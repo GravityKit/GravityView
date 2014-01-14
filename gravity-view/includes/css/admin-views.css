@@ -1,0 +1,230 @@
+/**
+ * Custom CSS at Add New / Edit Views screen
+ *
+ * @package   GravityView
+ * @author    Zack Katz <zack@katzwebservices.com>
+ * @license   ToBeDefined
+ * @link      http://www.katzwebservices.com
+ * @copyright Copyright 2013, Katz Web Services, Inc.
+ *
+ * @since 1.0.0
+ */
+
+/** View configuration tabs */
+.ui-tabs { 
+	position: relative; padding: .1em; zoom: 1; margin-top: 1em; }
+	
+.ui-tabs .ui-tabs-nav { 
+	margin: 0; padding: .1em .1em 0; 
+	-webkit-margin-before: 0;
+	-webkit-margin-after: 0;
+	-webkit-margin-start: 0;
+	-webkit-margin-end: 0;
+	-webkit-padding-start: 0; }
+	
+.ui-tabs .ui-tabs-nav li { 
+	list-style: none; 
+	float: left; 
+	position: relative; 
+	top: 1px; 
+	margin: 0 .2em 1px 0; 
+	border-bottom: 0 !important; 
+	padding: 0; 
+	white-space: nowrap; }
+	
+.ui-tabs .ui-tabs-nav li a { float: left; padding: .5em 1em; text-decoration: none; }
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected { margin-bottom: 0; padding-bottom: 1px; }
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a { cursor: text; }
+.ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
+.ui-tabs .ui-tabs-panel { display: block; border-width: 0; padding: 1em; background: none; border: 1px solid #ddd;}
+.ui-tabs .ui-tabs-hide { display: none !important; }
+.ui-tabs ul li.ui-state-active a { background: none; border-bottom: 1px solid #fff; }
+
+.nav-tab {
+	border-color: #ddd;
+}
+
+
+/** Fields */
+
+hr{
+	border: 0;
+	height: 0;
+	border-bottom: 1px solid #ddd;
+	margin: 2em 0 2em 0;
+}
+
+.view-table {
+	margin-top: 1em;
+	border-spacing: 0;
+	width: 100%;
+}
+
+.view-table td:first-child {
+	width: 35%;
+}
+
+.view-table td {
+	padding: 0.5em 0;
+}
+
+label {
+	font-weight: bold;
+}
+
+fieldset.area {
+	padding: 1em;
+	border: 1px solid #eee;
+}
+
+#directory-widgets fieldset.area {
+	margin: 1em 0 1em 0;
+}
+
+
+#directory-fields {
+	margin: 1.5em auto;
+}
+
+
+#directory-active-fields, #directory-active-widgets {
+	width: 75%;
+	float: left;
+}
+
+#directory-available-fields, #directory-available-widgets {
+	width: 20%;
+	float: right;
+}
+
+.fields-placeholder {
+	margin: 2px 1px;
+	width: 120px;
+	height: 20px;
+	border: 1px dashed #ccc;
+}
+
+.active-drop {
+	margin: 5px;
+	border: 1px dashed #ddd;
+	padding: 0.5em;
+	height: 100%;
+	/* text-align: center; */
+}
+
+
+/* Fields */
+.gv-fields {
+	margin: 2px 1px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	cursor: move;
+	border: 1px solid #ddd;
+	width: auto; 
+	display: block;
+
+	}
+	
+.gv-fields h5 {
+	position: relative;
+	font-weight: 600;
+	background: #f7f7f7; 
+	margin: 0;
+	padding: 5px;
+	line-height: 1;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none; 
+	}
+
+.gv-fields h5 span {
+	position: absolute;
+	right: 2px;
+	bottom: 2px;
+}
+
+.gv-fields h5 span a {
+	color: #999;
+}
+
+.gv-fields h5 span a:hover {
+	color: #0074a2;
+}
+
+#directory-available-fields h5 span {
+	display: none;
+}
+
+.gv-fields-options {
+	display: none;
+}
+
+.gv-fields-options ul {
+	margin: 5px 10px;
+}
+
+
+/* Widgets */
+.gv-widgets {
+	margin: 2px 1px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	cursor: move;
+	border: 1px solid #ddd;
+	width: auto; 
+	display: block;
+	}
+	
+.gv-widgets h5 {
+	font-weight: 600;
+	background: #f7f7f7; 
+	margin: 0;
+	padding: 5px;
+	line-height: 1;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none; 
+	}
+
+
+.gv-widgets-options {
+	display: none;
+}
+
+.widget-drop {
+	margin: 5px;
+	border: 1px dashed #ddd;
+	padding: 0.5em;
+	height: 100%;
+}
+
+.widget-drop span.drop-message, .active-drop span.drop-message {
+	color: #ddd;
+}
+
+.widget-drop > .gv-widgets {
+	width: 120px;
+	display: inline-block;
+}
+
+
+/* belongs to template */
+#gv-table-columns {
+	width: 130px;
+/* 	height: 300px; */
+	
+}
+
+#directory-active-fields fieldset.area {
+	width: 50%;
+}
+
+
