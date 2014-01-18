@@ -31,6 +31,33 @@ if( !function_exists('gravityview_get_form') ) {
 
 }
 
+if( !function_exists('gravityview_get_forms') ) { 
+	
+	
+	/**
+	 * Returns the form object for a given Form ID.
+	 * 
+	 * @access public
+	 * @param mixed $form_id
+	 * @return void
+	 */
+	function gravityview_get_forms() {
+			
+		if( class_exists( 'RGFormsModel' ) ) {
+			$gf_forms = RGFormsModel::get_forms( null, 'title' );
+			$forms = array();
+			foreach( $gf_forms as $form ) {
+				$forms[] = array( 'id' => $form->id, 'title' => $form->title );
+			}
+		}
+		return $forms;
+	}
+
+}
+
+
+
+
 	
 	/**
 	 * Return array of fields' id and label, for a given Form ID

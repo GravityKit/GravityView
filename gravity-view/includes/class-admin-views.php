@@ -70,13 +70,7 @@ class GravityView_Admin_Views {
 		// input 
 		echo '<label class="screen-reader-text" for="gravityview_form_id" >'. esc_html__( 'Select the Form', 'gravity-view' ) .'</label> ';
 		// check for available gravity forms
-		if( class_exists( 'RGFormsModel' ) ) {
-			$gf_forms = RGFormsModel::get_forms( null, 'title' );
-			$forms = array();
-			foreach( $gf_forms as $form ) {
-				$forms[] = array( 'id' => $form->id, 'title' => $form->title );
-			}
-		}
+		$forms = gravityview_get_forms();
 		echo '<select name="gravityview_form_id" id="gravityview_form_id">';
 		echo '	<option value="" '. selected( '', $current, false ) .'>-- '. esc_html__( 'list of forms', 'gravity-view' ) .' --</option>';
 		foreach( $forms as $form ) {
