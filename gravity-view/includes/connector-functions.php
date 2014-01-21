@@ -80,3 +80,51 @@ if( !function_exists('gravityview_get_forms') ) {
 		return $fields;
 		
 	}
+	
+	
+if( !function_exists('gravityview_get_entries') ) { 
+	
+	
+	
+	function gravityview_get_entries( $form_ids, $criteria = null, &$total = null ) {
+		
+		extract( wp_parse_args( $criteria, array( 'search_criteria' => null, 'sorting' => null, 'paging' => null ) ) );
+		
+		if( class_exists( 'GFAPI' ) && !empty( $form_ids ) ) {
+			if( !is_null( $total ) ) {
+				return GFAPI::get_entries( $form_ids, $search_criteria, $sorting, $paging, $total);
+			} else {
+				return GFAPI::get_entries( $form_ids, $search_criteria, $sorting, $paging );
+			}
+		}
+		return false;
+	}
+
+}	
+	
+	
+if( !function_exists('gravityview_get_field_label') ) { 
+	
+	
+	
+	function gravityview_get_field_label( $form, $field_id ) {
+		
+		if( empty($form) || empty( $field_id ) ) {
+			return '';
+		}
+		
+		foreach( $form['fields'] as $field ) {
+			if( $field_id == $field['id'] ) {
+				return $field['label'];
+			}
+		}
+		return '';
+	}
+
+}	
+	
+	
+	
+	
+	
+	

@@ -74,6 +74,9 @@ class GravityView_Plugin {
 			add_action( 'plugins_loaded', array( $this, 'frontend_actions' ), 0 );
 			
 		}
+		
+		// Load default templates
+		add_action( 'gravityview_init', array( $this, 'gravityview_register_default_templates' ) );
 
 	}
 	
@@ -163,7 +166,7 @@ class GravityView_Plugin {
 		);
 		register_post_type( 'gravityview', $args );
 		
-		
+		do_action( 'gravityview_init' );
 	}
 	
 	
@@ -177,12 +180,25 @@ class GravityView_Plugin {
 	
 	
 	public function frontend_actions() {
-		
+		error_log(' frontend actions: ');
+		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
+		// Shortcode to render view (directory)
+		add_shortcode( 'gravityview', array( 'GravityView_frontend', 'render_view_shortcode' ) );
 		
 	}	
 	
+
+	function gravityview_register_default_templates() {
+		
+		include_once( GRAVITYVIEW_DIR .'includes/default-templates.php' );
+		
+		$this->gravityview_register_template( 'GravityView_Default_Template_Table' );
+		$this->gravityview_register_template( 'GravityView_Default_Template_List' );
+	}
 	
-	
+	function gravityview_register_template( $class ) {
+		new $class();
+	}
 	
 
 

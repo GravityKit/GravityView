@@ -605,37 +605,7 @@ class GravityView_Admin_Views {
 
 
 
-class GravityView_Default_Directory_Template {
 
-	function __construct() {
-		// register template into the valid templates list
-		add_filter( 'gravityview_register_directory_template', array( $this, 'register_template' ) );
-		
-		// assign the active areas for the template
-		add_filter( 'gravityview_template_active_areas', array( $this, 'assign_active_areas' ), 10, 2 );
-		
-		//todo: css definition for active areas
-		
-		
-	}
-	
-	function register_template( $templates ) {
-		$templates[] = array( 'id' => 'default_table', 'label' => __( 'Table (default)', 'gravity-view') );
-		$templates[] = array( 'id' => 'default_list', 'label' => __( 'List (default)', 'gravity-view') );
-		$templates[] = array( 'id' => 'another_dummy', 'label' => __( 'Another (dummy)', 'gravity-view') );
-		return $templates;
-	}
-	
-	function assign_active_areas( $areas, $template = '' ) {
-		if( 'default_table' === $template ) {
-			$areas = array( array( 'id' => 'gv-table-columns', 'areaid' => 'table-columns', 'label' => __( 'Visible Table Columns', 'gravity-view') ) );
-		}
-		return $areas;
-	}
-	
-	
-}
-new GravityView_Default_Directory_Template();
 
 
 ?>
