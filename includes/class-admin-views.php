@@ -386,7 +386,7 @@ class GravityView_Admin_Views {
 
 		$output .= '<li>';
 
-		$output .= '<label for="'. $name .'">';
+		$output .= '<label>';
 		$output .= '<input name="'. $name .'" type="checkbox" value="1" '. checked( $current, '1', false ) .'>';
 		$output .= $label .'</label>';
 		$output .= '</li>';
