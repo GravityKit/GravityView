@@ -26,7 +26,7 @@ class GravityView_frontend {
 	public static function render_view_shortcode( $atts ) {
 		error_log('shortcode atts: '. print_r( $atts, true) );
 		//confront attributes with defaults
-		extract( shortcode_atts( array( 'id' => '', 'page_size' => '', 'sort_field' => '', 'sort_direction' => '', 'start_date' => '', 'end_date' => '', 'class' => '' ), $atts ) );
+		extract( shortcode_atts( array( 'id' => '', 'page_size' => '', 'sort_field' => '', 'sort_direction' => 'ASC', 'start_date' => '', 'end_date' => '', 'class' => '' ), $atts ) );
 		
 		// validate attributes
 		if( empty( $id ) ) {
@@ -44,16 +44,16 @@ class GravityView_frontend {
 		$search_criteria = '';
 		
 		// Sorting
-		$sorting = '';
+		$sorting = array( 'key' => $sort_field, 'direction' => "ASC" );
 		
 		// paging
 		if( empty( $page_size ) ) {
 			$page_size = get_post_meta( $id, '_gravityview_page_size', true );
 		}
-		
-		
 		$paging = array('offset' => 0, 'page_size' => $page_size );
 		
+		
+		//get entries
 		$entries = gravityview_get_entries( $form_id, compact( 'search_criteria', 'sorting', 'paging' ), $count );
 		
 		// remove hidden fields
