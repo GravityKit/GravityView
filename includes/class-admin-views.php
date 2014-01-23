@@ -385,10 +385,8 @@ class GravityView_Admin_Views {
 		$output = '';
 		
 		$output .= '<li>';
-
-		$output .= '<label for="'. $name .'">';
-		$output .= '<input name="'. $name .'" type="checkbox" value="1" '. checked( $current, '1', false ) .'>';
-		$output .= $label .'</label>';
+		$output .= '<input name="'. $name .'" id="'. $name .'" type="checkbox" value="1" '. checked( $current, '1', false ) .'>';
+		$output .= '<label for="'. $name .'">'. $label .'</label>';
 		$output .= '</li>';
 
 		
@@ -402,7 +400,7 @@ class GravityView_Admin_Views {
 		
 		$output = '<li>';
 		$output .= '<label for="'. $name .'">'. $label .'</label>';
-		$output .= '<input name="'. $name .'" type="text" value="'. $current .'" class="all-options">';
+		$output .= '<input name="'. $name .'" id="'. $name .'" type="text" value="'. $current .'" class="all-options">';
 		$output .= '</li>';
 
 		return $output;
