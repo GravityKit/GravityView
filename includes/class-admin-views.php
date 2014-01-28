@@ -144,12 +144,6 @@ class GravityView_Admin_Views {
 				<div id="directory-fields" class="">
 					<h4><?php esc_html_e( 'Fields Mapping', 'gravity-view'); ?></h4>
 					
-					<?php 
-						//$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $current_template );
-						//$fields = get_post_meta( $post->ID, '_gravityview_directory_fields', true );
-						//$available_fields = gravityview_get_form_fields( get_post_meta( $post->ID, '_gravityview_form_id', true ) );
-					?>
-					
 					<div id="directory-active-fields" class="gv-area">
 					
 						<?php echo $this->render_directory_active_areas( $current_template, $post->ID ); ?>
@@ -389,19 +383,21 @@ class GravityView_Admin_Views {
 		$show_label = !empty( $current['show_label'] ) ? 1 : '';
 		$show_as_link = !empty( $current['show_as_link'] ) ? 1 : '';
 		$custom_class = !empty( $current['custom_class'] ) ? $current['custom_class'] : '';
+		$custom_label = !empty( $current['custom_label'] ) ? $current['custom_label'] : '';
 		
 		
 		$output = '';
 		$output .= '<input type="hidden" class="field-key" name="fields['. $area .']['. $uniqid .'][id]" value="'. $field_id .'">';
+		$output .= '<input type="hidden" class="field-label" name="fields['. $area .']['. $uniqid .'][label]" value="'. $field_label .'">';
 		$output .= '<div class="gv-fields-options" title="Field Options: '. $field_label .' ['. $field_id .']">';
-		/* $output .= '<h3>Configure field '. $field_label .' ['. $field_id .']</h3>'; */
 		$output .= '<ul>';
 		
 		$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_label]' , __( 'Show Label', 'gravity-view' ), $show_label );
 		$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_as_link]' , __( 'Link to single entry', 'gravity-view' ), $show_as_link );
 		//$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_as_link]' , 'Link to single entry' ); //visible to logged-in
+		$output .= $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_label]' , __( 'Custom Label:', 'gravity-view' ), $custom_label );
 		$output .= $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_class]' , __( 'Custom CSS Class:', 'gravity-view' ), $custom_class );
-												
+		
 		$output .= '</ul>';
 		$output .= '</div>';
 		
