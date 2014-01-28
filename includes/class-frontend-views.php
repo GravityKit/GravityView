@@ -43,10 +43,20 @@ class GravityView_frontend {
 		// Search Criteria
 		$search_criteria = '';
 		
-		// Sorting
-		$sorting = array( 'key' => $sort_field, 'direction' => "ASC" );
+		//start date & end date
+		if( !empty( $start_date ) && !empty( $end_date ) ) {
+			$search_criteria['start_date'] = $start_date;
+			$search_criteria['end_date'] = $end_date;
+		}
 		
-		// paging
+		
+		// Sorting
+		$sorting = array();
+		if( !empty( $sort_field ) ) {
+			$sorting = array( 'key' => $sort_field, 'direction' => $sort_direction );
+		}
+		
+		// Paging
 		if( empty( $page_size ) ) {
 			$page_size = get_post_meta( $id, '_gravityview_page_size', true );
 		}
