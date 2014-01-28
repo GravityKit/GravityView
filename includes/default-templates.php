@@ -117,8 +117,12 @@ class GravityView_Default_Template_List {
 	}
 	
 	function assign_active_areas( $areas, $template = '' ) {
-		if( 'default_table' === $template ) {
-			$areas = array( array( 'id' => 'gv-list-columns', 'areaid' => 'table-columns', 'label' => __( 'Visible Table Columns', 'gravity-view') ) );
+		if( 'default_list' === $template ) {
+			$areas = array( 
+				array( 'id' => 'gv-list-title', 'areaid' => 'list-title', 'label' => __( 'Entry title', 'gravity-view') ), 
+				array( 'id' => 'gv-list-content', 'areaid' => 'list-content', 'label' => __( 'Entry Content', 'gravity-view') ), 
+				array( 'id' => 'gv-list-footer', 'areaid' => 'list-footer', 'label' => __( 'Entry Footer', 'gravity-view') ),
+			);
 		}
 		return $areas;
 	}

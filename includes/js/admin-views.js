@@ -31,6 +31,50 @@
 		});
 	}
 	
+	
+	function init_droppables() {
+	
+		$('#directory-active-fields').find(".active-drop").sortable({
+			placeholder: "fields-placeholder",
+			items: '> .gv-fields',
+			distance: 2,
+			receive: function( event, ui ) {
+				$(this).find(".drop-message").hide();
+			}
+		}).droppable({ 
+			drop: function( event, ui ) {
+				
+				if( 'draggable' === fieldOrigin ) {
+					
+					var data = {
+						action: 'gv_field_options',
+						area: $(this).attr('data-areaid'),
+						field_id: ui.draggable.attr('data-fieldid'),
+						field_label: ui.draggable.find("h5").text(),
+						nonce: ajax_object.nonce,
+					}
+					
+					$.post( ajax_object.ajaxurl, data, function( response ) {
+						if( response ) {
+							ui.draggable.append( response );
+						}
+					});
+					
+					fieldOrigin = 'sortable';
+					
+					// show field buttons: Settings & Remove
+					ui.draggable.find("h5 span").show();
+					
+					ui.draggable.find("h5 span a[href='#remove']").click( removeField );
+					
+					ui.draggable.find("h5 span a[href='#settings']").click( openFieldSettings );
+				}
+			}
+		});
+	
+	}
+	
+	
 	// Event handler to remove Fields from active areas
 	function removeField( event ) {
 		event.preventDefault();
@@ -79,6 +123,27 @@
 			
 		});
 		
+		// If Directory Template Selection changes update areas/fields
+		$("#gravityview_directory_template").change( function() {
+			
+			$("#directory-active-fields").find("fieldset.area").remove();
+			
+			var data = {
+				action: 'gv_get_active_areas',
+				template_id: $(this).val(),
+				nonce: ajax_object.nonce,
+			}
+			
+			$.post( ajax_object.ajaxurl, data, function( response ) {
+				if( response ) {
+					$("#directory-active-fields").append( response );
+					init_droppables();
+				}
+			});
+			
+		});
+		
+		
 		
 		// View Configuration - Tabs
 		$("#tabs").tabs();
@@ -88,43 +153,7 @@
 		
 		init_draggables();
 		
-		$('#directory-active-fields').find(".active-drop").sortable({
-			placeholder: "fields-placeholder",
-			items: '> .gv-fields',
-			distance: 2,
-			receive: function( event, ui ) {
-				$(this).find(".drop-message").hide();
-			}
-		}).droppable({ 
-			drop: function( event, ui ) {
-				
-				if( 'draggable' === fieldOrigin ) {
-					
-					var data = {
-						action: 'gv_field_options',
-						area: $(this).attr('data-areaid'),
-						field_id: ui.draggable.attr('data-fieldid'),
-						field_label: ui.draggable.find("h5").text(),
-						nonce: ajax_object.nonce,
-					}
-					
-					$.post( ajax_object.ajaxurl, data, function( response ) {
-						if( response ) {
-							ui.draggable.append( response );
-						}
-					});
-					
-					fieldOrigin = 'sortable';
-					
-					// show field buttons: Settings & Remove
-					ui.draggable.find("h5 span").show();
-					
-					ui.draggable.find("h5 span a[href='#remove']").click( removeField );
-					
-					ui.draggable.find("h5 span a[href='#settings']").click( openFieldSettings );
-				}
-			}
-		});
+		init_droppables();
 		
 		$("a[href='#remove']").click( removeField );
 		
