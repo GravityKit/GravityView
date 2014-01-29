@@ -129,17 +129,17 @@ class GravityView_Default_Template_List {
 	
 	function render_directory_view( $html = '', $form_id, $dir_fields, $entries, $atts = '' ) {
 		
-		$form = gravityview_get_form( $form_id );
-		
 		$html .= '<div id="" class="">';
 		error_log(' $dir_fields: '. print_r( $dir_fields, true) );
 		error_log(' $atts: '. print_r( $atts, true) );
 		
 		foreach( $entries as $entry ) {
-			$html .= '<div id="gv_list_" class="">';
-		//	$html .= $this->render_row_title( $form, $dir_fields['list-title'], $entry );
-		//	$html .= $this->render_row_content( $form, $dir_fields['list-content'], $entry);
-		//	$html .= $this->render_row_footer($form, $dir_fields['list-footer'], $entry );
+			error_log(' $entry: '. print_r( $entry, true) );
+			$html .= '<div id="gv_list_'.$entry['id'].'" class="">';
+			$html .= $this->render_row( $dir_fields['list-title'], $entry, array( 'before' => '<div class="list-row-title">', 'after' => '</div>' ), array( 'before' => '<h3>', 'after' => '</h3>', 'sep' => '' ) );
+			$html .= $this->render_row( $dir_fields['list-content'], $entry, array( 'before' => '<div class="list-row-content">', 'after' => '</div>' ), array( 'before' => '<p>', 'after' => '</p>', 'sep' => '' ) );
+			$html .= $this->render_row( $dir_fields['list-footer'], $entry, array( 'before' => '<div class="list-row-footer"><ul>', 'after' => '</ul></div>' ), array( 'before' => '<li>', 'after' => '</li>', 'sep' => '' ) );
+			
 			$html .= '</div>';
 		}
 		
@@ -149,23 +149,28 @@ class GravityView_Default_Template_List {
 	
 	}
 	
-	function render_row_title( ) {
-		
 	
+	function render_row( $fields, $entry, $row_wrap, $element_tags ) {
+		
+		foreach( $fields as $field ) {
+			
+			if( !empty( $field['show_label'] ) ) {
+				$label = empty( $field['custom_label'] ) ? $field['label'] : $field['custom_label'];
+				$label_sep = empty( $element_tags['label_sep'] ) ? ': ' : $element_tags['label_sep'];
+				$label .= apply_filters( 'gravityview_render_after_label', $label_sep, $field );
+			} else {
+				$label = '';
+			}
+			$content = isset( $entry[ $field['id'] ] ) ? $entry[ $field['id'] ] : '';
+			$elements[] = $element_tags['before'] . $label . $content  . $element_tags['after'];
+		}
+		
+		$element_sep = empty( $element_tags['sep'] ) ? ' ' : $element_tags['sep'];
+		
+		return $row_wrap['before'] . implode( $element_sep , $elements ) . $row_wrap['after'];
+		
 	}
 
-	function render_row_content() {
-	
-	
-	}
-	
-	function render_row_footer() {
-	
-	
-	}
-		
-		
-	
 	
 	
 }

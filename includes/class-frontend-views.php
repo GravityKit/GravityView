@@ -24,7 +24,7 @@ class GravityView_frontend {
 	
 
 	public static function render_view_shortcode( $atts ) {
-		error_log('shortcode atts: '. print_r( $atts, true) );
+		
 		//confront attributes with defaults
 		extract( shortcode_atts( array( 'id' => '', 'page_size' => '', 'sort_field' => '', 'sort_direction' => 'ASC', 'start_date' => '', 'end_date' => '', 'class' => '' ), $atts ) );
 		

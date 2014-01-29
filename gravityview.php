@@ -180,7 +180,7 @@ class GravityView_Plugin {
 	
 	
 	public function frontend_actions() {
-		error_log(' frontend actions: ');
+		
 		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
 		// Shortcode to render view (directory)
 		add_shortcode( 'gravityview', array( 'GravityView_frontend', 'render_view_shortcode' ) );
