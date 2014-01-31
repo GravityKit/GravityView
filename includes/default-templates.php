@@ -200,7 +200,7 @@ class GravityView_Default_Template_List {
 				case 'checkbox':
 				case 'name':
 					$value = RGFormsModel::get_lead_field_value( $entry, $field );
-					$value = GFCommon::get_lead_field_display( $field, $value, $lead['currency'] );
+					$value = GFCommon::get_lead_field_display( $field, $value, $entry['currency'] );
 				
 					break;
 				
