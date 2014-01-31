@@ -161,7 +161,7 @@ class GravityView_Default_Template_List {
 			} else {
 				$label = '';
 			}
-			$content = isset( $entry[ $field['id'] ] ) ? $entry[ $field['id'] ] : '';
+			$content = $this->get_field_entry_value( $entry, $field['id'] ); //isset( $entry[ $field['id'] ] ) ? $entry[ $field['id'] ] : '';
 			$elements[] = $element_tags['before'] . $label . $content  . $element_tags['after'];
 		}
 		
@@ -170,7 +170,50 @@ class GravityView_Default_Template_List {
 		return $row_wrap['before'] . implode( $element_sep , $elements ) . $row_wrap['after'];
 		
 	}
+	
+	// !!! this function will be migrated to another class.
+	/**
+	 * Given an entry and a form field id, calculate the entry value for that field.
+	 * 
+	 * @access public
+	 * @param array $entry
+	 * @param integer $field_id
+	 * @return string
+	 */
+	function get_field_entry_value( $entry, $field_id ) {
+		
+		if( empty( $entry['form_id'] ) || empty( $field_id ) ) {
+			return '';
+		}
+		
+		$value = '';
+		
+		$form = gravityview_get_form( $entry['form_id'] );
+		$field = gravityview_get_field( $form, $field_id );
+		
+		if( !empty( $field['type'] ) ) {
+		
+			switch( $field['type'] ){
 
+				case 'address':
+				case 'radio':
+				case 'checkbox':
+				case 'name':
+					$value = RGFormsModel::get_lead_field_value( $entry, $field );
+					$value = GFCommon::get_lead_field_display( $field, $value, $lead['currency'] );
+				
+					break;
+				
+				default:
+					$value = $entry[ $field_id ];
+					break;
+				
+			} //switch
+		} // if
+		
+		return $value;
+	}
+	
 	
 	
 }
