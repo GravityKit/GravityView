@@ -192,6 +192,10 @@ class GravityView_Default_Template_List {
 		$field = gravityview_get_field( $form, $field_id );
 		
 		if( !empty( $field['type'] ) ) {
+		// possible values: html, hidden, section, text, website, phone, number, date, time, textarea, select, , fileupload, email, post_title, post_content, post_excerpt, post_tags, post_category, post_image, post_custom_field, captcha
+		
+		// covered: checkbox, radio, name, address
+		
 		
 			switch( $field['type'] ){
 
@@ -204,8 +208,47 @@ class GravityView_Default_Template_List {
 				
 					break;
 				
+				case 'fileupload':
+				case 'post_image':
+					$value = isset( $entry[ $field_id ] ) ? $entry[ $field_id ] : '' ;
+					
+					error_log('$value : '. print_r( $value, true) );
+					
+					break;
+				
+				case 'source_url':
+				
+					break;
+				
+				case "textarea" :
+				case "post_content" :
+				case "post_excerpt" :
+				
+					break;
+					
+				
+				case "post_category":
+				
+					break;
+				
+				case "date_created" :
+				
+					break;
+				
+				case "date" :
+				
+					break;
+				
+				case "id" :
+				
+					break;
+				
+				case "list":
+				
+					break;
+				
 				default:
-					$value = $entry[ $field_id ];
+					$value = isset( $entry[ $field_id ] ) ? $entry[ $field_id ] : '' ;
 					break;
 				
 			} //switch
@@ -217,3 +260,7 @@ class GravityView_Default_Template_List {
 	
 	
 }
+
+
+
+
