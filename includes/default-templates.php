@@ -192,10 +192,11 @@ class GravityView_Default_Template_List {
 		$field = gravityview_get_field( $form, $field_id );
 		
 		if( !empty( $field['type'] ) ) {
-		// possible values: html, hidden, section, text, website, phone, number, date, time, textarea, select, , fileupload, email, post_title, post_content, post_excerpt, post_tags, post_category, post_image, post_custom_field, captcha
+		// possible values: html, hidden, section, text, website, phone, number, date, time, textarea, select, , , , post_title, post_content, post_excerpt, post_tags, post_category, post_image, post_custom_field, captcha
 		
-		// covered: checkbox, radio, name, address
-		
+		// covered: checkbox, radio, name, address, fileupload, email
+			//default
+			$value = isset( $entry[ $field_id ] ) ? $entry[ $field_id ] : '' ;
 		
 			switch( $field['type'] ){
 
@@ -203,16 +204,26 @@ class GravityView_Default_Template_List {
 				case 'radio':
 				case 'checkbox':
 				case 'name':
+					$value = '';
 					$value = RGFormsModel::get_lead_field_value( $entry, $field );
 					$value = GFCommon::get_lead_field_display( $field, $value, $entry['currency'] );
 				
 					break;
 				
-				case 'fileupload':
-				case 'post_image':
-					$value = isset( $entry[ $field_id ] ) ? $entry[ $field_id ] : '' ;
+				case 'email':
+					$value = '<a href="mailto:'. esc_attr( $value ) . '">'. esc_html( $value ) .'</a>';
 					
-					error_log('$value : '. print_r( $value, true) );
+					break;
+				
+				case 'fileupload':
+
+					$url = $value;
+					if( !class_exists( 'GFEntryList' ) ) { require_once( WP_PLUGIN_DIR . '/gravityforms/entry_list.php' ); }
+					$thumb = GFEntryList::get_icon_url( $url );
+					$value = '<a href="'. esc_url( $url ) .'" target="_blank" title="' . __( 'Click to view', 'gravity-view') . '"><img src="'. esc_url( $thumb ) .'"/></a>';
+					
+					break;
+				case 'post_image':
 					
 					break;
 				
@@ -248,7 +259,7 @@ class GravityView_Default_Template_List {
 					break;
 				
 				default:
-					$value = isset( $entry[ $field_id ] ) ? $entry[ $field_id ] : '' ;
+					//$value = isset( $entry[ $field_id ] ) ? $entry[ $field_id ] : '' ;
 					break;
 				
 			} //switch
