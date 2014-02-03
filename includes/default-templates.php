@@ -136,9 +136,18 @@ class GravityView_Default_Template_List {
 		foreach( $entries as $entry ) {
 			error_log(' $entry: '. print_r( $entry, true) );
 			$html .= '<div id="gv_list_'.$entry['id'].'" class="">';
-			$html .= $this->render_row( $dir_fields['list-title'], $entry, array( 'before' => '<div class="list-row-title">', 'after' => '</div>' ), array( 'before' => '<h3>', 'after' => '</h3>', 'sep' => '' ) );
-			$html .= $this->render_row( $dir_fields['list-content'], $entry, array( 'before' => '<div class="list-row-content">', 'after' => '</div>' ), array( 'before' => '<p>', 'after' => '</p>', 'sep' => '' ) );
-			$html .= $this->render_row( $dir_fields['list-footer'], $entry, array( 'before' => '<div class="list-row-footer"><ul>', 'after' => '</ul></div>' ), array( 'before' => '<li>', 'after' => '</li>', 'sep' => '' ) );
+			
+			if( !empty( $dir_fields['list-title'] ) ) {
+				$html .= $this->render_row( $dir_fields['list-title'], $entry, array( 'before' => '<div class="list-row-title">', 'after' => '</div>' ), array( 'before' => '<h3>', 'after' => '</h3>', 'sep' => '' ) );
+			}
+			
+			if( !empty( $dir_fields['list-content'] ) ) {
+				$html .= $this->render_row( $dir_fields['list-content'], $entry, array( 'before' => '<div class="list-row-content">', 'after' => '</div>' ), array( 'before' => '<p>', 'after' => '</p>', 'sep' => '' ) );
+			}
+			
+			if( !empty( $dir_fields['list-footer'] ) ) {
+				$html .= $this->render_row( $dir_fields['list-footer'], $entry, array( 'before' => '<div class="list-row-footer"><ul>', 'after' => '</ul></div>' ), array( 'before' => '<li>', 'after' => '</li>', 'sep' => '' ) );
+			}
 			
 			$html .= '</div>';
 		}
@@ -190,11 +199,11 @@ class GravityView_Default_Template_List {
 		
 		$form = gravityview_get_form( $entry['form_id'] );
 		$field = gravityview_get_field( $form, $field_id );
-		
+		error_log('$field: '. print_r( $field, true) );
 		if( !empty( $field['type'] ) ) {
-		// possible values: html, hidden, section, text, website, phone, number, date, time, textarea, select, , , , post_title, post_content, post_excerpt, post_tags, post_category, post_image, post_custom_field, captcha
+		// possible values: html, hidden, section, captcha , , ,, , , , post_title, , , post_tags, post_category, post_image, post_custom_field, 
 		
-		// covered: checkbox, radio, name, address, fileupload, email
+		// covered: checkbox, radio, name, address, fileupload, email, textarea, post_content, post_excerpt, text, website, select
 			//default
 			$value = isset( $entry[ $field_id ] ) ? $entry[ $field_id ] : '' ;
 		
@@ -212,7 +221,10 @@ class GravityView_Default_Template_List {
 				
 				case 'email':
 					$value = '<a href="mailto:'. esc_attr( $value ) . '">'. esc_html( $value ) .'</a>';
-					
+					break;
+				
+				case 'website':
+					$value = '<a href="'. esc_url( $value ) . '">'. esc_html( $value ) .'</a>';
 					break;
 				
 				case 'fileupload':
@@ -223,49 +235,70 @@ class GravityView_Default_Template_List {
 					$value = '<a href="'. esc_url( $url ) .'" target="_blank" title="' . __( 'Click to view', 'gravity-view') . '"><img src="'. esc_url( $thumb ) .'"/></a>';
 					
 					break;
-				case 'post_image':
 					
+				case 'post_image':
+					//todo
+					break;
+				
+				
+				case 'textarea' :
+				case 'post_content' :
+				case 'post_excerpt' :
+					if( apply_filters( 'gravityview_show_fulltext', true, $entry, $field_id ) ) {
+						$long_text = $value = '';
+
+						if( isset( $entry[ $field_id ] ) && strlen( $entry[ $field_id ] ) >= GFORMS_MAX_FIELD_LENGTH ) {
+						   $long_text = RGFormsModel::get_lead_field_value( $entry, RGFormsModel::get_field( $form, $field_id ));
+						}
+						if( isset( $entry[ $field_id ] ) ) {
+							$value = !empty( $long_text ) ? $long_text : $entry[ $field_id ];
+						}
+					}
+					
+					$value = esc_html( $value );
+					
+					if( apply_filters( 'gravityview_entry_value_wpautop', true, $entry, $field_id ) ) { 
+						$value = wpautop( $value ); 
+					};
+					
+					break;
+				
+				case 'date_created':
+					$value = GFCommon::format_date( $entry['date_created'], true, apply_filters( 'gravityview_date_format', '' ) );
+					break;
+					
+				
+				case 'date':
+					$value = GFCommon::date_display( $value, apply_filters( 'gravityview_date_format', $field['dateFormat'] ) );
+					break;
+
+				
+				case 'list':
+					$value = GFCommon::get_lead_field_display( $field, $value );
+					break;
+					
+				
+				case 'post_category':
+					//todo
+					break;
+				
+				case 'id':
+					//todo
 					break;
 				
 				case 'source_url':
-				
-					break;
-				
-				case "textarea" :
-				case "post_content" :
-				case "post_excerpt" :
-				
-					break;
-					
-				
-				case "post_category":
-				
-					break;
-				
-				case "date_created" :
-				
-					break;
-				
-				case "date" :
-				
-					break;
-				
-				case "id" :
-				
-					break;
-				
-				case "list":
+					// entry link
 				
 					break;
 				
 				default:
-					//$value = isset( $entry[ $field_id ] ) ? $entry[ $field_id ] : '' ;
+					$value = esc_html( $value );
 					break;
 				
 			} //switch
 		} // if
 		
-		return $value;
+		return apply_filters( 'gravityview_field_entry_value', $value, $entry, $field_id );
 	}
 	
 	
