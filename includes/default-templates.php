@@ -167,6 +167,7 @@ class GravityView_Default_Template_List {
 		
 		foreach( $fields as $field ) {
 			
+			// show label
 			if( !empty( $field['show_label'] ) ) {
 				$label = empty( $field['custom_label'] ) ? $field['label'] : $field['custom_label'];
 				$label_sep = empty( $element_tags['label_sep'] ) ? ': ' : $element_tags['label_sep'];
@@ -175,11 +176,20 @@ class GravityView_Default_Template_List {
 				$label = '';
 			}
 			
+			// custom class
 			if( !empty( $field['custom_class'] ) ) {
 				$element_tags['before'] = '<'. str_replace( array( '<' , '>' ), '', $element_tags['before'] ) . ' class="'. $field['custom_class'] .'">';
 			}
 			
+			// content
 			$content = $this->get_field_entry_value( $entry, $field['id'] ); 
+			
+			// link to single entry
+			if( !empty( $field['show_as_link'] ) ) {
+				$content = '<a href="">'. $content . '</a>';
+			}
+			
+			// join element parts
 			$elements[] = $element_tags['before'] . $label . $content  . $element_tags['after'];
 		}
 		
