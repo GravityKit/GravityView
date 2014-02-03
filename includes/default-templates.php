@@ -159,7 +159,11 @@ class GravityView_Default_Template_List {
 	}
 	
 	
+	// !!! this function will be migrated to another class.
 	function render_row( $fields, $entry, $row_wrap, $element_tags ) {
+		
+		$row_wrap = wp_parse_args( $row_wrap, array( 'before' => '', 'after' => '') );
+		$element_tags = wp_parse_args( $element_tags, array( 'before' => '', 'after' => '', 'sep' => '' ) );
 		
 		foreach( $fields as $field ) {
 			
@@ -170,7 +174,12 @@ class GravityView_Default_Template_List {
 			} else {
 				$label = '';
 			}
-			$content = $this->get_field_entry_value( $entry, $field['id'] ); //isset( $entry[ $field['id'] ] ) ? $entry[ $field['id'] ] : '';
+			
+			if( !empty( $field['custom_class'] ) ) {
+				$element_tags['before'] = '<'. str_replace( array( '<' , '>' ), '', $element_tags['before'] ) . ' class="'. $field['custom_class'] .'">';
+			}
+			
+			$content = $this->get_field_entry_value( $entry, $field['id'] ); 
 			$elements[] = $element_tags['before'] . $label . $content  . $element_tags['after'];
 		}
 		
