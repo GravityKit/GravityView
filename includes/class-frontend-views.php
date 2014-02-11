@@ -18,9 +18,29 @@ class GravityView_frontend {
 	function __construct() {
 		// 
 		
+		// init - register rewrite
+		//add_action( 'init', array( $this, 'init_rewrite' ) );
 	
 	
 	}
+	
+	
+	public static function init_rewrite() {
+		
+		global $wp_rewrite;
+		
+		if( !$wp_rewrite->using_permalinks() ) { 
+			return; 
+		}
+		
+		$endpoint = sanitize_title( apply_filters( 'gravityview_directory_endpoint', 'entry' ) );
+
+		# @TODO: Make sure this works in MU
+		$wp_rewrite->add_permastruct("{$endpoint}", $endpoint.'/%'.$endpoint.'%/?', true);
+		$wp_rewrite->add_endpoint("{$endpoint}",EP_ALL);
+	
+	}
+	
 	
 
 	public static function render_view_shortcode( $atts ) {
@@ -72,10 +92,22 @@ class GravityView_frontend {
 		
 		
 		
+		// Get the template slug
+		$view_slug =  apply_filters( 'gravityview_template_slug_'. $dir_template, 'table' );
 		
+		// Prepare to render view and set vars
+		$view = new GravityView_Template();
+		$view->entries = $entries;
+		$view->fields = $dir_fields;
 		
-		$output = apply_filters( 'gravityview_render_template_'. $dir_template, '', $form_id, $dir_fields, $entries, $atts );
+		ob_start();
 		
+		$view->render( $view_slug, 'header' );
+		$view->render( $view_slug, 'body' );
+		$view->render( $view_slug, 'footer' );
+		
+		$output = ob_get_contents();
+		ob_end_clean();
 		return $output;
 	}
 	

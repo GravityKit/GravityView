@@ -85,11 +85,18 @@ class GravityView_Plugin {
 		//@todo: Check if Gravity Form is installed and if version is upper than 1.8 -> Give notice message.
 		
 		
+		self::init_setup();
+		
+		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
+		GravityView_frontend::init_rewrite();
+		
+		flush_rewrite_rules();
+		
 	}
 	
 	public static function deactivate( $network_wide ) {
 		
-		
+		flush_rewrite_rules();
 		
 	}
 	
@@ -180,7 +187,8 @@ class GravityView_Plugin {
 	
 	
 	public function frontend_actions() {
-		
+	
+		include_once( GRAVITYVIEW_DIR .'includes/class-template.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
 		// Shortcode to render view (directory)
 		add_shortcode( 'gravityview', array( 'GravityView_frontend', 'render_view_shortcode' ) );

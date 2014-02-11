@@ -25,7 +25,8 @@ class GravityView_Template extends Gamajo_Template_Loader {
 	protected $filter_prefix = 'gravityview';
 	
 	// Directory name where custom templates for this plugin should be found in the theme.
-	protected $theme_template_directory = apply_filters( 'gravityview_theme_template_directory', '' );
+	protected $theme_template_directory = '';
+	//apply_filters( 'gravityview_theme_template_directory', '' );
 	
 	// Reference to the root directory path of this plugin.
 	protected $plugin_directory = GRAVITYVIEW_DIR;
@@ -37,6 +38,18 @@ class GravityView_Template extends Gamajo_Template_Loader {
 	
 	public function __get( $name ) {
 		return $this->vars[ $name ];
+	}
+	
+	public function render( $slug, $name, $require_once = true ) {
+	
+		$template_file = $this->get_template_part( $slug, $name, false );
+		
+		if( !empty( $template_file) ) {
+			if ( $require_once )
+				require_once( $template_file );
+			else
+				require( $template_file );
+		}
 	}
 	
 }
