@@ -40,6 +40,7 @@ class GravityView_Template extends Gamajo_Template_Loader {
 		return $this->vars[ $name ];
 	}
 	
+	// Load the template
 	public function render( $slug, $name, $require_once = true ) {
 	
 		$template_file = $this->get_template_part( $slug, $name, false );

@@ -96,15 +96,17 @@ class GravityView_frontend {
 		$view_slug =  apply_filters( 'gravityview_template_slug_'. $dir_template, 'table' );
 		
 		// Prepare to render view and set vars
-		$view = new GravityView_Template();
-		$view->entries = $entries;
-		$view->fields = $dir_fields;
+		global $gravity_view;
+		$gravity_view = new GravityView_Template();
+		
+		$gravity_view->entries = $entries;
+		$gravity_view->fields = $dir_fields;
 		
 		ob_start();
 		
-		$view->render( $view_slug, 'header' );
-		$view->render( $view_slug, 'body' );
-		$view->render( $view_slug, 'footer' );
+		$gravity_view->render( $view_slug, 'header' );
+		$gravity_view->render( $view_slug, 'body' );
+		$gravity_view->render( $view_slug, 'footer' );
 		
 		$output = ob_get_contents();
 		ob_end_clean();
@@ -117,3 +119,9 @@ class GravityView_frontend {
 	
 	
 }
+
+
+
+
+
+
