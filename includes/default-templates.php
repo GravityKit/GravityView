@@ -31,7 +31,7 @@ class GravityView_Default_Template_Table {
 		//todo: css definition for active areas
 		
 		// render view
-		add_filter( 'gravityview_render_template_default_table', array( $this, 'render_directory_view' ), 10, 5 );
+		add_filter( 'gravityview_template_slug_default_table', array( $this, 'assign_view_slug' ), 10, 1 );
 	}
 	
 	function register_template( $templates ) {
@@ -46,47 +46,9 @@ class GravityView_Default_Template_Table {
 		return $areas;
 	}
 	
-	function render_directory_view( $html = '', $form_id, $dir_fields, $entries, $atts = '' ) {
-		
-		
-		$form = gravityview_get_form( $form_id );
-
-		
-		// table header
-		$html = '<table class="">';
-		$html .= '<thead>';
-		
-		$header_row = '';
-		foreach( $dir_fields['table-columns'] as $key => $column ) {
-			$label = gravityview_get_field_label( $form, $column['id'] );
-			$header_row .= '<th>' . esc_html( $label ) . '</th>';
-		}
-		$html .= '<tr>' . $header_row . '</tr>';
-		$html .= '</thead>';
-		
-		// table body
-		$html .= '<tbody>';
-		foreach( $entries as $entry ) {
-			$html .= '<tr>';
-			foreach( $dir_fields['table-columns'] as $column ) {
-				$content = empty( $entry[ $column['id'] ] ) ? '' : $entry[ $column['id'] ];
-				$html .= '<td>'. $content .'</td>';
-			}
-			$html .= '</tr>';
-		}
-		
-		$html .= '</tbody>';
-		
-		// table footer
-		$html .= '<tfoot>';
-		$html .= '<tr>' . $header_row . '</tr>';
-		
-		$html .= '</tfoot>';
-		$html .= '</table>';
-		
-		return $html;
+	function assign_view_slug( $default ) {
+		return 'table';
 	}
-	
 	
 }
 
@@ -108,7 +70,7 @@ class GravityView_Default_Template_List {
 		//todo: css definition for active areas
 		
 		// render view
-		add_filter( 'gravityview_render_template_default_list', array( $this, 'render_directory_view' ), 10, 5 );
+		add_filter( 'gravityview_template_slug_default_list', array( $this, 'assign_view_slug' ), 10, 1 );
 	}
 	
 	function register_template( $templates ) {
@@ -117,17 +79,23 @@ class GravityView_Default_Template_List {
 	}
 	
 	function assign_active_areas( $areas, $template = '' ) {
-		if( 'default_table' === $template ) {
-			$areas = array( array( 'id' => 'gv-list-columns', 'areaid' => 'table-columns', 'label' => __( 'Visible Table Columns', 'gravity-view') ) );
+		if( 'default_list' === $template ) {
+			$areas = array( 
+				array( 'id' => 'gv-list-title', 'areaid' => 'list-title', 'label' => __( 'Entry title', 'gravity-view') ), 
+				array( 'id' => 'gv-list-content', 'areaid' => 'list-content', 'label' => __( 'Entry Content', 'gravity-view') ), 
+				array( 'id' => 'gv-list-footer', 'areaid' => 'list-footer', 'label' => __( 'Entry Footer', 'gravity-view') ),
+			);
 		}
 		return $areas;
 	}
 	
-	function render_directory_view( $html = '', $form_id, $dir_fields, $entries, $atts = '' ) {
-		
-		
-		
+	function assign_view_slug( $default ) {
+		return 'list';
 	}
 	
 	
 }
+
+
+
+
