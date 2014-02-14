@@ -6,5 +6,7 @@
 			}
 			?>
 		</tr>
+		<?php gravityview_footer(); ?>
 	</tfoot>
 </table>
+<?php gravityview_after(); ?>
