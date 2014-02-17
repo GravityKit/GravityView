@@ -73,7 +73,7 @@ if( !function_exists('gravityview_get_forms') ) {
 		
 		if( $form ) {
 			foreach( $form['fields'] as $field ) {
-				$fields[ $field['id'] ] = array( 'label' => $field['label'] );
+				$fields[ $field['id'] ] = array( 'label' => $field['label'], 'type' => $field['type'] );
 			}
 		}
 		

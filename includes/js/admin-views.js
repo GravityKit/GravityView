@@ -18,7 +18,7 @@
 
 	function init_draggables() {
 		
-		$("#directory-available-fields").find(".gv-fields").draggable({
+		$("#directory-available-fields, #single-available-fields").find(".gv-fields").draggable({
 			connectToSortable: 'div.active-drop',
 			distance: 2,
 			helper: 'clone',
@@ -34,7 +34,7 @@
 	
 	function init_droppables() {
 	
-		$('#directory-active-fields').find(".active-drop").sortable({
+		$('#directory-active-fields, #single-active-fields').find(".active-drop").sortable({
 			placeholder: "fields-placeholder",
 			items: '> .gv-fields',
 			distance: 2,
@@ -106,7 +106,7 @@
 		// If Form Selection changes update fields
 		$("#gravityview_form_id").change( function() {
 			
-			$("#directory-available-fields, #directory-active-fields").find(".gv-fields").remove();
+			$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
 			
 			var data = {
 				action: 'gv_available_fields',
@@ -117,6 +117,7 @@
 			$.post( ajax_object.ajaxurl, data, function( response ) {
 				if( response ) {
 					$("#directory-available-fields fieldset.area").append( response );
+					$("#single-available-fields fieldset.area").append( response );
 					init_draggables();
 				}
 			});
@@ -143,6 +144,25 @@
 			
 		});
 		
+		// If Single Template Selection changes update areas/fields
+		$("#gravityview_single_template").change( function() {
+			
+			$("#single-active-fields").find("fieldset.area").remove();
+			
+			var data = {
+				action: 'gv_get_active_areas',
+				template_id: $(this).val(),
+				nonce: ajax_object.nonce,
+			}
+			
+			$.post( ajax_object.ajaxurl, data, function( response ) {
+				if( response ) {
+					$("#single-active-fields").append( response );
+					init_droppables();
+				}
+			});
+			
+		});
 		
 		
 		// View Configuration - Tabs

@@ -82,17 +82,17 @@ fieldset.area {
 }
 
 
-#directory-fields {
+#directory-fields, #single-fields {
 	margin: 1.5em auto;
 }
 
 
-#directory-active-fields, #directory-active-widgets {
+#directory-active-fields, #directory-active-widgets, #single-active-fields {
 	width: 75%;
 	float: left;
 }
 
-#directory-available-fields, #directory-available-widgets {
+#directory-available-fields, #directory-available-widgets, #single-available-fields {
 	width: 20%;
 	float: right;
 }
@@ -155,7 +155,7 @@ fieldset.area {
 	color: #0074a2;
 }
 
-#directory-available-fields h5 span {
+#directory-available-fields h5 span, #single-available-fields h5 span {
 	display: none;
 }
 
@@ -223,7 +223,7 @@ fieldset.area {
 	
 }
 
-#directory-active-fields fieldset.area {
+#directory-active-fields fieldset.area, #single-active-fields {
 	width: 50%;
 }
 

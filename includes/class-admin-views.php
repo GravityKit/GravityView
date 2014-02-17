@@ -83,6 +83,14 @@ class GravityView_Admin_Views {
 		
 	}
 
+	
+	/**
+	 * Render html for 'View Configuration' metabox
+	 * 
+	 * @access public
+	 * @param mixed $post
+	 * @return void
+	 */
 	function render_view_configuration( $post ) {
 		
 		// Use nonce for verification
@@ -90,7 +98,11 @@ class GravityView_Admin_Views {
 		
 		// Fetch available style templates
 		$templates_directory = apply_filters( 'gravityview_register_directory_template', array() );
+		$templates_single = apply_filters( 'gravityview_register_single_template', array() );
 		
+		// Selected Form
+		$curr_form = get_post_meta( $post->ID, '_gravityview_form_id', true )
+
 		
 		?>
 		<div id="tabs">
@@ -153,7 +165,7 @@ class GravityView_Admin_Views {
 					<div id="directory-available-fields">
 						<fieldset class="area">
 							<legend><?php esc_html_e( 'Available Fields', 'gravity-view' ); ?></legend>
-							<?php echo $this->render_available_fields( get_post_meta( $post->ID, '_gravityview_form_id', true ) ); ?>
+							<?php echo $this->render_available_fields( $curr_form ); ?>
 						</fieldset>
 					</div>
 
@@ -189,10 +201,51 @@ class GravityView_Admin_Views {
 			
 			
 			
+			<?php // Single View Tab ?>
+			
 			<div id="single-view">
-				<p>single view</p>
-			</div>
-		</div>
+				<table class="view-table">
+					<tr valign="top">
+						<td>
+							<label for="gravityview_single_template"><?php esc_html_e( 'Single Entry Template', 'gravity-view'); ?></label>
+						</td>
+						<td>
+							<select name="gravityview_single_template" id="gravityview_single_template">
+								<?php 
+								$current_single_template = get_post_meta( $post->ID, '_gravityview_single_template', true );
+								foreach( $templates_single as $template ) {
+									echo '<option value="'. esc_attr( $template['id'] ) .'" '. selected( $template['id'], $current_single_template, false ) .'>'. esc_html( $template['label'] ) .'</option>';
+								} ?>
+							</select>
+						</td>
+					</tr>
+				</table>
+				
+				<hr>
+
+				<div id="single-fields" class="">
+					<h4><?php esc_html_e( 'Fields Mapping', 'gravity-view'); ?></h4>
+					
+					<div id="single-active-fields" class="gv-area">
+					
+						<?php echo $this->render_directory_active_areas( $current_single_template, $post->ID ); ?>
+
+					</div>
+					
+					<div id="single-available-fields">
+						<fieldset class="area">
+							<legend><?php esc_html_e( 'Available Fields', 'gravity-view' ); ?></legend>
+							<?php echo $this->render_available_fields( $curr_form ); ?>
+						</fieldset>
+					</div>
+
+				</div>
+
+				<div class="clear"></div>
+
+			</div> <?php // end single view tab ?>
+
+		</div> <?php // end tabs ?>
 		<?php
 	}
 
@@ -244,6 +297,8 @@ class GravityView_Admin_Views {
 		// save View Configuration metabox
 		if ( isset( $_POST['gravityview_view_configuration_nonce'] ) && wp_verify_nonce( $_POST['gravityview_view_configuration_nonce'], 'gravityview_view_configuration' ) ) {
 			
+			// -- directory tab --
+			
 			// Directory Template Id
 			update_post_meta( $post_id, '_gravityview_directory_template', $_POST['gravityview_directory_template'] );
 			
@@ -273,6 +328,10 @@ class GravityView_Admin_Views {
 			}
 			update_post_meta( $post_id, '_gravityview_directory_widgets', $_POST['widgets'] );
 			
+			
+			// -- single entry tab --
+			update_post_meta( $post_id, '_gravityview_single_template', $_POST['gravityview_single_template'] );
+			
 
 
 		
@@ -283,6 +342,7 @@ class GravityView_Admin_Views {
 	
 	/**
 	 * Render html for displaying available fields based on a Form ID
+	 * $blacklist_field_types - contains the field types which are not proper to be shown in a directory.
 	 * 
 	 * @access public
 	 * @param string $form_id (default: '')
@@ -290,12 +350,19 @@ class GravityView_Admin_Views {
 	 */
 	function render_available_fields( $form_id = '' ) {
 		
-		$fields = gravityview_get_form_fields( $form_id ); 
-	
+		$blacklist_field_types = array( 'html', 'section', 'captcha' );
+		
+		$fields = gravityview_get_form_fields( $form_id );
+		
 		$output = '';
 		
 		if( !empty( $fields ) ) {
 			foreach( $fields as $id => $details ) {
+				
+				if( in_array( $details['type'], $blacklist_field_types ) ) {
+					continue;
+				}
+			
 				$output .= '<div data-fieldid="'. $id .'" class="gv-fields">';
 				$output .= '<h5>'. $details['label'];
 				$output .= '<span><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
