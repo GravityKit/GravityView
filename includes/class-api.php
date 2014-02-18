@@ -62,7 +62,7 @@ class GravityView_API {
 		
 		$form = gravityview_get_form( $entry['form_id'] );
 		$field = gravityview_get_field( $form, $field_id );
-		error_log('$field: '. print_r( $field, true) );
+		
 		if( !empty( $field['type'] ) ) {
 		// possible values: html, hidden, section, captcha , , ,, , , , post_title, , , post_tags, post_category, post_image, post_custom_field, 
 		

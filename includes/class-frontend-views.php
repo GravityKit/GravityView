@@ -20,11 +20,20 @@ class GravityView_frontend {
 		
 		// init - register rewrite
 		//add_action( 'init', array( $this, 'init_rewrite' ) );
+		//add_filter( 'query_vars', array( $this, 'add_query_vars_filter' ) );
+		
 	
 	
 	}
 	
 	
+	/**
+	 * Register rewrite rules to capture the single entry view
+	 * 
+	 * @access public
+	 * @static
+	 * @return void
+	 */
 	public static function init_rewrite() {
 		
 		global $wp_rewrite;
@@ -33,20 +42,54 @@ class GravityView_frontend {
 			return; 
 		}
 		
-		$endpoint = sanitize_title( apply_filters( 'gravityview_directory_endpoint', 'entry' ) );
-
-		# @TODO: Make sure this works in MU
-		$wp_rewrite->add_permastruct("{$endpoint}", $endpoint.'/%'.$endpoint.'%/?', true);
-		$wp_rewrite->add_endpoint("{$endpoint}",EP_ALL);
+		$endpoint = self::get_entry_var_name();
+		
+		//add_permastruct( "{$endpoint}", $endpoint.'/%'.$endpoint.'%/?', true);
+		add_rewrite_endpoint( "{$endpoint}", EP_ALL );
+		
 	
+	}
+	
+	/**
+	 * Make the entry query var public to become available at WP_Query
+	 * 
+	 * @access public
+	 * @static
+	 * @param array $vars
+	 * @return $vars
+	 */
+	public static function add_query_vars_filter( $vars ){
+		$vars[] = self::get_entry_var_name();
+		return $vars;
+	}
+	
+	
+	/**
+	 * Return the query var / end point name for the entry
+	 * 
+	 * @access public
+	 * @static
+	 * @return void
+	 */
+	public static function get_entry_var_name() {
+		return sanitize_title( apply_filters( 'gravityview_directory_endpoint', 'entry' ) );
 	}
 	
 	
 
+	
+
 	public static function render_view_shortcode( $atts ) {
+		
+		// check if user requests single entry
+		$single_entry = get_query_var('entry');
+		
+		error_log(' queryvar: '. print_r($single_entry, true) );
 		
 		//confront attributes with defaults
 		extract( shortcode_atts( array( 'id' => '', 'page_size' => '', 'sort_field' => '', 'sort_direction' => 'ASC', 'start_date' => '', 'end_date' => '', 'class' => '' ), $atts ) );
+		
+		
 		
 		// validate attributes
 		if( empty( $id ) ) {
