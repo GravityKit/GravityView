@@ -119,8 +119,10 @@ class GravityView_Admin_Views {
 						</td>
 						<td>
 							<select name="gravityview_directory_template" id="gravityview_directory_template">
-								<?php 
+								<?php // get current directory template, by default, show table
 								$current_template = get_post_meta( $post->ID, '_gravityview_directory_template', true );
+								$current_template = empty( $current_template ) ? 'default_table' : $current_template;
+								
 								foreach( $templates_directory as $template ) {
 									echo '<option value="'. esc_attr( $template['id'] ) .'" '. selected( $template['id'], $current_template, false ) .'>'. esc_html( $template['label'] ) .'</option>';
 								} ?>
@@ -211,8 +213,10 @@ class GravityView_Admin_Views {
 						</td>
 						<td>
 							<select name="gravityview_single_template" id="gravityview_single_template">
-								<?php 
+								<?php // get current single entry template, or table by default
 								$current_single_template = get_post_meta( $post->ID, '_gravityview_single_template', true );
+								$current_single_template = empty( $current_single_template ) ? 'default_s_table' : $current_single_template;
+								
 								foreach( $templates_single as $template ) {
 									echo '<option value="'. esc_attr( $template['id'] ) .'" '. selected( $template['id'], $current_single_template, false ) .'>'. esc_html( $template['label'] ) .'</option>';
 								} ?>
