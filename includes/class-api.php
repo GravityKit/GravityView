@@ -45,19 +45,17 @@ class GravityView_API {
 	 * 
 	 * @access public
 	 * @param array $entry
-	 * @param integer $field_id
+	 * @param integer $field
 	 * @return string
 	 */
-	public static function field_value( $entry, $field ) {
+	public static function field_value( $entry, $field_settings ) {
 		
-		
-		
-		if( empty( $entry['form_id'] ) || empty( $field['id'] ) ) {
+		if( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
 			return '';
 		}
 
-		$field_id = $field['id'];
-		
+		$field_id = $field_settings['id'];
+		error_log('$field_settings : '. print_r($field_settings, true) );
 		$value = '';
 		
 		$form = gravityview_get_form( $entry['form_id'] );
@@ -161,7 +159,21 @@ class GravityView_API {
 			} //switch
 		} // if
 		
-		return apply_filters( 'gravityview_field_entry_value', $value, $entry, $field_id );
+		
+		
+		//if show as single entry link
+		if( !empty( $field_settings['show_as_link'] ) ) {
+			$post = get_post();
+			if( !empty( $post->ID ) ) {
+				$href = trailingslashit( get_permalink( $post->ID ) ) . sanitize_title( apply_filters( 'gravityview_directory_endpoint', 'entry' ) ) . '/'. $entry['id'] .'/';
+				
+				$value = '<a href="'. $href .'">'. $value . '</a>';
+			}
+			
+		}
+		
+		
+		return apply_filters( 'gravityview_field_entry_value', $value, $entry, $field_settings );
 	}
 	
 	

@@ -83,9 +83,7 @@ class GravityView_frontend {
 		
 		// check if user requests single entry
 		$single_entry = get_query_var('entry');
-		
-		error_log(' queryvar: '. print_r($single_entry, true) );
-		
+
 		//confront attributes with defaults
 		extract( shortcode_atts( array( 'id' => '', 'page_size' => '', 'sort_field' => '', 'sort_direction' => 'ASC', 'start_date' => '', 'end_date' => '', 'class' => '' ), $atts ) );
 		
@@ -123,11 +121,18 @@ class GravityView_frontend {
 		if( empty( $page_size ) ) {
 			$page_size = get_post_meta( $id, '_gravityview_page_size', true );
 		}
+		
 		$paging = array('offset' => 0, 'page_size' => $page_size );
 		
 		
-		//get entries
-		$entries = gravityview_get_entries( $form_id, compact( 'search_criteria', 'sorting', 'paging' ), $count );
+		//get entry or entries
+		if( !empty( $single_entry ) ) {
+			$entries[] = gravityview_get_entry( $single_entry );
+			
+		} else {
+			$entries = gravityview_get_entries( $form_id, compact( 'search_criteria', 'sorting', 'paging' ), $count );
+			
+		}
 		
 		// remove hidden fields
 		
@@ -147,9 +152,13 @@ class GravityView_frontend {
 		
 		ob_start();
 		
-		$gravity_view->render( $view_slug, 'header' );
-		$gravity_view->render( $view_slug, 'body' );
-		$gravity_view->render( $view_slug, 'footer' );
+		if( empty( $single_entry ) ) {
+			$gravity_view->render( $view_slug, 'header' );
+			$gravity_view->render( $view_slug, 'body' );
+			$gravity_view->render( $view_slug, 'footer' );
+		} else {
+			$gravity_view->render( $view_slug, 'single' );
+		}
 		
 		$output = ob_get_contents();
 		ob_end_clean();
