@@ -350,7 +350,8 @@ class GravityView_Admin_Views {
 	 * 
 	 * @access public
 	 * @param string $form_id (default: '')
-	 * @return string HTML
+	 * @param string $context (default: 'single')
+	 * @return void
 	 */
 	function render_available_fields( $form_id = '', $context = 'single' ) {
 		
@@ -388,6 +389,7 @@ class GravityView_Admin_Views {
 	 * @access public
 	 * @param string $template_id (default: '')
 	 * @param string $post_id (default: '')
+	 * @param string $context (default: 'single')
 	 * @return void
 	 */
 	function render_directory_active_areas( $template_id = '', $post_id = '', $context = 'single' ) {
