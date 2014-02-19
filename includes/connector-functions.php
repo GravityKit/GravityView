@@ -102,7 +102,22 @@ if( !function_exists('gravityview_get_entries') ) {
 		return false;
 	}
 
-}	
+}
+
+if( !function_exists('gravityview_get_entry') ) { 
+	
+	
+	
+	function gravityview_get_entry( $entry_id ) {
+		if( class_exists( 'GFAPI' ) && !empty( $entry_id ) ) {
+			return GFAPI::get_entry( $entry_id );
+		}
+		return false;
+	}
+
+}
+
+
 	
 	
 if( !function_exists('gravityview_get_field_label') ) { 
