@@ -160,14 +160,14 @@ class GravityView_Admin_Views {
 					
 					<div id="directory-active-fields" class="gv-area">
 					
-						<?php echo $this->render_directory_active_areas( $current_template, $post->ID ); ?>
+						<?php echo $this->render_directory_active_areas( $current_template, $post->ID, 'directory' ); ?>
 
 					</div>
 					
 					<div id="directory-available-fields">
 						<fieldset class="area">
 							<legend><?php esc_html_e( 'Available Fields', 'gravity-view' ); ?></legend>
-							<?php echo $this->render_available_fields( $curr_form ); ?>
+							<?php echo $this->render_available_fields( $curr_form, 'directory' ); ?>
 						</fieldset>
 					</div>
 
@@ -232,14 +232,14 @@ class GravityView_Admin_Views {
 					
 					<div id="single-active-fields" class="gv-area">
 					
-						<?php echo $this->render_directory_active_areas( $current_single_template, $post->ID ); ?>
+						<?php echo $this->render_directory_active_areas( $current_single_template, $post->ID, 'single' ); ?>
 
 					</div>
 					
 					<div id="single-available-fields">
 						<fieldset class="area">
 							<legend><?php esc_html_e( 'Available Fields', 'gravity-view' ); ?></legend>
-							<?php echo $this->render_available_fields( $curr_form ); ?>
+							<?php echo $this->render_available_fields( $curr_form, 'single' ); ?>
 						</fieldset>
 					</div>
 
@@ -352,7 +352,7 @@ class GravityView_Admin_Views {
 	 * @param string $form_id (default: '')
 	 * @return string HTML
 	 */
-	function render_available_fields( $form_id = '' ) {
+	function render_available_fields( $form_id = '', $context = 'single' ) {
 		
 		$blacklist_field_types = array( 'html', 'section', 'captcha' );
 		
@@ -390,7 +390,7 @@ class GravityView_Admin_Views {
 	 * @param string $post_id (default: '')
 	 * @return void
 	 */
-	function render_directory_active_areas( $template_id = '', $post_id = '' ) {
+	function render_directory_active_areas( $template_id = '', $post_id = '', $context = 'single' ) {
 		
 		if( empty( $template_id ) ) {
 			return;
@@ -421,7 +421,7 @@ class GravityView_Admin_Views {
 						$output .= '<span><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
 						$output .= '<a href="#remove" class="dashicons-dismiss dashicons"></a>';
 						$output .= '</span></h5>';
-						$output .= $this->render_field_options( $field['id'], $available_fields[ $field['id'] ]['label'], $area['areaid'], $uniqid, $field );
+						$output .= $this->render_field_options( $field['id'], $available_fields[ $field['id'] ]['label'], $area['areaid'], $uniqid, $field, $context );
 						$output .= '</div>';
 					}
 					
@@ -443,7 +443,7 @@ class GravityView_Admin_Views {
 	
 	
 	
-	function render_field_options( $field_id, $field_label, $area, $uniqid = '', $current = '' ) {
+	function render_field_options( $field_id, $field_label, $area, $uniqid = '', $current = '', $context = 'single' ) {
 		
 		if( empty( $uniqid ) ) {
 			//generate a unique field id
@@ -464,7 +464,9 @@ class GravityView_Admin_Views {
 		$output .= '<ul>';
 		
 		$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_label]' , __( 'Show Label', 'gravity-view' ), $show_label );
-		$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_as_link]' , __( 'Link to single entry', 'gravity-view' ), $show_as_link );
+		if( 'single' != $context ) {
+			$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_as_link]' , __( 'Link to single entry', 'gravity-view' ), $show_as_link );
+		}
 		//$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_as_link]' , 'Link to single entry' ); //visible to logged-in
 		$output .= $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_label]' , __( 'Custom Label:', 'gravity-view' ), $custom_label );
 		$output .= $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_class]' , __( 'Custom CSS Class:', 'gravity-view' ), $custom_class );

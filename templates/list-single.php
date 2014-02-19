@@ -1,4 +1,5 @@
 <div id="">
+	<?php echo gravityview_back_link(); ?>
 
 	<?php foreach( $this->entries as $entry ) : ?>
 	

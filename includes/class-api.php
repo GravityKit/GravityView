@@ -161,7 +161,7 @@ class GravityView_API {
 		
 		
 		
-		//if show as single entry link
+		//if show as single entry link is active
 		if( !empty( $field_settings['show_as_link'] ) ) {
 			$post = get_post();
 			if( !empty( $post->ID ) ) {
@@ -207,6 +207,21 @@ function gv_value( $entry, $field ) {
 
 function gv_link(  $entry, $field ) {
 	return GravityView_API::field_link( $entry, $field );
+}
+
+// 
+function gravityview_back_link() {
+	$post = get_post();
+	
+	if( empty( $post->ID ) ) {
+		return '';
+	}
+	
+	$href = trailingslashit( get_permalink( $post->ID ) );
+	$label = apply_filters( 'gravityview_go_back_label', __( 'Go back', 'gravity-view' ), $post );
+	
+	return '<a href="'. $href .'" >'. esc_html( $label ) . '</a>';
+	
 }
 
 

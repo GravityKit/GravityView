@@ -1,4 +1,5 @@
 <?php gravityview_before(); ?>
+<?php echo gravityview_back_link(); ?>
 <table class="">
 	<thead>
 		<?php gravityview_header(); ?>
