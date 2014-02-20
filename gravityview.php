@@ -181,6 +181,8 @@ class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-views.php' );
 		new GravityView_Admin_Views();
 		
+		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
+		new GravityView_Admin_Add_Shortcode();
 		
 	}
 	
