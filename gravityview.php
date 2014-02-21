@@ -77,6 +77,10 @@ class GravityView_Plugin {
 		
 		// Load default templates
 		add_action( 'gravityview_init', array( $this, 'gravityview_register_default_templates' ) );
+		
+		// 
+		add_filter( 'gravityview_blacklist_field_types', array( $this, 'default_field_blacklist' ), 0 );
+		array( 'html', 'section', 'captcha' );
 
 	}
 	
@@ -213,6 +217,16 @@ class GravityView_Plugin {
 	function gravityview_register_template( $class ) {
 		new $class();
 	}
+	
+	
+	
+	// defaults
+	
+	
+	function default_field_blacklist() {
+		return array( 'html', 'section', 'captcha' );
+	}
+	
 	
 
 

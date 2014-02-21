@@ -26,8 +26,6 @@ class GravityView_Admin_Add_Shortcode {
 			
 			// ajax - populate sort fields based on the selected view
 			add_action( 'wp_ajax_gv_sortable_fields', array( $this, 'get_sortable_fields' ) );
-
-
 	}
 	
 	
@@ -221,7 +219,7 @@ class GravityView_Admin_Add_Shortcode {
 		
 		if( !empty( $fields ) ) {
 		
-			$blacklist_field_types = array( 'html', 'section', 'captcha' );
+			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array() ); 
 			
 			$response = '<option value="">'. esc_html__( 'Default', 'gravity-view') .'</option>';
 			$response .= '<option value="date_created">'. esc_html__( 'Date Created', 'gravity-view' ) .'</option>';

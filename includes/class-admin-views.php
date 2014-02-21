@@ -355,7 +355,7 @@ class GravityView_Admin_Views {
 	 */
 	function render_available_fields( $form_id = '', $context = 'single' ) {
 		
-		$blacklist_field_types = array( 'html', 'section', 'captcha' );
+		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array() );
 		
 		$fields = gravityview_get_form_fields( $form_id );
 		
