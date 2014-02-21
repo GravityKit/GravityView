@@ -220,9 +220,15 @@ class GravityView_Plugin {
 	
 	
 	
-	// defaults
 	
 	
+	
+	/**
+	 * List the field types without presentation properties (on a View context)
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	function default_field_blacklist() {
 		return array( 'html', 'section', 'captcha' );
 	}
