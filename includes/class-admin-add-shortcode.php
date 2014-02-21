@@ -30,14 +30,14 @@ class GravityView_Admin_Add_Shortcode {
 	
 	
 	/**
-	 * check if screen is related with post type 'gravityview'
+	 * check if screen post editor and is not related with post type 'gravityview'
 	 * 
 	 * @access public
 	 * @return void
 	 */
-	function is_views_screen() {
-		global $current_screen;
-		return !empty( $current_screen->post_type ) && 'gravityview' == $current_screen->post_type;
+	function is_post_editor_screen() {
+		global $current_screen, $pagenow;
+		return !empty( $current_screen->post_type ) && 'gravityview' != $current_screen->post_type && in_array( $pagenow , array( 'post.php' , 'post-new.php' ) );
 	}
 	
 	
@@ -48,7 +48,7 @@ class GravityView_Admin_Add_Shortcode {
 	 * @return void
 	 */
 	function add_shortcode_button() {
-		if( $this->is_views_screen() ) {
+		if( !$this->is_post_editor_screen() ) {
 			return;
 		}
 		echo '<a href="#TB_inline?width=480&inlineId=select_gravityview_view&width=600&height=600" class="thickbox button gform_media_link" id="add_gravityview" title="' . esc_attr__("Add a Gravity Forms View", 'gravity-view') . '"><span class="dashicons dashicons-feedback"></span> ' . esc_html__( 'Add View', 'gravity-view' ) . '</a>';
@@ -64,7 +64,7 @@ class GravityView_Admin_Add_Shortcode {
 	 * @return void
 	 */
 	function add_shortcode_popup() {
-		if( $this->is_views_screen() ) {
+		if( !$this->is_post_editor_screen() ) {
 			return;
 		}
 		?>
@@ -163,13 +163,9 @@ class GravityView_Admin_Add_Shortcode {
 	 * @param mixed $hook
 	 * @return void
 	 */
-	function add_scripts_and_styles( $hook ) {
+	function add_scripts_and_styles() {
 		
-		if( $this->is_views_screen() ) {
-			return;
-		}
-		
-		if( !in_array( $hook , array( 'post.php' , 'post-new.php' ) ) ) {
+		if( ! $this->is_post_editor_screen() ) {
 			return;
 		}
 		
