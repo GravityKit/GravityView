@@ -188,8 +188,8 @@ class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
 		new GravityView_Admin_Add_Shortcode();
 		
-		include_once( GRAVITYVIEW_DIR .'includes/class-admin-edit-form.php' );
-		new GravityView_Admin_EditForm();
+		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
+		new GravityView_Admin_ApproveEntries();
 		
 	}
 	
