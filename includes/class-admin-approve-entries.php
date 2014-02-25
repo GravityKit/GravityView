@@ -18,12 +18,19 @@ class GravityView_Admin_ApproveEntries {
 	
 	function __construct() {
 		
+		/** Edit Gravity Form page */
+		
 		// Add button to left menu
 		add_filter( 'gform_add_field_buttons', array( $this, 'add_field_buttons' ) );
-		
 		// Set defaults
 		add_action( 'gform_editor_js_set_default_values', array( $this, 'set_defaults' ) );
 		
+		
+		
+		/** gf_entries page - entries table screen */
+		
+		//capture bulk actions
+		add_action( 'init', array( $this, 'process_bulk_action') );
 		
 		
 		
@@ -96,6 +103,12 @@ class GravityView_Admin_ApproveEntries {
 	
 	
 	
+	/**
+	 * Capture bulk actions - gf_entries table
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function process_bulk_action() {
 		global $process_bulk_update_message;
 
@@ -127,22 +140,78 @@ class GravityView_Admin_ApproveEntries {
 
 
 
-	private static function directory_update_bulk( $entries, $approved, $form_id ) {
-		global $_gform_directory_approvedcolumn;
+
+	
+	/**
+	 * Process a bulk of entries to update the approve field/property
+	 * 
+	 * @access private
+	 * @static
+	 * @param mixed $entries
+	 * @param mixed $approved
+	 * @param mixed $form_id
+	 * @return void
+	 */
+	private static function update_bulk( $entries, $approved, $form_id ) {
 
 		if( empty($entries) || !is_array($entries) ) { return false; }
 
-		$_gform_directory_approvedcolumn = empty( $_gform_directory_approvedcolumn ) ? self::globals_get_approved_column( $_POST['form_id'] ) : $_gform_directory_approvedcolumn;
-
 		$approved = empty( $approved ) ? 0 : 'Approved';
+		
+		// calculate approved field id
+		$approved_column_id = self::get_approved_column( $form_id );
+		
 		foreach( $entries as $entry_id ) {
-			self::directory_update_approved( $entry_id, $approved, $form_id );
+			self::update_approved( $entry_id, $approved, $form_id, $approved_column_id );
 		}
+	}
+
+	
+	
+	
+	/**
+	 * update_approved function.
+	 * 
+	 * @access public
+	 * @static
+	 * @param int $lead_id (default: 0)
+	 * @param int $approved (default: 0)
+	 * @param int $form_id (default: 0)
+	 * @param int $approvedcolumn (default: 0)
+	 * @return void
+	 */
+	public static function update_approved( $entry_id = 0, $approved = 0, $form_id = 0, $approvedcolumn = 0) {
+		
+		if( empty( $approvedcolumn ) ) {
+			$approvedcolumn = self::get_approved_column( $form_id );
+		}
+		
+		$current_user = wp_get_current_user();
+		$user_data = get_userdata($current_user->ID);
+
+		//get the entry
+		$entry = GFAPI::get_entry( $entry_id );
+
+		//update entry
+		$entry[ (string)$approvedcolumn ] = $approved;
+		$result = GFAPI::update_entry( $entry );
+		
+		// update entry meta
+		if( function_exists('gform_update_meta') ) { gform_update_meta( $entry_id, 'is_approved', $approved); }
+		
+		// add note to entry
+		if( $result === true ) {
+			$note = empty( $approved ) ? __( 'Disapproved the lead', 'gravity-view' ) : __( 'Approved the lead', 'gravity-view' );
+			RGFormsModel::add_note( $entry_id, $current_user->ID, $user_data->display_name, $note );
+		}
+		
 	}
 	
 	
+	/** OLD STUFF - to be removed */
+	public static function OLD_update_approved( $entry_id = 0, $approved = 0, $form_id = 0, $approvedcolumn = 0) {
 	
-	public static function directory_update_approved( $lead_id = 0, $approved = 0, $form_id = 0, $approvedcolumn = 0) {
+	
 		global $wpdb, $_gform_directory_approvedcolumn, $current_user;
 		$current_user = wp_get_current_user();
 		$user_data = get_userdata($current_user->ID);
@@ -183,6 +252,35 @@ class GravityView_Admin_ApproveEntries {
 		}
 	}
 	
+	
+	
+	/**
+	 * Calculate the approve field.input id
+	 * 
+	 * @access public
+	 * @static
+	 * @param mixed $form_id
+	 * @return void
+	 */
+	static public function get_approved_column( $form_id ) {
+		if( empty( $form_id ) ) {
+			return false; 
+		}
+		
+		$form = gravityview_get_form( $form_id );
+		
+		foreach( $form['fields'] as $key => $field ) {
+			if( !empty( $field['adminOnly'] ) && 'checkbox' == $field['type'] && isset( $field['inputs'] ) && is_array( $field['inputs'] ) ) {
+				foreach( $field['inputs'] as $key2 => $input) {
+					if( strtolower( $input['label'] ) == 'approved' ) {
+						return $input['id'];
+					}
+				}
+			}
+		}
+
+		return null;
+	}
 	
 	
 	

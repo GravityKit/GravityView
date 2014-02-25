@@ -14,6 +14,29 @@
 (function( $ ) {
 
 	
+	// review
+	function UpdateApproved( lead_id, approved ) {
+	
+		var data = {
+			action: 'gv_update_approved',
+			lead_id: lead_id,
+			form_id: ajax_object.form_id,
+			approved: approved,
+			nonce: ajax_object.nonce,
+		}
+			
+		$.post( ajax_object.ajaxurl, data, function( response ) {
+			if( response ) {
+				
+			}
+		});
+		
+		return true;
+		
+	}
+	
+	
+	
 
 	$(document).ready( function() {
 		
