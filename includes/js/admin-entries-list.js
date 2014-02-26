@@ -41,18 +41,33 @@
 
 	}
 	
+	// function to update table on column Approved if visible, after ajax update
+	function UpdateApprovedColumns() {
+		
+		var colIndex = $('th:contains("Approved")').index()-1;
+		console.log(colIndex);
+		
+		$("a.toggleApproved").each( function() {
+			
+			var tr = $(this).parents('tr');
+		
+			if( $(this).is('.entry_approved') ) {
+				$('td:visible:eq('+ colIndex +')', tr ).html('<i class="fa fa-check gf_valid"></i>');
+			} else {
+				$('td:visible:eq('+ colIndex +')', tr ).html('');
+			}
+		});
+
+	}
 	
 	
 	
-	
-	
-	
-	// review
-	function UpdateApproved( lead_id, approved ) {
+	// Request entry approve (ajax)
+	function UpdateApproved( entryid, approved ) {
 	
 		var data = {
 			action: 'gv_update_approved',
-			lead_id: lead_id,
+			entry_id: entryid,
 			form_id: ajax_object.form_id,
 			approved: approved,
 			nonce: ajax_object.nonce,
@@ -81,8 +96,35 @@
 			displayMessage( ajax_object.bulk_message, 'updated', '#lead_form');
 		}
 		
+		// inject approve/disapprove buttons into the first column of table
+		$('thead th.check-column:eq(1), tfoot th.check-column:eq(1)').after('<th scope="col" class="manage-column column-cb check-column gv-approve-column"><a href="'+ ajax_object.column_link+'" title="'+ ajax_object.column_title +'"></a></th>');
+		
+		$('td:has(img[src*="star"])').after('<td class="gv-approve-column"><a href="#" class="toggleApproved" title="'+ ajax_object.approve_title +'"></a></td>');
+		
+		$('tr:has(input.entry_approved)').find('a.toggleApproved').addClass('entry_approved').prop('title', ajax_object.unapprove_title );
 		
 		
+		
+		$('.toggleApproved').click( function(e) {
+			e.preventDefault();
+			
+			var entryID = $(this).parent().parent().find( 'th input[type="checkbox"]' ).val();
+			
+			$(this).toggleClass('entry_approved');
+			
+			if( $(this).hasClass('entry_approved') ) {
+				$(this).prop('title', ajax_object.unapprove_title ); 
+				UpdateApproved( entryID, 'Approved' );
+			} else {
+				$(this).prop('title', ajax_object.approve_title ); 
+				UpdateApproved( entryID, 0 );
+			}
+			
+			UpdateApprovedColumns();
+
+			return false;
+
+		});
 		
 		
 	});
