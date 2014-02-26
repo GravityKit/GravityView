@@ -12,7 +12,40 @@
 
 
 (function( $ ) {
+	
+	function displayMessage( message, messageClass, container) {
 
+		hideMessage( container, true );
+
+		var messageBox = $('<div class="message ' + messageClass + '" style="display:none;"><p>' + message + '</p></div>');
+		$(messageBox).prependTo( container ).slideDown();
+		
+		if( messageClass == 'updated' ) {
+			messageTimeout = setTimeout( function(){ hideMessage( container, false ); }, 10000);
+		}
+			
+
+	}
+
+	function hideMessage( container, messageQueued ){
+
+		var messageBox = $( container ).find('.message');
+
+		if( messageQueued ) {
+			$( messageBox ).remove();
+		} else { 
+			$( messageBox ).slideUp( function() { 
+				$(this).remove(); 
+			});
+		}
+
+	}
+	
+	
+	
+	
+	
+	
 	
 	// review
 	function UpdateApproved( lead_id, approved ) {
@@ -42,6 +75,11 @@
 		
 		// add actions to bulk select box
 		$("#bulk_action, #bulk_action2").append('<optgroup label="GravityView"><option value="approve-'+ ajax_object.form_id +'">' + ajax_object.label_approve +'</option><option value="unapprove-'+ ajax_object.form_id +'">'+ ajax_object.label_disapprove +'</option></optgroup>');
+		
+		// display update message if any
+		if( ajax_object.bulk_message.length > 0 ) {
+			displayMessage( ajax_object.bulk_message, 'updated', '#lead_form');
+		}
 		
 		
 		

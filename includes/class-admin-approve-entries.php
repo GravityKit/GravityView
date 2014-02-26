@@ -14,7 +14,9 @@
 
 
 class GravityView_Admin_ApproveEntries {
-
+	
+	// hold notification messages
+	public $bulk_update_message = '';
 	
 	function __construct() {
 		
@@ -110,7 +112,6 @@ class GravityView_Admin_ApproveEntries {
 	 * @return void
 	 */
 	public function process_bulk_action() {
-		global $process_bulk_update_message;
 
 		if( RGForms::post('action') === 'bulk' ) {
 		
@@ -127,12 +128,12 @@ class GravityView_Admin_ApproveEntries {
 			switch( $bulk_action[0] ) {
 				case 'approve':
 					self::update_bulk( $entries, 1, $bulk_action[1] );
-					$process_bulk_update_message = sprintf( __( "%s approved.", 'gravity-view' ), $entry_count );
+					$this->bulk_update_message = sprintf( __( "%s approved.", 'gravity-view' ), $entry_count );
 					break;
 
 				case 'unapprove':
 					self::update_bulk( $entries, 0, $bulk_action[1]);
-					$process_bulk_update_message = sprintf( __( "%s disapproved.", 'gravity-view' ), $entry_count );
+					$this->bulk_update_message = sprintf( __( "%s disapproved.", 'gravity-view' ), $entry_count );
 					break;
 			}
 		}
@@ -296,7 +297,7 @@ class GravityView_Admin_ApproveEntries {
 			
 			wp_register_script( 'gravityview_gf_entries_scripts',  GRAVITYVIEW_URL  . 'includes/js/admin-entries-list.js', array( 'jquery' ), '1.0.0');
 			wp_enqueue_script( 'gravityview_gf_entries_scripts' );
-			wp_localize_script('gravityview_gf_entries_scripts', 'ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries'), 'form_id' => RGForms::get('id'), 'label_approve' => __( 'Approve', 'gravity-view' ) , 'label_disapprove' => __( 'Disapprove', 'gravity-view' ) )  );
+			wp_localize_script('gravityview_gf_entries_scripts', 'ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries'), 'form_id' => RGForms::get('id'), 'label_approve' => __( 'Approve', 'gravity-view' ) , 'label_disapprove' => __( 'Disapprove', 'gravity-view' ), 'bulk_message' => $this->bulk_update_message  ) );
 			
 		}
 
