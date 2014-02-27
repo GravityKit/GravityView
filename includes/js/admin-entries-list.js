@@ -97,7 +97,7 @@
 		}
 		
 		// inject approve/disapprove buttons into the first column of table
-		$('thead th.check-column:eq(1), tfoot th.check-column:eq(1)').after('<th scope="col" class="manage-column column-cb check-column gv-approve-column"><a href="'+ ajax_object.column_link+'" title="'+ ajax_object.column_title +'"></a></th>');
+		$('thead th.check-column:eq(1), tfoot th.check-column:eq(1)').after('<th scope="col" class="manage-column column-cb check-column gv-approve-column"><a href="'+ ajax_object.column_link +'" title="'+ ajax_object.column_title +'"></a></th>');
 		
 		$('td:has(img[src*="star"])').after('<td class="gv-approve-column"><a href="#" class="toggleApproved" title="'+ ajax_object.approve_title +'"></a></td>');
 		

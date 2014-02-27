@@ -237,13 +237,6 @@ class GravityView_Admin_ApproveEntries {
 	}
 	
 	
-	
-	
-	
-	
-
-	
-	
 	/**
 	 * Calculate the approve field.input id
 	 * 
