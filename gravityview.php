@@ -200,6 +200,11 @@ class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-template.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-api.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
+		
+		//for testing purposes
+		include_once( GRAVITYVIEW_DIR .'includes/class-widget-pagination.php' );
+		new GravityView_Widget_Pagination();
+		
 		// Shortcode to render view (directory)
 		add_shortcode( 'gravityview', array( 'GravityView_frontend', 'render_view_shortcode' ) );
 		add_action( 'init', array( 'GravityView_frontend', 'init_rewrite' ) );

@@ -127,9 +127,11 @@ class GravityView_frontend {
 		
 		//get entry or entries
 		if( !empty( $single_entry ) ) {
+			$count = 1;
 			$entries[] = gravityview_get_entry( $single_entry );
 			
 		} else {
+			$count = 0;
 			$entries = gravityview_get_entries( $form_id, compact( 'search_criteria', 'sorting', 'paging' ), $count );
 			
 		}
@@ -149,6 +151,9 @@ class GravityView_frontend {
 		
 		$gravity_view->entries = $entries;
 		$gravity_view->fields = $dir_fields;
+		$gravity_view->total_entries = $count;
+		$gravity_view->paging = $paging;
+		
 		
 		ob_start();
 		
