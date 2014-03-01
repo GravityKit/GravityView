@@ -104,6 +104,12 @@ class GravityView_frontend {
 		// Search Criteria
 		$search_criteria = '';
 		
+		//search by keyword
+		if( !empty( $_GET['gv_search'] ) ) {
+			$search_criteria['field_filters'][] = array( 'value' => $_GET['gv_search'] );
+		}
+		
+		
 		//start date & end date
 		if( !empty( $start_date ) && !empty( $end_date ) ) {
 			$search_criteria['start_date'] = $start_date;

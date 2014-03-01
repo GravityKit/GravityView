@@ -35,7 +35,7 @@ class GravityView_Widget_Pagination {
 		$last = $offset + $page_size > $total ? $total : $offset + $page_size;
 		echo '<span class="">'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravity-view' ), $first , $last , $total ) . '</span>';
 		
-		// -> correct the last page info
+		
 		
 		
 		
@@ -56,6 +56,33 @@ class GravityView_Widget_Pagination {
 		$page_links = paginate_links( $page_links );
 		
 		echo $page_links;
+		
+		
+		
+		
+		
+		
+		
+		// Search box and filters
+		$curr_search = empty( $_GET['gv_search'] ) ? '' : $_GET['gv_search'];
+		?>
+		<form id="lead_form" method="get" action="">
+			<p class="search-box">
+				<label for="gv_search"><?php esc_html_e('Search Entries:', 'gravity-view' ); ?></label>
+				<input type="text" name="gv_search" id="gv_search" value="<?php echo $curr_search; ?>" />
+				<input type="submit" class="button" id="gv_search_button" value="<?php esc_attr_e( 'Search', 'gravity-view' ); ?>" />
+			</p>
+		</form>
+		
+		<?php
+			
+		
+		
+		// date filters
+		
+		
+		
+		
 	}
 
 	
