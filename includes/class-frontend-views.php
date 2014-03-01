@@ -121,8 +121,8 @@ class GravityView_frontend {
 		if( empty( $page_size ) ) {
 			$page_size = get_post_meta( $id, '_gravityview_page_size', true );
 		}
-		
-		$paging = array('offset' => 0, 'page_size' => $page_size );
+		$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
+		$paging = array( 'offset' => ($curr_page - 1) * $page_size, 'page_size' => $page_size );
 		
 		
 		//get entry or entries

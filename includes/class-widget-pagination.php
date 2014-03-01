@@ -30,9 +30,32 @@ class GravityView_Widget_Pagination {
 		$total = $gravity_view->total_entries;
 		
 		
-		// todo: correct translation
-		echo '<span class="gv-pagination">' . esc_html__( 'Displaying', 'gravity-view' ) . $offset * $page_size + 1  .' to '. ( ( $offset + 1 ) * $page_size - 1 )  .' of '. $total .'</span>';
+		// displaying info
+		$first = empty( $offset ) ? 1 : $offset + 1;
+		$last = $offset + $page_size > $total ? $total : $offset + $page_size;
+		echo '<span class="">'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravity-view' ), $first , $last , $total ) . '</span>';
 		
+		// -> correct the last page info
+		
+		
+		
+		// pagination links
+		$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
+		
+		$page_links = array(
+			'base' => add_query_arg('pagenum','%#%'),
+			'format' => '&pagenum=%#%',
+			'add_args' => array(), //
+			'prev_text' => '&laquo;',
+			'next_text' => '&raquo;',
+			'total' => ceil( $total / $page_size ),
+			'current' => $curr_page,
+			'show_all' => true, // to be available at backoffice
+		);
+
+		$page_links = paginate_links( $page_links );
+		
+		echo $page_links;
 	}
 
 	
