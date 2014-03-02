@@ -111,9 +111,11 @@ class GravityView_frontend {
 		
 		
 		//start date & end date
-		if( !empty( $start_date ) && !empty( $end_date ) ) {
-			$search_criteria['start_date'] = $start_date;
-			$search_criteria['end_date'] = $end_date;
+		$curr_start = empty( $_GET['gv_start'] ) ? $start_date : $_GET['gv_start'];
+		$curr_end = empty( $_GET['gv_end'] ) ? $end_date : $_GET['gv_end'];
+		if( !empty( $curr_start ) && !empty( $curr_end ) ) {
+			$search_criteria['start_date'] = $curr_start;
+			$search_criteria['end_date'] = $curr_end;
 		}
 		
 		
