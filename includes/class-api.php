@@ -55,7 +55,7 @@ class GravityView_API {
 		}
 
 		$field_id = $field_settings['id'];
-		error_log('$field_settings : '. print_r($field_settings, true) );
+
 		$value = '';
 		
 		$form = gravityview_get_form( $entry['form_id'] );
@@ -246,7 +246,7 @@ function gravityview_after() {
 
 function gravityview_get_view_id() {
 	global $gravity_view;
-	return isset( $gravity_view->view_id ) ? $gravity_view->view_id : false;
+	return $gravity_view->view_id;
 }
 
 

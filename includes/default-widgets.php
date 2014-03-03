@@ -16,15 +16,11 @@
 class GravityView_Widget_Pagination extends GravityView_Widget {
 	
 	function __construct() {
-		
-		parent::__construct( 'Pagination info' , 'page_info' );
+		$settings = array();
+		parent::__construct( __( 'Show pagination info', 'gravity-view' ) , 'page_info', $settings );
 		
 	}
 	
-	
-	function render_advanced_settings( $widgets ) {
-		echo 'this is a test';
-	}
 	
 	public function render_frontend() {
 	
@@ -48,6 +44,53 @@ class GravityView_Widget_Pagination extends GravityView_Widget {
 	}
 
 } // GravityView_Widget_Pagination
+
+
+
+
+class GravityView_Widget_Page_Links extends GravityView_Widget {
+	
+	function __construct() {
+		$settings = array( 'show_all' => array( 'type' => 'checkbox', 'label' => __( 'Show each page number', 'gravity-view' ) )  );
+		parent::__construct( __( 'Show page Links', 'gravity-view' ) , 'page_links', $settings );
+		
+	}
+	
+	
+	public function render_frontend() {
+	
+		global $gravity_view;
+		
+		$page_size = $gravity_view->paging['page_size'];
+		$total = $gravity_view->total_entries;
+		
+		$adv_settings = $this->get_advanced_settings();
+		
+		$show_all = !empty( $adv_settings['show_all'] ) ? true : false;
+
+		
+		// displaying info
+		$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
+		
+		$page_links = array(
+			'base' => add_query_arg('pagenum','%#%'),
+			'format' => '&pagenum=%#%',
+			'add_args' => array(), //
+			'prev_text' => '&laquo;',
+			'next_text' => '&raquo;',
+			'total' => ceil( $total / $page_size ),
+			'current' => $curr_page,
+			'show_all' => $show_all, // to be available at backoffice
+		);
+
+		$page_links = paginate_links( $page_links );
+		
+		echo $page_links;
+	
+	}
+
+} // GravityView_Widget_Page_Links
+
 
 
 
@@ -143,13 +186,17 @@ class GravityView_Widget {
 	// Widget admin id
 	protected $widget_id;
 	
+	// Widget admin advanced settings
+	protected $settings;
+	
 	// hold widget View options
 	private $widget_options;
 	
-	function __construct( $widget_label , $widget_id ) {
+	function __construct( $widget_label , $widget_id , $settings ) {
 		
 		$this->widget_label = $widget_label;
 		$this->widget_id = $widget_id;
+		$this->settings = $settings;
 		
 		// render html settings in the View admin screen
 		add_action( 'gravityview_admin_view_widgets', array( $this, 'render_admin_settings' ), 10, 1 );
@@ -187,10 +234,12 @@ class GravityView_Widget {
 				</fieldset>
 			</td>
 			<td>
-				<a class="button-secondary" href="#widget-settings" title="<?php esc_attr_e( 'Advanced Settings', 'gravity-view' ); ?>"><span class=""><?php esc_html_e( 'config', 'gravity-view'); ?></span></a>
-				<div class="gv-dialog-options" title="<?php printf( __( '%1$s options', 'gravity-view' ), $this->widget_label ); ?>">
-					<?php echo $this->render_advanced_settings( $widgets ); ?>
-				</div>
+				<?php if( !empty( $this->settings ) ): ?>
+					<a class="button-secondary" href="#widget-settings" title="<?php esc_attr_e( 'Advanced Settings', 'gravity-view' ); ?>"><span class=""><?php esc_html_e( 'config', 'gravity-view'); ?></span></a>
+					<div class="gv-dialog-options" title="<?php printf( __( '%1$s options', 'gravity-view' ), $this->widget_label ); ?>">
+						<?php $this->render_advanced_settings( $widgets ); ?>
+					</div>
+				<?php endif; ?>
 			</td>
 			
 		</tr>
@@ -200,7 +249,36 @@ class GravityView_Widget {
 	
 	
 	function render_advanced_settings( $widgets ) {
-		// to be defined by child class
+	
+		if( !is_array( $this->settings ) ) {
+			return '';
+		}
+		
+		echo '<ul>';
+		
+		foreach( $this->settings as $key => $details ) {
+			
+			$curr_value = isset( $widgets[ $this->widget_id ][ $key ] ) ? $widgets[ $this->widget_id ][ $key ] : '';
+			$label = isset( $details['label'] ) ? $details['label'] : '';
+			$type = isset( $details['type'] ) ? $details['type'] : 'input_text';
+		
+			switch( $type ) {
+				case 'checkbox':
+					echo GravityView_Admin_Views::render_checkbox_option( 'widgets['. $this->widget_id .']['. $key .']' , $label, $curr_value );
+					break;
+				
+				case 'input_text':
+				default:
+					echo GravityView_Admin_Views::render_input_text_option( 'widgets['. $this->widget_id .']['. $key .']' , $label, $curr_value );
+					break;
+			
+			}
+			
+			
+		}
+		
+		echo '</ul>';
+		
 	}
 	
 	
@@ -208,12 +286,12 @@ class GravityView_Widget {
 	/** Frontend logic */
 	
 	function render_frontend_hooks( $view_id ) {
-		
+		error_log(' $view_id: '. print_r( $view_id, true) );
 		if( empty( $view_id ) ) {
 			return;
 		}
 		// get View widget configuration
-		$widgets = get_widget_options( $view_id );
+		$widgets = $this->get_widget_options( $view_id );
 		
 		
 		switch( current_filter() ) {
@@ -255,6 +333,10 @@ class GravityView_Widget {
 		}
 		
 		return $this->widget_options;
+	}
+	
+	function get_advanced_settings() {
+		return isset( $this->widget_options[ $this->widget_id ] ) ? $this->widget_options[ $this->widget_id ] : '';
 	}
 	
 	
