@@ -218,6 +218,13 @@ class GravityView_Plugin {
 		
 		$this->gravityview_register_template( 'GravityView_Default_Template_Table' );
 		$this->gravityview_register_template( 'GravityView_Default_Template_List' );
+		
+		
+		//for testing purposes
+		include_once( GRAVITYVIEW_DIR .'includes/class-widget-pagination.php' );
+		new GravityView_Widget_Pagination();
+		
+		
 	}
 	
 	function gravityview_register_template( $class ) {

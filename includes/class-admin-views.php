@@ -176,57 +176,25 @@ class GravityView_Admin_Views {
 				<div class="clear"></div>
 				<hr>
 				<?php // widgets new innterface proposal ?>
+				<?php $widgets = get_post_meta( $post->ID, '_gravityview_directory_widgets', true ); ?>
 				<h4><?php esc_html_e( 'Directory Header & Footer', 'gravity-view'); ?></h4>
 				
-				<table class="form-table">
+				<table class="view-table">
 					<tr>
 						<th></th>
-						<th>Show on Header</th>
-						<th>Show on Footer</th>
+						<th><?php esc_html_e( 'Show in Header', 'gravity-view'); ?></th>
+						<th><?php esc_html_e( 'Show in Footer', 'gravity-view'); ?></th>
 						<th></th>
 					</tr>
-					<tr valign="top">
-						<td ><label for="tablecell">Pagination info</label></td>
-						<td><input name="" type="checkbox" id="" value="1" <?php checked( 0 , 1, true ); ?>></td>
-						<td><input name="" type="checkbox" id="" value="1" <?php checked( 1 , 1, true ); ?>></td>
-						<td><a class="button-secondary" href="#" title="<?php _e( '' ); ?>"><span class="">config</span></a></td>
-					</tr>
-					<tr valign="top">
-						<td ><label for="tablecell">Pagination Links</label></td>
-						<td><input name="" type="checkbox" id="" value="1" <?php checked( 1 , 1, true ); ?>></td>
-						<td><input name="" type="checkbox" id="" value="1" <?php checked( 0 , 1, true ); ?>></td>
-						<td><a class="button-secondary" href="#" title="<?php _e( '' ); ?>"><span class="">config</span></a></td>
-					</tr>
-					<tr valign="top">
-						<td ><label for="tablecell">Search box</label></td>
-						<td><input name="" type="checkbox" id="" value="1" <?php checked( 1 , 1, true ); ?>></td>
-						<td><input name="" type="checkbox" id="" value="1" <?php checked( 0 , 1, true ); ?>></td>
-						<td><a class="button-secondary" href="#" title="<?php _e( '' ); ?>"><span class="">config</span></a></td>
-					</tr>
-					<tr valign="top">
-						<td ><label for="tablecell">Date filters</label></td>
-						<td><input name="" type="checkbox" id="" value="1" <?php checked( 0 , 1, true ); ?>></td>
-						<td><input name="" type="checkbox" id="" value="1" <?php checked( 0 , 1, true ); ?>></td>
-						<td><a class="button-secondary" href="#" title="<?php _e( '' ); ?>"><span class="">config</span></a></td>
-					</tr>
-					<tr valign="top">
-						<td ><label for="tablecell">Other super cool</label></td>
-						<td><input name="" type="checkbox" id="" value="1" <?php checked( 1 , 1, true ); ?>></td>
-						<td><input name="" type="checkbox" id="" value="1" <?php checked( 1 , 1, true ); ?>></td>
-						<td><a class="button-secondary" href="#" title="<?php _e( '' ); ?>"><span class="">config</span></a></td>
-					</tr>
-					
+					<?php do_action( 'gravityview_admin_view_widgets', $widgets ); ?>
+										
 				</table>
-				
-				
-				
-				<hr>
 				
 				
 				
 				
 				<?php // to delete ---- ?>
-				<?php $widgets = get_post_meta( $post->ID, '_gravityview_directory_widgets', true ); ?>
+				<?php /* $widgets = get_post_meta( $post->ID, '_gravityview_directory_widgets', true ); ?>
 				<h4><?php esc_html_e( 'Directory Header & Footer', 'gravity-view'); ?></h4>
 				<div id="directory-widgets">
 					<div id="directory-active-widgets">
@@ -246,6 +214,7 @@ class GravityView_Admin_Views {
 						</fieldset>
 					</div>
 				</div>
+				<?php */ ?>
 				
 				<div class="clear"></div>
 

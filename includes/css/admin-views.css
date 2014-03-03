@@ -60,12 +60,16 @@ hr{
 	width: 100%;
 }
 
-.view-table td:first-child {
+.view-table td:first-child, .view-table th:first-child {
 	width: 35%;
 }
 
-.view-table td {
+.view-table td, .view-table th {
 	padding: 0.5em 0;
+}
+
+.view-table th {
+	text-align: left;
 }
 
 label {

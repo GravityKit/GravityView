@@ -13,9 +13,14 @@
 
 
 
-class GravityView_Widget_Pagination {
+class GravityView_Widget_Pagination extends GravityView_Widget {
+	
+	
+	
 	
 	function __construct() {
+		
+		parent::__construct( 'Pagination info' , 'page_info' );
 		
 		add_action( 'gravityview_before', array( $this, 'render_pagination' ) );
 		
@@ -101,6 +106,64 @@ class GravityView_Widget_Pagination {
 }
 
 
+
+class GravityView_Widget {
+	
+	// Widget admin label
+	protected $widget_label;
+	
+	// Widget admin id
+	protected $widget_id;
+	
+	
+	
+	
+	function __construct( $widget_label , $widget_id ) {
+		
+		$this->widget_label = $widget_label;
+		$this->widget_id = $widget_id;
+		
+		// render html settings in the View admin screen
+		add_action( 'gravityview_admin_view_widgets', array( $this, 'render_admin_settings' ), 10, 1 );
+		
+	}
+	
+	
+	
+	function render_admin_settings( $widgets ) {
+		
+		$header = empty( $widgets['header'][ $this->widget_id ] ) ? 0 : 1;
+		$footer = empty( $widgets['footer'][ $this->widget_id ] ) ? 0 : 1;
+		
+		?>
+		<tr valign="top">
+			<td><label for="gravityview_widget_header_<?php echo esc_attr( $this->widget_id ); ?>"><?php echo esc_html( $this->widget_label ); ?></label></td>
+			<td>
+				<fieldset>
+					<legend class="screen-reader-text"><span><?php esc_html_e( 'Enable this widget to appear in View header', 'gravity-view'); ?></span></legend>
+					<label for="gravityview_widget_header_<?php echo esc_attr( $this->widget_id ); ?>">
+						<input name="widgets[header][<?php echo esc_attr( $this->widget_id ); ?>]" type="checkbox" id="gravityview_widget_header_<?php echo esc_attr( $this->widget_id ); ?>" value="1" <?php checked( $header , 1, true ); ?>>
+					</label>
+				</fieldset>
+			</td>
+			<td>
+				<fieldset>
+					<legend class="screen-reader-text"><span><?php esc_html_e( 'Enable this widget to appear in View footer', 'gravity-view'); ?></span></legend>
+					<label for="gravityview_widget_footer_<?php echo esc_attr( $this->widget_id ); ?>">
+						<input name="widgets[footer][<?php echo esc_attr( $this->widget_id ); ?>]" type="checkbox" id="gravityview_widget_footer_<?php echo esc_attr( $this->widget_id ); ?>" value="1" <?php checked( $footer , 1, true ); ?>>
+					</label>
+				</fieldset>
+			</td>
+			<td><a class="button-secondary" href="#" title="<?php esc_attr_e( 'Advanced Settings', 'gravity-view' ); ?>"><span class=""><?php esc_html_e( 'config', 'gravity-view'); ?></span></a></td>
+		</tr>
+		
+		<?php
+	}
+	
+	
+	
+	
+}
 
 
 
