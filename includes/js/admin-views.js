@@ -85,7 +85,7 @@
 	function openFieldSettings( event ) {
 		event.preventDefault();
 		var parent = $( event.currentTarget ).parent().parent().parent();
-		parent.find(".gv-fields-options").dialog({
+		parent.find(".gv-dialog-options").dialog({
 			dialogClass: 'wp-dialog',
 			appendTo: parent,
 			closeOnEscape: true,
@@ -96,6 +96,23 @@
 			},
 		});
 	}
+	
+	// Event handler to open dialog with Widget Settings
+	function openWidgetSettings( event ) {
+		event.preventDefault();
+		var parent = $( event.currentTarget ).parent();
+		parent.find(".gv-dialog-options").dialog({
+			dialogClass: 'wp-dialog',
+			appendTo: parent,
+			closeOnEscape: true,
+			buttons: {
+				'Close': function() {
+					$(this).dialog('close');
+				} 
+			},
+		});
+	}
+	
 	
 	
 	
@@ -182,6 +199,9 @@
 		
 		
 		// Directory View Configuration - Widgets
+		
+		$("a[href='#widget-settings']").click( openWidgetSettings );
+		
 		
 		$("#directory-available-widgets").find(".gv-widgets").draggable({
 			connectToSortable: 'div.widget-drop',

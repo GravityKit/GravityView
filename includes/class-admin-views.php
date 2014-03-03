@@ -177,7 +177,7 @@ class GravityView_Admin_Views {
 				<hr>
 				<?php // widgets new innterface proposal ?>
 				<?php $widgets = get_post_meta( $post->ID, '_gravityview_directory_widgets', true ); ?>
-				<h4><?php esc_html_e( 'Directory Header & Footer', 'gravity-view'); ?></h4>
+				<h4><?php esc_html_e( 'Directory Header & Footer widgets', 'gravity-view'); ?></h4>
 				
 				<table class="view-table">
 					<tr>
@@ -187,7 +187,6 @@ class GravityView_Admin_Views {
 						<th></th>
 					</tr>
 					<?php do_action( 'gravityview_admin_view_widgets', $widgets ); ?>
-										
 				</table>
 				
 				
@@ -481,7 +480,7 @@ class GravityView_Admin_Views {
 		$output = '';
 		$output .= '<input type="hidden" class="field-key" name="fields['. $area .']['. $uniqid .'][id]" value="'. $field_id .'">';
 		$output .= '<input type="hidden" class="field-label" name="fields['. $area .']['. $uniqid .'][label]" value="'. $field_label .'">';
-		$output .= '<div class="gv-fields-options" title="Field Options: '. $field_label .' ['. $field_id .']">';
+		$output .= '<div class="gv-dialog-options" title="'. esc_attr__( 'Field Options', 'gravity-view' ) . ': '. $field_label .' ['. $field_id .']">';
 		$output .= '<ul>';
 		
 		$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_label]' , __( 'Show Label', 'gravity-view' ), $show_label );

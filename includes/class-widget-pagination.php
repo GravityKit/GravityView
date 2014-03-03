@@ -15,19 +15,14 @@
 
 class GravityView_Widget_Pagination extends GravityView_Widget {
 	
-	
-	
-	
 	function __construct() {
 		
 		parent::__construct( 'Pagination info' , 'page_info' );
 		
-		add_action( 'gravityview_before', array( $this, 'render_pagination' ) );
-		
 	}
 	
 	
-	public function render_pagination() {
+	public function render_frontend() {
 		global $gravity_view;
 		
 		$offset = $gravity_view->paging['offset'];
@@ -115,8 +110,8 @@ class GravityView_Widget {
 	// Widget admin id
 	protected $widget_id;
 	
-	
-	
+	// hold widget View options
+	private $widget_options;
 	
 	function __construct( $widget_label , $widget_id ) {
 		
@@ -125,6 +120,10 @@ class GravityView_Widget {
 		
 		// render html settings in the View admin screen
 		add_action( 'gravityview_admin_view_widgets', array( $this, 'render_admin_settings' ), 10, 1 );
+		
+		// frontend logic
+		add_action( 'gravityview_before', array( $this, 'render_frontend_hooks' ) );
+		add_action( 'gravityview_after', array( $this, 'render_frontend_hooks' ) );
 		
 	}
 	
@@ -154,12 +153,76 @@ class GravityView_Widget {
 					</label>
 				</fieldset>
 			</td>
-			<td><a class="button-secondary" href="#" title="<?php esc_attr_e( 'Advanced Settings', 'gravity-view' ); ?>"><span class=""><?php esc_html_e( 'config', 'gravity-view'); ?></span></a></td>
+			<td>
+				<a class="button-secondary" href="#widget-settings" title="<?php esc_attr_e( 'Advanced Settings', 'gravity-view' ); ?>"><span class=""><?php esc_html_e( 'config', 'gravity-view'); ?></span></a>
+				<div class="gv-dialog-options" title="<?php printf( __( '%1$s options', 'gravity-view' ), $this->widget_label ); ?>">
+					<?php echo $this->render_advanced_settings( $widgets ); ?>
+				</div>
+			</td>
+			
 		</tr>
 		
 		<?php
 	}
 	
+	
+	function render_advanced_settings( $widgets ) {
+		// to be defined by child class
+	}
+	
+	
+	
+	/** Frontend logic */
+	
+	function render_frontend_hooks( $view_id ) {
+		
+		if( empty( $view_id ) ) {
+			return;
+		}
+		// get View widget configuration
+		$widgets = get_widget_options( $view_id );
+		
+		
+		switch( current_filter() ) {
+			case 'gravityview_before':
+				if( !empty( $widgets['header'][ $this->widget_id ] ) ) {
+					$this->render_frontend();
+				}
+				break;
+			case 'gravityview_after':
+				if( !empty( $widgets['footer'][ $this->widget_id ] ) ) {
+					$this->render_frontend();
+				}
+				break;
+			
+		}
+
+	}
+	
+	
+	function render_frontend() {
+		// to be defined by child class
+	}
+	
+	
+	
+	
+	
+	
+	
+	// helper
+	function get_widget_options( $id ) {
+		
+		if( empty( $id ) ) {
+			return '';
+		}
+		
+		if( empty( $this->widget_options ) ) {
+			$this->widget_options = get_post_meta( $id, '_gravityview_directory_widgets', true );
+		}
+		
+		return $this->widget_options;
+	}
 	
 	
 	

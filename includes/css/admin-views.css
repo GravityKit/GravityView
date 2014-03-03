@@ -163,11 +163,11 @@ fieldset.area {
 	display: none;
 }
 
-.gv-fields-options {
+.gv-dialog-options {
 	display: none;
 }
 
-.gv-fields-options ul {
+.gv-dialog-options ul {
 	margin: 5px 10px;
 }
 

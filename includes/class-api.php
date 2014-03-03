@@ -228,17 +228,25 @@ function gravityview_back_link() {
 
 // Templates' hooks
 function gravityview_before() {
-	do_action( 'gravityview_before' );
+	do_action( 'gravityview_before', gravityview_get_view_id() );
 }
 
 function gravityview_header() {
-	do_action( 'gravityview_header' );
+
+	do_action( 'gravityview_header', gravityview_get_view_id() );
 }
 
 function gravityview_footer() {
-	do_action( 'gravityview_footer' );
+	do_action( 'gravityview_footer', gravityview_get_view_id() );
 }
 
 function gravityview_after() {
-	do_action( 'gravityview_after' );
+	do_action( 'gravityview_after', gravityview_get_view_id() );
 }
+
+function gravityview_get_view_id() {
+	global $gravity_view;
+	return isset( $gravity_view->view_id ) ? $gravity_view->view_id : false;
+}
+
+

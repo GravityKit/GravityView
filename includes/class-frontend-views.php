@@ -161,7 +161,7 @@ class GravityView_frontend {
 		$gravity_view->fields = $dir_fields;
 		$gravity_view->total_entries = $count;
 		$gravity_view->paging = $paging;
-		
+		$gravity_view->view_id = $id;
 		
 		ob_start();
 		
