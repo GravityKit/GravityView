@@ -22,6 +22,38 @@ class GravityView_Widget_Pagination extends GravityView_Widget {
 	}
 	
 	
+	function render_advanced_settings( $widgets ) {
+		echo 'this is a test';
+	}
+	
+	public function render_frontend() {
+	
+		global $gravity_view;
+		
+		$offset = $gravity_view->paging['offset'];
+		$page_size = $gravity_view->paging['page_size'];
+		$total = $gravity_view->total_entries;
+		
+		
+		// displaying info
+		if( $total == 0 ) {
+			$first = $last = 0;
+		} else {
+			$first = empty( $offset ) ? 1 : $offset + 1;
+			$last = $offset + $page_size > $total ? $total : $offset + $page_size;
+		}
+		
+		echo '<span class="">'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravity-view' ), $first , $last , $total ) . '</span>';
+	
+	}
+
+} // GravityView_Widget_Pagination
+
+
+
+/*
+
+	
 	public function render_frontend() {
 		global $gravity_view;
 		
@@ -99,6 +131,7 @@ class GravityView_Widget_Pagination extends GravityView_Widget {
 
 	
 }
+*/
 
 
 

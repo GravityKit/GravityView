@@ -76,11 +76,14 @@ class GravityView_Plugin {
 		}
 		
 		// Load default templates
-		add_action( 'gravityview_init', array( $this, 'gravityview_register_default_templates' ) );
+		add_action( 'gravityview_init', array( $this, 'register_default_templates' ) );
+		
+		// Load default widgets
+		add_action( 'gravityview_init', array( $this, 'register_default_widgets' ) );
 		
 		// 
 		add_filter( 'gravityview_blacklist_field_types', array( $this, 'default_field_blacklist' ), 0 );
-		array( 'html', 'section', 'captcha' );
+		
 
 	}
 	
@@ -201,10 +204,6 @@ class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-api.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
 		
-		//for testing purposes
-		include_once( GRAVITYVIEW_DIR .'includes/class-widget-pagination.php' );
-		new GravityView_Widget_Pagination();
-		
 		// Shortcode to render view (directory)
 		add_shortcode( 'gravityview', array( 'GravityView_frontend', 'render_view_shortcode' ) );
 		add_action( 'init', array( 'GravityView_frontend', 'init_rewrite' ) );
@@ -212,7 +211,7 @@ class GravityView_Plugin {
 	}	
 	
 
-	function gravityview_register_default_templates() {
+	function register_default_templates() {
 		
 		include_once( GRAVITYVIEW_DIR .'includes/default-templates.php' );
 		
@@ -220,12 +219,17 @@ class GravityView_Plugin {
 		$this->gravityview_register_template( 'GravityView_Default_Template_List' );
 		
 		
-		//for testing purposes
-		include_once( GRAVITYVIEW_DIR .'includes/class-widget-pagination.php' );
+	}
+	
+	function register_default_widgets() {
+		include_once( GRAVITYVIEW_DIR .'includes/default-widgets.php' );
 		new GravityView_Widget_Pagination();
 		
 		
+		
 	}
+	
+	
 	
 	function gravityview_register_template( $class ) {
 		new $class();
