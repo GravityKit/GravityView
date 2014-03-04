@@ -53,6 +53,8 @@ class GravityView_Widget_Pagination extends GravityView_Widget {
 
 
 
+
+
 /**
  * Widget to display page links
  * 
@@ -61,7 +63,7 @@ class GravityView_Widget_Pagination extends GravityView_Widget {
 class GravityView_Widget_Page_Links extends GravityView_Widget {
 	
 	function __construct() {
-		$settings = array( 'show_all' => array( 'type' => 'checkbox', 'label' => __( 'Show each page number', 'gravity-view' ) ), 'default' => false );
+		$settings = array( 'show_all' => array( 'type' => 'checkbox', 'label' => __( 'Show each page number', 'gravity-view' ) ) );
 		parent::__construct( __( 'Show Page Links', 'gravity-view' ) , 'page_links', $settings );
 		
 	}
@@ -104,12 +106,16 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 
 
 
+
+
 /**
  * Widget to display search bar (free search, field and date filters)
  * 
  * @extends GravityView_Widget
  */
 class GravityView_Widget_Search_Bar extends GravityView_Widget {
+	
+	private $search_filters = array();
 	
 	function __construct() {
 		$settings = array( 
@@ -119,13 +125,51 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		);
 		parent::__construct( __( 'Show Search Bar', 'gravity-view' ) , 'search_bar', $settings );
 		
+		add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ) );
+		
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ) );
+	}
+	
+	
+	function filter_entries( $search_criteria ) {
+
+		// add free search
+		if( !empty( $_GET['gv_search'] ) ) {
+			$search_criteria['field_filters'][] = array( 'value' => $_GET['gv_search'] );
+		}
+		
+		// add specific fields search
+		$search_filters = $this->get_search_filters();
+		if( !empty( $search_filters ) && is_array( $search_filters ) ) {
+			foreach( $search_filters as $k => $filter ) {
+				if( !empty( $filter['value'] ) ) {
+					$search_criteria['field_filters'][] = $filter;
+				}
+			}
+		}
+		
+		//start date & end date
+		$curr_start = empty( $_GET['gv_start'] ) ? '' : $_GET['gv_start'];
+		$curr_end = empty( $_GET['gv_end'] ) ? '' : $_GET['gv_end'];
+		if( !empty( $curr_start ) && !empty( $curr_end ) ) {
+			$search_criteria['start_date'] = $curr_start;
+			$search_criteria['end_date'] = $curr_end;
+		}
+		
+		return $search_criteria;
 	}
 	
 	
 	public function render_frontend() {
 	
 		global $gravity_view;
+		
+		$form_id = $gravity_view->form_id;
+		
+		error_log(' fields: '. print_r( $gravity_view->fields, true) );
+		
+		// get configured search filters (fields)
+		$search_filters = $this->get_search_filters();
 		
 		
 		$adv_settings = $this->get_advanced_settings();
@@ -140,16 +184,35 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		
 		?>
 		<form id="lead_form" method="get" action="">
+		
+			<?php // search filters (fields)
+			if( !empty( $search_filters ) ) {
+				$form = gravityview_get_form( $form_id );
+				foreach( $search_filters as $filter ) {
+					$field = gravityview_get_field( $form, $filter['key'] );
+					if( in_array( $field['type'] , array( 'select', 'checkbox', 'radio', 'post_category' ) ) ) {
+						echo self::render_search_dropdown( $field['label'], 'filter_'.$field['id'], $field['choices'], $filter['value'] ); //Label, name attr, choices
+					} else {
+						echo self::render_search_input( $field['label'], 'filter_'.$field['id'], $filter['value'] ); //label, attr name
+					}
+				}
+			}
+		
+			?>
+		
+		
 			<p class="search-box">
+			
 				<?php if( $search_free ): ?>
 					<label for="gv_search"><?php esc_html_e( 'Search Entries:', 'gravity-view' ); ?></label>
 					<input type="text" name="gv_search" id="gv_search" value="<?php echo $curr_search; ?>" />
 				<?php endif; ?>
+				
 				<?php if( $search_date ): ?>
 					<label for="gv_start_date"><?php esc_html_e('Filter by date:', 'gravity-view' ); ?></label>
 					<input name="gv_start" id="gv_start_date" type="text" class="gv-datepicker" placeholder="<?php esc_attr_e('Start date', 'gravity-view' ); ?>" value="<?php echo $curr_start; ?>">
 					<input name="gv_end" id="gv_end_date" type="text" class="gv-datepicker" placeholder="<?php esc_attr_e('End date', 'gravity-view' ); ?>" value="<?php echo $curr_end; ?>">
-					<?php // enqueue only if needed!
+					<?php // enqueue datepicker stuff only if needed!
 					wp_enqueue_script( 'jquery-ui-datepicker' );
 					wp_enqueue_style( 'jquery-ui-datepicker', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
 					wp_enqueue_script( 'gravityview_search_bar' ); 
@@ -162,96 +225,105 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 	
 	}
 	
+	
+	/**
+	 * Register script to include the js datepicker in the frontend
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	function add_scripts_and_styles() {
-			wp_register_script( 'gravityview_search_bar',  GRAVITYVIEW_URL  . 'includes/js/fe-search-bar.js', array( 'jquery', 'jquery-ui-datepicker' ), '1.0.0', true );
+		wp_register_script( 'gravityview_search_bar',  GRAVITYVIEW_URL  . 'includes/js/fe-search-bar.js', array( 'jquery', 'jquery-ui-datepicker' ), '1.0.0', true );
 	}
+	
+	
+	/**
+	 * render_search_dropdown function.
+	 * 
+	 * @access private
+	 * @static
+	 * @param string $label (default: '')
+	 * @param string $name (default: '')
+	 * @param mixed $choices
+	 * @param string $current_value (default: '')
+	 * @return void
+	 */
+	static private function render_search_dropdown( $label = '', $name = '', $choices, $current_value = '' ) {
+
+		if( empty( $choices ) || !is_array( $choices ) || empty( $name ) ) {
+			return '';
+		}
+
+		$output = '<div class="search-box">';
+		$output .= '<label for=search-box-'.$name.'>' . $label . '</label>';
+		$output .= '<select name="'.$name.'" id="search-box-'. $name.'">';
+		$output .= '<option value="" '. selected( '', $current_value, false ) .'>---</option>';
+		foreach( $choices as $choice ) {
+			$output .= '<option value="'. $choice['value'] .'" '. selected( $choice['value'], $current_value, false ) .'>'. $choice['text'] .'</option>';
+		}
+		$output .= '</select>';
+		$output .= '</div>';
+
+		return $output;
+
+	}
+
+
+	
+	/**
+	 * render_search_input function.
+	 * 
+	 * @access private
+	 * @static
+	 * @param string $label (default: '')
+	 * @param string $name (default: '')
+	 * @param string $current_value (default: '')
+	 * @return void
+	 */
+	static private function render_search_input( $label = '', $name = '', $current_value = '' ) {
+
+		if( empty( $name ) ) {
+			return '';
+		}
+
+		$output = '<div class="search-box">';
+		$output .= '<label for=search-box-'. $name .'>' . $label . '</label>';
+		$output .= '<input type="text" name="'. $name .'" id="search-box-'. $name .'" value="'. $current_value .'">';
+		$output .= '</div>';
+
+		return $output;
+
+	}
+	
+	private function get_search_filters() {
+		if( !empty( $this->search_filters ) ) {
+			return $this->search_filters;
+		}
+	
+		global $gravity_view;
+		
+		// get configured search filters (fields)
+		$search_filters = array();
+		if( is_array( $gravity_view->fields ) ) {
+			foreach( $gravity_view->fields as $t => $fields ) {
+				foreach( $fields as $field ) {
+					if( !empty( $field['search_filter'] ) ) {
+						$value = isset( $_GET['filter_'. $field['id'] ] ) ? $_GET['filter_'. $field['id'] ] : '';
+						$search_filters[] = array( 'key' => $field['id'], 'value' => $value );
+					}
+				}
+			}
+		}
+		$this->search_filters = $search_filters;
+		
+		return $search_filters;
+	}
+	
+	
 	
 
 } // GravityView_Widget_Page_Links
 
-
-
-/*
-
-	
-	public function render_frontend() {
-		global $gravity_view;
-		
-		$offset = $gravity_view->paging['offset'];
-		$page_size = $gravity_view->paging['page_size'];
-		$total = $gravity_view->total_entries;
-		
-		
-		// displaying info
-		if( $total == 0 ) {
-			$first = $last = 0;
-		} else {
-			$first = empty( $offset ) ? 1 : $offset + 1;
-			$last = $offset + $page_size > $total ? $total : $offset + $page_size;
-		}
-		
-		echo '<span class="">'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravity-view' ), $first , $last , $total ) . '</span>';
-		
-		
-		
-		
-		
-		// pagination links
-		$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
-		
-		$page_links = array(
-			'base' => add_query_arg('pagenum','%#%'),
-			'format' => '&pagenum=%#%',
-			'add_args' => array(), //
-			'prev_text' => '&laquo;',
-			'next_text' => '&raquo;',
-			'total' => ceil( $total / $page_size ),
-			'current' => $curr_page,
-			'show_all' => true, // to be available at backoffice
-		);
-
-		$page_links = paginate_links( $page_links );
-		
-		echo $page_links;
-		
-		
-		
-		
-		
-		
-		
-		// Search box and filters
-		$curr_search = empty( $_GET['gv_search'] ) ? '' : $_GET['gv_search'];
-		$curr_start = empty( $_GET['gv_start'] ) ? '' : $_GET['gv_start'];
-		$curr_end = empty( $_GET['gv_end'] ) ? '' : $_GET['gv_end'];
-		?>
-		<form id="lead_form" method="get" action="">
-			<p class="search-box">
-				<label for="gv_search"><?php esc_html_e('Search Entries:', 'gravity-view' ); ?></label>
-				<input type="text" name="gv_search" id="gv_search" value="<?php echo $curr_search; ?>" />
-				
-				<label for="gv_start_date"><?php esc_html_e('Filter by date:', 'gravity-view' ); ?></label>
-				<input name="gv_start" id="gv_start_date" type="text" class="gv-datepicker" placeholder="<?php esc_attr_e('Start date', 'gravity-view' ); ?>" value="<?php echo $curr_start; ?>">
-				<input name="gv_end" id="gv_end_date" type="text" class="gv-datepicker" placeholder="<?php esc_attr_e('End date', 'gravity-view' ); ?>" value="<?php echo $curr_end; ?>">
-				
-				<input type="submit" class="button" id="gv_search_button" value="<?php esc_attr_e( 'Search', 'gravity-view' ); ?>" />
-			</p>
-		</form>
-		
-		<?php
-			
-		
-		
-		// date filters
-		
-		
-		
-		
-	}
-
-	
-}
-*/
 
 
 
@@ -420,8 +492,4 @@ class GravityView_Widget {
 	
 	
 	
-}
-
-
-
-
+} // GravityView_Widget

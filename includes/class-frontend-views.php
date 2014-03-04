@@ -101,21 +101,29 @@ class GravityView_frontend {
 		
 		$dir_fields = get_post_meta( $id, '_gravityview_directory_fields', true );
 		
-		// Search Criteria
-		$search_criteria = '';
 		
-		//search by keyword
-		if( !empty( $_GET['gv_search'] ) ) {
-			$search_criteria['field_filters'][] = array( 'value' => $_GET['gv_search'] );
+		// set globals for templating
+		global $gravity_view;
+		$gravity_view = new GravityView_Template();
+		$gravity_view->form_id = $form_id;
+		$gravity_view->view_id = $id;
+		$gravity_view->fields = $dir_fields;
+		
+		
+		// Search Criteria
+		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ) );
+		
+		//start date & end date - Override values defined in shortcode (if needed)
+		if( !empty( $start_date ) ) {
+			if( empty( $search_criteria['start_date'] ) || ( !empty( $search_criteria['start_date'] ) && strotime( $start_date ) > strotime( $search_criteria['start_date'] ) ) ) {
+				$search_criteria['start_date'] = $start_date;
+			}
 		}
 		
-		
-		//start date & end date
-		$curr_start = empty( $_GET['gv_start'] ) ? $start_date : $_GET['gv_start'];
-		$curr_end = empty( $_GET['gv_end'] ) ? $end_date : $_GET['gv_end'];
-		if( !empty( $curr_start ) && !empty( $curr_end ) ) {
-			$search_criteria['start_date'] = $curr_start;
-			$search_criteria['end_date'] = $curr_end;
+		if( !empty( $end_date ) ) {
+			if( empty( $search_criteria['end_date'] ) || ( !empty( $search_criteria['end_date'] ) && strotime( $end_date ) < strotime( $search_criteria['end_date'] ) ) ) {
+				$search_criteria['start_date'] = $end_date;
+			}
 		}
 		
 		
@@ -130,7 +138,7 @@ class GravityView_frontend {
 			$page_size = get_post_meta( $id, '_gravityview_page_size', true );
 		}
 		$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
-		$paging = array( 'offset' => ($curr_page - 1) * $page_size, 'page_size' => $page_size );
+		$paging = array( 'offset' => ( $curr_page - 1 ) * $page_size, 'page_size' => $page_size );
 		
 		
 		//get entry or entries
@@ -154,14 +162,9 @@ class GravityView_frontend {
 		$view_slug =  apply_filters( 'gravityview_template_slug_'. $dir_template, 'table' );
 		
 		// Prepare to render view and set vars
-		global $gravity_view;
-		$gravity_view = new GravityView_Template();
-		
 		$gravity_view->entries = $entries;
-		$gravity_view->fields = $dir_fields;
 		$gravity_view->total_entries = $count;
 		$gravity_view->paging = $paging;
-		$gravity_view->view_id = $id;
 		
 		ob_start();
 		

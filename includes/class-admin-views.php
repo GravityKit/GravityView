@@ -475,7 +475,7 @@ class GravityView_Admin_Views {
 		$show_as_link = !empty( $current['show_as_link'] ) ? 1 : '';
 		$custom_class = !empty( $current['custom_class'] ) ? $current['custom_class'] : '';
 		$custom_label = !empty( $current['custom_label'] ) ? $current['custom_label'] : '';
-		
+		$search_filter = !empty( $current['search_filter'] ) ? 1 : '';
 		
 		$output = '';
 		$output .= '<input type="hidden" class="field-key" name="fields['. $area .']['. $uniqid .'][id]" value="'. $field_id .'">';
@@ -484,12 +484,14 @@ class GravityView_Admin_Views {
 		$output .= '<ul>';
 		
 		$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_label]' , __( 'Show Label', 'gravity-view' ), $show_label );
+		$output .= $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_label]' , __( 'Custom Label:', 'gravity-view' ), $custom_label );
+		$output .= $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_class]' , __( 'Custom CSS Class:', 'gravity-view' ), $custom_class );
 		if( 'single' != $context ) {
 			$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_as_link]' , __( 'Link to single entry', 'gravity-view' ), $show_as_link );
 		}
 		//$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_as_link]' , 'Link to single entry' ); //visible to logged-in
-		$output .= $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_label]' , __( 'Custom Label:', 'gravity-view' ), $custom_label );
-		$output .= $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_class]' , __( 'Custom CSS Class:', 'gravity-view' ), $custom_class );
+		
+		$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][search_filter]' , __( 'Use this field as a search filter', 'gravity-view' ), $search_filter );
 		
 		$output .= '</ul>';
 		$output .= '</div>';
@@ -503,11 +505,11 @@ class GravityView_Admin_Views {
 	
 	
 	public static function render_checkbox_option( $name = '', $label = '', $current = '' ) {
-		$output = '';
+		$id = sanitize_html_class( $name );
 		
-		$output .= '<li>';
-		$output .= '<input name="'. $name .'" id="'. $name .'" type="checkbox" value="1" '. checked( $current, '1', false ) .'>';
-		$output .= '<label for="'. $name .'">'. $label .'</label>';
+		$output = '<li>';
+		$output .= '<input name="'. $name .'" id="'. $id .'" type="checkbox" value="1" '. checked( $current, '1', false ) .'>';
+		$output .= '<label for="'. $id .'">'. $label .'</label>';
 		$output .= '</li>';
 
 		
@@ -518,10 +520,11 @@ class GravityView_Admin_Views {
 	
 	
 	public static function render_input_text_option( $name = '', $label = '', $current = '' ) {
+		$id = sanitize_html_class( $name );
 		
 		$output = '<li>';
-		$output .= '<label for="'. $name .'">'. $label .'</label>';
-		$output .= '<input name="'. $name .'" id="'. $name .'" type="text" value="'. $current .'" class="all-options">';
+		$output .= '<label for="'. $id .'">'. $label .'</label>';
+		$output .= '<input name="'. $name .'" id="'. $id .'" type="text" value="'. $current .'" class="all-options">';
 		$output .= '</li>';
 
 		return $output;
