@@ -115,13 +115,13 @@ class GravityView_frontend {
 		
 		//start date & end date - Override values defined in shortcode (if needed)
 		if( !empty( $start_date ) ) {
-			if( empty( $search_criteria['start_date'] ) || ( !empty( $search_criteria['start_date'] ) && strotime( $start_date ) > strotime( $search_criteria['start_date'] ) ) ) {
+			if( empty( $search_criteria['start_date'] ) || ( !empty( $search_criteria['start_date'] ) && strtotime( $start_date ) > strtotime( $search_criteria['start_date'] ) ) ) {
 				$search_criteria['start_date'] = $start_date;
 			}
 		}
 		
 		if( !empty( $end_date ) ) {
-			if( empty( $search_criteria['end_date'] ) || ( !empty( $search_criteria['end_date'] ) && strotime( $end_date ) < strotime( $search_criteria['end_date'] ) ) ) {
+			if( empty( $search_criteria['end_date'] ) || ( !empty( $search_criteria['end_date'] ) && strtotime( $end_date ) < strtotime( $search_criteria['end_date'] ) ) ) {
 				$search_criteria['start_date'] = $end_date;
 			}
 		}
