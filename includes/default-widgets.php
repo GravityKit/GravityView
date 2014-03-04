@@ -117,8 +117,9 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 			'search_date' => array( 'type' => 'checkbox', 'label' => __( 'Show date filters', 'gravity-view' ), 'default' => false ),
 			
 		);
-		parent::__construct( __( 'Show Search Bar', 'gravity-view' ) , 'search_box', $settings );
+		parent::__construct( __( 'Show Search Bar', 'gravity-view' ) , 'search_bar', $settings );
 		
+		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ) );
 	}
 	
 	
@@ -148,6 +149,11 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 					<label for="gv_start_date"><?php esc_html_e('Filter by date:', 'gravity-view' ); ?></label>
 					<input name="gv_start" id="gv_start_date" type="text" class="gv-datepicker" placeholder="<?php esc_attr_e('Start date', 'gravity-view' ); ?>" value="<?php echo $curr_start; ?>">
 					<input name="gv_end" id="gv_end_date" type="text" class="gv-datepicker" placeholder="<?php esc_attr_e('End date', 'gravity-view' ); ?>" value="<?php echo $curr_end; ?>">
+					<?php // enqueue only if needed!
+					wp_enqueue_script( 'jquery-ui-datepicker' );
+					wp_enqueue_style( 'jquery-ui-datepicker', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
+					wp_enqueue_script( 'gravityview_search_bar' ); 
+					?>
 				<?php endif; ?>
 				<input type="submit" class="button" id="gv_search_button" value="<?php esc_attr_e( 'Search', 'gravity-view' ); ?>" />
 			</p>
@@ -155,6 +161,11 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 	<?php
 	
 	}
+	
+	function add_scripts_and_styles() {
+			wp_register_script( 'gravityview_search_bar',  GRAVITYVIEW_URL  . 'includes/js/fe-search-bar.js', array( 'jquery', 'jquery-ui-datepicker' ), '1.0.0', true );
+	}
+	
 
 } // GravityView_Widget_Page_Links
 
@@ -319,12 +330,13 @@ class GravityView_Widget {
 		if( !is_array( $this->settings ) ) {
 			return '';
 		}
-		error_log('widgets : '. print_r(  $widgets[ $this->widget_id ], true) );
+		
 		echo '<ul>';
 		
 		foreach( $this->settings as $key => $details ) {
 			
-			$default = isset( $details['default'] ) ? $details['default'] : '';
+			//$default = isset( $details['default'] ) ? $details['default'] : '';
+			$default = '';
 			$curr_value = isset( $widgets[ $this->widget_id ][ $key ] ) ? $widgets[ $this->widget_id ][ $key ] : $default;
 			$label = isset( $details['label'] ) ? $details['label'] : '';
 			$type = isset( $details['type'] ) ? $details['type'] : 'input_text';

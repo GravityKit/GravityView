@@ -343,7 +343,7 @@ class GravityView_Admin_Views {
 				$_POST['fields'] = array();
 			}
 			update_post_meta( $post_id, '_gravityview_directory_fields', $_POST['fields'] );
-			
+			error_log('widgets : '. print_r(  $_POST['widgets'], true) );
 			// Directory Visible Widgets
 			if( empty( $_POST['widgets'] ) ) {
 				$_POST['widgets'] = array();
