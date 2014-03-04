@@ -502,7 +502,7 @@ class GravityView_Admin_Views {
 	
 	
 	
-	function render_checkbox_option( $name = '', $label = '', $current = '' ) {
+	public static function render_checkbox_option( $name = '', $label = '', $current = '' ) {
 		$output = '';
 		
 		$output .= '<li>';
@@ -517,7 +517,7 @@ class GravityView_Admin_Views {
 	
 	
 	
-	function render_input_text_option( $name = '', $label = '', $current = '' ) {
+	public static function render_input_text_option( $name = '', $label = '', $current = '' ) {
 		
 		$output = '<li>';
 		$output .= '<label for="'. $name .'">'. $label .'</label>';

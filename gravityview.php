@@ -225,7 +225,7 @@ class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/default-widgets.php' );
 		new GravityView_Widget_Pagination();
 		new GravityView_Widget_Page_Links();
-		
+		new GravityView_Widget_Search_Bar();
 		
 	}
 	

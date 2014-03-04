@@ -13,11 +13,16 @@
 
 
 
+/**
+ * Widget to display pagination info
+ * 
+ * @extends GravityView_Widget
+ */
 class GravityView_Widget_Pagination extends GravityView_Widget {
 	
 	function __construct() {
 		$settings = array();
-		parent::__construct( __( 'Show pagination info', 'gravity-view' ) , 'page_info', $settings );
+		parent::__construct( __( 'Show Pagination Info', 'gravity-view' ) , 'page_info', $settings );
 		
 	}
 	
@@ -48,11 +53,16 @@ class GravityView_Widget_Pagination extends GravityView_Widget {
 
 
 
+/**
+ * Widget to display page links
+ * 
+ * @extends GravityView_Widget
+ */
 class GravityView_Widget_Page_Links extends GravityView_Widget {
 	
 	function __construct() {
-		$settings = array( 'show_all' => array( 'type' => 'checkbox', 'label' => __( 'Show each page number', 'gravity-view' ) )  );
-		parent::__construct( __( 'Show page Links', 'gravity-view' ) , 'page_links', $settings );
+		$settings = array( 'show_all' => array( 'type' => 'checkbox', 'label' => __( 'Show each page number', 'gravity-view' ) ), 'default' => false );
+		parent::__construct( __( 'Show Page Links', 'gravity-view' ) , 'page_links', $settings );
 		
 	}
 	
@@ -91,6 +101,62 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 
 } // GravityView_Widget_Page_Links
 
+
+
+
+/**
+ * Widget to display search bar (free search, field and date filters)
+ * 
+ * @extends GravityView_Widget
+ */
+class GravityView_Widget_Search_Bar extends GravityView_Widget {
+	
+	function __construct() {
+		$settings = array( 
+			'search_free' => array( 'type' => 'checkbox', 'label' => __( 'Show search input', 'gravity-view' ), 'default' => true ),
+			'search_date' => array( 'type' => 'checkbox', 'label' => __( 'Show date filters', 'gravity-view' ), 'default' => false ),
+			
+		);
+		parent::__construct( __( 'Show Search Bar', 'gravity-view' ) , 'search_box', $settings );
+		
+	}
+	
+	
+	public function render_frontend() {
+	
+		global $gravity_view;
+		
+		
+		$adv_settings = $this->get_advanced_settings();
+		$search_free = !empty( $adv_settings['search_free'] ) ? true : false;
+		$search_date = !empty( $adv_settings['search_date'] ) ? true : false;
+		
+
+		// Search box and filters
+		$curr_search = empty( $_GET['gv_search'] ) ? '' : $_GET['gv_search'];
+		$curr_start = empty( $_GET['gv_start'] ) ? '' : $_GET['gv_start'];
+		$curr_end = empty( $_GET['gv_end'] ) ? '' : $_GET['gv_end'];
+		
+		?>
+		<form id="lead_form" method="get" action="">
+			<p class="search-box">
+				<?php if( $search_free ): ?>
+					<label for="gv_search"><?php esc_html_e( 'Search Entries:', 'gravity-view' ); ?></label>
+					<input type="text" name="gv_search" id="gv_search" value="<?php echo $curr_search; ?>" />
+				<?php endif; ?>
+				<?php if( $search_date ): ?>
+					<label for="gv_start_date"><?php esc_html_e('Filter by date:', 'gravity-view' ); ?></label>
+					<input name="gv_start" id="gv_start_date" type="text" class="gv-datepicker" placeholder="<?php esc_attr_e('Start date', 'gravity-view' ); ?>" value="<?php echo $curr_start; ?>">
+					<input name="gv_end" id="gv_end_date" type="text" class="gv-datepicker" placeholder="<?php esc_attr_e('End date', 'gravity-view' ); ?>" value="<?php echo $curr_end; ?>">
+				<?php endif; ?>
+				<input type="submit" class="button" id="gv_search_button" value="<?php esc_attr_e( 'Search', 'gravity-view' ); ?>" />
+			</p>
+		</form>
+	<?php
+	
+	}
+
+} // GravityView_Widget_Page_Links
 
 
 
@@ -253,15 +319,16 @@ class GravityView_Widget {
 		if( !is_array( $this->settings ) ) {
 			return '';
 		}
-		
+		error_log('widgets : '. print_r(  $widgets[ $this->widget_id ], true) );
 		echo '<ul>';
 		
 		foreach( $this->settings as $key => $details ) {
 			
-			$curr_value = isset( $widgets[ $this->widget_id ][ $key ] ) ? $widgets[ $this->widget_id ][ $key ] : '';
+			$default = isset( $details['default'] ) ? $details['default'] : '';
+			$curr_value = isset( $widgets[ $this->widget_id ][ $key ] ) ? $widgets[ $this->widget_id ][ $key ] : $default;
 			$label = isset( $details['label'] ) ? $details['label'] : '';
 			$type = isset( $details['type'] ) ? $details['type'] : 'input_text';
-		
+			
 			switch( $type ) {
 				case 'checkbox':
 					echo GravityView_Admin_Views::render_checkbox_option( 'widgets['. $this->widget_id .']['. $key .']' , $label, $curr_value );
@@ -286,7 +353,7 @@ class GravityView_Widget {
 	/** Frontend logic */
 	
 	function render_frontend_hooks( $view_id ) {
-		error_log(' $view_id: '. print_r( $view_id, true) );
+
 		if( empty( $view_id ) ) {
 			return;
 		}
