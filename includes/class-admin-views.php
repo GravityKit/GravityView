@@ -112,9 +112,9 @@ class GravityView_Admin_Views {
 			</ul>
 			<div id="directory-view">
 			
-				<table class="view-table">
+				<table class="form-table">
 					<tr valign="top">
-						<td>
+						<td scope="row">
 							<label for="gravityview_directory_template"><?php esc_html_e( 'Directory View Template', 'gravity-view'); ?></label>
 						</td>
 						<td>
@@ -130,7 +130,7 @@ class GravityView_Admin_Views {
 						</td>
 					</tr>
 					<tr valign="top">
-						<td>
+						<td scope="row">
 							<label for="gravityview_page_size"><?php esc_html_e( 'Number of entries to show per page', 'gravity-view'); ?></label>
 						</td>
 						<td>
@@ -139,7 +139,7 @@ class GravityView_Admin_Views {
 						</td>
 					</tr>
 					<tr valign="top">
-						<td>
+						<td scope="row">
 							<label for="gravityview_only_approved"><?php esc_html_e( 'Show only entries approved', 'gravity-view'); ?></label>
 						</td>
 						<td>
@@ -155,7 +155,7 @@ class GravityView_Admin_Views {
 				
 				<hr>
 
-				<div id="directory-fields" class="">
+				<div id="directory-fields" class="gv-section">
 					<h4><?php esc_html_e( 'Fields Mapping', 'gravity-view'); ?></h4>
 					
 					<div id="directory-active-fields" class="gv-area">
@@ -175,19 +175,22 @@ class GravityView_Admin_Views {
 
 				<div class="clear"></div>
 				<hr>
-				<?php // widgets new innterface proposal ?>
-				<?php $widgets = get_post_meta( $post->ID, '_gravityview_directory_widgets', true ); ?>
-				<h4><?php esc_html_e( 'Directory Header & Footer widgets', 'gravity-view'); ?></h4>
 				
-				<table class="view-table">
-					<tr>
-						<th></th>
-						<th><?php esc_html_e( 'Show in Header', 'gravity-view'); ?></th>
-						<th><?php esc_html_e( 'Show in Footer', 'gravity-view'); ?></th>
-						<th></th>
-					</tr>
-					<?php do_action( 'gravityview_admin_view_widgets', $widgets ); ?>
-				</table>
+				<div class="gv-section">
+					<?php // widgets new innterface proposal ?>
+					<?php $widgets = get_post_meta( $post->ID, '_gravityview_directory_widgets', true ); ?>
+					<h4><?php esc_html_e( 'Directory Header & Footer widgets', 'gravity-view'); ?></h4>
+					
+					<table class="form-table">
+						<tr>
+							<th>&nbsp;</th>
+							<th><?php esc_html_e( 'Show in Header', 'gravity-view'); ?></th>
+							<th><?php esc_html_e( 'Show in Footer', 'gravity-view'); ?></th>
+							<th>&nbsp;</th>
+						</tr>
+						<?php do_action( 'gravityview_admin_view_widgets', $widgets ); ?>
+					</table>
+				</div>
 
 			</div>
 			
@@ -196,7 +199,7 @@ class GravityView_Admin_Views {
 			<?php // Single View Tab ?>
 			
 			<div id="single-view">
-				<table class="view-table">
+				<table class="form-table">
 					<tr valign="top">
 						<td>
 							<label for="gravityview_single_template"><?php esc_html_e( 'Single Entry Template', 'gravity-view'); ?></label>
@@ -217,7 +220,7 @@ class GravityView_Admin_Views {
 				
 				<hr>
 
-				<div id="single-fields" class="">
+				<div id="single-fields" class="gv-section">
 					<h4><?php esc_html_e( 'Fields Mapping', 'gravity-view'); ?></h4>
 					
 					<div id="single-active-fields" class="gv-area">
@@ -492,8 +495,8 @@ class GravityView_Admin_Views {
 		$id = sanitize_html_class( $name );
 		
 		$output = '';
-		$output .= '<input name="'. $name .'" id="'. $id .'" type="checkbox" value="1" '. checked( $current, '1', false ) .'>';
-		$output .= '<label for="'. $id .'">'. $label .'</label>';
+		$output .= '<input name="'. $name .'" id="'. $id .'" type="checkbox" value="1" '. checked( $current, '1', false ) .' >';
+		$output .= '<label for="'. $id .'" class="gv-label-checkbox">'. $label .'</label>';
 		
 		return $output;
 	}
@@ -505,7 +508,7 @@ class GravityView_Admin_Views {
 		$id = sanitize_html_class( $name );
 		
 		$output = '';
-		$output .= '<label for="'. $id .'">'. $label .'</label>';
+		$output .= '<label for="'. $id .'" class="gv-label-text">'. $label .'</label>';
 		$output .= '<input name="'. $name .'" id="'. $id .'" type="text" value="'. $current .'" class="all-options">';
 
 		return $output;

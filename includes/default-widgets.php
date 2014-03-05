@@ -382,7 +382,7 @@ class GravityView_Widget {
 			</td>
 			<td>
 				<?php if( !empty( $this->settings ) ): ?>
-					<a class="button-secondary" href="#widget-settings" title="<?php esc_attr_e( 'Advanced Settings', 'gravity-view' ); ?>"><span class=""><?php esc_html_e( 'config', 'gravity-view'); ?></span></a>
+					<a class="button-small button" href="#widget-settings" title="<?php esc_attr_e( 'Advanced Settings', 'gravity-view' ); ?>"><span class=""><?php esc_html_e( 'Settings', 'gravity-view'); ?></span></a>
 					<div class="gv-dialog-options" title="<?php printf( __( '%1$s options', 'gravity-view' ), $this->widget_label ); ?>">
 						<?php $this->render_advanced_settings( $widgets ); ?>
 					</div>
@@ -413,12 +413,12 @@ class GravityView_Widget {
 			
 			switch( $type ) {
 				case 'checkbox':
-					echo GravityView_Admin_Views::render_checkbox_option( 'widgets['. $this->widget_id .']['. $key .']' , $label, $curr_value );
+					echo '<li>'. GravityView_Admin_Views::render_checkbox_option( 'widgets['. $this->widget_id .']['. $key .']' , $label, $curr_value ) .'</li>';
 					break;
 				
 				case 'input_text':
 				default:
-					echo GravityView_Admin_Views::render_input_text_option( 'widgets['. $this->widget_id .']['. $key .']' , $label, $curr_value );
+					echo '<li>'. GravityView_Admin_Views::render_input_text_option( 'widgets['. $this->widget_id .']['. $key .']' , $label, $curr_value ) .'</li>';
 					break;
 			
 			}

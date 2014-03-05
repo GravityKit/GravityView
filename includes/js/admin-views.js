@@ -88,6 +88,7 @@
 		parent.find(".gv-dialog-options").dialog({
 			dialogClass: 'wp-dialog',
 			appendTo: parent,
+			width: 550,
 			closeOnEscape: true,
 			buttons: {
 				'Close': function() {
@@ -104,6 +105,7 @@
 		parent.find(".gv-dialog-options").dialog({
 			dialogClass: 'wp-dialog',
 			appendTo: parent,
+			width: 350,
 			closeOnEscape: true,
 			buttons: {
 				'Close': function() {

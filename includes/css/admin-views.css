@@ -23,6 +23,7 @@
 	-webkit-padding-start: 0; }
 	
 .ui-tabs .ui-tabs-nav li { 
+
 	list-style: none; 
 	float: left; 
 	position: relative; 
@@ -42,6 +43,7 @@
 
 .nav-tab {
 	border-color: #ddd;
+	font-size: 14px;
 }
 
 
@@ -54,30 +56,20 @@ hr{
 	margin: 2em 0 2em 0;
 }
 
-.view-table {
-	margin-top: 1em;
-	border-spacing: 0;
-	width: 100%;
+
+.gv-section {
+	padding-right: 0.5em;
 }
 
-.view-table td:first-child, .view-table th:first-child {
-	width: 35%;
-}
-
-.view-table td, .view-table th {
-	padding: 0.5em 0;
-}
-
-.view-table th {
-	text-align: left;
-}
-
-label {
+.gv-section h4 {
+	font-size: 14px;
 	font-weight: bold;
 }
 
+
 fieldset.area {
-	padding: 1em;
+	padding: 0.5em;
+	margin-bottom: 1em;
 	border: 1px solid #eee;
 }
 
@@ -86,40 +78,30 @@ fieldset.area {
 }
 
 
-#directory-fields, #single-fields {
-	margin: 1.5em auto;
-}
-
-
 #directory-active-fields, #directory-active-widgets, #single-active-fields {
-	width: 75%;
+	width: 50%;
 	float: left;
 }
 
 #directory-available-fields, #directory-available-widgets, #single-available-fields {
-	width: 20%;
+	width: 40%;
 	float: right;
 }
 
 .fields-placeholder {
-	margin: 2px 1px;
-	width: 120px;
-	height: 20px;
+	margin: 5px 2px;
+	height: 30px;
 	border: 1px dashed #ccc;
 }
 
 .active-drop {
-	margin: 5px;
-	border: 1px dashed #ddd;
-	padding: 0.5em;
-	height: 100%;
-	/* text-align: center; */
+
 }
 
 
 /* Fields */
 .gv-fields {
-	margin: 2px 1px;
+	margin: 5px 2px;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -133,9 +115,10 @@ fieldset.area {
 .gv-fields h5 {
 	position: relative;
 	font-weight: 600;
+	font-size: 14px;
 	background: #f7f7f7; 
 	margin: 0;
-	padding: 5px;
+	padding: 0.5em;
 	line-height: 1;
 	overflow: hidden;
 	white-space: nowrap;
@@ -147,8 +130,8 @@ fieldset.area {
 
 .gv-fields h5 span {
 	position: absolute;
-	right: 2px;
-	bottom: 2px;
+	right: 0.5em;
+	bottom: 4px;
 }
 
 .gv-fields h5 span a {
@@ -165,70 +148,38 @@ fieldset.area {
 
 .gv-dialog-options {
 	display: none;
+	width: 90%;
 }
 
 .gv-dialog-options ul {
-	margin: 5px 10px;
-}
-
-
-/* Widgets */
-.gv-widgets {
-	margin: 2px 1px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	cursor: move;
-	border: 1px solid #ddd;
-	width: auto; 
-	display: block;
-	}
-	
-.gv-widgets h5 {
-	font-weight: 600;
-	background: #f7f7f7; 
+	list-style: none;
 	margin: 0;
-	padding: 5px;
-	line-height: 1;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	user-select: none; 
-	}
-
-
-.gv-widgets-options {
-	display: none;
+	padding: 1.5em;
 }
 
-.widget-drop {
-	margin: 5px;
-	border: 1px dashed #ddd;
-	padding: 0.5em;
-	height: 100%;
+.gv-dialog-options ul li {
+	display: block;
+	margin-bottom: 1em;
+	font-size: 14px;
 }
 
-.widget-drop span.drop-message, .active-drop span.drop-message {
+.gv-label-checkbox {
+	margin-right: 1em;
+	display: inline;
+}
+
+.gv-label-text {
+	display: block;
+	margin-bottom: 0.5em;
+}
+
+.active-drop span.drop-message {
 	color: #ddd;
 }
 
 .widget-drop > .gv-widgets {
 	width: 120px;
 	display: inline-block;
-}
-
-
-/* belongs to template */
-#gv-table-columns {
-	width: 130px;
-/* 	height: 300px; */
-	
-}
-
-#directory-active-fields fieldset.area, #single-active-fields {
-	width: 50%;
 }
 
 
