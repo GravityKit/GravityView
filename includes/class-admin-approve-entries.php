@@ -116,6 +116,9 @@ class GravityView_Admin_ApproveEntries {
 	 * @return void
 	 */
 	public function process_bulk_action() {
+		if( !class_exists( 'RGForms' ) ) {
+			return;
+		}
 
 		if( RGForms::post('action') === 'bulk' ) {
 		
@@ -187,6 +190,10 @@ class GravityView_Admin_ApproveEntries {
 	 */
 	public static function update_approved( $entry_id = 0, $approved = 0, $form_id = 0, $approvedcolumn = 0) {
 		
+		if( !class_exists( 'GFAPI' ) ) {
+			return;
+		}
+		
 		if( empty( $approvedcolumn ) ) {
 			$approvedcolumn = self::get_approved_column( $form_id );
 		}
@@ -207,7 +214,10 @@ class GravityView_Admin_ApproveEntries {
 		// add note to entry
 		if( $result === true ) {
 			$note = empty( $approved ) ? __( 'Disapproved the lead', 'gravity-view' ) : __( 'Approved the lead', 'gravity-view' );
-			RGFormsModel::add_note( $entry_id, $current_user->ID, $user_data->display_name, $note );
+			if( class_exists( 'RGFormsModel' ) ){
+				RGFormsModel::add_note( $entry_id, $current_user->ID, $user_data->display_name, $note );
+			}
+			
 		}
 		
 	}
@@ -281,6 +291,9 @@ class GravityView_Admin_ApproveEntries {
 	
 	function add_scripts_and_styles( $hook ) {
 		
+		if( !class_exists( 'RGForms' ) ) {
+			return;
+		}
 		
 		
 		//enqueue styles & scripts gf_entries
