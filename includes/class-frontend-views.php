@@ -141,20 +141,29 @@ class GravityView_frontend {
 		$paging = array( 'offset' => ( $curr_page - 1 ) * $page_size, 'page_size' => $page_size );
 		
 		
+		// remove not approved entries
+		$only_approved = get_post_meta( $id, '_gravityview_only_approved', true );
+		if( !empty( $only_approved ) ) {
+			$search_criteria['field_filters'][] = array( 'key' => 'is_approved', 'value' => 'Approved' );
+			$search_criteria['field_filters']['mode'] = 'all'; // force all the criterias to be met
+		}
+		
+		
+		
 		//get entry or entries
 		if( !empty( $single_entry ) ) {
 			$count = 1;
 			$entries[] = gravityview_get_entry( $single_entry );
-			
 		} else {
 			$count = 0;
 			$entries = gravityview_get_entries( $form_id, compact( 'search_criteria', 'sorting', 'paging' ), $count );
 			
 		}
 		
-		// remove hidden fields
 		
-		// remove not approved entries
+		
+		// remove fields according to visitor visibility permissions (if logged-in)
+		
 		
 		
 		
