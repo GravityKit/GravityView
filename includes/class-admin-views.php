@@ -188,34 +188,6 @@ class GravityView_Admin_Views {
 					</tr>
 					<?php do_action( 'gravityview_admin_view_widgets', $widgets ); ?>
 				</table>
-				
-				
-				
-				
-				<?php // to delete ---- ?>
-				<?php /* $widgets = get_post_meta( $post->ID, '_gravityview_directory_widgets', true ); ?>
-				<h4><?php esc_html_e( 'Directory Header & Footer', 'gravity-view'); ?></h4>
-				<div id="directory-widgets">
-					<div id="directory-active-widgets">
-						<fieldset class="area">
-							<legend><?php esc_html_e( 'Header Active Widgets', 'gravity-view'); ?></legend>
-							<?php echo $this->render_active_widgets( 'header', $widgets ); ?>
-						</fieldset>
-						<fieldset class="area">
-							<legend><?php esc_html_e( 'Footer Active Widgets', 'gravity-view'); ?></legend>
-							<?php echo $this->render_active_widgets( 'footer', $widgets ); ?>
-						</fieldset>
-					</div>
-					<div id="directory-available-widgets">
-						<fieldset class="area">
-							<legend><?php esc_html_e( 'Available Widgets', 'gravity-view'); ?></legend>
-							<?php echo $this->render_available_widgets(); ?>
-						</fieldset>
-					</div>
-				</div>
-				<?php */ ?>
-				
-				<div class="clear"></div>
 
 			</div>
 			
@@ -343,7 +315,7 @@ class GravityView_Admin_Views {
 				$_POST['fields'] = array();
 			}
 			update_post_meta( $post_id, '_gravityview_directory_fields', $_POST['fields'] );
-			error_log('widgets : '. print_r(  $_POST['widgets'], true) );
+
 			// Directory Visible Widgets
 			if( empty( $_POST['widgets'] ) ) {
 				$_POST['widgets'] = array();
@@ -476,6 +448,8 @@ class GravityView_Admin_Views {
 		$custom_class = !empty( $current['custom_class'] ) ? $current['custom_class'] : '';
 		$custom_label = !empty( $current['custom_label'] ) ? $current['custom_label'] : '';
 		$search_filter = !empty( $current['search_filter'] ) ? 1 : '';
+		$only_loggedin = !empty( $current['only_loggedin'] ) ? 1 : '';
+		$only_loggedin_cap = !empty( $current['only_loggedin_cap'] ) ? $current['only_loggedin_cap'] : 'read';
 		
 		$output = '';
 		$output .= '<input type="hidden" class="field-key" name="fields['. $area .']['. $uniqid .'][id]" value="'. $field_id .'">';
@@ -483,15 +457,25 @@ class GravityView_Admin_Views {
 		$output .= '<div class="gv-dialog-options" title="'. esc_attr__( 'Field Options', 'gravity-view' ) . ': '. $field_label .' ['. $field_id .']">';
 		$output .= '<ul>';
 		
-		$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_label]' , __( 'Show Label', 'gravity-view' ), $show_label );
-		$output .= $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_label]' , __( 'Custom Label:', 'gravity-view' ), $custom_label );
-		$output .= $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_class]' , __( 'Custom CSS Class:', 'gravity-view' ), $custom_class );
+		$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_label]' , __( 'Show Label', 'gravity-view' ), $show_label ) . '</li>';
+		$output .= '<li>' . $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_label]' , __( 'Custom Label:', 'gravity-view' ), $custom_label ) . '</li>';
+		$output .= '<li>' . $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_class]' , __( 'Custom CSS Class:', 'gravity-view' ), $custom_class ) . '</li>';
 		if( 'single' != $context ) {
-			$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_as_link]' , __( 'Link to single entry', 'gravity-view' ), $show_as_link );
+			$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_as_link]' , __( 'Link to single entry', 'gravity-view' ), $show_as_link ) . '</li>';
 		}
-		//$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_as_link]' , 'Link to single entry' ); //visible to logged-in
 		
-		$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][search_filter]' , __( 'Use this field as a search filter', 'gravity-view' ), $search_filter );
+		//logged-in visibility
+		$select_cap_choices = array(
+			array( 'label' => __( 'Any', 'gravity-view' ), 'value' => 'read' ),
+			array( 'label' => __( 'Author or higher', 'gravity-view' ), 'value' => 'publish_posts' ),
+			array( 'label' => __( 'Editor or higher', 'gravity-view' ), 'value' => 'delete_others_posts' ),
+			array( 'label' => __( 'Administrator', 'gravity-view' ), 'value' => 'manage_options' ),
+		);
+		$select_cap = $this->render_selectbox_option( 'fields['. $area .']['. $uniqid .'][only_loggedin_cap]', '', $select_cap_choices, $only_loggedin_cap );
+		$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][only_loggedin]' , sprintf( __( 'Only visible to logged in users with %s role', 'gravity-view' ), $select_cap), $only_loggedin ) . '</li>';
+		
+		//todo: make a hook to insert widget related field options
+		$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][search_filter]' , __( 'Use this field as a search filter', 'gravity-view' ), $search_filter ) . '</li>';
 		
 		$output .= '</ul>';
 		$output .= '</div>';
@@ -507,11 +491,9 @@ class GravityView_Admin_Views {
 	public static function render_checkbox_option( $name = '', $label = '', $current = '' ) {
 		$id = sanitize_html_class( $name );
 		
-		$output = '<li>';
+		$output = '';
 		$output .= '<input name="'. $name .'" id="'. $id .'" type="checkbox" value="1" '. checked( $current, '1', false ) .'>';
 		$output .= '<label for="'. $id .'">'. $label .'</label>';
-		$output .= '</li>';
-
 		
 		return $output;
 	}
@@ -522,11 +504,26 @@ class GravityView_Admin_Views {
 	public static function render_input_text_option( $name = '', $label = '', $current = '' ) {
 		$id = sanitize_html_class( $name );
 		
-		$output = '<li>';
+		$output = '';
 		$output .= '<label for="'. $id .'">'. $label .'</label>';
 		$output .= '<input name="'. $name .'" id="'. $id .'" type="text" value="'. $current .'" class="all-options">';
-		$output .= '</li>';
 
+		return $output;
+	}
+	
+	public static function render_selectbox_option( $name = '', $label = '', $choices, $current = '' ) {
+		$id = sanitize_html_class( $name );
+		$output = '';
+		
+		if( !empty( $label ) ) {
+			$output .= '<label for="'. $id .'">'. $label .'</label>';
+		}
+		$output .= '<select name="'. $name .'" id="'. $id .'">';
+		foreach( $choices as $choice ) {
+			$output .= '<option value="'. $choice['value'] .'" '. selected( $choice['value'], $current, false ) .'>'. $choice['label'] .'</option>';
+		}
+		$output .= '</select>';
+		
 		return $output;
 	}
 	

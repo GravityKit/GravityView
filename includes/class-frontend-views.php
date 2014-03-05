@@ -101,6 +101,8 @@ class GravityView_frontend {
 		
 		$dir_fields = get_post_meta( $id, '_gravityview_directory_fields', true );
 		
+		// remove fields according to visitor visibility permissions (if logged-in)
+		$dir_fields = self::filter_fields( $dir_fields );
 		
 		// set globals for templating
 		global $gravity_view;
@@ -109,6 +111,7 @@ class GravityView_frontend {
 		$gravity_view->view_id = $id;
 		$gravity_view->fields = $dir_fields;
 		
+		// start filters and sorting
 		
 		// Search Criteria
 		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ) );
@@ -125,7 +128,6 @@ class GravityView_frontend {
 				$search_criteria['start_date'] = $end_date;
 			}
 		}
-		
 		
 		// Sorting
 		$sorting = array();
@@ -161,12 +163,6 @@ class GravityView_frontend {
 		}
 		
 		
-		
-		// remove fields according to visitor visibility permissions (if logged-in)
-		
-		
-		
-		
 		// Get the template slug
 		$view_slug =  apply_filters( 'gravityview_template_slug_'. $dir_template, 'table' );
 		
@@ -193,6 +189,54 @@ class GravityView_frontend {
 	
 	
 	
+	// helper functions 
+	
+	
+	
+	/**
+	 * Filter area fields based on specified conditions
+	 * 
+	 * @access public
+	 * @param array $dir_fields
+	 * @return void
+	 */
+	public static function filter_fields( $dir_fields ) {
+		
+		if( empty( $dir_fields ) || !is_array( $dir_fields ) ) {
+			return $dir_fields;
+		}
+		
+		foreach( $dir_fields as $area => $fields ) {
+			foreach( $fields as $uniqid => $properties ) {
+				
+				if( self::hide_field_check_conditions( $properties ) ) {
+					unset( $dir_fields[ $area ][ $uniqid ] );
+				}
+
+			}
+		}
+		
+		return $dir_fields;
+		
+	}
+	
+	
+	/**
+	 * Check wether a certain field should not be presented based on its own properties.
+	 * 
+	 * @access public
+	 * @param array $properties
+	 * @return true (field should be hidden) or false (field should be presented)
+	 */
+	public static function hide_field_check_conditions( $properties ) {
+		
+		// logged-in visibility
+		if( !empty( $properties['only_loggedin'] ) && !current_user_can( $properties['only_loggedin_cap'] ) ) {
+			return true;
+		}
+		
+		return false;
+	}
 	
 	
 }
