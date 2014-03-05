@@ -88,7 +88,6 @@ if( !function_exists('gravityview_get_entries') ) {
 	
 	function gravityview_get_entries( $form_ids, $criteria = null, &$total = null ) {
 		
-		//error_log('$criteria : '. print_r( $criteria, true) );
 		
 		extract( wp_parse_args( $criteria, array( 'search_criteria' => null, 'sorting' => null, 'paging' => null ) ) );
 		

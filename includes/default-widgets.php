@@ -166,8 +166,6 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		
 		$form_id = $gravity_view->form_id;
 		
-		error_log(' fields: '. print_r( $gravity_view->fields, true) );
-		
 		// get configured search filters (fields)
 		$search_filters = $this->get_search_filters();
 		
