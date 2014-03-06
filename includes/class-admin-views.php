@@ -24,11 +24,10 @@ class GravityView_Admin_Views {
 		// adding styles and scripts
 		add_action('admin_enqueue_scripts', array( $this, 'add_scripts_and_styles') );
 		
-		// ajax
+		// AJAX 
 		//get field options
 		add_action( 'wp_ajax_gv_field_options', array( $this, 'get_field_options' ) );
 		
-		// AJAX 
 		// get available fields
 		add_action( 'wp_ajax_gv_available_fields', array( $this, 'get_available_fields' ) );
 		// get active areas
@@ -425,10 +424,10 @@ class GravityView_Admin_Views {
 					}
 					
 				}
-			} else {
-				$output .= '<span class="drop-message">'.esc_html__( 'Drop fields here', 'gravity-view' ).'</span>';
+				
 			}
 			
+			$output .= '<span class="drop-message">'.esc_html__( 'Drop fields here', 'gravity-view' ).'</span>';
 			// close active area
 			$output .= '</div>';
 			$output .= '</fieldset>';

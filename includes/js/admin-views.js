@@ -78,7 +78,11 @@
 	// Event handler to remove Fields from active areas
 	function removeField( event ) {
 		event.preventDefault();
+		var area = $( event.currentTarget ).parents(".active-drop");
 		$( event.currentTarget ).parent().parent().parent().remove();
+		if( area.find(".gv-fields").length == 0 ) {
+			 area.find(".drop-message").show();
+		}
 	}
 	
 	// Event handler to open dialog with Field Settings
@@ -207,6 +211,14 @@
 		$("a[href='#remove']").click( removeField );
 		
 		$("a[href='#settings']").click( openFieldSettings );
+		
+		$(".active-drop").each( function() {
+			if( $(this).find(".gv-fields").length != 0 ) {
+				$(this).find(".drop-message").hide();
+			}
+		});
+
+		
 		
 		
 		// Directory View Configuration - Widgets

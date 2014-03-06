@@ -22,8 +22,7 @@
 	-webkit-margin-end: 0;
 	-webkit-padding-start: 0; }
 	
-.ui-tabs .ui-tabs-nav li { 
-
+.ui-tabs .ui-tabs-nav li {
 	list-style: none; 
 	float: left; 
 	position: relative; 
@@ -176,7 +175,9 @@ fieldset.area {
 }
 
 .active-drop span.drop-message {
-	color: #ddd;
+	margin: 5px 2px;
+	line-height: 40px;
+	color: #bbb;
 }
 
 .widget-drop > .gv-widgets {
