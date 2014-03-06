@@ -28,9 +28,6 @@ class GravityView_Admin_Views {
 		//get field options
 		add_action( 'wp_ajax_gv_field_options', array( $this, 'get_field_options' ) );
 		
-		//get widget options
-		add_action( 'wp_ajax_gv_widget_options', array( $this, 'get_widget_options' ) );
-		
 		// AJAX 
 		// get available fields
 		add_action( 'wp_ajax_gv_available_fields', array( $this, 'get_available_fields' ) );
@@ -514,6 +511,7 @@ class GravityView_Admin_Views {
 		return $output;
 	}
 	
+	
 	public static function render_selectbox_option( $name = '', $label = '', $choices, $current = '' ) {
 		$id = sanitize_html_class( $name );
 		$output = '';
@@ -529,82 +527,6 @@ class GravityView_Admin_Views {
 		
 		return $output;
 	}
-	
-	
-	
-	
-	function render_available_widgets() {
-		
-		$widgets = self::get_widgets_list();
-	
-		$output = '';
-		foreach( $widgets as $id => $widget ) {
-			$output .= '<div data-widgetid="'. $id .'" class="gv-widgets">';
-			$output .= '<h5>'. $widget['label'] .'</h5>';
-			$output .= '</div>';
-		}
-		
-		return $output;
-	}
-	
-	
-	
-	public static function get_widgets_list() {
-	
-		$default['page_links'] = array( 'label' => 'Page Links' );
-		$default['search_filters'] = array( 'label' => 'Search Filters' );
-		$default['page_info'] = array( 'label' => 'Page Info' );
-		$default['date_filters'] = array( 'label' => 'Date Filters' );
-		
-		return $default;
-	}
-	
-	
-	
-	function render_widget_options( $widget_id, $widget_label, $area, $uniqid = '', $post_id = '' ) {
-		
-		if( empty( $uniqid ) ) {
-			//generate a unique field id
-			$uniqid = uniqid('', false);
-		}
-		
-		$output = '';
-		$output .= '<input type="hidden" name="widgets['. $area .']['. $uniqid .'][id]" value="'. $widget_id .'">';
-		
-		return $output;
-		
-	}
-	
-	
-	
-	function render_active_widgets( $area, $saved_widgets, $post_id = '' ) {
-		
-		$available_widgets = self::get_widgets_list();
-		
-		if( empty( $area ) ) {
-			return '';
-		}
-		
-		$widgets = isset( $saved_widgets[ $area ] ) ? $saved_widgets[ $area ] : '';
-		
-		$output = '<div data-areaid="'. $area .'" class="widget-drop">';
-		if( empty( $widgets ) ) {
-			$output .= '<span class="drop-message">'. esc_html__( 'Drop widgets here', 'gravity-view') .'</span>';
-		} else {
-			foreach( $widgets as $key => $widget ) {
-				if( !empty( $available_widgets[ $widget['id'] ] ) ) {
-					$output .= '<div data-widgetid="'. $widget['id'] .'" class="gv-widgets ui-draggable">';
-					$output .= '<h5>'. $available_widgets[ $widget['id'] ]['label'] .'</h5>';
-					$output .= $this->render_widget_options( $widget['id'], $available_widgets[ $widget['id'] ]['label'], $area, $key, $post_id );
-					$output .= '</div>';
-				}
-			}
-		}
-		$output .= '</div>';
-		
-		return $output;
-	}
-
 	
 	
 	/** AJAX stuff */
@@ -684,32 +606,6 @@ class GravityView_Admin_Views {
 		echo $response;
 		die();
 	}
-	
-	
-	/**
-	 * get_widget_options function.
-	 * 
-	 * @access public
-	 * @return void
-	 */
-	function get_widget_options() {
-		$response = false;
-		
-		if( empty( $_POST['area'] ) || empty( $_POST['widget_id'] ) || empty( $_POST['widget_label'] ) ) {
-			echo $response;
-			die();
-		}
-		
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxviews' ) ) {
-			echo $response;
-			die();
-		}
-		
-		$response = $this->render_widget_options( $_POST['widget_id'], $_POST['widget_label'], $_POST['area'] );
-		echo $response;
-		die();
-	}
-	
 	
 	
 	
