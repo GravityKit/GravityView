@@ -7,7 +7,7 @@
 		
 			<div class="list-row-title">
 			
-				<?php foreach( $this->fields['list-title'] as $field ) : ?>
+				<?php foreach( $this->fields['single-list-title'] as $field ) : ?>
 					<h3 class="<?php echo esc_attr( gv_class( $field ) ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></h3>
 				<?php endforeach; ?>
 				
@@ -15,7 +15,7 @@
 			
 			<div class="list-row-content">
 			
-				<?php foreach( $this->fields['list-content'] as $field ) : ?>
+				<?php foreach( $this->fields['single-list-content'] as $field ) : ?>
 					<p class="<?php echo esc_attr( gv_class( $field ) ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
 				<?php endforeach; ?>
 				
@@ -23,7 +23,7 @@
 			
 			<div class="list-row-footer">
 			
-				<?php foreach( $this->fields['list-footer'] as $field ) : ?>
+				<?php foreach( $this->fields['single-list-footer'] as $field ) : ?>
 					<p class="<?php echo esc_attr( gv_class( $field ) ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
 				<?php endforeach; ?>
 				

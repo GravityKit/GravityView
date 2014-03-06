@@ -73,14 +73,9 @@ class GravityView_frontend {
 	
 
 	public static function render_view_shortcode( $atts ) {
-		
-		// check if user requests single entry
-		$single_entry = get_query_var( self::get_entry_var_name() );
 
 		//confront attributes with defaults
 		extract( shortcode_atts( array( 'id' => '', 'page_size' => '', 'sort_field' => '', 'sort_direction' => 'ASC', 'start_date' => '', 'end_date' => '', 'class' => '' ), $atts ) );
-		
-		
 		
 		// validate attributes
 		if( empty( $id ) ) {
@@ -90,7 +85,7 @@ class GravityView_frontend {
 		// get form assign to this view
 		$form_id = get_post_meta( $id, '_gravityview_form_id', true );
 		
-		$dir_template = get_post_meta( $id, '_gravityview_directory_template', true );
+		
 		
 		$dir_fields = get_post_meta( $id, '_gravityview_directory_fields', true );
 		
@@ -104,73 +99,88 @@ class GravityView_frontend {
 		$gravity_view->view_id = $id;
 		$gravity_view->fields = $dir_fields;
 		
-		// start filters and sorting
 		
-		// Search Criteria
-		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ) );
+		// check if user requests single entry
+		$single_entry = get_query_var( self::get_entry_var_name() );
 		
-		//start date & end date - Override values defined in shortcode (if needed)
-		if( !empty( $start_date ) ) {
-			if( empty( $search_criteria['start_date'] ) || ( !empty( $search_criteria['start_date'] ) && strtotime( $start_date ) > strtotime( $search_criteria['start_date'] ) ) ) {
-				$search_criteria['start_date'] = $start_date;
+		if( empty( $single_entry ) ) {
+			// user requested Directory View
+			
+			// start filters and sorting
+			// Search Criteria
+			$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ) );
+			
+			//start date & end date - Override values defined in shortcode (if needed)
+			if( !empty( $start_date ) ) {
+				if( empty( $search_criteria['start_date'] ) || ( !empty( $search_criteria['start_date'] ) && strtotime( $start_date ) > strtotime( $search_criteria['start_date'] ) ) ) {
+					$search_criteria['start_date'] = $start_date;
+				}
 			}
-		}
-		
-		if( !empty( $end_date ) ) {
-			if( empty( $search_criteria['end_date'] ) || ( !empty( $search_criteria['end_date'] ) && strtotime( $end_date ) < strtotime( $search_criteria['end_date'] ) ) ) {
-				$search_criteria['start_date'] = $end_date;
+			
+			if( !empty( $end_date ) ) {
+				if( empty( $search_criteria['end_date'] ) || ( !empty( $search_criteria['end_date'] ) && strtotime( $end_date ) < strtotime( $search_criteria['end_date'] ) ) ) {
+					$search_criteria['start_date'] = $end_date;
+				}
 			}
-		}
-		
-		// Sorting
-		$sorting = array();
-		if( !empty( $sort_field ) ) {
-			$sorting = array( 'key' => $sort_field, 'direction' => $sort_direction );
-		}
-		
-		// Paging
-		if( empty( $page_size ) ) {
-			$page_size = get_post_meta( $id, '_gravityview_page_size', true );
-		}
-		$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
-		$paging = array( 'offset' => ( $curr_page - 1 ) * $page_size, 'page_size' => $page_size );
-		
-		
-		// remove not approved entries
-		$only_approved = get_post_meta( $id, '_gravityview_only_approved', true );
-		if( !empty( $only_approved ) ) {
-			$search_criteria['field_filters'][] = array( 'key' => 'is_approved', 'value' => 'Approved' );
-			$search_criteria['field_filters']['mode'] = 'all'; // force all the criterias to be met
-		}
-		
-		
-		
-		//get entry or entries
-		if( !empty( $single_entry ) ) {
-			$count = 1;
-			$entries[] = gravityview_get_entry( $single_entry );
-		} else {
+			
+			// Sorting
+			$sorting = array();
+			if( !empty( $sort_field ) ) {
+				$sorting = array( 'key' => $sort_field, 'direction' => $sort_direction );
+			}
+			
+			// Paging
+			if( empty( $page_size ) ) {
+				$page_size = get_post_meta( $id, '_gravityview_page_size', true );
+			}
+			$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
+			$paging = array( 'offset' => ( $curr_page - 1 ) * $page_size, 'page_size' => $page_size );
+			
+			
+			// remove not approved entries
+			$only_approved = get_post_meta( $id, '_gravityview_only_approved', true );
+			if( !empty( $only_approved ) ) {
+				$search_criteria['field_filters'][] = array( 'key' => 'is_approved', 'value' => 'Approved' );
+				$search_criteria['field_filters']['mode'] = 'all'; // force all the criterias to be met
+			}
+			
+			//fetch template and slug
+			$dir_template = get_post_meta( $id, '_gravityview_directory_template', true );
+			$view_slug =  apply_filters( 'gravityview_template_slug_'. $dir_template, 'table' );
+			
+			//fetch entries
 			$count = 0;
 			$entries = gravityview_get_entries( $form_id, compact( 'search_criteria', 'sorting', 'paging' ), $count );
+		
+		} else {
+			// user requested Single Entry View
+			
+			//fetch template and slug
+			$single_template = get_post_meta( $id, '_gravityview_single_template', true );
+			$view_slug =  apply_filters( 'gravityview_template_slug_'. $single_template, 'table' );
+			
+			//fetch entry detail
+			$count = 1;
+			$entries[] = gravityview_get_entry( $single_entry );
 			
 		}
-		
-		
-		// Get the template slug
-		$view_slug =  apply_filters( 'gravityview_template_slug_'. $dir_template, 'table' );
+
 		
 		// Prepare to render view and set vars
 		$gravity_view->entries = $entries;
 		$gravity_view->total_entries = $count;
-		$gravity_view->paging = $paging;
+		
 		
 		ob_start();
 		
 		if( empty( $single_entry ) ) {
+			$gravity_view->paging = $paging;
+			$gravity_view->context = 'directory';
 			$gravity_view->render( $view_slug, 'header' );
 			$gravity_view->render( $view_slug, 'body' );
 			$gravity_view->render( $view_slug, 'footer' );
 		} else {
+			$gravity_view->context = 'single';
 			$gravity_view->render( $view_slug, 'single' );
 		}
 		
@@ -182,9 +192,11 @@ class GravityView_frontend {
 	
 	
 	
+	
+	
+	
+	
 	// helper functions 
-	
-	
 	
 	/**
 	 * Filter area fields based on specified conditions

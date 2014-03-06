@@ -34,6 +34,7 @@ class GravityView_Default_Template_Table {
 		
 		// render view
 		add_filter( 'gravityview_template_slug_default_table', array( $this, 'assign_view_slug' ), 10, 1 );
+		add_filter( 'gravityview_template_slug_default_s_table', array( $this, 'assign_view_slug' ), 10, 1 );
 	}
 	
 	function register_template( $templates ) {
@@ -82,6 +83,7 @@ class GravityView_Default_Template_List {
 		
 		// render view
 		add_filter( 'gravityview_template_slug_default_list', array( $this, 'assign_view_slug' ), 10, 1 );
+		add_filter( 'gravityview_template_slug_default_s_list', array( $this, 'assign_view_slug' ), 10, 1 );
 	}
 
 	

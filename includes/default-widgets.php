@@ -436,7 +436,7 @@ class GravityView_Widget {
 	
 	function render_frontend_hooks( $view_id ) {
 
-		if( empty( $view_id ) ) {
+		if( empty( $view_id ) || 'single' == gravityview_get_context() ) {
 			return;
 		}
 		// get View widget configuration
