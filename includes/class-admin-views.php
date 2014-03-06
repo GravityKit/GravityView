@@ -263,7 +263,14 @@ class GravityView_Admin_Views {
 	}
 
 
-
+	
+	/**
+	 * Save View configuration
+	 * 
+	 * @access public
+	 * @param mixed $post_id
+	 * @return void
+	 */
 	function save_postdata( $post_id ) {
 		
 		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ){
@@ -435,6 +442,18 @@ class GravityView_Admin_Views {
 	
 	
 	
+	/**
+	 * Render Field Options html (shown through a dialog box)
+	 * 
+	 * @access public
+	 * @param mixed $field_id
+	 * @param mixed $field_label
+	 * @param mixed $area
+	 * @param string $uniqid (default: '')
+	 * @param string $current (default: '')
+	 * @param string $context (default: 'single')
+	 * @return void
+	 */
 	function render_field_options( $field_id, $field_label, $area, $uniqid = '', $current = '', $context = 'single' ) {
 		
 		if( empty( $uniqid ) ) {
@@ -451,6 +470,7 @@ class GravityView_Admin_Views {
 		$only_loggedin = !empty( $current['only_loggedin'] ) ? 1 : '';
 		$only_loggedin_cap = !empty( $current['only_loggedin_cap'] ) ? $current['only_loggedin_cap'] : 'read';
 		
+		// build output
 		$output = '';
 		$output .= '<input type="hidden" class="field-key" name="fields['. $area .']['. $uniqid .'][id]" value="'. $field_id .'">';
 		$output .= '<input type="hidden" class="field-label" name="fields['. $area .']['. $uniqid .'][label]" value="'. $field_label .'">';
@@ -471,8 +491,8 @@ class GravityView_Admin_Views {
 			array( 'label' => __( 'Editor or higher', 'gravity-view' ), 'value' => 'delete_others_posts' ),
 			array( 'label' => __( 'Administrator', 'gravity-view' ), 'value' => 'manage_options' ),
 		);
-		$select_cap = $this->render_selectbox_option( 'fields['. $area .']['. $uniqid .'][only_loggedin_cap]', '', $select_cap_choices, $only_loggedin_cap );
-		$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][only_loggedin]' , sprintf( __( 'Only visible to logged in users with %s role', 'gravity-view' ), $select_cap), $only_loggedin ) . '</li>';
+		$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][only_loggedin]' , __( 'Only visible to logged in users with role:', 'gravity-view' ) ) ;
+		$output .=  $this->render_selectbox_option( 'fields['. $area .']['. $uniqid .'][only_loggedin_cap]', '', $select_cap_choices, $only_loggedin_cap ) . '</li>';
 		
 		//todo: make a hook to insert widget related field options
 		$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][search_filter]' , __( 'Use this field as a search filter', 'gravity-view' ), $search_filter ) . '</li>';

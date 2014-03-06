@@ -197,54 +197,11 @@
 		$("a[href='#remove']").click( removeField );
 		
 		$("a[href='#settings']").click( openFieldSettings );
-
 		
 		
 		// Directory View Configuration - Widgets
-		
 		$("a[href='#widget-settings']").click( openWidgetSettings );
 		
-		
-		$("#directory-available-widgets").find(".gv-widgets").draggable({
-			connectToSortable: 'div.widget-drop',
-			distance: 2,
-			helper: 'clone',
-			revert: 'invalid',
-			zIndex: 100,
-			containment: 'document',
-			start: function() {
-				widgetOrigin = 'draggable';
-			}
-		});
-		
-		$('#directory-active-widgets').find(".widget-drop").sortable({
-			placeholder: "fields-placeholder",
-			items: '> .gv-widgets',
-			distance: 2,
-			receive: function( event, ui ) {
-				$(this).find(".drop-message").hide();
-			}
-		}).droppable({ 
-			drop: function( event, ui ) {
-				if( 'draggable' === widgetOrigin ) {
-					
-					var data = {
-						action: 'gv_widget_options',
-						area: $(this).attr('data-areaid'),
-						widget_id: ui.draggable.attr('data-widgetid'),
-						widget_label: ui.draggable.find("h5").text(),
-						nonce: ajax_object.nonce,
-					}
-					
-					$.post( ajax_object.ajaxurl, data, function( response ) {
-						if( response ) {
-							ui.draggable.append( response );
-						}
-					});
-					widgetOrigin = 'sortable';
-				}
-			}
-		});
 		
 		
 	});
