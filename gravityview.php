@@ -73,7 +73,7 @@ class GravityView_Plugin {
 
 		if( is_admin() ) {
 		
-			//add_filter( 'plugin_action_links_'. plugin_basename( __FILE__) , array( $this, 'plugin_action_links' ) );
+			add_filter( 'plugin_action_links_'. plugin_basename( __FILE__) , array( $this, 'plugin_action_links' ) );
 
 			add_action( 'plugins_loaded', array( $this, 'backend_actions' ) );
 			
@@ -133,8 +133,6 @@ class GravityView_Plugin {
 	 * @return void
 	 */
 	public static function activate( $network_wide ) {
-
-
 		
 		// gravityforms is active, proceed with activation:
 		self::init_setup();
@@ -182,8 +180,8 @@ class GravityView_Plugin {
 	 * @return void
 	 */
 	public static function plugin_action_links( $links ) {
-		$action = array();
-		//$action = array( '<a href="' . menu_page_url( 'gravityview', false ) . '">Settings</a>' );
+		$support_link = 'https://katzwebservices.zendesk.com/hc/en-us/categories/200136096';
+		$action = array( '<a href="' . $support_link . '">'. esc_html__( 'Support', 'gravity-view' ) .'</a>' );
 		return array_merge( $action, $links );
 	}
 	
