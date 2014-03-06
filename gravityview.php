@@ -134,11 +134,7 @@ class GravityView_Plugin {
 	 */
 	public static function activate( $network_wide ) {
 		
-		// gravityforms is active, proceed with activation:
 		self::init_setup();
-		
-		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
-		GravityView_frontend::init_rewrite();
 		
 		flush_rewrite_rules();
 		
@@ -232,6 +228,10 @@ class GravityView_Plugin {
 			'capability_type'     => 'page',
 		);
 		register_post_type( 'gravityview', $args );
+		
+		
+		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
+		GravityView_frontend::init_rewrite();
 		
 		do_action( 'gravityview_init' );
 	}

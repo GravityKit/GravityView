@@ -164,8 +164,16 @@ class GravityView_API {
 		//if show as single entry link is active
 		if( !empty( $field_settings['show_as_link'] ) ) {
 			$post = get_post();
-			if( !empty( $post->ID ) ) {
-				$href = trailingslashit( get_permalink( $post->ID ) ) . sanitize_title( apply_filters( 'gravityview_directory_endpoint', 'entry' ) ) . '/'. $entry['id'] .'/';
+			if( !empty( $post->ID ) ) { 
+				
+				$query_arg_name = GravityView_frontend::get_entry_var_name();
+				
+				if( get_option('permalink_structure') ) {
+					$href = trailingslashit( get_permalink( $post->ID ) ) . $query_arg_name . '/'. $entry['id'] .'/';
+				} else {
+					$href = add_query_arg( $query_arg_name, $entry['id'], get_permalink( $post->ID ) );
+				}
+					
 				
 				$value = '<a href="'. $href .'">'. $value . '</a>';
 			}

@@ -16,13 +16,6 @@
 class GravityView_frontend {
 	
 	function __construct() {
-		// 
-		
-		// init - register rewrite
-		//add_action( 'init', array( $this, 'init_rewrite' ) );
-		//add_filter( 'query_vars', array( $this, 'add_query_vars_filter' ) );
-		
-	
 	
 	}
 	
@@ -82,7 +75,7 @@ class GravityView_frontend {
 	public static function render_view_shortcode( $atts ) {
 		
 		// check if user requests single entry
-		$single_entry = get_query_var('entry');
+		$single_entry = get_query_var( self::get_entry_var_name() );
 
 		//confront attributes with defaults
 		extract( shortcode_atts( array( 'id' => '', 'page_size' => '', 'sort_field' => '', 'sort_direction' => 'ASC', 'start_date' => '', 'end_date' => '', 'class' => '' ), $atts ) );
