@@ -44,7 +44,7 @@ class GravityView_Widget_Pagination extends GravityView_Widget {
 			$last = $offset + $page_size > $total ? $total : $offset + $page_size;
 		}
 		
-		echo '<span class="">'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravity-view' ), $first , $last , $total ) . '</span>';
+		echo '<div class="gv-widget-pagination"><p>'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravity-view' ), $first , $last , $total ) . '</p></div>';
 	
 	}
 
@@ -97,7 +97,7 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 
 		$page_links = paginate_links( $page_links );
 		
-		echo $page_links;
+		echo '<div class="gv-widget-page-links"><p>'. $page_links .'</p></div>';
 	
 	}
 
@@ -181,7 +181,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		$curr_end = empty( $_GET['gv_end'] ) ? '' : $_GET['gv_end'];
 		
 		?>
-		<form id="lead_form" method="get" action="">
+		<form class="gv-widget-search" method="get" action="">
 		
 			<?php // search filters (fields)
 			if( !empty( $search_filters ) ) {
