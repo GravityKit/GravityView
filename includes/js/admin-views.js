@@ -121,11 +121,21 @@
 
 	$(document).ready( function() {
 		
+		// check if form is selected, if not hide the entire View Configuration metabox
+		if( '' == $("#gravityview_form_id").val() ) {
+			$("#gravityview_directory_view").hide();
+		}
 		
 		// If Form Selection changes update fields
 		$("#gravityview_form_id").change( function() {
 			
 			$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
+			
+			if( '' == $("#gravityview_form_id").val() ) {
+				$("#gravityview_directory_view").hide();
+			} else {
+				$("#gravityview_directory_view").show();
+			}
 			
 			var data = {
 				action: 'gv_available_fields',
