@@ -119,7 +119,15 @@
 		});
 	}
 	
-	
+	function toggleDropMessage() {
+		$(".active-drop").each( function() {
+			if( $(this).find(".gv-fields").length != 0 ) {
+				$(this).find(".drop-message").hide();
+			} else {
+				$(this).find(".drop-message").show();
+			}
+		});
+	}
 	
 	
 
@@ -140,6 +148,9 @@
 			} else {
 				$("#gravityview_directory_view").show();
 			}
+			
+			// toggle view of "drop message" when active areas are empty or not.
+			toggleDropMessage();
 			
 			var data = {
 				action: 'gv_available_fields',
@@ -212,12 +223,8 @@
 		
 		$("a[href='#settings']").click( openFieldSettings );
 		
-		$(".active-drop").each( function() {
-			if( $(this).find(".gv-fields").length != 0 ) {
-				$(this).find(".drop-message").hide();
-			}
-		});
-
+		// toggle view of "drop message" when active areas are empty or not.
+		toggleDropMessage();
 		
 		
 		
