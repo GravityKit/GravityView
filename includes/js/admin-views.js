@@ -133,31 +133,30 @@
 
 	$(document).ready( function() {
 		
-		// check if form is selected, if not hide the entire View Configuration metabox
-		if( '' == $("#gravityview_form_id").val() ) {
-			$("#gravityview_directory_view").hide();
-		}
 		
-		// If Form Selection changes update fields
-		$("#gravityview_form_id").change( function() {
-			
+		// If Form Selection changes update fields, show/hide View configuration metabox
+		$('#gravityview_form_id').change( function() {
+
 			$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
-			
-			if( '' == $("#gravityview_form_id").val() ) {
-				$("#gravityview_directory_view").hide();
+
+			// check if form is selected, if not hide the entire View Configuration metabox
+			if( $(this).val() === '') {
+				$("#gravityview_directory_view").slideUp(150);
+				// And stop processing
+				return;
 			} else {
-				$("#gravityview_directory_view").show();
+				$("#gravityview_directory_view").slideDown(150);
 			}
-			
+
 			// toggle view of "drop message" when active areas are empty or not.
 			toggleDropMessage();
-			
+
 			var data = {
 				action: 'gv_available_fields',
 				formid: $(this).val(),
 				nonce: ajax_object.nonce,
 			}
-			
+
 			$.post( ajax_object.ajaxurl, data, function( response ) {
 				if( response ) {
 					$("#directory-available-fields fieldset.area").append( response );
@@ -165,8 +164,9 @@
 					init_draggables();
 				}
 			});
-			
-		});
+
+		}).trigger('change');
+		
 		
 		// If Directory Template Selection changes update areas/fields
 		$("#gravityview_directory_template").change( function() {
@@ -209,8 +209,14 @@
 		});
 		
 		
-		// View Configuration - Tabs
-		$("#tabs").tabs();
+		// View Configuration - Tabs (persisten after refresh)
+		$("#tabs").tabs({
+			active: $("#gv-active-tab").val(),
+			activate: function( event, ui ) {
+				$("#gv-active-tab").val( ui.newTab.parent().children().index( ui.newTab ) );
+			}
+		});
+		
 		
 		// Directory View Configuration - Fields Mapping
 		 // Using field_origin as flag to avoid 'drop' event being fired twice.
