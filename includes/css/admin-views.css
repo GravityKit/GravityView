@@ -95,9 +95,6 @@ fieldset.area {
 	border: 1px dashed #ccc;
 }
 
-.active-drop {
-
-}
 
 
 /* Fields */
@@ -108,42 +105,66 @@ fieldset.area {
 	-webkit-box-sizing: border-box;
 	cursor: move;
 	border: 1px solid #ddd;
-	width: auto; 
+	width: 100%; 
 	display: block;
-
+	max-width: 355px;
+	background: #f7f7f7; 
+	overflow: hidden;
+	padding: 0.5em;
 	}
+
+.active-drop .gv-fields {
+	max-width: 442px !important;
+}
 	
 .gv-fields h5 {
-	position: relative;
 	font-weight: 600;
 	font-size: 14px;
-	background: #f7f7f7; 
 	margin: 0;
-	padding: 0.5em;
-	line-height: 1;
+	padding: 0;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	}
+	
+.gv-fields h5:before, .gv-fields h5:after {
+	content: "";
+	display: table;
+}
+
+.gv-fields h5:after {
+	clear: both;
+}
+
+.gv-fields h5 span.gv-field-title {
+	display: inline;
+	float: left;
+	line-height: 20px;
+	max-width: 340px;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	user-select: none; 
-	}
-
-.gv-fields h5 span {
-	position: absolute;
-	right: 0.5em;
-	bottom: 4px;
 }
 
-.gv-fields h5 span a {
+.active-drop .gv-fields h5 span.gv-field-title {
+	max-width: 360px !important;
+}
+
+.gv-fields h5 span.gv-field-controls {
+	display: inline;
+	margin-left: 5px;
+	float: right;
+}
+
+.gv-fields h5 span.gv-field-controls a {
 	color: #999;
 }
 
-.gv-fields h5 span a:hover {
+.gv-fields h5 span.gv-field-controls a:hover {
 	color: #0074a2;
 }
 
-#directory-available-fields h5 span, #single-available-fields h5 span {
+#directory-available-fields h5 span.gv-field-controls, #single-available-fields h5 span.gv-field-controls {
 	display: none;
 }
 
