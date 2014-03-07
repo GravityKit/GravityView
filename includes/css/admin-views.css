@@ -22,7 +22,7 @@
 	-webkit-margin-end: 0;
 	-webkit-padding-start: 0; }
 	
-.ui-tabs .ui-tabs-nav li { 
+.ui-tabs .ui-tabs-nav li {
 	list-style: none; 
 	float: left; 
 	position: relative; 
@@ -33,6 +33,8 @@
 	white-space: nowrap; }
 	
 .ui-tabs .ui-tabs-nav li a { float: left; padding: .5em 1em; text-decoration: none; }
+.ui-tabs .ui-tabs-nav li a:active, .ui-tabs .ui-tabs-nav li a:focus { outline: none; }
+
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected { margin-bottom: 0; padding-bottom: 1px; }
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a { cursor: text; }
 .ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
@@ -42,6 +44,7 @@
 
 .nav-tab {
 	border-color: #ddd;
+	font-size: 14px;
 }
 
 
@@ -54,26 +57,20 @@ hr{
 	margin: 2em 0 2em 0;
 }
 
-.view-table {
-	margin-top: 1em;
-	border-spacing: 0;
-	width: 100%;
+
+.gv-section {
+	padding-right: 0.5em;
 }
 
-.view-table td:first-child {
-	width: 35%;
-}
-
-.view-table td {
-	padding: 0.5em 0;
-}
-
-label {
+.gv-section h4 {
+	font-size: 14px;
 	font-weight: bold;
 }
 
+
 fieldset.area {
-	padding: 1em;
+	padding: 0.5em;
+	margin-bottom: 1em;
 	border: 1px solid #eee;
 }
 
@@ -82,149 +79,131 @@ fieldset.area {
 }
 
 
-#directory-fields {
-	margin: 1.5em auto;
-}
-
-
-#directory-active-fields, #directory-active-widgets {
-	width: 75%;
+#directory-active-fields, #directory-active-widgets, #single-active-fields {
+	width: 50%;
 	float: left;
 }
 
-#directory-available-fields, #directory-available-widgets {
-	width: 20%;
+#directory-available-fields, #directory-available-widgets, #single-available-fields {
+	width: 40%;
 	float: right;
 }
 
 .fields-placeholder {
-	margin: 2px 1px;
-	width: 120px;
-	height: 20px;
+	margin: 5px 2px;
+	height: 30px;
 	border: 1px dashed #ccc;
 }
 
-.active-drop {
-	margin: 5px;
-	border: 1px dashed #ddd;
-	padding: 0.5em;
-	height: 100%;
-	/* text-align: center; */
-}
 
 
 /* Fields */
 .gv-fields {
-	margin: 2px 1px;
+	margin: 5px 2px;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	cursor: move;
 	border: 1px solid #ddd;
-	width: auto; 
+	width: 100%; 
 	display: block;
-
+	max-width: 355px;
+	background: #f7f7f7; 
+	overflow: hidden;
+	padding: 0.5em;
 	}
+
+.active-drop .gv-fields {
+	max-width: 442px !important;
+}
 	
 .gv-fields h5 {
-	position: relative;
 	font-weight: 600;
-	background: #f7f7f7; 
+	font-size: 14px;
 	margin: 0;
-	padding: 5px;
-	line-height: 1;
+	padding: 0;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	}
+	
+.gv-fields h5:before, .gv-fields h5:after {
+	content: "";
+	display: table;
+}
+
+.gv-fields h5:after {
+	clear: both;
+}
+
+.gv-fields h5 span.gv-field-title {
+	display: inline;
+	float: left;
+	line-height: 20px;
+	max-width: 340px;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	user-select: none; 
-	}
-
-.gv-fields h5 span {
-	position: absolute;
-	right: 2px;
-	bottom: 2px;
 }
 
-.gv-fields h5 span a {
+.active-drop .gv-fields h5 span.gv-field-title {
+	max-width: 360px !important;
+}
+
+.gv-fields h5 span.gv-field-controls {
+	display: inline;
+	margin-left: 5px;
+	float: right;
+}
+
+.gv-fields h5 span.gv-field-controls a {
 	color: #999;
 }
 
-.gv-fields h5 span a:hover {
+.gv-fields h5 span.gv-field-controls a:hover {
 	color: #0074a2;
 }
 
-#directory-available-fields h5 span {
+#directory-available-fields h5 span.gv-field-controls, #single-available-fields h5 span.gv-field-controls {
 	display: none;
 }
 
-.gv-fields-options {
+.gv-dialog-options {
 	display: none;
+	width: 90%;
 }
 
-.gv-fields-options ul {
-	margin: 5px 10px;
-}
-
-
-/* Widgets */
-.gv-widgets {
-	margin: 2px 1px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	cursor: move;
-	border: 1px solid #ddd;
-	width: auto; 
-	display: block;
-	}
-	
-.gv-widgets h5 {
-	font-weight: 600;
-	background: #f7f7f7; 
+.gv-dialog-options ul {
+	list-style: none;
 	margin: 0;
-	padding: 5px;
-	line-height: 1;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	user-select: none; 
-	}
-
-
-.gv-widgets-options {
-	display: none;
+	padding: 1.5em;
 }
 
-.widget-drop {
-	margin: 5px;
-	border: 1px dashed #ddd;
-	padding: 0.5em;
-	height: 100%;
+.gv-dialog-options ul li {
+	display: block;
+	margin-bottom: 1em;
+	font-size: 14px;
 }
 
-.widget-drop span.drop-message, .active-drop span.drop-message {
-	color: #ddd;
+.gv-label-checkbox {
+	margin-right: 1em;
+	display: inline;
+}
+
+.gv-label-text {
+	display: block;
+	margin-bottom: 0.5em;
+}
+
+.active-drop span.drop-message {
+	margin: 5px 2px;
+	line-height: 40px;
+	color: #bbb;
 }
 
 .widget-drop > .gv-widgets {
 	width: 120px;
 	display: inline-block;
-}
-
-
-/* belongs to template */
-#gv-table-columns {
-	width: 130px;
-/* 	height: 300px; */
-	
-}
-
-#directory-active-fields fieldset.area {
-	width: 50%;
 }
 
 

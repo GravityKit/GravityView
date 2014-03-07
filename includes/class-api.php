@@ -45,24 +45,22 @@ class GravityView_API {
 	 * 
 	 * @access public
 	 * @param array $entry
-	 * @param integer $field_id
+	 * @param integer $field
 	 * @return string
 	 */
-	public static function field_value( $entry, $field ) {
+	public static function field_value( $entry, $field_settings ) {
 		
-		
-		
-		if( empty( $entry['form_id'] ) || empty( $field['id'] ) ) {
+		if( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
 			return '';
 		}
 
-		$field_id = $field['id'];
-		
+		$field_id = $field_settings['id'];
+
 		$value = '';
 		
 		$form = gravityview_get_form( $entry['form_id'] );
 		$field = gravityview_get_field( $form, $field_id );
-		error_log('$field: '. print_r( $field, true) );
+		
 		if( !empty( $field['type'] ) ) {
 		// possible values: html, hidden, section, captcha , , ,, , , , post_title, , , post_tags, post_category, post_image, post_custom_field, 
 		
@@ -161,7 +159,29 @@ class GravityView_API {
 			} //switch
 		} // if
 		
-		return apply_filters( 'gravityview_field_entry_value', $value, $entry, $field_id );
+		
+		
+		//if show as single entry link is active
+		if( !empty( $field_settings['show_as_link'] ) ) {
+			$post = get_post();
+			if( !empty( $post->ID ) ) { 
+				
+				$query_arg_name = GravityView_frontend::get_entry_var_name();
+				
+				if( get_option('permalink_structure') ) {
+					$href = trailingslashit( get_permalink( $post->ID ) ) . $query_arg_name . '/'. $entry['id'] .'/';
+				} else {
+					$href = add_query_arg( $query_arg_name, $entry['id'], get_permalink( $post->ID ) );
+				}
+					
+				
+				$value = '<a href="'. $href .'">'. $value . '</a>';
+			}
+			
+		}
+		
+		
+		return apply_filters( 'gravityview_field_entry_value', $value, $entry, $field_settings );
 	}
 	
 	
@@ -197,21 +217,47 @@ function gv_link(  $entry, $field ) {
 	return GravityView_API::field_link( $entry, $field );
 }
 
+// 
+function gravityview_back_link() {
+	$post = get_post();
+	
+	if( empty( $post->ID ) ) {
+		return '';
+	}
+	
+	$href = trailingslashit( get_permalink( $post->ID ) );
+	$label = apply_filters( 'gravityview_go_back_label', __( 'Go back', 'gravity-view' ), $post );
+	
+	return '<a href="'. $href .'" >'. esc_html( $label ) . '</a>';
+	
+}
+
 
 
 // Templates' hooks
 function gravityview_before() {
-	do_action( 'gravityview_before' );
+	do_action( 'gravityview_before', gravityview_get_view_id() );
 }
 
 function gravityview_header() {
-	do_action( 'gravityview_header' );
+
+	do_action( 'gravityview_header', gravityview_get_view_id() );
 }
 
 function gravityview_footer() {
-	do_action( 'gravityview_footer' );
+	do_action( 'gravityview_footer', gravityview_get_view_id() );
 }
 
 function gravityview_after() {
-	do_action( 'gravityview_after' );
+	do_action( 'gravityview_after', gravityview_get_view_id() );
+}
+
+function gravityview_get_view_id() {
+	global $gravity_view;
+	return $gravity_view->view_id;
+}
+
+function gravityview_get_context() {
+	global $gravity_view;
+	return $gravity_view->context;
 }

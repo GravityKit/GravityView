@@ -53,7 +53,8 @@ $gravity_view = new GravityView_Plugin();
  * GravityView_Plugin main class.
  */
 class GravityView_Plugin {
-
+	
+	private $admin_notices = array();
 	
 	public function __construct() {
 	
@@ -62,10 +63,17 @@ class GravityView_Plugin {
 		
 		//Load custom post types
 		add_action( 'init', array( $this, 'init_setup' ) );
+		
+		// check if gravityforms is active
+		add_action( 'admin_init', array( $this, 'check_gravityforms' ) );
+		
+		//throw notice messages if needed
+		add_action( 'admin_notices', array( $this, 'admin_notice' ) );
+
 
 		if( is_admin() ) {
-			
-			//add_filter( 'plugin_action_links_'. plugin_basename( __FILE__) , array( $this, 'plugin_action_links' ) );
+		
+			add_filter( 'plugin_action_links_'. plugin_basename( __FILE__) , array( $this, 'plugin_action_links' ) );
 
 			add_action( 'plugins_loaded', array( $this, 'backend_actions' ) );
 			
@@ -75,25 +83,72 @@ class GravityView_Plugin {
 			
 		}
 		
+		
 		// Load default templates
-		add_action( 'gravityview_init', array( $this, 'gravityview_register_default_templates' ) );
+		add_action( 'gravityview_init', array( $this, 'register_default_templates' ) );
+		
+		// Load default widgets
+		add_action( 'gravityview_init', array( $this, 'register_default_widgets' ) );
+		
+		// set the blacklist field types across the entire plugin
+		add_filter( 'gravityview_blacklist_field_types', array( $this, 'default_field_blacklist' ), 10 );
+		
 
 	}
 	
+	
+	/**
+	 * Check if Gravity Forms plugin is active
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function check_gravityforms() {
+		
+		$gf_status = self::get_plugin_status( 'gravityforms/gravityforms.php' );
+		
+		if( $gf_status !== true ) {
+			// gravityforms is inactive or not installed
+			
+			//deactivate_plugins( basename(__FILE__) );
+			//flush_rewrite_rules();
+			
+			if( $gf_status == 'inactive' ) {
+				$this->admin_notices[] = array( 'class' => 'error', 'message' => sprintf( __( 'GravityView requires Gravity Forms to be active in order to run properly. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravity-view' ), '<strong><a href="'. wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php') . '">', '</a></strong>' ) );
+			} else {
+				$this->admin_notices[] = array( 'class' => 'error', 'message' => sprintf( __( 'GravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s today', 'gravity-view' ), '</strong><a href="http://katz.si/gravityforms">' , '</a></strong>' ) );
+			}
+
+		}
+	}
+
+	
+	
+	/**
+	 * Plugin activate function.
+	 * 
+	 * @access public
+	 * @static
+	 * @param mixed $network_wide
+	 * @return void
+	 */
 	public static function activate( $network_wide ) {
 		
-		//@todo: Check if Gravity Form is installed and if version is upper than 1.8 -> Give notice message.
-		
-		
 		self::init_setup();
-		
-		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
-		GravityView_frontend::init_rewrite();
 		
 		flush_rewrite_rules();
 		
 	}
 	
+	
+	/**
+	 * Plugin deactivate function.
+	 * 
+	 * @access public
+	 * @static
+	 * @param mixed $network_wide
+	 * @return void
+	 */
 	public static function deactivate( $network_wide ) {
 		
 		flush_rewrite_rules();
@@ -113,7 +168,7 @@ class GravityView_Plugin {
 	
 	
 	/**
-	 * @TODO: Maybe not needed
+	 * Modify plugin action links at plugins screen
 	 * 
 	 * @access public
 	 * @static
@@ -121,13 +176,14 @@ class GravityView_Plugin {
 	 * @return void
 	 */
 	public static function plugin_action_links( $links ) {
-		$action = array( '<a href="' . menu_page_url( 'gravityview', false ) . '">Settings</a>' );
+		$support_link = 'https://katzwebservices.zendesk.com/hc/en-us/categories/200136096';
+		$action = array( '<a href="' . $support_link . '">'. esc_html__( 'Support', 'gravity-view' ) .'</a>' );
 		return array_merge( $action, $links );
 	}
 	
 	
 	/**
-	 * Init plugin components such as register custom post types
+	 * Init plugin components such as register own custom post types
 	 * 
 	 * @access public
 	 * @static
@@ -173,41 +229,139 @@ class GravityView_Plugin {
 		);
 		register_post_type( 'gravityview', $args );
 		
+		
+		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
+		GravityView_frontend::init_rewrite();
+		
 		do_action( 'gravityview_init' );
 	}
 	
 	
+	/**
+	 * Function to launch admin objects
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function backend_actions() {
+	
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-views.php' );
 		new GravityView_Admin_Views();
 		
+		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
+		new GravityView_Admin_Add_Shortcode();
+		
+		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
+		new GravityView_Admin_ApproveEntries();
 		
 	}
 	
 	
 	
+	/**
+	 * Function to launch frontend objects
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function frontend_actions() {
 	
 		include_once( GRAVITYVIEW_DIR .'includes/class-template.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-api.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
+		
 		// Shortcode to render view (directory)
 		add_shortcode( 'gravityview', array( 'GravityView_frontend', 'render_view_shortcode' ) );
-		
+		add_action( 'init', array( 'GravityView_frontend', 'init_rewrite' ) );
+		add_filter( 'query_vars', array( 'GravityView_frontend', 'add_query_vars_filter' ) );
 	}	
 	
 
-	function gravityview_register_default_templates() {
+	function register_default_templates() {
 		
 		include_once( GRAVITYVIEW_DIR .'includes/default-templates.php' );
 		
 		$this->gravityview_register_template( 'GravityView_Default_Template_Table' );
 		$this->gravityview_register_template( 'GravityView_Default_Template_List' );
+		
+		
 	}
+	
+	function register_default_widgets() {
+		include_once( GRAVITYVIEW_DIR .'includes/default-widgets.php' );
+		new GravityView_Widget_Pagination();
+		new GravityView_Widget_Page_Links();
+		new GravityView_Widget_Search_Bar();
+		
+	}
+	
+	
 	
 	function gravityview_register_template( $class ) {
 		new $class();
 	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * List the field types without presentation properties (on a View context)
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	function default_field_blacklist() {
+		return array( 'html', 'section', 'captcha' );
+	}
+	
+	
+	/**
+	 * Check if specified plugin is active, inactive or not installed
+	 * 
+	 * @access public
+	 * @static
+	 * @param string $location (default: '')
+	 * @return void
+	 */
+	static function get_plugin_status( $location = '' ) {
+	
+		if( ! function_exists('is_plugin_active') ) {
+			include_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+		}
+	
+		if( is_plugin_active( $location ) ) {
+			return true;
+		}
+	
+		if( !file_exists( trailingslashit( WP_PLUGIN_DIR ) . $location ) ) {
+			return false;
+		}
+	
+		if( is_plugin_inactive( $location ) ) {
+			return 'inactive';
+		}
+	}
+	
+	
+	function admin_notice() {
+		
+		if( empty( $this->admin_notices ) ) {
+			return;
+		}
+		
+		foreach( $this->admin_notices as $notice ) {
+			
+			echo '<div class="'. $notice['class'].'">';
+			echo '<p>'. $notice['message'] .'</p>';
+			echo '</div>';
+
+		}
+		//reset the notices handler
+		$this->admin_notices = array();
+	}
+	
 	
 
 

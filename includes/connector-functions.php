@@ -73,7 +73,7 @@ if( !function_exists('gravityview_get_forms') ) {
 		
 		if( $form ) {
 			foreach( $form['fields'] as $field ) {
-				$fields[ $field['id'] ] = array( 'label' => $field['label'] );
+				$fields[ $field['id'] ] = array( 'label' => $field['label'], 'type' => $field['type'] );
 			}
 		}
 		
@@ -88,7 +88,6 @@ if( !function_exists('gravityview_get_entries') ) {
 	
 	function gravityview_get_entries( $form_ids, $criteria = null, &$total = null ) {
 		
-		//error_log('$criteria : '. print_r( $criteria, true) );
 		
 		extract( wp_parse_args( $criteria, array( 'search_criteria' => null, 'sorting' => null, 'paging' => null ) ) );
 		
@@ -102,7 +101,22 @@ if( !function_exists('gravityview_get_entries') ) {
 		return false;
 	}
 
-}	
+}
+
+if( !function_exists('gravityview_get_entry') ) { 
+	
+	
+	
+	function gravityview_get_entry( $entry_id ) {
+		if( class_exists( 'GFAPI' ) && !empty( $entry_id ) ) {
+			return GFAPI::get_entry( $entry_id );
+		}
+		return false;
+	}
+
+}
+
+
 	
 	
 if( !function_exists('gravityview_get_field_label') ) { 
@@ -143,7 +157,13 @@ if( !function_exists('gravityview_get_field') ) {
 	}
 
 }	
-	
+
+
+
+
+
+
+
 	
 	
 	

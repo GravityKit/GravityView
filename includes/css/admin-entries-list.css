@@ -1,0 +1,78 @@
+/**
+ * Custom CSS at GF entries list page
+ *
+ * @package   GravityView
+ * @author    Zack Katz <zack@katzwebservices.com>
+ * @license   ToBeDefined
+ * @link      http://www.katzwebservices.com
+ * @copyright Copyright 2013, Katz Web Services, Inc.
+ *
+ * @since 1.0.0
+ */
+
+/*
+
+.lead_approved .toggleApproved {
+	background: url( '../../images/tick.png' ) top left no-repeat;
+}
+
+.toggleApproved {
+	background: url( '../../images/cross.png' ) top left no-repeat;
+	width: 16px;
+	height: 16px;
+	display: block;
+	text-indent: -9999px;
+	overflow: hidden;
+}
+
+*/
+
+.gv-approve-column {
+	text-align: center !important;
+}
+
+th.gv-approve-column a:before {
+	padding: 0;
+	margin:0;
+	content: "\f117";
+	display: inline-block;
+	-webkit-font-smoothing: antialiased;
+	font: normal 20px/1 'dashicons';
+	vertical-align: top;
+	color: #bbb;
+}
+
+
+.toggleApproved {
+	padding: 0;
+	margin:0;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+}
+
+.toggleApproved:before {
+	padding: 0;
+	margin:0;
+	content: "\f158";
+	display: inline-block;
+	-webkit-font-smoothing: antialiased;
+	font: normal 16px/1 'dashicons';
+	vertical-align: top;
+	color: #940303;
+}
+
+.toggleApproved.entry_approved:before {
+	content: "\f147";
+	color: #00ac15;
+}
+
+
+
+
+
+
+
+
+
+

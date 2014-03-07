@@ -24,14 +24,10 @@ class GravityView_Admin_Views {
 		// adding styles and scripts
 		add_action('admin_enqueue_scripts', array( $this, 'add_scripts_and_styles') );
 		
-		// ajax
+		// AJAX 
 		//get field options
 		add_action( 'wp_ajax_gv_field_options', array( $this, 'get_field_options' ) );
 		
-		//get widget options
-		add_action( 'wp_ajax_gv_widget_options', array( $this, 'get_widget_options' ) );
-		
-		// AJAX 
 		// get available fields
 		add_action( 'wp_ajax_gv_available_fields', array( $this, 'get_available_fields' ) );
 		// get active areas
@@ -83,6 +79,14 @@ class GravityView_Admin_Views {
 		
 	}
 
+	
+	/**
+	 * Render html for 'View Configuration' metabox
+	 * 
+	 * @access public
+	 * @param mixed $post
+	 * @return void
+	 */
 	function render_view_configuration( $post ) {
 		
 		// Use nonce for verification
@@ -90,7 +94,11 @@ class GravityView_Admin_Views {
 		
 		// Fetch available style templates
 		$templates_directory = apply_filters( 'gravityview_register_directory_template', array() );
+		$templates_single = apply_filters( 'gravityview_register_single_template', array() );
 		
+		// Selected Form
+		$curr_form = get_post_meta( $post->ID, '_gravityview_form_id', true )
+
 		
 		?>
 		<div id="tabs">
@@ -100,15 +108,17 @@ class GravityView_Admin_Views {
 			</ul>
 			<div id="directory-view">
 			
-				<table class="view-table">
+				<table class="form-table">
 					<tr valign="top">
-						<td>
+						<td scope="row">
 							<label for="gravityview_directory_template"><?php esc_html_e( 'Directory View Template', 'gravity-view'); ?></label>
 						</td>
 						<td>
 							<select name="gravityview_directory_template" id="gravityview_directory_template">
-								<?php 
+								<?php // get current directory template, by default, show table
 								$current_template = get_post_meta( $post->ID, '_gravityview_directory_template', true );
+								$current_template = empty( $current_template ) ? 'default_table' : $current_template;
+								
 								foreach( $templates_directory as $template ) {
 									echo '<option value="'. esc_attr( $template['id'] ) .'" '. selected( $template['id'], $current_template, false ) .'>'. esc_html( $template['label'] ) .'</option>';
 								} ?>
@@ -116,7 +126,7 @@ class GravityView_Admin_Views {
 						</td>
 					</tr>
 					<tr valign="top">
-						<td>
+						<td scope="row">
 							<label for="gravityview_page_size"><?php esc_html_e( 'Number of entries to show per page', 'gravity-view'); ?></label>
 						</td>
 						<td>
@@ -125,7 +135,7 @@ class GravityView_Admin_Views {
 						</td>
 					</tr>
 					<tr valign="top">
-						<td>
+						<td scope="row">
 							<label for="gravityview_only_approved"><?php esc_html_e( 'Show only entries approved', 'gravity-view'); ?></label>
 						</td>
 						<td>
@@ -141,19 +151,19 @@ class GravityView_Admin_Views {
 				
 				<hr>
 
-				<div id="directory-fields" class="">
+				<div id="directory-fields" class="gv-section">
 					<h4><?php esc_html_e( 'Fields Mapping', 'gravity-view'); ?></h4>
 					
 					<div id="directory-active-fields" class="gv-area">
 					
-						<?php echo $this->render_directory_active_areas( $current_template, $post->ID ); ?>
+						<?php echo $this->render_directory_active_areas( $current_template, $post->ID, 'directory' ); ?>
 
 					</div>
 					
 					<div id="directory-available-fields">
 						<fieldset class="area">
 							<legend><?php esc_html_e( 'Available Fields', 'gravity-view' ); ?></legend>
-							<?php echo $this->render_available_fields( get_post_meta( $post->ID, '_gravityview_form_id', true ) ); ?>
+							<?php echo $this->render_available_fields( $curr_form, 'directory' ); ?>
 						</fieldset>
 					</div>
 
@@ -162,37 +172,77 @@ class GravityView_Admin_Views {
 				<div class="clear"></div>
 				<hr>
 				
-				<?php $widgets = get_post_meta( $post->ID, '_gravityview_directory_widgets', true ); ?>
-				<h4><?php esc_html_e( 'Directory Header & Footer', 'gravity-view'); ?></h4>
-				<div id="directory-widgets">
-					<div id="directory-active-widgets">
-						<fieldset class="area">
-							<legend><?php esc_html_e( 'Header Active Widgets', 'gravity-view'); ?></legend>
-							<?php echo $this->render_active_widgets( 'header', $widgets ); ?>
-						</fieldset>
-						<fieldset class="area">
-							<legend><?php esc_html_e( 'Footer Active Widgets', 'gravity-view'); ?></legend>
-							<?php echo $this->render_active_widgets( 'footer', $widgets ); ?>
-						</fieldset>
-					</div>
-					<div id="directory-available-widgets">
-						<fieldset class="area">
-							<legend><?php esc_html_e( 'Available Widgets', 'gravity-view'); ?></legend>
-							<?php echo $this->render_available_widgets(); ?>
-						</fieldset>
-					</div>
+				<div class="gv-section">
+					<?php // widgets new innterface proposal ?>
+					<?php $widgets = get_post_meta( $post->ID, '_gravityview_directory_widgets', true ); ?>
+					<h4><?php esc_html_e( 'Directory Header & Footer widgets', 'gravity-view'); ?></h4>
+					
+					<table class="form-table">
+						<thead>
+							<tr>
+								<th>&nbsp;</th>
+								<th><?php esc_html_e( 'Show in Header', 'gravity-view'); ?></th>
+								<th><?php esc_html_e( 'Show in Footer', 'gravity-view'); ?></th>
+								<th>&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php do_action( 'gravityview_admin_view_widgets', $widgets ); ?>
+						</tbody>
+					</table>
 				</div>
-				
-				<div class="clear"></div>
 
 			</div>
 			
 			
 			
+			<?php // Single View Tab ?>
+			
 			<div id="single-view">
-				<p>single view</p>
-			</div>
-		</div>
+				<table class="form-table">
+					<tr valign="top">
+						<td>
+							<label for="gravityview_single_template"><?php esc_html_e( 'Single Entry Template', 'gravity-view'); ?></label>
+						</td>
+						<td>
+							<select name="gravityview_single_template" id="gravityview_single_template">
+								<?php // get current single entry template, or table by default
+								$current_single_template = get_post_meta( $post->ID, '_gravityview_single_template', true );
+								$current_single_template = empty( $current_single_template ) ? 'default_s_table' : $current_single_template;
+								
+								foreach( $templates_single as $template ) {
+									echo '<option value="'. esc_attr( $template['id'] ) .'" '. selected( $template['id'], $current_single_template, false ) .'>'. esc_html( $template['label'] ) .'</option>';
+								} ?>
+							</select>
+						</td>
+					</tr>
+				</table>
+				
+				<hr>
+
+				<div id="single-fields" class="gv-section">
+					<h4><?php esc_html_e( 'Fields Mapping', 'gravity-view'); ?></h4>
+					
+					<div id="single-active-fields" class="gv-area">
+					
+						<?php echo $this->render_directory_active_areas( $current_single_template, $post->ID, 'single' ); ?>
+
+					</div>
+					
+					<div id="single-available-fields">
+						<fieldset class="area">
+							<legend><?php esc_html_e( 'Available Fields', 'gravity-view' ); ?></legend>
+							<?php echo $this->render_available_fields( $curr_form, 'single' ); ?>
+						</fieldset>
+					</div>
+
+				</div>
+
+				<div class="clear"></div>
+
+			</div> <?php // end single view tab ?>
+
+		</div> <?php // end tabs ?>
 		<?php
 	}
 
@@ -216,7 +266,14 @@ class GravityView_Admin_Views {
 	}
 
 
-
+	
+	/**
+	 * Save View configuration
+	 * 
+	 * @access public
+	 * @param mixed $post_id
+	 * @return void
+	 */
 	function save_postdata( $post_id ) {
 		
 		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ){
@@ -244,6 +301,8 @@ class GravityView_Admin_Views {
 		// save View Configuration metabox
 		if ( isset( $_POST['gravityview_view_configuration_nonce'] ) && wp_verify_nonce( $_POST['gravityview_view_configuration_nonce'], 'gravityview_view_configuration' ) ) {
 			
+			// -- directory tab --
+			
 			// Directory Template Id
 			update_post_meta( $post_id, '_gravityview_directory_template', $_POST['gravityview_directory_template'] );
 			
@@ -266,12 +325,16 @@ class GravityView_Admin_Views {
 				$_POST['fields'] = array();
 			}
 			update_post_meta( $post_id, '_gravityview_directory_fields', $_POST['fields'] );
-			
+
 			// Directory Visible Widgets
 			if( empty( $_POST['widgets'] ) ) {
 				$_POST['widgets'] = array();
 			}
 			update_post_meta( $post_id, '_gravityview_directory_widgets', $_POST['widgets'] );
+			
+			
+			// -- single entry tab --
+			update_post_meta( $post_id, '_gravityview_single_template', $_POST['gravityview_single_template'] );
 			
 
 
@@ -283,22 +346,31 @@ class GravityView_Admin_Views {
 	
 	/**
 	 * Render html for displaying available fields based on a Form ID
+	 * $blacklist_field_types - contains the field types which are not proper to be shown in a directory.
 	 * 
 	 * @access public
 	 * @param string $form_id (default: '')
-	 * @return string HTML
+	 * @param string $context (default: 'single')
+	 * @return void
 	 */
-	function render_available_fields( $form_id = '' ) {
+	function render_available_fields( $form_id = '', $context = 'single' ) {
 		
-		$fields = gravityview_get_form_fields( $form_id ); 
-	
+		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array() );
+		
+		$fields = gravityview_get_form_fields( $form_id );
+		
 		$output = '';
 		
 		if( !empty( $fields ) ) {
 			foreach( $fields as $id => $details ) {
+				
+				if( in_array( $details['type'], $blacklist_field_types ) ) {
+					continue;
+				}
+			
 				$output .= '<div data-fieldid="'. $id .'" class="gv-fields">';
-				$output .= '<h5>'. $details['label'];
-				$output .= '<span><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
+				$output .= '<h5><span class="gv-field-title">'. $details['label'] . '</span>';
+				$output .= '<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
 				$output .= '<a href="#remove" class="dashicons-dismiss dashicons"></a>';
 				$output .= '</span></h5>';
 				$output .= '</div>';
@@ -317,9 +389,10 @@ class GravityView_Admin_Views {
 	 * @access public
 	 * @param string $template_id (default: '')
 	 * @param string $post_id (default: '')
+	 * @param string $context (default: 'single')
 	 * @return void
 	 */
-	function render_directory_active_areas( $template_id = '', $post_id = '' ) {
+	function render_directory_active_areas( $template_id = '', $post_id = '', $context = 'single' ) {
 		
 		if( empty( $template_id ) ) {
 			return;
@@ -346,19 +419,19 @@ class GravityView_Admin_Views {
 				
 					if( !empty( $available_fields[ $field['id'] ] ) ) {
 						$output .= '<div data-fieldid="'. $field['id'] .'" class="gv-fields ui-draggable">';
-						$output .= '<h5>'. $available_fields[ $field['id'] ]['label'];
-						$output .= '<span><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
+						$output .= '<h5><span class="gv-field-title">'. $available_fields[ $field['id'] ]['label'] . '</span>';
+						$output .= '<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
 						$output .= '<a href="#remove" class="dashicons-dismiss dashicons"></a>';
 						$output .= '</span></h5>';
-						$output .= $this->render_field_options( $field['id'], $available_fields[ $field['id'] ]['label'], $area['areaid'], $uniqid, $field );
+						$output .= $this->render_field_options( $field['id'], $available_fields[ $field['id'] ]['label'], $area['areaid'], $uniqid, $field, $context );
 						$output .= '</div>';
 					}
 					
 				}
-			} else {
-				$output .= '<span class="drop-message">'.esc_html__( 'Drop fields here', 'gravity-view' ).'</span>';
+				
 			}
 			
+			$output .= '<span class="drop-message">'. esc_html__( 'Drop fields here', 'gravity-view' ).'</span>';
 			// close active area
 			$output .= '</div>';
 			$output .= '</fieldset>';
@@ -372,7 +445,19 @@ class GravityView_Admin_Views {
 	
 	
 	
-	function render_field_options( $field_id, $field_label, $area, $uniqid = '', $current = '' ) {
+	/**
+	 * Render Field Options html (shown through a dialog box)
+	 * 
+	 * @access public
+	 * @param mixed $field_id
+	 * @param mixed $field_label
+	 * @param mixed $area
+	 * @param string $uniqid (default: '')
+	 * @param string $current (default: '')
+	 * @param string $context (default: 'single')
+	 * @return void
+	 */
+	function render_field_options( $field_id, $field_label, $area, $uniqid = '', $current = '', $context = 'single' ) {
 		
 		if( empty( $uniqid ) ) {
 			//generate a unique field id
@@ -384,19 +469,36 @@ class GravityView_Admin_Views {
 		$show_as_link = !empty( $current['show_as_link'] ) ? 1 : '';
 		$custom_class = !empty( $current['custom_class'] ) ? $current['custom_class'] : '';
 		$custom_label = !empty( $current['custom_label'] ) ? $current['custom_label'] : '';
+		$search_filter = !empty( $current['search_filter'] ) ? 1 : '';
+		$only_loggedin = !empty( $current['only_loggedin'] ) ? 1 : '';
+		$only_loggedin_cap = !empty( $current['only_loggedin_cap'] ) ? $current['only_loggedin_cap'] : 'read';
 		
-		
+		// build output
 		$output = '';
 		$output .= '<input type="hidden" class="field-key" name="fields['. $area .']['. $uniqid .'][id]" value="'. $field_id .'">';
 		$output .= '<input type="hidden" class="field-label" name="fields['. $area .']['. $uniqid .'][label]" value="'. $field_label .'">';
-		$output .= '<div class="gv-fields-options" title="Field Options: '. $field_label .' ['. $field_id .']">';
+		$output .= '<div class="gv-dialog-options" title="'. esc_attr__( 'Field Options', 'gravity-view' ) . ': '. $field_label .' ['. $field_id .']">';
 		$output .= '<ul>';
 		
-		$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_label]' , __( 'Show Label', 'gravity-view' ), $show_label );
-		$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_as_link]' , __( 'Link to single entry', 'gravity-view' ), $show_as_link );
-		//$output .= $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_as_link]' , 'Link to single entry' ); //visible to logged-in
-		$output .= $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_label]' , __( 'Custom Label:', 'gravity-view' ), $custom_label );
-		$output .= $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_class]' , __( 'Custom CSS Class:', 'gravity-view' ), $custom_class );
+		$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_label]' , __( 'Show Label', 'gravity-view' ), $show_label ) . '</li>';
+		$output .= '<li>' . $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_label]' , __( 'Custom Label:', 'gravity-view' ), $custom_label ) . '</li>';
+		$output .= '<li>' . $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_class]' , __( 'Custom CSS Class:', 'gravity-view' ), $custom_class ) . '</li>';
+		if( 'single' != $context ) {
+			$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_as_link]' , __( 'Link to single entry', 'gravity-view' ), $show_as_link ) . '</li>';
+		}
+		
+		//logged-in visibility
+		$select_cap_choices = array(
+			array( 'label' => __( 'Any', 'gravity-view' ), 'value' => 'read' ),
+			array( 'label' => __( 'Author or higher', 'gravity-view' ), 'value' => 'publish_posts' ),
+			array( 'label' => __( 'Editor or higher', 'gravity-view' ), 'value' => 'delete_others_posts' ),
+			array( 'label' => __( 'Administrator', 'gravity-view' ), 'value' => 'manage_options' ),
+		);
+		$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][only_loggedin]' , __( 'Only visible to logged in users with role:', 'gravity-view' ) ) ;
+		$output .=  $this->render_selectbox_option( 'fields['. $area .']['. $uniqid .'][only_loggedin_cap]', '', $select_cap_choices, $only_loggedin_cap ) . '</li>';
+		
+		//todo: make a hook to insert widget related field options
+		$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][search_filter]' , __( 'Use this field as a search filter', 'gravity-view' ), $search_filter ) . '</li>';
 		
 		$output .= '</ul>';
 		$output .= '</div>';
@@ -409,14 +511,12 @@ class GravityView_Admin_Views {
 	
 	
 	
-	function render_checkbox_option( $name = '', $label = '', $current = '' ) {
-		$output = '';
+	public static function render_checkbox_option( $name = '', $label = '', $current = '' ) {
+		$id = sanitize_html_class( $name );
 		
-		$output .= '<li>';
-		$output .= '<input name="'. $name .'" id="'. $name .'" type="checkbox" value="1" '. checked( $current, '1', false ) .'>';
-		$output .= '<label for="'. $name .'">'. $label .'</label>';
-		$output .= '</li>';
-
+		$output = '';
+		$output .= '<input name="'. $name .'" id="'. $id .'" type="checkbox" value="1" '. checked( $current, '1', false ) .' >';
+		$output .= '<label for="'. $id .'" class="gv-label-checkbox">'. $label .'</label>';
 		
 		return $output;
 	}
@@ -424,91 +524,32 @@ class GravityView_Admin_Views {
 	
 	
 	
-	function render_input_text_option( $name = '', $label = '', $current = '' ) {
+	public static function render_input_text_option( $name = '', $label = '', $current = '' ) {
+		$id = sanitize_html_class( $name );
 		
-		$output = '<li>';
-		$output .= '<label for="'. $name .'">'. $label .'</label>';
-		$output .= '<input name="'. $name .'" id="'. $name .'" type="text" value="'. $current .'" class="all-options">';
-		$output .= '</li>';
+		$output = '';
+		$output .= '<label for="'. $id .'" class="gv-label-text">'. $label .'</label>';
+		$output .= '<input name="'. $name .'" id="'. $id .'" type="text" value="'. $current .'" class="all-options">';
 
 		return $output;
 	}
 	
 	
-	
-	
-	function render_available_widgets() {
-		
-		$widgets = self::get_widgets_list();
-	
+	public static function render_selectbox_option( $name = '', $label = '', $choices, $current = '' ) {
+		$id = sanitize_html_class( $name );
 		$output = '';
-		foreach( $widgets as $id => $widget ) {
-			$output .= '<div data-widgetid="'. $id .'" class="gv-widgets">';
-			$output .= '<h5>'. $widget['label'] .'</h5>';
-			$output .= '</div>';
+		
+		if( !empty( $label ) ) {
+			$output .= '<label for="'. $id .'">'. $label .'</label>';
 		}
+		$output .= '<select name="'. $name .'" id="'. $id .'">';
+		foreach( $choices as $choice ) {
+			$output .= '<option value="'. $choice['value'] .'" '. selected( $choice['value'], $current, false ) .'>'. $choice['label'] .'</option>';
+		}
+		$output .= '</select>';
 		
 		return $output;
 	}
-	
-	
-	
-	public static function get_widgets_list() {
-	
-		$default['page_links'] = array( 'label' => 'Page Links' );
-		$default['search_filters'] = array( 'label' => 'Search Filters' );
-		$default['page_info'] = array( 'label' => 'Page Info' );
-		$default['date_filters'] = array( 'label' => 'Date Filters' );
-		
-		return $default;
-	}
-	
-	
-	
-	function render_widget_options( $widget_id, $widget_label, $area, $uniqid = '', $post_id = '' ) {
-		
-		if( empty( $uniqid ) ) {
-			//generate a unique field id
-			$uniqid = uniqid('', false);
-		}
-		
-		$output = '';
-		$output .= '<input type="hidden" name="widgets['. $area .']['. $uniqid .'][id]" value="'. $widget_id .'">';
-		
-		return $output;
-		
-	}
-	
-	
-	
-	function render_active_widgets( $area, $saved_widgets, $post_id = '' ) {
-		
-		$available_widgets = self::get_widgets_list();
-		
-		if( empty( $area ) ) {
-			return '';
-		}
-		
-		$widgets = isset( $saved_widgets[ $area ] ) ? $saved_widgets[ $area ] : '';
-		
-		$output = '<div data-areaid="'. $area .'" class="widget-drop">';
-		if( empty( $widgets ) ) {
-			$output .= '<span class="drop-message">'. esc_html__( 'Drop widgets here', 'gravity-view') .'</span>';
-		} else {
-			foreach( $widgets as $key => $widget ) {
-				if( !empty( $available_widgets[ $widget['id'] ] ) ) {
-					$output .= '<div data-widgetid="'. $widget['id'] .'" class="gv-widgets ui-draggable">';
-					$output .= '<h5>'. $available_widgets[ $widget['id'] ]['label'] .'</h5>';
-					$output .= $this->render_widget_options( $widget['id'], $available_widgets[ $widget['id'] ]['label'], $area, $key, $post_id );
-					$output .= '</div>';
-				}
-			}
-		}
-		$output .= '</div>';
-		
-		return $output;
-	}
-
 	
 	
 	/** AJAX stuff */
@@ -588,32 +629,6 @@ class GravityView_Admin_Views {
 		echo $response;
 		die();
 	}
-	
-	
-	/**
-	 * get_widget_options function.
-	 * 
-	 * @access public
-	 * @return void
-	 */
-	function get_widget_options() {
-		$response = false;
-		
-		if( empty( $_POST['area'] ) || empty( $_POST['widget_id'] ) || empty( $_POST['widget_label'] ) ) {
-			echo $response;
-			die();
-		}
-		
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxviews' ) ) {
-			echo $response;
-			die();
-		}
-		
-		$response = $this->render_widget_options( $_POST['widget_id'], $_POST['widget_label'], $_POST['area'] );
-		echo $response;
-		die();
-	}
-	
 	
 	
 	

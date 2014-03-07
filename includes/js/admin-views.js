@@ -18,7 +18,7 @@
 
 	function init_draggables() {
 		
-		$("#directory-available-fields").find(".gv-fields").draggable({
+		$("#directory-available-fields, #single-available-fields").find(".gv-fields").draggable({
 			connectToSortable: 'div.active-drop',
 			distance: 2,
 			helper: 'clone',
@@ -34,7 +34,7 @@
 	
 	function init_droppables() {
 	
-		$('#directory-active-fields').find(".active-drop").sortable({
+		$('#directory-active-fields, #single-active-fields').find(".active-drop").sortable({
 			placeholder: "fields-placeholder",
 			items: '> .gv-fields',
 			distance: 2,
@@ -78,16 +78,21 @@
 	// Event handler to remove Fields from active areas
 	function removeField( event ) {
 		event.preventDefault();
+		var area = $( event.currentTarget ).parents(".active-drop");
 		$( event.currentTarget ).parent().parent().parent().remove();
+		if( area.find(".gv-fields").length == 0 ) {
+			 area.find(".drop-message").show();
+		}
 	}
 	
 	// Event handler to open dialog with Field Settings
 	function openFieldSettings( event ) {
 		event.preventDefault();
 		var parent = $( event.currentTarget ).parent().parent().parent();
-		parent.find(".gv-fields-options").dialog({
+		parent.find(".gv-dialog-options").dialog({
 			dialogClass: 'wp-dialog',
 			appendTo: parent,
+			width: 550,
 			closeOnEscape: true,
 			buttons: {
 				'Close': function() {
@@ -97,16 +102,55 @@
 		});
 	}
 	
+	// Event handler to open dialog with Widget Settings
+	function openWidgetSettings( event ) {
+		event.preventDefault();
+		var parent = $( event.currentTarget ).parent();
+		parent.find(".gv-dialog-options").dialog({
+			dialogClass: 'wp-dialog',
+			appendTo: parent,
+			width: 350,
+			closeOnEscape: true,
+			buttons: {
+				'Close': function() {
+					$(this).dialog('close');
+				} 
+			},
+		});
+	}
+	
+	function toggleDropMessage() {
+		$(".active-drop").each( function() {
+			if( $(this).find(".gv-fields").length != 0 ) {
+				$(this).find(".drop-message").hide();
+			} else {
+				$(this).find(".drop-message").show();
+			}
+		});
+	}
 	
 	
 
 	$(document).ready( function() {
 		
+		// check if form is selected, if not hide the entire View Configuration metabox
+		if( '' == $("#gravityview_form_id").val() ) {
+			$("#gravityview_directory_view").hide();
+		}
 		
 		// If Form Selection changes update fields
 		$("#gravityview_form_id").change( function() {
 			
-			$("#directory-available-fields, #directory-active-fields").find(".gv-fields").remove();
+			$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
+			
+			if( '' == $("#gravityview_form_id").val() ) {
+				$("#gravityview_directory_view").hide();
+			} else {
+				$("#gravityview_directory_view").show();
+			}
+			
+			// toggle view of "drop message" when active areas are empty or not.
+			toggleDropMessage();
 			
 			var data = {
 				action: 'gv_available_fields',
@@ -117,6 +161,7 @@
 			$.post( ajax_object.ajaxurl, data, function( response ) {
 				if( response ) {
 					$("#directory-available-fields fieldset.area").append( response );
+					$("#single-available-fields fieldset.area").append( response );
 					init_draggables();
 				}
 			});
@@ -143,6 +188,25 @@
 			
 		});
 		
+		// If Single Template Selection changes update areas/fields
+		$("#gravityview_single_template").change( function() {
+			
+			$("#single-active-fields").find("fieldset.area").remove();
+			
+			var data = {
+				action: 'gv_get_active_areas',
+				template_id: $(this).val(),
+				nonce: ajax_object.nonce,
+			}
+			
+			$.post( ajax_object.ajaxurl, data, function( response ) {
+				if( response ) {
+					$("#single-active-fields").append( response );
+					init_droppables();
+				}
+			});
+			
+		});
 		
 		
 		// View Configuration - Tabs
@@ -158,51 +222,16 @@
 		$("a[href='#remove']").click( removeField );
 		
 		$("a[href='#settings']").click( openFieldSettings );
-
+		
+		// toggle view of "drop message" when active areas are empty or not.
+		toggleDropMessage();
+		
 		
 		
 		// Directory View Configuration - Widgets
+		$("a[href='#widget-settings']").click( openWidgetSettings );
 		
-		$("#directory-available-widgets").find(".gv-widgets").draggable({
-			connectToSortable: 'div.widget-drop',
-			distance: 2,
-			helper: 'clone',
-			revert: 'invalid',
-			zIndex: 100,
-			containment: 'document',
-			start: function() {
-				widgetOrigin = 'draggable';
-			}
-		});
-		
-		$('#directory-active-widgets').find(".widget-drop").sortable({
-			placeholder: "fields-placeholder",
-			items: '> .gv-widgets',
-			distance: 2,
-			receive: function( event, ui ) {
-				$(this).find(".drop-message").hide();
-			}
-		}).droppable({ 
-			drop: function( event, ui ) {
-				if( 'draggable' === widgetOrigin ) {
-					
-					var data = {
-						action: 'gv_widget_options',
-						area: $(this).attr('data-areaid'),
-						widget_id: ui.draggable.attr('data-widgetid'),
-						widget_label: ui.draggable.find("h5").text(),
-						nonce: ajax_object.nonce,
-					}
-					
-					$.post( ajax_object.ajaxurl, data, function( response ) {
-						if( response ) {
-							ui.draggable.append( response );
-						}
-					});
-					widgetOrigin = 'sortable';
-				}
-			}
-		});
+		$("table.form-table tr:even").addClass('alternate');
 		
 		
 	});
