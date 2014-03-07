@@ -136,18 +136,17 @@
 		
 		// If Form Selection changes update fields, show/hide View configuration metabox
 		$('#gravityview_form_id').change( function() {
-
-			$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
-
+			
 			// check if form is selected, if not hide the entire View Configuration metabox
 			if( $(this).val() === '') {
 				$("#gravityview_directory_view").slideUp(150);
+				$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
 				// And stop processing
-				return;
-			} else {
-				$("#gravityview_directory_view").slideDown(150);
-			}
-
+				return false;
+			} 
+			
+			$("#gravityview_directory_view").slideDown(150);
+			
 			// toggle view of "drop message" when active areas are empty or not.
 			toggleDropMessage();
 

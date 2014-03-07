@@ -15,7 +15,6 @@
 
 class GravityView_Admin_Views {
 	
-	private $active_tab = 0;
 	
 	function __construct() {
 	
