@@ -231,6 +231,7 @@
 		// Directory View Configuration - Widgets
 		$("a[href='#widget-settings']").click( openWidgetSettings );
 		
+		$("table.form-table tr:even").addClass('alternate');
 		
 		
 	});

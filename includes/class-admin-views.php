@@ -178,13 +178,17 @@ class GravityView_Admin_Views {
 					<h4><?php esc_html_e( 'Directory Header & Footer widgets', 'gravity-view'); ?></h4>
 					
 					<table class="form-table">
-						<tr>
-							<th>&nbsp;</th>
-							<th><?php esc_html_e( 'Show in Header', 'gravity-view'); ?></th>
-							<th><?php esc_html_e( 'Show in Footer', 'gravity-view'); ?></th>
-							<th>&nbsp;</th>
-						</tr>
-						<?php do_action( 'gravityview_admin_view_widgets', $widgets ); ?>
+						<thead>
+							<tr>
+								<th>&nbsp;</th>
+								<th><?php esc_html_e( 'Show in Header', 'gravity-view'); ?></th>
+								<th><?php esc_html_e( 'Show in Footer', 'gravity-view'); ?></th>
+								<th>&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php do_action( 'gravityview_admin_view_widgets', $widgets ); ?>
+						</tbody>
 					</table>
 				</div>
 
