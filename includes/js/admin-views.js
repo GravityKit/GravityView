@@ -170,20 +170,25 @@
 		
 		
 		// If Form Selection changes update fields, show/hide View configuration metabox
+		var viewFormId = $('#gravityview_form_id').val();
 		$('#gravityview_form_id').change( function() {
 			
 			// check if form is selected, if not hide the entire View Configuration metabox
-			if( $(this).val() === '') {
+			if( $(this).val() === '' ) {
 				$("#gravityview_directory_view").slideUp(150);
+				viewFormId = '';
 				$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
 				// And stop processing
 				return false;
-			} 
+			}
+			
+			if( viewFormId === $(this).val() ) {
+				return false;
+			}
+			
+			$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
 			
 			$("#gravityview_directory_view").slideDown(150);
-			
-			// toggle view of "drop message" when active areas are empty or not.
-			toggleDropMessage();
 
 			var data = {
 				action: 'gv_available_fields',
@@ -198,6 +203,10 @@
 					init_draggables();
 				}
 			});
+			
+			// toggle view of "drop message" when active areas are empty or not.
+			toggleDropMessage();
+			viewFormId = $(this).val();
 
 		}).trigger('change');
 		
