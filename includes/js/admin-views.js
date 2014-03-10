@@ -63,11 +63,11 @@
 					fieldOrigin = 'sortable';
 					
 					// show field buttons: Settings & Remove
-					ui.draggable.find("h5 span").show();
+					ui.draggable.find("span.gv-field-controls").show();
 					
-					ui.draggable.find("h5 span a[href='#remove']").click( removeField );
+					ui.draggable.find("span.gv-field-controls a[href='#remove']").click( removeField );
 					
-					ui.draggable.find("h5 span a[href='#settings']").click( openFieldSettings );
+					ui.draggable.find("span.gv-field-controls a[href='#settings']").click( openFieldSettings );
 				}
 			}
 		});
@@ -79,7 +79,7 @@
 	function removeField( event ) {
 		event.preventDefault();
 		var area = $( event.currentTarget ).parents(".active-drop");
-		$( event.currentTarget ).parent().parent().parent().remove();
+		$( event.currentTarget ).parent().parent().remove();
 		if( area.find(".gv-fields").length == 0 ) {
 			 area.find(".drop-message").show();
 		}
@@ -88,7 +88,7 @@
 	// Event handler to open dialog with Field Settings
 	function openFieldSettings( event ) {
 		event.preventDefault();
-		var parent = $( event.currentTarget ).parent().parent().parent();
+		var parent = $( event.currentTarget ).parent().parent();
 		parent.find(".gv-dialog-options").dialog({
 			dialogClass: 'wp-dialog',
 			appendTo: parent,

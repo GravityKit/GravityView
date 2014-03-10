@@ -58,6 +58,148 @@ hr{
 }
 
 
+
+
+.gv-section:before,
+.gv-section:after {
+	content: "";
+	display: table;
+}
+
+.gv-section:after {
+	clear: both;
+}
+
+.gv-section h4 {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#directory-active-fields,
+#directory-available-fields,
+#single-active-fields,
+#single-available-fields {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 50%;
+}
+
+#directory-active-fields,
+#single-active-fields {
+	float: left;
+	padding: 0 1em 0 0;
+}
+
+#directory-available-fields,
+#single-available-fields {
+	float: right;
+	padding: 0 0 0 1em;
+}
+
+
+fieldset.area {
+	padding: 0.5em;
+	margin-bottom: 1em;
+	border: 1px solid #eee;
+}
+
+.gv-fields {
+	cursor: move;
+	border: 1px solid #ddd;
+	background: #f7f7f7; 
+	overflow: hidden;
+	padding: 0.5em;
+	margin-bottom: 5px;
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+
+.gv-fields h5 {
+	float: left;
+	width: 80%;
+	font-weight: 600;
+	font-size: 14px;
+	margin: 0;
+	padding: 0 3em 0 0;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+
+}
+
+.ui-draggable-dragging {
+	max-width: 400px !important;
+}
+
+.gv-fields span.gv-field-controls {
+	float: right;
+	width: 20%;
+	text-align: right;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+#directory-available-fields .gv-fields h5,
+#single-available-fields .gv-fields h5 {
+	padding: 0 !important;
+}
+
+#directory-available-fields .gv-fields span.gv-field-controls,
+#single-available-fields .gv-fields span.gv-field-controls {
+	display: none !important;
+}
+
+.fields-placeholder {
+	margin: 5px 2px;
+	height: 30px;
+	border: 1px dashed #ccc;
+}
+
+.gv-dialog-options {
+	display: none;
+	width: 90%;
+}
+
+.gv-dialog-options ul {
+	list-style: none;
+	margin: 0;
+	padding: 1.5em;
+}
+
+.gv-dialog-options ul li {
+	display: block;
+	margin-bottom: 1em;
+	font-size: 14px;
+}
+
+.gv-label-checkbox {
+	margin-right: 1em;
+	display: inline;
+}
+
+.gv-label-text {
+	display: block;
+	margin-bottom: 0.5em;
+}
+
+
+.active-drop span.drop-message {
+	margin: 5px 2px;
+	line-height: 40px;
+	color: #bbb;
+}
+
+
+
+/*
 .gv-section {
 	padding-right: 0.5em;
 }
@@ -72,6 +214,7 @@ fieldset.area {
 	padding: 0.5em;
 	margin-bottom: 1em;
 	border: 1px solid #eee;
+	max-width: 355px;
 }
 
 #directory-widgets fieldset.area {
@@ -97,7 +240,6 @@ fieldset.area {
 
 
 
-/* Fields */
 .gv-fields {
 	margin: 5px 2px;
 	box-sizing: border-box;
@@ -106,7 +248,6 @@ fieldset.area {
 	cursor: move;
 	border: 1px solid #ddd;
 	width: 100%; 
-	display: block;
 	max-width: 355px;
 	background: #f7f7f7; 
 	overflow: hidden;
@@ -205,5 +346,6 @@ fieldset.area {
 	width: 120px;
 	display: inline-block;
 }
+*/
 
 

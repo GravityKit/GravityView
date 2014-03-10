@@ -376,10 +376,10 @@ class GravityView_Admin_Views {
 				}
 			
 				$output .= '<div data-fieldid="'. $id .'" class="gv-fields">';
-				$output .= '<h5><span class="gv-field-title">'. $details['label'] . '</span>';
+				$output .= '<h5>'. $details['label'] . '</h5>';
 				$output .= '<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
 				$output .= '<a href="#remove" class="dashicons-dismiss dashicons"></a>';
-				$output .= '</span></h5>';
+				$output .= '</span>';
 				$output .= '</div>';
 				
 			}
@@ -426,10 +426,10 @@ class GravityView_Admin_Views {
 				
 					if( !empty( $available_fields[ $field['id'] ] ) ) {
 						$output .= '<div data-fieldid="'. $field['id'] .'" class="gv-fields ui-draggable">';
-						$output .= '<h5><span class="gv-field-title">'. $available_fields[ $field['id'] ]['label'] . '</span>';
+						$output .= '<h5>'. $available_fields[ $field['id'] ]['label'] . '</h5>';
 						$output .= '<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
 						$output .= '<a href="#remove" class="dashicons-dismiss dashicons"></a>';
-						$output .= '</span></h5>';
+						$output .= '</span>';
 						$output .= $this->render_field_options( $field['id'], $available_fields[ $field['id'] ]['label'], $area['areaid'], $uniqid, $field, $context );
 						$output .= '</div>';
 					}
