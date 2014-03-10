@@ -38,8 +38,24 @@
 			placeholder: "fields-placeholder",
 			items: '> .gv-fields',
 			distance: 2,
+			connectWith: ".active-drop",
 			receive: function( event, ui ) {
-				$(this).find(".drop-message").hide();
+				
+				// Check if field comes from another active area and if so, update name attributes.
+				if( ui.item.find(".gv-dialog-options").length > 0 ) {
+				
+					var sender_area = ui.sender.attr('data-areaid'),
+						receiver_area = $(this).attr('data-areaid');
+						
+					ui.item.find( '[name^="fields['+ sender_area +']"]').each( function() {
+						var name = $(this).attr('name');
+						$(this).attr('name', name.replace( sender_area, receiver_area ) );
+					});
+				
+				}
+				
+				toggleDropMessage();
+				
 			}
 		}).droppable({ 
 			drop: function( event, ui ) {
