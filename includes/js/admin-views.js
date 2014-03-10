@@ -14,7 +14,6 @@
 (function( $ ) {
 	
 	var fieldOrigin = 'sortable';
-	var widgetOrigin = 'sortable';
 
 	function init_draggables() {
 		
@@ -28,6 +27,26 @@
 			start: function() {
 				fieldOrigin = 'draggable';
 			}
+		});
+		
+		// Define droppable zone to remove active fields
+		$("#directory-available-fields, #single-available-fields").droppable({
+			drop: function( event, ui ) {
+				if( ui.draggable.find(".gv-dialog-options").length > 0 ) {
+					ui.draggable.remove();
+					toggleDropMessage();
+				}
+			}/*
+,
+			over: function( event, ui ) {
+				if( ui.draggable.find(".gv-dialog-options").length > 0 ) {
+					console.log('in');
+				}
+			},
+			out: function( event, ui ) {
+				console.log('out');
+			}
+*/
 		});
 	}
 	
