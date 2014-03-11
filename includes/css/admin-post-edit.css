@@ -17,3 +17,12 @@
 	display: none;
 }
 
+/* Add GravityView icon to the button */
+.gv_button_icon {
+	background: url( '../../images/gravity-view-btn.png') no-repeat top left;
+	display: inline-block;
+	height: 20px;
+	margin: 0 2px 0 0;
+	vertical-align: text-bottom;
+	width: 20px;
+}

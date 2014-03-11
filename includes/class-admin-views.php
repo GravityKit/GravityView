@@ -14,7 +14,7 @@
 
 
 class GravityView_Admin_Views {
-
+	
 	
 	function __construct() {
 	
@@ -97,11 +97,13 @@ class GravityView_Admin_Views {
 		$templates_single = apply_filters( 'gravityview_register_single_template', array() );
 		
 		// Selected Form
-		$curr_form = get_post_meta( $post->ID, '_gravityview_form_id', true )
+		$curr_form = get_post_meta( $post->ID, '_gravityview_form_id', true );
 
 		
 		?>
 		<div id="tabs">
+
+			<input type="hidden" name="gv-active-tab" id="gv-active-tab" value="<?php echo get_post_meta( $post->ID, '_gravityview_tab_active', true ); ?>">
 			<ul class="nav-tab-wrapper">
 				<li><a href="#directory-view" class="nav-tab"><?php esc_html_e( 'Directory', 'gravity-view' ); ?></a></li>
 				<li><a href="#single-view" class="nav-tab"><?php esc_html_e( 'Single Entry', 'gravity-view' ); ?></a></li>
@@ -276,6 +278,7 @@ class GravityView_Admin_Views {
 	 */
 	function save_postdata( $post_id ) {
 		
+		
 		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ){
 			return;
 		}
@@ -292,6 +295,10 @@ class GravityView_Admin_Views {
 			if ( ! current_user_can( 'edit_post', $post_id ) )
 				return;
 		}
+		
+		//set active tab index
+		$active_tab = empty( $_POST['gv-active-tab'] ) ? 0 : $_POST['gv-active-tab'];
+		update_post_meta( $post_id, '_gravityview_tab_active', $active_tab );
 	
 		// save form id
 		if ( isset( $_POST['gravityview_select_form_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_form_nonce'], 'gravityview_select_form' ) ) {
@@ -369,10 +376,10 @@ class GravityView_Admin_Views {
 				}
 			
 				$output .= '<div data-fieldid="'. $id .'" class="gv-fields">';
-				$output .= '<h5><span class="gv-field-title">'. $details['label'] . '</span>';
+				$output .= '<h5>'. $details['label'] . '</h5>';
 				$output .= '<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
 				$output .= '<a href="#remove" class="dashicons-dismiss dashicons"></a>';
-				$output .= '</span></h5>';
+				$output .= '</span>';
 				$output .= '</div>';
 				
 			}
@@ -419,10 +426,10 @@ class GravityView_Admin_Views {
 				
 					if( !empty( $available_fields[ $field['id'] ] ) ) {
 						$output .= '<div data-fieldid="'. $field['id'] .'" class="gv-fields ui-draggable">';
-						$output .= '<h5><span class="gv-field-title">'. $available_fields[ $field['id'] ]['label'] . '</span>';
+						$output .= '<h5>'. $available_fields[ $field['id'] ]['label'] . '</h5>';
 						$output .= '<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
 						$output .= '<a href="#remove" class="dashicons-dismiss dashicons"></a>';
-						$output .= '</span></h5>';
+						$output .= '</span>';
 						$output .= $this->render_field_options( $field['id'], $available_fields[ $field['id'] ]['label'], $area['areaid'], $uniqid, $field, $context );
 						$output .= '</div>';
 					}

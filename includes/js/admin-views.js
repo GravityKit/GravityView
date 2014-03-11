@@ -14,7 +14,6 @@
 (function( $ ) {
 
 	var fieldOrigin = 'sortable';
-	var widgetOrigin = 'sortable';
 
 	function init_draggables() {
 
@@ -29,6 +28,26 @@
 				fieldOrigin = 'draggable';
 			}
 		});
+		
+		// Define droppable zone to remove active fields
+		$("#directory-available-fields, #single-available-fields").droppable({
+			drop: function( event, ui ) {
+				if( ui.draggable.find(".gv-dialog-options").length > 0 ) {
+					ui.draggable.remove();
+					toggleDropMessage();
+				}
+			}/*
+,
+			over: function( event, ui ) {
+				if( ui.draggable.find(".gv-dialog-options").length > 0 ) {
+					console.log('in');
+				}
+			},
+			out: function( event, ui ) {
+				console.log('out');
+			}
+*/
+		});
 	}
 
 
@@ -38,8 +57,24 @@
 			placeholder: "fields-placeholder",
 			items: '> .gv-fields',
 			distance: 2,
+			connectWith: ".active-drop",
 			receive: function( event, ui ) {
-				$(this).find(".drop-message").hide();
+				
+				// Check if field comes from another active area and if so, update name attributes.
+				if( ui.item.find(".gv-dialog-options").length > 0 ) {
+				
+					var sender_area = ui.sender.attr('data-areaid'),
+						receiver_area = $(this).attr('data-areaid');
+						
+					ui.item.find( '[name^="fields['+ sender_area +']"]').each( function() {
+						var name = $(this).attr('name');
+						$(this).attr('name', name.replace( sender_area, receiver_area ) );
+					});
+				
+				}
+				
+				toggleDropMessage();
+				
 			}
 		}).droppable({
 			drop: function( event, ui ) {
@@ -63,11 +98,19 @@
 					fieldOrigin = 'sortable';
 
 					// show field buttons: Settings & Remove
+<<<<<<< HEAD
 					ui.draggable.find("h5 span").show();
 
 					ui.draggable.find("h5 span a[href='#remove']").click( removeField );
 
 					ui.draggable.find("h5 span a[href='#settings']").click( openFieldSettings );
+=======
+					ui.draggable.find("span.gv-field-controls").show();
+					
+					ui.draggable.find("span.gv-field-controls a[href='#remove']").click( removeField );
+					
+					ui.draggable.find("span.gv-field-controls a[href='#settings']").click( openFieldSettings );
+>>>>>>> master
 				}
 			}
 		});
@@ -79,7 +122,7 @@
 	function removeField( event ) {
 		event.preventDefault();
 		var area = $( event.currentTarget ).parents(".active-drop");
-		$( event.currentTarget ).parent().parent().parent().remove();
+		$( event.currentTarget ).parent().parent().remove();
 		if( area.find(".gv-fields").length == 0 ) {
 			 area.find(".drop-message").show();
 		}
@@ -88,7 +131,7 @@
 	// Event handler to open dialog with Field Settings
 	function openFieldSettings( event ) {
 		event.preventDefault();
-		var parent = $( event.currentTarget ).parent().parent().parent();
+		var parent = $( event.currentTarget ).parent().parent();
 		parent.find(".gv-dialog-options").dialog({
 			dialogClass: 'wp-dialog',
 			appendTo: parent,
@@ -128,6 +171,7 @@
 			}
 		});
 	}
+<<<<<<< HEAD
 
 
 
@@ -150,6 +194,34 @@
 
 			// toggle view of "drop message" when active areas are empty or not.
 			toggleDropMessage();
+=======
+	
+	
+
+	$(document).ready( function() {
+		
+		
+		// If Form Selection changes update fields, show/hide View configuration metabox
+		var viewFormId = $('#gravityview_form_id').val();
+		$('#gravityview_form_id').change( function() {
+			
+			// check if form is selected, if not hide the entire View Configuration metabox
+			if( $(this).val() === '' ) {
+				$("#gravityview_directory_view").slideUp(150);
+				viewFormId = '';
+				$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
+				// And stop processing
+				return false;
+			}
+			
+			if( viewFormId === $(this).val() ) {
+				return false;
+			}
+			
+			$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
+			
+			$("#gravityview_directory_view").slideDown(150);
+>>>>>>> master
 
 			var data = {
 				action: 'gv_available_fields',
@@ -164,9 +236,20 @@
 					init_draggables();
 				}
 			});
+<<<<<<< HEAD
 
 		}).trigger('change');
 
+=======
+			
+			// toggle view of "drop message" when active areas are empty or not.
+			toggleDropMessage();
+			viewFormId = $(this).val();
+
+		}).trigger('change');
+		
+		
+>>>>>>> master
 		// If Directory Template Selection changes update areas/fields
 		$("#gravityview_directory_template").change( function() {
 
@@ -206,11 +289,25 @@
 			});
 
 		});
+<<<<<<< HEAD
 
 
 		// View Configuration - Tabs
 		$("#tabs").tabs();
 
+=======
+		
+		
+		// View Configuration - Tabs (persisten after refresh)
+		$("#tabs").tabs({
+			active: $("#gv-active-tab").val(),
+			activate: function( event, ui ) {
+				$("#gv-active-tab").val( ui.newTab.parent().children().index( ui.newTab ) );
+			}
+		});
+		
+		
+>>>>>>> master
 		// Directory View Configuration - Fields Mapping
 		 // Using field_origin as flag to avoid 'drop' event being fired twice.
 
