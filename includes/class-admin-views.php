@@ -77,6 +77,11 @@ class GravityView_Admin_Views {
 		}
 		echo '</select>';
 		
+		// confirm dialog box
+		echo '<div id="gravityview_form_id_dialog" class="gv-dialog-options" title="'. esc_attr__( 'Attention', 'gravity-view' ) .'">';
+		echo '<p>'. esc_html__( 'Changing the form will discard all the existent View configuration.', 'gravity-view' ) . '</p>';
+		echo '</div>';
+		
 	}
 
 	

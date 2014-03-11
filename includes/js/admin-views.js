@@ -163,24 +163,138 @@
 			}
 		});
 	}
+	
+	
+	var currentFormId = '', gvSelectForm,
+	viewFormSelect = {
+		
+		init: function() {
+			gvSelectForm = $('#gravityview_form_id');
+			currentFormId = gvSelectForm.val();
+			if( '' === currentFormId ) {
+				viewFormSelect.hideView();
+			} else {
+				viewFormSelect.showView();
+			}
+			$('#gravityview_form_id').change( viewFormSelect.changed );
+		},
+		
+		hideView: function() {
+			currentFormId = '';
+			$("#gravityview_directory_view").slideUp(150);
+			$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
+		},
+		
+		showView: function() {
+			$("#gravityview_directory_view").slideDown(150);
+		},
+		
+		changed: function() {
+			
+			if( currentFormId !== ''  && currentFormId !== $(this).val() ) {
+				viewFormSelect.showDialog();
+			} else {
+				viewFormSelect.getNewFields();
+			}
+		},
+		
+		showDialog: function() {
+			
+			var thisDialog = $('#gravityview_form_id_dialog');
+
+			thisDialog.dialog({
+				dialogClass: 'wp-dialog',
+				appendTo: thisDialog.parent(),
+				closeOnEscape: true,
+				buttons: {
+					'Cancel': function() {
+						gvSelectForm.val( currentFormId );
+						thisDialog.dialog('close');
+					},
+					'Continue': function() {
+						if( '' === gvSelectForm.val() ) {
+							viewFormSelect.hideView();
+						} else {
+							viewFormSelect.getNewFields();
+						}
+						thisDialog.dialog('close');
+					}
+				},
+			});
+			
+		},
+		
+		getNewFields: function() {
+
+			currentFormId = gvSelectForm.val();
+			
+			$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
+			
+			var data = {
+				action: 'gv_available_fields',
+				formid: currentFormId,
+				nonce: ajax_object.nonce,
+			}
+
+			$.post( ajax_object.ajaxurl, data, function( response ) {
+				if( response ) {
+					$("#directory-available-fields fieldset.area").append( response );
+					$("#single-available-fields fieldset.area").append( response );
+					init_draggables();
+				}
+			});
+			
+			toggleDropMessage();
+			viewFormSelect.showView();
+		}
+		
+	}
 
 
 
 	$(document).ready( function() {
+	
+		viewFormSelect.init();
 
-
+/*
 		// If Form Selection changes update fields, show/hide View configuration metabox
 		var viewFormId = $('#gravityview_form_id').val();
+		
 		$('#gravityview_form_id').change( function() {
+		
+			var formChange = false;
+			
+			if( viewFormId !== $(this).val() && ( '' !== viewFormId ) ) {
+			
+				//triggers a confirm dialog box
+				$('#gravityview_form_id_dialog').dialog({
+					dialogClass: 'wp-dialog',
+					appendTo: $(this).parent(),
+					// width: 350, 
+					closeOnEscape: true,
+					buttons: {
+						'Cancel': function() {
+							$(this).dialog('close');
+						},
+						'Proceed': function() {
+							formChange = true;
+							$(this).dialog('close');
+						}
+					},
+				});
+				
+			}
+			
+			
 
 			// Gravity View fields
-			var $gvfields = $("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields");
+			var gvfields = $("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields");
 
 			// check if form is selected, if not hide the entire View Configuration metabox
 			if( $(this).val() === '' ) {
 				$("#gravityview_directory_view").slideUp(150);
 				viewFormId = '';
-				$gvfields.remove();
+				gvfields.remove();
 				// And stop processing
 				return false;
 			}
@@ -192,8 +306,8 @@
 			if( viewFormId === $(this).val() ) {
 				return false;
 			}
-
-			$gvfields.remove();
+			
+			gvfields.remove();
 
 			var data = {
 				action: 'gv_available_fields',
@@ -214,6 +328,7 @@
 			viewFormId = $(this).val();
 
 		}).trigger('change');
+*/
 
 
 		// If Directory Template Selection changes update areas/fields

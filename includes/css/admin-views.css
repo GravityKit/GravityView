@@ -168,6 +168,11 @@ fieldset.area {
 	width: 90%;
 }
 
+.gv-dialog-options p {
+	margin: 0 !important;
+	padding: 1.5em !important;
+}
+
 .gv-dialog-options ul {
 	list-style: none;
 	margin: 0;
