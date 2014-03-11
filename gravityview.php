@@ -219,7 +219,8 @@ class GravityView_Plugin {
 			'show_in_nav_menus'   => false,
 			'show_in_admin_bar'   => true,
 			'menu_position'       => 15,
-			'menu_icon'           => 'dashicons-feedback',
+			/* 'menu_icon'           => 'dashicons-feedback', */
+			'menu_icon'           => GRAVITYVIEW_URL . '/images/gravity-view-icon.png',
 			'can_export'          => true,
 			'has_archive'         => false,
 			'exclude_from_search' => true,
