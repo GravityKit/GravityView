@@ -244,7 +244,7 @@ class GravityView_frontend {
 	 * @access public
 	 * @return void
 	 */
-	function add_scripts_and_styles() {
+	public static function add_scripts_and_styles() {
 		wp_register_script( 'gravityview-jquery-cookie', GRAVITYVIEW_URL . 'includes/lib/jquery-cookie/jquery.cookie.js', array( 'jquery' ), '1.0.0', true );
 		wp_enqueue_script( 'gravityview-jquery-cookie' );
 		wp_register_script( 'gravityview-fe-view', GRAVITYVIEW_URL . 'includes/js/fe-views.js', array( 'jquery', 'gravityview-jquery-cookie' ), '1.0.0', true );
