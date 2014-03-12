@@ -29,7 +29,7 @@
 			// directory view
 			
 			//set cookie
-			$.cookie('gravityview_back_link', window.location.href, { expires: 7, path: '/' });
+			$.cookie('gravityview_back_link', window.location.href, { path: '/' } );
 			
 		}
 	
