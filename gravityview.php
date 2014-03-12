@@ -220,7 +220,7 @@ class GravityView_Plugin {
 			'show_in_admin_bar'   => true,
 			'menu_position'       => 15,
 			/* 'menu_icon'           => 'dashicons-feedback', */
-			'menu_icon'           => GRAVITYVIEW_URL . '/images/gravity-view-icon.png',
+			'menu_icon'           => GRAVITYVIEW_URL . 'images/gravity-view-icon.png',
 			'can_export'          => true,
 			'has_archive'         => false,
 			'exclude_from_search' => true,
@@ -275,6 +275,7 @@ class GravityView_Plugin {
 		add_shortcode( 'gravityview', array( 'GravityView_frontend', 'render_view_shortcode' ) );
 		add_action( 'init', array( 'GravityView_frontend', 'init_rewrite' ) );
 		add_filter( 'query_vars', array( 'GravityView_frontend', 'add_query_vars_filter' ) );
+		add_action( 'wp_enqueue_scripts', array( 'GravityView_frontend', 'add_scripts_and_styles' ) );
 	}	
 	
 

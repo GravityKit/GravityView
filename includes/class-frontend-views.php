@@ -14,12 +14,7 @@
 
 
 class GravityView_frontend {
-	
-	function __construct() {
-	
-	}
-	
-	
+
 	/**
 	 * Register rewrite rules to capture the single entry view
 	 * 
@@ -241,6 +236,20 @@ class GravityView_frontend {
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Register styles and scripts 
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	function add_scripts_and_styles() {
+		wp_register_script( 'gravityview-jquery-cookie', GRAVITYVIEW_URL . 'includes/lib/jquery-cookie/jquery.cookie.js', array( 'jquery' ), '1.0.0', true );
+		wp_enqueue_script( 'gravityview-jquery-cookie' );
+		wp_register_script( 'gravityview-fe-view', GRAVITYVIEW_URL . 'includes/js/fe-views.js', array( 'jquery', 'gravityview-jquery-cookie' ), '1.0.0', true );
+		wp_enqueue_script( 'gravityview-fe-view' );
+		
 	}
 	
 	

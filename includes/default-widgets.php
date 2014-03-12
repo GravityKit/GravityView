@@ -213,7 +213,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 					<?php // enqueue datepicker stuff only if needed!
 					wp_enqueue_script( 'jquery-ui-datepicker' );
 					wp_enqueue_style( 'jquery-ui-datepicker', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
-					wp_enqueue_script( 'gravityview_search_bar' ); 
+					wp_enqueue_script( 'gravityview-search-bar' ); 
 					?>
 				<?php endif; ?>
 				<input type="submit" class="button" id="gv_search_button" value="<?php esc_attr_e( 'Search', 'gravity-view' ); ?>" />
@@ -231,7 +231,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 	 * @return void
 	 */
 	function add_scripts_and_styles() {
-		wp_register_script( 'gravityview_search_bar',  GRAVITYVIEW_URL  . 'includes/js/fe-search-bar.js', array( 'jquery', 'jquery-ui-datepicker' ), '1.0.0', true );
+		wp_register_script( 'gravityview-search-bar',  GRAVITYVIEW_URL  . 'includes/js/fe-search-bar.js', array( 'jquery', 'jquery-ui-datepicker' ), '1.0.0', true );
 	}
 	
 	

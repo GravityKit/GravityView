@@ -173,7 +173,6 @@ class GravityView_API {
 				} else {
 					$href = add_query_arg( $query_arg_name, $entry['id'], get_permalink( $post->ID ) );
 				}
-					
 				
 				$value = '<a href="'. $href .'">'. $value . '</a>';
 			}
@@ -219,6 +218,7 @@ function gv_link(  $entry, $field ) {
 
 // 
 function gravityview_back_link() {
+	
 	$post = get_post();
 	
 	if( empty( $post->ID ) ) {
@@ -228,7 +228,7 @@ function gravityview_back_link() {
 	$href = trailingslashit( get_permalink( $post->ID ) );
 	$label = apply_filters( 'gravityview_go_back_label', __( 'Go back', 'gravity-view' ), $post );
 	
-	return '<a href="'. $href .'" >'. esc_html( $label ) . '</a>';
+	return '<a href="'. $href .'" id="gravityview_back_link">'. esc_html( $label ) . '</a>';
 	
 }
 
