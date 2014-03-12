@@ -17,7 +17,7 @@ if( ! class_exists( 'Gamajo_Template_Loader' ) ) {
 }
 
 
-class GravityView_Template extends Gamajo_Template_Loader {
+class GravityView_View extends Gamajo_Template_Loader {
 	
 	protected $vars = array();
 	

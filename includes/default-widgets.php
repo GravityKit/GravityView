@@ -1,6 +1,6 @@
 <?php
 /**
- * GravityView Widget Pagination
+ * GravityView default widgets and generic widget class
  *
  * @package   GravityView
  * @author    Zack Katz <zack@katzwebservices.com>
@@ -29,11 +29,11 @@ class GravityView_Widget_Pagination extends GravityView_Widget {
 	
 	public function render_frontend() {
 	
-		global $gravity_view;
+		global $gravityview_view;
 		
-		$offset = $gravity_view->paging['offset'];
-		$page_size = $gravity_view->paging['page_size'];
-		$total = $gravity_view->total_entries;
+		$offset = $gravityview_view->paging['offset'];
+		$page_size = $gravityview_view->paging['page_size'];
+		$total = $gravityview_view->total_entries;
 		
 		
 		// displaying info
@@ -71,10 +71,10 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 	
 	public function render_frontend() {
 	
-		global $gravity_view;
+		global $gravityview_view;
 		
-		$page_size = $gravity_view->paging['page_size'];
-		$total = $gravity_view->total_entries;
+		$page_size = $gravityview_view->paging['page_size'];
+		$total = $gravityview_view->total_entries;
 		
 		$adv_settings = $this->get_advanced_settings();
 		
@@ -162,9 +162,9 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 	
 	public function render_frontend() {
 	
-		global $gravity_view;
+		global $gravityview_view;
 		
-		$form_id = $gravity_view->form_id;
+		$form_id = $gravityview_view->form_id;
 		
 		// get configured search filters (fields)
 		$search_filters = $this->get_search_filters();
@@ -298,12 +298,12 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 			return $this->search_filters;
 		}
 	
-		global $gravity_view;
+		global $gravityview_view;
 		
 		// get configured search filters (fields)
 		$search_filters = array();
-		if( is_array( $gravity_view->fields ) ) {
-			foreach( $gravity_view->fields as $t => $fields ) {
+		if( is_array( $gravityview_view->fields ) ) {
+			foreach( $gravityview_view->fields as $t => $fields ) {
 				foreach( $fields as $field ) {
 					if( !empty( $field['search_filter'] ) ) {
 						$value = isset( $_GET['filter_'. $field['id'] ] ) ? $_GET['filter_'. $field['id'] ] : '';

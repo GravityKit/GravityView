@@ -46,7 +46,7 @@ if( is_admin() ) {
 require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
 
 /** Launch plugin */
-$gravity_view = new GravityView_Plugin();
+$gravity_view_plugin = new GravityView_Plugin();
 
 
 /**

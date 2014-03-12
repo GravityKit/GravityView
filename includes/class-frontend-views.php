@@ -88,11 +88,11 @@ class GravityView_frontend {
 		$dir_fields = self::filter_fields( $dir_fields );
 		
 		// set globals for templating
-		global $gravity_view;
-		$gravity_view = new GravityView_Template();
-		$gravity_view->form_id = $form_id;
-		$gravity_view->view_id = $id;
-		$gravity_view->fields = $dir_fields;
+		global $gravityview_view;
+		$gravityview_view = new GravityView_View();
+		$gravityview_view->form_id = $form_id;
+		$gravityview_view->view_id = $id;
+		$gravityview_view->fields = $dir_fields;
 		
 		
 		// check if user requests single entry
@@ -162,21 +162,21 @@ class GravityView_frontend {
 
 		
 		// Prepare to render view and set vars
-		$gravity_view->entries = $entries;
-		$gravity_view->total_entries = $count;
+		$gravityview_view->entries = $entries;
+		$gravityview_view->total_entries = $count;
 		
 		
 		ob_start();
 		
 		if( empty( $single_entry ) ) {
-			$gravity_view->paging = $paging;
-			$gravity_view->context = 'directory';
-			$gravity_view->render( $view_slug, 'header' );
-			$gravity_view->render( $view_slug, 'body' );
-			$gravity_view->render( $view_slug, 'footer' );
+			$gravityview_view->paging = $paging;
+			$gravityview_view->context = 'directory';
+			$gravityview_view->render( $view_slug, 'header' );
+			$gravityview_view->render( $view_slug, 'body' );
+			$gravityview_view->render( $view_slug, 'footer' );
 		} else {
-			$gravity_view->context = 'single';
-			$gravity_view->render( $view_slug, 'single' );
+			$gravityview_view->context = 'single';
+			$gravityview_view->render( $view_slug, 'single' );
 		}
 		
 		$output = ob_get_contents();

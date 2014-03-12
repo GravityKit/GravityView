@@ -253,11 +253,11 @@ function gravityview_after() {
 }
 
 function gravityview_get_view_id() {
-	global $gravity_view;
-	return $gravity_view->view_id;
+	global $gravityview_view;
+	return $gravityview_view->view_id;
 }
 
 function gravityview_get_context() {
-	global $gravity_view;
-	return $gravity_view->context;
+	global $gravityview_view;
+	return $gravityview_view->context;
 }

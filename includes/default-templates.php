@@ -1,6 +1,6 @@
 <?php
 /**
- * Registers the default templates
+ * GravityView default templates and generic template class
  *
  * @package   GravityView
  * @author    Zack Katz <zack@katzwebservices.com>
@@ -121,6 +121,18 @@ class GravityView_Default_Template_List {
 	
 	
 }
+
+
+class GravityView_Template {
+	
+	
+	
+	
+	
+	
+}
+
+
 
 
 
