@@ -82,6 +82,11 @@ class GravityView_Admin_Views {
 		echo '<p>'. esc_html__( 'Changing the form will discard all the existent View configuration.', 'gravity-view' ) . '</p>';
 		echo '</div>';
 		
+		// no js notice
+		echo '<div class="error hide-if-js">';
+		echo '<p>'. esc_html__( 'GravityView requires Javascript to be enabled.', 'gravity-view' ) .'</p>';
+		echo '</div>';
+		
 	}
 
 	
