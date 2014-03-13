@@ -21,8 +21,9 @@
 class GravityView_Widget_Pagination extends GravityView_Widget {
 	
 	function __construct() {
+		$default_values = array( 'header' => 1, 'footer' => 1 );
 		$settings = array();
-		parent::__construct( __( 'Show Pagination Info', 'gravity-view' ) , 'page_info', $settings );
+		parent::__construct( __( 'Show Pagination Info', 'gravity-view' ) , 'page_info', $default_values, $settings );
 		
 	}
 	
@@ -63,8 +64,9 @@ class GravityView_Widget_Pagination extends GravityView_Widget {
 class GravityView_Widget_Page_Links extends GravityView_Widget {
 	
 	function __construct() {
-		$settings = array( 'show_all' => array( 'type' => 'checkbox', 'label' => __( 'Show each page number', 'gravity-view' ) ) );
-		parent::__construct( __( 'Show Page Links', 'gravity-view' ) , 'page_links', $settings );
+		$default_values = array( 'header' => 1, 'footer' => 1 );
+		$settings = array( 'show_all' => array( 'type' => 'checkbox', 'label' => __( 'Show each page number', 'gravity-view' ), 'default' => false ) );
+		parent::__construct( __( 'Show Page Links', 'gravity-view' ) , 'page_links', $default_values, $settings );
 		
 	}
 	
@@ -118,12 +120,14 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 	private $search_filters = array();
 	
 	function __construct() {
+		$default_values = array( 'header' => 0, 'footer' => 0 );
+	
 		$settings = array( 
 			'search_free' => array( 'type' => 'checkbox', 'label' => __( 'Show search input', 'gravity-view' ), 'default' => true ),
 			'search_date' => array( 'type' => 'checkbox', 'label' => __( 'Show date filters', 'gravity-view' ), 'default' => false ),
 			
 		);
-		parent::__construct( __( 'Show Search Bar', 'gravity-view' ) , 'search_bar', $settings );
+		parent::__construct( __( 'Show Search Bar', 'gravity-view' ) , 'search_bar', $default_values, $settings );
 		
 		add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ) );
 		
@@ -333,16 +337,20 @@ class GravityView_Widget {
 	// Widget admin id
 	protected $widget_id;
 	
+	// default configuration for header and footer
+	protected $defaults;
+	
 	// Widget admin advanced settings
 	protected $settings;
 	
 	// hold widget View options
 	private $widget_options;
 	
-	function __construct( $widget_label , $widget_id , $settings ) {
+	function __construct( $widget_label , $widget_id , $defaults = array(), $settings = array() ) {
 		
 		$this->widget_label = $widget_label;
 		$this->widget_id = $widget_id;
+		$this->defaults = array_merge( array( 'header' => 0, 'footer' => 0 ), $defaults );
 		$this->settings = $settings;
 		
 		// render html settings in the View admin screen
@@ -358,8 +366,8 @@ class GravityView_Widget {
 	
 	function render_admin_settings( $widgets ) {
 		
-		$header = empty( $widgets['header'][ $this->widget_id ] ) ? 0 : 1;
-		$footer = empty( $widgets['footer'][ $this->widget_id ] ) ? 0 : 1;
+		$header = isset( $widgets['header'][ $this->widget_id ] ) ? $widgets['header'][ $this->widget_id ] : $this->defaults['header'];
+		$footer = isset( $widgets['footer'][ $this->widget_id ] ) ? $widgets['footer'][ $this->widget_id ] : $this->defaults['footer'];
 		
 		?>
 		<tr valign="top">
@@ -368,6 +376,7 @@ class GravityView_Widget {
 				<fieldset>
 					<legend class="screen-reader-text"><span><?php esc_html_e( 'Enable this widget to appear in View header', 'gravity-view'); ?></span></legend>
 					<label for="gravityview_widget_header_<?php echo esc_attr( $this->widget_id ); ?>">
+						<input name="widgets[header][<?php echo esc_attr( $this->widget_id ); ?>]" type="hidden" value="0">
 						<input name="widgets[header][<?php echo esc_attr( $this->widget_id ); ?>]" type="checkbox" id="gravityview_widget_header_<?php echo esc_attr( $this->widget_id ); ?>" value="1" <?php checked( $header , 1, true ); ?>>
 					</label>
 				</fieldset>
@@ -376,6 +385,7 @@ class GravityView_Widget {
 				<fieldset>
 					<legend class="screen-reader-text"><span><?php esc_html_e( 'Enable this widget to appear in View footer', 'gravity-view'); ?></span></legend>
 					<label for="gravityview_widget_footer_<?php echo esc_attr( $this->widget_id ); ?>">
+						<input name="widgets[footer][<?php echo esc_attr( $this->widget_id ); ?>]" type="hidden" value="0">
 						<input name="widgets[footer][<?php echo esc_attr( $this->widget_id ); ?>]" type="checkbox" id="gravityview_widget_footer_<?php echo esc_attr( $this->widget_id ); ?>" value="1" <?php checked( $footer , 1, true ); ?>>
 					</label>
 				</fieldset>
@@ -463,12 +473,7 @@ class GravityView_Widget {
 	function render_frontend() {
 		// to be defined by child class
 	}
-	
-	
-	
-	
-	
-	
+
 	
 	// helper
 	function get_widget_options( $id ) {
