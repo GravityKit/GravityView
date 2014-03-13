@@ -440,7 +440,7 @@ class GravityView_Admin_Views {
 						$output .= '<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
 						$output .= '<a href="#remove" class="dashicons-dismiss dashicons"></a>';
 						$output .= '</span>';
-						$output .= $this->render_field_options( $field['id'], $available_fields[ $field['id'] ]['label'], $area['areaid'], $uniqid, $field, $context );
+						$output .= $this->render_field_options( $template_id, $field['id'], $available_fields[ $field['id'] ]['label'], $area['areaid'], $uniqid, $field, $context );
 						$output .= '</div>';
 					}
 					
@@ -466,29 +466,31 @@ class GravityView_Admin_Views {
 	 * Render Field Options html (shown through a dialog box)
 	 * 
 	 * @access public
-	 * @param mixed $field_id
-	 * @param mixed $field_label
-	 * @param mixed $area
+	 * @param string $template_id
+	 * @param string $field_id
+	 * @param string $field_label
+	 * @param string $area
 	 * @param string $uniqid (default: '')
 	 * @param string $current (default: '')
 	 * @param string $context (default: 'single')
 	 * @return void
 	 */
-	function render_field_options( $field_id, $field_label, $area, $uniqid = '', $current = '', $context = 'single' ) {
+	function render_field_options( $template_id, $field_id, $field_label, $area, $uniqid = '', $current = '', $context = 'single' ) {
 		
 		if( empty( $uniqid ) ) {
 			//generate a unique field id
 			$uniqid = uniqid('', false);
 		}
 		
-		//current values
-		$show_label = !empty( $current['show_label'] ) ? 1 : '';
-		$show_as_link = !empty( $current['show_as_link'] ) ? 1 : '';
-		$custom_class = !empty( $current['custom_class'] ) ? $current['custom_class'] : '';
-		$custom_label = !empty( $current['custom_label'] ) ? $current['custom_label'] : '';
-		$search_filter = !empty( $current['search_filter'] ) ? 1 : '';
-		$only_loggedin = !empty( $current['only_loggedin'] ) ? 1 : '';
-		$only_loggedin_cap = !empty( $current['only_loggedin_cap'] ) ? $current['only_loggedin_cap'] : 'read';
+		// generic field options
+		$field_options = array( 
+			'show_label' => array( 'type' => 'checkbox', 'label' => __( 'Show Label', 'gravity-view' ), 'default' => true ),
+			'custom_label' => array( 'type' => 'input_text', 'label' => __( 'Custom Label:', 'gravity-view' ), 'default' => '' ),
+			'custom_class' => array( 'type' => 'input_text', 'label' => __( 'Custom CSS Class:', 'gravity-view' ), 'default' => '' ),
+		);
+		
+		//get defined field options
+		$field_options = apply_filters( 'gravityview_template_field_options', $field_options, $template_id );
 		
 		// build output
 		$output = '';
@@ -497,14 +499,34 @@ class GravityView_Admin_Views {
 		$output .= '<div class="gv-dialog-options" title="'. esc_attr__( 'Field Options', 'gravity-view' ) . ': '. $field_label .' ['. $field_id .']">';
 		$output .= '<ul>';
 		
-		$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_label]' , __( 'Show Label', 'gravity-view' ), $show_label ) . '</li>';
-		$output .= '<li>' . $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_label]' , __( 'Custom Label:', 'gravity-view' ), $custom_label ) . '</li>';
-		$output .= '<li>' . $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_class]' , __( 'Custom CSS Class:', 'gravity-view' ), $custom_class ) . '</li>';
-		if( 'single' != $context ) {
-			$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_as_link]' , __( 'Link to single entry', 'gravity-view' ), $show_as_link ) . '</li>';
+		foreach( $field_options as $key => $details ) {
+			
+			$default = isset( $details['default'] ) ? $details['default'] : '';
+			//$default = '';
+			$curr_value = isset( $current[ $key ] ) ? $current[ $key ] : $default;
+			$label = isset( $details['label'] ) ? $details['label'] : '';
+			$type = isset( $details['type'] ) ? $details['type'] : 'input_text';
+			
+			switch( $type ) {
+				case 'checkbox':
+					$output .= '<li>'. $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .']['. $key .']' , $label, $curr_value ) .'</li>';
+					break;
+				
+				case 'input_text':
+				default:
+					$output .= '<li>'. $this->render_input_text_option( 'fields['. $area .']['. $uniqid .']['. $key .']' , $label, $curr_value ) .'</li>';
+					break;
+			
+			}
+			
 		}
 		
-		//logged-in visibility
+		
+		$search_filter = !empty( $current['search_filter'] ) ? 1 : '';
+		$only_loggedin = !empty( $current['only_loggedin'] ) ? 1 : '';
+		$only_loggedin_cap = !empty( $current['only_loggedin_cap'] ) ? $current['only_loggedin_cap'] : 'read';
+		
+		// default logged-in visibility
 		$select_cap_choices = array(
 			array( 'label' => __( 'Any', 'gravity-view' ), 'value' => 'read' ),
 			array( 'label' => __( 'Author or higher', 'gravity-view' ), 'value' => 'publish_posts' ),
@@ -517,9 +539,22 @@ class GravityView_Admin_Views {
 		//todo: make a hook to insert widget related field options
 		$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][search_filter]' , __( 'Use this field as a search filter', 'gravity-view' ), $search_filter ) . '</li>';
 		
+		
+		// close options window
 		$output .= '</ul>';
 		$output .= '</div>';
 		
+		
+	/*
+	$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_label]' , __( 'Show Label', 'gravity-view' ), $show_label ) . '</li>';
+		$output .= '<li>' . $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_label]' , __( 'Custom Label:', 'gravity-view' ), $custom_label ) . '</li>';
+		$output .= '<li>' . $this->render_input_text_option( 'fields['. $area .']['. $uniqid .'][custom_class]' , __( 'Custom CSS Class:', 'gravity-view' ), $custom_class ) . '</li>';
+		if( 'single' != $context ) {
+			$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][show_as_link]' , __( 'Link to single entry', 'gravity-view' ), $show_as_link ) . '</li>';
+		}
+*/
+		
+
 		
 		return $output;
 		
@@ -532,6 +567,7 @@ class GravityView_Admin_Views {
 		$id = sanitize_html_class( $name );
 		
 		$output = '';
+		$output .= '<input name="'. $name .'" type="hidden" value="0">';
 		$output .= '<input name="'. $name .'" id="'. $id .'" type="checkbox" value="1" '. checked( $current, '1', false ) .' >';
 		$output .= '<label for="'. $id .'" class="gv-label-checkbox">'. $label .'</label>';
 		
@@ -632,7 +668,7 @@ class GravityView_Admin_Views {
 	function get_field_options() {
 		$response = false;
 		
-		if( empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_label'] ) ) {
+		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_label'] ) ) {
 			echo $response;
 			die();
 		}
@@ -642,7 +678,7 @@ class GravityView_Admin_Views {
 			die();
 		}
 		
-		$response = $this->render_field_options( $_POST['field_id'], $_POST['field_label'], $_POST['area'] );
+		$response = $this->render_field_options( $_POST['template'], $_POST['field_id'], $_POST['field_label'], $_POST['area'] );
 		echo $response;
 		die();
 	}

@@ -284,7 +284,9 @@ class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/default-templates.php' );
 		
 		$this->gravityview_register_template( 'GravityView_Default_Template_Table' );
+		$this->gravityview_register_template( 'GravityView_Default_Template_Table_Single' );
 		$this->gravityview_register_template( 'GravityView_Default_Template_List' );
+		$this->gravityview_register_template( 'GravityView_Default_Template_List_Single' );
 		
 		
 	}

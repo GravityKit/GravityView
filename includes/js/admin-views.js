@@ -81,8 +81,17 @@
 
 				if( 'draggable' === fieldOrigin ) {
 
+					//find active tab object to assign the template selector
+					var templateId = '';
+					if( 'single-view' === $("#tabs ul li.ui-tabs-active").attr('aria-controls') ) {
+						templateId = $("#gravityview_single_template").val();
+					} else {
+						templateId = $("#gravityview_directory_template").val();
+					}
+					
 					var data = {
 						action: 'gv_field_options',
+						template: templateId,
 						area: $(this).attr('data-areaid'),
 						field_id: ui.draggable.attr('data-fieldid'),
 						field_label: ui.draggable.find("h5").text(),
@@ -253,7 +262,7 @@
 
 
 	$(document).ready( function() {
-	
+		// assign form to this view (logic)
 		viewFormSelect.init();
 
 /*
