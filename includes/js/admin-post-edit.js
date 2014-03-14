@@ -52,8 +52,8 @@
 		
 		
 		shortcode += ']';
-		var win = window.dialogArguments || opener || parent || top;
-		win.send_to_editor( shortcode );
+		//var win = window.dialogArguments || opener || parent || top;
+		window.send_to_editor( shortcode );
 		return false;
 	}
 
