@@ -27,8 +27,6 @@ class GravityView_Admin_ApproveEntries {
 		// Set defaults
 		add_action( 'gform_editor_js_set_default_values', array( $this, 'set_defaults' ) );
 		
-		
-		
 		/** gf_entries page - entries table screen */
 		
 		// capture bulk actions
@@ -39,9 +37,11 @@ class GravityView_Admin_ApproveEntries {
 		add_action('wp_ajax_gv_update_approved', array( $this, 'ajax_update_approved'));
 		
 		
-		
 		// adding styles and scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles') );
+		// bypass Gravity Forms no-conflict mode
+		add_filter( 'gform_noconflict_scripts', array( $this, 'register_gf_script' ) );
+		add_filter( 'gform_noconflict_styles', array( $this, 'register_gf_style' ) );
 		
 	}
 	
@@ -326,13 +326,18 @@ class GravityView_Admin_ApproveEntries {
 			) );
 			
 		}
-
-		
-		
-		
 		
 	}
-
+	
+	function register_gf_script( $scripts ) {
+		$scripts[] = 'gravityview_gf_entries_scripts';
+		return $scripts;
+	}
+	
+	function register_gf_style( $styles ) {
+		$styles[] = 'gravityview_entries_list';
+		return $$styles;
+	}
 
 }
 
