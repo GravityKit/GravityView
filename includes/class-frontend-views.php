@@ -95,6 +95,25 @@ class GravityView_frontend {
 	
 	
 	/**
+	 * In case View post is called directly, insert the view in the post content
+	 * 
+	 * @access public
+	 * @static
+	 * @param mixed $content
+	 * @return void
+	 */
+	public static function insert_view_in_content( $content ) {
+		$post = get_post();
+		
+		if( 'gravityview' == get_post_type( $post ) ) {
+			$content .= self::render_view( array( 'id' => $post->ID ) );
+		}
+		
+		return $content;
+	}
+	
+	
+	/**
 	 * Core function to render a View based on a set of arguments ($args):
 	 *   $id - View id
 	 *   $page_size - Page
