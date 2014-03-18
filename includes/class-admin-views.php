@@ -374,7 +374,7 @@ class GravityView_Admin_Views {
 		
 		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array() );
 		
-		$fields = gravityview_get_form_fields( $form_id );
+		$fields = gravityview_get_form_fields( $form_id, true );
 		
 		$output = '';
 		
@@ -421,7 +421,7 @@ class GravityView_Admin_Views {
 		
 		if( !empty( $post_id ) ) {
 			$fields = get_post_meta( $post_id, '_gravityview_directory_fields', true );
-			$available_fields = gravityview_get_form_fields( get_post_meta( $post_id, '_gravityview_form_id', true ) );
+			$available_fields = gravityview_get_form_fields( get_post_meta( $post_id, '_gravityview_form_id', true ), true );
 		}
 	
 		foreach( $template_areas as $area ) {
