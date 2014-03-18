@@ -64,13 +64,54 @@ class GravityView_frontend {
 	}
 	
 	
-
+	/**
+	 * Retrieve the default args for shortcode and theme function
+	 * 
+	 * @access public
+	 * @static
+	 * @return void
+	 */
+	public static function get_default_args() {
+		$defaults = array( 'id' => '', 'page_size' => '', 'sort_field' => '', 'sort_direction' => 'ASC', 'start_date' => '', 'end_date' => '', 'class' => '' );
+		return $defaults;
+	}
 	
-
+	
+	/**
+	 * Callback function for add_shortcode()
+	 * 
+	 * @access public
+	 * @static
+	 * @param mixed $atts
+	 * @return void
+	 */
 	public static function render_view_shortcode( $atts ) {
 
 		//confront attributes with defaults
-		extract( shortcode_atts( array( 'id' => '', 'page_size' => '', 'sort_field' => '', 'sort_direction' => 'ASC', 'start_date' => '', 'end_date' => '', 'class' => '' ), $atts ) );
+		$args = shortcode_atts( self::get_default_args() , $atts, 'gravityview' );
+		
+		return self::render_view( $args );
+	}
+	
+	
+	/**
+	 * Core function to render a View based on a set of arguments ($args):
+	 *   $id - View id
+	 *   $page_size - Page
+	 *   $sort_field - form field id to sort
+	 *   $sort_direction - ASC / DESC
+	 *   $start_date - Ymd
+	 *   $end_date - Ymd
+	 *   $class - assign a html class to the view
+	 * 
+	 * @access public
+	 * @static
+	 * @param mixed $args
+	 * @return void
+	 */
+	public static function render_view( $args ) {
+		
+		extract( $args );
 		
 		// validate attributes
 		if( empty( $id ) ) {
@@ -79,8 +120,6 @@ class GravityView_frontend {
 		
 		// get form assign to this view
 		$form_id = get_post_meta( $id, '_gravityview_form_id', true );
-		
-		
 		
 		$dir_fields = get_post_meta( $id, '_gravityview_directory_fields', true );
 		
@@ -167,7 +206,6 @@ class GravityView_frontend {
 		
 		
 		ob_start();
-		
 		if( empty( $single_entry ) ) {
 			$gravityview_view->paging = $paging;
 			$gravityview_view->context = 'directory';
@@ -181,14 +219,9 @@ class GravityView_frontend {
 		
 		$output = ob_get_contents();
 		ob_end_clean();
+		
 		return $output;
 	}
-	
-	
-	
-	
-	
-	
 	
 	
 	// helper functions 
@@ -256,6 +289,35 @@ class GravityView_frontend {
 }
 
 
+
+/**
+ * Theme function to get a GravityView view
+ * 
+ * @access public
+ * @param string $view_id (default: '')
+ * @param array $atts (default: array())
+ * @return void
+ */
+function get_gravityview( $view_id = '', $atts = array() ) {
+	if( !empty( $view_id ) ) {
+		$atts['id'] = $view_id;
+		$args = wp_parse_args( GravityView_frontend::get_default_args() , $atts );
+		return GravityView_frontend::render_view( $args );
+	}
+	return '';
+}
+
+/**
+ * Theme function to render a GravityView view
+ * 
+ * @access public
+ * @param string $view_id (default: '')
+ * @param array $atts (default: array())
+ * @return void
+ */
+function the_gravityview( $view_id = '', $atts = array() ) {
+	echo get_gravityview( $view_id, $atts );
+}
 
 
 
