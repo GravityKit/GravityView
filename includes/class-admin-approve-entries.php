@@ -312,7 +312,7 @@ class GravityView_Admin_ApproveEntries {
 			wp_register_script( 'gravityview_gf_entries_scripts',  GRAVITYVIEW_URL  . 'includes/js/admin-entries-list.js', array( 'jquery' ), '1.0.0');
 			wp_enqueue_script( 'gravityview_gf_entries_scripts' );
 			
-			wp_localize_script( 'gravityview_gf_entries_scripts', 'ajax_object', array( 
+			wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array( 
 				'ajaxurl' => admin_url( 'admin-ajax.php' ), 
 				'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries'), 
 				'form_id' => RGForms::get('id'), 

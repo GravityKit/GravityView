@@ -68,12 +68,12 @@
 		var data = {
 			action: 'gv_update_approved',
 			entry_id: entryid,
-			form_id: ajax_object.form_id,
+			form_id: gvGlobals.form_id,
 			approved: approved,
-			nonce: ajax_object.nonce,
+			nonce: gvGlobals.nonce,
 		}
 			
-		$.post( ajax_object.ajaxurl, data, function( response ) {
+		$.post( gvGlobals.ajaxurl, data, function( response ) {
 			if( response ) {
 				
 			}
@@ -89,19 +89,19 @@
 	$(document).ready( function() {
 		
 		// add actions to bulk select box
-		$("#bulk_action, #bulk_action2").append('<optgroup label="GravityView"><option value="approve-'+ ajax_object.form_id +'">' + ajax_object.label_approve +'</option><option value="unapprove-'+ ajax_object.form_id +'">'+ ajax_object.label_disapprove +'</option></optgroup>');
+		$("#bulk_action, #bulk_action2").append('<optgroup label="GravityView"><option value="approve-'+ gvGlobals.form_id +'">' + gvGlobals.label_approve +'</option><option value="unapprove-'+ gvGlobals.form_id +'">'+ gvGlobals.label_disapprove +'</option></optgroup>');
 		
 		// display update message if any
-		if( ajax_object.bulk_message.length > 0 ) {
-			displayMessage( ajax_object.bulk_message, 'updated', '#lead_form');
+		if( gvGlobals.bulk_message.length > 0 ) {
+			displayMessage( gvGlobals.bulk_message, 'updated', '#lead_form');
 		}
 		
 		// inject approve/disapprove buttons into the first column of table
-		$('thead th.check-column:eq(1), tfoot th.check-column:eq(1)').after('<th scope="col" class="manage-column column-cb check-column gv-approve-column"><a href="'+ ajax_object.column_link +'" title="'+ ajax_object.column_title +'"></a></th>');
+		$('thead th.check-column:eq(1), tfoot th.check-column:eq(1)').after('<th scope="col" class="manage-column column-cb check-column gv-approve-column"><a href="'+ gvGlobals.column_link +'" title="'+ gvGlobals.column_title +'"></a></th>');
 		
-		$('td:has(img[src*="star"])').after('<td class="gv-approve-column"><a href="#" class="toggleApproved" title="'+ ajax_object.approve_title +'"></a></td>');
+		$('td:has(img[src*="star"])').after('<td class="gv-approve-column"><a href="#" class="toggleApproved" title="'+ gvGlobals.approve_title +'"></a></td>');
 		
-		$('tr:has(input.entry_approved)').find('a.toggleApproved').addClass('entry_approved').prop('title', ajax_object.unapprove_title );
+		$('tr:has(input.entry_approved)').find('a.toggleApproved').addClass('entry_approved').prop('title', gvGlobals.unapprove_title );
 		
 		
 		
@@ -113,10 +113,10 @@
 			$(this).toggleClass('entry_approved');
 			
 			if( $(this).hasClass('entry_approved') ) {
-				$(this).prop('title', ajax_object.unapprove_title ); 
+				$(this).prop('title', gvGlobals.unapprove_title ); 
 				UpdateApproved( entryID, 'Approved' );
 			} else {
-				$(this).prop('title', ajax_object.approve_title ); 
+				$(this).prop('title', gvGlobals.approve_title ); 
 				UpdateApproved( entryID, 0 );
 			}
 			
