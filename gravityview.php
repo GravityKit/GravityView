@@ -224,7 +224,9 @@ class GravityView_Plugin {
 			'has_archive'         => false,
 			'exclude_from_search' => true,
 			'publicly_queryable'  => true,
-			'rewrite'             => true,
+			'rewrite'             => array(
+				'slug' => apply_filters( 'gravityview_slug', 'view' )
+			),
 			'capability_type'     => 'page',
 		);
 		register_post_type( 'gravityview', $args );
