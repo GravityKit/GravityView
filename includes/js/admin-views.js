@@ -95,10 +95,10 @@
 						area: $(this).attr('data-areaid'),
 						field_id: ui.draggable.attr('data-fieldid'),
 						field_label: ui.draggable.find("h5").text(),
-						nonce: ajax_object.nonce,
+						nonce: gvGlobals.nonce,
 					}
 
-					$.post( ajax_object.ajaxurl, data, function( response ) {
+					$.post( gvGlobals.ajaxurl, data, function( response ) {
 						if( response ) {
 							ui.draggable.append( response );
 						}
@@ -138,11 +138,12 @@
 			appendTo: parent,
 			width: 550,
 			closeOnEscape: true,
-			buttons: {
-				'Close': function() {
+			buttons: [ {
+				text: gvGlobals.label_close,
+				click: function() {
 					$(this).dialog('close');
 				}
-			},
+			}],
 		});
 	}
 
@@ -155,11 +156,12 @@
 			appendTo: parent,
 			width: 350,
 			closeOnEscape: true,
-			buttons: {
-				'Close': function() {
+			buttons: [ {
+				text: gvGlobals.label_close,
+				click: function() {
 					$(this).dialog('close');
 				}
-			},
+			} ],
 		});
 	}
 
@@ -215,12 +217,14 @@
 				dialogClass: 'wp-dialog',
 				appendTo: thisDialog.parent(),
 				closeOnEscape: true,
-				buttons: {
-					'Cancel': function() {
+				buttons: [ {
+					text: gvGlobals.label_cancel,
+					click: function() {
 						gvSelectForm.val( currentFormId );
 						thisDialog.dialog('close');
-					},
-					'Continue': function() {
+					} }, {
+					text: gvGlobals.label_continue,
+					click: function() {
 						if( '' === gvSelectForm.val() ) {
 							viewFormSelect.hideView();
 						} else {
@@ -228,7 +232,7 @@
 						}
 						thisDialog.dialog('close');
 					}
-				},
+				} ],
 			});
 			
 		},
@@ -242,10 +246,10 @@
 			var data = {
 				action: 'gv_available_fields',
 				formid: currentFormId,
-				nonce: ajax_object.nonce,
+				nonce: gvGlobals.nonce,
 			}
 
-			$.post( ajax_object.ajaxurl, data, function( response ) {
+			$.post( gvGlobals.ajaxurl, data, function( response ) {
 				if( response ) {
 					$("#directory-available-fields fieldset.area").append( response );
 					$("#single-available-fields fieldset.area").append( response );
@@ -321,10 +325,10 @@
 			var data = {
 				action: 'gv_available_fields',
 				formid: $(this).val(),
-				nonce: ajax_object.nonce,
+				nonce: gvGlobals.nonce,
 			}
 
-			$.post( ajax_object.ajaxurl, data, function( response ) {
+			$.post( gvGlobals.ajaxurl, data, function( response ) {
 				if( response ) {
 					$("#directory-available-fields fieldset.area").append( response );
 					$("#single-available-fields fieldset.area").append( response );
@@ -348,10 +352,10 @@
 			var data = {
 				action: 'gv_get_active_areas',
 				template_id: $(this).val(),
-				nonce: ajax_object.nonce,
+				nonce: gvGlobals.nonce,
 			}
 
-			$.post( ajax_object.ajaxurl, data, function( response ) {
+			$.post( gvGlobals.ajaxurl, data, function( response ) {
 				if( response ) {
 					$("#directory-active-fields").append( response );
 					init_droppables();
@@ -368,10 +372,10 @@
 			var data = {
 				action: 'gv_get_active_areas',
 				template_id: $(this).val(),
-				nonce: ajax_object.nonce,
+				nonce: gvGlobals.nonce,
 			}
 
-			$.post( ajax_object.ajaxurl, data, function( response ) {
+			$.post( gvGlobals.ajaxurl, data, function( response ) {
 				if( response ) {
 					$("#single-active-fields").append( response );
 					init_droppables();

@@ -686,6 +686,13 @@ class GravityView_Admin_Views {
 	
 	
 	
+	/**
+	 * Enqueue scripts and styles at Views editor
+	 * 
+	 * @access public
+	 * @param mixed $hook
+	 * @return void
+	 */
 	function add_scripts_and_styles( $hook ) {
 		global $current_screen;
 		
@@ -706,11 +713,13 @@ class GravityView_Admin_Views {
 		wp_register_script( 'gravityview_views_scripts', GRAVITYVIEW_URL . 'includes/js/admin-views.js', array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-dialog' ) );
 		wp_enqueue_script( 'gravityview_views_scripts');
 		
-
-
-/*wp_localize_script( 'gravityview_views_scripts', 'active_langs', array( 'all' => $this->active_langs['all'], 'default_lang' => $this->active_langs['default'], 'default_label' => __('Default','gpoliglota') ) );*/
-
-		wp_localize_script('gravityview_views_scripts', 'ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ) ) );
+		wp_localize_script('gravityview_views_scripts', 'gvGlobals', array( 
+			'ajaxurl' => admin_url( 'admin-ajax.php' ), 
+			'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
+			'label_close' => __( 'Close', 'gravity-view' ),
+			'label_cancel' => __( 'Cancel', 'gravity-view' ),
+			'label_continue' => __( 'Continue', 'gravity-view' ),
+		));
 		
 		//enqueue styles
 		wp_register_style( 'gravityview_views_styles', GRAVITYVIEW_URL . 'includes/css/admin-views.css', array() );
