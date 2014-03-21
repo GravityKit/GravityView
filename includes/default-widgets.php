@@ -392,7 +392,7 @@ class GravityView_Widget {
 			</td>
 			<td>
 				<?php if( !empty( $this->settings ) ): ?>
-					<a class="button-small button" href="#widget-settings" title="<?php esc_attr_e( 'Advanced Settings', 'gravity-view' ); ?>"><span class=""><?php esc_html_e( 'Settings', 'gravity-view'); ?></span></a>
+					<a class="button-small button" href="#widget-settings" title="<?php esc_attr_e( 'Advanced Settings', 'gravity-view' ); ?>"><?php esc_html_e( 'Settings', 'gravity-view'); ?></a>
 					<div class="gv-dialog-options" title="<?php printf( __( '%1$s options', 'gravity-view' ), $this->widget_label ); ?>">
 						<?php $this->render_advanced_settings( $widgets ); ?>
 					</div>
