@@ -84,7 +84,7 @@
 					//find active tab object to assign the template selector
 					var templateId = '';
 					if( 'single-view' === $("#tabs ul li.ui-tabs-active").attr('aria-controls') ) {
-						templateId = $("#gravityview_single_template").val();
+						templateId = $("input[name='gravityview_single_template']:checked").val();
 					} else {
 						templateId = $("input[name='gravityview_directory_template']:checked").val();
 					}
@@ -261,93 +261,90 @@
 			viewFormSelect.showView();
 		}
 		
-	}
+	};
 	
 	
 	
-	
-
-
-
-	$(document).ready( function() {
-		// assign form to this view (logic)
-		viewFormSelect.init();
-
-/*
-		// If Form Selection changes update fields, show/hide View configuration metabox
-		var viewFormId = $('#gravityview_form_id').val();
+	function viewTemplatePicker( type ) {
 		
-		$('#gravityview_form_id').change( function() {
+		var thisType = type;
 		
-			var formChange = false;
+		this.init = function() {
 			
-			if( viewFormId !== $(this).val() && ( '' !== viewFormId ) ) {
-			
-				//triggers a confirm dialog box
-				$('#gravityview_form_id_dialog').dialog({
-					dialogClass: 'wp-dialog',
-					appendTo: $(this).parent(),
-					// width: 350, 
-					closeOnEscape: true,
-					buttons: {
-						'Cancel': function() {
-							$(this).dialog('close');
-						},
-						'Proceed': function() {
-							formChange = true;
-							$(this).dialog('close');
-						}
-					},
-				});
-				
+			if( thisType != 'single' && thisType != 'directory' ) {
+				return;
 			}
 			
+			// assign selected class
+			$('input[name="gravityview_'+ thisType +'_template"]:checked').parents(".gv-template").addClass('gv-selected');
 			
-
-			// Gravity View fields
-			var gvfields = $("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields");
-
-			// check if form is selected, if not hide the entire View Configuration metabox
-			if( $(this).val() === '' ) {
-				$("#gravityview_directory_view").slideUp(150);
-				viewFormId = '';
-				gvfields.remove();
-				// And stop processing
-				return false;
-			}
-
-			// If a form is selected, show the View Configuration metabox
-			$("#gravityview_directory_view").slideDown(150);
-
-			// If the current view is the selected view, stop processing.
-			if( viewFormId === $(this).val() ) {
-				return false;
-			}
+			// 
+			$('#gravityview_'+ thisType +'_template_change').click( this.showDialog );
 			
-			gvfields.remove();
+			// action when template changes
+			$('input[name="gravityview_'+ thisType +'_template"]').change( this.changed );
+			
+			
+		};
+		
+		this.showDialog = function( e ) {
+			e.preventDefault();
+			
+			var $thisDialog = $('#gravityview_'+ thisType +'_template_dialog');
+
+			$thisDialog.dialog({
+				dialogClass: 'wp-dialog',
+				width: 600,
+				appendTo: $thisDialog.parent(),
+				closeOnEscape: true,
+				buttons: [ {
+					text: gvGlobals.label_ok,
+					click: function() {
+						$thisDialog.dialog('close');
+					} },
+				],
+			});
+		};
+		
+		this.changed = function() {
+			
+			$('#'+ thisType +'-active-fields').find("fieldset.area").remove();
 
 			var data = {
-				action: 'gv_available_fields',
-				formid: $(this).val(),
+				action: 'gv_get_active_areas',
+				template_id: $(this).val(),
 				nonce: gvGlobals.nonce,
 			}
 
 			$.post( gvGlobals.ajaxurl, data, function( response ) {
 				if( response ) {
-					$("#directory-available-fields fieldset.area").append( response );
-					$("#single-available-fields fieldset.area").append( response );
-					init_draggables();
+					$('#'+ thisType +'-active-fields').append( response );
+					init_droppables();
 				}
 			});
-
-			// toggle view of "drop message" when active areas are empty or not.
-			toggleDropMessage();
-			viewFormId = $(this).val();
-
-		}).trigger('change');
-*/
-
-
+			
+			//change class to highlight the selection
+			var $parent = $(this).parents(".gv-template");
+			$parent.siblings().removeClass('gv-selected');
+			$parent.addClass('gv-selected');
+			
+			//update the template name when dialog is closed
+			$('#gravityview_'+ thisType +'_template_name').text( $(this).next("img").attr('alt') );
+			
+		};
+	}
+	
+	
+	$(document).ready( function() {
+		// assign form to this view (logic)
+		viewFormSelect.init();
+		
+		var directoryTemplatePicker = new viewTemplatePicker('directory'),
+			singleTemplatePicker = new viewTemplatePicker('single');
+		
+		directoryTemplatePicker.init();
+		singleTemplatePicker.init();
+/*
 		// If Directory Template Selection changes update areas/fields
 		$("input[name='gravityview_directory_template']:checked").parents(".gv-template").addClass('gv-selected');
 		$("input[name='gravityview_directory_template']").change( function() {
@@ -381,7 +378,7 @@
 
 			thisDialog.dialog({
 				dialogClass: 'wp-dialog',
-				width: 810,
+				width: 600,
 				appendTo: thisDialog.parent(),
 				closeOnEscape: true,
 				buttons: [ {
@@ -417,7 +414,7 @@
 			});
 
 		});
-
+*/
 
 		// View Configuration - Tabs (persisten after refresh)
 		$("#tabs").tabs({
