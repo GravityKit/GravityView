@@ -86,7 +86,7 @@
 					if( 'single-view' === $("#tabs ul li.ui-tabs-active").attr('aria-controls') ) {
 						templateId = $("#gravityview_single_template").val();
 					} else {
-						templateId = $("#gravityview_directory_template").val();
+						templateId = $("input[name='gravityview_directory_template']:checked").val();
 					}
 					
 					var data = {
