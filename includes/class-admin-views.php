@@ -108,7 +108,6 @@ class GravityView_Admin_Views {
 		
 		// Selected Form
 		$curr_form = get_post_meta( $post->ID, '_gravityview_form_id', true );
-
 		
 		?>
 		<div id="tabs">
@@ -126,6 +125,31 @@ class GravityView_Admin_Views {
 							<label for="gravityview_directory_template"><?php esc_html_e( 'Directory View Template', 'gravity-view'); ?></label>
 						</td>
 						<td>
+							<?php // get current directory template, by default, show table
+							$current_template = get_post_meta( $post->ID, '_gravityview_directory_template', true );
+							$current_template = empty( $current_template ) ? 'default_table' : $current_template;
+							?>
+							<span id="gravityview_directory_template_name"><?php echo esc_html( $templates_directory[ $current_template ]['label'] ); ?></span>
+							<a href="#" id="gravityview_directory_template_change" title="<?php esc_attr_e( 'Change template', 'gravity-view' ); ?>" class="button-small button" style="vertical-align: baseline; margin-left: 2em;"><?php esc_html_e( 'Change template', 'gravity-view' ); ?></a>
+							<div id="gravityview_directory_template_dialog" class="gv-dialog-options" title="<?php esc_attr_e( 'Select the directory template', 'gravity-view' ); ?>" class="">
+								<div class="gv-template-browser">
+									<div class="gv-template">
+										<a href="https://katz.co/gravityview/" title="<?php esc_attr_e( 'Add New Template', 'gravity-view'); ?>" target="_blank">
+											<img src="<?php echo GRAVITYVIEW_URL . 'images/preview_add_new_template.jpg'; ?>" alt="<?php esc_attr_e( 'Add New Template', 'gravity-view'); ?>">
+										</a>
+									</div>
+									<?php foreach( $templates_directory as $id => $template ) : ?>
+										<div class="gv-template">
+											<label for="gv_directory_template_<?php echo $id; ?>">
+												<input type="radio" class="hide-if-js" id="gv_directory_template_<?php echo $id; ?>" name="gravityview_directory_template" value="<?php echo $id; ?>" <?php checked( $id, $current_template, true ); ?>>
+												<img src="<?php echo $template['preview']; ?>" alt="<?php echo $template['label']; ?>">
+											</label>
+										</div>
+									<?php endforeach; ?>
+								</div>
+							</div>
+							
+						<?php /* to be removed
 							<select name="gravityview_directory_template" id="gravityview_directory_template">
 								<?php // get current directory template, by default, show table
 								$current_template = get_post_meta( $post->ID, '_gravityview_directory_template', true );
@@ -135,6 +159,7 @@ class GravityView_Admin_Views {
 									echo '<option value="'. esc_attr( $template['id'] ) .'" '. selected( $template['id'], $current_template, false ) .'>'. esc_html( $template['label'] ) .'</option>';
 								} ?>
 							</select>
+						*/ ?>
 						</td>
 					</tr>
 					<tr valign="top">
@@ -217,6 +242,14 @@ class GravityView_Admin_Views {
 							<label for="gravityview_single_template"><?php esc_html_e( 'Single Entry Template', 'gravity-view'); ?></label>
 						</td>
 						<td>
+							<?php // get current directory template, by default, show table
+							$current_single_template = get_post_meta( $post->ID, '_gravityview_single_template', true );
+							$current_single_template = empty( $current_single_template ) ? 'default_s_table' : $current_single_template;
+							?>
+							<input type="hidden" name="gravityview_single_template" id="gravityview_single_template" value="<?php echo esc_attr( $current_single_template ); ?>">
+							<span><?php echo esc_html( $templates_single[ $current_single_template ]['label'] ); ?></span>
+							<a href="#" title="<?php esc_attr_e( 'Change template', 'gravity-view' ); ?>" class="button-small button"><?php esc_html_e( 'Change template', 'gravity-view' ); ?></a>
+							<?php /*
 							<select name="gravityview_single_template" id="gravityview_single_template">
 								<?php // get current single entry template, or table by default
 								$current_single_template = get_post_meta( $post->ID, '_gravityview_single_template', true );
@@ -226,6 +259,7 @@ class GravityView_Admin_Views {
 									echo '<option value="'. esc_attr( $template['id'] ) .'" '. selected( $template['id'], $current_single_template, false ) .'>'. esc_html( $template['label'] ) .'</option>';
 								} ?>
 							</select>
+							*/ ?>
 						</td>
 					</tr>
 				</table>
@@ -719,6 +753,7 @@ class GravityView_Admin_Views {
 			'label_close' => __( 'Close', 'gravity-view' ),
 			'label_cancel' => __( 'Cancel', 'gravity-view' ),
 			'label_continue' => __( 'Continue', 'gravity-view' ),
+			'label_ok' => __( 'Ok', 'gravity-view' ),
 		));
 		
 		//enqueue styles

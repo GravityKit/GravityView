@@ -33,6 +33,12 @@ $field_options = array(
 class GravityView_Default_Template_Table extends GravityView_Template {
 
 	function __construct() {
+		$settings = array(
+			'slug' => 'table', 
+			'type' => 'directory',
+			'label' =>  __( 'Table (default)', 'gravity-view' ),
+			'preview' => GRAVITYVIEW_URL . 'images/preview_table_directory.jpg'
+		);
 		
 		$field_options = array(
 			'show_as_link' => array( 'type' => 'checkbox', 'label' => __( 'Link to single entry', 'gravity-view' ), 'default' => false ),
@@ -40,7 +46,7 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 		
 		$areas = array( array( 'id' => 'gv-table-columns', 'areaid' => 'table-columns', 'label' => __( 'Visible Table Columns', 'gravity-view') ) );
 	
-		parent::__construct( 'default_table', 'table', 'directory',  __( 'Table (default)', 'gravity-view' ) , $field_options, $areas );
+		parent::__construct( 'default_table', $settings, $field_options, $areas );
 	
 	}
 	
@@ -50,12 +56,18 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 class GravityView_Default_Template_Table_Single extends GravityView_Template {
 
 	function __construct() {
+		$settings = array(
+			'slug' => 'table', 
+			'type' => 'single',
+			'label' =>  __( 'Table (default)', 'gravity-view' ),
+			'preview' => GRAVITYVIEW_URL . 'images/preview_table_directory.jpg'
+		);
 		
 		$field_options = array();
 		
 		$areas = array( array( 'id' => 'gv-table-columns-single', 'areaid' => 'table-columns-single', 'label' => __( 'Visible Table Columns', 'gravity-view') ) );
 	
-		parent::__construct( 'default_s_table', 'table', 'single',  __( 'Table (default)', 'gravity-view' ) , $field_options, $areas );
+		parent::__construct( 'default_s_table', $settings, $field_options, $areas );
 	
 	}
 	
@@ -69,6 +81,12 @@ class GravityView_Default_Template_Table_Single extends GravityView_Template {
 class GravityView_Default_Template_List extends GravityView_Template {
 
 	function __construct() {
+		$settings = array(
+			'slug' => 'list', 
+			'type' => 'directory',
+			'label' =>  __( 'List (default)', 'gravity-view' ),
+			'preview' => GRAVITYVIEW_URL . 'images/preview_list_directory.jpg'
+		);
 	
 		$field_options = array(
 			'show_as_link' => array( 'type' => 'checkbox', 'label' => __( 'Link to single entry', 'gravity-view' ), 'default' => false ),
@@ -80,7 +98,7 @@ class GravityView_Default_Template_List extends GravityView_Template {
 			array( 'id' => 'gv-list-footer', 'areaid' => 'list-footer', 'label' => __( 'Entry Footer', 'gravity-view') ),
 		);
 		
-		parent::__construct( 'default_list', 'list', 'directory', __( 'List (default)', 'gravity-view' ) , $field_options, $areas );
+		parent::__construct( 'default_list', $settings, $field_options, $areas );
 
 	}
 }
@@ -89,6 +107,12 @@ class GravityView_Default_Template_List extends GravityView_Template {
 class GravityView_Default_Template_List_Single extends GravityView_Template {
 
 	function __construct() {
+		$settings = array(
+			'slug' => 'list', 
+			'type' => 'single',
+			'label' =>  __( 'List (default)', 'gravity-view' ),
+			'preview' => GRAVITYVIEW_URL . 'images/preview_list_directory.jpg'
+		);
 		
 		$field_options = array();
 		
@@ -98,7 +122,7 @@ class GravityView_Default_Template_List_Single extends GravityView_Template {
 			array( 'id' => 'gv-single-list-footer', 'areaid' => 'single-list-footer', 'label' => __( 'Entry Footer', 'gravity-view') ),
 		);
 		
-		parent::__construct( 'default_s_list', 'list', 'single', __( 'List (default)', 'gravity-view' ) , $field_options, $areas );
+		parent::__construct( 'default_s_list', $settings, $field_options, $areas );
 
 	}
 }
@@ -125,17 +149,20 @@ class GravityView_Template {
 	protected $active_areas;
 	
 	
-	function __construct( $id, $slug = '', $type = '', $label = '', $field_options = array(), $areas ) {
+	function __construct( $id, $settings = array(), $field_options = array(), $areas ) {
 		
 		if( empty( $id ) ) {
 			return;
 		}
+		
+		extract( wp_parse_args( $settings, array( 'slug' => '', 'type' => '', 'label' => '', 'preview' => '' ) ) );
 		
 		// assign values
 		$this->template_id = $id;
 		$this->template_slug = $slug;
 		$this->template_type = $type;
 		$this->template_label = $label;
+		$this->template_preview = $preview;
 		$this->field_options = $field_options;
 		$this->active_areas = $areas;
 		
@@ -168,7 +195,7 @@ class GravityView_Template {
 	 * @return void
 	 */
 	public function register_template( $templates ) {
-		$templates[] = array( 'id' => $this->template_id, 'label' => $this->template_label );
+		$templates[ $this->template_id ] = array( 'label' => $this->template_label, 'preview' => $this->template_preview );
 		return $templates;
 	}
 	

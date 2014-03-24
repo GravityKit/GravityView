@@ -262,6 +262,10 @@
 		}
 		
 	}
+	
+	
+	
+	
 
 
 
@@ -345,7 +349,8 @@
 
 
 		// If Directory Template Selection changes update areas/fields
-		$("#gravityview_directory_template").change( function() {
+		$("input[name='gravityview_directory_template']:checked").parents(".gv-template").addClass('gv-selected');
+		$("input[name='gravityview_directory_template']").change( function() {
 
 			$("#directory-active-fields").find("fieldset.area").remove();
 
@@ -361,9 +366,38 @@
 					init_droppables();
 				}
 			});
-
+			$(this).parents(".gv-template").siblings().removeClass('gv-selected');
+			$(this).parents(".gv-template").addClass('gv-selected');
+			$("#gravityview_directory_template_name").text( $(this).next("img").attr('alt') );
+			
 		});
+		
+		// Open dialog template picker
+		$("#gravityview_directory_template_change").click( function( event ) {
+			
+			event.preventDefault();
+			
+			var thisDialog = $('#gravityview_directory_template_dialog');
 
+			thisDialog.dialog({
+				dialogClass: 'wp-dialog',
+				width: 810,
+				appendTo: thisDialog.parent(),
+				closeOnEscape: true,
+				buttons: [ {
+					text: gvGlobals.label_ok,
+					click: function() {
+						thisDialog.dialog('close');
+					} },
+				],
+			});
+			
+			
+		});
+		
+		
+		
+		
 		// If Single Template Selection changes update areas/fields
 		$("#gravityview_single_template").change( function() {
 
