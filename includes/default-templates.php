@@ -114,7 +114,8 @@ class GravityView_Default_Template_List_Single extends GravityView_Template {
 			'slug' => 'list',
 			'type' => 'single',
 			'label' =>  __( 'List (default)', 'gravity-view' ),
-			'preview' => GRAVITYVIEW_URL . 'images/preview_list_directory.jpg'
+			'preview' => GRAVITYVIEW_URL . 'images/preview_list_directory.jpg',
+			'css_source' => GRAVITYVIEW_URL . 'templates/css/list-view.css',
 		);
 
 		$field_options = array();
