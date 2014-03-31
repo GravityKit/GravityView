@@ -136,6 +136,15 @@ class GravityView_Plugin {
 
 		flush_rewrite_rules();
 
+		// Add "Upgraded From" Option
+		$current_version = get_option( 'gv_version' );
+		if ( $current_version ) {
+			update_option( 'gv_version_upgraded_from', $current_version );
+		}
+
+		// Update the current GV version
+		update_option( 'gv_version', self::version );
+
 		// Add the transient to redirect to configuration page
 		set_transient( '_gv_activation_redirect', true, 30 );
 	}
