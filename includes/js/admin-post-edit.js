@@ -17,7 +17,7 @@
 		var view_id = $("#gravityview_view_id").val();
 		
 		if( view_id == "" ) {
-			alert( ajax_object.alert_1 );
+			alert( gvGlobals.alert_1 );
 			$("#gravityview_view_id").focus();
 			return false;
 		}
@@ -52,8 +52,8 @@
 		
 		
 		shortcode += ']';
-		var win = window.dialogArguments || opener || parent || top;
-		win.send_to_editor( shortcode );
+		//var win = window.dialogArguments || opener || parent || top;
+		window.send_to_editor( shortcode );
 		return false;
 	}
 
@@ -73,10 +73,10 @@
 			var data = {
 				action: 'gv_sortable_fields',
 				viewid: $(this).val(),
-				nonce: ajax_object.nonce,
+				nonce: gvGlobals.nonce,
 			}
 			
-			$.post( ajax_object.ajaxurl, data, function( response ) {
+			$.post( gvGlobals.ajaxurl, data, function( response ) {
 				if( response ) {
 					$("#gravityview_sort_field").append( response );
 				}

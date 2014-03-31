@@ -184,7 +184,7 @@ class GravityView_Admin_Add_Shortcode {
 		// custom js
 		wp_register_script( 'gravityview_postedit_scripts',  GRAVITYVIEW_URL  . 'includes/js/admin-post-edit.js', array( 'jquery', 'jquery-ui-datepicker' ), '1.0.0');
 		wp_enqueue_script( 'gravityview_postedit_scripts' );
-		wp_localize_script('gravityview_postedit_scripts', 'ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'gravityview_ajaxaddshortcode'), 'alert_1' => esc_html__( 'Please select a View', 'gravity-view') )  );
+		wp_localize_script('gravityview_postedit_scripts', 'gvGlobals', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'gravityview_ajaxaddshortcode'), 'alert_1' => esc_html__( 'Please select a View', 'gravity-view') )  );
 		
 	}
 	
