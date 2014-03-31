@@ -160,8 +160,6 @@ class GravityView_Welcome {
 
 				<div class="feature-section">
 
-					<img src="<?php echo GRAVITYVIEW_URL . 'assets/images/screenshots/order-details.png'; ?>" class="gv-welcome-screenshots"/>
-
 					<h4><?php _e( 'First New Feature', 'gravity-view' );?></h4>
 					<p><?php _e( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'gravity-view' );?></p>
 					<p><?php _e( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'gravity-view' );?></p>
@@ -232,8 +230,6 @@ class GravityView_Welcome {
 				<h3><?php _e( 'Overview', 'gravity-view' );?></h3>
 
 				<div class="feature-section">
-
-					<img src="<?php echo GRAVITYVIEW_URL . 'assets/images/screenshots/edit-download.png'; ?>" class="gv-welcome-screenshots"/>
 
 					<h4><?php _e( 'Example Header', 'gravity-view' );?></h4>
 					<p><?php _e( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'gravity-view' );?></p>
