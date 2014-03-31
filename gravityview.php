@@ -136,6 +136,8 @@ class GravityView_Plugin {
 
 		flush_rewrite_rules();
 
+		// Add the transient to redirect to configuration page
+		set_transient( '_gv_activation_redirect', true, 30 );
 	}
 
 
