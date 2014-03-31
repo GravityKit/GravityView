@@ -54,6 +54,8 @@ $gravity_view_plugin = new GravityView_Plugin();
  */
 class GravityView_Plugin {
 
+	const version = '1.0';
+
 	private $admin_notices = array();
 
 	public function __construct() {
@@ -243,6 +245,8 @@ class GravityView_Plugin {
 	 * @return void
 	 */
 	public function backend_actions() {
+
+		include_once( GRAVITYVIEW_DIR .'includes/class-admin-welcome.php' );
 
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-views.php' );
 		new GravityView_Admin_Views();
