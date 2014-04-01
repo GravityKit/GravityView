@@ -54,6 +54,8 @@ $gravity_view_plugin = new GravityView_Plugin();
  */
 class GravityView_Plugin {
 
+	const version = '1.0';
+
 	private $admin_notices = array();
 
 	public function __construct() {
@@ -134,6 +136,17 @@ class GravityView_Plugin {
 
 		flush_rewrite_rules();
 
+		// Add "Upgraded From" Option
+		$current_version = get_option( 'gv_version' );
+		if ( $current_version ) {
+			update_option( 'gv_version_upgraded_from', $current_version );
+		}
+
+		// Update the current GV version
+		update_option( 'gv_version', self::version );
+
+		// Add the transient to redirect to configuration page
+		set_transient( '_gv_activation_redirect', true, 30 );
 	}
 
 
@@ -243,6 +256,8 @@ class GravityView_Plugin {
 	 * @return void
 	 */
 	public function backend_actions() {
+
+		include_once( GRAVITYVIEW_DIR .'includes/class-admin-welcome.php' );
 
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-views.php' );
 		new GravityView_Admin_Views();
