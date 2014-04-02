@@ -79,6 +79,16 @@ class GravityView_Plugin {
 
 			add_action( 'plugins_loaded', array( $this, 'backend_actions' ) );
 
+			//Hooks for no-conflict functionality
+		    add_action( 'wp_print_scripts', array( $this, 'no_conflict_scripts' ), 1000);
+		    add_action( 'admin_print_footer_scripts', array( $this, 'no_conflict_scripts' ), 9);
+
+		    add_action( 'wp_print_styles', array( $this, 'no_conflict_styles' ), 1000);
+		    add_action( 'admin_print_styles', array( $this, 'no_conflict_styles' ), 1);
+		    add_action( 'admin_print_footer_scripts', array( $this, 'no_conflict_styles' ), 1);
+		    add_action( 'admin_footer', array( $this, 'no_conflict_styles' ), 1);
+
+
 		} else {
 
 			add_action( 'plugins_loaded', array( $this, 'frontend_actions' ), 0 );
@@ -373,6 +383,156 @@ class GravityView_Plugin {
 		//reset the notices handler
 		$this->admin_notices = array();
 	}
+
+
+
+	/** no conflict mode functions */
+
+	/**
+	 * Checks if the current page is a GravityView page
+	 * @return boolean page name or false
+	 */
+	function is_gravityview_page() {
+
+		global $current_screen;
+
+		if( !empty( $current_screen->post_type ) && 'gravityview' == $current_screen->post_type ) {
+			return 'admin_views';
+		}
+		return false;
+	}
+
+	/**
+	 * Callback to eliminate any non-registered script
+	 * @return void
+	 */
+	function no_conflict_scripts() {
+		if( ! $this->is_gravityview_page() ){
+			return;
+		}
+		// if( !get_option( 'gv_enable_noconflict' ) ) {
+  //           return;
+		// }
+
+		global $wp_scripts;
+
+		$wp_required_scripts = array(
+			'debug-bar-extender',
+            'backcallsc',
+            'common',
+            'admin-bar',
+            'debug-bar',
+            'debug-bar-codemirror',
+            'debug-bar-console',
+            'puc-debug-bar-js',
+            'autosave',
+            'post',
+            'utils',
+            'svg-painter',
+            'wp-auth-check',
+            'heartbeat',
+			'media-editor',
+			'media-upload',
+            'thickbox',
+            'jquery-ui-dialog',
+            'jquery-ui-tabs',
+            'jquery-ui-draggable',
+            'jquery-ui-droppable',
+            'jquery-ui-sortable',
+            );
+
+		$this->remove_conflicts( $wp_scripts, $wp_required_scripts, 'scripts' );
+	}
+
+	/**
+	 * Callback to eliminate any non-registered style
+	 * @return void
+	 */
+	function no_conflict_styles() {
+		if( ! $this->is_gravityview_page() ){
+			return;
+		}
+		// if( !get_option( 'gv_enable_noconflict' ) ) {
+  //           return;
+		// }
+
+		global $wp_styles;
+
+        $wp_required_styles = array(
+        	'debug-bar-extender',
+	        'admin-bar',
+	        'debug-bar',
+	        'debug-bar-codemirror',
+	        'debug-bar-console',
+	        'puc-debug-bar-style',
+	        'colors',
+	        'ie',
+	        'wp-auth-check',
+	        'media-views',
+			'thickbox',
+			'dashicons',
+	        'wp-jquery-ui-dialog'
+	    );
+
+		$this->remove_conflicts( $wp_styles, $wp_required_styles, 'styles' );
+	}
+
+	/**
+	 * Remove any style or script non-registered in the no conflict mode
+	 * @param  object $wp_objects        Object of WP_Styles or WP_Scripts
+	 * @param  array $required_objects   List of registered script/style handles
+	 * @param  string $type              Either 'styles' or 'scripts'
+	 * @return void
+	 */
+	private function remove_conflicts( &$wp_objects, $required_objects, $type = 'scripts' ) {
+
+        //allowing addons or other products to change the list of no conflict scripts or styles
+        $required_objects = apply_filters( "gravityview_noconflict_{$type}", $required_objects );
+
+        //reset queue
+        $queue = array();
+        foreach( $wp_objects->queue as $object ) {
+            if( in_array( $object, $required_objects ) ) {
+                $queue[] = $object;
+            }
+        }
+        $wp_objects->queue = $queue;
+
+        $required_objects = $this->add_script_dependencies( $wp_objects->registered, $required_objects );
+
+        //unregistering scripts
+        $registered = array();
+        foreach( $wp_objects->registered as $handle => $script_registration ){
+            if( in_array( $handle, $required_objects ) ){
+                $registered[ $handle ] = $script_registration;
+            }
+        }
+        $wp_objects->registered = $registered;
+	}
+
+	/**
+	 * Add dependencies
+	 * @param [type] $registered [description]
+	 * @param [type] $scripts    [description]
+	 */
+	private function add_script_dependencies($registered, $scripts){
+
+        //gets all dependent scripts linked to the $scripts array passed
+        do{
+            $dependents = array();
+            foreach($scripts as $script){
+                $deps = isset($registered[$script]) && is_array($registered[$script]->deps) ? $registered[$script]->deps : array();
+                foreach($deps as $dep){
+                    if(!in_array($dep, $scripts) && !in_array($dep, $dependents)){
+                        $dependents[] = $dep;
+                    }
+                }
+            }
+            $scripts = array_merge($scripts, $dependents);
+        }while(!empty($dependents));
+
+        return $scripts;
+    }
 
 
 } // end class GravityView_Plugin
