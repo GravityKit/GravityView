@@ -45,14 +45,10 @@ if( is_admin() ) {
 /** Load connector functions */
 require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
 
-/** Launch plugin */
-$gravity_view_plugin = new GravityView_Plugin();
-
-
 /**
  * GravityView_Plugin main class.
  */
-class GravityView_Plugin {
+final class GravityView_Plugin {
 
 	const version = '1.0';
 
@@ -266,18 +262,10 @@ class GravityView_Plugin {
 	 * @return void
 	 */
 	public function backend_actions() {
-
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-welcome.php' );
-
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-views.php' );
-		new GravityView_Admin_Views();
-
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
-		new GravityView_Admin_Add_Shortcode();
-
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
-		new GravityView_Admin_ApproveEntries();
-
 	}
 
 
@@ -308,10 +296,6 @@ class GravityView_Plugin {
 	 */
 	function register_default_templates() {
 		include_once( GRAVITYVIEW_DIR .'includes/default-templates.php' );
-		new GravityView_Default_Template_Table();
-		new GravityView_Default_Template_Table_Single();
-		new GravityView_Default_Template_List();
-		new GravityView_Default_Template_List_Single();
 	}
 
 	/**
@@ -320,9 +304,6 @@ class GravityView_Plugin {
 	 */
 	function register_default_widgets() {
 		include_once( GRAVITYVIEW_DIR .'includes/default-widgets.php' );
-		new GravityView_Widget_Pagination();
-		new GravityView_Widget_Page_Links();
-		new GravityView_Widget_Search_Bar();
 	}
 
 	/**
@@ -537,3 +518,5 @@ class GravityView_Plugin {
 
 } // end class GravityView_Plugin
 
+/** Launch plugin */
+new GravityView_Plugin;

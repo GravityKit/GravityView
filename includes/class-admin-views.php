@@ -769,11 +769,4 @@ class GravityView_Admin_Views {
 
 }
 
-
-
-
-
-
-
-
-?>
+new GravityView_Admin_Views;
