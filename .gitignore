@@ -4,3 +4,5 @@
 *.sublime-workspace
 
 composer.lock
+
+vendor/.git
