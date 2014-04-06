@@ -275,8 +275,7 @@ class GravityView_Template {
 
 }
 
-
-
-
-
-
+new GravityView_Default_Template_Table;
+new GravityView_Default_Template_Table_Single;
+new GravityView_Default_Template_List;
+new GravityView_Default_Template_List_Single;

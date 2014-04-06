@@ -20,7 +20,9 @@ class GravityView_Admin_Views {
 		add_action( 'save_post', array( $this, 'save_postdata' ) );
 
 		// adding styles and scripts
-		add_action('admin_enqueue_scripts', array( $this, 'add_scripts_and_styles') );
+		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles'), 999 );
+		add_filter( 'gravityview_noconflict_styles', array( $this, 'register_no_conflict') );
+		add_filter( 'gravityview_noconflict_scripts', array( $this, 'register_no_conflict') );
 
 		// AJAX
 		//get field options
@@ -749,14 +751,22 @@ class GravityView_Admin_Views {
 		wp_enqueue_style( 'gravityview_views_styles', GRAVITYVIEW_URL . 'includes/css/admin-views.css', array() );
 	}
 
+	function register_no_conflict( $registered ) {
+
+		$filter = current_filter();
+
+		if( 'gravityview_noconflict_scripts' === $filter ) {
+			$allow_scripts = array( 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'gravityview_views_scripts' );
+			$registered = array_merge( $registered, $allow_scripts );
+		} elseif( 'gravityview_noconflict_styles' === $filter ) {
+			$allow_styles = array( 'dashicons', 'wp-jquery-ui-dialog', 'gravityview_views_styles' );
+			$registered = array_merge( $registered, $allow_styles );
+		}
+
+		return $registered;
+	}
+
 
 }
 
-
-
-
-
-
-
-
-?>
+new GravityView_Admin_Views;
