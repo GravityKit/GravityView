@@ -56,6 +56,8 @@ final class GravityView_Plugin {
 
 	public function __construct() {
 
+		require_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
+
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
@@ -374,15 +376,26 @@ final class GravityView_Plugin {
 
 	/**
 	 * Checks if the current page is a GravityView page
-	 * @return boolean page name or false
+	 *
+	 * @param string $include_settings Should we check if it's the settings page as well?
+	 * @return boolean|string page name or false
 	 */
-	function is_gravityview_page() {
+	static function is_gravityview_page($include_settings = false) {
+		global $current_screen, $plugin_page;
 
-		global $current_screen;
+		// If GravityView post type, but not the settings page, it's GravityView Page.
+		if( !empty( $current_screen->post_type ) && 'gravityview' === $current_screen->post_type) {
 
-		if( !empty( $current_screen->post_type ) && 'gravityview' == $current_screen->post_type ) {
+			// Is this the settings page?
+			if($plugin_page === 'settings') {
+				// If we asked to include the settings page as a GV page, then return 'settings'.
+				// Otherwise, return false.
+				return $include_settings ? 'settings' : false;
+			}
+
 			return 'admin_views';
 		}
+
 		return false;
 	}
 
@@ -392,7 +405,7 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	function no_conflict_scripts() {
-		if( ! $this->is_gravityview_page() ){
+		if( ! self::is_gravityview_page() ){
 			return;
 		}
 		// if( !get_option( 'gv_enable_noconflict' ) ) {
@@ -423,7 +436,23 @@ final class GravityView_Plugin {
             'jquery-ui-tabs',
             'jquery-ui-draggable',
             'jquery-ui-droppable',
+
+            // Redux Framework
+            'select2-js',
+            'qtip-js',
+            'nouislider-js',
+            'serializeForm-js',
+            'ace-editor-js',
+            'redux-vendor',
+            'redux-js',
+            'jquery',
+            'jquery-ui-core',
             'jquery-ui-sortable',
+            'jquery-ui-datepicker',
+            'jquery-ui-dialog',
+            'jquery-ui-slider',
+            'wp-color-picker',
+            'jquery-ui-accordion',
             );
 
 		$this->remove_conflicts( $wp_scripts, $wp_required_scripts, 'scripts' );
@@ -435,7 +464,7 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	function no_conflict_styles() {
-		if( ! $this->is_gravityview_page() ){
+		if( ! self::is_gravityview_page() ){
 			return;
 		}
 		// if( !get_option( 'gv_enable_noconflict' ) ) {
@@ -457,10 +486,25 @@ final class GravityView_Plugin {
 	        'media-views',
 			'thickbox',
 			'dashicons',
-	        'wp-jquery-ui-dialog'
+	        'wp-jquery-ui-dialog',
+	        'jquery-ui-sortable',
+
+	        // Redux Framework
+	        'redux-css',
+	        'redux-elusive-icon',
+	        'redux-elusive-icon-ie7',
+	        'select2-css',
+	        'qtip-css',
+	        'nouislider-css',
+	        'jquery-ui-css',
+	        'redux-rtl-css',
+	        'wp-color-picker',
 	    );
 
 		$this->remove_conflicts( $wp_styles, $wp_required_styles, 'styles' );
+
+		// Allow settings, etc, to hook in after
+		do_action('gravityview_remove_conflicts_after');
 	}
 
 	/**
