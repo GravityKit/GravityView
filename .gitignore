@@ -6,3 +6,4 @@
 composer.lock
 
 vendor/.git
+vendor/*/.git
