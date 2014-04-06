@@ -10,13 +10,16 @@ if (!class_exists('GravityView_Settings')) {
         public $theme;
         public $ReduxFramework;
 
+        /**
+         * Prefinery hash for user validation
+         */
+        const prefinery_hash = '1p8W2mQTK31zmpUfUA8H';
+
         public function __construct() {
 
         	require_once( GRAVITYVIEW_DIR . 'vendor/redux-framework/redux-framework/redux-framework.php');
 
-        	if (!class_exists('ReduxFramework')) {
-                return;
-            }
+        	if (!class_exists('ReduxFramework')) { return; }
 
             add_action('plugins_loaded', array($this, 'initSettings'), 10);
 
@@ -97,7 +100,7 @@ if (!class_exists('GravityView_Settings')) {
 
 			if($beta_email = $this->getSetting('beta-email')) {
 
-				$tester_hash = sha1(sprintf("1p8W2mQTK31zmpUfUA8H%s", $beta_email));
+				$tester_hash = sha1(sprintf("%s%s", self::prefinery_hash, $beta_email));
 
             	$fields[] = array(
             		'id'		=> 'share-beta',
@@ -209,44 +212,11 @@ if (!class_exists('GravityView_Settings')) {
                 )
             );
 
-
-            // SOCIAL ICONS -> Setup custom links in the footer for quick links in your panel footer icons.
             $this->args['share_icons'][] = array(
-                'url'   => 'https://github.com/ReduxFramework/ReduxFramework',
-                'title' => 'Visit us on GitHub',
-                'icon'  => 'el-icon-github'
-                //'img'   => '', // You can use icon OR img. IMG needs to be a full URL.
-            );
-            $this->args['share_icons'][] = array(
-                'url'   => 'https://www.facebook.com/pages/Redux-Framework/243141545850368',
-                'title' => 'Like us on Facebook',
-                'icon'  => 'el-icon-facebook'
-            );
-            $this->args['share_icons'][] = array(
-                'url'   => 'http://twitter.com/reduxframework',
+                'url'   => 'https://twitter.com/Gravity_View',
                 'title' => 'Follow us on Twitter',
                 'icon'  => 'el-icon-twitter'
             );
-            $this->args['share_icons'][] = array(
-                'url'   => 'http://www.linkedin.com/company/redux-framework',
-                'title' => 'Find us on LinkedIn',
-                'icon'  => 'el-icon-linkedin'
-            );
-
-            // Panel Intro text -> before the form
-            if (!isset($this->args['global_variable']) || $this->args['global_variable'] !== false) {
-                if (!empty($this->args['global_variable'])) {
-                    $v = $this->args['global_variable'];
-                } else {
-                    $v = str_replace('-', '_', $this->args['opt_name']);
-                }
-                $this->args['intro_text'] = sprintf(__('<p>Did you know that Redux sets a global variable for you? To access any of your saved options from within your code you can use your global variable: <strong>$%1$s</strong></p>', 'gravity-view'), $v);
-            } else {
-                $this->args['intro_text'] = __('<p>This text is displayed above the options panel. It isn\'t required, but more info is always better! The intro_text field accepts all HTML.</p>', 'gravity-view');
-            }
-
-            // Add content after the form.
-            $this->args['footer_text'] = __('<p>This text is displayed below the options panel. It isn\'t required, but more info is always better! The footer_text field accepts all HTML.</p>', 'gravity-view');
         }
 
     }
