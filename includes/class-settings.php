@@ -17,7 +17,7 @@ if (!class_exists('GravityView_Settings')) {
 
         public function __construct() {
 
-        	require_once( GRAVITYVIEW_DIR . 'vendor/redux-framework/redux-framework/redux-framework.php');
+        	require_once( GRAVITYVIEW_DIR . 'includes/lib/redux-framework/redux-framework.php');
 
         	if (!class_exists('ReduxFramework')) { return; }
 
