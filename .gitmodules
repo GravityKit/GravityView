@@ -1,0 +1,3 @@
+[submodule "includes/lib/redux-framework"]
+	path = includes/lib/redux-framework
+	url = git://github.com/ReduxFramework/redux-framework.git

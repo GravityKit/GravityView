@@ -2,3 +2,8 @@
 *.sublime-project
 
 *.sublime-workspace
+
+composer.lock
+
+vendor/.git
+vendor/*/.git
