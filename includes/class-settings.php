@@ -47,6 +47,10 @@ if (!class_exists('GravityView_Settings')) {
          * @return [type] [description]
          */
         public function _enqueue() {
+        	global $plugin_page;
+
+        	if(empty($plugin_page)) { return; }
+
         	get_redux_instance('gravityview_settings')->_enqueue();
         }
 
