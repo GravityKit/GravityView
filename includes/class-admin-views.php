@@ -39,8 +39,8 @@ class GravityView_Admin_Views {
 
 	function register_metabox() {
 
-		//select form box
-		add_meta_box( 'gravityview_select_form', __( 'Select the Form', 'gravity-view' ), array( $this, 'render_select_form' ), 'gravityview', 'normal', 'high' );
+		//select data source for this view
+		add_meta_box( 'gravityview_select_form', __( 'Data Source', 'gravity-view' ), array( $this, 'render_select_form' ), 'gravityview', 'normal', 'high' );
 
 		//View Configuration box
 		add_meta_box( 'gravityview_directory_view', __( 'View Configuration', 'gravity-view' ), array( $this, 'render_view_configuration' ), 'gravityview', 'normal', 'high' );
@@ -67,19 +67,26 @@ class GravityView_Admin_Views {
 		$current = get_post_meta( $post->ID, '_gravityview_form_id', true );
 
 		// input ?>
-		<label class="screen-reader-text" for="gravityview_form_id" ><?php esc_html_e( 'Select the Form', 'gravity-view' ); ?></label>
+		<label for="gravityview_form_id" ><?php esc_html_e( 'Where would you like the data to come from for this View?', 'gravity-view' ); ?></label>
 
 		<?php
 		// check for available gravity forms
 		$forms = gravityview_get_forms();
 
-		// render select box ?>
-		<select name="gravityview_form_id" id="gravityview_form_id">
-			<option value="" <?php selected( '', $current, true ); ?>>-- <?php esc_html_e( 'list of forms', 'gravity-view' ); ?> --</option>
-			<?php foreach( $forms as $form ) : ?>
-				<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current, true ); ?>><?php echo $form['title']; ?></option>
-			<?php endforeach; ?>
-		</select>
+		// render "start fresh" button ?>
+		<p>
+			<a class="button-primary" href="#" title="<?php esc_attr_e( 'Start Fresh', 'gravity-view' ); ?>"><?php esc_html_e( 'Start Fresh', 'gravity-view' ); ?></a>
+
+			<span>&nbsp;<?php esc_html_e( 'or use an existing form', 'gravity-view' ); ?>&nbsp;</span>
+
+			<?php // render select box ?>
+			<select name="gravityview_form_id" id="gravityview_form_id">
+				<option value="" <?php selected( '', $current, true ); ?>>-- <?php esc_html_e( 'list of forms', 'gravity-view' ); ?> --</option>
+				<?php foreach( $forms as $form ) : ?>
+					<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current, true ); ?>><?php echo $form['title']; ?></option>
+				<?php endforeach; ?>
+			</select>
+		</p>
 
 		<?php // confirm dialog box ?>
 		<div id="gravityview_form_id_dialog" class="gv-dialog-options" title="<?php esc_attr_e( 'Attention', 'gravity-view' ); ?>">
