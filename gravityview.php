@@ -405,12 +405,12 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	function no_conflict_scripts() {
-		if( ! self::is_gravityview_page() ){
+
+		global $gravityview_settings;
+
+		if( ! self::is_gravityview_page() || empty( $gravityview_settings['no-conflict-mode'] ) ) {
 			return;
 		}
-		// if( !get_option( 'gv_enable_noconflict' ) ) {
-  //           return;
-		// }
 
 		global $wp_scripts;
 
@@ -464,12 +464,11 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	function no_conflict_styles() {
-		if( ! self::is_gravityview_page() ){
+		global $gravityview_settings;
+
+		if( ! self::is_gravityview_page() || empty( $gravityview_settings['no-conflict-mode'] ) ) {
 			return;
 		}
-		// if( !get_option( 'gv_enable_noconflict' ) ) {
-  //           return;
-		// }
 
 		global $wp_styles;
 
