@@ -188,7 +188,7 @@ class GravityView_Template {
 		add_filter( 'gravityview_template_field_options', array( $this, 'assign_field_options' ), 10, 2 );
 
 		// template slug
-		add_filter( "gravityview_template_slug_{$id}", array( $this, 'assign_view_slug' ), 10, 1 );
+		add_filter( "gravityview_template_slug_{$id}", array( $this, 'assign_view_slug' ), 10, 2 );
 
 		// register template CSS
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_styles' ) );
@@ -249,7 +249,7 @@ class GravityView_Template {
 	 * @param mixed $default
 	 * @return void
 	 */
-	public function assign_view_slug( $default ) {
+	public function assign_view_slug( $default, $context ) {
 
 		if( !empty( $this->template_slug ) ) {
 			return $this->template_slug;

@@ -39,16 +39,21 @@ class GravityView_Admin_Views {
 
 	function register_metabox() {
 
-		//select data source for this view
+		// select data source for this view
 		add_meta_box( 'gravityview_select_form', __( 'Data Source', 'gravity-view' ), array( $this, 'render_select_form' ), 'gravityview', 'normal', 'high' );
 
-		//View Configuration box
+		// select view type/template
+		add_meta_box( 'gravityview_select_template', __( 'Choose a View Type', 'gravity-view' ), array( $this, 'render_select_template' ), 'gravityview', 'normal', 'high' );
+
+		// View Configuration box
 		add_meta_box( 'gravityview_directory_view', __( 'View Configuration', 'gravity-view' ), array( $this, 'render_view_configuration' ), 'gravityview', 'normal', 'high' );
 
-		//information box
+		// information box
 		add_meta_box( 'gravityview_shortcode_info', __( 'Shortcode Info', 'gravity-view' ), array( $this, 'render_shortcode_info' ), 'gravityview', 'side', 'default' );
-
 	}
+
+
+
 
 
 	/**
@@ -103,6 +108,42 @@ class GravityView_Admin_Views {
 
 
 	/**
+	 * Render html for 'select template' metabox
+	 *
+	 * @access public
+	 * @param object $post
+	 * @return void
+	 */
+	function render_select_template() {
+
+		// Use nonce for verification
+		wp_nonce_field( 'gravityview_select_template', 'gravityview_select_template_nonce' );
+
+		//current value
+		$current_template = get_post_meta( $post->ID, '_gravityview_directory_template', true );
+
+		// Fetch available style templates
+		$templates = apply_filters( 'gravityview_register_directory_template', array() );
+
+		// list all the available templates (type= fresh or custom )
+		?>
+		<div id="">
+			<?php foreach( $templates as $id => $template ) : ?>
+				<div class="gv-template" data-type="<?php echo esc_attr( $template['type'] ); ?>">
+					<label for="gv_directory_template_<?php echo esc_attr( $id ); ?>">
+						<input type="radio" class="hide-if-js" id="gv_directory_template_<?php echo esc_attr( $id ); ?>" name="gravityview_directory_template" value="<?php echo esc_attr( $id ); ?>" <?php checked( $id, $current_template, true ); ?>>
+						<img src="<?php echo esc_url( $template['preview'] ); ?>" alt="<?php echo esc_attr( $template['label'] ); ?>">
+					</label>
+				</div>
+			<?php endforeach; ?>
+		</div>
+
+<?php
+
+	}
+
+
+	/**
 	 * Render html for 'View Configuration' metabox
 	 *
 	 * @access public
@@ -114,119 +155,77 @@ class GravityView_Admin_Views {
 		// Use nonce for verification
 		wp_nonce_field( 'gravityview_view_configuration', 'gravityview_view_configuration_nonce' );
 
-		// Fetch available style templates
-		$templates_directory = apply_filters( 'gravityview_register_directory_template', array() );
-		$templates_single = apply_filters( 'gravityview_register_single_template', array() );
-
 		// Selected Form
 		$curr_form = get_post_meta( $post->ID, '_gravityview_form_id', true );
+
+		// Selected template
+		$curr_template = get_post_meta( $post->ID, '_gravityview_directory_template', true );
+
+		// View template settings
+		$template_settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
 
 		?>
 		<div id="tabs">
 
 			<input type="hidden" name="gv-active-tab" id="gv-active-tab" value="<?php echo get_post_meta( $post->ID, '_gravityview_tab_active', true ); ?>">
+
 			<ul class="nav-tab-wrapper">
 				<li><a href="#directory-view" class="nav-tab"><?php esc_html_e( 'Directory', 'gravity-view' ); ?></a></li>
 				<li><a href="#single-view" class="nav-tab"><?php esc_html_e( 'Single Entry', 'gravity-view' ); ?></a></li>
 			</ul>
+
 			<div id="directory-view">
 
+				<div id="directory-fields" class="gv-section">
+
+					<h4><?php esc_html_e( 'Customize your directory view', 'gravity-view'); ?></h4>
+
+					<?php //render header widget areas ?>
+
+					<?php //render Listing areas ?>
+
+					<?php //render footer widget areas ?>
+
+
+
+				</div>
+
+				<hr>
+
+				<?php // Other View Settings ?>
+
 				<table class="form-table">
-					<tr valign="top">
-						<td scope="row">
-							<label for="gravityview_directory_template"><?php esc_html_e( 'Directory View Template', 'gravity-view'); ?></label>
-						</td>
-						<td>
-							<?php // get current directory template, by default, show table
-							$current_template = get_post_meta( $post->ID, '_gravityview_directory_template', true );
-							$current_template = empty( $current_template ) ? 'default_table' : $current_template;
-							?>
-							<span id="gravityview_directory_template_name"><?php echo esc_html( $templates_directory[ $current_template ]['label'] ); ?></span>
-							<a href="#" id="gravityview_directory_template_change" title="<?php esc_attr_e( 'Change template', 'gravity-view' ); ?>" class="button-small button" style="vertical-align: baseline; margin-left: 2em;"><?php esc_html_e( 'Change template', 'gravity-view' ); ?></a>
-							<div id="gravityview_directory_template_dialog" class="gv-dialog-options" title="<?php esc_attr_e( 'Select the directory template', 'gravity-view' ); ?>" class="">
-								<div class="gv-template-browser">
-									<div class="gv-template">
-										<a href="https://katz.co/gravityview/" title="<?php esc_attr_e( 'Add New Template', 'gravity-view'); ?>" target="_blank">
-											<img src="<?php echo GRAVITYVIEW_URL . 'images/preview_add_new_template.jpg'; ?>" alt="<?php esc_attr_e( 'Add New Template', 'gravity-view'); ?>">
-										</a>
-									</div>
-									<?php foreach( $templates_directory as $id => $template ) : ?>
-										<div class="gv-template">
-											<label for="gv_directory_template_<?php echo $id; ?>">
-												<input type="radio" class="hide-if-js" id="gv_directory_template_<?php echo $id; ?>" name="gravityview_directory_template" value="<?php echo $id; ?>" <?php checked( $id, $current_template, true ); ?>>
-												<img src="<?php echo $template['preview']; ?>" alt="<?php echo $template['label']; ?>">
-											</label>
-										</div>
-									<?php endforeach; ?>
-								</div>
-							</div>
-						</td>
-					</tr>
+
 					<tr valign="top">
 						<td scope="row">
 							<label for="gravityview_page_size"><?php esc_html_e( 'Number of entries to show per page', 'gravity-view'); ?></label>
 						</td>
 						<td>
-							<?php $page_size_curr = get_post_meta( $post->ID, '_gravityview_page_size', true ); ?>
-							<input name="gravityview_page_size" id="gravityview_page_size" type="number" step="1" min="1" value="<?php empty( $page_size_curr ) ? print 25 : print $page_size_curr; ?>" class="small-text">
+							<input name="template_settings[page_size]" id="gravityview_page_size" type="number" step="1" min="1" value="<?php empty( $template_settings['page_size'] ) ? print 25 : print $template_settings['page_size']; ?>" class="small-text">
 						</td>
 					</tr>
 					<tr valign="top">
 						<td scope="row">
-							<label for="gravityview_only_approved"><?php esc_html_e( 'Show only entries approved', 'gravity-view'); ?></label>
+							<label for="gravityview_only_approved"><?php esc_html_e( 'Show only entries approved', 'gravity-view' ); ?></label>
 						</td>
 						<td>
 							<fieldset>
-								<legend class="screen-reader-text"><span><?php esc_html_e( 'Show only entries approved', 'gravity-view'); ?></span></legend>
+								<legend class="screen-reader-text"><span><?php esc_html_e( 'Show only entries approved', 'gravity-view' ); ?></span></legend>
 								<label for="gravityview_only_approved">
-									<input name="gravityview_only_approved" type="checkbox" id="gravityview_only_approved" value="1" <?php checked( get_post_meta( $post->ID, '_gravityview_only_approved', true ) , 1, true ); ?>>
+									<input name="template_settings[show_only_approved]" type="checkbox" id="gravityview_only_approved" value="1" <?php empty( $template_settings['show_only_approved'] ) ? print '' : checked( $template_settings['show_only_approved'] , 1, true ); ?>>
 								</label>
 							</fieldset>
 						</td>
 					</tr>
+
+					<?php // Hook for other template custom settings
+
+					do_action( 'gravityview_admin_directory_settings', $template_settings );
+
+					?>
+
 				</table>
 
-				<hr>
-
-				<div id="directory-fields" class="gv-section">
-					<h4><?php esc_html_e( 'Fields Mapping', 'gravity-view'); ?></h4>
-
-					<div id="directory-active-fields" class="gv-area">
-
-						<?php echo $this->render_directory_active_areas( $current_template, $post->ID, 'directory' ); ?>
-
-					</div>
-
-					<div id="directory-available-fields">
-						<fieldset class="area">
-							<legend><?php esc_html_e( 'Available Fields', 'gravity-view' ); ?></legend>
-							<?php echo $this->render_available_fields( $curr_form, 'directory' ); ?>
-						</fieldset>
-					</div>
-
-				</div>
-
-				<div class="clear"></div>
-				<hr>
-				<div class="gv-section">
-					<?php // Directory View widgets ?>
-					<?php $widgets = get_post_meta( $post->ID, '_gravityview_directory_widgets', true ); ?>
-					<h4><?php esc_html_e( 'Directory Header & Footer widgets', 'gravity-view'); ?></h4>
-
-					<table class="form-table">
-						<thead>
-							<tr>
-								<th>&nbsp;</th>
-								<th><?php esc_html_e( 'Show in Header', 'gravity-view'); ?></th>
-								<th><?php esc_html_e( 'Show in Footer', 'gravity-view'); ?></th>
-								<th>&nbsp;</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php do_action( 'gravityview_admin_view_widgets', $widgets ); ?>
-						</tbody>
-					</table>
-				</div>
 
 			</div>
 
@@ -235,61 +234,24 @@ class GravityView_Admin_Views {
 			<?php // Single View Tab ?>
 
 			<div id="single-view">
-				<table class="form-table">
-					<tr valign="top">
-						<td>
-							<label for="gravityview_single_template"><?php esc_html_e( 'Single Entry Template', 'gravity-view'); ?></label>
-						</td>
-						<td>
-							<?php // get current directory template, by default, show table
-							$current_single_template = get_post_meta( $post->ID, '_gravityview_single_template', true );
-							$current_single_template = empty( $current_single_template ) ? 'default_s_table' : $current_single_template;
-							?>
-							<span id="gravityview_single_template_name"><?php echo esc_html( $templates_single[ $current_single_template ]['label'] ); ?></span>
-							<a href="#" id="gravityview_single_template_change" title="<?php esc_attr_e( 'Change template', 'gravity-view' ); ?>" class="button-small button" style="vertical-align: baseline; margin-left: 2em;"><?php esc_html_e( 'Change template', 'gravity-view' ); ?></a>
-							<div id="gravityview_single_template_dialog" class="gv-dialog-options" title="<?php esc_attr_e( 'Select the single view template', 'gravity-view' ); ?>" class="">
-								<div class="gv-template-browser">
-									<div class="gv-template">
-										<a href="https://katz.co/gravityview/" title="<?php esc_attr_e( 'Add New Template', 'gravity-view'); ?>" target="_blank">
-											<img src="<?php echo GRAVITYVIEW_URL . 'images/preview_add_new_template.jpg'; ?>" alt="<?php esc_attr_e( 'Add New Template', 'gravity-view'); ?>">
-										</a>
-									</div>
-									<?php foreach( $templates_single as $id => $template ) : ?>
-										<div class="gv-template">
-											<label for="gv_single_template_<?php echo $id; ?>">
-												<input type="radio" class="hide-if-js" id="gv_single_template_<?php echo $id; ?>" name="gravityview_single_template" value="<?php echo $id; ?>" <?php checked( $id, $current_single_template, true ); ?>>
-												<img src="<?php echo $template['preview']; ?>" alt="<?php echo $template['label']; ?>">
-											</label>
-										</div>
-									<?php endforeach; ?>
-								</div>
-							</div>
-
-						</td>
-					</tr>
-				</table>
-
-				<hr>
 
 				<div id="single-fields" class="gv-section">
-					<h4><?php esc_html_e( 'Fields Mapping', 'gravity-view'); ?></h4>
+					<h4><?php esc_html_e( 'Customize your single view', 'gravity-view'); ?></h4>
 
-					<div id="single-active-fields" class="gv-area">
-
-						<?php echo $this->render_directory_active_areas( $current_single_template, $post->ID, 'single' ); ?>
-
-					</div>
-
-					<div id="single-available-fields">
-						<fieldset class="area">
-							<legend><?php esc_html_e( 'Available Fields', 'gravity-view' ); ?></legend>
-							<?php echo $this->render_available_fields( $curr_form, 'single' ); ?>
-						</fieldset>
-					</div>
 
 				</div>
 
-				<div class="clear"></div>
+				<hr>
+
+				<table class="form-table">
+
+					<?php // Hook for other template custom settings
+
+					do_action( 'gravityview_admin_single_settings', $template_settings );
+
+					?>
+
+				</table>
 
 			</div> <?php // end single view tab ?>
 
@@ -350,27 +312,19 @@ class GravityView_Admin_Views {
 			update_post_meta( $post_id, '_gravityview_form_id', $_POST['gravityview_form_id'] );
 		}
 
+		// save template id
+		if ( isset( $_POST['gravityview_select_template_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_template_nonce'], 'gravityview_select_template' ) ) {
+			update_post_meta( $post_id, '_gravityview_directory_template', $_POST['gravityview_directory_template'] );
+		}
+
 		// save View Configuration metabox
 		if ( isset( $_POST['gravityview_view_configuration_nonce'] ) && wp_verify_nonce( $_POST['gravityview_view_configuration_nonce'], 'gravityview_view_configuration' ) ) {
 
-			// -- directory tab --
-
-			// Directory Template Id
-			update_post_meta( $post_id, '_gravityview_directory_template', $_POST['gravityview_directory_template'] );
-
-			// Directory number of entries per page
-			if( isset( $_POST['gravityview_page_size'] ) && is_int( (int)$_POST['gravityview_page_size'] ) ) {
-				update_post_meta( $post_id, '_gravityview_page_size', (int)$_POST['gravityview_page_size'] );
-			} else {
-				update_post_meta( $post_id, '_gravityview_page_size', 25 );
+			// Directory Visible Fields
+			if( empty( $_POST['template_settings'] ) ) {
+				$_POST['template_settings'] = array();
 			}
-
-			// Directory show only the approved entries
-			if( !empty( $_POST['gravityview_only_approved'] ) ) {
-				update_post_meta( $post_id, '_gravityview_only_approved', $_POST['gravityview_only_approved'] );
-			} else {
-				delete_post_meta( $post_id, '_gravityview_only_approved' );
-			}
+			update_post_meta( $post_id, '_gravityview_template_settings', $_POST['template_settings'] );
 
 			// Directory Visible Fields
 			if( empty( $_POST['fields'] ) ) {
@@ -383,11 +337,6 @@ class GravityView_Admin_Views {
 				$_POST['widgets'] = array();
 			}
 			update_post_meta( $post_id, '_gravityview_directory_widgets', $_POST['widgets'] );
-
-
-			// -- single entry tab --
-			update_post_meta( $post_id, '_gravityview_single_template', $_POST['gravityview_single_template'] );
-
 
 		} // end save view configuration
 
