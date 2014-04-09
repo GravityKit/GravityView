@@ -137,8 +137,9 @@ class GravityView_Admin_Views {
 				</div>
 			<?php endforeach; ?>
 		</div>
+		<div class="clear"></div>
 
-<?php
+	<?php
 
 	}
 
