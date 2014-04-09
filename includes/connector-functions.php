@@ -110,6 +110,8 @@ if( !function_exists( 'gravityview_get_entry_meta' ) ) {
 				$fields[ $key ] = array( 'label' => $field['label'], 'type' => 'entry_meta' );
 			}
 	    }
+
+	    return $fields;
 	}
 }
 
