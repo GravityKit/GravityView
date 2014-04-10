@@ -329,6 +329,10 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 
 
+
+/**
+ * Main GravityView widget class
+ */
 class GravityView_Widget {
 
 	// Widget admin label
@@ -353,13 +357,20 @@ class GravityView_Widget {
 		$this->defaults = array_merge( array( 'header' => 0, 'footer' => 0 ), $defaults );
 		$this->settings = $settings;
 
-		// render html settings in the View admin screen
-		add_action( 'gravityview_admin_view_widgets', array( $this, 'render_admin_settings' ), 10, 1 );
+		// register widgets to be listed in the View Configuration
+		//add_action( 'gravityview_admin_view_widgets', array( $this, 'render_admin_settings' ), 10, 1 );
+		add_filter( 'gravityview_register_directory_widgets', array( $this, 'register_widget') );
 
 		// frontend logic
 		add_action( 'gravityview_before', array( $this, 'render_frontend_hooks' ) );
 		add_action( 'gravityview_after', array( $this, 'render_frontend_hooks' ) );
 
+	}
+
+
+	function register_widget( $widgets ) {
+		$widgets[ $this->widget_id ] = array( 'label' => $this->widget_label );
+		return $widgets;
 	}
 
 

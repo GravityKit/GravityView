@@ -187,6 +187,12 @@ class GravityView_Admin_Views {
 						<?php echo $this->render_available_fields( $curr_form, true ); ?>
 					</div>
 
+					<div id="directory-available-widgets" class="hide-if-js">
+						<?php echo $this->render_available_widgets(); ?>
+					</div>
+
+
+
 					<?php //render header widget areas ?>
 
 					<?php //render Listing areas ?>
@@ -393,7 +399,6 @@ class GravityView_Admin_Views {
 		}
 
 		return $output;
-
 	}
 
 	/**
@@ -409,6 +414,34 @@ class GravityView_Admin_Views {
                 'created_by' => array( 'label' => 'User', 'type' => 'created_by'),
         );
         return apply_filters( 'gravityview_entry_default_fields', $entry_default_fields );
+	}
+
+
+	/**
+	 * Render html for displaying available widgets
+	 * @return string html
+	 */
+	function render_available_widgets() {
+
+		// get the list of registered widgets
+		$widgets = apply_filters( 'gravityview_register_directory_widgets', array() );
+
+		$output = '';
+
+		if( !empty( $widgets ) ) {
+			foreach( $widgets as $id => $details ) {
+
+				$output .= '<div data-fieldid="'. $id .'" class="gv-fields">';
+				$output .= '<h5>'. $details['label'] . '</h5>';
+				$output .= '<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
+				$output .= '<a href="#remove" class="dashicons-dismiss dashicons"></a>';
+				$output .= '</span>';
+				$output .= '</div>';
+
+			}
+		}
+
+		return $output;
 	}
 
 
