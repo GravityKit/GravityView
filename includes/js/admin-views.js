@@ -88,7 +88,7 @@
 					} else {
 						templateId = $("input[name='gravityview_directory_template']:checked").val();
 					}
-					
+
 					var data = {
 						action: 'gv_field_options',
 						template: templateId,
@@ -174,11 +174,11 @@
 			}
 		});
 	}
-	
-	
+
+
 	var currentFormId = '', gvSelectForm,
 	viewFormSelect = {
-		
+
 		init: function() {
 			gvSelectForm = $('#gravityview_form_id');
 			currentFormId = gvSelectForm.val();
@@ -189,28 +189,28 @@
 			}
 			$('#gravityview_form_id').change( viewFormSelect.changed );
 		},
-		
+
 		hideView: function() {
 			currentFormId = '';
 			$("#gravityview_directory_view").slideUp(150);
 			$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
 		},
-		
+
 		showView: function() {
 			$("#gravityview_directory_view").slideDown(150);
 		},
-		
+
 		changed: function() {
-			
+
 			if( currentFormId !== ''  && currentFormId !== $(this).val() ) {
 				viewFormSelect.showDialog();
 			} else {
 				viewFormSelect.getNewFields();
 			}
 		},
-		
+
 		showDialog: function() {
-			
+
 			var thisDialog = $('#gravityview_form_id_dialog');
 
 			thisDialog.dialog({
@@ -234,15 +234,15 @@
 					}
 				} ],
 			});
-			
+
 		},
-		
+
 		getNewFields: function() {
 
 			currentFormId = gvSelectForm.val();
-			
+
 			$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
-			
+
 			var data = {
 				action: 'gv_available_fields',
 				formid: currentFormId,
@@ -256,40 +256,40 @@
 					init_draggables();
 				}
 			});
-			
+
 			toggleDropMessage();
 			viewFormSelect.showView();
 		}
-		
+
 	};
-	
-	
-	
+
+
+
 	function viewTemplatePicker( type ) {
-		
+
 		var thisType = type;
-		
+
 		this.init = function() {
-			
+
 			if( thisType != 'single' && thisType != 'directory' ) {
 				return;
 			}
-			
+
 			// assign selected class
 			$('input[name="gravityview_'+ thisType +'_template"]:checked').parents(".gv-template").addClass('gv-selected');
-			
-			// 
+
+			//
 			$('#gravityview_'+ thisType +'_template_change').click( this.showDialog );
-			
+
 			// action when template changes
 			$('input[name="gravityview_'+ thisType +'_template"]').change( this.changed );
-			
-			
+
+
 		};
-		
+
 		this.showDialog = function( e ) {
 			e.preventDefault();
-			
+
 			var $thisDialog = $('#gravityview_'+ thisType +'_template_dialog');
 
 			$thisDialog.dialog({
@@ -305,9 +305,9 @@
 				],
 			});
 		};
-		
+
 		this.changed = function() {
-			
+
 			$('#'+ thisType +'-active-fields').find("fieldset.area").remove();
 
 			var data = {
@@ -322,26 +322,26 @@
 					init_droppables();
 				}
 			});
-			
+
 			//change class to highlight the selection
 			var $parent = $(this).parents(".gv-template");
 			$parent.siblings().removeClass('gv-selected');
 			$parent.addClass('gv-selected');
-			
+
 			//update the template name when dialog is closed
 			$('#gravityview_'+ thisType +'_template_name').text( $(this).next("img").attr('alt') );
-			
+
 		};
 	}
-	
-	
+
+
 	$(document).ready( function() {
 		// assign form to this view (logic)
 		viewFormSelect.init();
-		
+
 		var directoryTemplatePicker = new viewTemplatePicker('directory'),
 			singleTemplatePicker = new viewTemplatePicker('single');
-		
+
 		directoryTemplatePicker.init();
 		singleTemplatePicker.init();
 /*
@@ -366,14 +366,14 @@
 			$(this).parents(".gv-template").siblings().removeClass('gv-selected');
 			$(this).parents(".gv-template").addClass('gv-selected');
 			$("#gravityview_directory_template_name").text( $(this).next("img").attr('alt') );
-			
+
 		});
-		
+
 		// Open dialog template picker
 		$("#gravityview_directory_template_change").click( function( event ) {
-			
+
 			event.preventDefault();
-			
+
 			var thisDialog = $('#gravityview_directory_template_dialog');
 
 			thisDialog.dialog({
@@ -388,13 +388,13 @@
 					} },
 				],
 			});
-			
-			
+
+
 		});
-		
-		
-		
-		
+
+
+
+
 		// If Single Template Selection changes update areas/fields
 		$("#gravityview_single_template").change( function() {
 
@@ -426,7 +426,7 @@
 
 
 		// Directory View Configuration - Fields Mapping
-		 // Using field_origin as flag to avoid 'drop' event being fired twice.
+
 
 		init_draggables();
 
@@ -444,8 +444,44 @@
 		// Directory View Configuration - Widgets
 		$("a[href='#widget-settings']").click( openWidgetSettings );
 
-		$("table.form-table tr:even").addClass('alternate');
 
+		// test tooltips
+		$(".gv-add-field").tooltip({
+			content: function() {
+				var objType = $(this).attr('data-objecttype');
+				if( objType === 'field' ) {
+					return $("#directory-available-fields").html();
+				} else if( objType === 'widget' ) {
+					return $("#directory-available-widgets").html();
+				}
+			},
+			disabled: true,
+			position: { my: "left+15 center", at: "right center" },
+			}).on('mouseout focusout', function(e) {
+                  e.stopImmediatePropagation();
+             }).click( function(e) {
+				e.preventDefault();
+				if( $(this).attr('data-tooltip') != undefined && $(this).attr('data-tooltip') == 'active' ) {
+					$(this).tooltip("close");
+					$(this).attr('data-tooltip', '');
+				} else {
+					$(this).tooltip("open");
+					$(this).attr('data-tooltip', 'active');
+				}
+		});
+
+        // close all tooltips if user clicks outside the tooltip
+        $(document).mouseup( function (e) {
+		    var activeTooltip = $("a.gv-add-field[data-tooltip='active']");
+		    if( !activeTooltip.is( e.target ) && activeTooltip.has( e.target ).length === 0 ) {
+		        activeTooltip.tooltip("close");
+		        activeTooltip.attr('data-tooltip', '');
+		    }
+		});
+
+
+		// Make zebra table rows
+		$("table.form-table tr:even").addClass('alternate');
 
 	});
 

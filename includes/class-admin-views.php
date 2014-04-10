@@ -182,14 +182,17 @@ class GravityView_Admin_Views {
 					<h4><?php esc_html_e( 'Customize your directory view', 'gravity-view'); ?></h4>
 
 
-					<p><a href="#" class="gv-add-field" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>">+</a>
+					<p><a href="#" class="gv-add-field" data-objecttype="field" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>">+</a>
 					<div id="directory-available-fields" class="hide-if-js">
 						<?php echo $this->render_available_fields( $curr_form, true ); ?>
 					</div>
 
+
+					<p><a href="#" class="gv-add-field" data-objecttype="widget" title="<?php esc_attr_e( 'Add Widget', 'gravity-view' ); ?>">++</a>
 					<div id="directory-available-widgets" class="hide-if-js">
 						<?php echo $this->render_available_widgets(); ?>
 					</div>
+
 
 
 
