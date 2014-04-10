@@ -96,7 +96,7 @@
 						field_id: ui.draggable.attr('data-fieldid'),
 						field_label: ui.draggable.find("h5").text(),
 						nonce: gvGlobals.nonce,
-					}
+					};
 
 					$.post( gvGlobals.ajaxurl, data, function( response ) {
 						if( response ) {
@@ -124,7 +124,7 @@
 		event.preventDefault();
 		var area = $( event.currentTarget ).parents(".active-drop");
 		$( event.currentTarget ).parent().parent().remove();
-		if( area.find(".gv-fields").length == 0 ) {
+		if( area.find(".gv-fields").length === 0 ) {
 			 area.find(".drop-message").show();
 		}
 	}
@@ -167,7 +167,7 @@
 
 	function toggleDropMessage() {
 		$(".active-drop").each( function() {
-			if( $(this).find(".gv-fields").length != 0 ) {
+			if( $(this).find(".gv-fields").length !== 0 ) {
 				$(this).find(".drop-message").hide();
 			} else {
 				$(this).find(".drop-message").show();
@@ -247,7 +247,7 @@
 				action: 'gv_available_fields',
 				formid: currentFormId,
 				nonce: gvGlobals.nonce,
-			}
+			};
 
 			$.post( gvGlobals.ajaxurl, data, function( response ) {
 				if( response ) {
@@ -314,7 +314,7 @@
 				action: 'gv_get_active_areas',
 				template_id: $(this).val(),
 				nonce: gvGlobals.nonce,
-			}
+			};
 
 			$.post( gvGlobals.ajaxurl, data, function( response ) {
 				if( response ) {
@@ -456,12 +456,23 @@
 				}
 			},
 			disabled: true,
-			position: { my: "left+15 center", at: "right center" },
+			position: {
+				my: "left+15 center",
+				at: "right center" ,
+				using: function( position, feedback ) {
+					$( this ).css( position );
+					$( "<div>" )
+					.addClass( "arrow" )
+					.addClass( feedback.vertical )
+					.addClass( feedback.horizontal )
+					.appendTo( this );
+				}
+			},
 			}).on('mouseout focusout', function(e) {
                   e.stopImmediatePropagation();
              }).click( function(e) {
 				e.preventDefault();
-				if( $(this).attr('data-tooltip') != undefined && $(this).attr('data-tooltip') == 'active' ) {
+				if( $(this).attr('data-tooltip') !== undefined && $(this).attr('data-tooltip') == 'active' ) {
 					$(this).tooltip("close");
 					$(this).attr('data-tooltip', '');
 				} else {
