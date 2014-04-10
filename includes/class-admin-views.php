@@ -114,7 +114,7 @@ class GravityView_Admin_Views {
 	 * @param object $post
 	 * @return void
 	 */
-	function render_select_template() {
+	function render_select_template( $post ) {
 
 		// Use nonce for verification
 		wp_nonce_field( 'gravityview_select_template', 'gravityview_select_template_nonce' );
@@ -181,11 +181,19 @@ class GravityView_Admin_Views {
 
 					<h4><?php esc_html_e( 'Customize your directory view', 'gravity-view'); ?></h4>
 
+
+					<p><a href="#" class="gv-add-field" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>">+</a>
+					<div id="directory-available-fields" class="hide-if-js">
+						<?php echo $this->render_available_fields( $curr_form, true ); ?>
+					</div>
+
 					<?php //render header widget areas ?>
 
 					<?php //render Listing areas ?>
 
 					<?php //render footer widget areas ?>
+
+
 
 
 
@@ -356,8 +364,14 @@ class GravityView_Admin_Views {
 	function render_available_fields( $form_id = '', $context = 'single' ) {
 
 		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array() );
-
+		// get form fields
 		$fields = gravityview_get_form_fields( $form_id, true );
+		// get meta fields
+		$meta_fields = gravityview_get_entry_meta( $form_id );
+		// get default fields
+		$default_fields = $this->get_entry_default_fields();
+
+		$fields = array_merge( $fields, $meta_fields, $default_fields );
 
 		$output = '';
 
@@ -381,6 +395,22 @@ class GravityView_Admin_Views {
 		return $output;
 
 	}
+
+	/**
+	 * Retrieve the default fields id, label and type
+	 * @return array
+	 */
+	function get_entry_default_fields() {
+		$entry_default_fields = array(
+		        'id' => array( 'label' => 'Entry Id', 'type' => 'id'),
+                'ip' => array( 'label' => 'User IP', 'type' => 'ip'),
+                'date_created' => array( 'label' => 'Entry Date', 'type' => 'date_created'),
+                'source_url' => array( 'label' => 'Source Url', 'type' => 'source_url'),
+                'created_by' => array( 'label' => 'User', 'type' => 'created_by'),
+        );
+        return apply_filters( 'gravityview_entry_default_fields', $entry_default_fields );
+	}
+
 
 
 	/**
@@ -692,6 +722,8 @@ class GravityView_Admin_Views {
 		wp_enqueue_script( 'jquery-ui-draggable' );
 		wp_enqueue_script( 'jquery-ui-droppable' );
 		wp_enqueue_script( 'jquery-ui-sortable' );
+		wp_enqueue_script( 'jquery-ui-tooltip' );
+
 
 		wp_enqueue_script( 'gravityview_views_scripts', GRAVITYVIEW_URL . 'includes/js/admin-views.js', array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-dialog' ) );
 
