@@ -35,9 +35,10 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 	function __construct() {
 		$settings = array(
 			'slug' => 'table',
-			'type' => 'directory',
+			'type' => 'custom',
 			'label' =>  __( 'Table (default)', 'gravity-view' ),
-			'preview' => GRAVITYVIEW_URL . 'images/preview_table_directory.jpg'
+			'description' => __('some description', 'gravity-view'),
+			'logo' => GRAVITYVIEW_URL . 'images/placeholder.png'
 		);
 
 		$field_options = array(
@@ -60,7 +61,9 @@ class GravityView_Default_Template_Table_Single extends GravityView_Template {
 			'slug' => 'table',
 			'type' => 'single',
 			'label' =>  __( 'Table (default)', 'gravity-view' ),
-			'preview' => GRAVITYVIEW_URL . 'images/preview_table_directory.jpg'
+			'description' => __('some description', 'gravity-view'),
+			'logo' => GRAVITYVIEW_URL . 'images/placeholder.png',
+			'buy_source' => '#',
 		);
 
 		$field_options = array();
@@ -85,7 +88,8 @@ class GravityView_Default_Template_List extends GravityView_Template {
 			'slug' => 'list',
 			'type' => 'directory',
 			'label' =>  __( 'List (default)', 'gravity-view' ),
-			'preview' => GRAVITYVIEW_URL . 'images/preview_list_directory.jpg',
+			'description' => __('some description', 'gravity-view'),
+			'logo' => GRAVITYVIEW_URL . 'images/placeholder.png',
 			'css_source' => GRAVITYVIEW_URL . 'templates/css/list-view.css',
 		);
 
@@ -114,7 +118,8 @@ class GravityView_Default_Template_List_Single extends GravityView_Template {
 			'slug' => 'list',
 			'type' => 'single',
 			'label' =>  __( 'List (default)', 'gravity-view' ),
-			'preview' => GRAVITYVIEW_URL . 'images/preview_list_directory.jpg',
+			'description' => __('some description', 'gravity-view'),
+			'logo' => GRAVITYVIEW_URL . 'images/placeholder.png',
 			'css_source' => GRAVITYVIEW_URL . 'templates/css/list-view.css',
 		);
 
@@ -139,14 +144,20 @@ class GravityView_Template {
 	// template unique id
 	private $template_id;
 
-	// define template slug
-	protected $template_slug;
-
-	// template presentation label
-	protected $template_label;
-
-	// template type, possible values single or directory view
-	private $template_type;
+	// define template settings
+	protected $settings;
+	/**
+	 * $settings:
+	 * slug - template slug (frontend)
+	 * css_source - url path to CSS file, to be enqueued (frontend)
+	 * type - 'custom' or 'preset' (admin)
+	 * label - template nicename (admin)
+	 * description - short about text (admin)
+	 * logo - template icon (admin)
+	 * preview - template image for previewing (admin)
+	 * buy_source - url source for buying this template
+	 *
+	 */
 
 	// form fields extra options
 	protected $field_options;
@@ -161,25 +172,14 @@ class GravityView_Template {
 			return;
 		}
 
-		extract( wp_parse_args( $settings, array( 'slug' => '', 'type' => '', 'label' => '', 'preview' => '', 'css_source' => '' ) ) );
-
-		// assign values
 		$this->template_id = $id;
-		$this->template_slug = $slug;
-		$this->template_type = $type;
-		$this->template_label = $label;
-		$this->template_preview = $preview;
-		$this->template_css_source = $css_source;
+
+		$this->settings = wp_parse_args( $settings, array( 'slug' => '', 'css_source' => '', 'type' => '', 'label' => '', 'description' => '', 'logo' => '', 'preview' => '', 'buy_source' => '' ) );
+
 		$this->field_options = $field_options;
 		$this->active_areas = $areas;
 
-
-		// register template
-		if( 'single' == $type ) {
-			add_filter( 'gravityview_register_single_template', array( $this, 'register_template' ) );
-		} else {
-			add_filter( 'gravityview_register_directory_template', array( $this, 'register_template' ) );
-		}
+		add_filter( 'gravityview_register_directory_template', array( $this, 'register_template' ) );
 
 		// assign active areas
 		add_filter( 'gravityview_template_active_areas', array( $this, 'assign_active_areas' ), 10, 2 );
@@ -203,7 +203,7 @@ class GravityView_Template {
 	 * @return void
 	 */
 	public function register_template( $templates ) {
-		$templates[ $this->template_id ] = array( 'label' => $this->template_label, 'preview' => $this->template_preview );
+		$templates[ $this->template_id ] = $this->settings;
 		return $templates;
 	}
 
@@ -251,8 +251,8 @@ class GravityView_Template {
 	 */
 	public function assign_view_slug( $default, $context ) {
 
-		if( !empty( $this->template_slug ) ) {
-			return $this->template_slug;
+		if( !empty( $this->settings['slug'] ) ) {
+			return $this->settings['slug'];
 		}
 		if( !empty( $default ) ) {
 			return $default;
@@ -266,8 +266,8 @@ class GravityView_Template {
 	 * @return void
 	 */
 	public function register_styles() {
-		if( !empty( $this->template_css_source ) ) {
-			wp_register_style( 'gravityview_style_' . $this->template_id, $this->template_css_source, array(), null, 'all' );
+		if( !empty( $this->settings['css_source'] ) ) {
+			wp_register_style( 'gravityview_style_' . $this->template_id, $this->settings['css_source'], array(), null, 'all' );
 		}
 	}
 
