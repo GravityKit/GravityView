@@ -206,7 +206,7 @@
 
 .top .ui-tooltip-content::after {
     bottom: -14px;
-    left: 45%;
+    left: 48%;
     border-color: #999 transparent;
     border-width: 10px 10px 0;
 }
@@ -236,42 +236,48 @@ hr{
 	font-weight: bold;
 }*/
 
-/** Template picker */
-.gv-template-browser:before,
-.gv-template-browser:after {
-	content: "";
-	display: table;
+/* GV Droppable Areas
+--------------------------------------- */
+
+.gv-droppable-area {
+	border: 1px solid #ccc;
+	margin-bottom: 1em;
 }
 
-.gv-template-browser:after {
-	clear: both;
+.gv-droppable-area .gv-droppable-area-action {
+	background: #eee;
+	padding: 0.5em;
 }
 
-.gv-template-browser {
-	padding: 0.5em 0 0 0.5em;
+.gv-droppable-area .gv-droppable-area-title {
+	font-weight: bold;
+	margin: 0;
+	padding: 0;
 }
 
-.gv-template {
-	width: 30%;
-	margin-right: 0.5em;
-	margin-bottom: 0.5em;
-	float: left;
-	border: 4px solid rgba(255,255,255,0);
+.gv-droppable-area .gv-droppable-area-subtitle {
+	margin: 0.25em 0 0 0;
+	padding: 0;
+	font-size: 14px;
+	color: #666;
 }
 
-.gv-template.gv-selected {
-	border: 4px solid #1e8cbe;
-
+.gv-droppable-area .button-secondary {
+	float: right;
 }
 
-.gv-template img {
-	width: 100%;
-	height: auto;
+.active-drop {
+	/*border: 1px dotted #bbb;*/
+	padding: 0.5em;
 }
 
-.gv-template a:active, .gv-template a:focus {
-	outline: none;
+.active-drop .drop-message {
+	margin: 5px 2px;
+	line-height: 40px;
+	color: #bbb;
 }
+
+
 
 
 /** Fields drag and drop */
