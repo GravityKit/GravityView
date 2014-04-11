@@ -158,6 +158,13 @@
 	width: 60%;
 }
 
+.button-primary.button-buy-now {
+	background: #2ecc37;
+	border-color: #00a213;
+	-webkit-box-shadow: inset 0 1px 0 rgba(120, 230, 129, .5), 0 1px 0 rgba(0, 0, 0, .15);
+	box-shadow: inset 0 1px 0 rgba(120, 230, 129, .5), 0 1px 0 rgba(0, 0, 0, .15);
+}
+
 
 
 
