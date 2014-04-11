@@ -403,7 +403,7 @@
 			disabled: true,
 			position: {
 				my: "center bottom",
-				at: "center top-10",
+				at: "center top-12",
 			},
 			tooltipClass: 'top',
 			}).on('mouseout focusout', function(e) {
