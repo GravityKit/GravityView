@@ -59,7 +59,7 @@ class GravityView_Default_Template_Table_Single extends GravityView_Template {
 	function __construct() {
 		$settings = array(
 			'slug' => 'table',
-			'type' => 'single',
+			'type' => 'preset',
 			'label' =>  __( 'Table (default)', 'gravity-view' ),
 			'description' => __('some description', 'gravity-view'),
 			'logo' => GRAVITYVIEW_URL . 'images/placeholder.png',

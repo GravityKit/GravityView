@@ -181,7 +181,7 @@
 
 		init: function() {
 			//start fresh button
-			var gvStartFreshButton = $("a[href='#gravityview_start_fresh']");
+			var gvStartFreshButton = $('a[href="#gv_start_fresh"]');
 			//select form dropdown
 			gvSelectForm = $('#gravityview_form_id');
 			//current form selection
@@ -193,12 +193,16 @@
 				viewFormSelect.showView();
 			}
 
+			// start fresh
+			gvStartFreshButton.click( function(e) {
+				e.preventDefault();
+				viewFormSelect.startFresh();
+			});
+
+			// select form
 			gvSelectForm.change( viewFormSelect.changed );
 
-			// gvStartFreshButton.click( function(e) {
 
-
-			// });
 		},
 
 		hideView: function() {
@@ -211,6 +215,16 @@
 			$("#gravityview_select_template").slideDown(150);
 		},
 
+		startFresh: function(){
+			if( currentFormId !== '' ) {
+				viewFormSelect.showDialog();
+			} else {
+				viewFormSelect.templateFilter('preset');
+				viewFormSelect.showView();
+			}
+
+		},
+
 		changed: function() {
 
 			if( currentFormId !== ''  && currentFormId !== $(this).val() ) {
@@ -218,11 +232,6 @@
 			} else {
 				viewFormSelect.getNewFields();
 			}
-		},
-
-		startFresh: function(e){
-			e.preventDefault();
-
 		},
 
 		showDialog: function() {
@@ -251,6 +260,17 @@
 				} ],
 			});
 
+		},
+
+		templateFilter: function( type ) {
+			var templateType = type;
+			$(".gv-view-types-module").each( function() {
+				if( $(this).attr('data-filter') === templateType ) {
+					$(this).parent().show();
+				} else {
+					$(this).parent().hide();
+				}
+			});
 		},
 
 		getNewFields: function() {
