@@ -176,6 +176,9 @@
 	}
 
 
+
+
+
 	var currentFormId = '', gvSelectForm,
 	viewFormSelect = {
 
@@ -192,7 +195,8 @@
 			if( '' === currentFormId ) {
 				viewFormSelect.hideView();
 			} else {
-				viewFormSelect.showView();
+				viewFormSelect.templateFilter('custom');
+				viewFormSelect.showTemplates();
 			}
 
 			// start fresh
@@ -216,11 +220,11 @@
 
 		hideView: function() {
 			currentFormId = '';
-			$("#gravityview_directory_view, #gravityview_select_template").slideUp(150);
+			$("#gravityview_view_config, #gravityview_select_template").slideUp(150);
 			$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
 		},
 
-		showView: function() {
+		showTemplates: function() {
 			$("#gravityview_select_template").slideDown(150);
 		},
 
@@ -229,7 +233,7 @@
 				viewFormSelect.showDialog();
 			} else {
 				viewFormSelect.templateFilter('preset');
-				viewFormSelect.showView();
+				viewFormSelect.showTemplates();
 			}
 
 		},
@@ -239,7 +243,9 @@
 			if( currentFormId !== ''  && currentFormId !== $(this).val() ) {
 				viewFormSelect.showDialog();
 			} else {
-				viewFormSelect.getNewFields();
+				viewFormSelect.templateFilter('custom');
+				viewFormSelect.showTemplates();
+				//viewFormSelect.getNewFields();
 			}
 		},
 
@@ -293,7 +299,15 @@
 
 			//change view configuration active areas
 
+			viewFormSelect.showViewConfig();
+
 		},
+
+		showViewConfig: function() {
+			$("#gravityview_view_config").slideDown(150);
+		},
+
+
 
 		getNewFields: function() {
 
@@ -316,7 +330,7 @@
 			});
 
 			toggleDropMessage();
-			viewFormSelect.showView();
+			viewFormSelect.showTemplates();
 		}
 
 	};

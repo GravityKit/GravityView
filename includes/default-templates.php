@@ -26,6 +26,32 @@ $field_options = array(
 
 */
 
+/** Preset templates */
+
+class GravityView_Preset_Business_Table {
+
+	function __construct() {
+		$def_template = new GravityView_Default_Template_Table;
+
+		$def_template->template_id = 'preset_business_table';
+
+		$def_template->settings = array(
+			'slug' => 'table',
+			'type' => 'preset',
+			'label' =>  __( 'Business Table', 'gravity-view' ),
+			'description' => __('Start a business directory as a table.', 'gravity-view'),
+			'logo' => GRAVITYVIEW_URL . 'images/placeholder.png'
+		);
+
+	}
+}
+
+
+
+
+
+/** Simple customizable templates: table and list */
+
 /**
  * GravityView_Default_Template_Table class.
  * Defines Table(default) template
@@ -37,7 +63,7 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 			'slug' => 'table',
 			'type' => 'custom',
 			'label' =>  __( 'Table (default)', 'gravity-view' ),
-			'description' => __('some description', 'gravity-view'),
+			'description' => __('Display items in a table view.', 'gravity-view'),
 			'logo' => GRAVITYVIEW_URL . 'images/placeholder.png'
 		);
 
@@ -53,30 +79,6 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 
 }
 
-// Table - single entry view
-class GravityView_Default_Template_Table_Single extends GravityView_Template {
-
-	function __construct() {
-		$settings = array(
-			'slug' => 'table',
-			'type' => 'preset',
-			'label' =>  __( 'Table (default)', 'gravity-view' ),
-			'description' => __('some description', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'images/placeholder.png',
-			'buy_source' => '#',
-		);
-
-		$field_options = array();
-
-		$areas = array( array( 'id' => 'gv-table-columns-single', 'areaid' => 'table-columns-single', 'label' => __( 'Visible Table Columns', 'gravity-view') ) );
-
-		parent::__construct( 'default_s_table', $settings, $field_options, $areas );
-
-	}
-
-}
-
-
 /**
  * GravityView_Default_Template_List class.
  * Defines List (default) template
@@ -86,9 +88,9 @@ class GravityView_Default_Template_List extends GravityView_Template {
 	function __construct() {
 		$settings = array(
 			'slug' => 'list',
-			'type' => 'directory',
+			'type' => 'custom',
 			'label' =>  __( 'List (default)', 'gravity-view' ),
-			'description' => __('some description', 'gravity-view'),
+			'description' => __('Display items in a listing view.', 'gravity-view'),
 			'logo' => GRAVITYVIEW_URL . 'images/placeholder.png',
 			'css_source' => GRAVITYVIEW_URL . 'templates/css/list-view.css',
 		);
@@ -110,42 +112,14 @@ class GravityView_Default_Template_List extends GravityView_Template {
 	}
 }
 
-// List - single entry view
-class GravityView_Default_Template_List_Single extends GravityView_Template {
-
-	function __construct() {
-		$settings = array(
-			'slug' => 'list',
-			'type' => 'single',
-			'label' =>  __( 'List (default)', 'gravity-view' ),
-			'description' => __('some description', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'images/placeholder.png',
-			'css_source' => GRAVITYVIEW_URL . 'templates/css/list-view.css',
-		);
-
-		$field_options = array();
-
-		$areas = array(
-			array( 'id' => 'gv-single-list-title', 'areaid' => 'single-list-title', 'label' => __( 'Entry title', 'gravity-view') ),
-			array( 'id' => 'gv-single-list-description', 'areaid' => 'single-list-description', 'label' => __( 'Entry Description', 'gravity-view') ),
-			array( 'id' => 'gv-single-list-image', 'areaid' => 'single-list-image', 'label' => __( 'Entry Image', 'gravity-view') ),
-			array( 'id' => 'gv-single-list-attributes', 'areaid' => 'single-list-attributes', 'label' => __( 'Entry Attributes', 'gravity-view') ),
-			array( 'id' => 'gv-single-list-footer', 'areaid' => 'single-list-footer', 'label' => __( 'Entry Footer', 'gravity-view') ),
-		);
-
-		parent::__construct( 'default_s_list', $settings, $field_options, $areas );
-
-	}
-}
-
 
 class GravityView_Template {
 
 	// template unique id
-	private $template_id;
+	public $template_id;
 
 	// define template settings
-	protected $settings;
+	public $settings;
 	/**
 	 * $settings:
 	 * slug - template slug (frontend)
@@ -160,10 +134,10 @@ class GravityView_Template {
 	 */
 
 	// form fields extra options
-	protected $field_options;
+	public $field_options;
 
 	// define the active areas
-	protected $active_areas;
+	public $active_areas;
 
 
 	function __construct( $id, $settings = array(), $field_options = array(), $areas ) {
@@ -276,6 +250,8 @@ class GravityView_Template {
 }
 
 new GravityView_Default_Template_Table;
-new GravityView_Default_Template_Table_Single;
 new GravityView_Default_Template_List;
-new GravityView_Default_Template_List_Single;
+
+//presets
+new GravityView_Preset_Business_Table();
+

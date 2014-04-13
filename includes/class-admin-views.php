@@ -46,7 +46,7 @@ class GravityView_Admin_Views {
 		add_meta_box( 'gravityview_select_template', __( 'Choose a View Type', 'gravity-view' ), array( $this, 'render_select_template' ), 'gravityview', 'normal', 'high' );
 
 		// View Configuration box
-		add_meta_box( 'gravityview_directory_view', __( 'View Configuration', 'gravity-view' ), array( $this, 'render_view_configuration' ), 'gravityview', 'normal', 'high' );
+		add_meta_box( 'gravityview_view_config', __( 'View Configuration', 'gravity-view' ), array( $this, 'render_view_configuration' ), 'gravityview', 'normal', 'high' );
 
 		// information box
 		add_meta_box( 'gravityview_shortcode_info', __( 'Shortcode Info', 'gravity-view' ), array( $this, 'render_shortcode_info' ), 'gravityview', 'side', 'default' );
@@ -197,61 +197,9 @@ class GravityView_Admin_Views {
 
 				<div id="directory-fields" class="gv-section">
 					<h4><?php esc_html_e( 'Above Listings', 'gravity-view'); ?> <span><?php esc_html_e( 'Define the header widgets', 'gravity-view'); ?></span></h4>
+					<?php echo $this->render_widgets_active_areas('header', $post->ID ); ?>
 
 
-
-					<?php // static placeholders just for demonstration ?>
-
-					<div class="gv-grid gv-grid-pad gv-grid-border">
-						<div class="gv-grid-col-1-1">
-							<div class="gv-droppable-area">
-								<div class="active-drop">
-									<span class="drop-message">Drop fields here</span>
-								</div>
-								<div class="gv-droppable-area-action">
-									<a href="#" class="gv-add-field button-secondary" data-objecttype="widget" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>"><?php esc_html_e( '+ Add Field', 'gravity-view'); ?></a>
-									<p class="gv-droppable-area-title">Full Width Bottom</p>
-									<p class="gv-droppable-area-subtitle">This is the full width bottom</p>
-								</div>
-							</div>
-						</div>
-						<div class="gv-grid-col-1-2">
-							<div class="gv-droppable-area">
-								<div class="active-drop">
-									<span class="drop-message">Drop fields here</span>
-								</div>
-								<div class="gv-droppable-area-action">
-									<a href="#" class="gv-add-field button-secondary" data-objecttype="widget" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>"><?php esc_html_e( '+ Add Field', 'gravity-view'); ?></a>
-									<p class="gv-droppable-area-title">Full Width Bottom</p>
-									<p class="gv-droppable-area-subtitle">This is the full width bottom</p>
-								</div>
-							</div>
-						</div>
-						<div class="gv-grid-col-1-2">
-							<div class="gv-droppable-area">
-								<div class="active-drop">
-									<span class="drop-message">Drop fields here</span>
-								</div>
-								<div class="gv-droppable-area-action">
-									<a href="#" class="gv-add-field button-secondary" data-objecttype="widget" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>"><?php esc_html_e( '+ Add Field', 'gravity-view'); ?></a>
-									<p class="gv-droppable-area-title">Full Width Bottom</p>
-									<p class="gv-droppable-area-subtitle">This is the full width bottom</p>
-								</div>
-							</div>
-						</div>
-						<div class="gv-grid-col-1-1">
-							<div class="gv-droppable-area">
-								<div class="active-drop">
-									<span class="drop-message">Drop fields here</span>
-								</div>
-								<div class="gv-droppable-area-action">
-									<a href="#" class="gv-add-field button-secondary" data-objecttype="widget" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>"><?php esc_html_e( '+ Add Field', 'gravity-view'); ?></a>
-									<p class="gv-droppable-area-title">Full Width Bottom</p>
-									<p class="gv-droppable-area-subtitle">This is the full width bottom</p>
-								</div>
-							</div>
-						</div>
-					</div>
 
 							<h4><?php esc_html_e( 'Listings', 'gravity-view'); ?> <span><?php esc_html_e( 'Configure the entry layout', 'gravity-view'); ?></span></h4>
 					<div class="gv-grid gv-grid-pad gv-grid-border">
@@ -665,14 +613,89 @@ class GravityView_Admin_Views {
 
 				$output .= '<div data-fieldid="'. $id .'" class="gv-fields">';
 				$output .= '<h5>'. $details['label'] . '</h5>';
-				// $output .= '<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
-				// $output .= '<a href="#remove" class="dashicons-dismiss dashicons"></a>';
-				// $output .= '</span>';
+				$output .= '<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
+				$output .= '<a href="#remove" class="dashicons-dismiss dashicons"></a>';
+				$output .= '</span>';
 				$output .= '</div>';
 
 			}
 		}
 
+		return $output;
+	}
+
+	/**
+	 * Generic function to render rows and columns of active areas for widgets & fields
+	 * @param  string $type   Either 'widget' or 'field'
+	 * @param  array $rows    The layout structure: rows, columns and areas
+	 * @param  array $values  Saved objects
+	 * @return void
+	 */
+	function render_active_areas( $type, $rows, $values ) {
+
+		if( $type == 'widget' ) {
+			$button_label = __( 'Add Widget', 'gravity-view' );
+		} else {
+			$button_label = __( 'Add Field', 'gravity-view' );
+		}
+
+		foreach( $rows as $row ) :
+			foreach( $row as $col => $areas ) :
+				$column = ($col == '2-2') ? '1-2' : $col; ?>
+
+				<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
+
+					<?php foreach ($areas as $area ) : ?>
+
+						<div class="gv-droppable-area">
+							<div class="active-drop">
+								<span class="drop-message">Drop fields here</span>
+							</div>
+							<div class="gv-droppable-area-action">
+								<a href="#" class="gv-add-field button-secondary" data-objecttype="<?php echo esc_attr( $type ); ?>" title="<?php echo esc_attr( $button_label ); ?>">+ <?php echo esc_html( $button_label ); ?></a>
+								<p class="gv-droppable-area-title"><?php echo esc_html( $area['title'] ); ?></p>
+								<p class="gv-droppable-area-subtitle"><?php echo esc_html( $area['subtitle'] ); ?></p>
+							</div>
+						</div>
+
+					<?php endforeach; ?>
+
+				</div>
+			<?php endforeach;
+		endforeach;
+	}
+
+	/**
+	 * Render the widget active areas
+	 * @param  string $zone    Either 'header' or 'footer'
+	 * @param  string $post_id Current Post ID (view)
+	 * @return string          html
+	 */
+	function render_widgets_active_areas( $zone, $post_id = '' ) {
+
+		$default_widget_areas = array(
+			array( '1-1' => array( array( 'areaid' => $zone .'_top', 'title' => __('Full Width Top', 'gravity-view' ) , 'subtitle' => '' ) ) ),
+			array( '1-2' => array( array( 'areaid' => $zone .'_left', 'title' => __('Left', 'gravity-view') , 'subtitle' => '' ) ), '2-2' => array( array( 'areaid' => $zone .'_right', 'title' => __('Right', 'gravity-view') , 'subtitle' => '' ) ) ),
+			array( '1-1' => array( 	array( 'areaid' => $zone .'_bottom', 'title' => __('Full Width Bottom', 'gravity-view') , 'subtitle' => '' ) ) )
+		);
+
+
+
+		if( !empty( $post_id ) ) {
+			$widgets = get_post_meta( $post_id, '_gravityview_directory_widgets', true );
+
+		}
+
+		ob_start();
+		?>
+
+		<div class="gv-grid gv-grid-pad gv-grid-border">
+			<?php echo $this->render_active_areas('widget', $default_widget_areas, $widgets ); ?>
+		</div>
+
+		<?php
+		$output = ob_get_contents();
+		ob_end_clean();
 		return $output;
 	}
 
