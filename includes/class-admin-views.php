@@ -125,29 +125,31 @@ class GravityView_Admin_Views {
 		// Fetch available style templates
 		$templates = apply_filters( 'gravityview_register_directory_template', array() );
 
-		// list all the available templates (type= fresh or custom )
-		?>
+
+		// current input ?>
+		<input type="hidden" id="gravityview_directory_template" name="gravityview_directory_template" value="<?php echo esc_attr( $current_template ); ?>">
+
+		<?php // list all the available templates (type= fresh or custom ) ?>
 		<div class="gv-grid">
-			<?php foreach( $templates as $id => $template ) : ?>
+			<?php foreach( $templates as $id => $template ) :
+				$selected = ( $id == $current_template ) ? ' gv-selected' : ''; ?>
+
 				<div class="gv-grid-col-1-3">
-					<div class="gv-view-types-module" data-filter="<?php echo esc_attr( $template['type'] ); ?>">
+					<div class="gv-view-types-module<?php echo $selected; ?>" data-filter="<?php echo esc_attr( $template['type'] ); ?>">
 						<div class="gv-view-types-hover">
 							<div>
 								<?php if( !empty( $template['buy_source'] ) ) : ?>
 									<p><a href="<?php echo esc_url( $template['buy_source'] ); ?>" class="button-primary button-buy-now"><?php esc_html_e( 'Buy Now', 'gravity-view'); ?></a></p>
 								<?php else: ?>
-									<p><a href="#gv_select_template" class="button-primary"><?php esc_html_e( 'Select', 'gravity-view'); ?></a></p>
-									<p><a href="#gv_select_template" class="button-secondary"><?php esc_html_e( 'Preview', 'gravity-view'); ?></a></p>
+									<p><a href="#gv_select_template" class="button-primary" data-templateid="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Select', 'gravity-view'); ?></a></p>
+									<p><a href="#gv_preview_template" class="button-secondary"><?php esc_html_e( 'Preview', 'gravity-view'); ?></a></p>
 								<?php endif; ?>
 							</div>
 						</div>
 						<div class="gv-view-types-normal">
-							<label for="gv_directory_template_<?php echo esc_attr( $id ); ?>">
-								<img src="<?php echo esc_url( $template['logo'] ); ?>" alt="<?php echo esc_attr( $template['label'] ); ?>">
-								<input type="radio" class="hide-if-js" id="gv_directory_template_<?php echo esc_attr( $id ); ?>" name="gravityview_directory_template" value="<?php echo esc_attr( $id ); ?>" <?php checked( $id, $current_template, true ); ?>>
-								<h5><?php echo esc_attr( $template['label'] ); ?></h5>
-								<p class="description"><?php echo esc_attr( $template['description'] ); ?></p>
-							</label>
+							<img src="<?php echo esc_url( $template['logo'] ); ?>" alt="<?php echo esc_attr( $template['label'] ); ?>">
+							<h5><?php echo esc_attr( $template['label'] ); ?></h5>
+							<p class="description"><?php echo esc_attr( $template['description'] ); ?></p>
 						</div>
 					</div>
 				</div>

@@ -108,6 +108,10 @@
 	margin-bottom: 1em;
 	background: #eee;
 	position: relative;
+	border: 2px solid transparent;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 .gv-view-types-module:hover .gv-view-types-hover {
@@ -131,6 +135,10 @@
 .gv-view-types-module .description {
 	margin: 0;
 	padding: 0;
+}
+
+.gv-view-types-module.gv-selected {
+	border: 2px solid #1e8cbe;
 }
 
 .gv-view-types-hover {

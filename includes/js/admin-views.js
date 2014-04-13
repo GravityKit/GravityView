@@ -182,8 +182,10 @@
 		init: function() {
 			//start fresh button
 			var gvStartFreshButton = $('a[href="#gv_start_fresh"]');
+
 			//select form dropdown
 			gvSelectForm = $('#gravityview_form_id');
+
 			//current form selection
 			currentFormId = gvSelectForm.val();
 
@@ -201,6 +203,13 @@
 
 			// select form
 			gvSelectForm.change( viewFormSelect.changed );
+
+			// templates
+
+			// select template
+			$('a[href="#gv_select_template"]').click( viewFormSelect.selectTemplate );
+
+
 
 
 		},
@@ -262,8 +271,7 @@
 
 		},
 
-		templateFilter: function( type ) {
-			var templateType = type;
+		templateFilter: function( templateType ) {
 			$(".gv-view-types-module").each( function() {
 				if( $(this).attr('data-filter') === templateType ) {
 					$(this).parent().show();
@@ -271,6 +279,20 @@
 					$(this).parent().hide();
 				}
 			});
+		},
+
+		selectTemplate: function(e) {
+			e.preventDefault();
+			var templateId = $(this).attr("data-templateid");
+			$("#gravityview_directory_template").val( templateId );
+
+			//add Selected class
+			var $parent = $(this).parents(".gv-view-types-module");
+			$parent.parents(".gv-grid").find(".gv-view-types-module").removeClass('gv-selected');
+			$parent.addClass('gv-selected');
+
+			//change view configuration active areas
+
 		},
 
 		getNewFields: function() {
@@ -298,6 +320,11 @@
 		}
 
 	};
+
+
+
+
+
 
 
 
@@ -375,11 +402,12 @@
 		// assign form to this view (logic)
 		viewFormSelect.init();
 
-		var directoryTemplatePicker = new viewTemplatePicker('directory'),
-			singleTemplatePicker = new viewTemplatePicker('single');
+		// var directoryTemplatePicker = new viewTemplatePicker('directory'),
+		// 	singleTemplatePicker = new viewTemplatePicker('single');
 
-		directoryTemplatePicker.init();
-		singleTemplatePicker.init();
+		// directoryTemplatePicker.init();
+		// singleTemplatePicker.init();
+
 
 		// View Configuration - Tabs (persisten after refresh)
 		$("#tabs").tabs({
