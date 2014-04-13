@@ -49,7 +49,10 @@ class GravityView_Admin_Add_Shortcode {
 		if( !$this->is_post_editor_screen() ) {
 			return;
 		}
-		echo '<a href="#TB_inline?width=480&inlineId=select_gravityview_view&width=600&height=600" class="thickbox button gform_media_link" id="add_gravityview" title="' . esc_attr__("Add a Gravity Forms View", 'gravity-view') . '"><span class="gv_button_icon"></span> ' . esc_html__( 'Add View', 'gravity-view' ) . '</a>';
+		?>
+		<a href="#TB_inline?width=480&inlineId=select_gravityview_view&width=600&height=600" class="thickbox button gform_media_link" id="add_gravityview" title="<?php esc_attr_e("Add a Gravity Forms View", 'gravity-view'); ?>"><span class="icon gv-icon-astronaut-head"></span><?php esc_html_e( 'Add View', 'gravity-view' ); ?></a>
+		<?php
+		//echo '<a href="#TB_inline?width=480&inlineId=select_gravityview_view&width=600&height=600" class="thickbox button gform_media_link" id="add_gravityview" title="' . esc_attr__("Add a Gravity Forms View", 'gravity-view') . '"><span class="gv_button_icon"></span> ' . esc_html__( 'Add View', 'gravity-view' ) . '</a>';
 		//echo '<a href="#TB_inline?width=480&inlineId=select_gravityview_view&width=600&height=600" class="thickbox button gform_media_link" id="add_gravityview" title="' . esc_attr__("Add a Gravity Forms View", 'gravity-view') . '"><span class="dashicons dashicons-feedback"></span> ' . esc_html__( 'Add View', 'gravity-view' ) . '</a>';
 
 	}
