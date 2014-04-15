@@ -376,7 +376,7 @@ hr{
 
 
 /** Fields drag and drop */
-#directory-active-fields,
+/*#directory-active-fields,
 #directory-available-fields,
 #single-active-fields,
 #single-available-fields {
@@ -384,26 +384,26 @@ hr{
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	width: 50%;
-}
+}*/
 
-#directory-active-fields,
+/*#directory-active-fields,
 #single-active-fields {
 	float: left;
 	padding: 0 1em 0 0;
-}
+}*/
 
-#directory-available-fields,
+/*#directory-available-fields,
 #single-available-fields {
 	float: right;
 	padding: 0 0 0 1em;
-}
+}*/
 
 
-fieldset.area {
+/*fieldset.area {
 	padding: 0.5em;
 	margin-bottom: 1em;
 	border: 1px solid #eee;
-}
+}*/
 
 .gv-fields {
 	cursor: move;
