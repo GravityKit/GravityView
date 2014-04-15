@@ -196,189 +196,34 @@ class GravityView_Admin_Views {
 			<div id="directory-view">
 
 				<div id="directory-fields" class="gv-section">
+
+
 					<h4><?php esc_html_e( 'Above Listings', 'gravity-view'); ?> <span><?php esc_html_e( 'Define the header widgets', 'gravity-view'); ?></span></h4>
-					<?php echo $this->render_widgets_active_areas('header', $post->ID ); ?>
 
+					<?php echo $this->render_widgets_active_areas( 'header', $post->ID ); ?>
 
+					<h4><?php esc_html_e( 'Listings', 'gravity-view'); ?> <span><?php esc_html_e( 'Configure the entry layout', 'gravity-view'); ?></span></h4>
 
-							<h4><?php esc_html_e( 'Listings', 'gravity-view'); ?> <span><?php esc_html_e( 'Configure the entry layout', 'gravity-view'); ?></span></h4>
-					<div class="gv-grid gv-grid-pad gv-grid-border">
-						<div class="gv-grid-col-1-3">
-							<div class="gv-droppable-area">
-								<div class="active-drop">
-									<div class="gv-fields">
-										<h5>Field example</h5>
-										<span class="gv-field-controls">
-											<a href="#settings" class="dashicons-admin-generic dashicons"></a>
-											<a href="#remove" class="dashicons-dismiss dashicons"></a>
-										</span>
-									</div>
-								</div>
-								<div class="gv-droppable-area-action">
-									<a href="#" class="gv-add-field button-secondary" data-objecttype="field" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>"><?php esc_html_e( '+ Add Field', 'gravity-view'); ?></a>
-									<p class="gv-droppable-area-title">Image</p>
-									<p class="gv-droppable-area-subtitle">some description</p>
-								</div>
-							</div>
-						</div>
-						<div class="gv-grid-col-2-3">
-							<div class="gv-droppable-area">
-								<div class="active-drop">
-									<span class="drop-message">Drop fields here</span>
-								</div>
-								<div class="gv-droppable-area-action">
-									<a href="#" class="gv-add-field button-secondary" data-objecttype="field" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>"><?php esc_html_e( '+ Add Field', 'gravity-view'); ?></a>
-									<p class="gv-droppable-area-title">Listing Title</p>
-									<p class="gv-droppable-area-subtitle">some description</p>
-								</div>
-							</div>
-							<div class="gv-droppable-area">
-								<div class="active-drop">
-									<div class="gv-fields">
-										<h5>Field example</h5>
-										<span class="gv-field-controls">
-											<a href="#settings" class="dashicons-admin-generic dashicons"></a>
-											<a href="#remove" class="dashicons-dismiss dashicons"></a>
-										</span>
-									</div>
-									<div class="gv-fields">
-										<h5>Field example</h5>
-										<span class="gv-field-controls">
-											<a href="#settings" class="dashicons-admin-generic dashicons"></a>
-											<a href="#remove" class="dashicons-dismiss dashicons"></a>
-										</span>
-									</div>
-									<div class="gv-fields">
-										<h5>Field example</h5>
-										<span class="gv-field-controls">
-											<a href="#settings" class="dashicons-admin-generic dashicons"></a>
-											<a href="#remove" class="dashicons-dismiss dashicons"></a>
-										</span>
-									</div>
-								</div>
-								<div class="gv-droppable-area-action">
-									<a href="#" class="gv-add-field button-secondary" data-objecttype="field" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>"><?php esc_html_e( '+ Add Field', 'gravity-view'); ?></a>
-									<p class="gv-droppable-area-title">Subheading</p>
-									<p class="gv-droppable-area-subtitle">some description</p>
-								</div>
-							</div>
-							<div class="gv-droppable-area">
-								<div class="active-drop">
-									<span class="drop-message">Drop fields here</span>
-								</div>
-								<div class="gv-droppable-area-action">
-									<a href="#" class="gv-add-field button-secondary" data-objecttype="field" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>"><?php esc_html_e( '+ Add Field', 'gravity-view'); ?></a>
-									<p class="gv-droppable-area-title">Entry description</p>
-									<p class="gv-droppable-area-subtitle">some description</p>
-								</div>
-							</div>
-						</div>
-						<div class="gv-grid-col-1-2">
-							<div class="gv-droppable-area">
-								<div class="active-drop">
-									<span class="drop-message">Drop fields here</span>
-								</div>
-								<div class="gv-droppable-area-action">
-									<a href="#" class="gv-add-field button-secondary" data-objecttype="field" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>"><?php esc_html_e( '+ Add Field', 'gravity-view'); ?></a>
-									<p class="gv-droppable-area-title">Footer left</p>
-									<p class="gv-droppable-area-subtitle"></p>
-								</div>
-							</div>
-						</div>
-						<div class="gv-grid-col-1-2">
-							<div class="gv-droppable-area">
-								<div class="active-drop">
-									<span class="drop-message">Drop fields here</span>
-								</div>
-								<div class="gv-droppable-area-action">
-									<a href="#" class="gv-add-field button-secondary" data-objecttype="field" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>"><?php esc_html_e( '+ Add Field', 'gravity-view'); ?></a>
-									<p class="gv-droppable-area-title">Footer Right</p>
-									<p class="gv-droppable-area-subtitle"></p>
-								</div>
-							</div>
-						</div>
-					</div>
-								<h4><?php esc_html_e( 'Below Listings', 'gravity-view'); ?> <span><?php esc_html_e( 'Define the footer widgets', 'gravity-view'); ?></span></h4>
-
-					<div class="gv-grid gv-grid-pad gv-grid-border">
-						<div class="gv-grid-col-1-1">
-							<div class="gv-droppable-area">
-								<div class="active-drop">
-									<span class="drop-message">Drop fields here</span>
-								</div>
-								<div class="gv-droppable-area-action">
-									<a href="#" class="gv-add-field button-secondary" data-objecttype="widget" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>"><?php esc_html_e( '+ Add Field', 'gravity-view'); ?></a>
-									<p class="gv-droppable-area-title">Full Width Bottom</p>
-									<p class="gv-droppable-area-subtitle">This is the full width bottom</p>
-								</div>
-							</div>
-						</div>
-						<div class="gv-grid-col-1-2">
-							<div class="gv-droppable-area">
-								<div class="active-drop">
-									<span class="drop-message">Drop fields here</span>
-								</div>
-								<div class="gv-droppable-area-action">
-									<a href="#" class="gv-add-field button-secondary" data-objecttype="widget" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>"><?php esc_html_e( '+ Add Field', 'gravity-view'); ?></a>
-									<p class="gv-droppable-area-title">Full Width Bottom</p>
-									<p class="gv-droppable-area-subtitle">This is the full width bottom</p>
-								</div>
-							</div>
-						</div>
-						<div class="gv-grid-col-1-2">
-							<div class="gv-droppable-area">
-								<div class="active-drop">
-									<div class="gv-fields">
-										<h5>Field example</h5>
-										<span class="gv-field-controls">
-											<a href="#settings" class="dashicons-admin-generic dashicons"></a>
-											<a href="#remove" class="dashicons-dismiss dashicons"></a>
-										</span>
-									</div>
-								</div>
-								<div class="gv-droppable-area-action">
-									<a href="#" class="gv-add-field button-secondary" data-objecttype="widget" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>"><?php esc_html_e( '+ Add Field', 'gravity-view'); ?></a>
-									<p class="gv-droppable-area-title">Full Width Bottom</p>
-								</div>
-							</div>
-						</div>
-						<div class="gv-grid-col-1-1">
-							<div class="gv-droppable-area">
-								<div class="active-drop">
-									<span class="drop-message">Drop fields here</span>
-								</div>
-								<div class="gv-droppable-area-action">
-									<a href="#" class="gv-add-field button-secondary" data-objecttype="widget" title="<?php esc_attr_e( 'Add Field', 'gravity-view' ); ?>"><?php esc_html_e( '+ Add Field', 'gravity-view'); ?></a>
-									<p class="gv-droppable-area-title">Full Width Bottom</p>
-									<p class="gv-droppable-area-subtitle">This is the full width bottom</p>
-								</div>
-							</div>
-						</div>
+					<div id="directory-active-fields" class="gv-grid gv-grid-pad gv-grid-border">
+						<?php if(!empty( $curr_template ) ) {
+							echo $this->render_directory_active_areas( $curr_template, 'directory', $post->ID );
+						} ?>
 					</div>
 
+					<h4><?php esc_html_e( 'Below Listings', 'gravity-view'); ?> <span><?php esc_html_e( 'Define the footer widgets', 'gravity-view'); ?></span></h4>
+
+					<?php echo $this->render_widgets_active_areas( 'footer', $post->ID ); ?>
 
 
-
-
-
+					<?php // list of available fields to be shown in the popup ?>
 					<div id="directory-available-fields" class="hide-if-js">
 						<?php echo $this->render_available_fields( $curr_form, true ); ?>
 					</div>
 
-
-
+					<?php // list of available widgets to be shown in the popup ?>
 					<div id="directory-available-widgets" class="hide-if-js">
 						<?php echo $this->render_available_widgets(); ?>
 					</div>
-
-
-
-
-					<?php //render header widget areas ?>
-
-					<?php //render Listing areas ?>
-
-					<?php //render footer widget areas ?>
 
 				</div>
 
@@ -627,11 +472,12 @@ class GravityView_Admin_Views {
 	/**
 	 * Generic function to render rows and columns of active areas for widgets & fields
 	 * @param  string $type   Either 'widget' or 'field'
+	 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
 	 * @param  array $rows    The layout structure: rows, columns and areas
 	 * @param  array $values  Saved objects
 	 * @return void
 	 */
-	function render_active_areas( $type, $rows, $values ) {
+	function render_active_areas( $type, $zone, $rows, $values ) {
 
 		if( $type == 'widget' ) {
 			$button_label = __( 'Add Widget', 'gravity-view' );
@@ -645,14 +491,14 @@ class GravityView_Admin_Views {
 
 				<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
 
-					<?php foreach ($areas as $area ) : ?>
+					<?php foreach( $areas as $area ) : ?>
 
 						<div class="gv-droppable-area">
-							<div class="active-drop">
+							<div class="active-drop" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
 								<span class="drop-message">Drop fields here</span>
 							</div>
 							<div class="gv-droppable-area-action">
-								<a href="#" class="gv-add-field button-secondary" data-objecttype="<?php echo esc_attr( $type ); ?>" title="<?php echo esc_attr( $button_label ); ?>">+ <?php echo esc_html( $button_label ); ?></a>
+								<a href="#" class="gv-add-field button-secondary" data-objecttype="<?php echo esc_attr( $type ); ?>" title="<?php echo $button_label; ?>" >+ <?php echo esc_html( $button_label ); ?></a>
 								<p class="gv-droppable-area-title"><?php echo esc_html( $area['title'] ); ?></p>
 								<p class="gv-droppable-area-subtitle"><?php echo esc_html( $area['subtitle'] ); ?></p>
 							</div>
@@ -680,7 +526,6 @@ class GravityView_Admin_Views {
 		);
 
 
-
 		if( !empty( $post_id ) ) {
 			$widgets = get_post_meta( $post_id, '_gravityview_directory_widgets', true );
 
@@ -690,7 +535,7 @@ class GravityView_Admin_Views {
 		?>
 
 		<div class="gv-grid gv-grid-pad gv-grid-border">
-			<?php echo $this->render_active_areas('widget', $default_widget_areas, $widgets ); ?>
+			<?php echo $this->render_active_areas( 'widget', '', $default_widget_areas, $widgets ); ?>
 		</div>
 
 		<?php
@@ -710,7 +555,7 @@ class GravityView_Admin_Views {
 	 * @param string $context (default: 'single')
 	 * @return void
 	 */
-	function render_directory_active_areas( $template_id = '', $post_id = '', $context = 'single' ) {
+	function render_directory_active_areas( $template_id = '', $context = 'single', $post_id = '' ) {
 
 		if( empty( $template_id ) ) {
 			return;
@@ -720,11 +565,22 @@ class GravityView_Admin_Views {
 
 		$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $template_id );
 
+		$fields = '';
 		if( !empty( $post_id ) ) {
 			$fields = get_post_meta( $post_id, '_gravityview_directory_fields', true );
 			$available_fields = gravityview_get_form_fields( get_post_meta( $post_id, '_gravityview_form_id', true ), true );
 		}
 
+
+
+		ob_start();
+		?>
+
+		<?php $this->render_active_areas( 'field', $context, $template_areas, $fields ); ?>
+
+		<?php
+
+		/*
 		foreach( $template_areas as $area ) {
 			$output .= '<fieldset class="area">';
 			$output .= '<legend>'. $area['label'] .'</legend>';
@@ -754,7 +610,10 @@ class GravityView_Admin_Views {
 			$output .= '</div>';
 			$output .= '</fieldset>';
 		}
+		*/
 
+		$output = ob_get_contents();
+		ob_end_clean();
 		return $output;
 
 	}
@@ -954,8 +813,12 @@ class GravityView_Admin_Views {
 			die();
 		}
 
-		$response = $this->render_directory_active_areas( $_POST['template_id'] );
-		echo $response;
+		// $response = $this->render_directory_active_areas( $_POST['template_id'] );
+		// echo $response;
+		$response['directory'] = $this->render_directory_active_areas( $_POST['template_id'], 'directory' );
+		$response['single'] = $this->render_directory_active_areas( $_POST['template_id'], 'single' );
+
+		echo json_encode( $response );
 		die();
 	}
 
@@ -1004,6 +867,7 @@ class GravityView_Admin_Views {
 		wp_enqueue_style( 'dashicons' );
 		wp_enqueue_style( 'wp-jquery-ui-dialog' );
 
+
 		//enqueue scripts
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		wp_enqueue_script( 'jquery-ui-tabs' );
@@ -1033,7 +897,7 @@ class GravityView_Admin_Views {
 		$filter = current_filter();
 
 		if( 'gravityview_noconflict_scripts' === $filter ) {
-			$allow_scripts = array( 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'gravityview_views_scripts' );
+			$allow_scripts = array( 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'gravityview_views_scripts', 'jquery-ui-tooltip' );
 			$registered = array_merge( $registered, $allow_scripts );
 		} elseif( 'gravityview_noconflict_styles' === $filter ) {
 			$allow_styles = array( 'dashicons', 'wp-jquery-ui-dialog', 'gravityview_views_styles' );

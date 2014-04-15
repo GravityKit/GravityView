@@ -176,8 +176,7 @@
 	}
 
 
-
-
+	/* Select form and template */
 
 	var currentFormId = '', gvSelectForm,
 	viewFormSelect = {
@@ -197,6 +196,9 @@
 			} else {
 				viewFormSelect.templateFilter('custom');
 				viewFormSelect.showTemplates();
+				if( $("#gravityview_directory_template").val().length > 0 ){
+					viewFormSelect.showViewConfig();
+				}
 			}
 
 			// start fresh
@@ -221,7 +223,7 @@
 		hideView: function() {
 			currentFormId = '';
 			$("#gravityview_view_config, #gravityview_select_template").slideUp(150);
-			$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
+			//$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
 		},
 
 		showTemplates: function() {
@@ -289,6 +291,7 @@
 
 		selectTemplate: function(e) {
 			e.preventDefault();
+			// update template name
 			var templateId = $(this).attr("data-templateid");
 			$("#gravityview_directory_template").val( templateId );
 
@@ -298,8 +301,28 @@
 			$parent.addClass('gv-selected');
 
 			//change view configuration active areas
-
+			viewFormSelect.updateActiveAreas( templateId );
 			viewFormSelect.showViewConfig();
+
+		},
+
+		updateActiveAreas: function( template ) {
+			$("#directory-active-fields, #single-active-fields").children().remove();
+
+			var data = {
+				action: 'gv_get_active_areas',
+				template_id: template,
+				nonce: gvGlobals.nonce,
+			};
+
+			$.post( gvGlobals.ajaxurl, data, function( response ) {
+				if( response ) {
+					var content = $.parseJSON( response );
+					$('#directory-active-fields').append( content.directory );
+					//$('#single-active-fields').append( content.single );
+					init_droppables();
+				}
+			});
 
 		},
 
@@ -325,7 +348,7 @@
 				if( response ) {
 					$("#directory-available-fields fieldset.area").append( response );
 					$("#single-available-fields fieldset.area").append( response );
-					init_draggables();
+					//init_draggables();
 				}
 			});
 
@@ -434,7 +457,6 @@
 
 		// Directory View Configuration - Fields Mapping
 
-
 		init_draggables();
 
 		init_droppables();
@@ -456,11 +478,13 @@
 		$(".gv-add-field").tooltip({
 			content: function() {
 				var objType = $(this).attr('data-objecttype');
+
 				if( objType === 'field' ) {
 					return $("#directory-available-fields").html();
 				} else if( objType === 'widget' ) {
 					return $("#directory-available-widgets").html();
 				}
+
 			},
 			disabled: true,
 			position: {
