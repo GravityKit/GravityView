@@ -28,24 +28,59 @@ $field_options = array(
 
 /** Preset templates */
 
-class GravityView_Preset_Business_Table {
+class GravityView_Preset_Resume_board {
 
 	function __construct() {
 		$def_template = new GravityView_Default_Template_Table;
 
-		$def_template->template_id = 'preset_business_table';
+		$def_template->template_id = 'preset_resume_board';
 
 		$def_template->settings = array(
 			'slug' => 'table',
 			'type' => 'preset',
-			'label' =>  __( 'Business Table', 'gravity-view' ),
-			'description' => __('Start a business directory as a table.', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'images/placeholder.png'
+			'label' =>  __( 'Resume Board', 'gravity-view' ),
+			'description' => __( 'Allow job-seekers to post their resumes.', 'gravity-view'),
+			'logo' => GRAVITYVIEW_URL . 'includes/presets/resume-board/logo-resume-board.png'
 		);
 
 	}
 }
 
+class GravityView_Preset_Job_Board {
+
+	function __construct() {
+		$def_template = new GravityView_Default_Template_Table;
+
+		$def_template->template_id = 'preset_job_board';
+
+		$def_template->settings = array(
+			'slug' => 'table',
+			'type' => 'preset',
+			'label' =>  __( 'Job Board', 'gravity-view' ),
+			'description' => __( 'Post available jobs in a simple job board.', 'gravity-view'),
+			'logo' => GRAVITYVIEW_URL . 'includes/presets/job-board/logo-job-board.png'
+		);
+
+	}
+}
+
+class GravityView_Preset_Business_Listings {
+
+	function __construct() {
+		$def_template = new GravityView_Default_Template_Table;
+
+		$def_template->template_id = 'preset_business_listings';
+
+		$def_template->settings = array(
+			'slug' => 'table',
+			'type' => 'preset',
+			'label' =>  __( 'Business Listings', 'gravity-view' ),
+			'description' => __( 'Display business profiles.', 'gravity-view'),
+			'logo' => GRAVITYVIEW_URL . 'includes/presets/business-listings/logo-business-listings.png'
+		);
+
+	}
+}
 
 
 
@@ -256,5 +291,7 @@ new GravityView_Default_Template_Table;
 new GravityView_Default_Template_List;
 
 //presets
-new GravityView_Preset_Business_Table();
+new GravityView_Preset_Resume_board();
+new GravityView_Preset_Job_Board();
+new GravityView_Preset_Business_Listings();
 
