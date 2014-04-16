@@ -449,11 +449,13 @@ hr{
 }
 
 #directory-available-fields .gv-fields h5,
+#directory-available-widgets .gv-fields h5,
 #single-available-fields .gv-fields h5 {
 	padding: 0 !important;
 }
 
 #directory-available-fields .gv-fields span.gv-field-controls,
+#directory-available-widgets .gv-fields span.gv-field-controls,
 #single-available-fields .gv-fields span.gv-field-controls {
 	display: none !important;
 }
