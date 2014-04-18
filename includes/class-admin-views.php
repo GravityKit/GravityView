@@ -48,6 +48,9 @@ class GravityView_Admin_Views {
 		// View Configuration box
 		add_meta_box( 'gravityview_view_config', __( 'View Configuration', 'gravity-view' ), array( $this, 'render_view_configuration' ), 'gravityview', 'normal', 'high' );
 
+		// Other Settings box
+		add_meta_box( 'gravityview_template_settings', __( 'Template Settings', 'gravity-view' ), array( $this, 'render_template_settings' ), 'gravityview', 'side', 'default' );
+
 		// information box
 		add_meta_box( 'gravityview_shortcode_info', __( 'Shortcode Info', 'gravity-view' ), array( $this, 'render_shortcode_info' ), 'gravityview', 'side', 'default' );
 	}
@@ -228,45 +231,6 @@ class GravityView_Admin_Views {
 				</div>
 
 
-				<hr>
-
-				<?php // Other View Settings ?>
-
-				<h4><?php esc_html_e( 'General Settings', 'gravity-view'); ?></h4>
-
-				<table class="form-table">
-
-					<tr valign="top">
-						<td scope="row">
-							<label for="gravityview_page_size"><?php esc_html_e( 'Number of entries to show per page', 'gravity-view'); ?></label>
-						</td>
-						<td>
-							<input name="template_settings[page_size]" id="gravityview_page_size" type="number" step="1" min="1" value="<?php empty( $template_settings['page_size'] ) ? print 25 : print $template_settings['page_size']; ?>" class="small-text">
-						</td>
-					</tr>
-					<tr valign="top">
-						<td scope="row">
-							<label for="gravityview_only_approved"><?php esc_html_e( 'Show only entries approved', 'gravity-view' ); ?></label>
-						</td>
-						<td>
-							<fieldset>
-								<legend class="screen-reader-text"><span><?php esc_html_e( 'Show only entries approved', 'gravity-view' ); ?></span></legend>
-								<label for="gravityview_only_approved">
-									<input name="template_settings[show_only_approved]" type="checkbox" id="gravityview_only_approved" value="1" <?php empty( $template_settings['show_only_approved'] ) ? print '' : checked( $template_settings['show_only_approved'] , 1, true ); ?>>
-								</label>
-							</fieldset>
-						</td>
-					</tr>
-
-					<?php // Hook for other template custom settings
-
-					do_action( 'gravityview_admin_directory_settings', $template_settings );
-
-					?>
-
-				</table>
-
-
 			</div><?php //end directory tab ?>
 
 
@@ -297,6 +261,45 @@ class GravityView_Admin_Views {
 
 		</div> <?php // end tabs ?>
 		<?php
+	}
+
+	function render_template_settings( $post ) {
+		 // Other View Settings ?>
+
+		<table class="form-table">
+
+			<tr valign="top">
+				<td scope="row">
+					<label for="gravityview_page_size"><?php esc_html_e( 'Number of entries to show per page', 'gravity-view'); ?></label>
+				</td>
+				<td>
+					<input name="template_settings[page_size]" id="gravityview_page_size" type="number" step="1" min="1" value="<?php empty( $template_settings['page_size'] ) ? print 25 : print $template_settings['page_size']; ?>" class="small-text">
+				</td>
+			</tr>
+			<tr valign="top">
+				<td scope="row">
+					<label for="gravityview_only_approved"><?php esc_html_e( 'Show only entries approved', 'gravity-view' ); ?></label>
+				</td>
+				<td>
+					<fieldset>
+						<legend class="screen-reader-text"><span><?php esc_html_e( 'Show only entries approved', 'gravity-view' ); ?></span></legend>
+						<label for="gravityview_only_approved">
+							<input name="template_settings[show_only_approved]" type="checkbox" id="gravityview_only_approved" value="1" <?php empty( $template_settings['show_only_approved'] ) ? print '' : checked( $template_settings['show_only_approved'] , 1, true ); ?>>
+						</label>
+					</fieldset>
+				</td>
+			</tr>
+
+			<?php // Hook for other template custom settings
+
+			do_action( 'gravityview_admin_directory_settings', $template_settings );
+
+			?>
+
+		</table>
+
+		<?php
+
 	}
 
 
@@ -498,7 +501,7 @@ class GravityView_Admin_Views {
 								<span class="drop-message">Drop fields here</span>
 							</div>
 							<div class="gv-droppable-area-action">
-								<a href="#" class="gv-add-field button-secondary" data-objecttype="<?php echo esc_attr( $type ); ?>" title="<?php echo $button_label; ?>" >+ <?php echo esc_html( $button_label ); ?></a>
+								<a href="#" class="gv-add-field button-secondary" data-objecttype="<?php echo esc_attr( $type ); ?>" title="abc"><?php echo '+ '.esc_html( $button_label ); ?></a>
 								<p class="gv-droppable-area-title"><?php echo esc_html( $area['title'] ); ?></p>
 								<p class="gv-droppable-area-subtitle"><?php echo esc_html( $area['subtitle'] ); ?></p>
 							</div>
@@ -525,7 +528,7 @@ class GravityView_Admin_Views {
 			array( '1-1' => array( 	array( 'areaid' => $zone .'_bottom', 'title' => __('Full Width Bottom', 'gravity-view') , 'subtitle' => '' ) ) )
 		);
 
-
+		$widgets = array();
 		if( !empty( $post_id ) ) {
 			$widgets = get_post_meta( $post_id, '_gravityview_directory_widgets', true );
 
