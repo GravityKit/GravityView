@@ -49,7 +49,7 @@ class GravityView_Admin_Views {
 		add_meta_box( 'gravityview_view_config', __( 'View Configuration', 'gravity-view' ), array( $this, 'render_view_configuration' ), 'gravityview', 'normal', 'high' );
 
 		// Other Settings box
-		add_meta_box( 'gravityview_template_settings', __( 'Template Settings', 'gravity-view' ), array( $this, 'render_template_settings' ), 'gravityview', 'side', 'default' );
+		add_meta_box( 'gravityview_template_settings', __( 'View Settings', 'gravity-view' ), array( $this, 'render_view_settings' ), 'gravityview', 'side', 'core' );
 
 		// information box
 		add_meta_box( 'gravityview_shortcode_info', __( 'Shortcode Info', 'gravity-view' ), array( $this, 'render_shortcode_info' ), 'gravityview', 'side', 'default' );
@@ -245,26 +245,17 @@ class GravityView_Admin_Views {
 
 				</div>
 
-				<hr>
-
-				<table class="form-table">
-
-					<?php // Hook for other template custom settings
-
-					do_action( 'gravityview_admin_single_settings', $template_settings );
-
-					?>
-
-				</table>
-
 			</div> <?php // end single view tab ?>
 
 		</div> <?php // end tabs ?>
 		<?php
 	}
 
-	function render_template_settings( $post ) {
-		 // Other View Settings ?>
+	function render_view_settings( $post ) {
+
+		// View template settings
+		$template_settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
+		?>
 
 		<table class="form-table">
 
