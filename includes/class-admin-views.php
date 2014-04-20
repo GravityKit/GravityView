@@ -481,9 +481,9 @@ class GravityView_Admin_Views {
 	 */
 	function render_active_areas( $type, $zone, $rows, $values ) {
 
-		if( $type == 'widget' ) {
+		if( $type === 'widget' ) {
 			$button_label = __( 'Add Widget', 'gravity-view' );
-		} else {
+		} elseif( $type === 'field' ) {
 			$button_label = __( 'Add Field', 'gravity-view' );
 		}
 
@@ -496,7 +496,7 @@ class GravityView_Admin_Views {
 					<?php foreach( $areas as $area ) : ?>
 
 						<div class="gv-droppable-area">
-							<div class="active-drop" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
+							<div class="active-drop active-drop-<?php echo $type; ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
 								<span class="drop-message">Drop fields here</span>
 							</div>
 							<div class="gv-droppable-area-action">
