@@ -440,15 +440,37 @@
 			vcfg.showTemplates();
 		},
 
+
 		// drop selected field in the active area
 		addField: function(e) {
 			e.preventDefault();
-			var newField = $(this).clone();
-			var areaId = $(this).parents('.ui-tooltip').attr('id');
+			var newField = $(this).clone(),
+				areaId = $(this).parents('.ui-tooltip').attr('id'),
+				templateId = $("#gravityview_directory_template").val();
 
+
+			var data = {
+				action: 'gv_field_options',
+				template: templateId,
+				area: $(this).attr('data-areaid'),
+				field_id: newField.attr('data-fieldid'),
+				field_label: newField.find("h5").text(),
+				field_type: $(this).attr('data-objecttype'),
+				nonce: gvGlobals.nonce,
+			};
+
+			$.post( gvGlobals.ajaxurl, data, function( response ) {
+				if( response ) {
+					newField.append( response );
+				}
+			});
+
+			// show field buttons: Settings & Remove
+			newField.find("span.gv-field-controls a[href='#remove']").click( removeField );
+			newField.find("span.gv-field-controls a[href='#settings']").click( openFieldSettings );
+
+			// append the new field to the active drop
 			$('a[data-tooltip-id="'+ areaId +'"]').parents('.gv-droppable-area').find('.active-drop').append(newField).end().attr('data-tooltip-id','');
-
-
 		},
 
 		// Sortables and droppables
@@ -480,6 +502,7 @@
 				}
 			});
 
+			//fields
 			$('#directory-fields, #single-fields').find(".active-drop-field").sortable({
 				placeholder: "fields-placeholder",
 				items: '> .gv-fields',
@@ -504,45 +527,6 @@
 				}
 			});
 
-			// .droppable({
-			// 	drop: function( event, ui ) {
-
-			// 		if( 'draggable' === fieldOrigin ) {
-
-			// 			//find active tab object to assign the template selector
-			// 			var templateId = '';
-			// 			if( 'single-view' === $("#tabs ul li.ui-tabs-active").attr('aria-controls') ) {
-			// 				templateId = $("input[name='gravityview_single_template']:checked").val();
-			// 			} else {
-			// 				templateId = $("input[name='gravityview_directory_template']:checked").val();
-			// 			}
-
-			// 			var data = {
-			// 				action: 'gv_field_options',
-			// 				template: templateId,
-			// 				area: $(this).attr('data-areaid'),
-			// 				field_id: ui.draggable.attr('data-fieldid'),
-			// 				field_label: ui.draggable.find("h5").text(),
-			// 				nonce: gvGlobals.nonce,
-			// 			};
-
-			// 			$.post( gvGlobals.ajaxurl, data, function( response ) {
-			// 				if( response ) {
-			// 					ui.draggable.append( response );
-			// 				}
-			// 			});
-
-			// 			fieldOrigin = 'sortable';
-
-			// 			// show field buttons: Settings & Remove
-			// 			ui.draggable.find("span.gv-field-controls").show();
-
-			// 			ui.draggable.find("span.gv-field-controls a[href='#remove']").click( removeField );
-
-			// 			ui.draggable.find("span.gv-field-controls a[href='#settings']").click( openFieldSettings );
-			// 		}
-			// 	}
-			// });
 
 	}
 
