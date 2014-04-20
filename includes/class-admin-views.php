@@ -251,6 +251,14 @@ class GravityView_Admin_Views {
 		<?php
 	}
 
+
+	/**
+	 * Render html View General Settings
+	 *
+	 * @access public
+	 * @param object $post
+	 * @return void
+	 */
 	function render_view_settings( $post ) {
 
 		// View template settings
@@ -492,7 +500,7 @@ class GravityView_Admin_Views {
 								<span class="drop-message">Drop fields here</span>
 							</div>
 							<div class="gv-droppable-area-action">
-								<a href="#" class="gv-add-field button-secondary" data-objecttype="<?php echo esc_attr( $type ); ?>" title="abc"><?php echo '+ '.esc_html( $button_label ); ?></a>
+								<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>"><?php echo '+ '.esc_html( $button_label ); ?></a>
 								<p class="gv-droppable-area-title"><?php echo esc_html( $area['title'] ); ?></p>
 								<p class="gv-droppable-area-subtitle"><?php echo esc_html( $area['subtitle'] ); ?></p>
 							</div>
