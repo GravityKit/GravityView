@@ -404,7 +404,6 @@
 						$(this).attr('data-tooltip', 'active');
 						$(this).attr('data-tooltip-id', $(this).attr( 'aria-describedby' ) );
 
-
 						// bind fields
 						$('.ui-tooltip-content .gv-fields').click( vcfg.addField );
 					}
@@ -446,16 +445,19 @@
 			e.preventDefault();
 			var newField = $(this).clone(),
 				areaId = $(this).parents('.ui-tooltip').attr('id'),
-				templateId = $("#gravityview_directory_template").val();
+				templateId = $("#gravityview_directory_template").val(),
+				tooltipId = $(this).parents('.ui-tooltip').attr('id'),
+				addButton = $('a.gv-add-field[data-tooltip-id="'+tooltipId+'"]');
+
 
 
 			var data = {
 				action: 'gv_field_options',
 				template: templateId,
-				area: $(this).attr('data-areaid'),
+				area: addButton.attr('data-areaid'),
 				field_id: newField.attr('data-fieldid'),
 				field_label: newField.find("h5").text(),
-				field_type: $(this).attr('data-objecttype'),
+				field_type: addButton.attr('data-objecttype'),
 				nonce: gvGlobals.nonce,
 			};
 
