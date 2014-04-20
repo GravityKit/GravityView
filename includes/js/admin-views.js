@@ -17,17 +17,17 @@
 
 	function init_draggables() {
 
-		$("#directory-available-fields, #single-available-fields").find(".gv-fields").draggable({
-			connectToSortable: 'div.active-drop',
-			distance: 2,
-			helper: 'clone',
-			revert: 'invalid',
-			zIndex: 100,
-			containment: 'document',
-			start: function() {
-				fieldOrigin = 'draggable';
-			}
-		});
+		// $("#directory-available-fields, #single-available-fields").find(".gv-fields").draggable({
+		// 	connectToSortable: 'div.active-drop',
+		// 	distance: 2,
+		// 	helper: 'clone',
+		// 	revert: 'invalid',
+		// 	zIndex: 100,
+		// 	containment: 'document',
+		// 	start: function() {
+		// 		fieldOrigin = 'draggable';
+		// 	}
+		// });
 
 		// Define droppable zone to remove active fields
 		$("#directory-available-fields, #single-available-fields").droppable({
@@ -53,7 +53,7 @@
 
 	function init_droppables() {
 
-		$('#directory-active-fields, #single-active-fields').find(".active-drop").sortable({
+		$('#directory-fields, #single-fields').find(".active-drop").sortable({
 			placeholder: "fields-placeholder",
 			items: '> .gv-fields',
 			distance: 2,
@@ -176,6 +176,10 @@
 	}
 
 
+
+
+
+
 	/* Select form and template */
 
 	var viewConfiguration = {
@@ -228,6 +232,8 @@
 			    }
 			});
 
+	        // sortables & droppables
+	        vcfg.init_droppables();
 
 
 
@@ -387,14 +393,12 @@
 	                  e.stopImmediatePropagation();
 	             })
 			.click( function(e) {
-					console.log('hey');
 					e.preventDefault();
 					e.stopImmediatePropagation();
 					if( $(this).attr('data-tooltip') !== undefined && $(this).attr('data-tooltip') == 'active' ) {
 						$(this).tooltip("close");
 						$(this).attr('data-tooltip', '');
-						// add title attribute so the tooltip can continue to work (jquery ui bug?)
-						$(this).attr("title", "");
+
 					} else {
 						$(this).tooltip("open");
 						$(this).attr('data-tooltip', 'active');
@@ -404,7 +408,8 @@
 						// bind fields
 						$('.ui-tooltip-content .gv-fields').click( vcfg.addField );
 					}
-
+					// add title attribute so the tooltip can continue to work (jquery ui bug?)
+					$(this).attr("title", "");
 
 			});
 
@@ -427,7 +432,7 @@
 				if( response ) {
 					$("#directory-available-fields").append( response );
 					$("#single-available-fields").append( response );
-					//init_draggables();
+
 				}
 			});
 
@@ -445,6 +450,101 @@
 
 
 		},
+
+		// Sortables and droppables
+
+		init_droppables: function() {
+
+			// widgets
+			$('#directory-fields, #single-fields').find(".active-drop-widget").sortable({
+				placeholder: "fields-placeholder",
+				items: '> .gv-fields',
+				distance: 2,
+				connectWith: ".active-drop-widget",
+				receive: function( event, ui ) {
+					// Check if field comes from another active area and if so, update name attributes.
+					if( ui.item.find(".gv-dialog-options").length > 0 ) {
+
+						var sender_area = ui.sender.attr('data-areaid'),
+							receiver_area = $(this).attr('data-areaid');
+
+						ui.item.find( '[name^="fields['+ sender_area +']"]').each( function() {
+							var name = $(this).attr('name');
+							$(this).attr('name', name.replace( sender_area, receiver_area ) );
+						});
+
+					}
+
+					toggleDropMessage();
+
+				}
+			});
+
+			$('#directory-fields, #single-fields').find(".active-drop-field").sortable({
+				placeholder: "fields-placeholder",
+				items: '> .gv-fields',
+				distance: 2,
+				connectWith: ".active-drop-field",
+				receive: function( event, ui ) {
+					// Check if field comes from another active area and if so, update name attributes.
+					if( ui.item.find(".gv-dialog-options").length > 0 ) {
+
+						var sender_area = ui.sender.attr('data-areaid'),
+							receiver_area = $(this).attr('data-areaid');
+
+						ui.item.find( '[name^="fields['+ sender_area +']"]').each( function() {
+							var name = $(this).attr('name');
+							$(this).attr('name', name.replace( sender_area, receiver_area ) );
+						});
+
+					}
+
+					toggleDropMessage();
+
+				}
+			});
+
+			// .droppable({
+			// 	drop: function( event, ui ) {
+
+			// 		if( 'draggable' === fieldOrigin ) {
+
+			// 			//find active tab object to assign the template selector
+			// 			var templateId = '';
+			// 			if( 'single-view' === $("#tabs ul li.ui-tabs-active").attr('aria-controls') ) {
+			// 				templateId = $("input[name='gravityview_single_template']:checked").val();
+			// 			} else {
+			// 				templateId = $("input[name='gravityview_directory_template']:checked").val();
+			// 			}
+
+			// 			var data = {
+			// 				action: 'gv_field_options',
+			// 				template: templateId,
+			// 				area: $(this).attr('data-areaid'),
+			// 				field_id: ui.draggable.attr('data-fieldid'),
+			// 				field_label: ui.draggable.find("h5").text(),
+			// 				nonce: gvGlobals.nonce,
+			// 			};
+
+			// 			$.post( gvGlobals.ajaxurl, data, function( response ) {
+			// 				if( response ) {
+			// 					ui.draggable.append( response );
+			// 				}
+			// 			});
+
+			// 			fieldOrigin = 'sortable';
+
+			// 			// show field buttons: Settings & Remove
+			// 			ui.draggable.find("span.gv-field-controls").show();
+
+			// 			ui.draggable.find("span.gv-field-controls a[href='#remove']").click( removeField );
+
+			// 			ui.draggable.find("span.gv-field-controls a[href='#settings']").click( openFieldSettings );
+			// 		}
+			// 	}
+			// });
+
+	}
 
 
 
@@ -562,9 +662,9 @@
 
 		// Directory View Configuration - Fields Mapping
 
-		init_draggables();
 
-		init_droppables();
+
+
 
 		$("a[href='#remove']").click( removeField );
 
