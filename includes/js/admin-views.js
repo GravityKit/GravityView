@@ -219,10 +219,6 @@
 			// select template
 			$('a[href="#gv_select_template"]').click( vcfg.selectTemplate );
 
-
-			//tooltips
-			vcfg.init_tooltips();
-
 			// close all tooltips if user clicks outside the tooltip
 	        $(document).mouseup( function (e) {
 			    var activeTooltip = $("a.gv-add-field[data-tooltip='active']");
@@ -358,7 +354,9 @@
 		},
 
 		showViewConfig: function() {
+			var vcfg = viewConfiguration;
 			$("#gravityview_view_config").slideDown(150);
+			vcfg.init_tooltips();
 		},
 
 
@@ -389,10 +387,14 @@
 	                  e.stopImmediatePropagation();
 	             })
 			.click( function(e) {
+					console.log('hey');
 					e.preventDefault();
+					e.stopImmediatePropagation();
 					if( $(this).attr('data-tooltip') !== undefined && $(this).attr('data-tooltip') == 'active' ) {
 						$(this).tooltip("close");
 						$(this).attr('data-tooltip', '');
+						// add title attribute so the tooltip can continue to work (jquery ui bug?)
+						$(this).attr("title", "");
 					} else {
 						$(this).tooltip("open");
 						$(this).attr('data-tooltip', 'active');
