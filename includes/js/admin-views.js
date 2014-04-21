@@ -165,15 +165,7 @@
 		});
 	}
 
-	function toggleDropMessage() {
-		$(".active-drop").each( function() {
-			if( $(this).find(".gv-fields").length !== 0 ) {
-				$(this).find(".drop-message").hide();
-			} else {
-				$(this).find(".drop-message").show();
-			}
-		});
-	}
+
 
 
 
@@ -235,6 +227,8 @@
 	        // sortables & droppables
 	        vcfg.init_droppables();
 
+	        // toggle view of "drop message" when active areas are empty or not.
+	        vcfg.toggleDropMessage();
 
 
 
@@ -435,7 +429,7 @@
 				}
 			});
 
-			toggleDropMessage();
+			vcfg.toggleDropMessage();
 			vcfg.showTemplates();
 		},
 
@@ -443,6 +437,9 @@
 		// drop selected field in the active area
 		addField: function(e) {
 			e.preventDefault();
+
+			var vcfg = viewConfiguration;
+
 			var newField = $(this).clone(),
 				areaId = $(this).parents('.ui-tooltip').attr('id'),
 				templateId = $("#gravityview_directory_template").val(),
@@ -473,6 +470,8 @@
 
 			// append the new field to the active drop
 			$('a[data-tooltip-id="'+ areaId +'"]').parents('.gv-droppable-area').find('.active-drop').append(newField).end().attr('data-tooltip-id','');
+
+			vcfg.toggleDropMessage();
 		},
 
 		// Sortables and droppables
@@ -499,7 +498,7 @@
 
 					}
 
-					toggleDropMessage();
+					vcfg.toggleDropMessage();
 
 				}
 			});
@@ -524,29 +523,25 @@
 
 					}
 
-					toggleDropMessage();
+					vcfg.toggleDropMessage();
 
 				}
 			});
+		},
 
+		toggleDropMessage: function() {
 
-	}
+			$('.active-drop').each( function() {
+				if( $(this).find(".gv-fields").length !== 0 ) {
+					$(this).find(".drop-message").hide();
+				} else {
+					$(this).find(".drop-message").show();
+				}
+			});
 
+		},
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-	};
+	}; // end viewConfiguration object
 
 
 
@@ -656,8 +651,8 @@
 
 		$("a[href='#settings']").click( openFieldSettings );
 
-		// toggle view of "drop message" when active areas are empty or not.
-		toggleDropMessage();
+
+
 
 
 
