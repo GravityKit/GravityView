@@ -230,8 +230,9 @@
 	        // toggle view of "drop message" when active areas are empty or not.
 	        vcfg.toggleDropMessage();
 
-
-
+	        // field controls
+	        $("a[href='#remove']").click( vcfg.removeField );
+			$("a[href='#settings']").click( vcfg.openFieldSettings );
 
 		},
 
@@ -346,7 +347,7 @@
 					var content = $.parseJSON( response );
 					$('#directory-active-fields').append( content.directory );
 					//$('#single-active-fields').append( content.single );
-					init_droppables();
+					vcfg.init_droppables();
 					vcfg.init_tooltips();
 				}
 			});
@@ -465,8 +466,8 @@
 			});
 
 			// show field buttons: Settings & Remove
-			newField.find("span.gv-field-controls a[href='#remove']").click( removeField );
-			newField.find("span.gv-field-controls a[href='#settings']").click( openFieldSettings );
+			newField.find("span.gv-field-controls a[href='#remove']").click( vcfg.removeField );
+			newField.find("span.gv-field-controls a[href='#settings']").click( vcfg.openFieldSettings );
 
 			// append the new field to the active drop
 			$('a[data-tooltip-id="'+ areaId +'"]').parents('.gv-droppable-area').find('.active-drop').append(newField).end().attr('data-tooltip-id','');
@@ -475,8 +476,9 @@
 		},
 
 		// Sortables and droppables
-
 		init_droppables: function() {
+
+			var vcfg = viewConfiguration;
 
 			// widgets
 			$('#directory-fields, #single-fields').find(".active-drop-widget").sortable({
@@ -539,6 +541,34 @@
 				}
 			});
 
+		},
+
+			// Event handler to remove Fields from active areas
+		removeField: function( e ) {
+			e.preventDefault();
+			var area = $( event.currentTarget ).parents(".active-drop");
+			$( event.currentTarget ).parent().parent().remove();
+			if( area.find(".gv-fields").length === 0 ) {
+				 area.find(".drop-message").show();
+			}
+		},
+
+		// Event handler to open dialog with Field Settings
+		openFieldSettings: function( e ) {
+			e.preventDefault();
+			var parent = $( event.currentTarget ).parent().parent();
+			parent.find(".gv-dialog-options").dialog({
+				dialogClass: 'wp-dialog',
+				appendTo: parent,
+				width: 550,
+				closeOnEscape: true,
+				buttons: [ {
+					text: gvGlobals.label_close,
+					click: function() {
+						$(this).dialog('close');
+					}
+				}],
+			});
 		},
 
 	}; // end viewConfiguration object
@@ -625,13 +655,6 @@
 		// start the View Configuration magic
 		viewConfiguration.init();
 
-		// var directoryTemplatePicker = new viewTemplatePicker('directory'),
-		// 	singleTemplatePicker = new viewTemplatePicker('single');
-
-		// directoryTemplatePicker.init();
-		// singleTemplatePicker.init();
-
-
 		// View Configuration - Tabs (persisten after refresh)
 		$("#tabs").tabs({
 			active: $("#gv-active-tab").val(),
@@ -640,28 +663,8 @@
 			}
 		});
 
-
-		// Directory View Configuration - Fields Mapping
-
-
-
-
-
-		$("a[href='#remove']").click( removeField );
-
-		$("a[href='#settings']").click( openFieldSettings );
-
-
-
-
-
-
 		// Directory View Configuration - Widgets
-		$("a[href='#widget-settings']").click( openWidgetSettings );
-
-
-
-
+		//$("a[href='#widget-settings']").click( openWidgetSettings );
 
 		// Make zebra table rows
 		$("table.form-table tr:even").addClass('alternate');
