@@ -14,6 +14,8 @@
 
 class GravityView_Admin_Views {
 
+	private $post_id;
+
 	function __construct() {
 
 		add_action( 'add_meta_boxes', array( $this, 'register_metabox' ) );
@@ -67,6 +69,10 @@ class GravityView_Admin_Views {
 	 * @return void
 	 */
 	function render_select_form( $post ) {
+
+		if( !empty( $post->ID ) ) {
+			$this->post_id = $post->ID;
+		}
 
 		// Use nonce for verification
 		wp_nonce_field( 'gravityview_select_form', 'gravityview_select_form_nonce' );
@@ -203,7 +209,7 @@ class GravityView_Admin_Views {
 
 					<h4><?php esc_html_e( 'Above Listings', 'gravity-view'); ?> <span><?php esc_html_e( 'Define the header widgets', 'gravity-view'); ?></span></h4>
 
-					<?php echo $this->render_widgets_active_areas( 'header', $post->ID ); ?>
+					<?php echo $this->render_widgets_active_areas( $curr_template, 'header', $post->ID ); ?>
 
 					<h4><?php esc_html_e( 'Listings', 'gravity-view'); ?> <span><?php esc_html_e( 'Configure the entry layout', 'gravity-view'); ?></span></h4>
 
@@ -215,7 +221,7 @@ class GravityView_Admin_Views {
 
 					<h4><?php esc_html_e( 'Below Listings', 'gravity-view'); ?> <span><?php esc_html_e( 'Define the footer widgets', 'gravity-view'); ?></span></h4>
 
-					<?php echo $this->render_widgets_active_areas( 'footer', $post->ID ); ?>
+					<?php echo $this->render_widgets_active_areas( $curr_template, 'footer', $post->ID ); ?>
 
 
 					<?php // list of available fields to be shown in the popup ?>
@@ -479,7 +485,7 @@ class GravityView_Admin_Views {
 	 * @param  array $values  Saved objects
 	 * @return void
 	 */
-	function render_active_areas( $type, $zone, $rows, $values ) {
+	function render_active_areas( $template_id, $type, $zone, $rows, $values ) {
 
 		if( $type === 'widget' ) {
 			$button_label = __( 'Add Widget', 'gravity-view' );
@@ -497,6 +503,30 @@ class GravityView_Admin_Views {
 
 						<div class="gv-droppable-area">
 							<div class="active-drop active-drop-<?php echo $type; ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
+
+								<?php // render saved fields
+								if( !empty( $values[ $area['areaid'] ] ) && !empty( $this->post_id ) ) :
+
+									// if saved values, get available fields to label everyone
+									$available_fields = gravityview_get_form_fields( get_post_meta( $this->post_id, '_gravityview_form_id', true ), true );
+
+									foreach( $values[ $area['areaid'] ] as $uniqid => $field ) :
+
+										if( !empty( $available_fields[ $field['id'] ] ) ) : ?>
+
+											<div data-fieldid="<?php echo $field['id']; ?>" class="gv-fields ui-draggable">
+												<h5><?php echo $available_fields[ $field['id'] ]['label']; ?></h5>
+												<span class="gv-field-controls">
+													<a href="#settings" class="dashicons-admin-generic dashicons"></a>
+													<a href="#remove" class="dashicons-dismiss dashicons"></a>
+												</span>
+												<?php echo $this->render_field_options( $type, $template_id, $field['id'], $available_fields[ $field['id'] ]['label'], $area['areaid'], $uniqid, $field, $context ); ?>
+											</div>
+
+										<?php endif; ?>
+									<?php endforeach; ?>
+								<?php endif; ?>
+
 								<span class="drop-message">Drop fields here</span>
 							</div>
 							<div class="gv-droppable-area-action">
@@ -519,12 +549,12 @@ class GravityView_Admin_Views {
 	 * @param  string $post_id Current Post ID (view)
 	 * @return string          html
 	 */
-	function render_widgets_active_areas( $zone, $post_id = '' ) {
+	function render_widgets_active_areas( $template_id = '', $zone, $post_id = '' ) {
 
 		$default_widget_areas = array(
-			array( '1-1' => array( array( 'areaid' => $zone .'_top', 'title' => __('Full Width Top', 'gravity-view' ) , 'subtitle' => '' ) ) ),
-			array( '1-2' => array( array( 'areaid' => $zone .'_left', 'title' => __('Left', 'gravity-view') , 'subtitle' => '' ) ), '2-2' => array( array( 'areaid' => $zone .'_right', 'title' => __('Right', 'gravity-view') , 'subtitle' => '' ) ) ),
-			array( '1-1' => array( 	array( 'areaid' => $zone .'_bottom', 'title' => __('Full Width Bottom', 'gravity-view') , 'subtitle' => '' ) ) )
+			array( '1-1' => array( array( 'areaid' => 'top', 'title' => __('Full Width Top', 'gravity-view' ) , 'subtitle' => '' ) ) ),
+			array( '1-2' => array( array( 'areaid' => 'left', 'title' => __('Left', 'gravity-view') , 'subtitle' => '' ) ), '2-2' => array( array( 'areaid' => 'right', 'title' => __('Right', 'gravity-view') , 'subtitle' => '' ) ) ),
+			array( '1-1' => array( 	array( 'areaid' => 'bottom', 'title' => __('Full Width Bottom', 'gravity-view') , 'subtitle' => '' ) ) )
 		);
 
 		$widgets = array();
@@ -537,7 +567,7 @@ class GravityView_Admin_Views {
 		?>
 
 		<div class="gv-grid gv-grid-pad gv-grid-border">
-			<?php echo $this->render_active_areas( 'widget', '', $default_widget_areas, $widgets ); ?>
+			<?php echo $this->render_active_areas( $template_id, 'widget', $zone, $default_widget_areas, $widgets ); ?>
 		</div>
 
 		<?php
@@ -578,7 +608,7 @@ class GravityView_Admin_Views {
 		ob_start();
 		?>
 
-		<?php $this->render_active_areas( 'field', $context, $template_areas, $fields ); ?>
+		<?php $this->render_active_areas( $template_id, 'field', $context, $template_areas, $fields ); ?>
 
 		<?php
 
@@ -633,31 +663,27 @@ class GravityView_Admin_Views {
 	 * @param string $context (default: 'single')
 	 * @return void
 	 */
-	function render_field_options( $template_id, $field_id, $field_label, $area, $uniqid = '', $current = '', $context = 'single' ) {
+	function render_field_options( $field_type, $template_id, $field_id, $field_label, $area, $uniqid = '', $current = '', $context = 'single' ) {
 
 		if( empty( $uniqid ) ) {
 			//generate a unique field id
 			$uniqid = uniqid('', false);
 		}
 
-		// generic field options
-		$field_options = array(
-			'show_label' => array( 'type' => 'checkbox', 'label' => __( 'Show Label', 'gravity-view' ), 'default' => true ),
-			'custom_label' => array( 'type' => 'input_text', 'label' => __( 'Custom Label:', 'gravity-view' ), 'default' => '' ),
-			'custom_class' => array( 'type' => 'input_text', 'label' => __( 'Custom CSS Class:', 'gravity-view' ), 'default' => '' ),
-		);
+		// get field/widget options
+		$options = $this->get_default_field_options( $field_type, $template_id, $field_id );
 
-		//get defined field options
-		$field_options = apply_filters( 'gravityview_template_field_options', $field_options, $template_id );
+		// two different post arrays, depending of the field type
+		$name_prefix = $field_type .'s' .'['. $area .']['. $uniqid .']';
 
 		// build output
 		$output = '';
-		$output .= '<input type="hidden" class="field-key" name="fields['. $area .']['. $uniqid .'][id]" value="'. $field_id .'">';
-		$output .= '<input type="hidden" class="field-label" name="fields['. $area .']['. $uniqid .'][label]" value="'. $field_label .'">';
-		$output .= '<div class="gv-dialog-options" title="'. esc_attr__( 'Field Options', 'gravity-view' ) . ': '. $field_label .' ['. $field_id .']">';
+		$output .= '<input type="hidden" class="field-key" name="'. $name_prefix .'[id]" value="'. $field_id .'">';
+		$output .= '<input type="hidden" class="field-label" name="'. $name_prefix .'[label]" value="'. $field_label .'">';
+		$output .= '<div class="gv-dialog-options" title="'. esc_attr__( 'Options', 'gravity-view' ) . ': '. $field_label .'">';
 		$output .= '<ul>';
 
-		foreach( $field_options as $key => $details ) {
+		foreach( $options as $key => $details ) {
 
 			$default = isset( $details['default'] ) ? $details['default'] : '';
 			//$default = '';
@@ -667,36 +693,33 @@ class GravityView_Admin_Views {
 
 			switch( $type ) {
 				case 'checkbox':
-					$output .= '<li>'. $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .']['. $key .']' , $label, $curr_value ) .'</li>';
+					$output .= '<li>'. $this->render_checkbox_option( $name_prefix . '['. $key .']' , $label, $curr_value ) .'</li>';
 					break;
 
 				case 'input_text':
 				default:
-					$output .= '<li>'. $this->render_input_text_option( 'fields['. $area .']['. $uniqid .']['. $key .']' , $label, $curr_value ) .'</li>';
+					$output .= '<li>'. $this->render_input_text_option( $name_prefix . '['. $key .']' , $label, $curr_value ) .'</li>';
 					break;
 
 			}
 
 		}
 
+		//TODO: Move this to other place..
+		if( 'field' === $field_type ) {
+			$only_loggedin = !empty( $current['only_loggedin'] ) ? 1 : '';
+			$only_loggedin_cap = !empty( $current['only_loggedin_cap'] ) ? $current['only_loggedin_cap'] : 'read';
 
-		$search_filter = !empty( $current['search_filter'] ) ? 1 : '';
-		$only_loggedin = !empty( $current['only_loggedin'] ) ? 1 : '';
-		$only_loggedin_cap = !empty( $current['only_loggedin_cap'] ) ? $current['only_loggedin_cap'] : 'read';
-
-		// default logged-in visibility
-		$select_cap_choices = array(
-			array( 'label' => __( 'Any', 'gravity-view' ), 'value' => 'read' ),
-			array( 'label' => __( 'Author or higher', 'gravity-view' ), 'value' => 'publish_posts' ),
-			array( 'label' => __( 'Editor or higher', 'gravity-view' ), 'value' => 'delete_others_posts' ),
-			array( 'label' => __( 'Administrator', 'gravity-view' ), 'value' => 'manage_options' ),
-		);
-		$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][only_loggedin]' , __( 'Only visible to logged in users with role:', 'gravity-view' ) ) ;
-		$output .=  $this->render_selectbox_option( 'fields['. $area .']['. $uniqid .'][only_loggedin_cap]', '', $select_cap_choices, $only_loggedin_cap ) . '</li>';
-
-		//todo: make a hook to insert widget related field options
-		$output .= '<li>' . $this->render_checkbox_option( 'fields['. $area .']['. $uniqid .'][search_filter]' , __( 'Use this field as a search filter', 'gravity-view' ), $search_filter ) . '</li>';
-
+			// default logged-in visibility
+			$select_cap_choices = array(
+				array( 'label' => __( 'Any', 'gravity-view' ), 'value' => 'read' ),
+				array( 'label' => __( 'Author or higher', 'gravity-view' ), 'value' => 'publish_posts' ),
+				array( 'label' => __( 'Editor or higher', 'gravity-view' ), 'value' => 'delete_others_posts' ),
+				array( 'label' => __( 'Administrator', 'gravity-view' ), 'value' => 'manage_options' ),
+			);
+			$output .= '<li>' . $this->render_checkbox_option( $name_prefix . '[only_loggedin]' , __( 'Only visible to logged in users with role:', 'gravity-view' ) ) ;
+			$output .=  $this->render_selectbox_option( $name_prefix . '[only_loggedin_cap]', '', $select_cap_choices, $only_loggedin_cap ) . '</li>';
+		}
 
 		// close options window
 		$output .= '</ul>';
@@ -705,6 +728,29 @@ class GravityView_Admin_Views {
 		return $output;
 
 	}
+
+
+	public function get_default_field_options( $field_type, $template_id, $field_id ) {
+
+		$field_options = array();
+
+		if( 'field' === $field_type ) {
+			// Default options - fields
+			$field_options = array(
+				'show_label' => array( 'type' => 'checkbox', 'label' => __( 'Show Label', 'gravity-view' ), 'default' => true ),
+				'custom_label' => array( 'type' => 'input_text', 'label' => __( 'Custom Label:', 'gravity-view' ), 'default' => '' ),
+				'custom_class' => array( 'type' => 'input_text', 'label' => __( 'Custom CSS Class:', 'gravity-view' ), 'default' => '' ),
+			);
+		} elseif( 'widget' === $field_type ) {
+
+		}
+
+		// hook to inject template specific field/widget options
+		return apply_filters( "gravityview_template_{$field_type}_options", $field_options, $template_id, $field_id );
+
+	}
+
+
 
 
 
@@ -846,7 +892,7 @@ error_log( ' POST: ' . print_r( $_POST , true ) );
 			die();
 		}
 
-		$response = $this->render_field_options( $_POST['template'], $_POST['field_id'], $_POST['field_label'], $_POST['area'] );
+		$response = $this->render_field_options( $_POST['field_type'], $_POST['template'], $_POST['field_id'], $_POST['field_label'], $_POST['area'] );
 		echo $response;
 		die();
 	}
@@ -868,7 +914,6 @@ error_log( ' POST: ' . print_r( $_POST , true ) );
 
 		wp_enqueue_style( 'dashicons' );
 		wp_enqueue_style( 'wp-jquery-ui-dialog' );
-
 
 		//enqueue scripts
 		wp_enqueue_script( 'jquery-ui-dialog' );

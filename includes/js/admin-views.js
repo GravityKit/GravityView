@@ -447,8 +447,6 @@
 				tooltipId = $(this).parents('.ui-tooltip').attr('id'),
 				addButton = $('a.gv-add-field[data-tooltip-id="'+tooltipId+'"]');
 
-
-
 			var data = {
 				action: 'gv_field_options',
 				template: templateId,
