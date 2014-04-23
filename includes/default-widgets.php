@@ -70,7 +70,6 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 
 	}
 
-
 	public function render_frontend() {
 
 		global $gravityview_view;
@@ -125,15 +124,21 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		$settings = array(
 			'search_free' => array( 'type' => 'checkbox', 'label' => __( 'Show search input', 'gravity-view' ), 'default' => true ),
 			'search_date' => array( 'type' => 'checkbox', 'label' => __( 'Show date filters', 'gravity-view' ), 'default' => false ),
-
 		);
 		parent::__construct( __( 'Show Search Bar', 'gravity-view' ) , 'search_bar', $default_values, $settings );
 
 		add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ) );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ) );
+
+		// add field options (specific for this widget)
+		add_filter( 'gravityview_template_field_options', array( $this, 'assign_field_options' ), 10, 1 );
 	}
 
+	function assign_field_options( $field_options ) {
+		return array_merge( $field_options, array(
+			'search_filter' => array( 'type' => 'checkbox', 'label' => __( 'Use this field as a search filter', 'gravity-view' ), 'default' => false ) ) );
+	}
 
 	function filter_entries( $search_criteria ) {
 
@@ -329,6 +334,10 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 
 
+
+/**
+ * Main GravityView widget class
+ */
 class GravityView_Widget {
 
 	// Widget admin label
@@ -353,8 +362,11 @@ class GravityView_Widget {
 		$this->defaults = array_merge( array( 'header' => 0, 'footer' => 0 ), $defaults );
 		$this->settings = $settings;
 
-		// render html settings in the View admin screen
-		add_action( 'gravityview_admin_view_widgets', array( $this, 'render_admin_settings' ), 10, 1 );
+		// register widgets to be listed in the View Configuration
+		add_filter( 'gravityview_register_directory_widgets', array( $this, 'register_widget') );
+
+		// widget options
+		add_filter( 'gravityview_template_widget_options', array( $this, 'assign_widget_options' ), 10, 3 );
 
 		// frontend logic
 		add_action( 'gravityview_before', array( $this, 'render_frontend_hooks' ) );
@@ -362,6 +374,28 @@ class GravityView_Widget {
 
 	}
 
+
+	function register_widget( $widgets ) {
+		$widgets[ $this->widget_id ] = array( 'label' => $this->widget_label );
+		return $widgets;
+	}
+
+	/**
+	 * Assign template specific field options
+	 *
+	 * @access protected
+	 * @param array $options (default: array())
+	 * @param string $template (default: '')
+	 * @return void
+	 */
+	public function assign_widget_options( $options = array(), $template = '', $widget = '' ) {
+
+		if( $this->widget_id === $widget ) {
+			$options = array_merge( $options, $this->settings );
+		}
+
+		return $options;
+	}
 
 
 	function render_admin_settings( $widgets ) {

@@ -10,52 +10,73 @@
  * @since 1.0.0
  */
 
-/** View configuration tabs */
-.ui-tabs { 
-	position: relative; padding: .1em; zoom: 1; margin-top: 1em; }
-	
-.ui-tabs .ui-tabs-nav { 
-	margin: 0; padding: .1em .1em 0; 
-	-webkit-margin-before: 0;
-	-webkit-margin-after: 0;
-	-webkit-margin-start: 0;
-	-webkit-margin-end: 0;
-	-webkit-padding-start: 0; }
-	
-.ui-tabs .ui-tabs-nav li {
-	list-style: none; 
-	float: left; 
-	position: relative; 
-	top: 1px; 
-	margin: 0 .2em 1px 0; 
-	border-bottom: 0 !important; 
-	padding: 0; 
-	white-space: nowrap; }
-	
-.ui-tabs .ui-tabs-nav li a { float: left; padding: .5em 1em; text-decoration: none; }
-.ui-tabs .ui-tabs-nav li a:active, .ui-tabs .ui-tabs-nav li a:focus { outline: none; }
 
-.ui-tabs .ui-tabs-nav li.ui-tabs-selected { margin-bottom: 0; padding-bottom: 1px; }
-.ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a { cursor: text; }
-.ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
-.ui-tabs .ui-tabs-panel { display: block; border-width: 0; padding: 1em; background: none; border: 1px solid #ddd;}
-.ui-tabs .ui-tabs-hide { display: none !important; }
-.ui-tabs ul li.ui-state-active a { background: none; border-bottom: 1px solid #fff; }
+/* GV Grid
+--------------------------------------- */
 
-.nav-tab {
-	border-color: #ddd;
-	font-size: 14px;
+.gv-grid {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	margin-bottom: 2em;
 }
 
-
-/** Sections */
-
-hr{
-	border: 0;
-	height: 0;
-	border-bottom: 1px solid #ddd;
-	margin: 2em 0 2em 0;
+.gv-grid:before,
+.gv-grid:after {
+	content: " ";
+	display: table;
 }
+
+.gv-grid:after {
+	clear: both;
+}
+
+.gv-grid-pad {
+	padding: 1em 0 0 1em;
+}
+
+.gv-grid-pad > [class*='gv-grid-col-'] {
+	padding-right: 1em;
+}
+
+.gv-grid-border {
+	border: 1px solid #999;
+}
+
+[class*='gv-grid-col-'] {
+	float: left;
+	padding-right: 1em;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.gv-grid-col-1-3 {
+	width: 33.33%;
+}
+
+.gv-grid-col-1-4 {
+	width: 25%;
+}
+
+.gv-grid-col-1-2 {
+	width: 50%;
+}
+
+.gv-grid-col-1-8 {
+	width: 12.5%;
+}
+
+.gv-grid-col-2-3 {
+	width: 66.66%;
+}
+
+.gv-grid-col-1-1 {
+	width: 100%;
+}
+
+/* GV Sections
+--------------------------------------- */
 
 .gv-section:before,
 .gv-section:after {
@@ -72,46 +93,290 @@ hr{
 	font-weight: bold;
 }
 
-/** Template picker */
-.gv-template-browser:before,
-.gv-template-browser:after {
+.gv-section h4 span {
+	font-size: 14px;
+	float: right;
+	color: #999;
+	font-weight: normal;
+}
+
+/* GV View Types
+--------------------------------------- */
+
+.gv-view-types-module {
+	padding: 1em;
+	margin-bottom: 1em;
+	background: #eee;
+	position: relative;
+	border: 2px solid transparent;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.gv-view-types-module:hover .gv-view-types-hover {
+	display: block;
+}
+
+.gv-view-types-module img {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin: 0;
+	padding: 0;
+}
+
+.gv-view-types-module h5 {
+	margin: 0.5em 0;
+	padding: 0;
+	font-size: 18px;
+}
+
+.gv-view-types-module .description {
+	margin: 0;
+	padding: 0;
+}
+
+.gv-view-types-module.gv-selected {
+	border: 2px solid #1e8cbe;
+}
+
+.gv-view-types-hover {
+	display: none;
+	background: rgba(0, 0, 0, .6);
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 100%;
+}
+
+.gv-view-types-hover > div {
+	margin-top: 20%;
+}
+
+.gv-view-types-hover > div p {
+	margin: 0.5em 0;
+	padding: 0;
+	text-align: center;
+}
+
+.gv-view-types-hover > div p a {
+	display: inline-block;
+	width: 60%;
+}
+
+/* button buy now */
+.button-primary.button-buy-now {
+	background: #2ecc37;
+	border-color: #00a213;
+	-webkit-box-shadow: inset 0 1px 0 rgba(120, 230, 129, .5), 0 1px 0 rgba(0, 0, 0, .15);
+	box-shadow: inset 0 1px 0 rgba(120, 230, 129, .5), 0 1px 0 rgba(0, 0, 0, .15);
+}
+
+.button-primary.button-buy-now.hover,
+.button-primary.button-buy-now:hover,
+.button-primary.button-buy-now.focus,
+.button-primary.button-buy-now:focus {
+	border-color: #00a213;
+	background: #1ebe41;
+	-webkit-box-shadow: inset 0 1px 0 rgba(120, 230, 129, .6);
+	box-shadow: inset 0 1px 0 rgba(120, 230, 129, .6);
+}
+
+.button-primary.button-buy-now.focus,
+.button-primary.button-buy-now:focus {
+	border-color: #0e5025;
+	-webkit-box-shadow: inset 0 1px 0 rgba(120, 230, 129, .6), 1px 1px 2px rgba(0, 0, 0, .4);
+	box-shadow: inset 0 1px 0 rgba(120, 230, 129, .6), 1px 1px 2px rgba(0, 0, 0, .4);
+}
+
+.button-primary.button-buy-now.active,
+.button-primary.button-buy-now.active:hover,
+.button-primary.button-buy-now.active:focus,
+.button-primary.button-buy-now:active {
+	border-color: #00842d;
+	background: #1ebe41;
+}
+
+
+
+
+/** View configuration tabs */
+.ui-tabs {
+	position: relative; padding: .1em; zoom: 1; margin-top: 1em; }
+
+.ui-tabs .ui-tabs-nav {
+	margin: 0; padding: .1em .1em 0;
+	-webkit-margin-before: 0;
+	-webkit-margin-after: 0;
+	-webkit-margin-start: 0;
+	-webkit-margin-end: 0;
+	-webkit-padding-start: 0; }
+
+.ui-tabs .ui-tabs-nav li {
+	list-style: none;
+	float: left;
+	position: relative;
+	top: 1px;
+	margin: 0 .2em 1px 0;
+	border-bottom: 0 !important;
+	padding: 0;
+	white-space: nowrap; }
+
+.ui-tabs .ui-tabs-nav li a { float: left; padding: .5em 1em; text-decoration: none; }
+.ui-tabs .ui-tabs-nav li a:active, .ui-tabs .ui-tabs-nav li a:focus { outline: none; }
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected { margin-bottom: 0; padding-bottom: 1px; }
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a { cursor: text; }
+.ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
+.ui-tabs .ui-tabs-panel { display: block; border-width: 0; padding: 1em; background: none; border: 1px solid #ddd;}
+.ui-tabs .ui-tabs-hide { display: none !important; }
+.ui-tabs ul li.ui-state-active a { background: none; border-bottom: 1px solid #fff; }
+
+.nav-tab {
+	border-color: #ddd;
+	font-size: 14px;
+}
+
+/** tooltips for fields + widgets */
+
+.ui-tooltip {
+	padding:8px;
+	position:absolute;
+	z-index:9999;
+	background: #eee;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-o-box-shadow: 0 0 5px #aaa;
+	-moz-box-shadow: 0 0 5px #aaa;
+	-webkit-box-shadow: 0 0 5px #aaa;
+	box-shadow: 0 0 5px #aaa;
+}
+/* Fades and background-images don't work well together in IE6, drop the image */
+* html .ui-tooltip {
+	background-image: none;
+}
+body .ui-tooltip { border: 4px solid #999; }
+
+
+.ui-tooltip-content {
+	padding: 0 10px 0 10px;
+	max-height: 200px;
+	overflow-y: scroll;
+}
+
+.ui-tooltip-content .gv-field-controls {
+	display: none;
+}
+
+.ui-tooltip-content .gv-fields {
+	cursor: pointer;
+}
+
+.ui-tooltip-content .gv-fields h5 {
+	float: none;
+	width: 100%;
+
+}
+
+.ui-tooltip-content::after {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    display: block;
+    width: 0;
+}
+
+.top .ui-tooltip-content::after {
+    bottom: -14px;
+    left: 48%;
+    border-color: #999 transparent;
+    border-width: 10px 10px 0;
+}
+
+
+/** Sections */
+
+hr{
+	border: 0;
+	height: 0;
+	border-bottom: 1px solid #ddd;
+	margin: 2em 0 2em 0;
+}
+/*
+.gv-section:before,
+.gv-section:after {
 	content: "";
 	display: table;
 }
 
-.gv-template-browser:after {
+.gv-section:after {
 	clear: both;
 }
 
-.gv-template-browser {
-	padding: 0.5em 0 0 0.5em;
+.gv-section h4 {
+	font-size: 14px;
+	font-weight: bold;
+}*/
+
+/* GV Droppable Areas
+--------------------------------------- */
+
+.gv-droppable-area {
+	border: 1px solid #ccc;
+	margin-bottom: 1em;
 }
 
-.gv-template {
-	width: 30%;
-	margin-right: 0.5em;
-	margin-bottom: 0.5em;
-	float: left;
-	border: 4px solid rgba(255,255,255,0);
+.gv-droppable-area .gv-droppable-area-action {
+	background: #eee;
+	padding: 0.5em;
 }
 
-.gv-template.gv-selected {
-	border: 4px solid #1e8cbe;
-	
+.gv-droppable-area .gv-droppable-area-action:before,
+.gv-droppable-area .gv-droppable-area-action:after {
+	content: " ";
+	display: table;
 }
 
-.gv-template img {
-	width: 100%;
-	height: auto;
+.gv-droppable-area .gv-droppable-area-action:after {
+	clear: both;
 }
 
-.gv-template a:active, .gv-template a:focus {
-	outline: none;
+.gv-droppable-area .gv-droppable-area-title {
+	font-weight: bold;
+	margin: 0;
+	padding: 0;
 }
+
+.gv-droppable-area .gv-droppable-area-subtitle {
+	margin: 0.25em 0 0 0;
+	padding: 0;
+	font-size: 12px;
+	color: #999;
+}
+
+.gv-droppable-area .button-secondary {
+	float: right;
+}
+
+.active-drop {
+	/*border: 1px dotted #bbb;*/
+	padding: 0.5em;
+}
+
+.active-drop .drop-message {
+	margin: 5px 2px;
+	line-height: 40px;
+	color: #bbb;
+}
+
+
 
 
 /** Fields drag and drop */
-#directory-active-fields,
+/*#directory-active-fields,
 #directory-available-fields,
 #single-active-fields,
 #single-available-fields {
@@ -119,31 +384,31 @@ hr{
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	width: 50%;
-}
+}*/
 
-#directory-active-fields,
+/*#directory-active-fields,
 #single-active-fields {
 	float: left;
 	padding: 0 1em 0 0;
-}
+}*/
 
-#directory-available-fields,
+/*#directory-available-fields,
 #single-available-fields {
 	float: right;
 	padding: 0 0 0 1em;
-}
+}*/
 
 
-fieldset.area {
+/*fieldset.area {
 	padding: 0.5em;
 	margin-bottom: 1em;
 	border: 1px solid #eee;
-}
+}*/
 
 .gv-fields {
 	cursor: move;
 	border: 1px solid #ddd;
-	background: #f7f7f7; 
+	background: #f7f7f7;
 	overflow: hidden;
 	padding: 0.5em;
 	margin-bottom: 5px;
@@ -184,11 +449,13 @@ fieldset.area {
 }
 
 #directory-available-fields .gv-fields h5,
+#directory-available-widgets .gv-fields h5,
 #single-available-fields .gv-fields h5 {
 	padding: 0 !important;
 }
 
 #directory-available-fields .gv-fields span.gv-field-controls,
+#directory-available-widgets .gv-fields span.gv-field-controls,
 #single-available-fields .gv-fields span.gv-field-controls {
 	display: none !important;
 }

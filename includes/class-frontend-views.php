@@ -137,10 +137,11 @@ class GravityView_frontend {
 			return;
 		}
 
-		// get form assign to this view
+		// get form, fields and settings assign to this view
 		$form_id = get_post_meta( $id, '_gravityview_form_id', true );
-
+		$template_id  = get_post_meta( $id, '_gravityview_directory_template', true );
 		$dir_fields = get_post_meta( $id, '_gravityview_directory_fields', true );
+		$template_settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
 
 		// remove fields according to visitor visibility permissions (if logged-in)
 		$dir_fields = self::filter_fields( $dir_fields );
@@ -155,9 +156,6 @@ class GravityView_frontend {
 
 		// check if user requests single entry
 		$single_entry = get_query_var( self::get_entry_var_name() );
-
-		// init vars
-		$template_id = '';
 
 		if( empty( $single_entry ) ) {
 			// user requested Directory View
@@ -187,22 +185,20 @@ class GravityView_frontend {
 
 			// Paging
 			if( empty( $page_size ) ) {
-				$page_size = get_post_meta( $id, '_gravityview_page_size', true );
+				$page_size = empty( $template_settings['page_size'] ) ? 25 : $template_settings['page_size'];
 			}
 			$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
 			$paging = array( 'offset' => ( $curr_page - 1 ) * $page_size, 'page_size' => $page_size );
 
 
 			// remove not approved entries
-			$only_approved = get_post_meta( $id, '_gravityview_only_approved', true );
-			if( !empty( $only_approved ) ) {
+			if( !empty( $template_settings['show_only_approved'] ) ) {
 				$search_criteria['field_filters'][] = array( 'key' => 'is_approved', 'value' => 'Approved' );
 				$search_criteria['field_filters']['mode'] = 'all'; // force all the criterias to be met
 			}
 
 			//fetch template and slug
-			$template_id  = get_post_meta( $id, '_gravityview_directory_template', true );
-			$view_slug =  apply_filters( 'gravityview_template_slug_'. $template_id, 'table' );
+			$view_slug =  apply_filters( 'gravityview_template_slug_'. $template_id, 'table', 'directory' );
 
 			//fetch entries
 			$count = 0;
@@ -212,8 +208,7 @@ class GravityView_frontend {
 			// user requested Single Entry View
 
 			//fetch template and slug
-			$template_id = get_post_meta( $id, '_gravityview_single_template', true );
-			$view_slug =  apply_filters( 'gravityview_template_slug_'. $template_id, 'table' );
+			$view_slug =  apply_filters( 'gravityview_template_slug_'. $template_id, 'table', 'single' );
 
 			//fetch entry detail
 			$count = 1;
