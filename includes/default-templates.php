@@ -28,6 +28,25 @@ $field_options = array(
 
 /** Preset templates */
 
+class GravityView_Preset_Business_Data {
+
+	function __construct() {
+		$def_template = new GravityView_Default_Template_Table;
+
+		$def_template->template_id = 'preset_business_data';
+
+		$def_template->settings = array(
+			'slug' => 'table',
+			'type' => 'preset',
+			'label' =>  __( 'Business Data', 'gravity-view' ),
+			'description' => __( 'Display business information in a table.', 'gravity-view'),
+			'logo' => GRAVITYVIEW_URL . 'includes/presets/business-data/logo-business-data.png'
+		);
+
+	}
+}
+
+
 class GravityView_Preset_Resume_board {
 
 	function __construct() {
@@ -294,4 +313,5 @@ new GravityView_Default_Template_List;
 new GravityView_Preset_Resume_board();
 new GravityView_Preset_Job_Board();
 new GravityView_Preset_Business_Listings();
+new GravityView_Preset_Business_Data();
 
