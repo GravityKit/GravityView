@@ -199,6 +199,10 @@
 	background: #1ebe41;
 }
 
+#gravityview_select_template .inside {
+	max-height: 450px;
+	overflow-x: scroll;
+}
 
 
 
