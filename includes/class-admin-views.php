@@ -113,6 +113,9 @@ class GravityView_Admin_Views {
 		</div>
 
 		<?php
+		// hidden field to keep track of start fresh state ?>
+		<input type="hidden" name="gravityview_form_id_start_fresh" value="0">
+
 	}
 
 
