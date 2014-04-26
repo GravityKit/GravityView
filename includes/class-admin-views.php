@@ -114,8 +114,8 @@ class GravityView_Admin_Views {
 
 		<?php
 		// hidden field to keep track of start fresh state ?>
-		<input type="hidden" name="gravityview_form_id_start_fresh" value="0">
-
+		<input type="hidden" id="gravityview_form_id_start_fresh" name="gravityview_form_id_start_fresh" value="0">
+		<?php
 	}
 
 
@@ -358,8 +358,26 @@ class GravityView_Admin_Views {
 		$active_tab = empty( $_POST['gv-active-tab'] ) ? 0 : $_POST['gv-active-tab'];
 		update_post_meta( $post_id, '_gravityview_tab_active', $active_tab );
 
-		// save form id
+		// check if this is a start fresh View
 		if ( isset( $_POST['gravityview_select_form_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_form_nonce'], 'gravityview_select_form' ) ) {
+			if( !empty( $_POST['gravityview_form_id_start_fresh'] ) ) {
+				// get the template id
+
+				// get the xml
+
+				// import form
+
+				// get the form ID
+
+				// save the form ID
+				//
+				// if error, stop saving.
+			} else {
+
+			}
+
+			// save form id
+
 			update_post_meta( $post_id, '_gravityview_form_id', $_POST['gravityview_form_id'] );
 		}
 

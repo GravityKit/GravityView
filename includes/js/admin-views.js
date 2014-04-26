@@ -249,14 +249,19 @@
 		},
 
 		startFresh: function(){
+			//TODO: what to do if you start fresh and then select another form!?
 			var vcfg = viewConfiguration;
 
 			if( vcfg.currentFormId !== '' ) {
 				vcfg.showDialog();
 			} else {
+				// show templates
 				vcfg.templateFilter('preset');
 				vcfg.showTemplates();
 			}
+
+			// start fresh trigger
+			$('#gravityview_form_id_start_fresh').val('1');
 
 		},
 
