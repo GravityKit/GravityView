@@ -559,7 +559,7 @@ error_log( 'this $POST: ' . print_r( $_POST , true ) );
 	 * @return void
 	 */
 	function render_active_areas( $template_id, $type, $zone, $rows, $values ) {
-error_log( 'render_active_areas, temp '. $template_id.' - '."$type - $zone " . print_r( $rows , true ) );
+
 		if( $type === 'widget' ) {
 			$button_label = __( 'Add Widget', 'gravity-view' );
 		} elseif( $type === 'field' ) {
@@ -570,10 +570,9 @@ error_log( 'render_active_areas, temp '. $template_id.' - '."$type - $zone " . p
 		if( !empty( $values ) && 'field' === $type && !empty( $this->post_id ) ) {
 			$form_id = get_post_meta( $this->post_id, '_gravityview_form_id', true );
 			$available_fields = $this->get_available_fields( $form_id );
-error_log( 'this $form_id: ' . print_r( $form_id , true ) );
-error_log( 'this $available_fields: ' . print_r( $available_fields , true ) );
 		}
 
+error_log( 'Values ' . print_r( $values , true ) );
 
 		foreach( $rows as $row ) :
 			foreach( $row as $col => $areas ) :
@@ -593,13 +592,13 @@ error_log( 'this $area[] ' . print_r( $area['areaid'] , true ) );
 
 										if( !empty( $available_fields[ $field['id'] ] ) ) : ?>
 
-											<div data-fieldid="<?php echo $field['id']; ?>" class="gv-fields ui-draggable">
+											<div data-fieldid="<?php echo $field['id']; ?>" class="gv-fields">
 												<h5><?php echo $available_fields[ $field['id'] ]['label']; ?></h5>
 												<span class="gv-field-controls">
 													<a href="#settings" class="dashicons-admin-generic dashicons"></a>
 													<a href="#remove" class="dashicons-dismiss dashicons"></a>
 												</span>
-												<?php echo $this->render_field_options( $type, $template_id, $field['id'], $available_fields[ $field['id'] ]['label'], $area['areaid'], $uniqid, $field, $context ); ?>
+												<?php echo $this->render_field_options( $type, $template_id, $field['id'], $available_fields[ $field['id'] ]['label'], $zone .'_'. $area['areaid'], $uniqid, $field, $zone ); ?>
 											</div>
 
 										<?php endif; ?>
@@ -957,7 +956,7 @@ error_log( 'this $area[] ' . print_r( $area['areaid'] , true ) );
 	 */
 	function get_field_options() {
 		$response = false;
-error_log( ' POST: ' . print_r( $_POST , true ) );
+
 		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) || empty( $_POST['field_label'] ) ) {
 			echo $response;
 			die();
