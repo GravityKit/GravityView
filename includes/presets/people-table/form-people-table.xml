@@ -1,90 +1,95 @@
-<!DOCTYPE html><html lang="en" xmlns:fb="http://ogp.me/ns/fb#" xml:lang="en" class="media-desktop" xmlns="http://www.w3.org/1999/xhtml"><head><script type="text/javascript">
-                window._document_observe_listeners = [];
-                document.observe = function(event, func) {
-                    window._document_observe_listeners.push({event: event, func: func});
-                };
-
-                window._jquery_ready_handlers = [];
-                jQuery = function(handler) {
-                    window._jquery_ready_handlers.push(handler);
-                };
-
-                function on_script_loaded(func) {
-                    (window.LoadedJsSuccessfully && document.loaded) ? func() : document.observe('script:loaded', func);
-                }
-                </script> <link href="https://dt8kf6553cww8.cloudfront.net/static/images/favicon-vflk5FiAC.ico" rel="shortcut icon" /><link href="https://dt8kf6553cww8.cloudfront.net/static/css/main-vfl3VIZDl.css" type="text/css" rel="stylesheet" /><link href="https://dt8kf6553cww8.cloudfront.net/static/css/web_sprites-vflZSlPmi.css" type="text/css" rel="stylesheet" /><link href="https://dt8kf6553cww8.cloudfront.net/static/images/dropbox_webclip-vflO8tEZ4.png" rel="apple-touch-icon" /><link href="/w3c/p3p.xml" rel="P3Pv1" /><script type="text/javascript">window.ST=+new Date();</script><meta content="text/html; charset=UTF-8" http-equiv="content-type" /><meta content="Dropbox is a free service that lets you bring your photos, docs, and videos anywhere and share them easily. Never email yourself a file again!" name="description" /><meta content="online storage, free storage, file sharing, share files,
-    awesome, cloud storage, online backup, cross platform, sync, sharing, mac,
-    windows, os x, linux, backup, collaboration, file versioning, file revisions,
-    remote access, undelete" name="keywords" /><meta content="noindex" name="robots" /><meta content="gravityforms-export-2014-04-16-4.xml" property="og:title" /><meta content="Shared with Dropbox" property="og:description" /><meta content="https://www.dropbox.com/static/images/icons128/page_white_code.png" property="og:image" /><meta content="https://www.dropbox.com/s/q39jfmntuw3oqwx/gravityforms-export-2014-04-16-4.xml" property="og:url" /><meta content="website" property="og:type" /><meta content="Dropbox" property="og:site_name" /><meta content="210019893730" property="fb:app_id" /><meta content="summary" name="twitter:card" /><meta content="@Dropbox" name="twitter:site" /><meta content="https://www.dropbox.com/s/q39jfmntuw3oqwx/gravityforms-export-2014-04-16-4.xml" name="twitter:url" /><meta content="gravityforms-export-2014-04-16-4.xml" name="twitter:title" /><meta content="Shared with Dropbox" name="twitter:description" /><meta content="https://www.dropbox.com/static/images/icons128/page_white_code.png" name="twitter:image" /><meta content="TnuSyOnBMNmtugbpL1ZvW2PbSF9LKvoTzrvOGS9h-b0" name="google-site-verification" /><meta content="EZKIczQcM1-DVUMz8heu1dIhNtxNbLqbaA9-HbOnCQ4" name="google-site-verification" /><meta content="tz8iotmk-pkhui406y41y5bfmfxdwmaa4a-yc0hm6r0fga7s6j0j27qmgqkmc7oovihzghbzhbdjk-uiyrz438nxsjdbj3fggwgl8oq2nf4ko8gi7j4z7t78kegbidl4" name="norton-safeweb-site-verification" /><meta content="https://dt8kf6553cww8.cloudfront.net/static/images/win8_web_tile-vfl8eyKFU.png" name="msapplication-TileImage" /><meta content="#ffffff" name="msapplication-TileColor" /><title>gravityforms-export-2014-04-16-4.xml - Dropbox</title><script type="text/javascript">var Constants = {"protocol": "https", "SUBSCRIBE_URL": "/subscribe", "_viewer_properties": {"deprecated_first_user_in_the_cookie_id": 15111151, "display_name": "Luis Godinho", "_user_data": [{"sso_required": false, "seamless_sso_enabled": false, "_authed": true, "notserver": "notify2.dropbox.com:80", "is_dropbox_admin": false, "is_team": 0, "role": "personal", "root_ns": 23589339, "id": 15111151, "email": "luismgod@gmail.com", "is_email_verified": true}]}, "NOTIFICATION_TYPE_META": -1, "DISABLE_VIDEOS_IN_LIGHTBOX": false, "DOC_PREVIEW_IN_PROGRESS": 2, "team_id": "", "BATCH_THUMB_ENDPOINTS": ["//photos-1.dropbox.com/btjb", "//photos-2.dropbox.com/btjb", "//photos-3.dropbox.com/btjb", "//photos-4.dropbox.com/btjb", "//photos-5.dropbox.com/btjb", "//photos-6.dropbox.com/btjb"], "GSLB_ENABLED": 0, "REQUEST_ID": "fdfabaecdee04902c972774246843d13", "static_url_video_js_swf": "https://dt8kf6553cww8.cloudfront.net/static/swf/video-js-vflMfTkZb.swf", "BLOCK_CLUSTER": "dl-web.dropbox.com", "DELETE_ON_UNLINK_SUPPORTED": 1, "personal_email": "", "DISABLE_VIDEO_ICONS": false, "static_url_pdfjs_viewer": "/static/javascript/external/pdf-js/viewer.html", "TWO_ITEM_LIST": "%(x)s and %(y)s", "send_a_copy_enabled": 0, "LIVE_TRANSCODE_SERVER": "showbox-tr.dropbox.com", "DELETE_ON_UNLINK_UNSUPPORTED": 3, "ADMIN": 0, "static_url_copy_clipboard_swf": "https://dt8kf6553cww8.cloudfront.net/static/swf/copy_clipboard-vflvMcZTC.swf", "TOKEN": "grg1swY-K4yXyXVDAq4hXns2", "SVN_REV": "582395461", "date_format": "d/M/yyyy", "MAX_TEXT_FILE_SIZE_B": 4194304, "ROLE_WORK": "work", "referrer": "https://github.com/zackkatz/GravityView/issues/44", "sess_id": "90601045465025131502216671654802315852", "quicksend_enabled": 0, "LOCALES": [["en", "English"], ["da_DK", "Dansk"], ["de", "Deutsch"], ["es", "Espa\u00f1ol (Latinoam\u00e9rica)"], ["es_ES", "Espa\u00f1ol (Espa\u00f1a)"], ["fr", "Fran\u00e7ais"], ["id", "Bahasa Indonesia"], ["it", "Italiano"], ["ja", "\u65e5\u672c\u8a9e"], ["ko", "\ud55c\uad6d\uc5b4"], ["ms", "Bahasa Malaysia"], ["nl_NL", "Nederlands"], ["pl", "Polski"], ["pt_BR", "Portugu\u00eas (Brasil)"], ["ru", "P\u0443\u0441\u0441\u043a\u0438\u0439"], ["sv_SE", "Svenska"], ["th_TH", "\u0e44\u0e17\u0e22"], ["uk_UA", "\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430"], ["zh_CN", "\u4e2d\u6587\uff08\u7b80\u4f53\uff09"], ["zh_TW", "\u4e2d\u6587\uff08\u7e41\u9ad4\uff09"]], "datetime_format": "d/M/yyyy h:mm a", "ROLE_PHOTOS": "photos", "TIMEZONE_OFFSET": 1.0, "DOC_PREVIEW_UNAVAILABLE": 1, "THREE_ITEM_LIST": "%(x)s, %(y)s, and %(z)s", "USER_LOCALE": "en", "MAX_PDF_FILE_SIZE_B": 20971520, "NOTSERVER": "notify2.dropbox.com:80", "root_ns": 23589339, "DELETE_ON_UNLINK_OLD_CLIENT": 2, "PDF_PREVIEW_MODE": "pdf-embedded", "team_name": "", "WEB_TIMING_ENABLED": 1, "DOC_PREVIEW_AVAILABLE": 0, "upload_debug": false, "ROLE_PARAM": "role", "static_url_video_overlay": "https://dt8kf6553cww8.cloudfront.net/static/images/icons/video_overlay-vfld7VbHa.png", "ROLE_PERSONAL": "personal", "GANDALF_PANEL": 0, "IS_PROD": 1, "static_url_swfupload_swf": "https://dt8kf6553cww8.cloudfront.net/static/swf/swfupload-vfl8U9T2v.swf", "CPROFILE_PARAMETER": "", "EMAIL_VERIFIED": 1, "PUBSERVER": "dl.dropboxusercontent.com", "time_format": "h:mm a", "IS_SPDY": 0, "work_email": "", "static_url_moxie_swf": "https://dt8kf6553cww8.cloudfront.net/static/swf/Moxie-vflz978zN.swf", "auto_timezone_offset": 1.0, "UID_PARAM_NAME": "_subject_uid", "WEBSERVER": "www.dropbox.com", "static_url_syntax_js": "https://dt8kf6553cww8.cloudfront.net/static/javascript/external/syntax-vflpNqebu.js", "block": "dl-web.dropbox.com", "FACEBOOK_APP_ID": "210019893730", "CPROFILE_ENABLED": 0, "WIT_VERSION": 6};</script><script type="text/javascript">
-    window.LoadedJsSuccessfully = false;
-
-    if (window.addEventListener) {
-        window.addEventListener('load', function() {
-            window.setTimeout(function() {
-                if (!window.LoadedJsSuccessfully) {
-                    var url = encodeURIComponent(window.location.href);
-                    new Image().src = '/jse?e=failed+to+load+script&loc=' + url + '&f=' + url;
-                }
-            }, 5000);
-        }, false);
-    }
-</script><script type="text/javascript">window.VFL_PREFIX = "https://dt8kf6553cww8.cloudfront.net/static/"; window.REQUIRE_JS_PATHS = {"jquery": ["https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min", "https://dt8kf6553cww8.cloudfront.net/static/javascript/external/jquery-vflrOa9og", "https://www.dropboxstatic.com/static/javascript/external/jquery-vflrOa9og"], "dropboxapi": ["https://dt8kf6553cww8.cloudfront.net/static/api/1/dropbox-vflPFN3ig", "https://www.dropboxstatic.com/static/api/1/dropbox-vflPFN3ig"], "connect_v3_mobile": ["https://dt8kf6553cww8.cloudfront.net/static/javascript/compiled/connect-v3-mobile-mini-vflG2Nx7Q", "https://www.dropboxstatic.com/static/javascript/compiled/connect-v3-mobile-mini-vflG2Nx7Q"], "saver": ["https://dt8kf6553cww8.cloudfront.net/static/javascript/compiled/saver-mini-vfl3tCwOe", "https://www.dropboxstatic.com/static/javascript/compiled/saver-mini-vfl3tCwOe"], "javascript": "https://dt8kf6553cww8.cloudfront.net/static/javascript", "dropins_mobile": ["https://dt8kf6553cww8.cloudfront.net/static/javascript/compiled/dropins-mobile-mini-vfl4z4p0P", "https://www.dropboxstatic.com/static/javascript/compiled/dropins-mobile-mini-vfl4z4p0P"], "mobile": ["https://dt8kf6553cww8.cloudfront.net/static/javascript/compiled/dropbox-mobile-mini-vfl9-x-gC", "https://www.dropboxstatic.com/static/javascript/compiled/dropbox-mobile-mini-vfl9-x-gC"], "external": "https://dt8kf6553cww8.cloudfront.net/static/javascript/external", "libs": ["https://dt8kf6553cww8.cloudfront.net/static/javascript/compiled/libs-mini-vflDDjtfz", "https://www.dropboxstatic.com/static/javascript/compiled/libs-mini-vflDDjtfz"], "dropbox": ["https://dt8kf6553cww8.cloudfront.net/static/javascript/compiled/dropbox-mini-vflXMwXA-", "https://www.dropboxstatic.com/static/javascript/compiled/dropbox-mini-vflXMwXA-"], "libs_mobile": ["https://dt8kf6553cww8.cloudfront.net/static/javascript/compiled/libs-mobile-mini-vflQ6RoNq", "https://www.dropboxstatic.com/static/javascript/compiled/libs-mobile-mini-vflQ6RoNq"]};</script><script src="https://dt8kf6553cww8.cloudfront.net/static/javascript/compiled/require-vfleiQ0bz.js" type="text/javascript"></script><script type="text/javascript">requirejs(['dropbox'])</script><style type="text/css">.hny-zcuiwy { display: none; }</style><!--[if lt IE 9]><script src="/static/javascript/external/html5shiv.js"></script><![endif]-->  
-            <style type="text/css" media="screen">
-                html {
-                  overflow: auto;
-                }
-            </style>
-        <link href="https://dt8kf6553cww8.cloudfront.net/static/css/components/sprite-div-vflfVxe3h.css" type="text/css" rel="stylesheet" /><link href="https://dt8kf6553cww8.cloudfront.net/static/css/notifications-vflZaKAfm.css" type="text/css" rel="stylesheet" /><link href="https://dt8kf6553cww8.cloudfront.net/static/css/shmodel_print-vflWHY0im.css" type="text/css" rel="stylesheet" /><link href="https://dt8kf6553cww8.cloudfront.net/static/css/syntax-vfljUnWvZ.css" type="text/css" rel="stylesheet" /><script>
-                if (self != top) {
-                    top.location.replace(self.location.href);
-                    setTimeout(function() {
-                        document.body.innerHTML = (
-                            "<img src='https://www.dropbox.com/static/images/logo.png' onClick='top.location.href=window.location.href' />");
-                    }, 1);
-                }
-            </script></head><body class="en file-preview-body shmodel-body deferred-resources "><div style="display: none;" id="db-modal-simple_modal" class="db-modal-wrapper"><div class="db-modal-overlay"></div><div class="db-modal"><div class="db-modal-box"><a href="#" class="db-modal-x"></a><h2 class="db-modal-title"><div class="db-modal-title-text"></div></h2><div class="db-modal-content"><div class="simple-modal-content"></div><div class="db-modal-buttons"><span class="ajax-loading-indicator"><img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/ajax-loading-small-vfl3Wt7C_.gif" /></span><input type="button" class="confirm-button freshbutton-blue " value="Confirm" /><input type="button" class="cancel-button freshbutton-silver" value="Cancel" /></div></div></div></div></div><div style="display: none;" id="modal-behind"></div><div style="display: none;" id="modal"><div id="modal-box"><a href="#" id="modal-x" onclick="javascript: Modal.hide(null, false, true); Event.stop(event); return false;"></a><h2 id="modal-title"></h2><div id="modal-content"></div></div></div><div style="display: none;" id="modal-overlay"></div><div style="display:none" id="grave-yard"></div><div style="display:none" id="trash-can"></div><script type="text/template" id="tutorial_nav_bubble_tmpl"><div class="tutorial-bubble-content"><a class="tutorial-bubble-x-link"><img src="/static/images/x-small-active.png" class="tutorial-bubble-x-img" /></a><h1 class="tutorial-bubble-title"><%= title %></h1><p class="tutorial-bubble-body"><%= body %></p><a class="tutorial-bubble-button <%= button_class %>"><%= button_text %></a></div></script><div id="floaters"></div><div style="display: none;" class="external-drop-indicator top"></div><div style="display: none;" class="external-drop-indicator right"></div><div style="display: none;" class="external-drop-indicator bottom"></div><div style="display: none;" class="external-drop-indicator left"></div><div id="notify-wrapper"><span style="display: none;" id="notify"><span id="notify-msg">Sorry, there was a problem loading this page.</span></span></div><div id="outer-frame"> <div style="display: none;" id="db-modal-locale-selector-modal" class="db-modal-wrapper"><div class="db-modal-overlay"></div><div class="db-modal"><div class="db-modal-box"><a href="#" class="db-modal-x"></a><h2 class="db-modal-title"><div class="db-modal-title-text">Choose a language</div></h2><div class="db-modal-content"><table><tr><td><ul><li><a data-locale="id" class="locale-option">Bahasa Indonesia</a></li><li><a data-locale="ms" class="locale-option">Bahasa Malaysia</a></li><li><a data-locale="da_DK" class="locale-option">Dansk [Beta]</a></li><li><a data-locale="de" class="locale-option">Deutsch</a></li><li><a data-locale="en" class="locale-option">English</a></li><li><a data-locale="es_ES" class="locale-option">Español (España)</a></li><li><a data-locale="es" class="locale-option">Español (Latinoamérica)</a></li><li><a data-locale="fr" class="locale-option">Français</a></li><li><a data-locale="it" class="locale-option">Italiano</a></li><li><a data-locale="nl_NL" class="locale-option">Nederlands [Beta]</a></li></ul></td><td><ul><li><a data-locale="pl" class="locale-option">Polski</a></li><li><a data-locale="pt_BR" class="locale-option">Português (Brasil)</a></li><li><a data-locale="ru" class="locale-option">Pусский</a></li><li><a data-locale="sv_SE" class="locale-option">Svenska [Beta]</a></li><li><a data-locale="uk_UA" class="locale-option">Українська [Beta]</a></li><li><a data-locale="th_TH" class="locale-option">ไทย [Beta]</a></li><li><a data-locale="zh_CN" class="locale-option">中文（简体）</a></li><li><a data-locale="zh_TW" class="locale-option">中文（繁體）</a></li><li><a data-locale="ja" class="locale-option">日本語</a></li><li><a data-locale="ko" class="locale-option">한국어</a></li></ul></td></tr></table></div></div></div></div><div id="page-content"><div class="nav-header"><a href="//www.dropbox.com?src=shmodel" target="_top" class="logo"><img src="https://dt8kf6553cww8.cloudfront.net/static/images/header/header_logo_shmodel-vflsZ7QsE.png" alt="Dropbox" data-hi-res="https://dt8kf6553cww8.cloudfront.net/static/images/header/header_logo_shmodel@2x-vflvJX68X.png" /></a> <div class="filename shmodel-filename"><span id="pyxl8740631937383611787"></span></div> <div class="buttons"><a href="#" class="freshbutton-blue freshdropdown-button" onclick="SharingModel.toggle_dropdown(event, $(&quot;download-menu&quot;), $(&quot;download-menu-button&quot;))" id="download-menu-button">Download<img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/icon_spacer-vflN3BYt2.gif" class=" sprite sprite_web s_web_arrow_white" /></a><div style="display: none;" id="download-menu" class="chat-bubble freshdropdown-menu"><ul><li><a href="https://dl.dropboxusercontent.com/s/q39jfmntuw3oqwx/gravityforms-export-2014-04-16-4.xml?dl=1&amp;token_hash=AAHwwTn9JYuIVXh9hgYkHRSYA8llBfrhQD5rqC0gvVNsNQ" id="download_button_link" onclick="FreshDropdown.hide_all()"><div class="sprite-div"><div class="sprite-frame small icon-left"><img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/icon_spacer-vflN3BYt2.gif" class=" sprite sprite_web s_web_download_arrow" /></div><div class="sprite-text"><div class="sprite-text-inner">Direct download</div></div></div></a></li><li><a class="a2md-button" onclick="SharingModel.show_c2d_modal(); return false;" id="add_to_my_dropbox_link"><div class="sprite-div"><div class="sprite-frame small icon-left"><img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/icon_spacer-vflN3BYt2.gif" class=" sprite sprite_web s_web_dropbox" /></div><div class="sprite-text"><div class="sprite-text-inner">Save to my Dropbox</div></div></div></a></li></ul><div class="chat-bubble-arrow-border"></div><div class="chat-bubble-arrow"></div></div><a href="#" class="freshbutton-lightblue freshdropdown-button" onclick="SharingModel.toggle_dropdown(event, $(&quot;non-owner-menu&quot;), $(&quot;non-owner-menu-button&quot;))" id="non-owner-menu-button"><img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/icon_spacer-vflN3BYt2.gif" class=" sprite sprite_web s_web_more" /></a><div style="display: none;" id="non-owner-menu" class="chat-bubble freshdropdown-menu"><ul><li><a id="print-button"><div class="sprite-div"><div class="sprite-frame small icon-left"><img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/icon_spacer-vflN3BYt2.gif" class=" sprite sprite_web s_web_printer" /></div><div class="sprite-text"><div class="sprite-text-inner">Print</div></div></div></a></li></ul><div class="chat-bubble-arrow-border"></div><div class="chat-bubble-arrow"></div></div> <div id="account-header"><ul class="nav"><li id="notification-feed-nav-link" class="notification-button top-level-nav-item"><a href="#" class="header-nav-link" onclick="UserNotifier.ack_unread_notifications(); return false;"><img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/icon_spacer-vflN3BYt2.gif" class="web notifications-bell sprite sprite_web s_web_notifications_icon" id="notifications-bell" /><img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/icon_spacer-vflN3BYt2.gif" class="web notifications-bell sprite sprite_web s_web_notifications_icon" id="notifications-bell-active" /><span id="new-notification-count" class="freshbubble"></span></a><div id="notification-nav-link" class="sub-nav chat-bubble"><div class="notifications-header">Notifications</div><div id="event-feed-container" class="show"><div id="event-feed"><div id="notification-loading"><img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/ajax-loading-small-vfl3Wt7C_.gif" /></div></div><div id="event-feed-empty"><img src="https://dt8kf6553cww8.cloudfront.net/static/images/empty_notifications-vflQy8YVJ.png" /><div id="event-feed-empty-text">We'll let you know when we've got something new for you!</div></div></div><div class="chat-bubble-arrow-border"></div><div class="chat-bubble-arrow"></div></div></li><li id="header-account-menu" class="ui-button top-level-nav-item"><a href="#" class="header-nav-link" onclick="return false;">Luis Godinho<img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/icon_spacer-vflN3BYt2.gif" class="s_web_arrow-down-blue link-img sprite sprite_web" /></a><div class="sub-nav chat-bubble"><div class="name">Luis Godinho</div><ul><div class="email force-no-break"><span id="pyxl6527272370285854131"></span></div><div class="subheader-gray-text">3.9 GB of 8.5 GB used</div><div class="quota_graph_container"><div style="width: 46%;" class="quota_graph_bar "></div></div><li class="first-standalone"><a href="/account" target="" class="standalone clearfix">Settings</a></li><li><a href="/install" class="standalone clearfix">Install</a></li><li><a href="/plans" target="" class="standalone clearfix">Upgrade</a></li> <li><a href="/logout" class="standalone clearfix">Sign out</a></li></ul><div class="chat-bubble-arrow-border"></div><div class="chat-bubble-arrow"></div></div></li></ul></div></div></div><div id="shmodel-content-area"><div id="default-content"><img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons128/page_white_code-vflEPhKac.png" class="bigicon" /><div class="filename shmodel-filename"><span id="pyxl5477368618966258224"></span></div><div class="meta">8 days ago&nbsp;&middot;&nbsp; 3.28 KB</div><a href="https://dl.dropboxusercontent.com/s/q39jfmntuw3oqwx/gravityforms-export-2014-04-16-4.xml?dl=1&amp;token_hash=AAHwwTn9JYuIVXh9hgYkHRSYA8llBfrhQD5rqC0gvVNsNQ" id="default_content_download_button" class="freshbutton-blue">Download</a><a class="freshbutton-lightblue" onclick="SharingModel.show_c2d_modal(); return false;" id="default_content_a2md">Save to my Dropbox</a></div><div class="filename-below shmodel-filename"><span id="pyxl6248213649777824963"></span></div><div class="preview-box"><div id="code-wrapper" class="content-shadow"><div id="code-loading" class="center"><img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/ajax-loading-small-vfl3Wt7C_.gif" alt="" class="text-img" />Loading...</div><pre id="code" class="brush: xml;"></pre></div></div><a href="/copyright_complaint?ssu=https%3A//www.dropbox.com/s/q39jfmntuw3oqwx/gravityforms-export-2014-04-16-4.xml" class="content-flag title_bubble" rel="nofollow" title="Flag for copyright">Flag for copyright</a></div><div style="display: none;" id="disable-token-modal"><p class="disable-token-desc"></p><div class="modal-buttons"><span class="ajax-loading-indicator"><img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/ajax-loading-small-vfl3Wt7C_.gif" /></span><input value="Remove link" type="button" class="freshbutton-blue unshare-button" onclick="SharingModel.do_remove(Modal.vars);" /><input value="Cancel" type="button" class="freshbutton" onclick="Modal.hide();" /></div></div><div style="display: none;" id="album-disable-token-modal"><p class="disable-token-desc">Are you sure you want to unshare <span class="album_unshare_name"></span>? Once it's unshared, nobody else will be able to view it.</p><div class="modal-buttons"><span class="ajax-loading-indicator"><img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/ajax-loading-small-vfl3Wt7C_.gif" /></span><input value="Unshare" type="button" class="freshbutton-blue unshare-button" onclick="SharingModel.do_remove(Modal.vars);" /><input value="Cancel" type="button" class="freshbutton" onclick="Modal.hide();" /></div></div><div style="display: none;" id="c2d-modal"><p><span class="c2d-desc"></span></p><div class="modal-buttons"><input type="submit" class="c2d-submit-button freshbutton-blue" value="Save to my Dropbox" onclick="SharingModel.do_c2d(15111151)" /><input type="button" class="freshbutton" value="Cancel" onclick="Modal.hide();" /></div></div>
-<script type="text/template" id="lightbox_more_actions_item_tmpl">
-<%
-  _id = (typeof _id !== 'undefined') ? _id : '';
-  _href = (typeof _href !== 'undefined') ? _href : '';
-  _target = (typeof _target !== 'undefined') ? _target : '';
-  more_classes = (typeof more_classes !== 'undefined') ? more_classes : '';
-  divider = ((typeof divider !== 'undefined') && (divider));
-%>
-
-<% if (divider) { %>
-  <li class="divider <%= more_classes %>" />
-<% } else { %>
-  <li id="<%= _id %>" class="<%= more_classes %>" >
-    <a href="<%= _href %>" target="<%= _target %>">
-      <%= Sprite.html('web', sprite_name) %>
-      <div>
-          <%= item_text %>
-      </div>
-    </a>
-  </li>
-<% } %>
-</script>
-<div style="display:none;" id="file-preview-modal"><div class="modal-preview-content"><div class="preview"><table class="preview-container-parent"><tr><td class="preview-container"><div class="preview-content"></div></td></tr></table></div> <div id="file-preview-menu" class="menu "><div class="file-title lightbox-not-important"><span class="album-name">&nbsp;</span><span class="filename">&nbsp;</span><span class="added-by">&nbsp;</span></div><div class="actions">&nbsp;</div><div class="paging lightbox-not-important"><div class="paging-block"><a href="#" class="prev"><img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/icon_spacer-vflN3BYt2.gif" class=" sprite sprite_web s_web_lightbox_prev" /></a><div class="lightbox-index-text-container"></div><a href="#" class="next"><img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/icon_spacer-vflN3BYt2.gif" class=" sprite sprite_web s_web_lightbox_next" /></a></div></div></div><div style="display:none;" id="lightbox-more-actions-menu" class="freshdropdown-menu big black chat-bubble-bottom"><ul id="lightbox-more-actions-list"></ul><div class="chat-bubble-arrow-border black"></div><div class="chat-bubble-arrow black"></div></div> <div style="display:none;" class="delete-file-prompt chat-bubble-bottom"><input type="button" id="lightbox-delete-photo" value="Delete" class="freshbutton-blue" /><br /><input type="button" id="lightbox-delete-cancel" value="Cancel" class="freshbutton" /><div class="chat-bubble-arrow-border black"></div><div class="chat-bubble-arrow black"></div></div></div><div class="header"><a href="#" class="close lightbox-not-important"><img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/icon_spacer-vflN3BYt2.gif" class=" sprite sprite_web s_web_lightbox_close" /></a></div></div></div><noscript><p class="center">The Dropbox website requires JavaScript.</p></noscript></div><div style="position: absolute; top: 0; left: 0; font-family: Courier" id="ieconsole"></div><div style="position:absolute; top:-10000px;width:0px; height:0px; left: 0;" id="FB_HiddenContainer"></div><div style="display:none;" id="notice-container" class="clearfix"></div><script src="https://dt8kf6553cww8.cloudfront.net/static/javascript/external/syntax-vflpNqebu.js" type="text/javascript"></script><script>requirejs(["dropbox"], function(dropbox) { SharingModel.init("gravityforms-export-2014-04-16-4.xml", {"secure_hash": "", "subpath": "", "tkey": "q39jfmntuw3oqwx"}); SharingModel.set_team_only_shmodel(null, null);
-
-            $j('#print-button').click(function() {
-                requirejs(['print'], function(print) { print.print(); });
-            });
-        
-Util.remove_param_from_url('m');
-SharingModel.init_file()
-
-        Util.smartLoad(function() {
-           Util.focus("");
-           Cookies.check_cookies_enabled();
-           WebTimingLogger.init();
-        });
-        
-add_notclient(15111151, "01396960212934129096", {"271756803": 123, "267630308": 1327, "238585415": 126, "472645383": 337, "341908492": 19, "35657360": 15132, "219691889": 45, "145042642": 4, "349465731": 5, "576513268": 5, "98705463": 8689, "157934937": 7, "23589339": 4700});
-$j("#pyxl8740631937383611787").text("gravityforms-export-2014-04-16-4.xml".em_snippet(50, 0.750000));
-UserNotifier.init();
-new NotificationUIButton();
-$j("#pyxl6527272370285854131").text("luismgod@gmail.com".em_snippet(13, 0.250000));
-$j("#pyxl5477368618966258224").text("gravityforms-export-2014-04-16-4.xml".em_snippet(20, 0.750000));
-$j("#pyxl6248213649777824963").text("gravityforms-export-2014-04-16-4.xml".em_snippet(20, 0.750000));
-FilePreview.init_text("https://dl.dropboxusercontent.com/s/q39jfmntuw3oqwx/gravityforms-export-2014-04-16-4.xml?token_hash=AAHwwTn9JYuIVXh9hgYkHRSYA8llBfrhQD5rqC0gvVNsNQ", 1, null, 0) });</script></body></html>
+<?xml version="1.0" encoding="UTF-8"?>
+<forms version="1.8.7">
+	<form labelPlacement="top_label" useCurrentUserAsAuthor="1">
+		<title><![CDATA[GV Template - Profiles]]></title>
+		<descriptionPlacement><![CDATA[below]]></descriptionPlacement>
+		<button type="text">
+			<text><![CDATA[Submit]]></text>
+		</button>
+		<fields>
+			<field id="1" size="medium" type="name" nameFormat="normal">
+				<label><![CDATA[Name]]></label>
+				<inputs>
+					<input id="1.3">
+						<label><![CDATA[First]]></label>
+					</input>
+					<input id="1.6">
+						<label><![CDATA[Last]]></label>
+					</input>
+				</inputs>
+			</field>
+			<field id="7" size="medium" type="email">
+				<label><![CDATA[Email]]></label>
+			</field>
+			<field id="8" size="medium" type="phone" phoneFormat="standard">
+				<label><![CDATA[Phone]]></label>
+			</field>
+			<field id="10" size="medium" type="text">
+				<label><![CDATA[Work]]></label>
+			</field>
+			<field id="11" size="medium" type="address" addressType="us">
+				<label><![CDATA[Address]]></label>
+				<defaultCountry><![CDATA[United States]]></defaultCountry>
+				<inputs>
+					<input id="11.1">
+						<label><![CDATA[Street Address]]></label>
+					</input>
+					<input id="11.2">
+						<label><![CDATA[Address Line 2]]></label>
+					</input>
+					<input id="11.3">
+						<label><![CDATA[City]]></label>
+					</input>
+					<input id="11.4">
+						<label><![CDATA[State / Province]]></label>
+					</input>
+					<input id="11.5">
+						<label><![CDATA[ZIP / Postal Code]]></label>
+					</input>
+					<input id="11.6">
+						<label><![CDATA[Country]]></label>
+					</input>
+				</inputs>
+			</field>
+			<field id="4" size="medium" type="textarea">
+				<label><![CDATA[Bio]]></label>
+			</field>
+			<field id="9" size="medium" type="fileupload">
+				<label><![CDATA[Photo]]></label>
+				<allowedExtensions><![CDATA[jpg,jpeg,gif,png]]></allowedExtensions>
+			</field>
+			<field id="5" size="medium" type="list">
+				<label><![CDATA[Interests]]></label>
+			</field>
+			<field id="2" size="medium" type="text">
+				<cssClass><![CDATA[validate-facebook]]></cssClass>
+				<errorMessage><![CDATA[Please enter a valid Facebook account name or page.]]></errorMessage>
+				<label><![CDATA[Facebook Profile]]></label>
+			</field>
+			<field id="3" size="medium" type="text">
+				<cssClass><![CDATA[validate-twitter]]></cssClass>
+				<errorMessage><![CDATA[Please enter a valid Twitter account username.]]></errorMessage>
+				<label><![CDATA[Twitter Username]]></label>
+			</field>
+			<field id="6" size="medium" type="website">
+				<label><![CDATA[Website]]></label>
+			</field>
+		</fields>
+		<confirmations>
+			<confirmation id="534df853d40da" isDefault="1" type="message">
+				<name><![CDATA[Default Confirmation]]></name>
+				<message><![CDATA[Thanks for contacting us! We will get in touch with you shortly.]]></message>
+			</confirmation>
+		</confirmations>
+		<notifications>
+			<notification id="534df853d3cc5">
+				<to><![CDATA[{admin_email}]]></to>
+				<name><![CDATA[Admin Notification]]></name>
+				<event><![CDATA[form_submission]]></event>
+				<toType><![CDATA[email]]></toType>
+				<subject><![CDATA[New submission from {form_title}]]></subject>
+				<message><![CDATA[{all_fields}]]></message>
+			</notification>
+		</notifications>
+	</form>
+</forms>
