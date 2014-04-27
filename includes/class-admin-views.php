@@ -358,33 +358,42 @@ class GravityView_Admin_Views {
 		$active_tab = empty( $_POST['gv-active-tab'] ) ? 0 : $_POST['gv-active-tab'];
 		update_post_meta( $post_id, '_gravityview_tab_active', $active_tab );
 
+		// Check if we have a template id
+		if ( isset( $_POST['gravityview_select_template_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_template_nonce'], 'gravityview_select_template' ) ) {
+
+			$template_id = $_POST['gravityview_directory_template'];
+		}
+
 		// check if this is a start fresh View
 		if ( isset( $_POST['gravityview_select_form_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_form_nonce'], 'gravityview_select_form' ) ) {
-			if( !empty( $_POST['gravityview_form_id_start_fresh'] ) ) {
-				// get the template id
 
-				// get the xml
+			if( !empty( $_POST['gravityview_form_id_start_fresh'] ) && !empty( $template_id ) ) {
+
+				// get the xml for this specific template_id
+				$preset_xml_path = apply_filters( 'gravityview_template_formxml', '', $template_id );
 
 				// import form
+				$form_id = $this->import_form( $preset_xml_path );
 
 				// get the form ID
+				if( $form_id === false ) {
+					// send error to user
+					error_log( 'this error on form insert: ' . print_r( $preset_xml_path , true ) );
+				}
 
-				// save the form ID
-				//
-				// if error, stop saving.
 			} else {
-
+				$form_id = $_POST['gravityview_form_id'];
 			}
 
 			// save form id
-
-			update_post_meta( $post_id, '_gravityview_form_id', $_POST['gravityview_form_id'] );
+			update_post_meta( $post_id, '_gravityview_form_id', $form_id );
 		}
 
-		// save template id
-		if ( isset( $_POST['gravityview_select_template_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_template_nonce'], 'gravityview_select_template' ) ) {
-			update_post_meta( $post_id, '_gravityview_directory_template', $_POST['gravityview_directory_template'] );
+		// now save template id
+		if( !empty( $template_id ) ) {
+			update_post_meta( $post_id, '_gravityview_directory_template', $template_id );
 		}
+
 
 		// save View Configuration metabox
 		if ( isset( $_POST['gravityview_view_configuration_nonce'] ) && wp_verify_nonce( $_POST['gravityview_view_configuration_nonce'], 'gravityview_view_configuration' ) ) {
@@ -409,6 +418,30 @@ class GravityView_Admin_Views {
 
 		} // end save view configuration
 
+	}
+
+	/**
+	 * Import Gravity Form XML
+	 * @param  string $xml_path Path to form xml file
+	 * @return int | bool       Imported form ID or false
+	 */
+	function import_form( $xml_path ) {
+
+		if( empty( $xml_path ) || !class_exists('GFExport') || !file_exists( $xml_path ) ) {
+			error_log( 'NOT FOUND: ' . print_r( $xml_path , true ) );
+			return false;
+		}
+
+		// import form
+		$forms = '';
+		$count = GFExport::import_file( $xml_path, $forms );
+
+		if( $count != 1 || empty( $forms[0]['id'] ) ) {
+			return false;
+		}
+
+		// import success - return form id
+		return $forms[0]['id'];
 	}
 
 

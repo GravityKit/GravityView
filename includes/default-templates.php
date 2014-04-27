@@ -40,7 +40,8 @@ class GravityView_Preset_Business_Data {
 			'type' => 'preset',
 			'label' =>  __( 'Business Data', 'gravity-view' ),
 			'description' => __( 'Display business information in a table.', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'includes/presets/business-data/logo-business-data.png'
+			'logo' => GRAVITYVIEW_URL . 'includes/presets/business-data/logo-business-data.png',
+			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/business-data/form-business-data.xml'
 		);
 
 	}
@@ -59,7 +60,8 @@ class GravityView_Preset_Resume_board {
 			'type' => 'preset',
 			'label' =>  __( 'Resume Board', 'gravity-view' ),
 			'description' => __( 'Allow job-seekers to post their resumes.', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'includes/presets/resume-board/logo-resume-board.png'
+			'logo' => GRAVITYVIEW_URL . 'includes/presets/resume-board/logo-resume-board.png',
+			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/resume-board/form-resume-board.xml'
 		);
 
 	}
@@ -77,7 +79,9 @@ class GravityView_Preset_Job_Board {
 			'type' => 'preset',
 			'label' =>  __( 'Job Board', 'gravity-view' ),
 			'description' => __( 'Post available jobs in a simple job board.', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'includes/presets/job-board/logo-job-board.png'
+			'logo' => GRAVITYVIEW_URL . 'includes/presets/job-board/logo-job-board.png',
+			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/job-board/form-job-board.xml'
+
 		);
 
 	}
@@ -95,7 +99,8 @@ class GravityView_Preset_Business_Listings {
 			'type' => 'preset',
 			'label' =>  __( 'Business Listings', 'gravity-view' ),
 			'description' => __( 'Display business profiles.', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'includes/presets/business-listings/logo-business-listings.png'
+			'logo' => GRAVITYVIEW_URL . 'includes/presets/business-listings/logo-business-listings.png',
+			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/business-listings/form-business-listings.xml'
 		);
 
 	}
@@ -187,6 +192,8 @@ class GravityView_Template {
 	 * logo - template icon (admin)
 	 * preview - template image for previewing (admin)
 	 * buy_source - url source for buying this template
+	 * preset_form - path to Gravity Form form XML file
+	 * preset_config - path to View config (XML)
 	 *
 	 */
 
@@ -205,12 +212,19 @@ class GravityView_Template {
 
 		$this->template_id = $id;
 
-		$this->settings = wp_parse_args( $settings, array( 'slug' => '', 'css_source' => '', 'type' => '', 'label' => '', 'description' => '', 'logo' => '', 'preview' => '', 'buy_source' => '' ) );
+		$this->settings = wp_parse_args( $settings, array( 'slug' => '', 'css_source' => '', 'type' => '', 'label' => '', 'description' => '', 'logo' => '', 'preview' => '', 'buy_source' => '', 'preset_form' => '' ) );
 
 		$this->field_options = $field_options;
 		$this->active_areas = $areas;
 
 		add_filter( 'gravityview_register_directory_template', array( $this, 'register_template' ) );
+
+		// presets hooks:
+		// form xml
+		add_filter( 'gravityview_template_formxml', array( $this, 'assign_form_xml' ), 10 , 2);
+
+		// fields config xml
+
 
 		// assign active areas
 		add_filter( 'gravityview_template_active_areas', array( $this, 'assign_active_areas' ), 10, 2 );
@@ -270,6 +284,15 @@ class GravityView_Template {
 		}
 
 		return $options;
+	}
+
+
+	public function assign_form_xml( $xml = '' , $template = '' ) {
+		if( $this->settings['type'] === 'preset' && !empty( $this->settings['preset_form'] ) && $this->template_id === $template ) {
+			return $this->settings['preset_form'];
+		}
+
+		return $xml;
 	}
 
 
