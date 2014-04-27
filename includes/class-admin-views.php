@@ -31,7 +31,7 @@ class GravityView_Admin_Views {
 		add_action( 'wp_ajax_gv_field_options', array( $this, 'get_field_options' ) );
 
 		// get available fields
-		add_action( 'wp_ajax_gv_available_fields', array( $this, 'get_available_fields' ) );
+		add_action( 'wp_ajax_gv_available_fields', array( $this, 'get_available_fields_html' ) );
 
 		// get active areas
 		add_action( 'wp_ajax_gv_get_active_areas', array( $this, 'get_active_areas' ) );
@@ -336,7 +336,7 @@ class GravityView_Admin_Views {
 	 */
 	function save_postdata( $post_id ) {
 
-
+error_log( 'this $POST: ' . print_r( $_POST , true ) );
 		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ){
 			return;
 		}
@@ -457,14 +457,8 @@ class GravityView_Admin_Views {
 	function render_available_fields( $form_id = '', $context = 'single' ) {
 
 		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array() );
-		// get form fields
-		$fields = gravityview_get_form_fields( $form_id, true );
-		// get meta fields
-		$meta_fields = gravityview_get_entry_meta( $form_id );
-		// get default fields
-		$default_fields = $this->get_entry_default_fields();
 
-		$fields = array_merge( $fields, $meta_fields, $default_fields );
+		$fields = $this->get_available_fields( $form_id );
 
 		$output = '';
 
@@ -501,6 +495,31 @@ class GravityView_Admin_Views {
                 'created_by' => array( 'label' => 'User', 'type' => 'created_by'),
         );
         return apply_filters( 'gravityview_entry_default_fields', $entry_default_fields );
+	}
+
+	/**
+	 * Calculate the available fields
+	 * @param  string $form_id Form ID
+	 * @return array         fields
+	 */
+	function get_available_fields( $form_id = '' ) {
+		if( empty( $form_id ) ) {
+			return array();
+		}
+
+		// get form fields
+		$fields = gravityview_get_form_fields( $form_id, true );
+
+		// get meta fields
+		$meta_fields = gravityview_get_entry_meta( $form_id );
+
+		// get default fields
+		$default_fields = $this->get_entry_default_fields();
+
+		//merge without loosing the keys
+		$fields = $fields + $meta_fields + $default_fields;
+
+		return $fields;
 	}
 
 
@@ -540,12 +559,21 @@ class GravityView_Admin_Views {
 	 * @return void
 	 */
 	function render_active_areas( $template_id, $type, $zone, $rows, $values ) {
-
+error_log( 'render_active_areas, temp '. $template_id.' - '."$type - $zone " . print_r( $rows , true ) );
 		if( $type === 'widget' ) {
 			$button_label = __( 'Add Widget', 'gravity-view' );
 		} elseif( $type === 'field' ) {
 			$button_label = __( 'Add Field', 'gravity-view' );
 		}
+
+		// if saved values, get available fields to label everyone
+		if( !empty( $values ) && 'field' === $type && !empty( $this->post_id ) ) {
+			$form_id = get_post_meta( $this->post_id, '_gravityview_form_id', true );
+			$available_fields = $this->get_available_fields( $form_id );
+error_log( 'this $form_id: ' . print_r( $form_id , true ) );
+error_log( 'this $available_fields: ' . print_r( $available_fields , true ) );
+		}
+
 
 		foreach( $rows as $row ) :
 			foreach( $row as $col => $areas ) :
@@ -559,12 +587,9 @@ class GravityView_Admin_Views {
 							<div class="active-drop active-drop-<?php echo $type; ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
 
 								<?php // render saved fields
-								if( !empty( $values[ $area['areaid'] ] ) && !empty( $this->post_id ) ) :
-
-									// if saved values, get available fields to label everyone
-									$available_fields = gravityview_get_form_fields( get_post_meta( $this->post_id, '_gravityview_form_id', true ), true );
-
-									foreach( $values[ $area['areaid'] ] as $uniqid => $field ) :
+								if( !empty( $values[ $zone .'_'. $area['areaid'] ] ) ) :
+error_log( 'this $area[] ' . print_r( $area['areaid'] , true ) );
+									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) :
 
 										if( !empty( $available_fields[ $field['id'] ] ) ) : ?>
 
@@ -654,10 +679,7 @@ class GravityView_Admin_Views {
 		$fields = '';
 		if( !empty( $post_id ) ) {
 			$fields = get_post_meta( $post_id, '_gravityview_directory_fields', true );
-			$available_fields = gravityview_get_form_fields( get_post_meta( $post_id, '_gravityview_form_id', true ), true );
 		}
-
-
 
 		ob_start();
 		?>
@@ -876,7 +898,7 @@ class GravityView_Admin_Views {
 	 * @access public
 	 * @return void
 	 */
-	function get_available_fields() {
+	function get_available_fields_html() {
 		$response = false;
 
 		if( empty( $_POST['formid'] ) ) {
