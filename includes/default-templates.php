@@ -41,7 +41,8 @@ class GravityView_Preset_Business_Data {
 			'label' =>  __( 'Business Data', 'gravity-view' ),
 			'description' => __( 'Display business information in a table.', 'gravity-view'),
 			'logo' => GRAVITYVIEW_URL . 'includes/presets/business-data/logo-business-data.png',
-			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/business-data/form-business-data.xml'
+			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/business-data/form-business-data.xml',
+			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/business-data/fields-test.xml'
 		);
 
 	}
@@ -212,7 +213,7 @@ class GravityView_Template {
 
 		$this->template_id = $id;
 
-		$this->settings = wp_parse_args( $settings, array( 'slug' => '', 'css_source' => '', 'type' => '', 'label' => '', 'description' => '', 'logo' => '', 'preview' => '', 'buy_source' => '', 'preset_form' => '' ) );
+		$this->settings = wp_parse_args( $settings, array( 'slug' => '', 'css_source' => '', 'type' => '', 'label' => '', 'description' => '', 'logo' => '', 'preview' => '', 'buy_source' => '', 'preset_form' => '', 'preset_fields' => '' ) );
 
 		$this->field_options = $field_options;
 		$this->active_areas = $areas;
@@ -222,9 +223,8 @@ class GravityView_Template {
 		// presets hooks:
 		// form xml
 		add_filter( 'gravityview_template_formxml', array( $this, 'assign_form_xml' ), 10 , 2);
-
 		// fields config xml
-
+		add_filter( 'gravityview_template_fieldsxml', array( $this, 'assign_fields_xml' ), 10 , 2);
 
 		// assign active areas
 		add_filter( 'gravityview_template_active_areas', array( $this, 'assign_active_areas' ), 10, 2 );
@@ -290,6 +290,14 @@ class GravityView_Template {
 	public function assign_form_xml( $xml = '' , $template = '' ) {
 		if( $this->settings['type'] === 'preset' && !empty( $this->settings['preset_form'] ) && $this->template_id === $template ) {
 			return $this->settings['preset_form'];
+		}
+
+		return $xml;
+	}
+
+	public function assign_fields_xml( $xml = '' , $template = '' ) {
+		if( $this->settings['type'] === 'preset' && !empty( $this->settings['preset_fields'] ) && $this->template_id === $template ) {
+			return $this->settings['preset_fields'];
 		}
 
 		return $xml;

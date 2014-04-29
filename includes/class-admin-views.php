@@ -336,7 +336,6 @@ class GravityView_Admin_Views {
 	 */
 	function save_postdata( $post_id ) {
 
-error_log( 'this $POST: ' . print_r( $_POST , true ) );
 		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ){
 			return;
 		}
@@ -381,6 +380,11 @@ error_log( 'this $POST: ' . print_r( $_POST , true ) );
 					error_log( 'this error on form insert: ' . print_r( $preset_xml_path , true ) );
 				}
 
+				// get the fields xml config file for this specific preset
+				$preset_fields_path = apply_filters( 'gravityview_template_fieldsxml', array(), $template_id );
+				// import fields
+				$preset_fields = $this->import_fields( $preset_fields_path );
+
 			} else {
 				$form_id = $_POST['gravityview_form_id'];
 			}
@@ -398,17 +402,21 @@ error_log( 'this $POST: ' . print_r( $_POST , true ) );
 		// save View Configuration metabox
 		if ( isset( $_POST['gravityview_view_configuration_nonce'] ) && wp_verify_nonce( $_POST['gravityview_view_configuration_nonce'], 'gravityview_view_configuration' ) ) {
 
-			// Directory Visible Fields
+			// template settings
 			if( empty( $_POST['template_settings'] ) ) {
 				$_POST['template_settings'] = array();
 			}
 			update_post_meta( $post_id, '_gravityview_template_settings', $_POST['template_settings'] );
 
 			// Directory Visible Fields
-			if( empty( $_POST['fields'] ) ) {
-				$_POST['fields'] = array();
+			if( !empty( $preset_fields ) ) {
+				$fields = $preset_fields;
+			} elseif( empty( $_POST['fields'] ) ) {
+				$fields = array();
+			} else {
+				$fields = $_POST['fields'];
 			}
-			update_post_meta( $post_id, '_gravityview_directory_fields', $_POST['fields'] );
+			update_post_meta( $post_id, '_gravityview_directory_fields', $fields );
 
 			// Directory Visible Widgets
 			if( empty( $_POST['widgets'] ) ) {
@@ -442,6 +450,41 @@ error_log( 'this $POST: ' . print_r( $_POST , true ) );
 
 		// import success - return form id
 		return $forms[0]['id'];
+	}
+
+	/**
+	 * Import fields configuration from an exported WordPress View preset
+	 * @param  string $file path to file
+	 * @return array       Fields config array (unserialized)
+	 */
+	function import_fields( $file ) {
+
+		if( empty( $file ) || !file_exists(  $file ) ) {
+			error_log( 'NOT FOUND: ' . print_r( $file , true ) );
+			return false;
+		}
+
+		if( !class_exists('WXR_Parser') ) {
+			include_once GRAVITYVIEW_DIR . 'includes/lib/xml-parsers/parsers.php';
+		}
+
+		$parser = new WXR_Parser();
+		$presets = $parser->parse( $file );
+
+		if( empty( $presets['posts'][0]['postmeta'] ) && is_array( $presets['posts'][0]['postmeta'] ) ) {
+			return false;
+		}
+
+		$fields = array();
+		foreach( $presets['posts'][0]['postmeta'] as $meta ) {
+			if( $meta['key'] === '_gravityview_directory_fields' ) {
+				$fields = maybe_unserialize( $meta['value'] );
+				break;
+			}
+		}
+
+		return $fields;
+
 	}
 
 
@@ -572,7 +615,6 @@ error_log( 'this $POST: ' . print_r( $_POST , true ) );
 			$available_fields = $this->get_available_fields( $form_id );
 		}
 
-error_log( 'Values ' . print_r( $values , true ) );
 
 		foreach( $rows as $row ) :
 			foreach( $row as $col => $areas ) :
@@ -587,7 +629,7 @@ error_log( 'Values ' . print_r( $values , true ) );
 
 								<?php // render saved fields
 								if( !empty( $values[ $zone .'_'. $area['areaid'] ] ) ) :
-error_log( 'this $area[] ' . print_r( $area['areaid'] , true ) );
+
 									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) :
 
 										if( !empty( $available_fields[ $field['id'] ] ) ) : ?>
@@ -1004,6 +1046,7 @@ error_log( 'this $area[] ' . print_r( $area['areaid'] , true ) );
 		wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
+			'label_viewname' => __( 'Enter View name here', 'gravity-view' ),
 			'label_close' => __( 'Close', 'gravity-view' ),
 			'label_cancel' => __( 'Cancel', 'gravity-view' ),
 			'label_continue' => __( 'Continue', 'gravity-view' ),
