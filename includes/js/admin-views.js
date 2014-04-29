@@ -655,6 +655,9 @@
 
 	$(document).ready( function() {
 
+		// title placeholder
+		$('#title-prompt-text').text( gvGlobals.label_viewname );
+
 		// start the View Configuration magic
 		viewConfiguration.init();
 
