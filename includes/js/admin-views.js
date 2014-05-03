@@ -176,6 +176,8 @@
 
 	var viewConfiguration = {
 
+		startFreshStatus: false,
+
 		init: function() {
 
 			// short tag
@@ -261,11 +263,14 @@
 
 			// start fresh trigger
 			$('#gravityview_form_id_start_fresh').val('1');
+			vcfg.startFreshStatus = true;
 
 		},
 
 		formChange: function() {
 			var vcfg = viewConfiguration;
+
+			vcfg.startFreshStatus = false;
 
 			if( vcfg.currentFormId !== ''  && vcfg.currentFormId !== $(this).val() ) {
 				vcfg.showDialog();
@@ -274,6 +279,7 @@
 				vcfg.showTemplates();
 				vcfg.getAvailableFields();
 			}
+
 		},
 
 		showDialog: function() {
@@ -323,6 +329,7 @@
 
 			e.preventDefault();
 			e.stopImmediatePropagation();
+
 			// update template name
 			var templateId = $(this).attr("data-templateid");
 			$("#gravityview_directory_template").val( templateId );
@@ -332,14 +339,20 @@
 			$parent.parents(".gv-grid").find(".gv-view-types-module").removeClass('gv-selected');
 			$parent.addClass('gv-selected');
 
-			//change view configuration active areas
-			//vcfg.updateActiveAreas( templateId );
+			// check for start fresh context
+			if( vcfg.startFreshStatus ) {
 
-			//fetch the available fields of the preset-form
-			vcfg.getAvailableFields( 'preset', templateId );
+				//fetch the available fields of the preset-form
+				vcfg.getAvailableFields( 'preset', templateId );
 
-			//fetch the fields template config of the preset view
-			vcfg.getPresetFields( templateId );
+				//fetch the fields template config of the preset view
+				vcfg.getPresetFields( templateId );
+
+			} else {
+				//change view configuration active areas
+				vcfg.updateActiveAreas( templateId );
+
+			}
 
 		},
 
@@ -365,8 +378,7 @@
 					var content = $.parseJSON( response );
 					$('#directory-active-fields').append( content.directory );
 					//$('#single-active-fields').append( content.single );
-					vcfg.init_droppables();
-					vcfg.init_tooltips();
+					vcfg.showViewConfig();
 				}
 			});
 
