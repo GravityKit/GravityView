@@ -229,7 +229,7 @@ class GravityView_Admin_Views {
 
 					<?php // list of available fields to be shown in the popup ?>
 					<div id="directory-available-fields" class="hide-if-js">
-						<?php echo $this->render_available_fields( $curr_form, true ); ?>
+						<?php $this->render_available_fields( $curr_form, 'directory' ); ?>
 					</div>
 
 					<?php // list of available widgets to be shown in the popup ?>
@@ -374,6 +374,7 @@ class GravityView_Admin_Views {
 				// import form
 				$form_id = $this->import_form( $preset_xml_path );
 
+
 				// get the form ID
 				if( $form_id === false ) {
 					// send error to user
@@ -487,6 +488,72 @@ class GravityView_Admin_Views {
 
 	}
 
+	/**
+	 * Get the available form fields for a preset (no form created yet)
+	 * @param  string $template_id Preset template
+	 *
+	 */
+	function pre_get_available_fields( $template_id = '') {
+
+
+
+		//$transient_key = 'preget_form_fields_' . $template_id;
+
+		//if( false === ( $available = get_transient( $transient_key ) ) ) {
+		//
+		//
+
+		if( empty( $template_id ) ) {
+			return;
+		} else {
+			$form_file = apply_filters( 'gravityview_template_formxml', '', $template_id );
+			if( !file_exists( $form_file )  ) {
+				return;
+			}
+		}
+
+		// Load xml parser (from GravityForms)
+		$xml_parser = trailingslashit( WP_PLUGIN_DIR ) . 'gravityforms/xml.php';
+		if( file_exists( $xml_parser ) ) {
+			require_once( $xml_parser );
+		}
+
+		// load file
+		$xmlstr = file_get_contents( $form_file );
+
+        $options = array(
+            "page" => array("unserialize_as_array" => true),
+            "form"=> array("unserialize_as_array" => true),
+            "field"=> array("unserialize_as_array" => true),
+            "rule"=> array("unserialize_as_array" => true),
+            "choice"=> array("unserialize_as_array" => true),
+            "input"=> array("unserialize_as_array" => true),
+            "routing_item"=> array("unserialize_as_array" => true),
+            "creditCard"=> array("unserialize_as_array" => true),
+            "routin"=> array("unserialize_as_array" => true),
+            "confirmation" => array("unserialize_as_array" => true),
+            "notification" => array("unserialize_as_array" => true)
+            );
+
+		$xml = new RGXML($options);
+        $forms = $xml->unserialize($xmlstr);
+
+        if( !$forms ) {
+        	return;
+        }
+
+        if( !empty( $forms[0] ) && is_array( $forms[0] ) ) {
+        	$form = $forms[0];
+        }
+
+        $this->render_available_fields( $form );
+
+error_log( 'this: presets' . print_r( $form  , true ) );
+
+	}
+
+
+
 
 	/**
 	 * Render html for displaying available fields based on a Form ID
@@ -497,32 +564,30 @@ class GravityView_Admin_Views {
 	 * @param string $context (default: 'single')
 	 * @return void
 	 */
-	function render_available_fields( $form_id = '', $context = 'single' ) {
+	function render_available_fields( $form = '', $context = 'single' ) {
 
 		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array() );
 
-		$fields = $this->get_available_fields( $form_id );
+		$fields = $this->get_available_fields( $form );
 
-		$output = '';
-
-		if( !empty( $fields ) ) {
-			foreach( $fields as $id => $details ) {
+		if( !empty( $fields ) ) :
+			foreach( $fields as $id => $details ) :
 
 				if( in_array( $details['type'], $blacklist_field_types ) ) {
 					continue;
-				}
+				} ?>
 
-				$output .= '<div data-fieldid="'. $id .'" class="gv-fields">';
-				$output .= '<h5>'. $details['label'] . '</h5>';
-				$output .= '<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
-				$output .= '<a href="#remove" class="dashicons-dismiss dashicons"></a>';
-				$output .= '</span>';
-				$output .= '</div>';
+				<div data-fieldid="<?php echo $id; ?>" class="gv-fields">
+					<h5><?php echo $details['label']; ?></h5>
+					<span class="gv-field-controls">
+						<a href="#settings" class="dashicons-admin-generic dashicons"></a>
+						<a href="#remove" class="dashicons-dismiss dashicons"></a>
+					</span>
+				</div>
 
-			}
-		}
-
-		return $output;
+			<?php
+			endforeach;
+		endif;
 	}
 
 	/**
@@ -542,19 +607,24 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Calculate the available fields
-	 * @param  string $form_id Form ID
+	 * @param  string|array form_ID or form object
 	 * @return array         fields
 	 */
-	function get_available_fields( $form_id = '' ) {
-		if( empty( $form_id ) ) {
+	function get_available_fields( $form = '' ) {
+
+		if( empty( $form ) ) {
 			return array();
 		}
 
 		// get form fields
-		$fields = gravityview_get_form_fields( $form_id, true );
+		$fields = gravityview_get_form_fields( $form, true );
 
-		// get meta fields
-		$meta_fields = gravityview_get_entry_meta( $form_id );
+		// get meta fields ( only if form was already created )
+		if( !is_array( $form ) ) {
+			$meta_fields = gravityview_get_entry_meta( $form );
+		} else {
+			$meta_fields = array();
+		}
 
 		// get default fields
 		$default_fields = $this->get_entry_default_fields();
@@ -822,7 +892,7 @@ class GravityView_Admin_Views {
 
 		}
 
-		//TODO: Move this to other place..
+		//todo: Move this to other place..
 		if( 'field' === $field_type ) {
 			$only_loggedin = !empty( $current['only_loggedin'] ) ? 1 : '';
 			$only_loggedin_cap = !empty( $current['only_loggedin_cap'] ) ? $current['only_loggedin_cap'] : 'read';
@@ -933,7 +1003,7 @@ class GravityView_Admin_Views {
 
 
 	/**
-	 * Returns available fields given a form ID.
+	 * Returns available fields given a form ID or a preset template ID
 	 * AJAX callback
 	 *
 	 * @access public
@@ -942,17 +1012,22 @@ class GravityView_Admin_Views {
 	function get_available_fields_html() {
 		$response = false;
 
-		if( empty( $_POST['formid'] ) ) {
-			echo $response;
-			die();
-		}
-
+		//check nonce
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxviews' ) ) {
 			echo $response;
 			die();
 		}
 
-		$response = $this->render_available_fields( $_POST['formid'] );
+		// If Form was changed, JS sends form ID, if start fresh, JS sends templateid
+		if( !empty( $_POST['formid'] ) ) {
+			$this->render_available_fields( $_POST['formid'] );
+			die();
+		} elseif( !empty( $_POST['templateid'] ) ) {
+			$this->pre_get_available_fields( $_POST['templateid'] );
+			die();
+		}
+
+		//if everything fails..
 		echo $response;
 		die();
 	}

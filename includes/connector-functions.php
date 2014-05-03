@@ -61,12 +61,15 @@ if( !function_exists('gravityview_get_form_fields') ) {
 	 * Return array of fields' id and label, for a given Form ID
 	 *
 	 * @access public
-	 * @param string $form_id (default: '')
+	 * @param string|array $form_id (default: '') or $form object
 	 * @return array
 	 */
-	function gravityview_get_form_fields( $form_id = '', $add_default_properties = false ) {
+	function gravityview_get_form_fields( $form = '', $add_default_properties = false ) {
 
-		$form = gravityview_get_form( $form_id );
+		if( !is_array( $form ) ) {
+			$form = gravityview_get_form( $form );
+		}
+
 		$fields = array();
 
 		if( $add_default_properties ) {

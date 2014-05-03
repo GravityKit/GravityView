@@ -273,7 +273,7 @@
 			} else {
 				vcfg.templateFilter('custom');
 				vcfg.showTemplates();
-				vcfg.getNewFields();
+				vcfg.getAvailableFields();
 			}
 		},
 
@@ -298,7 +298,9 @@
 						if( '' === vcfg.gvSelectForm.val() ) {
 							vcfg.hideView();
 						} else {
-							vcfg.getNewFields();
+							vcfg.getAvailableFields();
+							vcfg.toggleDropMessage();
+							vcfg.showTemplates();
 						}
 						thisDialog.dialog('close');
 					}
@@ -332,6 +334,15 @@
 
 			//change view configuration active areas
 			vcfg.updateActiveAreas( templateId );
+
+			//fetch the available fields of the preset-form
+			vcfg.getAvailableFields( 'preset', templateId );
+			//fetch the fields template config of the preset view
+
+
+			vcfg.toggleDropMessage();
+
+			// open View config metabox
 			vcfg.showViewConfig();
 
 		},
@@ -414,18 +425,24 @@
 
 		},
 
-		getNewFields: function() {
-			var vcfg = viewConfiguration;
+		// Fetch the Available Fields for a given Form ID or Preset Template ID
+		getAvailableFields: function( context, id ) {
 
-			vcfg.currentFormId = vcfg.gvSelectForm.val();
+			var vcfg = viewConfiguration;
 
 			$("#directory-available-fields, #single-available-fields").find(".gv-fields").remove();
 
 			var data = {
 				action: 'gv_available_fields',
-				formid: vcfg.currentFormId,
 				nonce: gvGlobals.nonce,
 			};
+
+			if( context !== undefined && 'preset' === context ) {
+				data.templateid = id;
+			} else {
+				data.formid = vcfg.gvSelectForm.val();
+			}
+
 
 			$.post( gvGlobals.ajaxurl, data, function( response ) {
 				if( response ) {
@@ -435,8 +452,6 @@
 				}
 			});
 
-			vcfg.toggleDropMessage();
-			vcfg.showTemplates();
 		},
 
 
