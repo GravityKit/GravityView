@@ -387,7 +387,7 @@
 		getPresetFields: function( template ) {
 			var vcfg = viewConfiguration;
 
-			$("#directory-available-fields, #single-available-fields").find(".gv-fields").remove();
+			$("#directory-active-fields, #single-active-fields").children().remove();
 
 			var data = {
 				action: 'gv_get_preset_fields',
@@ -473,6 +473,8 @@
 			var vcfg = viewConfiguration;
 
 			$("#directory-available-fields, #single-available-fields").find(".gv-fields").remove();
+			$("#directory-active-fields, #single-active-fields").find(".gv-fields").remove();
+			vcfg.toggleDropMessage();
 
 			var data = {
 				action: 'gv_available_fields',
