@@ -364,7 +364,9 @@ class GravityView_Admin_Views {
 		// Check if we have a template id
 		if ( isset( $_POST['gravityview_select_template_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_template_nonce'], 'gravityview_select_template' ) ) {
 
-			$template_id = $_POST['gravityview_directory_template'];
+			$template_id = empty( $_POST['gravityview_directory_template'] ) ? '' : $_POST['gravityview_directory_template'];
+		} else {
+			$template_id = '';
 		}
 
 		// check if this is a start fresh View
@@ -395,10 +397,7 @@ class GravityView_Admin_Views {
 		}
 
 		// now save template id
-		if( !empty( $template_id ) ) {
-			update_post_meta( $post_id, '_gravityview_directory_template', $template_id );
-		}
-
+		update_post_meta( $post_id, '_gravityview_directory_template', $template_id );
 
 		// save View Configuration metabox
 		if ( isset( $_POST['gravityview_view_configuration_nonce'] ) && wp_verify_nonce( $_POST['gravityview_view_configuration_nonce'], 'gravityview_view_configuration' ) ) {
