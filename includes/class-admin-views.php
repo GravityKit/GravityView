@@ -35,6 +35,10 @@ class GravityView_Admin_Views {
 
 		// get active areas
 		add_action( 'wp_ajax_gv_get_active_areas', array( $this, 'get_active_areas' ) );
+
+		// get preset fields
+		add_action( 'wp_ajax_gv_get_preset_fields', array( $this, 'get_preset_fields_config' ) );
+
 	}
 
 
@@ -381,10 +385,6 @@ class GravityView_Admin_Views {
 					error_log( 'this error on form insert: ' . print_r( $preset_xml_path , true ) );
 				}
 
-				// get the fields xml config file for this specific preset
-				$preset_fields_path = apply_filters( 'gravityview_template_fieldsxml', array(), $template_id );
-				// import fields
-				$preset_fields = $this->import_fields( $preset_fields_path );
 
 			} else {
 				$form_id = $_POST['gravityview_form_id'];
@@ -547,8 +547,6 @@ class GravityView_Admin_Views {
         }
 
         $this->render_available_fields( $form );
-
-error_log( 'this: presets' . print_r( $form  , true ) );
 
 	}
 
@@ -1001,6 +999,15 @@ error_log( 'this: presets' . print_r( $form  , true ) );
 		return $output;
 	}
 
+	/** -------- AJAX ---------- */
+
+	function check_ajax_nonce() {
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxviews' ) ) {
+			echo false;
+			die();
+		}
+	}
+
 
 	/**
 	 * Returns available fields given a form ID or a preset template ID
@@ -1059,6 +1066,31 @@ error_log( 'this: presets' . print_r( $form  , true ) );
 		$response['single'] = $this->render_directory_active_areas( $_POST['template_id'], 'single' );
 
 		echo json_encode( $response );
+		die();
+	}
+
+
+	function get_preset_fields_config() {
+
+		$this->check_ajax_nonce();
+
+		if( empty( $_POST['template_id'] ) ) {
+			echo false;
+			die();
+		}
+
+		// get the fields xml config file for this specific preset
+		$preset_fields_path = apply_filters( 'gravityview_template_fieldsxml', array(), $_POST['template_id'] );
+		// import fields
+		if( !empty( $preset_fields_path ) ) {
+			$preset_fields = $this->import_fields( $preset_fields_path );
+		}
+error_log( 'this $preset_fields: ' . print_r( $preset_fields , true ) );
+		// template areas
+		$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $_POST['template_id'] );
+
+		$this->render_active_areas( $_POST['template_id'], 'field', '', $template_areas, $preset_fields );
+
 		die();
 	}
 

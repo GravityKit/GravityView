@@ -249,7 +249,7 @@
 		},
 
 		startFresh: function(){
-			//TODO: what to do if you start fresh and then select another form!?
+			//todo: what to do if you start fresh and then select another form!?
 			var vcfg = viewConfiguration;
 
 			if( vcfg.currentFormId !== '' ) {
@@ -333,12 +333,13 @@
 			$parent.addClass('gv-selected');
 
 			//change view configuration active areas
-			vcfg.updateActiveAreas( templateId );
+			//vcfg.updateActiveAreas( templateId );
 
 			//fetch the available fields of the preset-form
 			vcfg.getAvailableFields( 'preset', templateId );
-			//fetch the fields template config of the preset view
 
+			//fetch the fields template config of the preset view
+			vcfg.getPresetFields( templateId );
 
 			vcfg.toggleDropMessage();
 
@@ -367,6 +368,31 @@
 					vcfg.init_tooltips();
 				}
 			});
+
+		},
+
+		getPresetFields: function( template ) {
+			var vcfg = viewConfiguration;
+
+			$("#directory-available-fields, #single-available-fields").find(".gv-fields").remove();
+
+			var data = {
+				action: 'gv_get_preset_fields',
+				template_id: template,
+				nonce: gvGlobals.nonce,
+			};
+
+			$.post( gvGlobals.ajaxurl, data, function( response ) {
+				if( response ) {
+					// var content = $.parseJSON( response );
+					// $('#directory-active-fields').append( content.directory );
+					//$('#single-active-fields').append( content.single );
+					 $('#directory-active-fields').append( response );
+					vcfg.init_droppables();
+					vcfg.init_tooltips();
+				}
+			});
+
 
 		},
 
