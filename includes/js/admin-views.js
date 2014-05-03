@@ -13,7 +13,7 @@
 
 (function( $ ) {
 
-	var fieldOrigin = 'sortable';
+	//var fieldOrigin = 'sortable';
 
 // 	function init_draggables() {
 
@@ -221,6 +221,7 @@
 
 			// select template
 			$('a[href="#gv_select_template"]').click( vcfg.selectTemplate );
+			$(".gv-view-types-hover").click( vcfg.selectTemplateHover );
 
 			// close all tooltips if user clicks outside the tooltip
 	        $(document).mouseup( function (e) {
@@ -321,6 +322,7 @@
 			var vcfg = viewConfiguration;
 
 			e.preventDefault();
+			e.stopImmediatePropagation();
 			// update template name
 			var templateId = $(this).attr("data-templateid");
 			$("#gravityview_directory_template").val( templateId );
@@ -339,6 +341,12 @@
 			//fetch the fields template config of the preset view
 			vcfg.getPresetFields( templateId );
 
+		},
+
+		selectTemplateHover: function(e) {
+			e.preventDefault();
+			e.stopImmediatePropagation();
+			$(this).find('a[href="#gv_select_template"]').trigger( 'click' );
 		},
 
 		updateActiveAreas: function( template ) {
