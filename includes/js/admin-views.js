@@ -15,155 +15,155 @@
 
 	var fieldOrigin = 'sortable';
 
-	function init_draggables() {
+// 	function init_draggables() {
 
-		// $("#directory-available-fields, #single-available-fields").find(".gv-fields").draggable({
-		// 	connectToSortable: 'div.active-drop',
-		// 	distance: 2,
-		// 	helper: 'clone',
-		// 	revert: 'invalid',
-		// 	zIndex: 100,
-		// 	containment: 'document',
-		// 	start: function() {
-		// 		fieldOrigin = 'draggable';
-		// 	}
-		// });
+// 		// $("#directory-available-fields, #single-available-fields").find(".gv-fields").draggable({
+// 		// 	connectToSortable: 'div.active-drop',
+// 		// 	distance: 2,
+// 		// 	helper: 'clone',
+// 		// 	revert: 'invalid',
+// 		// 	zIndex: 100,
+// 		// 	containment: 'document',
+// 		// 	start: function() {
+// 		// 		fieldOrigin = 'draggable';
+// 		// 	}
+// 		// });
 
-		// Define droppable zone to remove active fields
-		$("#directory-available-fields, #single-available-fields").droppable({
-			drop: function( event, ui ) {
-				if( ui.draggable.find(".gv-dialog-options").length > 0 ) {
-					ui.draggable.remove();
-					toggleDropMessage();
-				}
-			}/*
-,
-			over: function( event, ui ) {
-				if( ui.draggable.find(".gv-dialog-options").length > 0 ) {
-					console.log('in');
-				}
-			},
-			out: function( event, ui ) {
-				console.log('out');
-			}
-*/
-		});
-	}
+// 		// Define droppable zone to remove active fields
+// 		$("#directory-available-fields, #single-available-fields").droppable({
+// 			drop: function( event, ui ) {
+// 				if( ui.draggable.find(".gv-dialog-options").length > 0 ) {
+// 					ui.draggable.remove();
+// 					toggleDropMessage();
+// 				}
+// 			}/*
+// ,
+// 			over: function( event, ui ) {
+// 				if( ui.draggable.find(".gv-dialog-options").length > 0 ) {
+// 					console.log('in');
+// 				}
+// 			},
+// 			out: function( event, ui ) {
+// 				console.log('out');
+// 			}
+// */
+// 		});
+// 	}
 
 
-	function init_droppables() {
+	// function init_droppables() {
 
-		$('#directory-fields, #single-fields').find(".active-drop").sortable({
-			placeholder: "fields-placeholder",
-			items: '> .gv-fields',
-			distance: 2,
-			connectWith: ".active-drop",
-			receive: function( event, ui ) {
+	// 	$('#directory-fields, #single-fields').find(".active-drop").sortable({
+	// 		placeholder: "fields-placeholder",
+	// 		items: '> .gv-fields',
+	// 		distance: 2,
+	// 		connectWith: ".active-drop",
+	// 		receive: function( event, ui ) {
 
-				// Check if field comes from another active area and if so, update name attributes.
-				if( ui.item.find(".gv-dialog-options").length > 0 ) {
+	// 			// Check if field comes from another active area and if so, update name attributes.
+	// 			if( ui.item.find(".gv-dialog-options").length > 0 ) {
 
-					var sender_area = ui.sender.attr('data-areaid'),
-						receiver_area = $(this).attr('data-areaid');
+	// 				var sender_area = ui.sender.attr('data-areaid'),
+	// 					receiver_area = $(this).attr('data-areaid');
 
-					ui.item.find( '[name^="fields['+ sender_area +']"]').each( function() {
-						var name = $(this).attr('name');
-						$(this).attr('name', name.replace( sender_area, receiver_area ) );
-					});
+	// 				ui.item.find( '[name^="fields['+ sender_area +']"]').each( function() {
+	// 					var name = $(this).attr('name');
+	// 					$(this).attr('name', name.replace( sender_area, receiver_area ) );
+	// 				});
 
-				}
+	// 			}
 
-				toggleDropMessage();
+	// 			toggleDropMessage();
 
-			}
-		}).droppable({
-			drop: function( event, ui ) {
+	// 		}
+	// 	}).droppable({
+	// 		drop: function( event, ui ) {
 
-				if( 'draggable' === fieldOrigin ) {
+	// 			if( 'draggable' === fieldOrigin ) {
 
-					//find active tab object to assign the template selector
-					var templateId = '';
-					if( 'single-view' === $("#tabs ul li.ui-tabs-active").attr('aria-controls') ) {
-						templateId = $("input[name='gravityview_single_template']:checked").val();
-					} else {
-						templateId = $("input[name='gravityview_directory_template']:checked").val();
-					}
+	// 				//find active tab object to assign the template selector
+	// 				var templateId = '';
+	// 				if( 'single-view' === $("#tabs ul li.ui-tabs-active").attr('aria-controls') ) {
+	// 					templateId = $("input[name='gravityview_single_template']:checked").val();
+	// 				} else {
+	// 					templateId = $("input[name='gravityview_directory_template']:checked").val();
+	// 				}
 
-					var data = {
-						action: 'gv_field_options',
-						template: templateId,
-						area: $(this).attr('data-areaid'),
-						field_id: ui.draggable.attr('data-fieldid'),
-						field_label: ui.draggable.find("h5").text(),
-						nonce: gvGlobals.nonce,
-					};
+	// 				var data = {
+	// 					action: 'gv_field_options',
+	// 					template: templateId,
+	// 					area: $(this).attr('data-areaid'),
+	// 					field_id: ui.draggable.attr('data-fieldid'),
+	// 					field_label: ui.draggable.find("h5").text(),
+	// 					nonce: gvGlobals.nonce,
+	// 				};
 
-					$.post( gvGlobals.ajaxurl, data, function( response ) {
-						if( response ) {
-							ui.draggable.append( response );
-						}
-					});
+	// 				$.post( gvGlobals.ajaxurl, data, function( response ) {
+	// 					if( response ) {
+	// 						ui.draggable.append( response );
+	// 					}
+	// 				});
 
-					fieldOrigin = 'sortable';
+	// 				fieldOrigin = 'sortable';
 
-					// show field buttons: Settings & Remove
-					ui.draggable.find("span.gv-field-controls").show();
+	// 				// show field buttons: Settings & Remove
+	// 				ui.draggable.find("span.gv-field-controls").show();
 
-					ui.draggable.find("span.gv-field-controls a[href='#remove']").click( removeField );
+	// 				ui.draggable.find("span.gv-field-controls a[href='#remove']").click( removeField );
 
-					ui.draggable.find("span.gv-field-controls a[href='#settings']").click( openFieldSettings );
-				}
-			}
-		});
+	// 				ui.draggable.find("span.gv-field-controls a[href='#settings']").click( openFieldSettings );
+	// 			}
+	// 		}
+	// 	});
 
-	}
+	// }
 
 
 	// Event handler to remove Fields from active areas
-	function removeField( event ) {
-		event.preventDefault();
-		var area = $( event.currentTarget ).parents(".active-drop");
-		$( event.currentTarget ).parent().parent().remove();
-		if( area.find(".gv-fields").length === 0 ) {
-			 area.find(".drop-message").show();
-		}
-	}
+	// function removeField( event ) {
+	// 	event.preventDefault();
+	// 	var area = $( event.currentTarget ).parents(".active-drop");
+	// 	$( event.currentTarget ).parent().parent().remove();
+	// 	if( area.find(".gv-fields").length === 0 ) {
+	// 		 area.find(".drop-message").show();
+	// 	}
+	// }
 
 	// Event handler to open dialog with Field Settings
-	function openFieldSettings( event ) {
-		event.preventDefault();
-		var parent = $( event.currentTarget ).parent().parent();
-		parent.find(".gv-dialog-options").dialog({
-			dialogClass: 'wp-dialog',
-			appendTo: parent,
-			width: 550,
-			closeOnEscape: true,
-			buttons: [ {
-				text: gvGlobals.label_close,
-				click: function() {
-					$(this).dialog('close');
-				}
-			}],
-		});
-	}
+	// function openFieldSettings( event ) {
+	// 	event.preventDefault();
+	// 	var parent = $( event.currentTarget ).parent().parent();
+	// 	parent.find(".gv-dialog-options").dialog({
+	// 		dialogClass: 'wp-dialog',
+	// 		appendTo: parent,
+	// 		width: 550,
+	// 		closeOnEscape: true,
+	// 		buttons: [ {
+	// 			text: gvGlobals.label_close,
+	// 			click: function() {
+	// 				$(this).dialog('close');
+	// 			}
+	// 		}],
+	// 	});
+	// }
 
 	// Event handler to open dialog with Widget Settings
-	function openWidgetSettings( event ) {
-		event.preventDefault();
-		var parent = $( event.currentTarget ).parent();
-		parent.find(".gv-dialog-options").dialog({
-			dialogClass: 'wp-dialog',
-			appendTo: parent,
-			width: 350,
-			closeOnEscape: true,
-			buttons: [ {
-				text: gvGlobals.label_close,
-				click: function() {
-					$(this).dialog('close');
-				}
-			} ],
-		});
-	}
+	// function openWidgetSettings( event ) {
+	// 	event.preventDefault();
+	// 	var parent = $( event.currentTarget ).parent();
+	// 	parent.find(".gv-dialog-options").dialog({
+	// 		dialogClass: 'wp-dialog',
+	// 		appendTo: parent,
+	// 		width: 350,
+	// 		closeOnEscape: true,
+	// 		buttons: [ {
+	// 			text: gvGlobals.label_close,
+	// 			click: function() {
+	// 				$(this).dialog('close');
+	// 			}
+	// 		} ],
+	// 	});
+	// }
 
 
 
@@ -191,14 +191,21 @@
 			vcfg.currentFormId = vcfg.gvSelectForm.val();
 
 
+			// check if there's a form selected
 			if( '' === vcfg.currentFormId ) {
+				// if no form is selected, hide all the configs
 				vcfg.hideView();
+
 			} else {
-				vcfg.templateFilter('custom');
-				vcfg.showTemplates();
+				// if both form and template were selected, show View Layout config
 				if( $("#gravityview_directory_template").val().length > 0 ){
 					vcfg.showViewConfig();
+				} else {
+					// else show the template picker
+					vcfg.templateFilter('custom');
+					vcfg.showTemplates();
 				}
+
 			}
 
 			// start fresh button
@@ -224,24 +231,15 @@
 			    }
 			});
 
-	        // sortables & droppables
-	        vcfg.init_droppables();
-
-	        // toggle view of "drop message" when active areas are empty or not.
-	        vcfg.toggleDropMessage();
-
-	        // field controls
-	        $("a[href='#remove']").click( vcfg.removeField );
-			$("a[href='#settings']").click( vcfg.openFieldSettings );
-
 		},
 
+		// hides template picker metabox and view config metabox
 		hideView: function() {
 			var vcfg = viewConfiguration;
 
 			vcfg.currentFormId = '';
 			$("#gravityview_view_config, #gravityview_select_template").slideUp(150);
-			//$("#directory-available-fields, #directory-active-fields, #single-available-fields, #single-active-fields").find(".gv-fields").remove();
+
 		},
 
 		showTemplates: function() {
@@ -341,11 +339,6 @@
 			//fetch the fields template config of the preset view
 			vcfg.getPresetFields( templateId );
 
-			vcfg.toggleDropMessage();
-
-			// open View config metabox
-			vcfg.showViewConfig();
-
 		},
 
 		updateActiveAreas: function( template ) {
@@ -388,8 +381,7 @@
 					// $('#directory-active-fields').append( content.directory );
 					//$('#single-active-fields').append( content.single );
 					 $('#directory-active-fields').append( response );
-					vcfg.init_droppables();
-					vcfg.init_tooltips();
+					 vcfg.showViewConfig();
 				}
 			});
 
@@ -399,7 +391,11 @@
 		showViewConfig: function() {
 			var vcfg = viewConfiguration;
 			$("#gravityview_view_config").slideDown(150);
+			vcfg.toggleDropMessage();
+			vcfg.init_droppables();
 			vcfg.init_tooltips();
+			vcfg.initFieldControls();
+
 		},
 
 
@@ -577,8 +573,8 @@
 
 		toggleDropMessage: function() {
 
-			$('.active-drop').each( function() {
-				if( $(this).find(".gv-fields").length !== 0 ) {
+			$('.active-drop').each( function( ) {
+				if( $(this).find(".gv-fields").length > 0 ) {
 					$(this).find(".drop-message").hide();
 				} else {
 					$(this).find(".drop-message").show();
@@ -587,7 +583,13 @@
 
 		},
 
-			// Event handler to remove Fields from active areas
+		initFieldControls: function() {
+			var vcfg = viewConfiguration;
+			$("a[href='#remove']").click( vcfg.removeField );
+			$("a[href='#settings']").click( vcfg.openFieldSettings );
+		},
+
+		// Event handler to remove Fields from active areas
 		removeField: function( e ) {
 			e.preventDefault();
 			var area = $( event.currentTarget ).parents(".active-drop");
@@ -615,6 +617,9 @@
 			});
 		},
 
+
+
+
 	}; // end viewConfiguration object
 
 
@@ -624,74 +629,74 @@
 
 
 
-	function viewTemplatePicker( type ) {
+	// function viewTemplatePicker( type ) {
 
-		var thisType = type;
+	// 	var thisType = type;
 
-		this.init = function() {
+	// 	this.init = function() {
 
-			if( thisType != 'single' && thisType != 'directory' ) {
-				return;
-			}
+	// 		if( thisType != 'single' && thisType != 'directory' ) {
+	// 			return;
+	// 		}
 
-			// assign selected class
-			$('input[name="gravityview_'+ thisType +'_template"]:checked').parents(".gv-template").addClass('gv-selected');
+	// 		// assign selected class
+	// 		$('input[name="gravityview_'+ thisType +'_template"]:checked').parents(".gv-template").addClass('gv-selected');
 
-			//
-			$('#gravityview_'+ thisType +'_template_change').click( this.showDialog );
+	// 		//
+	// 		$('#gravityview_'+ thisType +'_template_change').click( this.showDialog );
 
-			// action when template changes
-			$('input[name="gravityview_'+ thisType +'_template"]').change( this.changed );
+	// 		// action when template changes
+	// 		$('input[name="gravityview_'+ thisType +'_template"]').change( this.changed );
 
 
-		};
+	// 	};
 
-		this.showDialog = function( e ) {
-			e.preventDefault();
+	// 	this.showDialog = function( e ) {
+	// 		e.preventDefault();
 
-			var $thisDialog = $('#gravityview_'+ thisType +'_template_dialog');
+	// 		var $thisDialog = $('#gravityview_'+ thisType +'_template_dialog');
 
-			$thisDialog.dialog({
-				dialogClass: 'wp-dialog',
-				width: 600,
-				appendTo: $thisDialog.parent(),
-				closeOnEscape: true,
-				buttons: [ {
-					text: gvGlobals.label_ok,
-					click: function() {
-						$thisDialog.dialog('close');
-					} },
-				],
-			});
-		};
+	// 		$thisDialog.dialog({
+	// 			dialogClass: 'wp-dialog',
+	// 			width: 600,
+	// 			appendTo: $thisDialog.parent(),
+	// 			closeOnEscape: true,
+	// 			buttons: [ {
+	// 				text: gvGlobals.label_ok,
+	// 				click: function() {
+	// 					$thisDialog.dialog('close');
+	// 				} },
+	// 			],
+	// 		});
+	// 	};
 
-		this.changed = function() {
+	// 	this.changed = function() {
 
-			$('#'+ thisType +'-active-fields').find("fieldset.area").remove();
+	// 		$('#'+ thisType +'-active-fields').find("fieldset.area").remove();
 
-			var data = {
-				action: 'gv_get_active_areas',
-				template_id: $(this).val(),
-				nonce: gvGlobals.nonce,
-			};
+	// 		var data = {
+	// 			action: 'gv_get_active_areas',
+	// 			template_id: $(this).val(),
+	// 			nonce: gvGlobals.nonce,
+	// 		};
 
-			$.post( gvGlobals.ajaxurl, data, function( response ) {
-				if( response ) {
-					$('#'+ thisType +'-active-fields').append( response );
-					init_droppables();
-				}
-			});
+	// 		$.post( gvGlobals.ajaxurl, data, function( response ) {
+	// 			if( response ) {
+	// 				$('#'+ thisType +'-active-fields').append( response );
+	// 				init_droppables();
+	// 			}
+	// 		});
 
-			//change class to highlight the selection
-			var $parent = $(this).parents(".gv-template");
-			$parent.siblings().removeClass('gv-selected');
-			$parent.addClass('gv-selected');
+	// 		//change class to highlight the selection
+	// 		var $parent = $(this).parents(".gv-template");
+	// 		$parent.siblings().removeClass('gv-selected');
+	// 		$parent.addClass('gv-selected');
 
-			//update the template name when dialog is closed
-			$('#gravityview_'+ thisType +'_template_name').text( $(this).next("img").attr('alt') );
+	// 		//update the template name when dialog is closed
+	// 		$('#gravityview_'+ thisType +'_template_name').text( $(this).next("img").attr('alt') );
 
-		};
-	}
+	// 	};
+	// }
 
 
 	$(document).ready( function() {
@@ -709,9 +714,6 @@
 				$("#gv-active-tab").val( ui.newTab.parent().children().index( ui.newTab ) );
 			}
 		});
-
-		// Directory View Configuration - Widgets
-		//$("a[href='#widget-settings']").click( openWidgetSettings );
 
 		// Make zebra table rows
 		$("table.form-table tr:even").addClass('alternate');
