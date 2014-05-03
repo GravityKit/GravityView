@@ -700,18 +700,18 @@ class GravityView_Admin_Views {
 
 									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) :
 
-										if( !empty( $available_fields[ $field['id'] ] ) ) : ?>
+										//if( !empty( $available_fields[ $field['id'] ] ) ) : ?>
 
 											<div data-fieldid="<?php echo $field['id']; ?>" class="gv-fields">
-												<h5><?php echo $available_fields[ $field['id'] ]['label']; ?></h5>
+												<h5><?php echo $field['label']; ?></h5>
 												<span class="gv-field-controls">
 													<a href="#settings" class="dashicons-admin-generic dashicons"></a>
 													<a href="#remove" class="dashicons-dismiss dashicons"></a>
 												</span>
-												<?php echo $this->render_field_options( $type, $template_id, $field['id'], $available_fields[ $field['id'] ]['label'], $zone .'_'. $area['areaid'], $uniqid, $field, $zone ); ?>
+												<?php echo $this->render_field_options( $type, $template_id, $field['id'], $field['label'], $zone .'_'. $area['areaid'], $uniqid, $field, $zone ); ?>
 											</div>
 
-										<?php endif; ?>
+										<?php //endif; ?>
 									<?php endforeach; ?>
 								<?php endif; ?>
 
@@ -789,7 +789,7 @@ class GravityView_Admin_Views {
 		if( !empty( $post_id ) ) {
 			$fields = get_post_meta( $post_id, '_gravityview_directory_fields', true );
 		}
-
+error_log( 'this $fields : ' . print_r( $fields , true ) );
 		ob_start();
 		?>
 
@@ -1089,7 +1089,7 @@ error_log( 'this $preset_fields: ' . print_r( $preset_fields , true ) );
 		// template areas
 		$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $_POST['template_id'] );
 
-		$this->render_active_areas( $_POST['template_id'], 'field', '', $template_areas, $preset_fields );
+		$this->render_active_areas( $_POST['template_id'], 'field', 'directory', $template_areas, $preset_fields );
 
 		die();
 	}
