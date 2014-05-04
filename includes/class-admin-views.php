@@ -642,7 +642,7 @@ class GravityView_Admin_Views {
 
 
 
-		if( !empty( $widgets ) ) {
+		if( !empty( $widgets ) ) :
 			foreach( $widgets as $id => $details ) : ?>
 
 				<div data-fieldid="<?php echo $id; ?>" class="gv-fields">
