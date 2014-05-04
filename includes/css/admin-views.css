@@ -207,6 +207,11 @@
 	max-width: 300px;
 }
 
+/** template preview */
+.gv-template-preview {
+	display: none;
+	width: 90%;
+}
 
 /** View configuration tabs */
 .ui-tabs {

@@ -140,7 +140,7 @@ class GravityView_Admin_Views {
 
 		// Fetch available style templates
 		$templates = apply_filters( 'gravityview_register_directory_template', array() );
-
+error_log( 'this: $templates' . print_r( $templates , true ) );
 
 		// current input ?>
 		<input type="hidden" id="gravityview_directory_template" name="gravityview_directory_template" value="<?php echo esc_attr( $current_template ); ?>">
@@ -162,6 +162,7 @@ class GravityView_Admin_Views {
 								<?php endif; ?>
 							</div>
 						</div>
+						<div class="gv-template-preview" title="<?php esc_html_e( 'Preview', 'gravity-view'); ?>: <?php echo esc_attr( $template['label'] ); ?>"><img src="<?php echo esc_url( $template['preview'] ); ?>" ></div>
 						<div class="gv-view-types-normal">
 							<img src="<?php echo esc_url( $template['logo'] ); ?>" alt="<?php echo esc_attr( $template['label'] ); ?>">
 							<h5><?php echo esc_attr( $template['label'] ); ?></h5>

@@ -219,11 +219,17 @@
 			// select form
 			vcfg.gvSelectForm.change( vcfg.formChange );
 
+
 			// templates
 
 			// select template
 			$('a[href="#gv_select_template"]').click( vcfg.selectTemplate );
 			$(".gv-view-types-hover").click( vcfg.selectTemplateHover );
+
+			// preview template
+			$('a[href="#gv_preview_template"]').click( vcfg.previewTemplate );
+
+
 
 			// close all tooltips if user clicks outside the tooltip
 	        $(document).mouseup( function (e) {
@@ -360,6 +366,28 @@
 			e.preventDefault();
 			e.stopImmediatePropagation();
 			$(this).find('a[href="#gv_select_template"]').trigger( 'click' );
+		},
+
+		previewTemplate: function(e) {
+			e.preventDefault();
+			e.stopImmediatePropagation();
+			var parent = $( event.currentTarget ).parents(".gv-view-types-module");
+			parent.find(".gv-template-preview").dialog({
+				dialogClass: 'wp-dialog',
+				appendTo: $("#gravityview_select_template"),
+				width: 550,
+				closeOnEscape: true,
+				buttons: [ {
+					text: gvGlobals.label_close,
+					click: function() {
+						$(this).dialog('close');
+					}
+				}],
+				close: function() {
+					$(this).dialog( "option", "appendTo", parent);
+				}
+			});
+
 		},
 
 		updateActiveAreas: function( template ) {

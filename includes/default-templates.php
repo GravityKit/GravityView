@@ -35,15 +35,18 @@ class GravityView_Preset_Business_Data {
 
 		$def_template->template_id = 'preset_business_data';
 
-		$def_template->settings = array(
+		$settings = array(
 			'slug' => 'table',
 			'type' => 'preset',
 			'label' =>  __( 'Business Data', 'gravity-view' ),
 			'description' => __( 'Display business information in a table.', 'gravity-view'),
 			'logo' => GRAVITYVIEW_URL . 'includes/presets/business-data/logo-business-data.png',
+			//'preview' => '',
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/business-data/form-business-data.xml',
 			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/business-data/fields-test.xml'
 		);
+
+		$def_template->merge_defaults( $settings );
 
 	}
 }
@@ -56,7 +59,7 @@ class GravityView_Preset_Resume_board {
 
 		$def_template->template_id = 'preset_resume_board';
 
-		$def_template->settings = array(
+		$settings = array(
 			'slug' => 'table',
 			'type' => 'preset',
 			'label' =>  __( 'Resume Board', 'gravity-view' ),
@@ -64,6 +67,8 @@ class GravityView_Preset_Resume_board {
 			'logo' => GRAVITYVIEW_URL . 'includes/presets/resume-board/logo-resume-board.png',
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/resume-board/form-resume-board.xml'
 		);
+
+		$def_template->merge_defaults( $settings );
 
 	}
 }
@@ -75,7 +80,7 @@ class GravityView_Preset_Job_Board {
 
 		$def_template->template_id = 'preset_job_board';
 
-		$def_template->settings = array(
+		$settings = array(
 			'slug' => 'table',
 			'type' => 'preset',
 			'label' =>  __( 'Job Board', 'gravity-view' ),
@@ -84,6 +89,8 @@ class GravityView_Preset_Job_Board {
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/job-board/form-job-board.xml'
 
 		);
+
+		$def_template->merge_defaults( $settings );
 
 	}
 }
@@ -95,7 +102,7 @@ class GravityView_Preset_Business_Listings {
 
 		$def_template->template_id = 'preset_business_listings';
 
-		$def_template->settings = array(
+		$settings = array(
 			'slug' => 'table',
 			'type' => 'preset',
 			'label' =>  __( 'Business Listings', 'gravity-view' ),
@@ -103,6 +110,8 @@ class GravityView_Preset_Business_Listings {
 			'logo' => GRAVITYVIEW_URL . 'includes/presets/business-listings/logo-business-listings.png',
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/business-listings/form-business-listings.xml'
 		);
+
+		$def_template->merge_defaults( $settings );
 
 	}
 }
@@ -213,7 +222,8 @@ class GravityView_Template {
 
 		$this->template_id = $id;
 
-		$this->settings = wp_parse_args( $settings, array( 'slug' => '', 'css_source' => '', 'type' => '', 'label' => '', 'description' => '', 'logo' => '', 'preview' => '', 'buy_source' => '', 'preset_form' => '', 'preset_fields' => '' ) );
+		// $this->settings = wp_parse_args( $settings, array( 'slug' => '', 'css_source' => '', 'type' => '', 'label' => '', 'description' => '', 'logo' => '', 'preview' => GRAVITYVIEW_URL . 'images/placeholder-template-preview.gif', 'buy_source' => '', 'preset_form' => '', 'preset_fields' => '' ) );
+		$this->merge_defaults( $settings );
 
 		$this->field_options = $field_options;
 		$this->active_areas = $areas;
@@ -239,6 +249,9 @@ class GravityView_Template {
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_styles' ) );
 	}
 
+	function merge_defaults( $settings = array() ) {
+		$this->settings = wp_parse_args( $settings, array( 'slug' => '', 'css_source' => '', 'type' => '', 'label' => '', 'description' => '', 'logo' => '', 'preview' => GRAVITYVIEW_URL . 'images/placeholder-template-preview.gif', 'buy_source' => '', 'preset_form' => '', 'preset_fields' => '' ) );
+	}
 
 	/**
 	 * Register the template to display in the admin
