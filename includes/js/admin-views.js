@@ -176,6 +176,7 @@
 
 	var viewConfiguration = {
 
+		// Checks if the execution is on a Start Fresh context
 		startFreshStatus: false,
 
 		init: function() {
@@ -201,6 +202,7 @@
 			} else {
 				// if both form and template were selected, show View Layout config
 				if( $("#gravityview_directory_template").val().length > 0 ){
+					$("#gravityview_select_template").slideUp(150);
 					vcfg.showViewConfig();
 				} else {
 					// else show the template picker
@@ -211,10 +213,7 @@
 			}
 
 			// start fresh button
-			vcfg.gvStartFreshButton.click( function(e) {
-				e.preventDefault();
-				vcfg.startFresh();
-			});
+			vcfg.gvStartFreshButton.click( vcfg.startFresh );
 
 			// select form
 			vcfg.gvSelectForm.change( vcfg.formChange );
@@ -255,22 +254,32 @@
 			$("#gravityview_select_template").slideDown(150);
 		},
 
-		startFresh: function(){
-			//todo: what to do if you start fresh and then select another form!?
+		startFresh: function(e){
+			e.preventDefault();
 			var vcfg = viewConfiguration;
+
+			//todo: what to do if you start fresh and then select another form!?
+			//
+			vcfg.startFreshStatus = true;
 
 			if( vcfg.currentFormId !== '' ) {
 				vcfg.showDialog();
 			} else {
-				// show templates
-				vcfg.templateFilter('preset');
-				vcfg.showTemplates();
+				vcfg.startFreshContinue();
 			}
+		},
 
-			// start fresh trigger
+		startFreshContinue: function() {
+			var vcfg = viewConfiguration;
+			// start fresh on save trigger
 			$('#gravityview_form_id_start_fresh').val('1');
-			vcfg.startFreshStatus = true;
 
+			// show templates
+			vcfg.templateFilter('preset');
+			vcfg.showTemplates();
+
+			// hide config metabox
+			$("#gravityview_view_config").slideUp(150);
 		},
 
 		formChange: function() {
@@ -281,11 +290,19 @@
 			if( vcfg.currentFormId !== ''  && vcfg.currentFormId !== $(this).val() ) {
 				vcfg.showDialog();
 			} else {
+				vcfg.formChangeContinue();
+			}
+		},
+
+		formChangeContinue: function() {
+			var vcfg = viewConfiguration;
+			if( '' === vcfg.gvSelectForm.val() ) {
+				vcfg.hideView();
+			} else {
 				vcfg.templateFilter('custom');
 				vcfg.showTemplates();
 				vcfg.getAvailableFields();
 			}
-
 		},
 
 		showDialog: function() {
@@ -301,17 +318,16 @@
 				buttons: [ {
 					text: gvGlobals.label_cancel,
 					click: function() {
+						vcfg.startFreshStatus = false;
 						vcfg.gvSelectForm.val( vcfg.currentFormId );
 						thisDialog.dialog('close');
 					} }, {
 					text: gvGlobals.label_continue,
 					click: function() {
-						if( '' === vcfg.gvSelectForm.val() ) {
-							vcfg.hideView();
+						if( vcfg.startFreshStatus ) {
+							vcfg.startFreshContinue();
 						} else {
-							vcfg.getAvailableFields();
-							vcfg.toggleDropMessage();
-							vcfg.showTemplates();
+							vcfg.formChangeContinue();
 						}
 						thisDialog.dialog('close');
 					}
