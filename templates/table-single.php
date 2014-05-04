@@ -1,12 +1,12 @@
 <?php gravityview_before(); ?>
 <?php echo gravityview_back_link(); ?>
 <table class="">
-	<?php if( !empty( $this->fields['table-columns-single'] ) ): ?>
+	<?php if( !empty( $this->fields['single_table-columns'] ) ): ?>
 		<thead>
 			<?php gravityview_header(); ?>
 			<tr>
-				<?php 
-				foreach( $this->fields['table-columns-single'] as $field ) {
+				<?php
+				foreach( $this->fields['single_table-columns'] as $field ) {
 					echo '<th class="'. esc_attr( gv_class( $field ) ) .'">' . esc_html( gv_label( $field ) ) . '</th>';
 				}
 				?>
@@ -15,7 +15,7 @@
 		<tbody>
 			<?php foreach( $this->entries as $entry ) : ?>
 				<tr>
-					<?php foreach( $this->fields['table-columns-single'] as $field ) : ?>
+					<?php foreach( $this->fields['single_table-columns'] as $field ) : ?>
 						<td><?php echo gv_value( $entry, $field ); ?></td>
 					<?php endforeach; ?>
 				</tr>
@@ -23,8 +23,8 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<?php 
-				foreach( $this->fields['table-columns-single'] as $field ) {
+				<?php
+				foreach( $this->fields['single_table-columns'] as $field ) {
 					echo '<th class="'. esc_attr( gv_class( $field ) ) .'">' . esc_html( gv_label( $field ) ) . '</th>';
 				}
 				?>

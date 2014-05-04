@@ -141,7 +141,7 @@ class GravityView_frontend {
 		$form_id = get_post_meta( $id, '_gravityview_form_id', true );
 		$template_id  = get_post_meta( $id, '_gravityview_directory_template', true );
 		$dir_fields = get_post_meta( $id, '_gravityview_directory_fields', true );
-		$template_settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
+		$template_settings = get_post_meta( $id, '_gravityview_template_settings', true );
 
 		// remove fields according to visitor visibility permissions (if logged-in)
 		$dir_fields = self::filter_fields( $dir_fields );
@@ -152,7 +152,6 @@ class GravityView_frontend {
 		$gravityview_view->form_id = $form_id;
 		$gravityview_view->view_id = $id;
 		$gravityview_view->fields = $dir_fields;
-
 
 		// check if user requests single entry
 		$single_entry = get_query_var( self::get_entry_var_name() );

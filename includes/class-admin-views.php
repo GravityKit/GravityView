@@ -500,14 +500,6 @@ class GravityView_Admin_Views {
 	 */
 	function pre_get_available_fields( $template_id = '') {
 
-
-
-		//$transient_key = 'preget_form_fields_' . $template_id;
-
-		//if( false === ( $available = get_transient( $transient_key ) ) ) {
-		//
-		//
-
 		if( empty( $template_id ) ) {
 			return;
 		} else {
@@ -796,46 +788,10 @@ class GravityView_Admin_Views {
 		}
 
 		ob_start();
-		?>
-
-		<?php $this->render_active_areas( $template_id, 'field', $context, $template_areas, $fields ); ?>
-
-		<?php
-
-		/*
-		foreach( $template_areas as $area ) {
-			$output .= '<fieldset class="area">';
-			$output .= '<legend>'. $area['label'] .'</legend>';
-
-			$output .= '<div id="'. $area['id'] .'" data-areaid="'. $area['areaid'] .'" class="active-drop">';
-
-			// render saved fields
-			if( !empty( $fields[ $area['areaid'] ] ) ) {
-				foreach( $fields[ $area['areaid'] ] as $uniqid => $field ) {
-
-					if( !empty( $available_fields[ $field['id'] ] ) ) {
-						$output .= '<div data-fieldid="'. $field['id'] .'" class="gv-fields ui-draggable">';
-						$output .= '<h5>'. $available_fields[ $field['id'] ]['label'] . '</h5>';
-						$output .= '<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
-						$output .= '<a href="#remove" class="dashicons-dismiss dashicons"></a>';
-						$output .= '</span>';
-						$output .= $this->render_field_options( $template_id, $field['id'], $available_fields[ $field['id'] ]['label'], $area['areaid'], $uniqid, $field, $context );
-						$output .= '</div>';
-					}
-
-				}
-
-			}
-
-			$output .= '<span class="drop-message">'. esc_html__( 'Drop fields here', 'gravity-view' ).'</span>';
-			// close active area
-			$output .= '</div>';
-			$output .= '</fieldset>';
-		}
-		*/
-
+		$this->render_active_areas( $template_id, 'field', $context, $template_areas, $fields );
 		$output = ob_get_contents();
 		ob_end_clean();
+
 		return $output;
 
 	}
@@ -941,9 +897,6 @@ class GravityView_Admin_Views {
 	}
 
 
-
-
-
 	/**
 	 * Render the HTML for a checkbox input to be used on the field & widgets options
 	 * @param  string $name , name attribute
@@ -1022,13 +975,9 @@ class GravityView_Admin_Views {
 	 * @return void
 	 */
 	function get_available_fields_html() {
-		$response = false;
 
 		//check nonce
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxviews' ) ) {
-			echo $response;
-			die();
-		}
+		$this->check_ajax_nonce();
 
 		// If Form was changed, JS sends form ID, if start fresh, JS sends templateid
 		if( !empty( $_POST['formid'] ) ) {
@@ -1040,7 +989,7 @@ class GravityView_Admin_Views {
 		}
 
 		//if everything fails..
-		echo $response;
+		echo false;
 		die();
 	}
 
@@ -1053,20 +1002,13 @@ class GravityView_Admin_Views {
 	 * @return void
 	 */
 	function get_active_areas() {
-		$response = false;
+		$this->check_ajax_nonce();
 
 		if( empty( $_POST['template_id'] ) ) {
-			echo $response;
+			echo false;
 			die();
 		}
 
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxviews' ) ) {
-			echo $response;
-			die();
-		}
-
-		// $response = $this->render_directory_active_areas( $_POST['template_id'] );
-		// echo $response;
 		$response['directory'] = $this->render_directory_active_areas( $_POST['template_id'], 'directory' );
 		$response['single'] = $this->render_directory_active_areas( $_POST['template_id'], 'single' );
 
@@ -1090,7 +1032,7 @@ class GravityView_Admin_Views {
 		if( !empty( $preset_fields_path ) ) {
 			$preset_fields = $this->import_fields( $preset_fields_path );
 		}
-error_log( 'this $preset_fields: ' . print_r( $preset_fields , true ) );
+
 		// template areas
 		$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $_POST['template_id'] );
 
@@ -1118,15 +1060,10 @@ error_log( 'this $preset_fields: ' . print_r( $preset_fields , true ) );
 	 * @return void
 	 */
 	function get_field_options() {
-		$response = false;
+		$this->check_ajax_nonce();
 
 		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) || empty( $_POST['field_label'] ) ) {
-			echo $response;
-			die();
-		}
-
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxviews' ) ) {
-			echo $response;
+			echo false;
 			die();
 		}
 

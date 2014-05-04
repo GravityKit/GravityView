@@ -1,8 +1,8 @@
 	<tfoot>
 		<tr>
-			<?php 
-			if( !empty( $this->fields['table-columns'] ) ) {
-				foreach( $this->fields['table-columns'] as $field ) {
+			<?php
+			if( !empty( $this->fields['directory_table-columns'] ) ) {
+				foreach( $this->fields['directory_table-columns'] as $field ) {
 					echo '<th class="'. esc_attr( gv_class( $field ) ) .'">' . esc_html( gv_label( $field ) ) . '</th>';
 				}
 			}
