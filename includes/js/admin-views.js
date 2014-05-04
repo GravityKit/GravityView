@@ -421,7 +421,7 @@
 				if( response ) {
 					var content = $.parseJSON( response );
 					$('#directory-active-fields').append( content.directory );
-					//$('#single-active-fields').append( content.single );
+					$('#single-active-fields').append( content.single );
 					vcfg.showViewConfig();
 				}
 			});
@@ -441,10 +441,9 @@
 
 			$.post( gvGlobals.ajaxurl, data, function( response ) {
 				if( response ) {
-					// var content = $.parseJSON( response );
-					// $('#directory-active-fields').append( content.directory );
-					//$('#single-active-fields').append( content.single );
-					 $('#directory-active-fields').append( response );
+					var content = $.parseJSON( response );
+					$('#directory-active-fields').append( content.directory );
+					$('#single-active-fields').append( content.single );
 					 vcfg.showViewConfig();
 				}
 			});

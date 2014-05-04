@@ -140,7 +140,7 @@ class GravityView_Admin_Views {
 
 		// Fetch available style templates
 		$templates = apply_filters( 'gravityview_register_directory_template', array() );
-error_log( 'this: $templates' . print_r( $templates , true ) );
+
 
 		// current input ?>
 		<input type="hidden" id="gravityview_directory_template" name="gravityview_directory_template" value="<?php echo esc_attr( $current_template ); ?>">
@@ -214,7 +214,6 @@ error_log( 'this: $templates' . print_r( $templates , true ) );
 
 				<div id="directory-fields" class="gv-section">
 
-
 					<h4><?php esc_html_e( 'Above Listings', 'gravity-view'); ?> <span><?php esc_html_e( 'Define the header widgets', 'gravity-view'); ?></span></h4>
 
 					<?php echo $this->render_widgets_active_areas( $curr_template, 'header', $post->ID ); ?>
@@ -254,8 +253,14 @@ error_log( 'this: $templates' . print_r( $templates , true ) );
 			<div id="single-view">
 
 				<div id="single-fields" class="gv-section">
+
 					<h4><?php esc_html_e( 'Customize your single view', 'gravity-view'); ?></h4>
 
+					<div id="single-active-fields" class="gv-grid gv-grid-pad gv-grid-border">
+						<?php if(!empty( $curr_template ) ) {
+							echo $this->render_directory_active_areas( $curr_template, 'single', $post->ID );
+						} ?>
+					</div>
 
 				</div>
 
@@ -755,7 +760,7 @@ error_log( 'this: $templates' . print_r( $templates , true ) );
 		?>
 
 		<div class="gv-grid gv-grid-pad gv-grid-border">
-			<?php echo $this->render_active_areas( $template_id, 'widget', $zone, $default_widget_areas, $widgets ); ?>
+			<?php $this->render_active_areas( $template_id, 'widget', $zone, $default_widget_areas, $widgets ); ?>
 		</div>
 
 		<?php
@@ -789,7 +794,7 @@ error_log( 'this: $templates' . print_r( $templates , true ) );
 		if( !empty( $post_id ) ) {
 			$fields = get_post_meta( $post_id, '_gravityview_directory_fields', true );
 		}
-error_log( 'this $fields : ' . print_r( $fields , true ) );
+
 		ob_start();
 		?>
 
@@ -1089,8 +1094,17 @@ error_log( 'this $preset_fields: ' . print_r( $preset_fields , true ) );
 		// template areas
 		$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $_POST['template_id'] );
 
+		ob_start();
 		$this->render_active_areas( $_POST['template_id'], 'field', 'directory', $template_areas, $preset_fields );
+		$response['directory'] = ob_get_contents();
+		ob_end_clean();
 
+		ob_start();
+		$this->render_active_areas( $_POST['template_id'], 'field', 'single', $template_areas, $preset_fields );
+		$response['single'] = ob_get_contents();
+		ob_end_clean();
+
+		echo json_encode( $response );
 		die();
 	}
 
