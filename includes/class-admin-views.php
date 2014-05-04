@@ -198,7 +198,7 @@ class GravityView_Admin_Views {
 		$curr_template = get_post_meta( $post->ID, '_gravityview_directory_template', true );
 
 		// View template settings
-		$template_settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
+	//	$template_settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
 
 		?>
 		<div id="tabs">
@@ -238,7 +238,7 @@ class GravityView_Admin_Views {
 
 					<?php // list of available widgets to be shown in the popup ?>
 					<div id="directory-available-widgets" class="hide-if-js">
-						<?php echo $this->render_available_widgets(); ?>
+						<?php $this->render_available_widgets(); ?>
 					</div>
 
 				</div>
@@ -640,22 +640,23 @@ class GravityView_Admin_Views {
 		// get the list of registered widgets
 		$widgets = apply_filters( 'gravityview_register_directory_widgets', array() );
 
-		$output = '';
+
 
 		if( !empty( $widgets ) ) {
-			foreach( $widgets as $id => $details ) {
+			foreach( $widgets as $id => $details ) : ?>
 
-				$output .= '<div data-fieldid="'. $id .'" class="gv-fields">';
-				$output .= '<h5>'. $details['label'] . '</h5>';
-				$output .= '<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons"></a>';
-				$output .= '<a href="#remove" class="dashicons-dismiss dashicons"></a>';
-				$output .= '</span>';
-				$output .= '</div>';
+				<div data-fieldid="<?php echo $id; ?>" class="gv-fields">
+					<h5><?php echo $details['label']; ?></h5>
+					<span class="gv-field-controls">
+						<a href="#settings" class="dashicons-admin-generic dashicons"></a>
+						<a href="#remove" class="dashicons-dismiss dashicons"></a>
+					</span>
+				</div>
 
-			}
-		}
+			<?php
+			endforeach;
+		endif;
 
-		return $output;
 	}
 
 	/**
