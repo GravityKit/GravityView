@@ -65,6 +65,8 @@ class GravityView_View extends Gamajo_Template_Loader {
 			return;
 		}
 
+		wp_enqueue_style( 'gravityview_default_style');
+
 		// get View widget configuration
 		$widgets = get_post_meta( $view_id, '_gravityview_directory_widgets', true );
 
@@ -77,28 +79,29 @@ class GravityView_View extends Gamajo_Template_Loader {
 			case 'gravityview_after':
 				$zone = 'footer';
 				break;
-		}
+		} ?>
 
-		foreach( $rows as $row ) :
-			foreach( $row as $col => $areas ) :
-				$column = ($col == '2-2') ? '1-2' : $col; ?>
-				<div class="gv-view-col-<?php echo esc_attr( $column ); ?>">
-					<?php
-					foreach( $areas as $area ) {
-						if( !empty( $widgets[ $zone .'_'. $area['areaid'] ] ) ) {
-							foreach( $widgets[ $zone .'_'. $area['areaid'] ] as $widget ) {
-								do_action( "gravityview_render_widget_{$widget['id']}", $widget );
+		<div class="gv-grid">
+			<?php
+			foreach( $rows as $row ) :
+				foreach( $row as $col => $areas ) :
+					$column = ($col == '2-2') ? '1-2' : $col; ?>
+					<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
+						<?php
+						foreach( $areas as $area ) {
+							if( !empty( $widgets[ $zone .'_'. $area['areaid'] ] ) ) {
+								foreach( $widgets[ $zone .'_'. $area['areaid'] ] as $widget ) {
+									do_action( "gravityview_render_widget_{$widget['id']}", $widget );
+								}
 							}
-						}
-					} ?>
-				</div>
+						} ?>
+					</div>
+				<?php endforeach; ?>
 			<?php endforeach; ?>
-		<?php endforeach; ?>
+		</div>
 
 		<?php
 	}
-
-
 
 }
 
