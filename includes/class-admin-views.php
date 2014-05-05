@@ -737,11 +737,7 @@ class GravityView_Admin_Views {
 	 */
 	function render_widgets_active_areas( $template_id = '', $zone, $post_id = '' ) {
 
-		$default_widget_areas = array(
-			array( '1-1' => array( array( 'areaid' => 'top', 'title' => __('Full Width Top', 'gravity-view' ) , 'subtitle' => '' ) ) ),
-			array( '1-2' => array( array( 'areaid' => 'left', 'title' => __('Left', 'gravity-view') , 'subtitle' => '' ) ), '2-2' => array( array( 'areaid' => 'right', 'title' => __('Right', 'gravity-view') , 'subtitle' => '' ) ) ),
-			array( '1-1' => array( 	array( 'areaid' => 'bottom', 'title' => __('Full Width Bottom', 'gravity-view') , 'subtitle' => '' ) ) )
-		);
+		$default_widget_areas = GravityView_Plugin::get_default_widget_areas();
 
 		$widgets = array();
 		if( !empty( $post_id ) ) {

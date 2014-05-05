@@ -31,6 +31,12 @@ class GravityView_View extends Gamajo_Template_Loader {
 	// Reference to the root directory path of this plugin.
 	protected $plugin_directory = GRAVITYVIEW_DIR;
 
+	function __construct() {
+		// widget logic
+		add_action( 'gravityview_before', array( $this, 'render_widget_hooks' ) );
+		add_action( 'gravityview_after', array( $this, 'render_widget_hooks' ) );
+	}
+
 	// Magic methods
 	public function __set( $name, $value ) {
 		$this->vars[ $name ] = $value;
@@ -52,6 +58,47 @@ class GravityView_View extends Gamajo_Template_Loader {
 				require( $template_file );
 		}
 	}
+
+	public function render_widget_hooks( $view_id ) {
+
+		if( empty( $view_id ) || 'single' == gravityview_get_context() ) {
+			return;
+		}
+
+		// get View widget configuration
+		$widgets = get_post_meta( $view_id, '_gravityview_directory_widgets', true );
+
+		$rows = GravityView_Plugin::get_default_widget_areas();
+
+		switch( current_filter() ) {
+			case 'gravityview_before':
+				$zone = 'header';
+				break;
+			case 'gravityview_after':
+				$zone = 'footer';
+				break;
+		}
+
+		foreach( $rows as $row ) :
+			foreach( $row as $col => $areas ) :
+				$column = ($col == '2-2') ? '1-2' : $col; ?>
+				<div class="gv-view-col-<?php echo esc_attr( $column ); ?>">
+					<?php
+					foreach( $areas as $area ) {
+						if( !empty( $widgets[ $zone .'_'. $area['areaid'] ] ) ) {
+							foreach( $widgets[ $zone .'_'. $area['areaid'] ] as $widget ) {
+								do_action( "gravityview_render_widget_{$widget['id']}", $widget );
+							}
+						}
+					} ?>
+				</div>
+			<?php endforeach; ?>
+		<?php endforeach; ?>
+
+		<?php
+	}
+
+
 
 }
 

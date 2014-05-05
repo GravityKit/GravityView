@@ -314,6 +314,18 @@ final class GravityView_Plugin {
 	}
 
 	/**
+	 * helper function to define the default widget areas
+	 * @return array definition for default widget areas
+	 */
+	public static function get_default_widget_areas() {
+		return array(
+			array( '1-1' => array( array( 'areaid' => 'top', 'title' => __('Full Width Top', 'gravity-view' ) , 'subtitle' => '' ) ) ),
+			array( '1-2' => array( array( 'areaid' => 'left', 'title' => __('Left', 'gravity-view') , 'subtitle' => '' ) ), '2-2' => array( array( 'areaid' => 'right', 'title' => __('Right', 'gravity-view') , 'subtitle' => '' ) ) ),
+			array( '1-1' => array( 	array( 'areaid' => 'bottom', 'title' => __('Full Width Bottom', 'gravity-view') , 'subtitle' => '' ) ) )
+		);
+	}
+
+	/**
 	 * List the field types without presentation properties (on a View context)
 	 *
 	 * @access public

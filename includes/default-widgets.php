@@ -28,7 +28,7 @@ class GravityView_Widget_Pagination extends GravityView_Widget {
 	}
 
 
-	public function render_frontend() {
+	public function render_frontend( $widget_args ) {
 
 		global $gravityview_view;
 
@@ -70,16 +70,14 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 
 	}
 
-	public function render_frontend() {
+	public function render_frontend( $widget_args ) {
 
 		global $gravityview_view;
 
 		$page_size = $gravityview_view->paging['page_size'];
 		$total = $gravityview_view->total_entries;
 
-		$adv_settings = $this->get_advanced_settings();
-
-		$show_all = !empty( $adv_settings['show_all'] ) ? true : false;
+		$show_all = !empty( $widget_args['show_all'] ) ? true : false;
 
 
 		// displaying info
@@ -169,7 +167,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 	}
 
 
-	public function render_frontend() {
+	public function render_frontend( $widget_args ) {
 
 		global $gravityview_view;
 
@@ -178,10 +176,8 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		// get configured search filters (fields)
 		$search_filters = $this->get_search_filters();
 
-
-		$adv_settings = $this->get_advanced_settings();
-		$search_free = !empty( $adv_settings['search_free'] ) ? true : false;
-		$search_date = !empty( $adv_settings['search_date'] ) ? true : false;
+		$search_free = !empty( $widget_args['search_free'] ) ? true : false;
+		$search_date = !empty( $widget_args['search_date'] ) ? true : false;
 
 
 		// Search box and filters
@@ -369,12 +365,15 @@ class GravityView_Widget {
 		add_filter( 'gravityview_template_widget_options', array( $this, 'assign_widget_options' ), 10, 3 );
 
 		// frontend logic
-		add_action( 'gravityview_before', array( $this, 'render_frontend_hooks' ) );
-		add_action( 'gravityview_after', array( $this, 'render_frontend_hooks' ) );
+		add_action( "gravityview_render_widget_{$widget_id}", array( $this, 'render_frontend' ), 10, 1 );
 
 	}
 
-
+	/**
+	 * Register widget to become available in admin
+	 * @param  array $widgets
+	 * @return array $widgets
+	 */
 	function register_widget( $widgets ) {
 		$widgets[ $this->widget_id ] = array( 'label' => $this->widget_label );
 		return $widgets;
@@ -398,135 +397,10 @@ class GravityView_Widget {
 	}
 
 
-	function render_admin_settings( $widgets ) {
-
-		$header = isset( $widgets['header'][ $this->widget_id ] ) ? $widgets['header'][ $this->widget_id ] : $this->defaults['header'];
-		$footer = isset( $widgets['footer'][ $this->widget_id ] ) ? $widgets['footer'][ $this->widget_id ] : $this->defaults['footer'];
-
-		?>
-		<tr valign="top">
-			<td scope="row"><label for="gravityview_widget_header_<?php echo esc_attr( $this->widget_id ); ?>"><?php echo esc_html( $this->widget_label ); ?></label></td>
-			<td>
-				<fieldset>
-					<legend class="screen-reader-text"><span><?php esc_html_e( 'Enable this widget to appear in View header', 'gravity-view'); ?></span></legend>
-					<label for="gravityview_widget_header_<?php echo esc_attr( $this->widget_id ); ?>">
-						<input name="widgets[header][<?php echo esc_attr( $this->widget_id ); ?>]" type="hidden" value="0">
-						<input name="widgets[header][<?php echo esc_attr( $this->widget_id ); ?>]" type="checkbox" id="gravityview_widget_header_<?php echo esc_attr( $this->widget_id ); ?>" value="1" <?php checked( $header , 1, true ); ?>>
-					</label>
-				</fieldset>
-			</td>
-			<td>
-				<fieldset>
-					<legend class="screen-reader-text"><span><?php esc_html_e( 'Enable this widget to appear in View footer', 'gravity-view'); ?></span></legend>
-					<label for="gravityview_widget_footer_<?php echo esc_attr( $this->widget_id ); ?>">
-						<input name="widgets[footer][<?php echo esc_attr( $this->widget_id ); ?>]" type="hidden" value="0">
-						<input name="widgets[footer][<?php echo esc_attr( $this->widget_id ); ?>]" type="checkbox" id="gravityview_widget_footer_<?php echo esc_attr( $this->widget_id ); ?>" value="1" <?php checked( $footer , 1, true ); ?>>
-					</label>
-				</fieldset>
-			</td>
-			<td>
-				<?php if( !empty( $this->settings ) ): ?>
-					<a class="button-small button" href="#widget-settings" title="<?php esc_attr_e( 'Advanced Settings', 'gravity-view' ); ?>"><?php esc_html_e( 'Settings', 'gravity-view'); ?></a>
-					<div class="gv-dialog-options" title="<?php printf( __( '%1$s options', 'gravity-view' ), $this->widget_label ); ?>">
-						<?php $this->render_advanced_settings( $widgets ); ?>
-					</div>
-				<?php endif; ?>
-			</td>
-
-		</tr>
-
-		<?php
-	}
-
-
-	function render_advanced_settings( $widgets ) {
-
-		if( !is_array( $this->settings ) ) {
-			return '';
-		}
-
-		echo '<ul>';
-
-		foreach( $this->settings as $key => $details ) {
-
-			//$default = isset( $details['default'] ) ? $details['default'] : '';
-			$default = '';
-			$curr_value = isset( $widgets[ $this->widget_id ][ $key ] ) ? $widgets[ $this->widget_id ][ $key ] : $default;
-			$label = isset( $details['label'] ) ? $details['label'] : '';
-			$type = isset( $details['type'] ) ? $details['type'] : 'input_text';
-
-			switch( $type ) {
-				case 'checkbox':
-					echo '<li>'. GravityView_Admin_Views::render_checkbox_option( 'widgets['. $this->widget_id .']['. $key .']' , $label, $curr_value ) .'</li>';
-					break;
-
-				case 'input_text':
-				default:
-					echo '<li>'. GravityView_Admin_Views::render_input_text_option( 'widgets['. $this->widget_id .']['. $key .']' , $label, $curr_value ) .'</li>';
-					break;
-
-			}
-
-
-		}
-
-		echo '</ul>';
-
-	}
-
-
-
 	/** Frontend logic */
-
-	function render_frontend_hooks( $view_id ) {
-
-		if( empty( $view_id ) || 'single' == gravityview_get_context() ) {
-			return;
-		}
-		// get View widget configuration
-		$widgets = $this->get_widget_options( $view_id );
-
-
-		switch( current_filter() ) {
-			case 'gravityview_before':
-				if( !empty( $widgets['header'][ $this->widget_id ] ) ) {
-					$this->render_frontend();
-				}
-				break;
-			case 'gravityview_after':
-				if( !empty( $widgets['footer'][ $this->widget_id ] ) ) {
-					$this->render_frontend();
-				}
-				break;
-
-		}
-
-	}
-
-
-	function render_frontend() {
+	function render_frontend( $args ) {
 		// to be defined by child class
 	}
-
-
-	// helper
-	function get_widget_options( $id ) {
-
-		if( empty( $id ) ) {
-			return '';
-		}
-
-		if( empty( $this->widget_options ) ) {
-			$this->widget_options = get_post_meta( $id, '_gravityview_directory_widgets', true );
-		}
-
-		return $this->widget_options;
-	}
-
-	function get_advanced_settings() {
-		return isset( $this->widget_options[ $this->widget_id ] ) ? $this->widget_options[ $this->widget_id ] : '';
-	}
-
 
 
 } // GravityView_Widget
