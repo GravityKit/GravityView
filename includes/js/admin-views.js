@@ -433,17 +433,14 @@
 				connectWith: ".active-drop-widget",
 				receive: function( event, ui ) {
 					// Check if field comes from another active area and if so, update name attributes.
-					if( ui.item.find(".gv-dialog-options").length > 0 ) {
 
-						var sender_area = ui.sender.attr('data-areaid'),
-							receiver_area = $(this).attr('data-areaid');
+					var sender_area = ui.sender.attr('data-areaid'),
+						receiver_area = $(this).attr('data-areaid');
 
-						ui.item.find( '[name^="fields['+ sender_area +']"]').each( function() {
-							var name = $(this).attr('name');
-							$(this).attr('name', name.replace( sender_area, receiver_area ) );
-						});
-
-					}
+					ui.item.find( '[name^="widgets['+ sender_area +']"]').each( function() {
+						var name = $(this).attr('name');
+						$(this).attr('name', name.replace( sender_area, receiver_area ) );
+					});
 
 					vcfg.toggleDropMessage();
 
