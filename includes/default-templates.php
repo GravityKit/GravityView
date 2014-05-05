@@ -65,7 +65,8 @@ class GravityView_Preset_Resume_board {
 			'label' =>  __( 'Resume Board', 'gravity-view' ),
 			'description' => __( 'Allow job-seekers to post their resumes.', 'gravity-view'),
 			'logo' => GRAVITYVIEW_URL . 'includes/presets/resume-board/logo-resume-board.png',
-			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/resume-board/form-resume-board.xml'
+			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/resume-board/form-resume-board.xml',
+			'preset_fields' => '',
 		);
 
 		$def_template->merge_defaults( $settings );
@@ -86,7 +87,31 @@ class GravityView_Preset_Job_Board {
 			'label' =>  __( 'Job Board', 'gravity-view' ),
 			'description' => __( 'Post available jobs in a simple job board.', 'gravity-view'),
 			'logo' => GRAVITYVIEW_URL . 'includes/presets/job-board/logo-job-board.png',
-			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/job-board/form-job-board.xml'
+			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/job-board/form-job-board.xml',
+			'preset_fields' => '',
+
+		);
+
+		$def_template->merge_defaults( $settings );
+
+	}
+}
+
+class GravityView_Preset_People_Table {
+
+	function __construct() {
+		$def_template = new GravityView_Default_Template_Table;
+
+		$def_template->template_id = 'preset_people_table';
+
+		$settings = array(
+			'slug' => 'table',
+			'type' => 'preset',
+			'label' =>  __( 'People Table', 'gravity-view' ),
+			'description' => __( 'Display information about people in a table.', 'gravity-view'),
+			'logo' => GRAVITYVIEW_URL . 'includes/presets/people-table/logo-people-table.png',
+			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/people-table/form-people-table.xml',
+			'preset_fields' => '',
 
 		);
 
@@ -98,17 +123,18 @@ class GravityView_Preset_Job_Board {
 class GravityView_Preset_Business_Listings {
 
 	function __construct() {
-		$def_template = new GravityView_Default_Template_Table;
+		$def_template = new GravityView_Default_Template_List;
 
 		$def_template->template_id = 'preset_business_listings';
 
 		$settings = array(
-			'slug' => 'table',
+			'slug' => 'list',
 			'type' => 'preset',
 			'label' =>  __( 'Business Listings', 'gravity-view' ),
 			'description' => __( 'Display business profiles.', 'gravity-view'),
 			'logo' => GRAVITYVIEW_URL . 'includes/presets/business-listings/logo-business-listings.png',
-			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/business-listings/form-business-listings.xml'
+			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/business-listings/form-business-listings.xml',
+			'preset_fields' => '',
 		);
 
 		$def_template->merge_defaults( $settings );
@@ -116,7 +142,93 @@ class GravityView_Preset_Business_Listings {
 	}
 }
 
+class GravityView_Preset_Event_Listings {
 
+	function __construct() {
+		$def_template = new GravityView_Default_Template_List;
+
+		$def_template->template_id = 'preset_event_listings';
+
+		$settings = array(
+			'slug' => 'list',
+			'type' => 'preset',
+			'label' =>  __( 'Event Listings', 'gravity-view' ),
+			'description' => __( 'Present a list of your events.', 'gravity-view'),
+			'logo' => GRAVITYVIEW_URL . 'includes/presets/event-listings/logo-event-listings.png',
+			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/event-listings/form-event-listings.xml',
+			'preset_fields' => '',
+		);
+
+		$def_template->merge_defaults( $settings );
+
+	}
+}
+
+class GravityView_Preset_Profiles {
+
+	function __construct() {
+		$def_template = new GravityView_Default_Template_List;
+
+		$def_template->template_id = 'preset_profiles';
+
+		$settings = array(
+			'slug' => 'list',
+			'type' => 'preset',
+			'label' =>  __( 'People Profiles', 'gravity-view' ),
+			'description' => __( 'List people with individual profiles.', 'gravity-view'),
+			'logo' => GRAVITYVIEW_URL . 'includes/presets/profiles/logo-profiles.png',
+			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/profiles/form-profiles.xml',
+			'preset_fields' => '',
+		);
+
+		$def_template->merge_defaults( $settings );
+
+	}
+}
+
+class GravityView_Preset_Staff_Profiles {
+
+	function __construct() {
+		$def_template = new GravityView_Default_Template_List;
+
+		$def_template->template_id = 'preset_staff_profiles';
+
+		$settings = array(
+			'slug' => 'list',
+			'type' => 'preset',
+			'label' =>  __( 'Staff Profiles', 'gravity-view' ),
+			'description' => __( 'List members of your team.', 'gravity-view'),
+			'logo' => GRAVITYVIEW_URL . 'includes/presets/staff-profiles/logo-staff-profiles.png',
+			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/staff-profiles/form-staff-profiles.xml',
+			'preset_fields' => '',
+		);
+
+		$def_template->merge_defaults( $settings );
+
+	}
+}
+
+class GravityView_Preset_Website_showcase {
+
+	function __construct() {
+		$def_template = new GravityView_Default_Template_List;
+
+		$def_template->template_id = 'preset_website_showcase';
+
+		$settings = array(
+			'slug' => 'list',
+			'type' => 'preset',
+			'label' =>  __( 'Website Showcase', 'gravity-view' ),
+			'description' => __( 'Feature submitted websites with screenshots.', 'gravity-view'),
+			'logo' => GRAVITYVIEW_URL . 'includes/presets/website-showcase/logo-website-showcase.png',
+			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/website-showcase/form-website-showcase.xml',
+			'preset_fields' => '',
+		);
+
+		$def_template->merge_defaults( $settings );
+
+	}
+}
 
 
 /** Simple customizable templates: table and list */
@@ -358,4 +470,7 @@ new GravityView_Preset_Resume_board();
 new GravityView_Preset_Job_Board();
 new GravityView_Preset_Business_Listings();
 new GravityView_Preset_Business_Data();
-
+new GravityView_Preset_Event_Listings();
+new GravityView_Preset_People_Table();
+new GravityView_Preset_Profiles();
+new GravityView_Preset_Staff_Profiles();
