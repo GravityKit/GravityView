@@ -1028,6 +1028,8 @@ class GravityView_Admin_Views {
 		// import fields
 		if( !empty( $preset_fields_path ) ) {
 			$preset_fields = $this->import_fields( $preset_fields_path );
+		} else {
+			$preset_fields = array();
 		}
 
 		// template areas
