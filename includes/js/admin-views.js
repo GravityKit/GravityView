@@ -79,6 +79,10 @@
 			    }
 			});
 
+	        // when saving the View, try to create form before proceeding
+	        $(document).on( 'click', '#publish', vcfg.createPresetForm );
+
+
 		},
 
 		// hides template picker metabox and view config metabox
@@ -518,6 +522,43 @@
 				}],
 			});
 		},
+
+		createPresetForm: function() {
+			var vcfg = viewConfiguration,
+				templateId = $("#gravityview_directory_template").val();
+
+			if( ! vcfg.startFreshStatus || templateId == '' ) {
+				return true;
+			}
+
+
+			// try to create preset form in Gravity Forms. On success assign it to post before saving
+			var data = {
+				action: 'gv_set_preset_form',
+				template_id: templateId,
+				nonce: gvGlobals.nonce,
+			};
+
+			$.post( gvGlobals.ajaxurl, data, function( response ) {
+
+				if( response != 'false' ) {
+
+					vcfg.startFreshStatus = false;
+					$('#gravityview_form_id_start_fresh').val('0');
+
+					//set the form id
+					vcfg.gvSelectForm.find("option:selected").removeAttr("selected");
+					vcfg.gvSelectForm.append( response );
+
+					$("#publish").trigger('click');
+
+				} else {
+					$("#post").before('<div id="message" class="error below-h2"><p>'+ gvGlobals.label_publisherror +'</p></div>');
+				}
+			});
+
+			return false;
+		}
 
 	}; // end viewConfiguration object
 

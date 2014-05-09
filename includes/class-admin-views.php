@@ -39,6 +39,9 @@ class GravityView_Admin_Views {
 		// get preset fields
 		add_action( 'wp_ajax_gv_get_preset_fields', array( $this, 'get_preset_fields_config' ) );
 
+		// get preset fields
+		add_action( 'wp_ajax_gv_set_preset_form', array( $this, 'create_preset_form' ) );
+
 	}
 
 
@@ -378,25 +381,25 @@ class GravityView_Admin_Views {
 		// check if this is a start fresh View
 		if ( isset( $_POST['gravityview_select_form_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_form_nonce'], 'gravityview_select_form' ) ) {
 
-			if( !empty( $_POST['gravityview_form_id_start_fresh'] ) && !empty( $template_id ) ) {
+			// if( !empty( $_POST['gravityview_form_id_start_fresh'] ) && !empty( $template_id ) ) {
 
-				// get the xml for this specific template_id
-				$preset_xml_path = apply_filters( 'gravityview_template_formxml', '', $template_id );
+			// 	// get the xml for this specific template_id
+			// 	$preset_xml_path = apply_filters( 'gravityview_template_formxml', '', $template_id );
 
-				// import form
-				$form_id = $this->import_form( $preset_xml_path );
-
-
-				// get the form ID
-				if( $form_id === false ) {
-					// send error to user
-					error_log( 'this error on form insert: ' . print_r( $preset_xml_path , true ) );
-				}
+			// 	// import form
+			// 	$form_id = $this->import_form( $preset_xml_path );
 
 
-			} else {
-				$form_id = $_POST['gravityview_form_id'];
-			}
+			// 	// get the form ID
+			// 	if( $form_id === false ) {
+			// 		// send error to user
+			// 		error_log( 'this error on form insert: ' . print_r( $preset_xml_path , true ) );
+			// 	}
+
+
+			// } else {
+			$form_id = $_POST['gravityview_form_id'];
+			// }
 
 			// save form id
 			update_post_meta( $post_id, '_gravityview_form_id', $form_id );
@@ -1013,7 +1016,10 @@ class GravityView_Admin_Views {
 		die();
 	}
 
-
+	/**
+	 * Fill in active areas with preset configuration according to the template selected
+	 * @return void
+	 */
 	function get_preset_fields_config() {
 
 		$this->check_ajax_nonce();
@@ -1049,6 +1055,39 @@ class GravityView_Admin_Views {
 		die();
 	}
 
+	/**
+	 * Create the preset form requested before the View save
+	 * @return void
+	 */
+	function create_preset_form() {
+
+		$this->check_ajax_nonce();
+
+		if( empty( $_POST['template_id'] ) ) {
+			echo false;
+			die();
+		}
+
+		// get the xml for this specific template_id
+		$preset_form_xml_path = apply_filters( 'gravityview_template_formxml', '', $_POST['template_id'] );
+
+		// import form
+		$form_id = $this->import_form( $preset_form_xml_path );
+
+		// get the form ID
+		if( $form_id === false ) {
+			// send error to user
+			error_log( 'this error on form insert: ' . print_r( $preset_form_xml_path , true ) );
+
+			echo false;
+			die();
+		}
+
+		echo '<option value="'.$form_id.'" selected></option>';
+
+		die();
+
+	}
 
 
 	/**
@@ -1108,6 +1147,7 @@ class GravityView_Admin_Views {
 			'label_cancel' => __( 'Cancel', 'gravity-view' ),
 			'label_continue' => __( 'Continue', 'gravity-view' ),
 			'label_ok' => __( 'Ok', 'gravity-view' ),
+			'label_publisherror' => __( 'Error while creating the View for you. Check the settings or contact the GravityView support.', 'gravity-view' ),
 		));
 
 		//enqueue styles
