@@ -30,6 +30,8 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /** Constants */
+if ( !defined('GRAVITYVIEW_VERSION') )
+	define( 'GRAVITYVIEW_VERSION', '1.0.0' );
 if ( !defined('GRAVITYVIEW_URL') )
 	define( 'GRAVITYVIEW_URL', plugin_dir_url( __FILE__ ) );
 if ( !defined('GRAVITYVIEW_DIR') )
@@ -50,7 +52,7 @@ require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
  */
 final class GravityView_Plugin {
 
-	const version = '1.0';
+	const version = GRAVITYVIEW_VERSION;
 
 	private $admin_notices = array();
 
