@@ -86,10 +86,10 @@ class GravityView_frontend {
 	 * @return void
 	 */
 	public static function render_view_shortcode( $atts ) {
-
+		GravityView_Plugin::log_debug( '[render_view_shortcode] Init Shortcode. Attributes: ' . print_r( $atts, true ) );
 		//confront attributes with defaults
 		$args = shortcode_atts( self::get_default_args() , $atts, 'gravityview' );
-
+		GravityView_Plugin::log_debug( '[render_view_shortcode] Init Shortcode. Merged Attributes: ' . print_r( $args, true ) );
 		return self::render_view( $args );
 	}
 
@@ -130,6 +130,8 @@ class GravityView_frontend {
 	 */
 	public static function render_view( $args ) {
 
+		GravityView_Plugin::log_debug( '[render_view] Init View. Arguments: ' . print_r( $args, true ) );
+
 		extract( $args );
 
 		// validate attributes
@@ -139,12 +141,20 @@ class GravityView_frontend {
 
 		// get form, fields and settings assign to this view
 		$form_id = get_post_meta( $id, '_gravityview_form_id', true );
+		GravityView_Plugin::log_debug( '[render_view] Form ID: ' . print_r( $form_id, true ) );
+
 		$template_id  = get_post_meta( $id, '_gravityview_directory_template', true );
+		GravityView_Plugin::log_debug( '[render_view] Template ID: ' . print_r( $template_id, true ) );
+
 		$dir_fields = get_post_meta( $id, '_gravityview_directory_fields', true );
+		GravityView_Plugin::log_debug( '[render_view] Fields: ' . print_r( $dir_fields, true ) );
+
 		$template_settings = get_post_meta( $id, '_gravityview_template_settings', true );
+		GravityView_Plugin::log_debug( '[render_view] Template Settings: ' . print_r( $template_settings, true ) );
 
 		// remove fields according to visitor visibility permissions (if logged-in)
 		$dir_fields = self::filter_fields( $dir_fields );
+		GravityView_Plugin::log_debug( '[render_view] Fields after visibility filter: ' . print_r( $dir_fields, true ) );
 
 		// set globals for templating
 		global $gravityview_view;
@@ -158,10 +168,13 @@ class GravityView_frontend {
 
 		if( empty( $single_entry ) ) {
 			// user requested Directory View
+			GravityView_Plugin::log_debug( '[render_view] Executing Directory View' );
 
 			// start filters and sorting
 			// Search Criteria
 			$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ) );
+
+			GravityView_Plugin::log_debug( '[render_view] Search Criteria after hook gravityview_fe_search_criteria: ' . print_r( $search_criteria, true ) );
 
 			//start date & end date - Override values defined in shortcode (if needed)
 			if( !empty( $start_date ) ) {
@@ -176,11 +189,16 @@ class GravityView_frontend {
 				}
 			}
 
+			GravityView_Plugin::log_debug( '[render_view] Search Criteria after date params: ' . print_r( $search_criteria, true ) );
+
 			// Sorting
 			$sorting = array();
 			if( !empty( $sort_field ) ) {
 				$sorting = array( 'key' => $sort_field, 'direction' => $sort_direction );
 			}
+
+			GravityView_Plugin::log_debug( '[render_view] Sort Criteria : ' . print_r( $sorting, true ) );
+
 
 			// Paging
 			if( empty( $page_size ) ) {
@@ -189,29 +207,42 @@ class GravityView_frontend {
 			$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
 			$paging = array( 'offset' => ( $curr_page - 1 ) * $page_size, 'page_size' => $page_size );
 
+			GravityView_Plugin::log_debug( '[render_view] Paging: ' . print_r( $paging, true ) );
+
 
 			// remove not approved entries
 			if( !empty( $template_settings['show_only_approved'] ) ) {
 				$search_criteria['field_filters'][] = array( 'key' => 'is_approved', 'value' => 'Approved' );
 				$search_criteria['field_filters']['mode'] = 'all'; // force all the criterias to be met
+
+				GravityView_Plugin::log_debug( '[render_view] Search Criteria if show only approved: ' . print_r( $search_criteria, true ) );
 			}
+
 
 			//fetch template and slug
 			$view_slug =  apply_filters( 'gravityview_template_slug_'. $template_id, 'table', 'directory' );
+
+			GravityView_Plugin::log_debug( '[render_view] View template slug: ' . print_r( $view_slug, true ) );
 
 			//fetch entries
 			$count = 0;
 			$entries = gravityview_get_entries( $form_id, compact( 'search_criteria', 'sorting', 'paging' ), $count );
 
+			GravityView_Plugin::log_debug( '[render_view] Get Entries. Found: ' . print_r( $count, true ) .' entries');
+
 		} else {
 			// user requested Single Entry View
+			GravityView_Plugin::log_debug( '[render_view] Executing Single View' );
 
 			//fetch template and slug
 			$view_slug =  apply_filters( 'gravityview_template_slug_'. $template_id, 'table', 'single' );
 
+			GravityView_Plugin::log_debug( '[render_view] View single template slug: ' . print_r( $view_slug, true ) );
+
 			//fetch entry detail
 			$count = 1;
 			$entries[] = gravityview_get_entry( $single_entry );
+			GravityView_Plugin::log_debug( '[render_view] Get single entry: ' . print_r( $entries, true ) );
 
 		}
 
@@ -311,6 +342,8 @@ class GravityView_frontend {
 	 * @param string $template_id
 	 */
 	public static function add_style( $template_id ) {
+
+		GravityView_Plugin::log_debug( '[add_style] Adding extra template style for: ' . print_r( $template_id, true ) );
 
 		if( !empty( $template_id ) && wp_style_is( 'gravityview_style_' . $template_id, 'registered' ) ) {
 			wp_enqueue_style( 'gravityview_style_' . $template_id );
