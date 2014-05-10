@@ -108,6 +108,8 @@ final class GravityView_Plugin {
 		// adding general styles and scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles') );
 
+	    // Enable debug with Gravity Forms Logging Add-on
+	    add_filter( 'gform_logging_supported', array( 'GravityView_Plugin', 'add_debug_settings' ) );
 
 	}
 
@@ -601,6 +603,28 @@ final class GravityView_Plugin {
         return $scripts;
     }
 
+    /** DEBUG */
+
+    /**
+     * Enables debug with Gravity Forms logging add-on
+     * @param array $supported_plugins List of plugins
+     */
+    public static function add_debug_settings( $supported_plugins ) {
+        $supported_plugins['gravityview'] = 'GravityView';
+        return $supported_plugins;
+    }
+
+    /**
+     * Logs messages using Gravity Forms logging add-on
+     * @param  string $message log message
+     * @return void
+     */
+    public static function log_debug( $message ){
+        if ( class_exists("GFLogging") ) {
+            GFLogging::include_logger();
+            GFLogging::log_message( 'gravityview', $message, KLogger::DEBUG );
+        }
+    }
 
 } // end class GravityView_Plugin
 
