@@ -26,7 +26,6 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 	// Directory name where custom templates for this plugin should be found in the theme.
 	protected $theme_template_directory = '';
-	//apply_filters( 'gravityview_theme_template_directory', '' );
 
 	// Reference to the root directory path of this plugin.
 	protected $plugin_directory = GRAVITYVIEW_DIR;
@@ -88,10 +87,13 @@ class GravityView_View extends Gamajo_Template_Loader {
 					$column = ($col == '2-2') ? '1-2' : $col; ?>
 					<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
 						<?php
-						foreach( $areas as $area ) {
-							if( !empty( $widgets[ $zone .'_'. $area['areaid'] ] ) ) {
-								foreach( $widgets[ $zone .'_'. $area['areaid'] ] as $widget ) {
-									do_action( "gravityview_render_widget_{$widget['id']}", $widget );
+						echo '&nbsp;';
+						if( !empty( $areas ) ) {
+							foreach( $areas as $area ) {
+								if( !empty( $widgets[ $zone .'_'. $area['areaid'] ] ) ) {
+									foreach( $widgets[ $zone .'_'. $area['areaid'] ] as $widget ) {
+										do_action( "gravityview_render_widget_{$widget['id']}", $widget );
+									}
 								}
 							}
 						} ?>
