@@ -200,9 +200,6 @@ class GravityView_Admin_Views {
 		// Selected template
 		$curr_template = get_post_meta( $post->ID, '_gravityview_directory_template', true );
 
-		// View template settings
-	//	$template_settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
-
 		?>
 		<div id="tabs">
 
@@ -366,47 +363,29 @@ class GravityView_Admin_Views {
 				return;
 		}
 
+		GravityView_Plugin::log_debug( 'Saving View post type. Data: ' . $_POST );
+
 		//set active tab index
 		$active_tab = empty( $_POST['gv-active-tab'] ) ? 0 : $_POST['gv-active-tab'];
 		update_post_meta( $post_id, '_gravityview_tab_active', $active_tab );
 
-		// Check if we have a template id
-		if ( isset( $_POST['gravityview_select_template_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_template_nonce'], 'gravityview_select_template' ) ) {
-
-			$template_id = empty( $_POST['gravityview_directory_template'] ) ? '' : $_POST['gravityview_directory_template'];
-		} else {
-			$template_id = '';
-		}
-
 		// check if this is a start fresh View
 		if ( isset( $_POST['gravityview_select_form_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_form_nonce'], 'gravityview_select_form' ) ) {
 
-			// if( !empty( $_POST['gravityview_form_id_start_fresh'] ) && !empty( $template_id ) ) {
-
-			// 	// get the xml for this specific template_id
-			// 	$preset_xml_path = apply_filters( 'gravityview_template_formxml', '', $template_id );
-
-			// 	// import form
-			// 	$form_id = $this->import_form( $preset_xml_path );
-
-
-			// 	// get the form ID
-			// 	if( $form_id === false ) {
-			// 		// send error to user
-			// 		error_log( 'this error on form insert: ' . print_r( $preset_xml_path , true ) );
-			// 	}
-
-
-			// } else {
-			$form_id = $_POST['gravityview_form_id'];
-			// }
-
+			$form_id = !empty( $_POST['gravityview_form_id'] ) ? $_POST['gravityview_form_id'] : '';
 			// save form id
 			update_post_meta( $post_id, '_gravityview_form_id', $form_id );
 		}
 
-		// now save template id
-		update_post_meta( $post_id, '_gravityview_directory_template', $template_id );
+		// Check if we have a template id
+		if ( isset( $_POST['gravityview_select_template_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_template_nonce'], 'gravityview_select_template' ) ) {
+
+			$template_id = !empty( $_POST['gravityview_directory_template'] ) ? $_POST['gravityview_directory_template'] : '';
+
+			// now save template id
+			update_post_meta( $post_id, '_gravityview_directory_template', $template_id );
+		}
+
 
 		// save View Configuration metabox
 		if ( isset( $_POST['gravityview_view_configuration_nonce'] ) && wp_verify_nonce( $_POST['gravityview_view_configuration_nonce'], 'gravityview_view_configuration' ) ) {
@@ -417,7 +396,7 @@ class GravityView_Admin_Views {
 			}
 			update_post_meta( $post_id, '_gravityview_template_settings', $_POST['template_settings'] );
 
-			// Directory Visible Fields
+			// Directory&single Visible Fields
 			if( !empty( $preset_fields ) ) {
 				$fields = $preset_fields;
 			} elseif( empty( $_POST['fields'] ) ) {
@@ -442,10 +421,12 @@ class GravityView_Admin_Views {
 	 * @param  string $xml_path Path to form xml file
 	 * @return int | bool       Imported form ID or false
 	 */
-	function import_form( $xml_path ) {
+	function import_form( $xml_path = '' ) {
+
+		GravityView_Plugin::log_debug( 'Import Preset Form. File: ' . $xml_path );
 
 		if( empty( $xml_path ) || !class_exists('GFExport') || !file_exists( $xml_path ) ) {
-			error_log( 'NOT FOUND: ' . print_r( $xml_path , true ) );
+			GravityView_Plugin::log_debug( 'Class GFExport or file not found. file: ' . $xml_path );
 			return false;
 		}
 
@@ -453,7 +434,10 @@ class GravityView_Admin_Views {
 		$forms = '';
 		$count = GFExport::import_file( $xml_path, $forms );
 
+		GravityView_Plugin::log_debug( 'Importing form. Result: ' . $count . '. Form: ' . $forms );
+
 		if( $count != 1 || empty( $forms[0]['id'] ) ) {
+			GravityView_Plugin::log_debug( 'Form Import Failed!' );
 			return false;
 		}
 
@@ -469,7 +453,7 @@ class GravityView_Admin_Views {
 	function import_fields( $file ) {
 
 		if( empty( $file ) || !file_exists(  $file ) ) {
-			error_log( 'NOT FOUND: ' . print_r( $file , true ) );
+			GravityView_Plugin::log_debug( 'Importing Preset Fields. File not found. file: ' . $file );
 			return false;
 		}
 
@@ -480,7 +464,8 @@ class GravityView_Admin_Views {
 		$parser = new WXR_Parser();
 		$presets = $parser->parse( $file );
 
-		if( empty( $presets['posts'][0]['postmeta'] ) && is_array( $presets['posts'][0]['postmeta'] ) ) {
+		if( empty( $presets['posts'][0]['postmeta'] ) && !is_array( $presets['posts'][0]['postmeta'] ) ) {
+			GravityView_Plugin::log_debug( 'Importing Preset Fields failed. Meta not found in file: ' . $file );
 			return false;
 		}
 
@@ -491,6 +476,8 @@ class GravityView_Admin_Views {
 				break;
 			}
 		}
+
+		GravityView_Plugin::log_debug( 'Imported Preset Fields: ' . $fields );
 
 		return $fields;
 
@@ -508,6 +495,7 @@ class GravityView_Admin_Views {
 		} else {
 			$form_file = apply_filters( 'gravityview_template_formxml', '', $template_id );
 			if( !file_exists( $form_file )  ) {
+				GravityView_Plugin::log_debug( 'Importing Form Fields for preset ['. $template_id .']. File not found. file: ' . $form_file );
 				return;
 			}
 		}
@@ -539,12 +527,15 @@ class GravityView_Admin_Views {
         $forms = $xml->unserialize($xmlstr);
 
         if( !$forms ) {
+        	GravityView_Plugin::log_debug( 'Importing Form Fields for preset ['. $template_id .']. Error importing file: ' . $form_file );
         	return;
         }
 
         if( !empty( $forms[0] ) && is_array( $forms[0] ) ) {
         	$form = $forms[0];
         }
+
+        GravityView_Plugin::log_debug( 'Importing Form Fields for preset ['. $template_id .']. Form: ' . $form );
 
         $this->render_available_fields( $form );
 
@@ -1077,8 +1068,7 @@ class GravityView_Admin_Views {
 		// get the form ID
 		if( $form_id === false ) {
 			// send error to user
-			error_log( 'this error on form insert: ' . print_r( $preset_form_xml_path , true ) );
-
+			GravityView_Plugin::log_debug( 'Error importing form for template id: ' . $_POST['template_id'] );
 			echo false;
 			die();
 		}
