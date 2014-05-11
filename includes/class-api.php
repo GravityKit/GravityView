@@ -50,7 +50,7 @@ class GravityView_API {
 	public static function field_class( $field ) {
 
 		if( !empty( $field['custom_class'] ) ) {
-			return $field['custom_class'];
+			return sanitize_html_class($field['custom_class'], esc_attr($field['custom_class']));
 		}
 
 		return '';

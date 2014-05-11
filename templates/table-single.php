@@ -7,7 +7,7 @@
 			<tr>
 				<?php
 				foreach( $this->fields['single_table-columns'] as $field ) {
-					echo '<th class="'. esc_attr( gv_class( $field ) ) .'">' . esc_html( gv_label( $field ) ) . '</th>';
+					echo '<th class="'. gv_class( $field ) .'">' . esc_html( gv_label( $field ) ) . '</th>';
 				}
 				?>
 			</tr>
@@ -25,7 +25,7 @@
 			<tr>
 				<?php
 				foreach( $this->fields['single_table-columns'] as $field ) {
-					echo '<th class="'. esc_attr( gv_class( $field ) ) .'">' . esc_html( gv_label( $field ) ) . '</th>';
+					echo '<th class="'. gv_class( $field ) .'">' . esc_html( gv_label( $field ) ) . '</th>';
 				}
 				?>
 			</tr>

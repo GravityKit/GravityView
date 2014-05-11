@@ -11,9 +11,9 @@
 					$i = 0;
 					foreach( $this->fields['single-list-title'] as $field ) :
 						if( $i == 0 ): ?>
-							<h3 class="<?php echo esc_attr( gv_class( $field ) ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></h3>
+							<h3 class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></h3>
 						<?php else: ?>
-							<p class="<?php echo esc_attr( gv_class( $field ) ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
+							<p class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
 						<?php endif;
 						$i++; ?>
 					<?php endforeach; ?>
@@ -26,7 +26,7 @@
 			<div class="gv-list-view-content-description">
 				<?php if( !empty(  $this->fields['single-list-description'] ) ):
 					foreach( $this->fields['single-list-description'] as $field ) : ?>
-						<p class="<?php echo esc_attr( gv_class( $field ) ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
+						<p class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</div>
@@ -42,7 +42,7 @@
 			<div class="gv-list-view-content-attributes">
 				<?php if( !empty(  $this->fields['single-list-attributes'] ) ):
 					foreach( $this->fields['single-list-attributes'] as $field ) : ?>
-						<p class="<?php echo esc_attr( gv_class( $field ) ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
+						<p class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</div>
@@ -54,7 +54,7 @@
 			<?php if( !empty(  $this->fields['single-list-footer'] ) ): ?>
 				<ul>
 					<?php foreach( $this->fields['single-list-footer'] as $field ) : ?>
-						<li class="<?php echo esc_attr( gv_class( $field ) ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></li>
+						<li class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></li>
 					<?php endforeach; ?>
 				</ul>
 			<?php endif; ?>
