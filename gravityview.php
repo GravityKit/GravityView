@@ -8,7 +8,7 @@
  * @author    Zack Katz <zack@katzwebservices.com>
  * @license   ToBeDefined
  * @link      http://www.katzwebservices.com
- * @copyright Copyright 2013, Katz Web Services, Inc.
+ * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @wordpress-plugin
  * Plugin Name:       GravityView

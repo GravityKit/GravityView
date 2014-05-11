@@ -102,7 +102,7 @@ class GravityView_Admin_Views {
 
 			<?php // render select box ?>
 			<select name="gravityview_form_id" id="gravityview_form_id">
-				<option value="" <?php selected( '', $current, true ); ?>>-- <?php esc_html_e( 'list of forms', 'gravity-view' ); ?> --</option>
+				<option value="" <?php selected( '', $current, true ); ?>>&mdash; <?php esc_html_e( 'list of forms', 'gravity-view' ); ?> &mdash;</option>
 				<?php foreach( $forms as $form ) : ?>
 					<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current, true ); ?>><?php echo $form['title']; ?></option>
 				<?php endforeach; ?>
@@ -296,11 +296,11 @@ class GravityView_Admin_Views {
 			</tr>
 			<tr valign="top">
 				<td scope="row">
-					<label for="gravityview_only_approved"><?php esc_html_e( 'Show only entries approved', 'gravity-view' ); ?></label>
+					<label for="gravityview_only_approved"><?php esc_html_e( 'Show only approved entries', 'gravity-view' ); ?></label>
 				</td>
 				<td>
 					<fieldset>
-						<legend class="screen-reader-text"><span><?php esc_html_e( 'Show only entries approved', 'gravity-view' ); ?></span></legend>
+						<legend class="screen-reader-text"><span><?php esc_html_e( 'Show only approved entries', 'gravity-view' ); ?></span></legend>
 						<label for="gravityview_only_approved">
 							<input name="template_settings[show_only_approved]" type="checkbox" id="gravityview_only_approved" value="1" <?php empty( $template_settings['show_only_approved'] ) ? print '' : checked( $template_settings['show_only_approved'] , 1, true ); ?>>
 						</label>
