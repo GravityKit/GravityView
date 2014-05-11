@@ -330,11 +330,11 @@ class GravityView_frontend {
 	 * @return void
 	 */
 	public static function add_scripts_and_styles() {
-		wp_enqueue_script( 'gravityview-jquery-cookie', GRAVITYVIEW_URL . 'includes/lib/jquery-cookie/jquery.cookie.js', array( 'jquery' ), GRAVITYVIEW_VERSION, true );
+		wp_enqueue_script( 'gravityview-jquery-cookie', plugins_url('includes/lib/jquery-cookie/jquery.cookie.js', GRAVITYVIEW_FILE), array( 'jquery' ), GRAVITYVIEW_VERSION, true );
 
-		wp_enqueue_script( 'gravityview-fe-view', GRAVITYVIEW_URL . 'includes/js/fe-views.js', array( 'jquery', 'gravityview-jquery-cookie' ), GRAVITYVIEW_VERSION, true );
+		wp_enqueue_script( 'gravityview-fe-view', plugins_url('includes/js/fe-views.js', GRAVITYVIEW_FILE), array( 'jquery', 'gravityview-jquery-cookie' ), GRAVITYVIEW_VERSION, true );
 
-		wp_enqueue_style( 'gravityview_default_style', GRAVITYVIEW_URL . 'templates/css/gv-default-styles.css', array(), GRAVITYVIEW_VERSION, 'all' );
+		wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), array(), GRAVITYVIEW_VERSION, 'all' );
 	}
 
 	/**

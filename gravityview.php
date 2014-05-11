@@ -32,6 +32,8 @@ if ( ! defined( 'WPINC' ) ) {
 /** Constants */
 if ( !defined('GRAVITYVIEW_VERSION') )
 	define( 'GRAVITYVIEW_VERSION', '1.0.0' );
+if( !defined('GRAVITYVIEW_FILE') )
+	define( 'GRAVITYVIEW_FILE', __FILE__ );
 if ( !defined('GRAVITYVIEW_URL') )
 	define( 'GRAVITYVIEW_URL', plugin_dir_url( __FILE__ ) );
 if ( !defined('GRAVITYVIEW_DIR') )
@@ -245,7 +247,7 @@ final class GravityView_Plugin {
 			'show_in_admin_bar'   => true,
 			'menu_position'       => 15,
 			'menu_icon'           => '',
-			//'menu_icon'           => GRAVITYVIEW_URL . 'images/gravity-view-icon.png',
+			//'menu_icon'           => plugins_url('images/gravity-view-icon.png', GRAVITYVIEW_FILE),
 			'can_export'          => true,
 			'has_archive'         => false,
 			'exclude_from_search' => true,
@@ -378,7 +380,7 @@ final class GravityView_Plugin {
 	 */
 	function add_scripts_and_styles() {
 
-		wp_enqueue_style( 'gravityview_fonts', GRAVITYVIEW_URL . 'includes/css/admin-fonts.css', array() );
+		wp_enqueue_style( 'gravityview_fonts', plugins_url('includes/css/admin-fonts.css', GRAVITYVIEW_FILE), array() );
 
 	}
 

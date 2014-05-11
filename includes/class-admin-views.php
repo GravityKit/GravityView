@@ -1119,11 +1119,11 @@ class GravityView_Admin_Views {
 		 * Uservoice feedback widget
 		 * @group Beta
 		 */
-		wp_enqueue_script( 'gravityview-uservoice-widget', GRAVITYVIEW_URL . 'includes/js/uservoice.js', array(), GravityView_Plugin::version, true);
+		wp_enqueue_script( 'gravityview-uservoice-widget', plugins_url('includes/js/uservoice.js', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version, true);
 		wp_localize_script( 'gravityview-uservoice-widget', 'gvUserVoice', array('email' => get_option( 'admin_email' )));
 
 		//enqueue scripts
-		wp_enqueue_script( 'gravityview_views_scripts', GRAVITYVIEW_URL . 'includes/js/admin-views.js', array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog' ), GravityView_Plugin::version);
+		wp_enqueue_script( 'gravityview_views_scripts', plugins_url('includes/js/admin-views.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog' ), GravityView_Plugin::version);
 
 		wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -1137,7 +1137,7 @@ class GravityView_Admin_Views {
 		));
 
 		//enqueue styles
-		wp_enqueue_style( 'gravityview_views_styles', GRAVITYVIEW_URL . 'includes/css/admin-views.css', array('dashicons', 'wp-jquery-ui-dialog'), GravityView_Plugin::version );
+		wp_enqueue_style( 'gravityview_views_styles', plugins_url('includes/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons', 'wp-jquery-ui-dialog'), GravityView_Plugin::version );
 	}
 
 	function register_no_conflict( $registered ) {

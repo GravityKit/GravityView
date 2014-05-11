@@ -236,7 +236,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 	 * @return void
 	 */
 	function add_scripts_and_styles() {
-		wp_register_script( 'gravityview-search-bar',  GRAVITYVIEW_URL  . 'includes/js/fe-search-bar.js', array( 'jquery', 'jquery-ui-datepicker' ), '1.0.0', true );
+		wp_register_script( 'gravityview-search-bar',  plugins_url('includes/js/fe-search-bar.js', GRAVITYVIEW_FILE), array( 'jquery', 'jquery-ui-datepicker' ), '1.0.0', true );
 	}
 
 

@@ -40,7 +40,7 @@ class GravityView_Preset_Business_Data {
 			'type' => 'preset',
 			'label' =>  __( 'Business Data', 'gravity-view' ),
 			'description' => __( 'Display business information in a table.', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'includes/presets/business-data/logo-business-data.png',
+			'logo' => plugins_url('includes/presets/business-data/logo-business-data.png', GRAVITYVIEW_FILE),
 			//'preview' => '',
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/business-data/form-business-data.xml',
 			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/business-data/fields-test.xml'
@@ -64,7 +64,7 @@ class GravityView_Preset_Resume_board {
 			'type' => 'preset',
 			'label' =>  __( 'Resume Board', 'gravity-view' ),
 			'description' => __( 'Allow job-seekers to post their resumes.', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'includes/presets/resume-board/logo-resume-board.png',
+			'logo' => plugins_url('includes/presets/resume-board/logo-resume-board.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/resume-board/form-resume-board.xml',
 			'preset_fields' => '',
 		);
@@ -86,7 +86,7 @@ class GravityView_Preset_Job_Board {
 			'type' => 'preset',
 			'label' =>  __( 'Job Board', 'gravity-view' ),
 			'description' => __( 'Post available jobs in a simple job board.', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'includes/presets/job-board/logo-job-board.png',
+			'logo' => plugins_url('includes/presets/job-board/logo-job-board.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/job-board/form-job-board.xml',
 			'preset_fields' => '',
 
@@ -109,7 +109,7 @@ class GravityView_Preset_People_Table {
 			'type' => 'preset',
 			'label' =>  __( 'People Table', 'gravity-view' ),
 			'description' => __( 'Display information about people in a table.', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'includes/presets/people-table/logo-people-table.png',
+			'logo' => plugins_url('includes/presets/people-table/logo-people-table.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/people-table/form-people-table.xml',
 			'preset_fields' => '',
 
@@ -132,7 +132,7 @@ class GravityView_Preset_Business_Listings {
 			'type' => 'preset',
 			'label' =>  __( 'Business Listings', 'gravity-view' ),
 			'description' => __( 'Display business profiles.', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'includes/presets/business-listings/logo-business-listings.png',
+			'logo' => plugins_url('includes/presets/business-listings/logo-business-listings.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/business-listings/form-business-listings.xml',
 			'preset_fields' => '',
 		);
@@ -154,7 +154,7 @@ class GravityView_Preset_Event_Listings {
 			'type' => 'preset',
 			'label' =>  __( 'Event Listings', 'gravity-view' ),
 			'description' => __( 'Present a list of your events.', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'includes/presets/event-listings/logo-event-listings.png',
+			'logo' => plugins_url('includes/presets/event-listings/logo-event-listings.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/event-listings/form-event-listings.xml',
 			'preset_fields' => '',
 		);
@@ -176,7 +176,7 @@ class GravityView_Preset_Profiles {
 			'type' => 'preset',
 			'label' =>  __( 'People Profiles', 'gravity-view' ),
 			'description' => __( 'List people with individual profiles.', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'includes/presets/profiles/logo-profiles.png',
+			'logo' => plugins_url('includes/presets/profiles/logo-profiles.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/profiles/form-profiles.xml',
 			'preset_fields' => '',
 		);
@@ -198,7 +198,7 @@ class GravityView_Preset_Staff_Profiles {
 			'type' => 'preset',
 			'label' =>  __( 'Staff Profiles', 'gravity-view' ),
 			'description' => __( 'List members of your team.', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'includes/presets/staff-profiles/logo-staff-profiles.png',
+			'logo' => plugins_url('includes/presets/staff-profiles/logo-staff-profiles.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/staff-profiles/form-staff-profiles.xml',
 			'preset_fields' => '',
 		);
@@ -220,7 +220,7 @@ class GravityView_Preset_Website_showcase {
 			'type' => 'preset',
 			'label' =>  __( 'Website Showcase', 'gravity-view' ),
 			'description' => __( 'Feature submitted websites with screenshots.', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'includes/presets/website-showcase/logo-website-showcase.png',
+			'logo' => plugins_url('includes/presets/website-showcase/logo-website-showcase.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/website-showcase/form-website-showcase.xml',
 			'preset_fields' => '',
 		);
@@ -245,7 +245,7 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 			'type' => 'custom',
 			'label' =>  __( 'Table (default)', 'gravity-view' ),
 			'description' => __('Display items in a table view.', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'images/placeholder.png'
+			'logo' => plugins_url('images/placeholder.png', GRAVITYVIEW_FILE)
 		);
 
 		$field_options = array(
@@ -276,8 +276,8 @@ class GravityView_Default_Template_List extends GravityView_Template {
 			'type' => 'custom',
 			'label' =>  __( 'List (default)', 'gravity-view' ),
 			'description' => __('Display items in a listing view.', 'gravity-view'),
-			'logo' => GRAVITYVIEW_URL . 'images/placeholder.png',
-			'css_source' => GRAVITYVIEW_URL . 'templates/css/list-view.css',
+			'logo' => plugins_url('images/placeholder.png', GRAVITYVIEW_FILE),
+			'css_source' => plugins_url('templates/css/list-view.css', GRAVITYVIEW_FILE),
 		);
 
 		$field_options = array(
@@ -334,7 +334,7 @@ class GravityView_Template {
 
 		$this->template_id = $id;
 
-		// $this->settings = wp_parse_args( $settings, array( 'slug' => '', 'css_source' => '', 'type' => '', 'label' => '', 'description' => '', 'logo' => '', 'preview' => GRAVITYVIEW_URL . 'images/placeholder-template-preview.gif', 'buy_source' => '', 'preset_form' => '', 'preset_fields' => '' ) );
+		// $this->settings = wp_parse_args( $settings, array( 'slug' => '', 'css_source' => '', 'type' => '', 'label' => '', 'description' => '', 'logo' => '', 'preview' => plugins_url('images/placeholder-template-preview.gif', GRAVITYVIEW_FILE), 'buy_source' => '', 'preset_form' => '', 'preset_fields' => '' ) );
 		$this->merge_defaults( $settings );
 
 		$this->field_options = $field_options;
@@ -362,7 +362,7 @@ class GravityView_Template {
 	}
 
 	function merge_defaults( $settings = array() ) {
-		$this->settings = wp_parse_args( $settings, array( 'slug' => '', 'css_source' => '', 'type' => '', 'label' => '', 'description' => '', 'logo' => '', 'preview' => GRAVITYVIEW_URL . 'images/placeholder-template-preview.gif', 'buy_source' => '', 'preset_form' => '', 'preset_fields' => '' ) );
+		$this->settings = wp_parse_args( $settings, array( 'slug' => '', 'css_source' => '', 'type' => '', 'label' => '', 'description' => '', 'logo' => '', 'preview' => plugins_url('images/placeholder-template-preview.gif', GRAVITYVIEW_FILE), 'buy_source' => '', 'preset_form' => '', 'preset_fields' => '' ) );
 	}
 
 	/**

@@ -85,7 +85,7 @@ class GravityView_Welcome {
 		}
 
 		// Badge for welcome page
-		$badge_url = GRAVITYVIEW_URL . 'assets/images/gv-badge.png';
+		$badge_url = plugins_url('assets/images/gv-badge.png', GRAVITYVIEW_FILE);
 		?>
 		<style type="text/css" media="screen">
 		/*<![CDATA[*/
