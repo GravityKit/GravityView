@@ -10,36 +10,23 @@
  * @since 1.0.0
  */
 
-/*
-
-.lead_approved .toggleApproved {
-	background: url( '../../images/tick.png' ) top left no-repeat;
-}
-
-.toggleApproved {
-	background: url( '../../images/cross.png' ) top left no-repeat;
-	width: 16px;
-	height: 16px;
-	display: block;
-	text-indent: -9999px;
-	overflow: hidden;
-}
-
-*/
-
 .gv-approve-column {
 	text-align: center !important;
+}
+
+.widefat tr th.gv-approve-column {
+	padding-top: 6px; /* Reduce the padding from 10 to 8 to account for the astronaut's head */
 }
 
 th.gv-approve-column a:before {
 	padding: 0;
 	margin:0;
-	content: "\f117";
+	content: "a";
 	display: inline-block;
 	-webkit-font-smoothing: antialiased;
-	font: normal 20px/1 'dashicons';
+	font: normal 22px/1 'gravityview';
 	vertical-align: top;
-	color: #bbb;
+	color: #555;
 }
 
 
@@ -47,24 +34,23 @@ th.gv-approve-column a:before {
 	padding: 0;
 	margin:0;
 	display: inline-block;
-	width: 16px;
-	height: 16px;
 }
 
 .toggleApproved:before {
 	padding: 0;
 	margin:0;
 	content: "\f158";
+	color: #940303;
 	display: inline-block;
 	-webkit-font-smoothing: antialiased;
-	font: normal 16px/1 'dashicons';
+	font: normal 18px/1 'dashicons';
 	vertical-align: top;
-	color: #940303;
 }
 
 .toggleApproved.entry_approved:before {
 	content: "\f147";
 	color: #00ac15;
+	font-size: 22px;
 }
 
 
