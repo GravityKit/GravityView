@@ -1115,19 +1115,15 @@ class GravityView_Admin_Views {
 			return;
 		}
 
-		wp_enqueue_style( 'dashicons' );
-		wp_enqueue_style( 'wp-jquery-ui-dialog' );
+		/**
+		 * Uservoice feedback widget
+		 * @group Beta
+		 */
+		wp_enqueue_script( 'gravityview-uservoice-widget', GRAVITYVIEW_URL . 'includes/js/uservoice.js', array(), GravityView_Plugin::version, true);
+		wp_localize_script( 'gravityview-uservoice-widget', 'gvUserVoice', array('email' => get_option( 'admin_email' )));
 
 		//enqueue scripts
-		wp_enqueue_script( 'jquery-ui-dialog' );
-		wp_enqueue_script( 'jquery-ui-tabs' );
-		wp_enqueue_script( 'jquery-ui-draggable' );
-		wp_enqueue_script( 'jquery-ui-droppable' );
-		wp_enqueue_script( 'jquery-ui-sortable' );
-		wp_enqueue_script( 'jquery-ui-tooltip' );
-
-
-		wp_enqueue_script( 'gravityview_views_scripts', GRAVITYVIEW_URL . 'includes/js/admin-views.js', array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-dialog' ) );
+		wp_enqueue_script( 'gravityview_views_scripts', GRAVITYVIEW_URL . 'includes/js/admin-views.js', array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog' ), GravityView_Plugin::version);
 
 		wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -1141,7 +1137,7 @@ class GravityView_Admin_Views {
 		));
 
 		//enqueue styles
-		wp_enqueue_style( 'gravityview_views_styles', GRAVITYVIEW_URL . 'includes/css/admin-views.css', array() );
+		wp_enqueue_style( 'gravityview_views_styles', GRAVITYVIEW_URL . 'includes/css/admin-views.css', array('dashicons', 'wp-jquery-ui-dialog'), GravityView_Plugin::version );
 	}
 
 	function register_no_conflict( $registered ) {
@@ -1149,7 +1145,7 @@ class GravityView_Admin_Views {
 		$filter = current_filter();
 
 		if( 'gravityview_noconflict_scripts' === $filter ) {
-			$allow_scripts = array( 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'gravityview_views_scripts', 'jquery-ui-tooltip' );
+			$allow_scripts = array( 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-uservoice-widget' );
 			$registered = array_merge( $registered, $allow_scripts );
 		} elseif( 'gravityview_noconflict_styles' === $filter ) {
 			$allow_styles = array( 'dashicons', 'wp-jquery-ui-dialog', 'gravityview_views_styles' );
