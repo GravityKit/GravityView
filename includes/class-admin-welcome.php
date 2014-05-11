@@ -37,6 +37,7 @@ class GravityView_Welcome {
 		add_action( 'admin_menu', array( $this, 'admin_menus') );
 		add_action( 'admin_head', array( $this, 'admin_head' ) );
 		add_action( 'admin_init', array( $this, 'welcome'    ) );
+		add_filter( 'gravityview_is_admin_page', array( $this, 'is_dashboard_page'), 10, 2 );
 	}
 
 	/**
@@ -68,6 +69,19 @@ class GravityView_Welcome {
 	}
 
 	/**
+	 * Is this page a GV dashboard page?
+	 *
+	 * @return boolean  $is_page   True: yep; false: nope
+	 */
+	public function is_dashboard_page($is_page = false, $hook = NULL) {
+		global $plugin_page;
+
+		if($is_page) { return $is_page; }
+
+		return in_array($plugin_page, array('gv-about', 'gv-getting-started'));
+	}
+
+	/**
 	 * Hide Individual Dashboard Pages
 	 *
 	 * @access public
@@ -75,38 +89,18 @@ class GravityView_Welcome {
 	 * @return void
 	 */
 	public function admin_head() {
+		global $plugin_page;
+
 		remove_submenu_page( 'index.php', 'gv-about' );
 		remove_submenu_page( 'index.php', 'gv-getting-started' );
 
-		$page = isset( $_GET['page'] ) ? $_GET['page'] : false;
+		if( !$this->is_dashboard_page() ) { return; }
 
-		if( 'gv-about' != $page  && 'gv-getting-started' != $page) {
-			return;
-		}
-
-		// Badge for welcome page
-		$badge_url = plugins_url('assets/images/gv-badge.png', GRAVITYVIEW_FILE);
 		?>
 		<style type="text/css" media="screen">
 		/*<![CDATA[*/
-		.gv-badge {
-			padding-top: 150px;
-			height: 52px;
-			width: 185px;
-			color: #666;
-			font-weight: bold;
-			font-size: 14px;
-			text-align: center;
-			text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-			margin: 0 -5px;
-			background: url('<?php echo $badge_url; ?>') no-repeat;
-		}
 
-		.about-wrap .gv-badge {
-			position: absolute;
-			top: 0;
-			right: 0;
-		}
+		.update-nag { display: none; }
 
 		.gv-welcome-screenshots {
 			float: right;
@@ -151,7 +145,6 @@ class GravityView_Welcome {
 		<div class="wrap about-wrap">
 			<h1><?php printf( __( 'Welcome to GravityView %s', 'gravity-view' ), $display_version ); ?></h1>
 			<div class="about-text"><?php printf( __( 'Thank you for Installing GravityView %s. Beautifully display your Gravity Forms entries.', 'gravity-view' ), $display_version ); ?></div>
-			<div class="gv-badge"><?php printf( __( 'Version %s', 'gravity-view' ), $display_version ); ?></div>
 
 			<?php $this->tabs(); ?>
 
@@ -219,7 +212,6 @@ class GravityView_Welcome {
 		<div class="wrap about-wrap">
 			<h1><?php printf( __( 'Welcome to GravityView %s', 'gravity-view' ), $display_version ); ?></h1>
 			<div class="about-text"><?php printf( __( 'Thank you for Installing GravityView %s. Beautifully display your Gravity Forms entries.', 'gravity-view' ), $display_version ); ?></div>
-			<div class="gv-badge"><?php printf( __( 'Version %s', 'gravity-view' ), $display_version ); ?></div>
 
 			<?php $this->tabs(); ?>
 

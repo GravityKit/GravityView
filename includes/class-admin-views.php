@@ -1100,6 +1100,32 @@ class GravityView_Admin_Views {
 		die();
 	}
 
+	/**
+	 * Uservoice feedback widget
+	 * @group Beta
+	 */
+	static function enqueue_uservoice_widget() {
+		wp_enqueue_script( 'gravityview-uservoice-widget', plugins_url('includes/js/uservoice.js', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version, true);
+		wp_localize_script( 'gravityview-uservoice-widget', 'gvUserVoice', array('email' => get_option( 'admin_email' )));
+	}
+
+	static function is_gravityview_admin_page($hook = '') {
+		global $current_screen;
+
+		$is_page = false;
+
+		// The post type
+		if(rgobj($current_screen, 'post_type') === 'gravityview' ) {
+			$is_page = true;
+		}
+
+		// $_GET `post_type` variable
+		if(rgget('post_type') === 'gravityview') {
+			$is_page = true;
+		}
+
+		return apply_filters( 'gravityview_is_admin_page', $is_page, $hook );
+	}
 
 	/**
 	 * Enqueue scripts and styles at Views editor
@@ -1109,18 +1135,12 @@ class GravityView_Admin_Views {
 	 * @return void
 	 */
 	function add_scripts_and_styles( $hook ) {
-		global $current_screen;
 
-		if( !in_array( $hook , array( 'post.php' , 'post-new.php' ) ) || ( !empty($current_screen->post_type) && 'gravityview' != $current_screen->post_type ) ) {
+		if(!self::is_gravityview_admin_page($hook)) {
 			return;
 		}
 
-		/**
-		 * Uservoice feedback widget
-		 * @group Beta
-		 */
-		wp_enqueue_script( 'gravityview-uservoice-widget', plugins_url('includes/js/uservoice.js', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version, true);
-		wp_localize_script( 'gravityview-uservoice-widget', 'gvUserVoice', array('email' => get_option( 'admin_email' )));
+		self::enqueue_uservoice_widget();
 
 		//enqueue scripts
 		wp_enqueue_script( 'gravityview_views_scripts', plugins_url('includes/js/admin-views.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog' ), GravityView_Plugin::version);
