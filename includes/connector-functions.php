@@ -22,9 +22,18 @@ if( !function_exists('gravityview_get_form') ) {
 	 * @return void
 	 */
 	function gravityview_get_form( $form_id ) {
-		if( class_exists( 'GFAPI' ) && !empty( $form_id ) ) {
+		if(empty( $form_id ) ) {
+			return false;
+		}
+
+		if(class_exists( 'GFAPI' )) {
 			return GFAPI::get_form( $form_id );
 		}
+
+		if(class_exists( 'RGFormsModel' )) {
+			return RGFormsModel::get_form( $form_id );
+		}
+
 		return false;
 	}
 
@@ -134,11 +143,7 @@ if( !function_exists('gravityview_get_entries') ) {
 		extract( wp_parse_args( $criteria, array( 'search_criteria' => null, 'sorting' => null, 'paging' => null ) ) );
 
 		if( class_exists( 'GFAPI' ) && !empty( $form_ids ) ) {
-			if( !is_null( $total ) ) {
-				return GFAPI::get_entries( $form_ids, $search_criteria, $sorting, $paging, $total);
-			} else {
-				return GFAPI::get_entries( $form_ids, $search_criteria, $sorting, $paging );
-			}
+			return GFAPI::get_entries( $form_ids, $search_criteria, $sorting, $paging, $total);
 		}
 		return false;
 	}
@@ -199,17 +204,7 @@ if( !function_exists('gravityview_get_field') ) {
 	 * @return void
 	 */
 	function gravityview_get_field( $form, $field_id ) {
-
-		if( empty($form) || empty( $field_id ) ) {
-			return '';
-		}
-
-		foreach( $form['fields'] as $field ) {
-			if( $field_id == $field['id'] ) {
-				return $field;
-			}
-		}
-		return '';
+		return GFFormsModel::get_field($form, $field_id);
 	}
 
 }

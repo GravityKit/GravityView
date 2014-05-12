@@ -63,12 +63,12 @@ class GravityView_API {
 	 * @access public
 	 * @param array $entry
 	 * @param integer $field
-	 * @return string
+	 * @return null|string
 	 */
 	public static function field_value( $entry, $field_settings ) {
 
 		if( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
-			return '';
+			return NULL;
 		}
 
 		$field_id = $field_settings['id'];
@@ -76,139 +76,86 @@ class GravityView_API {
 		$value = '';
 
 		$form = gravityview_get_form( $entry['form_id'] );
-		$field = gravityview_get_field( $form, floor( $field_id ) );
+		$field = gravityview_get_field( $form, $field_id );
 
-		if( !empty( $field['type'] ) ) {
 
-			//default
-			$value = isset( $entry[ (string)$field_id ] ) ? $entry[ (string)$field_id ] : '' ;
+		if( $field_type = RGFormsModel::get_input_type($field) ) {
+			$value = RGFormsModel::get_lead_field_value($entry, $field);
+		} else {
+			// For non-integer field types (`id`, `date_created`, etc.)
+			$field_type = $field_id;
+			$field['type'] = $field_id;
+			$value = isset($entry[$field_type]) ? $entry[$field_type] : NULL;
+		}
 
-			switch( $field['type'] ){
+		$display_value = GFCommon::get_lead_field_display($field, $value, $entry["currency"]);
+		$display_value = apply_filters("gform_entry_field_value", $display_value, $field, $entry, $form);
 
-				case 'address':
-				case 'radio':
-				case 'checkbox':
-				case 'name':
-					if( floatval( $field_id ) === floor( floatval( $field_id ) ) ) {
-						// For the complete field value
-						$value = '';
-						$value = RGFormsModel::get_lead_field_value( $entry, $field );
-						$value = GFCommon::get_lead_field_display( $field, $value, $entry['currency'] );
+		switch( $field_type ){
 
-					} else {
-						// For part of the field value
-						$entry_keys = array_keys( $entry );
-						foreach( $entry_keys as $input_key ) {
-							if( is_numeric( $input_key ) && floatval( $input_key ) === floatval( $field_id ) ) {
-								if( in_array( $field['type'], array( 'radio', 'checkbox' ) ) && !empty( $entry[ $input_key ] ) ) {
-									$value = apply_filters( 'gravityview_field_tick', '<span class="dashicons dashicons-yes"></span>', $entry, $field);
-								} else {
-									$value = $entry[ $input_key ];
-								}
+			case 'address':
+			case 'radio':
+			case 'checkbox':
+			case 'name':
+				if( floatval( $field_id ) === floor( floatval( $field_id ) ) ) {
+					// For the complete field value
+					$value = $display_value;
+				} else {
+					// For part of the field value
+					$entry_keys = array_keys( $entry );
+					foreach( $entry_keys as $input_key ) {
+						if( is_numeric( $input_key ) && floatval( $input_key ) === floatval( $field_id ) ) {
+							if( in_array( $field['type'], array( 'radio', 'checkbox' ) ) && !empty( $entry[ $input_key ] ) ) {
+								$value = apply_filters( 'gravityview_field_tick', '<span class="dashicons dashicons-yes"></span>', $entry, $field);
+							} else {
+								$value = $entry[ $input_key ];
 							}
 						}
 					}
-					break;
+				}
+				break;
+			case 'textarea' :
+			case 'post_content' :
+			case 'post_excerpt' :
+				if( apply_filters( 'gravityview_show_fulltext', true, $entry, $field_id ) ) {
+					$long_text = $value = '';
 
-				case 'email':
-					$value = '<a href="mailto:'. esc_attr( $value ) . '">'. esc_html( $value ) .'</a>';
-					break;
-
-				case 'website':
-					$value = '<a href="'. esc_url( $value ) . '">'. esc_html( $value ) .'</a>';
-					break;
-
-				case 'fileupload':
-
-					$url = $value;
-					if( !class_exists( 'GFEntryList' ) ) { require_once( WP_PLUGIN_DIR . '/gravityforms/entry_list.php' ); }
-					$thumb = GFEntryList::get_icon_url( $url );
-					$value = '<a href="'. esc_url( $url ) .'" target="_blank" title="' . __( 'Click to view', 'gravity-view') . '"><img src="'. esc_url( $thumb ) .'"/></a>';
-
-					break;
-
-				case 'post_image':
-					//todo
-					break;
-
-
-				case 'textarea' :
-				case 'post_content' :
-				case 'post_excerpt' :
-					if( apply_filters( 'gravityview_show_fulltext', true, $entry, $field_id ) ) {
-						$long_text = $value = '';
-
-						if( isset( $entry[ $field_id ] ) && strlen( $entry[ $field_id ] ) >= GFORMS_MAX_FIELD_LENGTH ) {
-						   $long_text = RGFormsModel::get_lead_field_value( $entry, RGFormsModel::get_field( $form, $field_id ));
-						}
-						if( isset( $entry[ $field_id ] ) ) {
-							$value = !empty( $long_text ) ? $long_text : $entry[ $field_id ];
-						}
+					if( isset( $entry[ $field_id ] ) && strlen( $entry[ $field_id ] ) >= GFORMS_MAX_FIELD_LENGTH ) {
+					   $long_text = RGFormsModel::get_lead_field_value( $entry, RGFormsModel::get_field( $form, $field_id ));
 					}
+					if( isset( $entry[ $field_id ] ) ) {
+						$value = !empty( $long_text ) ? $long_text : $entry[ $field_id ];
+					}
+				}
 
-					$value = esc_html( $value );
+				$value = esc_html( $value );
 
-					if( apply_filters( 'gravityview_entry_value_wpautop', true, $entry, $field_id ) ) {
-						$value = wpautop( $value );
-					};
+				if( apply_filters( 'gravityview_entry_value_wpautop', true, $entry, $field_id ) ) {
+					$value = wpautop( $value );
+				};
 
-					break;
+				break;
 
-				case 'date_created':
-					$value = GFCommon::format_date( $entry['date_created'], true, apply_filters( 'gravityview_date_format', '' ) );
-					break;
+			case 'date_created':
+				$value = GFCommon::format_date( $entry['date_created'], true, apply_filters( 'gravityview_date_format', '' ) );
+				break;
 
+			case 'date':
+				$value = GFCommon::date_display( $value, apply_filters( 'gravityview_date_format', $field['dateFormat'] ) );
+				break;
 
-				case 'date':
-					$value = GFCommon::date_display( $value, apply_filters( 'gravityview_date_format', $field['dateFormat'] ) );
-					break;
+			default:
+				$value = $display_value;
+				break;
 
-
-				case 'list':
-					$value = GFCommon::get_lead_field_display( $field, $value );
-					break;
-
-
-				case 'post_category':
-					//todo
-					break;
-
-				case 'id':
-					//todo
-					break;
-
-				case 'source_url':
-					// entry link
-
-					break;
-
-				default:
-					$value = esc_html( $value );
-					break;
-
-			} //switch
-		} // if
-
+		} //switch
 
 
 		//if show as single entry link is active
 		if( !empty( $field_settings['show_as_link'] ) ) {
-			$post = get_post();
-			if( !empty( $post->ID ) ) {
-
-				$query_arg_name = GravityView_frontend::get_entry_var_name();
-
-				if( get_option('permalink_structure') ) {
-					$href = trailingslashit( get_permalink( $post->ID ) ) . $query_arg_name . '/'. $entry['id'] .'/';
-				} else {
-					$href = add_query_arg( $query_arg_name, $entry['id'], get_permalink( $post->ID ) );
-				}
-
-				$value = '<a href="'. $href .'">'. $value . '</a>';
-			}
-
+			$href = self::field_link($entry, $field);
+			$value = '<a href="'. $href .'">'. $value . '</a>';
 		}
-
 
 		return apply_filters( 'gravityview_field_entry_value', $value, $entry, $field_settings );
 	}
@@ -217,8 +164,19 @@ class GravityView_API {
 	// return href for single entry
 	public static function field_link( $entry, $field ) {
 
-		if( !empty( $field['show_as_link'] ) ) {
-			return ;
+		$post = get_post();
+
+		if( !empty( $post->ID ) ) {
+
+			$query_arg_name = GravityView_frontend::get_entry_var_name();
+
+			if( get_option('permalink_structure') ) {
+				$href = trailingslashit( get_permalink( $post->ID ) ) . $query_arg_name . '/'. $entry['id'] .'/';
+			} else {
+				$href = add_query_arg( $query_arg_name, $entry['id'], get_permalink( $post->ID ) );
+			}
+
+			return $href;
 		}
 
 		return false;
@@ -251,7 +209,7 @@ function gravityview_back_link() {
 
 	$post = get_post();
 
-	if( empty( $post->ID ) ) {
+	if( empty( $post ) ) {
 		return '';
 	}
 
