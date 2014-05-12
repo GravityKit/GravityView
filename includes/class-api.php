@@ -110,6 +110,7 @@ class GravityView_API {
 				'value' => $value,
 				'display_value' => $display_value,
 				'format' => $format,
+				'entry' => $entry,
 			));
 
 			ob_start();
