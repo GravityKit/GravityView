@@ -35,6 +35,10 @@
   .gv-list-view-content .gv-list-view-content-image {
     float: left !important;
     margin: 0 1em 1em 0 !important; }
+    .gv-list-view-content .gv-list-view-content-image .gv-field-file-uploads li,
+    .gv-list-view-content .gv-list-view-content-image .gv-field-file-uploads {
+      list-style: none;
+      margin: 0; }
 
 .gv-list-view-footer {
   border-top: 1px solid #dddddd !important;
