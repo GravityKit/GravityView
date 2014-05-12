@@ -34,33 +34,85 @@ $field_options = array(
  */
 class GravityView_Default_Template_Table extends GravityView_Template {
 
-	function __construct() {
-		$settings = array(
-			'slug' => 'table',
-			'type' => 'custom',
-			'label' =>  __( 'Table (default)', 'gravity-view' ),
-			'description' => __('Display items in a table view.', 'gravity-view'),
-			'logo' => plugins_url('images/placeholder.png', GRAVITYVIEW_FILE),
-			'css_source' => plugins_url('templates/css/table-view.css', GRAVITYVIEW_FILE),
-		);
+	function __construct( $id = 'default_table', $settings = array(), $field_options = array(), $areas = array() ) {
+
+		if(empty($settings)) {
+			$settings = array(
+				'slug' => 'table',
+				'type' => 'custom',
+				'label' =>  __( 'Table (default)', 'gravity-view' ),
+				'description' => __('Display items in a table view.', 'gravity-view'),
+				'logo' => plugins_url('images/placeholder.png', GRAVITYVIEW_FILE),
+				'css_source' => plugins_url('templates/css/table-view.css', GRAVITYVIEW_FILE),
+			);
+		}
 
 		$field_options = array(
 			'show_as_link' => array( 'type' => 'checkbox', 'label' => __( 'Link to single entry', 'gravity-view' ), 'default' => false, 'context' => 'directory' ),
 		);
 
 		$areas = array(
-			array( '1-1' => array( array( 'areaid' => 'table-columns', 'title' => __('Visible Table Columns', 'gravity-view' ) , 'subtitle' => ''  ) ) )
+			array(
+				'1-1' => array(
+					array( 'areaid' => 'table-columns', 'title' => __('Visible Table Columns', 'gravity-view' ) , 'subtitle' => ''  )
+				)
+			)
 		);
 
 
-
-		parent::__construct( 'default_table', $settings, $field_options, $areas );
+		parent::__construct( $id, $settings, $field_options, $areas );
 
 	}
 
 }
 
 
+/**
+ * GravityView_Default_Template_List class.
+ * Defines List (default) template
+ */
+class GravityView_Default_Template_List extends GravityView_Template {
+
+	function __construct( $id = 'default_list', $settings = array(), $field_options = array(), $areas = array() ) {
+
+		if(empty($settings)) {
+			$settings = array(
+				'slug' => 'list',
+				'type' => 'custom',
+				'label' =>  __( 'List (default)', 'gravity-view' ),
+				'description' => __('Display items in a listing view.', 'gravity-view'),
+				'logo' => plugins_url('images/placeholder.png', GRAVITYVIEW_FILE),
+				'css_source' => plugins_url('templates/css/list-view.css', GRAVITYVIEW_FILE),
+			);
+		}
+
+		$field_options = array(
+			'show_as_link' => array( 'type' => 'checkbox', 'label' => __( 'Link to single entry', 'gravity-view' ), 'default' => false, 'context' => 'directory' ),
+		);
+
+		$areas = array(
+			array(
+				'1-3' => array(
+					array( 'areaid' => 'list-image', 'title' => __( 'Image', 'gravity-view' ) , 'subtitle' => '' )
+				),
+				'2-3' => array(
+					array( 'areaid' => 'list-title', 'title' => __('Listing Title', 'gravity-view' ) , 'subtitle' => 'Large Font' ),
+					array( 'areaid' => 'list-subtitle', 'title' => __('Subheading', 'gravity-view' ) , 'subtitle' => 'Data placed here will be bold.' ),
+					array( 'areaid' => 'list-description', 'title' => __('Description', 'gravity-view' ) , 'subtitle' => 'Below the subheading, a good place for description and other data.' ) )
+				),
+			array( '1-2' => array(
+					array( 'areaid' => 'list-footer-left', 'title' => __('Footer Left', 'gravity-view' ) , 'subtitle' => '' )
+				),
+				'2-2' => array(
+					array( 'areaid' => 'list-footer-right', 'title' => __('Footer Right', 'gravity-view' ) , 'subtitle' => ''  )
+				)
+			)
+		);
+
+		parent::__construct( $id, $settings, $field_options, $areas );
+
+	}
+}
 
 
 abstract class GravityView_Template {
@@ -92,7 +144,7 @@ abstract class GravityView_Template {
 	public $active_areas;
 
 
-	function __construct( $id, $settings = array(), $field_options = array(), $areas ) {
+	function __construct( $id, $settings = array(), $field_options = array(), $areas = array() ) {
 
 		if( empty( $id ) ) {
 			return;
@@ -267,38 +319,6 @@ abstract class GravityView_Template {
 
 }
 
-/**
- * GravityView_Default_Template_List class.
- * Defines List (default) template
- */
-class GravityView_Default_Template_List extends GravityView_Template {
-
-	function __construct() {
-		$settings = array(
-			'slug' => 'list',
-			'type' => 'custom',
-			'label' =>  __( 'List (default)', 'gravity-view' ),
-			'description' => __('Display items in a listing view.', 'gravity-view'),
-			'logo' => plugins_url('images/placeholder.png', GRAVITYVIEW_FILE),
-			'css_source' => plugins_url('templates/css/list-view.css', GRAVITYVIEW_FILE),
-		);
-
-		$field_options = array(
-			'show_as_link' => array( 'type' => 'checkbox', 'label' => __( 'Link to single entry', 'gravity-view' ), 'default' => false, 'context' => 'directory' ),
-		);
-
-		$areas = array(
-			array( '1-3' => array( array( 'areaid' => 'list-image', 'title' => __( 'Image', 'gravity-view' ) , 'subtitle' => '' ) ),
-				'2-3' => array( array( 'areaid' => 'list-title', 'title' => __('Listing Title', 'gravity-view' ) , 'subtitle' => 'Large Font' ), array( 'areaid' => 'list-subtitle', 'title' => __('Subheading', 'gravity-view' ) , 'subtitle' => 'Data placed here will be bold.' ), array( 'areaid' => 'list-description', 'title' => __('Description', 'gravity-view' ) , 'subtitle' => 'Below the subheading, a good place for description and other data.' ) )	),
-			array( '1-2' => array( array( 'areaid' => 'list-footer-left', 'title' => __('Footer Left', 'gravity-view' ) , 'subtitle' => '' ) ),
-				'2-2' => array( array( 'areaid' => 'list-footer-right', 'title' => __('Footer Right', 'gravity-view' ) , 'subtitle' => ''  ) ) )
-		);
-
-		parent::__construct( 'default_list', $settings, $field_options, $areas );
-
-	}
-}
-
 /** Preset templates */
 
 class GravityView_Preset_Business_Data extends GravityView_Default_Template_Table {
@@ -327,9 +347,7 @@ class GravityView_Preset_Resume_Board extends GravityView_Default_Template_Table
 
 	function __construct() {
 
-		parent::__construct();
-
-		$this->template_id = 'preset_resume_board';
+		$id = 'preset_resume_board';
 
 		$settings = array(
 			'slug' => 'table',
@@ -341,7 +359,7 @@ class GravityView_Preset_Resume_Board extends GravityView_Default_Template_Table
 			'preset_fields' => '',
 		);
 
-		$this->merge_defaults( $settings );
+		parent::__construct( $id, $settings );
 
 	}
 }
@@ -350,9 +368,7 @@ class GravityView_Preset_Job_Board extends GravityView_Default_Template_Table {
 
 	function __construct() {
 
-		parent::__construct();
-
-		$this->template_id = 'preset_job_board';
+		$id = 'preset_job_board';
 
 		$settings = array(
 			'slug' => 'table',
@@ -365,17 +381,15 @@ class GravityView_Preset_Job_Board extends GravityView_Default_Template_Table {
 
 		);
 
-		$this->merge_defaults( $settings );
-
+		parent::__construct( $id, $settings );
 	}
 }
 
 class GravityView_Preset_People_Table extends GravityView_Default_Template_Table {
 
 	function __construct() {
-		parent::__construct();
 
-		$this->template_id = 'preset_people_table';
+		$id = 'preset_people_table';
 
 		$settings = array(
 			'slug' => 'table',
@@ -388,7 +402,7 @@ class GravityView_Preset_People_Table extends GravityView_Default_Template_Table
 
 		);
 
-		$this->merge_defaults( $settings );
+		parent::__construct( $id, $settings );
 
 	}
 }
