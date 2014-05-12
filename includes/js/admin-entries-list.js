@@ -44,7 +44,7 @@
 
 
 	// Request entry approve (ajax)
-	function UpdateApproved( entryid, approved ) {
+	function updateApproved( entryid, approved, $target) {
 
 		var data = {
 			action: 'gv_update_approved',
@@ -56,9 +56,8 @@
 
 		$.post( gvGlobals.ajaxurl, data, function( response ) {
 			if( response ) {
-
 				// If there was a successful AJAX request, toggle the checkbox
-				$(this).toggleClass('entry_approved', (approved === 0) );
+				$target.removeClass('loading').toggleClass('entry_approved', (approved === 'Approved') );
 			}
 		});
 
@@ -93,14 +92,14 @@
 
 			var entryID = $(this).parent().parent().find( 'th input[type="checkbox"]' ).val();
 
-			$(this).toggleClass('entry_approved');
+			$(this).addClass('loading');
 
 			if( $(this).hasClass('entry_approved') ) {
-				$(this).prop('title', gvGlobals.unapprove_title );
-				UpdateApproved( entryID, 'Approved' );
-			} else {
 				$(this).prop('title', gvGlobals.approve_title );
-				UpdateApproved( entryID, 0 );
+				updateApproved( entryID, 0, $(this));
+			} else {
+				$(this).prop('title', gvGlobals.unapprove_title );
+				updateApproved( entryID, 'Approved', $(this));
 			}
 
 			return false;

@@ -36,6 +36,10 @@ th.gv-approve-column a:before {
 	display: inline-block;
 }
 
+.loading {
+	cursor: wait;
+}
+
 .toggleApproved:before {
 	padding: 0;
 	margin:0;
