@@ -23,29 +23,27 @@
 
 		<div class="gv-list-view-content">
 
-			<div class="gv-list-view-content-description">
-				<?php if( !empty(  $this->fields['single_list-description'] ) ):
-					foreach( $this->fields['single_list-description'] as $field ) : ?>
-						<p class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
-					<?php endforeach; ?>
-				<?php endif; ?>
-			</div>
-
+			<?php if( !empty(  $this->fields['single_list-image'] ) ): ?>
 			<div class="gv-list-view-content-image">
-				<?php if( !empty(  $this->fields['single_list-image'] ) ):
-					foreach( $this->fields['single_list-image'] as $field ) : ?>
-						<?php echo gv_value( $entry, $field ); ?>
-					<?php endforeach; ?>
-				<?php endif; ?>
+			<?php
+				foreach( $this->fields['single_list-image'] as $field ) : ?>
+					<?php echo gv_value( $entry, $field ); ?>
+				<?php endforeach; ?>
 			</div>
+			<?php endif; ?>
 
-			<div class="gv-list-view-content-attributes">
-				<?php if( !empty(  $this->fields['single_list-attributes'] ) ):
-					foreach( $this->fields['single_list-attributes'] as $field ) : ?>
-						<p class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
-					<?php endforeach; ?>
-				<?php endif; ?>
-			</div>
+			<?php if( !empty(  $this->fields['single_list-description'] ) ): ?>
+				<div class="gv-list-view-content-description">
+				<?php
+				foreach( $this->fields['single_list-description'] as $field ) : ?>
+					<div class="<?php echo gv_class( $field ); ?>"><?php
+						echo esc_html( gv_label( $field ) );
+						echo gv_value( $entry, $field );
+					?>
+					</div>
+				<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
 
 		</div>
 

@@ -33,54 +33,63 @@ $color-description: #999;
 // ================================================
 
 .gv-list-view {
-	border: 1px solid $color-border !important;
-	margin-bottom: 1em !important;
+	border: 1px solid $color-border;
+	margin-bottom: 1em;
 }
 
 // 3.1. Title
 // ------------------------------------------------
 
 .gv-list-view-title {
-	border-bottom: 1px solid $color-border !important;
-	padding: 1em !important;
+	border-bottom: 1px solid $color-border;
+
+	padding: .5em 1em;
 
 	h3 {
-		margin: 0 0 0.5em 0 !important;
-		padding: 0 !important;
+		margin: 0 0 0.5em 0;
+		padding: 0;
 	}
 
 	p {
-		margin: 0 !important;
-		padding: 0 !important;
+		margin: 0;
+		padding: 0;
 	}
 }
 
-// 3.2. Content
+// 3.2. Subtitle
+// ------------------------------------------------
+
+.gv-list-view-subtitle {
+
+	h4 {
+		margin: 0;
+	}
+
+}
+
+// 3.3. Content
 // ------------------------------------------------
 
 .gv-list-view-content {
-	padding: 1em !important;
+
+	padding: .75em 1em;
+
 	@extend %clearfix; // Clears image floats
 
 	p {
-		margin: 0 0 1em 0 !important;
-		padding: 0 !important;
+		margin: 0 0 1em 0;
+		padding: 0;
 	}
 
 	img {
-		display: block !important;
-		margin: 0 !important;
-		padding: 0 !important;
-	}
-
-	.gv-list-view-content-description {
-		color: $color-description !important;
-		font-weight: bold !important;
+		display: block;
+		margin: 0;
+		padding: 0;
 	}
 
 	.gv-list-view-content-image {
-		float: left!important;
-		margin: 0 1em 1em 0 !important;
+		float: left;
+		margin: 0 1em 1em 0;
 
 		.gv-field-file-uploads li,
 		.gv-field-file-uploads {
@@ -90,11 +99,11 @@ $color-description: #999;
 	}
 }
 
-// 3.3. Footer
+// 3.4. Footer
 // ------------------------------------------------
 
 .gv-list-view-footer {
-	border-top: 1px solid $color-border !important;
-	background-color: $color-footer !important;
-	padding: 1em !important;
+	border-top: 1px solid $color-border;
+	background-color: $color-footer;
+	padding: 1em;
 }
