@@ -52,7 +52,7 @@ class GravityView_Preset_Business_Data {
 }
 
 
-class GravityView_Preset_Resume_board {
+class GravityView_Preset_Resume_Board {
 
 	function __construct() {
 		$def_template = new GravityView_Default_Template_Table;
@@ -250,7 +250,7 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 		);
 
 		$field_options = array(
-			'show_as_link' => array( 'type' => 'checkbox', 'label' => __( 'Link to single entry', 'gravity-view' ), 'default' => false ),
+			'show_as_link' => array( 'type' => 'checkbox', 'label' => __( 'Link to single entry', 'gravity-view' ), 'default' => false, 'context' => 'directory' ),
 		);
 
 		$areas = array(
@@ -282,7 +282,7 @@ class GravityView_Default_Template_List extends GravityView_Template {
 		);
 
 		$field_options = array(
-			'show_as_link' => array( 'type' => 'checkbox', 'label' => __( 'Link to single entry', 'gravity-view' ), 'default' => false ),
+			'show_as_link' => array( 'type' => 'checkbox', 'label' => __( 'Link to single entry', 'gravity-view' ), 'default' => false, 'context' => 'directory' ),
 		);
 
 		$areas = array(
@@ -353,7 +353,7 @@ abstract class GravityView_Template {
 		add_filter( 'gravityview_template_active_areas', array( $this, 'assign_active_areas' ), 10, 2 );
 
 		// field options
-		add_filter( 'gravityview_template_field_options', array( $this, 'assign_field_options' ), 10, 2 );
+		add_filter( 'gravityview_template_field_options', array( $this, 'assign_field_options' ), 10, 4 );
 
 		// template slug
 		add_filter( "gravityview_template_slug_{$id}", array( $this, 'assign_view_slug' ), 10, 2 );
@@ -425,15 +425,30 @@ abstract class GravityView_Template {
 	 * @access protected
 	 * @param array $options (default: array())
 	 * @param string $template (default: '')
+	 * @param string $field_id key for the field
+	 * @param  string|array $context Context for the field; `directory` or `single` for example.
 	 * @return array Array of field options
 	 */
-	public function assign_field_options( $options = array(), $template = '' ) {
+	public function assign_field_options(  $field_options, $template_id, $field_id = NULL, $context = '' ) {
 
-		if( $this->template_id === $template ) {
-			$options = array_merge( $options, $this->field_options );
+		if( $this->template_id === $template_id ) {
+
+			foreach ($this->field_options as $key => $field_option) {
+
+				$field_context = rgar($field_option, 'context');
+
+				// Does the field option only apply to a certain context?
+				// You can define multiple contexts as an array:  `context => array("directory", "single")`
+				$context_matches = is_array($field_context) ? in_array($context, $field_context) : $context === $field_context;
+
+				// If the context matches (or isn't defined), add the field options.
+				if($context_matches) {
+					$field_options[$key] = $field_option;
+				}
+			}
 		}
 
-		return $options;
+		return $field_options;
 	}
 
 
@@ -491,11 +506,11 @@ new GravityView_Default_Template_Table;
 new GravityView_Default_Template_List;
 
 //presets
-new GravityView_Preset_Resume_board();
-new GravityView_Preset_Job_Board();
-new GravityView_Preset_Business_Listings();
-new GravityView_Preset_Business_Data();
-new GravityView_Preset_Event_Listings();
-new GravityView_Preset_People_Table();
-new GravityView_Preset_Profiles();
-new GravityView_Preset_Staff_Profiles();
+new GravityView_Preset_Resume_Board;
+new GravityView_Preset_Job_Board;
+new GravityView_Preset_Business_Listings;
+new GravityView_Preset_Business_Data;
+new GravityView_Preset_Event_Listings;
+new GravityView_Preset_People_Table;
+new GravityView_Preset_Profiles;
+new GravityView_Preset_Staff_Profiles;

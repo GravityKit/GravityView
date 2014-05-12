@@ -22,7 +22,7 @@ class GravityView_Admin_Views {
 		add_action( 'save_post', array( $this, 'save_postdata' ) );
 
 		// adding styles and scripts
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles'), 999 );
+		add_action( 'admin_enqueue_scripts', array( 'GravityView_Admin_Views', 'add_scripts_and_styles'), 999 );
 		add_filter( 'gravityview_noconflict_styles', array( $this, 'register_no_conflict') );
 		add_filter( 'gravityview_noconflict_scripts', array( $this, 'register_no_conflict') );
 
@@ -206,7 +206,7 @@ class GravityView_Admin_Views {
 			<input type="hidden" name="gv-active-tab" id="gv-active-tab" value="<?php echo get_post_meta( $post->ID, '_gravityview_tab_active', true ); ?>">
 
 			<ul class="nav-tab-wrapper">
-				<li><a href="#directory-view" class="nav-tab"><?php esc_html_e( 'Directory', 'gravity-view' ); ?></a></li>
+				<li><a href="#directory-view" class="nav-tab"><?php esc_html_e( 'Multiple Entries', 'gravity-view' ); ?></a></li>
 				<li><a href="#single-view" class="nav-tab"><?php esc_html_e( 'Single Entry', 'gravity-view' ); ?></a></li>
 			</ul>
 
@@ -214,11 +214,11 @@ class GravityView_Admin_Views {
 
 				<div id="directory-fields" class="gv-section">
 
-					<h4><?php esc_html_e( 'Above Listings', 'gravity-view'); ?> <span><?php esc_html_e( 'Define the header widgets', 'gravity-view'); ?></span></h4>
+					<h4><?php esc_html_e( 'Above Entries', 'gravity-view'); ?> <span><?php esc_html_e( 'Define the header widgets', 'gravity-view'); ?></span></h4>
 
 					<?php echo $this->render_widgets_active_areas( $curr_template, 'header', $post->ID ); ?>
 
-					<h4><?php esc_html_e( 'Listings', 'gravity-view'); ?> <span><?php esc_html_e( 'Configure the entry layout', 'gravity-view'); ?></span></h4>
+					<h4><?php esc_html_e( 'Entries', 'gravity-view'); ?> <span><?php esc_html_e( 'Configure the entry layout', 'gravity-view'); ?></span></h4>
 
 					<div id="directory-active-fields" class="gv-grid gv-grid-pad gv-grid-border">
 						<?php if(!empty( $curr_template ) ) {
@@ -226,7 +226,7 @@ class GravityView_Admin_Views {
 						} ?>
 					</div>
 
-					<h4><?php esc_html_e( 'Below Listings', 'gravity-view'); ?> <span><?php esc_html_e( 'Define the footer widgets', 'gravity-view'); ?></span></h4>
+					<h4><?php esc_html_e( 'Below Entries', 'gravity-view'); ?> <span><?php esc_html_e( 'Define the footer widgets', 'gravity-view'); ?></span></h4>
 
 					<?php echo $this->render_widgets_active_areas( $curr_template, 'footer', $post->ID ); ?>
 
@@ -692,6 +692,8 @@ class GravityView_Admin_Views {
 
 									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) :
 
+										$input_type = isset($available_fields[ $field['id'] ]['type']) ? $available_fields[ $field['id'] ]['type'] : NULL;
+
 										//if( !empty( $available_fields[ $field['id'] ] ) ) : ?>
 
 											<div data-fieldid="<?php echo $field['id']; ?>" class="gv-fields">
@@ -700,7 +702,7 @@ class GravityView_Admin_Views {
 													<a href="#settings" class="dashicons-admin-generic dashicons"></a>
 													<a href="#remove" class="dashicons-dismiss dashicons"></a>
 												</span>
-												<?php echo $this->render_field_options( $type, $template_id, $field['id'], $field['label'], $zone .'_'. $area['areaid'], $uniqid, $field, $zone ); ?>
+												<?php echo $this->render_field_options( $type, $template_id, $field['id'], $field['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone ); ?>
 											</div>
 
 										<?php //endif; ?>
@@ -800,7 +802,7 @@ class GravityView_Admin_Views {
 	 * @param string $context (default: 'single')
 	 * @return void
 	 */
-	function render_field_options( $field_type, $template_id, $field_id, $field_label, $area, $uniqid = '', $current = '', $context = 'single' ) {
+	function render_field_options( $field_type, $template_id, $field_id, $field_label, $area, $input_type = NULL, $uniqid = '', $current = '', $context = 'single' ) {
 
 		if( empty( $uniqid ) ) {
 			//generate a unique field id
@@ -808,7 +810,7 @@ class GravityView_Admin_Views {
 		}
 
 		// get field/widget options
-		$options = $this->get_default_field_options( $field_type, $template_id, $field_id );
+		$options = $this->get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type );
 
 		// two different post arrays, depending of the field type
 		$name_prefix = $field_type .'s' .'['. $area .']['. $uniqid .']';
@@ -867,7 +869,7 @@ class GravityView_Admin_Views {
 	}
 
 
-	public function get_default_field_options( $field_type, $template_id, $field_id ) {
+	public function get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type ) {
 
 		$field_options = array();
 
@@ -883,8 +885,12 @@ class GravityView_Admin_Views {
 		}
 
 		// hook to inject template specific field/widget options
-		return apply_filters( "gravityview_template_{$field_type}_options", $field_options, $template_id, $field_id );
+		$field_options = apply_filters( "gravityview_template_{$field_type}_options", $field_options, $template_id, $field_id, $context, $input_type );
 
+		// hook to inject template specific input type options (textarea, list, select, etc.)
+		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type );
+
+		return $field_options;
 	}
 
 
@@ -1090,12 +1096,12 @@ class GravityView_Admin_Views {
 	function get_field_options() {
 		$this->check_ajax_nonce();
 
-		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) || empty( $_POST['field_label'] ) ) {
+		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) || empty( $_POST['field_label'] ) || empty( $_POST['input_type'] ) ) {
 			echo false;
 			die();
 		}
 
-		$response = $this->render_field_options( $_POST['field_type'], $_POST['template'], $_POST['field_id'], $_POST['field_label'], $_POST['area'] );
+		$response = $this->render_field_options( $_POST['field_type'], $_POST['template'], $_POST['field_id'], $_POST['field_label'], $_POST['area'], $_POST['input_type']);
 		echo $response;
 		die();
 	}
@@ -1109,22 +1115,31 @@ class GravityView_Admin_Views {
 		wp_localize_script( 'gravityview-uservoice-widget', 'gvUserVoice', array('email' => get_option( 'admin_email' )));
 	}
 
-	static function is_gravityview_admin_page($hook = '') {
-		global $current_screen;
+	static function is_gravityview_admin_page($hook = '', $page = NULL) {
+		global $current_screen, $plugin_page, $pagenow;
 
 		$is_page = false;
 
-		// The post type
-		if(rgobj($current_screen, 'post_type') === 'gravityview' ) {
-			$is_page = true;
+		if(rgobj($current_screen, 'post_type') === 'gravityview' || rgget('post_type') === 'gravityview') {
+
+			// $_GET `post_type` variable
+			if(in_array($pagenow, array( 'post.php' , 'post-new.php' )) ) {
+				$is_page = 'single';
+			} elseif ($plugin_page === 'settings') {
+				$is_page = 'settings';
+			} else {
+				$is_page = 'views';
+			}
 		}
 
-		// $_GET `post_type` variable
-		if(rgget('post_type') === 'gravityview') {
-			$is_page = true;
+		$is_page = apply_filters( 'gravityview_is_admin_page', $is_page, $hook );
+
+		// If the current page is the same as the compared page
+		if(!empty($page)) {
+			return $is_page === $page;
 		}
 
-		return apply_filters( 'gravityview_is_admin_page', $is_page, $hook );
+		return $is_page;
 	}
 
 	/**
@@ -1134,30 +1149,35 @@ class GravityView_Admin_Views {
 	 * @param mixed $hook
 	 * @return void
 	 */
-	function add_scripts_and_styles( $hook ) {
+	static function add_scripts_and_styles( $hook ) {
+		global $plugin_page;
 
-		if(!self::is_gravityview_admin_page($hook)) {
-			return;
-		}
+		if(!self::is_gravityview_admin_page($hook)) { return; }
 
+		// Add the UserVoice widget on all GV pages
 		self::enqueue_uservoice_widget();
 
-		//enqueue scripts
-		wp_enqueue_script( 'gravityview_views_scripts', plugins_url('includes/js/admin-views.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog' ), GravityView_Plugin::version);
+		// Only enqueue the following on single pages
+		if(self::is_gravityview_admin_page($hook, 'single')) {
 
-		wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
-			'ajaxurl' => admin_url( 'admin-ajax.php' ),
-			'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
-			'label_viewname' => __( 'Enter View name here', 'gravity-view' ),
-			'label_close' => __( 'Close', 'gravity-view' ),
-			'label_cancel' => __( 'Cancel', 'gravity-view' ),
-			'label_continue' => __( 'Continue', 'gravity-view' ),
-			'label_ok' => __( 'Ok', 'gravity-view' ),
-			'label_publisherror' => __( 'Error while creating the View for you. Check the settings or contact the GravityView support.', 'gravity-view' ),
-		));
+			//enqueue scripts
+			wp_enqueue_script( 'gravityview_views_scripts', plugins_url('includes/js/admin-views.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog' ), GravityView_Plugin::version);
 
-		//enqueue styles
-		wp_enqueue_style( 'gravityview_views_styles', plugins_url('includes/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons', 'wp-jquery-ui-dialog'), GravityView_Plugin::version );
+			wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
+				'label_viewname' => __( 'Enter View name here', 'gravity-view' ),
+				'label_close' => __( 'Close', 'gravity-view' ),
+				'label_cancel' => __( 'Cancel', 'gravity-view' ),
+				'label_continue' => __( 'Continue', 'gravity-view' ),
+				'label_ok' => __( 'Ok', 'gravity-view' ),
+				'label_publisherror' => __( 'Error while creating the View for you. Check the settings or contact the GravityView support.', 'gravity-view' ),
+			));
+
+			//enqueue styles
+			wp_enqueue_style( 'gravityview_views_styles', plugins_url('includes/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons', 'wp-jquery-ui-dialog'), GravityView_Plugin::version );
+
+		} // End single page
 	}
 
 	function register_no_conflict( $registered ) {

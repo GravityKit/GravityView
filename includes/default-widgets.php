@@ -45,7 +45,7 @@ class GravityView_Widget_Pagination extends GravityView_Widget {
 			$last = $offset + $page_size > $total ? $total : $offset + $page_size;
 		}
 
-		echo '<div class="gv-widget-pagination"><p>'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravity-view' ), $first , $last , $total ) . '</p></div>';
+		echo apply_filters( 'gravityview_pagination_output', '<div class="gv-widget-pagination"><p>'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravity-view' ), $first , $last , $total ) . '</p></div>', $first , $last , $total);
 
 	}
 
@@ -129,15 +129,18 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 		add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ) );
 
-		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ) );
-
 		// add field options (specific for this widget)
-		add_filter( 'gravityview_template_field_options', array( $this, 'assign_field_options' ), 10, 1 );
+		add_filter( 'gravityview_template_field_options', array( $this, 'assign_field_options' ), 10, 4 );
 	}
 
-	function assign_field_options( $field_options ) {
-		return array_merge( $field_options, array(
+	function assign_field_options( $field_options, $template_id, $field_id, $context ) {
+
+		if($context !== 'single') {
+			$field_options = array_merge( $field_options, array(
 			'search_filter' => array( 'type' => 'checkbox', 'label' => __( 'Use this field as a search filter', 'gravity-view' ), 'default' => false ) ) );
+		}
+
+		return $field_options;
 	}
 
 	function filter_entries( $search_criteria ) {
@@ -170,77 +173,54 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 
 	public function render_frontend( $widget_args ) {
-
 		global $gravityview_view;
 
-		$form_id = $gravityview_view->form_id;
-
 		// get configured search filters (fields)
-		$search_filters = $this->get_search_filters();
+		$gravityview_view->__set('search_fields', $this->render_search_fields() );
 
-		$search_free = !empty( $widget_args['search_free'] ) ? true : false;
-		$search_date = !empty( $widget_args['search_date'] ) ? true : false;
+		$search_date = !empty( $widget_args['search_date'] );
 
+		$gravityview_view->__set('search_free', !empty( $widget_args['search_free'] ) );
+		$gravityview_view->__set('search_date', $search_date );
+
+		if($search_date) {
+
+			// enqueue datepicker stuff only if needed!
+			$scheme = is_ssl() ? 'https://' : 'http://';
+			wp_enqueue_style( 'jquery-ui-datepicker', $scheme.'ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
+			wp_enqueue_script( 'gform_datepicker_init' );
+
+			$datepicker_class = apply_filters( 'gravityview_search_datepicker_class', 'gv-datepicker datepicker ymd-dash' );
+			$gravityview_view->__set('datepicker_class', $datepicker_class );
+		}
 
 		// Search box and filters
-		$curr_search = esc_attr(rgget('gv_search'));
-		$curr_start = esc_attr(rgget('gv_start'));
-		$curr_end = esc_attr(rgget('gv_end'));
+		$gravityview_view->__set('curr_search', esc_attr(rgget('gv_search')) );
+		$gravityview_view->__set('curr_start', esc_attr(rgget('gv_start')) );
+		$gravityview_view->__set('curr_end', esc_attr(rgget('gv_end')) );
 
-		?>
-		<form class="gv-widget-search" method="get" action="">
+		$gravityview_view->render('widget', 'search');
+	}
 
-			<?php // search filters (fields)
-			if( !empty( $search_filters ) ) {
-				$form = gravityview_get_form( $form_id );
-				foreach( $search_filters as $filter ) {
-					$field = gravityview_get_field( $form, $filter['key'] );
-					if( in_array( $field['type'] , array( 'select', 'checkbox', 'radio', 'post_category' ) ) ) {
-						echo self::render_search_dropdown( $field['label'], 'filter_'.$field['id'], $field['choices'], $filter['value'] ); //Label, name attr, choices
-					} else {
-						echo self::render_search_input( $field['label'], 'filter_'.$field['id'], $filter['value'] ); //label, attr name
-					}
+	function render_search_fields() {
+		global $gravityview_view;
+
+		$output = '';
+
+		if( $search_filters = $this->get_search_filters() ) {
+			$form = gravityview_get_form( $gravityview_view->form_id );
+			foreach( $search_filters as $filter ) {
+				$field = gravityview_get_field( $form, $filter['key'] );
+				if( in_array( $field['type'] , array( 'select', 'checkbox', 'radio', 'post_category' ) ) ) {
+					$output .= self::render_search_dropdown( $field['label'], 'filter_'.$field['id'], $field['choices'], $filter['value'] ); //Label, name attr, choices
+				} else {
+					$output .= self::render_search_input( $field['label'], 'filter_'.$field['id'], $filter['value'] ); //label, attr name
 				}
 			}
+		}
 
-			?>
-
-
-			<p class="search-box">
-
-				<?php if( $search_free ): ?>
-					<label for="gv_search"><?php esc_html_e( 'Search Entries:', 'gravity-view' ); ?></label>
-					<input type="text" name="gv_search" id="gv_search" value="<?php echo $curr_search; ?>" />
-				<?php endif; ?>
-
-				<?php if( $search_date ): ?>
-					<label for="gv_start_date"><?php esc_html_e('Filter by date:', 'gravity-view' ); ?></label>
-					<input name="gv_start" id="gv_start_date" type="text" class="gv-datepicker" placeholder="<?php esc_attr_e('Start date', 'gravity-view' ); ?>" value="<?php echo $curr_start; ?>">
-					<input name="gv_end" id="gv_end_date" type="text" class="gv-datepicker" placeholder="<?php esc_attr_e('End date', 'gravity-view' ); ?>" value="<?php echo $curr_end; ?>">
-					<?php // enqueue datepicker stuff only if needed!
-					wp_enqueue_script( 'jquery-ui-datepicker' );
-					wp_enqueue_style( 'jquery-ui-datepicker', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
-					wp_enqueue_script( 'gravityview-search-bar' );
-					?>
-				<?php endif; ?>
-				<input type="submit" class="button" id="gv_search_button" value="<?php esc_attr_e( 'Search', 'gravity-view' ); ?>" />
-			</p>
-		</form>
-	<?php
-
+		return $output;
 	}
-
-
-	/**
-	 * Register script to include the js datepicker in the frontend
-	 *
-	 * @access public
-	 * @return void
-	 */
-	function add_scripts_and_styles() {
-		wp_register_script( 'gravityview-search-bar',  plugins_url('includes/js/fe-search-bar.js', GRAVITYVIEW_FILE), array( 'jquery', 'jquery-ui-datepicker' ), '1.0.0', true );
-	}
-
 
 	/**
 	 * render_search_dropdown function.
