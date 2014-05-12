@@ -52,6 +52,7 @@ if (!class_exists('GravityView_Settings')) {
         	if(empty($plugin_page)) { return; }
 
         	get_redux_instance('gravityview_settings')->_enqueue();
+
         }
 
         public function initSettings() {
@@ -102,23 +103,9 @@ if (!class_exists('GravityView_Settings')) {
             	)
             );
 
-			if($beta_email = $this->getSetting('beta-email')) {
-
-				$tester_hash = sha1(sprintf("%s%s", self::prefinery_hash, $beta_email));
-
-            	$fields[] = array(
-            		'id'		=> 'share-beta',
-            		'type'		=> 'raw',
-            		'title'		=> __('Share with your friends'),
-            		'subtitle'	=> __('Invite your friends to participate in the GravityView Beta'),
-            		'content'	=> "<iframe id='prefinery_iframe_inline' allowTransparency='true' width='100%' height='300' scrolling='no' frameborder='0' src='https://kws.prefinery.com/betas/4444/friend_invitations/new?display=inline&tester_hash={$tester_hash}'></iframe>",
-            	);
-            }
-
             // ACTUAL DECLARATION OF SECTIONS
             $this->sections[] = array(
                 'title'     => __('Home Settings', 'gravity-view'),
-                'desc'      => __('Redux Framework was created with the developer in mind. It allows for any theme developer to have an advanced theme panel with most of the features a developer would need. For more information check out the Github repo at: <a href="https://github.com/ReduxFramework/Redux-Framework">https://github.com/ReduxFramework/Redux-Framework</a>', 'gravity-view'),
                 'icon'      => 'el-icon-home',
                 // 'submenu' => false, // Setting submenu to false on a given section will hide it from the WordPress sidebar menu!
                 'fields'    => $fields,
@@ -159,8 +146,8 @@ if (!class_exists('GravityView_Settings')) {
                 'display_version'   => GravityView_Plugin::version,  // Version that appears at the top of your panel
                 'menu_type'         => 'submenu',                  //Specify if the admin menu should appear or not. Options: menu or submenu (Under appearance only)
                 'allow_sub_menu'    => true,                    // Show the sections below the admin menu item or not
-                'menu_title'        => __('Sample Options', 'gravity-view'),
-                'page_title'        => __('Sample Options', 'gravity-view'),
+                'menu_title'        => __('Settings', 'gravity-view'),
+                'page_title'        => __('Settings', 'gravity-view'),
 
                 // You will need to generate a Google API key to use this feature.
                 // Please visit: https://developers.google.com/fonts/docs/developer_api#Auth
