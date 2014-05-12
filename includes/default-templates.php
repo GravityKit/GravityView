@@ -429,7 +429,7 @@ abstract class GravityView_Template {
 	 * @param  string|array $context Context for the field; `directory` or `single` for example.
 	 * @return array Array of field options
 	 */
-	public function assign_field_options(  $field_options, $template_id, $field_id = NULL, $context = '' ) {
+	public function assign_field_options(  $field_options, $template_id, $field_id = NULL, $context = 'directory' ) {
 
 		if( $this->template_id === $template_id ) {
 
@@ -440,7 +440,7 @@ abstract class GravityView_Template {
 				// Does the field option only apply to a certain context?
 				// You can define multiple contexts as an array:  `context => array("directory", "single")`
 				$context_matches = is_array($field_context) ? in_array($context, $field_context) : $context === $field_context;
-
+				IDX_Plus::r(array($field_options, $template_id, $field_id, $context));
 				// If the context matches (or isn't defined), add the field options.
 				if($context_matches) {
 					$field_options[$key] = $field_option;

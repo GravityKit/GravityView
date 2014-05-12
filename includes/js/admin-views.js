@@ -402,9 +402,11 @@
 				action: 'gv_field_options',
 				template: templateId,
 				area: addButton.attr('data-areaid'),
+				context: addButton.attr('data-context'),
 				field_id: newField.attr('data-fieldid'),
 				field_label: newField.find("h5").text(),
 				field_type: addButton.attr('data-objecttype'),
+				input_type: addButton.attr('data-objecttype'),
 				nonce: gvGlobals.nonce,
 			};
 

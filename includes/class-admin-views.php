@@ -712,7 +712,7 @@ class GravityView_Admin_Views {
 								<span class="drop-message">Drop fields here</span>
 							</div>
 							<div class="gv-droppable-area-action">
-								<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>"><?php echo '+ '.esc_html( $button_label ); ?></a>
+								<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>"><?php echo '+ '.esc_html( $button_label ); ?></a>
 								<p class="gv-droppable-area-title"><?php echo esc_html( $area['title'] ); ?></p>
 								<p class="gv-droppable-area-subtitle"><?php echo esc_html( $area['subtitle'] ); ?></p>
 							</div>
@@ -1096,14 +1096,15 @@ class GravityView_Admin_Views {
 	function get_field_options() {
 		$this->check_ajax_nonce();
 
-		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) || empty( $_POST['field_label'] ) ) {
+		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) ) {
 			echo false;
 			die();
 		}
 
 		$input_type = isset($_POST['input_type']) ? $_POST['input_type'] : NULL;
+		$context = isset($_POST['context']) ? $_POST['context'] : NULL;
 
-		$response = $this->render_field_options( $_POST['field_type'], $_POST['template'], $_POST['field_id'], $_POST['field_label'], $_POST['area'], $input_type);
+		$response = $this->render_field_options( $_POST['field_type'], $_POST['template'], $_POST['field_id'], $_POST['field_label'], $_POST['area'], $input_type, '', '', $context  );
 		echo $response;
 		die();
 	}
