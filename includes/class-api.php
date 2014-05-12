@@ -129,7 +129,7 @@ class GravityView_API {
 		//if show as single entry link is active
 		if( !empty( $field_settings['show_as_link'] ) ) {
 			$href = self::entry_link($entry, $field);
-			$output = '<a href="'. $href .'">'. $value . '</a>';
+			$output = '<a href="'. $href .'">'. $output . '</a>';
 		}
 
 		$output = apply_filters( 'gravityview_field_entry_value', $output, $entry, $field_settings );
