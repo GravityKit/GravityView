@@ -2,10 +2,10 @@
  * Custom js script at post edit screen
  *
  * @package   GravityView
- * @author    Zack Katz <zack@katzwebservices.com>
- * @license   ToBeDefined
- * @link      http://www.katzwebservices.com
- * @copyright Copyright 2013, Katz Web Services, Inc.
+ * @license   GPL3+
+ * @author    Katz Web Services, Inc.
+ * @link      http://gravityview.co
+ * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
  */
