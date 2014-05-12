@@ -5,6 +5,13 @@
  * @package GravityView
  */
 
+if(empty($this->entries)) {
+
+	echo gv_no_results();
+
+	return;
+}
+
 foreach( $this->entries as $entry ) : ?>
 
 	<div id="gv_list_<?php echo $entry['id']; ?>" class="gv-list-view">

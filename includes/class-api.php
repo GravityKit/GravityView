@@ -141,6 +141,31 @@ class GravityView_API {
 	}
 
 	/**
+	 * Get the "No Results" text depending on whether there were results.
+	 * @param  boolean     $wpautop Apply wpautop() to the output?
+	 * @return string               HTML of "no results" text
+	 */
+	public static function no_results($wpautop = true) {
+		global $gravityview_view;
+
+		$is_search = false;
+
+		if($gravityview_view->__get('curr_start') || $gravityview_view->__get('curr_end') || $gravityview_view->__get('curr_search')) {
+			$is_search = true;
+		}
+
+		if($is_search) {
+			$output = __("This search returned no results.", "gravity-view");
+		} else {
+			$output = __("No entries match your request.", "gravity-view");
+		}
+
+		$output = apply_filters( 'gravitview_no_entries_text', $output, $is_search);
+
+		return $wpautop ? wpautop($output) : $output;
+	}
+
+	/**
 	 * Generate a link to the Directory view
 	 *
 	 * @return string      Permalink to multiple entries view
@@ -204,6 +229,10 @@ function gv_directory_link() {
 
 function gv_entry_link(  $entry, $field ) {
 	return GravityView_API::entry_link( $entry, $field );
+}
+
+function gv_no_results($wpautop = true) {
+	return GravityView_API::no_results( $wpautop );
 }
 
 /**
