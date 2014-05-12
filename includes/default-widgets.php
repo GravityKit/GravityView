@@ -89,6 +89,7 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 			'add_args' => array(), //
 			'prev_text' => '&laquo;',
 			'next_text' => '&raquo;',
+			'type' => 'list',
 			'total' => ceil( $total / $page_size ),
 			'current' => $curr_page,
 			'show_all' => $show_all, // to be available at backoffice
@@ -97,7 +98,7 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 		$page_links = paginate_links( $page_links );
 
 		if(!empty($page_links)) {
-			echo '<div class="gv-widget-page-links">'. wpautop( $page_links ) .'</div>';
+			echo '<div class="gv-widget-page-links">'. $page_links .'</div>';
 		}
 
 	}
