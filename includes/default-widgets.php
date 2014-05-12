@@ -216,10 +216,14 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 			$form = gravityview_get_form( $gravityview_view->form_id );
 			foreach( $search_filters as $filter ) {
 				$field = gravityview_get_field( $form, $filter['key'] );
-				if( in_array( $field['type'] , array( 'select', 'checkbox', 'radio', 'post_category' ) ) ) {
+				if( in_array( $field['type'] , array( 'select', 'checkbox', 'radio', 'post_category') ) ) {
 					$output .= self::render_search_dropdown( $field['label'], 'filter_'.$field['id'], $field['choices'], $filter['value'] ); //Label, name attr, choices
 				} else {
-					$output .= self::render_search_input( $field['label'], 'filter_'.$field['id'], $filter['value'] ); //label, attr name
+					if(empty($field)) {
+						$output .= self::render_search_input( $filter['label'], 'filter_'.$field['key'], $filter['value'] ); //label, attr name
+					} else {
+						$output .= self::render_search_input( $field['label'], 'filter_'.$field['id'], $filter['value'] ); //label, attr name
+					}
 				}
 			}
 		}
@@ -299,11 +303,12 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 				foreach( $fields as $field ) {
 					if( !empty( $field['search_filter'] ) ) {
 						$value = esc_attr(rgget('filter_'. $field['id']));
-						$search_filters[] = array( 'key' => $field['id'], 'value' => $value );
+						$search_filters[] = array( 'key' => $field['id'], 'label' => $field['label'], 'value' => $value );
 					}
 				}
 			}
 		}
+
 		$this->search_filters = $search_filters;
 
 		return $search_filters;
