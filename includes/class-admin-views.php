@@ -876,7 +876,7 @@ class GravityView_Admin_Views {
 		if( 'field' === $field_type ) {
 			// Default options - fields
 			$field_options = array(
-				'show_label' => array( 'type' => 'checkbox', 'label' => __( 'Show Label', 'gravity-view' ), 'default' => true ),
+				'show_label' => array( 'type' => 'checkbox', 'label' => __( 'Show Label', 'gravity-view' ), 'default' => preg_match('/table/ism', $template_id) ),
 				'custom_label' => array( 'type' => 'input_text', 'label' => __( 'Custom Label:', 'gravity-view' ), 'default' => '' ),
 				'custom_class' => array( 'type' => 'input_text', 'label' => __( 'Custom CSS Class:', 'gravity-view' ), 'default' => '' ),
 			);
