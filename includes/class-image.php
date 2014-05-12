@@ -92,7 +92,7 @@ class GravityView_Image {
 
 		$image_exts = apply_filters('gravityview_image_extensions', array( 'jpg', 'jpeg', 'jpe', 'gif', 'png' ));
 
-		return in_array($info['extension'], $image_exts);
+		return in_array(strtolower( $info['extension'] ), $image_exts);
 	}
 
 	/**

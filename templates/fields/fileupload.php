@@ -49,7 +49,7 @@ if(!empty($value)){
     $output = join(PHP_EOL, $output_arr);
   }
 
-$output = empty($output) || $format == "text" ? $output : sprintf("<ul class='gv-field-file-uploads'>%s</ul>", $output);
+$output = empty($output) || $format == "text" ? $output : sprintf("<ul class='gv-field-file-uploads gv-field-id-%s'>%s</ul>", esc_attr( $field_settings['id'] ), $output);
 
 echo $output;
 
