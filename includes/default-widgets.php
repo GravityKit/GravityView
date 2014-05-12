@@ -96,7 +96,9 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 
 		$page_links = paginate_links( $page_links );
 
-		echo '<div class="gv-widget-page-links"><p>'. $page_links .'</p></div>';
+		if(!empty($page_links)) {
+			echo '<div class="gv-widget-page-links">'. wpautop( $page_links ) .'</div>';
+		}
 
 	}
 
@@ -142,7 +144,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 		// add free search
 		if( !empty( $_GET['gv_search'] ) ) {
-			$search_criteria['field_filters'][] = array( 'value' => $_GET['gv_search'] );
+			$search_criteria['field_filters'][] = array( 'value' => esc_attr(rgget('gv_search')) );
 		}
 
 		// add specific fields search
@@ -156,8 +158,8 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		}
 
 		//start date & end date
-		$curr_start = empty( $_GET['gv_start'] ) ? '' : $_GET['gv_start'];
-		$curr_end = empty( $_GET['gv_end'] ) ? '' : $_GET['gv_end'];
+		$curr_start = esc_attr(rgget('gv_start'));
+		$curr_end = esc_attr(rgget('gv_end'));
 		if( !empty( $curr_start ) && !empty( $curr_end ) ) {
 			$search_criteria['start_date'] = $curr_start;
 			$search_criteria['end_date'] = $curr_end;
@@ -181,9 +183,9 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 
 		// Search box and filters
-		$curr_search = empty( $_GET['gv_search'] ) ? '' : $_GET['gv_search'];
-		$curr_start = empty( $_GET['gv_start'] ) ? '' : $_GET['gv_start'];
-		$curr_end = empty( $_GET['gv_end'] ) ? '' : $_GET['gv_end'];
+		$curr_search = esc_attr(rgget('gv_search'));
+		$curr_start = esc_attr(rgget('gv_start'));
+		$curr_end = esc_attr(rgget('gv_end'));
 
 		?>
 		<form class="gv-widget-search" method="get" action="">
@@ -311,7 +313,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 			foreach( $gravityview_view->fields as $t => $fields ) {
 				foreach( $fields as $field ) {
 					if( !empty( $field['search_filter'] ) ) {
-						$value = isset( $_GET['filter_'. $field['id'] ] ) ? $_GET['filter_'. $field['id'] ] : '';
+						$value = esc_attr(rgget('filter_'. $field['id']));
 						$search_filters[] = array( 'key' => $field['id'], 'value' => $value );
 					}
 				}
