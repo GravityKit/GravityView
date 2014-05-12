@@ -42,7 +42,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 	}
 
 	public function __get( $name ) {
-		return $this->vars[ $name ];
+		return isset($this->vars[ $name ]) ? $this->vars[ $name ] : NULL;
 	}
 
 	public function __unset( $name ) {

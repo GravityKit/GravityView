@@ -1096,12 +1096,14 @@ class GravityView_Admin_Views {
 	function get_field_options() {
 		$this->check_ajax_nonce();
 
-		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) || empty( $_POST['field_label'] ) || empty( $_POST['input_type'] ) ) {
+		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) || empty( $_POST['field_label'] ) ) {
 			echo false;
 			die();
 		}
 
-		$response = $this->render_field_options( $_POST['field_type'], $_POST['template'], $_POST['field_id'], $_POST['field_label'], $_POST['area'], $_POST['input_type']);
+		$input_type = isset($_POST['input_type']) ? $_POST['input_type'] : NULL;
+
+		$response = $this->render_field_options( $_POST['field_type'], $_POST['template'], $_POST['field_id'], $_POST['field_label'], $_POST['area'], $input_type);
 		echo $response;
 		die();
 	}

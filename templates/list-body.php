@@ -5,14 +5,15 @@
  * @package GravityView
  */
 
-if(empty($this->entries)) {
+if((int)$this->__get('total_entries') === 0) {
 
 	echo gv_no_results();
 
 	return;
 }
 
-foreach( $this->entries as $entry ) : ?>
+foreach( $this->entries as $entry ) :
+?>
 
 	<div id="gv_list_<?php echo $entry['id']; ?>" class="gv-list-view">
 
