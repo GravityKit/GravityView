@@ -245,7 +245,8 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 			'type' => 'custom',
 			'label' =>  __( 'Table (default)', 'gravity-view' ),
 			'description' => __('Display items in a table view.', 'gravity-view'),
-			'logo' => plugins_url('images/placeholder.png', GRAVITYVIEW_FILE)
+			'logo' => plugins_url('images/placeholder.png', GRAVITYVIEW_FILE),
+			'css_source' => plugins_url('templates/css/table-view.css', GRAVITYVIEW_FILE),
 		);
 
 		$field_options = array(
@@ -297,7 +298,7 @@ class GravityView_Default_Template_List extends GravityView_Template {
 }
 
 
-class GravityView_Template {
+abstract class GravityView_Template {
 
 	// template unique id
 	public $template_id;
@@ -361,8 +362,32 @@ class GravityView_Template {
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_styles' ) );
 	}
 
+	/**
+	 * Merge the template settings with the default settings
+	 *
+	 * Sets the `settings` object var.
+	 *
+	 * @param  array       $settings Defined template settings
+	 * @return array                Merged template settings.
+	 */
 	function merge_defaults( $settings = array() ) {
-		$this->settings = wp_parse_args( $settings, array( 'slug' => '', 'css_source' => '', 'type' => '', 'label' => '', 'description' => '', 'logo' => '', 'preview' => plugins_url('images/placeholder-template-preview.gif', GRAVITYVIEW_FILE), 'buy_source' => '', 'preset_form' => '', 'preset_fields' => '' ) );
+
+		$defaults = array(
+			'slug' => '',
+			'css_source' => '',
+			'type' => '',
+			'label' => '',
+			'description' => '',
+			'logo' => '',
+			'preview' => plugins_url('images/placeholder-template-preview.gif', GRAVITYVIEW_FILE),
+			'buy_source' => '',
+			'preset_form' => '',
+			'preset_fields' => ''
+		);
+
+		$this->settings = wp_parse_args( $settings, $defaults);
+
+		return $this->settings;
 	}
 
 	/**
@@ -370,7 +395,7 @@ class GravityView_Template {
 	 *
 	 * @access private
 	 * @param mixed $templates
-	 * @return void
+	 * @return array Array of templates available for GV
 	 */
 	public function register_template( $templates ) {
 		$templates[ $this->template_id ] = $this->settings;
@@ -384,7 +409,7 @@ class GravityView_Template {
 	 * @access protected
 	 * @param array $areas
 	 * @param string $template (default: '')
-	 * @return void
+	 * @return array Array of active areas
 	 */
 	public function assign_active_areas( $areas, $template = '' ) {
 		if( $this->template_id === $template ) {
@@ -400,7 +425,7 @@ class GravityView_Template {
 	 * @access protected
 	 * @param array $options (default: array())
 	 * @param string $template (default: '')
-	 * @return void
+	 * @return array Array of field options
 	 */
 	public function assign_field_options( $options = array(), $template = '' ) {
 
