@@ -37,16 +37,16 @@ foreach( $this->entries as $entry ) :
 		<div class="gv-list-view-content">
 
 			<div class="gv-list-view-content-description">
-				<?php if( !empty(  $this->fields['directory_list-content-description'] ) ):
-					foreach( $this->fields['directory_list-content-description'] as $field ) : ?>
+				<?php if( !empty(  $this->fields['directory_list-description'] ) ):
+					foreach( $this->fields['directory_list-description'] as $field ) : ?>
 						<p class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</div>
 
 			<div class="gv-list-view-content-image">
-				<?php if( !empty(  $this->fields['directory_list-content-image'] ) ):
-					foreach( $this->fields['directory_list-content-image'] as $field ) : ?>
+				<?php if( !empty(  $this->fields['directory_list-image'] ) ):
+					foreach( $this->fields['directory_list-image'] as $field ) : ?>
 						<?php echo gv_value( $entry, $field ); ?>
 					<?php endforeach; ?>
 				<?php endif; ?>
@@ -62,16 +62,23 @@ foreach( $this->entries as $entry ) :
 
 		</div>
 
-		<div class="gv-list-view-footer">
-
-			<?php if( !empty(  $this->fields['directory_list-footer'] ) ): ?>
-				<ul>
-					<?php foreach( $this->fields['directory_list-footer'] as $field ) : ?>
-						<li class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></li>
+		<div class="gv-grid gv-list-view-footer">
+			<?php if( !empty(  $this->fields['directory_list-footer-left'] ) ): ?>
+				<div class="gv-grid-col-1-2">
+					<?php foreach( $this->fields['directory_list-footer-left'] as $field ) : ?>
+						<div class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></div>
 					<?php endforeach; ?>
-				</ul>
+				</div>
 			<?php endif; ?>
 
+			<?php if( !empty(  $this->fields['directory_list-footer-right'] ) ): ?>
+				<div class="gv-grid-col-1-2">
+					<?php foreach( $this->fields['directory_list-footer-right'] as $field ) : ?>
+						<div class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></div>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
+			</div>
 		</div>
 
 	</div>
