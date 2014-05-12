@@ -7,36 +7,40 @@
     clear: both; }
 
 .gv-list-view {
-  border: 1px solid #dddddd !important;
-  margin-bottom: 1em !important; }
+  border: 1px solid #dddddd;
+  margin-bottom: 1em; }
 
 .gv-list-view-title {
-  border-bottom: 1px solid #dddddd !important;
-  padding: 1em !important; }
+  border-bottom: 1px solid #dddddd;
+  padding: .5em 1em; }
   .gv-list-view-title h3 {
-    margin: 0 0 0.5em 0 !important;
-    padding: 0 !important; }
+    margin: 0 0 0.5em 0;
+    padding: 0; }
   .gv-list-view-title p {
-    margin: 0 !important;
-    padding: 0 !important; }
+    margin: 0;
+    padding: 0; }
+
+.gv-list-view-subtitle h4 {
+  margin: 0; }
 
 .gv-list-view-content {
-  padding: 1em !important; }
+  padding: .75em 1em; }
   .gv-list-view-content p {
-    margin: 0 0 1em 0 !important;
-    padding: 0 !important; }
+    margin: 0 0 1em 0;
+    padding: 0; }
   .gv-list-view-content img {
-    display: block !important;
-    margin: 0 !important;
-    padding: 0 !important; }
-  .gv-list-view-content .gv-list-view-content-description {
-    color: #999999 !important;
-    font-weight: bold !important; }
+    display: block;
+    margin: 0;
+    padding: 0; }
   .gv-list-view-content .gv-list-view-content-image {
-    float: left !important;
-    margin: 0 1em 1em 0 !important; }
+    float: left;
+    margin: 0 1em 1em 0; }
+    .gv-list-view-content .gv-list-view-content-image .gv-field-file-uploads li,
+    .gv-list-view-content .gv-list-view-content-image .gv-field-file-uploads {
+      list-style: none;
+      margin: 0; }
 
 .gv-list-view-footer {
-  border-top: 1px solid #dddddd !important;
-  background-color: #eeeeee !important;
-  padding: 1em !important; }
+  border-top: 1px solid #dddddd;
+  background-color: #eeeeee;
+  padding: 1em; }

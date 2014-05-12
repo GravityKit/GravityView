@@ -20,7 +20,8 @@ if(!empty($value)){
 		$image = new GravityView_Image(array(
 			'src' => $file_path,
 			'class' => 'gv-image gv-field-id-'.$field_settings['id'],
-			'alt' => $field_settings['label']
+			'alt' => $field_settings['label'],
+			'width' => (gravityview_get_context() === 'single' ? NULL : 250)
 		));
 
 		$image_html = $image->html();
@@ -39,17 +40,29 @@ if(!empty($value)){
 	    }
 
 	    $text_format = $file_path . PHP_EOL;
+	    $html_format = "<a href='$file_path' target='_blank' title='" . __("Click to view", "gravityforms") . "'>" . $content . "</a>";
 
-	    $html_format = "<li><a href='$file_path' target='_blank' title='" . __("Click to view", "gravityforms") . "'>" . $content . "</a></li>";
+	    $output_arr[] = array(
+	    	'text' => $text_format,
+	    	'html' => $html_format,
+	    	'content' => $content
+	    );
 
-	    $output_arr[] = ($format == "text" ? $text_format : $html_format);
+    } // End foreach
 
+    // If the output array is just one item, let's not show a list.
+
+    if(sizeof($output_arr) === 1) {
+    	$output = wpautop( $output_arr[0]['content'] );
+    } else {
+    	$output .= sprintf("<ul class='gv-field-file-uploads gv-field-file-uploads gv-field-id-%s'>", esc_attr( $field_settings['id'] ));
+    	foreach ($variable as $key => $item) {
+			$output .= '<li>' . $item['html'] . PHP_EOL .'</li>';
+		}
+		$output .= '</ul>';
     }
 
-    $output = join(PHP_EOL, $output_arr);
   }
-
-$output = empty($output) || $format == "text" ? $output : sprintf("<ul class='gv-field-file-uploads gv-field-id-%s'>%s</ul>", esc_attr( $field_settings['id'] ), $output);
 
 echo $output;
 

@@ -89,6 +89,9 @@ class GravityView_API {
 			$value = isset($entry[$field_type]) ? $entry[$field_type] : NULL;
 		}
 
+		// todo: remove this. Needed for KWS imported testing data.
+		$value = str_replace('\n', "\n", $value);
+
 		$display_value = GFCommon::get_lead_field_display($field, $value, $entry["currency"], false, $format);
 		$display_value = apply_filters("gform_entry_field_value", $display_value, $field, $entry, $form);
 
