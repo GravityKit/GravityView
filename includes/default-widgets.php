@@ -148,7 +148,11 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 		// add free search
 		if( !empty( $_GET['gv_search'] ) ) {
-			$search_criteria['field_filters'][] = array( 'value' => esc_attr(rgget('gv_search')) );
+			$search_criteria['field_filters'][] = array(
+				'key' => null, // The field ID to search
+				'value' => esc_attr(rgget('gv_search')), // The value to search
+				'operator' => 'contains', // What to search in. Options: `is` or `contains`
+			);
 		}
 
 		// add specific fields search
