@@ -45,6 +45,10 @@ class GravityView_View extends Gamajo_Template_Loader {
 		return $this->vars[ $name ];
 	}
 
+	public function __unset( $name ) {
+		unset($this->vars[ $name ]);
+	}
+
 	// Load the template
 	public function render( $slug, $name, $require_once = true ) {
 

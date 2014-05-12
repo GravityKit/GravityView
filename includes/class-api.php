@@ -66,6 +66,7 @@ class GravityView_API {
 	 * @return null|string
 	 */
 	public static function field_value( $entry, $field_settings, $format = 'html') {
+		global $gravityview_view;
 
 		if( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
 			return NULL;
@@ -91,82 +92,38 @@ class GravityView_API {
 		$display_value = GFCommon::get_lead_field_display($field, $value, $entry["currency"], false, $format);
 		$display_value = apply_filters("gform_entry_field_value", $display_value, $field, $entry, $form);
 
-		switch( $field_type ){
 
-			case 'address':
-			case 'radio':
-			case 'checkbox':
-			case 'name':
-				if( floatval( $field_id ) === floor( floatval( $field_id ) ) ) {
-					// For the complete field value
-					$output = $display_value;
-				} else {
-					// For part of the field value
-					$entry_keys = array_keys( $entry );
-					foreach( $entry_keys as $input_key ) {
-						if( is_numeric( $input_key ) && floatval( $input_key ) === floatval( $field_id ) ) {
-							if( in_array( $field['type'], array( 'radio', 'checkbox' ) ) && !empty( $entry[ $input_key ] ) ) {
-								$output = apply_filters( 'gravityview_field_tick', '<span class="dashicons dashicons-yes"></span>', $entry, $field);
-							} else {
-								$output = $entry[ $input_key ];
-							}
-						}
-					}
-				}
-				break;
-			case 'textarea' :
-			case 'post_content' :
-			case 'post_excerpt' :
-				if( apply_filters( 'gravityview_show_fulltext', true, $entry, $field_id ) ) {
-					$long_text = $output = '';
+		// Check whether the field exists in /includes/fields/{$field_type}.php
+		// This can be overridden by user template files.
+		$field_exists = $gravityview_view->locate_template("fields/{$field_type}.php");
 
-					if( isset( $entry[ $field_id ] ) && strlen( $entry[ $field_id ] ) >= GFORMS_MAX_FIELD_LENGTH ) {
-					   $long_text = RGFormsModel::get_lead_field_value( $entry, RGFormsModel::get_field( $form, $field_id ));
-					}
-					if( isset( $entry[ $field_id ] ) ) {
-						$output = !empty( $long_text ) ? $long_text : $entry[ $field_id ];
-					}
-				}
+		if($field_exists) {
 
-				$output = esc_html( $value );
+			GravityView_Plugin::log_debug( sprintf('[field_value] Using template at %s', $field_exists) );
 
-				if( apply_filters( 'gravityview_entry_value_wpautop', true, $entry, $field_id ) ) {
-					$output = wpautop( $value );
-				};
+			// Set the field data to be available in the templates
+			$gravityview_view->__set('field_data', array(
+				'form' => $form,
+				'field_id' => $field_id,
+				'field' => $field,
+				'field_settings' => $field_settings,
+				'value' => $value,
+				'display_value' => $display_value,
+				'format' => $format,
+			));
 
-				break;
+			ob_start();
 
-			case 'date_created':
-				$output = GFCommon::format_date( $entry['date_created'], true, apply_filters( 'gravityview_date_format', '' ) );
-				break;
+			load_template( $field_exists, false );
 
-			case 'date':
-				$output = GFCommon::date_display( $value, apply_filters( 'gravityview_date_format', $field['dateFormat'] ) );
-				break;
+			$output = ob_get_clean();
 
-			case 'fileupload':
-				$output = "";
-				if(!empty($value)){
-				    $output_arr = array();
-				    $file_paths = rgar($field,"multipleFiles") ? json_decode($value) : array($value);
+		} else {
 
-				    foreach($file_paths as $file_path){
-				        $info = pathinfo($file_path);
-				        if(GFCommon::is_ssl() && strpos($file_path, "http:") !== false ){
-				            $file_path = str_replace("http:", "https:", $file_path);
-				        }
-				        $file_path = esc_attr(str_replace(" ", "%20", $file_path));
+			// Backup; the field template doesn't exist.
+			$output = $display_value;
 
-				        $output_arr[] = $format == "text" ? $file_path . PHP_EOL: "<li><a href='$file_path' target='_blank' title='" . __("Click to view", "gravityforms") . "'>" . $info["basename"] . "</a></li>";
-				    }
-				    $output = join(PHP_EOL, $output_arr);
-				  }
-				$output = empty($output) || $format == "text" ? $output : sprintf("<ul>%s</ul>", $output);
-			default:
-				$output = $display_value;
-				break;
-
-		} //switch
+		}
 
 
 		//if show as single entry link is active
@@ -175,7 +132,12 @@ class GravityView_API {
 			$output = '<a href="'. $href .'">'. $value . '</a>';
 		}
 
-		return apply_filters( 'gravityview_field_entry_value', $output, $entry, $field_settings );
+		$output = apply_filters( 'gravityview_field_entry_value', $output, $entry, $field_settings );
+
+		// Free up the memory
+		$gravityview_view->__unset('field_data');
+
+		return $output;
 	}
 
 	/**
