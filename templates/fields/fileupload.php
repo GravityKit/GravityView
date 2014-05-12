@@ -32,8 +32,8 @@ if(!empty($value)){
     	} else {
     		// Otherwise, get a link
 	        $info = pathinfo($file_path);
-	        if(GFCommon::is_ssl() && strpos($file_path, "http:") !== false ){
-	            $file_path = str_replace("http:", "https:", $file_path);
+	        if(function_exists('set_url_scheme')) {
+	        	$file_path = set_url_scheme($file_path);
 	        }
 	        $file_path = esc_attr(str_replace(" ", "%20", $file_path));
 	        $content = $info["basename"];
