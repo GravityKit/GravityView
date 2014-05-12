@@ -495,14 +495,16 @@
 			var vcfg = viewConfiguration;
 			$("a[href='#remove']").click( vcfg.removeField );
 			$("a[href='#settings']").click( vcfg.openFieldSettings );
-			$(".gv-fields").dblclick( vcfg.openFieldSettings );
+			$('body').on('dblclick', ".gv-fields", function(e) {
+				vcfg.openFieldSettings(e);
+			});
 		},
 
 		// Event handler to remove Fields from active areas
 		removeField: function( e ) {
 			e.preventDefault();
-			var area = $( event.currentTarget ).parents(".active-drop");
-			$( event.currentTarget ).parents('.gv-fields').remove();
+			var area = $( e.currentTarget ).parents(".active-drop");
+			$( e.currentTarget ).parents('.gv-fields').remove();
 			if( area.find(".gv-fields").length === 0 ) {
 				 area.find(".drop-message").show();
 			}
@@ -514,10 +516,10 @@
 
 			var parent;
 
-			if($( event.currentTarget ).is('.gv-fields')) {
-				parent = $( event.currentTarget );
+			if($( e.currentTarget ).is('.gv-fields')) {
+				parent = $( e.currentTarget );
 			} else {
-				parent = $( event.currentTarget ).parents('.gv-fields');
+				parent = $( e.currentTarget ).parents('.gv-fields');
 			}
 
 			parent.find(".gv-dialog-options").dialog({

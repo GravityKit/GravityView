@@ -134,13 +134,21 @@ if( !function_exists('gravityview_get_entries') ) {
 	 *
 	 * @access public
 	 * @param mixed $form_ids
-	 * @param mixed $criteria (default: null)
+	 * @param mixed $passed_criteria (default: null)
 	 * @param mixed &$total (default: null)
 	 * @return void
 	 */
-	function gravityview_get_entries( $form_ids, $criteria = null, &$total = null ) {
+	function gravityview_get_entries( $form_ids, $passed_criteria = null, &$total = null ) {
 
-		extract( wp_parse_args( $criteria, array( 'search_criteria' => null, 'sorting' => null, 'paging' => null ) ) );
+		$search_criteria_defaults = array(
+			'search_criteria' => null,
+			'sorting' => null,
+			'paging' => null
+		);
+
+		$criteria = wp_parse_args( $passed_criteria, $search_criteria_defaults );
+
+		extract( $criteria );
 
 		if( class_exists( 'GFAPI' ) && !empty( $form_ids ) ) {
 			return GFAPI::get_entries( $form_ids, $search_criteria, $sorting, $paging, $total);

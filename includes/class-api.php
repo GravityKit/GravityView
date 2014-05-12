@@ -50,7 +50,7 @@ class GravityView_API {
 	public static function field_class( $field ) {
 
 		if( !empty( $field['custom_class'] ) ) {
-			return sanitize_html_class($field['custom_class'], esc_attr($field['custom_class']));
+			return esc_attr($field['custom_class']);
 		}
 
 		return '';
@@ -110,6 +110,7 @@ class GravityView_API {
 				'value' => $value,
 				'display_value' => $display_value,
 				'format' => $format,
+				'entry' => $entry,
 			));
 
 			ob_start();
@@ -129,7 +130,7 @@ class GravityView_API {
 		//if show as single entry link is active
 		if( !empty( $field_settings['show_as_link'] ) ) {
 			$href = self::entry_link($entry, $field);
-			$output = '<a href="'. $href .'">'. $value . '</a>';
+			$output = '<a href="'. $href .'">'. $output . '</a>';
 		}
 
 		$output = apply_filters( 'gravityview_field_entry_value', $output, $entry, $field_settings );

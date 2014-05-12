@@ -581,25 +581,33 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Retrieve the default fields id, label and type
+	 * @param  string|array $form form_ID or form object
+	 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
 	 * @return array
 	 */
-	function get_entry_default_fields() {
+	function get_entry_default_fields($form, $zone) {
 		$entry_default_fields = array(
-		        'id' => array( 'label' => 'Entry Id', 'type' => 'id'),
-                'ip' => array( 'label' => 'User IP', 'type' => 'ip'),
-                'date_created' => array( 'label' => 'Entry Date', 'type' => 'date_created'),
-                'source_url' => array( 'label' => 'Source Url', 'type' => 'source_url'),
-                'created_by' => array( 'label' => 'User', 'type' => 'created_by'),
+			'id' => array( 'label' => __('Entry ID', 'gravity-view'), 'type' => 'id'),
+			'date_created' => array( 'label' => __('Entry Date', 'gravity-view'), 'type' => 'date_created'),
+			'source_url' => array( 'label' => __('Source URL', 'gravity-view'), 'type' => 'source_url'),
+			'ip' => array( 'label' => __('User IP', 'gravity-view'), 'type' => 'ip'),
+			'created_by' => array( 'label' => __('User', 'gravity-view'), 'type' => 'created_by'),
         );
-        return apply_filters( 'gravityview_entry_default_fields', $entry_default_fields );
+
+        if('single' !== $zone) {
+        	$entry_default_fields['entry_link'] = array('label' => __('Link to Entry', 'gravity-view'), 'type' => 'entry_link');
+        }
+
+        return apply_filters( 'gravityview_entry_default_fields', $entry_default_fields, $form, $zone);
 	}
 
 	/**
 	 * Calculate the available fields
 	 * @param  string|array form_ID or form object
+	 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
 	 * @return array         fields
 	 */
-	function get_available_fields( $form = '' ) {
+	function get_available_fields( $form = '', $zone = NULL ) {
 
 		if( empty( $form ) ) {
 			return array();
@@ -616,7 +624,7 @@ class GravityView_Admin_Views {
 		}
 
 		// get default fields
-		$default_fields = $this->get_entry_default_fields();
+		$default_fields = $this->get_entry_default_fields($form, $zone);
 
 		//merge without loosing the keys
 		$fields = $fields + $meta_fields + $default_fields;
@@ -672,7 +680,7 @@ class GravityView_Admin_Views {
 		// if saved values, get available fields to label everyone
 		if( !empty( $values ) && 'field' === $type && !empty( $this->post_id ) ) {
 			$form_id = get_post_meta( $this->post_id, '_gravityview_form_id', true );
-			$available_fields = $this->get_available_fields( $form_id );
+			$available_fields = $this->get_available_fields( $form_id, $zone );
 		}
 
 
@@ -876,7 +884,7 @@ class GravityView_Admin_Views {
 		if( 'field' === $field_type ) {
 			// Default options - fields
 			$field_options = array(
-				'show_label' => array( 'type' => 'checkbox', 'label' => __( 'Show Label', 'gravity-view' ), 'default' => true ),
+				'show_label' => array( 'type' => 'checkbox', 'label' => __( 'Show Label', 'gravity-view' ), 'default' => preg_match('/table/ism', $template_id) ),
 				'custom_label' => array( 'type' => 'input_text', 'label' => __( 'Custom Label:', 'gravity-view' ), 'default' => '' ),
 				'custom_class' => array( 'type' => 'input_text', 'label' => __( 'Custom CSS Class:', 'gravity-view' ), 'default' => '' ),
 			);

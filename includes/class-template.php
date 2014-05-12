@@ -88,7 +88,8 @@ class GravityView_View extends Gamajo_Template_Loader {
 			<?php
 			foreach( $rows as $row ) :
 				foreach( $row as $col => $areas ) :
-					$column = ($col == '2-2') ? '1-2' : $col; ?>
+					$column = ($col == '2-2') ? '1-2 gv-right' : $col.' gv-left';
+				?>
 					<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
 						<?php
 						echo '&nbsp;';
