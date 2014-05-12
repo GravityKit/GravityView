@@ -17,6 +17,7 @@ foreach( $this->entries as $entry ) :
 
 	<div id="gv_list_<?php echo $entry['id']; ?>" class="gv-list-view">
 
+		<?php if( !empty(  $this->fields['directory_list-title'] ) || !empty(  $this->fields['directory_list-subtitle'] ) ): ?>
 		<div class="gv-list-view-title">
 
 			<?php if( !empty(  $this->fields['directory_list-title'] ) ):
@@ -42,41 +43,47 @@ foreach( $this->entries as $entry ) :
 			</div>
 			<?php endif; ?>
 		</div>
+		<?php endif; ?>
 
 		<div class="gv-list-view-content">
 
+			<?php if( !empty(  $this->fields['directory_list-image'] ) ): ?>
 			<div class="gv-list-view-content-image">
-				<?php if( !empty(  $this->fields['directory_list-image'] ) ):
-					foreach( $this->fields['directory_list-image'] as $field ) : ?>
-						<?php echo gv_value( $entry, $field ); ?>
-					<?php endforeach; ?>
-				<?php endif; ?>
+			<?php
+				foreach( $this->fields['directory_list-image'] as $field ) : ?>
+					<?php echo gv_value( $entry, $field ); ?>
+				<?php endforeach; ?>
 			</div>
+			<?php endif; ?>
 
+			<?php if( !empty(  $this->fields['directory_list-description'] ) ): ?>
 			<div class="gv-list-view-content-description">
-				<?php if( !empty(  $this->fields['directory_list-description'] ) ):
-					foreach( $this->fields['directory_list-description'] as $field ) : ?>
-						<div class="<?php echo gv_class( $field ); ?>"><?php
+			<?php
+				foreach( $this->fields['directory_list-description'] as $field ) : ?>
+					<div class="<?php echo gv_class( $field ); ?>"><?php
 
-							if($label = gv_label( $field )) { echo '<h4>'.esc_html( $label ).'</h4>'; }
+						$label = gv_label( $field );
+						if(!empty($label)) { echo '<h4>'.esc_html( $label ).'</h4>'; }
 
-							echo wpautop(gv_value( $entry, $field ));
-						?>
-						</div>
-					<?php endforeach; ?>
-				<?php endif; ?>
+						echo wpautop(gv_value( $entry, $field ));
+					?>
+					</div>
+				<?php endforeach; ?>
 			</div>
+			<?php endif; ?>
 
+			<?php if( !empty(  $this->fields['directory_list-content-attributes'] ) ): ?>
 			<div class="gv-list-view-content-attributes">
-				<?php if( !empty(  $this->fields['directory_list-content-attributes'] ) ):
-					foreach( $this->fields['directory_list-content-attributes'] as $field ) : ?>
-						<p class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
-					<?php endforeach; ?>
-				<?php endif; ?>
+			<?php
+				foreach( $this->fields['directory_list-content-attributes'] as $field ) : ?>
+					<p class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
+				<?php endforeach; ?>
 			</div>
+			<?php endif; ?>
 
 		</div>
 
+		<?php if( !empty(  $this->fields['directory_list-footer-left'] ) || !empty(  $this->fields['directory_list-footer-right'] ) ): ?>
 		<div class="gv-grid gv-list-view-footer">
 			<?php if( !empty(  $this->fields['directory_list-footer-left'] ) ): ?>
 			<div class="gv-grid-col-1-2 gv-left">
@@ -94,6 +101,7 @@ foreach( $this->entries as $entry ) :
 			</div>
 			<?php endif; ?>
 		</div>
+		<?php endif; ?>
 
 	</div>
 
