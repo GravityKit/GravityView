@@ -493,13 +493,14 @@
 			var vcfg = viewConfiguration;
 			$("a[href='#remove']").click( vcfg.removeField );
 			$("a[href='#settings']").click( vcfg.openFieldSettings );
+			$(".gv-fields").dblclick( vcfg.openFieldSettings );
 		},
 
 		// Event handler to remove Fields from active areas
 		removeField: function( e ) {
 			e.preventDefault();
 			var area = $( event.currentTarget ).parents(".active-drop");
-			$( event.currentTarget ).parent().parent().remove();
+			$( event.currentTarget ).parents('.gv-fields').remove();
 			if( area.find(".gv-fields").length === 0 ) {
 				 area.find(".drop-message").show();
 			}
@@ -508,7 +509,15 @@
 		// Event handler to open dialog with Field Settings
 		openFieldSettings: function( e ) {
 			e.preventDefault();
-			var parent = $( event.currentTarget ).parent().parent();
+
+			var parent;
+
+			if($( event.currentTarget ).is('.gv-fields')) {
+				parent = $( event.currentTarget );
+			} else {
+				parent = $( event.currentTarget ).parents('.gv-fields');
+			}
+
 			parent.find(".gv-dialog-options").dialog({
 				dialogClass: 'wp-dialog',
 				appendTo: parent,
