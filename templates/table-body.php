@@ -1,6 +1,6 @@
 	<tbody>
 		<?php
-		if(empty($this->entries)) {
+		if((int)$this->__get('total_entries') === 0) {
 			?>
 			<tr>
 				<td colspan="<?php echo sizeof($this->fields['directory_table-columns']); ?>">
@@ -9,7 +9,6 @@
 			</tr>
 		<?php
 		} else {
-
 			foreach( $this->entries as $entry ) : ?>
 				<tr>
 					<?php if( !empty(  $this->fields['directory_table-columns'] ) ):
