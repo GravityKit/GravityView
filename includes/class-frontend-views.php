@@ -269,8 +269,8 @@ class GravityView_frontend {
 		// print the view-id so it can be grabbed by the cookie mechanism  ?>
 		<input type="hidden" id="gravityview-view-id" value="<?php echo $id; ?>">
 		<?php
-		$output = ob_get_contents();
-		ob_end_clean();
+
+		$output = ob_get_clean();
 
 		return $output;
 	}
