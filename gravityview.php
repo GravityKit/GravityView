@@ -5,9 +5,9 @@
  * Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
  *
  * @package   GravityView
- * @author    Zack Katz <zack@katzwebservices.com>
- * @license   ToBeDefined
- * @link      http://www.katzwebservices.com
+ * @license   GPL3+
+ * @author    Katz Web Services, Inc.
+ * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @wordpress-plugin

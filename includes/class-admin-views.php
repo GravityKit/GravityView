@@ -3,10 +3,10 @@
  * Renders all the metaboxes on Add New / Edit View post type.
  *
  * @package   GravityView
- * @author    Zack Katz <zack@katzwebservices.com>
- * @license   ToBeDefined
- * @link      http://www.katzwebservices.com
- * @copyright Copyright 2013, Katz Web Services, Inc.
+ * @license   GPL3+
+ * @author    Katz Web Services, Inc.
+ * @link      http://gravityview.co
+ * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
  */
