@@ -6,7 +6,7 @@
  * @author    Zack Katz <zack@katzwebservices.com>
  * @license   ToBeDefined
  * @link      http://www.katzwebservices.com
- * @copyright Copyright 2013, Katz Web Services, Inc.
+ * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
  */
@@ -123,10 +123,10 @@ class GravityView_Welcome {
 		?>
 		<h2 class="nav-tab-wrapper">
 			<a class="nav-tab <?php echo $selected == 'gv-about' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-about' ), 'index.php' ) ) ); ?>">
-				<?php _e( "What's New", 'gravity-view' ); ?>
+				<?php _e( "About", 'gravity-view' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'gv-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-getting-started' ), 'index.php' ) ) ); ?>">
-				<?php _e( 'Getting Started', 'gravity-view' ); ?>
+				<?php _e( 'Beta Testing', 'gravity-view' ); ?>
 			</a>
 		</h2>
 		<?php
@@ -149,16 +149,32 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 
 			<div class="changelog">
-				<h3><?php _e( 'New features', 'gravity-view' );?></h3>
+				<h3>Thank you for taking part in the GravityView beta</h3>
 
 				<div class="feature-section">
 
-					<h4><?php _e( 'First New Feature', 'gravity-view' );?></h4>
-					<p><?php _e( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'gravity-view' );?></p>
-					<p><?php _e( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'gravity-view' );?></p>
+					<div id="message" class="updated inline">
+						<h3>By helping discover bugs, suggest enhancements, and provide feedback:</h3>
 
-					<h4><?php _e( 'Second New Feature', 'gravity-view' );?></h4>
-					<p><?php _e( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'gravity-view' );?></p>
+						<ul>
+						<li><strong>50% off a GravityView license</strong> - everyone with Beta access will receive a discount</li>
+						<li><strong>The top 10 promoters of GravityView during the private Beta will receive a free license.</strong></li>
+						<li>You'll get a free license if you <strong>report an issue or contribute to the code</strong></li>
+						<li><strong>If you contribute to the code</strong>, you'll receive a thank-you on the plugin's "Credits" page</li>
+						</ul>
+					</div>
+
+					<h2>How to report issues</h2>
+
+					<div class="alignright"><img src="<?php echo plugins_url( 'images/screenshots/report-bug.png', GRAVITYVIEW_FILE ); ?>" /></div>
+
+
+					<p>If you find an issue, at the bottom of every GravityView page is a report widget (pictured at right). Please click the "question mark" button and be as descriptive as possible. Checking the "Include a screenshot..." checkbox will help us fix your issue.</p>
+
+					<h3>Request Github access</h3>
+
+					<p>If you want to contribute to the code, you can <a href="mailto:zack@katzwebservices.com?subject=Github%20Access">request access to the Github repository</a>.</p>
+
 				</div>
 			</div>
 
