@@ -412,7 +412,7 @@ class GravityView_Preset_Issue_Tracker extends GravityView_Default_Template_Tabl
 			'description' => __( 'Manage issues and their statuses.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/issue-tracker/logo-issue-tracker.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/issue-tracker/form-issue-tracker.xml',
-			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/people-table/fields-issue-tracker.xml'
+			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/issue-tracker/fields-issue-tracker.xml'
 
 		);
 
