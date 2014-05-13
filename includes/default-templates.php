@@ -434,7 +434,7 @@ class GravityView_Preset_Business_Listings extends GravityView_Default_Template_
 			'description' => __( 'Display business profiles.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/business-listings/logo-business-listings.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/business-listings/form-business-listings.xml',
-			#'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/business-listings/fields-business-listings.xml'
+			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/business-listings/fields-business-listings.xml'
 		);
 
 		parent::__construct( $id, $settings );
@@ -530,13 +530,14 @@ new GravityView_Default_Template_Table;
 new GravityView_Default_Template_List;
 
 //presets
-new GravityView_Preset_Resume_Board;
-new GravityView_Preset_Job_Board;
 new GravityView_Preset_Business_Listings;
 new GravityView_Preset_Business_Data;
-#new GravityView_Preset_Event_Listings;
 new GravityView_Preset_Issue_Tracker;
-new GravityView_Preset_People_Table;
+new GravityView_Preset_Resume_Board;
+new GravityView_Preset_Job_Board;
 new GravityView_Preset_Profiles;
 new GravityView_Preset_Staff_Profiles;
 new GravityView_Preset_Website_Showcase;
+
+#new GravityView_Preset_Event_Listings;
+#new GravityView_Preset_People_Table;
