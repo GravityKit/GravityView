@@ -166,6 +166,7 @@ class GravityView_Welcome {
 
 						<ul>
 							<li><strong>Front-end editing of entries</strong></li>
+							<li><strong>Event View</strong></li>
 							<li><strong>Column Sorting</strong><br/>
 							We're going to be integrating with <a href="http://datatables.net">DataTables</a> to provide some advanced sorting and search functionality. Until then, the sorting options are limited: none.</li>
 							<li><strong>Map View</strong><br/>
