@@ -191,6 +191,10 @@ class GravityView_Welcome {
 							</ul>
 							</li>
 						</ul>
+
+						<h4>Embed Views in Posts &amp; Pages</h4>
+						<p><img src="<?php echo plugins_url( 'images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" class="screenshot" style="max-width:50%; float:left; margin-right:1em; margin-bottom:1em;" height="44" width="103" />Unlike the Gravity Forms Directory plugin, views are stand-alone; they don&rsquo;t need to always be embedded, but you can still embed Views using the "Add View" button.</p>
+
 					</div>
 				</div>
 
