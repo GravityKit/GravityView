@@ -532,12 +532,12 @@ new GravityView_Default_Template_List;
 //presets
 new GravityView_Preset_Business_Listings;
 new GravityView_Preset_Business_Data;
-new GravityView_Preset_Issue_Tracker;
-new GravityView_Preset_Resume_Board;
-new GravityView_Preset_Job_Board;
 new GravityView_Preset_Profiles;
 new GravityView_Preset_Staff_Profiles;
 new GravityView_Preset_Website_Showcase;
+new GravityView_Preset_Issue_Tracker;
+new GravityView_Preset_Resume_Board;
+new GravityView_Preset_Job_Board;
 
 #new GravityView_Preset_Event_Listings;
 #new GravityView_Preset_People_Table;

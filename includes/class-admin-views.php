@@ -144,6 +144,8 @@ class GravityView_Admin_Views {
 	/**
 	 * Render html for 'select template' metabox
 	 *
+	 * @todo  Re-enable the Preview link
+	 * @group Beta
 	 * @access public
 	 * @param object $post
 	 * @return void
@@ -176,7 +178,7 @@ class GravityView_Admin_Views {
 									<p><a href="<?php echo esc_url( $template['buy_source'] ); ?>" class="button-primary button-buy-now"><?php esc_html_e( 'Buy Now', 'gravity-view'); ?></a></p>
 								<?php else: ?>
 									<p><a href="#gv_select_template" class="button-primary" data-templateid="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Select', 'gravity-view'); ?></a></p>
-									<p><a href="#gv_preview_template" class="button-secondary"><?php esc_html_e( 'Preview', 'gravity-view'); ?></a></p>
+									<!-- // TODO: Take screenshots. <p><a href="#gv_preview_template" class="button-secondary"><?php esc_html_e( 'Preview', 'gravity-view'); ?></a></p> -->
 								<?php endif; ?>
 							</div>
 						</div>
