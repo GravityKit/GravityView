@@ -135,6 +135,7 @@ class GravityView_Welcome {
 	/**
 	 * Render About Screen
 	 *
+	 * @group Beta
 	 * @access public
 	 * @since 1.0
 	 * @return void
@@ -143,67 +144,61 @@ class GravityView_Welcome {
 		list( $display_version ) = explode( '-', GravityView_Plugin::version );
 		?>
 		<div class="wrap about-wrap">
-			<h1><?php printf( __( 'Welcome to GravityView %s', 'gravity-view' ), $display_version ); ?></h1>
-			<div class="about-text"><?php printf( __( 'Thank you for Installing GravityView %s. Beautifully display your Gravity Forms entries.', 'gravity-view' ), $display_version ); ?></div>
+			<h1><?php _e( 'Welcome to GravityView Beta', 'gravity-view' ); ?></h1>
+			<div class="about-text"><?php printf( __( 'Thank you for installing GravityView %s. Beautifully display your Gravity Forms entries.', 'gravity-view' ), $display_version ); ?></div>
 
-			<?php $this->tabs(); ?>
+			<?php
+				/*
+					// For later...
+					$this->tabs();
+				 */
+			?>
 
 			<div class="changelog">
 				<h3>Thank you for taking part in the GravityView beta</h3>
 
-				<div class="feature-section">
+				<div class="feature-section col two-col">
 
-					<div id="message" class="updated inline">
-						<h3>By helping discover bugs, suggest enhancements, and provide feedback:</h3>
+					<div>
+						<h2>Not Yet Implemented</h2>
+
+						<h4>We're working on adding this functionality:</h4>
 
 						<ul>
-						<li><strong>50% off a GravityView license</strong> - everyone with Beta access will receive a discount</li>
-						<li><strong>The top 10 promoters of GravityView during the private Beta will receive a free license.</strong></li>
-						<li>You'll get a free license if you <strong>report an issue or contribute to the code</strong></li>
-						<li><strong>If you contribute to the code</strong>, you'll receive a thank-you on the plugin's "Credits" page</li>
+							<li><strong>Front-end editing of entries</strong></li>
+							<li><strong>Column Sorting</strong><br/>
+							We're going to be integrating with <a href="http://datatables.net">DataTables</a> to provide some advanced sorting and search functionality. Until then, the sorting options are limited: none.</li>
+							<li><strong>Map View</strong><br/>
+							Display your entries on a map view.</li>
+							<li><strong>Advanced output with merge tags</strong><br/>
+							We'll be adding the ability to integrate the value of the entry field with the output.</li>
 						</ul>
-					</div>
 
-					<h2>How to report issues</h2>
+						<h4>Feature Requests</h4>
 
-					<div class="alignright"><img src="<?php echo plugins_url( 'images/screenshots/report-bug.png', GRAVITYVIEW_FILE ); ?>" /></div>
+						<p>You can share your ideas for feature requests on the <a href="http://gravityview.uservoice.com/forums/238941-gravity-forms-directory">Ideas Forum</a>.</p>
 
-
-					<p>If you find an issue, at the bottom of every GravityView page is a report widget (pictured at right). Please click the "question mark" button and be as descriptive as possible. Checking the "Include a screenshot..." checkbox will help us fix your issue.</p>
-
-					<h3>Request Github access</h3>
-
-					<p>If you want to contribute to the code, you can <a href="mailto:zack@katzwebservices.com?subject=Github%20Access">request access to the Github repository</a>.</p>
-
-				</div>
-			</div>
-
-			<div class="changelog">
-				<h3><?php _e( 'Additional Updates', 'gravity-view' );?></h3>
-
-				<div class="feature-section col three-col">
-					<div>
-						<h4><?php _e( 'Update One', 'gravity-view' );?></h4>
-					<p><?php _e( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'gravity-view' );?></p>
-
-						<h4><?php _e( 'Update Two', 'gravity-view' );?></h4>
-					<p><?php _e( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'gravity-view' );?></p>
-					</div>
-
-					<div>
-						<h4><?php _e( 'Update Three', 'gravity-view' );?></h4>
-					<p><?php _e( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'gravity-view' );?></p>
-
-						<h4><?php _e( 'Update Four', 'gravity-view' );?></h4>
-						<p><?php _e( 'A new API has been introduced for easily adding new template tags to purchase receipts and admin sale notifications.', 'gravity-view' );?></p>
 					</div>
 
 					<div class="last-feature">
-						<h4><?php _e( 'Update Five', 'gravity-view' );?></h4>
-					<p><?php _e( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'gravity-view' );?></p>
+						<h2>How to report issues</h2>
 
-						<h4><?php _e( 'Update Six','gravity-view' );?></h4>
-					<p><?php _e( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'gravity-view' );?></p>
+						<p>If you find an issue, at the bottom of every GravityView page is a report widget (pictured below). Please click the "question mark" button and be as descriptive as possible. Checking the "Include a screenshot..." checkbox will help us fix your issue.</p>
+
+						<div><img src="<?php echo plugins_url( 'images/screenshots/report-bug.png', GRAVITYVIEW_FILE ); ?>" class="screenshot" /></div>
+
+						<h4>By helping discover bugs, suggest enhancements, and provide feedback:</h4>
+
+						<ul>
+							<li><strong>50% off a GravityView license</strong> - everyone with Beta access will receive a discount</li>
+							<li><strong>The top 10 promoters of GravityView during the private Beta will receive a free license.</strong></li>
+							<li>You'll get a free license if you <strong>report an issue or contribute to the code</strong></li>
+							<li><strong>If you contribute to the code</strong>, you'll receive a thank-you on the plugin's "Credits" page</li>
+						</ul>
+
+						<h4>Request Github access</h4>
+
+						<p>If you want to contribute to the code, you can <a href="mailto:zack@katzwebservices.com?subject=Github%20Access">request access to the Github repository</a>.</p>
 					</div>
 				</div>
 			</div>
@@ -245,6 +240,16 @@ class GravityView_Welcome {
 				</div>
 
 			</div>
+
+			<h2>Credits</h2>
+
+			<h3>GravityView uses the following open-source libraries:</h3>
+
+			<ul>
+			<li><a href="http://reduxframework.com">ReduxFramework</a> - a powerful settings library</li>
+			<li><a href="https://github.com/GaryJones/Gamajo-Template-Loader">Gamajo Template Loader</a> - makes it easy to load template files with user overrides</li>
+			<li><a href="http://katz.si/gf">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>
+			</ul>
 
 			<div class="changelog">
 				<h3><?php _e( 'Quick Terminology', 'gravity-view' );?></h3>
@@ -288,6 +293,7 @@ class GravityView_Welcome {
 	 * Sends user to the Welcome page on first activation of GravityView as well as each
 	 * time GravityView is upgraded to a new version
 	 *
+	 * @group Beta
 	 * @access public
 	 * @since 1.0
 	 * @return void
@@ -307,6 +313,9 @@ class GravityView_Welcome {
 
 		$upgrade = get_option( 'gv_version_upgraded_from' );
 
+		wp_safe_redirect( admin_url( 'index.php?page=gv-about' ) ); exit;
+
+		// After Beta
 		if( ! $upgrade ) { // First time install
 			wp_safe_redirect( admin_url( 'index.php?page=gv-getting-started' ) ); exit;
 		} else { // Update
