@@ -327,7 +327,7 @@ class GravityView_Preset_Business_Data extends GravityView_Default_Template_Tabl
 			'logo' => plugins_url('includes/presets/business-data/logo-business-data.png', GRAVITYVIEW_FILE),
 			//'preview' => '',
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/business-data/form-business-data.xml',
-			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/business-data/fields-test.xml'
+			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/business-data/fields-business-data.xml'
 		);
 
 		parent::__construct( $id, $settings );
@@ -348,7 +348,7 @@ class GravityView_Preset_Resume_Board extends GravityView_Default_Template_Table
 			'description' => __( 'Allow job-seekers to post their resumes.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/resume-board/logo-resume-board.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/resume-board/form-resume-board.xml',
-			'preset_fields' => '',
+			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/resume-board/fields-resume-board.xml'
 		);
 
 		parent::__construct( $id, $settings );
@@ -356,7 +356,7 @@ class GravityView_Preset_Resume_Board extends GravityView_Default_Template_Table
 	}
 }
 
-class GravityView_Preset_Job_Board extends GravityView_Default_Template_Table {
+class GravityView_Preset_Job_Board extends GravityView_Default_Template_List {
 
 	function __construct() {
 
@@ -369,7 +369,7 @@ class GravityView_Preset_Job_Board extends GravityView_Default_Template_Table {
 			'description' => __( 'Post available jobs in a simple job board.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/job-board/logo-job-board.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/job-board/form-job-board.xml',
-			'preset_fields' => '',
+			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/job-board/fields-job-board.xml'
 
 		);
 
@@ -390,7 +390,7 @@ class GravityView_Preset_People_Table extends GravityView_Default_Template_Table
 			'description' => __( 'Display information about people in a table.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/people-table/logo-people-table.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/people-table/form-people-table.xml',
-			'preset_fields' => '',
+			#'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/people-table/fields-people-table.xml'
 
 		);
 
@@ -412,7 +412,7 @@ class GravityView_Preset_Business_Listings extends GravityView_Default_Template_
 			'description' => __( 'Display business profiles.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/business-listings/logo-business-listings.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/business-listings/form-business-listings.xml',
-			'preset_fields' => '',
+			#'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/business-listings/fields-business-listings.xml'
 		);
 
 		parent::__construct( $id, $settings );
@@ -433,7 +433,7 @@ class GravityView_Preset_Event_Listings extends GravityView_Default_Template_Lis
 			'description' => __( 'Present a list of your events.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/event-listings/logo-event-listings.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/event-listings/form-event-listings.xml',
-			'preset_fields' => '',
+			#'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/event-listings/fields-event-listings.xml'
 		);
 
 		parent::__construct( $id, $settings );
@@ -454,7 +454,7 @@ class GravityView_Preset_Profiles extends GravityView_Default_Template_List {
 			'description' => __( 'List people with individual profiles.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/profiles/logo-profiles.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/profiles/form-profiles.xml',
-			'preset_fields' => '',
+			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/profiles/fields-profiles.xml'
 		);
 
 		parent::__construct( $id, $settings );
@@ -496,7 +496,7 @@ class GravityView_Preset_Website_Showcase extends GravityView_Default_Template_L
 			'description' => __( 'Feature submitted websites with screenshots.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/website-showcase/logo-website-showcase.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/website-showcase/form-website-showcase.xml',
-			'preset_fields' => '',
+			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/website-showcase/fields-website-showcase.xml'
 		);
 
 		parent::__construct( $id, $settings );
