@@ -71,6 +71,9 @@ if (!class_exists('GravityView_Settings')) {
             $this->ReduxFramework = new ReduxFramework($this->sections, $this->args);
         }
 
+        /**
+         * @group Beta
+         */
         public function setSections() {
 
             ob_start();
@@ -81,20 +84,21 @@ if (!class_exists('GravityView_Settings')) {
             	    'type'      => 'edd_license',
             	    'remote_api_url' => 'https://katz.co',
             	    'author'	=> 'Katz Web Services, Inc.',
+            	    'default'	=> array('license' => 'BETA_TESTER', 'status' => 'Valid'),
             	    'item_name'	=> 'GravityView',
             	    'version'	=> GravityView_Plugin::version,
             	    'mode'		=> 'plugin',
             	    'path'		=> GRAVITYVIEW_DIR,
-            	    'title'     => __('Beta Invite Key', 'gravity-view'),
-            	    #'subtitle'  => __('With the "section" field you can create indent option sections.', 'gravity-view'),
+            	    'title'     => __('License Key', 'gravity-view'),
+            	    'subtitle'  => __('Use <code>BETA_TESTER</code>. This allows you to get automatic upgrades.', 'gravity-view'),
             	),
-            	array(
+            	/*array(
             	    'id'        => 'beta-email',
             	    'type'      => 'text',
             	    'title'     => __('Beta Invite Email', 'gravity-view'),
             	    'validate'	=> 'email',
             	    'msg'		=> 'Please enter a valid email address',
-            	),
+            	),*/
             	array(
             	    'id'        => 'no-conflict-mode',
             	    'type'      => 'switch',
@@ -105,9 +109,8 @@ if (!class_exists('GravityView_Settings')) {
 
             // ACTUAL DECLARATION OF SECTIONS
             $this->sections[] = array(
-                'title'     => __('Home Settings', 'gravity-view'),
+                'title'     => __('GravityView Settings', 'gravity-view'),
                 'icon'      => 'el-icon-home',
-                // 'submenu' => false, // Setting submenu to false on a given section will hide it from the WordPress sidebar menu!
                 'fields'    => $fields,
             );
 
