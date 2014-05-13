@@ -42,7 +42,7 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 				'type' => 'custom',
 				'label' =>  __( 'Table (default)', 'gravity-view' ),
 				'description' => __('Display items in a table view.', 'gravity-view'),
-				'logo' => plugins_url('images/placeholder.png', GRAVITYVIEW_FILE),
+				'logo' => plugins_url('includes/presets/default-table/logo-default-table.png', GRAVITYVIEW_FILE),
 				'css_source' => plugins_url('templates/css/table-view.css', GRAVITYVIEW_FILE),
 			);
 		}
@@ -81,7 +81,7 @@ class GravityView_Default_Template_List extends GravityView_Template {
 				'type' => 'custom',
 				'label' =>  __( 'List (default)', 'gravity-view' ),
 				'description' => __('Display items in a listing view.', 'gravity-view'),
-				'logo' => plugins_url('images/placeholder.png', GRAVITYVIEW_FILE),
+				'logo' => plugins_url('includes/presets/default-list/logo-default-list.png', GRAVITYVIEW_FILE),
 				'css_source' => plugins_url('templates/css/list-view.css', GRAVITYVIEW_FILE),
 			);
 		}
