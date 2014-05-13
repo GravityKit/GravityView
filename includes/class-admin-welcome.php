@@ -156,7 +156,7 @@ class GravityView_Welcome {
 
 			<div class="changelog">
 
-				<div class="feature-section col">
+				<div class="feature-section col" style="margin-top:0;">
 
 					<div>
 
@@ -226,7 +226,7 @@ class GravityView_Welcome {
 
 				<hr />
 
-				<div class="changelog">
+				<div class="feature-section">
 					<h2>Things we&rsquo;re working on:</h2>
 
 					<h4>We&rsquo;re working on adding this functionality:</h4>
