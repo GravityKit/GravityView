@@ -3,7 +3,7 @@
 		if((int)$this->__get('total_entries') === 0) {
 			?>
 			<tr>
-				<td colspan="<?php echo sizeof($this->fields['directory_table-columns']); ?>">
+				<td colspan="<?php echo sizeof($this->fields['directory_table-columns']); ?>" class="gv-no-results">
 					<?php echo gv_no_results(); ?>
 				</td>
 			</tr>

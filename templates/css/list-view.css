@@ -34,7 +34,8 @@
     padding: 0; }
   .gv-list-view-content .gv-list-view-content-image {
     float: left;
-    margin: 0 1em 1em 0; }
+    margin: 0 1em 1em 0;
+    max-width: 45%; }
     .gv-list-view-content .gv-list-view-content-image .gv-field-file-uploads li,
     .gv-list-view-content .gv-list-view-content-image .gv-field-file-uploads {
       list-style: none;
