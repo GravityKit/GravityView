@@ -47,13 +47,22 @@ class GravityView_API {
 	 * @param mixed $field
 	 * @return string
 	 */
-	public static function field_class( $field ) {
+	public static function field_class( $field, $form = NULL, $entry = NULL ) {
+		global $gravityview_view;
+
+		$classes = array();
 
 		if( !empty( $field['custom_class'] ) ) {
-			return esc_attr($field['custom_class']);
+			$classes[] = $field['custom_class'];
 		}
 
-		return '';
+		if(!empty($field['id'])) {
+			$form_id = $gravityview_view->__get('form_id');
+			$form_id = empty($form_id) ? '' : '-'.$form_id;
+			$classes[] = 'gv-field'.$form_id.'-'.$field['id'];
+		}
+
+		return esc_attr(implode(' ', $classes));
 	}
 
 
