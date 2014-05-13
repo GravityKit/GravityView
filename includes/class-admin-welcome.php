@@ -155,52 +155,97 @@ class GravityView_Welcome {
 			?>
 
 			<div class="changelog">
-				<h3>Thank you for taking part in the GravityView beta</h3>
+
+				<div class="feature-section col">
+
+					<div>
+
+						<h2>Getting Started</h2>
+
+						<ol>
+							<li>Go to <a href="<?php echo admin_url('post-new.php?post_type=gravityview'); ?>">Views &gt; New View</a></li>
+							<li>If you want to <strong>create a new form</strong>, click the "Start Fresh" button</li>
+							<li>If you want to <strong>use an existing form&rsquo;s entries</strong>, select from the dropdown.</li>
+							<li>Select the type of View you would like to create. There are two core types of Views: <strong>Table</strong> and <strong>Listing</strong>.
+								<ul>
+									<li><strong>Table Views</strong> output entries as tables; a grid of data.</li>
+									<li><strong>Listing Views</strong> display entries in a more visual layout.</li>
+								</ul>
+							</li>
+						</ol>
+
+						<h4>Configure Mulitple Entry &amp; Single Entry Layouts</h4>
+						<p>You can configure how <strong>Multiple Entry</strong> and <strong>Single Entry</strong>. These can be configured by using the tabs under "View Configuration."</p>
+
+						<p class="clear:right;"><img src="<?php echo plugins_url( 'images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" style="max-width:50%; clear:right;" /></p>
+
+						<ul>
+							<li>Click "+ Add Field" to add a field to a zone*</li>
+							<li>Fields can be dragged and dropped to be re-arranged.</li>
+							<li>Click the <i class="dashicons dashicons-admin-generic"></i> gear icon on each field to configure the <strong>Field Settings</strong>:
+							<ul>
+								<li><em>Custom Label</em>: Change how the label is shown on the website. Default: the name of the field</li>
+								<li><em>Custom CSS Class</em>: Add additional CSS classes to the field container</li>
+								<li><em>Use this field as a search filter</em>: Allow searching the text of a field, or narrowing visible results using the field.</li>
+								<li><em>Only visible to logged in users with role</em>: Make certain fields visible only to users who are logged in.</li>
+							</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<hr />
 
 				<div class="feature-section col two-col">
 
+					<h3>Thank you for taking part in the GravityView beta</h3>
+
 					<div>
-						<h2>Not Yet Implemented</h2>
-
-						<h4>We're working on adding this functionality:</h4>
-
-						<ul>
-							<li><strong>Front-end editing of entries</strong></li>
-							<li><strong>Event View</strong></li>
-							<li><strong>Column Sorting</strong><br/>
-							We're going to be integrating with <a href="http://datatables.net">DataTables</a> to provide some advanced sorting and search functionality. Until then, the sorting options are limited: none.</li>
-							<li><strong>Map View</strong><br/>
-							Display your entries on a map view.</li>
-							<li><strong>Advanced output with merge tags</strong><br/>
-							We'll be adding the ability to integrate the value of the entry field with the output.</li>
-						</ul>
-
-						<h4>Feature Requests</h4>
-
-						<p>You can share your ideas for feature requests on the <a href="http://gravityview.uservoice.com/forums/238941-gravity-forms-directory">Ideas Forum</a>.</p>
-
-					</div>
-
-					<div class="last-feature">
 						<h2>How to report issues</h2>
 
-						<p>If you find an issue, at the bottom of every GravityView page is a report widget (pictured below). Please click the "question mark" button and be as descriptive as possible. Checking the "Include a screenshot..." checkbox will help us fix your issue.</p>
-
-						<div><img src="<?php echo plugins_url( 'images/screenshots/report-bug.png', GRAVITYVIEW_FILE ); ?>" class="screenshot" /></div>
-
-						<h4>By helping discover bugs, suggest enhancements, and provide feedback:</h4>
-
-						<ul>
-							<li><strong>50% off a GravityView license</strong> - everyone with Beta access will receive a discount</li>
-							<li><strong>The top 10 promoters of GravityView during the private Beta will receive a free license.</strong></li>
-							<li>You'll get a free license if you <strong>report an issue or contribute to the code</strong></li>
-							<li><strong>If you contribute to the code</strong>, you'll receive a thank-you on the plugin's "Credits" page</li>
-						</ul>
+						<p><img src="<?php echo plugins_url( 'images/screenshots/report-bug.png', GRAVITYVIEW_FILE ); ?>" class="screenshot" style="max-width:50%;" height="271" width="236" />If you find an issue, at the bottom of every GravityView page is a report widget (pictured below). Please click the "question mark" button and be as descriptive as possible. Checking the "Include a screenshot..." checkbox will help us fix your issue.</p>
 
 						<h4>Request Github access</h4>
 
 						<p>If you want to contribute to the code, you can <a href="mailto:zack@katzwebservices.com?subject=Github%20Access">request access to the Github repository</a>.</p>
 					</div>
+
+					<div class="last-feature">
+						<h2 class="clear">Thank you for your help.</h2>
+
+						<h4 class="clear">By helping discover bugs, suggest enhancements, and provide feedback:</h4>
+
+						<ul>
+							<li><strong>50% off a GravityView license</strong> - everyone with Beta access will receive a discount</li>
+							<li><strong>The top 10 promoters of GravityView during the private Beta will receive a free license.</strong></li>
+							<li>You&rsquo;ll get a free license if you <strong>report an issue or contribute to the code</strong></li>
+							<li><strong>If you contribute to the code</strong>, you&rsquo;ll receive a thank-you on the plugin&rsquo;s "Credits" page</li>
+						</ul>
+					</div>
+				</div>
+
+				<hr />
+
+				<div class="changelog">
+					<h2>Things we&rsquo;re working on:</h2>
+
+					<h4>We&rsquo;re working on adding this functionality:</h4>
+
+					<ul>
+						<li><strong>Front-end editing of entries</strong></li>
+						<li><strong>More Views!</strong></li>
+						<li><strong>Column Sorting</strong><br/>
+						We&rsquo;re going to be integrating with <a href="http://datatables.net">DataTables</a> to provide some advanced sorting and search functionality. Until then, the sorting options are limited: none.</li>
+						<li><strong>Map View</strong><br/>
+						Display your entries on a map view.</li>
+						<li><strong>Advanced output with merge tags</strong><br/>
+						We&rsquo;ll be adding the ability to integrate the value of the entry field with the output.</li>
+						<li>And much, MUCH more&hellip;</li>
+					</ul>
+
+					<h4>Feature Requests</h4>
+
+					<p>You can share your ideas for feature requests on the <a href="http://gravityview.uservoice.com/forums/238941-gravity-forms-directory">Ideas Forum</a>.</p>
 				</div>
 			</div>
 
@@ -214,6 +259,7 @@ class GravityView_Welcome {
 	/**
 	 * Render Getting Started Screen
 	 *
+	 * @todo  Add a tab!
 	 * @access public
 	 * @since 1.0
 	 * @return void
