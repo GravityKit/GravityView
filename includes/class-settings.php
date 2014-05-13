@@ -27,6 +27,7 @@ if (!class_exists('GravityView_Settings')) {
             add_action( "redux/extensions/gravityview_settings", array($this, 'register_edd_extension') );
 
             add_action('gravityview_remove_conflicts_after', array($this, '_enqueue'));
+
         }
 
         /**
@@ -71,6 +72,22 @@ if (!class_exists('GravityView_Settings')) {
             $this->ReduxFramework = new ReduxFramework($this->sections, $this->args);
         }
 
+        function get_edd_field() {
+        	return array(
+        	    'id'        => 'license',
+        	    'type'      => 'edd_license',
+        	    'remote_api_url' => 'https://katz.co',
+        	    'author'	=> 'Katz Web Services, Inc.',
+        	    'default'	=> array('license' => 'BETA_TESTER', 'status' => 'Valid'),
+        	    'item_name'	=> 'GravityView',
+        	    'version'	=> GravityView_Plugin::version,
+        	    'mode'		=> 'plugin',
+        	    'path'		=> GRAVITYVIEW_FILE,
+        	    'title'     => __('License Key', 'gravity-view'),
+        	    'subtitle'  => __('Use <code>BETA_TESTER</code>. This allows you to get automatic upgrades.', 'gravity-view'),
+        	);
+        }
+
         /**
          * @group Beta
          */
@@ -78,27 +95,10 @@ if (!class_exists('GravityView_Settings')) {
 
             ob_start();
 
+            $edd_field = $this->get_edd_field();
+
             $fields = array(
-            	array(
-            	    'id'        => 'license',
-            	    'type'      => 'edd_license',
-            	    'remote_api_url' => 'https://katz.co',
-            	    'author'	=> 'Katz Web Services, Inc.',
-            	    'default'	=> array('license' => 'BETA_TESTER', 'status' => 'Valid'),
-            	    'item_name'	=> 'GravityView',
-            	    'version'	=> GravityView_Plugin::version,
-            	    'mode'		=> 'plugin',
-            	    'path'		=> GRAVITYVIEW_DIR,
-            	    'title'     => __('License Key', 'gravity-view'),
-            	    'subtitle'  => __('Use <code>BETA_TESTER</code>. This allows you to get automatic upgrades.', 'gravity-view'),
-            	),
-            	/*array(
-            	    'id'        => 'beta-email',
-            	    'type'      => 'text',
-            	    'title'     => __('Beta Invite Email', 'gravity-view'),
-            	    'validate'	=> 'email',
-            	    'msg'		=> 'Please enter a valid email address',
-            	),*/
+            	$edd_field,
             	array(
             	    'id'        => 'no-conflict-mode',
             	    'type'      => 'switch',

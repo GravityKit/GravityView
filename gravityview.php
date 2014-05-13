@@ -31,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 /** Constants */
 if ( !defined('GRAVITYVIEW_VERSION') )
-	define( 'GRAVITYVIEW_VERSION', '1.0.0' );
+	define( 'GRAVITYVIEW_VERSION', '1.0-beta' );
 if( !defined('GRAVITYVIEW_FILE') )
 	define( 'GRAVITYVIEW_FILE', __FILE__ );
 if ( !defined('GRAVITYVIEW_URL') )
