@@ -441,7 +441,7 @@ class GravityView_Admin_Views {
 		GravityView_Plugin::log_debug( '[import_form] Import Preset Form. File: ' . print_r( $xml_path, true ) );
 
 		if( empty( $xml_path ) || !class_exists('GFExport') || !file_exists( $xml_path ) ) {
-			GravityView_Plugin::log_debug( '[import_form] Class GFExport or file not found. file: ' . print_r( $xml_path, true ) );
+			GravityView_Plugin::log_error( '[import_form] Class GFExport or file not found. file: ' . print_r( $xml_path, true ) );
 			return false;
 		}
 
@@ -452,7 +452,7 @@ class GravityView_Admin_Views {
 		GravityView_Plugin::log_debug( '[import_form] Importing form. Result: ' . print_r( $count, true ) . '. Form: ' . print_r( $forms, true ) );
 
 		if( $count != 1 || empty( $forms[0]['id'] ) ) {
-			GravityView_Plugin::log_debug( '[import_form] Form Import Failed!' );
+			GravityView_Plugin::log_error( '[import_form] Form Import Failed!' );
 			return false;
 		}
 
@@ -479,8 +479,13 @@ class GravityView_Admin_Views {
 		$parser = new WXR_Parser();
 		$presets = $parser->parse( $file );
 
+		if(is_wp_error( $presets )) {
+			GravityView_Plugin::log_error( '[import_fields] Importing Preset Fields failed. Threw WP_Error: ' . $presets->get_error_message() );
+			return false;
+		}
+
 		if( empty( $presets['posts'][0]['postmeta'] ) && !is_array( $presets['posts'][0]['postmeta'] ) ) {
-			GravityView_Plugin::log_debug( '[import_fields] Importing Preset Fields failed. Meta not found in file: ' . print_r( $file, true ) );
+			GravityView_Plugin::log_error( '[import_fields] Importing Preset Fields failed. Meta not found in file: ' . print_r( $file, true ) );
 			return false;
 		}
 
@@ -510,8 +515,8 @@ class GravityView_Admin_Views {
 		} else {
 			$form_file = apply_filters( 'gravityview_template_formxml', '', $template_id );
 			if( !file_exists( $form_file )  ) {
-				GravityView_Plugin::log_debug( '[pre_get_available_fields] Importing Form Fields for preset ['. $template_id .']. File not found. file: ' . $form_file );
-				return;
+				GravityView_Plugin::log_error( '[pre_get_available_fields] Importing Form Fields for preset ['. $template_id .']. File not found. file: ' . $form_file );
+				return false;
 			}
 		}
 
@@ -542,7 +547,7 @@ class GravityView_Admin_Views {
         $forms = $xml->unserialize($xmlstr);
 
         if( !$forms ) {
-        	GravityView_Plugin::log_debug( '[pre_get_available_fields] Importing Form Fields for preset ['. $template_id .']. Error importing file: ' . $form_file );
+        	GravityView_Plugin::log_error( '[pre_get_available_fields] Importing Form Fields for preset ['. $template_id .']. Error importing file: ' . $form_file );
         	return;
         }
 
@@ -1097,7 +1102,7 @@ class GravityView_Admin_Views {
 		// get the form ID
 		if( $form_id === false ) {
 			// send error to user
-			GravityView_Plugin::log_debug( '[create_preset_form] Error importing form for template id: ' . $_POST['template_id'] );
+			GravityView_Plugin::log_error( '[create_preset_form] Error importing form for template id: ' . $_POST['template_id'] );
 			echo false;
 			die();
 		}
