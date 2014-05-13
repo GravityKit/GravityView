@@ -85,7 +85,7 @@ class GravityView_Admin_Views {
 		wp_nonce_field( 'gravityview_select_form', 'gravityview_select_form_nonce' );
 
 		//current value
-		$current = get_post_meta( $post->ID, '_gravityview_form_id', true );
+		$current_form = get_post_meta( $post->ID, '_gravityview_form_id', true );
 
 		// input ?>
 		<label for="gravityview_form_id" ><?php esc_html_e( 'Where would you like the data to come from for this View?', 'gravity-view' ); ?></label>
@@ -93,25 +93,40 @@ class GravityView_Admin_Views {
 		<?php
 		// check for available gravity forms
 		$forms = gravityview_get_forms();
+		?>
 
-		// render "start fresh" button ?>
 		<p>
-			<a class="button-primary" href="#gv_start_fresh" title="<?php esc_attr_e( 'Start Fresh', 'gravity-view' ); ?>"><?php esc_html_e( 'Start Fresh', 'gravity-view' ); ?></a>
+			<?php if ( empty( $current_form ) ) : ?>
+				<?php // render "start fresh" button ?>
+				<a class="button-primary" href="#gv_start_fresh" title="<?php esc_attr_e( 'Start Fresh', 'gravity-view' ); ?>"><?php esc_html_e( 'Start Fresh', 'gravity-view' ); ?></a>
 
-			<span>&nbsp;<?php esc_html_e( 'or use an existing form', 'gravity-view' ); ?>&nbsp;</span>
+				<span>&nbsp;<?php esc_html_e( 'or use an existing form', 'gravity-view' ); ?>&nbsp;</span>
+
+			<?php endif; ?>
 
 			<?php // render select box ?>
 			<select name="gravityview_form_id" id="gravityview_form_id">
-				<option value="" <?php selected( '', $current, true ); ?>>&mdash; <?php esc_html_e( 'list of forms', 'gravity-view' ); ?> &mdash;</option>
+				<option value="" <?php selected( '', $current_form, true ); ?>>&mdash; <?php esc_html_e( 'list of forms', 'gravity-view' ); ?> &mdash;</option>
 				<?php foreach( $forms as $form ) : ?>
-					<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current, true ); ?>><?php echo $form['title']; ?></option>
+					<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current_form, true ); ?>><?php echo $form['title']; ?></option>
 				<?php endforeach; ?>
 			</select>
+
+			<?php // render change layout button
+			if( !empty( $current_form ) ): ?>
+				&nbsp;<a class="button-primary" href="#gv_switch_view" title="<?php esc_attr_e( 'Switch View', 'gravity-view' ); ?>"><?php esc_html_e( 'Switch View', 'gravity-view' ); ?></a>
+			<?php endif; ?>
+
 		</p>
 
 		<?php // confirm dialog box ?>
 		<div id="gravityview_form_id_dialog" class="gv-dialog-options" title="<?php esc_attr_e( 'Attention', 'gravity-view' ); ?>">
 			<p><?php esc_html_e( 'Changing the form will discard all the existent View configuration.', 'gravity-view' ); ?></p>
+		</div>
+
+		<?php // confirm template dialog box ?>
+		<div id="gravityview_switch_template_dialog" class="gv-dialog-options" title="<?php esc_attr_e( 'Attention', 'gravity-view' ); ?>">
+			<p><?php esc_html_e( 'Changing the View Type will discard all the existent View configuration.', 'gravity-view' ); ?></p>
 		</div>
 
 		<?php // no js notice ?>
