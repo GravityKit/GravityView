@@ -303,6 +303,8 @@
 			$.post( gvGlobals.ajaxurl, data, function( response ) {
 				if( response ) {
 					var content = $.parseJSON( response );
+					$('#directory-header-widgets').html( content.header );
+					$('#directory-footer-widgets').html( content.footer );
 					$('#directory-active-fields').append( content.directory );
 					$('#single-active-fields').append( content.single );
 					vcfg.showViewConfig();
@@ -325,6 +327,8 @@
 			$.post( gvGlobals.ajaxurl, data, function( response ) {
 				if( response ) {
 					var content = $.parseJSON( response );
+					$('#directory-header-widgets').html( content.header );
+					$('#directory-footer-widgets').html( content.footer );
 					$('#directory-active-fields').append( content.directory );
 					$('#single-active-fields').append( content.single );
 					 vcfg.showViewConfig();

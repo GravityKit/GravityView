@@ -489,18 +489,27 @@ class GravityView_Admin_Views {
 			return false;
 		}
 
-		$fields = array();
+		GravityView_Plugin::log_debug(print_r($presets['posts'][0]['postmeta'], true));
+
+		$fields = $widgets = array();
 		foreach( $presets['posts'][0]['postmeta'] as $meta ) {
-			if( $meta['key'] === '_gravityview_directory_fields' ) {
-				$fields = maybe_unserialize( $meta['value'] );
-				break;
+			switch ($meta['key']) {
+				case '_gravityview_directory_fields':
+					$fields = maybe_unserialize( $meta['value'] );
+					break;
+				case '_gravityview_directory_widgets':
+					$widgets = maybe_unserialize( $meta['value'] );
+					break;
 			}
 		}
 
 		GravityView_Plugin::log_debug( '[import_fields] Imported Preset Fields: ' . print_r( $fields, true ) );
+		GravityView_Plugin::log_debug( '[import_fields] Imported Preset Widgets: ' . print_r( $widgets, true ) );
 
-		return $fields;
-
+		return array(
+			'fields' => $fields,
+			'widgets' => $widgets
+		);
 	}
 
 	/**
@@ -772,7 +781,7 @@ class GravityView_Admin_Views {
 		ob_start();
 		?>
 
-		<div class="gv-grid gv-grid-pad gv-grid-border">
+		<div class="gv-grid gv-grid-pad gv-grid-border" id="directory-<?php echo $zone; ?>-widgets">
 			<?php $this->render_active_areas( $template_id, 'widget', $zone, $default_widget_areas, $widgets ); ?>
 		</div>
 
@@ -1058,23 +1067,40 @@ class GravityView_Admin_Views {
 		$preset_fields_path = apply_filters( 'gravityview_template_fieldsxml', array(), $_POST['template_id'] );
 		// import fields
 		if( !empty( $preset_fields_path ) ) {
-			$preset_fields = $this->import_fields( $preset_fields_path );
+			$presets = $this->import_fields( $preset_fields_path );
 		} else {
-			$preset_fields = array();
+			$presets = array( 'widgets' => array(), 'fields' => array() );
 		}
 
+		$template_id = esc_attr( $_POST['template_id'] );
+
 		// template areas
-		$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $_POST['template_id'] );
+		$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $template_id );
+
+		// widget areas
+		$default_widget_areas = GravityView_Plugin::get_default_widget_areas();
 
 		ob_start();
-		$this->render_active_areas( $_POST['template_id'], 'field', 'directory', $template_areas, $preset_fields );
+		$this->render_active_areas( $template_id, 'widget', 'header', $default_widget_areas, $presets['widgets'] );
+		$response['header'] = ob_get_contents();
+		ob_end_clean();
+
+		ob_start();
+		$this->render_active_areas( $template_id, 'widget', 'footer', $default_widget_areas, $presets['widgets'] );
+		$response['footer'] = ob_get_contents();
+		ob_end_clean();
+
+		ob_start();
+		$this->render_active_areas( $template_id, 'field', 'directory', $template_areas, $presets['fields'] );
 		$response['directory'] = ob_get_contents();
 		ob_end_clean();
 
 		ob_start();
-		$this->render_active_areas( $_POST['template_id'], 'field', 'single', $template_areas, $preset_fields );
+		$this->render_active_areas( $template_id, 'field', 'single', $template_areas, $presets['fields'] );
 		$response['single'] = ob_get_contents();
 		ob_end_clean();
+
+		GravityView_Plugin::log_debug('[get_preset_fields_config] AJAX Response: '.print_r($response, true));
 
 		echo json_encode( $response );
 		die();
