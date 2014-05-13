@@ -93,7 +93,7 @@ final class GravityView_Plugin {
 
 		} else {
 
-			add_action( 'plugins_loaded', array( $this, 'frontend_actions' ), 0 );
+			add_action( 'init', array( $this, 'frontend_actions' ), 20 );
 
 		}
 

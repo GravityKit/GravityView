@@ -72,7 +72,7 @@ class GravityView_frontend {
 	 * @return void
 	 */
 	public static function get_default_args() {
-		$defaults = array( 'id' => '', 'page_size' => '', 'sort_field' => '', 'sort_direction' => 'ASC', 'start_date' => '', 'end_date' => '', 'class' => '' );
+		$defaults = array( 'id' => '', 'page_size' => '', 'sort_field' => '', 'sort_direction' => 'ASC', 'start_date' => '', 'end_date' => '', 'class' => '', 'inline_css' => false );
 		return $defaults;
 	}
 
@@ -247,7 +247,10 @@ class GravityView_frontend {
 		}
 
 		// add template style
-		self::add_style( $template_id );
+		if( !empty( $inline_css ) ) {
+			self::add_style( $template_id );
+		}
+
 
 		// Prepare to render view and set vars
 		$gravityview_view->entries = $entries;
@@ -330,11 +333,20 @@ class GravityView_frontend {
 	 * @return void
 	 */
 	public static function add_scripts_and_styles() {
+		global $post;
+
 		wp_enqueue_script( 'gravityview-jquery-cookie', plugins_url('includes/lib/jquery-cookie/jquery.cookie.js', GRAVITYVIEW_FILE), array( 'jquery' ), GRAVITYVIEW_VERSION, true );
 
 		wp_enqueue_script( 'gravityview-fe-view', plugins_url('includes/js/fe-views.js', GRAVITYVIEW_FILE), array( 'jquery', 'gravityview-jquery-cookie' ), GRAVITYVIEW_VERSION, true );
 
 		wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), array(), GRAVITYVIEW_VERSION, 'all' );
+
+		// enqueue template specific styles
+		if( is_a( $post, 'WP_Post' ) && ( has_shortcode( $post->post_content, 'custom-shortcode') ||  'gravityview' === get_post_type() ) ) {
+
+			$template_id = get_post_meta( $post->ID, '_gravityview_directory_template', true );
+			self::add_style( $template_id );
+		}
 	}
 
 	/**
@@ -367,6 +379,7 @@ class GravityView_frontend {
 function get_gravityview( $view_id = '', $atts = array() ) {
 	if( !empty( $view_id ) ) {
 		$atts['id'] = $view_id;
+		$atts['inline_css'] = true;
 		$args = wp_parse_args( GravityView_frontend::get_default_args() , $atts );
 		return GravityView_frontend::render_view( $args );
 	}
