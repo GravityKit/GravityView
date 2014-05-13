@@ -893,7 +893,7 @@ class GravityView_Admin_Views {
 				array( 'label' => __( 'Editor or higher', 'gravity-view' ), 'value' => 'delete_others_posts' ),
 				array( 'label' => __( 'Administrator', 'gravity-view' ), 'value' => 'manage_options' ),
 			);
-			$output .= '<li>' . $this->render_checkbox_option( $name_prefix . '[only_loggedin]' , __( 'Only visible to logged in users with role:', 'gravity-view' ) ) ;
+			$output .= '<li>' . $this->render_checkbox_option( $name_prefix . '[only_loggedin]' , __( 'Only visible to logged in users with role:', 'gravity-view' ), $only_loggedin ) ;
 			$output .=  $this->render_selectbox_option( $name_prefix . '[only_loggedin_cap]', '', $select_cap_choices, $only_loggedin_cap ) . '</li>';
 		}
 
