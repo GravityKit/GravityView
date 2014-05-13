@@ -7,7 +7,7 @@
 
 if((int)$this->__get('total_entries') === 0) {
 
-	echo gv_no_results();
+	echo '<div class="gv-list-view gv-no-results"><div class="gv-list-view-title"><h3>'.gv_no_results().'</h3></div></div>';
 
 	return;
 }
