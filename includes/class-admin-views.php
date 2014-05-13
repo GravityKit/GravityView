@@ -911,9 +911,13 @@ class GravityView_Admin_Views {
 		$field_options = array();
 
 		if( 'field' === $field_type ) {
+
+			// If the view template is table, show label as default. Otherwise, don't
+			$show_label_default = preg_match('/table/ism', $template_id);
+
 			// Default options - fields
 			$field_options = array(
-				'show_label' => array( 'type' => 'checkbox', 'label' => __( 'Show Label', 'gravity-view' ), 'default' => preg_match('/table/ism', $template_id) ),
+				'show_label' => array( 'type' => 'checkbox', 'label' => __( 'Show Label', 'gravity-view' ), 'default' => $show_label_default ),
 				'custom_label' => array( 'type' => 'input_text', 'label' => __( 'Custom Label:', 'gravity-view' ), 'default' => '' ),
 				'custom_class' => array( 'type' => 'input_text', 'label' => __( 'Custom CSS Class:', 'gravity-view' ), 'default' => '' ),
 			);

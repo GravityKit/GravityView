@@ -12,21 +12,9 @@
  */
 
 
-/*
-Generic Field Options (as defined in Gravityview_Admin_Views class)
-
-$field_options = array(
-	'show_label' => array( 'type' => 'checkbox', 'label' => __( 'Show Label', 'gravity-view' ), 'default' => true ),
-	'custom_label' => array( 'type' => 'input_text', 'label' => __( 'Custom Label:', 'gravity-view' ), 'default' => '' ),
-	'custom_class' => array( 'type' => 'input_text', 'label' => __( 'Custom CSS Class:', 'gravity-view' ), 'default' => '' ),
-	'show_as_link' => array( 'type' => 'checkbox', 'label' => __( 'Link to single entry', 'gravity-view' ), 'default' => false ),
-
-);
-
-
-*/
-
-/** Simple customizable templates: table and list */
+/**
+ * Simple customizable templates: table and list
+ */
 
 /**
  * GravityView_Default_Template_Table class.
@@ -47,6 +35,10 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 			);
 		}
 
+		/**
+		 * @see  GravityView_Admin_Views::get_default_field_options() for Generic Field Options
+		 * @var array
+		 */
 		$field_options = array(
 			'show_as_link' => array( 'type' => 'checkbox', 'label' => __( 'Link to single entry', 'gravity-view' ), 'default' => false, 'context' => 'directory' ),
 		);
