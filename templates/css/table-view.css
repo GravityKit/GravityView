@@ -1,2 +1,10 @@
+.gv-table-view {
+  width: 100%; }
+
+.gv-table-view th,
+.gv-table-view td {
+  padding: .3em; }
+
 .gv-table-view-content th {
-  width: 35%; }
+  width: 35%;
+  vertical-align: top; }

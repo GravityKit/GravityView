@@ -42,7 +42,7 @@ if(!empty($value)){
 	    }
 
 	    $text_format = $file_path . PHP_EOL;
-	    $html_format = "<a href='$file_path' target='_blank' title='" . __("Click to view", "gravityforms") . "'>" . $content . "</a>";
+	    $html_format = sprintf("<a href='$file_path' rel='%s' target='_blank' title='" . __("Click to view", "gravityforms") . "'>" . $content . "</a>", gv_class( $field ));
 
 	    $output_arr[] = array(
 	    	'text' => $text_format,
@@ -57,8 +57,8 @@ if(!empty($value)){
     	$output = wpautop( $output_arr[0]['html'] );
     } else {
     	// Otherwise, a list it is!
-    	$output .= sprintf("<ul class='gv-field-file-uploads gv-field-file-uploads gv-field-id-%s'>", esc_attr( $field_settings['id'] ));
-    	foreach ($variable as $key => $item) {
+    	$output .= sprintf("<ul class='gv-field-file-uploads %s'>", gv_class( $field ));
+    	foreach ($output_arr as $key => $item) {
 			$output .= '<li>' . $item['html'] . PHP_EOL .'</li>';
 		}
 		$output .= '</ul>';

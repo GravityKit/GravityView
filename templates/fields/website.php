@@ -11,7 +11,7 @@ extract( $gravityview_view->__get('field_data') );
 
 $url_info = parse_url($value);
 
-if(isset($url_info['host']) && apply_filters( 'gravityview_field_website_shorten_url', true )) {
+if(isset($url_info['host']) && apply_filters( 'gravityview_field_website_shorten_url', false )) {
 	$anchor_text = $url_info['host'];
 	echo "<a href='$value' target='_blank'>$anchor_text</a>";
 } else {

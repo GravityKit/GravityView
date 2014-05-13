@@ -9,8 +9,11 @@
 			</tr>
 		<?php
 		} else {
-			foreach( $this->entries as $entry ) : ?>
-				<tr>
+			$class = true;
+			foreach( $this->entries as $entry ) :
+				$class = !$class ? ' class="alt"' : NULL;
+		?>
+				<tr<?php echo $class; ?>>
 					<?php if( !empty(  $this->fields['directory_table-columns'] ) ):
 						foreach( $this->fields['directory_table-columns'] as $field ) : ?>
 							<td><?php echo gv_value( $entry, $field ); ?></td>

@@ -1,5 +1,5 @@
 <?php gravityview_before(); ?>
-<table class="">
+<table class="gv-table-view">
 	<thead>
 		<?php gravityview_header(); ?>
 		<tr>

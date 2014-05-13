@@ -1,3 +1,25 @@
+// ================================================
+// Table View Template Styles for Gravity View
+// http://katz.co/gravityview/
+// ================================================
+
+// 1. Variables
+// ================================================
+
+// 1.1. Colors
+// Change accordingly to your website styles
+// ------------------------------------------------
+
+.gv-table-view {
+	width: 100%;
+}
+
+.gv-table-view th,
+.gv-table-view td {
+	padding: .3em;
+}
+
 .gv-table-view-content th {
 	width: 35%;
+	vertical-align: top;
 }
