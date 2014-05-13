@@ -10,7 +10,7 @@
 				<?php foreach( $this->entries as $entry ) : ?>
 					<?php foreach( $this->fields['single_table-columns'] as $field ) : ?>
 						<tr>
-							<th class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?></th>
+							<th class="<?php echo gv_class( $field ); ?>" scope="row"><?php echo esc_html( gv_label( $field ) ); ?></th>
 							<td><?php echo gv_value( $entry, $field ); ?></td>
 						</tr>
 						<?php endforeach; ?>
