@@ -468,7 +468,7 @@ class GravityView_Admin_Views {
 	function import_fields( $file ) {
 
 		if( empty( $file ) || !file_exists(  $file ) ) {
-			GravityView_Plugin::log_debug( '[import_fields] Importing Preset Fields. File not found. file: ' . print_r( $file, true ) );
+			GravityView_Plugin::log_error( '[import_fields] Importing Preset Fields. File not found. file: ' . print_r( $file, true ) );
 			return false;
 		}
 
