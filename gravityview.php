@@ -5,23 +5,23 @@
  * Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
  *
  * @package   GravityView
- * @license   GPL3+
+ * @license   GPL2+
  * @author    Katz Web Services, Inc.
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @wordpress-plugin
- * Plugin Name:       GravityView
- * Plugin URI:        http://www.seodenver.com/
- * Description:       Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:           1.0.0
- * Author:            Katz Web Services, Inc.
- * Author URI:        http://www.katzwebservices.com
- * Text Domain:       gravity-view
- * License:           ToBeDefined
- * License URI:       ToBeDefined
- * Domain Path:       /languages
- * GitHub Plugin URI: ToBeDefined
+ * Plugin Name:       	GravityView
+ * Plugin URI:        	http://www.seodenver.com/
+ * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
+ * Version:          	1.0-beta
+ * Author:            	Katz Web Services, Inc.
+ * Author URI:        	http://www.katzwebservices.com
+ * Text Domain:       	gravity-view
+ * License:           	GPLv2 or later
+ * License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
+ * Domain Path:			/languages
+ * GitHub Plugin URI: 	ToBeDefined
  */
 
 /** If this file is called directly, abort. */
