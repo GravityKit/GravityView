@@ -16,6 +16,12 @@ if(!empty($value)){
 
     foreach($file_paths as $file_path){
 
+    	// If the site is HTTPS, use HTTPS
+    	if(function_exists('set_url_scheme')) { $file_path = set_url_scheme($file_path); }
+
+    	// This is from Gravity Forms
+    	$file_path = esc_attr(str_replace(" ", "%20", $file_path));
+
     	// Is this an image?
 		$image = new GravityView_Image(array(
 			'src' => $file_path,
@@ -32,10 +38,6 @@ if(!empty($value)){
     	} else {
     		// Otherwise, get a link
 	        $info = pathinfo($file_path);
-	        if(function_exists('set_url_scheme')) {
-	        	$file_path = set_url_scheme($file_path);
-	        }
-	        $file_path = esc_attr(str_replace(" ", "%20", $file_path));
 	        $content = $info["basename"];
 	    }
 
@@ -51,10 +53,10 @@ if(!empty($value)){
     } // End foreach
 
     // If the output array is just one item, let's not show a list.
-
     if(sizeof($output_arr) === 1) {
-    	$output = wpautop( $output_arr[0]['content'] );
+    	$output = wpautop( $output_arr[0]['html'] );
     } else {
+    	// Otherwise, a list it is!
     	$output .= sprintf("<ul class='gv-field-file-uploads gv-field-file-uploads gv-field-id-%s'>", esc_attr( $field_settings['id'] ));
     	foreach ($variable as $key => $item) {
 			$output .= '<li>' . $item['html'] . PHP_EOL .'</li>';

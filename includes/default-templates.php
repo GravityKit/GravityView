@@ -483,7 +483,7 @@ class GravityView_Preset_Staff_Profiles extends GravityView_Default_Template_Lis
 			'description' => __( 'List members of your team.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/staff-profiles/logo-staff-profiles.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/staff-profiles/form-staff-profiles.xml',
-			'preset_fields' => '',
+			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/staff-profiles/fields-staff-profiles.xml',
 		);
 
 		parent::__construct( $id, $settings );

@@ -629,6 +629,18 @@ final class GravityView_Plugin {
         }
     }
 
+    /**
+     * Logs messages using Gravity Forms logging add-on
+     * @param  string $message log message
+     * @return void
+     */
+    public static function log_error( $message ){
+        if ( class_exists("GFLogging") ) {
+            GFLogging::include_logger();
+            GFLogging::log_message( 'gravityview', $message, KLogger::ERROR );
+        }
+    }
+
 } // end class GravityView_Plugin
 
 /** Launch plugin */
