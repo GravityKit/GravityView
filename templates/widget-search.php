@@ -13,7 +13,7 @@ $view_id = $gravityview_view->view_id;
 
 <form class="gv-widget-search" method="get" action="">
 
-	<div class="search-box">
+	<div class="gv-search-box">
 
 		<?php if( $gravityview_view->__get('search_free') ): ?>
 			<div class="gv-search">

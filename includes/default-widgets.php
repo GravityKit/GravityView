@@ -248,7 +248,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 			return '';
 		}
 
-		$output = '<div class="search-box">';
+		$output = '<div class="gv-search-box">';
 		$output .= '<label for=search-box-'.$name.'>' . $label . '</label>';
 		$output .= '<p><select name="'.$name.'" id="search-box-'. $name.'">';
 		$output .= '<option value="" '. selected( '', $current_value, false ) .'>---</option>';
@@ -280,7 +280,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 			return '';
 		}
 
-		$output = '<div class="search-box">';
+		$output = '<div class="gv-search-box">';
 		$output .= '<label for=search-box-'. $name .'>' . $label . '</label>';
 		$output .= '<p><input type="text" name="'. $name .'" id="search-box-'. $name .'" value="'. $current_value .'"></p>';
 		$output .= '</div>';
