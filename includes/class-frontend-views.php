@@ -136,6 +136,19 @@ class GravityView_frontend {
 
 		// validate attributes
 		if( empty( $id ) ) {
+			GravityView_Plugin::log_error( '[render_view] Returning; no ID defined.');
+			return;
+		}
+
+		// It's password protected and you need to log in.
+		if(post_password_required( $id )) {
+
+			GravityView_Plugin::log_error( sprintf('[render_view] Returning: View %d is password protected.', $id ) );
+
+			// If we're in an embed or on an archive page, show the password form
+			if(get_the_ID() !== $id) { return get_the_password_form(); }
+
+			// Otherwise, just get outta here
 			return;
 		}
 
