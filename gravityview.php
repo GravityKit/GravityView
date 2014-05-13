@@ -65,7 +65,7 @@ final class GravityView_Plugin {
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-		//Load custom post types
+		// Load custom post types
 		add_action( 'init', array( $this, 'init_setup' ) );
 
 		// check if gravityforms is active
@@ -76,6 +76,9 @@ final class GravityView_Plugin {
 
 
 		if( is_admin() ) {
+
+			// Filter Admin messages
+			add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
 
 			add_filter( 'plugin_action_links_'. plugin_basename( __FILE__) , array( $this, 'plugin_action_links' ) );
 
@@ -265,6 +268,37 @@ final class GravityView_Plugin {
 
 		// Hook for other init scripts
 		do_action( 'gravityview_init' );
+	}
+
+	/**
+	 * Filter Admin messages
+	 *
+	 * @param  array      $messages Existing messages
+	 * @return array                Messages with GravityView views!
+	 */
+	function post_updated_messages( $messages ) {
+		global $post;
+
+		$messages['gravityview'] = array(
+			0  => '', // Unused. Messages start at index 1.
+			1  => __( 'View updated.', 'gravity-view' ),
+			2  => __( 'View updated.', 'gravity-view' ),
+			3  => __( 'View deleted.', 'gravity-view' ),
+			4  => __( 'View updated.', 'gravity-view' ),
+			/* translators: %s: date and time of the revision */
+			5  => isset( $_GET['revision'] ) ? sprintf( __( 'View restored to revision from %s', 'gravity-view' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+			6  => __( 'View published.', 'gravity-view' ),
+			7  => __( 'View saved.', 'gravity-view' ),
+			8  => __( 'View submitted.', 'gravity-view' ),
+			9  => sprintf(
+				__( 'View scheduled for: <strong>%1$s</strong>.', 'gravity-view' ),
+				// translators: Publish box date format, see http://php.net/date
+				date_i18n( __( 'M j, Y @ G:i', 'gravity-view' ), strtotime( $post->post_date ) )
+			),
+			10 => __( 'View draft updated.', 'gravity-view' ),
+		);
+
+		return $messages;
 	}
 
 
