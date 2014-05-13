@@ -279,23 +279,25 @@ final class GravityView_Plugin {
 	function post_updated_messages( $messages ) {
 		global $post;
 
+		$post_id = isset($_GET['post']) ? intval($_GET['post']) : NULL;
+
 		$messages['gravityview'] = array(
 			0  => '', // Unused. Messages start at index 1.
-			1  => __( 'View updated.', 'gravity-view' ),
-			2  => __( 'View updated.', 'gravity-view' ),
+			1  => sprintf(__( 'View updated. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
+			2  => sprintf(__( 'View updated. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 			3  => __( 'View deleted.', 'gravity-view' ),
-			4  => __( 'View updated.', 'gravity-view' ),
+			4  => sprintf(__( 'View updated. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 			/* translators: %s: date and time of the revision */
 			5  => isset( $_GET['revision'] ) ? sprintf( __( 'View restored to revision from %s', 'gravity-view' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-			6  => __( 'View published.', 'gravity-view' ),
-			7  => __( 'View saved.', 'gravity-view' ),
+			6  => sprintf(__( 'View published. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
+			7  => sprintf(__( 'View saved. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 			8  => __( 'View submitted.', 'gravity-view' ),
 			9  => sprintf(
 				__( 'View scheduled for: <strong>%1$s</strong>.', 'gravity-view' ),
 				// translators: Publish box date format, see http://php.net/date
 				date_i18n( __( 'M j, Y @ G:i', 'gravity-view' ), strtotime( $post->post_date ) )
 			),
-			10 => __( 'View draft updated.', 'gravity-view' ),
+			10  => sprintf(__( 'View draft updated. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 		);
 
 		return $messages;
