@@ -87,7 +87,7 @@ class GravityView_frontend {
 	 * @return void
 	 */
 	public static function get_default_args() {
-		$defaults = array( 'id' => '', 'page_size' => '', 'sort_field' => '', 'sort_direction' => 'ASC', 'start_date' => '', 'end_date' => '', 'class' => '', 'inline_css' => false );
+		$defaults = array( 'id' => '', 'page_size' => '', 'sort_field' => '', 'sort_direction' => 'ASC', 'start_date' => '', 'end_date' => '', 'class' => '' );
 		return $defaults;
 	}
 
@@ -286,10 +286,7 @@ class GravityView_frontend {
 		}
 
 		// add template style
-		if( !empty( $inline_css ) ) {
-			self::add_style( $template_id );
-		}
-
+		self::add_style( $template_id );
 
 		// Prepare to render view and set vars
 		$gravityview_view->entries = $entries;
@@ -393,9 +390,8 @@ class GravityView_frontend {
 	 */
 	public static function add_style( $template_id ) {
 
-		GravityView_Plugin::log_debug( '[add_style] Adding extra template style for: ' . print_r( $template_id, true ) );
-
 		if( !empty( $template_id ) && wp_style_is( 'gravityview_style_' . $template_id, 'registered' ) ) {
+			GravityView_Plugin::log_debug( '[add_style] Adding extra template style for: ' . print_r( $template_id, true ) );
 			wp_enqueue_style( 'gravityview_style_' . $template_id );
 		}
 
@@ -418,7 +414,6 @@ new GravityView_frontend;
 function get_gravityview( $view_id = '', $atts = array() ) {
 	if( !empty( $view_id ) ) {
 		$atts['id'] = $view_id;
-		$atts['inline_css'] = true;
 		$args = wp_parse_args( GravityView_frontend::get_default_args() , $atts );
 		return GravityView_frontend::render_view( $args );
 	}
