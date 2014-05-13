@@ -36,8 +36,8 @@
 				<div class="gv-list-view-content-description">
 				<?php
 				foreach( $this->fields['single_list-description'] as $field ) : ?>
-					<div class="<?php echo gv_class( $field ); ?>"><?php
-						echo esc_html( gv_label( $field ) );
+					<div class="gv-list-view-field <?php echo gv_class( $field ); ?>"><?php
+						echo '<h4>'.esc_html( gv_label( $field ) ).'</h4>';
 						echo gv_value( $entry, $field );
 					?>
 					</div>
