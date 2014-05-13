@@ -58,6 +58,8 @@
 			// select form
 			vcfg.gvSelectForm.change( vcfg.formChange );
 
+			// switch View (for existing forms)
+			$('a[href="#gv_switch_view"]').click( vcfg.switchView );
 
 			// templates
 
@@ -90,7 +92,7 @@
 			var vcfg = viewConfiguration;
 
 			vcfg.currentFormId = '';
-			$("#gravityview_view_config, #gravityview_select_template").slideUp(150);
+			$("#gravityview_view_config, #gravityview_select_template").hide();
 
 		},
 
@@ -107,7 +109,7 @@
 			vcfg.startFreshStatus = true;
 
 			if( vcfg.currentFormId !== '' ) {
-				vcfg.showDialog();
+				vcfg.showDialog( 'gravityview_form_id_dialog' );
 			} else {
 				vcfg.startFreshContinue();
 			}
@@ -132,7 +134,7 @@
 			vcfg.startFreshStatus = false;
 
 			if( vcfg.currentFormId !== ''  && vcfg.currentFormId !== $(this).val() ) {
-				vcfg.showDialog();
+				vcfg.showDialog( 'gravityview_form_id_dialog' );
 			} else {
 				vcfg.formChangeContinue();
 			}
@@ -149,11 +151,11 @@
 			}
 		},
 
-		showDialog: function() {
+		showDialog: function( dialogId ) {
 
 			var vcfg = viewConfiguration;
 
-			var thisDialog = $('#gravityview_form_id_dialog');
+			var thisDialog = $('#'+ dialogId );
 
 			thisDialog.dialog({
 				dialogClass: 'wp-dialog',
@@ -162,22 +164,38 @@
 				buttons: [ {
 					text: gvGlobals.label_cancel,
 					click: function() {
-						vcfg.startFreshStatus = false;
-						vcfg.gvSelectForm.val( vcfg.currentFormId );
+						if( 'gravityview_form_id_dialog' === dialogId ) {
+							vcfg.startFreshStatus = false;
+							vcfg.gvSelectForm.val( vcfg.currentFormId );
+						} else if( 'gravityview_switch_template_dialog' === dialogId ) {
+							$("#gravityview_select_template").slideUp(150);
+						}
 						thisDialog.dialog('close');
 					} }, {
 					text: gvGlobals.label_continue,
 					click: function() {
-						if( vcfg.startFreshStatus ) {
-							vcfg.startFreshContinue();
-						} else {
-							vcfg.formChangeContinue();
+						if( 'gravityview_form_id_dialog' === dialogId ) {
+							if( vcfg.startFreshStatus ) {
+								vcfg.startFreshContinue();
+							} else {
+								vcfg.formChangeContinue();
+							}
+						} else if ( 'gravityview_switch_template_dialog' === dialogId ) {
+							vcfg.selectTemplateContinue();
 						}
+
 						thisDialog.dialog('close');
 					}
 				} ],
 			});
 
+		},
+
+		switchView: function(e){
+			e.preventDefault();
+			var vcfg = viewConfiguration;
+			vcfg.templateFilter('custom');
+			vcfg.showTemplates();
 		},
 
 		templateFilter: function( templateType ) {
@@ -196,12 +214,30 @@
 			e.preventDefault();
 			e.stopImmediatePropagation();
 
+			// get selected template
+			vcfg.wantedTemplate = $(this);
+			var	currTemplateId = $("#gravityview_directory_template").val(),
+				selectedTemplateId = vcfg.wantedTemplate.attr("data-templateid");
+
+			// check if template is being changed
+			if( currTemplateId === '' ) {
+				vcfg.selectTemplateContinue();
+			} else if ( currTemplateId != selectedTemplateId ) {
+				vcfg.showDialog( 'gravityview_switch_template_dialog' );
+			}
+		},
+
+
+		selectTemplateContinue: function() {
+
+			var vcfg = viewConfiguration,
+				selectedTemplateId = vcfg.wantedTemplate.attr("data-templateid");
+
 			// update template name
-			var templateId = $(this).attr("data-templateid");
-			$("#gravityview_directory_template").val( templateId );
+			$("#gravityview_directory_template").val( selectedTemplateId );
 
 			//add Selected class
-			var $parent = $(this).parents(".gv-view-types-module");
+			var $parent = vcfg.wantedTemplate.parents(".gv-view-types-module");
 			$parent.parents(".gv-grid").find(".gv-view-types-module").removeClass('gv-selected');
 			$parent.addClass('gv-selected');
 
@@ -209,18 +245,21 @@
 			if( vcfg.startFreshStatus ) {
 
 				//fetch the available fields of the preset-form
-				vcfg.getAvailableFields( 'preset', templateId );
+				vcfg.getAvailableFields( 'preset', selectedTemplateId );
 
 				//fetch the fields template config of the preset view
-				vcfg.getPresetFields( templateId );
+				vcfg.getPresetFields( selectedTemplateId );
 
 			} else {
 				//change view configuration active areas
-				vcfg.updateActiveAreas( templateId );
+				vcfg.updateActiveAreas( selectedTemplateId );
+
+				$("#gravityview_select_template").slideUp(150);
 
 			}
 
 		},
+
 
 		selectTemplateHover: function(e) {
 			e.preventDefault();
@@ -540,7 +579,7 @@
 			var vcfg = viewConfiguration,
 				templateId = $("#gravityview_directory_template").val();
 
-			if( ! vcfg.startFreshStatus || templateId == '' ) {
+			if( ! vcfg.startFreshStatus || templateId === '' ) {
 				return true;
 			}
 
