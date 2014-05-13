@@ -330,12 +330,6 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-api.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
 
-		// Shortcode to render view (directory)
-		add_shortcode( 'gravityview', array( 'GravityView_frontend', 'render_view_shortcode' ) );
-		add_action( 'init', array( 'GravityView_frontend', 'init_rewrite' ) );
-		add_filter( 'query_vars', array( 'GravityView_frontend', 'add_query_vars_filter' ) );
-		add_action( 'wp_enqueue_scripts', array( 'GravityView_frontend', 'add_scripts_and_styles' ) );
-		add_filter( 'the_content', array( 'GravityView_frontend', 'insert_view_in_content' ) );
 	}
 
 	/**

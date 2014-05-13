@@ -15,6 +15,21 @@
 
 class GravityView_frontend {
 
+	function __construct() {
+
+		// Shortcode to render view (directory)
+		add_shortcode( 'gravityview', array( 'GravityView_frontend', 'render_view_shortcode' ) );
+		add_action( 'init', array( 'GravityView_frontend', 'init_rewrite' ) );
+		add_filter( 'query_vars', array( 'GravityView_frontend', 'add_query_vars_filter' ) );
+
+		// Enqueue scripts and styles after GravityView_Template::register_styles()
+		add_action( 'wp_enqueue_scripts', array( 'GravityView_frontend', 'add_scripts_and_styles' ), 20);
+
+		add_filter( 'the_content', array( 'GravityView_frontend', 'insert_view_in_content' ) );
+		add_filter( 'comments_open', array( 'GravityView_frontend', 'comments_open' ), 10, 2);
+
+	}
+
 	/**
 	 * Register rewrite rules to capture the single entry view
 	 *
@@ -105,11 +120,22 @@ class GravityView_frontend {
 	public static function insert_view_in_content( $content ) {
 		$post = get_post();
 
-		if( 'gravityview' == get_post_type( $post ) ) {
+		if( 'gravityview' === get_post_type( $post ) ) {
 			$content .= self::render_view( array( 'id' => $post->ID ) );
 		}
 
 		return $content;
+	}
+
+	public static function comments_open( $open, $post_id ) {
+
+		$post = get_post( $post_id );
+
+		if( 'gravityview' === get_post_type( $post ) ) {
+			return false;
+		}
+
+		return $open;
 	}
 
 
@@ -356,7 +382,6 @@ class GravityView_frontend {
 
 		// enqueue template specific styles
 		if( is_a( $post, 'WP_Post' ) && ( has_shortcode( $post->post_content, 'custom-shortcode') ||  'gravityview' === get_post_type() ) ) {
-
 			$template_id = get_post_meta( $post->ID, '_gravityview_directory_template', true );
 			self::add_style( $template_id );
 		}
@@ -379,6 +404,7 @@ class GravityView_frontend {
 
 }
 
+new GravityView_frontend;
 
 
 /**
