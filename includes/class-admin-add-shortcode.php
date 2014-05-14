@@ -79,7 +79,7 @@ class GravityView_Admin_Add_Shortcode {
 							<td><label for="gravityview_view_id"><?php esc_html_e( 'Select a View', 'gravity-view' ); ?></label></td>
 							<td>
 								<select name="gravityview_view_id" id="gravityview_view_id">
-									<option value=""><?php esc_html_e( '-- views --', 'gravity-view' ); ?></option>
+									<option value=""><?php esc_html_e( '&mdash; views &mdash;', 'gravity-view' ); ?></option>
 									<?php $views = get_posts( array('post_type' => 'gravityview', 'posts_per_page' => -1 ) );
 									foreach( $views as $view ) {
 										echo '<option value="'. $view->ID .'">'. esc_html( $view->post_title ) .'</option>';
