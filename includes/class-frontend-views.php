@@ -257,6 +257,8 @@ class GravityView_frontend {
 				GravityView_Plugin::log_debug( '[render_view] Search Criteria if show only approved: ' . print_r( $search_criteria, true ) );
 			}
 
+			// Only show active listings
+			$search_criteria['status'] = apply_filters( 'gravityview_status', 'active', $args );
 
 			//fetch template and slug
 			$view_slug =  apply_filters( 'gravityview_template_slug_'. $template_id, 'table', 'directory' );
