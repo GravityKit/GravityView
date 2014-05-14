@@ -325,6 +325,30 @@ class GravityView_Admin_Views {
 				</td>
 			</tr>
 
+			<!--
+
+			// TODO
+
+			<tr valign="top">
+				<td>
+					<label for="gravityview_start_date"><?php esc_html_e( 'Filter by Start Date', 'gravity-view'); ?></label>
+				</td>
+				<td>
+					<input name="template_settings[start_date]" id="gravityview_start_date" type="text" class="gv-datepicker datepicker ymd-dash widefat" value="<?php echo esc_attr( $template_settings['start_date'] ); ?>">
+				</td>
+			</tr>
+
+			<tr valign="top" class="alternate">
+				<td>
+					<label for="gravityview_end_date"><?php esc_html_e( 'Filter by End Date', 'gravity-view'); ?></label>
+				</td>
+				<td>
+					<input name="template_settings[end_date]" id="gravityview_end_date" type="text" class="gv-datepicker datepicker ymd-dash widefat" value="<?php echo esc_attr( $template_settings['end_date'] ); ?>" />
+				</td>
+			</tr>
+
+			-->
+
 			<?php // Hook for other template custom settings
 
 			do_action( 'gravityview_admin_directory_settings', $template_settings );
@@ -888,12 +912,18 @@ class GravityView_Admin_Views {
 			$only_loggedin = !empty( $current['only_loggedin'] ) ? 1 : '';
 			$only_loggedin_cap = !empty( $current['only_loggedin_cap'] ) ? $current['only_loggedin_cap'] : 'read';
 
-			// default logged-in visibility
-			$select_cap_choices = array(
-				array( 'label' => __( 'Any', 'gravity-view' ), 'value' => 'read' ),
-				array( 'label' => __( 'Author or higher', 'gravity-view' ), 'value' => 'publish_posts' ),
-				array( 'label' => __( 'Editor or higher', 'gravity-view' ), 'value' => 'delete_others_posts' ),
-				array( 'label' => __( 'Administrator', 'gravity-view' ), 'value' => 'manage_options' ),
+			/**
+			 * Modify the capabilities shown in the field dropdown
+			 * @link  https://github.com/zackkatz/GravityView/wiki/How-to-modify-capabilities-shown-in-the-field-%22Only-visible-to...%22-dropdown
+			 * @since  1.0.1
+			 */
+			$select_cap_choices = apply_filters('gravityview_field_visibility_caps',
+				array(
+					array( 'label' => __( 'Any', 'gravity-view' ), 'value' => 'read' ),
+					array( 'label' => __( 'Author or higher', 'gravity-view' ), 'value' => 'publish_posts' ),
+					array( 'label' => __( 'Editor or higher', 'gravity-view' ), 'value' => 'delete_others_posts' ),
+					array( 'label' => __( 'Administrator', 'gravity-view' ), 'value' => 'manage_options' ),
+				)
 			);
 			$output .= '<li>' . $this->render_checkbox_option( $name_prefix . '[only_loggedin]' , __( 'Only visible to logged in users with role:', 'gravity-view' ), $only_loggedin ) ;
 			$output .=  $this->render_selectbox_option( $name_prefix . '[only_loggedin_cap]', '', $select_cap_choices, $only_loggedin_cap ) . '</li>';
