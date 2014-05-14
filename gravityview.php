@@ -14,7 +14,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://www.seodenver.com/
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.0-beta
+ * Version:          	1.0.1-beta
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravity-view
@@ -31,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 /** Constants */
 if ( !defined('GRAVITYVIEW_VERSION') )
-	define( 'GRAVITYVIEW_VERSION', '1.0-beta' );
+	define( 'GRAVITYVIEW_VERSION', '1.0.1-beta' );
 if( !defined('GRAVITYVIEW_FILE') )
 	define( 'GRAVITYVIEW_FILE', __FILE__ );
 if ( !defined('GRAVITYVIEW_URL') )
