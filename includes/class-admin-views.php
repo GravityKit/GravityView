@@ -1183,7 +1183,7 @@ class GravityView_Admin_Views {
 
 		$is_page = false;
 
-		if(rgobj($current_screen, 'post_type') === 'gravityview' || rgget('post_type') === 'gravityview') {
+		if(!empty($current_screen) && isset($current_screen->post_type) && $current_screen->post_type === 'gravityview' || rgget('post_type') === 'gravityview') {
 
 			// $_GET `post_type` variable
 			if(in_array($pagenow, array( 'post.php' , 'post-new.php' )) ) {
