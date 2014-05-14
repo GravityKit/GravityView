@@ -70,8 +70,6 @@
 			// preview template
 			$('a[href="#gv_preview_template"]').click( vcfg.previewTemplate );
 
-
-
 			// close all tooltips if user clicks outside the tooltip
 	        $(document).mouseup( function (e) {
 			    var activeTooltip = $("a.gv-add-field[data-tooltip='active']");
@@ -557,13 +555,16 @@
 		openFieldSettings: function( e ) {
 			e.preventDefault();
 
-			var parent;
+			var parent, vcfg = viewConfiguration;
 
 			if($( e.currentTarget ).is('.gv-fields')) {
 				parent = $( e.currentTarget );
 			} else {
 				parent = $( e.currentTarget ).parents('.gv-fields');
 			}
+
+			// Toggle checkbox when changing field visibility
+			$('body').on( 'change', 'select[id*="loggedin_cap"]', vcfg.toggleVisibilityCheckbox );
 
 			parent.find(".gv-dialog-options").dialog({
 				dialogClass: 'wp-dialog',
@@ -577,6 +578,17 @@
 					}
 				}],
 			});
+		},
+
+		// Check the "only visible to..." checkbox if the capability isn't public
+		toggleVisibilityCheckbox: function( e ) {
+			var targetCheckbox = $(e.currentTarget).parent().find('input:checkbox[name*=only_loggedin]');
+
+			if($(e.currentTarget).val() !== 'read') {
+				targetCheckbox.attr( 'checked', 'checked' );
+			} else {
+				targetCheckbox.attr( 'checked', null );
+			}
 		},
 
 		createPresetForm: function() {
