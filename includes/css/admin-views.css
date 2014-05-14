@@ -274,11 +274,22 @@
 }
 body .ui-tooltip { border: 4px solid #999; }
 
-
 .ui-tooltip-content {
-	padding: 0 10px 0 10px;
-	max-height: 200px;
+	padding: 5px 10px;
+	max-height: 275px;
 	overflow-y: scroll;
+}
+
+.ui-tooltip-content .close {
+	position: absolute;
+	padding: 5px;
+	top: -25px;
+	left: -25px;
+	cursor: pointer;
+}
+.ui-tooltip-content .close i {
+	font-size: 25px;
+	color: black;
 }
 
 .ui-tooltip-content .gv-field-controls {

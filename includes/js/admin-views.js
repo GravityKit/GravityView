@@ -61,7 +61,7 @@
 			// switch View (for existing forms)
 			$('a[href="#gv_switch_view"]').click( vcfg.switchView );
 
-			// templates
+		// templates
 
 			// select template
 			$('a[href="#gv_select_template"]').click( vcfg.selectTemplate );
@@ -71,16 +71,26 @@
 			$('a[href="#gv_preview_template"]').click( vcfg.previewTemplate );
 
 			// close all tooltips if user clicks outside the tooltip
-	        $(document).mouseup( function (e) {
-			    var activeTooltip = $("a.gv-add-field[data-tooltip='active']");
-			    if( !activeTooltip.is( e.target ) && activeTooltip.has( e.target ).length === 0 ) {
-			        activeTooltip.tooltip("close");
-			        activeTooltip.attr('data-tooltip', '');
-			    }
+			$(document).mouseup( function (e) {
+				if( (!$(e.target).is('.ui-tooltip') && !$(e.target).parents( '.ui-tooltip' ).length > 0) || $(e.target).parents('.close').length > 0 ) {
+					$("a.gv-add-field[data-tooltip='active']").tooltip("close");
+				}
 			});
 
-	        // when saving the View, try to create form before proceeding
-	        $(document).on( 'click', '#publish', vcfg.createPresetForm );
+		// Fields
+			// bind Add Field fields to the addField method
+			$('body').on('click', '.ui-tooltip-content .gv-fields', vcfg.addField );
+
+			// show field buttons: Settings & Remove
+			$('body').on('click', "span.gv-field-controls a[href='#remove']", vcfg.removeField );
+			$('body').on('click', "span.gv-field-controls a[href='#settings']", vcfg.openFieldSettings );
+
+			$('body').on('dblclick', ".gv-fields", function(e) {
+				vcfg.openFieldSettings(e);
+			});
+
+			// when saving the View, try to create form before proceeding
+			$(document).on( 'click', '#publish', vcfg.createPresetForm );
 
 
 		},
@@ -342,8 +352,6 @@
 			vcfg.toggleDropMessage();
 			vcfg.init_droppables();
 			vcfg.init_tooltips();
-			vcfg.initFieldControls();
-
 		},
 
 
@@ -363,34 +371,33 @@
 					}
 
 				},
+				close: function(event, ui) {
+					$(this).attr('data-tooltip', '');
+				},
+				open: function(event, ui) {
+
+					$(this)
+						.attr('data-tooltip', 'active')
+						.attr('data-tooltip-id', $(this).attr( 'aria-describedby' ) );
+				},
 				disabled: true,
 				position: {
 					my: "center bottom",
 					at: "center top-12",
 				},
 				tooltipClass: 'top',
-				})
+			})
 			.on('mouseout focusout', function(e) {
-	                  e.stopImmediatePropagation();
-	             })
+				e.stopImmediatePropagation();
+			})
 			.click( function(e) {
-					e.preventDefault();
-					e.stopImmediatePropagation();
-					if( $(this).attr('data-tooltip') !== undefined && $(this).attr('data-tooltip') == 'active' ) {
-						$(this).tooltip("close");
-						$(this).attr('data-tooltip', '');
+				e.preventDefault();
+				e.stopImmediatePropagation();
 
-					} else {
-						$(this).tooltip("open");
-						$(this).attr('data-tooltip', 'active');
-						$(this).attr('data-tooltip-id', $(this).attr( 'aria-describedby' ) );
+				$(this).tooltip("open");
 
-						// bind fields
-						$('.ui-tooltip-content .gv-fields').click( vcfg.addField );
-					}
-					// add title attribute so the tooltip can continue to work (jquery ui bug?)
-					$(this).attr("title", "");
-
+				// add title attribute so the tooltip can continue to work (jquery ui bug?)
+				$(this).attr("title", "");
 			});
 
 		},
@@ -433,7 +440,7 @@
 
 			var vcfg = viewConfiguration;
 
-			var newField = $(this).clone(),
+			var newField = $(this).clone().hide(),
 				areaId = $(this).parents('.ui-tooltip').attr('id'),
 				templateId = $("#gravityview_directory_template").val(),
 				tooltipId = $(this).parents('.ui-tooltip').attr('id'),
@@ -457,12 +464,24 @@
 				}
 			});
 
-			// show field buttons: Settings & Remove
-			newField.find("span.gv-field-controls a[href='#remove']").click( vcfg.removeField );
-			newField.find("span.gv-field-controls a[href='#settings']").click( vcfg.openFieldSettings );
-
 			// append the new field to the active drop
-			$('a[data-tooltip-id="'+ areaId +'"]').parents('.gv-droppable-area').find('.active-drop').append(newField).end().attr('data-tooltip-id','');
+			$('a[data-tooltip-id="'+ areaId +'"]')
+				.parents('.gv-droppable-area')
+					.find('.active-drop')
+						.append(newField)
+						.end()
+				.attr('data-tooltip-id','');
+
+			newField.fadeIn();
+
+			// Get the current position of the tooltip
+			tooltipOffset = $('#'+tooltipId).offset();
+
+			// Move the tooltip down by the height of the new field plus 5px margin bottom.
+			// TODO: Clean up this so it doesn't use hard-coded margin size.
+			$('#'+tooltipId).offset({
+				top: (tooltipOffset.top + newField.outerHeight() + 5)
+			});
 
 			vcfg.toggleDropMessage();
 		},
@@ -532,20 +551,13 @@
 
 		},
 
-		initFieldControls: function() {
-			var vcfg = viewConfiguration;
-			$("a[href='#remove']").click( vcfg.removeField );
-			$("a[href='#settings']").click( vcfg.openFieldSettings );
-			$('body').on('dblclick', ".gv-fields", function(e) {
-				vcfg.openFieldSettings(e);
-			});
-		},
-
 		// Event handler to remove Fields from active areas
 		removeField: function( e ) {
 			e.preventDefault();
 			var area = $( e.currentTarget ).parents(".active-drop");
-			$( e.currentTarget ).parents('.gv-fields').remove();
+			$( e.currentTarget ).parents('.gv-fields').fadeOut('normal', function() {
+				$(this).remove();
+			});
 			if( area.find(".gv-fields").length === 0 ) {
 				 area.find(".drop-message").show();
 			}

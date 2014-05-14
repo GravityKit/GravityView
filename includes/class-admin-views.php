@@ -249,12 +249,14 @@ class GravityView_Admin_Views {
 
 
 					<?php // list of available fields to be shown in the popup ?>
-					<div id="directory-available-fields" class="hide-if-js">
+					<div id="directory-available-fields" class="hide-if-js gv-tooltip">
+						<span class="close"><i class="dashicons dashicons-dismiss"></i></span>
 						<?php $this->render_available_fields( $curr_form, 'directory' ); ?>
 					</div>
 
 					<?php // list of available widgets to be shown in the popup ?>
-					<div id="directory-available-widgets" class="hide-if-js">
+					<div id="directory-available-widgets" class="hide-if-js gv-tooltip">
+						<span class="close"><i class="dashicons dashicons-dismiss"></i></span>
 						<?php $this->render_available_widgets(); ?>
 					</div>
 
