@@ -277,7 +277,7 @@ body .ui-tooltip { border: 4px solid #999; }
 .ui-tooltip-content {
 	padding: 5px 10px;
 	max-height: 275px;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 .ui-tooltip-content .close {
