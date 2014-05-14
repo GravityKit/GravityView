@@ -44,11 +44,26 @@ class GravityView_Welcome {
 	 * Register the Dashboard Pages which are later hidden but these pages
 	 * are used to render the Welcome pages.
 	 *
+	 * @group Beta
 	 * @access public
 	 * @since 1.0
 	 * @return void
 	 */
 	public function admin_menus() {
+
+		// Add help page to GravityView menu
+		add_submenu_page(
+			'edit.php?post_type=gravityview',
+			__('GravityView Beta: Getting Started', 'gravity-view'),
+			__('Getting Started', 'gravity-view'),
+			$this->minimum_capability,
+			'gv-about',
+			array( $this, 'about_screen' )
+		);
+
+		/*
+		// todo
+
 		// About Page
 		add_dashboard_page(
 			__( 'Welcome to GravityView', 'gravity-view' ),
@@ -65,7 +80,7 @@ class GravityView_Welcome {
 			$this->minimum_capability,
 			'gv-getting-started',
 			array( $this, 'getting_started_screen' )
-		);
+		);*/
 	}
 
 	/**
@@ -175,12 +190,10 @@ class GravityView_Welcome {
 						</ol>
 
 						<h4>Configure Mulitple Entry &amp; Single Entry Layouts</h4>
-						<p>You can configure how <strong>Multiple Entry</strong> and <strong>Single Entry</strong>. These can be configured by using the tabs under "View Configuration."</p>
-
-						<p class="clear:right;"><img src="<?php echo plugins_url( 'images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" style="max-width:50%; clear:right;" /></p>
+						<p><img src="<?php echo plugins_url( 'images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" style="max-width:50%; margin-left:10px;  margin-bottom:10px; clear:right;" />You can configure how <strong>Multiple Entry</strong> and <strong>Single Entry</strong>. These can be configured by using the tabs under "View Configuration."</p>
 
 						<ul>
-							<li>Click "+ Add Field" to add a field to a zone*</li>
+							<li>Click "+ Add Field" to add a field to a zone</li>
 							<li>Fields can be dragged and dropped to be re-arranged.</li>
 							<li>Click the <i class="dashicons dashicons-admin-generic"></i> gear icon on each field to configure the <strong>Field Settings</strong>:
 							<ul>
@@ -193,7 +206,7 @@ class GravityView_Welcome {
 						</ul>
 
 						<h4>Embed Views in Posts &amp; Pages</h4>
-						<p><img src="<?php echo plugins_url( 'images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" class="screenshot" style="max-width:50%; float:left; margin-right:1em; margin-bottom:1em;" height="44" width="103" />Unlike the Gravity Forms Directory plugin, views are stand-alone; they don&rsquo;t need to always be embedded, but you can still embed Views using the "Add View" button.</p>
+						<p><img src="<?php echo plugins_url( 'images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" class="screenshot" style="max-width:50%; float:left; margin-right:1em; margin-bottom:1em;" height="35" width="97" />Unlike the Gravity Forms Directory plugin, views are stand-alone; they don&rsquo;t need to always be embedded, but you can still embed Views using the "Add View" button.</p>
 
 					</div>
 				</div>
@@ -206,8 +219,10 @@ class GravityView_Welcome {
 
 					<div>
 						<h2>How to report issues</h2>
-
-						<p><img src="<?php echo plugins_url( 'images/screenshots/report-bug.png', GRAVITYVIEW_FILE ); ?>" class="screenshot" style="max-width:50%;" height="271" width="236" />If you find an issue, at the bottom of every GravityView page is a report widget (pictured below). Please click the "question mark" button and be as descriptive as possible. Checking the "Include a screenshot..." checkbox will help us fix your issue.</p>
+						<h4 style="font-weight:normal;">If you find a bug, it is most helpful if you <a href="https://gravityview.co/report-an-issue/">submit a report on the website</a>.</h4>
+						<p><img src="<?php echo plugins_url( 'images/screenshots/report-bug.png', GRAVITYVIEW_FILE ); ?>" class="screenshot" style="max-width:50%;" height="271" width="231" alt="Reporting bugs" />If you find an issue, you can <a href="https://gravityview.co/report-an-issue/">report it on the website</a>, or at the bottom of every GravityView page is a report widget (pictured).</p>
+						<p>Click the "question mark" button and be as <strong>descriptive as possible</strong>.</p>
+						<p><strong>Check the "Include a screenshot..." checkbox</strong> - this will help us fix your issue.</p>
 
 						<h4>Request Github access</h4>
 
@@ -217,7 +232,7 @@ class GravityView_Welcome {
 					<div class="last-feature">
 						<h2 class="clear">Thank you for your help.</h2>
 
-						<h4 class="clear">By helping discover bugs, suggest enhancements, and provide feedback:</h4>
+						<h4 style="font-weight:normal;" class="clear">By helping discover bugs, suggest enhancements, and provide feedback:</h4>
 
 						<ul>
 							<li><strong>50% off a GravityView license</strong> - everyone with Beta access will receive a discount</li>
@@ -364,13 +379,13 @@ class GravityView_Welcome {
 
 		$upgrade = get_option( 'gv_version_upgraded_from' );
 
-		wp_safe_redirect( admin_url( 'index.php?page=gv-about' ) ); exit;
+		wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-about' ) ); exit;
 
 		// After Beta
 		if( ! $upgrade ) { // First time install
-			wp_safe_redirect( admin_url( 'index.php?page=gv-getting-started' ) ); exit;
+			wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) ); exit;
 		} else { // Update
-			wp_safe_redirect( admin_url( 'index.php?page=gv-about' ) ); exit;
+			wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-about' ) ); exit;
 		}
 	}
 }
