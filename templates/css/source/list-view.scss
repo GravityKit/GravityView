@@ -76,6 +76,10 @@ $color-description: #999;
 
 	@extend %clearfix; // Clears image floats
 
+	h4 {
+		clear: none; // Fix themes with H4 clearing the images
+	}
+
 	p {
 		margin: 0 0 1em 0;
 		padding: 0;
