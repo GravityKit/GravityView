@@ -289,7 +289,12 @@ body .ui-tooltip { border: 4px solid #999; }
 }
 .ui-tooltip-content .close i {
 	font-size: 25px;
-	color: black;
+	color: #555;
+
+	&:hover,
+	&:active {
+		color: #000;
+	}
 }
 
 .ui-tooltip-content .gv-field-controls {
@@ -473,6 +478,7 @@ hr{
 
 .gv-field-controls .dashicons {
 
+	width: 24px; // Give a larger click target
 	font-size: 18px;
 	line-height: 20px;
 
