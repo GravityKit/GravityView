@@ -23,6 +23,9 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
+= 1.0.2 =
+* Added: Show Views in Nav menu builder
+
 = 1.0.1 =
 * Added: "Getting Started" link to the Views menu
 * Fixed: Fatal error for users with Gravity Forms versions 1.7 or older
