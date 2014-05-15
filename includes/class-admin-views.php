@@ -328,7 +328,7 @@ class GravityView_Admin_Views {
 			</tr>
 
 			<tr valign="top">
-				<td>
+				<td scope="row">
 					<label for="gravityview_sort_field"><?php esc_html_e( 'Sort by field', 'gravity-view'); ?></label>
 				</td>
 				<td>
@@ -339,8 +339,8 @@ class GravityView_Admin_Views {
 				</td>
 			</tr>
 
-			<tr valign="top" class="alternate">
-				<td>
+			<tr valign="top">
+				<td scope="row">
 					<label for="gravityview_sort_direction"><?php esc_html_e( 'Sort direction', 'gravity-view'); ?></label>
 				</td>
 				<td>
@@ -352,20 +352,20 @@ class GravityView_Admin_Views {
 			</tr>
 
 			<tr valign="top">
-				<td>
+				<td scope="row">
 					<label for="gravityview_start_date"><?php esc_html_e( 'Filter by Start Date', 'gravity-view'); ?></label>
 				</td>
 				<td>
-					<input name="template_settings[start_date]" id="gravityview_start_date" type="text" class="gv-datepicker">
+					<input name="template_settings[start_date]" id="gravityview_start_date" type="text" class="gv-datepicker small-text">
 				</td>
 			</tr>
 
-			<tr valign="top" class="alternate">
-				<td>
+			<tr valign="top">
+				<td scope="row">
 					<label for="gravityview_end_date"><?php esc_html_e( 'Filter by End Date', 'gravity-view'); ?></label>
 				</td>
 				<td>
-					<input name="template_settings[end_date]" id="gravityview_end_date" type="text" class="gv-datepicker">
+					<input name="template_settings[end_date]" id="gravityview_end_date" type="text" class="gv-datepicker small-text">
 				</td>
 			</tr>
 
