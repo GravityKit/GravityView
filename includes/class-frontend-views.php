@@ -297,12 +297,18 @@ class GravityView_frontend {
 
 		ob_start();
 		if( empty( $single_entry ) ) {
+			GravityView_Plugin::log_debug( '[render_view] Rendering Single Entry.' );
 			$gravityview_view->paging = $paging;
 			$gravityview_view->context = 'directory';
+
+			GravityView_Plugin::log_debug( '[render_view] Rendering header.' );
 			$gravityview_view->render( $view_slug, 'header' );
+			GravityView_Plugin::log_debug( '[render_view] Rendering body.' );
 			$gravityview_view->render( $view_slug, 'body' );
+			GravityView_Plugin::log_debug( '[render_view] Rendering footer.' );
 			$gravityview_view->render( $view_slug, 'footer' );
 		} else {
+			GravityView_Plugin::log_debug( '[render_view] Rendering Single Entry.' );
 			$gravityview_view->context = 'single';
 			$gravityview_view->render( $view_slug, 'single' );
 		}
