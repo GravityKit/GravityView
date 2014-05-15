@@ -604,18 +604,21 @@ class GravityView_Admin_Views {
 	 *
 	 * @param  string      $label_text The text of the label
 	 * @param  string      $field_id   The ID of the field
+	 * @param  string      $label_type   Is this a label for a `field` or `widget`?
 	 * @param  boolean     $add_controls   Add the field/widget controls?
 	 * @param  string      $field_options   Add field options DIV
 	 * @return string                  HTML of output
 	 */
-	function render_label( $label_text, $field_id, $add_controls = true, $field_options = '' ) {
+	function render_label( $label_text, $field_id, $label_type = 'field', $add_controls = true, $field_options = '' ) {
 
 		$output = '';
 
 		$output .= '<h5>'.esc_attr( $label_text );
 
 		if( $add_controls ) {
-			$output .= '<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons"></a><a href="#remove" class="dashicons-dismiss dashicons"></a></span>';
+			$settings_title = sprintf(__('Configure %s Settings', 'gravity-view'), ucfirst($label_type));
+			$delete_title = sprintf(__('Remove %s', 'gravity-view'), ucfirst($label_type));
+			$output .= sprintf('<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons" title="%s"></a><a href="#remove" class="dashicons-dismiss dashicons" title="%s"></a></span>', $settings_title, $delete_title);
 		}
 
 		$output .= '</h5>';
@@ -649,7 +652,7 @@ class GravityView_Admin_Views {
 					continue;
 				}
 
-				echo $this->render_label($details['label'], $id);
+				echo $this->render_label($details['label'], $id, 'field');
 
 			endforeach;
 		endif;
@@ -723,7 +726,7 @@ class GravityView_Admin_Views {
 		if( !empty( $widgets ) ) :
 			foreach( $widgets as $id => $details ) :
 
-				echo $this->render_label($details['label'], $id);
+				echo $this->render_label($details['label'], $id, 'widget');
 
 			endforeach;
 		endif;
@@ -775,7 +778,7 @@ class GravityView_Admin_Views {
 
 										$field_options = $this->render_field_options( $type, $template_id, $field['id'], $field['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone );
 
-										echo $this->render_label($field['label'], $field['id'], true, $field_options);
+										echo $this->render_label($field['label'], $field['id'], $type, true, $field_options);
 										//endif;
 
 									endforeach;
