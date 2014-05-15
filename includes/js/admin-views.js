@@ -553,14 +553,14 @@
 
 		// Event handler to remove Fields from active areas
 		removeField: function( e ) {
+			var vcfg = viewConfiguration;
 			e.preventDefault();
 			var area = $( e.currentTarget ).parents(".active-drop");
 			$( e.currentTarget ).parents('.gv-fields').fadeOut('normal', function() {
 				$(this).remove();
+				vcfg.toggleDropMessage();
 			});
-			if( area.find(".gv-fields").length === 0 ) {
-				 area.find(".drop-message").show();
-			}
+
 		},
 
 		// Event handler to open dialog with Field Settings
