@@ -92,7 +92,6 @@ class GravityView_View extends Gamajo_Template_Loader {
 				?>
 					<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
 						<?php
-						echo '&nbsp;';
 						if( !empty( $areas ) ) {
 							foreach( $areas as $area ) {
 								if( !empty( $widgets[ $zone .'_'. $area['areaid'] ] ) ) {
