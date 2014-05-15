@@ -25,6 +25,10 @@ Beautifully display your Gravity Forms entries.
 
 = 1.0.2 =
 * Added: Show Views in Nav menu builder
+* Fixed: "Add Fields" selector no longer closes when clicking to drag the scrollbar
+* Fixed: Issue affecting Gravity Forms styles when Gravity Forms' "No Conflict Mode" is enabled
+* Fixed: Footer widget areas added back to Single Entry views using Listing layout
+* Changed the look and feel of the Add Fields dialog and field settings. Let us know what you think!
 
 = 1.0.1 =
 * Added: "Getting Started" link to the Views menu
