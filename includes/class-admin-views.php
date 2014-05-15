@@ -327,7 +327,7 @@ class GravityView_Admin_Views {
 				</td>
 			</tr>
 
-			<!--
+			<?php /*
 
 			// TODO
 
@@ -349,7 +349,7 @@ class GravityView_Admin_Views {
 				</td>
 			</tr>
 
-			-->
+			*/ ?>
 
 			<?php // Hook for other template custom settings
 
