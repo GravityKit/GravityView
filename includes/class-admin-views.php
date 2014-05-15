@@ -327,16 +327,36 @@ class GravityView_Admin_Views {
 				</td>
 			</tr>
 
-			<?php /*
+			<tr valign="top">
+				<td>
+					<label for="gravityview_sort_field"><?php esc_html_e( 'Sort by field', 'gravity-view'); ?></label>
+				</td>
+				<td>
+					<select name="template_settings[sort_field]" id="gravityview_sort_field">
+						<option value=""><?php esc_html_e( 'Default', 'gravity-view'); ?></option>
+						<option value="date_created"><?php esc_html_e( 'Date Created', 'gravity-view'); ?></option>
+					</select>
+				</td>
+			</tr>
 
-			// TODO
+			<tr valign="top" class="alternate">
+				<td>
+					<label for="gravityview_sort_direction"><?php esc_html_e( 'Sort direction', 'gravity-view'); ?></label>
+				</td>
+				<td>
+					<select name="template_settings[sort_direction]" id="gravityview_sort_direction">
+						<option value="ASC"><?php esc_html_e( 'ASC', 'gravity-view'); ?></option>
+						<option value="DESC"><?php esc_html_e( 'DESC', 'gravity-view'); ?></option>
+					</select>
+				</td>
+			</tr>
 
 			<tr valign="top">
 				<td>
 					<label for="gravityview_start_date"><?php esc_html_e( 'Filter by Start Date', 'gravity-view'); ?></label>
 				</td>
 				<td>
-					<input name="template_settings[start_date]" id="gravityview_start_date" type="text" class="gv-datepicker datepicker ymd-dash widefat" value="<?php echo esc_attr( $template_settings['start_date'] ); ?>">
+					<input name="template_settings[start_date]" id="gravityview_start_date" type="text" class="gv-datepicker">
 				</td>
 			</tr>
 
@@ -345,11 +365,9 @@ class GravityView_Admin_Views {
 					<label for="gravityview_end_date"><?php esc_html_e( 'Filter by End Date', 'gravity-view'); ?></label>
 				</td>
 				<td>
-					<input name="template_settings[end_date]" id="gravityview_end_date" type="text" class="gv-datepicker datepicker ymd-dash widefat" value="<?php echo esc_attr( $template_settings['end_date'] ); ?>" />
+					<input name="template_settings[end_date]" id="gravityview_end_date" type="text" class="gv-datepicker">
 				</td>
 			</tr>
-
-			*/ ?>
 
 			<?php // Hook for other template custom settings
 
