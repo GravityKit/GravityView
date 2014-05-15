@@ -1,0 +1,38 @@
+/**
+ * Custom CSS at Add New / Edit Views screen
+ *
+ * @package   GravityView
+ * @license   GPL2+
+ * @author    Katz Web Services, Inc.
+ * @link      http://gravityview.co
+ * @copyright Copyright 2014, Katz Web Services, Inc.
+ *
+ * @since 1.0.0
+ */
+
+
+#select_gravityview_view {
+	overflow-x: hidden;
+	overflow-y: auto;
+	display: none;
+}
+
+/* Add GravityView icon to the button */
+
+/* image - to be removed */
+.gv_button_icon {
+	background: url( '../../images/gravity-view-btn.png') no-repeat top left;
+	display: inline-block;
+	height: 20px;
+	margin: 0 2px 0 0;
+	vertical-align: text-bottom;
+	width: 20px;
+}
+
+/* gravityview font icon */
+.gv-icon-astronaut-head:before {
+	display: inline-block;
+	font-size: 16px;
+	margin: 0 2px 1px 0;
+	vertical-align: text-bottom;
+}

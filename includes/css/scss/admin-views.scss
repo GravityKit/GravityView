@@ -446,11 +446,11 @@ hr{
 
 .gv-fields h5 {
 	float: left;
-	width: 80%;
+	width: 100%;
 	font-weight: 600;
 	font-size: 14px;
 	margin: 0;
-	padding: 0 3em 0 0;
+	padding: 0;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	user-select: none;
@@ -465,12 +465,30 @@ hr{
 }
 
 .gv-fields span.gv-field-controls {
-	float: right;
-	width: 20%;
-	text-align: right;
+	padding-left: .33em; // Give some space.
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+}
+
+.gv-field-controls .dashicons {
+
+	font-size: 18px;
+	line-height: 20px;
+
+	&:hover,
+	&:active {
+		color: #2ea2cc;
+	}
+
+	&.dashicons-dismiss {
+		float: right;
+		color: #999;
+		&:hover,
+		&:active {
+			color: #d03a3a
+		}
+	}
 }
 
 #directory-available-fields .gv-fields h5,
