@@ -624,7 +624,7 @@ class GravityView_Admin_Views {
 		$output .= '</h5>';
 
 
-		$output = '<div data-fieldid="'.esc_attr($id).'" class="gv-fields">'.$output.$field_options.'</div>';
+		$output = '<div data-fieldid="'.esc_attr($field_id).'" class="gv-fields">'.$output.$field_options.'</div>';
 
 		return $output;
 	}
