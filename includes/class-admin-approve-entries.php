@@ -336,7 +336,7 @@ class GravityView_Admin_ApproveEntries {
 
 	function register_gf_style( $styles ) {
 		$styles[] = 'gravityview_entries_list';
-		return $$styles;
+		return $styles;
 	}
 
 }
