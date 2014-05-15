@@ -599,12 +599,38 @@ class GravityView_Admin_Views {
 	}
 
 
+	/**
+	 * Generate the HTML for a field or widget label
+	 *
+	 * @param  string      $label_text The text of the label
+	 * @param  string      $field_id   The ID of the field
+	 * @param  boolean     $add_controls   Add the field/widget controls?
+	 * @param  string      $field_options   Add field options DIV
+	 * @return string                  HTML of output
+	 */
+	function render_label( $label_text, $field_id, $add_controls = true, $field_options = '' ) {
 
+		$output = '';
+
+		$output .= '<h5>'.esc_attr( $label_text );
+
+		if( $add_controls ) {
+			$output .= '<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons"></a><a href="#remove" class="dashicons-dismiss dashicons"></a></span>';
+		}
+
+		$output .= '</h5>';
+
+
+		$output = '<div data-fieldid="'.esc_attr($id).'" class="gv-fields">'.$output.$field_options.'</div>';
+
+		return $output;
+	}
 
 	/**
 	 * Render html for displaying available fields based on a Form ID
 	 * $blacklist_field_types - contains the field types which are not proper to be shown in a directory.
 	 *
+	 * @filter  gravityview_blacklist_field_types Modify the types of fields that shouldn't be shown in a View.
 	 * @access public
 	 * @param string $form_id (default: '')
 	 * @param string $context (default: 'single')
@@ -621,17 +647,10 @@ class GravityView_Admin_Views {
 
 				if( in_array( $details['type'], $blacklist_field_types ) ) {
 					continue;
-				} ?>
+				}
 
-				<div data-fieldid="<?php echo $id; ?>" class="gv-fields">
-					<h5><?php echo $details['label']; ?></h5>
-					<span class="gv-field-controls">
-						<a href="#settings" class="dashicons-admin-generic dashicons"></a>
-						<a href="#remove" class="dashicons-dismiss dashicons"></a>
-					</span>
-				</div>
+				echo $this->render_label($details['label'], $id);
 
-			<?php
 			endforeach;
 		endif;
 	}
@@ -702,17 +721,10 @@ class GravityView_Admin_Views {
 
 
 		if( !empty( $widgets ) ) :
-			foreach( $widgets as $id => $details ) : ?>
+			foreach( $widgets as $id => $details ) :
 
-				<div data-fieldid="<?php echo $id; ?>" class="gv-fields">
-					<h5><?php echo $details['label']; ?></h5>
-					<span class="gv-field-controls">
-						<a href="#settings" class="dashicons-admin-generic dashicons"></a>
-						<a href="#remove" class="dashicons-dismiss dashicons"></a>
-					</span>
-				</div>
+				echo $this->render_label($details['label'], $id);
 
-			<?php
 			endforeach;
 		endif;
 
@@ -759,20 +771,16 @@ class GravityView_Admin_Views {
 
 										$input_type = isset($available_fields[ $field['id'] ]['type']) ? $available_fields[ $field['id'] ]['type'] : NULL;
 
-										//if( !empty( $available_fields[ $field['id'] ] ) ) : ?>
+										//if( !empty( $available_fields[ $field['id'] ] ) ) :
 
-											<div data-fieldid="<?php echo $field['id']; ?>" class="gv-fields">
-												<h5><?php echo $field['label']; ?></h5>
-												<span class="gv-field-controls">
-													<a href="#settings" class="dashicons-admin-generic dashicons"></a>
-													<a href="#remove" class="dashicons-dismiss dashicons"></a>
-												</span>
-												<?php echo $this->render_field_options( $type, $template_id, $field['id'], $field['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone ); ?>
-											</div>
+										$field_options = $this->render_field_options( $type, $template_id, $field['id'], $field['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone );
 
-										<?php //endif; ?>
-									<?php endforeach; ?>
-								<?php endif; ?>
+										echo $this->render_label($field['label'], $field['id'], true, $field_options);
+										//endif;
+
+									endforeach;
+
+								endif; ?>
 
 								<span class="drop-message">Drop fields here</span>
 							</div>
