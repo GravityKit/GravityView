@@ -472,16 +472,22 @@
 						.end()
 				.attr('data-tooltip-id','');
 
+			// Show the new field
 			newField.fadeIn();
 
-			// Get the current position of the tooltip
-			tooltipOffset = $('#'+tooltipId).offset();
+			// If there's more than one field in the area,
+			// we move the tooltip.
+			if(newField.siblings('.gv-fields').length > 0) {
 
-			// Move the tooltip down by the height of the new field plus 5px margin bottom.
-			// TODO: Clean up this so it doesn't use hard-coded margin size.
-			$('#'+tooltipId).offset({
-				top: (tooltipOffset.top + newField.outerHeight() + 5)
-			});
+				// Get the current position of the tooltip
+				tooltipOffset = $('#'+tooltipId).offset();
+
+				// Move the tooltip down by the height of the new field plus 5px margin bottom.
+				// TODO: Clean up this so it doesn't use hard-coded margin size.
+				$('#'+tooltipId).offset({
+					top: (tooltipOffset.top + newField.outerHeight() + 5)
+				});
+			}
 
 			vcfg.toggleDropMessage();
 		},
