@@ -71,8 +71,19 @@
 			$('a[href="#gv_preview_template"]').click( vcfg.previewTemplate );
 
 			// close all tooltips if user clicks outside the tooltip
-			$(document).mouseup( function (e) {
-				if( (!$(e.target).is('.ui-tooltip') && !$(e.target).parents( '.ui-tooltip' ).length > 0) || $(e.target).parents('.close').length > 0 ) {
+			$(document).on('mouseup keyup', function (e) {
+				var close = false;
+
+				// Escape key was pressed
+				if(e.type === 'keyup' && e.keyCode == 27) { close = true; }
+
+				// The click that was registered wasn't on the tooltip
+				if(e.type === 'mouseup' && ((!$(e.target).is('.ui-tooltip') && !$(e.target).parents( '.ui-tooltip' ).length > 0) || $(e.target).parents('.close').length > 0 )) {
+					close = true;
+				}
+
+				// Close all open tooltips
+				if (close) {
 					$("a.gv-add-field[data-tooltip='active']").tooltip("close");
 				}
 			});
@@ -380,6 +391,7 @@
 						.attr('data-tooltip', 'active')
 						.attr('data-tooltip-id', $(this).attr( 'aria-describedby' ) );
 				},
+				closeOnEscape: true,
 				disabled: true,
 				position: {
 					my: "center bottom",
