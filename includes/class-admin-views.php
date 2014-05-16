@@ -18,8 +18,17 @@ class GravityView_Admin_Views {
 
 	function __construct() {
 
-		add_action( 'add_meta_boxes', array( $this, 'register_metabox' ) );
+		add_action( 'add_meta_boxes', array( $this, 'register_metabox' ));
 		add_action( 'save_post', array( $this, 'save_postdata' ) );
+
+		// Fix annoying 3rd party metabox behavior
+
+		// Remove metaboxes. We need to run this twice for Genesis (9) and others (11). Default is 10.
+		add_action( 'admin_menu' , array( $this, 'remove_other_metaboxes' ), 9 );
+		add_action( 'admin_menu' , array( $this, 'remove_other_metaboxes' ), 11 );
+
+		// Add them back in
+		add_action( 'add_meta_boxes', array( $this, 'add_other_metaboxes' ), 20 );
 
 		// adding styles and scripts
 		add_action( 'admin_enqueue_scripts', array( 'GravityView_Admin_Views', 'add_scripts_and_styles'), 999 );
@@ -44,6 +53,64 @@ class GravityView_Admin_Views {
 
 	}
 
+	/**
+	 * Modify WooThemes metabox behavior
+	 *
+	 * Only show when the View has been configured.
+	 *
+	 * @return void
+	 */
+	function remove_other_metaboxes() {
+		global $pagenow;
+
+		$gv_page = $this->is_gravityview_admin_page();
+
+		// New View or Edit View page
+		if($gv_page === 'single') {
+
+			// Genesis - adds the metaboxes too high. Added back in below.
+			remove_action( 'admin_menu', 'genesis_add_inpost_layout_box' );
+
+			// New View page
+			if($pagenow === 'post-new.php' ) {
+
+				// WooThemes
+				remove_meta_box( 'woothemes-settings', 'gravityview', 'normal' );
+
+				// WordPress SEO Plugin
+				add_filter( 'option_wpseo_titles', array( $this, 'hide_wordpress_seo_metabox' ) );
+			}
+
+		}
+
+	}
+
+	function add_other_metaboxes() {
+		global $pagenow;
+
+		if(!$this->is_gravityview_admin_page()) { return; }
+
+		// Genesis
+		if(function_exists('genesis_inpost_layout_box') && $pagenow !== 'post-new.php') {
+			// Add back in Genesis meta box
+			add_meta_box( 'genesis_inpost_layout_box', __( 'Layout Settings', 'genesis' ), 'genesis_inpost_layout_box', 'gravityview', 'advanced', 'default' );
+		}
+	}
+
+	/**
+	 * Modify the WordPress SEO plugin's metabox behavior
+	 *
+	 * Only show when the View has been configured.
+	 * @param  array       $options WP SEO options array
+	 * @return array               Modified
+	 */
+	function hide_wordpress_seo_metabox( $options = array() ) {
+		global $pagenow;
+
+		$options['hideeditbox-gravityview'] = true;
+
+		return $options;
+	}
 
 
 	function register_metabox() {
@@ -62,6 +129,7 @@ class GravityView_Admin_Views {
 
 		// information box
 		add_meta_box( 'gravityview_shortcode_info', __( 'Shortcode Info', 'gravity-view' ), array( $this, 'render_shortcode_info' ), 'gravityview', 'side', 'default' );
+
 	}
 
 
@@ -1222,11 +1290,11 @@ class GravityView_Admin_Views {
 	}
 
 	static function is_gravityview_admin_page($hook = '', $page = NULL) {
-		global $current_screen, $plugin_page, $pagenow;
+		global $current_screen, $plugin_page, $pagenow, $post;
 
 		$is_page = false;
 
-		if(!empty($current_screen) && isset($current_screen->post_type) && $current_screen->post_type === 'gravityview' || rgget('post_type') === 'gravityview') {
+		if((!empty($current_screen) && isset($current_screen->post_type) && $current_screen->post_type === 'gravityview') || (isset($_GET['post_type']) && $_GET['post_type'] === 'gravityview') || (!empty($post) && !empty($post->post_type) && $post->post_type === 'gravityview') ) {
 
 			// $_GET `post_type` variable
 			if(in_array($pagenow, array( 'post.php' , 'post-new.php' )) ) {

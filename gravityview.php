@@ -239,7 +239,7 @@ final class GravityView_Plugin {
 			'label'               => __( 'view', 'gravity-view' ),
 			'description'         => __( 'Create views based on a Gravity Forms form', 'gravity-view' ),
 			'labels'              => $labels,
-			'supports'            => array( 'title', ),
+			'supports'            => array( 'title', 'genesis-layouts'),
 			'hierarchical'        => false,
 			'public'              => true,
 			'show_ui'             => true,
