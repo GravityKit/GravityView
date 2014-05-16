@@ -23,6 +23,15 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
+= 1.0.3 =
+* Fixed: Custom CSS classes didn't apply to images in list view
+* Added: Hungarian translation. Thanks, [@dbalage](https://www.transifex.com/accounts/profile/dbalage/)!
+* Tweak: Hide WordPress SEO, Genesis, and WooThemes metaboxes until a View has been created
+* Tweak: Field layout improvements; drag-and-drop works smoother now
+* Fixed: Security warning by the WordFence plugin: it didn't like a line in a sample entry data .csv file
+* Tweak: Close "Add Field" and "Add Widget" boxes by pressing the escape key
+* If you'd like to contribute translations, [please sign up here](https://www.transifex.com/projects/p/gravityview/).
+
 = 1.0.2 =
 * Added: Show Views in Nav menu builder
 * Fixed: "Add Fields" selector no longer closes when clicking to drag the scrollbar
