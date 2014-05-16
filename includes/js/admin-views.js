@@ -563,7 +563,7 @@
 				if( $(this).find(".gv-fields").length > 0 ) {
 					$(this).find(".drop-message").hide();
 				} else {
-					$(this).find(".drop-message").show();
+					$(this).find(".drop-message").fadeIn(100);
 				}
 			});
 

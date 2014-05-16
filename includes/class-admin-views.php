@@ -855,7 +855,7 @@ class GravityView_Admin_Views {
 
 								endif; ?>
 
-								<span class="drop-message">Drop fields here</span>
+								<span class="drop-message"><?php echo sprintf(esc_attr__('"%s" or drag existing %ss here.', 'gravity-view'), $button_label, $type ); ?></span>
 							</div>
 							<div class="gv-droppable-area-action">
 								<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>"><?php echo '+ '.esc_html( $button_label ); ?></a>

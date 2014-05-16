@@ -392,14 +392,22 @@ hr{
 }
 
 .active-drop {
-	/*border: 1px dotted #bbb;*/
-	padding: 0.5em;
+	padding: 5px;
+	min-height: 40px;
+	position: relative;
 }
 
 .active-drop .drop-message {
-	margin: 5px 2px;
-	line-height: 40px;
 	color: #bbb;
+	margin: 0;
+	display: block;
+	text-align: center;
+	width: 100%;
+	z-index: 1;
+	position: absolute;
+	margin-top: 5px;
+	top: 0;
+	line-height: 40px;
 }
 
 
@@ -440,9 +448,10 @@ hr{
 	border: 1px solid #ddd;
 	background: #f7f7f7;
 	overflow: hidden;
-	padding: 0.5em;
+	padding: 0.5em 1%;
 	margin-bottom: 5px;
 	width: 100%;
+	z-index: 100; // Above .drop-message
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -511,7 +520,7 @@ hr{
 
 .fields-placeholder {
 	margin: 5px 2px;
-	height: 30px;
+	height: 28px; // .active-drop height - margin-top - margin-bottom - 2px border
 	border: 1px dashed #ccc;
 }
 
@@ -546,11 +555,3 @@ hr{
 	display: block;
 	margin-bottom: 0.5em;
 }
-
-.active-drop span.drop-message {
-	margin: 5px 2px;
-	line-height: 40px;
-	color: #bbb;
-}
-
-
