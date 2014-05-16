@@ -32,6 +32,8 @@ class GravityView_Admin_Views {
 
 		// adding styles and scripts
 		add_action( 'admin_enqueue_scripts', array( 'GravityView_Admin_Views', 'add_scripts_and_styles'), 999 );
+		add_filter( 'gform_noconflict_styles', array( $this, 'register_no_conflict') );
+		add_filter( 'gform_noconflict_scripts', array( $this, 'register_no_conflict') );
 		add_filter( 'gravityview_noconflict_styles', array( $this, 'register_no_conflict') );
 		add_filter( 'gravityview_noconflict_scripts', array( $this, 'register_no_conflict') );
 
@@ -1358,11 +1360,11 @@ class GravityView_Admin_Views {
 
 		$filter = current_filter();
 
-		if( 'gravityview_noconflict_scripts' === $filter ) {
+		if( preg_match('/script/ism', $filter ) ) {
 			$allow_scripts = array( 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-uservoice-widget' );
 			$registered = array_merge( $registered, $allow_scripts );
-		} elseif( 'gravityview_noconflict_styles' === $filter ) {
-			$allow_styles = array( 'dashicons', 'wp-jquery-ui-dialog', 'gravityview_views_styles' );
+		} elseif( preg_match('/style/ism', $filter ) ) {
+			$allow_styles = array( 'dashicons', 'wp-jquery-ui-dialog', 'gravityview_views_styles', 'gravityview_fonts' );
 			$registered = array_merge( $registered, $allow_styles );
 		}
 
