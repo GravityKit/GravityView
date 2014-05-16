@@ -39,7 +39,9 @@
 				<div class="gv-list-view-content-image">
 				<?php
 					foreach( $this->fields['single_list-image'] as $field ) : ?>
+						<div class="<?php echo gv_class( $field ); ?>">
 						<?php echo gv_value( $entry, $field ); ?>
+						</div>
 					<?php endforeach; ?>
 				</div>
 				<?php endif; ?>
