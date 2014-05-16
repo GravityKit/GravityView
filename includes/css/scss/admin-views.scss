@@ -393,7 +393,7 @@ hr{
 
 .active-drop {
 	padding: 5px;
-	min-height: 40px;
+	min-height: 44px;
 	position: relative;
 }
 
@@ -443,13 +443,19 @@ hr{
 	border: 1px solid #eee;
 }*/
 
+.fields-placeholder {
+	margin: 5px 2px;
+	height: 32px; // .active-drop height - margin-top - margin-bottom - 2px border
+	border: 1px dashed #ccc;
+}
+
 .gv-fields {
 	cursor: move;
 	border: 1px solid #ddd;
 	background: #f7f7f7;
 	overflow: hidden;
 	padding: 0.5em 1%;
-	margin-bottom: 5px;
+	margin: 5px 2px;
 	width: 100%;
 	z-index: 100; // Above .drop-message
 	-webkit-box-sizing: border-box;
@@ -516,12 +522,6 @@ hr{
 #directory-available-widgets .gv-fields span.gv-field-controls,
 #single-available-fields .gv-fields span.gv-field-controls {
 	display: none !important;
-}
-
-.fields-placeholder {
-	margin: 5px 2px;
-	height: 28px; // .active-drop height - margin-top - margin-bottom - 2px border
-	border: 1px dashed #ccc;
 }
 
 .gv-dialog-options {
