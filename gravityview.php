@@ -410,6 +410,8 @@ final class GravityView_Plugin {
 
 		wp_enqueue_style( 'gravityview_fonts', plugins_url('includes/css/admin-fonts.css', GRAVITYVIEW_FILE), array() );
 
+		wp_register_script( 'gravityview-jquery-cookie', plugins_url('includes/lib/jquery-cookie/jquery.cookie.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
+
 	}
 
 

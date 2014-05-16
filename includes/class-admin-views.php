@@ -290,8 +290,6 @@ class GravityView_Admin_Views {
 		?>
 		<div id="tabs">
 
-			<input type="hidden" name="gv-active-tab" id="gv-active-tab" value="<?php echo get_post_meta( $post->ID, '_gravityview_tab_active', true ); ?>">
-
 			<ul class="nav-tab-wrapper">
 				<li><a href="#directory-view" class="nav-tab"><?php esc_html_e( 'Multiple Entries', 'gravity-view' ); ?></a></li>
 				<li><a href="#single-view" class="nav-tab"><?php esc_html_e( 'Single Entry', 'gravity-view' ); ?></a></li>
@@ -301,11 +299,11 @@ class GravityView_Admin_Views {
 
 				<div id="directory-fields" class="gv-section">
 
-					<h4><?php esc_html_e( 'Above Entries', 'gravity-view'); ?> <span><?php esc_html_e( 'Define the header widgets', 'gravity-view'); ?></span></h4>
+					<h4><?php esc_html_e( 'Above Entries Widgets', 'gravity-view'); ?> <span><?php esc_html_e( 'These widgets will be shown above entries.', 'gravity-view'); ?></span></h4>
 
 					<?php echo $this->render_widgets_active_areas( $curr_template, 'header', $post->ID ); ?>
 
-					<h4><?php esc_html_e( 'Entries', 'gravity-view'); ?> <span><?php esc_html_e( 'Configure the entry layout', 'gravity-view'); ?></span></h4>
+					<h4><?php esc_html_e( 'Entries Fields', 'gravity-view'); ?> <span><?php esc_html_e( 'These fields will be shown for each entry.', 'gravity-view'); ?></span></h4>
 
 					<div id="directory-active-fields" class="gv-grid gv-grid-pad gv-grid-border">
 						<?php if(!empty( $curr_template ) ) {
@@ -313,7 +311,7 @@ class GravityView_Admin_Views {
 						} ?>
 					</div>
 
-					<h4><?php esc_html_e( 'Below Entries', 'gravity-view'); ?> <span><?php esc_html_e( 'Define the footer widgets', 'gravity-view'); ?></span></h4>
+					<h4><?php esc_html_e( 'Below Entries Widgets', 'gravity-view'); ?> <span><?php esc_html_e( 'These widgets will be shown below entries.', 'gravity-view'); ?></span></h4>
 
 					<?php echo $this->render_widgets_active_areas( $curr_template, 'footer', $post->ID ); ?>
 
@@ -343,7 +341,7 @@ class GravityView_Admin_Views {
 
 				<div id="single-fields" class="gv-section">
 
-					<h4><?php esc_html_e( 'Customize your single view', 'gravity-view'); ?></h4>
+					<h4><?php esc_html_e( 'These fields will be shown in Single Entry view.', 'gravity-view'); ?></h4>
 
 					<div id="single-active-fields" class="gv-grid gv-grid-pad gv-grid-border">
 						<?php if(!empty( $curr_template ) ) {
@@ -477,10 +475,6 @@ class GravityView_Admin_Views {
 		}
 
 		GravityView_Plugin::log_debug( '[save_postdata] Saving View post type. Data: ' . print_r( $_POST, true ) );
-
-		//set active tab index
-		$active_tab = empty( $_POST['gv-active-tab'] ) ? 0 : $_POST['gv-active-tab'];
-		update_post_meta( $post_id, '_gravityview_tab_active', $active_tab );
 
 		// check if this is a start fresh View
 		if ( isset( $_POST['gravityview_select_form_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_form_nonce'], 'gravityview_select_form' ) ) {
@@ -1337,10 +1331,11 @@ class GravityView_Admin_Views {
 		if(self::is_gravityview_admin_page($hook, 'single')) {
 
 			//enqueue scripts
-			wp_enqueue_script( 'gravityview_views_scripts', plugins_url('includes/js/admin-views.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog' ), GravityView_Plugin::version);
+			wp_enqueue_script( 'gravityview_views_scripts', plugins_url('includes/js/admin-views.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie' ), GravityView_Plugin::version);
 
 			wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'cookiepath' => COOKIEPATH,
 				'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
 				'label_viewname' => __( 'Enter View name here', 'gravity-view' ),
 				'label_close' => __( 'Close', 'gravity-view' ),
@@ -1361,7 +1356,7 @@ class GravityView_Admin_Views {
 		$filter = current_filter();
 
 		if( preg_match('/script/ism', $filter ) ) {
-			$allow_scripts = array( 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-uservoice-widget' );
+			$allow_scripts = array( 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-uservoice-widget', 'gravityview-jquery-cookie');
 			$registered = array_merge( $registered, $allow_scripts );
 		} elseif( preg_match('/style/ism', $filter ) ) {
 			$allow_styles = array( 'dashicons', 'wp-jquery-ui-dialog', 'gravityview_views_styles', 'gravityview_fonts' );

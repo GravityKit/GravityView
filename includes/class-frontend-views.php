@@ -379,8 +379,6 @@ class GravityView_frontend {
 	public static function add_scripts_and_styles() {
 		global $post;
 
-		wp_enqueue_script( 'gravityview-jquery-cookie', plugins_url('includes/lib/jquery-cookie/jquery.cookie.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
-
 		wp_enqueue_script( 'gravityview-fe-view', plugins_url('includes/js/fe-views.js', GRAVITYVIEW_FILE), array( 'jquery', 'gravityview-jquery-cookie' ), GravityView_Plugin::version, true );
 
 		wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version, 'all' );

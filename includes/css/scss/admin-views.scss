@@ -392,7 +392,7 @@ hr{
 }
 
 .active-drop {
-	padding: 5px;
+	padding: 3px 7px;
 	min-height: 44px;
 	position: relative;
 }
@@ -405,7 +405,7 @@ hr{
 	width: 100%;
 	z-index: 1;
 	position: absolute;
-	margin-top: 5px;
+	margin-top: 7px;
 	top: 0;
 	line-height: 40px;
 }
@@ -455,7 +455,7 @@ hr{
 	background: #f7f7f7;
 	overflow: hidden;
 	padding: 0.5em 1%;
-	margin: 5px 2px;
+	margin: 5px 0;
 	width: 100%;
 	z-index: 100; // Above .drop-message
 	-webkit-box-sizing: border-box;
