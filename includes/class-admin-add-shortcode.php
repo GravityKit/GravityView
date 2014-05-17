@@ -211,22 +211,7 @@ class GravityView_Admin_Add_Shortcode {
 
 		// fetch form id assigned to the view
 		$formid = get_post_meta( $_POST['viewid'], '_gravityview_form_id', true );
-		$fields = gravityview_get_form_fields( $formid );
-
-		if( !empty( $fields ) ) {
-
-			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array() );
-
-			$response = '<option value="">'. esc_html__( 'Default', 'gravity-view') .'</option>';
-			$response .= '<option value="date_created">'. esc_html__( 'Date Created', 'gravity-view' ) .'</option>';
-			foreach( $fields as $id => $field ) {
-				if( in_array( $field['type'], $blacklist_field_types ) ) {
-					continue;
-				}
-				$response .= '<option value="'. $id .'">'. $field['label'] .'</option>';
-			}
-
-		}
+		$response = gravityview_get_sortable_fields( $formid );
 
 		echo $response;
 		die();
