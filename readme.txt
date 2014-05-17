@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries.
 * Tweak: Hide WordPress SEO, Genesis, and WooThemes metaboxes until a View has been created
 * Tweak: Field layout improvements; drag-and-drop works smoother now
 * Fixed: Security warning by the WordFence plugin: it didn't like a line in a sample entry data .csv file
+* Fixed: Don't show welcome screen on editing the plugin using the WordPress Plugin Editor
 * Tweak: Close "Add Field" and "Add Widget" boxes by pressing the escape key
 * If you'd like to contribute translations, [please sign up here](https://www.transifex.com/projects/p/gravityview/).
 
