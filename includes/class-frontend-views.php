@@ -158,13 +158,21 @@ class GravityView_frontend {
 
 		GravityView_Plugin::log_debug( '[render_view] Init View. Arguments: ' . print_r( $args, true ) );
 
-		extract( $args );
-
 		// validate attributes
-		if( empty( $id ) ) {
+		if( empty( $args['id'] ) ) {
 			GravityView_Plugin::log_error( '[render_view] Returning; no ID defined.');
 			return;
 		}
+		//get template settings
+		$template_settings = get_post_meta( $args['id'], '_gravityview_template_settings', true );
+		GravityView_Plugin::log_debug( '[render_view] Template Settings: ' . print_r( $template_settings, true ) );
+
+		//Override shortcode args over View template settings
+		$args = wp_parse_args( $args, $template_settings );
+
+		GravityView_Plugin::log_debug( '[render_view] Arguments after merging with View settings: ' . print_r( $args, true ) );
+
+		extract( $args );
 
 		// It's password protected and you need to log in.
 		if(post_password_required( $id )) {
@@ -187,9 +195,6 @@ class GravityView_frontend {
 
 		$dir_fields = get_post_meta( $id, '_gravityview_directory_fields', true );
 		GravityView_Plugin::log_debug( '[render_view] Fields: ' . print_r( $dir_fields, true ) );
-
-		$template_settings = get_post_meta( $id, '_gravityview_template_settings', true );
-		GravityView_Plugin::log_debug( '[render_view] Template Settings: ' . print_r( $template_settings, true ) );
 
 		// remove fields according to visitor visibility permissions (if logged-in)
 		$dir_fields = self::filter_fields( $dir_fields );

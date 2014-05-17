@@ -167,7 +167,11 @@
 				vcfg.templateFilter('custom');
 				vcfg.showTemplates();
 				vcfg.getAvailableFields();
+				vcfg.getSortableFields();
 			}
+
+			vcfg.getSortableFields();
+
 		},
 
 		showDialog: function( dialogId ) {
@@ -209,6 +213,26 @@
 			});
 
 		},
+
+		getSortableFields: function() {
+
+			var vcfg = viewConfiguration;
+
+			var data = {
+				action: 'gv_sortable_fields_form',
+				form_id: vcfg.gvSelectForm.val(),
+				nonce: gvGlobals.nonce,
+			};
+
+			$.post( gvGlobals.ajaxurl, data, function( response ) {
+				if( response !== 'false' ) {
+					$("#gravityview_sort_field").empty();
+					$("#gravityview_sort_field").append( response );
+				}
+			});
+
+		},
+
 
 		switchView: function(e){
 			e.preventDefault();
@@ -669,6 +693,9 @@
 
 		// start the View Configuration magic
 		viewConfiguration.init();
+
+		//datepicker
+		$('.gv-datepicker').datepicker({ dateFormat: "yy-mm-dd" });
 
 		// Save the state on a per-post basis
 		var cookie_key = 'gv-active-tab-'+$('#post_ID').val();

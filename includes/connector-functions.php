@@ -219,3 +219,45 @@ if( !function_exists('gravityview_get_field') ) {
 
 
 
+if( !function_exists('gravityview_get_sortable_fields') ) {
+
+	/**
+	 * Render dropdown (select) with the list of sortable fields from a form ID
+	 *
+	 * @access public
+	 * @param  int $formid Form ID
+	 * @return string         html
+	 */
+	function gravityview_get_sortable_fields( $formid, $current = '' ) {
+
+		$output = '<option value="" '. selected( '', $current, false ).'>'. esc_html__( 'Default', 'gravity-view') .'</option>';
+
+		if( empty( $formid ) ) {
+			return $output;
+		}
+
+		$fields = gravityview_get_form_fields( $formid );
+
+		if( !empty( $fields ) ) {
+
+			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array() );
+
+			$output .= '<option value="date_created" '. selected( 'date_created', $current, false ).'>'. esc_html__( 'Date Created', 'gravity-view' ) .'</option>';
+			foreach( $fields as $id => $field ) {
+				if( in_array( $field['type'], $blacklist_field_types ) ) {
+					continue;
+				}
+				$output .= '<option value="'. $id .'" '. selected( $id, $current, false ).'>'. $field['label'] .'</option>';
+			}
+
+		}
+		return $output;
+	}
+
+}
+
+
+
+
+
+

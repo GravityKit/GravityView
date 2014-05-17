@@ -60,6 +60,8 @@ class GravityView_Admin_Views {
 		// get preset fields
 		add_action( 'wp_ajax_gv_set_preset_form', array( $this, 'create_preset_form' ) );
 
+		add_action( 'wp_ajax_gv_sortable_fields_form', array( $this, 'get_sortable_fields' ) );
+
 	}
 
 	/**
@@ -420,8 +422,22 @@ class GravityView_Admin_Views {
 	 */
 	function render_view_settings( $post ) {
 
+		$curr_form = get_post_meta( $post->ID, '_gravityview_form_id', true );
+
 		// View template settings
-		$template_settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
+		$settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
+
+		$defaults = array(
+			'page_size' => 25,
+			'show_only_approved' => false,
+			'sort_field' => '',
+			'sort_direction' => 'ASC',
+			'start_date' => '',
+			'end_date' => '',
+			);
+
+		$ts = wp_parse_args( $settings, $defaults );
+
 		?>
 
 		<table class="form-table">
@@ -431,7 +447,7 @@ class GravityView_Admin_Views {
 					<label for="gravityview_page_size"><?php esc_html_e( 'Number of entries to show per page', 'gravity-view'); ?></label>
 				</td>
 				<td>
-					<input name="template_settings[page_size]" id="gravityview_page_size" type="number" step="1" min="1" value="<?php empty( $template_settings['page_size'] ) ? print 25 : print $template_settings['page_size']; ?>" class="small-text">
+					<input name="template_settings[page_size]" id="gravityview_page_size" type="number" step="1" min="1" value="<?php empty( $ts['page_size'] ) ? print 25 : print $ts['page_size']; ?>" class="small-text">
 				</td>
 			</tr>
 			<tr valign="top">
@@ -442,39 +458,56 @@ class GravityView_Admin_Views {
 					<fieldset>
 						<legend class="screen-reader-text"><span><?php esc_html_e( 'Show only approved entries', 'gravity-view' ); ?></span></legend>
 						<label for="gravityview_only_approved">
-							<input name="template_settings[show_only_approved]" type="checkbox" id="gravityview_only_approved" value="1" <?php empty( $template_settings['show_only_approved'] ) ? print '' : checked( $template_settings['show_only_approved'] , 1, true ); ?>>
+							<input name="template_settings[show_only_approved]" type="checkbox" id="gravityview_only_approved" value="1" <?php empty( $ts['show_only_approved'] ) ? print '' : checked( $ts['show_only_approved'] , 1, true ); ?>>
 						</label>
 					</fieldset>
 				</td>
 			</tr>
 
-			<?php /*
-
-			// TODO
+			<tr valign="top">
+				<td scope="row">
+					<label for="gravityview_sort_field"><?php esc_html_e( 'Sort by field', 'gravity-view'); ?></label>
+				</td>
+				<td>
+					<select name="template_settings[sort_field]" id="gravityview_sort_field">
+						<?php echo gravityview_get_sortable_fields( $curr_form, $ts['sort_field'] ); ?>
+					</select>
+				</td>
+			</tr>
 
 			<tr valign="top">
+				<td scope="row">
+					<label for="gravityview_sort_direction"><?php esc_html_e( 'Sort direction', 'gravity-view'); ?></label>
+				</td>
 				<td>
+					<select name="template_settings[sort_direction]" id="gravityview_sort_direction">
+						<option value="ASC" <?php selected( 'ASC', $ts['sort_direction'], true ); ?>><?php esc_html_e( 'ASC', 'gravity-view'); ?></option>
+						<option value="DESC" <?php selected( 'DESC', $ts['sort_direction'], true ); ?>><?php esc_html_e( 'DESC', 'gravity-view'); ?></option>
+					</select>
+				</td>
+			</tr>
+
+			<tr valign="top">
+				<td scope="row">
 					<label for="gravityview_start_date"><?php esc_html_e( 'Filter by Start Date', 'gravity-view'); ?></label>
 				</td>
 				<td>
-					<input name="template_settings[start_date]" id="gravityview_start_date" type="text" class="gv-datepicker datepicker ymd-dash widefat" value="<?php echo esc_attr( $template_settings['start_date'] ); ?>">
+					<input name="template_settings[start_date]" id="gravityview_start_date" type="text" class="gv-datepicker"value="<?php echo $ts['start_date']; ?>">
 				</td>
 			</tr>
 
-			<tr valign="top" class="alternate">
-				<td>
+			<tr valign="top">
+				<td scope="row">
 					<label for="gravityview_end_date"><?php esc_html_e( 'Filter by End Date', 'gravity-view'); ?></label>
 				</td>
 				<td>
-					<input name="template_settings[end_date]" id="gravityview_end_date" type="text" class="gv-datepicker datepicker ymd-dash widefat" value="<?php echo esc_attr( $template_settings['end_date'] ); ?>" />
+					<input name="template_settings[end_date]" id="gravityview_end_date" type="text" class="gv-datepicker" value="<?php echo $ts['end_date']; ?>">
 				</td>
 			</tr>
 
-			*/ ?>
-
 			<?php // Hook for other template custom settings
 
-			do_action( 'gravityview_admin_directory_settings', $template_settings );
+			do_action( 'gravityview_admin_directory_settings', $ts );
 
 			?>
 
@@ -1330,6 +1363,30 @@ class GravityView_Admin_Views {
 	}
 
 	/**
+	 * Given a View id, calculates the assigned form, and returns the form fields (only the sortable ones )
+	 * AJAX callback
+	 *
+	 *
+	 * @access public
+	 * @return void
+	 */
+	function get_sortable_fields() {
+		$this->check_ajax_nonce();
+
+		if( empty( $_POST['form_id'] ) ) {
+			echo false;
+			die();
+		}
+
+		$response = gravityview_get_sortable_fields( $_POST['form_id'] );
+
+		echo $response;
+		die();
+	}
+
+
+
+	/**
 	 * Uservoice feedback widget
 	 * @group Beta
 	 */
@@ -1390,8 +1447,12 @@ class GravityView_Admin_Views {
 		// Only enqueue the following on single pages
 		if(self::is_gravityview_admin_page($hook, 'single')) {
 
+			wp_enqueue_script( 'jquery-ui-datepicker' );
+			//wp_enqueue_style( 'gravityview_views_datepicker', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
+			wp_enqueue_style( 'gravityview_views_datepicker', plugins_url('includes/css/admin-datepicker.css', GRAVITYVIEW_FILE), GravityView_Plugin::version );
+
 			//enqueue scripts
-			wp_enqueue_script( 'gravityview_views_scripts', plugins_url('includes/js/admin-views.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie' ), GravityView_Plugin::version);
+			wp_enqueue_script( 'gravityview_views_scripts', plugins_url('includes/js/admin-views.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie',  ), GravityView_Plugin::version);
 
 			wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -1406,7 +1467,7 @@ class GravityView_Admin_Views {
 			));
 
 			//enqueue styles
-			wp_enqueue_style( 'gravityview_views_styles', plugins_url('includes/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons', 'wp-jquery-ui-dialog'), GravityView_Plugin::version );
+			wp_enqueue_style( 'gravityview_views_styles', plugins_url('includes/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
 
 		} // End single page
 	}
@@ -1416,10 +1477,10 @@ class GravityView_Admin_Views {
 		$filter = current_filter();
 
 		if( preg_match('/script/ism', $filter ) ) {
-			$allow_scripts = array( 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-uservoice-widget', 'gravityview-jquery-cookie');
+			$allow_scripts = array( 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-uservoice-widget', 'gravityview-jquery-cookie', 'gravityview_views_datepicker' );
 			$registered = array_merge( $registered, $allow_scripts );
 		} elseif( preg_match('/style/ism', $filter ) ) {
-			$allow_styles = array( 'dashicons', 'wp-jquery-ui-dialog', 'gravityview_views_styles', 'gravityview_fonts' );
+			$allow_styles = array( 'dashicons', 'wp-jquery-ui-dialog', 'gravityview_views_styles', 'gravityview_fonts', 'gravityview_views_datepicker' );
 			$registered = array_merge( $registered, $allow_styles );
 		}
 
