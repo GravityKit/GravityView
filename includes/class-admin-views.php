@@ -60,6 +60,8 @@ class GravityView_Admin_Views {
 		// get preset fields
 		add_action( 'wp_ajax_gv_set_preset_form', array( $this, 'create_preset_form' ) );
 
+		add_action( 'wp_ajax_gv_sortable_fields_form', array( $this, 'get_sortable_fields' ) );
+
 	}
 
 	/**
@@ -477,7 +479,7 @@ class GravityView_Admin_Views {
 					<label for="gravityview_start_date"><?php esc_html_e( 'Filter by Start Date', 'gravity-view'); ?></label>
 				</td>
 				<td>
-					<input name="template_settings[start_date]" id="gravityview_start_date" type="text" class="gv-datepicker small-text">
+					<input name="template_settings[start_date]" id="gravityview_start_date" type="text" class="gv-datepicker">
 				</td>
 			</tr>
 
@@ -486,7 +488,7 @@ class GravityView_Admin_Views {
 					<label for="gravityview_end_date"><?php esc_html_e( 'Filter by End Date', 'gravity-view'); ?></label>
 				</td>
 				<td>
-					<input name="template_settings[end_date]" id="gravityview_end_date" type="text" class="gv-datepicker small-text">
+					<input name="template_settings[end_date]" id="gravityview_end_date" type="text" class="gv-datepicker">
 				</td>
 			</tr>
 
@@ -1348,6 +1350,30 @@ class GravityView_Admin_Views {
 	}
 
 	/**
+	 * Given a View id, calculates the assigned form, and returns the form fields (only the sortable ones )
+	 * AJAX callback
+	 *
+	 *
+	 * @access public
+	 * @return void
+	 */
+	function get_sortable_fields() {
+		$this->check_ajax_nonce();
+
+		if( empty( $_POST['form_id'] ) ) {
+			echo false;
+			die();
+		}
+
+		$response = gravityview_get_sortable_fields( $_POST['form_id'] );
+
+		echo $response;
+		die();
+	}
+
+
+
+	/**
 	 * Uservoice feedback widget
 	 * @group Beta
 	 */
@@ -1408,8 +1434,12 @@ class GravityView_Admin_Views {
 		// Only enqueue the following on single pages
 		if(self::is_gravityview_admin_page($hook, 'single')) {
 
+			wp_enqueue_script( 'jquery-ui-datepicker' );
+			//wp_enqueue_style( 'gravityview_views_datepicker', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
+			wp_enqueue_style( 'gravityview_views_datepicker', plugins_url('includes/css/admin-datepicker.css', GRAVITYVIEW_FILE), GravityView_Plugin::version );
+
 			//enqueue scripts
-			wp_enqueue_script( 'gravityview_views_scripts', plugins_url('includes/js/admin-views.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie' ), GravityView_Plugin::version);
+			wp_enqueue_script( 'gravityview_views_scripts', plugins_url('includes/js/admin-views.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie',  ), GravityView_Plugin::version);
 
 			wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -1424,7 +1454,7 @@ class GravityView_Admin_Views {
 			));
 
 			//enqueue styles
-			wp_enqueue_style( 'gravityview_views_styles', plugins_url('includes/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons', 'wp-jquery-ui-dialog'), GravityView_Plugin::version );
+			wp_enqueue_style( 'gravityview_views_styles', plugins_url('includes/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
 
 		} // End single page
 	}
@@ -1434,10 +1464,10 @@ class GravityView_Admin_Views {
 		$filter = current_filter();
 
 		if( preg_match('/script/ism', $filter ) ) {
-			$allow_scripts = array( 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-uservoice-widget', 'gravityview-jquery-cookie');
+			$allow_scripts = array( 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-uservoice-widget', 'gravityview-jquery-cookie', 'gravityview_views_datepicker' );
 			$registered = array_merge( $registered, $allow_scripts );
 		} elseif( preg_match('/style/ism', $filter ) ) {
-			$allow_styles = array( 'dashicons', 'wp-jquery-ui-dialog', 'gravityview_views_styles', 'gravityview_fonts' );
+			$allow_styles = array( 'dashicons', 'wp-jquery-ui-dialog', 'gravityview_views_styles', 'gravityview_fonts', 'gravityview_views_datepicker' );
 			$registered = array_merge( $registered, $allow_styles );
 		}
 
