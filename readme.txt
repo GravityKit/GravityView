@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries.
 == Changelog ==
 
 = 1.0.3 =
+* Fixed: Fatal errors caused by Gravity Forms not existing.
 * Fixed: Custom CSS classes didn't apply to images in list view
 * Added: Hungarian translation. Thanks, [@dbalage](https://www.transifex.com/accounts/profile/dbalage/)!
 * Tweak: Hide WordPress SEO, Genesis, and WooThemes metaboxes until a View has been created

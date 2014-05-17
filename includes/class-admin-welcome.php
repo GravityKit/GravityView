@@ -365,17 +365,19 @@ class GravityView_Welcome {
 	 * @return void
 	 */
 	public function welcome() {
+		global $plugin_page;
+
+		// Bail if we're just editing the plugin
+		if( $plugin_page === 'plugin-editor.php' ) { return; }
 
 		// Bail if no activation redirect
-		if ( ! get_transient( '_gv_activation_redirect' ) )
-			return;
+		if ( ! get_transient( '_gv_activation_redirect' ) ) { return; }
 
 		// Delete the redirect transient
 		delete_transient( '_gv_activation_redirect' );
 
 		// Bail if activating from network, or bulk
-		if ( is_network_admin() || isset( $_GET['activate-multi'] ) )
-			return;
+		if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) { return; }
 
 		$upgrade = get_option( 'gv_version_upgraded_from' );
 
