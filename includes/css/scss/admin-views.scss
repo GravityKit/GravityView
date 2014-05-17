@@ -408,9 +408,11 @@ hr{
 	width: 100%;
 	z-index: 1;
 	position: absolute;
-	margin-top: 7px;
+	margin: 10px auto 0;
 	top: 0;
-	line-height: 40px;
+	min-height: 40px;
+	font-size: 13px;
+	line-height: 16px;
 }
 
 
