@@ -563,7 +563,7 @@
 				if( $(this).find(".gv-fields").length > 0 ) {
 					$(this).find(".drop-message").hide();
 				} else {
-					$(this).find(".drop-message").show();
+					$(this).find(".drop-message").fadeIn(100);
 				}
 			});
 
@@ -670,16 +670,25 @@
 		// start the View Configuration magic
 		viewConfiguration.init();
 
+		// Save the state on a per-post basis
+		var cookie_key = 'gv-active-tab-'+$('#post_ID').val();
+
+		// The default tab is the first (0)
+		var activate_tab = $.cookie(cookie_key);
+		if(activate_tab === 'undefined') { activate_tab = 0; }
+
 		// View Configuration - Tabs (persisten after refresh)
 		$("#tabs").tabs({
-			active: $("#gv-active-tab").val(),
+			active: activate_tab,
 			activate: function( event, ui ) {
-				$("#gv-active-tab").val( ui.newTab.parent().children().index( ui.newTab ) );
+
+				// When the tab is activated, set a new cookie
+				$.cookie(cookie_key, ui.newTab.index(), { path: gvGlobals.cookiepath });
 			}
 		});
 
 		// Make zebra table rows
-		$("table.form-table tr:even").addClass('alternate');
+		$("#gravityview_template_settings .form-table tr:even").addClass('alternate');
 
 	});
 

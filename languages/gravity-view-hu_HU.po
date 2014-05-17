@@ -1,0 +1,809 @@
+# 
+# Translators:
+# dbalage <balazs@magonc.org>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: GravityView\n"
+"POT-Creation-Date: 2014-05-14 12:03-0700\n"
+"PO-Revision-Date: 2014-05-15 18:41+0000\n"
+"Last-Translator: dbalage <balazs@magonc.org>\n"
+"Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/gravityview/language/hu_HU/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hu_HU\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.6.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: gravityview.php:136
+#, php-format
+msgid ""
+"GravityView requires Gravity Forms to be active in order to run properly. "
+"%sActivate Gravity Forms%s to use the GravityView plugin."
+msgstr "A GravityView futtatásához szükséges a Gravity Forms plugin aktiválása. %sAktiváld a Gravity Forms-t%s a GravityView használatához."
+
+#: gravityview.php:138
+#, php-format
+msgid ""
+"GravityView requires Gravity Forms to be installed in order to run properly."
+" %sGet Gravity Forms%s today"
+msgstr "A GravityView futtatásához szükséges a Gravity Forms plugin telepítése. %sSzerezd be a Gravity Forms-t%s még ma!"
+
+#: gravityview.php:210
+msgid "Support"
+msgstr "Támogatás"
+
+#: gravityview.php:226
+msgctxt "Post Type General Name"
+msgid "Views"
+msgstr "Nézetek"
+
+#: gravityview.php:227
+msgctxt "Post Type Singular Name"
+msgid "View"
+msgstr "Nézet"
+
+#: gravityview.php:228
+msgid "Views"
+msgstr "Nézetek"
+
+#: gravityview.php:229
+msgid "Parent View:"
+msgstr "Szülő nézet:"
+
+#: gravityview.php:230
+msgid "All Views"
+msgstr "Összes nézet"
+
+#: gravityview.php:231 includes/class-admin-welcome.php:325
+msgid "View"
+msgstr "Nézet"
+
+#: gravityview.php:232
+msgid "Add New View"
+msgstr "Új nézet hozzáadása"
+
+#: gravityview.php:233
+msgid "New View"
+msgstr "Új nézet"
+
+#: gravityview.php:234
+msgid "Edit View"
+msgstr "Nézet szeresztése"
+
+#: gravityview.php:235
+msgid "Update View"
+msgstr "Nézet frissítése"
+
+#: gravityview.php:236
+msgid "Search Views"
+msgstr "Nézetek keresése"
+
+#: gravityview.php:237
+msgid "No Views found"
+msgstr "Nézet nem található"
+
+#: gravityview.php:238
+msgid "No Views found in Trash"
+msgstr "Nézet nem található a kukában"
+
+#: gravityview.php:241
+msgid "view"
+msgstr "nézet"
+
+#: gravityview.php:242
+msgid "Create views based on a Gravity Forms form"
+msgstr "Nézet létrehozása egy Gravity Forms űrlap alapján"
+
+#: gravityview.php:286 gravityview.php:287 gravityview.php:289
+#, php-format
+msgid "View updated. %sView on website.%s"
+msgstr "Nézet frissítve. %sMegtekintés a weboldalon.%s"
+
+#: gravityview.php:288
+msgid "View deleted."
+msgstr "Nézet törölve."
+
+#: gravityview.php:291
+#, php-format
+msgid "View restored to revision from %s"
+msgstr "Nézet visszaállítva %s változatra"
+
+#: gravityview.php:292
+#, php-format
+msgid "View published. %sView on website.%s"
+msgstr "Nézet publikálva. %sMegtekintés a weboldalon.%s"
+
+#: gravityview.php:293
+#, php-format
+msgid "View saved. %sView on website.%s"
+msgstr "Nézet elmentve. %sMegtekintés a weboldalon.%s"
+
+#: gravityview.php:294
+msgid "View submitted."
+msgstr "Nézet beküldve."
+
+#: gravityview.php:296
+#, php-format
+msgid "View scheduled for: <strong>%1$s</strong>."
+msgstr "Nézet időzítve: <strong>%1$s</strong>."
+
+#: gravityview.php:298
+msgid "M j, Y @ G:i"
+msgstr "Y. m j. @ G:i"
+
+#: gravityview.php:300
+#, php-format
+msgid "View draft updated. %sView on website.%s"
+msgstr "Nézet vázlata frissítve. %sMegtekintés a weboldalon.%s"
+
+#: gravityview.php:359
+msgid "Top"
+msgstr "Fent"
+
+#: gravityview.php:360
+msgid "Left"
+msgstr "Bal"
+
+#: gravityview.php:360
+msgid "Right"
+msgstr "Jobb"
+
+#: includes/class-admin-add-shortcode.php:53
+msgid "Add a Gravity Forms View"
+msgstr "Gravity Forms nézet hozzáadása"
+
+#: includes/class-admin-add-shortcode.php:53
+msgid "Add View"
+msgstr "Nézet hozzáadása"
+
+#: includes/class-admin-add-shortcode.php:76
+msgid "Insert a View"
+msgstr "Nézet beillesztése"
+
+#: includes/class-admin-add-shortcode.php:79
+msgid "Select a View"
+msgstr "Nézet kiválasztása"
+
+#: includes/class-admin-add-shortcode.php:82
+msgid "&mdash; views &mdash;"
+msgstr "&mdash; nézetek &mdash;"
+
+#: includes/class-admin-add-shortcode.php:94
+#: includes/class-admin-views.php:308
+msgid "Number of entries to show per page"
+msgstr "Bejegyzések száma oldalanként"
+
+#: includes/class-admin-add-shortcode.php:103
+msgid "Sort by field"
+msgstr "Rendezés alapja"
+
+#: includes/class-admin-add-shortcode.php:107
+#: includes/class-admin-add-shortcode.php:222
+msgid "Default"
+msgstr "Alapértelmezett"
+
+#: includes/class-admin-add-shortcode.php:108
+#: includes/class-admin-add-shortcode.php:223
+msgid "Date Created"
+msgstr "Létrehozás dátuma"
+
+#: includes/class-admin-add-shortcode.php:116
+msgid "Sort direction"
+msgstr "Rendezés iránya"
+
+#: includes/class-admin-add-shortcode.php:120
+msgid "ASC"
+msgstr "Növ."
+
+#: includes/class-admin-add-shortcode.php:121
+msgid "DESC"
+msgstr "Csökk."
+
+#: includes/class-admin-add-shortcode.php:128
+msgid "Filter by Start Date"
+msgstr "Szűrés: kezdés dátuma"
+
+#: includes/class-admin-add-shortcode.php:137
+msgid "Filter by End Date"
+msgstr "Szűrés: befejezés dátuma"
+
+#: includes/class-admin-add-shortcode.php:148
+#: includes/class-admin-views.php:1234
+msgid "Cancel"
+msgstr "Mégse"
+
+#: includes/class-admin-add-shortcode.php:188
+msgid "Please select a View"
+msgstr "Kérlek, válassz nézetet"
+
+#: includes/class-admin-approve-entries.php:64
+#: includes/class-admin-approve-entries.php:95
+msgid "Approved"
+msgstr "Jóváhagyva"
+
+#: includes/class-admin-approve-entries.php:86
+msgid "Approved? (Admin-only)"
+msgstr "Jóváhagyva? (csak admin)"
+
+#: includes/class-admin-approve-entries.php:88
+msgid "Approved?"
+msgstr "Jóváhagyva?"
+
+#: includes/class-admin-approve-entries.php:130
+#, php-format
+msgid "%d entries"
+msgstr "%d bejegyzés"
+
+#: includes/class-admin-approve-entries.php:130
+msgid "1 entry"
+msgstr "1 bejegyzés"
+
+#: includes/class-admin-approve-entries.php:138
+#, php-format
+msgid "%s approved."
+msgstr "%s jóváhagyva."
+
+#: includes/class-admin-approve-entries.php:143
+#, php-format
+msgid "%s disapproved."
+msgstr "%s elutasítva."
+
+#: includes/class-admin-approve-entries.php:216
+msgid "Disapproved the lead"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:216
+msgid "Approved the lead"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:319
+msgid "Approve"
+msgstr "Jóváhagy"
+
+#: includes/class-admin-approve-entries.php:320
+msgid "Disapprove"
+msgstr "Elutasít"
+
+#: includes/class-admin-approve-entries.php:322
+msgid "Entry not approved for directory viewing. Click to approve this entry."
+msgstr "A bejegyzés nem lett jóváhagyva könyvtárszerű megtekintésre. Klikkelj a bejegyzés jóváhagyásához."
+
+#: includes/class-admin-approve-entries.php:323
+msgid "Entry approved for directory viewing. Click to disapprove this entry."
+msgstr "A bejegyzés jóvá lett hagyva könyvtárszerű megtekintésre. Klikkelj a bejegyzés jóváhagyásának visszavonásához."
+
+#: includes/class-admin-approve-entries.php:324
+msgid "Show entry in directory view?"
+msgstr "Bejegyzés mutatása könyvtárszerűen?"
+
+#: includes/class-admin-views.php:52
+msgid "Data Source"
+msgstr "Adatforrás"
+
+#: includes/class-admin-views.php:55
+msgid "Choose a View Type"
+msgstr "Válaszd ki a Nézet típusát"
+
+#: includes/class-admin-views.php:58
+msgid "View Configuration"
+msgstr "Nézet konfigurálása"
+
+#: includes/class-admin-views.php:61
+msgid "View Settings"
+msgstr "Nézet beállításai"
+
+#: includes/class-admin-views.php:64
+msgid "Shortcode Info"
+msgstr "Shortcode infó"
+
+#: includes/class-admin-views.php:91
+msgid "Where would you like the data to come from for this View?"
+msgstr "Honnan szeretnéd, hogy adatok érkezzetenek ehhez a Nézethez?"
+
+#: includes/class-admin-views.php:101
+msgid "Start Fresh"
+msgstr "Új létrehozása"
+
+#: includes/class-admin-views.php:103
+msgid "or use an existing form"
+msgstr "vagy használj egy létező űrlapot"
+
+#: includes/class-admin-views.php:109
+msgid "list of forms"
+msgstr "űrlapok listája"
+
+#: includes/class-admin-views.php:117
+msgid "Switch View"
+msgstr "Nézet váltása"
+
+#: includes/class-admin-views.php:123 includes/class-admin-views.php:128
+msgid "Attention"
+msgstr "Figyelem"
+
+#: includes/class-admin-views.php:124
+msgid "Changing the form will discard all the existent View configuration."
+msgstr "Az űrlap megváltoztatása törli a Nézet jelenlegi konfigurációját."
+
+#: includes/class-admin-views.php:129
+msgid ""
+"Changing the View Type will discard all the existent View configuration."
+msgstr "A Nézet típusának megváltoztatása törli a Nézet jelenlegi konfigurációját."
+
+#: includes/class-admin-views.php:134
+msgid "GravityView requires Javascript to be enabled."
+msgstr "A GravityView használatához engedélyezni kell a Javascriptet."
+
+#: includes/class-admin-views.php:178
+msgid "Buy Now"
+msgstr "Vásárlás"
+
+#: includes/class-admin-views.php:180
+msgid "Select"
+msgstr "Kiválaszt"
+
+#: includes/class-admin-views.php:181 includes/class-admin-views.php:185
+msgid "Preview"
+msgstr "Előnézet"
+
+#: includes/class-admin-views.php:226
+msgid "Multiple Entries"
+msgstr "Több bejegyzés"
+
+#: includes/class-admin-views.php:227
+msgid "Single Entry"
+msgstr "Egyetlen bejegyzés"
+
+#: includes/class-admin-views.php:234
+msgid "Above Entries"
+msgstr "Bejegyzések felett"
+
+#: includes/class-admin-views.php:234
+msgid "Define the header widgets"
+msgstr "Fejléc widgeteinek meghatározása"
+
+#: includes/class-admin-views.php:238
+msgid "Entries"
+msgstr "Bejegyzések"
+
+#: includes/class-admin-views.php:238
+msgid "Configure the entry layout"
+msgstr "Bejegyzés elrendezésének konfigurálása"
+
+#: includes/class-admin-views.php:246
+msgid "Below Entries"
+msgstr "Bejegyzések alatt"
+
+#: includes/class-admin-views.php:246
+msgid "Define the footer widgets"
+msgstr "Lábléc widgeteinek meghatározása"
+
+#: includes/class-admin-views.php:274
+msgid "Customize your single view"
+msgstr ""
+
+#: includes/class-admin-views.php:316 includes/class-admin-views.php:320
+msgid "Show only approved entries"
+msgstr "Csak jóváhagyott bejegyzések mutatása"
+
+#: includes/class-admin-views.php:351
+msgid "To insert this view into a post or a page use the following shortcode:"
+msgstr "A Nézet oldalba vagy posztba illesztéséhez használd az alábbi shortcode-ot:"
+
+#: includes/class-admin-views.php:621
+msgid "Entry ID"
+msgstr "Bejegyzés AZ"
+
+#: includes/class-admin-views.php:622
+msgid "Entry Date"
+msgstr "Bejegyzés dátuma"
+
+#: includes/class-admin-views.php:623
+msgid "Source URL"
+msgstr "Forrás URL"
+
+#: includes/class-admin-views.php:624
+msgid "User IP"
+msgstr "Felhasználó IP"
+
+#: includes/class-admin-views.php:625
+msgid "User"
+msgstr "Felhasználó"
+
+#: includes/class-admin-views.php:629
+msgid "Link to Entry"
+msgstr "Link a bejegyzéshez"
+
+#: includes/class-admin-views.php:706
+msgid "Add Widget"
+msgstr "Widget hozzáadása"
+
+#: includes/class-admin-views.php:708
+msgid "Add Field"
+msgstr "Mező hozzáadása"
+
+#: includes/class-admin-views.php:861
+msgid "Options"
+msgstr "Lehetőségek"
+
+#: includes/class-admin-views.php:893
+msgid "Any"
+msgstr "Mind"
+
+#: includes/class-admin-views.php:894
+msgid "Author or higher"
+msgstr "Szerző vagy magasabb"
+
+#: includes/class-admin-views.php:895
+msgid "Editor or higher"
+msgstr "Szerkesztő vagy magasabb"
+
+#: includes/class-admin-views.php:896
+msgid "Administrator"
+msgstr "Adminisztrátor"
+
+#: includes/class-admin-views.php:898
+msgid "Only visible to logged in users with role:"
+msgstr "Csak következő szereppel rendelkező felhasználóknak látható:"
+
+#: includes/class-admin-views.php:922
+msgid "Show Label"
+msgstr "Cimke mutatása"
+
+#: includes/class-admin-views.php:923
+msgid "Custom Label:"
+msgstr "Egyéni cimke:"
+
+#: includes/class-admin-views.php:924
+msgid "Custom CSS Class:"
+msgstr "Egyéni CSS osztály:"
+
+#: includes/class-admin-views.php:1232
+msgid "Enter View name here"
+msgstr "Írd be ide a Nézet nevét:"
+
+#: includes/class-admin-views.php:1233
+msgid "Close"
+msgstr "Bezár"
+
+#: includes/class-admin-views.php:1235
+msgid "Continue"
+msgstr "Folytatás"
+
+#: includes/class-admin-views.php:1236
+msgid "Ok"
+msgstr "OK"
+
+#: includes/class-admin-views.php:1237
+msgid ""
+"Error while creating the View for you. Check the settings or contact the "
+"GravityView support."
+msgstr "Hiba történt a Nézet létrehozása közben. Nézd át a beállításokat vagy lépj kapcsolatba a GravityView támogatási részleggel."
+
+#: includes/class-admin-welcome.php:57
+msgid "GravityView Beta: Getting Started"
+msgstr "GravityView Béta: Első lépések"
+
+#: includes/class-admin-welcome.php:58
+msgid "Getting Started"
+msgstr "Első lépések"
+
+#: includes/class-admin-welcome.php:141
+msgid "About"
+msgstr "Rólunk"
+
+#: includes/class-admin-welcome.php:144
+msgid "Beta Testing"
+msgstr "Béta tesztelés alatt"
+
+#: includes/class-admin-welcome.php:162
+msgid "Welcome to GravityView Beta"
+msgstr "Üdvözöl a GravityView Béta!"
+
+#: includes/class-admin-welcome.php:163
+#, php-format
+msgid ""
+"Thank you for installing GravityView %s. Beautifully display your Gravity "
+"Forms entries."
+msgstr "Köszönjük, hogy telepítetted a GravityView %s-t. Jelenítsd meg gyönyörűen a Gravity Form bejegyzéseit."
+
+#: includes/class-admin-welcome.php:272
+msgid "Configure Views"
+msgstr "Nézetek konfigurálása"
+
+#: includes/class-admin-welcome.php:290
+#, php-format
+msgid "Welcome to GravityView %s"
+msgstr "Üdvözöl a GravityView %s"
+
+#: includes/class-admin-welcome.php:291
+#, php-format
+msgid ""
+"Thank you for Installing GravityView %s. Beautifully display your Gravity "
+"Forms entries."
+msgstr "Köszönjük, hogy telepítetted a GravityView %s-t. Jelenítsd meg gyönyörűen a Gravity Form bejegyzéseit."
+
+#: includes/class-admin-welcome.php:295
+msgid ""
+"Use the tips below to get started using GravityView. You will be up and "
+"running in no time!"
+msgstr "Használd az alábbi tippeket a GravityView használatának első lépéseihez. Meglátod, hamar belejössz!"
+
+#: includes/class-admin-welcome.php:299
+msgid "Overview"
+msgstr "Áttekintés"
+
+#: includes/class-admin-welcome.php:303
+msgid "Example Header"
+msgstr "Minta fejléc"
+
+#: includes/class-admin-welcome.php:304 includes/class-admin-welcome.php:326
+#: includes/class-admin-welcome.php:331 includes/class-admin-welcome.php:337
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod "
+"tempor incididunt ut labore et dolore magna aliqua."
+msgstr "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+
+#: includes/class-admin-welcome.php:321
+msgid "Quick Terminology"
+msgstr "Gyors terminológia"
+
+#: includes/class-admin-welcome.php:330
+msgid "Entry"
+msgstr "Bejegyzés"
+
+#: includes/class-admin-welcome.php:336
+msgid "Table"
+msgstr "Táblázat"
+
+#: includes/class-admin-welcome.php:344
+msgid "Need Help?"
+msgstr "Segítségre van szükséged?"
+
+#: includes/class-admin-welcome.php:348
+msgid "Phenomenal Support"
+msgstr "Fantasztikus súgó és támogatás"
+
+#: includes/class-admin-welcome.php:349
+msgid ""
+"We do our best to provide the best support we can. If you encounter a "
+"problem or have a question, visit our <a "
+"href=\"https://gravityview.co/support\">support</a> page to open a ticket."
+msgstr "Mindent megteszünk, hogy a lehető legjobb segítséget és támogatást nyújtsuk. Ha bármilyen problémád vagy kérdésed lenne, nyisd meg <a href=\"https://gravityview.co/support\">támogatási</a> oldalunkat és nyiss egy új hibajegyet."
+
+#: includes/class-api.php:171
+msgid "This search returned no results."
+msgstr "A keresés nem hozott eredményt."
+
+#: includes/class-api.php:173
+msgid "No entries match your request."
+msgstr "Nincs egyező találat."
+
+#: includes/class-api.php:264
+msgid "&larr; Go back"
+msgstr "&larr; Menj vissza"
+
+#: includes/class-settings.php:86
+msgid "License Key"
+msgstr "Licensz kulcs"
+
+#: includes/class-settings.php:87
+msgid ""
+"Use <code>BETA_TESTER</code>. This allows you to get automatic upgrades."
+msgstr "Használd ezt: <code>BETA_TESTER</code>, hogy automatikus frissítéseket kapj."
+
+#: includes/class-settings.php:105
+msgid "No-Conflict Mode"
+msgstr "Ütközésmentes üzemmód"
+
+#: includes/class-settings.php:106
+msgid ""
+"Set this to ON to prevent extraneous scripts and styles from being printed "
+"on GravityView admin pages, reducing conflicts with other plugins and "
+"themes."
+msgstr "Kapcsold be, ha a GravityView ütközik más bővítményekkel vagy sablonokkal."
+
+#: includes/class-settings.php:112
+msgid "GravityView Settings"
+msgstr "A GravityView beállításai"
+
+#: includes/class-settings.php:152 includes/class-settings.php:153
+msgid "Settings"
+msgstr "Beállítások"
+
+#: includes/class-settings.php:222
+msgid "Follow us on Google+"
+msgstr "Kövess minket Google+-on"
+
+#: includes/default-templates.php:31
+msgid "Table (default)"
+msgstr "Táblázat (alapértelmezett)"
+
+#: includes/default-templates.php:32
+msgid "Display items in a table view."
+msgstr "Elemek megjelenítése táblázatként."
+
+#: includes/default-templates.php:43 includes/default-templates.php:82
+msgid "Link to single entry"
+msgstr "Link egyedi bejegyzéshez"
+
+#: includes/default-templates.php:49
+msgid "Visible Table Columns"
+msgstr "Táblázat látható oszlopai"
+
+#: includes/default-templates.php:74
+msgid "List (default)"
+msgstr "Lista (alapértelmezett)"
+
+#: includes/default-templates.php:75
+msgid "Display items in a listing view."
+msgstr "Elemek megjelenítése listaként."
+
+#: includes/default-templates.php:88
+msgid "Image"
+msgstr "Kép"
+
+#: includes/default-templates.php:91
+msgid "Listing Title"
+msgstr "Listázási cím"
+
+#: includes/default-templates.php:92
+msgid "Subheading"
+msgstr "Alcím"
+
+#: includes/default-templates.php:93
+msgid "Description"
+msgstr "Leírás"
+
+#: includes/default-templates.php:96
+msgid "Footer Left"
+msgstr "Lábléc bal"
+
+#: includes/default-templates.php:99
+msgid "Footer Right"
+msgstr "Lábléc jobb"
+
+#: includes/default-templates.php:325
+msgid "Business Data"
+msgstr "Üzleti adatok"
+
+#: includes/default-templates.php:326
+msgid "Display business information in a table."
+msgstr "Üzleti információk megjelenítése táblázatban."
+
+#: includes/default-templates.php:347
+msgid "Resume Board"
+msgstr "Önéletrajzok"
+
+#: includes/default-templates.php:348
+msgid "Allow job-seekers to post their resumes."
+msgstr "Lehetővé teszi az álláskeresőknek önéletrajzuk megjelenítését."
+
+#: includes/default-templates.php:368
+msgid "Job Board"
+msgstr "Állásajánlatok"
+
+#: includes/default-templates.php:369
+msgid "Post available jobs in a simple job board."
+msgstr ""
+
+#: includes/default-templates.php:389
+msgid "People Table"
+msgstr "Emberek"
+
+#: includes/default-templates.php:390
+msgid "Display information about people in a table."
+msgstr ""
+
+#: includes/default-templates.php:411
+msgid "Issue Tracker"
+msgstr ""
+
+#: includes/default-templates.php:412
+msgid "Manage issues and their statuses."
+msgstr ""
+
+#: includes/default-templates.php:433
+msgid "Business Listings"
+msgstr ""
+
+#: includes/default-templates.php:434
+msgid "Display business profiles."
+msgstr ""
+
+#: includes/default-templates.php:454
+msgid "Event Listings"
+msgstr ""
+
+#: includes/default-templates.php:455
+msgid "Present a list of your events."
+msgstr ""
+
+#: includes/default-templates.php:475
+msgid "People Profiles"
+msgstr ""
+
+#: includes/default-templates.php:476
+msgid "List people with individual profiles."
+msgstr ""
+
+#: includes/default-templates.php:496
+msgid "Staff Profiles"
+msgstr ""
+
+#: includes/default-templates.php:497
+msgid "List members of your team."
+msgstr ""
+
+#: includes/default-templates.php:517
+msgid "Website Showcase"
+msgstr ""
+
+#: includes/default-templates.php:518
+msgid "Feature submitted websites with screenshots."
+msgstr ""
+
+#: includes/default-widgets.php:26
+msgid "Show Pagination Info"
+msgstr ""
+
+#: includes/default-widgets.php:48
+#, php-format
+msgid "Displaying %1$s - %2$s of %3$s"
+msgstr ""
+
+#: includes/default-widgets.php:68
+msgid "Show each page number"
+msgstr ""
+
+#: includes/default-widgets.php:69
+msgid "Show Page Links"
+msgstr ""
+
+#: includes/default-widgets.php:126
+msgid "Show search input"
+msgstr ""
+
+#: includes/default-widgets.php:127
+msgid "Show date filters"
+msgstr ""
+
+#: includes/default-widgets.php:129
+msgid "Show Search Bar"
+msgstr ""
+
+#: includes/default-widgets.php:141
+msgid "Use this field as a search filter"
+msgstr ""
+
+#: templates/fields/entry_link.php:7
+msgid "View Details"
+msgstr ""
+
+#: templates/fields/fileupload.php:45
+msgid "Click to view"
+msgstr ""
+
+#: templates/widget-search.php:20
+msgid "Search Entries:"
+msgstr ""
+
+#: templates/widget-search.php:27
+msgid "Filter by date:"
+msgstr ""
+
+#: templates/widget-search.php:29
+msgid "Start date"
+msgstr ""
+
+#: templates/widget-search.php:30
+msgid "End date"
+msgstr ""
+
+#: templates/widget-search.php:42
+msgid "Search"
+msgstr ""
