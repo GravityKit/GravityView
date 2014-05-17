@@ -30,6 +30,12 @@
 			shortcode += ' page_size="' + page_size + '"';
 		}
 
+		//show only approved
+		var show_only_approved = $("#gravityview_only_approved").prop('checked');
+		if( show_only_approved === true ) {
+			shortcode += ' show_only_approved="1"';
+		}
+
 		// sorting
 		var sort_field = $("#gravityview_sort_field").val();
 		if( '' !== sort_field ) {
