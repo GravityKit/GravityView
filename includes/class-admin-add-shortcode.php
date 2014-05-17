@@ -73,7 +73,7 @@ class GravityView_Admin_Add_Shortcode {
 				<div class="wrap">
 					<h3><?php esc_html_e( 'Insert a View', 'gravity-view' ); ?></h3>
 					<table class="form-table">
-						<tr valign="top">
+						<tr valign="top" class="alternate">
 							<td><label for="gravityview_view_id"><?php esc_html_e( 'Select a View', 'gravity-view' ); ?></label></td>
 							<td>
 								<select name="gravityview_view_id" id="gravityview_view_id">
@@ -87,12 +87,26 @@ class GravityView_Admin_Add_Shortcode {
 							</td>
 						</tr>
 
-						<tr valign="top" class="alternate">
+						<tr valign="top">
 							<td>
 								<label for="gravityview_page_size"><?php esc_html_e( 'Number of entries to show per page', 'gravity-view'); ?></label>
 							</td>
 							<td>
 								<input name="gravityview_page_size" id="gravityview_page_size" type="number" step="1" min="1" value="25" class="small-text">
+							</td>
+						</tr>
+
+						<tr valign="top" class="alternate">
+							<td>
+								<label for="gravityview_only_approved"><?php esc_html_e( 'Show only approved entries', 'gravity-view' ); ?></label>
+							</td>
+							<td>
+								<fieldset>
+									<legend class="screen-reader-text"><span><?php esc_html_e( 'Show only approved entries', 'gravity-view' ); ?></span></legend>
+									<label for="gravityview_only_approved">
+										<input name="gravityview_only_approved" type="checkbox" id="gravityview_only_approved" value="1">
+									</label>
+								</fieldset>
 							</td>
 						</tr>
 
