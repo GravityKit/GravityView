@@ -51,8 +51,6 @@
 				}
 
 			}
-			// update sortable fields (in settings side)
-			vcfg.getSortableFields();
 
 			// start fresh button
 			vcfg.gvStartFreshButton.click( vcfg.startFresh );

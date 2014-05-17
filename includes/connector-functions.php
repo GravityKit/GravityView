@@ -228,26 +228,26 @@ if( !function_exists('gravityview_get_sortable_fields') ) {
 	 * @param  int $formid Form ID
 	 * @return string         html
 	 */
-	function gravityview_get_sortable_fields( $formid ) {
+	function gravityview_get_sortable_fields( $formid, $current = '' ) {
+
+		$output = '<option value="" '. selected( '', $current, false ).'>'. esc_html__( 'Default', 'gravity-view') .'</option>';
 
 		if( empty( $formid ) ) {
-			return '';
+			return $output;
 		}
 
 		$fields = gravityview_get_form_fields( $formid );
-		$output = '';
 
 		if( !empty( $fields ) ) {
 
 			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array() );
 
-			$output .= '<option value="">'. esc_html__( 'Default', 'gravity-view') .'</option>';
-			$output .= '<option value="date_created">'. esc_html__( 'Date Created', 'gravity-view' ) .'</option>';
+			$output .= '<option value="date_created" '. selected( 'date_created', $current, false ).'>'. esc_html__( 'Date Created', 'gravity-view' ) .'</option>';
 			foreach( $fields as $id => $field ) {
 				if( in_array( $field['type'], $blacklist_field_types ) ) {
 					continue;
 				}
-				$output .= '<option value="'. $id .'">'. $field['label'] .'</option>';
+				$output .= '<option value="'. $id .'" '. selected( $id, $current, false ).'>'. $field['label'] .'</option>';
 			}
 
 		}

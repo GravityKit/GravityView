@@ -422,8 +422,22 @@ class GravityView_Admin_Views {
 	 */
 	function render_view_settings( $post ) {
 
+		$curr_form = get_post_meta( $post->ID, '_gravityview_form_id', true );
+
 		// View template settings
-		$template_settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
+		$settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
+
+		$defaults = array(
+			'page_size' => 25,
+			'show_only_approved' => false,
+			'sort_field' => '',
+			'sort_direction' => 'ASC',
+			'start_date' => '',
+			'end_date' => '',
+			);
+
+		$ts = wp_parse_args( $settings, $defaults );
+
 		?>
 
 		<table class="form-table">
@@ -433,7 +447,7 @@ class GravityView_Admin_Views {
 					<label for="gravityview_page_size"><?php esc_html_e( 'Number of entries to show per page', 'gravity-view'); ?></label>
 				</td>
 				<td>
-					<input name="template_settings[page_size]" id="gravityview_page_size" type="number" step="1" min="1" value="<?php empty( $template_settings['page_size'] ) ? print 25 : print $template_settings['page_size']; ?>" class="small-text">
+					<input name="template_settings[page_size]" id="gravityview_page_size" type="number" step="1" min="1" value="<?php empty( $ts['page_size'] ) ? print 25 : print $ts['page_size']; ?>" class="small-text">
 				</td>
 			</tr>
 			<tr valign="top">
@@ -444,7 +458,7 @@ class GravityView_Admin_Views {
 					<fieldset>
 						<legend class="screen-reader-text"><span><?php esc_html_e( 'Show only approved entries', 'gravity-view' ); ?></span></legend>
 						<label for="gravityview_only_approved">
-							<input name="template_settings[show_only_approved]" type="checkbox" id="gravityview_only_approved" value="1" <?php empty( $template_settings['show_only_approved'] ) ? print '' : checked( $template_settings['show_only_approved'] , 1, true ); ?>>
+							<input name="template_settings[show_only_approved]" type="checkbox" id="gravityview_only_approved" value="1" <?php empty( $ts['show_only_approved'] ) ? print '' : checked( $ts['show_only_approved'] , 1, true ); ?>>
 						</label>
 					</fieldset>
 				</td>
@@ -456,8 +470,7 @@ class GravityView_Admin_Views {
 				</td>
 				<td>
 					<select name="template_settings[sort_field]" id="gravityview_sort_field">
-						<option value=""><?php esc_html_e( 'Default', 'gravity-view'); ?></option>
-						<option value="date_created"><?php esc_html_e( 'Date Created', 'gravity-view'); ?></option>
+						<?php echo gravityview_get_sortable_fields( $curr_form, $ts['sort_field'] ); ?>
 					</select>
 				</td>
 			</tr>
@@ -468,8 +481,8 @@ class GravityView_Admin_Views {
 				</td>
 				<td>
 					<select name="template_settings[sort_direction]" id="gravityview_sort_direction">
-						<option value="ASC"><?php esc_html_e( 'ASC', 'gravity-view'); ?></option>
-						<option value="DESC"><?php esc_html_e( 'DESC', 'gravity-view'); ?></option>
+						<option value="ASC" <?php selected( 'ASC', $ts['sort_direction'], true ); ?>><?php esc_html_e( 'ASC', 'gravity-view'); ?></option>
+						<option value="DESC" <?php selected( 'DESC', $ts['sort_direction'], true ); ?>><?php esc_html_e( 'DESC', 'gravity-view'); ?></option>
 					</select>
 				</td>
 			</tr>
@@ -479,7 +492,7 @@ class GravityView_Admin_Views {
 					<label for="gravityview_start_date"><?php esc_html_e( 'Filter by Start Date', 'gravity-view'); ?></label>
 				</td>
 				<td>
-					<input name="template_settings[start_date]" id="gravityview_start_date" type="text" class="gv-datepicker">
+					<input name="template_settings[start_date]" id="gravityview_start_date" type="text" class="gv-datepicker"value="<?php echo $ts['start_date']; ?>">
 				</td>
 			</tr>
 
@@ -488,13 +501,13 @@ class GravityView_Admin_Views {
 					<label for="gravityview_end_date"><?php esc_html_e( 'Filter by End Date', 'gravity-view'); ?></label>
 				</td>
 				<td>
-					<input name="template_settings[end_date]" id="gravityview_end_date" type="text" class="gv-datepicker">
+					<input name="template_settings[end_date]" id="gravityview_end_date" type="text" class="gv-datepicker" value="<?php echo $ts['end_date']; ?>">
 				</td>
 			</tr>
 
 			<?php // Hook for other template custom settings
 
-			do_action( 'gravityview_admin_directory_settings', $template_settings );
+			do_action( 'gravityview_admin_directory_settings', $ts );
 
 			?>
 
