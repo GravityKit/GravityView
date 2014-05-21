@@ -170,7 +170,7 @@
 				vcfg.getSortableFields();
 			}
 
-			vcfg.getSortableFields();
+			//vcfg.getSortableFields();
 
 		},
 
@@ -214,15 +214,20 @@
 
 		},
 
-		getSortableFields: function() {
+		getSortableFields: function( context, id ) {
 
 			var vcfg = viewConfiguration;
 
 			var data = {
 				action: 'gv_sortable_fields_form',
-				form_id: vcfg.gvSelectForm.val(),
 				nonce: gvGlobals.nonce,
 			};
+
+			if( context !== undefined && 'preset' === context ) {
+				data.template_id = id;
+			} else {
+				data.form_id = vcfg.gvSelectForm.val();
+			}
 
 			$.post( gvGlobals.ajaxurl, data, function( response ) {
 				if( response !== 'false' ) {
@@ -292,6 +297,9 @@
 
 				//fetch the fields template config of the preset view
 				vcfg.getPresetFields( selectedTemplateId );
+
+				//fetch Sortable fields
+				vcfg.getSortableFields( 'preset', selectedTemplateId );
 
 			} else {
 				//change view configuration active areas

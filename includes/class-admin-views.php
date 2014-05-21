@@ -691,14 +691,14 @@ class GravityView_Admin_Views {
 	}
 
 	/**
-	 * Get the available form fields for a preset (no form created yet)
+	 * Get the the form fields for a preset (no form created yet)
 	 * @param  string $template_id Preset template
 	 *
 	 */
-	function pre_get_available_fields( $template_id = '') {
+	function pre_get_form_fields( $template_id = '') {
 
 		if( empty( $template_id ) ) {
-			return;
+			return false;
 		} else {
 			$form_file = apply_filters( 'gravityview_template_formxml', '', $template_id );
 			if( !file_exists( $form_file )  ) {
@@ -735,7 +735,7 @@ class GravityView_Admin_Views {
 
         if( !$forms ) {
         	GravityView_Plugin::log_error( '[pre_get_available_fields] Importing Form Fields for preset ['. $template_id .']. Error importing file: ' . $form_file );
-        	return;
+        	return false;
         }
 
         if( !empty( $forms[0] ) && is_array( $forms[0] ) ) {
@@ -744,7 +744,7 @@ class GravityView_Admin_Views {
 
         GravityView_Plugin::log_debug( '[pre_get_available_fields] Importing Form Fields for preset ['. $template_id .']. Form: ' . print_r( $form, true ) );
 
-        $this->render_available_fields( $form );
+        return $form;
 
 	}
 
@@ -1217,7 +1217,8 @@ class GravityView_Admin_Views {
 			$this->render_available_fields( $_POST['formid'] );
 			die();
 		} elseif( !empty( $_POST['templateid'] ) ) {
-			$this->pre_get_available_fields( $_POST['templateid'] );
+			$form = $this->pre_get_form_fields( $_POST['templateid'] );
+			$this->render_available_fields( $form );
 			die();
 		}
 
@@ -1373,12 +1374,16 @@ class GravityView_Admin_Views {
 	function get_sortable_fields() {
 		$this->check_ajax_nonce();
 
-		if( empty( $_POST['form_id'] ) ) {
-			echo false;
-			die();
+		$form = '';
+
+		// if form id is set, use it, else, get form from preset
+		if( !empty( $_POST['form_id'] ) ) {
+			$form = $_POST['form_id'];
+		} elseif( !empty( $_POST['template_id'] ) ) {
+			$form = $this->pre_get_form_fields( $_POST['template_id'] );
 		}
 
-		$response = gravityview_get_sortable_fields( $_POST['form_id'] );
+		$response = gravityview_get_sortable_fields( $form );
 
 		echo $response;
 		die();
