@@ -313,7 +313,6 @@ class GravityView_Admin_ApproveEntries {
 			wp_enqueue_script( 'gravityview_gf_entries_scripts' );
 
 			wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array(
-				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries'),
 				'form_id' => RGForms::get('id'),
 				'label_approve' => __( 'Approve', 'gravity-view' ) ,

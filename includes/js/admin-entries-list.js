@@ -54,7 +54,7 @@
 			nonce: gvGlobals.nonce,
 		}
 
-		$.post( gvGlobals.ajaxurl, data, function( response ) {
+		$.post( ajaxurl, data, function( response ) {
 			if( response ) {
 				// If there was a successful AJAX request, toggle the checkbox
 				$target.removeClass('loading').toggleClass('entry_approved', (approved === 'Approved') );

@@ -79,7 +79,7 @@
 				nonce: gvGlobals.nonce,
 			};
 
-			$.post( gvGlobals.ajaxurl, data, function( response ) {
+			$.post( ajaxurl, data, function( response ) {
 				if( response ) {
 					$("#gravityview_sort_field").append( response );
 				}

@@ -1462,7 +1462,6 @@ class GravityView_Admin_Views {
 			wp_enqueue_script( 'gravityview_views_scripts', plugins_url('includes/js/admin-views.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie',  ), GravityView_Plugin::version);
 
 			wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
-				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'cookiepath' => COOKIEPATH,
 				'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
 				'label_viewname' => __( 'Enter View name here', 'gravity-view' ),
@@ -1470,7 +1469,7 @@ class GravityView_Admin_Views {
 				'label_cancel' => __( 'Cancel', 'gravity-view' ),
 				'label_continue' => __( 'Continue', 'gravity-view' ),
 				'label_ok' => __( 'Ok', 'gravity-view' ),
-				'label_publisherror' => __( 'Error while creating the View for you. Check the settings or contact the GravityView support.', 'gravity-view' ),
+				'label_publisherror' => __( 'Error while creating the View for you. Check the settings or contact GravityView support.', 'gravity-view' ),
 			));
 
 			//enqueue styles

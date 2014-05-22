@@ -229,7 +229,7 @@
 				data.form_id = vcfg.gvSelectForm.val();
 			}
 
-			$.post( gvGlobals.ajaxurl, data, function( response ) {
+			$.post( ajaxurl, data, function( response ) {
 				if( response !== 'false' ) {
 					$("#gravityview_sort_field").empty();
 					$("#gravityview_sort_field").append( response );
@@ -351,7 +351,7 @@
 				nonce: gvGlobals.nonce,
 			};
 
-			$.post( gvGlobals.ajaxurl, data, function( response ) {
+			$.post( ajaxurl, data, function( response ) {
 				if( response ) {
 					var content = $.parseJSON( response );
 					$('#directory-header-widgets').html( content.header );
@@ -375,7 +375,7 @@
 				nonce: gvGlobals.nonce,
 			};
 
-			$.post( gvGlobals.ajaxurl, data, function( response ) {
+			$.post( ajaxurl, data, function( response ) {
 				if( response ) {
 					var content = $.parseJSON( response );
 					$('#directory-header-widgets').html( content.header );
@@ -467,7 +467,7 @@
 			}
 
 
-			$.post( gvGlobals.ajaxurl, data, function( response ) {
+			$.post( ajaxurl, data, function( response ) {
 				if( response ) {
 					$("#directory-available-fields").append( response );
 					$("#single-available-fields").append( response );
@@ -502,7 +502,7 @@
 				nonce: gvGlobals.nonce,
 			};
 
-			$.post( gvGlobals.ajaxurl, data, function( response ) {
+			$.post( ajaxurl, data, function( response ) {
 				if( response ) {
 					newField.append( response );
 				}
@@ -669,7 +669,7 @@
 				nonce: gvGlobals.nonce,
 			};
 
-			$.post( gvGlobals.ajaxurl, data, function( response ) {
+			$.post( ajaxurl, data, function( response ) {
 
 				if( response != 'false' ) {
 
