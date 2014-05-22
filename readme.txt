@@ -24,14 +24,21 @@ Beautifully display your Gravity Forms entries.
 == Changelog ==
 
 = 1.0.3 =
+* Added: Sort by field, sort direction, Start & End date now added to Post view
+	- Note: When using the shortcode, the shortcode settings override the View settings.
 * Fixed: Fatal errors caused by Gravity Forms not existing.
+* Added a setting for Support Email - please make sure your email is accurate; otherwise we won't be able to respond to the feedback you send
 * Fixed: Custom CSS classes didn't apply to images in list view
-* Added: Hungarian translation. Thanks, [@dbalage](https://www.transifex.com/accounts/profile/dbalage/)!
+* Improved Settings layout
 * Tweak: Hide WordPress SEO, Genesis, and WooThemes metaboxes until a View has been created
 * Tweak: Field layout improvements; drag-and-drop works smoother now
+* Tweak: Add icon to Multiple Entries / Single Entry tabs
+* Tweak: Dialog boxes now have a backdrop
+* Fixed: Don't show field/widget settings link if there are no settings (like on the Show Pagination Info widget)
 * Fixed: Security warning by the WordFence plugin: it didn't like a line in a sample entry data .csv file
 * Fixed: Don't show welcome screen on editing the plugin using the WordPress Plugin Editor
 * Tweak: Close "Add Field" and "Add Widget" boxes by pressing the escape key
+* Added: Hungarian translation. Thanks, [@dbalage](https://www.transifex.com/accounts/profile/dbalage/)!
 * If you'd like to contribute translations, [please sign up here](https://www.transifex.com/projects/p/gravityview/).
 
 = 1.0.2 =

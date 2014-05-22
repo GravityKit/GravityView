@@ -50,7 +50,8 @@ if (!class_exists('GravityView_Settings')) {
 		public function _enqueue() {
 			global $plugin_page;
 
-			if(empty($plugin_page)) { return; }
+			// We only want to show the settings scripts on the settings page.
+			if(empty($plugin_page) || $plugin_page !== 'settings') { return; }
 
 			// Hide the sidebar and the sidebar toggle button in the settings.
 			wp_enqueue_style( 'gravityview_settings', plugins_url( 'includes/css/admin-settings.css', GRAVITYVIEW_FILE ) );
@@ -143,7 +144,6 @@ if (!class_exists('GravityView_Settings')) {
 		public function setArguments() {
 
 			$this->args = array(
-				// TYPICAL -> Change these values as you need/desire
 				'opt_name'          => 'gravityview_settings',            // This is where your data is stored in the database and also becomes your global variable name.
 				'display_name'      => 'GravityView',     // Name that appears at the top of your panel
 				'display_version'   => GravityView_Plugin::version,  // Version that appears at the top of your panel

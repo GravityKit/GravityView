@@ -25,6 +25,7 @@
 
 .gravityview_page_settings .redux-main { margin-left: 0; }
 
+.gravityview_page_settings input[id*="defaults-section"], /** Reset Section button - there's only one section! */
 .gravityview_page_settings .redux-sidebar,
 .gravityview_page_settings #info_bar .expand_options {
 	display:none;
