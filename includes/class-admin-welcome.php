@@ -57,30 +57,30 @@ class GravityView_Welcome {
 			__('GravityView Beta: Getting Started', 'gravity-view'),
 			__('Getting Started', 'gravity-view'),
 			$this->minimum_capability,
-			'gv-about',
-			array( $this, 'about_screen' )
-		);
-
-		/*
-		// todo
-
-		// About Page
-		add_dashboard_page(
-			__( 'Welcome to GravityView', 'gravity-view' ),
-			__( 'Welcome to GravityView', 'gravity-view' ),
-			$this->minimum_capability,
-			'gv-about',
-			array( $this, 'about_screen' )
-		);
-
-		// Getting Started Page
-		add_dashboard_page(
-			__( 'Getting started with GravityView', 'gravity-view' ),
-			__( 'Getting started with GravityView', 'gravity-view' ),
-			$this->minimum_capability,
 			'gv-getting-started',
 			array( $this, 'getting_started_screen' )
-		);*/
+		);
+
+		// About Page
+		add_submenu_page(
+			'edit.php?post_type=gravityview',
+			__( 'Welcome to GravityView', 'gravity-view' ),
+			__( 'Welcome to GravityView', 'gravity-view' ),
+			$this->minimum_capability,
+			'gv-beta-testing',
+			array( $this, 'beta_testing_screen' )
+		);
+
+		// Credits Page
+		add_submenu_page(
+			'edit.php?post_type=gravityview',
+			__( 'Credits', 'gravity-view' ),
+			__( 'Credits', 'gravity-view' ),
+			$this->minimum_capability,
+			'gv-credits',
+			array( $this, 'credits_screen' )
+		);
+
 	}
 
 	/**
@@ -93,7 +93,7 @@ class GravityView_Welcome {
 
 		if($is_page) { return $is_page; }
 
-		return in_array($plugin_page, array('gv-about', 'gv-getting-started'));
+		return in_array($plugin_page, array('gv-about', 'gv-beta-testing', 'gv-credits', 'gv-getting-started'));
 	}
 
 	/**
@@ -106,8 +106,8 @@ class GravityView_Welcome {
 	public function admin_head() {
 		global $plugin_page;
 
-		remove_submenu_page( 'index.php', 'gv-about' );
-		remove_submenu_page( 'index.php', 'gv-getting-started' );
+		remove_submenu_page( 'edit.php?post_type=gravityview', 'gv-beta-testing' );
+		remove_submenu_page( 'edit.php?post_type=gravityview', 'gv-credits' );
 
 		if( !$this->is_dashboard_page() ) { return; }
 
@@ -119,7 +119,8 @@ class GravityView_Welcome {
 
 		.gv-welcome-screenshots {
 			float: right;
-			margin-left: 10px!important;
+			max-width:50%;
+			margin: 0 10px 10px 0!important;
 		}
 		/*]]>*/
 		</style>
@@ -134,14 +135,25 @@ class GravityView_Welcome {
 	 * @return void
 	 */
 	public function tabs() {
-		$selected = isset( $_GET['page'] ) ? $_GET['page'] : 'gv-about';
+		global $plugin_page;
+
+		list( $display_version ) = explode( '-', GravityView_Plugin::version );
+
+		$selected = !empty( $plugin_page ) ? $plugin_page : 'gv-getting-started';
 		?>
-		<h2 class="nav-tab-wrapper">
-			<a class="nav-tab <?php echo $selected == 'gv-about' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-about' ), 'index.php' ) ) ); ?>">
-				<?php _e( "About", 'gravity-view' ); ?>
+
+		<h1><img class="alignleft" src="<?php echo plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ); ?>" width="100" height="132" /><?php printf( __( 'Welcome to GravityView %s', 'gravity-view' ), $display_version ); ?></h1>
+		<div class="about-text"><?php _e( 'Thank you for Installing GravityView. Beautifully display your Gravity Forms entries.', 'gravity-view' ); ?></div>
+
+		<h2 class="nav-tab-wrapper clear">
+			<a class="nav-tab <?php echo $selected == 'gv-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-getting-started', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
+				<?php _e( "Getting Started", 'gravity-view' ); ?>
 			</a>
-			<a class="nav-tab <?php echo $selected == 'gv-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-getting-started' ), 'index.php' ) ) ); ?>">
+			<a class="nav-tab <?php echo $selected == 'gv-beta-testing' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-beta-testing', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
 				<?php _e( 'Beta Testing', 'gravity-view' ); ?>
+			</a>
+			<a class="nav-tab <?php echo $selected == 'gv-credits' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-credits', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
+				<?php _e( 'Credits', 'gravity-view' ); ?>
 			</a>
 		</h2>
 		<?php
@@ -155,124 +167,122 @@ class GravityView_Welcome {
 	 * @since 1.0
 	 * @return void
 	 */
-	public function about_screen() {
+	public function getting_started_screen() {
 		list( $display_version ) = explode( '-', GravityView_Plugin::version );
 		?>
 		<div class="wrap about-wrap">
-			<h1><?php _e( 'Welcome to GravityView Beta', 'gravity-view' ); ?></h1>
-			<div class="about-text"><?php printf( __( 'Thank you for installing GravityView %s. Beautifully display your Gravity Forms entries.', 'gravity-view' ), $display_version ); ?></div>
 
-			<?php
-				/*
-					// For later...
-					$this->tabs();
-				 */
-			?>
+			<?php $this->tabs(); ?>
 
-			<div class="changelog">
 
-				<div class="feature-section col" style="margin-top:0;">
 
-					<div>
+			<div class="feature-section col two-col" style="margin-top:0;">
 
-						<h2>Getting Started</h2>
+				<div>
 
-						<ol>
-							<li>Go to <a href="<?php echo admin_url('post-new.php?post_type=gravityview'); ?>">Views &gt; New View</a></li>
-							<li>If you want to <strong>create a new form</strong>, click the "Start Fresh" button</li>
-							<li>If you want to <strong>use an existing form&rsquo;s entries</strong>, select from the dropdown.</li>
-							<li>Select the type of View you would like to create. There are two core types of Views: <strong>Table</strong> and <strong>Listing</strong>.
-								<ul>
-									<li><strong>Table Views</strong> output entries as tables; a grid of data.</li>
-									<li><strong>Listing Views</strong> display entries in a more visual layout.</li>
-								</ul>
-							</li>
-						</ol>
+					<h2>Create a View</h2>
 
-						<h4>Configure Mulitple Entry &amp; Single Entry Layouts</h4>
-						<p><img src="<?php echo plugins_url( 'images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" style="max-width:50%; margin-left:10px;  margin-bottom:10px; clear:right;" />You can configure how <strong>Multiple Entry</strong> and <strong>Single Entry</strong>. These can be configured by using the tabs under "View Configuration."</p>
-
-						<ul>
-							<li>Click "+ Add Field" to add a field to a zone</li>
-							<li>Fields can be dragged and dropped to be re-arranged.</li>
-							<li>Click the <i class="dashicons dashicons-admin-generic"></i> gear icon on each field to configure the <strong>Field Settings</strong>:
+					<ol class="ol-decimal">
+						<li>Go to <a href="<?php echo admin_url('post-new.php?post_type=gravityview'); ?>">Views &gt; New View</a></li>
+						<li>If you want to <strong>create a new form</strong>, click the "Start Fresh" button</li>
+						<li>If you want to <strong>use an existing form&rsquo;s entries</strong>, select from the dropdown.</li>
+						<li>Select the type of View you would like to create. There are two core types of Views: <strong>Table</strong> and <strong>Listing</strong>.
 							<ul>
-								<li><em>Custom Label</em>: Change how the label is shown on the website. Default: the name of the field</li>
-								<li><em>Custom CSS Class</em>: Add additional CSS classes to the field container</li>
-								<li><em>Use this field as a search filter</em>: Allow searching the text of a field, or narrowing visible results using the field.</li>
-								<li><em>Only visible to logged in users with role</em>: Make certain fields visible only to users who are logged in.</li>
+								<li><strong>Table Views</strong> output entries as tables; a grid of data.</li>
+								<li><strong>Listing Views</strong> display entries in a more visual layout.</li>
 							</ul>
-							</li>
-						</ul>
-
-						<h4>Embed Views in Posts &amp; Pages</h4>
-						<p><img src="<?php echo plugins_url( 'images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" class="screenshot" style="max-width:50%; float:left; margin-right:1em; margin-bottom:1em;" height="35" width="97" />Unlike the Gravity Forms Directory plugin, views are stand-alone; they don&rsquo;t need to always be embedded, but you can still embed Views using the "Add View" button.</p>
-
-					</div>
+						</li>
+					</ol>
 				</div>
 
-				<hr />
-
-				<div class="feature-section col two-col">
-
-					<h3>Thank you for taking part in the GravityView beta</h3>
-
-					<div>
-						<h2>How to report issues</h2>
-						<h4 style="font-weight:normal;">If you find a bug, it is most helpful if you <a href="https://gravityview.co/report-an-issue/">submit a report on the website</a>.</h4>
-						<p><img src="<?php echo plugins_url( 'images/screenshots/report-bug.png', GRAVITYVIEW_FILE ); ?>" class="screenshot" style="max-width:50%;" height="271" width="231" alt="Reporting bugs" />If you find an issue, you can <a href="https://gravityview.co/report-an-issue/">report it on the website</a>, or at the bottom of every GravityView page is a report widget (pictured).</p>
-						<p>Click the "question mark" button and be as <strong>descriptive as possible</strong>.</p>
-						<p><strong>Check the "Include a screenshot..." checkbox</strong> - this will help us fix your issue.</p>
-
-						<h4>Request Github access</h4>
-
-						<p>If you want to contribute to the code, you can <a href="mailto:zack@katzwebservices.com?subject=Github%20Access">request access to the Github repository</a>.</p>
-					</div>
-
-					<div class="last-feature">
-						<h2 class="clear">Thank you for your help.</h2>
-
-						<h4 style="font-weight:normal;" class="clear">By helping discover bugs, suggest enhancements, and provide feedback:</h4>
-
-						<ul>
-							<li><strong>50% off a GravityView license</strong> - everyone with Beta access will receive a discount</li>
-							<li><strong>The top 10 promoters of GravityView during the private Beta will receive a free license.</strong></li>
-							<li>You&rsquo;ll get a free license if you <strong>report an issue or contribute to the code</strong></li>
-							<li><strong>If you contribute to the code</strong>, you&rsquo;ll receive a thank-you on the plugin&rsquo;s "Credits" page</li>
-						</ul>
-					</div>
+				<div class="last-feature">
+					<h2>Embed Views in Posts &amp; Pages</h2>
+					<p><img src="<?php echo plugins_url( 'images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" class="gv-welcome-screenshots" height="35" width="97" />Unlike the Gravity Forms Directory plugin, views are stand-alone; they don&rsquo;t need to always be embedded, but you can still embed Views using the "Add View" button.</p>
 				</div>
 
-				<hr />
-
-				<div class="feature-section">
-					<h2>Things we&rsquo;re working on:</h2>
-
-					<h4>We&rsquo;re working on adding this functionality:</h4>
-
-					<ul>
-						<li><strong>Front-end editing of entries</strong></li>
-						<li><strong>More Views!</strong></li>
-						<li><strong>Column Sorting</strong><br/>
-						We&rsquo;re going to be integrating with <a href="http://datatables.net">DataTables</a> to provide some advanced sorting and search functionality. Until then, the sorting options are limited: none.</li>
-						<li><strong>Map View</strong><br/>
-						Display your entries on a map view.</li>
-						<li><strong>Advanced output with merge tags</strong><br/>
-						We&rsquo;ll be adding the ability to integrate the value of the entry field with the output.</li>
-						<li>And much, MUCH more&hellip;</li>
-					</ul>
-
-					<h4>Feature Requests</h4>
-
-					<p>You can share your ideas for feature requests on the <a href="http://gravityview.uservoice.com/forums/238941-gravity-forms-directory">Ideas Forum</a>.</p>
-				</div>
 			</div>
 
-			<div class="return-to-dashboard">
-				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview' ) ); ?>"><?php _e( 'Configure Views', 'gravity-view' ); ?></a>
+			<div class="feature-section clear">
+				<h2>Configure Mulitple Entry &amp; Single Entry Layouts</h2>
+				<p><img src="<?php echo plugins_url( 'images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" class="gv-welcome-screenshots" />You can configure how <strong>Multiple Entry</strong> and <strong>Single Entry</strong>. These can be configured by using the tabs under "View Configuration."</p>
+
+				<ul class="ul-disc">
+					<li>Click "+ Add Field" to add a field to a zone</li>
+					<li>Fields can be dragged and dropped to be re-arranged.</li>
+					<li>Click the <i class="dashicons dashicons-admin-generic"></i> gear icon on each field to configure the <strong>Field Settings</strong>:
+					<ul class="ul-square">
+						<li><em>Custom Label</em>: Change how the label is shown on the website. Default: the name of the field</li>
+						<li><em>Custom CSS Class</em>: Add additional CSS classes to the field container</li>
+						<li><em>Use this field as a search filter</em>: Allow searching the text of a field, or narrowing visible results using the field.</li>
+						<li><em>Only visible to logged in users with role</em>: Make certain fields visible only to users who are logged in.</li>
+					</ul>
+					</li>
+				</ul>
+
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Render Credits Screen
+	 *
+	 * @access public
+	 * @since 1.0
+	 * @return void
+	 */
+	public function credits_screen() { ?>
+		<div class="wrap about-wrap">
+
+			<?php $this->tabs(); ?>
+
+			<p class="about-description"><?php _e( 'GravityView is brought to you because of the people and packages below.', 'gravity-view' ); ?></p>
+
+			<div class="feature-section col two-col">
+
+				<div>
+					<h2>Zack Katz</h2>
+					<h4 style="font-weight:0; margin-top:0">Project Lead &amp; Developer</h4>
+					<p></p>
+					<p><img style="float:left; margin: 0 15px 0 0;" src="http://gravatar.com/avatar/f0f175f8545912adbdab86f0b586f4c3?d=mm&amp;s=150&amp;r=G" width="94" height="94" />Zack has been developing integrations with Gravity Forms since 2009. He lives with his wife and cat in Denver, Colorado.</p>
+				</div>
+
+				<div class="last-feature">
+					<h2>Luis Godinho</h2>
+					<h4 style="font-weight:0; margin-top:0">Lead Developer</h4>
+					<p><img class="alignleft avatar" src="http://gravatar.com/avatar/5cf96bd9e526ede404680fabd299ffef?d=mm&amp;s=150&amp;r=G" width="94" height="94" />Luis is a WordPress developer passionate about WordPress, and co-founder and partner of GOMO, a digital agency located in Lisbon, Portugal.</p>
+					<p><a href="http://tinygod.pt">View Luis&rsquo;s website</a></p>
+				</div>
+
+			</div>
+
+			<hr class="clear" />
+
+			<div class="feature-section">
+				<div>
+					<h2>Contributors (your name here)</h2>
+					<h4>Want to contribute?</h4>
+					<p>If you want to contribute to the code, you can <a href="mailto:zack@katzwebservices.com?subject=Github%20Access">request access to the Github repository</a>. If your contributions are accepted, you will be thanked here.</p>
+				</div>
+			</div>
+
+			<hr class="clear" />
+
+			<div class="changelog">
+
+				<h4>GravityView uses the following open-source software:</h4>
+
+				<ul>
+					<li><a href="http://reduxframework.com">ReduxFramework</a> - a powerful settings library</li>
+					<li><a href="https://github.com/GaryJones/Gamajo-Template-Loader">Gamajo Template Loader</a> - makes it easy to load template files with user overrides</li>
+					<li><a href="https://github.com/carhartl/jquery-cookie">jQuery Cookie plugin</a> - Access and store cookie values with jQuery</li>
+					<li><a href="http://katz.si/gf">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>
+				</ul>
+
+			</div>
+
+		</div>
+	<?php
 	}
 
 	/**
@@ -283,71 +293,49 @@ class GravityView_Welcome {
 	 * @since 1.0
 	 * @return void
 	 */
-	public function getting_started_screen() {
+	public function beta_testing_screen() {
 		list( $display_version ) = explode( '-', GravityView_Plugin::version );
 		?>
 		<div class="wrap about-wrap">
-			<h1><?php printf( __( 'Welcome to GravityView %s', 'gravity-view' ), $display_version ); ?></h1>
-			<div class="about-text"><?php printf( __( 'Thank you for Installing GravityView %s. Beautifully display your Gravity Forms entries.', 'gravity-view' ), $display_version ); ?></div>
 
 			<?php $this->tabs(); ?>
 
-			<p class="about-description"><?php _e( 'Use the tips below to get started using GravityView. You will be up and running in no time!', 'gravity-view' ); ?></p>
+			<div class="feature-section col two-col">
 
-			<div class="changelog">
+				<h3>Thank you for taking part in the GravityView beta</h3>
 
-				<h3><?php _e( 'Overview', 'gravity-view' );?></h3>
+				<div>
+					<h2>How to report issues</h2>
+					<h4 style="font-weight:normal;">If you find a bug, it is most helpful if you <a href="https://gravityview.co/report-an-issue/">submit a report on the website</a>.</h4>
+					<p><img src="<?php echo plugins_url( 'images/screenshots/report-bug.png', GRAVITYVIEW_FILE ); ?>" class="screenshot" style="max-width:50%;" height="271" width="231" alt="Reporting bugs" />If you find an issue, you can <a href="https://gravityview.co/report-an-issue/">report it on the website</a>, or at the bottom of every GravityView page is a report widget (pictured).</p>
+					<p>Click the "question mark" button and be as <strong>descriptive as possible</strong>.</p>
+					<p><strong>Check the "Include a screenshot..." checkbox</strong> - this will help us fix your issue.</p>
 
-				<div class="feature-section">
+					<h4>Request Github access</h4>
 
-					<h4><?php _e( 'Example Header', 'gravity-view' );?></h4>
-					<p><?php _e( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'gravity-view' );?></p>
-
+					<p>If you want to contribute to the code, you can <a href="mailto:zack@katzwebservices.com?subject=Github%20Access">request access to the Github repository</a>.</p>
 				</div>
 
-			</div>
+				<div class="last-feature">
+					<h2 class="clear">Thank you for your help.</h2>
 
-			<h2>Credits</h2>
+					<h4 style="font-weight:normal;" class="clear">By helping discover bugs, suggest enhancements, and provide feedback:</h4>
 
-			<h3>GravityView uses the following open-source libraries:</h3>
-
-			<ul>
-			<li><a href="http://reduxframework.com">ReduxFramework</a> - a powerful settings library</li>
-			<li><a href="https://github.com/GaryJones/Gamajo-Template-Loader">Gamajo Template Loader</a> - makes it easy to load template files with user overrides</li>
-			<li><a href="http://katz.si/gf">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>
-			</ul>
-
-			<div class="changelog">
-				<h3><?php _e( 'Quick Terminology', 'gravity-view' );?></h3>
-
-				<div class="feature-section col three-col">
-					<div>
-						<h4><?php _e( 'View', 'gravity-view' );?></h4>
-						<p><?php _e( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'gravity-view' );?></p>
-					</div>
-
-					<div>
-						<h4><?php _e( 'Entry', 'gravity-view' );?></h4>
-						<p><?php _e( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'gravity-view' );?></p>
-
-					</div>
-
-					<div class="last-feature">
-						<h4><?php _e( 'Table', 'gravity-view' );?></h4>
-						<p><?php _e( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'gravity-view' );?></p>
-					</div>
+					<ul>
+						<li><strong>50% off a GravityView license</strong> - everyone with Beta access will receive a discount</li>
+						<li><strong>The top 10 promoters of GravityView during the private Beta will receive a free license.</strong></li>
+						<li>You&rsquo;ll get a free license if you <strong>report an issue or contribute to the code</strong></li>
+						<li><strong>If you contribute to the code</strong>, you&rsquo;ll receive a thank-you on the plugin&rsquo;s "Credits" page</li>
+					</ul>
 				</div>
 			</div>
 
+			<hr class="clear" />
 
-			<div class="changelog">
-				<h3><?php _e( 'Need Help?', 'gravity-view' );?></h3>
+			<div class="feature-section">
+				<h2>Feature Requests</h2>
 
-				<div class="feature-section">
-
-					<h4><?php _e( 'Phenomenal Support','gravity-view' );?></h4>
-					<p><?php _e( 'We do our best to provide the best support we can. If you encounter a problem or have a question, visit our <a href="https://gravityview.co/support">support</a> page to open a ticket.', 'gravity-view' );?></p>
-				</div>
+				<p>You can share your ideas for feature requests on the <a href="http://gravityview.uservoice.com/forums/238941-gravity-forms-directory">Ideas Forum</a>.</p>
 			</div>
 
 		</div>
@@ -381,13 +369,11 @@ class GravityView_Welcome {
 
 		$upgrade = get_option( 'gv_version_upgraded_from' );
 
-		wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-about' ) ); exit;
-
 		// After Beta
 		if( ! $upgrade ) { // First time install
-			wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) ); exit;
+			wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-beta-testing' ) ); exit;
 		} else { // Update
-			wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-about' ) ); exit;
+			wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) ); exit;
 		}
 	}
 }
