@@ -1,0 +1,10 @@
+/**
+ * Hide the sidebar and the sidebar toggle button in the settings.
+ */
+
+.gravityview_page_settings .redux-main { margin-left: 0; }
+
+.gravityview_page_settings .redux-sidebar,
+.gravityview_page_settings #info_bar .expand_options {
+	display:none;
+}
