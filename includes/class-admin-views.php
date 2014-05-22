@@ -1397,7 +1397,9 @@ class GravityView_Admin_Views {
 	 */
 	static function enqueue_uservoice_widget() {
 		wp_enqueue_script( 'gravityview-uservoice-widget', plugins_url('includes/js/uservoice.js', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version, true);
-		wp_localize_script( 'gravityview-uservoice-widget', 'gvUserVoice', array('email' => get_option( 'admin_email' )));
+		wp_localize_script( 'gravityview-uservoice-widget', 'gvUserVoice', array(
+			'email' => GravityView_Settings::getSetting( 'support-email' )
+		));
 	}
 
 	static function is_gravityview_admin_page($hook = '', $page = NULL) {
