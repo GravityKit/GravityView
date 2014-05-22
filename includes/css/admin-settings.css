@@ -2,6 +2,27 @@
  * Hide the sidebar and the sidebar toggle button in the settings.
  */
 
+ .gravityview_page_settings #wpcontent #redux-header {
+ 	padding: 0;
+ 	background: url(../../images/stars.jpg) left top repeat;
+ }
+
+ .gravityview_page_settings #redux-header .display_header {
+ 	min-height: 110px;
+ 	background: url(../../images/astronaut-200x263.png) -30px top no-repeat;
+ 	margin: 0;
+ 	padding: 10px 0 0 160px;
+ }
+ .gravityview_page_settings .display_header h2 {
+ 	padding-top: 30px;
+ 	font-size: 34px;
+ }
+ .gravityview_page_settings .display_header span {
+ 	display: block;
+ 	position: absolute;
+ 	text-indent: .25em;
+ }
+
 .gravityview_page_settings .redux-main { margin-left: 0; }
 
 .gravityview_page_settings .redux-sidebar,
