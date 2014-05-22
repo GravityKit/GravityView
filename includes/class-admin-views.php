@@ -346,8 +346,8 @@ class GravityView_Admin_Views {
 		<div id="tabs">
 
 			<ul class="nav-tab-wrapper">
-				<li><a href="#directory-view" class="nav-tab"><?php esc_html_e( 'Multiple Entries', 'gravity-view' ); ?></a></li>
-				<li><a href="#single-view" class="nav-tab"><?php esc_html_e( 'Single Entry', 'gravity-view' ); ?></a></li>
+				<li><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page"></i> <?php esc_html_e( 'Multiple Entries', 'gravity-view' ); ?></a></li>
+				<li><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default"></i> <?php esc_html_e( 'Single Entry', 'gravity-view' ); ?></a></li>
 			</ul>
 
 			<div id="directory-view">
