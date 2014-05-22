@@ -766,9 +766,12 @@ class GravityView_Admin_Views {
 		$output .= '<h5>'.esc_attr( $label_text );
 
 		if( $add_controls ) {
+
 			$settings_title = sprintf(__('Configure %s Settings', 'gravity-view'), ucfirst($label_type));
 			$delete_title = sprintf(__('Remove %s', 'gravity-view'), ucfirst($label_type));
-			$output .= sprintf('<span class="gv-field-controls"><a href="#settings" class="dashicons-admin-generic dashicons" title="%s"></a><a href="#remove" class="dashicons-dismiss dashicons" title="%s"></a></span>', $settings_title, $delete_title);
+			$settings_link = empty($field_options) ? '' : sprintf( '<a href="#settings" class="dashicons-admin-generic dashicons" title="%s"></a>', $settings_title );
+
+			$output .= sprintf('<span class="gv-field-controls">%s<a href="#remove" class="dashicons-dismiss dashicons" title="%s"></a></span>', $settings_link, $delete_title);
 		}
 
 		$output .= '</h5>';
@@ -1037,6 +1040,11 @@ class GravityView_Admin_Views {
 
 		// get field/widget options
 		$options = $this->get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type );
+
+		// If there are no options, return empty.
+		if(empty($options)) {
+			return NULL;
+		}
 
 		// two different post arrays, depending of the field type
 		$name_prefix = $field_type .'s' .'['. $area .']['. $uniqid .']';
