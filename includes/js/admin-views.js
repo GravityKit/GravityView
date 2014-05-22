@@ -128,7 +128,7 @@
 			vcfg.startFreshStatus = true;
 
 			if( vcfg.currentFormId !== '' ) {
-				vcfg.showDialog( 'gravityview_form_id_dialog' );
+				vcfg.showDialog( '#gravityview_form_id_dialog' );
 			} else {
 				vcfg.startFreshContinue();
 			}
@@ -153,7 +153,7 @@
 			vcfg.startFreshStatus = false;
 
 			if( vcfg.currentFormId !== ''  && vcfg.currentFormId !== $(this).val() ) {
-				vcfg.showDialog( 'gravityview_form_id_dialog' );
+				vcfg.showDialog( '#gravityview_form_id_dialog' );
 			} else {
 				vcfg.formChangeContinue();
 			}
@@ -174,42 +174,65 @@
 
 		},
 
-		showDialog: function( dialogId ) {
+		showDialog: function( dialogSelector, buttons ) {
 
 			var vcfg = viewConfiguration;
 
-			var thisDialog = $('#'+ dialogId );
+			var thisDialog = $( dialogSelector );
 
-			thisDialog.dialog({
-				dialogClass: 'wp-dialog',
-				appendTo: thisDialog.parent(),
-				closeOnEscape: true,
-				buttons: [ {
+			var default_buttons = [
+				{
 					text: gvGlobals.label_cancel,
 					click: function() {
-						if( 'gravityview_form_id_dialog' === dialogId ) {
+						if( thisDialog.is('#gravityview_form_id_dialog') ) {
 							vcfg.startFreshStatus = false;
 							vcfg.gvSelectForm.val( vcfg.currentFormId );
-						} else if( 'gravityview_switch_template_dialog' === dialogId ) {
+						} else if ( thisDialog.is('#gravityview_switch_template_dialog') ) {
 							$("#gravityview_select_template").slideUp(150);
 						}
 						thisDialog.dialog('close');
-					} }, {
+					}
+				},
+				{
 					text: gvGlobals.label_continue,
 					click: function() {
-						if( 'gravityview_form_id_dialog' === dialogId ) {
+						if( thisDialog.is('#gravityview_form_id_dialog') ) {
 							if( vcfg.startFreshStatus ) {
 								vcfg.startFreshContinue();
 							} else {
 								vcfg.formChangeContinue();
 							}
-						} else if ( 'gravityview_switch_template_dialog' === dialogId ) {
+						} else if ( thisDialog.is('#gravityview_switch_template_dialog') ) {
 							vcfg.selectTemplateContinue();
 						}
 
 						thisDialog.dialog('close');
 					}
-				} ],
+				}
+			];
+
+			// If the buttons var isn't passed, use the defaults instead.
+			buttons = buttons || default_buttons;
+
+			thisDialog.dialog({
+				dialogClass: 'wp-dialog',
+				appendTo: thisDialog.parent(),
+				width: function() {
+
+					// If the window is wider than 550px, use 550
+					if( $(window).width() > 550 ) { return 550; }
+
+					// Otherwise, return the window width, less 10px
+					return $(window).width() - 10;
+				},
+				open: function () {
+					$('<div class="gv-overlay" />').prependTo('#wpwrap');
+				},
+				close: function () {
+					$('#wpwrap > .gv-overlay').fadeOut( 'fast', function() { $(this).remove(); });
+				},
+				closeOnEscape: true,
+				buttons: buttons
 			});
 
 		},
@@ -271,7 +294,7 @@
 			if( currTemplateId === '' ) {
 				vcfg.selectTemplateContinue();
 			} else if ( currTemplateId != selectedTemplateId ) {
-				vcfg.showDialog( 'gravityview_switch_template_dialog' );
+				vcfg.showDialog( '#gravityview_switch_template_dialog' );
 			}
 		},
 
@@ -326,6 +349,12 @@
 				dialogClass: 'wp-dialog',
 				appendTo: $("#gravityview_select_template"),
 				width: 550,
+				open: function () {
+					$('<div class="gv-overlay" />').prependTo('#wpwrap');
+				},
+				close: function () {
+					$('#wpwrap > .gv-overlay').fadeOut( 'fast', function() { $(this).remove(); });
+				},
 				closeOnEscape: true,
 				buttons: [ {
 					text: gvGlobals.label_close,
@@ -628,18 +657,16 @@
 			// Toggle checkbox when changing field visibility
 			$('body').on( 'change', 'select[id*="loggedin_cap"]', vcfg.toggleVisibilityCheckbox );
 
-			parent.find(".gv-dialog-options").dialog({
-				dialogClass: 'wp-dialog',
-				appendTo: parent,
-				width: 550,
-				closeOnEscape: true,
-				buttons: [ {
-					text: gvGlobals.label_close,
-					click: function() {
-						$(this).dialog('close');
-					}
-				}],
-			});
+
+			var buttons = [ {
+				text: gvGlobals.label_close,
+				click: function() {
+					$(this).dialog('close');
+				}
+			}];
+
+			vcfg.showDialog(parent.find(".gv-dialog-options"), buttons);
+
 		},
 
 		// Check the "only visible to..." checkbox if the capability isn't public

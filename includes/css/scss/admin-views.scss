@@ -225,39 +225,82 @@
 
 /** View configuration tabs */
 .ui-tabs {
-	position: relative; padding: .1em; zoom: 1; margin-top: 1em; }
+	position: relative; padding: .1em; zoom: 1; margin-top: 1em;
 
-.ui-tabs .ui-tabs-nav {
-	margin: 0; padding: .1em .1em 0;
-	-webkit-margin-before: 0;
-	-webkit-margin-after: 0;
-	-webkit-margin-start: 0;
-	-webkit-margin-end: 0;
-	-webkit-padding-start: 0; }
+	.ui-tabs-nav {
+		margin: 0; padding: .1em .1em 0;
+		-webkit-margin-before: 0;
+		-webkit-margin-after: 0;
+		-webkit-margin-start: 0;
+		-webkit-margin-end: 0;
+		-webkit-padding-start: 0;
 
-.ui-tabs .ui-tabs-nav li {
-	list-style: none;
-	float: left;
-	position: relative;
-	top: 1px;
-	margin: 0 .2em 1px 0;
-	border-bottom: 0 !important;
-	padding: 0;
-	white-space: nowrap; }
+		li {
+			list-style: none;
+			float: left;
+			position: relative;
+			top: 1px;
+			margin: 0 .2em 1px 0;
+			border-bottom: 0 !important;
+			padding: 0;
+			border-bottom: 1px solid #fff;
+			white-space: nowrap;
 
-.ui-tabs .ui-tabs-nav li a { float: left; padding: .5em 1em; text-decoration: none; }
-.ui-tabs .ui-tabs-nav li a:active, .ui-tabs .ui-tabs-nav li a:focus { outline: none; }
+			// The tab anchor link
+			.nav-tab {
+				float: left;
+				padding: .5em 1em;
+				text-decoration: none;
+				font-size: 14px;
 
-.ui-tabs .ui-tabs-nav li.ui-tabs-selected { margin-bottom: 0; padding-bottom: 1px; }
-.ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a { cursor: text; }
-.ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
-.ui-tabs .ui-tabs-panel { display: block; border-width: 0; padding: 1em; background: none; border: 1px solid #ddd;}
-.ui-tabs .ui-tabs-hide { display: none !important; }
-.ui-tabs ul li.ui-state-active a { background: none; border-bottom: 1px solid #fff; }
+				&:link, &:visited, &:hover, &:active, &:focus {
+					outline: none;
+				}
+			}
 
-.nav-tab {
-	border-color: #ddd;
-	font-size: 14px;
+			// Non-active state
+			.dashicons { color: #aaa; }
+
+			&.ui-state-active,
+			&.ui-state-active.ui-state-hover {
+
+				a {
+					background: #fff;
+					border-bottom: 1px solid #fff;
+				}
+
+				// Active text is #555 - we want a bit lighter
+				// since it's bolder.
+				.dashicons { color: #666; }
+			}
+
+			&.ui-state-hover .dashicons {
+				color: #999;
+			}
+
+		}
+	}
+
+	// Tab content area
+	.ui-tabs-panel {
+		display: block;
+		padding: 1em;
+		background: #fff;
+		border: 1px solid #ddd;
+	}
+
+	.ui-tabs-hide { display: none!important; }
+
+}
+
+.gv-overlay {
+	position: fixed;
+	z-index: 10000;
+	background: transparent; // For browsers without support for rgba
+	background: rgba(225, 225, 225, .4);
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
 }
 
 /** tooltips for fields + widgets */
@@ -287,38 +330,38 @@ body .ui-tooltip { border: 4px solid #999; }
 	padding: 0 10px;
 	max-height: 275px;
 	overflow-y: auto;
-}
 
-.ui-tooltip-content .close {
-	position: absolute;
-	padding: 5px;
-	top: -25px;
-	left: -25px;
-	cursor: pointer;
-}
-.ui-tooltip-content .close i {
-	font-size: 25px;
-	color: #555;
-
-	&:hover,
-	&:active {
-		color: #000;
+	.close {
+		position: absolute;
+		padding: 5px;
+		top: -25px;
+		left: -25px;
+		cursor: pointer;
 	}
-}
+	.close i {
+		font-size: 25px;
+		color: #555;
 
-.ui-tooltip-content .gv-field-controls {
-	display: none;
-}
+		&:hover,
+		&:active {
+			color: #000;
+		}
+	}
 
-.ui-tooltip-content .gv-fields {
-	cursor: pointer;
-	padding: .5em .75em;
-}
+	.gv-field-controls {
+		display: none;
+	}
 
-.ui-tooltip-content .gv-fields h5 {
-	float: none;
-	width: 100%;
+	.gv-fields {
+		cursor: pointer;
+		padding: .5em .75em;
+	}
 
+	.gv-fields h5 {
+		float: none;
+		width: 100%;
+
+	}
 }
 
 .ui-tooltip-content::after {
@@ -367,93 +410,64 @@ hr{
 .gv-droppable-area {
 	border: 1px solid #ccc;
 	margin-bottom: 1em;
-}
 
-.gv-droppable-area .gv-droppable-area-action {
-	background: #eee;
-	padding: 0.5em;
-}
+	.gv-droppable-area-action {
+		background: #eee;
+		padding: 0.5em;
+	}
 
-.gv-droppable-area .gv-droppable-area-action:before,
-.gv-droppable-area .gv-droppable-area-action:after {
-	content: " ";
-	display: table;
-}
+	.gv-droppable-area-action:before,
+	.gv-droppable-area-action:after {
+		content: " ";
+		display: table;
+	}
 
-.gv-droppable-area .gv-droppable-area-action:after {
-	clear: both;
-}
+	.gv-droppable-area-action:after {
+		clear: both;
+	}
 
-.gv-droppable-area .gv-droppable-area-title {
-	font-weight: bold;
-	margin: 0;
-	padding: 0;
-}
+	.gv-droppable-area-title {
+		font-weight: bold;
+		margin: 0;
+		padding: 0;
+	}
 
-.gv-droppable-area .gv-droppable-area-subtitle {
-	margin: 0.25em 0 0 0;
-	padding: 0;
-	font-size: 12px;
-	color: #999;
-}
+	.gv-droppable-area-subtitle {
+		margin: 0.25em 0 0 0;
+		padding: 0;
+		font-size: 12px;
+		color: #999;
+	}
 
-.gv-droppable-area .button-secondary {
-	float: right;
-}
+	.button-secondary {
+		float: right;
+	}
+
+} // End .gv-droppable-area
 
 .active-drop {
 	padding: 3px 7px;
 	min-height: 44px;
 	position: relative;
-}
 
-.active-drop .drop-message {
-	color: #bbb;
-	margin: 0;
-	display: block;
-	text-align: center;
-	width: 100%;
-	z-index: 1;
-	position: absolute;
-	margin: 10px auto 0;
-	top: 0;
-	min-height: 40px;
-	font-size: 13px;
-	line-height: 16px;
-}
+	.drop-message {
+		color: #bbb;
+		margin: 0;
+		display: block;
+		text-align: center;
+		width: 90%;
+		padding: 0 5%;
+		z-index: 1;
+		position: absolute;
+		margin: 10px auto 0;
+		top: 0;
+		min-height: 40px;
+		font-size: 13px;
+		line-height: 16px;
+	}
 
+} // End .active-drop
 
-
-
-/** Fields drag and drop */
-/*#directory-active-fields,
-#directory-available-fields,
-#single-active-fields,
-#single-available-fields {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	width: 50%;
-}*/
-
-/*#directory-active-fields,
-#single-active-fields {
-	float: left;
-	padding: 0 1em 0 0;
-}*/
-
-/*#directory-available-fields,
-#single-available-fields {
-	float: right;
-	padding: 0 0 0 1em;
-}*/
-
-
-/*fieldset.area {
-	padding: 0.5em;
-	margin-bottom: 1em;
-	border: 1px solid #eee;
-}*/
 
 .fields-placeholder {
 	margin: 5px 2px;
@@ -473,34 +487,35 @@ hr{
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-}
 
+	h5 {
+		float: left;
+		width: 100%;
+		font-weight: 600;
+		font-size: 14px;
+		margin: 0;
+		padding: 0 0 0 .25em;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		user-select: none;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
 
-.gv-fields h5 {
-	float: left;
-	width: 100%;
-	font-weight: 600;
-	font-size: 14px;
-	margin: 0;
-	padding: 0;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	user-select: none;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+	}
 
-}
+	span.gv-field-controls {
+		padding-left: .33em; // Give some space.
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+
+} // End .gv-fields
+
 
 .ui-draggable-dragging {
 	max-width: 400px !important;
-}
-
-.gv-fields span.gv-field-controls {
-	padding-left: .33em; // Give some space.
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
 }
 
 .gv-field-controls .dashicons {
@@ -539,23 +554,23 @@ hr{
 .gv-dialog-options {
 	display: none;
 	width: 90%;
-}
 
-.gv-dialog-options p {
-	margin: 0 !important;
-	padding: 1.5em !important;
-}
+	p {
+		margin: 0 !important;
+		padding: 1.5em !important;
+	}
 
-.gv-dialog-options ul {
-	list-style: none;
-	margin: 0;
-	padding: 1.5em;
-}
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 1.5em;
+	}
 
-.gv-dialog-options ul li {
-	display: block;
-	margin-bottom: 1em;
-	font-size: 14px;
+	ul li {
+		display: block;
+		margin-bottom: 1em;
+		font-size: 14px;
+	}
 }
 
 .gv-label-checkbox {
