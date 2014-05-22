@@ -1059,19 +1059,19 @@ class GravityView_Admin_Views {
 		foreach( $options as $key => $details ) {
 
 			$default = isset( $details['default'] ) ? $details['default'] : '';
-			//$default = '';
+			$desc = isset( $details['desc'] ) ? $details['desc'] : '';
 			$curr_value = isset( $current[ $key ] ) ? $current[ $key ] : $default;
 			$label = isset( $details['label'] ) ? $details['label'] : '';
 			$type = isset( $details['type'] ) ? $details['type'] : 'input_text';
 
 			switch( $type ) {
 				case 'checkbox':
-					$output .= '<li>'. $this->render_checkbox_option( $name_prefix . '['. $key .']' , $label, $curr_value ) .'</li>';
+					$output .= '<li>'. $this->render_checkbox_option( $name_prefix . '['. $key .']' , $label, $curr_value, $desc ) .'</li>';
 					break;
 
 				case 'input_text':
 				default:
-					$output .= '<li>'. $this->render_input_text_option( $name_prefix . '['. $key .']' , $label, $curr_value ) .'</li>';
+					$output .= '<li>'. $this->render_input_text_option( $name_prefix . '['. $key .']' , $label, $curr_value, $desc ) .'</li>';
 					break;
 
 			}
@@ -1122,7 +1122,12 @@ class GravityView_Admin_Views {
 			$field_options = array(
 				'show_label' => array( 'type' => 'checkbox', 'label' => __( 'Show Label', 'gravity-view' ), 'default' => $show_label_default ),
 				'custom_label' => array( 'type' => 'input_text', 'label' => __( 'Custom Label:', 'gravity-view' ), 'default' => '' ),
-				'custom_class' => array( 'type' => 'input_text', 'label' => __( 'Custom CSS Class:', 'gravity-view' ), 'default' => '' ),
+				'custom_class' => array(
+					'type' => 'input_text',
+					'label' => __( 'Custom CSS Class:', 'gravity-view' ),
+					'desc' => __( 'This class will be added to the field container.', 'gravity-view'),
+					'default' => ''
+				),
 			);
 		} elseif( 'widget' === $field_type ) {
 
@@ -1149,9 +1154,11 @@ class GravityView_Admin_Views {
 		$id = sanitize_html_class( $name );
 
 		$output = '';
+		$output .= '<label for="'. $id .'" class="gv-label-checkbox">';
 		$output .= '<input name="'. $name .'" type="hidden" value="0">';
 		$output .= '<input name="'. $name .'" id="'. $id .'" type="checkbox" value="1" '. checked( $current, '1', false ) .' >';
-		$output .= '<label for="'. $id .'" class="gv-label-checkbox">'. $label .'</label>';
+		$output .= $label;
+		$output .= '</label>';
 
 		return $output;
 	}
@@ -1162,14 +1169,20 @@ class GravityView_Admin_Views {
 	 * @param  string $name    [name attribute]
 	 * @param  string $label   [label text]
 	 * @param  string $current [current value]
+	 * @param  string $desc   Option description
 	 * @return string         [html tags]
 	 */
-	public static function render_input_text_option( $name = '', $label = '', $current = '' ) {
+	public static function render_input_text_option( $name = '', $label = '', $current = '', $desc = '') {
 		$id = sanitize_html_class( $name );
 
 		$output = '';
-		$output .= '<label for="'. $id .'" class="gv-label-text">'. $label .'</label>';
+		$output .= '<label for="'. $id .'" class="gv-label-text">';
+		$output .= $label;
+		if(!empty($desc)) {
+			$output .= '<span class="howto">'.$desc.'</span>';
+		}
 		$output .= '<input name="'. $name .'" id="'. $id .'" type="text" value="'. $current .'" class="all-options">';
+		$output .= '</label>';
 
 		return $output;
 	}

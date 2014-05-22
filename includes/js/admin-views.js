@@ -72,6 +72,13 @@
 
 			// close all tooltips if user clicks outside the tooltip
 			$(document).on('mouseup keyup', function (e) {
+
+				// Close open Dialog boxes when clicking on the overlay
+				if(e.type === 'mouseup' && $(e.target).is('.gv-overlay')) {
+					$(".ui-dialog:visible .ui-dialog-titlebar .ui-button").click();
+					return;
+				}
+
 				var close = false;
 
 				// Escape key was pressed
@@ -82,9 +89,11 @@
 					close = true;
 				}
 
-				// Close all open tooltips
 				if (close) {
+
+					// Close all open tooltips
 					$("a.gv-add-field[data-tooltip='active']").tooltip("close");
+
 				}
 			});
 
@@ -217,6 +226,8 @@
 			thisDialog.dialog({
 				dialogClass: 'wp-dialog',
 				appendTo: thisDialog.parent(),
+				draggable: false,
+				resizable: false,
 				width: function() {
 
 					// If the window is wider than 550px, use 550
