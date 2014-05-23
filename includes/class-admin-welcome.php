@@ -236,7 +236,7 @@ class GravityView_Welcome {
 
 			<?php $this->tabs(); ?>
 
-			<p class="about-description"><?php _e( 'GravityView is brought to you because of the people and packages below.', 'gravity-view' ); ?></p>
+			<p class="about-description"><?php _e( 'GravityView is brought to you by:', 'gravity-view' ); ?></p>
 
 			<div class="feature-section col two-col">
 
@@ -244,13 +244,14 @@ class GravityView_Welcome {
 					<h2>Zack Katz</h2>
 					<h4 style="font-weight:0; margin-top:0">Project Lead &amp; Developer</h4>
 					<p></p>
-					<p><img style="float:left; margin: 0 15px 0 0;" src="http://gravatar.com/avatar/f0f175f8545912adbdab86f0b586f4c3?d=mm&amp;s=150&amp;r=G" width="94" height="94" />Zack has been developing integrations with Gravity Forms since 2009. He lives with his wife and cat in Denver, Colorado.</p>
+					<p><img style="float:left; margin: 0 15px 0 0;" src="<?php echo plugins_url( 'images/zack.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Zack has been developing integrations with Gravity Forms since 2009. He is the President of Katz Web Services and lives with his wife and cat in Denver, Colorado.</p>
+					<p><a href="https://katz.co">View Zack&rsquo;s website</a></p>
 				</div>
 
 				<div class="last-feature">
 					<h2>Luis Godinho</h2>
-					<h4 style="font-weight:0; margin-top:0">Lead Developer</h4>
-					<p><img class="alignleft avatar" src="http://gravatar.com/avatar/5cf96bd9e526ede404680fabd299ffef?d=mm&amp;s=150&amp;r=G" width="94" height="94" />Luis is a WordPress developer passionate about WordPress, and co-founder and partner of GOMO, a digital agency located in Lisbon, Portugal.</p>
+					<h4 style="font-weight:0; margin-top:0">Developer &amp; Support</h4>
+					<p><img class="alignleft avatar" src="<?php echo plugins_url( 'images/luis.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Luis is a WordPress developer passionate about WordPress. He is a co-founder and partner of GOMO, a digital agency located in Lisbon, Portugal.</p>
 					<p><a href="http://tinygod.pt">View Luis&rsquo;s website</a></p>
 				</div>
 
