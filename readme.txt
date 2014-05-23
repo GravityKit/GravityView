@@ -39,6 +39,7 @@ Beautifully display your Gravity Forms entries.
 * Fixed: Don't show welcome screen on editing the plugin using the WordPress Plugin Editor
 * Tweak: Close "Add Field" and "Add Widget" boxes by pressing the escape key
 * Added: Hungarian translation. Thanks, [@dbalage](https://www.transifex.com/accounts/profile/dbalage/)!
+* Added: Italian translation. Thanks, [@ClaraDiGennaro](https://www.transifex.com/accounts/profile/ClaraDiGennaro/)
 * If you'd like to contribute translations, [please sign up here](https://www.transifex.com/projects/p/gravityview/).
 
 = 1.0.2 =

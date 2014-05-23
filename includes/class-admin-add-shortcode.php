@@ -115,10 +115,9 @@ class GravityView_Admin_Add_Shortcode {
 								<label for="gravityview_sort_field"><?php esc_html_e( 'Sort by field', 'gravity-view'); ?></label>
 							</td>
 							<td>
-								<select name="gravityview_sort_field" id="gravityview_sort_field">
+								<select name="gravityview_sort_field" id="gravityview_sort_field" class="widefat">
 									<option value=""><?php esc_html_e( 'Default', 'gravity-view'); ?></option>
 									<option value="date_created"><?php esc_html_e( 'Date Created', 'gravity-view'); ?></option>
-
 								</select>
 							</td>
 						</tr>
