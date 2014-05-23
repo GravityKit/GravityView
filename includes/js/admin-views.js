@@ -586,6 +586,7 @@
 				placeholder: "fields-placeholder",
 				items: '> .gv-fields',
 				distance: 2,
+				revert: 75,
 				connectWith: ".active-drop-widget",
 				receive: function( event, ui ) {
 					// Check if field comes from another active area and if so, update name attributes.
@@ -608,6 +609,7 @@
 				placeholder: "fields-placeholder",
 				items: '> .gv-fields',
 				distance: 2,
+				revert: 75,
 				connectWith: ".active-drop-field",
 				receive: function( event, ui ) {
 					// Check if field comes from another active area and if so, update name attributes.
