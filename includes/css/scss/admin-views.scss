@@ -446,15 +446,23 @@ hr{
 		width: 90%;
 		padding: 0 5%;
 		z-index: 1;
-		position: absolute;
-		margin: 10px auto 0;
-		top: 0;
 		min-height: 40px;
 		font-size: 13px;
+
+		// Vertically center
+		position: absolute;
+		top: 50%;
+		margin-top: -8px;
 		line-height: 16px;
+
 	}
 
 } // End .active-drop
+
+.gv-grid-col-1-2 .drop-message {
+	padding-top: 0;
+	padding-bottom: 0;
+}
 
 
 .fields-placeholder {
