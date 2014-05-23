@@ -87,8 +87,8 @@ final class GravityView_Plugin {
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-		// Load custom post types
-		add_action( 'init', array( $this, 'init_setup' ) );
+		// Load custom post types. It's a static method.
+		add_action( 'init', array( 'GravityView_Plugin', 'init_setup' ) );
 
 
 		if( is_admin() ) {
