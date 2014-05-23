@@ -65,7 +65,12 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 
 	function __construct() {
 		$default_values = array( 'header' => 1, 'footer' => 1 );
-		$settings = array( 'show_all' => array( 'type' => 'checkbox', 'label' => __( 'Show each page number', 'gravity-view' ), 'default' => false ) );
+		$settings = array( 'show_all' => array(
+			'type' => 'checkbox',
+			'label' => __( 'Show each page number', 'gravity-view' ),
+			'desc' => __('Show every page number instead of summary (eg: 1 2 3 ... 8 »)', 'gravity-view'),
+			'default' => false
+		));
 		parent::__construct( __( 'Show Page Links', 'gravity-view' ) , 'page_links', $default_values, $settings );
 
 	}
@@ -138,7 +143,11 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 		if($context !== 'single') {
 			$field_options = array_merge( $field_options, array(
-			'search_filter' => array( 'type' => 'checkbox', 'label' => __( 'Use this field as a search filter', 'gravity-view' ), 'default' => false ) ) );
+			'search_filter' => array(
+				'type' => 'checkbox',
+				'label' => __( 'Use this field as a search filter', 'gravity-view' ),
+				'default' => false
+			)) );
 		}
 
 		return $field_options;
