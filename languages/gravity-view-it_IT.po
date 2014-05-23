@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # ClaraDiGennaro <claradigennaro7@hotmail.com>, 2014
 msgid ""
@@ -254,12 +254,12 @@ msgid "%s disapproved."
 msgstr "%s non approvato."
 
 #: includes/class-admin-approve-entries.php:216
-msgid "Disapproved the lead"
-msgstr "Disapprovato il comando"
+msgid "Disapproved the entry"
+msgstr "Disapprovato il contenuto"
 
 #: includes/class-admin-approve-entries.php:216
-msgid "Approved the lead"
-msgstr "Approvato il comando"
+msgid "Approved the entry"
+msgstr "Approvato il contenuto"
 
 #: includes/class-admin-approve-entries.php:319
 msgid "Approve"

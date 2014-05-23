@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # dbalage <balazs@magonc.org>, 2014
 msgid ""
@@ -255,11 +255,11 @@ msgstr "%s elutasítva."
 
 #: includes/class-admin-approve-entries.php:216
 msgid "Disapproved the lead"
-msgstr ""
+msgstr "Bejegyzés elutasítva"
 
 #: includes/class-admin-approve-entries.php:216
 msgid "Approved the lead"
-msgstr ""
+msgstr "Bejegyzés jóváhagyva"
 
 #: includes/class-admin-approve-entries.php:319
 msgid "Approve"
