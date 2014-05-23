@@ -175,6 +175,30 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 
 
+			<div class="changelog point-releases">
+				<h3>What changed in <?php echo $display_version; ?></h3>
+				<ul>
+					<li>Added: Sort by field, sort direction, Start &amp; End date now added to Post view (Note: When using the shortcode, the shortcode settings override the View settings.)</li>
+					<li>Fixed: Fatal errors caused by Gravity Forms not existing.</li>
+					<li>Added a setting for Support Email - please make sure your email is accurate; otherwise we won't be able to respond to the feedback you send</li>
+					<li>Fixed: Custom CSS classes didn't apply to images in list view</li>
+					<li>Improved Settings layout</li>
+					<li>Tweak: Hide WordPress SEO, Genesis, and WooThemes metaboxes until a View has been created</li>
+					<li>Tweak: Field layout improvements; drag-and-drop works smoother now</li>
+					<li>Tweak: Add icon to Multiple Entries / Single Entry tabs</li>
+					<li>Tweak: Dialog boxes now have a backdrop</li>
+					<li>Fixed: Don't show field/widget settings link if there are no settings (like on the Show Pagination Info widget)</li>
+					<li>Fixed: Security warning by the WordFence plugin: it didn't like a line in a sample entry data .csv file</li>
+					<li>Fixed: Don't show welcome screen on editing the plugin using the WordPress Plugin Editor</li>
+					<li>Tweak: Close "Add Field" and "Add Widget" boxes by pressing the escape key</li>
+					<li>Added: Hungarian translation. Thanks, <a href="https://www.transifex.com/accounts/profile/dbalage/" target="_blank">@dbalage</a>!</li>
+					<li>Added: Italian translation. Thanks, <a href="https://www.transifex.com/accounts/profile/ClaraDiGennaro/" target="_blank">@ClaraDiGennaro</a></li>
+					<li>If you'd like to contribute translations, <a href="https://www.transifex.com/projects/p/gravityview/" target="_blank">please sign up here</a>.</li>
+				</ul>
+
+
+				<h2 class="about-headline-callout">Configuring a View</h2>
+			</div>
 
 			<div class="feature-section col two-col" style="margin-top:0;">
 
