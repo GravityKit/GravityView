@@ -89,7 +89,7 @@ class WXR_Parser_SimpleXML {
 			return new WP_Error( 'WXR_parse_error', __( 'This does not appear to be a WXR file, missing/invalid WXR version number', 'wordpress-importer' ) );
 
 		$base_url = $xml->xpath('/rss/channel/wp:base_site_url');
-		$base_url = (string) trim( $base_url[0] );
+		$base_url = isset($base_url[0]) ? (string) trim( $base_url[0] ) : ''; // Modified by GravityView: Check if base_url exists; the GV import files may exclude them.
 
 		$namespaces = $xml->getDocNamespaces();
 		if ( ! isset( $namespaces['wp'] ) )
@@ -401,9 +401,10 @@ class WXR_Parser_Regex {
 	var $terms = array();
 	var $base_url = '';
 
-	function WXR_Parser_Regex() {
+	// Modified by GravityView: Strict mode doesn't allow for two constructors.
+	/*function WXR_Parser_Regex() {
 		$this->__construct();
-	}
+	}*/
 
 	function __construct() {
 		$this->has_gzip = is_callable( 'gzopen' );
