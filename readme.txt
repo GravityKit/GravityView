@@ -23,6 +23,9 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
+= 1.0.4 =
+* Added: Bengali translation. Thanks, [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)!
+
 = 1.0.3 =
 * Added: Sort by field, sort direction, Start & End date now added to Post view
 	- Note: When using the shortcode, the shortcode settings override the View settings.
