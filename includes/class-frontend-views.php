@@ -3,9 +3,9 @@
  * GravityView Frontend functions
  *
  * @package   GravityView
- * @author    Zack Katz <zack@katzwebservices.com>
- * @license   ToBeDefined
- * @link      http://www.katzwebservices.com
+ * @license   GPL2+
+ * @author    Katz Web Services, Inc.
+ * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
