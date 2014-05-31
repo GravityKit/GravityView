@@ -303,6 +303,7 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-welcome.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
+		do_action('gravityview_include_backend_actions');
 	}
 
 
@@ -319,7 +320,7 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-template.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-api.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
-
+		do_action('gravityview_include_frontend_actions');
 	}
 
 	/**
