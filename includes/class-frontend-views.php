@@ -384,12 +384,13 @@ class GravityView_frontend {
 	public static function add_scripts_and_styles() {
 		global $post;
 
-		wp_enqueue_script( 'gravityview-fe-view', plugins_url('includes/js/fe-views.js', GRAVITYVIEW_FILE), array( 'jquery', 'gravityview-jquery-cookie' ), GravityView_Plugin::version, true );
-
-		wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version, 'all' );
-
 		// enqueue template specific styles
-		if( is_a( $post, 'WP_Post' ) && ( has_shortcode( $post->post_content, 'custom-shortcode') ||  'gravityview' === get_post_type() ) ) {
+		if( is_a( $post, 'WP_Post' ) && ( has_shortcode( $post->post_content, 'gravityview') ||  'gravityview' === get_post_type() ) ) {
+
+			wp_enqueue_script( 'gravityview-fe-view', plugins_url('includes/js/fe-views.js', GRAVITYVIEW_FILE), array( 'jquery', 'gravityview-jquery-cookie' ), GravityView_Plugin::version, true );
+
+			wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version, 'all' );
+
 			$template_id = get_post_meta( $post->ID, '_gravityview_directory_template', true );
 			self::add_style( $template_id );
 		}
