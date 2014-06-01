@@ -276,6 +276,10 @@ class GravityView_frontend {
 
 			GravityView_Plugin::log_debug( '[render_view] Get Entries. Found: ' . print_r( $count, true ) .' entries');
 
+			$gravityview_view->paging = $paging;
+			$gravityview_view->context = 'directory';
+			$sections = array( 'header', 'body', 'footer' );
+
 		} else {
 			// user requested Single Entry View
 			GravityView_Plugin::log_debug( '[render_view] Executing Single View' );
@@ -290,6 +294,9 @@ class GravityView_frontend {
 			$entries[] = gravityview_get_entry( $single_entry );
 			GravityView_Plugin::log_debug( '[render_view] Get single entry: ' . print_r( $entries, true ) );
 
+			$gravityview_view->context = 'single';
+			$sections = array( 'single' );
+
 		}
 
 		// add template style
@@ -299,23 +306,12 @@ class GravityView_frontend {
 		$gravityview_view->entries = $entries;
 		$gravityview_view->total_entries = $count;
 
-
+		// finaly we'll render some html
 		ob_start();
-		if( empty( $single_entry ) ) {
-			GravityView_Plugin::log_debug( '[render_view] Rendering Single Entry.' );
-			$gravityview_view->paging = $paging;
-			$gravityview_view->context = 'directory';
-
-			GravityView_Plugin::log_debug( '[render_view] Rendering header.' );
-			$gravityview_view->render( $view_slug, 'header' );
-			GravityView_Plugin::log_debug( '[render_view] Rendering body.' );
-			$gravityview_view->render( $view_slug, 'body' );
-			GravityView_Plugin::log_debug( '[render_view] Rendering footer.' );
-			$gravityview_view->render( $view_slug, 'footer' );
-		} else {
-			GravityView_Plugin::log_debug( '[render_view] Rendering Single Entry.' );
-			$gravityview_view->context = 'single';
-			$gravityview_view->render( $view_slug, 'single' );
+		$sections = apply_filters( 'gravityview_render_view_sections', $sections, $template_id );
+		foreach( $sections as $section ) {
+			GravityView_Plugin::log_debug( '[render_view] Rendering '. $section . ' section.' );
+			$gravityview_view->render( $view_slug, $section );
 		}
 
 		// print the view-id so it can be grabbed by the cookie mechanism  ?>
