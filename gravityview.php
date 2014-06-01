@@ -627,3 +627,8 @@ final class GravityView_Plugin {
 } // end class GravityView_Plugin
 
 add_action('plugins_loaded', array('GravityView_Plugin', 'getInstance'), 1);
+
+
+/** EXTENSIONS */
+include_once( GRAVITYVIEW_DIR . 'includes/extensions/datatables/ext-datatables.php');
+
