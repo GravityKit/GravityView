@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries.
 
 = 1.0.4 =
 * Added: Bengali translation. Thanks, [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)!
+* Added: German translation. Thanks, [@seschwarz](https://www.transifex.com/accounts/profile/seschwarz/)!
 
 = 1.0.3 =
 * Added: Sort by field, sort direction, Start & End date now added to Post view
