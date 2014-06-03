@@ -21,7 +21,7 @@ class GV_Extension_DataTables_Data {
 		add_action( 'wp_ajax_nopriv_gv_datatables_data', array( $this, 'get_datatables_data' ) );
 
 		// replace template section by specific ajax
-		add_filter( 'gravityview_render_view_sections', array( $this, 'add_ajax_template_section' ), 10, 2 );
+		//add_filter( 'gravityview_render_view_sections', array( $this, 'add_ajax_template_section' ), 10, 2 );
 
 		// add template path
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
@@ -47,6 +47,7 @@ class GV_Extension_DataTables_Data {
 	 */
 	function check_ajax_nonce() {
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_datatables_data' ) ) {
+			GravityView_Plugin::log_debug( '[DataTables] AJAX request - NONCE check failed' );
 			echo false;
 			die();
 		}
@@ -58,14 +59,73 @@ class GV_Extension_DataTables_Data {
 	function get_datatables_data() {
 		$this->check_ajax_nonce();
 
-		error_log( 'this datatables _POST' . print_r( $_POST , true ) );
+		if( empty( $_POST['view_id'] ) ) {
+			GravityView_Plugin::log_debug( '[DataTables] AJAX request - View ID check failed');
+			die();
+		}
 
-		if( class_exists('GravityView_Plugin') && !class_exists('GravityView_frontend') ) {
+		GravityView_Plugin::log_debug( '[DataTables] AJAX Request $_POST: ' . print_r( $_POST, true ) );
+
+		// include some frontend logic
+		if( class_exists('GravityView_Plugin') && !class_exists('GravityView_View') ) {
 			GravityView_Plugin::getInstance()->frontend_actions();
 		}
 
+		// build Render View attributes array
+		$atts['id'] = $_POST['view_id'];
+
+		// check for order/sorting
+		if( !empty( $_POST['order'] ) ) {
+			// to do
+		}
+
+		// Paging/offset
+		$atts['page_size'] = isset( $_POST['length'] ) ? $_POST['length'] : '';
+		$atts['offset'] = isset( $_POST['start'] ) ? $_POST['start'] : 0;
+
+		// prepare to get entries
+		$args = wp_parse_args( $atts, GravityView_frontend::get_default_args() );
+		$form_id = get_post_meta( $args['id'], '_gravityview_form_id', true );
+		$template_settings = get_post_meta( $args['id'], '_gravityview_template_settings', true );
+		$dir_fields = get_post_meta( $args['id'], '_gravityview_directory_fields', true );
+
+		// get view entries
+		$view_entries = GravityView_frontend::get_view_entries( $args, $form_id, $template_settings );
+
+		global $gravityview_view;
+		$gravityview_view = new GravityView_View();
+		$gravityview_view->form_id = $form_id;
+		$gravityview_view->view_id = $args['id'];
+		$gravityview_view->fields = $dir_fields;
+		$gravityview_view->context = 'directory';
+
+		// build output data
+		$data = array();
+		if( $view_entries['count'] !== 0 ) {
+			foreach( $view_entries['entries'] as $entry ) {
+				$temp = array();
+				if( !empty(  $dir_fields['directory_table-columns'] ) ) {
+					foreach( $dir_fields['directory_table-columns'] as $field ) {
+						  $temp[] = gv_value( $entry, $field );
+					}
+				}
+				$data[] = $temp;
+			}
+		}
 
 
+		// wrap all
+		$output = array(
+			'draw' => intval( $_POST['draw'] ),
+			'recordsTotal' => $view_entries['count'],
+			'recordsFiltered' => $view_entries['count'],
+			'data' => $data
+			);
+
+		GravityView_Plugin::log_debug( '[DataTables] Ajax request answer: ' . print_r( $output, true ) );
+
+		echo json_encode($output);
+		die();
 	}
 
 	/**
@@ -96,8 +156,10 @@ class GV_Extension_DataTables_Data {
 
 				wp_enqueue_script( 'gv-datatables-cfg', plugins_url( 'assets/js/datatables-views.js', GV_DT_FILE ), array( 'gv-datatables' ), GV_Extension_DataTables::version, true );
 
+				//$template_settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
+
 				// Prepare DataTables init config
-				$dt_config = apply_filters( 'gravityview_datatables_js_options', array(
+				$dt_config =  array(
 					'processing' => true,
 					'serverSide' => true,
 					'ajax' => array(
@@ -109,7 +171,19 @@ class GV_Extension_DataTables_Data {
 							'nonce' => wp_create_nonce( 'gravityview_datatables_data' ),
 						),
 					),
-				) );
+				);
+
+				// get View directory active fields to init columns
+				$dir_fields = get_post_meta( $post->ID, '_gravityview_directory_fields', true );
+				$columns = array();
+				if( !empty( $dir_fields['directory_table-columns'] ) ) {
+					foreach( $dir_fields['directory_table-columns'] as $field ) {
+						$columns[] = array( 'name' => 'gv_' . $field['id'] );
+					}
+					$dt_config['columns'] = $columns;
+				}
+
+				$dt_config = apply_filters( 'gravityview_datatables_js_options', $dt_config );
 
 				wp_localize_script( 'gv-datatables-cfg', 'gvDTglobals', $dt_config );
 
