@@ -98,6 +98,7 @@ class GV_Extension_DataTables_Data {
 		$gravityview_view->view_id = $args['id'];
 		$gravityview_view->fields = $dir_fields;
 		$gravityview_view->context = 'directory';
+		$gravityview_view->post_id = isset( $_POST['post_id'] ) ? $_POST['post_id'] : '';
 
 		// build output data
 		$data = array();
@@ -106,7 +107,7 @@ class GV_Extension_DataTables_Data {
 				$temp = array();
 				if( !empty(  $dir_fields['directory_table-columns'] ) ) {
 					foreach( $dir_fields['directory_table-columns'] as $field ) {
-						  $temp[] = gv_value( $entry, $field );
+						$temp[] = gv_value( $entry, $field );
 					}
 				}
 				$data[] = $temp;
@@ -145,52 +146,74 @@ class GV_Extension_DataTables_Data {
 
 		global $post;
 
-		if( is_a( $post, 'WP_Post' ) && ( has_shortcode( $post->post_content, 'gravityview' ) ||  'gravityview' === get_post_type() ) ) {
-
-			// get the View template
-			$template_id = get_post_meta( $post->ID, '_gravityview_directory_template', true );
-
-			if( !empty( $template_id ) && 'datatables_table' === $template_id ) {
-				// include datatables script
-				wp_enqueue_script( 'gv-datatables', apply_filters( 'gravityview_datatables_script_src', '//cdn.datatables.net/1.10.0/js/jquery.dataTables.min.js' ), array( 'jquery' ), GV_Extension_DataTables::version, true );
-
-				wp_enqueue_script( 'gv-datatables-cfg', plugins_url( 'assets/js/datatables-views.js', GV_DT_FILE ), array( 'gv-datatables' ), GV_Extension_DataTables::version, true );
-
-				//$template_settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
-
-				// Prepare DataTables init config
-				$dt_config =  array(
-					'processing' => true,
-					'serverSide' => true,
-					'ajax' => array(
-						'url' => admin_url( 'admin-ajax.php' ),
-						'type' => 'POST',
-						'data' => array(
-							'action' => 'gv_datatables_data',
-							'view_id' => $post->ID,
-							'nonce' => wp_create_nonce( 'gravityview_datatables_data' ),
-						),
-					),
-				);
-
-				// get View directory active fields to init columns
-				$dir_fields = get_post_meta( $post->ID, '_gravityview_directory_fields', true );
-				$columns = array();
-				if( !empty( $dir_fields['directory_table-columns'] ) ) {
-					foreach( $dir_fields['directory_table-columns'] as $field ) {
-						$columns[] = array( 'name' => 'gv_' . $field['id'] );
-					}
-					$dt_config['columns'] = $columns;
-				}
-
-				$dt_config = apply_filters( 'gravityview_datatables_js_options', $dt_config );
-
-				wp_localize_script( 'gv-datatables-cfg', 'gvDTglobals', $dt_config );
-
-				wp_enqueue_style( 'gv-datatables_style', apply_filters( 'gravityview_datatables_style_src', '//cdn.datatables.net/1.10.0/css/jquery.dataTables.css' ), array(), GV_Extension_DataTables::version, 'all' );
-
-			}
+		if( !is_a( $post, 'WP_Post' ) ) {
+			return;
 		}
+
+		// View was called using the shortcode
+		if( has_shortcode( $post->post_content, 'gravityview' ) ) {
+			$view_atts = GravityView_frontend::get_view_shortcode_atts( $post->post_content );
+			if( !empty( $view_atts['id'] ) ) {
+				$view_id = $view_atts['id'];
+			} else {
+				return;
+			}
+		} else if( 'gravityview' === get_post_type() ) {
+			// view was called directly
+			$view_id = $post->ID;
+		} else {
+			return;
+		}
+
+		// get the View template
+		$template_id = get_post_meta( $view_id, '_gravityview_directory_template', true );
+
+		// is the View requested a Datatables view ?
+		if( empty( $template_id ) || 'datatables_table' !== $template_id ) {
+			return;
+		}
+
+		// include DataTables core script
+		wp_enqueue_script( 'gv-datatables', apply_filters( 'gravityview_datatables_script_src', '//cdn.datatables.net/1.10.0/js/jquery.dataTables.min.js' ), array( 'jquery' ), GV_Extension_DataTables::version, true );
+
+		// include DataTables custom script
+		wp_enqueue_script( 'gv-datatables-cfg', plugins_url( 'assets/js/datatables-views.js', GV_DT_FILE ), array( 'gv-datatables' ), GV_Extension_DataTables::version, true );
+
+		//$template_settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
+
+		// Prepare DataTables init config
+		$dt_config =  array(
+			'processing' => true,
+			'serverSide' => true,
+			'ajax' => array(
+				'url' => admin_url( 'admin-ajax.php' ),
+				'type' => 'POST',
+				'data' => array(
+					'action' => 'gv_datatables_data',
+					'view_id' => $view_id,
+					'post_id' => $post->ID,
+					'nonce' => wp_create_nonce( 'gravityview_datatables_data' ),
+				),
+			),
+		);
+
+		// get View directory active fields to init columns
+		$dir_fields = get_post_meta( $post->ID, '_gravityview_directory_fields', true );
+		$columns = array();
+		if( !empty( $dir_fields['directory_table-columns'] ) ) {
+			foreach( $dir_fields['directory_table-columns'] as $field ) {
+				$columns[] = array( 'name' => 'gv_' . $field['id'] );
+			}
+			$dt_config['columns'] = $columns;
+		}
+
+		$dt_config = apply_filters( 'gravityview_datatables_js_options', $dt_config );
+
+		wp_localize_script( 'gv-datatables-cfg', 'gvDTglobals', $dt_config );
+
+		// DataTables Style
+		wp_enqueue_style( 'gv-datatables_style', apply_filters( 'gravityview_datatables_style_src', '//cdn.datatables.net/1.10.0/css/jquery.dataTables.css' ), array(), GV_Extension_DataTables::version, 'all' );
+
 
 	} // end add_scripts_and_styles
 
