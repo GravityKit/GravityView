@@ -108,6 +108,30 @@ class GravityView_frontend {
 		return self::render_view( $args );
 	}
 
+	/**
+	 * Retrieves the shortcode atts
+	 * @param  string $content
+	 * @return mixed in case of success retrieve the shortcode attributes else, empty
+	 */
+	public static function get_view_shortcode_atts( $content ) {
+		if ( false === strpos( $content, '[' ) ) {
+			return array();
+		}
+
+		preg_match_all( '/' . get_shortcode_regex() . '/s', $content, $matches, PREG_SET_ORDER );
+		if ( empty( $matches ) )
+			return array();
+
+		foreach ( $matches as $shortcode ) {
+			if ( 'gravityview' === $shortcode[2] )
+				return shortcode_parse_atts( $shortcode[3] );
+		}
+
+		return array();
+	}
+
+
+
 
 	/**
 	 * In case View post is called directly, insert the view in the post content
