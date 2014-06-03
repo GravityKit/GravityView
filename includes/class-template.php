@@ -34,6 +34,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 		// widget logic
 		add_action( 'gravityview_before', array( $this, 'render_widget_hooks' ) );
 		add_action( 'gravityview_after', array( $this, 'render_widget_hooks' ) );
+		add_action( 'gravityview_after', array( $this, 'render_view_id' ) );
 	}
 
 	// Magic methods
@@ -108,6 +109,18 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		<?php
 	}
+
+	/**
+	 * Print the View ID to enable proper cookie pagination
+	 * @param  int $view_id View ID
+	 */
+	public function render_view_id( $view_id ) {
+		?>
+		<input type="hidden" id="gravityview-view-id" value="<?php echo $view_id; ?>">
+		<?php
+	}
+
+
 
 }
 
