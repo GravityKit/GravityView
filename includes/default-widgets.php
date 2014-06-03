@@ -307,7 +307,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 		// get configured search filters (fields)
 		$search_filters = array();
-		if( is_array( $gravityview_view->fields ) ) {
+		if( !empty( $gravityview_view->fields ) && is_array( $gravityview_view->fields ) ) {
 			foreach( $gravityview_view->fields as $t => $fields ) {
 				foreach( $fields as $field ) {
 					if( !empty( $field['search_filter'] ) ) {
