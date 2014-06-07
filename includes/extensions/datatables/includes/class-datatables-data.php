@@ -79,6 +79,11 @@ class GV_Extension_DataTables_Data {
 			// to do
 		}
 
+		// check for search
+		if( !empty( $_POST['search']['value'] ) ) {
+			$atts['search_value'] = $_POST['search']['value'];
+		}
+
 		// Paging/offset
 		$atts['page_size'] = isset( $_POST['length'] ) ? $_POST['length'] : '';
 		$atts['offset'] = isset( $_POST['start'] ) ? $_POST['start'] : 0;

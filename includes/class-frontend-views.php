@@ -316,8 +316,17 @@ class GravityView_frontend {
 
 		// Search Criteria
 		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ) );
-
 		GravityView_Plugin::log_debug( '[get_view_entries] Search Criteria after hook gravityview_fe_search_criteria: ' . print_r( $search_criteria, true ) );
+
+		// implicity search
+		if( !empty( $args['search_value'] ) ) {
+			$search_criteria['field_filters'][] = array(
+				'key' => null, // The field ID to search
+				'value' => esc_attr( $args['search_value'] ), // The value to search
+				'operator' => 'contains', // What to search in. Options: `is` or `contains`
+			);
+		}
+		GravityView_Plugin::log_debug( '[get_view_entries] Search Criteria after implicity search: ' . print_r( $search_criteria, true ) );
 
 		//start date & end date filter - Override values defined in shortcode (if needed)
 		if( !empty( $args['start_date'] ) ) {
