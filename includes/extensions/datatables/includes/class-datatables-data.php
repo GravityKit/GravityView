@@ -75,8 +75,13 @@ class GV_Extension_DataTables_Data {
 		$atts['id'] = $_POST['view_id'];
 
 		// check for order/sorting
-		if( !empty( $_POST['order'] ) ) {
-			// to do
+		if( isset( $_POST['order'][0]['column'] ) ) {
+			$order_index = $_POST['order'][0]['column'];
+			if( !empty( $_POST['columns'][ $order_index ]['name'] ) ) {
+				// remove prefix 'gv_'
+				$atts['sort_field'] = substr( $_POST['columns'][ $order_index ]['name'], 3 );
+				$atts['sort_direction'] = !empty( $_POST['order'][0]['dir'] ) ? strtoupper( $_POST['order'][0]['dir'] ) : 'ASC';
+			}
 		}
 
 		// check for search
@@ -88,19 +93,26 @@ class GV_Extension_DataTables_Data {
 		$atts['page_size'] = isset( $_POST['length'] ) ? $_POST['length'] : '';
 		$atts['offset'] = isset( $_POST['start'] ) ? $_POST['start'] : 0;
 
+		// shortcode attributes ?
+		if( !empty( $_POST['shortcode_atts'] ) ) {
+			$atts = wp_parse_args( $atts, $_POST['shortcode_atts'] );
+		}
+		$template_settings = get_post_meta( $atts['id'], '_gravityview_template_settings', true );
+		$atts = wp_parse_args( $atts, $template_settings );
+
 		// prepare to get entries
-		$args = wp_parse_args( $atts, GravityView_frontend::get_default_args() );
-		$form_id = get_post_meta( $args['id'], '_gravityview_form_id', true );
-		$template_settings = get_post_meta( $args['id'], '_gravityview_template_settings', true );
-		$dir_fields = get_post_meta( $args['id'], '_gravityview_directory_fields', true );
+		$atts = wp_parse_args( $atts, GravityView_frontend::get_default_args() );
+		$form_id = get_post_meta( $atts['id'], '_gravityview_form_id', true );
+		$dir_fields = get_post_meta( $atts['id'], '_gravityview_directory_fields', true );
 
 		// get view entries
-		$view_entries = GravityView_frontend::get_view_entries( $args, $form_id, $template_settings );
+		$view_entries = GravityView_frontend::get_view_entries( $atts, $form_id );
+
 
 		global $gravityview_view;
 		$gravityview_view = new GravityView_View();
 		$gravityview_view->form_id = $form_id;
-		$gravityview_view->view_id = $args['id'];
+		$gravityview_view->view_id = $atts['id'];
 		$gravityview_view->fields = $dir_fields;
 		$gravityview_view->context = 'directory';
 		$gravityview_view->post_id = isset( $_POST['post_id'] ) ? $_POST['post_id'] : '';
@@ -184,7 +196,8 @@ class GV_Extension_DataTables_Data {
 		// include DataTables custom script
 		wp_enqueue_script( 'gv-datatables-cfg', plugins_url( 'assets/js/datatables-views.js', GV_DT_FILE ), array( 'gv-datatables' ), GV_Extension_DataTables::version, true );
 
-		//$template_settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
+		// fetch template settings
+		$template_settings = get_post_meta( $view_id, '_gravityview_template_settings', true );
 
 		// Prepare DataTables init config
 		$dt_config =  array(
@@ -202,8 +215,18 @@ class GV_Extension_DataTables_Data {
 			),
 		);
 
+		// merge shortcode attributes with template settings, if we're running on shortcode
+		// inject shortcode atts into ajax
+		if( !empty( $view_atts ) ) {
+			$args = wp_parse_args( $view_atts, $template_settings );
+			$dt_config['ajax']['data']['shortcode_atts'] = $view_atts;
+		} else {
+			$args = $template_settings;
+		}
+
+
 		// get View directory active fields to init columns
-		$dir_fields = get_post_meta( $post->ID, '_gravityview_directory_fields', true );
+		$dir_fields = get_post_meta( $view_id, '_gravityview_directory_fields', true );
 		$columns = array();
 		if( !empty( $dir_fields['directory_table-columns'] ) ) {
 			foreach( $dir_fields['directory_table-columns'] as $field ) {
@@ -212,6 +235,18 @@ class GV_Extension_DataTables_Data {
 			$dt_config['columns'] = $columns;
 		}
 
+		// set default order
+		if( !empty( $args['sort_field'] ) ) {
+			foreach ( $columns as $key => $column ) {
+				if( $column['name'] === 'gv_'. $args['sort_field'] ) {
+					$dir = !empty( $args['sort_direction'] ) ? $args['sort_direction'] : 'asc';
+					$dt_config['order'] = array( array( $key, strtolower( $dir ) ) );
+				}
+			}
+		}
+
+
+		// filter init DataTables options
 		$dt_config = apply_filters( 'gravityview_datatables_js_options', $dt_config );
 
 		wp_localize_script( 'gv-datatables-cfg', 'gvDTglobals', $dt_config );

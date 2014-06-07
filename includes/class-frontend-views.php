@@ -309,7 +309,7 @@ class GravityView_frontend {
 	 * @param array $template_settings
 	 * @return void
 	 */
-	public static function get_view_entries( $args, $form_id, $template_settings ) {
+	public static function get_view_entries( $args, $form_id ) {
 
 		GravityView_Plugin::log_debug( '[get_view_entries] init' );
 		// start filters and sorting
@@ -368,7 +368,7 @@ class GravityView_frontend {
 
 
 		// remove not approved entries
-		if( !empty( $template_settings['show_only_approved'] ) ) {
+		if( !empty( $args['show_only_approved'] ) ) {
 			$search_criteria['field_filters'][] = array( 'key' => 'is_approved', 'value' => 'Approved' );
 			$search_criteria['field_filters']['mode'] = 'all'; // force all the criterias to be met
 
