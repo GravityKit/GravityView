@@ -233,6 +233,10 @@ class GV_Extension_DataTables_Data {
 			}
 		}
 
+		// page size, if defined
+		if( !empty( $args['page_size'] ) ) {
+			$dt_config['pageLength'] = $args['page_size'];
+		}
 
 		// filter init DataTables options
 		$dt_config = apply_filters( 'gravityview_datatables_js_options', $dt_config );
