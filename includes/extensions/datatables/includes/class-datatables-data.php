@@ -20,9 +20,6 @@ class GV_Extension_DataTables_Data {
 		add_action( 'wp_ajax_gv_datatables_data', array( $this, 'get_datatables_data' ) );
 		add_action( 'wp_ajax_nopriv_gv_datatables_data', array( $this, 'get_datatables_data' ) );
 
-		// replace template section by specific ajax
-		//add_filter( 'gravityview_render_view_sections', array( $this, 'add_ajax_template_section' ), 10, 2 );
-
 		// add template path
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
 
@@ -31,15 +28,6 @@ class GV_Extension_DataTables_Data {
 			add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ) );
 		}
 
-
-
-	}
-
-	function add_ajax_template_section( $sections, $template_id = '' ) {
-		if( 'datatables_table' === $template_id && defined( 'DOING_AJAX') && DOING_AJAX ) {
-			$sections = array( 'ajax' );
-		}
-		return $sections;
 	}
 
 	/**
