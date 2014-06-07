@@ -284,6 +284,10 @@ class GravityView_frontend {
 			GravityView_Plugin::log_debug( '[render_view] Rendering '. $section . ' section.' );
 			$gravityview_view->render( $view_slug, $section );
 		}
+
+		// Print the View ID to enable proper cookie pagination ?>
+		<input type="hidden" id="gravityview-view-id" value="<?php echo $args['id']; ?>">
+		<?php
 		$output = ob_get_clean();
 
 		return $output;
