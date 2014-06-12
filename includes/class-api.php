@@ -200,14 +200,20 @@ class GravityView_API {
 	// return href for single entry
 	public static function entry_link( $entry, $field ) {
 
-		$post = get_post();
+		if( defined('DOING_AJAX') && DOING_AJAX ) {
+			global $gravityview_view;
+			$post_id = $gravityview_view->post_id;
+		} else {
+			global $post;
+			$post_id = isset( $post->ID ) ? $post->ID : null;
+		}
 
-		if( !empty( $post ) ) {
+		if( !empty( $post_id ) ) {
 
 			$query_arg_name = GravityView_frontend::get_entry_var_name();
 
 			if( get_option('permalink_structure') ) {
-				$href = trailingslashit( get_permalink( $post->ID ) ) . $query_arg_name . '/'. $entry['id'] .'/';
+				$href = trailingslashit( get_permalink( $post_id ) ) . $query_arg_name . '/'. $entry['id'] .'/';
 			} else {
 				$href = add_query_arg( $query_arg_name, $entry['id'], self::directory_link() );
 			}
@@ -215,7 +221,7 @@ class GravityView_API {
 			return $href;
 		}
 
-		return false;
+		return '';
 	}
 
 

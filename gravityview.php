@@ -303,6 +303,9 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-welcome.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
+
+		// Nice place to insert extensions' backend stuff
+		do_action('gravityview_include_backend_actions');
 	}
 
 
@@ -320,6 +323,8 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-api.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
 
+		// Nice place to insert extensions' frontend stuff
+		do_action('gravityview_include_frontend_actions');
 	}
 
 	/**
@@ -622,3 +627,8 @@ final class GravityView_Plugin {
 } // end class GravityView_Plugin
 
 add_action('plugins_loaded', array('GravityView_Plugin', 'getInstance'), 1);
+
+
+/** EXTENSIONS */
+include_once( GRAVITYVIEW_DIR . 'includes/extensions/datatables/ext-datatables.php');
+
