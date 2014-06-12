@@ -1090,14 +1090,16 @@ class GravityView_Admin_Views {
 			 */
 			$select_cap_choices = apply_filters('gravityview_field_visibility_caps',
 				array(
-					array( 'label' => __( 'Any', 'gravity-view' ), 'value' => 'read' ),
+					array( 'label' => __( 'Any logged-in user', 'gravity-view' ), 'value' => 'read' ),
 					array( 'label' => __( 'Author or higher', 'gravity-view' ), 'value' => 'publish_posts' ),
 					array( 'label' => __( 'Editor or higher', 'gravity-view' ), 'value' => 'delete_others_posts' ),
 					array( 'label' => __( 'Administrator', 'gravity-view' ), 'value' => 'manage_options' ),
 				)
 			);
-			$output .= '<li>' . $this->render_checkbox_option( $name_prefix . '[only_loggedin]' , __( 'Only visible to logged in users with role:', 'gravity-view' ), $only_loggedin ) ;
-			$output .=  $this->render_selectbox_option( $name_prefix . '[only_loggedin_cap]', '', $select_cap_choices, $only_loggedin_cap ) . '</li>';
+			$output .= '<li>';
+			$output .= $this->render_checkbox_option( $name_prefix . '[only_loggedin]' , __( 'Only visible to logged in users with role:', 'gravity-view' ), $only_loggedin ) ;
+			$output .= $this->render_selectbox_option( $name_prefix . '[only_loggedin_cap]', '', $select_cap_choices, $only_loggedin_cap );
+			$output .= '</li>';
 		}
 
 		// close options window
@@ -1115,13 +1117,18 @@ class GravityView_Admin_Views {
 
 		if( 'field' === $field_type ) {
 
-			// If the view template is table, show label as default. Otherwise, don't
-			$show_label_default = preg_match('/table/ism', $template_id);
-
 			// Default options - fields
 			$field_options = array(
-				'show_label' => array( 'type' => 'checkbox', 'label' => __( 'Show Label', 'gravity-view' ), 'default' => $show_label_default ),
-				'custom_label' => array( 'type' => 'input_text', 'label' => __( 'Custom Label:', 'gravity-view' ), 'default' => '' ),
+				'show_label' => array(
+					'type' => 'checkbox',
+					'label' => __( 'Show Label', 'gravity-view' ),
+					'default' => preg_match('/table/ism', $template_id), // If the view template is table, show label as default. Otherwise, don't
+				),
+				'custom_label' => array(
+					'type' => 'input_text',
+					'label' => __( 'Custom Label:', 'gravity-view' ),
+					'default' => ''
+				),
 				'custom_class' => array(
 					'type' => 'input_text',
 					'label' => __( 'Custom CSS Class:', 'gravity-view' ),
@@ -1129,6 +1136,7 @@ class GravityView_Admin_Views {
 					'default' => ''
 				),
 			);
+
 		} elseif( 'widget' === $field_type ) {
 
 		}
@@ -1215,8 +1223,7 @@ class GravityView_Admin_Views {
 
 	function check_ajax_nonce() {
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxviews' ) ) {
-			echo false;
-			die();
+			exit( false );
 		}
 	}
 
@@ -1236,16 +1243,15 @@ class GravityView_Admin_Views {
 		// If Form was changed, JS sends form ID, if start fresh, JS sends templateid
 		if( !empty( $_POST['formid'] ) ) {
 			$this->render_available_fields( $_POST['formid'] );
-			die();
+			exit();
 		} elseif( !empty( $_POST['templateid'] ) ) {
 			$form = $this->pre_get_form_fields( $_POST['templateid'] );
 			$this->render_available_fields( $form );
-			die();
+			exit();
 		}
 
 		//if everything fails..
-		echo false;
-		die();
+		exit( false );
 	}
 
 
@@ -1260,15 +1266,13 @@ class GravityView_Admin_Views {
 		$this->check_ajax_nonce();
 
 		if( empty( $_POST['template_id'] ) ) {
-			echo false;
-			die();
+			exit( false );
 		}
 
 		$response['directory'] = $this->render_directory_active_areas( $_POST['template_id'], 'directory' );
 		$response['single'] = $this->render_directory_active_areas( $_POST['template_id'], 'single' );
 
-		echo json_encode( $response );
-		die();
+		exit( json_encode( $response ) );
 	}
 
 	/**
@@ -1280,8 +1284,7 @@ class GravityView_Admin_Views {
 		$this->check_ajax_nonce();
 
 		if( empty( $_POST['template_id'] ) ) {
-			echo false;
-			die();
+			exit( false );
 		}
 
 		// get the fields xml config file for this specific preset
@@ -1323,8 +1326,7 @@ class GravityView_Admin_Views {
 
 		GravityView_Plugin::log_debug('[get_preset_fields_config] AJAX Response: '.print_r($response, true));
 
-		echo json_encode( $response );
-		die();
+		exit( json_encode( $response ) );
 	}
 
 	/**
@@ -1336,8 +1338,7 @@ class GravityView_Admin_Views {
 		$this->check_ajax_nonce();
 
 		if( empty( $_POST['template_id'] ) ) {
-			echo false;
-			die();
+			exit( false );
 		}
 
 		// get the xml for this specific template_id
@@ -1350,13 +1351,13 @@ class GravityView_Admin_Views {
 		if( $form_id === false ) {
 			// send error to user
 			GravityView_Plugin::log_error( '[create_preset_form] Error importing form for template id: ' . $_POST['template_id'] );
-			echo false;
-			die();
+
+			exit( false );
 		}
 
 		echo '<option value="'.$form_id.'" selected></option>';
 
-		die();
+		exit();
 
 	}
 
@@ -1372,16 +1373,15 @@ class GravityView_Admin_Views {
 		$this->check_ajax_nonce();
 
 		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) ) {
-			echo false;
-			die();
+			exit( false );
 		}
 
-		$input_type = isset($_POST['input_type']) ? $_POST['input_type'] : NULL;
-		$context = isset($_POST['context']) ? $_POST['context'] : NULL;
+		$input_type = isset($_POST['input_type']) ? esc_attr( $_POST['input_type'] ) : NULL;
+		$context = isset($_POST['context']) ? esc_attr( $_POST['context'] ) : NULL;
 
-		$response = $this->render_field_options( $_POST['field_type'], $_POST['template'], $_POST['field_id'], $_POST['field_label'], $_POST['area'], $input_type, '', '', $context  );
-		echo $response;
-		die();
+		$response = $this->render_field_options( esc_attr( $_POST['field_type'] ), esc_attr( $_POST['template'] ), esc_attr( $_POST['field_id'] ), esc_attr( $_POST['field_label'] ), esc_attr( $_POST['area'] ), $input_type, '', '', $context  );
+
+		exit( $response );
 	}
 
 	/**
@@ -1406,8 +1406,7 @@ class GravityView_Admin_Views {
 
 		$response = gravityview_get_sortable_fields( $form );
 
-		echo $response;
-		die();
+		exit( $response );
 	}
 
 

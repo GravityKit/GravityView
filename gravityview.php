@@ -127,7 +127,7 @@ final class GravityView_Plugin {
 		add_filter( 'gravityview_blacklist_field_types', array( $this, 'default_field_blacklist' ), 10 );
 
 		// Enable debug with Gravity Forms Logging Add-on
-	    add_filter( 'gform_logging_supported', array( 'GravityView_Plugin', 'add_debug_settings' ) );
+	    add_filter( 'gform_logging_supported', array( 'GravityView_Plugin', 'enable_gform_logging' ) );
 
 	}
 
@@ -607,7 +607,7 @@ final class GravityView_Plugin {
      * Enables debug with Gravity Forms logging add-on
      * @param array $supported_plugins List of plugins
      */
-    public static function add_debug_settings( $supported_plugins ) {
+    public static function enable_gform_logging( $supported_plugins ) {
         $supported_plugins['gravityview'] = 'GravityView';
         return $supported_plugins;
     }
