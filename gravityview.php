@@ -488,13 +488,25 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	function no_conflict_styles() {
-		global $gravityview_settings;
+		global $gravityview_settings, $wp_styles;
 
-		if( ! self::is_gravityview_page() || empty( $gravityview_settings['no-conflict-mode'] ) ) {
+		if( ! self::is_gravityview_page() ) {
 			return;
 		}
 
-		global $wp_styles;
+		// Something's not right; the styles aren't registered.
+		if( !empty( $wp_styles->registered ) )  {
+			foreach ($wp_styles->registered as $key => $style) {
+				if( preg_match( '/^(?:wp\-)?jquery/ism', $key ) ) {
+					wp_dequeue_style( $key );
+				}
+			}
+		}
+
+		// Making sure jQuery is unset will be enough
+		if( empty( $gravityview_settings['no-conflict-mode'] ) ) {
+			return;
+		}
 
         $wp_required_styles = array(
         	'debug-bar-extender',
