@@ -448,18 +448,24 @@ class GravityView_frontend {
 	 * @return void
 	 */
 	public static function add_scripts_and_styles() {
-		global $post;
+		global $post, $posts;
 
-		// enqueue template specific styles
-		if( is_a( $post, 'WP_Post' ) && ( has_shortcode( $post->post_content, 'gravityview') ||  'gravityview' === get_post_type() ) ) {
+		foreach ($posts as $p) {
 
-			wp_enqueue_script( 'gravityview-fe-view', plugins_url('includes/js/fe-views.js', GRAVITYVIEW_FILE), array( 'jquery', 'gravityview-jquery-cookie' ), GravityView_Plugin::version, true );
+			// enqueue template specific styles
+			if( is_a( $p, 'WP_Post' ) && ( function_exists('has_shortcode') && has_shortcode( $p->post_content, 'gravityview') ||  'gravityview' === get_post_type() ) ) {
 
-			wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version, 'all' );
+				wp_enqueue_script( 'gravityview-fe-view', plugins_url('includes/js/fe-views.js', GRAVITYVIEW_FILE), array( 'jquery', 'gravityview-jquery-cookie' ), GravityView_Plugin::version, true );
 
-			$template_id = get_post_meta( $post->ID, '_gravityview_directory_template', true );
-			self::add_style( $template_id );
+				wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version, 'all' );
+
+				$template_id = get_post_meta( $p->ID, '_gravityview_directory_template', true );
+
+				self::add_style( $template_id );
+			}
+
 		}
+
 	}
 
 	/**

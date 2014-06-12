@@ -156,7 +156,7 @@ class GV_Extension_DataTables_Data {
 		}
 
 		// View was called using the shortcode
-		if( has_shortcode( $post->post_content, 'gravityview' ) ) {
+		if( function_exists( 'has_shortcode' ) && has_shortcode( $post->post_content, 'gravityview' ) ) {
 			$view_atts = GravityView_frontend::get_view_shortcode_atts( $post->post_content );
 			if( !empty( $view_atts['id'] ) ) {
 				$view_id = $view_atts['id'];
