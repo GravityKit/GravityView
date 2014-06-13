@@ -1173,19 +1173,19 @@ class GravityView_Admin_Views {
 
 		switch( $type ) {
 			case 'checkbox':
-				$output .= self::render_checkbox_option( $name, $current, $desc );
+				$output .= self::render_checkbox_option( $name, $id,  $current );
 				$output .= $label.$desc;
 				break;
 
 			case 'select':
 				$output .= $label.$desc;
-				$output .= self::render_select_option( $name, $choices, $current );
+				$output .= self::render_select_option( $name, $id, $choices, $current );
 				break;
 
 			case 'text':
 			default:
 				$output .= $label.$desc;
-				$output .= self::render_text_option( $name, $current, $desc );
+				$output .= self::render_text_option( $name, $id, $current );
 				break;
 		}
 
@@ -1201,8 +1201,7 @@ class GravityView_Admin_Views {
 	 * @param  string $current current value
 	 * @return string         html tags
 	 */
-	public static function render_checkbox_option( $name = '', $current = '' ) {
-		$id = sanitize_html_class( $name );
+	public static function render_checkbox_option( $name = '', $id = '', $current = '' ) {
 
 		$output  = '<input name="'. $name .'" type="hidden" value="0">';
 		$output .= '<input name="'. $name .'" id="'. $id .'" type="checkbox" value="1" '. checked( $current, '1', false ) .' >';
@@ -1218,9 +1217,7 @@ class GravityView_Admin_Views {
 	 * @param  string $desc   Option description
 	 * @return string         [html tags]
 	 */
-	public static function render_text_option( $name = '', $current = '', $desc = '') {
-		$id = sanitize_html_class( $name );
-
+	public static function render_text_option( $name = '', $id = '', $current = '' ) {
 		return '<input name="'. $name .'" id="'. $id .'" type="text" value="'. $current .'" class="all-options">';
 	}
 
@@ -1231,8 +1228,7 @@ class GravityView_Admin_Views {
 	 * @param  string $current [current value]
 	 * @return string          [html tags]
 	 */
-	public static function render_select_option( $name = '', $choices, $current = '' ) {
-		$id = sanitize_html_class( $name );
+	public static function render_select_option( $name = '', $id = '', $choices, $current = '' ) {
 
 		$output = '<select name="'. $name .'" id="'. $id .'">';
 		foreach( $choices as $choice ) {
