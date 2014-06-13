@@ -667,9 +667,10 @@
 				parent = $( e.currentTarget ).parents('.gv-fields');
 			}
 
-			// Toggle checkbox when changing field visibility
-			$('body').on( 'change', 'select[id*="loggedin_cap"]', vcfg.toggleVisibilityCheckbox );
+			vcfg.updateVisibilitySettings( e, true );
 
+			// Toggle checkbox when changing field visibility
+			$('body').on( 'open-field-settings change', '.gv-fields input:checkbox', vcfg.updateVisibilitySettings );
 
 			var buttons = [ {
 				text: gvGlobals.label_close,
@@ -683,14 +684,34 @@
 		},
 
 		// Check the "only visible to..." checkbox if the capability isn't public
-		toggleVisibilityCheckbox: function( e ) {
-			var targetCheckbox = $(e.currentTarget).parent().find('input:checkbox[name*=only_loggedin]');
+		updateVisibilitySettings: function( e, first_run ) {
 
-			if($(e.currentTarget).val() !== 'read') {
-				targetCheckbox.attr( 'checked', 'checked' );
+			var vcfg = viewConfiguration;
+
+			// Is this coming from the window opening?
+			first_run = first_run || false;
+
+			// If coming from the openFieldSettings method, we need a different parent
+			$parent = $(e.currentTarget).is('.gv-fields') ? $(e.currentTarget) : $(e.currentTarget).parents('.gv-fields');
+
+			// Custom Label should show only when "Show Label" checkbox is checked
+			vcfg.toggleVisibility( $('input:checkbox[name*=show_label]', $parent) , $('[name*=custom_label]', $parent), first_run );
+
+			// Logged in capability selector should only show when Logged In checkbox is checked
+			vcfg.toggleVisibility( $('input:checkbox[name*=only_loggedin]', $parent) , $('[name*=only_loggedin_cap]', $parent), first_run );
+
+		},
+
+		toggleVisibility: function( $checkbox, $toggled, first_run ) {
+
+			var speed = first_run ? 0 : 'fast';
+
+			if( $checkbox.is(':checked') ) {
+				$toggled.parents('li').fadeIn( speed );
 			} else {
-				targetCheckbox.attr( 'checked', null );
+				$toggled.parents('li').fadeOut( speed );
 			}
+
 		},
 
 		createPresetForm: function() {
