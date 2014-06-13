@@ -299,10 +299,14 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public function backend_actions() {
+
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-views.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-welcome.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
+
+		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/created-by.php' );
 
 		// Nice place to insert extensions' backend stuff
 		do_action('gravityview_include_backend_actions');

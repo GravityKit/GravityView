@@ -921,9 +921,10 @@ class GravityView_Admin_Views {
 							<div class="active-drop active-drop-<?php echo $type; ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
 
 								<?php // render saved fields
-								if( !empty( $values[ $zone .'_'. $area['areaid'] ] ) ) :
 
-									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) :
+								if( !empty( $values[ $zone .'_'. $area['areaid'] ] ) ) {
+
+									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) {
 
 										$input_type = isset($available_fields[ $field['id'] ]['type']) ? $available_fields[ $field['id'] ]['type'] : NULL;
 
@@ -934,9 +935,9 @@ class GravityView_Admin_Views {
 										echo $this->render_label($field['label'], $field['id'], $type, true, $field_options);
 										//endif;
 
-									endforeach;
+									}
 
-								endif; ?>
+								} // End if zone is not empty ?>
 
 								<span class="drop-message"><?php echo sprintf(esc_attr__('"%s" or drag existing %ss here.', 'gravity-view'), $button_label, $type ); ?></span>
 							</div>
@@ -1053,53 +1054,12 @@ class GravityView_Admin_Views {
 		$output = '';
 		$output .= '<input type="hidden" class="field-key" name="'. $name_prefix .'[id]" value="'. $field_id .'">';
 		$output .= '<input type="hidden" class="field-label" name="'. $name_prefix .'[label]" value="'. $field_label .'">';
-		$output .= '<div class="gv-dialog-options" title="'. esc_attr__( 'Options', 'gravity-view' ) . ': '. $field_label .'">';
+		$output .= '<div class="gv-dialog-options" title="'. esc_attr( sprintf( __( 'Options: %s', 'gravity-view' ), $field_label ) ) .'">';
 		$output .= '<ul>';
 
 		foreach( $options as $key => $details ) {
-
-			$default = isset( $details['default'] ) ? $details['default'] : '';
-			$desc = isset( $details['desc'] ) ? $details['desc'] : '';
-			$curr_value = isset( $current[ $key ] ) ? $current[ $key ] : $default;
-			$label = isset( $details['label'] ) ? $details['label'] : '';
-			$type = isset( $details['type'] ) ? $details['type'] : 'input_text';
-
-			switch( $type ) {
-				case 'checkbox':
-					$output .= '<li>'. $this->render_checkbox_option( $name_prefix . '['. $key .']' , $label, $curr_value, $desc ) .'</li>';
-					break;
-
-				case 'input_text':
-				default:
-					$output .= '<li>'. $this->render_input_text_option( $name_prefix . '['. $key .']' , $label, $curr_value, $desc ) .'</li>';
-					break;
-
-			}
-
-		}
-
-		//todo: Move this to other place..
-		if( 'field' === $field_type ) {
-			$only_loggedin = !empty( $current['only_loggedin'] ) ? 1 : '';
-			$only_loggedin_cap = !empty( $current['only_loggedin_cap'] ) ? $current['only_loggedin_cap'] : 'read';
-
-			/**
-			 * Modify the capabilities shown in the field dropdown
-			 * @link  https://github.com/zackkatz/GravityView/wiki/How-to-modify-capabilities-shown-in-the-field-%22Only-visible-to...%22-dropdown
-			 * @since  1.0.1
-			 */
-			$select_cap_choices = apply_filters('gravityview_field_visibility_caps',
-				array(
-					array( 'label' => __( 'Any logged-in user', 'gravity-view' ), 'value' => 'read' ),
-					array( 'label' => __( 'Author or higher', 'gravity-view' ), 'value' => 'publish_posts' ),
-					array( 'label' => __( 'Editor or higher', 'gravity-view' ), 'value' => 'delete_others_posts' ),
-					array( 'label' => __( 'Administrator', 'gravity-view' ), 'value' => 'manage_options' ),
-				)
-			);
-			$output .= '<li>';
-			$output .= $this->render_checkbox_option( $name_prefix . '[only_loggedin]' , __( 'Only visible to logged in users with role:', 'gravity-view' ), $only_loggedin ) ;
-			$output .= $this->render_selectbox_option( $name_prefix . '[only_loggedin_cap]', '', $select_cap_choices, $only_loggedin_cap );
-			$output .= '</li>';
+			$value = isset( $current[ $key ] ) ? $current[ $key ] : NULL;
+			$output .= '<li>'. $this->render_field_option( $name_prefix . '['. $key .']' , $details, $value) .'</li>';
 		}
 
 		// close options window
@@ -1117,6 +1077,20 @@ class GravityView_Admin_Views {
 
 		if( 'field' === $field_type ) {
 
+			/**
+			 * Modify the capabilities shown in the field dropdown
+			 * @link  https://github.com/zackkatz/GravityView/wiki/How-to-modify-capabilities-shown-in-the-field-%22Only-visible-to...%22-dropdown
+			 * @since  1.0.1
+			 */
+			$select_cap_choices = apply_filters('gravityview_field_visibility_caps',
+				array(
+					array( 'label' => __( 'Any logged-in user', 'gravity-view' ), 'value' => 'read' ),
+					array( 'label' => __( 'Author or higher', 'gravity-view' ), 'value' => 'publish_posts' ),
+					array( 'label' => __( 'Editor or higher', 'gravity-view' ), 'value' => 'delete_others_posts' ),
+					array( 'label' => __( 'Administrator', 'gravity-view' ), 'value' => 'manage_options' ),
+				)
+			);
+
 			// Default options - fields
 			$field_options = array(
 				'show_label' => array(
@@ -1125,15 +1099,25 @@ class GravityView_Admin_Views {
 					'default' => preg_match('/table/ism', $template_id), // If the view template is table, show label as default. Otherwise, don't
 				),
 				'custom_label' => array(
-					'type' => 'input_text',
+					'type' => 'text',
 					'label' => __( 'Custom Label:', 'gravity-view' ),
 					'default' => ''
 				),
 				'custom_class' => array(
-					'type' => 'input_text',
+					'type' => 'text',
 					'label' => __( 'Custom CSS Class:', 'gravity-view' ),
 					'desc' => __( 'This class will be added to the field container.', 'gravity-view'),
 					'default' => ''
+				),
+				'only_loggedin' => array(
+					'type' => 'checkbox',
+					'label' => __( 'Make visible only to logged-in users?', 'gravity-view' ),
+					'default' => ''
+				),
+				'only_loggedin_cap' => array(
+					'type' => 'select',
+					'choices' => $select_cap_choices,
+					'default' => 'read',
 				),
 			);
 
@@ -1150,23 +1134,78 @@ class GravityView_Admin_Views {
 		return $field_options;
 	}
 
+	/**
+	 * Handle rendering a field option form element
+	 *
+	 * @uses GravityView_Admin_Views::render_checkbox_option() Render <input type="checkbox">
+	 * @uses GravityView_Admin_Views::render_select_option() Render <select>
+	 * @uses GravityView_Admin_Views::render_text_option() Render <input type="text">
+	 * @param  string      $name    Input `name` attribute
+	 * @param  array      $option  Associative array of options. See the $defaults variable for available keys.
+	 * @param  mixed      $current Current value of option
+	 * @return string               HTML output of option
+	 */
+	public static function render_field_option( $name = '', $option, $current = NULL ) {
+
+		$defaults = array(
+			'default' => '',
+			'desc' => '',
+			'value' => '',
+			'label' => '',
+			'type'	=> 'text',
+			'choices' => NULL,
+		);
+
+		$parsed_option = wp_parse_args( $option, $defaults );
+
+		extract( $parsed_option );
+
+
+		$output = '';
+
+		$id = sanitize_html_class( $name );
+
+		$output .= '<label for="'. $id .'" class="gv-label-'.sanitize_html_class( $type ).'">';
+
+		if(!empty($desc)) {
+			$desc = '<span class="howto">'.$desc.'</span>';
+		}
+
+		switch( $type ) {
+			case 'checkbox':
+				$output .= self::render_checkbox_option( $name, $current, $desc );
+				$output .= $label.$desc;
+				break;
+
+			case 'select':
+				$output .= $label.$desc;
+				$output .= self::render_select_option( $name, $choices, $current );
+				break;
+
+			case 'text':
+			default:
+				$output .= $label.$desc;
+				$output .= self::render_text_option( $name, $current, $desc );
+				break;
+		}
+
+		$output .= '</label>';
+
+		return $output;
+	}
+
 
 	/**
 	 * Render the HTML for a checkbox input to be used on the field & widgets options
 	 * @param  string $name , name attribute
-	 * @param  string $label   label text
 	 * @param  string $current current value
 	 * @return string         html tags
 	 */
-	public static function render_checkbox_option( $name = '', $label = '', $current = '' ) {
+	public static function render_checkbox_option( $name = '', $current = '' ) {
 		$id = sanitize_html_class( $name );
 
-		$output = '';
-		$output .= '<label for="'. $id .'" class="gv-label-checkbox">';
-		$output .= '<input name="'. $name .'" type="hidden" value="0">';
+		$output  = '<input name="'. $name .'" type="hidden" value="0">';
 		$output .= '<input name="'. $name .'" id="'. $id .'" type="checkbox" value="1" '. checked( $current, '1', false ) .' >';
-		$output .= $label;
-		$output .= '</label>';
 
 		return $output;
 	}
@@ -1175,42 +1214,27 @@ class GravityView_Admin_Views {
 	/**
 	 * Render the HTML for an input text to be used on the field & widgets options
 	 * @param  string $name    [name attribute]
-	 * @param  string $label   [label text]
 	 * @param  string $current [current value]
 	 * @param  string $desc   Option description
 	 * @return string         [html tags]
 	 */
-	public static function render_input_text_option( $name = '', $label = '', $current = '', $desc = '') {
+	public static function render_text_option( $name = '', $current = '', $desc = '') {
 		$id = sanitize_html_class( $name );
 
-		$output = '';
-		$output .= '<label for="'. $id .'" class="gv-label-text">';
-		$output .= $label;
-		if(!empty($desc)) {
-			$output .= '<span class="howto">'.$desc.'</span>';
-		}
-		$output .= '<input name="'. $name .'" id="'. $id .'" type="text" value="'. $current .'" class="all-options">';
-		$output .= '</label>';
-
-		return $output;
+		return '<input name="'. $name .'" id="'. $id .'" type="text" value="'. $current .'" class="all-options">';
 	}
 
 	/**
 	 * Render the HTML for a select box to be used on the field & widgets options
 	 * @param  string $name    [name attribute]
-	 * @param  string $label   [label text]
 	 * @param  array $choices [select options]
 	 * @param  string $current [current value]
 	 * @return string          [html tags]
 	 */
-	public static function render_selectbox_option( $name = '', $label = '', $choices, $current = '' ) {
+	public static function render_select_option( $name = '', $choices, $current = '' ) {
 		$id = sanitize_html_class( $name );
-		$output = '';
 
-		if( !empty( $label ) ) {
-			$output .= '<label for="'. $id .'">'. $label .'</label>';
-		}
-		$output .= '<select name="'. $name .'" id="'. $id .'">';
+		$output = '<select name="'. $name .'" id="'. $id .'">';
 		foreach( $choices as $choice ) {
 			$output .= '<option value="'. $choice['value'] .'" '. selected( $choice['value'], $current, false ) .'>'. $choice['label'] .'</option>';
 		}
@@ -1221,6 +1245,10 @@ class GravityView_Admin_Views {
 
 	/** -------- AJAX ---------- */
 
+	/**
+	 * Verify the nonce. Exit if not verified.
+	 * @return void
+	 */
 	function check_ajax_nonce() {
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxviews' ) ) {
 			exit( false );
