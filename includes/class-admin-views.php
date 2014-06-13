@@ -1070,7 +1070,18 @@ class GravityView_Admin_Views {
 
 	}
 
-
+	/**
+	 * Get the default options for a standard field.
+	 *
+	 * @param  string      $field_type  Type of field options to render (`field` or `widget`)
+	 * @param  string      $template_id Table slug
+	 * @param  float      $field_id    GF Field ID
+	 * @param  string      $context     What context are we in? Example: `single` or `directory`
+	 * @param  string      $input_type  (textarea, list, select, etc.)
+	 * @return array                   Array of field options with `label`, `value`, `type`, `default` keys
+	 * @filter gravityview_template_{$field_type}_options Filter the field options by field type ( field / widget)
+	 * @filter gravityview_template_{$input_type}_options Filter the field options by input type (textarea, list, select, etc.)
+	 */
 	public function get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type ) {
 
 		$field_options = array();
@@ -1116,6 +1127,7 @@ class GravityView_Admin_Views {
 				),
 				'only_loggedin_cap' => array(
 					'type' => 'select',
+					'label' => __( 'Make visible for:', 'gravity-view' ),
 					'choices' => $select_cap_choices,
 					'default' => 'read',
 				),
@@ -1173,18 +1185,18 @@ class GravityView_Admin_Views {
 
 		switch( $type ) {
 			case 'checkbox':
-				$output .= self::render_checkbox_option( $name, $id,  $current );
-				$output .= $label.$desc;
+				$output .= self::render_checkbox_option( $name, $id, $current );
+				$output .= '&nbsp;'.$label.$desc;
 				break;
 
 			case 'select':
-				$output .= $label.$desc;
+				$output .= $label.$desc.'&nbsp;';
 				$output .= self::render_select_option( $name, $id, $choices, $current );
 				break;
 
 			case 'text':
 			default:
-				$output .= $label.$desc;
+				$output .= $label.$desc.'&nbsp;';
 				$output .= self::render_text_option( $name, $id, $current );
 				break;
 		}
