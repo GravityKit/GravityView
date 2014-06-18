@@ -33,24 +33,8 @@
 			//current form selection
 			vcfg.currentFormId = vcfg.gvSelectForm.val();
 
-
-			// check if there's a form selected
-			if( '' === vcfg.currentFormId ) {
-				// if no form is selected, hide all the configs
-				vcfg.hideView();
-
-			} else {
-				// if both form and template were selected, show View Layout config
-				if( $("#gravityview_directory_template").val().length > 0 ){
-					$("#gravityview_select_template").slideUp(150);
-					vcfg.showViewConfig();
-				} else {
-					// else show the template picker
-					vcfg.templateFilter('custom');
-					vcfg.showTemplates();
-				}
-
-			}
+			// Start by showing/hiding on load
+			vcfg.toggleInitialVisibility( vcfg );
 
 			// start fresh button
 			vcfg.gvStartFreshButton.click( vcfg.startFresh );
@@ -99,7 +83,17 @@
 
 		// Fields
 			// bind Add Field fields to the addField method
-			$('body').on('click', '.ui-tooltip-content .gv-fields', vcfg.addField );
+			$('body').on('click', '.ui-tooltip-content .gv-fields', function(e) {
+
+				// If the clicked field div contains the all fields label,
+				// we're dealing with an all fields click!
+				if( $(this).has('.field-id-all-fields').length ) {
+					vcfg.addAllFields( $(this) );
+				} else {
+					// Add a single field.
+					vcfg.addField( $(this), e );
+				}
+			});
 
 			// show field buttons: Settings & Remove
 			$('body').on('click', "span.gv-field-controls a[href='#remove']", vcfg.removeField );
@@ -112,6 +106,27 @@
 			// when saving the View, try to create form before proceeding
 			$(document).on( 'click', '#publish', vcfg.createPresetForm );
 
+
+		},
+
+		toggleInitialVisibility: function( vcfg ) {
+
+			// check if there's a form selected
+			if( '' === vcfg.currentFormId ) {
+				// if no form is selected, hide all the configs
+				vcfg.hideView();
+
+			} else {
+				// if both form and template were selected, show View Layout config
+				if( $("#gravityview_directory_template").val().length > 0 ){
+					$("#gravityview_select_template").slideUp(150);
+					vcfg.showViewConfig();
+				} else {
+					// else show the template picker
+					vcfg.templateFilter('custom');
+					vcfg.showTemplates();
+				}
+			}
 
 		},
 
@@ -156,6 +171,10 @@
 			$("#gravityview_view_config").slideUp(150);
 		},
 
+		/**
+		 * The Data Source dropdown has been changed. Show alert dialog or process.
+		 * @return void
+		 */
 		formChange: function() {
 			var vcfg = viewConfiguration;
 
@@ -345,13 +364,22 @@
 
 		},
 
-
+		/**
+		 * When clicking the hover overlay, select the template by clicking the #gv_select_template button
+		 * @param  object    e     jQuery event object
+		 * @return void
+		 */
 		selectTemplateHover: function(e) {
 			e.preventDefault();
 			e.stopImmediatePropagation();
 			$(this).find('a[href="#gv_select_template"]').trigger( 'click' );
 		},
 
+		/**
+		 * Display a screenshot of the current template. Not currently in use.
+		 * @param  object    e     jQuery event object
+		 * @return void
+		 */
 		previewTemplate: function(e) {
 			e.preventDefault();
 			e.stopImmediatePropagation();
@@ -486,8 +514,13 @@
 
 		},
 
-		// Fetch the Available Fields for a given Form ID or Preset Template ID
-		getAvailableFields: function( context, id ) {
+		/**
+		 * Fetch the Available Fields for a given Form ID or Preset Template ID
+		 * @param  string    context Current context (seen as tabs): for example, "directory" or "single"
+		 * @param  string    templateid      The "slug" of the View template
+		 * @return void
+		 */
+		getAvailableFields: function( context, templateid ) {
 
 			var vcfg = viewConfiguration;
 
@@ -501,7 +534,7 @@
 			};
 
 			if( context !== undefined && 'preset' === context ) {
-				data.templateid = id;
+				data.templateid = templateid;
 			} else {
 				data.formid = vcfg.gvSelectForm.val();
 			}
@@ -509,6 +542,7 @@
 
 			$.post( ajaxurl, data, function( response ) {
 				if( response ) {
+
 					$("#directory-available-fields").append( response );
 					$("#single-available-fields").append( response );
 
@@ -517,18 +551,34 @@
 
 		},
 
+		/**
+		 * Add all the fields available at once. Bam!
+		 * @param  object    clicked jQuery object of the clicked "+ Add All Fields" link
+		 */
+		addAllFields: function( clicked ) {
 
-		// drop selected field in the active area
-		addField: function(e) {
+			clicked.siblings('.gv-fields').each( function() {
+				$(this).trigger('click');
+			});
+
+			// We just added all the fields. No reason
+			$("a.gv-add-field[data-tooltip='active']").tooltip("close");
+		},
+
+		/**
+		 * Drop selected field in the active area
+		 * @param  object    e     jQuery Event object
+		 */
+		addField: function( clicked, e ) {
 			e.preventDefault();
 
 			var vcfg = viewConfiguration;
 
-			var newField = $(this).clone().hide(),
-				areaId = $(this).parents('.ui-tooltip').attr('id'),
-				templateId = $("#gravityview_directory_template").val(),
-				tooltipId = $(this).parents('.ui-tooltip').attr('id'),
-				addButton = $('a.gv-add-field[data-tooltip-id="'+tooltipId+'"]');
+			var newField	= 	clicked.clone().hide();
+			var	areaId 		= 	clicked.parents('.ui-tooltip').attr('id');
+			var	templateId 	= 	$("#gravityview_directory_template").val();
+			var	tooltipId 	= 	clicked.parents('.ui-tooltip').attr('id');
+			var addButton 	= 	$('a.gv-add-field[data-tooltip-id="'+tooltipId+'"]');
 
 			var data = {
 				action: 'gv_field_options',
@@ -542,10 +592,21 @@
 				nonce: gvGlobals.nonce,
 			};
 
+			// Get the HTML for the Options <div>
+			// - If there are no options, response will NULL
+			// - If response is false, it means the request was invalid.
 			$.post( ajaxurl, data, function( response ) {
+
+				// A response means we have the HTML for the field options
 				if( response ) {
+
+					// Add in the Options <div>
 					newField.append( response );
+
+					// There is a response, so there are options. Show the settings gear.
+					$('.dashicons-admin-generic', newField).hide().removeClass('hide-if-js').fadeIn(100);
 				}
+
 			});
 
 			// append the new field to the active drop

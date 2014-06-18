@@ -761,21 +761,23 @@ class GravityView_Admin_Views {
 	 */
 	function render_label( $label_text, $field_id, $label_type = 'field', $add_controls = true, $field_options = '' ) {
 
-		$output = '';
+		$output = '<h5 class="field-id-'.esc_attr($field_id).'">';
 
-		$output .= '<h5>'.esc_attr( $label_text );
+		$output .= esc_attr( $label_text );
 
 		if( $add_controls ) {
 
 			$settings_title = sprintf(__('Configure %s Settings', 'gravity-view'), ucfirst($label_type));
 			$delete_title = sprintf(__('Remove %s', 'gravity-view'), ucfirst($label_type));
-			$settings_link = empty($field_options) ? '' : sprintf( '<a href="#settings" class="dashicons-admin-generic dashicons" title="%s"></a>', $settings_title );
+
+			$hide_settings_link = empty($field_options) ? 'hide-if-js' : '';
+
+			$settings_link = sprintf( '<a href="#settings" class="dashicons-admin-generic dashicons %s" title="%s"></a>', $hide_settings_link, $settings_title );
 
 			$output .= sprintf('<span class="gv-field-controls">%s<a href="#remove" class="dashicons-dismiss dashicons" title="%s"></a></span>', $settings_link, $delete_title);
 		}
 
 		$output .= '</h5>';
-
 
 		$output = '<div data-fieldid="'.esc_attr($field_id).'" class="gv-fields">'.$output.$field_options.'</div>';
 
@@ -798,8 +800,11 @@ class GravityView_Admin_Views {
 
 		$fields = $this->get_available_fields( $form );
 
-		if( !empty( $fields ) ) :
-			foreach( $fields as $id => $details ) :
+		$all_fields = $this->render_label( __( '+ Add All Fields', 'gravity-view' ) , 'all-fields', 'field' );
+
+		if( !empty( $fields ) ) {
+
+			foreach( $fields as $id => $details ) {
 
 				if( in_array( $details['type'], $blacklist_field_types ) ) {
 					continue;
@@ -807,8 +812,11 @@ class GravityView_Admin_Views {
 
 				echo $this->render_label($details['label'], $id, 'field');
 
-			endforeach;
-		endif;
+			} // End foreach
+
+			// Add All Fields link
+			echo $all_fields;
+		}
 	}
 
 	/**
@@ -907,7 +915,6 @@ class GravityView_Admin_Views {
 			$form_id = get_post_meta( $this->post_id, '_gravityview_form_id', true );
 			$available_fields = $this->get_available_fields( $form_id, $zone );
 		}
-
 
 		foreach( $rows as $row ) :
 			foreach( $row as $col => $areas ) :
@@ -1052,8 +1059,8 @@ class GravityView_Admin_Views {
 
 		// build output
 		$output = '';
-		$output .= '<input type="hidden" class="field-key" name="'. $name_prefix .'[id]" value="'. $field_id .'">';
-		$output .= '<input type="hidden" class="field-label" name="'. $name_prefix .'[label]" value="'. $field_label .'">';
+		$output .= '<input type="hidden" class="field-key" name="'. $name_prefix .'[id]" value="'. esc_attr( $field_id ) .'">';
+		$output .= '<input type="hidden" class="field-label" name="'. $name_prefix .'[label]" value="'. esc_attr( $field_label ) .'">';
 		$output .= '<div class="gv-dialog-options" title="'. esc_attr( sprintf( __( 'Options: %s', 'gravity-view' ), $field_label ) ) .'">';
 		$output .= '<ul>';
 
@@ -1416,10 +1423,16 @@ class GravityView_Admin_Views {
 			exit( false );
 		}
 
-		$input_type = isset($_POST['input_type']) ? esc_attr( $_POST['input_type'] ) : NULL;
-		$context = isset($_POST['context']) ? esc_attr( $_POST['context'] ) : NULL;
+		// Fix apostrophes added by JSON response
+		$post = array_map( 'stripslashes_deep', $_POST );
 
-		$response = $this->render_field_options( esc_attr( $_POST['field_type'] ), esc_attr( $_POST['template'] ), esc_attr( $_POST['field_id'] ), esc_attr( $_POST['field_label'] ), esc_attr( $_POST['area'] ), $input_type, '', '', $context  );
+		// Sanitize
+		$post = array_map( 'esc_attr', $post );
+
+		$input_type = isset($post['input_type']) ? esc_attr( $post['input_type'] ) : NULL;
+		$context = isset($post['context']) ? esc_attr( $post['context'] ) : NULL;
+
+		$response = $this->render_field_options( $post['field_type'], $post['template'], $post['field_id'], $post['field_label'], $post['area'], $input_type, '', '', $context  );
 
 		exit( $response );
 	}
@@ -1439,9 +1452,13 @@ class GravityView_Admin_Views {
 
 		// if form id is set, use it, else, get form from preset
 		if( !empty( $_POST['form_id'] ) ) {
-			$form = $_POST['form_id'];
+
+			$form = (int) $_POST['form_id'];
+
 		} elseif( !empty( $_POST['template_id'] ) ) {
+
 			$form = $this->pre_get_form_fields( $_POST['template_id'] );
+
 		}
 
 		$response = gravityview_get_sortable_fields( $form );
