@@ -1162,7 +1162,7 @@ class GravityView_Admin_Views {
 		$defaults = array(
 			'default' => '',
 			'desc' => '',
-			'value' => '',
+			'value' => NULL,
 			'label' => '',
 			'type'	=> 'text',
 			'choices' => NULL,
@@ -1174,6 +1174,10 @@ class GravityView_Admin_Views {
 
 
 		$output = '';
+
+		if( is_null($current) ) {
+			$current = $default;
+		}
 
 		$id = sanitize_html_class( $name );
 
