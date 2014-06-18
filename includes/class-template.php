@@ -30,7 +30,24 @@ class GravityView_View extends Gamajo_Template_Loader {
 	// Reference to the root directory path of this plugin.
 	protected $plugin_directory = GRAVITYVIEW_DIR;
 
-	function __construct() {
+	/**
+	 * Construct the view object
+	 * @param  array       $atts Associative array to set as vars
+	 */
+	function __construct( $atts = array() ) {
+
+		$atts = wp_parse_args( $atts, array(
+			'form_id' => NULL,
+			'view_id' => NULL,
+			'fields'  => NULL,
+			'context' => NULL,
+			'post_id' => NULL,
+		) );
+
+		foreach ($atts as $key => $value) {
+			$this->vars[ $key ] = $value;
+		}
+
 		// widget logic
 		add_action( 'gravityview_before', array( $this, 'render_widget_hooks' ) );
 		add_action( 'gravityview_after', array( $this, 'render_widget_hooks' ) );

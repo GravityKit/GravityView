@@ -98,12 +98,13 @@ class GV_Extension_DataTables_Data {
 
 
 		global $gravityview_view;
-		$gravityview_view = new GravityView_View();
-		$gravityview_view->form_id = $form_id;
-		$gravityview_view->view_id = $atts['id'];
-		$gravityview_view->fields = $dir_fields;
-		$gravityview_view->context = 'directory';
-		$gravityview_view->post_id = isset( $_POST['post_id'] ) ? $_POST['post_id'] : '';
+		$gravityview_view = new GravityView_View( array(
+			'form_id' => $form_id,
+			'view_id' => $atts['id'],
+			'fields'  => $dir_fields,
+			'context' => 'directory',
+			'post_id' => ( isset( $_POST['post_id'] ) ? $_POST['post_id'] : '' ),
+		) );
 
 		// build output data
 		$data = array();

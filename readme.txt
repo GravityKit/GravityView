@@ -24,8 +24,16 @@ Beautifully display your Gravity Forms entries.
 == Changelog ==
 
 = 1.0.4 =
+* Added: Per-field-type options structure to allow for different field types to override default Field Settings
+	* Added: Choose how to display User data. In the User field settings, you can now choose to display the "Display Name", username, or ID.
+	* Added: Custom date format using [PHP date format](https://www.php.net//manual/en/function.date.php)
+	* Fixed: Default setting values working again
+* Added: `search_field` parameter to the shortcode. This allows you to specify a field ID where you want the search performed (The search itself is defined in `search_value`)
+* Added: [Using the Shortcode](https://katzwebservices.zendesk.com/hc/en-us/articles/202934188) help article
+* Added: Data Source added to the Views page
 * Added: Bengali translation. Thanks, [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)!
 * Added: German translation. Thanks, [@seschwarz](https://www.transifex.com/accounts/profile/seschwarz/)!
+* Improved: Added visibility toggles to some Field Settings. For example, if the "Show Label" setting is not checked, then the "Custom Label" setting is hidden.
 
 = 1.0.3 =
 * Added: Sort by field, sort direction, Start & End date now added to Post view

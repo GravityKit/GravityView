@@ -45,7 +45,9 @@ class GravityView_Widget_Pagination extends GravityView_Widget {
 			$last = $offset + $page_size > $total ? $total : $offset + $page_size;
 		}
 
-		echo apply_filters( 'gravityview_pagination_output', '<div class="gv-widget-pagination"><p>'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravity-view' ), $first , $last , $total ) . '</p></div>', $first , $last , $total);
+		$output = '<div class="gv-widget-pagination"><p>'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravity-view' ), $first , $last , $total ) . '</p></div>';
+
+		echo apply_filters( 'gravityview_pagination_output', $output, $first, $last, $total );
 
 	}
 

@@ -87,7 +87,19 @@ class GravityView_frontend {
 	 * @return void
 	 */
 	public static function get_default_args() {
-		$defaults = array( 'id' => '', 'page_size' => '', 'sort_field' => '', 'sort_direction' => 'ASC', 'start_date' => '', 'end_date' => '', 'class' => '' );
+
+		$defaults = array(
+			'id' => '',
+			'page_size' => '',
+			'sort_field' => '',
+			'sort_direction' => 'ASC',
+			'start_date' => '',
+			'end_date' => '',
+			'class' => '',
+			'search_value' => '',
+			'search_field' => '',
+		);
+
 		return $defaults;
 	}
 
@@ -101,10 +113,14 @@ class GravityView_frontend {
 	 * @return void
 	 */
 	public static function render_view_shortcode( $atts ) {
+
 		GravityView_Plugin::log_debug( '[render_view_shortcode] Init Shortcode. Attributes: ' . print_r( $atts, true ) );
+
 		//confront attributes with defaults
 		$args = shortcode_atts( self::get_default_args() , $atts, 'gravityview' );
+
 		GravityView_Plugin::log_debug( '[render_view_shortcode] Init Shortcode. Merged Attributes: ' . print_r( $args, true ) );
+
 		return self::render_view( $args );
 	}
 
@@ -228,15 +244,17 @@ class GravityView_frontend {
 
 		// set globals for templating
 		global $gravityview_view;
-		$gravityview_view = new GravityView_View();
-		$gravityview_view->form_id = $form_id;
-		$gravityview_view->view_id = $args['id'];
-		$gravityview_view->fields = $dir_fields;
+		$gravityview_view = new GravityView_View(array(
+			'form_id' => $form_id,
+			'view_id' => $args['id'],
+			'fields'  => $dir_fields,
+		));
 
 		// check if user requests single entry
 		$single_entry = get_query_var( self::get_entry_var_name() );
 
 		if( empty( $single_entry ) ) {
+
 			// user requested Directory View
 			GravityView_Plugin::log_debug( '[render_view] Executing Directory View' );
 
@@ -325,7 +343,7 @@ class GravityView_frontend {
 		// implicity search
 		if( !empty( $args['search_value'] ) ) {
 			$search_criteria['field_filters'][] = array(
-				'key' => null, // The field ID to search
+				'key' => ( ( !empty( $args['search_field'] ) && is_numeric( $args['search_field'] ) ) ? $args['search_field'] : null ), // The field ID to search
 				'value' => esc_attr( $args['search_value'] ), // The value to search
 				'operator' => 'contains', // What to search in. Options: `is` or `contains`
 			);
