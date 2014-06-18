@@ -247,7 +247,7 @@ if( !function_exists('gravityview_get_sortable_fields') ) {
 				if( in_array( $field['type'], $blacklist_field_types ) ) {
 					continue;
 				}
-				$output .= '<option value="'. $id .'" '. selected( $id, $current, false ).'>'. $field['label'] .'</option>';
+				$output .= '<option value="'. $id .'" '. selected( $id, $current, false ).'>'. esc_attr( $field['label'] ) .'</option>';
 			}
 
 		}
