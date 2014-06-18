@@ -12,7 +12,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:       	GravityView
- * Plugin URI:        	http://www.seodenver.com/
+ * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
  * Version:          	1.0.3-beta
  * Author:            	Katz Web Services, Inc.
@@ -307,6 +307,7 @@ final class GravityView_Plugin {
 
 		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/created-by.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/date.php' );
 
 		// Nice place to insert extensions' backend stuff
 		do_action('gravityview_include_backend_actions');
