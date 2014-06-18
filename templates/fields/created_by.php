@@ -7,7 +7,7 @@
 
 global $gravityview_view;
 
-extract( $gravityview_view->__get('field_data') );
+extract( $gravityview_view->field_data );
 
 // Get the user data for the passed User ID
 $User = get_userdata($value);

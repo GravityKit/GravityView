@@ -7,7 +7,7 @@
 
 global $gravityview_view;
 
-extract( $gravityview_view->__get('field_data') );
+extract( $gravityview_view->field_data );
 
 $url_info = parse_url($value);
 
