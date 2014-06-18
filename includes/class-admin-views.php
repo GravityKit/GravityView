@@ -759,27 +759,22 @@ class GravityView_Admin_Views {
 	 * @param  string      $field_options   Add field options DIV
 	 * @return string                  HTML of output
 	 */
-	function render_label( $label_text, $field_id, $label_type = 'field', $add_controls = true, $field_options = '' ) {
+	function render_label( $label_text, $field_id, $label_type = 'field', $input_type = NULL, $field_options = '' ) {
+
+		$settings_title = sprintf(__('Configure %s Settings', 'gravity-view'), ucfirst($label_type));
+		$delete_title = sprintf(__('Remove %s', 'gravity-view'), ucfirst($label_type));
+		$hide_settings_link = empty($field_options) ? 'hide-if-js' : '';
+		$settings_link = sprintf( '<a href="#settings" class="dashicons-admin-generic dashicons %s" title="%s"></a>', $hide_settings_link, $settings_title );
 
 		$output = '<h5 class="field-id-'.esc_attr($field_id).'">';
 
 		$output .= esc_attr( $label_text );
 
-		if( $add_controls ) {
-
-			$settings_title = sprintf(__('Configure %s Settings', 'gravity-view'), ucfirst($label_type));
-			$delete_title = sprintf(__('Remove %s', 'gravity-view'), ucfirst($label_type));
-
-			$hide_settings_link = empty($field_options) ? 'hide-if-js' : '';
-
-			$settings_link = sprintf( '<a href="#settings" class="dashicons-admin-generic dashicons %s" title="%s"></a>', $hide_settings_link, $settings_title );
-
-			$output .= sprintf('<span class="gv-field-controls">%s<a href="#remove" class="dashicons-dismiss dashicons" title="%s"></a></span>', $settings_link, $delete_title);
-		}
+		$output .= sprintf('<span class="gv-field-controls">%s<a href="#remove" class="dashicons-dismiss dashicons" title="%s"></a></span>', $settings_link, $delete_title);
 
 		$output .= '</h5>';
 
-		$output = '<div data-fieldid="'.esc_attr($field_id).'" class="gv-fields">'.$output.$field_options.'</div>';
+		$output = '<div data-fieldid="'.esc_attr($field_id).'" data-inputtype="'.esc_attr( $input_type ).'" class="gv-fields">'.$output.$field_options.'</div>';
 
 		return $output;
 	}
@@ -810,7 +805,7 @@ class GravityView_Admin_Views {
 					continue;
 				}
 
-				echo $this->render_label($details['label'], $id, 'field');
+				echo $this->render_label($details['label'], $id, 'field', $details['type'] );
 
 			} // End foreach
 
@@ -939,7 +934,7 @@ class GravityView_Admin_Views {
 
 										$field_options = $this->render_field_options( $type, $template_id, $field['id'], $field['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone );
 
-										echo $this->render_label($field['label'], $field['id'], $type, true, $field_options);
+										echo $this->render_label($field['label'], $field['id'], $type, $input_type, $field_options);
 										//endif;
 
 									}
@@ -1082,7 +1077,7 @@ class GravityView_Admin_Views {
 	 *
 	 * @param  string      $field_type  Type of field options to render (`field` or `widget`)
 	 * @param  string      $template_id Table slug
-	 * @param  float      $field_id    GF Field ID
+	 * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
 	 * @param  string      $context     What context are we in? Example: `single` or `directory`
 	 * @param  string      $input_type  (textarea, list, select, etc.)
 	 * @return array                   Array of field options with `label`, `value`, `type`, `default` keys
@@ -1289,7 +1284,7 @@ class GravityView_Admin_Views {
 
 		// If Form was changed, JS sends form ID, if start fresh, JS sends templateid
 		if( !empty( $_POST['formid'] ) ) {
-			$this->render_available_fields( $_POST['formid'] );
+			$this->render_available_fields( (int) $_POST['formid'] );
 			exit();
 		} elseif( !empty( $_POST['templateid'] ) ) {
 			$form = $this->pre_get_form_fields( $_POST['templateid'] );
@@ -1429,6 +1424,7 @@ class GravityView_Admin_Views {
 		// Sanitize
 		$post = array_map( 'esc_attr', $post );
 
+		// The GF type of field: `product`, `name`, `creditcard`, `id`, `text`
 		$input_type = isset($post['input_type']) ? esc_attr( $post['input_type'] ) : NULL;
 		$context = isset($post['context']) ? esc_attr( $post['context'] ) : NULL;
 

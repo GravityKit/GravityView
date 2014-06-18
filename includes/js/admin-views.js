@@ -588,7 +588,7 @@
 				field_id: newField.attr('data-fieldid'),
 				field_label: newField.find("h5").text(),
 				field_type: addButton.attr('data-objecttype'),
-				input_type: addButton.attr('data-objecttype'),
+				input_type: newField.attr('data-inputtype'),
 				nonce: gvGlobals.nonce,
 			};
 

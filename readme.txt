@@ -26,9 +26,10 @@ Beautifully display your Gravity Forms entries.
 = 1.0.4 =
 * Added: "Add All Fields" option to bottom of the "Add Field" box
 * Added: Per-field-type options structure to allow for different field types to override default Field Settings
-	* Added: Choose how to display User data. In the User field settings, you can now choose to display the "Display Name", username, or ID.
-	* Added: Custom date format using [PHP date format](https://www.php.net//manual/en/function.date.php)
+	* Added: Choose how to display User data. In the User field settings, you can now choose to display the "Display Name", username, or ID
+	* Added: Custom date format using [PHP date format](https://www.php.net//manual/en/function.date.php) available for Entry Date and Date fields
 	* Fixed: Default setting values working again
+	* Fixed: Field type settings now working
 * Added: `search_field` parameter to the shortcode. This allows you to specify a field ID where you want the search performed (The search itself is defined in `search_value`)
 * Added: [Using the Shortcode](https://katzwebservices.zendesk.com/hc/en-us/articles/202934188) help article
 * Added: Data Source added to the Views page
