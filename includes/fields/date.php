@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Add custom options for date fields
+ */
 class GravityView_Field_Date extends GravityView_Field {
 
 	var $name = 'date';

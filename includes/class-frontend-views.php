@@ -158,6 +158,10 @@ class GravityView_frontend {
 	 * @return void
 	 */
 	public static function insert_view_in_content( $content ) {
+
+		// Otherwise, this is called on the Views page when in Excerpt mode.
+		if( is_admin() ) { return $content; }
+
 		$post = get_post();
 
 		if( 'gravityview' === get_post_type( $post ) ) {

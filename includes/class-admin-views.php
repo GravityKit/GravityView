@@ -62,6 +62,52 @@ class GravityView_Admin_Views {
 
 		add_action( 'wp_ajax_gv_sortable_fields_form', array( $this, 'get_sortable_fields' ) );
 
+		// Add Connected Form column
+		add_filter('manage_gravityview_posts_columns' , array( $this, 'add_post_type_columns' ) );
+
+		add_action( 'manage_gravityview_posts_custom_column', array( $this, 'add_post_type_column_content'), 10, 2 );
+
+	}
+
+	public function add_post_type_column_content( $column_name, $post_id )	{
+
+		$form_id = get_post_meta( $post_id, '_gravityview_form_id', true );
+
+		// All Views should have a connected form. If it doesn't, that's not right.
+		if( empty($form_id) ) {
+			GravityView_Plugin::log_error( sprintf( '[add_post_type_column_content] View ID %s does not have a connected GF form.', $post_id ) );
+			echo __( 'Not connected.', 'gravity-view' );
+			return;
+		}
+
+		$form = gravityview_get_form( $form_id );
+
+		if( !$form ) {
+			GravityView_Plugin::log_error( sprintf( '[add_post_type_column_content] Connected form not found: Form #%d', $form_id ) );
+
+			echo __( 'The connected form can not be found; it may no longer exist.', 'gravity-view' );
+		}
+
+		$url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;id=%d', $form_id ) );
+
+		echo sprintf( '<a href="%s">%s</a>', $url , $form['title'] );
+
+	}
+
+	public function add_post_type_columns( $columns ) {
+
+		// Get the date column and save it for later to add back in.
+		// This adds it after the Data Source column.
+		// This way, we don't need to do array_slice, array_merge, etc.
+		$date = $columns['date'];
+		unset( $columns['date'] );
+
+		$columns['gv_connected_form'] = __('Data Source', 'gravity-view');
+
+		// Add the date back in.
+		$columns['date'] = $date;
+
+		return $columns;
 	}
 
 	/**
@@ -527,9 +573,7 @@ class GravityView_Admin_Views {
 	 * @return void
 	 */
 	function render_shortcode_info( $post ) {
-		echo '<p>';
-		esc_html_e( 'To insert this view into a post or a page use the following shortcode:', 'gravity-view' );
-		echo ' <code>[gravityview id="'. $post->ID .'"]</code></p>';
+		printf('<p>%s <code>[gravityview id="%d"]</code></p>', esc_html__( 'To insert this view into a post or a page use the following shortcode:', 'gravity-view' ), $post->ID );
 	}
 
 
