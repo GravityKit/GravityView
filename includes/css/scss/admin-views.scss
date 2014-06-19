@@ -202,6 +202,10 @@
 	}
 }
 
+#gravityview_select_template {
+	display: none; // Don't display by default
+}
+
 #gravityview_select_template .inside {
 	max-height: 450px;
 	overflow-x: auto;
