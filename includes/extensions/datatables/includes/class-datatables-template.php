@@ -25,9 +25,9 @@ class GravityView_DataTables_Template extends GravityView_Template {
 			$settings = array(
 				'slug' => 'table-dt',
 				'type' => 'custom',
-				'label' =>  __( 'Table (DataTables)', 'gravity-view' ),
-				'description' => __('Display items in a table view powered by DataTables.', 'gravity-view'),
-			//	'logo' => plugins_url('assets/logo-default-table.png', GV_DT_FILE ),
+				'label' =>  __( 'DataTables Table', 'gravity-view' ),
+				'description' => __('Display items in a dynamic table powered by DataTables.', 'gravity-view'),
+				'logo' => plugins_url('assets/img/logo-datatables.png', GV_DT_FILE ),
 			//	'css_source' => plugins_url('templates/css/table-view.css', GV_DT_FILE ),
 			);
 		}
