@@ -731,7 +731,7 @@
 			vcfg.updateVisibilitySettings( e, true );
 
 			// Toggle checkbox when changing field visibility
-			$('body').on( 'open-field-settings change', '.gv-fields input:checkbox', vcfg.updateVisibilitySettings );
+			$('body').on( 'change', '.gv-fields input:checkbox', vcfg.updateVisibilitySettings );
 
 			var buttons = [ {
 				text: gvGlobals.label_close,

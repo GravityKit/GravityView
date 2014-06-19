@@ -72,10 +72,13 @@ class GravityView_View extends Gamajo_Template_Loader {
 		$template_file = $this->get_template_part( $slug, $name, false );
 
 		if( !empty( $template_file) ) {
-			if ( $require_once )
+
+			if ( $require_once ) {
 				require_once( $template_file );
-			else
+			} else {
 				require( $template_file );
+			}
+
 		}
 	}
 
