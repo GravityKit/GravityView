@@ -192,6 +192,11 @@ class GV_Extension_DataTables_Data {
 		$dt_config =  array(
 			'processing' => true,
 			'serverSide' => true,
+			// On refresh (and on single entry view, then clicking "go back"), save the page you were on.
+			'stateSave'	 => true,
+			// Only save the state for the session.
+			// Use to time in seconds (like the DAY_IN_SECONDS WordPress constant) if you want to modify.
+			"stateDuration" => -1,
 			'ajax' => array(
 				'url' => admin_url( 'admin-ajax.php' ),
 				'type' => 'POST',
