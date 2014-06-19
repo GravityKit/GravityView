@@ -140,7 +140,10 @@ class GV_Extension_DataTables_Data {
 	 * @param array $file_paths List of template paths ordered
 	 */
 	function add_template_path( $file_paths ) {
+
+		// Index 100 is the default GravityView template path.
 		$file_paths[101] = GV_DT_DIR . 'templates/';
+
 		return $file_paths;
 	}
 
