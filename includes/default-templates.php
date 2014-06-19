@@ -260,7 +260,12 @@ abstract class GravityView_Template {
 		return $field_options;
 	}
 
-
+	/**
+	 * Set the Gravity Forms import form information by using the `preset_form` field defined in the template.
+	 * @see GravityView_Admin_Views::pre_get_form_fields()
+	 * @see GravityView_Admin_Views::create_preset_form()
+	 * @return string                Path to XML file
+	 */
 	public function assign_form_xml( $xml = '' , $template = '' ) {
 		if( $this->settings['type'] === 'preset' && !empty( $this->settings['preset_form'] ) && $this->template_id === $template ) {
 			return $this->settings['preset_form'];
@@ -269,6 +274,11 @@ abstract class GravityView_Template {
 		return $xml;
 	}
 
+	/**
+	 * Set the Gravity Forms import form by using the `preset_fields` field defined in the template.
+	 * @see GravityView_Admin_Views::pre_get_form_fields()
+	 * @return string                Path to XML file
+	 */
 	public function assign_fields_xml( $xml = '' , $template = '' ) {
 		if( $this->settings['type'] === 'preset' && !empty( $this->settings['preset_fields'] ) && $this->template_id === $template ) {
 			return $this->settings['preset_fields'];

@@ -777,16 +777,26 @@
 
 		},
 
+		/**
+		 * Create a Gravity Forms form using a preset defined by the View Template selected during Start Fresh
+		 *
+		 * This is done just before the Publish click is registered.
+		 *
+		 * @see GravityView_Admin_Views::create_preset_form()
+		 * @return boolean|void
+		 */
 		createPresetForm: function() {
 			var vcfg = viewConfiguration,
 				templateId = $("#gravityview_directory_template").val();
 
+			// If the View isn't a Start Fresh view, we just return true
+			// so that the click on the Publish button can process.
 			if( ! vcfg.startFreshStatus || templateId === '' ) {
 				return true;
 			}
 
 
-			// try to create preset form in Gravity Forms. On success assign it to post before saving
+			// Try to create preset form in Gravity Forms. On success assign it to post before saving
 			var data = {
 				action: 'gv_set_preset_form',
 				template_id: templateId,
@@ -795,10 +805,10 @@
 
 			$.post( ajaxurl, data, function( response ) {
 
+
 				if( response != 'false' ) {
 
 					vcfg.startFreshStatus = false;
-					$('#gravityview_form_id_start_fresh').val('0');
 
 					//set the form id
 					vcfg.gvSelectForm.find("option:selected").removeAttr("selected");

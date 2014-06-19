@@ -612,6 +612,14 @@ class GravityView_Admin_Views {
 			$form_id = !empty( $_POST['gravityview_form_id'] ) ? $_POST['gravityview_form_id'] : '';
 			// save form id
 			update_post_meta( $post_id, '_gravityview_form_id', $form_id );
+
+		}
+
+		// Was this a start fresh?
+		if ( ! empty( $_POST['gravityview_form_id_start_fresh'] ) ) {
+			add_post_meta( $post_id, '_gravityview_start_fresh', 1 );
+		} else {
+			delete_post_meta( $post_id, '_gravityview_start_fresh' );
 		}
 
 		// Check if we have a template id
@@ -1416,6 +1424,7 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Create the preset form requested before the View save
+	 *
 	 * @return void
 	 */
 	function create_preset_form() {
@@ -1423,6 +1432,7 @@ class GravityView_Admin_Views {
 		$this->check_ajax_nonce();
 
 		if( empty( $_POST['template_id'] ) ) {
+			GravityView_Plugin::log_error( '[create_preset_form] Cannot create preset form; the template_id is empty.' );
 			exit( false );
 		}
 
