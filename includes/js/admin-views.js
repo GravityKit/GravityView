@@ -603,8 +603,10 @@
 					// Add in the Options <div>
 					newField.append( response );
 
-					// There is a response, so there are options. Show the settings gear.
-					$('.dashicons-admin-generic', newField).hide().removeClass('hide-if-js').fadeIn(100);
+					if( $('.gv-dialog-options', newField ).length > 0 ) {
+						// There are options. Show the settings gear.
+						$('.dashicons-admin-generic', newField).hide().removeClass('hide-if-js').fadeIn(100);
+					}
 				}
 
 			});
@@ -618,7 +620,7 @@
 				.attr('data-tooltip-id','');
 
 			// Show the new field
-			newField.fadeIn();
+			newField.fadeIn('fast');
 
 			// If there's more than one field in the area,
 			// we move the tooltip.

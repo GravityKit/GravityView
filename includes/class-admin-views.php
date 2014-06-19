@@ -1088,11 +1088,6 @@ class GravityView_Admin_Views {
 		// get field/widget options
 		$options = $this->get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type );
 
-		// If there are no options, return empty.
-		if(empty($options)) {
-			return NULL;
-		}
-
 		// two different post arrays, depending of the field type
 		$name_prefix = $field_type .'s' .'['. $area .']['. $uniqid .']';
 
@@ -1100,6 +1095,10 @@ class GravityView_Admin_Views {
 		$output = '';
 		$output .= '<input type="hidden" class="field-key" name="'. $name_prefix .'[id]" value="'. esc_attr( $field_id ) .'">';
 		$output .= '<input type="hidden" class="field-label" name="'. $name_prefix .'[label]" value="'. esc_attr( $field_label ) .'">';
+
+		// If there are no options, return what we got.
+		if(empty($options)) { return $output; }
+
 		$output .= '<div class="gv-dialog-options" title="'. esc_attr( sprintf( __( 'Options: %s', 'gravity-view' ), $field_label ) ) .'">';
 		$output .= '<ul>';
 
