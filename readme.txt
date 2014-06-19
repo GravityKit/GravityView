@@ -24,7 +24,7 @@ Beautifully display your Gravity Forms entries.
 == Changelog ==
 
 = 1.0.4 =
-* Added: "Add All Fields" option to bottom of the "Add Field" box
+* Added: "Add All Fields" option to bottom of the "Add Field" selector
 * Added: Per-field-type options structure to allow for different field types to override default Field Settings
 	* Added: Choose how to display User data. In the User field settings, you can now choose to display the "Display Name", username, or ID
 	* Added: Custom date format using [PHP date format](https://www.php.net//manual/en/function.date.php) available for Entry Date and Date fields
@@ -35,9 +35,13 @@ Beautifully display your Gravity Forms entries.
 * Added: Data Source added to the Views page
 * Fixed: Apostrophes no longer have slashes before them
 * Fixed: Settings "gear" not showing when adding a new field
-* Added: Bengali translation. Thanks, [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)!
-* Added: German translation. Thanks, [@seschwarz](https://www.transifex.com/accounts/profile/seschwarz/)!
 * Improved: Added visibility toggles to some Field Settings. For example, if the "Show Label" setting is not checked, then the "Custom Label" setting is hidden.
+* Added many translations. Thanks everyone!
+	* Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
+	* German translation by [@seschwarz](https://www.transifex.com/accounts/profile/seschwarz/)
+	* Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
+	* Dutch translation by [@leooosterloo](https://www.transifex.com/accounts/profile/leooosterloo/)
+	* If you'd like to contribute translations, [please sign up here](https://www.transifex.com/projects/p/gravityview/). Thanks again to all who have contributed!
 
 = 1.0.3 =
 * Added: Sort by field, sort direction, Start & End date now added to Post view

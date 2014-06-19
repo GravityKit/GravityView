@@ -1,0 +1,855 @@
+# 
+# Translators:
+# leooosterloo <leo@pronamic.nl>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: GravityView\n"
+"POT-Creation-Date: 2014-06-18 17:46-0700\n"
+"PO-Revision-Date: 2014-06-19 13:03+0000\n"
+"Last-Translator: leooosterloo <leo@pronamic.nl>\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/gravityview/language/nl_NL/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl_NL\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.6.5\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: gravityview.php:199
+msgid "Support"
+msgstr "Support"
+
+#: gravityview.php:215
+msgctxt "Post Type General Name"
+msgid "Views"
+msgstr "Weergaven"
+
+#: gravityview.php:216
+msgctxt "Post Type Singular Name"
+msgid "View"
+msgstr "Weergave"
+
+#: gravityview.php:217
+msgid "Views"
+msgstr "Weergaven"
+
+#: gravityview.php:218
+msgid "Parent View:"
+msgstr "Bovenliggende Weergave:"
+
+#: gravityview.php:219
+msgid "All Views"
+msgstr "Alle Weergaven"
+
+#: gravityview.php:220
+msgid "View"
+msgstr "Weergave"
+
+#: gravityview.php:221
+msgid "Add New View"
+msgstr "Nieuwe Weergave Toevoegen"
+
+#: gravityview.php:222
+msgid "New View"
+msgstr "Nieuwe Weergave"
+
+#: gravityview.php:223
+msgid "Edit View"
+msgstr "Bewerk Weergave"
+
+#: gravityview.php:224
+msgid "Update View"
+msgstr "Update Weergave"
+
+#: gravityview.php:225
+msgid "Search Views"
+msgstr "Doorzoek Weergaven"
+
+#: gravityview.php:226
+msgid "No Views found"
+msgstr "Geen Weergaven gevonden"
+
+#: gravityview.php:227
+msgid "No Views found in Trash"
+msgstr "Geen Weergaven gevonden in de Prullenbak"
+
+#: gravityview.php:230
+msgid "view"
+msgstr "weergave"
+
+#: gravityview.php:231
+msgid "Create views based on a Gravity Forms form"
+msgstr "Cre&#235;er weergaven gebaseerd op een Gravity Forms formulier"
+
+#: gravityview.php:274 gravityview.php:275 gravityview.php:277
+#, php-format
+msgid "View updated. %sView on website.%s"
+msgstr "Weergave ge&#252;pdatet. %sBekijk op website.%s"
+
+#: gravityview.php:276
+msgid "View deleted."
+msgstr "Weergave verwijderd."
+
+#: gravityview.php:279
+#, php-format
+msgid "View restored to revision from %s"
+msgstr "Weergave hersteld naar revisie vanaf %s"
+
+#: gravityview.php:280
+#, php-format
+msgid "View published. %sView on website.%s"
+msgstr "Weergave gepubliceerd. %sBekijk op website.%s"
+
+#: gravityview.php:281
+#, php-format
+msgid "View saved. %sView on website.%s"
+msgstr "Weergave opgeslagen. %sBekijk op website.%s"
+
+#: gravityview.php:282
+msgid "View submitted."
+msgstr "Toon ingediende."
+
+#: gravityview.php:284
+#, php-format
+msgid "View scheduled for: <strong>%1$s</strong>."
+msgstr "Weergave ingepland voor: <strong>%1$s</strong>."
+
+#: gravityview.php:286
+msgid "M j, Y @ G:i"
+msgstr "j M Y @ G:i"
+
+#: gravityview.php:288
+#, php-format
+msgid "View draft updated. %sView on website.%s"
+msgstr "Weergave concept ge&#252;pdatet. %sBekijk op website.%s"
+
+#: gravityview.php:358
+msgid "Top"
+msgstr "Top"
+
+#: gravityview.php:359
+msgid "Left"
+msgstr "Links"
+
+#: gravityview.php:359
+msgid "Right"
+msgstr "Rechts"
+
+#: includes/class-admin-add-shortcode.php:53
+msgid "Add a Gravity Forms View"
+msgstr "Voeg een Gravity Forms Weergave toe"
+
+#: includes/class-admin-add-shortcode.php:53
+msgid "Add View"
+msgstr "Weergave toevoegen"
+
+#: includes/class-admin-add-shortcode.php:74
+msgid "Insert a View"
+msgstr "Een Weergave invoegen"
+
+#: includes/class-admin-add-shortcode.php:77
+msgid "Select a View"
+msgstr "Selecteer een Weergave"
+
+#: includes/class-admin-add-shortcode.php:80
+msgid "&mdash; views &mdash;"
+msgstr "&mdash; weergaven &mdash;"
+
+#: includes/class-admin-add-shortcode.php:92
+#: includes/class-admin-views.php:493
+msgid "Number of entries to show per page"
+msgstr "Aantal inzendingen te tonen per pagina"
+
+#: includes/class-admin-add-shortcode.php:101
+#: includes/class-admin-add-shortcode.php:105
+#: includes/class-admin-views.php:501 includes/class-admin-views.php:505
+msgid "Show only approved entries"
+msgstr "Alleen toegelaten inzendingen tonen"
+
+#: includes/class-admin-add-shortcode.php:115
+#: includes/class-admin-views.php:515
+msgid "Sort by field"
+msgstr "Sorteer per veld"
+
+#: includes/class-admin-add-shortcode.php:119
+#: includes/connector-functions.php:233
+msgid "Default"
+msgstr "Stanadaard"
+
+#: includes/class-admin-add-shortcode.php:120
+#: includes/connector-functions.php:245
+msgid "Date Created"
+msgstr "Datum gecre&#235;erd"
+
+#: includes/class-admin-add-shortcode.php:127
+#: includes/class-admin-views.php:526
+msgid "Sort direction"
+msgstr "Sorteer richting"
+
+#: includes/class-admin-add-shortcode.php:131
+#: includes/class-admin-views.php:530
+msgid "ASC"
+msgstr "Oplopend"
+
+#: includes/class-admin-add-shortcode.php:132
+#: includes/class-admin-views.php:531
+msgid "DESC"
+msgstr "Aflopend"
+
+#: includes/class-admin-add-shortcode.php:139
+#: includes/class-admin-views.php:538
+msgid "Filter by Start Date"
+msgstr "Filter per Start Datum"
+
+#: includes/class-admin-add-shortcode.php:148
+#: includes/class-admin-views.php:547
+msgid "Filter by End Date"
+msgstr "Filter per Eind Datum"
+
+#: includes/class-admin-add-shortcode.php:159
+#: includes/class-admin-views.php:1586
+msgid "Cancel"
+msgstr "Annuleer"
+
+#: includes/class-admin-add-shortcode.php:201
+msgid "Please select a View"
+msgstr "Selecteer een Weergave"
+
+#: includes/class-admin-approve-entries.php:64
+#: includes/class-admin-approve-entries.php:95
+msgid "Approved"
+msgstr "Toegelaten"
+
+#: includes/class-admin-approve-entries.php:86
+msgid "Approved? (Admin-only)"
+msgstr "Toegelaten? (alleen Admin)"
+
+#: includes/class-admin-approve-entries.php:88
+msgid "Approved?"
+msgstr "Toegelaten?"
+
+#: includes/class-admin-approve-entries.php:130
+#, php-format
+msgid "%d entries"
+msgstr "%d inzendingen"
+
+#: includes/class-admin-approve-entries.php:130
+msgid "1 entry"
+msgstr "1 inzending"
+
+#: includes/class-admin-approve-entries.php:138
+#, php-format
+msgid "%s approved."
+msgstr "%s toegelaten."
+
+#: includes/class-admin-approve-entries.php:143
+#, php-format
+msgid "%s disapproved."
+msgstr "%s geweigerd."
+
+#: includes/class-admin-approve-entries.php:216
+msgid "Disapproved the Entry for GravityView"
+msgstr "De Inzending afgekeurd voor GravityView"
+
+#: includes/class-admin-approve-entries.php:216
+msgid "Approved the Entry for GravityView"
+msgstr "De Inzending goedgekeurd voor GravityView"
+
+#: includes/class-admin-approve-entries.php:318
+msgid "Approve"
+msgstr "Toelaten"
+
+#: includes/class-admin-approve-entries.php:319
+msgid "Disapprove"
+msgstr "Weigeren"
+
+#: includes/class-admin-approve-entries.php:321
+msgid "Entry not approved for directory viewing. Click to approve this entry."
+msgstr "Inzending niet toegelaten voor directory weergave. Klik om deze inzending toe te laten."
+
+#: includes/class-admin-approve-entries.php:322
+msgid "Entry approved for directory viewing. Click to disapprove this entry."
+msgstr "Inzending is toegelaten voor directory weergave. Klik om deze inzending te weigeren."
+
+#: includes/class-admin-approve-entries.php:323
+msgid "Show entry in directory view?"
+msgstr "Toon inzending in directory weergave?"
+
+#: includes/class-admin-views.php:79
+msgid "Not connected."
+msgstr "Niet gekoppeld."
+
+#: includes/class-admin-views.php:88
+msgid "The connected form can not be found; it may no longer exist."
+msgstr "Het gekoppelde formulier kan niet worden gevonden; het bestaat wellicht niet meer."
+
+#: includes/class-admin-views.php:105 includes/class-admin-views.php:222
+msgid "Data Source"
+msgstr "Data Bron"
+
+#: includes/class-admin-views.php:126
+#, php-format
+msgid ""
+"%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
+"Forms%s to use the GravityView plugin."
+msgstr ""
+
+#: includes/class-admin-views.php:128
+#, php-format
+msgid ""
+"%sGravityView requires Gravity Forms to be installed in order to run "
+"properly. %sGet Gravity Forms%s - starting at $39%s%s"
+msgstr ""
+
+#: includes/class-admin-views.php:199
+msgid "Layout Settings"
+msgstr "Layout Instellingen"
+
+#: includes/class-admin-views.php:225
+msgid "Choose a View Type"
+msgstr "Kies een Weergave Type"
+
+#: includes/class-admin-views.php:228
+msgid "View Configuration"
+msgstr "Bekijk Configuratie"
+
+#: includes/class-admin-views.php:231
+msgid "View Settings"
+msgstr "Bekijk Instellingen"
+
+#: includes/class-admin-views.php:234
+msgid "Shortcode Info"
+msgstr "Shortcode Info"
+
+#: includes/class-admin-views.php:262
+msgid "Where would you like the data to come from for this View?"
+msgstr "Waar wil je de data vandaan halen voor deze Weergave?"
+
+#: includes/class-admin-views.php:272
+msgid "Start Fresh"
+msgstr "Opnieuw beginnen"
+
+#: includes/class-admin-views.php:274
+msgid "or use an existing form"
+msgstr "of gebruik een bestaand formulier"
+
+#: includes/class-admin-views.php:280
+msgid "list of forms"
+msgstr "lijst van formulieren"
+
+#: includes/class-admin-views.php:288
+msgid "Switch View"
+msgstr "Schakel Weergave"
+
+#: includes/class-admin-views.php:294 includes/class-admin-views.php:299
+msgid "Attention"
+msgstr "Attentie"
+
+#: includes/class-admin-views.php:295
+msgid "Changing the form will discard all the existent View configuration."
+msgstr "Het formulier wijzigen zal de huidige Weergave configuratie verwijderen."
+
+#: includes/class-admin-views.php:300
+msgid ""
+"Changing the View Type will discard all the existent View configuration."
+msgstr "Het Weergave Type wijzigen zal de huidige Weergave configuratie verwijderen."
+
+#: includes/class-admin-views.php:305
+msgid "GravityView requires Javascript to be enabled."
+msgstr "GravityView vereist Javascript om geactiveerd te kunnen worden."
+
+#: includes/class-admin-views.php:349
+msgid "Buy Now"
+msgstr "Koop Nu"
+
+#: includes/class-admin-views.php:351
+msgid "Select"
+msgstr "Selecteer"
+
+#: includes/class-admin-views.php:352 includes/class-admin-views.php:356
+msgid "Preview"
+msgstr "Voorbeeld"
+
+#: includes/class-admin-views.php:395
+msgid "Multiple Entries"
+msgstr "Meerdere Inzendingen"
+
+#: includes/class-admin-views.php:396
+msgid "Single Entry"
+msgstr "Enkele Inzending"
+
+#: includes/class-admin-views.php:403
+msgid "Above Entries Widgets"
+msgstr "Boven Inzendingen WIdgets"
+
+#: includes/class-admin-views.php:403
+msgid "These widgets will be shown above entries."
+msgstr "Deze widgets worden boven de inzendingen getoond."
+
+#: includes/class-admin-views.php:407
+msgid "Entries Fields"
+msgstr "Inzendingen Velden"
+
+#: includes/class-admin-views.php:407
+msgid "These fields will be shown for each entry."
+msgstr "Deze velden worden bij elke inzending getoond."
+
+#: includes/class-admin-views.php:415
+msgid "Below Entries Widgets"
+msgstr "Onder Inzendingen Widgets"
+
+#: includes/class-admin-views.php:415
+msgid "These widgets will be shown below entries."
+msgstr "Deze widgets worden onder de inzendingen getoond."
+
+#: includes/class-admin-views.php:445
+msgid "These fields will be shown in Single Entry view."
+msgstr "Deze velden worden getoond in de Enkele Inzending weergave."
+
+#: includes/class-admin-views.php:576
+msgid "To insert this view into a post or a page use the following shortcode:"
+msgstr "Gebruik de volgende shortcode om deze weergave in een bericht of pagina te plaatsen:"
+
+#: includes/class-admin-views.php:808
+#, php-format
+msgid "Configure %s Settings"
+msgstr "Configureer %s Instellingen"
+
+#: includes/class-admin-views.php:809
+#, php-format
+msgid "Remove %s"
+msgstr "Verwijder %s"
+
+#: includes/class-admin-views.php:842
+msgid "+ Add All Fields"
+msgstr "+ Voeg Alle Velden toe"
+
+#: includes/class-admin-views.php:869
+msgid "Entry ID"
+msgstr "Inzending ID"
+
+#: includes/class-admin-views.php:870
+msgid "Entry Date"
+msgstr "Inzending Datum"
+
+#: includes/class-admin-views.php:871
+msgid "Source URL"
+msgstr "Bron URL"
+
+#: includes/class-admin-views.php:872
+msgid "User IP"
+msgstr "Gebruiker IP"
+
+#: includes/class-admin-views.php:873
+msgid "User"
+msgstr "Gebruiker"
+
+#: includes/class-admin-views.php:877
+msgid "Link to Entry"
+msgstr "Link naar Inzending"
+
+#: includes/class-admin-views.php:947
+msgid "Add Widget"
+msgstr "Widget Toevoegen"
+
+#: includes/class-admin-views.php:949
+msgid "Add Field"
+msgstr "Veld Toevoegen"
+
+#: includes/class-admin-views.php:988
+#, php-format
+msgid "\"%s\" or drag existing %ss here."
+msgstr "\"%s\" of versleep bestaande %ss hierheen."
+
+#: includes/class-admin-views.php:1103
+#, php-format
+msgid "Options: %s"
+msgstr "Opties: %s"
+
+#: includes/class-admin-views.php:1144
+msgid "Any logged-in user"
+msgstr "Een ingelogde gebruiker"
+
+#: includes/class-admin-views.php:1145
+msgid "Author or higher"
+msgstr "Auteur of hoger"
+
+#: includes/class-admin-views.php:1146
+msgid "Editor or higher"
+msgstr "Redacteur of hoger"
+
+#: includes/class-admin-views.php:1147
+msgid "Administrator"
+msgstr "Beheerder"
+
+#: includes/class-admin-views.php:1155
+msgid "Show Label"
+msgstr "Toon Label"
+
+#: includes/class-admin-views.php:1160
+msgid "Custom Label:"
+msgstr "Eigen Label:"
+
+#: includes/class-admin-views.php:1165
+msgid "Custom CSS Class:"
+msgstr "Eigen CSS Class:"
+
+#: includes/class-admin-views.php:1166
+msgid "This class will be added to the field container."
+msgstr ""
+
+#: includes/class-admin-views.php:1171
+msgid "Make visible only to logged-in users?"
+msgstr ""
+
+#: includes/class-admin-views.php:1176
+msgid "Make visible for:"
+msgstr ""
+
+#: includes/class-admin-views.php:1584
+msgid "Enter View name here"
+msgstr "Vul hier de Weergave naam in"
+
+#: includes/class-admin-views.php:1585
+msgid "Close"
+msgstr "Sluiten"
+
+#: includes/class-admin-views.php:1587
+msgid "Continue"
+msgstr "Doorgaan"
+
+#: includes/class-admin-views.php:1588
+msgid "Ok"
+msgstr "Ok"
+
+#: includes/class-admin-views.php:1589
+msgid ""
+"Error while creating the View for you. Check the settings or contact "
+"GravityView support."
+msgstr ""
+
+#: includes/class-admin-welcome.php:57
+msgid "GravityView Beta: Getting Started"
+msgstr "GravityView Beta: Aan de slag"
+
+#: includes/class-admin-welcome.php:58 includes/class-admin-welcome.php:150
+msgid "Getting Started"
+msgstr "Aan de slag"
+
+#: includes/class-admin-welcome.php:67 includes/class-admin-welcome.php:68
+msgid "Welcome to GravityView"
+msgstr ""
+
+#: includes/class-admin-welcome.php:77 includes/class-admin-welcome.php:78
+#: includes/class-admin-welcome.php:156
+msgid "Credits"
+msgstr ""
+
+#: includes/class-admin-welcome.php:145
+#, php-format
+msgid "Welcome to GravityView %s"
+msgstr "Welkom bij GravityView %s"
+
+#: includes/class-admin-welcome.php:146
+msgid ""
+"Thank you for Installing GravityView. Beautifully display your Gravity Forms"
+" entries."
+msgstr ""
+
+#: includes/class-admin-welcome.php:153
+msgid "Beta Testing"
+msgstr "Beta Testen"
+
+#: includes/class-admin-welcome.php:263
+msgid "GravityView is brought to you by:"
+msgstr ""
+
+#: includes/class-api.php:171
+msgid "This search returned no results."
+msgstr "Deze zoekopdracht geeft geen resultaten."
+
+#: includes/class-api.php:173
+msgid "No entries match your request."
+msgstr "Er zijn geen inzendingen die voldoen aan jou verzoek."
+
+#: includes/class-api.php:270
+msgid "&larr; Go back"
+msgstr "&larr; Ga terug"
+
+#: includes/class-settings.php:90
+msgid "License Key"
+msgstr "Licentiesleutel"
+
+#: includes/class-settings.php:91
+msgid ""
+"Use <code>BETA_TESTER</code>. This allows you to get automatic upgrades."
+msgstr "Gebruik <code>BETA_TESTER</code>. Dit geeft toegang tot automatische updates."
+
+#: includes/class-settings.php:111
+msgid "Support Email"
+msgstr ""
+
+#: includes/class-settings.php:112
+msgid ""
+"In order to provide responses to your support requests, please provide your "
+"email address."
+msgstr ""
+
+#: includes/class-settings.php:117
+msgid "No-Conflict Mode"
+msgstr "Geen-Conflict Modus"
+
+#: includes/class-settings.php:118
+msgid ""
+"Set this to ON to prevent extraneous scripts and styles from being printed "
+"on GravityView admin pages, reducing conflicts with other plugins and "
+"themes."
+msgstr "Zet dit op AAN om te voorkomen dat vreemde scripts en stijlen worden uitgevoerd op GravityView admin pagina's en het verminderen van conflicten met andere plugins en thema's."
+
+#: includes/class-settings.php:124
+msgid "GravityView Settings"
+msgstr "GravityView Instellingen"
+
+#: includes/class-settings.php:152 includes/class-settings.php:153
+msgid "Settings"
+msgstr "Instellingen"
+
+#: includes/class-settings.php:218
+msgid "Follow us on Google+"
+msgstr "Volg ons op Google+"
+
+#: includes/default-templates.php:31
+msgid "Table (default)"
+msgstr "Tabel (standaard)"
+
+#: includes/default-templates.php:32
+msgid "Display items in a table view."
+msgstr "Toon items in een tabel weergave."
+
+#: includes/default-templates.php:43 includes/default-templates.php:82
+#: includes/extensions/datatables/includes/class-datatables-template.php:40
+msgid "Link to single entry"
+msgstr "Link naar enkele inzending"
+
+#: includes/default-templates.php:49
+#: includes/extensions/datatables/includes/class-datatables-template.php:46
+msgid "Visible Table Columns"
+msgstr "Zichtbare Tabel Kolommen"
+
+#: includes/default-templates.php:74
+msgid "List (default)"
+msgstr "Lijst (standaard)"
+
+#: includes/default-templates.php:75
+msgid "Display items in a listing view."
+msgstr "Toon items in een lijst weergave."
+
+#: includes/default-templates.php:88
+msgid "Image"
+msgstr "Afbeelding"
+
+#: includes/default-templates.php:91
+msgid "Listing Title"
+msgstr "Vermeldingstitel"
+
+#: includes/default-templates.php:92
+msgid "Subheading"
+msgstr "Subkop"
+
+#: includes/default-templates.php:93
+msgid "Description"
+msgstr "Beschrijving"
+
+#: includes/default-templates.php:96
+msgid "Footer Left"
+msgstr "Footer Links"
+
+#: includes/default-templates.php:99
+msgid "Footer Right"
+msgstr "Footer Rechts"
+
+#: includes/default-templates.php:325
+msgid "Business Data"
+msgstr "Bedrijfsdata"
+
+#: includes/default-templates.php:326
+msgid "Display business information in a table."
+msgstr "Toon bedrijfsinformatie in een tabel."
+
+#: includes/default-templates.php:347
+msgid "Resume Board"
+msgstr "CV Prikbord"
+
+#: includes/default-templates.php:348
+msgid "Allow job-seekers to post their resumes."
+msgstr "Baanzoekenden toestaan om een CV te plaatsen."
+
+#: includes/default-templates.php:368
+msgid "Job Board"
+msgstr "Banen Bord"
+
+#: includes/default-templates.php:369
+msgid "Post available jobs in a simple job board."
+msgstr "Publiceer beschikbare banen op een eenvoudig banen bord."
+
+#: includes/default-templates.php:389
+msgid "People Table"
+msgstr "Personen Tabel"
+
+#: includes/default-templates.php:390
+msgid "Display information about people in a table."
+msgstr "Toon informatie over personen in een tabel."
+
+#: includes/default-templates.php:411
+msgid "Issue Tracker"
+msgstr "Issue Tracker"
+
+#: includes/default-templates.php:412
+msgid "Manage issues and their statuses."
+msgstr "Beheer issues en hun status."
+
+#: includes/default-templates.php:433
+msgid "Business Listings"
+msgstr "Bedrijfsvermeldingen"
+
+#: includes/default-templates.php:434
+msgid "Display business profiles."
+msgstr "Toon bedrijfsprofielen."
+
+#: includes/default-templates.php:454
+msgid "Event Listings"
+msgstr "Evenement Vermeldingen"
+
+#: includes/default-templates.php:455
+msgid "Present a list of your events."
+msgstr "Presenteer een lijst van al jou evenementen."
+
+#: includes/default-templates.php:475
+msgid "People Profiles"
+msgstr "Persoonsprofielen"
+
+#: includes/default-templates.php:476
+msgid "List people with individual profiles."
+msgstr "Toon personen met individuele profielen in een lijst."
+
+#: includes/default-templates.php:496
+msgid "Staff Profiles"
+msgstr "Personeelsprofielen"
+
+#: includes/default-templates.php:497
+msgid "List members of your team."
+msgstr "Toon leden van jouw team in een lijst."
+
+#: includes/default-templates.php:517
+msgid "Website Showcase"
+msgstr "Website Weergeven"
+
+#: includes/default-templates.php:518
+msgid "Feature submitted websites with screenshots."
+msgstr "Ingestuurde websites uitlichten met screenshots."
+
+#: includes/default-widgets.php:26
+msgid "Show Pagination Info"
+msgstr "Toon Paginering Info"
+
+#: includes/default-widgets.php:48
+#, php-format
+msgid "Displaying %1$s - %2$s of %3$s"
+msgstr "Tonen %1$s - %2$s of %3$s"
+
+#: includes/default-widgets.php:72
+msgid "Show each page number"
+msgstr "Toon elke paginanummer"
+
+#: includes/default-widgets.php:73
+msgid "Show every page number instead of summary (eg: 1 2 3 ... 8 »)"
+msgstr ""
+
+#: includes/default-widgets.php:76
+msgid "Show Page Links"
+msgstr "Toon Pagina Links"
+
+#: includes/default-widgets.php:133
+msgid "Show search input"
+msgstr "Toon zoekinput"
+
+#: includes/default-widgets.php:134
+msgid "Show date filters"
+msgstr "Toon datum filters"
+
+#: includes/default-widgets.php:136
+msgid "Show Search Bar"
+msgstr "Toon Zoekbalk"
+
+#: includes/default-widgets.php:150
+msgid "Use this field as a search filter"
+msgstr "Gebruik dit veld als een zoekfilter"
+
+#: includes/extensions/datatables/includes/class-datatables-template.php:28
+msgid "Table (DataTables)"
+msgstr ""
+
+#: includes/extensions/datatables/includes/class-datatables-template.php:29
+msgid "Display items in a table view powered by DataTables."
+msgstr ""
+
+#: includes/fields/created-by.php:11
+msgid "User Format"
+msgstr ""
+
+#: includes/fields/created-by.php:12
+msgid "How should the User information be displayed?"
+msgstr ""
+
+#: includes/fields/created-by.php:16
+msgid "Display Name (Example: \"Ellen Ripley\")"
+msgstr ""
+
+#: includes/fields/created-by.php:20
+msgid "Username (Example: \"nostromo\")"
+msgstr ""
+
+#: includes/fields/created-by.php:24
+msgid "User ID # (Example: 426)"
+msgstr ""
+
+#: includes/fields/date.php:14
+msgid "Override Date Format"
+msgstr ""
+
+#: includes/fields/date.php:15
+#, php-format
+msgid "Define how the date is displayed (using %sthe PHP date format%s)"
+msgstr ""
+
+#: templates/fields/entry_link.php:7
+msgid "View Details"
+msgstr "Toon Details"
+
+#: templates/fields/fileupload.php:45
+msgid "Click to view"
+msgstr "Klik om te bekijken"
+
+#: templates/widget-search.php:20
+msgid "Search Entries:"
+msgstr "Zoek Inzendingen:"
+
+#: templates/widget-search.php:27
+msgid "Filter by date:"
+msgstr "Filter op datum:"
+
+#: templates/widget-search.php:29
+msgid "Start date"
+msgstr "Startdatum"
+
+#: templates/widget-search.php:30
+msgid "End date"
+msgstr "Einddatum"
+
+#: templates/widget-search.php:42
+msgid "Search"
+msgstr "Zoeken"
