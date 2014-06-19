@@ -1,4 +1,5 @@
 <?php gravityview_before(); ?>
+<div class="gv-datatables-wrapper">
 <table class="gv-datatables">
 	<thead>
 		<?php gravityview_header(); ?>

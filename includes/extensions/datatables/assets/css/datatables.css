@@ -1,0 +1,18 @@
+
+.dataTables_filter,
+.dataTables_length {
+	white-space: nowrap;
+	width: auto;
+}
+
+.gv-datatables-wrapper .dataTables_processing {
+	height: auto;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	line-height: 1em;
+	width: 50%;
+	left: 50%;
+	margin-left: -25%;
+	min-width: 300px;
+	border: 1px solid #ccc;
+}

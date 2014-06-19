@@ -11,4 +11,5 @@
 		<?php gravityview_footer(); ?>
 	</tfoot>
 </table>
+</div>
 <?php gravityview_after(); ?>
