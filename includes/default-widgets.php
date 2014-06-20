@@ -227,7 +227,13 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 			$form = gravityview_get_form( $gravityview_view->form_id );
 			foreach( $search_filters as $filter ) {
 				$field = gravityview_get_field( $form, $filter['key'] );
-				if( in_array( $field['type'] , array( 'select', 'checkbox', 'radio', 'post_category') ) ) {
+
+				if( in_array( $field['type'] , array( 'select', 'checkbox', 'radio', 'post_category' ) ) ) {
+
+					if( !empty( $field['displayAllCategories'] ) && empty( $field['choices'] ) ) {
+						$field['choices'] = self::get_post_categories_choices();
+					}
+
 					$output .= self::render_search_dropdown( $field['label'], 'filter_'.$field['id'], $field['choices'], $filter['value'] ); //Label, name attr, choices
 				} else {
 					if(empty($field)) {
@@ -273,6 +279,30 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 	}
 
+	static private function get_post_categories_choices() {
+		$args = array(
+			'type'                     => 'post',
+			'child_of'                 => 0,
+			'orderby'                  => 'name',
+			'order'                    => 'ASC',
+			'hide_empty'               => 0,
+			'hierarchical'             => 1,
+			'taxonomy'                 => 'category',
+		);
+		$categories = get_categories( $args );
+
+		if( empty( $categories ) ) {
+			return array();
+		}
+
+		$choices = array();
+
+		foreach( $categories as $category ) {
+			$choices[] = array( 'text' => $category->name, 'value' => $category->term_id );
+		}
+
+		return $choices;
+	}
 
 
 	/**
