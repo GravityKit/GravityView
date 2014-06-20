@@ -178,24 +178,28 @@ class GravityView_Welcome {
 			<div class="changelog point-releases">
 				<h3>What changed in <?php echo $display_version; ?></h3>
 				<ul>
-					<li>Added: Sort by field, sort direction, Start &amp; End date now added to Post view (Note: When using the shortcode, the shortcode settings override the View settings.)</li>
-					<li>Fixed: Fatal errors caused by Gravity Forms not existing.</li>
-					<li>Added a setting for Support Email - please make sure your email is accurate; otherwise we won't be able to respond to the feedback you send</li>
-					<li>Fixed: Custom CSS classes didn't apply to images in list view</li>
-					<li>Improved Settings layout</li>
-					<li>Tweak: Hide WordPress SEO, Genesis, and WooThemes metaboxes until a View has been created</li>
-					<li>Tweak: Field layout improvements; drag-and-drop works smoother now</li>
-					<li>Tweak: Add icon to Multiple Entries / Single Entry tabs</li>
-					<li>Tweak: Dialog boxes now have a backdrop</li>
-					<li>Fixed: Don't show field/widget settings link if there are no settings (like on the Show Pagination Info widget)</li>
-					<li>Fixed: Security warning by the WordFence plugin: it didn't like a line in a sample entry data .csv file</li>
-					<li>Fixed: Don't show welcome screen on editing the plugin using the WordPress Plugin Editor</li>
-					<li>Tweak: Close "Add Field" and "Add Widget" boxes by pressing the escape key</li>
-					<li>Added: Hungarian translation. Thanks, <a href="https://www.transifex.com/accounts/profile/dbalage/" target="_blank">@dbalage</a>!</li>
-					<li>Added: Italian translation. Thanks, <a href="https://www.transifex.com/accounts/profile/ClaraDiGennaro/" target="_blank">@ClaraDiGennaro</a></li>
-					<li>If you'd like to contribute translations, <a href="https://www.transifex.com/projects/p/gravityview/" target="_blank">please sign up here</a>.</li>
-				</ul>
+					<li><strong>DataTables integration</strong> Created a new view type for existing forms that uses the <a href="http://datatables.net">DataTables</a> script.<br/>
+					We're just getting started with what can be done with DataTables. We'll have much more cool stuff like <a href="http://datatables.net/extensions/index">DataTables Extensions</a>.</li>
+					<li>Added: "Add All Fields" option to bottom of the "Add Field" selector</li>
+					<li>Added: Choose how to display User data. In the User field settings, you can now choose to display the "Display Name", username, or ID</li>
+					<li>Added: Custom date format using <a href="https://www.php.net//manual/en/function.date.php">PHP date format</a> available for Entry Date and Date fields</li>
+					<li>Added: <code>search_field</code> parameter to the shortcode. This allows you to specify a field ID where you want the search performed (The search itself is defined in <code>search_value</code>)</li>
+					<li>Added: <a href="https://katzwebservices.zendesk.com/hc/en-us/articles/202934188">Using the Shortcode</a> help article</li>
+					<li>Added: Data Source added to the Views page</li>
+					<li>Fixed: Field labels escaping issue (<code>It's an Example</code> was displaying as <code>It\'s an Example</code>)</li>
+					<li>Fixed: Settings "gear" not showing when adding a new field</li>
+					<li>Fixed: Sorting issues on fields like Name, Address, Product</li>
+					<li>Added <em>many</em> translations. <strong>Thanks everyone!</strong>
 
+					<ul>
+					<li>Bengali translation by <a href="https://www.transifex.com/accounts/profile/tareqhi/">@tareqhi</a></li>
+					<li>German translation by <a href="https://www.transifex.com/accounts/profile/seschwarz/">@seschwarz</a></li>
+					<li>Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
+					<li>Dutch translation by <a href="https://www.transifex.com/accounts/profile/leooosterloo/">@leooosterloo</a></li>
+					<li>If you'd like to contribute translations, <a href="https://www.transifex.com/projects/p/gravityview/">please sign up here</a>. Thanks again to all who have contributed!</li>
+					</ul>
+					</li>
+				</ul>
 
 				<h2 class="about-headline-callout">Configuring a View</h2>
 			</div>
@@ -285,9 +289,19 @@ class GravityView_Welcome {
 
 			<div class="feature-section">
 				<div>
-					<h2>Contributors (your name here)</h2>
-					<h4>Want to contribute?</h4>
-					<p>If you want to contribute to the code, you can <a href="mailto:zack@katzwebservices.com?subject=Github%20Access">request access to the Github repository</a>. If your contributions are accepted, you will be thanked here.</p>
+					<h2><?php esc_attr_e( 'Contributors', 'gravity-view' ); ?></h2>
+
+					<ul class="wp-people-group">
+						<li class="wp-person">Bengali translation by <a href="https://www.transifex.com/accounts/profile/tareqhi/">@tareqhi</a></li>
+						<li class="wp-person">German translation by <a href="https://www.transifex.com/accounts/profile/seschwarz/">@seschwarz</a></li>
+						<li class="wp-person">Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
+						<li class="wp-person">Dutch translation by <a href="https://www.transifex.com/accounts/profile/leooosterloo/">@leooosterloo</a></li>
+						<li class="wp-person">Hungarian translation by <a href="https://www.transifex.com/accounts/profile/dbalage/">@dbalage</a>!</li>
+						<li class="wp-person">Italian translation by <a href="https://www.transifex.com/accounts/profile/ClaraDiGennaro/">@ClaraDiGennaro</a></li>
+					</ul>
+
+					<h4><?php esc_attr_e( 'Want to contribute?', 'gravity-view' ); ?></h4>
+					<p><?php echo sprintf( esc_attr__( 'If you want to contribute to the code, you can %srequest access to the Github repository%s. If your contributions are accepted, you will be thanked here.', 'gravity-view'), '<a href="mailto:zack@katzwebservices.com?subject=Github%20Access">', '</a>' ); ?></p>
 				</div>
 			</div>
 
