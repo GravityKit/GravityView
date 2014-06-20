@@ -33,9 +33,13 @@ Beautifully display your Gravity Forms entries.
 * Added: `search_field` parameter to the shortcode. This allows you to specify a field ID where you want the search performed (The search itself is defined in `search_value`)
 * Added: [Using the Shortcode](https://katzwebservices.zendesk.com/hc/en-us/articles/202934188) help article
 * Added: Data Source added to the Views page
-* Fixed: Apostrophes no longer have slashes before them
+* Fixed: Field labels escaping issue (`It's an Example` was displaying as `It\'s an Example`)
 * Fixed: Settings "gear" not showing when adding a new field
+* Fixed: Sorting issues
+	- Remove the option to sort by composite fields like Name, Address, Product; Gravity Forms doesn't process those sort requests properly
+	- Remove List and Paragraph fields from being sortable
 * Improved: Added visibility toggles to some Field Settings. For example, if the "Show Label" setting is not checked, then the "Custom Label" setting is hidden.
+* Modified how data is sent to the template: removed the magic methods getter/setters setting the `$var` variable - not data is stored directly as object parameters.
 * Added many translations. Thanks everyone!
 	* Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
 	* German translation by [@seschwarz](https://www.transifex.com/accounts/profile/seschwarz/)

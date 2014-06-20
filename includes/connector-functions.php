@@ -73,7 +73,7 @@ if( !function_exists('gravityview_get_form_fields') ) {
 	 * @param string|array $form_id (default: '') or $form object
 	 * @return array
 	 */
-	function gravityview_get_form_fields( $form = '', $add_default_properties = false ) {
+	function gravityview_get_form_fields( $form = '', $add_default_properties = false, $include_parent_field = true ) {
 
 		if( !is_array( $form ) ) {
 			$form = gravityview_get_form( $form );
@@ -87,7 +87,10 @@ if( !function_exists('gravityview_get_form_fields') ) {
 
 		if( $form ) {
 			foreach( $form['fields'] as $field ) {
-				$fields[ $field['id'] ] = array( 'label' => $field['label'], 'type' => $field['type'] );
+
+				if( $include_parent_field || empty( $field['inputs'] ) ) {
+					$fields[ $field['id'] ] = array( 'label' => $field['label'], 'type' => $field['type'] );
+				}
 
 				if( $add_default_properties && !empty( $field['inputs'] ) ) {
 					foreach( $field['inputs'] as $input ) {
@@ -236,17 +239,19 @@ if( !function_exists('gravityview_get_sortable_fields') ) {
 			return $output;
 		}
 
-		$fields = gravityview_get_form_fields( $formid );
+		// Get fields with sub-inputs and no parent
+		$fields = gravityview_get_form_fields( $formid, true, false );
 
 		if( !empty( $fields ) ) {
 
-			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array() );
+			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'list', 'textarea' ) );
 
 			$output .= '<option value="date_created" '. selected( 'date_created', $current, false ).'>'. esc_html__( 'Date Created', 'gravity-view' ) .'</option>';
+
 			foreach( $fields as $id => $field ) {
-				if( in_array( $field['type'], $blacklist_field_types ) ) {
-					continue;
-				}
+
+				if( in_array( $field['type'], $blacklist_field_types ) ) { continue; }
+
 				$output .= '<option value="'. $id .'" '. selected( $id, $current, false ).'>'. esc_attr( $field['label'] ) .'</option>';
 			}
 

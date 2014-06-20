@@ -369,8 +369,8 @@ final class GravityView_Plugin {
 	 * @access public
 	 * @return void
 	 */
-	function default_field_blacklist() {
-		return array( 'html', 'section', 'captcha', 'page' );
+	function default_field_blacklist( $array = array() ) {
+		return array_merge( $array, array( 'html', 'section', 'captcha', 'page' ) );
 	}
 
 
