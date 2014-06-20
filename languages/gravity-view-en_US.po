@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-06-18 17:46-0700\n"
-"PO-Revision-Date: 2014-06-18 17:58-0700\n"
+"POT-Creation-Date: 2014-06-19 20:44-0700\n"
+"PO-Revision-Date: 2014-06-19 20:44-0700\n"
 "Last-Translator: Katz Web Services, Inc. <support@katz.co>\n"
 "Language-Team: Zack Katz <admin@gravityview.co>\n"
 "Language: en_US\n"
@@ -18,123 +18,123 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: gravityview.php:199
+#: gravityview.php:203
 msgid "Support"
 msgstr ""
 
-#: gravityview.php:215
+#: gravityview.php:219
 msgctxt "Post Type General Name"
 msgid "Views"
 msgstr ""
 
-#: gravityview.php:216
+#: gravityview.php:220
 msgctxt "Post Type Singular Name"
 msgid "View"
 msgstr ""
 
-#: gravityview.php:217
+#: gravityview.php:221
 msgid "Views"
 msgstr ""
 
-#: gravityview.php:218
+#: gravityview.php:222
 msgid "Parent View:"
 msgstr ""
 
-#: gravityview.php:219
+#: gravityview.php:223
 msgid "All Views"
 msgstr ""
 
-#: gravityview.php:220
+#: gravityview.php:224
 msgid "View"
 msgstr ""
 
-#: gravityview.php:221
+#: gravityview.php:225
 msgid "Add New View"
 msgstr ""
 
-#: gravityview.php:222
+#: gravityview.php:226
 msgid "New View"
 msgstr ""
 
-#: gravityview.php:223
+#: gravityview.php:227
 msgid "Edit View"
 msgstr ""
 
-#: gravityview.php:224
+#: gravityview.php:228
 msgid "Update View"
 msgstr ""
 
-#: gravityview.php:225
+#: gravityview.php:229
 msgid "Search Views"
 msgstr ""
 
-#: gravityview.php:226
+#: gravityview.php:230
 msgid "No Views found"
 msgstr ""
 
-#: gravityview.php:227
+#: gravityview.php:231
 msgid "No Views found in Trash"
 msgstr ""
 
-#: gravityview.php:230
+#: gravityview.php:234
 msgid "view"
 msgstr ""
 
-#: gravityview.php:231
+#: gravityview.php:235
 msgid "Create views based on a Gravity Forms form"
 msgstr ""
 
-#: gravityview.php:274 gravityview.php:275 gravityview.php:277
+#: gravityview.php:278 gravityview.php:279 gravityview.php:281
 #, php-format
 msgid "View updated. %sView on website.%s"
 msgstr ""
 
-#: gravityview.php:276
+#: gravityview.php:280
 msgid "View deleted."
 msgstr ""
 
-#: gravityview.php:279
+#: gravityview.php:283
 #, php-format
 msgid "View restored to revision from %s"
 msgstr ""
 
-#: gravityview.php:280
+#: gravityview.php:284
 #, php-format
 msgid "View published. %sView on website.%s"
 msgstr ""
 
-#: gravityview.php:281
+#: gravityview.php:285
 #, php-format
 msgid "View saved. %sView on website.%s"
 msgstr ""
 
-#: gravityview.php:282
-msgid "View submitted."
-msgstr ""
-
-#: gravityview.php:284
-#, php-format
-msgid "View scheduled for: <strong>%1$s</strong>."
-msgstr ""
-
 #: gravityview.php:286
-msgid "M j, Y @ G:i"
+msgid "View submitted."
 msgstr ""
 
 #: gravityview.php:288
 #, php-format
+msgid "View scheduled for: <strong>%1$s</strong>."
+msgstr ""
+
+#: gravityview.php:290
+msgid "M j, Y @ G:i"
+msgstr ""
+
+#: gravityview.php:292
+#, php-format
 msgid "View draft updated. %sView on website.%s"
 msgstr ""
 
-#: gravityview.php:358
+#: gravityview.php:362
 msgid "Top"
 msgstr ""
 
-#: gravityview.php:359
+#: gravityview.php:363
 msgid "Left"
 msgstr ""
 
-#: gravityview.php:359
+#: gravityview.php:363
 msgid "Right"
 msgstr ""
 
@@ -175,12 +175,12 @@ msgid "Sort by field"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:119
-#: includes/connector-functions.php:233
+#: includes/connector-functions.php:236
 msgid "Default"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:120
-#: includes/connector-functions.php:245
+#: includes/connector-functions.php:249
 msgid "Date Created"
 msgstr ""
 
@@ -210,7 +210,7 @@ msgid "Filter by End Date"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:159
-#: includes/class-admin-views.php:1586
+#: includes/class-admin-views.php:1595
 msgid "Cancel"
 msgstr ""
 
@@ -413,119 +413,119 @@ msgstr ""
 msgid "To insert this view into a post or a page use the following shortcode:"
 msgstr ""
 
-#: includes/class-admin-views.php:808
+#: includes/class-admin-views.php:816
 #, php-format
 msgid "Configure %s Settings"
 msgstr ""
 
-#: includes/class-admin-views.php:809
+#: includes/class-admin-views.php:817
 #, php-format
 msgid "Remove %s"
 msgstr ""
 
-#: includes/class-admin-views.php:842
+#: includes/class-admin-views.php:850
 msgid "+ Add All Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:869
+#: includes/class-admin-views.php:877
 msgid "Entry ID"
 msgstr ""
 
-#: includes/class-admin-views.php:870
+#: includes/class-admin-views.php:878
 msgid "Entry Date"
 msgstr ""
 
-#: includes/class-admin-views.php:871
+#: includes/class-admin-views.php:879
 msgid "Source URL"
 msgstr ""
 
-#: includes/class-admin-views.php:872
+#: includes/class-admin-views.php:880
 msgid "User IP"
 msgstr ""
 
-#: includes/class-admin-views.php:873
+#: includes/class-admin-views.php:881
 msgid "User"
 msgstr ""
 
-#: includes/class-admin-views.php:877
+#: includes/class-admin-views.php:885
 msgid "Link to Entry"
 msgstr ""
 
-#: includes/class-admin-views.php:947
+#: includes/class-admin-views.php:955
 msgid "Add Widget"
 msgstr ""
 
-#: includes/class-admin-views.php:949
+#: includes/class-admin-views.php:957
 msgid "Add Field"
 msgstr ""
 
-#: includes/class-admin-views.php:988
+#: includes/class-admin-views.php:996
 #, php-format
 msgid "\"%s\" or drag existing %ss here."
 msgstr ""
 
-#: includes/class-admin-views.php:1103
+#: includes/class-admin-views.php:1110
 #, php-format
 msgid "Options: %s"
 msgstr ""
 
-#: includes/class-admin-views.php:1144
+#: includes/class-admin-views.php:1151
 msgid "Any logged-in user"
 msgstr ""
 
-#: includes/class-admin-views.php:1145
+#: includes/class-admin-views.php:1152
 msgid "Author or higher"
 msgstr ""
 
-#: includes/class-admin-views.php:1146
+#: includes/class-admin-views.php:1153
 msgid "Editor or higher"
 msgstr ""
 
-#: includes/class-admin-views.php:1147
+#: includes/class-admin-views.php:1154
 msgid "Administrator"
 msgstr ""
 
-#: includes/class-admin-views.php:1155
+#: includes/class-admin-views.php:1162
 msgid "Show Label"
 msgstr ""
 
-#: includes/class-admin-views.php:1160
+#: includes/class-admin-views.php:1167
 msgid "Custom Label:"
 msgstr ""
 
-#: includes/class-admin-views.php:1165
+#: includes/class-admin-views.php:1172
 msgid "Custom CSS Class:"
 msgstr ""
 
-#: includes/class-admin-views.php:1166
+#: includes/class-admin-views.php:1173
 msgid "This class will be added to the field container."
 msgstr ""
 
-#: includes/class-admin-views.php:1171
+#: includes/class-admin-views.php:1178
 msgid "Make visible only to logged-in users?"
 msgstr ""
 
-#: includes/class-admin-views.php:1176
+#: includes/class-admin-views.php:1183
 msgid "Make visible for:"
 msgstr ""
 
-#: includes/class-admin-views.php:1584
+#: includes/class-admin-views.php:1593
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1585
+#: includes/class-admin-views.php:1594
 msgid "Close"
 msgstr ""
 
-#: includes/class-admin-views.php:1587
+#: includes/class-admin-views.php:1596
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:1588
+#: includes/class-admin-views.php:1597
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:1589
+#: includes/class-admin-views.php:1598
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
@@ -563,8 +563,24 @@ msgstr ""
 msgid "Beta Testing"
 msgstr ""
 
-#: includes/class-admin-welcome.php:263
+#: includes/class-admin-welcome.php:267
 msgid "GravityView is brought to you by:"
+msgstr ""
+
+#: includes/class-admin-welcome.php:292
+msgid "Contributors"
+msgstr ""
+
+#: includes/class-admin-welcome.php:303
+msgid "Want to contribute?"
+msgstr ""
+
+#: includes/class-admin-welcome.php:304
+#, php-format
+msgid ""
+"If you want to contribute to the code, you can %srequest access to the "
+"Github repository%s. If your contributions are accepted, you will be thanked "
+"here."
 msgstr ""
 
 #: includes/class-api.php:171
@@ -670,83 +686,83 @@ msgstr ""
 msgid "Footer Right"
 msgstr ""
 
-#: includes/default-templates.php:325
+#: includes/default-templates.php:335
 msgid "Business Data"
 msgstr ""
 
-#: includes/default-templates.php:326
+#: includes/default-templates.php:336
 msgid "Display business information in a table."
 msgstr ""
 
-#: includes/default-templates.php:347
+#: includes/default-templates.php:357
 msgid "Resume Board"
 msgstr ""
 
-#: includes/default-templates.php:348
+#: includes/default-templates.php:358
 msgid "Allow job-seekers to post their resumes."
 msgstr ""
 
-#: includes/default-templates.php:368
+#: includes/default-templates.php:378
 msgid "Job Board"
 msgstr ""
 
-#: includes/default-templates.php:369
+#: includes/default-templates.php:379
 msgid "Post available jobs in a simple job board."
 msgstr ""
 
-#: includes/default-templates.php:389
+#: includes/default-templates.php:399
 msgid "People Table"
 msgstr ""
 
-#: includes/default-templates.php:390
+#: includes/default-templates.php:400
 msgid "Display information about people in a table."
 msgstr ""
 
-#: includes/default-templates.php:411
+#: includes/default-templates.php:421
 msgid "Issue Tracker"
 msgstr ""
 
-#: includes/default-templates.php:412
+#: includes/default-templates.php:422
 msgid "Manage issues and their statuses."
 msgstr ""
 
-#: includes/default-templates.php:433
+#: includes/default-templates.php:443
 msgid "Business Listings"
 msgstr ""
 
-#: includes/default-templates.php:434
+#: includes/default-templates.php:444
 msgid "Display business profiles."
 msgstr ""
 
-#: includes/default-templates.php:454
+#: includes/default-templates.php:464
 msgid "Event Listings"
 msgstr ""
 
-#: includes/default-templates.php:455
+#: includes/default-templates.php:465
 msgid "Present a list of your events."
 msgstr ""
 
-#: includes/default-templates.php:475
+#: includes/default-templates.php:485
 msgid "People Profiles"
 msgstr ""
 
-#: includes/default-templates.php:476
+#: includes/default-templates.php:486
 msgid "List people with individual profiles."
 msgstr ""
 
-#: includes/default-templates.php:496
+#: includes/default-templates.php:506
 msgid "Staff Profiles"
 msgstr ""
 
-#: includes/default-templates.php:497
+#: includes/default-templates.php:507
 msgid "List members of your team."
 msgstr ""
 
-#: includes/default-templates.php:517
+#: includes/default-templates.php:527
 msgid "Website Showcase"
 msgstr ""
 
-#: includes/default-templates.php:518
+#: includes/default-templates.php:528
 msgid "Feature submitted websites with screenshots."
 msgstr ""
 
@@ -788,11 +804,11 @@ msgid "Use this field as a search filter"
 msgstr ""
 
 #: includes/extensions/datatables/includes/class-datatables-template.php:28
-msgid "Table (DataTables)"
+msgid "DataTables Table"
 msgstr ""
 
 #: includes/extensions/datatables/includes/class-datatables-template.php:29
-msgid "Display items in a table view powered by DataTables."
+msgid "Display items in a dynamic table powered by DataTables."
 msgstr ""
 
 #: includes/fields/created-by.php:11
