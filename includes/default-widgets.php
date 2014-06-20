@@ -230,8 +230,14 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 				if( in_array( $field['type'] , array( 'select', 'checkbox', 'radio', 'post_category' ) ) ) {
 
+					// post_category specifics
 					if( !empty( $field['displayAllCategories'] ) && empty( $field['choices'] ) ) {
 						$field['choices'] = self::get_post_categories_choices();
+					}
+
+					if( 'post_category' === $field['type'] && !empty( $filter['value'] ) ) {
+						$value = explode( ':', $filter['value'] );
+						$filter['value'] = !empty( $value[1] ) ? $value[1] : '';
 					}
 
 					$output .= self::render_search_dropdown( $field['label'], 'filter_'.$field['id'], $field['choices'], $filter['value'] ); //Label, name attr, choices
@@ -339,13 +345,23 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 		// get configured search filters (fields)
 		$search_filters = array();
-		$fields = $gravityview_view->fields;
+		$view_fields = $gravityview_view->fields;
+		$form = gravityview_get_form( $gravityview_view->form_id );
 
-		if( !empty( $fields ) && is_array( $fields ) ) {
-			foreach( $fields as $t => $fields ) {
+		if( !empty( $view_fields ) && is_array( $view_fields ) ) {
+			foreach( $view_fields as $t => $fields ) {
 				foreach( $fields as $field ) {
 					if( !empty( $field['search_filter'] ) ) {
 						$value = esc_attr(rgget('filter_'. $field['id']));
+						$form_field = gravityview_get_field( $form, $field['id'] );
+
+						// convert value (category_id) into 'name:id'
+						if( 'post_category' === $form_field['type'] && !empty( $value ) ) {
+							$cat = get_term( $value, 'category' );
+							$value = esc_attr( $cat->name ) . ':' . $value;
+
+						}
+
 						$search_filters[] = array( 'key' => $field['id'], 'label' => $field['label'], 'value' => $value );
 					}
 				}
