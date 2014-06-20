@@ -24,6 +24,8 @@ Beautifully display your Gravity Forms entries.
 == Changelog ==
 
 = 1.0.4 =
+* Added: __DataTables integration__ Created a new view type for existing forms that uses the [DataTables](http://datatables.net) script.
+We're just getting started with what can be done with DataTables. We'll have much more cool stuff like [DataTables Extensions](http://datatables.net/extensions/index).
 * Added: "Add All Fields" option to bottom of the "Add Field" selector
 * Added: Per-field-type options structure to allow for different field types to override default Field Settings
 	* Added: Choose how to display User data. In the User field settings, you can now choose to display the "Display Name", username, or ID
@@ -38,6 +40,7 @@ Beautifully display your Gravity Forms entries.
 * Fixed: Sorting issues
 	- Remove the option to sort by composite fields like Name, Address, Product; Gravity Forms doesn't process those sort requests properly
 	- Remove List and Paragraph fields from being sortable
+	- Known bug: Price fields are sorted alphabetically, not numerically. For example, given $20,000, $2,000 and $20, Gravity Forms will sort the array like this: $2,000, $20, $20,000. We've filed a bug report with Gravity Forms.
 * Improved: Added visibility toggles to some Field Settings. For example, if the "Show Label" setting is not checked, then the "Custom Label" setting is hidden.
 * Modified how data is sent to the template: removed the magic methods getter/setters setting the `$var` variable - not data is stored directly as object parameters.
 * Added many translations. Thanks everyone!
