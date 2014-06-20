@@ -84,6 +84,10 @@ final class GravityView_Plugin {
 
 		require_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
 
+		// Load Extensions
+		// TODO: Convert to a scan of the directory or a method where this all lives
+		include_once( GRAVITYVIEW_DIR . 'includes/extensions/datatables/ext-datatables.php');
+
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
@@ -645,8 +649,3 @@ final class GravityView_Plugin {
 } // end class GravityView_Plugin
 
 add_action('plugins_loaded', array('GravityView_Plugin', 'getInstance'), 1);
-
-
-/** EXTENSIONS */
-include_once( GRAVITYVIEW_DIR . 'includes/extensions/datatables/ext-datatables.php');
-
