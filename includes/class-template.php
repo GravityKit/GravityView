@@ -19,8 +19,6 @@ if( ! class_exists( 'Gamajo_Template_Loader' ) ) {
 
 class GravityView_View extends Gamajo_Template_Loader {
 
-	protected $vars = array();
-
 	// Prefix for filter names.
 	protected $filter_prefix = 'gravityview';
 
@@ -32,7 +30,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 	/**
 	 * Construct the view object
-	 * @param  array       $atts Associative array to set as vars
+	 * @param  array       $atts Associative array to set the data of
 	 */
 	function __construct( $atts = array() ) {
 
@@ -45,7 +43,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 		) );
 
 		foreach ($atts as $key => $value) {
-			$this->vars[ $key ] = $value;
+			$this->{$key} = $value;
 		}
 
 		// widget logic
@@ -53,17 +51,17 @@ class GravityView_View extends Gamajo_Template_Loader {
 		add_action( 'gravityview_after', array( $this, 'render_widget_hooks' ) );
 	}
 
-	// Magic methods
-	public function __set( $name, $value ) {
-		$this->vars[ $name ] = $value;
-	}
-
+	/**
+	 * Magic Method: Instead of throwing an errow when a variable isn't set, return null.
+	 * @param  string      $name Key for the data retrieval.
+	 * @return mixed|null    The stored data.
+	 */
 	public function __get( $name ) {
-		return isset($this->vars[ $name ]) ? $this->vars[ $name ] : NULL;
-	}
-
-	public function __unset( $name ) {
-		unset($this->vars[ $name ]);
+		if( isset( $this->{$name} ) ) {
+			return $this->{$name};
+		} else {
+			return NULL;
+		}
 	}
 
 	// Load the template

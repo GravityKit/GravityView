@@ -1,6 +1,6 @@
 	<tbody>
 		<?php
-		if((int)$this->__get('total_entries') === 0) {
+		if((int)$this->total_entries === 0) {
 			?>
 			<tr>
 				<td colspan="<?php echo sizeof($this->fields['directory_table-columns']); ?>" class="gv-no-results">

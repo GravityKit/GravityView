@@ -57,7 +57,7 @@ class GravityView_API {
 		}
 
 		if(!empty($field['id'])) {
-			$form_id = $gravityview_view->__get('form_id');
+			$form_id = $gravityview_view->form_id;
 			$form_id = empty($form_id) ? '' : '-'.$form_id;
 			$classes[] = 'gv-field'.$form_id.'-'.$field['id'];
 		}
@@ -114,7 +114,7 @@ class GravityView_API {
 			GravityView_Plugin::log_debug( sprintf('[field_value] Using template at %s', $field_exists) );
 
 			// Set the field data to be available in the templates
-			$gravityview_view->__set('field_data', array(
+			$gravityview_view->field_data = array(
 				'form' => $form,
 				'field_id' => $field_id,
 				'field' => $field,
@@ -123,7 +123,7 @@ class GravityView_API {
 				'display_value' => $display_value,
 				'format' => $format,
 				'entry' => $entry,
-			));
+			);
 
 			ob_start();
 
@@ -148,7 +148,7 @@ class GravityView_API {
 		$output = apply_filters( 'gravityview_field_entry_value', $output, $entry, $field_settings );
 
 		// Free up the memory
-		$gravityview_view->__unset('field_data');
+		unset( $gravityview_view->field_data );
 
 		return $output;
 	}
@@ -163,7 +163,7 @@ class GravityView_API {
 
 		$is_search = false;
 
-		if($gravityview_view->__get('curr_start') || $gravityview_view->__get('curr_end') || $gravityview_view->__get('curr_search')) {
+		if($gravityview_view->curr_start || $gravityview_view->curr_end || $gravityview_view->curr_search) {
 			$is_search = true;
 		}
 

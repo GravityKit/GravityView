@@ -15,19 +15,19 @@ $view_id = $gravityview_view->view_id;
 
 	<div class="gv-search-box">
 
-		<?php if( $gravityview_view->__get('search_free') ): ?>
+		<?php if( $gravityview_view->search_free ): ?>
 			<div class="gv-search">
 				<label for="gv_search_<?php echo $view_id; ?>"><?php esc_html_e( 'Search Entries:', 'gravity-view' ); ?></label>
-				<p><input type="text" name="gv_search" id="gv_search_<?php echo $view_id; ?>" value="<?php echo $gravityview_view->__get('curr_search'); ?>" /></p>
+				<p><input type="text" name="gv_search" id="gv_search_<?php echo $view_id; ?>" value="<?php echo $gravityview_view->curr_search; ?>" /></p>
 			</div>
 		<?php endif; ?>
 
-		<?php if( $gravityview_view->__get('search_date') ): ?>
+		<?php if( $gravityview_view->search_date ): ?>
 			<div class="gv-search-date">
 				<label for="gv_start_date_<?php echo $view_id; ?>"><?php esc_html_e('Filter by date:', 'gravity-view' ); ?></label>
 				<p>
-				<input name="gv_start" id="gv_start_date_<?php echo $view_id; ?>" type="text" class="<?php echo esc_html($gravityview_view->__get('datepicker_class')); ?>" placeholder="<?php esc_attr_e('Start date', 'gravity-view' ); ?>" value="<?php echo $gravityview_view->__get('curr_start'); ?>">
-				<input name="gv_end" id="gv_end_date_<?php echo $view_id; ?>" type="text" class="<?php echo  esc_html($gravityview_view->__get('datepicker_class')); ?>" placeholder="<?php esc_attr_e('End date', 'gravity-view' ); ?>" value="<?php echo $gravityview_view->__get('curr_end'); ?>">
+				<input name="gv_start" id="gv_start_date_<?php echo $view_id; ?>" type="text" class="<?php echo esc_html($gravityview_view->datepicker_class); ?>" placeholder="<?php esc_attr_e('Start date', 'gravity-view' ); ?>" value="<?php echo $gravityview_view->curr_start; ?>">
+				<input name="gv_end" id="gv_end_date_<?php echo $view_id; ?>" type="text" class="<?php echo  esc_html($gravityview_view->datepicker_class); ?>" placeholder="<?php esc_attr_e('End date', 'gravity-view' ); ?>" value="<?php echo $gravityview_view->curr_end; ?>">
 				</p>
 			</div>
 		<?php endif; ?>
@@ -35,7 +35,7 @@ $view_id = $gravityview_view->view_id;
 
 	<?php
 		// search filters (fields)
-		echo $gravityview_view->__get('search_fields');
+		echo $gravityview_view->search_fields;
 	?>
 
 	<div>

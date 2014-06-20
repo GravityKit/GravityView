@@ -192,12 +192,12 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		global $gravityview_view;
 
 		// get configured search filters (fields)
-		$gravityview_view->__set('search_fields', $this->render_search_fields() );
+		$gravityview_view->search_fields = $this->render_search_fields();
 
 		$search_date = !empty( $widget_args['search_date'] );
 
-		$gravityview_view->__set('search_free', !empty( $widget_args['search_free'] ) );
-		$gravityview_view->__set('search_date', $search_date );
+		$gravityview_view->search_free = !empty( $widget_args['search_free'] );
+		$gravityview_view->search_date = $search_date;
 
 		if($search_date) {
 
@@ -207,13 +207,13 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 			wp_enqueue_script( 'gform_datepicker_init' );
 
 			$datepicker_class = apply_filters( 'gravityview_search_datepicker_class', 'gv-datepicker datepicker ymd-dash' );
-			$gravityview_view->__set('datepicker_class', $datepicker_class );
+			$gravityview_view->datepicker_class = $datepicker_class;
 		}
 
 		// Search box and filters
-		$gravityview_view->__set('curr_search', esc_attr(rgget('gv_search')) );
-		$gravityview_view->__set('curr_start', esc_attr(rgget('gv_start')) );
-		$gravityview_view->__set('curr_end', esc_attr(rgget('gv_end')) );
+		$gravityview_view->curr_search = esc_attr(rgget('gv_search'));
+		$gravityview_view->curr_start = esc_attr(rgget('gv_start'));
+		$gravityview_view->curr_end = esc_attr(rgget('gv_end'));
 
 		$gravityview_view->render('widget', 'search');
 	}
