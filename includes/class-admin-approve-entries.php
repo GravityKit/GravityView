@@ -300,6 +300,15 @@ class GravityView_Admin_ApproveEntries {
 		if( 'forms_page_gf_entries' == $hook ) {
 
 			$form_id = RGForms::get('id');
+
+			if( empty( $form_id ) && class_exists('RGFormsModel') ) {
+				$forms = gravityview_get_forms();
+				if( !empty( $forms ) ) {
+					$form_id = $forms[0]['id'];
+				}
+			}
+
+
 			$approvedcolumn = $this->get_approved_column( $form_id );
 
 			if( empty( $approvedcolumn ) ) {
@@ -314,7 +323,7 @@ class GravityView_Admin_ApproveEntries {
 
 			wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array(
 				'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries'),
-				'form_id' => RGForms::get('id'),
+				'form_id' => $form_id,
 				'label_approve' => __( 'Approve', 'gravity-view' ) ,
 				'label_disapprove' => __( 'Disapprove', 'gravity-view' ),
 				'bulk_message' => $this->bulk_update_message,

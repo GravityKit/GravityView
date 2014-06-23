@@ -57,8 +57,9 @@ if( !function_exists('gravityview_get_forms') ) {
 			foreach( $gf_forms as $form ) {
 				$forms[] = array( 'id' => $form->id, 'title' => $form->title );
 			}
+			return $forms;
 		}
-		return $forms;
+		return false;
 	}
 
 }
