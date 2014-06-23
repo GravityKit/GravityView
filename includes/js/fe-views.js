@@ -11,35 +11,37 @@
  */
 
 
-(function( $ ) {
+jQuery(document).ready( function( $ ) {
 
+	var gvFront = {
 
+		init: function() {
+			this.cookies();
+		},
 
-	$(document).ready( function() {
+		cookies: function() {
+			if( $("#gravityview-view-id").length > 0 ) {
 
-		if( $("#gravityview-view-id").length > 0 ) {
+				var viewId = $("#gravityview-view-id").val();
 
-			var viewId = $("#gravityview-view-id").val();
+				// Manages the Go Back link in single entry view based on cookies
+				if( $("#gravityview_back_link").length > 0 ) {
+					// single entry view
+					if( $.cookie('gravityview_back_link_'+ viewId ) != null ) {
+						$("#gravityview_back_link").attr('href', $.cookie('gravityview_back_link_'+ viewId) );
+					}
 
-			// Manages the Go Back link in single entry view based on cookies
-			if( $("#gravityview_back_link").length > 0 ) {
-				// single entry view
-				if( $.cookie('gravityview_back_link_'+ viewId ) != null ) {
-					$("#gravityview_back_link").attr('href', $.cookie('gravityview_back_link_'+ viewId) );
+				} else {
+					// directory view
+
+					//set cookie
+					$.cookie('gravityview_back_link_'+ viewId, window.location.href, { path: '/' } );
+
 				}
-
-			} else {
-				// directory view
-
-				//set cookie
-				$.cookie('gravityview_back_link_'+ viewId, window.location.href, { path: '/' } );
-
 			}
 		}
+	};
 
+	gvFront.init();
 
-
-
-	});
-
-}(jQuery));
+});

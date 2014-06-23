@@ -90,6 +90,7 @@ class GravityView_frontend {
 
 		$defaults = array(
 			'id' => '',
+			'lightbox' => true,
 			'page_size' => '',
 			'sort_field' => '',
 			'sort_direction' => 'ASC',
@@ -130,6 +131,7 @@ class GravityView_frontend {
 	 * @return mixed in case of success retrieve the shortcode attributes else, empty
 	 */
 	public static function get_view_shortcode_atts( $content ) {
+
 		if ( false === strpos( $content, '[' ) ) {
 			return array();
 		}
@@ -466,6 +468,8 @@ class GravityView_frontend {
 	/**
 	 * Register styles and scripts
 	 *
+	 * @filter  gravity_view_lightbox_script Modify the lightbox JS slug. Default: `thickbox`
+	 * @filter  gravity_view_lightbox_style Modify the thickbox CSS slug. Default: `thickbox`
 	 * @access public
 	 * @return void
 	 */
@@ -477,9 +481,28 @@ class GravityView_frontend {
 			// enqueue template specific styles
 			if( is_a( $p, 'WP_Post' ) && ( function_exists('has_shortcode') && has_shortcode( $p->post_content, 'gravityview') ||  'gravityview' === get_post_type() ) ) {
 
-				wp_enqueue_script( 'gravityview-fe-view', plugins_url('includes/js/fe-views.js', GRAVITYVIEW_FILE), array( 'jquery', 'gravityview-jquery-cookie' ), GravityView_Plugin::version, true );
+				// If we're dealing with a View, we return
+				if( 'gravityview' === get_post_type( $post ) ) {
+					$view_atts = get_post_meta( $post->ID, '_gravityview_template_settings', true );
+				} else {
+					$view_atts = GravityView_frontend::get_view_shortcode_atts( $p->post_content );
+				}
 
-				wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version, 'all' );
+				// By default, no thickbox
+				$js_dependencies = array( 'jquery', 'gravityview-jquery-cookie' );
+				$css_dependencies = array();
+
+				// If the thickbox is enqueued, add dependencies
+				if( !empty( $view_atts['lightbox'] ) ) {
+					$js_dependencies[] = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
+					$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
+				}
+
+				wp_register_script( 'gravityview-jquery-cookie', plugins_url('includes/lib/jquery-cookie/jquery.cookie.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
+
+				wp_enqueue_script( 'gravityview-fe-view', plugins_url('includes/js/fe-views.min.js', GRAVITYVIEW_FILE), $js_dependencies, GravityView_Plugin::version, true );
+
+				wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), $css_dependencies, GravityView_Plugin::version, 'all' );
 
 				$template_id = get_post_meta( $p->ID, '_gravityview_directory_template', true );
 
