@@ -388,7 +388,20 @@ class GravityView_Admin_Views {
 		// Selected template
 		$curr_template = get_post_meta( $post->ID, '_gravityview_directory_template', true );
 
-		?>
+		$form = gravityview_get_form( $curr_form );
+
+		if(isset($form['id']))
+		    echo "<script type=\"text/javascript\">var form = " . GFCommon::json_encode($form) . ";</script>";
+		else
+		    echo "<script type=\"text/javascript\">var form = new Form();</script>";
+
+
+		$get_id_backup = $_GET['id'];
+		$_GET['id'] = $curr_form;
+		echo '<script type="text/javascript">' . GFCommon::gf_vars(false) . '</script>';
+		$_GET['id'] = $get_id_backup;
+
+?>
 		<div id="tabs">
 
 			<ul class="nav-tab-wrapper">
@@ -1258,8 +1271,10 @@ class GravityView_Admin_Views {
 
 			case 'text':
 			default:
-				$output .= $label.$desc.'&nbsp;';
+				$output .= $label.$desc;
+				$output .= '<div>';
 				$output .= self::render_text_option( $name, $id, $current );
+				$output .= '</div>';
 				break;
 		}
 
@@ -1289,10 +1304,18 @@ class GravityView_Admin_Views {
 	 * @param  string $name    [name attribute]
 	 * @param  string $current [current value]
 	 * @param  string $desc   Option description
+	 * @param string $add_merge_tags Add merge tags to the input?
 	 * @return string         [html tags]
 	 */
-	public static function render_text_option( $name = '', $id = '', $current = '' ) {
-		return '<input name="'. $name .'" id="'. $id .'" type="text" value="'. $current .'" class="all-options">';
+	public static function render_text_option( $name = '', $id = '', $current = '', $add_merge_tags = true ) {
+
+		if( $add_merge_tags ) {
+			$merge_class = ' merge-tag-support mt-position-right mt-hide_all_fields';
+		}
+
+		$value = GFCommon::replace_variables_prepopulate( $current );
+
+		return '<input name="'. $name .'" id="'. $id .'" type="text" value="'. $value .'" class="all-options'.$merge_class.'">';
 	}
 
 	/**
@@ -1590,7 +1613,7 @@ class GravityView_Admin_Views {
 			wp_enqueue_style( 'gravityview_views_datepicker', plugins_url('includes/css/admin-datepicker.css', GRAVITYVIEW_FILE), GravityView_Plugin::version );
 
 			//enqueue scripts
-			wp_enqueue_script( 'gravityview_views_scripts', plugins_url('includes/js/admin-views.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie',  ), GravityView_Plugin::version);
+			wp_enqueue_script( 'gravityview_views_scripts', plugins_url('includes/js/admin-views.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie'  ), GravityView_Plugin::version);
 
 			wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
 				'cookiepath' => COOKIEPATH,
@@ -1603,10 +1626,39 @@ class GravityView_Admin_Views {
 				'label_publisherror' => __( 'Error while creating the View for you. Check the settings or contact GravityView support.', 'gravity-view' ),
 			));
 
-			//enqueue styles
 			wp_enqueue_style( 'gravityview_views_styles', plugins_url('includes/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
 
+			self::enqueue_gravity_forms_scripts();
+
 		} // End single page
+	}
+
+	function enqueue_gravity_forms_scripts() {
+		GFForms::register_scripts();
+
+		$thickbox = !GFCommon::is_wp_version("3.3") ? 'gf_thickbox' : 'thickbox';
+		$scripts = array(
+		    $thickbox,
+		    'jquery-ui-core',
+		    'jquery-ui-sortable',
+		    'jquery-ui-tabs',
+		    'sack',
+		    'gform_gravityforms',
+		    'gform_forms',
+		    'gform_json',
+		    'gform_form_admin',
+		    'gform_floatmenu',
+		    'gform_menu',
+		    'gform_placeholder',
+		    'jquery-ui-autocomplete'
+		    );
+
+		if ( wp_is_mobile() )
+		    $scripts[] = 'jquery-touch-punch';
+
+		foreach ($scripts as $script) {
+			wp_enqueue_script( $script );
+		}
 	}
 
 	function register_no_conflict( $registered ) {
