@@ -15,7 +15,7 @@ abstract class GravityView_Field {
 	function __construct() {
 
 		// Modify the field options based on the name of the field type
-		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ) );
+		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 5 );
 	}
 
 	/**
