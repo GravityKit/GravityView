@@ -99,6 +99,7 @@ final class GravityView_Plugin {
 
 			// Filter Admin messages
 			add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
+			add_filter( 'bulk_post_updated_messages', array( $this, 'post_updated_messages' ) );
 
 			add_filter( 'plugin_action_links_'. plugin_basename( __FILE__) , array( $this, 'plugin_action_links' ) );
 
@@ -217,7 +218,7 @@ final class GravityView_Plugin {
 		// Floaty the astronaut
 		$image = '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:0 10px 10px 0;" />';
 
-		$not_found =  sprintf( __("%sYou don't have any active views. Let's go %screate one%s!%s\n\nIf you need help getting started, check out the %sGetting Started%s page.", 'gravity-view' ), '<h3>', '<a href="'.admin_url('post-new.php?post_type=gravityview').'">', '</a>', '</h3>', '<a href="'.admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ).'">', '</a>' );
+		$not_found =  sprintf( __("%sYou don't have any active views. Let's go %screate one%s!%s\n\nIf you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page.", 'gravity-view' ), '<h3>', '<a href="'.admin_url('post-new.php?post_type=gravityview').'">', '</a>', '</h3>', '<a href="'.admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ).'">', '</a>' );
 
 		//Register Custom Post Type - gravityview
 		$labels = array(
@@ -273,10 +274,15 @@ final class GravityView_Plugin {
 	 * @param  array      $messages Existing messages
 	 * @return array                Messages with GravityView views!
 	 */
-	function post_updated_messages( $messages ) {
+	function post_updated_messages( $messages, $bulk_counts = NULL ) {
 		global $post;
 
 		$post_id = isset($_GET['post']) ? intval($_GET['post']) : NULL;
+
+		// By default, there will only be one item being modified.
+		// When in the `bulk_post_updated_messages` filter, there will be passed a number
+		// of modified items that will override this array.
+		$bulk_counts = is_null( $bulk_counts ) ? array( 'updated' => 1 , 'locked' => 1 , 'deleted' => 1 , 'trashed' => 1, 'untrashed' => 1 ) : $bulk_counts;
 
 		$messages['gravityview'] = array(
 			0  => '', // Unused. Messages start at index 1.
@@ -295,6 +301,16 @@ final class GravityView_Plugin {
 				date_i18n( __( 'M j, Y @ G:i', 'gravity-view' ), strtotime( $post->post_date ) )
 			),
 			10  => sprintf(__( 'View draft updated. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
+
+			/**
+			 * These apply to `bulk_post_updated_messages`
+			 * @file wp-admin/edit.php
+			 */
+			'updated'   => _n( '%s View updated.', '%s Views updated.', $bulk_counts['updated'] ),
+			'locked'    => _n( '%s View not updated, somebody is editing it.', '%s Views not updated, somebody is editing them.', $bulk_counts['locked'] ),
+			'deleted'   => _n( '%s View permanently deleted.', '%s Views permanently deleted.', $bulk_counts['deleted'] ),
+			'trashed'   => _n( '%s View moved to the Trash.', '%s Views moved to the Trash.', $bulk_counts['trashed'] ),
+			'untrashed' => _n( '%s View restored from the Trash.', '%s Views restored from the Trash.', $bulk_counts['untrashed'] ),
 		);
 
 		return $messages;
