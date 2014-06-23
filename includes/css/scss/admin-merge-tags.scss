@@ -1,0 +1,98 @@
+/* Merge Tag AutoComplete ----------------------------------------------------*/
+
+.merge-tag-support {
+	max-width: 95%;
+}
+
+.all-merge-tags {
+	position: relative;
+	display: -moz-inline-stack;
+	display: inline-block;
+	zoom: 1;
+}
+
+.all-merge-tags.textarea {
+	position: absolute;
+	margin-top: 1px;
+}
+
+.all-merge-tags a.open-list {
+	text-indent: -999em;
+	width: 16px;
+	height: 16px;
+	background: url(images/icon-drop-list.png);
+	background-repeat: no-repeat;
+	cursor: pointer;
+	margin-left: 5px;
+	display: -moz-inline-stack;
+	display: inline-block;
+	zoom: 1;
+}
+
+.all-merge-tags a.open-list:focus {
+	outline: 0 !important;
+}
+
+ul#gf_merge_tag_list {
+	padding: 0;
+	max-height: 200px;
+	min-width: 200px;
+	overflow: auto;
+	position: absolute;
+	background-color: #F8F8F8;
+	border: 1px solid #CCC;
+	z-index: 999;
+	text-indent: 0;
+	-moz-box-shadow: 0 8px 6px -6px rgba(68,68,68,0.4);
+	-webkit-box-shadow: 0 8px 6px -6px rgba(68,68,68,0.4);
+	box-shadow: 0 8px 6px -6px rgba(68,68,68,0.4);
+}
+
+ul#gf_merge_tag_list li:nth-child(even) {
+    background-color: #EEE;
+}
+
+.right ul#gf_merge_tag_list {
+	right: 0;
+}
+
+ul#gf_merge_tag_list li {
+	margin: 0;
+	line-height: 1.4em;
+	padding: 0 !important;
+	border-bottom: 1px dotted #ccc;
+}
+
+ul#gf_merge_tag_list li:last-child {
+	border-bottom: none;
+}
+
+ul#gf_merge_tag_list li.group-header {
+	font-weight: bold;
+	padding: 5px !important;
+}
+
+ul#gf_merge_tag_list li.group-header:hover {
+	background-color: transparent;
+}
+
+ul#gf_merge_tag_list a {
+	display: block;
+	padding: 5px;
+    cursor:pointer;
+}
+
+ul#gf_merge_tag_list a:hover {
+	background-color: #EEE;
+}
+
+.mt-gform_notification_message {
+    float: right;
+    position: relative;
+    right: 10px;
+    top: 90px;
+}
+
+#wp-gform_notification_message-wrap {
+    margin-right: 12px;
+}
