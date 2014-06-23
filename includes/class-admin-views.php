@@ -474,13 +474,14 @@ class GravityView_Admin_Views {
 		$settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
 
 		$defaults = array(
+			'lightbox' => true,
 			'page_size' => 25,
 			'show_only_approved' => false,
 			'sort_field' => '',
 			'sort_direction' => 'ASC',
 			'start_date' => '',
 			'end_date' => '',
-			);
+		);
 
 		$ts = wp_parse_args( $settings, $defaults );
 
@@ -497,16 +498,20 @@ class GravityView_Admin_Views {
 				</td>
 			</tr>
 			<tr valign="top">
-				<td scope="row">
-					<label for="gravityview_only_approved"><?php esc_html_e( 'Show only approved entries', 'gravity-view' ); ?></label>
+				<td colspan="2">
+					<label class="checkbox">
+						<input name="template_settings[lightbox]" type="hidden" value="0" />
+						<input name="template_settings[lightbox]" id="gravityview_lightbox" type="checkbox" value="1"<?php checked( !empty($ts['lightbox']) , true, true ); ?> class="checkbox">
+						<span><?php esc_html_e( 'Enable lightbox for images', 'gravity-view'); ?></span>
+					</label>
 				</td>
-				<td>
-					<fieldset>
-						<legend class="screen-reader-text"><span><?php esc_html_e( 'Show only approved entries', 'gravity-view' ); ?></span></legend>
-						<label for="gravityview_only_approved">
-							<input name="template_settings[show_only_approved]" type="checkbox" id="gravityview_only_approved" value="1" <?php empty( $ts['show_only_approved'] ) ? print '' : checked( $ts['show_only_approved'] , 1, true ); ?>>
-						</label>
-					</fieldset>
+			</tr>
+			<tr valign="top">
+				<td scope="row" colspan="2">
+					<label class="checkbox">
+						<input name="template_settings[show_only_approved]" type="checkbox" id="gravityview_only_approved" value="1" <?php empty( $ts['show_only_approved'] ) ? print '' : checked( $ts['show_only_approved'] , 1, true ); ?>>
+						<?php esc_html_e( 'Show only approved entries', 'gravity-view' ); ?>
+					</label>
 				</td>
 			</tr>
 

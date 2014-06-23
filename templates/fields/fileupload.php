@@ -42,7 +42,7 @@ if(!empty($value)){
 	    }
 
 	    $text_format = $file_path . PHP_EOL;
-	    $html_format = sprintf("<a href='$file_path' rel='%s' target='_blank' title='" . __("Click to view", "gravityforms") . "'>" . $content . "</a>", gv_class( $field ));
+	    $html_format = sprintf("<a href='$file_path' rel='%s-%d' class='thickbox' target='_blank'>" . $content . "</a>", gv_class( $field ), $entry['id'] );
 
 	    $output_arr[] = array(
 	    	'text' => $text_format,

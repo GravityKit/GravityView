@@ -298,7 +298,7 @@ final class GravityView_Plugin {
 			9  => sprintf(
 				__( 'View scheduled for: <strong>%1$s</strong>.', 'gravity-view' ),
 				// translators: Publish box date format, see http://php.net/date
-				date_i18n( __( 'M j, Y @ G:i', 'gravity-view' ), strtotime( $post->post_date ) )
+				date_i18n( __( 'M j, Y @ G:i', 'gravity-view' ), strtotime( ( isset( $post->post_date ) ? $post->post_date : NULL ) ) )
 			),
 			10  => sprintf(__( 'View draft updated. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 
