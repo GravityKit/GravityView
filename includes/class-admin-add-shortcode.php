@@ -98,6 +98,20 @@ class GravityView_Admin_Add_Shortcode {
 
 						<tr valign="top" class="alternate">
 							<td>
+								<label for="gravityview_only_approved"><?php esc_html_e( 'Enable lightbox for images', 'gravity-view' ); ?></label>
+							</td>
+							<td>
+								<fieldset>
+									<legend class="screen-reader-text"><span><?php esc_html_e( 'Enable lightbox for images', 'gravity-view' ); ?></span></legend>
+									<label for="gravityview_lightbox">
+										<input name="gravityview_lightbox" type="checkbox" id="gravityview_lightbox" checked="checked" value="1">
+									</label>
+								</fieldset>
+							</td>
+						</tr>
+
+						<tr valign="top" class="alternate">
+							<td>
 								<label for="gravityview_only_approved"><?php esc_html_e( 'Show only approved entries', 'gravity-view' ); ?></label>
 							</td>
 							<td>
