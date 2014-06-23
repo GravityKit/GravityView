@@ -214,20 +214,25 @@ final class GravityView_Plugin {
 	 */
 	public static function init_setup() {
 
+		// Floaty the astronaut
+		$image = '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:0 10px 10px 0;" />';
+
+		$not_found =  sprintf( __("%sYou don't have any active views. Let's go %screate one%s!%s\n\nIf you need help getting started, check out the %sGetting Started%s page.", 'gravity-view' ), '<h3>', '<a href="'.admin_url('post-new.php?post_type=gravityview').'">', '</a>', '</h3>', '<a href="'.admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ).'">', '</a>' );
+
 		//Register Custom Post Type - gravityview
 		$labels = array(
 			'name'                => _x( 'Views', 'Post Type General Name', 'gravity-view' ),
 			'singular_name'       => _x( 'View', 'Post Type Singular Name', 'gravity-view' ),
-			'menu_name'           => __( 'Views', 'gravity-view' ),
+			'menu_name'           => _x( 'Views', 'Menu name', 'gravity-view' ),
 			'parent_item_colon'   => __( 'Parent View:', 'gravity-view' ),
 			'all_items'           => __( 'All Views', 'gravity-view' ),
-			'view_item'           => __( 'View', 'gravity-view' ),
+			'view_item'           => _x( 'View', 'View Item', 'gravity-view' ),
 			'add_new_item'        => __( 'Add New View', 'gravity-view' ),
 			'add_new'             => __( 'New View', 'gravity-view' ),
 			'edit_item'           => __( 'Edit View', 'gravity-view' ),
 			'update_item'         => __( 'Update View', 'gravity-view' ),
 			'search_items'        => __( 'Search Views', 'gravity-view' ),
-			'not_found'           => __( 'No Views found', 'gravity-view' ),
+			'not_found'           => $image.$not_found,
 			'not_found_in_trash'  => __( 'No Views found in Trash', 'gravity-view' ),
 		);
 		$args = array(

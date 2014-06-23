@@ -23,6 +23,10 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
+= 1.0.5 =
+* Fixed: Approve Entries column not displaying when clicking Forms > Entries link in admin menu
+* Improved: "No Views found" text now more helpful for getting started.
+
 = 1.0.4 =
 * Added: __DataTables integration__ Created a new view type for existing forms that uses the [DataTables](http://datatables.net) script.
 We're just getting started with what can be done with DataTables. We'll have much more cool stuff like [DataTables Extensions](http://datatables.net/extensions/index).
