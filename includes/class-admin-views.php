@@ -854,7 +854,11 @@ class GravityView_Admin_Views {
 
 		$settings_title = sprintf(__('Configure %s Settings', 'gravity-view'), ucfirst($label_type));
 		$delete_title = sprintf(__('Remove %s', 'gravity-view'), ucfirst($label_type));
-		$hide_settings_link = empty($field_options) ? 'hide-if-js' : '';
+
+		// $field_options will just be hidden inputs if empty. Otherwise, it'll have an <ul>. Ugly hack, I know.
+		// TODO: Un-hack this
+		$hide_settings_link = ( strpos( $field_options, '<!-- No Options -->') > 0 ) ? 'hide-if-js' : '';
+
 		$settings_link = sprintf( '<a href="#settings" class="dashicons-admin-generic dashicons %s" title="%s"></a>', $hide_settings_link, $settings_title );
 
 		$output = '<h5 class="field-id-'.esc_attr($field_id).'">';
@@ -1144,7 +1148,13 @@ class GravityView_Admin_Views {
 		$output .= '<input type="hidden" class="field-label" name="'. $name_prefix .'[label]" value="'. esc_attr( $field_label ) .'">';
 
 		// If there are no options, return what we got.
-		if(empty($options)) { return $output; }
+		if(empty($options)) {
+
+			// This is here for checking if the output is empty in render_label()
+			$output .= '<!-- No Options -->';
+
+			return $output;
+		}
 
 		$output .= '<div class="gv-dialog-options" title="'. esc_attr( sprintf( __( 'Options: %s', 'gravity-view' ), $field_label ) ) .'">';
 		$output .= '<ul>';
