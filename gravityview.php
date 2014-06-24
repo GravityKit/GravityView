@@ -100,6 +100,9 @@ final class GravityView_Plugin {
 
 		if( is_admin() ) {
 
+			// Enable Gravity Forms tooltips
+			require_once( GFCommon::get_base_path() . '/tooltips.php' );
+
 			// Filter Admin messages
 			add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
 			add_filter( 'bulk_post_updated_messages', array( $this, 'post_updated_messages' ) );

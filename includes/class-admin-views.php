@@ -33,9 +33,12 @@ class GravityView_Admin_Views {
 		// Remove metaboxes. We need to run this twice for Genesis (9) and others (11). Default is 10.
 		add_action( 'admin_menu' , array( $this, 'remove_other_metaboxes' ), 9 );
 		add_action( 'admin_menu' , array( $this, 'remove_other_metaboxes' ), 11 );
-
 		// Add them back in
 		add_action( 'add_meta_boxes', array( $this, 'add_other_metaboxes' ), 20 );
+
+
+		// Tooltips
+		add_filter( 'gform_tooltips', array( $this, 'tooltips') );
 
 		// adding styles and scripts
 		add_action( 'admin_enqueue_scripts', array( 'GravityView_Admin_Views', 'add_scripts_and_styles'), 999 );
@@ -67,6 +70,42 @@ class GravityView_Admin_Views {
 
 		add_action( 'manage_gravityview_posts_custom_column', array( $this, 'add_post_type_column_content'), 10, 2 );
 
+	}
+
+	/**
+	 * Add tooltip text for use throughout the UI
+	 * @param  array       $tooltips Array of Gravity Forms tooltips
+	 * @return array                Modified tooltips array
+	 */
+	public function tooltips( $tooltips = array() ) {
+
+		$gv_tooltips = array(
+			'gv_filter_by_start_date' => array(
+				'title' => __('Filter by Start Date', 'gravity-view'),
+				'value' => __('Show entries submitted after this date. Supports relative dates, such as "-1 week" or "-1 month".', 'gravity-view' ),
+			),
+			'gv_filter_by_end_date' => array(
+				'title' => __('Filter by End Date', 'gravity-view'),
+				'value' => __('Show entries submitted before this date. Supports relative dates, such as "now" or "-3 days".', 'gravity-view' ),
+			),
+			'gv_single_entry_title' => array(
+				'title' => __('Single Entry Title', 'gravity-view'),
+				'value' => __('When viewing a single entry, change the title of the page to this setting. Otherwise, the title will not change between the Multiple Entries and Single Entry views.', 'gravity-view'),
+			),
+			'gv_back_link_label' => array(
+				'title' => __('Back Link Label', 'gravity-view'),
+				'value' => __('The text of the link that returns to the multiple entries view.', 'gravity-view'),
+			)
+		);
+
+		foreach ( $gv_tooltips as $key => $tooltip ) {
+
+			$title = empty( $tooltip['title'] ) ? '' : '<h6>'.esc_html( $tooltip['title'] ) .'</h6>';
+
+			$tooltips[ $key ] = $title . esc_html( $tooltip['value'] );
+		}
+
+		return $tooltips;
 	}
 
 	public function add_post_type_column_content( $column_name, $post_id )	{
@@ -555,21 +594,19 @@ class GravityView_Admin_Views {
 
 			<tr valign="top">
 				<td scope="row">
-					<label for="gravityview_start_date"><?php esc_html_e( 'Filter by Start Date', 'gravity-view'); ?></label>
+					<label for="gravityview_start_date"><?php esc_html_e( 'Filter by Start Date', 'gravity-view'); ?> <?php gform_tooltip("gv_filter_by_start_date") ?></label>
 				</td>
 				<td>
 					<input name="template_settings[start_date]" id="gravityview_start_date" type="text" class="widefat gv-datepicker" value="<?php echo $ts['start_date']; ?>">
-					<span class="howto"><?php printf( __('Also supports %srelative dates%s.', 'gravity-view' ), '<a href="https://katzwebservices.zendesk.com/hc/en-us/articles/203496337" rel="external">', '</a>' ); ?></span>
 				</td>
 			</tr>
 
 			<tr valign="top">
 				<td scope="row">
-					<label for="gravityview_end_date"><?php esc_html_e( 'Filter by End Date', 'gravity-view'); ?></label>
+					<label for="gravityview_end_date"><?php esc_html_e( 'Filter by End Date', 'gravity-view'); ?> <?php gform_tooltip("gv_filter_by_end_date") ?></label>
 				</td>
 				<td>
 					<input name="template_settings[end_date]" id="gravityview_end_date" type="text" class="widefat gv-datepicker" value="<?php echo $ts['end_date']; ?>">
-					<span class="howto"><?php printf( __('Also supports %srelative dates%s.', 'gravity-view' ), '<a href="https://katzwebservices.zendesk.com/hc/en-us/articles/203496337" rel="external">', '</a>' ); ?></span>
 				</td>
 			</tr>
 
@@ -586,13 +623,13 @@ class GravityView_Admin_Views {
 		<table class="form-table">
 			<tr valign="top">
 				<td scope="row" colspan="2">
-					<label for="gravityview_se_title"><?php esc_html_e( 'Single Entry Title', 'gravity-view'); ?></label>
+					<label for="gravityview_se_title"><?php esc_html_e( 'Single Entry Title', 'gravity-view'); ?> <?php gform_tooltip("gv_single_entry_title") ?></label>
 					<?php echo self::render_text_option( 'template_settings[single_title]', 'gravityview_se_title', $ts['single_title'], true ); ?>
 				</td>
 			</tr>
 			<tr valign="top">
 				<td scope="row" colspan="2">
-					<label for="gravityview_se_back_label"><?php esc_html_e( 'Back Link Label', 'gravity-view'); ?></label>
+					<label for="gravityview_se_back_label"><?php esc_html_e( 'Back Link Label', 'gravity-view'); ?>  <?php gform_tooltip("gv_back_link_label") ?></label>
 					<?php echo self::render_text_option( 'template_settings[back_link_label]', 'gravityview_se_back_label', $ts['back_link_label'], true ); ?>
 				</td>
 			</tr>
@@ -1350,7 +1387,7 @@ class GravityView_Admin_Views {
 		$show = ( $is_single || $is_list );
 
 		// and $add_merge_tags is not false
-		if( $show && $add_merge_tags !== false ) {
+		if( $show && $add_merge_tags !== false || $add_merge_tags === true ) {
 			$merge_class = ' merge-tag-support mt-position-right mt-hide_all_fields';
 		}
 
