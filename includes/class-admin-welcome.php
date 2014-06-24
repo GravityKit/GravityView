@@ -178,31 +178,38 @@ class GravityView_Welcome {
 			<div class="changelog point-releases">
 				<h3>What changed in <?php echo $display_version; ?></h3>
 				<ul>
-					<li><strong>DataTables integration</strong> Created a new view type for existing forms that uses the <a href="http://datatables.net">DataTables</a> script.<br/>
-					We're just getting started with what can be done with DataTables. We'll have much more cool stuff like <a href="http://datatables.net/extensions/index">DataTables Extensions</a>.</li>
-					<li>Added: "Add All Fields" option to bottom of the "Add Field" selector</li>
-					<li>Added: Choose how to display User data. In the User field settings, you can now choose to display the "Display Name", username, or ID</li>
-					<li>Added: Custom date format using <a href="https://www.php.net//manual/en/function.date.php">PHP date format</a> available for Entry Date and Date fields</li>
-					<li>Added: <code>search_field</code> parameter to the shortcode. This allows you to specify a field ID where you want the search performed (The search itself is defined in <code>search_value</code>)</li>
-					<li>Added: <a href="https://katzwebservices.zendesk.com/hc/en-us/articles/202934188">Using the Shortcode</a> help article</li>
-					<li>Added: Data Source added to the Views page</li>
-					<li>Fixed: Field labels escaping issue (<code>It's an Example</code> was displaying as <code>It\'s an Example</code>)</li>
-					<li>Fixed: Settings "gear" not showing when adding a new field</li>
-					<li>Fixed: Sorting issues on fields like Name, Address, Product</li>
-					<li>Added <em>many</em> translations. <strong>Thanks everyone!</strong>
+					<li>Added: Lightbox for images (in View Settings metabox)</li>
+					<li>Added: Merge Tags - You can now modify labels and settings using dynamic text based on the value of a field. (requires Gravity Forms 1.8.6 or higher)</li>
+					<li>Added: Customize the return to directory link anchor text (in the View Settings metabox, under Single Entry Settings)</li>
+					<li>Added: Set the title for the Single Entry</li>
+					<li>Added: Choose whether to hide empty fields on a per-View basis</li>
+					<li>Improved: DataTables styling now set to <code>display</code> by default. Can be overridden by using the filter <code>gravityview_datatables_table_class</code></li>
+					<li>Improved: Speed!
 
 					<ul>
-					<li>Bengali translation by <a href="https://www.transifex.com/accounts/profile/tareqhi/">@tareqhi</a></li>
-					<li>German translation by <a href="https://www.transifex.com/accounts/profile/seschwarz/">@seschwarz</a></li>
-					<li>Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
-					<li>Dutch translation by <a href="https://www.transifex.com/accounts/profile/leooosterloo/">@leooosterloo</a></li>
-					<li>If you'd like to contribute translations, <a href="https://www.transifex.com/projects/p/gravityview/">please sign up here</a>. Thanks again to all who have contributed!</li>
+					<li>Added <code>form</code> item to global <code>$gravityview_view</code> data instead of looking it up in functions. Improves <code>gv_value()</code> and <code>gv_label()</code> speed.</li>
+					<li>Added <code>replace_variables()</code> method to <code>GravityView_API</code> to reduce time to process merge tags by checking if there are any curly brackets first.</li>
 					</ul>
 					</li>
+					<li>Improved: "No Views found" text now more helpful for getting started.</li>
+					<li>Fixed: Approve Entries column not displaying when clicking Forms > Entries link in admin menu</li>
+					<li>Fixed: Field Settings gear no longer showing for widgets without options</li>
+					<li>Fixed: Added Gravity Forms minimum version notice when using &lt; 1.8</li>
 				</ul>
-
-				<h2 class="about-headline-callout">Configuring a View</h2>
 			</div>
+		</div>
+
+		<div class="wrap">
+			<div class="error inline">
+				<h3>Help is Coming.</h3>
+				<p>We&rsquo;re adding lots of features are working on providing helpful guides to get started and developer documentation.</p>
+				<p><a class="button button-secondary button-large" href="https://katzwebservices.zendesk.com/hc/en-us/categories/200136096">See our Help Docs</a>
+			</div>
+		</div>
+
+		<div class="wrap about-wrap">
+
+			<div class="changelog"><h2 class="about-headline-callout">Configuring a View</h2></div>
 
 			<div class="feature-section col two-col" style="margin-top:0;">
 
@@ -214,17 +221,18 @@ class GravityView_Welcome {
 						<li>Go to <a href="<?php echo admin_url('post-new.php?post_type=gravityview'); ?>">Views &gt; New View</a></li>
 						<li>If you want to <strong>create a new form</strong>, click the "Start Fresh" button</li>
 						<li>If you want to <strong>use an existing form&rsquo;s entries</strong>, select from the dropdown.</li>
-						<li>Select the type of View you would like to create. There are two core types of Views: <strong>Table</strong> and <strong>Listing</strong>.
-							<ul>
+						<li>Select the type of View you would like to create. There are two core types of Views: <strong>Table</strong>, <strong>Listing</strong>, and <strong>DataTables</strong>.
+							<ul class="ul-square">
 								<li><strong>Table Views</strong> output entries as tables; a grid of data.</li>
 								<li><strong>Listing Views</strong> display entries in a more visual layout.</li>
+								<li><strong>DataTables</strong> display entries in a dynamic table with advanced sorting capabilities provided by the <a href="http://datatables.net">DataTables</a> script.</li>
 							</ul>
 						</li>
 					</ol>
 				</div>
 
 				<div class="last-feature">
-					<h2>Embed Views in Posts &amp; Pages</h2>
+				<h2>Embed Views in Posts &amp; Pages</h2>
 					<p><img src="<?php echo plugins_url( 'images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" class="gv-welcome-screenshots" height="35" width="97" />Unlike the Gravity Forms Directory plugin, views are stand-alone; they don&rsquo;t need to always be embedded, but you can still embed Views using the "Add View" button.</p>
 				</div>
 
@@ -236,7 +244,7 @@ class GravityView_Welcome {
 
 				<ul class="ul-disc">
 					<li>Click "+ Add Field" to add a field to a zone</li>
-					<li>Fields can be dragged and dropped to be re-arranged.</li>
+					<li>Fields can be dragged and dropped to be re-arranged. Hover over the field until you see a cursor with four arrows, then drag the field.</li>
 					<li>Click the <i class="dashicons dashicons-admin-generic"></i> gear icon on each field to configure the <strong>Field Settings</strong>:
 					<ul class="ul-square">
 						<li><em>Custom Label</em>: Change how the label is shown on the website. Default: the name of the field</li>
@@ -312,6 +320,7 @@ class GravityView_Welcome {
 				<h4>GravityView uses the following open-source software:</h4>
 
 				<ul>
+					<li><a href="http://datatables.net/">DataTables</a> - amazing tool for table data display. Many thanks!</li>
 					<li><a href="http://reduxframework.com">ReduxFramework</a> - a powerful settings library</li>
 					<li><a href="https://github.com/GaryJones/Gamajo-Template-Loader">Gamajo Template Loader</a> - makes it easy to load template files with user overrides</li>
 					<li><a href="https://github.com/carhartl/jquery-cookie">jQuery Cookie plugin</a> - Access and store cookie values with jQuery</li>
