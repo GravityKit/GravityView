@@ -535,6 +535,7 @@ class GravityView_Admin_Views {
 			'end_date' => '',
 			'single_title' => '',
 			'back_link_label' => '',
+			'hide_empty' => true,
 		);
 
 		$ts = wp_parse_args( $settings, $defaults );
@@ -553,22 +554,25 @@ class GravityView_Admin_Views {
 			</tr>
 			<tr valign="top">
 				<td colspan="2">
-					<label class="checkbox">
-						<input name="template_settings[lightbox]" type="hidden" value="0" />
-						<input name="template_settings[lightbox]" id="gravityview_lightbox" type="checkbox" value="1"<?php checked( !empty($ts['lightbox']) , true, true ); ?> class="checkbox">
-						<span><?php esc_html_e( 'Enable lightbox for images', 'gravity-view'); ?></span>
-					</label>
+					<?php
+						echo self::render_field_option( 'template_settings[lightbox]', array( 'label' => __( 'Enable lightbox for images', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ts['lightbox'] );
+					?>
 				</td>
 			</tr>
 			<tr valign="top">
 				<td scope="row" colspan="2">
-					<label class="checkbox">
-						<input name="template_settings[show_only_approved]" type="checkbox" id="gravityview_only_approved" value="1" <?php empty( $ts['show_only_approved'] ) ? print '' : checked( $ts['show_only_approved'] , 1, true ); ?>>
-						<?php esc_html_e( 'Show only approved entries', 'gravity-view' ); ?>
-					</label>
+					<?php
+						echo self::render_field_option( 'template_settings[show_only_approved]', array( 'label' => __( 'Show only approved entries', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ts['show_only_approved'] );
+					?>
 				</td>
 			</tr>
-
+			<tr valign="top">
+				<td scope="row" colspan="2">
+					<?php
+						echo self::render_field_option( 'template_settings[hide_empty]', array( 'label' => __( 'Hide empty fields', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ts['hide_empty'] );
+					?>
+				</td>
+			</tr>
 			<tr valign="top">
 				<td scope="row">
 					<label for="gravityview_sort_field"><?php esc_html_e( 'Sort by field', 'gravity-view'); ?></label>
@@ -1198,7 +1202,7 @@ class GravityView_Admin_Views {
 
 		foreach( $options as $key => $details ) {
 			$value = isset( $current[ $key ] ) ? $current[ $key ] : NULL;
-			$output .= '<li>'. $this->render_field_option( $name_prefix . '['. $key .']' , $details, $value) .'</li>';
+			$output .= '<li>'. self::render_field_option( $name_prefix . '['. $key .']' , $details, $value) .'</li>';
 		}
 
 		// close options window
