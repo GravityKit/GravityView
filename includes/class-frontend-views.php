@@ -322,13 +322,21 @@ class GravityView_frontend {
 			// user requested Single Entry View
 			GravityView_Plugin::log_debug( '[render_view] Executing Single View' );
 
+			$entry = gravityview_get_entry( $single_entry );
+
+			// We're in single view, but the view being processed is not the same view the single entry belongs to.
+			if( $form_id !== $entry['form_id'] ) {
+				GravityView_Plugin::log_debug( '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '.$view_entries['entries'][0]['id'] );
+				return;
+			}
+
 			//fetch template and slug
 			$view_slug =  apply_filters( 'gravityview_template_slug_'. $template_id, 'table', 'single' );
 			GravityView_Plugin::log_debug( '[render_view] View single template slug: ' . print_r( $view_slug, true ) );
 
 			//fetch entry detail
 			$view_entries['count'] = 1;
-			$view_entries['entries'][] = gravityview_get_entry( $single_entry );
+			$view_entries['entries'][] = $entry;
 			GravityView_Plugin::log_debug( '[render_view] Get single entry: ' . print_r( $view_entries['entries'], true ) );
 
 			// set back link label
