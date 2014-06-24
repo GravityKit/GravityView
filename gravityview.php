@@ -82,6 +82,9 @@ final class GravityView_Plugin {
 
 		self::$theInstance = $this;
 
+		// Add logging
+		require_once( GRAVITYVIEW_DIR . 'includes/class-logging.php');
+
 		require_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
 
 		// Load Extensions
@@ -649,10 +652,7 @@ final class GravityView_Plugin {
      * @return void
      */
     public static function log_debug( $message ){
-        if ( class_exists("GFLogging") ) {
-            GFLogging::include_logger();
-            GFLogging::log_message( 'gravityview', $message, KLogger::DEBUG );
-        }
+    	do_action( 'gravityview_log_debug', $message );
     }
 
     /**
@@ -661,10 +661,7 @@ final class GravityView_Plugin {
      * @return void
      */
     public static function log_error( $message ){
-        if ( class_exists("GFLogging") ) {
-            GFLogging::include_logger();
-            GFLogging::log_message( 'gravityview', $message, KLogger::ERROR );
-        }
+    	do_action( 'gravityview_log_error', $message );
     }
 
 } // end class GravityView_Plugin
