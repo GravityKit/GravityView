@@ -25,6 +25,7 @@ class GravityView_frontend {
 		// Enqueue scripts and styles after GravityView_Template::register_styles()
 		add_action( 'wp_enqueue_scripts', array( 'GravityView_frontend', 'add_scripts_and_styles' ), 20);
 
+		add_filter( 'the_title', array( 'GravityView_frontend', 'single_entry_title' ), 1, 2 );
 		add_filter( 'the_content', array( 'GravityView_frontend', 'insert_view_in_content' ) );
 		add_filter( 'comments_open', array( 'GravityView_frontend', 'comments_open' ), 10, 2);
 
@@ -99,6 +100,8 @@ class GravityView_frontend {
 			'class' => '',
 			'search_value' => '',
 			'search_field' => '',
+			'single_title' => '',
+			'back_link_label' => '',
 		);
 
 		return $defaults;
@@ -148,7 +151,33 @@ class GravityView_frontend {
 		return array();
 	}
 
+	/**
+	 * Filter the title for the single entry view
+	 * @param  string $title   current title
+	 * @param  int $post_id Post ID
+	 * @return string          (modified) title
+	 */
+	public static function single_entry_title( $title, $post_id ) {
 
+		if( !self::is_single_entry() ) {
+			return $title;
+		}
+
+		$post = get_post( $post_id );
+
+		// Shortcode or direct View
+		if( 'gravityview' === get_post_type( $post ) ) {
+			$view_atts = get_post_meta( $post_id, '_gravityview_template_settings', true );
+		} else {
+			$view_atts = GravityView_frontend::get_view_shortcode_atts( $post->post_content );
+		}
+
+		if( !empty( $view_atts['single_title'] ) ) {
+			return esc_html( $view_atts['single_title'] );
+		}
+
+		return $title;
+	}
 
 
 	/**
@@ -257,7 +286,7 @@ class GravityView_frontend {
 		));
 
 		// check if user requests single entry
-		$single_entry = get_query_var( self::get_entry_var_name() );
+		$single_entry = self::is_single_entry();
 
 		if( empty( $single_entry ) ) {
 
@@ -289,10 +318,8 @@ class GravityView_frontend {
 			$view_entries['entries'][] = gravityview_get_entry( $single_entry );
 			GravityView_Plugin::log_debug( '[render_view] Get single entry: ' . print_r( $view_entries['entries'], true ) );
 
-			// back link label
+			// set back link label
 			$gravityview_view->back_link_label = isset( $args['back_link_label'] ) ? $args['back_link_label'] : NULL;
-
-			// Single Entry title
 
 			$gravityview_view->context = 'single';
 			$sections = array( 'single' );
@@ -469,6 +496,22 @@ class GravityView_frontend {
 
 		return false;
 	}
+
+	/**
+	 * Verify if user requested a single entry view
+	 * @return boolean|string false if not, single entry id if true
+	 */
+	public static function is_single_entry() {
+		$single_entry = get_query_var( self::get_entry_var_name() );
+		if( empty( $single_entry ) ){
+			return false;
+		} else {
+			return $single_entry;
+		}
+	}
+
+
+
 
 	/**
 	 * Register styles and scripts
