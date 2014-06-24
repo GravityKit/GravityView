@@ -188,7 +188,7 @@ class GravityView_frontend {
 				$form_id = get_post_meta( $view_id, '_gravityview_form_id', true );
 				$form = gravityview_get_form( $form_id );
 
-				$title = GFCommon::replace_variables($title, $form, $entry, false, false, true, "html");
+				$title = GravityView_API::replace_variables($title, $form, $entry, false, false, true, "html");
 			}
 		}
 
@@ -302,10 +302,14 @@ class GravityView_frontend {
 		$dir_fields = self::filter_fields( $dir_fields );
 		GravityView_Plugin::log_debug( '[render_view] Fields after visibility filter: ' . print_r( $dir_fields, true ) );
 
+		// Store in global for improved speed.
+		$form = gravityview_get_form( $form_id );
+
 		// set globals for templating
 		global $gravityview_view;
 		$gravityview_view = new GravityView_View(array(
 			'form_id' => $form_id,
+			'form'	  => $form,
 			'view_id' => $args['id'],
 			'fields'  => $dir_fields,
 		));

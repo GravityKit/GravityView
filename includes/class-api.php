@@ -28,17 +28,44 @@ class GravityView_API {
 	public static function field_label( $field, $entry = NULL ) {
 		global $gravityview_view;
 
-		$form = gravityview_get_form( $gravityview_view->form_id );
+		$form = $gravityview_view->form;
 
 		if( !empty( $field['show_label'] ) ) {
 			$label = empty( $field['custom_label'] ) ? $field['label'] : $field['custom_label'];
-			$label = GFCommon::replace_variables( $label, $form, $entry, false, false, true, "html");
+			$label = self::replace_variables( $label, $form, $entry, false, false, true, "html");
 			$label .= apply_filters( 'gravityview_render_after_label', '', $field );
 		} else {
 			$label = '';
 		}
 
 		return $label .' ';
+	}
+
+	/**
+	 * Check for merge tags before passing to Gravity Forms to improve speed
+	 *
+	 * @param  [type]      $text       [description]
+	 * @param  [type]      $form       [description]
+	 * @param  [type]      $lead       [description]
+	 * @param  boolean     $url_encode [description]
+	 * @param  boolean     $esc_html   [description]
+	 * @param  boolean     $nl2br      [description]
+	 * @param  string      $format     [description]
+	 * @return [type]                  [description]
+	 */
+	public static function replace_variables($text, $form, $lead, $url_encode = false, $esc_html=true, $nl2br = true, $format="html") {
+
+		if( strpos( $text, '{') === false ) {
+			return $text;
+		}
+
+		preg_match_all('/{[^{]*?:(\d+(\.\d+)?)(:(.*?))?}/mi', $text, $matches, PREG_SET_ORDER);
+
+		if( empty( $matches ) ) {
+			return $text;
+		}
+
+		return GFCommon::replace_variables( $label, $form, $entry, false, false, true, "html");
 	}
 
 
@@ -88,7 +115,7 @@ class GravityView_API {
 
 		$output = '';
 
-		$form = gravityview_get_form( $entry['form_id'] );
+		$form = $gravityview_view->form;
 		$field = gravityview_get_field( $form, $field_id );
 
 
@@ -101,19 +128,15 @@ class GravityView_API {
 			$value = isset($entry[$field_type]) ? $entry[$field_type] : NULL;
 		}
 
-		// todo: remove this. Needed for KWS imported testing data.
-		$value = str_replace('\n', "\n", $value);
-
 		$display_value = GFCommon::get_lead_field_display($field, $value, $entry["currency"], false, $format);
 		$display_value = apply_filters("gform_entry_field_value", $display_value, $field, $entry, $form);
-		$display_value = GFCommon::replace_variables($display_value, $form, $entry, false, false, true, "html");
-
+		$display_value = self::replace_variables($display_value, $form, $entry, false, false, true, "html");
 
 		// Check whether the field exists in /includes/fields/{$field_type}.php
 		// This can be overridden by user template files.
 		$field_exists = $gravityview_view->locate_template("fields/{$field_type}.php");
 
-		if($field_exists) {
+		if( $field_exists ) {
 
 			GravityView_Plugin::log_debug( sprintf('[field_value] Using template at %s', $field_exists) );
 
@@ -242,7 +265,7 @@ function gv_class( $field ) {
 	return GravityView_API::field_class( $field );
 }
 
-function gv_value( $entry, $field ) {
+function gv_value( $entry, $field) {
 	return GravityView_API::field_value( $entry, $field );
 }
 
