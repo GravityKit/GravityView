@@ -263,11 +263,16 @@ function gravityview_back_link() {
 
 	$post = get_post();
 
-	if(empty($post)) { return NULL; }
+	if( empty($post) ) { return NULL; }
 
 	$href = gv_directory_link();
 
-	$label = apply_filters( 'gravityview_go_back_label', __( '&larr; Go back', 'gravity-view' ), $post );
+	// calculate link label
+	global $gravityview_view;
+	$label = !empty( $gravityview_view->back_link_label ) ? $gravityview_view->back_link_label : __( '&larr; Go back', 'gravity-view' );
+
+	// filter link label
+	$label = apply_filters( 'gravityview_go_back_label', $label, $post );
 
 	return '<a href="'. $href .'" id="gravityview_back_link">'. esc_html( $label ) . '</a>';
 
