@@ -222,6 +222,27 @@ if( !function_exists('gravityview_get_field') ) {
 }
 
 
+if( !function_exists('has_gravityview_shortcode') ) {
+
+	/**
+	 * Check whether the post is GravityView
+	 *
+	 * - Check post type. Is it `gravityview`?
+	 * - Check shortcode
+	 *
+	 * @param  WP_Post      $post WordPress post object
+	 * @return boolean           True: yep, GravityView; No: not!
+	 */
+	function has_gravityview_shortcode( $post = NULL ) {
+
+		if( is_a( $post, 'WP_Post' ) && ( 'gravityview' === get_post_type( $post ) || function_exists('has_shortcode') && has_shortcode( $post->post_content, 'gravityview') ) ) {
+			return true;
+		}
+
+		return false;
+	}
+}
+
 
 if( !function_exists('gravityview_get_sortable_fields') ) {
 

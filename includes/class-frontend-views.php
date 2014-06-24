@@ -90,18 +90,18 @@ class GravityView_frontend {
 	public static function get_default_args() {
 
 		$defaults = array(
-			'id' => '',
+			'id' => NULL,
 			'lightbox' => true,
-			'page_size' => '',
-			'sort_field' => '',
+			'page_size' => NULL,
+			'sort_field' => NULL,
 			'sort_direction' => 'ASC',
-			'start_date' => '',
-			'end_date' => '',
-			'class' => '',
-			'search_value' => '',
-			'search_field' => '',
-			'single_title' => '',
-			'back_link_label' => '',
+			'start_date' => NULL,
+			'end_date' => NULL,
+			'class' => NULL,
+			'search_value' => NULL,
+			'search_field' => NULL,
+			'single_title' => NULL,
+			'back_link_label' => NULL,
 		);
 
 		return $defaults;
@@ -144,8 +144,9 @@ class GravityView_frontend {
 			return array();
 
 		foreach ( $matches as $shortcode ) {
-			if ( 'gravityview' === $shortcode[2] )
-				return shortcode_parse_atts( $shortcode[3] );
+			if ( 'gravityview' === $shortcode[2] ) {
+				return wp_parse_args( shortcode_parse_atts( $shortcode[3] ), self::get_default_args() );
+			}
 		}
 
 		return array();
@@ -159,21 +160,24 @@ class GravityView_frontend {
 	 */
 	public static function single_entry_title( $title, $post_id ) {
 
-		if( !self::is_single_entry() ) {
-			return $title;
-		}
+		// If this is the directory, return
+		if( !self::is_single_entry() ) { return $title; }
 
 		$post = get_post( $post_id );
 
-		// Shortcode or direct View
-		if( 'gravityview' === get_post_type( $post ) ) {
-			$view_atts = get_post_meta( $post_id, '_gravityview_template_settings', true );
-		} else {
-			$view_atts = GravityView_frontend::get_view_shortcode_atts( $post->post_content );
-		}
+		if( has_gravityview_shortcode( $post ) ) {
 
-		if( !empty( $view_atts['single_title'] ) ) {
-			return esc_html( $view_atts['single_title'] );
+			// Shortcode or direct View
+			if( 'gravityview' === get_post_type( $post ) ) {
+				$view_atts = get_post_meta( $post_id, '_gravityview_template_settings', true );
+			} else {
+				$shortcode_atts = GravityView_frontend::get_view_shortcode_atts( $post->post_content );
+				$view_atts = get_post_meta( $shortcode_atts['id'], '_gravityview_template_settings', true );
+			}
+
+			if( !empty( $view_atts['single_title'] ) ) {
+				return esc_html( $view_atts['single_title'] );
+			}
 		}
 
 		return $title;
@@ -244,7 +248,16 @@ class GravityView_frontend {
 		$template_settings = get_post_meta( $args['id'], '_gravityview_template_settings', true );
 		GravityView_Plugin::log_debug( '[render_view] Template Settings: ' . print_r( $template_settings, true ) );
 
+		// The passed args were always winning, even if they were NULL.
+		// This prevents that.
+		foreach ($args as $key => $value) {
+			if( is_null( $args[$key] ) || $args[$key] === '' ) {
+				unset( $args[$key] );
+			}
+		}
+
 		//Override shortcode args over View template settings
+		// array_filter prevents empty arguments from winning over defaults.
 		$args = wp_parse_args( $args, $template_settings );
 
 		GravityView_Plugin::log_debug( '[render_view] Arguments after merging with View settings: ' . print_r( $args, true ) );
@@ -527,10 +540,10 @@ class GravityView_frontend {
 		foreach ($posts as $p) {
 
 			// enqueue template specific styles
-			if( is_a( $p, 'WP_Post' ) && ( function_exists('has_shortcode') && has_shortcode( $p->post_content, 'gravityview') ||  'gravityview' === get_post_type() ) ) {
+			if( has_gravityview_shortcode( $p ) ) {
 
 				// If we're dealing with a View, we return
-				if( 'gravityview' === get_post_type( $post ) ) {
+				if( 'gravityview' === get_post_type( $p ) ) {
 					$view_atts = get_post_meta( $post->ID, '_gravityview_template_settings', true );
 				} else {
 					$view_atts = GravityView_frontend::get_view_shortcode_atts( $p->post_content );
