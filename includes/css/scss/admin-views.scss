@@ -521,7 +521,8 @@ hr{
 // Fix the Merge Tag dropdowns triggering scroll
 // inside the modal
 .post-type-gravityview .ui-dialog-content {
-	overflow: inherit
+	overflow: inherit;
+	padding: 0;
 }
 
 .ui-draggable-dragging {
@@ -564,6 +565,12 @@ hr{
 .gv-dialog-options {
 	display: none;
 	width: 90%;
+
+	&:after {
+	  content: "";
+	  display: table;
+	  clear: both;
+	}
 
 	p {
 		margin: 0 !important;
