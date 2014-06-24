@@ -339,6 +339,12 @@ body .ui-tooltip { border: 4px solid #999; }
 	max-height: 275px;
 	overflow-y: auto;
 
+	&:after {
+	  content: "";
+	  display: table;
+	  clear: both;
+	}
+
 	.close {
 		position: absolute;
 		padding: 5px;
@@ -370,14 +376,6 @@ body .ui-tooltip { border: 4px solid #999; }
 		width: 100%;
 
 	}
-}
-
-.ui-tooltip-content::after {
-    content: '';
-    position: absolute;
-    border-style: solid;
-    display: block;
-    width: 0;
 }
 
 .top .ui-tooltip-content::after {
