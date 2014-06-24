@@ -46,14 +46,14 @@ class GravityView_API {
 	 *
 	 * @param  string      $text       Text to replace variables in
 	 * @param  array      $form        GF Form array
-	 * @param  array      $lead        GF Entry array
+	 * @param  array      $entry        GF Entry array
 	 * @param  boolean     $url_encode URL encode the output using `GFCommon::format_variable_value()`?
 	 * @param  boolean     $esc_html   [description]
 	 * @param  boolean     $nl2br      [description]
 	 * @param  string      $format     [description]
 	 * @return [type]                  [description]
 	 */
-	public static function replace_variables($text, $form, $lead ) {
+	public static function replace_variables($text, $form, $entry ) {
 
 		if( strpos( $text, '{') === false ) {
 			return $text;
@@ -65,7 +65,7 @@ class GravityView_API {
 			return $text;
 		}
 
-		return GFCommon::replace_variables( $label, $form, $entry, false, false, false, "html");
+		return GFCommon::replace_variables( $text, $form, $entry, false, false, false, "html");
 	}
 
 
@@ -266,7 +266,13 @@ function gv_class( $field ) {
 }
 
 function gv_value( $entry, $field) {
-	return GravityView_API::field_value( $entry, $field );
+	$value = GravityView_API::field_value( $entry, $field );
+
+	if( $value === '') {
+		return apply_filters( 'gravityview_empty_value', '' );
+	}
+
+	return $value;
 }
 
 function gv_directory_link() {

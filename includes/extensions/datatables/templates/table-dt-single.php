@@ -11,7 +11,7 @@
 					<?php foreach( $this->fields['single_table-columns'] as $field ) :
 
 						$value = gv_value( $entry, $field );
-						var_dump($this->hide_empty_fields);
+
 						if( $value === '' && $this->hide_empty_fields ) { continue; }
 					?>
 						<tr class="<?php echo gv_class( $field ); ?>">
