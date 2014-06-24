@@ -481,6 +481,8 @@ class GravityView_Admin_Views {
 			'sort_direction' => 'ASC',
 			'start_date' => '',
 			'end_date' => '',
+			'single_title' => '',
+			'back_link_label' => '',
 		);
 
 		$ts = wp_parse_args( $settings, $defaults );
@@ -562,6 +564,27 @@ class GravityView_Admin_Views {
 
 			?>
 
+		</table>
+
+		<h3 style="margin-top:1em;"><?php esc_html_e( 'Single Entry Settings', 'gravity-view'); ?>:</h3>
+
+		<table class="form-table">
+			<tr valign="top">
+				<td scope="row">
+					<label for="gravityview_se_title"><?php esc_html_e( 'Single Entry Title', 'gravity-view'); ?></label>
+				</td>
+				<td>
+					<input name="template_settings[single_title]" id="gravityview_se_title" type="text" class="widefat" value="<?php echo $ts['single_title']; ?>">
+				</td>
+			</tr>
+			<tr valign="top">
+				<td scope="row">
+					<label for="gravityview_se_back_label"><?php esc_html_e( 'Back Link Label', 'gravity-view'); ?></label>
+				</td>
+				<td>
+					<input name="template_settings[back_link_label]" id="gravityview_se_back_label" type="text" class="widefat" value="<?php echo $ts['back_link_label']; ?>">
+				</td>
+			</tr>
 		</table>
 
 		<?php

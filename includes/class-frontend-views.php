@@ -25,6 +25,7 @@ class GravityView_frontend {
 		// Enqueue scripts and styles after GravityView_Template::register_styles()
 		add_action( 'wp_enqueue_scripts', array( 'GravityView_frontend', 'add_scripts_and_styles' ), 20);
 
+		add_filter( 'the_title', array( 'GravityView_frontend', 'single_entry_title' ), 1, 2 );
 		add_filter( 'the_content', array( 'GravityView_frontend', 'insert_view_in_content' ) );
 		add_filter( 'comments_open', array( 'GravityView_frontend', 'comments_open' ), 10, 2);
 
@@ -89,16 +90,18 @@ class GravityView_frontend {
 	public static function get_default_args() {
 
 		$defaults = array(
-			'id' => '',
+			'id' => NULL,
 			'lightbox' => true,
-			'page_size' => '',
-			'sort_field' => '',
+			'page_size' => NULL,
+			'sort_field' => NULL,
 			'sort_direction' => 'ASC',
-			'start_date' => '',
-			'end_date' => '',
-			'class' => '',
-			'search_value' => '',
-			'search_field' => '',
+			'start_date' => NULL,
+			'end_date' => NULL,
+			'class' => NULL,
+			'search_value' => NULL,
+			'search_field' => NULL,
+			'single_title' => NULL,
+			'back_link_label' => NULL,
 		);
 
 		return $defaults;
@@ -141,14 +144,44 @@ class GravityView_frontend {
 			return array();
 
 		foreach ( $matches as $shortcode ) {
-			if ( 'gravityview' === $shortcode[2] )
-				return shortcode_parse_atts( $shortcode[3] );
+			if ( 'gravityview' === $shortcode[2] ) {
+				return wp_parse_args( shortcode_parse_atts( $shortcode[3] ), self::get_default_args() );
+			}
 		}
 
 		return array();
 	}
 
+	/**
+	 * Filter the title for the single entry view
+	 * @param  string $title   current title
+	 * @param  int $post_id Post ID
+	 * @return string          (modified) title
+	 */
+	public static function single_entry_title( $title, $post_id ) {
 
+		// If this is the directory, return
+		if( !self::is_single_entry() ) { return $title; }
+
+		$post = get_post( $post_id );
+
+		if( has_gravityview_shortcode( $post ) ) {
+
+			// Shortcode or direct View
+			if( 'gravityview' === get_post_type( $post ) ) {
+				$view_atts = get_post_meta( $post_id, '_gravityview_template_settings', true );
+			} else {
+				$shortcode_atts = GravityView_frontend::get_view_shortcode_atts( $post->post_content );
+				$view_atts = get_post_meta( $shortcode_atts['id'], '_gravityview_template_settings', true );
+			}
+
+			if( !empty( $view_atts['single_title'] ) ) {
+				return esc_html( $view_atts['single_title'] );
+			}
+		}
+
+		return $title;
+	}
 
 
 	/**
@@ -215,7 +248,16 @@ class GravityView_frontend {
 		$template_settings = get_post_meta( $args['id'], '_gravityview_template_settings', true );
 		GravityView_Plugin::log_debug( '[render_view] Template Settings: ' . print_r( $template_settings, true ) );
 
+		// The passed args were always winning, even if they were NULL.
+		// This prevents that.
+		foreach ($args as $key => $value) {
+			if( is_null( $args[$key] ) || $args[$key] === '' ) {
+				unset( $args[$key] );
+			}
+		}
+
 		//Override shortcode args over View template settings
+		// array_filter prevents empty arguments from winning over defaults.
 		$args = wp_parse_args( $args, $template_settings );
 
 		GravityView_Plugin::log_debug( '[render_view] Arguments after merging with View settings: ' . print_r( $args, true ) );
@@ -257,7 +299,7 @@ class GravityView_frontend {
 		));
 
 		// check if user requests single entry
-		$single_entry = get_query_var( self::get_entry_var_name() );
+		$single_entry = self::is_single_entry();
 
 		if( empty( $single_entry ) ) {
 
@@ -288,6 +330,9 @@ class GravityView_frontend {
 			$view_entries['count'] = 1;
 			$view_entries['entries'][] = gravityview_get_entry( $single_entry );
 			GravityView_Plugin::log_debug( '[render_view] Get single entry: ' . print_r( $view_entries['entries'], true ) );
+
+			// set back link label
+			$gravityview_view->back_link_label = isset( $args['back_link_label'] ) ? $args['back_link_label'] : NULL;
 
 			$gravityview_view->context = 'single';
 			$sections = array( 'single' );
@@ -466,6 +511,22 @@ class GravityView_frontend {
 	}
 
 	/**
+	 * Verify if user requested a single entry view
+	 * @return boolean|string false if not, single entry id if true
+	 */
+	public static function is_single_entry() {
+		$single_entry = get_query_var( self::get_entry_var_name() );
+		if( empty( $single_entry ) ){
+			return false;
+		} else {
+			return $single_entry;
+		}
+	}
+
+
+
+
+	/**
 	 * Register styles and scripts
 	 *
 	 * @filter  gravity_view_lightbox_script Modify the lightbox JS slug. Default: `thickbox`
@@ -479,10 +540,10 @@ class GravityView_frontend {
 		foreach ($posts as $p) {
 
 			// enqueue template specific styles
-			if( is_a( $p, 'WP_Post' ) && ( function_exists('has_shortcode') && has_shortcode( $p->post_content, 'gravityview') ||  'gravityview' === get_post_type() ) ) {
+			if( has_gravityview_shortcode( $p ) ) {
 
 				// If we're dealing with a View, we return
-				if( 'gravityview' === get_post_type( $post ) ) {
+				if( 'gravityview' === get_post_type( $p ) ) {
 					$view_atts = get_post_meta( $post->ID, '_gravityview_template_settings', true );
 				} else {
 					$view_atts = GravityView_frontend::get_view_shortcode_atts( $p->post_content );

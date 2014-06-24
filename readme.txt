@@ -24,6 +24,9 @@ Beautifully display your Gravity Forms entries.
 == Changelog ==
 
 = 1.0.5 =
+* Added: Customize the return to directory link anchor text (in the View Settings metabox, under Single Entry Settings)
+* Added: Set the title for the Single Entry
+* Improved: DataTables styling now set to `display` by default. Can be overridden by using the filter `gravityview_datatables_table_class`
 * Fixed: Approve Entries column not displaying when clicking Forms > Entries link in admin menu
 * Improved: "No Views found" text now more helpful for getting started.
 
