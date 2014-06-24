@@ -455,7 +455,7 @@ class GravityView_frontend {
 	 * @param array $template_settings
 	 * @return void
 	 */
-	public static function get_view_entries( $args, $form_id ) {
+	public static function get_view_entries( $args, $form_id, $template_settings = array() ) {
 
 		GravityView_Plugin::log_debug( '[get_view_entries] init' );
 		// start filters and sorting
@@ -514,9 +514,18 @@ class GravityView_frontend {
 		// Only show active listings
 		$search_criteria['status'] = apply_filters( 'gravityview_status', 'active', $args );
 
+		/**
+		 * Filter get entries criteria
+		 *
+		 * Passes and returns array with `search_criteria`, `sorting` and `paging` keys.
+		 *
+		 * @var array
+		 */
+		$parameters = apply_filters( 'gravityview_get_entries', apply_filters( 'gravityview_get_entries_'.$args['id'], compact( 'search_criteria', 'sorting', 'paging' ) ) );
+
 		//fetch entries
 		$count = 0;
-		$entries = gravityview_get_entries( $form_id, compact( 'search_criteria', 'sorting', 'paging' ), $count );
+		$entries = gravityview_get_entries( $form_id, $parameters, $count );
 
 		GravityView_Plugin::log_debug( '[get_view_entries] Get Entries. Found: ' . print_r( $count, true ) .' entries');
 
