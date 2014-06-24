@@ -32,7 +32,7 @@ class GravityView_API {
 
 		if( !empty( $field['show_label'] ) ) {
 			$label = empty( $field['custom_label'] ) ? $field['label'] : $field['custom_label'];
-			$label = self::replace_variables( $label, $form, $entry, false, false, true, "html");
+			$label = self::replace_variables( $label, $form, $entry );
 			$label .= apply_filters( 'gravityview_render_after_label', '', $field );
 		} else {
 			$label = '';
@@ -44,16 +44,16 @@ class GravityView_API {
 	/**
 	 * Check for merge tags before passing to Gravity Forms to improve speed
 	 *
-	 * @param  [type]      $text       [description]
-	 * @param  [type]      $form       [description]
-	 * @param  [type]      $lead       [description]
-	 * @param  boolean     $url_encode [description]
+	 * @param  string      $text       Text to replace variables in
+	 * @param  array      $form        GF Form array
+	 * @param  array      $lead        GF Entry array
+	 * @param  boolean     $url_encode URL encode the output using `GFCommon::format_variable_value()`?
 	 * @param  boolean     $esc_html   [description]
 	 * @param  boolean     $nl2br      [description]
 	 * @param  string      $format     [description]
 	 * @return [type]                  [description]
 	 */
-	public static function replace_variables($text, $form, $lead, $url_encode = false, $esc_html=true, $nl2br = true, $format="html") {
+	public static function replace_variables($text, $form, $lead ) {
 
 		if( strpos( $text, '{') === false ) {
 			return $text;
@@ -65,7 +65,7 @@ class GravityView_API {
 			return $text;
 		}
 
-		return GFCommon::replace_variables( $label, $form, $entry, false, false, true, "html");
+		return GFCommon::replace_variables( $label, $form, $entry, false, false, false, "html");
 	}
 
 
@@ -130,7 +130,7 @@ class GravityView_API {
 
 		$display_value = GFCommon::get_lead_field_display($field, $value, $entry["currency"], false, $format);
 		$display_value = apply_filters("gform_entry_field_value", $display_value, $field, $entry, $form);
-		$display_value = self::replace_variables($display_value, $form, $entry, false, false, true, "html");
+		$display_value = self::replace_variables( $display_value, $form, $entry );
 
 		// Check whether the field exists in /includes/fields/{$field_type}.php
 		// This can be overridden by user template files.
