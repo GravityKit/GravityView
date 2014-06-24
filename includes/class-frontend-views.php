@@ -351,7 +351,7 @@ class GravityView_frontend {
 		$sections = apply_filters( 'gravityview_render_view_sections', $sections, $template_id );
 		foreach( $sections as $section ) {
 			GravityView_Plugin::log_debug( '[render_view] Rendering '. $section . ' section.' );
-			$gravityview_view->render( $view_slug, $section );
+			$gravityview_view->render( $view_slug, $section, false );
 		}
 
 		// Print the View ID to enable proper cookie pagination ?>
