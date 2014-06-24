@@ -1330,8 +1330,15 @@ class GravityView_Admin_Views {
 	 */
 	public static function render_text_option( $name = '', $id = '', $current = '', $add_merge_tags = NULL ) {
 
-		// Show the merge tags only if the field is a list view, or $add_merge_tags is defined as true
-		if( ( $add_merge_tags === true )  || ( preg_match( '/_list-/ism', $name ) && $add_merge_tags !== false) ) {
+		// Show the merge tags if the field is a list view
+		$is_list = ( preg_match( '/_list-/ism', $name ));
+
+		// Or is a single entry view
+		$is_single = ( preg_match( '/single_/ism', $name ));
+		$show = ( $is_single || $is_list );
+
+		// and $add_merge_tags is not false
+		if( $show && $add_merge_tags !== false ) {
 			$merge_class = ' merge-tag-support mt-position-right mt-hide_all_fields';
 		}
 
@@ -1653,25 +1660,16 @@ class GravityView_Admin_Views {
 		} // End single page
 	}
 
-	function enqueue_gravity_forms_scripts() {
+	static function enqueue_gravity_forms_scripts() {
 		GFForms::register_scripts();
 
-		$thickbox = !GFCommon::is_wp_version("3.3") ? 'gf_thickbox' : 'thickbox';
 		$scripts = array(
-		    $thickbox,
-		    'jquery-ui-core',
-		    'jquery-ui-sortable',
-		    'jquery-ui-tabs',
 		    'sack',
 		    'gform_gravityforms',
 		    'gform_forms',
-		    'gform_json',
 		    'gform_form_admin',
-		    'gform_floatmenu',
-		    'gform_menu',
-		    'gform_placeholder',
 		    'jquery-ui-autocomplete'
-		    );
+		);
 
 		if ( wp_is_mobile() )
 		    $scripts[] = 'jquery-touch-punch';
@@ -1686,7 +1684,8 @@ class GravityView_Admin_Views {
 		$filter = current_filter();
 
 		if( preg_match('/script/ism', $filter ) ) {
-			$allow_scripts = array( 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-uservoice-widget', 'gravityview-jquery-cookie', 'gravityview_views_datepicker' );
+			$allow_scripts = array( 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-uservoice-widget', 'gravityview-jquery-cookie', 'gravityview_views_datepicker',
+			'sack', 'gform_gravityforms', 'gform_forms', 'gform_form_admin', 'jquery-ui-autocomplete' );
 			$registered = array_merge( $registered, $allow_scripts );
 		} elseif( preg_match('/style/ism', $filter ) ) {
 			$allow_styles = array( 'dashicons', 'wp-jquery-ui-dialog', 'gravityview_views_styles', 'gravityview_fonts', 'gravityview_views_datepicker' );
