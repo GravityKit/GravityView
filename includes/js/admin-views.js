@@ -603,6 +603,12 @@
 					// Add in the Options <div>
 					newField.append( response );
 
+					// Remove existing merge tags
+					$('.all-merge-tags').remove();
+
+					// Re-init merge tag dropdowns
+					window.gfMergeTags = new gfMergeTagsObj(form);
+
 					if( $('.gv-dialog-options', newField ).length > 0 ) {
 						// There are options. Show the settings gear.
 						$('.dashicons-admin-generic', newField).hide().removeClass('hide-if-js').fadeIn(100);
