@@ -168,30 +168,9 @@ class GravityView_Admin_Add_Shortcode {
 
 					</table>
 
-					<h4 style="margin-top:1em;"><?php esc_html_e( 'Single Entry Settings', 'gravity-view'); ?>:</h4>
-
-					<table class="form-table">
-						<tr valign="top" class="alternate">
-							<td scope="row">
-								<label for="gravityview_se_title"><?php esc_html_e( 'Single Entry Title', 'gravity-view'); ?></label>
-							</td>
-							<td>
-								<input name="gravityview_single_title" id="gravityview_se_title" type="text" class="widefat">
-							</td>
-						</tr>
-						<tr valign="top">
-							<td scope="row">
-								<label for="gravityview_se_back_label"><?php esc_html_e( 'Back Link Label', 'gravity-view'); ?></label>
-							</td>
-							<td>
-								<input name="gravityview_back_link_label" id="gravityview_se_back_label" type="text" class="widefat">
-							</td>
-						</tr>
-					</table>
-
 					<div class="submit">
-						<input type="submit" class="button-primary" value="Insert View" id="insert_gravityview_view" />
-						<input class="button-secondary" type="submit" onclick="tb_remove(); return false;" value="<?php _e("Cancel", "gravity-view"); ?>" />
+						<input type="submit" class="button-primary" value="<?php esc_attr_e('Insert View', 'gravity-view' ); ?>" id="insert_gravityview_view" />
+						<input class="button-secondary" type="submit" onclick="tb_remove(); return false;" value="<?php esc_attr_e("Cancel", "gravity-view"); ?>" />
 					</div>
 
 				</div>
