@@ -160,17 +160,20 @@ class GV_Extension_DataTables_Data {
 		}
 
 		// View was called using the shortcode
-		if( has_gravityview_shortcode( $post ) ) {
+		if( 'gravityview' === get_post_type() ) {
+			// view was called directly
+			$view_id = $post->ID;
+		} else if( has_gravityview_shortcode( $post ) ) {
 			$view_atts = GravityView_frontend::get_view_shortcode_atts( $post->post_content );
+
 			if( !empty( $view_atts['id'] ) ) {
 				$view_id = $view_atts['id'];
 			} else {
+				GravityView_Plugin::log_error( 'GV_Extension_DataTables_Data[add_scripts_and_styles] Returning; no ID defined.');
 				return;
 			}
-		} else if( 'gravityview' === get_post_type() ) {
-			// view was called directly
-			$view_id = $post->ID;
 		} else {
+			GravityView_Plugin::log_debug( 'GV_Extension_DataTables_Data[add_scripts_and_styles] Not GravityView type and no shortcode found.');
 			return;
 		}
 
@@ -179,6 +182,7 @@ class GV_Extension_DataTables_Data {
 
 		// is the View requested a Datatables view ?
 		if( empty( $template_id ) || 'datatables_table' !== $template_id ) {
+			GravityView_Plugin::log_debug( 'GV_Extension_DataTables_Data[add_scripts_and_styles] DataTables view not requested.');
 			return;
 		}
 
@@ -249,6 +253,8 @@ class GV_Extension_DataTables_Data {
 
 		// filter init DataTables options
 		$dt_config = apply_filters( 'gravityview_datatables_js_options', $dt_config );
+
+		GravityView_Plugin::log_debug( 'GV_Extension_DataTables_Data[add_scripts_and_styles] DataTables configuration: '. print_r( $dt_config, true ) );
 
 		wp_localize_script( 'gv-datatables-cfg', 'gvDTglobals', $dt_config );
 
