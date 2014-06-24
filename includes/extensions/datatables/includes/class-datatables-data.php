@@ -160,7 +160,7 @@ class GV_Extension_DataTables_Data {
 		}
 
 		// View was called using the shortcode
-		if( 'gravityview' === get_post_type() ) {
+		if( 'gravityview' === get_post_type( $post ) ) {
 			// view was called directly
 			$view_id = $post->ID;
 		} else if( has_gravityview_shortcode( $post ) ) {
