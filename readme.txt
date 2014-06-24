@@ -24,17 +24,19 @@ Beautifully display your Gravity Forms entries.
 == Changelog ==
 
 = 1.0.5 =
+* Added: Lightbox for images (in View Settings metabox)
 * Added: Merge Tags - You can now modify labels and settings using dynamic text based on the value of a field. (requires Gravity Forms 1.8.6 or higher)
 * Added: Customize the return to directory link anchor text (in the View Settings metabox, under Single Entry Settings)
 * Added: Set the title for the Single Entry
 * Added: Choose whether to hide empty fields on a per-View basis
 * Improved: DataTables styling now set to `display` by default. Can be overridden by using the filter `gravityview_datatables_table_class`
-* Fixed: Approve Entries column not displaying when clicking Forms > Entries link in admin menu
-* Fixed: Field Settings gear no longer showing for widgets without options
-* Improved: "No Views found" text now more helpful for getting started.
 * Improved: Speed!
 	* Added `form` item to global `$gravityview_view` data instead of looking it up in functions. Improves `gv_value()` and `gv_label()` speed.
 	* Added `replace_variables()` method to `GravityView_API` to reduce time to process merge tags by checking if there are any curly brackets first.
+* Improved: "No Views found" text now more helpful for getting started.
+* Fixed: Approve Entries column not displaying when clicking Forms > Entries link in admin menu
+* Fixed: Field Settings gear no longer showing for widgets without options
+* Fixed: Added Gravity Forms minimum version notice when using < 1.8
 
 = 1.0.4 =
 * Added: __DataTables integration__ Created a new view type for existing forms that uses the [DataTables](http://datatables.net) script.

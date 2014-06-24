@@ -72,10 +72,10 @@ final class GravityView_Plugin {
 
 	public function __construct() {
 
-		// If Gravity Forms doesn't exist, load the admin view class to show
-		// the notice, but not load any post types or process shortcodes.
+		// If Gravity Forms doesn't exist or is outdated, load the admin view class to
+		// show the notice, but not load any post types or process shortcodes.
 		// Without Gravity Forms, there is no GravityView. Beautiful, really.
-		if(!class_exists('GFForms')) {
+		if( !class_exists('GFForms') || false === version_compare(GFCommon::$version, '1.8', ">=") ) {
 			require_once( GRAVITYVIEW_DIR .'includes/class-admin-views.php' );
 			return;
 		}
