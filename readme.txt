@@ -37,6 +37,7 @@ Beautifully display your Gravity Forms entries.
 * Fixed: Approve Entries column not displaying when clicking Forms > Entries link in admin menu
 * Fixed: Field Settings gear no longer showing for widgets without options
 * Fixed: Added Gravity Forms minimum version notice when using < 1.8
+* Fixed: Column "Data Source" content being displayed in other columns
 
 = 1.0.4 =
 * Added: __DataTables integration__ Created a new view type for existing forms that uses the [DataTables](http://datatables.net) script.

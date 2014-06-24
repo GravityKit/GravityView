@@ -195,6 +195,7 @@ class GravityView_Welcome {
 					<li>Fixed: Approve Entries column not displaying when clicking Forms > Entries link in admin menu</li>
 					<li>Fixed: Field Settings gear no longer showing for widgets without options</li>
 					<li>Fixed: Added Gravity Forms minimum version notice when using &lt; 1.8</li>
+					<li>Fixed: Column "Data Source" content being displayed in other columns</li>
 				</ul>
 			</div>
 		</div>

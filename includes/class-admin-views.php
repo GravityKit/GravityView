@@ -110,6 +110,8 @@ class GravityView_Admin_Views {
 
 	public function add_post_type_column_content( $column_name, $post_id )	{
 
+		if( $column_name !== 'gv_connected_form' )  { return; }
+
 		$form_id = get_post_meta( $post_id, '_gravityview_form_id', true );
 
 		// All Views should have a connected form. If it doesn't, that's not right.
