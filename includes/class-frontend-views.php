@@ -423,14 +423,34 @@ class GravityView_frontend {
 
 		//start date & end date filter - Override values defined in shortcode (if needed)
 		if( !empty( $args['start_date'] ) ) {
-			if( empty( $search_criteria['start_date'] ) || ( !empty( $search_criteria['start_date'] ) && strtotime( $args['start_date'] ) > strtotime( $search_criteria['start_date'] ) ) ) {
+			if(
+				// If there is no search being performed
+				empty( $search_criteria['start_date'] ) ||
+
+				// Or if there is a search being performed
+				( !empty( $search_criteria['start_date'] )
+					// And the search is for entries before the start date defined by the settings
+					&& strtotime( $search_criteria['start_date'] ) < strtotime( $args['start_date'] )
+				)
+			) {
+				// Then we override the search and re-set the start date
 				$search_criteria['start_date'] = $args['start_date'];
 			}
 		}
 
 		if( !empty( $args['end_date'] ) ) {
-			if( empty( $search_criteria['end_date'] ) || ( !empty( $search_criteria['end_date'] ) && strtotime( $args['end_date'] ) < strtotime( $search_criteria['end_date'] ) ) ) {
-				$search_criteria['start_date'] = $args['end_date'];
+			if(
+				// If there is no search being performed
+				empty( $search_criteria['end_date'] ) ||
+
+				// Or if there is a search being performed
+				( !empty( $search_criteria['end_date'] )
+					// And the search for entries after the end date defined by the settings
+					&& strtotime( $search_criteria['end_date'] ) > strtotime( $args['end_date'] )
+				)
+			) {
+				// Then we override the search and re-set the end date
+				$search_criteria['end_date'] = $args['end_date'];
 			}
 		}
 
