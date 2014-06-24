@@ -289,6 +289,11 @@ class GravityView_frontend {
 			$view_entries['entries'][] = gravityview_get_entry( $single_entry );
 			GravityView_Plugin::log_debug( '[render_view] Get single entry: ' . print_r( $view_entries['entries'], true ) );
 
+			// back link label
+			$gravityview_view->back_link_label = isset( $args['back_link_label'] ) ? $args['back_link_label'] : NULL;
+
+			// Single Entry title
+
 			$gravityview_view->context = 'single';
 			$sections = array( 'single' );
 
