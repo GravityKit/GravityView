@@ -592,6 +592,11 @@ hr{
 	}
 }
 
+// Make the dropdown icon fit on the same line as the text field
+.post-type-gravityview input.merge-tag-support {
+	width: 90%;
+}
+
 .gv-label-checkbox {
 	padding-right: 1em;
 	display: inline;
@@ -603,5 +608,7 @@ hr{
 .gv-label-text {
 	float: left;
 	clear: both;
+	width: 100%;
+	display: block;
 	margin-bottom: 0.5em;
 }

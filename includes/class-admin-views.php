@@ -583,19 +583,15 @@ class GravityView_Admin_Views {
 
 		<table class="form-table">
 			<tr valign="top">
-				<td scope="row">
+				<td scope="row" colspan="2">
 					<label for="gravityview_se_title"><?php esc_html_e( 'Single Entry Title', 'gravity-view'); ?></label>
-				</td>
-				<td>
-					<input name="template_settings[single_title]" id="gravityview_se_title" type="text" class="widefat" value="<?php echo $ts['single_title']; ?>">
+					<?php echo self::render_text_option( 'template_settings[single_title]', 'gravityview_se_title', $ts['single_title'], true ); ?>
 				</td>
 			</tr>
 			<tr valign="top">
-				<td scope="row">
+				<td scope="row" colspan="2">
 					<label for="gravityview_se_back_label"><?php esc_html_e( 'Back Link Label', 'gravity-view'); ?></label>
-				</td>
-				<td>
-					<input name="template_settings[back_link_label]" id="gravityview_se_back_label" type="text" class="widefat" value="<?php echo $ts['back_link_label']; ?>">
+					<?php echo self::render_text_option( 'template_settings[back_link_label]', 'gravityview_se_back_label', $ts['back_link_label'], true ); ?>
 				</td>
 			</tr>
 		</table>
@@ -1206,13 +1202,15 @@ class GravityView_Admin_Views {
 				'custom_label' => array(
 					'type' => 'text',
 					'label' => __( 'Custom Label:', 'gravity-view' ),
-					'default' => ''
+					'default' => '',
+					'merge_tags' => true,
 				),
 				'custom_class' => array(
 					'type' => 'text',
 					'label' => __( 'Custom CSS Class:', 'gravity-view' ),
 					'desc' => __( 'This class will be added to the field container.', 'gravity-view'),
-					'default' => ''
+					'default' => '',
+					'merge_tags' => false,
 				),
 				'only_loggedin' => array(
 					'type' => 'checkbox',
@@ -1251,7 +1249,7 @@ class GravityView_Admin_Views {
 	 * @param  mixed      $current Current value of option
 	 * @return string               HTML output of option
 	 */
-	public static function render_field_option( $name = '', $option, $current = NULL ) {
+	public static function render_field_option( $name = '', $passed_option, $current = NULL ) {
 
 		$defaults = array(
 			'default' => '',
@@ -1260,43 +1258,43 @@ class GravityView_Admin_Views {
 			'label' => '',
 			'type'	=> 'text',
 			'choices' => NULL,
+			'merge_tags' => true,
 		);
 
-		$parsed_option = wp_parse_args( $option, $defaults );
+		$option = wp_parse_args( $passed_option, $defaults );
 
-		extract( $parsed_option );
-
+		extract( $option );
 
 		$output = '';
 
 		if( is_null($current) ) {
-			$current = $default;
+			$current = $option['default'];
 		}
 
 		$id = sanitize_html_class( $name );
 
-		$output .= '<label for="'. $id .'" class="gv-label-'.sanitize_html_class( $type ).'">';
+		$output .= '<label for="'. $id .'" class="gv-label-'.sanitize_html_class( $option['type'] ).'">';
 
-		if(!empty($desc)) {
-			$desc = '<span class="howto">'.$desc.'</span>';
+		if( !empty( $option['desc'] ) ) {
+			$option['desc'] = '<span class="howto">'.$option['desc'].'</span>';
 		}
 
-		switch( $type ) {
+		switch( $option['type'] ) {
 			case 'checkbox':
 				$output .= self::render_checkbox_option( $name, $id, $current );
-				$output .= '&nbsp;'.$label.$desc;
+				$output .= '&nbsp;'.$option['label'].$option['desc'];
 				break;
 
 			case 'select':
-				$output .= $label.$desc.'&nbsp;';
-				$output .= self::render_select_option( $name, $id, $choices, $current );
+				$output .= $option['label'].$option['desc'].'&nbsp;';
+				$output .= self::render_select_option( $name, $id, $option['choices'], $current );
 				break;
 
 			case 'text':
 			default:
-				$output .= $label.$desc;
+				$output .= $option['label'].$option['desc'];
 				$output .= '<div>';
-				$output .= self::render_text_option( $name, $id, $current );
+				$output .= self::render_text_option( $name, $id, $current, $option['merge_tags'] );
 				$output .= '</div>';
 				break;
 		}
@@ -1330,14 +1328,14 @@ class GravityView_Admin_Views {
 	 * @param string $add_merge_tags Add merge tags to the input?
 	 * @return string         [html tags]
 	 */
-	public static function render_text_option( $name = '', $id = '', $current = '', $add_merge_tags = true ) {
+	public static function render_text_option( $name = '', $id = '', $current = '', $add_merge_tags = NULL ) {
 
-		// Show the merge tags only if the field is a list view,
-		if( preg_match( '/_list-/', $name ) && $add_merge_tags ) {
+		// Show the merge tags only if the field is a list view, or $add_merge_tags is defined as true
+		if( ( $add_merge_tags === true )  || ( preg_match( '/_list-/ism', $name ) && $add_merge_tags !== false) ) {
 			$merge_class = ' merge-tag-support mt-position-right mt-hide_all_fields';
 		}
 
-		return '<input name="'. $name .'" id="'. $id .'" type="text" value="'. $current .'" class="all-options'.$merge_class.'">';
+		return '<input name="'. $name .'" id="'. $id .'" type="text" value="'. $current .'" class="widefat'.$merge_class.'">';
 	}
 
 	/**

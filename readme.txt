@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries.
 == Changelog ==
 
 = 1.0.5 =
+* Added: Merge Tags (requires Gravity Forms 1.8.6 or higher)
 * Added: Customize the return to directory link anchor text (in the View Settings metabox, under Single Entry Settings)
 * Added: Set the title for the Single Entry
 * Improved: DataTables styling now set to `display` by default. Can be overridden by using the filter `gravityview_datatables_table_class`
