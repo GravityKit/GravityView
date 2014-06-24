@@ -50,7 +50,7 @@ class GravityView_Admin_Add_Shortcode {
 			return;
 		}
 		?>
-		<a href="#TB_inline?width=480&inlineId=select_gravityview_view&width=600&height=600" class="thickbox button gform_media_link" id="add_gravityview" title="<?php esc_attr_e("Add a Gravity Forms View", 'gravity-view'); ?>"><span class="icon gv-icon-astronaut-head"></span><?php esc_html_e( 'Add View', 'gravity-view' ); ?></a>
+		<a href="#TB_inline?width=480&amp;inlineId=select_gravityview_view&amp;width=600&amp;height=800" class="thickbox button gform_media_link" id="add_gravityview" title="<?php esc_attr_e("Add a Gravity Forms View", 'gravity-view'); ?>"><span class="icon gv-icon-astronaut-head"></span><?php esc_html_e( 'Add View', 'gravity-view' ); ?></a>
 		<?php
 
 	}
@@ -110,7 +110,7 @@ class GravityView_Admin_Add_Shortcode {
 							</td>
 						</tr>
 
-						<tr valign="top" class="alternate">
+						<tr valign="top">
 							<td>
 								<label for="gravityview_only_approved"><?php esc_html_e( 'Show only approved entries', 'gravity-view' ); ?></label>
 							</td>
@@ -124,7 +124,7 @@ class GravityView_Admin_Add_Shortcode {
 							</td>
 						</tr>
 
-						<tr valign="top">
+						<tr valign="top" class="alternate">
 							<td>
 								<label for="gravityview_sort_field"><?php esc_html_e( 'Sort by field', 'gravity-view'); ?></label>
 							</td>
@@ -136,7 +136,7 @@ class GravityView_Admin_Add_Shortcode {
 							</td>
 						</tr>
 
-						<tr valign="top" class="alternate">
+						<tr valign="top">
 							<td>
 								<label for="gravityview_sort_direction"><?php esc_html_e( 'Sort direction', 'gravity-view'); ?></label>
 							</td>
@@ -148,7 +148,7 @@ class GravityView_Admin_Add_Shortcode {
 							</td>
 						</tr>
 
-						<tr valign="top">
+						<tr valign="top" class="alternate">
 							<td>
 								<label for="gravityview_start_date"><?php esc_html_e( 'Filter by Start Date', 'gravity-view'); ?></label>
 							</td>
@@ -157,7 +157,7 @@ class GravityView_Admin_Add_Shortcode {
 							</td>
 						</tr>
 
-						<tr valign="top" class="alternate">
+						<tr valign="top">
 							<td>
 								<label for="gravityview_end_date"><?php esc_html_e( 'Filter by End Date', 'gravity-view'); ?></label>
 							</td>
@@ -166,6 +166,27 @@ class GravityView_Admin_Add_Shortcode {
 							</td>
 						</tr>
 
+					</table>
+
+					<h4 style="margin-top:1em;"><?php esc_html_e( 'Single Entry Settings', 'gravity-view'); ?>:</h4>
+
+					<table class="form-table">
+						<tr valign="top" class="alternate">
+							<td scope="row">
+								<label for="gravityview_se_title"><?php esc_html_e( 'Single Entry Title', 'gravity-view'); ?></label>
+							</td>
+							<td>
+								<input name="gravityview_single_title" id="gravityview_se_title" type="text" class="widefat">
+							</td>
+						</tr>
+						<tr valign="top">
+							<td scope="row">
+								<label for="gravityview_se_back_label"><?php esc_html_e( 'Back Link Label', 'gravity-view'); ?></label>
+							</td>
+							<td>
+								<input name="gravityview_back_link_label" id="gravityview_se_back_label" type="text" class="widefat">
+							</td>
+						</tr>
 					</table>
 
 					<div class="submit">

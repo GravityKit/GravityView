@@ -35,6 +35,18 @@
 			shortcode += ' lightbox="0"';
 		}
 
+		// single entry title
+		var single_title = $("#gravityview_se_title").val();
+		if( '' !== single_title ) {
+			shortcode += ' single_title="' + single_title + '"';
+		}
+
+		// single entry title
+		var back_link_label = $("#gravityview_se_back_label").val();
+		if( '' !== back_link_label ) {
+			shortcode += ' back_link_label="' + back_link_label + '"';
+		}
+
 		//show only approved
 		if( $("#gravityview_only_approved").prop('checked') === true ) {
 			shortcode += ' show_only_approved="1"';

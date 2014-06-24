@@ -566,8 +566,7 @@ class GravityView_Admin_Views {
 
 		</table>
 
-		<br>
-		<h3><?php esc_html_e( 'Single Entry Settings', 'gravity-view'); ?>:</h3>
+		<h3 style="margin-top:1em;"><?php esc_html_e( 'Single Entry Settings', 'gravity-view'); ?>:</h3>
 
 		<table class="form-table">
 			<tr valign="top">
