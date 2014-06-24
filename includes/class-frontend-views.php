@@ -386,15 +386,15 @@ class GravityView_frontend {
 	 * Process the start and end dates for a view - overrides values defined in shortcode (if needed)
 	 *
 	 * The `start_date` and `end_date` keys need to be in a format processable by GFFormsModel::get_date_range_where(),
-	 * which uses \DateTime() format. We and simply pass a timestamp, if we want to.
+	 * which uses \DateTime() format.
 	 *
 	 * You can set the `start_date` or `end_date` to any value allowed by {@link http://www.php.net//manual/en/function.strtotime.php strtotime()},
 	 * including strings like "now" or "-1 year" or "-3 days".
 	 *
 	 * @todo  Compress into one
-	 * @param  [type]      $args            [description]
-	 * @param  [type]      $search_criteria [description]
-	 * @return [type]                       [description]
+	 * @param  array      $args            View settings
+	 * @param  array      $search_criteria Search being performed, if any
+	 * @return array                       Modified `$search_criteria` array
 	 */
 	static function process_search_dates( $args, $search_criteria ) {
 
@@ -404,6 +404,15 @@ class GravityView_frontend {
 			// If so, we want to make sure that the search doesn't go outside the bounds defined.
 			if( !empty( $args[ $key ] ) ) {
 
+				// Get a timestamp and see if it's a valid date format
+				$date = strtotime( $args[ $key ] );
+
+				// The date was invalid
+				if( empty( $date ) ) {
+					GravityView_Plugin::log_error( '[process_search_dates] Invalid '.$key.' date format: ' . $args[ $key ]);
+					continue;
+				}
+
 				if(
 					// If there is no search being performed
 					empty( $search_criteria[ $key ] ) ||
@@ -412,22 +421,13 @@ class GravityView_frontend {
 					( !empty( $search_criteria[ $key ] )
 						// And the search is for entries before the start date defined by the settings
 						&& (
-							( $key === 'start_date' && strtotime( $search_criteria[ $key ] ) < strtotime( $args[ $key ] ) ) ||
-							( $key === 'end_date' && strtotime( $search_criteria[ $key ] ) > strtotime( $args[ $key ] ) )
+							( $key === 'start_date' && strtotime( $search_criteria[ $key ] ) < $date ) ||
+							( $key === 'end_date' && strtotime( $search_criteria[ $key ] ) > $date )
 						)
 					)
 				) {
-
-					// Get a timestamp and see if it's a valid date format
-					$date = strtotime( $args[ $key ] );
-
-					// Valid date
-					if( !empty( $date ) ) {
-						// Then we override the search and re-set the start date
-						$search_criteria[ $key ] = date( 'Y-m-d H:i:s' , $date );
-					} else {
-						GravityView_Plugin::log_error( '[process_search_dates] Invalid '.$key.' date format: ' . $args[ $key ]);
-					}
+					// Then we override the search and re-set the start date
+					$search_criteria[ $key ] = date( 'Y-m-d H:i:s' , $date );
 				}
 			}
 
