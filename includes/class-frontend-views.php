@@ -160,8 +160,10 @@ class GravityView_frontend {
 	 */
 	public static function single_entry_title( $title, $post_id ) {
 
+		$single_entry = self::is_single_entry();
+
 		// If this is the directory, return
-		if( !self::is_single_entry() ) { return $title; }
+		if( empty( $single_entry ) ) { return $title; }
 
 		$post = get_post( $post_id );
 
@@ -169,14 +171,24 @@ class GravityView_frontend {
 
 			// Shortcode or direct View
 			if( 'gravityview' === get_post_type( $post ) ) {
+				$view_id = $post_id;
 				$view_atts = get_post_meta( $post_id, '_gravityview_template_settings', true );
 			} else {
+				$view_id = $shortcode_atts['id'];
 				$shortcode_atts = GravityView_frontend::get_view_shortcode_atts( $post->post_content );
 				$view_atts = get_post_meta( $shortcode_atts['id'], '_gravityview_template_settings', true );
 			}
 
 			if( !empty( $view_atts['single_title'] ) ) {
-				return esc_html( $view_atts['single_title'] );
+
+				// We are allowing HTML in the fields, so no escaping the output
+				$title = $view_atts['single_title'];
+
+				$entry = gravityview_get_entry( $single_entry );
+				$form_id = get_post_meta( $view_id, '_gravityview_form_id', true );
+				$form = gravityview_get_form( $form_id );
+
+				$title = GFCommon::replace_variables($title, $form, $entry, false, false, true, "html");
 			}
 		}
 
