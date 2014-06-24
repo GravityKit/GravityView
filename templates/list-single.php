@@ -52,7 +52,7 @@
 					foreach( $this->fields['single_list-description'] as $field ) : ?>
 						<div class="<?php echo gv_class( $field ); ?>"><?php
 
-							$label = gv_label( $field );
+							$label = gv_label( $field, $entry );
 							if(!empty($label)) { echo '<h4>'.esc_html( $label ).'</h4>'; }
 
 							echo wpautop(gv_value( $entry, $field ));
@@ -66,7 +66,7 @@
 				<div class="gv-list-view-content-attributes">
 				<?php
 					foreach( $this->fields['single_list-content-attributes'] as $field ) : ?>
-						<p class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
+						<p class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field, $entry ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
 					<?php endforeach; ?>
 				</div>
 				<?php endif; ?>
@@ -78,7 +78,7 @@
 					<div class="gv-grid-col-1-2 gv-left">
 					<?php if( !empty(  $this->fields['single_list-footer-left'] ) ): ?>
 						<?php foreach( $this->fields['single_list-footer-left'] as $field ) : ?>
-							<div class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></div>
+							<div class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field, $entry ) ); ?><?php echo gv_value( $entry, $field ); ?></div>
 						<?php endforeach; ?>
 					<?php endif; ?>
 					</div>
@@ -86,7 +86,7 @@
 					<div class="gv-grid-col-1-2 gv-right">
 					<?php if( !empty(  $this->fields['single_list-footer-right'] ) ): ?>
 						<?php foreach( $this->fields['single_list-footer-right'] as $field ) : ?>
-							<div class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field ) ); ?><?php echo gv_value( $entry, $field ); ?></div>
+							<div class="<?php echo gv_class( $field ); ?>"><?php echo esc_html( gv_label( $field, $entry ) ); ?><?php echo gv_value( $entry, $field ); ?></div>
 						<?php endforeach; ?>
 					<?php endif; ?>
 					</div>

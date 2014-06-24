@@ -25,17 +25,20 @@ class GravityView_API {
 	 * @param mixed $field
 	 * @return string
 	 */
-	public static function field_label( $field ) {
+	public static function field_label( $field, $entry = NULL ) {
+		global $gravityview_view;
+
+		$form = gravityview_get_form( $gravityview_view->form_id );
 
 		if( !empty( $field['show_label'] ) ) {
 			$label = empty( $field['custom_label'] ) ? $field['label'] : $field['custom_label'];
+			$label = GFCommon::replace_variables( $label, $form, $entry, false, false, true, "html");
 			$label .= apply_filters( 'gravityview_render_after_label', '', $field );
 		} else {
 			$label = '';
 		}
 
 		return $label .' ';
-
 	}
 
 
@@ -103,6 +106,7 @@ class GravityView_API {
 
 		$display_value = GFCommon::get_lead_field_display($field, $value, $entry["currency"], false, $format);
 		$display_value = apply_filters("gform_entry_field_value", $display_value, $field, $entry, $form);
+		$display_value = GFCommon::replace_variables($display_value, $form, $entry, false, false, true, "html");
 
 
 		// Check whether the field exists in /includes/fields/{$field_type}.php
@@ -230,8 +234,8 @@ class GravityView_API {
 
 // inside loop functions
 
-function gv_label( $field ) {
-	return GravityView_API::field_label( $field );
+function gv_label( $field, $entry = NULL ) {
+	return GravityView_API::field_label( $field, $entry );
 }
 
 function gv_class( $field ) {

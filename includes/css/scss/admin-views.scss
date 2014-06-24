@@ -11,6 +11,8 @@
  */
 
 
+@import "admin-merge-tags.scss";
+
 /* GV Grid
 --------------------------------------- */
 
@@ -518,6 +520,12 @@ hr{
 	cursor: default;
 }
 
+// Fix the Merge Tag dropdowns triggering scroll
+// inside the modal
+.post-type-gravityview .ui-dialog-content {
+	overflow: inherit
+}
+
 .ui-draggable-dragging {
 	max-width: 400px !important;
 }
@@ -579,6 +587,7 @@ hr{
 
 	input[type="text"] {
 		display: block;
+		display: inline-block; // Inline-block for the merge tags dropdown
 		clear: left;
 	}
 }
