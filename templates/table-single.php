@@ -8,10 +8,15 @@
 			</thead>
 			<tbody>
 				<?php foreach( $this->entries as $entry ) : ?>
-					<?php foreach( $this->fields['single_table-columns'] as $field ) : ?>
+					<?php foreach( $this->fields['single_table-columns'] as $field ) :
+
+						$value = gv_value( $entry, $field );
+
+						if( $value === '' && $this->hide_empty_fields ) { continue; }
+					?>
 						<tr class="<?php echo gv_class( $field ); ?>">
 							<th scope="row"><?php echo esc_html( gv_label( $field ) ); ?></th>
-							<td><?php echo gv_value( $entry, $field ); ?></td>
+							<td><?php echo $value; ?></td>
 						</tr>
 						<?php endforeach; ?>
 				<?php endforeach; ?>

@@ -102,6 +102,7 @@ class GravityView_frontend {
 			'search_field' => NULL,
 			'single_title' => NULL,
 			'back_link_label' => NULL,
+			'hide_empty' => true,
 		);
 
 		return $defaults;
@@ -305,6 +306,16 @@ class GravityView_frontend {
 		// Store in global for improved speed.
 		$form = gravityview_get_form( $form_id );
 
+		// If not set, the default is hide empty fields.
+		$hide_empty_fields = isset( $args['hide_empty'] ) ? !empty( $args['hide_empty'] ) : true;
+		// Allow filtering
+		$hide_empty_fields = apply_filters( 'gravityview_hide_empty_fields', $hide_empty_fields );
+		// Per template
+		$hide_empty_fields = apply_filters( 'gravityview_hide_empty_fields_template_'.$template_id, $hide_empty_fields );
+		// And per view
+		$hide_empty_fields = apply_filters( 'gravityview_hide_empty_fields_view_'.$args['id'], $hide_empty_fields );
+
+
 		// set globals for templating
 		global $gravityview_view;
 		$gravityview_view = new GravityView_View(array(
@@ -312,6 +323,7 @@ class GravityView_frontend {
 			'form'	  => $form,
 			'view_id' => $args['id'],
 			'fields'  => $dir_fields,
+			'hide_empty_fields' => $hide_empty_fields,
 		));
 
 		// check if user requests single entry
