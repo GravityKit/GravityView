@@ -23,3 +23,17 @@
 	width: 35%;
 	vertical-align: top;
 }
+
+// Gallery
+.gv-table-view .gv-gallery .gv-field-file-uploads {
+	margin: 0;
+	padding: 0;
+}
+
+.gv-table-view .gv-gallery .gv-field-file-uploads li {
+	list-style: none;
+	display: inline-block;
+	max-width: 200px;
+	max-height: 200px;
+	margin-right: 1em;
+}
