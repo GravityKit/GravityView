@@ -1315,8 +1315,8 @@ class GravityView_Admin_Views {
 	 */
 	public static function render_checkbox_option( $name = '', $id = '', $current = '' ) {
 
-		$output  = '<input name="'. $name .'" type="hidden" value="0">';
-		$output .= '<input name="'. $name .'" id="'. $id .'" type="checkbox" value="1" '. checked( $current, '1', false ) .' >';
+		$output  = '<input name="'. esc_attr( $name ) .'" type="hidden" value="0">';
+		$output .= '<input name="'. esc_attr( $name ) .'" id="'. esc_attr( $id ) .'" type="checkbox" value="1" '. checked( $current, '1', false ) .' >';
 
 		return $output;
 	}
@@ -1344,7 +1344,7 @@ class GravityView_Admin_Views {
 			$merge_class = ' merge-tag-support mt-position-right mt-hide_all_fields';
 		}
 
-		return '<input name="'. $name .'" id="'. $id .'" type="text" value="'. $current .'" class="widefat'.$merge_class.'">';
+		return '<input name="'. esc_attr( $name ) .'" id="'. esc_attr( $id ) .'" type="text" value="'. esc_attr( $current ) .'" class="widefat'.$merge_class.'">';
 	}
 
 	/**
@@ -1358,7 +1358,7 @@ class GravityView_Admin_Views {
 
 		$output = '<select name="'. $name .'" id="'. $id .'">';
 		foreach( $choices as $choice ) {
-			$output .= '<option value="'. $choice['value'] .'" '. selected( $choice['value'], $current, false ) .'>'. $choice['label'] .'</option>';
+			$output .= '<option value="'. esc_attr( $choice['value'] ) .'" '. selected( $choice['value'], $current, false ) .'>'. esc_html( $choice['label'] ) .'</option>';
 		}
 		$output .= '</select>';
 
