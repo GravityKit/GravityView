@@ -1301,7 +1301,7 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Render the HTML for an input text to be used on the field & widgets options
-	 * @param  string $name    [name attribute]
+	 * @param  string $name    Unique name of the field. Exampe: `fields[directory_list-title][5374ff6ab128b][custom_label]`
 	 * @param  string $current [current value]
 	 * @param  string $desc   Option description
 	 * @param string $add_merge_tags Add merge tags to the input?
@@ -1309,13 +1309,12 @@ class GravityView_Admin_Views {
 	 */
 	public static function render_text_option( $name = '', $id = '', $current = '', $add_merge_tags = true ) {
 
-		if( $add_merge_tags ) {
+		// Show the merge tags only if the field is a list view,
+		if( preg_match( '/_list-/', $name ) && $add_merge_tags ) {
 			$merge_class = ' merge-tag-support mt-position-right mt-hide_all_fields';
 		}
 
-		$value = GFCommon::replace_variables_prepopulate( $current );
-
-		return '<input name="'. $name .'" id="'. $id .'" type="text" value="'. $value .'" class="all-options'.$merge_class.'">';
+		return '<input name="'. $name .'" id="'. $id .'" type="text" value="'. $current .'" class="all-options'.$merge_class.'">';
 	}
 
 	/**
