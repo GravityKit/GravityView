@@ -129,9 +129,3 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 }
 
-
-
-
-
-
-?>
