@@ -837,7 +837,10 @@
 		viewConfiguration.init();
 
 		//datepicker
-		$('.gv-datepicker').datepicker({ dateFormat: "yy-mm-dd" });
+		$('.gv-datepicker').datepicker({
+			dateFormat: "yy-mm-dd",
+			constrainInput: false // Allow strtotime() configurations
+		});
 
 		// Save the state on a per-post basis
 		var cookie_key = 'gv-active-tab-'+$('#post_ID').val();

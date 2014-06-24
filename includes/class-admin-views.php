@@ -558,7 +558,8 @@ class GravityView_Admin_Views {
 					<label for="gravityview_start_date"><?php esc_html_e( 'Filter by Start Date', 'gravity-view'); ?></label>
 				</td>
 				<td>
-					<input name="template_settings[start_date]" id="gravityview_start_date" type="text" class="widefat gv-datepicker"value="<?php echo $ts['start_date']; ?>">
+					<input name="template_settings[start_date]" id="gravityview_start_date" type="text" class="widefat gv-datepicker" value="<?php echo $ts['start_date']; ?>">
+					<span class="howto"><?php printf( __('Also supports %srelative dates%s.', 'gravity-view' ), '<a href="https://katzwebservices.zendesk.com/hc/en-us/articles/203496337" rel="external">', '</a>' ); ?></span>
 				</td>
 			</tr>
 
@@ -568,6 +569,7 @@ class GravityView_Admin_Views {
 				</td>
 				<td>
 					<input name="template_settings[end_date]" id="gravityview_end_date" type="text" class="widefat gv-datepicker" value="<?php echo $ts['end_date']; ?>">
+					<span class="howto"><?php printf( __('Also supports %srelative dates%s.', 'gravity-view' ), '<a href="https://katzwebservices.zendesk.com/hc/en-us/articles/203496337" rel="external">', '</a>' ); ?></span>
 				</td>
 			</tr>
 

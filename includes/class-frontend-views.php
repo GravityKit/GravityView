@@ -96,7 +96,7 @@ class GravityView_frontend {
 			'sort_field' => NULL,
 			'sort_direction' => 'ASC',
 			'start_date' => NULL,
-			'end_date' => NULL,
+			'end_date' => 'now',
 			'class' => NULL,
 			'search_value' => NULL,
 			'search_field' => NULL,
@@ -382,6 +382,59 @@ class GravityView_frontend {
 		return $output;
 	}
 
+	/**
+	 * Process the start and end dates for a view - overrides values defined in shortcode (if needed)
+	 *
+	 * The `start_date` and `end_date` keys need to be in a format processable by GFFormsModel::get_date_range_where(),
+	 * which uses \DateTime() format. We and simply pass a timestamp, if we want to.
+	 *
+	 * You can set the `start_date` or `end_date` to any value allowed by {@link http://www.php.net//manual/en/function.strtotime.php strtotime()},
+	 * including strings like "now" or "-1 year" or "-3 days".
+	 *
+	 * @todo  Compress into one
+	 * @param  [type]      $args            [description]
+	 * @param  [type]      $search_criteria [description]
+	 * @return [type]                       [description]
+	 */
+	static function process_search_dates( $args, $search_criteria ) {
+
+		foreach ( array( 'start_date', 'end_date' ) as $key ) {
+
+			// Is the start date or end date set in the view or shortcode?
+			// If so, we want to make sure that the search doesn't go outside the bounds defined.
+			if( !empty( $args[ $key ] ) ) {
+
+				if(
+					// If there is no search being performed
+					empty( $search_criteria[ $key ] ) ||
+
+					// Or if there is a search being performed
+					( !empty( $search_criteria[ $key ] )
+						// And the search is for entries before the start date defined by the settings
+						&& (
+							( $key === 'start_date' && strtotime( $search_criteria[ $key ] ) < strtotime( $args[ $key ] ) ) ||
+							( $key === 'end_date' && strtotime( $search_criteria[ $key ] ) > strtotime( $args[ $key ] ) )
+						)
+					)
+				) {
+
+					// Get a timestamp and see if it's a valid date format
+					$date = strtotime( $args[ $key ] );
+
+					// Valid date
+					if( !empty( $date ) ) {
+						// Then we override the search and re-set the start date
+						$search_criteria[ $key ] = date( 'Y-m-d H:i:s' , $date );
+					} else {
+						GravityView_Plugin::log_error( '[process_search_dates] Invalid '.$key.' date format: ' . $args[ $key ]);
+					}
+				}
+			}
+
+		}
+
+		return $search_criteria;
+	}
 
 	/**
 	 * Core function to calculate View multi entries (directory) based on a set of arguments ($args):
@@ -421,38 +474,8 @@ class GravityView_frontend {
 		}
 		GravityView_Plugin::log_debug( '[get_view_entries] Search Criteria after implicity search: ' . print_r( $search_criteria, true ) );
 
-		//start date & end date filter - Override values defined in shortcode (if needed)
-		if( !empty( $args['start_date'] ) ) {
-			if(
-				// If there is no search being performed
-				empty( $search_criteria['start_date'] ) ||
-
-				// Or if there is a search being performed
-				( !empty( $search_criteria['start_date'] )
-					// And the search is for entries before the start date defined by the settings
-					&& strtotime( $search_criteria['start_date'] ) < strtotime( $args['start_date'] )
-				)
-			) {
-				// Then we override the search and re-set the start date
-				$search_criteria['start_date'] = $args['start_date'];
-			}
-		}
-
-		if( !empty( $args['end_date'] ) ) {
-			if(
-				// If there is no search being performed
-				empty( $search_criteria['end_date'] ) ||
-
-				// Or if there is a search being performed
-				( !empty( $search_criteria['end_date'] )
-					// And the search for entries after the end date defined by the settings
-					&& strtotime( $search_criteria['end_date'] ) > strtotime( $args['end_date'] )
-				)
-			) {
-				// Then we override the search and re-set the end date
-				$search_criteria['end_date'] = $args['end_date'];
-			}
-		}
+		// Handle setting date range
+		$search_criteria = self::process_search_dates( $args, $search_criteria );
 
 		GravityView_Plugin::log_debug( '[get_view_entries] Search Criteria after date params: ' . print_r( $search_criteria, true ) );
 

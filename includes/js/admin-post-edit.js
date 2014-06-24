@@ -67,7 +67,10 @@ function InsertViewShortcode(){
 jQuery(document).ready( function( $ ) {
 
 	//datepicker
-	$('.gv-datepicker').datepicker({ dateFormat: "yy-mm-dd" });
+	$('.gv-datepicker').datepicker({
+		dateFormat: "yy-mm-dd",
+		constrainInput: false
+	});
 
 
 	// Select view id -> populate sort fields
