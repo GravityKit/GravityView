@@ -29,3 +29,18 @@
 	max-height: 200px;
 	margin-right: 1em;
 }
+
+.gv-table-view {
+	width: 100%;
+
+	th,
+	td {
+		padding: .3em;
+	}
+
+	th {
+		width: 35%;
+		vertical-align: top;
+	}
+
+}
