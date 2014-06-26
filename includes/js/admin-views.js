@@ -54,14 +54,14 @@
 			// preview template
 			$('a[href="#gv_preview_template"]').click( vcfg.previewTemplate );
 
-			// close all tooltips if user clicks outside the tooltip
-			$(document).on('mouseup keyup', function (e) {
+			// Close open Dialog boxes when clicking on the overlay
+			$('body').on('click', '.gv-overlay', function( e ) {
+				$(".ui-dialog:visible .ui-dialog-titlebar .ui-button").click();
+				return;
+			});
 
-				// Close open Dialog boxes when clicking on the overlay
-				if(e.type === 'mouseup' && $(e.target).is('.gv-overlay')) {
-					$(".ui-dialog:visible .ui-dialog-titlebar .ui-button").click();
-					return;
-				}
+			// close all tooltips if user clicks outside the tooltip
+			$('body').on('mouseup keyup', function (e) {
 
 				var close = false;
 
@@ -175,7 +175,8 @@
 		 * The Data Source dropdown has been changed. Show alert dialog or process.
 		 * @return void
 		 */
-		formChange: function() {
+		formChange: function( e ) {
+			e.preventDefault();
 			var vcfg = viewConfiguration;
 
 			vcfg.startFreshStatus = false;
@@ -192,6 +193,10 @@
 			if( '' === vcfg.gvSelectForm.val() ) {
 				vcfg.hideView();
 			} else {
+
+				// Let merge tags know not to initialize
+				$('body').addClass('gv-form-changed');
+
 				vcfg.templateFilter('custom');
 				vcfg.showTemplates();
 				vcfg.getAvailableFields();
@@ -255,8 +260,9 @@
 					// Otherwise, return the window width, less 10px
 					return $(window).width() - 10;
 				},
-				open: function () {
+				open: function ( event, ui ) {
 					$('<div class="gv-overlay" />').prependTo('#wpwrap');
+					return true;
 				},
 				close: function () {
 					$('#wpwrap > .gv-overlay').fadeOut( 'fast', function() { $(this).remove(); });
@@ -534,9 +540,9 @@
 			};
 
 			if( context !== undefined && 'preset' === context ) {
-				data.templateid = templateid;
+				data.template_id = templateid;
 			} else {
-				data.formid = vcfg.gvSelectForm.val();
+				data.form_id = vcfg.gvSelectForm.val();
 			}
 
 
@@ -606,8 +612,12 @@
 					// Remove existing merge tags
 					$('.all-merge-tags').remove();
 
-					// Re-init merge tag dropdowns
-					window.gfMergeTags = new gfMergeTagsObj(form);
+					// Only init if the View has been saved and the form hasn't been changed.
+					if( typeof(form) !== 'undefined' && $('body').not('.gv-form-changed') ) {
+
+						// Re-init merge tag dropdowns
+						window.gfMergeTags = new gfMergeTagsObj(form);
+					}
 
 					if( $('.gv-dialog-options', newField ).length > 0 ) {
 						// There are options. Show the settings gear.
