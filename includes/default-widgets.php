@@ -143,7 +143,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 	function assign_field_options( $field_options, $template_id, $field_id, $context ) {
 
-		if($context !== 'single') {
+		if($context !== 'single' && $field_id !== 'entry_link' ) {
 			$field_options = array_merge( $field_options, array(
 			'search_filter' => array(
 				'type' => 'checkbox',
