@@ -562,9 +562,29 @@ hr{
 	display: none !important;
 }
 
+.ui-dialog-titlebar {
+	min-height: 36px;
+	line-height: 1.25;
+	padding: 10px;
+	height: auto;
+}
+
 .gv-dialog-options {
 	display: none;
 	width: 90%;
+
+	&.gv-dialog-warning p {
+		font-size: 1.1em;
+	}
+	&.gv-dialog-warning .dashicons {
+		font-size: 70px;
+		width: 70px;
+		height: 70px;
+		line-height: .8;
+		float: right;
+		text-align: right;
+		color: #ddd;
+	}
 
 	&:after {
 	  content: "";
