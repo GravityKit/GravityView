@@ -23,6 +23,21 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
+= 1.0.5.1 =
+* Fixed: Undefined index for `id` in Edit View
+* Fixed: Undefined variable: `merge_class`
+* Fixed: Javascript error when choosing a Start Fresh template. (Introduced by the new Merge Tags functionality in 1.0.5)
+* Fixed: Merge Tags were available in Multiple Entries view for the Table layout
+* Fixed: Remove Merge Tags when switching forms
+* Fixed: That darn settings gear showing up when it shouldn't
+* Fixed: Disappearing dialog when switching forms
+* Fixed: Fatal error when Gravity Forms is inactive
+* Modified: Moved admin functionality into new files
+	- AJAX calls now live in `class-ajax.php`
+	- Metaboxes now live in `class-metabox.php`
+* Tweak: Updated change forms dialog text
+* Tweak: Removed "use as search filter" from Link to Entry field options
+
 = 1.0.5 =
 * Added: Lightbox for images (in View Settings metabox)
 * Added: Merge Tags - You can now modify labels and settings using dynamic text based on the value of a field. (requires Gravity Forms 1.8.6 or higher)

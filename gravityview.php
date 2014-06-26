@@ -85,6 +85,7 @@ final class GravityView_Plugin {
 		// Add logging
 		require_once( GRAVITYVIEW_DIR . 'includes/class-logging.php');
 
+		require_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
 
 		// Load Extensions
@@ -102,6 +103,8 @@ final class GravityView_Plugin {
 
 			// Enable Gravity Forms tooltips
 			require_once( GFCommon::get_base_path() . '/tooltips.php' );
+
+			require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes.php' );
 
 			// Filter Admin messages
 			add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
@@ -133,12 +136,6 @@ final class GravityView_Plugin {
 
 		// Load default widgets
 		add_action( 'gravityview_init', array( $this, 'register_default_widgets' ) );
-
-		// set the blacklist field types across the entire plugin
-		add_filter( 'gravityview_blacklist_field_types', array( $this, 'default_field_blacklist' ), 10 );
-
-		// Enable debug with Gravity Forms Logging Add-on
-	    add_filter( 'gform_logging_supported', array( 'GravityView_Plugin', 'enable_gform_logging' ) );
 
 	}
 
@@ -394,45 +391,6 @@ final class GravityView_Plugin {
 		return apply_filters( 'gravityview_widget_active_areas', $default_areas );
 	}
 
-	/**
-	 * List the field types without presentation properties (on a View context)
-	 *
-	 * @access public
-	 * @return void
-	 */
-	function default_field_blacklist( $array = array() ) {
-		return array_merge( $array, array( 'html', 'section', 'captcha', 'page' ) );
-	}
-
-
-	/**
-	 * Check if specified plugin is active, inactive or not installed
-	 *
-	 * @access public
-	 * @static
-	 * @param string $location (default: '')
-	 * @return void
-	 */
-	static function get_plugin_status( $location = '' ) {
-
-		if( ! function_exists('is_plugin_active') ) {
-			include_once( ABSPATH . '/wp-admin/includes/plugin.php' );
-		}
-
-		if( is_plugin_active( $location ) ) {
-			return true;
-		}
-
-		if( !file_exists( trailingslashit( WP_PLUGIN_DIR ) . $location ) ) {
-			return false;
-		}
-
-		if( is_plugin_inactive( $location ) ) {
-			return 'inactive';
-		}
-	}
-
-
 	/** no conflict mode functions */
 
 	/**
@@ -639,15 +597,6 @@ final class GravityView_Plugin {
     }
 
     /** DEBUG */
-
-    /**
-     * Enables debug with Gravity Forms logging add-on
-     * @param array $supported_plugins List of plugins
-     */
-    public static function enable_gform_logging( $supported_plugins ) {
-        $supported_plugins['gravityview'] = 'GravityView';
-        return $supported_plugins;
-    }
 
     /**
      * Logs messages using Gravity Forms logging add-on
