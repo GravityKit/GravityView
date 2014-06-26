@@ -23,7 +23,7 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
-= 1.0.5.1 =
+= 1.0.6 on June 26 =
 * Fixed: Undefined index for `id` in Edit View
 * Fixed: Undefined variable: `merge_class`
 * Fixed: Javascript error when choosing a Start Fresh template. (Introduced by the new Merge Tags functionality in 1.0.5)
