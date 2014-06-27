@@ -1,0 +1,995 @@
+#
+# Translators:
+# Md Akter Hosen <tareqhi@gmail.com>, 2014
+# Md Akter Hosen <tareqhi@gmail.com>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: GravityView\n"
+"POT-Creation-Date: 2014-06-24 18:47-0700\n"
+"PO-Revision-Date: 2014-06-27 08:04-0700\n"
+"Last-Translator: Katz Web Services, Inc. <support@katz.co>\n"
+"Language-Team: Bengali (http://www.transifex.com/projects/p/gravityview/"
+"language/bn/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: bn\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.6.5\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: gravityview.php:210
+msgid "Support"
+msgstr "সহায়তা"
+
+#: gravityview.php:227
+#, php-format
+msgid ""
+"%sYou don't have any active views. Let's go %screate one%s!%s\n"
+"\n"
+"If you feel like you're lost in space and need help getting started, check "
+"out the %sGetting Started%s page."
+msgstr ""
+"%s আপনার কোন সক্রিয় দৃশ্য নাই। %sএকটি দৃশ্য তৈরি করুন!%s\n"
+"\n"
+"যদি আপনি মনে করেন আপনার জায়গার অভাব আছে এবং কিভাবে শুরু করতে হবে তা দেখতে "
+"%sশুরুর পৃষ্ঠা%s দেখুন।%s "
+
+#: gravityview.php:231
+msgctxt "Post Type General Name"
+msgid "Views"
+msgstr "দৃশ্যগুলো"
+
+#: gravityview.php:232
+msgctxt "Post Type Singular Name"
+msgid "View"
+msgstr "দৃশ্য"
+
+#: gravityview.php:233
+msgctxt "Menu name"
+msgid "Views"
+msgstr "দৃশ্য"
+
+#: gravityview.php:234
+msgid "Parent View:"
+msgstr "মূল দৃশ্য"
+
+#: gravityview.php:235
+msgid "All Views"
+msgstr "সকল দৃশ্যগুলো"
+
+#: gravityview.php:236
+msgctxt "View Item"
+msgid "View"
+msgstr "দৃশ্য"
+
+#: gravityview.php:237
+msgid "Add New View"
+msgstr "নতুন দৃশ্য যোগ করুন"
+
+#: gravityview.php:238
+msgid "New View"
+msgstr "নতুন দৃশ্য"
+
+#: gravityview.php:239
+msgid "Edit View"
+msgstr "দৃশ্য সম্পাদন করুন"
+
+#: gravityview.php:240
+msgid "Update View"
+msgstr "দৃশ্য হালনাগাদ করুন"
+
+#: gravityview.php:241
+msgid "Search Views"
+msgstr "দৃশ্য খুজুঁন"
+
+#: gravityview.php:243
+msgid "No Views found in Trash"
+msgstr "আবর্জনার বাক্সে কোন দৃশ্য নাই"
+
+#: gravityview.php:246
+msgid "view"
+msgstr "দৃশ্য"
+
+#: gravityview.php:247
+msgid "Create views based on a Gravity Forms form"
+msgstr "গ্রাভিটি ফর্মের ভিত্তিতে দৃশ্য তৈরি করুন"
+
+#: gravityview.php:295 gravityview.php:296 gravityview.php:298
+#, php-format
+msgid "View updated. %sView on website.%s"
+msgstr "দৃশ্য হালনাগাদ করা হয়েছে। %sওয়েবসাইটে দৃশ্যমান%s"
+
+#: gravityview.php:297
+msgid "View deleted."
+msgstr "দৃশ্য মুছে ফেলা হয়েছে।"
+
+#: gravityview.php:300
+#, php-format
+msgid "View restored to revision from %s"
+msgstr "সংশোধিত ফর্মে দৃশ্য পুনঃরুদ্ধার হয়েছে %s"
+
+#: gravityview.php:301
+#, php-format
+msgid "View published. %sView on website.%s"
+msgstr "দৃশ্য প্রকাশিত হয়েছে। %sওয়েবসাইটে দৃশ্যমান%s"
+
+#: gravityview.php:302
+#, php-format
+msgid "View saved. %sView on website.%s"
+msgstr "দৃশ্য সংরক্ষিত হয়েছে। %sওয়েবসাইটে দৃশ্যমান%s"
+
+#: gravityview.php:303
+msgid "View submitted."
+msgstr "দৃশ্য উপস্থাপিত হয়েছে।"
+
+#: gravityview.php:305
+#, php-format
+msgid "View scheduled for: <strong>%1$s</strong>."
+msgstr "দৃশ্য নির্ধারিতঃ <strong>%1$s</strong>."
+
+#: gravityview.php:307
+msgid "M j, Y @ G:i"
+msgstr "M j, Y @ G:i"
+
+#: gravityview.php:309
+#, php-format
+msgid "View draft updated. %sView on website.%s"
+msgstr "খসড়া দৃশ্য হালনাগাদ করা হয়েছে। %sওয়েবসাইটে দৃশ্যমান%s"
+
+#: gravityview.php:315
+#, php-format
+msgid "%s View updated."
+msgid_plural "%s Views updated."
+msgstr[0] "%s দৃশ্য হালনাগাদ করা হয়েছে।"
+msgstr[1] "%s দৃশ্য হালনাগাদ করা হয়েছে।"
+
+#: gravityview.php:316
+#, php-format
+msgid "%s View not updated, somebody is editing it."
+msgid_plural "%s Views not updated, somebody is editing them."
+msgstr[0] "%s দৃশ্য হালনাগাদ করা হয়নি। কেউ একে সম্পাদনা করছেন।"
+msgstr[1] "%s দৃশ্য হালনাগাদ করা হয়নি। কেউ একে সম্পাদনা করছেন।"
+
+#: gravityview.php:317
+#, php-format
+msgid "%s View permanently deleted."
+msgid_plural "%s Views permanently deleted."
+msgstr[0] "%s দৃশ্য পুরোপুরি মুছে ফেলা হয়েছে।"
+msgstr[1] "%s দৃশ্য পুরোপুরি মুছে ফেলা হয়েছে।"
+
+#: gravityview.php:318
+#, php-format
+msgid "%s View moved to the Trash."
+msgid_plural "%s Views moved to the Trash."
+msgstr[0] "%s দৃশ্য আবর্জনার ঝুড়িতে সরানো হয়েছে।"
+msgstr[1] "%s দৃশ্য আবর্জনার ঝুড়িতে সরানো হয়েছে।"
+
+#: gravityview.php:319
+#, php-format
+msgid "%s View restored from the Trash."
+msgid_plural "%s Views restored from the Trash."
+msgstr[0] "%s দৃশ্য আবর্জনার ঝুড়ি থেকে পুনরায় ফিরিয়ে আনা হয়েছে।"
+msgstr[1] "%s দৃশ্য আবর্জনার ঝুড়ি থেকে পুনরায় ফিরিয়ে আনা হয়েছে।"
+
+#: gravityview.php:389
+msgid "Top"
+msgstr "উপরে"
+
+#: gravityview.php:390
+msgid "Left"
+msgstr "বামে"
+
+#: gravityview.php:390
+msgid "Right"
+msgstr "ডানে"
+
+#: includes/class-admin-add-shortcode.php:53
+msgid "Add a Gravity Forms View"
+msgstr "গ্রাভিটি ফর্মের দৃশ্য যোগ করুন"
+
+#: includes/class-admin-add-shortcode.php:53
+msgid "Add View"
+msgstr "দৃশ্য যোগ করুন"
+
+#: includes/class-admin-add-shortcode.php:74
+msgid "Insert a View"
+msgstr "একটি দৃশ্য ঢোকান"
+
+#: includes/class-admin-add-shortcode.php:77
+msgid "Select a View"
+msgstr "একটি দৃশ্য নির্বাচন করুন"
+
+#: includes/class-admin-add-shortcode.php:80
+msgid "&mdash; views &mdash;"
+msgstr "&mdash; দৃশ্যগুলো &mdash;"
+
+#: includes/class-admin-add-shortcode.php:92
+#: includes/class-admin-views.php:558
+msgid "Number of entries to show per page"
+msgstr "প্রতি পৃষ্ঠায় দেখানো এন্ট্রির সংখ্যা"
+
+#: includes/class-admin-add-shortcode.php:101
+#: includes/class-admin-add-shortcode.php:105
+#: includes/class-admin-views.php:567
+msgid "Enable lightbox for images"
+msgstr "ছবির জন্য লাইটবক্স সক্রিয় করুন"
+
+#: includes/class-admin-add-shortcode.php:115
+#: includes/class-admin-add-shortcode.php:119
+#: includes/class-admin-views.php:574
+msgid "Show only approved entries"
+msgstr "শুধুমাত্র অনুমোদিত এন্ট্রিসমূহ দেখান"
+
+#: includes/class-admin-add-shortcode.php:129
+#: includes/class-admin-views.php:587
+msgid "Sort by field"
+msgstr "ফিল্ড অনুসারে সাজান"
+
+#: includes/class-admin-add-shortcode.php:133
+#: includes/connector-functions.php:258
+msgid "Default"
+msgstr "ডিফল্ট"
+
+#: includes/class-admin-add-shortcode.php:134
+#: includes/connector-functions.php:271
+msgid "Date Created"
+msgstr "নির্মাণের তারিখ"
+
+#: includes/class-admin-add-shortcode.php:141
+#: includes/class-admin-views.php:598
+msgid "Sort direction"
+msgstr "সাজানোর দিক"
+
+#: includes/class-admin-add-shortcode.php:145
+#: includes/class-admin-views.php:602
+msgid "ASC"
+msgstr "কখগ"
+
+#: includes/class-admin-add-shortcode.php:146
+#: includes/class-admin-views.php:603
+msgid "DESC"
+msgstr "গখক"
+
+#: includes/class-admin-add-shortcode.php:153
+#: includes/class-admin-views.php:84 includes/class-admin-views.php:610
+msgid "Filter by Start Date"
+msgstr "শুরুর তারিখ দ্বারা ফিল্টার করুন"
+
+#: includes/class-admin-add-shortcode.php:162
+#: includes/class-admin-views.php:88 includes/class-admin-views.php:619
+msgid "Filter by End Date"
+msgstr "শেষ তারিখ দ্বারা ফিল্টার করুন"
+
+#: includes/class-admin-add-shortcode.php:172
+msgid "Insert View"
+msgstr "দৃশ্য ঢোকান"
+
+#: includes/class-admin-add-shortcode.php:173
+#: includes/class-admin-views.php:1712
+msgid "Cancel"
+msgstr "বাতিল"
+
+#: includes/class-admin-add-shortcode.php:215
+msgid "Please select a View"
+msgstr "দয়াকরে একটি দৃশ্য বাছাই করুন"
+
+#: includes/class-admin-approve-entries.php:64
+#: includes/class-admin-approve-entries.php:95
+msgid "Approved"
+msgstr "অনুমোদিত"
+
+#: includes/class-admin-approve-entries.php:86
+msgid "Approved? (Admin-only)"
+msgstr "অনুমোদিত? (শুধুমাত্র প্রশাসক)"
+
+#: includes/class-admin-approve-entries.php:88
+msgid "Approved?"
+msgstr "অনুমোদিত?"
+
+#: includes/class-admin-approve-entries.php:130
+#, php-format
+msgid "%d entries"
+msgstr "%d এন্ট্রি"
+
+#: includes/class-admin-approve-entries.php:130
+msgid "1 entry"
+msgstr "এন্ট্রি"
+
+#: includes/class-admin-approve-entries.php:138
+#, php-format
+msgid "%s approved."
+msgstr "%s অনুমোদিত।"
+
+#: includes/class-admin-approve-entries.php:143
+#, php-format
+msgid "%s disapproved."
+msgstr "%s অননুমোদিত।"
+
+#: includes/class-admin-approve-entries.php:216
+msgid "Disapproved the Entry for GravityView"
+msgstr "গ্রাভিটি ভিউ এর এই এন্ট্রি অননুমোদন করুন"
+
+#: includes/class-admin-approve-entries.php:216
+msgid "Approved the Entry for GravityView"
+msgstr "গ্রাভিটি ভিউ এর এই এন্ট্রি অনুমোদন করুন"
+
+#: includes/class-admin-approve-entries.php:327
+msgid "Approve"
+msgstr "অনুমোদন"
+
+#: includes/class-admin-approve-entries.php:328
+msgid "Disapprove"
+msgstr "অমনোনীত"
+
+#: includes/class-admin-approve-entries.php:330
+msgid "Entry not approved for directory viewing. Click to approve this entry."
+msgstr "এন্ট্রি দেখানোর জন্য অনুমোদন করা হয়নি। অনুমোদন করার জন্য ক্লিক করুন।"
+
+#: includes/class-admin-approve-entries.php:331
+msgid "Entry approved for directory viewing. Click to disapprove this entry."
+msgstr "এন্ট্রি দেখানোর জন্য অনুমোদন করা হয়েছে। অননুমোদিত করার জন্য ক্লিক করুন।"
+
+#: includes/class-admin-approve-entries.php:332
+msgid "Show entry in directory view?"
+msgstr "এন্ট্রি ডিরেক্টরি দৃশ্যে দেখাবে কি?"
+
+#: includes/class-admin-views.php:85
+msgid ""
+"Show entries submitted after this date. Supports relative dates, such as "
+"\"-1 week\" or \"-1 month\"."
+msgstr ""
+"এই তারিখের পরে জমানো এন্ট্রিগুলো দেখান। সমর্থনকৃত তারিখ, যেমন \"-1 সপ্তাহ\" অথবা "
+"\"-1 মাস\""
+
+#: includes/class-admin-views.php:89
+msgid ""
+"Show entries submitted before this date. Supports relative dates, such as "
+"\"now\" or \"-3 days\"."
+msgstr ""
+"এই তারিখের পূর্বে জমানো এন্ট্রিগুলো দেখান। সমর্থনকৃত তারিখ, যেমন \"এখন\" অথবা \"-3 "
+"দিন\"।"
+
+#: includes/class-admin-views.php:92 includes/class-admin-views.php:639
+msgid "Single Entry Title"
+msgstr "একক দৃশ্য টাইটেল"
+
+#: includes/class-admin-views.php:93
+msgid ""
+"When viewing a single entry, change the title of the page to this setting. "
+"Otherwise, the title will not change between the Multiple Entries and Single "
+"Entry views."
+msgstr ""
+"যখন একক এন্ট্রি দেখাবে, এই সেটিংস এর টাইটেল পেজের টাইটেল হিসেবে পরিবর্তন করবে। "
+"অন্যথায় একাধিক এন্ট্রি এবং একক এন্ট্রির ক্ষেত্রে টাইটেল পরিবর্তন হবেনা।"
+
+#: includes/class-admin-views.php:96 includes/class-admin-views.php:645
+msgid "Back Link Label"
+msgstr "পিছেনের লিংকের লেবেল"
+
+#: includes/class-admin-views.php:97
+msgid "The text of the link that returns to the multiple entries view."
+msgstr "একাধিক এন্ট্রি দৃশ্য ফিরে যাওয়ার লিংকের শব্দ।"
+
+#: includes/class-admin-views.php:120
+msgid "Not connected."
+msgstr "সংযোগ নাই"
+
+#: includes/class-admin-views.php:129
+msgid "The connected form can not be found; it may no longer exist."
+msgstr "সংযোগকৃত ফর্মটি পাওয়া যায়নি। এটা সম্ভবত আর নেই।"
+
+#: includes/class-admin-views.php:146 includes/class-admin-views.php:270
+msgid "Data Source"
+msgstr "তথ্যের উৎস"
+
+#: includes/class-admin-views.php:169
+#, php-format
+msgid ""
+"%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n"
+"\n"
+"You're using Version %s. Please update your Gravity Forms or purchase a "
+"license. %sGet Gravity Forms%s - starting at $39%s%s"
+msgstr ""
+"%s গ্রাভিটি ভিউ চালানোর জন্য গ্রাভিটি ফর্ম ভার্সন 1.8 অথবা নতুনতর দরকার। %s\n"
+"\n"
+"আপনি ভার্সন %s চালাচ্ছেন। দয়া করে আপনার গ্রাভিটি ফর্ম হালনাগাদ করুন অথবা লাইসেন্স "
+"ক্রয় করুন। %sগ্রাভিটি ফর্ম কিনুন%s- শুরু মাত্র $39%s%s"
+
+#: includes/class-admin-views.php:174
+#, php-format
+msgid ""
+"%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms"
+"%s to use the GravityView plugin."
+msgstr ""
+"%sগ্রাভিটি ভিউ চালাতে গ্রাভিটি ফর্ম সচল রাখতে হবে। গ্রাভিটি ভিউ প্লাগইন্স ব্যবহার "
+"করার জন্য %sগ্রাভিটি ফর্ম সচল করুন%s"
+
+#: includes/class-admin-views.php:176
+#, php-format
+msgid ""
+"%sGravityView requires Gravity Forms to be installed in order to run "
+"properly. %sGet Gravity Forms%s - starting at $39%s%s"
+msgstr ""
+"%sগ্রাভিটি ভিউ সঠিকভাবে চালাতে গ্রাভিটি ফর্ম ইনস্টল করতে হবে। %sগ্রাভিটি ফর্ম কিনুন "
+"%s - মাত্র $39 থেকে শুরু %s%s"
+
+#: includes/class-admin-views.php:247
+msgid "Layout Settings"
+msgstr "লেআউট সেটিংস"
+
+#: includes/class-admin-views.php:273
+msgid "Choose a View Type"
+msgstr "একটি দৃশ্যের প্রকার বাছাই করুন"
+
+#: includes/class-admin-views.php:276
+msgid "View Configuration"
+msgstr "দৃশ্যের রূপরেখা"
+
+#: includes/class-admin-views.php:279
+msgid "View Settings"
+msgstr "দৃশ্যের বিন্যাস"
+
+#: includes/class-admin-views.php:282
+msgid "Shortcode Info"
+msgstr "সর্টকোডের তথ্য"
+
+#: includes/class-admin-views.php:310
+msgid "Where would you like the data to come from for this View?"
+msgstr "আপনি এ দৃশ্যের জন্য কোথা থেকে তথ্য আনতে চান?"
+
+#: includes/class-admin-views.php:320
+msgid "Start Fresh"
+msgstr "নতুন করে শুরু"
+
+#: includes/class-admin-views.php:322
+msgid "or use an existing form"
+msgstr "অথবা পূর্বের একটি ফর্ম ব্যবহার করুন"
+
+#: includes/class-admin-views.php:328
+msgid "list of forms"
+msgstr "ফর্মের তালিকা"
+
+#: includes/class-admin-views.php:336
+msgid "Switch View"
+msgstr "দৃশ্য পরিবর্তন"
+
+#: includes/class-admin-views.php:342 includes/class-admin-views.php:347
+msgid "Attention"
+msgstr "দৃষ্টি আকর্ষণ"
+
+#: includes/class-admin-views.php:343
+msgid "Changing the form will discard all the existent View configuration."
+msgstr "ফর্ম পরিবর্তন পূর্বের সকল দৃশ্যের রূপরেখা পরিত্যাগ করবে"
+
+#: includes/class-admin-views.php:348
+msgid ""
+"Changing the View Type will discard all the existent View configuration."
+msgstr "দৃশ্যের প্রকার পরিবর্তন পূর্বের সকল দৃশ্যের রূপরেখা পরিত্যাগ করবে"
+
+#: includes/class-admin-views.php:353
+msgid "GravityView requires Javascript to be enabled."
+msgstr "গ্রাভিটি ভিউ চালানোর জন্য জাভাস্ক্রীপ্ট সক্রিয় রাখতে হবে।"
+
+#: includes/class-admin-views.php:397
+msgid "Buy Now"
+msgstr "কিনুন"
+
+#: includes/class-admin-views.php:399
+msgid "Select"
+msgstr "বাছাই"
+
+#: includes/class-admin-views.php:400 includes/class-admin-views.php:404
+msgid "Preview"
+msgstr "দেখুন"
+
+#: includes/class-admin-views.php:456
+msgid "Multiple Entries"
+msgstr "একাধিক এন্ট্রি"
+
+#: includes/class-admin-views.php:457
+msgid "Single Entry"
+msgstr "একক এন্ট্রি"
+
+#: includes/class-admin-views.php:464
+msgid "Above Entries Widgets"
+msgstr "এন্ট্রির উপরের উইজেড"
+
+#: includes/class-admin-views.php:464
+msgid "These widgets will be shown above entries."
+msgstr "এই উইজেট এন্ট্রির উপরে দেখাবে"
+
+#: includes/class-admin-views.php:468
+msgid "Entries Fields"
+msgstr "এন্ট্রি ফিল্ড"
+
+#: includes/class-admin-views.php:468
+msgid "These fields will be shown for each entry."
+msgstr "এই ফিল্ডটি সকল এন্ট্রির জন্য দেখাবে"
+
+#: includes/class-admin-views.php:476
+msgid "Below Entries Widgets"
+msgstr "এন্ট্রি উইজেডের নিছে"
+
+#: includes/class-admin-views.php:476
+msgid "These widgets will be shown below entries."
+msgstr "এই উইজেট এন্ট্রির নিছে দেখাবে"
+
+#: includes/class-admin-views.php:506
+msgid "These fields will be shown in Single Entry view."
+msgstr "এই ফিল্ডগুলো একক দৃশ্যে দেখাবে"
+
+#: includes/class-admin-views.php:581
+msgid "Hide empty fields"
+msgstr "শূন্য ফিল্ডগুলো লুকান"
+
+#: includes/class-admin-views.php:634
+msgid "Single Entry Settings"
+msgstr "একক এন্ট্রি সেটিংস"
+
+#: includes/class-admin-views.php:665
+msgid "To insert this view into a post or a page use the following shortcode:"
+msgstr "এই দৃশ্য কোন পোস্ট অথবা পেজে দেখানোর জন্য নিন্মোক্ত সর্টকোড ব্যবহার করুনঃ"
+
+#: includes/class-admin-views.php:905
+#, php-format
+msgid "Configure %s Settings"
+msgstr "কনফিগার %sসেটিংস"
+
+#: includes/class-admin-views.php:906
+#, php-format
+msgid "Remove %s"
+msgstr "মুছে ফেলুন %s"
+
+#: includes/class-admin-views.php:943
+msgid "+ Add All Fields"
+msgstr "+ সকল ফিল্ড যোগ করুন"
+
+#: includes/class-admin-views.php:970
+msgid "Entry ID"
+msgstr "এন্ট্রি আইডি"
+
+#: includes/class-admin-views.php:971
+msgid "Entry Date"
+msgstr "এন্ট্রি তারিখ"
+
+#: includes/class-admin-views.php:972
+msgid "Source URL"
+msgstr "উৎস ইউআরএল"
+
+#: includes/class-admin-views.php:973
+msgid "User IP"
+msgstr "ব্যবহারকারীর আইপি"
+
+#: includes/class-admin-views.php:974
+msgid "User"
+msgstr "ব্যবহারকারী"
+
+#: includes/class-admin-views.php:978
+msgid "Link to Entry"
+msgstr "এন্ট্রির সাথে সংযোগ"
+
+#: includes/class-admin-views.php:1048
+msgid "Add Widget"
+msgstr "উইজেড যোগ করুন"
+
+#: includes/class-admin-views.php:1050
+msgid "Add Field"
+msgstr "ফিল্ড যোগ করুন"
+
+#: includes/class-admin-views.php:1089
+#, php-format
+msgid "\"%s\" or drag existing %ss here."
+msgstr "\"%s\" অথবা এখানে পুরাতনগুলো টেনে আনুন %ss"
+
+#: includes/class-admin-views.php:1209
+#, php-format
+msgid "Options: %s"
+msgstr "বাছাই: %s"
+
+#: includes/class-admin-views.php:1250
+msgid "Any logged-in user"
+msgstr "যে কোন লগইন করা ব্যবহারকারী"
+
+#: includes/class-admin-views.php:1251
+msgid "Author or higher"
+msgstr "রচয়িতা অথবা ঊর্ধ্বতন"
+
+#: includes/class-admin-views.php:1252
+msgid "Editor or higher"
+msgstr "সম্পাদক অথবা ঊর্ধ্বতন"
+
+#: includes/class-admin-views.php:1253
+msgid "Administrator"
+msgstr "প্রশাসক"
+
+#: includes/class-admin-views.php:1261
+msgid "Show Label"
+msgstr "লেবেল দেখান"
+
+#: includes/class-admin-views.php:1266
+msgid "Custom Label:"
+msgstr "নিজস্ব লেবেলঃ"
+
+#: includes/class-admin-views.php:1272
+msgid "Custom CSS Class:"
+msgstr "নিজস্ব সিএসএস ক্লাসঃ"
+
+#: includes/class-admin-views.php:1273
+msgid "This class will be added to the field container."
+msgstr "এটি ফিল্ড কন্টেইনার-এ যুক্ত হবে"
+
+#: includes/class-admin-views.php:1279
+msgid "Make visible only to logged-in users?"
+msgstr "শুধুমাত্র লগইন করা ব্যবহারকারী দেখবে?"
+
+#: includes/class-admin-views.php:1284
+msgid "Make visible for:"
+msgstr "দৃশ্যমান করুন:"
+
+#: includes/class-admin-views.php:1710
+msgid "Enter View name here"
+msgstr "দৃশ্যের নাম এখানে প্রবেশ করান"
+
+#: includes/class-admin-views.php:1711
+msgid "Close"
+msgstr "বন্ধ"
+
+#: includes/class-admin-views.php:1713
+msgid "Continue"
+msgstr "চলমান"
+
+#: includes/class-admin-views.php:1714
+msgid "Ok"
+msgstr "ঠিক আছে"
+
+#: includes/class-admin-views.php:1715
+msgid ""
+"Error while creating the View for you. Check the settings or contact "
+"GravityView support."
+msgstr ""
+"দৃশ্য তৈরি করার সময় সমস্যা হয়েছে। সেটিংস দেখুন অথবা গ্রাভিটি ভিউ সাপোর্ট দেখুন"
+
+#: includes/class-admin-welcome.php:57
+msgid "GravityView Beta: Getting Started"
+msgstr "গ্রাভিটি ভিউ বেটাঃ শুরু"
+
+#: includes/class-admin-welcome.php:58 includes/class-admin-welcome.php:150
+msgid "Getting Started"
+msgstr "শুরু"
+
+#: includes/class-admin-welcome.php:67 includes/class-admin-welcome.php:68
+msgid "Welcome to GravityView"
+msgstr "গ্রাভিটি ভিউ-এ আপনাকে স্বাগতম"
+
+#: includes/class-admin-welcome.php:77 includes/class-admin-welcome.php:78
+#: includes/class-admin-welcome.php:156
+msgid "Credits"
+msgstr "ক্রেডিটস"
+
+#: includes/class-admin-welcome.php:145
+#, php-format
+msgid "Welcome to GravityView %s"
+msgstr "গ্রাভিটি ভিউ-এ স্বাগতম %s"
+
+#: includes/class-admin-welcome.php:146
+msgid ""
+"Thank you for Installing GravityView. Beautifully display your Gravity Forms "
+"entries."
+msgstr "গ্রাভিটি ভিউ ইনস্টল করার জন্য ধন্যবাদ। আপনার এন্ট্রিগুলো সুন্দরভাবে দেখুন।"
+
+#: includes/class-admin-welcome.php:153
+msgid "Beta Testing"
+msgstr "বেটা যাছাই"
+
+#: includes/class-admin-welcome.php:276
+msgid "GravityView is brought to you by:"
+msgstr "গ্রাভিটি ভিউ আপনার জন্য নিয়ে এল:"
+
+#: includes/class-admin-welcome.php:301
+msgid "Contributors"
+msgstr "সহযোগী যারা"
+
+#: includes/class-admin-welcome.php:312
+msgid "Want to contribute?"
+msgstr "সহযোগীতা করতে চান?"
+
+#: includes/class-admin-welcome.php:313
+#, php-format
+msgid ""
+"If you want to contribute to the code, you can %srequest access to the "
+"Github repository%s. If your contributions are accepted, you will be thanked "
+"here."
+msgstr ""
+"যদি আপনি কোডিং-এ সহযোগীতা করতে চান তাহলে আপনি %sগিটহাব এর জন্য আবেদন করতে "
+"পারেন%s। যদি আপনার সহযোগীতা অনুমোদন করা হয় তবে আপনি এখানে ধন্যবাদ পাবেন।"
+
+#: includes/class-api.php:198
+msgid "This search returned no results."
+msgstr "এই অনুসন্ধানের কোন ফলাফল পাওয়া যায়নি।"
+
+#: includes/class-api.php:200
+msgid "No entries match your request."
+msgstr "আপনার অনুরোধ কোন এন্ট্রির সাথে মিলেনি।"
+
+#: includes/class-api.php:305
+msgid "&larr; Go back"
+msgstr "&larr; পিছনে ফিরে যান"
+
+#: includes/class-settings.php:90
+msgid "License Key"
+msgstr "লাইসেন্স নম্বর"
+
+#: includes/class-settings.php:91
+msgid ""
+"Use <code>BETA_TESTER</code>. This allows you to get automatic upgrades."
+msgstr ""
+"<code>BETA_TESTER</code> ব্যবহার করুন। এটি আপনাকে স্বয়ংক্রিয় হালনাগাদে সম্মতি "
+"দেবে।"
+
+#: includes/class-settings.php:111
+msgid "Support Email"
+msgstr "সাপোর্ট ইমেইল"
+
+#: includes/class-settings.php:112
+msgid ""
+"In order to provide responses to your support requests, please provide your "
+"email address."
+msgstr "আপনার আবেদন গ্রহন করতে দয়া করে আপনার ইমেইল ঠিকানা দিন।"
+
+#: includes/class-settings.php:117
+msgid "No-Conflict Mode"
+msgstr "সংঘাতহীন মোড"
+
+#: includes/class-settings.php:118
+msgid ""
+"Set this to ON to prevent extraneous scripts and styles from being printed "
+"on GravityView admin pages, reducing conflicts with other plugins and themes."
+msgstr ""
+"অন্যান্য প্লাগিন ও থিম সহ দ্বন্দ্ব হ্রাস গ্রাভিটি ভিউ অ্যাডমিন পাতায় ছাপা হওয়া থেকে "
+"বিদেশী স্ক্রিপ্ট এবং শৈলী প্রতিরোধ চালু করার জন্য এই সেট করুন -অসম্পূর্ণ"
+
+#: includes/class-settings.php:124
+msgid "GravityView Settings"
+msgstr "গ্রাভিটি ভিউ এর বিন্যাস"
+
+#: includes/class-settings.php:152 includes/class-settings.php:153
+msgid "Settings"
+msgstr "বিন্যাস"
+
+#: includes/class-settings.php:218
+msgid "Follow us on Google+"
+msgstr "গুগল+ এ আমাদের অনুসরণ করুন"
+
+#: includes/default-templates.php:31
+msgid "Table (default)"
+msgstr "ছক (ডিফল্ট)"
+
+#: includes/default-templates.php:32
+msgid "Display items in a table view."
+msgstr "ছক দৃশ্যে দেখান"
+
+#: includes/default-templates.php:43 includes/default-templates.php:82
+#: includes/extensions/datatables/includes/class-datatables-template.php:40
+msgid "Link to single entry"
+msgstr "একক এন্ট্রির সাথে সংযোগ"
+
+#: includes/default-templates.php:49
+#: includes/extensions/datatables/includes/class-datatables-template.php:46
+msgid "Visible Table Columns"
+msgstr "দৃশ্যমান ছক স্তম্ভ"
+
+#: includes/default-templates.php:74
+msgid "List (default)"
+msgstr "তালিকা (ডিফল্ট)"
+
+#: includes/default-templates.php:75
+msgid "Display items in a listing view."
+msgstr "তালিকা দৃশ্যে দেখান"
+
+#: includes/default-templates.php:88
+msgid "Image"
+msgstr "ছবি"
+
+#: includes/default-templates.php:91
+msgid "Listing Title"
+msgstr "তালিকার শিরোনাম"
+
+#: includes/default-templates.php:92
+msgid "Subheading"
+msgstr "অনুশীর্ষ"
+
+#: includes/default-templates.php:93
+msgid "Description"
+msgstr "বর্নণা"
+
+#: includes/default-templates.php:96
+msgid "Footer Left"
+msgstr "বামের ফুটার"
+
+#: includes/default-templates.php:99
+msgid "Footer Right"
+msgstr "ডানের ফুটার"
+
+#: includes/default-templates.php:335
+msgid "Business Data"
+msgstr "ব্যবসায়িক তথ্য"
+
+#: includes/default-templates.php:336
+msgid "Display business information in a table."
+msgstr "ব্যবসায়িক তথ্য ছক আকারে দেখান"
+
+#: includes/default-templates.php:357
+msgid "Resume Board"
+msgstr "সংক্ষিপ্ত বোর্ড"
+
+#: includes/default-templates.php:358
+msgid "Allow job-seekers to post their resumes."
+msgstr "চাকুরী-প্রার্থীদের তাদের সংক্ষিপ্ত বিবরণ পোষ্ট করতে অনুমতি দিন"
+
+#: includes/default-templates.php:378
+msgid "Job Board"
+msgstr "চাকুরী বোর্ড"
+
+#: includes/default-templates.php:379
+msgid "Post available jobs in a simple job board."
+msgstr "প্রাপ্তব্য চাকুরীসমূহ একটি সহজ চাকুরী বোর্ডে পোস্ট করুন।"
+
+#: includes/default-templates.php:399
+msgid "People Table"
+msgstr "মানুষ ছক"
+
+#: includes/default-templates.php:400
+msgid "Display information about people in a table."
+msgstr "ছকে মানুষের তথ্য দেখান"
+
+#: includes/default-templates.php:421
+msgid "Issue Tracker"
+msgstr "বিষয় অনুসরণ"
+
+#: includes/default-templates.php:422
+msgid "Manage issues and their statuses."
+msgstr "বিষয় এবং তাদের স্থিতিগুলোকে পরিচালনা করুন।"
+
+#: includes/default-templates.php:443
+msgid "Business Listings"
+msgstr "ব্যবসায়িক তালিকা"
+
+#: includes/default-templates.php:444
+msgid "Display business profiles."
+msgstr "ব্যবসায়িক পাশ্বচিত্র দেখান।"
+
+#: includes/default-templates.php:464
+msgid "Event Listings"
+msgstr "ঘটনার তালিকা"
+
+#: includes/default-templates.php:465
+msgid "Present a list of your events."
+msgstr "আপনার ঘটনাসমূহের তালিকা উপস্থাপন করুন।"
+
+#: includes/default-templates.php:485
+msgid "People Profiles"
+msgstr "মানুষের পাশ্বচিত্র"
+
+#: includes/default-templates.php:486
+msgid "List people with individual profiles."
+msgstr "পৃথক প্রোফাইলের ব্যক্তিদের তালিকা।"
+
+#: includes/default-templates.php:506
+msgid "Staff Profiles"
+msgstr "স্টাফ প্রোফাইল"
+
+#: includes/default-templates.php:507
+msgid "List members of your team."
+msgstr "আপনার দলের সদস্যদের তালিকা।"
+
+#: includes/default-templates.php:527
+msgid "Website Showcase"
+msgstr "ওয়েবসাইট প্রদর্শনী"
+
+#: includes/default-templates.php:528
+msgid "Feature submitted websites with screenshots."
+msgstr "স্ক্রিনশটসহ ওয়েবসাইটের বৈশিষ্ট্য জমা হয়েছে"
+
+#: includes/default-widgets.php:26
+msgid "Show Pagination Info"
+msgstr "পত্রাঙ্কনের তথ্য দেখান"
+
+#: includes/default-widgets.php:48
+#, php-format
+msgid "Displaying %1$s - %2$s of %3$s"
+msgstr "দেখানো হচ্ছে %1$s - %2$s of %3$s"
+
+#: includes/default-widgets.php:72
+msgid "Show each page number"
+msgstr "প্রতি পৃষ্ঠার নম্বর দেখান"
+
+#: includes/default-widgets.php:73
+msgid "Show every page number instead of summary (eg: 1 2 3 ... 8 »)"
+msgstr "সামারীর বদলে প্রতি পৃষ্ঠার নাম্বার দেখান (উদাঃ 1 2 3 ... 8 »)"
+
+#: includes/default-widgets.php:76
+msgid "Show Page Links"
+msgstr "পৃষ্ঠার লিংক দেখান"
+
+#: includes/default-widgets.php:133
+msgid "Show search input"
+msgstr "অনুসন্ধানের যোগান দেখান"
+
+#: includes/default-widgets.php:134
+msgid "Show date filters"
+msgstr "তারিখ ছাকঁনি দেখান"
+
+#: includes/default-widgets.php:136
+msgid "Show Search Bar"
+msgstr "অনুসন্ধান বার দেখান"
+
+#: includes/default-widgets.php:150
+msgid "Use this field as a search filter"
+msgstr "এই ফিল্ডটি অনুসন্ধান ছাকঁনি হিসেবে ব্যবহার করুন"
+
+#: includes/extensions/datatables/includes/class-datatables-template.php:28
+msgid "DataTables Table"
+msgstr "ডেটাটিবিল ছক"
+
+#: includes/extensions/datatables/includes/class-datatables-template.php:29
+msgid "Display items in a dynamic table powered by DataTables."
+msgstr "ডেটাটেবিল একটি পরিবর্তনশীল ছকে দেখান।"
+
+#: includes/fields/created-by.php:11
+msgid "User Format"
+msgstr "ফরম্যাট ব্যবহার করুন"
+
+#: includes/fields/created-by.php:12
+msgid "How should the User information be displayed?"
+msgstr "ব্যবহারকারীর তথ্য কিভাবে দেখাবে?"
+
+#: includes/fields/created-by.php:16
+msgid "Display Name (Example: \"Ellen Ripley\")"
+msgstr "নাম দেখান (উদাহরণঃ \"তারেকুল ইসলাম\")"
+
+#: includes/fields/created-by.php:20
+msgid "Username (Example: \"nostromo\")"
+msgstr "ব্যবহারকারীর নাম (উদাহরণ: \"আকতার\")"
+
+#: includes/fields/created-by.php:24
+msgid "User ID # (Example: 426)"
+msgstr "ব্যবহারকারীর আইডি # (উদাহরণ: 426)"
+
+#: includes/fields/date.php:14
+msgid "Override Date Format"
+msgstr "তারিখ ফরম্যাট পুনঃস্থাপন করুন"
+
+#: includes/fields/date.php:15
+#, php-format
+msgid "Define how the date is displayed (using %sthe PHP date format%s)"
+msgstr "তারিখ কিভাবে দেখাবে তা দেখান (%sপিএইচপি তারিখ ফরম্যাট%s)"
+
+#: templates/fields/entry_link.php:7
+msgid "View Details"
+msgstr "বিস্তারিত দেখান"
+
+#: templates/widget-search.php:20
+msgid "Search Entries:"
+msgstr "এন্ট্রি খুঁজুনঃ"
+
+#: templates/widget-search.php:27
+msgid "Filter by date:"
+msgstr "তারিখ অনুসারে ছাঁকনিঃ"
+
+#: templates/widget-search.php:29
+msgid "Start date"
+msgstr "শুরুর তারিখ"
+
+#: templates/widget-search.php:30
+msgid "End date"
+msgstr "শেষের তারিখ"
+
+#: templates/widget-search.php:42
+msgid "Search"
+msgstr "অনুসন্ধান করুন"
