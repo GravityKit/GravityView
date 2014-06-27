@@ -334,9 +334,16 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 
 		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/entry-link.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/created-by.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/date.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/entry-date.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/fileupload.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/post-title.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/post-content.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/post-category.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/post-tags.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/post-image.php' );
 
 		// Nice place to insert extensions' backend stuff
 		do_action('gravityview_include_backend_actions');

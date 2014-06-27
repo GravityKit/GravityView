@@ -18,6 +18,48 @@ abstract class GravityView_Field {
 		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 5 );
 	}
 
+	private function field_support_options() {
+		$options = array(
+			'link_to_post' => array(
+				'type' => 'checkbox',
+				'label' => __( 'Link to the post', 'gravity-view' ),
+				'desc' => __( 'Link to the post created by the entry.', 'gravity-view' ),
+				'default' => false,
+			),
+			'link_to_term' => array(
+				'type' => 'checkbox',
+				'label' => __( 'Link to the category or tag', 'gravity-view' ),
+				'desc' => __( 'Link to the current category or tag. "Link to single entry" must be unchecked.', 'gravity-view' ),
+				'default' => false,
+			),
+			'dynamic_data' => array(
+				'type' => 'checkbox',
+				'label' => __( 'Use the live post data', 'gravity-view' ),
+				'desc' => __( 'Instead of using the entry data, instead use the current post data.', 'gravity-view' ),
+				'default' => true,
+			),
+			'date_display' => array(
+				'type' => 'text',
+				'label' => __( 'Override Date Format', 'gravity-view' ),
+				'desc' => sprintf( __( 'Define how the date is displayed (using %sthe PHP date format%s)', 'gravity-view'), '<a href="https://www.php.net/manual/en/function.date.php">', '</a>' ),
+				'default' => apply_filters( 'gravityview_date_format', NULL )
+			)
+		);
+
+		return apply_filters( 'gravityview_field_support_options', $options );
+	}
+
+	function add_field_support( $key = '', &$field_options ) {
+
+		$options = $this->field_support_options();
+
+		if( isset( $options[ $key ] ) ) {
+			$field_options[ $key ] = $options[ $key ];
+		}
+
+		return $field_options;
+	}
+
 	/**
 	 * Tap in here to modify field options.
 	 *

@@ -776,6 +776,19 @@
 			// Custom Label should show only when "Show Label" checkbox is checked
 			vcfg.toggleVisibility( $('input:checkbox[name*=show_label]', $parent) , $('[name*=custom_label]', $parent), first_run );
 
+
+			$('input:checkbox', $parent).attr( 'disabled', null );
+
+			// Link to Post should be disabled when Single Entry is checked
+			if( $('input:checkbox[name*=show_as_link]', $parent).is(':checked') ) {
+				$('input:checkbox[name*=link_to_]', $parent).attr('disabled', true);
+			}
+
+			// Link to Post should hide when Single Entry is checked
+			if( $('input:checkbox[name*=link_to_]:checked', $parent).length > 0 ) {
+				$('input:checkbox[name*=show_as_link]', $parent).attr('disabled', true);
+			}
+
 			// Logged in capability selector should only show when Logged In checkbox is checked
 			vcfg.toggleVisibility( $('input:checkbox[name*=only_loggedin]', $parent) , $('[name*=only_loggedin_cap]', $parent), first_run );
 

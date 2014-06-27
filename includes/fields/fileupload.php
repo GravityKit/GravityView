@@ -3,17 +3,17 @@
 /**
  * Add custom options for date fields
  */
-class GravityView_Field_Date extends GravityView_Field {
+class GravityView_Field_FileUpload extends GravityView_Field {
 
-	var $name = 'date';
+	var $name = 'fileupload';
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
-		$this->add_field_support('date_display', $field_options );
+		unset( $field_options['search_filter'] );
 
 		return $field_options;
 	}
 
 }
 
-new GravityView_Field_Date;
+new GravityView_Field_FileUpload;

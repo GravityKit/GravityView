@@ -32,6 +32,12 @@ Beautifully display your Gravity Forms entries.
 * Fixed: That darn settings gear showing up when it shouldn't
 * Fixed: Disappearing dialog when switching forms
 * Fixed: Fatal error when Gravity Forms is inactive
+* Fixed: Display of Entry Link field
+* Fixed: Per-field settings weren't working
+	* Added: "Link to the post" setting for Post fields
+	* Added: "Use live post data" setting for Post fields. Allows you to use the current post information (like title, tags, or content) instead of the original submitted data.
+	* Added: Link to category or tag setting for Post Categories and Post Tags fields
+	* Added: "Link Text" setting for the Entry Link field
 * Modified: Moved admin functionality into new files
 	- AJAX calls now live in `class-ajax.php`
 	- Metaboxes now live in `class-metabox.php`

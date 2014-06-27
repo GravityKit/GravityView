@@ -120,6 +120,7 @@ class GravityView_API {
 
 
 		if( $field_type = RGFormsModel::get_input_type($field) ) {
+			$field_type = $field['type'];
 			$value = RGFormsModel::get_lead_field_value($entry, $field);
 		} else {
 			// For non-integer field types (`id`, `date_created`, etc.)
@@ -337,6 +338,78 @@ function gravityview_get_field_value( $entry, $field_id, $display_value ) {
 
 }
 
+/**
+ * Take a passed CSV of terms and generate a linked list of terms
+ *
+ * Gravity Forms passes categories as "Name:ID" so we handle that using the ID, which
+ * is more accurate than checking the name, which is more likely to change.
+ *
+ * @param  string      $value    Existing value
+ * @param  string      $taxonomy Type of term (`post_tag` or `category`)
+ * @return string                CSV of linked terms
+ */
+function gravityview_convert_value_to_term_list( $value, $taxonomy = 'post_tag' ) {
+
+	$output = array();
+
+	$terms = explode( ', ', $value );
+
+	foreach ($terms as $term_name ) {
+
+		// If we're processing a category,
+		if( $taxonomy === 'category' ) {
+
+			// Use rgexplode to prevent errors if : doesn't exist
+			list( $term_name, $term_id ) = rgexplode( ':', $value, 2 );
+
+			// The explode was succesful; we have the category ID
+			if( !empty( $term_id )) {
+				$term = get_term_by( 'id', $term_id, $taxonomy );
+			} else {
+			// We have to fall back to the name
+				$term = get_term_by( 'name', $term_name, $taxonomy );
+			}
+
+		} else {
+			// Use the name of the tag to get the full term information
+			$term = get_term_by( 'name', $term_name, $taxonomy );
+		}
+
+		// There's still a tag/category here.
+		if( $term ) {
+
+			$term_link = get_term_link( $term, $taxonomy );
+
+			// If there was an error, continue to the next term.
+			if ( is_wp_error( $term_link ) ) {
+			    continue;
+			}
+
+			$output[] = '<a href="' . esc_url( $term_link ) . '">' . esc_html( $term->name ) . '</a>';
+		}
+	}
+
+	return implode(', ', $output );
+}
+
+/**
+ * Get the links for post_tags and post_category output based on post ID
+ * @param  int      $post_id  The ID of the post
+ * @param  boolean     $link     Add links or no?
+ * @param  string      $taxonomy Taxonomy of term to fetch.
+ * @return string                String with terms
+ */
+function gravityview_get_the_term_list( $post_id, $link = true, $taxonomy = 'post_tag' ) {
+
+	$output = get_the_term_list( $post_id, $taxonomy, NULL, ', ' );
+
+	if( empty( $link ) ) {
+		return strip_tags( $output);
+	}
+
+	return $output;
+
+}
 
 // Templates' hooks
 function gravityview_before() {

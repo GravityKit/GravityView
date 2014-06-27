@@ -407,6 +407,7 @@ class GravityView_Admin_Views {
 	function get_available_fields( $form = '', $zone = NULL ) {
 
 		if( empty( $form ) ) {
+			GravityView_Plugin::log_error( '[get_available_fields] $form is empty' );
 			return array();
 		}
 
@@ -458,6 +459,7 @@ class GravityView_Admin_Views {
 	 * @return void
 	 */
 	function render_active_areas( $template_id, $type, $zone, $rows, $values ) {
+		global $post;
 
 		if( $type === 'widget' ) {
 			$button_label = __( 'Add Widget', 'gravity-view' );
@@ -466,8 +468,8 @@ class GravityView_Admin_Views {
 		}
 
 		// if saved values, get available fields to label everyone
-		if( !empty( $values ) && 'field' === $type && !empty( $this->post_id ) ) {
-			$form_id = get_post_meta( $this->post_id, '_gravityview_form_id', true );
+		if( !empty( $values ) && 'field' === $type && !empty( $post->ID ) ) {
+			$form_id = get_post_meta( $post->ID, '_gravityview_form_id', true );
 			$available_fields = $this->get_available_fields( $form_id, $zone );
 		}
 
@@ -541,8 +543,7 @@ class GravityView_Admin_Views {
 		</div>
 
 		<?php
-		$output = ob_get_contents();
-		ob_end_clean();
+		$output = ob_get_clean();
 
 		echo $output;
 
@@ -561,6 +562,7 @@ class GravityView_Admin_Views {
 	function render_directory_active_areas( $template_id = '', $context = 'single', $post_id = '', $echo = false ) {
 
 		if( empty( $template_id ) ) {
+			GravityView_Plugin::log_debug( '[render_directory_active_areas] $template_id is empty' );
 			return;
 		}
 
