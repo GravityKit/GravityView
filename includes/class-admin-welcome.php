@@ -178,24 +178,31 @@ class GravityView_Welcome {
 			<div class="changelog point-releases">
 				<h3>What changed in <?php echo $display_version; ?></h3>
 				<ul>
-					<li>Added: Lightbox for images (in View Settings metabox)</li>
-					<li>Added: Merge Tags - You can now modify labels and settings using dynamic text based on the value of a field. (requires Gravity Forms 1.8.6 or higher)</li>
-					<li>Added: Customize the return to directory link anchor text (in the View Settings metabox, under Single Entry Settings)</li>
-					<li>Added: Set the title for the Single Entry</li>
-					<li>Added: Choose whether to hide empty fields on a per-View basis</li>
-					<li>Improved: DataTables styling now set to <code>display</code> by default. Can be overridden by using the filter <code>gravityview_datatables_table_class</code></li>
-					<li>Improved: Speed!
+					<li>Fixed: Fatal error when Gravity Forms is inactive</li>
+					<li>Fixed: Undefined index for <code>id</code> in Edit View</li>
+					<li>Fixed: Undefined variable: <code>merge_class</code></li>
+					<li>Fixed: Javascript error when choosing a Start Fresh template. (Introduced by the new Merge Tags functionality in 1.0.5)</li>
+					<li>Fixed: Merge Tags were available in Multiple Entries view for the Table layout</li>
+					<li>Fixed: Remove Merge Tags when switching forms</li>
+					<li>Fixed: That darn settings gear showing up when it shouldn&#39;t</li>
+					<li>Fixed: Disappearing dialog when switching forms</li>
+					<li>Fixed: Display of Entry Link field</li>
+					<li>Fixed: Per-field settings weren&#39;t working
 
 					<ul>
-					<li>Added <code>form</code> item to global <code>$gravityview_view</code> data instead of looking it up in functions. Improves <code>gv_value()</code> and <code>gv_label()</code> speed.</li>
-					<li>Added <code>replace_variables()</code> method to <code>GravityView_API</code> to reduce time to process merge tags by checking if there are any curly brackets first.</li>
-					</ul>
-					</li>
-					<li>Improved: "No Views found" text now more helpful for getting started.</li>
-					<li>Fixed: Approve Entries column not displaying when clicking Forms > Entries link in admin menu</li>
-					<li>Fixed: Field Settings gear no longer showing for widgets without options</li>
-					<li>Fixed: Added Gravity Forms minimum version notice when using &lt; 1.8</li>
-					<li>Fixed: Column "Data Source" content being displayed in other columns</li>
+					<li>Added: &quot;Link to the post&quot; setting for Post fields</li>
+					<li>Added: &quot;Use live post data&quot; setting for Post fields. Allows you to use the current post information (like title, tags, or content) instead of the original submitted data.</li>
+					<li>Added: Link to category or tag setting for Post Categories and Post Tags fields</li>
+					<li>Added: &quot;Link Text&quot; setting for the Entry Link field</li>
+					</ul></li>
+					<li>Modified: Moved admin functionality into new files
+
+					<ul>
+					<li>AJAX calls now live in <code>class-ajax.php</code></li>
+					<li>Metaboxes now live in <code>class-metabox.php</code></li>
+					</ul></li>
+					<li>Tweak: Updated change forms dialog text</li>
+					<li>Tweak: Removed &quot;use as search filter&quot; from Link to Entry field options</li>
 				</ul>
 			</div>
 		</div>

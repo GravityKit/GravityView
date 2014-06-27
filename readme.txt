@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries.
 == Changelog ==
 
 = 1.0.6 on June 26 =
+* Fixed: Fatal error when Gravity Forms is inactive
 * Fixed: Undefined index for `id` in Edit View
 * Fixed: Undefined variable: `merge_class`
 * Fixed: Javascript error when choosing a Start Fresh template. (Introduced by the new Merge Tags functionality in 1.0.5)
@@ -31,7 +32,6 @@ Beautifully display your Gravity Forms entries.
 * Fixed: Remove Merge Tags when switching forms
 * Fixed: That darn settings gear showing up when it shouldn't
 * Fixed: Disappearing dialog when switching forms
-* Fixed: Fatal error when Gravity Forms is inactive
 * Fixed: Display of Entry Link field
 * Fixed: Per-field settings weren't working
 	* Added: "Link to the post" setting for Post fields
@@ -43,6 +43,11 @@ Beautifully display your Gravity Forms entries.
 	- Metaboxes now live in `class-metabox.php`
 * Tweak: Updated change forms dialog text
 * Tweak: Removed "use as search filter" from Link to Entry field options
+* Translation updates.
+	* Added: French translation by [@franckt](https://www.transifex.com/accounts/profile/franckt/) - thanks!
+	* Updated: Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
+	* Updated: Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
+	* If you'd like to contribute translations, [please sign up here](https://www.transifex.com/projects/p/gravityview/).
 
 = 1.0.5 =
 * Added: Lightbox for images (in View Settings metabox)
