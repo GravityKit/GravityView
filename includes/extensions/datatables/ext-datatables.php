@@ -29,6 +29,8 @@ class GV_Extension_DataTables {
 
 	public function __construct() {
 
+		include_once( GV_DT_DIR . 'includes/class-datatables-common.php' );
+
 		// load DataTables admin logic
 		add_action( 'gravityview_include_backend_actions', array( $this, 'backend_actions' ) );
 
