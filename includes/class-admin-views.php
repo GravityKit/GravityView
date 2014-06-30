@@ -357,8 +357,6 @@ class GravityView_Admin_Views {
 
 		$fields = $this->get_available_fields( $form );
 
-		$all_fields = $this->render_label( __( '+ Add All Fields', 'gravity-view' ) , 'all-fields', 'field' );
-
 		if( !empty( $fields ) ) {
 
 			foreach( $fields as $id => $details ) {
@@ -370,10 +368,41 @@ class GravityView_Admin_Views {
 				echo $this->render_label($details['label'], $id, 'field', $details['type'] );
 
 			} // End foreach
-
-			// Add All Fields link
-			echo $all_fields;
 		}
+
+		$this->render_additional_fields( $form, $context );
+		}
+
+	function render_additional_fields( $form, $context ) {
+
+		$additional_fields = apply_filters( 'gravityview_additional_fields', array(
+			array(
+				'label_text' => __( '+ Add All Fields', 'gravity-view' ),
+				'field_id' => 'all-fields',
+				'label_type' => 'field',
+				'input_type' => NULL,
+				'field_options' => NULL
+			)
+		));
+
+		if( !empty( $additional_fields )) {
+			foreach ( (array)$additional_fields as $item ) {
+
+				// Prevent items from not having index set
+				$item = wp_parse_args( $item, array(
+					'label_text' => NULL,
+					'field_id' => NULL,
+					'label_type' => NULL,
+					'input_type' => NULL,
+					'field_options' => NULL
+				));
+
+				// Render a label for each of them
+				echo $this->render_label( $item['label_text'], $item[
+					'field_id'], $item['label_type'], $item['input_type'], $item['field_options']);
+			}
+		}
+
 	}
 
 	/**
