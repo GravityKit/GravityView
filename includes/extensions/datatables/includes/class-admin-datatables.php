@@ -126,7 +126,7 @@ class GV_Extension_DataTables_Admin {
 			</tr>
 		</table>
 
-		<h3 style="margin-top:1em;">FixedHeader/FixedColumns:</h3>
+		<h3 style="margin-top:1em;">FixedHeader &amp; FixedColumns:</h3>
 		<table class="form-table">
 			<tr valign="top">
 				<td colspan="2">
