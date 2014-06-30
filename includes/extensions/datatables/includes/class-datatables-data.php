@@ -28,9 +28,13 @@ class GV_Extension_DataTables_Data {
 			add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ) );
 		}
 
-		// extensions
+		// extensions - TableTools
 		add_action( 'gravityview_datatables_scripts_styles', array( $this, 'tabletools_add_scripts' ), 10, 3 );
 		add_filter( 'gravityview_datatables_js_options', array( $this, 'tabletools_add_config' ), 10, 3 );
+
+		// extensions - Scroller
+		add_action( 'gravityview_datatables_scripts_styles', array( $this, 'scroller_add_scripts' ), 10, 3 );
+		add_filter( 'gravityview_datatables_js_options', array( $this, 'scroller_add_config' ), 10, 3 );
 
 	}
 
@@ -213,6 +217,9 @@ class GV_Extension_DataTables_Data {
 			// Only save the state for the session.
 			// Use to time in seconds (like the DAY_IN_SECONDS WordPress constant) if you want to modify.
 			'stateDuration' => -1,
+			'oLanguage' => array(
+				'sProcessing' => __( 'Loading data...', 'gravity-view' ),
+			),
 			'ajax' => array(
 				'url' => admin_url( 'admin-ajax.php' ),
 				'type' => 'POST',
@@ -312,7 +319,9 @@ class GV_Extension_DataTables_Data {
 	}
 
 
-
+	/**
+	 * TableTools add specific config data based on admin settings
+	 */
 	function tabletools_add_config( $dt_config, $view_id, $post  ) {
 
 		$settings = get_post_meta( $view_id, '_gravityview_datatables_settings', true );
@@ -322,7 +331,7 @@ class GV_Extension_DataTables_Data {
 		}
 
 		// init TableTools
-		$dt_config['dom'] = apply_filters( 'gravityview_dt_tabletools_dom', 'T<"clear">lfrtip', $view_id, $post );
+		$dt_config['dom'] = empty( $dt_config['dom'] ) ? 'T<"clear">lfrtip' : 'T<"clear">'. $dt_config['dom'];
 		$dt_config['tableTools']['sSwfPath'] = plugins_url( 'assets/swf/copy_csv_xls_pdf.swf', GV_DT_FILE );
 
 		// row selection mode option
@@ -349,6 +358,58 @@ class GV_Extension_DataTables_Data {
 		}
 
 		GravityView_Plugin::log_debug( '[tabletools_add_config] Inserting TableTools config. Data: ' . print_r( $dt_config, true ) );
+
+		return $dt_config;
+	}
+
+
+	/** Scroller */
+
+	/**
+	 * Inject Scroller Scripts and Styles if needed
+	 */
+	function scroller_add_scripts( $dt_config, $view_id, $post ) {
+
+		$settings = get_post_meta( $view_id, '_gravityview_datatables_settings', true );
+
+		if( empty( $settings['scroller'] ) ) {
+			return;
+		}
+
+		/**
+		 * Include Scroller core script (DT plugin)
+		 * Use your own DataTables core script by using the `gravityview_dt_scroller_script_src` filter
+		 */
+		wp_enqueue_script( 'gv-dt-scroller', apply_filters( 'gravityview_dt_scroller_script_src', '//cdn.datatables.net/scroller/1.2.1/js/dataTables.scroller.min.js' ), array( 'jquery', 'gv-datatables' ), GV_Extension_DataTables::version, true );
+
+		/**
+		 * Use your own Scroller stylesheet by using the `gravityview_dt_scroller_style_src` filter
+		 */
+		wp_enqueue_style( 'gv-dt_scroller_style', apply_filters( 'gravityview_dt_scroller_style_src', '//cdn.datatables.net/scroller/1.2.1/css/dataTables.scroller.css' ), array('gv-datatables_style'), GV_Extension_DataTables::version, 'all' );
+
+	}
+
+
+	/**
+	 * Scroller add specific config data based on admin settings
+	 */
+	function scroller_add_config( $dt_config, $view_id, $post  ) {
+
+		$settings = get_post_meta( $view_id, '_gravityview_datatables_settings', true );
+
+		if( empty( $settings['scroller'] ) ) {
+			return $dt_config;
+		}
+
+		// init Scroller
+		$dt_config['dom'] = empty( $dt_config['dom'] ) ? 'frtiS' : $dt_config['dom'].'S';
+
+		// set table height
+		$settings['scrolly'] = empty( $settings['scrolly'] ) ? '200' : (string)$settings['scrolly'];
+		$dt_config['scrollY'] = empty( $dt_config['scrollY'] ) ? $settings['scrolly'] : $dt_config['scrollY'];
+		$dt_config['scrollY'] .= 'px';
+
+		GravityView_Plugin::log_debug( '[tabletools_add_config] Inserting Scroller config. Data: ' . print_r( $dt_config, true ) );
 
 		return $dt_config;
 	}
