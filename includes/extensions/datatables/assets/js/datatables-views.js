@@ -14,9 +14,21 @@
 (function( $ ) {
 
 var gvDataTables = {
+
 	init: function() {
-		$('.gv-datatables').DataTable( gvDTglobals );
-	}
+		var table = $('.gv-datatables').DataTable( gvDTglobals );
+
+		// init FixedHeader
+		if( gvDTFixedHeaderColumns.fixedHeader == 1 ) {
+			new $.fn.dataTable.FixedHeader( table );
+		}
+
+		// init FixedColumns
+		if( gvDTFixedHeaderColumns.fixedColumns == 1 ) {
+			new $.fn.dataTable.FixedColumns( table );
+		}
+
+	},
 
 };
 
