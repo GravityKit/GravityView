@@ -56,6 +56,8 @@ class GV_Extension_DataTables_Admin {
 			'tt_row_selection' => 'os',
 			'scroller' => false,
 			'scrolly' => 200,
+			'fixedcolumns' => false,
+			'fixedcolumns' => false,
 		);
 
 		$tt_buttons_labels = GV_Extension_DataTables_Common::tabletools_button_labels();
@@ -120,6 +122,24 @@ class GV_Extension_DataTables_Admin {
 				</td>
 				<td>
 					<input name="datatables_settings[scrolly]" id="gravityview_dt_scrollerheight" type="number" step="1" min="50" value="<?php empty( $ds['scrolly'] ) ? print 200 : print $ds['scrolly']; ?>" class="small-text">
+				</td>
+			</tr>
+		</table>
+
+		<h3 style="margin-top:1em;">FixedHeader/FixedColumns:</h3>
+		<table class="form-table">
+			<tr valign="top">
+				<td colspan="2">
+					<?php
+						echo GravityView_Admin_Views::render_field_option( 'datatables_settings[fixedheader]', array( 'label' => __( 'Enable FixedHeader', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ds['fixedheader'] );
+					?>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td colspan="2">
+					<?php
+						echo GravityView_Admin_Views::render_field_option( 'datatables_settings[fixedcolumns]', array( 'label' => __( 'Enable FixedColumns', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ds['fixedcolumns'] );
+					?>
 				</td>
 			</tr>
 		</table>
