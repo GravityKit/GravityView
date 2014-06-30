@@ -315,6 +315,7 @@ class GravityView_frontend {
 		// And per view
 		$hide_empty_fields = apply_filters( 'gravityview_hide_empty_fields_view_'.$args['id'], $hide_empty_fields );
 
+		ob_start();
 
 		// set globals for templating
 		global $gravityview_view;
@@ -382,12 +383,22 @@ class GravityView_frontend {
 		$gravityview_view->entries = $view_entries['entries'];
 		$gravityview_view->total_entries = $view_entries['count'];
 
+		// If Edit
+		if ( apply_filters( 'gravityview_is_edit_entry', false ) ) {
+
+			do_action( 'gravityview_edit_entry' );
+
+			return;
+
+		} else {
+
 		// finaly we'll render some html
-		ob_start();
 		$sections = apply_filters( 'gravityview_render_view_sections', $sections, $template_id );
 		foreach( $sections as $section ) {
 			GravityView_Plugin::log_debug( '[render_view] Rendering '. $section . ' section.' );
 			$gravityview_view->render( $view_slug, $section, false );
+			}
+
 		}
 
 		// Print the View ID to enable proper cookie pagination ?>

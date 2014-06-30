@@ -91,6 +91,7 @@ final class GravityView_Plugin {
 		// Load Extensions
 		// TODO: Convert to a scan of the directory or a method where this all lives
 		include_once( GRAVITYVIEW_DIR . 'includes/extensions/datatables/ext-datatables.php');
+		include_once( GRAVITYVIEW_DIR .'includes/extensions/edit-entry/class-edit-entry.php' );
 
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
