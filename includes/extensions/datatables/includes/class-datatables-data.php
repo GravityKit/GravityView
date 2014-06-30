@@ -413,7 +413,7 @@ class GV_Extension_DataTables_Data {
 		$dt_config['scrollY'] = empty( $dt_config['scrollY'] ) ? $settings['scrolly'] : $dt_config['scrollY'];
 		$dt_config['scrollY'] .= 'px';
 
-		GravityView_Plugin::log_debug( '[tabletools_add_config] Inserting Scroller config. Data: ' . print_r( $dt_config, true ) );
+		GravityView_Plugin::log_debug( '[scroller_add_config] Inserting Scroller config. Data: ' . print_r( $dt_config, true ) );
 
 		return $dt_config;
 	}
@@ -428,17 +428,50 @@ class GV_Extension_DataTables_Data {
 
 		$settings = get_post_meta( $view_id, '_gravityview_datatables_settings', true );
 
+		$fixed_config = array(
+			'fixedColumns' => 0,
+			'fixedHeader' => 0,
+		);
+
 		if( !empty( $settings['fixedheader'] ) ) {
 			wp_enqueue_script( 'gv-dt-fixedheader', apply_filters( 'gravityview_dt_fixedheader_script_src', '//cdn.datatables.net/fixedheader/2.1.1/js/dataTables.fixedHeader.min.js' ), array( 'jquery', 'gv-datatables' ), GV_Extension_DataTables::version, true );
 			wp_enqueue_style( 'gv-dt_fixedheader_style', apply_filters( 'gravityview_dt_fixedheader_style_src', '//cdn.datatables.net/fixedheader/2.1.1/css/dataTables.fixedHeader.css' ), array('gv-datatables_style'), GV_Extension_DataTables::version, 'all' );
+
+			$fixed_config['fixedHeader'] = 1;
 		}
 
 		if( !empty( $settings['fixedcolumns'] ) ) {
 			wp_enqueue_script( 'gv-dt-fixedcolumns', apply_filters( 'gravityview_dt_fixedcolumns_script_src', '//cdn.datatables.net/fixedcolumns/3.0.1/js/dataTables.fixedColumns.min.js' ), array( 'jquery', 'gv-datatables' ), GV_Extension_DataTables::version, true );
 			wp_enqueue_style( 'gv-dt_fixedcolumns_style', apply_filters( 'gravityview_dt_fixedcolumns_style_src', '//cdn.datatables.net/fixedcolumns/3.0.1/css/dataTables.fixedColumns.css' ), array('gv-datatables_style'), GV_Extension_DataTables::version, 'all' );
+			$fixed_config['fixedColumns'] = 1;
 		}
 
+		wp_localize_script( 'gv-datatables-cfg', 'gvDTFixedHeaderColumns', $fixed_config );
+
 	}
+
+	/**
+	 * FixedColumns add specific config data based on admin settings
+	 */
+	function fixedheadercolumns_add_config( $dt_config, $view_id, $post  ) {
+
+		$settings = get_post_meta( $view_id, '_gravityview_datatables_settings', true );
+
+		if( empty( $settings['fixedcolumns'] ) ) {
+			return $dt_config;
+		}
+
+		// FixedColumns need scrollX to be set
+		$dt_config['scrollX'] = true;
+
+
+		GravityView_Plugin::log_debug( '[fixedheadercolumns_add_config] Inserting FixedColumns config. Data: ' . print_r( $dt_config, true ) );
+
+		return $dt_config;
+	}
+
+
+
 
 } // end class
 new GV_Extension_DataTables_Data;
