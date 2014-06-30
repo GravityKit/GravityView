@@ -108,14 +108,28 @@ class GV_Extension_DataTables_Admin {
 			var gvTableTools = {
 				init: function() {
 					jQuery('#gv_dt_tt_showbuttons').click( gvTableTools.showButtonsOptions );
+					jQuery('#gravityview_directory_template').change( gvTableTools.showMetabox );
+
+					gvTableTools.showMetabox();
 				},
+
+				showMetabox: function() {
+					var template = jQuery('#gravityview_directory_template').val();
+					if( 'datatables_table' === template ) {
+						jQuery('#gravityview_datatables_settings').slideDown();
+					} else {
+						jQuery('#gravityview_datatables_settings').slideUp();
+					}
+				},
+
 				showButtonsOptions: function(e) {
 					e.preventDefault();
 					jQuery('#gv_dt_tt_buttons').slideToggle();
 				}
+
 			};
 
-			gvTableTools.init();
+			jQuery(document).ready( gvTableTools.init );
 
 		</script>
 
