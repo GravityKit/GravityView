@@ -54,6 +54,8 @@ class GV_Extension_DataTables_Admin {
 				'print' => 1
 			),
 			'tt_row_selection' => 'os',
+			'scroller' => false,
+			'scrolly' => 200,
 		);
 
 		$tt_buttons_labels = GV_Extension_DataTables_Common::tabletools_button_labels();
@@ -99,6 +101,25 @@ class GV_Extension_DataTables_Admin {
 						<option value="multi" <?php selected( 'multi', $ds['tt_row_selection'], true ); ?>><?php esc_html_e( 'Multiple row', 'gravity-view'); ?></option>
 						<option value="os" <?php selected( 'os', $ds['tt_row_selection'], true ); ?>><?php esc_html_e( 'Operating System like selection', 'gravity-view'); ?></option>
 					</select>
+				</td>
+			</tr>
+		</table>
+
+		<h3 style="margin-top:1em;">Scroller:</h3>
+		<table class="form-table">
+			<tr valign="top">
+				<td colspan="2">
+					<?php
+						echo GravityView_Admin_Views::render_field_option( 'datatables_settings[scroller]', array( 'label' => __( 'Enable Scroller', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ds['scroller'] );
+					?>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td scope="row">
+					<label for="gravityview_dt_scrollerheight"><?php esc_html_e( 'Table Height', 'gravity-view'); ?></label>
+				</td>
+				<td>
+					<input name="datatables_settings[scrolly]" id="gravityview_dt_scrollerheight" type="number" step="1" min="50" value="<?php empty( $ds['scrolly'] ) ? print 200 : print $ds['scrolly']; ?>" class="small-text">
 				</td>
 			</tr>
 		</table>
