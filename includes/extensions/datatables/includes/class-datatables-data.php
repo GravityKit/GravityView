@@ -409,7 +409,7 @@ class GV_Extension_DataTables_Data {
 		$dt_config['dom'] = empty( $dt_config['dom'] ) ? 'frtiS' : $dt_config['dom'].'S';
 
 		// set table height
-		$settings['scrolly'] = empty( $settings['scrolly'] ) ? '200' : (string)$settings['scrolly'];
+		$settings['scrolly'] = empty( $settings['scrolly'] ) ? '400' : (string)$settings['scrolly'];
 		$dt_config['scrollY'] = empty( $dt_config['scrollY'] ) ? $settings['scrolly'] : $dt_config['scrollY'];
 		$dt_config['scrollY'] .= 'px';
 

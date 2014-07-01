@@ -55,7 +55,7 @@ class GV_Extension_DataTables_Admin {
 			),
 			'tt_row_selection' => 'os',
 			'scroller' => false,
-			'scrolly' => 200,
+			'scrolly' => 400,
 			'fixedcolumns' => false,
 			'fixedcolumns' => false,
 		);
