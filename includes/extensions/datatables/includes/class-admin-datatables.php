@@ -45,11 +45,11 @@ class GV_Extension_DataTables_Admin {
 		$defaults = array(
 			'tabletools' => true,
 			'tt_buttons' => array(
-				'select_all' => 1,
-				'select_none' => 1,
+				// 'select_all' => 0,
+				// 'select_none' => 0,
 				'copy' => 1,
 				'csv' => 1,
-				'xls' => 1,
+				'xls' => 0,
 				'pdf' => 1,
 				'print' => 1
 			),
