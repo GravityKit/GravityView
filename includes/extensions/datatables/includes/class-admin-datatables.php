@@ -53,7 +53,7 @@ class GV_Extension_DataTables_Admin {
 				'pdf' => 1,
 				'print' => 1
 			),
-			'tt_row_selection' => 'os',
+			//'tt_row_selection' => 'os',
 			'scroller' => false,
 			'scrolly' => 400,
 			'fixedcolumns' => false,
@@ -92,6 +92,7 @@ class GV_Extension_DataTables_Admin {
 					?>
 				</td>
 			</tr>
+			<?php /*
 			<tr>
 				<td scope="row">
 					<label for="gravityview_tt_rowselection"><?php esc_html_e( 'Row Selection', 'gravity-view'); ?></label>
@@ -105,6 +106,7 @@ class GV_Extension_DataTables_Admin {
 					</select>
 				</td>
 			</tr>
+			*/ ?>
 		</table>
 
 		<h3 style="margin-top:1em;">Scroller:</h3>

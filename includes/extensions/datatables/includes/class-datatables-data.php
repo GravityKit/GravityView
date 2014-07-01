@@ -339,7 +339,8 @@ class GV_Extension_DataTables_Data {
 		$dt_config['tableTools']['sSwfPath'] = plugins_url( 'assets/swf/copy_csv_xls_pdf.swf', GV_DT_FILE );
 
 		// row selection mode option
-		$dt_config['tableTools']['sRowSelect'] = empty( $settings['tt_row_selection'] ) ? 'none' : $settings['tt_row_selection'];
+		//$dt_config['tableTools']['sRowSelect'] = empty( $settings['tt_row_selection'] ) ? 'none' : $settings['tt_row_selection'];
+		$dt_config['tableTools']['sRowSelect'] = apply_filters( 'gravityview_dt_tabletools_rowselect', 'none', $dt_config, $view_id, $post );
 
 		// display buttons
 		if( !empty( $settings['tt_buttons'] ) && is_array( $settings['tt_buttons'] ) ) {
