@@ -123,7 +123,7 @@ class GV_Extension_DataTables_Admin {
 					<label for="gravityview_dt_scrollerheight"><?php esc_html_e( 'Table Height', 'gravity-view'); ?></label>
 				</td>
 				<td>
-					<input name="datatables_settings[scrolly]" id="gravityview_dt_scrollerheight" type="number" step="1" min="50" value="<?php empty( $ds['scrolly'] ) ? print 200 : print $ds['scrolly']; ?>" class="small-text">
+					<input name="datatables_settings[scrolly]" id="gravityview_dt_scrollerheight" type="number" step="1" min="50" value="<?php empty( $ds['scrolly'] ) ? print 400 : print $ds['scrolly']; ?>" class="small-text">
 				</td>
 			</tr>
 		</table>
@@ -150,10 +150,13 @@ class GV_Extension_DataTables_Admin {
 
 			var gvTableTools = {
 				init: function() {
-					jQuery('#gv_dt_tt_showbuttons').click( gvTableTools.showButtonsOptions );
-					jQuery('#gravityview_directory_template').change( gvTableTools.showMetabox );
 
-					gvTableTools.showMetabox();
+					jQuery('#gravityview_directory_template').change( gvTableTools.showMetabox ).change();
+
+					jQuery('#datatables_settingstabletools, #datatables_settingsscroller').change( gvTableTools.showGroupOptions ).change();
+
+					jQuery('#gv_dt_tt_showbuttons').click( gvTableTools.showButtonsOptions );
+
 				},
 
 				showMetabox: function() {
@@ -168,6 +171,16 @@ class GV_Extension_DataTables_Admin {
 				showButtonsOptions: function(e) {
 					e.preventDefault();
 					jQuery('#gv_dt_tt_buttons').slideToggle();
+				},
+
+
+				showGroupOptions: function() {
+					var _this = jQuery(this);
+					if( _this.is(':checked') ) {
+						_this.parents('tr').siblings().not('#gv_dt_tt_buttons').slideDown();
+					} else {
+						_this.parents('tr').siblings().slideUp();
+					}
 				}
 
 			};
