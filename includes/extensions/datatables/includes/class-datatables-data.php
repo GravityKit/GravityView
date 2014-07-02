@@ -58,7 +58,7 @@ class GV_Extension_DataTables_Data {
 	 */
 	function get_datatables_data() {
 		$this->check_ajax_nonce();
-
+error_log( 'this: $_POST ' . print_r( $_POST , true ) );
 		if( empty( $_POST['view_id'] ) ) {
 			GravityView_Plugin::log_debug( '[DataTables] AJAX request - View ID check failed');
 			die();
@@ -105,9 +105,18 @@ class GV_Extension_DataTables_Data {
 		$form_id = get_post_meta( $atts['id'], '_gravityview_form_id', true );
 		$dir_fields = get_post_meta( $atts['id'], '_gravityview_directory_fields', true );
 
-		// get view entries
-		$view_entries = GravityView_frontend::get_view_entries( $atts, $form_id );
 
+
+		// check if someone requested the full filtered data
+		if( $atts['page_size'] == '-1' ) {
+			$mode = 'all';
+			$atts['page_size'] = '200';
+		} else {
+			// regular mode - get view entries
+			$mode = 'page';
+		}
+
+		$view_entries = GravityView_frontend::get_view_entries( $atts, $form_id );
 
 		global $gravityview_view;
 		$gravityview_view = new GravityView_View( array(
@@ -121,15 +130,28 @@ class GV_Extension_DataTables_Data {
 		// build output data
 		$data = array();
 		if( $view_entries['count'] !== 0 ) {
-			foreach( $view_entries['entries'] as $entry ) {
-				$temp = array();
-				if( !empty(  $dir_fields['directory_table-columns'] ) ) {
-					foreach( $dir_fields['directory_table-columns'] as $field ) {
-						$temp[] = gv_value( $entry, $field );
+
+			$total = $view_entries['count'];
+			$i = 0;
+			do {
+				foreach( $view_entries['entries'] as $entry ) {
+					$temp = array();
+					if( !empty(  $dir_fields['directory_table-columns'] ) ) {
+						foreach( $dir_fields['directory_table-columns'] as $field ) {
+							$temp[] = gv_value( $entry, $field );
+						}
 					}
+					$data[] = $temp;
+					$i++;
 				}
-				$data[] = $temp;
-			}
+
+				//prepare for one more loop (in case)
+				if( 'all' === $mode && $i < $total ) {
+					$atts['offset'] = $view_entries['paging']['offset'] + $atts['page_size'];
+					$view_entries = GravityView_frontend::get_view_entries( $atts, $form_id );
+				}
+
+			} while( 'all' === $mode && $view_entries['count'] > 0 && $i < $total );
 		}
 
 
