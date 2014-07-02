@@ -58,7 +58,7 @@ class GV_Extension_DataTables_Data {
 	 */
 	function get_datatables_data() {
 		$this->check_ajax_nonce();
-error_log( 'this: $_POST ' . print_r( $_POST , true ) );
+
 		if( empty( $_POST['view_id'] ) ) {
 			GravityView_Plugin::log_debug( '[DataTables] AJAX request - View ID check failed');
 			die();
@@ -107,7 +107,7 @@ error_log( 'this: $_POST ' . print_r( $_POST , true ) );
 
 
 
-		// check if someone requested the full filtered data
+		// check if someone requested the full filtered data (eg. TableTools print button)
 		if( $atts['page_size'] == '-1' ) {
 			$mode = 'all';
 			$atts['page_size'] = '200';
