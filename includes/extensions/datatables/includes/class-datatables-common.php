@@ -26,6 +26,7 @@ class GV_Extension_DataTables_Common {
 			'copy' => __( 'Copy', 'gravity-view' ),
 			'csv' => 'CSV',
 			'xls' => 'XLS',
+			'newpdf' => 'NEW PDF',
 			'pdf' => 'PDF',
 			'print' => __( 'Print', 'gravity-view' )
 		);

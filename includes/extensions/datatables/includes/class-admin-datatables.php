@@ -50,7 +50,8 @@ class GV_Extension_DataTables_Admin {
 				'copy' => 1,
 				'csv' => 1,
 				'xls' => 0,
-				'pdf' => 1,
+				'pdf' => 0,
+				'newpdf' => 1,
 				'print' => 1
 			),
 			//'tt_row_selection' => 'os',
