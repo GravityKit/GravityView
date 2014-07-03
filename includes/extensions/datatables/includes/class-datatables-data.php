@@ -57,6 +57,7 @@ class GV_Extension_DataTables_Data {
 	 * main AJAX logic to retrieve DataTables data
 	 */
 	function get_datatables_data() {
+
 		$this->check_ajax_nonce();
 
 		if( empty( $_POST['view_id'] ) ) {
@@ -221,16 +222,6 @@ class GV_Extension_DataTables_Data {
 		}
 
 
-		/**
-		 * Include DataTables core script
-		 * Use your own DataTables core script by using the `gravityview_datatables_script_src` filter
-		 */
-		wp_enqueue_script( 'gv-datatables', apply_filters( 'gravityview_datatables_script_src', '//cdn.datatables.net/1.10.0/js/jquery.dataTables.min.js' ), array( 'jquery' ), GV_Extension_DataTables::version, true );
-
-		// include DataTables custom script
-		wp_enqueue_script( 'gv-datatables-cfg', plugins_url( 'assets/js/datatables-views.js', GV_DT_FILE ), array( 'gv-datatables' ), GV_Extension_DataTables::version, true );
-
-
 		// fetch template settings
 		$template_settings = get_post_meta( $view_id, '_gravityview_template_settings', true );
 
@@ -298,15 +289,25 @@ class GV_Extension_DataTables_Data {
 
 		GravityView_Plugin::log_debug( 'GV_Extension_DataTables_Data[add_scripts_and_styles] DataTables configuration: '. print_r( $dt_config, true ) );
 
-		wp_localize_script( 'gv-datatables-cfg', 'gvDTglobals', $dt_config );
 
 
+
+
+		/**
+		 * Include DataTables core script
+		 * Use your own DataTables core script by using the `gravityview_datatables_script_src` filter
+		 */
+		wp_enqueue_script( 'gv-datatables', apply_filters( 'gravityview_datatables_script_src', '//cdn.datatables.net/1.10.0/js/jquery.dataTables.min.js' ), array( 'jquery' ), GV_Extension_DataTables::version, true );
 
 		/**
 		 * Use your own DataTables stylesheet by using the `gravityview_datatables_style_src` filter
 		 */
 		wp_enqueue_style( 'gv-datatables_style', apply_filters( 'gravityview_datatables_style_src', '//cdn.datatables.net/1.10.0/css/jquery.dataTables.css' ), array(), GV_Extension_DataTables::version, 'all' );
 
+		// include DataTables custom script
+		wp_enqueue_script( 'gv-datatables-cfg', plugins_url( 'assets/js/datatables-views.js', GV_DT_FILE ), array( 'gv-datatables' ), GV_Extension_DataTables::version, true );
+
+		wp_localize_script( 'gv-datatables-cfg', 'gvDTglobals', $dt_config );
 
 		// Extend datatables by including other scripts and styles
 		do_action( 'gravityview_datatables_scripts_styles', $dt_config, $view_id, $post );
@@ -377,7 +378,7 @@ class GV_Extension_DataTables_Data {
 				foreach( $buttons as $button ) {
 					$dt_config['tableTools']['aButtons'][] = array(
 						'sExtends' => $button,
-						'sButtonText' => $button_labels[ $button ]
+						'sButtonText' => $button_labels[ $button ],
 					);
 				}
 			}
