@@ -304,7 +304,7 @@ class GravityView_frontend {
 		GravityView_Plugin::log_debug( '[render_view] Fields after visibility filter: ' . print_r( $dir_fields, true ) );
 
 		// Store in global for improved speed.
-		$form = gravityview_get_form( $form_id );
+	//	$form = gravityview_get_form( $form_id );
 
 		// If not set, the default is hide empty fields.
 		$hide_empty_fields = isset( $args['hide_empty'] ) ? !empty( $args['hide_empty'] ) : true;
@@ -321,7 +321,7 @@ class GravityView_frontend {
 		global $gravityview_view;
 		$gravityview_view = new GravityView_View(array(
 			'form_id' => $form_id,
-			'form'	  => $form,
+		//	'form'	  => $form,
 			'view_id' => $args['id'],
 			'fields'  => $dir_fields,
 			'hide_empty_fields' => $hide_empty_fields,
