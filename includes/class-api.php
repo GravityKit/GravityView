@@ -83,7 +83,7 @@ class GravityView_API {
 		$classes = array();
 
 		if( !empty( $field['custom_class'] ) ) {
-			$classes[] = $field['custom_class'];
+			$classes[] = esc_attr( self::replace_variables( $field['custom_class'], $form, $entry ) );
 		}
 
 		if(!empty($field['id'])) {

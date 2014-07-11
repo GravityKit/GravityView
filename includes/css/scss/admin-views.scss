@@ -129,6 +129,7 @@
 }
 
 .gv-view-types-module h5 {
+	white-space: nowrap; // Prevent different size boxes in responsive because title wraps to two lines
 	margin: 0.5em 0;
 	padding: 0;
 	font-size: 18px;
