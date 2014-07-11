@@ -23,7 +23,7 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
-= 1.0.7 on July 8 =
+= 1.0.7 on July 11 =
 * Tweak: Moved shortcode hint to Publish metabox
 * Tweak: Converted shortcode hint to input with content selected on click
 * Tweak: Remove WordPress SEO score calculation on Views
@@ -31,6 +31,10 @@ Beautifully display your Gravity Forms entries.
 * Modified: Enabled merge tags in Custom Class field settings
 * Tweak: Use `$User->ID` instead of `$User->id` in Name fields
 * Fix: Escaped Custom Class values
+* Added: custom `class` attribute sanitizer function
+`gravityview_sanitize_html_class`
+* Modified: Updated `gv_class()` calls to pass form and entry fields to allow for merge tags
+* Added" tooltip capability to field settings by using `tooltip` parameter. Uses the Gravity Forms tooltip array key.
 
 = 1.0.6 on June 26 =
 * Fixed: Fatal error when Gravity Forms is inactive

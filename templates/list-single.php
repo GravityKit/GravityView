@@ -12,9 +12,9 @@
 					$i = 0;
 					foreach( $this->fields['single_list-title'] as $field ) :
 						if( $i == 0 ): ?>
-							<h3 class="<?php echo gv_class( $field, $this->form ); ?>"><?php echo gv_value( $entry, $field ); ?></h3>
+							<h3 class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php echo gv_value( $entry, $field ); ?></h3>
 						<?php else: ?>
-							<div class="<?php echo gv_class( $field, $this->form ); ?>"><?php echo wpautop(gv_value( $entry, $field )); ?></div>
+							<div class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php echo wpautop(gv_value( $entry, $field )); ?></div>
 						<?php endif;
 						$i++; ?>
 					<?php endforeach; ?>
@@ -26,7 +26,7 @@
 				<div class="gv-list-view-subtitle"> <?php
 					foreach( $this->fields['single_list-subtitle'] as $field ) :
 				?>
-					<h4 class="<?php echo gv_class( $field, $this->form ); ?>"><?php echo gv_value( $entry, $field ); ?></h4>
+					<h4 class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php echo gv_value( $entry, $field ); ?></h4>
 				<?php endforeach; ?>
 				</div>
 				<?php endif; ?>
@@ -39,7 +39,7 @@
 				<div class="gv-list-view-content-image">
 				<?php
 					foreach( $this->fields['single_list-image'] as $field ) : ?>
-						<div class="<?php echo gv_class( $field, $this->form ); ?>">
+						<div class="<?php echo gv_class( $field, $this->form, $entry ); ?>">
 						<?php echo gv_value( $entry, $field ); ?>
 						</div>
 					<?php endforeach; ?>
@@ -54,7 +54,7 @@
 
 						if( $value === '' && $this->hide_empty_fields ) { continue; }
 					?>
-						<div class="<?php echo gv_class( $field, $this->form ); ?>"><?php
+						<div class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php
 
 							$label = gv_label( $field, $entry );
 							if(!empty($label)) { echo '<h4>'.esc_html( $label ).'</h4>'; }
@@ -75,7 +75,7 @@
 
 						if( $value === '' && $this->hide_empty_fields ) { continue; }
 				?>
-						<p class="<?php echo gv_class( $field, $this->form ); ?>"><?php echo esc_html( gv_label( $field, $entry ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
+						<p class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php echo esc_html( gv_label( $field, $entry ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
 					<?php endforeach; ?>
 				</div>
 				<?php endif; ?>
@@ -91,7 +91,7 @@
 
 							if( $value === '' && $this->hide_empty_fields ) { continue; }
 						?>
-							<div class="<?php echo gv_class( $field, $this->form ); ?>"><?php echo esc_html( gv_label( $field, $entry ) ); ?><?php echo gv_value( $entry, $field ); ?></div>
+							<div class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php echo esc_html( gv_label( $field, $entry ) ); ?><?php echo gv_value( $entry, $field ); ?></div>
 						<?php endforeach; ?>
 					<?php endif; ?>
 					</div>
@@ -104,7 +104,7 @@
 
 							if( $value === '' && $this->hide_empty_fields ) { continue; }
 						?>
-							<div class="<?php echo gv_class( $field, $this->form ); ?>"><?php echo esc_html( gv_label( $field, $entry ) ); ?><?php echo gv_value( $entry, $field ); ?></div>
+							<div class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php echo esc_html( gv_label( $field, $entry ) ); ?><?php echo gv_value( $entry, $field ); ?></div>
 						<?php endforeach; ?>
 					<?php endif; ?>
 					</div>
