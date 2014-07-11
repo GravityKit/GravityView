@@ -28,6 +28,18 @@ class GV_Extension_DataTables_Data {
 			add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ) );
 		}
 
+		// extensions - TableTools
+		add_action( 'gravityview_datatables_scripts_styles', array( $this, 'tabletools_add_scripts' ), 10, 3 );
+		add_filter( 'gravityview_datatables_js_options', array( $this, 'tabletools_add_config' ), 10, 3 );
+
+		// extensions - Scroller
+		add_action( 'gravityview_datatables_scripts_styles', array( $this, 'scroller_add_scripts' ), 10, 3 );
+		add_filter( 'gravityview_datatables_js_options', array( $this, 'scroller_add_config' ), 10, 3 );
+
+		// extensions - FixedHeader & FixedColumns
+		add_action( 'gravityview_datatables_scripts_styles', array( $this, 'fixedheadercolumns_add_scripts' ), 10, 3 );
+		add_filter( 'gravityview_datatables_js_options', array( $this, 'fixedheadercolumns_add_config' ), 10, 3 );
+
 	}
 
 	/**
@@ -45,6 +57,7 @@ class GV_Extension_DataTables_Data {
 	 * main AJAX logic to retrieve DataTables data
 	 */
 	function get_datatables_data() {
+
 		$this->check_ajax_nonce();
 
 		if( empty( $_POST['view_id'] ) ) {
@@ -93,9 +106,18 @@ class GV_Extension_DataTables_Data {
 		$form_id = get_post_meta( $atts['id'], '_gravityview_form_id', true );
 		$dir_fields = get_post_meta( $atts['id'], '_gravityview_directory_fields', true );
 
-		// get view entries
-		$view_entries = GravityView_frontend::get_view_entries( $atts, $form_id );
 
+
+		// check if someone requested the full filtered data (eg. TableTools print button)
+		if( $atts['page_size'] == '-1' ) {
+			$mode = 'all';
+			$atts['page_size'] = '200';
+		} else {
+			// regular mode - get view entries
+			$mode = 'page';
+		}
+
+		$view_entries = GravityView_frontend::get_view_entries( $atts, $form_id );
 
 		global $gravityview_view;
 		$gravityview_view = new GravityView_View( array(
@@ -109,15 +131,28 @@ class GV_Extension_DataTables_Data {
 		// build output data
 		$data = array();
 		if( $view_entries['count'] !== 0 ) {
-			foreach( $view_entries['entries'] as $entry ) {
-				$temp = array();
-				if( !empty(  $dir_fields['directory_table-columns'] ) ) {
-					foreach( $dir_fields['directory_table-columns'] as $field ) {
-						$temp[] = gv_value( $entry, $field );
+
+			$total = $view_entries['count'];
+			$i = 0;
+			do {
+				foreach( $view_entries['entries'] as $entry ) {
+					$temp = array();
+					if( !empty(  $dir_fields['directory_table-columns'] ) ) {
+						foreach( $dir_fields['directory_table-columns'] as $field ) {
+							$temp[] = gv_value( $entry, $field );
+						}
 					}
+					$data[] = $temp;
+					$i++;
 				}
-				$data[] = $temp;
-			}
+
+				//prepare for one more loop (in case)
+				if( 'all' === $mode && $i < $total ) {
+					$atts['offset'] = $view_entries['paging']['offset'] + $atts['page_size'];
+					$view_entries = GravityView_frontend::get_view_entries( $atts, $form_id );
+				}
+
+			} while( 'all' === $mode && $view_entries['count'] > 0 && $i < $total );
 		}
 
 
@@ -186,11 +221,6 @@ class GV_Extension_DataTables_Data {
 			return;
 		}
 
-		// include DataTables core script
-		wp_enqueue_script( 'gv-datatables', apply_filters( 'gravityview_datatables_script_src', '//cdn.datatables.net/1.10.0/js/jquery.dataTables.min.js' ), array( 'jquery' ), GV_Extension_DataTables::version, true );
-
-		// include DataTables custom script
-		wp_enqueue_script( 'gv-datatables-cfg', plugins_url( 'assets/js/datatables-views.js', GV_DT_FILE ), array( 'gv-datatables' ), GV_Extension_DataTables::version, true );
 
 		// fetch template settings
 		$template_settings = get_post_meta( $view_id, '_gravityview_template_settings', true );
@@ -203,7 +233,10 @@ class GV_Extension_DataTables_Data {
 			'stateSave'	 => true,
 			// Only save the state for the session.
 			// Use to time in seconds (like the DAY_IN_SECONDS WordPress constant) if you want to modify.
-			"stateDuration" => -1,
+			'stateDuration' => -1,
+			'oLanguage' => array(
+				'sProcessing' => __( 'Loading data...', 'gravity-view' ),
+			),
 			'ajax' => array(
 				'url' => admin_url( 'admin-ajax.php' ),
 				'type' => 'POST',
@@ -252,19 +285,214 @@ class GV_Extension_DataTables_Data {
 		}
 
 		// filter init DataTables options
-		$dt_config = apply_filters( 'gravityview_datatables_js_options', $dt_config );
+		$dt_config = apply_filters( 'gravityview_datatables_js_options', $dt_config, $view_id, $post );
 
 		GravityView_Plugin::log_debug( 'GV_Extension_DataTables_Data[add_scripts_and_styles] DataTables configuration: '. print_r( $dt_config, true ) );
 
-		wp_localize_script( 'gv-datatables-cfg', 'gvDTglobals', $dt_config );
+
+
+
+
+		/**
+		 * Include DataTables core script
+		 * Use your own DataTables core script by using the `gravityview_datatables_script_src` filter
+		 */
+		wp_enqueue_script( 'gv-datatables', apply_filters( 'gravityview_datatables_script_src', '//cdn.datatables.net/1.10.0/js/jquery.dataTables.min.js' ), array( 'jquery' ), GV_Extension_DataTables::version, true );
 
 		/**
 		 * Use your own DataTables stylesheet by using the `gravityview_datatables_style_src` filter
 		 */
 		wp_enqueue_style( 'gv-datatables_style', apply_filters( 'gravityview_datatables_style_src', '//cdn.datatables.net/1.10.0/css/jquery.dataTables.css' ), array(), GV_Extension_DataTables::version, 'all' );
 
+		// include DataTables custom script
+		wp_enqueue_script( 'gv-datatables-cfg', plugins_url( 'assets/js/datatables-views.js', GV_DT_FILE ), array( 'gv-datatables' ), GV_Extension_DataTables::version, true );
+
+		wp_localize_script( 'gv-datatables-cfg', 'gvDTglobals', $dt_config );
+
+		// Extend datatables by including other scripts and styles
+		do_action( 'gravityview_datatables_scripts_styles', $dt_config, $view_id, $post );
+
 
 	} // end add_scripts_and_styles
+
+
+	/** ---- DATATABLES EXTENSIONS ---- */
+
+
+	/** TableTools */
+
+	/**
+	 * Inject TableTools Scripts and Styles if needed
+	 */
+	function tabletools_add_scripts( $dt_config, $view_id, $post ) {
+
+		$settings = get_post_meta( $view_id, '_gravityview_datatables_settings', true );
+
+		if( empty( $settings['tabletools'] ) ) {
+			return;
+		}
+
+		/**
+		 * Include TableTools core script (DT plugin)
+		 * Use your own DataTables core script by using the `gravityview_datatables_script_src` filter
+		 */
+		wp_enqueue_script( 'gv-dt-tabletools', apply_filters( 'gravityview_dt_tabletools_script_src', '//cdn.datatables.net/tabletools/2.2.1/js/dataTables.tableTools.min.js' ), array( 'jquery', 'gv-datatables' ), GV_Extension_DataTables::version, true );
+
+		/**
+		 * Use your own TableTools stylesheet by using the `gravityview_dt_tabletools_style_src` filter
+		 */
+		wp_enqueue_style( 'gv-dt_tabletools_style', apply_filters( 'gravityview_dt_tabletools_style_src', '//cdn.datatables.net/tabletools/2.2.1/css/dataTables.tableTools.css' ), array('gv-datatables_style'), GV_Extension_DataTables::version, 'all' );
+
+	}
+
+
+	/**
+	 * TableTools add specific config data based on admin settings
+	 */
+	function tabletools_add_config( $dt_config, $view_id, $post  ) {
+
+		$settings = get_post_meta( $view_id, '_gravityview_datatables_settings', true );
+
+		if( empty( $settings['tabletools'] ) ) {
+			return $dt_config;
+		}
+
+		// init TableTools
+		$dt_config['dom'] = empty( $dt_config['dom'] ) ? 'T<"clear">lfrtip' : 'T<"clear">'. $dt_config['dom'];
+		$dt_config['tableTools']['sSwfPath'] = plugins_url( 'assets/swf/copy_csv_xls_pdf.swf', GV_DT_FILE );
+
+		// row selection mode option
+		//$dt_config['tableTools']['sRowSelect'] = empty( $settings['tt_row_selection'] ) ? 'none' : $settings['tt_row_selection'];
+		$dt_config['tableTools']['sRowSelect'] = apply_filters( 'gravityview_dt_tabletools_rowselect', 'none', $dt_config, $view_id, $post );
+
+		// display buttons
+		if( !empty( $settings['tt_buttons'] ) && is_array( $settings['tt_buttons'] ) ) {
+
+			//fetch buttons' labels
+			$button_labels = GV_Extension_DataTables_Common::tabletools_button_labels();
+
+			//calculate who's in
+			$buttons = array_keys( $settings['tt_buttons'], 1 );
+
+			if( !empty( $buttons ) ) {
+				foreach( $buttons as $button ) {
+					$dt_config['tableTools']['aButtons'][] = array(
+						'sExtends' => $button,
+						'sButtonText' => $button_labels[ $button ],
+					);
+				}
+			}
+
+		}
+
+		GravityView_Plugin::log_debug( '[tabletools_add_config] Inserting TableTools config. Data: ' . print_r( $dt_config, true ) );
+
+		return $dt_config;
+	}
+
+
+	/** Scroller */
+
+	/**
+	 * Inject Scroller Scripts and Styles if needed
+	 */
+	function scroller_add_scripts( $dt_config, $view_id, $post ) {
+
+		$settings = get_post_meta( $view_id, '_gravityview_datatables_settings', true );
+
+		if( empty( $settings['scroller'] ) ) {
+			return;
+		}
+
+		/**
+		 * Include Scroller core script (DT plugin)
+		 * Use your own DataTables core script by using the `gravityview_dt_scroller_script_src` filter
+		 */
+		wp_enqueue_script( 'gv-dt-scroller', apply_filters( 'gravityview_dt_scroller_script_src', '//cdn.datatables.net/scroller/1.2.1/js/dataTables.scroller.min.js' ), array( 'jquery', 'gv-datatables' ), GV_Extension_DataTables::version, true );
+
+		/**
+		 * Use your own Scroller stylesheet by using the `gravityview_dt_scroller_style_src` filter
+		 */
+		wp_enqueue_style( 'gv-dt_scroller_style', apply_filters( 'gravityview_dt_scroller_style_src', '//cdn.datatables.net/scroller/1.2.1/css/dataTables.scroller.css' ), array('gv-datatables_style'), GV_Extension_DataTables::version, 'all' );
+
+	}
+
+
+	/**
+	 * Scroller add specific config data based on admin settings
+	 */
+	function scroller_add_config( $dt_config, $view_id, $post  ) {
+
+		$settings = get_post_meta( $view_id, '_gravityview_datatables_settings', true );
+
+		if( empty( $settings['scroller'] ) ) {
+			return $dt_config;
+		}
+
+		// init Scroller
+		$dt_config['dom'] = empty( $dt_config['dom'] ) ? 'frtiS' : $dt_config['dom'].'S';
+
+		// set table height
+		$settings['scrolly'] = empty( $settings['scrolly'] ) ? '400' : (string)$settings['scrolly'];
+		$dt_config['scrollY'] = empty( $dt_config['scrollY'] ) ? $settings['scrolly'] : $dt_config['scrollY'];
+		$dt_config['scrollY'] .= 'px';
+
+		GravityView_Plugin::log_debug( '[scroller_add_config] Inserting Scroller config. Data: ' . print_r( $dt_config, true ) );
+
+		return $dt_config;
+	}
+
+
+	/** FixedHeader & FixedColumns */
+
+	/**
+	 * Inject FixedHeader & FixedColumns Scripts and Styles if needed
+	 */
+	function fixedheadercolumns_add_scripts( $dt_config, $view_id, $post ) {
+
+		$settings = get_post_meta( $view_id, '_gravityview_datatables_settings', true );
+
+		$fixed_config = array(
+			'fixedColumns' => 0,
+			'fixedHeader' => 0,
+		);
+
+		if( !empty( $settings['fixedheader'] ) ) {
+			wp_enqueue_script( 'gv-dt-fixedheader', apply_filters( 'gravityview_dt_fixedheader_script_src', '//cdn.datatables.net/fixedheader/2.1.1/js/dataTables.fixedHeader.min.js' ), array( 'jquery', 'gv-datatables' ), GV_Extension_DataTables::version, true );
+			wp_enqueue_style( 'gv-dt_fixedheader_style', apply_filters( 'gravityview_dt_fixedheader_style_src', '//cdn.datatables.net/fixedheader/2.1.1/css/dataTables.fixedHeader.css' ), array('gv-datatables_style'), GV_Extension_DataTables::version, 'all' );
+
+			$fixed_config['fixedHeader'] = 1;
+		}
+
+		if( !empty( $settings['fixedcolumns'] ) ) {
+			wp_enqueue_script( 'gv-dt-fixedcolumns', apply_filters( 'gravityview_dt_fixedcolumns_script_src', '//cdn.datatables.net/fixedcolumns/3.0.1/js/dataTables.fixedColumns.min.js' ), array( 'jquery', 'gv-datatables' ), GV_Extension_DataTables::version, true );
+			wp_enqueue_style( 'gv-dt_fixedcolumns_style', apply_filters( 'gravityview_dt_fixedcolumns_style_src', '//cdn.datatables.net/fixedcolumns/3.0.1/css/dataTables.fixedColumns.css' ), array('gv-datatables_style'), GV_Extension_DataTables::version, 'all' );
+			$fixed_config['fixedColumns'] = 1;
+		}
+
+		wp_localize_script( 'gv-datatables-cfg', 'gvDTFixedHeaderColumns', $fixed_config );
+
+	}
+
+	/**
+	 * FixedColumns add specific config data based on admin settings
+	 */
+	function fixedheadercolumns_add_config( $dt_config, $view_id, $post  ) {
+
+		$settings = get_post_meta( $view_id, '_gravityview_datatables_settings', true );
+
+		if( empty( $settings['fixedcolumns'] ) ) {
+			return $dt_config;
+		}
+
+		// FixedColumns need scrollX to be set
+		$dt_config['scrollX'] = true;
+
+
+		GravityView_Plugin::log_debug( '[fixedheadercolumns_add_config] Inserting FixedColumns config. Data: ' . print_r( $dt_config, true ) );
+
+		return $dt_config;
+	}
 
 
 

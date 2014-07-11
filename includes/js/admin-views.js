@@ -341,7 +341,7 @@
 				selectedTemplateId = vcfg.wantedTemplate.attr("data-templateid");
 
 			// update template name
-			$("#gravityview_directory_template").val( selectedTemplateId );
+			$("#gravityview_directory_template").val( selectedTemplateId ).change();
 
 			//add Selected class
 			var $parent = vcfg.wantedTemplate.parents(".gv-view-types-module");
