@@ -51,7 +51,7 @@ class GravityView_Admin_Views {
 		// Add Connected Form column
 		add_filter('manage_gravityview_posts_columns' , array( $this, 'add_post_type_columns' ) );
 
-		add_action( 'manage_gravityview_posts_custom_column', array( $this, 'add_post_type_column_content'), 10, 2 );
+		add_action( 'manage_gravityview_posts_custom_column', array( $this, 'add_connected_form_column_content'), 10, 2 );
 
 	}
 
@@ -88,7 +88,11 @@ class GravityView_Admin_Views {
 			'gv_back_link_label' => array(
 				'title' => __('Back Link Label', 'gravity-view'),
 				'value' => __('The text of the link that returns to the multiple entries view.', 'gravity-view'),
-			)
+			),
+			'gv_css_merge_tags' => array(
+				'title' => __('CSS Merge Tags', 'gravity-view'),
+				'value' => sprintf( __( 'Developers: The CSS classes will be sanitized using the %ssanitize_title_with_dashes()%s function.', 'gravity-view'), '<code>', '</code>' ),
+			),
 		);
 
 		foreach ( $gv_tooltips as $key => $tooltip ) {
@@ -101,7 +105,7 @@ class GravityView_Admin_Views {
 		return $tooltips;
 	}
 
-	public function add_post_type_column_content( $column_name, $post_id )	{
+	public function add_connected_form_column_content( $column_name, $post_id )	{
 
 		if( $column_name !== 'gv_connected_form' )  { return; }
 
@@ -109,7 +113,7 @@ class GravityView_Admin_Views {
 
 		// All Views should have a connected form. If it doesn't, that's not right.
 		if( empty($form_id) ) {
-			GravityView_Plugin::log_error( sprintf( '[add_post_type_column_content] View ID %s does not have a connected GF form.', $post_id ) );
+			GravityView_Plugin::log_error( sprintf( '[add_connected_form_column_content] View ID %s does not have a connected GF form.', $post_id ) );
 			echo __( 'Not connected.', 'gravity-view' );
 			return;
 		}
@@ -117,17 +121,29 @@ class GravityView_Admin_Views {
 		$form = gravityview_get_form( $form_id );
 
 		if( !$form ) {
-			GravityView_Plugin::log_error( sprintf( '[add_post_type_column_content] Connected form not found: Form #%d', $form_id ) );
+			GravityView_Plugin::log_error( sprintf( '[add_connected_form_column_content] Connected form not found: Form #%d', $form_id ) );
 
 			echo __( 'The connected form can not be found; it may no longer exist.', 'gravity-view' );
 		}
 
-		$url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;id=%d', $form_id ) );
+		$form_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;id=%d', $form_id ) );
+		$form_link = sprintf( '<strong><a href="%s" class="row-title">%s</a></strong>', $form_url , $form['title'] );
 
-		echo sprintf( '<a href="%s">%s</a>', $url , $form['title'] );
+		$edit_link = sprintf( '<a href="%s">%s</a>', $form_url , __('Edit Form', 'gravity-view') );
 
+		$entries_url = admin_url( sprintf( 'admin.php?page=gf_entries&amp;id=%d', $form_id ) );
+		$entries_link = sprintf( '<span><a href="%s">%s</a></span>', $entries_url , __( 'Entries', 'gravity-view' ) );
+
+		$settings_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;id=%d', $form_id ) );
+		$settings_link = sprintf( '<a title="%s" href="%s">%s</a>', __('Edit settings for this form', 'gravity-view'), $settings_url, __('Settings', 'gravity-view') );
+
+		echo $form_link . '<div class="row-actions">'. implode( ' | ', array( $edit_link, $entries_link, $settings_link ) ).'</div>';
 	}
 
+	/**
+	 * Add the Data Source column to the Views page
+	 * @param  array      $columns Columns array
+	 */
 	public function add_post_type_columns( $columns ) {
 
 		// Get the date column and save it for later to add back in.
@@ -179,13 +195,13 @@ class GravityView_Admin_Views {
 	 */
 	public function check_gravityforms() {
 
-		$image = '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:0 10px 10px 0;" />';
+		$image = '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft gv-astronaut" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin: 0 10px 10px 0;" />';
 
 		$gf_status = self::get_plugin_status( 'gravityforms/gravityforms.php' );
 
 		if( $gf_status !== true ) {
 			if( $gf_status === 'inactive' ) {
-				$this->admin_notices[] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravity-view' ), '<h3>'.$image, "</h3>\n\n".'<strong><a href="'. wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php') . '" class="button button-large">', '</a></strong>' ) );
+				$this->admin_notices[] = array( 'class' => 'error below-h2', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravity-view' ), '<h3>'.$image, "</h3>\n\n".'<strong><a href="'. wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php') . '" class="button button-large">', '</a></strong>' ) );
 			} else {
 				$this->admin_notices[] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $39%s%s', 'gravity-view' ), '<h3>'.$image, "</h3>\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
 			}
@@ -193,7 +209,7 @@ class GravityView_Admin_Views {
 
 		} else if( class_exists( 'GFCommon' ) && false === version_compare( GFCommon::$version, '1.8', ">=" ) ) {
 
-			$this->admin_notices[] = array( 'class' => 'error', 'message' => sprintf( __( "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravity-view' ), '<h3>'.$image, "</h3>\n\n", '<tt>'.GFCommon::$version.'</tt>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
+			$this->admin_notices[] = array( 'class' => 'error below-h2', 'message' => sprintf( __( "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravity-view' ), '<h3>'.$image, "</h3>\n\n", '<tt>'.GFCommon::$version.'</tt>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
 
 		}
 
@@ -511,7 +527,7 @@ class GravityView_Admin_Views {
 					<?php foreach( $areas as $area ) : ?>
 
 						<div class="gv-droppable-area">
-							<div class="active-drop active-drop-<?php echo $type; ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
+							<div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
 
 								<?php // render saved fields
 
@@ -719,9 +735,10 @@ class GravityView_Admin_Views {
 				'custom_class' => array(
 					'type' => 'text',
 					'label' => __( 'Custom CSS Class:', 'gravity-view' ),
-					'desc' => __( 'This class will be added to the field container.', 'gravity-view'),
+					'desc' => __( 'This class will be added to the field container', 'gravity-view'),
 					'default' => '',
-					'merge_tags' => false,
+					'merge_tags' => true,
+					'tooltip' => 'gv_css_merge_tags',
 				),
 				'only_loggedin' => array(
 					'type' => 'checkbox',
@@ -770,11 +787,15 @@ class GravityView_Admin_Views {
 			'type'	=> 'text',
 			'choices' => NULL,
 			'merge_tags' => true,
+			'tooltip' => NULL,
 		);
 
 		$option = wp_parse_args( $passed_option, $defaults );
 
 		extract( $option );
+
+		// If we set a tooltip, get the HTML
+		$tooltip = !empty( $option['tooltip'] ) ? ' '.gform_tooltip( $option['tooltip'] , '', true ) : NULL;
 
 		$output = '';
 
@@ -793,17 +814,17 @@ class GravityView_Admin_Views {
 		switch( $option['type'] ) {
 			case 'checkbox':
 				$output .= self::render_checkbox_option( $name, $id, $current );
-				$output .= '&nbsp;'.$option['label'].$option['desc'];
+				$output .= '&nbsp;'.$option['label'].$tooltip.$option['desc'];
 				break;
 
 			case 'select':
-				$output .= $option['label'].$option['desc'].'&nbsp;';
+				$output .= $option['label'].$tooltip.$option['desc'].'&nbsp;';
 				$output .= self::render_select_option( $name, $id, $option['choices'], $current );
 				break;
 
 			case 'text':
 			default:
-				$output .= $option['label'].$option['desc'];
+				$output .= $option['label'].$tooltip.$option['desc'];
 				$output .= '<div>';
 				$output .= self::render_text_option( $name, $id, $current, $option['merge_tags'] );
 				$output .= '</div>';
@@ -888,11 +909,24 @@ class GravityView_Admin_Views {
 	}
 
 	static function is_gravityview_admin_page($hook = '', $page = NULL) {
-		global $current_screen, $plugin_page, $pagenow, $post;
+		global $current_filter, $current_screen, $plugin_page, $pagenow, $post, $wp_post_types;
+
+		if( !is_admin() ) { return false; }
 
 		$is_page = false;
 
-		if((!empty($current_screen) && isset($current_screen->post_type) && $current_screen->post_type === 'gravityview') || (isset($_GET['post_type']) && $_GET['post_type'] === 'gravityview') || (!empty($post) && !empty($post->post_type) && $post->post_type === 'gravityview') ) {
+		$is_gv_screen = (!empty($current_screen) && isset($current_screen->post_type) && $current_screen->post_type === 'gravityview');
+
+		$is_gv_post_type_get = (isset($_GET['post_type']) && $_GET['post_type'] === 'gravityview');
+
+		if( empty( $post ) && $pagenow === 'post.php' && !empty( $_GET['post'] ) ) {
+			$gv_post = get_post( intval( $_GET['post'] ) );
+			$is_gv_post_type = (!empty($gv_post) && !empty($gv_post->post_type) && $gv_post->post_type === 'gravityview');
+		} else {
+			$is_gv_post_type = (!empty($post) && !empty($post->post_type) && $post->post_type === 'gravityview');
+		}
+
+		if( $is_gv_screen || $is_gv_post_type || $is_gv_post_type ) {
 
 			// $_GET `post_type` variable
 			if(in_array($pagenow, array( 'post.php' , 'post-new.php' )) ) {

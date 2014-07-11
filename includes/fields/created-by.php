@@ -20,7 +20,7 @@ class GravityView_Field_Created_By extends GravityView_Field {
 					'label' => __('Username (Example: "nostromo")', 'gravity-view')
 				),
 				array(
-					'value' => 'id',
+					'value' => 'ID',
 					'label' => __('User ID # (Example: 426)', 'gravity-view')
 				),
 			),

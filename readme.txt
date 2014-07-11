@@ -23,6 +23,15 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
+= 1.0.7 on July 8 =
+* Tweak: Moved shortcode hint to Publish metabox
+* Tweak: Converted shortcode hint to input with content selected on click
+* Tweak: Remove WordPress SEO score calculation on Views
+* Modified: Updated `GravityView_Admin_Views::is_gravityview_admin_page()` to fetch post if not yet set.
+* Modified: Enabled merge tags in Custom Class field settings
+* Tweak: Use `$User->ID` instead of `$User->id` in Name fields
+* Fix: Escaped Custom Class values
+
 = 1.0.6 on June 26 =
 * Fixed: Fatal error when Gravity Forms is inactive
 * Fixed: Undefined index for `id` in Edit View

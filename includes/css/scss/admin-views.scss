@@ -129,6 +129,7 @@
 }
 
 .gv-view-types-module h5 {
+	white-space: nowrap; // Prevent different size boxes in responsive because title wraps to two lines
 	margin: 0.5em 0;
 	padding: 0;
 	font-size: 18px;
@@ -311,6 +312,8 @@
 	overflow: hidden;
 }
 
+
+
 /** tooltips for fields + widgets */
 
 .ui-tooltip {
@@ -318,7 +321,7 @@
 	position:absolute;
 	width: 300px;
 	max-width: 100%; // Resize for responsive, if necessary
-	z-index:9999;
+	z-index: 999999!important; // Gravity Forms tooltips - need to make sure they're higher z-index to be above the field settings
 	background: #eee;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;

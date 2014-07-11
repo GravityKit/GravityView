@@ -95,6 +95,9 @@
 				}
 			});
 
+			// When user clicks into the shortcode example field, select the example.
+			$('body').on('click', ".gv-shortcode input", vcfg.selectText );
+
 			// show field buttons: Settings & Remove
 			$('body').on('click', "span.gv-field-controls a[href='#remove']", vcfg.removeField );
 			$('body').on('click', "span.gv-field-controls a[href='#settings']", vcfg.openFieldSettings );
@@ -107,6 +110,21 @@
 			$(document).on( 'click', '#publish', vcfg.createPresetForm );
 
 
+		},
+
+		/**
+		 * Select the text of an input field on click
+		 * @filter default text
+		 * @action default text
+		 * @param  {[type]}    e     [description]
+		 * @return {[type]}          [description]
+		 */
+		selectText: function( e ) {
+			e.preventDefault();
+
+			$(this).focus().select();
+
+			return false;
 		},
 
 		toggleInitialVisibility: function( vcfg ) {

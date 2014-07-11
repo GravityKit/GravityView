@@ -30,7 +30,7 @@ class GravityView_Admin_Metaboxes {
 		add_meta_box( 'gravityview_template_settings', __( 'View Settings', 'gravity-view' ), array( $this, 'render_view_settings_metabox' ), 'gravityview', 'side', 'core' );
 
 		// information box
-		add_meta_box( 'gravityview_shortcode_info', __( 'Shortcode Info', 'gravity-view' ), array( $this, 'render_shortcode_info_metabox' ), 'gravityview', 'side', 'default' );
+		add_action( 'post_submitbox_misc_actions', array( $this, 'render_shortcode_hint' ) );
 
 	}
 
@@ -422,16 +422,21 @@ class GravityView_Admin_Metaboxes {
 
 
 
-		/**
-		 * Render html shortcode info metabox.
-		 *
-		 * @access public
-		 * @param object $post
-		 * @return void
-		 */
-		function render_shortcode_info_metabox( $post ) {
-			printf('<p>%s <code>[gravityview id="%d"]</code></p>', esc_html__( 'To insert this view into a post or a page use the following shortcode:', 'gravity-view' ), $post->ID );
-		}
+	/**
+	 * Render shortcode hint in the Publish metabox
+	 *
+	 * @access public
+	 * @param object $post
+	 * @return void
+	 */
+	function render_shortcode_hint() {
+		global $post;
+
+		// Only show this on GravityView post types.
+		if( false === GravityView_Admin_Views::is_gravityview_admin_page() ) { return; }
+
+		printf('<div class="misc-pub-section gv-shortcode misc-pub-section-last"><i class="dashicons dashicons-editor-code" style="color: #888; left: -1px; font-size: 20px; line-height: 1;"></i> <span>%s</span><div><input type="text" readonly="readonly" value="[gravityview id=\'%d\']" class="code widefat" /><span class="howto">%s</span></div></div>', __( 'Embed Shortcode', 'gravity-view' ), $post->ID, esc_html__( 'You can use this shortcode to insert this view into a post or a page.', 'gravity-view' ) );
+	}
 
 	/**
 	 * Modify WooThemes metabox behavior
@@ -447,6 +452,9 @@ class GravityView_Admin_Metaboxes {
 
 		// New View or Edit View page
 		if($gv_page === 'single') {
+
+			// Prevent the SEO from being checked. Eesh.
+			add_filter( 'wpseo_use_page_analysis', '__return_false' );
 
 			// Genesis - adds the metaboxes too high. Added back in below.
 			remove_action( 'admin_menu', 'genesis_add_inpost_layout_box' );

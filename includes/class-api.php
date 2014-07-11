@@ -42,7 +42,12 @@ class GravityView_API {
 	}
 
 	/**
-	 * Check for merge tags before passing to Gravity Forms to improve speed
+	 * Check for merge tags before passing to Gravity Forms to improve speed.
+	 *
+	 * GF doesn't check for {} before diving in. They not only replace fields, they do `str_replace()` on
+	 * things like ip address, which is a lot of work just to check if there's any hint of a replacement variable.
+	 *
+	 * We check for the basics first.
 	 *
 	 * @param  string      $text       Text to replace variables in
 	 * @param  array      $form        GF Form array
@@ -83,12 +88,29 @@ class GravityView_API {
 		$classes = array();
 
 		if( !empty( $field['custom_class'] ) ) {
-			$classes[] = $field['custom_class'];
+
+			// We want the merge tag to be formatted as a class. The merge tag may be
+			// replaced by a multiple-word value that should be output as a single class.
+			// "Office Manager" should be formatted as `.office-manager`, not `.office` and `.manager`
+			add_filter('gform_merge_tag_filter', 'sanitize_title');
+
+			$custom_class = self::replace_variables( $field['custom_class'], $form, $entry );
+
+			// And then we want life to return to normal
+			remove_filter('gform_merge_tag_filter', 'sanitize_title');
+
+			// And now we want the spaces to be handled nicely.
+			$classes[] = gravityview_sanitize_html_class( $custom_class );
+
 		}
 
 		if(!empty($field['id'])) {
-			$form_id = $gravityview_view->form_id;
-			$form_id = empty($form_id) ? '' : '-'.$form_id;
+			if( !empty( $form ) && !empty( $form['id'] ) ) {
+				$form_id = '-'.$form['id'];
+			} else {
+				$form_id = empty( $gravityview_view->form_id ) ? '' : '-'. $gravityview_view->form_id;
+			}
+
 			$classes[] = 'gv-field'.$form_id.'-'.$field['id'];
 		}
 
@@ -262,8 +284,29 @@ function gv_label( $field, $entry = NULL ) {
 	return GravityView_API::field_label( $field, $entry );
 }
 
-function gv_class( $field ) {
-	return GravityView_API::field_class( $field );
+function gv_class( $field, $form = NULL, $entry = array() ) {
+	return GravityView_API::field_class( $field, $form, $entry  );
+}
+
+/**
+ * sanitize_html_class doesn't handle spaces (multiple classes). We remedy that.
+ * @uses sanitize_html_class
+ * @param  string      $string Text to sanitize
+ * @return [type]              [description]
+ */
+function gravityview_sanitize_html_class( $classes ) {
+
+	if( is_string( $classes ) ) {
+		$classes = explode(' ', $classes );
+	}
+
+	// If someone passes something not string or array, we get outta here.
+	if( !is_array( $classes ) ) { return $classes; }
+
+	$classes = array_map( 'sanitize_title_with_dashes' , $classes );
+
+	return implode( ' ', $classes );
+
 }
 
 function gv_value( $entry, $field) {
