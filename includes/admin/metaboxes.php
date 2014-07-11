@@ -450,7 +450,6 @@ class GravityView_Admin_Metaboxes {
 
 		$gv_page = GravityView_Admin_Views::is_gravityview_admin_page();
 
-		#die(var_dump($gv_page));
 		// New View or Edit View page
 		if($gv_page === 'single') {
 

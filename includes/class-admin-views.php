@@ -88,7 +88,11 @@ class GravityView_Admin_Views {
 			'gv_back_link_label' => array(
 				'title' => __('Back Link Label', 'gravity-view'),
 				'value' => __('The text of the link that returns to the multiple entries view.', 'gravity-view'),
-			)
+			),
+			'gv_css_merge_tags' => array(
+				'title' => __('CSS Merge Tags', 'gravity-view'),
+				'value' => sprintf( __( 'Developers: The CSS classes will be sanitized using the %ssanitize_title_with_dashes()%s function.', 'gravity-view'), '<code>', '</code>' ),
+			),
 		);
 
 		foreach ( $gv_tooltips as $key => $tooltip ) {
@@ -494,7 +498,7 @@ class GravityView_Admin_Views {
 					<?php foreach( $areas as $area ) : ?>
 
 						<div class="gv-droppable-area">
-							<div class="active-drop active-drop-<?php echo $type; ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
+							<div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
 
 								<?php // render saved fields
 
@@ -702,9 +706,10 @@ class GravityView_Admin_Views {
 				'custom_class' => array(
 					'type' => 'text',
 					'label' => __( 'Custom CSS Class:', 'gravity-view' ),
-					'desc' => __( 'This class will be added to the field container.', 'gravity-view'),
+					'desc' => __( 'This class will be added to the field container', 'gravity-view'),
 					'default' => '',
-					'merge_tags' => false,
+					'merge_tags' => true,
+					'tooltip' => 'gv_css_merge_tags',
 				),
 				'only_loggedin' => array(
 					'type' => 'checkbox',
@@ -753,11 +758,15 @@ class GravityView_Admin_Views {
 			'type'	=> 'text',
 			'choices' => NULL,
 			'merge_tags' => true,
+			'tooltip' => NULL,
 		);
 
 		$option = wp_parse_args( $passed_option, $defaults );
 
 		extract( $option );
+
+		// If we set a tooltip, get the HTML
+		$tooltip = !empty( $option['tooltip'] ) ? ' '.gform_tooltip( $option['tooltip'] , '', true ) : NULL;
 
 		$output = '';
 
@@ -776,17 +785,17 @@ class GravityView_Admin_Views {
 		switch( $option['type'] ) {
 			case 'checkbox':
 				$output .= self::render_checkbox_option( $name, $id, $current );
-				$output .= '&nbsp;'.$option['label'].$option['desc'];
+				$output .= '&nbsp;'.$option['label'].$tooltip.$option['desc'];
 				break;
 
 			case 'select':
-				$output .= $option['label'].$option['desc'].'&nbsp;';
+				$output .= $option['label'].$tooltip.$option['desc'].'&nbsp;';
 				$output .= self::render_select_option( $name, $id, $option['choices'], $current );
 				break;
 
 			case 'text':
 			default:
-				$output .= $option['label'].$option['desc'];
+				$output .= $option['label'].$tooltip.$option['desc'];
 				$output .= '<div>';
 				$output .= self::render_text_option( $name, $id, $current, $option['merge_tags'] );
 				$output .= '</div>';
