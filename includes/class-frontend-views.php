@@ -659,7 +659,8 @@ class GravityView_frontend {
 
 				wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), $css_dependencies, GravityView_Plugin::version, 'all' );
 
-				$template_id = get_post_meta( $p->ID, '_gravityview_directory_template', true );
+				$gravityview_post_id = !empty( $view_atts['id'] ) ? $view_atts['id'] : $p->ID;
+				$template_id = get_post_meta( $gravityview_post_id, '_gravityview_directory_template', true );
 
 				self::add_style( $template_id );
 			}
