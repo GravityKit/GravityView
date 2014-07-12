@@ -40,8 +40,8 @@ class GravityView_Admin_ApproveEntries {
 		// adding styles and scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles') );
 		// bypass Gravity Forms no-conflict mode
-		add_filter( 'gform_noconflict_scripts', array( $this, 'register_gf_script' ) );
-		add_filter( 'gform_noconflict_styles', array( $this, 'register_gf_style' ) );
+		add_filter( 'gform_noconflict_scripts', array( $this, 'register_gform_noconflict_script' ) );
+		add_filter( 'gform_noconflict_styles', array( $this, 'register_gform_noconflict_style' ) );
 
 	}
 
@@ -296,8 +296,9 @@ class GravityView_Admin_ApproveEntries {
 		}
 
 
-		//enqueue styles & scripts gf_entries
-		if( 'forms_page_gf_entries' == $hook ) {
+		// enqueue styles & scripts gf_entries
+		// But only if we're on the main Entries page, not on reports pages
+		if( 'forms_page_gf_entries' == $hook && ( empty($_GET['view']) || $_GET['view'] === 'entries' ) ) {
 
 			$form_id = RGForms::get('id');
 
@@ -337,12 +338,12 @@ class GravityView_Admin_ApproveEntries {
 
 	}
 
-	function register_gf_script( $scripts ) {
+	function register_gform_noconflict_script( $scripts ) {
 		$scripts[] = 'gravityview_gf_entries_scripts';
 		return $scripts;
 	}
 
-	function register_gf_style( $styles ) {
+	function register_gform_noconflict_style( $styles ) {
 		$styles[] = 'gravityview_entries_list';
 		return $styles;
 	}
