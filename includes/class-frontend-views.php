@@ -50,8 +50,6 @@ class GravityView_frontend {
 
 		//add_permastruct( "{$endpoint}", $endpoint.'/%'.$endpoint.'%/?', true);
 		add_rewrite_endpoint( "{$endpoint}", EP_ALL );
-
-
 	}
 
 	/**
@@ -74,6 +72,7 @@ class GravityView_frontend {
 	 * @access public
 	 * @static
 	 * @return void
+	 * @filter gravityview_directory_endpoint Change the slug used for single entries
 	 */
 	public static function get_entry_var_name() {
 		return sanitize_title( apply_filters( 'gravityview_directory_endpoint', 'entry' ) );
@@ -119,12 +118,12 @@ class GravityView_frontend {
 	 */
 	public static function render_view_shortcode( $atts ) {
 
-		GravityView_Plugin::log_debug( '[render_view_shortcode] Init Shortcode. Attributes: ' . print_r( $atts, true ) );
+		do_action( 'gravityview_log_debug', '[render_view_shortcode] Init Shortcode. Attributes: ',  $atts );
 
 		//confront attributes with defaults
 		$args = shortcode_atts( self::get_default_args() , $atts, 'gravityview' );
 
-		GravityView_Plugin::log_debug( '[render_view_shortcode] Init Shortcode. Merged Attributes: ' . print_r( $args, true ) );
+		do_action( 'gravityview_log_debug', '[render_view_shortcode] Init Shortcode. Merged Attributes: ', $args );
 
 		return self::render_view( $args );
 	}
@@ -175,8 +174,8 @@ class GravityView_frontend {
 				$view_id = $post_id;
 				$view_atts = get_post_meta( $post_id, '_gravityview_template_settings', true );
 			} else {
-				$view_id = $shortcode_atts['id'];
 				$shortcode_atts = GravityView_frontend::get_view_shortcode_atts( $post->post_content );
+				$view_id = $shortcode_atts['id'];
 				$view_atts = get_post_meta( $shortcode_atts['id'], '_gravityview_template_settings', true );
 			}
 
@@ -250,16 +249,16 @@ class GravityView_frontend {
 	 */
 	public static function render_view( $args ) {
 
-		GravityView_Plugin::log_debug( '[render_view] Init View. Arguments: ' . print_r( $args, true ) );
+		do_action( 'gravityview_log_debug', '[render_view] Init View. Arguments: ', $args );
 
 		// validate attributes
 		if( empty( $args['id'] ) ) {
-			GravityView_Plugin::log_error( '[render_view] Returning; no ID defined.');
+			do_action( 'gravityview_log_error', '[render_view] Returning; no ID defined.');
 			return;
 		}
 		//get template settings
 		$template_settings = get_post_meta( $args['id'], '_gravityview_template_settings', true );
-		GravityView_Plugin::log_debug( '[render_view] Template Settings: ' . print_r( $template_settings, true ) );
+		do_action( 'gravityview_log_debug', '[render_view] Template Settings: ', $template_settings );
 
 		// The passed args were always winning, even if they were NULL.
 		// This prevents that.
@@ -273,14 +272,14 @@ class GravityView_frontend {
 		// array_filter prevents empty arguments from winning over defaults.
 		$args = wp_parse_args( $args, $template_settings );
 
-		GravityView_Plugin::log_debug( '[render_view] Arguments after merging with View settings: ' . print_r( $args, true ) );
+		do_action( 'gravityview_log_debug', '[render_view] Arguments after merging with View settings: ', $args );
 
 		//extract( $args ); - no more extracts please!
 
 		// It's password protected and you need to log in.
 		if( post_password_required( $args['id'] ) ) {
 
-			GravityView_Plugin::log_error( sprintf('[render_view] Returning: View %d is password protected.', $args['id'] ) );
+			do_action( 'gravityview_log_error', sprintf('[render_view] Returning: View %d is password protected.', $args['id'] ) );
 
 			// If we're in an embed or on an archive page, show the password form
 			if( get_the_ID() !== $args['id'] ) { return get_the_password_form(); }
@@ -291,17 +290,17 @@ class GravityView_frontend {
 
 		// get form, fields and settings assign to this view
 		$form_id = get_post_meta( $args['id'], '_gravityview_form_id', true );
-		GravityView_Plugin::log_debug( '[render_view] Form ID: ' . print_r( $form_id, true ) );
+		do_action( 'gravityview_log_debug', '[render_view] Form ID: ', $form_id );
 
 		$template_id  = get_post_meta( $args['id'], '_gravityview_directory_template', true );
-		GravityView_Plugin::log_debug( '[render_view] Template ID: ' . print_r( $template_id, true ) );
+		do_action( 'gravityview_log_debug', '[render_view] Template ID: ', $template_id );
 
 		$dir_fields = get_post_meta( $args['id'], '_gravityview_directory_fields', true );
-		GravityView_Plugin::log_debug( '[render_view] Fields: ' . print_r( $dir_fields, true ) );
+		do_action( 'gravityview_log_debug', '[render_view] Fields: ', $dir_fields );
 
 		// remove fields according to visitor visibility permissions (if logged-in)
 		$dir_fields = self::filter_fields( $dir_fields );
-		GravityView_Plugin::log_debug( '[render_view] Fields after visibility filter: ' . print_r( $dir_fields, true ) );
+		do_action( 'gravityview_log_debug', '[render_view] Fields after visibility filter: ', $dir_fields );
 
 		// If not set, the default is hide empty fields.
 		$hide_empty_fields = isset( $args['hide_empty'] ) ? !empty( $args['hide_empty'] ) : true;
@@ -329,15 +328,15 @@ class GravityView_frontend {
 		if( empty( $single_entry ) ) {
 
 			// user requested Directory View
-			GravityView_Plugin::log_debug( '[render_view] Executing Directory View' );
+			do_action( 'gravityview_log_debug', '[render_view] Executing Directory View' );
 
 			//fetch template and slug
 			$view_slug =  apply_filters( 'gravityview_template_slug_'. $template_id, 'table', 'directory' );
-			GravityView_Plugin::log_debug( '[render_view] View template slug: ' . print_r( $view_slug, true ) );
+			do_action( 'gravityview_log_debug', '[render_view] View template slug: ', $view_slug );
 
 			$view_entries = self::get_view_entries( $args, $form_id, $template_settings );
 
-			GravityView_Plugin::log_debug( '[render_view] Get Entries. Found: ' . print_r( $view_entries['count'], true ) .' entries');
+			do_action( 'gravityview_log_debug', sprintf( '[render_view] Get Entries. Found %s entries', $view_entries['count'] ) );
 
 			$gravityview_view->paging = $view_entries['paging'];
 			$gravityview_view->context = 'directory';
@@ -345,24 +344,24 @@ class GravityView_frontend {
 
 		} else {
 			// user requested Single Entry View
-			GravityView_Plugin::log_debug( '[render_view] Executing Single View' );
+			do_action( 'gravityview_log_debug', '[render_view] Executing Single View' );
 
 			$entry = gravityview_get_entry( $single_entry );
 
 			// We're in single view, but the view being processed is not the same view the single entry belongs to.
 			if( $form_id !== $entry['form_id'] ) {
-				GravityView_Plugin::log_debug( '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '.$view_entries['entries'][0]['id'] );
+				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '.$view_entries['entries'][0]['id'] );
 				return;
 			}
 
 			//fetch template and slug
 			$view_slug =  apply_filters( 'gravityview_template_slug_'. $template_id, 'table', 'single' );
-			GravityView_Plugin::log_debug( '[render_view] View single template slug: ' . print_r( $view_slug, true ) );
+			do_action( 'gravityview_log_debug', '[render_view] View single template slug: ', $view_slug );
 
 			//fetch entry detail
 			$view_entries['count'] = 1;
 			$view_entries['entries'][] = $entry;
-			GravityView_Plugin::log_debug( '[render_view] Get single entry: ' . print_r( $view_entries['entries'], true ) );
+			do_action( 'gravityview_log_debug', '[render_view] Get single entry: ', $view_entries['entries'] );
 
 			// set back link label
 			$gravityview_view->back_link_label = isset( $args['back_link_label'] ) ? $args['back_link_label'] : NULL;
@@ -391,7 +390,7 @@ class GravityView_frontend {
 		// finaly we'll render some html
 		$sections = apply_filters( 'gravityview_render_view_sections', $sections, $template_id );
 		foreach( $sections as $section ) {
-			GravityView_Plugin::log_debug( '[render_view] Rendering '. $section . ' section.' );
+			do_action( 'gravityview_log_debug', '[render_view] Rendering '. $section . ' section.' );
 			$gravityview_view->render( $view_slug, $section, false );
 			}
 
@@ -432,7 +431,7 @@ class GravityView_frontend {
 
 				// The date was invalid
 				if( empty( $date ) ) {
-					GravityView_Plugin::log_error( '[process_search_dates] Invalid '.$key.' date format: ' . $args[ $key ]);
+					do_action( 'gravityview_log_error', '[process_search_dates] Invalid '.$key.' date format: ' . $args[ $key ]);
 					continue;
 				}
 
@@ -480,12 +479,12 @@ class GravityView_frontend {
 	 */
 	public static function get_view_entries( $args, $form_id, $template_settings = array() ) {
 
-		GravityView_Plugin::log_debug( '[get_view_entries] init' );
+		do_action( 'gravityview_log_debug', '[get_view_entries] init' );
 		// start filters and sorting
 
 		// Search Criteria
 		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ) );
-		GravityView_Plugin::log_debug( '[get_view_entries] Search Criteria after hook gravityview_fe_search_criteria: ' . print_r( $search_criteria, true ) );
+		do_action( 'gravityview_log_debug', '[get_view_entries] Search Criteria after hook gravityview_fe_search_criteria: ', $search_criteria );
 
 		// implicity search
 		if( !empty( $args['search_value'] ) ) {
@@ -495,12 +494,12 @@ class GravityView_frontend {
 				'operator' => 'contains', // What to search in. Options: `is` or `contains`
 			);
 		}
-		GravityView_Plugin::log_debug( '[get_view_entries] Search Criteria after implicity search: ' . print_r( $search_criteria, true ) );
+		do_action( 'gravityview_log_debug', '[get_view_entries] Search Criteria after implicity search: ', $search_criteria );
 
 		// Handle setting date range
 		$search_criteria = self::process_search_dates( $args, $search_criteria );
 
-		GravityView_Plugin::log_debug( '[get_view_entries] Search Criteria after date params: ' . print_r( $search_criteria, true ) );
+		do_action( 'gravityview_log_debug', '[get_view_entries] Search Criteria after date params: ', $search_criteria );
 
 
 		// Sorting
@@ -509,7 +508,7 @@ class GravityView_frontend {
 			$sorting = array( 'key' => $args['sort_field'], 'direction' => $args['sort_direction'] );
 		}
 
-		GravityView_Plugin::log_debug( '[get_view_entries] Sort Criteria : ' . print_r( $sorting, true ) );
+		do_action( 'gravityview_log_debug', '[get_view_entries] Sort Criteria : ', $sorting );
 
 
 		// Paging & offset
@@ -523,7 +522,7 @@ class GravityView_frontend {
 		}
 		$paging = array( 'offset' => $offset, 'page_size' => $page_size );
 
-		GravityView_Plugin::log_debug( '[get_view_entries] Paging: ' . print_r( $paging, true ) );
+		do_action( 'gravityview_log_debug', '[get_view_entries] Paging: ', $paging );
 
 
 		// remove not approved entries
@@ -531,7 +530,7 @@ class GravityView_frontend {
 			$search_criteria['field_filters'][] = array( 'key' => 'is_approved', 'value' => 'Approved' );
 			$search_criteria['field_filters']['mode'] = 'all'; // force all the criterias to be met
 
-			GravityView_Plugin::log_debug( '[get_view_entries] Search Criteria if show only approved: ' . print_r( $search_criteria, true ) );
+			do_action( 'gravityview_log_debug', '[get_view_entries] Search Criteria if show only approved: ', $search_criteria );
 		}
 
 		// Only show active listings
@@ -550,7 +549,7 @@ class GravityView_frontend {
 		$count = 0;
 		$entries = gravityview_get_entries( $form_id, $parameters, $count );
 
-		GravityView_Plugin::log_debug( '[get_view_entries] Get Entries. Found: ' . print_r( $count, true ) .' entries');
+		do_action( 'gravityview_log_debug', sprintf( '[get_view_entries] Get Entries. Found: %s entries', $count ) );
 
 		return compact( 'count', 'entries', 'paging' );
 	}
@@ -676,7 +675,7 @@ class GravityView_frontend {
 	public static function add_style( $template_id ) {
 
 		if( !empty( $template_id ) && wp_style_is( 'gravityview_style_' . $template_id, 'registered' ) ) {
-			GravityView_Plugin::log_debug( '[add_style] Adding extra template style for: ' . print_r( $template_id, true ) );
+			do_action( 'gravityview_log_debug', sprintf( '[add_style] Adding extra template style for %s', $template_id ) );
 			wp_enqueue_style( 'gravityview_style_' . $template_id );
 		}
 

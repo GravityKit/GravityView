@@ -433,7 +433,7 @@ class GravityView_Admin_Metaboxes {
 		global $post;
 
 		// Only show this on GravityView post types.
-		if( false === GravityView_Admin_Views::is_gravityview_admin_page() ) { return; }
+		if( false === gravityview_is_admin_page() ) { return; }
 
 		printf('<div class="misc-pub-section gv-shortcode misc-pub-section-last"><i class="dashicons dashicons-editor-code" style="color: #888; left: -1px; font-size: 20px; line-height: 1;"></i> <span>%s</span><div><input type="text" readonly="readonly" value="[gravityview id=\'%d\']" class="code widefat" /><span class="howto">%s</span></div></div>', __( 'Embed Shortcode', 'gravity-view' ), $post->ID, esc_html__( 'You can use this shortcode to insert this view into a post or a page.', 'gravity-view' ) );
 	}
@@ -448,7 +448,7 @@ class GravityView_Admin_Metaboxes {
 	function remove_other_metaboxes() {
 		global $pagenow;
 
-		$gv_page = GravityView_Admin_Views::is_gravityview_admin_page();
+		$gv_page = gravityview_is_admin_page();
 
 		// New View or Edit View page
 		if($gv_page === 'single') {
@@ -476,7 +476,7 @@ class GravityView_Admin_Metaboxes {
 	function add_other_metaboxes() {
 		global $pagenow;
 
-		if(!GravityView_Admin_Views::is_gravityview_admin_page()) { return; }
+		if(!gravityview_is_admin_page()) { return; }
 
 		// Genesis
 		if(function_exists('genesis_inpost_layout_box') && $pagenow !== 'post-new.php') {

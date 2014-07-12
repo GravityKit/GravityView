@@ -161,7 +161,7 @@ class GravityView_API {
 
 		if( $field_exists ) {
 
-			GravityView_Plugin::log_debug( sprintf('[field_value] Using template at %s', $field_exists) );
+			do_action( 'gravityview_log_debug', sprintf('[field_value] Rendering %s Field', $field_type ), $field_exists );
 
 			// Set the field data to be available in the templates
 			$gravityview_view->field_data = array(
