@@ -11,18 +11,20 @@ extract( $gravityview_view->field_data );
 
 $output = "";
 if(!empty($value)){
-    $output_arr = array();
-    $file_paths = rgar($field,"multipleFiles") ? json_decode($value) : array($value);
 
-    foreach($file_paths as $file_path){
+	$gv_class = gv_class( $field, $gravityview_view->form, $entry );
+	$output_arr = array();
+	$file_paths = rgar($field,"multipleFiles") ? json_decode($value) : array($value);
 
-    	// If the site is HTTPS, use HTTPS
-    	if(function_exists('set_url_scheme')) { $file_path = set_url_scheme($file_path); }
+	foreach($file_paths as $file_path){
 
-    	// This is from Gravity Forms
-    	$file_path = esc_attr(str_replace(" ", "%20", $file_path));
+		// If the site is HTTPS, use HTTPS
+		if(function_exists('set_url_scheme')) { $file_path = set_url_scheme($file_path); }
 
-    	// Is this an image?
+		// This is from Gravity Forms
+		$file_path = esc_attr(str_replace(" ", "%20", $file_path));
+
+		// Is this an image?
 		$image = new GravityView_Image(array(
 			'src' => $file_path,
 			'class' => 'gv-image gv-field-id-'.$field_settings['id'],
@@ -33,36 +35,49 @@ if(!empty($value)){
 		$image_html = $image->html();
 
 		// If so, use it!
-    	if(!empty($image_html)) {
-    		$content = $image;
-    	} else {
-    		// Otherwise, get a link
-	        $info = pathinfo($file_path);
-	        $content = $info["basename"];
-	    }
+		if(!empty($image_html)) {
+			$content = $image;
+		} else {
+			// Otherwise, get a link
+			$info = pathinfo($file_path);
+			$content = $info["basename"];
+		}
 
-	    $text_format = $file_path . PHP_EOL;
-	    $html_format = sprintf("<a href='$file_path' rel='%s-%d' class='thickbox' target='_blank'>" . $content . "</a>", gv_class( $field ), $entry['id'] );
+		$text_format = $file_path . PHP_EOL;
 
-	    $output_arr[] = array(
-	    	'text' => $text_format,
-	    	'html' => $html_format,
-	    	'content' => $content
-	    );
+		switch( $info['extension'] ) {
+			case 'mp4':
+			case 'ogv':
+			case 'ogg':
+			case 'webm':
+				$incompatible_text = __('Sorry, your browser doesn&rsquo;t support embedded videos, but you can %sdownload it%s and watch it with your favorite video player!', '<a href="'.$file_path.'">', '</a>' );
+				$video_tag = '<video controls="controls" preload="auto" width="375"><source src="'.esc_url( $file_path ).'" type="video/'.esc_attr( $info['extension'] ).'" /> '.$incompatible_text.'</video>';
+				$html_format = apply_filters( 'gravityview_video_html', $video_tag, $info, $incompatible_text );
+				break;
+			default:
+				$html_format = sprintf("<a href='{$file_path}' rel='%s-{$entry['id']}' class='thickbox' target='_blank'>" . $content . "</a>", $gv_class );
+				break;
+		}
 
-    } // End foreach
+		$output_arr[] = array(
+			'text' => $text_format,
+			'html' => $html_format,
+			'content' => $content
+		);
 
-    // If the output array is just one item, let's not show a list.
-    if(sizeof($output_arr) === 1) {
-    	$output = wpautop( $output_arr[0]['html'] );
-    } else {
-    	// Otherwise, a list it is!
-    	$output .= sprintf("<ul class='gv-field-file-uploads %s'>", gv_class( $field ));
-    	foreach ($output_arr as $key => $item) {
+	} // End foreach
+
+	// If the output array is just one item, let's not show a list.
+	if(sizeof($output_arr) === 1) {
+		$output = wpautop( $output_arr[0]['html'] );
+	} else {
+		// Otherwise, a list it is!
+		$output .= sprintf("<ul class='gv-field-file-uploads %s'>", $gv_class );
+		foreach ($output_arr as $key => $item) {
 			$output .= '<li>' . $item['html'] . PHP_EOL .'</li>';
 		}
 		$output .= '</ul>';
-    }
+	}
 
   }
 
