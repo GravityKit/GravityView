@@ -37,27 +37,32 @@ if(!empty($value)){
 		// If so, use it!
 		if(!empty($image_html)) {
 			$content = $image;
+			$html_format = sprintf("<a href='{$file_path}' rel='%s-{$entry['id']}' class='thickbox' target='_blank'>" . $content . "</a>", $gv_class );
 		} else {
+
 			// Otherwise, get a link
 			$info = pathinfo($file_path);
 			$content = $info["basename"];
+			$extension = empty( $info['extension'] ) ? NULL : $info['extension'];
+
+			switch( $extension ) {
+				case 'mp4':
+				case 'ogv':
+				case 'ogg':
+				case 'webm':
+					// We could use the {@link http://www.videojs.com VideoJS} library in the future
+					$incompatible_text = __('Sorry, your browser doesn&rsquo;t support embedded videos, but you can %sdownload it%s and watch it with your favorite video player!', '<a href="'.$file_path.'">', '</a>' );
+					$video_tag = '<video controls="controls" preload="auto" width="375"><source src="'.esc_url( $file_path ).'" type="video/'.esc_attr( $info['extension'] ).'" /> '.$incompatible_text.'</video>';
+					$html_format = apply_filters( 'gravityview_video_html', $video_tag, $info, $incompatible_text );
+					break;
+				default:
+					$html_format = sprintf("<a href='{$file_path}' rel='%s-{$entry['id']}' class='thickbox' target='_blank'>" . $content . "</a>", $gv_class );
+					break;
+			}
+
 		}
 
 		$text_format = $file_path . PHP_EOL;
-
-		switch( $info['extension'] ) {
-			case 'mp4':
-			case 'ogv':
-			case 'ogg':
-			case 'webm':
-				$incompatible_text = __('Sorry, your browser doesn&rsquo;t support embedded videos, but you can %sdownload it%s and watch it with your favorite video player!', '<a href="'.$file_path.'">', '</a>' );
-				$video_tag = '<video controls="controls" preload="auto" width="375"><source src="'.esc_url( $file_path ).'" type="video/'.esc_attr( $info['extension'] ).'" /> '.$incompatible_text.'</video>';
-				$html_format = apply_filters( 'gravityview_video_html', $video_tag, $info, $incompatible_text );
-				break;
-			default:
-				$html_format = sprintf("<a href='{$file_path}' rel='%s-{$entry['id']}' class='thickbox' target='_blank'>" . $content . "</a>", $gv_class );
-				break;
-		}
 
 		$output_arr[] = array(
 			'text' => $text_format,
