@@ -9,12 +9,9 @@ if (!class_exists('GravityView_Settings')) {
 		public $sections    = array();
 		public $ReduxFramework;
 
-		/**
-		 * Prefinery hash for user validation
-		 */
-		const prefinery_hash = '1p8W2mQTK31zmpUfUA8H';
-
 		public function __construct() {
+
+			if( !gravityview_is_admin_page() ) { return; }
 
 			require_once( GRAVITYVIEW_DIR . 'includes/lib/redux-framework/redux-framework.php');
 
