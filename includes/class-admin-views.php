@@ -926,7 +926,7 @@ class GravityView_Admin_Views {
 			$is_gv_post_type = (!empty($post) && !empty($post->post_type) && $post->post_type === 'gravityview');
 		}
 
-		if( $is_gv_screen || $is_gv_post_type || $is_gv_post_type ) {
+		if( $is_gv_screen || $is_gv_post_type || $is_gv_post_type || $is_gv_post_type_get ) {
 
 			// $_GET `post_type` variable
 			if(in_array($pagenow, array( 'post.php' , 'post-new.php' )) ) {
