@@ -23,9 +23,19 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
-= 1.0.7 on July 11 =
+= 1.0.7 on July 12 =
+* Major behind-the-scenes work
+* Added: Very cool DataTables extensions:
+	* Scroller: dynamically load in new entries as you scroll - no need for pagination)
+	* TableTools: Export your entries to CSV and PDF
+	* FixedHeader: As you scroll a large DataTable result, the headers of the table stay at the top of the screen. Also, FixedColumns, which does the same for the main table column.
++ Added: Horizontal search form fields. To return to vertical, you can add `add_filter('gravityview_search_class', '__return_null');` to your theme's functions.php file.
++ Added: Easy links to "Edit Form", "Settings" and "Entries" for the Data Source Gravity Forms form in the All Views admin screen
+* Fixed: Now supports View shortcodes inside other shortcodes (like if you wanted to use the [WP UI](https://wordpress.org/plugins/wp-ui/) plugin to put your `[gravityview]` shortocde inside a tab - this now works)
+* Added: Integration with the [Debug Bar](http://wordpress.org/plugins/debug-bar/) plugin - very helpful for developers to see what's going on behind the scenes.
 * Tweak: Moved shortcode hint to Publish metabox
 * Tweak: Converted shortcode hint to input with content selected on click
+* Tweak: Added tooltips to fields in the View editor
 * Tweak: Remove WordPress SEO score calculation on Views
 * Modified: Updated `GravityView_Admin_Views::is_gravityview_admin_page()` to fetch post if not yet set.
 * Modified: Enabled merge tags in Custom Class field settings
