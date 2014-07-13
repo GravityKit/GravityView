@@ -1,5 +1,6 @@
 <div class="gv-list-single-container">
-	<?php echo gravityview_back_link(); ?>
+
+	<p class="gv-back-link"><?php echo gravityview_back_link(); ?></p>
 
 	<?php foreach( $this->entries as $entry ) : ?>
 
