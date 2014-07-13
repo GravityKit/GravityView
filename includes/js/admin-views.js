@@ -911,7 +911,7 @@
 		if(activate_tab === 'undefined') { activate_tab = 0; }
 
 		// View Configuration - Tabs (persisten after refresh)
-		$("#tabs").tabs({
+		$("#gv-view-configuration-tabs").tabs({
 			active: activate_tab,
 			activate: function( event, ui ) {
 

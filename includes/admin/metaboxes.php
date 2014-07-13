@@ -218,7 +218,7 @@ class GravityView_Admin_Metaboxes {
 
 			echo $this->render_merge_tags_scripts( $curr_form );
 	?>
-			<div id="tabs">
+			<div id="gv-view-configuration-tabs">
 
 				<ul class="nav-tab-wrapper">
 					<li><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page"></i> <?php esc_html_e( 'Multiple Entries', 'gravity-view' ); ?></a></li>
