@@ -52,7 +52,7 @@ class GV_Extension_DataTables_TableTools {
 			<tr valign="top" id="gv_dt_tt_buttons" class="hide-if-js">
 				<td colspan="2">
 					<?php
-					foreach( $defaults['tt_buttons'] as $b_key => $b_value ) {
+					foreach( $ds['tt_buttons'] as $b_key => $b_value ) {
 						echo GravityView_Admin_Views::render_field_option( 'datatables_settings[tt_buttons]['. $b_key .']', array( 'label' => $tt_buttons_labels[ $b_key ], 'type' => 'checkbox', 'value' => 1 ), $ds['tt_buttons'][ $b_key ] );
 					}
 					?>
