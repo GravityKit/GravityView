@@ -184,7 +184,7 @@ class GravityView_API {
 		} else {
 
 			// Backup; the field template doesn't exist.
-			$output = esc_attr( $display_value );
+			$output = $display_value;
 
 		}
 

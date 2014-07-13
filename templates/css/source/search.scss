@@ -1,0 +1,24 @@
+// search.scss
+
+.gv-search-horizontal .gv-search-box {
+	float: left;
+	margin-right: .5em;
+
+	input {
+		display: block;
+	}
+
+	p {
+		display: inline-block block;
+	}
+
+	&.gv-search-date {
+		input {
+			display: inline-block;
+		}
+	}
+
+	&.gv-search-box-submit {
+		clear: left;
+	}
+}
