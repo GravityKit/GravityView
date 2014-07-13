@@ -337,27 +337,25 @@ class GravityView_Admin_Metaboxes {
 					</td>
 				</tr>
 				<tr valign="top">
-					<td scope="row" colspan="2">
+					<td colspan="2">
 						<?php
 							echo GravityView_Admin_Views::render_field_option( 'template_settings[show_only_approved]', array( 'label' => __( 'Show only approved entries', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ts['show_only_approved'] );
 						?>
 					</td>
 				</tr>
 				<tr valign="top">
-					<td scope="row" colspan="2">
+					<td colspan="2">
 						<?php
 							echo GravityView_Admin_Views::render_field_option( 'template_settings[hide_empty]', array( 'label' => __( 'Hide empty fields', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ts['hide_empty'] );
 						?>
 					</td>
 				</tr>
 				<tr valign="top">
-					<td scope="row">
+					<td colspan="2">
 						<label for="gravityview_sort_field"><?php esc_html_e( 'Sort by field', 'gravity-view'); ?></label>
-					</td>
-					<td>
-						<select name="template_settings[sort_field]" id="gravityview_sort_field" class="widefat">
+						<p><select name="template_settings[sort_field]" id="gravityview_sort_field" class="widefat">
 							<?php echo gravityview_get_sortable_fields( $curr_form, $ts['sort_field'] ); ?>
-						</select>
+						</select></p>
 					</td>
 				</tr>
 
