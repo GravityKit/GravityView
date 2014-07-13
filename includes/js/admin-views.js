@@ -297,9 +297,18 @@
 
 		},
 
+		/**
+		 * @todo Combine with the embed shortcode dropdown
+		 * @param  {[type]} context [description]
+		 * @param  {[type]} id      [description]
+		 * @return {[type]}         [description]
+		 */
 		getSortableFields: function( context, id ) {
 
 			var vcfg = viewConfiguration;
+
+			// While it's loading, disable the field, remove previous options, and add loading message.
+			$("#gravityview_sort_field").prop('disabled', 'disabled').empty().append('<option>'+ gvGlobals.loading_text + '</option>');
 
 			var data = {
 				action: 'gv_sortable_fields_form',
@@ -314,8 +323,7 @@
 
 			$.post( ajaxurl, data, function( response ) {
 				if( response !== 'false' ) {
-					$("#gravityview_sort_field").empty();
-					$("#gravityview_sort_field").append( response );
+					$("#gravityview_sort_field").empty().append( response ).prop('disabled', null );
 				}
 			});
 

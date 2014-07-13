@@ -866,6 +866,7 @@ class GravityView_Admin_Views {
 				'label_continue' => __( 'Continue', 'gravity-view' ),
 				'label_ok' => __( 'Ok', 'gravity-view' ),
 				'label_publisherror' => __( 'Error while creating the View for you. Check the settings or contact GravityView support.', 'gravity-view' ),
+				'loading_text' => esc_html__( 'Loading&hellip;', 'gravity-view' ),
 			));
 
 			wp_enqueue_style( 'gravityview_views_styles', plugins_url('includes/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
