@@ -47,53 +47,6 @@ class GV_Extension_DataTables_Admin {
 		$ds = wp_parse_args( $settings, $defaults );
 
 		do_action( 'gravityview_datatables_settings_row', $ds );
-		?>
-
-		<script>
-		// TODO: Convert this to not hard-coded logic
-			var gvDataTablesExt = {
-				init: function() {
-
-					jQuery('#gravityview_directory_template').change( gvDataTablesExt.showMetabox ).change();
-
-					jQuery('#datatables_settingstabletools, #datatables_settingsscroller').change( gvDataTablesExt.showGroupOptions ).change();
-
-					jQuery('#gv_dt_tt_showbuttons').click( gvDataTablesExt.showButtonsOptions );
-
-				},
-
-				showMetabox: function() {
-					var template = jQuery('#gravityview_directory_template').val();
-					if( 'datatables_table' === template ) {
-						jQuery('#gravityview_datatables_settings').slideDown();
-					} else {
-						jQuery('#gravityview_datatables_settings').slideUp();
-					}
-				},
-
-				showButtonsOptions: function(e) {
-					e.preventDefault();
-					jQuery('#gv_dt_tt_buttons').slideToggle();
-				},
-
-
-				showGroupOptions: function() {
-					var _this = jQuery(this);
-					if( _this.is(':checked') ) {
-						_this.parents('tr').siblings().not('#gv_dt_tt_buttons').slideDown();
-					} else {
-						_this.parents('tr').siblings().slideUp();
-					}
-				}
-
-			};
-
-			jQuery(document).ready( gvDataTablesExt.init );
-
-		</script>
-
-
-		<?php
 
 	}
 
