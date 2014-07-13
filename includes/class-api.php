@@ -91,13 +91,13 @@ class GravityView_API {
 
 			// We want the merge tag to be formatted as a class. The merge tag may be
 			// replaced by a multiple-word value that should be output as a single class.
-			// "Office Manager" should be formatted as `.office-manager`, not `.office` and `.manager`
-			add_filter('gform_merge_tag_filter', 'sanitize_title');
+			// "Office Manager" will be formatted as `.OfficeManager`, not `.Office` and `.Manager`
+			add_filter('gform_merge_tag_filter', 'sanitize_html_class');
 
 			$custom_class = self::replace_variables( $field['custom_class'], $form, $entry );
 
 			// And then we want life to return to normal
-			remove_filter('gform_merge_tag_filter', 'sanitize_title');
+			remove_filter('gform_merge_tag_filter', 'sanitize_html_class');
 
 			// And now we want the spaces to be handled nicely.
 			$classes[] = gravityview_sanitize_html_class( $custom_class );
@@ -184,7 +184,7 @@ class GravityView_API {
 		} else {
 
 			// Backup; the field template doesn't exist.
-			$output = $display_value;
+			$output = esc_attr( $display_value );
 
 		}
 
@@ -303,7 +303,7 @@ function gravityview_sanitize_html_class( $classes ) {
 	// If someone passes something not string or array, we get outta here.
 	if( !is_array( $classes ) ) { return $classes; }
 
-	$classes = array_map( 'sanitize_title_with_dashes' , $classes );
+	$classes = array_map( 'sanitize_html_class' , $classes );
 
 	return implode( ' ', $classes );
 
