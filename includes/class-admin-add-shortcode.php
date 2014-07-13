@@ -72,6 +72,14 @@ class GravityView_Admin_Add_Shortcode {
 
 		$post_type = get_post_type_object($post->post_type);
 
+		$views = get_posts( array('post_type' => 'gravityview', 'posts_per_page' => -1 ) );
+
+		// If there are no views set up yet, we get outta here.
+		if( empty( $views ) ) {
+			echo '<div id="select_gravityview_view"><div class="wrap">'.GravityView_Plugin::no_views_text().'</div></div>';
+			return;
+		}
+
 		?>
 		<div id="select_gravityview_view">
 			<form action="#" method="get" id="select_gravityview_view_form">
@@ -85,7 +93,7 @@ class GravityView_Admin_Add_Shortcode {
 
 						<select name="gravityview_view_id" id="gravityview_view_id">
 							<option value=""><?php esc_html_e( '&mdash; Select a View to Insert &mdash;', 'gravity-view' ); ?></option>
-							<?php $views = get_posts( array('post_type' => 'gravityview', 'posts_per_page' => -1 ) );
+							<?php
 							foreach( $views as $view ) {
 								$title = empty( $view->post_title ) ? __('(no title)', 'gravity-view') : $view->post_title;
 								echo '<option value="'. $view->ID .'">'. esc_html( sprintf('%s #%d', $title, $view->ID ) ) .'</option>';

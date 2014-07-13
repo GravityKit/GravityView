@@ -197,6 +197,19 @@ final class GravityView_Plugin {
 		return array_merge( $action, $links );
 	}
 
+	/**
+	 * Get text for no views found.
+	 * @todo Move somewhere appropriate.
+	 * @return string HTML message with no container tags.
+	 */
+	function no_views_text() {
+		// Floaty the astronaut
+		$image = '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:0 10px 10px 0;" />';
+
+		$not_found =  sprintf( esc_attr__("%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n\nIf you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page.", 'gravity-view' ), '<h3>', '<a href="'.admin_url('post-new.php?post_type=gravityview').'">', '</a>', '</h3>', '<a href="'.admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ).'">', '</a>' );
+
+		return $image.wpautop( $not_found );
+	}
 
 	/**
 	 * Init plugin components such as register own custom post types
@@ -206,11 +219,6 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public static function init_setup() {
-
-		// Floaty the astronaut
-		$image = '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:0 10px 10px 0;" />';
-
-		$not_found =  sprintf( __("%sYou don't have any active views. Let's go %screate one%s!%s\n\nIf you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page.", 'gravity-view' ), '<h3>', '<a href="'.admin_url('post-new.php?post_type=gravityview').'">', '</a>', '</h3>', '<a href="'.admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ).'">', '</a>' );
 
 		//Register Custom Post Type - gravityview
 		$labels = array(
@@ -225,7 +233,7 @@ final class GravityView_Plugin {
 			'edit_item'           => __( 'Edit View', 'gravity-view' ),
 			'update_item'         => __( 'Update View', 'gravity-view' ),
 			'search_items'        => __( 'Search Views', 'gravity-view' ),
-			'not_found'           => $image.$not_found,
+			'not_found'           => self::no_views_text(),
 			'not_found_in_trash'  => __( 'No Views found in Trash', 'gravity-view' ),
 		);
 		$args = array(
