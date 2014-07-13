@@ -433,7 +433,7 @@ class GravityView_Admin_Metaboxes {
 		// Only show this on GravityView post types.
 		if( false === gravityview_is_admin_page() ) { return; }
 
-		printf('<div class="misc-pub-section gv-shortcode misc-pub-section-last"><i class="dashicons dashicons-editor-code" style="color: #888; left: -1px; font-size: 20px; line-height: 1;"></i> <span>%s</span><div><input type="text" readonly="readonly" value="[gravityview id=\'%d\']" class="code widefat" /><span class="howto">%s</span></div></div>', __( 'Embed Shortcode', 'gravity-view' ), $post->ID, esc_html__( 'You can use this shortcode to insert this view into a post or a page.', 'gravity-view' ) );
+		printf('<div class="misc-pub-section gv-shortcode misc-pub-section-last"><i class="dashicons dashicons-editor-code" style="color: #888; left: -1px; font-size: 20px; line-height: 1;"></i> <span>%s</span><div><input type="text" readonly="readonly" value="[gravityview id=\'%d\']" class="code widefat" /><span class="howto">%s</span></div></div>', __( 'Embed Shortcode', 'gravity-view' ), $post->ID, esc_html__( 'Add this shortcode to a post or page to embed this view.', 'gravity-view' ) );
 	}
 
 	/**
