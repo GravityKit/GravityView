@@ -202,7 +202,7 @@ final class GravityView_Plugin {
 	 * @todo Move somewhere appropriate.
 	 * @return string HTML message with no container tags.
 	 */
-	function no_views_text() {
+	static function no_views_text() {
 		// Floaty the astronaut
 		$image = '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:0 10px 10px 0;" />';
 
