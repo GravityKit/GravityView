@@ -18,6 +18,10 @@ class GV_Extension_DataTables_Admin {
 		add_action( 'add_meta_boxes', array( $this, 'register_metabox' ) );
 		add_action( 'save_post', array( $this, 'save_postdata' ) );
 
+		// adding styles and scripts
+		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 999 );
+		add_filter( 'gravityview_noconflict_scripts', array( $this, 'register_no_conflict') );
+
 	}
 
 	/**
@@ -88,6 +92,26 @@ class GV_Extension_DataTables_Admin {
 
 
 	} // end save configuration
+
+	/**
+	 * Add script to Views edit screen (admin)
+	 * @param  mixed $hook
+	 */
+	function add_scripts_and_styles( $hook ) {
+		// Don't process any scripts below here if it's not a GravityView page.
+		if( !gravityview_is_admin_page( $hook ) ) { return; }
+
+		wp_enqueue_script( 'gravityview_datatables_admin', plugins_url( 'assets/js/datatables-admin-views.js', GV_DT_FILE ), array( 'jquery' ), GV_Extension_DataTables::version );
+
+	}
+
+	/**
+	 * Add admin script to the whitelist
+	 */
+	function register_no_conflict( $required ) {
+		$required[] = 'gravityview_datatables_admin';
+		return $required;
+	}
 
 }
 
