@@ -25,11 +25,9 @@ if ( !defined('GV_DT_DIR') )
 
 class GV_Extension_DataTables {
 
-	const version = '1.0.0';
+	const version = '1.0.1';
 
 	public function __construct() {
-
-		include_once( GV_DT_DIR . 'includes/class-datatables-common.php' );
 
 		// load DataTables admin logic
 		add_action( 'gravityview_include_backend_actions', array( $this, 'backend_actions' ) );
@@ -47,7 +45,10 @@ class GV_Extension_DataTables {
 	}
 
 	function core_actions() {
-		include_once( GV_DT_DIR . 'includes/class-datatables-data.php' );
+		include_once ( GV_DT_DIR . 'includes/class-datatables-data.php' );
+		include_once ( GV_DT_DIR . 'includes/extensions/class-datatables-tabletools.php' );
+		include_once ( GV_DT_DIR . 'includes/extensions/class-datatables-scroller.php' );
+		include_once ( GV_DT_DIR . 'includes/extensions/class-datatables-fixedheader.php' );
 	}
 
 	function register_templates() {
@@ -56,4 +57,5 @@ class GV_Extension_DataTables {
 
 
 }
+
 new GV_Extension_DataTables;

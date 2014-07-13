@@ -42,121 +42,23 @@ class GV_Extension_DataTables_Admin {
 		// View DataTables settings
 		$settings = get_post_meta( $post->ID, '_gravityview_datatables_settings', true );
 
-		$defaults = array(
-			'tabletools' => true,
-			'tt_buttons' => array(
-				// 'select_all' => 0,
-				// 'select_none' => 0,
-				'copy' => 1,
-				'csv' => 1,
-				'xls' => 0,
-				'pdf' => 0,
-				'newpdf' => 1,
-				'print' => 1
-			),
-			//'tt_row_selection' => 'os',
-			'scroller' => false,
-			'scrolly' => 400,
-			'fixedcolumns' => false,
-			'fixedcolumns' => false,
-		);
-
-		$tt_buttons_labels = GV_Extension_DataTables_Common::tabletools_button_labels();
+		$defaults = add_filter('gravityview_dt_default_settings', array() );
 
 		$ds = wp_parse_args( $settings, $defaults );
 
+		do_action( 'gravityview_datatables_settings_row', $ds );
 		?>
 
-		<h3 style="margin-top:1em;">TableTools:</h3>
-		<table class="form-table">
-			<tr valign="top">
-				<td colspan="2">
-					<?php
-						echo GravityView_Admin_Views::render_field_option( 'datatables_settings[tabletools]', array( 'label' => __( 'Enable TableTools', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ds['tabletools'] );
-					?>
-				</td>
-			</tr>
-			<tr valign="top">
-				<td scope="row">
-					<?php esc_html_e( 'Display Buttons', 'gravity-view' ); ?>
-				</td>
-				<td>
-					<a href="#" id="gv_dt_tt_showbuttons"><?php esc_html_e( 'Customize', 'gravity-view' ); ?></a>
-				</td>
-			</tr>
-			<tr valign="top" id="gv_dt_tt_buttons" class="hide-if-js">
-				<td colspan="2">
-					<?php
-					foreach( $defaults['tt_buttons'] as $b_key => $b_value ) {
-						echo GravityView_Admin_Views::render_field_option( 'datatables_settings[tt_buttons]['. $b_key .']', array( 'label' => $tt_buttons_labels[ $b_key ], 'type' => 'checkbox', 'value' => 1 ), $ds['tt_buttons'][ $b_key ] );
-					}
-					?>
-				</td>
-			</tr>
-			<?php /*
-			<tr>
-				<td scope="row">
-					<label for="gravityview_tt_rowselection"><?php esc_html_e( 'Row Selection', 'gravity-view'); ?></label>
-				</td>
-				<td>
-					<select name="datatables_settings[tt_row_selection]" id="gravityview_tt_rowselection" class="widefat">
-						<option value="none" <?php selected( 'none', $ds['tt_row_selection'], true ); ?>><?php esc_html_e( 'None', 'gravity-view'); ?></option>
-						<option value="single" <?php selected( 'single', $ds['tt_row_selection'], true ); ?>><?php esc_html_e( 'Single row', 'gravity-view'); ?></option>
-						<option value="multi" <?php selected( 'multi', $ds['tt_row_selection'], true ); ?>><?php esc_html_e( 'Multiple row', 'gravity-view'); ?></option>
-						<option value="os" <?php selected( 'os', $ds['tt_row_selection'], true ); ?>><?php esc_html_e( 'Operating System like selection', 'gravity-view'); ?></option>
-					</select>
-				</td>
-			</tr>
-			*/ ?>
-		</table>
-
-		<h3 style="margin-top:1em;">Scroller:</h3>
-		<table class="form-table">
-			<tr valign="top">
-				<td colspan="2">
-					<?php
-						echo GravityView_Admin_Views::render_field_option( 'datatables_settings[scroller]', array( 'label' => __( 'Enable Scroller', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ds['scroller'] );
-					?>
-				</td>
-			</tr>
-			<tr valign="top">
-				<td scope="row">
-					<label for="gravityview_dt_scrollerheight"><?php esc_html_e( 'Table Height', 'gravity-view'); ?></label>
-				</td>
-				<td>
-					<input name="datatables_settings[scrolly]" id="gravityview_dt_scrollerheight" type="number" step="1" min="50" value="<?php empty( $ds['scrolly'] ) ? print 400 : print $ds['scrolly']; ?>" class="small-text">
-				</td>
-			</tr>
-		</table>
-
-		<h3 style="margin-top:1em;">FixedHeader &amp; FixedColumns:</h3>
-		<table class="form-table">
-			<tr valign="top">
-				<td colspan="2">
-					<?php
-						echo GravityView_Admin_Views::render_field_option( 'datatables_settings[fixedheader]', array( 'label' => __( 'Enable FixedHeader', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ds['fixedheader'] );
-					?>
-				</td>
-			</tr>
-			<tr valign="top">
-				<td colspan="2">
-					<?php
-						echo GravityView_Admin_Views::render_field_option( 'datatables_settings[fixedcolumns]', array( 'label' => __( 'Enable FixedColumns', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ds['fixedcolumns'] );
-					?>
-				</td>
-			</tr>
-		</table>
-
 		<script>
-
-			var gvTableTools = {
+		// TODO: Convert this to not hard-coded logic
+			var gvDataTablesExt = {
 				init: function() {
 
-					jQuery('#gravityview_directory_template').change( gvTableTools.showMetabox ).change();
+					jQuery('#gravityview_directory_template').change( gvDataTablesExt.showMetabox ).change();
 
-					jQuery('#datatables_settingstabletools, #datatables_settingsscroller').change( gvTableTools.showGroupOptions ).change();
+					jQuery('#datatables_settingstabletools, #datatables_settingsscroller').change( gvDataTablesExt.showGroupOptions ).change();
 
-					jQuery('#gv_dt_tt_showbuttons').click( gvTableTools.showButtonsOptions );
+					jQuery('#gv_dt_tt_showbuttons').click( gvDataTablesExt.showButtonsOptions );
 
 				},
 
@@ -186,7 +88,7 @@ class GV_Extension_DataTables_Admin {
 
 			};
 
-			jQuery(document).ready( gvTableTools.init );
+			jQuery(document).ready( gvDataTablesExt.init );
 
 		</script>
 
