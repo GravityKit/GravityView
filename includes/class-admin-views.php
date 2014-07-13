@@ -431,7 +431,7 @@ class GravityView_Admin_Views {
 
 		// if saved values, get available fields to label everyone
 		if( !empty( $values ) && 'field' === $type && !empty( $post->ID ) ) {
-			$form_id = get_post_meta( $post->ID, '_gravityview_form_id', true );
+			$form_id = gravityview_get_form_id( $post->ID );
 			$available_fields = $this->get_available_fields( $form_id, $zone );
 		}
 

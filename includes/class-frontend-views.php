@@ -69,22 +69,16 @@ class GravityView_frontend {
 
 		}
 
-		$entry_id = self::is_single_entry();
+		if( GFCommon::current_user_can_any('gravityforms_edit_entries') && $entry_id =& self::is_single_entry() ) {
 
-		if( GFCommon::current_user_can_any('gravityforms_edit_entries') ) {
+			// We need the attached form ID as well...
+			$entry = gravityview_get_entry( $entry_id );
 
-			if( $entry_id ) {
-
-				// We need the attached form ID as well...
-				$entry = gravityview_get_entry( $entry_id );
-
-				$wp_admin_bar->add_menu( array(
-					'id' => 'edit',
-					'title' => __('Edit Entry', 'gravity-view'),
-					'href' => admin_url( sprintf('admin.php?page=gf_entries&amp;view=entry&id=%d&lid=%d', $entry['form_id'], $entry_id ) ),
-				) );
-
-			}
+			$wp_admin_bar->add_menu( array(
+				'id' => 'edit',
+				'title' => __('Edit Entry', 'gravity-view'),
+				'href' => admin_url( sprintf('admin.php?page=gf_entries&amp;view=entry&id=%d&lid=%d', $entry['form_id'], $entry_id ) ),
+			) );
 
 		}
 

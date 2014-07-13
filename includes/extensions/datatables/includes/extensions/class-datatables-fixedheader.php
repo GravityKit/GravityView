@@ -23,7 +23,7 @@ class GV_Extension_DataTables_FixedHeader {
 
 	function settings_row( $ds ) {
 		?>
-		<h3 style="margin-top:1em;">FixedHeader &amp; FixedColumns:</h3>
+		<h3 style="margin-top:1em;"><?php esc_attr_e('FixedHeader &amp; FixedColumns:', 'gravity-view' ); ?></h3>
 		<table class="form-table">
 			<tr valign="top">
 				<td colspan="2">
