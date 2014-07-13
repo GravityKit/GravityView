@@ -11,6 +11,9 @@
  */
 
 
+/**
+ * Generate the shortcode to insert, and reset the form to default state.
+ */
 function InsertViewShortcode(){
 	var view_id = jQuery("#gravityview_view_id").val();
 
@@ -21,25 +24,29 @@ function InsertViewShortcode(){
 	}
 
 	var shortcode = '[gravityview id="' + view_id +'"';
+	jQuery("#gravityview_view_id").val('');
 
 	//page size
 	var page_size = parseInt( jQuery("#gravityview_page_size").val() );
 	if( page_size > 0 && page_size != 25 ) {
 		shortcode += ' page_size="' + page_size + '"';
+		jQuery("#gravityview_page_size").val(25);
 	}
 
 	//lightbox
 	if( jQuery("#gravityview_lightbox").prop('checked') === false ) {
 		shortcode += ' lightbox="0"';
+		jQuery("#gravityview_lightbox").prop('checked', 'checked');
 	}
 
 	//show only approved
 	if( jQuery("#gravityview_only_approved").prop('checked') === true ) {
 		shortcode += ' show_only_approved="1"';
+		jQuery("#gravityview_only_approved").prop('checked', null );
 	}
 
 	// sorting
-	var sort_field = jQuery("#gravityview_sort_field").val();
+	var sort_field = jQuery("#gravityview_sort_field:enabled").val();
 	if( sort_field && sort_field !== '' ) {
 		var sort_direction = jQuery("#gravityview_sort_direction").val();
 		shortcode += ' sort_field="' + sort_field + '"' + ' sort_direction="' + sort_direction + '"';
@@ -54,6 +61,8 @@ function InsertViewShortcode(){
 	if( '' !== end_date ) {
 		shortcode += ' end_date="' + end_date + '"';
 	}
+
+	jQuery("#gravityview_sort_field,#gravityview_start_date,#gravityview_end_date").val('');
 
 
 	shortcode += ']';
@@ -76,7 +85,13 @@ jQuery(document).ready( function( $ ) {
 	// Select view id -> populate sort fields
 	$("#gravityview_view_id").change( function() {
 
-		$("#gravityview_sort_field").empty();
+		if( $("#gravityview_view_id").val() === '' ) {
+			$('#select_gravityview_view_form').find('.hide-if-js').fadeOut();
+			return;
+		}
+
+		// While it's loading, disable the field, remove previous options, and add loading message.
+		$("#gravityview_sort_field").prop('disabled', 'disabled').empty().append('<option>'+ gvGlobals.loading_text + '</option>');
 
 		var data = {
 			action: 'gv_sortable_fields',
@@ -86,17 +101,18 @@ jQuery(document).ready( function( $ ) {
 
 		$.post( ajaxurl, data, function( response ) {
 			if( response ) {
-				$("#gravityview_sort_field").append( response );
+				$("#gravityview_sort_field").empty().append( response ).prop('disabled', null );
 			}
 		});
 
+		$('#select_gravityview_view_form').find('.hide-if-js').fadeIn();
 	});
-
 
 	// capture form submit -> add shortcode to editor
 	$('#insert_gravityview_view').on( 'click', function(e) {
 		e.preventDefault();
 		InsertViewShortcode();
+		$('#select_gravityview_view_form').find('.hide-if-js').hide();
 		return false;
 	});
 

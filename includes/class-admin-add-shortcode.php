@@ -64,28 +64,39 @@ class GravityView_Admin_Add_Shortcode {
 	 * @return void
 	 */
 	function add_shortcode_popup() {
+		global $post;
+
 		if( !$this->is_post_editor_screen() ) {
 			return;
 		}
+
+		$post_type = get_post_type_object($post->post_type);
+
 		?>
 		<div id="select_gravityview_view">
 			<form action="#" method="get" id="select_gravityview_view_form">
 				<div class="wrap">
-					<h3><?php esc_html_e( 'Insert a View', 'gravity-view' ); ?></h3>
-					<table class="form-table">
-						<tr valign="top" class="alternate">
-							<td><label for="gravityview_view_id"><?php esc_html_e( 'Select a View', 'gravity-view' ); ?></label></td>
-							<td>
-								<select name="gravityview_view_id" id="gravityview_view_id">
-									<option value=""><?php esc_html_e( '&mdash; views &mdash;', 'gravity-view' ); ?></option>
-									<?php $views = get_posts( array('post_type' => 'gravityview', 'posts_per_page' => -1 ) );
-									foreach( $views as $view ) {
-										echo '<option value="'. $view->ID .'">'. esc_html( $view->post_title ) .'</option>';
-									}
-									?>
-								</select>
-							</td>
-						</tr>
+
+					<h2 class=""><?php esc_html_e( 'Embed a View', 'gravity-view' ); ?></h2>
+					<p class="subtitle"><?php printf( esc_attr ( __( 'Use this form to embed a View into this %s. %sLearn more about using shortcodes.%s', 'gravity-view') ), $post_type->labels->singular_name, '<a href="http://gravityview.co/support/documentation/202934188/" target="_blank">', '</a>' ); ?></p>
+
+					<div>
+						<h3><label for="gravityview_view_id"><?php esc_html_e( 'Select a View', 'gravity-view' ); ?></label></h3>
+
+						<select name="gravityview_view_id" id="gravityview_view_id">
+							<option value=""><?php esc_html_e( '&mdash; Select a View to Insert &mdash;', 'gravity-view' ); ?></option>
+							<?php $views = get_posts( array('post_type' => 'gravityview', 'posts_per_page' => -1 ) );
+							foreach( $views as $view ) {
+								$title = empty( $view->post_title ) ? __('(no title)', 'gravity-view') : $view->post_title;
+								echo '<option value="'. $view->ID .'">'. esc_html( sprintf('%s #%d', $title, $view->ID ) ) .'</option>';
+							}
+							?>
+						</select>
+					</div>
+
+					<table class="form-table hide-if-js">
+
+						<caption><?php esc_html_e( 'View Settings' ); ?></caption>
 
 						<tr valign="top">
 							<td>
@@ -150,7 +161,7 @@ class GravityView_Admin_Add_Shortcode {
 
 						<tr valign="top" class="alternate">
 							<td>
-								<label for="gravityview_start_date"><?php esc_html_e( 'Filter by Start Date', 'gravity-view'); ?></label>
+								<label for="gravityview_start_date"><?php esc_html_e( 'Show entries submitted after', 'gravity-view'); ?></label>
 							</td>
 							<td>
 								<input name="gravityview_start_date" id="gravityview_start_date" type="text" class="gv-datepicker">
@@ -159,7 +170,7 @@ class GravityView_Admin_Add_Shortcode {
 
 						<tr valign="top">
 							<td>
-								<label for="gravityview_end_date"><?php esc_html_e( 'Filter by End Date', 'gravity-view'); ?></label>
+								<label for="gravityview_end_date"><?php esc_html_e( 'Show entries submitted before', 'gravity-view'); ?></label>
 							</td>
 							<td>
 								<input name="gravityview_end_date" id="gravityview_end_date" type="text" class="gv-datepicker">
@@ -169,8 +180,8 @@ class GravityView_Admin_Add_Shortcode {
 					</table>
 
 					<div class="submit">
-						<input type="submit" class="button-primary" value="<?php esc_attr_e('Insert View', 'gravity-view' ); ?>" id="insert_gravityview_view" />
-						<input class="button-secondary" type="submit" onclick="tb_remove(); return false;" value="<?php esc_attr_e("Cancel", "gravity-view"); ?>" />
+						<input type="submit" class="button button-primary button-large alignleft hide-if-js" value="<?php esc_attr_e('Insert View', 'gravity-view' ); ?>" id="insert_gravityview_view" />
+						<input class="button button-secondary alignright" type="submit" onclick="tb_remove(); return false;" value="<?php esc_attr_e("Cancel", "gravity-view"); ?>" />
 					</div>
 
 				</div>
@@ -212,6 +223,7 @@ class GravityView_Admin_Add_Shortcode {
 		wp_enqueue_script( 'gravityview_postedit_scripts' );
 		wp_localize_script('gravityview_postedit_scripts', 'gvGlobals', array(
 			'nonce' => wp_create_nonce( 'gravityview_ajaxaddshortcode'),
+			'loading_text' => esc_html__( 'Loading&hellip;', 'gravity-view' ),
 			'alert_1' => esc_html__( 'Please select a View', 'gravity-view'),
 		));
 
@@ -240,7 +252,7 @@ class GravityView_Admin_Add_Shortcode {
 		}
 
 		// fetch form id assigned to the view
-		$formid = get_post_meta( $_POST['viewid'], '_gravityview_form_id', true );
+		$formid = gravityview_get_form_id( (int)$_POST['viewid'] );
 		$response = gravityview_get_sortable_fields( $formid );
 
 		echo $response;
