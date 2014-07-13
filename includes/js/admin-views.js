@@ -102,6 +102,12 @@
 			$('body').on('click', "span.gv-field-controls a[href='#remove']", vcfg.removeField );
 			$('body').on('click', "span.gv-field-controls a[href='#settings']", vcfg.openFieldSettings );
 
+			// Don't allow collapsing the main Configuration metabox.
+			$('#gravityview_view_config').find('.hndle,.handlediv').off('click').on('click', function(e) {
+				e.preventDefault();
+				return false;
+			});
+
 			$('body').on('dblclick', ".gv-fields", function(e) {
 				vcfg.openFieldSettings(e);
 			});
