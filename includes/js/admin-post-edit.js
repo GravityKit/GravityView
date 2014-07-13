@@ -12,45 +12,45 @@
 
 
 function InsertViewShortcode(){
-	var view_id = $("#gravityview_view_id").val();
+	var view_id = jQuery("#gravityview_view_id").val();
 
 	if( view_id === '' ) {
 		alert( gvGlobals.alert_1 );
-		$("#gravityview_view_id").focus();
+		jQuery("#gravityview_view_id").focus();
 		return false;
 	}
 
 	var shortcode = '[gravityview id="' + view_id +'"';
 
 	//page size
-	var page_size = parseInt( $("#gravityview_page_size").val() );
+	var page_size = parseInt( jQuery("#gravityview_page_size").val() );
 	if( page_size > 0 && page_size != 25 ) {
 		shortcode += ' page_size="' + page_size + '"';
 	}
 
 	//lightbox
-	if( $("#gravityview_lightbox").prop('checked') === false ) {
+	if( jQuery("#gravityview_lightbox").prop('checked') === false ) {
 		shortcode += ' lightbox="0"';
 	}
 
 	//show only approved
-	if( $("#gravityview_only_approved").prop('checked') === true ) {
+	if( jQuery("#gravityview_only_approved").prop('checked') === true ) {
 		shortcode += ' show_only_approved="1"';
 	}
 
 	// sorting
-	var sort_field = $("#gravityview_sort_field").val();
-	if( '' !== sort_field ) {
-		var sort_direction = $("#gravityview_sort_direction").val();
+	var sort_field = jQuery("#gravityview_sort_field").val();
+	if( sort_field && sort_field !== '' ) {
+		var sort_direction = jQuery("#gravityview_sort_direction").val();
 		shortcode += ' sort_field="' + sort_field + '"' + ' sort_direction="' + sort_direction + '"';
 	}
 
 	// date filtering
-	var start_date = $("#gravityview_start_date").val();
+	var start_date = jQuery("#gravityview_start_date").val();
 	if( '' !== start_date ) {
 		shortcode += ' start_date="' + start_date + '"';
 	}
-	var end_date = $("#gravityview_end_date").val();
+	var end_date = jQuery("#gravityview_end_date").val();
 	if( '' !== end_date ) {
 		shortcode += ' end_date="' + end_date + '"';
 	}
@@ -67,7 +67,7 @@ function InsertViewShortcode(){
 jQuery(document).ready( function( $ ) {
 
 	//datepicker
-	$('.gv-datepicker').datepicker({
+	jQuery('.gv-datepicker').datepicker({
 		dateFormat: "yy-mm-dd",
 		constrainInput: false
 	});
