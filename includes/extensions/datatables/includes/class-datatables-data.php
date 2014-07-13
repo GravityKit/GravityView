@@ -242,7 +242,6 @@ class GV_Extension_DataTables_Data {
 
 		do_action('gravityview_log_debug', 'GV_Extension_DataTables_Data[add_scripts_and_styles] DataTables configuration: ', $dt_config );
 
-
 		/**
 		 * Include DataTables core script
 		 * Use your own DataTables core script by using the `gravityview_datatables_script_src` filter
@@ -254,8 +253,10 @@ class GV_Extension_DataTables_Data {
 		 */
 		wp_enqueue_style( 'gv-datatables_style', apply_filters( 'gravityview_datatables_style_src', '//cdn.datatables.net/1.10.0/css/jquery.dataTables.css' ), array(), GV_Extension_DataTables::version, 'all' );
 
+		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
+
 		// include DataTables custom script
-		wp_enqueue_script( 'gv-datatables-cfg', plugins_url( 'assets/js/datatables-views.js', GV_DT_FILE ), array( 'gv-datatables' ), GV_Extension_DataTables::version, true );
+		wp_enqueue_script( 'gv-datatables-cfg', plugins_url( 'assets/js/datatables-views'.$script_debug.'.js', GV_DT_FILE ), array( 'gv-datatables' ), GV_Extension_DataTables::version, true );
 
 		wp_localize_script( 'gv-datatables-cfg', 'gvDTglobals', $dt_config );
 

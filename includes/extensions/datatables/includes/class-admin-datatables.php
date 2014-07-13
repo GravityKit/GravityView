@@ -101,7 +101,8 @@ class GV_Extension_DataTables_Admin {
 		// Don't process any scripts below here if it's not a GravityView page.
 		if( !gravityview_is_admin_page( $hook ) ) { return; }
 
-		wp_enqueue_script( 'gravityview_datatables_admin', plugins_url( 'assets/js/datatables-admin-views.js', GV_DT_FILE ), array( 'jquery' ), GV_Extension_DataTables::version );
+		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
+		wp_enqueue_script( 'gravityview_datatables_admin', plugins_url( 'assets/js/datatables-admin-views'.$script_debug.'.js', GV_DT_FILE ), array( 'jquery' ), GV_Extension_DataTables::version );
 
 	}
 

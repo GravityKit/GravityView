@@ -819,7 +819,8 @@ class GravityView_Admin_Views {
 	 * @group Beta
 	 */
 	static function enqueue_uservoice_widget() {
-		wp_enqueue_script( 'gravityview-uservoice-widget', plugins_url('includes/js/uservoice.js', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version, true);
+		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
+		wp_enqueue_script( 'gravityview-uservoice-widget', plugins_url('includes/js/uservoice'.$script_debug.'.js', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version, true);
 		wp_localize_script( 'gravityview-uservoice-widget', 'gvUserVoice', array(
 			'email' => GravityView_Settings::getSetting( 'support-email' )
 		));
@@ -854,8 +855,10 @@ class GravityView_Admin_Views {
 			//wp_enqueue_style( 'gravityview_views_datepicker', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
 			wp_enqueue_style( 'gravityview_views_datepicker', plugins_url('includes/css/admin-datepicker.css', GRAVITYVIEW_FILE), GravityView_Plugin::version );
 
+			$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
+
 			//enqueue scripts
-			wp_enqueue_script( 'gravityview_views_scripts', plugins_url('includes/js/admin-views.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie'  ), GravityView_Plugin::version);
+			wp_enqueue_script( 'gravityview_views_scripts', plugins_url('includes/js/admin-views'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie'  ), GravityView_Plugin::version);
 
 			wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
 				'cookiepath' => COOKIEPATH,
