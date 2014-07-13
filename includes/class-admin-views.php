@@ -101,7 +101,7 @@ class GravityView_Admin_Views {
 
 		if( $column_name !== 'gv_connected_form' )  { return; }
 
-		$form_id = get_post_meta( $post_id, '_gravityview_form_id', true );
+		$form_id = gravityview_get_form_id( $post_id );
 
 		// All Views should have a connected form. If it doesn't, that's not right.
 		if( empty($form_id) ) {
@@ -118,18 +118,23 @@ class GravityView_Admin_Views {
 			echo __( 'The connected form can not be found; it may no longer exist.', 'gravity-view' );
 		}
 
-		$form_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;id=%d', $form_id ) );
-		$form_link = sprintf( '<strong><a href="%s" class="row-title">%s</a></strong>', $form_url , $form['title'] );
+		if( GFCommon::current_user_can_any('gravityforms_edit_forms') ) {
+			$form_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;id=%d', $form_id ) );
+			$form_link = sprintf( '<strong><a href="%s" class="row-title">%s</a></strong>', $form_url , $form['title'] );
+			$links[] = sprintf( '<a href="%s">%s</a>', $form_url , __('Edit Form', 'gravity-view') );
+		}
 
-		$edit_link = sprintf( '<a href="%s">%s</a>', $form_url , __('Edit Form', 'gravity-view') );
+		if( GFCommon::current_user_can_any('gravityforms_view_entries') ) {
+			$entries_url = admin_url( sprintf( 'admin.php?page=gf_entries&amp;id=%d', $form_id ) );
+			$links[] = sprintf( '<span><a href="%s">%s</a></span>', $entries_url , __( 'Entries', 'gravity-view' ) );
+		}
 
-		$entries_url = admin_url( sprintf( 'admin.php?page=gf_entries&amp;id=%d', $form_id ) );
-		$entries_link = sprintf( '<span><a href="%s">%s</a></span>', $entries_url , __( 'Entries', 'gravity-view' ) );
+		if( GFCommon::current_user_can_any('gravityforms_edit_settings') ) {
+			$settings_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;id=%d', $form_id ) );
+			$links[] = sprintf( '<a title="%s" href="%s">%s</a>', __('Edit settings for this form', 'gravity-view'), $settings_url, __('Settings', 'gravity-view') );
+		}
 
-		$settings_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;id=%d', $form_id ) );
-		$settings_link = sprintf( '<a title="%s" href="%s">%s</a>', __('Edit settings for this form', 'gravity-view'), $settings_url, __('Settings', 'gravity-view') );
-
-		echo $form_link . '<div class="row-actions">'. implode( ' | ', array( $edit_link, $entries_link, $settings_link ) ).'</div>';
+		echo $form_link . '<div class="row-actions">'. implode( ' | ', $links ).'</div>';
 	}
 
 	/**
@@ -529,7 +534,7 @@ class GravityView_Admin_Views {
 
 		$fields = '';
 		if( !empty( $post_id ) ) {
-			$fields = get_post_meta( $post_id, '_gravityview_directory_fields', true );
+			$fields = gravityview_get_directory_fields( $post_id );
 		}
 
 		ob_start();

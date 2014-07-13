@@ -39,6 +39,17 @@ if( !function_exists('gravityview_get_form') ) {
 
 }
 
+if( !function_exists('gravityview_get_form_from_entry_id') ) {
+
+	function gravityview_get_form_from_entry_id( $entry_id ) {
+
+		$entry = gravityview_get_entry( $entry );
+
+		$form = gravityview_get_form( $entry['form_id'] );
+
+		return $form;
+	}
+}
 
 
 if( !function_exists('gravityview_get_forms') ) {
@@ -235,14 +246,122 @@ if( !function_exists('has_gravityview_shortcode') ) {
 	 */
 	function has_gravityview_shortcode( $post = NULL ) {
 
-		if( is_a( $post, 'WP_Post' ) && ( 'gravityview' === get_post_type( $post ) || function_exists('has_shortcode') && has_shortcode( $post->post_content, 'gravityview') ) ) {
+		if( is_a( $post, 'WP_Post' ) && 'gravityview' === get_post_type( $post ) ) {
 			return true;
+		}
+
+		if( $shortcode = gravityview_has_shortcode_r( $post->post_content, 'gravityview') ) {
+			return $shortcode;
 		}
 
 		return false;
 	}
 }
 
+if( !function_exists( 'gravityview_has_shortcode_r') ) {
+	/**
+	 * Placeholder until the recursive has_shortcode() patch is merged
+	 * @link https://core.trac.wordpress.org/ticket/26343#comment:10
+	 */
+	function gravityview_has_shortcode_r( $content, $tag ) {
+		if ( false === strpos( $content, '[' ) ) {
+			return false;
+		}
+
+		if ( shortcode_exists( $tag ) ) {
+			preg_match_all( '/' . get_shortcode_regex() . '/s', $content, $matches, PREG_SET_ORDER );
+			if ( empty( $matches ) )
+				return false;
+
+			foreach ( $matches as $shortcode ) {
+				if ( $tag === $shortcode[2] ) {
+
+					// Changed this to $shortcode instead of true so we get the parsed atts.
+					return $shortcode;
+
+				} else if ( isset( $shortcode[5] ) && $result = gravityview_has_shortcode_r( $shortcode[5], $tag ) ) {
+					return $result;
+				}
+			}
+		}
+		return false;
+	}
+}
+
+function gravityview_get_form_id( $post_id ) {
+	return get_post_meta( $post_id, '_gravityview_form_id', true );
+}
+
+function gravityview_get_template_id( $post_id ) {
+	return get_post_meta( $post_id, '_gravityview_directory_template', true );
+}
+
+function gravityview_get_template_settings( $post_id ) {
+	return get_post_meta( $post_id, '_gravityview_template_settings', true );
+}
+
+function gravityview_get_directory_fields( $post_id ) {
+	return get_post_meta( $post_id, '_gravityview_directory_fields', true );
+}
+
+/**
+ * Get all the basic information about a View (id, form_id, settings)
+ *
+ * If the passed post ID is not a view, it handles the shortcode parsing and merging.
+ *
+ * @filter default text
+ * @action default text
+ * @param  int|WP_Post      $post Pass either a View ID or a WP_Post View object
+ * @return array            Associative array with `id`, `form_id`, `template_id` and `atts` (template settings) keys
+ */
+function gravityview_get_view_meta( $post ) {
+
+	// You can pass a post ID if you want to
+	if( is_numeric( $post ) ) {
+		$post = get_post( $post );
+	}
+
+	$output = array();
+
+	// Shortcode or direct View
+	if( 'gravityview' === get_post_type( $post ) ) {
+		$post_id = $post->ID;
+	} else if( $shortcode = has_gravityview_shortcode( $post ) ) {
+
+		// GravityView_frontend may not always be available, since connector-functions.php is loaded before the GravityView_Plugin class is defined.
+		$defaults = class_exists('GravityView_frontend') ? GravityView_frontend::get_default_args() : array();
+
+		// Get the settings from the shortcode and merge them with defaults.
+		$shortcode_atts = wp_parse_args( shortcode_parse_atts( $shortcode[3] ), $defaults );
+
+		if( empty( $shortcode_atts['id'] ) ) {
+			do_action('gravityview_log_error', sprintf( '[gravityview_get_view_meta] Returning; no ID defined in shortcode atts for Post #%s (Atts)', $post->ID ), $shortcode_atts );
+			return false;
+		}
+
+		$post_id = $shortcode_atts['id'];
+
+		// The passed args were always winning, even if they were NULL.
+		// This prevents that. Filters NULL, FALSE, and empty strings.
+		$output['shortcode_atts'] = array_filter( $shortcode_atts, 'strlen' );
+
+	} else {
+		do_action('gravityview_log_error', '[gravityview_get_view_meta] Not GravityView type and no shortcode found.');
+		return false;
+	}
+
+	$output['id'] = $post_id;
+	$output['form_id'] = gravityview_get_form_id( $post_id );
+	$output['template_id'] = gravityview_get_template_id( $post_id );
+	$output['atts'] = gravityview_get_template_settings( $post_id );
+
+	// The shortcode settings should overrule the default View settings
+	if( !empty( $output['shortcode_atts'] ) ) {
+		$output['atts'] = wp_parse_args( $output['shortcode_atts'], $output['atts'] );
+	}
+
+	return $output;
+}
 
 if( !function_exists('gravityview_get_sortable_fields') ) {
 

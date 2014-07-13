@@ -372,7 +372,7 @@ class GravityView_Admin {
 	}
 
 	static function is_admin_page($hook = '', $page = NULL) {
-		global $current_filter, $current_screen, $plugin_page, $pagenow, $post, $wp_post_types;
+		global $current_screen, $plugin_page, $pagenow, $post;
 
 		if( !is_admin() ) { return false; }
 

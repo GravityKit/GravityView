@@ -29,6 +29,78 @@ class GravityView_frontend {
 		add_filter( 'the_content', array( 'GravityView_frontend', 'insert_view_in_content' ) );
 		add_filter( 'comments_open', array( 'GravityView_frontend', 'comments_open' ), 10, 2);
 
+		add_action('add_admin_bar_menus', array($this, 'admin_bar_remove_links'), 80 );
+		add_action('admin_bar_menu', array($this, 'admin_bar_add_links'), 85 );
+		add_filter('get_edit_post_link', array($this, 'edit_post_link_filter') );
+	}
+
+	/**
+	 * Modify the "Edit" link many templates add. This way it matches user expectations.
+	 * @param  string      $url  Existing URL
+	 * @return string            Modified URL
+	 */
+	function edit_post_link_filter( $url ) {
+
+		if( is_admin() ) { return $url; }
+
+		if( $entry_id =& self::is_single_entry() ) {
+
+			// We need the attached form ID as well...
+			$entry = gravityview_get_entry( $entry_id );
+
+			$url = admin_url( sprintf('admin.php?page=gf_entries&amp;view=entry&id=%d&lid=%d', $entry['form_id'], $entry_id ) );
+		}
+
+		return $url;
+	}
+
+	/**
+	 * Add helpful GV links to the menu bar, like Edit Entry on single entry page.
+	 * @filter default text
+	 * @action default text
+	 * @return [type]      [description]
+	 */
+	function admin_bar_add_links() {
+		global $wp_admin_bar, $post, $wp, $wp_the_query;
+
+		if( is_admin() ) { return; }
+
+		if( GFCommon::current_user_can_any('gravityforms_edit_forms') ) {
+
+		}
+
+		$entry_id = self::is_single_entry();
+
+		if( GFCommon::current_user_can_any('gravityforms_edit_entries') ) {
+
+			if( $entry_id ) {
+
+				// We need the attached form ID as well...
+				$entry = gravityview_get_entry( $entry_id );
+
+				$wp_admin_bar->add_menu( array(
+					'id' => 'edit',
+					'title' => __('Edit Entry', 'gravity-view'),
+					'href' => admin_url( sprintf('admin.php?page=gf_entries&amp;view=entry&id=%d&lid=%d', $entry['form_id'], $entry_id ) ),
+				) );
+
+			}
+
+		}
+
+	}
+
+	/**
+	 * Remove "Edit Page" or "Edit View" links when on single entry pages
+	 * @return void
+	 */
+	function admin_bar_remove_links() {
+		global $wp_admin_bar, $post, $wp, $wp_the_query;
+
+		// If we're on the single entry page, we don't want to cause confusion.
+		if( is_admin() || false !== self::is_single_entry() ) {
+			remove_action( 'admin_bar_menu', 'wp_admin_bar_edit_menu', 80 );
+		}
 	}
 
 	/**
@@ -129,67 +201,40 @@ class GravityView_frontend {
 	}
 
 	/**
-	 * Retrieves the shortcode atts
-	 * @param  string $content
-	 * @return mixed in case of success retrieve the shortcode attributes else, empty
-	 */
-	public static function get_view_shortcode_atts( $content ) {
-
-		if ( false === strpos( $content, '[' ) ) {
-			return array();
-		}
-
-		preg_match_all( '/' . get_shortcode_regex() . '/s', $content, $matches, PREG_SET_ORDER );
-		if ( empty( $matches ) )
-			return array();
-
-		foreach ( $matches as $shortcode ) {
-			if ( 'gravityview' === $shortcode[2] ) {
-				return wp_parse_args( shortcode_parse_atts( $shortcode[3] ), self::get_default_args() );
-			}
-		}
-
-		return array();
-	}
-
-	/**
 	 * Filter the title for the single entry view
+	 * @todo Somehow make this work with multiple shortcodes on a page. The problem is that there's no form data passed...
 	 * @param  string $title   current title
-	 * @param  int $post_id Post ID
+	 * @param  int $passed_post_id Post ID
 	 * @return string          (modified) title
 	 */
-	public static function single_entry_title( $title, $post_id ) {
+	public static function single_entry_title( $title, $passed_post_id ) {
+		global $post, $gravityview_view;
+
+
+		// Don't modify the title for anything other than the current view/post.
+		// This is true for embedded shortcodes and Views.
+		if( (int)$post->ID !== (int)$passed_post_id ) {
+			return $title;
+		}
+
 
 		$single_entry = self::is_single_entry();
 
-		// If this is the directory, return
-		if( empty( $single_entry ) ) { return $title; }
+		// If this is the directory view, return.
+		if( empty( $single_entry ) ) {
+			return $title;
+		}
 
-		$post = get_post( $post_id );
+		$view_meta = gravityview_get_view_meta( $passed_post_id );
 
-		if( has_gravityview_shortcode( $post ) ) {
+		if( !empty( $view_meta['atts']['single_title'] ) ) {
 
-			// Shortcode or direct View
-			if( 'gravityview' === get_post_type( $post ) ) {
-				$view_id = $post_id;
-				$view_atts = get_post_meta( $post_id, '_gravityview_template_settings', true );
-			} else {
-				$shortcode_atts = GravityView_frontend::get_view_shortcode_atts( $post->post_content );
-				$view_id = $shortcode_atts['id'];
-				$view_atts = get_post_meta( $shortcode_atts['id'], '_gravityview_template_settings', true );
-			}
+			// We are allowing HTML in the fields, so no escaping the output
+			$title = $view_meta['atts']['single_title'];
+			$entry = gravityview_get_entry( $single_entry );
+			$form = gravityview_get_form( $view_meta['form_id'] );
 
-			if( !empty( $view_atts['single_title'] ) ) {
-
-				// We are allowing HTML in the fields, so no escaping the output
-				$title = $view_atts['single_title'];
-
-				$entry = gravityview_get_entry( $single_entry );
-				$form_id = get_post_meta( $view_id, '_gravityview_form_id', true );
-				$form = gravityview_get_form( $form_id );
-
-				$title = GravityView_API::replace_variables($title, $form, $entry, false, false, true, "html");
-			}
+			$title = GravityView_API::replace_variables( $title, $form, $entry );
 		}
 
 		return $title;
@@ -247,55 +292,46 @@ class GravityView_frontend {
 	 * @param mixed $args
 	 * @return void
 	 */
-	public static function render_view( $args ) {
+	public static function render_view( $passed_args ) {
 
-		do_action( 'gravityview_log_debug', '[render_view] Init View. Arguments: ', $args );
+		do_action( 'gravityview_log_debug', '[render_view] Init View. Arguments: ', $passed_args );
 
 		// validate attributes
-		if( empty( $args['id'] ) ) {
+		if( empty( $passed_args['id'] ) ) {
 			do_action( 'gravityview_log_error', '[render_view] Returning; no ID defined.');
 			return;
 		}
-		//get template settings
-		$template_settings = get_post_meta( $args['id'], '_gravityview_template_settings', true );
-		do_action( 'gravityview_log_debug', '[render_view] Template Settings: ', $template_settings );
+
+		$view_meta = gravityview_get_view_meta( $passed_args['id'] );
+
+		do_action( 'gravityview_log_debug', '[render_view] View Meta: ', $view_meta );
 
 		// The passed args were always winning, even if they were NULL.
-		// This prevents that.
-		foreach ($args as $key => $value) {
-			if( is_null( $args[$key] ) || $args[$key] === '' ) {
-				unset( $args[$key] );
-			}
-		}
+		// This prevents that. Filters NULL, FALSE, and empty strings.
+		$passed_args = array_filter( $passed_args, 'strlen' );
 
 		//Override shortcode args over View template settings
 		// array_filter prevents empty arguments from winning over defaults.
-		$args = wp_parse_args( $args, $template_settings );
+		$atts = $view_meta['atts'] = wp_parse_args( $passed_args, $view_meta['atts'] );
 
-		do_action( 'gravityview_log_debug', '[render_view] Arguments after merging with View settings: ', $args );
+		// Add this so it can be passed to get_view_entries() below.
+		$atts['id'] = $view_meta['id'];
 
-		//extract( $args ); - no more extracts please!
+		do_action( 'gravityview_log_debug', '[render_view] Arguments after merging with View settings: ', $atts );
 
 		// It's password protected and you need to log in.
-		if( post_password_required( $args['id'] ) ) {
+		if( post_password_required( $view_meta['id'] ) ) {
 
-			do_action( 'gravityview_log_error', sprintf('[render_view] Returning: View %d is password protected.', $args['id'] ) );
+			do_action( 'gravityview_log_error', sprintf('[render_view] Returning: View %d is password protected.', $view_meta['id'] ) );
 
 			// If we're in an embed or on an archive page, show the password form
-			if( get_the_ID() !== $args['id'] ) { return get_the_password_form(); }
+			if( get_the_ID() !== $view_meta['id'] ) { return get_the_password_form(); }
 
 			// Otherwise, just get outta here
 			return;
 		}
 
-		// get form, fields and settings assign to this view
-		$form_id = get_post_meta( $args['id'], '_gravityview_form_id', true );
-		do_action( 'gravityview_log_debug', '[render_view] Form ID: ', $form_id );
-
-		$template_id  = get_post_meta( $args['id'], '_gravityview_directory_template', true );
-		do_action( 'gravityview_log_debug', '[render_view] Template ID: ', $template_id );
-
-		$dir_fields = get_post_meta( $args['id'], '_gravityview_directory_fields', true );
+		$dir_fields = gravityview_get_directory_fields( $view_meta['id'] );
 		do_action( 'gravityview_log_debug', '[render_view] Fields: ', $dir_fields );
 
 		// remove fields according to visitor visibility permissions (if logged-in)
@@ -303,21 +339,21 @@ class GravityView_frontend {
 		do_action( 'gravityview_log_debug', '[render_view] Fields after visibility filter: ', $dir_fields );
 
 		// If not set, the default is hide empty fields.
-		$hide_empty_fields = isset( $args['hide_empty'] ) ? !empty( $args['hide_empty'] ) : true;
+		$hide_empty_fields = isset( $atts['hide_empty'] ) ? !empty( $atts['hide_empty'] ) : true;
 		// Allow filtering
 		$hide_empty_fields = apply_filters( 'gravityview_hide_empty_fields', $hide_empty_fields );
 		// Per template
-		$hide_empty_fields = apply_filters( 'gravityview_hide_empty_fields_template_'.$template_id, $hide_empty_fields );
+		$hide_empty_fields = apply_filters( 'gravityview_hide_empty_fields_template_'.$view_meta['template_id'], $hide_empty_fields );
 		// And per view
-		$hide_empty_fields = apply_filters( 'gravityview_hide_empty_fields_view_'.$args['id'], $hide_empty_fields );
+		$hide_empty_fields = apply_filters( 'gravityview_hide_empty_fields_view_'.$view_meta['id'], $hide_empty_fields );
 
 		ob_start();
 
 		// set globals for templating
 		global $gravityview_view;
 		$gravityview_view = new GravityView_View(array(
-			'form_id' => $form_id,
-			'view_id' => $args['id'],
+			'form_id' => $view_meta['form_id'],
+			'view_id' => $view_meta['id'],
 			'fields'  => $dir_fields,
 			'hide_empty_fields' => $hide_empty_fields,
 		));
@@ -331,10 +367,10 @@ class GravityView_frontend {
 			do_action( 'gravityview_log_debug', '[render_view] Executing Directory View' );
 
 			//fetch template and slug
-			$view_slug =  apply_filters( 'gravityview_template_slug_'. $template_id, 'table', 'directory' );
+			$view_slug =  apply_filters( 'gravityview_template_slug_'. $view_meta['template_id'], 'table', 'directory' );
 			do_action( 'gravityview_log_debug', '[render_view] View template slug: ', $view_slug );
 
-			$view_entries = self::get_view_entries( $args, $form_id, $template_settings );
+			$view_entries = self::get_view_entries( $atts, $view_meta['form_id'] );
 
 			do_action( 'gravityview_log_debug', sprintf( '[render_view] Get Entries. Found %s entries', $view_entries['count'] ) );
 
@@ -349,13 +385,13 @@ class GravityView_frontend {
 			$entry = gravityview_get_entry( $single_entry );
 
 			// We're in single view, but the view being processed is not the same view the single entry belongs to.
-			if( $form_id !== $entry['form_id'] ) {
+			if( $view_meta['form_id'] !== $entry['form_id'] ) {
 				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '.$view_entries['entries'][0]['id'] );
 				return;
 			}
 
 			//fetch template and slug
-			$view_slug =  apply_filters( 'gravityview_template_slug_'. $template_id, 'table', 'single' );
+			$view_slug =  apply_filters( 'gravityview_template_slug_'. $view_meta['template_id'], 'table', 'single' );
 			do_action( 'gravityview_log_debug', '[render_view] View single template slug: ', $view_slug );
 
 			//fetch entry detail
@@ -364,7 +400,7 @@ class GravityView_frontend {
 			do_action( 'gravityview_log_debug', '[render_view] Get single entry: ', $view_entries['entries'] );
 
 			// set back link label
-			$gravityview_view->back_link_label = isset( $args['back_link_label'] ) ? $args['back_link_label'] : NULL;
+			$gravityview_view->back_link_label = isset( $atts['back_link_label'] ) ? $atts['back_link_label'] : NULL;
 
 			$gravityview_view->context = 'single';
 			$sections = array( 'single' );
@@ -372,7 +408,7 @@ class GravityView_frontend {
 		}
 
 		// add template style
-		self::add_style( $template_id );
+		self::add_style( $view_meta['template_id'] );
 
 		// Prepare to render view and set vars
 		$gravityview_view->entries = $view_entries['entries'];
@@ -388,7 +424,7 @@ class GravityView_frontend {
 		} else {
 
 		// finaly we'll render some html
-		$sections = apply_filters( 'gravityview_render_view_sections', $sections, $template_id );
+		$sections = apply_filters( 'gravityview_render_view_sections', $sections, $view_meta['template_id'] );
 		foreach( $sections as $section ) {
 			do_action( 'gravityview_log_debug', '[render_view] Rendering '. $section . ' section.' );
 			$gravityview_view->render( $view_slug, $section, false );
@@ -397,7 +433,7 @@ class GravityView_frontend {
 		}
 
 		// Print the View ID to enable proper cookie pagination ?>
-		<input type="hidden" id="gravityview-view-id" value="<?php echo $args['id']; ?>">
+		<input type="hidden" id="gravityview-view-id" value="<?php echo $view_meta['id']; ?>">
 		<?php
 		$output = ob_get_clean();
 
@@ -474,10 +510,9 @@ class GravityView_frontend {
 	 * @static
 	 * @param mixed $args
 	 * @param int $form_id
-	 * @param array $template_settings
 	 * @return void
 	 */
-	public static function get_view_entries( $args, $form_id, $template_settings = array() ) {
+	public static function get_view_entries( $args, $form_id ) {
 
 		do_action( 'gravityview_log_debug', '[get_view_entries] init' );
 		// start filters and sorting
@@ -636,19 +671,14 @@ class GravityView_frontend {
 			// enqueue template specific styles
 			if( has_gravityview_shortcode( $p ) ) {
 
-				// If we're dealing with a View, we return
-				if( 'gravityview' === get_post_type( $p ) ) {
-					$view_atts = get_post_meta( $post->ID, '_gravityview_template_settings', true );
-				} else {
-					$view_atts = GravityView_frontend::get_view_shortcode_atts( $p->post_content );
-				}
+				$view_meta = gravityview_get_view_meta( $p );
 
 				// By default, no thickbox
 				$js_dependencies = array( 'jquery', 'gravityview-jquery-cookie' );
 				$css_dependencies = array();
 
 				// If the thickbox is enqueued, add dependencies
-				if( !empty( $view_atts['lightbox'] ) ) {
+				if( !empty( $atts['lightbox'] ) ) {
 					$js_dependencies[] = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
 					$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
 				}
@@ -659,10 +689,7 @@ class GravityView_frontend {
 
 				wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), $css_dependencies, GravityView_Plugin::version, 'all' );
 
-				$gravityview_post_id = !empty( $view_atts['id'] ) ? $view_atts['id'] : $p->ID;
-				$template_id = get_post_meta( $gravityview_post_id, '_gravityview_directory_template', true );
-
-				self::add_style( $template_id );
+				self::add_style( $view_meta['template_id'] );
 			}
 
 		}

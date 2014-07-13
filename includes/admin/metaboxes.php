@@ -51,7 +51,7 @@ class GravityView_Admin_Metaboxes {
 		wp_nonce_field( 'gravityview_select_form', 'gravityview_select_form_nonce' );
 
 		//current value
-		$current_form = get_post_meta( $post->ID, '_gravityview_form_id', true );
+		$current_form = gravityview_get_form_id( $post->ID );
 
 		// input ?>
 		<label for="gravityview_form_id" ><?php esc_html_e( 'Where would you like the data to come from for this View?', 'gravity-view' ); ?></label>
@@ -121,7 +121,7 @@ class GravityView_Admin_Metaboxes {
 			wp_nonce_field( 'gravityview_select_template', 'gravityview_select_template_nonce' );
 
 			//current value
-			$current_template = get_post_meta( $post->ID, '_gravityview_directory_template', true );
+			$current_template = gravityview_get_template_id( $post->ID );
 
 			// Fetch available style templates
 			$templates = apply_filters( 'gravityview_register_directory_template', array() );
@@ -211,10 +211,10 @@ class GravityView_Admin_Metaboxes {
 			wp_nonce_field( 'gravityview_view_configuration', 'gravityview_view_configuration_nonce' );
 
 			// Selected Form
-			$curr_form = get_post_meta( $post->ID, '_gravityview_form_id', true );
+			$curr_form = gravityview_get_form_id( $post->ID );
 
 			// Selected template
-			$curr_template = get_post_meta( $post->ID, '_gravityview_directory_template', true );
+			$curr_template = gravityview_get_template_id( $post->ID );
 
 			echo $this->render_merge_tags_scripts( $curr_form );
 	?>
@@ -297,10 +297,10 @@ class GravityView_Admin_Metaboxes {
 		 */
 		function render_view_settings_metabox( $post ) {
 
-			$curr_form = get_post_meta( $post->ID, '_gravityview_form_id', true );
+			$curr_form = gravityview_get_form_id( $post->ID );
 
 			// View template settings
-			$settings = get_post_meta( $post->ID, '_gravityview_template_settings', true );
+			$settings = gravityview_get_template_settings( $post->ID );
 
 			$defaults = array(
 				'lightbox' => true,
