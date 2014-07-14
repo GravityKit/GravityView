@@ -50,7 +50,7 @@ class GravityView_Debug_Bar extends Debug_Bar_Panel {
 	 * Should the panel be shown? If there are notices or warnings, yes.
 	 * @return boolean true: show panel; false: hide panel
 	 */
-	function set_visible() {
+	function set_visible( $visible ) {
 		$this->_visible = ( count( $this->get_notices() ) || count( $this->get_warnings() ) );
 	}
 
