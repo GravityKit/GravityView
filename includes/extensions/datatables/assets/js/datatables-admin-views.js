@@ -44,20 +44,21 @@ var gvDataTablesExt = {
 	showGroupOptions: function() {
 		var _this = $(this);
 		if( _this.is(':checked') ) {
-			_this.parents('tr').siblings().not('#gv_dt_tt_buttons').slideDown();
+			_this.parents('tr').siblings().not('#gv_dt_tt_buttons').fadeIn();
 		} else {
-			_this.parents('tr').siblings().slideUp();
+			_this.parents('tr').siblings().fadeOut();
 		}
 	},
 
 	toggleNonCompatible: function() {
 		var _this = $(this),
-			fixedHeaderCB = $('#datatables_settingsfixedheader');
+			fixedCB = $('#datatables_settingsfixedheader, #datatables_settingsfixedcolumns');
+
 
 		if( _this.is(':checked') ) {
-			fixedHeaderCB.prop('checked', false).parents('tr').hide();
+			fixedCB.prop('checked', false).parents('table').fadeOut().prev('h3').fadeOut();
 		} else {
-			fixedHeaderCB.parents('tr').show();
+			fixedCB.parents('table').fadeIn().prev('h3').fadeIn();
 		}
 	}
 
