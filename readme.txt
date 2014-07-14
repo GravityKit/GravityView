@@ -23,18 +23,19 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
-= 1.0.7 on July 12 =
-* Major behind-the-scenes work
+= 1.0.7 on July 14 =
+* __Edit Entry__ - you can add an Edit Entry link using the "Add Field" buttons in either the Multiple Entries or Single Entry tab.
+	- For now, if the user has the ability to edit entries in Gravity Forms, they’ll be able to edit entries in GravityView. Moving forward, we'll be adding refined controls over who can edit which entries.
+	- It supports modifying existing Entry uploads and the great Multiple-File Upload field.
 * Added: Very cool DataTables extensions:
 	* Scroller: dynamically load in new entries as you scroll - no need for pagination)
 	* TableTools: Export your entries to CSV and PDF
 	* FixedHeader: As you scroll a large DataTable result, the headers of the table stay at the top of the screen. Also, FixedColumns, which does the same for the main table column.
 + Added: Horizontal search form fields. To return to vertical, you can add `add_filter('gravityview_search_class', '__return_null');` to your theme's functions.php file.
 + Added: Easy links to "Edit Form", "Settings" and "Entries" for the Data Source Gravity Forms form in the All Views admin screen
-* Fixed: Now supports View shortcodes inside other shortcodes (like if you wanted to use the [WP UI](https://wordpress.org/plugins/wp-ui/) plugin to put your `[gravityview]` shortocde inside a tab - this now works)
+* Fixed: Now supports View shortcodes inside other shortcodes (such as `[example][gravityview][/example]`)
 * Added: Integration with the [Debug Bar](http://wordpress.org/plugins/debug-bar/) plugin - very helpful for developers to see what's going on behind the scenes.
-* Tweak: Moved shortcode hint to Publish metabox
-* Tweak: Converted shortcode hint to input with content selected on click
+* Tweak: Moved shortcode hint to Publish metabox and added ability to easily select the text
 * Tweak: Added tooltips to fields in the View editor
 * Tweak: Remove WordPress SEO score calculation on Views
 * Modified: Updated `GravityView_Admin_Views::is_gravityview_admin_page()` to fetch post if not yet set.
@@ -45,6 +46,13 @@ Beautifully display your Gravity Forms entries.
 `gravityview_sanitize_html_class`
 * Modified: Updated `gv_class()` calls to pass form and entry fields to allow for merge tags
 * Added" tooltip capability to field settings by using `tooltip` parameter. Uses the Gravity Forms tooltip array key.
+* Translation updates - thank you, everyone! The # of strings will stay more stable once the plugin's out of beta :-)
+	* Added: Portuguese translation by [@luistinygod](https://www.transifex.com/accounts/profile/luistinygod/) - thanks!
+	* Updated: Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
+	* Updated: Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
+	* Updated: Dutch translation by [@leooosterloo](https://www.transifex.com/accounts/profile/leooosterloo/)
+	* If you'd like to contribute translations, [please sign up here](https://www.transifex.com/projects/p/gravityview/).
+
 
 = 1.0.6 on June 26 =
 * Fixed: Fatal error when Gravity Forms is inactive
