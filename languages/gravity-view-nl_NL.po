@@ -1,1002 +1,965 @@
-#
+# 
 # Translators:
-# Süha Karalar <suhakaralar@gmail.com>, 2014
-# Süha Karalar <suhakaralar@gmail.com>, 2014
+# leooosterloo <leo@pronamic.nl>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-06-24 18:47-0700\n"
-"PO-Revision-Date: 2014-06-27 08:04-0700\n"
-"Last-Translator: Katz Web Services, Inc. <support@katz.co>\n"
-"Language-Team: Turkish (Turkey) (http://www.transifex.com/projects/p/"
-"gravityview/language/tr_TR/)\n"
+"PO-Revision-Date: 2014-07-14 09:49+0000\n"
+"Last-Translator: Zachary Katz <zack@katzwebservices.com>\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/gravityview/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: tr_TR\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: nl_NL\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.6.5\n"
 "X-Poedit-Basepath: ..\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: gravityview.php:210
 msgid "Support"
-msgstr "Destek"
+msgstr "Support"
 
 #: gravityview.php:227
 #, php-format
 msgid ""
 "%sYou don't have any active views. Let's go %screate one%s!%s\n"
 "\n"
-"If you feel like you're lost in space and need help getting started, check "
-"out the %sGetting Started%s page."
+"If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
 msgstr ""
-"%sAktif bir Görünüm oluşturmadınız. Yeni bir Görünüm %soluşturun%s!%s\n"
-"\n"
-"Nereden başlayacağınızı bilmiyorsanız, %sBaşlangıç%s sayfasına "
-"bakabilirsiniz. "
 
 #: gravityview.php:231
 msgctxt "Post Type General Name"
 msgid "Views"
-msgstr "Görünümler"
+msgstr "Weergaven"
 
 #: gravityview.php:232
 msgctxt "Post Type Singular Name"
 msgid "View"
-msgstr "Görünüm"
+msgstr "Weergave"
 
 #: gravityview.php:233
 msgctxt "Menu name"
 msgid "Views"
-msgstr "Görünümler"
+msgstr "Weergaven"
 
 #: gravityview.php:234
 msgid "Parent View:"
-msgstr "Ebeveyn Görünüm:"
+msgstr "Bovenliggende Weergave:"
 
 #: gravityview.php:235
 msgid "All Views"
-msgstr "Tüm Görünümler"
+msgstr "Alle Weergaven"
 
 #: gravityview.php:236
 msgctxt "View Item"
 msgid "View"
-msgstr "Görünüm"
+msgstr "Weergave"
 
 #: gravityview.php:237
 msgid "Add New View"
-msgstr "Yeni Görünüm Ekle"
+msgstr "Nieuwe Weergave Toevoegen"
 
 #: gravityview.php:238
 msgid "New View"
-msgstr "Yeni Görünüm"
+msgstr "Nieuwe Weergave"
 
 #: gravityview.php:239
 msgid "Edit View"
-msgstr "Görünüm'ü Düzenle"
+msgstr "Bewerk Weergave"
 
 #: gravityview.php:240
 msgid "Update View"
-msgstr "Görünüm'ü Güncelle"
+msgstr "Update Weergave"
 
 #: gravityview.php:241
 msgid "Search Views"
-msgstr "Görünümlerde Ara"
+msgstr "Doorzoek Weergaven"
 
 #: gravityview.php:243
 msgid "No Views found in Trash"
-msgstr "Çöp Kutusunda Görünüm Bulunamadı"
+msgstr "Geen Weergaven gevonden in de Prullenbak"
 
 #: gravityview.php:246
 msgid "view"
-msgstr "görünüm"
+msgstr "weergave"
 
 #: gravityview.php:247
 msgid "Create views based on a Gravity Forms form"
-msgstr "Gravity Forms temelli yeni Görünümler oluştur"
+msgstr "Cre&#235;er weergaven gebaseerd op een Gravity Forms formulier"
 
 #: gravityview.php:295 gravityview.php:296 gravityview.php:298
 #, php-format
 msgid "View updated. %sView on website.%s"
-msgstr "Görünüm güncellendi. %sÖnyüzde görüntüle.%s"
+msgstr "Weergave ge&#252;pdatet. %sBekijk op website.%s"
 
 #: gravityview.php:297
 msgid "View deleted."
-msgstr "Görünüm silindi."
+msgstr "Weergave verwijderd."
 
 #: gravityview.php:300
 #, php-format
 msgid "View restored to revision from %s"
-msgstr "Görünüm %s sürümünden geri yüklendi"
+msgstr "Weergave hersteld naar revisie vanaf %s"
 
 #: gravityview.php:301
 #, php-format
 msgid "View published. %sView on website.%s"
-msgstr "Görünüm yayınlandı. %sÖnyüzde görüntüle%s"
+msgstr "Weergave gepubliceerd. %sBekijk op website.%s"
 
 #: gravityview.php:302
 #, php-format
 msgid "View saved. %sView on website.%s"
-msgstr "Görünüm kaydedildi. %sÖnyüzde görüntüle%s"
+msgstr "Weergave opgeslagen. %sBekijk op website.%s"
 
 #: gravityview.php:303
 msgid "View submitted."
-msgstr "Görünüm gönderildi."
+msgstr "Toon ingediende."
 
 #: gravityview.php:305
 #, php-format
 msgid "View scheduled for: <strong>%1$s</strong>."
-msgstr "Görünüm yayınlanma tarihi: <strong>%1$s</strong>."
+msgstr "Weergave ingepland voor: <strong>%1$s</strong>."
 
 #: gravityview.php:307
 msgid "M j, Y @ G:i"
-msgstr "M j, Y @ G:i"
+msgstr "j M Y @ G:i"
 
 #: gravityview.php:309
 #, php-format
 msgid "View draft updated. %sView on website.%s"
-msgstr "Görünüm taslağı güncellendi. %sÖnyüzde görüntüle%s"
+msgstr "Weergave concept ge&#252;pdatet. %sBekijk op website.%s"
 
 #: gravityview.php:315
 #, php-format
 msgid "%s View updated."
 msgid_plural "%s Views updated."
-msgstr[0] "%s Görünümler güncellendi."
+msgstr[0] "%s Weergave bijgewerkt."
+msgstr[1] "%s Weergaven bijgewerkt."
 
 #: gravityview.php:316
 #, php-format
 msgid "%s View not updated, somebody is editing it."
 msgid_plural "%s Views not updated, somebody is editing them."
-msgstr[0] ""
-"%s Görünümler güncellenmedi, birileri Görünümler üzerinde düzenleme yapıyor."
+msgstr[0] "%s Weergave niet bijgewerkt, iemand is bezig deze te bewerken."
+msgstr[1] "%s Weergaven niet bijgewerkt, iemand is bezig deze te bewerken."
 
 #: gravityview.php:317
 #, php-format
 msgid "%s View permanently deleted."
 msgid_plural "%s Views permanently deleted."
-msgstr[0] "%s Görünümler kalıcı olarak silindi."
+msgstr[0] "%s Weergave permanent verwijderd."
+msgstr[1] "%s Weergaven permanent verwijderd."
 
 #: gravityview.php:318
 #, php-format
 msgid "%s View moved to the Trash."
 msgid_plural "%s Views moved to the Trash."
-msgstr[0] "%s Görünümler çöp kutusuna taşındı."
+msgstr[0] "%s Weergave verplaatst naar de Prullenbak."
+msgstr[1] "%s Weergaven verplaatst naar de Prullenbak."
 
 #: gravityview.php:319
 #, php-format
 msgid "%s View restored from the Trash."
 msgid_plural "%s Views restored from the Trash."
-msgstr[0] "%s Görünümler çöp kutusundan çıkarıldı."
+msgstr[0] "%s Weergave hersteld vanuit de Prullenbak."
+msgstr[1] "%s Weergaven hersteld vanuit de Prullenbak."
 
 #: gravityview.php:389
 msgid "Top"
-msgstr "Üst"
+msgstr "Top"
 
 #: gravityview.php:390
 msgid "Left"
-msgstr "Sol"
+msgstr "Links"
 
 #: gravityview.php:390
 msgid "Right"
-msgstr "Sağ"
+msgstr "Rechts"
 
 #: includes/class-admin-add-shortcode.php:53
 msgid "Add a Gravity Forms View"
-msgstr "Gravity Forms Görünümü Ekle"
+msgstr "Voeg een Gravity Forms Weergave toe"
 
 #: includes/class-admin-add-shortcode.php:53
 msgid "Add View"
-msgstr "Görünüm Ekle"
+msgstr "Weergave toevoegen"
 
 #: includes/class-admin-add-shortcode.php:74
 msgid "Insert a View"
-msgstr "Görünüm Ekle"
+msgstr ""
 
 #: includes/class-admin-add-shortcode.php:77
 msgid "Select a View"
-msgstr "Görünüm Seç"
+msgstr "Selecteer een Weergave"
 
 #: includes/class-admin-add-shortcode.php:80
 msgid "&mdash; views &mdash;"
-msgstr "&mdash; görünümler &mdash;"
+msgstr ""
 
 #: includes/class-admin-add-shortcode.php:92
 #: includes/class-admin-views.php:558
 msgid "Number of entries to show per page"
-msgstr "Sayfa başına gösterilecek kayıt sayısı"
+msgstr "Aantal inzendingen te tonen per pagina"
 
 #: includes/class-admin-add-shortcode.php:101
 #: includes/class-admin-add-shortcode.php:105
 #: includes/class-admin-views.php:567
 msgid "Enable lightbox for images"
-msgstr "Resimler için Lightbox etkinleştir."
+msgstr ""
 
 #: includes/class-admin-add-shortcode.php:115
 #: includes/class-admin-add-shortcode.php:119
 #: includes/class-admin-views.php:574
 msgid "Show only approved entries"
-msgstr "Sadece onaylı kayıtları göster"
+msgstr "Alleen toegelaten inzendingen tonen"
 
 #: includes/class-admin-add-shortcode.php:129
 #: includes/class-admin-views.php:587
 msgid "Sort by field"
-msgstr "Alana göre sırala"
+msgstr "Sorteer per veld"
 
 #: includes/class-admin-add-shortcode.php:133
 #: includes/connector-functions.php:258
 msgid "Default"
-msgstr "Varsayılan"
+msgstr "Stanadaard"
 
 #: includes/class-admin-add-shortcode.php:134
 #: includes/connector-functions.php:271
 msgid "Date Created"
-msgstr "Oluşturulma Tarihi"
+msgstr "Datum gecre&#235;erd"
 
 #: includes/class-admin-add-shortcode.php:141
 #: includes/class-admin-views.php:598
 msgid "Sort direction"
-msgstr "Sıralama yönü"
+msgstr "Sorteer richting"
 
 #: includes/class-admin-add-shortcode.php:145
 #: includes/class-admin-views.php:602
 msgid "ASC"
-msgstr "Artan"
+msgstr "Oplopend"
 
 #: includes/class-admin-add-shortcode.php:146
 #: includes/class-admin-views.php:603
 msgid "DESC"
-msgstr "Azalan"
+msgstr "Aflopend"
 
 #: includes/class-admin-add-shortcode.php:153
 #: includes/class-admin-views.php:84 includes/class-admin-views.php:610
 msgid "Filter by Start Date"
-msgstr "Başlangıç Tarihine Göre Sırala"
+msgstr "Filter per Start Datum"
 
 #: includes/class-admin-add-shortcode.php:162
 #: includes/class-admin-views.php:88 includes/class-admin-views.php:619
 msgid "Filter by End Date"
-msgstr "Bitiş Tarihine Göre Sırala"
+msgstr "Filter per Eind Datum"
 
 #: includes/class-admin-add-shortcode.php:172
 msgid "Insert View"
-msgstr "Görünüm Ekle"
+msgstr ""
 
 #: includes/class-admin-add-shortcode.php:173
 #: includes/class-admin-views.php:1712
 msgid "Cancel"
-msgstr "İptal"
+msgstr "Annuleer"
 
 #: includes/class-admin-add-shortcode.php:215
 msgid "Please select a View"
-msgstr "Lütfen Görünüm seçin"
+msgstr "Selecteer een Weergave"
 
 #: includes/class-admin-approve-entries.php:64
 #: includes/class-admin-approve-entries.php:95
 msgid "Approved"
-msgstr "Onaylandı"
+msgstr "Toegelaten"
 
 #: includes/class-admin-approve-entries.php:86
 msgid "Approved? (Admin-only)"
-msgstr "Onaylandı? (Sadece-admin)"
+msgstr "Toegelaten? (alleen Admin)"
 
 #: includes/class-admin-approve-entries.php:88
 msgid "Approved?"
-msgstr "Onaylandı?"
+msgstr "Toegelaten?"
 
 #: includes/class-admin-approve-entries.php:130
 #, php-format
 msgid "%d entries"
-msgstr "%d kayıt"
+msgstr "%d inzendingen"
 
 #: includes/class-admin-approve-entries.php:130
 msgid "1 entry"
-msgstr "1 kayıt"
+msgstr "1 inzending"
 
 #: includes/class-admin-approve-entries.php:138
 #, php-format
 msgid "%s approved."
-msgstr "%s onaylandı."
+msgstr "%s toegelaten."
 
 #: includes/class-admin-approve-entries.php:143
 #, php-format
 msgid "%s disapproved."
-msgstr "%s onaylanmadı."
+msgstr "%s geweigerd."
 
 #: includes/class-admin-approve-entries.php:216
 msgid "Disapproved the Entry for GravityView"
-msgstr "GravityView için kaydın onayını geri al"
+msgstr "De Inzending afgekeurd voor GravityView"
 
 #: includes/class-admin-approve-entries.php:216
 msgid "Approved the Entry for GravityView"
-msgstr "GravityView için kaydı onayla"
+msgstr "De Inzending goedgekeurd voor GravityView"
 
 #: includes/class-admin-approve-entries.php:327
 msgid "Approve"
-msgstr "Onayla"
+msgstr "Toelaten"
 
 #: includes/class-admin-approve-entries.php:328
 msgid "Disapprove"
-msgstr "Onayı Geri Al"
+msgstr "Weigeren"
 
 #: includes/class-admin-approve-entries.php:330
 msgid "Entry not approved for directory viewing. Click to approve this entry."
-msgstr ""
-"Kayıt dizin görüntülemesi için onaylanmamış. Kaydı onaylamak için tıklayın."
+msgstr "Inzending niet toegelaten voor directory weergave. Klik om deze inzending toe te laten."
 
 #: includes/class-admin-approve-entries.php:331
 msgid "Entry approved for directory viewing. Click to disapprove this entry."
-msgstr ""
-"Kayıt dizin görüntülemesi için onaylanmış. Onayı geri almak için tıklayın."
+msgstr "Inzending is toegelaten voor directory weergave. Klik om deze inzending te weigeren."
 
 #: includes/class-admin-approve-entries.php:332
 msgid "Show entry in directory view?"
-msgstr "Kaydı dizin içinde göster?"
+msgstr "Toon inzending in directory weergave?"
 
 #: includes/class-admin-views.php:85
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
 msgstr ""
-"Bu tarihten sonra gönderilen kayıtları göster. Önceki tarihler "
-"desteklenmektedir. \"-1 hafta\" yada \"-1 ay\" gibi."
 
 #: includes/class-admin-views.php:89
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
 msgstr ""
-"Bu tarihten önce gönderilen kayıtları göster. Önceki tarihler "
-"desteklenmektedir. \"şimdi\" yada \"-3 gün\" gibi."
 
 #: includes/class-admin-views.php:92 includes/class-admin-views.php:639
 msgid "Single Entry Title"
-msgstr "Tekil Kayıt Başlığı"
+msgstr ""
 
 #: includes/class-admin-views.php:93
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
-"Otherwise, the title will not change between the Multiple Entries and Single "
-"Entry views."
+"Otherwise, the title will not change between the Multiple Entries and Single"
+" Entry views."
 msgstr ""
-"Tekil kayıtları görüntülerken sayfanın başlığını bu ayarı kullanarak "
-"değiştirebilirsiniz. Aksi takdirde Çoklu Kayıt ve Tekil Kayıt görünümleri "
-"arasında geçiş yaptığınızda başlık aynı kalır."
 
 #: includes/class-admin-views.php:96 includes/class-admin-views.php:645
 msgid "Back Link Label"
-msgstr "Geri Dönüş Bağlantısı Etiketi"
+msgstr ""
 
 #: includes/class-admin-views.php:97
 msgid "The text of the link that returns to the multiple entries view."
-msgstr "Çoklu kayıt görünümüne dönüş yapan bağlantının yazısı."
+msgstr ""
 
 #: includes/class-admin-views.php:120
 msgid "Not connected."
-msgstr "Bağlanmadı."
+msgstr "Niet gekoppeld."
 
 #: includes/class-admin-views.php:129
 msgid "The connected form can not be found; it may no longer exist."
-msgstr "Bağlantı yapılan form bulunamadı; form silinmiş olabilir."
+msgstr "Het gekoppelde formulier kan niet worden gevonden; het bestaat wellicht niet meer."
 
 #: includes/class-admin-views.php:146 includes/class-admin-views.php:270
 msgid "Data Source"
-msgstr "Veri Kaynağı"
+msgstr "Data Bron"
 
 #: includes/class-admin-views.php:169
 #, php-format
 msgid ""
 "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n"
 "\n"
-"You're using Version %s. Please update your Gravity Forms or purchase a "
-"license. %sGet Gravity Forms%s - starting at $39%s%s"
+"You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr ""
-"%sGravityView Gravity Forms sürüm 1.8 yada üstü gerektirir.%s\n"
-"\n"
-"Kullandığınız sürüm %s. Lütfen Gravity Forms eklentinizi güncelleyin. %s "
-"Gravity Forms şimdi satın al%s - $39 dan başlayan fiyatlarla%s%s"
 
 #: includes/class-admin-views.php:174
 #, php-format
 msgid ""
-"%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms"
-"%s to use the GravityView plugin."
-msgstr ""
-"%sGravityView, Gravity Forms eklentisinin etkin olmasını gerektirmektedir. "
-"GravityView eklentisini kullanabilmek için %sGravity Forms'u etkinleştirin.%s"
+"%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
+"Forms%s to use the GravityView plugin."
+msgstr "%sGravityView vereist dat Gravity Forms actief is. %sActiveer Gravity Forms%s om de GravityView plugin te gebruiken."
 
 #: includes/class-admin-views.php:176
 #, php-format
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
-msgstr ""
-"%sGravityView, Gravity Forms eklentisinin yüklü olmasını gerektirmektedir. "
-"$39%s dan başlayan fiyatlarla %sGravity Forms satın almak için tıklayın%s%s"
+msgstr "%sGravityView vereist dat Gravity Forms is geinstalleerd om goed te werken. %sKoop Gravity Forms%s - startend vanaf $39%s%s"
 
 #: includes/class-admin-views.php:247
 msgid "Layout Settings"
-msgstr "Tasarım Düzeni Ayarları"
+msgstr "Layout Instellingen"
 
 #: includes/class-admin-views.php:273
 msgid "Choose a View Type"
-msgstr "Görünüm Türünü Seçin"
+msgstr "Kies een Weergave Type"
 
 #: includes/class-admin-views.php:276
 msgid "View Configuration"
-msgstr "Görünüm Düzeni"
+msgstr "Bekijk Configuratie"
 
 #: includes/class-admin-views.php:279
 msgid "View Settings"
-msgstr "Görünüm Ayarları"
+msgstr "Bekijk Instellingen"
 
 #: includes/class-admin-views.php:282
 msgid "Shortcode Info"
-msgstr "Kısakod Bilgisi"
+msgstr ""
 
 #: includes/class-admin-views.php:310
 msgid "Where would you like the data to come from for this View?"
-msgstr "Bu Görünüm için verinin hangi kaynaktan gelmesini istersiniz?"
+msgstr "Waar wil je de data vandaan halen voor deze Weergave?"
 
 #: includes/class-admin-views.php:320
 msgid "Start Fresh"
-msgstr "Sıfırdan başlayın"
+msgstr "Opnieuw beginnen"
 
 #: includes/class-admin-views.php:322
 msgid "or use an existing form"
-msgstr "yada mevcut bir formu kullanın"
+msgstr "of gebruik een bestaand formulier"
 
 #: includes/class-admin-views.php:328
 msgid "list of forms"
-msgstr "form listesi"
+msgstr "lijst van formulieren"
 
 #: includes/class-admin-views.php:336
 msgid "Switch View"
-msgstr "Görünüm'ü Değiştir"
+msgstr "Schakel Weergave"
 
 #: includes/class-admin-views.php:342 includes/class-admin-views.php:347
 msgid "Attention"
-msgstr "Dikkat"
+msgstr "Attentie"
 
 #: includes/class-admin-views.php:343
 msgid "Changing the form will discard all the existent View configuration."
-msgstr "Formu değiştirmek mevcut Görünüm düzenini tamamen sıfırlayacaktır."
+msgstr ""
 
 #: includes/class-admin-views.php:348
 msgid ""
 "Changing the View Type will discard all the existent View configuration."
 msgstr ""
-"Görünüm Türü'nü değiştirmek mevcut Görünüm düzenini tamamen sıfırlayacaktır."
 
 #: includes/class-admin-views.php:353
 msgid "GravityView requires Javascript to be enabled."
-msgstr "GravityView Javascript'in çalışır durumda olmasını gerektirir."
+msgstr "GravityView vereist Javascript om geactiveerd te kunnen worden."
 
 #: includes/class-admin-views.php:397
 msgid "Buy Now"
-msgstr "Şimdi Satın Al"
+msgstr "Koop Nu"
 
 #: includes/class-admin-views.php:399
 msgid "Select"
-msgstr "Seç"
+msgstr "Selecteer"
 
 #: includes/class-admin-views.php:400 includes/class-admin-views.php:404
 msgid "Preview"
-msgstr "Önizleme"
+msgstr "Voorbeeld"
 
 #: includes/class-admin-views.php:456
 msgid "Multiple Entries"
-msgstr "Çoklu Kayıt"
+msgstr "Meerdere Inzendingen"
 
 #: includes/class-admin-views.php:457
 msgid "Single Entry"
-msgstr "Tekil Kayıt"
+msgstr "Enkele Inzending"
 
 #: includes/class-admin-views.php:464
 msgid "Above Entries Widgets"
-msgstr "Kayıt Üstü Bileşenleri"
+msgstr "Boven Inzendingen WIdgets"
 
 #: includes/class-admin-views.php:464
 msgid "These widgets will be shown above entries."
-msgstr "Bu bileşenler kayıt dökümünün üst kısımında gösterilir."
+msgstr "Deze widgets worden boven de inzendingen getoond."
 
 #: includes/class-admin-views.php:468
 msgid "Entries Fields"
-msgstr "Kayıtlara Ait Alanlar"
+msgstr "Inzendingen Velden"
 
 #: includes/class-admin-views.php:468
 msgid "These fields will be shown for each entry."
-msgstr "Bu alanlar her kayıt için ayrı ayrı gösterilir."
+msgstr "Deze velden worden bij elke inzending getoond."
 
 #: includes/class-admin-views.php:476
 msgid "Below Entries Widgets"
-msgstr "Kayıt Altı Bileşenleri"
+msgstr "Onder Inzendingen Widgets"
 
 #: includes/class-admin-views.php:476
 msgid "These widgets will be shown below entries."
-msgstr "Bu bileşenler kayıt dökümünün alt kısımında gösterilir."
+msgstr "Deze widgets worden onder de inzendingen getoond."
 
 #: includes/class-admin-views.php:506
 msgid "These fields will be shown in Single Entry view."
-msgstr "Bu alanlar Tekil Kayıt görünümü etkinse gösterilir."
+msgstr "Deze velden worden getoond in de Enkele Inzending weergave."
 
 #: includes/class-admin-views.php:581
 msgid "Hide empty fields"
-msgstr "Boş Alanları Gizle"
+msgstr ""
 
 #: includes/class-admin-views.php:634
 msgid "Single Entry Settings"
-msgstr "Tekil Kayıt Ayarları"
+msgstr ""
 
 #: includes/class-admin-views.php:665
 msgid "To insert this view into a post or a page use the following shortcode:"
-msgstr "Bu Görünüm'ü sayfanıza gömmek için lütfen şu kısakodu kullanın:"
+msgstr ""
 
 #: includes/class-admin-views.php:905
 #, php-format
 msgid "Configure %s Settings"
-msgstr "%s Ayarlarını Düzenle"
+msgstr "Configureer %s Instellingen"
 
 #: includes/class-admin-views.php:906
 #, php-format
 msgid "Remove %s"
-msgstr "%s Sil"
+msgstr "Verwijder %s"
 
 #: includes/class-admin-views.php:943
 msgid "+ Add All Fields"
-msgstr "+ Tüm Alanları Ekle"
+msgstr "+ Voeg Alle Velden toe"
 
 #: includes/class-admin-views.php:970
 msgid "Entry ID"
-msgstr "Kayıt NO"
+msgstr "Inzending ID"
 
 #: includes/class-admin-views.php:971
 msgid "Entry Date"
-msgstr "Kayıt Tarihi"
+msgstr "Inzending Datum"
 
 #: includes/class-admin-views.php:972
 msgid "Source URL"
-msgstr "Kaynak URL"
+msgstr "Bron URL"
 
 #: includes/class-admin-views.php:973
 msgid "User IP"
-msgstr "Kullanıcı IP"
+msgstr "Gebruiker IP"
 
 #: includes/class-admin-views.php:974
 msgid "User"
-msgstr "Kullanıcı"
+msgstr "Gebruiker"
 
 #: includes/class-admin-views.php:978
 msgid "Link to Entry"
-msgstr "Kayıt Bağlantısı"
+msgstr "Link naar Inzending"
 
 #: includes/class-admin-views.php:1048
 msgid "Add Widget"
-msgstr "Bileşen Ekle"
+msgstr "Widget Toevoegen"
 
 #: includes/class-admin-views.php:1050
 msgid "Add Field"
-msgstr "Alan Ekle"
+msgstr "Veld Toevoegen"
 
 #: includes/class-admin-views.php:1089
 #, php-format
 msgid "\"%s\" or drag existing %ss here."
-msgstr "\"%s\" yada mevcut %ss buraya sürükleyin."
+msgstr "\"%s\" of versleep bestaande %ss hierheen."
 
 #: includes/class-admin-views.php:1209
 #, php-format
 msgid "Options: %s"
-msgstr "Seçenekler: %s"
+msgstr "Opties: %s"
 
 #: includes/class-admin-views.php:1250
 msgid "Any logged-in user"
-msgstr "Tüm giriş yapan kullanıcılar"
+msgstr "Een ingelogde gebruiker"
 
 #: includes/class-admin-views.php:1251
 msgid "Author or higher"
-msgstr "Yazar yada üstü"
+msgstr "Auteur of hoger"
 
 #: includes/class-admin-views.php:1252
 msgid "Editor or higher"
-msgstr "Editör yada üstü"
+msgstr "Redacteur of hoger"
 
 #: includes/class-admin-views.php:1253
 msgid "Administrator"
-msgstr "Yönetici"
+msgstr "Beheerder"
 
 #: includes/class-admin-views.php:1261
 msgid "Show Label"
-msgstr "Etiketi Göster"
+msgstr "Toon Label"
 
 #: includes/class-admin-views.php:1266
 msgid "Custom Label:"
-msgstr "Özel Etiket:"
+msgstr "Eigen Label:"
 
 #: includes/class-admin-views.php:1272
 msgid "Custom CSS Class:"
-msgstr "Özel CSS Sınıfı:"
+msgstr "Eigen CSS Class:"
 
 #: includes/class-admin-views.php:1273
 msgid "This class will be added to the field container."
-msgstr "Bu sınıf, ilgili alanı kapsayan taşıyıcıya eklenecektir."
+msgstr ""
 
 #: includes/class-admin-views.php:1279
 msgid "Make visible only to logged-in users?"
-msgstr "Sadece giriş yapan kullanıcılar mı görüntülesin?"
+msgstr "Maak alleen zichtbaar voor ingelogde gebruikers?"
 
 #: includes/class-admin-views.php:1284
 msgid "Make visible for:"
-msgstr "Şunlar için görünür:"
+msgstr "Maak zichtbaar voor:"
 
 #: includes/class-admin-views.php:1710
 msgid "Enter View name here"
-msgstr "Görünüm Adını buraya girin"
+msgstr "Vul hier de Weergave naam in"
 
 #: includes/class-admin-views.php:1711
 msgid "Close"
-msgstr "Kapat"
+msgstr "Sluiten"
 
 #: includes/class-admin-views.php:1713
 msgid "Continue"
-msgstr "Devam Et"
+msgstr "Doorgaan"
 
 #: includes/class-admin-views.php:1714
 msgid "Ok"
-msgstr "Tamam"
+msgstr "Ok"
 
 #: includes/class-admin-views.php:1715
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
-msgstr ""
-"Görünüm oluşturulurken hata oluştu. Lütfen ayarları kontrol edin yada "
-"GravityView destek bölümüne başvurun."
+msgstr "Fout tijdens het creeeren van de Weergave. Controleer de instellingen of neem contact op met GravityView support."
 
 #: includes/class-admin-welcome.php:57
 msgid "GravityView Beta: Getting Started"
-msgstr "GravityView Beta: Başlangıç"
+msgstr "GravityView Beta: Aan de slag"
 
 #: includes/class-admin-welcome.php:58 includes/class-admin-welcome.php:150
 msgid "Getting Started"
-msgstr "Başlangıç"
+msgstr "Aan de slag"
 
 #: includes/class-admin-welcome.php:67 includes/class-admin-welcome.php:68
 msgid "Welcome to GravityView"
-msgstr "GravityView'e Hoşgeldiniz"
+msgstr "Welkom bij GravityView"
 
 #: includes/class-admin-welcome.php:77 includes/class-admin-welcome.php:78
 #: includes/class-admin-welcome.php:156
 msgid "Credits"
-msgstr "Hazırlayanlar"
+msgstr "Credits"
 
 #: includes/class-admin-welcome.php:145
 #, php-format
 msgid "Welcome to GravityView %s"
-msgstr "%s GravityView'e Hoşgeldiniz"
+msgstr "Welkom bij GravityView %s"
 
 #: includes/class-admin-welcome.php:146
 msgid ""
-"Thank you for Installing GravityView. Beautifully display your Gravity Forms "
-"entries."
-msgstr ""
-"GravityView yüklediğiniz için teşekkür ederiz. Artık Gravity Forms "
-"kayıtlarınızı güzel ve etkin bir şekilde görüntüleyebilirsiniz."
+"Thank you for Installing GravityView. Beautifully display your Gravity Forms"
+" entries."
+msgstr "Hartelijk dank voor het installeren van GravityView. Mooi weergeven van Gravity Forms inzendingen."
 
 #: includes/class-admin-welcome.php:153
 msgid "Beta Testing"
-msgstr "Beta Test"
+msgstr "Beta Testen"
 
 #: includes/class-admin-welcome.php:276
 msgid "GravityView is brought to you by:"
-msgstr "GravityView'i çıkaranlar:"
+msgstr "GravityView wordt jou aangeboden door:"
 
 #: includes/class-admin-welcome.php:301
 msgid "Contributors"
-msgstr "Katkıda Bulunanlar"
+msgstr "Bijdragers"
 
 #: includes/class-admin-welcome.php:312
 msgid "Want to contribute?"
-msgstr "Katkıda bulunmak istermisiniz?"
+msgstr "Wil je bijdragen?"
 
 #: includes/class-admin-welcome.php:313
 #, php-format
 msgid ""
 "If you want to contribute to the code, you can %srequest access to the "
-"Github repository%s. If your contributions are accepted, you will be thanked "
-"here."
-msgstr ""
-"Çekirdek kodlara katkı sağlamak isterseniz %sGithub deposuna erişim izni "
-"isteyebilirsiniz.%s Eğer talebiniz kabul edilirse, buradan size teşekkür "
-"edilecektir."
+"Github repository%s. If your contributions are accepted, you will be thanked"
+" here."
+msgstr "Als je wilt bijdragen aan de code kan je %stoegang vragen tot de Github repository%s. Als je bijdragen zijn geaccepteerd, wordt je op deze plek bedankt."
 
 #: includes/class-api.php:198
 msgid "This search returned no results."
-msgstr "Bu aramada hiç sonuç bulunamadı"
+msgstr "Deze zoekopdracht geeft geen resultaten."
 
 #: includes/class-api.php:200
 msgid "No entries match your request."
-msgstr "Talebinize uyan kayıt bulunamadı."
+msgstr "Er zijn geen inzendingen die voldoen aan jou verzoek."
 
 #: includes/class-api.php:305
 msgid "&larr; Go back"
-msgstr "&larr; Geri dön"
+msgstr "&larr; Ga terug"
 
 #: includes/class-settings.php:90
 msgid "License Key"
-msgstr "Lisans Anahtarı"
+msgstr "Licentiesleutel"
 
 #: includes/class-settings.php:91
 msgid ""
 "Use <code>BETA_TESTER</code>. This allows you to get automatic upgrades."
-msgstr ""
-"<code>BETA_TESTER</code> kodunu kullanın. Bu sayede otomatik güncellemeleri "
-"alabilirsiniz."
+msgstr "Gebruik <code>BETA_TESTER</code>. Dit geeft toegang tot automatische updates."
 
 #: includes/class-settings.php:111
 msgid "Support Email"
-msgstr "Destek Eposta Adresi"
+msgstr "Support E-mail"
 
 #: includes/class-settings.php:112
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
-msgstr ""
-"Destek taleplerinize yanıt verebilmemiz için lütfen eposta adresinizi "
-"yazınız."
+msgstr "Vul uw e-mailadres in om reactie te kunnen geven op jou supportvragen."
 
 #: includes/class-settings.php:117
 msgid "No-Conflict Mode"
-msgstr "Çakışmasız Durum"
+msgstr "Geen-Conflict Modus"
 
 #: includes/class-settings.php:118
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
-"on GravityView admin pages, reducing conflicts with other plugins and themes."
-msgstr ""
-"Arkaplanda farklı betik ve sitil dosyalarının GravityView yönetim sayfasında "
-"yüklenmesini istemiyorsanız bu ayarı kullanmalısınız. Bu sayede diğer "
-"eklenti ve temalarla yaşanabilecek çakışmalar asgariye indirilmiş olur."
+"on GravityView admin pages, reducing conflicts with other plugins and "
+"themes."
+msgstr "Zet dit op AAN om te voorkomen dat vreemde scripts en stijlen worden uitgevoerd op GravityView admin pagina's en het verminderen van conflicten met andere plugins en thema's."
 
 #: includes/class-settings.php:124
 msgid "GravityView Settings"
-msgstr "GravityView Ayarları"
+msgstr "GravityView Instellingen"
 
 #: includes/class-settings.php:152 includes/class-settings.php:153
 msgid "Settings"
-msgstr "Ayarlar"
+msgstr "Instellingen"
 
 #: includes/class-settings.php:218
 msgid "Follow us on Google+"
-msgstr "Bizi Google+ 'da takip edin"
+msgstr "Volg ons op Google+"
 
 #: includes/default-templates.php:31
 msgid "Table (default)"
-msgstr "Tablo(varsayılan)"
+msgstr "Tabel (standaard)"
 
 #: includes/default-templates.php:32
 msgid "Display items in a table view."
-msgstr "Ögeleri Tablo şeklinde görüntüle"
+msgstr "Toon items in een tabel weergave."
 
 #: includes/default-templates.php:43 includes/default-templates.php:82
 #: includes/extensions/datatables/includes/class-datatables-template.php:40
 msgid "Link to single entry"
-msgstr "Tek kayıda bağlantı "
+msgstr "Link naar enkele inzending"
 
 #: includes/default-templates.php:49
 #: includes/extensions/datatables/includes/class-datatables-template.php:46
 msgid "Visible Table Columns"
-msgstr "Görünür Tablo Kolonları"
+msgstr "Zichtbare Tabel Kolommen"
 
 #: includes/default-templates.php:74
 msgid "List (default)"
-msgstr "Liste (varsayılan)"
+msgstr "Lijst (standaard)"
 
 #: includes/default-templates.php:75
 msgid "Display items in a listing view."
-msgstr "Ögeleri liste şeklinde görüntüle."
+msgstr "Toon items in een lijst weergave."
 
 #: includes/default-templates.php:88
 msgid "Image"
-msgstr "Resim"
+msgstr "Afbeelding"
 
 #: includes/default-templates.php:91
 msgid "Listing Title"
-msgstr "Liste Başlığı"
+msgstr "Vermeldingstitel"
 
 #: includes/default-templates.php:92
 msgid "Subheading"
-msgstr "Alt Başlık"
+msgstr "Subkop"
 
 #: includes/default-templates.php:93
 msgid "Description"
-msgstr "Açıklama"
+msgstr "Beschrijving"
 
 #: includes/default-templates.php:96
 msgid "Footer Left"
-msgstr "Sol Sayfa Altı"
+msgstr "Footer Links"
 
 #: includes/default-templates.php:99
 msgid "Footer Right"
-msgstr "Sağ Sayfa Altı"
+msgstr "Footer Rechts"
 
 #: includes/default-templates.php:335
 msgid "Business Data"
-msgstr "İş Bilgisi"
+msgstr "Bedrijfsdata"
 
 #: includes/default-templates.php:336
 msgid "Display business information in a table."
-msgstr "İş Bilgisini tablo şeklinde görüntüle."
+msgstr "Toon bedrijfsinformatie in een tabel."
 
 #: includes/default-templates.php:357
 msgid "Resume Board"
-msgstr "Özgeçmiş Panosu"
+msgstr "CV Prikbord"
 
 #: includes/default-templates.php:358
 msgid "Allow job-seekers to post their resumes."
-msgstr "İş arayanların özgeçmiş göndermesine izin ver."
+msgstr "Baanzoekenden toestaan om een CV te plaatsen."
 
 #: includes/default-templates.php:378
 msgid "Job Board"
-msgstr "İş İlanı Panosu"
+msgstr "Banen Bord"
 
 #: includes/default-templates.php:379
 msgid "Post available jobs in a simple job board."
-msgstr "Mevcut iş ilanlarını basit iş panosunda görüntüle."
+msgstr "Publiceer beschikbare banen op een eenvoudig banen bord."
 
 #: includes/default-templates.php:399
 msgid "People Table"
-msgstr "Kişi Tablosu"
+msgstr "Personen Tabel"
 
 #: includes/default-templates.php:400
 msgid "Display information about people in a table."
-msgstr "Kişi bilgilerini tablo şeklinde görüntüle."
+msgstr "Toon informatie over personen in een tabel."
 
 #: includes/default-templates.php:421
 msgid "Issue Tracker"
-msgstr "Sorun Takipçisi"
+msgstr "Issue Tracker"
 
 #: includes/default-templates.php:422
 msgid "Manage issues and their statuses."
-msgstr "Sorunları ve durumlarını yönetin."
+msgstr "Beheer issues en hun status."
 
 #: includes/default-templates.php:443
 msgid "Business Listings"
-msgstr "İş Rehberi"
+msgstr "Bedrijfsvermeldingen"
 
 #: includes/default-templates.php:444
 msgid "Display business profiles."
-msgstr "İş türlerini görüntüle."
+msgstr "Toon bedrijfsprofielen."
 
 #: includes/default-templates.php:464
 msgid "Event Listings"
-msgstr "Etkinlik Takvimi"
+msgstr "Evenement Vermeldingen"
 
 #: includes/default-templates.php:465
 msgid "Present a list of your events."
-msgstr "Etkinliklerinizin sunumunu yapabilirsiniz."
+msgstr "Presenteer een lijst van al jou evenementen."
 
 #: includes/default-templates.php:485
 msgid "People Profiles"
-msgstr "Kişi Özgeçmişi"
+msgstr "Persoonsprofielen"
 
 #: includes/default-templates.php:486
 msgid "List people with individual profiles."
-msgstr "Bireysel kişi özgeçmişlerini listele. "
+msgstr "Toon personen met individuele profielen in een lijst."
 
 #: includes/default-templates.php:506
 msgid "Staff Profiles"
-msgstr "Personel Özgeçmişi"
+msgstr "Personeelsprofielen"
 
 #: includes/default-templates.php:507
 msgid "List members of your team."
-msgstr "Ekibinizin üyelerini listeleyin."
+msgstr "Toon leden van jouw team in een lijst."
 
 #: includes/default-templates.php:527
 msgid "Website Showcase"
-msgstr "Website Teşhiri"
+msgstr "Website Weergeven"
 
 #: includes/default-templates.php:528
 msgid "Feature submitted websites with screenshots."
-msgstr "Ekran görüntülü özel website listesi"
+msgstr "Ingestuurde websites uitlichten met screenshots."
 
 #: includes/default-widgets.php:26
 msgid "Show Pagination Info"
-msgstr "Sayfalama Bilgisini Göster"
+msgstr "Toon Paginering Info"
 
 #: includes/default-widgets.php:48
 #, php-format
 msgid "Displaying %1$s - %2$s of %3$s"
-msgstr "%3$s taneden %1$s - %2$s arası kayıt görüntüleniyor"
+msgstr "Tonen %1$s - %2$s of %3$s"
 
 #: includes/default-widgets.php:72
 msgid "Show each page number"
-msgstr "Her sayfanın numarasını göster"
+msgstr "Toon elke paginanummer"
 
 #: includes/default-widgets.php:73
 msgid "Show every page number instead of summary (eg: 1 2 3 ... 8 »)"
-msgstr "Özeti yerine her sayfayı tek tek göster (örn: 1 2 3 ... 8 »)"
+msgstr "Toon elke pagina nummer in plaats van een samenvatting (zoals: 1 2 3 ... 8 »)"
 
 #: includes/default-widgets.php:76
 msgid "Show Page Links"
-msgstr "Sayfa Bağlantılarını Göster"
+msgstr "Toon Pagina Links"
 
 #: includes/default-widgets.php:133
 msgid "Show search input"
-msgstr "Arama kutusunu göster"
+msgstr "Toon zoekinput"
 
 #: includes/default-widgets.php:134
 msgid "Show date filters"
-msgstr "Tarih süzgeçlerini göster"
+msgstr "Toon datum filters"
 
 #: includes/default-widgets.php:136
 msgid "Show Search Bar"
-msgstr "Arama Çubuğunu Göster"
+msgstr "Toon Zoekbalk"
 
 #: includes/default-widgets.php:150
 msgid "Use this field as a search filter"
-msgstr "Bu alanı arama süzgeci olarak kullan"
+msgstr "Gebruik dit veld als een zoekfilter"
 
 #: includes/extensions/datatables/includes/class-datatables-template.php:28
 msgid "DataTables Table"
-msgstr "DataTables Tablosu"
+msgstr "DataTables Tabel"
 
 #: includes/extensions/datatables/includes/class-datatables-template.php:29
 msgid "Display items in a dynamic table powered by DataTables."
-msgstr "Ögeleri DataTables dinamik tablolarda görüntüleyin."
+msgstr "Toon items in een dynamische tabel aangestuurd door DataTables"
 
 #: includes/fields/created-by.php:11
 msgid "User Format"
-msgstr "Kullanıcı Biçimi"
+msgstr "Gebruiker Formaat"
 
 #: includes/fields/created-by.php:12
 msgid "How should the User information be displayed?"
-msgstr "Kullanıcı bilgisi hangi biçimde görünmeli?"
+msgstr "Hoe moet de Gebruiker informatie worden weergegeven?"
 
 #: includes/fields/created-by.php:16
 msgid "Display Name (Example: \"Ellen Ripley\")"
-msgstr "Görünen Adı (Örn: \"Ahmet Yılmaz\")"
+msgstr "Weergave Naam (Bijvoorbeeld: \"Ellen Ripley\")"
 
 #: includes/fields/created-by.php:20
 msgid "Username (Example: \"nostromo\")"
-msgstr "Kullanıcı Adı (Örnek: \"rumuz01\")"
+msgstr "Gebruikersnaam (Bijvoorbeeld: \"nostromo\")"
 
 #: includes/fields/created-by.php:24
 msgid "User ID # (Example: 426)"
-msgstr "Kullanıcı NO # (Örnek: 426)"
+msgstr "Gebruiker ID # (Bijvoorbeeld: 426)"
 
 #: includes/fields/date.php:14
 msgid "Override Date Format"
-msgstr "Tarih Biçimini Değiştir"
+msgstr "Overschrijf Datum Formaat"
 
 #: includes/fields/date.php:15
 #, php-format
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
-msgstr "Tarih biçimini belirleyin (%sPHP date format kullanarak%s)"
+msgstr "Definieer hoe de datum moet worden weergegeven (gebruik %shet PHP datum formaat%s)"
 
 #: templates/fields/entry_link.php:7
 msgid "View Details"
-msgstr "Görünüm Detayları"
+msgstr "Toon Details"
 
 #: templates/widget-search.php:20
 msgid "Search Entries:"
-msgstr "Kayıtlarda ara:"
+msgstr "Zoek Inzendingen:"
 
 #: templates/widget-search.php:27
 msgid "Filter by date:"
-msgstr "Tarihe göre sırala:"
+msgstr "Filter op datum:"
 
 #: templates/widget-search.php:29
 msgid "Start date"
-msgstr "Başlangıç tarihi"
+msgstr "Startdatum"
 
 #: templates/widget-search.php:30
 msgid "End date"
-msgstr "Bitiş tarihi"
+msgstr "Einddatum"
 
 #: templates/widget-search.php:42
 msgid "Search"
-msgstr "Ara"
+msgstr "Zoeken"

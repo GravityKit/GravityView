@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.com
+
+[gravityview.gravity-view]
+file_filter = languages/gravity-view-<lang>.po
+source_lang = en
+type = PO
+

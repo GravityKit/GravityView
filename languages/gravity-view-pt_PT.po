@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-06-24 18:47-0700\n"
-"PO-Revision-Date: 2014-06-28 16:31+0000\n"
-"Last-Translator: luistinygod <luis@gomo.pt>\n"
+"PO-Revision-Date: 2014-07-14 09:49+0000\n"
+"Last-Translator: Zachary Katz <zack@katzwebservices.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/gravityview/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +29,7 @@ msgid ""
 "%sYou don't have any active views. Let's go %screate one%s!%s\n"
 "\n"
 "If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
-msgstr "%sAinda não tem nenhuma Vista activa. %sCrie uma agora%s!%s\n\nSe sente que está perdido no espaço e precisa de ajuda para começar, visite a página %sComece Aqui%s."
+msgstr ""
 
 #: gravityview.php:231
 msgctxt "Post Type General Name"
@@ -190,7 +190,7 @@ msgstr "Adicionar Vista"
 
 #: includes/class-admin-add-shortcode.php:74
 msgid "Insert a View"
-msgstr "Inserir Vista"
+msgstr ""
 
 #: includes/class-admin-add-shortcode.php:77
 msgid "Select a View"
@@ -198,7 +198,7 @@ msgstr "Escolher Vista"
 
 #: includes/class-admin-add-shortcode.php:80
 msgid "&mdash; views &mdash;"
-msgstr "&mdash; vistas &mdash;"
+msgstr ""
 
 #: includes/class-admin-add-shortcode.php:92
 #: includes/class-admin-views.php:558
@@ -413,7 +413,7 @@ msgstr "Configurações"
 
 #: includes/class-admin-views.php:282
 msgid "Shortcode Info"
-msgstr "Informação do Shortcode"
+msgstr ""
 
 #: includes/class-admin-views.php:310
 msgid "Where would you like the data to come from for this View?"
@@ -441,12 +441,12 @@ msgstr "Atenção"
 
 #: includes/class-admin-views.php:343
 msgid "Changing the form will discard all the existent View configuration."
-msgstr "Se alterar o formulário vai perder todas as configurações desta Vista."
+msgstr ""
 
 #: includes/class-admin-views.php:348
 msgid ""
 "Changing the View Type will discard all the existent View configuration."
-msgstr "Se alterar o Tipo de Vista vai perder todas as configurações desta Vista"
+msgstr ""
 
 #: includes/class-admin-views.php:353
 msgid "GravityView requires Javascript to be enabled."
@@ -510,7 +510,7 @@ msgstr "Configurações de Entrada Individual"
 
 #: includes/class-admin-views.php:665
 msgid "To insert this view into a post or a page use the following shortcode:"
-msgstr "Para inserir esta Vista num artigo ou página utilize o seguinte shortcode:"
+msgstr ""
 
 #: includes/class-admin-views.php:905
 #, php-format
@@ -598,7 +598,7 @@ msgstr "Classe CSS personalizada:"
 
 #: includes/class-admin-views.php:1273
 msgid "This class will be added to the field container."
-msgstr "Esta classe será adicionada ao campo"
+msgstr ""
 
 #: includes/class-admin-views.php:1279
 msgid "Make visible only to logged-in users?"
