@@ -426,7 +426,7 @@ class GravityView_Edit_Entry {
 			if( ! $this->is_valid ){
 
 				// Keeping this compatible with Gravity Forms.
-			    $validation_message = "<div class='validation_error'>" . __("There was a problem with your submission.", "gravityforms") . " " . __("Errors have been highlighted below.", "gravityforms") . "</div>";
+			    $validation_message = "<div class='validation_error'>" . __("There was a problem with your submission.", "gravity-view") . " " . __("Errors have been highlighted below.", "gravity-view") . "</div>";
 			    $message .= apply_filters("gform_validation_message_{$this->form["id"]}", apply_filters("gform_validation_message", $validation_message, $this->form), $this->form);
 
 			    echo $this->generate_notice( $message , 'gv-error' );
