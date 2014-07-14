@@ -46,7 +46,7 @@ class GV_Extension_DataTables_Admin {
 		// View DataTables settings
 		$settings = get_post_meta( $post->ID, '_gravityview_datatables_settings', true );
 
-		$defaults = add_filter('gravityview_dt_default_settings', array() );
+		$defaults = apply_filters( 'gravityview_dt_default_settings', array() );
 
 		$ds = wp_parse_args( $settings, $defaults );
 
