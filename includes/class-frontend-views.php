@@ -43,7 +43,9 @@ class GravityView_frontend {
 
 		if( is_admin() ) { return $url; }
 
-		if( $entry_id =& self::is_single_entry() ) {
+		$entry_id = self::is_single_entry();
+
+		if( !empty( $entry_id ) ) {
 
 			// We need the attached form ID as well...
 			$entry = gravityview_get_entry( $entry_id );
@@ -66,10 +68,12 @@ class GravityView_frontend {
 		if( is_admin() ) { return; }
 
 		if( GFCommon::current_user_can_any('gravityforms_edit_forms') ) {
-
+			// ???
 		}
 
-		if( GFCommon::current_user_can_any('gravityforms_edit_entries') && $entry_id =& self::is_single_entry() ) {
+		$entry_id = self::is_single_entry();
+
+		if( GFCommon::current_user_can_any('gravityforms_edit_entries') && !empty( $entry_id ) ) {
 
 			// We need the attached form ID as well...
 			$entry = gravityview_get_entry( $entry_id );
