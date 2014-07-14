@@ -672,7 +672,7 @@ class GravityView_frontend {
 				$css_dependencies = array();
 
 				// If the thickbox is enqueued, add dependencies
-				if( !empty( $atts['lightbox'] ) ) {
+				if( !empty( $view_meta['atts']['lightbox'] ) ) {
 					$js_dependencies[] = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
 					$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
 				}
