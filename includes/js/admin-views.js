@@ -164,6 +164,7 @@
 		},
 
 		showTemplates: function() {
+			$('a[href=#gv_switch_view]').fadeOut(150);
 			$("#gravityview_select_template").slideDown(150);
 		},
 
@@ -225,10 +226,8 @@
 				vcfg.showTemplates();
 				vcfg.getAvailableFields();
 				vcfg.getSortableFields();
+				$('a[href=#gv_switch_view]').fadeOut(150);
 			}
-
-			//vcfg.getSortableFields();
-
 		},
 
 		showDialog: function( dialogSelector, buttons ) {
@@ -396,6 +395,7 @@
 				//change view configuration active areas
 				vcfg.updateActiveAreas( selectedTemplateId );
 
+				$('a[href=#gv_switch_view]').fadeIn(150);
 				$("#gravityview_select_template").slideUp(150);
 
 			}
