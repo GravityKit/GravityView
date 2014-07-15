@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-06-24 18:47-0700\n"
-"PO-Revision-Date: 2014-07-14 09:49+0000\n"
-"Last-Translator: Zachary Katz <zack@katzwebservices.com>\n"
+"PO-Revision-Date: 2014-07-15 09:12+0000\n"
+"Last-Translator: Süha Karalar <suhakaralar@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/projects/p/gravityview/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,7 +30,7 @@ msgid ""
 "%sYou don't have any active views. Let's go %screate one%s!%s\n"
 "\n"
 "If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
-msgstr ""
+msgstr "%sAktif bir Görünüm oluşturmadınız. Yeni bir Görünüm %soluşturun%s!%s \n\nNereden başlayacağınızı bilmiyorsanız, %sBaşlangıç%s sayfasına bakabilirsiniz."
 
 #: gravityview.php:231
 msgctxt "Post Type General Name"
@@ -186,7 +186,7 @@ msgstr "Görünüm Ekle"
 
 #: includes/class-admin-add-shortcode.php:74
 msgid "Insert a View"
-msgstr ""
+msgstr "Görünüm Ekle"
 
 #: includes/class-admin-add-shortcode.php:77
 msgid "Select a View"
@@ -194,7 +194,7 @@ msgstr "Görünüm Seç"
 
 #: includes/class-admin-add-shortcode.php:80
 msgid "&mdash; views &mdash;"
-msgstr ""
+msgstr "&mdash; görünümler &mdash;"
 
 #: includes/class-admin-add-shortcode.php:92
 #: includes/class-admin-views.php:558
@@ -409,7 +409,7 @@ msgstr "Görünüm Ayarları"
 
 #: includes/class-admin-views.php:282
 msgid "Shortcode Info"
-msgstr ""
+msgstr "Kısakod Bilgisi"
 
 #: includes/class-admin-views.php:310
 msgid "Where would you like the data to come from for this View?"
@@ -437,12 +437,12 @@ msgstr "Dikkat"
 
 #: includes/class-admin-views.php:343
 msgid "Changing the form will discard all the existent View configuration."
-msgstr ""
+msgstr "Formu değiştirmek tüm mevcut Görünüm ayarlarını sıfırlayacaktır."
 
 #: includes/class-admin-views.php:348
 msgid ""
 "Changing the View Type will discard all the existent View configuration."
-msgstr ""
+msgstr "Görünüm Türünü değiştirmek tüm mevcut Görünüm ayarlarını sıfırlayacaktır."
 
 #: includes/class-admin-views.php:353
 msgid "GravityView requires Javascript to be enabled."
@@ -506,7 +506,7 @@ msgstr "Tekil Kayıt Ayarları"
 
 #: includes/class-admin-views.php:665
 msgid "To insert this view into a post or a page use the following shortcode:"
-msgstr ""
+msgstr "Bu Görünümü yazı veya sayfalarınıza eklemek için aşağıdaki kısakodu kullanın: "
 
 #: includes/class-admin-views.php:905
 #, php-format
@@ -594,7 +594,7 @@ msgstr "Özel CSS Sınıfı:"
 
 #: includes/class-admin-views.php:1273
 msgid "This class will be added to the field container."
-msgstr ""
+msgstr "Bu sınıf, ilgili alanın kapsayıcısına eklenecektir."
 
 #: includes/class-admin-views.php:1279
 msgid "Make visible only to logged-in users?"
