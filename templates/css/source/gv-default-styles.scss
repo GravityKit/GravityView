@@ -81,9 +81,10 @@
 	}
 }
 
-.gv-widget-page-links {
+// "body" is here to overrule some themes
+body .gv-widget-page-links {
 
-	ul {
+	ul, li {
 		list-style: none;
 		margin: 0;
 		padding: 0;
@@ -91,10 +92,12 @@
 
 	li {
 		display: inline;
+		display: inline-block;
 	}
 
 	li .page-numbers {
-		padding: .4em;
+		display: inline-block;
+		padding: .4em .5em;
 	}
 }
 
