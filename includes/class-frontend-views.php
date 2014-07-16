@@ -67,10 +67,6 @@ class GravityView_frontend {
 
 		if( is_admin() ) { return; }
 
-		if( GFCommon::current_user_can_any('gravityforms_edit_forms') ) {
-			// ???
-		}
-
 		$entry_id = self::is_single_entry();
 
 		if( GFCommon::current_user_can_any('gravityforms_edit_entries') && !empty( $entry_id ) ) {
@@ -79,7 +75,7 @@ class GravityView_frontend {
 			$entry = gravityview_get_entry( $entry_id );
 
 			$wp_admin_bar->add_menu( array(
-				'id' => 'edit',
+				'id' => 'edit-entry',
 				'title' => __('Edit Entry', 'gravity-view'),
 				'href' => admin_url( sprintf('admin.php?page=gf_entries&amp;view=entry&id=%d&lid=%d', $entry['form_id'], $entry_id ) ),
 			) );
@@ -95,8 +91,11 @@ class GravityView_frontend {
 	function admin_bar_remove_links() {
 		global $wp_admin_bar, $post, $wp, $wp_the_query;
 
+		$is_single_entry = self::is_single_entry();
+		$post_type = get_post_type( $post );
+
 		// If we're on the single entry page, we don't want to cause confusion.
-		if( is_admin() || false !== self::is_single_entry() ) {
+		if( is_admin() || ($is_single_entry && $post_type !== 'gravityview') ) {
 			remove_action( 'admin_bar_menu', 'wp_admin_bar_edit_menu', 80 );
 		}
 	}
