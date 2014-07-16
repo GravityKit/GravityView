@@ -18,19 +18,27 @@
  *
  * @extends GravityView_Widget
  */
-class GravityView_Widget_Pagination extends GravityView_Widget {
+class GravityView_Widget_Pagination_Info extends GravityView_Widget {
+
+	/**
+	 * Does this get displayed on a single entry?
+	 * @var boolean
+	 */
+	protected $show_on_single = false;
 
 	function __construct() {
 		$default_values = array( 'header' => 1, 'footer' => 1 );
 		$settings = array();
 		parent::__construct( __( 'Show Pagination Info', 'gravity-view' ) , 'page_info', $default_values, $settings );
-
 	}
 
-
-	public function render_frontend( $widget_args ) {
-
+	public function render_frontend( $widget_args, $content = '', $context = '') {
 		global $gravityview_view;
+
+		if( empty( $gravityview_view )) {
+			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: $gravityview_view not instantiated yet.', get_class($this)) );
+			return;
+		}
 
 		$offset = $gravityview_view->paging['offset'];
 		$page_size = $gravityview_view->paging['page_size'];
@@ -51,10 +59,7 @@ class GravityView_Widget_Pagination extends GravityView_Widget {
 
 	}
 
-} // GravityView_Widget_Pagination
-
-
-
+} // GravityView_Widget_Pagination_Info
 
 
 
@@ -64,6 +69,8 @@ class GravityView_Widget_Pagination extends GravityView_Widget {
  * @extends GravityView_Widget
  */
 class GravityView_Widget_Page_Links extends GravityView_Widget {
+
+	protected $show_on_single = false;
 
 	function __construct() {
 		$default_values = array( 'header' => 1, 'footer' => 1 );
@@ -77,15 +84,21 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 
 	}
 
-	public function render_frontend( $widget_args ) {
+	public function render_frontend( $widget_args, $content = '', $context = '') {
+		global $gravityview_view, $post;
 
-		global $gravityview_view;
+		if( empty( $gravityview_view )) {
+			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: $gravityview_view not instantiated yet.', get_class($this)) );
+
+			return;
+		}
 
 		$page_size = $gravityview_view->paging['page_size'];
 		$total = $gravityview_view->total_entries;
 
-		$show_all = !empty( $widget_args['show_all'] ) ? true : false;
-
+		$atts = shortcode_atts( array(
+			'show_all' => !empty( $this->settings['show_all']['default'] ),
+		), $widget_args, 'gravityview_widget_page_links' );
 
 		// displaying info
 		$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
@@ -97,9 +110,9 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 			'prev_text' => '&laquo;',
 			'next_text' => '&raquo;',
 			'type' => 'list',
-			'total' => ceil( $total / $page_size ),
+			'total' => empty( $page_size ) ? 0 : ceil( $total / $page_size ),
 			'current' => $curr_page,
-			'show_all' => $show_all, // to be available at backoffice
+			'show_all' => !empty( $atts['show_all'] ), // to be available at backoffice
 		);
 
 		$page_links = paginate_links( $page_links );
@@ -130,8 +143,16 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		$default_values = array( 'header' => 0, 'footer' => 0 );
 
 		$settings = array(
-			'search_free' => array( 'type' => 'checkbox', 'label' => __( 'Show search input', 'gravity-view' ), 'default' => true ),
-			'search_date' => array( 'type' => 'checkbox', 'label' => __( 'Show date filters', 'gravity-view' ), 'default' => false ),
+			'search_free' => array(
+				'type' => 'checkbox',
+				'label' => __( 'Show search input', 'gravity-view' ),
+				'default' => true
+			),
+			'search_date' => array(
+				'type' => 'checkbox',
+				'label' => __( 'Show date filters', 'gravity-view' ),
+				'default' => false
+			),
 		);
 		parent::__construct( __( 'Show Search Bar', 'gravity-view' ) , 'search_bar', $default_values, $settings );
 
@@ -188,18 +209,27 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 	}
 
 
-	public function render_frontend( $widget_args ) {
+	public function render_frontend( $widget_args, $content = '', $context = '') {
 		global $gravityview_view;
+
+		if( empty( $gravityview_view )) {
+			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: $gravityview_view not instantiated yet.', get_class($this)) );
+			return;
+		}
 
 		// get configured search filters (fields)
 		$gravityview_view->search_fields = $this->render_search_fields();
 
-		$search_date = !empty( $widget_args['search_date'] );
 
-		$gravityview_view->search_free = !empty( $widget_args['search_free'] );
-		$gravityview_view->search_date = $search_date;
+		$atts = shortcode_atts( array(
+			'search_date' => !empty( $this->settings['search_date']['default'] ),
+			'search_free' => !empty( $this->settings['search_free']['default'] )
+		), $widget_args, 'gravityview_widget_search_bar' );
 
-		if($search_date) {
+		$gravityview_view->search_free = $atts['search_free'];
+		$gravityview_view->search_date = $atts['search_date'];
+
+		if( !empty( $gravityview_view->search_date ) ) {
 
 			// enqueue datepicker stuff only if needed!
 			$scheme = is_ssl() ? 'https://' : 'http://';
@@ -215,7 +245,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		$gravityview_view->curr_start = esc_attr(rgget('gv_start'));
 		$gravityview_view->curr_end = esc_attr(rgget('gv_end'));
 
-		$gravityview_view->render('widget', 'search');
+		$gravityview_view->render('widget', 'search', false );
 	}
 
 	function render_search_fields() {
@@ -387,22 +417,47 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
  */
 class GravityView_Widget {
 
-	// Widget admin label
+	/**
+	 * Widget admin label
+	 * @var string
+	 */
 	protected $widget_label;
 
-	// Widget admin id
+	/**
+	 * Widget admin id
+	 * @var string
+	 */
 	protected $widget_id;
 
-	// default configuration for header and footer
+	/**
+	 * default configuration for header and footer
+	 * @var array
+	 */
 	protected $defaults;
 
-	// Widget admin advanced settings
+	/**
+	 * Widget admin advanced settings
+	 * @var array
+	 */
 	protected $settings;
+
+	/**
+	 * allow class to automatically add widget_text filter for you in shortcode
+	 * @var string
+	 */
+	protected $shortcode_name;
 
 	// hold widget View options
 	private $widget_options;
 
 	function __construct( $widget_label , $widget_id , $defaults = array(), $settings = array() ) {
+
+
+		/**
+		 * The shortcode name is set to the lowercase name of the widget class, unless overridden by the class specifying a different value for $shortcode_name
+		 * @var string
+		 */
+		$this->shortcode_name = !isset( $this->shortcode_name ) ? strtolower( get_class($this) ) : $this->shortcode_name;
 
 		$this->widget_label = $widget_label;
 		$this->widget_id = $widget_id;
@@ -418,6 +473,65 @@ class GravityView_Widget {
 		// frontend logic
 		add_action( "gravityview_render_widget_{$widget_id}", array( $this, 'render_frontend' ), 10, 1 );
 
+		// register shortcodes
+		add_action( 'wp', array( $this, 'add_shortcode') );
+
+		// Use shortcodes in text widgets.
+		add_filter('widget_text', array( $this, 'maybe_do_shortcode' ) );
+	}
+
+	/**
+	 * Do shortcode if the Widget's shortcode exists.
+	 * @param  string $text   Widget text to check
+	 * @param  null|WP_Widget Empty if not called by WP_Widget, or a WP_Widget instance
+	 * @return string         Widget text
+	 */
+	function maybe_do_shortcode( $text, $widget = NULL ) {
+
+		if( !empty( $this->shortcode_name ) && has_shortcode( $text, $this->shortcode_name ) ) {
+			return do_shortcode( $text );
+		}
+
+		return $text;
+	}
+
+	function render_shortcode( $atts, $content = '', $context = '' ) {
+
+		ob_start();
+
+		$this->render_frontend( $atts, $content, $context );
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Add $this->shortcode_name shortcode to output self::render_frontend()
+	 */
+	function add_shortcode( $run_on_singular = true ) {
+		global $gravityview_view, $post;
+
+		if( is_admin() ) { return; }
+
+		if( empty( $this->shortcode_name ) ) { return; }
+
+		// If the widget shouldn't output on single entries, don't show it
+		if( empty( $this->show_on_single ) && class_exists('GravityView_frontend') && GravityView_frontend::is_single_entry() ) {
+			do_action('gravityview_log_debug', sprintf( '%s[add_shortcode]: Skipping; set to not run on single entry.', get_class($this)) );
+
+			add_shortcode( $this->shortcode_name, '__return_null' );
+			return;
+		}
+
+
+		if( !has_gravityview_shortcode( $post ) ) {
+
+			do_action('gravityview_log_debug', sprintf( '%s[add_shortcode]: No shortcode present; not adding render_frontend shortcode.', get_class($this)) );
+
+			add_shortcode( $this->shortcode_name, '__return_null' );
+			return;
+		}
+
+		add_shortcode( $this->shortcode_name, array( $this, 'render_shortcode') );
 	}
 
 	/**
@@ -449,13 +563,13 @@ class GravityView_Widget {
 
 
 	/** Frontend logic */
-	function render_frontend( $args ) {
+	public function render_frontend( $widget_args, $content = '', $context = '') {
 		// to be defined by child class
 	}
 
 
 } // GravityView_Widget
 
-new GravityView_Widget_Pagination;
+new GravityView_Widget_Pagination_Info;
 new GravityView_Widget_Page_Links;
 new GravityView_Widget_Search_Bar;
