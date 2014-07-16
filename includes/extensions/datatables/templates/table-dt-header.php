@@ -1,5 +1,5 @@
 <?php gravityview_before(); ?>
-<div class="gv-datatables-wrapper">
+<div class="gv-datatables-container gv-container">
 <table class="gv-datatables <?php echo esc_attr( apply_filters('gravityview_datatables_table_class', 'display dataTable') ); ?>">
 	<thead>
 		<?php gravityview_header(); ?>
