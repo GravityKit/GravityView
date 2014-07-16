@@ -2,7 +2,7 @@
 
 <p class="gv-back-link"><?php echo gravityview_back_link(); ?></p>
 
-<div class="gv-table-view gv-table-single-container">
+<div class="gv-table-view gv-container gv-table-single-container">
 	<table class="gv-table-view-content">
 		<?php if( !empty( $this->fields['single_table-columns'] ) ): ?>
 			<thead>
