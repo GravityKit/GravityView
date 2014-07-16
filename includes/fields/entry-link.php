@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Add custom options for date fields
+ * Add custom options for entry_link fields
  */
 class GravityView_Field_Entry_Link extends GravityView_Field {
 
@@ -10,7 +10,7 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		// Always a link!
-		unset( $field_options['show_as_link'] );
+		unset( $field_options['show_as_link'], $field_options['search_filter'] );
 
 		$add_options = array();
 		$add_options['entry_link_text'] = array(
