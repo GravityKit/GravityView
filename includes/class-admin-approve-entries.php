@@ -101,6 +101,7 @@ class GravityView_Admin_ApproveEntries {
 			}
 
 			field.type = 'checkbox';
+			field.gravityview_approved = 1;
 
 			break;
 		<?php
@@ -263,6 +264,13 @@ class GravityView_Admin_ApproveEntries {
 		$form = gravityview_get_form( $form_id );
 
 		foreach( $form['fields'] as $key => $field ) {
+
+			if( !empty( $field['gravityview_approved'] ) ) {
+				if( !empty($field['inputs'][0]['id']) ) {
+					return $field['inputs'][0]['id'];
+				}
+			}
+
 			if( !empty( $field['adminOnly'] ) && 'checkbox' == $field['type'] && isset( $field['inputs'] ) && is_array( $field['inputs'] ) ) {
 				foreach( $field['inputs'] as $key2 => $input) {
 					if( strtolower( $input['label'] ) == 'approved' ) {
@@ -302,18 +310,12 @@ class GravityView_Admin_ApproveEntries {
 
 			$form_id = RGForms::get('id');
 
+			// If there are no forms identified, use the first form. That's how GF does it.
 			if( empty( $form_id ) && class_exists('RGFormsModel') ) {
 				$forms = gravityview_get_forms();
 				if( !empty( $forms ) ) {
 					$form_id = $forms[0]['id'];
 				}
-			}
-
-
-			$approvedcolumn = $this->get_approved_column( $form_id );
-
-			if( empty( $approvedcolumn ) ) {
-				return;
 			}
 
 			wp_register_style( 'gravityview_entries_list', plugins_url('includes/css/admin-entries-list.css', GRAVITYVIEW_FILE), array() );
