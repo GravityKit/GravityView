@@ -28,6 +28,9 @@ class GravityView_Edit_Entry {
 
 		add_filter( 'gravityview_additional_fields', array( $this, 'add_available_field' ));
 
+		// For the Edit Entry Link, you don't want visible to all users.
+		add_filter( 'gravityview_field_visibility_caps', array( $this, 'modify_visibility_caps'), 10, 5 );
+
 		// Modify the field options based on the name of the field type
 		add_filter( 'gravityview_template_edit_link_options', array( $this, 'field_options' ), 10, 5 );
 
@@ -102,10 +105,19 @@ class GravityView_Edit_Entry {
 		return $file_paths;
 	}
 
+	/**
+	 * Add "Edit Link Text" setting to the edit_link field settings
+	 * @param  [type] $field_options [description]
+	 * @param  [type] $template_id   [description]
+	 * @param  [type] $field_id      [description]
+	 * @param  [type] $context       [description]
+	 * @param  [type] $input_type    [description]
+	 * @return [type]                [description]
+	 */
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
-		// Always a link!
-		unset( $field_options['show_as_link'] );
+		// Always a link, never a filter
+		unset( $field_options['show_as_link'], $field_options['search_filter'] );
 
 		// Always only shown to users
 
@@ -121,6 +133,10 @@ class GravityView_Edit_Entry {
 		return $add_options + $field_options;
 	}
 
+	/**
+	 * Add Edit Entry Link to the Add Field dialog
+	 * @param array $available_fields
+	 */
 	function add_available_field( $available_fields = array() ) {
 
 		$available_fields['edit_link'] = array(
@@ -132,6 +148,30 @@ class GravityView_Edit_Entry {
 		);
 
 		return $available_fields;
+	}
+
+	/**
+	 * Only show edit link to logged-in users.
+	 *
+	 * @param  array 	   $caps        Array of capabilities to display in field dropdown.
+	 * @param  string      $field_type  Type of field options to render (`field` or `widget`)
+	 * @param  string      $template_id Table slug
+	 * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+	 * @param  string      $context     What context are we in? Example: `single` or `directory`
+	 * @param  string      $input_type  (textarea, list, select, etc.)
+	 * @return array                   Array of field options with `label`, `value`, `type`, `default` keys
+	 */
+	function modify_visibility_caps( $caps, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
+
+		if( $field_id === 'edit_link' || $input_type === 'edit_link' ) {
+			foreach ($caps as $key => $cap) {
+				if( $cap['value'] === 'read' ) {
+					unset($caps[$key]);
+				}
+			}
+		}
+
+		return $caps;
 	}
 
 	/**
