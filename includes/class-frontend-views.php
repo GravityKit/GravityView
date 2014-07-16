@@ -248,6 +248,14 @@ class GravityView_frontend {
 	 */
 	public static function insert_view_in_content( $content ) {
 
+		// Plugins may run through the content in the header. WP SEO does this for its OpenGraph functionality.
+		if( !did_action( 'loop_start' ) ) {
+
+			do_action( 'gravityview_log_debug', '[insert_view_in_content] Not processing yet: loop_start hasn\'t run yet.');
+
+			return $content;
+		}
+
 		// Otherwise, this is called on the Views page when in Excerpt mode.
 		if( is_admin() ) { return $content; }
 
@@ -420,11 +428,12 @@ class GravityView_frontend {
 
 		} else {
 
-		// finaly we'll render some html
-		$sections = apply_filters( 'gravityview_render_view_sections', $sections, $view_meta['template_id'] );
-		foreach( $sections as $section ) {
-			do_action( 'gravityview_log_debug', '[render_view] Rendering '. $section . ' section.' );
-			$gravityview_view->render( $view_slug, $section, false );
+			// finaly we'll render some html
+			$sections = apply_filters( 'gravityview_render_view_sections', $sections, $view_meta['template_id'] );
+			do_action( 'gravityview_log_debug', '[render_view] Sections to render: ', $sections );
+			foreach( $sections as $section ) {
+				do_action( 'gravityview_log_debug', '[render_view] Rendering '. $section . ' section.' );
+				$gravityview_view->render( $view_slug, $section, false );
 			}
 
 		}

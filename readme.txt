@@ -39,6 +39,7 @@ Beautifully display your Gravity Forms entries.
 * Added: Easy links to "Edit Form", "Settings" and "Entries" for the Data Source Gravity Forms form in the All Views admin screen
 * Added: Integration with the [Debug Bar](http://wordpress.org/plugins/debug-bar/) plugin - very helpful for developers to see what's going on behind the scenes.
 * Fixed: Now supports View shortcodes inside other shortcodes (such as `[example][gravityview][/example]`)
+* Fixed: Conflict with WordPress SEO OpenGraph meta data generators
 * Fixed: Enforced image max-width so images don't spill out of their containers
 * Fixed: Sanitized "Custom Class" field setting values to make sure the HTML doesn't break.
 * Modified: Updated `GravityView_Admin_Views::is_gravityview_admin_page()` to fetch post if not yet set.
