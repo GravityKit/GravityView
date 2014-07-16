@@ -27,25 +27,33 @@ Beautifully display your Gravity Forms entries.
 * __Edit Entry__ - you can add an Edit Entry link using the "Add Field" buttons in either the Multiple Entries or Single Entry tab.
 	- For now, if the user has the ability to edit entries in Gravity Forms, they’ll be able to edit entries in GravityView. Moving forward, we'll be adding refined controls over who can edit which entries.
 	- It supports modifying existing Entry uploads and the great Multiple-File Upload field.
+* Modified: Approved Entry functionality
+	* Approve/Reject Entries now visible on all forms, regardless of whether the form has an "Approved" field.
+	* The Approved field now supports being renamed
 * Added: Very cool DataTables extensions:
 	* Scroller: dynamically load in new entries as you scroll - no need for pagination)
 	* TableTools: Export your entries to CSV and PDF
 	* FixedHeader: As you scroll a large DataTable result, the headers of the table stay at the top of the screen. Also, FixedColumns, which does the same for the main table column.
-+ Added: Horizontal search form fields. To return to vertical, you can add `add_filter('gravityview_search_class', '__return_null');` to your theme's functions.php file.
-+ Added: Easy links to "Edit Form", "Settings" and "Entries" for the Data Source Gravity Forms form in the All Views admin screen
-* Fixed: Now supports View shortcodes inside other shortcodes (such as `[example][gravityview][/example]`)
+* Added: Shortcodes for outputting Widgets such as pagination and search. Note: they only work on embedded views if the shortcode has already been processed. This is going to be improved. [Read the documentation](https://katzwebservices.zendesk.com/hc/en-us/articles/201103045)
+* Added: Horizontal search form fields. To return to vertical, you can add `add_filter('gravityview_search_class', '__return_null');` to your theme's functions.php file.
+* Added: Easy links to "Edit Form", "Settings" and "Entries" for the Data Source Gravity Forms form in the All Views admin screen
 * Added: Integration with the [Debug Bar](http://wordpress.org/plugins/debug-bar/) plugin - very helpful for developers to see what's going on behind the scenes.
+* Fixed: Now supports View shortcodes inside other shortcodes (such as `[example][gravityview][/example]`)
+* Fixed: Enforced image max-width so images don't spill out of their containers
+* Fixed: Sanitized "Custom Class" field setting values to make sure the HTML doesn't break.
+* Modified: Updated `GravityView_Admin_Views::is_gravityview_admin_page()` to fetch post if not yet set.
+* Modified: Enabled merge tags in Custom Class field settings
+* Modified: Set margin and padding to `0` on pagination links to override theme conflicts
+* Modified: Updated `gv_class()` calls to pass form and entry fields to allow for merge tags
+* Modified: Added custom `class` attribute sanitizer function
+`gravityview_sanitize_html_class`
+* Tweak: Improved the Embed View form
+* Tweak: Hide "Switch View" button when already choosing a view
 * Tweak: Moved shortcode hint to Publish metabox and added ability to easily select the text
 * Tweak: Added tooltips to fields in the View editor
 * Tweak: Remove WordPress SEO score calculation on Views
-* Modified: Updated `GravityView_Admin_Views::is_gravityview_admin_page()` to fetch post if not yet set.
-* Modified: Enabled merge tags in Custom Class field settings
 * Tweak: Use `$User->ID` instead of `$User->id` in Name fields
-* Fix: Escaped Custom Class values
-* Added: custom `class` attribute sanitizer function
-`gravityview_sanitize_html_class`
-* Modified: Updated `gv_class()` calls to pass form and entry fields to allow for merge tags
-* Added" tooltip capability to field settings by using `tooltip` parameter. Uses the Gravity Forms tooltip array key.
+* Tweak: Added tooltip capability to field settings by using `tooltip` parameter. Uses the Gravity Forms tooltip array key.
 * Translation updates - thank you, everyone! The # of strings will stay more stable once the plugin's out of beta :-)
 	* Added: Portuguese translation by [@luistinygod](https://www.transifex.com/accounts/profile/luistinygod/) - thanks!
 	* Updated: Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
