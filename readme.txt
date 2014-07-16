@@ -35,9 +35,10 @@ Beautifully display your Gravity Forms entries.
 	* TableTools: Export your entries to CSV and PDF
 	* FixedHeader: As you scroll a large DataTable result, the headers of the table stay at the top of the screen. Also, FixedColumns, which does the same for the main table column.
 * Added: Shortcodes for outputting Widgets such as pagination and search. Note: they only work on embedded views if the shortcode has already been processed. This is going to be improved. [Read the documentation](https://katzwebservices.zendesk.com/hc/en-us/articles/201103045)
-* Added: Horizontal search form fields. To return to vertical, you can add `add_filter('gravityview_search_class', '__return_null');` to your theme's functions.php file.
+* Added: Search form fields now displayed horizontally by default. [That can be changed](https://katzwebservices.zendesk.com/hc/en-us/articles/201119765).
 * Added: Easy links to "Edit Form", "Settings" and "Entries" for the Data Source Gravity Forms form in the All Views admin screen
 * Added: Integration with the [Debug Bar](http://wordpress.org/plugins/debug-bar/) plugin - very helpful for developers to see what's going on behind the scenes.
+* Fixed: Insert View embed code.
 * Fixed: Now supports View shortcodes inside other shortcodes (such as `[example][gravityview][/example]`)
 * Fixed: Conflict with WordPress SEO OpenGraph meta data generators
 * Fixed: Enforced image max-width so images don't spill out of their containers
@@ -46,9 +47,10 @@ Beautifully display your Gravity Forms entries.
 * Modified: Enabled merge tags in Custom Class field settings
 * Modified: Set margin and padding to `0` on pagination links to override theme conflicts
 * Modified: Updated `gv_class()` calls to pass form and entry fields to allow for merge tags
+* Modified: Default visibility capabilities: added "Can View/Edit Gravity Forms Entries" as options
 * Modified: Added custom `class` attribute sanitizer function
 `gravityview_sanitize_html_class`
-* Tweak: Improved the Embed View form
+* Tweak: Improved the Embed View form layout
 * Tweak: Hide "Switch View" button when already choosing a view
 * Tweak: Moved shortcode hint to Publish metabox and added ability to easily select the text
 * Tweak: Added tooltips to fields in the View editor

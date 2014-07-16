@@ -116,11 +116,13 @@ class GravityView_Welcome {
 		/*<![CDATA[*/
 
 		.update-nag { display: none; }
-
+		.clear { clear: both; display: block; width: 100%; }
 		.gv-welcome-screenshots {
 			float: right;
+			clear:right;
 			max-width:50%;
-			margin: 0 10px 10px 0!important;
+			border: 1px solid #ccc;
+			margin: 0 10px 10px 1.25rem!important;
 		}
 		/*]]>*/
 		</style>
@@ -137,6 +139,7 @@ class GravityView_Welcome {
 	public function tabs() {
 		global $plugin_page;
 
+		// Don't fetch -beta, etc.
 		list( $display_version ) = explode( '-', GravityView_Plugin::version );
 
 		$selected = !empty( $plugin_page ) ? $plugin_page : 'gv-getting-started';
@@ -174,42 +177,39 @@ class GravityView_Welcome {
 
 			<?php $this->tabs(); ?>
 
-
 			<div class="changelog point-releases">
 				<h3>What changed in <?php echo $display_version; ?></h3>
 				<ul>
-					<li>Fixed: Fatal error when Gravity Forms is inactive</li>
-					<li>Fixed: Undefined index for <code>id</code> in Edit View</li>
-					<li>Fixed: Undefined variable: <code>merge_class</code></li>
-					<li>Fixed: Javascript error when choosing a Start Fresh template. (Introduced by the new Merge Tags functionality in 1.0.5)</li>
-					<li>Fixed: Merge Tags were available in Multiple Entries view for the Table layout</li>
-					<li>Fixed: Remove Merge Tags when switching forms</li>
-					<li>Fixed: That darn settings gear showing up when it shouldn&#39;t</li>
-					<li>Fixed: Disappearing dialog when switching forms</li>
-					<li>Fixed: Display of Entry Link field</li>
-					<li>Fixed: Per-field settings weren&#39;t working
-
+				<li><img src="<?php echo plugins_url( 'images/screenshots/edit-entry-link.png', GRAVITYVIEW_FILE ); ?>" alt="Edit Entry Link" class="gv-welcome-screenshots" /><strong>Edit Entry</strong> - you can add an Edit Entry link using the <q>Add Field</q> buttons in either the Multiple Entries or Single Entry tab.
 					<ul>
-					<li>Added: &quot;Link to the post&quot; setting for Post fields</li>
-					<li>Added: &quot;Use live post data&quot; setting for Post fields. Allows you to use the current post information (like title, tags, or content) instead of the original submitted data.</li>
-					<li>Added: Link to category or tag setting for Post Categories and Post Tags fields</li>
-					<li>Added: &quot;Link Text&quot; setting for the Entry Link field</li>
-					</ul></li>
-					<li>Modified: Moved admin functionality into new files
-
+						<li>For now, if the user has the ability to edit entries in Gravity Forms, they’ll be able to edit entries in GravityView. Moving forward, we&#39;ll be adding refined controls over who can edit which entries.</li>
+						<li>It supports modifying existing Entry uploads and the great Multiple-File Upload field.</li>
+					</ul>
+				</li>
+				<li><img src="<?php echo plugins_url( 'images/screenshots/datatables-settings.png', GRAVITYVIEW_FILE ); ?>" alt="DataTables Settings" class="gv-welcome-screenshots" /><strong>Added very cool DataTables extensions:</strong>
 					<ul>
-					<li>AJAX calls now live in <code>class-ajax.php</code></li>
-					<li>Metaboxes now live in <code>class-metabox.php</code></li>
-					</ul></li>
-					<li>Tweak: Updated change forms dialog text</li>
-					<li>Tweak: Removed &quot;use as search filter&quot; from Link to Entry field options</li>
+						<li><a href="https://datatables.net/extensions/scroller/">Scroller</a>: dynamically load in new entries as you scroll - no need for pagination)</li>
+						<li><a href="https://datatables.net/extensions/tabletools/">TableTools</a>: Export your entries to CSV and PDF</li>
+						<li><a href="https://datatables.net/extensions/fixedheader/">FixedHeader</a>: As you scroll a large DataTable result, the headers of the table stay at the top of the screen. Also, FixedColumns, which does the same for the main table column.</li>
+					</ul>
+				</li>
+				<li>Fixed: Insert View embed code now works again</li>
+				<li>Added: Easy links to <q>Edit Form</q>, <q>Settings</q> and <q>Entries</q> for the Data Source Gravity Forms form in the All Views admin screen</li>
+				<li>Added: Shortcodes for outputting Widgets such as pagination and search. Note: they only work on embedded views if the shortcode has already been processed. This is going to be improved. <a href="https://katzwebservices.zendesk.com/hc/en-us/articles/201103045">Read the documentation</a>.</li>
+				<li>Added: Search form fields now displayed horizontally by default. <a href="https://katzwebservices.zendesk.com/hc/en-us/articles/201119765">That can be changed</a>.</li>
+				<li>Added: Integration with the <a href="http://wordpress.org/plugins/debug-bar/" rel="external">Debug Bar</a> plugin - very helpful for developers to see what&#39;s going on behind the scenes.</li>
+				<li>Modified: Approve/Reject Entries now visible on all forms, regardless of whether the form has an <q>Approved</q> field.</li>
+				<li>Modified: Enabled Merge Tags in Custom Class field settings</li>
+				<li>Fixed: Now supports View shortcodes inside other shortcodes (such as <code>[example][gravityview][/example]</code>)</li>
+				<li>Fixed: Conflict with WordPress SEO plugin&#39;s OpenGraph feature</li>
 				</ul>
+			<div class="clear"></div>
 			</div>
 		</div>
 
 		<div class="wrap">
-			<div class="error inline">
-				<h3>Help is Coming.</h3>
+			<div class="updated inline">
+				<h3><?php esc_html_e('How-To &amp; Documentation', 'gravity-view'); ?></h3>
 				<p>We&rsquo;re adding lots of features are working on providing helpful guides to get started and developer documentation.</p>
 				<p><a class="button button-secondary button-large" href="https://katzwebservices.zendesk.com/hc/en-us/categories/200136096">See our Help Docs</a>
 			</div>
@@ -314,6 +314,8 @@ class GravityView_Welcome {
 						<li class="wp-person">Dutch translation by <a href="https://www.transifex.com/accounts/profile/leooosterloo/">@leooosterloo</a></li>
 						<li class="wp-person">Hungarian translation by <a href="https://www.transifex.com/accounts/profile/dbalage/">@dbalage</a>!</li>
 						<li class="wp-person">Italian translation by <a href="https://www.transifex.com/accounts/profile/ClaraDiGennaro/">@ClaraDiGennaro</a></li>
+						<li class="wp-person">French translation by <a href="https://www.transifex.com/accounts/profile/franckt/">@franckt</a></li>
+						<li class="wp-person">Portuguese translation by <a href="https://www.transifex.com/accounts/profile/luistinygod/">@luistinygod</a></li>
 					</ul>
 
 					<h4><?php esc_attr_e( 'Want to contribute?', 'gravity-view' ); ?></h4>
