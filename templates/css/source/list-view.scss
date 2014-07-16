@@ -87,8 +87,6 @@ $color-description: #999;
 
 	img {
 		display: block;
-		margin: 0;
-		padding: 0;
 	}
 
 	// Featured Image
@@ -119,6 +117,7 @@ $color-description: #999;
 		max-width: 200px;
 		max-height: 200px;
 		margin-right: 1em;
+		margin-bottom: .5em;
 	}
 
 }
