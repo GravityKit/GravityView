@@ -11,73 +11,73 @@
  */
 
 
-/**
- * Generate the shortcode to insert, and reset the form to default state.
- */
-function InsertViewShortcode(){
-	var view_id = jQuery("#gravityview_view_id").val();
+jQuery(document).ready( function( $ ) {
 
-	if( view_id === '' ) {
-		alert( gvGlobals.alert_1 );
-		jQuery("#gravityview_view_id").focus();
+	/**
+	 * Generate the shortcode to insert, and reset the form to default state.
+	 */
+	function InsertViewShortcode(){
+		var view_id = $("#gravityview_view_id").val();
+
+		if( view_id === '' ) {
+			alert( gvGlobals.alert_1 );
+			$("#gravityview_view_id").focus();
+			return false;
+		}
+
+		var shortcode = '[gravityview id="' + view_id +'"';
+		$("#gravityview_view_id").val('');
+
+		//page size
+		var page_size = parseInt( $("#gravityview_page_size").val() );
+		if( page_size > 0 && page_size != 25 ) {
+			shortcode += ' page_size="' + page_size + '"';
+			$("#gravityview_page_size").val(25);
+		}
+
+		//lightbox
+		if( $("#gravityview_lightbox").prop('checked') === false ) {
+			shortcode += ' lightbox="0"';
+			$("#gravityview_lightbox").prop('checked', 'checked');
+		}
+
+		//show only approved
+		if( $("#gravityview_only_approved").prop('checked') === true ) {
+			shortcode += ' show_only_approved="1"';
+			$("#gravityview_only_approved").prop('checked', null );
+		}
+
+		// sorting
+		var sort_field = $("#gravityview_sort_field:enabled").val();
+		if( sort_field && sort_field !== '' ) {
+			var sort_direction = $("#gravityview_sort_direction").val();
+			shortcode += ' sort_field="' + sort_field + '"' + ' sort_direction="' + sort_direction + '"';
+		}
+
+		// date filtering
+		var start_date = $("#gravityview_start_date").val();
+		if( '' !== start_date ) {
+			shortcode += ' start_date="' + start_date + '"';
+		}
+		var end_date = $("#gravityview_end_date").val();
+		if( '' !== end_date ) {
+			shortcode += ' end_date="' + end_date + '"';
+		}
+
+		$("#gravityview_sort_field,#gravityview_start_date,#gravityview_end_date").val('');
+
+
+		shortcode += ']';
+		//var win = window.dialogArguments || opener || parent || top;
+		window.send_to_editor( shortcode );
 		return false;
 	}
 
-	var shortcode = '[gravityview id="' + view_id +'"';
-	jQuery("#gravityview_view_id").val('');
-
-	//page size
-	var page_size = parseInt( jQuery("#gravityview_page_size").val() );
-	if( page_size > 0 && page_size != 25 ) {
-		shortcode += ' page_size="' + page_size + '"';
-		jQuery("#gravityview_page_size").val(25);
-	}
-
-	//lightbox
-	if( jQuery("#gravityview_lightbox").prop('checked') === false ) {
-		shortcode += ' lightbox="0"';
-		jQuery("#gravityview_lightbox").prop('checked', 'checked');
-	}
-
-	//show only approved
-	if( jQuery("#gravityview_only_approved").prop('checked') === true ) {
-		shortcode += ' show_only_approved="1"';
-		jQuery("#gravityview_only_approved").prop('checked', null );
-	}
-
-	// sorting
-	var sort_field = jQuery("#gravityview_sort_field:enabled").val();
-	if( sort_field && sort_field !== '' ) {
-		var sort_direction = jQuery("#gravityview_sort_direction").val();
-		shortcode += ' sort_field="' + sort_field + '"' + ' sort_direction="' + sort_direction + '"';
-	}
-
-	// date filtering
-	var start_date = jQuery("#gravityview_start_date").val();
-	if( '' !== start_date ) {
-		shortcode += ' start_date="' + start_date + '"';
-	}
-	var end_date = jQuery("#gravityview_end_date").val();
-	if( '' !== end_date ) {
-		shortcode += ' end_date="' + end_date + '"';
-	}
-
-	jQuery("#gravityview_sort_field,#gravityview_start_date,#gravityview_end_date").val('');
-
-
-	shortcode += ']';
-	//var win = window.dialogArguments || opener || parent || top;
-	window.send_to_editor( shortcode );
-	return false;
-}
-
-
-
-jQuery(document).ready( function( $ ) {
-
 	//datepicker
-	jQuery('.gv-datepicker').datepicker({
+	$('.gv-datepicker').datepicker({
 		dateFormat: "yy-mm-dd",
+
+		// Allow users to type in values like "-1 year" or "now"
 		constrainInput: false
 	});
 
