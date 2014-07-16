@@ -48,8 +48,11 @@ class GV_GFCommon extends GFCommon {
         $class = rgar($field, "size");
         $class_suffix = "";
 
-        if( $field_input =& apply_filters("gform_field_input", "", $field, $value, $lead_id, $form_id) )
+        $field_input = apply_filters("gform_field_input", "", $field, $value, $lead_id, $form_id);
+
+        if( $field_input ) {
             return $field_input;
+        }
 
         switch(RGFormsModel::get_input_type($field)){
 

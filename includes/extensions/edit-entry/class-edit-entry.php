@@ -38,7 +38,7 @@ class GravityView_Edit_Entry {
 		add_action('wp_ajax_nopriv_rg_delete_file', array('RGForms', 'delete_file'));
 	}
 
-	function getInstance() {
+	static function getInstance() {
 
 		if( !empty( self::$instance ) ) {
 			return self::$instance;
@@ -72,7 +72,7 @@ class GravityView_Edit_Entry {
 	 * @param  [type]      $field [description]
 	 * @return [type]             [description]
 	 */
-	function get_edit_link( $entry, $field ) {
+	static function get_edit_link( $entry, $field ) {
 		global $gravityview_view;
 
 		if( empty( self::$nonce_key ) ) {
