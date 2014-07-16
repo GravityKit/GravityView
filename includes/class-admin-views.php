@@ -629,11 +629,14 @@ class GravityView_Admin_Views {
 			 */
 			$select_cap_choices = apply_filters('gravityview_field_visibility_caps',
 				array(
-					array( 'label' => __( 'Any logged-in user', 'gravity-view' ), 'value' => 'read' ),
-					array( 'label' => __( 'Author or higher', 'gravity-view' ), 'value' => 'publish_posts' ),
-					array( 'label' => __( 'Editor or higher', 'gravity-view' ), 'value' => 'delete_others_posts' ),
+					array( 'label' => __( 'Any Logged-In User', 'gravity-view' ), 'value' => 'read' ),
+					array( 'label' => __( 'Author Or Higher', 'gravity-view' ), 'value' => 'publish_posts' ),
+					array( 'label' => __( 'Can View Gravity Forms Entries', 'gravity-view' ), 'value' => 'gravityforms_view_entries' ),
+					array( 'label' => __( 'Editor Or Higher', 'gravity-view' ), 'value' => 'delete_others_posts' ),
+					array( 'label' => __( 'Can Edit Gravity Forms Entries', 'gravity-view' ), 'value' => 'gravityforms_edit_entries' ),
 					array( 'label' => __( 'Administrator', 'gravity-view' ), 'value' => 'manage_options' ),
-				)
+				),
+				$template_id, $field_id, $context, $input_type
 			);
 
 			// Default options - fields
@@ -666,6 +669,7 @@ class GravityView_Admin_Views {
 					'type' => 'select',
 					'label' => __( 'Make visible for:', 'gravity-view' ),
 					'choices' => $select_cap_choices,
+					'class' => 'widefat',
 					'default' => 'read',
 				),
 			);
