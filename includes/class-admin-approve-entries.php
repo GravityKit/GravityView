@@ -36,6 +36,7 @@ class GravityView_Admin_ApproveEntries {
 		// process ajax approve entry requests
 		add_action('wp_ajax_gv_update_approved', array( $this, 'ajax_update_approved'));
 
+		add_action( 'gravityview_tooltips', array( $this, 'tooltips' ) );
 
 		// adding styles and scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles') );
@@ -43,6 +44,16 @@ class GravityView_Admin_ApproveEntries {
 		add_filter( 'gform_noconflict_scripts', array( $this, 'register_gform_noconflict_script' ) );
 		add_filter( 'gform_noconflict_styles', array( $this, 'register_gform_noconflict_style' ) );
 
+	}
+
+	function tooltips( $tooltips ) {
+
+		$tooltips['form_gravityview_fields'] = array(
+			'title' => __('GravityView Fields', 'gravity-view'),
+			'value' => __( 'Allow administrators to approve or reject entries and users to opt-in or opt-out of their entries being displayed.', 'gravity-view'),
+		);
+
+		return $tooltips;
 	}
 
 
@@ -57,11 +68,16 @@ class GravityView_Admin_ApproveEntries {
 
 		$gravityview_fields = array(
 			'name' => 'gravityview_fields',
-			'label' => 'GravityView Fields',
+			'label' => 'GravityView',
 			'fields' => array(
 				array(
 					'class' => 'button',
-					'value' => __( 'Approved', 'gravity-view' ),
+					'value' => __( 'Approve/Reject', 'gravity-view' ),
+					'onclick' => "StartAddField('gravityviewapproved_admin');"
+				),
+				array(
+					'class' => 'button',
+					'value' => __( 'User Opt-In', 'gravity-view' ),
 					'onclick' => "StartAddField('gravityviewapproved');"
 				),
 			)
@@ -82,7 +98,7 @@ class GravityView_Admin_ApproveEntries {
 	 */
 	function set_defaults() {
 		?>
-		case 'gravityviewapproved':
+		case 'gravityviewapproved_admin':
 			field.label = "<?php _e( 'Approved? (Admin-only)', 'gravity-view' ); ?>";
 
 			field.adminLabel = "<?php _e( 'Approved?', 'gravity-view' ); ?>";
@@ -93,6 +109,30 @@ class GravityView_Admin_ApproveEntries {
 
 			if( !field.choices ) {
 				field.choices = new Array( new Choice("<?php _e( 'Approved', 'gravity-view' ); ?>") );
+			}
+
+			field.inputs = new Array();
+			for( var i=1; i<=field.choices.length; i++ ) {
+				field.inputs.push(new Input(field.id + (i/10), field.choices[i-1].text));
+			}
+
+			field.type = 'checkbox';
+			field.gravityview_approved = 1;
+
+			break;
+		case 'gravityviewapproved':
+			field.label = "<?php _e( 'Show Entry on Website', 'gravity-view' ); ?>";
+
+			field.adminLabel = "<?php _e( 'Opt-In', 'gravity-view' ); ?>";
+			field.adminOnly = false;
+
+			field.choices = null;
+			field.inputs = null;
+
+			if( !field.choices ) {
+				field.choices = new Array(
+					new Choice("<?php _e( 'Yes, display my entry on the website', 'gravity-view' ); ?>")
+				);
 			}
 
 			field.inputs = new Array();
@@ -317,6 +357,8 @@ class GravityView_Admin_ApproveEntries {
 					$form_id = $forms[0]['id'];
 				}
 			}
+
+			$approvedcolumn = self::get_approved_column( $form_id );
 
 			wp_register_style( 'gravityview_entries_list', plugins_url('includes/css/admin-entries-list.css', GRAVITYVIEW_FILE), array() );
 			wp_enqueue_style( 'gravityview_entries_list' );
