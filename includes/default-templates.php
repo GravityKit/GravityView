@@ -465,7 +465,7 @@ class GravityView_Preset_Event_Listings extends GravityView_Default_Template_Lis
 			'description' => __( 'Present a list of your events.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/event-listings/logo-event-listings.png', GRAVITYVIEW_FILE),
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/event-listings/form-event-listings.xml',
-			#'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/event-listings/fields-event-listings.xml'
+			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/event-listings/fields-event-listings.xml'
 		);
 
 		parent::__construct( $id, $settings );
@@ -549,5 +549,5 @@ new GravityView_Preset_Issue_Tracker;
 new GravityView_Preset_Resume_Board;
 new GravityView_Preset_Job_Board;
 
-#new GravityView_Preset_Event_Listings;
+new GravityView_Preset_Event_Listings;
 #new GravityView_Preset_People_Table;
