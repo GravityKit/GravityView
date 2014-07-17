@@ -367,11 +367,13 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 	}
 
 	private function get_search_filters() {
+		global $gravityview_view;
+
 		if( !empty( $this->search_filters ) ) {
 			return $this->search_filters;
 		}
 
-		global $gravityview_view;
+		if( empty( $gravityview_view ) ) { return; }
 
 		// get configured search filters (fields)
 		$search_filters = array();
