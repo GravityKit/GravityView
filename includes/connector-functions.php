@@ -246,7 +246,11 @@ if( !function_exists('has_gravityview_shortcode') ) {
 	 */
 	function has_gravityview_shortcode( $post = NULL ) {
 
-		if( is_a( $post, 'WP_Post' ) && 'gravityview' === get_post_type( $post ) ) {
+		if( !is_a( $post, 'WP_Post' ) ) {
+			return false;
+		}
+
+		if( 'gravityview' === get_post_type( $post ) ) {
 			return true;
 		}
 

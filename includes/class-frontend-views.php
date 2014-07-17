@@ -210,7 +210,7 @@ class GravityView_frontend {
 
 		// Don't modify the title for anything other than the current view/post.
 		// This is true for embedded shortcodes and Views.
-		if( (int)$post->ID !== (int)$passed_post_id ) {
+		if( is_object($post) && (int)$post->ID !== (int)$passed_post_id ) {
 			return $title;
 		}
 

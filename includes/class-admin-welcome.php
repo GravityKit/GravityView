@@ -211,7 +211,7 @@ class GravityView_Welcome {
 			<div class="updated inline">
 				<h3><?php esc_html_e('How-To &amp; Documentation', 'gravity-view'); ?></h3>
 				<p>We&rsquo;re adding lots of features are working on providing helpful guides to get started and developer documentation.</p>
-				<p><a class="button button-secondary button-large" href="https://katzwebservices.zendesk.com/hc/en-us/categories/200136096">See our Help Docs</a>
+				<p><a class="button button-secondary button-primary" href="https://katzwebservices.zendesk.com/hc/en-us/categories/200136096">See our Help Docs</a>
 			</div>
 		</div>
 

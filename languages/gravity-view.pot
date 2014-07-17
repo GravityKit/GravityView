@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-07-14 02:17-0700\n"
-"PO-Revision-Date: 2014-07-14 02:17-0700\n"
+"POT-Creation-Date: 2014-07-16 20:08-0700\n"
+"PO-Revision-Date: 2014-07-16 21:26-0700\n"
 "Last-Translator: Katz Web Services, Inc. <support@katz.co>\n"
 "Language-Team: Zack Katz <admin@gravityview.co>\n"
 "Language: en_US\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.6.5\n"
+"X-Generator: Poedit 1.6.6\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
@@ -328,13 +328,13 @@ msgid "Insert View"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:192
-#: includes/class-admin-views.php:868
-#: includes/extensions/edit-entry/class-edit-entry.php:467
+#: includes/class-admin-views.php:872
+#: includes/extensions/edit-entry/class-edit-entry.php:507
 msgid "Cancel"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:235
-#: includes/class-admin-views.php:872
+#: includes/class-admin-views.php:876
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -355,50 +355,50 @@ msgstr ""
 msgid "Approved?"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:130
+#: includes/class-admin-approve-entries.php:131
 #, php-format
 msgid "%d entries"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:130
+#: includes/class-admin-approve-entries.php:131
 msgid "1 entry"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:138
+#: includes/class-admin-approve-entries.php:139
 #, php-format
 msgid "%s approved."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:143
+#: includes/class-admin-approve-entries.php:144
 #, php-format
 msgid "%s disapproved."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:216
+#: includes/class-admin-approve-entries.php:217
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:216
+#: includes/class-admin-approve-entries.php:217
 msgid "Approved the Entry for GravityView"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:328
+#: includes/class-admin-approve-entries.php:330
 msgid "Approve"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:329
+#: includes/class-admin-approve-entries.php:331
 msgid "Disapprove"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:331
+#: includes/class-admin-approve-entries.php:333
 msgid "Entry not approved for directory viewing. Click to approve this entry."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:332
+#: includes/class-admin-approve-entries.php:334
 msgid "Entry approved for directory viewing. Click to disapprove this entry."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:333
+#: includes/class-admin-approve-entries.php:335
 msgid "Show entry in directory view?"
 msgstr ""
 
@@ -518,62 +518,70 @@ msgid "Options: %s"
 msgstr ""
 
 #: includes/class-admin-views.php:632
-msgid "Any logged-in user"
+msgid "Any Logged-In User"
 msgstr ""
 
 #: includes/class-admin-views.php:633
-msgid "Author or higher"
+msgid "Author Or Higher"
 msgstr ""
 
 #: includes/class-admin-views.php:634
-msgid "Editor or higher"
+msgid "Can View Gravity Forms Entries"
 msgstr ""
 
 #: includes/class-admin-views.php:635
+msgid "Editor Or Higher"
+msgstr ""
+
+#: includes/class-admin-views.php:636
+msgid "Can Edit Gravity Forms Entries"
+msgstr ""
+
+#: includes/class-admin-views.php:637
 msgid "Administrator"
 msgstr ""
 
-#: includes/class-admin-views.php:643
+#: includes/class-admin-views.php:646
 msgid "Show Label"
 msgstr ""
 
-#: includes/class-admin-views.php:648
+#: includes/class-admin-views.php:651
 msgid "Custom Label:"
 msgstr ""
 
-#: includes/class-admin-views.php:654
+#: includes/class-admin-views.php:657
 msgid "Custom CSS Class:"
 msgstr ""
 
-#: includes/class-admin-views.php:655
+#: includes/class-admin-views.php:658
 msgid "This class will be added to the field container"
 msgstr ""
 
-#: includes/class-admin-views.php:662
+#: includes/class-admin-views.php:665
 msgid "Make visible only to logged-in users?"
 msgstr ""
 
-#: includes/class-admin-views.php:667
+#: includes/class-admin-views.php:670
 msgid "Make visible for:"
 msgstr ""
 
-#: includes/class-admin-views.php:866
+#: includes/class-admin-views.php:870
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:867
+#: includes/class-admin-views.php:871
 msgid "Close"
 msgstr ""
 
-#: includes/class-admin-views.php:869
+#: includes/class-admin-views.php:873
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:870
+#: includes/class-admin-views.php:874
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:871
+#: includes/class-admin-views.php:875
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
@@ -583,7 +591,7 @@ msgstr ""
 msgid "GravityView Beta: Getting Started"
 msgstr ""
 
-#: includes/class-admin-welcome.php:58 includes/class-admin-welcome.php:150
+#: includes/class-admin-welcome.php:58 includes/class-admin-welcome.php:153
 msgid "Getting Started"
 msgstr ""
 
@@ -592,23 +600,27 @@ msgid "Welcome to GravityView"
 msgstr ""
 
 #: includes/class-admin-welcome.php:77 includes/class-admin-welcome.php:78
-#: includes/class-admin-welcome.php:156
+#: includes/class-admin-welcome.php:159
 msgid "Credits"
 msgstr ""
 
-#: includes/class-admin-welcome.php:145
+#: includes/class-admin-welcome.php:148
 #, php-format
 msgid "Welcome to GravityView %s"
 msgstr ""
 
-#: includes/class-admin-welcome.php:146
+#: includes/class-admin-welcome.php:149
 msgid ""
 "Thank you for Installing GravityView. Beautifully display your Gravity Forms "
 "entries."
 msgstr ""
 
-#: includes/class-admin-welcome.php:153
+#: includes/class-admin-welcome.php:156
 msgid "Beta Testing"
+msgstr ""
+
+#: includes/class-admin-welcome.php:212
+msgid "How-To &amp; Documentation"
 msgstr ""
 
 #: includes/class-admin-welcome.php:283
@@ -619,11 +631,11 @@ msgstr ""
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:319
+#: includes/class-admin-welcome.php:321
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:320
+#: includes/class-admin-welcome.php:322
 #, php-format
 msgid ""
 "If you want to contribute to the code, you can %srequest access to the "
@@ -762,8 +774,8 @@ msgid "Empty"
 msgstr ""
 
 #: includes/class-frontend-views.php:79
-#: includes/extensions/edit-entry/class-edit-entry.php:117
-#: includes/extensions/edit-entry/class-edit-entry.php:418
+#: includes/extensions/edit-entry/class-edit-entry.php:129
+#: includes/extensions/edit-entry/class-edit-entry.php:458
 #: includes/extensions/edit-entry/fields/edit_link.php:7
 msgid "Edit Entry"
 msgstr ""
@@ -935,40 +947,40 @@ msgstr ""
 msgid "Feature submitted websites with screenshots."
 msgstr ""
 
-#: includes/default-widgets.php:26
+#: includes/default-widgets.php:32
 msgid "Show Pagination Info"
 msgstr ""
 
-#: includes/default-widgets.php:48
+#: includes/default-widgets.php:56
 #, php-format
 msgid "Displaying %1$s - %2$s of %3$s"
 msgstr ""
 
-#: includes/default-widgets.php:72
+#: includes/default-widgets.php:79
 msgid "Show each page number"
 msgstr ""
 
-#: includes/default-widgets.php:73
+#: includes/default-widgets.php:80
 msgid "Show every page number instead of summary (eg: 1 2 3 ... 8 »)"
 msgstr ""
 
-#: includes/default-widgets.php:76
+#: includes/default-widgets.php:83
 msgid "Show Page Links"
 msgstr ""
 
-#: includes/default-widgets.php:133
+#: includes/default-widgets.php:148
 msgid "Show search input"
 msgstr ""
 
-#: includes/default-widgets.php:134
+#: includes/default-widgets.php:153
 msgid "Show date filters"
 msgstr ""
 
-#: includes/default-widgets.php:136
+#: includes/default-widgets.php:157
 msgid "Show Search Bar"
 msgstr ""
 
-#: includes/default-widgets.php:150
+#: includes/default-widgets.php:171
 msgid "Use this field as a search filter"
 msgstr ""
 
@@ -1032,39 +1044,39 @@ msgstr ""
 msgid "Print"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:115
+#: includes/extensions/edit-entry/class-edit-entry.php:127
 msgid "Edit Link Text"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:127
+#: includes/extensions/edit-entry/class-edit-entry.php:143
 msgid "Edit Entry Link"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:372
+#: includes/extensions/edit-entry/class-edit-entry.php:412
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:376
+#: includes/extensions/edit-entry/class-edit-entry.php:416
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:380
+#: includes/extensions/edit-entry/class-edit-entry.php:420
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:429
+#: includes/extensions/edit-entry/class-edit-entry.php:469
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:429
+#: includes/extensions/edit-entry/class-edit-entry.php:469
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:435
+#: includes/extensions/edit-entry/class-edit-entry.php:475
 msgid "Entry Updated"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:465
+#: includes/extensions/edit-entry/class-edit-entry.php:505
 msgid "Update"
 msgstr ""
 
@@ -1077,24 +1089,24 @@ msgstr ""
 msgid "You can %sedit this post%s from the post page."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-gv-gfcommon.php:98
-#: includes/extensions/edit-entry/class-gv-gfcommon.php:117
+#: includes/extensions/edit-entry/class-gv-gfcommon.php:101
+#: includes/extensions/edit-entry/class-gv-gfcommon.php:120
 msgid "Allowed Files"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-gv-gfcommon.php:130
+#: includes/extensions/edit-entry/class-gv-gfcommon.php:133
 msgid "Drop files here or"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-gv-gfcommon.php:130
+#: includes/extensions/edit-entry/class-gv-gfcommon.php:133
 msgid "Select files"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-gv-gfcommon.php:157
+#: includes/extensions/edit-entry/class-gv-gfcommon.php:160
 msgid "Download file"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-gv-gfcommon.php:157
+#: includes/extensions/edit-entry/class-gv-gfcommon.php:160
 msgid "Delete file"
 msgstr ""
 
