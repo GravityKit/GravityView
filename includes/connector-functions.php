@@ -163,10 +163,26 @@ if( !function_exists('gravityview_get_entries') ) {
 
 		$criteria = wp_parse_args( $passed_criteria, $search_criteria_defaults );
 
-		extract( $criteria );
+		// Prepare date formats to be in Gravity Forms DB format
+		foreach( array('start_date', 'end_date' ) as $key ) {
+
+			if( !empty( $criteria['search_criteria'][ $key ] ) ) {
+
+				// Use date_create instead of new DateTime so it returns false if invalid date format.
+				$date = date_create( $criteria['search_criteria'][ $key ] );
+
+				if( $date ) {
+					$criteria['search_criteria'][ $key ] = $date->format('Y-m-d H:i:s');
+				} else {
+					do_action( 'gravityview_log_error', '[gravityview_get_entries] '.$key.' Date format not valid:', $criteria['search_criteria'][ $key ] );
+				}
+			}
+		}
+
+		do_action( 'gravityview_log_debug', '[gravityview_get_entries] Final Parameters', $criteria );
 
 		if( class_exists( 'GFAPI' ) && !empty( $form_ids ) ) {
-			return GFAPI::get_entries( $form_ids, $search_criteria, $sorting, $paging, $total);
+			return GFAPI::get_entries( $form_ids, $criteria['search_criteria'], $criteria['sorting'], $criteria['paging'], $total );
 		}
 		return false;
 	}

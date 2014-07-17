@@ -586,6 +586,8 @@ class GravityView_frontend {
 		 */
 		$parameters = apply_filters( 'gravityview_get_entries', apply_filters( 'gravityview_get_entries_'.$args['id'], compact( 'search_criteria', 'sorting', 'paging' ) ) );
 
+		do_action( 'gravityview_log_debug', '[get_view_entries] $parameters passed to gravityview_get_entries(): ', $parameters );
+
 		//fetch entries
 		$count = 0;
 		$entries = gravityview_get_entries( $form_id, $parameters, $count );
