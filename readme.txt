@@ -8,18 +8,11 @@ License: GPL 3 or higher
 
 Beautifully display your Gravity Forms entries.
 
-== Description ==
-
-== Screenshots ==
-
-
 == Installation ==
 
 1. Upload plugin files to your plugins folder, or install using WordPress' built-in Add New Plugin installer
 2. Activate the plugin
 3. Follow the instructions
-
-== Frequently Asked Questions ==
 
 == Changelog ==
 
