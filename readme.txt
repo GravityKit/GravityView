@@ -16,7 +16,7 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
-= 1.0.7 on July 14 =
+= 1.0.7 & 1.0.8 on July 17 =
 * __Edit Entry__ - you can add an Edit Entry link using the "Add Field" buttons in either the Multiple Entries or Single Entry tab.
 	- For now, if the user has the ability to edit entries in Gravity Forms, they’ll be able to edit entries in GravityView. Moving forward, we'll be adding refined controls over who can edit which entries.
 	- It supports modifying existing Entry uploads and the great Multiple-File Upload field.
@@ -37,6 +37,7 @@ Beautifully display your Gravity Forms entries.
 * Fixed: Enforced image max-width so images don't spill out of their containers
 * Fixed: Sanitized "Custom Class" field setting values to make sure the HTML doesn't break.
 * Fixed: Search field with "default" permalink structure
+* Fixed: 1.0.8 fixes an issue accessing single entries that was introduced in 1.0.7
 * Modified: Updated `GravityView_Admin_Views::is_gravityview_admin_page()` to fetch post if not yet set.
 * Modified: Enabled merge tags in Custom Class field settings
 * Modified: Set margin and padding to `0` on pagination links to override theme conflicts
