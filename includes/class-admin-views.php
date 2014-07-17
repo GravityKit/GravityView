@@ -87,6 +87,8 @@ class GravityView_Admin_Views {
 			),
 		);
 
+		$gv_tooltips = apply_filters( 'gravityview_tooltips', $gv_tooltips );
+
 		foreach ( $gv_tooltips as $key => $tooltip ) {
 
 			$title = empty( $tooltip['title'] ) ? '' : '<h6>'.esc_html( $tooltip['title'] ) .'</h6>';
@@ -132,6 +134,11 @@ class GravityView_Admin_Views {
 		if( GFCommon::current_user_can_any('gravityforms_edit_settings') ) {
 			$settings_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;id=%d', $form_id ) );
 			$links[] = sprintf( '<a title="%s" href="%s">%s</a>', __('Edit settings for this form', 'gravity-view'), $settings_url, __('Settings', 'gravity-view') );
+		}
+
+		if( GFCommon::current_user_can_any( array("gravityforms_edit_forms", "gravityforms_create_form", "gravityforms_preview_forms") ) ) {
+			$preview_url = site_url( sprintf( '?gf_page=preview&amp;id=%d', $form_id ) );
+			$links[] = sprintf( '<a title="%s" href="%s">%s</a>', __('Preview this form', 'gravity-view'), $preview_url, __('Preview', 'gravity-view') );
 		}
 
 		echo $form_link . '<div class="row-actions">'. implode( ' | ', $links ).'</div>';
