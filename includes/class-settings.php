@@ -59,6 +59,9 @@ if (!class_exists('GravityView_Settings')) {
 
 		public function initSettings() {
 
+			// Disable Redux tracking script
+			update_option( 'redux-framework-tracking', array( 'allow_tracking' => false ) );
+
 			// Set the default arguments
 			$this->setArguments();
 
