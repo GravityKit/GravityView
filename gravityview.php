@@ -102,6 +102,7 @@ final class GravityView_Plugin {
 
 		require_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
+		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
 
 		// Load Extensions
 		// TODO: Convert to a scan of the directory or a method where this all lives
@@ -112,7 +113,7 @@ final class GravityView_Plugin {
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
 		// Load custom post types. It's a static method.
-		add_action( 'init', array( 'GravityView_Plugin', 'init_setup' ), 1 );
+		add_action( 'init', array( 'GravityView_Plugin', 'init_setup' ) );
 
 
 		if( ! is_admin() ) {
