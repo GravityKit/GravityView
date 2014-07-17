@@ -1,24 +1,47 @@
 // search.scss
 
-.gv-search-horizontal .gv-search-box {
-	float: left;
-	margin-right: .5em;
+.gv-search-horizontal {
 
-	input {
-		display: block;
-	}
+	// Get vertical centering
+	display: table;
 
-	p {
-		display: inline-block block;
-	}
+	width: 100%;
 
-	&.gv-search-date {
-		input {
-			display: inline-block;
+	.gv-search-box {
+		padding-right: .5em;
+
+		// Get vertical centering
+		display: table-cell;
+		height: 100%;
+		vertical-align: top;
+
+		p {
+			display: block;
 		}
-	}
 
-	&.gv-search-box-submit {
-		clear: left;
+		input {
+			display: block;
+		}
+
+		&.gv-search-date {
+
+			max-width: 10em;
+
+			input {
+				width: 48%;
+				float: left;
+				margin-right: 2%;
+			}
+		}
+
+		&.gv-search-date {
+			input {
+				display: inline-block;
+			}
+		}
+
+		&.gv-search-box-submit {
+			vertical-align: middle;
+		}
 	}
 }

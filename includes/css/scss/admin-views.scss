@@ -205,6 +205,10 @@
 	}
 }
 
+#gv_switch_view_button {
+	display: inline-block;
+}
+
 #gravityview_select_template {
 	display: none; // Don't display by default
 }
@@ -277,7 +281,7 @@
 			&.ui-state-active.ui-state-hover {
 
 				a {
-					background: #fff;
+					background-color: #fff;
 					border-bottom: 1px solid #fff;
 				}
 

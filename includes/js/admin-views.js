@@ -37,13 +37,13 @@
 			vcfg.toggleInitialVisibility( vcfg );
 
 			// start fresh button
-			vcfg.gvStartFreshButton.click( vcfg.startFresh );
+			vcfg.gvStartFreshButton.on( 'click', vcfg.startFresh );
 
 			// select form
 			vcfg.gvSelectForm.change( vcfg.formChange );
 
 			// switch View (for existing forms)
-			$('a[href="#gv_switch_view"]').click( vcfg.switchView );
+			$('a[href="#gv_switch_view"]').hide().on( 'click', vcfg.switchView );
 
 		// templates
 
@@ -148,7 +148,7 @@
 				} else {
 					// else show the template picker
 					vcfg.templateFilter('custom');
-					vcfg.showTemplates();
+					vcfg.showViewTypeMetabox();
 				}
 			}
 
@@ -163,8 +163,32 @@
 
 		},
 
-		showTemplates: function() {
-			$('a[href=#gv_switch_view]').fadeOut(150);
+		/**
+		 * Show/Hide
+		 * @return {[type]} [description]
+		 */
+		toggleViewTypeMetabox: function() {
+			var $templates = $("#gravityview_select_template");
+
+			if( $templates.is(':visible') ) {
+
+				$('a[href=#gv_switch_view]').text(function() {
+					return $(this).attr('data-text-backup');
+				});
+
+				$templates.slideUp(150);
+
+			} else {
+
+				$('a[href=#gv_switch_view]').attr('data-text-backup', function() {
+					return $(this).text();
+				}).text( gvGlobals.label_cancel );
+
+				$templates.slideDown(150);
+			}
+		},
+
+		showViewTypeMetabox: function() {
 			$("#gravityview_select_template").slideDown(150);
 		},
 
@@ -188,9 +212,13 @@
 			// start fresh on save trigger
 			$('#gravityview_form_id_start_fresh').val('1');
 
+			// Reset the selected form value
+			$('#gravityview_form_id').val('');
+			$('a[href=#gv_switch_view]').hide();
+
 			// show templates
 			vcfg.templateFilter('preset');
-			vcfg.showTemplates();
+			vcfg.showViewTypeMetabox();
 
 			// hide config metabox
 			$("#gravityview_view_config").slideUp(150);
@@ -223,7 +251,7 @@
 				$('body').addClass('gv-form-changed');
 
 				vcfg.templateFilter('custom');
-				vcfg.showTemplates();
+				vcfg.showViewTypeMetabox();
 				vcfg.getAvailableFields();
 				vcfg.getSortableFields();
 				$('a[href=#gv_switch_view]').fadeOut(150);
@@ -236,36 +264,42 @@
 
 			var thisDialog = $( dialogSelector );
 
-			var default_buttons = [
-				{
-					text: gvGlobals.label_cancel,
-					click: function() {
-						if( thisDialog.is('#gravityview_form_id_dialog') ) {
-							vcfg.startFreshStatus = false;
-							vcfg.gvSelectForm.val( vcfg.currentFormId );
-						} else if ( thisDialog.is('#gravityview_switch_template_dialog') ) {
-							$("#gravityview_select_template").slideUp(150);
-						}
-						thisDialog.dialog('close');
+			var cancel_button = {
+				text: gvGlobals.label_cancel,
+				click: function() {
+					if( thisDialog.is('#gravityview_form_id_dialog') ) {
+						vcfg.startFreshStatus = false;
+						vcfg.gvSelectForm.val( vcfg.currentFormId );
 					}
-				},
-				{
-					text: gvGlobals.label_continue,
-					click: function() {
-						if( thisDialog.is('#gravityview_form_id_dialog') ) {
-							if( vcfg.startFreshStatus ) {
-								vcfg.startFreshContinue();
-							} else {
-								vcfg.formChangeContinue();
-							}
-						} else if ( thisDialog.is('#gravityview_switch_template_dialog') ) {
-							vcfg.selectTemplateContinue();
-						}
-
-						thisDialog.dialog('close');
+					// "Changing the View Type will reset your field configuration. Changes will be permanent once you save the View."
+					else if ( thisDialog.is('#gravityview_switch_template_dialog') ) {
+						vcfg.toggleViewTypeMetabox();
 					}
+					thisDialog.dialog('close');
 				}
-			];
+			};
+
+			var continue_button = {
+				text: gvGlobals.label_continue,
+				click: function() {
+					if( thisDialog.is('#gravityview_form_id_dialog') ) {
+						if( vcfg.startFreshStatus ) {
+							vcfg.startFreshContinue();
+						} else {
+							vcfg.formChangeContinue();
+						}
+					}
+					// "Changing the View Type will reset your field configuration. Changes will be permanent once you save the View."
+					else if ( thisDialog.is('#gravityview_switch_template_dialog') ) {
+						vcfg.selectTemplateContinue();
+						vcfg.toggleViewTypeMetabox();
+					}
+
+					thisDialog.dialog('close');
+				}
+			};
+
+			var default_buttons = [cancel_button, continue_button];
 
 			// If the buttons var isn't passed, use the defaults instead.
 			buttons = buttons || default_buttons;
@@ -332,10 +366,16 @@
 		switchView: function(e){
 			e.preventDefault();
 			var vcfg = viewConfiguration;
+
 			vcfg.templateFilter('custom');
-			vcfg.showTemplates();
+			vcfg.toggleViewTypeMetabox();
 		},
 
+		/**
+		 * Change which filters to show, depending on whether the form is Start Fresh or pre-existing forms
+		 * @param  {string} templateType Checks against the `data-filter` attribute of the HTML
+		 * @return {[type]}              [description]
+		 */
 		templateFilter: function( templateType ) {
 			$(".gv-view-types-module").each( function() {
 				if( $(this).attr('data-filter') === templateType ) {
@@ -359,6 +399,7 @@
 
 			// check if template is being changed
 			if( currTemplateId === '' ) {
+				$("#gravityview_select_template").slideUp(150);
 				vcfg.selectTemplateContinue();
 			} else if ( currTemplateId != selectedTemplateId ) {
 				vcfg.showDialog( '#gravityview_switch_template_dialog' );
@@ -396,7 +437,7 @@
 				vcfg.updateActiveAreas( selectedTemplateId );
 
 				$('a[href=#gv_switch_view]').fadeIn(150);
-				$("#gravityview_select_template").slideUp(150);
+				vcfg.toggleViewTypeMetabox();
 
 			}
 

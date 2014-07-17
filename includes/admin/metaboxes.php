@@ -64,7 +64,7 @@ class GravityView_Admin_Metaboxes {
 		<p>
 			<?php if ( empty( $current_form ) ) : ?>
 				<?php // render "start fresh" button ?>
-				<a class="button-primary" href="#gv_start_fresh" title="<?php esc_attr_e( 'Start Fresh', 'gravity-view' ); ?>"><?php esc_html_e( 'Start Fresh', 'gravity-view' ); ?></a>
+				<a class="button button-primary" href="#gv_start_fresh" title="<?php esc_attr_e( 'Start Fresh', 'gravity-view' ); ?>"><?php esc_html_e( 'Start Fresh', 'gravity-view' ); ?></a>
 
 				<span>&nbsp;<?php esc_html_e( 'or use an existing form', 'gravity-view' ); ?>&nbsp;</span>
 
@@ -78,10 +78,8 @@ class GravityView_Admin_Metaboxes {
 				<?php endforeach; ?>
 			</select>
 
-			<?php // render change layout button
-			if( !empty( $current_form ) ): ?>
-				&nbsp;<a class="button-primary" href="#gv_switch_view" title="<?php esc_attr_e( 'Switch View', 'gravity-view' ); ?>"><?php esc_html_e( 'Switch View', 'gravity-view' ); ?></a>
-			<?php endif; ?>
+
+			&nbsp;<a class="button button-primary <?php if( empty( $current_form ) ) { echo 'hide-if-js'; } ?>" id="gv_switch_view_button" href="#gv_switch_view" title="<?php esc_attr_e( 'Switch View', 'gravity-view' ); ?>"><?php esc_html_e( 'Switch View Type', 'gravity-view' ); ?></a>
 
 		</p>
 
