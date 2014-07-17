@@ -6,41 +6,37 @@ class GravityView_Admin {
 
 	function __construct() {
 
-		// check if gravityforms is active
-		add_action( 'admin_init', array( &$this, 'check_gravityforms') );
+		if( !is_admin() ) { return; }
 
-		if( is_admin() ) {
 
-			if( !class_exists( 'GFCommon' ) ) {
+		// If Gravity Forms isn't active or compatibile, stop loading
+		if( false === $this->check_gravityforms() ) {
 
-				//throw notice messages if needed
-				add_action( 'admin_notices', array( $this, 'admin_notice' ) );
+			add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
 
-				return;
-			}
-
-		// Enable Gravity Forms tooltips
-			require_once( GFCommon::get_base_path() . '/tooltips.php' );
-
-			require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes.php' );
-
-			// Filter Admin messages
-			add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
-			add_filter( 'bulk_post_updated_messages', array( $this, 'post_updated_messages' ) );
-
-			add_filter( 'plugin_action_links_'. plugin_basename( __FILE__) , array( $this, 'plugin_action_links' ) );
-
-			add_action( 'plugins_loaded', array( $this, 'backend_actions' ) );
-
-			//Hooks for no-conflict functionality
-		    add_action( 'wp_print_scripts', array( $this, 'no_conflict_scripts' ), 1000);
-		    add_action( 'admin_print_footer_scripts', array( $this, 'no_conflict_scripts' ), 9);
-
-		    add_action( 'wp_print_styles', array( $this, 'no_conflict_styles' ), 1000);
-		    add_action( 'admin_print_styles', array( $this, 'no_conflict_styles' ), 1);
-		    add_action( 'admin_print_footer_scripts', array( $this, 'no_conflict_styles' ), 1);
-		    add_action( 'admin_footer', array( $this, 'no_conflict_styles' ), 1);
+			return;
 		}
+
+		require_once( GFCommon::get_base_path() . '/tooltips.php' );
+
+		require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes.php' );
+
+		// Filter Admin messages
+		add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
+		add_filter( 'bulk_post_updated_messages', array( $this, 'post_updated_messages' ) );
+
+		add_filter( 'plugin_action_links_'. plugin_basename( __FILE__) , array( $this, 'plugin_action_links' ) );
+
+		add_action( 'plugins_loaded', array( $this, 'backend_actions' ) );
+
+		//Hooks for no-conflict functionality
+	    add_action( 'wp_print_scripts', array( $this, 'no_conflict_scripts' ), 1000);
+	    add_action( 'admin_print_footer_scripts', array( $this, 'no_conflict_scripts' ), 9);
+
+	    add_action( 'wp_print_styles', array( $this, 'no_conflict_styles' ), 1000);
+	    add_action( 'admin_print_styles', array( $this, 'no_conflict_styles' ), 1);
+	    add_action( 'admin_print_footer_scripts', array( $this, 'no_conflict_styles' ), 1);
+	    add_action( 'admin_footer', array( $this, 'no_conflict_styles' ), 1);
 	}
 
 	/**
@@ -60,6 +56,7 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/fields/entry-link.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/created-by.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/date.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/time.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/entry-date.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/fileupload.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/post-title.php' );
@@ -334,7 +331,7 @@ class GravityView_Admin {
 
 		if( $gf_status !== true ) {
 			if( $gf_status === 'inactive' ) {
-				$this->admin_notices[] = array( 'class' => 'error below-h2', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravity-view' ), '<h3>'.$image, "</h3>\n\n".'<strong><a href="'. wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php') . '" class="button button-large">', '</a></strong>' ) );
+				$this->admin_notices[] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravity-view' ), '<h3>'.$image, "</h3>\n\n".'<strong><a href="'. wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php') . '" class="button button-large">', '</a></strong>' ) );
 			} else {
 				$this->admin_notices[] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $39%s%s', 'gravity-view' ), '<h3>'.$image, "</h3>\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
 			}
@@ -342,8 +339,9 @@ class GravityView_Admin {
 
 		} else if( class_exists( 'GFCommon' ) && false === version_compare( GFCommon::$version, GV_MIN_GF_VERSION, ">=" ) ) {
 
-			$this->admin_notices[] = array( 'class' => 'error below-h2', 'message' => sprintf( __( "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravity-view' ), '<h3>'.$image, "</h3>\n\n", '<tt>'.GFCommon::$version.'</tt>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
+			$this->admin_notices[] = array( 'class' => 'error', 'message' => sprintf( __( "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravity-view' ), '<h3>'.$image, "</h3>\n\n", '<tt>'.GFCommon::$version.'</tt>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
 
+			return false;
 		}
 
 		return true;
