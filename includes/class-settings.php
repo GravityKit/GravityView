@@ -11,13 +11,13 @@ if (!class_exists('GravityView_Settings')) {
 
 		public function __construct() {
 
-			if( !gravityview_is_admin_page() ) { return; }
-
 			require_once( GRAVITYVIEW_DIR . 'includes/lib/redux-framework/redux-framework.php');
 
 			if (!class_exists('ReduxFramework')) { return; }
 
 			add_action('plugins_loaded', array($this, 'initSettings'), 10);
+
+			if( !gravityview_is_admin_page() ) { return; }
 
 			// Add the EDD extension to Redux
 			add_action( "redux/extensions/gravityview_settings", array($this, 'register_edd_extension') );
