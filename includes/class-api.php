@@ -87,7 +87,7 @@ class GravityView_API {
 
 		$classes = array();
 
-		if( !empty( $field['custom_class'] ) ) {
+		if( !empty( $field['custom_class'] ) && !empty( $entry ) ) {
 
 			// We want the merge tag to be formatted as a class. The merge tag may be
 			// replaced by a multiple-word value that should be output as a single class.
