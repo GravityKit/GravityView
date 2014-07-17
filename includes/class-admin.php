@@ -11,13 +11,18 @@ class GravityView_Admin {
 
 		if( is_admin() ) {
 
+			if( !class_exists( 'GFCommon' ) ) {
+
+				//throw notice messages if needed
+				add_action( 'admin_notices', array( $this, 'admin_notice' ) );
+
+				return;
+			}
+
 		// Enable Gravity Forms tooltips
 			require_once( GFCommon::get_base_path() . '/tooltips.php' );
 
 			require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes.php' );
-
-			//throw notice messages if needed
-			add_action( 'admin_notices', array( $this, 'admin_notice' ) );
 
 			// Filter Admin messages
 			add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
