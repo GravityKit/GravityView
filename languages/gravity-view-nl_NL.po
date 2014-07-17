@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-06-24 18:47-0700\n"
-"PO-Revision-Date: 2014-07-14 09:49+0000\n"
-"Last-Translator: Zachary Katz <zack@katzwebservices.com>\n"
+"PO-Revision-Date: 2014-07-17 07:45+0000\n"
+"Last-Translator: leooosterloo <leo@pronamic.nl>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/gravityview/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -209,7 +209,7 @@ msgstr "Aantal inzendingen te tonen per pagina"
 #: includes/class-admin-add-shortcode.php:105
 #: includes/class-admin-views.php:567
 msgid "Enable lightbox for images"
-msgstr ""
+msgstr "Lightbox inschakelen voor afbeeldingen"
 
 #: includes/class-admin-add-shortcode.php:115
 #: includes/class-admin-add-shortcode.php:119
@@ -259,7 +259,7 @@ msgstr "Filter per Eind Datum"
 
 #: includes/class-admin-add-shortcode.php:172
 msgid "Insert View"
-msgstr ""
+msgstr "Weergave Invoegen"
 
 #: includes/class-admin-add-shortcode.php:173
 #: includes/class-admin-views.php:1712
@@ -334,17 +334,17 @@ msgstr "Toon inzending in directory weergave?"
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
-msgstr ""
+msgstr "Toon inzendingen ingezonden na deze datum. Ondersteund relatieve data, zoals \"-1 week\" of \"-1 maand\"."
 
 #: includes/class-admin-views.php:89
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
-msgstr ""
+msgstr "Toon inzendingen ingezonden voor deze datum. Ondersteund relative data, zoals \"nu\" of \"-3 dagen\"."
 
 #: includes/class-admin-views.php:92 includes/class-admin-views.php:639
 msgid "Single Entry Title"
-msgstr ""
+msgstr "Enkele Inzending Titel"
 
 #: includes/class-admin-views.php:93
 msgid ""
