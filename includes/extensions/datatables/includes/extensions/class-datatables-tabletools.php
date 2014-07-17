@@ -20,7 +20,7 @@ class GV_Extension_DataTables_TableTools {
 			'csv' => 1,
 			'xls' => 0,
 			'pdf' => 0,
-			'newpdf' => 1,
+			//'newpdf' => 1,
 			'print' => 1
 		);
 
@@ -53,6 +53,7 @@ class GV_Extension_DataTables_TableTools {
 				<td colspan="2">
 					<?php
 					foreach( $ds['tt_buttons'] as $b_key => $b_value ) {
+						if( empty( $tt_buttons_labels[ $b_key ] )) { continue; }
 						echo GravityView_Admin_Views::render_field_option( 'datatables_settings[tt_buttons]['. $b_key .']', array( 'label' => $tt_buttons_labels[ $b_key ], 'type' => 'checkbox', 'value' => 1 ), $ds['tt_buttons'][ $b_key ] );
 					}
 					?>
@@ -88,7 +89,7 @@ class GV_Extension_DataTables_TableTools {
 			'copy' => __( 'Copy', 'gravity-view' ),
 			'csv' => 'CSV',
 			'xls' => 'XLS',
-			'newpdf' => 'NEW PDF',
+			//'newpdf' => 'NEW PDF',
 			'pdf' => 'PDF',
 			'print' => __( 'Print', 'gravity-view' )
 		);

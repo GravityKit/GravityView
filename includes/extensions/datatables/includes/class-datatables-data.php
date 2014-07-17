@@ -192,6 +192,7 @@ class GV_Extension_DataTables_Data {
 		$dt_config =  array(
 			'processing' => true,
 			'serverSide' => true,
+			'retrieve'	 => true, // Only initialize once
 			// On refresh (and on single entry view, then clicking "go back"), save the page you were on.
 			'stateSave'	 => true,
 			// Only save the state for the session.
@@ -213,8 +214,8 @@ class GV_Extension_DataTables_Data {
 		);
 
 		// page size, if defined
-		if( !empty( $args['page_size'] ) && is_numeric( $args['page_size'] ) ) {
-			$dt_config['pageLength'] = intval( $args['page_size'] );
+		if( !empty( $view_meta['atts']['page_size'] ) && is_numeric( $view_meta['atts']['page_size'] ) ) {
+			$dt_config['pageLength'] = intval( $view_meta['atts']['page_size'] );
 		}
 
 		// get View directory active fields to init columns
@@ -228,10 +229,10 @@ class GV_Extension_DataTables_Data {
 		}
 
 		// set default order
-		if( !empty( $args['sort_field'] ) ) {
+		if( !empty( $view_meta['atts']['sort_field'] ) ) {
 			foreach ( $columns as $key => $column ) {
-				if( $column['name'] === 'gv_'. $args['sort_field'] ) {
-					$dir = !empty( $args['sort_direction'] ) ? $args['sort_direction'] : 'asc';
+				if( $column['name'] === 'gv_'. $view_meta['atts']['sort_field'] ) {
+					$dir = !empty( $view_meta['atts']['sort_direction'] ) ? $view_meta['atts']['sort_direction'] : 'asc';
 					$dt_config['order'] = array( array( $key, strtolower( $dir ) ) );
 				}
 			}

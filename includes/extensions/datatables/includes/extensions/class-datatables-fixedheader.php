@@ -28,14 +28,14 @@ class GV_Extension_DataTables_FixedHeader {
 			<tr valign="top">
 				<td colspan="2">
 					<?php
-						echo GravityView_Admin_Views::render_field_option( 'datatables_settings[fixedheader]', array( 'label' => __( 'Enable FixedHeader', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), !empty($ds['fixedheader']) );
+						echo GravityView_Admin_Views::render_field_option( 'datatables_settings[fixedheader]', array( 'label' => __( 'Enable FixedHeader', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ds['fixedheader'] );
 					?>
 				</td>
 			</tr>
 			<tr valign="top">
 				<td colspan="2">
 					<?php
-						echo GravityView_Admin_Views::render_field_option( 'datatables_settings[fixedcolumns]', array( 'label' => __( 'Enable FixedColumns', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), !empty($ds['fixedcolumns']) );
+						echo GravityView_Admin_Views::render_field_option( 'datatables_settings[fixedcolumns]', array( 'label' => __( 'Enable FixedColumns', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ds['fixedcolumns'] );
 					?>
 				</td>
 			</tr>
@@ -84,8 +84,8 @@ class GV_Extension_DataTables_FixedHeader {
 		}
 
 		// FixedColumns need scrollX to be set
-		$dt_config['scrollX'] = true;
-
+		$dt_config['scrollX'] = false;
+		$dt_config['scrollY'] = false;
 
 		do_action( 'gravityview_log_debug', '[fixedheadercolumns_add_config] Inserting FixedColumns config. Data: ', $dt_config );
 

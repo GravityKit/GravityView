@@ -14,42 +14,25 @@
 (function( $ ) {
 
 
-
-
-
-
-
-
 var gvDataTables = {
 
 	init: function() {
 
+
 		var table = $('.gv-datatables').DataTable( gvDTglobals );
 
-
-		// capture click on TableTools export buttons
-		// table.on( 'init.dt', function () {
-  //   		alert( 'Table init' );
-  //   		gvDataTables.hijackClickTableTools();
-		// } );
-
 		// init FixedHeader
-		if( gvDTFixedHeaderColumns.fixedHeader == 1 ) {
+		if( gvDTFixedHeaderColumns.fixedHeader === '1' ) {
 			new $.fn.dataTable.FixedHeader( table );
 		}
-
 		// init FixedColumns
-		if( gvDTFixedHeaderColumns.fixedColumns == 1 ) {
+		if( gvDTFixedHeaderColumns.fixedColumns === '1' ) {
 			new $.fn.dataTable.FixedColumns( table );
 		}
 
 	},
 
-
-
 };
-
-
 
 
 

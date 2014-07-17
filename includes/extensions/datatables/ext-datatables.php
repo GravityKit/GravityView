@@ -25,7 +25,7 @@ if ( !defined('GV_DT_DIR') )
 
 class GV_Extension_DataTables {
 
-	const version = '1.0.1';
+	const version = '1.0.2';
 
 	public function __construct() {
 

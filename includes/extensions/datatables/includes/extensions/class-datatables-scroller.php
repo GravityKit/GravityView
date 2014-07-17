@@ -18,7 +18,7 @@ class GV_Extension_DataTables_Scroller {
 	function defaults( $settings ) {
 
 		$settings['scroller'] = false;
-		$settings['scrolly'] = 400;
+		$settings['scrolly'] = 500;
 
 		return $settings;
 	}
@@ -39,7 +39,7 @@ class GV_Extension_DataTables_Scroller {
 					<label for="gravityview_dt_scrollerheight"><?php esc_html_e( 'Table Height', 'gravity-view'); ?></label>
 				</td>
 				<td>
-					<input name="datatables_settings[scrolly]" id="gravityview_dt_scrollerheight" type="number" step="1" min="50" value="<?php empty( $ds['scrolly'] ) ? print 400 : print $ds['scrolly']; ?>" class="small-text">
+					<input name="datatables_settings[scrolly]" id="gravityview_dt_scrollerheight" type="number" step="1" min="50" value="<?php empty( $ds['scrolly'] ) ? print 500 : print $ds['scrolly']; ?>" class="small-text">
 				</td>
 			</tr>
 		</table>
@@ -83,11 +83,14 @@ class GV_Extension_DataTables_Scroller {
 			return $dt_config;
 		}
 
+		// Disable the pagination menu
+		//$dt_config['lengthMenu'] = -1;
+
 		// init Scroller
 		$dt_config['dom'] = empty( $dt_config['dom'] ) ? 'frtiS' : $dt_config['dom'].'S';
 
 		// set table height
-		$settings['scrolly'] = empty( $settings['scrolly'] ) ? '400' : (string)$settings['scrolly'];
+		$settings['scrolly'] = empty( $settings['scrolly'] ) ? '500' : (string)$settings['scrolly'];
 		$dt_config['scrollY'] = empty( $dt_config['scrollY'] ) ? $settings['scrolly'] : $dt_config['scrollY'];
 		$dt_config['scrollY'] .= 'px';
 
