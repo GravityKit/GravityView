@@ -194,6 +194,7 @@ class GravityView_Welcome {
 					</ul>
 				</li>
 				<li>Fixed: Insert View embed code now works again</li>
+				<li>Fixed: Filtering by date now working</li>
 				<li>Added: Easy links to <q>Edit Form</q>, <q>Settings</q> and <q>Entries</q> for the Data Source Gravity Forms form in the All Views admin screen</li>
 				<li>Added: Shortcodes for outputting Widgets such as pagination and search. Note: they only work on embedded views if the shortcode has already been processed. This is going to be improved. <a href="https://katzwebservices.zendesk.com/hc/en-us/articles/201103045">Read the documentation</a>.</li>
 				<li>Added: Search form fields now displayed horizontally by default. <a href="https://katzwebservices.zendesk.com/hc/en-us/articles/201119765">That can be changed</a>.</li>

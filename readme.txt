@@ -16,6 +16,17 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
+= 1.0.8.1 on July 17 =
+* Fixed: DataTables
+	- Restored pageSize
+	- Prevented double-initilization
+	- FixedHeader & FixedColumns work (now prevent scrolling)
+	- Changed default Scroller height from 400 to 500px
+* Fixed: Filtering by date
+* Fixed: PHP warning in `gv_class()`
+* Fixed: Debug Bar integration not printing Warnings
+* Removed settings panel tracking script
+
 = 1.0.7 & 1.0.8 on July 17 =
 * __Edit Entry__ - you can add an Edit Entry link using the "Add Field" buttons in either the Multiple Entries or Single Entry tab.
 	- For now, if the user has the ability to edit entries in Gravity Forms, they’ll be able to edit entries in GravityView. Moving forward, we'll be adding refined controls over who can edit which entries.
