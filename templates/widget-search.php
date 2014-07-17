@@ -5,7 +5,7 @@
  * @see includes/default-widgets.php
  */
 
-global $gravityview_view;
+global $gravityview_view, $wp_rewrite;
 
 $view_id = $gravityview_view->view_id;
 
@@ -40,6 +40,13 @@ $view_id = $gravityview_view->view_id;
 	?>
 
 	<div class="gv-search-box gv-search-box-submit">
+		<?php
+
+		// Support default permalink structure
+		if( !empty( $_GET['gravityview'] ) && false === $wp_rewrite->using_index_permalinks() ) {
+			echo '<input type="hidden" name="gravityview" value="'.esc_attr( $_GET['gravityview'] ).'" />';
+		}
+		?>
 		<input type="submit" class="button gv-search-button" id="gv_search_button_<?php echo $view_id; ?>" value="<?php esc_attr_e( 'Search', 'gravity-view' ); ?>" />
 	</div>
 </form>

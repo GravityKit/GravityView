@@ -36,6 +36,7 @@ Beautifully display your Gravity Forms entries.
 * Fixed: Conflict with WordPress SEO OpenGraph meta data generators
 * Fixed: Enforced image max-width so images don't spill out of their containers
 * Fixed: Sanitized "Custom Class" field setting values to make sure the HTML doesn't break.
+* Fixed: Search field with "default" permalink structure
 * Modified: Updated `GravityView_Admin_Views::is_gravityview_admin_page()` to fetch post if not yet set.
 * Modified: Enabled merge tags in Custom Class field settings
 * Modified: Set margin and padding to `0` on pagination links to override theme conflicts
