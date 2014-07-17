@@ -8,7 +8,7 @@
  */
 class GravityView_Debug_Bar extends Debug_Bar_Panel {
 
-	var $warnings = array();
+	var $warnings = NULL;
 
 	var $notices = NULL;
 
