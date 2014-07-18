@@ -77,9 +77,9 @@ class GravityView_Admin_Metaboxes {
 					<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current_form, true ); ?>><?php echo $form['title']; ?></option>
 				<?php endforeach; ?>
 			</select>
+		<?php #echo '<pre>';var_dump($current_form); die(); ?>
 
-
-			&nbsp;<a class="button button-primary <?php if( empty( $current_form ) ) { echo 'hide-if-js'; } ?>" id="gv_switch_view_button" href="#gv_switch_view" title="<?php esc_attr_e( 'Switch View', 'gravity-view' ); ?>"><?php esc_html_e( 'Switch View Type', 'gravity-view' ); ?></a>
+			&nbsp;<a class="button button-primary" <?php if( empty( $current_form ) ) { echo 'style="display:none;"'; } ?> id="gv_switch_view_button" href="#gv_switch_view" title="<?php esc_attr_e( 'Switch View', 'gravity-view' ); ?>"><?php esc_html_e( 'Switch View Type', 'gravity-view' ); ?></a>
 
 		</p>
 

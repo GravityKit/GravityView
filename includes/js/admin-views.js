@@ -43,7 +43,7 @@
 			vcfg.gvSelectForm.change( vcfg.formChange );
 
 			// switch View (for existing forms)
-			$('a[href="#gv_switch_view"]').hide().on( 'click', vcfg.switchView );
+			$('a[href="#gv_switch_view"]').on( 'click', vcfg.switchView );
 
 		// templates
 
