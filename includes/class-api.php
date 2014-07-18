@@ -245,7 +245,14 @@ class GravityView_API {
 			return NULL;
 		}
 
-		return get_permalink( $post->ID );
+		$link = get_permalink( $post->ID );
+
+		// Deal with returning to proper pagination for embedded views
+		if( !empty( $_GET['pagenum'] ) && is_numeric( $_GET['pagenum'] ) ) {
+			$link = add_query_arg('pagenum', $_GET['pagenum'], $link );
+		}
+
+		return $link;
 	}
 
 
@@ -263,11 +270,20 @@ class GravityView_API {
 		if( !empty( $post_id ) ) {
 
 			$query_arg_name = GravityView_frontend::get_entry_var_name();
+			$args = array();
+
+			// Deal with returning to proper pagination for embedded views
+			if( !empty( $_GET['pagenum'] ) && is_numeric( $_GET['pagenum'] ) ) {
+				$args['pagenum'] = $_GET['pagenum'];
+			}
 
 			if( get_option('permalink_structure') ) {
-				$href = trailingslashit( get_permalink( $post_id ) ) . $query_arg_name . '/'. $entry['id'] .'/';
+				$href = add_query_arg( $args,  trailingslashit( get_permalink( $post_id ) ) . $query_arg_name . '/'. $entry['id'] .'/' );
 			} else {
-				$href = add_query_arg( $query_arg_name, $entry['id'], self::directory_link( $post_id ) );
+
+				$args = array( $query_arg_name => $entry['id'] );
+
+				$href = add_query_arg( $args, self::directory_link( $post_id ) );
 			}
 
 			return $href;
