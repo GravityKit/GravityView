@@ -269,7 +269,7 @@ class GravityView_API {
 
 		if( !empty( $post_id ) ) {
 
-			$query_arg_name = GravityView_frontend::get_entry_var_name();
+			$query_arg_name = GravityView_Post_Types::get_entry_var_name();
 			$args = array();
 
 			// Deal with returning to proper pagination for embedded views
