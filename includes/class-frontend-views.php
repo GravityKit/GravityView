@@ -20,7 +20,7 @@ class GravityView_frontend {
 		// Shortcode to render view (directory)
 		add_shortcode( 'gravityview', array( 'GravityView_frontend', 'render_view_shortcode' ) );
 		add_action( 'init', array( 'GravityView_frontend', 'init_rewrite' ) );
-		add_filter( 'query_vars', array( 'GravityView_frontend', 'add_query_vars_filter' ) );
+		add_action( 'gravityview_init', array( 'GravityView_frontend', 'init_rewrite' ) );
 
 		// Enqueue scripts and styles after GravityView_Template::register_styles()
 		add_action( 'wp_enqueue_scripts', array( 'GravityView_frontend', 'add_scripts_and_styles' ), 20);
@@ -50,7 +50,7 @@ class GravityView_frontend {
 			// We need the attached form ID as well...
 			$entry = gravityview_get_entry( $entry_id );
 
-			$url = admin_url( sprintf('admin.php?page=gf_entries&amp;view=entry&id=%d&lid=%d', $entry['form_id'], $entry_id ) );
+			$url = admin_url( sprintf('admin.php?page=gf_entries&amp;view=entry&amp;id=%d&lid=%d', $entry['form_id'], $entry_id ) );
 		}
 
 		return $url;
@@ -77,7 +77,7 @@ class GravityView_frontend {
 			$wp_admin_bar->add_menu( array(
 				'id' => 'edit-entry',
 				'title' => __('Edit Entry', 'gravity-view'),
-				'href' => admin_url( sprintf('admin.php?page=gf_entries&amp;view=entry&id=%d&lid=%d', $entry['form_id'], $entry_id ) ),
+				'href' => admin_url( sprintf('admin.php?page=gf_entries&amp;view=entry&amp;id=%d&lid=%d', $entry['form_id'], $entry_id ) ),
 			) );
 
 		}
@@ -119,19 +119,6 @@ class GravityView_frontend {
 
 		//add_permastruct( "{$endpoint}", $endpoint.'/%'.$endpoint.'%/?', true);
 		add_rewrite_endpoint( "{$endpoint}", EP_ALL );
-	}
-
-	/**
-	 * Make the entry query var public to become available at WP_Query
-	 *
-	 * @access public
-	 * @static
-	 * @param array $vars
-	 * @return $vars
-	 */
-	public static function add_query_vars_filter( $vars ){
-		$vars[] = self::get_entry_var_name();
-		return $vars;
 	}
 
 
