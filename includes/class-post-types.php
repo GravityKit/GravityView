@@ -8,7 +8,7 @@
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
- * @since 1.0.7
+ * @since 1.0.9
  */
 
 class GravityView_Post_Types {

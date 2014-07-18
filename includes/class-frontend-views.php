@@ -153,9 +153,13 @@ class GravityView_frontend {
 	 * @param  int $passed_post_id Post ID
 	 * @return string          (modified) title
 	 */
-	public static function single_entry_title( $title, $passed_post_id ) {
+	public static function single_entry_title( $title, $passed_post_id = NULL ) {
 		global $post, $gravityview_view;
 
+		// User reported WooCommerce doesn't pass two args.
+		if( empty( $passed_post_id ) )  {
+			return NULL;
+		}
 
 		// Don't modify the title for anything other than the current view/post.
 		// This is true for embedded shortcodes and Views.

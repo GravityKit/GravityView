@@ -76,6 +76,10 @@ if (!class_exists('GravityView_Settings')) {
 			$this->ReduxFramework = new ReduxFramework($this->sections, $this->args);
 		}
 
+		/**
+		 * @group Beta
+		 * @return [type] [description]
+		 */
 		function get_edd_field() {
 			return array(
 				'id'        => 'license',

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-06-24 18:47-0700\n"
-"PO-Revision-Date: 2014-07-17 07:45+0000\n"
+"PO-Revision-Date: 2014-07-18 11:47+0000\n"
 "Last-Translator: leooosterloo <leo@pronamic.nl>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/gravityview/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,7 @@ msgid ""
 "%sYou don't have any active views. Let's go %screate one%s!%s\n"
 "\n"
 "If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
-msgstr ""
+msgstr "%sJe hebt geen actieve weergaven. Laten we starten, %smaak één%s!%s\n\nAls je het gevoel hebt verdwaald te zijn in de ruimte en hulp nodig hebt om te starten, bekijk dan de %sAan de slag%s pagina."
 
 #: gravityview.php:231
 msgctxt "Post Type General Name"
@@ -190,7 +190,7 @@ msgstr "Weergave toevoegen"
 
 #: includes/class-admin-add-shortcode.php:74
 msgid "Insert a View"
-msgstr ""
+msgstr "Weergave Invoegen"
 
 #: includes/class-admin-add-shortcode.php:77
 msgid "Select a View"
@@ -198,7 +198,7 @@ msgstr "Selecteer een Weergave"
 
 #: includes/class-admin-add-shortcode.php:80
 msgid "&mdash; views &mdash;"
-msgstr ""
+msgstr "&mdash; weergaven &mdash;"
 
 #: includes/class-admin-add-shortcode.php:92
 #: includes/class-admin-views.php:558
@@ -351,15 +351,15 @@ msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and Single"
 " Entry views."
-msgstr ""
+msgstr "Bij het bekijken van een enkele inzending, verander de titel van de pagina naar deze instelling. Anders zal de titel niet veranderen van Meervoudige Inzendingen naar Enkele Inzending weergaven."
 
 #: includes/class-admin-views.php:96 includes/class-admin-views.php:645
 msgid "Back Link Label"
-msgstr ""
+msgstr "Inkomende Link Label"
 
 #: includes/class-admin-views.php:97
 msgid "The text of the link that returns to the multiple entries view."
-msgstr ""
+msgstr "De tekst van de link die terugverwijst naar de meervoudige inzendingen weergave."
 
 #: includes/class-admin-views.php:120
 msgid "Not connected."
@@ -379,7 +379,7 @@ msgid ""
 "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n"
 "\n"
 "You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
-msgstr ""
+msgstr "%sGravityView vereist Gravity Forms Versie 1.8 of nieuwer. %s\n\nJij gebruikt Versie %s. Update Gravity Forms of koop een licentie. %sKoop Gravity Forms%s - prijs vanaf $39%s%s"
 
 #: includes/class-admin-views.php:174
 #, php-format
@@ -413,7 +413,7 @@ msgstr "Bekijk Instellingen"
 
 #: includes/class-admin-views.php:282
 msgid "Shortcode Info"
-msgstr ""
+msgstr "Shortcode info"
 
 #: includes/class-admin-views.php:310
 msgid "Where would you like the data to come from for this View?"
@@ -441,12 +441,12 @@ msgstr "Attentie"
 
 #: includes/class-admin-views.php:343
 msgid "Changing the form will discard all the existent View configuration."
-msgstr ""
+msgstr "Het formulier wijzigen zal de huidige Weergave configuratie verwijderen."
 
 #: includes/class-admin-views.php:348
 msgid ""
 "Changing the View Type will discard all the existent View configuration."
-msgstr ""
+msgstr "Het Weergave Type wijzigen zal de huidige Weergave configuratie verwijderen."
 
 #: includes/class-admin-views.php:353
 msgid "GravityView requires Javascript to be enabled."
@@ -502,15 +502,15 @@ msgstr "Deze velden worden getoond in de Enkele Inzending weergave."
 
 #: includes/class-admin-views.php:581
 msgid "Hide empty fields"
-msgstr ""
+msgstr "Verberg lege velden"
 
 #: includes/class-admin-views.php:634
 msgid "Single Entry Settings"
-msgstr ""
+msgstr "Enkele Inzending Instellingen"
 
 #: includes/class-admin-views.php:665
 msgid "To insert this view into a post or a page use the following shortcode:"
-msgstr ""
+msgstr "Gebruik de volgende shortcode om deze weergave in een bericht of pagina te plaatsen:"
 
 #: includes/class-admin-views.php:905
 #, php-format
@@ -598,7 +598,7 @@ msgstr "Eigen CSS Class:"
 
 #: includes/class-admin-views.php:1273
 msgid "This class will be added to the field container."
-msgstr ""
+msgstr "Deze class zal worden toegevoegd aan de veld container"
 
 #: includes/class-admin-views.php:1279
 msgid "Make visible only to logged-in users?"

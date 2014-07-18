@@ -179,6 +179,21 @@ class GravityView_Welcome {
 
 			<div class="changelog point-releases">
 				<h3>What changed in <?php echo $display_version; ?></h3>
+
+				<div class="alignright">
+					<img src="<?php echo plugins_url( 'images/screenshots/edit-form-buttons.png', GRAVITYVIEW_FILE ); ?>" alt="Edit Form Buttons" class="gv-welcome-screenshots" />
+					<p class="howto" style="text-align:center;">New Buttons form Gravity Forms</p>
+				</div>
+				<ul>
+					<li>Added: Time field support, with date format default and options</li>
+					<li>Added: <q>Event Listings</q> View preset</li>
+					<li>Added: <q>Show Entry On Website</q> Gravity Forms form button. This is meant to be an opt-in checkbox that the user sees and can control, unlike the <q>Approve/Reject</q> button, which is designed for adminstrators to manage approval.</li>
+					<li>Improved horizontal search widget layout</li>
+					<li>Fixed: Only show Edit Entry link to logged-in users</li>
+					<li>Updated: Dutch translation by <a href="https://www.transifex.com/accounts/profile/leooosterloo/">@leooosterloo</a> (100% coverage, thank you!)</li>
+				</ul>
+
+				<h3>What changed in 1.0.8</h3>
 				<ul>
 				<li><img src="<?php echo plugins_url( 'images/screenshots/edit-entry-link.png', GRAVITYVIEW_FILE ); ?>" alt="Edit Entry Link" class="gv-welcome-screenshots" /><strong>Edit Entry</strong> - you can add an Edit Entry link using the <q>Add Field</q> buttons in either the Multiple Entries or Single Entry tab.
 					<ul>
@@ -186,24 +201,9 @@ class GravityView_Welcome {
 						<li>It supports modifying existing Entry uploads and the great Multiple-File Upload field.</li>
 					</ul>
 				</li>
-				<li><img src="<?php echo plugins_url( 'images/screenshots/datatables-settings.png', GRAVITYVIEW_FILE ); ?>" alt="DataTables Settings" class="gv-welcome-screenshots" /><strong>Added very cool DataTables extensions:</strong>
-					<ul>
-						<li><a href="https://datatables.net/extensions/scroller/">Scroller</a>: dynamically load in new entries as you scroll - no need for pagination)</li>
-						<li><a href="https://datatables.net/extensions/tabletools/">TableTools</a>: Export your entries to CSV and PDF</li>
-						<li><a href="https://datatables.net/extensions/fixedheader/">FixedHeader</a>: As you scroll a large DataTable result, the headers of the table stay at the top of the screen. Also, FixedColumns, which does the same for the main table column.</li>
-					</ul>
-				</li>
 				<li>Fixed: Insert View embed code now works again</li>
 				<li>Fixed: Filtering by date now working</li>
-				<li>Added: Easy links to <q>Edit Form</q>, <q>Settings</q> and <q>Entries</q> for the Data Source Gravity Forms form in the All Views admin screen</li>
-				<li>Added: Shortcodes for outputting Widgets such as pagination and search. Note: they only work on embedded views if the shortcode has already been processed. This is going to be improved. <a href="https://katzwebservices.zendesk.com/hc/en-us/articles/201103045">Read the documentation</a>.</li>
-				<li>Added: Search form fields now displayed horizontally by default. <a href="https://katzwebservices.zendesk.com/hc/en-us/articles/201119765">That can be changed</a>.</li>
-				<li>Added: Integration with the <a href="http://wordpress.org/plugins/debug-bar/" rel="external">Debug Bar</a> plugin - very helpful for developers to see what&#39;s going on behind the scenes.</li>
-				<li>Modified: Approve/Reject Entries now visible on all forms, regardless of whether the form has an <q>Approved</q> field.</li>
-				<li>Modified: Enabled Merge Tags in Custom Class field settings</li>
-				<li>Fixed: Now supports View shortcodes inside other shortcodes (such as <code>[example][gravityview][/example]</code>)</li>
-				<li>Fixed: Conflict with WordPress SEO plugin&#39;s OpenGraph feature</li>
-				</ul>
+			</ul>
 			<div class="clear"></div>
 			</div>
 		</div>
@@ -289,7 +289,7 @@ class GravityView_Welcome {
 					<h2>Zack Katz</h2>
 					<h4 style="font-weight:0; margin-top:0">Project Lead &amp; Developer</h4>
 					<p></p>
-					<p><img style="float:left; margin: 0 15px 0 0;" src="<?php echo plugins_url( 'images/zack.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Zack has been developing integrations with Gravity Forms since 2009. He is the President of Katz Web Services and lives with his wife and cat in Denver, Colorado.</p>
+					<p><img style="float:left; margin: 0 15px 0 0;" src="<?php echo plugins_url( 'images/zack.png', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Zack has been developing integrations with Gravity Forms since 2009. He is the President of Katz Web Services and lives with his wife and cat in Denver, Colorado.</p>
 					<p><a href="https://katz.co">View Zack&rsquo;s website</a></p>
 				</div>
 

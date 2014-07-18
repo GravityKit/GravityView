@@ -16,18 +16,20 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
-= 1.0.9 (working) =
+= 1.0.9 on July 18 =
 * Added: Time field support, with date format default and options
 * Added: "Event Listings" View preset
 * Added: "Show Entry On Website" Gravity Forms form button. This is meant to be an opt-in checkbox that the user sees and can control, unlike the "Approve/Reject" button, which is designed for adminstrators to manage approval.
 * Modified: Improved horizontal search widget layout
 * Modified: Improved "Start Fresh" and "Switch View" visual logic when Starting Fresh and switching forms
+* Fixed: Single Entry showing 404 errors
+* Fixed: PHP notice on WooCommerce pages
 * Fixed: Don't display empty date/time value
 * Fixed: Only show Edit Entry link to logged-in users
-* Tweak: Added "Preview" link to Data Source
 * Fixed: Re-enabled "Minimum Gravity Forms Version" error message
-* Updated: Dutch translation by [@leooosterloo](https://www.transifex.com/accounts/profile/leooosterloo/)
-
+* Updated: Dutch translation by [@leooosterloo](https://www.transifex.com/accounts/profile/leooosterloo/) (100% coverage, thank you!)
+* Tweak: Added "Preview" link to Data Source
+* Modified: Created new `class-post-types.php` include file to handle post type & URL rewrite actions.
 
 = 1.0.8.1 on July 17 =
 * Fixed: DataTables
