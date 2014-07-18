@@ -109,15 +109,8 @@ class GravityView_frontend {
 	 */
 	public static function init_rewrite() {
 
-		global $wp_rewrite;
-
-		if( !$wp_rewrite->using_permalinks() ) {
-			return;
-		}
-
 		$endpoint = self::get_entry_var_name();
 
-		//add_permastruct( "{$endpoint}", $endpoint.'/%'.$endpoint.'%/?', true);
 		add_rewrite_endpoint( "{$endpoint}", EP_ALL );
 	}
 
@@ -285,6 +278,7 @@ class GravityView_frontend {
 	 * @return void
 	 */
 	public static function render_view( $passed_args ) {
+		global $post;
 
 		do_action( 'gravityview_log_debug', '[render_view] Init View. Arguments: ', $passed_args );
 
@@ -378,7 +372,9 @@ class GravityView_frontend {
 
 			// We're in single view, but the view being processed is not the same view the single entry belongs to.
 			if( $view_meta['form_id'] !== $entry['form_id'] ) {
-				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '.$view_entries['entries'][0]['id'] );
+
+				$view_id = isset( $view_entries['entries'][0]['id'] ) ? $view_entries['entries'][0]['id'] : '(empty)';
+				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '. $view_id);
 				return;
 			}
 
@@ -425,9 +421,11 @@ class GravityView_frontend {
 
 		}
 
-		// Print the View ID to enable proper cookie pagination ?>
-		<input type="hidden" id="gravityview-view-id" value="<?php echo $view_meta['id']; ?>">
-		<?php
+		if( 'gravityview' === get_post_type( $post ) ) {
+			// Print the View ID to enable proper cookie pagination ?>
+			<input type="hidden" id="gravityview-view-id" value="<?php echo $view_meta['id']; ?>">
+<?php
+		}
 		$output = ob_get_clean();
 
 		return $output;

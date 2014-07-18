@@ -235,15 +235,17 @@ class GravityView_API {
 	 */
 	public static function directory_link($post = NULL) {
 
-		if(empty($post)) {
+		if( empty($post) ) {
 			$post = get_post();
+		} elseif( is_numeric( $post ) ) {
+			$post = get_post( $post );
 		}
 
 		if( empty( $post ) ) {
 			return NULL;
 		}
 
-		return trailingslashit( get_permalink( $post->ID ) );
+		return get_permalink( $post->ID );
 	}
 
 
@@ -265,7 +267,7 @@ class GravityView_API {
 			if( get_option('permalink_structure') ) {
 				$href = trailingslashit( get_permalink( $post_id ) ) . $query_arg_name . '/'. $entry['id'] .'/';
 			} else {
-				$href = add_query_arg( $query_arg_name, $entry['id'], self::directory_link() );
+				$href = add_query_arg( $query_arg_name, $entry['id'], self::directory_link( $post_id ) );
 			}
 
 			return $href;
@@ -319,8 +321,8 @@ function gv_value( $entry, $field) {
 	return $value;
 }
 
-function gv_directory_link() {
-	return GravityView_API::directory_link();
+function gv_directory_link( $post = NULL ) {
+	return GravityView_API::directory_link( $post = NULL );
 }
 
 function gv_entry_link(  $entry, $field ) {
@@ -338,21 +340,18 @@ function gv_no_results($wpautop = true) {
  */
 function gravityview_back_link() {
 
-	$post = get_post();
-
-	if( empty($post) ) { return NULL; }
-
 	$href = gv_directory_link();
+
+	if( empty( $href ) ) { return NULL; }
 
 	// calculate link label
 	global $gravityview_view;
 	$label = !empty( $gravityview_view->back_link_label ) ? $gravityview_view->back_link_label : __( '&larr; Go back', 'gravity-view' );
 
 	// filter link label
-	$label = apply_filters( 'gravityview_go_back_label', $label, $post );
+	$label = apply_filters( 'gravityview_go_back_label', $label );
 
 	return '<a href="'. $href .'" id="gravityview_back_link">'. esc_html( $label ) . '</a>';
-
 }
 
 /**
