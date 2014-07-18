@@ -12,15 +12,12 @@
  */
 
 
-
 class GravityView_frontend {
 
 	function __construct() {
 
 		// Shortcode to render view (directory)
 		add_shortcode( 'gravityview', array( 'GravityView_frontend', 'render_view_shortcode' ) );
-		add_action( 'init', array( 'GravityView_frontend', 'init_rewrite' ) );
-		add_action( 'gravityview_init', array( 'GravityView_frontend', 'init_rewrite' ) );
 
 		// Enqueue scripts and styles after GravityView_Template::register_styles()
 		add_action( 'wp_enqueue_scripts', array( 'GravityView_frontend', 'add_scripts_and_styles' ), 20);
@@ -99,34 +96,6 @@ class GravityView_frontend {
 			remove_action( 'admin_bar_menu', 'wp_admin_bar_edit_menu', 80 );
 		}
 	}
-
-	/**
-	 * Register rewrite rules to capture the single entry view
-	 *
-	 * @access public
-	 * @static
-	 * @return void
-	 */
-	public static function init_rewrite() {
-
-		$endpoint = self::get_entry_var_name();
-
-		add_rewrite_endpoint( "{$endpoint}", EP_ALL );
-	}
-
-
-	/**
-	 * Return the query var / end point name for the entry
-	 *
-	 * @access public
-	 * @static
-	 * @return void
-	 * @filter gravityview_directory_endpoint Change the slug used for single entries
-	 */
-	public static function get_entry_var_name() {
-		return sanitize_title( apply_filters( 'gravityview_directory_endpoint', 'entry' ) );
-	}
-
 
 	/**
 	 * Retrieve the default args for shortcode and theme function
@@ -637,7 +606,7 @@ class GravityView_frontend {
 	 * @return boolean|string false if not, single entry id if true
 	 */
 	public static function is_single_entry() {
-		$single_entry = get_query_var( self::get_entry_var_name() );
+		$single_entry = get_query_var( GravityView_Post_Types::get_entry_var_name() );
 		if( empty( $single_entry ) ){
 			return false;
 		} else {
