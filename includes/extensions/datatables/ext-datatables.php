@@ -33,10 +33,10 @@ class GV_Extension_DataTables {
 		add_action( 'gravityview_include_backend_actions', array( $this, 'backend_actions' ) );
 
 		// load DataTables core logic
-		add_action( 'gravityview_init', array( $this, 'core_actions' ) );
+		add_action( 'init', array( $this, 'core_actions' ), 19 );
 
 		// Register specific template
-		add_action( 'gravityview_init', array( $this, 'register_templates' ), 20 );
+		add_action( 'init', array( $this, 'register_templates' ), 20 );
 
 	}
 
