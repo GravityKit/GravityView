@@ -315,6 +315,7 @@ class GravityView_frontend {
 			'view_id' => $view_meta['id'],
 			'fields'  => $dir_fields,
 			'hide_empty_fields' => $hide_empty_fields,
+			'atts' => $view_meta['atts'],
 		));
 
 		// check if user requests single entry

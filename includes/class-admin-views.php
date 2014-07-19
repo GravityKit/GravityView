@@ -43,8 +43,60 @@ class GravityView_Admin_Views {
 		// Add Connected Form column
 		add_filter('manage_gravityview_posts_columns' , array( $this, 'add_post_type_columns' ) );
 
+		add_filter( 'gform_toolbar_menu', array( 'GravityView_Admin_Views', 'gform_toolbar_menu' ), 10, 2 );
+
 		add_action( 'manage_gravityview_posts_custom_column', array( $this, 'add_connected_form_column_content'), 10, 2 );
 
+	}
+
+
+	/**
+	 * Add a GravityView menu to the Form Toolbar with connected views
+	 * @param  array  $menu_items Menu items, as set in GFForms::top_toolbar()
+	 * @param  int $id         ID of the current Gravity form
+	 * @return array            Modified array
+	 */
+	static function gform_toolbar_menu( $menu_items = array(), $id = NULL ) {
+
+		$connected_views = gravityview_get_connected_views( $id );
+
+		if( empty( $connected_views ) ) {
+			return $menu_items;
+		}
+
+		// This needs to be here to trigger Gravity Forms to use the submenu;
+		// If there's only submenu item, it replaces the main menu link with the submenu item.
+		$sub_menu_items = array(
+			array(
+				'url' => '#',
+				'label' => '',
+				'menu_class' => 'hidden',
+				'capabilities' => '',
+			)
+		);
+
+		foreach ( (array)$connected_views as $view ) {
+			$sub_menu_items[] = array(
+				'url' => admin_url( 'post.php?action=edit&post='.$view->ID ),
+				'label' => esc_attr( $view->post_title ),
+				'capabilities' => current_user_can( 'edit_post', $view->ID ),
+			);
+		}
+
+		$menu_items['gravityview'] = array(
+			'label' 			=> __( 'Connected Views', 'gravity-view' ),
+			'icon' 			=> '<i class="fa fa-lg gv-icon-astronaut-head gv-icon"></i>',
+			'title'				=> __('GravityView Views using this form as a data source', 'gravityforms'),
+			'url' 				=> '#',
+			'onclick'			=> 'return false;',
+			'menu_class' 		=> 'gv_connected_forms gf_form_toolbar_settings',
+			'link_class' 		=> ( 1 === 1 ? '' : 'gf_toolbar_disabled' ),
+			'sub_menu_items' 	=> $sub_menu_items,
+			'capabilities' 		=> array(),
+			'priority'			=> 0
+		);
+
+		return $menu_items;
 	}
 
 	/**
@@ -848,7 +900,7 @@ class GravityView_Admin_Views {
 		global $plugin_page;
 
 		// Add the GV font (with the Astronaut)
-		wp_enqueue_style( 'gravityview_fonts', plugins_url('includes/css/admin-fonts.css', GRAVITYVIEW_FILE), array() );
+		wp_enqueue_style( 'gravityview_global', plugins_url('includes/css/admin-global.css', GRAVITYVIEW_FILE), array() );
 
 		wp_register_script( 'gravityview-jquery-cookie', plugins_url('includes/lib/jquery-cookie/jquery.cookie.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
 
@@ -918,7 +970,7 @@ class GravityView_Admin_Views {
 			'sack', 'gform_gravityforms', 'gform_forms', 'gform_form_admin', 'jquery-ui-autocomplete' );
 			$registered = array_merge( $registered, $allow_scripts );
 		} elseif( preg_match('/style/ism', $filter ) ) {
-			$allow_styles = array( 'dashicons', 'wp-jquery-ui-dialog', 'gravityview_views_styles', 'gravityview_fonts', 'gravityview_views_datepicker' );
+			$allow_styles = array( 'dashicons', 'wp-jquery-ui-dialog', 'gravityview_views_styles', 'gravityview_global', 'gravityview_views_datepicker' );
 			$registered = array_merge( $registered, $allow_styles );
 		}
 

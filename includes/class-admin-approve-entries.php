@@ -340,13 +340,15 @@ class GravityView_Admin_ApproveEntries {
 	function add_scripts_and_styles( $hook ) {
 
 		if( !class_exists( 'RGForms' ) ) {
+
+			do_action( 'gravityview_log_error', 'GravityView_Admin_ApproveEntries[add_scripts_and_styles] RGForms does not exist.' );
+
 			return;
 		}
 
-
 		// enqueue styles & scripts gf_entries
 		// But only if we're on the main Entries page, not on reports pages
-		if( 'forms_page_gf_entries' == $hook && ( empty($_GET['view']) || $_GET['view'] === 'entries' ) ) {
+		if( RGForms::get_page() === 'entry_list' ) {
 
 			$form_id = RGForms::get('id');
 

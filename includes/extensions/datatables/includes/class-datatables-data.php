@@ -109,6 +109,7 @@ class GV_Extension_DataTables_Data {
 			'fields'  => $dir_fields,
 			'context' => 'directory',
 			'post_id' => ( isset( $_POST['post_id'] ) ? $_POST['post_id'] : '' ),
+			'atts' => $atts,
 		) );
 
 		// build output data

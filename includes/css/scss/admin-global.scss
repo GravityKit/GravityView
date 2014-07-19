@@ -72,5 +72,34 @@
 }
 
 
+// Form Toolbar for connected views
+#gf_form_toolbar .gv_connected_forms {
+
+	.gv-icon {
+		font-size: 19px;
+		margin-top: -.5em;
+		line-height: 0.5em;
+		display: inline-block;
+	}
+
+	.hidden {
+		display: none!important;
+	}
+
+	.gf_submenu {
+		min-width: 150px;
+		max-width: 100%;
+	}
+
+	li a {
+		// Important is necessary because we're dealing with overriding
+		// ul#gf_form_toolbar_links .gf_submenu ul li a
+		padding: .5em .75em!important;
+		display: block;
+		width: auto;
+	}
+}
+
+
 
 

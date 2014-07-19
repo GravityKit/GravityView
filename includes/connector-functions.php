@@ -308,6 +308,23 @@ if( !function_exists( 'gravityview_has_shortcode_r') ) {
 	}
 }
 
+/**
+ * Get the views for a particular form
+ * @param  int $form_id Gravity Forms form ID
+ * @return array          Array with view details
+ */
+function gravityview_get_connected_views( $form_id ) {
+
+	$views = get_posts(array(
+		'post_type' => 'gravityview',
+		'posts_per_page' => -1,
+		'meta_key' => '_gravityview_form_id',
+		'meta_value' => (int)$form_id,
+	));
+
+	return $views;
+}
+
 function gravityview_get_form_id( $post_id ) {
 	return get_post_meta( $post_id, '_gravityview_form_id', true );
 }
