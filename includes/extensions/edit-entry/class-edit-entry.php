@@ -51,10 +51,10 @@ class GravityView_Edit_Entry {
 		}
 	}
 
-	function setup_vars() {
+	function setup_vars( $entry = null ) {
 		global $gravityview_view;
 
-		$this->entry = $gravityview_view->entries[0];
+		$this->entry = empty( $entry ) ? $gravityview_view->entries[0] : $entry;
 		$this->form = $gravityview_view->form;
 		$this->form_id = $gravityview_view->form_id;
 		$this->view_id = $gravityview_view->view_id;
@@ -78,9 +78,7 @@ class GravityView_Edit_Entry {
 	static function get_edit_link( $entry, $field ) {
 		global $gravityview_view;
 
-		if( empty( self::$nonce_key ) ) {
-			self::getInstance()->setup_vars();
-		}
+		self::getInstance()->setup_vars( $entry );
 
 		$base = gv_entry_link( $entry, $field );
 
@@ -140,7 +138,7 @@ class GravityView_Edit_Entry {
 	function add_available_field( $available_fields = array() ) {
 
 		$available_fields['edit_link'] = array(
-			'label_text' => __( 'Edit Entry Link', 'gravity-view' ),
+			'label_text' => __( 'Edit Entry', 'gravity-view' ),
 			'field_id' => 'edit_link',
 			'label_type' => 'field',
 			'input_type' => 'edit_link',
@@ -472,7 +470,7 @@ class GravityView_Edit_Entry {
 			    echo $this->generate_notice( $message , 'gv-error' );
 
 			} else {
-				echo $this->generate_notice( __('Entry Updated', 'gravity-view') );
+				echo $this->generate_notice( sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravity-view'), '<a href="'.$back_link.'">', '</a>' ) );
 			}
 
 		}

@@ -18,6 +18,7 @@ Beautifully display your Gravity Forms entries.
 
 = 1.0.10 =
 * Added: "Connected Views" in the Gravity Forms Toolbar. This makes it simple to see which Views are using the current form as a data source.
+* Fixed: Edit Entry link in Multiple Entries view
 
 = 1.0.9 on July 18 =
 * Added: Time field support, with date format default and options
