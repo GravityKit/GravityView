@@ -44,6 +44,10 @@ class GravityView_Widget_Pagination_Info extends GravityView_Widget {
 		$page_size = $gravityview_view->paging['page_size'];
 		$total = $gravityview_view->total_entries;
 
+		if( empty( $total ) ) {
+			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: No entries.', get_class($this)) );
+			return;
+		}
 
 		// displaying info
 		if( $total == 0 ) {
@@ -117,7 +121,7 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 
 		$page_links = paginate_links( $page_links );
 
-		if(!empty($page_links)) {
+		if( !empty( $page_links )) {
 			echo '<div class="gv-widget-page-links">'. $page_links .'</div>';
 		}
 
