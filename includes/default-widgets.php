@@ -258,7 +258,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		$output = '';
 
 		if( $search_filters = $this->get_search_filters() ) {
-			$form = gravityview_get_form( $gravityview_view->form_id );
+			$form = $gravityview_view->form;
 			foreach( $search_filters as $filter ) {
 				$field = gravityview_get_field( $form, $filter['key'] );
 
@@ -382,7 +382,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		// get configured search filters (fields)
 		$search_filters = array();
 		$view_fields = $gravityview_view->fields;
-		$form = gravityview_get_form( $gravityview_view->form_id );
+		$form = $gravityview_view->form;
 
 		if( !empty( $view_fields ) && is_array( $view_fields ) ) {
 			foreach( $view_fields as $t => $fields ) {

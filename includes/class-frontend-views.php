@@ -141,8 +141,7 @@ class GravityView_frontend {
 
 		if( !empty( $view_meta['atts']['single_title'] ) ) {
 			// We are allowing HTML in the fields, so no escaping the output
-			$form = empty( $view_meta['form'] ) ? gravityview_get_form( $view_meta['form_id'] ) : $view_meta['form'];
-			$title = GravityView_API::replace_variables( $view_meta['atts']['single_title'], $form, $this->entry );
+			$title = GravityView_API::replace_variables( $view_meta['atts']['single_title'], $view_meta['form'], $this->entry );
 		}
 
 		return $title;

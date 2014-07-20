@@ -57,14 +57,17 @@ class GravityView_View_Data {
 			return self::$views[ $view_id ];
 		}
 
+		$form_id = gravityview_get_form_id( $view_id );
+
 		$data = array(
 			'id' => $view_id,
 			'view_id' => $view_id,
-			'form_id' => gravityview_get_form_id( $view_id ),
+			'form_id' => $form_id,
 			'template_id' => gravityview_get_template_id( $view_id ),
 			'atts' => gravityview_get_template_settings( $view_id ),
 			'fields' => self::get_fields( $view_id ),
 			'widgets' => get_post_meta( $view_id, '_gravityview_directory_widgets', true ),
+			'form' => gravityview_get_form( $form_id ),
 		);
 
 		self::$views[ $view_id ] = $data;

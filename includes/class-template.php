@@ -40,12 +40,8 @@ class GravityView_View extends Gamajo_Template_Loader {
 			'fields'  => NULL,
 			'context' => NULL,
 			'post_id' => NULL,
+			'form'    => NULL,
 		) );
-
-		// store form if not defined yet
-		if( !array_key_exists( 'form', $atts ) && !empty( $atts['form_id'] ) ) {
-			$atts['form'] = gravityview_get_form( $atts['form_id'] );
-		}
 
 		foreach ($atts as $key => $value) {
 			$this->{$key} = $value;
