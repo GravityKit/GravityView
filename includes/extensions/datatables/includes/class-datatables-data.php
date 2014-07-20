@@ -58,10 +58,10 @@ class GV_Extension_DataTables_Data {
 			GravityView_Plugin::getInstance()->frontend_actions();
 		}
 
-		$atts = array();
+		$GravityView_View_Data = new GravityView_View_Data;
 
 		// build Render View attributes array
-		$view_data = GravityView_View_Data::add_view( (int)$_POST['view_id'] );
+		$view_data = $GravityView_View_Data->add_view( (int)$_POST['view_id'] );
 
 		$atts = $view_data['atts'];
 
