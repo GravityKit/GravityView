@@ -372,7 +372,7 @@ function gravityview_get_view_meta( $post ) {
 		foreach ($shortcodes as $key => $shortcode) {
 
 			// GravityView_frontend may not always be available, since connector-functions.php is loaded before the GravityView_Plugin class is defined.
-			$defaults = class_exists('GravityView_frontend') ? GravityView_Output::get_default_args() : array();
+			$defaults = class_exists('GravityView_View_Data') ? GravityView_View_Data::get_default_args() : array();
 
 			// Get the settings from the shortcode and merge them with defaults.
 			$shortcode_atts = wp_parse_args( shortcode_parse_atts( $shortcode[3] ), $defaults );

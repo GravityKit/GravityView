@@ -48,10 +48,10 @@ class GravityView_frontend {
 		$this->single_entry = self::is_single_entry();
 		$this->is_gravityview_post_type = ( get_post_type( $post ) === 'gravityview' );
 
-		self::$gv_output_data = new GravityView_Output( $post->post_content );
+		self::$gv_output_data = new GravityView_View_Data( $post );
 	}
 
-	private static function r( $content = '', $die = false, $title ='') {
+	static function r( $content = '', $die = false, $title ='') {
 		if( !empty($title)) { echo "<h3>{$title}</h3>"; }
 		echo '<pre>'; print_r($content); echo '</pre>';
 		if($die) { die(); }
@@ -176,7 +176,10 @@ class GravityView_frontend {
 		if( is_admin() ) { return $content; }
 
 		if( $this->is_gravityview_post_type ) {
-			foreach (self::$gv_output_data->views as $view_id => $data ) {
+			$output_data = self::$gv_output_data;
+
+			foreach ( $output_data::$views as $view_id => $data ) {
+
 				$content .= $this->render_view( array( 'id' => $view_id ) );
 			}
 		}
@@ -234,7 +237,7 @@ class GravityView_frontend {
 		$passed_args = array_filter( $passed_args, 'strlen' );
 
 		//Override shortcode args over View template settings
-		$atts = wp_parse_args( $passed_args, $view_data->atts );
+		$atts = wp_parse_args( $passed_args, $view_data['atts'] );
 
 		do_action( 'gravityview_log_debug', '[render_view] Arguments after merging with View settings: ', $atts );
 
@@ -268,10 +271,10 @@ class GravityView_frontend {
 			do_action( 'gravityview_log_debug', '[render_view] Executing Directory View' );
 
 			//fetch template and slug
-			$view_slug =  apply_filters( 'gravityview_template_slug_'. $view_data->template_id, 'table', 'directory' );
+			$view_slug =  apply_filters( 'gravityview_template_slug_'. $view_data['template_id'], 'table', 'directory' );
 			do_action( 'gravityview_log_debug', '[render_view] View template slug: ', $view_slug );
 
-			$view_entries = self::get_view_entries( $atts, $view_data->form_id );
+			$view_entries = self::get_view_entries( $atts, $view_data['form_id'] );
 
 			do_action( 'gravityview_log_debug', sprintf( '[render_view] Get Entries. Found %s entries', $view_entries['count'] ) );
 
@@ -286,7 +289,7 @@ class GravityView_frontend {
 			$entry = gravityview_get_entry( $this->single_entry );
 
 			// We're in single view, but the view being processed is not the same view the single entry belongs to.
-			if( $view_data->form_id !== $entry['form_id'] ) {
+			if( $view_data['form_id'] !== $entry['form_id'] ) {
 
 				$view_id = isset( $view_entries['entries'][0]['id'] ) ? $view_entries['entries'][0]['id'] : '(empty)';
 				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '. $view_id);
@@ -294,7 +297,7 @@ class GravityView_frontend {
 			}
 
 			//fetch template and slug
-			$view_slug =  apply_filters( 'gravityview_template_slug_'. $view_data->template_id, 'table', 'single' );
+			$view_slug =  apply_filters( 'gravityview_template_slug_'. $view_data['template_id'], 'table', 'single' );
 			do_action( 'gravityview_log_debug', '[render_view] View single template slug: ', $view_slug );
 
 			//fetch entry detail
@@ -311,7 +314,7 @@ class GravityView_frontend {
 		}
 
 		// add template style
-		self::add_style( $view_data->template_id );
+		self::add_style( $view_data['template_id'] );
 
 		// Prepare to render view and set vars
 		$gravityview_view->entries = $view_entries['entries'];
@@ -327,7 +330,7 @@ class GravityView_frontend {
 		} else {
 
 			// finaly we'll render some html
-			$sections = apply_filters( 'gravityview_render_view_sections', $sections, $view_data->template_id );
+			$sections = apply_filters( 'gravityview_render_view_sections', $sections, $view_data['template_id'] );
 			do_action( 'gravityview_log_debug', '[render_view] Sections to render: ', $sections );
 			foreach( $sections as $section ) {
 				do_action( 'gravityview_log_debug', '[render_view] Rendering '. $section . ' section.' );
@@ -579,14 +582,16 @@ class GravityView_frontend {
 		// enqueue template specific styles
 		if( !empty( self::$gv_output_data ) ) {
 
-			foreach ( self::$gv_output_data->views as $view_id => $data ) {
+			$view_data = self::$gv_output_data;
+
+			foreach ( $view_data::$views as $view_id => $data ) {
 
 				// By default, no thickbox
 				$js_dependencies = array( 'jquery', 'gravityview-jquery-cookie' );
 				$css_dependencies = array();
 
 				// If the thickbox is enqueued, add dependencies
-				if( !empty( $data->atts['lightbox'] ) ) {
+				if( !empty( $data['atts']['lightbox'] ) ) {
 					$js_dependencies[] = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
 					$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
 				}
@@ -598,7 +603,7 @@ class GravityView_frontend {
 
 				wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), $css_dependencies, GravityView_Plugin::version, 'all' );
 
-				self::add_style( $data->template_id );
+				self::add_style( $data['template_id'] );
 
 			}
 		}
@@ -634,7 +639,7 @@ new GravityView_frontend;
 function get_gravityview( $view_id = '', $atts = array() ) {
 	if( !empty( $view_id ) ) {
 		$atts['id'] = $view_id;
-		$args = wp_parse_args( $atts, GravityView_Output::get_default_args() );
+		$args = wp_parse_args( $atts, GravityView_View_Data::get_default_args() );
 		$GravityView_frontend = new GravityView_frontend;
 		return $GravityView_frontend->render_view( $args );
 	}

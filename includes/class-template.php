@@ -74,6 +74,8 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		$template_file = $this->get_template_part( $slug, $name, false );
 
+		do_action( 'gravityview_log_debug', '[render] Rendering Template File', $template_file );
+
 		if( !empty( $template_file) ) {
 
 			if ( $require_once ) {
@@ -91,10 +93,12 @@ class GravityView_View extends Gamajo_Template_Loader {
 			return;
 		}
 
+		$view_data = GravityView_frontend::$gv_output_data->get_view( $view_id );
+
 		wp_enqueue_style( 'gravityview_default_style');
 
 		// get View widget configuration
-		$widgets = get_post_meta( $view_id, '_gravityview_directory_widgets', true );
+		$widgets = $view_data['widgets'];
 
 		$rows = GravityView_Plugin::get_default_widget_areas();
 
