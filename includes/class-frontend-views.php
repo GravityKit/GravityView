@@ -28,29 +28,6 @@ class GravityView_frontend {
 
 		add_action('add_admin_bar_menus', array($this, 'admin_bar_remove_links'), 80 );
 		add_action('admin_bar_menu', array($this, 'admin_bar_add_links'), 85 );
-		add_filter('get_edit_post_link', array($this, 'edit_post_link_filter') );
-	}
-
-	/**
-	 * Modify the "Edit" link many templates add. This way it matches user expectations.
-	 * @param  string      $url  Existing URL
-	 * @return string            Modified URL
-	 */
-	function edit_post_link_filter( $url ) {
-
-		if( is_admin() ) { return $url; }
-
-		$entry_id = self::is_single_entry();
-
-		if( !empty( $entry_id ) ) {
-
-			// We need the attached form ID as well...
-			$entry = gravityview_get_entry( $entry_id );
-
-			$url = admin_url( sprintf('admin.php?page=gf_entries&amp;view=entry&amp;id=%d&lid=%d', $entry['form_id'], $entry_id ) );
-		}
-
-		return $url;
 	}
 
 	/**
@@ -61,8 +38,6 @@ class GravityView_frontend {
 	 */
 	function admin_bar_add_links() {
 		global $wp_admin_bar, $post, $wp, $wp_the_query;
-
-		if( is_admin() ) { return; }
 
 		$entry_id = self::is_single_entry();
 
