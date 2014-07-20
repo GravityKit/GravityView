@@ -19,6 +19,9 @@ if (!class_exists('GravityView_Settings')) {
 
 			if( !gravityview_is_admin_page() ) { return; }
 
+			// Disable Redux tracking script
+			update_option( 'redux-framework-tracking', array( 'allow_tracking' => false ) );
+
 			// Add the EDD extension to Redux
 			add_action( "redux/extensions/gravityview_settings", array($this, 'register_edd_extension') );
 
@@ -59,8 +62,7 @@ if (!class_exists('GravityView_Settings')) {
 
 		public function initSettings() {
 
-			// Disable Redux tracking script
-			update_option( 'redux-framework-tracking', array( 'allow_tracking' => false ) );
+			if( !is_admin() ) { return; }
 
 			// Set the default arguments
 			$this->setArguments();
