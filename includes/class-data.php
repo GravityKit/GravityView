@@ -58,6 +58,7 @@ class GravityView_View_Data {
 		}
 
 		$data = array(
+			'id' => $view_id,
 			'view_id' => $view_id,
 			'form_id' => gravityview_get_form_id( $view_id ),
 			'template_id' => gravityview_get_template_id( $view_id ),
@@ -157,7 +158,7 @@ class GravityView_View_Data {
 			$shortcode_atts = wp_parse_args( shortcode_parse_atts( $shortcode[3] ), self::get_default_args() );
 
 			if( empty( $shortcode_atts['id'] ) ) {
-				do_action('gravityview_log_error', sprintf( '[gravityview_get_view_meta] Returning; no ID defined in shortcode atts for Post #%s (Atts)', $post->ID ), $shortcode_atts );
+				do_action('gravityview_log_error', sprintf( 'GravityView_View_Data[parse_post_content] Returning; no ID defined in shortcode atts for Post #%s (Atts)', $post->ID ), $shortcode_atts );
 				return false;
 			}
 

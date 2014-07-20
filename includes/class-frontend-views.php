@@ -46,6 +46,7 @@ class GravityView_frontend {
 		if( is_admin() ) { return; }
 
 		$this->single_entry = self::is_single_entry();
+		$this->entry = ( $this->single_entry ) ? gravityview_get_entry( $this->single_entry ) : false;
 		$this->is_gravityview_post_type = ( get_post_type( $post ) === 'gravityview' );
 
 		self::$gv_output_data = new GravityView_View_Data( $post );
@@ -68,13 +69,10 @@ class GravityView_frontend {
 
 		if( GFCommon::current_user_can_any('gravityforms_edit_entries') && !empty( $this->single_entry ) ) {
 
-			// We need the attached form ID as well...
-			$entry = gravityview_get_entry( $this->single_entry );
-
 			$wp_admin_bar->add_menu( array(
 				'id' => 'edit-entry',
 				'title' => __('Edit Entry', 'gravity-view'),
-				'href' => admin_url( sprintf('admin.php?page=gf_entries&amp;view=entry&amp;id=%d&lid=%d', $entry['form_id'], $this->single_entry ) ),
+				'href' => admin_url( sprintf('admin.php?page=gf_entries&amp;view=entry&amp;id=%d&lid=%d', $this->entry['form_id'], $this->single_entry ) ),
 			) );
 
 		}
@@ -138,16 +136,13 @@ class GravityView_frontend {
 			return $title;
 		}
 
-		$view_meta = gravityview_get_view_meta( $passed_post_id );
+		$gv_output_data = self::$gv_output_data;
+		$view_meta = $gv_output_data::get_view( $passed_post_id );
 
 		if( !empty( $view_meta['atts']['single_title'] ) ) {
-
 			// We are allowing HTML in the fields, so no escaping the output
-			$title = $view_meta['atts']['single_title'];
-			$entry = gravityview_get_entry( $this->single_entry );
-			$form = gravityview_get_form( $view_meta['form_id'] );
-
-			$title = GravityView_API::replace_variables( $title, $form, $entry );
+			$form = empty( $view_meta['form'] ) ? gravityview_get_form( $view_meta['form_id'] ) : $view_meta['form'];
+			$title = GravityView_API::replace_variables( $view_meta['atts']['single_title'], $form, $this->entry );
 		}
 
 		return $title;

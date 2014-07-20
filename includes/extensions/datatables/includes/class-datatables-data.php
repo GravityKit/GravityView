@@ -61,11 +61,9 @@ class GV_Extension_DataTables_Data {
 		$atts = array();
 
 		// build Render View attributes array
-		$view_meta = gravityview_get_view_meta( (int)$_POST['view_id'] );
+		$view_data = GravityView_View_Data::add_view( (int)$_POST['view_id'] );
 
-		$atts = $view_meta['atts'];
-
-		$atts['id'] = $view_meta['id'];
+		$atts = $view_data['atts'];
 
 		// check for order/sorting
 		if( isset( $_POST['order'][0]['column'] ) ) {
@@ -87,9 +85,7 @@ class GV_Extension_DataTables_Data {
 		$atts['offset'] = isset( $_POST['start'] ) ? intval( $_POST['start'] ) : 0;
 
 		// prepare to get entries
-		$atts = wp_parse_args( $atts, GravityView_frontend::get_default_args() );
-		$dir_fields = gravityview_get_directory_fields( $atts['id'] );
-
+		$atts = wp_parse_args( $atts, GravityView_View_Data::get_default_args() );
 
 		// check if someone requested the full filtered data (eg. TableTools print button)
 		if( $atts['page_size'] == '-1' ) {
@@ -100,13 +96,13 @@ class GV_Extension_DataTables_Data {
 			$mode = 'page';
 		}
 
-		$view_entries = GravityView_frontend::get_view_entries( $atts, $view_meta['form_id'] );
+		$view_entries = GravityView_frontend::get_view_entries( $atts, $view_data['form_id'] );
 
 		global $gravityview_view;
 		$gravityview_view = new GravityView_View( array(
-			'form_id' => $view_meta['form_id'],
+			'form_id' => $view_data['form_id'],
 			'view_id' => $atts['id'],
-			'fields'  => $dir_fields,
+			'fields'  => $view_data['fields'],
 			'context' => 'directory',
 			'post_id' => ( isset( $_POST['post_id'] ) ? $_POST['post_id'] : '' ),
 			'atts' => $atts,
@@ -121,8 +117,8 @@ class GV_Extension_DataTables_Data {
 			do {
 				foreach( $view_entries['entries'] as $entry ) {
 					$temp = array();
-					if( !empty(  $dir_fields['directory_table-columns'] ) ) {
-						foreach( $dir_fields['directory_table-columns'] as $field ) {
+					if( !empty(  $view_data['fields']['directory_table-columns'] ) ) {
+						foreach( $view_data['fields']['directory_table-columns'] as $field ) {
 							$temp[] = gv_value( $entry, $field );
 						}
 					}
@@ -133,7 +129,7 @@ class GV_Extension_DataTables_Data {
 				//prepare for one more loop (in case)
 				if( 'all' === $mode && $i < $total ) {
 					$atts['offset'] = $view_entries['paging']['offset'] + $atts['page_size'];
-					$view_entries = GravityView_frontend::get_view_entries( $atts, $view_meta['form_id'] );
+					$view_entries = GravityView_frontend::get_view_entries( $atts, $view_data['form_id'] );
 				}
 
 			} while( 'all' === $mode && $view_entries['count'] > 0 && $i < $total );
@@ -177,14 +173,15 @@ class GV_Extension_DataTables_Data {
 			return;
 		}
 
-		$view_meta = gravityview_get_view_meta( $post );
+		// build Render View attributes array
+		$view_data = GravityView_View_Data::add_view( $post->ID );
 
-		if( empty( $view_meta['id'] ) ) {
+		if( empty( $view_data['id'] ) ) {
 			do_action( 'gravityview_log_error', 'GV_Extension_DataTables_Data[add_scripts_and_styles] Returning; no ID defined.');
 		}
 
 		// is the View requested a Datatables view ?
-		if( empty( $view_meta['template_id'] ) || 'datatables_table' !== $view_meta['template_id'] ) {
+		if( empty( $view_data['template_id'] ) || 'datatables_table' !== $view_data['template_id'] ) {
 			do_action( 'gravityview_log_debug', 'GV_Extension_DataTables_Data[add_scripts_and_styles] DataTables view not requested.');
 			return;
 		}
@@ -207,7 +204,7 @@ class GV_Extension_DataTables_Data {
 				'type' => 'POST',
 				'data' => array(
 					'action' => 'gv_datatables_data',
-					'view_id' => $view_meta['id'],
+					'view_id' => $view_data['id'],
 					'post_id' => $post->ID,
 					'nonce' => wp_create_nonce( 'gravityview_datatables_data' ),
 				),
@@ -215,32 +212,30 @@ class GV_Extension_DataTables_Data {
 		);
 
 		// page size, if defined
-		if( !empty( $view_meta['atts']['page_size'] ) && is_numeric( $view_meta['atts']['page_size'] ) ) {
-			$dt_config['pageLength'] = intval( $view_meta['atts']['page_size'] );
+		if( !empty( $view_data['atts']['page_size'] ) && is_numeric( $view_data['atts']['page_size'] ) ) {
+			$dt_config['pageLength'] = intval( $view_data['atts']['page_size'] );
 		}
 
-		// get View directory active fields to init columns
-		$dir_fields = gravityview_get_directory_fields( $view_meta['id'] );
 		$columns = array();
-		if( !empty( $dir_fields['directory_table-columns'] ) ) {
-			foreach( $dir_fields['directory_table-columns'] as $field ) {
+		if( !empty( $view_data['fields']['directory_table-columns'] ) ) {
+			foreach( $view_data['fields']['directory_table-columns'] as $field ) {
 				$columns[] = array( 'name' => 'gv_' . $field['id'] );
 			}
 			$dt_config['columns'] = $columns;
 		}
 
 		// set default order
-		if( !empty( $view_meta['atts']['sort_field'] ) ) {
+		if( !empty( $view_data['atts']['sort_field'] ) ) {
 			foreach ( $columns as $key => $column ) {
-				if( $column['name'] === 'gv_'. $view_meta['atts']['sort_field'] ) {
-					$dir = !empty( $view_meta['atts']['sort_direction'] ) ? $view_meta['atts']['sort_direction'] : 'asc';
+				if( $column['name'] === 'gv_'. $view_data['atts']['sort_field'] ) {
+					$dir = !empty( $view_data['atts']['sort_direction'] ) ? $view_data['atts']['sort_direction'] : 'asc';
 					$dt_config['order'] = array( array( $key, strtolower( $dir ) ) );
 				}
 			}
 		}
 
 		// filter init DataTables options
-		$dt_config = apply_filters( 'gravityview_datatables_js_options', $dt_config, $view_meta['id'], $post );
+		$dt_config = apply_filters( 'gravityview_datatables_js_options', $dt_config, $view_data['id'], $post );
 
 		do_action('gravityview_log_debug', 'GV_Extension_DataTables_Data[add_scripts_and_styles] DataTables configuration: ', $dt_config );
 
@@ -263,7 +258,7 @@ class GV_Extension_DataTables_Data {
 		wp_localize_script( 'gv-datatables-cfg', 'gvDTglobals', $dt_config );
 
 		// Extend datatables by including other scripts and styles
-		do_action( 'gravityview_datatables_scripts_styles', $dt_config, $view_meta['id'], $post );
+		do_action( 'gravityview_datatables_scripts_styles', $dt_config, $view_data['id'], $post );
 
 
 	} // end add_scripts_and_styles
