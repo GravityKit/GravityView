@@ -106,6 +106,7 @@ final class GravityView_Plugin {
 		require_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
 		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/class-data.php' );
 
 		// Load Extensions
 		// TODO: Convert to a scan of the directory or a method where this all lives

@@ -289,6 +289,9 @@ if( !function_exists( 'gravityview_has_shortcode_r') ) {
 		}
 
 		if ( shortcode_exists( $tag ) ) {
+
+			$shortcodes = array();
+
 			preg_match_all( '/' . get_shortcode_regex() . '/s', $content, $matches, PREG_SET_ORDER );
 			if ( empty( $matches ) )
 				return false;
@@ -297,12 +300,13 @@ if( !function_exists( 'gravityview_has_shortcode_r') ) {
 				if ( $tag === $shortcode[2] ) {
 
 					// Changed this to $shortcode instead of true so we get the parsed atts.
-					return $shortcode;
+					$shortcodes[] = $shortcode;
 
 				} else if ( isset( $shortcode[5] ) && $result = gravityview_has_shortcode_r( $shortcode[5], $tag ) ) {
-					return $result;
+					$shortcodes[] = $result;
 				}
 			}
+			return $shortcodes;
 		}
 		return false;
 	}
@@ -363,24 +367,32 @@ function gravityview_get_view_meta( $post ) {
 	// Shortcode or direct View
 	if( 'gravityview' === get_post_type( $post ) ) {
 		$post_id = $post->ID;
-	} else if( $shortcode = has_gravityview_shortcode( $post ) ) {
+	} else if( $shortcodes = has_gravityview_shortcode( $post ) ) {
 
-		// GravityView_frontend may not always be available, since connector-functions.php is loaded before the GravityView_Plugin class is defined.
-		$defaults = class_exists('GravityView_frontend') ? GravityView_frontend::get_default_args() : array();
+		foreach ($shortcodes as $key => $shortcode) {
 
-		// Get the settings from the shortcode and merge them with defaults.
-		$shortcode_atts = wp_parse_args( shortcode_parse_atts( $shortcode[3] ), $defaults );
+			// GravityView_frontend may not always be available, since connector-functions.php is loaded before the GravityView_Plugin class is defined.
+			$defaults = class_exists('GravityView_frontend') ? GravityView_Output::get_default_args() : array();
 
-		if( empty( $shortcode_atts['id'] ) ) {
-			do_action('gravityview_log_error', sprintf( '[gravityview_get_view_meta] Returning; no ID defined in shortcode atts for Post #%s (Atts)', $post->ID ), $shortcode_atts );
-			return false;
+			// Get the settings from the shortcode and merge them with defaults.
+			$shortcode_atts = wp_parse_args( shortcode_parse_atts( $shortcode[3] ), $defaults );
+
+			if( empty( $shortcode_atts['id'] ) ) {
+				do_action('gravityview_log_error', sprintf( '[gravityview_get_view_meta] Returning; no ID defined in shortcode atts for Post #%s (Atts)', $post->ID ), $shortcode_atts );
+				return false;
+			}
+
+			$post_id = $shortcode_atts['id'];
+
+			// The passed args were always winning, even if they were NULL.
+			// This prevents that. Filters NULL, FALSE, and empty strings.
+			$item['shortcode_atts'] = array_filter( $shortcode_atts, 'strlen' );
+			$item['id'] = $post_id;
+			$item['form_id'] = gravityview_get_form_id( $post_id );
+			$item['template_id'] = gravityview_get_template_id( $post_id );
+			$item['atts'] = gravityview_get_template_settings( $post_id );
+			$output[] = $item;
 		}
-
-		$post_id = $shortcode_atts['id'];
-
-		// The passed args were always winning, even if they were NULL.
-		// This prevents that. Filters NULL, FALSE, and empty strings.
-		$output['shortcode_atts'] = array_filter( $shortcode_atts, 'strlen' );
 
 	} else {
 		do_action('gravityview_log_error', '[gravityview_get_view_meta] Not GravityView type and no shortcode found.');

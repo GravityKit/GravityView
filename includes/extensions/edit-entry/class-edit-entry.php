@@ -31,6 +31,9 @@ class GravityView_Edit_Entry {
 		// For the Edit Entry Link, you don't want visible to all users.
 		add_filter( 'gravityview_field_visibility_caps', array( $this, 'modify_visibility_caps'), 10, 5 );
 
+		// Add fields expected by GFFormDisplay::validate()
+		add_filter( 'gform_pre_validation', array( $this, 'gform_pre_validation') );
+
 		// Modify the field options based on the name of the field type
 		add_filter( 'gravityview_template_edit_link_options', array( $this, 'field_options' ), 10, 5 );
 
@@ -326,6 +329,27 @@ class GravityView_Edit_Entry {
 		}
 	}
 
+	/**
+	 * Add field keys that Gravity Forms expects.
+	 *
+	 * @param  array $form GF Form
+	 * @return array       Modified GF Form
+	 */
+	function gform_pre_validation( $form ) {
+
+		if( !self::verify_nonce() ) {
+			return $form;
+		}
+
+		// Fix PHP warning regarding undefined index.
+		// This may have only been necessary for Mass Import Entries...
+		foreach ($form['fields'] as &$field) {
+			$field['noDuplicates'] = isset( $field['noDuplicates'] ) ? $field['noDuplicates'] : NULL;
+		}
+
+		return $form;
+	}
+
 	function validate( ) {
 		/**
 		 * For some crazy reason, Gravity Forms doesn't validate Edit Entry form submissions.
@@ -396,7 +420,13 @@ class GravityView_Edit_Entry {
 	 */
 	function verify_nonce() {
 
-		if( empty( $_GET['edit'] ) ) { return false; }
+		// Verify form submitted for editing single
+		if( !empty( $_POST['is_gv_edit_entry'] ) ) {
+			return wp_verify_nonce( $_POST['is_gv_edit_entry'], 'is_gv_edit_entry' );
+		}
+
+		// Verify
+		if( !self::is_edit_entry() ) { return false; }
 
 		return wp_verify_nonce( $_GET['edit'], self::$nonce_key );
 
@@ -465,7 +495,7 @@ class GravityView_Edit_Entry {
 
 				// Keeping this compatible with Gravity Forms.
 			    $validation_message = "<div class='validation_error'>" . __("There was a problem with your submission.", "gravity-view") . " " . __("Errors have been highlighted below.", "gravity-view") . "</div>";
-			    $message .= apply_filters("gform_validation_message_{$this->form["id"]}", apply_filters("gform_validation_message", $validation_message, $this->form), $this->form);
+			    $message = apply_filters("gform_validation_message_{$this->form["id"]}", apply_filters("gform_validation_message", $validation_message, $this->form), $this->form);
 
 			    echo $this->generate_notice( $message , 'gv-error' );
 
