@@ -176,7 +176,7 @@ class GravityView_frontend {
 		if( is_admin() ) { return $content; }
 
 		if( $this->is_gravityview_post_type ) {
-			foreach (self::$gv_output_data as $view_id => $data ) {
+			foreach (self::$gv_output_data->views as $view_id => $data ) {
 				$content .= $this->render_view( array( 'id' => $view_id ) );
 			}
 		}
@@ -231,13 +231,10 @@ class GravityView_frontend {
 
 		// The passed args were always winning, even if they were NULL.
 		// This prevents that. Filters NULL, FALSE, and empty strings.
-		$atts = array_filter( $passed_args, 'strlen' );
+		$passed_args = array_filter( $passed_args, 'strlen' );
 
 		//Override shortcode args over View template settings
-		#$atts = $view_data['atts'] = wp_parse_args( $passed_args, $view_data );
-
-		// Add this so it can be passed to get_view_entries() below.
-		#$atts['id'] = $view_data['id'];
+		$atts = wp_parse_args( $passed_args, $view_data->atts );
 
 		do_action( 'gravityview_log_debug', '[render_view] Arguments after merging with View settings: ', $atts );
 
@@ -256,16 +253,13 @@ class GravityView_frontend {
 		// If not set, the default is hide empty fields.
 		$hide_empty_fields = isset( $atts['hide_empty'] ) ? !empty( $atts['hide_empty'] ) : true;
 		// Allow filtering
-		$hide_empty_fields = apply_filters( 'gravityview_hide_empty_fields', $hide_empty_fields );
-		// Per template
-		$hide_empty_fields = apply_filters( 'gravityview_hide_empty_fields_template_'.$view_data->template_id, $hide_empty_fields );
-		// And per view
-		$hide_empty_fields = apply_filters( 'gravityview_hide_empty_fields_view_'.$view_id, $hide_empty_fields );
+		$atts['hide_empty'] = apply_filters( 'gravityview_hide_empty_fields', $hide_empty_fields, $atts, $view_data );
 
 		ob_start();
 
 		// set globals for templating
 		global $gravityview_view;
+
 		$gravityview_view = new GravityView_View( $view_data );
 
 		if( empty( $this->single_entry ) ) {
@@ -580,19 +574,19 @@ class GravityView_frontend {
 	public static function add_scripts_and_styles() {
 		global $post, $posts;
 
-		foreach ($posts as $p) {
+		//foreach ($posts as $p) {
 
-			// enqueue template specific styles
-			if( has_gravityview_shortcode( $p ) ) {
+		// enqueue template specific styles
+		if( !empty( self::$gv_output_data ) ) {
 
-				$view_meta = gravityview_get_view_meta( $p );
+			foreach ( self::$gv_output_data->views as $view_id => $data ) {
 
 				// By default, no thickbox
 				$js_dependencies = array( 'jquery', 'gravityview-jquery-cookie' );
 				$css_dependencies = array();
 
 				// If the thickbox is enqueued, add dependencies
-				if( !empty( $view_meta['atts']['lightbox'] ) ) {
+				if( !empty( $data->atts['lightbox'] ) ) {
 					$js_dependencies[] = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
 					$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
 				}
@@ -604,11 +598,10 @@ class GravityView_frontend {
 
 				wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), $css_dependencies, GravityView_Plugin::version, 'all' );
 
-				self::add_style( $view_meta['template_id'] );
+				self::add_style( $data->template_id );
+
 			}
-
 		}
-
 	}
 
 	/**
@@ -659,7 +652,6 @@ function get_gravityview( $view_id = '', $atts = array() ) {
 function the_gravityview( $view_id = '', $atts = array() ) {
 	echo get_gravityview( $view_id, $atts );
 }
-
 
 
 
