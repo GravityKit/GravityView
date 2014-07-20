@@ -53,7 +53,7 @@
 					foreach( $this->fields['single_list-description'] as $field ) :
 						$value = gv_value( $entry, $field );
 
-						if( $value === '' && $this->hide_empty_fields ) { continue; }
+						if( $value === '' && $this->atts['hide_empty'] ) { continue; }
 					?>
 						<div class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php
 
@@ -74,7 +74,7 @@
 
 						$value = gv_value( $entry, $field );
 
-						if( $value === '' && $this->hide_empty_fields ) { continue; }
+						if( $value === '' && $this->atts['hide_empty'] ) { continue; }
 				?>
 						<p class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php echo esc_html( gv_label( $field, $entry ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
 					<?php endforeach; ?>
@@ -90,7 +90,7 @@
 						<?php foreach( $this->fields['single_list-footer-left'] as $field ) :
 							$value = gv_value( $entry, $field );
 
-							if( $value === '' && $this->hide_empty_fields ) { continue; }
+							if( $value === '' && $this->atts['hide_empty'] ) { continue; }
 						?>
 							<div class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php echo esc_html( gv_label( $field, $entry ) ); ?><?php echo gv_value( $entry, $field ); ?></div>
 						<?php endforeach; ?>
@@ -103,7 +103,7 @@
 
 							$value = gv_value( $entry, $field );
 
-							if( $value === '' && $this->hide_empty_fields ) { continue; }
+							if( $value === '' && $this->atts['hide_empty'] ) { continue; }
 						?>
 							<div class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php echo esc_html( gv_label( $field, $entry ) ); ?><?php echo gv_value( $entry, $field ); ?></div>
 						<?php endforeach; ?>

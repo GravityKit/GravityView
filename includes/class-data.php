@@ -4,57 +4,58 @@ class GravityView_View_Data {
 
 	static $instance = NULL;
 
-	static $views = array();
+	protected $views = array();
 
 	function __construct( $passed_post = NULL ) {
 
 		if( !empty( $passed_post ) ) {
 
+			$id = NULL;
+
 			if( $passed_post instanceof WP_Post ) {
 
 				if( ( get_post_type( $passed_post ) === 'gravityview' ) ) {
-					self::add_view( $passed_post->ID );
+					$id = $passed_post->ID;
 				} else{
-					self::parse_post_content( $passed_post->post_content );
+					$this->parse_post_content( $passed_post->post_content );
 				}
 			} elseif( is_string( $passed_post ) ) {
-				self::parse_post_content( $passed_post );
+				$this->parse_post_content( $passed_post );
 			} else {
-				self::parse_atts( $passed_post );
+				$id = $this->get_id_from_atts( $passed_post );
+			}
+
+			if( !empty( $id ) ) {
+				$this->add_view( $id );
 			}
 		}
 	}
 
-	static function getInstance() {
+	function get_views() {
+		return $this->views;
+	}
 
-		if( !empty( self::$instance ) ) {
-			return self::$instance;
-		} else {
-			return new GravityView_View_Data;
+	function get_view( $view_id ) {
+
+		if( !is_numeric( $view_id) ) {
+			do_action('gravityview_log_error', sprintf('GravityView_View_Data[get_view] $view_id passed is not numeric.', $view_id) );
+			return false;
 		}
-	}
 
-	static function get_views() {
-		return self::$views;
-	}
-
-	static function get_view( $view_id ) {
-
-		if ( empty( self::$views[ $view_id ] ) ) {
+		if ( empty( $this->views[ $view_id ] ) ) {
 			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[get_view] Returning; View #%s does not exist.', $view_id) );
 			return false;
 		}
 
-		return self::$views[ $view_id ];
-
+		return $this->views[ $view_id ];
 	}
 
-	static function add_view( $view_id ) {
+	function add_view( $view_id ) {
 
-		if ( !empty( self::$views[ $view_id ] ) ) {
+		if ( !empty( $this->views[ $view_id ] ) ) {
 			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] Returning; View #%s already exists.', $view_id) );
 
-			return self::$views[ $view_id ];
+			return $this->views[ $view_id ];
 		}
 
 		$form_id = gravityview_get_form_id( $view_id );
@@ -70,9 +71,9 @@ class GravityView_View_Data {
 			'form' => gravityview_get_form( $form_id ),
 		);
 
-		self::$views[ $view_id ] = $data;
-
-		return self::$views[ $view_id ];
+		$this->views[ $view_id ] = $data;
+		#self::r(sizeof($this->views), false, 'add_view '.$view_id);
+		return $this->views[ $view_id ];
 	}
 
 	static function get_fields( $view_id ) {
@@ -132,24 +133,28 @@ class GravityView_View_Data {
 		return false;
 	}
 
-	static function parse_atts( $atts ) {
+	static function get_id_from_atts( $atts ) {
 
 		$atts = is_array( $atts ) ? $atts : shortcode_parse_atts( $atts );
 
 		// Get the settings from the shortcode and merge them with defaults.
 		$atts = wp_parse_args( $atts, self::get_default_args() );
 
-		$view_id = !empty( $atts['view_id'] ) ? $atts['view_id'] : NULL;
+		$view_id = !empty( $atts['view_id'] ) ? (int)$atts['view_id'] : NULL;
 
-		if( empty( $atts['view_id'] ) ) {
-			do_action('gravityview_log_error', 'GravityView_View_Data[parse_atts] Returning; no ID defined (Atts)', $atts );
+		if( empty( $view_id ) && !empty( $atts['id'] ) ) {
+			$view_id = (int)$atts['id'];
+		}
+
+		if( empty( $view_id ) ) {
+			do_action('gravityview_log_error', 'GravityView_View_Data[get_id_from_atts] Returning; no ID defined (Atts)', $atts );
 			return;
 		}
 
-		return self::add_view( $atts['view_id'] );
+		return $view_id;
 	}
 
-	static function parse_post_content( $content ) {
+	function parse_post_content( $content ) {
 
 		$shortcodes = gravityview_has_shortcode_r( $content, 'gravityview' );
 
@@ -165,7 +170,7 @@ class GravityView_View_Data {
 				return false;
 			}
 
-			self::add_view( $shortcode_atts['id'] );
+			$this->add_view( $shortcode_atts['id'] );
 		}
 
 	}

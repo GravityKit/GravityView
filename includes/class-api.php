@@ -469,13 +469,20 @@ function gravityview_get_the_term_list( $post_id, $link = true, $taxonomy = 'pos
 
 }
 
+function gravityview_get_current_views() {
+	return GravityView_frontend::getInstance()->gv_output_data->get_views();
+}
+
+function gravityview_get_current_view_data( $view_id ) {
+	return GravityView_frontend::getInstance()->gv_output_data->get_view( $view_id );
+}
+
 // Templates' hooks
 function gravityview_before() {
 	do_action( 'gravityview_before', gravityview_get_view_id() );
 }
 
 function gravityview_header() {
-
 	do_action( 'gravityview_header', gravityview_get_view_id() );
 }
 

@@ -14,7 +14,7 @@
 
 						$value = gv_value( $entry, $field );
 
-						if( $value === '' && $this->hide_empty_fields ) { continue; }
+						if( $value === '' && $this->atts['hide_empty'] ) { continue; }
 					?>
 						<tr class="<?php echo gv_class( $field, $this->form, $entry ); ?>">
 							<th scope="row"><?php echo esc_html( gv_label( $field ) ); ?></th>

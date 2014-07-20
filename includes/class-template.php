@@ -41,6 +41,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 			'context' => NULL,
 			'post_id' => NULL,
 			'form'    => NULL,
+			'atts'	  => NULL,
 		) );
 
 		foreach ($atts as $key => $value) {
@@ -89,7 +90,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 			return;
 		}
 
-		$view_data = GravityView_frontend::$gv_output_data->get_view( $view_id );
+		$view_data = gravityview_get_current_view_data( $view_id );
 
 		wp_enqueue_style( 'gravityview_default_style');
 
@@ -105,7 +106,12 @@ class GravityView_View extends Gamajo_Template_Loader {
 			case 'gravityview_after':
 				$zone = 'footer';
 				break;
-		} ?>
+		}
+
+		// Prevent being called twice
+		if( did_action( $zone.'_'.$view_id.'_widgets' ) ) { return; }
+
+		?>
 
 		<div class="gv-grid">
 			<?php
@@ -130,6 +136,8 @@ class GravityView_View extends Gamajo_Template_Loader {
 		</div>
 
 		<?php
+		// Prevent being called twice
+		do_action( $zone.'_'.$view_id.'_widgets' );
 	}
 
 }

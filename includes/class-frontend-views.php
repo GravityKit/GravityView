@@ -20,7 +20,9 @@ class GravityView_frontend {
 
 	var $single_entry = false;
 
-	static $gv_output_data = array();
+	var $gv_output_data = array();
+
+	static $instance;
 
 	function __construct() {
 
@@ -30,27 +32,39 @@ class GravityView_frontend {
 		add_shortcode( 'gravityview', array( $this, 'shortcode' ) );
 
 		// Enqueue scripts and styles after GravityView_Template::register_styles()
-		add_action( 'wp_enqueue_scripts', array( 'GravityView_frontend', 'add_scripts_and_styles' ), 20);
+		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 20);
 
 		add_filter( 'the_title', array( $this, 'single_entry_title' ), 1, 2 );
 		add_filter( 'the_content', array( $this, 'insert_view_in_content' ) );
-		add_filter( 'comments_open', array( 'GravityView_frontend', 'comments_open' ), 10, 2);
+		add_filter( 'comments_open', array( $this, 'comments_open' ), 10, 2);
 
 		add_action('add_admin_bar_menus', array($this, 'admin_bar_remove_links'), 80 );
 		add_action('admin_bar_menu', array($this, 'admin_bar_add_links'), 85 );
+
+		self::$instance = &$this;
+	}
+
+	static function getInstance() {
+
+		if( !empty( self::$instance ) ) {
+			return self::$instance;
+		} else {
+			return new GravityView_frontend;
+		}
 	}
 
 	function parse_content() {
 		global $post;
 
 		if( is_admin() ) { return; }
-
 		$this->single_entry = self::is_single_entry();
 		$this->entry = ( $this->single_entry ) ? gravityview_get_entry( $this->single_entry ) : false;
 		$this->is_gravityview_post_type = ( get_post_type( $post ) === 'gravityview' );
 
-		self::$gv_output_data = new GravityView_View_Data( $post );
+		$this->gv_output_data = new GravityView_View_Data( $post );
 	}
+
+
 
 	static function r( $content = '', $die = false, $title ='') {
 		if( !empty($title)) { echo "<h3>{$title}</h3>"; }
@@ -102,9 +116,7 @@ class GravityView_frontend {
 	 */
 	public function shortcode( $atts, $content = NULL ) {
 
-		$data = self::$gv_output_data->parse_atts( $atts );
-
-		do_action( 'gravityview_log_debug', '[shortcode] parse_atts data: ', $data );
+		do_action( 'gravityview_log_debug', '[shortcode] $atts: ', $atts );
 
 		return $this->render_view( $atts );
 	}
@@ -119,9 +131,14 @@ class GravityView_frontend {
 	public function single_entry_title( $title, $passed_post_id = NULL ) {
 		global $post, $gravityview_view;
 
+		// If this is the directory view, return.
+		if( empty( $this->single_entry ) ) {
+			return $title;
+		}
+
 		// User reported WooCommerce doesn't pass two args.
 		if( empty( $passed_post_id ) )  {
-			return NULL;
+			return $title;
 		}
 
 		// Don't modify the title for anything other than the current view/post.
@@ -130,14 +147,7 @@ class GravityView_frontend {
 			return $title;
 		}
 
-
-		// If this is the directory view, return.
-		if( empty( $this->single_entry ) ) {
-			return $title;
-		}
-
-		$gv_output_data = self::$gv_output_data;
-		$view_meta = $gv_output_data::get_view( $passed_post_id );
+		$view_meta = $this->gv_output_data->get_view( $passed_post_id );
 
 		if( !empty( $view_meta['atts']['single_title'] ) ) {
 			// We are allowing HTML in the fields, so no escaping the output
@@ -170,10 +180,8 @@ class GravityView_frontend {
 		if( is_admin() ) { return $content; }
 
 		if( $this->is_gravityview_post_type ) {
-			$output_data = self::$gv_output_data;
 
-			foreach ( $output_data::$views as $view_id => $data ) {
-
+			foreach ( $this->gv_output_data->get_views() as $view_id => $data ) {
 				$content .= $this->render_view( array( 'id' => $view_id ) );
 			}
 		}
@@ -181,11 +189,15 @@ class GravityView_frontend {
 		return $content;
 	}
 
-	public static function comments_open( $open, $post_id ) {
+	/**
+	 * Disable comments on GravityView post types
+	 * @param  boolean $open    existing status
+	 * @param  int $post_id Post ID
+	 * @return boolean
+	 */
+	public function comments_open( $open, $post_id ) {
 
-		$post = get_post( $post_id );
-
-		if( 'gravityview' === get_post_type( $post ) ) {
+		if( $this->is_gravityview_post_type ) {
 			return false;
 		}
 
@@ -213,8 +225,6 @@ class GravityView_frontend {
 	public function render_view( $passed_args ) {
 		global $post;
 
-		do_action( 'gravityview_log_debug', '[render_view] Init View. Arguments: ', $passed_args );
-
 		// validate attributes
 		if( empty( $passed_args['id'] ) ) {
 			do_action( 'gravityview_log_error', '[render_view] Returning; no ID defined.', $passed_args );
@@ -222,9 +232,11 @@ class GravityView_frontend {
 		}
 
 		$view_id = $passed_args['id'];
-		$view_data = self::$gv_output_data->get_view( $view_id );
+		$view_data = $this->gv_output_data->get_view( $view_id );
 
 		do_action( 'gravityview_log_debug', '[render_view] View Data: ', $view_data );
+
+		do_action( 'gravityview_log_debug', '[render_view] Init View. Arguments: ', $passed_args );
 
 		// The passed args were always winning, even if they were NULL.
 		// This prevents that. Filters NULL, FALSE, and empty strings.
@@ -246,11 +258,6 @@ class GravityView_frontend {
 			// Otherwise, just get outta here
 			return;
 		}
-
-		// If not set, the default is hide empty fields.
-		$hide_empty_fields = isset( $atts['hide_empty'] ) ? !empty( $atts['hide_empty'] ) : true;
-		// Allow filtering
-		$atts['hide_empty'] = apply_filters( 'gravityview_hide_empty_fields', $hide_empty_fields, $atts, $view_data );
 
 		ob_start();
 
@@ -325,8 +332,10 @@ class GravityView_frontend {
 
 			// finaly we'll render some html
 			$sections = apply_filters( 'gravityview_render_view_sections', $sections, $view_data['template_id'] );
+
 			do_action( 'gravityview_log_debug', '[render_view] Sections to render: ', $sections );
 			foreach( $sections as $section ) {
+
 				do_action( 'gravityview_log_debug', '[render_view] Rendering '. $section . ' section.' );
 				$gravityview_view->render( $view_slug, $section, false );
 			}
@@ -568,17 +577,17 @@ class GravityView_frontend {
 	 * @access public
 	 * @return void
 	 */
-	public static function add_scripts_and_styles() {
+	public function add_scripts_and_styles() {
 		global $post, $posts;
 
 		//foreach ($posts as $p) {
 
 		// enqueue template specific styles
-		if( !empty( self::$gv_output_data ) ) {
+		if( !empty( $this->gv_output_data ) ) {
 
-			$view_data = self::$gv_output_data;
+			$view_data = $this->gv_output_data;
 
-			foreach ( $view_data::$views as $view_id => $data ) {
+			foreach ( $view_data->get_views() as $view_id => $data ) {
 
 				// By default, no thickbox
 				$js_dependencies = array( 'jquery', 'gravityview-jquery-cookie' );

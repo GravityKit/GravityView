@@ -167,21 +167,28 @@ class GV_Extension_DataTables_Data {
 	 * @filter gravityview_datatables_loading_text Modify the text shown while the DataTable is loading
 	 */
 	function add_scripts_and_styles() {
-		global $post;
+		global $post, $gravityview_view;
 
 		if( !is_a( $post, 'WP_Post' ) ) {
 			return;
 		}
 
-		// build Render View attributes array
-		$view_data = GravityView_View_Data::add_view( $post->ID );
+		$views = gravityview_get_current_views();
+
+		$is_datatables = false;
+		foreach ($views as $key => $view_data) {
+			if( empty( $view_data['template_id'] ) || 'datatables_table' !== $view_data['template_id'] ) {
+				continue;
+			}
+			$is_datatables = true;
+		}
 
 		if( empty( $view_data['id'] ) ) {
 			do_action( 'gravityview_log_error', 'GV_Extension_DataTables_Data[add_scripts_and_styles] Returning; no ID defined.');
 		}
 
 		// is the View requested a Datatables view ?
-		if( empty( $view_data['template_id'] ) || 'datatables_table' !== $view_data['template_id'] ) {
+		if( empty( $is_datatables ) ) {
 			do_action( 'gravityview_log_debug', 'GV_Extension_DataTables_Data[add_scripts_and_styles] DataTables view not requested.');
 			return;
 		}
