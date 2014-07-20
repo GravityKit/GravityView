@@ -72,7 +72,7 @@ class GravityView_View_Data {
 		);
 
 		$this->views[ $view_id ] = $data;
-		#self::r(sizeof($this->views), false, 'add_view '.$view_id);
+
 		return $this->views[ $view_id ];
 	}
 

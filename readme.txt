@@ -17,8 +17,9 @@ Beautifully display your Gravity Forms entries.
 == Changelog ==
 
 = 1.1 =
-* Refactored View handling storage
-* Removed redundant `gravityview_hide_empty_fields` filters
+* Refactored (re-wrote) View data handling. Now saves up to 10 queries on each page load.
+* Fixed: Infinite loop for rendering `post_content` fields
+* Modified: Removed redundant `gravityview_hide_empty_fields` filters
 
 = 1.0.10 =
 * Added: "Connected Views" in the Gravity Forms Toolbar. This makes it simple to see which Views are using the current form as a data source.

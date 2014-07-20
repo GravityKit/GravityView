@@ -176,6 +176,9 @@ class GravityView_frontend {
 			return $content;
 		}
 
+		//	We don't want this filter to run infinite loop on any post content fields
+		remove_filter( 'the_content', array( $this, 'insert_view_in_content' ) );
+
 		// Otherwise, this is called on the Views page when in Excerpt mode.
 		if( is_admin() ) { return $content; }
 
@@ -284,6 +287,7 @@ class GravityView_frontend {
 			$sections = array( 'header', 'body', 'footer' );
 
 		} else {
+
 			// user requested Single Entry View
 			do_action( 'gravityview_log_debug', '[render_view] Executing Single View' );
 
@@ -329,7 +333,6 @@ class GravityView_frontend {
 			return;
 
 		} else {
-
 			// finaly we'll render some html
 			$sections = apply_filters( 'gravityview_render_view_sections', $sections, $view_data['template_id'] );
 
