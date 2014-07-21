@@ -114,7 +114,7 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/edit-entry/class-edit-entry.php' );
 
 		// Load plugin text domain
-		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+		add_action( 'init', array( $this, 'load_plugin_textdomain' ), 1 );
 
 		if( ! is_admin() ) {
 			add_action( 'init', array( $this, 'frontend_actions' ), 20 );
@@ -183,22 +183,7 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'gravity-view', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-	}
-
-
-	/**
-	 * Modify plugin action links at plugins screen
-	 *
-	 * @access public
-	 * @static
-	 * @param mixed $links
-	 * @return void
-	 */
-	public static function plugin_action_links( $links ) {
-		$support_link = 'https://katzwebservices.zendesk.com/hc/en-us/categories/200136096';
-		$action = array( '<a href="' . $support_link . '">'. esc_html__( 'Support', 'gravity-view' ) .'</a>' );
-		return array_merge( $action, $links );
+		load_plugin_textdomain( 'gravity-view', false, dirname( plugin_basename( GRAVITYVIEW_FILE ) ) . '/languages/' );
 	}
 
 	/**
