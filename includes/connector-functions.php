@@ -167,6 +167,8 @@ if( !function_exists('gravityview_get_entries') ) {
 		if( !empty( $criteria['search_criteria']['field_filters'] ) ) {
 			foreach ( $criteria['search_criteria']['field_filters'] as &$filter ) {
 
+				if( !is_array( $filter ) ) { continue; }
+
 				// By default, we want searches to be wildcard for each field.
 				$filter['operator'] = apply_filters( 'gravityview_search_operator', 'like', $filter );
 			}
