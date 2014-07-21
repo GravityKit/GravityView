@@ -84,8 +84,7 @@ class GV_Extension_DataTables_FixedHeader {
 		}
 
 		// FixedColumns need scrollX to be set
-		$dt_config['scrollX'] = false;
-		$dt_config['scrollY'] = false;
+		$dt_config['scrollX'] = true;
 
 		do_action( 'gravityview_log_debug', '[fixedheadercolumns_add_config] Inserting FixedColumns config. Data: ', $dt_config );
 
