@@ -22,6 +22,9 @@ Beautifully display your Gravity Forms entries.
 * Fixed: Page length value now respected for DataTables
 * Fixed: Formatting of DataTables fields is now processed the same way as other fields. Images now work, for example.
 * Modified: Removed redundant `gravityview_hide_empty_fields` filters
+* Fixed/Modified: Enabled "wildcard" search instead of strict search for field searches.
+* Added: `gravityview_search_operator` filter to modify the search operator used by the search.
+* Added: `gravityview_search_criteria` filter to modify all search criteria before being passed to Gravity Forms
 
 = 1.0.10 =
 * Added: "Connected Views" in the Gravity Forms Toolbar. This makes it simple to see which Views are using the current form as a data source.

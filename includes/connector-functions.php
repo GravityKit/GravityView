@@ -147,6 +147,7 @@ if( !function_exists('gravityview_get_entries') ) {
 	/**
 	 * Retrieve entries given search, sort, paging criteria
 	 *
+	 * @see GFFormsModel::get_field_filters_where()
 	 * @access public
 	 * @param mixed $form_ids
 	 * @param mixed $passed_criteria (default: null)
@@ -163,6 +164,14 @@ if( !function_exists('gravityview_get_entries') ) {
 
 		$criteria = wp_parse_args( $passed_criteria, $search_criteria_defaults );
 
+		if( !empty( $criteria['search_criteria']['field_filters'] ) ) {
+			foreach ( $criteria['search_criteria']['field_filters'] as &$filter ) {
+
+				// By default, we want searches to be wildcard for each field.
+				$filter['operator'] = apply_filters( 'gravityview_search_operator', 'like', $filter );
+			}
+		}
+
 		// Prepare date formats to be in Gravity Forms DB format
 		foreach( array('start_date', 'end_date' ) as $key ) {
 
@@ -178,6 +187,8 @@ if( !function_exists('gravityview_get_entries') ) {
 				}
 			}
 		}
+
+		$criteria = apply_filters( 'gravityview_search_criteria', $criteria, $form_ids );
 
 		do_action( 'gravityview_log_debug', '[gravityview_get_entries] Final Parameters', $criteria );
 
