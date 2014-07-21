@@ -77,7 +77,7 @@ class GV_Extension_DataTables_Data {
 
 		// check for search
 		if( !empty( $_POST['search']['value'] ) ) {
-			$atts['search_value'] = $_POST['search']['value'];
+			$atts['search_value'] = esc_attr( stripslashes_deep( $_POST['search']['value'] ) );
 		}
 
 		// Paging/offset
@@ -99,14 +99,8 @@ class GV_Extension_DataTables_Data {
 		$view_entries = GravityView_frontend::get_view_entries( $atts, $view_data['form_id'] );
 
 		global $gravityview_view;
-		$gravityview_view = new GravityView_View( array(
-			'form_id' => $view_data['form_id'],
-			'view_id' => $atts['id'],
-			'fields'  => $view_data['fields'],
-			'context' => 'directory',
-			'post_id' => ( isset( $_POST['post_id'] ) ? $_POST['post_id'] : '' ),
-			'atts' => $atts,
-		) );
+		$view_data['atts'] = $atts;
+		$gravityview_view = new GravityView_View( $view_data );
 
 		// build output data
 		$data = array();
@@ -119,7 +113,7 @@ class GV_Extension_DataTables_Data {
 					$temp = array();
 					if( !empty(  $view_data['fields']['directory_table-columns'] ) ) {
 						foreach( $view_data['fields']['directory_table-columns'] as $field ) {
-							$temp[] = gv_value( $entry, $field );
+							$temp[] = GravityView_API::field_value( $entry, $field );
 						}
 					}
 					$data[] = $temp;
@@ -160,6 +154,45 @@ class GV_Extension_DataTables_Data {
 		return $file_paths;
 	}
 
+	/**
+	 * Generate the values for the page length menu
+	 *
+	 * @filter  gravityview_datatables_lengthmenu Modify the values shown in the page length menu. Key is the # of results, value is the label for the results.
+	 * @param  array $view_data View data array from GravityView_View_Data
+	 * @return array            2D array formatted for DataTables
+	 */
+	function get_length_menu( $view_data ) {
+
+		// Create the array of values for the drop-down page menu
+		$values = array(
+			(int)$view_data['atts']['page_size'] => $view_data['atts']['page_size'],
+			10 => 10,
+			25 => 25,
+			50 => 50
+		);
+
+		// no duplicate values
+		$values = array_unique( $values );
+
+		// Sort by the # of results per page
+		ksort( $values );
+
+		// Add the "All" option after the rest of them have been sorted by value
+		$values[-1] = _x('All', 'Menu label to show all results in DataTables template.', 'gravity-view' );
+
+		$values = apply_filters( 'gravityview_datatables_lengthmenu', $values, $view_data );
+
+		/**
+		 * Prepare a 2D array for the dropdown.
+		 * @link https://datatables.net/examples/advanced_init/length_menu.html
+		 */
+		$lengthMenu = array(
+			array_keys( $values ),
+			array_values( $values )
+		);
+
+		return $lengthMenu;
+	}
 
 	/**
 	 * Enqueue Scripts and Styles for DataTable View Type
@@ -173,18 +206,16 @@ class GV_Extension_DataTables_Data {
 			return;
 		}
 
+		// Get all the views on the current post/page/view
 		$views = gravityview_get_current_views();
 
+		// Check whether there's a view with a datatables template
 		$is_datatables = false;
 		foreach ($views as $key => $view_data) {
-			if( empty( $view_data['template_id'] ) || 'datatables_table' !== $view_data['template_id'] ) {
-				continue;
+			if( !empty( $view_data['template_id'] ) && 'datatables_table' === $view_data['template_id'] ) {
+				$is_datatables = true;
+				break;
 			}
-			$is_datatables = true;
-		}
-
-		if( empty( $view_data['id'] ) ) {
-			do_action( 'gravityview_log_error', 'GV_Extension_DataTables_Data[add_scripts_and_styles] Returning; no ID defined.');
 		}
 
 		// is the View requested a Datatables view ?
@@ -197,12 +228,10 @@ class GV_Extension_DataTables_Data {
 		$dt_config =  array(
 			'processing' => true,
 			'serverSide' => true,
-			'retrieve'	 => true, // Only initialize once
-			// On refresh (and on single entry view, then clicking "go back"), save the page you were on.
-			'stateSave'	 => true,
-			// Only save the state for the session.
-			// Use to time in seconds (like the DAY_IN_SECONDS WordPress constant) if you want to modify.
-			'stateDuration' => -1,
+			'retrieve'	 => true, // Only initialize each table once
+			'stateSave'	 => true, // On refresh (and on single entry view, then clicking "go back"), save the page you were on.
+			'stateDuration' => -1, // Only save the state for the session. Use to time in seconds (like the DAY_IN_SECONDS WordPress constant) if you want to modify.
+			'lengthMenu'	=> $this->get_length_menu( $view_data ), // Dropdown pagination length menu
 			'oLanguage' => array(
 				'sProcessing' => apply_filters( 'gravityview_datatables_loading_text', __( 'Loading data&hellip;', 'gravity-view' ) ),
 			),

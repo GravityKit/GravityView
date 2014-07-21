@@ -138,10 +138,12 @@ class GravityView_API {
 		$output = '';
 
 		$form = $gravityview_view->form;
+
 		$field = gravityview_get_field( $form, $field_id );
 
+		$field_type = RGFormsModel::get_input_type($field);
 
-		if( $field_type = RGFormsModel::get_input_type($field) ) {
+		if( $field_type ) {
 			$field_type = $field['type'];
 			$value = RGFormsModel::get_lead_field_value($entry, $field);
 		} else {

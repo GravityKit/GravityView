@@ -342,9 +342,12 @@ class GravityView_Edit_Entry {
 		}
 
 		// Fix PHP warning regarding undefined index.
-		// This may have only been necessary for Mass Import Entries...
 		foreach ($form['fields'] as &$field) {
-			$field['noDuplicates'] = isset( $field['noDuplicates'] ) ? $field['noDuplicates'] : NULL;
+
+			// This is because we're doing admin form pretending to be front-end
+			foreach ( array( 'noDuplicates', 'adminOnly', 'inputType' ) as $key ) {
+				$field[ $key ] = isset( $field[ $key ] ) ? $field[ $key ] : NULL;
+			}
 		}
 
 		return $form;

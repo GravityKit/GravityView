@@ -19,6 +19,8 @@ Beautifully display your Gravity Forms entries.
 = 1.1 =
 * Refactored (re-wrote) View data handling. Now saves up to 10 queries on each page load.
 * Fixed: Infinite loop for rendering `post_content` fields
+* Fixed: Page length value now respected for DataTables
+* Fixed: Formatting of DataTables fields is now processed the same way as other fields. Images now work, for example.
 * Modified: Removed redundant `gravityview_hide_empty_fields` filters
 
 = 1.0.10 =
