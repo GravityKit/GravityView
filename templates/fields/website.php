@@ -9,11 +9,9 @@ global $gravityview_view;
 
 extract( $gravityview_view->field_data );
 
-$url_info = parse_url($value);
-
-if(isset($url_info['host']) && apply_filters( 'gravityview_field_website_shorten_url', false )) {
-	$anchor_text = $url_info['host'];
-	echo "<a href='$value' target='_blank'>$anchor_text</a>";
+if( !empty( $field_settings['truncatelink'] ) && function_exists( 'gravityview_format_link' ) ) {
+	$anchor_text = gravityview_format_link( $value );
+	echo "<a href='".esc_attr($value)."' target='_blank'>$anchor_text</a>";
 } else {
 	echo $display_value;
 }

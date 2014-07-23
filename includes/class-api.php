@@ -471,6 +471,39 @@ function gravityview_get_the_term_list( $post_id, $link = true, $taxonomy = 'pos
 
 }
 
+if( !function_exists( 'gravityview_format_link' ) ) {
+
+/**
+ * Convert a whole link into a shorter link for display
+ * @param  [type] $value [description]
+ * @return [type]        [description]
+ */
+function gravityview_format_link($value = null) {
+
+	if(apply_filters('gravityview_anchor_text_striphttp', true)) {
+		$value = str_replace('http://', '', $value);
+		$value = str_replace('https://', '', $value);
+	}
+
+	if(apply_filters('gravityview_anchor_text_stripwww', true)) {
+		$value = str_replace('www.', '', $value);
+	}
+	if(apply_filters('gravityview_anchor_text_rootonly', true)) {
+		$value = preg_replace('/(.*?)\/(.+)/ism', '$1', $value);
+	}
+	if(apply_filters('gravityview_anchor_text_nosubdomain', true)) {
+		$value = preg_replace('/((.*?)\.)+(.*?)\.(.*?)/ism', '$3.$4', $value);
+	}
+	if(apply_filters('gravityview_anchor_text_noquerystring', true)) {
+		$ary = explode("?", $value);
+		$value = $ary[0];
+	}
+	return $value;
+}
+
+}
+
+
 function gravityview_get_current_views() {
 	return GravityView_frontend::getInstance()->gv_output_data->get_views();
 }

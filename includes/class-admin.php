@@ -56,6 +56,7 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/fields/entry-link.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/created-by.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/date.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/website.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/time.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/entry-date.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/fileupload.php' );
