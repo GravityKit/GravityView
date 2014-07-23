@@ -274,6 +274,7 @@
 					// "Changing the View Type will reset your field configuration. Changes will be permanent once you save the View."
 					else if ( thisDialog.is('#gravityview_switch_template_dialog') ) {
 						vcfg.toggleViewTypeMetabox();
+						$("#gravityview_view_config").slideDown(150);
 					}
 					thisDialog.dialog('close');
 				}
