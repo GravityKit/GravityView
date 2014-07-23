@@ -56,7 +56,7 @@ if(!empty($value)){
 					$html_format = apply_filters( 'gravityview_video_html', $video_tag, $info, $incompatible_text );
 					break;
 				default:
-					$html_format = sprintf("<a href='{$file_path}' rel='%s-{$entry['id']}' class='thickbox' target='_blank'>" . $content . "</a>", $gv_class );
+					$html_format = sprintf("<a href='{$file_path}' rel='%s-{$entry['id']}' target='_blank'>" . $content . "</a>", $gv_class );
 					break;
 			}
 
