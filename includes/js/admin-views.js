@@ -366,6 +366,8 @@
 
 		switchView: function(e){
 			e.preventDefault();
+			e.stopImmediatePropagation();
+
 			var vcfg = viewConfiguration;
 
 			vcfg.templateFilter('custom');
