@@ -23,6 +23,10 @@
 			display: block;
 		}
 
+		select {
+			max-width: 15em;
+		}
+
 		&.gv-search-date {
 
 			max-width: 10em;
