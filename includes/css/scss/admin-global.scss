@@ -71,6 +71,10 @@
 		content: 'a';
 }
 
+// Fix Make theme overriding button width
+.wp-editor-tools #add_gravityview {
+	width: auto;
+}
 
 // Form Toolbar for connected views
 #gf_form_toolbar .gv_connected_forms {
