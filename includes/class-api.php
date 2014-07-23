@@ -263,7 +263,8 @@ class GravityView_API {
 
 		if( defined('DOING_AJAX') && DOING_AJAX ) {
 			global $gravityview_view;
-			$post_id = $gravityview_view->post_id;
+			//$post_id = $gravityview_view->post_id;
+			$post_id = isset( $_POST['post_id'] ) ? $_POST['post_id'] : '';
 		} else {
 			global $post;
 			$post_id = isset( $post->ID ) ? $post->ID : null;
