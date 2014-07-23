@@ -16,7 +16,7 @@ class GV_Extension_DataTables_FixedHeader {
 
 	function defaults( $settings ) {
 		$settings['fixedcolumns'] = false;
-		$settings['fixedheaders'] = false;
+		$settings['fixedheader'] = false;
 
 		return $settings;
 	}
