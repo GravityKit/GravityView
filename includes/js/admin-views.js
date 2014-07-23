@@ -403,6 +403,10 @@
 				vcfg.selectTemplateContinue();
 			} else if ( currTemplateId != selectedTemplateId ) {
 				vcfg.showDialog( '#gravityview_switch_template_dialog' );
+			} else {
+				// show the same situation as before clicking in Start Fresh.
+				$("#gravityview_select_template").slideUp(150);
+				$("#gravityview_view_config").slideDown(150);
 			}
 		},
 
