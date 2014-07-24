@@ -475,14 +475,14 @@ function gravityview_get_the_term_list( $post_id, $link = true, $taxonomy = 'pos
 
 }
 
-if( !function_exists( 'gravityview_format_link_format' ) ) {
+if( !function_exists( 'gravityview_format_link' ) ) {
 
 /**
  * Convert a whole link into a shorter link for display
  * @param  [type] $value [description]
  * @return [type]        [description]
  */
-function gravityview_format_link_format($value = null) {
+function gravityview_format_link($value = null) {
 
 	if(apply_filters('gravityview_anchor_text_striphttp', true)) {
 		$value = str_replace('http://', '', $value);

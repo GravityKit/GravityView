@@ -76,12 +76,21 @@ if(!empty($value)){
 	if(sizeof($output_arr) === 1) {
 		$output = wpautop( $output_arr[0]['html'] );
 	} else {
+
 		// Otherwise, a list it is!
-		$output .= sprintf("<ul class='gv-field-file-uploads %s'>", $gv_class );
+		$output = '';
 		foreach ($output_arr as $key => $item) {
+			// Fix empty lists
+			if( empty( $item['content'] ) ) { continue; }
 			$output .= '<li>' . $item['html'] . PHP_EOL .'</li>';
 		}
-		$output .= '</ul>';
+
+		$before = sprintf("<ul class='gv-field-file-uploads %s'>", $gv_class );
+		$after = '</ul>';
+
+		if( !empty( $output ) ) {
+			$output = $before.$output.$after;
+		}
 	}
 
   }

@@ -26,6 +26,8 @@ Beautifully display your Gravity Forms entries.
 * Added: `gravityview_search_operator` filter to modify the search operator used by the search.
 * Added: `gravityview_search_criteria` filter to modify all search criteria before being passed to Gravity Forms
 * Added: Website Field setting to display shortened link instead of full URL
+* Fixed: Form title gets replaced properly in merge tags
+* Modified: Tweaked preset templates
 
 = 1.0.10 =
 * Added: "Connected Views" in the Gravity Forms Toolbar. This makes it simple to see which Views are using the current form as a data source.
