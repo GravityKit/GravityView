@@ -51,8 +51,11 @@
 			$('a[href="#gv_select_template"]').click( vcfg.selectTemplate );
 			$(".gv-view-types-hover").click( vcfg.selectTemplateHover );
 
-			// preview template
-			$('a[href="#gv_preview_template"]').click( vcfg.previewTemplate );
+			$('a[rel*=external]').click( vcfg.openExternalLinks );
+
+			// @todo
+			// preview template (not being used - remove? )
+			// -- $('a[href="#gv_preview_template"]').click( vcfg.previewTemplate );
 
 			// Close open Dialog boxes when clicking on the overlay
 			$('body').on('click', '.gv-overlay', function( e ) {
@@ -461,8 +464,15 @@
 			$(this).find('a[href="#gv_select_template"]').trigger( 'click' );
 		},
 
+		openExternalLinks: function(e) {
+			window.open( this.href );
+			return false;
+		},
+
 		/**
 		 * Display a screenshot of the current template. Not currently in use.
+		 *
+		 * @todo REMOVE ?
 		 * @param  object    e     jQuery event object
 		 * @return void
 		 */

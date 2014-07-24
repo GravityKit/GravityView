@@ -107,8 +107,6 @@ class GravityView_Admin_Metaboxes {
 		/**
 		 * Render html for 'select template' metabox
 		 *
-		 * @todo  Re-enable the Preview link
-		 * @group Beta
 		 * @access public
 		 * @param object $post
 		 * @return void
@@ -141,11 +139,12 @@ class GravityView_Admin_Metaboxes {
 										<p><a href="<?php echo esc_url( $template['buy_source'] ); ?>" class="button-primary button-buy-now"><?php esc_html_e( 'Buy Now', 'gravity-view'); ?></a></p>
 									<?php else: ?>
 										<p><a href="#gv_select_template" class="button-primary" data-templateid="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Select', 'gravity-view'); ?></a></p>
-										<!-- // TODO: Take screenshots. <p><a href="#gv_preview_template" class="button-secondary"><?php esc_html_e( 'Preview', 'gravity-view'); ?></a></p> -->
+										<?php if( !empty( $template['preview'] ) ) : ?>
+											<p><a href="<?php echo esc_url( $template['preview'] ); ?>" class="button-secondary" rel="external"><?php esc_html_e( 'Preview', 'gravity-view'); ?></a></p>
+										<?php endif; ?>
 									<?php endif; ?>
 								</div>
 							</div>
-							<div class="gv-template-preview" title="<?php esc_html_e( 'Preview', 'gravity-view'); ?>: <?php echo esc_attr( $template['label'] ); ?>"><img src="<?php echo esc_url( $template['preview'] ); ?>" ></div>
 							<div class="gv-view-types-normal">
 								<img src="<?php echo esc_url( $template['logo'] ); ?>" alt="<?php echo esc_attr( $template['label'] ); ?>">
 								<h5><?php echo esc_attr( $template['label'] ); ?></h5>
