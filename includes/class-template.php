@@ -40,12 +40,9 @@ class GravityView_View extends Gamajo_Template_Loader {
 			'fields'  => NULL,
 			'context' => NULL,
 			'post_id' => NULL,
+			'form'    => NULL,
+			'atts'	  => NULL,
 		) );
-
-		// store form if not defined yet
-		if( !array_key_exists( 'form', $atts ) && !empty( $atts['form_id'] ) ) {
-			$atts['form'] = gravityview_get_form( $atts['form_id'] );
-		}
 
 		foreach ($atts as $key => $value) {
 			$this->{$key} = $value;
@@ -74,6 +71,8 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		$template_file = $this->get_template_part( $slug, $name, false );
 
+		do_action( 'gravityview_log_debug', '[render] Rendering Template File', $template_file );
+
 		if( !empty( $template_file) ) {
 
 			if ( $require_once ) {
@@ -91,10 +90,12 @@ class GravityView_View extends Gamajo_Template_Loader {
 			return;
 		}
 
+		$view_data = gravityview_get_current_view_data( $view_id );
+
 		wp_enqueue_style( 'gravityview_default_style');
 
 		// get View widget configuration
-		$widgets = get_post_meta( $view_id, '_gravityview_directory_widgets', true );
+		$widgets = $view_data['widgets'];
 
 		$rows = GravityView_Plugin::get_default_widget_areas();
 
@@ -105,7 +106,12 @@ class GravityView_View extends Gamajo_Template_Loader {
 			case 'gravityview_after':
 				$zone = 'footer';
 				break;
-		} ?>
+		}
+
+		// Prevent being called twice
+		if( did_action( $zone.'_'.$view_id.'_widgets' ) ) { return; }
+
+		?>
 
 		<div class="gv-grid">
 			<?php
@@ -130,6 +136,8 @@ class GravityView_View extends Gamajo_Template_Loader {
 		</div>
 
 		<?php
+		// Prevent being called twice
+		do_action( $zone.'_'.$view_id.'_widgets' );
 	}
 
 }

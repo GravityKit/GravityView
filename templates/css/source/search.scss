@@ -19,8 +19,14 @@
 			display: block;
 		}
 
-		input {
+		input,
+		select {
 			display: block;
+		}
+
+		select {
+			width: 100%;
+			max-width: 15em;
 		}
 
 		&.gv-search-date {

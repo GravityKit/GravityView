@@ -1,4 +1,4 @@
-# 
+# Translators:
 # Translators:
 # franckt <franckthomaspro@hotmail.com>, 2014
 msgid ""

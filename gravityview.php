@@ -14,7 +14,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.0.9-beta
+ * Version:          	1.1
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravity-view
@@ -64,7 +64,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.0.9-beta';
+	const version = '1.1';
 
 	public static $theInstance;
 
@@ -106,14 +106,15 @@ final class GravityView_Plugin {
 		require_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
 		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/class-data.php' );
+
 
 		// Load Extensions
-		// TODO: Convert to a scan of the directory or a method where this all lives
-		include_once( GRAVITYVIEW_DIR . 'includes/extensions/datatables/ext-datatables.php');
+ 		// @todo: Convert to a scan of the directory or a method where this all lives
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/edit-entry/class-edit-entry.php' );
 
 		// Load plugin text domain
-		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+		add_action( 'init', array( $this, 'load_plugin_textdomain' ), 1 );
 
 		if( ! is_admin() ) {
 			add_action( 'init', array( $this, 'frontend_actions' ), 20 );
@@ -182,22 +183,7 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'gravity-view', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-	}
-
-
-	/**
-	 * Modify plugin action links at plugins screen
-	 *
-	 * @access public
-	 * @static
-	 * @param mixed $links
-	 * @return void
-	 */
-	public static function plugin_action_links( $links ) {
-		$support_link = 'https://katzwebservices.zendesk.com/hc/en-us/categories/200136096';
-		$action = array( '<a href="' . $support_link . '">'. esc_html__( 'Support', 'gravity-view' ) .'</a>' );
-		return array_merge( $action, $links );
+		load_plugin_textdomain( 'gravity-view', false, dirname( plugin_basename( GRAVITYVIEW_FILE ) ) . '/languages/' );
 	}
 
 	/**

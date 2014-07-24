@@ -1,8 +1,20 @@
 <?php
-
 /**
- * Enable editing entries
+ * The GravityView Edit Entry Extension
+ *
+ * Easily edit entries in GravityView.
+ *
+ * @package   GravityView-DataTables-Ext
+ * @license   GPL2+
+ * @author    Katz Web Services, Inc.
+ * @link      http://gravityview.co
+ * @copyright Copyright 2014, Katz Web Services, Inc.
  */
+
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 class GravityView_Edit_Entry {
 
 	static $file;
@@ -20,9 +32,9 @@ class GravityView_Edit_Entry {
 		self::$file = plugin_dir_path( __FILE__ );
 
 		// Stop Gravity Forms processing what is ours!
-		add_filter('wp', array( $this, 'prevent_maybe_process_form'), 8 );
+		add_filter( 'wp', array( $this, 'prevent_maybe_process_form'), 8 );
 
-		add_filter('gravityview_is_edit_entry', array( $this, 'is_edit_entry') );
+		add_filter( 'gravityview_is_edit_entry', array( $this, 'is_edit_entry') );
 
 		add_action( 'gravityview_edit_entry', array( $this, 'init' ) );
 
@@ -30,6 +42,9 @@ class GravityView_Edit_Entry {
 
 		// For the Edit Entry Link, you don't want visible to all users.
 		add_filter( 'gravityview_field_visibility_caps', array( $this, 'modify_visibility_caps'), 10, 5 );
+
+		// Add fields expected by GFFormDisplay::validate()
+		add_filter( 'gform_pre_validation', array( $this, 'gform_pre_validation') );
 
 		// Modify the field options based on the name of the field type
 		add_filter( 'gravityview_template_edit_link_options', array( $this, 'field_options' ), 10, 5 );
@@ -326,6 +341,30 @@ class GravityView_Edit_Entry {
 		}
 	}
 
+	/**
+	 * Add field keys that Gravity Forms expects.
+	 *
+	 * @param  array $form GF Form
+	 * @return array       Modified GF Form
+	 */
+	function gform_pre_validation( $form ) {
+
+		if( !self::verify_nonce() ) {
+			return $form;
+		}
+
+		// Fix PHP warning regarding undefined index.
+		foreach ($form['fields'] as &$field) {
+
+			// This is because we're doing admin form pretending to be front-end
+			foreach ( array( 'noDuplicates', 'adminOnly', 'inputType' ) as $key ) {
+				$field[ $key ] = isset( $field[ $key ] ) ? $field[ $key ] : NULL;
+			}
+		}
+
+		return $form;
+	}
+
 	function validate( ) {
 		/**
 		 * For some crazy reason, Gravity Forms doesn't validate Edit Entry form submissions.
@@ -396,7 +435,13 @@ class GravityView_Edit_Entry {
 	 */
 	function verify_nonce() {
 
-		if( empty( $_GET['edit'] ) ) { return false; }
+		// Verify form submitted for editing single
+		if( !empty( $_POST['is_gv_edit_entry'] ) ) {
+			return wp_verify_nonce( $_POST['is_gv_edit_entry'], 'is_gv_edit_entry' );
+		}
+
+		// Verify
+		if( !self::is_edit_entry() ) { return false; }
 
 		return wp_verify_nonce( $_GET['edit'], self::$nonce_key );
 
@@ -465,12 +510,12 @@ class GravityView_Edit_Entry {
 
 				// Keeping this compatible with Gravity Forms.
 			    $validation_message = "<div class='validation_error'>" . __("There was a problem with your submission.", "gravity-view") . " " . __("Errors have been highlighted below.", "gravity-view") . "</div>";
-			    $message .= apply_filters("gform_validation_message_{$this->form["id"]}", apply_filters("gform_validation_message", $validation_message, $this->form), $this->form);
+			    $message = apply_filters("gform_validation_message_{$this->form["id"]}", apply_filters("gform_validation_message", $validation_message, $this->form), $this->form);
 
 			    echo $this->generate_notice( $message , 'gv-error' );
 
 			} else {
-				echo $this->generate_notice( sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravity-view'), '<a href="'.$back_link.'">', '</a>' ) );
+				echo $this->generate_notice( sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', ''), '<a href="'.$back_link.'">', '</a>' ) );
 			}
 
 		}
@@ -514,3 +559,4 @@ class GravityView_Edit_Entry {
 }
 
 new GravityView_Edit_Entry;
+

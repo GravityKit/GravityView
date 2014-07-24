@@ -114,6 +114,7 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 			'prev_text' => '&laquo;',
 			'next_text' => '&raquo;',
 			'type' => 'list',
+			'end_size' => 2,
 			'total' => empty( $page_size ) ? 0 : ceil( $total / $page_size ),
 			'current' => $curr_page,
 			'show_all' => !empty( $atts['show_all'] ), // to be available at backoffice
@@ -258,7 +259,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		$output = '';
 
 		if( $search_filters = $this->get_search_filters() ) {
-			$form = gravityview_get_form( $gravityview_view->form_id );
+			$form = $gravityview_view->form;
 			foreach( $search_filters as $filter ) {
 				$field = gravityview_get_field( $form, $filter['key'] );
 
@@ -308,7 +309,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		$output = '<div class="gv-search-box">';
 		$output .= '<label for=search-box-'.$name.'>' . $label . '</label>';
 		$output .= '<p><select name="'.$name.'" id="search-box-'. $name.'">';
-		$output .= '<option value="" '. selected( '', $current_value, false ) .'>---</option>';
+		$output .= '<option value="" '. selected( '', $current_value, false ) .'>&mdash;</option>';
 		foreach( $choices as $choice ) {
 			$output .= '<option value="'. $choice['value'] .'" '. selected( $choice['value'], $current_value, false ) .'>'. $choice['text'] .'</option>';
 		}
@@ -382,7 +383,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		// get configured search filters (fields)
 		$search_filters = array();
 		$view_fields = $gravityview_view->fields;
-		$form = gravityview_get_form( $gravityview_view->form_id );
+		$form = $gravityview_view->form;
 
 		if( !empty( $view_fields ) && is_array( $view_fields ) ) {
 			foreach( $view_fields as $t => $fields ) {

@@ -24,16 +24,16 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 
 	function __construct( $id = 'default_table', $settings = array(), $field_options = array(), $areas = array() ) {
 
-		if(empty($settings)) {
-			$settings = array(
-				'slug' => 'table',
-				'type' => 'custom',
-				'label' =>  __( 'Table (default)', 'gravity-view' ),
-				'description' => __('Display items in a table view.', 'gravity-view'),
-				'logo' => plugins_url('includes/presets/default-table/logo-default-table.png', GRAVITYVIEW_FILE),
-				'css_source' => plugins_url('templates/css/table-view.css', GRAVITYVIEW_FILE),
-			);
-		}
+		$table_settings = array(
+			'slug' => 'table',
+			'type' => 'custom',
+			'label' =>  __( 'Table (default)', 'gravity-view' ),
+			'description' => __('Display items in a table view.', 'gravity-view'),
+			'logo' => plugins_url('includes/presets/default-table/logo-default-table.png', GRAVITYVIEW_FILE),
+			'css_source' => plugins_url('templates/css/table-view.css', GRAVITYVIEW_FILE),
+		);
+
+		$settings = wp_parse_args( $settings, $table_settings );
 
 		/**
 		 * @see  GravityView_Admin_Views::get_default_field_options() for Generic Field Options
@@ -67,16 +67,16 @@ class GravityView_Default_Template_List extends GravityView_Template {
 
 	function __construct( $id = 'default_list', $settings = array(), $field_options = array(), $areas = array() ) {
 
-		if(empty($settings)) {
-			$settings = array(
-				'slug' => 'list',
-				'type' => 'custom',
-				'label' =>  __( 'List (default)', 'gravity-view' ),
-				'description' => __('Display items in a listing view.', 'gravity-view'),
-				'logo' => plugins_url('includes/presets/default-list/logo-default-list.png', GRAVITYVIEW_FILE),
-				'css_source' => plugins_url('templates/css/list-view.css', GRAVITYVIEW_FILE),
-			);
-		}
+		$list_settings = array(
+			'slug' => 'list',
+			'type' => 'custom',
+			'label' =>  __( 'List (default)', 'gravity-view' ),
+			'description' => __('Display items in a listing view.', 'gravity-view'),
+			'logo' => plugins_url('includes/presets/default-list/logo-default-list.png', GRAVITYVIEW_FILE),
+			'css_source' => plugins_url('templates/css/list-view.css', GRAVITYVIEW_FILE),
+		);
+
+		$settings = wp_parse_args( $settings, $list_settings );
 
 		$field_options = array(
 			'show_as_link' => array( 'type' => 'checkbox', 'label' => __( 'Link to single entry', 'gravity-view' ), 'default' => false, 'context' => 'directory' ),
@@ -335,7 +335,7 @@ class GravityView_Preset_Business_Data extends GravityView_Default_Template_Tabl
 			'label' =>  __( 'Business Data', 'gravity-view' ),
 			'description' => __( 'Display business information in a table.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/business-data/logo-business-data.png', GRAVITYVIEW_FILE),
-			//'preview' => '',
+			'preview' => 'http://demo.gravityview.co/blog/view/business-table/',
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/business-data/form-business-data.xml',
 			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/business-data/fields-business-data.xml'
 		);
@@ -357,6 +357,7 @@ class GravityView_Preset_Resume_Board extends GravityView_Default_Template_Table
 			'label' =>  __( 'Resume Board', 'gravity-view' ),
 			'description' => __( 'Allow job-seekers to post their resumes.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/resume-board/logo-resume-board.png', GRAVITYVIEW_FILE),
+			'preview' => 'http://demo.gravityview.co/blog/view/resume-board/',
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/resume-board/form-resume-board.xml',
 			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/resume-board/fields-resume-board.xml'
 		);
@@ -378,6 +379,7 @@ class GravityView_Preset_Job_Board extends GravityView_Default_Template_List {
 			'label' =>  __( 'Job Board', 'gravity-view' ),
 			'description' => __( 'Post available jobs in a simple job board.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/job-board/logo-job-board.png', GRAVITYVIEW_FILE),
+			'preview' => 'http://demo.gravityview.co/blog/view/job-board/',
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/job-board/form-job-board.xml',
 			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/job-board/fields-job-board.xml'
 
@@ -399,6 +401,7 @@ class GravityView_Preset_People_Table extends GravityView_Default_Template_Table
 			'label' =>  __( 'People Table', 'gravity-view' ),
 			'description' => __( 'Display information about people in a table.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/people-table/logo-people-table.png', GRAVITYVIEW_FILE),
+			'preview' => '',
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/people-table/form-people-table.xml',
 			#'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/people-table/fields-people-table.xml'
 
@@ -421,6 +424,7 @@ class GravityView_Preset_Issue_Tracker extends GravityView_Default_Template_Tabl
 			'label' =>  __( 'Issue Tracker', 'gravity-view' ),
 			'description' => __( 'Manage issues and their statuses.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/issue-tracker/logo-issue-tracker.png', GRAVITYVIEW_FILE),
+			'preview' => 'http://demo.gravityview.co/blog/view/issue-tracker/',
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/issue-tracker/form-issue-tracker.xml',
 			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/issue-tracker/fields-issue-tracker.xml'
 
@@ -443,6 +447,7 @@ class GravityView_Preset_Business_Listings extends GravityView_Default_Template_
 			'label' =>  __( 'Business Listings', 'gravity-view' ),
 			'description' => __( 'Display business profiles.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/business-listings/logo-business-listings.png', GRAVITYVIEW_FILE),
+			'preview' => 'http://demo.gravityview.co/blog/view/business-listings/',
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/business-listings/form-business-listings.xml',
 			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/business-listings/fields-business-listings.xml'
 		);
@@ -464,6 +469,7 @@ class GravityView_Preset_Event_Listings extends GravityView_Default_Template_Lis
 			'label' =>  __( 'Event Listings', 'gravity-view' ),
 			'description' => __( 'Present a list of your events.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/event-listings/logo-event-listings.png', GRAVITYVIEW_FILE),
+			'preview' => 'http://demo.gravityview.co/blog/view/event-listings/',
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/event-listings/form-event-listings.xml',
 			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/event-listings/fields-event-listings.xml'
 		);
@@ -485,6 +491,7 @@ class GravityView_Preset_Profiles extends GravityView_Default_Template_List {
 			'label' =>  __( 'People Profiles', 'gravity-view' ),
 			'description' => __( 'List people with individual profiles.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/profiles/logo-profiles.png', GRAVITYVIEW_FILE),
+			'preview' => 'http://demo.gravityview.co/blog/view/people-profiles/',
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/profiles/form-profiles.xml',
 			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/profiles/fields-profiles.xml'
 		);
@@ -506,6 +513,7 @@ class GravityView_Preset_Staff_Profiles extends GravityView_Default_Template_Lis
 			'label' =>  __( 'Staff Profiles', 'gravity-view' ),
 			'description' => __( 'List members of your team.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/staff-profiles/logo-staff-profiles.png', GRAVITYVIEW_FILE),
+			'preview' => 'http://demo.gravityview.co/blog/view/staff-profiles/',
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/staff-profiles/form-staff-profiles.xml',
 			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/staff-profiles/fields-staff-profiles.xml',
 		);
@@ -527,6 +535,7 @@ class GravityView_Preset_Website_Showcase extends GravityView_Default_Template_L
 			'label' =>  __( 'Website Showcase', 'gravity-view' ),
 			'description' => __( 'Feature submitted websites with screenshots.', 'gravity-view'),
 			'logo' => plugins_url('includes/presets/website-showcase/logo-website-showcase.png', GRAVITYVIEW_FILE),
+			'preview' => 'http://demo.gravityview.co/blog/view/website-showcase/',
 			'preset_form' => GRAVITYVIEW_DIR . 'includes/presets/website-showcase/form-website-showcase.xml',
 			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/website-showcase/fields-website-showcase.xml'
 		);

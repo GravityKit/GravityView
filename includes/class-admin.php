@@ -25,7 +25,7 @@ class GravityView_Admin {
 		add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
 		add_filter( 'bulk_post_updated_messages', array( $this, 'post_updated_messages' ) );
 
-		add_filter( 'plugin_action_links_'. plugin_basename( __FILE__) , array( $this, 'plugin_action_links' ) );
+		add_filter( 'plugin_action_links_'. plugin_basename( GRAVITYVIEW_FILE ) , array( $this, 'plugin_action_links' ) );
 
 		add_action( 'plugins_loaded', array( $this, 'backend_actions' ) );
 
@@ -56,6 +56,7 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/fields/entry-link.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/created-by.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/date.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/website.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/time.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/entry-date.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/fileupload.php' );
@@ -67,6 +68,20 @@ class GravityView_Admin {
 
 		// Nice place to insert extensions' backend stuff
 		do_action('gravityview_include_backend_actions');
+	}
+
+	/**
+	 * Modify plugin action links at plugins screen
+	 *
+	 * @access public
+	 * @static
+	 * @param mixed $links
+	 * @return void
+	 */
+	public static function plugin_action_links( $links ) {
+		$support_link = 'https://katzwebservices.zendesk.com/hc/en-us/categories/200136096';
+		$action = array( '<a href="' . $support_link . '">'. esc_html__( 'Support', 'gravity-view' ) .'</a>' );
+		return array_merge( $action, $links );
 	}
 
 	/**

@@ -147,6 +147,7 @@ if( !function_exists('gravityview_get_entries') ) {
 	/**
 	 * Retrieve entries given search, sort, paging criteria
 	 *
+	 * @see GFFormsModel::get_field_filters_where()
 	 * @access public
 	 * @param mixed $form_ids
 	 * @param mixed $passed_criteria (default: null)
@@ -163,6 +164,16 @@ if( !function_exists('gravityview_get_entries') ) {
 
 		$criteria = wp_parse_args( $passed_criteria, $search_criteria_defaults );
 
+		if( !empty( $criteria['search_criteria']['field_filters'] ) ) {
+			foreach ( $criteria['search_criteria']['field_filters'] as &$filter ) {
+
+				if( !is_array( $filter ) ) { continue; }
+
+				// By default, we want searches to be wildcard for each field.
+				$filter['operator'] = apply_filters( 'gravityview_search_operator', 'like', $filter );
+			}
+		}
+
 		// Prepare date formats to be in Gravity Forms DB format
 		foreach( array('start_date', 'end_date' ) as $key ) {
 
@@ -178,6 +189,8 @@ if( !function_exists('gravityview_get_entries') ) {
 				}
 			}
 		}
+
+		$criteria = apply_filters( 'gravityview_search_criteria', $criteria, $form_ids );
 
 		do_action( 'gravityview_log_debug', '[gravityview_get_entries] Final Parameters', $criteria );
 
@@ -289,6 +302,9 @@ if( !function_exists( 'gravityview_has_shortcode_r') ) {
 		}
 
 		if ( shortcode_exists( $tag ) ) {
+
+			$shortcodes = array();
+
 			preg_match_all( '/' . get_shortcode_regex() . '/s', $content, $matches, PREG_SET_ORDER );
 			if ( empty( $matches ) )
 				return false;
@@ -297,12 +313,13 @@ if( !function_exists( 'gravityview_has_shortcode_r') ) {
 				if ( $tag === $shortcode[2] ) {
 
 					// Changed this to $shortcode instead of true so we get the parsed atts.
-					return $shortcode;
+					$shortcodes[] = $shortcode;
 
 				} else if ( isset( $shortcode[5] ) && $result = gravityview_has_shortcode_r( $shortcode[5], $tag ) ) {
-					return $result;
+					$shortcodes[] = $result;
 				}
 			}
+			return $shortcodes;
 		}
 		return false;
 	}
@@ -339,65 +356,6 @@ function gravityview_get_template_settings( $post_id ) {
 
 function gravityview_get_directory_fields( $post_id ) {
 	return get_post_meta( $post_id, '_gravityview_directory_fields', true );
-}
-
-/**
- * Get all the basic information about a View (id, form_id, settings)
- *
- * If the passed post ID is not a view, it handles the shortcode parsing and merging.
- *
- * @filter default text
- * @action default text
- * @param  int|WP_Post      $post Pass either a View ID or a WP_Post View object
- * @return array            Associative array with `id`, `form_id`, `template_id` and `atts` (template settings) keys
- */
-function gravityview_get_view_meta( $post ) {
-
-	// You can pass a post ID if you want to
-	if( is_numeric( $post ) ) {
-		$post = get_post( $post );
-	}
-
-	$output = array();
-
-	// Shortcode or direct View
-	if( 'gravityview' === get_post_type( $post ) ) {
-		$post_id = $post->ID;
-	} else if( $shortcode = has_gravityview_shortcode( $post ) ) {
-
-		// GravityView_frontend may not always be available, since connector-functions.php is loaded before the GravityView_Plugin class is defined.
-		$defaults = class_exists('GravityView_frontend') ? GravityView_frontend::get_default_args() : array();
-
-		// Get the settings from the shortcode and merge them with defaults.
-		$shortcode_atts = wp_parse_args( shortcode_parse_atts( $shortcode[3] ), $defaults );
-
-		if( empty( $shortcode_atts['id'] ) ) {
-			do_action('gravityview_log_error', sprintf( '[gravityview_get_view_meta] Returning; no ID defined in shortcode atts for Post #%s (Atts)', $post->ID ), $shortcode_atts );
-			return false;
-		}
-
-		$post_id = $shortcode_atts['id'];
-
-		// The passed args were always winning, even if they were NULL.
-		// This prevents that. Filters NULL, FALSE, and empty strings.
-		$output['shortcode_atts'] = array_filter( $shortcode_atts, 'strlen' );
-
-	} else {
-		do_action('gravityview_log_error', '[gravityview_get_view_meta] Not GravityView type and no shortcode found.');
-		return false;
-	}
-
-	$output['id'] = $post_id;
-	$output['form_id'] = gravityview_get_form_id( $post_id );
-	$output['template_id'] = gravityview_get_template_id( $post_id );
-	$output['atts'] = gravityview_get_template_settings( $post_id );
-
-	// The shortcode settings should overrule the default View settings
-	if( !empty( $output['shortcode_atts'] ) ) {
-		$output['atts'] = wp_parse_args( $output['shortcode_atts'], $output['atts'] );
-	}
-
-	return $output;
 }
 
 if( !function_exists('gravityview_get_sortable_fields') ) {

@@ -44,7 +44,6 @@ class GravityView_Welcome {
 	 * Register the Dashboard Pages which are later hidden but these pages
 	 * are used to render the Welcome pages.
 	 *
-	 * @group Beta
 	 * @access public
 	 * @since 1.0
 	 * @return void
@@ -54,21 +53,11 @@ class GravityView_Welcome {
 		// Add help page to GravityView menu
 		add_submenu_page(
 			'edit.php?post_type=gravityview',
-			__('GravityView Beta: Getting Started', 'gravity-view'),
+			__('GravityView: Getting Started', 'gravity-view'),
 			__('Getting Started', 'gravity-view'),
 			$this->minimum_capability,
 			'gv-getting-started',
 			array( $this, 'getting_started_screen' )
-		);
-
-		// About Page
-		add_submenu_page(
-			'edit.php?post_type=gravityview',
-			__( 'Welcome to GravityView', 'gravity-view' ),
-			__( 'Welcome to GravityView', 'gravity-view' ),
-			$this->minimum_capability,
-			'gv-beta-testing',
-			array( $this, 'beta_testing_screen' )
 		);
 
 		// Credits Page
@@ -93,7 +82,7 @@ class GravityView_Welcome {
 
 		if($is_page) { return $is_page; }
 
-		return in_array($plugin_page, array('gv-about', 'gv-beta-testing', 'gv-credits', 'gv-getting-started'));
+		return in_array( $plugin_page, array( 'gv-about', 'gv-credits', 'gv-getting-started' ) );
 	}
 
 	/**
@@ -106,7 +95,6 @@ class GravityView_Welcome {
 	public function admin_head() {
 		global $plugin_page;
 
-		remove_submenu_page( 'edit.php?post_type=gravityview', 'gv-beta-testing' );
 		remove_submenu_page( 'edit.php?post_type=gravityview', 'gv-credits' );
 
 		if( !$this->is_dashboard_page() ) { return; }
@@ -152,9 +140,6 @@ class GravityView_Welcome {
 			<a class="nav-tab <?php echo $selected == 'gv-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-getting-started', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
 				<?php _e( "Getting Started", 'gravity-view' ); ?>
 			</a>
-			<a class="nav-tab <?php echo $selected == 'gv-beta-testing' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-beta-testing', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
-				<?php _e( 'Beta Testing', 'gravity-view' ); ?>
-			</a>
 			<a class="nav-tab <?php echo $selected == 'gv-credits' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-credits', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
 				<?php _e( 'Credits', 'gravity-view' ); ?>
 			</a>
@@ -165,7 +150,6 @@ class GravityView_Welcome {
 	/**
 	 * Render About Screen
 	 *
-	 * @group Beta
 	 * @access public
 	 * @since 1.0
 	 * @return void
@@ -344,69 +328,11 @@ class GravityView_Welcome {
 	<?php
 	}
 
-	/**
-	 * Render Getting Started Screen
-	 *
-	 * @todo  Add a tab!
-	 * @access public
-	 * @since 1.0
-	 * @return void
-	 */
-	public function beta_testing_screen() {
-		list( $display_version ) = explode( '-', GravityView_Plugin::version );
-		?>
-		<div class="wrap about-wrap">
-
-			<?php $this->tabs(); ?>
-
-			<div class="feature-section col two-col">
-
-				<h3>Thank you for taking part in the GravityView beta</h3>
-
-				<div>
-					<h2>How to report issues</h2>
-					<h4 style="font-weight:normal;">If you find a bug, it is most helpful if you <a href="https://gravityview.co/report-an-issue/">submit a report on the website</a>.</h4>
-					<p><img src="<?php echo plugins_url( 'images/screenshots/report-bug.png', GRAVITYVIEW_FILE ); ?>" class="screenshot" style="max-width:50%;" height="271" width="231" alt="Reporting bugs" />If you find an issue, you can <a href="https://gravityview.co/report-an-issue/">report it on the website</a>, or at the bottom of every GravityView page is a report widget (pictured).</p>
-					<p>Click the "question mark" button and be as <strong>descriptive as possible</strong>.</p>
-					<p><strong>Check the "Include a screenshot..." checkbox</strong> - this will help us fix your issue.</p>
-
-					<h4>Request Github access</h4>
-
-					<p>If you want to contribute to the code, you can <a href="mailto:zack@katzwebservices.com?subject=Github%20Access">request access to the Github repository</a>.</p>
-				</div>
-
-				<div class="last-feature">
-					<h2 class="clear">Thank you for your help.</h2>
-
-					<h4 style="font-weight:normal;" class="clear">By helping discover bugs, suggest enhancements, and provide feedback:</h4>
-
-					<ul>
-						<li><strong>50% off a GravityView license</strong> - everyone with Beta access will receive a discount</li>
-						<li><strong>The top 10 promoters of GravityView during the private Beta will receive a free license.</strong></li>
-						<li>You&rsquo;ll get a free license if you <strong>report an issue or contribute to the code</strong></li>
-						<li><strong>If you contribute to the code</strong>, you&rsquo;ll receive a thank-you on the plugin&rsquo;s "Credits" page</li>
-					</ul>
-				</div>
-			</div>
-
-			<hr class="clear" />
-
-			<div class="feature-section">
-				<h2>Feature Requests</h2>
-
-				<p>You can share your ideas for feature requests on the <a href="http://gravityview.uservoice.com/forums/238941-gravity-forms-directory">Ideas Forum</a>.</p>
-			</div>
-
-		</div>
-		<?php
-	}
-
 
 	/**
 	 * Sends user to the Welcome page on first activation of GravityView as well as each
 	 * time GravityView is upgraded to a new version
 	 *
-	 * @group Beta
 	 * @access public
 	 * @since 1.0
 	 * @return void
@@ -428,12 +354,12 @@ class GravityView_Welcome {
 
 		$upgrade = get_option( 'gv_version_upgraded_from' );
 
-		// After Beta
-		if( ! $upgrade ) { // First time install
-			wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-beta-testing' ) ); exit;
-		} else { // Update
-			wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) ); exit;
-		}
+		// // After Beta
+		// if( ! $upgrade ) { // First time install
+		// 	wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-beta-testing' ) ); exit;
+		// } else { // Update
+		wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) ); exit;
+		// }
 	}
 }
 new GravityView_Welcome;

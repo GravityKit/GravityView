@@ -51,8 +51,11 @@
 			$('a[href="#gv_select_template"]').click( vcfg.selectTemplate );
 			$(".gv-view-types-hover").click( vcfg.selectTemplateHover );
 
-			// preview template
-			$('a[href="#gv_preview_template"]').click( vcfg.previewTemplate );
+			$('a[rel*=external]').click( vcfg.openExternalLinks );
+
+			// @todo
+			// preview template (not being used - remove? )
+			// -- $('a[href="#gv_preview_template"]').click( vcfg.previewTemplate );
 
 			// Close open Dialog boxes when clicking on the overlay
 			$('body').on('click', '.gv-overlay', function( e ) {
@@ -274,6 +277,7 @@
 					// "Changing the View Type will reset your field configuration. Changes will be permanent once you save the View."
 					else if ( thisDialog.is('#gravityview_switch_template_dialog') ) {
 						vcfg.toggleViewTypeMetabox();
+						$("#gravityview_view_config").slideDown(150);
 					}
 					thisDialog.dialog('close');
 				}
@@ -365,6 +369,8 @@
 
 		switchView: function(e){
 			e.preventDefault();
+			e.stopImmediatePropagation();
+
 			var vcfg = viewConfiguration;
 
 			vcfg.templateFilter('custom');
@@ -403,6 +409,10 @@
 				vcfg.selectTemplateContinue();
 			} else if ( currTemplateId != selectedTemplateId ) {
 				vcfg.showDialog( '#gravityview_switch_template_dialog' );
+			} else {
+				// show the same situation as before clicking in Start Fresh.
+				vcfg.toggleViewTypeMetabox();
+				$("#gravityview_view_config").slideDown(150);
 			}
 		},
 
@@ -454,8 +464,15 @@
 			$(this).find('a[href="#gv_select_template"]').trigger( 'click' );
 		},
 
+		openExternalLinks: function(e) {
+			window.open( this.href );
+			return false;
+		},
+
 		/**
 		 * Display a screenshot of the current template. Not currently in use.
+		 *
+		 * @todo REMOVE ?
 		 * @param  object    e     jQuery event object
 		 * @return void
 		 */
@@ -896,7 +913,6 @@
 			if( ! vcfg.startFreshStatus || templateId === '' ) {
 				return true;
 			}
-
 
 			// Try to create preset form in Gravity Forms. On success assign it to post before saving
 			var data = {

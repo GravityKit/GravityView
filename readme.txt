@@ -16,6 +16,19 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
+= 1.1 =
+* Refactored (re-wrote) View data handling. Now saves up to 10 queries on each page load.
+* Fixed: Infinite loop for rendering `post_content` fields
+* Fixed: Page length value now respected for DataTables
+* Fixed: Formatting of DataTables fields is now processed the same way as other fields. Images now work, for example.
+* Modified: Removed redundant `gravityview_hide_empty_fields` filters
+* Fixed/Modified: Enabled "wildcard" search instead of strict search for field searches.
+* Added: `gravityview_search_operator` filter to modify the search operator used by the search.
+* Added: `gravityview_search_criteria` filter to modify all search criteria before being passed to Gravity Forms
+* Added: Website Field setting to display shortened link instead of full URL
+* Fixed: Form title gets replaced properly in merge tags
+* Modified: Tweaked preset templates
+
 = 1.0.10 =
 * Added: "Connected Views" in the Gravity Forms Toolbar. This makes it simple to see which Views are using the current form as a data source.
 * Fixed: Edit Entry link in Multiple Entries view
