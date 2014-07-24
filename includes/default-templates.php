@@ -24,16 +24,16 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 
 	function __construct( $id = 'default_table', $settings = array(), $field_options = array(), $areas = array() ) {
 
-		if(empty($settings)) {
-			$settings = array(
-				'slug' => 'table',
-				'type' => 'custom',
-				'label' =>  __( 'Table (default)', 'gravity-view' ),
-				'description' => __('Display items in a table view.', 'gravity-view'),
-				'logo' => plugins_url('includes/presets/default-table/logo-default-table.png', GRAVITYVIEW_FILE),
-				'css_source' => plugins_url('templates/css/table-view.css', GRAVITYVIEW_FILE),
-			);
-		}
+		$table_settings = array(
+			'slug' => 'table',
+			'type' => 'custom',
+			'label' =>  __( 'Table (default)', 'gravity-view' ),
+			'description' => __('Display items in a table view.', 'gravity-view'),
+			'logo' => plugins_url('includes/presets/default-table/logo-default-table.png', GRAVITYVIEW_FILE),
+			'css_source' => plugins_url('templates/css/table-view.css', GRAVITYVIEW_FILE),
+		);
+
+		$settings = wp_parse_args( $settings, $table_settings );
 
 		/**
 		 * @see  GravityView_Admin_Views::get_default_field_options() for Generic Field Options
@@ -67,16 +67,16 @@ class GravityView_Default_Template_List extends GravityView_Template {
 
 	function __construct( $id = 'default_list', $settings = array(), $field_options = array(), $areas = array() ) {
 
-		if(empty($settings)) {
-			$settings = array(
-				'slug' => 'list',
-				'type' => 'custom',
-				'label' =>  __( 'List (default)', 'gravity-view' ),
-				'description' => __('Display items in a listing view.', 'gravity-view'),
-				'logo' => plugins_url('includes/presets/default-list/logo-default-list.png', GRAVITYVIEW_FILE),
-				'css_source' => plugins_url('templates/css/list-view.css', GRAVITYVIEW_FILE),
-			);
-		}
+		$list_settings = array(
+			'slug' => 'list',
+			'type' => 'custom',
+			'label' =>  __( 'List (default)', 'gravity-view' ),
+			'description' => __('Display items in a listing view.', 'gravity-view'),
+			'logo' => plugins_url('includes/presets/default-list/logo-default-list.png', GRAVITYVIEW_FILE),
+			'css_source' => plugins_url('templates/css/list-view.css', GRAVITYVIEW_FILE),
+		);
+
+		$settings = wp_parse_args( $settings, $list_settings );
 
 		$field_options = array(
 			'show_as_link' => array( 'type' => 'checkbox', 'label' => __( 'Link to single entry', 'gravity-view' ), 'default' => false, 'context' => 'directory' ),
