@@ -114,6 +114,7 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 			'prev_text' => '&laquo;',
 			'next_text' => '&raquo;',
 			'type' => 'list',
+			'end_size' => 2,
 			'total' => empty( $page_size ) ? 0 : ceil( $total / $page_size ),
 			'current' => $curr_page,
 			'show_all' => !empty( $atts['show_all'] ), // to be available at backoffice
