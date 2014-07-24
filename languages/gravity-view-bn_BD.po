@@ -1,4 +1,4 @@
-# 
+# Translators:
 # Translators:
 # Md Akter Hosen <tareqhi@gmail.com>, 2014
 # Md Akter Hosen <tareqhi@gmail.com>, 2014
@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-06-24 18:47-0700\n"
-"PO-Revision-Date: 2014-07-14 09:49+0000\n"
-"Last-Translator: Zachary Katz <zack@katzwebservices.com>\n"
+"PO-Revision-Date: 2014-07-22 09:01+0000\n"
+"Last-Translator: Md Akter Hosen <tareqhi@gmail.com>\n"
 "Language-Team: Bengali (http://www.transifex.com/projects/p/gravityview/language/bn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,7 +30,7 @@ msgid ""
 "%sYou don't have any active views. Let's go %screate one%s!%s\n"
 "\n"
 "If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
-msgstr ""
+msgstr "%sআপনার সক্রিয় কোন দৃশ্য নেই। চলুন %sএকটি দৃশ্য তৈরি করুন%s%s\n\nযদি আপনার যথেষ্ঠ জায়গা না থাকে এবং কিভাবে শুরু করতে হবে তা জানতে চান তাহলে %sশুরুর পৃষ্ঠা দেখুন%s"
 
 #: gravityview.php:231
 msgctxt "Post Type General Name"
@@ -191,7 +191,7 @@ msgstr "দৃশ্য যোগ করুন"
 
 #: includes/class-admin-add-shortcode.php:74
 msgid "Insert a View"
-msgstr ""
+msgstr "একটি দৃশ্য প্রবেশ করান"
 
 #: includes/class-admin-add-shortcode.php:77
 msgid "Select a View"
@@ -199,7 +199,7 @@ msgstr "একটি দৃশ্য নির্বাচন করুন"
 
 #: includes/class-admin-add-shortcode.php:80
 msgid "&mdash; views &mdash;"
-msgstr ""
+msgstr "&mdash; দৃশ্য &mdash;"
 
 #: includes/class-admin-add-shortcode.php:92
 #: includes/class-admin-views.php:558
@@ -414,7 +414,7 @@ msgstr "দৃশ্যের বিন্যাস"
 
 #: includes/class-admin-views.php:282
 msgid "Shortcode Info"
-msgstr ""
+msgstr "সর্টকোড তথ্য"
 
 #: includes/class-admin-views.php:310
 msgid "Where would you like the data to come from for this View?"
@@ -442,12 +442,12 @@ msgstr "দৃষ্টি আকর্ষণ"
 
 #: includes/class-admin-views.php:343
 msgid "Changing the form will discard all the existent View configuration."
-msgstr ""
+msgstr "ফর্ম পরিবর্তন করলে পূর্বের কনফিগারেশন নষ্ঠ হয়ে যাবে।"
 
 #: includes/class-admin-views.php:348
 msgid ""
 "Changing the View Type will discard all the existent View configuration."
-msgstr ""
+msgstr "দৃশ্যের প্রকার পরিবর্তন করলে পূর্বের কনফিগারেশন নষ্ঠ হয়ে যাবে।"
 
 #: includes/class-admin-views.php:353
 msgid "GravityView requires Javascript to be enabled."
@@ -511,7 +511,7 @@ msgstr "একক এন্ট্রি সেটিংস"
 
 #: includes/class-admin-views.php:665
 msgid "To insert this view into a post or a page use the following shortcode:"
-msgstr ""
+msgstr "এই দৃশ্যটি কোন পোষ্ট অথবা পৃষ্ঠায় প্রবেশ করানোর জন্য নিন্মোক্ত সর্টকোড ব্যবহার করুনঃ"
 
 #: includes/class-admin-views.php:905
 #, php-format
@@ -599,7 +599,7 @@ msgstr "নিজস্ব সিএসএস ক্লাসঃ"
 
 #: includes/class-admin-views.php:1273
 msgid "This class will be added to the field container."
-msgstr ""
+msgstr "এই শ্রণীটি ফিল্ড কন্টেইনারে যুক্ত হবে।"
 
 #: includes/class-admin-views.php:1279
 msgid "Make visible only to logged-in users?"

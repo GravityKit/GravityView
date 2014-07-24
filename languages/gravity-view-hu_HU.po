@@ -1,4 +1,4 @@
-# 
+# Translators:
 # Translators:
 # dbalage <balazs@magonc.org>, 2014
 msgid ""

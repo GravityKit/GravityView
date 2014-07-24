@@ -1,4 +1,4 @@
-# 
+# Translators:
 # Translators:
 # Basti <se-schwarz@gmx.de>, 2014
 msgid ""

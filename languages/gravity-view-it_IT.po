@@ -1,4 +1,4 @@
-# 
+# Translators:
 # Translators:
 # Clara Di Gennaro <claradigennaro7@hotmail.com>, 2014
 msgid ""

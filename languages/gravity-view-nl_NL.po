@@ -1,4 +1,4 @@
-# 
+# Translators:
 # Translators:
 # leooosterloo <leo@pronamic.nl>, 2014
 msgid ""
