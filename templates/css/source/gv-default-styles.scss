@@ -123,3 +123,21 @@ body .gv-widget-page-links {
 	max-height: 100%;
 	max-width: 100%;
 }
+
+
+// Screenshots Gallery
+.gv-gallery .gv-field-file-uploads {
+	margin: 0;
+	padding: 0;
+	li {
+		list-style: none;
+		display: inline-block;
+		max-width: 200px;
+		margin-right: 1em;
+		margin-bottom: .5em;
+
+		img {
+			max-width: auto;
+		}
+	}
+}

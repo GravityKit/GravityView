@@ -308,7 +308,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		$output = '<div class="gv-search-box">';
 		$output .= '<label for=search-box-'.$name.'>' . $label . '</label>';
 		$output .= '<p><select name="'.$name.'" id="search-box-'. $name.'">';
-		$output .= '<option value="" '. selected( '', $current_value, false ) .'>---</option>';
+		$output .= '<option value="" '. selected( '', $current_value, false ) .'>&mdash;</option>';
 		foreach( $choices as $choice ) {
 			$output .= '<option value="'. $choice['value'] .'" '. selected( $choice['value'], $current_value, false ) .'>'. $choice['text'] .'</option>';
 		}
