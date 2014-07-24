@@ -624,6 +624,10 @@ class GravityView_frontend {
 		if( !empty( $template_id ) && wp_style_is( 'gravityview_style_' . $template_id, 'registered' ) ) {
 			do_action( 'gravityview_log_debug', sprintf( '[add_style] Adding extra template style for %s', $template_id ) );
 			wp_enqueue_style( 'gravityview_style_' . $template_id );
+		} else if( empty( $template_id ) ) {
+			do_action( 'gravityview_log_error', '[add_style] Cannot add template style; template_id is empty' );
+		} else {
+			do_action( 'gravityview_log_error', sprintf( '[add_style] Cannot add template style; %s is not registered', 'gravityview_style_'.$template_id ) );
 		}
 
 	}
