@@ -64,10 +64,14 @@ class GravityView_API {
 			return $text;
 		}
 
+		// Check for fields
 		preg_match_all('/{[^{]*?:(\d+(\.\d+)?)(:(.*?))?}/mi', $text, $matches, PREG_SET_ORDER);
-
 		if( empty( $matches ) ) {
-			return $text;
+
+			// Check for form variables
+			if( !preg_match( '/{(pricing_fields|form_title|entry_url|post_id|admin_email|post_edit_url|form_id|entry_id)}/ism', $text ) ) {
+				return $text;
+			}
 		}
 
 		return GFCommon::replace_variables( $text, $form, $entry, false, false, false, "html");
@@ -263,7 +267,7 @@ class GravityView_API {
 
 		if( defined('DOING_AJAX') && DOING_AJAX ) {
 			global $gravityview_view;
-			$post_id = isset( $_POST['post_id'] ) ? $_POST['post_id'] : '';
+			$post_id = isset( $_POST['post_id'] ) ? (int)$_POST['post_id'] : '';
 		} else {
 			global $post;
 			$post_id = isset( $post->ID ) ? $post->ID : null;
@@ -471,14 +475,14 @@ function gravityview_get_the_term_list( $post_id, $link = true, $taxonomy = 'pos
 
 }
 
-if( !function_exists( 'gravityview_format_link' ) ) {
+if( !function_exists( 'gravityview_format_link_format' ) ) {
 
 /**
  * Convert a whole link into a shorter link for display
  * @param  [type] $value [description]
  * @return [type]        [description]
  */
-function gravityview_format_link($value = null) {
+function gravityview_format_link_format($value = null) {
 
 	if(apply_filters('gravityview_anchor_text_striphttp', true)) {
 		$value = str_replace('http://', '', $value);
