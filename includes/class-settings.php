@@ -86,7 +86,7 @@ if (!class_exists('GravityView_Settings')) {
 			return array(
 				'id'        => 'license',
 				'type'      => 'edd_license',
-				'remote_api_url' => 'https://katz.co',
+				'remote_api_url' => 'https://gravityview.co',
 				'author'	=> 'Katz Web Services, Inc.',
 				'default'	=> array('license' => 'BETA_TESTER', 'status' => 'Valid'),
 				'item_name'	=> 'GravityView',
@@ -94,7 +94,7 @@ if (!class_exists('GravityView_Settings')) {
 				'mode'		=> 'plugin',
 				'path'		=> GRAVITYVIEW_FILE,
 				'title'     => __('License Key', 'gravity-view'),
-				'subtitle'  => __('Use <code>BETA_TESTER</code>. This allows you to get automatic upgrades.', 'gravity-view'),
+				'subtitle'  => __('Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravity-view'),
 			);
 		}
 
