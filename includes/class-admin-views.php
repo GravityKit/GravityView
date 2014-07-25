@@ -136,11 +136,7 @@ class GravityView_Admin_Views {
 			'gv_css_merge_tags' => array(
 				'title' => __('CSS Merge Tags', 'gravity-view'),
 				'value' => sprintf( __( 'Developers: The CSS classes will be sanitized using the %ssanitize_title_with_dashes()%s function.', 'gravity-view'), '<code>', '</code>' ),
-			),
-			'gv_allow_user_edit' => array(
-				'title' => __('Allow User Edit', 'gravity-view'),
-				'value' => __('Allow logged-in users to edit entries they created.', 'gravity-view'),
-			),
+			)
 		);
 
 		$gv_tooltips = apply_filters( 'gravityview_tooltips', $gv_tooltips );

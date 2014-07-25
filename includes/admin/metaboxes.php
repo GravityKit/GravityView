@@ -310,7 +310,6 @@ class GravityView_Admin_Metaboxes {
 				'single_title' => '',
 				'back_link_label' => '',
 				'hide_empty' => true,
-				'user_edit' => false, // Allow logged-in users to edit entries they created.
 			);
 
 			$ts = wp_parse_args( $settings, $defaults );
@@ -345,13 +344,6 @@ class GravityView_Admin_Metaboxes {
 					<td colspan="2">
 						<?php
 							echo GravityView_Admin_Views::render_field_option( 'template_settings[hide_empty]', array( 'label' => __( 'Hide empty fields', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ts['hide_empty'] );
-						?>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td colspan="2">
-						<?php
-							echo GravityView_Admin_Views::render_field_option( 'template_settings[user_edit]', array( 'label' => __( 'Allow User Edit', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1, 'tooltip' => 'gv_allow_user_edit' ), $ts['user_edit'] );
 						?>
 					</td>
 				</tr>
