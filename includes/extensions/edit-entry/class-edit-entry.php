@@ -132,10 +132,7 @@ class GravityView_Edit_Entry {
 		// Always a link, never a filter
 		unset( $field_options['show_as_link'], $field_options['search_filter'] );
 
-		// Always only shown to users
-
-		$add_options = array();
-		$add_options['edit_link'] = array(
+		$add_option['edit_link'] = array(
 			'type' => 'text',
 			'label' => __( 'Edit Link Text', 'gravity-view' ),
 			'desc' => NULL,
@@ -143,7 +140,7 @@ class GravityView_Edit_Entry {
 			'merge_tags' => true,
 		);
 
-		return $add_options + $field_options;
+		return array_merge( $add_option, $field_options );
 	}
 
 	/**
@@ -448,6 +445,7 @@ class GravityView_Edit_Entry {
 	}
 
 	function user_can_edit_entry( $echo = false ) {
+		global $gravityview_view;
 
 		$error = NULL;
 
@@ -455,8 +453,13 @@ class GravityView_Edit_Entry {
 			$error = __( 'The link to edit this entry is not valid; it may have expired.', 'gravity-view');
 		}
 
-		if( ! GFCommon::current_user_can_any("gravityforms_edit_entries") ) {
-			$error = __( 'You do not have permission to edit this entry.', 'gravity-view');
+		$user_edit = $gravityview_view->atts['user_edit'];
+		$current_user = wp_get_current_user();
+
+		if( !( !empty( $user_edit ) && is_user_logged_in() && intval( $current_user->ID ) === intval( $this->entry['created_by'] ) ) ) {
+			if( ! GFCommon::current_user_can_any("gravityforms_edit_entries") ) {
+				$error = __( 'You do not have permission to edit this entry.', 'gravity-view');
+			}
 		}
 
 		if( $this->entry['status'] === 'trash' ) {
@@ -558,5 +561,6 @@ class GravityView_Edit_Entry {
 
 }
 
+//add_action( 'plugins_loaded', array('GravityView_Edit_Entry', 'getInstance'), 6 );
 new GravityView_Edit_Entry;
 
