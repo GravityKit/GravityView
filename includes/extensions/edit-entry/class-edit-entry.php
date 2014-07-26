@@ -416,7 +416,7 @@ class GravityView_Edit_Entry {
 				$gv_valid = false;
 			}
 		}
-//@todo this doesn't feel right --- what if other fields are not correct!?
+
 		$validation_results['is_valid'] = $gv_valid;
 
 		return $validation_results;
