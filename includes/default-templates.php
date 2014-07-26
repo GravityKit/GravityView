@@ -188,7 +188,7 @@ abstract class GravityView_Template {
 			'label' => '',
 			'description' => '',
 			'logo' => '',
-			'preview' => plugins_url('images/placeholder-template-preview.gif', GRAVITYVIEW_FILE),
+			'preview' => '',
 			'buy_source' => '',
 			'preset_form' => '',
 			'preset_fields' => ''
