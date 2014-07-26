@@ -357,12 +357,18 @@ class GravityView_Edit_Entry {
 			foreach ( array( 'noDuplicates', 'adminOnly', 'inputType' ) as $key ) {
 				$field[ $key ] = isset( $field[ $key ] ) ? $field[ $key ] : NULL;
 			}
+
+			// unset emailConfirmEnabled for email type fields
+			if( 'email' === $field['type'] && !empty( $field['emailConfirmEnabled'] ) ) {
+				$field['emailConfirmEnabled'] = '';
+			}
+
 		}
 
 		return $form;
 	}
 
-	function validate( ) {
+	function validate() {
 		/**
 		 * For some crazy reason, Gravity Forms doesn't validate Edit Entry form submissions.
 		 * You can enter whatever you want!
@@ -374,7 +380,7 @@ class GravityView_Edit_Entry {
 		$failed_validation_page = NULL;
 		$field_values = RGForms::post("gform_field_values");
 
-		$this->is_valid = GFFormDisplay::validate($this->form, $field_values, 1, $failed_validation_page );
+		$this->is_valid = GFFormDisplay::validate( $this->form, $field_values, 1, $failed_validation_page );
 
 		remove_filter( 'gform_validation_'.$this->form_id, array( &$this, 'custom_validation'), 10 );
 	}
@@ -398,6 +404,7 @@ class GravityView_Edit_Entry {
 		}
 
 		$gv_valid = true;
+
 		foreach ($validation_results['form']['fields'] as $key => &$field ) {
 			if( !empty( $field['failed_validation'] ) ) {
 
@@ -409,7 +416,7 @@ class GravityView_Edit_Entry {
 				$gv_valid = false;
 			}
 		}
-
+//@todo this doesn't feel right --- what if other fields are not correct!?
 		$validation_results['is_valid'] = $gv_valid;
 
 		return $validation_results;
