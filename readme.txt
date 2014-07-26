@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries.
 * Fixed: Field setting layouts not persisting
 * Updated: Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
 * Fixed: Logging re-enabled in Admin
+* Fixed: Multi-upload field button width no longer cut off
 * Tweak: Added links to View Type picker to live demos of presets.
 * Tweak: Added this "List of Changes" tab.
 
