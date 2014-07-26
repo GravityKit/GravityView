@@ -16,6 +16,17 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
+= 1.1.1 =
+* __We fixed license validation and auto-updates__. Sorry for the inconvenience!
+* Added: View Setting to allow users to edit only entries they created.
+* Fixed: Could not edit an entry with Confirm Email fields
+* Fixed: Field setting layouts not persisting
+* Updated: Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
+* Fixed: Logging re-enabled in Admin
+* Fixed: Multi-upload field button width no longer cut off
+* Tweak: Added links to View Type picker to live demos of presets.
+* Tweak: Added this "List of Changes" tab.
+
 = 1.1 =
 * Refactored (re-wrote) View data handling. Now saves up to 10 queries on each page load.
 * Fixed: Infinite loop for rendering `post_content` fields

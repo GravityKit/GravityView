@@ -13,6 +13,9 @@ if (!class_exists('GravityView_Settings')) {
 
 			require_once( GRAVITYVIEW_DIR . 'includes/lib/redux-framework/redux-framework.php');
 
+			// Add the EDD extension to Redux
+			add_action( "redux/extensions/gravityview_settings", array($this, 'register_edd_extension') );
+
 			if (!class_exists('ReduxFramework')) { return; }
 
 			add_action('plugins_loaded', array($this, 'initSettings'), 10);
@@ -21,9 +24,6 @@ if (!class_exists('GravityView_Settings')) {
 
 			// Disable Redux tracking script
 			update_option( 'redux-framework-tracking', array( 'allow_tracking' => false ) );
-
-			// Add the EDD extension to Redux
-			add_action( "redux/extensions/gravityview_settings", array($this, 'register_edd_extension') );
 
 			add_action('admin_enqueue_scripts', array($this, '_enqueue'));
 			add_action('gravityview_remove_conflicts_after', array($this, '_enqueue'));
@@ -79,7 +79,6 @@ if (!class_exists('GravityView_Settings')) {
 		}
 
 		/**
-		 * @group Beta
 		 * @return [type] [description]
 		 */
 		function get_edd_field() {
@@ -88,7 +87,7 @@ if (!class_exists('GravityView_Settings')) {
 				'type'      => 'edd_license',
 				'remote_api_url' => 'https://gravityview.co',
 				'author'	=> 'Katz Web Services, Inc.',
-				'default'	=> array('license' => 'BETA_TESTER', 'status' => 'Valid'),
+				'default'	=> array('license' => '', 'status' => ''),
 				'item_name'	=> 'GravityView',
 				'version'	=> GravityView_Plugin::version,
 				'mode'		=> 'plugin',

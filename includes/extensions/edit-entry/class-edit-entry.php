@@ -40,6 +40,8 @@ class GravityView_Edit_Entry {
 
 		add_filter( 'gravityview_additional_fields', array( $this, 'add_available_field' ));
 
+		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field'), 10, 3 );
+
 		// For the Edit Entry Link, you don't want visible to all users.
 		add_filter( 'gravityview_field_visibility_caps', array( $this, 'modify_visibility_caps'), 10, 5 );
 
@@ -132,10 +134,10 @@ class GravityView_Edit_Entry {
 		// Always a link, never a filter
 		unset( $field_options['show_as_link'], $field_options['search_filter'] );
 
-		// Always only shown to users
+		// Edit Entry link should only appear to visitors capable of editing entries
+		unset( $field_options['only_loggedin'], $field_options['only_loggedin_cap'] );
 
-		$add_options = array();
-		$add_options['edit_link'] = array(
+		$add_option['edit_link'] = array(
 			'type' => 'text',
 			'label' => __( 'Edit Link Text', 'gravity-view' ),
 			'desc' => NULL,
@@ -143,7 +145,23 @@ class GravityView_Edit_Entry {
 			'merge_tags' => true,
 		);
 
-		return $add_options + $field_options;
+		return array_merge( $add_option, $field_options );
+	}
+
+	/**
+	 * Add Edit Link as a default field, outside those set in the Gravity Form form
+	 * @param array $entry_default_fields Existing fields
+	 * @param  string|array $form form_ID or form object
+	 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
+	 */
+	function add_default_field( $entry_default_fields, $form = array(), $zone = '' ) {
+
+		$entry_default_fields['edit_link'] = array(
+			'label' => __('Edit Entry', 'gravity-view'),
+			'type' => 'edit_link'
+		);
+
+		return $entry_default_fields;
 	}
 
 	/**
@@ -360,12 +378,18 @@ class GravityView_Edit_Entry {
 			foreach ( array( 'noDuplicates', 'adminOnly', 'inputType' ) as $key ) {
 				$field[ $key ] = isset( $field[ $key ] ) ? $field[ $key ] : NULL;
 			}
+
+			// unset emailConfirmEnabled for email type fields
+			if( 'email' === $field['type'] && !empty( $field['emailConfirmEnabled'] ) ) {
+				$field['emailConfirmEnabled'] = '';
+			}
+
 		}
 
 		return $form;
 	}
 
-	function validate( ) {
+	function validate() {
 		/**
 		 * For some crazy reason, Gravity Forms doesn't validate Edit Entry form submissions.
 		 * You can enter whatever you want!
@@ -377,7 +401,7 @@ class GravityView_Edit_Entry {
 		$failed_validation_page = NULL;
 		$field_values = RGForms::post("gform_field_values");
 
-		$this->is_valid = GFFormDisplay::validate($this->form, $field_values, 1, $failed_validation_page );
+		$this->is_valid = GFFormDisplay::validate( $this->form, $field_values, 1, $failed_validation_page );
 
 		remove_filter( 'gform_validation_'.$this->form_id, array( &$this, 'custom_validation'), 10 );
 	}
@@ -401,6 +425,7 @@ class GravityView_Edit_Entry {
 		}
 
 		$gv_valid = true;
+
 		foreach ($validation_results['form']['fields'] as $key => &$field ) {
 			if( !empty( $field['failed_validation'] ) ) {
 
@@ -455,7 +480,7 @@ class GravityView_Edit_Entry {
 			$error = __( 'The link to edit this entry is not valid; it may have expired.', 'gravity-view');
 		}
 
-		if( ! GFCommon::current_user_can_any("gravityforms_edit_entries") ) {
+		if( ! self::check_user_cap_edit_entry( $this->entry ) ) {
 			$error = __( 'You do not have permission to edit this entry.', 'gravity-view');
 		}
 
@@ -476,6 +501,38 @@ class GravityView_Edit_Entry {
 
 		return false;
 	}
+
+	/**
+	 * checks if user has permissions to edit a specific entry
+	 *
+	 * Needs to be used combined with GravityView_Edit_Entry::user_can_edit_entry for maximum security!!
+	 *
+	 * @param  [type] $entry [description]
+	 * @return bool
+	 */
+	public static function check_user_cap_edit_entry( $entry ) {
+		global $gravityview_view;
+
+		if( !isset( $entry['created_by'] ) ) {
+			return false;
+		}
+
+		$user_edit = !empty( $gravityview_view->atts['user_edit'] );
+		$current_user = wp_get_current_user();
+
+		// If the logged-in user is the same as the user who created the entry, we're good.
+		if( $user_edit && is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
+			return true;
+		}
+
+		// Or if they can edit any entries (as defined in Gravity Forms), we're good.
+		if( GFCommon::current_user_can_any("gravityforms_edit_entries") ) {
+			return true;
+		}
+
+		return false;
+	}
+
 
 	function generate_notice( $notice, $class = '' ) {
 		return '<div class="gv-notice '.esc_attr( $class ) .'">'. $notice .'</div>';
@@ -558,5 +615,6 @@ class GravityView_Edit_Entry {
 
 }
 
+//add_action( 'plugins_loaded', array('GravityView_Edit_Entry', 'getInstance'), 6 );
 new GravityView_Edit_Entry;
 
