@@ -40,6 +40,8 @@ class GravityView_Edit_Entry {
 
 		add_filter( 'gravityview_additional_fields', array( $this, 'add_available_field' ));
 
+		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field'), 10, 3 );
+
 		// For the Edit Entry Link, you don't want visible to all users.
 		add_filter( 'gravityview_field_visibility_caps', array( $this, 'modify_visibility_caps'), 10, 5 );
 
@@ -144,6 +146,22 @@ class GravityView_Edit_Entry {
 		);
 
 		return array_merge( $add_option, $field_options );
+	}
+
+	/**
+	 * Add Edit Link as a default field, outside those set in the Gravity Form form
+	 * @param array $entry_default_fields Existing fields
+	 * @param  string|array $form form_ID or form object
+	 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
+	 */
+	function add_default_field( $entry_default_fields, $form = array(), $zone = '' ) {
+
+		$entry_default_fields['edit_link'] = array(
+			'label' => __('Edit Entry', 'gravity-view'),
+			'type' => 'edit_link'
+		);
+
+		return $entry_default_fields;
 	}
 
 	/**
@@ -499,12 +517,15 @@ class GravityView_Edit_Entry {
 			return false;
 		}
 
-		$user_edit = $gravityview_view->atts['user_edit'];
+		$user_edit = !empty( $gravityview_view->atts['user_edit'] );
 		$current_user = wp_get_current_user();
 
-		if( !empty( $user_edit ) && is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
+		// If the logged-in user is the same as the user who created the entry, we're good.
+		if( $user_edit && is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
 			return true;
 		}
+
+		// Or if they can edit any entries (as defined in Gravity Forms), we're good.
 		if( GFCommon::current_user_can_any("gravityforms_edit_entries") ) {
 			return true;
 		}
