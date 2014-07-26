@@ -138,9 +138,9 @@ class GravityView_Admin_Metaboxes {
 									<?php if( !empty( $template['buy_source'] ) ) : ?>
 										<p><a href="<?php echo esc_url( $template['buy_source'] ); ?>" class="button-primary button-buy-now"><?php esc_html_e( 'Buy Now', 'gravity-view'); ?></a></p>
 									<?php else: ?>
-										<p><a href="#gv_select_template" class="button-primary" data-templateid="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Select', 'gravity-view'); ?></a></p>
+										<p><a href="#gv_select_template" class="button button-large button-primary" data-templateid="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Select', 'gravity-view'); ?></a></p>
 										<?php if( !empty( $template['preview'] ) ) : ?>
-											<p><a href="<?php echo esc_url( $template['preview'] ); ?>" class="button-secondary" rel="external"><?php esc_html_e( 'Preview', 'gravity-view'); ?></a></p>
+											<a href="<?php echo esc_url( $template['preview'] ); ?>" rel="external" class="gv-site-preview"><i class="dashicons dashicons-admin-links" title="<?php esc_html_e( 'View a live demo of this preset', 'gravity-view'); ?>"></i></a>
 										<?php endif; ?>
 									<?php endif; ?>
 								</div>
