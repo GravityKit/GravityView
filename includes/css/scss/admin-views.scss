@@ -154,14 +154,39 @@
 	left: 0;
 	right: 0;
 	height: 100%;
+
+	.gv-site-preview {
+		color: #fff;
+		text-decoration: none;
+	}
+
+	.dashicons {
+		font-size: 24px;
+		width: 24px;
+		height: 24px;
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		opacity: .5;
+
+		&:hover {
+			opacity: 1;
+		}
+	}
 }
 
+// Select / Preview buttons container
 .gv-view-types-hover > div {
-	margin-top: 20%;
+
+	padding-top: 31%;
+
+	// .button-large is 30px; we want to vertically-center
+	margin-top: -15px;
+
 }
 
 .gv-view-types-hover > div p {
-	margin: 0.5em 0;
+	margin: 0.5em 0 1.5em;
 	padding: 0;
 	text-align: center;
 }
