@@ -5,7 +5,7 @@ global $gravityview_view;
 extract( $gravityview_view->field_data );
 
 // Only show the link to logged-in users.
-if( !current_user_can( $field_settings['only_loggedin_cap'] ) ) {
+if( !GravityView_Edit_Entry::check_user_cap_edit_entry( $entry ) ) {
 	return;
 }
 

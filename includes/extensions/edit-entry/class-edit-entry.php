@@ -132,6 +132,9 @@ class GravityView_Edit_Entry {
 		// Always a link, never a filter
 		unset( $field_options['show_as_link'], $field_options['search_filter'] );
 
+		// Edit Entry link should only appear to visitors capable of editing entries
+		unset( $field_options['only_loggedin'], $field_options['only_loggedin_cap'] );
+
 		$add_option['edit_link'] = array(
 			'type' => 'text',
 			'label' => __( 'Edit Link Text', 'gravity-view' ),
@@ -452,7 +455,6 @@ class GravityView_Edit_Entry {
 	}
 
 	function user_can_edit_entry( $echo = false ) {
-		global $gravityview_view;
 
 		$error = NULL;
 
@@ -460,13 +462,8 @@ class GravityView_Edit_Entry {
 			$error = __( 'The link to edit this entry is not valid; it may have expired.', 'gravity-view');
 		}
 
-		$user_edit = $gravityview_view->atts['user_edit'];
-		$current_user = wp_get_current_user();
-
-		if( !( !empty( $user_edit ) && is_user_logged_in() && intval( $current_user->ID ) === intval( $this->entry['created_by'] ) ) ) {
-			if( ! GFCommon::current_user_can_any("gravityforms_edit_entries") ) {
-				$error = __( 'You do not have permission to edit this entry.', 'gravity-view');
-			}
+		if( ! self::check_user_cap_edit_entry( $this->entry ) ) {
+			$error = __( 'You do not have permission to edit this entry.', 'gravity-view');
 		}
 
 		if( $this->entry['status'] === 'trash' ) {
@@ -486,6 +483,35 @@ class GravityView_Edit_Entry {
 
 		return false;
 	}
+
+	/**
+	 * checks if user has permissions to edit a specific entry
+	 *
+	 * Needs to be used combined with GravityView_Edit_Entry::user_can_edit_entry for maximum security!!
+	 *
+	 * @param  [type] $entry [description]
+	 * @return bool
+	 */
+	public static function check_user_cap_edit_entry( $entry ) {
+		global $gravityview_view;
+
+		if( !isset( $entry['created_by'] ) ) {
+			return false;
+		}
+
+		$user_edit = $gravityview_view->atts['user_edit'];
+		$current_user = wp_get_current_user();
+
+		if( !empty( $user_edit ) && is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
+			return true;
+		}
+		if( GFCommon::current_user_can_any("gravityforms_edit_entries") ) {
+			return true;
+		}
+
+		return false;
+	}
+
 
 	function generate_notice( $notice, $class = '' ) {
 		return '<div class="gv-notice '.esc_attr( $class ) .'">'. $notice .'</div>';
