@@ -26,7 +26,7 @@ class GravityView_Welcome {
 	/**
 	 * @var string The capability users should have to view the page
 	 */
-	public $minimum_capability = 'edit_posts';
+	public $minimum_capability = 'manage_options';
 
 	/**
 	 * Get things started
@@ -161,45 +161,6 @@ class GravityView_Welcome {
 		<?php
 	}
 
-	public function changelog_screen() {
-
-		list( $display_version ) = explode( '-', GravityView_Plugin::version );
-
-		?>
-
-		<div class="changelog point-releases">
-			<h3>What changed in <?php echo $display_version; ?></h3>
-
-			<div class="alignright">
-				<img src="<?php echo plugins_url( 'images/screenshots/edit-form-buttons.png', GRAVITYVIEW_FILE ); ?>" alt="Edit Form Buttons" class="gv-welcome-screenshots" />
-				<p class="howto" style="text-align:center;">New Buttons form Gravity Forms</p>
-			</div>
-			<ul>
-				<li>Added: Time field support, with date format default and options</li>
-				<li>Added: <q>Event Listings</q> View preset</li>
-				<li>Added: <q>Show Entry On Website</q> Gravity Forms form button. This is meant to be an opt-in checkbox that the user sees and can control, unlike the <q>Approve/Reject</q> button, which is designed for adminstrators to manage approval.</li>
-				<li>Improved horizontal search widget layout</li>
-				<li>Fixed: Only show Edit Entry link to logged-in users</li>
-				<li>Updated: Dutch translation by <a href="https://www.transifex.com/accounts/profile/leooosterloo/">@leooosterloo</a> (100% coverage, thank you!)</li>
-			</ul>
-
-			<h3>What changed in 1.0.8</h3>
-			<ul>
-			<li><img src="<?php echo plugins_url( 'images/screenshots/edit-entry-link.png', GRAVITYVIEW_FILE ); ?>" alt="Edit Entry Link" class="gv-welcome-screenshots" /><strong>Edit Entry</strong> - you can add an Edit Entry link using the <q>Add Field</q> buttons in either the Multiple Entries or Single Entry tab.
-				<ul>
-					<li>For now, if the user has the ability to edit entries in Gravity Forms, they’ll be able to edit entries in GravityView. Moving forward, we&#39;ll be adding refined controls over who can edit which entries.</li>
-					<li>It supports modifying existing Entry uploads and the great Multiple-File Upload field.</li>
-				</ul>
-			</li>
-			<li>Fixed: Insert View embed code now works again</li>
-			<li>Fixed: Filtering by date now working</li>
-		</ul>
-		<div class="clear"></div>
-		</div>
-	</div>
-		<?php
-	}
-
 	/**
 	 * Render About Screen
 	 *
@@ -208,7 +169,7 @@ class GravityView_Welcome {
 	 * @return void
 	 */
 	public function getting_started_screen() {
-		?>
+	?>
 		<div class="wrap about-wrap">
 			<?php $this->tabs(); ?>
 		</div>
@@ -216,7 +177,7 @@ class GravityView_Welcome {
 		<div class="wrap">
 			<div class="updated inline">
 				<h3><?php esc_html_e('How-To &amp; Documentation', 'gravity-view'); ?></h3>
-				<p>Read all about GravityView.</p>
+				<p>We&rsquo;re adding lots of features are working on providing helpful guides to get started and developer documentation.</p>
 				<p><a class="button button-secondary button-primary" href="https://gravityview.co/support/documentation/?zen_section=200480627">See our Help Docs</a>
 			</div>
 		</div>
@@ -321,7 +282,7 @@ class GravityView_Welcome {
 				<div class="alignright">
 					<img src="<?php echo plugins_url( 'images/screenshots/edit-form-buttons.png', GRAVITYVIEW_FILE ); ?>" alt="Edit Form Buttons" class="gv-welcome-screenshots" />
 					<p class="howto" style="text-align:center;">New Buttons form Gravity Forms</p>
-			</div>
+				</div>
 				<ul>
 					<li>Added: Time field support, with date format default and options</li>
 					<li>Added: <q>Event Listings</q> View preset</li>
@@ -346,7 +307,7 @@ class GravityView_Welcome {
 			</div>
 
 		</div>
-		<?php
+	<?php
 	}
 
 	/**
