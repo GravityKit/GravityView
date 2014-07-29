@@ -36,7 +36,7 @@ class GravityView_Admin_ApproveEntries {
 		// process ajax approve entry requests
 		add_action('wp_ajax_gv_update_approved', array( $this, 'ajax_update_approved'));
 
-		add_action( 'gravityview_tooltips', array( $this, 'tooltips' ) );
+		add_filter( 'gravityview_tooltips', array( $this, 'tooltips' ) );
 
 		// adding styles and scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles') );
