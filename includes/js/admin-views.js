@@ -42,6 +42,10 @@
 			// select form
 			vcfg.gvSelectForm.change( vcfg.formChange );
 
+			// Force the sort metabox to be directly under the view configuration.
+			// Damn 3rd party metaboxes!
+			$('#gravityview_sort_filter').insertAfter('#gravityview_view_config');
+
 			// switch View (for existing forms)
 			$('a[href="#gv_switch_view"]').on( 'click', vcfg.switchView );
 
@@ -162,7 +166,7 @@
 			var vcfg = viewConfiguration;
 
 			vcfg.currentFormId = '';
-			$("#gravityview_view_config, #gravityview_select_template").hide();
+			$("#gravityview_view_config, #gravityview_select_template, #gravityview_sort_filter").hide();
 
 		},
 
@@ -224,7 +228,7 @@
 			vcfg.showViewTypeMetabox();
 
 			// hide config metabox
-			$("#gravityview_view_config").slideUp(150);
+			vcfg.hideViewConfig();
 		},
 
 		/**
@@ -251,7 +255,7 @@
 			} else {
 
 				// Let merge tags know not to initialize
-				$('body').addClass('gv-form-changed');
+				$('body').trigger('gravityview_form_change').addClass('gv-form-changed');
 
 				vcfg.templateFilter('custom');
 				vcfg.showViewTypeMetabox();
@@ -277,7 +281,7 @@
 					// "Changing the View Type will reset your field configuration. Changes will be permanent once you save the View."
 					else if ( thisDialog.is('#gravityview_switch_template_dialog') ) {
 						vcfg.toggleViewTypeMetabox();
-						$("#gravityview_view_config").slideDown(150);
+						vcfg.showViewConfig();
 					}
 					thisDialog.dialog('close');
 				}
@@ -412,7 +416,7 @@
 			} else {
 				// show the same situation as before clicking in Start Fresh.
 				vcfg.toggleViewTypeMetabox();
-				$("#gravityview_view_config").slideDown(150);
+				vcfg.showViewConfig();
 			}
 		},
 
@@ -553,9 +557,17 @@
 
 		},
 
+		/**
+		 * Hide metaboxes related to view configuration.
+		 * @return {void}
+		 */
+		hideViewConfig: function() {
+			$("#gravityview_view_config,#gravityview_sort_filter").slideUp(150);
+		},
+
 		showViewConfig: function() {
 			var vcfg = viewConfiguration;
-			$("#gravityview_view_config").slideDown(150);
+			$("#gravityview_view_config,#gravityview_sort_filter").slideDown(150);
 			vcfg.toggleDropMessage();
 			vcfg.init_droppables();
 			vcfg.init_tooltips();
