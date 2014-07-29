@@ -189,6 +189,9 @@ class GravityView_frontend {
 			}
 		}
 
+		//	Add the filter back in
+		add_filter( 'the_content', array( $this, 'insert_view_in_content' ) );
+
 		return $content;
 	}
 
@@ -292,6 +295,16 @@ class GravityView_frontend {
 			do_action( 'gravityview_log_debug', '[render_view] Executing Single View' );
 
 			$entry = gravityview_get_entry( $this->single_entry );
+
+			// You are not permitted to view this entry.
+			if( false === $entry ) {
+
+				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.');
+
+				esc_attr_e( 'You have attempted to view an entry that does not exist.', 'gravity-view');
+
+				return;
+			}
 
 			// We're in single view, but the view being processed is not the same view the single entry belongs to.
 			if( $view_data['form_id'] !== $entry['form_id'] ) {
