@@ -34,6 +34,9 @@ class GravityView_frontend {
 		// Enqueue scripts and styles after GravityView_Template::register_styles()
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 20);
 
+		// Enqueue and print styles in the footer. Added 1 priorty so stuff gets printed at 10 priority.
+		add_action( 'wp_print_footer_scripts', array( $this, 'add_scripts_and_styles' ), 1);
+
 		add_filter( 'the_title', array( $this, 'single_entry_title' ), 1, 2 );
 		add_filter( 'the_content', array( $this, 'insert_view_in_content' ) );
 		add_filter( 'comments_open', array( $this, 'comments_open' ), 10, 2);
@@ -171,7 +174,7 @@ class GravityView_frontend {
 		// Plugins may run through the content in the header. WP SEO does this for its OpenGraph functionality.
 		if( !did_action( 'loop_start' ) ) {
 
-			do_action( 'gravityview_log_debug', '[insert_view_in_content] Not processing yet: loop_start hasn\'t run yet.');
+			do_action( 'gravityview_log_debug', '[insert_view_in_content] Not processing yet: loop_start hasn\'t run yet. Current action:', current_filter() );
 
 			return $content;
 		}
@@ -601,9 +604,9 @@ class GravityView_frontend {
 		// enqueue template specific styles
 		if( !empty( $this->gv_output_data ) ) {
 
-			$view_data = $this->gv_output_data;
+			$views = $this->gv_output_data->get_views();
 
-			foreach ( $view_data->get_views() as $view_id => $data ) {
+			foreach ( $views as $view_id => $data ) {
 
 				// By default, no thickbox
 				$js_dependencies = array( 'jquery', 'gravityview-jquery-cookie' );
