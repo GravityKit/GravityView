@@ -74,18 +74,22 @@ class GravityView_Admin_Metaboxes {
 				<?php // render "start fresh" button ?>
 				<a class="button button-primary" href="#gv_start_fresh" title="<?php esc_attr_e( 'Start Fresh', 'gravity-view' ); ?>"><?php esc_html_e( 'Start Fresh', 'gravity-view' ); ?></a>
 
+				<?php if( !empty( $forms ) ) { ?>
 				<span>&nbsp;<?php esc_html_e( 'or use an existing form', 'gravity-view' ); ?>&nbsp;</span>
+				<?php } ?>
 
 			<?php endif; ?>
 
-			<?php // render select box ?>
+			<?php
+			// If there are no forms to select, show no forms.
+			if( !empty( $forms ) ) { ?>
 			<select name="gravityview_form_id" id="gravityview_form_id">
 				<option value="" <?php selected( '', $current_form, true ); ?>>&mdash; <?php esc_html_e( 'list of forms', 'gravity-view' ); ?> &mdash;</option>
 				<?php foreach( $forms as $form ) : ?>
 					<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current_form, true ); ?>><?php echo $form['title']; ?></option>
 				<?php endforeach; ?>
 			</select>
-		<?php #echo '<pre>';var_dump($current_form); die(); ?>
+			<?php } ?>
 
 			&nbsp;<a class="button button-primary" <?php if( empty( $current_form ) ) { echo 'style="display:none;"'; } ?> id="gv_switch_view_button" href="#gv_switch_view" title="<?php esc_attr_e( 'Switch View', 'gravity-view' ); ?>"><?php esc_html_e( 'Switch View Type', 'gravity-view' ); ?></a>
 
