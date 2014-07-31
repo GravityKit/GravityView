@@ -78,58 +78,60 @@ if (!class_exists('GravityView_Settings')) {
 			$this->ReduxFramework = new ReduxFramework($this->sections, $this->args);
 		}
 
-		/**
-		 * @return [type] [description]
-		 */
-		function get_edd_field() {
-			return array(
-				'id'        => 'license',
-				'type'      => 'edd_license',
-				'remote_api_url' => 'https://gravityview.co',
-				'author'	=> 'Katz Web Services, Inc.',
-				'default'	=> array('license' => '', 'status' => ''),
-				'item_name'	=> 'GravityView',
-				'version'	=> GravityView_Plugin::version,
-				'mode'		=> 'plugin',
-				'path'		=> GRAVITYVIEW_FILE,
-				'title'     => __('License Key', 'gravity-view'),
-				'subtitle'  => __('Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravity-view'),
-			);
-		}
-
-		/**
-		 * @group Beta
-		 */
 		public function setSections() {
 
 			ob_start();
 
-			$edd_field = $this->get_edd_field();
+			$fields = apply_filters( 'gravityview_settings_fields', array(
+					array(
+						'id'        => 'license',
+						'type'      => 'edd_license',
+						'remote_api_url' => 'https://gravityview.co',
+						'author'	=> 'Katz Web Services, Inc.',
+						'default'	=> array('license' => '', 'status' => ''),
+						'item_name'	=> 'GravityView',
+						'version'	=> GravityView_Plugin::version,
+						'mode'		=> 'plugin',
+						'path'		=> GRAVITYVIEW_FILE,
+						'title'     => __('License Key', 'gravity-view'),
+						'subtitle'  => __('Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravity-view'),
+					),
+					array(
+						'id'        => 'support-email',
+						'type'      => 'text',
+						'validate'	=> 'email',
+						'default'   => get_bloginfo( 'admin_email' ),
+						'title'     => __('Support Email', 'gravity-view'),
+						'subtitle'  => __('In order to provide responses to your support requests, please provide your email address.', 'gravity-view'),
+					),
+					array(
+						'id'        => 'no-conflict-mode',
+						'type'      => 'switch',
+						'title'     => __('No-Conflict Mode', 'gravity-view'),
+						'subtitle'  => __('Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravity-view'),
+					)
+			));
 
-			$fields = array(
-				$edd_field,
-				array(
-					'id'        => 'support-email',
-					'type'      => 'text',
-					'validate'	=> 'email',
-					'default'   => get_bloginfo( 'admin_email' ),
-					'title'     => __('Support Email', 'gravity-view'),
-					'subtitle'  => __('In order to provide responses to your support requests, please provide your email address.', 'gravity-view'),
-				),
-				array(
-					'id'        => 'no-conflict-mode',
-					'type'      => 'switch',
-					'title'     => __('No-Conflict Mode', 'gravity-view'),
-					'subtitle'  => __('Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravity-view'),
-				)
-			);
+			// Extensions can tap in here.
+			$extension_fields = apply_filters( 'gravityview_extension_fields', array() );
 
-			// ACTUAL DECLARATION OF SECTIONS
+			// If there are extensions, add a section for them
+			if( !empty( $extension_fields ) ) {
+				array_unshift( $extension_fields, array(
+					'title' => 'GravityView Extension Settings',
+					'id'        => 'gravityview-extensions-header',
+					'type'      => 'section',
+					'indent'	=> false,
+				));
+			}
+
 			$this->sections[] = array(
 				'title'     => __('GravityView Settings', 'gravity-view'),
 				'icon'      => 'el-icon-home',
-				'fields'    => $fields,
+				'fields'    => array_merge( $fields, $extension_fields )
 			);
+
+			do_action( 'gravityview_settings_sections', $this );
 
 		}
 
