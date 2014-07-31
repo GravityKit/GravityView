@@ -79,7 +79,7 @@ class GravityView_Admin {
 	 * @return void
 	 */
 	public static function plugin_action_links( $links ) {
-		$support_link = 'https://katzwebservices.zendesk.com/hc/en-us/categories/200136096';
+		$support_link = 'https://gravityview.co/support/documentation/';
 		$action = array( '<a href="' . $support_link . '">'. esc_html__( 'Support', 'gravity-view' ) .'</a>' );
 		return array_merge( $action, $links );
 	}
