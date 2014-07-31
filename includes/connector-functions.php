@@ -310,11 +310,8 @@ if( !function_exists('has_gravityview_shortcode') ) {
 			return true;
 		}
 
-		if( $shortcode = gravityview_has_shortcode_r( $post->post_content, 'gravityview') ) {
-			return $shortcode;
-		}
+		return gravityview_has_shortcode_r( $post->post_content, 'gravityview');
 
-		return false;
 	}
 }
 
@@ -323,7 +320,7 @@ if( !function_exists( 'gravityview_has_shortcode_r') ) {
 	 * Placeholder until the recursive has_shortcode() patch is merged
 	 * @link https://core.trac.wordpress.org/ticket/26343#comment:10
 	 */
-	function gravityview_has_shortcode_r( $content, $tag ) {
+	function gravityview_has_shortcode_r( $content, $tag = 'gravityview' ) {
 		if ( false === strpos( $content, '[' ) ) {
 			return false;
 		}
@@ -343,9 +340,10 @@ if( !function_exists( 'gravityview_has_shortcode_r') ) {
 					$shortcodes[] = $shortcode;
 
 				} else if ( isset( $shortcode[5] ) && $result = gravityview_has_shortcode_r( $shortcode[5], $tag ) ) {
-					$shortcodes[] = $result;
+					$shortcodes = $result;
 				}
 			}
+
 			return $shortcodes;
 		}
 		return false;
