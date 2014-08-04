@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0.2
+ * @version 1.0.3
  */
 abstract class GravityView_Extension {
 
@@ -145,7 +145,7 @@ abstract class GravityView_Extension {
 
 		} else if( false === version_compare(GravityView_Plugin::version, $this->_min_gravityview_version , ">=") ) {
 
-			$message = sprintf( __('The extension requires GravityView Version %s or newer.', 'gravity-view' ), '<tt>'.$this->_min_gravityview_version.'</tt>');
+			$message = sprintf( __('The %s Extension requires GravityView Version %s or newer.', 'gravity-view' ), $this->_title, '<tt>'.$this->_min_gravityview_version.'</tt>' );
 
 			self::add_notice( $message );
 

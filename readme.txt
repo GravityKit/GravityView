@@ -17,15 +17,16 @@ Beautifully display your Gravity Forms entries.
 == Changelog ==
 
 = 1.1.2 =
-* Fixed: When trying to access an entry that doesn't exist (it had been permanently deleted), don't throw an error
+* Added: Extensions framework to allow for extensions to auto-update.
 * Fixed: Entries not displaying in Visual Composer plugin editor
-* Fixed: Default styles not being enqueued when embedded using the shortcode (fixes vertical pagination links)
-* Modified: Switched `gravityview_get_entry()` to using `GFAPI::get_entries()` instead of `GFAPI::get_entry()` to allow for advanced filtering
-* Fixed: Form ID can be 0 in `gravityview_get_entries()`
-* Fixed: Single entry queries were being run twice
-* Fixed: Added Enhanced Display style in Edit Entry mode
 * Fixed: Allow using images as link to entry
 * Fixed: Updated field layout in Admin to reflect actual layout of listings (full-width title and subtitle above image)
+* Fixed: When trying to access an entry that doesn't exist (it had been permanently deleted), don't throw an error
+* Fixed: Default styles not being enqueued when embedded using the shortcode (fixes vertical pagination links)
+* Fixed: Single entry queries were being run twice
+* Fixed: Added Enhanced Display style in Edit Entry mode
+* Modified: How single entries are accessed; now allows for advanced filtering. Converted `gravityview_get_entry()` to use `GFAPI::get_entries()` instead of `GFAPI::get_entry()`
+* Modified: Form ID can be 0 in `gravityview_get_entries()`
 * Modified: Improved Edit Entry styling
 * Modified: Convert to using `GravityView_View_Data::get_default_args()` instead of duplicating the settings arrays. Used for tooltips, insert shortcode dialog and View metaboxes.
 * Modified: Add a check for whether a view exists in `GravityView_View_Data::add_view()`
