@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0
+ * @version 1.0.2
  */
 abstract class GravityView_Extension {
 
@@ -26,7 +26,7 @@ abstract class GravityView_Extension {
 
 		add_action( 'admin_init', array( $this, 'settings') );
 
-		add_action( 'admin_notices', array( $this, 'admin_notice' ) );
+		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
 
 		if( false === $this->is_extension_supported() ) {
 			return;
@@ -58,6 +58,8 @@ abstract class GravityView_Extension {
 			include_once plugin_dir_path( __FILE__ ) . 'EDD_SL_Plugin_Updater.php';
 		}
 
+		if( !class_exists( 'GravityView_Settings' ) ) { return; }
+
 		$license = GravityView_Settings::getSetting('license');
 
 		// Don't update if invalid license.
@@ -86,17 +88,12 @@ abstract class GravityView_Extension {
 			return;
 		}
 
-		foreach( self::$admin_notices as $notice ) {
+		foreach( self::$admin_notices as $key => $notice ) {
 
 			echo '<div id="message" class="'. esc_attr( $notice['class'] ).'">';
-
-			if( !self::$is_compatible ) {
-				echo '<h3>'.sprintf( esc_attr__('%s could not be activated.', 'gravity-view'), $this->_title ).'</h3>';
-			}
 			echo wpautop( $notice['message'] );
 			echo '<div class="clear"></div>';
 			echo '</div>';
-
 		}
 
 		//reset the notices handler
@@ -138,7 +135,7 @@ abstract class GravityView_Extension {
 
 		if( !class_exists( 'GravityView_Plugin' ) ) {
 
-			$message = __('GravityView is not active.', 'gravity-view');
+			$message = sprintf( __('Could not activate the %s Extension; GravityView is not active.', 'gravity-view'), $this->_title );
 
 			self::add_notice( $message );
 
