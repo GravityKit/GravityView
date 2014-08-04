@@ -27,7 +27,7 @@ class GravityView_Admin {
 
 		add_filter( 'plugin_action_links_'. plugin_basename( GRAVITYVIEW_FILE ) , array( $this, 'plugin_action_links' ) );
 
-		add_action( 'plugins_loaded', array( $this, 'backend_actions' ) );
+		add_action( 'plugins_loaded', array( $this, 'backend_actions' ), 100 );
 
 		//Hooks for no-conflict functionality
 	    add_action( 'wp_print_scripts', array( $this, 'no_conflict_scripts' ), 1000);

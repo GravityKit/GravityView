@@ -1,10 +1,14 @@
 <?php
-
+/**
+ * @version 1.0
+ */
 abstract class GravityView_Extension {
 
 	protected $_title = NULL;
 
 	protected $_version = NULL;
+
+	protected $_text_domain = 'gravity-view';
 
 	protected $_min_gravityview_version = '1.1.2';
 
@@ -17,6 +21,8 @@ abstract class GravityView_Extension {
 	static $is_compatible = true;
 
 	function __construct() {
+
+		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
 		add_action( 'admin_init', array( $this, 'settings') );
 
@@ -35,15 +41,27 @@ abstract class GravityView_Extension {
 
 	}
 
+	/**
+	 * Load translations for the extension
+	 * @return void
+	 */
+	function load_plugin_textdomain() {
+
+		if( empty( $this->_text_domain ) ) { return; }
+
+		load_plugin_textdomain( $this->_text_domain , false, plugin_dir_path( __FILE__ ). 'languages/' );
+	}
+
 	function settings( $settings ) {
 
-		if( !class_exists( 'GravityView_Settings' ) ) {
-			return;
+		if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
+			include_once plugin_dir_path( __FILE__ ) . 'EDD_SL_Plugin_Updater.php';
 		}
 
 		$license = GravityView_Settings::getSetting('license');
 
-		if( empty( $license['status'] ) || $license['status'] !== 'valid' ) { return; }
+		// Don't update if invalid license.
+		if( empty( $license['status'] ) || strtolower( $license['status'] ) !== 'valid' ) { return; }
 
 		new EDD_SL_Plugin_Updater(
 			$this->_remote_update_url,
