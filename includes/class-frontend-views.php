@@ -297,10 +297,8 @@ class GravityView_frontend {
 			// user requested Single Entry View
 			do_action( 'gravityview_log_debug', '[render_view] Executing Single View' );
 
-			$entry = gravityview_get_entry( $this->single_entry );
-
 			// You are not permitted to view this entry.
-			if( false === $entry ) {
+			if( false === $this->entry ) {
 
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.');
 
@@ -310,7 +308,7 @@ class GravityView_frontend {
 			}
 
 			// We're in single view, but the view being processed is not the same view the single entry belongs to.
-			if( $view_data['form_id'] !== $entry['form_id'] ) {
+			if( $view_data['form_id'] !== $this->entry['form_id'] ) {
 
 				$view_id = isset( $view_entries['entries'][0]['id'] ) ? $view_entries['entries'][0]['id'] : '(empty)';
 				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '. $view_id);
@@ -323,7 +321,7 @@ class GravityView_frontend {
 
 			//fetch entry detail
 			$view_entries['count'] = 1;
-			$view_entries['entries'][] = $entry;
+			$view_entries['entries'][] = $this->entry;
 			do_action( 'gravityview_log_debug', '[render_view] Get single entry: ', $view_entries['entries'] );
 
 			// set back link label
