@@ -106,84 +106,17 @@ class GravityView_Admin_Add_Shortcode {
 
 						<caption><?php esc_html_e( 'View Settings' ); ?></caption>
 
-						<tr valign="top">
-							<td>
-								<label for="gravityview_page_size"><?php esc_html_e( 'Number of entries to show per page', 'gravity-view'); ?></label>
-							</td>
-							<td>
-								<input name="gravityview_page_size" id="gravityview_page_size" type="number" step="1" min="1" value="25" class="small-text">
-							</td>
-						</tr>
+						<?php
 
-						<tr valign="top" class="alternate">
-							<td>
-								<label for="gravityview_only_approved"><?php esc_html_e( 'Enable lightbox for images', 'gravity-view' ); ?></label>
-							</td>
-							<td>
-								<fieldset>
-									<legend class="screen-reader-text"><span><?php esc_html_e( 'Enable lightbox for images', 'gravity-view' ); ?></span></legend>
-									<label for="gravityview_lightbox">
-										<input name="gravityview_lightbox" type="checkbox" id="gravityview_lightbox" checked="checked" value="1">
-									</label>
-								</fieldset>
-							</td>
-						</tr>
+						$settings = GravityView_View_Data::get_default_args( true );
 
-						<tr valign="top">
-							<td>
-								<label for="gravityview_only_approved"><?php esc_html_e( 'Show only approved entries', 'gravity-view' ); ?></label>
-							</td>
-							<td>
-								<fieldset>
-									<legend class="screen-reader-text"><span><?php esc_html_e( 'Show only approved entries', 'gravity-view' ); ?></span></legend>
-									<label for="gravityview_only_approved">
-										<input name="gravityview_only_approved" type="checkbox" id="gravityview_only_approved" value="1">
-									</label>
-								</fieldset>
-							</td>
-						</tr>
+						foreach ( $settings as $key => $setting ) {
 
-						<tr valign="top" class="alternate">
-							<td>
-								<label for="gravityview_sort_field"><?php esc_html_e( 'Sort by field', 'gravity-view'); ?></label>
-							</td>
-							<td>
-								<select name="gravityview_sort_field" id="gravityview_sort_field" class="widefat">
-									<option value=""><?php esc_html_e( 'Default', 'gravity-view'); ?></option>
-									<option value="date_created"><?php esc_html_e( 'Date Created', 'gravity-view'); ?></option>
-								</select>
-							</td>
-						</tr>
+							if( empty( $setting['show_in_shortcode'] ) ) { continue; }
 
-						<tr valign="top">
-							<td>
-								<label for="gravityview_sort_direction"><?php esc_html_e( 'Sort direction', 'gravity-view'); ?></label>
-							</td>
-							<td>
-								<select name="gravityview_sort_direction" id="gravityview_sort_direction">
-									<option value="ASC"><?php esc_html_e( 'ASC', 'gravity-view'); ?></option>
-									<option value="DESC"><?php esc_html_e( 'DESC', 'gravity-view'); ?></option>
-								</select>
-							</td>
-						</tr>
-
-						<tr valign="top" class="alternate">
-							<td>
-								<label for="gravityview_start_date"><?php esc_html_e( 'Show entries submitted after', 'gravity-view'); ?></label>
-							</td>
-							<td>
-								<input name="gravityview_start_date" id="gravityview_start_date" type="text" class="gv-datepicker">
-							</td>
-						</tr>
-
-						<tr valign="top">
-							<td>
-								<label for="gravityview_end_date"><?php esc_html_e( 'Show entries submitted before', 'gravity-view'); ?></label>
-							</td>
-							<td>
-								<input name="gravityview_end_date" id="gravityview_end_date" type="text" class="gv-datepicker">
-							</td>
-						</tr>
+							GravityView_Admin_Views::render_setting_row( $key, array(), NULL, 'gravityview_%s', 'gravityview_%s' );
+						}
+						?>
 
 					</table>
 

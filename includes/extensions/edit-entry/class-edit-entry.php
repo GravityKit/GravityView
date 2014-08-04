@@ -195,11 +195,7 @@ class GravityView_Edit_Entry {
 	function modify_visibility_caps( $caps, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 
 		if( $field_id === 'edit_link' || $input_type === 'edit_link' ) {
-			foreach ($caps as $key => $cap) {
-				if( $cap['value'] === 'read' ) {
-					unset($caps[$key]);
-				}
-			}
+			unset($caps['read'] );
 		}
 
 		return $caps;

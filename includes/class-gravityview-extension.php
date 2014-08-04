@@ -112,7 +112,7 @@ abstract class GravityView_Extension {
 	 */
 	function save_post( $post_id ) {}
 
-	function tooltips( $tooltips = array() ) {}
+	function tooltips( $tooltips = array() ) { return $tooltips; }
 
 	private function is_extension_supported() {
 

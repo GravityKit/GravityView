@@ -12,8 +12,17 @@ class GravityView_View_Data {
 
 			$id = NULL;
 
-			if( $passed_post instanceof WP_Post ) {
+			if( is_array( $passed_post ) ) {
 
+				foreach ( $passed_post as &$post) {
+					if( ( get_post_type( $post ) === 'gravityview' ) ) {
+						$id = $passed_post->ID;
+					} else{
+						$this->parse_post_content( $post->post_content );
+					}
+				}
+
+			} elseif( $passed_post instanceof WP_Post ) {
 				if( ( get_post_type( $passed_post ) === 'gravityview' ) ) {
 					$id = $passed_post->ID;
 				} else{
@@ -42,20 +51,45 @@ class GravityView_View_Data {
 			return false;
 		}
 
+		// Backup: the view hasn't been fetched yet. Doing it now.
+		if ( !isset( $this->views[ $view_id ] ) ) {
+			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[get_view] View #%s not set yet.', $view_id) );
+			return $this->add_view( $view_id );
+		}
+
 		if ( empty( $this->views[ $view_id ] ) ) {
-			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[get_view] Returning; View #%s does not exist.', $view_id) );
+			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[get_view] Returning; View #%s was empty.', $view_id) );
 			return false;
 		}
 
 		return $this->views[ $view_id ];
 	}
 
+	/**
+	 * Determines if a post, identified by the specified ID, exist
+	 * within the WordPress database.
+	 *
+	 * @link http://tommcfarlin.com/wordpress-post-exists-by-id/
+	 * @param    int    $id    The ID of the post to check
+	 * @return   bool          True if the post exists; otherwise, false.
+	 * @since    1.0.0
+	 */
+	function view_exists( $view_id ) {
+		return is_string( get_post_status( $view_id ) );
+	}
+
 	function add_view( $view_id ) {
 
+		// The view has been set already; returning stored view.
 		if ( !empty( $this->views[ $view_id ] ) ) {
 			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] Returning; View #%s already exists.', $view_id) );
 
 			return $this->views[ $view_id ];
+		}
+
+		if( !$this->view_exists( $view_id ) ) {
+			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] Returning; View #%s does not exist.', $view_id) );
+			return false;
 		}
 
 		$form_id = gravityview_get_form_id( $view_id );
@@ -182,31 +216,193 @@ class GravityView_View_Data {
 	}
 
 	/**
+	 * Get a specific default setting
+	 * @param  string  $key          The key of the setting array item
+	 * @param  boolean $with_details Include details
+	 * @return mixed|array                If using $with_details, return array. Otherwise, mixed.
+	 */
+	public static function get_default_arg( $key, $with_details = false ) {
+
+		$args = self::get_default_args( $with_details );
+
+		if( !isset( $args[ $key ] ) ) { return NULL; }
+
+		return $args[ $key ];
+	}
+
+	/**
 	 * Retrieve the default args for shortcode and theme function
 	 *
+	 * @param boolean $with_details True: Return array with full default settings information, including description, name, etc. False: Return an array with only key => value pairs.
+	 * @param string $group Only fetch
 	 * @access public
 	 * @static
 	 * @return void
+	 * @filter gravityview_default_args Modify the default settings for new Views
 	 */
-	public static function get_default_args() {
+	public static function get_default_args( $with_details = false, $group = NULL ) {
 
-		$defaults = array(
-			'id' => NULL,
-			'lightbox' => true,
-			'page_size' => NULL,
-			'sort_field' => NULL,
-			'sort_direction' => 'ASC',
-			'start_date' => NULL,
-			'end_date' => 'now',
-			'class' => NULL,
-			'search_value' => NULL,
-			'search_field' => NULL,
-			'single_title' => NULL,
-			'back_link_label' => NULL,
-			'hide_empty' => true,
-		);
+		$default_settings = apply_filters( 'gravityview_default_args', array(
+			'id' => array(
+				'name' => __('View ID', 'gravity-view'),
+				'type' => 'number',
+				'group'	=> 'default',
+				'value' => NULL,
+				'tooltip' => NULL,
+				'show_in_shortcode' => false,
+			),
+			'page_size' => array(
+				'name' 	=> __('Number of entries per page', 'gravity-view'),
+				'type' => 'number',
+				'class'	=> 'small-text',
+				'group'	=> 'default',
+				'value' => 25,
+				'show_in_shortcode' => true,
+			),
+			'lightbox' => array(
+				'name' => __( 'Enable lightbox for images', 'gravity-view' ),
+				'type' => 'checkbox',
+				'group'	=> 'default',
+				'value' => 1,
+				'tooltip' => NULL,
+				'show_in_shortcode' => true,
+			),
+			'show_only_approved' => array(
+				'name' => __( 'Show only approved entries', 'gravity-view' ),
+				'type' => 'checkbox',
+				'group'	=> 'default',
+				'value' => 0,
+				'show_in_shortcode' => false,
+			),
+			'hide_empty' => array(
+				'name' 	=> __( 'Hide empty fields', 'gravity-view' ),
+				'group'	=> 'default',
+				'type'	=> 'checkbox',
+				'value' => 1,
+				'show_in_shortcode' => false,
+			),
+			'user_edit' => array(
+				'name'	=> __( 'Allow User Edit', 'gravity-view' ),
+				'group'	=> 'default',
+				'desc'	=> __('Allow logged-in users to edit entries they created.', 'gravity-view'),
+				'value'	=> 0,
+				'type'	=> 'checkbox',
+				'show_in_shortcode' => false,
+			),
+			'sort_field' => array(
+				'name'	=> __('Sort by field', 'gravity-view'),
+				'type' => 'select',
+				'value' => NULL,
+				'group'	=> 'sort',
+				'options' => array(
+					'' => __( 'Default', 'gravity-view'),
+					'date_created' => __( 'Date Created', 'gravity-view'),
+				),
+				'show_in_shortcode' => true,
+			),
+			'sort_direction' => array(
+				'name' 	=> __('Sort direction', 'gravity-view'),
+				'type' => 'select',
+				'value' => 'ASC',
+				'group'	=> 'sort',
+				'options' => array(
+					'ASC' => __('ASC', 'gravity-view'),
+					'DESC' => __('DESC', 'gravity-view'),
+				),
+				'show_in_shortcode' => true,
+			),
+			'start_date' => array(
+				'name' 	=> __('Filter by Start Date', 'gravity-view'),
+				'class'	=> 'gv-datepicker',
+				'desc'	=> __('Show entries submitted after this date. Supports relative dates, such as "-1 week" or "-1 month".', 'gravity-view' ),
+				'type' => 'text',
+				'value' => NULL,
+				'group'	=> 'filter',
+				'show_in_shortcode' => true,
+			),
+			'end_date' => array(
+				'name' 	=> __('Filter by End Date', 'gravity-view'),
+				'class'	=> 'gv-datepicker',
+				'desc'	=> __('Show entries submitted before this date. Supports relative dates, such as "now" or "-3 days".', 'gravity-view' ),
+				'type' => 'text',
+				'value' => NULL,
+				'group'	=> 'filter',
+				'show_in_shortcode' => true,
+			),
+			'class' => array(
+				'name' 	=> __('CSS Class', 'gravity-view'),
+				'desc'	=> __('CSS class to add to the wrapping HTML container.', 'gravity-view'),
+				'group'	=> 'default',
+				'type' => 'text',
+				'value' => NULL,
+				'show_in_shortcode' => false,
+			),
+			'search_value' => array(
+				'name' 	=> __('Search Value', 'gravity-view'),
+				'desc'	=> __('Define a default search value for the View', 'gravity-view'),
+				'type' => 'text',
+				'value' => NULL,
+				'group'	=> 'filter',
+				'show_in_shortcode' => false,
+			),
+			'search_field' => array(
+				'name' 	=> __('Search Field', 'gravity-view'),
+				'desc'	=> __('If Search Value is set, you can define a specific field to search in. Otherwise, all fields will be searched.', 'gravity-view'),
+				'type' => 'number',
+				'value' => NULL,
+				'group'	=> 'filter',
+				'show_in_shortcode' => false,
+			),
+			'single_title' => array(
+				'name'	=> __('Single Entry Title', 'gravity-view'),
+				'type'	=> 'text',
+				'desc'	=> __('When viewing a single entry, change the title of the page to this setting. Otherwise, the title will not change between the Multiple Entries and Single Entry views.', 'gravity-view'),
+				'group'	=> 'default',
+				'value'	=> NULL,
+				'show_in_shortcode' => false,
+				'full_width' => true,
+			),
+			'back_link_label' => array(
+				'name'	=> __('Back Link Label', 'gravity-view'),
+				'group'	=> 'default',
+				'desc'	=> __('The text of the link that returns to the multiple entries view.', 'gravity-view'),
+				'type'	=> 'text',
+				'value'	=> NULL,
+				'show_in_shortcode' => false,
+				'full_width' => true,
+			),
+		));
 
-		return $defaults;
+		// By default, we only want the key => value pairing, not the whole array.
+		if( empty( $with_details ) ) {
+
+			$defaults = array();
+
+			foreach( $default_settings as $key => $value ) {
+				$defaults[ $key ] = $value['value'];
+			}
+
+			return $defaults;
+
+		}
+		// But sometimes, we want all the details.
+		else {
+
+			foreach ($default_settings as $key => $value) {
+
+				// If the $group argument is set for the method,
+				// ignore any settings that aren't in that group.
+				if( !empty( $group ) && is_string( $group ) ) {
+					if( empty( $value['group'] ) || $value['group'] !== $group ) {
+						unset( $default_settings[ $key ] );
+					}
+				}
+
+			}
+
+			return $default_settings;
+
+		}
 	}
 
 	static function shortcode_atts( $atts ) {

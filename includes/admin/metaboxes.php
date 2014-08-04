@@ -5,8 +5,7 @@ class GravityView_Admin_Metaboxes {
 	function __construct() {
 
 
-		// Make Yoast go down to the bottom please.
-		// We already know we've got PHP 5.3, so we can do anonymous functions like this.
+		// Make Yoast go down to the bottom please. We know we're running PHP 5.3, so we can do anonymous functions like this.
 		add_filter('wpseo_metabox_prio', function() { return 'low'; });
 
 		add_action( 'add_meta_boxes', array( $this, 'register_metabox' ));
@@ -296,7 +295,6 @@ class GravityView_Admin_Metaboxes {
 		<?php
 	}
 
-
 	/**
 	 * Render html View General Settings
 	 *
@@ -311,86 +309,41 @@ class GravityView_Admin_Metaboxes {
 		// View template settings
 		$settings = gravityview_get_template_settings( $post->ID );
 
-		$defaults = array(
-			'lightbox' => true,
-			'page_size' => 25,
-			'show_only_approved' => false,
-			'sort_field' => '',
-			'sort_direction' => 'ASC',
-			'start_date' => '',
-			'end_date' => '',
-			'single_title' => '',
-			'back_link_label' => '',
-			'hide_empty' => true,
-			'user_edit' => false, // Allow logged-in users to edit entries they created.
-		);
+		$defaults = GravityView_View_Data::get_default_args();
 
-		$ts = wp_parse_args( $settings, $defaults );
+		$current_settings = wp_parse_args( $settings, $defaults );
 
 		?>
 
 		<table class="form-table">
 
-			<tr valign="top">
-				<td scope="row">
-					<label for="gravityview_page_size"><?php esc_html_e( 'Number of entries to show per page', 'gravity-view'); ?></label>
-				</td>
-				<td>
-					<input name="template_settings[page_size]" id="gravityview_page_size" type="number" step="1" min="1" value="<?php empty( $ts['page_size'] ) ? print 25 : print $ts['page_size']; ?>" class="small-text">
-				</td>
-			</tr>
-			<tr valign="top">
-				<td colspan="2">
-					<?php
-						echo GravityView_Admin_Views::render_field_option( 'template_settings[lightbox]', array( 'label' => __( 'Enable lightbox for images', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ts['lightbox'] );
-					?>
-				</td>
-			</tr>
-			<tr valign="top">
-				<td colspan="2">
-					<?php
-						echo GravityView_Admin_Views::render_field_option( 'template_settings[show_only_approved]', array( 'label' => __( 'Show only approved entries', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ts['show_only_approved'] );
-					?>
-				</td>
-			</tr>
-			<tr valign="top">
-				<td colspan="2">
-					<?php
-						echo GravityView_Admin_Views::render_field_option( 'template_settings[hide_empty]', array( 'label' => __( 'Hide empty fields', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1 ), $ts['hide_empty'] );
-					?>
-				</td>
-			</tr>
-			<tr valign="top">
-				<td colspan="2">
-					<?php
-						echo GravityView_Admin_Views::render_field_option( 'template_settings[user_edit]', array( 'label' => __( 'Allow User Edit', 'gravity-view' ), 'type' => 'checkbox', 'value' => 1, 'tooltip' => 'gv_allow_user_edit' ), $ts['user_edit'] );
-					?>
-				</td>
-			</tr>
+		<?php
 
-			<?php
+			GravityView_Admin_Views::render_setting_row( 'page_size', $current_settings );
 
-			do_action( 'gravityview_admin_directory_settings', $ts );
+			GravityView_Admin_Views::render_setting_row( 'lightbox', $current_settings );
 
-			?>
+			GravityView_Admin_Views::render_setting_row( 'show_only_approved', $current_settings );
+
+			GravityView_Admin_Views::render_setting_row( 'hide_empty', $current_settings );
+
+			GravityView_Admin_Views::render_setting_row( 'user_edit', $current_settings );
+
+			do_action( 'gravityview_admin_directory_settings', $current_settings );
+
+		?>
 
 		</table>
 
 		<h3 style="margin-top:1em;"><?php esc_html_e( 'Single Entry Settings', 'gravity-view'); ?>:</h3>
 
-		<table class="form-table">
-			<tr valign="top">
-				<td scope="row" colspan="2">
-					<label for="gravityview_se_title"><?php esc_html_e( 'Single Entry Title', 'gravity-view'); ?> <?php gform_tooltip("gv_single_entry_title") ?></label>
-					<?php echo GravityView_Admin_Views::render_text_option( 'template_settings[single_title]', 'gravityview_se_title', $ts['single_title'], true ); ?>
-				</td>
-			</tr>
-			<tr valign="top">
-				<td scope="row" colspan="2">
-					<label for="gravityview_se_back_label"><?php esc_html_e( 'Back Link Label', 'gravity-view'); ?>  <?php gform_tooltip("gv_back_link_label") ?></label>
-					<?php echo GravityView_Admin_Views::render_text_option( 'template_settings[back_link_label]', 'gravityview_se_back_label', $ts['back_link_label'], true ); ?>
-				</td>
-			</tr>
+		<table class="form-table"><?php
+
+			GravityView_Admin_Views::render_setting_row( 'single_title', $current_settings );
+
+			GravityView_Admin_Views::render_setting_row( 'back_link_label', $current_settings );
+
+		?>
 		</table>
 
 		<?php
@@ -404,89 +357,40 @@ class GravityView_Admin_Metaboxes {
 		// View template settings
 		$settings = gravityview_get_template_settings( $post->ID );
 
-		$defaults = array(
-			'lightbox' => true,
-			'page_size' => 25,
-			'show_only_approved' => false,
-			'sort_field' => '',
-			'sort_direction' => 'ASC',
-			'start_date' => '',
-			'end_date' => '',
-			'single_title' => '',
-			'back_link_label' => '',
-			'hide_empty' => true,
-			'user_edit' => false, // Allow logged-in users to edit entries they created.
-		);
+		$defaults = GravityView_View_Data::get_default_args();
 
-		$ts = wp_parse_args( $settings, $defaults );
+		$current_settings = wp_parse_args( $settings, $defaults );
 
 		?>
 		<table class="form-table">
 
 			<?php
 
-			do_action( 'gravityview_metabox_sort_filter_before', $ts );
+			do_action( 'gravityview_metabox_sort_filter_before', $current_settings );
 
 			// Begin Sort fields
-			do_action( 'gravityview_metabox_sort_before', $ts );
-			?>
+			do_action( 'gravityview_metabox_sort_before', $current_settings );
 
-			<tr valign="top">
-				<th scope="row">
-					<label for="gravityview_sort_field"><?php esc_html_e( 'Sort by field', 'gravity-view'); ?></label>
-				</th>
-				<td>
-					<select name="template_settings[sort_field]" id="gravityview_sort_field">
-						<?php echo gravityview_get_sortable_fields( $curr_form, $ts['sort_field'] ); ?>
-					</select>
-				</td>
-			</tr>
+			$sort_fields_input = '<select name="template_settings[sort_field]" id="gravityview_sort_field">'.gravityview_get_sortable_fields( $curr_form, $current_settings['sort_field'] ).'</select>';
 
-			<tr valign="top" class="alt">
-				<th scope="row">
-					<label for="gravityview_sort_direction"><?php esc_html_e( 'Sort direction', 'gravity-view'); ?></label>
-				</th>
-				<td>
-					<select name="template_settings[sort_direction]" id="gravityview_sort_direction">
-						<option value="ASC" <?php selected( 'ASC', $ts['sort_direction'], true ); ?>><?php esc_html_e( 'ASC', 'gravity-view'); ?></option>
-						<option value="DESC" <?php selected( 'DESC', $ts['sort_direction'], true ); ?>><?php esc_html_e( 'DESC', 'gravity-view'); ?></option>
-					</select>
-				</td>
-			</tr>
+			GravityView_Admin_Views::render_setting_row( 'sort_field', $current_settings, $sort_fields_input );
 
-			<?php
+			GravityView_Admin_Views::render_setting_row( 'sort_direction', $current_settings );
 
 			// End Sort fields
-			do_action( 'gravityview_metabox_sort_after', $ts );
+			do_action( 'gravityview_metabox_sort_after', $current_settings );
 
 			// Begin Filter fields
-			do_action( 'gravityview_metabox_filter_before', $ts );
+			do_action( 'gravityview_metabox_filter_before', $current_settings );
 
-			?>
-			<tr valign="top">
-				<th scope="row">
-					<label for="gravityview_start_date"><?php esc_html_e( 'Filter by Start Date', 'gravity-view'); ?> <?php gform_tooltip("gv_filter_by_start_date") ?></label>
-				</th>
-				<td>
-					<input name="template_settings[start_date]" id="gravityview_start_date" type="text" class="gv-datepicker" value="<?php echo $ts['start_date']; ?>">
-				</td>
-			</tr>
+			GravityView_Admin_Views::render_setting_row( 'start_date', $current_settings );
 
-			<tr valign="top" class="alt">
-				<th scope="row">
-					<label for="gravityview_end_date"><?php esc_html_e( 'Filter by End Date', 'gravity-view'); ?> <?php gform_tooltip("gv_filter_by_end_date") ?></label>
-				</th>
-				<td>
-					<input name="template_settings[end_date]" id="gravityview_end_date" type="text" class="gv-datepicker" value="<?php echo $ts['end_date']; ?>">
-				</td>
-			</tr>
-
-			<?php
+			GravityView_Admin_Views::render_setting_row( 'end_date', $current_settings );
 
 			// End Filter fields
-			do_action( 'gravityview_metabox_filter_after', $ts );
+			do_action( 'gravityview_metabox_filter_after', $current_settings );
 
-			do_action( 'gravityview_metabox_sort_filter_after', $ts );
+			do_action( 'gravityview_metabox_sort_filter_after', $current_settings );
 
 			?>
 
@@ -509,7 +413,7 @@ class GravityView_Admin_Metaboxes {
 		// Only show this on GravityView post types.
 		if( false === gravityview_is_admin_page() ) { return; }
 
-		printf('<div class="misc-pub-section gv-shortcode misc-pub-section-last"><i class="dashicons dashicons-editor-code" style="color: #888; left: -1px; font-size: 20px; line-height: 1;"></i> <span>%s</span><div><input type="text" readonly="readonly" value="[gravityview id=\'%d\']" class="code widefat" /><span class="howto">%s</span></div></div>', __( 'Embed Shortcode', 'gravity-view' ), $post->ID, esc_html__( 'Add this shortcode to a post or page to embed this view.', 'gravity-view' ) );
+		printf('<div class="misc-pub-section gv-shortcode misc-pub-section-last"><i class="dashicons dashicons-editor-code"></i> <span>%s</span><div><input type="text" readonly="readonly" value="[gravityview id=\'%d\']" class="code widefat" /><span class="howto">%s</span></div></div>', __( 'Embed Shortcode', 'gravity-view' ), $post->ID, esc_html__( 'Add this shortcode to a post or page to embed this view.', 'gravity-view' ) );
 	}
 
 	/**
