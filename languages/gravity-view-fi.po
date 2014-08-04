@@ -1,17 +1,17 @@
 # 
 # Translators:
-# Basti <se-schwarz@gmx.de>, 2014
+# Jari Harju <jari.harju@doaudit.fi>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-08-04 15:15-0700\n"
-"PO-Revision-Date: 2014-08-04 21:20+0000\n"
+"PO-Revision-Date: 2014-08-04 21:19+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
-"Language-Team: German (Germany) (http://www.transifex.com/projects/p/gravityview/language/de_DE/)\n"
+"Language-Team: Finnish (http://www.transifex.com/projects/p/gravityview/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de_DE\n"
+"Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.6.7\n"
 "X-Poedit-Basepath: ..\n"
@@ -21,31 +21,31 @@ msgstr ""
 
 #: gravityview.php:234
 msgid "Top"
-msgstr "Oben"
+msgstr "Alkuun"
 
 #: gravityview.php:235
 msgid "Left"
-msgstr "Links"
+msgstr "Vasen"
 
 #: gravityview.php:235
 msgid "Right"
-msgstr "Rechts"
+msgstr "Oikea"
 
 #: includes/admin/metaboxes.php:25 includes/class-admin-views.php:215
 msgid "Data Source"
-msgstr "Datenquelle"
+msgstr "Tietolähde"
 
 #: includes/admin/metaboxes.php:28
 msgid "Choose a View Type"
-msgstr "Art des Views wählen"
+msgstr "Valitse näkymän tyyppi"
 
 #: includes/admin/metaboxes.php:31
 msgid "View Configuration"
-msgstr "View-Konfiguration"
+msgstr "Näytä kokoonpano"
 
 #: includes/admin/metaboxes.php:34 includes/class-admin-add-shortcode.php:107
 msgid "View Settings"
-msgstr "View-Einstellungen"
+msgstr "Näytä asetukset"
 
 #: includes/admin/metaboxes.php:37
 msgid "Filter &amp; Sort"
@@ -53,23 +53,23 @@ msgstr ""
 
 #: includes/admin/metaboxes.php:64
 msgid "Where would you like the data to come from for this View?"
-msgstr "Woher sollen die Daten dieses Views stammen?"
+msgstr "Mistä haluat tämän datan tulevan tähän näkymään?"
 
 #: includes/admin/metaboxes.php:74
 msgid "Start Fresh"
-msgstr "Ganz neu beginnen"
+msgstr "Aloita tyhjästä"
 
 #: includes/admin/metaboxes.php:77
 msgid "or use an existing form"
-msgstr "oder vorhandenes Formular als Grundlage wählen"
+msgstr "tai käytä olemassa olevaa lomaketta"
 
 #: includes/admin/metaboxes.php:86
 msgid "list of forms"
-msgstr "Liste aller Formulare"
+msgstr "lista lomakkeista"
 
 #: includes/admin/metaboxes.php:93
 msgid "Switch View"
-msgstr "View wechseln"
+msgstr "Vaihda näkymää"
 
 #: includes/admin/metaboxes.php:93
 msgid "Switch View Type"
@@ -77,7 +77,7 @@ msgstr ""
 
 #: includes/admin/metaboxes.php:98 includes/admin/metaboxes.php:103
 msgid "Attention"
-msgstr "Hinweis"
+msgstr "Huomio"
 
 #: includes/admin/metaboxes.php:99
 msgid ""
@@ -93,15 +93,15 @@ msgstr ""
 
 #: includes/admin/metaboxes.php:109
 msgid "GravityView requires Javascript to be enabled."
-msgstr "GravityView setzt aktiviertes JavaScript im Browser voraus."
+msgstr "GravityView vaatii Javascript asetuksen olevan päällä."
 
 #: includes/admin/metaboxes.php:150
 msgid "Buy Now"
-msgstr "Jetzt kaufen"
+msgstr "Osta nyt"
 
 #: includes/admin/metaboxes.php:152
 msgid "Select"
-msgstr "Wählen"
+msgstr "Valitse"
 
 #: includes/admin/metaboxes.php:154
 msgid "View a live demo of this preset"
@@ -109,43 +109,43 @@ msgstr ""
 
 #: includes/admin/metaboxes.php:232
 msgid "Multiple Entries"
-msgstr "Mehrere Einträge"
+msgstr "Monta merkintää"
 
 #: includes/admin/metaboxes.php:233
 msgid "Single Entry"
-msgstr "Einzelner Eintrag"
+msgstr "Yksittäinen merkintä"
 
 #: includes/admin/metaboxes.php:240
 msgid "Above Entries Widgets"
-msgstr ""
+msgstr "Merkintöjen yläpuoliset vimpaimet"
 
 #: includes/admin/metaboxes.php:240
 msgid "These widgets will be shown above entries."
-msgstr ""
+msgstr "Nämä vimpaimet näytetään merkintöjen yläpuolella."
 
 #: includes/admin/metaboxes.php:244
 msgid "Entries Fields"
-msgstr ""
+msgstr "Merkintöjen kentät"
 
 #: includes/admin/metaboxes.php:244
 msgid "These fields will be shown for each entry."
-msgstr ""
+msgstr "Nämä kentät näytetään jokaisessa merkinnässä."
 
 #: includes/admin/metaboxes.php:252
 msgid "Below Entries Widgets"
-msgstr ""
+msgstr "Merkintöjen alapuoliset vimpaimet"
 
 #: includes/admin/metaboxes.php:252
 msgid "These widgets will be shown below entries."
-msgstr ""
+msgstr "Nämä vimpaimet näytetään merkintöjen alapuolella."
 
 #: includes/admin/metaboxes.php:282
 msgid "These fields will be shown in Single Entry view."
-msgstr ""
+msgstr "Nämä kentät näytetään yksittäisen merkinnän näkymässä."
 
 #: includes/admin/metaboxes.php:338
 msgid "Single Entry Settings"
-msgstr ""
+msgstr "Yksittäisen merkinnän asetukset"
 
 #: includes/admin/metaboxes.php:416
 msgid "Embed Shortcode"
@@ -157,15 +157,15 @@ msgstr ""
 
 #: includes/admin/metaboxes.php:462
 msgid "Layout Settings"
-msgstr ""
+msgstr "Ulkoasun asetukset"
 
 #: includes/class-admin-add-shortcode.php:53
 msgid "Add a Gravity Forms View"
-msgstr "Gravity Forms View hinzufügen"
+msgstr "Lisää Gravity Form näkymä"
 
 #: includes/class-admin-add-shortcode.php:53
 msgid "Add View"
-msgstr "View hinzufügen"
+msgstr "Lisää näkymä"
 
 #: includes/class-admin-add-shortcode.php:88
 msgid "Embed a View"
@@ -180,7 +180,7 @@ msgstr ""
 
 #: includes/class-admin-add-shortcode.php:92
 msgid "Select a View"
-msgstr "View wählen"
+msgstr "Valitse näkymä"
 
 #: includes/class-admin-add-shortcode.php:95
 msgid "&mdash; Select a View to Insert &mdash;"
@@ -192,13 +192,13 @@ msgstr ""
 
 #: includes/class-admin-add-shortcode.php:124
 msgid "Insert View"
-msgstr ""
+msgstr "Lisää näkymä"
 
 #: includes/class-admin-add-shortcode.php:125
 #: includes/class-admin-views.php:1007
 #: includes/extensions/edit-entry/class-edit-entry.php:603
 msgid "Cancel"
-msgstr "Abbruch"
+msgstr "Peru"
 
 #: includes/class-admin-add-shortcode.php:168
 #: includes/class-admin-views.php:1011
@@ -207,7 +207,7 @@ msgstr ""
 
 #: includes/class-admin-add-shortcode.php:169
 msgid "Please select a View"
-msgstr "Bitte einen View auswählen"
+msgstr "Ole hyvä valitse näkymä"
 
 #: includes/class-admin-approve-entries.php:52
 msgid "GravityView Fields"
@@ -229,15 +229,15 @@ msgstr ""
 
 #: includes/class-admin-approve-entries.php:102
 msgid "Approved? (Admin-only)"
-msgstr "Genehmigt (nur Administrator)"
+msgstr "Hyväksytty (vain Ylläpitäjälle)"
 
 #: includes/class-admin-approve-entries.php:104
 msgid "Approved?"
-msgstr "Genehmigt?"
+msgstr "Hyväksytty?"
 
 #: includes/class-admin-approve-entries.php:111
 msgid "Approved"
-msgstr "Genehmigt"
+msgstr "Hyväksytty"
 
 #: includes/class-admin-approve-entries.php:124
 msgid "Show Entry on Website"
@@ -254,49 +254,49 @@ msgstr ""
 #: includes/class-admin-approve-entries.php:171
 #, php-format
 msgid "%d entries"
-msgstr "%d Einträge"
+msgstr "%d merkintää"
 
 #: includes/class-admin-approve-entries.php:171
 msgid "1 entry"
-msgstr "1 Eintrag"
+msgstr "yksi merkintä"
 
 #: includes/class-admin-approve-entries.php:179
 #, php-format
 msgid "%s approved."
-msgstr "%s genehmigt."
+msgstr "%s hyväksytty."
 
 #: includes/class-admin-approve-entries.php:184
 #, php-format
 msgid "%s disapproved."
-msgstr "%s abgelehnt."
+msgstr "%s hyväksymätön."
 
 #: includes/class-admin-approve-entries.php:257
 msgid "Disapproved the Entry for GravityView"
-msgstr ""
+msgstr "Hylätty merkintä GravityViewille"
 
 #: includes/class-admin-approve-entries.php:257
 msgid "Approved the Entry for GravityView"
-msgstr ""
+msgstr "Hyväksytty merkintä GravityViewille"
 
 #: includes/class-admin-approve-entries.php:374
 msgid "Approve"
-msgstr "Genehmigen"
+msgstr "Hyväksy"
 
 #: includes/class-admin-approve-entries.php:375
 msgid "Disapprove"
-msgstr "Ablehnen"
+msgstr "Hylkää"
 
 #: includes/class-admin-approve-entries.php:377
 msgid "Entry not approved for directory viewing. Click to approve this entry."
-msgstr "Eintrag für die Listung im View nicht genehmigt. Klicken, um zu genehmigen."
+msgstr "Merkintää ei hyväksytty tiedostolistaukseen. Klikkaa hyväksyäksesi tämä merkintä."
 
 #: includes/class-admin-approve-entries.php:378
 msgid "Entry approved for directory viewing. Click to disapprove this entry."
-msgstr "Eintrag für die Listung im View genehmigt. Klicken, um nachträglich abzulehnen."
+msgstr "Merkintä hyväksyttiin tiedostolistaukseen. Klikkaa hylkääksesi tämä merkintä."
 
 #: includes/class-admin-approve-entries.php:379
 msgid "Show entry in directory view?"
-msgstr "EIntrag im View anzeigen?"
+msgstr "Näytä merkintä hakemistonäkymänä?"
 
 #: includes/class-admin-views.php:88
 msgid "Connected Views"
@@ -319,11 +319,11 @@ msgstr ""
 
 #: includes/class-admin-views.php:167
 msgid "Not connected."
-msgstr ""
+msgstr "ei yhteydessä."
 
 #: includes/class-admin-views.php:176
 msgid "The connected form can not be found; it may no longer exist."
-msgstr ""
+msgstr "Yhdistettyä lomaketta ei löydy; sitä ei ehkä enää ole olemassa."
 
 #: includes/class-admin-views.php:182
 msgid "Edit Form"
@@ -331,7 +331,7 @@ msgstr ""
 
 #: includes/class-admin-views.php:187
 msgid "Entries"
-msgstr "Einträge"
+msgstr ""
 
 #: includes/class-admin-views.php:192
 msgid "Edit settings for this form"
@@ -340,7 +340,7 @@ msgstr ""
 #: includes/class-admin-views.php:192 includes/class-settings.php:159
 #: includes/class-settings.php:160
 msgid "Settings"
-msgstr "Einstellungen"
+msgstr "Asetukset"
 
 #: includes/class-admin-views.php:197
 msgid "Preview this form"
@@ -348,63 +348,63 @@ msgstr ""
 
 #: includes/class-admin-views.php:197
 msgid "Preview"
-msgstr "Vorschau"
+msgstr "Esikatselu"
 
 #: includes/class-admin-views.php:318
 #, php-format
 msgid "Configure %s Settings"
-msgstr ""
+msgstr "Muokkaa %s asetukset"
 
 #: includes/class-admin-views.php:319
 #, php-format
 msgid "Remove %s"
-msgstr ""
+msgstr "Poista %s"
 
 #: includes/class-admin-views.php:376
 msgid "+ Add All Fields"
-msgstr ""
+msgstr "+ lisää kaikki kentät"
 
 #: includes/class-admin-views.php:412
 msgid "Entry ID"
-msgstr "Eintrags-ID"
+msgstr "Merkinnän ID"
 
 #: includes/class-admin-views.php:413
 msgid "Entry Date"
-msgstr "Eintragsdatum"
+msgstr "Merkintäpäivä"
 
 #: includes/class-admin-views.php:414
 msgid "Source URL"
-msgstr "URL der Quelle"
+msgstr "Lähteen URL"
 
 #: includes/class-admin-views.php:415
 msgid "User IP"
-msgstr "IP des Benutzers"
+msgstr "Käyttäjän IP"
 
 #: includes/class-admin-views.php:416
 msgid "User"
-msgstr "Benutzer"
+msgstr "Käyttäjä"
 
 #: includes/class-admin-views.php:420
 msgid "Link to Entry"
-msgstr "Link zum Eintrag"
+msgstr "Linkki merkintään"
 
 #: includes/class-admin-views.php:490
 msgid "Add Widget"
-msgstr "Widget hinzufügen"
+msgstr "Lisää vimpain"
 
 #: includes/class-admin-views.php:492
 msgid "Add Field"
-msgstr "Feld hinzufügen"
+msgstr "Lisää kenttä"
 
 #: includes/class-admin-views.php:531
 #, php-format
 msgid "\"%s\" or drag existing %ss here."
-msgstr ""
+msgstr "\"%s\" tai vedä olemassa olevat %ss tähän."
 
 #: includes/class-admin-views.php:653
 #, php-format
 msgid "Options: %s"
-msgstr ""
+msgstr "Valinnat: %s"
 
 #: includes/class-admin-views.php:688
 msgid "Any Logged-In User"
@@ -428,7 +428,7 @@ msgstr ""
 
 #: includes/class-admin-views.php:693
 msgid "Administrator"
-msgstr "Administratoren"
+msgstr "Ylläpitäjä"
 
 #: includes/class-admin-views.php:697
 msgid "Multisite Super Admin"
@@ -436,15 +436,15 @@ msgstr ""
 
 #: includes/class-admin-views.php:711
 msgid "Show Label"
-msgstr "Bezeichnung anzeigen"
+msgstr "Näytä kenttä"
 
 #: includes/class-admin-views.php:716
 msgid "Custom Label:"
-msgstr "Abweichende Bezeichnung:"
+msgstr "Muokattu kenttä:"
 
 #: includes/class-admin-views.php:722
 msgid "Custom CSS Class:"
-msgstr "Abweichende CSS-Klasse:"
+msgstr "Muokattu CSS luokka:"
 
 #: includes/class-admin-views.php:723
 msgid "This class will be added to the field container"
@@ -452,33 +452,33 @@ msgstr ""
 
 #: includes/class-admin-views.php:730
 msgid "Make visible only to logged-in users?"
-msgstr ""
+msgstr "Tee näkyväksi vain kirjautuneille käyttäjille?"
 
 #: includes/class-admin-views.php:735
 msgid "Make visible for:"
-msgstr ""
+msgstr "Tee näkyväksi:"
 
 #: includes/class-admin-views.php:1005
 msgid "Enter View name here"
-msgstr "Trage den Namen des Views hier ein"
+msgstr "Lisää näkymän nimi tähän"
 
 #: includes/class-admin-views.php:1006
 msgid "Close"
-msgstr "Schließen"
+msgstr "Sulje"
 
 #: includes/class-admin-views.php:1008
 msgid "Continue"
-msgstr "Fortfahren"
+msgstr "Jatka"
 
 #: includes/class-admin-views.php:1009
 msgid "Ok"
-msgstr "OK"
+msgstr "Ok"
 
 #: includes/class-admin-views.php:1010
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
-msgstr ""
+msgstr "Virhe kun näkymä luotiin sinulle. Tarkista asetukset tai ota yhteyttä GravityView tukeen."
 
 #: includes/class-admin-welcome.php:56
 msgid "GravityView: Getting Started"
@@ -486,7 +486,7 @@ msgstr ""
 
 #: includes/class-admin-welcome.php:57 includes/class-admin-welcome.php:152
 msgid "Getting Started"
-msgstr "Erste Schritte"
+msgstr "Aloitusopas"
 
 #: includes/class-admin-welcome.php:66 includes/class-admin-welcome.php:67
 msgid "Changelog"
@@ -495,18 +495,18 @@ msgstr ""
 #: includes/class-admin-welcome.php:76 includes/class-admin-welcome.php:77
 #: includes/class-admin-welcome.php:158
 msgid "Credits"
-msgstr ""
+msgstr "Kiitokset"
 
 #: includes/class-admin-welcome.php:147
 #, php-format
 msgid "Welcome to GravityView %s"
-msgstr "Willkommen bei GravityView %s"
+msgstr "Tervetuloa GravityView %s"
 
 #: includes/class-admin-welcome.php:148
 msgid ""
 "Thank you for Installing GravityView. Beautifully display your Gravity Forms"
 " entries."
-msgstr ""
+msgstr "Kiitos kun asensit GravityViewin. Näytä kauniisti Gravity Forms lomakkeet."
 
 #: includes/class-admin-welcome.php:155
 msgid "List of Changes"
@@ -518,15 +518,15 @@ msgstr ""
 
 #: includes/class-admin-welcome.php:325
 msgid "GravityView is brought to you by:"
-msgstr ""
+msgstr "Gravityformin on tehnyt sinulle:"
 
 #: includes/class-admin-welcome.php:350
 msgid "Contributors"
-msgstr ""
+msgstr "Avustajat"
 
 #: includes/class-admin-welcome.php:368
 msgid "Want to contribute?"
-msgstr ""
+msgstr "Haluatko avustaa?"
 
 #: includes/class-admin-welcome.php:369
 #, php-format
@@ -534,103 +534,103 @@ msgid ""
 "If you want to contribute to the code, you can %srequest access to the "
 "Github repository%s. If your contributions are accepted, you will be thanked"
 " here."
-msgstr ""
+msgstr "Jos haluat avustaa koodin osalta, voit %spyytää oikeuksia Github yhteisöön%s. Jos koodisi hyväksytään, sinua kiitetään siellä."
 
 #: includes/class-admin.php:83
 msgid "Support"
-msgstr "Hilfe"
+msgstr "Tuki"
 
 #: includes/class-admin.php:105 includes/class-admin.php:106
 #: includes/class-admin.php:108
 #, php-format
 msgid "View updated. %sView on website.%s"
-msgstr "View aktualisiert. %sansehen%s"
+msgstr "Näkymä päivitetty. %snäkymä nettisivulla.%s"
 
 #: includes/class-admin.php:107
 msgid "View deleted."
-msgstr "View gelöscht"
+msgstr "Näkymä poistettu."
 
 #: includes/class-admin.php:110
 #, php-format
 msgid "View restored to revision from %s"
-msgstr "View auf die Revision vom %s zurückgesetzt"
+msgstr "Näytä palautetut revisiosta %s"
 
 #: includes/class-admin.php:111
 #, php-format
 msgid "View published. %sView on website.%s"
-msgstr "View veröffentlicht. %sansehen%s"
+msgstr "Näkymä julkaistu.  %snäkymä nettisivulla.%s"
 
 #: includes/class-admin.php:112
 #, php-format
 msgid "View saved. %sView on website.%s"
-msgstr "View gespeichert. %sansehen%s"
+msgstr "Näkymä tallennettu.  %snäkymä nettisivulla.%s"
 
 #: includes/class-admin.php:113
 msgid "View submitted."
-msgstr "View übermittelt"
+msgstr "Näkymä luotu."
 
 #: includes/class-admin.php:115
 #, php-format
 msgid "View scheduled for: <strong>%1$s</strong>."
-msgstr "View geplant: <strong>%1$s</strong>"
+msgstr "Näkymä ajastettu: <strong>%1$s</strong>."
 
 #: includes/class-admin.php:117
 msgid "M j, Y @ G:i"
-msgstr "j.m.Y um H:i"
+msgstr "M j, Y @ G:i"
 
 #: includes/class-admin.php:119
 #, php-format
 msgid "View draft updated. %sView on website.%s"
-msgstr "View-Entwurf gespeichert. %sansehen%s"
+msgstr "Näkymän luonnos päivitetty. %snäkymä nettisivulla.%s"
 
 #: includes/class-admin.php:125
 #, php-format
 msgid "%s View updated."
 msgid_plural "%s Views updated."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s näkymä päivitetty."
+msgstr[1] "%s näkymää päivitetty."
 
 #: includes/class-admin.php:126
 #, php-format
 msgid "%s View not updated, somebody is editing it."
 msgid_plural "%s Views not updated, somebody is editing them."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s näkymää ei päivitetty, joku muokkaa sitä."
+msgstr[1] "%s näkymiä ei päivitetty, joku muokkaa sitä."
 
 #: includes/class-admin.php:127
 #, php-format
 msgid "%s View permanently deleted."
 msgid_plural "%s Views permanently deleted."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s näkymä poistettu lopullisesti."
+msgstr[1] "%s näkymää poistettu lopullisesti."
 
 #: includes/class-admin.php:128
 #, php-format
 msgid "%s View moved to the Trash."
 msgid_plural "%s Views moved to the Trash."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s näkymä siirretty roskakoriin."
+msgstr[1] "%s näkymää siirretty roskakoriin."
 
 #: includes/class-admin.php:129
 #, php-format
 msgid "%s View restored from the Trash."
 msgid_plural "%s Views restored from the Trash."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s näkymä palautettu roskakorista."
+msgstr[1] "%s näkymää palautettu roskakorista."
 
 #: includes/class-admin.php:365
 #, php-format
 msgid ""
 "%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
 "Forms%s to use the GravityView plugin."
-msgstr ""
+msgstr "%sGravityView vaatii Gravity Forms aktivoimiseksi. %sAktivoi Gravity Forms%s käyttääksesi GravityView lisäosaa."
 
 #: includes/class-admin.php:367
 #, php-format
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
-msgstr ""
+msgstr "%sGravityView vaatii Gravity Formsin asennuksen toimiakseen kunnolla. %sHanki Gravity Forms%s - alkaen $39%s%s"
 
 #: includes/class-admin.php:373
 #, php-format
@@ -638,19 +638,19 @@ msgid ""
 "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n"
 "\n"
 "You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
-msgstr ""
+msgstr "%sGravityView vaatii Gravity Forms - version 1.8 tai uudemman.%s \n\n\nKäytät versiota %s. Päivitä Gravity Forms tai osata lisenssi. %sHanki Gravity Forms%s - alkaen $39%s%s"
 
 #: includes/class-api.php:227
 msgid "This search returned no results."
-msgstr "Die Suche hat keine Ergebnisse geliefert."
+msgstr "Tämä haku ei antanut tuloksia."
 
 #: includes/class-api.php:229
 msgid "No entries match your request."
-msgstr "Keine übereinstimmenden Einträge."
+msgstr "Mikään merkintä ei täytä kyselyäsi."
 
 #: includes/class-api.php:371
 msgid "&larr; Go back"
-msgstr "&larr; zurück"
+msgstr "&larr; Mene takaisin"
 
 #: includes/class-data.php:247
 msgid "View ID"
@@ -662,15 +662,15 @@ msgstr ""
 
 #: includes/class-data.php:263
 msgid "Enable lightbox for images"
-msgstr ""
+msgstr "Aseta Lightbox määritys kuville"
 
 #: includes/class-data.php:271
 msgid "Show only approved entries"
-msgstr "Nur genehmigte Einträge anzeigen"
+msgstr "Näytä vain hyväksytyt merkinnät"
 
 #: includes/class-data.php:278
 msgid "Hide empty fields"
-msgstr ""
+msgstr "Piilota tyhjät kentät"
 
 #: includes/class-data.php:285
 msgid "Allow User Edit"
@@ -682,47 +682,47 @@ msgstr ""
 
 #: includes/class-data.php:293
 msgid "Sort by field"
-msgstr "Sortieren nach dem Feld"
+msgstr "Järjestä kentän mukaan"
 
 #: includes/class-data.php:298 includes/connector-functions.php:397
 msgid "Default"
-msgstr "Standard"
+msgstr "Oletus"
 
 #: includes/class-data.php:299 includes/connector-functions.php:410
 msgid "Date Created"
-msgstr "Erstellungsdatum"
+msgstr "Luontipäivä"
 
 #: includes/class-data.php:304
 msgid "Sort direction"
-msgstr "Richtung"
+msgstr "Järjestyssuunta"
 
 #: includes/class-data.php:309
 msgid "ASC"
-msgstr "aufsteigend"
+msgstr "Nouseva"
 
 #: includes/class-data.php:310
 msgid "DESC"
-msgstr "absteigend"
+msgstr "Laskeva"
 
 #: includes/class-data.php:315
 msgid "Filter by Start Date"
-msgstr "Nach Erstellungsdatum filtern"
+msgstr "Suodata aloituspäivän mukaan"
 
 #: includes/class-data.php:317
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
-msgstr ""
+msgstr "Näytä merkinnät jotka luotu tämän päivämäärän jälkeen. Tukee suhteellisia päiviä, kuten \"-1 viikko\" tai \"-1 kuukausi\"."
 
 #: includes/class-data.php:324
 msgid "Filter by End Date"
-msgstr "Nach Ablaufdatum filtern"
+msgstr "Suodata lopetuspäivän mukaan"
 
 #: includes/class-data.php:326
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
-msgstr ""
+msgstr "Näytä merkinnät jotka luotu ennen tätä päivämäärä. Tukee suhteellisia päiviä, kuten \"nyt\" tai \"-3 päivää\"."
 
 #: includes/class-data.php:333
 msgid "CSS Class"
@@ -752,22 +752,22 @@ msgstr ""
 
 #: includes/class-data.php:357
 msgid "Single Entry Title"
-msgstr ""
+msgstr "Yksittäisen merkinnän otsikko"
 
 #: includes/class-data.php:359
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and Single"
 " Entry views."
-msgstr ""
+msgstr "Katsoaksesi yhtä merkintää vaihda sivun otsikko tähän asetukseen. Muutoin otsikko ei vaihdu monen näkymän ja yksittäisen näkymän osalta."
 
 #: includes/class-data.php:366
 msgid "Back Link Label"
-msgstr ""
+msgstr "Takaisin linkin otsikko"
 
 #: includes/class-data.php:368
 msgid "The text of the link that returns to the multiple entries view."
-msgstr ""
+msgstr "Linkin tekstit joka näytetään monen merkinnän näkymässä."
 
 #: includes/class-debug-bar.php:24
 msgid "GravityView"
@@ -816,62 +816,62 @@ msgstr ""
 #: includes/class-post-types.php:35
 msgctxt "Post Type General Name"
 msgid "Views"
-msgstr "Views"
+msgstr "Näkymät"
 
 #: includes/class-post-types.php:36
 msgctxt "Post Type Singular Name"
 msgid "View"
-msgstr "View"
+msgstr "Näkymää"
 
 #: includes/class-post-types.php:37
 msgctxt "Menu name"
 msgid "Views"
-msgstr "Views"
+msgstr "Näkymät"
 
 #: includes/class-post-types.php:38
 msgid "Parent View:"
-msgstr "Haupt-View"
+msgstr "Päänäkymä:"
 
 #: includes/class-post-types.php:39
 msgid "All Views"
-msgstr "Alle Views"
+msgstr "Kaikki näkymät"
 
 #: includes/class-post-types.php:40
 msgctxt "View Item"
 msgid "View"
-msgstr "View"
+msgstr "Näkymä"
 
 #: includes/class-post-types.php:41
 msgid "Add New View"
-msgstr "Neuen View hinzufügen"
+msgstr "Lisää uusi näkymä"
 
 #: includes/class-post-types.php:42
 msgid "New View"
-msgstr "Neuer View"
+msgstr "Uusi näkymä"
 
 #: includes/class-post-types.php:43
 msgid "Edit View"
-msgstr "View bearbeiten"
+msgstr "Muokka näkymää"
 
 #: includes/class-post-types.php:44
 msgid "Update View"
-msgstr "View aktualisieren"
+msgstr "Päivitä näkymää"
 
 #: includes/class-post-types.php:45
 msgid "Search Views"
-msgstr "View suchen"
+msgstr "Etsi näkymiä"
 
 #: includes/class-post-types.php:47
 msgid "No Views found in Trash"
-msgstr "Keinen View im Papierkorb gefunden"
+msgstr "Ei löytynyt näkymiä roskakorista"
 
 #: includes/class-post-types.php:50
 msgid "view"
-msgstr "View"
+msgstr "näytä"
 
 #: includes/class-post-types.php:51
 msgid "Create views based on a Gravity Forms form"
-msgstr "Einen View auf Basis eines Gravity Forms Formular erstellen"
+msgstr "Luo näkymiä perustuen Gravity Formin lomakkeeseen"
 
 #: includes/class-post-types.php:118
 #, php-format
@@ -883,7 +883,7 @@ msgstr ""
 
 #: includes/class-settings.php:96
 msgid "License Key"
-msgstr "Seriennummer"
+msgstr "Lisenssiavain"
 
 #: includes/class-settings.php:97
 msgid ""
@@ -893,197 +893,197 @@ msgstr ""
 
 #: includes/class-settings.php:104
 msgid "Support Email"
-msgstr ""
+msgstr "Tuen sähköposti"
 
 #: includes/class-settings.php:105
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
-msgstr ""
+msgstr "Tukipyynnön vastausten ja palautteen osalta anna sähköpostiosoitteesi."
 
 #: includes/class-settings.php:110
 msgid "No-Conflict Mode"
-msgstr "Abgesicherter Modus"
+msgstr "Ei-konflikti tila"
 
 #: includes/class-settings.php:111
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
-msgstr "Einschalten, um Darstellungsprobleme im Theme und Funktionseinstellungen mit anderen Plugins vorzubeugen oder zu beheben."
+msgstr "Asenna ON asentoon estääksesi lisäskriptien ja tyylien ajamisen GravityView ylläpitosivuilta välttääksesi ei-yhteensopivuuksia muiden lisäosien ja teemojen osalta."
 
 #: includes/class-settings.php:129
 msgid "GravityView Settings"
-msgstr "GravityView Einstellungen"
+msgstr "GravityView asetukset"
 
 #: includes/class-settings.php:225
 msgid "Follow us on Google+"
-msgstr "FOlge uns auf Google+"
+msgstr "Seuraa meitä Google+:ssa"
 
 #: includes/default-templates.php:30
 msgid "Table (default)"
-msgstr "Tabelle (standard)"
+msgstr "Taulu (oletus)"
 
 #: includes/default-templates.php:31
 msgid "Display items in a table view."
-msgstr "Einträge in einer Tabellenansicht darstellen."
+msgstr "Näytä merkinnät taulukkonäkymässä."
 
 #: includes/default-templates.php:43 includes/default-templates.php:82
 msgid "Link to single entry"
-msgstr "Link zum einzelnen Eintrag"
+msgstr "Linkki yksittäiseen merkintään"
 
 #: includes/default-templates.php:49
 msgid "Visible Table Columns"
-msgstr "Sichtbare Tabellenspalten"
+msgstr "Näkyvät taulukon sarakkeet"
 
 #: includes/default-templates.php:73
 msgid "List (default)"
-msgstr "Liste (Stadard)"
+msgstr "Lista (oletus)"
 
 #: includes/default-templates.php:74
 msgid "Display items in a listing view."
-msgstr "Einträge in einer Listenansicht darstellen."
+msgstr "Näytä kohteet listanäkymänä."
 
 #: includes/default-templates.php:88
 msgid "Listing Title"
-msgstr "Titel der Liste"
+msgstr "Listauksen otsikko"
 
 #: includes/default-templates.php:89
 msgid "Subheading"
-msgstr "Untertitel"
+msgstr "Alaotsikko"
 
 #: includes/default-templates.php:92
 msgid "Image"
-msgstr "Bild"
+msgstr "Kuva"
 
 #: includes/default-templates.php:95
 msgid "Description"
-msgstr "Beschreibung"
+msgstr "Kuvaus"
 
 #: includes/default-templates.php:99
 msgid "Footer Left"
-msgstr "Fußzeile links"
+msgstr "Vasen alatunniste"
 
 #: includes/default-templates.php:102
 msgid "Footer Right"
-msgstr "Fußzeile rechts"
+msgstr "Oikea alatunniste"
 
 #: includes/default-templates.php:338
 msgid "Business Data"
-msgstr "Geschäftsdaten"
+msgstr "Businessdata"
 
 #: includes/default-templates.php:339
 msgid "Display business information in a table."
-msgstr "Geschäftsdaten in einer Tabelle anzeigen."
+msgstr "Näytä businessinfo taulukossa."
 
 #: includes/default-templates.php:360
 msgid "Resume Board"
-msgstr "Lebenlsauf-Plattform"
+msgstr "Ansioluettelotaulu"
 
 #: includes/default-templates.php:361
 msgid "Allow job-seekers to post their resumes."
-msgstr "Arbeitsuchenden erlauben ihre Lebensläufe und Erfahrungen zu veröffentlichen."
+msgstr "Anna työnhakijoiden julkaista ansioluettelot."
 
 #: includes/default-templates.php:382
 msgid "Job Board"
-msgstr "Arbeitsplatz-Plattform"
+msgstr "Työnhakutaulu"
 
 #: includes/default-templates.php:383
 msgid "Post available jobs in a simple job board."
-msgstr "Verfügbare Jobs in einer einfachen Übersicht posten."
+msgstr "Näytä saatavilla olevat työpaikat yksinkertaisessa työpaikkataulussa."
 
 #: includes/default-templates.php:404
 msgid "People Table"
-msgstr "Personentabelle"
+msgstr "Henkilöstötaulu"
 
 #: includes/default-templates.php:405
 msgid "Display information about people in a table."
-msgstr "Informationen über Personen in Tabellenansicht anzeigen."
+msgstr "Näytä tieto ihmisistä taulukossa."
 
 #: includes/default-templates.php:427
 msgid "Issue Tracker"
-msgstr "Fehlermelder"
+msgstr "Julkaisun/muutoksen seuranta"
 
 #: includes/default-templates.php:428
 msgid "Manage issues and their statuses."
-msgstr "Fehlerberichte verwalten"
+msgstr "Hoida kysymykset ja niiden statukset."
 
 #: includes/default-templates.php:450
 msgid "Business Listings"
-msgstr "Geschäftsprofile"
+msgstr "Businesslistaukset"
 
 #: includes/default-templates.php:451
 msgid "Display business profiles."
-msgstr "Gescäftsprofile anzeigen."
+msgstr "Näytä businessprofiilit."
 
 #: includes/default-templates.php:472
 msgid "Event Listings"
-msgstr "Veranstaltungen"
+msgstr "Tapahtumalistat"
 
 #: includes/default-templates.php:473
 msgid "Present a list of your events."
-msgstr "Eine Liste aller Veranstaltungen anzeigen."
+msgstr "Näyttää listan tapahtumista."
 
 #: includes/default-templates.php:494
 msgid "People Profiles"
-msgstr "Benutzerprofile"
+msgstr "Henkilöstöprofiilit"
 
 #: includes/default-templates.php:495
 msgid "List people with individual profiles."
-msgstr "Benutzer mit individuellen Profilen auflisten."
+msgstr "Lista henkilöistä henkilökohtaisine profiileineen."
 
 #: includes/default-templates.php:516
 msgid "Staff Profiles"
-msgstr "Mitarbeiterprofile"
+msgstr "Henkilökunnan profiilit"
 
 #: includes/default-templates.php:517
 msgid "List members of your team."
-msgstr "Mitglieder deines Teams auflisten"
+msgstr "Näytä tiimisi jäsenet."
 
 #: includes/default-templates.php:538
 msgid "Website Showcase"
-msgstr "Webseitenpräsentation"
+msgstr "Websivustojen näyteikkuna"
 
 #: includes/default-templates.php:539
 msgid "Feature submitted websites with screenshots."
-msgstr "Webseiten mittels Screenshots vorstellen."
+msgstr "Näytä julkaistut nettisivustot kuvaruutukaappauksilla."
 
 #: includes/default-widgets.php:32
 msgid "Show Pagination Info"
-msgstr "Zeige Seitennummerierung"
+msgstr "Näytä sivutusinfo"
 
 #: includes/default-widgets.php:60
 #, php-format
 msgid "Displaying %1$s - %2$s of %3$s"
-msgstr "Einträge %1$s - %2$s von insgesamt %3$s"
+msgstr "Näytetään %1$s - %2$s / %3$s"
 
 #: includes/default-widgets.php:83
 msgid "Show each page number"
-msgstr "Zeige jede Seitenzahl"
+msgstr "Näytä jokainen sivunumero"
 
 #: includes/default-widgets.php:84
 msgid "Show every page number instead of summary (eg: 1 2 3 ... 8 »)"
-msgstr ""
+msgstr "Näytä joka sivun numero yhteenvedon sijaan (esim: 1 2 3 ... 8 »)"
 
 #: includes/default-widgets.php:87
 msgid "Show Page Links"
-msgstr "Zeige Seitenlinks"
+msgstr "Näytä sivun linkit"
 
 #: includes/default-widgets.php:153
 msgid "Show search input"
-msgstr "Zeige Sucheingabe"
+msgstr "Näytä hakukenttä"
 
 #: includes/default-widgets.php:158
 msgid "Show date filters"
-msgstr "Zeige Datumsfilter"
+msgstr "Näytä päivämäärän suodattimet"
 
 #: includes/default-widgets.php:162
 msgid "Show Search Bar"
-msgstr "Suchfeld"
+msgstr "Näytä hakupalkki"
 
 #: includes/default-widgets.php:176
 msgid "Use this field as a search filter"
-msgstr "Dieses Feld auch als Suchfilter benutzen."
+msgstr "Käytä tätä kenttää hakusuodattimena"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:142
 msgid "Edit Link Text"
@@ -1186,32 +1186,32 @@ msgstr ""
 
 #: includes/fields/class.field.php:43
 msgid "Override Date Format"
-msgstr ""
+msgstr "Ylikirjoita päivämäärän muoto"
 
 #: includes/fields/class.field.php:44
 #, php-format
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
-msgstr ""
+msgstr "Määritä kuinka päivämäärä näytetään (käyttäen %sPHP päivämäärämuotoja%s)"
 
 #: includes/fields/created-by.php:11
 msgid "User Format"
-msgstr ""
+msgstr "Käyttäjän muoto"
 
 #: includes/fields/created-by.php:12
 msgid "How should the User information be displayed?"
-msgstr ""
+msgstr "Kuinka käyttäjäinfo näytetään?"
 
 #: includes/fields/created-by.php:14
 msgid "Display Name (Example: \"Ellen Ripley\")"
-msgstr ""
+msgstr "Näyttönimi (Esimerkki: \"Mikko Mallikas\")"
 
 #: includes/fields/created-by.php:15
 msgid "Username (Example: \"nostromo\")"
-msgstr ""
+msgstr "Käyttäjänimi (esimerkki: \"mikkomallikas\")"
 
 #: includes/fields/created-by.php:16
 msgid "User ID # (Example: 426)"
-msgstr ""
+msgstr "Käyttäjän ID # (Esimerkki: 426)"
 
 #: includes/fields/entry-link.php:18
 msgid "Link Text:"
@@ -1219,7 +1219,7 @@ msgstr ""
 
 #: includes/fields/entry-link.php:20 templates/fields/entry_link.php:7
 msgid "View Details"
-msgstr "Details anzeigen"
+msgstr "Näytä yksityiskohdat"
 
 #: includes/fields/website.php:18
 msgid "Shorten Link Display"
@@ -1242,20 +1242,20 @@ msgstr ""
 
 #: templates/widget-search.php:20
 msgid "Search Entries:"
-msgstr "Einträge durchsuchen:"
+msgstr "Hakumerkinnät"
 
 #: templates/widget-search.php:29
 msgid "Filter by date:"
-msgstr "Nach Datum filtern:"
+msgstr "Järjestä päivämäärän mukaan:"
 
 #: templates/widget-search.php:31
 msgid "Start date"
-msgstr "von"
+msgstr "Aloituspäivä"
 
 #: templates/widget-search.php:32
 msgid "End date"
-msgstr "bis"
+msgstr "Lopetuspäivä"
 
 #: templates/widget-search.php:50
 msgid "Search"
-msgstr "Suche"
+msgstr "Etsi"
