@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries.
 * Fixed: Entries not displaying in Visual Composer plugin editor
 * Fixed: Allow using images as link to entry
 * Fixed: Updated field layout in Admin to reflect actual layout of listings (full-width title and subtitle above image)
+* Fixed: Editing entry updates the Approved status
 * Fixed: When trying to access an entry that doesn't exist (it had been permanently deleted), don't throw an error
 * Fixed: Default styles not being enqueued when embedded using the shortcode (fixes vertical pagination links)
 * Fixed: Single entry queries were being run twice

@@ -259,6 +259,7 @@ class GravityView_Welcome {
 					<li>Fixed: When trying to access an entry that doesn't exist (it had been permanently deleted), don't throw an error</li>
 					<li>Fixed: Default styles not being enqueued when embedded using the shortcode (fixes vertical pagination links)</li>
 					<li>Fixed: Improved style for Edit Entry mode</li>
+					<li>Fixed: Editing entry updates the Approved status</li>
 					<li>New translations - thank you, everyone!
 						<ul>
 							<li>Romanian translation by <a href="https://www.transifex.com/accounts/profile/ArianServ/">@ArianServ</a></li>

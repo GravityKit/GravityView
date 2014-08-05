@@ -313,7 +313,7 @@ class GravityView_Admin_ApproveEntries {
 	 * @access public
 	 * @static
 	 * @param mixed $form_id
-	 * @return void
+	 * @return false|null|string Returns the input ID of the approved field. Returns NULL if no approved fields were found. Returns false if $form_id wasn't set.
 	 */
 	static public function get_approved_column( $form_id ) {
 		if( empty( $form_id ) ) {
