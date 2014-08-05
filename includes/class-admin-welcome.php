@@ -374,7 +374,7 @@ class GravityView_Welcome {
 
 			<div class="changelog">
 
-				<h4>GravityView uses the following open-source software:</h4>
+				<h4>Thanks to the following open-source software:</h4>
 
 				<ul>
 					<li><a href="http://datatables.net/">DataTables</a> - amazing tool for table data display. Many thanks!</li>
@@ -382,6 +382,7 @@ class GravityView_Welcome {
 					<li><a href="https://github.com/GaryJones/Gamajo-Template-Loader">Gamajo Template Loader</a> - makes it easy to load template files with user overrides</li>
 					<li><a href="https://github.com/carhartl/jquery-cookie">jQuery Cookie plugin</a> - Access and store cookie values with jQuery</li>
 					<li><a href="http://katz.si/gf">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>
+					<li>GravityView uses icons made by Freepik, Adam Whitcroft, Amit Jakhu, Zurb, Scott de Jonge, Yannick, Picol, Icomoon, TutsPlus, Dave Gandy, SimpleIcon from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a></li>
 				</ul>
 
 			</div>
