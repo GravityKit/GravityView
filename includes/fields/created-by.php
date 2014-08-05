@@ -11,18 +11,9 @@ class GravityView_Field_Created_By extends GravityView_Field {
 			'label' => __( 'User Format', 'gravity-view' ),
 			'desc' => __( 'How should the User information be displayed?', 'gravity-view'),
 			'choices' => array(
-				array(
-					'value' => 'display_name',
-					'label' => __('Display Name (Example: "Ellen Ripley")', 'gravity-view'),
-				),
-				array(
-					'value' => 'user_login',
-					'label' => __('Username (Example: "nostromo")', 'gravity-view')
-				),
-				array(
-					'value' => 'ID',
-					'label' => __('User ID # (Example: 426)', 'gravity-view')
-				),
+				'display_name' => __('Display Name (Example: "Ellen Ripley")', 'gravity-view'),
+				'user_login' => __('Username (Example: "nostromo")', 'gravity-view'),
+				'ID' => __('User ID # (Example: 426)', 'gravity-view'),
 			),
 			'default' => 'display_name'
 		);

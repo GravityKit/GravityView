@@ -249,6 +249,26 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 
 			<div class="changelog point-releases">
+
+				<h3>What changed in 1.1.2</h3>
+				<ul>
+					<li>Added: Extensions framework to allow for extensions to auto-update</li>
+					<li>Fixed: Entries not displaying in Visual Composer plugin editor</li>
+					<li>Fixed: Allow using images as link to entry</li>
+					<li>Fixed: Updated field layout in Admin to reflect actual layout of listings (full-width title and subtitle above image)</li>
+					<li>Fixed: When trying to access an entry that doesn't exist (it had been permanently deleted), don't throw an error</li>
+					<li>Fixed: Default styles not being enqueued when embedded using the shortcode (fixes vertical pagination links)</li>
+					<li>Fixed: Improved style for Edit Entry mode</li>
+					<li>Fixed: Editing entry updates the Approved status</li>
+					<li>New translations - thank you, everyone!
+						<ul>
+							<li>Romanian translation by <a href="https://www.transifex.com/accounts/profile/ArianServ/">@ArianServ</a></li>
+							<li>Finnish translation by <a href="https://www.transifex.com/accounts/profile/harjuja/">@harjuja</a></li>
+							<li>Spanish translation by <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a></li>
+						</ul>
+					</li>
+				</ul>
+
 				<h3>What changed in 1.1.1</h3>
 
 				<ul>
@@ -358,6 +378,11 @@ class GravityView_Welcome {
 						<li class="wp-person">Italian translation by <a href="https://www.transifex.com/accounts/profile/ClaraDiGennaro/">@ClaraDiGennaro</a></li>
 						<li class="wp-person">French translation by <a href="https://www.transifex.com/accounts/profile/franckt/">@franckt</a></li>
 						<li class="wp-person">Portuguese translation by <a href="https://www.transifex.com/accounts/profile/luistinygod/">@luistinygod</a></li>
+						<li class="wp-person">Portuguese translation by <a href="https://www.transifex.
+						com/accounts/profile/luistinygod/">@luistinygod</a></li>
+						<li class="wp-person">Romanian translation by <a href="https://www.transifex.com/accounts/profile/ArianServ/">@ArianServ</a></li>
+						<li class="wp-person">Finnish translation by <a href="https://www.transifex.com/accounts/profile/harjuja/">@harjuja</a></li>
+						<li class="wp-person">Spanish translation by <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a></li>
 					</ul>
 
 					<h4><?php esc_attr_e( 'Want to contribute?', 'gravity-view' ); ?></h4>
@@ -369,7 +394,7 @@ class GravityView_Welcome {
 
 			<div class="changelog">
 
-				<h4>GravityView uses the following open-source software:</h4>
+				<h4>Thanks to the following open-source software:</h4>
 
 				<ul>
 					<li><a href="http://datatables.net/">DataTables</a> - amazing tool for table data display. Many thanks!</li>
@@ -377,6 +402,7 @@ class GravityView_Welcome {
 					<li><a href="https://github.com/GaryJones/Gamajo-Template-Loader">Gamajo Template Loader</a> - makes it easy to load template files with user overrides</li>
 					<li><a href="https://github.com/carhartl/jquery-cookie">jQuery Cookie plugin</a> - Access and store cookie values with jQuery</li>
 					<li><a href="http://katz.si/gf">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>
+					<li>GravityView uses icons made by Freepik, Adam Whitcroft, Amit Jakhu, Zurb, Scott de Jonge, Yannick, Picol, Icomoon, TutsPlus, Dave Gandy, SimpleIcon from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a></li>
 				</ul>
 
 			</div>

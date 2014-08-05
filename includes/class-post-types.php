@@ -13,8 +13,6 @@
 
 class GravityView_Post_Types {
 
-	private $admin_notices = array();
-
 	function __construct() {
 
 		// Load custom post types. It's a static method.

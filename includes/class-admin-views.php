@@ -15,6 +15,7 @@
 class GravityView_Admin_Views {
 
 	private $post_id;
+	private static $setting_row_alt = false;
 
 	function __construct() {
 
@@ -116,31 +117,30 @@ class GravityView_Admin_Views {
 	 */
 	public function tooltips( $tooltips = array() ) {
 
-		$gv_tooltips = array(
-			'gv_filter_by_start_date' => array(
-				'title' => __('Filter by Start Date', 'gravity-view'),
-				'value' => __('Show entries submitted after this date. Supports relative dates, such as "-1 week" or "-1 month".', 'gravity-view' ),
-			),
-			'gv_filter_by_end_date' => array(
-				'title' => __('Filter by End Date', 'gravity-view'),
-				'value' => __('Show entries submitted before this date. Supports relative dates, such as "now" or "-3 days".', 'gravity-view' ),
-			),
-			'gv_single_entry_title' => array(
-				'title' => __('Single Entry Title', 'gravity-view'),
-				'value' => __('When viewing a single entry, change the title of the page to this setting. Otherwise, the title will not change between the Multiple Entries and Single Entry views.', 'gravity-view'),
-			),
-			'gv_back_link_label' => array(
-				'title' => __('Back Link Label', 'gravity-view'),
-				'value' => __('The text of the link that returns to the multiple entries view.', 'gravity-view'),
-			),
-			'gv_css_merge_tags' => array(
+		$gv_tooltips = array();
+
+		// Generate tooltips for View settings
+		$default_args = GravityView_View_Data::get_default_args( true );
+
+		foreach ( $default_args as $key => $arg ) {
+
+			// If an arg has `tooltip` defined, but it's false, don't display a tooltip
+			if( isset( $arg['tooltip'] ) && empty( $arg['tooltip'] ) ) { continue; }
+
+			// And if there's no description to be used as a tooltip.
+			if( empty( $arg['desc'] ) ) { continue; }
+
+			// Add the tooltip
+			$gv_tooltips[ 'gv_'.$key ] = array(
+				'title'	=> $arg['name'],
+				'value'	=> $arg['desc'],
+			);
+
+		}
+
+		$gv_tooltips['gv_css_merge_tags'] = array(
 				'title' => __('CSS Merge Tags', 'gravity-view'),
-				'value' => sprintf( __( 'Developers: The CSS classes will be sanitized using the %ssanitize_title_with_dashes()%s function.', 'gravity-view'), '<code>', '</code>' ),
-			),
-			'gv_allow_user_edit' => array(
-				'title' => __('Allow User Edit', 'gravity-view'),
-				'value' => __('Allow logged-in users to edit entries they created.', 'gravity-view'),
-			),
+				'value' => sprintf( __( 'Developers: The CSS classes will be sanitized using the %ssanitize_title_with_dashes()%s function.', 'gravity-view'), '<code>', '</code>' )
 		);
 
 		$gv_tooltips = apply_filters( 'gravityview_tooltips', $gv_tooltips );
@@ -149,7 +149,7 @@ class GravityView_Admin_Views {
 
 			$title = empty( $tooltip['title'] ) ? '' : '<h6>'.esc_html( $tooltip['title'] ) .'</h6>';
 
-			$tooltips[ $key ] = $title . esc_html( $tooltip['value'] );
+			$tooltips[ $key ] = $title . wpautop( esc_html( $tooltip['value'] ) );
 		}
 
 		return $tooltips;
@@ -532,8 +532,7 @@ class GravityView_Admin_Views {
 							</div>
 							<div class="gv-droppable-area-action">
 								<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>"><?php echo '+ '.esc_html( $button_label ); ?></a>
-								<p class="gv-droppable-area-title"><?php echo esc_html( $area['title'] ); ?></p>
-								<p class="gv-droppable-area-subtitle"><?php echo esc_html( $area['subtitle'] ); ?></p>
+								<p class="gv-droppable-area-title"><strong><?php echo esc_html( $area['title'] ); ?></strong><?php if( !empty( $area['subtitle'] ) ) { ?><span class="gv-droppable-area-subtitle"> &ndash; <?php echo esc_html( $area['subtitle'] ); ?></span><?php } ?></p>
 							</div>
 						</div>
 
@@ -685,22 +684,25 @@ class GravityView_Admin_Views {
 
 		if( 'field' === $field_type ) {
 
+			$select_cap_choices = array(
+				'read' => __( 'Any Logged-In User', 'gravity-view' ),
+				'publish_posts' => __( 'Author Or Higher', 'gravity-view' ),
+				'gravityforms_view_entries' => __( 'Can View Gravity Forms Entries', 'gravity-view' ),
+				'delete_others_posts' => __( 'Editor Or Higher', 'gravity-view' ),
+				'gravityforms_edit_entries' => __( 'Can Edit Gravity Forms Entries', 'gravity-view' ),
+				'manage_options' => __( 'Administrator', 'gravity-view' ),
+			);
+
+			if( is_multisite() ) {
+				$select_cap_choices['manage_network'] = __('Multisite Super Admin', 'gravity-view' );
+			}
+
 			/**
 			 * Modify the capabilities shown in the field dropdown
 			 * @link  https://github.com/zackkatz/GravityView/wiki/How-to-modify-capabilities-shown-in-the-field-%22Only-visible-to...%22-dropdown
 			 * @since  1.0.1
 			 */
-			$select_cap_choices = apply_filters('gravityview_field_visibility_caps',
-				array(
-					array( 'label' => __( 'Any Logged-In User', 'gravity-view' ), 'value' => 'read' ),
-					array( 'label' => __( 'Author Or Higher', 'gravity-view' ), 'value' => 'publish_posts' ),
-					array( 'label' => __( 'Can View Gravity Forms Entries', 'gravity-view' ), 'value' => 'gravityforms_view_entries' ),
-					array( 'label' => __( 'Editor Or Higher', 'gravity-view' ), 'value' => 'delete_others_posts' ),
-					array( 'label' => __( 'Can Edit Gravity Forms Entries', 'gravity-view' ), 'value' => 'gravityforms_edit_entries' ),
-					array( 'label' => __( 'Administrator', 'gravity-view' ), 'value' => 'manage_options' ),
-				),
-				$template_id, $field_id, $context, $input_type
-			);
+			$select_cap_choices = apply_filters('gravityview_field_visibility_caps', $select_cap_choices, $template_id, $field_id, $context, $input_type );
 
 			// Default options - fields
 			$field_options = array(
@@ -820,6 +822,73 @@ class GravityView_Admin_Views {
 		return $output;
 	}
 
+	/**
+	 * Output a table row for view settings
+	 * @param  string $key              The key of the input
+	 * @param  array  $current_settings Associative array of current settings to use as input values, if set. If not set, the defaults are used.
+	 * @param  [type] $override_input   [description]
+	 * @param  string $name             [description]
+	 * @param  string $id               [description]
+	 * @return [type]                   [description]
+	 */
+	static function render_setting_row( $key = '', $current_settings = array(), $override_input = null, $name = 'template_settings[%s]', $id = 'gravityview_se_%s' ) {
+
+		$name = esc_attr( sprintf( $name, $key ) );
+		$id = esc_attr( sprintf( $id, $key ) );
+
+		$setting = GravityView_View_Data::get_default_arg( $key, true );
+
+		// If the key doesn't exist, there's something wrong.
+		if( empty( $setting ) ) { return; }
+
+		// Use default if current setting isn't set.
+		$current = isset( $current_settings[ $key ] ) ? $current_settings[ $key ] : $setting['value'];
+
+		$output = self::$setting_row_alt ? '<tr valign="top">' : '<tr valign="top" class="alt">';
+		self::$setting_row_alt = self::$setting_row_alt ? false : true;
+
+		$label = trim( esc_html( $setting['name'] ) . ' '.gform_tooltip( 'gv_'.$key, false, true ) );
+
+		if( !empty( $override_input ) ) {
+			$input = $override_input;
+		} else {
+			switch ($setting['type']) {
+				case 'select':
+					$input = GravityView_Admin_Views::render_select_option( $name, $id, $setting['options'], $current, true );
+					break;
+				case 'checkbox':
+					$input = GravityView_Admin_Views::render_checkbox_option( $name, $id, $current, true );
+					break;
+				default:
+					$input = GravityView_Admin_Views::render_text_option( $name, $id, $current, true, $setting );
+					break;
+			}
+		}
+
+		if( $setting['type'] === 'checkbox' ) {
+			$output .= '<td scope="row" colspan="2">';
+			$output .= '<label for="'.$id.'">';
+			$output .= $input . ' ' . $label;
+			$output .= '</label>';
+		} else {
+
+			// By default, show setting as full width.
+			if( !empty( $setting['full_width'] ) ) {
+				$output .= '<td scope="row" colspan="2"><div><label for="'.$id.'">';
+				$output .= $label;
+				$output .= '</label></div>'.$input.'</td>';
+			} else {
+				$output .= '<td scope="row"><label for="'.$id.'">';
+				$output .= $label;
+				$output .= '</label></td><td>'.$input.'</td>';
+			}
+		}
+
+		$output .= '</tr>';
+
+		echo $output;
+	}
+
 
 	/**
 	 * Render the HTML for a checkbox input to be used on the field & widgets options
@@ -844,7 +913,7 @@ class GravityView_Admin_Views {
 	 * @param string $add_merge_tags Add merge tags to the input?
 	 * @return string         [html tags]
 	 */
-	public static function render_text_option( $name = '', $id = '', $current = '', $add_merge_tags = NULL ) {
+	public static function render_text_option( $name = '', $id = '', $current = '', $add_merge_tags = NULL, $args = array() ) {
 
 		// Show the merge tags if the field is a list view
 		$is_list = ( preg_match( '/_list-/ism', $name ));
@@ -853,13 +922,16 @@ class GravityView_Admin_Views {
 		$is_single = ( preg_match( '/single_/ism', $name ));
 		$show = ( $is_single || $is_list );
 
-		$merge_class = '';
+		$class = '';
 		// and $add_merge_tags is not false
 		if( $show && $add_merge_tags !== false ) {
-			$merge_class = ' merge-tag-support mt-position-right mt-hide_all_fields';
+			$class = 'merge-tag-support mt-position-right mt-hide_all_fields';
 		}
 
-		return '<input name="'. esc_attr( $name ) .'" id="'. esc_attr( $id ) .'" type="text" value="'. esc_attr( $current ) .'" class="widefat'.$merge_class.'">';
+		$class .= !empty( $args['class'] ) ? ' '.$args['class'] : 'widefat';
+		$type = !empty( $args['type'] ) ? $args['type'] : 'text';
+
+		return '<input name="'. esc_attr( $name ) .'" id="'. esc_attr( $id ) .'" type="'.esc_attr($type).'" value="'. esc_attr( $current ) .'" class="'.esc_attr( $class ).'">';
 	}
 
 	/**
@@ -872,8 +944,8 @@ class GravityView_Admin_Views {
 	public static function render_select_option( $name = '', $id = '', $choices, $current = '' ) {
 
 		$output = '<select name="'. $name .'" id="'. $id .'">';
-		foreach( $choices as $choice ) {
-			$output .= '<option value="'. esc_attr( $choice['value'] ) .'" '. selected( $choice['value'], $current, false ) .'>'. esc_html( $choice['label'] ) .'</option>';
+		foreach( $choices as $value => $label ) {
+			$output .= '<option value="'. esc_attr( $value ) .'" '. selected( $value, $current, false ) .'>'. esc_html( $label ) .'</option>';
 		}
 		$output .= '</select>';
 

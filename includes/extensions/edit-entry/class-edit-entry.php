@@ -31,6 +31,8 @@ class GravityView_Edit_Entry {
 
 		self::$file = plugin_dir_path( __FILE__ );
 
+		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
+
 		// Stop Gravity Forms processing what is ours!
 		add_filter( 'wp', array( $this, 'prevent_maybe_process_form'), 8 );
 
@@ -195,11 +197,7 @@ class GravityView_Edit_Entry {
 	function modify_visibility_caps( $caps, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 
 		if( $field_id === 'edit_link' || $input_type === 'edit_link' ) {
-			foreach ($caps as $key => $cap) {
-				if( $cap['value'] === 'read' ) {
-					unset($caps[$key]);
-				}
-			}
+			unset($caps['read'] );
 		}
 
 		return $caps;
@@ -341,7 +339,13 @@ class GravityView_Edit_Entry {
 
 	        	do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] Submission is valid.' );
 
-		        GFFormsModel::save_lead( $this->form, $this->entry );
+	        	/**
+	        	 * @hack This step is needed to unset the adminOnly from form fields
+	        	 */
+	        	$form = $this->form_prepare_for_save();
+
+
+		        GFFormsModel::save_lead( $form, $this->entry );
 
 		        do_action("gform_after_update_entry", $this->form, $this->entry["id"]);
 		        do_action("gform_after_update_entry_{$this->form["id"]}", $this->form, $this->entry["id"]);
@@ -357,6 +361,25 @@ class GravityView_Edit_Entry {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Unset adminOnly and convert field input key to string
+	 * @return array $form
+	 */
+	function form_prepare_for_save() {
+		$form = $this->form;
+		foreach( $form['fields'] as &$field ) {
+			$field['adminOnly'] = '';
+
+			if( isset($field["inputs"] ) && is_array( $field["inputs"] ) ) {
+				foreach( $field["inputs"] as &$input ) {
+					$input['id'] = (string)$input['id'];
+				}
+			}
+
+		}
+		return $form;
 	}
 
 	/**

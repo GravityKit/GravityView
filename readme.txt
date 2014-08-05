@@ -16,6 +16,27 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
+= 1.1.2 =
+* Added: Extensions framework to allow for extensions to auto-update
+* Fixed: Entries not displaying in Visual Composer plugin editor
+* Fixed: Allow using images as link to entry
+* Fixed: Updated field layout in Admin to reflect actual layout of listings (full-width title and subtitle above image)
+* Fixed: Editing entry updates the Approved status
+* Fixed: When trying to access an entry that doesn't exist (it had been permanently deleted), don't throw an error
+* Fixed: Default styles not being enqueued when embedded using the shortcode (fixes vertical pagination links)
+* Fixed: Single entry queries were being run twice
+* Fixed: Added Enhanced Display style in Edit Entry mode
+* Modified: How single entries are accessed; now allows for advanced filtering. Converted `gravityview_get_entry()` to use `GFAPI::get_entries()` instead of `GFAPI::get_entry()`
+* Modified: Form ID can be 0 in `gravityview_get_entries()`
+* Modified: Improved Edit Entry styling
+* Modified: Convert to using `GravityView_View_Data::get_default_args()` instead of duplicating the settings arrays. Used for tooltips, insert shortcode dialog and View metaboxes.
+* Modified: Add a check for whether a view exists in `GravityView_View_Data::add_view()`
+* Modified: Convert `GravityView_Admin_Views::render_select_option()` to use the key as the value and the value as the label instead of using associative array with `value` and `label` keys.
+* Translation updates - thank you, everyone!
+	* Romanian translation by [@ArianServ](https://www.transifex.com/accounts/profile/ArianServ/)
+	* Finnish translation by [@harjuja](https://www.transifex.com/accounts/profile/harjuja/)
+	* Spanish translation by [@jorgepelaez](https://www.transifex.com/accounts/profile/jorgepelaez/)
+
 = 1.1.1 =
 * __We fixed license validation and auto-updates__. Sorry for the inconvenience!
 * Added: View Setting to allow users to edit only entries they created.

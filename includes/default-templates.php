@@ -84,15 +84,18 @@ class GravityView_Default_Template_List extends GravityView_Template {
 
 		$areas = array(
 			array(
+				'1-1' => array(
+					array( 'areaid' => 'list-title', 'title' => __('Listing Title', 'gravity-view' ) , 'subtitle' => '' ),
+					array( 'areaid' => 'list-subtitle', 'title' => __('Subheading', 'gravity-view' ) , 'subtitle' => 'Data placed here will be bold.' ),
+				),
 				'1-3' => array(
-					array( 'areaid' => 'list-image', 'title' => __( 'Image', 'gravity-view' ) , 'subtitle' => '' )
+					array( 'areaid' => 'list-image', 'title' => __( 'Image', 'gravity-view' ) , 'subtitle' => 'Leave empty to remove.' )
 				),
 				'2-3' => array(
-					array( 'areaid' => 'list-title', 'title' => __('Listing Title', 'gravity-view' ) , 'subtitle' => 'Large Font' ),
-					array( 'areaid' => 'list-subtitle', 'title' => __('Subheading', 'gravity-view' ) , 'subtitle' => 'Data placed here will be bold.' ),
 					array( 'areaid' => 'list-description', 'title' => __('Description', 'gravity-view' ) , 'subtitle' => 'Below the subheading, a good place for description and other data.' ) )
 				),
-			array( '1-2' => array(
+			array(
+				'1-2' => array(
 					array( 'areaid' => 'list-footer-left', 'title' => __('Footer Left', 'gravity-view' ) , 'subtitle' => '' )
 				),
 				'2-2' => array(

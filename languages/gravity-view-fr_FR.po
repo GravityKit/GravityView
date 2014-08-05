@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-06-24 18:47-0700\n"
-"PO-Revision-Date: 2014-07-14 09:49+0000\n"
-"Last-Translator: Zachary Katz <zack@katzwebservices.com>\n"
+"PO-Revision-Date: 2014-08-05 10:13+0000\n"
+"Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/gravityview/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +29,7 @@ msgid ""
 "%sYou don't have any active views. Let's go %screate one%s!%s\n"
 "\n"
 "If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
-msgstr ""
+msgstr "%sVous n'avez aucune vue active. Allez en %scréer une%s!%s\n\nSi vous vous sentez perdu et que vous auriez besoin d'aide pour commencer, consultez la page %sBien commencer%s."
 
 #: gravityview.php:231
 msgctxt "Post Type General Name"
@@ -190,7 +190,7 @@ msgstr "Ajouter une Vue"
 
 #: includes/class-admin-add-shortcode.php:74
 msgid "Insert a View"
-msgstr ""
+msgstr "Insérer une Vue"
 
 #: includes/class-admin-add-shortcode.php:77
 msgid "Select a View"
@@ -198,7 +198,7 @@ msgstr "Sélectionner une Vue"
 
 #: includes/class-admin-add-shortcode.php:80
 msgid "&mdash; views &mdash;"
-msgstr ""
+msgstr "&mdash; vues &mdash;"
 
 #: includes/class-admin-add-shortcode.php:92
 #: includes/class-admin-views.php:558
@@ -413,7 +413,7 @@ msgstr "Voir les paramètres"
 
 #: includes/class-admin-views.php:282
 msgid "Shortcode Info"
-msgstr ""
+msgstr "Information du code-court"
 
 #: includes/class-admin-views.php:310
 msgid "Where would you like the data to come from for this View?"
@@ -441,12 +441,12 @@ msgstr "Attention"
 
 #: includes/class-admin-views.php:343
 msgid "Changing the form will discard all the existent View configuration."
-msgstr ""
+msgstr "Changer le formulaire supprimera toute la configuration de la Vue actuelle"
 
 #: includes/class-admin-views.php:348
 msgid ""
 "Changing the View Type will discard all the existent View configuration."
-msgstr ""
+msgstr "Changer le type de Vue supprimera toute la configuration de la Vue actuelle"
 
 #: includes/class-admin-views.php:353
 msgid "GravityView requires Javascript to be enabled."
@@ -510,7 +510,7 @@ msgstr ""
 
 #: includes/class-admin-views.php:665
 msgid "To insert this view into a post or a page use the following shortcode:"
-msgstr ""
+msgstr "Pour insérer cette Vue dans un article ou une page, utiliser le code-court suivant :"
 
 #: includes/class-admin-views.php:905
 #, php-format
@@ -598,7 +598,7 @@ msgstr "Classe CSS personnalisée:"
 
 #: includes/class-admin-views.php:1273
 msgid "This class will be added to the field container."
-msgstr ""
+msgstr "Cette classe sera ajoutée au contenant du champ."
 
 #: includes/class-admin-views.php:1279
 msgid "Make visible only to logged-in users?"

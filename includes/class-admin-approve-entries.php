@@ -36,7 +36,10 @@ class GravityView_Admin_ApproveEntries {
 		// process ajax approve entry requests
 		add_action('wp_ajax_gv_update_approved', array( $this, 'ajax_update_approved'));
 
-		add_action( 'gravityview_tooltips', array( $this, 'tooltips' ) );
+		// in case entry is edited (on admin or frontend)
+		add_action( 'gform_after_update_entry', array( $this, 'update_approved_meta' ), 10, 2);
+
+		add_filter( 'gravityview_tooltips', array( $this, 'tooltips' ) );
 
 		// adding styles and scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles') );
@@ -262,7 +265,23 @@ class GravityView_Admin_ApproveEntries {
 		}
 
 	}
+	/**
+	 * Update the is_approved meta whenever the entry is updated
+	 * @param  [type] $form     [description]
+	 * @param  [type] $entry_id [description]
+	 * @return [type]           [description]
+	 */
+	public static function update_approved_meta( $form, $entry_id = NULL ) {
 
+		$approvedcolumn = (string)self::get_approved_column( $form['id'] );
+
+		$entry = GFAPI::get_entry( $entry_id );
+		$approved = !empty( $entry[ $approvedcolumn ] ) ? $entry[ $approvedcolumn ] : 0;
+
+		// update entry meta
+		if( function_exists('gform_update_meta') ) { gform_update_meta( $entry_id, 'is_approved', $approved ); }
+
+	}
 
 
 	public function ajax_update_approved() {
@@ -294,7 +313,7 @@ class GravityView_Admin_ApproveEntries {
 	 * @access public
 	 * @static
 	 * @param mixed $form_id
-	 * @return void
+	 * @return false|null|string Returns the input ID of the approved field. Returns NULL if no approved fields were found. Returns false if $form_id wasn't set.
 	 */
 	static public function get_approved_column( $form_id ) {
 		if( empty( $form_id ) ) {

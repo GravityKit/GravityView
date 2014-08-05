@@ -24,6 +24,9 @@ if(!empty($value)){
 		// This is from Gravity Forms
 		$file_path = esc_attr(str_replace(" ", "%20", $file_path));
 
+		// If the field is set to link to the single entry, link to it.
+		$link = !empty( $field_settings['show_as_link'] ) ? GravityView_API::entry_link( $entry, $field ) : $file_path;
+
 		// Is this an image?
 		$image = new GravityView_Image(array(
 			'src' => $file_path,
@@ -34,10 +37,12 @@ if(!empty($value)){
 
 		$image_html = $image->html();
 
+		$link_atts = ( !empty( $gravityview_view->atts['lightbox'] ) && empty( $field_settings['show_as_link'] ) ) ? "rel='%s-{$entry['id']}' class='thickbox' target='_blank'" : "target='_blank'";
+
 		// If so, use it!
 		if(!empty($image_html)) {
 			$content = $image;
-			$html_format = sprintf("<a href='{$file_path}' rel='%s-{$entry['id']}' class='thickbox' target='_blank'>" . $content . "</a>", $gv_class );
+			$html_format = sprintf("<a href='{$link}' {$link_atts}>" . $content . "</a>", $gv_class );
 		} else {
 
 			// Otherwise, get a link
@@ -56,7 +61,7 @@ if(!empty($value)){
 					$html_format = apply_filters( 'gravityview_video_html', $video_tag, $info, $incompatible_text );
 					break;
 				default:
-					$html_format = sprintf("<a href='{$file_path}' rel='%s-{$entry['id']}' target='_blank'>" . $content . "</a>", $gv_class );
+					$html_format = sprintf("<a href='{$link}' {$link_atts}>" . $content . "</a>", $gv_class );
 					break;
 			}
 

@@ -154,7 +154,7 @@ if( !function_exists('gravityview_get_entries') ) {
 	 * @param mixed &$total (default: null)
 	 * @return void
 	 */
-	function gravityview_get_entries( $form_ids, $passed_criteria = null, &$total = null ) {
+	function gravityview_get_entries( $form_ids = null, $passed_criteria = null, &$total = null ) {
 
 		$search_criteria_defaults = array(
 			'search_criteria' => null,
@@ -170,7 +170,8 @@ if( !function_exists('gravityview_get_entries') ) {
 				if( !is_array( $filter ) ) { continue; }
 
 				// By default, we want searches to be wildcard for each field.
-				$filter['operator'] = apply_filters( 'gravityview_search_operator', 'like', $filter );
+				$filter['operator'] = empty( $filter['operator'] ) ? 'like' : $filter['operator'];
+				$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter );
 			}
 		}
 
@@ -194,8 +195,15 @@ if( !function_exists('gravityview_get_entries') ) {
 
 		do_action( 'gravityview_log_debug', '[gravityview_get_entries] Final Parameters', $criteria );
 
-		if( class_exists( 'GFAPI' ) && !empty( $form_ids ) ) {
-			return GFAPI::get_entries( $form_ids, $criteria['search_criteria'], $criteria['sorting'], $criteria['paging'], $total );
+		if( class_exists( 'GFAPI' ) && is_numeric( $form_ids ) ) {
+			$entries = GFAPI::get_entries( $form_ids, $criteria['search_criteria'], $criteria['sorting'], $criteria['paging'], $total );
+
+			if( is_wp_error( $entries ) ) {
+				do_action( 'idx_plus_log_error', $entries->get_error_message(), $entries );
+				return false;
+			}
+
+			return $entries;
 		}
 		return false;
 	}
@@ -213,7 +221,26 @@ if( !function_exists('gravityview_get_entry') ) {
 	 */
 	function gravityview_get_entry( $entry_id ) {
 		if( class_exists( 'GFAPI' ) && !empty( $entry_id ) ) {
-			return GFAPI::get_entry( $entry_id );
+
+			$criteria = array(
+				'search_criteria' => array(
+					'field_filters' => array(
+						array(
+							'key' => "id",
+							'value' => $entry_id,
+							'operator' => 'is',
+						)
+					)
+				),
+				'sorting' => null,
+				'paging' => array("offset" => 0, "page_size" => 1)
+			);
+
+			$entries = gravityview_get_entries( 0, $criteria );
+
+			if( !empty( $entries ) ) {
+				return $entries[0];
+			}
 		}
 		return false;
 	}
@@ -283,11 +310,8 @@ if( !function_exists('has_gravityview_shortcode') ) {
 			return true;
 		}
 
-		if( $shortcode = gravityview_has_shortcode_r( $post->post_content, 'gravityview') ) {
-			return $shortcode;
-		}
+		return gravityview_has_shortcode_r( $post->post_content, 'gravityview');
 
-		return false;
 	}
 }
 
@@ -296,7 +320,7 @@ if( !function_exists( 'gravityview_has_shortcode_r') ) {
 	 * Placeholder until the recursive has_shortcode() patch is merged
 	 * @link https://core.trac.wordpress.org/ticket/26343#comment:10
 	 */
-	function gravityview_has_shortcode_r( $content, $tag ) {
+	function gravityview_has_shortcode_r( $content, $tag = 'gravityview' ) {
 		if ( false === strpos( $content, '[' ) ) {
 			return false;
 		}
@@ -316,9 +340,10 @@ if( !function_exists( 'gravityview_has_shortcode_r') ) {
 					$shortcodes[] = $shortcode;
 
 				} else if ( isset( $shortcode[5] ) && $result = gravityview_has_shortcode_r( $shortcode[5], $tag ) ) {
-					$shortcodes[] = $result;
+					$shortcodes = $result;
 				}
 			}
+
 			return $shortcodes;
 		}
 		return false;

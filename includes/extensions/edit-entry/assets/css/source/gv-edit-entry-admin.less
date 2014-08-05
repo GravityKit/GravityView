@@ -1,6 +1,7 @@
 
-
 .gv-edit-entry-wrapper {
+
+	@import "chosen.less";
 
 	#gravityview_back_link {
 		float: right;
@@ -75,6 +76,11 @@ AND ANY CHANGES MADE HERE WILL BE OVERWRITTEN.
 	position: relative;
 	min-width: 500px;
 
+	* {
+		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+		box-sizing: border-box;         /* Opera/IE 8+ */
+	}
 
 	.validation_message {
 		color: #9E0B0F !important;
@@ -91,15 +97,40 @@ AND ANY CHANGES MADE HERE WILL BE OVERWRITTEN.
 		border: 1px dotted #C89797;
 	}
 
-	table.entry-details td.detail-view label.detail-label,.ginput_full_admin label {display: block; font-weight: bold; font-size: 13px; margin-bottom: 4px}
-	div.ginput_complex_admin .ginput_full_admin label {
+	table.entry-details {
+		border: none;
+	}
+
+	td {
+		border: none;
+		margin-bottom: 9px;
+		padding: .33em .5em;
+		line-height: 1.3;
+		vertical-align: middle;
+	}
+
+	table.entry-details td.detail-view label.detail-label,
+	.ginput_full_admin label {
+		display: block;
+		font-weight: bold;
+		margin-bottom: .25em;
+	}
+
+	.ginput_container label {
 		font-weight: normal;
-		font-size: 11px;
+		font-size: .9em;
+		cursor: pointer;
 	}
 
 	table.entry-details input[type="text"],
 	table.entry-details input {
 		width: 99%;
+	}
+
+	.ginput_container,
+	.ginput_container > span {
+		margin-bottom: .5em;
+		display: block;
 	}
 
 	.ginput_complex_admin.ginput_container span.ginput_left,
@@ -114,21 +145,39 @@ AND ANY CHANGES MADE HERE WILL BE OVERWRITTEN.
 
 	.ginput_complex_admin.ginput_container span.ginput_left,
 	.ginput_complex_admin.ginput_container span.ginput_left_admin {
-		margin-right: 1em;
+		margin-right: 1%;
+		float: left;
 	}
-
+	.ginput_left_admin {
+		clear: left;
+	}
 	.ginput_left_admin label,
 	.ginput_right_admin label {
 		display: block;
 	}
 
-	.ginput_container ul.gfield_radio li input,
-	.ginput_container ul.gfield_checkbox li input {
-		width: auto !important;
+	.ginput_container ul.gfield_radio,
+	.ginput_container ul.gfield_checkbox {
+
+
+		&,
+		li {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		li input {
+			width: auto !important;
+		}
 	}
 
 	.ginput_left_admin input[type="text"] {
 		width: 99% !important;
+	}
+
+	.gf_clear {
+		clear: both;
 	}
 
 	select.medium_admin {
@@ -170,12 +219,47 @@ AND ANY CHANGES MADE HERE WILL BE OVERWRITTEN.
 	    cursor: pointer;
 	}
 
-	tr.gf-locking.wp-locked .locked-info {
-	    height: auto;
+	.gfield_time_hour,
+	.gfield_time_minute {
+	    width: 5em;
+	    float: left;
+	    margin-bottom: 4px;
 	}
 
-	tr.gf-locking.wp-locked img.gform_active_icon {
-	    display: none;
+	.selectable.gfield {
+	    margin-bottom: 10px;
+	}
+
+	.gfield_date_month,
+	.gfield_date_day,
+	.gfield_date_year {
+	    width: 50px;
+	    float: left;
+	    margin-bottom: 4px;
+
+	    input {
+	        width: 80% !important;
+	    }
+	}
+
+	.gfield_date_dropdown_month,
+	.gfield_date_dropdown_day,
+	.gfield_date_dropdown_year {
+	    margin-right: 6px;
+	    vertical-align: top;
+	    display: -moz-inline-stack;
+	    display: inline-block;
+	    zoom: 1;
+	}
+
+	.gfield_time_ampm select {
+	    width: 5em;
+	}
+
+	.gfield_time_hour input,
+	.gfield_time_minute input {
+	    width: 80% !important;
 	}
 
 }
+
