@@ -31,6 +31,8 @@ class GravityView_Edit_Entry {
 
 		self::$file = plugin_dir_path( __FILE__ );
 
+		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
+
 		// Stop Gravity Forms processing what is ours!
 		add_filter( 'wp', array( $this, 'prevent_maybe_process_form'), 8 );
 
