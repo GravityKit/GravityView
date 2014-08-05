@@ -249,6 +249,25 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 
 			<div class="changelog point-releases">
+
+				<h3>What changed in 1.1.2</h3>
+				<ul>
+					<li>Added: Extensions framework to allow for extensions to auto-update</li>
+					<li>Fixed: Entries not displaying in Visual Composer plugin editor</li>
+					<li>Fixed: Allow using images as link to entry</li>
+					<li>Fixed: Updated field layout in Admin to reflect actual layout of listings (full-width title and subtitle above image)</li>
+					<li>Fixed: When trying to access an entry that doesn't exist (it had been permanently deleted), don't throw an error</li>
+					<li>Fixed: Default styles not being enqueued when embedded using the shortcode (fixes vertical pagination links)</li>
+					<li>Fixed: Improved style for Edit Entry mode</li>
+					<li>New translations - thank you, everyone!
+						<ul>
+							<li>Romanian translation by <a href="https://www.transifex.com/accounts/profile/ArianServ/">@ArianServ</a></li>
+							<li>Finnish translation by <a href="https://www.transifex.com/accounts/profile/harjuja/">@harjuja</a></li>
+							<li>Spanish translation by <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a></li>
+						</ul>
+					</li>
+				</ul>
+
 				<h3>What changed in 1.1.1</h3>
 
 				<ul>
