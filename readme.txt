@@ -17,7 +17,7 @@ Beautifully display your Gravity Forms entries.
 == Changelog ==
 
 = 1.1.2 =
-* Added: Extensions framework to allow for extensions to auto-update.
+* Added: Extensions framework to allow for extensions to auto-update
 * Fixed: Entries not displaying in Visual Composer plugin editor
 * Fixed: Allow using images as link to entry
 * Fixed: Updated field layout in Admin to reflect actual layout of listings (full-width title and subtitle above image)
