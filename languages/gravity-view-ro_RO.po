@@ -1,162 +1,188 @@
-# 
+# Translators:
 # Translators:
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-08-04 15:15-0700\n"
-"PO-Revision-Date: 2014-08-04 21:19+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"POT-Creation-Date: 2014-06-24 18:47-0700\n"
+"PO-Revision-Date: 2014-08-05 11:01+0000\n"
+"Last-Translator: Arian - Cazare Muncitori <arianserv@gmail.com>\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/projects/p/gravityview/language/ro_RO/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ro_RO\n"
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
-"X-Generator: Poedit 1.6.7\n"
+"X-Generator: Poedit 1.6.5\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
+#: gravityview.php:210
+msgid "Support"
+msgstr "Suport"
+
+#: gravityview.php:227
+#, php-format
+msgid ""
+"%sYou don't have any active views. Let's go %screate one%s!%s\n"
+"\n"
+"If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
+msgstr "%sYou nu ai nici o vizualizare activă. Hai să mergem la %screate una%s!%s\n\nDacă te simți pierdut în spațiu și ai nevoie de ajutori pentru a începe, poți consulta pagina de %sGetting Pornire%s."
+
+#: gravityview.php:231
+msgctxt "Post Type General Name"
+msgid "Views"
+msgstr "Vizualizări"
+
+#: gravityview.php:232
+msgctxt "Post Type Singular Name"
+msgid "View"
+msgstr "Vizualizare"
+
+#: gravityview.php:233
+msgctxt "Menu name"
+msgid "Views"
+msgstr "Afișări"
+
 #: gravityview.php:234
+msgid "Parent View:"
+msgstr "Vizualizare Sursă:"
+
+#: gravityview.php:235
+msgid "All Views"
+msgstr "Toate Vizualizările"
+
+#: gravityview.php:236
+msgctxt "View Item"
+msgid "View"
+msgstr "Vizualizare"
+
+#: gravityview.php:237
+msgid "Add New View"
+msgstr "Adaugă o Vizualizare Nouă"
+
+#: gravityview.php:238
+msgid "New View"
+msgstr "Vizualizare nouă"
+
+#: gravityview.php:239
+msgid "Edit View"
+msgstr "Editare Vizualizare"
+
+#: gravityview.php:240
+msgid "Update View"
+msgstr "Actualizare Vizualizare"
+
+#: gravityview.php:241
+msgid "Search Views"
+msgstr "Căutare Vizualizări"
+
+#: gravityview.php:243
+msgid "No Views found in Trash"
+msgstr "Nici o Vizualizare găsită la Gunoi"
+
+#: gravityview.php:246
+msgid "view"
+msgstr "vizualizare"
+
+#: gravityview.php:247
+msgid "Create views based on a Gravity Forms form"
+msgstr "Creează vizualizări pe baza formularului Gravity Forms"
+
+#: gravityview.php:295 gravityview.php:296 gravityview.php:298
+#, php-format
+msgid "View updated. %sView on website.%s"
+msgstr "Vizualizare actualizată. %sView pe site.%s"
+
+#: gravityview.php:297
+msgid "View deleted."
+msgstr "Vizualizarea a fost ștearsă."
+
+#: gravityview.php:300
+#, php-format
+msgid "View restored to revision from %s"
+msgstr "Vizualizare restaurată, pentru revizuire, din %s"
+
+#: gravityview.php:301
+#, php-format
+msgid "View published. %sView on website.%s"
+msgstr "Vizualizare publicată. %sView pe site.%s"
+
+#: gravityview.php:302
+#, php-format
+msgid "View saved. %sView on website.%s"
+msgstr "Vizualizare salvată. %sView pe site.%s"
+
+#: gravityview.php:303
+msgid "View submitted."
+msgstr "Vizualizare trimisă."
+
+#: gravityview.php:305
+#, php-format
+msgid "View scheduled for: <strong>%1$s</strong>."
+msgstr "Vizualizare programată pentru: <strong>%1$s</strong>."
+
+#: gravityview.php:307
+msgid "M j, Y @ G:i"
+msgstr "j F Y G:i"
+
+#: gravityview.php:309
+#, php-format
+msgid "View draft updated. %sView on website.%s"
+msgstr "Schița  de Vizualizare a fost actualizată. %sView pe site.%s"
+
+#: gravityview.php:315
+#, php-format
+msgid "%s View updated."
+msgid_plural "%s Views updated."
+msgstr[0] "%s Vizualizare actualizată."
+msgstr[1] "%s Vizualizări actualizate."
+msgstr[2] "%s de Vizualizări actualizate."
+
+#: gravityview.php:316
+#, php-format
+msgid "%s View not updated, somebody is editing it."
+msgid_plural "%s Views not updated, somebody is editing them."
+msgstr[0] "%s Vizualizarea nu a fost actualizată, cineva o editează."
+msgstr[1] "%s Vizualizări nu au fost actualizate, cineva le editează."
+msgstr[2] "%s de Vizualizări nu au fost actualizate, cineva le editează."
+
+#: gravityview.php:317
+#, php-format
+msgid "%s View permanently deleted."
+msgid_plural "%s Views permanently deleted."
+msgstr[0] "%s Vizualizare ștearsă definitiv."
+msgstr[1] "%s Vizualizări șterse definitiv."
+msgstr[2] "%s de Vizualizări șterse definitiv."
+
+#: gravityview.php:318
+#, php-format
+msgid "%s View moved to the Trash."
+msgid_plural "%s Views moved to the Trash."
+msgstr[0] "%s Vizualizare mutată la Gunoi."
+msgstr[1] "%s Vizualizări mutate la Gunoi."
+msgstr[2] "%s de Vizualizări mutate la Gunoi."
+
+#: gravityview.php:319
+#, php-format
+msgid "%s View restored from the Trash."
+msgid_plural "%s Views restored from the Trash."
+msgstr[0] "%s Vizualizare restaurată de la Gunoi."
+msgstr[1] "%s Vizualizări restaurate de la Gunoi."
+msgstr[2] "%s de Vizualizări restaurate de la Gunoi."
+
+#: gravityview.php:389
 msgid "Top"
 msgstr "Sus"
 
-#: gravityview.php:235
+#: gravityview.php:390
 msgid "Left"
 msgstr "Stânga"
 
-#: gravityview.php:235
+#: gravityview.php:390
 msgid "Right"
 msgstr "Dreapta"
-
-#: includes/admin/metaboxes.php:25 includes/class-admin-views.php:215
-msgid "Data Source"
-msgstr "Sursă de Date"
-
-#: includes/admin/metaboxes.php:28
-msgid "Choose a View Type"
-msgstr "Alege un Tip de Vizualizare"
-
-#: includes/admin/metaboxes.php:31
-msgid "View Configuration"
-msgstr "Configurare Vizualizare"
-
-#: includes/admin/metaboxes.php:34 includes/class-admin-add-shortcode.php:107
-msgid "View Settings"
-msgstr "Configurări Vizualizare"
-
-#: includes/admin/metaboxes.php:37
-msgid "Filter &amp; Sort"
-msgstr ""
-
-#: includes/admin/metaboxes.php:64
-msgid "Where would you like the data to come from for this View?"
-msgstr "De unde dorești să primești datele pentru această Vizualizare? "
-
-#: includes/admin/metaboxes.php:74
-msgid "Start Fresh"
-msgstr "Creează unul Nou "
-
-#: includes/admin/metaboxes.php:77
-msgid "or use an existing form"
-msgstr "sau folosește un formular existent"
-
-#: includes/admin/metaboxes.php:86
-msgid "list of forms"
-msgstr "lista de formulare"
-
-#: includes/admin/metaboxes.php:93
-msgid "Switch View"
-msgstr "Comutare Vizualizare"
-
-#: includes/admin/metaboxes.php:93
-msgid "Switch View Type"
-msgstr ""
-
-#: includes/admin/metaboxes.php:98 includes/admin/metaboxes.php:103
-msgid "Attention"
-msgstr "Atenție"
-
-#: includes/admin/metaboxes.php:99
-msgid ""
-"Changing the form will reset your field configuration. Changes will be "
-"permanent once you save the View."
-msgstr ""
-
-#: includes/admin/metaboxes.php:104
-msgid ""
-"Changing the View Type will reset your field configuration. Changes will be "
-"permanent once you save the View."
-msgstr ""
-
-#: includes/admin/metaboxes.php:109
-msgid "GravityView requires Javascript to be enabled."
-msgstr "GravityView necesită ca JavaScript să fie activată."
-
-#: includes/admin/metaboxes.php:150
-msgid "Buy Now"
-msgstr "Cumpără acum"
-
-#: includes/admin/metaboxes.php:152
-msgid "Select"
-msgstr "Selectare"
-
-#: includes/admin/metaboxes.php:154
-msgid "View a live demo of this preset"
-msgstr ""
-
-#: includes/admin/metaboxes.php:232
-msgid "Multiple Entries"
-msgstr "Înregistrări Multiple"
-
-#: includes/admin/metaboxes.php:233
-msgid "Single Entry"
-msgstr "O singură Înregistrare"
-
-#: includes/admin/metaboxes.php:240
-msgid "Above Entries Widgets"
-msgstr "Widgets deasupra Înregistrărilor"
-
-#: includes/admin/metaboxes.php:240
-msgid "These widgets will be shown above entries."
-msgstr "Aceste miniaplicații-widget vor fi afișate deasupra înregistrărilor."
-
-#: includes/admin/metaboxes.php:244
-msgid "Entries Fields"
-msgstr "Câmpuri Înregistrări"
-
-#: includes/admin/metaboxes.php:244
-msgid "These fields will be shown for each entry."
-msgstr "Aceste câmpuri vor fi afișate pentru fiecare înregistrare."
-
-#: includes/admin/metaboxes.php:252
-msgid "Below Entries Widgets"
-msgstr "Widgets sub Înregistrări"
-
-#: includes/admin/metaboxes.php:252
-msgid "These widgets will be shown below entries."
-msgstr "Aceste miniaplicații-widget vor fi afișate sub înregistrări."
-
-#: includes/admin/metaboxes.php:282
-msgid "These fields will be shown in Single Entry view."
-msgstr "Aceste câmpuri vor fi afișate pentru O Singură Înregistrare."
-
-#: includes/admin/metaboxes.php:338
-msgid "Single Entry Settings"
-msgstr "Configurări pentru O Singură Înregistrare"
-
-#: includes/admin/metaboxes.php:416
-msgid "Embed Shortcode"
-msgstr ""
-
-#: includes/admin/metaboxes.php:416
-msgid "Add this shortcode to a post or page to embed this view."
-msgstr ""
-
-#: includes/admin/metaboxes.php:462
-msgid "Layout Settings"
-msgstr "Configurări Aspect"
 
 #: includes/class-admin-add-shortcode.php:53
 msgid "Add a Gravity Forms View"
@@ -166,477 +192,192 @@ msgstr "Adaugă o Vizualizare Gravity Forms"
 msgid "Add View"
 msgstr "Adaugă Vizualizare"
 
-#: includes/class-admin-add-shortcode.php:88
-msgid "Embed a View"
-msgstr ""
+#: includes/class-admin-add-shortcode.php:74
+msgid "Insert a View"
+msgstr "Inserează o Vizualizare"
 
-#: includes/class-admin-add-shortcode.php:89
-#, php-format
-msgid ""
-"Use this form to embed a View into this %s. %sLearn more about using "
-"shortcodes.%s"
-msgstr ""
-
-#: includes/class-admin-add-shortcode.php:92
+#: includes/class-admin-add-shortcode.php:77
 msgid "Select a View"
 msgstr "Selectează o Vizualizare"
 
-#: includes/class-admin-add-shortcode.php:95
-msgid "&mdash; Select a View to Insert &mdash;"
-msgstr ""
+#: includes/class-admin-add-shortcode.php:80
+msgid "&mdash; views &mdash;"
+msgstr "&mdash; vizualizări &mdash;"
 
-#: includes/class-admin-add-shortcode.php:98
-msgid "(no title)"
-msgstr ""
+#: includes/class-admin-add-shortcode.php:92
+#: includes/class-admin-views.php:558
+msgid "Number of entries to show per page"
+msgstr "Numărul de înregistrări de afișat pe pagină"
 
-#: includes/class-admin-add-shortcode.php:124
+#: includes/class-admin-add-shortcode.php:101
+#: includes/class-admin-add-shortcode.php:105
+#: includes/class-admin-views.php:567
+msgid "Enable lightbox for images"
+msgstr "Activează lightbox pentru imagini"
+
+#: includes/class-admin-add-shortcode.php:115
+#: includes/class-admin-add-shortcode.php:119
+#: includes/class-admin-views.php:574
+msgid "Show only approved entries"
+msgstr "Afișează doar înregistrările aprobate"
+
+#: includes/class-admin-add-shortcode.php:129
+#: includes/class-admin-views.php:587
+msgid "Sort by field"
+msgstr "Sortează după câmp"
+
+#: includes/class-admin-add-shortcode.php:133
+#: includes/connector-functions.php:258
+msgid "Default"
+msgstr "Implicit"
+
+#: includes/class-admin-add-shortcode.php:134
+#: includes/connector-functions.php:271
+msgid "Date Created"
+msgstr "Data creării"
+
+#: includes/class-admin-add-shortcode.php:141
+#: includes/class-admin-views.php:598
+msgid "Sort direction"
+msgstr "Direcția de Sortare"
+
+#: includes/class-admin-add-shortcode.php:145
+#: includes/class-admin-views.php:602
+msgid "ASC"
+msgstr "ASC"
+
+#: includes/class-admin-add-shortcode.php:146
+#: includes/class-admin-views.php:603
+msgid "DESC"
+msgstr "DESC"
+
+#: includes/class-admin-add-shortcode.php:153
+#: includes/class-admin-views.php:84 includes/class-admin-views.php:610
+msgid "Filter by Start Date"
+msgstr "Filtrare după Data Începerii"
+
+#: includes/class-admin-add-shortcode.php:162
+#: includes/class-admin-views.php:88 includes/class-admin-views.php:619
+msgid "Filter by End Date"
+msgstr "Filtrare după Data Finalizării"
+
+#: includes/class-admin-add-shortcode.php:172
 msgid "Insert View"
 msgstr "Inserează Vizualizare"
 
-#: includes/class-admin-add-shortcode.php:125
-#: includes/class-admin-views.php:1007
-#: includes/extensions/edit-entry/class-edit-entry.php:603
+#: includes/class-admin-add-shortcode.php:173
+#: includes/class-admin-views.php:1712
 msgid "Cancel"
 msgstr "Anulare"
 
-#: includes/class-admin-add-shortcode.php:168
-#: includes/class-admin-views.php:1011
-msgid "Loading&hellip;"
-msgstr ""
-
-#: includes/class-admin-add-shortcode.php:169
+#: includes/class-admin-add-shortcode.php:215
 msgid "Please select a View"
 msgstr "Te rugăm să selectezi o Vizualizare"
 
-#: includes/class-admin-approve-entries.php:52
-msgid "GravityView Fields"
-msgstr ""
-
-#: includes/class-admin-approve-entries.php:53
-msgid ""
-"Allow administrators to approve or reject entries and users to opt-in or "
-"opt-out of their entries being displayed."
-msgstr ""
-
-#: includes/class-admin-approve-entries.php:75
-msgid "Approve/Reject"
-msgstr ""
-
-#: includes/class-admin-approve-entries.php:80
-msgid "User Opt-In"
-msgstr ""
-
-#: includes/class-admin-approve-entries.php:102
-msgid "Approved? (Admin-only)"
-msgstr "Aprobată? (Numai-Administrator)"
-
-#: includes/class-admin-approve-entries.php:104
-msgid "Approved?"
-msgstr "Aprobată?"
-
-#: includes/class-admin-approve-entries.php:111
+#: includes/class-admin-approve-entries.php:64
+#: includes/class-admin-approve-entries.php:95
 msgid "Approved"
 msgstr "Aprobată"
 
-#: includes/class-admin-approve-entries.php:124
-msgid "Show Entry on Website"
-msgstr ""
+#: includes/class-admin-approve-entries.php:86
+msgid "Approved? (Admin-only)"
+msgstr "Aprobată? (Numai-Administrator)"
 
-#: includes/class-admin-approve-entries.php:126
-msgid "Opt-In"
-msgstr ""
+#: includes/class-admin-approve-entries.php:88
+msgid "Approved?"
+msgstr "Aprobată?"
 
-#: includes/class-admin-approve-entries.php:134
-msgid "Yes, display my entry on the website"
-msgstr ""
-
-#: includes/class-admin-approve-entries.php:171
+#: includes/class-admin-approve-entries.php:130
 #, php-format
 msgid "%d entries"
 msgstr "%d înregistrări"
 
-#: includes/class-admin-approve-entries.php:171
+#: includes/class-admin-approve-entries.php:130
 msgid "1 entry"
 msgstr "1 înregistrare"
 
-#: includes/class-admin-approve-entries.php:179
+#: includes/class-admin-approve-entries.php:138
 #, php-format
 msgid "%s approved."
 msgstr "%s aprobate."
 
-#: includes/class-admin-approve-entries.php:184
+#: includes/class-admin-approve-entries.php:143
 #, php-format
 msgid "%s disapproved."
 msgstr "%s respinse."
 
-#: includes/class-admin-approve-entries.php:257
+#: includes/class-admin-approve-entries.php:216
 msgid "Disapproved the Entry for GravityView"
 msgstr "Înregistrare pentru GravityView Respinsă"
 
-#: includes/class-admin-approve-entries.php:257
+#: includes/class-admin-approve-entries.php:216
 msgid "Approved the Entry for GravityView"
 msgstr "Înregistrare pentru GravityView Aprobată"
 
-#: includes/class-admin-approve-entries.php:374
+#: includes/class-admin-approve-entries.php:327
 msgid "Approve"
 msgstr "Aprobă"
 
-#: includes/class-admin-approve-entries.php:375
+#: includes/class-admin-approve-entries.php:328
 msgid "Disapprove"
 msgstr "Respinge"
 
-#: includes/class-admin-approve-entries.php:377
+#: includes/class-admin-approve-entries.php:330
 msgid "Entry not approved for directory viewing. Click to approve this entry."
 msgstr "Înregistrare neaprobată pentru vizualizarea directorului. Apasă pentru a aproba această înregistrare."
 
-#: includes/class-admin-approve-entries.php:378
+#: includes/class-admin-approve-entries.php:331
 msgid "Entry approved for directory viewing. Click to disapprove this entry."
 msgstr "Înregistrare aprobată pentru vizualizarea directorului. Apasă pentru a respinge această înregistrare."
 
-#: includes/class-admin-approve-entries.php:379
+#: includes/class-admin-approve-entries.php:332
 msgid "Show entry in directory view?"
 msgstr "Afișează înregistrarea în vizualizare director?"
 
-#: includes/class-admin-views.php:88
-msgid "Connected Views"
-msgstr ""
-
-#: includes/class-admin-views.php:90
-msgid "GravityView Views using this form as a data source"
-msgstr ""
-
-#: includes/class-admin-views.php:142
-msgid "CSS Merge Tags"
-msgstr ""
-
-#: includes/class-admin-views.php:143
-#, php-format
+#: includes/class-admin-views.php:85
 msgid ""
-"Developers: The CSS classes will be sanitized using the "
-"%ssanitize_title_with_dashes()%s function."
-msgstr ""
+"Show entries submitted after this date. Supports relative dates, such as "
+"\"-1 week\" or \"-1 month\"."
+msgstr "Afișează înregistrările transmise după această dată. Sunt suportate datele relative, precum \"-1 săptămână\" ori \"-1 lună\"."
 
-#: includes/class-admin-views.php:167
+#: includes/class-admin-views.php:89
+msgid ""
+"Show entries submitted before this date. Supports relative dates, such as "
+"\"now\" or \"-3 days\"."
+msgstr "Afișează înregistrările transmise până în această dată. Sunt suportate datele relative, precum \"acum\" ori \"-3 zile\"."
+
+#: includes/class-admin-views.php:92 includes/class-admin-views.php:639
+msgid "Single Entry Title"
+msgstr "Titlu pentru O Înregistrare"
+
+#: includes/class-admin-views.php:93
+msgid ""
+"When viewing a single entry, change the title of the page to this setting. "
+"Otherwise, the title will not change between the Multiple Entries and Single"
+" Entry views."
+msgstr "Când vizualizezi o singură înregistrare, schimbă titlul paginii cu această configurare. Altfel, titlul nu se va schimba în funcție de vizualizările de Înregistrări Multiple sau Unice"
+
+#: includes/class-admin-views.php:96 includes/class-admin-views.php:645
+msgid "Back Link Label"
+msgstr "Etichetă Legătură Inversă"
+
+#: includes/class-admin-views.php:97
+msgid "The text of the link that returns to the multiple entries view."
+msgstr "Textul legăturii ce returnează către vizualizarea înregistrărilor multiple."
+
+#: includes/class-admin-views.php:120
 msgid "Not connected."
 msgstr "Neconectat."
 
-#: includes/class-admin-views.php:176
+#: includes/class-admin-views.php:129
 msgid "The connected form can not be found; it may no longer exist."
 msgstr "Formularul conectat nu poate fi găsit; este posibil să nu mai existe."
 
-#: includes/class-admin-views.php:182
-msgid "Edit Form"
-msgstr ""
-
-#: includes/class-admin-views.php:187
-msgid "Entries"
-msgstr ""
-
-#: includes/class-admin-views.php:192
-msgid "Edit settings for this form"
-msgstr ""
-
-#: includes/class-admin-views.php:192 includes/class-settings.php:159
-#: includes/class-settings.php:160
-msgid "Settings"
-msgstr "Configurări"
-
-#: includes/class-admin-views.php:197
-msgid "Preview this form"
-msgstr ""
-
-#: includes/class-admin-views.php:197
-msgid "Preview"
-msgstr "Previzualizare"
-
-#: includes/class-admin-views.php:318
-#, php-format
-msgid "Configure %s Settings"
-msgstr "Configurări Setări %s"
-
-#: includes/class-admin-views.php:319
-#, php-format
-msgid "Remove %s"
-msgstr "Elimină %s"
-
-#: includes/class-admin-views.php:376
-msgid "+ Add All Fields"
-msgstr "+ Adaugă Toate Câmpurile"
-
-#: includes/class-admin-views.php:412
-msgid "Entry ID"
-msgstr "ID Înregistrare"
-
-#: includes/class-admin-views.php:413
-msgid "Entry Date"
-msgstr "Dată Înregistrare"
-
-#: includes/class-admin-views.php:414
-msgid "Source URL"
-msgstr "URL Sursă"
-
-#: includes/class-admin-views.php:415
-msgid "User IP"
-msgstr "IP Utilizator"
-
-#: includes/class-admin-views.php:416
-msgid "User"
-msgstr "Utilizator"
-
-#: includes/class-admin-views.php:420
-msgid "Link to Entry"
-msgstr "Legătură către Înregistrare"
-
-#: includes/class-admin-views.php:490
-msgid "Add Widget"
-msgstr "Adăugă Widget"
-
-#: includes/class-admin-views.php:492
-msgid "Add Field"
-msgstr "Adaugă Câmp"
-
-#: includes/class-admin-views.php:531
-#, php-format
-msgid "\"%s\" or drag existing %ss here."
-msgstr "\"%s\" sau trage aici %ss existent."
-
-#: includes/class-admin-views.php:653
-#, php-format
-msgid "Options: %s"
-msgstr "Opțiuni: %s"
-
-#: includes/class-admin-views.php:688
-msgid "Any Logged-In User"
-msgstr ""
-
-#: includes/class-admin-views.php:689
-msgid "Author Or Higher"
-msgstr ""
-
-#: includes/class-admin-views.php:690
-msgid "Can View Gravity Forms Entries"
-msgstr ""
-
-#: includes/class-admin-views.php:691
-msgid "Editor Or Higher"
-msgstr ""
-
-#: includes/class-admin-views.php:692
-msgid "Can Edit Gravity Forms Entries"
-msgstr ""
-
-#: includes/class-admin-views.php:693
-msgid "Administrator"
-msgstr "Administrator"
-
-#: includes/class-admin-views.php:697
-msgid "Multisite Super Admin"
-msgstr ""
-
-#: includes/class-admin-views.php:711
-msgid "Show Label"
-msgstr "Afișează Eticheta"
-
-#: includes/class-admin-views.php:716
-msgid "Custom Label:"
-msgstr "Etichetă Personalizată:"
-
-#: includes/class-admin-views.php:722
-msgid "Custom CSS Class:"
-msgstr "Clasă CSS Personalizată:"
-
-#: includes/class-admin-views.php:723
-msgid "This class will be added to the field container"
-msgstr ""
-
-#: includes/class-admin-views.php:730
-msgid "Make visible only to logged-in users?"
-msgstr "O faci vizibilă numai pentru utilizatorii autentificați?"
-
-#: includes/class-admin-views.php:735
-msgid "Make visible for:"
-msgstr "Fă-o vizibilă pentru:"
-
-#: includes/class-admin-views.php:1005
-msgid "Enter View name here"
-msgstr "Introdu aici numele Vizualizarii"
-
-#: includes/class-admin-views.php:1006
-msgid "Close"
-msgstr "Închide"
-
-#: includes/class-admin-views.php:1008
-msgid "Continue"
-msgstr "Continuă"
-
-#: includes/class-admin-views.php:1009
-msgid "Ok"
-msgstr "Ok"
-
-#: includes/class-admin-views.php:1010
-msgid ""
-"Error while creating the View for you. Check the settings or contact "
-"GravityView support."
-msgstr "Eroare la crearea Vizualizării pentru tine. Verifică configurările sau contactează asistența GravityView."
-
-#: includes/class-admin-welcome.php:56
-msgid "GravityView: Getting Started"
-msgstr ""
-
-#: includes/class-admin-welcome.php:57 includes/class-admin-welcome.php:152
-msgid "Getting Started"
-msgstr "Noțiuni de bază"
-
-#: includes/class-admin-welcome.php:66 includes/class-admin-welcome.php:67
-msgid "Changelog"
-msgstr ""
-
-#: includes/class-admin-welcome.php:76 includes/class-admin-welcome.php:77
-#: includes/class-admin-welcome.php:158
-msgid "Credits"
-msgstr "Creditări"
-
-#: includes/class-admin-welcome.php:147
-#, php-format
-msgid "Welcome to GravityView %s"
-msgstr "Bun venit la GravityForms %s"
-
-#: includes/class-admin-welcome.php:148
-msgid ""
-"Thank you for Installing GravityView. Beautifully display your Gravity Forms"
-" entries."
-msgstr "Îți mulțumim pentru Instalarea GravityView. Îți afișează frumos înregistrările tale Gravity Forms."
-
-#: includes/class-admin-welcome.php:155
-msgid "List of Changes"
-msgstr ""
-
-#: includes/class-admin-welcome.php:179
-msgid "How-To &amp; Documentation"
-msgstr ""
-
-#: includes/class-admin-welcome.php:325
-msgid "GravityView is brought to you by:"
-msgstr "Gravity Forms vă este adus de către:"
-
-#: includes/class-admin-welcome.php:350
-msgid "Contributors"
-msgstr "Contribuitori:"
-
-#: includes/class-admin-welcome.php:368
-msgid "Want to contribute?"
-msgstr "Dorești să contribui?"
-
-#: includes/class-admin-welcome.php:369
-#, php-format
-msgid ""
-"If you want to contribute to the code, you can %srequest access to the "
-"Github repository%s. If your contributions are accepted, you will be thanked"
-" here."
-msgstr "Dacă dorești să contribui la codul de programare, îl poți %srequest accesa din arhiva Github %s. Dacă contribuțiile îți vor fi acceptate, ți se vor aduce mulțumiri aici. "
-
-#: includes/class-admin.php:83
-msgid "Support"
-msgstr "Suport"
-
-#: includes/class-admin.php:105 includes/class-admin.php:106
-#: includes/class-admin.php:108
-#, php-format
-msgid "View updated. %sView on website.%s"
-msgstr "Vizualizare actualizată. %sView pe site.%s"
-
-#: includes/class-admin.php:107
-msgid "View deleted."
-msgstr "Vizualizarea a fost ștearsă."
-
-#: includes/class-admin.php:110
-#, php-format
-msgid "View restored to revision from %s"
-msgstr "Vizualizare restaurată, pentru revizuire, din %s"
-
-#: includes/class-admin.php:111
-#, php-format
-msgid "View published. %sView on website.%s"
-msgstr "Vizualizare publicată. %sView pe site.%s"
-
-#: includes/class-admin.php:112
-#, php-format
-msgid "View saved. %sView on website.%s"
-msgstr "Vizualizare salvată. %sView pe site.%s"
-
-#: includes/class-admin.php:113
-msgid "View submitted."
-msgstr "Vizualizare trimisă."
-
-#: includes/class-admin.php:115
-#, php-format
-msgid "View scheduled for: <strong>%1$s</strong>."
-msgstr "Vizualizare programată pentru: <strong>%1$s</strong>."
-
-#: includes/class-admin.php:117
-msgid "M j, Y @ G:i"
-msgstr "j F Y G:i"
-
-#: includes/class-admin.php:119
-#, php-format
-msgid "View draft updated. %sView on website.%s"
-msgstr "Schița  de Vizualizare a fost actualizată. %sView pe site.%s"
-
-#: includes/class-admin.php:125
-#, php-format
-msgid "%s View updated."
-msgid_plural "%s Views updated."
-msgstr[0] "%s Vizualizare actualizată."
-msgstr[1] "%s Vizualizări actualizate."
-msgstr[2] "%s de Vizualizări actualizate."
-
-#: includes/class-admin.php:126
-#, php-format
-msgid "%s View not updated, somebody is editing it."
-msgid_plural "%s Views not updated, somebody is editing them."
-msgstr[0] "%s Vizualizarea nu a fost actualizată, cineva o editează."
-msgstr[1] "%s Vizualizări nu au fost actualizate, cineva le editează."
-msgstr[2] "%s de Vizualizări nu au fost actualizate, cineva le editează."
-
-#: includes/class-admin.php:127
-#, php-format
-msgid "%s View permanently deleted."
-msgid_plural "%s Views permanently deleted."
-msgstr[0] "%s Vizualizare ștearsă definitiv."
-msgstr[1] "%s Vizualizări șterse definitiv."
-msgstr[2] "%s de Vizualizări șterse definitiv."
-
-#: includes/class-admin.php:128
-#, php-format
-msgid "%s View moved to the Trash."
-msgid_plural "%s Views moved to the Trash."
-msgstr[0] "%s Vizualizare mutată la Gunoi."
-msgstr[1] "%s Vizualizări mutate la Gunoi."
-msgstr[2] "%s de Vizualizări mutate la Gunoi."
-
-#: includes/class-admin.php:129
-#, php-format
-msgid "%s View restored from the Trash."
-msgid_plural "%s Views restored from the Trash."
-msgstr[0] "%s Vizualizare restaurată de la Gunoi."
-msgstr[1] "%s Vizualizări restaurate de la Gunoi."
-msgstr[2] "%s de Vizualizări restaurate de la Gunoi."
-
-#: includes/class-admin.php:365
-#, php-format
-msgid ""
-"%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
-"Forms%s to use the GravityView plugin."
-msgstr "%sGravityView necesită ca Gravity Forms să fie activ. %sActivate Gravity Forms%s pentru a utiliza modulul GravityView."
-
-#: includes/class-admin.php:367
-#, php-format
-msgid ""
-"%sGravityView requires Gravity Forms to be installed in order to run "
-"properly. %sGet Gravity Forms%s - starting at $39%s%s"
-msgstr "%sGravityView necesită ca Gravity Forms să fie instalat, pentru a rula corespunzător. %sGet Gravity Forms%s - începând cu $39%s%s"
-
-#: includes/class-admin.php:373
+#: includes/class-admin-views.php:146 includes/class-admin-views.php:270
+msgid "Data Source"
+msgstr "Sursă de Date"
+
+#: includes/class-admin-views.php:169
 #, php-format
 msgid ""
 "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n"
@@ -644,558 +385,535 @@ msgid ""
 "You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr "%sGravityView necesită Gravity Forms Versiunea 1.8 ori mai recentă.%s \n\nFolosiți Versiunea %s. Te rugăm să actualizezi Gravity Forms ori să achiziționezi o licență. %sGet Gravity Forms%s - începând cu $39%s%s"
 
-#: includes/class-api.php:227
-msgid "This search returned no results."
-msgstr "Această căutare nu a returnat nici un rezultat."
+#: includes/class-admin-views.php:174
+#, php-format
+msgid ""
+"%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
+"Forms%s to use the GravityView plugin."
+msgstr "%sGravityView necesită ca Gravity Forms să fie activ. %sActivate Gravity Forms%s pentru a utiliza modulul GravityView."
 
-#: includes/class-api.php:229
-msgid "No entries match your request."
-msgstr "Nici o înregistrare nu se potrivește solicitării tale."
+#: includes/class-admin-views.php:176
+#, php-format
+msgid ""
+"%sGravityView requires Gravity Forms to be installed in order to run "
+"properly. %sGet Gravity Forms%s - starting at $39%s%s"
+msgstr "%sGravityView necesită ca Gravity Forms să fie instalat, pentru a rula corespunzător. %sGet Gravity Forms%s - începând cu $39%s%s"
 
-#: includes/class-api.php:371
-msgid "&larr; Go back"
-msgstr "&larr; Înapoi"
+#: includes/class-admin-views.php:247
+msgid "Layout Settings"
+msgstr "Configurări Aspect"
 
-#: includes/class-data.php:247
-msgid "View ID"
-msgstr ""
+#: includes/class-admin-views.php:273
+msgid "Choose a View Type"
+msgstr "Alege un Tip de Vizualizare"
 
-#: includes/class-data.php:255
-msgid "Number of entries per page"
-msgstr ""
+#: includes/class-admin-views.php:276
+msgid "View Configuration"
+msgstr "Configurare Vizualizare"
 
-#: includes/class-data.php:263
-msgid "Enable lightbox for images"
-msgstr "Activează lightbox pentru imagini"
+#: includes/class-admin-views.php:279
+msgid "View Settings"
+msgstr "Configurări Vizualizare"
 
-#: includes/class-data.php:271
-msgid "Show only approved entries"
-msgstr "Afișează doar înregistrările aprobate"
+#: includes/class-admin-views.php:282
+msgid "Shortcode Info"
+msgstr "Info Cod-Scurt"
 
-#: includes/class-data.php:278
+#: includes/class-admin-views.php:310
+msgid "Where would you like the data to come from for this View?"
+msgstr "De unde dorești să primești datele pentru această Vizualizare? "
+
+#: includes/class-admin-views.php:320
+msgid "Start Fresh"
+msgstr "Creează unul Nou "
+
+#: includes/class-admin-views.php:322
+msgid "or use an existing form"
+msgstr "sau folosește un formular existent"
+
+#: includes/class-admin-views.php:328
+msgid "list of forms"
+msgstr "lista de formulare"
+
+#: includes/class-admin-views.php:336
+msgid "Switch View"
+msgstr "Comutare Vizualizare"
+
+#: includes/class-admin-views.php:342 includes/class-admin-views.php:347
+msgid "Attention"
+msgstr "Atenție"
+
+#: includes/class-admin-views.php:343
+msgid "Changing the form will discard all the existent View configuration."
+msgstr "Modificând formularul, se va renunța la toate configurările existente ale Vizualizării."
+
+#: includes/class-admin-views.php:348
+msgid ""
+"Changing the View Type will discard all the existent View configuration."
+msgstr "Modificând Tipul de Vizualizare, se va renunța la toate configurările existente ale Vizualizării."
+
+#: includes/class-admin-views.php:353
+msgid "GravityView requires Javascript to be enabled."
+msgstr "GravityView necesită ca JavaScript să fie activată."
+
+#: includes/class-admin-views.php:397
+msgid "Buy Now"
+msgstr "Cumpără acum"
+
+#: includes/class-admin-views.php:399
+msgid "Select"
+msgstr "Selectare"
+
+#: includes/class-admin-views.php:400 includes/class-admin-views.php:404
+msgid "Preview"
+msgstr "Previzualizare"
+
+#: includes/class-admin-views.php:456
+msgid "Multiple Entries"
+msgstr "Înregistrări Multiple"
+
+#: includes/class-admin-views.php:457
+msgid "Single Entry"
+msgstr "O singură Înregistrare"
+
+#: includes/class-admin-views.php:464
+msgid "Above Entries Widgets"
+msgstr "Widgets deasupra Înregistrărilor"
+
+#: includes/class-admin-views.php:464
+msgid "These widgets will be shown above entries."
+msgstr "Aceste miniaplicații-widget vor fi afișate deasupra înregistrărilor."
+
+#: includes/class-admin-views.php:468
+msgid "Entries Fields"
+msgstr "Câmpuri Înregistrări"
+
+#: includes/class-admin-views.php:468
+msgid "These fields will be shown for each entry."
+msgstr "Aceste câmpuri vor fi afișate pentru fiecare înregistrare."
+
+#: includes/class-admin-views.php:476
+msgid "Below Entries Widgets"
+msgstr "Widgets sub Înregistrări"
+
+#: includes/class-admin-views.php:476
+msgid "These widgets will be shown below entries."
+msgstr "Aceste miniaplicații-widget vor fi afișate sub înregistrări."
+
+#: includes/class-admin-views.php:506
+msgid "These fields will be shown in Single Entry view."
+msgstr "Aceste câmpuri vor fi afișate pentru O Singură Înregistrare."
+
+#: includes/class-admin-views.php:581
 msgid "Hide empty fields"
 msgstr "Ascunde câmpurile goale"
 
-#: includes/class-data.php:285
-msgid "Allow User Edit"
-msgstr ""
+#: includes/class-admin-views.php:634
+msgid "Single Entry Settings"
+msgstr "Configurări pentru O Singură Înregistrare"
 
-#: includes/class-data.php:287
-msgid "Allow logged-in users to edit entries they created."
-msgstr ""
+#: includes/class-admin-views.php:665
+msgid "To insert this view into a post or a page use the following shortcode:"
+msgstr "Pentru a insera această vizualizare într-o postare sau pagină, folosește urmîtorul cod-scurt:"
 
-#: includes/class-data.php:293
-msgid "Sort by field"
-msgstr "Sortează după câmp"
-
-#: includes/class-data.php:298 includes/connector-functions.php:397
-msgid "Default"
-msgstr "Implicit"
-
-#: includes/class-data.php:299 includes/connector-functions.php:410
-msgid "Date Created"
-msgstr "Data creării"
-
-#: includes/class-data.php:304
-msgid "Sort direction"
-msgstr "Direcția de Sortare"
-
-#: includes/class-data.php:309
-msgid "ASC"
-msgstr "ASC"
-
-#: includes/class-data.php:310
-msgid "DESC"
-msgstr "DESC"
-
-#: includes/class-data.php:315
-msgid "Filter by Start Date"
-msgstr "Filtrare după Data Începerii"
-
-#: includes/class-data.php:317
-msgid ""
-"Show entries submitted after this date. Supports relative dates, such as "
-"\"-1 week\" or \"-1 month\"."
-msgstr "Afișează înregistrările transmise după această dată. Sunt suportate datele relative, precum \"-1 săptămână\" ori \"-1 lună\"."
-
-#: includes/class-data.php:324
-msgid "Filter by End Date"
-msgstr "Filtrare după Data Finalizării"
-
-#: includes/class-data.php:326
-msgid ""
-"Show entries submitted before this date. Supports relative dates, such as "
-"\"now\" or \"-3 days\"."
-msgstr "Afișează înregistrările transmise până în această dată. Sunt suportate datele relative, precum \"acum\" ori \"-3 zile\"."
-
-#: includes/class-data.php:333
-msgid "CSS Class"
-msgstr ""
-
-#: includes/class-data.php:334
-msgid "CSS class to add to the wrapping HTML container."
-msgstr ""
-
-#: includes/class-data.php:341
-msgid "Search Value"
-msgstr ""
-
-#: includes/class-data.php:342
-msgid "Define a default search value for the View"
-msgstr ""
-
-#: includes/class-data.php:349
-msgid "Search Field"
-msgstr ""
-
-#: includes/class-data.php:350
-msgid ""
-"If Search Value is set, you can define a specific field to search in. "
-"Otherwise, all fields will be searched."
-msgstr ""
-
-#: includes/class-data.php:357
-msgid "Single Entry Title"
-msgstr "Titlu pentru O Înregistrare"
-
-#: includes/class-data.php:359
-msgid ""
-"When viewing a single entry, change the title of the page to this setting. "
-"Otherwise, the title will not change between the Multiple Entries and Single"
-" Entry views."
-msgstr "Când vizualizezi o singură înregistrare, schimbă titlul paginii cu această configurare. Altfel, titlul nu se va schimba în funcție de vizualizările de Înregistrări Multiple sau Unice"
-
-#: includes/class-data.php:366
-msgid "Back Link Label"
-msgstr "Etichetă Legătură Inversă"
-
-#: includes/class-data.php:368
-msgid "The text of the link that returns to the multiple entries view."
-msgstr "Textul legăturii ce returnează către vizualizarea înregistrărilor multiple."
-
-#: includes/class-debug-bar.php:24
-msgid "GravityView"
-msgstr ""
-
-#: includes/class-debug-bar.php:91
-msgid "Warnings"
-msgstr ""
-
-#: includes/class-debug-bar.php:100
-msgid "Logs"
-msgstr ""
-
-#: includes/class-debug-bar.php:169
-msgctxt "Debugging output data is empty."
-msgid "Empty"
-msgstr ""
-
-#: includes/class-frontend-views.php:91
-#: includes/extensions/edit-entry/class-edit-entry.php:144
-#: includes/extensions/edit-entry/class-edit-entry.php:160
-#: includes/extensions/edit-entry/class-edit-entry.php:174
-#: includes/extensions/edit-entry/class-edit-entry.php:554
-#: includes/extensions/edit-entry/fields/edit_link.php:12
-msgid "Edit Entry"
-msgstr ""
-
-#: includes/class-frontend-views.php:305
-msgid "You have attempted to view an entry that does not exist."
-msgstr ""
-
-#: includes/class-gravityview-extension.php:94
+#: includes/class-admin-views.php:905
 #, php-format
-msgid "%s could not be activated."
-msgstr ""
+msgid "Configure %s Settings"
+msgstr "Configurări Setări %s"
 
-#: includes/class-gravityview-extension.php:141
-msgid "GravityView is not active."
-msgstr ""
-
-#: includes/class-gravityview-extension.php:151
+#: includes/class-admin-views.php:906
 #, php-format
-msgid "The extension requires GravityView Version %s or newer."
-msgstr ""
+msgid "Remove %s"
+msgstr "Elimină %s"
 
-#: includes/class-post-types.php:35
-msgctxt "Post Type General Name"
-msgid "Views"
-msgstr "Vizualizări"
+#: includes/class-admin-views.php:943
+msgid "+ Add All Fields"
+msgstr "+ Adaugă Toate Câmpurile"
 
-#: includes/class-post-types.php:36
-msgctxt "Post Type Singular Name"
-msgid "View"
-msgstr "Vizualizare"
+#: includes/class-admin-views.php:970
+msgid "Entry ID"
+msgstr "ID Înregistrare"
 
-#: includes/class-post-types.php:37
-msgctxt "Menu name"
-msgid "Views"
-msgstr "Afișări"
+#: includes/class-admin-views.php:971
+msgid "Entry Date"
+msgstr "Dată Înregistrare"
 
-#: includes/class-post-types.php:38
-msgid "Parent View:"
-msgstr "Vizualizare Sursă:"
+#: includes/class-admin-views.php:972
+msgid "Source URL"
+msgstr "URL Sursă"
 
-#: includes/class-post-types.php:39
-msgid "All Views"
-msgstr "Toate Vizualizările"
+#: includes/class-admin-views.php:973
+msgid "User IP"
+msgstr "IP Utilizator"
 
-#: includes/class-post-types.php:40
-msgctxt "View Item"
-msgid "View"
-msgstr "Vizualizare"
+#: includes/class-admin-views.php:974
+msgid "User"
+msgstr "Utilizator"
 
-#: includes/class-post-types.php:41
-msgid "Add New View"
-msgstr "Adaugă o Vizualizare Nouă"
+#: includes/class-admin-views.php:978
+msgid "Link to Entry"
+msgstr "Legătură către Înregistrare"
 
-#: includes/class-post-types.php:42
-msgid "New View"
-msgstr "Vizualizare nouă"
+#: includes/class-admin-views.php:1048
+msgid "Add Widget"
+msgstr "Adăugă Widget"
 
-#: includes/class-post-types.php:43
-msgid "Edit View"
-msgstr "Editare Vizualizare"
+#: includes/class-admin-views.php:1050
+msgid "Add Field"
+msgstr "Adaugă Câmp"
 
-#: includes/class-post-types.php:44
-msgid "Update View"
-msgstr "Actualizare Vizualizare"
+#: includes/class-admin-views.php:1089
+#, php-format
+msgid "\"%s\" or drag existing %ss here."
+msgstr "\"%s\" sau trage aici %ss existent."
 
-#: includes/class-post-types.php:45
-msgid "Search Views"
-msgstr "Căutare Vizualizări"
+#: includes/class-admin-views.php:1209
+#, php-format
+msgid "Options: %s"
+msgstr "Opțiuni: %s"
 
-#: includes/class-post-types.php:47
-msgid "No Views found in Trash"
-msgstr "Nici o Vizualizare găsită la Gunoi"
+#: includes/class-admin-views.php:1250
+msgid "Any logged-in user"
+msgstr "Orice utilizator autentificat"
 
-#: includes/class-post-types.php:50
-msgid "view"
-msgstr "vizualizare"
+#: includes/class-admin-views.php:1251
+msgid "Author or higher"
+msgstr "Autor sau superior"
 
-#: includes/class-post-types.php:51
-msgid "Create views based on a Gravity Forms form"
-msgstr "Creează vizualizări pe baza formularului Gravity Forms"
+#: includes/class-admin-views.php:1252
+msgid "Editor or higher"
+msgstr "Editor sau superior"
 
-#: includes/class-post-types.php:118
+#: includes/class-admin-views.php:1253
+msgid "Administrator"
+msgstr "Administrator"
+
+#: includes/class-admin-views.php:1261
+msgid "Show Label"
+msgstr "Afișează Eticheta"
+
+#: includes/class-admin-views.php:1266
+msgid "Custom Label:"
+msgstr "Etichetă Personalizată:"
+
+#: includes/class-admin-views.php:1272
+msgid "Custom CSS Class:"
+msgstr "Clasă CSS Personalizată:"
+
+#: includes/class-admin-views.php:1273
+msgid "This class will be added to the field container."
+msgstr "Această clasă va fi adăugată în conținutul câmpului."
+
+#: includes/class-admin-views.php:1279
+msgid "Make visible only to logged-in users?"
+msgstr "O faci vizibilă numai pentru utilizatorii autentificați?"
+
+#: includes/class-admin-views.php:1284
+msgid "Make visible for:"
+msgstr "Fă-o vizibilă pentru:"
+
+#: includes/class-admin-views.php:1710
+msgid "Enter View name here"
+msgstr "Introdu aici numele Vizualizarii"
+
+#: includes/class-admin-views.php:1711
+msgid "Close"
+msgstr "Închide"
+
+#: includes/class-admin-views.php:1713
+msgid "Continue"
+msgstr "Continuă"
+
+#: includes/class-admin-views.php:1714
+msgid "Ok"
+msgstr "Ok"
+
+#: includes/class-admin-views.php:1715
+msgid ""
+"Error while creating the View for you. Check the settings or contact "
+"GravityView support."
+msgstr "Eroare la crearea Vizualizării pentru tine. Verifică configurările sau contactează asistența GravityView."
+
+#: includes/class-admin-welcome.php:57
+msgid "GravityView Beta: Getting Started"
+msgstr "GravityView Beta: Introducere"
+
+#: includes/class-admin-welcome.php:58 includes/class-admin-welcome.php:150
+msgid "Getting Started"
+msgstr "Noțiuni de bază"
+
+#: includes/class-admin-welcome.php:67 includes/class-admin-welcome.php:68
+msgid "Welcome to GravityView"
+msgstr "Bun venit la GravityForms"
+
+#: includes/class-admin-welcome.php:77 includes/class-admin-welcome.php:78
+#: includes/class-admin-welcome.php:156
+msgid "Credits"
+msgstr "Creditări"
+
+#: includes/class-admin-welcome.php:145
+#, php-format
+msgid "Welcome to GravityView %s"
+msgstr "Bun venit la GravityForms %s"
+
+#: includes/class-admin-welcome.php:146
+msgid ""
+"Thank you for Installing GravityView. Beautifully display your Gravity Forms"
+" entries."
+msgstr "Îți mulțumim pentru Instalarea GravityView. Îți afișează frumos înregistrările tale Gravity Forms."
+
+#: includes/class-admin-welcome.php:153
+msgid "Beta Testing"
+msgstr "Testare Beta"
+
+#: includes/class-admin-welcome.php:276
+msgid "GravityView is brought to you by:"
+msgstr "Gravity Forms vă este adus de către:"
+
+#: includes/class-admin-welcome.php:301
+msgid "Contributors"
+msgstr "Contribuitori:"
+
+#: includes/class-admin-welcome.php:312
+msgid "Want to contribute?"
+msgstr "Dorești să contribui?"
+
+#: includes/class-admin-welcome.php:313
 #, php-format
 msgid ""
-"%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n"
-"\n"
-"If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
-msgstr ""
+"If you want to contribute to the code, you can %srequest access to the "
+"Github repository%s. If your contributions are accepted, you will be thanked"
+" here."
+msgstr "Dacă dorești să contribui la codul de programare, îl poți %srequest accesa din arhiva Github %s. Dacă contribuțiile îți vor fi acceptate, ți se vor aduce mulțumiri aici. "
 
-#: includes/class-settings.php:96
+#: includes/class-api.php:198
+msgid "This search returned no results."
+msgstr "Această căutare nu a returnat nici un rezultat."
+
+#: includes/class-api.php:200
+msgid "No entries match your request."
+msgstr "Nici o înregistrare nu se potrivește solicitării tale."
+
+#: includes/class-api.php:305
+msgid "&larr; Go back"
+msgstr "&larr; Înapoi"
+
+#: includes/class-settings.php:90
 msgid "License Key"
 msgstr "Cheia de Licență"
 
-#: includes/class-settings.php:97
+#: includes/class-settings.php:91
 msgid ""
-"Enter the license key that was sent to you on purchase. This enables plugin "
-"updates &amp; support."
-msgstr ""
+"Use <code>BETA_TESTER</code>. This allows you to get automatic upgrades."
+msgstr "Folosește <code>BETA_TESTER</code>. Aceasta îți va permite să primești automat actualizări."
 
-#: includes/class-settings.php:104
+#: includes/class-settings.php:111
 msgid "Support Email"
 msgstr "Email pentru Suport"
 
-#: includes/class-settings.php:105
+#: includes/class-settings.php:112
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
 msgstr "Pentru a primi răspunsuri la solicitările tale de asistență, te rugăm să ne furnizezi adresa ta de email."
 
-#: includes/class-settings.php:110
+#: includes/class-settings.php:117
 msgid "No-Conflict Mode"
 msgstr "Modul Fără-Conflict"
 
-#: includes/class-settings.php:111
+#: includes/class-settings.php:118
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
 msgstr "Stabilește aceasta ca PORNIT pentru a preveni ca scripturile și stilurile străine, să fie tipărite pe paginile de administrare GravityView, reducând astfel conflictele cu alte module sau teme."
 
-#: includes/class-settings.php:129
+#: includes/class-settings.php:124
 msgid "GravityView Settings"
 msgstr "Configurări GravityView"
 
-#: includes/class-settings.php:225
+#: includes/class-settings.php:152 includes/class-settings.php:153
+msgid "Settings"
+msgstr "Configurări"
+
+#: includes/class-settings.php:218
 msgid "Follow us on Google+"
 msgstr "Urmăriți-ne pe Google+"
 
-#: includes/default-templates.php:30
+#: includes/default-templates.php:31
 msgid "Table (default)"
 msgstr "Tabel (implicit)"
 
-#: includes/default-templates.php:31
+#: includes/default-templates.php:32
 msgid "Display items in a table view."
 msgstr "Afișează elementele sub formă de tabel."
 
 #: includes/default-templates.php:43 includes/default-templates.php:82
+#: includes/extensions/datatables/includes/class-datatables-template.php:40
 msgid "Link to single entry"
 msgstr "Legătură cu o singură înregistrare"
 
 #: includes/default-templates.php:49
+#: includes/extensions/datatables/includes/class-datatables-template.php:46
 msgid "Visible Table Columns"
 msgstr "Coloane Tabel Vizibile"
 
-#: includes/default-templates.php:73
+#: includes/default-templates.php:74
 msgid "List (default)"
 msgstr "Listă (implicit)"
 
-#: includes/default-templates.php:74
+#: includes/default-templates.php:75
 msgid "Display items in a listing view."
 msgstr "Afișează elementele sub formă de listă."
 
 #: includes/default-templates.php:88
-msgid "Listing Title"
-msgstr "Titlu Listare"
-
-#: includes/default-templates.php:89
-msgid "Subheading"
-msgstr "Subtitlu"
-
-#: includes/default-templates.php:92
 msgid "Image"
 msgstr "Imagine"
 
-#: includes/default-templates.php:95
+#: includes/default-templates.php:91
+msgid "Listing Title"
+msgstr "Titlu Listare"
+
+#: includes/default-templates.php:92
+msgid "Subheading"
+msgstr "Subtitlu"
+
+#: includes/default-templates.php:93
 msgid "Description"
 msgstr "Descriere"
 
-#: includes/default-templates.php:99
+#: includes/default-templates.php:96
 msgid "Footer Left"
 msgstr "Subsol Stânga"
 
-#: includes/default-templates.php:102
+#: includes/default-templates.php:99
 msgid "Footer Right"
 msgstr "Subsol Dreapta"
 
-#: includes/default-templates.php:338
+#: includes/default-templates.php:335
 msgid "Business Data"
 msgstr "Date Business"
 
-#: includes/default-templates.php:339
+#: includes/default-templates.php:336
 msgid "Display business information in a table."
 msgstr "Afișează informațiile business într-un tabel"
 
-#: includes/default-templates.php:360
+#: includes/default-templates.php:357
 msgid "Resume Board"
 msgstr "Panou CV"
 
-#: includes/default-templates.php:361
+#: includes/default-templates.php:358
 msgid "Allow job-seekers to post their resumes."
 msgstr "Permite celor care își caută o slujbă, să își posteze CV-urile"
 
-#: includes/default-templates.php:382
+#: includes/default-templates.php:378
 msgid "Job Board"
 msgstr "Panou Angajări"
 
-#: includes/default-templates.php:383
+#: includes/default-templates.php:379
 msgid "Post available jobs in a simple job board."
 msgstr "Postează slujbele disponibile într-un panou simplu"
 
-#: includes/default-templates.php:404
+#: includes/default-templates.php:399
 msgid "People Table"
 msgstr "Tabel Persoane"
 
-#: includes/default-templates.php:405
+#: includes/default-templates.php:400
 msgid "Display information about people in a table."
 msgstr "Afișează informații despre persoane într-un tabel"
 
-#: includes/default-templates.php:427
+#: includes/default-templates.php:421
 msgid "Issue Tracker"
 msgstr "Instrument Urmărire Probleme"
 
-#: includes/default-templates.php:428
+#: includes/default-templates.php:422
 msgid "Manage issues and their statuses."
 msgstr "Gestionează problemele și statusul lor."
 
-#: includes/default-templates.php:450
+#: includes/default-templates.php:443
 msgid "Business Listings"
 msgstr "Listări Business"
 
-#: includes/default-templates.php:451
+#: includes/default-templates.php:444
 msgid "Display business profiles."
 msgstr "Afișează profile business."
 
-#: includes/default-templates.php:472
+#: includes/default-templates.php:464
 msgid "Event Listings"
 msgstr "Listări Eveniment"
 
-#: includes/default-templates.php:473
+#: includes/default-templates.php:465
 msgid "Present a list of your events."
 msgstr "Prezintă o listă a evenimentelor tale"
 
-#: includes/default-templates.php:494
+#: includes/default-templates.php:485
 msgid "People Profiles"
 msgstr "Profile Persoane"
 
-#: includes/default-templates.php:495
+#: includes/default-templates.php:486
 msgid "List people with individual profiles."
 msgstr "Listează persoane cu profile individuale."
 
-#: includes/default-templates.php:516
+#: includes/default-templates.php:506
 msgid "Staff Profiles"
 msgstr "Profile Echipă"
 
-#: includes/default-templates.php:517
+#: includes/default-templates.php:507
 msgid "List members of your team."
 msgstr "Listează membrii echipei tale"
 
-#: includes/default-templates.php:538
+#: includes/default-templates.php:527
 msgid "Website Showcase"
 msgstr "Prezentare Site Web"
 
-#: includes/default-templates.php:539
+#: includes/default-templates.php:528
 msgid "Feature submitted websites with screenshots."
 msgstr "Site-urile recomandate transmise alături de capturile lor de ecran."
 
-#: includes/default-widgets.php:32
+#: includes/default-widgets.php:26
 msgid "Show Pagination Info"
 msgstr "Afișează Informațiile de Paginație"
 
-#: includes/default-widgets.php:60
+#: includes/default-widgets.php:48
 #, php-format
 msgid "Displaying %1$s - %2$s of %3$s"
 msgstr "Se afișează %1$s - %2$s din %3$s"
 
-#: includes/default-widgets.php:83
+#: includes/default-widgets.php:72
 msgid "Show each page number"
 msgstr "Afișează numărul fiecărei pagini"
 
-#: includes/default-widgets.php:84
+#: includes/default-widgets.php:73
 msgid "Show every page number instead of summary (eg: 1 2 3 ... 8 »)"
 msgstr "Afișează numărul fiecărei pagini, în locul sumarului (ex.: 1 2 3 ... 8 »)"
 
-#: includes/default-widgets.php:87
+#: includes/default-widgets.php:76
 msgid "Show Page Links"
 msgstr "Afișează Legături Pagină"
 
-#: includes/default-widgets.php:153
+#: includes/default-widgets.php:133
 msgid "Show search input"
 msgstr "Afișează formularul de căutare"
 
-#: includes/default-widgets.php:158
+#: includes/default-widgets.php:134
 msgid "Show date filters"
 msgstr "Afișează filtre de date"
 
-#: includes/default-widgets.php:162
+#: includes/default-widgets.php:136
 msgid "Show Search Bar"
 msgstr "Afișează Bara de Căutare"
 
-#: includes/default-widgets.php:176
+#: includes/default-widgets.php:150
 msgid "Use this field as a search filter"
 msgstr "Folosește acest câmp ca și un filtru de căutare"
 
-#: includes/extensions/edit-entry/class-edit-entry.php:142
-msgid "Edit Link Text"
-msgstr ""
+#: includes/extensions/datatables/includes/class-datatables-template.php:28
+msgid "DataTables Table"
+msgstr "Tabel cu Tabelele de Date"
 
-#: includes/extensions/edit-entry/class-edit-entry.php:476
-msgid "The link to edit this entry is not valid; it may have expired."
-msgstr ""
-
-#: includes/extensions/edit-entry/class-edit-entry.php:480
-msgid "You do not have permission to edit this entry."
-msgstr ""
-
-#: includes/extensions/edit-entry/class-edit-entry.php:484
-msgid "You cannot edit the entry; it is in the trash."
-msgstr ""
-
-#: includes/extensions/edit-entry/class-edit-entry.php:565
-msgid "There was a problem with your submission."
-msgstr ""
-
-#: includes/extensions/edit-entry/class-edit-entry.php:565
-msgid "Errors have been highlighted below."
-msgstr ""
-
-#: includes/extensions/edit-entry/class-edit-entry.php:571
-#, php-format
-msgid "Entry Updated. %sReturn to Entry%s"
-msgstr ""
-
-#: includes/extensions/edit-entry/class-edit-entry.php:601
-msgid "Update"
-msgstr ""
-
-#: includes/extensions/edit-entry/class-gv-gfcommon.php:35
-msgid "You don&rsquo;t have permission to edit this post."
-msgstr ""
-
-#: includes/extensions/edit-entry/class-gv-gfcommon.php:37
-#, php-format
-msgid "You can %sedit this post%s from the post page."
-msgstr ""
-
-#: includes/extensions/edit-entry/class-gv-gfcommon.php:101
-#: includes/extensions/edit-entry/class-gv-gfcommon.php:120
-msgid "Allowed Files"
-msgstr ""
-
-#: includes/extensions/edit-entry/class-gv-gfcommon.php:133
-msgid "Drop files here or"
-msgstr ""
-
-#: includes/extensions/edit-entry/class-gv-gfcommon.php:133
-msgid "Select files"
-msgstr ""
-
-#: includes/extensions/edit-entry/class-gv-gfcommon.php:160
-msgid "Download file"
-msgstr ""
-
-#: includes/extensions/edit-entry/class-gv-gfcommon.php:160
-msgid "Delete file"
-msgstr ""
-
-#: includes/extensions/edit-entry/inline-javascript.php:4
-msgid ""
-"'Would you like to permanently delete this file? \\'Cancel\\' to stop. "
-"\\'OK\\' to delete'"
-msgstr ""
-
-#: includes/extensions/edit-entry/inline-javascript.php:14
-msgid "Ajax error while deleting field."
-msgstr ""
-
-#: includes/fields/class.field.php:25
-msgid "Link to the post"
-msgstr ""
-
-#: includes/fields/class.field.php:26
-msgid "Link to the post created by the entry."
-msgstr ""
-
-#: includes/fields/class.field.php:31
-msgid "Link to the category or tag"
-msgstr ""
-
-#: includes/fields/class.field.php:32
-msgid ""
-"Link to the current category or tag. \"Link to single entry\" must be "
-"unchecked."
-msgstr ""
-
-#: includes/fields/class.field.php:37
-msgid "Use the live post data"
-msgstr ""
-
-#: includes/fields/class.field.php:38
-msgid "Instead of using the entry data, instead use the current post data."
-msgstr ""
-
-#: includes/fields/class.field.php:43
-msgid "Override Date Format"
-msgstr "Înlocuire Format Dată"
-
-#: includes/fields/class.field.php:44
-#, php-format
-msgid "Define how the date is displayed (using %sthe PHP date format%s)"
-msgstr "Definește cum se va afișa data (folosind %sthe formatul de dată PHP%s)"
+#: includes/extensions/datatables/includes/class-datatables-template.php:29
+msgid "Display items in a dynamic table powered by DataTables."
+msgstr "Afișează elemente într-un tabel dinamic cu ajutorul Tabelelor de Date"
 
 #: includes/fields/created-by.php:11
 msgid "User Format"
@@ -1205,61 +923,47 @@ msgstr "Format Utilizator"
 msgid "How should the User information be displayed?"
 msgstr "Cum ar trebui să fie afișate informațiile despre Utilizator?"
 
-#: includes/fields/created-by.php:14
+#: includes/fields/created-by.php:16
 msgid "Display Name (Example: \"Ellen Ripley\")"
 msgstr "Nume Afișat (Exemplu: \"Ellen Ripley\")"
 
-#: includes/fields/created-by.php:15
+#: includes/fields/created-by.php:20
 msgid "Username (Example: \"nostromo\")"
 msgstr "Utilizator (Exemplu: \"nostromo\")"
 
-#: includes/fields/created-by.php:16
+#: includes/fields/created-by.php:24
 msgid "User ID # (Example: 426)"
 msgstr "ID utilizator # (Exemplu: 426)"
 
-#: includes/fields/entry-link.php:18
-msgid "Link Text:"
-msgstr ""
+#: includes/fields/date.php:14
+msgid "Override Date Format"
+msgstr "Înlocuire Format Dată"
 
-#: includes/fields/entry-link.php:20 templates/fields/entry_link.php:7
+#: includes/fields/date.php:15
+#, php-format
+msgid "Define how the date is displayed (using %sthe PHP date format%s)"
+msgstr "Definește cum se va afișa data (folosind %sthe formatul de dată PHP%s)"
+
+#: templates/fields/entry_link.php:7
 msgid "View Details"
 msgstr "Vizualizează Detaliile"
-
-#: includes/fields/website.php:18
-msgid "Shorten Link Display"
-msgstr ""
-
-#: includes/fields/website.php:19
-msgid "Only show the domain for a URL instead of the whole link."
-msgstr ""
-
-#: includes/fields/website.php:20
-msgid "Don&rsquo;t show the full URL, only show the domain."
-msgstr ""
-
-#: templates/fields/fileupload.php:59
-#, php-format
-msgid ""
-"Sorry, your browser doesn&rsquo;t support embedded videos, but you can "
-"%sdownload it%s and watch it with your favorite video player!"
-msgstr ""
 
 #: templates/widget-search.php:20
 msgid "Search Entries:"
 msgstr "Caută Înregistrări:"
 
-#: templates/widget-search.php:29
+#: templates/widget-search.php:27
 msgid "Filter by date:"
 msgstr "Filtrare după dată:"
 
-#: templates/widget-search.php:31
+#: templates/widget-search.php:29
 msgid "Start date"
 msgstr "Dată de început"
 
-#: templates/widget-search.php:32
+#: templates/widget-search.php:30
 msgid "End date"
 msgstr "Data de finalizare"
 
-#: templates/widget-search.php:50
+#: templates/widget-search.php:42
 msgid "Search"
 msgstr "Caută"
