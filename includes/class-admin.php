@@ -169,6 +169,10 @@ class GravityView_Admin {
             'jquery-ui-draggable',
             'jquery-ui-droppable',
 
+            'gform_tooltip_init',
+            'gform_field_filter',
+            'gform_forms',
+
             // Redux Framework
             'select2-js',
             'qtip-js',

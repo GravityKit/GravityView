@@ -16,6 +16,10 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
+= 1.1.3 =
+* Fixed: Fatal error on activation when running PHP 5.2
+* Fixed: PHP notice when in No-Conflict mode
+
 = 1.1.2 =
 * Added: Extensions framework to allow for extensions to auto-update
 * Fixed: Entries not displaying in Visual Composer plugin editor

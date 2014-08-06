@@ -250,6 +250,12 @@ class GravityView_Welcome {
 
 			<div class="changelog point-releases">
 
+				<h3>What changed in 1.1.3</h3>
+				<ul>
+					<li>Fixed: Fatal error on activation when running PHP 5.2</li>
+					<li>Fixed: PHP notice when in No-Conflict mode</li>
+				</ul>
+
 				<h3>What changed in 1.1.2</h3>
 				<ul>
 					<li>Added: Extensions framework to allow for extensions to auto-update</li>

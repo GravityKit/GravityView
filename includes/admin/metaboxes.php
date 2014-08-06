@@ -4,9 +4,8 @@ class GravityView_Admin_Metaboxes {
 
 	function __construct() {
 
-
-		// Make Yoast go down to the bottom please. We know we're running PHP 5.3, so we can do anonymous functions like this.
-		add_filter('wpseo_metabox_prio', function() { return 'low'; });
+		// Make Yoast go down to the bottom please.
+		add_filter('wpseo_metabox_prio', array( $this, 'return_low') );
 
 		add_action( 'add_meta_boxes', array( $this, 'register_metabox' ));
 
@@ -17,6 +16,14 @@ class GravityView_Admin_Metaboxes {
 		// Add them back in
 		add_action( 'add_meta_boxes', array( $this, 'add_other_metaboxes' ), 20 );
 
+	}
+
+	/**
+	 * Return 'low' as the status for metabox priority
+	 * @return string 'low'
+	 */
+	function return_low() {
+		return 'low';
 	}
 
 	function register_metabox() {
