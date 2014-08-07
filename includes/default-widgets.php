@@ -263,7 +263,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 			foreach( $search_filters as $filter ) {
 				$field = gravityview_get_field( $form, $filter['key'] );
 
-				if( in_array( $field['type'] , array( 'select', 'checkbox', 'radio', 'post_category' ) ) ) {
+				if( in_array( $field['type'] , array( 'select', 'checkbox', 'radio', 'post_category', 'multiselect' ) ) ) {
 
 					// post_category specifics
 					if( !empty( $field['displayAllCategories'] ) && empty( $field['choices'] ) ) {
