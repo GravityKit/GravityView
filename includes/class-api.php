@@ -542,3 +542,34 @@ function gravityview_get_context() {
 	global $gravityview_view;
 	return $gravityview_view->context;
 }
+
+/**
+ * output field based on a certain html markup
+ * @param  array $args [description]
+ * @return string
+ */
+function gravityview_field_output( $args ) {
+
+	$args = wp_parse_args( $args, array(
+		'entry' => NULL,
+		'field' => NULL,
+		'form' => NULL,
+		'hide_empty' => true,
+		'markup' => '',
+		'wpautop' => false
+	) );
+
+	$value = gv_value( $args['entry'], $args['field'] );
+
+	if( $value === '' && $args['hide_empty'] ) { return ''; }
+
+	if( $args['wpautop'] ) {
+		$value = wpautop( $value );
+	}
+
+	$class = esc_attr( gv_class( $args['field'], $args['form'], $args['entry'] ) );
+	$label = esc_html( gv_label( $args['field'], $args['entry'] ) );
+
+	return sprintf( $args['markup'], $label, $value, $class );
+
+}

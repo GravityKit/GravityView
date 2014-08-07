@@ -112,12 +112,23 @@ foreach( $this->entries as $entry ) :
 				<div class="gv-grid-col-1-2 gv-right">
 				<?php if( !empty(  $this->fields['directory_list-footer-right'] ) ): ?>
 					<?php foreach( $this->fields['directory_list-footer-right'] as $field ) :
+
+						echo gravityview_field_output( array(
+							'entry' => $entry,
+							'field' => $field,
+							'form' => $this->form,
+							'hide_empty' => $this->atts['hide_empty'],
+							'markup' => '<div class="%3$s">%1$s%2$s</div>',
+							'wpautop' => false
+						) );
+	 /*
 						$value = gv_value( $entry, $field );
 
 						if( $value === '' && $this->atts['hide_empty'] ) { continue; }
 					?>
 						<div class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php echo esc_html( gv_label( $field, $entry ) ); ?><?php echo $value; ?></div>
-					<?php endforeach; ?>
+	*/
+					endforeach; ?>
 				<?php endif; ?>
 				</div>
 			</div>
