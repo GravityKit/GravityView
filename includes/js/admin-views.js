@@ -44,7 +44,7 @@
 
 			// Force the sort metabox to be directly under the view configuration.
 			// Damn 3rd party metaboxes!
-			$('#gravityview_sort_filter').insertAfter('#gravityview_view_config');
+			$('#gravityview_sort_filter').insertAfter( $('#gravityview_view_config' ) );
 
 			// switch View (for existing forms)
 			$('a[href="#gv_switch_view"]').on( 'click', vcfg.switchView );
@@ -567,7 +567,7 @@
 
 		showViewConfig: function() {
 			var vcfg = viewConfiguration;
-			$("#gravityview_view_config,#gravityview_sort_filter").slideDown(150);
+			$("#gravityview_view_config, #gravityview_sort_filter").slideDown(150);
 			vcfg.toggleDropMessage();
 			vcfg.init_droppables();
 			vcfg.init_tooltips();
