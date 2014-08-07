@@ -422,7 +422,7 @@ class GravityView_Edit_Entry {
 
 		// Needed by the validate funtion
 		$failed_validation_page = NULL;
-		$field_values = RGForms::post("gform_field_values");
+		$field_values = RGForms::post("gform_field_values"); // this returns empty!!!
 
 		$this->is_valid = GFFormDisplay::validate( $this->form, $field_values, 1, $failed_validation_page );
 
@@ -455,6 +455,20 @@ class GravityView_Edit_Entry {
 				if( preg_match('/post_/ism', $field['type'] )) {
 					$field['failed_validation'] = false;
 					continue;
+				}
+
+				// checks if the No Duplicates option is not validating entry against itself
+				if( !empty( $field['noDuplicates'] ) ) {
+					$value = RGFormsModel::get_field_value( $field );
+					if( empty( $entry ) ) {
+						$entry = gravityview_get_entry( GravityView_frontend::is_single_entry() );
+					}
+					if( !empty( $entry ) && $value == $entry[ $field['id'] ] ) {
+						//if value submitted was not changed, then don't validate
+						$field['failed_validation'] = false;
+						unset( $field['validation_message'] );
+						continue;
+					}
 				}
 
 				$gv_valid = false;
