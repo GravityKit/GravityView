@@ -7,78 +7,94 @@
 		<div id="gv_list_<?php echo $entry['id']; ?>" class="gv-list-view">
 
 			<?php if( !empty(  $this->fields['single_list-title'] ) || !empty(  $this->fields['single_list-subtitle'] ) ): ?>
-			<div class="gv-list-view-title">
+				<div class="gv-list-view-title">
 
-				<?php if( !empty(  $this->fields['single_list-title'] ) ):
-					$i = 0;
-					foreach( $this->fields['single_list-title'] as $field ) :
-						if( $i == 0 ): ?>
-							<h3 class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php echo gv_value( $entry, $field ); ?></h3>
-						<?php else: ?>
-							<div class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php echo wpautop(gv_value( $entry, $field )); ?></div>
-						<?php endif;
-						$i++; ?>
-					<?php endforeach; ?>
-				<?php endif;
+					<?php if( !empty(  $this->fields['single_list-title'] ) ):
+						$i = 0;
+						$title_args = array(
+							'entry' => $entry,
+							'form' => $this->form,
+							'hide_empty' => $this->atts['hide_empty'],
+						);
+						foreach( $this->fields['single_list-title'] as $field ) :
+							$title_args['field'] = $field;
+							if( $i == 0 ) {
+								$title_args['markup'] = '<h3 class="%3$s">%1$s%2$s</h3>';
+								echo gravityview_field_output( $title_args );
+							} else {
+								$title_args['markup'] = '<div class="%3$s">%1$s%2$s</div>';
+								$title_args['wpautop'] = true;
+								echo gravityview_field_output( $title_args );
+							}
+							$i++;
+						endforeach;
+					endif;
 
-				if( !empty(  $this->fields['single_list-subtitle'] ) ):
-
-				?>
-				<div class="gv-list-view-subtitle"> <?php
-					foreach( $this->fields['single_list-subtitle'] as $field ) :
-				?>
-					<h4 class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php echo gv_value( $entry, $field ); ?></h4>
-				<?php endforeach; ?>
+					if( !empty(  $this->fields['single_list-subtitle'] ) ): ?>
+						<div class="gv-list-view-subtitle">
+							<?php foreach( $this->fields['single_list-subtitle'] as $field ) :
+								echo gravityview_field_output( array(
+									'entry' => $entry,
+									'field' => $field,
+									'form' => $this->form,
+									'hide_empty' => $this->atts['hide_empty'],
+									'markup' => '<h4 class="%3$s">%1$s%2$s</h4>',
+								) );
+							endforeach; ?>
+						</div>
+					<?php endif; ?>
 				</div>
-				<?php endif; ?>
-			</div>
 			<?php endif; ?>
 
 			<div class="gv-list-view-content">
 
 				<?php if( !empty(  $this->fields['single_list-image'] ) ): ?>
-				<div class="gv-list-view-content-image">
-				<?php
-					foreach( $this->fields['single_list-image'] as $field ) : ?>
-						<div class="<?php echo gv_class( $field, $this->form, $entry ); ?>">
-						<?php echo gv_value( $entry, $field ); ?>
-						</div>
-					<?php endforeach; ?>
-				</div>
+					<div class="gv-list-view-content-image">
+						<?php foreach( $this->fields['single_list-image'] as $field ) :
+
+							echo gravityview_field_output( array(
+								'entry' => $entry,
+								'field' => $field,
+								'form' => $this->form,
+								'hide_empty' => $this->atts['hide_empty'],
+								'markup' => '<div class="%3$s">%1$s%2$s</div>',
+							) );
+
+						endforeach; ?>
+					</div>
 				<?php endif; ?>
 
 				<?php if( !empty(  $this->fields['single_list-description'] ) ): ?>
-				<div class="gv-list-view-content-description">
-				<?php
-					foreach( $this->fields['single_list-description'] as $field ) :
-						$value = gv_value( $entry, $field );
+					<div class="gv-list-view-content-description">
+						<?php foreach( $this->fields['single_list-description'] as $field ) :
 
-						if( $value === '' && $this->atts['hide_empty'] ) { continue; }
-					?>
-						<div class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php
+							echo gravityview_field_output( array(
+								'entry' => $entry,
+								'field' => $field,
+								'form' => $this->form,
+								'hide_empty' => $this->atts['hide_empty'],
+								'markup' => '<div class="%3$s">%1$s%2$s</div>',
+								'label_markup' => '<h4>%1$s</h4>',
+								'wpautop' => true
+							) );
 
-							$label = gv_label( $field, $entry );
-							if(!empty($label)) { echo '<h4>'.esc_html( $label ).'</h4>'; }
-
-							echo wpautop( $value );
-						?>
-						</div>
-					<?php endforeach; ?>
-				</div>
+						endforeach; ?>
+					</div>
 				<?php endif; ?>
 
 				<?php if( !empty(  $this->fields['single_list-content-attributes'] ) ): ?>
-				<div class="gv-list-view-content-attributes">
-				<?php
-					foreach( $this->fields['single_list-content-attributes'] as $field ) :
-
-						$value = gv_value( $entry, $field );
-
-						if( $value === '' && $this->atts['hide_empty'] ) { continue; }
-				?>
-						<p class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php echo esc_html( gv_label( $field, $entry ) ); ?><?php echo gv_value( $entry, $field ); ?></p>
-					<?php endforeach; ?>
-				</div>
+					<div class="gv-list-view-content-attributes">
+						<?php foreach( $this->fields['single_list-content-attributes'] as $field ) :
+							echo gravityview_field_output( array(
+								'entry' => $entry,
+								'field' => $field,
+								'form' => $this->form,
+								'hide_empty' => $this->atts['hide_empty'],
+								'markup' => '<p class="%3$s">%1$s%2$s</p>',
+								'wpautop' => false
+							) );
+						endforeach; ?>
+					</div>
 				<?php endif; ?>
 
 			</div>
@@ -86,34 +102,38 @@
 			<?php if( !empty(  $this->fields['single_list-footer-left'] ) || !empty(  $this->fields['single_list-footer-right'] ) ): ?>
 				<div class="gv-grid gv-list-view-footer">
 					<div class="gv-grid-col-1-2 gv-left">
-					<?php if( !empty(  $this->fields['single_list-footer-left'] ) ): ?>
-						<?php foreach( $this->fields['single_list-footer-left'] as $field ) :
-							$value = gv_value( $entry, $field );
-
-							if( $value === '' && $this->atts['hide_empty'] ) { continue; }
-						?>
-							<div class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php echo esc_html( gv_label( $field, $entry ) ); ?><?php echo gv_value( $entry, $field ); ?></div>
-						<?php endforeach; ?>
-					<?php endif; ?>
+						<?php if( !empty(  $this->fields['single_list-footer-left'] ) ): ?>
+							<?php foreach( $this->fields['single_list-footer-left'] as $field ) :
+								echo gravityview_field_output( array(
+									'entry' => $entry,
+									'field' => $field,
+									'form' => $this->form,
+									'hide_empty' => $this->atts['hide_empty'],
+									'markup' => '<div class="%3$s">%1$s%2$s</div>',
+									'wpautop' => false
+								) );
+							endforeach; ?>
+						<?php endif; ?>
 					</div>
 
 					<div class="gv-grid-col-1-2 gv-right">
-					<?php if( !empty(  $this->fields['single_list-footer-right'] ) ): ?>
-						<?php foreach( $this->fields['single_list-footer-right'] as $field ) :
-
-							$value = gv_value( $entry, $field );
-
-							if( $value === '' && $this->atts['hide_empty'] ) { continue; }
-						?>
-							<div class="<?php echo gv_class( $field, $this->form, $entry ); ?>"><?php echo esc_html( gv_label( $field, $entry ) ); ?><?php echo gv_value( $entry, $field ); ?></div>
-						<?php endforeach; ?>
-					<?php endif; ?>
+						<?php if( !empty(  $this->fields['single_list-footer-right'] ) ): ?>
+							<?php foreach( $this->fields['single_list-footer-right'] as $field ) :
+								echo gravityview_field_output( array(
+									'entry' => $entry,
+									'field' => $field,
+									'form' => $this->form,
+									'hide_empty' => $this->atts['hide_empty'],
+									'markup' => '<div class="%3$s">%1$s%2$s</div>',
+									'wpautop' => false
+								) );
+							endforeach; ?>
+						<?php endif; ?>
 					</div>
 				</div>
 			<?php endif; ?>
 
 		</div>
-
 
 	<?php endforeach; ?>
 
