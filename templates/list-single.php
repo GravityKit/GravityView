@@ -19,10 +19,9 @@
 						foreach( $this->fields['single_list-title'] as $field ) :
 							$title_args['field'] = $field;
 							if( $i == 0 ) {
-								$title_args['markup'] = '<h3 class="%3$s">%1$s%2$s</h3>';
+								$title_args['markup'] = '<h3 class="{{class}}">{{label}}{{value}}</h3>';
 								echo gravityview_field_output( $title_args );
 							} else {
-								$title_args['markup'] = '<div class="%3$s">%1$s%2$s</div>';
 								$title_args['wpautop'] = true;
 								echo gravityview_field_output( $title_args );
 							}
@@ -38,7 +37,7 @@
 									'field' => $field,
 									'form' => $this->form,
 									'hide_empty' => $this->atts['hide_empty'],
-									'markup' => '<h4 class="%3$s">%1$s%2$s</h4>',
+									'markup' => '<h4 class="{{class}}">{{label}}{{value}}</h4>',
 								) );
 							endforeach; ?>
 						</div>
@@ -57,7 +56,6 @@
 								'field' => $field,
 								'form' => $this->form,
 								'hide_empty' => $this->atts['hide_empty'],
-								'markup' => '<div class="%3$s">%1$s%2$s</div>',
 							) );
 
 						endforeach; ?>
@@ -73,8 +71,7 @@
 								'field' => $field,
 								'form' => $this->form,
 								'hide_empty' => $this->atts['hide_empty'],
-								'markup' => '<div class="%3$s">%1$s%2$s</div>',
-								'label_markup' => '<h4>%1$s</h4>',
+								'label_markup' => '<h4>{{label}}</h4>',
 								'wpautop' => true
 							) );
 
@@ -90,8 +87,7 @@
 								'field' => $field,
 								'form' => $this->form,
 								'hide_empty' => $this->atts['hide_empty'],
-								'markup' => '<p class="%3$s">%1$s%2$s</p>',
-								'wpautop' => false
+								'markup' => '<p class="{{class}}">{{label}}{{value}}</p>'
 							) );
 						endforeach; ?>
 					</div>
@@ -108,9 +104,7 @@
 									'entry' => $entry,
 									'field' => $field,
 									'form' => $this->form,
-									'hide_empty' => $this->atts['hide_empty'],
-									'markup' => '<div class="%3$s">%1$s%2$s</div>',
-									'wpautop' => false
+									'hide_empty' => $this->atts['hide_empty']
 								) );
 							endforeach; ?>
 						<?php endif; ?>
@@ -123,9 +117,7 @@
 									'entry' => $entry,
 									'field' => $field,
 									'form' => $this->form,
-									'hide_empty' => $this->atts['hide_empty'],
-									'markup' => '<div class="%3$s">%1$s%2$s</div>',
-									'wpautop' => false
+									'hide_empty' => $this->atts['hide_empty']
 								) );
 							endforeach; ?>
 						<?php endif; ?>

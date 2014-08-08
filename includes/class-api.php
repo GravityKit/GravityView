@@ -548,13 +548,13 @@ function gravityview_get_context() {
  *
  *   markup - string to be used on a sprintf statement.
  *      Use:
- *         %1$s - field label
- *         %2$s - entry field value
- *         %3$s - field class
+ *         {{label}} - field label
+ *         {{value}} - entry field value
+ *         {{class}} - field class
  *
  *   wpautop - true will filter the value using wpautop function
  *
- * @param  array $args [description]
+ * @param  array $args Associative array with field data. `entry`, `field` and `form` are required.
  * @return string
  */
 function gravityview_field_output( $args ) {
@@ -564,25 +564,47 @@ function gravityview_field_output( $args ) {
 		'field' => NULL,
 		'form' => NULL,
 		'hide_empty' => true,
-		'markup' => '<div class="%3$s">%1$s%2$s</div>',
+		'markup' => '<div class="{{class}}">{{label}}{{value}}</div>',
 		'label_markup' => '',
 		'wpautop' => false
 	) );
 
+	// Required fields.
+	if( empty( $args['entry'] ) || empty( $args['field'] ) || empty( $args['form'] ) ) {
+		do_action( 'gravityview_log_error', '[gravityview_field_output] Entry, field, or form are empty.', $args );
+		return '';
+	}
+
 	$value = gv_value( $args['entry'], $args['field'] );
 
-	if( $value === '' && $args['hide_empty'] ) { return ''; }
+	// If the value is empty and we're hiding empty, return empty.
+	if( $value === '' && !empty( $args['hide_empty'] ) ) { return ''; }
 
-	if( $args['wpautop'] ) {
+	if( !empty( $args['wpautop'] ) ) {
 		$value = wpautop( $value );
 	}
 
-	$class = esc_attr( gv_class( $args['field'], $args['form'], $args['entry'] ) );
+	$class = gv_class( $args['field'], $args['form'], $args['entry'] );
 
 	$label = esc_html( gv_label( $args['field'], $args['entry'] ) );
-	if( !empty( $label ) && false !== strpos( $args['label_markup'], '%1$s' ) ) {
-		$label = sprintf( $args['label_markup'], $label );
+
+	// If the label markup is overridden
+	if( !empty( $args['label_markup'] ) ) {
+		$label = str_replace( '{{label}}', $label, $args['label_markup'] );
 	}
 
-	return sprintf( $args['markup'], $label, $value, $class );
+
+	$html = $args['markup'];
+	$html = str_replace( '{{class}}', $class, $html );
+	$html = str_replace( '{{label}}', $label, $html );
+	$html = str_replace( '{{value}}', $value, $html );
+
+	/**
+	 * Modify the output
+	 * @param string $html Existing HTML output
+	 * @param array $args Arguments passed to the function
+	 */
+	$html = apply_filters( 'gravityview_field_output', $html, $args );
+
+	return $html;
 }
