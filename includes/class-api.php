@@ -544,7 +544,16 @@ function gravityview_get_context() {
 }
 
 /**
- * output field based on a certain html markup
+ * Output field based on a certain html markup
+ *
+ *   markup - string to be used on a sprintf statement.
+ *      Use:
+ *         %1$s - field label
+ *         %2$s - entry field value
+ *         %3$s - field class
+ *
+ *   wpautop - true will filter the value using wpautop function
+ *
  * @param  array $args [description]
  * @return string
  */
@@ -555,7 +564,8 @@ function gravityview_field_output( $args ) {
 		'field' => NULL,
 		'form' => NULL,
 		'hide_empty' => true,
-		'markup' => '',
+		'markup' => '<div class="%3$s">%1$s%2$s</div>',
+		'label_markup' => '',
 		'wpautop' => false
 	) );
 
@@ -568,8 +578,11 @@ function gravityview_field_output( $args ) {
 	}
 
 	$class = esc_attr( gv_class( $args['field'], $args['form'], $args['entry'] ) );
+
 	$label = esc_html( gv_label( $args['field'], $args['entry'] ) );
+	if( !empty( $label ) && false !== strpos( $args['label_markup'], '%1$s' ) ) {
+		$label = sprintf( $args['label_markup'], $label );
+	}
 
 	return sprintf( $args['markup'], $label, $value, $class );
-
 }
