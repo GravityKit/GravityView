@@ -16,6 +16,14 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
+= 1.1.4 =
+* Fixed: Sort & Filter box not displaying
+* Fixed: Multi-select fields now display as drop-down field instead of text field in the search bar widget
+* Fixed: Edit Entry now compatibile with Gravity Forms forms when "No Duplicates" is enabled
+* Added: `gravityview_field_output()` function to generate field output.
+* Added: `gravityview_page_links_args` filter to modify the Page Links widget output. Passes standard [paginate_links()](http://codex.wordpress.org/Function_Reference/paginate_links) arguments.
+* Modified: `list-body.php` and `list-single.php` template files - field output are now generated using the `gravityview_field_output()` function
+
 = 1.1.3 =
 * Fixed: Fatal error on activation when running PHP 5.2
 * Fixed: PHP notice when in No-Conflict mode

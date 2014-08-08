@@ -542,3 +542,69 @@ function gravityview_get_context() {
 	global $gravityview_view;
 	return $gravityview_view->context;
 }
+
+/**
+ * Output field based on a certain html markup
+ *
+ *   markup - string to be used on a sprintf statement.
+ *      Use:
+ *         {{label}} - field label
+ *         {{value}} - entry field value
+ *         {{class}} - field class
+ *
+ *   wpautop - true will filter the value using wpautop function
+ *
+ * @param  array $args Associative array with field data. `entry`, `field` and `form` are required.
+ * @return string
+ */
+function gravityview_field_output( $args ) {
+
+	$args = wp_parse_args( $args, array(
+		'entry' => NULL,
+		'field' => NULL,
+		'form' => NULL,
+		'hide_empty' => true,
+		'markup' => '<div class="{{class}}">{{label}}{{value}}</div>',
+		'label_markup' => '',
+		'wpautop' => false
+	) );
+
+	// Required fields.
+	if( empty( $args['entry'] ) || empty( $args['field'] ) || empty( $args['form'] ) ) {
+		do_action( 'gravityview_log_error', '[gravityview_field_output] Entry, field, or form are empty.', $args );
+		return '';
+	}
+
+	$value = gv_value( $args['entry'], $args['field'] );
+
+	// If the value is empty and we're hiding empty, return empty.
+	if( $value === '' && !empty( $args['hide_empty'] ) ) { return ''; }
+
+	if( !empty( $args['wpautop'] ) ) {
+		$value = wpautop( $value );
+	}
+
+	$class = gv_class( $args['field'], $args['form'], $args['entry'] );
+
+	$label = esc_html( gv_label( $args['field'], $args['entry'] ) );
+
+	// If the label markup is overridden
+	if( !empty( $args['label_markup'] ) ) {
+		$label = str_replace( '{{label}}', $label, $args['label_markup'] );
+	}
+
+
+	$html = $args['markup'];
+	$html = str_replace( '{{class}}', $class, $html );
+	$html = str_replace( '{{label}}', $label, $html );
+	$html = str_replace( '{{value}}', $value, $html );
+
+	/**
+	 * Modify the output
+	 * @param string $html Existing HTML output
+	 * @param array $args Arguments passed to the function
+	 */
+	$html = apply_filters( 'gravityview_field_output', $html, $args );
+
+	return $html;
+}

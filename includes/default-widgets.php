@@ -107,23 +107,36 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 		// displaying info
 		$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
 
-		$page_links = array(
+		$page_link_args = array(
 			'base' => add_query_arg('pagenum','%#%'),
 			'format' => '&pagenum=%#%',
 			'add_args' => array(), //
 			'prev_text' => '&laquo;',
 			'next_text' => '&raquo;',
 			'type' => 'list',
-			'end_size' => 2,
+			'end_size' => 1,
+			'mid_size' => 2,
 			'total' => empty( $page_size ) ? 0 : ceil( $total / $page_size ),
 			'current' => $curr_page,
 			'show_all' => !empty( $atts['show_all'] ), // to be available at backoffice
 		);
 
-		$page_links = paginate_links( $page_links );
+		/**
+		 * Filter the pagination options
+		 *
+		 * @since 1.1.4
+		 *
+		 * @param array  $page_link_args Array of arguments for the `paginate_links()` function
+		 * @link http://developer.wordpress.org/reference/functions/paginate_links/ Read more about `paginate_links()`
+		 */
+		$page_link_args = apply_filters('gravityview_page_links_args', $page_link_args );
+
+		$page_links = paginate_links( $page_link_args );
 
 		if( !empty( $page_links )) {
 			echo '<div class="gv-widget-page-links">'. $page_links .'</div>';
+		} else {
+			do_action( 'gravityview_log_debug', 'GravityView_Widget_Page_Links[render_frontend] No page links; paginate_links() returned empty response.' );
 		}
 
 	}
@@ -263,7 +276,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 			foreach( $search_filters as $filter ) {
 				$field = gravityview_get_field( $form, $filter['key'] );
 
-				if( in_array( $field['type'] , array( 'select', 'checkbox', 'radio', 'post_category' ) ) ) {
+				if( in_array( $field['type'] , array( 'select', 'checkbox', 'radio', 'post_category', 'multiselect' ) ) ) {
 
 					// post_category specifics
 					if( !empty( $field['displayAllCategories'] ) && empty( $field['choices'] ) ) {
