@@ -250,6 +250,13 @@ class GravityView_Welcome {
 
 			<div class="changelog point-releases">
 
+				<h3>What changed in 1.1.4</h3>
+				<ul>
+					<li>Fixed: Sort &amp; Filter box not displaying</li>
+					<li>Fixed: Multi-select fields now display as drop-down field instead of text field in the search bar widget</li>
+					<li>Fixed: Edit Entry now compatibile with Gravity Forms forms when "No Duplicates" is enabled</li>
+				</ul>
+
 				<h3>What changed in 1.1.3</h3>
 				<ul>
 					<li>Fixed: Fatal error on activation when running PHP 5.2</li>
