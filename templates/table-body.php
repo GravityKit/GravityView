@@ -27,7 +27,7 @@
 						$fields = apply_filters('gravityview_table_cells', $this->fields['directory_table-columns'], $this );
 
 						foreach( $fields as $field ) {
-							echo '<td>'.gv_value( $entry, $field ).'</td>';
+							echo '<td class="' . gv_class( $field, $this->form, $entry ) .'">'.gv_value( $entry, $field ).'</td>';
 						}
 					}
 
