@@ -19,6 +19,7 @@ Beautifully display your Gravity Forms entries.
 = 1.1.5 =
 * Fixed: Show tooltips when No Conflict Mode is enabled
 * Fixed: Merge Vars for labels in Single Entry table layouts
+* Updated: Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
 
 = 1.1.4 =
 * Fixed: Sort & Filter box not displaying
