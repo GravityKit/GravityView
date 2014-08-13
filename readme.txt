@@ -16,6 +16,10 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
+= 1.1.5 =
+* Fixed: Show tooltips when No Conflict Mode is enabled
+* Fixed: Merge Vars for labels in Single Entry table layouts
+
 = 1.1.4 =
 * Fixed: Sort & Filter box not displaying
 * Fixed: Multi-select fields now display as drop-down field instead of text field in the search bar widget

@@ -236,6 +236,10 @@ class GravityView_Admin {
 	        'wp-jquery-ui-dialog',
 	        'jquery-ui-sortable',
 
+	        // Gravity Forms
+	        'gform_tooltip',
+	        'gform_font_awesome',
+
 	        // Redux Framework
 	        'redux-css',
 	        'redux-elusive-icon',
