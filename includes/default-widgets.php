@@ -290,11 +290,13 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 					$output .= self::render_search_dropdown( $field['label'], 'filter_'.$field['id'], $field['choices'], $filter['value'] ); //Label, name attr, choices
 				} else {
-					if(empty($field)) {
-						$output .= self::render_search_input( $filter['label'], 'filter_'.$filter['key'], $filter['value'] ); //label, attr name
-					} else {
-						$output .= self::render_search_input( $field['label'], 'filter_'.$field['id'], $filter['value'] ); //label, attr name
-					}
+					$filter['key'] = str_replace( '.', '_', $filter['key'] );
+					$output .= self::render_search_input( $filter['label'], 'filter_'.$filter['key'], $filter['value'] );
+					// if( empty($field) ) {
+					// 	$output .= self::render_search_input( $filter['label'], 'filter_'.$filter['key'], $filter['value'] ); //label, attr name
+					// } else {
+					// 	$output .= self::render_search_input( $field['label'], 'filter_'.$field['id'], $filter['value'] ); //label, attr name
+					// }
 				}
 			}
 		}
@@ -402,7 +404,8 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 			foreach( $view_fields as $t => $fields ) {
 				foreach( $fields as $field ) {
 					if( !empty( $field['search_filter'] ) ) {
-						$value = esc_attr(rgget('filter_'. $field['id']));
+						$key = str_replace( '.', '_', $field['id'] );
+						$value = esc_attr(rgget('filter_'. $key ) );
 						$form_field = gravityview_get_field( $form, $field['id'] );
 
 						// convert value (category_id) into 'name:id'
