@@ -40,8 +40,6 @@ class GravityView_Edit_Entry {
 
 		add_action( 'gravityview_edit_entry', array( $this, 'init' ) );
 
-		add_filter( 'gravityview_additional_fields', array( $this, 'add_available_field' ));
-
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field'), 10, 3 );
 
 		// For the Edit Entry Link, you don't want visible to all users.
