@@ -198,18 +198,48 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 		// add free search
 		if( !empty( $_GET['gv_search'] ) ) {
-			$search_criteria['field_filters'][] = array(
-				'key' => null, // The field ID to search
-				'value' => esc_attr(rgget('gv_search')), // The value to search
-				'operator' => 'contains', // What to search in. Options: `is` or `contains`
-			);
+
+			// Search for a piece
+			$words = explode( ' ', $_GET['gv_search'] );
+
+			foreach ( $words as $word ) {
+				$search_criteria['field_filters'][] = array(
+					'key' => null, // The field ID to search
+					'value' => esc_attr( $word ), // The value to search
+					'operator' => 'contains', // What to search in. Options: `is` or `contains`
+				);
+			}
 		}
 
 		// add specific fields search
 		$search_filters = $this->get_search_filters();
+
 		if( !empty( $search_filters ) && is_array( $search_filters ) ) {
 			foreach( $search_filters as $k => $filter ) {
+
 				if( !empty( $filter['value'] ) ) {
+
+					// for the fake advanced fields (e.g. fullname), explode the search words
+					if( false === strpos('.', $filter['key'] ) && ( 'name' === $filter['type'] || 'address' === $filter['type'] ) ) {
+						unset($filter['type']);
+
+						$words = explode( ' ', $filter['value'] );
+
+						foreach( $words as $word ) {
+							if( !empty( $word ) && strlen( $word ) > 1 ) {
+								// Keep the same key, label for each filter
+								$filter['value'] = $word;
+
+								// Add a search for the value
+								$search_criteria['field_filters'][] = $filter;
+							}
+						}
+
+						// next field
+						continue;
+					}
+
+					unset($filter['type']);
 					$search_criteria['field_filters'][] = $filter;
 				}
 			}
@@ -290,11 +320,13 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 					$output .= self::render_search_dropdown( $field['label'], 'filter_'.$field['id'], $field['choices'], $filter['value'] ); //Label, name attr, choices
 				} else {
-					if(empty($field)) {
-						$output .= self::render_search_input( $filter['label'], 'filter_'.$filter['key'], $filter['value'] ); //label, attr name
-					} else {
-						$output .= self::render_search_input( $field['label'], 'filter_'.$field['id'], $filter['value'] ); //label, attr name
-					}
+					$filter['key'] = str_replace( '.', '_', $filter['key'] );
+					$output .= self::render_search_input( $filter['label'], 'filter_'.$filter['key'], $filter['value'] );
+					// if( empty($field) ) {
+					// 	$output .= self::render_search_input( $filter['label'], 'filter_'.$filter['key'], $filter['value'] ); //label, attr name
+					// } else {
+					// 	$output .= self::render_search_input( $field['label'], 'filter_'.$field['id'], $filter['value'] ); //label, attr name
+					// }
 				}
 			}
 		}
@@ -402,7 +434,8 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 			foreach( $view_fields as $t => $fields ) {
 				foreach( $fields as $field ) {
 					if( !empty( $field['search_filter'] ) ) {
-						$value = esc_attr(rgget('filter_'. $field['id']));
+						$key = str_replace( '.', '_', $field['id'] );
+						$value = esc_attr(rgget('filter_'. $key ) );
 						$form_field = gravityview_get_field( $form, $field['id'] );
 
 						// convert value (category_id) into 'name:id'
@@ -412,7 +445,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 						}
 
-						$search_filters[] = array( 'key' => $field['id'], 'label' => $field['label'], 'value' => $value );
+						$search_filters[] = array( 'key' => $field['id'], 'label' => $field['label'], 'value' => $value, 'type' => $form_field['type'] );
 					}
 				}
 			}

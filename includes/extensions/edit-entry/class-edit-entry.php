@@ -40,8 +40,6 @@ class GravityView_Edit_Entry {
 
 		add_action( 'gravityview_edit_entry', array( $this, 'init' ) );
 
-		add_filter( 'gravityview_additional_fields', array( $this, 'add_available_field' ));
-
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field'), 10, 3 );
 
 		// For the Edit Entry Link, you don't want visible to all users.
@@ -551,6 +549,9 @@ class GravityView_Edit_Entry {
 		global $gravityview_view;
 
 		if( !isset( $entry['created_by'] ) ) {
+
+			do_action('gravityview_log_error', 'GravityView_Edit_Entry[check_user_cap_edit_entry] Entry `created_by` doesn\'t exist.');
+
 			return false;
 		}
 
@@ -559,6 +560,9 @@ class GravityView_Edit_Entry {
 
 		// If the logged-in user is the same as the user who created the entry, we're good.
 		if( $user_edit && is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
+
+			do_action('gravityview_log_debug', sprintf( 'GravityView_Edit_Entry[check_user_cap_edit_entry] User %s created the entry.', $current_user->ID ) );
+
 			return true;
 		}
 
@@ -576,7 +580,7 @@ class GravityView_Edit_Entry {
 	}
 
 	/**
-	 * Display the Edit Enrty form
+	 * Display the Edit Entry form
 	 *
 	 * @filter gravityview_edit_entry_title Modfify the edit entry title
 	 * @return [type] [description]

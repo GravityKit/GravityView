@@ -367,7 +367,7 @@ class GravityView_Admin_Views {
 		}
 
 		$this->render_additional_fields( $form, $context );
-		}
+	}
 
 	function render_additional_fields( $form, $context ) {
 

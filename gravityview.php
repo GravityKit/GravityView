@@ -14,7 +14,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.1.4
+ * Version:          	1.1.5
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravity-view
@@ -64,7 +64,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.1.4';
+	const version = '1.1.5';
 
 	public static $theInstance;
 
@@ -146,12 +146,6 @@ final class GravityView_Plugin {
 		GravityView_Post_Types::init_rewrite();
 
 		flush_rewrite_rules();
-
-		// Add "Upgraded From" Option
-		$current_version = get_option( 'gv_version' );
-		if ( $current_version ) {
-			update_option( 'gv_version_upgraded_from', $current_version );
-		}
 
 		// Update the current GV version
 		update_option( 'gv_version', self::version );

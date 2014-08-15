@@ -16,6 +16,17 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
+= 1.1.5 =
+* Added: "Edit" link in Gravity Forms Entries screen
+* Fixed: Show tooltips when No Conflict Mode is enabled
+* Fixed: Merge Vars for labels in Single Entry table layouts
+* Fixed: Duplicate "Edit Entry" fields in field picker
+* Fixed: Custom date formatting for Date Created field
+* Fixed: Searching full names or addresses now works as expected
+* Fixed: Custom CSS classes are now added to cells in table-based Views
+* Updated: Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
+* Tweak: Redirect to Changelog instead of Getting Started if upgrading
+
 = 1.1.4 =
 * Fixed: Sort & Filter box not displaying
 * Fixed: Multi-select fields now display as drop-down field instead of text field in the search bar widget
