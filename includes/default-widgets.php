@@ -210,6 +210,24 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 		if( !empty( $search_filters ) && is_array( $search_filters ) ) {
 			foreach( $search_filters as $k => $filter ) {
 				if( !empty( $filter['value'] ) ) {
+
+					// for the fake advanced fields (e.g. fullname), explode the search words
+					if( false === strpos('.', $filter['key'] ) && ( 'name' === $filter['type'] || 'address' === $filter['type'] ) ) {
+						unset($filter['type']);
+						$words = explode( ' ', $filter['value'] );
+						if( is_array( $words ) ) {
+							foreach( $words as $word ) {
+								if( !empty( $word ) && strlen( $word ) > 1 ) {
+									$filter['value'] = $word;
+									$search_criteria['field_filters'][] = $filter;
+								}
+							}
+						}
+						// next field
+						continue;
+					}
+
+					unset($filter['type']);
 					$search_criteria['field_filters'][] = $filter;
 				}
 			}
@@ -415,7 +433,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 						}
 
-						$search_filters[] = array( 'key' => $field['id'], 'label' => $field['label'], 'value' => $value );
+						$search_filters[] = array( 'key' => $field['id'], 'label' => $field['label'], 'value' => $value, 'type' => $form_field['type'] );
 					}
 				}
 			}
