@@ -20,6 +20,7 @@ class GravityView_Admin {
 		require_once( GFCommon::get_base_path() . '/tooltips.php' );
 
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/admin/entry-list.php' );
 
 		// Filter Admin messages
 		add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
