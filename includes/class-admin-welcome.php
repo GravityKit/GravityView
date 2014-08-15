@@ -174,19 +174,16 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 		</div>
 
-		<div class="wrap">
-			<div class="updated inline">
-				<h3><?php esc_html_e('How-To &amp; Documentation', 'gravity-view'); ?></h3>
-				<p>We&rsquo;re adding lots of features are working on providing helpful guides to get started and developer documentation.</p>
-				<p><a class="button button-secondary button-primary" href="https://gravityview.co/support/documentation/?zen_section=200480627">See our Help Docs</a>
-			</div>
+		<div style="text-align:center; padding-top: 1em;">
+			<h2>Read more articles on using GravityView</h2>
+			<p><a class="button button-primary button-hero" href="https://gravityview.co/support/documentation/?zen_section=200480627">Getting Started Articles</a></p>
 		</div>
 
 		<div class="wrap about-wrap">
 
 			<div class="changelog"><h2 class="about-headline-callout">Configuring a View</h2></div>
 
-			<div class="feature-section col two-col" style="margin-top:0;">
+			<div class="feature-section col two-col" style="margin-top:1em;">
 
 				<div>
 
@@ -220,7 +217,7 @@ class GravityView_Welcome {
 				<ul class="ul-disc">
 					<li>Click "+ Add Field" to add a field to a zone</li>
 					<li>Fields can be dragged and dropped to be re-arranged. Hover over the field until you see a cursor with four arrows, then drag the field.</li>
-					<li>Click the <i class="dashicons dashicons-admin-generic"></i> gear icon on each field to configure the <strong>Field Settings</strong>:
+					<li>Click the <a href="#" style="text-decoration:none;"><i class="dashicons dashicons-admin-generic"></i></a> gear icon on each field to configure the <strong>Field Settings</strong>:
 					<ul class="ul-square">
 						<li><em>Custom Label</em>: Change how the label is shown on the website. Default: the name of the field</li>
 						<li><em>Custom CSS Class</em>: Add additional CSS classes to the field container</li>
@@ -229,7 +226,13 @@ class GravityView_Welcome {
 					</ul>
 					</li>
 				</ul>
+			</div>
 
+			<div class="clear">
+				<h2>What is a View?</h2>
+				<p>When a form is submitted in Gravity Forms, an entry is created. Without GravityView, Gravity Forms entries are visible only in the WordPress dashboard, and only to users with permission.</p>
+
+				<p>GravityView allows you to display entries on the front of your site. In GravityView, when you arrange the fields you want displayed and save the configuration, it's called a "View".</p>
 			</div>
 		</div>
 		<?php
@@ -249,6 +252,18 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 
 			<div class="changelog point-releases">
+
+				<h3>What changed in 1.1.5</h3>
+				<ul>
+					<li>Added: New "Edit" link in Gravity Forms Entries screen - allows you to easily access the Edit screen for an entry.</li>
+					<li>Fixed: Show tooltips when No Conflict Mode is enabled</li>
+					<li>Fixed: Merge Vars for labels in Single Entry table layouts</li>
+					<li>Fixed: Duplicate "Edit Entry" fields in field picker</li>
+					<li>Fixed: Custom date formatting for Date Created field</li>
+					<li>Fixed: Searching full names or addresses now works</li>
+					<li>Fixed: Custom CSS classes are now added to cells in table-based Views</li>
+					<li>Updated: Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
+				</ul>
 
 				<h3>What changed in 1.1.4</h3>
 				<ul>
@@ -445,17 +460,22 @@ class GravityView_Welcome {
 		// Delete the redirect transient
 		delete_transient( '_gv_activation_redirect' );
 
+		$upgrade = get_option( 'gv_version_upgraded_from' );
+
+		// Add "Upgraded From" Option
+		update_option( 'gv_version_upgraded_from', GravityView_Plugin::version );
+
 		// Bail if activating from network, or bulk
 		if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) { return; }
 
-		$upgrade = get_option( 'gv_version_upgraded_from' );
-
-		// // After Beta
-		// if( ! $upgrade ) { // First time install
-		// 	wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-beta-testing' ) ); exit;
-		// } else { // Update
-		wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) ); exit;
-		// }
+		// First time install
+		if( ! $upgrade ) {
+			wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) ); exit;
+		}
+		// Update
+		else {
+			wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-changelog' ) ); exit;
+		}
 	}
 }
 new GravityView_Welcome;
