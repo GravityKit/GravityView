@@ -198,31 +198,43 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 
 		// add free search
 		if( !empty( $_GET['gv_search'] ) ) {
-			$search_criteria['field_filters'][] = array(
-				'key' => null, // The field ID to search
-				'value' => esc_attr(rgget('gv_search')), // The value to search
-				'operator' => 'contains', // What to search in. Options: `is` or `contains`
-			);
+
+			// Search for a piece
+			$words = explode( ' ', $_GET['gv_search'] );
+
+			foreach ( $words as $word ) {
+				$search_criteria['field_filters'][] = array(
+					'key' => null, // The field ID to search
+					'value' => esc_attr( $word ), // The value to search
+					'operator' => 'contains', // What to search in. Options: `is` or `contains`
+				);
+			}
 		}
 
 		// add specific fields search
 		$search_filters = $this->get_search_filters();
+
 		if( !empty( $search_filters ) && is_array( $search_filters ) ) {
 			foreach( $search_filters as $k => $filter ) {
+
 				if( !empty( $filter['value'] ) ) {
 
 					// for the fake advanced fields (e.g. fullname), explode the search words
 					if( false === strpos('.', $filter['key'] ) && ( 'name' === $filter['type'] || 'address' === $filter['type'] ) ) {
 						unset($filter['type']);
+
 						$words = explode( ' ', $filter['value'] );
-						if( is_array( $words ) ) {
-							foreach( $words as $word ) {
-								if( !empty( $word ) && strlen( $word ) > 1 ) {
-									$filter['value'] = $word;
-									$search_criteria['field_filters'][] = $filter;
-								}
+
+						foreach( $words as $word ) {
+							if( !empty( $word ) && strlen( $word ) > 1 ) {
+								// Keep the same key, label for each filter
+								$filter['value'] = $word;
+
+								// Add a search for the value
+								$search_criteria['field_filters'][] = $filter;
 							}
 						}
+
 						// next field
 						continue;
 					}
