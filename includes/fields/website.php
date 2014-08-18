@@ -9,7 +9,10 @@ class GravityView_Field_Website extends GravityView_Field {
 
 	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 
-		// It makes no sense to use this as the link.
+if ( empty = do not display the field at all and do not run the truncatelink function )
+
+
+if (!empty )		// It makes no sense to use this as the link.
 		unset( $field_options['show_as_link'] );
 
 		$field_options['truncatelink'] = array(
