@@ -507,7 +507,7 @@ class GravityView_frontend {
 		 *
 		 * @var array
 		 */
-		$parameters = apply_filters( 'gravityview_get_entries', apply_filters( 'gravityview_get_entries_'.$args['id'], compact( 'search_criteria', 'sorting', 'paging' ) ) );
+		$parameters = apply_filters( 'gravityview_get_entries', apply_filters( 'gravityview_get_entries_'.$args['id'], compact( 'search_criteria', 'sorting', 'paging' ), $args ), $args );
 
 		do_action( 'gravityview_log_debug', '[get_view_entries] $parameters passed to gravityview_get_entries(): ', $parameters );
 
