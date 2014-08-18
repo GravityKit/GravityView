@@ -16,6 +16,17 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
+= 1.1.6 =
+* Added: `gravityview_entry_class` filter to modify the CSS class for each entry wrapper
+* Added: Actions to the `list-body.php` template file:
+	- `gravityview_list_body_before`: Before the entry output
+	- `gravityview_entry_before`: Inside the entry wrapper
+	- `gravityview_entry_title_before`, `gravityview_entry_title_after`: Before and after the entry title and subtitle output
+	- `gravityview_entry_content_before`, `gravityview_entry_content_after`: Before and after the entry content area (image and description zones)
+	- `gravityview_entry_footer_before`, `gravityview_entry_footer_after`: Before and after the entry footer
+	- `gravityview_entry_after`: Before the entry wrapper closing tag
+	- `gravityview_list_body_after`: After entry output
+
 = 1.1.5 =
 * Added: "Edit" link in Gravity Forms Entries screen
 * Fixed: Show tooltips when No Conflict Mode is enabled
