@@ -127,7 +127,28 @@ abstract class GravityView_Extension {
 	 */
 	function save_post( $post_id ) {}
 
-	function tooltips( $tooltips = array() ) { return $tooltips; }
+	/**
+	 * Add tooltips for the extension.
+	 *
+	 * Add a tooltip with an array using the `title` and `value` keys. The `title` key is the H6 tag value of the tooltip; it's the headline. The `value` is the tooltip content, and can contain any HTML.
+	 *
+	 * The tooltip key must be `gv_{name_of_setting}`. If the name of the setting is "example_extension_setting", the code would be:
+	 *
+	 * <code>
+	 * $tooltips['gv_example_extension_setting'] = array(
+	 * 	'title'	=> 'About Example Extension Setting',
+	 *  'value'	=> 'When you do [x] with [y], [z] happens.'
+	 * );
+	 * </code>
+	 *
+	 * @param  array  $tooltips Existing GV tooltips, with `title` and `value` keys
+	 * @return array           Modified tooltips
+	 */
+	function tooltips( $tooltips = array() ) {
+
+		return $tooltips;
+
+	}
 
 	private function is_extension_supported() {
 

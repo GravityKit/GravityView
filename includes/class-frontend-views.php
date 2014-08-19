@@ -517,6 +517,14 @@ class GravityView_frontend {
 
 		do_action( 'gravityview_log_debug', sprintf( '[get_view_entries] Get Entries. Found: %s entries', $count ) );
 
+		/**
+		 * Filter the entries output to the View
+		 *
+		 * @param array $args View settings associative array
+		 * @var array
+		 */
+		$entries = apply_filters( 'gravityview_view_entries', $entries, $args );
+
 		return compact( 'count', 'entries', 'paging' );
 	}
 
