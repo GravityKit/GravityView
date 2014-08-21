@@ -365,6 +365,11 @@ class GravityView_Admin {
 	 */
 	public static function check_gravityforms() {
 
+		// Bypass other checks: if the class exists and the version's right, we're good.
+		if( class_exists( 'GFCommon' ) && true === version_compare( GFCommon::$version, GV_MIN_GF_VERSION, ">=" ) ) {
+			return true;
+		}
+
 		$image = '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft gv-astronaut" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin: 0 10px 10px 0;" />';
 
 		$gf_status = self::get_plugin_status( 'gravityforms/gravityforms.php' );

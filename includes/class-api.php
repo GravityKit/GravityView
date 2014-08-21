@@ -554,6 +554,7 @@ function gravityview_get_context() {
  *
  *   wpautop - true will filter the value using wpautop function
  *
+ * @since  1.1.5
  * @param  array $args Associative array with field data. `entry`, `field` and `form` are required.
  * @return string
  */
