@@ -878,6 +878,9 @@
 			// Custom Label should show only when "Show Label" checkbox is checked
 			vcfg.toggleVisibility( $('input:checkbox[name*=show_label]', $parent) , $('[name*=custom_label]', $parent), first_run );
 
+			// Toggle Email fields
+			vcfg.toggleVisibility( $('input:checkbox[name*=emailmailto]', $parent) , $('[name*=emailsubject],[name*=emailbody]', $parent), first_run );
+
 
 			$('input:checkbox', $parent).attr( 'disabled', null );
 

@@ -808,6 +808,13 @@ class GravityView_Admin_Views {
 				$output .= self::render_select_option( $name, $id, $option['choices'], $current );
 				break;
 
+			case 'textarea':
+				$output .= $option['label'].$tooltip.$option['desc'];
+				$output .= '<div>';
+				$output .= self::render_textarea_option( $name, $id, $current, $option['merge_tags'] );
+				$output .= '</div>';
+				break;
+
 			case 'text':
 			default:
 				$output .= $option['label'].$tooltip.$option['desc'];
@@ -924,14 +931,43 @@ class GravityView_Admin_Views {
 
 		$class = '';
 		// and $add_merge_tags is not false
-		if( $show && $add_merge_tags !== false ) {
-			$class = 'merge-tag-support mt-position-right mt-hide_all_fields';
+		if( $show && $add_merge_tags !== false || $add_merge_tags === 'force' ) {
+			$class = 'merge-tag-support mt-position-right mt-hide_all_fields ';
 		}
 
-		$class .= !empty( $args['class'] ) ? ' '.$args['class'] : 'widefat';
+		$class .= !empty( $args['class'] ) ? $args['class'] : 'widefat';
 		$type = !empty( $args['type'] ) ? $args['type'] : 'text';
 
 		return '<input name="'. esc_attr( $name ) .'" id="'. esc_attr( $id ) .'" type="'.esc_attr($type).'" value="'. esc_attr( $current ) .'" class="'.esc_attr( $class ).'">';
+	}
+
+	/**
+	 * Render the HTML for an textarea input to be used on the field & widgets options
+	 * @param  string $name    Unique name of the field. Exampe: `fields[directory_list-title][5374ff6ab128b][custom_label]`
+	 * @param  string $current [current value]
+	 * @param  string $desc   Option description
+	 * @param string $add_merge_tags Add merge tags to the input?
+	 * @return string         [html tags]
+	 */
+	public static function render_textarea_option( $name = '', $id = '', $current = '', $add_merge_tags = NULL, $args = array() ) {
+
+		// Show the merge tags if the field is a list view
+		$is_list = ( preg_match( '/_list-/ism', $name ));
+
+		// Or is a single entry view
+		$is_single = ( preg_match( '/single_/ism', $name ));
+		$show = ( $is_single || $is_list );
+
+		$class = '';
+		// and $add_merge_tags is not false
+		if( $show && $add_merge_tags !== false || $add_merge_tags === 'force' ) {
+			$class = 'merge-tag-support mt-position-right mt-hide_all_fields ';
+		}
+
+		$class .= !empty( $args['class'] ) ? 'widefat '.$args['class'] : 'widefat';
+		$type = !empty( $args['type'] ) ? $args['type'] : 'text';
+
+		return '<textarea name="'. esc_attr( $name ) .'" id="'. esc_attr( $id ) .'" class="'.esc_attr( $class ).'">'. esc_textarea( $current ) .'</textarea>';
 	}
 
 	/**

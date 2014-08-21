@@ -18,7 +18,11 @@ Beautifully display your Gravity Forms entries.
 
 = 1.1.6 =
 * Added: `gravityview_entry_class` filter to modify the CSS class for each entry wrapper
-* Added: Actions to the `list-body.php` template file:
+* Added: Email field settings
+	- Email addresses are now encrypted by default to prevent scraping by spammers
+	- Added option to display email plaintext or as a link
+	- Added subject and body settings: when the link is clicked, you can choose to have these values pre-filled
+* Modified: Added actions to the `list-body.php` template file:
 	- `gravityview_list_body_before`: Before the entry output
 	- `gravityview_entry_before`: Inside the entry wrapper
 	- `gravityview_entry_title_before`, `gravityview_entry_title_after`: Before and after the entry title and subtitle output
