@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries.
 	- `gravityview_entry_after`: Before the entry wrapper closing tag
 	- `gravityview_list_body_after`: After entry output
 * Fixed: Empty truncated URLs no longer get shown
+* Tweak: Added helper text when a new form is created by GravityView
 
 = 1.1.5 =
 * Added: "Edit" link in Gravity Forms Entries screen

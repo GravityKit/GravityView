@@ -95,12 +95,39 @@ class GravityView_Admin {
 	function post_updated_messages( $messages, $bulk_counts = NULL ) {
 		global $post;
 
-		$post_id = isset($_GET['post']) ? intval($_GET['post']) : NULL;
+		$post_id = isset($_GET['post']) ? intval($_GET['post']) : $post->ID;
 
 		// By default, there will only be one item being modified.
 		// When in the `bulk_post_updated_messages` filter, there will be passed a number
 		// of modified items that will override this array.
 		$bulk_counts = is_null( $bulk_counts ) ? array( 'updated' => 1 , 'locked' => 1 , 'deleted' => 1 , 'trashed' => 1, 'untrashed' => 1 ) : $bulk_counts;
+
+
+		// If we're starting fresh, a new form was created.
+		// We should let the user know this is the case.
+		$start_fresh = get_post_meta( $post_id, '_gravityview_start_fresh', true );
+
+		$new_form_text = '';
+
+		if( !empty( $start_fresh ) ) {
+
+			// Get the form that was created
+			$connected_form = gravityview_get_form_id( $post_id );
+
+			if( !empty( $connected_form ) ) {
+				$form = gravityview_get_form( $connected_form );
+				$form_name = esc_attr( $form['title'] );
+				$image = '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:0 1em 1.6em 0;" />';
+				$new_form_text .= '<h3>'.$image.sprintf( __( 'A new form was created for this View: "%s"', 'gravity-view' ), $form_name ).'</h3>';
+				$new_form_text .=  sprintf( __( '%sThere are no entries for the new form, so the View will also be empty.%s To start collecting entries, you can add submissions through %sthe preview form%s and also embed the form on a post or page using this code: %s
+
+					You can %sedit the form%s in Gravity Forms and the updated fields will be available here. Don&rsquo;t forget to %scustomize the form settings%s.
+					', 'gravity-view' ), '<strong>', '</strong>', '<a href="'.site_url( '?gf_page=preview&amp;id='.$connected_form ).'">', '</a>', '<code>[gravityform id="'.$connected_form.'" name="'.$form_name.'"]</code>', '<a href="'.admin_url( 'admin.php?page=gf_edit_forms&amp;id='.$connected_form ).'">', '</a>', '<a href="'.admin_url( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;id='.$connected_form ).'">', '</a>');
+				$new_form_text = wpautop( $new_form_text );
+
+				delete_post_meta( $post_id, '_gravityview_start_fresh' );
+			}
+		}
 
 		$messages['gravityview'] = array(
 			0  => '', // Unused. Messages start at index 1.
@@ -110,14 +137,14 @@ class GravityView_Admin {
 			4  => sprintf(__( 'View updated. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 			/* translators: %s: date and time of the revision */
 			5  => isset( $_GET['revision'] ) ? sprintf( __( 'View restored to revision from %s', 'gravity-view' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-			6  => sprintf(__( 'View published. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
-			7  => sprintf(__( 'View saved. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
+			6  => sprintf(__( 'View published. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
+			7  => sprintf(__( 'View saved. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
 			8  => __( 'View submitted.', 'gravity-view' ),
 			9  => sprintf(
-				__( 'View scheduled for: <strong>%1$s</strong>.', 'gravity-view' ),
+				__( 'View scheduled for: %1$s.', 'gravity-view' ),
 				// translators: Publish box date format, see http://php.net/date
-				date_i18n( __( 'M j, Y @ G:i', 'gravity-view' ), strtotime( ( isset( $post->post_date ) ? $post->post_date : NULL ) ) )
-			),
+				'<strong>'.date_i18n( __( 'M j, Y @ G:i', 'gravity-view' ), strtotime( ( isset( $post->post_date ) ? $post->post_date : NULL ) ).'</strong>' )
+			) . $new_form_text,
 			10  => sprintf(__( 'View draft updated. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 
 			/**
