@@ -143,7 +143,7 @@ class GravityView_Admin {
 			9  => sprintf(
 				__( 'View scheduled for: %1$s.', 'gravity-view' ),
 				// translators: Publish box date format, see http://php.net/date
-				'<strong>'.date_i18n( __( 'M j, Y @ G:i', 'gravity-view' ), strtotime( ( isset( $post->post_date ) ? $post->post_date : NULL ) ).'</strong>' )
+				'<strong>'.date_i18n( __( 'M j, Y @ G:i', 'gravity-view' ), strtotime( ( isset( $post->post_date ) ? $post->post_date : NULL ) .'</strong>' ) )
 			) . $new_form_text,
 			10  => sprintf(__( 'View draft updated. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 
