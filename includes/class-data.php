@@ -100,7 +100,7 @@ class GravityView_View_Data {
 			'form_id' => $form_id,
 			'template_id' => gravityview_get_template_id( $view_id ),
 			'atts' => gravityview_get_template_settings( $view_id ),
-			'fields' => self::get_fields( $view_id ),
+			'fields' => $this->get_fields( $view_id ),
 			'widgets' => get_post_meta( $view_id, '_gravityview_directory_widgets', true ),
 			'form' => gravityview_get_form( $form_id ),
 		);
@@ -110,13 +110,20 @@ class GravityView_View_Data {
 		return $this->views[ $view_id ];
 	}
 
-	static function get_fields( $view_id ) {
+	/**
+	 * Get the visible fields for a View
+	 * @uses  gravityview_get_directory_fields() Fetch the configured fields for a View
+	 * @uses  GravityView_View_Data::filter_fields() Only show visible fields
+	 * @param  int $view_id View ID
+	 * @return array          Array of fields as passed by `gravityview_get_directory_fields()`
+	 */
+	function get_fields( $view_id ) {
 
 		$dir_fields = gravityview_get_directory_fields( $view_id );
 		do_action( 'gravityview_log_debug', '[render_view] Fields: ', $dir_fields );
 
 		// remove fields according to visitor visibility permissions (if logged-in)
-		$dir_fields = self::filter_fields( $dir_fields );
+		$dir_fields = $this->filter_fields( $dir_fields );
 		do_action( 'gravityview_log_debug', '[render_view] Fields after visibility filter: ', $dir_fields );
 
 		return $dir_fields;
@@ -129,7 +136,7 @@ class GravityView_View_Data {
 	 * @param array $dir_fields
 	 * @return void
 	 */
-	static private function filter_fields( $dir_fields ) {
+	private function filter_fields( $dir_fields ) {
 
 		if( empty( $dir_fields ) || !is_array( $dir_fields ) ) {
 			return $dir_fields;
@@ -138,7 +145,7 @@ class GravityView_View_Data {
 		foreach( $dir_fields as $area => $fields ) {
 			foreach( $fields as $uniqid => $properties ) {
 
-				if( self::hide_field_check_conditions( $properties ) ) {
+				if( $this->hide_field_check_conditions( $properties ) ) {
 					unset( $dir_fields[ $area ][ $uniqid ] );
 				}
 
@@ -157,7 +164,7 @@ class GravityView_View_Data {
 	 * @param array $properties
 	 * @return true (field should be hidden) or false (field should be presented)
 	 */
-	static private function hide_field_check_conditions( $properties ) {
+	private function hide_field_check_conditions( $properties ) {
 
 		// logged-in visibility
 		if( !empty( $properties['only_loggedin'] ) && !current_user_can( $properties['only_loggedin_cap'] ) ) {
@@ -167,7 +174,7 @@ class GravityView_View_Data {
 		return false;
 	}
 
-	static function get_id_from_atts( $atts ) {
+	function get_id_from_atts( $atts ) {
 
 		$atts = is_array( $atts ) ? $atts : shortcode_parse_atts( $atts );
 

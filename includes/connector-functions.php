@@ -142,6 +142,21 @@ if( !function_exists( 'gravityview_get_entry_meta' ) ) {
 	}
 }
 
+/**
+ * Wrapper for the Gravity Forms GFFormsModel::search_lead_ids() method
+ *
+ * @see  GFEntryList::leads_page()
+ * @param  int $form_id ID of the Gravity Forms form
+ * @since  1.1.6
+ * @return array          Array of entry IDs
+ */
+function gravityview_get_entry_ids( $form_id, $search_criteria = array() ) {
+
+	if( !class_exists( 'GFFormsModel' ) ) { return; }
+
+	return GFFormsModel::search_lead_ids( $form_id, $search_criteria );
+}
+
 
 if( !function_exists('gravityview_get_entries') ) {
 	/**
