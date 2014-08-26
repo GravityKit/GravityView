@@ -410,6 +410,13 @@ class GravityView_Edit_Entry {
 		return $form;
 	}
 
+	/**
+	 * Process validation for a edit entry submission
+	 *
+	 * Sets the `is_valid` object var
+	 *
+	 * @return void
+	 */
 	function validate() {
 		/**
 		 * For some crazy reason, Gravity Forms doesn't validate Edit Entry form submissions.
