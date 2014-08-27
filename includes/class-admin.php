@@ -81,8 +81,9 @@ class GravityView_Admin {
 	 * @return void
 	 */
 	public static function plugin_action_links( $links ) {
-		$support_link = 'https://gravityview.co/support/documentation/';
-		$action = array( '<a href="' . $support_link . '">'. esc_html__( 'Support', 'gravity-view' ) .'</a>' );
+
+		$action = array( '<a href="https://gravityview.co/support/documentation/">'. esc_html__( 'Support', 'gravity-view' ) .'</a>' );
+
 		return array_merge( $action, $links );
 	}
 
@@ -95,7 +96,7 @@ class GravityView_Admin {
 	function post_updated_messages( $messages, $bulk_counts = NULL ) {
 		global $post;
 
-		$post_id = isset($_GET['post']) ? intval($_GET['post']) : $post->ID;
+		$post_id = isset($_GET['post']) ? intval($_GET['post']) : ( is_object( $post ) && isset( $post->ID ) ? $post->ID : NULL );
 
 		// By default, there will only be one item being modified.
 		// When in the `bulk_post_updated_messages` filter, there will be passed a number
