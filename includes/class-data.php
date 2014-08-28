@@ -78,7 +78,13 @@ class GravityView_View_Data {
 		return is_string( get_post_status( $view_id ) );
 	}
 
-	function add_view( $view_id ) {
+	/**
+	 *
+	 * @param type $view_id
+	 * @param type $atts Combine other attributes (eg. from shortcode) with the view settings (optional)
+	 * @return type
+	 */
+	function add_view( $view_id, $atts = NULL ) {
 
 		// The view has been set already; returning stored view.
 		if ( !empty( $this->views[ $view_id ] ) ) {
@@ -94,12 +100,19 @@ class GravityView_View_Data {
 
 		$form_id = gravityview_get_form_id( $view_id );
 
+		if( isset( $atts ) && is_array( $atts ) ) {
+			$atts = wp_parse_args( $atts, gravityview_get_template_settings( $view_id ) );
+			unset( $atts['id'] );
+		} else {
+			$atts = gravityview_get_template_settings( $view_id );
+		}
+
 		$data = array(
 			'id' => $view_id,
 			'view_id' => $view_id,
 			'form_id' => $form_id,
 			'template_id' => gravityview_get_template_id( $view_id ),
-			'atts' => gravityview_get_template_settings( $view_id ),
+			'atts' => $atts,
 			'fields' => $this->get_fields( $view_id ),
 			'widgets' => get_post_meta( $view_id, '_gravityview_directory_widgets', true ),
 			'form' => gravityview_get_form( $form_id ),
@@ -211,7 +224,7 @@ class GravityView_View_Data {
 				return false;
 			}
 
-			$this->add_view( $shortcode_atts['id'] );
+			$this->add_view( $shortcode_atts['id'] , $shortcode_atts );
 		}
 
 	}
