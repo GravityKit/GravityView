@@ -219,6 +219,8 @@ class GravityView_Admin {
             'jquery-ui-slider',
             'wp-color-picker',
             'jquery-ui-accordion',
+            'redux-edd_license',
+            'redux-field-edd-js',
             );
 
 		$this->remove_conflicts( $wp_scripts, $wp_required_scripts, 'scripts' );
@@ -280,6 +282,9 @@ class GravityView_Admin {
 	        'jquery-ui-css',
 	        'redux-rtl-css',
 	        'wp-color-picker',
+	        'redux-field-edd-css',
+	        'redux-field-info-css',
+	        'redux-edd_license',
 	    );
 
 		$this->remove_conflicts( $wp_styles, $wp_required_styles, 'styles' );
