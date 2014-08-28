@@ -142,6 +142,11 @@
 
 		toggleInitialVisibility: function( vcfg ) {
 
+			// There are no Gravity Forms forms
+			if( vcfg.gvSelectForm.length === 0 ) {
+				return;
+			}
+
 			// check if there's a form selected
 			if( '' === vcfg.currentFormId ) {
 				// if no form is selected, hide all the configs
@@ -207,7 +212,8 @@
 			//
 			vcfg.startFreshStatus = true;
 
-			if( vcfg.currentFormId !== '' ) {
+			// If the form has been chosen and there are GF forms to choose from
+			if( vcfg.currentFormId !== '' && vcfg.gvSelectForm.length > 0 ) {
 				vcfg.showDialog( '#gravityview_form_id_dialog' );
 			} else {
 				vcfg.startFreshContinue();

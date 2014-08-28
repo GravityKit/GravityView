@@ -197,10 +197,25 @@ class GravityView_API {
 
 		//if show as single entry link is active
 		if( !empty( $field_settings['show_as_link'] ) ) {
-			$href = self::entry_link($entry, $field);
-			$output = '<a href="'. $href .'">'. $output . '</a>';
+			$href = self::entry_link( $entry, $field );
+			$link = '<a href="'. $href .'">'. $output . '</a>';
+
+			/**
+			 * Modify the link format
+			 * @param string $link HTML output of the link
+			 * @param string $href URL of the link
+			 * @param array  $entry The GF entry array
+			 * @param  array $field_settings Settings for the particular GV field
+			 */
+			$output = apply_filters( 'gravityview_field_entry_link', $link, $href, $entry, $field_settings );
 		}
 
+		/**
+		 * Modify the field value output
+		 * @param string $output HTML value output
+		 * @param array  $entry The GF entry array
+		 * @param  array $field_settings Settings for the particular GV field
+		 */
 		$output = apply_filters( 'gravityview_field_entry_value', $output, $entry, $field_settings );
 
 		// Free up the memory
