@@ -670,6 +670,42 @@ class GravityView_Admin_Views {
 	}
 
 	/**
+	 * Get capabilities options for GravityView
+	 *
+	 * Parameters are only to pass to the filter.
+	 *
+	 * @param  string $template_id Optional. View slug
+	 * @param  string $field_id    Optional. GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+	 * @param  string $context     Optional. What context are we in? Example: `single` or `directory`
+	 * @param  string $input_type  Optional. (textarea, list, select, etc.)
+	 * @return array Associative array, with the key being the capability and the value being the label shown.
+	 */
+	static public function get_cap_choices( $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
+
+		$select_cap_choices = array(
+			'read' => __( 'Any Logged-In User', 'gravity-view' ),
+			'publish_posts' => __( 'Author Or Higher', 'gravity-view' ),
+			'gravityforms_view_entries' => __( 'Can View Gravity Forms Entries', 'gravity-view' ),
+			'delete_others_posts' => __( 'Editor Or Higher', 'gravity-view' ),
+			'gravityforms_edit_entries' => __( 'Can Edit Gravity Forms Entries', 'gravity-view' ),
+			'manage_options' => __( 'Administrator', 'gravity-view' ),
+		);
+
+		if( is_multisite() ) {
+			$select_cap_choices['manage_network'] = __('Multisite Super Admin', 'gravity-view' );
+		}
+
+		/**
+		 * Modify the capabilities shown in the field dropdown
+		 * @link  https://github.com/zackkatz/GravityView/wiki/How-to-modify-capabilities-shown-in-the-field-%22Only-visible-to...%22-dropdown
+		 * @since  1.0.1
+		 */
+		$select_cap_choices = apply_filters('gravityview_field_visibility_caps', $select_cap_choices, $template_id, $field_id, $context, $input_type );
+
+		return $select_cap_choices;
+	}
+
+	/**
 	 * Get the default options for a standard field.
 	 *
 	 * @param  string      $field_type  Type of field options to render (`field` or `widget`)
@@ -686,26 +722,6 @@ class GravityView_Admin_Views {
 		$field_options = array();
 
 		if( 'field' === $field_type ) {
-
-			$select_cap_choices = array(
-				'read' => __( 'Any Logged-In User', 'gravity-view' ),
-				'publish_posts' => __( 'Author Or Higher', 'gravity-view' ),
-				'gravityforms_view_entries' => __( 'Can View Gravity Forms Entries', 'gravity-view' ),
-				'delete_others_posts' => __( 'Editor Or Higher', 'gravity-view' ),
-				'gravityforms_edit_entries' => __( 'Can Edit Gravity Forms Entries', 'gravity-view' ),
-				'manage_options' => __( 'Administrator', 'gravity-view' ),
-			);
-
-			if( is_multisite() ) {
-				$select_cap_choices['manage_network'] = __('Multisite Super Admin', 'gravity-view' );
-			}
-
-			/**
-			 * Modify the capabilities shown in the field dropdown
-			 * @link  https://github.com/zackkatz/GravityView/wiki/How-to-modify-capabilities-shown-in-the-field-%22Only-visible-to...%22-dropdown
-			 * @since  1.0.1
-			 */
-			$select_cap_choices = apply_filters('gravityview_field_visibility_caps', $select_cap_choices, $template_id, $field_id, $context, $input_type );
 
 			// Default options - fields
 			$field_options = array(
@@ -725,7 +741,7 @@ class GravityView_Admin_Views {
 					'label' => __( 'Custom CSS Class:', 'gravity-view' ),
 					'desc' => __( 'This class will be added to the field container', 'gravity-view'),
 					'default' => '',
-					'merge_tags' => true,
+					'merge_tags' => 'force',
 					'tooltip' => 'gv_css_merge_tags',
 				),
 				'only_loggedin' => array(
@@ -736,7 +752,7 @@ class GravityView_Admin_Views {
 				'only_loggedin_cap' => array(
 					'type' => 'select',
 					'label' => __( 'Make visible for:', 'gravity-view' ),
-					'choices' => $select_cap_choices,
+					'choices' => self::get_cap_choices( $template_id, $field_id, $context, $input_type ),
 					'class' => 'widefat',
 					'default' => 'read',
 				),
@@ -1048,6 +1064,8 @@ class GravityView_Admin_Views {
 				'label_ok' => __( 'Ok', 'gravity-view' ),
 				'label_publisherror' => __( 'Error while creating the View for you. Check the settings or contact GravityView support.', 'gravity-view' ),
 				'loading_text' => esc_html__( 'Loading&hellip;', 'gravity-view' ),
+				'field_loaderror' => __( 'Error while adding the field. Please try again or contact GravityView support.', 'gravity-view' ),
+				'remove_all_fields' => __( 'Would you like to remove all fields in this zone? (You are seeing this message because you were holding down the ALT key)', 'gravity-view' ),
 			));
 
 			wp_enqueue_style( 'gravityview_views_styles', plugins_url('includes/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
