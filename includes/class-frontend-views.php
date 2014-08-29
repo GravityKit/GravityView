@@ -565,7 +565,21 @@ class GravityView_frontend {
 	 * @return boolean|string false if not, single entry id if true
 	 */
 	public static function is_single_entry() {
-		$single_entry = get_query_var( GravityView_Post_Types::get_entry_var_name() );
+		global $wp_rewrite;
+
+		$var_name = GravityView_Post_Types::get_entry_var_name();
+
+		// If not using permalinks, simply check whether the single entry $_GET parameter is set.
+		if( !empty( $wp_rewrite ) && !$wp_rewrite->using_permalinks() ) {
+			if( !empty( $_GET[ $var_name ] ) && is_numeric( $_GET[ $var_name ] ) ) {
+				return (int)$_GET[ $var_name ];
+			} else {
+				return false;
+			}
+		}
+
+		$single_entry = get_query_var( $var_name );
+
 		if( empty( $single_entry ) ){
 			return false;
 		} else {
