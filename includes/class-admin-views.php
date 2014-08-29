@@ -311,24 +311,27 @@ class GravityView_Admin_Views {
 	 * @param  string      $label_type   Is this a label for a `field` or `widget`?
 	 * @param  boolean     $add_controls   Add the field/widget controls?
 	 * @param  string      $field_options   Add field options DIV
+	 * @param  array 	   $data	Field or widget data
 	 * @return string                  HTML of output
 	 */
-	function render_label( $label_text, $field_id, $label_type = 'field', $input_type = NULL, $field_options = '' ) {
+	function render_label( $label_text, $field_id, $label_type = 'field', $input_type = NULL, $field_options = '', $data = array() ) {
 
 		$settings_title = sprintf(__('Configure %s Settings', 'gravity-view'), ucfirst($label_type));
 		$delete_title = sprintf(__('Remove %s', 'gravity-view'), ucfirst($label_type));
+		$single_link_title = __('This field links to the Single Entry', 'gravity-view');
 
 		// $field_options will just be hidden inputs if empty. Otherwise, it'll have an <ul>. Ugly hack, I know.
 		// TODO: Un-hack this
 		$hide_settings_link = ( empty( $field_options ) || strpos( $field_options, '<!-- No Options -->') > 0 ) ? 'hide-if-js' : '';
+		$settings_link = sprintf( '<a href="#settings" class="dashicons-admin-generic dashicons %s" title="%s"></a>', $hide_settings_link, esc_attr( $settings_title ) );
 
-		$settings_link = sprintf( '<a href="#settings" class="dashicons-admin-generic dashicons %s" title="%s"></a>', $hide_settings_link, $settings_title );
+		// Should we show the icon that the field is being used as a link to single entry?
+		$hide_show_as_link_class = empty( $data['show_as_link'] ) ? 'hide-if-js' : '';
+		$show_as_link = '<span class="dashicons dashicons-admin-links '.$hide_show_as_link_class.'" title="'.esc_attr( $single_link_title ).'"></span>';
 
-		$output = '<h5 class="field-id-'.esc_attr($field_id).'">';
+		$output = '<h5 class="field-id-'.esc_attr($field_id).'">' . esc_attr( $label_text );
 
-		$output .= esc_attr( $label_text );
-
-		$output .= sprintf('<span class="gv-field-controls">%s<a href="#remove" class="dashicons-dismiss dashicons" title="%s"></a></span>', $settings_link, $delete_title);
+		$output .= '<span class="gv-field-controls">'.$settings_link.$show_as_link.'<a href="#remove" class="dashicons-dismiss dashicons" title="'.esc_attr( $delete_title ) .'"></a></span>';
 
 		$output .= '</h5>';
 
@@ -361,7 +364,7 @@ class GravityView_Admin_Views {
 					continue;
 				}
 
-				echo $this->render_label($details['label'], $id, 'field', $details['type'] );
+				echo $this->render_label($details['label'], $id, 'field', $details['type'], '', $details );
 
 			} // End foreach
 		}
@@ -521,14 +524,14 @@ class GravityView_Admin_Views {
 
 										$field_options = self::render_field_options( $type, $template_id, $field['id'], $field['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone );
 
-										echo $this->render_label($field['label'], $field['id'], $type, $input_type, $field_options);
+										echo $this->render_label($field['label'], $field['id'], $type, $input_type, $field_options, $field);
 										//endif;
 
 									}
 
 								} // End if zone is not empty ?>
 
-								<span class="drop-message"><?php echo sprintf(esc_attr__('"%s" or drag existing %ss here.', 'gravity-view'), $button_label, $type ); ?></span>
+								<span class="drop-message"><?php echo sprintf(esc_attr__('"+ %s" or drag existing %ss here.', 'gravity-view'), $button_label, $type ); ?></span>
 							</div>
 							<div class="gv-droppable-area-action">
 								<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>"><?php echo '+ '.esc_html( $button_label ); ?></a>
