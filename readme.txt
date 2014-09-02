@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries.
 * Fixed: Date Created field now respects the blog's timezone setting, instead of using UTC time
 	* Modified: `template/fields/date_created.php`
 	* Added: `gravityview_date_created_adjust_timezone` filter to disable timezone support and use UTC
+* Fixed: Product sub-fields (Name, Quantity & Price) displayed properly
 * Modified: `gravityview_entry_class` filter to modify the CSS class for each entry wrapper
 * Modified: `gravityview_default_page_size` filter to modify default page size for Views (25 by default)
 * Modified: Added actions to the `list-body.php` template file:
