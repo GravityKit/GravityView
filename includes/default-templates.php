@@ -377,7 +377,7 @@ class GravityView_Preset_Job_Board extends GravityView_Default_Template_List {
 		$id = 'preset_job_board';
 
 		$settings = array(
-			'slug' => 'table',
+			'slug' => 'list',
 			'type' => 'preset',
 			'label' =>  __( 'Job Board', 'gravity-view' ),
 			'description' => __( 'Post available jobs in a simple job board.', 'gravity-view'),
