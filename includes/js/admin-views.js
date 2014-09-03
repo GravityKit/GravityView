@@ -942,6 +942,9 @@
 			// Toggle Email fields
 			vcfg.toggleVisibility( $('input:checkbox[name*=emailmailto]', $parent) , $('[name*=emailsubject],[name*=emailbody]', $parent), first_run );
 
+			// Toggle Source URL fields
+			vcfg.toggleVisibility( $('input:checkbox[name*=link_to_source]', $parent) , $('[name*=source_link_text]', $parent), first_run );
+
 
 			$('input:checkbox', $parent).attr( 'disabled', null );
 

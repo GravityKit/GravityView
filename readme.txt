@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries.
 	- Email addresses are now encrypted by default to prevent scraping by spammers
 	- Added option to display email plaintext or as a link
 	- Added subject and body settings: when the link is clicked, you can choose to have these values pre-filled
+* Added: Source URL field settings, including show as a link and custom link text
 * Fixed: Empty truncated URLs no longer get shown
 * Fixed: License Activation works when No-Conflict Mode is enabled
 * Fixed: When creating a new View, "View Type" box was visible when there were no existing Gravity Forms
