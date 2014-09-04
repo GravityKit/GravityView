@@ -56,6 +56,9 @@ class GravityView_Edit_Entry {
 
 		// Add front-end access to Gravity Forms delete file action
 		add_action('wp_ajax_nopriv_rg_delete_file', array('RGForms', 'delete_file'));
+
+		// Make sure this hook is run for non-admins
+		add_action('wp_ajax_rg_delete_file', array('RGForms', 'delete_file'));
 	}
 
 	static function getInstance() {
@@ -572,8 +575,15 @@ class GravityView_Edit_Entry {
 		$user_edit = !empty( $gravityview_view->atts['user_edit'] );
 		$current_user = wp_get_current_user();
 
+		if( empty( $user_edit ) ) {
+
+			do_action('gravityview_log_debug', 'GravityView_Edit_Entry[check_user_cap_edit_entry] User Edit is disabled. Returning false.' );
+
+			return false;
+		}
+
 		// If the logged-in user is the same as the user who created the entry, we're good.
-		if( $user_edit && is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
+		if( is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
 
 			do_action('gravityview_log_debug', sprintf( 'GravityView_Edit_Entry[check_user_cap_edit_entry] User %s created the entry.', $current_user->ID ) );
 
