@@ -156,6 +156,7 @@ class GravityView_Admin_ApproveEntries {
 	/**
 	 * Capture bulk actions - gf_entries table
 	 *
+	 * @uses  GravityView_frontend::get_search_criteria() Convert the $_POST search request into a properly formatted request.
 	 * @access public
 	 * @return void
 	 */
@@ -168,22 +169,52 @@ class GravityView_Admin_ApproveEntries {
 
 			check_admin_referer('gforms_entry_list', 'gforms_entry_list');
 
+			// The action is formatted like: approve-16 or disapprove-16, where the first word is the name of the action and the second is the ID of the form. Bulk action 2 is the bottom bulk action select form.
 			$bulk_action = !empty( $_POST['bulk_action'] ) ? $_POST['bulk_action'] : $_POST['bulk_action2'];
-			$entries = $_POST['lead'];
 
-			$entry_count = count( $entries ) > 1 ? sprintf(__("%d entries", 'gravity-view' ), count( $entries ) ) : __( '1 entry', 'gravityforms' );
+			list( $approved_status, $form_id ) = explode( '-', $bulk_action );
 
-			$bulk_action = explode( '-', $bulk_action );
-			if( !isset( $bulk_action[1] ) || empty( $entries ) ) { return false; }
+			if( empty( $form_id ) ) {
+				do_action('gravityview_log_error', '[process_bulk_action] Form ID is empty from parsing bulk action.', $bulk_action );
+				return false;
+			}
 
-			switch( $bulk_action[0] ) {
+			// All entries are set to be updated, not just the visible ones
+			if( !empty( $_POST['all_entries'] ) ) {
+
+				// Convert the current entry search into GF-formatted search criteria
+				$search = array(
+					'search_field' => isset( $_POST['f'] ) ? $_POST['f'][0] : 0,
+					'search_value' => isset( $_POST['v'][0] ) ? $_POST['v'][0] : '',
+					'search_operator' => isset( $_POST['o'][0] ) ? $_POST['o'][0] : 'contains',
+				);
+
+				$search_criteria = GravityView_frontend::get_search_criteria( $search );
+
+				// Get all the entry IDs for the form
+				$entries = gravityview_get_entry_ids( $form_id, $search_criteria );
+
+			} else {
+
+				$entries = $_POST['lead'];
+
+			}
+
+			if( empty( $entries ) ) {
+				do_action('gravityview_log_error', '[process_bulk_action] Entries are empty');
+				return false;
+			}
+
+			$entry_count = count( $entries ) > 1 ? sprintf(__("%d entries", 'gravity-view' ), count( $entries ) ) : __( '1 entry', 'gravity-view' );
+
+			switch( $approved_status ) {
 				case 'approve':
-					self::update_bulk( $entries, 1, $bulk_action[1] );
+					self::update_bulk( $entries, 1, $form_id );
 					$this->bulk_update_message = sprintf( __( "%s approved.", 'gravity-view' ), $entry_count );
 					break;
 
 				case 'unapprove':
-					self::update_bulk( $entries, 0, $bulk_action[1]);
+					self::update_bulk( $entries, 0, $form_id );
 					$this->bulk_update_message = sprintf( __( "%s disapproved.", 'gravity-view' ), $entry_count );
 					break;
 			}
@@ -199,14 +230,14 @@ class GravityView_Admin_ApproveEntries {
 	 *
 	 * @access private
 	 * @static
-	 * @param mixed $entries
-	 * @param mixed $approved
-	 * @param mixed $form_id
+	 * @param array|boolean $entries If array, array of entry IDs that are to be updated. If true: update all entries.
+	 * @param int $approved Approved status. If `0`: unapproved, if not empty, `Approved`
+	 * @param int $form_id The Gravity Forms Form ID
 	 * @return void
 	 */
 	private static function update_bulk( $entries, $approved, $form_id ) {
 
-		if( empty($entries) || !is_array($entries) ) { return false; }
+		if( empty($entries) || ( $entries !== true && !is_array($entries) ) ) { return false; }
 
 		$approved = empty( $approved ) ? 0 : 'Approved';
 
@@ -214,7 +245,7 @@ class GravityView_Admin_ApproveEntries {
 		$approved_column_id = self::get_approved_column( $form_id );
 
 		foreach( $entries as $entry_id ) {
-			self::update_approved( $entry_id, $approved, $form_id, $approved_column_id );
+			self::update_approved( (int)$entry_id, $approved, $form_id, $approved_column_id );
 		}
 	}
 
@@ -230,7 +261,7 @@ class GravityView_Admin_ApproveEntries {
 	 * @param int $approved (default: 0)
 	 * @param int $form_id (default: 0)
 	 * @param int $approvedcolumn (default: 0)
-	 * @return void
+	 * @return boolean True: It worked; False: it failed
 	 */
 	public static function update_approved( $entry_id = 0, $approved = 0, $form_id = 0, $approvedcolumn = 0) {
 
@@ -242,9 +273,6 @@ class GravityView_Admin_ApproveEntries {
 			$approvedcolumn = self::get_approved_column( $form_id );
 		}
 
-		$current_user = wp_get_current_user();
-		$user_data = get_userdata($current_user->ID);
-
 		//get the entry
 		$entry = GFAPI::get_entry( $entry_id );
 
@@ -253,23 +281,27 @@ class GravityView_Admin_ApproveEntries {
 		$result = GFAPI::update_entry( $entry );
 
 		// update entry meta
-		if( function_exists('gform_update_meta') ) { gform_update_meta( $entry_id, 'is_approved', $approved); }
+		if( function_exists('gform_update_meta') ) {
+			gform_update_meta( $entry_id, 'is_approved', $approved);
+		}
 
 		// add note to entry
 		if( $result === true ) {
 			$note = empty( $approved ) ? __( 'Disapproved the Entry for GravityView', 'gravity-view' ) : __( 'Approved the Entry for GravityView', 'gravity-view' );
 			if( class_exists( 'RGFormsModel' ) ){
-				RGFormsModel::add_note( $entry_id, $current_user->ID, $user_data->display_name, $note );
+				RGFormsModel::add_note( $entry_id, get_current_user_id(), $user_data->display_name, $note );
 			}
 
 		}
 
+		return $result;
+
 	}
 	/**
 	 * Update the is_approved meta whenever the entry is updated
-	 * @param  [type] $form     [description]
-	 * @param  [type] $entry_id [description]
-	 * @return [type]           [description]
+	 * @param  array $form     Gravity Forms form array
+	 * @param  int $entry_id ID of the Gravity Forms entry
+	 * @return void
 	 */
 	public static function update_approved_meta( $form, $entry_id = NULL ) {
 
@@ -279,31 +311,37 @@ class GravityView_Admin_ApproveEntries {
 		$approved = !empty( $entry[ $approvedcolumn ] ) ? $entry[ $approvedcolumn ] : 0;
 
 		// update entry meta
-		if( function_exists('gform_update_meta') ) { gform_update_meta( $entry_id, 'is_approved', $approved ); }
+		if( function_exists('gform_update_meta') ) {
+			gform_update_meta( $entry_id, 'is_approved', $approved );
+		}
 
 	}
 
 
+	/**
+	 * Approve/Disapprove entries using the × or ✓ icons in the GF Entries screen
+	 * @return void
+	 */
 	public function ajax_update_approved() {
 		$response = false;
 
 		if( empty( $_POST['entry_id'] ) || empty( $_POST['form_id'] ) ) {
-			echo $response;
-			die();
+
+			do_action( 'gravityview_log_error', 'GravityView_Admin_ApproveEntries[ajax_update_approved] entry_id or form_id are empty.', $_POST );
+
+			exit( false );
 		}
 
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxgfentries' ) ) {
-			echo $response;
-			die();
+
+			do_action( 'gravityview_log_error', 'GravityView_Admin_ApproveEntries[ajax_update_approved] Security check failed.', $_POST );
+
+			exit( false );
 		}
 
-		$this->update_approved( $_POST['entry_id'], $_POST['approved'], $_POST['form_id'] );
+		$result = self::update_approved( $_POST['entry_id'], $_POST['approved'], $_POST['form_id'] );
 
-		$response = true;
-		echo $response;
-		die();
-
-
+		exit( $result );
 	}
 
 

@@ -410,6 +410,13 @@ class GravityView_Edit_Entry {
 		return $form;
 	}
 
+	/**
+	 * Process validation for a edit entry submission
+	 *
+	 * Sets the `is_valid` object var
+	 *
+	 * @return void
+	 */
 	function validate() {
 		/**
 		 * For some crazy reason, Gravity Forms doesn't validate Edit Entry form submissions.
@@ -474,6 +481,8 @@ class GravityView_Edit_Entry {
 		}
 
 		$validation_results['is_valid'] = $gv_valid;
+
+		do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Validation results.', $validation_results );
 
 		return $validation_results;
 	}
@@ -548,6 +557,11 @@ class GravityView_Edit_Entry {
 	public static function check_user_cap_edit_entry( $entry ) {
 		global $gravityview_view;
 
+		// Or if they can edit any entries (as defined in Gravity Forms), we're good.
+		if( GFCommon::current_user_can_any("gravityforms_edit_entries") ) {
+			return true;
+		}
+
 		if( !isset( $entry['created_by'] ) ) {
 
 			do_action('gravityview_log_error', 'GravityView_Edit_Entry[check_user_cap_edit_entry] Entry `created_by` doesn\'t exist.');
@@ -563,11 +577,6 @@ class GravityView_Edit_Entry {
 
 			do_action('gravityview_log_debug', sprintf( 'GravityView_Edit_Entry[check_user_cap_edit_entry] User %s created the entry.', $current_user->ID ) );
 
-			return true;
-		}
-
-		// Or if they can edit any entries (as defined in Gravity Forms), we're good.
-		if( GFCommon::current_user_can_any("gravityforms_edit_entries") ) {
 			return true;
 		}
 

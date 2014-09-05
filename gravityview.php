@@ -105,12 +105,19 @@ final class GravityView_Plugin {
 
 		// Add logging
 		require_once( GRAVITYVIEW_DIR . 'includes/class-logging.php');
+
 		require_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
-		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/class-data.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-frontend-views.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
 
-
+		/**
+		 * Encrypt Email Addresses
+		 * @link  https://github.com/jnicol/standalone-phpenkoder
+		 */
+		if( !class_exists( 'StandalonePHPEnkoder' ) ) {
+			include_once( GRAVITYVIEW_DIR . 'includes/lib/standalone-phpenkoder/StandalonePHPEnkoder.php' );
+		}
 
 
 		// Load plugin text domain

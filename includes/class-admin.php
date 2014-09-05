@@ -58,6 +58,7 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/fields/created-by.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/date.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/website.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/email.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/time.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/entry-date.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/fileupload.php' );
@@ -80,8 +81,9 @@ class GravityView_Admin {
 	 * @return void
 	 */
 	public static function plugin_action_links( $links ) {
-		$support_link = 'https://gravityview.co/support/documentation/';
-		$action = array( '<a href="' . $support_link . '">'. esc_html__( 'Support', 'gravity-view' ) .'</a>' );
+
+		$action = array( '<a href="https://gravityview.co/support/documentation/">'. esc_html__( 'Support', 'gravity-view' ) .'</a>' );
+
 		return array_merge( $action, $links );
 	}
 
@@ -94,12 +96,39 @@ class GravityView_Admin {
 	function post_updated_messages( $messages, $bulk_counts = NULL ) {
 		global $post;
 
-		$post_id = isset($_GET['post']) ? intval($_GET['post']) : NULL;
+		$post_id = isset($_GET['post']) ? intval($_GET['post']) : ( is_object( $post ) && isset( $post->ID ) ? $post->ID : NULL );
 
 		// By default, there will only be one item being modified.
 		// When in the `bulk_post_updated_messages` filter, there will be passed a number
 		// of modified items that will override this array.
 		$bulk_counts = is_null( $bulk_counts ) ? array( 'updated' => 1 , 'locked' => 1 , 'deleted' => 1 , 'trashed' => 1, 'untrashed' => 1 ) : $bulk_counts;
+
+
+		// If we're starting fresh, a new form was created.
+		// We should let the user know this is the case.
+		$start_fresh = get_post_meta( $post_id, '_gravityview_start_fresh', true );
+
+		$new_form_text = '';
+
+		if( !empty( $start_fresh ) ) {
+
+			// Get the form that was created
+			$connected_form = gravityview_get_form_id( $post_id );
+
+			if( !empty( $connected_form ) ) {
+				$form = gravityview_get_form( $connected_form );
+				$form_name = esc_attr( $form['title'] );
+				$image = '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:0 1em 1.6em 0;" />';
+				$new_form_text .= '<h3>'.$image.sprintf( __( 'A new form was created for this View: "%s"', 'gravity-view' ), $form_name ).'</h3>';
+				$new_form_text .=  sprintf( __( '%sThere are no entries for the new form, so the View will also be empty.%s To start collecting entries, you can add submissions through %sthe preview form%s and also embed the form on a post or page using this code: %s
+
+					You can %sedit the form%s in Gravity Forms and the updated fields will be available here. Don&rsquo;t forget to %scustomize the form settings%s.
+					', 'gravity-view' ), '<strong>', '</strong>', '<a href="'.site_url( '?gf_page=preview&amp;id='.$connected_form ).'">', '</a>', '<code>[gravityform id="'.$connected_form.'" name="'.$form_name.'"]</code>', '<a href="'.admin_url( 'admin.php?page=gf_edit_forms&amp;id='.$connected_form ).'">', '</a>', '<a href="'.admin_url( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;id='.$connected_form ).'">', '</a>');
+				$new_form_text = wpautop( $new_form_text );
+
+				delete_post_meta( $post_id, '_gravityview_start_fresh' );
+			}
+		}
 
 		$messages['gravityview'] = array(
 			0  => '', // Unused. Messages start at index 1.
@@ -109,14 +138,14 @@ class GravityView_Admin {
 			4  => sprintf(__( 'View updated. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 			/* translators: %s: date and time of the revision */
 			5  => isset( $_GET['revision'] ) ? sprintf( __( 'View restored to revision from %s', 'gravity-view' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-			6  => sprintf(__( 'View published. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
-			7  => sprintf(__( 'View saved. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
+			6  => sprintf(__( 'View published. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
+			7  => sprintf(__( 'View saved. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
 			8  => __( 'View submitted.', 'gravity-view' ),
 			9  => sprintf(
-				__( 'View scheduled for: <strong>%1$s</strong>.', 'gravity-view' ),
+				__( 'View scheduled for: %1$s.', 'gravity-view' ),
 				// translators: Publish box date format, see http://php.net/date
-				date_i18n( __( 'M j, Y @ G:i', 'gravity-view' ), strtotime( ( isset( $post->post_date ) ? $post->post_date : NULL ) ) )
-			),
+				date_i18n( __( 'M j, Y @ G:i', 'gravity-view' ), strtotime( ( isset( $post->post_date ) ? $post->post_date : NULL )  ) )
+			) . $new_form_text,
 			10  => sprintf(__( 'View draft updated. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 
 			/**
@@ -190,6 +219,8 @@ class GravityView_Admin {
             'jquery-ui-slider',
             'wp-color-picker',
             'jquery-ui-accordion',
+            'redux-edd_license',
+            'redux-field-edd-js',
             );
 
 		$this->remove_conflicts( $wp_scripts, $wp_required_scripts, 'scripts' );
@@ -251,6 +282,9 @@ class GravityView_Admin {
 	        'jquery-ui-css',
 	        'redux-rtl-css',
 	        'wp-color-picker',
+	        'redux-field-edd-css',
+	        'redux-field-info-css',
+	        'redux-edd_license',
 	    );
 
 		$this->remove_conflicts( $wp_styles, $wp_required_styles, 'styles' );
@@ -364,6 +398,11 @@ class GravityView_Admin {
 	 * @return void
 	 */
 	public static function check_gravityforms() {
+
+		// Bypass other checks: if the class exists and the version's right, we're good.
+		if( class_exists( 'GFCommon' ) && true === version_compare( GFCommon::$version, GV_MIN_GF_VERSION, ">=" ) ) {
+			return true;
+		}
 
 		$image = '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft gv-astronaut" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin: 0 10px 10px 0;" />';
 

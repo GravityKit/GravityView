@@ -16,6 +16,29 @@ Beautifully display your Gravity Forms entries.
 
 == Changelog ==
 
+= 1.1.6 =
+* Fixed: Approve / Disapprove all entries using Gravity Forms bulk edit entries form (previously, only visible entries were affected)
+* Added: Email field settings
+	- Email addresses are now encrypted by default to prevent scraping by spammers
+	- Added option to display email plaintext or as a link
+	- Added subject and body settings: when the link is clicked, you can choose to have these values pre-filled
+* Fixed: Empty truncated URLs no longer get shown
+* Fixed: License Activation works when No-Conflict Mode is enabled
+* Fixed: When creating a new View, "View Type" box was visible when there were no existing Gravity Forms
+* Modified: `gravityview_entry_class` filter to modify the CSS class for each entry wrapper
+* Modified: `gravityview_default_page_size` filter to modify default page size for Views (25 by default)
+* Modified: Added actions to the `list-body.php` template file:
+	- `gravityview_list_body_before`: Before the entry output
+	- `gravityview_entry_before`: Inside the entry wrapper
+	- `gravityview_entry_title_before`, `gravityview_entry_title_after`: Before and after the entry title and subtitle output
+	- `gravityview_entry_content_before`, `gravityview_entry_content_after`: Before and after the entry content area (image and description zones)
+	- `gravityview_entry_footer_before`, `gravityview_entry_footer_after`: Before and after the entry footer
+	- `gravityview_entry_after`: Before the entry wrapper closing tag
+	- `gravityview_list_body_after`: After entry output
+* Modified: Added `gravityview_get_entry_ids()` function to fetch array of entry IDs (not full entry arrays) that match a search result
+* Tweak: Added helper text when a new form is created by GravityView
+* Tweak: Removed duplicate `GravityView_frontend::hide_field_check_conditions()` and `GravityView_frontend::filter_fields()` methods
+
 = 1.1.5 =
 * Added: "Edit" link in Gravity Forms Entries screen
 * Fixed: Show tooltips when No Conflict Mode is enabled

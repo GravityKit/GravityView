@@ -142,6 +142,11 @@
 
 		toggleInitialVisibility: function( vcfg ) {
 
+			// There are no Gravity Forms forms
+			if( vcfg.gvSelectForm.length === 0 ) {
+				return;
+			}
+
 			// check if there's a form selected
 			if( '' === vcfg.currentFormId ) {
 				// if no form is selected, hide all the configs
@@ -207,7 +212,8 @@
 			//
 			vcfg.startFreshStatus = true;
 
-			if( vcfg.currentFormId !== '' ) {
+			// If the form has been chosen and there are GF forms to choose from
+			if( vcfg.currentFormId !== '' && vcfg.gvSelectForm.length > 0 ) {
 				vcfg.showDialog( '#gravityview_form_id_dialog' );
 			} else {
 				vcfg.startFreshContinue();
@@ -877,6 +883,9 @@
 
 			// Custom Label should show only when "Show Label" checkbox is checked
 			vcfg.toggleVisibility( $('input:checkbox[name*=show_label]', $parent) , $('[name*=custom_label]', $parent), first_run );
+
+			// Toggle Email fields
+			vcfg.toggleVisibility( $('input:checkbox[name*=emailmailto]', $parent) , $('[name*=emailsubject],[name*=emailbody]', $parent), first_run );
 
 
 			$('input:checkbox', $parent).attr( 'disabled', null );
