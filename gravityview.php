@@ -123,7 +123,7 @@ final class GravityView_Plugin {
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ), 1 );
 
-		if( ! is_admin() ) {
+		if( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 			add_action( 'init', array( $this, 'frontend_actions' ), 20 );
 		}
 

@@ -59,7 +59,8 @@ class GravityView_frontend {
 	function parse_content() {
 		global $post;
 
-		if( is_admin() ) { return; }
+		if( is_admin() && ( !defined( 'DOING_AJAX' ) || defined( 'DOING_AJAX' ) && ! DOING_AJAX ) ) { return; }
+
 		$this->single_entry = self::is_single_entry();
 		$this->entry = ( $this->single_entry ) ? gravityview_get_entry( $this->single_entry ) : false;
 		$this->is_gravityview_post_type = ( get_post_type( $post ) === 'gravityview' );
@@ -238,6 +239,15 @@ class GravityView_frontend {
 		if( empty( $passed_args['id'] ) ) {
 			do_action( 'gravityview_log_error', '[render_view] Returning; no ID defined.', $passed_args );
 			return;
+		}
+
+		// Solve problem when loading content via admin-ajax.php
+		// @hack
+		if( empty( $this->gv_output_data ) ) {
+
+			do_action( 'gravityview_log_error', '[render_view] gv_output_data not defined; parsing content.', $passed_args );
+
+			$this->parse_content();
 		}
 
 		$view_id = $passed_args['id'];
