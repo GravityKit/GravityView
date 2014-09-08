@@ -590,12 +590,13 @@ hr{
 	ul {
 		list-style: none;
 		margin: 0;
-		padding: 1.5em;
+		padding: 1em 1.5em;
 	}
 
 	ul li {
 		display: block;
-		margin-bottom: 1em;
+		margin: 0;
+		padding: .5em 0 .75em;
 		font-size: 14px;
 		clear: left;
 	}
