@@ -92,26 +92,82 @@ if( !function_exists('gravityview_get_form_fields') ) {
 		}
 
 		$fields = array();
+		$has_product_fields = false;
+		$has_post_fields = false;
 
 		if( $add_default_properties ) {
 			$form = RGFormsModel::add_default_properties( $form );
 		}
 
 		if( $form ) {
+
 			foreach( $form['fields'] as $field ) {
 
 				if( $include_parent_field || empty( $field['inputs'] ) ) {
-					$fields[ $field['id'] ] = array( 'label' => $field['label'], 'type' => $field['type'] );
+					$fields[ $field['id'] ] = array(
+						'label' => $field['label'],
+						'type' => $field['type'],
+						'adminLabel' => $field['adminLabel'],
+						'adminOnly' => $field['adminOnly'],
+					);
 				}
 
 				if( $add_default_properties && !empty( $field['inputs'] ) ) {
 					foreach( $field['inputs'] as $input ) {
-						$fields[ (string)$input['id'] ] = array( 'label' => $input['label'].' ('.$field['label'].')', 'type' => $field['type'] );
+						$fields[ (string)$input['id'] ] = array(
+							'label' => $input['label'].' ('.$field['label'].')',
+							'type' => $field['type'],
+							'adminLabel' => $field['adminLabel'],
+							'adminOnly' => $field['adminOnly'],
+						);
 					}
 
 				}
 
+				if( GFCommon::is_product_field( $field['type'] ) ){
+					$has_product_fields = true;
+				}
+
 			}
+		}
+
+		if( $has_product_fields ) {
+
+			$fields['payment_status'] = array(
+			    "label" => __( 'Payment Status', 'gravity-view' ),
+			    "type" => 'payment_status'
+			);
+
+			$fields['payment_date'] = array(
+			    "label" => __( 'Payment Date', 'gravity-view' ),
+			    "type" => 'payment_date',
+			);
+
+			$fields['payment_amount'] = array(
+			    "label" => __( 'Payment Amount', 'gravity-view' ),
+			    "type" => 'payment_amount'
+			);
+
+			$fields['payment_method'] = array(
+			    "label" => __( 'Payment Method', 'gravity-view' ),
+			    "type" => 'payment_method'
+			);
+
+			$fields['is_fulfilled'] = array(
+			    "label" => __( 'Is Fulfilled', 'gravity-view' ),
+			    "type" => 'is_fulfilled',
+			);
+
+			$fields['transaction_id'] = array(
+			    "label" => __( 'Transaction ID', 'gravity-view' ),
+			    "type" => 'transaction_id',
+			);
+
+			$fields['transaction_type'] = array(
+			    "label" => __( 'Transaction Type', 'gravity-view' ),
+			    "type" => 'transaction_type',
+			);
+
 		}
 
 		return $fields;
