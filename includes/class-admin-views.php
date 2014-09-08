@@ -176,6 +176,9 @@ class GravityView_Admin_Views {
 			echo __( 'The connected form can not be found; it may no longer exist.', 'gravity-view' );
 		}
 
+		$form_link = '';
+		$links = array();
+
 		if( GFCommon::current_user_can_any('gravityforms_edit_forms') ) {
 			$form_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;id=%d', $form_id ) );
 			$form_link = sprintf( '<strong><a href="%s" class="row-title">%s</a></strong>', $form_url , $form['title'] );
@@ -311,27 +314,24 @@ class GravityView_Admin_Views {
 	 * @param  string      $label_type   Is this a label for a `field` or `widget`?
 	 * @param  boolean     $add_controls   Add the field/widget controls?
 	 * @param  string      $field_options   Add field options DIV
-	 * @param  array 	   $data	Field or widget data
 	 * @return string                  HTML of output
 	 */
-	function render_label( $label_text, $field_id, $label_type = 'field', $input_type = NULL, $field_options = '', $data = array() ) {
+	function render_label( $label_text, $field_id, $label_type = 'field', $input_type = NULL, $field_options = '' ) {
 
 		$settings_title = sprintf(__('Configure %s Settings', 'gravity-view'), ucfirst($label_type));
 		$delete_title = sprintf(__('Remove %s', 'gravity-view'), ucfirst($label_type));
-		$single_link_title = __('This field links to the Single Entry', 'gravity-view');
 
 		// $field_options will just be hidden inputs if empty. Otherwise, it'll have an <ul>. Ugly hack, I know.
 		// TODO: Un-hack this
 		$hide_settings_link = ( empty( $field_options ) || strpos( $field_options, '<!-- No Options -->') > 0 ) ? 'hide-if-js' : '';
-		$settings_link = sprintf( '<a href="#settings" class="dashicons-admin-generic dashicons %s" title="%s"></a>', $hide_settings_link, esc_attr( $settings_title ) );
 
-		// Should we show the icon that the field is being used as a link to single entry?
-		$hide_show_as_link_class = empty( $data['show_as_link'] ) ? 'hide-if-js' : '';
-		$show_as_link = '<span class="dashicons dashicons-admin-links '.$hide_show_as_link_class.'" title="'.esc_attr( $single_link_title ).'"></span>';
+		$settings_link = sprintf( '<a href="#settings" class="dashicons-admin-generic dashicons %s" title="%s"></a>', $hide_settings_link, $settings_title );
 
-		$output = '<h5 class="field-id-'.esc_attr($field_id).'">' . esc_attr( $label_text );
+		$output = '<h5 class="field-id-'.esc_attr($field_id).'">';
 
-		$output .= '<span class="gv-field-controls">'.$settings_link.$show_as_link.'<a href="#remove" class="dashicons-dismiss dashicons" title="'.esc_attr( $delete_title ) .'"></a></span>';
+		$output .= esc_attr( $label_text );
+
+		$output .= sprintf('<span class="gv-field-controls">%s<a href="#remove" class="dashicons-dismiss dashicons" title="%s"></a></span>', $settings_link, $delete_title);
 
 		$output .= '</h5>';
 
@@ -364,7 +364,11 @@ class GravityView_Admin_Views {
 					continue;
 				}
 
-				echo $this->render_label($details['label'], $id, 'field', $details['type'], '', $details );
+				if( !empty( $details['type'] ) ) {
+					$details['input_type'] = $details['type'];
+				}
+
+				echo new GravityView_Admin_View_Field( $details['label'], $id, $details );
 
 			} // End foreach
 		}
@@ -380,7 +384,8 @@ class GravityView_Admin_Views {
 				'field_id' => 'all-fields',
 				'label_type' => 'field',
 				'input_type' => NULL,
-				'field_options' => NULL
+				'field_options' => NULL,
+				'settings_html'	=> NULL,
 			)
 		));
 
@@ -393,12 +398,19 @@ class GravityView_Admin_Views {
 					'field_id' => NULL,
 					'label_type' => NULL,
 					'input_type' => NULL,
-					'field_options' => NULL
+					'field_options' => NULL,
+					'settings_html'	=> NULL,
 				));
 
+				// Backward compat.
+				if( !empty( $item['field_options'] ) ) {
+					// Use settings_html from now on.
+					$item['settings_html'] = $item['field_options'];
+				}
+
 				// Render a label for each of them
-				echo $this->render_label( $item['label_text'], $item[
-					'field_id'], $item['label_type'], $item['input_type'], $item['field_options']);
+				echo new GravityView_Admin_View_Field( $item['label_text'], $item['field_id'], $item );
+
 			}
 		}
 
@@ -412,15 +424,33 @@ class GravityView_Admin_Views {
 	 */
 	function get_entry_default_fields($form, $zone) {
 		$entry_default_fields = array(
-			'id' => array( 'label' => __('Entry ID', 'gravity-view'), 'type' => 'id'),
-			'date_created' => array( 'label' => __('Entry Date', 'gravity-view'), 'type' => 'date_created'),
-			'source_url' => array( 'label' => __('Source URL', 'gravity-view'), 'type' => 'source_url'),
-			'ip' => array( 'label' => __('User IP', 'gravity-view'), 'type' => 'ip'),
-			'created_by' => array( 'label' => __('User', 'gravity-view'), 'type' => 'created_by'),
+			'id' => array(
+				'label' => __('Entry ID', 'gravity-view'),
+				'type' => 'id'
+			),
+			'date_created' => array(
+				'label' => __('Entry Date', 'gravity-view'),
+				'type' => 'date_created'
+			),
+			'source_url' => array(
+				'label' => __('Source URL', 'gravity-view'),
+				'type' => 'source_url'
+			),
+			'ip' => array(
+				'label' => __('User IP', 'gravity-view'),
+				'type' => 'ip'
+			),
+			'created_by' => array(
+				'label' => __('User', 'gravity-view'),
+				'type' => 'created_by'
+			),
         );
 
         if('single' !== $zone) {
-        	$entry_default_fields['entry_link'] = array('label' => __('Link to Entry', 'gravity-view'), 'type' => 'entry_link');
+        	$entry_default_fields['entry_link'] = array(
+        		'label' => __('Link to Entry', 'gravity-view'),
+        		'type' => 'entry_link'
+        	);
         }
 
         return apply_filters( 'gravityview_entry_default_fields', $entry_default_fields, $form, $zone);
@@ -471,7 +501,7 @@ class GravityView_Admin_Views {
 		if( !empty( $widgets ) ) :
 			foreach( $widgets as $id => $details ) :
 
-				echo $this->render_label($details['label'], $id, 'widget');
+				echo new GravityView_Admin_View_Widget( $details['label'], $id, $details );
 
 			endforeach;
 		endif;
@@ -507,7 +537,7 @@ class GravityView_Admin_Views {
 
 				<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
 
-					<?php foreach( $areas as $area ) : ?>
+					<?php foreach( $areas as $area ) : 	?>
 
 						<div class="gv-droppable-area">
 							<div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
@@ -519,12 +549,18 @@ class GravityView_Admin_Views {
 									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) {
 
 										$input_type = isset($available_fields[ $field['id'] ]['type']) ? $available_fields[ $field['id'] ]['type'] : NULL;
+										$field_options = self::render_field_options( $type, $template_id, $field['id'], $field['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone );
+
+										$item = array(
+											'input_type' => $input_type,
+											'settings_html' => $field_options,
+											'label_type' => $type
+										);
 
 										//if( !empty( $available_fields[ $field['id'] ] ) ) :
 
-										$field_options = self::render_field_options( $type, $template_id, $field['id'], $field['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone );
+										echo new GravityView_Admin_View_Item( $field['label'], $field['id'], $item, $field );
 
-										echo $this->render_label($field['label'], $field['id'], $type, $input_type, $field_options, $field);
 										//endif;
 
 									}
@@ -616,6 +652,7 @@ class GravityView_Admin_Views {
 	/**
 	 * Render Field Options html (shown through a dialog box)
 	 *
+	 * @todo Move to `class-admin-label.php`
 	 * @access public
 	 * @param string $template_id
 	 * @param string $field_id
@@ -741,7 +778,7 @@ class GravityView_Admin_Views {
 					'label' => __( 'Custom CSS Class:', 'gravity-view' ),
 					'desc' => __( 'This class will be added to the field container', 'gravity-view'),
 					'default' => '',
-					'merge_tags' => 'force',
+					'merge_tags' => true,
 					'tooltip' => 'gv_css_merge_tags',
 				),
 				'only_loggedin' => array(
