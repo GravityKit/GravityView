@@ -678,6 +678,26 @@ class GravityView_Widget {
 	}
 
 	/**
+	 * Get the widget settings
+	 * @return array|null   Settings array; NULL if not set
+	 */
+	public function get_settings() {
+		return !empty( $this->settings ) ? $this->settings : NULL;
+	}
+
+	/**
+	 * Get a setting by the setting key
+	 * @param  string $key Key for the setting
+	 * @return mixed|null      Value of the setting; NULL if not set
+	 */
+	public function get_setting( $key ) {
+		if( isset( $this->settings ) && is_array( $this->settings ) ) {
+
+			return isset( $this->settings[ $key ] ) ? $this->settings[ $key ] : NULL;
+		}
+	}
+
+	/**
 	 * Do shortcode if the Widget's shortcode exists.
 	 * @param  string $text   Widget text to check
 	 * @param  null|WP_Widget Empty if not called by WP_Widget, or a WP_Widget instance

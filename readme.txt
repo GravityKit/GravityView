@@ -55,6 +55,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 * Modified: `template/fields/date_created.php` file
 * Added: `gravityview_date_created_adjust_timezone` filter to disable timezone support and use UTC (returns boolean)
+* Added: `get_settings()` and `get_setting()` methods to the `GravityView_Widget` class. This allows easier access to widget settings.
 * Modified: Added `gravityview_js_localization` filter to add Javascript localization
 * Added: `gravityview_datepicker_settings` filter to modify the datepicker settings using the setting names from the [jQuery DatePicker options](http://api.jqueryui.com/datepicker/)
 * Modified: `gravityview_entry_class` filter to modify the CSS class for each entry wrapper
