@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-09-08 13:49-0700\n"
-"PO-Revision-Date: 2014-09-08 20:22+0000\n"
+"POT-Creation-Date: 2014-09-08 17:23-0700\n"
+"PO-Revision-Date: 2014-09-08 23:29+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Bengali (http://www.transifex.com/projects/p/gravityview/language/bn/)\n"
 "MIME-Version: 1.0\n"
@@ -720,11 +720,11 @@ msgstr ""
 msgid "Sort by field"
 msgstr "ফিল্ড অনুসারে সাজান"
 
-#: includes/class-data.php:318 includes/connector-functions.php:468
+#: includes/class-data.php:318 includes/connector-functions.php:467
 msgid "Default"
 msgstr "ডিফল্ট"
 
-#: includes/class-data.php:319 includes/connector-functions.php:481
+#: includes/class-data.php:319 includes/connector-functions.php:480
 msgid "Date Created"
 msgstr "নির্মাণের তারিখ"
 
@@ -952,31 +952,31 @@ msgstr "গ্রাভিটি ভিউ এর বিন্যাস"
 msgid "Follow us on Google+"
 msgstr "গুগল+ এ আমাদের অনুসরণ করুন"
 
-#: includes/connector-functions.php:137
+#: includes/connector-functions.php:136
 msgid "Payment Status"
 msgstr ""
 
-#: includes/connector-functions.php:142
+#: includes/connector-functions.php:141
 msgid "Payment Date"
 msgstr ""
 
-#: includes/connector-functions.php:147
+#: includes/connector-functions.php:146
 msgid "Payment Amount"
 msgstr ""
 
-#: includes/connector-functions.php:152
+#: includes/connector-functions.php:151
 msgid "Payment Method"
 msgstr ""
 
-#: includes/connector-functions.php:157
+#: includes/connector-functions.php:156
 msgid "Is Fulfilled"
 msgstr ""
 
-#: includes/connector-functions.php:162
+#: includes/connector-functions.php:161
 msgid "Transaction ID"
 msgstr ""
 
-#: includes/connector-functions.php:167
+#: includes/connector-functions.php:166
 msgid "Transaction Type"
 msgstr ""
 
@@ -1149,253 +1149,33 @@ msgstr "অনুসন্ধান বার দেখান"
 msgid "Use this field as a search filter"
 msgstr "এই ফিল্ডটি অনুসন্ধান ছাকঁনি হিসেবে ব্যবহার করুন"
 
-#: includes/default-widgets.php:325
+#: includes/default-widgets.php:328
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "বন্ধ"
 
-#: includes/default-widgets.php:326
+#: includes/default-widgets.php:329
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/default-widgets.php:327
+#: includes/default-widgets.php:330
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/default-widgets.php:328
+#: includes/default-widgets.php:331
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/default-widgets.php:330
-msgctxt "Full month name"
-msgid "January"
-msgstr ""
-
-#: includes/default-widgets.php:331
-msgctxt "Full month name"
-msgid "February"
-msgstr ""
-
 #: includes/default-widgets.php:332
-msgctxt "Full month name"
-msgid "March"
+msgctxt "Week in calendar"
+msgid "Week"
 msgstr ""
 
 #: includes/default-widgets.php:333
-msgctxt "Full month name"
-msgid "April"
-msgstr ""
-
-#: includes/default-widgets.php:334
-msgctxt "Full month name"
-msgid "May"
-msgstr ""
-
-#: includes/default-widgets.php:335
-msgctxt "Full month name"
-msgid "June"
-msgstr ""
-
-#: includes/default-widgets.php:336
-msgctxt "Full month name"
-msgid "July"
-msgstr ""
-
-#: includes/default-widgets.php:337
-msgctxt "Full month name"
-msgid "August"
-msgstr ""
-
-#: includes/default-widgets.php:338
-msgctxt "Full month name"
-msgid "September"
-msgstr ""
-
-#: includes/default-widgets.php:339
-msgctxt "Full month name"
-msgid "October"
-msgstr ""
-
-#: includes/default-widgets.php:340
-msgctxt "Full month name"
-msgid "November"
-msgstr ""
-
-#: includes/default-widgets.php:341
-msgctxt "Full month name"
-msgid "December"
-msgstr ""
-
-#: includes/default-widgets.php:344
-msgctxt "Short month name for January"
-msgid "Jan"
-msgstr ""
-
-#: includes/default-widgets.php:345
-msgctxt "Short month name for February"
-msgid "Feb"
-msgstr ""
-
-#: includes/default-widgets.php:346
-msgctxt "Short month name for March"
-msgid "Mar"
-msgstr ""
-
-#: includes/default-widgets.php:347
-msgctxt "Short month name for April"
-msgid "Apr"
-msgstr ""
-
-#: includes/default-widgets.php:348
-msgctxt "Short month name for May"
-msgid "May"
-msgstr ""
-
-#: includes/default-widgets.php:349
-msgctxt "Short month name for June"
-msgid "Jun"
-msgstr ""
-
-#: includes/default-widgets.php:350
-msgctxt "Short month name for July"
-msgid "Jul"
-msgstr ""
-
-#: includes/default-widgets.php:351
-msgctxt "Short month name for August"
-msgid "Aug"
-msgstr ""
-
-#: includes/default-widgets.php:352
-msgctxt "Short month name for September"
-msgid "Sep"
-msgstr ""
-
-#: includes/default-widgets.php:353
-msgctxt "Short month name for October"
-msgid "Oct"
-msgstr ""
-
-#: includes/default-widgets.php:354
-msgctxt "Short month name for November"
-msgid "Nov"
-msgstr ""
-
-#: includes/default-widgets.php:355
-msgctxt "Short month name for December"
-msgid "Dec"
-msgstr ""
-
-#: includes/default-widgets.php:358
-msgctxt "Full day names"
-msgid "Sunday"
-msgstr ""
-
-#: includes/default-widgets.php:359
-msgctxt "Full day names"
-msgid "Monday"
-msgstr ""
-
-#: includes/default-widgets.php:360
-msgctxt "Full day names"
-msgid "Tuesday"
-msgstr ""
-
-#: includes/default-widgets.php:361
-msgctxt "Full day names"
-msgid "Wednesday"
-msgstr ""
-
-#: includes/default-widgets.php:362
-msgctxt "Full day names"
-msgid "Thursday"
-msgstr ""
-
-#: includes/default-widgets.php:363
-msgctxt "Full day names"
-msgid "Friday"
-msgstr ""
-
-#: includes/default-widgets.php:364
-msgctxt "Full day names"
-msgid "Saturday"
-msgstr ""
-
-#: includes/default-widgets.php:367
-msgctxt "Short day name for Sunday"
-msgid "Sun"
-msgstr ""
-
-#: includes/default-widgets.php:368
-msgctxt "Short day name for Monday"
-msgid "Mon"
-msgstr ""
-
-#: includes/default-widgets.php:369
-msgctxt "Short day name for Tuesday"
-msgid "Tues"
-msgstr ""
-
-#: includes/default-widgets.php:370
-msgctxt "Short day name for Wednesday"
-msgid "Wed"
-msgstr ""
-
-#: includes/default-widgets.php:371
-msgctxt "Short day name for Thursday"
-msgid "Thur"
-msgstr ""
-
-#: includes/default-widgets.php:372
-msgctxt "Short day name for Friday"
-msgid "Fri"
-msgstr ""
-
-#: includes/default-widgets.php:373
-msgctxt "Short day name for Saturday"
-msgid "Sat"
-msgstr ""
-
-#: includes/default-widgets.php:376
-msgctxt "Letter represeting Sunday, to show on calendar"
-msgid "S"
-msgstr ""
-
-#: includes/default-widgets.php:377
-msgctxt "Letter represeting Monday, to show on calendar"
-msgid "M"
-msgstr ""
-
-#: includes/default-widgets.php:378
-msgctxt "Letter represeting Tuesday, to show on calendar"
-msgid "T"
-msgstr ""
-
-#: includes/default-widgets.php:379
-msgctxt "Letter represeting Wednesday, to show on calendar"
-msgid "W"
-msgstr ""
-
-#: includes/default-widgets.php:380
-msgctxt "Letter represeting Thursday, to show on calendar"
-msgid "T"
-msgstr ""
-
-#: includes/default-widgets.php:381
-msgctxt "Letter represeting Friday, to show on calendar"
-msgid "F"
-msgstr ""
-
-#: includes/default-widgets.php:382
-msgctxt "Letter represeting Saturday, to show on calendar"
-msgid "S"
-msgstr ""
-
-#: includes/default-widgets.php:384
-msgid "Week"
+msgid "Show a different month"
 msgstr ""
 
 #: includes/extensions/edit-entry/class-edit-entry.php:145
