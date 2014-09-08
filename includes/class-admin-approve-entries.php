@@ -422,7 +422,9 @@ class GravityView_Admin_ApproveEntries {
 			wp_register_style( 'gravityview_entries_list', plugins_url('includes/css/admin-entries-list.css', GRAVITYVIEW_FILE), array() );
 			wp_enqueue_style( 'gravityview_entries_list' );
 
-			wp_register_script( 'gravityview_gf_entries_scripts', plugins_url('includes/js/admin-entries-list.js', GRAVITYVIEW_FILE), array( 'jquery' ), '1.0.0');
+			$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
+
+			wp_register_script( 'gravityview_gf_entries_scripts', plugins_url('includes/js/admin-entries-list'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery' ), '1.0.0');
 			wp_enqueue_script( 'gravityview_gf_entries_scripts' );
 
 			wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array(
