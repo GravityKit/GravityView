@@ -29,6 +29,10 @@ Beautifully display your Gravity Forms entries.
 * Fixed: Date Created field now respects the blog's timezone setting, instead of using UTC time
 	* Modified: `template/fields/date_created.php`
 	* Added: `gravityview_date_created_adjust_timezone` filter to disable timezone support and use UTC
+* Fixed: Edit Entry issues
+	* Fixed form validation errors when a scheduled form has expired and also when a form has reached its entry limit
+	* Fixed PHP warning messages when editing entries
+	* When an Edit Entry form is submitted and there are errors, the submitted values stay in the form; the user won't need to fill in the form again.
 * Fixed: Product sub-fields (Name, Quantity & Price) displayed properly
 * Fixed: Files now can be deleted when a non-administrator is editing an entry
 * Modified: `gravityview_entry_class` filter to modify the CSS class for each entry wrapper
