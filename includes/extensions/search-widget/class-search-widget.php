@@ -43,10 +43,10 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		parent::__construct( __( 'New Search Bar', 'gravity-view' ) , 'search_widget', $default_values, $settings );
 
 
-		add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ) );
+	//	add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ) );
 
 		// add field options (specific for this widget)
-		add_filter( 'gravityview_template_field_options', array( $this, 'assign_field_options' ), 10, 4 );
+	//	add_filter( 'gravityview_template_field_options', array( $this, 'assign_field_options' ), 10, 4 );
 
 
 
