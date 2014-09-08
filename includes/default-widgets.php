@@ -310,11 +310,13 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 	}
 
 	function add_datepicker_localization( $localizations = array(), $data = array() ) {
+		global $wp_locale;
 
 		/**
 		 * Modify the datepicker settings
 		 *
 		 * @link http://api.jqueryui.com/datepicker/ Learn what settings are available
+		 * @link http://www.renegadetechconsulting.com/tutorials/jquery-datepicker-and-wordpress-i18n Thanks for the helpful information on $wp_locale
 		 * @param array $array Default settings
 		 * @var array
 		 */
@@ -326,62 +328,17 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 			'prevText' => esc_attr_x( 'Prev', 'Previous month in calendar', 'gravity-view' ),
 			'nextText' => esc_attr_x( 'Next', 'Next month in calendar', 'gravity-view' ),
 			'currentText' => esc_attr_x( 'Today', 'Today in calendar', 'gravity-view' ),
-			'monthNames' => array(
-				esc_attr_x( 'January', 'Full month name', 'gravity-view' ),
-				esc_attr_x( 'February', 'Full month name', 'gravity-view' ),
-				esc_attr_x( 'March', 'Full month name', 'gravity-view' ),
-				esc_attr_x( 'April', 'Full month name', 'gravity-view' ),
-				esc_attr_x( 'May', 'Full month name', 'gravity-view' ),
-				esc_attr_x( 'June', 'Full month name', 'gravity-view' ),
-				esc_attr_x( 'July', 'Full month name', 'gravity-view' ),
-				esc_attr_x( 'August', 'Full month name', 'gravity-view' ),
-				esc_attr_x( 'September', 'Full month name', 'gravity-view' ),
-				esc_attr_x( 'October', 'Full month name', 'gravity-view' ),
-				esc_attr_x( 'November', 'Full month name', 'gravity-view' ),
-				esc_attr_x( 'December', 'Full month name', 'gravity-view' ),
-			),
-			'monthNamesShort' => array(
-				esc_attr_x( 'Jan', 'Short month name for January', 'gravity-view' ),
-				esc_attr_x( 'Feb', 'Short month name for February', 'gravity-view' ),
-				esc_attr_x( 'Mar', 'Short month name for March', 'gravity-view' ),
-				esc_attr_x( 'Apr', 'Short month name for April', 'gravity-view' ),
-				esc_attr_x( 'May', 'Short month name for May', 'gravity-view' ),
-				esc_attr_x( 'Jun', 'Short month name for June', 'gravity-view' ),
-				esc_attr_x( 'Jul', 'Short month name for July', 'gravity-view' ),
-				esc_attr_x( 'Aug', 'Short month name for August', 'gravity-view' ),
-				esc_attr_x( 'Sep', 'Short month name for September', 'gravity-view' ),
-				esc_attr_x( 'Oct', 'Short month name for October', 'gravity-view' ),
-				esc_attr_x( 'Nov', 'Short month name for November', 'gravity-view' ),
-				esc_attr_x( 'Dec', 'Short month name for December', 'gravity-view' ),
-			),
-			'dayNames' => array(
-				esc_attr_x( 'Sunday', 'Full day names', 'gravity-view' ),
-				esc_attr_x( 'Monday', 'Full day names', 'gravity-view' ),
-				esc_attr_x( 'Tuesday', 'Full day names', 'gravity-view' ),
-				esc_attr_x( 'Wednesday', 'Full day names', 'gravity-view' ),
-				esc_attr_x( 'Thursday', 'Full day names', 'gravity-view' ),
-				esc_attr_x( 'Friday', 'Full day names', 'gravity-view' ),
-				esc_attr_x( 'Saturday', 'Full day names', 'gravity-view' ),
-			),
-			'dayNamesShort' => array(
-				esc_attr_x( 'Sun', 'Short day name for Sunday', 'gravity-view' ),
-				esc_attr_x( 'Mon', 'Short day name for Monday', 'gravity-view' ),
-				esc_attr_x( 'Tues', 'Short day name for Tuesday', 'gravity-view' ),
-				esc_attr_x( 'Wed', 'Short day name for Wednesday', 'gravity-view' ),
-				esc_attr_x( 'Thur', 'Short day name for Thursday', 'gravity-view' ),
-				esc_attr_x( 'Fri', 'Short day name for Friday', 'gravity-view' ),
-				esc_attr_x( 'Sat', 'Short day name for Saturday', 'gravity-view' ),
-			),
-			'dayNamesMin' => array(
-				esc_attr_x( 'S', 'Letter represeting Sunday, to show on calendar', 'gravity-view' ),
-				esc_attr_x( 'M', 'Letter represeting Monday, to show on calendar', 'gravity-view' ),
-				esc_attr_x( 'T', 'Letter represeting Tuesday, to show on calendar', 'gravity-view' ),
-				esc_attr_x( 'W', 'Letter represeting Wednesday, to show on calendar', 'gravity-view' ),
-				esc_attr_x( 'T', 'Letter represeting Thursday, to show on calendar', 'gravity-view' ),
-				esc_attr_x( 'F', 'Letter represeting Friday, to show on calendar', 'gravity-view' ),
-				esc_attr_x( 'S', 'Letter represeting Saturday, to show on calendar', 'gravity-view' ),
-			),
-			'weekHeader' => esc_attr__( 'Week', 'gravity-view' ),
+			'weekHeader' => esc_attr_x( 'Week', 'Week in calendar', 'gravity-view' ),
+			'monthStatus'       => __( 'Show a different month', 'gravity-view' ),
+			'monthNames'        => array_values( $wp_locale->month ),
+	        'monthNamesShort'   => array_values( $wp_locale->month_abbrev ),
+	        'dayNames'          => array_values( $wp_locale->weekday ),
+	        'dayNamesShort'     => array_values( $wp_locale->weekday_abbrev ),
+	        'dayNamesMin'       => array_values( $wp_locale->weekday_initial ),
+	        // get the start of week from WP general setting
+	        'firstDay'          => get_option( 'start_of_week' ),
+	        // is Right to left language? default is false
+	        'isRTL'             => is_rtl(),
 		), $data );
 
 		$localizations['datepicker'] = $datepicker_settings;
