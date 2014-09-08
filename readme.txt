@@ -26,6 +26,8 @@ Beautifully display your Gravity Forms entries.
 * Fixed: Empty truncated URLs no longer get shown
 * Fixed: License Activation works when No-Conflict Mode is enabled
 * Fixed: When creating a new View, "View Type" box was visible when there were no existing Gravity Forms
+* Fixed: Fields not always saving properly when adding lots of fields with the "Add All Fields" button
+* Fixed: Recognizing single entry when using WordPress "Default" Permalink setting
 * Fixed: Date Created field now respects the blog's timezone setting, instead of using UTC time
 	* Modified: `template/fields/date_created.php`
 	* Added: `gravityview_date_created_adjust_timezone` filter to disable timezone support and use UTC
@@ -34,8 +36,15 @@ Beautifully display your Gravity Forms entries.
 	* Fixed PHP warning messages when editing entries
 	* When an Edit Entry form is submitted and there are errors, the submitted values stay in the form; the user won't need to fill in the form again.
 * Fixed: Product sub-fields (Name, Quantity & Price) displayed properly
+* Fixed: Empty entry display when using Job Board preset caused by incorrect template files being loaded
 * Fixed: Files now can be deleted when a non-administrator is editing an entry
+* Added: `gravityview_js_localization` filter to add Javascript localization
+* Modified: Added ability to customize and translate the Search Bar's date picker. You can now fully customize the date picker.
+	* Added: `gravityview_datepicker_settings` filter to modify the datepicker settings using the setting names from the [jQuery DatePicker options](http://api.jqueryui.com/datepicker/)
+	* Added: Full localization for datepicker calendar (translate the days of the week, month, etc)
+	* Modified: Changed year picker to +/- 5 years instead of +20/-100
 * Modified: `gravityview_entry_class` filter to modify the CSS class for each entry wrapper
+* Modified: Added `gravityview_widget_search_filters` filter to allow reordering search filters, so that they display in a different order in search widget
 * Modified: `gravityview_default_page_size` filter to modify default page size for Views (25 by default)
 * Modified: Added actions to the `list-body.php` template file:
 	- `gravityview_list_body_before`: Before the entry output
@@ -46,8 +55,14 @@ Beautifully display your Gravity Forms entries.
 	- `gravityview_entry_after`: Before the entry wrapper closing tag
 	- `gravityview_list_body_after`: After entry output
 * Modified: Added `gravityview_get_entry_ids()` function to fetch array of entry IDs (not full entry arrays) that match a search result
+* Fixed: PHP Notices on Admin Views screen for users without edit all entries capabilities
+* Tweak: Merge Tags enabled for Table view "Custom CSS Class" field settings
+* Tweak: In the Edit View screen, show a link icon when a field is being used as a link to the Single Entry mode
 * Tweak: Added helper text when a new form is created by GravityView
 * Tweak: Removed duplicate `GravityView_frontend::hide_field_check_conditions()` and `GravityView_frontend::filter_fields()` methods
+* Tweak: Renamed "Description" drop zone to "Other Fields" to more accurately represent use
+* Tweak: Remove all fields from a zone by holding down the Alt key while clicking the remove icon
+* Modified: Added `get_cap_choices()` method to be used for fetching GravityView roles array
 
 = 1.1.5 =
 * Added: "Edit" link in Gravity Forms Entries screen
