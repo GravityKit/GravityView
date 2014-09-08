@@ -63,6 +63,7 @@
 
 			// Close open Dialog boxes when clicking on the overlay
 			$('body').on('click', '.gv-overlay', function( e ) {
+				e.preventDefault();
 				$(".ui-dialog:visible .ui-dialog-titlebar .ui-button").click();
 				return;
 			});
@@ -356,7 +357,8 @@
 					$('<div class="gv-overlay" />').prependTo('#wpwrap');
 					return true;
 				},
-				close: function () {
+				close: function ( e ) {
+					e.preventDefault();
 					$('#wpwrap > .gv-overlay').fadeOut( 'fast', function() { $(this).remove(); });
 				},
 				closeOnEscape: true,
@@ -696,8 +698,9 @@
 				$(this).trigger('click');
 			});
 
-			// We just added all the fields. No reason
+			// We just added all the fields. No reason to show the tooltip.
 			$("a.gv-add-field[data-tooltip='active']").tooltip("close");
+
 		},
 
 		/**
@@ -727,13 +730,23 @@
 				nonce: gvGlobals.nonce,
 			};
 
-			// Don't allow saving until this is done.
-			$('#publishing-action #publish').prop('disabled', 'disabled').addClass('button-primary-disabled');
-
 			// Get the HTML for the Options <div>
 			// - If there are no options, response will NULL
 			// - If response is false, it means the request was invalid.
-			$.post( ajaxurl, data)
+			$.ajax( {
+				type: "POST",
+				url: ajaxurl,
+				data: data,
+				async: true,
+				beforeSend: function() {
+					// Don't allow saving until this is done.
+					vcfg.disable_publish();
+				},
+				complete: function() {
+					// Enable saving after it's done
+					vcfg.enable_publish();
+				}
+			})
 				.done( function( response ) {
 
 					// Add in the Options <div>
@@ -763,7 +776,7 @@
 						.attr('data-tooltip-id','');
 
 					// Show the new field
-					newField.slideDown( 100 );
+					newField.fadeIn( 100 );
 
 					// If there's more than one field in the area,
 					// we move the tooltip.
@@ -781,23 +794,41 @@
 						}
 					}
 
-					//console.log('before');
 				})
 				.fail( function( jqXHR, textStatus, errorThrown ) {
 
+					// Enable publish on error
+					vcfg.enable_publish();
+
 					// Something went wrong
-					alert( gvGlobals.field_loaderror + ': ' + jqXHR.responseText );
+					alert( gvGlobals.field_loaderror );
 
 					console.log( jqXHR );
 
 				})
 				.always(function() {
-					// Restore saving after settings are generated
-					$('#publishing-action #publish').prop('disabled', null ).removeClass('button-primary-disabled');
 
 					vcfg.toggleDropMessage();
+
 				});
 
+		},
+
+		/**
+		 * Enable the publish input; enable saving a View
+		 * @return {void}
+		 */
+		enable_publish: function() {
+			// Restore saving after settings are generated
+			$('#publishing-action #publish').prop('disabled', null ).removeClass('button-primary-disabled');
+		},
+
+		/**
+		 * Disable the publish input; prevent saving a View
+		 * @return {void}
+		 */
+		disable_publish: function() {
+			$('#publishing-action #publish').prop('disabled', 'disabled').addClass('button-primary-disabled');
 		},
 
 		// Sortables and droppables
