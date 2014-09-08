@@ -93,7 +93,6 @@ if( !function_exists('gravityview_get_form_fields') ) {
 
 		$fields = array();
 		$has_product_fields = false;
-		$has_post_fields = false;
 
 		if( $add_default_properties ) {
 			$form = RGFormsModel::add_default_properties( $form );

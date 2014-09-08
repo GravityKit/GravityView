@@ -607,8 +607,6 @@ function gravityview_field_output( $args ) {
 	// If the label markup is overridden
 	if( !empty( $args['label_markup'] ) ) {
 		$label = str_replace( '{{label}}', '<span class="gv-field-label">' . $label . '</span>', $args['label_markup'] );
-	} else {
-		$args['markup'] =  str_replace( '{{label}}', '<span class="gv-field-label">{{label}}</span>', $args['label_markup'] );
 	}
 
 
