@@ -87,7 +87,7 @@ class GravityView_Admin_Views {
 		$menu_items['gravityview'] = array(
 			'label' 			=> __( 'Connected Views', 'gravity-view' ),
 			'icon' 			=> '<i class="fa fa-lg gv-icon-astronaut-head gv-icon"></i>',
-			'title'				=> __('GravityView Views using this form as a data source', 'gravityforms'),
+			'title'				=> __('GravityView Views using this form as a data source', 'gravity-view'),
 			'url' 				=> '#',
 			'onclick'			=> 'return false;',
 			'menu_class' 		=> 'gv_connected_forms gf_form_toolbar_settings',
