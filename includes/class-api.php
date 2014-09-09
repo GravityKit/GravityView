@@ -522,13 +522,35 @@ function gravityview_format_link($value = null) {
 
 }
 
-
+/**
+ * Get all views processed so far for the current page load
+ *
+ * @see  GravityView_View_Data::add_view()
+ * @return array Array of View data, each View data with `id`, `view_id`, `form_id`, `template_id`, `atts`, `fields`, `widgets`, `form` keys.
+ */
 function gravityview_get_current_views() {
-	return GravityView_frontend::getInstance()->gv_output_data->get_views();
+
+	$fe = GravityView_frontend::getInstance();
+
+	if( empty( $fe->gv_output_data ) ) { return array(); }
+
+	return $fe->gv_output_data->get_views();
+
 }
 
+/**
+ * Get data for a specific view
+ *
+ * @see  GravityView_View_Data::get_view()
+ * @return array View data with `id`, `view_id`, `form_id`, `template_id`, `atts`, `fields`, `widgets`, `form` keys.
+ */
 function gravityview_get_current_view_data( $view_id ) {
-	return GravityView_frontend::getInstance()->gv_output_data->get_view( $view_id );
+
+	$fe = GravityView_frontend::getInstance();
+
+	if( empty( $fe->gv_output_data ) ) { return array(); }
+
+	return $fe->gv_output_data->get_view( $view_id );
 }
 
 // Templates' hooks
