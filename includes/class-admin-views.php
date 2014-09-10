@@ -1047,7 +1047,6 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Uservoice feedback widget
-	 * @group Beta
 	 */
 	static function enqueue_uservoice_widget() {
 		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
