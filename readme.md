@@ -9,7 +9,7 @@ If you find a bug, [let us know here](https://github.com/katzwebservices/Gravity
 * Pull in new translations from [Transifex](https://www.transifex.com/projects/p/gravityview/)
 	1. `cd /[ path to ]/wp-content/plugins/gravityview`
 	2. `tx pull -a` - Get the latest Transifex translations
-	3. <code>find . -name \*.po -execdir sh -c 'msgfmt "$0" -o `basename $0 .po`.mo' '{}' \;` - Convert translations to .mo from .po files</code>
+	3. <code>find . -name \*.po -execdir sh -c 'msgfmt "$0" -o \`basename $0 .po\`.mo' '{}' \;</code> - Convert translations to .mo from .po files
 	4. Update `readme.txt` to thank the translators
 	5. Update `includes/admin-welcome.php` to add translators to contributors page
 * Commit to GitHub
