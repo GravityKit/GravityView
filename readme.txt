@@ -37,7 +37,6 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 	* Fixed form validation errors when a scheduled form has expired and also when a form has reached its entry limit
 	* Fixed PHP warning messages when editing entries
 	* When an Edit Entry form is submitted and there are errors, the submitted values stay in the form; the user won't need to fill in the form again.
-	* Allows for populating fields dynamically ()
 * Fixed: Product sub-fields (Name, Quantity & Price) displayed properly
 * Fixed: Empty entry display when using Job Board preset caused by incorrect template files being loaded
 * Fixed: Files now can be deleted when a non-administrator is editing an entry

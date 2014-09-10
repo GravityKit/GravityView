@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-09-08 17:23-0700\n"
-"PO-Revision-Date: 2014-09-08 23:29+0000\n"
+"POT-Creation-Date: 2014-09-09 18:20-0700\n"
+"PO-Revision-Date: 2014-09-10 00:40+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/gravityview/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -57,7 +57,7 @@ msgstr "Bekijk Instellingen"
 
 #: includes/admin/metaboxes.php:44
 msgid "Filter &amp; Sort"
-msgstr ""
+msgstr "Filter &amp; Sorteer"
 
 #: includes/admin/metaboxes.php:71
 msgid "Where would you like the data to come from for this View?"
@@ -81,7 +81,7 @@ msgstr "Schakel Weergave"
 
 #: includes/admin/metaboxes.php:100
 msgid "Switch View Type"
-msgstr ""
+msgstr "Scahakel Weergave Type"
 
 #: includes/admin/metaboxes.php:105 includes/admin/metaboxes.php:110
 msgid "Attention"
@@ -91,13 +91,13 @@ msgstr "Attentie"
 msgid ""
 "Changing the form will reset your field configuration. Changes will be "
 "permanent once you save the View."
-msgstr ""
+msgstr "Door het formulier te wijzigen zal uw veld configuratie worden gereset. Wijzigingen zijn permanent wanneer u de Weergave opslaat."
 
 #: includes/admin/metaboxes.php:111
 msgid ""
 "Changing the View Type will reset your field configuration. Changes will be "
 "permanent once you save the View."
-msgstr ""
+msgstr "Door het Weergave Type te wijzigen zal uw veld configuratie worden gereset. Wijzigingen zijn permanent wanneer u de Weergave opslaat."
 
 #: includes/admin/metaboxes.php:116
 msgid "GravityView requires Javascript to be enabled."
@@ -113,7 +113,7 @@ msgstr "Selecteer"
 
 #: includes/admin/metaboxes.php:161
 msgid "View a live demo of this preset"
-msgstr ""
+msgstr "Bekijk de live demo van deze voorinstelling."
 
 #: includes/admin/metaboxes.php:239
 msgid "Multiple Entries"
@@ -157,11 +157,11 @@ msgstr "Enkele Inzending Instellingen"
 
 #: includes/admin/metaboxes.php:423
 msgid "Embed Shortcode"
-msgstr ""
+msgstr "Shortcode Invoegen"
 
 #: includes/admin/metaboxes.php:423
 msgid "Add this shortcode to a post or page to embed this view."
-msgstr ""
+msgstr "Plaats deze shortcode in een bericht of pagina om deze weergave in te voegen."
 
 #: includes/admin/metaboxes.php:469
 msgid "Layout Settings"
@@ -177,14 +177,14 @@ msgstr "Weergave toevoegen"
 
 #: includes/class-admin-add-shortcode.php:88
 msgid "Embed a View"
-msgstr ""
+msgstr "Een Weergave invoegen"
 
 #: includes/class-admin-add-shortcode.php:89
 #, php-format
 msgid ""
 "Use this form to embed a View into this %s. %sLearn more about using "
 "shortcodes.%s"
-msgstr ""
+msgstr "Gebruik dit formulier om een Weergave in te voegen aan %s. %sLeer meer over het gebruik van shortcodes.%s"
 
 #: includes/class-admin-add-shortcode.php:92
 msgid "Select a View"
@@ -192,26 +192,26 @@ msgstr "Selecteer een Weergave"
 
 #: includes/class-admin-add-shortcode.php:95
 msgid "&mdash; Select a View to Insert &mdash;"
-msgstr ""
+msgstr "&mdash; Selecteer een Weergave om in te voegen &mdash;"
 
 #: includes/class-admin-add-shortcode.php:98
 msgid "(no title)"
-msgstr ""
+msgstr "(geen titel)"
 
 #: includes/class-admin-add-shortcode.php:124
 msgid "Insert View"
 msgstr "Weergave Invoegen"
 
 #: includes/class-admin-add-shortcode.php:125
-#: includes/class-admin-views.php:1099
+#: includes/class-admin-views.php:1098
 #: includes/extensions/edit-entry/class-edit-entry.php:711
 msgid "Cancel"
 msgstr "Annuleer"
 
 #: includes/class-admin-add-shortcode.php:168
-#: includes/class-admin-views.php:1103
+#: includes/class-admin-views.php:1102
 msgid "Loading&hellip;"
-msgstr ""
+msgstr "Laden&hellip;"
 
 #: includes/class-admin-add-shortcode.php:169
 msgid "Please select a View"
@@ -219,21 +219,21 @@ msgstr "Selecteer een Weergave"
 
 #: includes/class-admin-approve-entries.php:55
 msgid "GravityView Fields"
-msgstr ""
+msgstr "GravityView Velden"
 
 #: includes/class-admin-approve-entries.php:56
 msgid ""
 "Allow administrators to approve or reject entries and users to opt-in or "
 "opt-out of their entries being displayed."
-msgstr ""
+msgstr "Sta beheerders toe om inzendingen goed te keuren of te weigeren en gebruikers hun inzendingen wel of niet te laten te laten zien."
 
 #: includes/class-admin-approve-entries.php:78
 msgid "Approve/Reject"
-msgstr ""
+msgstr "Goedkeuren/Weigeren"
 
 #: includes/class-admin-approve-entries.php:83
 msgid "User Opt-In"
-msgstr ""
+msgstr "Gebruiker Opt-In"
 
 #: includes/class-admin-approve-entries.php:105
 msgid "Approved? (Admin-only)"
@@ -249,11 +249,11 @@ msgstr "Toegelaten"
 
 #: includes/class-admin-approve-entries.php:127
 msgid "Show Entry on Website"
-msgstr ""
+msgstr "Toon Inzending op Website"
 
 #: includes/class-admin-approve-entries.php:129
 msgid "Opt-In"
-msgstr ""
+msgstr "Opt-In"
 
 #: includes/class-admin-approve-entries.php:137
 msgid "Yes, display my entry on the website"
@@ -353,7 +353,7 @@ msgstr ""
 
 #: includes/class-admin-views.php:190
 msgid "Entries"
-msgstr ""
+msgstr "Inzendingen"
 
 #: includes/class-admin-views.php:195
 msgid "Edit settings for this form"
@@ -470,35 +470,35 @@ msgstr "Maak alleen zichtbaar voor ingelogde gebruikers?"
 msgid "Make visible for:"
 msgstr "Maak zichtbaar voor:"
 
-#: includes/class-admin-views.php:1097
+#: includes/class-admin-views.php:1096
 msgid "Enter View name here"
 msgstr "Vul hier de Weergave naam in"
 
-#: includes/class-admin-views.php:1098
+#: includes/class-admin-views.php:1097
 msgid "Close"
 msgstr "Sluiten"
 
-#: includes/class-admin-views.php:1100
+#: includes/class-admin-views.php:1099
 msgid "Continue"
 msgstr "Doorgaan"
 
-#: includes/class-admin-views.php:1101
+#: includes/class-admin-views.php:1100
 msgid "Ok"
 msgstr "Ok"
 
-#: includes/class-admin-views.php:1102
+#: includes/class-admin-views.php:1101
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr "Fout tijdens het creeeren van de Weergave. Controleer de instellingen of neem contact op met GravityView support."
 
-#: includes/class-admin-views.php:1104
+#: includes/class-admin-views.php:1103
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1105
+#: includes/class-admin-views.php:1104
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -536,19 +536,19 @@ msgstr "Hartelijk dank voor het installeren van GravityView. Mooi weergeven van 
 msgid "List of Changes"
 msgstr ""
 
-#: includes/class-admin-welcome.php:373
+#: includes/class-admin-welcome.php:409
 msgid "GravityView is brought to you by:"
 msgstr "GravityView wordt jou aangeboden door:"
 
-#: includes/class-admin-welcome.php:398
+#: includes/class-admin-welcome.php:434
 msgid "Contributors"
 msgstr "Bijdragers"
 
-#: includes/class-admin-welcome.php:416
+#: includes/class-admin-welcome.php:452
 msgid "Want to contribute?"
 msgstr "Wil je bijdragen?"
 
-#: includes/class-admin-welcome.php:417
+#: includes/class-admin-welcome.php:453
 #, php-format
 msgid ""
 "If you want to contribute to the code, you can %srequest access to the "
@@ -1147,32 +1147,32 @@ msgstr "Toon Zoekbalk"
 msgid "Use this field as a search filter"
 msgstr "Gebruik dit veld als een zoekfilter"
 
-#: includes/default-widgets.php:328
+#: includes/default-widgets.php:327
 msgctxt "Close calendar"
 msgid "Close"
-msgstr ""
+msgstr "Sluiten"
 
-#: includes/default-widgets.php:329
+#: includes/default-widgets.php:328
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/default-widgets.php:330
+#: includes/default-widgets.php:329
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/default-widgets.php:331
+#: includes/default-widgets.php:330
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/default-widgets.php:332
+#: includes/default-widgets.php:331
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/default-widgets.php:333
+#: includes/default-widgets.php:332
 msgid "Show a different month"
 msgstr ""
 

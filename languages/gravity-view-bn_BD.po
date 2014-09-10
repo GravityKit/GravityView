@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-09-08 17:23-0700\n"
-"PO-Revision-Date: 2014-09-08 23:29+0000\n"
+"POT-Creation-Date: 2014-09-09 18:20-0700\n"
+"PO-Revision-Date: 2014-09-10 00:40+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Bengali (http://www.transifex.com/projects/p/gravityview/language/bn/)\n"
 "MIME-Version: 1.0\n"
@@ -205,13 +205,13 @@ msgid "Insert View"
 msgstr "দৃশ্য ঢোকান"
 
 #: includes/class-admin-add-shortcode.php:125
-#: includes/class-admin-views.php:1099
+#: includes/class-admin-views.php:1098
 #: includes/extensions/edit-entry/class-edit-entry.php:711
 msgid "Cancel"
 msgstr "বাতিল"
 
 #: includes/class-admin-add-shortcode.php:168
-#: includes/class-admin-views.php:1103
+#: includes/class-admin-views.php:1102
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -426,7 +426,7 @@ msgstr "যে কোন লগইন করা ব্যবহারকার�
 
 #: includes/class-admin-views.php:724
 msgid "Author Or Higher"
-msgstr "রচয়িতা অথবা ঊর্ধ্বতন"
+msgstr ""
 
 #: includes/class-admin-views.php:725
 msgid "Can View Gravity Forms Entries"
@@ -472,35 +472,35 @@ msgstr "শুধুমাত্র লগইন করা ব্যবহার
 msgid "Make visible for:"
 msgstr "দৃশ্যমান করুন:"
 
-#: includes/class-admin-views.php:1097
+#: includes/class-admin-views.php:1096
 msgid "Enter View name here"
 msgstr "দৃশ্যের নাম এখানে প্রবেশ করান"
 
-#: includes/class-admin-views.php:1098
+#: includes/class-admin-views.php:1097
 msgid "Close"
 msgstr "বন্ধ"
 
-#: includes/class-admin-views.php:1100
+#: includes/class-admin-views.php:1099
 msgid "Continue"
 msgstr "চলমান"
 
-#: includes/class-admin-views.php:1101
+#: includes/class-admin-views.php:1100
 msgid "Ok"
 msgstr "ঠিক আছে"
 
-#: includes/class-admin-views.php:1102
+#: includes/class-admin-views.php:1101
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr "দৃশ্য তৈরি করার সময় সমস্যা হয়েছে। সেটিংস দেখুন অথবা গ্রাভিটি ভিউ সাপোর্ট দেখুন"
 
-#: includes/class-admin-views.php:1104
+#: includes/class-admin-views.php:1103
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1105
+#: includes/class-admin-views.php:1104
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -538,19 +538,19 @@ msgstr "গ্রাভিটি ভিউ ইনস্টল করার জ�
 msgid "List of Changes"
 msgstr ""
 
-#: includes/class-admin-welcome.php:373
+#: includes/class-admin-welcome.php:409
 msgid "GravityView is brought to you by:"
 msgstr "গ্রাভিটি ভিউ আপনার জন্য নিয়ে এল:"
 
-#: includes/class-admin-welcome.php:398
+#: includes/class-admin-welcome.php:434
 msgid "Contributors"
 msgstr "সহযোগী যারা"
 
-#: includes/class-admin-welcome.php:416
+#: includes/class-admin-welcome.php:452
 msgid "Want to contribute?"
 msgstr "সহযোগীতা করতে চান?"
 
-#: includes/class-admin-welcome.php:417
+#: includes/class-admin-welcome.php:453
 #, php-format
 msgid ""
 "If you want to contribute to the code, you can %srequest access to the "
@@ -694,7 +694,7 @@ msgstr ""
 
 #: includes/class-data.php:275
 msgid "Number of entries per page"
-msgstr "প্রতি পৃষ্ঠায় দেখানো এন্ট্রির সংখ্যা"
+msgstr ""
 
 #: includes/class-data.php:283
 msgid "Enable lightbox for images"
@@ -1149,32 +1149,32 @@ msgstr "অনুসন্ধান বার দেখান"
 msgid "Use this field as a search filter"
 msgstr "এই ফিল্ডটি অনুসন্ধান ছাকঁনি হিসেবে ব্যবহার করুন"
 
-#: includes/default-widgets.php:328
+#: includes/default-widgets.php:327
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "বন্ধ"
 
-#: includes/default-widgets.php:329
+#: includes/default-widgets.php:328
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/default-widgets.php:330
+#: includes/default-widgets.php:329
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/default-widgets.php:331
+#: includes/default-widgets.php:330
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/default-widgets.php:332
+#: includes/default-widgets.php:331
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/default-widgets.php:333
+#: includes/default-widgets.php:332
 msgid "Show a different month"
 msgstr ""
 

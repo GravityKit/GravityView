@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-09-08 17:23-0700\n"
-"PO-Revision-Date: 2014-09-08 23:29+0000\n"
+"POT-Creation-Date: 2014-09-09 18:20-0700\n"
+"PO-Revision-Date: 2014-09-10 00:40+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Finnish (http://www.transifex.com/projects/p/gravityview/language/fi/)\n"
 "MIME-Version: 1.0\n"
@@ -177,7 +177,7 @@ msgstr "Lisää näkymä"
 
 #: includes/class-admin-add-shortcode.php:88
 msgid "Embed a View"
-msgstr ""
+msgstr "Upota näkymä"
 
 #: includes/class-admin-add-shortcode.php:89
 #, php-format
@@ -192,24 +192,24 @@ msgstr "Valitse näkymä"
 
 #: includes/class-admin-add-shortcode.php:95
 msgid "&mdash; Select a View to Insert &mdash;"
-msgstr ""
+msgstr "&mdash; Valitse näkymä lisätäksesi &mdash;"
 
 #: includes/class-admin-add-shortcode.php:98
 msgid "(no title)"
-msgstr ""
+msgstr "(ei otsikkoa)"
 
 #: includes/class-admin-add-shortcode.php:124
 msgid "Insert View"
 msgstr "Lisää näkymä"
 
 #: includes/class-admin-add-shortcode.php:125
-#: includes/class-admin-views.php:1099
+#: includes/class-admin-views.php:1098
 #: includes/extensions/edit-entry/class-edit-entry.php:711
 msgid "Cancel"
 msgstr "Peru"
 
 #: includes/class-admin-add-shortcode.php:168
-#: includes/class-admin-views.php:1103
+#: includes/class-admin-views.php:1102
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -470,35 +470,35 @@ msgstr "Tee näkyväksi vain kirjautuneille käyttäjille?"
 msgid "Make visible for:"
 msgstr "Tee näkyväksi:"
 
-#: includes/class-admin-views.php:1097
+#: includes/class-admin-views.php:1096
 msgid "Enter View name here"
 msgstr "Lisää näkymän nimi tähän"
 
-#: includes/class-admin-views.php:1098
+#: includes/class-admin-views.php:1097
 msgid "Close"
 msgstr "Sulje"
 
-#: includes/class-admin-views.php:1100
+#: includes/class-admin-views.php:1099
 msgid "Continue"
 msgstr "Jatka"
 
-#: includes/class-admin-views.php:1101
+#: includes/class-admin-views.php:1100
 msgid "Ok"
 msgstr "Ok"
 
-#: includes/class-admin-views.php:1102
+#: includes/class-admin-views.php:1101
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr "Virhe kun näkymä luotiin sinulle. Tarkista asetukset tai ota yhteyttä GravityView tukeen."
 
-#: includes/class-admin-views.php:1104
+#: includes/class-admin-views.php:1103
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1105
+#: includes/class-admin-views.php:1104
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -536,19 +536,19 @@ msgstr "Kiitos kun asensit GravityViewin. Näytä kauniisti Gravity Forms lomakk
 msgid "List of Changes"
 msgstr ""
 
-#: includes/class-admin-welcome.php:373
+#: includes/class-admin-welcome.php:409
 msgid "GravityView is brought to you by:"
 msgstr "Gravityformin on tehnyt sinulle:"
 
-#: includes/class-admin-welcome.php:398
+#: includes/class-admin-welcome.php:434
 msgid "Contributors"
 msgstr "Avustajat"
 
-#: includes/class-admin-welcome.php:416
+#: includes/class-admin-welcome.php:452
 msgid "Want to contribute?"
 msgstr "Haluatko avustaa?"
 
-#: includes/class-admin-welcome.php:417
+#: includes/class-admin-welcome.php:453
 #, php-format
 msgid ""
 "If you want to contribute to the code, you can %srequest access to the "
@@ -805,7 +805,7 @@ msgstr "Linkin tekstit joka näytetään monen merkinnän näkymässä."
 
 #: includes/class-debug-bar.php:24
 msgid "GravityView"
-msgstr ""
+msgstr "GravityView"
 
 #: includes/class-debug-bar.php:91
 msgid "Warnings"
@@ -836,12 +836,12 @@ msgstr ""
 #: includes/class-gravityview-extension.php:159
 #, php-format
 msgid "Could not activate the %s Extension; GravityView is not active."
-msgstr ""
+msgstr "Ei voitu aktivoida %s laajennusta; GravityView ei ole aktiivinen."
 
 #: includes/class-gravityview-extension.php:169
 #, php-format
 msgid "The %s Extension requires GravityView Version %s or newer."
-msgstr ""
+msgstr "Tämä %s laajennus vaatii GravityView version %s tai uudemman."
 
 #: includes/class-post-types.php:35
 msgctxt "Post Type General Name"
@@ -1147,32 +1147,32 @@ msgstr "Näytä hakupalkki"
 msgid "Use this field as a search filter"
 msgstr "Käytä tätä kenttää hakusuodattimena"
 
-#: includes/default-widgets.php:328
+#: includes/default-widgets.php:327
 msgctxt "Close calendar"
 msgid "Close"
-msgstr ""
+msgstr "Sulje"
 
-#: includes/default-widgets.php:329
+#: includes/default-widgets.php:328
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/default-widgets.php:330
+#: includes/default-widgets.php:329
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/default-widgets.php:331
+#: includes/default-widgets.php:330
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/default-widgets.php:332
+#: includes/default-widgets.php:331
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/default-widgets.php:333
+#: includes/default-widgets.php:332
 msgid "Show a different month"
 msgstr ""
 

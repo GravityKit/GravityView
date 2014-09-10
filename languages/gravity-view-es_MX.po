@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-09-08 17:23-0700\n"
-"PO-Revision-Date: 2014-09-08 23:29+0000\n"
+"POT-Creation-Date: 2014-09-09 18:20-0700\n"
+"PO-Revision-Date: 2014-09-10 00:40+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Spanish (Mexico) (http://www.transifex.com/projects/p/gravityview/language/es_MX/)\n"
 "MIME-Version: 1.0\n"
@@ -206,13 +206,13 @@ msgid "Insert View"
 msgstr "Insertar Vista"
 
 #: includes/class-admin-add-shortcode.php:125
-#: includes/class-admin-views.php:1099
+#: includes/class-admin-views.php:1098
 #: includes/extensions/edit-entry/class-edit-entry.php:711
 msgid "Cancel"
 msgstr "Cancelar"
 
 #: includes/class-admin-add-shortcode.php:168
-#: includes/class-admin-views.php:1103
+#: includes/class-admin-views.php:1102
 msgid "Loading&hellip;"
 msgstr "Cargando&hellip;"
 
@@ -414,7 +414,7 @@ msgstr "Agregar Campo"
 #: includes/class-admin-views.php:570
 #, php-format
 msgid "\"+ %s\" or drag existing %ss here."
-msgstr "\"+ %s\" o arrastre existente %ss aquí."
+msgstr ""
 
 #: includes/class-admin-views.php:693
 #, php-format
@@ -473,35 +473,35 @@ msgstr "¿Solo hacer visible a usuarios logueados?"
 msgid "Make visible for:"
 msgstr "Hacer visible para:"
 
-#: includes/class-admin-views.php:1097
+#: includes/class-admin-views.php:1096
 msgid "Enter View name here"
 msgstr "Ingresar nombre aquí"
 
-#: includes/class-admin-views.php:1098
+#: includes/class-admin-views.php:1097
 msgid "Close"
 msgstr "Cerrar"
 
-#: includes/class-admin-views.php:1100
+#: includes/class-admin-views.php:1099
 msgid "Continue"
 msgstr "Continuar"
 
-#: includes/class-admin-views.php:1101
+#: includes/class-admin-views.php:1100
 msgid "Ok"
 msgstr "Ok"
 
-#: includes/class-admin-views.php:1102
+#: includes/class-admin-views.php:1101
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr "Error mientras se creaba la Vista. Revise los ajustes o contacte al soporte de GravityView"
 
-#: includes/class-admin-views.php:1104
+#: includes/class-admin-views.php:1103
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1105
+#: includes/class-admin-views.php:1104
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -539,19 +539,19 @@ msgstr "Gracias por instalar GravityView. Muestra hermosamente sus entradas de G
 msgid "List of Changes"
 msgstr "Lista de cambios"
 
-#: includes/class-admin-welcome.php:373
+#: includes/class-admin-welcome.php:409
 msgid "GravityView is brought to you by:"
 msgstr "GravityView es traído para Ud. por:"
 
-#: includes/class-admin-welcome.php:398
+#: includes/class-admin-welcome.php:434
 msgid "Contributors"
 msgstr "Colaboradores"
 
-#: includes/class-admin-welcome.php:416
+#: includes/class-admin-welcome.php:452
 msgid "Want to contribute?"
 msgstr "¿Desea colaborar?"
 
-#: includes/class-admin-welcome.php:417
+#: includes/class-admin-welcome.php:453
 #, php-format
 msgid ""
 "If you want to contribute to the code, you can %srequest access to the "
@@ -609,7 +609,7 @@ msgstr "Vista enviada."
 #: includes/class-admin.php:147
 #, php-format
 msgid "View scheduled for: %1$s."
-msgstr "Vista programada para: %1$s."
+msgstr "Vista programada para: %1$s"
 
 #: includes/class-admin.php:149
 msgid "M j, Y @ G:i"
@@ -1150,38 +1150,38 @@ msgstr "Mostrar Buscador"
 msgid "Use this field as a search filter"
 msgstr "Mostrar este campo como filtro de búsqueda"
 
-#: includes/default-widgets.php:328
+#: includes/default-widgets.php:327
 msgctxt "Close calendar"
 msgid "Close"
-msgstr ""
+msgstr "Cerrar"
 
-#: includes/default-widgets.php:329
+#: includes/default-widgets.php:328
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/default-widgets.php:330
+#: includes/default-widgets.php:329
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/default-widgets.php:331
+#: includes/default-widgets.php:330
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/default-widgets.php:332
+#: includes/default-widgets.php:331
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/default-widgets.php:333
+#: includes/default-widgets.php:332
 msgid "Show a different month"
 msgstr ""
 
 #: includes/extensions/edit-entry/class-edit-entry.php:145
 msgid "Edit Link Text"
-msgstr ""
+msgstr "Editar texto de enlace"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:546
 msgid "The link to edit this entry is not valid; it may have expired."
@@ -1246,7 +1246,7 @@ msgstr "Borrar archivo"
 msgid ""
 "Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to "
 "delete"
-msgstr "'¿Desea borrar permanentemente este archivo? \\'Cancelar\\' para detener. \\'OK\\' para borrar'"
+msgstr "¿Desea borrar permanentemente este archivo? 'Cancelar' para detener. 'OK' para borrar"
 
 #: includes/extensions/edit-entry/inline-javascript.php:14
 msgid "Ajax error while deleting field."

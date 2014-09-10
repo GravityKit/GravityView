@@ -2,11 +2,12 @@
 # Translators:
 # Süha Karalar <suhakaralar@gmail.com>, 2014
 # Süha Karalar <suhakaralar@gmail.com>, 2014
+# Zachary Katz <zack@katz.co>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-09-08 17:23-0700\n"
-"PO-Revision-Date: 2014-09-08 23:29+0000\n"
+"POT-Creation-Date: 2014-09-09 18:20-0700\n"
+"PO-Revision-Date: 2014-09-10 00:40+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/projects/p/gravityview/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -178,7 +179,7 @@ msgstr "Görünüm Ekle"
 
 #: includes/class-admin-add-shortcode.php:88
 msgid "Embed a View"
-msgstr ""
+msgstr "Görünüm'ü göm"
 
 #: includes/class-admin-add-shortcode.php:89
 #, php-format
@@ -193,26 +194,26 @@ msgstr "Görünüm Seç"
 
 #: includes/class-admin-add-shortcode.php:95
 msgid "&mdash; Select a View to Insert &mdash;"
-msgstr ""
+msgstr "&mdash; Eklemek için bir Görünüm seçin &mdash;"
 
 #: includes/class-admin-add-shortcode.php:98
 msgid "(no title)"
-msgstr ""
+msgstr "(başlıksız)"
 
 #: includes/class-admin-add-shortcode.php:124
 msgid "Insert View"
 msgstr "Görünüm Ekle"
 
 #: includes/class-admin-add-shortcode.php:125
-#: includes/class-admin-views.php:1099
+#: includes/class-admin-views.php:1098
 #: includes/extensions/edit-entry/class-edit-entry.php:711
 msgid "Cancel"
 msgstr "İptal"
 
 #: includes/class-admin-add-shortcode.php:168
-#: includes/class-admin-views.php:1103
+#: includes/class-admin-views.php:1102
 msgid "Loading&hellip;"
-msgstr ""
+msgstr "data&hellip; yükleniyor"
 
 #: includes/class-admin-add-shortcode.php:169
 msgid "Please select a View"
@@ -412,7 +413,7 @@ msgstr "Alan Ekle"
 #: includes/class-admin-views.php:570
 #, php-format
 msgid "\"+ %s\" or drag existing %ss here."
-msgstr ""
+msgstr "\"+ %s\" yada mevcut %ss buraya sürükleyin."
 
 #: includes/class-admin-views.php:693
 #, php-format
@@ -421,11 +422,11 @@ msgstr "Seçenekler: %s"
 
 #: includes/class-admin-views.php:723
 msgid "Any Logged-In User"
-msgstr ""
+msgstr "Tüm giriş yapan kullanıcılar"
 
 #: includes/class-admin-views.php:724
 msgid "Author Or Higher"
-msgstr ""
+msgstr "Yazar yada üstü"
 
 #: includes/class-admin-views.php:725
 msgid "Can View Gravity Forms Entries"
@@ -433,7 +434,7 @@ msgstr ""
 
 #: includes/class-admin-views.php:726
 msgid "Editor Or Higher"
-msgstr ""
+msgstr "Editör yada üstü"
 
 #: includes/class-admin-views.php:727
 msgid "Can Edit Gravity Forms Entries"
@@ -461,7 +462,7 @@ msgstr "Özel CSS Sınıfı:"
 
 #: includes/class-admin-views.php:779
 msgid "This class will be added to the field container"
-msgstr ""
+msgstr "Bu sınıf, ilgili alanı kapsayan taşıyıcıya eklenecektir."
 
 #: includes/class-admin-views.php:786
 msgid "Make visible only to logged-in users?"
@@ -471,35 +472,35 @@ msgstr "Sadece giriş yapan kullanıcılar mı görüntülesin?"
 msgid "Make visible for:"
 msgstr "Şunlar için görünür:"
 
-#: includes/class-admin-views.php:1097
+#: includes/class-admin-views.php:1096
 msgid "Enter View name here"
 msgstr "Görünüm Adını buraya girin"
 
-#: includes/class-admin-views.php:1098
+#: includes/class-admin-views.php:1097
 msgid "Close"
 msgstr "Kapat"
 
-#: includes/class-admin-views.php:1100
+#: includes/class-admin-views.php:1099
 msgid "Continue"
 msgstr "Devam Et"
 
-#: includes/class-admin-views.php:1101
+#: includes/class-admin-views.php:1100
 msgid "Ok"
 msgstr "Tamam"
 
-#: includes/class-admin-views.php:1102
+#: includes/class-admin-views.php:1101
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr "Görünüm oluşturulurken hata oluştu. Lütfen ayarları kontrol edin yada GravityView destek bölümüne başvurun."
 
-#: includes/class-admin-views.php:1104
+#: includes/class-admin-views.php:1103
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1105
+#: includes/class-admin-views.php:1104
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -507,7 +508,7 @@ msgstr ""
 
 #: includes/class-admin-welcome.php:56
 msgid "GravityView: Getting Started"
-msgstr ""
+msgstr "GravityView: Başlangıç"
 
 #: includes/class-admin-welcome.php:57 includes/class-admin-welcome.php:152
 msgid "Getting Started"
@@ -537,19 +538,19 @@ msgstr "GravityView yüklediğiniz için teşekkür ederiz. Artık Gravity Forms
 msgid "List of Changes"
 msgstr ""
 
-#: includes/class-admin-welcome.php:373
+#: includes/class-admin-welcome.php:409
 msgid "GravityView is brought to you by:"
 msgstr "GravityView'i çıkaranlar:"
 
-#: includes/class-admin-welcome.php:398
+#: includes/class-admin-welcome.php:434
 msgid "Contributors"
 msgstr "Katkıda Bulunanlar"
 
-#: includes/class-admin-welcome.php:416
+#: includes/class-admin-welcome.php:452
 msgid "Want to contribute?"
 msgstr "Katkıda bulunmak istermisiniz?"
 
-#: includes/class-admin-welcome.php:417
+#: includes/class-admin-welcome.php:453
 #, php-format
 msgid ""
 "If you want to contribute to the code, you can %srequest access to the "
@@ -607,7 +608,7 @@ msgstr "Görünüm gönderildi."
 #: includes/class-admin.php:147
 #, php-format
 msgid "View scheduled for: %1$s."
-msgstr ""
+msgstr "Görünüm yayınlanma tarihi: %1$s."
 
 #: includes/class-admin.php:149
 msgid "M j, Y @ G:i"
@@ -688,7 +689,7 @@ msgstr ""
 
 #: includes/class-data.php:275
 msgid "Number of entries per page"
-msgstr ""
+msgstr "Sayfa başına gösterilecek kayıt sayısı"
 
 #: includes/class-data.php:283
 msgid "Enable lightbox for images"
@@ -756,7 +757,7 @@ msgstr "Bu tarihten önce gönderilen kayıtları göster. Önceki tarihler dest
 
 #: includes/class-data.php:353
 msgid "CSS Class"
-msgstr ""
+msgstr "Özel CSS Sınıfı:"
 
 #: includes/class-data.php:354
 msgid "CSS class to add to the wrapping HTML container."
@@ -801,7 +802,7 @@ msgstr "Çoklu kayıt görünümüne dönüş yapan bağlantının yazısı."
 
 #: includes/class-debug-bar.php:24
 msgid "GravityView"
-msgstr ""
+msgstr "GravityView"
 
 #: includes/class-debug-bar.php:91
 msgid "Warnings"
@@ -832,12 +833,12 @@ msgstr ""
 #: includes/class-gravityview-extension.php:159
 #, php-format
 msgid "Could not activate the %s Extension; GravityView is not active."
-msgstr ""
+msgstr "%s eklentisi etkinleştirilemiyor; GravityView etkin değil."
 
 #: includes/class-gravityview-extension.php:169
 #, php-format
 msgid "The %s Extension requires GravityView Version %s or newer."
-msgstr ""
+msgstr "%s eklentisi en az GravityView %s sürümü yada daha yenisini gerektirmektedir."
 
 #: includes/class-post-types.php:35
 msgctxt "Post Type General Name"
@@ -1143,32 +1144,32 @@ msgstr "Arama Çubuğunu Göster"
 msgid "Use this field as a search filter"
 msgstr "Bu alanı arama süzgeci olarak kullan"
 
-#: includes/default-widgets.php:328
+#: includes/default-widgets.php:327
 msgctxt "Close calendar"
 msgid "Close"
-msgstr ""
+msgstr "Kapat"
 
-#: includes/default-widgets.php:329
+#: includes/default-widgets.php:328
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/default-widgets.php:330
+#: includes/default-widgets.php:329
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/default-widgets.php:331
+#: includes/default-widgets.php:330
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/default-widgets.php:332
+#: includes/default-widgets.php:331
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/default-widgets.php:333
+#: includes/default-widgets.php:332
 msgid "Show a different month"
 msgstr ""
 
