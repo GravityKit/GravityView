@@ -197,10 +197,25 @@ class GravityView_API {
 
 		//if show as single entry link is active
 		if( !empty( $field_settings['show_as_link'] ) ) {
-			$href = self::entry_link($entry, $field);
-			$output = '<a href="'. $href .'">'. $output . '</a>';
+			$href = self::entry_link( $entry, $field );
+			$link = '<a href="'. $href .'">'. $output . '</a>';
+
+			/**
+			 * Modify the link format
+			 * @param string $link HTML output of the link
+			 * @param string $href URL of the link
+			 * @param array  $entry The GF entry array
+			 * @param  array $field_settings Settings for the particular GV field
+			 */
+			$output = apply_filters( 'gravityview_field_entry_link', $link, $href, $entry, $field_settings );
 		}
 
+		/**
+		 * Modify the field value output
+		 * @param string $output HTML value output
+		 * @param array  $entry The GF entry array
+		 * @param  array $field_settings Settings for the particular GV field
+		 */
 		$output = apply_filters( 'gravityview_field_entry_value', $output, $entry, $field_settings );
 
 		// Free up the memory
@@ -507,13 +522,35 @@ function gravityview_format_link($value = null) {
 
 }
 
-
+/**
+ * Get all views processed so far for the current page load
+ *
+ * @see  GravityView_View_Data::add_view()
+ * @return array Array of View data, each View data with `id`, `view_id`, `form_id`, `template_id`, `atts`, `fields`, `widgets`, `form` keys.
+ */
 function gravityview_get_current_views() {
-	return GravityView_frontend::getInstance()->gv_output_data->get_views();
+
+	$fe = GravityView_frontend::getInstance();
+
+	if( empty( $fe->gv_output_data ) ) { return array(); }
+
+	return $fe->gv_output_data->get_views();
+
 }
 
+/**
+ * Get data for a specific view
+ *
+ * @see  GravityView_View_Data::get_view()
+ * @return array View data with `id`, `view_id`, `form_id`, `template_id`, `atts`, `fields`, `widgets`, `form` keys.
+ */
 function gravityview_get_current_view_data( $view_id ) {
-	return GravityView_frontend::getInstance()->gv_output_data->get_view( $view_id );
+
+	$fe = GravityView_frontend::getInstance();
+
+	if( empty( $fe->gv_output_data ) ) { return array(); }
+
+	return $fe->gv_output_data->get_view( $view_id );
 }
 
 // Templates' hooks
@@ -554,6 +591,7 @@ function gravityview_get_context() {
  *
  *   wpautop - true will filter the value using wpautop function
  *
+ * @since  1.1.5
  * @param  array $args Associative array with field data. `entry`, `field` and `form` are required.
  * @return string
  */
@@ -590,9 +628,10 @@ function gravityview_field_output( $args ) {
 
 	// If the label markup is overridden
 	if( !empty( $args['label_markup'] ) ) {
-		$label = str_replace( '{{label}}', $label, $args['label_markup'] );
+		$label = str_replace( '{{label}}', '<span class="gv-field-label">' . $label . '</span>', $args['label_markup'] );
+	} else {
+		$args['markup'] =  str_replace( '{{label}}', '<span class="gv-field-label">{{label}}</span>', $args['markup'] );
 	}
-
 
 	$html = $args['markup'];
 	$html = str_replace( '{{class}}', $class, $html );

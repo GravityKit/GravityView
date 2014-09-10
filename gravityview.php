@@ -14,7 +14,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.1.5
+ * Version:          	1.1.6
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravity-view
@@ -64,7 +64,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.1.5';
+	const version = '1.1.6';
 
 	public static $theInstance;
 
@@ -105,18 +105,25 @@ final class GravityView_Plugin {
 
 		// Add logging
 		require_once( GRAVITYVIEW_DIR . 'includes/class-logging.php');
+
 		require_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
-		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/class-data.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-frontend-views.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
 
-
+		/**
+		 * Encrypt Email Addresses
+		 * @link  https://github.com/jnicol/standalone-phpenkoder
+		 */
+		if( !class_exists( 'StandalonePHPEnkoder' ) ) {
+			include_once( GRAVITYVIEW_DIR . 'includes/lib/standalone-phpenkoder/StandalonePHPEnkoder.php' );
+		}
 
 
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ), 1 );
 
-		if( ! is_admin() ) {
+		if( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 			add_action( 'init', array( $this, 'frontend_actions' ), 20 );
 		}
 

@@ -98,7 +98,7 @@ class GV_GFCommon extends GFCommon {
 			                'flash_swf_url' => includes_url('js/plupload/plupload.flash.swf'),
 			                'silverlight_xap_url' => includes_url('js/plupload/plupload.silverlight.xap'),
 			                'filters' => array(
-			                    'mime_types' => array(array('title' => __( 'Allowed Files', 'gravityforms' ), 'extensions' => $allowed_extensions)),
+			                    'mime_types' => array(array('title' => __( 'Allowed Files', 'gravity-view' ), 'extensions' => $allowed_extensions)),
 			                    'max_file_size' => $max_upload_size . 'b'
 			                ),
 			                'multipart' => true,
@@ -117,7 +117,7 @@ class GV_GFCommon extends GFCommon {
 			            // plupload 2 was introduced in WordPress 3.9. Plupload 1 accepts a slightly different init array.
 			            if (version_compare(get_bloginfo('version'), "3.9-RC1", "<")) {
 			                $plupload_init['max_file_size'] = $max_upload_size . 'b';
-			                $plupload_init['filters']       = array(array('title' => __('Allowed Files', 'gravityforms'), 'extensions' => $allowed_extensions));
+			                $plupload_init['filters']       = array(array('title' => __('Allowed Files', 'gravity-view'), 'extensions' => $allowed_extensions));
 			            }
 			        }
 

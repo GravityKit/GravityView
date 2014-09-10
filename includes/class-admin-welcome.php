@@ -253,6 +253,42 @@ class GravityView_Welcome {
 
 			<div class="changelog point-releases">
 
+				<h3>What changed in 1.1.6</h3>
+				<ul>
+					<li><img src="<?php echo plugins_url( 'images/screenshots/single-entry-link.png', GRAVITYVIEW_FILE ); ?>" class="gv-welcome-screenshots alignright" />A link icon is shown when a field is being used as a link to the Single Entry mode (see screenshot)</li>
+					<li>Fixed: Approve / Disapprove all entries using Gravity Forms bulk edit entries form (previously, only visible entries were affected)</li>
+					<li>Email addresses are now encrypted by default to prevent spammers</li>
+					<li>Fixed: License Activation works when No-Conflict Mode is enabled</li>
+					<li>Fixed: Fields not always saving properly when adding lots of fields with the "Add All Fields" button</li>
+					<li>Fixed: Recognize single entry when using WordPress "Default" Permalink setting</li>
+					<li>Fixed: Edit Entry issues
+						<ul>
+							<li>Fixed form validation errors when a scheduled form has expired and also when a form has reached its entry limit</li>
+							<li>Fixed PHP warning messages when editing entries</li>
+							<li>When an Edit Entry form is submitted and there are errors, the submitted values stay in the form; the user won't need to fill in the form again.</li>
+						</ul>
+					</li>
+					<li>Added: Email field settings
+						<ul>
+							<li>Added option to display email plaintext or as a link</li>
+							<li>Added subject and body settings: when the link is clicked, you can choose to have these values pre-filled</li>
+						</ul>
+					</li>
+					<li>Source URL field settings, including show as a link and custom link text</li>
+					<li>Fixed: Empty truncated URLs no longer get shown</li>
+					<li>Fixed: Date Created field now respects the blog's timezone setting, instead of using UTC time</li>
+					<li>Fixed: Product sub-fields (Name, Quantity &amp; Price) displayed properly</li>
+					<li>Fixed: Empty entry display when using Job Board preset caused by incorrect template files being loaded</li>
+					<li>Fixed: Files now can be deleted when a non-administrator is editing an entry</li>
+					<li>Fixed: PHP Notices on Admin Views screen for users without edit all entries capabilities</li>
+					<li>Modified: Added ability to customize and translate the Search Bar's date picker. You can now fully customize the date picker.</li>
+					<li>Tweak: Added helper text when a new form is created by GravityView</li>
+					<li>Tweak: Renamed "Description" drop zone to "Other Fields" to more accurately represent use</li>
+					<li>Tweak: Remove all fields from a zone by holding down the Alt key while clicking the remove icon</li>
+					<li><strong>And much more!</strong> See <a href="<?php echo plugins_url('readme.txt', GRAVITYVIEW_FILE ); ?>">the full plugin changelog</a> for more information.</li>
+				</ul>
+
+
 				<h3>What changed in 1.1.5</h3>
 				<ul>
 					<li>Added: New "Edit" link in Gravity Forms Entries screen - allows you to easily access the Edit screen for an entry.</li>
@@ -431,6 +467,7 @@ class GravityView_Welcome {
 					<li><a href="https://github.com/carhartl/jquery-cookie">jQuery Cookie plugin</a> - Access and store cookie values with jQuery</li>
 					<li><a href="http://katz.si/gf">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>
 					<li>GravityView uses icons made by Freepik, Adam Whitcroft, Amit Jakhu, Zurb, Scott de Jonge, Yannick, Picol, Icomoon, TutsPlus, Dave Gandy, SimpleIcon from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a></li>
+					<li><a href="https://github.com/jnicol/standalone-phpenkoder">PHPEnkoder</a> script encodes the email addresses.</li>
 				</ul>
 
 			</div>

@@ -1,7 +1,7 @@
  <script type="text/javascript">
 
 	function DeleteFile(leadId, fieldId, deleteButton){
-		if(confirm(<?php _e("'Would you like to permanently delete this file? \'Cancel\' to stop. \'OK\' to delete'", "gravity-view"); ?>)){
+		if(confirm('<?php echo esc_js( __("Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to delete", 'gravity-view') ); ?>')){
 			var fileIndex = jQuery(deleteButton).parent().index();
 			var mysack = new sack("<?php echo admin_url("admin-ajax.php")?>");
 			mysack.execute = 1;

@@ -56,6 +56,9 @@ class GravityView_Edit_Entry {
 
 		// Add front-end access to Gravity Forms delete file action
 		add_action('wp_ajax_nopriv_rg_delete_file', array('RGForms', 'delete_file'));
+
+		// Make sure this hook is run for non-admins
+		add_action('wp_ajax_rg_delete_file', array('RGForms', 'delete_file'));
 	}
 
 	static function getInstance() {
@@ -367,6 +370,7 @@ class GravityView_Edit_Entry {
 	 */
 	function form_prepare_for_save() {
 		$form = $this->form;
+
 		foreach( $form['fields'] as &$field ) {
 			$field['adminOnly'] = '';
 
@@ -383,20 +387,22 @@ class GravityView_Edit_Entry {
 	/**
 	 * Add field keys that Gravity Forms expects.
 	 *
+	 * @see GFFormDisplay::validate()
 	 * @param  array $form GF Form
 	 * @return array       Modified GF Form
 	 */
 	function gform_pre_validation( $form ) {
 
-		if( !self::verify_nonce() ) {
+		if( ! $this->verify_nonce() ) {
 			return $form;
 		}
 
 		// Fix PHP warning regarding undefined index.
 		foreach ($form['fields'] as &$field) {
 
-			// This is because we're doing admin form pretending to be front-end
-			foreach ( array( 'noDuplicates', 'adminOnly', 'inputType' ) as $key ) {
+			// This is because we're doing admin form pretending to be front-end, so Gravity Forms
+			// expects certain field array items to be set.
+			foreach ( array( 'noDuplicates', 'adminOnly', 'inputType', 'isRequired', 'enablePrice', 'inputs' ) as $key ) {
 				$field[ $key ] = isset( $field[ $key ] ) ? $field[ $key ] : NULL;
 			}
 
@@ -410,6 +416,13 @@ class GravityView_Edit_Entry {
 		return $form;
 	}
 
+	/**
+	 * Process validation for a edit entry submission
+	 *
+	 * Sets the `is_valid` object var
+	 *
+	 * @return void
+	 */
 	function validate() {
 		/**
 		 * For some crazy reason, Gravity Forms doesn't validate Edit Entry form submissions.
@@ -421,6 +434,10 @@ class GravityView_Edit_Entry {
 		// Needed by the validate funtion
 		$failed_validation_page = NULL;
 		$field_values = RGForms::post("gform_field_values"); // this returns empty!!!
+
+		// Prevent entry limit from running when editing an entry, also
+		// prevent form scheduling from preventing editing
+		unset( $this->form['limitEntries'], $this->form['scheduleForm'] );
 
 		$this->is_valid = GFFormDisplay::validate( $this->form, $field_values, 1, $failed_validation_page );
 
@@ -448,19 +465,30 @@ class GravityView_Edit_Entry {
 		$gv_valid = true;
 
 		foreach ($validation_results['form']['fields'] as $key => &$field ) {
+
+			// This field has failed validation.
 			if( !empty( $field['failed_validation'] ) ) {
 
+				// Post Fields aren't editable, so we un-fail them.
 				if( preg_match('/post_/ism', $field['type'] )) {
 					$field['failed_validation'] = false;
 					continue;
 				}
 
-				// checks if the No Duplicates option is not validating entry against itself
+				// checks if the No Duplicates option is not validating entry against itself, since
+				// we're editing a stored entry, it would also assume it's a duplicate.
 				if( !empty( $field['noDuplicates'] ) ) {
 					$value = RGFormsModel::get_field_value( $field );
-					if( empty( $entry ) ) {
-						$entry = gravityview_get_entry( GravityView_frontend::is_single_entry() );
+
+					if( empty( $this->entry ) ) {
+						// Get the database value of the entry that's being edited
+						$this->entry = gravityview_get_entry( GravityView_frontend::is_single_entry() );
+					} else {
+						$entry = $this->entry;
 					}
+
+					// If the value of the entry is the same as the stored value
+					// Then we can assume it's not a duplicate, it's the same.
 					if( !empty( $entry ) && $value == $entry[ $field['id'] ] ) {
 						//if value submitted was not changed, then don't validate
 						$field['failed_validation'] = false;
@@ -470,10 +498,13 @@ class GravityView_Edit_Entry {
 				}
 
 				$gv_valid = false;
+
 			}
 		}
 
 		$validation_results['is_valid'] = $gv_valid;
+
+		do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Validation results.', $validation_results );
 
 		return $validation_results;
 	}
@@ -482,7 +513,7 @@ class GravityView_Edit_Entry {
 	 * Is the current page an Edit Entry page?
 	 * @return boolean
 	 */
-	function is_edit_entry() {
+	public function is_edit_entry() {
 
 		$gf_page = ( 'entry' === RGForms::get("view") );
 
@@ -493,7 +524,7 @@ class GravityView_Edit_Entry {
 	 * Is the current nonce valid for editing the entry?
 	 * @return boolean
 	 */
-	function verify_nonce() {
+	public function verify_nonce() {
 
 		// Verify form submitted for editing single
 		if( !empty( $_POST['is_gv_edit_entry'] ) ) {
@@ -501,7 +532,7 @@ class GravityView_Edit_Entry {
 		}
 
 		// Verify
-		if( !self::is_edit_entry() ) { return false; }
+		if( ! $this->is_edit_entry() ) { return false; }
 
 		return wp_verify_nonce( $_GET['edit'], self::$nonce_key );
 
@@ -548,6 +579,11 @@ class GravityView_Edit_Entry {
 	public static function check_user_cap_edit_entry( $entry ) {
 		global $gravityview_view;
 
+		// Or if they can edit any entries (as defined in Gravity Forms), we're good.
+		if( GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) ) {
+			return true;
+		}
+
 		if( !isset( $entry['created_by'] ) ) {
 
 			do_action('gravityview_log_error', 'GravityView_Edit_Entry[check_user_cap_edit_entry] Entry `created_by` doesn\'t exist.');
@@ -558,16 +594,18 @@ class GravityView_Edit_Entry {
 		$user_edit = !empty( $gravityview_view->atts['user_edit'] );
 		$current_user = wp_get_current_user();
 
+		if( empty( $user_edit ) ) {
+
+			do_action('gravityview_log_debug', 'GravityView_Edit_Entry[check_user_cap_edit_entry] User Edit is disabled. Returning false.' );
+
+			return false;
+		}
+
 		// If the logged-in user is the same as the user who created the entry, we're good.
-		if( $user_edit && is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
+		if( is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
 
 			do_action('gravityview_log_debug', sprintf( 'GravityView_Edit_Entry[check_user_cap_edit_entry] User %s created the entry.', $current_user->ID ) );
 
-			return true;
-		}
-
-		// Or if they can edit any entries (as defined in Gravity Forms), we're good.
-		if( GFCommon::current_user_can_any("gravityforms_edit_entries") ) {
 			return true;
 		}
 
@@ -577,6 +615,26 @@ class GravityView_Edit_Entry {
 
 	function generate_notice( $notice, $class = '' ) {
 		return '<div class="gv-notice '.esc_attr( $class ) .'">'. $notice .'</div>';
+	}
+
+	/**
+	 * Get the posted values from the edit form submission
+	 *
+	 * @hack
+	 * @uses GFFormsModel::get_field_value()
+	 * @param  mixed $value Existing field value, before edit
+	 * @param  array $lead  Gravity Forms entry array
+	 * @param  array $field Gravity Forms field array
+	 * @return string        [description]
+	 */
+	public function get_field_value( $value, $lead, $field ) {
+
+		// The form's not being edited; use the original value
+		if( empty( $_POST['is_gv_edit_entry'] ) ) {
+			return $value;
+		}
+
+		return GFFormsModel::get_field_value( $field, $lead, true );
 	}
 
 	/**
@@ -608,7 +666,7 @@ class GravityView_Edit_Entry {
 
 				// Keeping this compatible with Gravity Forms.
 			    $validation_message = "<div class='validation_error'>" . __("There was a problem with your submission.", "gravity-view") . " " . __("Errors have been highlighted below.", "gravity-view") . "</div>";
-			    $message = apply_filters("gform_validation_message_{$this->form["id"]}", apply_filters("gform_validation_message", $validation_message, $this->form), $this->form);
+			    $message = apply_filters("gform_validation_message_{$this->form['id']}", apply_filters("gform_validation_message", $validation_message, $this->form), $this->form);
 
 			    echo $this->generate_notice( $message , 'gv-error' );
 
@@ -639,7 +697,12 @@ class GravityView_Edit_Entry {
 			<input type='hidden' name='lid' value='{$this->entry['id']}' />
 	        ";
 
-	        // Print the actual form HTML
+	        /**
+	         * By default, the lead_detail_edit method uses the `RGFormsModel::get_lead_field_value()` method, which doesn't fill in $_POST values when there is a validation error, because it was designed to work in the admin. We want to use the `RGFormsModel::get_field_value()` If the form has been submitted, use the values for the fields.
+	         */
+	        add_filter( 'gform_get_field_value', array( $this, 'get_field_value' ), 10, 3 );
+
+			// Print the actual form HTML
 			GFEntryDetail::lead_detail_edit( $this->form, $this->entry );
 	?>
 		<div id="publishing-action">

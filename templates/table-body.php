@@ -16,9 +16,13 @@
 		} else {
 			$class = true;
 			foreach( $this->entries as $entry ) :
-				$class = !$class ? ' class="alt"' : NULL;
+
+				// Add `alt` class to alternate rows
+				$alt = empty( $alt ) ? 'alt' : false;
+
+				$class = apply_filters( 'gravityview_entry_class', $alt, $entry, $this );
 		?>
-				<tr<?php echo $class; ?>>
+				<tr<?php echo ' class="'.esc_attr($class).'"'; ?>>
 		<?php
 					do_action('gravityview_table_cells_before', $this );
 

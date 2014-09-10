@@ -46,7 +46,11 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 		$areas = array(
 			array(
 				'1-1' => array(
-					array( 'areaid' => 'table-columns', 'title' => __('Visible Table Columns', 'gravity-view' ) , 'subtitle' => ''  )
+					array(
+						'areaid' => 'table-columns',
+						'title' => __('Visible Table Columns', 'gravity-view' ) ,
+						'subtitle' => __('Each field will be displayed as a column in the table.', 'gravity-view'),
+					)
 				)
 			)
 		);
@@ -92,7 +96,7 @@ class GravityView_Default_Template_List extends GravityView_Template {
 					array( 'areaid' => 'list-image', 'title' => __( 'Image', 'gravity-view' ) , 'subtitle' => 'Leave empty to remove.' )
 				),
 				'2-3' => array(
-					array( 'areaid' => 'list-description', 'title' => __('Description', 'gravity-view' ) , 'subtitle' => 'Below the subheading, a good place for description and other data.' ) )
+					array( 'areaid' => 'list-description', 'title' => __('Other Fields', 'gravity-view' ) , 'subtitle' => 'Below the subheading, a good place for description and other data.' ) )
 				),
 			array(
 				'1-2' => array(
@@ -377,7 +381,7 @@ class GravityView_Preset_Job_Board extends GravityView_Default_Template_List {
 		$id = 'preset_job_board';
 
 		$settings = array(
-			'slug' => 'table',
+			'slug' => 'list',
 			'type' => 'preset',
 			'label' =>  __( 'Job Board', 'gravity-view' ),
 			'description' => __( 'Post available jobs in a simple job board.', 'gravity-view'),

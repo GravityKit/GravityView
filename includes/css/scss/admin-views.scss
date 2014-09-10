@@ -11,7 +11,8 @@
  */
 
 
-@import "admin-merge-tags.scss";
+@import "admin-merge-tags";
+@import "admin-tooltips";
 
 /* GV Grid
 --------------------------------------- */
@@ -183,17 +184,17 @@
 	// .button-large is 30px; we want to vertically-center
 	margin-top: -15px;
 
-}
+	p {
+		margin: 0.5em 0 1.5em;
+		padding: 0;
+		text-align: center;
 
-.gv-view-types-hover > div p {
-	margin: 0.5em 0 1.5em;
-	padding: 0;
-	text-align: center;
-}
+		a {
+			display: inline-block;
+			width: 60%;
+		}
+	}
 
-.gv-view-types-hover > div p a {
-	display: inline-block;
-	width: 60%;
 }
 
 /* button buy now */
@@ -348,7 +349,6 @@
 	}
 
 	.ui-tabs-hide { display: none!important; }
-
 }
 
 .gv-overlay {
@@ -360,86 +360,6 @@
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
-}
-
-
-
-/** tooltips for fields + widgets */
-
-body .ui-tooltip {
-	padding: 8px;
-	position:absolute;
-	width: 300px;
-	max-width: 100%; // Resize for responsive, if necessary
-	z-index: 999999!important; // Gravity Forms tooltips - need to make sure they're higher z-index to be above the field settings
-	background: #eee;
-	border: 4px solid #999;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	-o-box-shadow: 0 0 5px #aaa;
-	-moz-box-shadow: 0 0 5px #aaa;
-	-webkit-box-shadow: 0 0 5px #aaa;
-	box-shadow: 0 0 5px #aaa;
-
-	// Fix issue in Gravity Forms tooltips with line breaks
-	br { display: none; }
-
-}
-/* Fades and background-images don't work well together in IE6, drop the image */
-* html .ui-tooltip {
-	background-image: none;
-}
-
-.ui-tooltip-content {
-	padding: 0 10px;
-	max-height: 275px;
-	overflow-y: auto;
-
-	&:after {
-	  content: "";
-	  display: table;
-	  clear: both;
-	}
-
-	.close {
-		position: absolute;
-		padding: 5px;
-		top: -25px;
-		left: -25px;
-		cursor: pointer;
-	}
-	.close i {
-		font-size: 25px;
-		color: #555;
-
-		&:hover,
-		&:active {
-			color: #000;
-		}
-	}
-
-	.gv-field-controls {
-		display: none;
-	}
-
-	.gv-fields {
-		cursor: pointer;
-		padding: .5em .75em;
-	}
-
-	.gv-fields h5 {
-		float: none;
-		width: 100%;
-
-	}
-}
-
-.top .ui-tooltip-content::after {
-    bottom: -14px;
-    left: 48%;
-    border-color: #999 transparent;
-    border-width: 10px 10px 0;
 }
 
 
@@ -604,18 +524,32 @@ hr{
 			color: #d03a3a
 		}
 	}
+
+	&.dashicons-admin-links {
+		color: #aaa;
+		width: 20px;
+		font-size: 16px;
+		line-height: 20px;
+		cursor: default;
+	}
 }
 
-#directory-available-fields .gv-fields h5,
-#directory-available-widgets .gv-fields h5,
-#single-available-fields .gv-fields h5 {
-	padding: 0 !important;
-}
+/**
+ * Field Picker ( + Add Field )
+ */
+#directory-available-fields .gv-fields,
+#directory-available-widgets .gv-fields,
+#single-available-fields .gv-fields {
 
-#directory-available-fields .gv-fields span.gv-field-controls,
-#directory-available-widgets .gv-fields span.gv-field-controls,
-#single-available-fields .gv-fields span.gv-field-controls {
-	display: none !important;
+	h5 {
+		padding: 0 !important;
+	}
+
+	span.gv-field-controls,
+	span.gv-field-controls,
+	span.gv-field-controls {
+		display: none !important;
+	}
 }
 
 .ui-dialog-titlebar {
@@ -656,12 +590,13 @@ hr{
 	ul {
 		list-style: none;
 		margin: 0;
-		padding: 1.5em;
+		padding: 1em 1.5em;
 	}
 
 	ul li {
 		display: block;
-		margin-bottom: 1em;
+		margin: 0;
+		padding: .5em 0 .75em;
 		font-size: 14px;
 		clear: left;
 	}
@@ -673,9 +608,20 @@ hr{
 	}
 }
 
-// Make the dropdown icon fit on the same line as the text field
-.post-type-gravityview input.merge-tag-support {
-	width: 90%;
+
+// Only modify GV post type
+.post-type-gravityview {
+
+	// Make the dropdown icon fit on the same line as the text field
+	input.merge-tag-support {
+		width: 90%;
+	}
+
+	// Sort by field width issue
+	#gravityview_sort_field {
+		max-width: 300px;
+	}
+
 }
 
 .gv-label-checkbox {
