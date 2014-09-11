@@ -63,6 +63,7 @@
 
 			// Close open Dialog boxes when clicking on the overlay
 			$('body').on('click', '.gv-overlay', function( e ) {
+				e.preventDefault();
 				$(".ui-dialog:visible .ui-dialog-titlebar .ui-button").click();
 				return;
 			});
@@ -105,6 +106,9 @@
 			// When user clicks into the shortcode example field, select the example.
 			$('body').on('click', ".gv-shortcode input", vcfg.selectText );
 
+			// Show fields that are being used as links to single entry
+			$('body').on('change', ".gv-dialog-options input[name*=show_as_link]", vcfg.toggleShowAsEntry );
+
 			// show field buttons: Settings & Remove
 			$('body').on('click', "span.gv-field-controls a[href='#remove']", vcfg.removeField );
 			$('body').on('click', "span.gv-field-controls a[href='#settings']", vcfg.openFieldSettings );
@@ -123,6 +127,24 @@
 			$(document).on( 'click', '#publish', vcfg.createPresetForm );
 
 
+		},
+
+		/**
+		 * Toggle the dashicon link representing whether the field is being used as a link to the single entry
+		 * @param  {object} e jQuery event object
+		 * @return {void}
+		 */
+		toggleShowAsEntry: function( e ) {
+
+			var parent = $( e.target ).parents('.gv-fields');
+
+			var icon = parent.find('.gv-field-controls .dashicons-admin-links');
+
+			if( $(e.target).is(':checked') ) {
+				icon.removeClass('hide-if-js');
+			} else {
+				icon.addClass('hide-if-js');
+			}
 		},
 
 		/**
@@ -335,7 +357,8 @@
 					$('<div class="gv-overlay" />').prependTo('#wpwrap');
 					return true;
 				},
-				close: function () {
+				close: function ( e ) {
+					e.preventDefault();
 					$('#wpwrap > .gv-overlay').fadeOut( 'fast', function() { $(this).remove(); });
 				},
 				closeOnEscape: true,
@@ -675,8 +698,9 @@
 				$(this).trigger('click');
 			});
 
-			// We just added all the fields. No reason
+			// We just added all the fields. No reason to show the tooltip.
 			$("a.gv-add-field[data-tooltip='active']").tooltip("close");
+
 		},
 
 		/**
@@ -709,10 +733,21 @@
 			// Get the HTML for the Options <div>
 			// - If there are no options, response will NULL
 			// - If response is false, it means the request was invalid.
-			$.post( ajaxurl, data, function( response ) {
-
-				// A response means we have the HTML for the field options
-				if( response ) {
+			$.ajax( {
+				type: "POST",
+				url: ajaxurl,
+				data: data,
+				async: true,
+				beforeSend: function() {
+					// Don't allow saving until this is done.
+					vcfg.disable_publish();
+				},
+				complete: function() {
+					// Enable saving after it's done
+					vcfg.enable_publish();
+				}
+			})
+				.done( function( response ) {
 
 					// Add in the Options <div>
 					newField.append( response );
@@ -720,47 +755,80 @@
 					// Remove existing merge tags
 					$('.all-merge-tags').remove();
 
-					// Only init if the View has been saved and the form hasn't been changed.
+					// Only init merge tags if the View has been saved and the form hasn't been changed.
 					if( typeof(form) !== 'undefined' && $('body').not('.gv-form-changed') ) {
 
 						// Re-init merge tag dropdowns
 						window.gfMergeTags = new gfMergeTagsObj(form);
 					}
 
+					// If there are field options, show the settings gear.
 					if( $('.gv-dialog-options', newField ).length > 0 ) {
-						// There are options. Show the settings gear.
-						$('.dashicons-admin-generic', newField).hide().removeClass('hide-if-js').fadeIn(100);
+						$('.dashicons-admin-generic', newField).removeClass('hide-if-js');
 					}
-				}
 
-			});
+					// append the new field to the active drop
+					$('a[data-tooltip-id="'+ areaId +'"]')
+						.parents('.gv-droppable-area')
+							.find('.active-drop')
+								.append(newField)
+								.end()
+						.attr('data-tooltip-id','');
 
-			// append the new field to the active drop
-			$('a[data-tooltip-id="'+ areaId +'"]')
-				.parents('.gv-droppable-area')
-					.find('.active-drop')
-						.append(newField)
-						.end()
-				.attr('data-tooltip-id','');
+					// Show the new field
+					newField.fadeIn( 100 );
 
-			// Show the new field
-			newField.fadeIn('fast');
+					// If there's more than one field in the area,
+					// we move the tooltip.
+					if(newField.siblings('.gv-fields').length > 0) {
 
-			// If there's more than one field in the area,
-			// we move the tooltip.
-			if(newField.siblings('.gv-fields').length > 0) {
+						// Get the current position of the tooltip
+						tooltipOffset = $('#'+tooltipId).offset();
 
-				// Get the current position of the tooltip
-				tooltipOffset = $('#'+tooltipId).offset();
+						if( tooltipOffset && tooltipOffset.top ) {
+							// Move the tooltip down by the height of the new field plus 5px margin bottom.
+							// TODO: Clean up this so it doesn't use hard-coded margin size.
+							$('#'+tooltipId).offset({
+								top: ( tooltipOffset.top + newField.outerHeight() + 5)
+							});
+						}
+					}
 
-				// Move the tooltip down by the height of the new field plus 5px margin bottom.
-				// TODO: Clean up this so it doesn't use hard-coded margin size.
-				$('#'+tooltipId).offset({
-					top: (tooltipOffset.top + newField.outerHeight() + 5)
+				})
+				.fail( function( jqXHR, textStatus, errorThrown ) {
+
+					// Enable publish on error
+					vcfg.enable_publish();
+
+					// Something went wrong
+					alert( gvGlobals.field_loaderror );
+
+					console.log( jqXHR );
+
+				})
+				.always(function() {
+
+					vcfg.toggleDropMessage();
+
 				});
-			}
 
-			vcfg.toggleDropMessage();
+		},
+
+		/**
+		 * Enable the publish input; enable saving a View
+		 * @return {void}
+		 */
+		enable_publish: function() {
+			// Restore saving after settings are generated
+			$('#publishing-action #publish').prop('disabled', null ).removeClass('button-primary-disabled');
+		},
+
+		/**
+		 * Disable the publish input; prevent saving a View
+		 * @return {void}
+		 */
+		disable_publish: function() {
+			$('#publishing-action #publish').prop('disabled', 'disabled').addClass('button-primary-disabled');
 		},
 
 		// Sortables and droppables
@@ -832,9 +900,27 @@
 
 		// Event handler to remove Fields from active areas
 		removeField: function( e ) {
-			var vcfg = viewConfiguration;
+
 			e.preventDefault();
+
+			var vcfg = viewConfiguration;
 			var area = $( e.currentTarget ).parents(".active-drop");
+
+			// Nice little easter egg: when holding down control, get rid of all fields in the zone at once.
+			if( e.altKey && $(area).find('.gv-fields').length > 1) {
+
+				// Show a confirm dialog
+				var remove_all = window.confirm( gvGlobals.remove_all_fields );
+
+				// If yes, remove all, otherwise don't do anything
+				if( remove_all ) {
+					$(area).find('.gv-fields').remove();
+					vcfg.toggleDropMessage();
+				}
+
+				return;
+			}
+
 			$( e.currentTarget ).parents('.gv-fields').fadeOut('normal', function() {
 				$(this).remove();
 				vcfg.toggleDropMessage();
@@ -886,6 +972,9 @@
 
 			// Toggle Email fields
 			vcfg.toggleVisibility( $('input:checkbox[name*=emailmailto]', $parent) , $('[name*=emailsubject],[name*=emailbody]', $parent), first_run );
+
+			// Toggle Source URL fields
+			vcfg.toggleVisibility( $('input:checkbox[name*=link_to_source]', $parent) , $('[name*=source_link_text]', $parent), first_run );
 
 
 			$('input:checkbox', $parent).attr( 'disabled', null );

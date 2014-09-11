@@ -87,7 +87,7 @@ class GravityView_Admin_Views {
 		$menu_items['gravityview'] = array(
 			'label' 			=> __( 'Connected Views', 'gravity-view' ),
 			'icon' 			=> '<i class="fa fa-lg gv-icon-astronaut-head gv-icon"></i>',
-			'title'				=> __('GravityView Views using this form as a data source', 'gravityforms'),
+			'title'				=> __('GravityView Views using this form as a data source', 'gravity-view'),
 			'url' 				=> '#',
 			'onclick'			=> 'return false;',
 			'menu_class' 		=> 'gv_connected_forms gf_form_toolbar_settings',
@@ -175,6 +175,9 @@ class GravityView_Admin_Views {
 
 			echo __( 'The connected form can not be found; it may no longer exist.', 'gravity-view' );
 		}
+
+		$form_link = '';
+		$links = array();
 
 		if( GFCommon::current_user_can_any('gravityforms_edit_forms') ) {
 			$form_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;id=%d', $form_id ) );
@@ -361,7 +364,11 @@ class GravityView_Admin_Views {
 					continue;
 				}
 
-				echo $this->render_label($details['label'], $id, 'field', $details['type'] );
+				if( !empty( $details['type'] ) ) {
+					$details['input_type'] = $details['type'];
+				}
+
+				echo new GravityView_Admin_View_Field( $details['label'], $id, $details );
 
 			} // End foreach
 		}
@@ -377,7 +384,8 @@ class GravityView_Admin_Views {
 				'field_id' => 'all-fields',
 				'label_type' => 'field',
 				'input_type' => NULL,
-				'field_options' => NULL
+				'field_options' => NULL,
+				'settings_html'	=> NULL,
 			)
 		));
 
@@ -390,12 +398,19 @@ class GravityView_Admin_Views {
 					'field_id' => NULL,
 					'label_type' => NULL,
 					'input_type' => NULL,
-					'field_options' => NULL
+					'field_options' => NULL,
+					'settings_html'	=> NULL,
 				));
 
+				// Backward compat.
+				if( !empty( $item['field_options'] ) ) {
+					// Use settings_html from now on.
+					$item['settings_html'] = $item['field_options'];
+				}
+
 				// Render a label for each of them
-				echo $this->render_label( $item['label_text'], $item[
-					'field_id'], $item['label_type'], $item['input_type'], $item['field_options']);
+				echo new GravityView_Admin_View_Field( $item['label_text'], $item['field_id'], $item );
+
 			}
 		}
 
@@ -409,15 +424,33 @@ class GravityView_Admin_Views {
 	 */
 	function get_entry_default_fields($form, $zone) {
 		$entry_default_fields = array(
-			'id' => array( 'label' => __('Entry ID', 'gravity-view'), 'type' => 'id'),
-			'date_created' => array( 'label' => __('Entry Date', 'gravity-view'), 'type' => 'date_created'),
-			'source_url' => array( 'label' => __('Source URL', 'gravity-view'), 'type' => 'source_url'),
-			'ip' => array( 'label' => __('User IP', 'gravity-view'), 'type' => 'ip'),
-			'created_by' => array( 'label' => __('User', 'gravity-view'), 'type' => 'created_by'),
+			'id' => array(
+				'label' => __('Entry ID', 'gravity-view'),
+				'type' => 'id'
+			),
+			'date_created' => array(
+				'label' => __('Entry Date', 'gravity-view'),
+				'type' => 'date_created'
+			),
+			'source_url' => array(
+				'label' => __('Source URL', 'gravity-view'),
+				'type' => 'source_url'
+			),
+			'ip' => array(
+				'label' => __('User IP', 'gravity-view'),
+				'type' => 'ip'
+			),
+			'created_by' => array(
+				'label' => __('User', 'gravity-view'),
+				'type' => 'created_by'
+			),
         );
 
         if('single' !== $zone) {
-        	$entry_default_fields['entry_link'] = array('label' => __('Link to Entry', 'gravity-view'), 'type' => 'entry_link');
+        	$entry_default_fields['entry_link'] = array(
+        		'label' => __('Link to Entry', 'gravity-view'),
+        		'type' => 'entry_link'
+        	);
         }
 
         return apply_filters( 'gravityview_entry_default_fields', $entry_default_fields, $form, $zone);
@@ -468,7 +501,7 @@ class GravityView_Admin_Views {
 		if( !empty( $widgets ) ) :
 			foreach( $widgets as $id => $details ) :
 
-				echo $this->render_label($details['label'], $id, 'widget');
+				echo new GravityView_Admin_View_Widget( $details['label'], $id, $details );
 
 			endforeach;
 		endif;
@@ -504,7 +537,7 @@ class GravityView_Admin_Views {
 
 				<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
 
-					<?php foreach( $areas as $area ) : ?>
+					<?php foreach( $areas as $area ) : 	?>
 
 						<div class="gv-droppable-area">
 							<div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>">
@@ -516,19 +549,25 @@ class GravityView_Admin_Views {
 									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) {
 
 										$input_type = isset($available_fields[ $field['id'] ]['type']) ? $available_fields[ $field['id'] ]['type'] : NULL;
+										$field_options = self::render_field_options( $type, $template_id, $field['id'], $field['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone );
+
+										$item = array(
+											'input_type' => $input_type,
+											'settings_html' => $field_options,
+											'label_type' => $type
+										);
 
 										//if( !empty( $available_fields[ $field['id'] ] ) ) :
 
-										$field_options = self::render_field_options( $type, $template_id, $field['id'], $field['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone );
+										echo new GravityView_Admin_View_Item( $field['label'], $field['id'], $item, $field );
 
-										echo $this->render_label($field['label'], $field['id'], $type, $input_type, $field_options);
 										//endif;
 
 									}
 
 								} // End if zone is not empty ?>
 
-								<span class="drop-message"><?php echo sprintf(esc_attr__('"%s" or drag existing %ss here.', 'gravity-view'), $button_label, $type ); ?></span>
+								<span class="drop-message"><?php echo sprintf(esc_attr__('"+ %s" or drag existing %ss here.', 'gravity-view'), $button_label, $type ); ?></span>
 							</div>
 							<div class="gv-droppable-area-action">
 								<a href="#" class="gv-add-field button-secondary" title="" data-objecttype="<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone .'_'. $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>"><?php echo '+ '.esc_html( $button_label ); ?></a>
@@ -613,6 +652,7 @@ class GravityView_Admin_Views {
 	/**
 	 * Render Field Options html (shown through a dialog box)
 	 *
+	 * @todo Move to `class-admin-label.php`
 	 * @access public
 	 * @param string $template_id
 	 * @param string $field_id
@@ -667,6 +707,42 @@ class GravityView_Admin_Views {
 	}
 
 	/**
+	 * Get capabilities options for GravityView
+	 *
+	 * Parameters are only to pass to the filter.
+	 *
+	 * @param  string $template_id Optional. View slug
+	 * @param  string $field_id    Optional. GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+	 * @param  string $context     Optional. What context are we in? Example: `single` or `directory`
+	 * @param  string $input_type  Optional. (textarea, list, select, etc.)
+	 * @return array Associative array, with the key being the capability and the value being the label shown.
+	 */
+	static public function get_cap_choices( $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
+
+		$select_cap_choices = array(
+			'read' => __( 'Any Logged-In User', 'gravity-view' ),
+			'publish_posts' => __( 'Author Or Higher', 'gravity-view' ),
+			'gravityforms_view_entries' => __( 'Can View Gravity Forms Entries', 'gravity-view' ),
+			'delete_others_posts' => __( 'Editor Or Higher', 'gravity-view' ),
+			'gravityforms_edit_entries' => __( 'Can Edit Gravity Forms Entries', 'gravity-view' ),
+			'manage_options' => __( 'Administrator', 'gravity-view' ),
+		);
+
+		if( is_multisite() ) {
+			$select_cap_choices['manage_network'] = __('Multisite Super Admin', 'gravity-view' );
+		}
+
+		/**
+		 * Modify the capabilities shown in the field dropdown
+		 * @link  https://github.com/zackkatz/GravityView/wiki/How-to-modify-capabilities-shown-in-the-field-%22Only-visible-to...%22-dropdown
+		 * @since  1.0.1
+		 */
+		$select_cap_choices = apply_filters('gravityview_field_visibility_caps', $select_cap_choices, $template_id, $field_id, $context, $input_type );
+
+		return $select_cap_choices;
+	}
+
+	/**
 	 * Get the default options for a standard field.
 	 *
 	 * @param  string      $field_type  Type of field options to render (`field` or `widget`)
@@ -683,26 +759,6 @@ class GravityView_Admin_Views {
 		$field_options = array();
 
 		if( 'field' === $field_type ) {
-
-			$select_cap_choices = array(
-				'read' => __( 'Any Logged-In User', 'gravity-view' ),
-				'publish_posts' => __( 'Author Or Higher', 'gravity-view' ),
-				'gravityforms_view_entries' => __( 'Can View Gravity Forms Entries', 'gravity-view' ),
-				'delete_others_posts' => __( 'Editor Or Higher', 'gravity-view' ),
-				'gravityforms_edit_entries' => __( 'Can Edit Gravity Forms Entries', 'gravity-view' ),
-				'manage_options' => __( 'Administrator', 'gravity-view' ),
-			);
-
-			if( is_multisite() ) {
-				$select_cap_choices['manage_network'] = __('Multisite Super Admin', 'gravity-view' );
-			}
-
-			/**
-			 * Modify the capabilities shown in the field dropdown
-			 * @link  https://github.com/zackkatz/GravityView/wiki/How-to-modify-capabilities-shown-in-the-field-%22Only-visible-to...%22-dropdown
-			 * @since  1.0.1
-			 */
-			$select_cap_choices = apply_filters('gravityview_field_visibility_caps', $select_cap_choices, $template_id, $field_id, $context, $input_type );
 
 			// Default options - fields
 			$field_options = array(
@@ -733,7 +789,7 @@ class GravityView_Admin_Views {
 				'only_loggedin_cap' => array(
 					'type' => 'select',
 					'label' => __( 'Make visible for:', 'gravity-view' ),
-					'choices' => $select_cap_choices,
+					'choices' => self::get_cap_choices( $template_id, $field_id, $context, $input_type ),
 					'class' => 'widefat',
 					'default' => 'read',
 				),
@@ -991,7 +1047,6 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Uservoice feedback widget
-	 * @group Beta
 	 */
 	static function enqueue_uservoice_widget() {
 		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
@@ -1045,6 +1100,8 @@ class GravityView_Admin_Views {
 				'label_ok' => __( 'Ok', 'gravity-view' ),
 				'label_publisherror' => __( 'Error while creating the View for you. Check the settings or contact GravityView support.', 'gravity-view' ),
 				'loading_text' => esc_html__( 'Loading&hellip;', 'gravity-view' ),
+				'field_loaderror' => __( 'Error while adding the field. Please try again or contact GravityView support.', 'gravity-view' ),
+				'remove_all_fields' => __( 'Would you like to remove all fields in this zone? (You are seeing this message because you were holding down the ALT key)', 'gravity-view' ),
 			));
 
 			wp_enqueue_style( 'gravityview_views_styles', plugins_url('includes/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );

@@ -60,6 +60,14 @@ if(!empty($value)){
 					$video_tag = '<video controls="controls" preload="auto" width="375"><source src="'.esc_url( $file_path ).'" type="video/'.esc_attr( $info['extension'] ).'" /> '.$incompatible_text.'</video>';
 					$html_format = apply_filters( 'gravityview_video_html', $video_tag, $info, $incompatible_text );
 					break;
+
+				case "pdf":
+
+					// PDF needs to be displayed in an IFRAME
+					$link = add_query_arg( array( 'TB_iframe' => 'true' ), $link );
+
+					// break; left out intentionally so it is handled as default
+
 				default:
 					$html_format = sprintf("<a href='{$link}' {$link_atts}>" . $content . "</a>", $gv_class );
 					break;

@@ -59,7 +59,8 @@ class GravityView_frontend {
 	function parse_content() {
 		global $post;
 
-		if( is_admin() ) { return; }
+		if( is_admin() && ( !defined( 'DOING_AJAX' ) || defined( 'DOING_AJAX' ) && ! DOING_AJAX ) ) { return; }
+
 		$this->single_entry = self::is_single_entry();
 		$this->entry = ( $this->single_entry ) ? gravityview_get_entry( $this->single_entry ) : false;
 		$this->is_gravityview_post_type = ( get_post_type( $post ) === 'gravityview' );
@@ -240,7 +241,17 @@ class GravityView_frontend {
 			return;
 		}
 
+		// Solve problem when loading content via admin-ajax.php
+		// @hack
+		if( empty( $this->gv_output_data ) ) {
+
+			do_action( 'gravityview_log_error', '[render_view] gv_output_data not defined; parsing content.', $passed_args );
+
+			$this->parse_content();
+		}
+
 		$view_id = $passed_args['id'];
+
 		$view_data = $this->gv_output_data->get_view( $view_id );
 
 		do_action( 'gravityview_log_debug', '[render_view] View Data: ', $view_data );
@@ -539,7 +550,7 @@ class GravityView_frontend {
 		 *
 		 * @var array
 		 */
-		$parameters = apply_filters( 'gravityview_get_entries', apply_filters( 'gravityview_get_entries_'.$args['id'], compact( 'search_criteria', 'sorting', 'paging' ), $args ), $args );
+		$parameters = apply_filters( 'gravityview_get_entries', apply_filters( 'gravityview_get_entries_'.$args['id'], compact( 'search_criteria', 'sorting', 'paging' ), $args, $form_id ), $args, $form_id );
 
 		do_action( 'gravityview_log_debug', '[get_view_entries] $parameters passed to gravityview_get_entries(): ', $parameters );
 
@@ -547,7 +558,7 @@ class GravityView_frontend {
 		$count = 0;
 		$entries = gravityview_get_entries( $form_id, $parameters, $count );
 
-		do_action( 'gravityview_log_debug', sprintf( '[get_view_entries] Get Entries. Found: %s entries', $count ) );
+		do_action( 'gravityview_log_debug', sprintf( '[get_view_entries] Get Entries. Found: %s entries', $count ), $entries );
 
 		/**
 		 * Filter the entries output to the View
@@ -565,7 +576,21 @@ class GravityView_frontend {
 	 * @return boolean|string false if not, single entry id if true
 	 */
 	public static function is_single_entry() {
-		$single_entry = get_query_var( GravityView_Post_Types::get_entry_var_name() );
+		global $wp_rewrite;
+
+		$var_name = GravityView_Post_Types::get_entry_var_name();
+
+		// If not using permalinks, simply check whether the single entry $_GET parameter is set.
+		if( !empty( $wp_rewrite ) && !$wp_rewrite->using_permalinks() ) {
+			if( !empty( $_GET[ $var_name ] ) && is_numeric( $_GET[ $var_name ] ) ) {
+				return (int)$_GET[ $var_name ];
+			} else {
+				return false;
+			}
+		}
+
+		$single_entry = get_query_var( $var_name );
+
 		if( empty( $single_entry ) ){
 			return false;
 		} else {
@@ -594,6 +619,8 @@ class GravityView_frontend {
 
 			$views = $this->gv_output_data->get_views();
 
+			$js_localization = array();
+
 			foreach ( $views as $view_id => $data ) {
 
 				// By default, no thickbox
@@ -609,13 +636,24 @@ class GravityView_frontend {
 				wp_register_script( 'gravityview-jquery-cookie', plugins_url('includes/lib/jquery-cookie/jquery.cookie.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
 
 				$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
-				wp_enqueue_script( 'gravityview-fe-view', plugins_url('includes/js/fe-views'.$script_debug.'.js', GRAVITYVIEW_FILE), $js_dependencies, GravityView_Plugin::version, true );
+				wp_enqueue_script( 'gravityview-fe-view', plugins_url('includes/js/fe-views'.$script_debug.'.js', GRAVITYVIEW_FILE), apply_filters('gravityview_js_dependencies', $js_dependencies ) , GravityView_Plugin::version, true );
+
+				/**
+				 * Modify the array passed to wp_localize_script
+				 * @var array Contains `datepicker` key, which passes settings to the JS file
+				 */
+				$js_localization = apply_filters('gravityview_js_localization', $js_localization, $data );
 
 				wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), $css_dependencies, GravityView_Plugin::version, 'all' );
 
 				self::add_style( $data['template_id'] );
 
 			}
+
+			if( current_filter() === 'wp_print_footer_scripts' ) {
+				wp_localize_script( 'gravityview-fe-view', 'gvGlobals', $js_localization );
+			}
+
 		}
 	}
 
