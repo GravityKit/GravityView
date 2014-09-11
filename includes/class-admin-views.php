@@ -751,7 +751,9 @@ class GravityView_Admin_Views {
 	 * @param  string      $context     What context are we in? Example: `single` or `directory`
 	 * @param  string      $input_type  (textarea, list, select, etc.)
 	 * @return array                   Array of field options with `label`, `value`, `type`, `default` keys
-	 * @filter gravityview_template_{$field_type}_options Filter the field options by field type ( field / widget)
+	 * @filter gravityview_template_{$field_type}_options Filter the field options by field type
+	 *     - gravityview_template_field_options
+	 *     - gravityview_template_widget_options
 	 * @filter gravityview_template_{$input_type}_options Filter the field options by input type (textarea, list, select, etc.)
 	 */
 	static public function get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type ) {
