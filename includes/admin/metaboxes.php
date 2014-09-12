@@ -326,15 +326,15 @@ class GravityView_Admin_Metaboxes {
 
 		<?php
 
-			GravityView_Admin_Views::render_setting_row( 'page_size', $current_settings );
+			GravityView_Render_Settings::render_setting_row( 'page_size', $current_settings );
 
-			GravityView_Admin_Views::render_setting_row( 'lightbox', $current_settings );
+			GravityView_Render_Settings::render_setting_row( 'lightbox', $current_settings );
 
-			GravityView_Admin_Views::render_setting_row( 'show_only_approved', $current_settings );
+			GravityView_Render_Settings::render_setting_row( 'show_only_approved', $current_settings );
 
-			GravityView_Admin_Views::render_setting_row( 'hide_empty', $current_settings );
+			GravityView_Render_Settings::render_setting_row( 'hide_empty', $current_settings );
 
-			GravityView_Admin_Views::render_setting_row( 'user_edit', $current_settings );
+			GravityView_Render_Settings::render_setting_row( 'user_edit', $current_settings );
 
 			do_action( 'gravityview_admin_directory_settings', $current_settings );
 
@@ -346,9 +346,9 @@ class GravityView_Admin_Metaboxes {
 
 		<table class="form-table"><?php
 
-			GravityView_Admin_Views::render_setting_row( 'single_title', $current_settings );
+			GravityView_Render_Settings::render_setting_row( 'single_title', $current_settings );
 
-			GravityView_Admin_Views::render_setting_row( 'back_link_label', $current_settings );
+			GravityView_Render_Settings::render_setting_row( 'back_link_label', $current_settings );
 
 		?>
 		</table>
@@ -380,9 +380,9 @@ class GravityView_Admin_Metaboxes {
 
 			$sort_fields_input = '<select name="template_settings[sort_field]" id="gravityview_sort_field">'.gravityview_get_sortable_fields( $curr_form, $current_settings['sort_field'] ).'</select>';
 
-			GravityView_Admin_Views::render_setting_row( 'sort_field', $current_settings, $sort_fields_input );
+			GravityView_Render_Settings::render_setting_row( 'sort_field', $current_settings, $sort_fields_input );
 
-			GravityView_Admin_Views::render_setting_row( 'sort_direction', $current_settings );
+			GravityView_Render_Settings::render_setting_row( 'sort_direction', $current_settings );
 
 			// End Sort fields
 			do_action( 'gravityview_metabox_sort_after', $current_settings );
@@ -390,9 +390,9 @@ class GravityView_Admin_Metaboxes {
 			// Begin Filter fields
 			do_action( 'gravityview_metabox_filter_before', $current_settings );
 
-			GravityView_Admin_Views::render_setting_row( 'start_date', $current_settings );
+			GravityView_Render_Settings::render_setting_row( 'start_date', $current_settings );
 
-			GravityView_Admin_Views::render_setting_row( 'end_date', $current_settings );
+			GravityView_Render_Settings::render_setting_row( 'end_date', $current_settings );
 
 			// End Filter fields
 			do_action( 'gravityview_metabox_filter_after', $current_settings );
