@@ -15,7 +15,6 @@
 class GravityView_Admin_Views {
 
 	private $post_id;
-	private static $setting_row_alt = false;
 
 	function __construct() {
 
@@ -39,6 +38,8 @@ class GravityView_Admin_Views {
 		add_action( 'gravityview_render_available_fields', array( $this, 'render_available_fields'), 10, 2 );
 		add_action( 'gravityview_render_available_widgets', array( $this, 'render_available_widgets') );
 		add_action( 'gravityview_render_active_areas', array( $this, 'render_active_areas'), 10, 5 );
+
+		// @todo check if this hook is needed..
 		add_action( 'gravityview_render_field_options', array( $this, 'render_field_options'), 10, 9 );
 
 		// Add Connected Form column
@@ -564,7 +565,6 @@ class GravityView_Admin_Views {
 												echo new GravityView_Admin_View_Field( $item['label'], $field['id'], $item, $field );
 										}
 
-
 										//endif;
 
 									}
@@ -651,31 +651,8 @@ class GravityView_Admin_Views {
 		}
 
 		return $output;
-	}
-
-	/**
-	 * Render Field Options html (shown through a dialog box)
-	 *
-	 * @todo Move to `class-admin-label.php`
-	 * @access public
-	 * @param string $template_id
-	 * @param string $field_id
-	 * @param string $field_label
-	 * @param string $area
-	 * @param string $uniqid (default: '')
-	 * @param string $current (default: '')
-	 * @param string $context (default: 'single')
-	 * @return void
-	 */
-	static function render_field_options( $field_type, $template_id, $field_id, $field_label, $area, $input_type = NULL, $uniqid = '', $current = '', $context = 'single' ) {
-
-		if( empty( $uniqid ) ) {
-			//generate a unique field id
-			$uniqid = uniqid('', false);
 		}
 
-		// get field/widget options
-		$options = self::get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type );
 
 		// two different post arrays, depending of the field type
 		$name_prefix = $field_type .'s' .'['. $area .']['. $uniqid .']';
@@ -746,312 +723,7 @@ class GravityView_Admin_Views {
 		$select_cap_choices = apply_filters('gravityview_field_visibility_caps', $select_cap_choices, $template_id, $field_id, $context, $input_type );
 
 		return $select_cap_choices;
-	}
-
-	/**
-	 * Get the default options for a standard field.
-	 *
-	 * @param  string      $field_type  Type of field options to render (`field` or `widget`)
-	 * @param  string      $template_id Table slug
-	 * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
-	 * @param  string      $context     What context are we in? Example: `single` or `directory`
-	 * @param  string      $input_type  (textarea, list, select, etc.)
-	 * @return array                   Array of field options with `label`, `value`, `type`, `default` keys
-	 * @filter gravityview_template_{$field_type}_options Filter the field options by field type
-	 *     - gravityview_template_field_options
-	 *     - gravityview_template_widget_options
-	 * @filter gravityview_template_{$input_type}_options Filter the field options by input type (textarea, list, select, etc.)
-	 */
-	static public function get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type ) {
-
-		$field_options = array();
-
-		if( 'field' === $field_type ) {
-
-			// Default options - fields
-			$field_options = array(
-				'show_label' => array(
-					'type' => 'checkbox',
-					'label' => __( 'Show Label', 'gravity-view' ),
-					'default' => preg_match('/table/ism', $template_id), // If the view template is table, show label as default. Otherwise, don't
-				),
-				'custom_label' => array(
-					'type' => 'text',
-					'label' => __( 'Custom Label:', 'gravity-view' ),
-					'default' => '',
-					'merge_tags' => true,
-				),
-				'custom_class' => array(
-					'type' => 'text',
-					'label' => __( 'Custom CSS Class:', 'gravity-view' ),
-					'desc' => __( 'This class will be added to the field container', 'gravity-view'),
-					'default' => '',
-					'merge_tags' => true,
-					'tooltip' => 'gv_css_merge_tags',
-				),
-				'only_loggedin' => array(
-					'type' => 'checkbox',
-					'label' => __( 'Make visible only to logged-in users?', 'gravity-view' ),
-					'default' => ''
-				),
-				'only_loggedin_cap' => array(
-					'type' => 'select',
-					'label' => __( 'Make visible for:', 'gravity-view' ),
-					'choices' => self::get_cap_choices( $template_id, $field_id, $context, $input_type ),
-					'class' => 'widefat',
-					'default' => 'read',
-				),
-			);
-
-		} elseif( 'widget' === $field_type ) {
-
 		}
-
-		// hook to inject template specific field/widget options
-		$field_options = apply_filters( "gravityview_template_{$field_type}_options", $field_options, $template_id, $field_id, $context, $input_type );
-
-		// hook to inject template specific input type options (textarea, list, select, etc.)
-		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type );
-
-		return $field_options;
-	}
-
-	/**
-	 * Handle rendering a field option form element
-	 *
-	 * @uses GravityView_Admin_Views::render_checkbox_option() Render <input type="checkbox">
-	 * @uses GravityView_Admin_Views::render_select_option() Render <select>
-	 * @uses GravityView_Admin_Views::render_text_option() Render <input type="text">
-	 * @param  string      $name    Input `name` attribute
-	 * @param  array      $option  Associative array of options. See the $defaults variable for available keys.
-	 * @param  mixed      $current Current value of option
-	 * @return string               HTML output of option
-	 */
-	public static function render_field_option( $name = '', $passed_option, $current = NULL ) {
-
-		$defaults = array(
-			'default' => '',
-			'desc' => '',
-			'value' => NULL,
-			'label' => '',
-			'type'	=> 'text',
-			'choices' => NULL,
-			'merge_tags' => true,
-			'tooltip' => NULL,
-		);
-
-		$option = wp_parse_args( $passed_option, $defaults );
-
-		extract( $option );
-
-		// If we set a tooltip, get the HTML
-		$tooltip = !empty( $option['tooltip'] ) ? ' '.gform_tooltip( $option['tooltip'] , '', true ) : NULL;
-
-		$output = '';
-
-		if( is_null($current) ) {
-			$current = $option['default'];
-		}
-
-		$id = sanitize_html_class( $name );
-
-		$output .= '<label for="'. $id .'" class="gv-label-'.sanitize_html_class( $option['type'] ).'">';
-
-		if( !empty( $option['desc'] ) ) {
-			$option['desc'] = '<span class="howto">'.$option['desc'].'</span>';
-		}
-
-		switch( $option['type'] ) {
-			case 'checkbox':
-				$output .= self::render_checkbox_option( $name, $id, $current );
-				$output .= '&nbsp;'.$option['label'].$tooltip.$option['desc'];
-				break;
-
-			case 'select':
-				$output .= $option['label'].$tooltip.$option['desc'].'&nbsp;';
-				$output .= self::render_select_option( $name, $id, $option['choices'], $current );
-				break;
-
-			case 'textarea':
-				$output .= $option['label'].$tooltip.$option['desc'];
-				$output .= '<div>';
-				$output .= self::render_textarea_option( $name, $id, $current, $option['merge_tags'] );
-				$output .= '</div>';
-				break;
-
-			case 'text':
-			default:
-				$output .= $option['label'].$tooltip.$option['desc'];
-				$output .= '<div>';
-				$output .= self::render_text_option( $name, $id, $current, $option['merge_tags'] );
-				$output .= '</div>';
-				break;
-		}
-
-		$output .= '</label>';
-
-		return $output;
-	}
-
-	/**
-	 * Output a table row for view settings
-	 * @param  string $key              The key of the input
-	 * @param  array  $current_settings Associative array of current settings to use as input values, if set. If not set, the defaults are used.
-	 * @param  [type] $override_input   [description]
-	 * @param  string $name             [description]
-	 * @param  string $id               [description]
-	 * @return [type]                   [description]
-	 */
-	static function render_setting_row( $key = '', $current_settings = array(), $override_input = null, $name = 'template_settings[%s]', $id = 'gravityview_se_%s' ) {
-
-		$name = esc_attr( sprintf( $name, $key ) );
-		$id = esc_attr( sprintf( $id, $key ) );
-
-		$setting = GravityView_View_Data::get_default_arg( $key, true );
-
-		// If the key doesn't exist, there's something wrong.
-		if( empty( $setting ) ) { return; }
-
-		// Use default if current setting isn't set.
-		$current = isset( $current_settings[ $key ] ) ? $current_settings[ $key ] : $setting['value'];
-
-		$output = self::$setting_row_alt ? '<tr valign="top">' : '<tr valign="top" class="alt">';
-		self::$setting_row_alt = self::$setting_row_alt ? false : true;
-
-		$label = trim( esc_html( $setting['name'] ) . ' '.gform_tooltip( 'gv_'.$key, false, true ) );
-
-		if( !empty( $override_input ) ) {
-			$input = $override_input;
-		} else {
-			switch ($setting['type']) {
-				case 'select':
-					$input = GravityView_Admin_Views::render_select_option( $name, $id, $setting['options'], $current, true );
-					break;
-				case 'checkbox':
-					$input = GravityView_Admin_Views::render_checkbox_option( $name, $id, $current, true );
-					break;
-				default:
-					$input = GravityView_Admin_Views::render_text_option( $name, $id, $current, true, $setting );
-					break;
-			}
-		}
-
-		if( $setting['type'] === 'checkbox' ) {
-			$output .= '<td scope="row" colspan="2">';
-			$output .= '<label for="'.$id.'">';
-			$output .= $input . ' ' . $label;
-			$output .= '</label>';
-		} else {
-
-			// By default, show setting as full width.
-			if( !empty( $setting['full_width'] ) ) {
-				$output .= '<td scope="row" colspan="2"><div><label for="'.$id.'">';
-				$output .= $label;
-				$output .= '</label></div>'.$input.'</td>';
-			} else {
-				$output .= '<td scope="row"><label for="'.$id.'">';
-				$output .= $label;
-				$output .= '</label></td><td>'.$input.'</td>';
-			}
-		}
-
-		$output .= '</tr>';
-
-		echo $output;
-	}
-
-
-	/**
-	 * Render the HTML for a checkbox input to be used on the field & widgets options
-	 * @param  string $name , name attribute
-	 * @param  string $current current value
-	 * @return string         html tags
-	 */
-	public static function render_checkbox_option( $name = '', $id = '', $current = '' ) {
-
-		$output  = '<input name="'. esc_attr( $name ) .'" type="hidden" value="0">';
-		$output .= '<input name="'. esc_attr( $name ) .'" id="'. esc_attr( $id ) .'" type="checkbox" value="1" '. checked( $current, '1', false ) .' >';
-
-		return $output;
-	}
-
-
-	/**
-	 * Render the HTML for an input text to be used on the field & widgets options
-	 * @param  string $name    Unique name of the field. Exampe: `fields[directory_list-title][5374ff6ab128b][custom_label]`
-	 * @param  string $current [current value]
-	 * @param  string $desc   Option description
-	 * @param string $add_merge_tags Add merge tags to the input?
-	 * @return string         [html tags]
-	 */
-	public static function render_text_option( $name = '', $id = '', $current = '', $add_merge_tags = NULL, $args = array() ) {
-
-		// Show the merge tags if the field is a list view
-		$is_list = ( preg_match( '/_list-/ism', $name ));
-
-		// Or is a single entry view
-		$is_single = ( preg_match( '/single_/ism', $name ));
-		$show = ( $is_single || $is_list );
-
-		$class = '';
-		// and $add_merge_tags is not false
-		if( $show && $add_merge_tags !== false || $add_merge_tags === 'force' ) {
-			$class = 'merge-tag-support mt-position-right mt-hide_all_fields ';
-		}
-
-		$class .= !empty( $args['class'] ) ? $args['class'] : 'widefat';
-		$type = !empty( $args['type'] ) ? $args['type'] : 'text';
-
-		return '<input name="'. esc_attr( $name ) .'" id="'. esc_attr( $id ) .'" type="'.esc_attr($type).'" value="'. esc_attr( $current ) .'" class="'.esc_attr( $class ).'">';
-	}
-
-	/**
-	 * Render the HTML for an textarea input to be used on the field & widgets options
-	 * @param  string $name    Unique name of the field. Exampe: `fields[directory_list-title][5374ff6ab128b][custom_label]`
-	 * @param  string $current [current value]
-	 * @param  string $desc   Option description
-	 * @param string $add_merge_tags Add merge tags to the input?
-	 * @return string         [html tags]
-	 */
-	public static function render_textarea_option( $name = '', $id = '', $current = '', $add_merge_tags = NULL, $args = array() ) {
-
-		// Show the merge tags if the field is a list view
-		$is_list = ( preg_match( '/_list-/ism', $name ));
-
-		// Or is a single entry view
-		$is_single = ( preg_match( '/single_/ism', $name ));
-		$show = ( $is_single || $is_list );
-
-		$class = '';
-		// and $add_merge_tags is not false
-		if( $show && $add_merge_tags !== false || $add_merge_tags === 'force' ) {
-			$class = 'merge-tag-support mt-position-right mt-hide_all_fields ';
-		}
-
-		$class .= !empty( $args['class'] ) ? 'widefat '.$args['class'] : 'widefat';
-		$type = !empty( $args['type'] ) ? $args['type'] : 'text';
-
-		return '<textarea name="'. esc_attr( $name ) .'" id="'. esc_attr( $id ) .'" class="'.esc_attr( $class ).'">'. esc_textarea( $current ) .'</textarea>';
-	}
-
-	/**
-	 * Render the HTML for a select box to be used on the field & widgets options
-	 * @param  string $name    [name attribute]
-	 * @param  array $choices [select options]
-	 * @param  string $current [current value]
-	 * @return string          [html tags]
-	 */
-	public static function render_select_option( $name = '', $id = '', $choices, $current = '' ) {
-
-		$output = '<select name="'. $name .'" id="'. $id .'">';
-		foreach( $choices as $value => $label ) {
-			$output .= '<option value="'. esc_attr( $value ) .'" '. selected( $value, $current, false ) .'>'. esc_html( $label ) .'</option>';
-		}
-		$output .= '</select>';
-
-		return $output;
-	}
-
 
 	/**
 	 * Uservoice feedback widget
