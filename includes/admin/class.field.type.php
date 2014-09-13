@@ -6,15 +6,15 @@
 abstract class GravityView_FieldType {
 
     //field form html name
-    private $name;
+    protected $name;
 
     // field settings
-    private $field;
+    protected $field;
 
     // field current value
-    private $value;
+    protected $value;
 
-    function __construct( $name, $field = array(), $curr_value = NULL ) {
+    function __construct( $name = '', $field = array(), $curr_value = NULL ) {
 
         $this->name = $name;
         $this->field = $field;
