@@ -133,7 +133,7 @@ class GravityView_Admin_Views {
 
 			// Add the tooltip
 			$gv_tooltips[ 'gv_'.$key ] = array(
-				'title'	=> $arg['name'],
+				'title'	=> $arg['label'],
 				'value'	=> $arg['desc'],
 			);
 
