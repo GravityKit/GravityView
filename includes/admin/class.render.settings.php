@@ -86,6 +86,43 @@ class GravityView_Render_Settings {
     }
 
     /**
+     * Get capabilities options for GravityView
+     *
+     * Parameters are only to pass to the filter.
+     *
+     * @param  string $template_id Optional. View slug
+     * @param  string $field_id    Optional. GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+     * @param  string $context     Optional. What context are we in? Example: `single` or `directory`
+     * @param  string $input_type  Optional. (textarea, list, select, etc.)
+     * @return array Associative array, with the key being the capability and the value being the label shown.
+     */
+    static public function get_cap_choices( $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
+
+        $select_cap_choices = array(
+            'read' => __( 'Any Logged-In User', 'gravity-view' ),
+            'publish_posts' => __( 'Author Or Higher', 'gravity-view' ),
+            'gravityforms_view_entries' => __( 'Can View Gravity Forms Entries', 'gravity-view' ),
+            'delete_others_posts' => __( 'Editor Or Higher', 'gravity-view' ),
+            'gravityforms_edit_entries' => __( 'Can Edit Gravity Forms Entries', 'gravity-view' ),
+            'manage_options' => __( 'Administrator', 'gravity-view' ),
+        );
+
+        if( is_multisite() ) {
+            $select_cap_choices['manage_network'] = __('Multisite Super Admin', 'gravity-view' );
+        }
+
+        /**
+         * Modify the capabilities shown in the field dropdown
+         * @link  https://github.com/zackkatz/GravityView/wiki/How-to-modify-capabilities-shown-in-the-field-%22Only-visible-to...%22-dropdown
+         * @since  1.0.1
+         */
+        $select_cap_choices = apply_filters('gravityview_field_visibility_caps', $select_cap_choices, $template_id, $field_id, $context, $input_type );
+
+        return $select_cap_choices;
+    }
+
+
+    /**
      * Render Field Options html (shown through a dialog box)
      *
      * @access public
