@@ -7,7 +7,7 @@ class GravityView_FieldType_checkbox extends GravityView_FieldType {
 	function render_option() {
 		?>
 		<label for="<?php echo $this->get_field_id(); ?>" class="<?php echo $this->get_label_class(); ?>">
-			<?php self::render_input(); ?>
+			<?php $this->render_input(); ?>
 			&nbsp;<?php echo $this->get_field_label() . $this->get_tooltip() . $this->get_field_desc(); ?>
 		</label>
 		<?php
@@ -17,7 +17,7 @@ class GravityView_FieldType_checkbox extends GravityView_FieldType {
 		?>
 		<td scope="row" colspan="2">
 			<label for="<?php echo $this->get_field_id(); ?>">
-				<?php self::render_input( $override_input ); ?>
+				<?php $this->render_input( $override_input ); ?>
 				&nbsp;<?php echo $this->get_field_label() . $this->get_tooltip() . $this->get_field_desc(); ?>
 			</label>
 		</td>

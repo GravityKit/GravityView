@@ -8,8 +8,7 @@ if( !class_exists('GravityView_FieldType_text') ) {
 }
 class GravityView_FieldType_number extends GravityView_FieldType_text {
 
-	function render_input( $override_input ) {
-
+	function render_input( $override_input = null ) {
 		if( isset( $override_input ) ) {
 			echo $override_input;
 			return;
