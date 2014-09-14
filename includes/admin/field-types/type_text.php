@@ -9,13 +9,13 @@ class GravityView_FieldType_text extends GravityView_FieldType {
 		<label for="<?php echo $this->get_field_id(); ?>" class="<?php echo $this->get_label_class(); ?>">
 			<?php echo $this->get_field_label() . $this->get_tooltip() . $this->get_field_desc(); ?>
 			<div>
-				<?php self::render_input(); ?>
+				<?php $this->render_input(); ?>
 			</div>
 		</label>
 		<?php
 	}
 
-	function render_input( $override_input ) {
+	function render_input( $override_input = null ) {
 
 		if( isset( $override_input ) ) {
 			echo $override_input;

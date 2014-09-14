@@ -109,7 +109,7 @@ abstract class GravityView_FieldType {
         // Show the merge tags if the field is a list view
         $is_list = preg_match( '/_list-/ism', $this->name );
         // Or is a single entry view
-        $is_single = preg_match( '/single_/ism', $name );
+        $is_single = preg_match( '/single_/ism', $this->name );
 
         return ( $is_single || $is_list );
     }
@@ -137,7 +137,7 @@ abstract class GravityView_FieldType {
                         <?php echo $this->get_field_label() . $this->get_tooltip() . $this->get_field_desc(); ?>
                     </label>
                 </div>
-                <?php self::render_input( $override_input ); ?>
+                <?php $this->render_input( $override_input ); ?>
             </td>
         <?php else: ?>
             <td scope="row">
@@ -146,7 +146,7 @@ abstract class GravityView_FieldType {
                 </label>
             </td>
             <td>
-                <?php self::render_input( $override_input ); ?>
+                <?php $this->render_input( $override_input ); ?>
             </td>
         <?php endif;
 
