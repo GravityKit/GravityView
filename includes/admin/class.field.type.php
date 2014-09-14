@@ -134,7 +134,7 @@ abstract class GravityView_FieldType {
             <td scope="row" colspan="2">
                 <div>
                     <label for="<?php echo $this->get_field_id(); ?>">
-                        <?php echo $this->get_field_label() . $this->get_tooltip() . $this->get_field_desc(); ?>
+                        <?php echo $this->get_field_label() . $this->get_tooltip(); ?>
                     </label>
                 </div>
                 <?php $this->render_input( $override_input ); ?>
@@ -142,7 +142,7 @@ abstract class GravityView_FieldType {
         <?php else: ?>
             <td scope="row">
                 <label for="<?php echo $this->get_field_id(); ?>">
-                    <?php echo $this->get_field_label() . $this->get_tooltip() . $this->get_field_desc(); ?>
+                    <?php echo $this->get_field_label() . $this->get_tooltip(); ?>
                 </label>
             </td>
             <td>
