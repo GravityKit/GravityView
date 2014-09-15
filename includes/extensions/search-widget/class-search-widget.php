@@ -39,9 +39,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 	//	add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ) );
 
-		// add field options (specific for this widget)
-	//	add_filter( 'gravityview_template_field_options', array( $this, 'assign_field_options' ), 10, 4 );
-
 
 
 
@@ -53,6 +50,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 		return self::$instance;
 	}
+
+
 
 
 
