@@ -190,16 +190,6 @@ class GravityView_Render_Settings {
      */
     public static function render_field_option( $name = '', $option, $curr_value = NULL ) {
 
-        $defaults = GravityView_FieldType::get_field_option_defaults();
-
-        $option = wp_parse_args( $option, $defaults );
-
-        $output = '';
-
-        if( is_null( $curr_value ) ) {
-            $curr_value = $option['value'];
-        }
-
         // prepare to render option field type
 
         if( isset( $option['type'] ) ) {
