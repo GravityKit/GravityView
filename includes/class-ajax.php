@@ -230,7 +230,7 @@ class GravityView_Ajax {
 		$input_type = isset($post['input_type']) ? esc_attr( $post['input_type'] ) : NULL;
 		$context = isset($post['context']) ? esc_attr( $post['context'] ) : NULL;
 
-		$response = GravityView_Admin_Views::render_field_options( $post['field_type'], $post['template'], $post['field_id'], $post['field_label'], $post['area'], $input_type, '', '', $context  );
+		$response = GravityView_Render_Settings::render_field_options( $post['field_type'], $post['template'], $post['field_id'], $post['field_label'], $post['area'], $input_type, '', '', $context  );
 
 		exit( $response );
 	}
