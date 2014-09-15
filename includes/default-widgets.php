@@ -98,7 +98,7 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 			'type' => 'checkbox',
 			'label' => __( 'Show each page number', 'gravity-view' ),
 			'desc' => __('Show every page number instead of summary (eg: 1 2 3 ... 8 »)', 'gravity-view'),
-			'default' => false
+			'value' => false
 		));
 		parent::__construct( __( 'Page Links', 'gravity-view' ) , 'page_links', $default_values, $settings );
 
@@ -183,12 +183,12 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 			'search_free' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Show search input', 'gravity-view' ),
-				'default' => true
+				'value' => true
 			),
 			'search_date' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Show date filters', 'gravity-view' ),
-				'default' => false
+				'value' => false
 			),
 		);
 		parent::__construct( __( 'Search Bar', 'gravity-view' ) , 'search_bar', $default_values, $settings );
@@ -206,7 +206,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 			'search_filter' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Use this field as a search filter', 'gravity-view' ),
-				'default' => false
+				'value' => false
 			)) );
 		}
 
