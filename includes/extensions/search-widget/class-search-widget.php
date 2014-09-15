@@ -29,15 +29,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$default_values = array( 'header' => 0, 'footer' => 0 );
 
 		$settings = array(
-			'search_free' => array(
-				'type' => 'checkbox',
-				'label' => __( 'Show search input', 'gravity-view' ),
-				'default' => true
-			),
-			'search_date' => array(
-				'type' => 'checkbox',
-				'label' => __( 'Show date filters', 'gravity-view' ),
-				'default' => false
+			'search_filters' => array(
+				'type' => 'hidden',
+				'label' => '',
 			),
 		);
 		parent::__construct( __( 'New Search Bar', 'gravity-view' ) , 'search_widget', $default_values, $settings );
