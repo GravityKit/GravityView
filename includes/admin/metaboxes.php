@@ -314,11 +314,7 @@ class GravityView_Admin_Metaboxes {
 		$curr_form = gravityview_get_form_id( $post->ID );
 
 		// View template settings
-		$settings = gravityview_get_template_settings( $post->ID );
-
-		$defaults = GravityView_View_Data::get_default_args();
-
-		$current_settings = wp_parse_args( $settings, $defaults );
+		$current_settings = gravityview_get_template_settings( $post->ID );
 
 		?>
 
@@ -362,11 +358,7 @@ class GravityView_Admin_Metaboxes {
 		$curr_form = gravityview_get_form_id( $post->ID );
 
 		// View template settings
-		$settings = gravityview_get_template_settings( $post->ID );
-
-		$defaults = GravityView_View_Data::get_default_args();
-
-		$current_settings = wp_parse_args( $settings, $defaults );
+		$current_settings = gravityview_get_template_settings( $post->ID );
 
 		?>
 		<table class="form-table">
