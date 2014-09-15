@@ -89,9 +89,9 @@ class GravityView_Admin_Add_Shortcode {
 					<p class="subtitle"><?php printf( esc_attr ( __( 'Use this form to embed a View into this %s. %sLearn more about using shortcodes.%s', 'gravity-view') ), $post_type->labels->singular_name, '<a href="http://gravityview.co/support/documentation/202934188/" target="_blank">', '</a>' ); ?></p>
 
 					<div>
-						<h3><label for="gravityview_view_id"><?php esc_html_e( 'Select a View', 'gravity-view' ); ?></label></h3>
+						<h3><label for="gravityview_id"><?php esc_html_e( 'Select a View', 'gravity-view' ); ?></label></h3>
 
-						<select name="gravityview_view_id" id="gravityview_view_id">
+						<select name="gravityview_id" id="gravityview_id">
 							<option value=""><?php esc_html_e( '&mdash; Select a View to Insert &mdash;', 'gravity-view' ); ?></option>
 							<?php
 							foreach( $views as $view ) {

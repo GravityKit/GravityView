@@ -14,62 +14,95 @@
 jQuery(document).ready( function( $ ) {
 
 	/**
+	 * Set the defaultValue property for select inputs, since they're not set by the DOM. This allows us to check whether they've been changed in InsertViewShortcode()
+	 * @return {string} Value
+	 */
+	$('#select_gravityview_view_form')
+		.find('select')
+		.prop( 'defaultValue', function() {
+			return $(this).val();
+		});
+
+	/**
 	 * Generate the shortcode to insert, and reset the form to default state.
 	 */
 	function InsertViewShortcode(){
-		var view_id = $("#gravityview_view_id").val();
 
-		if( view_id === '' ) {
+		if( $("#gravityview_id").val() === '' ) {
 			alert( gvGlobals.alert_1 );
 			$("#gravityview_view_id").focus();
 			return false;
 		}
 
-		var shortcode = '[gravityview id="' + view_id +'"';
-		$("#gravityview_view_id").val('');
+		var shortcode = '[gravityview';
 
-		//page size
-		var page_size = parseInt( $("#gravityview_page_size").val() );
-		if( page_size > 0 && page_size != 25 ) {
-			shortcode += ' page_size="' + page_size + '"';
-			$("#gravityview_page_size").val(25);
-		}
+		/**
+		 * Run through each input and generate shortcode attributes based on their `name`s.
+		 */
+		$("#select_gravityview_view_form :input:enabled").each(function() {
 
-		//lightbox
-		if( $("#gravityview_lightbox").prop('checked') === false ) {
-			shortcode += ' lightbox="0"';
-			$("#gravityview_lightbox").prop('checked', 'checked');
-		}
+			// CHECKBOX or RADIO
+			// Checkboxes and Radio inputs have their own `defaultChecked` property
+			// so we process them separately
+			if( $(this).is(':checkbox') || $(this).is(':radio') ) {
 
-		//show only approved
-		if( $("#gravityview_only_approved").prop('checked') === true ) {
-			shortcode += ' show_only_approved="1"';
-			$("#gravityview_only_approved").prop('checked', null );
-		}
+				// If it's not checked and it's not checked by default, don't add the attribute
+				if(	( true === $(this).is(':checked') ) && ( true === $(this).prop('defaultChecked') ) ) {
+					return;
+				}
 
-		// sorting
-		var sort_field = $("#gravityview_sort_field:enabled").val();
-		if( sort_field && sort_field !== '' ) {
-			var sort_direction = $("#gravityview_sort_direction").val();
-			shortcode += ' sort_field="' + sort_field + '"' + ' sort_direction="' + sort_direction + '"';
-		}
+				// If it's not checked and it's not checked by default, don't add the attribute
+				if(	( false === $(this).is(':checked') ) && (false === $(this).prop('defaultChecked') ) ) {
+					return;
+				}
 
-		// date filtering
-		var start_date = $("#gravityview_start_date").val();
-		if( '' !== start_date ) {
-			shortcode += ' start_date="' + start_date + '"';
-		}
-		var end_date = $("#gravityview_end_date").val();
-		if( '' !== end_date ) {
-			shortcode += ' end_date="' + end_date + '"';
-		}
+				// 1 = checked; 0 = not checked
+				var setting_value = $(this).is(':checked') ? '1' : '0';
 
-		$("#gravityview_sort_field,#gravityview_start_date,#gravityview_end_date").val('');
+				// Reset to default
+				$(this).prop( 'checked', $(this).prop('defaultChecked') );
 
+			}
+			// NOT A CHECKBOX
+			// Other inputs have the `defaultValue` DOM property (or they've been set by this script)
+			// so we process them next.
+			else {
 
+				// It's a drop-down and the value is empty - likely the "Sort by Field" select
+				if( $(this).is('select') && $(this).val() === '' ) {
+					return;
+				}
+
+				// If the value is the default value, don't add attribute
+				if(	$(this).val() === $(this).prop('defaultValue') ) {
+
+					return;
+
+				} else {
+
+					// Get the value
+					var setting_value = $(this).val();
+
+					// Reset to default
+					$(this).val( $(this).prop('defaultValue') );
+
+				}
+
+			}
+
+			// The shortcode attribute is the input name, without `gravityview_` in front
+			var setting_attr = $(this).prop('name').replace(/^gravityview_/, '');
+
+			// Add to the output
+			shortcode += ' ' + setting_attr + '="' + setting_value + '"';;
+
+		});
+
+		// Close the shortcode tag
 		shortcode += ']';
-		//var win = window.dialogArguments || opener || parent || top;
+
 		window.send_to_editor( shortcode );
+
 		return false;
 	}
 
@@ -83,9 +116,9 @@ jQuery(document).ready( function( $ ) {
 
 
 	// Select view id -> populate sort fields
-	$("#gravityview_view_id").change( function() {
+	$("#gravityview_id").change( function() {
 
-		if( $("#gravityview_view_id").val() === '' ) {
+		if( $("#gravityview_id").val() === '' ) {
 			$('#select_gravityview_view_form').find('.hide-if-js').fadeOut();
 			return;
 		}
