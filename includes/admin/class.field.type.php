@@ -17,42 +17,44 @@ abstract class GravityView_FieldType {
     function __construct( $name = '', $field = array(), $curr_value = NULL ) {
 
         $this->name = $name;
-        $this->field = $field;
-        $this->value = $curr_value;
+
+        $defaults = self::get_field_defaults();
+        $this->field =  wp_parse_args( $field, $defaults );
+
+        $this->value = is_null( $curr_value ) ? $this->field['value'] : $curr_value;
 
     }
 
     /**
      * Returns the default details for a field option
      *
-     * - default    // default option value, in case nothing is defined (deprecated)
+     * - default    // default option value, in case nothing is defined (@deprecated)
      * - desc       // option description
      * - value      // the option default value
      * - label      // the option label
      * - id         // the field id
      * - type       // the option type ( text, checkbox, select, ... )
-     * - options    // when type is select, define the select options ('choices' is deprecated)
+     * - options    // when type is select, define the select options ('choices' is @deprecated)
      * - merge_tags // if the option supports merge tags feature
      * - class      // (new) define extra classes for the field
      * - tooltip    //
-     * - section    // (new) ?
-     * - callback   // (new) define a special render callback function
+     * - group    // (new) ?
+     * - callback   // (new) define a special render callback function ?
      * - condition  // (new) ?
      *
      * @return array
      */
-    public static function get_field_option_defaults() {
+    public static function get_field_defaults() {
         return array(
-            'default' => '',
             'desc' => '',
             'value' => NULL,
             'label' => '',
+            'id' => NULL,
             'type'  => 'text',
-            'choices' => NULL,
+            'options' => NULL,
             'merge_tags' => true,
             'class' => '',
             'tooltip' => NULL,
-
         );
     }
 
@@ -100,6 +102,7 @@ abstract class GravityView_FieldType {
     function get_field_desc() {
         return !empty( $this->field['desc'] ) ? '<span class="howto">'. $this->field['desc'] .'</span>' : '';
     }
+
 
     /**
      * Verify if field should have merge tags
