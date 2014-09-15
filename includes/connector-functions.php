@@ -488,6 +488,36 @@ function gravityview_get_template_setting( $post_id, $key ) {
 	return NULL;
 }
 
+/**
+ * Get the field configuration for the View
+ *
+ * array(
+ *
+ * 	[other zones]
+ *
+ * 	'directory_list-title' => array(
+ *
+ *   	[other fields]
+ *
+ *  	'5372653f25d44' => array(
+ *  		'id' => string '9' (length=1)
+ *  		'label' => string 'Screenshots' (length=11)
+ *			'show_label' => string '1' (length=1)
+ *			'custom_label' => string '' (length=0)
+ *			'custom_class' => string 'gv-gallery' (length=10)
+ * 			'only_loggedin' => string '0' (length=1)
+ *			'only_loggedin_cap' => string 'read' (length=4)
+ *  	)
+ *
+ * 		[other fields]
+ *  )
+ *
+ * 	[other zones]
+ * )
+ *
+ * @param  int $post_id View ID
+ * @return array          Multi-array of fields with first level being the field zones. See code comment.
+ */
 function gravityview_get_directory_fields( $post_id ) {
 	return get_post_meta( $post_id, '_gravityview_directory_fields', true );
 }
@@ -530,9 +560,3 @@ if( !function_exists('gravityview_get_sortable_fields') ) {
 	}
 
 }
-
-
-
-
-
-
