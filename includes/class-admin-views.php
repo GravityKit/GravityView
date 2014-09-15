@@ -40,7 +40,7 @@ class GravityView_Admin_Views {
 		add_action( 'gravityview_render_active_areas', array( $this, 'render_active_areas'), 10, 5 );
 
 		// @todo check if this hook is needed..
-		add_action( 'gravityview_render_field_options', array( $this, 'render_field_options'), 10, 9 );
+		//add_action( 'gravityview_render_field_options', array( $this, 'render_field_options'), 10, 9 );
 
 		// Add Connected Form column
 		add_filter('manage_gravityview_posts_columns' , array( $this, 'add_post_type_columns' ) );
@@ -49,6 +49,23 @@ class GravityView_Admin_Views {
 
 		add_action( 'manage_gravityview_posts_custom_column', array( $this, 'add_connected_form_column_content'), 10, 2 );
 
+	}
+
+
+	/**
+	 * @deprecated since 1.1.7
+	 * Start using GravityView_Render_Settings::render_setting_row
+	 */
+	public static function render_setting_row( $key = '', $current_settings = array(), $override_input = null, $name = 'template_settings[%s]', $id = 'gravityview_se_%s' ) {
+		GravityView_Render_Settings::render_setting_row( $key, $current_settings, $override_input, $name , $id );
+	}
+
+	/**
+	 * @deprecated since 1.1.7
+	 * Start using GravityView_Render_Settings::render_field_option
+	 */
+	public static function render_field_option( $name = '', $option, $curr_value = NULL ) {
+		GravityView_Render_Settings::render_field_option( $name, $option, $curr_value );
 	}
 
 
