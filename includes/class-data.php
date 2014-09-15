@@ -264,7 +264,7 @@ class GravityView_View_Data {
 
 		$default_settings = apply_filters( 'gravityview_default_args', array(
 			'id' => array(
-				'name' => __('View ID', 'gravity-view'),
+				'label' => __('View ID', 'gravity-view'),
 				'type' => 'number',
 				'group'	=> 'default',
 				'value' => NULL,
@@ -272,7 +272,7 @@ class GravityView_View_Data {
 				'show_in_shortcode' => false,
 			),
 			'page_size' => array(
-				'name' 	=> __('Number of entries per page', 'gravity-view'),
+				'label' 	=> __('Number of entries per page', 'gravity-view'),
 				'type' => 'number',
 				'class'	=> 'small-text',
 				'group'	=> 'default',
@@ -280,7 +280,7 @@ class GravityView_View_Data {
 				'show_in_shortcode' => true,
 			),
 			'lightbox' => array(
-				'name' => __( 'Enable lightbox for images', 'gravity-view' ),
+				'label' => __( 'Enable lightbox for images', 'gravity-view' ),
 				'type' => 'checkbox',
 				'group'	=> 'default',
 				'value' => 1,
@@ -288,21 +288,21 @@ class GravityView_View_Data {
 				'show_in_shortcode' => true,
 			),
 			'show_only_approved' => array(
-				'name' => __( 'Show only approved entries', 'gravity-view' ),
+				'label' => __( 'Show only approved entries', 'gravity-view' ),
 				'type' => 'checkbox',
 				'group'	=> 'default',
 				'value' => 0,
 				'show_in_shortcode' => false,
 			),
 			'hide_empty' => array(
-				'name' 	=> __( 'Hide empty fields', 'gravity-view' ),
+				'label' 	=> __( 'Hide empty fields', 'gravity-view' ),
 				'group'	=> 'default',
 				'type'	=> 'checkbox',
 				'value' => 1,
 				'show_in_shortcode' => false,
 			),
 			'user_edit' => array(
-				'name'	=> __( 'Allow User Edit', 'gravity-view' ),
+				'label'	=> __( 'Allow User Edit', 'gravity-view' ),
 				'group'	=> 'default',
 				'desc'	=> __('Allow logged-in users to edit entries they created.', 'gravity-view'),
 				'value'	=> 0,
@@ -310,7 +310,7 @@ class GravityView_View_Data {
 				'show_in_shortcode' => false,
 			),
 			'sort_field' => array(
-				'name'	=> __('Sort by field', 'gravity-view'),
+				'label'	=> __('Sort by field', 'gravity-view'),
 				'type' => 'select',
 				'value' => '',
 				'group'	=> 'sort',
@@ -321,7 +321,7 @@ class GravityView_View_Data {
 				'show_in_shortcode' => true,
 			),
 			'sort_direction' => array(
-				'name' 	=> __('Sort direction', 'gravity-view'),
+				'label' 	=> __('Sort direction', 'gravity-view'),
 				'type' => 'select',
 				'value' => 'ASC',
 				'group'	=> 'sort',
@@ -332,7 +332,7 @@ class GravityView_View_Data {
 				'show_in_shortcode' => true,
 			),
 			'start_date' => array(
-				'name' 	=> __('Filter by Start Date', 'gravity-view'),
+				'label' 	=> __('Filter by Start Date', 'gravity-view'),
 				'class'	=> 'gv-datepicker',
 				'desc'	=> __('Show entries submitted after this date. Supports relative dates, such as "-1 week" or "-1 month".', 'gravity-view' ),
 				'type' => 'text',
@@ -341,7 +341,7 @@ class GravityView_View_Data {
 				'show_in_shortcode' => true,
 			),
 			'end_date' => array(
-				'name' 	=> __('Filter by End Date', 'gravity-view'),
+				'label' 	=> __('Filter by End Date', 'gravity-view'),
 				'class'	=> 'gv-datepicker',
 				'desc'	=> __('Show entries submitted before this date. Supports relative dates, such as "now" or "-3 days".', 'gravity-view' ),
 				'type' => 'text',
@@ -350,7 +350,7 @@ class GravityView_View_Data {
 				'show_in_shortcode' => true,
 			),
 			'class' => array(
-				'name' 	=> __('CSS Class', 'gravity-view'),
+				'label' 	=> __('CSS Class', 'gravity-view'),
 				'desc'	=> __('CSS class to add to the wrapping HTML container.', 'gravity-view'),
 				'group'	=> 'default',
 				'type' => 'text',
@@ -358,7 +358,7 @@ class GravityView_View_Data {
 				'show_in_shortcode' => false,
 			),
 			'search_value' => array(
-				'name' 	=> __('Search Value', 'gravity-view'),
+				'label' 	=> __('Search Value', 'gravity-view'),
 				'desc'	=> __('Define a default search value for the View', 'gravity-view'),
 				'type' => 'text',
 				'value' => '',
@@ -366,7 +366,7 @@ class GravityView_View_Data {
 				'show_in_shortcode' => false,
 			),
 			'search_field' => array(
-				'name' 	=> __('Search Field', 'gravity-view'),
+				'label' 	=> __('Search Field', 'gravity-view'),
 				'desc'	=> __('If Search Value is set, you can define a specific field to search in. Otherwise, all fields will be searched.', 'gravity-view'),
 				'type' => 'number',
 				'value' => '',
@@ -374,7 +374,7 @@ class GravityView_View_Data {
 				'show_in_shortcode' => false,
 			),
 			'single_title' => array(
-				'name'	=> __('Single Entry Title', 'gravity-view'),
+				'label'	=> __('Single Entry Title', 'gravity-view'),
 				'type'	=> 'text',
 				'desc'	=> __('When viewing a single entry, change the title of the page to this setting. Otherwise, the title will not change between the Multiple Entries and Single Entry views.', 'gravity-view'),
 				'group'	=> 'default',
@@ -383,7 +383,7 @@ class GravityView_View_Data {
 				'full_width' => true,
 			),
 			'back_link_label' => array(
-				'name'	=> __('Back Link Label', 'gravity-view'),
+				'label'	=> __('Back Link Label', 'gravity-view'),
 				'group'	=> 'default',
 				'desc'	=> __('The text of the link that returns to the multiple entries view.', 'gravity-view'),
 				'type'	=> 'text',
