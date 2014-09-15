@@ -181,24 +181,29 @@ class GravityView_Admin_Add_Shortcode {
 	 * @return void
 	 */
 	function get_sortable_fields() {
-		$response = false;
 
-		if( empty( $_POST['viewid'] ) ) {
-			echo $response;
-			die();
+		// Not properly formatted request
+		if ( empty( $_POST['viewid'] ) || !is_numeric( $_POST['viewid'] ) ) {
+			exit( false );
 		}
 
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxaddshortcode' ) ) {
-			echo $response;
-			die();
+		// Not valid request
+		if( empty( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxaddshortcode' ) ) {
+			exit( false );
 		}
+
+		$viewid = (int)$_POST['viewid'];
 
 		// fetch form id assigned to the view
-		$formid = gravityview_get_form_id( (int)$_POST['viewid'] );
-		$response = gravityview_get_sortable_fields( $formid );
+		$formid = gravityview_get_form_id( $viewid );
 
-		echo $response;
-		die();
+		// Get the default sort field for the view
+		$sort_field = gravityview_get_template_setting( $viewid, 'sort_field' );
+
+		// Generate the output `<option>`s
+		$response = gravityview_get_sortable_fields( $formid, $sort_field );
+
+		exit( $response );
 	}
 
 }
