@@ -309,6 +309,8 @@ class GravityView_Edit_Entry {
 	function prevent_maybe_process_form() {
 		global $post;
 
+		do_action('gravityview_log_debug', 'GravityView_Edit_Entry[prevent_maybe_process_form] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
+
 		if( !empty( $_POST['is_gv_edit_entry'] ) && wp_verify_nonce( $_POST['is_gv_edit_entry'], 'is_gv_edit_entry' ) ) {
 			remove_action('wp',  array('RGForms', 'maybe_process_form'), 9);
 		}
@@ -321,6 +323,8 @@ class GravityView_Edit_Entry {
 
 	        // Make sure the entry, view, and form IDs are all correct
 	        check_admin_referer( self::$nonce_key, self::$nonce_key );
+
+	        do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
 
 	        $lead_id = absint( $_POST['lid'] );
 
@@ -424,6 +428,7 @@ class GravityView_Edit_Entry {
 	 * @return void
 	 */
 	function validate() {
+
 		/**
 		 * For some crazy reason, Gravity Forms doesn't validate Edit Entry form submissions.
 		 * You can enter whatever you want!
@@ -457,10 +462,14 @@ class GravityView_Edit_Entry {
 	 */
 	function custom_validation( $validation_results ) {
 
+		do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Validation results: ', $validation_results );
+
 		// We don't need to process if this is valid
 		if( !empty( $validation_results['is_valid'] ) ) {
 			return $validation_results;
 		}
+
+		do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
 
 		$gv_valid = true;
 
@@ -469,16 +478,20 @@ class GravityView_Edit_Entry {
 			// This field has failed validation.
 			if( !empty( $field['failed_validation'] ) ) {
 
+				$value = RGFormsModel::get_field_value( $field );
+
+				do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Field is invalid.', array( 'field' => $field, 'value' => $value ) );
+
 				// Post Fields aren't editable, so we un-fail them.
 				if( preg_match('/post_/ism', $field['type'] )) {
 					$field['failed_validation'] = false;
+					unset( $field['validation_message'] );
 					continue;
 				}
 
 				// checks if the No Duplicates option is not validating entry against itself, since
 				// we're editing a stored entry, it would also assume it's a duplicate.
 				if( !empty( $field['noDuplicates'] ) ) {
-					$value = RGFormsModel::get_field_value( $field );
 
 					if( empty( $this->entry ) ) {
 						// Get the database value of the entry that's being edited
@@ -492,7 +505,11 @@ class GravityView_Edit_Entry {
 					if( !empty( $entry ) && $value == $entry[ $field['id'] ] ) {
 						//if value submitted was not changed, then don't validate
 						$field['failed_validation'] = false;
+
 						unset( $field['validation_message'] );
+
+						do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Field not a duplicate; it is the same entry.', $entry );
+
 						continue;
 					}
 				}
