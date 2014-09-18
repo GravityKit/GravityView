@@ -178,11 +178,16 @@
 
 		updateSelectInput: function( tr ) {
 			var gvsw = gvSearchWidget,
-				type = tr.find('select.gv-search-fields option:selected').attr('data-type');
+				type = tr.find('select.gv-search-fields option:selected').attr('data-type'),
+				select = tr.find('select.gv-search-inputs');
 
 			var options = gvsw.getSelectInput( type );
 
-			tr.find('select.gv-search-inputs').html( options );
+			select.html( options );
+
+			if( type === 'text' || type === 'date' ) {
+				select.prop( 'disabled', true );
+			}
 
 		},
 
