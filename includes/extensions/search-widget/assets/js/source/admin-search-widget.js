@@ -83,6 +83,8 @@
 				return;
 			}
 
+			dialog.append( '<p id="gv-loading">' + gvGlobals.loading_text + '</p>' );
+
 			//add table and header
 			table = gvsw.addTable();
 
@@ -96,6 +98,7 @@
 
 			dialog.find('table tbody').sortable();
 
+			$('#gv-loading').remove();
 		},
 
 		populateRows: function( table, fields ) {
