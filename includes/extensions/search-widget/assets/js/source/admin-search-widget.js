@@ -65,7 +65,7 @@
 			var gvsw = gvSearchWidget,
 				table = $(this).parents( 'table' );
 			//remove line
-			$(this).parents( 'tr' ).remove();
+			$(this).parents( 'tr' ).fadeTo( 600, 0.4, function() { $(this).remove(); });
 			//check if is there any
 			if( table.find('tr').length < 2 ) {
 				gvsw.addEmptyMsg( table );
@@ -141,7 +141,7 @@
 				return;
 			}
 
-			var rowString = '<tr class="gv-search-field-row new-row">'+
+			var rowString = '<tr class="gv-search-field-row new-row hide-if-js">'+
 								'<td><span class="dashicons dashicons-sort"></span></td>'+
 								'<td>'+ gvsw.selectFields +'</td>'+
 								'<td class="row-inputs"><select class="gv-search-inputs"></select></td>'+
@@ -165,7 +165,7 @@
 				if( curr !== null ) {
 					$(this).find('select.gv-search-inputs').val( curr.input );
 				}
-				$(this).removeClass('new-row');
+				$(this).fadeTo( 600, 1, function() { $(this).removeClass('new-row hide-if-js'); });
 			});
 
 		},
