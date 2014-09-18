@@ -84,7 +84,7 @@
 			}
 
 			//add table and header
-			table = gvsw.addHeader();
+			table = gvsw.addTable();
 
 			if( fields === '' ) {
 				gvsw.addEmptyMsg( table );
@@ -92,7 +92,7 @@
 				gvsw.populateRows( table, fields );
 			}
 
-			dialog.prepend( table );
+			dialog.append( table );
 
 			dialog.find('table tbody').sortable();
 
@@ -110,7 +110,7 @@
 
 		},
 
-		addHeader: function() {
+		addTable: function() {
 			return $('<table cellpading="0" cellspacing="0" border="0">' +
 						'<thead>'+
 							'<tr>' +
