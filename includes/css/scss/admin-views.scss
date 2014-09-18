@@ -625,6 +625,10 @@ hr{
 		padding: 5px;
 	}
 
+	table span.dashicons-sort:hover {
+		cursor: ns-resize;
+	}
+
 	table td.row-inputs {
 		width: 180px;
 	}
