@@ -53,7 +53,7 @@
 
 			if( row.hasClass('no-search-fields') ) {
 				row.remove();
-				row = table.find('tbody tr:last');
+				row = null;
 			}
 			// if no fields message exists, remove it
 			table.find('tr.no-search-fields').remove();
@@ -101,7 +101,7 @@
 		populateRows: function( table, fields ) {
 			var gvsw = gvSearchWidget,
 				rows = $.parseJSON( fields ),
-				pos = table.find('tbody tr:last');
+				pos = null;
 
 			$.each( rows, function( i, values ) {
 				gvsw.addRow( table, pos, values );
@@ -139,14 +139,14 @@
 			}
 
 			var rowString = '<tr class="gv-search-field-row new-row">'+
-										'<td><span class="dashicons dashicons-sort"></span></td>'+
-										'<td>'+ gvsw.selectFields +'</td>'+
-										'<td><select class="gv-search-inputs"></select></td>'+
-										'<td class="row-options"><a href="#addSearchField" class="dashicons dashicons-plus-alt"></a><a href="#removeSearchField" class="dashicons dashicons-dismiss"></a></td>'+
-									'</tr>';
+								'<td><span class="dashicons dashicons-sort"></span></td>'+
+								'<td>'+ gvsw.selectFields +'</td>'+
+								'<td class="row-inputs"><select class="gv-search-inputs"></select></td>'+
+								'<td class="row-options"><a href="#addSearchField" class="dashicons dashicons-plus-alt"></a><a href="#removeSearchField" class="dashicons dashicons-dismiss"></a></td>'+
+							'</tr>';
 
 			// add row
-			if( row.length ) {
+			if( row !== null && row.length ) {
 				$( row, table ).after( rowString );
 			} else {
 				$( 'tbody', table ).append( rowString );
