@@ -64,12 +64,19 @@
 			e.preventDefault();
 			var gvsw = gvSearchWidget,
 				table = $(this).parents( 'table' );
+
 			//remove line
-			$(this).parents( 'tr' ).fadeTo( 600, 0.4, function() { $(this).remove(); });
-			//check if is there any
-			if( table.find('tr').length < 2 ) {
-				gvsw.addEmptyMsg( table );
-			}
+			$(this).parents( 'tr' ).fadeTo( 600, 0.4, function() {
+
+				$(this).remove();
+
+				//check if is there any
+				if( $('tr', table ).length < 3 ) {
+					gvsw.addEmptyMsg( table );
+				}
+			});
+
+
 		},
 
 		renderUI: function( parent ) {
@@ -89,7 +96,7 @@
 			table = gvsw.addTable();
 
 			if( fields === '' ) {
-				gvsw.addEmptyMsg( table );
+				gvsw.addRow( table, null, null );
 			} else {
 				gvsw.populateRows( table, fields );
 			}
@@ -122,7 +129,7 @@
 								'<th>' + gvSearchVar.label_inputtype +'</th>' +
 								'<th>&nbsp;</th>' +
 							'</tr>' +
-						'<thead>'+
+						'</thead>'+
 						'<tbody></tbody>' +
 					'</table>' );
 		},
