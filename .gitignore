@@ -14,3 +14,4 @@ package.json
 .sass-cache
 *.codekit
 .tx
+.idea
