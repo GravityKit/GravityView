@@ -187,6 +187,8 @@
 
 			if( type === 'text' || type === 'date' ) {
 				select.prop( 'disabled', true );
+			} else {
+				select.prop( 'disabled', false );
 			}
 
 		},
