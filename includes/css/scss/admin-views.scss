@@ -655,6 +655,39 @@ hr{
 		display: inline-block; // Inline-block for the merge tags dropdown
 		clear: left;
 	}
+
+	table, table select {
+		width: 100%;
+	}
+
+	table {
+		margin-top: 2em;
+	}
+
+	table th {
+		font-size: 14px;
+	}
+
+	table td, table th {
+		text-align: left;
+		padding: 5px;
+	}
+
+	table td.row-options {
+		width: 40px;
+		a {
+			font-size: 18px;
+
+			&.dashicons-plus-alt {
+				color: green;
+			}
+			&.dashicons-dismiss {
+				color: red;
+			}
+		}
+	}
+
+
 }
 
 
