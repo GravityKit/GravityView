@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 = 1.1.7 =
 * Added: Textarea field support. Instead of using line breaks, textareas now output with paragraphs.
+	- Added new `/templates/fields/textarea.php` file
 * Added: A new File Upload field setting. Force uploads to be displayed as links and not visually embedded by checking the "Display as a Link" checkbox.
 * Modified: File Upload field output no longer run through `wpautop()` function
 * Modified: Audio and Video file uploads are now displayed using WordPress' built-in [audio](http://codex.wordpress.org/Audio_Shortcode) and [video](http://codex.wordpress.org/Video_Shortcode) shortcodes (requires WordPress 3.6 or higher)
