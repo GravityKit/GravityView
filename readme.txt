@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.1.7 =
+* Added: Textarea field support. Instead of using line breaks, textareas now output with paragraphs.
+
 = 1.1.6 on September 8 =
 * Fixed: Approve / Disapprove all entries using Gravity Forms bulk edit entries form (previously, only visible entries were affected)
 * Added: Email field settings
