@@ -51,7 +51,7 @@ class GravityView_Ajax {
 			do_action( 'gravityview_render_available_fields', (int) $_POST['form_id'] );
 			exit();
 		} elseif( !empty( $_POST['template_id'] ) ) {
-			$form = $this->pre_get_form_fields( $_POST['template_id'] );
+			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
 			do_action( 'gravityview_render_available_fields', $form );
 			exit();
 		}
@@ -255,7 +255,7 @@ class GravityView_Ajax {
 
 		} elseif( !empty( $_POST['template_id'] ) ) {
 
-			$form = $this->pre_get_form_fields( $_POST['template_id'] );
+			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
 
 		}
 
@@ -269,7 +269,7 @@ class GravityView_Ajax {
 	 * @param  string $template_id Preset template
 	 *
 	 */
-	function pre_get_form_fields( $template_id = '') {
+	static function pre_get_form_fields( $template_id = '') {
 
 		if( empty( $template_id ) ) {
 			return false;
