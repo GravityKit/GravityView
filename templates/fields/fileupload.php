@@ -9,17 +9,16 @@ global $gravityview_view;
 
 extract( $gravityview_view->field_data );
 
-$output = "";
-if(!empty($value)){
+$output = '';
+
+if( !empty( $value ) ){
 
 	$gv_class = gv_class( $field, $gravityview_view->form, $entry );
 
 	$output_arr = gravityview_get_files_array( $value, $gv_class );
 
-	$output = '';
-
 	// If the output array is just one item, let's not show a list.
-	if( sizeof($output_arr) === 1 ) {
+	if( sizeof( $output_arr ) === 1 ) {
 
 		$output = $output_arr[0]['content'];
 

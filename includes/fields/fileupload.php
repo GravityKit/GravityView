@@ -32,6 +32,8 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 	 * `file_path` => The file path of the file, with a line break
 	 * `html` => The file output HTML formatted
 	 *
+	 * @since  1.1.7
+	 * @todo  Support `playlist` shortcode for playlist of video/audio
 	 * @usedby gravityview_get_files_array()
 	 * @param  string $value    Field value passed by Gravity Forms. String of file URL, or serialized string of file URL array
 	 * @param  string $gv_class Field class to add to the output HTML
@@ -85,13 +87,11 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			// If pathinfo() gave us the extension of the file, run the switch statement using that.
 			$extension = empty( $file_path_info['extension'] ) ? NULL : $file_path_info['extension'];
 
-			switch( $extension ) {
 
-				case 'mp3':
-				case 'wav':
-				case 'm4a':
-				case 'ogg':
-				case 'wma':
+			switch( true ) {
+
+				// Audio file
+				case in_array( $extension, wp_get_audio_extensions() ):
 
 					$disable_lightbox = true;
 
@@ -100,33 +100,60 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 						$disable_wrapped_link = true;
 
 						/**
+						 * Modify the settings passed to the `wp_video_shortcode()` function
+						 *
+						 * @since  1.1.7
+						 * @var array
+						 */
+						$audio_settings = apply_filters( 'gravityview_audio_settings', array(
+							'src' => $file_path,
+							'class' => 'wp-audio-shortcode gv-audio gv-field-id-'.$field_settings['id']
+						));
+
+						/**
 						 * Generate the audio shortcode
 						 * @link http://codex.wordpress.org/Audio_Shortcode
+						 * @link https://developer.wordpress.org/reference/functions/wp_audio_shortcode/
 						 */
-						$content = sprintf('[audio %s="%s"]', $extension, esc_url( $file_path ) );
-
-						$content = do_shortcode( $content );
+						$content = wp_audio_shortcode( $audio_settings );
 
 					}
 
 					break;
 
-				case 'mp4':
-				case 'ogv':
-				case 'ogg':
-				case 'webm':
+				// Video file
+				case in_array( $extension, wp_get_video_extensions() ):
 
 					$disable_lightbox = true;
-					$disable_wrapped_link = true;
 
-					// We could use the {@link http://www.videojs.com VideoJS} library in the future
-					$incompatible_text = __('Sorry, your browser doesn&rsquo;t support embedded videos, but you can %sdownload it%s and watch it with your favorite video player!', '<a href="'.$file_path.'">', '</a>' );
-					$video_tag = '<video controls="controls" preload="auto" width="375"><source src="'.esc_url( $file_path ).'" type="video/'.esc_attr( $file_path_info['extension'] ).'" /> '.$incompatible_text.'</video>';
-					$content = apply_filters( 'gravityview_video_html', $video_tag, $file_path_info, $incompatible_text );
+					if( shortcode_exists( 'video' ) ) {
+
+						$disable_wrapped_link = true;
+
+						/**
+						 * Modify the settings passed to the `wp_video_shortcode()` function
+						 *
+						 * @since  1.1.7
+						 * @var array
+						 */
+						$video_settings = apply_filters( 'gravityview_video_settings', array(
+							'src' => $file_path,
+							'class' => 'wp-video-shortcode gv-video gv-field-id-'.$field_settings['id']
+						));
+
+						/**
+						 * Generate the video shortcode
+						 * @link http://codex.wordpress.org/Video_Shortcode
+						 * @link https://developer.wordpress.org/reference/functions/wp_video_shortcode/
+						 */
+						$content = wp_video_shortcode( $video_settings );
+
+					}
 
 					break;
 
-				case "pdf":
+				// PDF
+				case $extension === 'pdf':
 
 					// PDF needs to be displayed in an IFRAME
 					$link = add_query_arg( array( 'TB_iframe' => 'true' ), $link );
