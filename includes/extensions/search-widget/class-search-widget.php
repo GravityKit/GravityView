@@ -112,16 +112,18 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 */
 	static function get_searchable_fields() {
 
-		if( empty( $_POST['formid'] ) ) {
-			exit(0);
-		}
-
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxsearchwidget' ) ) {
 			exit(0);
 		}
+		$form = '';
+		if( !empty( $_POST['formid'] ) ) {
+			$form = (int) $_POST['formid'];
+		} elseif( !empty( $_POST['template_id'] ) && class_exists('GravityView_Ajax') ) {
+			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
+		}
 
 		// fetch form id assigned to the view
-		$response = GravityView_Widget_Search::render_searchable_fields( $_POST['formid'] );
+		$response = GravityView_Widget_Search::render_searchable_fields( $form );
 
 		exit( $response );
 	}

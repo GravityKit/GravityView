@@ -34,8 +34,8 @@
 			// hook on dialog close to update widget config
 			$('body').on( 'dialogbeforeclose', '.gv-dialog-options', gvsw.updateOnClose );
 
-			// hook on assigned form change to clear cache
-			$('#gravityview_form_id').change( gvsw.clearCache );
+			// hook on assigned form/template change to clear cache
+			$('#gravityview_form_id, #gravityview_directory_template').change( gvsw.clearCache );
 
 		},
 
@@ -71,7 +71,7 @@
 				$(this).remove();
 
 				//check if is there any
-				if( $('tr', table ).length < 3 ) {
+				if( $('tr.gv-search-field-row', table ).length < 1 && $('tr.no-search-fields', table ).length < 1 ) {
 					gvsw.addEmptyMsg( table );
 				}
 			});
@@ -85,12 +85,16 @@
 				fields = $('.gv-search-fields-value', parent ).val(),
 				dialog = $( '.gv-dialog-options', parent );
 
-			// Is this dialog already rendered before?
-			if( $('table', dialog ).length ) {
+			if( gvsw.selectFields === null ) {
+				dialog.append( '<p id="gv-loading">' + gvGlobals.loading_text + '</p>' );
+				gvsw.getSelectFields( parent );
 				return;
 			}
 
-			dialog.append( '<p id="gv-loading">' + gvGlobals.loading_text + '</p>' );
+			// Is this dialog already rendered before & not loading fields again
+			if( $('table', dialog ).length && $('#gv-loading').length < 1 ) {
+				return;
+			}
 
 			//add table and header
 			table = gvsw.addTable();
@@ -143,10 +147,10 @@
 			var gvsw = gvSearchWidget;
 
 			// get fields or cache
-			if( gvsw.selectFields === null ) {
-				gvsw.getSelectFields( table, row, curr );
-				return;
-			}
+			// if( gvsw.selectFields === null ) {
+			// 	gvsw.getSelectFields( table, row, curr );
+			// 	return;
+			// }
 
 			var rowString = '<tr class="gv-search-field-row new-row hide-if-js">'+
 								'<td><span class="dashicons dashicons-sort"></span></td>'+
@@ -154,6 +158,7 @@
 								'<td class="row-inputs"><select class="gv-search-inputs"></select></td>'+
 								'<td class="row-options"><a href="#addSearchField" class="dashicons dashicons-plus-alt"></a><a href="#removeSearchField" class="dashicons dashicons-dismiss"></a></td>'+
 							'</tr>';
+
 
 			// add row
 			if( row !== null && row.length ) {
@@ -164,7 +169,7 @@
 
 
 			table.find('tr.new-row').each( function() {
-
+				$(this).removeClass('new-row');
 				if( curr !== null ) {
 					$(this).find('select.gv-search-fields').val( curr.field );
 				}
@@ -172,7 +177,7 @@
 				if( curr !== null ) {
 					$(this).find('select.gv-search-inputs').val( curr.input );
 				}
-				$(this).fadeTo( 600, 1, function() { $(this).removeClass('new-row hide-if-js'); });
+				$(this).fadeTo( 600, 1, function() { $(this).removeClass('hide-if-js'); });
 			});
 
 		},
@@ -201,7 +206,7 @@
 		},
 
 		// Fetch Form Searchable fields (AJAX)
-		getSelectFields: function( table, row, curr ) {
+		getSelectFields: function( parent ) {
 			var gvsw = gvSearchWidget;
 
 			$.ajax({
@@ -213,11 +218,12 @@
 					action: 'gv_searchable_fields',
 					nonce: gvSearchVar.nonce,
 					formid: $('#gravityview_form_id').val(),
+					template_id: $('#gravityview_directory_template').val(),
 				},
 				success: function( response ) {
 					if( response !== '0' ) {
 						gvsw.selectFields = response;
-						gvsw.addRow( table, row, curr );
+						gvsw.renderUI( parent );
 					}
 
 				}
@@ -260,7 +266,13 @@
 		},
 
 		clearCache: function() {
-			gvsw.selectFields = null;
+			gvSearchWidget.selectFields = null;
+			// clean table & values
+			$('.gv-search-fields-value').each( function() {
+				$(this).parents('.gv-dialog-options').find('table').remove();
+				$(this).val('');
+			});
+
 		}
 
 
