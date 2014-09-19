@@ -124,6 +124,11 @@ body .gv-widget-page-links {
 	max-width: 100%;
 }
 
+// Give some default space
+.gv-field-label {
+	padding-right: .25em;
+}
+
 
 // Screenshots Gallery
 .gv-gallery .gv-field-file-uploads {

@@ -38,7 +38,7 @@ class GravityView_API {
 			$label = '';
 		}
 
-		return $label .' ';
+		return $label;
 	}
 
 	/**
@@ -656,11 +656,13 @@ function gravityview_field_output( $args ) {
 
 	$label = esc_html( gv_label( $args['field'], $args['entry'] ) );
 
-	// If the label markup is overridden
-	if( !empty( $args['label_markup'] ) ) {
-		$label = str_replace( '{{label}}', '<span class="gv-field-label">' . $label . '</span>', $args['label_markup'] );
-	} else {
-		$args['markup'] =  str_replace( '{{label}}', '<span class="gv-field-label">{{label}}</span>', $args['markup'] );
+	if( !empty( $label ) ) {
+		// If the label markup is overridden
+		if( !empty( $args['label_markup'] ) ) {
+			$label = str_replace( '{{label}}', '<span class="gv-field-label">' . $label . '</span>', $args['label_markup'] );
+		} else {
+			$args['markup'] =  str_replace( '{{label}}', '<span class="gv-field-label">{{label}}</span>', $args['markup'] );
+		}
 	}
 
 	$html = $args['markup'];
