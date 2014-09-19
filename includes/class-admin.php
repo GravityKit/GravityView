@@ -17,6 +17,10 @@ class GravityView_Admin {
 			return;
 		}
 
+		// Migrate Class
+		require_once( GRAVITYVIEW_DIR . 'includes/class-migrate.php' );
+
+
 		require_once( GFCommon::get_base_path() . '/tooltips.php' );
 
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes.php' );
