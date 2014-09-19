@@ -475,6 +475,12 @@ class GravityView_Edit_Entry {
 					continue;
 				}
 
+				// Captchas don't need to be re-entered.
+				if( in_array( $field['type'], array( 'captcha' ) ) ) {
+					$field['failed_validation'] = false;
+					continue;
+				}
+
 				// checks if the No Duplicates option is not validating entry against itself, since
 				// we're editing a stored entry, it would also assume it's a duplicate.
 				if( !empty( $field['noDuplicates'] ) ) {
