@@ -66,6 +66,27 @@ if(!empty($value)){
 			$extension = empty( $file_path_info['extension'] ) ? NULL : $file_path_info['extension'];
 
 			switch( $extension ) {
+
+				case 'mp3':
+				case 'wav':
+				case 'm4a':
+				case 'ogg':
+				case 'wma':
+
+					if( shortcode_exists( 'audio' ) ) {
+
+						/**
+						 * Generate the audio shortcode
+						 * @link http://codex.wordpress.org/Audio_Shortcode
+						 */
+						$html_format = sprintf('[audio %s="%s"]', $extension, esc_url( $file_path ) );
+
+						$html_format = do_shortcode( $html_format );
+
+					}
+
+					break;
+
 				case 'mp4':
 				case 'ogv':
 				case 'ogg':
