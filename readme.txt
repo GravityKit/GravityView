@@ -22,6 +22,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 = 1.1.7 =
 * Added: Textarea field support. Instead of using line breaks, textareas now output with paragraphs.
+* Added: A new File Upload field setting. Force uploads to be displayed as links and not visually embedded by checking the "Display as a Link" checkbox.
+* Modified: File Upload field output no longer run through `wpautop()` function
 
 = 1.1.6 on September 8 =
 * Fixed: Approve / Disapprove all entries using Gravity Forms bulk edit entries form (previously, only visible entries were affected)

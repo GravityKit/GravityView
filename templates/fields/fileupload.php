@@ -2,6 +2,7 @@
 /**
  * Display the fileupload field type
  *
+ * @todo Move the logic into a function and include templates for each file type instead, like `fileupload-[image|audio|video|pdf].php`, or `fileupload-[jpg|mp3|pdf|mp4].php`
  * @package GravityView
  */
 
@@ -13,6 +14,8 @@ $output = "";
 if(!empty($value)){
 
 	$gv_class = gv_class( $field, $gravityview_view->form, $entry );
+
+
 	$output_arr = array();
 	$file_paths = rgar($field,"multipleFiles") ? json_decode($value) : array($value);
 
@@ -37,18 +40,30 @@ if(!empty($value)){
 
 		$image_html = $image->html();
 
-		$link_atts = ( !empty( $gravityview_view->atts['lightbox'] ) && empty( $field_settings['show_as_link'] ) ) ? "rel='%s-{$entry['id']}' class='thickbox' target='_blank'" : "target='_blank'";
+		// Get file path information
+		$file_path_info = pathinfo($file_path);
 
-		// If so, use it!
-		if(!empty($image_html)) {
-			$content = $image;
+		$link_atts = ( !empty( $gravityview_view->atts['lightbox'] ) && empty( $field_settings['show_as_link'] ) && empty( $field_settings['link_to_file'] ) ) ? "rel='%s-{$entry['id']}' class='thickbox' target='_blank'" : "target='_blank'";
+
+		// If they want to force linking it to the file, and not embed rich file
+		if( !empty( $field_settings['link_to_file'] ) ) {
+
+			$content = $file_path_info["basename"];
+
 			$html_format = sprintf("<a href='{$link}' {$link_atts}>" . $content . "</a>", $gv_class );
+
+		}
+		// If this is an image show it!
+		else if( !empty( $image_html ) ) {
+
+			$content = $image;
+
+			$html_format = sprintf("<a href='{$link}' {$link_atts}>" . $content . "</a>", $gv_class );
+
 		} else {
 
-			// Otherwise, get a link
-			$info = pathinfo($file_path);
-			$content = $info["basename"];
-			$extension = empty( $info['extension'] ) ? NULL : $info['extension'];
+			$content = $file_path_info["basename"];
+			$extension = empty( $file_path_info['extension'] ) ? NULL : $file_path_info['extension'];
 
 			switch( $extension ) {
 				case 'mp4':
@@ -57,8 +72,8 @@ if(!empty($value)){
 				case 'webm':
 					// We could use the {@link http://www.videojs.com VideoJS} library in the future
 					$incompatible_text = __('Sorry, your browser doesn&rsquo;t support embedded videos, but you can %sdownload it%s and watch it with your favorite video player!', '<a href="'.$file_path.'">', '</a>' );
-					$video_tag = '<video controls="controls" preload="auto" width="375"><source src="'.esc_url( $file_path ).'" type="video/'.esc_attr( $info['extension'] ).'" /> '.$incompatible_text.'</video>';
-					$html_format = apply_filters( 'gravityview_video_html', $video_tag, $info, $incompatible_text );
+					$video_tag = '<video controls="controls" preload="auto" width="375"><source src="'.esc_url( $file_path ).'" type="video/'.esc_attr( $file_path_info['extension'] ).'" /> '.$incompatible_text.'</video>';
+					$html_format = apply_filters( 'gravityview_video_html', $video_tag, $file_path_info, $incompatible_text );
 					break;
 
 				case "pdf":
@@ -86,12 +101,15 @@ if(!empty($value)){
 	} // End foreach
 
 	// If the output array is just one item, let's not show a list.
-	if(sizeof($output_arr) === 1) {
-		$output = wpautop( $output_arr[0]['html'] );
+	if( sizeof($output_arr) === 1 ) {
+
+		$output = $output_arr[0]['html'];
+
 	} else {
 
 		// Otherwise, a list it is!
 		$output = '';
+
 		foreach ($output_arr as $key => $item) {
 			// Fix empty lists
 			if( empty( $item['content'] ) ) { continue; }
@@ -99,6 +117,7 @@ if(!empty($value)){
 		}
 
 		$before = sprintf("<ul class='gv-field-file-uploads %s'>", $gv_class );
+
 		$after = '</ul>';
 
 		if( !empty( $output ) ) {
