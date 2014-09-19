@@ -144,6 +144,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$output = '<select class="gv-search-fields">';
 
 		$output .= '<option value="search_all" '. selected( 'search_all', $current, false ).' data-type="text">'. esc_html__( 'Search Everything', 'gravity-view') .'</option>';
+		$output .= '<option value="entry_date" '. selected( 'entry_date', $current, false ).' data-type="date">'. esc_html__( 'Entry Date', 'gravity-view') .'</option>';
 
 		if( !empty( $fields ) ) {
 
