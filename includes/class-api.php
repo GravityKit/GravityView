@@ -580,6 +580,36 @@ function gravityview_get_context() {
 	return $gravityview_view->context;
 }
 
+
+/**
+ * Return an array of files prepared for output. Wrapper for GravityView_Field_FileUpload::get_files_array()
+ *
+ * Processes files by file type and generates unique output for each.
+ *
+ * Returns array for each file, with the following keys:
+ *
+ * `file_path` => The file path of the file, with a line break
+ * `html` => The file output HTML formatted
+ *
+ * @see GravityView_Field_FileUpload::get_files_array()
+ *
+ * @param  string $value    Field value passed by Gravity Forms. String of file URL, or serialized string of file URL array
+ * @param  string $gv_class Field class to add to the output HTML
+ * @return array           Array of file output, with `file_path` and `html` keys (see comments above)
+ */
+function gravityview_get_files_array( $value, $gv_class = '' ) {
+
+	if( !class_exists( 'GravityView_Field ' ) ) {
+		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
+	}
+
+	if( !class_exists( 'GravityView_Field_FileUpload ' ) ) {
+		include_once( GRAVITYVIEW_DIR .'includes/fields/fileupload.php' );
+	}
+
+	return GravityView_Field_FileUpload::get_files_array( $value, $gv_class );
+}
+
 /**
  * Output field based on a certain html markup
  *

@@ -22,6 +22,158 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		return $add_options + $field_options;
 	}
 
+	/**
+	 * Return an array of files prepared for output.
+	 *
+	 * Processes files by file type and generates unique output for each.
+	 *
+	 * Returns array for each file, with the following keys:
+	 *
+	 * `file_path` => The file path of the file, with a line break
+	 * `html` => The file output HTML formatted
+	 *
+	 * @usedby gravityview_get_files_array()
+	 * @param  string $value    Field value passed by Gravity Forms. String of file URL, or serialized string of file URL array
+	 * @param  string $gv_class Field class to add to the output HTML
+	 * @return array           Array of file output, with `file_path` and `html` keys (see comments above)
+	 */
+	static function get_files_array( $value, $gv_class ) {
+
+		global $gravityview_view;
+
+		extract( $gravityview_view->field_data );
+
+		$output_arr = array();
+
+		// Get an array of file paths for the field.
+		$file_paths = rgar( $field , 'multipleFiles' ) ? json_decode( $value ) : array( $value );
+
+		// Process each file path
+		foreach( $file_paths as $file_path ) {
+
+			// If the site is HTTPS, use HTTPS
+			if(function_exists('set_url_scheme')) { $file_path = set_url_scheme($file_path); }
+
+			// This is from Gravity Forms
+			$file_path = esc_attr(str_replace(" ", "%20", $file_path));
+
+			// If the field is set to link to the single entry, link to it.
+			$link = !empty( $field_settings['show_as_link'] ) ? GravityView_API::entry_link( $entry, $field ) : $file_path;
+
+			// Get file path information
+			$file_path_info = pathinfo($file_path);
+
+			$html_format = NULL;
+
+			$disable_lightbox = false;
+
+			$disable_wrapped_link = false;
+
+			// Is this an image?
+			$image = new GravityView_Image(array(
+				'src' => $file_path,
+				'class' => 'gv-image gv-field-id-'.$field_settings['id'],
+				'alt' => $field_settings['label'],
+				'width' => (gravityview_get_context() === 'single' ? NULL : 250)
+			));
+
+			$content = $image->html();
+
+			// The new default content is the image, if it exists. If not, use the file name as the content.
+			$content = !empty( $content ) ? $content : $file_path_info['basename'];
+
+			// If pathinfo() gave us the extension of the file, run the switch statement using that.
+			$extension = empty( $file_path_info['extension'] ) ? NULL : $file_path_info['extension'];
+
+			switch( $extension ) {
+
+				case 'mp3':
+				case 'wav':
+				case 'm4a':
+				case 'ogg':
+				case 'wma':
+
+					$disable_lightbox = true;
+
+					if( shortcode_exists( 'audio' ) ) {
+
+						$disable_wrapped_link = true;
+
+						/**
+						 * Generate the audio shortcode
+						 * @link http://codex.wordpress.org/Audio_Shortcode
+						 */
+						$content = sprintf('[audio %s="%s"]', $extension, esc_url( $file_path ) );
+
+						$content = do_shortcode( $content );
+
+					}
+
+					break;
+
+				case 'mp4':
+				case 'ogv':
+				case 'ogg':
+				case 'webm':
+
+					$disable_lightbox = true;
+					$disable_wrapped_link = true;
+
+					// We could use the {@link http://www.videojs.com VideoJS} library in the future
+					$incompatible_text = __('Sorry, your browser doesn&rsquo;t support embedded videos, but you can %sdownload it%s and watch it with your favorite video player!', '<a href="'.$file_path.'">', '</a>' );
+					$video_tag = '<video controls="controls" preload="auto" width="375"><source src="'.esc_url( $file_path ).'" type="video/'.esc_attr( $file_path_info['extension'] ).'" /> '.$incompatible_text.'</video>';
+					$content = apply_filters( 'gravityview_video_html', $video_tag, $file_path_info, $incompatible_text );
+
+					break;
+
+				case "pdf":
+
+					// PDF needs to be displayed in an IFRAME
+					$link = add_query_arg( array( 'TB_iframe' => 'true' ), $link );
+
+					break;
+			}
+
+			// If using Link to File, override the content.
+			// (We do this here so that the $disable_lightbox can be set. Yes, there's a little more processing time, but oh well.)
+			if( !empty( $field_settings['link_to_file'] ) ) {
+
+				// Force the content to be the file name
+				$content =  $file_path_info["basename"];
+
+				// Restore the wrapped link
+				$disable_wrapped_link = false;
+
+			}
+
+			// Whether to use lightbox or not
+			if( $disable_lightbox || empty( $gravityview_view->atts['lightbox'] ) || !empty( $field_settings['show_as_link'] ) ) {
+
+				$link_atts = "target='_blank'";
+
+			} else {
+
+				$link_atts = sprintf( "rel='%s-{$entry['id']}' class='thickbox' target='_blank'", $gv_class );
+
+			}
+
+			// If the HTML output hasn't been overridden by the switch statement above, use the default format
+			if( !empty( $content ) && empty( $disable_wrapped_link ) ) {
+
+				$content = "<a href='{$link}' {$link_atts}>" . $content . "</a>";
+
+			}
+
+			$output_arr[] = array(
+				'file_path' => $file_path,
+				'content' => $content
+			);
+
+		} // End foreach loop
+
+		return $output_arr;
+	}
+
 }
 
 new GravityView_Field_FileUpload;
