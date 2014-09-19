@@ -136,7 +136,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 
 		// Get fields with sub-inputs and no parent
-		$fields = gravityview_get_form_fields( $form_id, true, false );
+		$fields = gravityview_get_form_fields( $form_id, true, true );
 
 
 		// start building output
@@ -147,7 +147,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		if( !empty( $fields ) ) {
 
-			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array() );
+			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'fileupload', 'post_image') );
 
 			foreach( $fields as $id => $field ) {
 
