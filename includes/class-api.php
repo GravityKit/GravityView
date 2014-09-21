@@ -44,19 +44,14 @@ class GravityView_API {
 	/**
 	 * Check for merge tags before passing to Gravity Forms to improve speed.
 	 *
-	 * GF doesn't check for {} before diving in. They not only replace fields, they do `str_replace()` on
-	 * things like ip address, which is a lot of work just to check if there's any hint of a replacement variable.
+	 * GF doesn't check for whether `{` exists before it starts diving in. They not only replace fields, they do `str_replace()` on things like ip address, which is a lot of work just to check if there's any hint of a replacement variable.
 	 *
-	 * We check for the basics first.
+	 * We check for the basics first, which is more efficient.
 	 *
 	 * @param  string      $text       Text to replace variables in
 	 * @param  array      $form        GF Form array
 	 * @param  array      $entry        GF Entry array
-	 * @param  boolean     $url_encode URL encode the output using `GFCommon::format_variable_value()`?
-	 * @param  boolean     $esc_html   [description]
-	 * @param  boolean     $nl2br      [description]
-	 * @param  string      $format     [description]
-	 * @return [type]                  [description]
+	 * @return string                  Text with variables maybe replaced
 	 */
 	public static function replace_variables($text, $form, $entry ) {
 
@@ -165,21 +160,21 @@ class GravityView_API {
 		// This can be overridden by user template files.
 		$field_exists = $gravityview_view->locate_template("fields/{$field_type}.php");
 
+		// Set the field data to be available in the templates
+		$gravityview_view->field_data = array(
+			'form' => $form,
+			'field_id' => $field_id,
+			'field' => $field,
+			'field_settings' => $field_settings,
+			'value' => $value,
+			'display_value' => $display_value,
+			'format' => $format,
+			'entry' => $entry,
+		);
+
 		if( $field_exists ) {
 
 			do_action( 'gravityview_log_debug', sprintf('[field_value] Rendering %s Field', $field_type ), $field_exists );
-
-			// Set the field data to be available in the templates
-			$gravityview_view->field_data = array(
-				'form' => $form,
-				'field_id' => $field_id,
-				'field' => $field,
-				'field_settings' => $field_settings,
-				'value' => $value,
-				'display_value' => $display_value,
-				'format' => $format,
-				'entry' => $entry,
-			);
 
 			ob_start();
 
@@ -194,10 +189,17 @@ class GravityView_API {
 
 		}
 
+		/**
+		 * Link to the single entry by wrapping the output in an anchor tag
+		 *
+		 * Fields can override this by modifying the field data variable inside the field. See /templates/fields/post_image.php for an example.
+		 *
+		 * @todo Move into its own function usingt `gravityview_field_entry_value` to tap in
+		 */
+		if( !empty( $gravityview_view->field_data['field_settings']['show_as_link'] ) ) {
 
-		//if show as single entry link is active
-		if( !empty( $field_settings['show_as_link'] ) ) {
 			$href = self::entry_link( $entry, $field );
+
 			$link = '<a href="'. $href .'">'. $output . '</a>';
 
 			/**
