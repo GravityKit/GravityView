@@ -100,12 +100,25 @@ class GravityView_View_Data {
 
 		$form_id = gravityview_get_form_id( $view_id );
 
+		// Get the settings for the View ID
+		$view_settings = gravityview_get_template_settings( $view_id );
+
+		// Merge the view settings with the defaults
+		$view_defaults = wp_parse_args( $view_settings, self::get_default_args() );
+
 		if( isset( $atts ) && is_array( $atts ) ) {
-			$atts = wp_parse_args( $atts, gravityview_get_template_settings( $view_id ) );
-			unset( $atts['id'] );
+
+			// Get the settings from the shortcode and merge them with defaults.
+			$atts = wp_parse_args( $atts, $view_defaults );
+
 		} else {
-			$atts = gravityview_get_template_settings( $view_id );
+
+			// If there are no passed $atts, the defaults will be used.
+			$atts = $view_defaults;
+
 		}
+
+		unset( $atts['id'], $view_defaults, $view_settings );
 
 		$data = array(
 			'id' => $view_id,
@@ -117,6 +130,8 @@ class GravityView_View_Data {
 			'widgets' => get_post_meta( $view_id, '_gravityview_directory_widgets', true ),
 			'form' => gravityview_get_form( $form_id ),
 		);
+
+		do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] View #%s being added.', $view_id), $data );
 
 		$this->views[ $view_id ] = $data;
 
@@ -208,6 +223,15 @@ class GravityView_View_Data {
 		return $view_id;
 	}
 
+	/**
+	 * Parse content to determine if there is a GV shortcode to allow for enqueing necessary files in the head.
+	 *
+	 * @uses gravityview_has_shortcode_r() Check whether shortcode exists (recursively)
+	 * @uses shortcode_parse_atts() Parse each GV shortcode
+	 * @uses  gravityview_get_template_settings() Get the settings for the View ID
+	 * @param  string $content $post->post_content content
+	 * @return void
+	 */
 	function parse_post_content( $content ) {
 
 		$shortcodes = gravityview_has_shortcode_r( $content, 'gravityview' );
@@ -216,23 +240,17 @@ class GravityView_View_Data {
 
 		foreach ($shortcodes as $key => $shortcode) {
 
-			// Get the settings from the shortcode and merge them with defaults.
-			$shortcode_atts = wp_parse_args( shortcode_parse_atts( $shortcode[3] ), self::get_default_args() );
+			$args = shortcode_parse_atts( $shortcode[3] );
 
-			if( empty( $shortcode_atts['id'] ) ) {
-				do_action('gravityview_log_error', sprintf( 'GravityView_View_Data[parse_post_content] Returning; no ID defined in shortcode atts for Post #%s (Atts)', $post->ID ), $shortcode_atts );
+			if( empty( $args['id'] ) ) {
+				do_action('gravityview_log_error', sprintf( 'GravityView_View_Data[parse_post_content] Returning; no ID defined in shortcode atts for Post #%s (Atts)', $post->ID ), $shortcode );
 				return false;
 			}
 
-			$this->add_view( $shortcode_atts['id'] , $shortcode_atts );
+			// Store the View to the object for later fetching.
+			$this->add_view( $shortcode_atts['id'] , $args );
 		}
 
-	}
-
-	static function r( $content = '', $die = false, $title ='') {
-		if( !empty($title)) { echo "<h3>{$title}</h3>"; }
-		echo '<pre>'; print_r($content); echo '</pre>';
-		if($die) { die(); }
 	}
 
 	/**

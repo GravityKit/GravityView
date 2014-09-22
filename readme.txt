@@ -20,6 +20,23 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.1.7 =
+* Added: Textarea field support. Instead of using line breaks, textareas now output with paragraphs.
+	- Added new `/templates/fields/textarea.php` file
+* Added: A new File Upload field setting. Force uploads to be displayed as links and not visually embedded by checking the "Display as a Link" checkbox.
+* Added: Option to disable "Map It" link for the full Address field.
+	- New `gravityview_get_map_link()` function with `gravityview_map_link` filter. To learn how to modify the map link, [refer to this how-to article](https://gravityview.co/support/documentation/201608159)
+	- The "Map It" string is now translatable
+* Modified: File Upload field output no longer run through `wpautop()` function
+* Modified: Audio and Video file uploads are now displayed using WordPress' built-in [audio](http://codex.wordpress.org/Audio_Shortcode) and [video](http://codex.wordpress.org/Video_Shortcode) shortcodes (requires WordPress 3.6 or higher)
+	- Additional file type support
+	- Added `gravityview_video_settings` and `gravityview_audio_settings` filters to modify the parameters passed to the shortcode
+* Fixed: Empty `<span class="gv-field-label">` tags no longer output
+	- Modified: `gv_field_label()` no longer returns the label with a trailing space. Instead, we use the `.gv-field-label` CSS class to add spacing using CSS padding.
+* Modified: Added support for Gravity Forms "Post Image" field captions, titles, and descriptions.
+* Updated list of allowed image formats to include `.bmp`, `.jpe`, `.tiff`, `.ico`
+* Modified: `/templates/fields/fileupload.php` file - removed the logic for how to output the different file types and moved it to the `gravityview_get_files_array()` function in `includes/class-api.php`
+
 = 1.1.6 on September 8 =
 * Fixed: Approve / Disapprove all entries using Gravity Forms bulk edit entries form (previously, only visible entries were affected)
 * Added: Email field settings

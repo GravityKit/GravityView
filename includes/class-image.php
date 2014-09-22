@@ -90,7 +90,7 @@ class GravityView_Image {
 
 		$info = pathinfo($this->src);
 
-		$image_exts = apply_filters('gravityview_image_extensions', array( 'jpg', 'jpeg', 'jpe', 'gif', 'png' ));
+		$image_exts = apply_filters('gravityview_image_extensions', array( 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico' ));
 
 		return isset( $info['extension'] ) && in_array(strtolower( $info['extension'] ), $image_exts);
 	}

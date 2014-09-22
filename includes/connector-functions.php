@@ -445,10 +445,79 @@ function gravityview_get_template_id( $post_id ) {
 	return get_post_meta( $post_id, '_gravityview_directory_template', true );
 }
 
+/**
+ * Get all the settings for a View
+ *
+ * @uses  GravityView_View_Data::get_default_args() Parses the settings with the plugin defaults as backups.
+ * @param  int $post_id View ID
+ * @return array          Associative array of settings with plugin defaults used if not set by the View
+ */
 function gravityview_get_template_settings( $post_id ) {
-	return get_post_meta( $post_id, '_gravityview_template_settings', true );
+
+	$settings = get_post_meta( $post_id, '_gravityview_template_settings', true );
+
+	if( class_exists( 'GravityView_View_Data' ) ) {
+
+		$defaults = GravityView_View_Data::get_default_args();
+
+		return wp_parse_args( (array)$settings, $defaults );
+
+	}
+
+	// Backup, in case GravityView_View_Data isn't loaded yet.
+	return $settings;
 }
 
+/**
+ * Get the setting for a View
+ *
+ * If the setting isn't set by the View, it returns the plugin default.
+ *
+ * @param  int $post_id View ID
+ * @param  string $key     Key for the setting
+ * @return mixed|null          Setting value, or NULL if not set.
+ */
+function gravityview_get_template_setting( $post_id, $key ) {
+
+	$settings = gravityview_get_template_settings( $post_id );
+
+	if( isset( $settings[ $key ] ) ) {
+		return $settings[ $key ];
+	}
+
+	return NULL;
+}
+
+/**
+ * Get the field configuration for the View
+ *
+ * array(
+ *
+ * 	[other zones]
+ *
+ * 	'directory_list-title' => array(
+ *
+ *   	[other fields]
+ *
+ *  	'5372653f25d44' => array(
+ *  		'id' => string '9' (length=1)
+ *  		'label' => string 'Screenshots' (length=11)
+ *			'show_label' => string '1' (length=1)
+ *			'custom_label' => string '' (length=0)
+ *			'custom_class' => string 'gv-gallery' (length=10)
+ * 			'only_loggedin' => string '0' (length=1)
+ *			'only_loggedin_cap' => string 'read' (length=4)
+ *  	)
+ *
+ * 		[other fields]
+ *  )
+ *
+ * 	[other zones]
+ * )
+ *
+ * @param  int $post_id View ID
+ * @return array          Multi-array of fields with first level being the field zones. See code comment.
+ */
 function gravityview_get_directory_fields( $post_id ) {
 	return get_post_meta( $post_id, '_gravityview_directory_fields', true );
 }
@@ -491,9 +560,3 @@ if( !function_exists('gravityview_get_sortable_fields') ) {
 	}
 
 }
-
-
-
-
-
-

@@ -9,22 +9,138 @@ global $gravityview_view;
 
 extract( $gravityview_view->field_data );
 
-$output = $display_value;
+// Tell the renderer not to wrap this field in an anchor tag.
+$gravityview_view->field_data['field_settings']['show_as_link'] = false;
 
-if( !empty( $field_settings['show_as_link'] ) || !empty( $field_settings['link_to_post'] ) ) {
+/**
+ * Parse the stored value of the post image
+ *
+ * The image is stored with `|:|` dividing the fields. Break it into its parts and see what's set.
+ *
+ * @see GFCommon::get_lead_field_display()
+ * @var array
+ */
+$ary = explode("|:|", $value);
+$url = count($ary) > 0 ? $ary[0] : "";
+$title = count($ary) > 1 ? $ary[1] : "";
+$caption = count($ary) > 2 ? $ary[2] : "";
+$description = count($ary) > 3 ? $ary[3] : "";
 
-	// Strip link to file - we're going to be wrapping with link to entry.
-	// DIVs have issues being wrapped by an inline element. Strip them, too.
-	$output = strip_tags( $output, '<img><span>');
+$link_atts = '';
+
+##
+## Get the link URL
+##
+
+// Link to the post created by the entry
+if( !empty( $field_settings['link_to_post'] ) ) {
+	$href = get_permalink( $entry['post_id'] );
+}
+// Link to the single entry
+else if ( !empty( $field_settings['show_as_link'] ) ) {
+	$href = gv_entry_link( $entry, $field );
+}
+// Link to the file itself
+else {
+
+	$href = $url;
+
+	// Only show the lightbox if linking to the file itself
+	if( !empty( $gravityview_view->atts['lightbox'] ) ) {
+		$link_atts .= "target='_blank' class='thickbox'";
+	}
+
 }
 
-// Link to the post URL?
-if( !empty( $field_settings['link_to_post'] )) {
-	$output = '<a href="'.get_permalink( $entry['post_id'] ).'">'.esc_attr( $output ).'</a>';
-} else {
 
-	// Add thickbox
-	$output =  str_replace('<a ', '<a class="thickbox" ', $output );
-}
+// Set the attributes for the link
+$link_atts .= " href='{$href}'";
+
+// Add the title as the link title, if exists. This will appear as caption in the lightbox.
+$link_atts .= ' title="'.esc_attr( $title ).'"';
+
+
+
+##
+## Get the image
+##
+$image_atts = array(
+	'src'	=> $url,
+	'alt'	=> ( !empty( $caption ) ? $caption : $title ),
+	'validate_src'	=> false, // Already validated by GF
+);
+
+$image = new GravityView_Image( $image_atts );
+
+
+/**
+ * Modify the values used for the image meta.
+ *
+ * @link https://gravityview.co/support/documentation/201606759 Read more about the filter
+ *
+ * @var array
+ */
+$image_meta = apply_filters('gravityview_post_image_meta', array(
+	'title' => array(
+		'label' => esc_attr_x( 'Title:', 'Post Image field title heading', 'gravity-view'),
+		'value' => $title,
+		'tag_label' => 'span',
+		'tag_value' => 'div'
+	),
+	'caption' => array(
+		'label' => esc_attr_x( 'Caption:', 'Post Image field caption heading', 'gravity-view'),
+		'value' => $caption,
+		'tag_label' => 'span',
+		'tag_value' => GFFormsModel::is_html5_enabled() ? 'figcaption' : 'div',
+	),
+	'description' => array(
+		'label' => esc_attr_x( 'Description:', 'Post Image field description heading', 'gravity-view'),
+		'value' => $description,
+		'tag_label' => 'span',
+		'tag_value' => 'div'
+	),
+));
+
+// If HTML5 output is enabled, support the `figure` and `figcaption` tags
+$wrappertag = GFFormsModel::is_html5_enabled() ? 'figure' : 'div';
+
+/**
+ * Whether to show labels for the image meta.
+ *
+ * @link https://gravityview.co/support/documentation/201606759 Read more about the filter
+ * @var boolean
+ */
+$showlabels = apply_filters( 'gravityview_post_image_meta_show_labels', true );
+
+// Wrapper tag
+$output = '<'.$wrappertag.' class="gv-image">';
+
+	// Image with link tag
+	$output .= "<a {$link_atts}>{$image}</a>";
+
+	foreach ( (array)$image_meta as $key => $meta ) {
+
+		if( !empty( $meta['value'] ) ) {
+
+			$output .= '<div class="gv-image-'.esc_attr( $key ).'">';
+
+			// Display the label if the label's not empty
+			if( !empty( $showlabels ) && !empty( $meta['label'] ) ) {
+				$output .= '<'.esc_attr( $meta['tag_label'] ).' class="gv-image-label">';
+				$output .= esc_html( $meta['label'] );
+				$output .= '</'.esc_attr( $meta['tag_label'] ).'> ';
+			}
+
+			// Display the value
+			$output .= '<'.esc_attr( $meta['tag_value'] ).' class="gv-image-value">';
+			$output .= esc_html( $meta['value'] );
+			$output .= '</'.esc_attr( $meta['tag_value'] ).'>';
+
+			$output .= '</div>';
+		}
+
+	}
+
+$output .= '</'.$wrappertag.'>';
 
 echo $output;
