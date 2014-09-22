@@ -11,7 +11,7 @@ $view_id = $gravityview_view->view_id;
 
 ?>
 
-<form class="gv-widget-search <?php echo gravityview_sanitize_html_class( apply_filters('gravityview_search_class', 'gv-search-horizontal' ) ); ?>" method="get" action="">
+<form class="gv-widget-search <?php echo gravityview_sanitize_html_class( apply_filters('gravityview_search_class', 'gv-search-horizontal' ) ); ?>" method="get" action="<?php echo esc_url( add_query_arg(array()) ); ?>">
 
 	<div class="gv-search-box">
 
@@ -35,8 +35,13 @@ $view_id = $gravityview_view->view_id;
 	<?php endif; ?>
 
 	<?php
+
+		do_action( 'gravityview_search_widget_fields_before' );
+
 		// search filters (fields)
-		echo $gravityview_view->search_fields;
+		echo apply_filters( 'gravityview_search_widget_fields', $gravityview_view->search_fields );
+
+		do_action( 'gravityview_search_widget_fields_after' );
 	?>
 
 	<div class="gv-search-box gv-search-box-submit">
