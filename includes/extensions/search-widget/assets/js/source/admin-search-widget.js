@@ -22,7 +22,7 @@
 		init: function() {
 			var gvsw = gvSearchWidget;
 			// hook on all the open settings buttons
-			$('body').on( 'click', 'h5.field-id-search_widget a[href="#settings"]', gvsw.openDialog );
+			$('body').on( 'click', 'h5.field-id-search_bar a[href="#settings"]', gvsw.openDialog );
 
 			// hook to add/remove rows
 			$('body').on( 'click', ".gv-dialog-options a[href='#addSearchField']", gvsw.addField );
@@ -99,7 +99,7 @@
 			//add table and header
 			table = gvsw.addTable();
 
-			if( fields === '' ) {
+			if( fields === '' || fields === '[]' ) {
 				gvsw.addRow( table, null, null );
 			} else {
 				gvsw.populateRows( table, fields );
@@ -153,7 +153,7 @@
 			// }
 
 			var rowString = '<tr class="gv-search-field-row new-row hide-if-js">'+
-								'<td><span class="dashicons dashicons-sort"></span></td>'+
+								'<td><span class="icon gv-icon-caret-up-down"></span></td>'+
 								'<td>'+ gvsw.selectFields +'</td>'+
 								'<td class="row-inputs"><select class="gv-search-inputs"></select></td>'+
 								'<td class="row-options"><a href="#addSearchField" class="dashicons dashicons-plus-alt"></a><a href="#removeSearchField" class="dashicons dashicons-dismiss"></a></td>'+
