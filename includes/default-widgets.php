@@ -767,4 +767,4 @@ class GravityView_Widget {
 
 new GravityView_Widget_Pagination_Info;
 new GravityView_Widget_Page_Links;
-new GravityView_Widget_Search_Bar;
+//new GravityView_Widget_Search_Bar;
