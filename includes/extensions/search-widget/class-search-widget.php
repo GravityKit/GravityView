@@ -376,7 +376,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 			if( 'post_category' === $form_field['type'] && !empty( $form_field['displayAllCategories'] ) && empty( $form_field['choices'] ) ) {
 				$filter['choices'] = self::get_post_categories_choices();
-			} else {
+			} elseif( !empty( $form_field['choices'] ) ) {
 				$filter['choices'] = $form_field['choices'];
 			}
 		}
@@ -446,7 +446,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 
 		$gravityview_view->search_fields = $search_fields;
-		$gravityview_view->search_layout = !empty( $widget['search_layout'] ) ? $widget['search_layout'] : 'horizontal';
+		$gravityview_view->search_layout = !empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal';
 
 		if( $has_date ) {
 			// enqueue datepicker stuff only if needed!
