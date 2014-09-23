@@ -288,13 +288,15 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			foreach( $view_data['widgets'] as $a => $area ) {
 				foreach( $area as $k => $widget ) {
 
-					$search_fields = json_decode( $widget['search_fields'] );
+					$search_fields = json_decode( $widget['search_fields'], true );
 
 					if( empty( $search_fields ) || !is_array( $search_fields ) ) { continue; }
 
 					foreach( $search_fields as $field ) {
+
 						// do not repeat fields
 						if( in_array( $field['field'], $field_ids ) ) { continue; }
+
 						$field_ids[] = $field['field'];
 
 						$search_filters[] = $this->get_search_filter_details( $field );
