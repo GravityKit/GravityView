@@ -286,7 +286,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// get configured search filters (fields)
 		if( array_key_exists( 'widgets', $view_data ) && is_array( $view_data['widgets'] ) ) {
 			foreach( $view_data['widgets'] as $a => $area ) {
+
 				foreach( $area as $k => $widget ) {
+
+					// If this is not a search widget, don't process.
+					if( empty( $widget['search_fields'] ) ) { continue; }
 
 					$search_fields = json_decode( $widget['search_fields'], true );
 
@@ -355,7 +359,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			}
 		}
 
-
 		return $filter;
 
 	}
@@ -389,7 +392,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 
 		// get configured search fields
-		$search_fields = !empty( $widget['search_fields'] ) ? json_decode( $widget['search_fields'] ) : '';
+		$search_fields = !empty( $widget_args['search_fields'] ) ? json_decode( $widget_args['search_fields'], true ) : '';
 
 		if( empty( $search_fields ) || !is_array( $search_fields ) ) {
 			do_action('gravityview_log_debug', sprintf( '%s[render_frontend] No search fields configured for widget:', get_class( $this ) ), $widget_args );
