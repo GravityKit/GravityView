@@ -611,13 +611,15 @@
 
 			$(".gv-add-field").tooltip({
 				content: function() {
-					var objType = $(this).attr('data-objecttype');
-					if( objType === 'field' ) {
-						return $("#directory-available-fields").html();
-					} else if( objType === 'widget' ) {
-						return $("#directory-available-widgets").html();
-					}
 
+					switch( $(this).attr('data-objecttype') ) {
+						case 'field':
+							return $("#directory-available-fields").html();
+							break;
+						case 'widget':
+							return $("#directory-available-widgets").html();
+							break;
+					}
 				},
 				close: function(event, ui) {
 					$(this).attr('data-tooltip', '');
@@ -634,6 +636,11 @@
 					my: "center bottom",
 					at: "center top-12",
 				},
+				/*position: {
+					my: "center center",
+					at: "center center",
+					of: window
+				},*/
 				tooltipClass: 'top',
 			})
 			.on('mouseout focusout', function(e) {
@@ -777,22 +784,6 @@
 
 					// Show the new field
 					newField.fadeIn( 100 );
-
-					// If there's more than one field in the area,
-					// we move the tooltip.
-					if(newField.siblings('.gv-fields').length > 0) {
-
-						// Get the current position of the tooltip
-						tooltipOffset = $('#'+tooltipId).offset();
-
-						if( tooltipOffset && tooltipOffset.top ) {
-							// Move the tooltip down by the height of the new field plus 5px margin bottom.
-							// TODO: Clean up this so it doesn't use hard-coded margin size.
-							$('#'+tooltipId).offset({
-								top: ( tooltipOffset.top + newField.outerHeight() + 5)
-							});
-						}
-					}
 
 				})
 				.fail( function( jqXHR, textStatus, errorThrown ) {

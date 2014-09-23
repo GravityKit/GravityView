@@ -478,6 +478,11 @@ hr{
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 
+		// Parent field name
+		small {
+			color: #777;
+			font-weight: 600;
+		}
 	}
 
 	span.gv-field-controls {
@@ -485,6 +490,72 @@ hr{
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
+	}
+
+	&:hover {
+
+		background: #fff;
+
+		.gv-field-controls .dashicons {
+			color: #0074a2;
+		}
+
+		h5 small,
+		.gv-field-info {
+			color: #666;
+		}
+	}
+
+	.gv-field-controls .dashicons {
+
+		width: 24px; // Give a larger click target
+		font-size: 18px;
+		line-height: 20px;
+		color: #618090;
+
+		&:hover,
+		&:active {
+			color: #2ea2cc;
+		}
+
+		&.dashicons-dismiss {
+			float: right;
+			color: #999;
+			&:hover,
+			&:active {
+				color: #d03a3a
+			}
+		}
+
+		&.dashicons-admin-links {
+			color: #aaa;
+			width: 20px;
+			font-size: 16px;
+			line-height: 20px;
+			cursor: default;
+		}
+	}
+
+	/**
+	 * Field information
+	 */
+	.gv-field-info {
+
+		display: block;
+		font-weight: normal;
+		color: #999;
+		text-shadow: none;
+
+		span {
+			&:after {
+				content:", ";
+			}
+
+			&.gv-sublabel:after,
+			&:last-child:after {
+				content: "";
+			}
+		}
 	}
 
 } // End .gv-fields
@@ -505,51 +576,39 @@ hr{
 	max-width: 400px !important;
 }
 
-.gv-field-controls .dashicons {
-
-	width: 24px; // Give a larger click target
-	font-size: 18px;
-	line-height: 20px;
-
-	&:hover,
-	&:active {
-		color: #2ea2cc;
-	}
-
-	&.dashicons-dismiss {
-		float: right;
-		color: #999;
-		&:hover,
-		&:active {
-			color: #d03a3a
-		}
-	}
-
-	&.dashicons-admin-links {
-		color: #aaa;
-		width: 20px;
-		font-size: 16px;
-		line-height: 20px;
-		cursor: default;
-	}
-}
-
 /**
  * Field Picker ( + Add Field )
  */
-#directory-available-fields .gv-fields,
-#directory-available-widgets .gv-fields,
-#single-available-fields .gv-fields {
+#directory-available-fields,
+#directory-available-widgets,
+#single-available-fields {
 
-	h5 {
-		padding: 0 !important;
+	.gv-fields {
+
+		h5 {
+			padding: 0 !important;
+		}
+
+		span.gv-field-controls {
+			display: none !important;
+		}
+
+	}
+}
+
+
+
+
+
+.gv-sublabel {
+
+	font-size: .9em;
+
+	&.description {
+		font-style: normal;
 	}
 
-	span.gv-field-controls,
-	span.gv-field-controls,
-	span.gv-field-controls {
-		display: none !important;
-	}
+	display: block;
 }
 
 .ui-dialog-titlebar {

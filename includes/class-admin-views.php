@@ -356,6 +356,8 @@ class GravityView_Admin_Views {
 
 		$fields = $this->get_available_fields( $form );
 
+		$output = '';
+
 		if( !empty( $fields ) ) {
 
 			foreach( $fields as $id => $details ) {
@@ -364,14 +366,12 @@ class GravityView_Admin_Views {
 					continue;
 				}
 
-				if( !empty( $details['type'] ) ) {
-					$details['input_type'] = $details['type'];
-				}
-
-				echo new GravityView_Admin_View_Field( $details['label'], $id, $details );
+				$output .= new GravityView_Admin_View_Field( $details['label'], $id, $details );
 
 			} // End foreach
 		}
+
+		echo $output;
 
 		$this->render_additional_fields( $form, $context );
 	}
@@ -690,7 +690,9 @@ class GravityView_Admin_Views {
 			return $output;
 		}
 
+		// The title sets the label for the dialog
 		$output .= '<div class="gv-dialog-options" title="'. esc_attr( sprintf( __( 'Options: %s', 'gravity-view' ), $field_label ) ) .'">';
+
 		$output .= '<ul>';
 
 		foreach( $options as $key => $details ) {
