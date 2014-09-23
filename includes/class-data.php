@@ -248,7 +248,7 @@ class GravityView_View_Data {
 			}
 
 			// Store the View to the object for later fetching.
-			$this->add_view( $shortcode_atts['id'] , $args );
+			$this->add_view( $args['id'] , $args );
 		}
 
 	}
