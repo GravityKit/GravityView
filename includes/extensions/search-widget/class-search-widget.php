@@ -135,7 +135,12 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		exit( $response );
 	}
 
-
+	/**
+	 * Generates html for the available Search Fields dropdown
+	 * @param  string $form_id
+	 * @param  string $current (for future use)
+	 * @return string
+	 */
 	static function render_searchable_fields( $form_id = null, $current = '' ) {
 
 		if( is_null( $form_id ) ) {
@@ -174,7 +179,13 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 	}
 
-
+	/**
+	 * Assign an input type according to the form field type
+	 * @see admin-search-widget.js
+	 *
+	 * @param  string $field_type
+	 * @return string
+	 */
 	static function get_search_input_type( $field_type = null ) {
 
 		if( in_array( $field_type, array( 'select', 'checkbox', 'radio', 'post_category', 'multiselect' ) ) ) {
@@ -321,7 +332,16 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		return $search_filters;
 	}
 
-
+	/**
+	 * Populate search fields with other details (label, field type, searched value)
+	 * Depending on $context:
+	 * 	- 'render' : when the goal is to render the search fields
+	 *  - 'filter' : when the goal is to filter the entries
+	 *
+	 * @param type $field
+	 * @param type $context
+	 * @return type
+	 */
 	private function get_search_filter_details( $field, $context = 'filter' ) {
 
 		global $gravityview_view;
@@ -356,6 +376,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 			if( 'post_category' === $form_field['type'] && !empty( $form_field['displayAllCategories'] ) && empty( $form_field['choices'] ) ) {
 				$filter['choices'] = self::get_post_categories_choices();
+			} else {
+				$filter['choices'] = $form_field['choices'];
 			}
 		}
 
