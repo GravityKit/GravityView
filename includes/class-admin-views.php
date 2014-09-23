@@ -107,7 +107,7 @@ class GravityView_Admin_Views {
 	 * @return void
 	 */
 	function default_field_blacklist( $array = array() ) {
-		return array_merge( $array, array( 'html', 'section', 'captcha', 'page' ) );
+		return array_merge( $array, array( 'captcha', 'page' ) );
 	}
 
 	/**

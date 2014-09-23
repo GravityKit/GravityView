@@ -28,6 +28,10 @@
 
 					if( !empty(  $this->fields['directory_table-columns'] ) ) {
 
+						/**
+						 * Modify the fields displayed in the table
+						 * @var array
+						 */
 						$fields = apply_filters('gravityview_table_cells', $this->fields['directory_table-columns'], $this );
 
 						foreach( $fields as $field ) {
