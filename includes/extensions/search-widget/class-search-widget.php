@@ -238,7 +238,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * @return [type]                  [description]
 	 */
 	function filter_entries( $search_criteria ) {
-error_log( 'this: $_GET ' . print_r( $_GET , true ) );
+
 		// add free search
 		if( !empty( $_GET['gv_search'] ) ) {
 
@@ -427,6 +427,7 @@ error_log( 'this: $_GET ' . print_r( $_GET , true ) );
 				$filter['label'] = $form_field['label'];
 				$filter['input'] = $field['input'];
 
+				// collect choices
 				if( 'post_category' === $form_field['type'] && !empty( $form_field['displayAllCategories'] ) && empty( $form_field['choices'] ) ) {
 					$filter['choices'] = self::get_post_categories_choices();
 				} elseif( !empty( $form_field['choices'] ) ) {
@@ -496,6 +497,9 @@ error_log( 'this: $_GET ' . print_r( $_GET , true ) );
 				);
 				$has_date = true;
 			} else {
+				if( $field['input'] === 'date' ) {
+					$has_date = true;
+				}
 				$search_fields[ $k ] = $this->get_search_filter_details( $field, 'render' );
 			}
 
