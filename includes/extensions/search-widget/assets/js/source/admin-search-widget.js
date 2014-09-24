@@ -190,14 +190,14 @@
 
 		updateSelectInput: function( tr ) {
 			var gvsw = gvSearchWidget,
-				type = tr.find('select.gv-search-fields option:selected').attr('data-type'),
+				type = tr.find('select.gv-search-fields option:selected').attr('data-inputtypes'),
 				select = tr.find('select.gv-search-inputs');
 
 			var options = gvsw.getSelectInput( type );
 
 			select.html( options );
 
-			if( type === 'text' || type === 'date' ) {
+			if( select.find('option').length < 2 ) {
 				select.prop( 'disabled', true );
 			} else {
 				select.prop( 'disabled', false );
@@ -231,22 +231,43 @@
 		},
 
 		getSelectInput: function( type ) {
-			var types = $.parseJSON( gvSearchVar.inputs ),
-				options = '',
-				list = types.text;
 
-			if( type === 'multi' ) {
-				list = types.multi;
-			} else if( type === 'date' ) {
-				list = types.date;
+			var gvsw = gvSearchWidget,
+				labels = $.parseJSON( gvSearchVar.input_labels ),
+				types = $.parseJSON( gvSearchVar.input_types ),
+				options = '';
+
+			// get list of inputs
+			var inputs = gvsw.getValue( types, type );
+
+			if( inputs === null ) {
+				return '';
 			}
 
-			$.each( list, function( key, label ) {
-				options += '<option value="' + key + '">' + label + '</option>';
+			// iterate through the requested input types
+			$.each( inputs, function( k, input ) {
+
+				//get label
+				var label = gvsw.getValue( labels, input );
+
+				options += '<option value="' + input + '">' + label + '</option>';
 			});
 
 			return options;
 		},
+
+		// helper: get value from a js object given a certain key
+		getValue: function( obj, key ) {
+			var value = null;
+			$.each( obj, function( k, val ) {
+				if( key === k ) {
+					value = val;
+					return false;
+				}
+			});
+			return value;
+		},
+
 
 		updateOnClose: function( event, ui ) {
 			var dialog = $(this),

@@ -84,12 +84,32 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		wp_enqueue_script( 'gravityview_searchwidget_admin', plugins_url( 'assets/js'.$script_source.'/admin-search-widget'.$script_min.'.js', __FILE__ ), array( 'jquery' ), GravityView_Plugin::version );
 
 
-		$input_types = array(
-			'text' => array( 'input_text' => esc_html__( 'Text', 'gravity-view') ),
-			'date' => array( 'date' => esc_html__('Date', 'gravity-view') ),
-			'multi' => array( 'select' => esc_html__( 'Select', 'gravity-view' ), 'multi_select' => esc_html__( 'Select (multiple values)', 'gravity-view' ), 'radio' => esc_html__('Radio button', 'gravity-view'), 'checkbox' => esc_html__( 'Checkbox', 'gravity-view' ) )
-			);
+		/**
+		 * Input Type labels l10n
+		 * @see admin-search-widget.js (getSelectInput)
+		 * @var array
+		 */
+		$input_labels = array(
+			'input_text' => esc_html__( 'Text', 'gravity-view'),
+			'date' => esc_html__('Date', 'gravity-view'),
+			'select' => esc_html__( 'Select', 'gravity-view' ),
+			'multiselect' => esc_html__( 'Select (multiple values)', 'gravity-view' ),
+			'radio' => esc_html__('Radio', 'gravity-view'),
+			'checkbox' => esc_html__( 'Checkbox', 'gravity-view' ),
+			'link' => esc_html__('Links', 'gravity-view')
+		);
 
+		/**
+		 * Input Type groups
+		 * @see admin-search-widget.js (getSelectInput)
+		 * @var array
+		 */
+		$input_types = array(
+			'text' => array( 'input_text' ),
+			'date' => array( 'date' ),
+			'select' => array( 'select', 'radio', 'link' ),
+			'multi' => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
+		);
 
 		wp_localize_script( 'gravityview_searchwidget_admin', 'gvSearchVar', array(
 			'nonce' => wp_create_nonce( 'gravityview_ajaxsearchwidget'),
@@ -97,7 +117,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			'label_addfield' =>  esc_html__( 'Add Search Field', 'gravity-view' ),
 			'label_searchfield' => esc_html__( 'Search Field', 'gravity-view' ),
 			'label_inputtype' => esc_html__( 'Input Type', 'gravity-view' ),
-			'inputs' => json_encode( $input_types ),
+			'input_labels' => json_encode( $input_labels ),
+			'input_types' => json_encode( $input_types ),
 		) );
 
 	}
@@ -155,8 +176,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		$output = '<select class="gv-search-fields">';
 
-		$output .= '<option value="search_all" '. selected( 'search_all', $current, false ).' data-type="text">'. esc_html__( 'Search Everything', 'gravity-view') .'</option>';
-		$output .= '<option value="entry_date" '. selected( 'entry_date', $current, false ).' data-type="date">'. esc_html__( 'Entry Date', 'gravity-view') .'</option>';
+		$output .= '<option value="search_all" '. selected( 'search_all', $current, false ).' data-inputtypes="text">'. esc_html__( 'Search Everything', 'gravity-view') .'</option>';
+		$output .= '<option value="entry_date" '. selected( 'entry_date', $current, false ).' data-inputtypes="date">'. esc_html__( 'Entry Date', 'gravity-view') .'</option>';
 
 		if( !empty( $fields ) ) {
 
@@ -166,9 +187,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 				if( in_array( $field['type'], $blacklist_field_types ) ) { continue; }
 
-				$type = GravityView_Widget_Search::get_search_input_type( $field['type'] );
+				$types = GravityView_Widget_Search::get_search_input_types( $field['type'] );
 
-				$output .= '<option value="'. $id .'" '. selected( $id, $current, false ).'data-type="'. esc_attr( $type ) .'">'. esc_html( $field['label'] ) .'</option>';
+				$output .= '<option value="'. $id .'" '. selected( $id, $current, false ).'data-inputtypes="'. esc_attr( $types ) .'">'. esc_html( $field['label'] ) .'</option>';
 			}
 
 		}
@@ -186,17 +207,26 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * @param  string $field_type
 	 * @return string
 	 */
-	static function get_search_input_type( $field_type = null ) {
+	static function get_search_input_types( $field_type = null ) {
 
-		if( in_array( $field_type, array( 'select', 'checkbox', 'radio', 'post_category', 'multiselect' ) ) ) {
-			$type = 'multi';
+		if( in_array( $field_type, array( 'checkbox', 'post_category', 'multiselect' ) ) ) {
+			//multiselect
+			$types = 'multi';
+
+		} elseif( in_array( $field_type, array( 'select', 'radio' ) ) ) {
+			//single select
+			$types = 'select';
+
 		} elseif( in_array( $field_type, array( 'date' ) ) ) {
-			$type = 'date';
+			// date
+			$types = 'date';
 		} else {
-			$type = 'text';
+			// input type = text
+			$types = 'text';
 		}
 
-		return apply_filters( 'gravityview/extension/search/input_type', $type, $field_type );
+		return apply_filters( 'gravityview/extension/search/input_type', $types, $field_type );
+
 	}
 
 
@@ -208,7 +238,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * @return [type]                  [description]
 	 */
 	function filter_entries( $search_criteria ) {
-
+error_log( 'this: $_GET ' . print_r( $_GET , true ) );
 		// add free search
 		if( !empty( $_GET['gv_search'] ) ) {
 
@@ -352,10 +382,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$name = 'filter_' . str_replace( '.', '_', $field['field'] );
 
 		// get searched value from $_GET
-		$value = esc_attr( rgget( $name ) );
+		$value = rgget( $name );
 
 		$form_field = gravityview_get_field( $form, $field['field'] );
 
+		//@todo refactor to allow multiple values for categories
 		// convert value (category_id) into 'name:id'
 		if( 'post_category' === $form_field['type'] && !empty( $value ) && $context === 'filter' ) {
 			$cat = get_term( $value, 'category' );
