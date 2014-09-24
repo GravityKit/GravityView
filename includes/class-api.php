@@ -719,3 +719,23 @@ function gravityview_field_output( $args ) {
 
 	return $html;
 }
+
+
+function gv_selected( $value, $current, $echo = true, $type = 'selected' ) {
+
+	$output = '';
+	if( is_array( $current ) ) {
+		if( in_array( $value, $current ) ) {
+			$output = __checked_selected_helper( true, true, false, $type );
+		}
+	} else {
+		$output = __checked_selected_helper( $value, $current, false, $type );
+	}
+
+	if( $echo ) {
+		echo $output;
+	} else {
+		return $output;
+	}
+
+}
