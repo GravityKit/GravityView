@@ -528,8 +528,22 @@ class GravityView_Admin_Views {
 
 									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) {
 
-										$input_type = isset($available_items[ $field['id'] ]['type']) ? $available_items[ $field['id'] ]['type'] : NULL;
-										$field_options = self::render_field_options( $type, $template_id, $field['id'], $field['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone );
+										$input_type = NULL;
+										$original_item = isset( $available_items[ $field['id'] ] ) ? $available_items[ $field['id'] ] : false ;
+
+										if( !$original_item ) {
+
+											do_action('gravityview_log_error', 'An item was not available when rendering the output; maybe it was added by a plugn that is now de-activated.', array('available_items' => $available_items, 'field' => $field ));
+
+											$original_item = $field;
+										} else {
+
+											$input_type = isset( $original_item['type'] ) ? $original_item['type'] : NULL;
+
+										}
+
+										// Field options dialog box
+										$field_options = self::render_field_options( $type, $template_id, $field['id'], $original_item['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone );
 
 										$item = array(
 											'input_type' => $input_type,
@@ -537,7 +551,10 @@ class GravityView_Admin_Views {
 											'label_type' => $type
 										);
 
-										$item = wp_parse_args( $item, $available_items[ $field['id'] ] );
+										// Merge the values with the current item to pass things like widget descriptions and original field names
+										if( $original_item ) {
+											$item = wp_parse_args( $item, $original_item );
+										}
 
 										switch( $type ) {
 											case 'widget':

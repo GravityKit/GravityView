@@ -762,7 +762,7 @@
 				area: addButton.attr('data-areaid'),
 				context: addButton.attr('data-context'),
 				field_id: newField.attr('data-fieldid'),
-				field_label: newField.find("h5").remove('small,span').text(),
+				field_label: newField.find('.gv-field-label').attr('data-original-title'),
 				field_type: addButton.attr('data-objecttype'),
 				input_type: newField.attr('data-inputtype'),
 				nonce: gvGlobals.nonce,
