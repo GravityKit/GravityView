@@ -262,7 +262,7 @@ class GravityView_Admin_Metaboxes {
 
 
 					<?php // list of available fields to be shown in the popup ?>
-					<div id="directory-available-fields" class="hide-if-js gv-tooltip">
+					<div id="directory-available-fields" class="hide-if-js gv-tooltip gv-dialog-options">
 						<span class="close"><i class="dashicons dashicons-dismiss"></i></span>
 						<?php do_action('gravityview_render_available_fields', $curr_form, 'directory' ); ?>
 					</div>

@@ -307,37 +307,10 @@ class GravityView_Admin_Views {
 	}
 
 	/**
-	 * Generate the HTML for a field or widget label
-	 *
-	 * @param  string      $label_text The text of the label
-	 * @param  string      $field_id   The ID of the field
-	 * @param  string      $label_type   Is this a label for a `field` or `widget`?
-	 * @param  boolean     $add_controls   Add the field/widget controls?
-	 * @param  string      $field_options   Add field options DIV
-	 * @return string                  HTML of output
+	 * @deprecated 1.1.6
 	 */
-	function render_label( $label_text, $field_id, $label_type = 'field', $input_type = NULL, $field_options = '' ) {
-
-		$settings_title = sprintf(__('Configure %s Settings', 'gravity-view'), ucfirst($label_type));
-		$delete_title = sprintf(__('Remove %s', 'gravity-view'), ucfirst($label_type));
-
-		// $field_options will just be hidden inputs if empty. Otherwise, it'll have an <ul>. Ugly hack, I know.
-		// TODO: Un-hack this
-		$hide_settings_link = ( empty( $field_options ) || strpos( $field_options, '<!-- No Options -->') > 0 ) ? 'hide-if-js' : '';
-
-		$settings_link = sprintf( '<a href="#settings" class="dashicons-admin-generic dashicons %s" title="%s"></a>', $hide_settings_link, $settings_title );
-
-		$output = '<h5 class="field-id-'.esc_attr($field_id).'">';
-
-		$output .= esc_attr( $label_text );
-
-		$output .= sprintf('<span class="gv-field-controls">%s<a href="#remove" class="dashicons-dismiss dashicons" title="%s"></a></span>', $settings_link, $delete_title);
-
-		$output .= '</h5>';
-
-		$output = '<div data-fieldid="'.esc_attr($field_id).'" data-inputtype="'.esc_attr( $input_type ).'" class="gv-fields">'.$output.$field_options.'</div>';
-
-		return $output;
+	function render_label() {
+		_deprecated_function( 'GravityView_Admin_Views::render_label()', '1.1.6', 'Use the GravityView_Admin_View_Field class instead.' );
 	}
 
 	/**
@@ -356,6 +329,8 @@ class GravityView_Admin_Views {
 
 		$fields = $this->get_available_fields( $form );
 
+		$output = '';
+
 		if( !empty( $fields ) ) {
 
 			foreach( $fields as $id => $details ) {
@@ -364,14 +339,12 @@ class GravityView_Admin_Views {
 					continue;
 				}
 
-				if( !empty( $details['type'] ) ) {
-					$details['input_type'] = $details['type'];
-				}
-
-				echo new GravityView_Admin_View_Field( $details['label'], $id, $details );
+				$output .= new GravityView_Admin_View_Field( $details['label'], $id, $details );
 
 			} // End foreach
 		}
+
+		echo $output;
 
 		$this->render_additional_fields( $form, $context );
 	}
@@ -526,9 +499,16 @@ class GravityView_Admin_Views {
 		}
 
 		// if saved values, get available fields to label everyone
-		if( !empty( $values ) && 'field' === $type && !empty( $post->ID ) ) {
+		if( !empty( $values ) && !empty( $post->ID ) ) {
 			$form_id = gravityview_get_form_id( $post->ID );
-			$available_fields = $this->get_available_fields( $form_id, $zone );
+
+			if( 'field' === $type ) {
+				$available_items = $this->get_available_fields( $form_id, $zone );
+			} else {
+				// get the list of registered widgets
+				$available_items = apply_filters( 'gravityview_register_directory_widgets', array() );
+			}
+
 		}
 
 		foreach( $rows as $row ) :
@@ -548,8 +528,22 @@ class GravityView_Admin_Views {
 
 									foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) {
 
-										$input_type = isset($available_fields[ $field['id'] ]['type']) ? $available_fields[ $field['id'] ]['type'] : NULL;
-										$field_options = self::render_field_options( $type, $template_id, $field['id'], $field['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone );
+										$input_type = NULL;
+										$original_item = isset( $available_items[ $field['id'] ] ) ? $available_items[ $field['id'] ] : false ;
+
+										if( !$original_item ) {
+
+											do_action('gravityview_log_error', 'An item was not available when rendering the output; maybe it was added by a plugn that is now de-activated.', array('available_items' => $available_items, 'field' => $field ));
+
+											$original_item = $field;
+										} else {
+
+											$input_type = isset( $original_item['type'] ) ? $original_item['type'] : NULL;
+
+										}
+
+										// Field options dialog box
+										$field_options = self::render_field_options( $type, $template_id, $field['id'], $original_item['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone );
 
 										$item = array(
 											'input_type' => $input_type,
@@ -557,9 +551,19 @@ class GravityView_Admin_Views {
 											'label_type' => $type
 										);
 
-										//if( !empty( $available_fields[ $field['id'] ] ) ) :
+										// Merge the values with the current item to pass things like widget descriptions and original field names
+										if( $original_item ) {
+											$item = wp_parse_args( $item, $original_item );
+										}
 
-										echo new GravityView_Admin_View_Item( $field['label'], $field['id'], $item, $field );
+										switch( $type ) {
+											case 'widget':
+												echo new GravityView_Admin_View_Widget( $item['label'], $field['id'], $item, $field );
+												break;
+											default:
+												echo new GravityView_Admin_View_Field( $item['label'], $field['id'], $item, $field );
+										}
+
 
 										//endif;
 
@@ -690,7 +694,9 @@ class GravityView_Admin_Views {
 			return $output;
 		}
 
+		// The title sets the label for the dialog
 		$output .= '<div class="gv-dialog-options" title="'. esc_attr( sprintf( __( 'Options: %s', 'gravity-view' ), $field_label ) ) .'">';
+
 		$output .= '<ul>';
 
 		foreach( $options as $key => $details ) {
