@@ -223,6 +223,7 @@ final class GravityView_Plugin {
 	 */
 	function register_default_widgets() {
 		include_once( GRAVITYVIEW_DIR .'includes/default-widgets.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/extensions/search-widget/class-search-widget.php' );
 	}
 
 	/**
