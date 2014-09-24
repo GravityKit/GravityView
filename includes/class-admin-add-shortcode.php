@@ -114,7 +114,7 @@ class GravityView_Admin_Add_Shortcode {
 
 							if( empty( $setting['show_in_shortcode'] ) ) { continue; }
 
-							GravityView_Render_Settings::render_setting_row( $key, array(), NULL, 'gravityview_%s', 'gravityview_%s' );
+							GravityView_Admin_Views::render_setting_row( $key, array(), NULL, 'gravityview_%s', 'gravityview_%s' );
 						}
 						?>
 

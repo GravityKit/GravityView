@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-09-09 18:20-0700\n"
-"PO-Revision-Date: 2014-09-10 15:33+0000\n"
-"Last-Translator: Jorge Pelaez <jorgepelaez@gmail.com>\n"
+"PO-Revision-Date: 2014-09-10 00:40+0000\n"
+"Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Spanish (Mexico) (http://www.transifex.com/projects/p/gravityview/language/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -414,7 +414,7 @@ msgstr "Agregar Campo"
 #: includes/class-admin-views.php:570
 #, php-format
 msgid "\"+ %s\" or drag existing %ss here."
-msgstr "\"+ %s\" o arrastre %ss existentes aquí."
+msgstr ""
 
 #: includes/class-admin-views.php:693
 #, php-format
@@ -499,13 +499,13 @@ msgstr "Error mientras se creaba la Vista. Revise los ajustes o contacte al sopo
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
-msgstr "Error al agregar el campo . Por favor, inténtelo de nuevo o contacte a soporte de GravityView ."
+msgstr ""
 
 #: includes/class-admin-views.php:1104
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
-msgstr "¿Desea eliminar todos los campos en esta zona ? ( Usted está viendo este mensaje porque mantuvo presionada la tecla ALT )"
+msgstr ""
 
 #: includes/class-admin-welcome.php:56
 msgid "GravityView: Getting Started"
@@ -566,7 +566,7 @@ msgstr "Soporte"
 #: includes/class-admin.php:124
 #, php-format
 msgid "A new form was created for this View: \"%s\""
-msgstr "Una nueva forma ha sido creada para esta Vista. \"%s\""
+msgstr ""
 
 #: includes/class-admin.php:125
 #, php-format
@@ -955,31 +955,31 @@ msgstr "Síganos en Google+"
 
 #: includes/connector-functions.php:136
 msgid "Payment Status"
-msgstr "Status de Pago"
+msgstr ""
 
 #: includes/connector-functions.php:141
 msgid "Payment Date"
-msgstr "Fecha de Pago"
+msgstr ""
 
 #: includes/connector-functions.php:146
 msgid "Payment Amount"
-msgstr "Cantidad Pagada"
+msgstr ""
 
 #: includes/connector-functions.php:151
 msgid "Payment Method"
-msgstr "Método de Pago"
+msgstr ""
 
 #: includes/connector-functions.php:156
 msgid "Is Fulfilled"
-msgstr "Está completa"
+msgstr ""
 
 #: includes/connector-functions.php:161
 msgid "Transaction ID"
-msgstr "ID Transacción"
+msgstr ""
 
 #: includes/connector-functions.php:166
 msgid "Transaction Type"
-msgstr "Tipo de Transacción"
+msgstr ""
 
 #: includes/default-templates.php:30
 msgid "Table (default)"
@@ -999,7 +999,7 @@ msgstr "Tabla Columnas Visible"
 
 #: includes/default-templates.php:52
 msgid "Each field will be displayed as a column in the table."
-msgstr "Cada campo se mostrará como una columna en la tabla ."
+msgstr ""
 
 #: includes/default-templates.php:77
 msgid "List (default)"
@@ -1023,7 +1023,7 @@ msgstr "Imagen"
 
 #: includes/default-templates.php:99
 msgid "Other Fields"
-msgstr "Otros Campos"
+msgstr ""
 
 #: includes/default-templates.php:103
 msgid "Footer Left"
@@ -1158,26 +1158,26 @@ msgstr "Cerrar"
 #: includes/default-widgets.php:328
 msgctxt "Previous month in calendar"
 msgid "Prev"
-msgstr "Ant"
+msgstr ""
 
 #: includes/default-widgets.php:329
 msgctxt "Next month in calendar"
 msgid "Next"
-msgstr "Sig"
+msgstr ""
 
 #: includes/default-widgets.php:330
 msgctxt "Today in calendar"
 msgid "Today"
-msgstr "Hoy"
+msgstr ""
 
 #: includes/default-widgets.php:331
 msgctxt "Week in calendar"
 msgid "Week"
-msgstr "Semana"
+msgstr ""
 
 #: includes/default-widgets.php:332
 msgid "Show a different month"
-msgstr "Mostrar un mes diferente"
+msgstr ""
 
 #: includes/extensions/edit-entry/class-edit-entry.php:145
 msgid "Edit Link Text"
@@ -1309,7 +1309,7 @@ msgstr "ID de Usuario # (Ejemplo: 426)"
 
 #: includes/fields/email.php:19
 msgid "Link the Email Address"
-msgstr "Enlazar la Dirección de Email"
+msgstr ""
 
 #: includes/fields/email.php:20
 msgid "Link the an email when cliking an email when clicked."
@@ -1317,7 +1317,7 @@ msgstr ""
 
 #: includes/fields/email.php:24
 msgid "Email Subject"
-msgstr "Asunto del email"
+msgstr ""
 
 #: includes/fields/email.php:26
 msgid "Set the default email subject line."

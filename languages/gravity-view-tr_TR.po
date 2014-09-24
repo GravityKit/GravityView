@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-09-09 18:20-0700\n"
-"PO-Revision-Date: 2014-09-10 07:34+0000\n"
-"Last-Translator: Süha Karalar <suhakaralar@gmail.com>\n"
+"PO-Revision-Date: 2014-09-10 00:40+0000\n"
+"Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/projects/p/gravityview/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,11 +35,11 @@ msgstr "Sağ"
 
 #: includes/admin/entry-list.php:66
 msgid "Edit this entry"
-msgstr "Kaydı düzenle"
+msgstr ""
 
 #: includes/admin/entry-list.php:66
 msgid "Edit"
-msgstr "Düzenle"
+msgstr ""
 
 #: includes/admin/metaboxes.php:32 includes/class-admin-views.php:218
 msgid "Data Source"
@@ -59,7 +59,7 @@ msgstr "Görünüm Ayarları"
 
 #: includes/admin/metaboxes.php:44
 msgid "Filter &amp; Sort"
-msgstr "Süz &amp; Sırala"
+msgstr ""
 
 #: includes/admin/metaboxes.php:71
 msgid "Where would you like the data to come from for this View?"
@@ -83,7 +83,7 @@ msgstr "Görünüm'ü Değiştir"
 
 #: includes/admin/metaboxes.php:100
 msgid "Switch View Type"
-msgstr "Görünüm Türünü Değiştir"
+msgstr ""
 
 #: includes/admin/metaboxes.php:105 includes/admin/metaboxes.php:110
 msgid "Attention"
@@ -93,13 +93,13 @@ msgstr "Dikkat"
 msgid ""
 "Changing the form will reset your field configuration. Changes will be "
 "permanent once you save the View."
-msgstr "Formu değiştirmek alan ayarlarınızı sıfırlayacaktır. Yaptığınız değişiklikler kaydettikten sonra kalıcıdır."
+msgstr ""
 
 #: includes/admin/metaboxes.php:111
 msgid ""
 "Changing the View Type will reset your field configuration. Changes will be "
 "permanent once you save the View."
-msgstr "Görünüm Türünü değiştirmek alan ayarlarınızı sıfırlayacaktır. Yaptığınız değişiklikler kaydettikten sonra kalıcıdır."
+msgstr ""
 
 #: includes/admin/metaboxes.php:116
 msgid "GravityView requires Javascript to be enabled."
@@ -115,7 +115,7 @@ msgstr "Seç"
 
 #: includes/admin/metaboxes.php:161
 msgid "View a live demo of this preset"
-msgstr "Bu ayarla canlı önizleme göster"
+msgstr ""
 
 #: includes/admin/metaboxes.php:239
 msgid "Multiple Entries"
@@ -159,11 +159,11 @@ msgstr "Tekil Kayıt Ayarları"
 
 #: includes/admin/metaboxes.php:423
 msgid "Embed Shortcode"
-msgstr "Kısakod Ekle"
+msgstr ""
 
 #: includes/admin/metaboxes.php:423
 msgid "Add this shortcode to a post or page to embed this view."
-msgstr "Bu Görünümü sayfa yada yazılarınıza eklemek için bu kısakodu kullanın."
+msgstr ""
 
 #: includes/admin/metaboxes.php:469
 msgid "Layout Settings"
@@ -186,7 +186,7 @@ msgstr "Görünüm'ü göm"
 msgid ""
 "Use this form to embed a View into this %s. %sLearn more about using "
 "shortcodes.%s"
-msgstr "%s 'a Görünüm eklemek için bu formu kullanın. %sKısakodların kullanımı hakkında daha fazla bilgi edinin%s"
+msgstr ""
 
 #: includes/class-admin-add-shortcode.php:92
 msgid "Select a View"
@@ -221,17 +221,17 @@ msgstr "Lütfen Görünüm seçin"
 
 #: includes/class-admin-approve-entries.php:55
 msgid "GravityView Fields"
-msgstr "GravityView Alanları"
+msgstr ""
 
 #: includes/class-admin-approve-entries.php:56
 msgid ""
 "Allow administrators to approve or reject entries and users to opt-in or "
 "opt-out of their entries being displayed."
-msgstr "Yöneticilere kayıtları onaylama yada reddetme ve kullanıcılara kayıtlarını gösterme yada gizleme yetkisi ver."
+msgstr ""
 
 #: includes/class-admin-approve-entries.php:78
 msgid "Approve/Reject"
-msgstr "Onayla/Reddet"
+msgstr ""
 
 #: includes/class-admin-approve-entries.php:83
 msgid "User Opt-In"
@@ -251,7 +251,7 @@ msgstr "Onaylandı"
 
 #: includes/class-admin-approve-entries.php:127
 msgid "Show Entry on Website"
-msgstr "Kaydı Site üzerinde göster"
+msgstr ""
 
 #: includes/class-admin-approve-entries.php:129
 msgid "Opt-In"
@@ -259,7 +259,7 @@ msgstr ""
 
 #: includes/class-admin-approve-entries.php:137
 msgid "Yes, display my entry on the website"
-msgstr "Evet, kaydımı site üzerinde göster"
+msgstr ""
 
 #: includes/class-admin-approve-entries.php:208
 #, php-format
@@ -320,11 +320,11 @@ msgstr "%s Sil"
 
 #: includes/class-admin-label.php:57
 msgid "This field links to the Single Entry"
-msgstr "Bu alan Tekil Kayıt'a bağlanmıştır"
+msgstr ""
 
 #: includes/class-admin-views.php:88
 msgid "Connected Views"
-msgstr "Bağlı Görünümler"
+msgstr ""
 
 #: includes/class-admin-views.php:90
 msgid "GravityView Views using this form as a data source"
@@ -332,7 +332,7 @@ msgstr ""
 
 #: includes/class-admin-views.php:142
 msgid "CSS Merge Tags"
-msgstr "CSS Kaynaşma Etiketleri"
+msgstr ""
 
 #: includes/class-admin-views.php:143
 #, php-format

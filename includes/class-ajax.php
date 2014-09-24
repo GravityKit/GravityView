@@ -51,7 +51,7 @@ class GravityView_Ajax {
 			do_action( 'gravityview_render_available_fields', (int) $_POST['form_id'] );
 			exit();
 		} elseif( !empty( $_POST['template_id'] ) ) {
-			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
+			$form = $this->pre_get_form_fields( $_POST['template_id'] );
 			do_action( 'gravityview_render_available_fields', $form );
 			exit();
 		}
@@ -230,7 +230,7 @@ class GravityView_Ajax {
 		$input_type = isset($post['input_type']) ? esc_attr( $post['input_type'] ) : NULL;
 		$context = isset($post['context']) ? esc_attr( $post['context'] ) : NULL;
 
-		$response = GravityView_Render_Settings::render_field_options( $post['field_type'], $post['template'], $post['field_id'], $post['field_label'], $post['area'], $input_type, '', '', $context  );
+		$response = GravityView_Admin_Views::render_field_options( $post['field_type'], $post['template'], $post['field_id'], $post['field_label'], $post['area'], $input_type, '', '', $context  );
 
 		exit( $response );
 	}
@@ -255,7 +255,7 @@ class GravityView_Ajax {
 
 		} elseif( !empty( $_POST['template_id'] ) ) {
 
-			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
+			$form = $this->pre_get_form_fields( $_POST['template_id'] );
 
 		}
 
@@ -269,7 +269,7 @@ class GravityView_Ajax {
 	 * @param  string $template_id Preset template
 	 *
 	 */
-	static function pre_get_form_fields( $template_id = '') {
+	function pre_get_form_fields( $template_id = '') {
 
 		if( empty( $template_id ) ) {
 			return false;

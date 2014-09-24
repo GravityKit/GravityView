@@ -17,10 +17,6 @@ class GravityView_Admin {
 			return;
 		}
 
-		// Migrate Class
-		require_once( GRAVITYVIEW_DIR . 'includes/class-migrate.php' );
-
-
 		require_once( GFCommon::get_base_path() . '/tooltips.php' );
 
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes.php' );
@@ -52,8 +48,6 @@ class GravityView_Admin {
 	 */
 	public function backend_actions() {
 
-		include_once( GRAVITYVIEW_DIR . 'includes/admin/class.field.type.php' );
-		include_once( GRAVITYVIEW_DIR . 'includes/admin/class.render.settings.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-label.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-views.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-welcome.php' );
