@@ -26,7 +26,7 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 			);
 
 			$field_info_items[] = array(
-				'value' => sprintf( __('Field ID: %d', 'gravity-view'), $this->id ),
+				'value' => sprintf( __('Field ID: %s', 'gravity-view'), $this->id ),
 			);
 
 		}
