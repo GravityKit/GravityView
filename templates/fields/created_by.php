@@ -9,6 +9,11 @@ global $gravityview_view;
 
 extract( $gravityview_view->field_data );
 
+// There was no logged in user.
+if( empty( $value ) ) {
+	return;
+}
+
 // Get the user data for the passed User ID
 $User = get_userdata($value);
 

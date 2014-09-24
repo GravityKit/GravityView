@@ -27,9 +27,15 @@ class GravityView_Widget_Pagination_Info extends GravityView_Widget {
 	protected $show_on_single = false;
 
 	function __construct() {
-		$default_values = array( 'header' => 1, 'footer' => 1 );
-		$settings = array();
-		parent::__construct( __( 'Show Pagination Info', 'gravity-view' ) , 'page_info', $default_values, $settings );
+
+		$this->widget_description = __('Summary of the number of visible entries out of the total results.', 'gravity-view' );
+
+		$default_values = array(
+			'header' => 1,
+			'footer' => 1,
+		);
+
+		parent::__construct( __( 'Show Pagination Info', 'gravity-view' ) , 'page_info', $default_values, array() );
 	}
 
 	public function render_frontend( $widget_args, $content = '', $context = '') {
@@ -84,6 +90,9 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 	protected $show_on_single = false;
 
 	function __construct() {
+
+		$this->widget_description = __('Links to pages when there are multiple pages of results.', 'gravity-view' );
+
 		$default_values = array( 'header' => 1, 'footer' => 1 );
 		$settings = array( 'show_all' => array(
 			'type' => 'checkbox',
@@ -91,7 +100,7 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 			'desc' => __('Show every page number instead of summary (eg: 1 2 3 ... 8 »)', 'gravity-view'),
 			'value' => false
 		));
-		parent::__construct( __( 'Show Page Links', 'gravity-view' ) , 'page_links', $default_values, $settings );
+		parent::__construct( __( 'Page Links', 'gravity-view' ) , 'page_links', $default_values, $settings );
 
 	}
 
@@ -165,6 +174,9 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 	private $search_filters = array();
 
 	function __construct() {
+
+		$this->widget_description = __('Search form for searching entries.', 'gravity-view' );
+
 		$default_values = array( 'header' => 0, 'footer' => 0 );
 
 		$settings = array(
@@ -179,7 +191,7 @@ class GravityView_Widget_Search_Bar extends GravityView_Widget {
 				'value' => false
 			),
 		);
-		parent::__construct( __( 'Show Search Bar', 'gravity-view' ) , 'search_bar', $default_values, $settings );
+		parent::__construct( __( 'Search Bar', 'gravity-view' ) , 'search_bar', $default_values, $settings );
 
 		add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ) );
 
@@ -578,6 +590,12 @@ class GravityView_Widget {
 	protected $widget_label;
 
 	/**
+	 * Widget description
+	 * @var  string
+	 */
+	protected $widget_description;
+
+	/**
 	 * Widget admin id
 	 * @var string
 	 */
@@ -714,7 +732,10 @@ class GravityView_Widget {
 	 * @return array $widgets
 	 */
 	function register_widget( $widgets ) {
-		$widgets[ $this->widget_id ] = array( 'label' => $this->widget_label );
+		$widgets[ $this->widget_id ] = array(
+			'label' => $this->widget_label ,
+			'description' => $this->widget_description,
+		);
 		return $widgets;
 	}
 

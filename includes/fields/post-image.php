@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Add custom options for date fields
+ * Add custom options for Post Image fields
  */
 class GravityView_Field_Post_Image extends GravityView_Field {
 
