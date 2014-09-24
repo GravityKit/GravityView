@@ -381,17 +381,11 @@ error_log( 'this: $_GET ' . print_r( $_GET , true ) );
 		// for advanced field ids (eg, first name / last name )
 		$name = 'filter_' . str_replace( '.', '_', $field['field'] );
 
-		// get searched value from $_GET
+		// get searched value from $_GET (string or array)
 		$value = rgget( $name );
 
+		// get form field details
 		$form_field = gravityview_get_field( $form, $field['field'] );
-
-		//@todo refactor to allow multiple values for categories
-		// convert value (category_id) into 'name:id'
-		if( 'post_category' === $form_field['type'] && !empty( $value ) && $context === 'filter' ) {
-			$cat = get_term( $value, 'category' );
-			$value = esc_attr( $cat->name ) . ':' . $value;
-		}
 
 		$filter = array(
 			'key' => $field['field'],
@@ -399,18 +393,49 @@ error_log( 'this: $_GET ' . print_r( $_GET , true ) );
 			'type' => $form_field['type'],
 		);
 
-		if( $context === 'render' ) {
 
-			$filter['name'] = $name;
-			$filter['label'] = $form_field['label'];
-			$filter['input'] = $field['input'];
+		switch( $context ) {
 
-			if( 'post_category' === $form_field['type'] && !empty( $form_field['displayAllCategories'] ) && empty( $form_field['choices'] ) ) {
-				$filter['choices'] = self::get_post_categories_choices();
-			} elseif( !empty( $form_field['choices'] ) ) {
-				$filter['choices'] = $form_field['choices'];
-			}
-		}
+			case 'filter':
+
+				// prepare value for filtering
+				if( empty( $value ) ) {
+					break;
+				}
+
+				if( !is_array( $value ) ) {
+					$value = array( $value );
+				}
+
+				if( 'post_category' === $form_field['type'] ) {
+					foreach( $value as $val ) {
+						$cat = get_term( $val, 'category' );
+						$vals[] = esc_attr( $cat->name ) . ':' . $val;
+					}
+					$value = implode( ',', $vals );
+				} else {
+					$value = implode( ',', $value );
+				}
+
+				$filter['value'] = $value;
+
+				break;
+
+			case 'render':
+
+				$filter['name'] = $name;
+				$filter['label'] = $form_field['label'];
+				$filter['input'] = $field['input'];
+
+				if( 'post_category' === $form_field['type'] && !empty( $form_field['displayAllCategories'] ) && empty( $form_field['choices'] ) ) {
+					$filter['choices'] = self::get_post_categories_choices();
+				} elseif( !empty( $form_field['choices'] ) ) {
+					$filter['choices'] = $form_field['choices'];
+				}
+
+				break;
+
+		} // end switch
 
 		return $filter;
 
