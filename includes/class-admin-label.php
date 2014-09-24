@@ -4,11 +4,64 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 
 	private $label_type = 'field';
 
+	protected function additional_info() {
+
+		$field_info = '';
+
+		$field_info_items = array();
+
+		/*if( !empty( $this->item['parent'] ) ) {
+			$field_info_items[] = array(
+				'value' => sprintf( __('Parent Field: %s', 'gravity-view' ), $this->item['parent']['label'] ),
+				'class'	=> 'gv-sublabel'
+			);
+		}*/
+
+		if( is_numeric( $this->id ) ) {
+
+			$field_type_title = GFCommon::get_field_type_title( $this->item['input_type'] );
+
+			$field_info_items[] = array(
+				'value' => sprintf( __('Type: %s', 'gravity-view'), $field_type_title )
+			);
+
+			$field_info_items[] = array(
+				'value' => sprintf( __('Field ID: %d', 'gravity-view'), $this->id ),
+			);
+
+		}
+
+		/*if( !empty( $this->item['adminLabel'] ) ) {
+			$field_info_items[] = array(
+				'value' => sprintf( __('Admin Label: %s', 'gravity-view' ), $this->item['adminLabel'] ),
+				'class'	=> 'gv-sublabel'
+			);
+		}*/
+
+		return $field_info_items;
+	}
+
 }
 
 class GravityView_Admin_View_Widget extends GravityView_Admin_View_Item {
 
 	private $label_type = 'widget';
+
+	protected function additional_info() {
+
+		$field_info = '';
+		$field_info_items = array();
+
+		if( !empty( $this->item['description'] ) ) {
+
+			$field_info_items[] = array(
+				'value' => $this->item['description']
+			);
+
+		}
+
+		return $field_info_items;
+	}
 
 }
 
@@ -17,12 +70,12 @@ class GravityView_Admin_View_Widget extends GravityView_Admin_View_Item {
  */
 class GravityView_Admin_View_Item {
 
-	private $title;
-	private $id;
-	private $subtitle;
-	private $settings_html;
+	protected $title;
+	protected $id;
+	protected $subtitle;
+	protected $settings_html;
 	private $label_type;
-	private $item;
+	protected $item;
 
 	function __construct( $title = '', $field_id, $item = array(), $settings = array() ) {
 
@@ -52,66 +105,43 @@ class GravityView_Admin_View_Item {
 
 	}
 
+	/**
+	 * When echoing this class, print the HTML output
+	 * @return string HTML output of the class
+	 */
 	public function __toString() {
 
 		return $this->getOutput();
 	}
 
-	function get_field_info() {
+	/**
+	 * Overridden by child classes
+	 * @return array Array of content with arrays for each item. Those arrays have `value`, `label` and (optional) `class` keys
+	 */
+	protected function additional_info() {
+		return array();
+	}
 
-		$field_info = '';
+	protected function get_item_info() {
 
-		// This only applies to fields currently
-		if( !empty( $this->item['input_type'] ) ) {
+		$output = '';
+		$field_info_items = $this->additional_info();
 
-			$field_info_items = array();
+		/**
+		 * Tap in to modify the field information displayed next to an item
+		 * @var array
+		 */
+		$field_info_items = apply_filters( 'gravityview_admin_label_item_info', $field_info_items, $this );
 
-			if( !empty( $this->item['adminLabel'] ) ) {
-				$field_info_items[] = array(
-					'label' => __('Admin Label:', 'gravity-view' ),
-					'value' => $this->item['adminLabel'],
-					'class'	=> 'gv-sublabel'
-				);
-			}
-
-			if( !empty( $this->item['parent_label'] ) ) {
-				$field_info_items[] = array(
-					'label' => __('Parent Field:', 'gravity-view' ),
-					'value' => $this->item['parent_label'],
-					'class'	=> 'gv-sublabel'
-				);
-			}
-
-			if( is_numeric( $this->id ) ) {
-
-				$field_info_items[] = array(
-					'label' => __('Type:', 'gravity-view'),
-					'value' => GFCommon::get_field_type_title( $this->item['input_type'] )
-				);
-
-				$field_info_items[] = array(
-					'label' => __('Field ID:', 'gravity-view'),
-					'value' => $this->id
-				);
-
-			}
-
-			/**
-			 * Tap in to modify the field information displayed next to an item
-			 * @var array
-			 */
-			$field_info_items = apply_filters( 'gravityview_admin_label_field_info', $field_info_items, $this );
-
-			foreach ( $field_info_items as $item ) {
-				$class = isset($item['class']) ? sanitize_html_class( $item['class'] ).' description' : 'description';
-				// Add the title in case the value's long, in which case, it'll be truncated by CSS.
-				$field_info .= '<span class="'.$class.'" title="'.esc_attr( $item['value'] ).'">';
-				$field_info .= esc_html( $item['label'] .' '. $item['value'] );
-				$field_info .= '</span>';
-			}
+		foreach ( $field_info_items as $item ) {
+			$class = isset($item['class']) ? sanitize_html_class( $item['class'] ).' description' : 'description';
+			// Add the title in case the value's long, in which case, it'll be truncated by CSS.
+			$output .= '<span class="'.$class.'">';
+			$output .= esc_html( $item['value'] );
+			$output .= '</span>';
 		}
 
-		return $field_info;
+		return $output;
 
 	}
 
@@ -129,18 +159,20 @@ class GravityView_Admin_View_Item {
 		$hide_show_as_link_class = empty( $this->settings['show_as_link'] ) ? 'hide-if-js' : '';
 		$show_as_link = '<span class="dashicons dashicons-admin-links '.$hide_show_as_link_class.'" title="'.esc_attr( $single_link_title ).'"></span>';
 
-		$field_info = $this->get_field_info();
+		$field_info = $this->get_item_info();
 
 		// When a field label is empty, use the Field ID
 		$label = empty( $this->title ) ? sprintf( _x('Field #%s (No Label)', 'Label in field picker for empty label', 'gravity-view'), $this->id ) : $this->title;
 
+		// If there's a custom label, and show label is checked, use that as the field heading
+		if( !empty( $this->settings['custom_label'] ) && !empty( $this->settings['show_label'] ) ) {
+			$label = $this->settings['custom_label'];
+		}
 
-		$h5_class = 'selectable gfield field-id-'.esc_attr($this->id);
-
-		$output = '<h5 class="'.$h5_class.'">';
+		$output = '<h5 class="selectable gfield field-id-'.esc_attr($this->id).'">';
 
 		// Name of field
-		$output .= esc_attr( $label );
+		$output .= '<span class="gv-field-label" data-original-title="'.esc_attr( $this->title ).'">'.esc_attr( $label ).'</span>';
 
 		if( !empty( $this->item['parent'] ) ) {
 			$output .= ' <small>('.$this->item['parent']['label'].')</small>';

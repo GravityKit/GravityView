@@ -359,11 +359,42 @@
 				},
 				close: function ( e ) {
 					e.preventDefault();
+
+					vcfg.setCustomLabel( thisDialog );
+
 					$('#wpwrap > .gv-overlay').fadeOut( 'fast', function() { $(this).remove(); });
 				},
 				closeOnEscape: true,
 				buttons: buttons
 			});
+
+		},
+
+		/**
+		 * Update the field display to show the custom label while editing
+		 * @param {jQuery DOM} dialog The dialog object
+		 */
+		setCustomLabel: function( dialog ) {
+
+			// Does the field have a custom label?
+			var $custom_label = $('[name*=custom_label]', dialog );
+
+			var show_label = $('[name*=show_label]', dialog ).is(':checked');
+
+			var $label = dialog.parents('.gv-fields').find('.gv-field-label');
+
+			// If there's a custom title, use it for the label.
+			if( $custom_label.val().length > 0 && show_label ) {
+
+				$label.text( $custom_label.val() );
+
+			} else {
+
+				// If there's no custom title, then use the original
+				// @see GravityView_Admin_View_Item::getOutput()
+				$label.text( $label.attr('data-original-title') );
+
+			}
 
 		},
 
@@ -731,7 +762,7 @@
 				area: addButton.attr('data-areaid'),
 				context: addButton.attr('data-context'),
 				field_id: newField.attr('data-fieldid'),
-				field_label: newField.find("h5").text(),
+				field_label: newField.find("h5").remove('small,span').text(),
 				field_type: addButton.attr('data-objecttype'),
 				input_type: newField.attr('data-inputtype'),
 				nonce: gvGlobals.nonce,

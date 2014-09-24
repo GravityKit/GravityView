@@ -494,10 +494,10 @@ hr{
 
 	&:hover {
 
-		background: #fff;
+		background: #fefefe;
 
 		.gv-field-controls .dashicons {
-			color: #0074a2;
+			color: #136cb9;
 		}
 
 		h5 small,
@@ -511,7 +511,6 @@ hr{
 		width: 24px; // Give a larger click target
 		font-size: 18px;
 		line-height: 20px;
-		color: #618090;
 
 		&:hover,
 		&:active {
@@ -597,17 +596,8 @@ hr{
 }
 
 
-
-
-
 .gv-sublabel {
-
 	font-size: .9em;
-
-	&.description {
-		font-style: normal;
-	}
-
 	display: block;
 }
 
