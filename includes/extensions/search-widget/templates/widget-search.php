@@ -21,7 +21,7 @@ $has_inputs = false;
 
 	foreach( $this->search_fields as $search_field ) {
 		$gravityview_view->search_field = $search_field;
-		$this->render( 'search-field', $search_field['input'] );
+		$this->render( 'search-field', $search_field['input'], false );
 
 		// show/hide the search button if there are input type fields
 		if( !$has_inputs &&  $search_field['input'] != 'link' ) {
