@@ -14,8 +14,10 @@ $search_field = $gravityview_view->search_field;
 
 	<?php foreach( $search_field['choices'] as $choice ) : ?>
 
+		<label for="search-box-<?php echo sanitize_html_class( $search_field['name'].$choice['value'].$choice['text'] ); ?>" class="gv-check-radio">
 			<input type="radio" name="<?php echo esc_attr( $search_field['name'] ); ?>" value="<?php echo esc_attr( $choice['value'] ); ?>" id="search-box-<?php echo sanitize_html_class( $search_field['name'].$choice['value'].$choice['text'] ); ?>" <?php checked( $choice['value'], $search_field['value'], true ); ?>>
-			<label for="search-box-<?php echo sanitize_html_class( $search_field['name'].$choice['value'].$choice['text'] ); ?>"><?php echo esc_html( $choice['text'] ); ?></label>
+			<?php echo esc_html( $choice['text'] ); ?>
+		</label>
 
 	<?php endforeach; ?>
 
