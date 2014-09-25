@@ -36,6 +36,10 @@ class GravityView_Migrate {
 	/** ----  Migrate from old search widget to new search widget  ---- */
 	function update_search_on_views() {
 
+		if( !class_exists('GravityView_Widget_Search') ) {
+			include_once( GRAVITYVIEW_DIR .'includes/extensions/search-widget/class-search-widget.php' );
+		}
+
 		// Loop through all the views
 		$query_args = array(
 			'post_type' => 'gravityview',
@@ -113,13 +117,7 @@ class GravityView_Migrate {
 					// get field type & calculate the input type (by default)
 					$form_field = gravityview_get_field( $form, $field['id'] );
 
-					if( in_array( $form_field['type'], array( 'select', 'checkbox', 'radio', 'post_category', 'multiselect' ) ) ) {
-						$type = 'select';
-					} elseif( in_array( $form_field['type'], array( 'date' ) ) ) {
-						$type = 'date';
-					} else {
-						$type = 'input_text';
-					}
+					$type = GravityView_Widget_Search::get_search_input_types( $field['id'], $field['type'] );
 
 					// add field to config
 					$search_fields[] = array( 'field' => $field['id'], 'input' => $type );
