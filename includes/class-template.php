@@ -48,6 +48,10 @@ class GravityView_View extends Gamajo_Template_Loader {
 			$this->{$key} = $value;
 		}
 
+
+		// Add granular overrides
+		add_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ), 10, 3 );
+
 		// widget logic
 		add_action( 'gravityview_before', array( $this, 'render_widget_hooks' ) );
 		add_action( 'gravityview_after', array( $this, 'render_widget_hooks' ) );
@@ -64,6 +68,43 @@ class GravityView_View extends Gamajo_Template_Loader {
 		} else {
 			return NULL;
 		}
+	}
+
+	/**
+	 * Enable overrides of GravityView templates on a granular basis
+	 *
+	 * The loading order is:
+	 *
+	 * - view-[View ID]-table-footer.php
+	 * - form-[Form ID]-table-footer.php
+	 * - page-[ID of post or page where view is embedded]-table-footer.php
+	 * - table-footer.php
+	 *
+	 * @see  Gamajo_Template_Loader::get_template_file_names() Where the filter is
+	 * @param array $templates Existing list of templates.
+	 * @param [type] $slug      [description]
+	 * @param [type] $name      [description]
+	 */
+	function add_id_specific_templates( $templates, $slug, $name ) {
+
+		$additional = array();
+
+		// form-19-table-body.php
+		$additional[] = sprintf( 'form-%d-%s-%s.php', $this->form_id, $slug, $name );
+
+		// view-3-table-body.php
+		$additional[] = sprintf( 'view-%d-%s-%s.php', $this->view_id, $slug, $name );
+
+		if( !empty( $this->post_id ) ) {
+
+			// page-19-table-body.php
+			$additional[] = sprintf( 'page-%d-%s-%s.php', $this->post_id, $slug, $name );
+		}
+
+		// Combine with existing table-body.php and table.php
+		$templates = array_merge( $additional, $templates );
+
+		return $templates;
 	}
 
 	// Load the template
