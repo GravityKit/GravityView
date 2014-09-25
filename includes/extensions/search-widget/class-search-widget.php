@@ -235,14 +235,16 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	}
 
 
-	/** Frontend */
+	/** --- Frontend --- */
 
 	/**
 	 * Calculate the search criteria to filter entries
-	 * @param  [type] $search_criteria [description]
-	 * @return [type]                  [description]
+	 * @param  array $search_criteria
+	 * @return array
 	 */
 	function filter_entries( $search_criteria ) {
+
+		do_action( 'gravityview_log_debug', sprintf( '%s[filter_entries] Requested $_GET: ', get_class( $this ) ), $_GET );
 
 		if( empty( $_GET ) || !is_array( $_GET ) ) {
 			return $search_criteria;
@@ -290,6 +292,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			}
 
 		}
+
+		do_action( 'gravityview_log_debug', sprintf( '%s[filter_entries] Returned Search Criteria: ', get_class( $this ) ), $search_criteria );
 
 		return $search_criteria;
 	}
@@ -445,6 +449,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			}
 
 		}
+
+		do_action( 'gravityview_log_debug', sprintf( '%s[render_frontend] Calculated Search Fields: ', get_class( $this ) ), $search_fields );
 
 		/**
 		 * Modify what fields are shown. The order of the fields in the $search_filters array controls the order as displayed in the search bar widget.
