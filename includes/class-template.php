@@ -104,6 +104,8 @@ class GravityView_View extends Gamajo_Template_Loader {
 		// Combine with existing table-body.php and table.php
 		$templates = array_merge( $additional, $templates );
 
+		do_action( 'gravityview_log_debug', '[add_id_specific_templates] List of Template Files', $templates );
+
 		return $templates;
 	}
 
