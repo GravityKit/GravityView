@@ -384,7 +384,7 @@
 			var $label = dialog.parents('.gv-fields').find('.gv-field-label');
 
 			// If there's a custom title, use it for the label.
-			if( $custom_label.val().length > 0 && show_label ) {
+			if( $custom_label.length && $custom_label.val().length && show_label ) {
 
 				$label.text( $custom_label.val() );
 
