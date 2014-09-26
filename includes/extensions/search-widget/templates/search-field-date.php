@@ -10,7 +10,7 @@ $search_field = $gravityview_view->search_field;
 
 ?>
 
-<div class="gv-search-box gv-search-date">
+<div class="gv-search-box">
 	<label for=search-box-<?php echo esc_attr( $search_field['name'] ); ?>>
 		<?php echo esc_html( $search_field['label'] ); ?>
 	</label>

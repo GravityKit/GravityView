@@ -340,7 +340,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			case 'multiselect':
 
 				if( is_array( $value ) ) {
-					$value = implode( ',', $vals );
+					$value = implode( ',', $value );
 				}
 
 				break;
@@ -355,7 +355,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 						}
 					}
 				} elseif( is_array( $value ) ) {
-					$filter['value'] = implode( ',', $vals );
+					$filter['value'] = implode( ',', $value );
 				}
 
 				break;
@@ -377,6 +377,18 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 					$filter = $filters;
 
+				}
+
+				break;
+
+			case 'date':
+
+				$date = date_create( $value );
+
+				if( $date ) {
+					$filter['value'] = $date->format('Y-m-d');
+				} else {
+					do_action( 'gravityview_log_debug', sprintf( '%s[filter_entries] Date format not valid: ', get_class( $this ) ), $value );
 				}
 
 				break;

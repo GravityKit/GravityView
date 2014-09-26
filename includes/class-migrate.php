@@ -117,6 +117,7 @@ class GravityView_Migrate {
 					// get field type & calculate the input type (by default)
 					$form_field = gravityview_get_field( $form, $field['id'] );
 
+					// depending on the field type assign a group of possible search field types
 					$type = GravityView_Widget_Search::get_search_input_types( $field['id'], $field['type'] );
 
 					// add field to config
