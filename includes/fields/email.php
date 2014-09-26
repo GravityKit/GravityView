@@ -17,7 +17,7 @@ class GravityView_Field_Email extends GravityView_Field {
 				'type' => 'checkbox',
 				'default' => true,
 				'label' => __( 'Link the Email Address', 'gravity-view' ),
-				'desc' => __( 'Link the an email when cliking an email when clicked.', 'gravity-view' ),
+				'desc' => __( 'Clicking the link will generate a new email.', 'gravity-view' ),
 			),
 			'emailsubject' => array(
 				'type' => 'text',

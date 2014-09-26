@@ -37,6 +37,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Modified: Added support for Gravity Forms "Post Image" field captions, titles, and descriptions.
 * Updated list of allowed image formats to include `.bmp`, `.jpe`, `.tiff`, `.ico`
 * Modified: `/templates/fields/fileupload.php` file - removed the logic for how to output the different file types and moved it to the `gravityview_get_files_array()` function in `includes/class-api.php`
+* Tweak: Fixed email setting description text.
 
 = 1.1.6 on September 8 =
 * Fixed: Approve / Disapprove all entries using Gravity Forms bulk edit entries form (previously, only visible entries were affected)
