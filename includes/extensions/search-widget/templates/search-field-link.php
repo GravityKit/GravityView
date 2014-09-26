@@ -22,7 +22,7 @@ $links_sep = apply_filters( 'gravityview/extension/search/links_sep', '&nbsp;|&n
 
 			if( $k != 0 ) { echo esc_html( $links_sep ); }?>
 
-			<a href="<?php echo esc_url( add_query_arg( array( $search_field['name'] => $choice['value'] ) ) ); ?>">
+			<a href="<?php echo esc_url( add_query_arg( array( $search_field['name'] => urlencode( $choice['value'] ) ) ) ); ?>">
 				<?php echo esc_html( $choice['text'] ); ?>
 			</a>
 
