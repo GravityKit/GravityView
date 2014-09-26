@@ -21,7 +21,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.1.7 =
-* Added: Textarea field support. Instead of using line breaks, textareas now output with paragraphs.
+* Added: Support for Gravity Forms Section & HTML field types
+* Added: Improved textarea field support. Instead of using line breaks, textareas now output with paragraphs.
 	- Added new `/templates/fields/textarea.php` file
 * Added: A new File Upload field setting. Force uploads to be displayed as links and not visually embedded by checking the "Display as a Link" checkbox.
 * Added: Option to disable "Map It" link for the full Address field.

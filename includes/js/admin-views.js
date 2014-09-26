@@ -359,11 +359,42 @@
 				},
 				close: function ( e ) {
 					e.preventDefault();
+
+					vcfg.setCustomLabel( thisDialog );
+
 					$('#wpwrap > .gv-overlay').fadeOut( 'fast', function() { $(this).remove(); });
 				},
 				closeOnEscape: true,
 				buttons: buttons
 			});
+
+		},
+
+		/**
+		 * Update the field display to show the custom label while editing
+		 * @param {jQuery DOM} dialog The dialog object
+		 */
+		setCustomLabel: function( dialog ) {
+
+			// Does the field have a custom label?
+			var $custom_label = $('[name*=custom_label]', dialog );
+
+			var show_label = $('[name*=show_label]', dialog ).is(':checked');
+
+			var $label = dialog.parents('.gv-fields').find('.gv-field-label');
+
+			// If there's a custom title, use it for the label.
+			if( $custom_label.length && $custom_label.val().length && show_label ) {
+
+				$label.text( $custom_label.val() );
+
+			} else {
+
+				// If there's no custom title, then use the original
+				// @see GravityView_Admin_View_Item::getOutput()
+				$label.text( $label.attr('data-original-title') );
+
+			}
 
 		},
 
@@ -611,13 +642,15 @@
 
 			$(".gv-add-field").tooltip({
 				content: function() {
-					var objType = $(this).attr('data-objecttype');
-					if( objType === 'field' ) {
-						return $("#directory-available-fields").html();
-					} else if( objType === 'widget' ) {
-						return $("#directory-available-widgets").html();
-					}
 
+					switch( $(this).attr('data-objecttype') ) {
+						case 'field':
+							return $("#directory-available-fields").html();
+							break;
+						case 'widget':
+							return $("#directory-available-widgets").html();
+							break;
+					}
 				},
 				close: function(event, ui) {
 					$(this).attr('data-tooltip', '');
@@ -634,6 +667,11 @@
 					my: "center bottom",
 					at: "center top-12",
 				},
+				/*position: {
+					my: "center center",
+					at: "center center",
+					of: window
+				},*/
 				tooltipClass: 'top',
 			})
 			.on('mouseout focusout', function(e) {
@@ -724,7 +762,7 @@
 				area: addButton.attr('data-areaid'),
 				context: addButton.attr('data-context'),
 				field_id: newField.attr('data-fieldid'),
-				field_label: newField.find("h5").text(),
+				field_label: newField.find('.gv-field-label').attr('data-original-title'),
 				field_type: addButton.attr('data-objecttype'),
 				input_type: newField.attr('data-inputtype'),
 				nonce: gvGlobals.nonce,
@@ -777,22 +815,6 @@
 
 					// Show the new field
 					newField.fadeIn( 100 );
-
-					// If there's more than one field in the area,
-					// we move the tooltip.
-					if(newField.siblings('.gv-fields').length > 0) {
-
-						// Get the current position of the tooltip
-						tooltipOffset = $('#'+tooltipId).offset();
-
-						if( tooltipOffset && tooltipOffset.top ) {
-							// Move the tooltip down by the height of the new field plus 5px margin bottom.
-							// TODO: Clean up this so it doesn't use hard-coded margin size.
-							$('#'+tooltipId).offset({
-								top: ( tooltipOffset.top + newField.outerHeight() + 5)
-							});
-						}
-					}
 
 				})
 				.fail( function( jqXHR, textStatus, errorThrown ) {

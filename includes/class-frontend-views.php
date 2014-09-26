@@ -120,6 +120,9 @@ class GravityView_frontend {
 	 */
 	public function shortcode( $atts, $content = NULL ) {
 
+		// Don't process when saving post.
+		if( is_admin() ) { return; }
+
 		do_action( 'gravityview_log_debug', '[shortcode] $atts: ', $atts );
 
 		return $this->render_view( $atts );
@@ -248,6 +251,14 @@ class GravityView_frontend {
 			do_action( 'gravityview_log_error', '[render_view] gv_output_data not defined; parsing content.', $passed_args );
 
 			$this->parse_content();
+		}
+
+		// Make 100% sure that we're dealing with a properly called situation
+		if( !is_object( $this->gv_output_data ) || !is_callable( array( $this->gv_output_data, 'get_view' ) ) ) {
+
+			do_action( 'gravityview_log_error', '[render_view] gv_output_data not an object or get_view not callable.', $this->gv_output_data );
+
+			return;
 		}
 
 		$view_id = $passed_args['id'];

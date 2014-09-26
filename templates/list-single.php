@@ -1,4 +1,4 @@
-<div class="gv-container gv-list-single-container">
+<div class="gv-container gv-list-single-container gv-list-container">
 
 	<p class="gv-back-link"><?php echo gravityview_back_link(); ?></p>
 

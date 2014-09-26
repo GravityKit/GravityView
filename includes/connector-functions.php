@@ -105,6 +105,7 @@ if( !function_exists('gravityview_get_form_fields') ) {
 				if( $include_parent_field || empty( $field['inputs'] ) ) {
 					$fields[ $field['id'] ] = array(
 						'label' => $field['label'],
+						'parent' => null,
 						'type' => $field['type'],
 						'adminLabel' => $field['adminLabel'],
 						'adminOnly' => $field['adminOnly'],
@@ -114,7 +115,8 @@ if( !function_exists('gravityview_get_form_fields') ) {
 				if( $add_default_properties && !empty( $field['inputs'] ) ) {
 					foreach( $field['inputs'] as $input ) {
 						$fields[ (string)$input['id'] ] = array(
-							'label' => $input['label'].' ('.$field['label'].')',
+							'label' => $input['label'],
+							'parent' => $field,
 							'type' => $field['type'],
 							'adminLabel' => $field['adminLabel'],
 							'adminOnly' => $field['adminOnly'],

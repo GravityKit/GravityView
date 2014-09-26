@@ -11,6 +11,7 @@
  */
 
  @import "search";
+ @import "fields";
 
 
 /* GV Grid
@@ -147,7 +148,3 @@ body .gv-widget-page-links {
 	}
 }
 
-// Image caption
-.gv-image-caption {
-	font-style: italic;
-}
