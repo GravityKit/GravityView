@@ -14,6 +14,17 @@
 @import "admin-merge-tags";
 @import "admin-tooltips";
 
+// http://blog.teamtreehouse.com/a-better-clearfix-with-sass
+%clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+$dismiss-red: #d03a3a;
+
 /* GV Grid
 --------------------------------------- */
 
@@ -83,7 +94,7 @@
 
 .gv-section:before,
 .gv-section:after {
-	content: "";
+	content: " ";
 	display: table;
 }
 
@@ -547,7 +558,7 @@ hr{
 			color: #999;
 			&:hover,
 			&:active {
-				color: #d03a3a
+				color: $dismiss-red;
 			}
 		}
 
@@ -575,9 +586,9 @@ hr{
 				content:", ";
 			}
 
-			&.gv-sublabel:after,
-			&:last-child:after {
-				content: "";
+			&.gv-sublabel,
+			&:last-child {
+				@extend %clearfix;
 			}
 		}
 	}
@@ -634,8 +645,12 @@ hr{
 }
 
 .gv-dialog-options {
+
+	@extend %clearfix;
+
 	display: none;
 	width: 90%;
+	padding: 10px 0!important;
 
 	&.gv-dialog-warning p {
 		font-size: 1.1em;
@@ -650,29 +665,36 @@ hr{
 		color: #ddd;
 	}
 
-	&:after {
-	  content: "";
-	  display: table;
-	  clear: both;
-	}
-
 	p {
 		margin: 0 !important;
 		padding: 1.5em !important;
 	}
 
-	ul {
-		list-style: none;
+	// Each setting row ( Used to be ul and ul li )
+	.gv-setting-container {
+		@extend %clearfix;
 		margin: 0;
-		padding: 1em 1.5em;
-	}
-
-	ul li {
+		padding: .4em 15px .8em;
+		// border-bottom: 1px solid #f9f9f9;
 		display: block;
-		margin: 0;
-		padding: .5em 0 .75em;
-		font-size: 14px;
+		font-size: 1.1em;
 		clear: left;
+
+		&:last-child {
+			// border-bottom: none;
+			padding-bottom: .5em;
+		}
+
+		label {
+			margin: 0;
+			font-weight: normal;
+			display: inline-block;
+			padding-right: .75em;
+		}
+
+		.howto {
+			margin: 0 0 .25em;
+		}
 	}
 
 	input[type="text"] {
@@ -682,51 +704,80 @@ hr{
 	}
 
 	table, table select {
-		width: 100%;
+		width: 95%;
+		margin: 0 auto;
 	}
 
 	table {
-		margin-top: 1em;
-		margin-bottom: 2em;
-		tr {
-			padding-top: 5px;
+		padding-bottom: 15px;
+
+		td, th {
+			text-align: left;
+
+			// Standard `.form-table td` is 15px 10px
+			padding: 10px 5px;
 		}
-	}
 
-	table th {
-		font-size: 14px;
-	}
+		.no-search-fields td {
+			text-align: center;
+			font-size: 15px;
+			padding: 15px 0;
+		}
 
-	table td, table th {
-		text-align: left;
-		padding: 5px;
-	}
+		.cell-sort {
+			cursor: ns-resize;
 
-	table span.gv-icon-caret-up-down:hover {
-		cursor: ns-resize;
-	}
-
-	table td.row-inputs {
-		width: 180px;
-	}
-
-	table td.row-options {
-		width: 40px;
-		a {
-			font-size: 18px;
-
-			&.dashicons-plus-alt {
-				color: green;
-			}
-			&.dashicons-dismiss {
-				color: red;
+			&.no-sort {
+				cursor: default;
 			}
 		}
+
+		.cell-input-types {
+			width: 180px;
+		}
+
+		.cell-sort,
+		.cell-add-remove {
+
+			width: 40px;
+
+			a {
+				font-size: 18px;
+
+				&.dashicons {
+					opacity: .8;
+					&:hover {
+						opacity: 1;
+					}
+				}
+
+				&.dashicons-plus-alt {
+					color: green;
+				}
+
+				&.dashicons-dismiss {
+					color: $dismiss-red;
+				}
+			}
+		}
+
+		.cell-sort {
+			width: 18px;
+		}
+
 	}
 
-	p#gv-loading {
+	#gv-loading {
 		text-align: center;
-		font-size: 1.2em;
+		font-size: 16px;
+		line-height: 20px;
+		display: block;
+
+		.spinner {
+			display: inline-block;
+			margin-top: -3px;
+			float: none;
+		}
 	}
 
 
@@ -746,6 +797,13 @@ hr{
 		max-width: 300px;
 	}
 
+}
+
+
+.gv-label {
+	display: inline-block;
+	clear: right;
+	margin-bottom: .1em;
 }
 
 .gv-label-checkbox {

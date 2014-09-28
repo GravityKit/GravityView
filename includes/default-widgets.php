@@ -35,7 +35,9 @@ class GravityView_Widget_Pagination_Info extends GravityView_Widget {
 			'footer' => 1,
 		);
 
-		parent::__construct( __( 'Show Pagination Info', 'gravity-view' ) , 'page_info', $default_values, array() );
+		$settings = array();
+
+		parent::__construct( __( 'Show Pagination Info', 'gravity-view' ) , 'page_info', $default_values, $settings );
 	}
 
 	public function render_frontend( $widget_args, $content = '', $context = '') {
@@ -44,6 +46,10 @@ class GravityView_Widget_Pagination_Info extends GravityView_Widget {
 		if( empty( $gravityview_view )) {
 			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: $gravityview_view not instantiated yet.', get_class($this)) );
 			return;
+		}
+
+		if( !empty( $widget_args['title'] ) ) {
+			echo $widget_args['title'];
 		}
 
 		$offset = $gravityview_view->paging['offset'];
@@ -193,7 +199,7 @@ class GravityView_Widget {
 	 * Widget admin advanced settings
 	 * @var array
 	 */
-	protected $settings;
+	protected $settings = array();
 
 	/**
 	 * allow class to automatically add widget_text filter for you in shortcode
@@ -216,7 +222,9 @@ class GravityView_Widget {
 		$this->widget_label = $widget_label;
 		$this->widget_id = $widget_id;
 		$this->defaults = array_merge( array( 'header' => 0, 'footer' => 0 ), $defaults );
-		$this->settings = $settings;
+
+		// Make sure every widget has a title, even if empty
+		$this->settings = wp_parse_args( $settings, $this->settings );
 
 		// register widgets to be listed in the View Configuration
 		add_filter( 'gravityview_register_directory_widgets', array( $this, 'register_widget') );
@@ -349,4 +357,3 @@ class GravityView_Widget {
 
 new GravityView_Widget_Pagination_Info;
 new GravityView_Widget_Page_Links;
-//new GravityView_Widget_Search_Bar;

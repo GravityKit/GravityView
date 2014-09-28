@@ -8,7 +8,9 @@ class GravityView_FieldType_select extends GravityView_FieldType {
 		?>
 		<label for="<?php echo $this->get_field_id(); ?>" class="<?php echo $this->get_label_class(); ?>"><?php
 
-			echo $this->get_field_label() . $this->get_tooltip() . $this->get_field_desc();
+			echo '<span class="gv-label">'.$this->get_field_label().'</span>';
+
+			echo $this->get_tooltip() . $this->get_field_desc();
 
 			$this->render_input();
 

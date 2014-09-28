@@ -70,8 +70,6 @@ class GravityView_Render_Settings {
                 ),
             );
 
-        } elseif( 'widget' === $field_type ) {
-
         }
 
         // hook to inject template specific field/widget options
@@ -111,7 +109,7 @@ class GravityView_Render_Settings {
 
         /**
          * Modify the capabilities shown in the field dropdown
-         * @link  https://github.com/zackkatz/GravityView/wiki/How-to-modify-capabilities-shown-in-the-field-%22Only-visible-to...%22-dropdown
+         * @link  https://gravityview.co/support/documentation/203266467
          * @since  1.0.1
          */
         $select_cap_choices = apply_filters('gravityview_field_visibility_caps', $select_cap_choices, $template_id, $field_id, $context, $input_type );

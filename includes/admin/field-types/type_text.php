@@ -6,9 +6,11 @@ class GravityView_FieldType_text extends GravityView_FieldType {
 
 	function render_option() {
 		?>
-		<label for="<?php echo $this->get_field_id(); ?>" class="<?php echo $this->get_label_class(); ?>">
-			<?php echo $this->get_field_label() . $this->get_tooltip() . $this->get_field_desc(); ?>
-			<div>
+		<label for="<?php echo $this->get_field_id(); ?>" class="<?php echo $this->get_label_class(); ?>"><?php
+
+			echo '<span class="gv-label">'.$this->get_field_label().'</span>';
+			echo $this->get_tooltip() . $this->get_field_desc();
+		?><div>
 				<?php $this->render_input(); ?>
 			</div>
 		</label>
