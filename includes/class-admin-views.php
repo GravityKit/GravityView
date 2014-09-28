@@ -541,6 +541,8 @@ class GravityView_Admin_Views {
 	function render_active_areas( $template_id, $type, $zone, $rows, $values ) {
 		global $post;
 
+		$available_items = array();
+
 		if( $type === 'widget' ) {
 			$button_label = __( 'Add Widget', 'gravity-view' );
 		} elseif( $type === 'field' ) {
@@ -548,11 +550,16 @@ class GravityView_Admin_Views {
 		}
 
 		// if saved values, get available fields to label everyone
-		if( !empty( $values ) && !empty( $post->ID ) ) {
-			$form_id = gravityview_get_form_id( $post->ID );
+		if( !empty( $values ) && ( !empty( $post->ID ) || !empty( $_POST['template_id'] ) ) ) {
+
+			if( !empty( $_POST['template_id'] ) ) {
+				$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
+			} else {
+				$form = gravityview_get_form_id( $post->ID );
+			}
 
 			if( 'field' === $type ) {
-				$available_items = $this->get_available_fields( $form_id, $zone );
+				$available_items = $this->get_available_fields( $form, $zone );
 			} else {
 				// get the list of registered widgets
 				$available_items = apply_filters( 'gravityview_register_directory_widgets', array() );
@@ -758,6 +765,7 @@ class GravityView_Admin_Views {
 				'label_ok' => __( 'Ok', 'gravity-view' ),
 				'label_publisherror' => __( 'Error while creating the View for you. Check the settings or contact GravityView support.', 'gravity-view' ),
 				'loading_text' => esc_html__( 'Loading&hellip;', 'gravity-view' ),
+				'loading_error' => esc_html__( 'There was an error loading dynamic content.', 'gravity-view' ),
 				'field_loaderror' => __( 'Error while adding the field. Please try again or contact GravityView support.', 'gravity-view' ),
 				'remove_all_fields' => __( 'Would you like to remove all fields in this zone? (You are seeing this message because you were holding down the ALT key)', 'gravity-view' ),
 			));
