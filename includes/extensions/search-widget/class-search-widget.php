@@ -111,6 +111,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		 */
 		$input_types = array(
 			'text' => array( 'input_text' ),
+			'address' => array( 'input_text' ),
 			'date' => array( 'date' ),
 			'boolean' => array( 'single_checkbox' ),
 			'select' => array( 'select', 'radio', 'link' ),
@@ -215,7 +216,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 */
 	static function get_search_input_types( $id = '', $field_type = null ) {
 
-		if( false !== strpos( (string)$id, '.' ) ) {
+		// @todo - This needs to be improved - many fields have . including products and addresses
+		if( false !== strpos( (string)$id, '.' ) && in_array( $field_type, array( 'select', 'radio', 'checkbox' ) ) ) {
 			// on/off checkbox
 			$types = 'boolean';
 		} elseif( in_array( $field_type, array( 'checkbox', 'post_category', 'multiselect' ) ) ) {
