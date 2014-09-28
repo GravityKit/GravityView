@@ -55,6 +55,7 @@ abstract class GravityView_FieldType {
             'merge_tags' => true,
             'class' => '',
             'tooltip' => NULL,
+            'choices' => NULL, // deprecated; here for backward compatibility
         );
     }
 
