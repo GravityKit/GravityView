@@ -178,7 +178,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// Get fields with sub-inputs and no parent
 		$fields = gravityview_get_form_fields( $form_id, true, true );
 
-
 		// start building output
 
 		$output = '<select class="gv-search-fields">';
@@ -217,7 +216,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	static function get_search_input_types( $id = '', $field_type = null ) {
 
 		// @todo - This needs to be improved - many fields have . including products and addresses
-		if( false !== strpos( (string)$id, '.' ) && in_array( $field_type, array( 'select', 'radio', 'checkbox' ) ) ) {
+		if( false !== strpos( (string)$id, '.' ) && in_array( $field_type, array( 'select', 'radio', 'checkbox' ) ) || in_array( $id, array( 'is_fulfilled' ) ) ) {
 			// on/off checkbox
 			$types = 'boolean';
 		} elseif( in_array( $field_type, array( 'checkbox', 'post_category', 'multiselect' ) ) ) {
@@ -228,7 +227,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			//single select
 			$types = 'select';
 
-		} elseif( in_array( $field_type, array( 'date' ) ) ) {
+		} elseif( in_array( $field_type, array( 'date' ) ) || in_array( $id, array( 'payment_date' ) ) ) {
 			// date
 			$types = 'date';
 		} else {
