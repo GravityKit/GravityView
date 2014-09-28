@@ -21,18 +21,24 @@
 
 		init: function() {
 			var gvsw = gvSearchWidget;
-			// hook on all the open settings buttons
-			$('body').on( 'click', 'h5.field-id-search_bar a[href="#settings"]', gvsw.openDialog );
 
-			// hook to add/remove rows
-			$('body').on( 'click', ".gv-dialog-options a[href='#addSearchField']", gvsw.addField );
-			$('body').on( 'click', ".gv-dialog-options a[href='#removeSearchField']", gvsw.removeField );
+			$('body')
+				// hook on all the open settings buttons
+				.on( 'dialogopen', '[data-fieldid="search_bar"] .gv-dialog-options', gvsw.openDialog )
 
-			// hook to update row input types
-			$('body').on( 'change', ".gv-dialog-options select.gv-search-fields", gvsw.updateRow );
+				// hook to add/remove rows
+				.on( 'click', ".gv-dialog-options a[href='#addSearchField']", gvsw.addField )
 
-			// hook on dialog close to update widget config
-			$('body').on( 'dialogbeforeclose', '.gv-dialog-options', gvsw.updateOnClose );
+				.on( 'click', ".gv-dialog-options a[href='#removeSearchField']", gvsw.removeField )
+
+				// hook to update row input types
+				.on( 'change', ".gv-dialog-options select.gv-search-fields", gvsw.updateRow )
+
+				// add alt class to table when sorting
+				.on('sortcreate sortupdate sort', '.gv-dialog-options table', gvsw.zebraStripe )
+
+				// hook on dialog close to update widget config
+				.on( 'dialogbeforeclose', '[data-fieldid="search_bar"] .gv-dialog-options', gvsw.updateOnClose );
 
 			// hook on assigned form/template change to clear cache
 			$('#gravityview_form_id, #gravityview_directory_template').change( gvsw.clearCache );
@@ -40,15 +46,15 @@
 		},
 
 		openDialog: function(e) {
-			var gvsw = gvSearchWidget;
 			e.preventDefault();
-			gvsw.renderUI( $(this).parents('.gv-fields') );
+
+			gvSearchWidget.renderUI( $(this).parents('.gv-fields') );
 		},
 
 		addField: function(e) {
 			e.preventDefault();
-			var gvsw = gvSearchWidget,
-				table = $(this).parents( 'table' ),
+
+			var table = $(this).parents( 'table' ),
 				row = $(this).parents( 'tr' );
 
 			if( row.hasClass('no-search-fields') ) {
@@ -57,25 +63,34 @@
 			}
 			// if no fields message exists, remove it
 			table.find('tr.no-search-fields').remove();
-			gvsw.addRow( table, row, null );
+
+			gvSearchWidget.addRow( table, row, null );
+
+			return false;
 		},
 
 		removeField: function(e) {
 			e.preventDefault();
-			var gvsw = gvSearchWidget,
-				table = $(this).parents( 'table' );
+			var table = $(this).parents( 'table' );
 
 			//remove line
-			$(this).parents( 'tr' ).fadeTo( 600, 0.4, function() {
+			$(this).parents( 'tr' ).fadeTo( 'normal', 0.4, function() {
 
 				$(this).remove();
 
 				//check if is there any
 				if( $('tr.gv-search-field-row', table ).length < 1 && $('tr.no-search-fields', table ).length < 1 ) {
-					gvsw.addEmptyMsg( table );
+
+					gvSearchWidget.addEmptyMsg( table );
+
+				} else {
+
+					gvSearchWidget.zebraStripe( table );
+
 				}
 			});
 
+			return false;
 
 		},
 
@@ -86,7 +101,7 @@
 				dialog = $( '.gv-dialog-options', parent );
 
 			if( gvsw.selectFields === null ) {
-				dialog.append( '<p id="gv-loading">' + gvGlobals.loading_text + '</p>' );
+				dialog.append( '<p id="gv-loading"><span class="spinner"></span>' + gvGlobals.loading_text + '</p>' );
 				gvsw.getSelectFields( parent );
 				return;
 			}
@@ -99,7 +114,7 @@
 			//add table and header
 			table = gvsw.addTable();
 
-			if( fields === '' || fields === '[]' ) {
+			if( fields.length === 0 ) {
 				gvsw.addRow( table, null, null );
 			} else {
 				gvsw.populateRows( table, fields );
@@ -107,31 +122,52 @@
 
 			dialog.append( table );
 
-			dialog.find('table tbody').sortable();
+			//
+			dialog.find('table tbody').sortable({
+				start: function( event, ui ) {
+					$( ui.item ).removeClass( 'alt' );
+				}
+			});
 
 			$('#gv-loading').remove();
 		},
 
+		/**
+		 * Add alt classes on table sort
+		 * @param  {jQuery event|DOM object} e_or_object
+		 * @return {void}
+		 */
+		zebraStripe: function( e_or_object ) {
+
+			var target = e_or_object.target || e_or_object;
+
+			// Zebra stripe the rows
+			$( target )
+				.find('tr.gv-search-field-row')
+					.removeClass('alt')
+					.filter(':even').addClass('alt');
+
+		},
+
 		populateRows: function( table, fields ) {
-			var gvsw = gvSearchWidget,
-				rows = $.parseJSON( fields ),
+			var rows = $.parseJSON( fields ),
 				pos = null;
 
 			$.each( rows, function( i, values ) {
-				gvsw.addRow( table, pos, values );
+				gvSearchWidget.addRow( table, pos, values );
 				pos = table.find('tbody tr:last');
 			});
 
 		},
 
 		addTable: function() {
-			return $('<table cellpading="0" cellspacing="0" border="0">' +
+			return $('<table class="form-table widefat">' +
 						'<thead>'+
 							'<tr>' +
-								'<th>&nbsp;</th>' +
-								'<th>' + gvSearchVar.label_searchfield +'</th>' +
-								'<th>' + gvSearchVar.label_inputtype +'</th>' +
-								'<th>&nbsp;</th>' +
+								'<th class="cell-sort">&nbsp;</th>' +
+								'<th class="cell-search-fields">' + gvSearchVar.label_searchfield +'</th>' +
+								'<th class="cell-input-types">' + gvSearchVar.label_inputtype +'</th>' +
+								'<th class="cell-add-remove">&nbsp;</th>' +
 							'</tr>' +
 						'</thead>'+
 						'<tbody></tbody>' +
@@ -139,26 +175,22 @@
 		},
 
 		addEmptyMsg: function( table ) {
-			$( table ).append('<tr class="no-search-fields"><td colspan="4">&nbsp;'+ gvSearchVar.label_nofields +'&nbsp;&nbsp;<a href="#addSearchField">'+ gvSearchVar.label_addfield +'</a></td></tr>');
+			$( table ).append('<tr class="no-search-fields"><td colspan="4">'+ gvSearchVar.label_nofields +'&nbsp; <a href="#addSearchField">'+ gvSearchVar.label_addfield +'</a></td></tr>');
 		},
 
 
 		addRow: function( table, row, curr ) {
-			var gvsw = gvSearchWidget;
-
 			// get fields or cache
-			// if( gvsw.selectFields === null ) {
-			// 	gvsw.getSelectFields( table, row, curr );
+			// if( gvSearchWidget.selectFields === null ) {
+			// 	gvSearchWidget.getSelectFields( table, row, curr );
 			// 	return;
 			// }
 
-			var rowString = '<tr class="gv-search-field-row new-row hide-if-js">'+
-								'<td><span class="icon gv-icon-caret-up-down"></span></td>'+
-								'<td>'+ gvsw.selectFields +'</td>'+
-								'<td class="row-inputs"><select class="gv-search-inputs"></select></td>'+
-								'<td class="row-options"><a href="#addSearchField" class="dashicons dashicons-plus-alt"></a><a href="#removeSearchField" class="dashicons dashicons-dismiss"></a></td>'+
-							'</tr>';
-
+			var rowString = $('<tr class="gv-search-field-row new-row hide-if-js" />')
+				.append('<td class="cell-sort"><span class="icon gv-icon-caret-up-down" /></td>')
+				.append('<td class="cell-search-fields">'+ gvSearchWidget.selectFields +'</td>')
+				.append('<td class="cell-input-types"><select class="gv-search-inputs" /></td>')
+				.append('<td class="cell-add-remove"><a href="#addSearchField" class="dashicons dashicons-plus-alt" /><a href="#removeSearchField" class="dashicons dashicons-dismiss" /></td>');
 
 			// add row
 			if( row !== null && row.length ) {
@@ -173,12 +205,14 @@
 				if( curr !== null ) {
 					$(this).find('select.gv-search-fields').val( curr.field );
 				}
-				gvsw.updateSelectInput( $(this) );
+				gvSearchWidget.updateSelectInput( $(this) );
 				if( curr !== null ) {
 					$(this).find('select.gv-search-inputs').val( curr.input );
 				}
-				$(this).fadeTo( 600, 1, function() { $(this).removeClass('hide-if-js'); });
+				$(this).fadeTo( 'normal', 1, function() { $(this).removeClass('hide-if-js'); });
 			});
+
+			gvSearchWidget.zebraStripe( table );
 
 		},
 
@@ -189,11 +223,10 @@
 		},
 
 		updateSelectInput: function( tr ) {
-			var gvsw = gvSearchWidget,
-				type = tr.find('select.gv-search-fields option:selected').attr('data-inputtypes'),
+			var type = tr.find('select.gv-search-fields option:selected').attr('data-inputtypes'),
 				select = tr.find('select.gv-search-inputs');
 
-			var options = gvsw.getSelectInput( type );
+			var options = gvSearchWidget.getSelectInput( type );
 
 			select.html( options );
 
@@ -207,7 +240,6 @@
 
 		// Fetch Form Searchable fields (AJAX)
 		getSelectFields: function( parent ) {
-			var gvsw = gvSearchWidget;
 
 			$.ajax({
 				url: ajaxurl,
@@ -222,8 +254,8 @@
 				},
 				success: function( response ) {
 					if( response !== '0' ) {
-						gvsw.selectFields = response;
-						gvsw.renderUI( parent );
+						gvSearchWidget.selectFields = response;
+						gvSearchWidget.renderUI( parent );
 					}
 
 				}
@@ -232,13 +264,12 @@
 
 		getSelectInput: function( type ) {
 
-			var gvsw = gvSearchWidget,
-				labels = $.parseJSON( gvSearchVar.input_labels ),
+			var labels = $.parseJSON( gvSearchVar.input_labels ),
 				types = $.parseJSON( gvSearchVar.input_types ),
 				options = '';
 
 			// get list of inputs
-			var inputs = gvsw.getValue( types, type );
+			var inputs = gvSearchWidget.getValue( types, type );
 
 			if( inputs === null ) {
 				return '';
@@ -248,7 +279,7 @@
 			$.each( inputs, function( k, input ) {
 
 				//get label
-				var label = gvsw.getValue( labels, input );
+				var label = gvSearchWidget.getValue( labels, input );
 
 				options += '<option value="' + input + '">' + label + '</option>';
 			});
