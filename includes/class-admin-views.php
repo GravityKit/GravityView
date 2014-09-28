@@ -368,7 +368,7 @@ class GravityView_Admin_Views {
 	 *
 	 * @filter  gravityview_blacklist_field_types Modify the types of fields that shouldn't be shown in a View.
 	 * @access public
-	 * @param string $form_id (default: '')
+	 * @param int $form_id Gravity Forms Form ID (default: '')
 	 * @param string $context (default: 'single')
 	 * @return void
 	 */
@@ -376,7 +376,7 @@ class GravityView_Admin_Views {
 
 		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array() );
 
-		$fields = $this->get_available_fields( $form );
+		$fields = $this->get_available_fields( $form, $context );
 
 		$output = '';
 
@@ -468,7 +468,8 @@ class GravityView_Admin_Views {
 			),
         );
 
-        if('single' !== $zone) {
+		if('single' !== $zone) {
+
         	$entry_default_fields['entry_link'] = array(
         		'label' => __('Link to Entry', 'gravity-view'),
         		'type' => 'entry_link'
@@ -502,7 +503,7 @@ class GravityView_Admin_Views {
 		}
 
 		// get default fields
-		$default_fields = $this->get_entry_default_fields($form, $zone);
+		$default_fields = $this->get_entry_default_fields( $form, $zone );
 
 		//merge without loosing the keys
 		$fields = $fields + $meta_fields + $default_fields;

@@ -271,7 +271,7 @@ class GravityView_Admin_Metaboxes {
 
 
 					<?php // list of available fields to be shown in the popup ?>
-					<div id="directory-available-fields" class="hide-if-js gv-tooltip gv-dialog-options">
+					<div id="directory-available-fields" class="hide-if-js gv-tooltip">
 						<span class="close"><i class="dashicons dashicons-dismiss"></i></span>
 						<?php do_action('gravityview_render_available_fields', $curr_form, 'directory' ); ?>
 					</div>
@@ -301,6 +301,11 @@ class GravityView_Admin_Metaboxes {
 						<?php if(!empty( $curr_template ) ) {
 							do_action('gravityview_render_directory_active_areas', $curr_template, 'single', $post->ID, true );
 						} ?>
+					</div>
+
+					<div id="single-available-fields" class="hide-if-js gv-tooltip">
+						<span class="close"><i class="dashicons dashicons-dismiss"></i></span>
+						<?php do_action('gravityview_render_available_fields', $curr_form, 'single' ); ?>
 					</div>
 
 				</div>
@@ -421,7 +426,7 @@ class GravityView_Admin_Metaboxes {
 		// Only show this on GravityView post types.
 		if( false === gravityview_is_admin_page() ) { return; }
 
-		printf('<div class="misc-pub-section gv-shortcode misc-pub-section-last"><i class="dashicons dashicons-editor-code"></i> <span>%s</span><div><input type="text" readonly="readonly" value="[gravityview id=\'%d\']" class="code widefat" /><span class="howto">%s</span></div></div>', __( 'Embed Shortcode', 'gravity-view' ), $post->ID, esc_html__( 'Add this shortcode to a post or page to embed this view.', 'gravity-view' ) );
+		printf('<div class="misc-pub-section gv-shortcode misc-pub-section-last"><i class="dashicons dashicons-editor-code"></i> <span>%s</span><div><input type="text" readonly="readonly" value="[gravityview id=\'%d\']" class="code widefat" /><span class="howto">%s</span></div></div>', esc_html__( 'Embed Shortcode', 'gravity-view' ), $post->ID, esc_html__( 'Add this shortcode to a post or page to embed this view.', 'gravity-view' ) );
 	}
 
 	/**

@@ -694,9 +694,14 @@
             $(".gv-add-field").tooltip({
                 content: function () {
 
+                	// Is the field picker in single or directory mode?
+                	var context = ( $(this).parents('#single-view').length ) ? 'single' : 'directory';
+
                     switch ($(this).attr('data-objecttype')) {
                         case 'field':
-                            return $("#directory-available-fields").html();
+                        	// If in Single context, show fields available in single
+                        	// If it Directory, same for directory
+                            return $("#"+ context + "-available-fields").html();
                         case 'widget':
                             return $("#directory-available-widgets").html();
                     }
@@ -741,11 +746,11 @@
 
         /**
          * Fetch the Available Fields for a given Form ID or Preset Template ID
-         * @param  string    context Current context (seen as tabs): for example, "directory" or "single"
+         * @param  null|string    preset
          * @param  string    templateid      The "slug" of the View template
          * @return void
          */
-        getAvailableFields: function (context, templateid) {
+        getAvailableFields: function (preset, templateid) {
 
             var vcfg = viewConfiguration;
 
@@ -756,21 +761,29 @@
             var data = {
                 action: 'gv_available_fields',
                 nonce: gvGlobals.nonce,
+                context: 'directory'
             };
 
-            if (context !== undefined && 'preset' === context) {
+            if (preset !== undefined && 'preset' === preset) {
                 data.template_id = templateid;
             } else {
                 data.form_id = vcfg.gvSelectForm.val();
             }
 
+            // Get the fields for the directory context
+            $.post(ajaxurl, data, function (response) {
+                if (response) {
+                    $("#directory-available-fields").append(response);
+                }
+            });
+
+
+            // Now get the fields for the single context
+            data.context = 'single';
 
             $.post(ajaxurl, data, function (response) {
                 if (response) {
-
-                    $("#directory-available-fields").append(response);
                     $("#single-available-fields").append(response);
-
                 }
             });
 

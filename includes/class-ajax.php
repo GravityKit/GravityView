@@ -46,13 +46,15 @@ class GravityView_Ajax {
 		//check nonce
 		$this->check_ajax_nonce();
 
+		$context = isset($_POST['context']) ? esc_attr( $_POST['context'] ) : 'directory';
+
 		// If Form was changed, JS sends form ID, if start fresh, JS sends template_id
 		if( !empty( $_POST['form_id'] ) ) {
-			do_action( 'gravityview_render_available_fields', (int) $_POST['form_id'] );
+			do_action( 'gravityview_render_available_fields', (int) $_POST['form_id'], $context );
 			exit();
 		} elseif( !empty( $_POST['template_id'] ) ) {
 			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
-			do_action( 'gravityview_render_available_fields', $form );
+			do_action( 'gravityview_render_available_fields', $form, $context );
 			exit();
 		}
 
