@@ -54,7 +54,7 @@
             	.on('click', 'a[rel*=external]', vcfg.openExternalLinks)
 
                 // close all tooltips if user clicks outside the tooltip
-                .on('mouseup keyup', vcfg.closeTooltips)
+                .on('click mouseup keyup', vcfg.closeTooltips)
 
                 // switch View (for existing forms)
                 .on('click', 'a[href="#gv_switch_view"]', vcfg.switchView)
@@ -124,12 +124,7 @@
                     // For tooltips, clicking on anything outside of the tooltip
                     // should close it. Not for dialogs.
                     else if ( activeTooltips.length > 0 ) {
-                        close = true;
-                    }
-
-                    // They clicked the overlay
-                    else if ($(e.target).is('.gv-overlay')) {
-                        close = true;
+                    	close = true;
                     }
 
                     // The click was on the close link
@@ -138,6 +133,17 @@
                     }
 
                     break; // End mouseup switch
+
+            	// Run on click instead of mouseup so that when selecting a form using the
+            	// select, it doesn't close the dialog right away
+        		case 'click':
+
+        			// They clicked the overlay
+        			if ( $(e.target).is('.gv-overlay') ) {
+        				close = true;
+        			}
+
+        			break;
 
             }
 
