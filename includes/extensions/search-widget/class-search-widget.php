@@ -24,6 +24,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 	function __construct() {
 
+		$this->widget_description = __('Search form for searching entries.', 'gravity-view' );
+
 		self::$instance = &$this;
 
 		self::$file = plugin_dir_path( __FILE__ );
@@ -45,7 +47,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				),
 			),
 		);
-		parent::__construct( __( 'Show Search Bar', 'gravity-view' ) , 'search_bar', $default_values, $settings );
+		parent::__construct( __( 'Search Bar', 'gravity-view' ) , 'search_bar', $default_values, $settings );
 
 		// frontend - filter entries
 		add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ) );
