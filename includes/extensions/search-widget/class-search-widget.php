@@ -39,8 +39,10 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				'class' => 'gv-search-fields-value'
 			),
 			'search_layout' => array(
-				'type' => 'select',
+				'type' => 'radio',
+				'full_width' => true,
 				'label' => __( 'Search Layout', 'gravity-view' ),
+				'value' => 'horizontal',
 				'options' => array(
 					'horizontal' => __( 'Horizontal', 'gravity-view' ),
 					'vertical' => __( 'Vertical', 'gravity-view' )
