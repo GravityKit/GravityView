@@ -17,6 +17,8 @@
 
 	var gvSearchWidget = {
 
+		dialog: null,
+
 		selectFields : null,
 
 		init: function() {
@@ -47,7 +49,7 @@
 
 		openDialog: function(e) {
 			e.preventDefault();
-
+			gvSearchWidget.dialog = $(this);
 			gvSearchWidget.renderUI( $(this).parents('.gv-fields') );
 		},
 
@@ -57,12 +59,11 @@
 			var table = $(this).parents( 'table' ),
 				row = $(this).parents( 'tr' );
 
+			// if no fields message exists, remove it
 			if( row.hasClass('no-search-fields') ) {
 				row.remove();
 				row = null;
 			}
-			// if no fields message exists, remove it
-			table.find('tr.no-search-fields').remove();
 
 			gvSearchWidget.addRow( table, row, null );
 
@@ -97,17 +98,16 @@
 		renderUI: function( parent ) {
 
 			var gvsw = gvSearchWidget,
-				fields = $('.gv-search-fields-value', parent ).val(),
-				dialog = $( '.gv-dialog-options', parent );
+				fields = $('.gv-search-fields-value', parent ).val();
 
 			if( gvsw.selectFields === null ) {
-				dialog.append( '<p id="gv-loading"><span class="spinner"></span>' + gvGlobals.loading_text + '</p>' );
+				gvSearchWidget.dialog.append( '<p id="gv-loading"><span class="spinner"></span>' + gvGlobals.loading_text + '</p>' );
 				gvsw.getSelectFields( parent );
 				return;
 			}
 
 			// Is this dialog already rendered before & not loading fields again
-			if( $('table', dialog ).length && $('#gv-loading').length < 1 ) {
+			if( $('table', gvSearchWidget.dialog ).length && $('#gv-loading').length < 1 ) {
 				return;
 			}
 
@@ -120,14 +120,16 @@
 				gvsw.populateRows( table, fields );
 			}
 
-			dialog.append( table );
+			gvSearchWidget.dialog.append( table );
 
 			//
-			dialog.find('table tbody').sortable({
+			gvSearchWidget.dialog.find('table tbody').sortable({
 				start: function( event, ui ) {
 					$( ui.item ).removeClass( 'alt' );
 				}
 			});
+
+			gvSearchWidget.updateAvailableFields();
 
 			$('#gv-loading').remove();
 		},
@@ -188,7 +190,7 @@
 
 			var rowString = $('<tr class="gv-search-field-row new-row hide-if-js" />')
 				.append('<td class="cell-sort"><span class="icon gv-icon-caret-up-down" /></td>')
-				.append('<td class="cell-search-fields">'+ gvSearchWidget.selectFields +'</td>')
+				.append('<td class="cell-search-fields">'+ gvSearchWidget.getSelectFields() +'</td>')
 				.append('<td class="cell-input-types"><select class="gv-search-inputs" /></td>')
 				.append('<td class="cell-add-remove"><a href="#addSearchField" class="dashicons dashicons-plus-alt" /><a href="#removeSearchField" class="dashicons dashicons-dismiss" /></td>');
 
@@ -202,14 +204,24 @@
 
 			table.find('tr.new-row').each( function() {
 				$(this).removeClass('new-row');
+
+				// Set previous field
 				if( curr !== null ) {
 					$(this).find('select.gv-search-fields').val( curr.field );
 				}
+
 				gvSearchWidget.updateSelectInput( $(this) );
+
+				// Set previous value
 				if( curr !== null ) {
 					$(this).find('select.gv-search-inputs').val( curr.input );
 				}
-				$(this).fadeTo( 'normal', 1, function() { $(this).removeClass('hide-if-js'); });
+
+				// Fade in
+				$(this).fadeIn( function() {
+					$(this).removeClass('hide-if-js');
+				});
+
 			});
 
 			gvSearchWidget.zebraStripe( table );
@@ -219,27 +231,72 @@
 		updateRow: function() {
 			var row = $(this).parents('tr');
 			gvSearchWidget.updateSelectInput( row );
+			gvSearchWidget.updateAvailableFields();
+		},
+
+		/**
+		 * Modify the gvSearchWidget.selectFields input to disable existing search fields, then replace the fields with the generated input.
+		 * @return {void}
+		 */
+		updateAvailableFields: function() {
+
+			$( 'option', gvSearchWidget.selectFields).attr('disabled', null );
+
+			// Update the selectFields var to disable all existing values
+			$('tr.gv-search-field-row .gv-search-fields', gvSearchWidget.dialog).each( function() {
+
+				gvSearchWidget.selectFields
+					.find('option[value="'+ $(this).val() +'"]')
+					.not( $('option', $(this) ) )
+					.attr('disabled', true);
+
+			});
+
+			// Then once we have the select input finalized, run through again
+			// and replace the select inputs with the new one
+			$('tr.gv-search-field-row .gv-search-fields', gvSearchWidget.dialog ).each( function() {
+
+				var select = gvSearchWidget.selectFields
+					.clone()
+				// Set the value
+					.val( $(this).val() )
+				// Enable the option with the current value
+					.find('option[value="'+$(this).val()+'"]')
+						.attr('disabled', null )
+				// Go back to cloning the main select
+					.end();
+
+				// Replace the select with the generated one
+				$(this).replaceWith( select );
+			});
 
 		},
 
 		updateSelectInput: function( tr ) {
-			var type = tr.find('select.gv-search-fields option:selected').attr('data-inputtypes'),
-				select = tr.find('select.gv-search-inputs');
+			var type = tr.find('select.gv-search-fields option:selected').attr('data-inputtypes');
+			var select = tr.find('select.gv-search-inputs');
 
 			var options = gvSearchWidget.getSelectInput( type );
 
 			select.html( options );
 
-			if( select.find('option').length < 2 ) {
-				select.prop( 'disabled', true );
-			} else {
-				select.prop( 'disabled', false );
-			}
+			// If there's only one option, disable ability to change it.
+			select.prop( 'disabled', function() {
+				return ( $('option', $(this)).length === 1 );
+			} );
 
 		},
 
 		// Fetch Form Searchable fields (AJAX)
 		getSelectFields: function( parent ) {
+
+			if( gvSearchWidget.selectFields !== null ) {
+
+				gvSearchWidget.updateAvailableFields();
+
+				// .html() returns the <option>s, we want the <select>
+				return gvSearchWidget.selectFields.prop('outerHTML');
+			}
 
 			$.ajax({
 				url: ajaxurl,
@@ -250,11 +307,11 @@
 					action: 'gv_searchable_fields',
 					nonce: gvSearchVar.nonce,
 					formid: $('#gravityview_form_id').val(),
-					template_id: $('#gravityview_directory_template').val(),
+					template_id: $('#gravityview_directory_template').val()
 				},
 				success: function( response ) {
 					if( response !== '0' ) {
-						gvSearchWidget.selectFields = response;
+						gvSearchWidget.selectFields = $(response);
 						gvSearchWidget.renderUI( parent );
 					}
 
@@ -301,11 +358,10 @@
 
 
 		updateOnClose: function( event, ui ) {
-			var dialog = $(this),
-				configs = [];
+			var configs = [];
 
 			//loop throught table rows
-			dialog.find('table tr.gv-search-field-row').each( function() {
+			gvSearchWidget.dialog.find('table tr.gv-search-field-row').each( function() {
 				var row = {};
 				row.field = $(this).find('select.gv-search-fields').val();
 				row.input = $(this).find('select.gv-search-inputs').val();
@@ -313,7 +369,7 @@
 			});
 
 			// save
-			$( '.gv-search-fields-value', dialog ).val( JSON.stringify( configs ) );
+			$( '.gv-search-fields-value', gvSearchWidget.dialog ).val( JSON.stringify( configs ) );
 
 		},
 
