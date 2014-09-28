@@ -19,6 +19,13 @@ abstract class GravityView_FieldType {
         $this->name = $name;
 
         $defaults = self::get_field_defaults();
+
+        // Backward compatibility
+        if( !empty( $field['choices'] ) ) {
+        	$field['options'] = $field['choices'];
+        	unset( $field['choices'] );
+        }
+
         $this->field =  wp_parse_args( $field, $defaults );
 
         $this->value = is_null( $curr_value ) ? $this->field['value'] : $curr_value;
@@ -54,8 +61,7 @@ abstract class GravityView_FieldType {
             'options' => NULL,
             'merge_tags' => true,
             'class' => '',
-            'tooltip' => NULL,
-            'choices' => NULL, // deprecated; here for backward compatibility
+            'tooltip' => NULL
         );
     }
 
