@@ -302,7 +302,7 @@ class GravityView_Ajax {
             "routin"=> array("unserialize_as_array" => true),
             "confirmation" => array("unserialize_as_array" => true),
             "notification" => array("unserialize_as_array" => true)
-            );
+        );
 
 		$xml = new RGXML($options);
         $forms = $xml->unserialize($xmlstr);
@@ -314,6 +314,11 @@ class GravityView_Ajax {
 
         if( !empty( $forms[0] ) && is_array( $forms[0] ) ) {
         	$form = $forms[0];
+        }
+
+        if( empty( $form ) ) {
+        	do_action( 'gravityview_log_error', '[pre_get_available_fields] $form not set.', $forms );
+        	return false;
         }
 
         do_action( 'gravityview_log_debug', '[pre_get_available_fields] Importing Form Fields for preset ['. $template_id .']. (Form)', $form );
