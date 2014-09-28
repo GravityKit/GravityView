@@ -13,8 +13,6 @@
 
 class GravityView_Render_Settings {
 
-     private static $setting_row_alt = false;
-
     /**
      * Get the default options for a standard field.
      *
@@ -163,15 +161,29 @@ class GravityView_Render_Settings {
         }
 
         $output .= '<div class="gv-dialog-options" title="'. esc_attr( sprintf( __( 'Options: %s', 'gravity-view' ), $field_label ) ) .'">';
-        $output .= '<ul>';
 
-        foreach( $options as $key => $details ) {
+        foreach( $options as $key => $option ) {
+
             $value = isset( $current[ $key ] ) ? $current[ $key ] : NULL;
-            $output .= '<li>'. self::render_field_option( $name_prefix . '['. $key .']' , $details, $value) .'</li>';
+
+            $field_output = self::render_field_option( $name_prefix . '['. $key .']' , $option, $value);
+
+            // The setting is empty
+            if( empty( $field_output ) ) {
+            	continue;
+            }
+
+            switch( $option['type'] ) {
+            	// Hide hidden fields
+            	case 'hidden':
+            		$output .= '<div class="gv-setting-container screen-reader-text">'. $field_output . '</div>';
+            		break;
+            	default:
+            		$output .= '<div class="gv-setting-container">'. $field_output .'</div>';
+            }
         }
 
         // close options window
-        $output .= '</ul>';
         $output .= '</div>';
 
         return $output;
@@ -190,8 +202,9 @@ class GravityView_Render_Settings {
      */
     public static function render_field_option( $name = '', $option, $curr_value = NULL ) {
 
-        // prepare to render option field type
+    	$output = '';
 
+        // prepare to render option field type
         if( isset( $option['type'] ) ) {
 
             $type_class = self::load_type_class( $option );
@@ -266,10 +279,7 @@ class GravityView_Render_Settings {
             $output = ob_get_clean();
         }
 
-        $tr_wrap = self::$setting_row_alt ? '<tr valign="top">' : '<tr valign="top" class="alt">';
-        self::$setting_row_alt = self::$setting_row_alt ? false : true;
-
-        echo $tr_wrap . $output . '</tr>';
+        echo '<tr valign="top">' . $output . '</tr>';
 
     }
 
@@ -316,15 +326,8 @@ class GravityView_Render_Settings {
 
 
 
-
-
-
-
-
-
-
-
-    /** @deprecated
+    /**
+     * @deprecated 1.1.7
      * Render the HTML for a checkbox input to be used on the field & widgets options
      * @param  string $name , name attribute
      * @param  string $current current value
@@ -339,7 +342,8 @@ class GravityView_Render_Settings {
     }
 
 
-    /**@deprecated
+    /**
+     * @deprecated 1.1.7
      * Render the HTML for an input text to be used on the field & widgets options
      * @param  string $name    Unique name of the field. Exampe: `fields[directory_list-title][5374ff6ab128b][custom_label]`
      * @param  string $current [current value]
@@ -368,7 +372,8 @@ class GravityView_Render_Settings {
         return '<input name="'. esc_attr( $name ) .'" id="'. esc_attr( $id ) .'" type="'.esc_attr($type).'" value="'. esc_attr( $current ) .'" class="'.esc_attr( $class ).'">';
     }
 
-    /**@deprecated
+    /**
+     * @deprecated 1.1.7
      * Render the HTML for an textarea input to be used on the field & widgets options
      * @param  string $name    Unique name of the field. Exampe: `fields[directory_list-title][5374ff6ab128b][custom_label]`
      * @param  string $current [current value]
@@ -397,8 +402,10 @@ class GravityView_Render_Settings {
         return '<textarea name="'. esc_attr( $name ) .'" id="'. esc_attr( $id ) .'" class="'.esc_attr( $class ).'">'. esc_textarea( $current ) .'</textarea>';
     }
 
-    /**@deprecated
+    /**
+     *
      * Render the HTML for a select box to be used on the field & widgets options
+     * @deprecated 1.1.7
      * @param  string $name    [name attribute]
      * @param  array $choices [select options]
      * @param  string $current [current value]
