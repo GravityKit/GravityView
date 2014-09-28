@@ -84,11 +84,11 @@
 
 					gvSearchWidget.addEmptyMsg( table );
 
-				} else {
-
-					gvSearchWidget.zebraStripe( table );
-
 				}
+
+				gvSearchWidget.updateAvailableFields();
+
+				gvSearchWidget.styleRow( table );
 			});
 
 			return false;
@@ -139,12 +139,10 @@
 		 * @param  {jQuery event|DOM object} e_or_object
 		 * @return {void}
 		 */
-		zebraStripe: function( e_or_object ) {
-
-			var target = e_or_object.target || e_or_object;
+		zebraStripe: function() {
 
 			// Zebra stripe the rows
-			$( target )
+			$( gvSearchWidget.dialog )
 				.find('tr.gv-search-field-row')
 					.removeClass('alt')
 					.filter(':even').addClass('alt');
@@ -182,11 +180,6 @@
 
 
 		addRow: function( table, row, curr ) {
-			// get fields or cache
-			// if( gvSearchWidget.selectFields === null ) {
-			// 	gvSearchWidget.getSelectFields( table, row, curr );
-			// 	return;
-			// }
 
 			var rowString = $('<tr class="gv-search-field-row new-row hide-if-js" />')
 				.append('<td class="cell-sort"><span class="icon gv-icon-caret-up-down" /></td>')
@@ -201,21 +194,17 @@
 				$( 'tbody', table ).append( rowString );
 			}
 
-
 			table.find('tr.new-row').each( function() {
 				$(this).removeClass('new-row');
 
 				// Set previous field
 				if( curr !== null ) {
-					$(this).find('select.gv-search-fields').val( curr.field );
+					$(this)
+						.find('select.gv-search-fields').val( curr.field )
+						.find('select.gv-search-inputs').val( curr.input );
 				}
 
 				gvSearchWidget.updateSelectInput( $(this) );
-
-				// Set previous value
-				if( curr !== null ) {
-					$(this).find('select.gv-search-inputs').val( curr.input );
-				}
 
 				// Fade in
 				$(this).fadeIn( function() {
@@ -224,7 +213,29 @@
 
 			});
 
-			gvSearchWidget.zebraStripe( table );
+			gvSearchWidget.styleRow( table );
+		},
+
+		/**
+		 * Style the table rows - remove/add sorting icon, zebra stripe
+		 * @param  {object} table Table
+		 * @return {[type]}       [description]
+		 */
+		styleRow: function( table ) {
+
+			var sort_icon = $( '.cell-sort .icon', gvSearchWidget.dialog );
+
+			if( $( 'tbody tr', gvSearchWidget.dialog ).length === 1 ) {
+				sort_icon.fadeOut('fast', function() {
+					$(this).parents('td').addClass('no-sort');
+				});
+			} else {
+				sort_icon.fadeIn('fast', function() {
+					$(this).parents('td').removeClass('no-sort');
+				});
+			}
+
+			gvSearchWidget.zebraStripe();
 
 		},
 
@@ -240,35 +251,34 @@
 		 */
 		updateAvailableFields: function() {
 
+			// Clear out the disabled options first
 			$( 'option', gvSearchWidget.selectFields).attr('disabled', null );
 
-			// Update the selectFields var to disable all existing values
-			$('tr.gv-search-field-row .gv-search-fields', gvSearchWidget.dialog).each( function() {
 
-				gvSearchWidget.selectFields
-					.find('option[value="'+ $(this).val() +'"]')
-					.not( $('option', $(this) ) )
-					.attr('disabled', true);
+			$('tr.gv-search-field-row .gv-search-fields', gvSearchWidget.dialog)
 
-			});
+				// Update the selectFields var to disable all existing values
+				.each( function() {
+					gvSearchWidget.selectFields
+						.find('option[value="'+ $(this).val() +'"]')
+						.attr('disabled', true);
+				})
 
-			// Then once we have the select input finalized, run through again
-			// and replace the select inputs with the new one
-			$('tr.gv-search-field-row .gv-search-fields', gvSearchWidget.dialog ).each( function() {
+				// Then once we have the select input finalized, run through again
+				// and replace the select inputs with the new one
+				.each( function() {
 
-				var select = gvSearchWidget.selectFields
-					.clone()
-				// Set the value
-					.val( $(this).val() )
-				// Enable the option with the current value
-					.find('option[value="'+$(this).val()+'"]')
-						.attr('disabled', null )
-				// Go back to cloning the main select
-					.end();
+					var select = gvSearchWidget.selectFields.clone();
 
-				// Replace the select with the generated one
-				$(this).replaceWith( select );
-			});
+					// Set the value
+					select.val( $(this).val() );
+
+					// Enable the option with the current value
+					select.find('option:selected').attr('disabled', null );
+
+					// Replace the select with the generated one
+					$(this).replaceWith( select );
+				});
 
 		},
 
@@ -323,7 +333,7 @@
 
 			var labels = $.parseJSON( gvSearchVar.input_labels ),
 				types = $.parseJSON( gvSearchVar.input_types ),
-				options = '';
+				options = [];
 
 			// get list of inputs
 			var inputs = gvSearchWidget.getValue( types, type );
@@ -338,10 +348,10 @@
 				//get label
 				var label = gvSearchWidget.getValue( labels, input );
 
-				options += '<option value="' + input + '">' + label + '</option>';
+				options.push('<option value="' + input + '">' + label + '</option>');
 			});
 
-			return options;
+			return options.join();
 		},
 
 		// helper: get value from a js object given a certain key
