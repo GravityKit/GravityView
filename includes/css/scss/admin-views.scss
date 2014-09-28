@@ -231,6 +231,31 @@
 	}
 }
 
+
+// Don't display the arrow toggle for collapsing the metabox
+#gravityview_select_form .handlediv {
+	display: none;
+}
+
+/**
+ * Form Information Links
+ */
+.gv-form-links {
+
+	color: #ddd;
+	font-weight: normal;
+	padding: 0 10px;
+
+	.row-actions {
+		visibility: visible;
+		padding: 0;
+	}
+	.gv-form-title {
+		display: none;
+	}
+}
+
+
 #gv_switch_view_button {
 	display: inline-block;
 }

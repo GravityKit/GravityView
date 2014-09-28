@@ -27,9 +27,19 @@ class GravityView_Admin_Metaboxes {
 	}
 
 	function register_metabox() {
+		global $post;
+
+		//current value
+		$current_form = gravityview_get_form_id( $post->ID );
+
+		$links = GravityView_Admin_Views::get_connected_form_links( $current_form, false );
+
+		if( !empty( $links ) ) {
+			$links = '<span class="alignright gv-form-links">'. $links .'</span>';
+		}
 
 		// select data source for this view
-		add_meta_box( 'gravityview_select_form', __( 'Data Source', 'gravity-view' ), array( $this, 'render_select_form_metabox' ), 'gravityview', 'normal', 'high' );
+		add_meta_box( 'gravityview_select_form', __( 'Data Source', 'gravity-view' ).$links, array( $this, 'render_select_form_metabox' ), 'gravityview', 'normal', 'high' );
 
 		// select view type/template
 		add_meta_box( 'gravityview_select_template', __( 'Choose a View Type', 'gravity-view' ), array( $this, 'render_select_template_metabox' ), 'gravityview', 'normal', 'high' );
@@ -98,7 +108,6 @@ class GravityView_Admin_Metaboxes {
 			<?php } ?>
 
 			&nbsp;<a class="button button-primary" <?php if( empty( $current_form ) ) { echo 'style="display:none;"'; } ?> id="gv_switch_view_button" href="#gv_switch_view" title="<?php esc_attr_e( 'Switch View', 'gravity-view' ); ?>"><?php esc_html_e( 'Switch View Type', 'gravity-view' ); ?></a>
-
 		</p>
 
 		<?php // confirm dialog box ?>

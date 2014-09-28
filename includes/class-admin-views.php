@@ -47,7 +47,7 @@ class GravityView_Admin_Views {
 
 		add_filter( 'gform_toolbar_menu', array( 'GravityView_Admin_Views', 'gform_toolbar_menu' ), 10, 2 );
 
-		add_action( 'manage_gravityview_posts_custom_column', array( $this, 'add_connected_form_column_content'), 10, 2 );
+		add_action( 'manage_gravityview_posts_custom_column', array( __CLASS__, 'add_connected_form_column_content'), 10, 2 );
 
 	}
 
@@ -173,9 +173,9 @@ class GravityView_Admin_Views {
 		return $tooltips;
 	}
 
-	public function add_connected_form_column_content( $column_name, $post_id )	{
+	static public function add_connected_form_column_content( $column_name = NULL, $post_id )	{
 
-		if( $column_name !== 'gv_connected_form' )  { return; }
+		if( !empty( $column_name ) && $column_name !== 'gv_connected_form' )  { return; }
 
 		$form_id = gravityview_get_form_id( $post_id );
 
@@ -194,13 +194,36 @@ class GravityView_Admin_Views {
 			echo __( 'The connected form can not be found; it may no longer exist.', 'gravity-view' );
 		}
 
+		echo self::get_connected_form_links( $form );
+
+	}
+
+	/**
+	 * Get HTML links relating to a connected form, like Edit, Entries, Settings, Preview
+	 * @param  array|int $form_id Gravity Forms forms array, or the form ID
+	 * @param  boolean $include_form_link Whether to include the bold name of the form in the output
+	 * @return string          HTML links
+	 */
+	static public function get_connected_form_links( $form, $include_form_link = true ) {
+
+		// Either the form is empty or the form ID is 0, not yet set.
+		if( empty( $form ) ) {
+			return;
+		}
+
+		// The $form is passed as the form ID
+		if( !is_array( $form ) ) {
+			$form = gravityview_get_form( $form );
+		}
+
+		$form_id = $form['id'];
 		$form_link = '';
 		$links = array();
 
 		if( GFCommon::current_user_can_any('gravityforms_edit_forms') ) {
 			$form_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;id=%d', $form_id ) );
-			$form_link = sprintf( '<strong><a href="%s" class="row-title">%s</a></strong>', $form_url , $form['title'] );
-			$links[] = sprintf( '<a href="%s">%s</a>', $form_url , __('Edit Form', 'gravity-view') );
+			$form_link = sprintf( '<strong class="gv-form-title"><a href="%s" class="row-title">%s</a></strong>', $form_url , $form['title'] );
+			$links[] = sprintf( '<span><a href="%s">%s</a></span>', $form_url , __('Edit Form', 'gravity-view') );
 		}
 
 		if( GFCommon::current_user_can_any('gravityforms_view_entries') ) {
@@ -210,15 +233,23 @@ class GravityView_Admin_Views {
 
 		if( GFCommon::current_user_can_any('gravityforms_edit_settings') ) {
 			$settings_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;id=%d', $form_id ) );
-			$links[] = sprintf( '<a title="%s" href="%s">%s</a>', __('Edit settings for this form', 'gravity-view'), $settings_url, __('Settings', 'gravity-view') );
+			$links[] = sprintf( '<span><a title="%s" href="%s">%s</a></span>', __('Edit settings for this form', 'gravity-view'), $settings_url, __('Settings', 'gravity-view') );
 		}
 
 		if( GFCommon::current_user_can_any( array("gravityforms_edit_forms", "gravityforms_create_form", "gravityforms_preview_forms") ) ) {
 			$preview_url = site_url( sprintf( '?gf_page=preview&amp;id=%d', $form_id ) );
-			$links[] = sprintf( '<a title="%s" href="%s">%s</a>', __('Preview this form', 'gravity-view'), $preview_url, __('Preview', 'gravity-view') );
+			$links[] = sprintf( '<span><a title="%s" href="%s">%s</a></span>', __('Preview this form', 'gravity-view'), $preview_url, __('Preview', 'gravity-view') );
 		}
 
-		echo $form_link . '<div class="row-actions">'. implode( ' | ', $links ).'</div>';
+		$output = '';
+
+		if( !empty( $include_form_link ) ) {
+			$output .= $form_link;
+		}
+
+		$output .= '<div class="row-actions">'. implode( ' | ', $links ) .'</div>';
+
+		return $output;
 	}
 
 	/**
