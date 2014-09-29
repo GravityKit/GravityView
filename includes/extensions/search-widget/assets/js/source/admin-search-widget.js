@@ -25,7 +25,7 @@
 			var gvsw = gvSearchWidget;
 
 			$('body')
-				// hook on all the open settings buttons
+				// hook on all the open settings buttons for search_bar widget
 				.on( 'dialogopen', '[data-fieldid="search_bar"] .gv-dialog-options', gvsw.openDialog )
 
 				// hook to add/remove rows
@@ -47,12 +47,20 @@
 
 		},
 
+		/**
+		 * Capture the widget dialog and call to render the widget settings content
+		 * @param  object e event
+		 */
 		openDialog: function(e) {
 			e.preventDefault();
 			gvSearchWidget.dialog = $(this);
 			gvSearchWidget.renderUI( $(this).parents('.gv-fields') );
 		},
 
+		/**
+		 * Add a search field to the table
+		 * @param  object e event
+		 */
 		addField: function(e) {
 			e.preventDefault();
 
@@ -70,6 +78,10 @@
 			return false;
 		},
 
+		/**
+		 * Remove a search field to the table
+		 * @param  object e event
+		 */
 		removeField: function(e) {
 			e.preventDefault();
 			var table = $(this).parents( 'table' );
@@ -95,14 +107,17 @@
 
 		},
 
+		/**
+		 * Render search fields table (includes a pre-loader animation)
+		 * @param  {jQuery DOM object} parent The dialog div object
+		 */
 		renderUI: function( parent ) {
 
-			var gvsw = gvSearchWidget,
-				fields = $('.gv-search-fields-value', parent ).val();
+			var fields = $('.gv-search-fields-value', parent ).val();
 
-			if( gvsw.selectFields === null ) {
+			if( gvSearchWidget.selectFields === null ) {
 				gvSearchWidget.dialog.append( '<p id="gv-loading"><span class="spinner"></span>' + gvGlobals.loading_text + '</p>' );
-				gvsw.getSelectFields( parent );
+				gvSearchWidget.getSelectFields( parent );
 				return;
 			}
 
@@ -112,12 +127,12 @@
 			}
 
 			//add table and header
-			table = gvsw.addTable();
+			table = gvSearchWidget.addTable();
 
 			if( fields.length === 0 ) {
-				gvsw.addRow( table, null, null );
+				gvSearchWidget.addRow( table, null, null );
 			} else {
-				gvsw.populateRows( table, fields );
+				gvSearchWidget.populateRows( table, fields );
 			}
 
 			gvSearchWidget.dialog.append( table );
@@ -149,6 +164,11 @@
 
 		},
 
+		/**
+		 * Given a JSON string convert it to the search fields table
+		 * @param  {{jQuery DOM object}} table  The table DOM object
+		 * @param  {string} fields JSON fields configuration
+		 */
 		populateRows: function( table, fields ) {
 			var rows = $.parseJSON( fields ),
 				pos = null;
@@ -160,6 +180,9 @@
 
 		},
 
+		/**
+		 * Init the search fields table
+		 */
 		addTable: function() {
 			return $('<table class="form-table widefat">' +
 						'<thead>'+
@@ -174,11 +197,20 @@
 					'</table>' );
 		},
 
+		/**
+		 * Add a "no-fields" message
+		 * @param  {{jQuery DOM object}} table  The table DOM object
+		 */
 		addEmptyMsg: function( table ) {
 			$( table ).append('<tr class="no-search-fields"><td colspan="4">'+ gvSearchVar.label_nofields +'&nbsp; <a href="#addSearchField">'+ gvSearchVar.label_addfield +'</a></td></tr>');
 		},
 
-
+		/**
+		 * Add row to the table object
+		 * @param {jQuery DOM object} table  The table DOM object
+		 * @param {jQuery DOM object}  row   Table row object after which the new row will be added
+		 * @param {object} curr  Configured values for the row ( field and input )
+		 */
 		addRow: function( table, row, curr ) {
 
 			var rowString = $('<tr class="gv-search-field-row new-row hide-if-js" />')
@@ -239,6 +271,10 @@
 
 		},
 
+		/**
+		 * When field is changed, update the search fields selector (disable the ones in use) and the input types for the new field selected
+		 * @return {[type]} [description]
+		 */
 		updateRow: function() {
 			var row = $(this).parents('tr');
 			gvSearchWidget.updateSelectInput( row );
@@ -282,6 +318,11 @@
 
 		},
 
+		/**
+		 * Update the input types for the new field selected
+		 * @param  {jQuery DOM object} tr table row object
+		 * @return {[type]}    [description]
+		 */
 		updateSelectInput: function( tr ) {
 			var type = tr.find('select.gv-search-fields option:selected').attr('data-inputtypes');
 			var select = tr.find('select.gv-search-inputs');
@@ -297,7 +338,11 @@
 
 		},
 
-		// Fetch Form Searchable fields (AJAX)
+		/**
+		 * Get the Select DOM object populated with the available search fields
+		 * If not already in cache, get it from server using AJAX request
+		 * @param  {jQuery DOM object} parent The dialog div object
+		 */
 		getSelectFields: function( parent ) {
 
 			if( gvSearchWidget.selectFields !== null ) {
@@ -366,7 +411,11 @@
 			return value;
 		},
 
-
+		/**
+		 * Update widget config on dialog close
+		 * @param  {object} event
+		 * @param  {[type]} ui    [description]
+		 */
 		updateOnClose: function( event, ui ) {
 			var configs = [];
 
@@ -383,6 +432,9 @@
 
 		},
 
+		/**
+		 * When form or template change, clear the select fields cache and remove all the search_bar configs
+		 */
 		clearCache: function() {
 			gvSearchWidget.selectFields = null;
 			// clean table & values
