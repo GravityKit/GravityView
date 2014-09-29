@@ -53,7 +53,7 @@ class GravityView_Admin_Views {
 
 
 	/**
-	 * @deprecated since 1.1.7
+	 * @deprecated since 1.2
 	 * Start using GravityView_Render_Settings::render_setting_row
 	 */
 	public static function render_setting_row( $key = '', $current_settings = array(), $override_input = null, $name = 'template_settings[%s]', $id = 'gravityview_se_%s' ) {
@@ -62,7 +62,7 @@ class GravityView_Admin_Views {
 	}
 
 	/**
-	 * @deprecated since 1.1.7
+	 * @deprecated since 1.2
 	 * Start using GravityView_Render_Settings::render_field_option
 	 */
 	public static function render_field_option( $name = '', $option, $curr_value = NULL ) {

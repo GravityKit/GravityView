@@ -7,7 +7,7 @@
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
- * @since 1.1.7
+ * @since 1.2
  */
 
 

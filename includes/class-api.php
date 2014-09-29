@@ -596,7 +596,7 @@ function gravityview_get_context() {
  *
  * @see GravityView_Field_FileUpload::get_files_array()
  *
- * @since  1.1.7
+ * @since  1.2
  * @param  string $value    Field value passed by Gravity Forms. String of file URL, or serialized string of file URL array
  * @param  string $gv_class Field class to add to the output HTML
  * @return array           Array of file output, with `file_path` and `html` keys (see comments above)

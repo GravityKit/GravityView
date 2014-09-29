@@ -32,7 +32,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 	 * `file_path` => The file path of the file, with a line break
 	 * `html` => The file output HTML formatted
 	 *
-	 * @since  1.1.7
+	 * @since  1.2
 	 * @todo  Support `playlist` shortcode for playlist of video/audio
 	 * @usedby gravityview_get_files_array()
 	 * @param  string $value    Field value passed by Gravity Forms. String of file URL, or serialized string of file URL array
@@ -102,7 +102,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 						/**
 						 * Modify the settings passed to the `wp_video_shortcode()` function
 						 *
-						 * @since  1.1.7
+						 * @since  1.2
 						 * @var array
 						 */
 						$audio_settings = apply_filters( 'gravityview_audio_settings', array(
@@ -133,7 +133,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 						/**
 						 * Modify the settings passed to the `wp_video_shortcode()` function
 						 *
-						 * @since  1.1.7
+						 * @since  1.2
 						 * @var array
 						 */
 						$video_settings = apply_filters( 'gravityview_video_settings', array(

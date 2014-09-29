@@ -8,7 +8,7 @@
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
- * @since 1.1.7
+ * @since 1.2
  */
 
 class GravityView_Render_Settings {
@@ -343,7 +343,7 @@ class GravityView_Render_Settings {
 
 
     /**
-     * @deprecated 1.1.7
+     * @deprecated 1.2
      * Render the HTML for a checkbox input to be used on the field & widgets options
      * @param  string $name , name attribute
      * @param  string $current current value
@@ -359,7 +359,7 @@ class GravityView_Render_Settings {
 
 
     /**
-     * @deprecated 1.1.7
+     * @deprecated 1.2
      * Render the HTML for an input text to be used on the field & widgets options
      * @param  string $name    Unique name of the field. Exampe: `fields[directory_list-title][5374ff6ab128b][custom_label]`
      * @param  string $current [current value]
@@ -389,7 +389,7 @@ class GravityView_Render_Settings {
     }
 
     /**
-     * @deprecated 1.1.7
+     * @deprecated 1.2
      * Render the HTML for an textarea input to be used on the field & widgets options
      * @param  string $name    Unique name of the field. Exampe: `fields[directory_list-title][5374ff6ab128b][custom_label]`
      * @param  string $current [current value]
@@ -421,7 +421,7 @@ class GravityView_Render_Settings {
     /**
      *
      * Render the HTML for a select box to be used on the field & widgets options
-     * @deprecated 1.1.7
+     * @deprecated 1.2
      * @param  string $name    [name attribute]
      * @param  array $choices [select options]
      * @param  string $current [current value]

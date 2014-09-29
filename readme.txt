@@ -20,7 +20,14 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= 1.1.7 =
+= 1.2 =
+* Added: New Search Bar!
+	- No longer check boxes in each field to add a field to the search form
+	- Add any searchable form fields, not just fields added to the View
+	- Easy new drag & drop way to re-order fields
+	- Horizontal and Vertical layouts
+	- Choose how your search fields are displayed (if you have a checkbox field, for example, you can choose to have a drop-down, a multiselect field, checkboxes, radio buttons, or filter links)
+	- Existing search settings will be migrated over on upgrade
 * Added: Support for Gravity Forms Section & HTML field types
 * Added: Improved textarea field support. Instead of using line breaks, textareas now output with paragraphs.
 	- Added new `/templates/fields/textarea.php` file
@@ -28,17 +35,23 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Added: Option to disable "Map It" link for the full Address field.
 	- New `gravityview_get_map_link()` function with `gravityview_map_link` filter. To learn how to modify the map link, [refer to this how-to article](https://gravityview.co/support/documentation/201608159)
 	- The "Map It" string is now translatable
+* Added: When editing a View, there are now links in the Data Source box to easily access the Form: edit form, form entries, form settings and form preview
+* Added: Additional information in the "Add Field" or "Add Widget" picker (also get details about an item by hovering over the name in the View Configuration)
+* Modified: It's now possible to override templates on a Form ID, Post ID, and View ID basis. This allows custom layouts for a specific View, rather than site-wide. See "Template File Hierarchy" in [the override documentation](http://gravityview.co/support/documentation/202551113/) to learn more.
 * Modified: File Upload field output no longer run through `wpautop()` function
 * Modified: Audio and Video file uploads are now displayed using WordPress' built-in [audio](http://codex.wordpress.org/Audio_Shortcode) and [video](http://codex.wordpress.org/Video_Shortcode) shortcodes (requires WordPress 3.6 or higher)
 	- Additional file type support
 	- Added `gravityview_video_settings` and `gravityview_audio_settings` filters to modify the parameters passed to the shortcode
 * Fixed: Empty `<span class="gv-field-label">` tags no longer output
 	- Modified: `gv_field_label()` no longer returns the label with a trailing space. Instead, we use the `.gv-field-label` CSS class to add spacing using CSS padding.
+* Fixed: Conflict with Relevanssi plugin
 * Modified: Added support for Gravity Forms "Post Image" field captions, titles, and descriptions.
 * Updated list of allowed image formats to include `.bmp`, `.jpe`, `.tiff`, `.ico`
 * Modified: `/templates/fields/fileupload.php` file - removed the logic for how to output the different file types and moved it to the `gravityview_get_files_array()` function in `includes/class-api.php`
 * Tweak: Fixed email setting description text.
 * Tweak: Don't show Entry Link field output on single entry
+* Tweak: Improved Javascript performance in the Admin
+* Tweak: "Custom Label" is now shown as the field title in View Configuration
 
 = 1.1.6 on September 8 =
 * Fixed: Approve / Disapprove all entries using Gravity Forms bulk edit entries form (previously, only visible entries were affected)
