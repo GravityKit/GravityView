@@ -32,6 +32,12 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 
 		}
 
+		if( !empty( $this->item['desc'] ) ) {
+			$field_info_items[] = array(
+				'value' => $this->item['desc']
+			);
+		}
+
 		/*if( !empty( $this->item['adminLabel'] ) ) {
 			$field_info_items[] = array(
 				'value' => sprintf( __('Admin Label: %s', 'gravity-view' ), $this->item['adminLabel'] ),

@@ -445,10 +445,12 @@ class GravityView_Admin_Views {
 	 * @return array
 	 */
 	function get_entry_default_fields($form, $zone) {
+
+
 		$entry_default_fields = array(
 			'id' => array(
 				'label' => __('Entry ID', 'gravity-view'),
-				'type' => 'id'
+				'type' => 'id',
 			),
 			'date_created' => array(
 				'label' => __('Entry Date', 'gravity-view'),
@@ -456,15 +458,18 @@ class GravityView_Admin_Views {
 			),
 			'source_url' => array(
 				'label' => __('Source URL', 'gravity-view'),
-				'type' => 'source_url'
+				'type' => 'source_url',
+				'desc'	=> __('The URL of the page where the form was submitted.', 'gravity-view'),
 			),
 			'ip' => array(
 				'label' => __('User IP', 'gravity-view'),
-				'type' => 'ip'
+				'type' => 'ip',
+				'desc'	=> __('The IP Address of the user who created the entry.', 'gravity-view'),
 			),
 			'created_by' => array(
 				'label' => __('User', 'gravity-view'),
-				'type' => 'created_by'
+				'type' => 'created_by',
+				'desc'	=> __('If logged-in, the user who created the entry.', 'gravity-view'),
 			),
         );
 
@@ -472,7 +477,7 @@ class GravityView_Admin_Views {
 
         	$entry_default_fields['entry_link'] = array(
         		'label' => __('Link to Entry', 'gravity-view'),
-        		'type' => 'entry_link'
+        		'type' => 'entry_link',
         	);
         }
 

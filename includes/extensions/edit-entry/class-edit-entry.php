@@ -161,7 +161,8 @@ class GravityView_Edit_Entry {
 
 		$entry_default_fields['edit_link'] = array(
 			'label' => __('Edit Entry', 'gravity-view'),
-			'type' => 'edit_link'
+			'type' => 'edit_link',
+			'desc'	=> __('A link to edit the entry. Visible based on View settings.', 'gravity-view'),
 		);
 
 		return $entry_default_fields;
