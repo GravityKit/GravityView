@@ -129,9 +129,9 @@ class GravityView_Admin_View_Item {
 		return array();
 	}
 
-	protected function get_item_info() {
+	protected function get_item_info( $html = true ) {
 
-		$output = '';
+		$output = NULL;
 		$field_info_items = $this->additional_info();
 
 		/**
@@ -140,15 +140,25 @@ class GravityView_Admin_View_Item {
 		 */
 		$field_info_items = apply_filters( 'gravityview_admin_label_item_info', $field_info_items, $this );
 
-		foreach ( $field_info_items as $item ) {
-			$class = isset($item['class']) ? sanitize_html_class( $item['class'] ).' description' : 'description';
-			// Add the title in case the value's long, in which case, it'll be truncated by CSS.
-			$output .= '<span class="'.$class.'">';
-			$output .= esc_html( $item['value'] );
-			$output .= '</span>';
+		if( $html ) {
+
+			foreach ( $field_info_items as $item ) {
+				$class = isset($item['class']) ? sanitize_html_class( $item['class'] ).' description' : 'description';
+				// Add the title in case the value's long, in which case, it'll be truncated by CSS.
+				$output .= '<span class="'.$class.'">';
+				$output .= esc_html( $item['value'] );
+				$output .= '</span>';
+			}
+
+		} else {
+
+			$values = wp_list_pluck( $field_info_items, 'value' );
+
+			$output = esc_html( implode(', ', $values) );
+
 		}
 
-		return $output;
+		return empty( $output ) ? NULL : $output;
 
 	}
 
@@ -166,8 +176,6 @@ class GravityView_Admin_View_Item {
 		$hide_show_as_link_class = empty( $this->settings['show_as_link'] ) ? 'hide-if-js' : '';
 		$show_as_link = '<span class="dashicons dashicons-admin-links '.$hide_show_as_link_class.'" title="'.esc_attr( $single_link_title ).'"></span>';
 
-		$field_info = $this->get_item_info();
-
 		// When a field label is empty, use the Field ID
 		$label = empty( $this->title ) ? sprintf( _x('Field #%s (No Label)', 'Label in field picker for empty label', 'gravity-view'), $this->id ) : $this->title;
 
@@ -176,7 +184,7 @@ class GravityView_Admin_View_Item {
 			$label = $this->settings['custom_label'];
 		}
 
-		$output = '<h5 class="selectable gfield field-id-'.esc_attr($this->id).'">';
+		$output = '<h5 class="selectable gfield field-id-'.esc_attr($this->id).'" title="'. $this->get_item_info( false ) .'">';
 
 		// Name of field
 		$output .= '<span class="gv-field-label" data-original-title="'.esc_attr( $this->title ).'">'.esc_attr( $label ).'</span>';
@@ -188,7 +196,8 @@ class GravityView_Admin_View_Item {
 
 		$output .= '<span class="gv-field-controls">'.$settings_link.$show_as_link.'<a href="#remove" class="dashicons-dismiss dashicons" title="'.esc_attr( $delete_title ) .'"></a></span>';
 
-		if( !empty( $field_info ) ) {
+		// Displays only in the field/widget picker.
+		if( $field_info = $this->get_item_info() ) {
 			$output .= '<span class="gv-field-info">'.$field_info.'</span>';
 		}
 

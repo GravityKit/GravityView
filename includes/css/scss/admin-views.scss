@@ -576,19 +576,26 @@ hr{
 	 */
 	.gv-field-info {
 
-		display: block;
-		font-weight: normal;
-		color: #999;
-		text-shadow: none;
+		// In the zones, don't display the field info;
+		// that's being handled by tooltips
+		display: none;
 
-		span {
-			&:after {
-				content:", ";
-			}
+		// In the field picker, display the field info.
+		.ui-tooltip & {
+			display: block;
+			font-weight: normal;
+			color: #999;
+			text-shadow: none;
 
-			&.gv-sublabel,
-			&:last-child {
-				@extend %clearfix;
+			span {
+				&:after {
+					content:", ";
+				}
+
+				&.gv-sublabel,
+				&:last-child {
+					@extend %clearfix;
+				}
 			}
 		}
 	}
