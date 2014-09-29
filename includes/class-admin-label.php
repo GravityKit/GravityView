@@ -10,13 +10,6 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 
 		$field_info_items = array();
 
-		/*if( !empty( $this->item['parent'] ) ) {
-			$field_info_items[] = array(
-				'value' => sprintf( __('Parent Field: %s', 'gravity-view' ), $this->item['parent']['label'] ),
-				'class'	=> 'gv-sublabel'
-			);
-		}*/
-
 		// Fields with IDs, not like Source URL or Entry ID
 		if( is_numeric( $this->id ) ) {
 
@@ -38,12 +31,12 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 			);
 		}
 
-		/*if( !empty( $this->item['adminLabel'] ) ) {
+		if( !empty( $this->item['adminLabel'] ) ) {
 			$field_info_items[] = array(
 				'value' => sprintf( __('Admin Label: %s', 'gravity-view' ), $this->item['adminLabel'] ),
 				'class'	=> 'gv-sublabel'
 			);
-		}*/
+		}
 
 		return $field_info_items;
 	}
@@ -129,6 +122,13 @@ class GravityView_Admin_View_Item {
 		return array();
 	}
 
+	/**
+	 * Generate the output for a field based on the additional_info() output
+	 *
+	 * @see GravityView_Admin_View_Item::additional_info()
+	 * @param  boolean $html Display HTML output? If yes, output is wrapped in spans. If no, plaintext.
+	 * @return string|null        If empty, return null. Otherwise, return output HTML/text.
+	 */
 	protected function get_item_info( $html = true ) {
 
 		$output = NULL;
@@ -184,14 +184,16 @@ class GravityView_Admin_View_Item {
 			$label = $this->settings['custom_label'];
 		}
 
-		$output = '<h5 class="selectable gfield field-id-'.esc_attr($this->id).'" title="'. $this->get_item_info( false ) .'">';
+		$output = '<h5 class="selectable gfield field-id-'.esc_attr($this->id).'">';
 
 		// Name of field
-		$output .= '<span class="gv-field-label" data-original-title="'.esc_attr( $this->title ).'">'.esc_attr( $label ).'</span>';
+		$output .= '<span class="gv-field-label" data-original-title="'.esc_attr( $this->title ).'" title="'. $this->get_item_info( false ) .'">'.esc_attr( $label );
 
 		if( !empty( $this->item['parent'] ) ) {
 			$output .= ' <small>('.$this->item['parent']['label'].')</small>';
 		}
+
+		$output .= '</span>';
 
 
 		$output .= '<span class="gv-field-controls">'.$settings_link.$show_as_link.'<a href="#remove" class="dashicons-dismiss dashicons" title="'.esc_attr( $delete_title ) .'"></a></span>';
