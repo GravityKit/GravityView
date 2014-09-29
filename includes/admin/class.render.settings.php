@@ -202,6 +202,15 @@ class GravityView_Render_Settings {
 
     	$output = '';
 
+        /**
+         * @deprecated setting index 'default' was replaced by 'value'
+         * @see GravityView_FieldType::get_field_defaults
+         */
+        if( !empty( $option['default'] ) && empty( $option['value'] ) ) {
+            $option['value'] = $option['default'];
+            _deprecated_function( 'GravityView_FieldType::get_field_defaults', '1.1.7', '[value] instead of [default] when defining the setting '. $name .' details' );
+        }
+
         // prepare to render option field type
         if( isset( $option['type'] ) ) {
 
@@ -250,6 +259,15 @@ class GravityView_Render_Settings {
 
         // If the key doesn't exist, there's something wrong.
         if( empty( $setting ) ) { return; }
+
+        /**
+         * @deprecated setting index 'name' was replaced by 'label'
+         * @see GravityView_FieldType::get_field_defaults
+         */
+        if( isset( $setting['name'] ) && empty( $setting['label'] ) ) {
+            $setting['label'] = $setting['name'];
+            _deprecated_function( 'GravityView_FieldType::get_field_defaults', '1.1.7', '[label] instead of [name] when defining the setting '. $key .' details' );
+        }
 
         $name = esc_attr( sprintf( $name, $key ) );
         $setting['id'] = esc_attr( sprintf( $id, $key ) );

@@ -45,9 +45,6 @@ abstract class GravityView_FieldType {
      * - merge_tags // if the option supports merge tags feature
      * - class      // (new) define extra classes for the field
      * - tooltip    //
-     * - group    // (new) ?
-     * - callback   // (new) define a special render callback function ?
-     * - condition  // (new) ?
      *
      * @return array
      */

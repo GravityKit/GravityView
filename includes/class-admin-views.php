@@ -57,6 +57,7 @@ class GravityView_Admin_Views {
 	 * Start using GravityView_Render_Settings::render_setting_row
 	 */
 	public static function render_setting_row( $key = '', $current_settings = array(), $override_input = null, $name = 'template_settings[%s]', $id = 'gravityview_se_%s' ) {
+        _deprecated_function( 'GravityView_Admin_Views::render_setting_row', '1.1.7', 'GravityView_Render_Settings::render_setting_row' );
 		return GravityView_Render_Settings::render_setting_row( $key, $current_settings, $override_input, $name , $id );
 	}
 
@@ -65,6 +66,7 @@ class GravityView_Admin_Views {
 	 * Start using GravityView_Render_Settings::render_field_option
 	 */
 	public static function render_field_option( $name = '', $option, $curr_value = NULL ) {
+		_deprecated_function( 'GravityView_Admin_Views::render_field_option', '1.1.7', 'GravityView_Render_Settings::render_field_option' );
 		return GravityView_Render_Settings::render_field_option( $name, $option, $curr_value );
 	}
 
