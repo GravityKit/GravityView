@@ -80,6 +80,8 @@ class GravityView_View_Data {
 
 	/**
 	 *
+	 * Add a view to the views array
+	 *
 	 * @param type $view_id
 	 * @param type $atts Combine other attributes (eg. from shortcode) with the view settings (optional)
 	 * @return type
@@ -103,13 +105,21 @@ class GravityView_View_Data {
 		// Get the settings for the View ID
 		$view_settings = gravityview_get_template_settings( $view_id );
 
+		do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] Settings pulled in from View #%s', $view_id), $view_settings );
+
 		// Merge the view settings with the defaults
 		$view_defaults = wp_parse_args( $view_settings, self::get_default_args() );
 
-		if( isset( $atts ) && is_array( $atts ) ) {
+		do_action('gravityview_log_debug', 'GravityView_View_Data[add_view] View Defaults after merging View Settings with the default args.', $view_defaults );
+
+		if( !empty( $atts ) && is_array( $atts ) ) {
+
+			do_action('gravityview_log_debug', 'GravityView_View_Data[add_view] $atts before merging  with the $view_defaults', $atts );
 
 			// Get the settings from the shortcode and merge them with defaults.
-			$atts = wp_parse_args( $atts, $view_defaults );
+			$atts = shortcode_atts( $view_defaults, $atts );
+
+			do_action('gravityview_log_debug', 'GravityView_View_Data[add_view] $atts after merging  with the $view_defaults', $atts );
 
 		} else {
 
@@ -238,6 +248,8 @@ class GravityView_View_Data {
 
 		if( empty( $shortcodes ) ) { return array(); }
 
+		do_action('gravityview_log_debug', 'GravityView_View_Data[parse_post_content] Parsing content, found shortcodes:', $shortcodes );
+
 		foreach ($shortcodes as $key => $shortcode) {
 
 			$args = shortcode_parse_atts( $shortcode[3] );
@@ -246,6 +258,8 @@ class GravityView_View_Data {
 				do_action('gravityview_log_error', sprintf( 'GravityView_View_Data[parse_post_content] Returning; no ID defined in shortcode atts for Post #%s (Atts)', $post->ID ), $shortcode );
 				return false;
 			}
+
+			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[parse_post_content] Adding view #%s with shortcode args', $args['id']), $args );
 
 			// Store the View to the object for later fetching.
 			$this->add_view( $args['id'] , $args );
