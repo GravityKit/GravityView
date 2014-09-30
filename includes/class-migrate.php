@@ -77,7 +77,16 @@ class GravityView_Migrate {
 						$search_generic[] = array( 'field' => 'entry_date', 'input' => 'date' );
 					}
 
-					$widgets[ $area ][ $k ]['search_fields'] = json_encode( array_merge( $search_generic, $search_fields ) );
+					$search_config = array_merge( $search_generic, $search_fields );
+
+					// don't throw '[]' when json_encode an empty array
+					if( empty( $search_config ) ) {
+						$search_config = '';
+					} else {
+						$search_config = json_encode( $search_config );
+					}
+
+					$widgets[ $area ][ $k ]['search_fields'] = $search_config;
 					$widgets[ $area ][ $k ]['search_layout'] = 'horizontal';
 
 					do_action( 'gravityview_log_debug', '[GravityView_Migrate/update_search_on_views] Updated Widget: ', $widgets[ $area ][ $k ] );
@@ -117,8 +126,12 @@ class GravityView_Migrate {
 					// get field type & calculate the input type (by default)
 					$form_field = gravityview_get_field( $form, $field['id'] );
 
+					if( empty( $form_field['type'] ) ) {
+						continue;
+					}
+
 					// depending on the field type assign a group of possible search field types
-					$type = GravityView_Widget_Search::get_search_input_types( $field['id'], $field['type'] );
+					$type = GravityView_Widget_Search::get_search_input_types( $field['id'], $form_field['type'] );
 
 					// add field to config
 					$search_fields[] = array( 'field' => $field['id'], 'input' => $type );
