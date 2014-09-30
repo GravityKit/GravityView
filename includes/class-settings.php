@@ -16,6 +16,10 @@ if (!class_exists('GravityView_Settings')) {
 			// Add the EDD extension to Redux
 			add_action( "redux/extensions/gravityview_settings", array($this, 'register_edd_extension') );
 
+			if( isset($_GET['asdasdasdasd']) ) {
+				die();
+			}
+
 			if (!class_exists('ReduxFramework')) { return; }
 
 			add_action('plugins_loaded', array($this, 'initSettings'), 10);
@@ -144,8 +148,12 @@ if (!class_exists('GravityView_Settings')) {
 		 */
 		static public function getSetting($key, $default = NULL) {
 
-			return get_redux_instance('gravityview_settings')->get($key, $default);
+			$instance = get_redux_instance('gravityview_settings');
 
+			// Fix fatal error when loading a TinyMCE extension by making sure it's callable
+			if( is_callable( array($instance, 'get') ) ) {
+				return $instance->get($key, $default);
+			}
 		}
 
 		public function setArguments() {
