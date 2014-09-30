@@ -115,6 +115,7 @@
 
 			var fields = $('.gv-search-fields-value', parent ).val();
 
+			// get fields from server
 			if( gvSearchWidget.selectFields === null ) {
 				gvSearchWidget.dialog.append( '<p id="gv-loading"><span class="spinner"></span>' + gvGlobals.loading_text + '</p>' );
 				gvSearchWidget.getSelectFields( parent );
@@ -172,6 +173,11 @@
 		populateRows: function( table, fields ) {
 			var rows = $.parseJSON( fields ),
 				pos = null;
+
+			if( rows.length === 0 ) {
+				gvSearchWidget.addEmptyMsg( table );
+				return;
+			}
 
 			$.each( rows, function( i, values ) {
 				gvSearchWidget.addRow( table, pos, values );
