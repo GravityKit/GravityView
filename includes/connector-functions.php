@@ -256,8 +256,14 @@ if( !function_exists('gravityview_get_entries') ) {
 				$date = date_create( $criteria['search_criteria'][ $key ] );
 
 				if( $date ) {
+
 					$criteria['search_criteria'][ $key ] = $date->format('Y-m-d H:i:s');
+
 				} else {
+
+					// If it's an invalid date, unset it. Gravity Forms freaks out otherwise.
+					unset( $criteria['search_criteria'][ $key ] );
+
 					do_action( 'gravityview_log_error', '[gravityview_get_entries] '.$key.' Date format not valid:', $criteria['search_criteria'][ $key ] );
 				}
 			}

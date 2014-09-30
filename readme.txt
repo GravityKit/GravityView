@@ -45,6 +45,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Empty `<span class="gv-field-label">` tags no longer output
 	- Modified: `gv_field_label()` no longer returns the label with a trailing space. Instead, we use the `.gv-field-label` CSS class to add spacing using CSS padding.
 * Fixed: Conflict with Relevanssi plugin
+* Fixed: If a date search isn't valid, remove the search parameter so it doesn't cause an error in Gravity Forms
 * Modified: Added support for Gravity Forms "Post Image" field captions, titles, and descriptions.
 * Updated list of allowed image formats to include `.bmp`, `.jpe`, `.tiff`, `.ico`
 * Modified: `/templates/fields/fileupload.php` file - removed the logic for how to output the different file types and moved it to the `gravityview_get_files_array()` function in `includes/class-api.php`
