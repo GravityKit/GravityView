@@ -280,7 +280,7 @@ class GravityView_API {
 
 
 	// return href for single entry
-	public static function entry_link( $entry, $field ) {
+	public static function entry_link( $entry ) {
 
 		if( defined('DOING_AJAX') && DOING_AJAX ) {
 			global $gravityview_view;
@@ -350,7 +350,7 @@ function gravityview_sanitize_html_class( $classes ) {
 
 }
 
-function gv_value( $entry, $field) {
+function gv_value( $entry, $field ) {
 	$value = GravityView_API::field_value( $entry, $field );
 
 	if( $value === '') {
@@ -364,8 +364,8 @@ function gv_directory_link( $post = NULL ) {
 	return GravityView_API::directory_link( $post = NULL );
 }
 
-function gv_entry_link(  $entry, $field ) {
-	return GravityView_API::entry_link( $entry, $field );
+function gv_entry_link( $entry ) {
+	return GravityView_API::entry_link( $entry );
 }
 
 function gv_no_results($wpautop = true) {
