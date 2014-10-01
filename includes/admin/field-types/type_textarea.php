@@ -34,9 +34,7 @@ class GravityView_FieldType_textarea extends GravityView_FieldType {
         $class .= !empty( $this->field['class'] ) ? 'widefat ' . $this->field['class'] : 'widefat';
 
 		?>
-		<textarea name="<?php echo esc_attr( $this->name ); ?>" id="<?php echo $this->get_field_id(); ?>" class="<?php echo esc_attr( $class ); ?>">
-			<?php echo esc_textarea(  $this->value ); ?>
-		</textarea>
+		<textarea name="<?php echo esc_attr( $this->name ); ?>" id="<?php echo $this->get_field_id(); ?>" class="<?php echo esc_attr( $class ); ?>" rows="5"><?php echo esc_textarea(  $this->value ); ?></textarea>
        	<?php
 	}
 
