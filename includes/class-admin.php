@@ -52,8 +52,8 @@ class GravityView_Admin {
 	 */
 	public function backend_actions() {
 
-		include_once( GRAVITYVIEW_DIR . 'includes/admin/class.field.type.php' );
-		include_once( GRAVITYVIEW_DIR . 'includes/admin/class.render.settings.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/admin/class.field.type.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/admin/class.render.settings.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-label.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-views.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-welcome.php' );
@@ -67,6 +67,7 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/fields/website.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/email.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/html.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/custom.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/section.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/time.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/fields/entry-date.php' );

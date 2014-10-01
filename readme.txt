@@ -28,6 +28,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 	- Horizontal and Vertical layouts
 	- Choose how your search fields are displayed (if you have a checkbox field, for example, you can choose to have a drop-down, a multiselect field, checkboxes, radio buttons, or filter links)
 	- Existing search settings will be migrated over on upgrade
+* Added: "Custom Content" field type
+	- Insert arbitrary text or HTML in a View
+	- Supports shortcodes (including Gravity Forms shortcodes)!
 * Added: Support for Gravity Forms Section & HTML field types
 * Added: Improved textarea field support. Instead of using line breaks, textareas now output with paragraphs.
 	- Added new `/templates/fields/textarea.php` file

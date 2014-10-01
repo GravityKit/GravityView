@@ -456,7 +456,7 @@ class GravityView_Admin_Views {
 			),
 			'date_created' => array(
 				'label' => __('Entry Date', 'gravity-view'),
-				'type' => 'date_created'
+				'type' => 'date_created',
 			),
 			'source_url' => array(
 				'label' => __('Source URL', 'gravity-view'),
@@ -472,6 +472,11 @@ class GravityView_Admin_Views {
 				'label' => __('User', 'gravity-view'),
 				'type' => 'created_by',
 				'desc'	=> __('If logged-in, the user who created the entry.', 'gravity-view'),
+			),
+			'custom'	=> array(
+				'label'	=> __('Custom Content', 'gravity-view'),
+				'type'	=> 'custom',
+				'desc'	=> __('Insert custom text or HTML.', 'gravity-view'),
 			),
         );
 
