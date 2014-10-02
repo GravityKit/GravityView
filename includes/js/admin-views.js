@@ -992,8 +992,16 @@
 			// Logged in capability selector should only show when Logged In checkbox is checked
 			vcfg.toggleVisibility( $('input:checkbox[name*=only_loggedin]', $parent) , $('[name*=only_loggedin_cap]', $parent), first_run );
 
+			// Make editable checkbox should only be visible when 'user_edit' is checked
+			vcfg.toggleVisibility( $('input:checkbox[name*=user_edit]') , $('[id$=allow_edit]', $parent), first_run );
+
+			// If 'user_edit' is unckecked, also uncheck 'allow_edit' (inherently hiding 'allow_edit_cap')
+			if( !$('input:checkbox[name*=user_edit]').is(':checked') ) {
+				$('input:checkbox[id$=allow_edit]', $parent).prop('checked', false);
+			}
+
 			// Make editable capability selector should only show when Make Field Editable checkbox is checked
-			vcfg.toggleVisibility( $('input:checkbox[name*=allow_edit]', $parent) , $('[name*=allow_edit_cap]', $parent), first_run );
+			vcfg.toggleVisibility( $('input:checkbox[id$=allow_edit]', $parent) , $('[name*=allow_edit_cap]', $parent), first_run );
 
 		},
 

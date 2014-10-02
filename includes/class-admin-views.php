@@ -796,8 +796,8 @@ class GravityView_Admin_Views {
 				'allow_edit' => array(
 					'type' => 'checkbox',
 					'label' => __( 'Make field editable?', 'gravity-view' ),
-					'desc' => __( 'Note: Affects entire group, i.e. selections for "First" will also affect "Last" under the "Name" group.', 'gravity-view'),
-					'default' => ''
+					'desc' => __( 'Note: Affects entire field if it has multiple inputs, i.e. selections for "First" input will also affect "Last" under the "Name" field.', 'gravity-view'),
+					'default' => 1
 				),
 				'allow_edit_cap' => array(
 					'type' => 'select',
