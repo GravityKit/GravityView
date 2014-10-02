@@ -16,6 +16,8 @@ if( floor( $field_id ) === floatval( $field_id ) ) {
 	// Pass the `text` parameter so the map link isn't added like when passing `html`
 	$value_with_newline = GFCommon::get_lead_field_display( $field, $value, "", false, 'text' );
 
+	if( empty( $value_with_newline ) ) { return; }
+
 	// Add map link if it's not set (default, back compat) or if it's set to yes
 	if( !isset( $field_settings['show_map_link'] ) || !empty( $field_settings['show_map_link'] ) ){
 
