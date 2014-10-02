@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-09-09 18:20-0700\n"
-"PO-Revision-Date: 2014-09-10 07:34+0000\n"
+"PO-Revision-Date: 2014-09-26 19:50+0000\n"
 "Last-Translator: Süha Karalar <suhakaralar@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/projects/p/gravityview/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -328,7 +328,7 @@ msgstr "Bağlı Görünümler"
 
 #: includes/class-admin-views.php:90
 msgid "GravityView Views using this form as a data source"
-msgstr ""
+msgstr "GravityView Görünümleri veri kaynağı olarak bu formu kullanmaktadır"
 
 #: includes/class-admin-views.php:142
 msgid "CSS Merge Tags"
@@ -339,7 +339,7 @@ msgstr "CSS Kaynaşma Etiketleri"
 msgid ""
 "Developers: The CSS classes will be sanitized using the "
 "%ssanitize_title_with_dashes()%s function."
-msgstr ""
+msgstr "Geliştiriciler için: CSS sınıfları %ssanitize_title_with_dashes()%s fonksiyonu ile ayıklanacaktır."
 
 #: includes/class-admin-views.php:167
 msgid "Not connected."
@@ -351,15 +351,15 @@ msgstr "Bağlantı yapılan form bulunamadı; form silinmiş olabilir."
 
 #: includes/class-admin-views.php:185
 msgid "Edit Form"
-msgstr ""
+msgstr "Formu Düzenle"
 
 #: includes/class-admin-views.php:190
 msgid "Entries"
-msgstr ""
+msgstr "Kayıtlar"
 
 #: includes/class-admin-views.php:195
 msgid "Edit settings for this form"
-msgstr ""
+msgstr "Bu formun ayarlarını değiştirin"
 
 #: includes/class-admin-views.php:195 includes/class-settings.php:159
 #: includes/class-settings.php:160
@@ -368,7 +368,7 @@ msgstr "Ayarlar"
 
 #: includes/class-admin-views.php:200
 msgid "Preview this form"
-msgstr ""
+msgstr "Form Önizleme"
 
 #: includes/class-admin-views.php:200
 msgid "Preview"
@@ -430,7 +430,7 @@ msgstr "Yazar yada üstü"
 
 #: includes/class-admin-views.php:725
 msgid "Can View Gravity Forms Entries"
-msgstr ""
+msgstr "Gravity Forms Kayıtlarını Görüntüleyebilir"
 
 #: includes/class-admin-views.php:726
 msgid "Editor Or Higher"
@@ -438,7 +438,7 @@ msgstr "Editör yada üstü"
 
 #: includes/class-admin-views.php:727
 msgid "Can Edit Gravity Forms Entries"
-msgstr ""
+msgstr "Gravity Forms Kayıtlarını Düzenleyebilir"
 
 #: includes/class-admin-views.php:728
 msgid "Administrator"
@@ -446,7 +446,7 @@ msgstr "Yönetici"
 
 #: includes/class-admin-views.php:732
 msgid "Multisite Super Admin"
-msgstr ""
+msgstr "Multisite Süper Yönetici"
 
 #: includes/class-admin-views.php:767
 msgid "Show Label"
@@ -498,13 +498,13 @@ msgstr "Görünüm oluşturulurken hata oluştu. Lütfen ayarları kontrol edin 
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
-msgstr ""
+msgstr "Alanı eklerken hata oluştu. Lütfen tekrar deneyin yada GravityView destek bölümüne başvurun."
 
 #: includes/class-admin-views.php:1104
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
-msgstr ""
+msgstr "Bu kısımdaki tüm alanları silmek istermisiniz? (Bu mesajı görüyorsunuz çünkü ALT tuşuna basıyordunuz)"
 
 #: includes/class-admin-welcome.php:56
 msgid "GravityView: Getting Started"
@@ -516,7 +516,7 @@ msgstr "Başlangıç"
 
 #: includes/class-admin-welcome.php:66 includes/class-admin-welcome.php:67
 msgid "Changelog"
-msgstr ""
+msgstr "Yenilikler"
 
 #: includes/class-admin-welcome.php:76 includes/class-admin-welcome.php:77
 #: includes/class-admin-welcome.php:158
@@ -536,7 +536,7 @@ msgstr "GravityView yüklediğiniz için teşekkür ederiz. Artık Gravity Forms
 
 #: includes/class-admin-welcome.php:155
 msgid "List of Changes"
-msgstr ""
+msgstr "Değişiklik Listesi"
 
 #: includes/class-admin-welcome.php:409
 msgid "GravityView is brought to you by:"
@@ -565,7 +565,7 @@ msgstr "Destek"
 #: includes/class-admin.php:124
 #, php-format
 msgid "A new form was created for this View: \"%s\""
-msgstr ""
+msgstr "\"%s\" Görünümü için yeni bir form oluşturuldu"
 
 #: includes/class-admin.php:125
 #, php-format
@@ -685,7 +685,7 @@ msgstr "&larr; Geri dön"
 
 #: includes/class-data.php:267
 msgid "View ID"
-msgstr ""
+msgstr "Görünüm NO"
 
 #: includes/class-data.php:275
 msgid "Number of entries per page"
@@ -705,11 +705,11 @@ msgstr "Boş Alanları Gizle"
 
 #: includes/class-data.php:305
 msgid "Allow User Edit"
-msgstr ""
+msgstr "Kullanıcı Müdahalesine İzin Ver"
 
 #: includes/class-data.php:307
 msgid "Allow logged-in users to edit entries they created."
-msgstr ""
+msgstr "Giriş yapmış kullanıcılara kendi kayıtlarını düzenleme izni ver."
 
 #: includes/class-data.php:313
 msgid "Sort by field"
@@ -761,25 +761,25 @@ msgstr "Özel CSS Sınıfı:"
 
 #: includes/class-data.php:354
 msgid "CSS class to add to the wrapping HTML container."
-msgstr ""
+msgstr "HTML bloğunu çevreleyen CSS sınıfı."
 
 #: includes/class-data.php:361
 msgid "Search Value"
-msgstr ""
+msgstr "Değer Ara"
 
 #: includes/class-data.php:362
 msgid "Define a default search value for the View"
-msgstr ""
+msgstr "Görünüm için varsayılan arama değeri belirle"
 
 #: includes/class-data.php:369
 msgid "Search Field"
-msgstr ""
+msgstr "Alanlarda Ara"
 
 #: includes/class-data.php:370
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
-msgstr ""
+msgstr "Eğer Arama Değeri atandıysa, belirli bir alanda arama yapabiliriniz. Aksi takdirde tüm alanlar aranacaktır."
 
 #: includes/class-data.php:377
 msgid "Single Entry Title"
@@ -806,16 +806,16 @@ msgstr "GravityView"
 
 #: includes/class-debug-bar.php:91
 msgid "Warnings"
-msgstr ""
+msgstr "Uyarılar"
 
 #: includes/class-debug-bar.php:100
 msgid "Logs"
-msgstr ""
+msgstr "Kütükler"
 
 #: includes/class-debug-bar.php:169
 msgctxt "Debugging output data is empty."
 msgid "Empty"
-msgstr ""
+msgstr "Boş"
 
 #: includes/class-frontend-views.php:92
 #: includes/extensions/edit-entry/class-edit-entry.php:147
@@ -824,11 +824,11 @@ msgstr ""
 #: includes/extensions/edit-entry/class-edit-entry.php:657
 #: includes/extensions/edit-entry/fields/edit_link.php:12
 msgid "Edit Entry"
-msgstr ""
+msgstr "Kaydı Düzenle"
 
 #: includes/class-frontend-views.php:316
 msgid "You have attempted to view an entry that does not exist."
-msgstr ""
+msgstr "Var olmayan bir kaydı görütülemek istiyorsunuz."
 
 #: includes/class-gravityview-extension.php:159
 #, php-format
@@ -906,7 +906,7 @@ msgid ""
 "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n"
 "\n"
 "If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
-msgstr ""
+msgstr "%sAktif bir Görünüm oluşturmadınız. Yeni bir Görünüm %soluşturun%s!%s \n\nNereden başlayacağınızı bilmiyorsanız, %sBaşlangıç%s sayfasına bakabilirsiniz."
 
 #: includes/class-settings.php:96
 msgid "License Key"
@@ -916,7 +916,7 @@ msgstr "Lisans Anahtarı"
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
-msgstr ""
+msgstr "Satın alma esnasında size gönderilen lisans anahtarını giriniz. Bu sayede eklenti güncellemeleri ve desteği alabilirsiniz."
 
 #: includes/class-settings.php:104
 msgid "Support Email"
@@ -949,31 +949,31 @@ msgstr "Bizi Google+ 'da takip edin"
 
 #: includes/connector-functions.php:136
 msgid "Payment Status"
-msgstr ""
+msgstr "Ödeme Durumu"
 
 #: includes/connector-functions.php:141
 msgid "Payment Date"
-msgstr ""
+msgstr "Ödeme Tarihi"
 
 #: includes/connector-functions.php:146
 msgid "Payment Amount"
-msgstr ""
+msgstr "Ödeme Miktarı"
 
 #: includes/connector-functions.php:151
 msgid "Payment Method"
-msgstr ""
+msgstr "Ödeme Yöntemi"
 
 #: includes/connector-functions.php:156
 msgid "Is Fulfilled"
-msgstr ""
+msgstr "Tamamlandı"
 
 #: includes/connector-functions.php:161
 msgid "Transaction ID"
-msgstr ""
+msgstr "İşlem NO"
 
 #: includes/connector-functions.php:166
 msgid "Transaction Type"
-msgstr ""
+msgstr "İşlem Türü"
 
 #: includes/default-templates.php:30
 msgid "Table (default)"
@@ -993,7 +993,7 @@ msgstr "Görünür Tablo Kolonları"
 
 #: includes/default-templates.php:52
 msgid "Each field will be displayed as a column in the table."
-msgstr ""
+msgstr "Her alan tabloda sütun şeklinde görünecektir."
 
 #: includes/default-templates.php:77
 msgid "List (default)"
@@ -1017,7 +1017,7 @@ msgstr "Resim"
 
 #: includes/default-templates.php:99
 msgid "Other Fields"
-msgstr ""
+msgstr "Diğer Alanlar"
 
 #: includes/default-templates.php:103
 msgid "Footer Left"
@@ -1152,125 +1152,125 @@ msgstr "Kapat"
 #: includes/default-widgets.php:328
 msgctxt "Previous month in calendar"
 msgid "Prev"
-msgstr ""
+msgstr "Önceki"
 
 #: includes/default-widgets.php:329
 msgctxt "Next month in calendar"
 msgid "Next"
-msgstr ""
+msgstr "Sonraki"
 
 #: includes/default-widgets.php:330
 msgctxt "Today in calendar"
 msgid "Today"
-msgstr ""
+msgstr "Bugün"
 
 #: includes/default-widgets.php:331
 msgctxt "Week in calendar"
 msgid "Week"
-msgstr ""
+msgstr "Hafta"
 
 #: includes/default-widgets.php:332
 msgid "Show a different month"
-msgstr ""
+msgstr "Farklı bir ay göster"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:145
 msgid "Edit Link Text"
-msgstr ""
+msgstr "Bağlantı Yazısını Düzenle"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:546
 msgid "The link to edit this entry is not valid; it may have expired."
-msgstr ""
+msgstr "Bu kaydı düzenleyecek bağlantı geçerli değil, zamanaşımına uğramış olabilir."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:550
 msgid "You do not have permission to edit this entry."
-msgstr ""
+msgstr "Bu kaydı düzenleme yetkiniz yok."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:554
 msgid "You cannot edit the entry; it is in the trash."
-msgstr ""
+msgstr "Bu kaydı düzenleyemezsiniz; çünnkü çöp kutusunda."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:668
 msgid "There was a problem with your submission."
-msgstr ""
+msgstr "Gönderinizle ilgili bir sorun oluştu."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:668
 msgid "Errors have been highlighted below."
-msgstr ""
+msgstr "Hatalar aşağıda belirtilmiştir."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:674
 #, php-format
 msgid "Entry Updated. %sReturn to Entry%s"
-msgstr ""
+msgstr "Kayıt güncellendi. %sKayda Dön%s"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:709
 msgid "Update"
-msgstr ""
+msgstr "Güncelle"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:35
 msgid "You don&rsquo;t have permission to edit this post."
-msgstr ""
+msgstr "Bu yazıyı düzenleme yetkiniz yok."
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:37
 #, php-format
 msgid "You can %sedit this post%s from the post page."
-msgstr ""
+msgstr "%sBu yazıyı%s yazı sayfasından düzenleyebilirsiniz."
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:101
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:120
 msgid "Allowed Files"
-msgstr ""
+msgstr "İzinli Dosyalar"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:133
 msgid "Drop files here or"
-msgstr ""
+msgstr "Dosyaları buraya ekleyin yada"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:133
 msgid "Select files"
-msgstr ""
+msgstr "Dosyaları seç"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:160
 msgid "Download file"
-msgstr ""
+msgstr "Dosya indir"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:160
 msgid "Delete file"
-msgstr ""
+msgstr "Dosya sil"
 
 #: includes/extensions/edit-entry/inline-javascript.php:4
 msgid ""
 "Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to "
 "delete"
-msgstr ""
+msgstr "Bu dosyayı kalıcı olarak silmek istiyormusunuz? Durdurmak için 'İptal' tuşuna, silmek için 'Tamam' tuşuna basın."
 
 #: includes/extensions/edit-entry/inline-javascript.php:14
 msgid "Ajax error while deleting field."
-msgstr ""
+msgstr "Alan silinirken Ajax hatası oluştu."
 
 #: includes/fields/class.field.php:25
 msgid "Link to the post"
-msgstr ""
+msgstr "Yazıya bağlantı ver"
 
 #: includes/fields/class.field.php:26
 msgid "Link to the post created by the entry."
-msgstr ""
+msgstr "Girdi tarafından oluşturulan yazıya bağlantı ver"
 
 #: includes/fields/class.field.php:31
 msgid "Link to the category or tag"
-msgstr ""
+msgstr "Kategori yada etikete bağlantı ver"
 
 #: includes/fields/class.field.php:32
 msgid ""
 "Link to the current category or tag. \"Link to single entry\" must be "
 "unchecked."
-msgstr ""
+msgstr "Mevcut kategori yada etikete bağlantı ver. \"Tekil kayda bağlantı ver\" seçili olmamalı."
 
 #: includes/fields/class.field.php:37
 msgid "Use the live post data"
-msgstr ""
+msgstr "Canlı yazı verisini kullan"
 
 #: includes/fields/class.field.php:38
 msgid "Instead of using the entry data, instead use the current post data."
-msgstr ""
+msgstr "Kayıt verisini kullanmak yerine mevcut yazı verisini kullan."
 
 #: includes/fields/class.field.php:43
 msgid "Override Date Format"
@@ -1303,41 +1303,41 @@ msgstr "Kullanıcı NO # (Örnek: 426)"
 
 #: includes/fields/email.php:19
 msgid "Link the Email Address"
-msgstr ""
+msgstr "Eposta Adresine bağlantı ver"
 
 #: includes/fields/email.php:20
 msgid "Link the an email when cliking an email when clicked."
-msgstr ""
+msgstr "Bağlantıya tıklamak yeni bir eposta oluşturur."
 
 #: includes/fields/email.php:24
 msgid "Email Subject"
-msgstr ""
+msgstr "Eposta Konusu"
 
 #: includes/fields/email.php:26
 msgid "Set the default email subject line."
-msgstr ""
+msgstr "Varsayılan eposta konusu satırını belirle"
 
 #: includes/fields/email.php:31
 msgid "Email Body"
-msgstr ""
+msgstr "Eposta İçeriği"
 
 #: includes/fields/email.php:33
 msgid "Set the default email content."
-msgstr ""
+msgstr "Varsayılan eposta içeriğini belirle"
 
 #: includes/fields/email.php:39
 msgid "Encrypt Email Address"
-msgstr ""
+msgstr "Eposta Adresini şifrele"
 
 #: includes/fields/email.php:40
 msgid ""
 "Make it harder for spammers to get email addresses from your entries. Email "
 "addresses will not be visible with Javascript disabled."
-msgstr ""
+msgstr "Hırsızların kayıtlarınızda yer alan eposta adreslerini çalınmasını zorlaştırın. Javascript etkin olmadığında eposta adresleriniz gizlenmiş olur."
 
 #: includes/fields/entry-link.php:18 includes/fields/source-url.php:25
 msgid "Link Text:"
-msgstr ""
+msgstr "Bağlantı Yazısı:"
 
 #: includes/fields/entry-link.php:20 templates/fields/entry_link.php:7
 msgid "View Details"
@@ -1345,46 +1345,46 @@ msgstr "Görünüm Detayları"
 
 #: includes/fields/source-url.php:18
 msgid "Link to URL:"
-msgstr ""
+msgstr "Bağlantı URL:"
 
 #: includes/fields/source-url.php:19
 msgid "Display as a link to the Source URL"
-msgstr ""
+msgstr "Kaynak URL ye bağlantı olarak göster"
 
 #: includes/fields/source-url.php:26
 msgid "Customize the link text. If empty, the link text will be the the URL."
-msgstr ""
+msgstr "Bağlantı yazısını özelleştirin. Boş bırakırsanız, bağlantı yazısı URL nin kendisi olacaktır."
 
 #: includes/fields/website.php:18
 msgid "Shorten Link Display"
-msgstr ""
+msgstr "Bağlantı Görünümünü kısalt"
 
 #: includes/fields/website.php:19
 msgid "Only show the domain for a URL instead of the whole link."
-msgstr ""
+msgstr "Sadece URL ye ait alan adını göster, tüm bağlantıyı gösterme."
 
 #: includes/fields/website.php:20
 msgid "Don&rsquo;t show the full URL, only show the domain."
-msgstr ""
+msgstr "Tam URL adresini gösterme, sadece alan adını göster."
 
 #: templates/fields/email.php:54
 msgid "Email hidden; Javascript is required."
-msgstr ""
+msgstr "Eposta gizlenmiş; Javascript etkin olmalı."
 
 #: templates/fields/fileupload.php:59
 #, php-format
 msgid ""
 "Sorry, your browser doesn&rsquo;t support embedded videos, but you can "
 "%sdownload it%s and watch it with your favorite video player!"
-msgstr ""
+msgstr "Üzgünüz, tarayıcınız gömülü video oynatmayı desteklemiyor, bunun yerine videoyu %sindirebilir%s ve sevdiğiniz video oynatıcısında izleyebilirsiniz."
 
 #: templates/fields/is_fulfilled.php:8
 msgid "Not Fulfilled"
-msgstr ""
+msgstr "Tamamlanmadı"
 
 #: templates/fields/is_fulfilled.php:10
 msgid "Fulfilled"
-msgstr ""
+msgstr "Tamamlandı"
 
 #: templates/widget-search.php:20
 msgid "Search Entries:"

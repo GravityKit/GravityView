@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-09-09 18:20-0700\n"
-"PO-Revision-Date: 2014-09-10 00:40+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2014-09-29 07:00+0000\n"
+"Last-Translator: leooosterloo <leo@pronamic.nl>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/gravityview/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,11 +33,11 @@ msgstr "Rechts"
 
 #: includes/admin/entry-list.php:66
 msgid "Edit this entry"
-msgstr ""
+msgstr "Bewerk deze inzending"
 
 #: includes/admin/entry-list.php:66
 msgid "Edit"
-msgstr ""
+msgstr "Bewerk"
 
 #: includes/admin/metaboxes.php:32 includes/class-admin-views.php:218
 msgid "Data Source"
@@ -257,7 +257,7 @@ msgstr "Opt-In"
 
 #: includes/class-admin-approve-entries.php:137
 msgid "Yes, display my entry on the website"
-msgstr ""
+msgstr "Ja, toon mijn inzending op de website"
 
 #: includes/class-admin-approve-entries.php:208
 #, php-format
@@ -318,26 +318,26 @@ msgstr "Verwijder %s"
 
 #: includes/class-admin-label.php:57
 msgid "This field links to the Single Entry"
-msgstr ""
+msgstr "Dit veld linkt naar de Enkele Inzending"
 
 #: includes/class-admin-views.php:88
 msgid "Connected Views"
-msgstr ""
+msgstr "Gekoppelde Weergaven"
 
 #: includes/class-admin-views.php:90
 msgid "GravityView Views using this form as a data source"
-msgstr ""
+msgstr "GravityView Weergaven gebruikt dit formulier als databron"
 
 #: includes/class-admin-views.php:142
 msgid "CSS Merge Tags"
-msgstr ""
+msgstr "CSS Samenvoeging Tags"
 
 #: includes/class-admin-views.php:143
 #, php-format
 msgid ""
 "Developers: The CSS classes will be sanitized using the "
 "%ssanitize_title_with_dashes()%s function."
-msgstr ""
+msgstr "Ontwikkelaars: De CSS classes worden opgeschoond met de %ssanitize_title_with_dashes()%s functie."
 
 #: includes/class-admin-views.php:167
 msgid "Not connected."
@@ -349,7 +349,7 @@ msgstr "Het gekoppelde formulier kan niet worden gevonden; het bestaat wellicht 
 
 #: includes/class-admin-views.php:185
 msgid "Edit Form"
-msgstr ""
+msgstr "Bewerk Formulier"
 
 #: includes/class-admin-views.php:190
 msgid "Entries"
@@ -357,7 +357,7 @@ msgstr "Inzendingen"
 
 #: includes/class-admin-views.php:195
 msgid "Edit settings for this form"
-msgstr ""
+msgstr "Bewerk instellingen voor dit formulier"
 
 #: includes/class-admin-views.php:195 includes/class-settings.php:159
 #: includes/class-settings.php:160
@@ -366,7 +366,7 @@ msgstr "Instellingen"
 
 #: includes/class-admin-views.php:200
 msgid "Preview this form"
-msgstr ""
+msgstr "Preview dit formulier"
 
 #: includes/class-admin-views.php:200
 msgid "Preview"
@@ -411,7 +411,7 @@ msgstr "Veld Toevoegen"
 #: includes/class-admin-views.php:570
 #, php-format
 msgid "\"+ %s\" or drag existing %ss here."
-msgstr ""
+msgstr "\"+ %s\" of versleep bestaande %ss hierheen."
 
 #: includes/class-admin-views.php:693
 #, php-format
@@ -420,11 +420,11 @@ msgstr "Opties: %s"
 
 #: includes/class-admin-views.php:723
 msgid "Any Logged-In User"
-msgstr ""
+msgstr "Elke Ingelogde Gebruiker"
 
 #: includes/class-admin-views.php:724
 msgid "Author Or Higher"
-msgstr ""
+msgstr "Auteur Of hoger"
 
 #: includes/class-admin-views.php:725
 msgid "Can View Gravity Forms Entries"

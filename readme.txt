@@ -57,6 +57,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Tweak: Don't show Entry Link field output on single entry
 * Tweak: Improved Javascript performance in the Admin
 * Tweak: "Custom Label" is now shown as the field title in View Configuration
+* Updated: Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/), Dutch translation by [@leooosterloo](https://www.transifex.com/accounts/profile/leooosterloo/)
 
 = 1.1.6 on September 8 =
 * Fixed: Approve / Disapprove all entries using Gravity Forms bulk edit entries form (previously, only visible entries were affected)
