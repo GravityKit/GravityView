@@ -793,6 +793,19 @@ class GravityView_Admin_Views {
 					'class' => 'widefat',
 					'default' => 'read',
 				),
+				'allow_edit' => array(
+					'type' => 'checkbox',
+					'label' => __( 'Make field editable?', 'gravity-view' ),
+					'desc' => __( 'Note: Affects entire group, i.e. selections for "First" will also affect "Last" under the "Name" group.', 'gravity-view'),
+					'default' => ''
+				),
+				'allow_edit_cap' => array(
+					'type' => 'select',
+					'label' => __( 'Make editable for:', 'gravity-view' ),
+					'choices' => self::get_cap_choices( $template_id, $field_id, $context, $input_type ),
+					'class' => 'widefat',
+					'default' => 'read',
+				),
 			);
 
 		} elseif( 'widget' === $field_type ) {

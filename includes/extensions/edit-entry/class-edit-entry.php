@@ -233,10 +233,11 @@ class GravityView_Edit_Entry {
 		require_once(GFCommon::get_base_path() . "/form_display.php");
 		require_once(GFCommon::get_base_path() . "/entry_detail.php");
 		require_once( self::$file . '/class-gv-gfcommon.php' );
+		require_once( self::$file . '/class-gv-gfentrydetail.php' );
 
 
-		if( !class_exists( 'GFEntryDetail' )) {
-			do_action( 'gravityview_log_error', 'GravityView_Edit_Entry[init] GFEntryDetail does not exist' );
+		if( !class_exists( 'GV_GFEntryDetail' )) {
+			do_action( 'gravityview_log_error', 'GravityView_Edit_Entry[init] GV_GFEntryDetail does not exist' );
 		}
 
 		$this->setup_vars();
@@ -555,6 +556,48 @@ class GravityView_Edit_Entry {
 
 	}
 
+	function user_can_edit_field( $echo = false ) {
+
+		$error = NULL;
+
+		if( ! self::check_user_cap_edit_field( $this->field ) ) {
+			$error = __( 'You do not have permission to edit this field.', 'gravity-view');
+		}
+
+		// No errors; everything's fine here!
+		if( empty( $error ) ) {
+			return true;
+		}
+
+		if( $echo ) {
+			echo $this->generate_notice( wpautop( esc_html( $error ) ), 'gv-error error');
+		}
+
+		do_action('gravityview_log_error', 'GravityView_Edit_Entry[user_can_edit_field]' . $error );
+
+		return false;
+
+	}
+
+	/**
+	 * checks if user has permissions to edit a specific field
+	 *
+	 * Needs to be used combined with GravityView_Edit_Entry::user_can_edit_field for maximum security!!
+	 *
+	 * @param  [type] $field [description]
+	 * @return bool
+	 */
+	public static function check_user_cap_edit_field( $field ) {
+		global $gravityview_view;
+
+		// Or if they can edit any entries (as defined in Gravity Forms), we're good.
+		if( GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
 	function user_can_edit_entry( $echo = false ) {
 
 		$error = NULL;
@@ -696,32 +739,32 @@ class GravityView_Edit_Entry {
 		// The ID of the form needs to be `gform_{form_id}` for the pluploader ?>
 		<form method="post" id="gform_<?php echo $this->form_id; ?>" enctype='multipart/form-data'>
 
-		    <?php
+	    <?php
 
-		    wp_nonce_field( self::$nonce_key, self::$nonce_key );
+	    wp_nonce_field( self::$nonce_key, self::$nonce_key );
 
-		    wp_nonce_field( 'is_gv_edit_entry', 'is_gv_edit_entry', false );
+	    wp_nonce_field( 'is_gv_edit_entry', 'is_gv_edit_entry', false );
 
-		    // Most of this is needed for GFFormDisplay::validate(), but `gform_unique_id` is needed for file cleanup.
-		    echo "
-		    <input type='hidden' name='action' id='action' value='update' />
-		    <input type='hidden' class='gform_hidden' name='is_submit_{$this->form_id}' value='1' />
-	        <input type='hidden' class='gform_hidden' name='gform_submit' value='{$this->form_id}' />
-	        <input type='hidden' class='gform_hidden' name='gform_unique_id' value='" . esc_attr(GFFormsModel::get_form_unique_id($this->form_id)) . "' />
-	        <input type='hidden' class='gform_hidden' name='state_{$this->form_id}' value='" . GFFormDisplay::get_state( $this->form, NULL ) . "' />
-	        <input type='hidden' name='gform_field_values' value='' />
+	    // Most of this is needed for GFFormDisplay::validate(), but `gform_unique_id` is needed for file cleanup.
+	    echo "
+	    <input type='hidden' name='action' id='action' value='update' />
+	    <input type='hidden' class='gform_hidden' name='is_submit_{$this->form_id}' value='1' />
+      <input type='hidden' class='gform_hidden' name='gform_submit' value='{$this->form_id}' />
+      <input type='hidden' class='gform_hidden' name='gform_unique_id' value='" . esc_attr(GFFormsModel::get_form_unique_id($this->form_id)) . "' />
+      <input type='hidden' class='gform_hidden' name='state_{$this->form_id}' value='" . GFFormDisplay::get_state( $this->form, NULL ) . "' />
+      <input type='hidden' name='gform_field_values' value='' />
 			<input type='hidden' name='screen_mode' id='screen_mode' value='view' />
 			<input type='hidden' name='lid' value='{$this->entry['id']}' />
-	        ";
+        ";
 
-	        /**
-	         * By default, the lead_detail_edit method uses the `RGFormsModel::get_lead_field_value()` method, which doesn't fill in $_POST values when there is a validation error, because it was designed to work in the admin. We want to use the `RGFormsModel::get_field_value()` If the form has been submitted, use the values for the fields.
-	         */
-	        add_filter( 'gform_get_field_value', array( $this, 'get_field_value' ), 10, 3 );
+      /**
+       * By default, the lead_detail_edit method uses the `RGFormsModel::get_lead_field_value()` method, which doesn't fill in $_POST values when there is a validation error, because it was designed to work in the admin. We want to use the `RGFormsModel::get_field_value()` If the form has been submitted, use the values for the fields.
+       */
+      add_filter( 'gform_get_field_value', array( $this, 'get_field_value' ), 10, 3 );
 
 			// Print the actual form HTML
-			GFEntryDetail::lead_detail_edit( $this->form, $this->entry );
-	?>
+    	GV_GFEntryDetail::lead_detail_edit($this->form, $this->entry, $this->view_id);
+    ?>
 		<div id="publishing-action">
 		    <input class="btn btn-lg button button-large button-primary" type="submit" tabindex="4" value="<?php esc_attr_e( 'Update', 'gravity-view'); ?>" name="save" />
 
