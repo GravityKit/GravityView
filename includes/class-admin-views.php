@@ -473,6 +473,10 @@ class GravityView_Admin_Views {
 				'type' => 'created_by',
 				'desc'	=> __('If logged-in, the user who created the entry.', 'gravity-view'),
 			),
+
+			/**
+			 * @since  1.2
+			 */
 			'custom'	=> array(
 				'label'	=> __('Custom Content', 'gravity-view'),
 				'type'	=> 'custom',

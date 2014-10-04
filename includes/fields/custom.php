@@ -2,6 +2,7 @@
 
 /**
  * Add custom options for Code field
+ * @since 1.2
  */
 class GravityView_Field_Custom extends GravityView_Field {
 
@@ -23,7 +24,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 			'wpautop' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Automatically add paragraphs to content', 'gravity-view' ),
-				'tooltip' => __( 'Choose the option to "Automatically add paragraphs" to wrap each block of text in an HTML paragraph tag (recommended for text).', 'gravity-view' ),
+				'tooltip' => __( 'Wrap each block of text in an HTML paragraph tag (recommended for text).', 'gravity-view' ),
 				'default' => '',
 			),
 		);

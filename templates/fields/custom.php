@@ -3,6 +3,7 @@
  * Display the HTML field type
  *
  * @package GravityView
+ * @since  1.2
  */
 
 global $gravityview_view;
