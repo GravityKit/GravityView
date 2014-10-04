@@ -42,8 +42,14 @@ if( !isset( $field_settings['emailmailto'] ) || !empty( $field_settings['emailma
 
 }
 
+/**
+ * Prevent encrypting emails no matter what - this is handy for DataTables exports, for example
+ * @var boolean
+ */
+$prevent_encrypt = apply_filters( 'gravityview_email_prevent_encrypt', false );
+
 // If not encrypting the link
-if( empty( $field_settings['emailencrypt'] ) ) {
+if( empty( $field_settings['emailencrypt'] ) || $prevent_encrypt ) {
 
 	echo $output;
 
