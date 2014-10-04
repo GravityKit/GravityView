@@ -3,7 +3,7 @@
 class GV_GFEntryDetail {
 
   /**
-   * A modified version of the Gravity Form method. 
+   * A modified version of the Gravity Form method.
    * Generates the form responsible for editing a Gravity
    * Forms entry.
    *
@@ -89,29 +89,43 @@ class GV_GFEntryDetail {
   static private function filter_fields( $fields, $properties ) {
 
     if( empty( $fields ) || !is_array( $fields ) ) {
-      return $fields;
+		return $fields;
     }
 
     foreach ($properties as $k => $prop) {
+
       foreach ($fields as $k2 => $field) {
-        if($prop['id'] == $field['id']){
-          $temp = array_merge($prop, $field);
+
+        if( $prop['id'] == $field['id'] ){
+
+          $temp = array_merge( $prop, $field );
+
           if( self::hide_field_check_conditions( $temp ) ) {
             unset( $fields[ $k2 ] );
           }
-        }elseif(isset($field['inputs'])){
+
+        } elseif( !empty( $field['inputs'] ) ){
+
           //If any inputs for the field are not editable, disable that field
           //All inputs for that field will be disabled.
           foreach ($field['inputs'] as $k3 => $input) {
+
             if($prop['id'] == $input['id']){
+
               $temp = array_merge($prop, $input);
+
               if( self::hide_field_check_conditions( $temp ) ) {
                 unset( $fields[ $k2 ] );
               }
+
             }
+
           }
+
         }
+
       }
+
     }
 
     return $fields;
