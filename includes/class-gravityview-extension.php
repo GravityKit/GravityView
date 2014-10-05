@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0.3
+ * @version 1.0.4
  */
 abstract class GravityView_Extension {
 
@@ -150,7 +150,17 @@ abstract class GravityView_Extension {
 
 	}
 
-	private function is_extension_supported() {
+	/**
+	 * Check whether the extension is supported:
+	 *
+	 * - Checks if GravityView and Gravity Forms exist
+	 * - Checks GravityView and Gravity Forms version numbers
+	 * - Sets
+	 *
+	 * @uses GravityView_Admin::check_gravityforms()
+	 * @return boolean Is the extension supported?
+	 */
+	protected function is_extension_supported() {
 
 		self::$is_compatible = true;
 
