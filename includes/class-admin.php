@@ -563,7 +563,7 @@ class GravityView_Admin {
 			// $_GET `post_type` variable
 			if(in_array($pagenow, array( 'post.php' , 'post-new.php' )) ) {
 				$is_page = 'single';
-			} elseif ($plugin_page === 'settings') {
+			} elseif ($plugin_page === 'settings' || ( !empty( $_GET['page'] ) && $_GET['page'] === 'settings' ) ) {
 				$is_page = 'settings';
 			} else {
 				$is_page = 'views';
