@@ -160,19 +160,17 @@ class GravityView_Ajax {
 		$preset_form_xml_path = apply_filters( 'gravityview_template_formxml', '', $_POST['template_id'] );
 
 		// import form
-		$form_id = $this->import_form( $preset_form_xml_path );
+		$form = $this->import_form( $preset_form_xml_path );
 
 		// get the form ID
-		if( $form_id === false ) {
+		if( $form === false ) {
 			// send error to user
 			do_action( 'gravityview_log_error', '[create_preset_form] Error importing form for template id: ' . (int) $_POST['template_id'] );
 
 			exit( false );
 		}
 
-		echo '<option value="'.$form_id.'" selected></option>';
-
-		exit();
+		exit( '<option value="'.esc_attr( $form['id'] ).'" selected="selected">'.esc_html( $form['title'] ).'</option>' );
 
 	}
 
@@ -203,7 +201,7 @@ class GravityView_Ajax {
 		}
 
 		// import success - return form id
-		return $forms[0]['id'];
+		return $forms[0];
 	}
 
 

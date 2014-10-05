@@ -45,7 +45,7 @@
             	.on('click', 'a[href="#gv_start_fresh"]', vcfg.startFresh)
 
             	// when saving the View, try to create form before proceeding
-            	.on('click', '#publish', vcfg.createPresetForm)
+            	.on('submit', '#post', vcfg.createPresetForm)
 
             	// Hover overlay show/hide
             	.on('click', ".gv-view-types-hover", vcfg.selectTemplateHover)
@@ -1125,15 +1125,17 @@
          * @see GravityView_Admin_Views::create_preset_form()
          * @return boolean|void
          */
-        createPresetForm: function () {
+        createPresetForm: function ( e ) {
             var vcfg = viewConfiguration,
                 templateId = $("#gravityview_directory_template").val();
 
             // If the View isn't a Start Fresh view, we just return true
             // so that the click on the Publish button can process.
             if (!vcfg.startFreshStatus || templateId === '') {
-                return true;
+            	return true;
             }
+
+            e.preventDefault();
 
             // Try to create preset form in Gravity Forms. On success assign it to post before saving
             var data = {
@@ -1143,20 +1145,21 @@
             };
 
             $.post(ajaxurl, data, function (response) {
-
-
                 if (response !== 'false' && response !== '0') {
 
                     vcfg.startFreshStatus = false;
 
                     //set the form id
-                    vcfg.gvSelectForm.find("option:selected").removeAttr("selected");
-                    vcfg.gvSelectForm.append(response);
+                    vcfg.gvSelectForm
+                    	.find("option:selected").removeAttr("selected").end()
+                    	.append(response);
 
-                    $("#publish").trigger('click');
+                    // Continue submitting the form, since we preventDefault() above
+                    $(e.target).submit();
 
                 } else {
                     $("#post").before('<div id="message" class="error below-h2"><p>' + gvGlobals.label_publisherror + '</p></div>');
+                   return false;
                 }
             });
 
