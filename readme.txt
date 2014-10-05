@@ -61,6 +61,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Tweak: Don't show Entry Link field output on single entry
 * Tweak: Improved Javascript performance in the Admin
 * Tweak: "Custom Label" is now shown as the field title in View Configuration
+* Tweak: Fixed "Left Footer" box not properly cleared
+* Tweak: Show warning if the Directory plugin is running
 * Updated: Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/), Dutch translation by [@leooosterloo](https://www.transifex.com/accounts/profile/leooosterloo/)
 
 = 1.1.6 on September 8 =

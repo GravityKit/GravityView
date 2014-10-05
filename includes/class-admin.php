@@ -12,6 +12,9 @@ class GravityView_Admin {
 		add_action( 'admin_notices', array( $this, 'dismiss_notice' ), 50 );
 		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
 
+		// Check if Gravity Forms Directory is running.
+		self::check_gf_directory();
+
 		// If Gravity Forms isn't active or compatibile, stop loading
 		if( false === self::check_gravityforms() ) {
 			return;
@@ -444,6 +447,7 @@ class GravityView_Admin {
 
 			echo '<div id="message" class="'. esc_attr( $notice['class'] ).'">';
 
+			// Too cute to leave out.
 			echo GravityView_Admin::get_floaty() ;
 
 			if( !empty( $notice['title'] ) ) {
@@ -484,6 +488,21 @@ class GravityView_Admin {
 		$notice['class'] = empty( $notice['class'] ) ? 'error' : $notice['class'];
 
 		self::$admin_notices[] = $notice;
+	}
+
+	public static function check_gf_directory() {
+
+		if( class_exists( 'GFDirectory' ) ) {
+
+			self::$admin_notices['gf_directory'] = array(
+				'class' => 'error',
+				'title' => __('Potential Conflict', 'gravity-view' ),
+				'message' => __( 'GravityView and Gravity Forms Directory are both active. This may cause problems. If you experience issues, disable the Gravity Forms Directory plugin.', 'gravity-view' ),
+				'dismiss' => 'gf_directory',
+			);
+
+		}
+
 	}
 
 	/**
