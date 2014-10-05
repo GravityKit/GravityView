@@ -100,6 +100,14 @@ class GravityView_Admin {
 	}
 
 	/**
+	 * Get an image of our intrepid explorer friend
+	 * @return string HTML image tag with floaty's cute mug on it
+	 */
+	public static function get_floaty() {
+		return '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:10px 10px 10px 0;" />';
+	}
+
+	/**
 	 * Filter Admin messages
 	 *
 	 * @param  array      $messages Existing messages
@@ -341,7 +349,7 @@ class GravityView_Admin {
 
 	/**
 	 * Add dependencies
-	 * @todo  Move this to GravityView_Admin_Views
+	 *
 	 * @param [type] $registered [description]
 	 * @param [type] $scripts    [description]
 	 */
