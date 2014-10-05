@@ -16,15 +16,18 @@ if (!class_exists('GravityView_Settings')) {
 			// Add the EDD extension to Redux
 			add_action( "redux/extensions/gravityview_settings", array($this, 'register_edd_extension') );
 
-			if( isset($_GET['asdasdasdasd']) ) {
-				die();
-			}
+			add_filter( 'redux/gravityview_settings/field/class/edd_license/strings', array($this, 'edd_settings_strings') );
 
 			if (!class_exists('ReduxFramework')) { return; }
 
 			add_action('plugins_loaded', array($this, 'initSettings'), 10);
 
 			if( !gravityview_is_admin_page() ) { return; }
+
+			// Show license notice on all GV pages, except for settings page
+			if( !gravityview_is_admin_page( '', 'settings' ) ) {
+				add_action('plugins_loaded', array($this, 'license_key_notice'), 20);
+			}
 
 			// Disable Redux tracking script
 			update_option( 'redux-framework-tracking', array( 'allow_tracking' => false ) );
@@ -41,9 +44,14 @@ if (!class_exists('GravityView_Settings')) {
 		 */
 		public function register_edd_extension($ReduxFramework) {
 
-			require_once( GRAVITYVIEW_DIR . 'includes/lib/edd/extension_edd.php');
+			require_once( GRAVITYVIEW_DIR . 'includes/lib/edd-redux-extension/extension_edd.php');
 
-			new ReduxFramework_extension_edd($ReduxFramework);
+			$extension = new ReduxFramework_extension_edd($ReduxFramework);
+
+			if( !gravityview_is_admin_page( '', 'settings' ) ) {
+				// Remove the scripts; these will be added back in later by the `_enqueue()` method
+				remove_action('admin_enqueue_scripts', array( $extension, 'enqueue_scripts') );
+			}
 
 		}
 
@@ -55,7 +63,9 @@ if (!class_exists('GravityView_Settings')) {
 			global $plugin_page;
 
 			// We only want to show the settings scripts on the settings page.
-			if(empty($plugin_page) || $plugin_page !== 'settings') { return; }
+			if( !gravityview_is_admin_page( '', 'settings' ) ) {
+				return;
+			}
 
 			// Hide the sidebar and the sidebar toggle button in the settings.
 			wp_enqueue_style( 'gravityview_settings', plugins_url( 'includes/css/admin-settings.css', GRAVITYVIEW_FILE ) );
@@ -80,6 +90,74 @@ if (!class_exists('GravityView_Settings')) {
 
 			// Then populate properly.
 			$this->ReduxFramework = new ReduxFramework($this->sections, $this->args);
+		}
+
+		function license_key_notice() {
+
+			$license = $this->getSetting('license', array( 'license' => NULL, 'status' => NULL ));
+
+			$license_status = empty( $license['status'] ) ? 'site_inactive' : $license['status'];
+			$license_id = empty( $license['license'] ) ? 'license' : $license['license'];
+
+			$message = esc_html__('Your GravityView license %s. This means you&rsquo;re missing out on updates and support! %sActivate your license%s or %sget a license here%s.');
+
+			$title = __('Inactive License', 'gravity-view');
+
+			switch ( $license_status ) {
+				case 'invalid':
+					$title = __('Invalid License', 'gravity-view');
+					$status = __('is invalid', 'gravity-view');
+					break;
+				case 'deactivated':
+					$status = __('is inactive', 'gravity-view');
+					break;
+				case 'site_inactive':
+					$status = __('has not been activated', 'gravity-view');
+					break;
+			}
+
+			$message = sprintf( $message, $status, '<a href="'.admin_url( 'edit.php?post_type=gravityview&amp;page=settings' ).'">', '</a>', '<a href="https://gravityview.co/pricing/">', '</a>' );
+
+			if( !empty( $status ) ) {
+
+				GravityView_Admin::add_notice( array(
+					'message' => $message,
+					'class'	=> 'updated',
+					'title' => $title,
+					'dismiss' => sha1( $license_status.'_'.$license_id ),
+				));
+
+			}
+
+		}
+
+		/**
+		 * Override the text used in the Redux Framework EDD field extension
+		 * @param  array $strings array of content
+		 * @return array          Modified array of content
+		 */
+		public function edd_settings_strings( $strings ) {
+
+			$new_strings = array(
+				'status' => esc_html__('Status', 'gravity-view'),
+				'error' => esc_html__('There was an error processing the request.', 'gravity-view'),
+				'failed'  => esc_html__('Could not deactivate the license. The submitted license key may not be active.', 'gravity-view'),
+				'site_inactive' => esc_html__('Not Activated', 'gravity-view'),
+				'no_activations_left' => esc_html__('Invalid; this license has reached its activation limit.', 'gravity-view'),
+				'deactivated' => esc_html__('Deactivated', 'gravity-view'),
+				'valid' => esc_html__('Valid', 'gravity-view'),
+				'invalid' => esc_html__('Not Valid', 'gravity-view'),
+				'missing' => esc_html__('Not Valid', 'gravity-view'),
+				'revoked' => esc_html__('The license key has been revoked.', 'gravity-view'),
+				'expired' => esc_html__('The license key has expired.', 'gravity-view'),
+
+				'verifying_license' => esc_html__('Verifying license&hellip;', 'gravity-view'),
+				'activate_license' => esc_html__('Activate License', 'gravity-view'),
+				'deactivate_license' => esc_html__('Deactivate License', 'gravity-view'),
+				'check_license' => esc_html__('Verify License', 'gravity-view'),
+			);
+
+			return $new_strings;
 		}
 
 		public function setSections() {
