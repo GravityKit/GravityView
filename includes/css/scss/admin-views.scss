@@ -89,6 +89,12 @@ $dismiss-red: #d03a3a;
 	width: 100%;
 }
 
+// Clear the left footer area
+.gv-grid-col-1-1 + .gv-grid-col-1-3 + .gv-grid-col-2-3 + .gv-grid-col-1-2,
+.gv-grid-col-1-1 + .gv-grid-col-2-3 + .gv-grid-col-1-3 + .gv-grid-col-1-2 {
+	clear: left;
+}
+
 /* GV Sections
 --------------------------------------- */
 
