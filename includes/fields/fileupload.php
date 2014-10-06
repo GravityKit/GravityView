@@ -13,8 +13,8 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 		$add_options['link_to_file'] = array(
 			'type' => 'checkbox',
-			'label' => __( 'Display as a Link:', 'gravity-view' ),
-			'desc' => __('Display the uploaded files as links, rather than embedded content.', 'gravity-view'),
+			'label' => __( 'Display as a Link:', 'gravityview' ),
+			'desc' => __('Display the uploaded files as links, rather than embedded content.', 'gravityview'),
 			'default' => false,
 			'merge_tags' => false,
 		);

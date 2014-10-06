@@ -9,7 +9,7 @@ global $gravityview_view;
 $view_id = $gravityview_view->view_id;
 $search_field = $gravityview_view->search_field;
 
-$links_label = apply_filters( 'gravityview/extension/search/links_label', __( 'Show only:', 'gravity-view' ) );
+$links_label = apply_filters( 'gravityview/extension/search/links_label', __( 'Show only:', 'gravityview' ) );
 $links_sep = apply_filters( 'gravityview/extension/search/links_sep', '&nbsp;|&nbsp;' );
 ?>
 

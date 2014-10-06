@@ -52,8 +52,8 @@ class GravityView_Admin_ApproveEntries {
 	function tooltips( $tooltips ) {
 
 		$tooltips['form_gravityview_fields'] = array(
-			'title' => __('GravityView Fields', 'gravity-view'),
-			'value' => __( 'Allow administrators to approve or reject entries and users to opt-in or opt-out of their entries being displayed.', 'gravity-view'),
+			'title' => __('GravityView Fields', 'gravityview'),
+			'value' => __( 'Allow administrators to approve or reject entries and users to opt-in or opt-out of their entries being displayed.', 'gravityview'),
 		);
 
 		return $tooltips;
@@ -75,12 +75,12 @@ class GravityView_Admin_ApproveEntries {
 			'fields' => array(
 				array(
 					'class' => 'button',
-					'value' => __( 'Approve/Reject', 'gravity-view' ),
+					'value' => __( 'Approve/Reject', 'gravityview' ),
 					'onclick' => "StartAddField('gravityviewapproved_admin');"
 				),
 				array(
 					'class' => 'button',
-					'value' => __( 'User Opt-In', 'gravity-view' ),
+					'value' => __( 'User Opt-In', 'gravityview' ),
 					'onclick' => "StartAddField('gravityviewapproved');"
 				),
 			)
@@ -102,16 +102,16 @@ class GravityView_Admin_ApproveEntries {
 	function set_defaults() {
 		?>
 		case 'gravityviewapproved_admin':
-			field.label = "<?php _e( 'Approved? (Admin-only)', 'gravity-view' ); ?>";
+			field.label = "<?php _e( 'Approved? (Admin-only)', 'gravityview' ); ?>";
 
-			field.adminLabel = "<?php _e( 'Approved?', 'gravity-view' ); ?>";
+			field.adminLabel = "<?php _e( 'Approved?', 'gravityview' ); ?>";
 			field.adminOnly = true;
 
 			field.choices = null;
 			field.inputs = null;
 
 			if( !field.choices ) {
-				field.choices = new Array( new Choice("<?php _e( 'Approved', 'gravity-view' ); ?>") );
+				field.choices = new Array( new Choice("<?php _e( 'Approved', 'gravityview' ); ?>") );
 			}
 
 			field.inputs = new Array();
@@ -124,9 +124,9 @@ class GravityView_Admin_ApproveEntries {
 
 			break;
 		case 'gravityviewapproved':
-			field.label = "<?php _e( 'Show Entry on Website', 'gravity-view' ); ?>";
+			field.label = "<?php _e( 'Show Entry on Website', 'gravityview' ); ?>";
 
-			field.adminLabel = "<?php _e( 'Opt-In', 'gravity-view' ); ?>";
+			field.adminLabel = "<?php _e( 'Opt-In', 'gravityview' ); ?>";
 			field.adminOnly = false;
 
 			field.choices = null;
@@ -134,7 +134,7 @@ class GravityView_Admin_ApproveEntries {
 
 			if( !field.choices ) {
 				field.choices = new Array(
-					new Choice("<?php _e( 'Yes, display my entry on the website', 'gravity-view' ); ?>")
+					new Choice("<?php _e( 'Yes, display my entry on the website', 'gravityview' ); ?>")
 				);
 			}
 
@@ -205,17 +205,17 @@ class GravityView_Admin_ApproveEntries {
 				return false;
 			}
 
-			$entry_count = count( $entries ) > 1 ? sprintf(__("%d entries", 'gravity-view' ), count( $entries ) ) : __( '1 entry', 'gravity-view' );
+			$entry_count = count( $entries ) > 1 ? sprintf(__("%d entries", 'gravityview' ), count( $entries ) ) : __( '1 entry', 'gravityview' );
 
 			switch( $approved_status ) {
 				case 'approve':
 					self::update_bulk( $entries, 1, $form_id );
-					$this->bulk_update_message = sprintf( __( "%s approved.", 'gravity-view' ), $entry_count );
+					$this->bulk_update_message = sprintf( __( "%s approved.", 'gravityview' ), $entry_count );
 					break;
 
 				case 'unapprove':
 					self::update_bulk( $entries, 0, $form_id );
-					$this->bulk_update_message = sprintf( __( "%s disapproved.", 'gravity-view' ), $entry_count );
+					$this->bulk_update_message = sprintf( __( "%s disapproved.", 'gravityview' ), $entry_count );
 					break;
 			}
 		}
@@ -287,7 +287,7 @@ class GravityView_Admin_ApproveEntries {
 
 		// add note to entry
 		if( $result === true ) {
-			$note = empty( $approved ) ? __( 'Disapproved the Entry for GravityView', 'gravity-view' ) : __( 'Approved the Entry for GravityView', 'gravity-view' );
+			$note = empty( $approved ) ? __( 'Disapproved the Entry for GravityView', 'gravityview' ) : __( 'Approved the Entry for GravityView', 'gravityview' );
 			if( class_exists( 'RGFormsModel' ) ){
 				RGFormsModel::add_note( $entry_id, get_current_user_id(), $user_data->display_name, $note );
 			}
@@ -430,12 +430,12 @@ class GravityView_Admin_ApproveEntries {
 			wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array(
 				'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries'),
 				'form_id' => $form_id,
-				'label_approve' => __( 'Approve', 'gravity-view' ) ,
-				'label_disapprove' => __( 'Disapprove', 'gravity-view' ),
+				'label_approve' => __( 'Approve', 'gravityview' ) ,
+				'label_disapprove' => __( 'Disapprove', 'gravityview' ),
 				'bulk_message' => $this->bulk_update_message,
-				'approve_title' => __( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravity-view'),
-				'unapprove_title' => __( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravity-view'),
-				'column_title' => __( 'Show entry in directory view?', 'gravity-view'),
+				'approve_title' => __( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravityview'),
+				'unapprove_title' => __( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravityview'),
+				'column_title' => __( 'Show entry in directory view?', 'gravityview'),
 				'column_link' => add_query_arg( array('sort' => $approvedcolumn) ),
 			) );
 

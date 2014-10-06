@@ -135,37 +135,37 @@ if( !function_exists('gravityview_get_form_fields') ) {
 		if( $has_product_fields ) {
 
 			$fields['payment_status'] = array(
-			    "label" => __( 'Payment Status', 'gravity-view' ),
+			    "label" => __( 'Payment Status', 'gravityview' ),
 			    "type" => 'payment_status'
 			);
 
 			$fields['payment_date'] = array(
-			    "label" => __( 'Payment Date', 'gravity-view' ),
+			    "label" => __( 'Payment Date', 'gravityview' ),
 			    "type" => 'payment_date',
 			);
 
 			$fields['payment_amount'] = array(
-			    "label" => __( 'Payment Amount', 'gravity-view' ),
+			    "label" => __( 'Payment Amount', 'gravityview' ),
 			    "type" => 'payment_amount'
 			);
 
 			$fields['payment_method'] = array(
-			    "label" => __( 'Payment Method', 'gravity-view' ),
+			    "label" => __( 'Payment Method', 'gravityview' ),
 			    "type" => 'payment_method'
 			);
 
 			$fields['is_fulfilled'] = array(
-			    "label" => __( 'Is Fulfilled', 'gravity-view' ),
+			    "label" => __( 'Is Fulfilled', 'gravityview' ),
 			    "type" => 'is_fulfilled',
 			);
 
 			$fields['transaction_id'] = array(
-			    "label" => __( 'Transaction ID', 'gravity-view' ),
+			    "label" => __( 'Transaction ID', 'gravityview' ),
 			    "type" => 'transaction_id',
 			);
 
 			$fields['transaction_type'] = array(
-			    "label" => __( 'Transaction Type', 'gravity-view' ),
+			    "label" => __( 'Transaction Type', 'gravityview' ),
 			    "type" => 'transaction_type',
 			);
 
@@ -541,7 +541,7 @@ if( !function_exists('gravityview_get_sortable_fields') ) {
 	 */
 	function gravityview_get_sortable_fields( $formid, $current = '' ) {
 
-		$output = '<option value="" '. selected( '', $current, false ).'>'. esc_html__( 'Default', 'gravity-view') .'</option>';
+		$output = '<option value="" '. selected( '', $current, false ).'>'. esc_html__( 'Default', 'gravityview') .'</option>';
 
 		if( empty( $formid ) ) {
 			return $output;
@@ -554,7 +554,7 @@ if( !function_exists('gravityview_get_sortable_fields') ) {
 
 			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'list', 'textarea' ) );
 
-			$output .= '<option value="date_created" '. selected( 'date_created', $current, false ).'>'. esc_html__( 'Date Created', 'gravity-view' ) .'</option>';
+			$output .= '<option value="date_created" '. selected( 'date_created', $current, false ).'>'. esc_html__( 'Date Created', 'gravityview' ) .'</option>';
 
 			foreach( $fields as $id => $field ) {
 

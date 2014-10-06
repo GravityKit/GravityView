@@ -28,7 +28,7 @@ class GravityView_Widget_Pagination_Info extends GravityView_Widget {
 
 	function __construct() {
 
-		$this->widget_description = __('Summary of the number of visible entries out of the total results.', 'gravity-view' );
+		$this->widget_description = __('Summary of the number of visible entries out of the total results.', 'gravityview' );
 
 		$default_values = array(
 			'header' => 1,
@@ -37,7 +37,7 @@ class GravityView_Widget_Pagination_Info extends GravityView_Widget {
 
 		$settings = array();
 
-		parent::__construct( __( 'Show Pagination Info', 'gravity-view' ) , 'page_info', $default_values, $settings );
+		parent::__construct( __( 'Show Pagination Info', 'gravityview' ) , 'page_info', $default_values, $settings );
 	}
 
 	public function render_frontend( $widget_args, $content = '', $context = '') {
@@ -76,7 +76,7 @@ class GravityView_Widget_Pagination_Info extends GravityView_Widget {
 		 */
 		list( $first, $last, $total ) = apply_filters( 'gravityview_pagination_counts', array( $first, $last, $total ) );
 
-		$output = '<div class="gv-widget-pagination"><p>'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravity-view' ), $first , $last , $total ) . '</p></div>';
+		$output = '<div class="gv-widget-pagination"><p>'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravityview' ), $first , $last , $total ) . '</p></div>';
 
 		echo apply_filters( 'gravityview_pagination_output', $output, $first, $last, $total );
 
@@ -97,16 +97,16 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 
 	function __construct() {
 
-		$this->widget_description = __('Links to multiple pages of results.', 'gravity-view' );
+		$this->widget_description = __('Links to multiple pages of results.', 'gravityview' );
 
 		$default_values = array( 'header' => 1, 'footer' => 1 );
 		$settings = array( 'show_all' => array(
 			'type' => 'checkbox',
-			'label' => __( 'Show each page number', 'gravity-view' ),
-			'desc' => __('Show every page number instead of summary (eg: 1 2 3 ... 8 »)', 'gravity-view'),
+			'label' => __( 'Show each page number', 'gravityview' ),
+			'desc' => __('Show every page number instead of summary (eg: 1 2 3 ... 8 »)', 'gravityview'),
 			'value' => false
 		));
-		parent::__construct( __( 'Page Links', 'gravity-view' ) , 'page_links', $default_values, $settings );
+		parent::__construct( __( 'Page Links', 'gravityview' ) , 'page_links', $default_values, $settings );
 
 	}
 

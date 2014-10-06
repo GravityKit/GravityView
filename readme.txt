@@ -40,6 +40,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 	- The "Map It" string is now translatable
 * Added: When editing a View, there are now links in the Data Source box to easily access the Form: edit form, form entries, form settings and form preview
 * Added: Additional information in the "Add Field" or "Add Widget" picker (also get details about an item by hovering over the name in the View Configuration)
+* Modified: Changed translation textdomain to `gravityview` instead of `gravity-view`
+* Modified: Always show label by default, regardless of whether in List or Table View type
 * Modified: It's now possible to override templates on a Form ID, Post ID, and View ID basis. This allows custom layouts for a specific View, rather than site-wide. See "Template File Hierarchy" in [the override documentation](http://gravityview.co/support/documentation/202551113/) to learn more.
 * Modified: File Upload field output no longer run through `wpautop()` function
 * Modified: Audio and Video file uploads are now displayed using WordPress' built-in [audio](http://codex.wordpress.org/Audio_Shortcode) and [video](http://codex.wordpress.org/Video_Shortcode) shortcodes (requires WordPress 3.6 or higher)

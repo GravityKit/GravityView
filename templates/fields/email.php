@@ -57,7 +57,7 @@ if( empty( $field_settings['emailencrypt'] ) || $prevent_encrypt ) {
 
 	$enkoder = new StandalonePHPEnkoder;
 
-	$enkoder->enkode_msg = __( 'Email hidden; Javascript is required.', 'gravity-view' );
+	$enkoder->enkode_msg = __( 'Email hidden; Javascript is required.', 'gravityview' );
 
 	$encrypted =  $enkoder->enkode( $output );
 

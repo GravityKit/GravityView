@@ -15,9 +15,9 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 		$add_options = array();
 		$add_options['entry_link_text'] = array(
 			'type' => 'text',
-			'label' => __( 'Link Text:', 'gravity-view' ),
+			'label' => __( 'Link Text:', 'gravityview' ),
 			'desc' => NULL,
-			'default' => __('View Details', 'gravity-view'),
+			'default' => __('View Details', 'gravityview'),
 			'merge_tags' => true,
 		);
 

@@ -16,11 +16,11 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 			$field_type_title = GFCommon::get_field_type_title( $this->item['input_type'] );
 
 			$field_info_items[] = array(
-				'value' => sprintf( __('Type: %s', 'gravity-view'), $field_type_title )
+				'value' => sprintf( __('Type: %s', 'gravityview'), $field_type_title )
 			);
 
 			$field_info_items[] = array(
-				'value' => sprintf( __('Field ID: %s', 'gravity-view'), $this->id ),
+				'value' => sprintf( __('Field ID: %s', 'gravityview'), $this->id ),
 			);
 
 		}
@@ -33,7 +33,7 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 
 		if( !empty( $this->item['adminLabel'] ) ) {
 			$field_info_items[] = array(
-				'value' => sprintf( __('Admin Label: %s', 'gravity-view' ), $this->item['adminLabel'] ),
+				'value' => sprintf( __('Admin Label: %s', 'gravityview' ), $this->item['adminLabel'] ),
 				'class'	=> 'gv-sublabel'
 			);
 		}
@@ -163,9 +163,9 @@ class GravityView_Admin_View_Item {
 	}
 
 	function getOutput() {
-		$settings_title = sprintf(__('Configure %s Settings', 'gravity-view'), ucfirst($this->label_type));
-		$delete_title = sprintf(__('Remove %s', 'gravity-view'), ucfirst($this->label_type));
-		$single_link_title = __('This field links to the Single Entry', 'gravity-view');
+		$settings_title = sprintf(__('Configure %s Settings', 'gravityview'), ucfirst($this->label_type));
+		$delete_title = sprintf(__('Remove %s', 'gravityview'), ucfirst($this->label_type));
+		$single_link_title = __('This field links to the Single Entry', 'gravityview');
 
 		// $settings_html will just be hidden inputs if empty. Otherwise, it'll have an <ul>. Ugly hack, I know.
 		// TODO: Un-hack this
@@ -177,7 +177,7 @@ class GravityView_Admin_View_Item {
 		$show_as_link = '<span class="dashicons dashicons-admin-links '.$hide_show_as_link_class.'" title="'.esc_attr( $single_link_title ).'"></span>';
 
 		// When a field label is empty, use the Field ID
-		$label = empty( $this->title ) ? sprintf( _x('Field #%s (No Label)', 'Label in field picker for empty label', 'gravity-view'), $this->id ) : $this->title;
+		$label = empty( $this->title ) ? sprintf( _x('Field #%s (No Label)', 'Label in field picker for empty label', 'gravityview'), $this->id ) : $this->title;
 
 		// If there's a custom label, and show label is checked, use that as the field heading
 		if( !empty( $this->settings['custom_label'] ) && !empty( $this->settings['show_label'] ) ) {

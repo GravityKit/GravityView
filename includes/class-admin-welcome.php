@@ -53,8 +53,8 @@ class GravityView_Welcome {
 		// Add help page to GravityView menu
 		add_submenu_page(
 			'edit.php?post_type=gravityview',
-			__('GravityView: Getting Started', 'gravity-view'),
-			__('Getting Started', 'gravity-view'),
+			__('GravityView: Getting Started', 'gravityview'),
+			__('Getting Started', 'gravityview'),
 			$this->minimum_capability,
 			'gv-getting-started',
 			array( $this, 'getting_started_screen' )
@@ -63,8 +63,8 @@ class GravityView_Welcome {
 		// Changelog Page
 		add_submenu_page(
 			'edit.php?post_type=gravityview',
-			__( 'Changelog', 'gravity-view' ),
-			__( 'Changelog', 'gravity-view' ),
+			__( 'Changelog', 'gravityview' ),
+			__( 'Changelog', 'gravityview' ),
 			$this->minimum_capability,
 			'gv-changelog',
 			array( $this, 'changelog_screen' )
@@ -73,8 +73,8 @@ class GravityView_Welcome {
 		// Credits Page
 		add_submenu_page(
 			'edit.php?post_type=gravityview',
-			__( 'Credits', 'gravity-view' ),
-			__( 'Credits', 'gravity-view' ),
+			__( 'Credits', 'gravityview' ),
+			__( 'Credits', 'gravityview' ),
 			$this->minimum_capability,
 			'gv-credits',
 			array( $this, 'credits_screen' )
@@ -144,18 +144,18 @@ class GravityView_Welcome {
 		$selected = !empty( $plugin_page ) ? $plugin_page : 'gv-getting-started';
 		?>
 
-		<h1><img class="alignleft" src="<?php echo plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ); ?>" width="100" height="132" /><?php printf( __( 'Welcome to GravityView %s', 'gravity-view' ), $display_version ); ?></h1>
-		<div class="about-text"><?php _e( 'Thank you for Installing GravityView. Beautifully display your Gravity Forms entries.', 'gravity-view' ); ?></div>
+		<h1><img class="alignleft" src="<?php echo plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ); ?>" width="100" height="132" /><?php printf( __( 'Welcome to GravityView %s', 'gravityview' ), $display_version ); ?></h1>
+		<div class="about-text"><?php _e( 'Thank you for Installing GravityView. Beautifully display your Gravity Forms entries.', 'gravityview' ); ?></div>
 
 		<h2 class="nav-tab-wrapper clear">
 			<a class="nav-tab <?php echo $selected == 'gv-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-getting-started', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
-				<?php _e( "Getting Started", 'gravity-view' ); ?>
+				<?php _e( "Getting Started", 'gravityview' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'gv-changelog' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-changelog', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
-				<?php _e( "List of Changes", 'gravity-view' ); ?>
+				<?php _e( "List of Changes", 'gravityview' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'gv-credits' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-credits', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
-				<?php _e( 'Credits', 'gravity-view' ); ?>
+				<?php _e( 'Credits', 'gravityview' ); ?>
 			</a>
 		</h2>
 		<?php
@@ -406,7 +406,7 @@ class GravityView_Welcome {
 
 			<?php $this->tabs(); ?>
 
-			<p class="about-description"><?php _e( 'GravityView is brought to you by:', 'gravity-view' ); ?></p>
+			<p class="about-description"><?php _e( 'GravityView is brought to you by:', 'gravityview' ); ?></p>
 
 			<div class="feature-section col two-col">
 
@@ -431,7 +431,7 @@ class GravityView_Welcome {
 
 			<div class="feature-section">
 				<div>
-					<h2><?php esc_attr_e( 'Contributors', 'gravity-view' ); ?></h2>
+					<h2><?php esc_attr_e( 'Contributors', 'gravityview' ); ?></h2>
 
 					<ul class="wp-people-group">
 						<li class="wp-person">Bengali translation by <a href="https://www.transifex.com/accounts/profile/tareqhi/">@tareqhi</a></li>
@@ -455,8 +455,8 @@ class GravityView_Welcome {
 
 					</ul>
 
-					<h4><?php esc_attr_e( 'Want to contribute?', 'gravity-view' ); ?></h4>
-					<p><?php echo sprintf( esc_attr__( 'If you want to contribute to the code, you can %srequest access to the Github repository%s. If your contributions are accepted, you will be thanked here.', 'gravity-view'), '<a href="mailto:zack@katzwebservices.com?subject=Github%20Access">', '</a>' ); ?></p>
+					<h4><?php esc_attr_e( 'Want to contribute?', 'gravityview' ); ?></h4>
+					<p><?php echo sprintf( esc_attr__( 'If you want to contribute to the code, you can %srequest access to the Github repository%s. If your contributions are accepted, you will be thanked here.', 'gravityview'), '<a href="mailto:zack@katzwebservices.com?subject=Github%20Access">', '</a>' ); ?></p>
 				</div>
 			</div>
 

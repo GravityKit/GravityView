@@ -32,23 +32,23 @@ class GravityView_Post_Types {
 
 		//Register Custom Post Type - gravityview
 		$labels = array(
-			'name'                => _x( 'Views', 'Post Type General Name', 'gravity-view' ),
-			'singular_name'       => _x( 'View', 'Post Type Singular Name', 'gravity-view' ),
-			'menu_name'           => _x( 'Views', 'Menu name', 'gravity-view' ),
-			'parent_item_colon'   => __( 'Parent View:', 'gravity-view' ),
-			'all_items'           => __( 'All Views', 'gravity-view' ),
-			'view_item'           => _x( 'View', 'View Item', 'gravity-view' ),
-			'add_new_item'        => __( 'Add New View', 'gravity-view' ),
-			'add_new'             => __( 'New View', 'gravity-view' ),
-			'edit_item'           => __( 'Edit View', 'gravity-view' ),
-			'update_item'         => __( 'Update View', 'gravity-view' ),
-			'search_items'        => __( 'Search Views', 'gravity-view' ),
+			'name'                => _x( 'Views', 'Post Type General Name', 'gravityview' ),
+			'singular_name'       => _x( 'View', 'Post Type Singular Name', 'gravityview' ),
+			'menu_name'           => _x( 'Views', 'Menu name', 'gravityview' ),
+			'parent_item_colon'   => __( 'Parent View:', 'gravityview' ),
+			'all_items'           => __( 'All Views', 'gravityview' ),
+			'view_item'           => _x( 'View', 'View Item', 'gravityview' ),
+			'add_new_item'        => __( 'Add New View', 'gravityview' ),
+			'add_new'             => __( 'New View', 'gravityview' ),
+			'edit_item'           => __( 'Edit View', 'gravityview' ),
+			'update_item'         => __( 'Update View', 'gravityview' ),
+			'search_items'        => __( 'Search Views', 'gravityview' ),
 			'not_found'           => self::no_views_text(),
-			'not_found_in_trash'  => __( 'No Views found in Trash', 'gravity-view' ),
+			'not_found_in_trash'  => __( 'No Views found in Trash', 'gravityview' ),
 		);
 		$args = array(
-			'label'               => __( 'view', 'gravity-view' ),
-			'description'         => __( 'Create views based on a Gravity Forms form', 'gravity-view' ),
+			'label'               => __( 'view', 'gravityview' ),
+			'description'         => __( 'Create views based on a Gravity Forms form', 'gravityview' ),
 			'labels'              => $labels,
 			'supports'            => array( 'title', 'genesis-layouts'),
 			'hierarchical'        => false,
@@ -116,7 +116,7 @@ class GravityView_Post_Types {
 		// Floaty the astronaut
 		$image = GravityView_Admin::get_floaty();
 
-		$not_found =  sprintf( esc_attr__("%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n\nIf you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page.", 'gravity-view' ), '<h3>', '<a href="'.admin_url('post-new.php?post_type=gravityview').'">', '</a>', '</h3>', '<a href="'.admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ).'">', '</a>' );
+		$not_found =  sprintf( esc_attr__("%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n\nIf you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page.", 'gravityview' ), '<h3>', '<a href="'.admin_url('post-new.php?post_type=gravityview').'">', '</a>', '</h3>', '<a href="'.admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ).'">', '</a>' );
 
 		return $image.wpautop( $not_found );
 	}

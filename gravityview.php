@@ -17,7 +17,7 @@
  * Version:          	1.2
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
- * Text Domain:       	gravity-view
+ * Text Domain:       	gravityview
  * License:           	GPLv2 or later
  * License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
  * Domain Path:			/languages
@@ -187,7 +187,7 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'gravity-view', false, dirname( plugin_basename( GRAVITYVIEW_FILE ) ) . '/languages/' );
+		load_plugin_textdomain( 'gravityview', false, dirname( plugin_basename( GRAVITYVIEW_FILE ) ) . '/languages/' );
 	}
 
 	/**
@@ -233,9 +233,9 @@ final class GravityView_Plugin {
 	 */
 	public static function get_default_widget_areas() {
 		$default_areas = array(
-			array( '1-1' => array( array( 'areaid' => 'top', 'title' => __('Top', 'gravity-view' ) , 'subtitle' => '' ) ) ),
-			array( '1-2' => array( array( 'areaid' => 'left', 'title' => __('Left', 'gravity-view') , 'subtitle' => '' ) ), '2-2' => array( array( 'areaid' => 'right', 'title' => __('Right', 'gravity-view') , 'subtitle' => '' ) ) ),
-			//array( '1-1' => array( 	array( 'areaid' => 'bottom', 'title' => __('Full Width Bottom', 'gravity-view') , 'subtitle' => '' ) ) )
+			array( '1-1' => array( array( 'areaid' => 'top', 'title' => __('Top', 'gravityview' ) , 'subtitle' => '' ) ) ),
+			array( '1-2' => array( array( 'areaid' => 'left', 'title' => __('Left', 'gravityview') , 'subtitle' => '' ) ), '2-2' => array( array( 'areaid' => 'right', 'title' => __('Right', 'gravityview') , 'subtitle' => '' ) ) ),
+			//array( '1-1' => array( 	array( 'areaid' => 'bottom', 'title' => __('Full Width Bottom', 'gravityview') , 'subtitle' => '' ) ) )
 		);
 
 		return apply_filters( 'gravityview_widget_active_areas', $default_areas );

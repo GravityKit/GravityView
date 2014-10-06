@@ -16,28 +16,28 @@ class GravityView_Field_Email extends GravityView_Field {
 			'emailmailto' => array(
 				'type' => 'checkbox',
 				'default' => true,
-				'label' => __( 'Link the Email Address', 'gravity-view' ),
-				'desc' => __( 'Clicking the link will generate a new email.', 'gravity-view' ),
+				'label' => __( 'Link the Email Address', 'gravityview' ),
+				'desc' => __( 'Clicking the link will generate a new email.', 'gravityview' ),
 			),
 			'emailsubject' => array(
 				'type' => 'text',
-				'label' => __( 'Email Subject', 'gravity-view' ),
+				'label' => __( 'Email Subject', 'gravityview' ),
 				'default' => '',
-				'desc' => __( 'Set the default email subject line.', 'gravity-view' ),
+				'desc' => __( 'Set the default email subject line.', 'gravityview' ),
 				'merge_tags' => 'force',
 			),
 			'emailbody' => array(
 				'type' => 'textarea',
-				'label' => __( 'Email Body', 'gravity-view' ),
+				'label' => __( 'Email Body', 'gravityview' ),
 				'default' => '',
-				'desc' => __( 'Set the default email content.', 'gravity-view' ),
+				'desc' => __( 'Set the default email content.', 'gravityview' ),
 				'merge_tags' => 'force',
 			),
 			'emailencrypt' => array(
 				'type' => 'checkbox',
 				'default' => true,
-				'label' => __( 'Encrypt Email Address', 'gravity-view' ),
-				'desc' => __( 'Make it harder for spammers to get email addresses from your entries. Email addresses will not be visible with Javascript disabled.', 'gravity-view' )
+				'label' => __( 'Encrypt Email Address', 'gravityview' ),
+				'desc' => __( 'Make it harder for spammers to get email addresses from your entries. Email addresses will not be visible with Javascript disabled.', 'gravityview' )
 			)
 		);
 

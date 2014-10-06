@@ -31,8 +31,8 @@ class GravityView_FieldType_checkbox extends GravityView_FieldType {
 		}
 
 		?>
-		<input name="<?php echo esc_attr( $this->name ); ?>" type="hidden" value="0">
-       	<input name="<?php echo esc_attr( $this->name ); ?>" id="<?php echo $this->get_field_id(); ?>" type="checkbox" value="1" <?php checked( $this->value, '1', true ); ?>>
+		<input name="<?php echo esc_attr( $this->name ); ?>" type="hidden" value="0" />
+       	<input name="<?php echo esc_attr( $this->name ); ?>" id="<?php echo $this->get_field_id(); ?>" type="checkbox" value="1" <?php checked( $this->value, '1', true ); ?> />
        	<?php
 	}
 

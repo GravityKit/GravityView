@@ -18,8 +18,8 @@ class GravityView_Field_Address extends GravityView_Field {
 
 		$add_options['show_map_link'] = array(
 			'type' => 'checkbox',
-			'label' => __( 'Show Map Link:', 'gravity-view' ),
-			'desc' => __('Display a "Map It" link below the address', 'gravity-view'),
+			'label' => __( 'Show Map Link:', 'gravityview' ),
+			'desc' => __('Display a "Map It" link below the address', 'gravityview'),
 			'default' => true,
 			'merge_tags' => false,
 		);

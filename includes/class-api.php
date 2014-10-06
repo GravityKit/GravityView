@@ -241,9 +241,9 @@ class GravityView_API {
 		}
 
 		if($is_search) {
-			$output = __("This search returned no results.", "gravity-view");
+			$output = __('This search returned no results.', 'gravityview');
 		} else {
-			$output = __("No entries match your request.", "gravity-view");
+			$output = __('No entries match your request.', 'gravityview');
 		}
 
 		$output = apply_filters( 'gravitview_no_entries_text', $output, $is_search);
@@ -385,7 +385,7 @@ function gravityview_back_link() {
 
 	// calculate link label
 	global $gravityview_view;
-	$label = !empty( $gravityview_view->back_link_label ) ? $gravityview_view->back_link_label : __( '&larr; Go back', 'gravity-view' );
+	$label = !empty( $gravityview_view->back_link_label ) ? $gravityview_view->back_link_label : __( '&larr; Go back', 'gravityview' );
 
 	// filter link label
 	$label = apply_filters( 'gravityview_go_back_label', $label );
@@ -633,7 +633,7 @@ function gravityview_get_map_link( $address ) {
 	$url = "https://maps.google.com/maps?q={$address_qs}";
 
 	// Generate HTML tag
-	$link = sprintf( '<a href="%s" class="map-it-link">%s</a>', esc_url( $url ), esc_html__( 'Map It', 'gravity-view' ) );
+	$link = sprintf( '<a href="%s" class="map-it-link">%s</a>', esc_url( $url ), esc_html__( 'Map It', 'gravityview' ) );
 
 	/**
 	 * Modify the map link generated. You can use a different mapping service, for example.

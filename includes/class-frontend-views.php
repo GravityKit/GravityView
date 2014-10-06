@@ -89,7 +89,7 @@ class GravityView_frontend {
 
 			$wp_admin_bar->add_menu( array(
 				'id' => 'edit-entry',
-				'title' => __('Edit Entry', 'gravity-view'),
+				'title' => __('Edit Entry', 'gravityview'),
 				'href' => admin_url( sprintf('admin.php?page=gf_entries&amp;view=entry&amp;id=%d&lid=%d', $this->entry['form_id'], $this->single_entry ) ),
 			) );
 
@@ -324,7 +324,7 @@ class GravityView_frontend {
 
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.');
 
-				esc_attr_e( 'You have attempted to view an entry that does not exist.', 'gravity-view');
+				esc_attr_e( 'You have attempted to view an entry that does not exist.', 'gravityview');
 
 				return;
 			}

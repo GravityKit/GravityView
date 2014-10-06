@@ -15,16 +15,16 @@ class GravityView_Field_Custom extends GravityView_Field {
 		$new_fields = array(
 			'content' => array(
 				'type' => 'textarea',
-				'label' => __( 'Custom Content', 'gravity-view' ),
-				'desc' => __( 'Enter text or HTML. Also supports shortcodes.', 'gravity-view' ),
+				'label' => __( 'Custom Content', 'gravityview' ),
+				'desc' => __( 'Enter text or HTML. Also supports shortcodes.', 'gravityview' ),
 				'default' => '',
 				'class'	=> 'code',
 				'merge_tags' => 'force',
 			),
 			'wpautop' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Automatically add paragraphs to content', 'gravity-view' ),
-				'tooltip' => __( 'Wrap each block of text in an HTML paragraph tag (recommended for text).', 'gravity-view' ),
+				'label' => __( 'Automatically add paragraphs to content', 'gravityview' ),
+				'tooltip' => __( 'Wrap each block of text in an HTML paragraph tag (recommended for text).', 'gravityview' ),
 				'default' => '',
 			),
 		);

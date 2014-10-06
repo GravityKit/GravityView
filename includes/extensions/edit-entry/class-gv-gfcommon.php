@@ -32,9 +32,9 @@ class GV_GFCommon extends GFCommon {
 
 				if( is_numeric( $lead["post_id"] ) && self::is_post_field( $field ) ){
 					if( false === current_user_can( 'edit_post', $lead["post_id"] ) ) {
-				    	return __('You don&rsquo;t have permission to edit this post.', 'gravity-view');
+				    	return __('You don&rsquo;t have permission to edit this post.', 'gravityview');
 				    } else {
-				    	return sprintf( __('You can %sedit this post%s from the post page.', 'gravity-view'), "<a href='".admin_url("post.php?action=edit&amp;post={$lead["post_id"]}")."''>", '</a>' );
+				    	return sprintf( __('You can %sedit this post%s from the post page.', 'gravityview'), "<a href='".admin_url("post.php?action=edit&amp;post={$lead["post_id"]}")."''>", '</a>' );
 				    }
 				}
 
@@ -98,7 +98,7 @@ class GV_GFCommon extends GFCommon {
 			                'flash_swf_url' => includes_url('js/plupload/plupload.flash.swf'),
 			                'silverlight_xap_url' => includes_url('js/plupload/plupload.silverlight.xap'),
 			                'filters' => array(
-			                    'mime_types' => array(array('title' => __( 'Allowed Files', 'gravity-view' ), 'extensions' => $allowed_extensions)),
+			                    'mime_types' => array(array('title' => __( 'Allowed Files', 'gravityview' ), 'extensions' => $allowed_extensions)),
 			                    'max_file_size' => $max_upload_size . 'b'
 			                ),
 			                'multipart' => true,
@@ -117,7 +117,7 @@ class GV_GFCommon extends GFCommon {
 			            // plupload 2 was introduced in WordPress 3.9. Plupload 1 accepts a slightly different init array.
 			            if (version_compare(get_bloginfo('version'), "3.9-RC1", "<")) {
 			                $plupload_init['max_file_size'] = $max_upload_size . 'b';
-			                $plupload_init['filters']       = array(array('title' => __('Allowed Files', 'gravity-view'), 'extensions' => $allowed_extensions));
+			                $plupload_init['filters']       = array(array('title' => __('Allowed Files', 'gravityview'), 'extensions' => $allowed_extensions));
 			            }
 			        }
 
@@ -130,7 +130,7 @@ class GV_GFCommon extends GFCommon {
 			            $plupload_init['multi_selection'] = false;
 
 			        $plupload_init_json = htmlspecialchars(json_encode($plupload_init), ENT_QUOTES, 'UTF-8');
-			        $upload = sprintf("<div id='%s' data-settings='%s' class='gform_fileupload_multifile'><div id='%s' class='gform_drop_area'><span class='gform_drop_instructions'>%s </span><input id='%s' type='button' value='%s' class='button gform_button_select_files'/></div></div>",$container_id, $plupload_init_json, $drag_drop_id, __("Drop files here or" ,"gravity-view"), $browse_button_id, __("Select files", "gravity-view") ) ;
+			        $upload = sprintf("<div id='%s' data-settings='%s' class='gform_fileupload_multifile'><div id='%s' class='gform_drop_area'><span class='gform_drop_instructions'>%s </span><input id='%s' type='button' value='%s' class='button gform_button_select_files'/></div></div>",$container_id, $plupload_init_json, $drag_drop_id, __('Drop files here or' ,'gravityview'), $browse_button_id, __('Select files', 'gravityview') ) ;
 
 			        // Display plupload messages here
 			        $upload .= "<div class='validation_message'><ul id='{$messages_id}'></ul></div>";
@@ -157,7 +157,7 @@ class GV_GFCommon extends GFCommon {
 			                $file_url = str_replace("http:", "https:", $file_url);
 			            }
 			            $file_url = esc_attr($file_url);
-			            $preview .= sprintf("<div id='preview_file_%d' class='ginput_preview'><a href='%s' target='_blank' alt='%s' title='%s'>%s</a><a href='%s' target='_blank' alt='" . __("Download file", "gravity-view") . "' title='" . __("Download file", "gravity-view") . "'><img src='%s' style='margin-left:10px;'/></a><a href='javascript:void(0);' alt='" . __("Delete file", "gravity-view") . "' title='" . __("Delete file", "gravity-view") . "' onclick='DeleteFile(%d,%d,this);' ><img src='%s' style='margin-left:10px;'/></a></div>", $file_index, $file_url, $file_url, $file_url, GFCommon::truncate_url($file_url), $file_url, GFCommon::get_base_url() . "/images/download.png", $lead_id, $id, GFCommon::get_base_url() . "/images/delete.png");
+			            $preview .= sprintf("<div id='preview_file_%d' class='ginput_preview'><a href='%s' target='_blank' alt='%s' title='%s'>%s</a><a href='%s' target='_blank' alt='" . __('Download file', 'gravityview') . "' title='" . __('Download file', 'gravityview') . "'><img src='%s' style='margin-left:10px;'/></a><a href='javascript:void(0);' alt='" . __('Delete file', 'gravityview') . "' title='" . __('Delete file', 'gravityview') . "' onclick='DeleteFile(%d,%d,this);' ><img src='%s' style='margin-left:10px;'/></a></div>", $file_index, $file_url, $file_url, $file_url, GFCommon::truncate_url($file_url), $file_url, GFCommon::get_base_url() . "/images/download.png", $lead_id, $id, GFCommon::get_base_url() . "/images/delete.png");
 			        }
 
 			        $preview .="</div>";

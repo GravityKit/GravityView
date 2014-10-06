@@ -39,19 +39,19 @@ class GravityView_Admin_Metaboxes {
 		}
 
 		// select data source for this view
-		add_meta_box( 'gravityview_select_form', __( 'Data Source', 'gravity-view' ).$links, array( $this, 'render_select_form_metabox' ), 'gravityview', 'normal', 'high' );
+		add_meta_box( 'gravityview_select_form', __( 'Data Source', 'gravityview' ).$links, array( $this, 'render_select_form_metabox' ), 'gravityview', 'normal', 'high' );
 
 		// select view type/template
-		add_meta_box( 'gravityview_select_template', __( 'Choose a View Type', 'gravity-view' ), array( $this, 'render_select_template_metabox' ), 'gravityview', 'normal', 'high' );
+		add_meta_box( 'gravityview_select_template', __( 'Choose a View Type', 'gravityview' ), array( $this, 'render_select_template_metabox' ), 'gravityview', 'normal', 'high' );
 
 		// View Configuration box
-		add_meta_box( 'gravityview_view_config', __( 'View Configuration', 'gravity-view' ), array( $this, 'render_view_configuration_metabox' ), 'gravityview', 'normal', 'high' );
+		add_meta_box( 'gravityview_view_config', __( 'View Configuration', 'gravityview' ), array( $this, 'render_view_configuration_metabox' ), 'gravityview', 'normal', 'high' );
 
 		// Other Settings box
-		add_meta_box( 'gravityview_template_settings', __( 'View Settings', 'gravity-view' ), array( $this, 'render_view_settings_metabox' ), 'gravityview', 'side', 'core' );
+		add_meta_box( 'gravityview_template_settings', __( 'View Settings', 'gravityview' ), array( $this, 'render_view_settings_metabox' ), 'gravityview', 'side', 'core' );
 
 		// Filter & Sort box
-		add_meta_box( 'gravityview_sort_filter', __( 'Filter &amp; Sort', 'gravity-view' ), array( $this, 'render_sort_filter_metabox' ), 'gravityview', 'normal', 'high' );
+		add_meta_box( 'gravityview_sort_filter', __( 'Filter &amp; Sort', 'gravityview' ), array( $this, 'render_sort_filter_metabox' ), 'gravityview', 'normal', 'high' );
 
 		// information box
 		add_action( 'post_submitbox_misc_actions', array( $this, 'render_shortcode_hint' ) );
@@ -78,7 +78,7 @@ class GravityView_Admin_Metaboxes {
 		$current_form = gravityview_get_form_id( $post->ID );
 
 		// input ?>
-		<label for="gravityview_form_id" ><?php esc_html_e( 'Where would you like the data to come from for this View?', 'gravity-view' ); ?></label>
+		<label for="gravityview_form_id" ><?php esc_html_e( 'Where would you like the data to come from for this View?', 'gravityview' ); ?></label>
 
 		<?php
 		// check for available gravity forms
@@ -88,10 +88,10 @@ class GravityView_Admin_Metaboxes {
 		<p>
 			<?php if ( empty( $current_form ) ) : ?>
 				<?php // render "start fresh" button ?>
-				<a class="button button-primary" href="#gv_start_fresh" title="<?php esc_attr_e( 'Start Fresh', 'gravity-view' ); ?>"><?php esc_html_e( 'Start Fresh', 'gravity-view' ); ?></a>
+				<a class="button button-primary" href="#gv_start_fresh" title="<?php esc_attr_e( 'Start Fresh', 'gravityview' ); ?>"><?php esc_html_e( 'Start Fresh', 'gravityview' ); ?></a>
 
 				<?php if( !empty( $forms ) ) { ?>
-				<span>&nbsp;<?php esc_html_e( 'or use an existing form', 'gravity-view' ); ?>&nbsp;</span>
+				<span>&nbsp;<?php esc_html_e( 'or use an existing form', 'gravityview' ); ?>&nbsp;</span>
 				<?php } ?>
 
 			<?php endif; ?>
@@ -100,34 +100,34 @@ class GravityView_Admin_Metaboxes {
 			// If there are no forms to select, show no forms.
 			if( !empty( $forms ) ) { ?>
 			<select name="gravityview_form_id" id="gravityview_form_id">
-				<option value="" <?php selected( '', $current_form, true ); ?>>&mdash; <?php esc_html_e( 'list of forms', 'gravity-view' ); ?> &mdash;</option>
+				<option value="" <?php selected( '', $current_form, true ); ?>>&mdash; <?php esc_html_e( 'list of forms', 'gravityview' ); ?> &mdash;</option>
 				<?php foreach( $forms as $form ) : ?>
 					<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current_form, true ); ?>><?php echo $form['title']; ?></option>
 				<?php endforeach; ?>
 			</select>
 			<?php } ?>
 
-			&nbsp;<a class="button button-primary" <?php if( empty( $current_form ) ) { echo 'style="display:none;"'; } ?> id="gv_switch_view_button" href="#gv_switch_view" title="<?php esc_attr_e( 'Switch View', 'gravity-view' ); ?>"><?php esc_html_e( 'Switch View Type', 'gravity-view' ); ?></a>
+			&nbsp;<a class="button button-primary" <?php if( empty( $current_form ) ) { echo 'style="display:none;"'; } ?> id="gv_switch_view_button" href="#gv_switch_view" title="<?php esc_attr_e( 'Switch View', 'gravityview' ); ?>"><?php esc_html_e( 'Switch View Type', 'gravityview' ); ?></a>
 		</p>
 
 		<?php // confirm dialog box ?>
-		<div id="gravityview_form_id_dialog" class="gv-dialog-options gv-dialog-warning" title="<?php esc_attr_e( 'Attention', 'gravity-view' ); ?>">
-			<p><?php esc_html_e( 'Changing the form will reset your field configuration. Changes will be permanent once you save the View.', 'gravity-view' ); ?></p>
+		<div id="gravityview_form_id_dialog" class="gv-dialog-options gv-dialog-warning" title="<?php esc_attr_e( 'Attention', 'gravityview' ); ?>">
+			<p><?php esc_html_e( 'Changing the form will reset your field configuration. Changes will be permanent once you save the View.', 'gravityview' ); ?></p>
 		</div>
 
 		<?php // confirm template dialog box ?>
-		<div id="gravityview_switch_template_dialog" class="gv-dialog-options gv-dialog-warning" title="<?php esc_attr_e( 'Attention', 'gravity-view' ); ?>">
-			<p><?php esc_html_e( 'Changing the View Type will reset your field configuration. Changes will be permanent once you save the View.', 'gravity-view' ); ?></p>
+		<div id="gravityview_switch_template_dialog" class="gv-dialog-options gv-dialog-warning" title="<?php esc_attr_e( 'Attention', 'gravityview' ); ?>">
+			<p><?php esc_html_e( 'Changing the View Type will reset your field configuration. Changes will be permanent once you save the View.', 'gravityview' ); ?></p>
 		</div>
 
 		<?php // no js notice ?>
 		<div class="error hide-if-js">
-			<p><?php esc_html_e( 'GravityView requires Javascript to be enabled.', 'gravity-view' ); ?></p>
+			<p><?php esc_html_e( 'GravityView requires Javascript to be enabled.', 'gravityview' ); ?></p>
 		</div>
 
 		<?php
 		// hidden field to keep track of start fresh state ?>
-		<input type="hidden" id="gravityview_form_id_start_fresh" name="gravityview_form_id_start_fresh" value="0">
+		<input type="hidden" id="gravityview_form_id_start_fresh" name="gravityview_form_id_start_fresh" value="0" />
 		<?php
 	}
 
@@ -151,7 +151,7 @@ class GravityView_Admin_Metaboxes {
 
 
 		// current input ?>
-		<input type="hidden" id="gravityview_directory_template" name="gravityview_directory_template" value="<?php echo esc_attr( $current_template ); ?>">
+		<input type="hidden" id="gravityview_directory_template" name="gravityview_directory_template" value="<?php echo esc_attr( $current_template ); ?>" />
 
 		<?php // list all the available templates (type= fresh or custom ) ?>
 		<div class="gv-grid">
@@ -163,11 +163,11 @@ class GravityView_Admin_Metaboxes {
 						<div class="gv-view-types-hover">
 							<div>
 								<?php if( !empty( $template['buy_source'] ) ) : ?>
-									<p><a href="<?php echo esc_url( $template['buy_source'] ); ?>" class="button-primary button-buy-now"><?php esc_html_e( 'Buy Now', 'gravity-view'); ?></a></p>
+									<p><a href="<?php echo esc_url( $template['buy_source'] ); ?>" class="button-primary button-buy-now"><?php esc_html_e( 'Buy Now', 'gravityview'); ?></a></p>
 								<?php else: ?>
-									<p><a href="#gv_select_template" class="button button-large button-primary" data-templateid="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Select', 'gravity-view'); ?></a></p>
+									<p><a href="#gv_select_template" class="button button-large button-primary" data-templateid="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Select', 'gravityview'); ?></a></p>
 									<?php if( !empty( $template['preview'] ) ) : ?>
-										<a href="<?php echo esc_url( $template['preview'] ); ?>" rel="external" class="gv-site-preview"><i class="dashicons dashicons-admin-links" title="<?php esc_html_e( 'View a live demo of this preset', 'gravity-view'); ?>"></i></a>
+										<a href="<?php echo esc_url( $template['preview'] ); ?>" rel="external" class="gv-site-preview"><i class="dashicons dashicons-admin-links" title="<?php esc_html_e( 'View a live demo of this preset', 'gravityview'); ?>"></i></a>
 									<?php endif; ?>
 								<?php endif; ?>
 							</div>
@@ -245,19 +245,19 @@ class GravityView_Admin_Metaboxes {
 		<div id="gv-view-configuration-tabs">
 
 			<ul class="nav-tab-wrapper">
-				<li><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page"></i> <?php esc_html_e( 'Multiple Entries', 'gravity-view' ); ?></a></li>
-				<li><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default"></i> <?php esc_html_e( 'Single Entry', 'gravity-view' ); ?></a></li>
+				<li><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page"></i> <?php esc_html_e( 'Multiple Entries', 'gravityview' ); ?></a></li>
+				<li><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default"></i> <?php esc_html_e( 'Single Entry', 'gravityview' ); ?></a></li>
 			</ul>
 
 			<div id="directory-view">
 
 				<div id="directory-fields" class="gv-section">
 
-					<h4><?php esc_html_e( 'Above Entries Widgets', 'gravity-view'); ?> <span><?php esc_html_e( 'These widgets will be shown above entries.', 'gravity-view'); ?></span></h4>
+					<h4><?php esc_html_e( 'Above Entries Widgets', 'gravityview'); ?> <span><?php esc_html_e( 'These widgets will be shown above entries.', 'gravityview'); ?></span></h4>
 
 					<?php do_action('gravityview_render_widgets_active_areas', $curr_template, 'header', $post->ID ); ?>
 
-					<h4><?php esc_html_e( 'Entries Fields', 'gravity-view'); ?> <span><?php esc_html_e( 'These fields will be shown for each entry.', 'gravity-view'); ?></span></h4>
+					<h4><?php esc_html_e( 'Entries Fields', 'gravityview'); ?> <span><?php esc_html_e( 'These fields will be shown for each entry.', 'gravityview'); ?></span></h4>
 
 					<div id="directory-active-fields" class="gv-grid gv-grid-pad gv-grid-border">
 						<?php if(!empty( $curr_template ) ) {
@@ -265,7 +265,7 @@ class GravityView_Admin_Metaboxes {
 						} ?>
 					</div>
 
-					<h4><?php esc_html_e( 'Below Entries Widgets', 'gravity-view'); ?> <span><?php esc_html_e( 'These widgets will be shown below entries.', 'gravity-view'); ?></span></h4>
+					<h4><?php esc_html_e( 'Below Entries Widgets', 'gravityview'); ?> <span><?php esc_html_e( 'These widgets will be shown below entries.', 'gravityview'); ?></span></h4>
 
 					<?php do_action('gravityview_render_widgets_active_areas', $curr_template, 'footer', $post->ID ); ?>
 
@@ -295,7 +295,7 @@ class GravityView_Admin_Metaboxes {
 
 				<div id="single-fields" class="gv-section">
 
-					<h4><?php esc_html_e( 'These fields will be shown in Single Entry view.', 'gravity-view'); ?></h4>
+					<h4><?php esc_html_e( 'These fields will be shown in Single Entry view.', 'gravityview'); ?></h4>
 
 					<div id="single-active-fields" class="gv-grid gv-grid-pad gv-grid-border">
 						<?php if(!empty( $curr_template ) ) {
@@ -352,7 +352,7 @@ class GravityView_Admin_Metaboxes {
 
 		</table>
 
-		<h3 style="margin-top:1em;"><?php esc_html_e( 'Single Entry Settings', 'gravity-view'); ?>:</h3>
+		<h3 style="margin-top:1em;"><?php esc_html_e( 'Single Entry Settings', 'gravityview'); ?>:</h3>
 
 		<table class="form-table"><?php
 
@@ -426,7 +426,7 @@ class GravityView_Admin_Metaboxes {
 		// Only show this on GravityView post types.
 		if( false === gravityview_is_admin_page() ) { return; }
 
-		printf('<div class="misc-pub-section gv-shortcode misc-pub-section-last"><i class="dashicons dashicons-editor-code"></i> <span>%s</span><div><input type="text" readonly="readonly" value="[gravityview id=\'%d\']" class="code widefat" /><span class="howto">%s</span></div></div>', esc_html__( 'Embed Shortcode', 'gravity-view' ), $post->ID, esc_html__( 'Add this shortcode to a post or page to embed this view.', 'gravity-view' ) );
+		printf('<div class="misc-pub-section gv-shortcode misc-pub-section-last"><i class="dashicons dashicons-editor-code"></i> <span>%s</span><div><input type="text" readonly="readonly" value="[gravityview id=\'%d\']" class="code widefat" /><span class="howto">%s</span></div></div>', esc_html__( 'Embed Shortcode', 'gravityview' ), $post->ID, esc_html__( 'Add this shortcode to a post or page to embed this view.', 'gravityview' ) );
 	}
 
 	/**

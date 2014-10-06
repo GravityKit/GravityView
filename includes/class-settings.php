@@ -101,18 +101,18 @@ if (!class_exists('GravityView_Settings')) {
 
 			$message = esc_html__('Your GravityView license %s. This means you&rsquo;re missing out on updates and support! %sActivate your license%s or %sget a license here%s.');
 
-			$title = __('Inactive License', 'gravity-view');
+			$title = __('Inactive License', 'gravityview');
 
 			switch ( $license_status ) {
 				case 'invalid':
-					$title = __('Invalid License', 'gravity-view');
-					$status = __('is invalid', 'gravity-view');
+					$title = __('Invalid License', 'gravityview');
+					$status = __('is invalid', 'gravityview');
 					break;
 				case 'deactivated':
-					$status = __('is inactive', 'gravity-view');
+					$status = __('is inactive', 'gravityview');
 					break;
 				case 'site_inactive':
-					$status = __('has not been activated', 'gravity-view');
+					$status = __('has not been activated', 'gravityview');
 					break;
 			}
 
@@ -139,22 +139,22 @@ if (!class_exists('GravityView_Settings')) {
 		public function edd_settings_strings( $strings ) {
 
 			$new_strings = array(
-				'status' => esc_html__('Status', 'gravity-view'),
-				'error' => esc_html__('There was an error processing the request.', 'gravity-view'),
-				'failed'  => esc_html__('Could not deactivate the license. The submitted license key may not be active.', 'gravity-view'),
-				'site_inactive' => esc_html__('Not Activated', 'gravity-view'),
-				'no_activations_left' => esc_html__('Invalid; this license has reached its activation limit.', 'gravity-view'),
-				'deactivated' => esc_html__('Deactivated', 'gravity-view'),
-				'valid' => esc_html__('Valid', 'gravity-view'),
-				'invalid' => esc_html__('Not Valid', 'gravity-view'),
-				'missing' => esc_html__('Not Valid', 'gravity-view'),
-				'revoked' => esc_html__('The license key has been revoked.', 'gravity-view'),
-				'expired' => esc_html__('The license key has expired.', 'gravity-view'),
+				'status' => esc_html__('Status', 'gravityview'),
+				'error' => esc_html__('There was an error processing the request.', 'gravityview'),
+				'failed'  => esc_html__('Could not deactivate the license. The submitted license key may not be active.', 'gravityview'),
+				'site_inactive' => esc_html__('Not Activated', 'gravityview'),
+				'no_activations_left' => esc_html__('Invalid; this license has reached its activation limit.', 'gravityview'),
+				'deactivated' => esc_html__('Deactivated', 'gravityview'),
+				'valid' => esc_html__('Valid', 'gravityview'),
+				'invalid' => esc_html__('Not Valid', 'gravityview'),
+				'missing' => esc_html__('Not Valid', 'gravityview'),
+				'revoked' => esc_html__('The license key has been revoked.', 'gravityview'),
+				'expired' => esc_html__('The license key has expired.', 'gravityview'),
 
-				'verifying_license' => esc_html__('Verifying license&hellip;', 'gravity-view'),
-				'activate_license' => esc_html__('Activate License', 'gravity-view'),
-				'deactivate_license' => esc_html__('Deactivate License', 'gravity-view'),
-				'check_license' => esc_html__('Verify License', 'gravity-view'),
+				'verifying_license' => esc_html__('Verifying license&hellip;', 'gravityview'),
+				'activate_license' => esc_html__('Activate License', 'gravityview'),
+				'deactivate_license' => esc_html__('Deactivate License', 'gravityview'),
+				'check_license' => esc_html__('Verify License', 'gravityview'),
 			);
 
 			return $new_strings;
@@ -175,22 +175,22 @@ if (!class_exists('GravityView_Settings')) {
 						'version'	=> GravityView_Plugin::version,
 						'mode'		=> 'plugin',
 						'path'		=> GRAVITYVIEW_FILE,
-						'title'     => __('License Key', 'gravity-view'),
-						'subtitle'  => __('Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravity-view'),
+						'title'     => __('License Key', 'gravityview'),
+						'subtitle'  => __('Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview'),
 					),
 					array(
 						'id'        => 'support-email',
 						'type'      => 'text',
 						'validate'	=> 'email',
 						'default'   => get_bloginfo( 'admin_email' ),
-						'title'     => __('Support Email', 'gravity-view'),
-						'subtitle'  => __('In order to provide responses to your support requests, please provide your email address.', 'gravity-view'),
+						'title'     => __('Support Email', 'gravityview'),
+						'subtitle'  => __('In order to provide responses to your support requests, please provide your email address.', 'gravityview'),
 					),
 					array(
 						'id'        => 'no-conflict-mode',
 						'type'      => 'switch',
-						'title'     => __('No-Conflict Mode', 'gravity-view'),
-						'subtitle'  => __('Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravity-view'),
+						'title'     => __('No-Conflict Mode', 'gravityview'),
+						'subtitle'  => __('Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview'),
 					)
 			));
 
@@ -208,7 +208,7 @@ if (!class_exists('GravityView_Settings')) {
 			}
 
 			$this->sections[] = array(
-				'title'     => __('GravityView Settings', 'gravity-view'),
+				'title'     => __('GravityView Settings', 'gravityview'),
 				'icon'      => 'el-icon-home',
 				'fields'    => array_merge( $fields, $extension_fields )
 			);
@@ -242,8 +242,8 @@ if (!class_exists('GravityView_Settings')) {
 				'display_version'   => GravityView_Plugin::version,  // Version that appears at the top of your panel
 				'menu_type'         => 'submenu',                  //Specify if the admin menu should appear or not. Options: menu or submenu (Under appearance only)
 				'allow_sub_menu'    => true,                    // Show the sections below the admin menu item or not
-				'menu_title'        => __('Settings', 'gravity-view'),
-				'page_title'        => __('Settings', 'gravity-view'),
+				'menu_title'        => __('Settings', 'gravityview'),
+				'page_title'        => __('Settings', 'gravityview'),
 
 				'async_typography'  => false,                    // Use a asynchronous font on the front end or font string
 				'admin_bar'         => false,                    // Show the panel pages on the admin bar
@@ -308,7 +308,7 @@ if (!class_exists('GravityView_Settings')) {
 				),
 				array(
 					'url'   => 'https://plus.google.com/115639371871185834833/about',
-					'title' => __('Follow us on Google+', 'gravity-view' ),
+					'title' => __('Follow us on Google+', 'gravityview' ),
 					'icon' => 'el-icon-googleplus',
 				),
 			);

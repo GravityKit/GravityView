@@ -142,9 +142,9 @@ class GravityView_Edit_Entry {
 
 		$add_option['edit_link'] = array(
 			'type' => 'text',
-			'label' => __( 'Edit Link Text', 'gravity-view' ),
+			'label' => __( 'Edit Link Text', 'gravityview' ),
 			'desc' => NULL,
-			'default' => __('Edit Entry', 'gravity-view'),
+			'default' => __('Edit Entry', 'gravityview'),
 			'merge_tags' => true,
 		);
 
@@ -160,9 +160,9 @@ class GravityView_Edit_Entry {
 	function add_default_field( $entry_default_fields, $form = array(), $zone = '' ) {
 
 		$entry_default_fields['edit_link'] = array(
-			'label' => __('Edit Entry', 'gravity-view'),
+			'label' => __('Edit Entry', 'gravityview'),
 			'type' => 'edit_link',
-			'desc'	=> __('A link to edit the entry. Visible based on View settings.', 'gravity-view'),
+			'desc'	=> __('A link to edit the entry. Visible based on View settings.', 'gravityview'),
 		);
 
 		return $entry_default_fields;
@@ -175,7 +175,7 @@ class GravityView_Edit_Entry {
 	function add_available_field( $available_fields = array() ) {
 
 		$available_fields['edit_link'] = array(
-			'label_text' => __( 'Edit Entry', 'gravity-view' ),
+			'label_text' => __( 'Edit Entry', 'gravityview' ),
 			'field_id' => 'edit_link',
 			'label_type' => 'field',
 			'input_type' => 'edit_link',
@@ -550,15 +550,15 @@ class GravityView_Edit_Entry {
 		$error = NULL;
 
 		if( ! $this->verify_nonce() ) {
-			$error = __( 'The link to edit this entry is not valid; it may have expired.', 'gravity-view');
+			$error = __( 'The link to edit this entry is not valid; it may have expired.', 'gravityview');
 		}
 
 		if( ! self::check_user_cap_edit_entry( $this->entry ) ) {
-			$error = __( 'You do not have permission to edit this entry.', 'gravity-view');
+			$error = __( 'You do not have permission to edit this entry.', 'gravityview');
 		}
 
 		if( $this->entry['status'] === 'trash' ) {
-			$error = __('You cannot edit the entry; it is in the trash.', 'gravity-view' );
+			$error = __('You cannot edit the entry; it is in the trash.', 'gravityview' );
 		}
 
 		// No errors; everything's fine here!
@@ -661,7 +661,7 @@ class GravityView_Edit_Entry {
 		<?php include_once( self::$file .'/inline-javascript.php'); ?>
 
 		<h2 class="gv-edit-entry-title">
-			<span><?php echo esc_attr( apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravity-view'), $this ) ); ?></span>
+			<span><?php echo esc_attr( apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravityview'), $this ) ); ?></span>
 		</h2>
 
 		<?php
@@ -672,7 +672,7 @@ class GravityView_Edit_Entry {
 			if( ! $this->is_valid ){
 
 				// Keeping this compatible with Gravity Forms.
-			    $validation_message = "<div class='validation_error'>" . __("There was a problem with your submission.", "gravity-view") . " " . __("Errors have been highlighted below.", "gravity-view") . "</div>";
+			    $validation_message = "<div class='validation_error'>" . __('There was a problem with your submission.', 'gravityview') . " " . __('Errors have been highlighted below.', 'gravityview') . "</div>";
 			    $message = apply_filters("gform_validation_message_{$this->form['id']}", apply_filters("gform_validation_message", $validation_message, $this->form), $this->form);
 
 			    echo $this->generate_notice( $message , 'gv-error' );
@@ -713,9 +713,9 @@ class GravityView_Edit_Entry {
 			GFEntryDetail::lead_detail_edit( $this->form, $this->entry );
 	?>
 		<div id="publishing-action">
-		    <input class="btn btn-lg button button-large button-primary" type="submit" tabindex="4" value="<?php esc_attr_e( 'Update', 'gravity-view'); ?>" name="save" />
+		    <input class="btn btn-lg button button-large button-primary" type="submit" tabindex="4" value="<?php esc_attr_e( 'Update', 'gravityview'); ?>" name="save" />
 
-            <a class="btn btn-sm button button-small" tabindex="5" href="<?php echo $back_link ?>"><?php esc_attr_e( 'Cancel', 'gravity-view' ); ?></a>
+            <a class="btn btn-sm button button-small" tabindex="5" href="<?php echo $back_link ?>"><?php esc_attr_e( 'Cancel', 'gravityview' ); ?></a>
 		</div>
 <?php
 		GFFormDisplay::footer_init_scripts($this->form_id);
