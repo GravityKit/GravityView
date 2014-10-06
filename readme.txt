@@ -52,6 +52,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 	- Modified: `gv_field_label()` no longer returns the label with a trailing space. Instead, we use the `.gv-field-label` CSS class to add spacing using CSS padding.
 * Fixed: Conflict with Relevanssi plugin
 * Fixed: If a date search isn't valid, remove the search parameter so it doesn't cause an error in Gravity Forms
+* Fixed: Email field was displaying label even when email was empty.
 * Settings page improvements
 	- When changing the license value and saving the form, GravityView now re-checks the license status
 	- Improved error messages
