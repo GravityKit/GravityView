@@ -45,7 +45,7 @@
             	.on('click', 'a[href="#gv_start_fresh"]', vcfg.startFresh)
 
             	// when saving the View, try to create form before proceeding
-            	.on('submit', '#post', vcfg.createPresetForm)
+            	.on('submit', '#post', vcfg.processFormSubmit)
 
             	// Hover overlay show/hide
             	.on('click', ".gv-view-types-hover", vcfg.selectTemplateHover)
@@ -1117,6 +1117,52 @@
 
         },
 
+        processFormSubmit: function( e ) {
+        	var vcfg = viewConfiguration;
+			var templateId = $("#gravityview_directory_template").val();
+
+        	// If the View isn't a Start Fresh view, we just return true
+        	// so that the click on the Publish button can process.
+        	if (!vcfg.startFreshStatus || templateId === '') {
+
+        		// Serialize the inputs so that `max_input_vars`
+        		vcfg.serializeForm( e );
+
+        		return true;
+        	}
+
+        	vcfg.createPresetForm( e, templateId );
+
+        },
+
+        /**
+         * Serialize all GV field data and submit it all as one field value
+         *
+         * To fix issues where there are too many array items, causing PHP max_input_vars threshold to be met
+         *
+         * @param  {[type]} e [description]
+         * @return {[type]}   [description]
+         */
+        serializeForm: function () {
+
+        	// Get all the fields where the `name` attribute start with `fields`
+        	var $fields = $('#post :input[name^=fields]');
+
+        	// Serialize the data
+        	var serialized_data = $fields.serialize();
+
+        	// Remove the fields from the $_POSTed data
+        	$fields.remove();
+
+        	// Add a field to the form that contains all the data.
+        	$('#post').append( $('<input/>', {
+        		'name' : 'fields',
+        		'value': serialized_data,
+        		'type': 'hidden'
+        	}));
+
+        },
+
         /**
          * Create a Gravity Forms form using a preset defined by the View Template selected during Start Fresh
          *
@@ -1125,15 +1171,8 @@
          * @see GravityView_Admin_Views::create_preset_form()
          * @return boolean|void
          */
-        createPresetForm: function ( e ) {
-            var vcfg = viewConfiguration,
-                templateId = $("#gravityview_directory_template").val();
-
-            // If the View isn't a Start Fresh view, we just return true
-            // so that the click on the Publish button can process.
-            if (!vcfg.startFreshStatus || templateId === '') {
-            	return true;
-            }
+        createPresetForm: function ( e, templateId ) {
+            var vcfg = viewConfiguration;
 
             e.preventDefault();
 
@@ -1158,8 +1197,9 @@
                     $(e.target).submit();
 
                 } else {
+
                     $("#post").before('<div id="message" class="error below-h2"><p>' + gvGlobals.label_publisherror + '</p></div>');
-                   return false;
+
                 }
             });
 

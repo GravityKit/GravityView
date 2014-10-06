@@ -302,20 +302,22 @@ class GravityView_Admin_Views {
 
 		do_action( 'gravityview_log_debug', '[save_postdata] Saving View post type.', $_POST );
 
+		$statii = array();
+
 		// check if this is a start fresh View
 		if ( isset( $_POST['gravityview_select_form_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_form_nonce'], 'gravityview_select_form' ) ) {
 
 			$form_id = !empty( $_POST['gravityview_form_id'] ) ? $_POST['gravityview_form_id'] : '';
 			// save form id
-			update_post_meta( $post_id, '_gravityview_form_id', $form_id );
+			$statii['form_id'] = update_post_meta( $post_id, '_gravityview_form_id', $form_id );
 
 		}
 
 		// Was this a start fresh?
 		if ( ! empty( $_POST['gravityview_form_id_start_fresh'] ) ) {
-			add_post_meta( $post_id, '_gravityview_start_fresh', 1 );
+			$statii['start_fresh'] = add_post_meta( $post_id, '_gravityview_start_fresh', 1 );
 		} else {
-			delete_post_meta( $post_id, '_gravityview_start_fresh' );
+			$statii['start_fresh'] = delete_post_meta( $post_id, '_gravityview_start_fresh' );
 		}
 
 		// Check if we have a template id
@@ -324,7 +326,7 @@ class GravityView_Admin_Views {
 			$template_id = !empty( $_POST['gravityview_directory_template'] ) ? $_POST['gravityview_directory_template'] : '';
 
 			// now save template id
-			update_post_meta( $post_id, '_gravityview_directory_template', $template_id );
+			$statii['directory_template'] = update_post_meta( $post_id, '_gravityview_directory_template', $template_id );
 		}
 
 
@@ -335,26 +337,51 @@ class GravityView_Admin_Views {
 			if( empty( $_POST['template_settings'] ) ) {
 				$_POST['template_settings'] = array();
 			}
-			update_post_meta( $post_id, '_gravityview_template_settings', $_POST['template_settings'] );
+			$statii['template_settings'] = update_post_meta( $post_id, '_gravityview_template_settings', $_POST['template_settings'] );
+
+			$fields = array();
 
 			// Directory&single Visible Fields
 			if( !empty( $preset_fields ) ) {
+
 				$fields = $preset_fields;
-			} elseif( empty( $_POST['fields'] ) ) {
-				$fields = array();
-			} else {
-				$fields = $_POST['fields'];
+
+			} elseif( !empty( $_POST['fields'] ) ) {
+
+				if( !is_array( $_POST['fields'] ) ) {
+
+					// Fields are passed as a jQuery-serialized array, created in admin-views.js in the serializeForm method
+					parse_str( $_POST['fields'], $fields_holder );
+
+					if( isset( $fields_holder['fields'] ) ) {
+
+						// When parsed, there's a m
+						$fields = $fields_holder['fields'];
+
+					} else {
+
+						do_action('gravityview_log_error', '[save_postdata] No `fields` key was found after parsing $fields string', $fields_holder );
+
+					}
+
+				} else {
+
+					$fields = $_POST['fields'];
+
+				}
 			}
-			update_post_meta( $post_id, '_gravityview_directory_fields', $fields );
+
+			$statii['directory_fields'] = update_post_meta( $post_id, '_gravityview_directory_fields', $fields );
 
 			// Directory Visible Widgets
 			if( empty( $_POST['widgets'] ) ) {
 				$_POST['widgets'] = array();
 			}
-			update_post_meta( $post_id, '_gravityview_directory_widgets', $_POST['widgets'] );
+			$statii['directory_widgets'] = update_post_meta( $post_id, '_gravityview_directory_widgets', $_POST['widgets'] );
 
 		} // end save view configuration
 
+		do_action('gravityview_log_debug', '[save_postdata] Update Post Meta Statuses (also returns false if nothing changed)', array_map( 'intval', $statii ) );
 	}
 
 	/**

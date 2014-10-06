@@ -47,6 +47,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Modified: Audio and Video file uploads are now displayed using WordPress' built-in [audio](http://codex.wordpress.org/Audio_Shortcode) and [video](http://codex.wordpress.org/Video_Shortcode) shortcodes (requires WordPress 3.6 or higher)
 	- Additional file type support
 	- Added `gravityview_video_settings` and `gravityview_audio_settings` filters to modify the parameters passed to the shortcode
+* Fixed: Configurations get truncated when configuring Views with many fields
 * Fixed: Empty `<span class="gv-field-label">` tags no longer output
 	- Modified: `gv_field_label()` no longer returns the label with a trailing space. Instead, we use the `.gv-field-label` CSS class to add spacing using CSS padding.
 * Fixed: Conflict with Relevanssi plugin
