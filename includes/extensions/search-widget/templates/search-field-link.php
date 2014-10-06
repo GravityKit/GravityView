@@ -20,9 +20,12 @@ $links_sep = apply_filters( 'gravityview/extension/search/links_sep', '&nbsp;|&n
 
 		<?php foreach( $search_field['choices'] as $k => $choice ) :
 
-			if( $k != 0 ) { echo esc_html( $links_sep ); }?>
+			if( $k != 0 ) { echo esc_html( $links_sep ); }
 
-			<a href="<?php echo esc_url( add_query_arg( array( $search_field['name'] => urlencode( $choice['value'] ) ) ) ); ?>">
+			$link = add_query_arg( array( $search_field['name'] => urlencode( $choice['value'] ) ), remove_query_arg( array('pagenum') ) );
+		?>
+
+			<a href="<?php echo esc_url( $link ); ?>">
 				<?php echo esc_html( $choice['text'] ); ?>
 			</a>
 
