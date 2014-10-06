@@ -4,6 +4,11 @@ global $gravityview_view;
 
 extract( $gravityview_view->field_data );
 
+// If there's no email, don't bother continuing.
+if( empty( $value ) ) {
+	return;
+}
+
 if( !isset( $field_settings['emailmailto'] ) || !empty( $field_settings['emailmailto'] ) ) {
 
 	$params = array();
