@@ -29,6 +29,11 @@ class GravityView_Admin_Metaboxes {
 	function register_metabox() {
 		global $post;
 
+		// On Comment Edit, for example, $post isn't set.
+		if( empty( $post ) || !is_object( $post ) || !isset( $post->ID ) ) {
+			return;
+		}
+
 		//current value
 		$current_form = gravityview_get_form_id( $post->ID );
 
