@@ -152,7 +152,7 @@ class GV_GFCommon extends GFCommon {
 			        $preview .= sprintf("<div id='%s'></div>", $file_list_id);
 			        $preview .= sprintf("<div id='preview_existing_files_%d'>", $id);
 
-			        foreach($file_urls as $file_index => $file_url){
+			        foreach( (array)$file_urls as $file_index => $file_url){
 			            if(self::is_ssl() && strpos($file_url, "http:") !== false ){
 			                $file_url = str_replace("http:", "https:", $file_url);
 			            }

@@ -281,6 +281,7 @@ class GravityView_Edit_Entry {
 		$label = esc_html(GFCommon::get_label($field));
 
 		$input = GV_GFCommon::get_field_input($field, $value, $lead_id, $form_id ) ;
+		#$input = GFCommon::get_field_input($field, $value, $lead_id, $form_id ) ;
 
 		$error_class = rgget("failed_validation", $field) ? "gfield_error" : "";
 
@@ -325,11 +326,11 @@ class GravityView_Edit_Entry {
 
 	        $lead_id = absint( $_POST['lid'] );
 
-	        //Loading files that have been uploaded to temp folder
+			//Loading files that have been uploaded to temp folder
 	        $files = GFCommon::json_decode(stripslashes(RGForms::post("gform_uploaded_files")));
-	        if(!is_array($files)) {
-	            $files = array();
-	        }
+			if(!is_array($files)) {
+			    $files = array();
+			}
 
 	        GFFormsModel::$uploaded_files[$this->form_id] = $files;
 
@@ -403,13 +404,76 @@ class GravityView_Edit_Entry {
 
 			// This is because we're doing admin form pretending to be front-end, so Gravity Forms
 			// expects certain field array items to be set.
-			foreach ( array( 'noDuplicates', 'adminOnly', 'inputType', 'isRequired', 'enablePrice', 'inputs' ) as $key ) {
+			foreach ( array( 'noDuplicates', 'adminOnly', 'inputType', 'isRequired', 'enablePrice', 'inputs', 'allowedExtensions' ) as $key ) {
 				$field[ $key ] = isset( $field[ $key ] ) ? $field[ $key ] : NULL;
 			}
 
 			// unset emailConfirmEnabled for email type fields
 			if( 'email' === $field['type'] && !empty( $field['emailConfirmEnabled'] ) ) {
 				$field['emailConfirmEnabled'] = '';
+			}
+
+			switch( RGFormsModel::get_input_type( $field ) ) {
+
+				/**
+				 * this whole fileupload hack is because in the admin, Gravity Forms simply doesn't update any fileupload field if it's empty, but it DOES in the frontend.
+				 *
+				 * What we have to do is set the value so that it doesn't get overwritten as empty on save and appears immediately in the Edit Entry screen again.
+				 *
+				 * @hack
+				 */
+				case 'fileupload':
+
+					// Set the previous value
+					$entry = $this->get_entry();
+
+					$input_name = 'input_'.$field['id'];
+					$form_id = $form['id'];
+
+					$before = isset( $_POST[$input_name] ) ? $_POST[$input_name] : 'NULL';
+
+					$value = NULL;
+
+					// Use the previous entry value as the default.
+					if( isset( $entry[ $field['id'] ] ) ) {
+						$value = $entry[ $field['id'] ];
+					}
+
+					// If this is a single upload file
+					if( !empty( $_FILES[ $input_name ] ) && !empty( $_FILES[ $input_name ]['name'] ) ) {
+						$file_path = GFFormsModel::get_file_upload_path( $form['id'], $_FILES[ $input_name ]['name'] );
+						$value = $file_path['url'];
+					}
+
+					if( rgar($field, "multipleFiles") ) {
+
+						// If there are fresh uploads, process and merge them.
+						// Otherwise, use the passed values, which should be json-encoded array of URLs
+						if( isset( GFFormsModel::$uploaded_files[$form_id][$input_name] ) ) {
+
+							$value = empty( $value ) ? '[]' : $value;
+							$value = stripslashes_deep( $value );
+							$value = GFFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], array());
+						}
+
+					}
+
+					$_POST[ $input_name ] = $value;
+
+					break;
+				case 'number':
+					// Fix "undefined index" issue at line 1286 in form_display.php
+					// @hack
+					if( !isset( $_POST['input_'.$field['id'] ] ) ) {
+						$_POST['input_'.$field['id'] ] = NULL;
+					}
+					break;
+				case 'captcha':
+					// Fix issue with recaptcha_check_answer() on line 1458 in form_display.php
+					// @hack
+					$_POST['recaptcha_challenge_field'] = NULL;
+					$_POST['recaptcha_response_field'] = NULL;
+					break;
 			}
 
 		}
@@ -487,12 +551,7 @@ class GravityView_Edit_Entry {
 				if( !empty( $field['noDuplicates'] ) ) {
 					$value = RGFormsModel::get_field_value( $field );
 
-					if( empty( $this->entry ) ) {
-						// Get the database value of the entry that's being edited
-						$this->entry = gravityview_get_entry( GravityView_frontend::is_single_entry() );
-					} else {
-						$entry = $this->entry;
-					}
+					$entry = $this->get_entry();
 
 					// If the value of the entry is the same as the stored value
 					// Then we can assume it's not a duplicate, it's the same.
@@ -514,6 +573,20 @@ class GravityView_Edit_Entry {
 		do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Validation results.', $validation_results );
 
 		return $validation_results;
+	}
+
+	/**
+	 * Get the current entry and set it if it's not yet set.
+	 * @return array Gravity Forms entry array
+	 */
+	private function get_entry() {
+
+		if( empty( $this->entry ) ) {
+			// Get the database value of the entry that's being edited
+			$this->entry = gravityview_get_entry( GravityView_frontend::is_single_entry() );
+		}
+
+		return $this->entry;
 	}
 
 	/**
