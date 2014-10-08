@@ -262,7 +262,7 @@ class GravityView_Welcome {
 					<div class="col-2 last-feature">
 						<h3 class="higher">New Search Bar</h3>
 						<p>We started from scratch and created the new Search Bar widget. Easily add fields to your search form, drag and drop to re-order fields, and choose how search fields are displayed.</p>
-						<p>The Search Bar widgets in yoru existing Views have been converted to use the new format.</p>
+						<p>The Search Bar widgets in your existing Views have been converted to use the new format.</p>
 					</div>
 				</div>
 
