@@ -675,6 +675,8 @@
          */
         hideViewConfig: function () {
             $("#gravityview_view_config,#gravityview_sort_filter").slideUp(150);
+
+            $(document).trigger('gv_admin_views_hideViewConfig');
         },
 
         showViewConfig: function () {
@@ -684,6 +686,8 @@
             viewConfiguration.toggleDropMessage();
             viewConfiguration.init_droppables();
             viewConfiguration.init_tooltips();
+
+            $(document).trigger('gv_admin_views_showViewConfig');
         },
 
 
