@@ -157,7 +157,7 @@ class GV_GFCommon extends GFCommon {
 			                $file_url = str_replace("http:", "https:", $file_url);
 			            }
 			            $file_url = esc_attr($file_url);
-			            $preview .= sprintf("<div id='preview_file_%d' class='ginput_preview'><a href='%s' target='_blank' alt='%s' title='%s'>%s</a><a href='%s' target='_blank' alt='" . __('Download file', 'gravityview') . "' title='" . __('Download file', 'gravityview') . "'><img src='%s' style='margin-left:10px;'/></a><a href='javascript:void(0);' alt='" . __('Delete file', 'gravityview') . "' title='" . __('Delete file', 'gravityview') . "' onclick='DeleteFile(%d,%d,this);' ><img src='%s' style='margin-left:10px;'/></a></div>", $file_index, $file_url, $file_url, $file_url, GFCommon::truncate_url($file_url), $file_url, GFCommon::get_base_url() . "/images/download.png", $lead_id, $id, GFCommon::get_base_url() . "/images/delete.png");
+			            $preview .= sprintf("<div id='preview_file_%d' class='ginput_preview'><a href='%s' target='_blank' alt='%s' title='%s'>%s</a><a href='%s' target='_blank' alt='" . __('Download file', 'gravityview') . "' title='" . __('Download file', 'gravityview') . "'><span class='dashicons dashicons-download'></span></a><a href='javascript:void(0);' alt='" . __('Delete file', 'gravityview') . "' title='" . __('Delete file', 'gravityview') . "' onclick='DeleteFile(%d,%d,this);' ><span class='dashicons dashicons-dismiss'></span></a></div>", $file_index, $file_url, $file_url, $file_url, GFCommon::truncate_url($file_url), $file_url, $lead_id, $id );
 			        }
 
 			        $preview .="</div>";
