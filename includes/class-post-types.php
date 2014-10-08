@@ -113,6 +113,10 @@ class GravityView_Post_Types {
 	 */
 	static function no_views_text() {
 
+		if( !class_exists( 'GravityView_Admin' ) ) {
+			require_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
+		}
+
 		// Floaty the astronaut
 		$image = GravityView_Admin::get_floaty();
 
