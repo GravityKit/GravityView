@@ -2,25 +2,27 @@
 
 	.dashicons {
 		font-size: .9em;
-		padding: 0 2px;
-		width: .9em;
+		padding: 0 .2em;
+		width: 1em;
 		height: 1em;
 		line-height: 1em;
 		margin-left: .5em;
-
-		opacity: .7;
-
-		&:hover {
-			opacity: 1;
-		}
 	}
 
 	.dashicons-dismiss {
-		color: #9e0b0f;
+		color: #a36f71;
+
+		&:hover {
+			color: #9e0b0f;
+		}
 	}
 
 	.dashicons-download {
-		color: #406618;
+		color: #757e73;
+
+		&:hover {
+			color: #406618;
+		}
 	}
 
 }
