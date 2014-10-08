@@ -41,9 +41,14 @@ if( !function_exists('gravityview_get_form') ) {
 
 if( !function_exists('gravityview_get_form_from_entry_id') ) {
 
+	/**
+	 * Get the form array for an entry based only on the entry ID
+	 * @param  int $entry_id Entry ID
+	 * @return array           Gravity Forms form array
+	 */
 	function gravityview_get_form_from_entry_id( $entry_id ) {
 
-		$entry = gravityview_get_entry( $entry );
+		$entry = gravityview_get_entry( $entry_id );
 
 		$form = gravityview_get_form( $entry['form_id'] );
 
