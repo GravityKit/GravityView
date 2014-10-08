@@ -49,6 +49,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Modified: Audio and Video file uploads are now displayed using WordPress' built-in [audio](http://codex.wordpress.org/Audio_Shortcode) and [video](http://codex.wordpress.org/Video_Shortcode) shortcodes (requires WordPress 3.6 or higher)
 	- Additional file type support
 	- Added `gravityview_video_settings` and `gravityview_audio_settings` filters to modify the parameters passed to the shortcode
+* Fixed: Shortcode attributes not overriding View defaults
 * Fixed: Uploading and deleting files works properly in Edit Entry mode
 * Fixed: Configurations get truncated when configuring Views with many fields
 * Fixed: Empty `<span class="gv-field-label">` tags no longer output

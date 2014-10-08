@@ -351,6 +351,7 @@ class GravityView_Welcome {
 							<li>Added <code>gravityview_video_settings</code> and <code>gravityview_audio_settings</code> filters to modify the parameters passed to the shortcode</li>
 						</ul>
 					</li>
+					<li>Fixed: Shortcode attributes not overriding View defaults</li>
 					<li>Fixed: Uploading and deleting files works properly in Edit Entry mode</li>
 					<li>Fixed: Configurations get truncated when configuring Views with many fields</li>
 					<li>Fixed: Empty <code>&lt;span class="gv-field-label"&gt;</code> tags no longer output
