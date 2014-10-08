@@ -423,14 +423,13 @@ class GravityView_Edit_Entry {
 				 * @hack
 				 */
 				case 'fileupload':
+				case 'post_image':
 
 					// Set the previous value
 					$entry = $this->get_entry();
 
 					$input_name = 'input_'.$field['id'];
 					$form_id = $form['id'];
-
-					$before = isset( $_POST[$input_name] ) ? $_POST[$input_name] : 'NULL';
 
 					$value = NULL;
 
@@ -443,6 +442,12 @@ class GravityView_Edit_Entry {
 					if( !empty( $_FILES[ $input_name ] ) && !empty( $_FILES[ $input_name ]['name'] ) ) {
 						$file_path = GFFormsModel::get_file_upload_path( $form['id'], $_FILES[ $input_name ]['name'] );
 						$value = $file_path['url'];
+
+					} else {
+
+						// Fix PHP warning on line 1498 of form_display.php for post_image fields
+						$_FILES[ $input_name ] = array('name' => '');
+
 					}
 
 					if( rgar($field, "multipleFiles") ) {
@@ -463,14 +468,12 @@ class GravityView_Edit_Entry {
 					break;
 				case 'number':
 					// Fix "undefined index" issue at line 1286 in form_display.php
-					// @hack
 					if( !isset( $_POST['input_'.$field['id'] ] ) ) {
 						$_POST['input_'.$field['id'] ] = NULL;
 					}
 					break;
 				case 'captcha':
 					// Fix issue with recaptcha_check_answer() on line 1458 in form_display.php
-					// @hack
 					$_POST['recaptcha_challenge_field'] = NULL;
 					$_POST['recaptcha_response_field'] = NULL;
 					break;
