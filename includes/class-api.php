@@ -38,25 +38,20 @@ class GravityView_API {
 			$label = '';
 		}
 
-		return $label .' ';
+		return $label;
 	}
 
 	/**
 	 * Check for merge tags before passing to Gravity Forms to improve speed.
 	 *
-	 * GF doesn't check for {} before diving in. They not only replace fields, they do `str_replace()` on
-	 * things like ip address, which is a lot of work just to check if there's any hint of a replacement variable.
+	 * GF doesn't check for whether `{` exists before it starts diving in. They not only replace fields, they do `str_replace()` on things like ip address, which is a lot of work just to check if there's any hint of a replacement variable.
 	 *
-	 * We check for the basics first.
+	 * We check for the basics first, which is more efficient.
 	 *
 	 * @param  string      $text       Text to replace variables in
 	 * @param  array      $form        GF Form array
 	 * @param  array      $entry        GF Entry array
-	 * @param  boolean     $url_encode URL encode the output using `GFCommon::format_variable_value()`?
-	 * @param  boolean     $esc_html   [description]
-	 * @param  boolean     $nl2br      [description]
-	 * @param  string      $format     [description]
-	 * @return [type]                  [description]
+	 * @return string                  Text with variables maybe replaced
 	 */
 	public static function replace_variables($text, $form, $entry ) {
 
@@ -69,7 +64,7 @@ class GravityView_API {
 		if( empty( $matches ) ) {
 
 			// Check for form variables
-			if( !preg_match( '/{(pricing_fields|form_title|entry_url|post_id|admin_email|post_edit_url|form_id|entry_id)}/ism', $text ) ) {
+			if( !preg_match( '/{(pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id)}/ism', $text ) ) {
 				return $text;
 			}
 		}
@@ -165,21 +160,21 @@ class GravityView_API {
 		// This can be overridden by user template files.
 		$field_exists = $gravityview_view->locate_template("fields/{$field_type}.php");
 
+		// Set the field data to be available in the templates
+		$gravityview_view->field_data = array(
+			'form' => $form,
+			'field_id' => $field_id,
+			'field' => $field,
+			'field_settings' => $field_settings,
+			'value' => $value,
+			'display_value' => $display_value,
+			'format' => $format,
+			'entry' => $entry,
+		);
+
 		if( $field_exists ) {
 
 			do_action( 'gravityview_log_debug', sprintf('[field_value] Rendering %s Field', $field_type ), $field_exists );
-
-			// Set the field data to be available in the templates
-			$gravityview_view->field_data = array(
-				'form' => $form,
-				'field_id' => $field_id,
-				'field' => $field,
-				'field_settings' => $field_settings,
-				'value' => $value,
-				'display_value' => $display_value,
-				'format' => $format,
-				'entry' => $entry,
-			);
 
 			ob_start();
 
@@ -194,10 +189,17 @@ class GravityView_API {
 
 		}
 
+		/**
+		 * Link to the single entry by wrapping the output in an anchor tag
+		 *
+		 * Fields can override this by modifying the field data variable inside the field. See /templates/fields/post_image.php for an example.
+		 *
+		 * @todo Move into its own function usingt `gravityview_field_entry_value` to tap in
+		 */
+		if( !empty( $gravityview_view->field_data['field_settings']['show_as_link'] ) ) {
 
-		//if show as single entry link is active
-		if( !empty( $field_settings['show_as_link'] ) ) {
 			$href = self::entry_link( $entry, $field );
+
 			$link = '<a href="'. $href .'">'. $output . '</a>';
 
 			/**
@@ -239,9 +241,9 @@ class GravityView_API {
 		}
 
 		if($is_search) {
-			$output = __("This search returned no results.", "gravity-view");
+			$output = __('This search returned no results.', 'gravityview');
 		} else {
-			$output = __("No entries match your request.", "gravity-view");
+			$output = __('No entries match your request.', 'gravityview');
 		}
 
 		$output = apply_filters( 'gravitview_no_entries_text', $output, $is_search);
@@ -278,7 +280,7 @@ class GravityView_API {
 
 
 	// return href for single entry
-	public static function entry_link( $entry, $field ) {
+	public static function entry_link( $entry ) {
 
 		if( defined('DOING_AJAX') && DOING_AJAX ) {
 			global $gravityview_view;
@@ -348,7 +350,7 @@ function gravityview_sanitize_html_class( $classes ) {
 
 }
 
-function gv_value( $entry, $field) {
+function gv_value( $entry, $field ) {
 	$value = GravityView_API::field_value( $entry, $field );
 
 	if( $value === '') {
@@ -362,8 +364,8 @@ function gv_directory_link( $post = NULL ) {
 	return GravityView_API::directory_link( $post = NULL );
 }
 
-function gv_entry_link(  $entry, $field ) {
-	return GravityView_API::entry_link( $entry, $field );
+function gv_entry_link( $entry ) {
+	return GravityView_API::entry_link( $entry );
 }
 
 function gv_no_results($wpautop = true) {
@@ -383,7 +385,7 @@ function gravityview_back_link() {
 
 	// calculate link label
 	global $gravityview_view;
-	$label = !empty( $gravityview_view->back_link_label ) ? $gravityview_view->back_link_label : __( '&larr; Go back', 'gravity-view' );
+	$label = !empty( $gravityview_view->back_link_label ) ? $gravityview_view->back_link_label : __( '&larr; Go back', 'gravityview' );
 
 	// filter link label
 	$label = apply_filters( 'gravityview_go_back_label', $label );
@@ -399,7 +401,8 @@ function gravityview_back_link() {
  *
  * @param  array      $entry    GF entry array
  * @param  [type]      $field_id [description]
- * @return [type]                [description]
+ * @param  string 	$display_value The value generated by Gravity Forms
+ * @return string                Value
  */
 function gravityview_get_field_value( $entry, $field_id, $display_value ) {
 
@@ -580,6 +583,73 @@ function gravityview_get_context() {
 	return $gravityview_view->context;
 }
 
+
+/**
+ * Return an array of files prepared for output. Wrapper for GravityView_Field_FileUpload::get_files_array()
+ *
+ * Processes files by file type and generates unique output for each.
+ *
+ * Returns array for each file, with the following keys:
+ *
+ * `file_path` => The file path of the file, with a line break
+ * `html` => The file output HTML formatted
+ *
+ * @see GravityView_Field_FileUpload::get_files_array()
+ *
+ * @since  1.2
+ * @param  string $value    Field value passed by Gravity Forms. String of file URL, or serialized string of file URL array
+ * @param  string $gv_class Field class to add to the output HTML
+ * @return array           Array of file output, with `file_path` and `html` keys (see comments above)
+ */
+function gravityview_get_files_array( $value, $gv_class = '' ) {
+
+	if( !class_exists( 'GravityView_Field ' ) ) {
+		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
+	}
+
+	if( !class_exists( 'GravityView_Field_FileUpload ' ) ) {
+		include_once( GRAVITYVIEW_DIR .'includes/fields/fileupload.php' );
+	}
+
+	return GravityView_Field_FileUpload::get_files_array( $value, $gv_class );
+}
+
+if( !function_exists( 'gravityview_get_map_link' ) ) {
+
+/**
+ * Generate a mapping link from an address
+ *
+ * The address should be plain text with new line (`\n`) or `<br />` line breaks separating sections
+ *
+ * @link https://gravityview.co/support/documentation/201608159 Read how to modify the link
+ * @param  string $address Address
+ * @return string          URL of link to map of address
+ */
+function gravityview_get_map_link( $address ) {
+
+	$address_qs = str_replace( array( '<br />', "\n" ), ' ', $address ); // Replace \n with spaces
+	$address_qs = urlencode( $address_qs );
+
+	$url = "https://maps.google.com/maps?q={$address_qs}";
+
+	// Generate HTML tag
+	$link = sprintf( '<a href="%s" class="map-it-link">%s</a>', esc_url( $url ), esc_html__( 'Map It', 'gravityview' ) );
+
+	/**
+	 * Modify the map link generated. You can use a different mapping service, for example.
+	 *
+	 * @param  string $link Map link
+	 * @param string $address Address to generate link for
+	 * @param string $url URL generated by the function
+	 * @var string
+	 */
+	$link = apply_filters( 'gravityview_map_link', $link, $address, $url );
+
+	return $link;
+}
+
+}
+
 /**
  * Output field based on a certain html markup
  *
@@ -626,11 +696,13 @@ function gravityview_field_output( $args ) {
 
 	$label = esc_html( gv_label( $args['field'], $args['entry'] ) );
 
-	// If the label markup is overridden
-	if( !empty( $args['label_markup'] ) ) {
-		$label = str_replace( '{{label}}', '<span class="gv-field-label">' . $label . '</span>', $args['label_markup'] );
-	} else {
-		$args['markup'] =  str_replace( '{{label}}', '<span class="gv-field-label">{{label}}</span>', $args['markup'] );
+	if( !empty( $label ) ) {
+		// If the label markup is overridden
+		if( !empty( $args['label_markup'] ) ) {
+			$label = str_replace( '{{label}}', '<span class="gv-field-label">' . $label . '</span>', $args['label_markup'] );
+		} else {
+			$args['markup'] =  str_replace( '{{label}}', '<span class="gv-field-label">{{label}}</span>', $args['markup'] );
+		}
 	}
 
 	$html = $args['markup'];
@@ -646,4 +718,24 @@ function gravityview_field_output( $args ) {
 	$html = apply_filters( 'gravityview_field_output', $html, $args );
 
 	return $html;
+}
+
+
+function gv_selected( $value, $current, $echo = true, $type = 'selected' ) {
+
+	$output = '';
+	if( is_array( $current ) ) {
+		if( in_array( $value, $current ) ) {
+			$output = __checked_selected_helper( true, true, false, $type );
+		}
+	} else {
+		$output = __checked_selected_helper( $value, $current, false, $type );
+	}
+
+	if( $echo ) {
+		echo $output;
+	} else {
+		return $output;
+	}
+
 }

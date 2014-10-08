@@ -89,8 +89,8 @@ class GravityView_frontend {
 
 			$wp_admin_bar->add_menu( array(
 				'id' => 'edit-entry',
-				'title' => __('Edit Entry', 'gravity-view'),
-				'href' => admin_url( sprintf('admin.php?page=gf_entries&amp;view=entry&amp;id=%d&lid=%d', $this->entry['form_id'], $this->single_entry ) ),
+				'title' => __('Edit Entry', 'gravityview'),
+				'href' => admin_url( sprintf('admin.php?page=gf_entries&amp;screen_mode=edit&amp;view=entry&amp;id=%d&lid=%d', $this->entry['form_id'], $this->single_entry ) ),
 			) );
 
 		}
@@ -119,6 +119,9 @@ class GravityView_frontend {
 	 * @return void
 	 */
 	public function shortcode( $atts, $content = NULL ) {
+
+		// Don't process when saving post.
+		if( is_admin() ) { return; }
 
 		do_action( 'gravityview_log_debug', '[shortcode] $atts: ', $atts );
 
@@ -250,6 +253,14 @@ class GravityView_frontend {
 			$this->parse_content();
 		}
 
+		// Make 100% sure that we're dealing with a properly called situation
+		if( !is_object( $this->gv_output_data ) || !is_callable( array( $this->gv_output_data, 'get_view' ) ) ) {
+
+			do_action( 'gravityview_log_error', '[render_view] gv_output_data not an object or get_view not callable.', $this->gv_output_data );
+
+			return;
+		}
+
 		$view_id = $passed_args['id'];
 
 		$view_data = $this->gv_output_data->get_view( $view_id );
@@ -313,7 +324,7 @@ class GravityView_frontend {
 
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.');
 
-				esc_attr_e( 'You have attempted to view an entry that does not exist.', 'gravity-view');
+				esc_attr_e( 'You have attempted to view an entry that does not exist.', 'gravityview');
 
 				return;
 			}

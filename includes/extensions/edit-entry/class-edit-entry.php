@@ -142,9 +142,9 @@ class GravityView_Edit_Entry {
 
 		$add_option['edit_link'] = array(
 			'type' => 'text',
-			'label' => __( 'Edit Link Text', 'gravity-view' ),
+			'label' => __( 'Edit Link Text', 'gravityview' ),
 			'desc' => NULL,
-			'default' => __('Edit Entry', 'gravity-view'),
+			'default' => __('Edit Entry', 'gravityview'),
 			'merge_tags' => true,
 		);
 
@@ -160,8 +160,9 @@ class GravityView_Edit_Entry {
 	function add_default_field( $entry_default_fields, $form = array(), $zone = '' ) {
 
 		$entry_default_fields['edit_link'] = array(
-			'label' => __('Edit Entry', 'gravity-view'),
-			'type' => 'edit_link'
+			'label' => __('Edit Entry', 'gravityview'),
+			'type' => 'edit_link',
+			'desc'	=> __('A link to edit the entry. Visible based on View settings.', 'gravityview'),
 		);
 
 		return $entry_default_fields;
@@ -174,7 +175,7 @@ class GravityView_Edit_Entry {
 	function add_available_field( $available_fields = array() ) {
 
 		$available_fields['edit_link'] = array(
-			'label_text' => __( 'Edit Entry', 'gravity-view' ),
+			'label_text' => __( 'Edit Entry', 'gravityview' ),
 			'field_id' => 'edit_link',
 			'label_type' => 'field',
 			'input_type' => 'edit_link',
@@ -328,11 +329,11 @@ class GravityView_Edit_Entry {
 
 	        $lead_id = absint( $_POST['lid'] );
 
-	        //Loading files that have been uploaded to temp folder
+			//Loading files that have been uploaded to temp folder
 	        $files = GFCommon::json_decode(stripslashes(RGForms::post("gform_uploaded_files")));
-	        if(!is_array($files)) {
-	            $files = array();
-	        }
+			if(!is_array($files)) {
+			    $files = array();
+			}
 
 	        GFFormsModel::$uploaded_files[$this->form_id] = $files;
 
@@ -406,13 +407,79 @@ class GravityView_Edit_Entry {
 
 			// This is because we're doing admin form pretending to be front-end, so Gravity Forms
 			// expects certain field array items to be set.
-			foreach ( array( 'noDuplicates', 'adminOnly', 'inputType', 'isRequired', 'enablePrice', 'inputs' ) as $key ) {
+			foreach ( array( 'noDuplicates', 'adminOnly', 'inputType', 'isRequired', 'enablePrice', 'inputs', 'allowedExtensions' ) as $key ) {
 				$field[ $key ] = isset( $field[ $key ] ) ? $field[ $key ] : NULL;
 			}
 
 			// unset emailConfirmEnabled for email type fields
 			if( 'email' === $field['type'] && !empty( $field['emailConfirmEnabled'] ) ) {
 				$field['emailConfirmEnabled'] = '';
+			}
+
+			switch( RGFormsModel::get_input_type( $field ) ) {
+
+				/**
+				 * this whole fileupload hack is because in the admin, Gravity Forms simply doesn't update any fileupload field if it's empty, but it DOES in the frontend.
+				 *
+				 * What we have to do is set the value so that it doesn't get overwritten as empty on save and appears immediately in the Edit Entry screen again.
+				 *
+				 * @hack
+				 */
+				case 'fileupload':
+				case 'post_image':
+
+					// Set the previous value
+					$entry = $this->get_entry();
+
+					$input_name = 'input_'.$field['id'];
+					$form_id = $form['id'];
+
+					$value = NULL;
+
+					// Use the previous entry value as the default.
+					if( isset( $entry[ $field['id'] ] ) ) {
+						$value = $entry[ $field['id'] ];
+					}
+
+					// If this is a single upload file
+					if( !empty( $_FILES[ $input_name ] ) && !empty( $_FILES[ $input_name ]['name'] ) ) {
+						$file_path = GFFormsModel::get_file_upload_path( $form['id'], $_FILES[ $input_name ]['name'] );
+						$value = $file_path['url'];
+
+					} else {
+
+						// Fix PHP warning on line 1498 of form_display.php for post_image fields
+						$_FILES[ $input_name ] = array('name' => '');
+
+					}
+
+					if( rgar($field, "multipleFiles") ) {
+
+						// If there are fresh uploads, process and merge them.
+						// Otherwise, use the passed values, which should be json-encoded array of URLs
+						if( isset( GFFormsModel::$uploaded_files[$form_id][$input_name] ) ) {
+
+							$value = empty( $value ) ? '[]' : $value;
+							$value = stripslashes_deep( $value );
+							$value = GFFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], array());
+						}
+
+					}
+
+					$_POST[ $input_name ] = $value;
+
+					break;
+				case 'number':
+					// Fix "undefined index" issue at line 1286 in form_display.php
+					if( !isset( $_POST['input_'.$field['id'] ] ) ) {
+						$_POST['input_'.$field['id'] ] = NULL;
+					}
+					break;
+				case 'captcha':
+					// Fix issue with recaptcha_check_answer() on line 1458 in form_display.php
+					$_POST['recaptcha_challenge_field'] = NULL;
+					$_POST['recaptcha_response_field'] = NULL;
+					break;
 			}
 
 		}
@@ -489,16 +556,17 @@ class GravityView_Edit_Entry {
 					continue;
 				}
 
+				// Captchas don't need to be re-entered.
+				if( in_array( $field['type'], array( 'captcha' ) ) ) {
+					$field['failed_validation'] = false;
+					continue;
+				}
+
 				// checks if the No Duplicates option is not validating entry against itself, since
 				// we're editing a stored entry, it would also assume it's a duplicate.
 				if( !empty( $field['noDuplicates'] ) ) {
 
-					if( empty( $this->entry ) ) {
-						// Get the database value of the entry that's being edited
-						$this->entry = gravityview_get_entry( GravityView_frontend::is_single_entry() );
-					} else {
-						$entry = $this->entry;
-					}
+					$entry = $this->get_entry();
 
 					// If the value of the entry is the same as the stored value
 					// Then we can assume it's not a duplicate, it's the same.
@@ -524,6 +592,20 @@ class GravityView_Edit_Entry {
 		do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Validation results.', $validation_results );
 
 		return $validation_results;
+	}
+
+	/**
+	 * Get the current entry and set it if it's not yet set.
+	 * @return array Gravity Forms entry array
+	 */
+	private function get_entry() {
+
+		if( empty( $this->entry ) ) {
+			// Get the database value of the entry that's being edited
+			$this->entry = gravityview_get_entry( GravityView_frontend::is_single_entry() );
+		}
+
+		return $this->entry;
 	}
 
 	/**
@@ -560,15 +642,15 @@ class GravityView_Edit_Entry {
 		$error = NULL;
 
 		if( ! $this->verify_nonce() ) {
-			$error = __( 'The link to edit this entry is not valid; it may have expired.', 'gravity-view');
+			$error = __( 'The link to edit this entry is not valid; it may have expired.', 'gravityview');
 		}
 
 		if( ! self::check_user_cap_edit_entry( $this->entry ) ) {
-			$error = __( 'You do not have permission to edit this entry.', 'gravity-view');
+			$error = __( 'You do not have permission to edit this entry.', 'gravityview');
 		}
 
 		if( $this->entry['status'] === 'trash' ) {
-			$error = __('You cannot edit the entry; it is in the trash.', 'gravity-view' );
+			$error = __('You cannot edit the entry; it is in the trash.', 'gravityview' );
 		}
 
 		// No errors; everything's fine here!
@@ -671,7 +753,7 @@ class GravityView_Edit_Entry {
 		<?php include_once( self::$file .'/inline-javascript.php'); ?>
 
 		<h2 class="gv-edit-entry-title">
-			<span><?php echo esc_attr( apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravity-view'), $this ) ); ?></span>
+			<span><?php echo esc_attr( apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravityview'), $this ) ); ?></span>
 		</h2>
 
 		<?php
@@ -682,7 +764,7 @@ class GravityView_Edit_Entry {
 			if( ! $this->is_valid ){
 
 				// Keeping this compatible with Gravity Forms.
-			    $validation_message = "<div class='validation_error'>" . __("There was a problem with your submission.", "gravity-view") . " " . __("Errors have been highlighted below.", "gravity-view") . "</div>";
+			    $validation_message = "<div class='validation_error'>" . __('There was a problem with your submission.', 'gravityview') . " " . __('Errors have been highlighted below.', 'gravityview') . "</div>";
 			    $message = apply_filters("gform_validation_message_{$this->form['id']}", apply_filters("gform_validation_message", $validation_message, $this->form), $this->form);
 
 			    echo $this->generate_notice( $message , 'gv-error' );
@@ -723,9 +805,9 @@ class GravityView_Edit_Entry {
 			GFEntryDetail::lead_detail_edit( $this->form, $this->entry );
 	?>
 		<div id="publishing-action">
-		    <input class="btn btn-lg button button-large button-primary" type="submit" tabindex="4" value="<?php esc_attr_e( 'Update', 'gravity-view'); ?>" name="save" />
+		    <input class="btn btn-lg button button-large button-primary" type="submit" tabindex="4" value="<?php esc_attr_e( 'Update', 'gravityview'); ?>" name="save" />
 
-            <a class="btn btn-sm button button-small" tabindex="5" href="<?php echo $back_link ?>"><?php esc_attr_e( 'Cancel', 'gravity-view' ); ?></a>
+            <a class="btn btn-sm button button-small" tabindex="5" href="<?php echo $back_link ?>"><?php esc_attr_e( 'Cancel', 'gravityview' ); ?></a>
 		</div>
 <?php
 		GFFormDisplay::footer_init_scripts($this->form_id);

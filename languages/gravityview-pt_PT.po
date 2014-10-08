@@ -1,0 +1,1665 @@
+# 
+# Translators:
+# luistinygod <luis@gomo.pt>, 2014
+# Zachary Katz <zack@katz.co>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: GravityView\n"
+"POT-Creation-Date: 2014-10-06 09:36-0700\n"
+"PO-Revision-Date: 2014-10-07 17:51+0000\n"
+"Last-Translator: luistinygod <luis@gomo.pt>\n"
+"Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/gravityview/language/pt_PT/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt_PT\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.6.9\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: gravityview.php:236
+msgid "Top"
+msgstr "Topo"
+
+#: gravityview.php:237
+msgid "Left"
+msgstr "Esquerda"
+
+#: gravityview.php:237
+msgid "Right"
+msgstr "Direita"
+
+#: includes/admin/class.render.settings.php:42
+msgid "Show Label"
+msgstr "Mostrar Título"
+
+#: includes/admin/class.render.settings.php:47
+msgid "Custom Label:"
+msgstr "Título personalizado:"
+
+#: includes/admin/class.render.settings.php:53
+msgid "Custom CSS Class:"
+msgstr "Classe CSS personalizada:"
+
+#: includes/admin/class.render.settings.php:54
+msgid "This class will be added to the field container"
+msgstr "Esta classe será adicionada ao container do campo"
+
+#: includes/admin/class.render.settings.php:61
+msgid "Make visible only to logged-in users?"
+msgstr "Visível apenas para utilizadores registados?"
+
+#: includes/admin/class.render.settings.php:66
+msgid "Make visible for:"
+msgstr "Visível para:"
+
+#: includes/admin/class.render.settings.php:98
+msgid "Any Logged-In User"
+msgstr "Qualquer utilizador registado"
+
+#: includes/admin/class.render.settings.php:99
+msgid "Author Or Higher"
+msgstr "Autor ou superior"
+
+#: includes/admin/class.render.settings.php:100
+msgid "Can View Gravity Forms Entries"
+msgstr "Consegue ver entradas do Gravity Forms"
+
+#: includes/admin/class.render.settings.php:101
+msgid "Editor Or Higher"
+msgstr "Editor ou superior"
+
+#: includes/admin/class.render.settings.php:102
+msgid "Can Edit Gravity Forms Entries"
+msgstr "Consegue editar entradas do Gravity Forms"
+
+#: includes/admin/class.render.settings.php:103
+msgid "Administrator"
+msgstr "Administrador"
+
+#: includes/admin/class.render.settings.php:107
+msgid "Multisite Super Admin"
+msgstr "Multisite Super Admin"
+
+#: includes/admin/class.render.settings.php:161
+#, php-format
+msgid "Options: %s"
+msgstr "Opções: %s"
+
+#: includes/admin/entry-list.php:66
+msgid "Edit this entry"
+msgstr "Editar esta entrada"
+
+#: includes/admin/entry-list.php:66
+msgid "Edit"
+msgstr "Editar"
+
+#: includes/admin/metaboxes.php:42 includes/class-admin-views.php:269
+msgid "Data Source"
+msgstr "Fonte dos dados"
+
+#: includes/admin/metaboxes.php:45
+msgid "Choose a View Type"
+msgstr "Escolha o Tipo de Vista"
+
+#: includes/admin/metaboxes.php:48
+msgid "View Configuration"
+msgstr "Configuração da Vista"
+
+#: includes/admin/metaboxes.php:51 includes/class-admin-add-shortcode.php:107
+msgid "View Settings"
+msgstr "Configurações"
+
+#: includes/admin/metaboxes.php:54
+msgid "Filter &amp; Sort"
+msgstr "Filtrar &amp; Ordenar"
+
+#: includes/admin/metaboxes.php:81
+msgid "Where would you like the data to come from for this View?"
+msgstr "Qual a fonte de dados para esta Vista?"
+
+#: includes/admin/metaboxes.php:91
+msgid "Start Fresh"
+msgstr "Nova Fonte"
+
+#: includes/admin/metaboxes.php:94
+msgid "or use an existing form"
+msgstr "ou utilizar um formulário existente"
+
+#: includes/admin/metaboxes.php:103
+msgid "list of forms"
+msgstr "Lista de formulários"
+
+#: includes/admin/metaboxes.php:110
+msgid "Switch View"
+msgstr "Alterar Vista"
+
+#: includes/admin/metaboxes.php:110
+msgid "Switch View Type"
+msgstr "Alterar o Tipo de Vista"
+
+#: includes/admin/metaboxes.php:114 includes/admin/metaboxes.php:119
+msgid "Attention"
+msgstr "Atenção"
+
+#: includes/admin/metaboxes.php:115
+msgid ""
+"Changing the form will reset your field configuration. Changes will be "
+"permanent once you save the View."
+msgstr "Se alterar o formulário irá perder todas as configurações dos campos. As alterações serão permanentes assim que gravar a Vista."
+
+#: includes/admin/metaboxes.php:120
+msgid ""
+"Changing the View Type will reset your field configuration. Changes will be "
+"permanent once you save the View."
+msgstr "Se alterar o tipo de Vista irá perder todas as configurações dos campos. As alterações serão permanentes assim que gravar a Vista."
+
+#: includes/admin/metaboxes.php:125
+msgid "GravityView requires Javascript to be enabled."
+msgstr "O GravityView necessita de Javascript activado."
+
+#: includes/admin/metaboxes.php:166
+msgid "Buy Now"
+msgstr "Comprar"
+
+#: includes/admin/metaboxes.php:168
+#: includes/extensions/search-widget/class-search-widget.php:99
+msgid "Select"
+msgstr "Escolher"
+
+#: includes/admin/metaboxes.php:170
+msgid "View a live demo of this preset"
+msgstr "Ver a demonstração online deste preset"
+
+#: includes/admin/metaboxes.php:248
+msgid "Multiple Entries"
+msgstr "Directório"
+
+#: includes/admin/metaboxes.php:249
+msgid "Single Entry"
+msgstr "Entrada Individual"
+
+#: includes/admin/metaboxes.php:256
+msgid "Above Entries Widgets"
+msgstr "Widgets de Cabeçalho"
+
+#: includes/admin/metaboxes.php:256
+msgid "These widgets will be shown above entries."
+msgstr "Estes widgets serão mostrados acima do directório de entradas"
+
+#: includes/admin/metaboxes.php:260
+msgid "Entries Fields"
+msgstr "Campos das entradas"
+
+#: includes/admin/metaboxes.php:260
+msgid "These fields will be shown for each entry."
+msgstr "Estes campos serão mostrados para cada entrada."
+
+#: includes/admin/metaboxes.php:268
+msgid "Below Entries Widgets"
+msgstr "Widgets de Rodapé"
+
+#: includes/admin/metaboxes.php:268
+msgid "These widgets will be shown below entries."
+msgstr "Estes widgets serão mostrados no rodapé do directório de entradas"
+
+#: includes/admin/metaboxes.php:298
+msgid "These fields will be shown in Single Entry view."
+msgstr "Estes campos serão mostrados na Vista de entrada individual."
+
+#: includes/admin/metaboxes.php:355
+msgid "Single Entry Settings"
+msgstr "Configurações de Entrada Individual"
+
+#: includes/admin/metaboxes.php:429
+msgid "Embed Shortcode"
+msgstr "Embed Shortcode"
+
+#: includes/admin/metaboxes.php:429
+msgid "Add this shortcode to a post or page to embed this view."
+msgstr "Adicionar este shortcode ao artigo ou página para o mostrar esta Vista"
+
+#: includes/admin/metaboxes.php:475
+msgid "Layout Settings"
+msgstr "Configurações do formato"
+
+#: includes/class-admin-add-shortcode.php:53
+msgid "Add a Gravity Forms View"
+msgstr "Adicionar Vista de um formulário Gravity Forms"
+
+#: includes/class-admin-add-shortcode.php:53
+msgid "Add View"
+msgstr "Adicionar Vista"
+
+#: includes/class-admin-add-shortcode.php:88
+msgid "Embed a View"
+msgstr "Inserir Vista"
+
+#: includes/class-admin-add-shortcode.php:89
+#, php-format
+msgid ""
+"Use this form to embed a View into this %s. %sLearn more about using "
+"shortcodes.%s"
+msgstr "Utilize este formulário para inserir a Vista neste %s. %sSaiba mais sobre como utilizar shortcodes.%s"
+
+#: includes/class-admin-add-shortcode.php:92
+msgid "Select a View"
+msgstr "Escolher Vista"
+
+#: includes/class-admin-add-shortcode.php:95
+msgid "&mdash; Select a View to Insert &mdash;"
+msgstr "&mdash; Escolha uma Vista para inserir &mdash;"
+
+#: includes/class-admin-add-shortcode.php:98
+msgid "(no title)"
+msgstr "(sem título)"
+
+#: includes/class-admin-add-shortcode.php:124
+msgid "Insert View"
+msgstr "Inserir Vista"
+
+#: includes/class-admin-add-shortcode.php:125
+#: includes/class-admin-views.php:781
+#: includes/extensions/edit-entry/class-edit-entry.php:718
+msgid "Cancel"
+msgstr "Anular"
+
+#: includes/class-admin-add-shortcode.php:168
+#: includes/class-admin-views.php:785
+msgid "Loading&hellip;"
+msgstr "A carregar&hellip;"
+
+#: includes/class-admin-add-shortcode.php:169
+msgid "Please select a View"
+msgstr "Por favor escolha uma Vista"
+
+#: includes/class-admin-approve-entries.php:55
+msgid "GravityView Fields"
+msgstr "Campos GravityView"
+
+#: includes/class-admin-approve-entries.php:56
+msgid ""
+"Allow administrators to approve or reject entries and users to opt-in or "
+"opt-out of their entries being displayed."
+msgstr "Permitir que os administradores aprovem ou rejeitem entradas; e que os utilizadores optem que as suas entradas apareçam."
+
+#: includes/class-admin-approve-entries.php:78
+msgid "Approve/Reject"
+msgstr "Aprovar/Rejeitar"
+
+#: includes/class-admin-approve-entries.php:83
+msgid "User Opt-In"
+msgstr "Opção Utilizador"
+
+#: includes/class-admin-approve-entries.php:105
+msgid "Approved? (Admin-only)"
+msgstr "Aprovado? (Admin-only)"
+
+#: includes/class-admin-approve-entries.php:107
+msgid "Approved?"
+msgstr "Aprovado?"
+
+#: includes/class-admin-approve-entries.php:114
+msgid "Approved"
+msgstr "Aprovado"
+
+#: includes/class-admin-approve-entries.php:127
+msgid "Show Entry on Website"
+msgstr "Mostrar Entrada no Site"
+
+#: includes/class-admin-approve-entries.php:129
+msgid "Opt-In"
+msgstr "Incluir"
+
+#: includes/class-admin-approve-entries.php:137
+msgid "Yes, display my entry on the website"
+msgstr "Sim, quero mostrar a minha entrada no site"
+
+#: includes/class-admin-approve-entries.php:208
+#, php-format
+msgid "%d entries"
+msgstr "%d entradas"
+
+#: includes/class-admin-approve-entries.php:208
+msgid "1 entry"
+msgstr "1 entrada"
+
+#: includes/class-admin-approve-entries.php:213
+#, php-format
+msgid "%s approved."
+msgstr "%s aprovado."
+
+#: includes/class-admin-approve-entries.php:218
+#, php-format
+msgid "%s disapproved."
+msgstr "%s não aprovado."
+
+#: includes/class-admin-approve-entries.php:290
+msgid "Disapproved the Entry for GravityView"
+msgstr "Entrada Desaprovada para o GravityView"
+
+#: includes/class-admin-approve-entries.php:290
+msgid "Approved the Entry for GravityView"
+msgstr "Entrada Aprovada para o GravityView"
+
+#: includes/class-admin-approve-entries.php:433
+msgid "Approve"
+msgstr "Aprovar"
+
+#: includes/class-admin-approve-entries.php:434
+msgid "Disapprove"
+msgstr "Desaprovar"
+
+#: includes/class-admin-approve-entries.php:436
+msgid "Entry not approved for directory viewing. Click to approve this entry."
+msgstr "Entrada não aprovada para aparecer no directório. Clique para aprovar esta entrada."
+
+#: includes/class-admin-approve-entries.php:437
+msgid "Entry approved for directory viewing. Click to disapprove this entry."
+msgstr "Entrada aprovada para aparecer no directório. Clique para desaprovar esta entrada."
+
+#: includes/class-admin-approve-entries.php:438
+msgid "Show entry in directory view?"
+msgstr "Mostrar esta entrada no directório?"
+
+#: includes/class-admin-label.php:19
+#, php-format
+msgid "Type: %s"
+msgstr "Tipo: %s"
+
+#: includes/class-admin-label.php:23
+#, php-format
+msgid "Field ID: %s"
+msgstr "ID Campo: %s"
+
+#: includes/class-admin-label.php:36
+#, php-format
+msgid "Admin Label: %s"
+msgstr "Título Admin: %s"
+
+#: includes/class-admin-label.php:166
+#, php-format
+msgid "Configure %s Settings"
+msgstr "Configurar %s"
+
+#: includes/class-admin-label.php:167
+#, php-format
+msgid "Remove %s"
+msgstr "Remover %s"
+
+#: includes/class-admin-label.php:168
+msgid "This field links to the Single Entry"
+msgstr "Esta campo é um link para a entrada individual"
+
+#: includes/class-admin-label.php:180
+#, php-format
+msgctxt "Label in field picker for empty label"
+msgid "Field #%s (No Label)"
+msgstr "Campo #%s (sem título)"
+
+#: includes/class-admin-views.php:108
+msgid "Connected Views"
+msgstr "Vistas Associadas"
+
+#: includes/class-admin-views.php:110
+msgid "GravityView Views using this form as a data source"
+msgstr "Vistas GravityView que utilizam este formulário como fonte de dados"
+
+#: includes/class-admin-views.php:162
+msgid "CSS Merge Tags"
+msgstr "CSS Merge Tags"
+
+#: includes/class-admin-views.php:163
+#, php-format
+msgid ""
+"Developers: The CSS classes will be sanitized using the "
+"%ssanitize_title_with_dashes()%s function."
+msgstr "Programadores: As classes CSS serão filtradas utilizando a função %ssanitize_title_with_dashes()%s."
+
+#: includes/class-admin-views.php:187
+msgid "Not connected."
+msgstr "Sem Ligação."
+
+#: includes/class-admin-views.php:196
+msgid "The connected form can not be found; it may no longer exist."
+msgstr "O formulário associado não foi encontrado; pode já não existir."
+
+#: includes/class-admin-views.php:228
+msgid "Edit Form"
+msgstr "Editar Formulário"
+
+#: includes/class-admin-views.php:233
+msgid "Entries"
+msgstr "Entradas"
+
+#: includes/class-admin-views.php:238
+msgid "Edit settings for this form"
+msgstr "Editar as configurações deste formulário"
+
+#: includes/class-admin-views.php:238 includes/class-settings.php:245
+#: includes/class-settings.php:246
+msgid "Settings"
+msgstr "Configurações"
+
+#: includes/class-admin-views.php:243
+msgid "Preview this form"
+msgstr "Previsão do formulário"
+
+#: includes/class-admin-views.php:243
+msgid "Preview"
+msgstr "Previsão"
+
+#: includes/class-admin-views.php:407
+msgid "+ Add All Fields"
+msgstr "+ Adicionar Todos"
+
+#: includes/class-admin-views.php:454
+msgid "Entry ID"
+msgstr "ID da Entrada"
+
+#: includes/class-admin-views.php:458
+#: includes/extensions/search-widget/class-search-widget.php:186
+msgid "Entry Date"
+msgstr "Data da Entrada"
+
+#: includes/class-admin-views.php:462
+msgid "Source URL"
+msgstr "URL origem"
+
+#: includes/class-admin-views.php:464
+msgid "The URL of the page where the form was submitted."
+msgstr "O URL da página onde o formulário foi submetido."
+
+#: includes/class-admin-views.php:467
+msgid "User IP"
+msgstr "IP do utilizador"
+
+#: includes/class-admin-views.php:469
+msgid "The IP Address of the user who created the entry."
+msgstr "O endereço IP do utilizador que criou a entrada."
+
+#: includes/class-admin-views.php:472
+msgid "User"
+msgstr "Utilizador"
+
+#: includes/class-admin-views.php:474
+msgid "Details of the logged-in user who created the entry (if any)."
+msgstr "Detalhes do utilizador registado que criou a entrada (se existirem)."
+
+#: includes/class-admin-views.php:481 includes/fields/custom.php:18
+msgid "Custom Content"
+msgstr "Conteúdo Personalizado"
+
+#: includes/class-admin-views.php:483
+msgid "Insert custom text or HTML."
+msgstr "Inserir texto personalizado ou HTML"
+
+#: includes/class-admin-views.php:490
+msgid "Link to Entry"
+msgstr "Link para entrada"
+
+#: includes/class-admin-views.php:491
+msgid "A dedicated link to the single entry with customizable text."
+msgstr "Link dedicado para a entrada individual com texto personalizado."
+
+#: includes/class-admin-views.php:565
+msgid "Add Widget"
+msgstr "Adicionar Widget"
+
+#: includes/class-admin-views.php:567
+msgid "Add Field"
+msgstr "Adicionar Campo"
+
+#: includes/class-admin-views.php:648
+#, php-format
+msgid "\"+ %s\" or drag existing %ss here."
+msgstr "\"%s\" ou arrastar %ss para aqui."
+
+#: includes/class-admin-views.php:779
+msgid "Enter View name here"
+msgstr "Nome da Vista"
+
+#: includes/class-admin-views.php:780
+msgid "Close"
+msgstr "Fechar"
+
+#: includes/class-admin-views.php:782
+msgid "Continue"
+msgstr "Continuar"
+
+#: includes/class-admin-views.php:783
+msgid "Ok"
+msgstr "Ok"
+
+#: includes/class-admin-views.php:784
+msgid ""
+"Error while creating the View for you. Check the settings or contact "
+"GravityView support."
+msgstr "Foi encontrado um erro enquanto criávamos esta Vista para si. Verifique as configurações ou contacte o suporte GravityView."
+
+#: includes/class-admin-views.php:786
+msgid "There was an error loading dynamic content."
+msgstr "Existiu um erro ao carregar o conteúdo dinâmico."
+
+#: includes/class-admin-views.php:787
+msgid ""
+"Error while adding the field. Please try again or contact GravityView "
+"support."
+msgstr "Existiu um erro ao adicionar o campo. Por favor tente novamente ou contacte o suporte do GravityView."
+
+#: includes/class-admin-views.php:788
+msgid ""
+"Would you like to remove all fields in this zone? (You are seeing this "
+"message because you were holding down the ALT key)"
+msgstr "Pretende remover todos os campos desta zona? (Esta mensagem apareceu porque pressionou a tecla ALT do seu teclado)"
+
+#: includes/class-admin-welcome.php:56
+msgid "GravityView: Getting Started"
+msgstr "GravityView: Comece Aqui"
+
+#: includes/class-admin-welcome.php:57 includes/class-admin-welcome.php:152
+msgid "Getting Started"
+msgstr "Comece Aqui"
+
+#: includes/class-admin-welcome.php:66 includes/class-admin-welcome.php:67
+msgid "Changelog"
+msgstr "Changelog"
+
+#: includes/class-admin-welcome.php:76 includes/class-admin-welcome.php:77
+#: includes/class-admin-welcome.php:158
+msgid "Credits"
+msgstr "Créditos"
+
+#: includes/class-admin-welcome.php:147
+#, php-format
+msgid "Welcome to GravityView %s"
+msgstr "Bem-vindo ao GravityView %s"
+
+#: includes/class-admin-welcome.php:148
+msgid ""
+"Thank you for Installing GravityView. Beautifully display your Gravity Forms"
+" entries."
+msgstr "Obrigado por instalar o GravityView. Dê Vistas impecáveis às suas entradas do Gravity Forms."
+
+#: includes/class-admin-welcome.php:155
+msgid "List of Changes"
+msgstr "Lista de Alterações"
+
+#: includes/class-admin-welcome.php:409
+msgid "GravityView is brought to you by:"
+msgstr "GravityView desenvolvido para si por:"
+
+#: includes/class-admin-welcome.php:434
+msgid "Contributors"
+msgstr "Contributors"
+
+#: includes/class-admin-welcome.php:458
+msgid "Want to contribute?"
+msgstr "Deseja contribuir?"
+
+#: includes/class-admin-welcome.php:459
+#, php-format
+msgid ""
+"If you want to contribute to the code, you can %srequest access to the "
+"Github repository%s. If your contributions are accepted, you will be thanked"
+" here."
+msgstr "Se deseja contribuir para o código, pode pedir %sacesso ao repositório no Github%s. Se as suas contribuições forem aceites, a sua contribuição será agradecida aqui."
+
+#: includes/class-admin.php:100
+msgid "Support"
+msgstr "Suporte"
+
+#: includes/class-admin.php:145
+#, php-format
+msgid "A new form was created for this View: \"%s\""
+msgstr "Foi criado um novo formulário associado a esta Vista: \"%s\""
+
+#: includes/class-admin.php:146
+#, php-format
+msgid ""
+"%sThere are no entries for the new form, so the View will also be empty.%s To start collecting entries, you can add submissions through %sthe preview form%s and also embed the form on a post or page using this code: %s\n"
+"\n"
+"\t\t\t\t\tYou can %sedit the form%s in Gravity Forms and the updated fields will be available here. Don&rsquo;t forget to %scustomize the form settings%s.\n"
+"\t\t\t\t\t"
+msgstr "%sNão há entradas no novo formulário pelo que a Vista estará vazia.%s Para começar a recolher entradas pode adicioná-las através da %sprevisão do formulário%s e/ou inserir o formulário num artigo ou página utilizando este código: %s\n\n\t\t\t\t\tPode %seditar o formulário%s no Gravity Forms e posteriormente os novos campos ficarão disponíveis aqui. Não se esqueça de %spersonalizar o formulário%s.\n\t\t\t\t\t"
+
+#: includes/class-admin.php:158 includes/class-admin.php:159
+#: includes/class-admin.php:161
+#, php-format
+msgid "View updated. %sView on website.%s"
+msgstr "Vista actualizada. %sVer no site%s."
+
+#: includes/class-admin.php:160
+msgid "View deleted."
+msgstr "Vista removida."
+
+#: includes/class-admin.php:163
+#, php-format
+msgid "View restored to revision from %s"
+msgstr "Vista recuperada da revisão %s"
+
+#: includes/class-admin.php:164
+#, php-format
+msgid "View published. %sView on website.%s"
+msgstr "Vista publicada. %sVer no site%s."
+
+#: includes/class-admin.php:165
+#, php-format
+msgid "View saved. %sView on website.%s"
+msgstr "Vista guardada. %sVer no site%s."
+
+#: includes/class-admin.php:166
+msgid "View submitted."
+msgstr "Vista submetida."
+
+#: includes/class-admin.php:168
+#, php-format
+msgid "View scheduled for: %1$s."
+msgstr "Vista agendada para: %1$s."
+
+#: includes/class-admin.php:170
+msgid "M j, Y @ G:i"
+msgstr "M j, Y @ G:i"
+
+#: includes/class-admin.php:172
+#, php-format
+msgid "View draft updated. %sView on website.%s"
+msgstr "Rascunho actualizado. %sVer no site%s."
+
+#: includes/class-admin.php:178
+#, php-format
+msgid "%s View updated."
+msgid_plural "%s Views updated."
+msgstr[0] "%s vista actualizada"
+msgstr[1] "%s vistas actualizadas"
+
+#: includes/class-admin.php:179
+#, php-format
+msgid "%s View not updated, somebody is editing it."
+msgid_plural "%s Views not updated, somebody is editing them."
+msgstr[0] "%s vista não actualizada. Alguém está a editá-la."
+msgstr[1] "%s vistas não actualizadas. Alguém está a editá-las."
+
+#: includes/class-admin.php:180
+#, php-format
+msgid "%s View permanently deleted."
+msgid_plural "%s Views permanently deleted."
+msgstr[0] "%s vista removida definitivamente."
+msgstr[1] "%s vistas removida definitivamente."
+
+#: includes/class-admin.php:181
+#, php-format
+msgid "%s View moved to the Trash."
+msgid_plural "%s Views moved to the Trash."
+msgstr[0] "%s vista movida para o Lixo"
+msgstr[1] "%s vistas movidas para o Lixo"
+
+#: includes/class-admin.php:182
+#, php-format
+msgid "%s View restored from the Trash."
+msgid_plural "%s Views restored from the Trash."
+msgstr[0] "%s vista reposta a partir do Lixo"
+msgstr[1] "%s vista reposta a partir do Lixo"
+
+#: includes/class-admin.php:465
+msgid "Dismiss"
+msgstr "Dispensar"
+
+#: includes/class-admin.php:499
+msgid "Potential Conflict"
+msgstr "Conflicto"
+
+#: includes/class-admin.php:500
+msgid ""
+"GravityView and Gravity Forms Directory are both active. This may cause "
+"problems. If you experience issues, disable the Gravity Forms Directory "
+"plugin."
+msgstr "Os plugins GravityView e o Gravity Forms Directory estão os dois activos e podem existir interferências no funcionamento. Se verificar algum problema, sugerimos que desactive o plugin Gravity Forms Directory."
+
+#: includes/class-admin.php:527
+#, php-format
+msgid ""
+"%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
+"Forms%s to use the GravityView plugin."
+msgstr "%sO GravityView necessita do plugin Gravity Forms activo. %sActive-o%s para utilizar o plugin GravityView."
+
+#: includes/class-admin.php:529
+#, php-format
+msgid ""
+"%sGravityView requires Gravity Forms to be installed in order to run "
+"properly. %sGet Gravity Forms%s - starting at $39%s%s"
+msgstr "%sO GravityView necessita que o plugin Gravity Forms esteja instalado para poder funcionar correctamente. %sObtenha o Gravity Forms%s - a partir de $39%s%s"
+
+#: includes/class-admin.php:535
+#, php-format
+msgid ""
+"%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n"
+"\n"
+"You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
+msgstr "%sO GravityView necessita da versão 1.8 ou mais recente do Gravity Forms.%s\n\nNeste momento está a utilizar a versão %s. Por favor actualize o plugin Gravity Forms ou compre uma nova licença. %sObtenha o Gravity Forms%s - a partir de $39%s%s"
+
+#: includes/class-api.php:244
+msgid "This search returned no results."
+msgstr "A pesquisa não retornou resultados."
+
+#: includes/class-api.php:246
+msgid "No entries match your request."
+msgstr "Não existem entradas que correspondam ao seu pedido."
+
+#: includes/class-api.php:388
+msgid "&larr; Go back"
+msgstr "&larr; Voltar"
+
+#: includes/class-api.php:636
+msgid "Map It"
+msgstr "Mapear"
+
+#: includes/class-data.php:299
+msgid "View ID"
+msgstr "ID da Vista"
+
+#: includes/class-data.php:307
+msgid "Number of entries per page"
+msgstr "Número de entradas por página"
+
+#: includes/class-data.php:315
+msgid "Enable lightbox for images"
+msgstr "Activar lightbox para Imagens"
+
+#: includes/class-data.php:323
+msgid "Show only approved entries"
+msgstr "Mostrar apenas entradas aprovadas"
+
+#: includes/class-data.php:330
+msgid "Hide empty fields"
+msgstr "Esconder campos vazios"
+
+#: includes/class-data.php:337
+msgid "Allow User Edit"
+msgstr "Permitir Edição de Utilizador"
+
+#: includes/class-data.php:339
+msgid "Allow logged-in users to edit entries they created."
+msgstr "Permitir que utilizadores registados editem as suas entradas."
+
+#: includes/class-data.php:345
+msgid "Sort by field"
+msgstr "Ordenar por campo"
+
+#: includes/class-data.php:350 includes/connector-functions.php:544
+msgid "Default"
+msgstr "Default"
+
+#: includes/class-data.php:351 includes/connector-functions.php:557
+msgid "Date Created"
+msgstr "Data de Criação"
+
+#: includes/class-data.php:356
+msgid "Sort direction"
+msgstr "Ordenação"
+
+#: includes/class-data.php:361
+msgid "ASC"
+msgstr "ASC"
+
+#: includes/class-data.php:362
+msgid "DESC"
+msgstr "DESC"
+
+#: includes/class-data.php:367
+msgid "Filter by Start Date"
+msgstr "Filtrar por Data de Início"
+
+#: includes/class-data.php:369
+msgid ""
+"Show entries submitted after this date. Supports relative dates, such as "
+"\"-1 week\" or \"-1 month\"."
+msgstr "Mostrar entradas submetidas depois desta data. Pode definir datas relativas como \"-1 week\" ou \"-1 month\""
+
+#: includes/class-data.php:376
+msgid "Filter by End Date"
+msgstr "Filtrar por Data de Fim"
+
+#: includes/class-data.php:378
+msgid ""
+"Show entries submitted before this date. Supports relative dates, such as "
+"\"now\" or \"-3 days\"."
+msgstr "Mostrar entradas submetidas antes desta data. Pode definir datas relativas como \"now\" ou \"-3 days\""
+
+#: includes/class-data.php:385
+msgid "CSS Class"
+msgstr "Classe CSS"
+
+#: includes/class-data.php:386
+msgid "CSS class to add to the wrapping HTML container."
+msgstr "Classe CSS a adicionar ao elemento HTML envolvente."
+
+#: includes/class-data.php:393
+msgid "Search Value"
+msgstr "Conteúdo a Pesquisar"
+
+#: includes/class-data.php:394
+msgid "Define a default search value for the View"
+msgstr "Definir o conteúdo a pesquisar por omissão para esta Vista"
+
+#: includes/class-data.php:401
+#: includes/extensions/search-widget/class-search-widget.php:125
+msgid "Search Field"
+msgstr "Campo de Pesquisa"
+
+#: includes/class-data.php:402
+msgid ""
+"If Search Value is set, you can define a specific field to search in. "
+"Otherwise, all fields will be searched."
+msgstr "Se o Conteúdo a Pesquisar estiver definido pode definir um campo específico como alvo da pesquisa, caso contrário a pesquisa incidirá sobre todos os campos."
+
+#: includes/class-data.php:409
+msgid "Single Entry Title"
+msgstr "Título para entrada individual"
+
+#: includes/class-data.php:411
+msgid ""
+"When viewing a single entry, change the title of the page to this setting. "
+"Otherwise, the title will not change between the Multiple Entries and Single"
+" Entry views."
+msgstr "Utilize esta configuração para personalizar o título da vista de entrada individual. Ou deixe em branco e o título será igual ao do directório."
+
+#: includes/class-data.php:418
+msgid "Back Link Label"
+msgstr "Título do link para voltar para trás"
+
+#: includes/class-data.php:420
+msgid "The text of the link that returns to the multiple entries view."
+msgstr "O texto do link para voltar para trás na vista de entrada individual."
+
+#: includes/class-debug-bar.php:24
+msgid "GravityView"
+msgstr "GravityView"
+
+#: includes/class-debug-bar.php:91
+msgid "Warnings"
+msgstr "Alertas"
+
+#: includes/class-debug-bar.php:100
+msgid "Logs"
+msgstr "Logs"
+
+#: includes/class-debug-bar.php:169
+msgctxt "Debugging output data is empty."
+msgid "Empty"
+msgstr "Vazio"
+
+#: includes/class-frontend-views.php:92
+#: includes/extensions/edit-entry/class-edit-entry.php:147
+#: includes/extensions/edit-entry/class-edit-entry.php:163
+#: includes/extensions/edit-entry/class-edit-entry.php:178
+#: includes/extensions/edit-entry/class-edit-entry.php:664
+#: includes/extensions/edit-entry/fields/edit_link.php:12
+msgid "Edit Entry"
+msgstr "Editar Entrada"
+
+#: includes/class-frontend-views.php:327
+msgid "You have attempted to view an entry that does not exist."
+msgstr "Tentou ver uma entrada que não existe."
+
+#: includes/class-gravityview-extension.php:169
+#, php-format
+msgid "Could not activate the %s Extension; GravityView is not active."
+msgstr "Não foi possível activar a extensão %s. O plugin GravityView não está activado."
+
+#: includes/class-gravityview-extension.php:179
+#, php-format
+msgid "The %s Extension requires GravityView Version %s or newer."
+msgstr "A extensão %s necessita do GravityView com a versão %s ou superior."
+
+#: includes/class-post-types.php:35
+msgctxt "Post Type General Name"
+msgid "Views"
+msgstr "Vistas"
+
+#: includes/class-post-types.php:36
+msgctxt "Post Type Singular Name"
+msgid "View"
+msgstr "Vista"
+
+#: includes/class-post-types.php:37
+msgctxt "Menu name"
+msgid "Views"
+msgstr "Vistas"
+
+#: includes/class-post-types.php:38
+msgid "Parent View:"
+msgstr "Vista Pai:"
+
+#: includes/class-post-types.php:39
+msgid "All Views"
+msgstr "Todas as Vistas"
+
+#: includes/class-post-types.php:40
+msgctxt "View Item"
+msgid "View"
+msgstr "Vista"
+
+#: includes/class-post-types.php:41
+msgid "Add New View"
+msgstr "Adicionar Nova Vista"
+
+#: includes/class-post-types.php:42
+msgid "New View"
+msgstr "Nova Vista"
+
+#: includes/class-post-types.php:43
+msgid "Edit View"
+msgstr "Editar Vista"
+
+#: includes/class-post-types.php:44
+msgid "Update View"
+msgstr "Actualizar Vista"
+
+#: includes/class-post-types.php:45
+msgid "Search Views"
+msgstr "Procurar"
+
+#: includes/class-post-types.php:47
+msgid "No Views found in Trash"
+msgstr "Não foram encontradas Vistas no Lixo"
+
+#: includes/class-post-types.php:50
+msgid "view"
+msgstr "vista"
+
+#: includes/class-post-types.php:51
+msgid "Create views based on a Gravity Forms form"
+msgstr "Criar vistas baseadas num formulário do Gravity Forms"
+
+#: includes/class-post-types.php:119
+#, php-format
+msgid ""
+"%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n"
+"\n"
+"If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
+msgstr "%sAinda não tem nenhuma Vista activa. %sCrie uma agora%s!%s\n\nSe sente que está perdido no espaço e precisa de ajuda para começar, visite a página %sGetting Started%s."
+
+#: includes/class-settings.php:102
+#, php-format
+msgid ""
+"Your GravityView license %s. This means you&rsquo;re missing out on updates "
+"and support! %sActivate your license%s or %sget a license here%s."
+msgstr "A sua licença GravityView %s. Isto significa que está a perder as actualizações e o acesso ao suporte. %sActive a sua licença%s ou %sadquira uma aqui%s."
+
+#: includes/class-settings.php:104
+msgid "Inactive License"
+msgstr "Licença inactiva"
+
+#: includes/class-settings.php:108
+msgid "Invalid License"
+msgstr "Licença inválida"
+
+#: includes/class-settings.php:109
+msgid "is invalid"
+msgstr "está inválida"
+
+#: includes/class-settings.php:112
+msgid "is inactive"
+msgstr "está inactiva"
+
+#: includes/class-settings.php:115
+msgid "has not been activated"
+msgstr "ainda não foi activada"
+
+#: includes/class-settings.php:142
+msgid "Status"
+msgstr "Estado"
+
+#: includes/class-settings.php:143
+msgid "There was an error processing the request."
+msgstr "Existiu um erro a processar o seu pedido."
+
+#: includes/class-settings.php:144
+msgid ""
+"Could not deactivate the license. The submitted license key may not be "
+"active."
+msgstr "Não foi possível activar a licença. A chave da licença que foi submetida pode ainda não estar activa."
+
+#: includes/class-settings.php:145
+msgid "Not Activated"
+msgstr "Não Activada"
+
+#: includes/class-settings.php:146
+msgid "Invalid; this license has reached its activation limit."
+msgstr "Inválido; Esta licença já atingiu o limite de activações."
+
+#: includes/class-settings.php:147
+msgid "Deactivated"
+msgstr "Desactivada"
+
+#: includes/class-settings.php:148
+msgid "Valid"
+msgstr "Válida"
+
+#: includes/class-settings.php:149 includes/class-settings.php:150
+msgid "Not Valid"
+msgstr "Inválida"
+
+#: includes/class-settings.php:151
+msgid "The license key has been revoked."
+msgstr "A chave da licença foi revogada."
+
+#: includes/class-settings.php:152
+msgid "The license key has expired."
+msgstr "A chave da licença expirou."
+
+#: includes/class-settings.php:154
+msgid "Verifying license&hellip;"
+msgstr "A verificar a licença&hellip;"
+
+#: includes/class-settings.php:155
+msgid "Activate License"
+msgstr "Activar a Licença"
+
+#: includes/class-settings.php:156
+msgid "Deactivate License"
+msgstr "Desactivar a Licença"
+
+#: includes/class-settings.php:157
+msgid "Verify License"
+msgstr "Verificar a Licença"
+
+#: includes/class-settings.php:178
+msgid "License Key"
+msgstr "Chave da Licença"
+
+#: includes/class-settings.php:179
+msgid ""
+"Enter the license key that was sent to you on purchase. This enables plugin "
+"updates &amp; support."
+msgstr "Insira a chave da Licença que lhe foi enviada durante a compra do plugin para activar os updates e o suporte."
+
+#: includes/class-settings.php:186
+msgid "Support Email"
+msgstr "Email de Suporte"
+
+#: includes/class-settings.php:187
+msgid ""
+"In order to provide responses to your support requests, please provide your "
+"email address."
+msgstr "Para obter resposta aos seus pedidos de suporte, por favor forneça-nos o seu endereço de email."
+
+#: includes/class-settings.php:192
+msgid "No-Conflict Mode"
+msgstr "Modo Sem Conflictos"
+
+#: includes/class-settings.php:193
+msgid ""
+"Set this to ON to prevent extraneous scripts and styles from being printed "
+"on GravityView admin pages, reducing conflicts with other plugins and "
+"themes."
+msgstr "Active este modo para prevenir que scripts e estilos de outros plugins não afectem as páginas de administração do GravityView."
+
+#: includes/class-settings.php:211
+msgid "GravityView Settings"
+msgstr "Configuração GravityView"
+
+#: includes/class-settings.php:311
+msgid "Follow us on Google+"
+msgstr "Siga-nos no Google+"
+
+#: includes/connector-functions.php:138
+msgid "Payment Status"
+msgstr "Estado do Pagamento"
+
+#: includes/connector-functions.php:143
+msgid "Payment Date"
+msgstr "Data do Pagamento"
+
+#: includes/connector-functions.php:148
+msgid "Payment Amount"
+msgstr "Valor Pago"
+
+#: includes/connector-functions.php:153
+msgid "Payment Method"
+msgstr "Meio de Pagamento"
+
+#: includes/connector-functions.php:158
+msgid "Is Fulfilled"
+msgstr "Fornecido"
+
+#: includes/connector-functions.php:163
+msgid "Transaction ID"
+msgstr "ID da Transação"
+
+#: includes/connector-functions.php:168
+msgid "Transaction Type"
+msgstr "Tipo de Transação"
+
+#: includes/default-templates.php:30
+msgid "Table (default)"
+msgstr "Tabela (default)"
+
+#: includes/default-templates.php:31
+msgid "Display items in a table view."
+msgstr "Mostrar entradas numa Tabela"
+
+#: includes/default-templates.php:43 includes/default-templates.php:86
+msgid "Link to single entry"
+msgstr "Link para entrada individual"
+
+#: includes/default-templates.php:51
+msgid "Visible Table Columns"
+msgstr "Colunas Visíveis na Tabela"
+
+#: includes/default-templates.php:52
+msgid "Each field will be displayed as a column in the table."
+msgstr "Cada campo será apresentado numa coluna da tabela"
+
+#: includes/default-templates.php:77
+msgid "List (default)"
+msgstr "Lista (default)"
+
+#: includes/default-templates.php:78
+msgid "Display items in a listing view."
+msgstr "Mostrar entradas em lista"
+
+#: includes/default-templates.php:92
+msgid "Listing Title"
+msgstr "Título"
+
+#: includes/default-templates.php:93
+msgid "Subheading"
+msgstr "Sub-título"
+
+#: includes/default-templates.php:96
+msgid "Image"
+msgstr "Imagem"
+
+#: includes/default-templates.php:99
+msgid "Other Fields"
+msgstr "Outros Campos"
+
+#: includes/default-templates.php:103
+msgid "Footer Left"
+msgstr "Rodapé à esquerda"
+
+#: includes/default-templates.php:106
+msgid "Footer Right"
+msgstr "Rodapé à direita"
+
+#: includes/default-templates.php:342
+msgid "Business Data"
+msgstr "Dados Comerciais"
+
+#: includes/default-templates.php:343
+msgid "Display business information in a table."
+msgstr "Mostrar informação comercial numa tabela"
+
+#: includes/default-templates.php:364
+msgid "Resume Board"
+msgstr "Lista de CVs"
+
+#: includes/default-templates.php:365
+msgid "Allow job-seekers to post their resumes."
+msgstr "Listar CVs de quem procura emprego."
+
+#: includes/default-templates.php:386
+msgid "Job Board"
+msgstr "Oportunidades de Emprego"
+
+#: includes/default-templates.php:387
+msgid "Post available jobs in a simple job board."
+msgstr "Lista de oportunidades de emprego."
+
+#: includes/default-templates.php:408
+msgid "People Table"
+msgstr "Tabela de Dados Pessoais"
+
+#: includes/default-templates.php:409
+msgid "Display information about people in a table."
+msgstr "Mostrar dados pessoais numa tabela"
+
+#: includes/default-templates.php:431
+msgid "Issue Tracker"
+msgstr "Lista de Incidentes"
+
+#: includes/default-templates.php:432
+msgid "Manage issues and their statuses."
+msgstr "Gerir incidentes e o seu estado."
+
+#: includes/default-templates.php:454
+msgid "Business Listings"
+msgstr "Listagem Comercial"
+
+#: includes/default-templates.php:455
+msgid "Display business profiles."
+msgstr "Mostrar perfis comerciais"
+
+#: includes/default-templates.php:476
+msgid "Event Listings"
+msgstr "Listagem de Eventos"
+
+#: includes/default-templates.php:477
+msgid "Present a list of your events."
+msgstr "Mostrar lista de eventos."
+
+#: includes/default-templates.php:498
+msgid "People Profiles"
+msgstr "Perfis Pessoais"
+
+#: includes/default-templates.php:499
+msgid "List people with individual profiles."
+msgstr "Listagem de pessoas com perfis individuais."
+
+#: includes/default-templates.php:520
+msgid "Staff Profiles"
+msgstr "Staff Profiles"
+
+#: includes/default-templates.php:521
+msgid "List members of your team."
+msgstr "Listagem de membros da sua equipa"
+
+#: includes/default-templates.php:542
+msgid "Website Showcase"
+msgstr "Website Showcase"
+
+#: includes/default-templates.php:543
+msgid "Feature submitted websites with screenshots."
+msgstr "Destaque de websites com imagens"
+
+#: includes/default-widgets.php:31
+msgid "Summary of the number of visible entries out of the total results."
+msgstr "Sumário do número total de entradas visíveis em relação ao total de resultados."
+
+#: includes/default-widgets.php:40
+msgid "Show Pagination Info"
+msgstr "Mostrar Paginação"
+
+#: includes/default-widgets.php:79
+#, php-format
+msgid "Displaying %1$s - %2$s of %3$s"
+msgstr "Entradas %1$s - %2$s de %3$s"
+
+#: includes/default-widgets.php:100
+msgid "Links to multiple pages of results."
+msgstr "Links para múltiplas páginas de resultados."
+
+#: includes/default-widgets.php:105
+msgid "Show each page number"
+msgstr "Mostrar todos os números de página"
+
+#: includes/default-widgets.php:106
+msgid "Show every page number instead of summary (eg: 1 2 3 ... 8 »)"
+msgstr "Mostrar todos os números de página em vez de resumo (p.e.: 1 2 3 ... 8 »)"
+
+#: includes/default-widgets.php:109
+msgid "Page Links"
+msgstr "Links Páginas"
+
+#: includes/extensions/edit-entry/class-edit-entry.php:145
+msgid "Edit Link Text"
+msgstr "Editar Texto do Link"
+
+#: includes/extensions/edit-entry/class-edit-entry.php:165
+msgid "A link to edit the entry. Visible based on View settings."
+msgstr "Link para editar a entrada. Estará visível de acordo com as configurações da Vista."
+
+#: includes/extensions/edit-entry/class-edit-entry.php:553
+msgid "The link to edit this entry is not valid; it may have expired."
+msgstr "O link para editar esta entrada não é válido. Pode ter expirado."
+
+#: includes/extensions/edit-entry/class-edit-entry.php:557
+msgid "You do not have permission to edit this entry."
+msgstr "Não tem permissões para editar esta entrada."
+
+#: includes/extensions/edit-entry/class-edit-entry.php:561
+msgid "You cannot edit the entry; it is in the trash."
+msgstr "Não é possível editar esta entrada."
+
+#: includes/extensions/edit-entry/class-edit-entry.php:675
+msgid "There was a problem with your submission."
+msgstr "Foi encontrado um erro."
+
+#: includes/extensions/edit-entry/class-edit-entry.php:675
+msgid "Errors have been highlighted below."
+msgstr "Os erros estão assinalados em baixo."
+
+#: includes/extensions/edit-entry/class-edit-entry.php:681
+#, php-format
+msgid "Entry Updated. %sReturn to Entry%s"
+msgstr "Entrada Actualizada. %sVoltar à Entrada%s"
+
+#: includes/extensions/edit-entry/class-edit-entry.php:716
+msgid "Update"
+msgstr "Actualizar"
+
+#: includes/extensions/edit-entry/class-gv-gfcommon.php:35
+msgid "You don&rsquo;t have permission to edit this post."
+msgstr "Não tem permissões para editar este artigo."
+
+#: includes/extensions/edit-entry/class-gv-gfcommon.php:37
+#, php-format
+msgid "You can %sedit this post%s from the post page."
+msgstr "Pode %seditar este artigo%s a partir da página do artigo."
+
+#: includes/extensions/edit-entry/class-gv-gfcommon.php:101
+#: includes/extensions/edit-entry/class-gv-gfcommon.php:120
+msgid "Allowed Files"
+msgstr "Ficheiros Autorizados"
+
+#: includes/extensions/edit-entry/class-gv-gfcommon.php:133
+msgid "Drop files here or"
+msgstr "Arrastar os ficheiros para aqui ou"
+
+#: includes/extensions/edit-entry/class-gv-gfcommon.php:133
+msgid "Select files"
+msgstr "Escolher Ficheiros"
+
+#: includes/extensions/edit-entry/class-gv-gfcommon.php:160
+msgid "Download file"
+msgstr "Descarregar ficheiro"
+
+#: includes/extensions/edit-entry/class-gv-gfcommon.php:160
+msgid "Delete file"
+msgstr "Remover ficheiro"
+
+#: includes/extensions/edit-entry/inline-javascript.php:4
+msgid ""
+"Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to "
+"delete"
+msgstr "Pretende remover o ficheiro de forma definitiva? 'Cancelar' para interromper. 'OK' para remover."
+
+#: includes/extensions/edit-entry/inline-javascript.php:14
+msgid "Ajax error while deleting field."
+msgstr "Erro AJAX enquanto apagava o campo."
+
+#: includes/extensions/search-widget/class-search-widget.php:27
+msgid "Search form for searching entries."
+msgstr "Formulário de pesquisa para entradas."
+
+#: includes/extensions/search-widget/class-search-widget.php:44
+msgid "Search Layout"
+msgstr "Estilo da Pesquisa"
+
+#: includes/extensions/search-widget/class-search-widget.php:47
+msgid "Horizontal"
+msgstr "Horizontal"
+
+#: includes/extensions/search-widget/class-search-widget.php:48
+msgid "Vertical"
+msgstr "Vertical"
+
+#: includes/extensions/search-widget/class-search-widget.php:52
+msgid "Search Bar"
+msgstr "Barra de Pesquisa"
+
+#: includes/extensions/search-widget/class-search-widget.php:97
+msgid "Text"
+msgstr "Texto"
+
+#: includes/extensions/search-widget/class-search-widget.php:98
+msgid "Date"
+msgstr "Data"
+
+#: includes/extensions/search-widget/class-search-widget.php:100
+msgid "Select (multiple values)"
+msgstr "Select (múltiplos valores)"
+
+#: includes/extensions/search-widget/class-search-widget.php:101
+msgid "Radio"
+msgstr "Radio"
+
+#: includes/extensions/search-widget/class-search-widget.php:102
+#: includes/extensions/search-widget/class-search-widget.php:103
+msgid "Checkbox"
+msgstr "Checkbox"
+
+#: includes/extensions/search-widget/class-search-widget.php:104
+msgid "Links"
+msgstr "Links"
+
+#: includes/extensions/search-widget/class-search-widget.php:123
+msgid "No search fields configured yet."
+msgstr "Ainda não foram definidos campos de pesquisa."
+
+#: includes/extensions/search-widget/class-search-widget.php:124
+msgid "Add Search Field"
+msgstr "Adicionar Campo"
+
+#: includes/extensions/search-widget/class-search-widget.php:126
+msgid "Input Type"
+msgstr "Tipo de Input"
+
+#: includes/extensions/search-widget/class-search-widget.php:185
+msgid "Search Everything"
+msgstr "Pesquisar Tudo"
+
+#: includes/extensions/search-widget/class-search-widget.php:597
+msgctxt "Close calendar"
+msgid "Close"
+msgstr "Fechar"
+
+#: includes/extensions/search-widget/class-search-widget.php:598
+msgctxt "Previous month in calendar"
+msgid "Prev"
+msgstr "Anterior"
+
+#: includes/extensions/search-widget/class-search-widget.php:599
+msgctxt "Next month in calendar"
+msgid "Next"
+msgstr "Próximo"
+
+#: includes/extensions/search-widget/class-search-widget.php:600
+msgctxt "Today in calendar"
+msgid "Today"
+msgstr "Hoje"
+
+#: includes/extensions/search-widget/class-search-widget.php:601
+msgctxt "Week in calendar"
+msgid "Week"
+msgstr "Semana"
+
+#: includes/extensions/search-widget/class-search-widget.php:602
+msgid "Show a different month"
+msgstr "Mostrar outro mês"
+
+#: includes/extensions/search-widget/templates/search-field-entry_date.php:15
+msgid "Filter by date:"
+msgstr "Filtrar por data:"
+
+#: includes/extensions/search-widget/templates/search-field-entry_date.php:17
+msgid "Start date"
+msgstr "Data de Início"
+
+#: includes/extensions/search-widget/templates/search-field-entry_date.php:18
+msgid "End date"
+msgstr "Data de Fim"
+
+#: includes/extensions/search-widget/templates/search-field-link.php:12
+msgid "Show only:"
+msgstr "Mostar apenas:"
+
+#: includes/extensions/search-widget/templates/search-field-search_all.php:16
+msgid "Search Entries:"
+msgstr "Pesquisar Entradas"
+
+#: includes/extensions/search-widget/templates/widget-search.php:56
+msgid "Search"
+msgstr "Pesquisar"
+
+#: includes/fields/address.php:21
+msgid "Show Map Link:"
+msgstr "Mostrar Link para Mapa"
+
+#: includes/fields/address.php:22
+msgid "Display a \"Map It\" link below the address"
+msgstr "Apresentar um link \"Ver no Mapa\" por baixo do endereço"
+
+#: includes/fields/class.field.php:25
+msgid "Link to the post"
+msgstr "Link para o artigo"
+
+#: includes/fields/class.field.php:26
+msgid "Link to the post created by the entry."
+msgstr "Link para o artigo criado pela entrada."
+
+#: includes/fields/class.field.php:31
+msgid "Link to the category or tag"
+msgstr "Link para a categoria ou tag"
+
+#: includes/fields/class.field.php:32
+msgid ""
+"Link to the current category or tag. \"Link to single entry\" must be "
+"unchecked."
+msgstr "Link para a categoria ou tag actual. A opção \"Link para entrada individual\" não deve estar escolhida."
+
+#: includes/fields/class.field.php:37
+msgid "Use the live post data"
+msgstr "Utilizar os dados actualizados do artigo"
+
+#: includes/fields/class.field.php:38
+msgid "Instead of using the entry data, instead use the current post data."
+msgstr "Utilizar os dados actualizados do artigo em vez dos dados da entrada."
+
+#: includes/fields/class.field.php:43
+msgid "Override Date Format"
+msgstr "Personalizar o formato da data"
+
+#: includes/fields/class.field.php:44
+#, php-format
+msgid "Define how the date is displayed (using %sthe PHP date format%s)"
+msgstr "Definir como mostrar a data (utilizar %sformatos PHP%s)"
+
+#: includes/fields/created-by.php:11
+msgid "User Format"
+msgstr "Formato de Utilizador"
+
+#: includes/fields/created-by.php:12
+msgid "How should the User information be displayed?"
+msgstr "Como pretende mostrar a informação de utilizador?"
+
+#: includes/fields/created-by.php:14
+msgid "Display Name (Example: \"Ellen Ripley\")"
+msgstr "Mostrar Nome (exemplo: \"António Silva\")"
+
+#: includes/fields/created-by.php:15
+msgid "Username (Example: \"nostromo\")"
+msgstr "Mostrar utilizador (exemplo: \"antonio_silva01\""
+
+#: includes/fields/created-by.php:16
+msgid "User ID # (Example: 426)"
+msgstr "ID de utilizador (exemplo: 234)"
+
+#: includes/fields/custom.php:19
+msgid "Enter text or HTML. Also supports shortcodes."
+msgstr "Inserir texto ou HTML. Suporta shortcodes."
+
+#: includes/fields/custom.php:26
+msgid "Automatically add paragraphs to content"
+msgstr "Adicionar parágrafos automaticamente ao conteúdo."
+
+#: includes/fields/custom.php:27
+msgid ""
+"Wrap each block of text in an HTML paragraph tag (recommended for text)."
+msgstr "Envolver cada bloco de texto com uma tag HTML de parágrafo (recomendado para texto)."
+
+#: includes/fields/email.php:19
+msgid "Link the Email Address"
+msgstr "Link para endereço de Email"
+
+#: includes/fields/email.php:20
+msgid "Clicking the link will generate a new email."
+msgstr "Ao clicar no link irá ser gerado um novo email."
+
+#: includes/fields/email.php:24
+msgid "Email Subject"
+msgstr "Assunto do Email"
+
+#: includes/fields/email.php:26
+msgid "Set the default email subject line."
+msgstr "Definir o assunto do email por omissão."
+
+#: includes/fields/email.php:31
+msgid "Email Body"
+msgstr "Corpo do Email"
+
+#: includes/fields/email.php:33
+msgid "Set the default email content."
+msgstr "Definir o conteúdo do email por omissão."
+
+#: includes/fields/email.php:39
+msgid "Encrypt Email Address"
+msgstr "Encriptar o Endereço de Email"
+
+#: includes/fields/email.php:40
+msgid ""
+"Make it harder for spammers to get email addresses from your entries. Email "
+"addresses will not be visible with Javascript disabled."
+msgstr "Dificultar que os endereços de email das entradas sejam apanhados e utilizados para spam. Se o Javascript não estiver disponível o endereço de email não estará visível."
+
+#: includes/fields/entry-link.php:18 includes/fields/source-url.php:25
+msgid "Link Text:"
+msgstr "Texto do Link:"
+
+#: includes/fields/entry-link.php:20 templates/fields/entry_link.php:10
+msgid "View Details"
+msgstr "Detalhes da Vista"
+
+#: includes/fields/fileupload.php:16
+msgid "Display as a Link:"
+msgstr "Apresentar como um Link:"
+
+#: includes/fields/fileupload.php:17
+msgid "Display the uploaded files as links, rather than embedded content."
+msgstr "Apresentar os ficheiros carregados como links em vez de conteúdo embebido."
+
+#: includes/fields/source-url.php:18
+msgid "Link to URL:"
+msgstr "Link para o URL:"
+
+#: includes/fields/source-url.php:19
+msgid "Display as a link to the Source URL"
+msgstr "Apresentar como um link para o URL de origem"
+
+#: includes/fields/source-url.php:26
+msgid "Customize the link text. If empty, the link text will be the the URL."
+msgstr "Personalizar o texto do link. Se vazio, o texto do link será o URL."
+
+#: includes/fields/website.php:18
+msgid "Shorten Link Display"
+msgstr "Encurtar o Link"
+
+#: includes/fields/website.php:19
+msgid "Only show the domain for a URL instead of the whole link."
+msgstr "Mostrar apenas o domínio do URL em vez do link completo."
+
+#: includes/fields/website.php:20
+msgid "Don&rsquo;t show the full URL, only show the domain."
+msgstr "Não mostrar o URL completo, apenas o domínio."
+
+#: templates/fields/email.php:60
+msgid "Email hidden; Javascript is required."
+msgstr "Email escondido; É necessário Javascript."
+
+#: templates/fields/is_fulfilled.php:8
+msgid "Not Fulfilled"
+msgstr "Não Realizado"
+
+#: templates/fields/is_fulfilled.php:10
+msgid "Fulfilled"
+msgstr "Realizado"
+
+#: templates/fields/post_image.php:85
+msgctxt "Post Image field title heading"
+msgid "Title:"
+msgstr "Título:"
+
+#: templates/fields/post_image.php:91
+msgctxt "Post Image field caption heading"
+msgid "Caption:"
+msgstr "Legenda:"
+
+#: templates/fields/post_image.php:97
+msgctxt "Post Image field description heading"
+msgid "Description:"
+msgstr "Descrição:"

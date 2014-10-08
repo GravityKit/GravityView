@@ -22,26 +22,26 @@ abstract class GravityView_Field {
 		$options = array(
 			'link_to_post' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Link to the post', 'gravity-view' ),
-				'desc' => __( 'Link to the post created by the entry.', 'gravity-view' ),
+				'label' => __( 'Link to the post', 'gravityview' ),
+				'desc' => __( 'Link to the post created by the entry.', 'gravityview' ),
 				'default' => false,
 			),
 			'link_to_term' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Link to the category or tag', 'gravity-view' ),
-				'desc' => __( 'Link to the current category or tag. "Link to single entry" must be unchecked.', 'gravity-view' ),
+				'label' => __( 'Link to the category or tag', 'gravityview' ),
+				'desc' => __( 'Link to the current category or tag. "Link to single entry" must be unchecked.', 'gravityview' ),
 				'default' => false,
 			),
 			'dynamic_data' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Use the live post data', 'gravity-view' ),
-				'desc' => __( 'Instead of using the entry data, instead use the current post data.', 'gravity-view' ),
+				'label' => __( 'Use the live post data', 'gravityview' ),
+				'desc' => __( 'Instead of using the entry data, instead use the current post data.', 'gravityview' ),
 				'default' => true,
 			),
 			'date_display' => array(
 				'type' => 'text',
-				'label' => __( 'Override Date Format', 'gravity-view' ),
-				'desc' => sprintf( __( 'Define how the date is displayed (using %sthe PHP date format%s)', 'gravity-view'), '<a href="https://www.php.net/manual/en/function.date.php">', '</a>' ),
+				'label' => __( 'Override Date Format', 'gravityview' ),
+				'desc' => sprintf( __( 'Define how the date is displayed (using %sthe PHP date format%s)', 'gravityview'), '<a href="https://codex.wordpress.org/Formatting_Date_and_Time">', '</a>' ),
 				'default' => apply_filters( 'gravityview_date_format', NULL )
 			)
 		);
@@ -68,16 +68,16 @@ abstract class GravityView_Field {
 	 * <code>
 	 * $field_options['name_display'] = array(
 	 * 	'type' => 'select',
-	 * 	'label' => __( 'User Format', 'gravity-view' ),
-	 * 	'desc' => __( 'How should the User information be displayed?', 'gravity-view'),
+	 * 	'label' => __( 'User Format', 'gravityview' ),
+	 * 	'desc' => __( 'How should the User information be displayed?', 'gravityview'),
 	 * 	'choices' => array(
 	 * 		array(
 	 *		 	'value' => 'display_name',
-	 *		  	'label' => __('Display Name (Example: "Ellen Ripley")', 'gravity-view'),
+	 *		  	'label' => __('Display Name (Example: "Ellen Ripley")', 'gravityview'),
 	 *		),
 	 *  	array(
 	 *			'value' => 'user_login',
-	 *			'label' => __('Username (Example: "nostromo")', 'gravity-view')
+	 *			'label' => __('Username (Example: "nostromo")', 'gravityview')
 	 *		),
 	 * 	 'default' => 'display_name'
 	 * );

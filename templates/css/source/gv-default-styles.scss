@@ -11,7 +11,8 @@
  */
 
  @import "search";
-
+ @import "fields";
+ @import "edit";
 
 /* GV Grid
 --------------------------------------- */
@@ -122,6 +123,11 @@ body .gv-widget-page-links {
 #TB_window img {
 	max-height: 100%;
 	max-width: 100%;
+}
+
+// Give some default space
+.gv-field-label {
+	padding-right: .25em;
 }
 
 

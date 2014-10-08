@@ -53,8 +53,8 @@ class GravityView_Welcome {
 		// Add help page to GravityView menu
 		add_submenu_page(
 			'edit.php?post_type=gravityview',
-			__('GravityView: Getting Started', 'gravity-view'),
-			__('Getting Started', 'gravity-view'),
+			__('GravityView: Getting Started', 'gravityview'),
+			__('Getting Started', 'gravityview'),
 			$this->minimum_capability,
 			'gv-getting-started',
 			array( $this, 'getting_started_screen' )
@@ -63,8 +63,8 @@ class GravityView_Welcome {
 		// Changelog Page
 		add_submenu_page(
 			'edit.php?post_type=gravityview',
-			__( 'Changelog', 'gravity-view' ),
-			__( 'Changelog', 'gravity-view' ),
+			__( 'Changelog', 'gravityview' ),
+			__( 'Changelog', 'gravityview' ),
 			$this->minimum_capability,
 			'gv-changelog',
 			array( $this, 'changelog_screen' )
@@ -73,8 +73,8 @@ class GravityView_Welcome {
 		// Credits Page
 		add_submenu_page(
 			'edit.php?post_type=gravityview',
-			__( 'Credits', 'gravity-view' ),
-			__( 'Credits', 'gravity-view' ),
+			__( 'Credits', 'gravityview' ),
+			__( 'Credits', 'gravityview' ),
 			$this->minimum_capability,
 			'gv-credits',
 			array( $this, 'credits_screen' )
@@ -144,18 +144,18 @@ class GravityView_Welcome {
 		$selected = !empty( $plugin_page ) ? $plugin_page : 'gv-getting-started';
 		?>
 
-		<h1><img class="alignleft" src="<?php echo plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ); ?>" width="100" height="132" /><?php printf( __( 'Welcome to GravityView %s', 'gravity-view' ), $display_version ); ?></h1>
-		<div class="about-text"><?php _e( 'Thank you for Installing GravityView. Beautifully display your Gravity Forms entries.', 'gravity-view' ); ?></div>
+		<h1><img class="alignleft" src="<?php echo plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ); ?>" width="100" height="132" /><?php printf( __( 'Welcome to GravityView %s', 'gravityview' ), $display_version ); ?></h1>
+		<div class="about-text"><?php _e( 'Thank you for Installing GravityView. Beautifully display your Gravity Forms entries.', 'gravityview' ); ?></div>
 
 		<h2 class="nav-tab-wrapper clear">
 			<a class="nav-tab <?php echo $selected == 'gv-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-getting-started', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
-				<?php _e( "Getting Started", 'gravity-view' ); ?>
+				<?php _e( "Getting Started", 'gravityview' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'gv-changelog' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-changelog', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
-				<?php _e( "List of Changes", 'gravity-view' ); ?>
+				<?php _e( "List of Changes", 'gravityview' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'gv-credits' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-credits', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
-				<?php _e( 'Credits', 'gravity-view' ); ?>
+				<?php _e( 'Credits', 'gravityview' ); ?>
 			</a>
 		</h2>
 		<?php
@@ -252,6 +252,136 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 
 			<div class="changelog point-releases">
+
+				<h3>What changed in 1.2</h3>
+
+				<div class="feature-section col two-col">
+					<div class="col-1">
+						<img src="<?php echo plugins_url( 'images/screenshots/search-bar.png', GRAVITYVIEW_FILE ); ?>">
+					</div>
+					<div class="col-2 last-feature">
+						<h3 class="higher">New Search Bar</h3>
+						<p>We started from scratch and created the new Search Bar widget. Easily add fields to your search form, drag and drop to re-order fields, and choose how search fields are displayed.</p>
+						<p>The Search Bar widgets in yoru existing Views have been converted to use the new format.</p>
+					</div>
+				</div>
+
+				<hr />
+
+				<div class="feature-section col two-col">
+					<div class="col-1">
+						<h3 class="higher">Custom Content Field</h3>
+						<p>Sometimes you want to go free-form. With the Custom Content field, you can write HTML code or even a custom-generated paragraph using form field values.</p>
+						<p>The field also supports shortcodes, making it possible to add Gravity Forms forms!</p>
+					</div>
+					<div class="col-2 last-feature">
+						<img src="<?php echo plugins_url( 'images/screenshots/custom-content.png', GRAVITYVIEW_FILE ); ?>">
+					</div>
+				</div>
+
+				<hr />
+
+				<div class="feature-section col three-col">
+					<div class="col-1">
+						<h3 class="higher">Better Field Picker</h3>
+						<img src="<?php echo plugins_url( 'images/screenshots/better-field-picker.png', GRAVITYVIEW_FILE ); ?>">
+						<p>We've added additional information to the field picker, so you know more about the fields before you add them. This makes adding fields from large forms much easier.</p>
+					</div>
+					<div class="col-2">
+						<h3 class="higher">Video &amp; Audio Embeds</h3>
+						<img src="<?php echo plugins_url( 'images/screenshots/video-embed.png', GRAVITYVIEW_FILE ); ?>">
+						<p>If you upload a video or audio file, they are now embedded in the View, ready to play.</p>
+					</div>
+					<div class="col-3 last-feature">
+						<h3 class="higher">Easier Access to Forms</h3>
+						<img src="<?php echo plugins_url( 'images/screenshots/form-links.png', GRAVITYVIEW_FILE ); ?>">
+						<p>Easily access all the links for a View&rsquo;s connected form. Find the links in the "Data Source" box when editing a View.</p>
+					</div>
+				</div>
+
+				<hr />
+
+				<h3>Changes in 1.2 (full list)</h3>
+
+				<ul>
+					<li>Added: New Search Bar!
+						<ul>
+							<li>No longer check boxes in each field to add a field to the search form</li>
+							<li>Add any searchable form fields, not just fields added to the View</li>
+							<li>Easy new drag &amp; drop way to re-order fields</li>
+							<li>Horizontal and Vertical layouts</li>
+							<li>Choose how your search fields are displayed (if you have a checkbox field, for example, you can choose to have a drop-down, a multiselect field, checkboxes, radio buttons, or filter links)</li>
+							<li>Existing search settings will be migrated over on upgrade</li>
+						</ul>
+					</li>
+					<li>Added: "Custom Content" field type
+						<ul>
+							<li>Insert arbitrary text or HTML in a View</li>
+							<li>Supports shortcodes (including Gravity Forms shortcodes)!</li>
+						</ul>
+					</li>
+					<li>Added: Support for Gravity Forms Section &amp; HTML field types</li>
+					<li>Added: Improved textarea field support. Instead of using line breaks,textareas now output with paragraphs.
+						<ul>
+							<li>Added new <code>/templates/fields/textarea.php</code> file</li>
+						</ul>
+					</li>
+					<li>Added: A new File Upload field setting. Force uploads to be displayed as links and not visually embedded by checking the "Display as a Link" checkbox.</li>
+					<li>Added: Option to disable "Map It" link for the full Address field.
+						<ul>
+							<li>New <code>gravityview_get_map_link()</code> function with <code>gravityview_map_link</code> filter. To learn how to modify the map link, <a href="https://gravityview.co/support/documentation/201608159">refer to this how-to article</a></li>
+							<li>The "Map It" string is now translatable</li>
+						</ul>
+					</li>
+					<li>Added: When editing a View, there are now links in the Data Source box to easily access the Form: edit form, form entries, form settings and form preview</li>
+					<li>Added: Additional information in the "Add Field" or "Add Widget" picker (also get details about an item by hovering over the name in the View Configuration)</li>
+					<li>Added: Change Entry Creator functionality. Easily change the creator of an entry when editing the entry in the Gravity Forms Edit Entry page
+
+					<ul>
+					<li>If you're using the plugin downloaded from <a href="https://gravityview.co/support/documentation/201991205/">the how-to page</a>, you can de-activate it</li>
+					</ul>
+					</li>
+					<li>Modified: Changed translation textdomain to <code>gravityview</code> instead of <code>gravity-view</code></li>
+					<li>Modified: Always show label by default, regardless of whether in List or Table View type</li>
+					<li>Modified: It's now possible to override templates on a Form ID, Post ID, and View ID basis. This allows custom layouts for a specific View, rather than site-wide. See "Template File Hierarchy" in <a href="http://gravityview.co/support/documentation/202551113/">the override documentation</a> to learn more.</li>
+					<li>Modified: File Upload field output no longer run through <code>wpautop()</code> function</li>
+					<li>Modified: Audio and Video file uploads are now displayed using WordPress' built-in <a href="http://codex.wordpress.org/Audio_Shortcode">audio</a> and <a href="http://codex.wordpress.org/Video_Shortcode">video</a> shortcodes (requires WordPress 3.6 or higher)
+						<ul>
+							<li>Additional file type support</li>
+							<li>Added <code>gravityview_video_settings</code> and <code>gravityview_audio_settings</code> filters to modify the parameters passed to the shortcode</li>
+						</ul>
+					</li>
+					<li>Fixed: Shortcode attributes not overriding View defaults</li>
+					<li>Fixed: Uploading and deleting files works properly in Edit Entry mode</li>
+					<li>Fixed: Configurations get truncated when configuring Views with many fields</li>
+					<li>Fixed: Empty <code>&lt;span class="gv-field-label"&gt;</code> tags no longer output
+						<ul>
+							<li>Modified: <code>gv_field_label()</code> no longer returns the label with a trailing space. Instead, we use the <code>.gv-field-label</code> CSS class to add spacing using CSS padding.</li>
+						</ul>
+					</li>
+					<li>Fixed: Conflict with Relevanssi plugin</li>
+					<li>Fixed: If a date search isn't valid, remove the search parameter so it doesn't cause an error in Gravity Forms</li>
+					<li>Fixed: Email field was displaying label even when email was empty.</li>
+					<li>Settings page improvements
+						<ul>
+							<li>When changing the license value and saving the form, GravityView now re-checks the license status</li>
+							<li>Improved error messages</li>
+							<li>Made license settings translatable</li>
+						</ul>
+					</li>
+					<li>Modified: Added support for Gravity Forms "Post Image" field captions, titles, and descriptions.</li>
+					<li>Updated list of allowed image formats to include <code>.bmp</code>, <code>.jpe</code>, <code>.tiff</code>, <code>.ico</code></li>
+					<li>Modified: <code>/templates/fields/fileupload.php</code> file - removed the logic for how to output the different file types and moved it to the <code>gravityview_get_files_array()</code> function in <code>includes/class-api.php</code></li>
+					<li>Modified: <code>gv_value()</code> no longer needs the <code>$field</code> parameter</li>
+					<li>Tweak: Fixed email setting description text.</li>
+					<li>Tweak: Don't show Entry Link field output on single entry</li>
+					<li>Tweak: Improved Javascript performance in the Admin</li>
+					<li>Tweak: "Custom Label" is now shown as the field title in View Configuration</li>
+					<li>Tweak: Fixed "Left Footer" box not properly cleared</li>
+					<li>Tweak: Show warning if the Directory plugin is running</li>
+					<li>Tweak: Use icon font in Edit Entry mode for the download/delete file buttons. Now stylable using <code>.gv-edit-entry-wrapper .dashicons</code> CSS class.</li>
+					<li>Updated: Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a>, Dutch translation by <a href="https://www.transifex.com/accounts/profile/leooosterloo/">@leooosterloo</a>, Portuguese translation by <a href="https://www.transifex.com/accounts/profile/luistinygod/">@luistinygod</a></li>
+				</ul>
 
 				<h3>What changed in 1.1.6</h3>
 				<ul>
@@ -406,7 +536,7 @@ class GravityView_Welcome {
 
 			<?php $this->tabs(); ?>
 
-			<p class="about-description"><?php _e( 'GravityView is brought to you by:', 'gravity-view' ); ?></p>
+			<p class="about-description"><?php _e( 'GravityView is brought to you by:', 'gravityview' ); ?></p>
 
 			<div class="feature-section col two-col">
 
@@ -431,7 +561,7 @@ class GravityView_Welcome {
 
 			<div class="feature-section">
 				<div>
-					<h2><?php esc_attr_e( 'Contributors', 'gravity-view' ); ?></h2>
+					<h2><?php esc_attr_e( 'Contributors', 'gravityview' ); ?></h2>
 
 					<ul class="wp-people-group">
 						<li class="wp-person">Bengali translation by <a href="https://www.transifex.com/accounts/profile/tareqhi/">@tareqhi</a></li>
@@ -455,8 +585,8 @@ class GravityView_Welcome {
 
 					</ul>
 
-					<h4><?php esc_attr_e( 'Want to contribute?', 'gravity-view' ); ?></h4>
-					<p><?php echo sprintf( esc_attr__( 'If you want to contribute to the code, you can %srequest access to the Github repository%s. If your contributions are accepted, you will be thanked here.', 'gravity-view'), '<a href="mailto:zack@katzwebservices.com?subject=Github%20Access">', '</a>' ); ?></p>
+					<h4><?php esc_attr_e( 'Want to contribute?', 'gravityview' ); ?></h4>
+					<p><?php echo sprintf( esc_attr__( 'If you want to contribute to the code, you can %srequest access to the Github repository%s. If your contributions are accepted, you will be thanked here.', 'gravityview'), '<a href="mailto:zack@katzwebservices.com?subject=Github%20Access">', '</a>' ); ?></p>
 				</div>
 			</div>
 

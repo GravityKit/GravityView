@@ -46,13 +46,15 @@ class GravityView_Ajax {
 		//check nonce
 		$this->check_ajax_nonce();
 
+		$context = isset($_POST['context']) ? esc_attr( $_POST['context'] ) : 'directory';
+
 		// If Form was changed, JS sends form ID, if start fresh, JS sends template_id
 		if( !empty( $_POST['form_id'] ) ) {
-			do_action( 'gravityview_render_available_fields', (int) $_POST['form_id'] );
+			do_action( 'gravityview_render_available_fields', (int) $_POST['form_id'], $context );
 			exit();
 		} elseif( !empty( $_POST['template_id'] ) ) {
-			$form = $this->pre_get_form_fields( $_POST['template_id'] );
-			do_action( 'gravityview_render_available_fields', $form );
+			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
+			do_action( 'gravityview_render_available_fields', $form, $context );
 			exit();
 		}
 
@@ -158,19 +160,17 @@ class GravityView_Ajax {
 		$preset_form_xml_path = apply_filters( 'gravityview_template_formxml', '', $_POST['template_id'] );
 
 		// import form
-		$form_id = $this->import_form( $preset_form_xml_path );
+		$form = $this->import_form( $preset_form_xml_path );
 
 		// get the form ID
-		if( $form_id === false ) {
+		if( $form === false ) {
 			// send error to user
 			do_action( 'gravityview_log_error', '[create_preset_form] Error importing form for template id: ' . (int) $_POST['template_id'] );
 
 			exit( false );
 		}
 
-		echo '<option value="'.$form_id.'" selected></option>';
-
-		exit();
+		exit( '<option value="'.esc_attr( $form['id'] ).'" selected="selected">'.esc_html( $form['title'] ).'</option>' );
 
 	}
 
@@ -201,7 +201,7 @@ class GravityView_Ajax {
 		}
 
 		// import success - return form id
-		return $forms[0]['id'];
+		return $forms[0];
 	}
 
 
@@ -230,7 +230,7 @@ class GravityView_Ajax {
 		$input_type = isset($post['input_type']) ? esc_attr( $post['input_type'] ) : NULL;
 		$context = isset($post['context']) ? esc_attr( $post['context'] ) : NULL;
 
-		$response = GravityView_Admin_Views::render_field_options( $post['field_type'], $post['template'], $post['field_id'], $post['field_label'], $post['area'], $input_type, '', '', $context  );
+		$response = GravityView_Render_Settings::render_field_options( $post['field_type'], $post['template'], $post['field_id'], $post['field_label'], $post['area'], $input_type, '', '', $context  );
 
 		exit( $response );
 	}
@@ -255,7 +255,7 @@ class GravityView_Ajax {
 
 		} elseif( !empty( $_POST['template_id'] ) ) {
 
-			$form = $this->pre_get_form_fields( $_POST['template_id'] );
+			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
 
 		}
 
@@ -269,7 +269,7 @@ class GravityView_Ajax {
 	 * @param  string $template_id Preset template
 	 *
 	 */
-	function pre_get_form_fields( $template_id = '') {
+	static function pre_get_form_fields( $template_id = '') {
 
 		if( empty( $template_id ) ) {
 			return false;
@@ -302,7 +302,7 @@ class GravityView_Ajax {
             "routin"=> array("unserialize_as_array" => true),
             "confirmation" => array("unserialize_as_array" => true),
             "notification" => array("unserialize_as_array" => true)
-            );
+        );
 
 		$xml = new RGXML($options);
         $forms = $xml->unserialize($xmlstr);
@@ -314,6 +314,11 @@ class GravityView_Ajax {
 
         if( !empty( $forms[0] ) && is_array( $forms[0] ) ) {
         	$form = $forms[0];
+        }
+
+        if( empty( $form ) ) {
+        	do_action( 'gravityview_log_error', '[pre_get_available_fields] $form not set.', $forms );
+        	return false;
         }
 
         do_action( 'gravityview_log_debug', '[pre_get_available_fields] Importing Form Fields for preset ['. $template_id .']. (Form)', $form );

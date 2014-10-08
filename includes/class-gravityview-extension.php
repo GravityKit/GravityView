@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0.3
+ * @version 1.0.4
  */
 abstract class GravityView_Extension {
 
@@ -8,7 +8,7 @@ abstract class GravityView_Extension {
 
 	protected $_version = NULL;
 
-	protected $_text_domain = 'gravity-view';
+	protected $_text_domain = 'gravityview';
 
 	protected $_min_gravityview_version = '1.1.2';
 
@@ -150,13 +150,23 @@ abstract class GravityView_Extension {
 
 	}
 
-	private function is_extension_supported() {
+	/**
+	 * Check whether the extension is supported:
+	 *
+	 * - Checks if GravityView and Gravity Forms exist
+	 * - Checks GravityView and Gravity Forms version numbers
+	 * - Sets
+	 *
+	 * @uses GravityView_Admin::check_gravityforms()
+	 * @return boolean Is the extension supported?
+	 */
+	protected function is_extension_supported() {
 
 		self::$is_compatible = true;
 
 		if( !class_exists( 'GravityView_Plugin' ) ) {
 
-			$message = sprintf( __('Could not activate the %s Extension; GravityView is not active.', 'gravity-view'), $this->_title );
+			$message = sprintf( __('Could not activate the %s Extension; GravityView is not active.', 'gravityview'), $this->_title );
 
 			self::add_notice( $message );
 
@@ -166,7 +176,7 @@ abstract class GravityView_Extension {
 
 		} else if( false === version_compare(GravityView_Plugin::version, $this->_min_gravityview_version , ">=") ) {
 
-			$message = sprintf( __('The %s Extension requires GravityView Version %s or newer.', 'gravity-view' ), $this->_title, '<tt>'.$this->_min_gravityview_version.'</tt>' );
+			$message = sprintf( __('The %s Extension requires GravityView Version %s or newer.', 'gravityview' ), $this->_title, '<tt>'.$this->_min_gravityview_version.'</tt>' );
 
 			self::add_notice( $message );
 

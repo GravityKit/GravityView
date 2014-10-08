@@ -1,4 +1,6 @@
-<div class="gv-container gv-list-single-container">
+<?php gravityview_before(); ?>
+
+<div class="gv-container gv-list-single-container gv-list-container">
 
 	<p class="gv-back-link"><?php echo gravityview_back_link(); ?></p>
 
@@ -130,3 +132,5 @@
 	<?php endforeach; ?>
 
 </div>
+
+<?php gravityview_after(); ?>

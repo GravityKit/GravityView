@@ -21,7 +21,7 @@ class GravityView_Debug_Bar extends Debug_Bar_Panel {
 	function init() {
 
 		$icon = is_admin() ? '<i class="icon gv-icon-astronaut-head"></i>&nbsp;' : NULL;
-		$this->title( $icon . __('GravityView', 'gravity-view') );
+		$this->title( $icon . __('GravityView', 'gravityview') );
 	}
 
 	function get_warnings() {
@@ -88,7 +88,7 @@ class GravityView_Debug_Bar extends Debug_Bar_Panel {
 			$notices = $this->get_notices();
 
 			if(count($warnings)) {
-				$output .= '<h3><span>'.__('Warnings', 'gravity-view').'</span></h3>';
+				$output .= '<h3><span>'.__('Warnings', 'gravityview').'</span></h3>';
 				$output .= '<ul class="ul-square">';
 				foreach ( $warnings as $notice) {
 					if(empty($notice['message'])) { continue; }
@@ -97,7 +97,7 @@ class GravityView_Debug_Bar extends Debug_Bar_Panel {
 				$output .= '</ul><hr />';
 			}
 			if(count($notices)) {
-				$output .= '<h3><span>'.__('Logs', 'gravity-view').'</span></h3>';
+				$output .= '<h3><span>'.__('Logs', 'gravityview').'</span></h3>';
 				$output .= '<ul class="ul-square">';
 				foreach ( $notices as $notice) {
 					if(empty($notice['message'])) { continue; }
@@ -166,7 +166,7 @@ class GravityView_Debug_Bar extends Debug_Bar_Panel {
 		// Debugging Output
 		if( empty( $notice['data'] ) ) {
 			if( !is_null( $notice['data'] ) ) {
-				$output .= '<em>'._x('Empty', 'Debugging output data is empty.', 'gravity-view' ).'</em>';
+				$output .= '<em>'._x('Empty', 'Debugging output data is empty.', 'gravityview' ).'</em>';
 			}
 		}
 		else {
