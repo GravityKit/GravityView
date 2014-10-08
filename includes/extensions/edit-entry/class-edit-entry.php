@@ -281,7 +281,6 @@ class GravityView_Edit_Entry {
 		$label = esc_html(GFCommon::get_label($field));
 
 		$input = GV_GFCommon::get_field_input($field, $value, $lead_id, $form_id ) ;
-		#$input = GFCommon::get_field_input($field, $value, $lead_id, $form_id ) ;
 
 		$error_class = rgget("failed_validation", $field) ? "gfield_error" : "";
 

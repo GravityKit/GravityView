@@ -11,14 +11,13 @@
  */
 class GV_GFCommon extends GFCommon {
 
-	public static function get_field_input($field, $value="", $lead_id=0, $form_id=0){
-
+	public static function get_field_input( $field, $value = '', $lead_id = 0, $form_id = 0 ){
 
 		// Check if we need to use this hack. Ideally, no.
 		switch(RGFormsModel::get_input_type($field)){
 
 			// We need to take control of this file type.
-			case "fileupload":
+			case 'fileupload':
 			break;
 
 			// We have no problem with you, other field input babies.
@@ -30,7 +29,7 @@ class GV_GFCommon extends GFCommon {
 				// 3. We wanted to check whether the current user could edit the post in question.
 				$lead = RGFormsModel::get_lead($lead_id);
 
-				if( is_numeric( $lead["post_id"] ) && self::is_post_field( $field ) ){
+				if( is_numeric( $lead["post_id"] ) && parent::is_post_field( $field ) ){
 					if( false === current_user_can( 'edit_post', $lead["post_id"] ) ) {
 				    	return __('You don&rsquo;t have permission to edit this post.', 'gravityview');
 				    } else {
@@ -56,7 +55,7 @@ class GV_GFCommon extends GFCommon {
 
         switch(RGFormsModel::get_input_type($field)){
 
-			case "fileupload" :
+			case 'fileupload':
 
 			    $tabindex = self::get_tabindex();
 			    $multiple_files = rgar($field, "multipleFiles");
@@ -134,14 +133,13 @@ class GV_GFCommon extends GFCommon {
 
 			        // Display plupload messages here
 			        $upload .= "<div class='validation_message'><ul id='{$messages_id}'></ul></div>";
-
 			        // Add the hidden field used by gravityforms.js to fetch what uploads are in this field.
-			        $upload .= sprintf('<input type="hidden" name="input_%d" value=\'%s\' />', $id, esc_attr($value));
+			        $upload .= sprintf('<input type="hidden" name="input_%d" value=\'%s\' />', $id, esc_attr( $value ) );
 
 			    }
 
 			    // There's a JSON-encoded array of files
-			    if( !empty($value) ){ // edit entry
+			    if( !empty( $value ) ){ // edit entry
 
 			    	// Single upload fields are hidden if they have files; when deleting
 			    	// existing files, the field slides down.
