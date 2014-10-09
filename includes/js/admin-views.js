@@ -433,9 +433,9 @@
             var $label = dialog.parents('.gv-fields').find('.gv-field-label');
 
             // If there's a custom title, use it for the label.
-            if ($custom_label.length && $custom_label.val().length && show_label) {
+            if ($custom_label.length && $custom_label.val().trim().length && show_label) {
 
-                $label.text($custom_label.val());
+                $label.text($custom_label.val().trim());
 
             } else {
 
@@ -874,17 +874,6 @@
                     // Add in the Options <div>
                     newField.append(response);
 
-                    // Remove existing merge tags
-                    $('.all-merge-tags').remove();
-
-                    // Only init merge tags if the View has been saved and the form hasn't been changed.
-                    if ( typeof( form ) !== 'undefined' && $('body').not('.gv-form-changed')) {
-
-                        // Re-init merge tag dropdowns
-                        window.gfMergeTags = new gfMergeTagsObj(form);
-
-                    }
-
                     // If there are field options, show the settings gear.
                     if ($('.gv-dialog-options', newField).length > 0) {
                         $('.dashicons-admin-generic', newField).removeClass('hide-if-js');
@@ -899,7 +888,20 @@
                         .attr('data-tooltip-id', '');
 
                     // Show the new field
-                    newField.fadeIn(100);
+                    newField.fadeIn(100, function() {
+
+                    	// Remove existing merge tags, since otherwise GF will add another
+                    	$('.all-merge-tags').remove();
+
+                    	// Only init merge tags if the View has been saved and the form hasn't been changed.
+                    	if ( typeof( form ) !== 'undefined' && $('body').not('.gv-form-changed')) {
+
+                    	    // Re-init merge tag dropdowns
+                    	    window.gfMergeTags = new gfMergeTagsObj(form);
+
+                    	}
+
+                    });
 
                 })
                 .fail(function (jqXHR) {

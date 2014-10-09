@@ -64,7 +64,7 @@ class GravityView_API {
 		if( empty( $matches ) ) {
 
 			// Check for form variables
-			if( !preg_match( '/{(pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id)}/ism', $text ) ) {
+			if( !preg_match( '/{(all_fields|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id)}/ism', $text ) ) {
 				return $text;
 			}
 		}

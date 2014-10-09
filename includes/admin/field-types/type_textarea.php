@@ -29,7 +29,11 @@ class GravityView_FieldType_textarea extends GravityView_FieldType {
 		$show_mt = $this->show_merge_tags();
 
         if( $show_mt && $this->field['merge_tags'] !== false || $this->field['merge_tags'] === 'force' ) {
-            $class = 'merge-tag-support mt-position-right mt-hide_all_fields ';
+            $class = ' merge-tag-support mt-position-right ';
+
+            if( empty( $this->field['show_all_fields'] ) ) {
+            	$class .= ' mt-hide_all_fields';
+            }
         }
         $class .= !empty( $this->field['class'] ) ? 'widefat ' . $this->field['class'] : 'widefat';
 
