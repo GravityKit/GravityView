@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Modified: Allow `{all_fields}` and `{pricing_fields}` Merge Tags in Custom Content field
 * Fixed: Field label disappears on closing settings if the field title is empty
 * Fixed: Merge Tags available when adding a new field
+* Fixed: Issue where jQuery Cookie script wouldn't load due to `mod_security` issues. [Learn more here](http://docs.woothemes.com/document/jquery-cookie-fails-to-load/)
 
 = 1.2 =
 * Added: New Search Bar!
