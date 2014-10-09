@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-10-06 09:36-0700\n"
-"PO-Revision-Date: 2014-10-06 18:31+0000\n"
+"PO-Revision-Date: 2014-10-08 22:10+0000\n"
 "Last-Translator: Jorge Pelaez <jorgepelaez@gmail.com>\n"
 "Language-Team: Spanish (Mexico) (http://www.transifex.com/projects/p/gravityview/language/es_MX/)\n"
 "MIME-Version: 1.0\n"
@@ -1018,17 +1018,17 @@ msgstr "Estado"
 
 #: includes/class-settings.php:143
 msgid "There was an error processing the request."
-msgstr ""
+msgstr "Hubo un error al procesar la solicitud."
 
 #: includes/class-settings.php:144
 msgid ""
 "Could not deactivate the license. The submitted license key may not be "
 "active."
-msgstr ""
+msgstr "No se puede desactivar la licencia . La llave enviada puede no estar activa "
 
 #: includes/class-settings.php:145
 msgid "Not Activated"
-msgstr ""
+msgstr "No Activado"
 
 #: includes/class-settings.php:146
 msgid "Invalid; this license has reached its activation limit."
@@ -1495,7 +1495,7 @@ msgstr "Ver enlace mapa:"
 
 #: includes/fields/address.php:22
 msgid "Display a \"Map It\" link below the address"
-msgstr ""
+msgstr "Mostrar un enlace \" Localizar en mapa \" debajo de la dirección"
 
 #: includes/fields/class.field.php:25
 msgid "Link to the post"
@@ -1554,16 +1554,16 @@ msgstr "ID de Usuario # (Ejemplo: 426)"
 
 #: includes/fields/custom.php:19
 msgid "Enter text or HTML. Also supports shortcodes."
-msgstr ""
+msgstr "Introduzca texto o HTML . También es compatible con shortcodes."
 
 #: includes/fields/custom.php:26
 msgid "Automatically add paragraphs to content"
-msgstr ""
+msgstr "Agregar párrafos automáticamente al contenido"
 
 #: includes/fields/custom.php:27
 msgid ""
 "Wrap each block of text in an HTML paragraph tag (recommended for text)."
-msgstr ""
+msgstr "Envuelva cada bloque de texto en una etiqueta de párrafo HTML (recomendado para el texto) ."
 
 #: includes/fields/email.php:19
 msgid "Link the Email Address"
@@ -1571,7 +1571,7 @@ msgstr "Enlazar la Dirección de Email"
 
 #: includes/fields/email.php:20
 msgid "Clicking the link will generate a new email."
-msgstr ""
+msgstr "Al hacer clic en el enlace va a generar un nuevo correo electrónico "
 
 #: includes/fields/email.php:24
 msgid "Email Subject"
@@ -1579,25 +1579,25 @@ msgstr "Asunto del email"
 
 #: includes/fields/email.php:26
 msgid "Set the default email subject line."
-msgstr ""
+msgstr "Establecer la línea de asunto predeterminada del correo electrónico."
 
 #: includes/fields/email.php:31
 msgid "Email Body"
-msgstr ""
+msgstr "Cuerpo del correo"
 
 #: includes/fields/email.php:33
 msgid "Set the default email content."
-msgstr ""
+msgstr "Establecer el contenido predeterminado del correo electrónico ."
 
 #: includes/fields/email.php:39
 msgid "Encrypt Email Address"
-msgstr ""
+msgstr "Encriptar dirección de correo electrónico"
 
 #: includes/fields/email.php:40
 msgid ""
 "Make it harder for spammers to get email addresses from your entries. Email "
 "addresses will not be visible with Javascript disabled."
-msgstr ""
+msgstr "Haga más difícil para los spammers obtener direcciones de correo electrónico de sus entradas . Las direcciones de correo electrónico no serán visible con Javascript desactivado ."
 
 #: includes/fields/entry-link.php:18 includes/fields/source-url.php:25
 msgid "Link Text:"
@@ -1609,23 +1609,23 @@ msgstr "Vista Detalles"
 
 #: includes/fields/fileupload.php:16
 msgid "Display as a Link:"
-msgstr ""
+msgstr "Mostrar como Enlace:"
 
 #: includes/fields/fileupload.php:17
 msgid "Display the uploaded files as links, rather than embedded content."
-msgstr ""
+msgstr "Visualizar los archivos cargados como enlaces, en lugar de contenido incrustado ."
 
 #: includes/fields/source-url.php:18
 msgid "Link to URL:"
-msgstr ""
+msgstr "Enlace a URL:"
 
 #: includes/fields/source-url.php:19
 msgid "Display as a link to the Source URL"
-msgstr ""
+msgstr "Mostrar como enlace al URL Fuente"
 
 #: includes/fields/source-url.php:26
 msgid "Customize the link text. If empty, the link text will be the the URL."
-msgstr ""
+msgstr "Personalizar el texto del enlace . Si está vacío , el texto del enlace será el de la URL ."
 
 #: includes/fields/website.php:18
 msgid "Shorten Link Display"
@@ -1641,27 +1641,27 @@ msgstr "No mostrar la URL completa, solo mostrar el dominio."
 
 #: templates/fields/email.php:60
 msgid "Email hidden; Javascript is required."
-msgstr ""
+msgstr "Email oculto; Se requiere Javascript ."
 
 #: templates/fields/is_fulfilled.php:8
 msgid "Not Fulfilled"
-msgstr ""
+msgstr "No Cumplido"
 
 #: templates/fields/is_fulfilled.php:10
 msgid "Fulfilled"
-msgstr ""
+msgstr "Cumplido"
 
 #: templates/fields/post_image.php:85
 msgctxt "Post Image field title heading"
 msgid "Title:"
-msgstr ""
+msgstr "Título:"
 
 #: templates/fields/post_image.php:91
 msgctxt "Post Image field caption heading"
 msgid "Caption:"
-msgstr ""
+msgstr "Leyenda:"
 
 #: templates/fields/post_image.php:97
 msgctxt "Post Image field description heading"
 msgid "Description:"
-msgstr ""
+msgstr "Descripción:"
