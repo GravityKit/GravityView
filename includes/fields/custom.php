@@ -20,6 +20,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 				'default' => '',
 				'class'	=> 'code',
 				'merge_tags' => 'force',
+				'show_all_fields' => true, // Show the `{all_fields}` and `{pricing_fields}` merge tags
 			),
 			'wpautop' => array(
 				'type' => 'checkbox',

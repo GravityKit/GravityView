@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+* Modified: Allow `{all_fields}` and `{pricing_fields}` Merge Tags in Custom Content field
 = 1.2 =
 * Added: New Search Bar!
 	- No longer check boxes in each field to add a field to the search form
