@@ -481,9 +481,11 @@ class GravityView_Admin_Views {
 			'id' => array(
 				'label' => __('Entry ID', 'gravityview'),
 				'type' => 'id',
+				'desc'	=> __('The unique ID of the entry.', 'gravityview'),
 			),
 			'date_created' => array(
 				'label' => __('Entry Date', 'gravityview'),
+				'desc'	=> __('The date the entry was created.', 'gravityview'),
 				'type' => 'date_created',
 			),
 			'source_url' => array(
@@ -778,7 +780,7 @@ class GravityView_Admin_Views {
 		global $plugin_page;
 
 		// Add the GV font (with the Astronaut)
-		wp_enqueue_style( 'gravityview_global', plugins_url('includes/css/admin-global.css', GRAVITYVIEW_FILE), array() );
+		wp_enqueue_style( 'gravityview_global', plugins_url('includes/css/admin-global.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
 
 		wp_register_script( 'gravityview-jquery-cookie', plugins_url('includes/lib/jquery-cookie/jquery_cookie.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
 

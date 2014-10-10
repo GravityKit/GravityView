@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Merge Tags available when adding a new field
 * Fixed: Issue where jQuery Cookie script wouldn't load due to `mod_security` issues. [Learn more here](http://docs.woothemes.com/document/jquery-cookie-fails-to-load/)
 * Tweak: If the View hasn't been configured yet, don't show embed shortcode
+* Tweak: Add version info to scripts and styles to clear caches with plugin updates
 
 = 1.2 =
 * Added: New Search Bar!

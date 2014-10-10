@@ -212,7 +212,7 @@ class GravityView_Edit_Entry {
 	function print_scripts( $css_only = false ) {
 		global $gravityview_view;
 
-		wp_enqueue_style('gravityview-edit-entry', plugins_url('/assets/css/gv-edit-entry-admin.css', __FILE__ ) );
+		wp_enqueue_style('gravityview-edit-entry', plugins_url('/assets/css/gv-edit-entry-admin.css', __FILE__ ), array(), GravityView_Plugin::version );
 
 		if( $css_only ) { return; }
 
