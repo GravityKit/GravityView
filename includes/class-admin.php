@@ -142,7 +142,7 @@ class GravityView_Admin {
 			if( !empty( $connected_form ) ) {
 				$form = gravityview_get_form( $connected_form );
 				$form_name = esc_attr( $form['title'] );
-				$image = '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:0 1em 1.6em 0;" />';
+				$image = self::get_floaty();
 				$new_form_text .= '<h3>'.$image.sprintf( __( 'A new form was created for this View: "%s"', 'gravityview' ), $form_name ).'</h3>';
 				$new_form_text .=  sprintf( __( '%sThere are no entries for the new form, so the View will also be empty.%s To start collecting entries, you can add submissions through %sthe preview form%s and also embed the form on a post or page using this code: %s
 

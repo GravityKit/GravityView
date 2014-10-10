@@ -1123,9 +1123,24 @@
 
         },
 
+        /**
+         * When the Publish/Update form is submitted
+         *
+         * - Make sure there is a GF Form selected. If doing Start Fresh, calls `createPresetForm()` to create the GF form for the template ID.
+         * - Serializes the field data so that the request isn't too large
+         *
+         * @param  {[type]} e [description]
+         * @return {boolean}   True: success; False: stuff didn't work out.
+         */
         processFormSubmit: function( e ) {
         	var vcfg = viewConfiguration;
 			var templateId = $("#gravityview_directory_template").val();
+
+			// Create the form if we're starting fresh.
+			// On success, this also sets the vcfg.startFreshStatus to false.
+			if( vcfg.startFreshStatus ) {
+				vcfg.createPresetForm( e, templateId );
+			}
 
         	// If the View isn't a Start Fresh view, we just return true
         	// so that the click on the Publish button can process.
@@ -1137,7 +1152,7 @@
         		return true;
         	}
 
-        	vcfg.createPresetForm( e, templateId );
+        	return false;
 
         },
 
@@ -1180,7 +1195,7 @@
         createPresetForm: function ( e, templateId ) {
             var vcfg = viewConfiguration;
 
-            e.preventDefault();
+            e.stopPropagation();
 
             // Try to create preset form in Gravity Forms. On success assign it to post before saving
             var data = {
@@ -1189,22 +1204,31 @@
                 nonce: gvGlobals.nonce,
             };
 
-            $.post(ajaxurl, data, function (response) {
-                if (response !== 'false' && response !== '0') {
+            var result = $.ajax({
+                type: "POST",
+                url: ajaxurl,
+                data: data,
+                async: false, // Allows returning the value. Important!
 
-                    vcfg.startFreshStatus = false;
+                success: function( response ) {
 
-                    //set the form id
-                    vcfg.gvSelectForm
-                    	.find("option:selected").removeAttr("selected").end()
-                    	.append(response);
+                	if (response !== 'false' && response !== '0') {
 
-                    // Continue submitting the form, since we preventDefault() above
-                    $(e.target).submit();
+                	    vcfg.startFreshStatus = false;
 
-                } else {
+                	    //set the form id
+                	    vcfg.gvSelectForm
+                	    	.find("option:selected").removeAttr("selected").end()
+                	    	.append(response);
 
-                    $("#post").before('<div id="message" class="error below-h2"><p>' + gvGlobals.label_publisherror + '</p></div>');
+                	    // Continue submitting the form, since we preventDefault() above
+                	    $(e.target).submit();
+
+                	} else {
+
+                	    $("#post").before('<div id="message" class="error below-h2"><p>' + gvGlobals.label_publisherror + '</p></div>');
+
+                	}
 
                 }
             });
