@@ -431,6 +431,9 @@ class GravityView_Admin_Metaboxes {
 		// Only show this on GravityView post types.
 		if( false === gravityview_is_admin_page() ) { return; }
 
+		// If the View hasn't been configured yet, don't show embed shortcode
+		if( !gravityview_get_directory_fields( $post->ID ) ) { return; }
+
 		printf('<div class="misc-pub-section gv-shortcode misc-pub-section-last"><i class="dashicons dashicons-editor-code"></i> <span>%s</span><div><input type="text" readonly="readonly" value="[gravityview id=\'%d\']" class="code widefat" /><span class="howto">%s</span></div></div>', esc_html__( 'Embed Shortcode', 'gravityview' ), $post->ID, esc_html__( 'Add this shortcode to a post or page to embed this view.', 'gravityview' ) );
 	}
 
