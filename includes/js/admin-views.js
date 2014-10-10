@@ -97,6 +97,7 @@
             var activeTooltips = $("[data-tooltip='active']");
 
             var close = false;
+            var return_false = false;
 
             switch (e.type) {
 
@@ -141,6 +142,7 @@
         			// They clicked the overlay
         			if ( $(e.target).is('.gv-overlay') ) {
         				close = true;
+        				return_false = true;
         			}
 
         			break;
@@ -156,6 +158,10 @@
                 // Close all open dialogs
                 $(".ui-dialog:visible").find('.ui-dialog-content').dialog("close");
 
+                // Prevent scrolling window on click close
+				if( return_false ) {
+					return false;
+				}
             }
         },
 
