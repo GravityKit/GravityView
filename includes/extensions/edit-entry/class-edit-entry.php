@@ -350,6 +350,8 @@ class GravityView_Edit_Entry {
 	        	 */
 	        	$form = $this->form_prepare_for_save();
 
+	        	// Make sure hidden fields are represented in $_POST
+	        	GV_GFEntryDetail::combine_update_existing( $this->view_id, $this->entry );
 
 		        GFFormsModel::save_lead( $form, $this->entry );
 
@@ -737,7 +739,7 @@ class GravityView_Edit_Entry {
 		}
 
 		// The ID of the form needs to be `gform_{form_id}` for the pluploader ?>
-		<form method="post" id="gform_<?php echo $this->form_id; ?>" enctype='multipart/form-data'>
+		<form method="post" id="gform_<?php echo $this->form_id; ?>" enctype="multipart/form-data">
 
 	    <?php
 
@@ -763,7 +765,8 @@ class GravityView_Edit_Entry {
       add_filter( 'gform_get_field_value', array( $this, 'get_field_value' ), 10, 3 );
 
 			// Print the actual form HTML
-    	GV_GFEntryDetail::lead_detail_edit($this->form, $this->entry, $this->view_id);
+    	GV_GFEntryDetail::lead_detail_edit( $this->form, $this->entry, $this->view_id );
+
     ?>
 		<div id="publishing-action">
 		    <input class="btn btn-lg button button-large button-primary" type="submit" tabindex="4" value="<?php esc_attr_e( 'Update', 'gravity-view'); ?>" name="save" />
@@ -771,10 +774,11 @@ class GravityView_Edit_Entry {
             <a class="btn btn-sm button button-small" tabindex="5" href="<?php echo $back_link ?>"><?php esc_attr_e( 'Cancel', 'gravity-view' ); ?></a>
 		</div>
 <?php
-		GFFormDisplay::footer_init_scripts($this->form_id);
+		GFFormDisplay::footer_init_scripts( $this->form_id );
 ?>
 	</div>
 <?php
+
 	}
 
 }

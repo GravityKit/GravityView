@@ -3,6 +3,37 @@
 class GV_GFEntryDetail {
 
   /**
+   * Gets stored entry data and combines it in to $_POST array.
+   *
+   * Reason: If a form field doesn't exist in the $_POST data, 
+   * its value will be cleared from the DB. Since some form
+   * fields could be hidden, we need to make sure existing
+   * vales are passed through $_POST.
+   *
+   * @access public
+   * @param int $view_id
+   * @param array $entry
+   * @return void
+   */
+  public static function combine_update_existing ( $view_id, $entry ) { 
+
+     // Get all fields for form
+    $view_data = new GravityView_View_Data;
+    $fields = $view_data->get_fields( $view_id );
+
+    $field_pairs = array();
+
+    //Fetch existing save data for this entry
+    foreach( $fields[ 'directory_table-columns' ] as $k => $field ){
+      $field_pairs[ 'input_' . $field['id'] ] = RGFormsModel::get_lead_field_value ( $entry, $field );
+    }
+
+    //If the field doesn't exist, merge it in to $_POST
+    $_POST = array_merge( $field_pairs, $_POST );
+
+  }
+
+  /**
    * A modified version of the Gravity Form method.
    * Generates the form responsible for editing a Gravity
    * Forms entry.
@@ -12,7 +43,7 @@ class GV_GFEntryDetail {
    * @param array $properties
    * @return void
    */
-  public static function lead_detail_edit($form, $lead, $view_id){
+  public static function lead_detail_edit( $form, $lead, $view_id ){
 
     $form = apply_filters("gform_admin_pre_render_" . $form["id"], apply_filters("gform_admin_pre_render", $form));
     $form_id = $form["id"];
