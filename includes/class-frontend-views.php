@@ -59,7 +59,11 @@ class GravityView_frontend {
 	function parse_content() {
 		global $post;
 
-		if( is_admin() && ( !defined( 'DOING_AJAX' ) || defined( 'DOING_AJAX' ) && ! DOING_AJAX ) ) { return; }
+		// Are we in an AJAX request?
+		$doing_ajax = ( defined( 'DOING_AJAX' ) && DOING_AJAX );
+
+		// If in admin and NOT AJAX request, get outta here.
+		if( is_admin() && !$doing_ajax )  { return; }
 
 		$this->single_entry = self::is_single_entry();
 		$this->entry = ( $this->single_entry ) ? gravityview_get_entry( $this->single_entry ) : false;
@@ -554,6 +558,12 @@ class GravityView_frontend {
 		do_action( 'gravityview_log_debug', '[get_view_entries] Sort Criteria : ', $sorting );
 
 
+		$parameters = array(
+			'search_criteria' => $search_criteria,
+			'sorting' => $sorting,
+			'paging' => $paging,
+		);
+
 		/**
 		 * Filter get entries criteria
 		 *
@@ -561,7 +571,7 @@ class GravityView_frontend {
 		 *
 		 * @var array
 		 */
-		$parameters = apply_filters( 'gravityview_get_entries', apply_filters( 'gravityview_get_entries_'.$args['id'], compact( 'search_criteria', 'sorting', 'paging' ), $args, $form_id ), $args, $form_id );
+		$parameters = apply_filters( 'gravityview_get_entries', apply_filters( 'gravityview_get_entries_'.$args['id'], $parameters, $args, $form_id ), $args, $form_id );
 
 		do_action( 'gravityview_log_debug', '[get_view_entries] $parameters passed to gravityview_get_entries(): ', $parameters );
 
