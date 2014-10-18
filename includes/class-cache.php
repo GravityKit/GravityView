@@ -41,6 +41,12 @@ class GravityView_Cache {
 	 */
 	function add_hooks() {
 
+		// Schedule cleanup of expired transients
+		add_action( 'wp', array( $this, 'schedule_transient_cleanup') );
+
+		// Hook in to the scheduled cleanup, if scheduled
+		add_action('gravityview-expired-transients', array( $this, 'delete_expired_transients') );
+
 		// Trigger this when you need to prevent any results from being cached with forms that have been modified
 		add_action('gravityview_clear_form_cache', array( $this, 'blacklist_add' ) );
 
@@ -246,7 +252,7 @@ class GravityView_Cache {
 	/**
 	 * Cache content as a transient.
 	 *
-	 * Cache time defaults to 3 days.
+	 * Cache time defaults to 1 week
 	 *
 	 * @param [type] $content     [description]
 	 * @param [type] $filter_name Name used to modify the cache time. Will be set to `gravityview_cache_time_{$filter_name}`.
@@ -261,7 +267,7 @@ class GravityView_Cache {
 			 * Name format: `gravityview_cache_time_{$filter_name}`
 			 * @var string
 			 */
-			$cache_time = (int)apply_filters( 'gravityview_cache_time_' . $filter_name , DAY_IN_SECONDS * 3 );
+			$cache_time = (int)apply_filters( 'gravityview_cache_time_' . $filter_name , DAY_IN_SECONDS * 7 );
 
 			do_action( 'gravityview_log_debug', 'GravityView_Cache[set] Setting cache with transient key '. $this->key .' for '.$cache_time.' seconds' );
 
@@ -306,6 +312,80 @@ class GravityView_Cache {
 	    	do_action( 'gravityview_log_debug', 'GravityView_Cache[delete] Deleting cache for form #'.$form_id, array($sql, sprintf( 'Deleted results: %d', $result ) ) );
 	    }
 
+	}
+
+	/**
+	 * Schedule expired transient cleanup twice a day.
+	 *
+	 * Can be overruled by the `gravityview_cleanup_transients` filter (returns boolean)
+	 *
+	 * @return void
+	 */
+	public function schedule_transient_cleanup() {
+
+		/**
+		 * Override GravityView cleanup of transients by setting this to false
+		 * @var boolean
+		 */
+		$cleanup = apply_filters( 'gravityview_cleanup_transients', true );
+
+		if( !$cleanup ) { return; }
+
+		if ( !wp_next_scheduled( 'gravityview-expired-transients' ) ) {
+			wp_schedule_event( time(), 'daily', 'gravityview-expired-transients' );
+		}
+	}
+
+	/**
+	 * Delete expired transients.
+	 *
+	 * The code is copied from the Delete Expired Transients, with slight modifications to track # of results and to get the blog ID dynamically
+	 *
+	 * @link  https://wordpress.org/plugins/delete-expired-transients/ Plugin where the code was taken from
+	 * @see  DelxtransCleaners::clearBlogExpired()
+	 * @return void
+	 */
+	public function delete_expired_transients() {
+		global $wpdb;
+
+		// Added this line, which isn't in the plugin
+		$blog_id = get_current_blog_id();
+
+		$num_results = 0;
+
+		// get current PHP time, offset by a minute to avoid clashes with other tasks
+		$threshold = time() - 60;
+
+		// get table name for options on specified blog
+		$table = $wpdb->get_blog_prefix( $blog_id ) . 'options';
+
+		// delete expired transients, using the paired timeout record to find them
+		$sql = "
+			delete from t1, t2
+			using $table t1
+			join $table t2 on t2.option_name = replace(t1.option_name, '_timeout', '')
+			where (t1.option_name like '\_transient\_timeout\_%' or t1.option_name like '\_site\_transient\_timeout\_%')
+			and t1.option_value < '$threshold'
+		";
+
+		$num_results = $wpdb->query($sql);
+
+		// delete orphaned transient expirations
+		// also delete NextGEN Gallery 2.x display cache timeout aliases
+		$sql = "
+			delete from $table
+			where (
+				   option_name like '\_transient\_timeout\_%'
+				or option_name like '\_site\_transient\_timeout\_%'
+				or option_name like 'displayed\_galleries\_%'
+				or option_name like 'displayed\_gallery\_rendering\_%'
+			)
+			and option_value < '$threshold'
+		";
+
+		$num_results += $wpdb->query($sql);
+
+		do_action('gravityview_log_debug', 'GravityView_Cache[delete_expired_transients] Deleted '.$num_results.' expired transient records from the database' );
 	}
 
 	/**
