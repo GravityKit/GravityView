@@ -30,5 +30,6 @@ if( !empty( $field_settings['wpautop'] ) ) {
 
 }
 
-// Process any shortcodes inside.
-echo do_shortcode( $content );
+// Enqueue scripts needed for Gravity Form display, if form shortcode exists.
+// Also runs `do_shortcode()`
+echo GFCommon::gform_do_shortcode( $content );
