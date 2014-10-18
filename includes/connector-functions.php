@@ -224,9 +224,10 @@ if( !function_exists('gravityview_get_entries') ) {
 	/**
 	 * Retrieve entries given search, sort, paging criteria
 	 *
+	 * @see  GFAPI::get_entries()
 	 * @see GFFormsModel::get_field_filters_where()
 	 * @access public
-	 * @param mixed $form_ids
+	 * @param int|array $form_ids The ID of the form or an array IDs of the Forms. Zero for all forms.
 	 * @param mixed $passed_criteria (default: null)
 	 * @param mixed &$total (default: null)
 	 * @return void
@@ -278,8 +279,24 @@ if( !function_exists('gravityview_get_entries') ) {
 
 		do_action( 'gravityview_log_debug', '[gravityview_get_entries] Final Parameters', $criteria );
 
-		if( class_exists( 'GFAPI' ) && is_numeric( $form_ids ) ) {
+		if( !empty( $criteria['cache'] ) ) {
+
+			$Cache = new GravityView_Cache( $form_ids, $criteria );
+
+			if( $entries = $Cache->get() ) {
+
+				// Still update the total count when using cached results
+				if( !is_null( $total ) ) {
+					$total = GFAPI::count_entries( $form_ids, $criteria['search_criteria'] );
+				}
+
+				return $entries;
+			}
+
+		}
+
 		if( class_exists( 'GFAPI' ) && ( is_numeric( $form_ids ) || is_array( $form_ids ) ) ) {
+
 			$entries = GFAPI::get_entries( $form_ids, $criteria['search_criteria'], $criteria['sorting'], $criteria['paging'], $total );
 
 			if( is_wp_error( $entries ) ) {
@@ -287,12 +304,19 @@ if( !function_exists('gravityview_get_entries') ) {
 				return false;
 			}
 
+			if( !empty( $criteria['cache'] ) ) {
+
+				// Cache results
+				$Cache->set( $entries, 'entries' );
+
+			}
+
 			return $entries;
 		}
+
 		return false;
 	}
 }
-
 
 
 if( !function_exists('gravityview_get_entry') ) {

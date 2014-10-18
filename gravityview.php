@@ -53,6 +53,9 @@ require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
 /** Register Post Types and Rewrite Rules */
 require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
 
+/** Add Cache Class */
+require_once( GRAVITYVIEW_DIR . 'includes/class-cache.php');
+
 /** Register hooks that are fired when the plugin is activated and deactivated. */
 if( is_admin() ) {
 	register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );

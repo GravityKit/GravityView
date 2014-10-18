@@ -562,6 +562,7 @@ class GravityView_frontend {
 			'search_criteria' => $search_criteria,
 			'sorting' => $sorting,
 			'paging' => $paging,
+			'cache' => true
 		);
 
 		/**
