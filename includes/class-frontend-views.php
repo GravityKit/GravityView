@@ -312,7 +312,7 @@ class GravityView_frontend {
 
 			$view_entries = self::get_view_entries( $atts, $view_data['form_id'] );
 
-			do_action( 'gravityview_log_debug', sprintf( '[render_view] Get Entries. Found %s entries', $view_entries['count'] ) );
+			do_action( 'gravityview_log_debug', sprintf( '[render_view] Get Entries. Found %s entries total, showing %d entries', $view_entries['count'], sizeof( $view_entries['entries'] ) ) );
 
 			$gravityview_view->paging = $view_entries['paging'];
 			$gravityview_view->context = 'directory';
