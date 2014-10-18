@@ -536,15 +536,19 @@ class GravityView_frontend {
 		$search_criteria = self::get_search_criteria( $args, $form_id );
 
 		// Paging & offset
-		$page_size = !empty( $args['page_size'] ) ? $args['page_size'] : apply_filters( 'gravityview_default_page_size', 25 );
+		$page_size = !empty( $args['page_size'] ) ? intval( $args['page_size'] ) : apply_filters( 'gravityview_default_page_size', 25 );
 
 		if( isset( $args['offset'] ) ) {
-			$offset = $args['offset'];
+			$offset = intval( $args['offset'] );
 		} else {
 			$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
 			$offset = ( $curr_page - 1 ) * $page_size;
 		}
-		$paging = array( 'offset' => $offset, 'page_size' => $page_size );
+
+		$paging = array(
+			'offset' => $offset,
+			'page_size' => $page_size
+		);
 
 		do_action( 'gravityview_log_debug', '[get_view_entries] Paging: ', $paging );
 
@@ -552,17 +556,21 @@ class GravityView_frontend {
 		// Sorting
 		$sorting = array();
 		if( !empty( $args['sort_field'] ) ) {
-			$sorting = array( 'key' => $args['sort_field'], 'direction' => $args['sort_direction'] );
+
+			$sorting = array(
+				'key' => $args['sort_field'],
+				'direction' => $args['sort_direction']
+			);
+
 		}
 
 		do_action( 'gravityview_log_debug', '[get_view_entries] Sort Criteria : ', $sorting );
-
 
 		$parameters = array(
 			'search_criteria' => $search_criteria,
 			'sorting' => $sorting,
 			'paging' => $paging,
-			'cache' => true
+			'cache' => isset( $args['cache'] ) ? $args['cache'] : true,
 		);
 
 		/**

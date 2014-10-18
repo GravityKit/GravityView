@@ -263,6 +263,7 @@ if( !function_exists('gravityview_get_entries') ) {
 
 				if( $date ) {
 
+					// Gravity Forms wants dates in the `Y-m-d H:i:s` format.
 					$criteria['search_criteria'][ $key ] = $date->format('Y-m-d H:i:s');
 
 				} else {
