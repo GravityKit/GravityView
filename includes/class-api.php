@@ -361,6 +361,7 @@ function gravityview_sanitize_html_class( $classes ) {
 }
 
 function gv_value( $entry, $field ) {
+
 	$value = GravityView_API::field_value( $entry, $field );
 
 	if( $value === '') {
@@ -545,10 +546,23 @@ function gravityview_get_current_views() {
 
 	$fe = GravityView_frontend::getInstance();
 
-	if( empty( $fe->gv_output_data ) ) { return array(); }
+	// Solve problem when loading content via admin-ajax.php
+	if( empty( $fe->gv_output_data ) ) {
+
+		do_action( 'gravityview_log_debug', '[gravityview_get_current_views] gv_output_data not defined; parsing content.' );
+
+		$fe->parse_content();
+	}
+
+	// Make 100% sure that we're dealing with a properly called situation
+	if( !isset( $fe->gv_output_data ) || !is_a( $fe->gv_output_data, 'GravityView_View_Data' ) ) {
+
+		do_action( 'gravityview_log_debug', '[gravityview_get_current_views] gv_output_data not an object or get_view not callable.', $this->gv_output_data );
+
+		return array();
+	}
 
 	return $fe->gv_output_data->get_views();
-
 }
 
 /**
