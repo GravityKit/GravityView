@@ -279,6 +279,7 @@ if( !function_exists('gravityview_get_entries') ) {
 		do_action( 'gravityview_log_debug', '[gravityview_get_entries] Final Parameters', $criteria );
 
 		if( class_exists( 'GFAPI' ) && is_numeric( $form_ids ) ) {
+		if( class_exists( 'GFAPI' ) && ( is_numeric( $form_ids ) || is_array( $form_ids ) ) ) {
 			$entries = GFAPI::get_entries( $form_ids, $criteria['search_criteria'], $criteria['sorting'], $criteria['paging'], $total );
 
 			if( is_wp_error( $entries ) ) {

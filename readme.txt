@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: PHP warnings for Section fields
 	- Reduce number of lookups for where template files are located
 	- Store the path to the permalink for future reference when rendering a View
+* Modified: Allow passing array of form IDs to `gravityview_get_entries()`
 * Tweak: If the View hasn't been configured yet, don't show embed shortcode
 * Tweak: Add version info to scripts and styles to clear caches with plugin updates
 
