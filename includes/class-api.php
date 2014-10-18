@@ -254,26 +254,38 @@ class GravityView_API {
 	/**
 	 * Generate a link to the Directory view
 	 *
+	 * Uses `wp_cache_get` and `wp_cache_get` (since 1.2.1) to speed up repeated requests to get permalink, which improves load time. Since we may be doing this hundreds of times per request, it adds up!
+	 *
+	 * @param int $post_id Post ID
 	 * @return string      Permalink to multiple entries view
 	 */
-	public static function directory_link($post = NULL) {
+	public static function directory_link( $post_id = NULL ) {
+		global $post;
 
-		if( empty($post) ) {
-			$post = get_post();
-		} elseif( is_numeric( $post ) ) {
-			$post = get_post( $post );
+		if( empty( $post_id ) ) {
+			$post_id = is_a( $post, 'WP_Post' ) ? $post->ID : NULL;
 		}
 
-		if( empty( $post ) ) {
+		if( empty( $post_id ) ) {
 			return NULL;
 		}
 
-		$link = get_permalink( $post->ID );
+		// If we've saved the permalink in memory, use it
+		// @since 1.2.1
+		if( $link = wp_cache_get( 'gv_directory_link_'.$post_id ) ) {
+			return $link;
+		}
+
+		$link = get_permalink( $post_id );
 
 		// Deal with returning to proper pagination for embedded views
 		if( !empty( $_GET['pagenum'] ) && is_numeric( $_GET['pagenum'] ) ) {
 			$link = add_query_arg('pagenum', $_GET['pagenum'], $link );
 		}
+
+		// If not yet saved, cache the permalink.
+		// @since 1.2.1
+		wp_cache_set( 'gv_directory_link_'.$post_id, $link );
 
 		return $link;
 	}
@@ -290,29 +302,27 @@ class GravityView_API {
 			$post_id = isset( $post->ID ) ? $post->ID : null;
 		}
 
-		if( !empty( $post_id ) ) {
+		// No post ID, get outta here.
+		if( empty( $post_id ) ) { return ''; }
 
-			$query_arg_name = GravityView_Post_Types::get_entry_var_name();
+		$query_arg_name = GravityView_Post_Types::get_entry_var_name();
+
+		// Get the permalink to the View
+		$directory_link = self::directory_link( $post_id );
+
+		if( get_option('permalink_structure') ) {
+
 			$args = array();
 
-			// Deal with returning to proper pagination for embedded views
-			if( !empty( $_GET['pagenum'] ) && is_numeric( $_GET['pagenum'] ) ) {
-				$args['pagenum'] = $_GET['pagenum'];
-			}
+			$directory_link = trailingslashit( $directory_link ) . $query_arg_name . '/'. $entry['id'] .'/';
 
-			if( get_option('permalink_structure') ) {
-				$href = add_query_arg( $args,  trailingslashit( get_permalink( $post_id ) ) . $query_arg_name . '/'. $entry['id'] .'/' );
-			} else {
+		} else {
 
-				$args = array( $query_arg_name => $entry['id'] );
-
-				$href = add_query_arg( $args, self::directory_link( $post_id ) );
-			}
-
-			return $href;
+			$args = array( $query_arg_name => $entry['id'] );
 		}
 
-		return '';
+		return add_query_arg( $args, $directory_link );
+
 	}
 
 

@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Make sure Gravity Forms scripts are added when embedding Gravity Forms shortcodes in a Custom Field
 * Fixed: Remove double Floaty images when Gravity View is disabled
 * Fixed: PHP warnings for Section fields
+	- Store the path to the permalink for future reference when rendering a View
 * Tweak: If the View hasn't been configured yet, don't show embed shortcode
 * Tweak: Add version info to scripts and styles to clear caches with plugin updates
 
