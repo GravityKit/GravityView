@@ -102,6 +102,7 @@ if (!class_exists('GravityView_Settings')) {
 			$message = esc_html__('Your GravityView license %s. This means you&rsquo;re missing out on updates and support! %sActivate your license%s or %sget a license here%s.');
 
 			$title = __('Inactive License', 'gravityview');
+			$status = '';
 
 			switch ( $license_status ) {
 				case 'invalid':
