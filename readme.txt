@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Make sure Gravity Forms scripts are added when embedding Gravity Forms shortcodes in a Custom Field
 * Fixed: Remove double Floaty images when Gravity View is disabled
 * Fixed: PHP warnings for Section fields
+* Fixed: Searching advanced input fields
 * Modified: Speed improvements
 	- Added caching functionality that saves results to be displayed
 	- Automatically clean up expired caches

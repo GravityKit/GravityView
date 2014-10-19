@@ -291,7 +291,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			$filter = $this->prepare_field_filter( $key, $value );
 
 			if( isset( $filter[0]['value'] ) ) {
-				array_merge( $search_criteria['field_filters'], $filter );
+				$search_criteria['field_filters'] = array_merge( $search_criteria['field_filters'], $filter );
 			} else {
 				$search_criteria['field_filters'][] = $filter;
 			}
