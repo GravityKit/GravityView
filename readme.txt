@@ -32,6 +32,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Searching advanced input fields
 * Fixed: When using an advanced input as a search field in the Search Bar, the label would always show the parent field's label (Eg: "Address" when it should have shown "City")
 	- Added: `gravityview_search_field_label` filter to allow modifying search bar labels
+* Fixed: Sub-fields retain label after opening field settings in the View Configuration
 * Modified: Speed improvements
 	- Added caching functionality that saves results to be displayed
 	- Automatically clean up expired caches
