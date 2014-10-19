@@ -367,6 +367,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 			case 'name':
 			case 'address':
+
 				if( false === strpos('.', $field_id ) ) {
 
 					$words = explode( ' ', $value );
@@ -487,6 +488,40 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$gravityview_view->render('widget', 'search', false );
 	}
 
+	/**
+	 * Get the label for a search form field
+	 * @param  array $field      Field setting as sent by the GV configuration - has `field` and `input` (input type) keys
+	 * @param  array $form_field Form field data, as fetched by `gravityview_get_field()`
+	 * @return string             Label for the search form
+	 */
+	private function get_field_label( $field, $form_field ) {
+
+		$label = isset( $form_field['label'] ) ? $form_field['label'] : '';
+
+		// If this is a field input, not a field
+		if( strpos( $field['field'], '.') > 0 && !empty( $form_field['inputs'] ) ) {
+
+			// Get the label for the field in question, which returns an array
+			$items = wp_list_filter( $form_field['inputs'], array('id' => $field['field']) );
+
+			// Get the item with the `label` key
+			$values = wp_list_pluck( $items, 'label' );
+
+			// There will only one item in the array, but this is easier
+			foreach ( $values as $value ) {
+				$label = $value;
+				break;
+			}
+		}
+
+		/**
+		 * Modify the label for a search field
+		 * @var string
+		 */
+		$label = apply_filters( 'gravityview_search_field_label', $label, $form_field );
+
+		return esc_attr( $label );
+	}
 
 	/**
 	 * Prepare search fields to frontend render with other details (label, field type, searched values)
@@ -512,7 +547,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$filter = array(
 			'key' => $field['field'],
 			'name' => $name,
-			'label' => $form_field['label'],
+			'label' => $this->get_field_label( $field, $form_field ),
 			'input' => $field['input'],
 			'value' => $value,
 			'type' => $form_field['type'],

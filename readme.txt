@@ -30,6 +30,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Remove double Floaty images when Gravity View is disabled
 * Fixed: PHP warnings for Section fields
 * Fixed: Searching advanced input fields
+* Fixed: When using an advanced input as a search field in the Search Bar, the label would always show the parent field's label (Eg: "Address" when it should have shown "City")
+	- Added: `gravityview_search_field_label` filter to allow modifying search bar labels
 * Modified: Speed improvements
 	- Added caching functionality that saves results to be displayed
 	- Automatically clean up expired caches
