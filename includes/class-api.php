@@ -132,6 +132,24 @@ class GravityView_API {
 			return NULL;
 		}
 
+		if( class_exists( 'GFCache' ) ) {
+			/**
+			 * Gravity Forms' GFCache function was thrashing the database, causing double the amount of time for the field_value() method to run.
+			 *
+			 * The reason is that the cache was checking against a field value stored in a transient every time `GFFormsModel::get_lead_field_value()` is called.
+			 *
+			 * What we're doing here is telling the GFCache that it's already checked the transient and the value is false, forcing it to just use the non-cached data, which is actually faster.
+			 *
+			 * @hack
+			 * @since  1.3
+			 * @param  string $cache_key Field Value transient key used by Gravity Forms
+			 * @param mixed false Setting the value of the cache to false so that it's not used by Gravity Forms' GFFormsModel::get_lead_field_value() method
+			 * @param boolean false Tell Gravity Forms not to store this as a transient
+			 * @param  int 0 Time to store the value. 0 is maximum amount of time possible.
+			 */
+			GFCache::set( "GFFormsModel::get_lead_field_value_" . $entry["id"] . "_" . $field_settings["id"], false, false, 0 );
+		}
+
 		$field_id = $field_settings['id'];
 
 		$output = '';
@@ -153,8 +171,11 @@ class GravityView_API {
 		}
 
 		$display_value = GFCommon::get_lead_field_display($field, $value, $entry["currency"], false, $format);
+
 		$display_value = apply_filters("gform_entry_field_value", $display_value, $field, $entry, $form);
+
 		$display_value = self::replace_variables( $display_value, $form, $entry );
+
 
 		// Check whether the field exists in /includes/fields/{$field_type}.php
 		// This can be overridden by user template files.
@@ -254,7 +275,7 @@ class GravityView_API {
 	/**
 	 * Generate a link to the Directory view
 	 *
-	 * Uses `wp_cache_get` and `wp_cache_get` (since 1.2.1) to speed up repeated requests to get permalink, which improves load time. Since we may be doing this hundreds of times per request, it adds up!
+	 * Uses `wp_cache_get` and `wp_cache_get` (since 1.3) to speed up repeated requests to get permalink, which improves load time. Since we may be doing this hundreds of times per request, it adds up!
 	 *
 	 * @param int $post_id Post ID
 	 * @return string      Permalink to multiple entries view
@@ -271,7 +292,7 @@ class GravityView_API {
 		}
 
 		// If we've saved the permalink in memory, use it
-		// @since 1.2.1
+		// @since 1.3
 		if( $link = wp_cache_get( 'gv_directory_link_'.$post_id ) ) {
 			return $link;
 		}
@@ -284,7 +305,7 @@ class GravityView_API {
 		}
 
 		// If not yet saved, cache the permalink.
-		// @since 1.2.1
+		// @since 1.3
 		wp_cache_set( 'gv_directory_link_'.$post_id, $link );
 
 		return $link;

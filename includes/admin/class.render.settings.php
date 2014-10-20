@@ -158,7 +158,7 @@ class GravityView_Render_Settings {
 			return $output;
 		}
 
-		$output .= '<div class="gv-dialog-options" title="'. esc_attr( sprintf( __( 'Options: %s', 'gravityview' ), $field_label ) ) .'">';
+		$output .= '<div class="gv-dialog-options" title="'. esc_attr( sprintf( __( 'Options: %s', 'gravityview' ) , strip_tags( html_entity_decode( $field_label ) ) ) ) .'">';
 
 		foreach( $options as $key => $option ) {
 

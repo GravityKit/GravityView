@@ -65,24 +65,11 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 
 		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/entry-link.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/created-by.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/date.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/website.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/email.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/html.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/custom.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/section.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/time.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/entry-date.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/address.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/fileupload.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/source-url.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/post-title.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/post-content.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/post-category.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/post-tags.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/post-image.php' );
+
+		// Load Field files automatically
+		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/*.php' ) as $gv_field_filename ) {
+			require_once( $gv_field_filename );
+		}
 
 		// Nice place to insert extensions' backend stuff
 		do_action('gravityview_include_backend_actions');

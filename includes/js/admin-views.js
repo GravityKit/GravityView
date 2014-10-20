@@ -143,6 +143,9 @@
         			if ( $(e.target).is('.gv-overlay') ) {
         				close = true;
         				return_false = true;
+
+        				// Always remove the overlay
+        				$(e.target).remove();
         			}
 
         			break;
@@ -447,7 +450,7 @@
 
                 // If there's no custom title, then use the original
                 // @see GravityView_Admin_View_Item::getOutput()
-                $label.text($label.attr('data-original-title'));
+                $label.html($label.attr('data-original-title'));
 
             }
 

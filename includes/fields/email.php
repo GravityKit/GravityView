@@ -32,6 +32,7 @@ class GravityView_Field_Email extends GravityView_Field {
 				'default' => '',
 				'desc' => __( 'Set the default email content.', 'gravityview' ),
 				'merge_tags' => 'force',
+				'class' => 'widefat',
 			),
 			'emailencrypt' => array(
 				'type' => 'checkbox',

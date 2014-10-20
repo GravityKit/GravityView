@@ -186,14 +186,14 @@ class GravityView_Admin_View_Item {
 
 		$output = '<h5 class="selectable gfield field-id-'.esc_attr($this->id).'">';
 
-		// Name of field
-		$output .= '<span class="gv-field-label" data-original-title="'.esc_attr( $label ).'" title="'. $this->get_item_info( false ) .'">'.esc_attr( $label );
+		$label = esc_attr( $label );
 
 		if( !empty( $this->item['parent'] ) ) {
-			$output .= ' <small>('.$this->item['parent']['label'].')</small>';
+			$label .= ' <small>('.esc_attr( $this->item['parent']['label'] ) .')</small>';
 		}
 
-		$output .= '</span>';
+		// Name of field
+		$output .= '<span class="gv-field-label" data-original-title="'.esc_attr( $label ).'" title="'. $this->get_item_info( false ) .'">'. $label . '</span>';
 
 
 		$output .= '<span class="gv-field-controls">'.$settings_link.$show_as_link.'<a href="#remove" class="dashicons-dismiss dashicons" title="'.esc_attr( $delete_title ) .'"></a></span>';
