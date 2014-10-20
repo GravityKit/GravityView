@@ -310,9 +310,24 @@ class GravityView_frontend {
 			$view_slug =  apply_filters( 'gravityview_template_slug_'. $view_data['template_id'], 'table', 'directory' );
 			do_action( 'gravityview_log_debug', '[render_view] View template slug: ', $view_slug );
 
-			$view_entries = self::get_view_entries( $atts, $view_data['form_id'] );
+			/**
+			 * Disable fetching initial entries for views that don't need it (DataTables)
+			 */
+			$get_entries = apply_filters( 'gravityview_get_view_entries_'.$view_slug, true );
 
-			do_action( 'gravityview_log_debug', sprintf( '[render_view] Get Entries. Found %s entries total, showing %d entries', $view_entries['count'], sizeof( $view_entries['entries'] ) ) );
+			if( $get_entries ) {
+
+				$view_entries = self::get_view_entries( $atts, $view_data['form_id'] );
+
+				do_action( 'gravityview_log_debug', sprintf( '[render_view] Get Entries. Found %s entries total, showing %d entries', $view_entries['count'], sizeof( $view_entries['entries'] ) ) );
+
+			} else {
+
+				$view_entries = array( 'count' => NULL, 'entries' => NULL, 'paging' => NULL );
+
+				do_action( 'gravityview_log_debug', '[render_view] Not fetching entries because `gravityview_get_view_entries_'.$view_slug.'` is false');
+
+			}
 
 			$gravityview_view->paging = $view_entries['paging'];
 			$gravityview_view->context = 'directory';
