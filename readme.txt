@@ -21,27 +21,32 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.3 on October 13 =
-* Modified: Allow `{all_fields}` and `{pricing_fields}` Merge Tags in Custom Content field
-* Fixed: Field label disappears on closing settings if the field title is empty
-* Fixed: Merge Tags available when adding a new field
-* Fixed: Issue where jQuery Cookie script wouldn't load due to `mod_security` issues. [Learn more here](http://docs.woothemes.com/document/jquery-cookie-fails-to-load/)
-* Fixed: Scrolling when clicking overlay to close field/widget settings
-* Fixed: Make sure Gravity Forms scripts are added when embedding Gravity Forms shortcodes in a Custom Field
-* Fixed: Remove double Floaty images when Gravity View is disabled
-* Fixed: PHP warnings for Section fields
-* Fixed: Searching advanced input fields
-* Fixed: When using an advanced input as a search field in the Search Bar, the label would always show the parent field's label (Eg: "Address" when it should have shown "City")
-	- Added: `gravityview_search_field_label` filter to allow modifying search bar labels
-* Fixed: Sub-fields retain label after opening field settings in the View Configuration
-* Modified: Speed improvements
+* Speed improvements - [Learn more about GravityView caching](https://gravityview.co/support/documentation/202827685/)
 	- Added caching functionality that saves results to be displayed
 	- Automatically clean up expired caches
 	- Reduce number of lookups for where template files are located
 	- Store the path to the permalink for future reference when rendering a View
 	- Improve speed of Gravity Forms fetching field values
-* Modified: Allow passing array of form IDs to `gravityview_get_entries()`
-* Tweak: If the View hasn't been configured yet, don't show embed shortcode
+* Modified: Allow `{all_fields}` and `{pricing_fields}` Merge Tags in Custom Content field. [See examples of how to use these fields](https://gravityview.co/support/documentation/201874189/).
+* Fixed: Message restored when creating a new View
+* Fixed: Searching advanced input fields
+* Fixed: Merge Tags available immediately when adding a new field
+* Fixed: Issue where jQuery Cookie script wouldn't load due to `mod_security` issues. [Learn more here](http://docs.woothemes.com/document/jquery-cookie-fails-to-load/)
+* Fixed (hopefully): Auto-updates for WordPress Multisite
+* Fixed: Clicking overlay to close field/widget settings no longer scrolls to top of page
+* Fixed: Make sure Gravity Forms scripts are added when embedding Gravity Forms shortcodes in a Custom Field
+* Fixed: Remove double images of Floaty in the warning message when Gravity View is disabled
+* Fixed: PHP warnings related to Section field descriptions
+* Fixed: When using an advanced input as a search field in the Search Bar, the label would always show the parent field's label (Eg: "Address" when it should have shown "City")
+	- Added: `gravityview_search_field_label` filter to allow modifying search bar labels
+* Fixed: Field label disappears on closing settings if the field title is empty
+* Fixed: Sub-fields retain label after opening field settings in the View Configuration
+* Modified: Allow passing an array of form IDs to `gravityview_get_entries()`
+* Tweak: If the View hasn't been configured yet, don't show embed shortcode in Publish metabox
 * Tweak: Add version info to scripts and styles to clear caches with plugin updates
+* Added: Swedish translation (thanks, [@adamrehal](https://www.transifex.com/accounts/profile/adamrehal/))!
+* Updated: Spanish (Mexican) translation by, [@jorgepelaez](https://www.transifex.com/accounts/profile/jorgepelaez/), Dutch translation by [@erikvanbeek](https://www.transifex.com/accounts/profile/erikvanbeek/), and Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
+* Updated: Changed Turkish language code from `tr` to `tr_TR` to match WordPress locales
 
 = 1.2 on October 8 =
 * Added: New Search Bar!
