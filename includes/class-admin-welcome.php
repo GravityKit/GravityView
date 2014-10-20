@@ -253,7 +253,7 @@ class GravityView_Welcome {
 
 			<div class="changelog point-releases">
 
-				<h3>What changed in 1.2</h3>
+				<h3>What changed in 1.2 &amp; 1.3</h3>
 
 				<div class="feature-section col two-col">
 					<div class="col-1">
@@ -300,6 +300,46 @@ class GravityView_Welcome {
 				</div>
 
 				<hr />
+
+				<h3>Changes in 1.3 (full list)</h3>
+
+				<ul>
+				<li>Speed improvements - <a href="https://gravityview.co/support/documentation/202827685/">Learn more about GravityView caching</a>
+
+				<ul>
+				<li>Added caching functionality that saves results to be displayed</li>
+				<li>Automatically clean up expired caches</li>
+				<li>Reduce number of lookups for where template files are located</li>
+				<li>Store the path to the permalink for future reference when rendering a View</li>
+				<li>Improve speed of Gravity Forms fetching field values</li>
+				</ul>
+				</li>
+				<li>Modified: Allow <code>{all_fields}</code> and <code>{pricing_fields}</code> Merge Tags in Custom Content field. <a href="https://gravityview.co/support/documentation/201874189/">See examples of how to use these fields</a>.</li>
+				<li>Fixed: Message restored when creating a new View</li>
+				<li>Fixed: Searching advanced input fields</li>
+				<li>Fixed: Merge Tags available immediately when adding a new field</li>
+				<li>Fixed: Issue where jQuery Cookie script wouldn't load due to <code>mod_security</code> issues. <a href="http://docs.woothemes.com/document/jquery-cookie-fails-to-load/">Learn more here</a></li>
+				<li>Fixed (hopefully): Auto-updates for WordPress Multisite</li>
+				<li>Fixed: Clicking overlay to close field/widget settings no longer scrolls to top of page</li>
+				<li>Fixed: Make sure Gravity Forms scripts are added when embedding Gravity Forms shortcodes in a Custom Field</li>
+				<li>Fixed: Remove double images of Floaty in the warning message when Gravity View is disabled</li>
+				<li>Fixed: PHP warnings related to Section field descriptions</li>
+				<li>Fixed: When using an advanced input as a search field in the Search Bar, the label would always show the parent field's label (Eg: "Address" when it should have shown "City")
+
+				<ul>
+				<li>Added: <code>gravityview_search_field_label</code> filter to allow modifying search bar labels</li>
+				</ul>
+				</li>
+				<li>Fixed: Field label disappears on closing settings if the field title is empty</li>
+				<li>Fixed: Sub-fields retain label after opening field settings in the View Configuration</li>
+				<li>Modified: Allow passing an array of form IDs to <code>gravityview_get_entries()</code></li>
+				<li>Tweak: If the View hasn't been configured yet, don't show embed shortcode in Publish metabox</li>
+				<li>Tweak: Add version info to scripts and styles to clear caches with plugin updates</li>
+				<li>Added: Swedish translation (thanks, <a href="https://www.transifex.com/accounts/profile/adamrehal/">@adamrehal</a>)!</li>
+				<li>Updated: Spanish (Mexican) translation by, <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a>, Dutch translation by <a href="https://www.transifex.com/accounts/profile/erikvanbeek/">@erikvanbeek</a>, and Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
+				<li>Updated: Changed Turkish language code from <code>tr</code> to <code>tr_TR</code> to match WordPress locales</li>
+				</ul>
+
 
 				<h3>Changes in 1.2 (full list)</h3>
 
