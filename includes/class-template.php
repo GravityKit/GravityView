@@ -29,6 +29,12 @@ class GravityView_View extends Gamajo_Template_Loader {
 	protected $plugin_directory = GRAVITYVIEW_DIR;
 
 	/**
+	 * Store templates locations that have already been located
+	 * @var array
+	 */
+	protected $located_templates = array();
+
+	/**
 	 * Construct the view object
 	 * @param  array       $atts Associative array to set the data of
 	 */
@@ -48,9 +54,45 @@ class GravityView_View extends Gamajo_Template_Loader {
 			$this->{$key} = $value;
 		}
 
+
+		// Add granular overrides
+		add_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ), 10, 3 );
+
 		// widget logic
 		add_action( 'gravityview_before', array( $this, 'render_widget_hooks' ) );
 		add_action( 'gravityview_after', array( $this, 'render_widget_hooks' ) );
+	}
+
+	/**
+	 * In order to improve lookup times, we store located templates in a local array.
+	 *
+	 * This improves performance by up to 1/2 second on a 250 entry View with 7 columns showing
+	 *
+	 * @inheritdoc
+	 * @see Gamajo_Template_Loader::locate_template()
+	 */
+	function locate_template( $template_names, $load = false, $require_once = true ) {
+
+		$located = false;
+
+		if( is_string( $template_names ) && isset( $this->located_templates[ $template_names ] ) ) {
+			$located = $this->located_templates[ $template_names ];
+
+		} else {
+
+			// Set $load to always falso so we handle it here.
+			$located = parent::locate_template( $template_names, false, $require_once );
+
+			if( is_string( $template_names ) ) {
+				$this->located_templates[ $template_names ] = $located;
+			}
+		}
+
+		if ( $load && $located ) {
+			load_template( $located, $require_once );
+		}
+
+		return $located;
 	}
 
 	/**
@@ -64,6 +106,45 @@ class GravityView_View extends Gamajo_Template_Loader {
 		} else {
 			return NULL;
 		}
+	}
+
+	/**
+	 * Enable overrides of GravityView templates on a granular basis
+	 *
+	 * The loading order is:
+	 *
+	 * - view-[View ID]-table-footer.php
+	 * - form-[Form ID]-table-footer.php
+	 * - page-[ID of post or page where view is embedded]-table-footer.php
+	 * - table-footer.php
+	 *
+	 * @see  Gamajo_Template_Loader::get_template_file_names() Where the filter is
+	 * @param array $templates Existing list of templates.
+	 * @param [type] $slug      [description]
+	 * @param [type] $name      [description]
+	 */
+	function add_id_specific_templates( $templates, $slug, $name ) {
+
+		$additional = array();
+
+		// form-19-table-body.php
+		$additional[] = sprintf( 'form-%d-%s-%s.php', $this->form_id, $slug, $name );
+
+		// view-3-table-body.php
+		$additional[] = sprintf( 'view-%d-%s-%s.php', $this->view_id, $slug, $name );
+
+		if( !empty( $this->post_id ) ) {
+
+			// page-19-table-body.php
+			$additional[] = sprintf( 'page-%d-%s-%s.php', $this->post_id, $slug, $name );
+		}
+
+		// Combine with existing table-body.php and table.php
+		$templates = array_merge( $additional, $templates );
+
+		do_action( 'gravityview_log_debug', '[add_id_specific_templates] List of Template Files', $templates );
+
+		return $templates;
 	}
 
 	// Load the template

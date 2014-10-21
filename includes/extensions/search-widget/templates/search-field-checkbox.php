@@ -1,0 +1,25 @@
+<?php
+/**
+ * Display the search CHECKBOX input field (supports multi-select)
+ *
+ * @see class-search-widget.php
+ */
+
+global $gravityview_view;
+$view_id = $gravityview_view->view_id;
+$search_field = $gravityview_view->search_field;
+
+?>
+
+<div class="gv-search-box">
+
+	<?php foreach( $search_field['choices'] as $choice ) : ?>
+
+		<label for="search-box-<?php echo sanitize_html_class( $search_field['name'].$choice['value'].$choice['text'] ); ?>" class="gv-check-radio">
+			<input type="checkbox" name="<?php echo esc_attr( $search_field['name'] ); ?>[]" value="<?php echo esc_attr( $choice['value'] ); ?>" id="search-box-<?php echo sanitize_html_class( $search_field['name'].$choice['value'].$choice['text'] ); ?>" <?php gv_selected( $choice['value'], $search_field['value'], true, 'checked' ); ?>>
+			<?php echo esc_html( $choice['text'] ); ?>
+		</label>
+
+	<?php endforeach; ?>
+
+</div>

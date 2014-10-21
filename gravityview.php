@@ -14,10 +14,10 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.1.6
+ * Version:          	1.3
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
- * Text Domain:       	gravity-view
+ * Text Domain:       	gravityview
  * License:           	GPLv2 or later
  * License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
  * Domain Path:			/languages
@@ -53,6 +53,9 @@ require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
 /** Register Post Types and Rewrite Rules */
 require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
 
+/** Add Cache Class */
+require_once( GRAVITYVIEW_DIR . 'includes/class-cache.php');
+
 /** Register hooks that are fired when the plugin is activated and deactivated. */
 if( is_admin() ) {
 	register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
@@ -64,7 +67,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.1.6';
+	const version = '1.3';
 
 	public static $theInstance;
 
@@ -187,7 +190,7 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'gravity-view', false, dirname( plugin_basename( GRAVITYVIEW_FILE ) ) . '/languages/' );
+		load_plugin_textdomain( 'gravityview', false, dirname( plugin_basename( GRAVITYVIEW_FILE ) ) . '/languages/' );
 	}
 
 	/**
@@ -223,6 +226,7 @@ final class GravityView_Plugin {
 	 */
 	function register_default_widgets() {
 		include_once( GRAVITYVIEW_DIR .'includes/default-widgets.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/extensions/search-widget/class-search-widget.php' );
 	}
 
 	/**
@@ -232,9 +236,9 @@ final class GravityView_Plugin {
 	 */
 	public static function get_default_widget_areas() {
 		$default_areas = array(
-			array( '1-1' => array( array( 'areaid' => 'top', 'title' => __('Top', 'gravity-view' ) , 'subtitle' => '' ) ) ),
-			array( '1-2' => array( array( 'areaid' => 'left', 'title' => __('Left', 'gravity-view') , 'subtitle' => '' ) ), '2-2' => array( array( 'areaid' => 'right', 'title' => __('Right', 'gravity-view') , 'subtitle' => '' ) ) ),
-			//array( '1-1' => array( 	array( 'areaid' => 'bottom', 'title' => __('Full Width Bottom', 'gravity-view') , 'subtitle' => '' ) ) )
+			array( '1-1' => array( array( 'areaid' => 'top', 'title' => __('Top', 'gravityview' ) , 'subtitle' => '' ) ) ),
+			array( '1-2' => array( array( 'areaid' => 'left', 'title' => __('Left', 'gravityview') , 'subtitle' => '' ) ), '2-2' => array( array( 'areaid' => 'right', 'title' => __('Right', 'gravityview') , 'subtitle' => '' ) ) ),
+			//array( '1-1' => array( 	array( 'areaid' => 'bottom', 'title' => __('Full Width Bottom', 'gravityview') , 'subtitle' => '' ) ) )
 		);
 
 		return apply_filters( 'gravityview_widget_active_areas', $default_areas );

@@ -20,6 +20,88 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.3 on October 13 =
+* Speed improvements - [Learn more about GravityView caching](https://gravityview.co/support/documentation/202827685/)
+	- Added caching functionality that saves results to be displayed
+	- Automatically clean up expired caches
+	- Reduce number of lookups for where template files are located
+	- Store the path to the permalink for future reference when rendering a View
+	- Improve speed of Gravity Forms fetching field values
+* Modified: Allow `{all_fields}` and `{pricing_fields}` Merge Tags in Custom Content field. [See examples of how to use these fields](https://gravityview.co/support/documentation/201874189/).
+* Fixed: Message restored when creating a new View
+* Fixed: Searching advanced input fields
+* Fixed: Merge Tags available immediately when adding a new field
+* Fixed: Issue where jQuery Cookie script wouldn't load due to `mod_security` issues. [Learn more here](http://docs.woothemes.com/document/jquery-cookie-fails-to-load/)
+* Fixed (hopefully): Auto-updates for WordPress Multisite
+* Fixed: Clicking overlay to close field/widget settings no longer scrolls to top of page
+* Fixed: Make sure Gravity Forms scripts are added when embedding Gravity Forms shortcodes in a Custom Field
+* Fixed: Remove double images of Floaty in the warning message when Gravity View is disabled
+* Fixed: PHP warnings related to Section field descriptions
+* Fixed: When using an advanced input as a search field in the Search Bar, the label would always show the parent field's label (Eg: "Address" when it should have shown "City")
+	- Added: `gravityview_search_field_label` filter to allow modifying search bar labels
+* Fixed: Field label disappears on closing settings if the field title is empty
+* Fixed: Sub-fields retain label after opening field settings in the View Configuration
+* Modified: Allow passing an array of form IDs to `gravityview_get_entries()`
+* Tweak: If the View hasn't been configured yet, don't show embed shortcode in Publish metabox
+* Tweak: Add version info to scripts and styles to clear caches with plugin updates
+* Added: Swedish translation (thanks, [@adamrehal](https://www.transifex.com/accounts/profile/adamrehal/))!
+* Updated: Spanish (Mexican) translation by, [@jorgepelaez](https://www.transifex.com/accounts/profile/jorgepelaez/), Dutch translation by [@erikvanbeek](https://www.transifex.com/accounts/profile/erikvanbeek/), and Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
+* Updated: Changed Turkish language code from `tr` to `tr_TR` to match WordPress locales
+
+= 1.2 on October 8 =
+* Added: New Search Bar!
+	- No longer check boxes in each field to add a field to the search form
+	- Add any searchable form fields, not just fields added to the View
+	- Easy new drag & drop way to re-order fields
+	- Horizontal and Vertical layouts
+	- Choose how your search fields are displayed (if you have a checkbox field, for example, you can choose to have a drop-down, a multiselect field, checkboxes, radio buttons, or filter links)
+	- Existing search settings will be migrated over on upgrade
+* Added: "Custom Content" field type
+	- Insert arbitrary text or HTML in a View
+	- Supports shortcodes (including Gravity Forms shortcodes)!
+* Added: Support for Gravity Forms Section & HTML field types
+* Added: Improved textarea field support. Instead of using line breaks, textareas now output with paragraphs.
+	- Added new `/templates/fields/textarea.php` file
+* Added: A new File Upload field setting. Force uploads to be displayed as links and not visually embedded by checking the "Display as a Link" checkbox.
+* Added: Option to disable "Map It" link for the full Address field.
+	- New `gravityview_get_map_link()` function with `gravityview_map_link` filter. To learn how to modify the map link, [refer to this how-to article](https://gravityview.co/support/documentation/201608159)
+	- The "Map It" string is now translatable
+* Added: When editing a View, there are now links in the Data Source box to easily access the Form: edit form, form entries, form settings and form preview
+* Added: Additional information in the "Add Field" or "Add Widget" picker (also get details about an item by hovering over the name in the View Configuration)
+* Added: Change Entry Creator functionality. Easily change the creator of an entry when editing the entry in the Gravity Forms Edit Entry page
+	- If you're using the plugin downloaded from [the how-to page](https://gravityview.co/support/documentation/201991205/), you can de-activate it
+* Modified: Changed translation textdomain to `gravityview` instead of `gravity-view`
+* Modified: Always show label by default, regardless of whether in List or Table View type
+* Modified: It's now possible to override templates on a Form ID, Post ID, and View ID basis. This allows custom layouts for a specific View, rather than site-wide. See "Template File Hierarchy" in [the override documentation](http://gravityview.co/support/documentation/202551113/) to learn more.
+* Modified: File Upload field output no longer run through `wpautop()` function
+* Modified: Audio and Video file uploads are now displayed using WordPress' built-in [audio](http://codex.wordpress.org/Audio_Shortcode) and [video](http://codex.wordpress.org/Video_Shortcode) shortcodes (requires WordPress 3.6 or higher)
+	- Additional file type support
+	- Added `gravityview_video_settings` and `gravityview_audio_settings` filters to modify the parameters passed to the shortcode
+* Fixed: Shortcode attributes not overriding View defaults
+* Fixed: Uploading and deleting files works properly in Edit Entry mode
+* Fixed: Configurations get truncated when configuring Views with many fields
+* Fixed: Empty `<span class="gv-field-label">` tags no longer output
+	- Modified: `gv_field_label()` no longer returns the label with a trailing space. Instead, we use the `.gv-field-label` CSS class to add spacing using CSS padding.
+* Fixed: Conflict with Relevanssi plugin
+* Fixed: If a date search isn't valid, remove the search parameter so it doesn't cause an error in Gravity Forms
+* Fixed: Email field was displaying label even when email was empty.
+* Settings page improvements
+	- When changing the license value and saving the form, GravityView now re-checks the license status
+	- Improved error messages
+	- Made license settings translatable
+* Modified: Added support for Gravity Forms "Post Image" field captions, titles, and descriptions.
+* Updated list of allowed image formats to include `.bmp`, `.jpe`, `.tiff`, `.ico`
+* Modified: `/templates/fields/fileupload.php` file - removed the logic for how to output the different file types and moved it to the `gravityview_get_files_array()` function in `includes/class-api.php`
+* Modified: `gv_value()` no longer needs the `$field` parameter
+* Tweak: Fixed email setting description text.
+* Tweak: Don't show Entry Link field output on single entry
+* Tweak: Improved Javascript performance in the Admin
+* Tweak: "Custom Label" is now shown as the field title in View Configuration
+* Tweak: Fixed "Left Footer" box not properly cleared
+* Tweak: Show warning if the Directory plugin is running
+* Tweak: Use icon font in Edit Entry mode for the download/delete file buttons. Now stylable using `.gv-edit-entry-wrapper .dashicons` CSS class.
+* Updated: Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/), Dutch translation by [@leooosterloo](https://www.transifex.com/accounts/profile/leooosterloo/), Portuguese translation by [@luistinygod](https://www.transifex.com/accounts/profile/luistinygod/)
+
 = 1.1.6 on September 8 =
 * Fixed: Approve / Disapprove all entries using Gravity Forms bulk edit entries form (previously, only visible entries were affected)
 * Added: Email field settings
@@ -27,6 +109,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 	- Added option to display email plaintext or as a link
 	- Added subject and body settings: when the link is clicked, you can choose to have these values pre-filled
 * Added: Source URL field settings, including show as a link and custom link text
+* Added: Signature field improvements (when using the Gravity Forms Signature Add-on) - now shows full size
 * Fixed: Empty truncated URLs no longer get shown
 * Fixed: License Activation works when No-Conflict Mode is enabled
 * Fixed: When creating a new View, "View Type" box was visible when there were no existing Gravity Forms

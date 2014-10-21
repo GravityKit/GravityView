@@ -80,6 +80,8 @@ class GravityView_View_Data {
 
 	/**
 	 *
+	 * Add a view to the views array
+	 *
 	 * @param type $view_id
 	 * @param type $atts Combine other attributes (eg. from shortcode) with the view settings (optional)
 	 * @return type
@@ -100,12 +102,33 @@ class GravityView_View_Data {
 
 		$form_id = gravityview_get_form_id( $view_id );
 
-		if( isset( $atts ) && is_array( $atts ) ) {
-			$atts = wp_parse_args( $atts, gravityview_get_template_settings( $view_id ) );
-			unset( $atts['id'] );
+		// Get the settings for the View ID
+		$view_settings = gravityview_get_template_settings( $view_id );
+
+		do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] Settings pulled in from View #%s', $view_id), $view_settings );
+
+		// Merge the view settings with the defaults
+		$view_defaults = wp_parse_args( $view_settings, self::get_default_args() );
+
+		do_action('gravityview_log_debug', 'GravityView_View_Data[add_view] View Defaults after merging View Settings with the default args.', $view_defaults );
+
+		if( !empty( $atts ) && is_array( $atts ) ) {
+
+			do_action('gravityview_log_debug', 'GravityView_View_Data[add_view] $atts before merging  with the $view_defaults', $atts );
+
+			// Get the settings from the shortcode and merge them with defaults.
+			$atts = shortcode_atts( $view_defaults, $atts );
+
+			do_action('gravityview_log_debug', 'GravityView_View_Data[add_view] $atts after merging  with the $view_defaults', $atts );
+
 		} else {
-			$atts = gravityview_get_template_settings( $view_id );
+
+			// If there are no passed $atts, the defaults will be used.
+			$atts = $view_defaults;
+
 		}
+
+		unset( $atts['id'], $view_defaults, $view_settings );
 
 		$data = array(
 			'id' => $view_id,
@@ -117,6 +140,8 @@ class GravityView_View_Data {
 			'widgets' => get_post_meta( $view_id, '_gravityview_directory_widgets', true ),
 			'form' => gravityview_get_form( $form_id ),
 		);
+
+		do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] View #%s being added.', $view_id), $data );
 
 		$this->views[ $view_id ] = $data;
 
@@ -208,31 +233,38 @@ class GravityView_View_Data {
 		return $view_id;
 	}
 
+	/**
+	 * Parse content to determine if there is a GV shortcode to allow for enqueing necessary files in the head.
+	 *
+	 * @uses gravityview_has_shortcode_r() Check whether shortcode exists (recursively)
+	 * @uses shortcode_parse_atts() Parse each GV shortcode
+	 * @uses  gravityview_get_template_settings() Get the settings for the View ID
+	 * @param  string $content $post->post_content content
+	 * @return void
+	 */
 	function parse_post_content( $content ) {
 
 		$shortcodes = gravityview_has_shortcode_r( $content, 'gravityview' );
 
 		if( empty( $shortcodes ) ) { return array(); }
 
+		do_action('gravityview_log_debug', 'GravityView_View_Data[parse_post_content] Parsing content, found shortcodes:', $shortcodes );
+
 		foreach ($shortcodes as $key => $shortcode) {
 
-			// Get the settings from the shortcode and merge them with defaults.
-			$shortcode_atts = wp_parse_args( shortcode_parse_atts( $shortcode[3] ), self::get_default_args() );
+			$args = shortcode_parse_atts( $shortcode[3] );
 
-			if( empty( $shortcode_atts['id'] ) ) {
-				do_action('gravityview_log_error', sprintf( 'GravityView_View_Data[parse_post_content] Returning; no ID defined in shortcode atts for Post #%s (Atts)', $post->ID ), $shortcode_atts );
+			if( empty( $args['id'] ) ) {
+				do_action('gravityview_log_error', sprintf( 'GravityView_View_Data[parse_post_content] Returning; no ID defined in shortcode atts for Post #%s (Atts)', $post->ID ), $shortcode );
 				return false;
 			}
 
-			$this->add_view( $shortcode_atts['id'] , $shortcode_atts );
+			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[parse_post_content] Adding view #%s with shortcode args', $args['id']), $args );
+
+			// Store the View to the object for later fetching.
+			$this->add_view( $args['id'] , $args );
 		}
 
-	}
-
-	static function r( $content = '', $die = false, $title ='') {
-		if( !empty($title)) { echo "<h3>{$title}</h3>"; }
-		echo '<pre>'; print_r($content); echo '</pre>';
-		if($die) { die(); }
 	}
 
 	/**
@@ -264,7 +296,7 @@ class GravityView_View_Data {
 
 		$default_settings = apply_filters( 'gravityview_default_args', array(
 			'id' => array(
-				'name' => __('View ID', 'gravity-view'),
+				'label' => __('View ID', 'gravityview'),
 				'type' => 'number',
 				'group'	=> 'default',
 				'value' => NULL,
@@ -272,7 +304,7 @@ class GravityView_View_Data {
 				'show_in_shortcode' => false,
 			),
 			'page_size' => array(
-				'name' 	=> __('Number of entries per page', 'gravity-view'),
+				'label' 	=> __('Number of entries per page', 'gravityview'),
 				'type' => 'number',
 				'class'	=> 'small-text',
 				'group'	=> 'default',
@@ -280,7 +312,7 @@ class GravityView_View_Data {
 				'show_in_shortcode' => true,
 			),
 			'lightbox' => array(
-				'name' => __( 'Enable lightbox for images', 'gravity-view' ),
+				'label' => __( 'Enable lightbox for images', 'gravityview' ),
 				'type' => 'checkbox',
 				'group'	=> 'default',
 				'value' => 1,
@@ -288,104 +320,104 @@ class GravityView_View_Data {
 				'show_in_shortcode' => true,
 			),
 			'show_only_approved' => array(
-				'name' => __( 'Show only approved entries', 'gravity-view' ),
+				'label' => __( 'Show only approved entries', 'gravityview' ),
 				'type' => 'checkbox',
 				'group'	=> 'default',
 				'value' => 0,
 				'show_in_shortcode' => false,
 			),
 			'hide_empty' => array(
-				'name' 	=> __( 'Hide empty fields', 'gravity-view' ),
+				'label' 	=> __( 'Hide empty fields', 'gravityview' ),
 				'group'	=> 'default',
 				'type'	=> 'checkbox',
 				'value' => 1,
 				'show_in_shortcode' => false,
 			),
 			'user_edit' => array(
-				'name'	=> __( 'Allow User Edit', 'gravity-view' ),
+				'label'	=> __( 'Allow User Edit', 'gravityview' ),
 				'group'	=> 'default',
-				'desc'	=> __('Allow logged-in users to edit entries they created.', 'gravity-view'),
+				'desc'	=> __('Allow logged-in users to edit entries they created.', 'gravityview'),
 				'value'	=> 0,
 				'type'	=> 'checkbox',
 				'show_in_shortcode' => false,
 			),
 			'sort_field' => array(
-				'name'	=> __('Sort by field', 'gravity-view'),
+				'label'	=> __('Sort by field', 'gravityview'),
 				'type' => 'select',
 				'value' => '',
 				'group'	=> 'sort',
 				'options' => array(
-					'' => __( 'Default', 'gravity-view'),
-					'date_created' => __( 'Date Created', 'gravity-view'),
+					'' => __( 'Default', 'gravityview'),
+					'date_created' => __( 'Date Created', 'gravityview'),
 				),
 				'show_in_shortcode' => true,
 			),
 			'sort_direction' => array(
-				'name' 	=> __('Sort direction', 'gravity-view'),
+				'label' 	=> __('Sort direction', 'gravityview'),
 				'type' => 'select',
 				'value' => 'ASC',
 				'group'	=> 'sort',
 				'options' => array(
-					'ASC' => __('ASC', 'gravity-view'),
-					'DESC' => __('DESC', 'gravity-view'),
+					'ASC' => __('ASC', 'gravityview'),
+					'DESC' => __('DESC', 'gravityview'),
 				),
 				'show_in_shortcode' => true,
 			),
 			'start_date' => array(
-				'name' 	=> __('Filter by Start Date', 'gravity-view'),
+				'label' 	=> __('Filter by Start Date', 'gravityview'),
 				'class'	=> 'gv-datepicker',
-				'desc'	=> __('Show entries submitted after this date. Supports relative dates, such as "-1 week" or "-1 month".', 'gravity-view' ),
+				'desc'	=> __('Show entries submitted after this date. Supports relative dates, such as "-1 week" or "-1 month".', 'gravityview' ),
 				'type' => 'text',
 				'value' => '',
 				'group'	=> 'filter',
 				'show_in_shortcode' => true,
 			),
 			'end_date' => array(
-				'name' 	=> __('Filter by End Date', 'gravity-view'),
+				'label' 	=> __('Filter by End Date', 'gravityview'),
 				'class'	=> 'gv-datepicker',
-				'desc'	=> __('Show entries submitted before this date. Supports relative dates, such as "now" or "-3 days".', 'gravity-view' ),
+				'desc'	=> __('Show entries submitted before this date. Supports relative dates, such as "now" or "-3 days".', 'gravityview' ),
 				'type' => 'text',
 				'value' => '',
 				'group'	=> 'filter',
 				'show_in_shortcode' => true,
 			),
 			'class' => array(
-				'name' 	=> __('CSS Class', 'gravity-view'),
-				'desc'	=> __('CSS class to add to the wrapping HTML container.', 'gravity-view'),
+				'label' 	=> __('CSS Class', 'gravityview'),
+				'desc'	=> __('CSS class to add to the wrapping HTML container.', 'gravityview'),
 				'group'	=> 'default',
 				'type' => 'text',
 				'value' => '',
 				'show_in_shortcode' => false,
 			),
 			'search_value' => array(
-				'name' 	=> __('Search Value', 'gravity-view'),
-				'desc'	=> __('Define a default search value for the View', 'gravity-view'),
+				'label' 	=> __('Search Value', 'gravityview'),
+				'desc'	=> __('Define a default search value for the View', 'gravityview'),
 				'type' => 'text',
 				'value' => '',
 				'group'	=> 'filter',
 				'show_in_shortcode' => false,
 			),
 			'search_field' => array(
-				'name' 	=> __('Search Field', 'gravity-view'),
-				'desc'	=> __('If Search Value is set, you can define a specific field to search in. Otherwise, all fields will be searched.', 'gravity-view'),
+				'label' 	=> __('Search Field', 'gravityview'),
+				'desc'	=> __('If Search Value is set, you can define a specific field to search in. Otherwise, all fields will be searched.', 'gravityview'),
 				'type' => 'number',
 				'value' => '',
 				'group'	=> 'filter',
 				'show_in_shortcode' => false,
 			),
 			'single_title' => array(
-				'name'	=> __('Single Entry Title', 'gravity-view'),
+				'label'	=> __('Single Entry Title', 'gravityview'),
 				'type'	=> 'text',
-				'desc'	=> __('When viewing a single entry, change the title of the page to this setting. Otherwise, the title will not change between the Multiple Entries and Single Entry views.', 'gravity-view'),
+				'desc'	=> __('When viewing a single entry, change the title of the page to this setting. Otherwise, the title will not change between the Multiple Entries and Single Entry views.', 'gravityview'),
 				'group'	=> 'default',
 				'value'	=> '',
 				'show_in_shortcode' => false,
 				'full_width' => true,
 			),
 			'back_link_label' => array(
-				'name'	=> __('Back Link Label', 'gravity-view'),
+				'label'	=> __('Back Link Label', 'gravityview'),
 				'group'	=> 'default',
-				'desc'	=> __('The text of the link that returns to the multiple entries view.', 'gravity-view'),
+				'desc'	=> __('The text of the link that returns to the multiple entries view.', 'gravityview'),
 				'type'	=> 'text',
 				'value'	=> '',
 				'show_in_shortcode' => false,

@@ -41,9 +41,14 @@ if( !function_exists('gravityview_get_form') ) {
 
 if( !function_exists('gravityview_get_form_from_entry_id') ) {
 
+	/**
+	 * Get the form array for an entry based only on the entry ID
+	 * @param  int $entry_id Entry ID
+	 * @return array           Gravity Forms form array
+	 */
 	function gravityview_get_form_from_entry_id( $entry_id ) {
 
-		$entry = gravityview_get_entry( $entry );
+		$entry = gravityview_get_entry( $entry_id );
 
 		$form = gravityview_get_form( $entry['form_id'] );
 
@@ -105,6 +110,7 @@ if( !function_exists('gravityview_get_form_fields') ) {
 				if( $include_parent_field || empty( $field['inputs'] ) ) {
 					$fields[ $field['id'] ] = array(
 						'label' => $field['label'],
+						'parent' => null,
 						'type' => $field['type'],
 						'adminLabel' => $field['adminLabel'],
 						'adminOnly' => $field['adminOnly'],
@@ -114,7 +120,8 @@ if( !function_exists('gravityview_get_form_fields') ) {
 				if( $add_default_properties && !empty( $field['inputs'] ) ) {
 					foreach( $field['inputs'] as $input ) {
 						$fields[ (string)$input['id'] ] = array(
-							'label' => $input['label'].' ('.$field['label'].')',
+							'label' => $input['label'],
+							'parent' => $field,
 							'type' => $field['type'],
 							'adminLabel' => $field['adminLabel'],
 							'adminOnly' => $field['adminOnly'],
@@ -133,37 +140,37 @@ if( !function_exists('gravityview_get_form_fields') ) {
 		if( $has_product_fields ) {
 
 			$fields['payment_status'] = array(
-			    "label" => __( 'Payment Status', 'gravity-view' ),
+			    "label" => __( 'Payment Status', 'gravityview' ),
 			    "type" => 'payment_status'
 			);
 
 			$fields['payment_date'] = array(
-			    "label" => __( 'Payment Date', 'gravity-view' ),
+			    "label" => __( 'Payment Date', 'gravityview' ),
 			    "type" => 'payment_date',
 			);
 
 			$fields['payment_amount'] = array(
-			    "label" => __( 'Payment Amount', 'gravity-view' ),
+			    "label" => __( 'Payment Amount', 'gravityview' ),
 			    "type" => 'payment_amount'
 			);
 
 			$fields['payment_method'] = array(
-			    "label" => __( 'Payment Method', 'gravity-view' ),
+			    "label" => __( 'Payment Method', 'gravityview' ),
 			    "type" => 'payment_method'
 			);
 
 			$fields['is_fulfilled'] = array(
-			    "label" => __( 'Is Fulfilled', 'gravity-view' ),
+			    "label" => __( 'Is Fulfilled', 'gravityview' ),
 			    "type" => 'is_fulfilled',
 			);
 
 			$fields['transaction_id'] = array(
-			    "label" => __( 'Transaction ID', 'gravity-view' ),
+			    "label" => __( 'Transaction ID', 'gravityview' ),
 			    "type" => 'transaction_id',
 			);
 
 			$fields['transaction_type'] = array(
-			    "label" => __( 'Transaction Type', 'gravity-view' ),
+			    "label" => __( 'Transaction Type', 'gravityview' ),
 			    "type" => 'transaction_type',
 			);
 
@@ -217,9 +224,10 @@ if( !function_exists('gravityview_get_entries') ) {
 	/**
 	 * Retrieve entries given search, sort, paging criteria
 	 *
+	 * @see  GFAPI::get_entries()
 	 * @see GFFormsModel::get_field_filters_where()
 	 * @access public
-	 * @param mixed $form_ids
+	 * @param int|array $form_ids The ID of the form or an array IDs of the Forms. Zero for all forms.
 	 * @param mixed $passed_criteria (default: null)
 	 * @param mixed &$total (default: null)
 	 * @return void
@@ -254,8 +262,15 @@ if( !function_exists('gravityview_get_entries') ) {
 				$date = date_create( $criteria['search_criteria'][ $key ] );
 
 				if( $date ) {
+
+					// Gravity Forms wants dates in the `Y-m-d H:i:s` format.
 					$criteria['search_criteria'][ $key ] = $date->format('Y-m-d H:i:s');
+
 				} else {
+
+					// If it's an invalid date, unset it. Gravity Forms freaks out otherwise.
+					unset( $criteria['search_criteria'][ $key ] );
+
 					do_action( 'gravityview_log_error', '[gravityview_get_entries] '.$key.' Date format not valid:', $criteria['search_criteria'][ $key ] );
 				}
 			}
@@ -265,7 +280,24 @@ if( !function_exists('gravityview_get_entries') ) {
 
 		do_action( 'gravityview_log_debug', '[gravityview_get_entries] Final Parameters', $criteria );
 
-		if( class_exists( 'GFAPI' ) && is_numeric( $form_ids ) ) {
+		if( !empty( $criteria['cache'] ) ) {
+
+			$Cache = new GravityView_Cache( $form_ids, $criteria );
+
+			if( $entries = $Cache->get() ) {
+
+				// Still update the total count when using cached results
+				if( !is_null( $total ) ) {
+					$total = GFAPI::count_entries( $form_ids, $criteria['search_criteria'] );
+				}
+
+				return $entries;
+			}
+
+		}
+
+		if( class_exists( 'GFAPI' ) && ( is_numeric( $form_ids ) || is_array( $form_ids ) ) ) {
+
 			$entries = GFAPI::get_entries( $form_ids, $criteria['search_criteria'], $criteria['sorting'], $criteria['paging'], $total );
 
 			if( is_wp_error( $entries ) ) {
@@ -273,12 +305,19 @@ if( !function_exists('gravityview_get_entries') ) {
 				return false;
 			}
 
+			if( !empty( $criteria['cache'] ) ) {
+
+				// Cache results
+				$Cache->set( $entries, 'entries' );
+
+			}
+
 			return $entries;
 		}
+
 		return false;
 	}
 }
-
 
 
 if( !function_exists('gravityview_get_entry') ) {
@@ -445,10 +484,79 @@ function gravityview_get_template_id( $post_id ) {
 	return get_post_meta( $post_id, '_gravityview_directory_template', true );
 }
 
+/**
+ * Get all the settings for a View
+ *
+ * @uses  GravityView_View_Data::get_default_args() Parses the settings with the plugin defaults as backups.
+ * @param  int $post_id View ID
+ * @return array          Associative array of settings with plugin defaults used if not set by the View
+ */
 function gravityview_get_template_settings( $post_id ) {
-	return get_post_meta( $post_id, '_gravityview_template_settings', true );
+
+	$settings = get_post_meta( $post_id, '_gravityview_template_settings', true );
+
+	if( class_exists( 'GravityView_View_Data' ) ) {
+
+		$defaults = GravityView_View_Data::get_default_args();
+
+		return wp_parse_args( (array)$settings, $defaults );
+
+	}
+
+	// Backup, in case GravityView_View_Data isn't loaded yet.
+	return $settings;
 }
 
+/**
+ * Get the setting for a View
+ *
+ * If the setting isn't set by the View, it returns the plugin default.
+ *
+ * @param  int $post_id View ID
+ * @param  string $key     Key for the setting
+ * @return mixed|null          Setting value, or NULL if not set.
+ */
+function gravityview_get_template_setting( $post_id, $key ) {
+
+	$settings = gravityview_get_template_settings( $post_id );
+
+	if( isset( $settings[ $key ] ) ) {
+		return $settings[ $key ];
+	}
+
+	return NULL;
+}
+
+/**
+ * Get the field configuration for the View
+ *
+ * array(
+ *
+ * 	[other zones]
+ *
+ * 	'directory_list-title' => array(
+ *
+ *   	[other fields]
+ *
+ *  	'5372653f25d44' => array(
+ *  		'id' => string '9' (length=1)
+ *  		'label' => string 'Screenshots' (length=11)
+ *			'show_label' => string '1' (length=1)
+ *			'custom_label' => string '' (length=0)
+ *			'custom_class' => string 'gv-gallery' (length=10)
+ * 			'only_loggedin' => string '0' (length=1)
+ *			'only_loggedin_cap' => string 'read' (length=4)
+ *  	)
+ *
+ * 		[other fields]
+ *  )
+ *
+ * 	[other zones]
+ * )
+ *
+ * @param  int $post_id View ID
+ * @return array          Multi-array of fields with first level being the field zones. See code comment.
+ */
 function gravityview_get_directory_fields( $post_id ) {
 	return get_post_meta( $post_id, '_gravityview_directory_fields', true );
 }
@@ -464,7 +572,7 @@ if( !function_exists('gravityview_get_sortable_fields') ) {
 	 */
 	function gravityview_get_sortable_fields( $formid, $current = '' ) {
 
-		$output = '<option value="" '. selected( '', $current, false ).'>'. esc_html__( 'Default', 'gravity-view') .'</option>';
+		$output = '<option value="" '. selected( '', $current, false ).'>'. esc_html__( 'Default', 'gravityview') .'</option>';
 
 		if( empty( $formid ) ) {
 			return $output;
@@ -477,7 +585,7 @@ if( !function_exists('gravityview_get_sortable_fields') ) {
 
 			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'list', 'textarea' ) );
 
-			$output .= '<option value="date_created" '. selected( 'date_created', $current, false ).'>'. esc_html__( 'Date Created', 'gravity-view' ) .'</option>';
+			$output .= '<option value="date_created" '. selected( 'date_created', $current, false ).'>'. esc_html__( 'Date Created', 'gravityview' ) .'</option>';
 
 			foreach( $fields as $id => $field ) {
 
@@ -491,9 +599,3 @@ if( !function_exists('gravityview_get_sortable_fields') ) {
 	}
 
 }
-
-
-
-
-
-

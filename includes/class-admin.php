@@ -3,24 +3,32 @@
 class GravityView_Admin {
 
 	static private $admin_notices = array();
+	static private $dismissed_notices = array();
 
 	function __construct() {
 
 		if( !is_admin() ) { return; }
 
+		add_action( 'admin_notices', array( $this, 'dismiss_notice' ), 50 );
+		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
+
+		// Check if Gravity Forms Directory is running.
+		self::check_gf_directory();
 
 		// If Gravity Forms isn't active or compatibile, stop loading
 		if( false === self::check_gravityforms() ) {
-
-			add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
-
 			return;
 		}
+
+		// Migrate Class
+		require_once( GRAVITYVIEW_DIR . 'includes/class-migrate.php' );
+
 
 		require_once( GFCommon::get_base_path() . '/tooltips.php' );
 
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/entry-list.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-change-entry-creator.php' );
 
 		// Filter Admin messages
 		add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
@@ -48,6 +56,8 @@ class GravityView_Admin {
 	 */
 	public function backend_actions() {
 
+		include_once( GRAVITYVIEW_DIR .'includes/admin/class.field.type.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/admin/class.render.settings.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-label.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-views.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-welcome.php' );
@@ -55,20 +65,11 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 
 		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/entry-link.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/created-by.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/date.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/website.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/email.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/time.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/entry-date.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/fileupload.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/source-url.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/post-title.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/post-content.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/post-category.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/post-tags.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/fields/post-image.php' );
+
+		// Load Field files automatically
+		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/*.php' ) as $gv_field_filename ) {
+			require_once( $gv_field_filename );
+		}
 
 		// Nice place to insert extensions' backend stuff
 		do_action('gravityview_include_backend_actions');
@@ -84,9 +85,17 @@ class GravityView_Admin {
 	 */
 	public static function plugin_action_links( $links ) {
 
-		$action = array( '<a href="https://gravityview.co/support/documentation/">'. esc_html__( 'Support', 'gravity-view' ) .'</a>' );
+		$action = array( '<a href="https://gravityview.co/support/documentation/">'. esc_html__( 'Support', 'gravityview' ) .'</a>' );
 
 		return array_merge( $action, $links );
+	}
+
+	/**
+	 * Get an image of our intrepid explorer friend
+	 * @return string HTML image tag with floaty's cute mug on it
+	 */
+	public static function get_floaty() {
+		return '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:10px 10px 10px 0;" />';
 	}
 
 	/**
@@ -120,12 +129,12 @@ class GravityView_Admin {
 			if( !empty( $connected_form ) ) {
 				$form = gravityview_get_form( $connected_form );
 				$form_name = esc_attr( $form['title'] );
-				$image = '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:0 1em 1.6em 0;" />';
-				$new_form_text .= '<h3>'.$image.sprintf( __( 'A new form was created for this View: "%s"', 'gravity-view' ), $form_name ).'</h3>';
+				$image = self::get_floaty();
+				$new_form_text .= '<h3>'.$image.sprintf( __( 'A new form was created for this View: "%s"', 'gravityview' ), $form_name ).'</h3>';
 				$new_form_text .=  sprintf( __( '%sThere are no entries for the new form, so the View will also be empty.%s To start collecting entries, you can add submissions through %sthe preview form%s and also embed the form on a post or page using this code: %s
 
 					You can %sedit the form%s in Gravity Forms and the updated fields will be available here. Don&rsquo;t forget to %scustomize the form settings%s.
-					', 'gravity-view' ), '<strong>', '</strong>', '<a href="'.site_url( '?gf_page=preview&amp;id='.$connected_form ).'">', '</a>', '<code>[gravityform id="'.$connected_form.'" name="'.$form_name.'"]</code>', '<a href="'.admin_url( 'admin.php?page=gf_edit_forms&amp;id='.$connected_form ).'">', '</a>', '<a href="'.admin_url( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;id='.$connected_form ).'">', '</a>');
+					', 'gravityview' ), '<strong>', '</strong>', '<a href="'.site_url( '?gf_page=preview&amp;id='.$connected_form ).'">', '</a>', '<code>[gravityform id="'.$connected_form.'" name="'.$form_name.'"]</code>', '<a href="'.admin_url( 'admin.php?page=gf_edit_forms&amp;id='.$connected_form ).'">', '</a>', '<a href="'.admin_url( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;id='.$connected_form ).'">', '</a>');
 				$new_form_text = wpautop( $new_form_text );
 
 				delete_post_meta( $post_id, '_gravityview_start_fresh' );
@@ -134,21 +143,21 @@ class GravityView_Admin {
 
 		$messages['gravityview'] = array(
 			0  => '', // Unused. Messages start at index 1.
-			1  => sprintf(__( 'View updated. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
-			2  => sprintf(__( 'View updated. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
-			3  => __( 'View deleted.', 'gravity-view' ),
-			4  => sprintf(__( 'View updated. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
+			1  => sprintf(__( 'View updated. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
+			2  => sprintf(__( 'View updated. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
+			3  => __( 'View deleted.', 'gravityview' ),
+			4  => sprintf(__( 'View updated. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 			/* translators: %s: date and time of the revision */
-			5  => isset( $_GET['revision'] ) ? sprintf( __( 'View restored to revision from %s', 'gravity-view' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-			6  => sprintf(__( 'View published. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
-			7  => sprintf(__( 'View saved. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
-			8  => __( 'View submitted.', 'gravity-view' ),
+			5  => isset( $_GET['revision'] ) ? sprintf( __( 'View restored to revision from %s', 'gravityview' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+			6  => sprintf(__( 'View published. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
+			7  => sprintf(__( 'View saved. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
+			8  => __( 'View submitted.', 'gravityview' ),
 			9  => sprintf(
-				__( 'View scheduled for: %1$s.', 'gravity-view' ),
+				__( 'View scheduled for: %1$s.', 'gravityview' ),
 				// translators: Publish box date format, see http://php.net/date
-				date_i18n( __( 'M j, Y @ G:i', 'gravity-view' ), strtotime( ( isset( $post->post_date ) ? $post->post_date : NULL )  ) )
+				date_i18n( __( 'M j, Y @ G:i', 'gravityview' ), strtotime( ( isset( $post->post_date ) ? $post->post_date : NULL )  ) )
 			) . $new_form_text,
-			10  => sprintf(__( 'View draft updated. %sView on website.%s', 'gravity-view' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
+			10  => sprintf(__( 'View draft updated. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 
 			/**
 			 * These apply to `bulk_post_updated_messages`
@@ -331,7 +340,7 @@ class GravityView_Admin {
 
 	/**
 	 * Add dependencies
-	 * @todo  Move this to GravityView_Admin_Views
+	 *
 	 * @param [type] $registered [description]
 	 * @param [type] $scripts    [description]
 	 */
@@ -354,6 +363,56 @@ class GravityView_Admin {
         return $scripts;
     }
 
+    function dismiss_notice() {
+
+    	// No dismiss sent
+    	if( empty( $_GET['gv-dismiss'] ) ) {
+    		return;
+    	}
+
+    	// Invalid nonce
+    	if( !wp_verify_nonce( $_GET['gv-dismiss'], 'dismiss' ) ) {
+    		return;
+    	}
+
+    	$notice_id = esc_attr( $_GET['notice'] );
+
+    	//don't display a message if use has dismissed the message for this version
+    	$dismissed_notices = (array)get_transient( 'gravityview_dismissed_notices' );
+
+    	$dismissed_notices[] = $notice_id;
+
+    	$dismissed_notices = array_unique( $dismissed_notices );
+
+    	// Remind users every 8 weeks
+    	set_transient( 'gravityview_dismissed_notices', $dismissed_notices, WEEK_IN_SECONDS * 8 );
+
+    }
+
+    /**
+     * Should the notice be shown in the admin (Has it been dismissed already)?
+     *
+     * If the passed notice array has a `dismiss` key, the notice is dismissable. If it's dismissable,
+     * we check against other notices that have already been dismissed.
+     *
+     * @see GravityView_Admin::dismiss_notice()
+     * @see GravityView_Admin::add_notice()
+     * @param  string $notice            Notice array, set using `add_notice()`.
+     * @return boolean                   True: show notice; False: hide notice
+     */
+    function _maybe_show_notice( $notice ) {
+
+    	// There are no dismissed notices.
+    	if( empty( self::$dismissed_notices ) ) {
+    		return true;
+    	}
+
+    	// Has the
+    	$is_dismissed = !empty( $notice['dismiss'] ) && in_array( $notice['dismiss'], self::$dismissed_notices );
+
+    	return $is_dismissed ? false : true;
+    }
+
 	/**
 	 * Outputs the admin notices generated by the plugin
 	 *
@@ -365,14 +424,40 @@ class GravityView_Admin {
 			return;
 		}
 
+		//don't display a message if use has dismissed the message for this version
+		self::$dismissed_notices = (array)get_transient( 'gravityview_dismissed_notices' );
+
 		foreach( self::$admin_notices as $notice ) {
 
+			if( false === $this->_maybe_show_notice( $notice ) ) {
+				continue;
+			}
+
 			echo '<div id="message" class="'. esc_attr( $notice['class'] ).'">';
+
+			// Too cute to leave out.
+			echo GravityView_Admin::get_floaty() ;
+
+			if( !empty( $notice['title'] ) ) {
+				echo '<h3>'.esc_html( $notice['title'] ) .'</h3>';
+			}
+
 			echo wpautop( $notice['message'] );
+
+			if( !empty( $notice['dismiss'] ) ) {
+
+				$dismiss = esc_attr($notice['dismiss']);
+
+				$url = add_query_arg( array( 'gv-dismiss' => wp_create_nonce( 'dismiss' ), 'notice' => $dismiss ) );
+
+				echo wpautop( '<a href="'.$url.'" data-notice="'.$dismiss.'" class="button-small button button-secondary">'.esc_html__('Dismiss', 'gravityview' ).'</a>' );
+			}
+
 			echo '<div class="clear"></div>';
 			echo '</div>';
 
 		}
+
 		//reset the notices handler
 		self::$admin_notices = array();
 	}
@@ -393,6 +478,21 @@ class GravityView_Admin {
 		self::$admin_notices[] = $notice;
 	}
 
+	public static function check_gf_directory() {
+
+		if( class_exists( 'GFDirectory' ) ) {
+
+			self::$admin_notices['gf_directory'] = array(
+				'class' => 'error',
+				'title' => __('Potential Conflict', 'gravityview' ),
+				'message' => __( 'GravityView and Gravity Forms Directory are both active. This may cause problems. If you experience issues, disable the Gravity Forms Directory plugin.', 'gravityview' ),
+				'dismiss' => 'gf_directory',
+			);
+
+		}
+
+	}
+
 	/**
 	 * Check if Gravity Forms plugin is active and show notice if not.
 	 *
@@ -406,21 +506,19 @@ class GravityView_Admin {
 			return true;
 		}
 
-		$image = '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft gv-astronaut" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin: 0 10px 10px 0;" />';
-
 		$gf_status = self::get_plugin_status( 'gravityforms/gravityforms.php' );
 
 		if( $gf_status !== true ) {
 			if( $gf_status === 'inactive' ) {
-				self::$admin_notices['gf_inactive'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravity-view' ), '<h3>'.$image, "</h3>\n\n".'<strong><a href="'. wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php') . '" class="button button-large">', '</a></strong>' ) );
+				self::$admin_notices['gf_inactive'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravityview' ), '<h3>', "</h3>\n\n".'<strong><a href="'. wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php') . '" class="button button-large">', '</a></strong>' ) );
 			} else {
-				self::$admin_notices['gf_installed'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $39%s%s', 'gravity-view' ), '<h3>'.$image, "</h3>\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
+				self::$admin_notices['gf_installed'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $39%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
 			}
 			return false;
 
 		} else if( class_exists( 'GFCommon' ) && false === version_compare( GFCommon::$version, GV_MIN_GF_VERSION, ">=" ) ) {
 
-			self::$admin_notices['gf_version'] = array( 'class' => 'error', 'message' => sprintf( __( "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravity-view' ), '<h3>'.$image, "</h3>\n\n", '<tt>'.GFCommon::$version.'</tt>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
+			self::$admin_notices['gf_version'] = array( 'class' => 'error', 'message' => sprintf( __( "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', "</h3>\n\n", '<tt>'.GFCommon::$version.'</tt>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
 
 			return false;
 		}
@@ -478,7 +576,7 @@ class GravityView_Admin {
 			// $_GET `post_type` variable
 			if(in_array($pagenow, array( 'post.php' , 'post-new.php' )) ) {
 				$is_page = 'single';
-			} elseif ($plugin_page === 'settings') {
+			} elseif ($plugin_page === 'settings' || ( !empty( $_GET['page'] ) && $_GET['page'] === 'settings' ) ) {
 				$is_page = 'settings';
 			} else {
 				$is_page = 'views';

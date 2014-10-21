@@ -59,7 +59,11 @@ class GravityView_frontend {
 	function parse_content() {
 		global $post;
 
-		if( is_admin() && ( !defined( 'DOING_AJAX' ) || defined( 'DOING_AJAX' ) && ! DOING_AJAX ) ) { return; }
+		// Are we in an AJAX request?
+		$doing_ajax = ( defined( 'DOING_AJAX' ) && DOING_AJAX );
+
+		// If in admin and NOT AJAX request, get outta here.
+		if( is_admin() && !$doing_ajax )  { return; }
 
 		$this->single_entry = self::is_single_entry();
 		$this->entry = ( $this->single_entry ) ? gravityview_get_entry( $this->single_entry ) : false;
@@ -89,8 +93,8 @@ class GravityView_frontend {
 
 			$wp_admin_bar->add_menu( array(
 				'id' => 'edit-entry',
-				'title' => __('Edit Entry', 'gravity-view'),
-				'href' => admin_url( sprintf('admin.php?page=gf_entries&amp;view=entry&amp;id=%d&lid=%d', $this->entry['form_id'], $this->single_entry ) ),
+				'title' => __('Edit Entry', 'gravityview'),
+				'href' => admin_url( sprintf('admin.php?page=gf_entries&amp;screen_mode=edit&amp;view=entry&amp;id=%d&lid=%d', $this->entry['form_id'], $this->single_entry ) ),
 			) );
 
 		}
@@ -119,6 +123,9 @@ class GravityView_frontend {
 	 * @return void
 	 */
 	public function shortcode( $atts, $content = NULL ) {
+
+		// Don't process when saving post.
+		if( is_admin() ) { return; }
 
 		do_action( 'gravityview_log_debug', '[shortcode] $atts: ', $atts );
 
@@ -250,6 +257,14 @@ class GravityView_frontend {
 			$this->parse_content();
 		}
 
+		// Make 100% sure that we're dealing with a properly called situation
+		if( !is_object( $this->gv_output_data ) || !is_callable( array( $this->gv_output_data, 'get_view' ) ) ) {
+
+			do_action( 'gravityview_log_error', '[render_view] gv_output_data not an object or get_view not callable.', $this->gv_output_data );
+
+			return;
+		}
+
 		$view_id = $passed_args['id'];
 
 		$view_data = $this->gv_output_data->get_view( $view_id );
@@ -295,9 +310,24 @@ class GravityView_frontend {
 			$view_slug =  apply_filters( 'gravityview_template_slug_'. $view_data['template_id'], 'table', 'directory' );
 			do_action( 'gravityview_log_debug', '[render_view] View template slug: ', $view_slug );
 
-			$view_entries = self::get_view_entries( $atts, $view_data['form_id'] );
+			/**
+			 * Disable fetching initial entries for views that don't need it (DataTables)
+			 */
+			$get_entries = apply_filters( 'gravityview_get_view_entries_'.$view_slug, true );
 
-			do_action( 'gravityview_log_debug', sprintf( '[render_view] Get Entries. Found %s entries', $view_entries['count'] ) );
+			if( $get_entries ) {
+
+				$view_entries = self::get_view_entries( $atts, $view_data['form_id'] );
+
+				do_action( 'gravityview_log_debug', sprintf( '[render_view] Get Entries. Found %s entries total, showing %d entries', $view_entries['count'], sizeof( $view_entries['entries'] ) ) );
+
+			} else {
+
+				$view_entries = array( 'count' => NULL, 'entries' => NULL, 'paging' => NULL );
+
+				do_action( 'gravityview_log_debug', '[render_view] Not fetching entries because `gravityview_get_view_entries_'.$view_slug.'` is false');
+
+			}
 
 			$gravityview_view->paging = $view_entries['paging'];
 			$gravityview_view->context = 'directory';
@@ -313,7 +343,7 @@ class GravityView_frontend {
 
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.');
 
-				esc_attr_e( 'You have attempted to view an entry that does not exist.', 'gravity-view');
+				esc_attr_e( 'You have attempted to view an entry that does not exist.', 'gravityview');
 
 				return;
 			}
@@ -521,15 +551,19 @@ class GravityView_frontend {
 		$search_criteria = self::get_search_criteria( $args, $form_id );
 
 		// Paging & offset
-		$page_size = !empty( $args['page_size'] ) ? $args['page_size'] : apply_filters( 'gravityview_default_page_size', 25 );
+		$page_size = !empty( $args['page_size'] ) ? intval( $args['page_size'] ) : apply_filters( 'gravityview_default_page_size', 25 );
 
 		if( isset( $args['offset'] ) ) {
-			$offset = $args['offset'];
+			$offset = intval( $args['offset'] );
 		} else {
 			$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
 			$offset = ( $curr_page - 1 ) * $page_size;
 		}
-		$paging = array( 'offset' => $offset, 'page_size' => $page_size );
+
+		$paging = array(
+			'offset' => $offset,
+			'page_size' => $page_size
+		);
 
 		do_action( 'gravityview_log_debug', '[get_view_entries] Paging: ', $paging );
 
@@ -537,11 +571,22 @@ class GravityView_frontend {
 		// Sorting
 		$sorting = array();
 		if( !empty( $args['sort_field'] ) ) {
-			$sorting = array( 'key' => $args['sort_field'], 'direction' => $args['sort_direction'] );
+
+			$sorting = array(
+				'key' => $args['sort_field'],
+				'direction' => $args['sort_direction']
+			);
+
 		}
 
 		do_action( 'gravityview_log_debug', '[get_view_entries] Sort Criteria : ', $sorting );
 
+		$parameters = array(
+			'search_criteria' => $search_criteria,
+			'sorting' => $sorting,
+			'paging' => $paging,
+			'cache' => isset( $args['cache'] ) ? $args['cache'] : true,
+		);
 
 		/**
 		 * Filter get entries criteria
@@ -550,7 +595,7 @@ class GravityView_frontend {
 		 *
 		 * @var array
 		 */
-		$parameters = apply_filters( 'gravityview_get_entries', apply_filters( 'gravityview_get_entries_'.$args['id'], compact( 'search_criteria', 'sorting', 'paging' ), $args, $form_id ), $args, $form_id );
+		$parameters = apply_filters( 'gravityview_get_entries', apply_filters( 'gravityview_get_entries_'.$args['id'], $parameters, $args, $form_id ), $args, $form_id );
 
 		do_action( 'gravityview_log_debug', '[get_view_entries] $parameters passed to gravityview_get_entries(): ', $parameters );
 
@@ -633,7 +678,7 @@ class GravityView_frontend {
 					$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
 				}
 
-				wp_register_script( 'gravityview-jquery-cookie', plugins_url('includes/lib/jquery-cookie/jquery.cookie.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
+				wp_register_script( 'gravityview-jquery-cookie', plugins_url('includes/lib/jquery-cookie/jquery_cookie.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
 
 				$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 				wp_enqueue_script( 'gravityview-fe-view', plugins_url('includes/js/fe-views'.$script_debug.'.js', GRAVITYVIEW_FILE), apply_filters('gravityview_js_dependencies', $js_dependencies ) , GravityView_Plugin::version, true );

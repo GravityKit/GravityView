@@ -50,7 +50,7 @@ class GravityView_Admin_Add_Shortcode {
 			return;
 		}
 		?>
-		<a href="#TB_inline?width=480&amp;inlineId=select_gravityview_view&amp;width=600&amp;height=800" class="thickbox button gform_media_link" id="add_gravityview" title="<?php esc_attr_e("Add a Gravity Forms View", 'gravity-view'); ?>"><span class="icon gv-icon-astronaut-head"></span><?php esc_html_e( 'Add View', 'gravity-view' ); ?></a>
+		<a href="#TB_inline?width=480&amp;inlineId=select_gravityview_view&amp;width=600&amp;height=800" class="thickbox button gform_media_link" id="add_gravityview" title="<?php esc_attr_e("Add a Gravity Forms View", 'gravityview'); ?>"><span class="icon gv-icon-astronaut-head"></span><?php esc_html_e( 'Add View', 'gravityview' ); ?></a>
 		<?php
 
 	}
@@ -85,17 +85,17 @@ class GravityView_Admin_Add_Shortcode {
 			<form action="#" method="get" id="select_gravityview_view_form">
 				<div class="wrap">
 
-					<h2 class=""><?php esc_html_e( 'Embed a View', 'gravity-view' ); ?></h2>
-					<p class="subtitle"><?php printf( esc_attr ( __( 'Use this form to embed a View into this %s. %sLearn more about using shortcodes.%s', 'gravity-view') ), $post_type->labels->singular_name, '<a href="http://gravityview.co/support/documentation/202934188/" target="_blank">', '</a>' ); ?></p>
+					<h2 class=""><?php esc_html_e( 'Embed a View', 'gravityview' ); ?></h2>
+					<p class="subtitle"><?php printf( esc_attr ( __( 'Use this form to embed a View into this %s. %sLearn more about using shortcodes.%s', 'gravityview') ), $post_type->labels->singular_name, '<a href="http://gravityview.co/support/documentation/202934188/" target="_blank">', '</a>' ); ?></p>
 
 					<div>
-						<h3><label for="gravityview_view_id"><?php esc_html_e( 'Select a View', 'gravity-view' ); ?></label></h3>
+						<h3><label for="gravityview_id"><?php esc_html_e( 'Select a View', 'gravityview' ); ?></label></h3>
 
-						<select name="gravityview_view_id" id="gravityview_view_id">
-							<option value=""><?php esc_html_e( '&mdash; Select a View to Insert &mdash;', 'gravity-view' ); ?></option>
+						<select name="gravityview_id" id="gravityview_id">
+							<option value=""><?php esc_html_e( '&mdash; Select a View to Insert &mdash;', 'gravityview' ); ?></option>
 							<?php
 							foreach( $views as $view ) {
-								$title = empty( $view->post_title ) ? __('(no title)', 'gravity-view') : $view->post_title;
+								$title = empty( $view->post_title ) ? __('(no title)', 'gravityview') : $view->post_title;
 								echo '<option value="'. $view->ID .'">'. esc_html( sprintf('%s #%d', $title, $view->ID ) ) .'</option>';
 							}
 							?>
@@ -114,15 +114,15 @@ class GravityView_Admin_Add_Shortcode {
 
 							if( empty( $setting['show_in_shortcode'] ) ) { continue; }
 
-							GravityView_Admin_Views::render_setting_row( $key, array(), NULL, 'gravityview_%s', 'gravityview_%s' );
+							GravityView_Render_Settings::render_setting_row( $key, array(), NULL, 'gravityview_%s', 'gravityview_%s' );
 						}
 						?>
 
 					</table>
 
 					<div class="submit">
-						<input type="submit" class="button button-primary button-large alignleft hide-if-js" value="<?php esc_attr_e('Insert View', 'gravity-view' ); ?>" id="insert_gravityview_view" />
-						<input class="button button-secondary alignright" type="submit" onclick="tb_remove(); return false;" value="<?php esc_attr_e("Cancel", "gravity-view"); ?>" />
+						<input type="submit" class="button button-primary button-large alignleft hide-if-js" value="<?php esc_attr_e('Insert View', 'gravityview' ); ?>" id="insert_gravityview_view" />
+						<input class="button button-secondary alignright" type="submit" onclick="tb_remove(); return false;" value="<?php esc_attr_e("Cancel", 'gravityview'); ?>" />
 					</div>
 
 				</div>
@@ -152,21 +152,24 @@ class GravityView_Admin_Add_Shortcode {
 
 		// date picker
 		wp_enqueue_script( 'jquery-ui-datepicker' );
-		wp_enqueue_style( 'jquery-ui-datepicker', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
+
+		$protocol = is_ssl() ? 'https://' : 'http://';
+
+		wp_enqueue_style( 'jquery-ui-datepicker', $protocol.'ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css', array(), GravityView_Plugin::version );
 
 		//enqueue styles
-		wp_register_style( 'gravityview_postedit_styles', plugins_url('includes/css/admin-post-edit.css', GRAVITYVIEW_FILE), array() );
+		wp_register_style( 'gravityview_postedit_styles', plugins_url('includes/css/admin-post-edit.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
 		wp_enqueue_style( 'gravityview_postedit_styles' );
 
 		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
 		// custom js
-		wp_register_script( 'gravityview_postedit_scripts',  plugins_url('includes/js/admin-post-edit'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery', 'jquery-ui-datepicker' ), '1.0.0');
+		wp_register_script( 'gravityview_postedit_scripts',  plugins_url('includes/js/admin-post-edit'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery', 'jquery-ui-datepicker' ), GravityView_Plugin::version );
 		wp_enqueue_script( 'gravityview_postedit_scripts' );
 		wp_localize_script('gravityview_postedit_scripts', 'gvGlobals', array(
 			'nonce' => wp_create_nonce( 'gravityview_ajaxaddshortcode'),
-			'loading_text' => esc_html__( 'Loading&hellip;', 'gravity-view' ),
-			'alert_1' => esc_html__( 'Please select a View', 'gravity-view'),
+			'loading_text' => esc_html__( 'Loading&hellip;', 'gravityview' ),
+			'alert_1' => esc_html__( 'Please select a View', 'gravityview'),
 		));
 
 	}
@@ -181,24 +184,29 @@ class GravityView_Admin_Add_Shortcode {
 	 * @return void
 	 */
 	function get_sortable_fields() {
-		$response = false;
 
-		if( empty( $_POST['viewid'] ) ) {
-			echo $response;
-			die();
+		// Not properly formatted request
+		if ( empty( $_POST['viewid'] ) || !is_numeric( $_POST['viewid'] ) ) {
+			exit( false );
 		}
 
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxaddshortcode' ) ) {
-			echo $response;
-			die();
+		// Not valid request
+		if( empty( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxaddshortcode' ) ) {
+			exit( false );
 		}
+
+		$viewid = (int)$_POST['viewid'];
 
 		// fetch form id assigned to the view
-		$formid = gravityview_get_form_id( (int)$_POST['viewid'] );
-		$response = gravityview_get_sortable_fields( $formid );
+		$formid = gravityview_get_form_id( $viewid );
 
-		echo $response;
-		die();
+		// Get the default sort field for the view
+		$sort_field = gravityview_get_template_setting( $viewid, 'sort_field' );
+
+		// Generate the output `<option>`s
+		$response = gravityview_get_sortable_fields( $formid, $sort_field );
+
+		exit( $response );
 	}
 
 }

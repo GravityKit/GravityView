@@ -9,104 +9,40 @@ global $gravityview_view;
 
 extract( $gravityview_view->field_data );
 
-$output = "";
-if(!empty($value)){
+$output = '';
+
+if( !empty( $value ) ){
 
 	$gv_class = gv_class( $field, $gravityview_view->form, $entry );
-	$output_arr = array();
-	$file_paths = rgar($field,"multipleFiles") ? json_decode($value) : array($value);
 
-	foreach($file_paths as $file_path){
-
-		// If the site is HTTPS, use HTTPS
-		if(function_exists('set_url_scheme')) { $file_path = set_url_scheme($file_path); }
-
-		// This is from Gravity Forms
-		$file_path = esc_attr(str_replace(" ", "%20", $file_path));
-
-		// If the field is set to link to the single entry, link to it.
-		$link = !empty( $field_settings['show_as_link'] ) ? GravityView_API::entry_link( $entry, $field ) : $file_path;
-
-		// Is this an image?
-		$image = new GravityView_Image(array(
-			'src' => $file_path,
-			'class' => 'gv-image gv-field-id-'.$field_settings['id'],
-			'alt' => $field_settings['label'],
-			'width' => (gravityview_get_context() === 'single' ? NULL : 250)
-		));
-
-		$image_html = $image->html();
-
-		$link_atts = ( !empty( $gravityview_view->atts['lightbox'] ) && empty( $field_settings['show_as_link'] ) ) ? "rel='%s-{$entry['id']}' class='thickbox' target='_blank'" : "target='_blank'";
-
-		// If so, use it!
-		if(!empty($image_html)) {
-			$content = $image;
-			$html_format = sprintf("<a href='{$link}' {$link_atts}>" . $content . "</a>", $gv_class );
-		} else {
-
-			// Otherwise, get a link
-			$info = pathinfo($file_path);
-			$content = $info["basename"];
-			$extension = empty( $info['extension'] ) ? NULL : $info['extension'];
-
-			switch( $extension ) {
-				case 'mp4':
-				case 'ogv':
-				case 'ogg':
-				case 'webm':
-					// We could use the {@link http://www.videojs.com VideoJS} library in the future
-					$incompatible_text = __('Sorry, your browser doesn&rsquo;t support embedded videos, but you can %sdownload it%s and watch it with your favorite video player!', '<a href="'.$file_path.'">', '</a>' );
-					$video_tag = '<video controls="controls" preload="auto" width="375"><source src="'.esc_url( $file_path ).'" type="video/'.esc_attr( $info['extension'] ).'" /> '.$incompatible_text.'</video>';
-					$html_format = apply_filters( 'gravityview_video_html', $video_tag, $info, $incompatible_text );
-					break;
-
-				case "pdf":
-
-					// PDF needs to be displayed in an IFRAME
-					$link = add_query_arg( array( 'TB_iframe' => 'true' ), $link );
-
-					// break; left out intentionally so it is handled as default
-
-				default:
-					$html_format = sprintf("<a href='{$link}' {$link_atts}>" . $content . "</a>", $gv_class );
-					break;
-			}
-
-		}
-
-		$text_format = $file_path . PHP_EOL;
-
-		$output_arr[] = array(
-			'text' => $text_format,
-			'html' => $html_format,
-			'content' => $content
-		);
-
-	} // End foreach
+	$output_arr = gravityview_get_files_array( $value, $gv_class );
 
 	// If the output array is just one item, let's not show a list.
-	if(sizeof($output_arr) === 1) {
-		$output = wpautop( $output_arr[0]['html'] );
-	} else {
+	if( sizeof( $output_arr ) === 1 ) {
 
-		// Otherwise, a list it is!
-		$output = '';
-		foreach ($output_arr as $key => $item) {
+		$output = $output_arr[0]['content'];
+
+	}
+
+	// There are multiple files
+	else {
+
+		// For each file, show as a list
+		foreach ( $output_arr as $key => $item) {
+
 			// Fix empty lists
 			if( empty( $item['content'] ) ) { continue; }
-			$output .= '<li>' . $item['html'] . PHP_EOL .'</li>';
+
+			$output .= '<li>' . $item['content'] . '</li>';
 		}
 
-		$before = sprintf("<ul class='gv-field-file-uploads %s'>", $gv_class );
-		$after = '</ul>';
-
 		if( !empty( $output ) ) {
-			$output = $before.$output.$after;
+
+			$output = sprintf("<ul class='gv-field-file-uploads %s'>%s</ul>", $gv_class, $output );
+
 		}
 	}
 
-  }
+}
 
 echo $output;
-

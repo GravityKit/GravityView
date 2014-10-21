@@ -51,3 +51,22 @@
 		}
 	}
 }
+
+.gv-widget-search {
+
+	label.gv-check-radio {
+		display: inline-block;
+		margin-right: 1em;
+		input {
+			display: inline;
+		}
+	}
+
+	&.gv-search-vertical {
+
+		label.gv-check-radio {
+			display: block;
+			margin-bottom: 1em;
+		}
+	}
+}
