@@ -1,6 +1,6 @@
 <?php
 
-class GV_GFEntryDetail {
+class GV_GFEntryDetail{
 
   /**
    * Gets stored entry data and combines it in to $_POST array.
@@ -17,7 +17,7 @@ class GV_GFEntryDetail {
    */
   public static function combine_update_existing ( $view_id, $entry ) { 
 
-     // Get all fields for form
+    // Get all fields for form
     $view_data = new GravityView_View_Data;
     $fields = $view_data->get_fields( $view_id );
 
@@ -45,12 +45,12 @@ class GV_GFEntryDetail {
    */
   public static function lead_detail_edit( $form, $lead, $view_id ){
 
-    $form = apply_filters("gform_admin_pre_render_" . $form["id"], apply_filters("gform_admin_pre_render", $form));
+    $form = apply_filters( "gform_admin_pre_render_" . $form["id"], apply_filters( "gform_admin_pre_render", $form ) );
     $form_id = $form["id"];
     ?>
     <div class="postbox">
       <h3>
-          <label for="name"><?php _e("Details", "gravityforms"); ?></label>
+          <label for="name"><?php _e( "Details", "gravityforms" ); ?></label>
       </h3>
       <div class="inside">
         <table class="form-table entry-details">
@@ -59,19 +59,22 @@ class GV_GFEntryDetail {
 
           // Get all fields for form
           $view_data = new GravityView_View_Data;
-          $fields = $view_data->get_fields( $view_id );
+          $properties = $view_data->get_fields( $view_id );
 
           // Hide fields depending on admin settings
-          $fields = self::filter_fields($form['fields'], $fields["directory_table-columns"]);
+          $fields = self::filter_fields( $form['fields'], $properties["directory_table-columns"] );
 
-          foreach($fields as $field){
+          foreach( $fields as $field ){
+
             $field_id = $field["id"];
-            switch(RGFormsModel::get_input_type($field)){
+
+            switch( RGFormsModel::get_input_type( $field ) ){
+
               case "section" :
                 ?>
                 <tr valign="top">
                     <td class="detail-view">
-                        <div style="margin-bottom:10px; border-bottom:1px dotted #ccc;"><h2 class="detail_gsection_title"><?php echo esc_html(GFCommon::get_label($field))?></h2></div>
+                        <div style="margin-bottom:10px; border-bottom:1px dotted #ccc;"><h2 class="detail_gsection_title"><?php echo esc_html( GFCommon::get_label( $field ) ) ?></h2></div>
                     </td>
                 </tr>
                 <?php
@@ -85,12 +88,10 @@ class GV_GFEntryDetail {
               break;
 
               default :
-                $value = RGFormsModel::get_lead_field_value($lead, $field);
+                $value = RGFormsModel::get_lead_field_value( $lead, $field );
                 $td_id = "field_" . $form_id . "_" . $field_id;
-                $content = "<tr valign='top'><td class='detail-view' id='{$td_id}'><label class='detail-label'>" . esc_html(GFCommon::get_label($field)) . "</label>" .
-                           GFCommon::get_field_input($field, $value, $lead["id"]) . "</td></tr>";
-
-                $content = apply_filters("gform_field_content", $content, $field, $value, $lead["id"], $form["id"]);
+                
+                $content = apply_filters( "gform_field_content", $content, $field, $value, $lead["id"], $form["id"] );
 
                 echo $content;
               break;
@@ -117,36 +118,39 @@ class GV_GFEntryDetail {
    * @param array $properties
    * @return array $fields
    */
-  static private function filter_fields( $fields, $properties ) {
+  static public function filter_fields( $fields, $properties ) {
 
     if( empty( $fields ) || !is_array( $fields ) ) {
 		return $fields;
     }
 
-    foreach ($properties as $k => $prop) {
+    foreach ( $properties as $k => $prop ) {
 
-      foreach ($fields as $k2 => $field) {
+      if( ! empty( $fields ) ){
+        foreach ($fields as $k2 => $field) {
 
-        if( $prop['id'] == $field['id'] ){
+          if( $prop['id'] == $field['id'] ){
 
-          $temp = array_merge( $prop, $field );
+            $properties = array_merge( $prop, $field );
 
-          if( self::hide_field_check_conditions( $temp ) ) {
-            unset( $fields[ $k2 ] );
-          }
+            if( self::hide_field_check_conditions( $properties ) ) {
+              unset( $fields[ $k2 ] );
+            }
 
-        } elseif( !empty( $field['inputs'] ) ){
+          } elseif( !empty( $field['inputs'] ) ){
 
-          //If any inputs for the field are not editable, disable that field
-          //All inputs for that field will be disabled.
-          foreach ($field['inputs'] as $k3 => $input) {
+            //If any inputs for the field are not editable, disable that field
+            //All inputs for that field will be disabled.
+            foreach ( $field['inputs'] as $k3 => $input ) {
 
-            if($prop['id'] == $input['id']){
+              if( $prop['id'] == $input['id'] ){
 
-              $temp = array_merge($prop, $input);
+                $properties = array_merge( $prop, $input );
 
-              if( self::hide_field_check_conditions( $temp ) ) {
-                unset( $fields[ $k2 ] );
+                if( self::hide_field_check_conditions( $properties ) ) {
+                  unset( $fields[ $k2 ] );
+                }
+
               }
 
             }

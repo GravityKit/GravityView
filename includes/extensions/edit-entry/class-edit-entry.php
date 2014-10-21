@@ -292,10 +292,13 @@ class GravityView_Edit_Entry {
 			$input = $input . $validation_message;
 		}
 
+		//Add required indicator
+    $required = ($field['isRequired'] == 1) ? '<span class="required">*</span>' : '';
+
 		$content = "
 		<tr valign='top'>
 			<td class='detail-view {$error_class}' id='{$td_id}'>
-				<label class='detail-label'>" . $label . "</label>" . $input . "
+				<label class='detail-label'>" . $label . $required . "</label>" . $input . "
 			</td>
 		</tr>";
 
@@ -322,44 +325,44 @@ class GravityView_Edit_Entry {
 		 // If the form is submitted
 		if(RGForms::post("action") === "update") {
 
-	        // Make sure the entry, view, and form IDs are all correct
-	        check_admin_referer( self::$nonce_key, self::$nonce_key );
+      // Make sure the entry, view, and form IDs are all correct
+      check_admin_referer( self::$nonce_key, self::$nonce_key );
 
-	        do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
+      do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
 
-	        $lead_id = absint( $_POST['lid'] );
+      $lead_id = absint( $_POST['lid'] );
 
-	        //Loading files that have been uploaded to temp folder
-	        $files = GFCommon::json_decode(stripslashes(RGForms::post("gform_uploaded_files")));
-	        if(!is_array($files)) {
-	            $files = array();
-	        }
+      //Loading files that have been uploaded to temp folder
+      $files = GFCommon::json_decode(stripslashes(RGForms::post("gform_uploaded_files")));
+      if(!is_array($files)) {
+          $files = array();
+      }
 
-	        GFFormsModel::$uploaded_files[$this->form_id] = $files;
-
-
-	        $this->validate();
+      GFFormsModel::$uploaded_files[$this->form_id] = $files;
 
 
-	        if( $this->is_valid ) {
+      $this->validate();
 
-	        	do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] Submission is valid.' );
 
-	        	/**
-	        	 * @hack This step is needed to unset the adminOnly from form fields
-	        	 */
-	        	$form = $this->form_prepare_for_save();
+      if( $this->is_valid ) {
 
-	        	// Make sure hidden fields are represented in $_POST
-	        	GV_GFEntryDetail::combine_update_existing( $this->view_id, $this->entry );
+      	do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] Submission is valid.' );
 
-		        GFFormsModel::save_lead( $form, $this->entry );
+      	/**
+      	 * @hack This step is needed to unset the adminOnly from form fields
+      	 */
+      	$form = $this->form_prepare_for_save();
 
-		        do_action("gform_after_update_entry", $this->form, $this->entry["id"]);
-		        do_action("gform_after_update_entry_{$this->form["id"]}", $this->form, $this->entry["id"]);
+      	// Make sure hidden fields are represented in $_POST
+      	GV_GFEntryDetail::combine_update_existing( $this->view_id, $this->entry );
 
-		        // Re-define the entry now that we've updated it.
-		        $this->entry = RGFormsModel::get_lead( $this->entry["id"] );
+        GFFormsModel::save_lead( $form, $this->entry );
+
+        do_action("gform_after_update_entry", $this->form, $this->entry["id"]);
+        do_action("gform_after_update_entry_{$this->form["id"]}", $this->form, $this->entry["id"]);
+
+        // Re-define the entry now that we've updated it.
+        $this->entry = RGFormsModel::get_lead( $this->entry["id"] );
 				$this->entry = GFFormsModel::set_entry_meta( $this->entry, $this->form );
 
 				// We need to clear the cache because Gravity Forms caches the field values, which
@@ -446,6 +449,13 @@ class GravityView_Edit_Entry {
 		// Prevent entry limit from running when editing an entry, also
 		// prevent form scheduling from preventing editing
 		unset( $this->form['limitEntries'], $this->form['scheduleForm'] );
+
+    // Get all fields for form
+    $view_data = new GravityView_View_Data;
+    $properties = $view_data->get_fields( $this->view_id );
+
+    // Hide fields depending on admin settings
+    $this->form['fields'] = GV_GFEntryDetail::filter_fields( $this->form['fields'], $properties["directory_table-columns"], 'GV_GFEntryDetail::filter_fields' );
 
 		$this->is_valid = GFFormDisplay::validate( $this->form, $field_values, 1, $failed_validation_page );
 
