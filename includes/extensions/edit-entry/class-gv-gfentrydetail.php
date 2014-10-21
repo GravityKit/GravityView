@@ -90,6 +90,8 @@ class GV_GFEntryDetail{
               default :
                 $value = RGFormsModel::get_lead_field_value( $lead, $field );
                 $td_id = "field_" . $form_id . "_" . $field_id;
+
+                $content = "<tr valign='top'><td class='detail-view' id='{$td_id}'><label class='detail-label'>" . esc_html(GFCommon::get_label($field)) . "</label>" . GFCommon::get_field_input($field, $value, $lead["id"]) . "</td></tr>";
                 
                 $content = apply_filters( "gform_field_content", $content, $field, $value, $lead["id"], $form["id"] );
 
