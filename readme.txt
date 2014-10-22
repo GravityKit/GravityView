@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.3.1 =
+* Fixed: Searches ending in a space caused PHP warning
+
 = 1.3 on October 13 =
 * Speed improvements - [Learn more about GravityView caching](https://gravityview.co/support/documentation/202827685/)
 	- Added caching functionality that saves results to be displayed

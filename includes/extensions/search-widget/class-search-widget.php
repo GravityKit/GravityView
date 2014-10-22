@@ -261,6 +261,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			// Search for a piece
 			$words = explode( ' ',  stripslashes_deep( urldecode( $_GET['gv_search'] ) ) );
 
+			$words = array_filter( $words );
+
 			foreach ( $words as $word ) {
 				$search_criteria['field_filters'][] = array(
 					'key' => null, // The field ID to search
