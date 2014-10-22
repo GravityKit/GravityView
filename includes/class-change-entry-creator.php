@@ -31,9 +31,9 @@ class GravityView_Change_Entry_Creator {
     		// Now, no validation is required in the methods; let's hook in.
     		remove_action('admin_init', array( $Old_Lead_Creator, 'set_screen_mode' ) );
 
-    		add_action("gform_entry_info", array( $Old_Lead_Creator, 'add_select' ), 10, 2);
+    		remove_action("gform_entry_info", array( $Old_Lead_Creator, 'add_select' ), 10, 2);
 
-    		add_action("gform_after_update_entry", array( $Old_Lead_Creator, 'update_entry_creator' ), 10, 2);
+    		remove_action("gform_after_update_entry", array( $Old_Lead_Creator, 'update_entry_creator' ), 10, 2);
     	}
 
     }
