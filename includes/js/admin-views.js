@@ -1149,6 +1149,7 @@
 			// On success, this also sets the vcfg.startFreshStatus to false.
 			if( vcfg.startFreshStatus ) {
 				vcfg.createPresetForm( e, templateId );
+                return false;
 			}
 
         	// If the View isn't a Start Fresh view, we just return true
