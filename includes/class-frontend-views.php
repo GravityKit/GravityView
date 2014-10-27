@@ -338,6 +338,12 @@ class GravityView_frontend {
 			// user requested Single Entry View
 			do_action( 'gravityview_log_debug', '[render_view] Executing Single View' );
 
+			if( did_action('gravityview_render_entry_'.$view_data['id']) ) {
+				return;
+			}
+
+			do_action('gravityview_render_entry_'.$view_data['id']);
+
 			// You are not permitted to view this entry.
 			if( false === $this->entry ) {
 
@@ -348,13 +354,15 @@ class GravityView_frontend {
 				return;
 			}
 
-			// We're in single view, but the view being processed is not the same view the single entry belongs to.
-			if( $view_data['form_id'] !== $this->entry['form_id'] ) {
 
+
+			// We're in single view, but the view being processed is not the same view the single entry belongs to.
+			if( intval( $view_data['form_id'] ) !== intval( $this->entry['form_id'] ) ) {
 				$view_id = isset( $view_entries['entries'][0]['id'] ) ? $view_entries['entries'][0]['id'] : '(empty)';
 				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '. $view_id);
 				return;
 			}
+
 
 			//fetch template and slug
 			$view_slug =  apply_filters( 'gravityview_template_slug_'. $view_data['template_id'], 'table', 'single' );

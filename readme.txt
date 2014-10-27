@@ -26,6 +26,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Custom "Edit Link Text" settings respected
 * Fixed: Don't rely on Gravity Forms code for escaping query
 * Fixed: PHP error when displaying Post Content fields using Live Data for a post that no longer is published.
+* Fixed: When multiple Views are displayed on a page, Single Entry mode displays empty templates.
+* Fixed: PHP error when displaying Post Content fields using Live Data for a post that no longer is published
 
 = 1.3 on October 13 =
 * Speed improvements - [Learn more about GravityView caching](https://gravityview.co/support/documentation/202827685/)
