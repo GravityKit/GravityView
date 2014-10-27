@@ -27,7 +27,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Don't rely on Gravity Forms code for escaping query
 * Fixed: When multiple Views are displayed on a page, Single Entry mode displays empty templates.
 * Fixed: PHP error when displaying Post Content fields using Live Data for a post that no longer is published
-* Tweak: Make active search link bold when using Search Bar "Links" Input Type
+* Tweak: Search Bar "Links" Input Type
+	- Make link bold when filter is active
+	- Clicking on an active filter removes the filter
 * Tweak: Fixed updates for Multisite installations
 
 = 1.3 on October 13 =
