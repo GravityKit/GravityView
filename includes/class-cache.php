@@ -303,7 +303,14 @@ class GravityView_Cache {
 
 	    	$key = $this->get_cache_key_prefix( $form_id );
 
-	    	$key = "%" . GFCommon::esc_like( $key ) . "%";
+	    	// WordPress 4.0+
+	    	if( is_callable( array( $wpdb, 'esc_like' ) ) ) {
+	    	    $key = $wpdb->esc_like( $key );
+	    	} else {
+	    	    $key = like_escape( $key );
+	    	}
+
+	    	$key = "%" . $key . "%";
 
 	    	$sql = $wpdb->prepare("DELETE FROM {$wpdb->options} WHERE `option_name` LIKE %s", $key );
 
