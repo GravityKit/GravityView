@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 = 1.4 =
 * Added: Custom entry slug capability. Instead of `/entry/123`, you can now use entry values in the URL, like `/entry/{company name}/` or `/entry/{first name}-{last name}/`. Requires some customization; [learn more here](https://gravityview.co/support/documentation/202239919)
+* Fixed: Loaded field configurations when using "Start Fresh" presets
 * Fixed: Searches ending in a space caused PHP warning
 * Fixed: Custom "Edit Link Text" settings respected
 * Fixed: Don't rely on Gravity Forms code for escaping query
