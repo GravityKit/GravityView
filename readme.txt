@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 = 1.3.1 =
 * Fixed: Searches ending in a space caused PHP warning
+* Fixed: Custom "Edit Link Text" settings respected
 * Fixed: Don't rely on Gravity Forms code for escaping query
 * Fixed: PHP error when displaying Post Content fields using Live Data for a post that no longer is published.
 
