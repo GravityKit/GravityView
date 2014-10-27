@@ -43,12 +43,12 @@ if( !function_exists('gravityview_get_form_from_entry_id') ) {
 
 	/**
 	 * Get the form array for an entry based only on the entry ID
-	 * @param  int $entry_id Entry ID
+	 * @param  int|string $entry_slug Entry slug
 	 * @return array           Gravity Forms form array
 	 */
-	function gravityview_get_form_from_entry_id( $entry_id ) {
+	function gravityview_get_form_from_entry_id( $entry_slug ) {
 
-		$entry = gravityview_get_entry( $entry_id );
+		$entry = gravityview_get_entry( $entry_slug );
 
 		$form = gravityview_get_form( $entry['form_id'] );
 
@@ -321,25 +321,73 @@ if( !function_exists('gravityview_get_entries') ) {
 
 
 if( !function_exists('gravityview_get_entry') ) {
+
 	/**
 	 * Return a single entry object
+	 *
+	 * Since 1.4, supports custom entry slugs. The way that GravityView fetches an entry based on the custom slug is by searching `gravityview_unique_id` meta. The `$entry_slug` is fetched by getting the current query var set by `is_single_entry()`
 	 *
 	 * @access public
 	 * @param mixed $entry_id
 	 * @return object or false
 	 */
-	function gravityview_get_entry( $entry_id ) {
-		if( class_exists( 'GFAPI' ) && !empty( $entry_id ) ) {
+	function gravityview_get_entry( $entry_slug ) {
+
+		if( class_exists( 'GFAPI' ) && !empty( $entry_slug ) ) {
+
+			$filters = array(
+				'mode' => 'any'
+			);
+
+			/**
+			 * Enable custom entry slug functionality.
+			 *
+			 * @see  GravityView_API::get_entry_slug()
+			 * @var boolean
+			 */
+			$custom_slug = apply_filters('gravityview_custom_entry_slug', false );
+
+			/**
+			 * When using a custom slug, allow access to the entry using the original slug (the Entry ID).
+			 *
+			 * If disabled (default), only allow access to an entry using the custom slug value.  (example: `/entry/custom-slug/` NOT `/entry/123/`)
+			 * If enabled, you could access using the custom slug OR the entry id (example: `/entry/custom-slug/` OR `/entry/123/`)
+			 *
+			 * @var boolean
+			 */
+			$custom_slug_id_access = apply_filters('gravityview_custom_entry_slug_allow_id', false );
+
+			/**
+			 * If we're using custom entry slugs, we do a meta value search
+			 * instead of doing a straightup ID search.
+			 */
+			if( $custom_slug ) {
+
+				$filters[] = array(
+					'key' => 'gravityview_unique_id',
+					'value' => $entry_slug,
+					'operator' => 'is',
+					'type' => 'meta'
+				);
+
+			}
+
+			// If custom slug is off, search using the entry ID
+			// ID allow ID access is on, also use entry ID as a backup
+			if( empty( $custom_slug ) || !empty( $custom_slug_id_access ) ) {
+
+				// Search for IDs matching $entry_slug
+				$filters[] = array(
+					'key' => "id",
+					'value' => $entry_slug,
+					'operator' => 'is',
+				);
+
+			}
 
 			$criteria = array(
 				'search_criteria' => array(
-					'field_filters' => array(
-						array(
-							'key' => "id",
-							'value' => $entry_id,
-							'operator' => 'is',
-						)
-					)
+					'field_filters' => $filters
 				),
 				'sorting' => null,
 				'paging' => array("offset" => 0, "page_size" => 1)
@@ -351,6 +399,7 @@ if( !function_exists('gravityview_get_entry') ) {
 				return $entries[0];
 			}
 		}
+
 		return false;
 	}
 
