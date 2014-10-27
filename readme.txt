@@ -20,14 +20,14 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= 1.3.1 =
+= 1.4 =
 * Added: Custom entry slug capability. Instead of `/entry/123`, you can now use entry values in the URL, like `/entry/{company name}/` or `/entry/{first name}-{last name}/`. Requires some customization; [learn more here](https://gravityview.co/support/documentation/202239919)
 * Fixed: Searches ending in a space caused PHP warning
 * Fixed: Custom "Edit Link Text" settings respected
 * Fixed: Don't rely on Gravity Forms code for escaping query
-* Fixed: PHP error when displaying Post Content fields using Live Data for a post that no longer is published.
 * Fixed: When multiple Views are displayed on a page, Single Entry mode displays empty templates.
 * Fixed: PHP error when displaying Post Content fields using Live Data for a post that no longer is published
+* Tweak: Fixed updates for Multisite installations
 
 = 1.3 on October 13 =
 * Speed improvements - [Learn more about GravityView caching](https://gravityview.co/support/documentation/202827685/)
