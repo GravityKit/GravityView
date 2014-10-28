@@ -672,7 +672,9 @@ class GravityView_frontend {
 
 			$views = $this->gv_output_data->get_views();
 
-			$js_localization = array();
+			$js_localization = array(
+				'cookiepath' => COOKIEPATH
+			);
 
 			foreach ( $views as $view_id => $data ) {
 
