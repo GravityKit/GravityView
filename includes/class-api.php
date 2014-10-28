@@ -397,13 +397,46 @@ class GravityView_API {
 
 	// return href for single entry
 	public static function entry_link( $entry ) {
+		global $post, $gravityview_view;
+
+		$post_id = false;
 
 		if( defined('DOING_AJAX') && DOING_AJAX ) {
-			global $gravityview_view;
-			$post_id = isset( $_POST['post_id'] ) ? (int)$_POST['post_id'] : '';
+
+			$post_id = isset( $_POST['post_id'] ) ? (int)$_POST['post_id'] : false;
+
 		} else {
-			global $post;
-			$post_id = isset( $post->ID ) ? $post->ID : null;
+
+			// The Post ID has been passed via the shortcode
+			if( !empty( $gravityview_view ) && !empty( $gravityview_view->post_id ) ) {
+
+				$post_id = $gravityview_view->post_id;
+
+			} else {
+
+				// This is a GravityView post type
+				if( GravityView_frontend::getInstance()->is_gravityview_post_type ) {
+
+					$post_id = $gravityview_view->view_id;
+
+				} else {
+
+					// This is an embedded GravityView; use the embedded post's ID as the base.
+					if( GravityView_frontend::getInstance()->post_has_shortcode ) {
+
+						$post_id = $post->ID;
+
+					} else {
+
+						// The GravityView has been embedded in a widget or in a template, and
+						// is not in the current content. Thus, we defer to the View's own ID.
+						$post_id = $gravityview_view->view_id;
+
+					}
+
+				}
+
+			}
 		}
 
 		// No post ID, get outta here.

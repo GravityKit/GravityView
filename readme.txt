@@ -34,6 +34,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 	- Make link bold when filter is active
 	- Clicking on an active filter removes the filter
 * Tweak: Fixed updates for Multisite installations
+* Modified: Now you can override which post a single entry links to. For example, if a shortcode is embedded on a home page and you want single entries to link to a page with an embedded View, not the View itself, you can pass the `post_id` parameter. This accepts the ID of the page where the View is embedded.
 * Modified: Added `$add_pagination` parameter to `GravityView_API::directory_link()`
 
 = 1.3 on October 13 =

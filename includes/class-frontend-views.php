@@ -16,6 +16,8 @@ class GravityView_frontend {
 
 	var $is_gravityview_post_type = false;
 
+	var $post_has_shortcode = false;
+
 	var $post_id = NULL;
 
 	var $single_entry = false;
@@ -68,7 +70,8 @@ class GravityView_frontend {
 		$this->single_entry = self::is_single_entry();
 		$this->entry = ( $this->single_entry ) ? gravityview_get_entry( $this->single_entry ) : false;
 		$this->is_gravityview_post_type = ( get_post_type( $post ) === 'gravityview' );
-
+		$post_has_shortcode = gravityview_has_shortcode_r( $post->post_content, 'gravityview' );
+		$this->post_has_shortcode = empty( $this->is_gravityview_post_type ) ? !empty( $post_has_shortcode ) : NULL;
 		$this->gv_output_data = new GravityView_View_Data( $post );
 	}
 
@@ -267,7 +270,7 @@ class GravityView_frontend {
 
 		$view_id = $passed_args['id'];
 
-		$view_data = $this->gv_output_data->get_view( $view_id );
+		$view_data = $this->gv_output_data->get_view( $view_id, $passed_args );
 
 		do_action( 'gravityview_log_debug', '[render_view] View Data: ', $view_data );
 
@@ -300,6 +303,8 @@ class GravityView_frontend {
 		global $gravityview_view;
 
 		$gravityview_view = new GravityView_View( $view_data );
+
+		$gravityview_view->post_id = !empty( $atts['post_id'] ) ? intval( $atts['post_id'] ) : $gravityview_view->post_id;
 
 		if( empty( $this->single_entry ) ) {
 
