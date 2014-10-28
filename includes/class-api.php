@@ -278,9 +278,10 @@ class GravityView_API {
 	 * Uses `wp_cache_get` and `wp_cache_get` (since 1.3) to speed up repeated requests to get permalink, which improves load time. Since we may be doing this hundreds of times per request, it adds up!
 	 *
 	 * @param int $post_id Post ID
+	 * @param boolean $add_pagination Add pagination arguments
 	 * @return string      Permalink to multiple entries view
 	 */
-	public static function directory_link( $post_id = NULL ) {
+	public static function directory_link( $post_id = NULL, $add_pagination = true ) {
 		global $post;
 
 		if( empty( $post_id ) ) {
@@ -300,8 +301,8 @@ class GravityView_API {
 		$link = get_permalink( $post_id );
 
 		// Deal with returning to proper pagination for embedded views
-		if( !empty( $_GET['pagenum'] ) && is_numeric( $_GET['pagenum'] ) ) {
-			$link = add_query_arg('pagenum', $_GET['pagenum'], $link );
+		if( $add_pagination && !empty( $_GET['pagenum'] ) && is_numeric( $_GET['pagenum'] ) ) {
+			$link = add_query_arg('pagenum', intval( $_GET['pagenum'] ), $link );
 		}
 
 		// If not yet saved, cache the permalink.
@@ -476,8 +477,8 @@ function gv_value( $entry, $field ) {
 	return $value;
 }
 
-function gv_directory_link( $post = NULL ) {
-	return GravityView_API::directory_link( $post = NULL );
+function gv_directory_link( $post = NULL, $add_pagination = true ) {
+	return GravityView_API::directory_link( $post, $add_pagination );
 }
 
 function gv_entry_link( $entry ) {

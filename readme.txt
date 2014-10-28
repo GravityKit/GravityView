@@ -32,6 +32,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 	- Make link bold when filter is active
 	- Clicking on an active filter removes the filter
 * Tweak: Fixed updates for Multisite installations
+* Modified: Added `$add_pagination` parameter to `GravityView_API::directory_link()`
 
 = 1.3 on October 13 =
 * Speed improvements - [Learn more about GravityView caching](https://gravityview.co/support/documentation/202827685/)
