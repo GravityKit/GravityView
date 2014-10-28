@@ -412,7 +412,7 @@ class GravityView_API {
 		$query_arg_name = GravityView_Post_Types::get_entry_var_name();
 
 		// Get the permalink to the View
-		$directory_link = self::directory_link( $post_id );
+		$directory_link = self::directory_link( $post_id, false );
 
 		$entry_slug = self::get_entry_slug( $entry['id'], $entry );
 
@@ -425,6 +425,10 @@ class GravityView_API {
 		} else {
 
 			$args = array( $query_arg_name => $entry_slug );
+		}
+
+		if( !empty( $_GET['pagenum'] ) ) {
+			$args['pagenum'] = intval( $_GET['pagenum'] );
 		}
 
 		return add_query_arg( $args, $directory_link );
