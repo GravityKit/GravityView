@@ -17,7 +17,7 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 			'type' => 'text',
 			'label' => __( 'Link Text:', 'gravityview' ),
 			'desc' => NULL,
-			'default' => __('View Details', 'gravityview'),
+			'value' => __('View Details', 'gravityview'),
 			'merge_tags' => true,
 		);
 
