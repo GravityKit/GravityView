@@ -70,7 +70,7 @@ class GravityView_frontend {
 		$this->single_entry = self::is_single_entry();
 		$this->entry = ( $this->single_entry ) ? gravityview_get_entry( $this->single_entry ) : false;
 		$this->is_gravityview_post_type = ( get_post_type( $post ) === 'gravityview' );
-		$post_has_shortcode = gravityview_has_shortcode_r( $post->post_content, 'gravityview' );
+		$post_has_shortcode = !empty( $post->post_content ) ? gravityview_has_shortcode_r( $post->post_content, 'gravityview' ) : false;
 		$this->post_has_shortcode = empty( $this->is_gravityview_post_type ) ? !empty( $post_has_shortcode ) : NULL;
 		$this->gv_output_data = new GravityView_View_Data( $post );
 	}
