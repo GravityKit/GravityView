@@ -301,7 +301,7 @@ if( !function_exists('gravityview_get_entries') ) {
 			$entries = GFAPI::get_entries( $form_ids, $criteria['search_criteria'], $criteria['sorting'], $criteria['paging'], $total );
 
 			if( is_wp_error( $entries ) ) {
-				do_action( 'idx_plus_log_error', $entries->get_error_message(), $entries );
+				do_action( 'gravityview_log_error', $entries->get_error_message(), $entries );
 				return false;
 			}
 
