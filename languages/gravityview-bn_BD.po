@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-10-20 17:00-0700\n"
+"POT-Creation-Date: 2014-10-28 21:29-0700\n"
 "PO-Revision-Date: 2014-10-20 23:02+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Bengali (http://www.transifex.com/projects/p/gravityview/language/bn/)\n"
@@ -264,7 +264,7 @@ msgstr "দৃশ্য ঢোকান"
 
 #: includes/class-admin-add-shortcode.php:125
 #: includes/class-admin-views.php:811
-#: includes/extensions/edit-entry/class-edit-entry.php:810
+#: includes/extensions/edit-entry/class-edit-entry.php:843
 msgid "Cancel"
 msgstr "বাতিল"
 
@@ -601,19 +601,19 @@ msgstr "গ্রাভিটি ভিউ ইনস্টল করার জ�
 msgid "List of Changes"
 msgstr ""
 
-#: includes/class-admin-welcome.php:539
+#: includes/class-admin-welcome.php:603
 msgid "GravityView is brought to you by:"
 msgstr "গ্রাভিটি ভিউ আপনার জন্য নিয়ে এল:"
 
-#: includes/class-admin-welcome.php:564
+#: includes/class-admin-welcome.php:628
 msgid "Contributors"
 msgstr "সহযোগী যারা"
 
-#: includes/class-admin-welcome.php:587
+#: includes/class-admin-welcome.php:651
 msgid "Want to contribute?"
 msgstr "সহযোগীতা করতে চান?"
 
-#: includes/class-admin-welcome.php:588
+#: includes/class-admin-welcome.php:652
 #, php-format
 msgid ""
 "If you want to contribute to the code, you can %srequest access to the "
@@ -762,11 +762,11 @@ msgstr "এই অনুসন্ধানের কোন ফলাফল প�
 msgid "No entries match your request."
 msgstr "আপনার অনুরোধ কোন এন্ট্রির সাথে মিলেনি।"
 
-#: includes/class-api.php:420
+#: includes/class-api.php:542
 msgid "&larr; Go back"
 msgstr "&larr; পিছনে ফিরে যান"
 
-#: includes/class-api.php:681
+#: includes/class-api.php:803
 msgid "Map It"
 msgstr ""
 
@@ -795,121 +795,121 @@ msgctxt "No user assigned to the entry"
 msgid "No User"
 msgstr ""
 
-#: includes/class-data.php:299
+#: includes/class-data.php:305
 msgid "View ID"
 msgstr ""
 
-#: includes/class-data.php:307
+#: includes/class-data.php:313
 msgid "Number of entries per page"
 msgstr ""
 
-#: includes/class-data.php:315
+#: includes/class-data.php:321
 msgid "Enable lightbox for images"
 msgstr "ছবির জন্য লাইটবক্স সক্রিয় করুন"
 
-#: includes/class-data.php:323
+#: includes/class-data.php:329
 msgid "Show only approved entries"
 msgstr "শুধুমাত্র অনুমোদিত এন্ট্রিসমূহ দেখান"
 
-#: includes/class-data.php:330
+#: includes/class-data.php:336
 msgid "Hide empty fields"
 msgstr "শূন্য ফিল্ডগুলো লুকান"
 
-#: includes/class-data.php:337
+#: includes/class-data.php:343
 msgid "Allow User Edit"
 msgstr ""
 
-#: includes/class-data.php:339
+#: includes/class-data.php:345
 msgid "Allow logged-in users to edit entries they created."
 msgstr ""
 
-#: includes/class-data.php:345
+#: includes/class-data.php:351
 msgid "Sort by field"
 msgstr "ফিল্ড অনুসারে সাজান"
 
-#: includes/class-data.php:350 includes/connector-functions.php:575
+#: includes/class-data.php:356 includes/connector-functions.php:624
 msgid "Default"
 msgstr "ডিফল্ট"
 
-#: includes/class-data.php:351 includes/connector-functions.php:588
+#: includes/class-data.php:357 includes/connector-functions.php:637
 msgid "Date Created"
 msgstr "নির্মাণের তারিখ"
 
-#: includes/class-data.php:356
+#: includes/class-data.php:362
 msgid "Sort direction"
 msgstr "সাজানোর দিক"
 
-#: includes/class-data.php:361
+#: includes/class-data.php:367
 msgid "ASC"
 msgstr "কখগ"
 
-#: includes/class-data.php:362
+#: includes/class-data.php:368
 msgid "DESC"
 msgstr "গখক"
 
-#: includes/class-data.php:367
+#: includes/class-data.php:373
 msgid "Filter by Start Date"
 msgstr "শুরুর তারিখ দ্বারা ফিল্টার করুন"
 
-#: includes/class-data.php:369
+#: includes/class-data.php:375
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
 msgstr "এই তারিখের পরে জমানো এন্ট্রিগুলো দেখান। সমর্থনকৃত তারিখ, যেমন \"-1 সপ্তাহ\" অথবা \"-1 মাস\""
 
-#: includes/class-data.php:376
+#: includes/class-data.php:382
 msgid "Filter by End Date"
 msgstr "শেষ তারিখ দ্বারা ফিল্টার করুন"
 
-#: includes/class-data.php:378
+#: includes/class-data.php:384
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
 msgstr "এই তারিখের পূর্বে জমানো এন্ট্রিগুলো দেখান। সমর্থনকৃত তারিখ, যেমন \"এখন\" অথবা \"-3 দিন\"।"
 
-#: includes/class-data.php:385
+#: includes/class-data.php:391
 msgid "CSS Class"
 msgstr ""
 
-#: includes/class-data.php:386
+#: includes/class-data.php:392
 msgid "CSS class to add to the wrapping HTML container."
 msgstr ""
 
-#: includes/class-data.php:393
+#: includes/class-data.php:399
 msgid "Search Value"
 msgstr ""
 
-#: includes/class-data.php:394
+#: includes/class-data.php:400
 msgid "Define a default search value for the View"
 msgstr ""
 
-#: includes/class-data.php:401
+#: includes/class-data.php:407
 #: includes/extensions/search-widget/class-search-widget.php:125
 msgid "Search Field"
 msgstr ""
 
-#: includes/class-data.php:402
+#: includes/class-data.php:408
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
 msgstr ""
 
-#: includes/class-data.php:409
+#: includes/class-data.php:415
 msgid "Single Entry Title"
 msgstr "একক দৃশ্য টাইটেল"
 
-#: includes/class-data.php:411
+#: includes/class-data.php:417
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and Single"
 " Entry views."
 msgstr "যখন একক এন্ট্রি দেখাবে, এই সেটিংস এর টাইটেল পেজের টাইটেল হিসেবে পরিবর্তন করবে। অন্যথায় একাধিক এন্ট্রি এবং একক এন্ট্রির ক্ষেত্রে টাইটেল পরিবর্তন হবেনা।"
 
-#: includes/class-data.php:418
+#: includes/class-data.php:424
 msgid "Back Link Label"
 msgstr "পিছেনের লিংকের লেবেল"
 
-#: includes/class-data.php:420
+#: includes/class-data.php:426
 msgid "The text of the link that returns to the multiple entries view."
 msgstr "একাধিক এন্ট্রি দৃশ্য ফিরে যাওয়ার লিংকের শব্দ।"
 
@@ -930,16 +930,16 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr ""
 
-#: includes/class-frontend-views.php:96
+#: includes/class-frontend-views.php:99
 #: includes/extensions/edit-entry/class-edit-entry.php:147
 #: includes/extensions/edit-entry/class-edit-entry.php:163
 #: includes/extensions/edit-entry/class-edit-entry.php:178
-#: includes/extensions/edit-entry/class-edit-entry.php:756
+#: includes/extensions/edit-entry/class-edit-entry.php:789
 #: includes/extensions/edit-entry/fields/edit_link.php:12
 msgid "Edit Entry"
 msgstr ""
 
-#: includes/class-frontend-views.php:346
+#: includes/class-frontend-views.php:357
 msgid "You have attempted to view an entry that does not exist."
 msgstr ""
 
@@ -1181,127 +1181,127 @@ msgstr "ছক (ডিফল্ট)"
 msgid "Display items in a table view."
 msgstr "ছক দৃশ্যে দেখান"
 
-#: includes/default-templates.php:43 includes/default-templates.php:86
+#: includes/default-templates.php:45 includes/default-templates.php:93
 msgid "Link to single entry"
 msgstr "একক এন্ট্রির সাথে সংযোগ"
 
-#: includes/default-templates.php:51
+#: includes/default-templates.php:56
 msgid "Visible Table Columns"
 msgstr "দৃশ্যমান ছক স্তম্ভ"
 
-#: includes/default-templates.php:52
+#: includes/default-templates.php:57
 msgid "Each field will be displayed as a column in the table."
 msgstr ""
 
-#: includes/default-templates.php:77
+#: includes/default-templates.php:82
 msgid "List (default)"
 msgstr "তালিকা (ডিফল্ট)"
 
-#: includes/default-templates.php:78
+#: includes/default-templates.php:83
 msgid "Display items in a listing view."
 msgstr "তালিকা দৃশ্যে দেখান"
 
-#: includes/default-templates.php:92
+#: includes/default-templates.php:102
 msgid "Listing Title"
 msgstr "তালিকার শিরোনাম"
 
-#: includes/default-templates.php:93
+#: includes/default-templates.php:103
 msgid "Subheading"
 msgstr "অনুশীর্ষ"
 
-#: includes/default-templates.php:96
+#: includes/default-templates.php:106
 msgid "Image"
 msgstr "ছবি"
 
-#: includes/default-templates.php:99
+#: includes/default-templates.php:109
 msgid "Other Fields"
 msgstr ""
 
-#: includes/default-templates.php:103
+#: includes/default-templates.php:113
 msgid "Footer Left"
 msgstr "বামের ফুটার"
 
-#: includes/default-templates.php:106
+#: includes/default-templates.php:116
 msgid "Footer Right"
 msgstr "ডানের ফুটার"
 
-#: includes/default-templates.php:342
+#: includes/default-templates.php:352
 msgid "Business Data"
 msgstr "ব্যবসায়িক তথ্য"
 
-#: includes/default-templates.php:343
+#: includes/default-templates.php:353
 msgid "Display business information in a table."
 msgstr "ব্যবসায়িক তথ্য ছক আকারে দেখান"
 
-#: includes/default-templates.php:364
+#: includes/default-templates.php:374
 msgid "Resume Board"
 msgstr "সংক্ষিপ্ত বোর্ড"
 
-#: includes/default-templates.php:365
+#: includes/default-templates.php:375
 msgid "Allow job-seekers to post their resumes."
 msgstr "চাকুরী-প্রার্থীদের তাদের সংক্ষিপ্ত বিবরণ পোষ্ট করতে অনুমতি দিন"
 
-#: includes/default-templates.php:386
+#: includes/default-templates.php:396
 msgid "Job Board"
 msgstr "চাকুরী বোর্ড"
 
-#: includes/default-templates.php:387
+#: includes/default-templates.php:397
 msgid "Post available jobs in a simple job board."
 msgstr "প্রাপ্তব্য চাকুরীসমূহ একটি সহজ চাকুরী বোর্ডে পোস্ট করুন।"
 
-#: includes/default-templates.php:408
+#: includes/default-templates.php:418
 msgid "People Table"
 msgstr "মানুষ ছক"
 
-#: includes/default-templates.php:409
+#: includes/default-templates.php:419
 msgid "Display information about people in a table."
 msgstr "ছকে মানুষের তথ্য দেখান"
 
-#: includes/default-templates.php:431
+#: includes/default-templates.php:441
 msgid "Issue Tracker"
 msgstr "বিষয় অনুসরণ"
 
-#: includes/default-templates.php:432
+#: includes/default-templates.php:442
 msgid "Manage issues and their statuses."
 msgstr "বিষয় এবং তাদের স্থিতিগুলোকে পরিচালনা করুন।"
 
-#: includes/default-templates.php:454
+#: includes/default-templates.php:464
 msgid "Business Listings"
 msgstr "ব্যবসায়িক তালিকা"
 
-#: includes/default-templates.php:455
+#: includes/default-templates.php:465
 msgid "Display business profiles."
 msgstr "ব্যবসায়িক পাশ্বচিত্র দেখান।"
 
-#: includes/default-templates.php:476
+#: includes/default-templates.php:486
 msgid "Event Listings"
 msgstr "ঘটনার তালিকা"
 
-#: includes/default-templates.php:477
+#: includes/default-templates.php:487
 msgid "Present a list of your events."
 msgstr "আপনার ঘটনাসমূহের তালিকা উপস্থাপন করুন।"
 
-#: includes/default-templates.php:498
+#: includes/default-templates.php:508
 msgid "People Profiles"
 msgstr "মানুষের পাশ্বচিত্র"
 
-#: includes/default-templates.php:499
+#: includes/default-templates.php:509
 msgid "List people with individual profiles."
 msgstr "পৃথক প্রোফাইলের ব্যক্তিদের তালিকা।"
 
-#: includes/default-templates.php:520
+#: includes/default-templates.php:530
 msgid "Staff Profiles"
 msgstr "স্টাফ প্রোফাইল"
 
-#: includes/default-templates.php:521
+#: includes/default-templates.php:531
 msgid "List members of your team."
 msgstr "আপনার দলের সদস্যদের তালিকা।"
 
-#: includes/default-templates.php:542
+#: includes/default-templates.php:552
 msgid "Website Showcase"
 msgstr "ওয়েবসাইট প্রদর্শনী"
 
-#: includes/default-templates.php:543
+#: includes/default-templates.php:553
 msgid "Feature submitted websites with screenshots."
 msgstr "স্ক্রিনশটসহ ওয়েবসাইটের বৈশিষ্ট্য জমা হয়েছে"
 
@@ -1342,32 +1342,32 @@ msgstr ""
 msgid "A link to edit the entry. Visible based on View settings."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:645
+#: includes/extensions/edit-entry/class-edit-entry.php:678
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:649
+#: includes/extensions/edit-entry/class-edit-entry.php:682
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:653
+#: includes/extensions/edit-entry/class-edit-entry.php:686
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:767
+#: includes/extensions/edit-entry/class-edit-entry.php:800
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:767
+#: includes/extensions/edit-entry/class-edit-entry.php:800
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:773
+#: includes/extensions/edit-entry/class-edit-entry.php:806
 #, php-format
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:808
+#: includes/extensions/edit-entry/class-edit-entry.php:841
 msgid "Update"
 msgstr ""
 
@@ -1472,32 +1472,32 @@ msgstr ""
 msgid "Search Everything"
 msgstr ""
 
-#: includes/extensions/search-widget/class-search-widget.php:632
+#: includes/extensions/search-widget/class-search-widget.php:634
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "বন্ধ"
 
-#: includes/extensions/search-widget/class-search-widget.php:633
+#: includes/extensions/search-widget/class-search-widget.php:635
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/extensions/search-widget/class-search-widget.php:634
+#: includes/extensions/search-widget/class-search-widget.php:636
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/extensions/search-widget/class-search-widget.php:635
+#: includes/extensions/search-widget/class-search-widget.php:637
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/extensions/search-widget/class-search-widget.php:636
+#: includes/extensions/search-widget/class-search-widget.php:638
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/extensions/search-widget/class-search-widget.php:637
+#: includes/extensions/search-widget/class-search-widget.php:639
 msgid "Show a different month"
 msgstr ""
 

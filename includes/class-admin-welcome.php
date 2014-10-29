@@ -253,7 +253,7 @@ class GravityView_Welcome {
 
 			<div class="changelog point-releases">
 
-				<h3>What changed in 1.2 &amp; 1.3</h3>
+				<h3>What's New</h3>
 
 				<div class="feature-section col two-col">
 					<div class="col-1">
@@ -300,6 +300,35 @@ class GravityView_Welcome {
 				</div>
 
 				<hr />
+
+				<h3 id="toc_0">Changes in 1.4 (full list)</h3>
+
+				<ul>
+					<li>Added: Custom entry slug capability. Instead of <code>/entry/123</code>, you can now use entry values in the URL, like <code>/entry/{company name}/</code> or <code>/entry/{first name}-{last name}/</code>. Requires some customization; <a href="https://gravityview.co/support/documentation/202239919">learn more here</a></li>
+					<li>Fixed: GravityView auto-updater script not showing updates</li>
+					<li>Fixed: Edit Entry when a form has required Upload Fields</li>
+					<li>Fixed: "Return to Directory" link not always working for sites in subdirectories</li>
+					<li>Fixed: Broken links to single entries when viewing paginated results</li>
+					<li>Fixed: Loaded field configurations when using "Start Fresh" presets</li>
+					<li>Fixed: Searches ending in a space caused PHP warning</li>
+					<li>Fixed: Custom "Edit Link Text" settings respected</li>
+					<li>Fixed: Don't rely on Gravity Forms code for escaping query</li>
+					<li>Fixed: When multiple Views are displayed on a page, Single Entry mode displays empty templates.</li>
+					<li>Fixed: PHP error when displaying Post Content fields using Live Data for a post that no longer is published</li>
+					<li>Tweak: Search Bar "Links" Input Type
+
+					<ul>
+					<li>Make link bold when filter is active</li>
+					<li>Clicking on an active filter removes the filter</li>
+					</ul>
+					</li>
+					<li>Tweak: Fixed updates for Multisite installations</li>
+					<li>Modified: Now you can override which post a single entry links to. For example, if a shortcode is embedded on a home page and you want single entries to link to a page with an embedded View, not the View itself, you can pass the <code>post_id</code> parameter. This accepts the ID of the page where the View is embedded.</li>
+					<li>Modified: Added <code>$add_pagination</code> parameter to <code>GravityView_API::directory_link()</code></li>
+					<li>Added: Indonesian translation (thanks, <a href="https://www.transifex.com/accounts/profile/sariyanta/">@sariyanta</a>)!</li>
+					<li>Updated: Swedish translation 100% translated - thanks, <a href="https://www.transifex.com/accounts/profile/adamrehal/">@adamrehal</a>!</li>
+					<li>Updated: Dutch translation (thanks, <a href="https://www.transifex.com/accounts/profile/leooosterloo/">@leooosterloo</a>)!</li>
+				</ul>
 
 				<h3>Changes in 1.3 (full list)</h3>
 
@@ -616,6 +645,7 @@ class GravityView_Welcome {
 						<li class="wp-person">Finnish translation by <a href="https://www.transifex.com/accounts/profile/harjuja/">@harjuja</a></li>
 						<li class="wp-person">Spanish translation by <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a>, <a href="https://www.transifex.com/accounts/profile/luisdiazvenero/">@luisdiazvenero</a>, and <a href="https://www.transifex.com/accounts/profile/josemv/">@josemv</a></li>
 						<li class="wp-person">Swedish translation by <a href="https://www.transifex.com/accounts/profile/adamrehal/">@adamrehal</a>
+						<li class="wp-person">Indonesian translation by <a href="https://www.transifex.com/accounts/profile/sariyanta/">@sariyanta</a>
 						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a></li>
 
 						<!-- No translation strings yet... -->
