@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.4.1 prep =
+* Fixed: Single entry Go back button context on Embedded Views
+
 = 1.4 on October 28 =
 * Added: Custom entry slug capability. Instead of `/entry/123`, you can now use entry values in the URL, like `/entry/{company name}/` or `/entry/{first name}-{last name}/`. Requires some customization; [learn more here](https://gravityview.co/support/documentation/202239919)
 * Fixed: GravityView auto-updater script not showing updates
