@@ -648,3 +648,26 @@ if( !function_exists('gravityview_get_sortable_fields') ) {
 	}
 
 }
+
+if( !function_exists('gravityview_get_field_type') ) {
+
+	/**
+	 * Returns the GF Form field type for a certain field(id) of a form
+	 * @param  object $form     Gravity Forms form
+	 * @param  mixed $field_id Field ID or Field array
+	 * @return string field type
+	 */
+	function gravityview_get_field_type(  $form = null , $field_id = '' ) {
+
+		if( !empty( $field_id ) && !is_array( $field_id ) ) {
+			$field = gravityview_get_field( $form, $field_id );
+		} else {
+			$field = $field_id;
+		}
+
+		return class_exists( 'RGFormsModel' ) ? RGFormsModel::get_input_type( $field ) : '';
+
+	}
+
+
+}
