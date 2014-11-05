@@ -16,6 +16,8 @@ class GravityView_frontend {
 
 	var $is_gravityview_post_type = false;
 
+	var $post_has_shortcode = false;
+
 	var $post_id = NULL;
 
 	var $single_entry = false;
@@ -68,7 +70,8 @@ class GravityView_frontend {
 		$this->single_entry = self::is_single_entry();
 		$this->entry = ( $this->single_entry ) ? gravityview_get_entry( $this->single_entry ) : false;
 		$this->is_gravityview_post_type = ( get_post_type( $post ) === 'gravityview' );
-
+		$post_has_shortcode = !empty( $post->post_content ) ? gravityview_has_shortcode_r( $post->post_content, 'gravityview' ) : false;
+		$this->post_has_shortcode = empty( $this->is_gravityview_post_type ) ? !empty( $post_has_shortcode ) : NULL;
 		$this->gv_output_data = new GravityView_View_Data( $post );
 	}
 
@@ -267,7 +270,7 @@ class GravityView_frontend {
 
 		$view_id = $passed_args['id'];
 
-		$view_data = $this->gv_output_data->get_view( $view_id );
+		$view_data = $this->gv_output_data->get_view( $view_id, $passed_args );
 
 		do_action( 'gravityview_log_debug', '[render_view] View Data: ', $view_data );
 
@@ -300,6 +303,8 @@ class GravityView_frontend {
 		global $gravityview_view;
 
 		$gravityview_view = new GravityView_View( $view_data );
+
+		$gravityview_view->post_id = !empty( $atts['post_id'] ) ? intval( $atts['post_id'] ) : $gravityview_view->post_id;
 
 		if( empty( $this->single_entry ) ) {
 
@@ -338,6 +343,12 @@ class GravityView_frontend {
 			// user requested Single Entry View
 			do_action( 'gravityview_log_debug', '[render_view] Executing Single View' );
 
+			if( did_action('gravityview_render_entry_'.$view_data['id']) ) {
+				return;
+			}
+
+			do_action('gravityview_render_entry_'.$view_data['id']);
+
 			// You are not permitted to view this entry.
 			if( false === $this->entry ) {
 
@@ -348,13 +359,15 @@ class GravityView_frontend {
 				return;
 			}
 
-			// We're in single view, but the view being processed is not the same view the single entry belongs to.
-			if( $view_data['form_id'] !== $this->entry['form_id'] ) {
 
+
+			// We're in single view, but the view being processed is not the same view the single entry belongs to.
+			if( intval( $view_data['form_id'] ) !== intval( $this->entry['form_id'] ) ) {
 				$view_id = isset( $view_entries['entries'][0]['id'] ) ? $view_entries['entries'][0]['id'] : '(empty)';
 				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '. $view_id);
 				return;
 			}
+
 
 			//fetch template and slug
 			$view_slug =  apply_filters( 'gravityview_template_slug_'. $view_data['template_id'], 'table', 'single' );
@@ -400,7 +413,8 @@ class GravityView_frontend {
 
 		}
 
-		if( $this->is_gravityview_post_type ) {
+		//@todo: check why we need the IF statement vs. print the view id always.
+		if( $this->is_gravityview_post_type || $this->post_has_shortcode ) {
 			// Print the View ID to enable proper cookie pagination ?>
 			<input type="hidden" id="gravityview-view-id" value="<?php echo $view_id; ?>">
 <?php
@@ -664,7 +678,9 @@ class GravityView_frontend {
 
 			$views = $this->gv_output_data->get_views();
 
-			$js_localization = array();
+			$js_localization = array(
+				'cookiepath' => COOKIEPATH
+			);
 
 			foreach ( $views as $view_id => $data ) {
 

@@ -14,7 +14,7 @@ class GravityView_Field_Website extends GravityView_Field {
 
 		$field_options['truncatelink'] = array(
 			'type' => 'checkbox',
-			'default' => true,
+			'value' => true,
 			'label' => __( 'Shorten Link Display', 'gravityview' ),
 			'tooltip' => __( 'Only show the domain for a URL instead of the whole link.', 'gravityview' ),
 			'desc' => __( 'Don&rsquo;t show the full URL, only show the domain.', 'gravityview' )

@@ -20,7 +20,7 @@ class GravityView_Field_Address extends GravityView_Field {
 			'type' => 'checkbox',
 			'label' => __( 'Show Map Link:', 'gravityview' ),
 			'desc' => __('Display a "Map It" link below the address', 'gravityview'),
-			'default' => true,
+			'value' => true,
 			'merge_tags' => false,
 		);
 

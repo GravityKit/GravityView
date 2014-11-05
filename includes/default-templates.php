@@ -40,7 +40,12 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 		 * @var array
 		 */
 		$field_options = array(
-			'show_as_link' => array( 'type' => 'checkbox', 'label' => __( 'Link to single entry', 'gravityview' ), 'default' => false, 'context' => 'directory' ),
+			'show_as_link' => array(
+				'type' => 'checkbox',
+				'label' => __( 'Link to single entry', 'gravityview' ),
+				'value' => false,
+				'context' => 'directory'
+			),
 		);
 
 		$areas = array(
@@ -83,7 +88,12 @@ class GravityView_Default_Template_List extends GravityView_Template {
 		$settings = wp_parse_args( $settings, $list_settings );
 
 		$field_options = array(
-			'show_as_link' => array( 'type' => 'checkbox', 'label' => __( 'Link to single entry', 'gravityview' ), 'default' => false, 'context' => 'directory' ),
+			'show_as_link' => array(
+				'type' => 'checkbox',
+				'label' => __( 'Link to single entry', 'gravityview' ),
+				'value' => false,
+				'context' => 'directory'
+			),
 		);
 
 		$areas = array(

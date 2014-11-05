@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-10-20 17:00-0700\n"
+"POT-Creation-Date: 2014-10-28 21:29-0700\n"
 "PO-Revision-Date: 2014-10-20 23:02+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/gravityview/language/de_DE/)\n"
@@ -263,7 +263,7 @@ msgstr "Ansicht einfügen"
 
 #: includes/class-admin-add-shortcode.php:125
 #: includes/class-admin-views.php:811
-#: includes/extensions/edit-entry/class-edit-entry.php:810
+#: includes/extensions/edit-entry/class-edit-entry.php:843
 msgid "Cancel"
 msgstr "Abbruch"
 
@@ -600,19 +600,19 @@ msgstr "Danke, dass Sie GravityView installiert haben! Zeigen Sie auf fasziniere
 msgid "List of Changes"
 msgstr "Liste von Änderungen"
 
-#: includes/class-admin-welcome.php:539
+#: includes/class-admin-welcome.php:603
 msgid "GravityView is brought to you by:"
 msgstr "GravityView wird herausgegeben von:"
 
-#: includes/class-admin-welcome.php:564
+#: includes/class-admin-welcome.php:628
 msgid "Contributors"
 msgstr "Beitragende Entwickler"
 
-#: includes/class-admin-welcome.php:587
+#: includes/class-admin-welcome.php:651
 msgid "Want to contribute?"
 msgstr "Wollen Sie mitwirken?"
 
-#: includes/class-admin-welcome.php:588
+#: includes/class-admin-welcome.php:652
 #, php-format
 msgid ""
 "If you want to contribute to the code, you can %srequest access to the "
@@ -761,11 +761,11 @@ msgstr "Die Suche hat keine Ergebnisse geliefert."
 msgid "No entries match your request."
 msgstr "Keine übereinstimmenden Einträge."
 
-#: includes/class-api.php:420
+#: includes/class-api.php:542
 msgid "&larr; Go back"
 msgstr "&larr; zurück"
 
-#: includes/class-api.php:681
+#: includes/class-api.php:803
 msgid "Map It"
 msgstr ""
 
@@ -794,121 +794,121 @@ msgctxt "No user assigned to the entry"
 msgid "No User"
 msgstr ""
 
-#: includes/class-data.php:299
+#: includes/class-data.php:305
 msgid "View ID"
 msgstr "Ansichts-ID"
 
-#: includes/class-data.php:307
+#: includes/class-data.php:313
 msgid "Number of entries per page"
 msgstr "Anzahl von Einträgen pro Seite"
 
-#: includes/class-data.php:315
+#: includes/class-data.php:321
 msgid "Enable lightbox for images"
 msgstr "Lightbox für Bilder aktivieren"
 
-#: includes/class-data.php:323
+#: includes/class-data.php:329
 msgid "Show only approved entries"
 msgstr "Nur genehmigte Einträge anzeigen"
 
-#: includes/class-data.php:330
+#: includes/class-data.php:336
 msgid "Hide empty fields"
 msgstr "Leere Felder ausblenden"
 
-#: includes/class-data.php:337
+#: includes/class-data.php:343
 msgid "Allow User Edit"
 msgstr "Benutzerbearbeitungen erlauben"
 
-#: includes/class-data.php:339
+#: includes/class-data.php:345
 msgid "Allow logged-in users to edit entries they created."
 msgstr "Es angemeldeten Benutzern erlauben, von ihnen erstellte Einträge zu bearbeiten."
 
-#: includes/class-data.php:345
+#: includes/class-data.php:351
 msgid "Sort by field"
 msgstr "Sortieren nach dem Feld"
 
-#: includes/class-data.php:350 includes/connector-functions.php:575
+#: includes/class-data.php:356 includes/connector-functions.php:624
 msgid "Default"
 msgstr "Standard"
 
-#: includes/class-data.php:351 includes/connector-functions.php:588
+#: includes/class-data.php:357 includes/connector-functions.php:637
 msgid "Date Created"
 msgstr "Erstellungsdatum"
 
-#: includes/class-data.php:356
+#: includes/class-data.php:362
 msgid "Sort direction"
 msgstr "Richtung"
 
-#: includes/class-data.php:361
+#: includes/class-data.php:367
 msgid "ASC"
 msgstr "aufsteigend"
 
-#: includes/class-data.php:362
+#: includes/class-data.php:368
 msgid "DESC"
 msgstr "absteigend"
 
-#: includes/class-data.php:367
+#: includes/class-data.php:373
 msgid "Filter by Start Date"
 msgstr "Nach Erstellungsdatum filtern"
 
-#: includes/class-data.php:369
+#: includes/class-data.php:375
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
 msgstr "Nach diesem Datum eingereichte Einträge anzeigen. Relative Datumsangaben werden unterstützt, zum Beispiel \"-1 week\" (-1 Woche) oder \"-1 month\" (-1 Monat)."
 
-#: includes/class-data.php:376
+#: includes/class-data.php:382
 msgid "Filter by End Date"
 msgstr "Nach Ablaufdatum filtern"
 
-#: includes/class-data.php:378
+#: includes/class-data.php:384
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
 msgstr "Vor diesem Datum eingereichte Einträge anzeigen. Relative Datumsangaben werden unterstützt, zum Beispiel \"now\" (jetzt) oder \"-3 days\" (-3 Tage)."
 
-#: includes/class-data.php:385
+#: includes/class-data.php:391
 msgid "CSS Class"
 msgstr "CSS-Klasse"
 
-#: includes/class-data.php:386
+#: includes/class-data.php:392
 msgid "CSS class to add to the wrapping HTML container."
 msgstr "CSS-Klasse, welche dem umgebenden HTML-Container (Wrapper) hinzugefügt wird."
 
-#: includes/class-data.php:393
+#: includes/class-data.php:399
 msgid "Search Value"
 msgstr "Suchwert"
 
-#: includes/class-data.php:394
+#: includes/class-data.php:400
 msgid "Define a default search value for the View"
 msgstr "Legen Sie einen Standardsuchwert für die Ansicht fest"
 
-#: includes/class-data.php:401
+#: includes/class-data.php:407
 #: includes/extensions/search-widget/class-search-widget.php:125
 msgid "Search Field"
 msgstr "Suchfeld"
 
-#: includes/class-data.php:402
+#: includes/class-data.php:408
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
 msgstr "Falls ein Suchwert gesetzt ist, können Sie ein spezifisches Feld festlegen, in dem gesucht wird. Ansonsten wird in allen Felder gesucht."
 
-#: includes/class-data.php:409
+#: includes/class-data.php:415
 msgid "Single Entry Title"
 msgstr "Einzeleintragstitel"
 
-#: includes/class-data.php:411
+#: includes/class-data.php:417
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and Single"
 " Entry views."
 msgstr "Wird ein einzelner Eintrag angezeigt, kann der Seitentitel auf diese Einstellung hier geändert werden. Ansonsten wird sich der Seitentitel bei den Ansichten für mehrere und einzelne Einträge nicht ändern."
 
-#: includes/class-data.php:418
+#: includes/class-data.php:424
 msgid "Back Link Label"
 msgstr "Beschriftung Zurück-Link"
 
-#: includes/class-data.php:420
+#: includes/class-data.php:426
 msgid "The text of the link that returns to the multiple entries view."
 msgstr "Der Linktext für die Rückkehr zur Mehreintragsansicht."
 
@@ -929,16 +929,16 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Leer"
 
-#: includes/class-frontend-views.php:96
+#: includes/class-frontend-views.php:99
 #: includes/extensions/edit-entry/class-edit-entry.php:147
 #: includes/extensions/edit-entry/class-edit-entry.php:163
 #: includes/extensions/edit-entry/class-edit-entry.php:178
-#: includes/extensions/edit-entry/class-edit-entry.php:756
+#: includes/extensions/edit-entry/class-edit-entry.php:789
 #: includes/extensions/edit-entry/fields/edit_link.php:12
 msgid "Edit Entry"
 msgstr "Eintrag bearbeiten"
 
-#: includes/class-frontend-views.php:346
+#: includes/class-frontend-views.php:357
 msgid "You have attempted to view an entry that does not exist."
 msgstr "Sie haben versucht einen Eintrag aufzurufen, welcher nicht existiert."
 
@@ -1180,127 +1180,127 @@ msgstr "Tabelle (standard)"
 msgid "Display items in a table view."
 msgstr "Einträge in einer Tabellenansicht darstellen."
 
-#: includes/default-templates.php:43 includes/default-templates.php:86
+#: includes/default-templates.php:45 includes/default-templates.php:93
 msgid "Link to single entry"
 msgstr "Link zum einzelnen Eintrag"
 
-#: includes/default-templates.php:51
+#: includes/default-templates.php:56
 msgid "Visible Table Columns"
 msgstr "Sichtbare Tabellenspalten"
 
-#: includes/default-templates.php:52
+#: includes/default-templates.php:57
 msgid "Each field will be displayed as a column in the table."
 msgstr "Jedes Feld wird als eine Spalte in der Tabelle dargestellt."
 
-#: includes/default-templates.php:77
+#: includes/default-templates.php:82
 msgid "List (default)"
 msgstr "Liste (Stadard)"
 
-#: includes/default-templates.php:78
+#: includes/default-templates.php:83
 msgid "Display items in a listing view."
 msgstr "Einträge in einer Listenansicht darstellen."
 
-#: includes/default-templates.php:92
+#: includes/default-templates.php:102
 msgid "Listing Title"
 msgstr "Titel der Liste"
 
-#: includes/default-templates.php:93
+#: includes/default-templates.php:103
 msgid "Subheading"
 msgstr "Untertitel"
 
-#: includes/default-templates.php:96
+#: includes/default-templates.php:106
 msgid "Image"
 msgstr "Bild"
 
-#: includes/default-templates.php:99
+#: includes/default-templates.php:109
 msgid "Other Fields"
 msgstr "Andere Felder"
 
-#: includes/default-templates.php:103
+#: includes/default-templates.php:113
 msgid "Footer Left"
 msgstr "Fußzeile links"
 
-#: includes/default-templates.php:106
+#: includes/default-templates.php:116
 msgid "Footer Right"
 msgstr "Fußzeile rechts"
 
-#: includes/default-templates.php:342
+#: includes/default-templates.php:352
 msgid "Business Data"
 msgstr "Geschäftsdaten"
 
-#: includes/default-templates.php:343
+#: includes/default-templates.php:353
 msgid "Display business information in a table."
 msgstr "Geschäftsdaten in einer Tabelle anzeigen."
 
-#: includes/default-templates.php:364
+#: includes/default-templates.php:374
 msgid "Resume Board"
 msgstr "Lebenlsauf-Plattform"
 
-#: includes/default-templates.php:365
+#: includes/default-templates.php:375
 msgid "Allow job-seekers to post their resumes."
 msgstr "Arbeitsuchenden erlauben ihre Lebensläufe und Erfahrungen zu veröffentlichen."
 
-#: includes/default-templates.php:386
+#: includes/default-templates.php:396
 msgid "Job Board"
 msgstr "Arbeitsplatz-Plattform"
 
-#: includes/default-templates.php:387
+#: includes/default-templates.php:397
 msgid "Post available jobs in a simple job board."
 msgstr "Verfügbare Jobs in einer einfachen Übersicht posten."
 
-#: includes/default-templates.php:408
+#: includes/default-templates.php:418
 msgid "People Table"
 msgstr "Personentabelle"
 
-#: includes/default-templates.php:409
+#: includes/default-templates.php:419
 msgid "Display information about people in a table."
 msgstr "Informationen über Personen in Tabellenansicht anzeigen."
 
-#: includes/default-templates.php:431
+#: includes/default-templates.php:441
 msgid "Issue Tracker"
 msgstr "Fehlermelder"
 
-#: includes/default-templates.php:432
+#: includes/default-templates.php:442
 msgid "Manage issues and their statuses."
 msgstr "Fehlerberichte verwalten"
 
-#: includes/default-templates.php:454
+#: includes/default-templates.php:464
 msgid "Business Listings"
 msgstr "Geschäftsprofile"
 
-#: includes/default-templates.php:455
+#: includes/default-templates.php:465
 msgid "Display business profiles."
 msgstr "Gescäftsprofile anzeigen."
 
-#: includes/default-templates.php:476
+#: includes/default-templates.php:486
 msgid "Event Listings"
 msgstr "Veranstaltungen"
 
-#: includes/default-templates.php:477
+#: includes/default-templates.php:487
 msgid "Present a list of your events."
 msgstr "Eine Liste aller Veranstaltungen anzeigen."
 
-#: includes/default-templates.php:498
+#: includes/default-templates.php:508
 msgid "People Profiles"
 msgstr "Benutzerprofile"
 
-#: includes/default-templates.php:499
+#: includes/default-templates.php:509
 msgid "List people with individual profiles."
 msgstr "Benutzer mit individuellen Profilen auflisten."
 
-#: includes/default-templates.php:520
+#: includes/default-templates.php:530
 msgid "Staff Profiles"
 msgstr "Mitarbeiterprofile"
 
-#: includes/default-templates.php:521
+#: includes/default-templates.php:531
 msgid "List members of your team."
 msgstr "Mitglieder deines Teams auflisten"
 
-#: includes/default-templates.php:542
+#: includes/default-templates.php:552
 msgid "Website Showcase"
 msgstr "Webseitenpräsentation"
 
-#: includes/default-templates.php:543
+#: includes/default-templates.php:553
 msgid "Feature submitted websites with screenshots."
 msgstr "Webseiten mittels Screenshots vorstellen."
 
@@ -1341,32 +1341,32 @@ msgstr "Linktext bearbeiten"
 msgid "A link to edit the entry. Visible based on View settings."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:645
+#: includes/extensions/edit-entry/class-edit-entry.php:678
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "Der Link zum Bearbeiten des Eintrags ist ungültig; er könnte abgelaufen sein."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:649
+#: includes/extensions/edit-entry/class-edit-entry.php:682
 msgid "You do not have permission to edit this entry."
 msgstr "Sie haben keine Berechtigung, um diesen Eintrag bearbeiten zu können."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:653
+#: includes/extensions/edit-entry/class-edit-entry.php:686
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "Sie können diesen Eintrag nicht bearbeiten, da er sich im Papierkorb befindet."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:767
+#: includes/extensions/edit-entry/class-edit-entry.php:800
 msgid "There was a problem with your submission."
 msgstr "Mit Ihrem Eintrag gab es ein Problem."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:767
+#: includes/extensions/edit-entry/class-edit-entry.php:800
 msgid "Errors have been highlighted below."
 msgstr "Fehleder wurden unten hervorgehoben."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:773
+#: includes/extensions/edit-entry/class-edit-entry.php:806
 #, php-format
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "Eintrag aktualisiert. %sZurück zum Eintrag%s"
 
-#: includes/extensions/edit-entry/class-edit-entry.php:808
+#: includes/extensions/edit-entry/class-edit-entry.php:841
 msgid "Update"
 msgstr "Aktualisieren"
 
@@ -1471,32 +1471,32 @@ msgstr ""
 msgid "Search Everything"
 msgstr ""
 
-#: includes/extensions/search-widget/class-search-widget.php:632
+#: includes/extensions/search-widget/class-search-widget.php:634
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "Schließen"
 
-#: includes/extensions/search-widget/class-search-widget.php:633
+#: includes/extensions/search-widget/class-search-widget.php:635
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr "Zurück"
 
-#: includes/extensions/search-widget/class-search-widget.php:634
+#: includes/extensions/search-widget/class-search-widget.php:636
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr "Weiter"
 
-#: includes/extensions/search-widget/class-search-widget.php:635
+#: includes/extensions/search-widget/class-search-widget.php:637
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr "Heute"
 
-#: includes/extensions/search-widget/class-search-widget.php:636
+#: includes/extensions/search-widget/class-search-widget.php:638
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr "Woche"
 
-#: includes/extensions/search-widget/class-search-widget.php:637
+#: includes/extensions/search-widget/class-search-widget.php:639
 msgid "Show a different month"
 msgstr "Einen anderen Monat anzeigen"
 

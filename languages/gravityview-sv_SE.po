@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-10-20 17:00-0700\n"
-"PO-Revision-Date: 2014-10-20 23:02+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"POT-Creation-Date: 2014-10-28 21:29-0700\n"
+"PO-Revision-Date: 2014-10-22 15:10+0000\n"
+"Last-Translator: Adam Rehal <adam.rehal@nineyards.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/gravityview/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -102,7 +102,7 @@ msgstr "Datakälla"
 
 #: includes/admin/metaboxes.php:50
 msgid "Choose a View Type"
-msgstr "Välj en Yytyp"
+msgstr "Välj en Vytyp"
 
 #: includes/admin/metaboxes.php:53
 msgid "View Configuration"
@@ -118,7 +118,7 @@ msgstr "Filtrera &amp; sortera"
 
 #: includes/admin/metaboxes.php:86
 msgid "Where would you like the data to come from for this View?"
-msgstr "Varifrån vill du att datan för denna vy skall hämtas?"
+msgstr "Varifrån vill du att datan för denna Vy skall hämtas?"
 
 #: includes/admin/metaboxes.php:96
 msgid "Start Fresh"
@@ -158,7 +158,7 @@ msgstr "Om du byter Vytyp återställs alla fält. Ändringarna blir permanenta 
 
 #: includes/admin/metaboxes.php:130
 msgid "GravityView requires Javascript to be enabled."
-msgstr "GravityView kräver att Javascript är aktiverat"
+msgstr "GravityView kräver att Javascript är aktiverat."
 
 #: includes/admin/metaboxes.php:171
 msgid "Buy Now"
@@ -203,11 +203,11 @@ msgstr "Widgets under inläggen"
 
 #: includes/admin/metaboxes.php:273
 msgid "These widgets will be shown below entries."
-msgstr "Dessa widgets visas under inläggen"
+msgstr "Dessa widgets visas under inläggen."
 
 #: includes/admin/metaboxes.php:303
 msgid "These fields will be shown in Single Entry view."
-msgstr "Dessa fält visas i Vyn för enskillda inlägg"
+msgstr "Dessa fält visas i Vyn för enskilda inlägg."
 
 #: includes/admin/metaboxes.php:360
 msgid "Single Entry Settings"
@@ -262,7 +262,7 @@ msgstr "Lägg in Vy"
 
 #: includes/class-admin-add-shortcode.php:125
 #: includes/class-admin-views.php:811
-#: includes/extensions/edit-entry/class-edit-entry.php:810
+#: includes/extensions/edit-entry/class-edit-entry.php:843
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -457,7 +457,7 @@ msgstr "+ Lägg till alla fält"
 
 #: includes/class-admin-views.php:435
 msgid "Add all the available fields at once."
-msgstr ""
+msgstr "Lägg till allt tillgängliga fält på en gång."
 
 #: includes/class-admin-views.php:482
 msgid "Entry ID"
@@ -465,7 +465,7 @@ msgstr "Fält-ID"
 
 #: includes/class-admin-views.php:484
 msgid "The unique ID of the entry."
-msgstr ""
+msgstr "Inläggets unika ID."
 
 #: includes/class-admin-views.php:487
 #: includes/extensions/search-widget/class-search-widget.php:186
@@ -474,7 +474,7 @@ msgstr "Inläggsdatum"
 
 #: includes/class-admin-views.php:488
 msgid "The date the entry was created."
-msgstr ""
+msgstr "Datum inlägget skapades."
 
 #: includes/class-admin-views.php:492
 msgid "Source URL"
@@ -599,25 +599,25 @@ msgstr "Tack för att du installerade GravityView. Visa dina Gravity Forms-inlä
 msgid "List of Changes"
 msgstr "Lista över ändringar"
 
-#: includes/class-admin-welcome.php:539
+#: includes/class-admin-welcome.php:603
 msgid "GravityView is brought to you by:"
 msgstr "GravityView untvecklas av:"
 
-#: includes/class-admin-welcome.php:564
+#: includes/class-admin-welcome.php:628
 msgid "Contributors"
 msgstr "Medhjälpare"
 
-#: includes/class-admin-welcome.php:587
+#: includes/class-admin-welcome.php:651
 msgid "Want to contribute?"
 msgstr "Vill du bidra?"
 
-#: includes/class-admin-welcome.php:588
+#: includes/class-admin-welcome.php:652
 #, php-format
 msgid ""
 "If you want to contribute to the code, you can %srequest access to the "
 "Github repository%s. If your contributions are accepted, you will be thanked"
 " here."
-msgstr ""
+msgstr "Om du vill bidra till koden kan du %sgöra en förfrågan om att få tillgång till Gtihub-repot%s. Om din förfrågan accepteras blir du tackad här."
 
 #: includes/class-admin.php:88
 msgid "Support"
@@ -626,7 +626,7 @@ msgstr "Support"
 #: includes/class-admin.php:133
 #, php-format
 msgid "A new form was created for this View: \"%s\""
-msgstr "Ett nytt formulär skapades för denna Vy \"%s\""
+msgstr "Ett nytt formulär skapades för denna Vy: \"%s\""
 
 #: includes/class-admin.php:134
 #, php-format
@@ -728,7 +728,7 @@ msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
 "plugin."
-msgstr "Både GravityView och Gravity Forms Directory är aktiva. Detta kan orsaka problem. Om du stöter på några konstigheter så avaktivera  Gravity Forms Directory,"
+msgstr "Både GravityView och Gravity Forms Directory är aktiva. Detta kan orsaka problem. Om du stöter på några konstigheter så inaktivera Gravity Forms Directory,"
 
 #: includes/class-admin.php:513
 #, php-format
@@ -760,11 +760,11 @@ msgstr "Sökningen gav inga resultat."
 msgid "No entries match your request."
 msgstr "Inga inlägg matchade din förfrågan."
 
-#: includes/class-api.php:420
+#: includes/class-api.php:542
 msgid "&larr; Go back"
 msgstr "&larr; Tillbaka"
 
-#: includes/class-api.php:681
+#: includes/class-api.php:803
 msgid "Map It"
 msgstr "Karta"
 
@@ -773,141 +773,141 @@ msgstr "Karta"
 msgctxt ""
 "The name and the ID of users who initiated changes to entry ownership"
 msgid "%s (ID #%d)"
-msgstr ""
+msgstr "%s (ID #%d)"
 
 #: includes/class-change-entry-creator.php:113
 msgid "No User"
-msgstr ""
+msgstr "Ingen användare"
 
 #: includes/class-change-entry-creator.php:125
 #, php-format
 msgid "Changed entry creator from %s to %s"
-msgstr ""
+msgstr "Ändrade inläggets skapare från %s till %s"
 
 #: includes/class-change-entry-creator.php:152
 msgid "Change Entry Creator:"
-msgstr ""
+msgstr "Byt inläggets skapare:"
 
 #: includes/class-change-entry-creator.php:155
 msgctxt "No user assigned to the entry"
 msgid "No User"
-msgstr ""
+msgstr "Ingen användare"
 
-#: includes/class-data.php:299
+#: includes/class-data.php:305
 msgid "View ID"
-msgstr "Vy ID"
+msgstr "Vy-ID"
 
-#: includes/class-data.php:307
+#: includes/class-data.php:313
 msgid "Number of entries per page"
 msgstr "Antal inlägg per sida"
 
-#: includes/class-data.php:315
+#: includes/class-data.php:321
 msgid "Enable lightbox for images"
 msgstr "Aktivera lightbox för bilder"
 
-#: includes/class-data.php:323
+#: includes/class-data.php:329
 msgid "Show only approved entries"
 msgstr "Visa endast godkända inlägg"
 
-#: includes/class-data.php:330
+#: includes/class-data.php:336
 msgid "Hide empty fields"
 msgstr "Dölj tomma fält"
 
-#: includes/class-data.php:337
+#: includes/class-data.php:343
 msgid "Allow User Edit"
 msgstr "Tillåt redigering"
 
-#: includes/class-data.php:339
+#: includes/class-data.php:345
 msgid "Allow logged-in users to edit entries they created."
 msgstr "Tillåt inloggade användare att redigera inlägg de skapat."
 
-#: includes/class-data.php:345
+#: includes/class-data.php:351
 msgid "Sort by field"
 msgstr "Sortera efter fält"
 
-#: includes/class-data.php:350 includes/connector-functions.php:575
+#: includes/class-data.php:356 includes/connector-functions.php:624
 msgid "Default"
 msgstr "Standard"
 
-#: includes/class-data.php:351 includes/connector-functions.php:588
+#: includes/class-data.php:357 includes/connector-functions.php:637
 msgid "Date Created"
 msgstr "Datum inlägget skapades"
 
-#: includes/class-data.php:356
+#: includes/class-data.php:362
 msgid "Sort direction"
 msgstr "Sorteringsriktning"
 
-#: includes/class-data.php:361
+#: includes/class-data.php:367
 msgid "ASC"
 msgstr "Stigande"
 
-#: includes/class-data.php:362
+#: includes/class-data.php:368
 msgid "DESC"
 msgstr "Fallande"
 
-#: includes/class-data.php:367
+#: includes/class-data.php:373
 msgid "Filter by Start Date"
 msgstr "Filtrera på startdatum"
 
-#: includes/class-data.php:369
+#: includes/class-data.php:375
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
 msgstr "Visa inlägg gjorda efter detta datum. Stödjer relativa datum så som \"-1 vecka\" eller \"-1 månad\"."
 
-#: includes/class-data.php:376
+#: includes/class-data.php:382
 msgid "Filter by End Date"
 msgstr "Filtrera på inläggsdatum"
 
-#: includes/class-data.php:378
+#: includes/class-data.php:384
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
 msgstr "Visa inlägg gjorda före detta datum. Stödjer relativa datum så som \"nu\" eller \"-3 dagar\"."
 
-#: includes/class-data.php:385
+#: includes/class-data.php:391
 msgid "CSS Class"
 msgstr "CSS-klass"
 
-#: includes/class-data.php:386
+#: includes/class-data.php:392
 msgid "CSS class to add to the wrapping HTML container."
 msgstr "CSS-klass att lägga till på wrapperns container."
 
-#: includes/class-data.php:393
+#: includes/class-data.php:399
 msgid "Search Value"
 msgstr "Sök värde"
 
-#: includes/class-data.php:394
+#: includes/class-data.php:400
 msgid "Define a default search value for the View"
 msgstr "Definiera ett sökvärde för Vyn"
 
-#: includes/class-data.php:401
+#: includes/class-data.php:407
 #: includes/extensions/search-widget/class-search-widget.php:125
 msgid "Search Field"
 msgstr "Sökfält"
 
-#: includes/class-data.php:402
+#: includes/class-data.php:408
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
 msgstr "Om ett sökvärde är satt kan du definiera ett specifikt fält att söka i. Annars görs sökningen i alla fält."
 
-#: includes/class-data.php:409
+#: includes/class-data.php:415
 msgid "Single Entry Title"
 msgstr "Titel för enskilt inlägg"
 
-#: includes/class-data.php:411
+#: includes/class-data.php:417
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and Single"
 " Entry views."
 msgstr "Välj en titel på sidan när en enskild Vy visas. Om du inte gör något val kommer titeln att vara samma både för listan över inlägg och för det enskilda inlägget."
 
-#: includes/class-data.php:418
+#: includes/class-data.php:424
 msgid "Back Link Label"
 msgstr "Text för tillbakalänk"
 
-#: includes/class-data.php:420
+#: includes/class-data.php:426
 msgid "The text of the link that returns to the multiple entries view."
 msgstr "Text för länken som leder tillbaka till inläggslistan."
 
@@ -928,16 +928,16 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Tom"
 
-#: includes/class-frontend-views.php:96
+#: includes/class-frontend-views.php:99
 #: includes/extensions/edit-entry/class-edit-entry.php:147
 #: includes/extensions/edit-entry/class-edit-entry.php:163
 #: includes/extensions/edit-entry/class-edit-entry.php:178
-#: includes/extensions/edit-entry/class-edit-entry.php:756
+#: includes/extensions/edit-entry/class-edit-entry.php:789
 #: includes/extensions/edit-entry/fields/edit_link.php:12
 msgid "Edit Entry"
 msgstr "Redigera inlägg"
 
-#: includes/class-frontend-views.php:346
+#: includes/class-frontend-views.php:357
 msgid "You have attempted to view an entry that does not exist."
 msgstr "Du försöker visa ett inlägg som inte finns."
 
@@ -1017,14 +1017,14 @@ msgid ""
 "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n"
 "\n"
 "If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
-msgstr ""
+msgstr "%sDu har inga aktiva Vyer. Låt oss %sskapa en%s!%s\n\nOm du känner dig vilse i pannkakan och behöver hjälp så kolla in %sKom igång-sidan%s."
 
 #: includes/class-settings.php:102
 #, php-format
 msgid ""
 "Your GravityView license %s. This means you&rsquo;re missing out on updates "
 "and support! %sActivate your license%s or %sget a license here%s."
-msgstr ""
+msgstr "Din GravityView-licens %s. Detta betyder att du inte missar uppdateringar och support. %sAktivera din licens%s eller %sskaffa en licens här%s."
 
 #: includes/class-settings.php:104
 msgid "Inactive License"
@@ -1116,13 +1116,13 @@ msgstr "Lägg in licensnyckeln som du fick i samband med ditt köp. Detta ger di
 
 #: includes/class-settings.php:187
 msgid "Support Email"
-msgstr "Supportepost"
+msgstr "Supporte-post"
 
 #: includes/class-settings.php:188
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
-msgstr ""
+msgstr "För att vi skall kunna svara på supportförfrågningar behöver vi din e-postadress."
 
 #: includes/class-settings.php:193
 msgid "No-Conflict Mode"
@@ -1133,7 +1133,7 @@ msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
-msgstr ""
+msgstr "Sätt på detta för att hindra ovidkommande script och stilmallar från att skrivas ut på GravityViews adminsidor. Detta förhindrar konflikter med andra plugins och teman."
 
 #: includes/class-settings.php:212
 msgid "GravityView Settings"
@@ -1177,525 +1177,525 @@ msgstr "Tabell (standard)"
 
 #: includes/default-templates.php:31
 msgid "Display items in a table view."
-msgstr "Visar inlägg i en tabell"
+msgstr "Visar inlägg i en tabell."
 
-#: includes/default-templates.php:43 includes/default-templates.php:86
+#: includes/default-templates.php:45 includes/default-templates.php:93
 msgid "Link to single entry"
 msgstr "Länk till enskilt inlägg"
 
-#: includes/default-templates.php:51
+#: includes/default-templates.php:56
 msgid "Visible Table Columns"
 msgstr "Synliga tabellkolumner"
 
-#: includes/default-templates.php:52
+#: includes/default-templates.php:57
 msgid "Each field will be displayed as a column in the table."
 msgstr "Varje fält visas som en kolumn i tabellen."
 
-#: includes/default-templates.php:77
+#: includes/default-templates.php:82
 msgid "List (default)"
 msgstr "Lista (standard)"
 
-#: includes/default-templates.php:78
+#: includes/default-templates.php:83
 msgid "Display items in a listing view."
 msgstr "Visa inlägg i en listningsvy"
 
-#: includes/default-templates.php:92
+#: includes/default-templates.php:102
 msgid "Listing Title"
 msgstr "Titel för listningsvy"
 
-#: includes/default-templates.php:93
+#: includes/default-templates.php:103
 msgid "Subheading"
 msgstr "Underrubrik"
 
-#: includes/default-templates.php:96
+#: includes/default-templates.php:106
 msgid "Image"
 msgstr "Bild"
 
-#: includes/default-templates.php:99
+#: includes/default-templates.php:109
 msgid "Other Fields"
 msgstr "Andra fält"
 
-#: includes/default-templates.php:103
+#: includes/default-templates.php:113
 msgid "Footer Left"
 msgstr "Till vänster i sidfoten"
 
-#: includes/default-templates.php:106
+#: includes/default-templates.php:116
 msgid "Footer Right"
 msgstr "Till höger i sidfoten"
 
-#: includes/default-templates.php:342
+#: includes/default-templates.php:352
 msgid "Business Data"
 msgstr "Företagsdata"
 
-#: includes/default-templates.php:343
+#: includes/default-templates.php:353
 msgid "Display business information in a table."
 msgstr "Visa företagsinformation i en tabell."
 
-#: includes/default-templates.php:364
+#: includes/default-templates.php:374
 msgid "Resume Board"
-msgstr ""
+msgstr "Jobbsökare"
 
-#: includes/default-templates.php:365
+#: includes/default-templates.php:375
 msgid "Allow job-seekers to post their resumes."
-msgstr ""
+msgstr "Låt arbetssökande posta sina CV."
 
-#: includes/default-templates.php:386
+#: includes/default-templates.php:396
 msgid "Job Board"
-msgstr ""
+msgstr "Platsanonser"
 
-#: includes/default-templates.php:387
+#: includes/default-templates.php:397
 msgid "Post available jobs in a simple job board."
-msgstr ""
+msgstr "Lista lediga tjänster som platsannonser"
 
-#: includes/default-templates.php:408
+#: includes/default-templates.php:418
 msgid "People Table"
-msgstr ""
+msgstr "Persontabell"
 
-#: includes/default-templates.php:409
+#: includes/default-templates.php:419
 msgid "Display information about people in a table."
-msgstr ""
+msgstr "Lista information om personer i en tabell"
 
-#: includes/default-templates.php:431
+#: includes/default-templates.php:441
 msgid "Issue Tracker"
-msgstr ""
+msgstr "Bugg-lista"
 
-#: includes/default-templates.php:432
+#: includes/default-templates.php:442
 msgid "Manage issues and their statuses."
-msgstr ""
+msgstr "Hantera buggar och deras status "
 
-#: includes/default-templates.php:454
+#: includes/default-templates.php:464
 msgid "Business Listings"
-msgstr ""
+msgstr "Företags-lista"
 
-#: includes/default-templates.php:455
+#: includes/default-templates.php:465
 msgid "Display business profiles."
-msgstr ""
+msgstr "Lista företagsprofiler"
 
-#: includes/default-templates.php:476
+#: includes/default-templates.php:486
 msgid "Event Listings"
-msgstr ""
+msgstr "Event-lista"
 
-#: includes/default-templates.php:477
+#: includes/default-templates.php:487
 msgid "Present a list of your events."
-msgstr ""
+msgstr "Publicera en lista över dina event"
 
-#: includes/default-templates.php:498
+#: includes/default-templates.php:508
 msgid "People Profiles"
-msgstr ""
+msgstr "Personprofiler"
 
-#: includes/default-templates.php:499
+#: includes/default-templates.php:509
 msgid "List people with individual profiles."
-msgstr ""
+msgstr "Lista personer med individuella profiler"
 
-#: includes/default-templates.php:520
+#: includes/default-templates.php:530
 msgid "Staff Profiles"
-msgstr ""
+msgstr "Antällda"
 
-#: includes/default-templates.php:521
+#: includes/default-templates.php:531
 msgid "List members of your team."
-msgstr ""
+msgstr "Lista dina anställda."
 
-#: includes/default-templates.php:542
+#: includes/default-templates.php:552
 msgid "Website Showcase"
-msgstr ""
+msgstr "Webbsideportfolio"
 
-#: includes/default-templates.php:543
+#: includes/default-templates.php:553
 msgid "Feature submitted websites with screenshots."
-msgstr ""
+msgstr "Visa webbsidor med skärmdumpar."
 
 #: includes/default-widgets.php:31
 msgid "Summary of the number of visible entries out of the total results."
-msgstr ""
+msgstr "Summan av visade inlägg ur det totala antalet inlägg."
 
 #: includes/default-widgets.php:40
 msgid "Show Pagination Info"
-msgstr ""
+msgstr "Visa sidindelning"
 
 #: includes/default-widgets.php:79
 #, php-format
 msgid "Displaying %1$s - %2$s of %3$s"
-msgstr ""
+msgstr "Visar %1$s - %2$s av %3$s"
 
 #: includes/default-widgets.php:100
 msgid "Links to multiple pages of results."
-msgstr ""
+msgstr "Länkar till flera resultatsidor."
 
 #: includes/default-widgets.php:105
 msgid "Show each page number"
-msgstr ""
+msgstr "Visa vare sidas sidnummer"
 
 #: includes/default-widgets.php:106
 msgid "Show every page number instead of summary (eg: 1 2 3 ... 8 »)"
-msgstr ""
+msgstr "Vi länk till varje sida istället för sammanfattning (typ: 1 2 3 ... 8 »)"
 
 #: includes/default-widgets.php:109
 msgid "Page Links"
-msgstr ""
+msgstr "Sidlänkar"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:145
 msgid "Edit Link Text"
-msgstr ""
+msgstr "Redigera textlänk"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:165
 msgid "A link to edit the entry. Visible based on View settings."
-msgstr ""
+msgstr "Länk för att redigera inlägget. Synlig beroende på Vy-inställningar."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:645
+#: includes/extensions/edit-entry/class-edit-entry.php:678
 msgid "The link to edit this entry is not valid; it may have expired."
-msgstr ""
+msgstr "Länken till detta inlägg är ogiltig; visningstiden kan ha löpt ut."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:649
+#: includes/extensions/edit-entry/class-edit-entry.php:682
 msgid "You do not have permission to edit this entry."
-msgstr ""
+msgstr "Du har inte tillåtelse att visa detta inlägg."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:653
+#: includes/extensions/edit-entry/class-edit-entry.php:686
 msgid "You cannot edit the entry; it is in the trash."
-msgstr ""
+msgstr "Du kan inte redigera detta inlägg eftersom det ligger i papperskorgen."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:767
+#: includes/extensions/edit-entry/class-edit-entry.php:800
 msgid "There was a problem with your submission."
-msgstr ""
+msgstr "Det uppstod ett problem med ditt inlägg."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:767
+#: includes/extensions/edit-entry/class-edit-entry.php:800
 msgid "Errors have been highlighted below."
-msgstr ""
+msgstr "Fel har markerats nedan."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:773
+#: includes/extensions/edit-entry/class-edit-entry.php:806
 #, php-format
 msgid "Entry Updated. %sReturn to Entry%s"
-msgstr ""
+msgstr "Inlägg uppdaterat. %sTillbaka till inlägg%s"
 
-#: includes/extensions/edit-entry/class-edit-entry.php:808
+#: includes/extensions/edit-entry/class-edit-entry.php:841
 msgid "Update"
-msgstr ""
+msgstr "Uppdatera"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:34
 msgid "You don&rsquo;t have permission to edit this post."
-msgstr ""
+msgstr "Du har inte tillåtelse att redigera detta inlägg."
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:36
 #, php-format
 msgid "You can %sedit this post%s from the post page."
-msgstr ""
+msgstr "Du kan %sredigera detta inlägg%s från inläggssidan."
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:100
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:119
 msgid "Allowed Files"
-msgstr ""
+msgstr "Tillåtna filer"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:132
 msgid "Drop files here or"
-msgstr ""
+msgstr "Släpp filer här eller"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:132
 msgid "Select files"
-msgstr ""
+msgstr "Välj filer"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:158
 msgid "Download file"
-msgstr ""
+msgstr "Ladda ner fil"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:158
 msgid "Delete file"
-msgstr ""
+msgstr "Ta bort fil"
 
 #: includes/extensions/edit-entry/inline-javascript.php:4
 msgid ""
 "Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to "
 "delete"
-msgstr ""
+msgstr "Vill du radera denna fil permanent? Klicka 'OK' för att bekräfta"
 
 #: includes/extensions/edit-entry/inline-javascript.php:14
 msgid "Ajax error while deleting field."
-msgstr ""
+msgstr "Ajax-fel när fältet togs bort."
 
 #: includes/extensions/search-widget/class-search-widget.php:27
 msgid "Search form for searching entries."
-msgstr ""
+msgstr "Sökfält för att söka i inlägg."
 
 #: includes/extensions/search-widget/class-search-widget.php:44
 msgid "Search Layout"
-msgstr ""
+msgstr "Sök layout"
 
 #: includes/extensions/search-widget/class-search-widget.php:47
 msgid "Horizontal"
-msgstr ""
+msgstr "Horisontell"
 
 #: includes/extensions/search-widget/class-search-widget.php:48
 msgid "Vertical"
-msgstr ""
+msgstr "Vertikal"
 
 #: includes/extensions/search-widget/class-search-widget.php:52
 msgid "Search Bar"
-msgstr ""
+msgstr "Sökfält"
 
 #: includes/extensions/search-widget/class-search-widget.php:97
 msgid "Text"
-msgstr ""
+msgstr "Text"
 
 #: includes/extensions/search-widget/class-search-widget.php:98
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: includes/extensions/search-widget/class-search-widget.php:100
 msgid "Select (multiple values)"
-msgstr ""
+msgstr "Välj (flera värden)"
 
 #: includes/extensions/search-widget/class-search-widget.php:101
 msgid "Radio"
-msgstr ""
+msgstr "Alternativ"
 
 #: includes/extensions/search-widget/class-search-widget.php:102
 #: includes/extensions/search-widget/class-search-widget.php:103
 msgid "Checkbox"
-msgstr ""
+msgstr "Kryssruta"
 
 #: includes/extensions/search-widget/class-search-widget.php:104
 msgid "Links"
-msgstr ""
+msgstr "Länkar"
 
 #: includes/extensions/search-widget/class-search-widget.php:123
 msgid "No search fields configured yet."
-msgstr ""
+msgstr "Inga sökfält konfigurerade ännu."
 
 #: includes/extensions/search-widget/class-search-widget.php:124
 msgid "Add Search Field"
-msgstr ""
+msgstr "Lägg till sökfält"
 
 #: includes/extensions/search-widget/class-search-widget.php:126
 msgid "Input Type"
-msgstr ""
+msgstr "Inmatningstyp"
 
 #: includes/extensions/search-widget/class-search-widget.php:185
 msgid "Search Everything"
-msgstr ""
+msgstr "Sök i allt"
 
-#: includes/extensions/search-widget/class-search-widget.php:632
+#: includes/extensions/search-widget/class-search-widget.php:634
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "Stäng"
 
-#: includes/extensions/search-widget/class-search-widget.php:633
+#: includes/extensions/search-widget/class-search-widget.php:635
 msgctxt "Previous month in calendar"
 msgid "Prev"
-msgstr ""
-
-#: includes/extensions/search-widget/class-search-widget.php:634
-msgctxt "Next month in calendar"
-msgid "Next"
-msgstr ""
-
-#: includes/extensions/search-widget/class-search-widget.php:635
-msgctxt "Today in calendar"
-msgid "Today"
-msgstr ""
+msgstr "Föregående"
 
 #: includes/extensions/search-widget/class-search-widget.php:636
-msgctxt "Week in calendar"
-msgid "Week"
-msgstr ""
+msgctxt "Next month in calendar"
+msgid "Next"
+msgstr "Nästa"
 
 #: includes/extensions/search-widget/class-search-widget.php:637
+msgctxt "Today in calendar"
+msgid "Today"
+msgstr "Idag"
+
+#: includes/extensions/search-widget/class-search-widget.php:638
+msgctxt "Week in calendar"
+msgid "Week"
+msgstr "Vecka"
+
+#: includes/extensions/search-widget/class-search-widget.php:639
 msgid "Show a different month"
-msgstr ""
+msgstr "Visa en annan månad"
 
 #: includes/extensions/search-widget/templates/search-field-entry_date.php:15
 msgid "Filter by date:"
-msgstr ""
+msgstr "Filtrera på datum:"
 
 #: includes/extensions/search-widget/templates/search-field-entry_date.php:17
 msgid "Start date"
-msgstr ""
+msgstr "Startdatum"
 
 #: includes/extensions/search-widget/templates/search-field-entry_date.php:18
 msgid "End date"
-msgstr ""
+msgstr "Slutdatum"
 
 #: includes/extensions/search-widget/templates/search-field-link.php:12
 msgid "Show only:"
-msgstr ""
+msgstr "Visa endast:"
 
 #: includes/extensions/search-widget/templates/search-field-search_all.php:16
 msgid "Search Entries:"
-msgstr ""
+msgstr "Sök bland inlägg:"
 
 #: includes/extensions/search-widget/templates/widget-search.php:56
 msgid "Search"
-msgstr ""
+msgstr "Sök"
 
 #: includes/fields/address.php:21
 msgid "Show Map Link:"
-msgstr ""
+msgstr "Visa kart-länk"
 
 #: includes/fields/address.php:22
 msgid "Display a \"Map It\" link below the address"
-msgstr ""
+msgstr "Visa en \"Karta\"-länk under adressen"
 
 #: includes/fields/class.field.php:25
 msgid "Link to the post"
-msgstr ""
+msgstr "Länk till inlägget"
 
 #: includes/fields/class.field.php:26
 msgid "Link to the post created by the entry."
-msgstr ""
+msgstr "Länk till posten där inlägget skapades."
 
 #: includes/fields/class.field.php:31
 msgid "Link to the category or tag"
-msgstr ""
+msgstr "Länk till kategori eller tagg"
 
 #: includes/fields/class.field.php:32
 msgid ""
 "Link to the current category or tag. \"Link to single entry\" must be "
 "unchecked."
-msgstr ""
+msgstr "Länk till nuvarande kategori eller tagg. \"Länk till enskilt inlägg\" får inte vara ikryssad."
 
 #: includes/fields/class.field.php:37
 msgid "Use the live post data"
-msgstr ""
+msgstr "Använd livedata från inlägget"
 
 #: includes/fields/class.field.php:38
 msgid "Instead of using the entry data, instead use the current post data."
-msgstr ""
+msgstr "Visa data från posten istället för inlägget."
 
 #: includes/fields/class.field.php:43
 msgid "Override Date Format"
-msgstr ""
+msgstr "Åsidosätt datumformat"
 
 #: includes/fields/class.field.php:44
 #, php-format
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
-msgstr ""
+msgstr "Definiera hur datumet skall visas (använder %sPHP date format%s)"
 
 #: includes/fields/created-by.php:11
 msgid "User Format"
-msgstr ""
+msgstr "Användarformat"
 
 #: includes/fields/created-by.php:12
 msgid "How should the User information be displayed?"
-msgstr ""
+msgstr "Hur skall användarinformationen visas?"
 
 #: includes/fields/created-by.php:14
 msgid "Display Name (Example: \"Ellen Ripley\")"
-msgstr ""
+msgstr "Namn (Exempel: \"Ludvig Lindblom\")"
 
 #: includes/fields/created-by.php:15
 msgid "Username (Example: \"nostromo\")"
-msgstr ""
+msgstr "Användarnamn (Exempel: \"nostromo\")"
 
 #: includes/fields/created-by.php:16
 msgid "User ID # (Example: 426)"
-msgstr ""
+msgstr "Användar-ID % (Exempel: 426)"
 
 #: includes/fields/custom.php:19
 msgid "Enter text or HTML. Also supports shortcodes."
-msgstr ""
+msgstr "Skriv in text eller HTML. Stödjer även shortcodes."
 
 #: includes/fields/custom.php:27
 msgid "Automatically add paragraphs to content"
-msgstr ""
+msgstr "Lägg till styckesindelning automatiskt"
 
 #: includes/fields/custom.php:28
 msgid ""
 "Wrap each block of text in an HTML paragraph tag (recommended for text)."
-msgstr ""
+msgstr "Lägg varje textblock inuti en paragraf-tagg (rekommenderat för text)."
 
 #: includes/fields/email.php:19
 msgid "Link the Email Address"
-msgstr ""
+msgstr "Länk till epostadressen"
 
 #: includes/fields/email.php:20
 msgid "Clicking the link will generate a new email."
-msgstr ""
+msgstr "Ett klick på länken skapar ett nytt epostmeddelande."
 
 #: includes/fields/email.php:24
 msgid "Email Subject"
-msgstr ""
+msgstr "Ämne"
 
 #: includes/fields/email.php:26
 msgid "Set the default email subject line."
-msgstr ""
+msgstr "Vält standardtext för ämnesraden."
 
 #: includes/fields/email.php:31
 msgid "Email Body"
-msgstr ""
+msgstr "Text"
 
 #: includes/fields/email.php:33
 msgid "Set the default email content."
-msgstr ""
+msgstr "Välj standardinnehåll för e-postmeddelandet."
 
 #: includes/fields/email.php:40
 msgid "Encrypt Email Address"
-msgstr ""
+msgstr "Kryptera e-postadressen"
 
 #: includes/fields/email.php:41
 msgid ""
 "Make it harder for spammers to get email addresses from your entries. Email "
 "addresses will not be visible with Javascript disabled."
-msgstr ""
+msgstr "Gör det svårare för spammare att komma åt e-postadresserna. E-postadresser  kommer inte att visas om Javascript är avstängt."
 
 #: includes/fields/entry-link.php:18 includes/fields/source-url.php:25
 msgid "Link Text:"
-msgstr ""
+msgstr "Textlänk:"
 
 #: includes/fields/entry-link.php:20 templates/fields/entry_link.php:10
 msgid "View Details"
-msgstr ""
+msgstr "Vyns detaljer"
 
 #: includes/fields/fileupload.php:16
 msgid "Display as a Link:"
-msgstr ""
+msgstr "Visa som länk:"
 
 #: includes/fields/fileupload.php:17
 msgid "Display the uploaded files as links, rather than embedded content."
-msgstr ""
+msgstr "Visa de uppladdade filerna som länkar istället för inbäddat innehåll."
 
 #: includes/fields/source-url.php:18
 msgid "Link to URL:"
-msgstr ""
+msgstr "Länk till URL:"
 
 #: includes/fields/source-url.php:19
 msgid "Display as a link to the Source URL"
-msgstr ""
+msgstr "Visa som en länk till källans URL"
 
 #: includes/fields/source-url.php:26
 msgid "Customize the link text. If empty, the link text will be the the URL."
-msgstr ""
+msgstr "Redigera länktexten. Om fältet lämnas tomt blir URL:en länkad."
 
 #: includes/fields/website.php:18
 msgid "Shorten Link Display"
-msgstr ""
+msgstr "Förkorta länken"
 
 #: includes/fields/website.php:19
 msgid "Only show the domain for a URL instead of the whole link."
-msgstr ""
+msgstr "Visa endast URL:ens domän istället för hela länken."
 
 #: includes/fields/website.php:20
 msgid "Don&rsquo;t show the full URL, only show the domain."
-msgstr ""
+msgstr "Visa inte hela URL:en utan endast domänen."
 
 #: templates/fields/email.php:65
 msgid "Email hidden; Javascript is required."
-msgstr ""
+msgstr "E-post dold; Javascript krävs."
 
 #: templates/fields/is_fulfilled.php:8
 msgid "Not Fulfilled"
-msgstr ""
+msgstr "Ej uppfyllt"
 
 #: templates/fields/is_fulfilled.php:10
 msgid "Fulfilled"
-msgstr ""
+msgstr "Uppfyllt"
 
 #: templates/fields/post_image.php:85
 msgctxt "Post Image field title heading"
 msgid "Title:"
-msgstr ""
+msgstr "Titel:"
 
 #: templates/fields/post_image.php:91
 msgctxt "Post Image field caption heading"
 msgid "Caption:"
-msgstr ""
+msgstr "Ettiket:"
 
 #: templates/fields/post_image.php:97
 msgctxt "Post Image field description heading"
 msgid "Description:"
-msgstr ""
+msgstr "Beskrivning:"

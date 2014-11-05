@@ -24,25 +24,25 @@ abstract class GravityView_Field {
 				'type' => 'checkbox',
 				'label' => __( 'Link to the post', 'gravityview' ),
 				'desc' => __( 'Link to the post created by the entry.', 'gravityview' ),
-				'default' => false,
+				'value' => false,
 			),
 			'link_to_term' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Link to the category or tag', 'gravityview' ),
 				'desc' => __( 'Link to the current category or tag. "Link to single entry" must be unchecked.', 'gravityview' ),
-				'default' => false,
+				'value' => false,
 			),
 			'dynamic_data' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Use the live post data', 'gravityview' ),
 				'desc' => __( 'Instead of using the entry data, instead use the current post data.', 'gravityview' ),
-				'default' => true,
+				'value' => true,
 			),
 			'date_display' => array(
 				'type' => 'text',
 				'label' => __( 'Override Date Format', 'gravityview' ),
 				'desc' => sprintf( __( 'Define how the date is displayed (using %sthe PHP date format%s)', 'gravityview'), '<a href="https://codex.wordpress.org/Formatting_Date_and_Time">', '</a>' ),
-				'default' => apply_filters( 'gravityview_date_format', NULL )
+				'value' => apply_filters( 'gravityview_date_format', NULL )
 			)
 		);
 
@@ -79,7 +79,7 @@ abstract class GravityView_Field {
 	 *			'value' => 'user_login',
 	 *			'label' => __('Username (Example: "nostromo")', 'gravityview')
 	 *		),
-	 * 	 'default' => 'display_name'
+	 * 	 'value' => 'display_name'
 	 * );
 	 * </code>
 	 *

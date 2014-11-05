@@ -144,7 +144,7 @@ class GravityView_Edit_Entry {
 			'type' => 'text',
 			'label' => __( 'Edit Link Text', 'gravityview' ),
 			'desc' => NULL,
-			'default' => __('Edit Entry', 'gravityview'),
+			'value' => __('Edit Entry', 'gravityview'),
 			'merge_tags' => true,
 		);
 
@@ -340,7 +340,9 @@ class GravityView_Edit_Entry {
           $files = array();
       }
 
-      GFFormsModel::$uploaded_files[$this->form_id] = $files;
+
+		// When Gravity Forms validates upload fields, they expect this variable to be set.
+		GFFormsModel::$uploaded_files[ $this->form_id ] = $files;
 
 
       $this->validate();
@@ -469,7 +471,30 @@ class GravityView_Edit_Entry {
 							$value = empty( $value ) ? '[]' : $value;
 							$value = stripslashes_deep( $value );
 							$value = GFFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], array());
+						} else {
+
+							$json = json_decode( $value, true );
+
+							// If there was a form submitted with previous values, prevent errors
+							if ( !empty( $value ) && !empty( $json ) ) {
+
+								// Satisfy any validation issues
+								GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] = array(
+									array(
+										'temp_filename' => NULL,
+										'uploaded_filename' => NULL
+									)
+								);
+
+							}
+
 						}
+
+					} else {
+
+						// A file already exists when editing an entry
+						// We set this to solve issue when file upload fields are required.
+						GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] = $value;
 
 					}
 
@@ -563,16 +588,26 @@ class GravityView_Edit_Entry {
 
 				do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Field is invalid.', array( 'field' => $field, 'value' => $value ) );
 
-				// Post Fields aren't editable, so we un-fail them.
-				if( preg_match('/post_/ism', $field['type'] )) {
-					$field['failed_validation'] = false;
-					unset( $field['validation_message'] );
-					continue;
+				switch ( RGFormsModel::get_input_type( $field ) ) {
+
+					// Captchas don't need to be re-entered.
+					case 'captcha':
+
+					// Post Fields aren't editable, so we un-fail them.
+					case 'post_title':
+					case 'post_content':
+					case 'post_excerpt':
+					case 'post_tags':
+					case 'post_category':
+					case 'post_image':
+					case 'post_custom_field':
+						$field['failed_validation'] = false;
+						unset( $field['validation_message'] );
+						break;
 				}
 
-				// Captchas don't need to be re-entered.
-				if( in_array( $field['type'], array( 'captcha' ) ) ) {
-					$field['failed_validation'] = false;
+				// You can't continue inside a switch, so we do it after.
+				if( empty( $field['failed_validation'] ) ) {
 					continue;
 				}
 
