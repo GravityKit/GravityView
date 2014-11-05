@@ -70,13 +70,13 @@ class GravityView_Render_Settings {
 				),
 				'allow_edit' => array(
 					'type' => 'checkbox',
-					'label' => __( 'Make field editable?', 'gravity-view' ),
-					'desc' => __( 'Note: Affects entire field if it has multiple inputs, i.e. selections for "First" input will also affect "Last" under the "Name" field.', 'gravity-view'),
+					'label' => __( 'Make field editable?', 'gravityview' ),
+					'tooltip' => 'gv_allow_edit_field',
 					'default' => 1
 				),
 				'allow_edit_cap' => array(
 					'type' => 'select',
-					'label' => __( 'Make editable for:', 'gravity-view' ),
+					'label' => __( 'Make editable for:', 'gravityview' ),
 					'choices' => self::get_cap_choices( $template_id, $field_id, $context, $input_type ),
 					'class' => 'widefat',
 					'default' => 'read',
