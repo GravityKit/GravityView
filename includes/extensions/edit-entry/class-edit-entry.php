@@ -140,6 +140,9 @@ class GravityView_Edit_Entry {
 		// Edit Entry link should only appear to visitors capable of editing entries
 		unset( $field_options['only_loggedin'], $field_options['only_loggedin_cap'] );
 
+		// Edit Entry link cannot be editable
+		unset( $field_options['allow_edit'], $field_options['allow_edit_cap'] );
+
 		$add_option['edit_link'] = array(
 			'type' => 'text',
 			'label' => __( 'Edit Link Text', 'gravityview' ),
