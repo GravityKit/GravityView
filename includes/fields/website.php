@@ -20,6 +20,12 @@ class GravityView_Field_Website extends GravityView_Field {
 			'desc' => __( 'Don&rsquo;t show the full URL, only show the domain.', 'gravityview' )
 		);
 
+		$field_options['open_same_window'] = array(
+			'type' => 'checkbox',
+			'value' => false,
+			'label' => __( 'Open link in the same window?', 'gravityview' ),
+		);
+
 		return $field_options;
 	}
 
