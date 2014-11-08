@@ -162,11 +162,15 @@ class GravityView_Edit_Entry {
 	 */
 	function add_default_field( $entry_default_fields, $form = array(), $zone = '' ) {
 
-		$entry_default_fields['edit_link'] = array(
-			'label' => __('Edit Entry', 'gravityview'),
-			'type' => 'edit_link',
-			'desc'	=> __('A link to edit the entry. Visible based on View settings.', 'gravityview'),
-		);
+		if( $zone !== 'edit' ) {
+
+			$entry_default_fields['edit_link'] = array(
+				'label' => __('Edit Entry', 'gravityview'),
+				'type' => 'edit_link',
+				'desc'	=> __('A link to edit the entry. Visible based on View settings.', 'gravityview'),
+			);
+
+		}
 
 		return $entry_default_fields;
 	}

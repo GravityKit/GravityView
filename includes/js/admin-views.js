@@ -708,7 +708,8 @@
                 content: function () {
 
                 	// Is the field picker in single or directory mode?
-                	var context = ( $(this).parents('#single-view').length ) ? 'single' : 'directory';
+                //	var context = ( $(this).parents('#single-view').length ) ? 'single' : 'directory';
+                    var context = $(this).attr('data-context');
 
                     switch ($(this).attr('data-objecttype')) {
                         case 'field':
@@ -1109,7 +1110,7 @@
 
             // Logged in capability selector should only show when Logged In checkbox is checked
             vcfg.toggleVisibility($('input:checkbox[name*=only_loggedin]', $parent), $('[name*=only_loggedin_cap]', $parent), first_run);
-            
+
             // Make editable checkbox should only be visible when 'user_edit' is checked
             vcfg.toggleVisibility( $('input:checkbox[name*=user_edit]') , $('[id$=allow_edit]', $parent), first_run );
 
@@ -1232,7 +1233,7 @@
                 async: false, // Allows returning the value. Important!
 
                 success: function( response ) {
-                    
+
                 	if (response !== 'false' && response !== '0') {
 
                 	    vcfg.startFreshStatus = false;

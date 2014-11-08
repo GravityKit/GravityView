@@ -429,6 +429,11 @@ class GravityView_Admin_Views {
 
 		echo $output;
 
+		// For the EDIT view we only want to allow the form fields.
+		if( $context === 'edit' ) {
+			return;
+		}
+
 		$this->render_additional_fields( $form, $context );
 	}
 
@@ -481,52 +486,59 @@ class GravityView_Admin_Views {
 	 */
 	function get_entry_default_fields($form, $zone) {
 
+		$entry_default_fields = array();
 
-		$entry_default_fields = array(
-			'id' => array(
-				'label' => __('Entry ID', 'gravityview'),
-				'type' => 'id',
-				'desc'	=> __('The unique ID of the entry.', 'gravityview'),
-			),
-			'date_created' => array(
-				'label' => __('Entry Date', 'gravityview'),
-				'desc'	=> __('The date the entry was created.', 'gravityview'),
-				'type' => 'date_created',
-			),
-			'source_url' => array(
-				'label' => __('Source URL', 'gravityview'),
-				'type' => 'source_url',
-				'desc'	=> __('The URL of the page where the form was submitted.', 'gravityview'),
-			),
-			'ip' => array(
-				'label' => __('User IP', 'gravityview'),
-				'type' => 'ip',
-				'desc'	=> __('The IP Address of the user who created the entry.', 'gravityview'),
-			),
-			'created_by' => array(
-				'label' => __('User', 'gravityview'),
-				'type' => 'created_by',
-				'desc'	=> __('Details of the logged-in user who created the entry (if any).', 'gravityview'),
-			),
+		if( in_array( $zone, array( 'directory', 'single' ) ) ) {
 
-			/**
-			 * @since  1.2
-			 */
-			'custom'	=> array(
-				'label'	=> __('Custom Content', 'gravityview'),
-				'type'	=> 'custom',
-				'desc'	=> __('Insert custom text or HTML.', 'gravityview'),
-			),
-        );
+			$entry_default_fields = array(
+				'id' => array(
+					'label' => __('Entry ID', 'gravityview'),
+					'type' => 'id',
+					'desc'	=> __('The unique ID of the entry.', 'gravityview'),
+				),
+				'date_created' => array(
+					'label' => __('Entry Date', 'gravityview'),
+					'desc'	=> __('The date the entry was created.', 'gravityview'),
+					'type' => 'date_created',
+				),
+				'source_url' => array(
+					'label' => __('Source URL', 'gravityview'),
+					'type' => 'source_url',
+					'desc'	=> __('The URL of the page where the form was submitted.', 'gravityview'),
+				),
+				'ip' => array(
+					'label' => __('User IP', 'gravityview'),
+					'type' => 'ip',
+					'desc'	=> __('The IP Address of the user who created the entry.', 'gravityview'),
+				),
+				'created_by' => array(
+					'label' => __('User', 'gravityview'),
+					'type' => 'created_by',
+					'desc'	=> __('Details of the logged-in user who created the entry (if any).', 'gravityview'),
+				),
 
-		if('single' !== $zone) {
+				/**
+				 * @since  1.2
+				 */
+				'custom'	=> array(
+					'label'	=> __('Custom Content', 'gravityview'),
+					'type'	=> 'custom',
+					'desc'	=> __('Insert custom text or HTML.', 'gravityview'),
+				),
+	        );
 
-        	$entry_default_fields['entry_link'] = array(
-        		'label' => __('Link to Entry', 'gravityview'),
-        		'desc'	=> __('A dedicated link to the single entry with customizable text.', 'gravityview'),
-        		'type' => 'entry_link',
-        	);
-        }
+
+			if( 'single' !== $zone) {
+
+	        	$entry_default_fields['entry_link'] = array(
+	        		'label' => __('Link to Entry', 'gravityview'),
+	        		'desc'	=> __('A dedicated link to the single entry with customizable text.', 'gravityview'),
+	        		'type' => 'entry_link',
+	        	);
+	        }
+
+		} // if not zone directory or single
+
 
         return apply_filters( 'gravityview_entry_default_fields', $entry_default_fields, $form, $zone);
 	}
