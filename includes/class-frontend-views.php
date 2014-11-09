@@ -396,6 +396,8 @@ class GravityView_frontend {
 		// If Edit
 		if ( apply_filters( 'gravityview_is_edit_entry', false ) ) {
 
+			do_action( 'gravityview_log_debug', '[render_view] Edit Entry ' );
+
 			do_action( 'gravityview_edit_entry' );
 
 			return;

@@ -328,52 +328,56 @@ class GravityView_Edit_Entry {
 		}
 	}
 
+
 	function process_save() {
+
 		global $gravityview_view;
-		 // If the form is submitted
-		if(RGForms::post("action") === "update") {
 
-      // Make sure the entry, view, and form IDs are all correct
-      check_admin_referer( self::$nonce_key, self::$nonce_key );
+		// If the form is submitted
+		if( RGForms::post("action") === "update") {
 
-      do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
+			// Make sure the entry, view, and form IDs are all correct
+			check_admin_referer( self::$nonce_key, self::$nonce_key );
 
-      $lead_id = absint( $_POST['lid'] );
+			do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
 
-      //Loading files that have been uploaded to temp folder
-      $files = GFCommon::json_decode(stripslashes( RGForms::post( "gform_uploaded_files" ) ) );
+			$lead_id = absint( $_POST['lid'] );
 
-      if( !is_array( $files ) ) {
-          $files = array();
-      }
+			//Loading files that have been uploaded to temp folder
+			$files = GFCommon::json_decode( stripslashes( RGForms::post( "gform_uploaded_files" ) ) );
 
-
-		// When Gravity Forms validates upload fields, they expect this variable to be set.
-		GFFormsModel::$uploaded_files[ $this->form_id ] = $files;
+			if( !is_array( $files ) ) {
+			 	$files = array();
+			}
 
 
-      $this->validate();
+			// When Gravity Forms validates upload fields, they expect this variable to be set.
+			GFFormsModel::$uploaded_files[ $this->form_id ] = $files;
 
 
-      if( $this->is_valid ) {
+			$this->validate();
 
-      	do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] Submission is valid.' );
 
-      	/**
-      	 * @hack This step is needed to unset the adminOnly from form fields
-      	 */
-      	$form = $this->form_prepare_for_save();
+			if( $this->is_valid ) {
 
-      	// Make sure hidden fields are represented in $_POST
-      	GV_GFEntryDetail::combine_update_existing( $this->view_id, $this->entry );
+				do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] Submission is valid.' );
 
-        GFFormsModel::save_lead( $form, $this->entry );
+				/**
+				 * @hack This step is needed to unset the adminOnly from form fields
+				 */
+				$form = $this->form_prepare_for_save();
 
-        do_action("gform_after_update_entry", $this->form, $this->entry["id"]);
-        do_action("gform_after_update_entry_{$this->form["id"]}", $this->form, $this->entry["id"]);
+				// Make sure hidden fields are represented in $_POST
+				GV_GFEntryDetail::combine_update_existing( $this->view_id, $this->entry );
 
-        // Re-define the entry now that we've updated it.
-        $this->entry = RGFormsModel::get_lead( $this->entry["id"] );
+				GFFormsModel::save_lead( $form, $this->entry );
+
+				do_action("gform_after_update_entry", $this->form, $this->entry["id"]);
+				do_action("gform_after_update_entry_{$this->form["id"]}", $this->form, $this->entry["id"]);
+
+				// Re-define the entry now that we've updated it.
+				$this->entry = RGFormsModel::get_lead( $this->entry["id"] );
+
 				$this->entry = GFFormsModel::set_entry_meta( $this->entry, $this->form );
 
 				// We need to clear the cache because Gravity Forms caches the field values, which
@@ -382,8 +386,9 @@ class GravityView_Edit_Entry {
 					GFFormsModel::refresh_lead_field_value( $this->entry['id'], $field['id'] );
 				}
 			}
-		}
-	}
+		} // endif action is update.
+
+	} // process_save
 
 	/**
 	 * Unset adminOnly and convert field input key to string
@@ -844,79 +849,88 @@ class GravityView_Edit_Entry {
 
 		$back_link = remove_query_arg( array( 'page', 'view', 'edit' ) );
 
-	?>
+		?>
 
-	<div class="gv-edit-entry-wrapper">
+		<div class="gv-edit-entry-wrapper">
 
-		<?php include_once( self::$file .'/inline-javascript.php'); ?>
+			<?php include_once( self::$file .'/inline-javascript.php'); ?>
 
-		<h2 class="gv-edit-entry-title">
-			<span><?php echo esc_attr( apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravityview'), $this ) ); ?></span>
-		</h2>
+			<h2 class="gv-edit-entry-title">
+				<span><?php echo esc_attr( apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravityview'), $this ) ); ?></span>
+			</h2>
 
-		<?php
+			<?php
 
-		// Display the sucess message
-		if( rgpost('action') === 'update' ) {
+			// Display the sucess message
+			if( rgpost('action') === 'update' ) {
 
-			if( ! $this->is_valid ){
+				if( ! $this->is_valid ){
 
-				// Keeping this compatible with Gravity Forms.
-			    $validation_message = "<div class='validation_error'>" . __('There was a problem with your submission.', 'gravityview') . " " . __('Errors have been highlighted below.', 'gravityview') . "</div>";
-			    $message = apply_filters("gform_validation_message_{$this->form['id']}", apply_filters("gform_validation_message", $validation_message, $this->form), $this->form);
+					// Keeping this compatible with Gravity Forms.
+				    $validation_message = "<div class='validation_error'>" . __('There was a problem with your submission.', 'gravityview') . " " . __('Errors have been highlighted below.', 'gravityview') . "</div>";
+				    $message = apply_filters("gform_validation_message_{$this->form['id']}", apply_filters("gform_validation_message", $validation_message, $this->form), $this->form);
 
-			    echo $this->generate_notice( $message , 'gv-error' );
+				    echo $this->generate_notice( $message , 'gv-error' );
 
-			} else {
-				echo $this->generate_notice( sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', ''), '<a href="'.$back_link.'">', '</a>' ) );
+				} else {
+					echo $this->generate_notice( sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', ''), '<a href="'.$back_link.'">', '</a>' ) );
+				}
+
 			}
 
-		}
+			?>
 
-		// The ID of the form needs to be `gform_{form_id}` for the pluploader ?>
-		<form method="post" id="gform_<?php echo $this->form_id; ?>" enctype="multipart/form-data">
+			<?php // The ID of the form needs to be `gform_{form_id}` for the pluploader ?>
 
-	    <?php
+			<form method="post" id="gform_<?php echo $this->form_id; ?>" enctype="multipart/form-data">
 
-	    wp_nonce_field( self::$nonce_key, self::$nonce_key );
+				<?php
 
-	    wp_nonce_field( 'is_gv_edit_entry', 'is_gv_edit_entry', false );
+				wp_nonce_field( self::$nonce_key, self::$nonce_key );
 
-	    // Most of this is needed for GFFormDisplay::validate(), but `gform_unique_id` is needed for file cleanup.
-	    echo "
-	    <input type='hidden' name='action' id='action' value='update' />
-	    <input type='hidden' class='gform_hidden' name='is_submit_{$this->form_id}' value='1' />
-      <input type='hidden' class='gform_hidden' name='gform_submit' value='{$this->form_id}' />
-      <input type='hidden' class='gform_hidden' name='gform_unique_id' value='" . esc_attr(GFFormsModel::get_form_unique_id($this->form_id)) . "' />
-      <input type='hidden' class='gform_hidden' name='state_{$this->form_id}' value='" . GFFormDisplay::get_state( $this->form, NULL ) . "' />
-      <input type='hidden' name='gform_field_values' value='' />
-			<input type='hidden' name='screen_mode' id='screen_mode' value='view' />
-			<input type='hidden' name='lid' value='{$this->entry['id']}' />
-        ";
+				wp_nonce_field( 'is_gv_edit_entry', 'is_gv_edit_entry', false );
 
-      /**
-       * By default, the lead_detail_edit method uses the `RGFormsModel::get_lead_field_value()` method, which doesn't fill in $_POST values when there is a validation error, because it was designed to work in the admin. We want to use the `RGFormsModel::get_field_value()` If the form has been submitted, use the values for the fields.
-       */
-      add_filter( 'gform_get_field_value', array( $this, 'get_field_value' ), 10, 3 );
+				// Most of this is needed for GFFormDisplay::validate(), but `gform_unique_id` is needed for file cleanup.
 
-			// Print the actual form HTML
-    	GV_GFEntryDetail::lead_detail_edit( $this->form, $this->entry, $this->view_id );
+				?>
 
-    ?>
-		<div id="publishing-action">
-		    <input class="btn btn-lg button button-large button-primary" type="submit" tabindex="4" value="<?php esc_attr_e( 'Update', 'gravityview'); ?>" name="save" />
+				<input type="hidden" name="action" id="action" value="update" />
+				<input type="hidden" class="gform_hidden" name="is_submit_<?php echo $this->form_id; ?>" value="1" />
+				<input type="hidden" class="gform_hidden" name="gform_submit" value="<?php echo $this->form_id; ?>" />
+				<input type="hidden" class="gform_hidden" name="gform_unique_id" value="<?php echo esc_attr( GFFormsModel::get_form_unique_id( $this->form_id ) ); ?>" />
+				<input type="hidden" class="gform_hidden" name="state_<?php echo $this->form_id; ?>" value="<?php  echo GFFormDisplay::get_state( $this->form, NULL ); ?>" />
+				<input type="hidden" name="gform_field_values" value="" />
+				<input type="hidden" name="screen_mode" id="screen_mode" value="view" />
+				<input type="hidden" name="lid" value="<?php echo $this->entry['id']; ?>" />
 
-            <a class="btn btn-sm button button-small" tabindex="5" href="<?php echo $back_link ?>"><?php esc_attr_e( 'Cancel', 'gravityview' ); ?></a>
+				<?php
+
+				/**
+				 * By default, the lead_detail_edit method uses the `RGFormsModel::get_lead_field_value()` method, which doesn't fill in $_POST values when there is a validation error, because it was designed to work in the admin. We want to use the `RGFormsModel::get_field_value()` If the form has been submitted, use the values for the fields.
+				*/
+				add_filter( 'gform_get_field_value', array( $this, 'get_field_value' ), 10, 3 );
+
+				// Print the actual form HTML
+				GV_GFEntryDetail::lead_detail_edit( $this->form, $this->entry, $this->view_id );
+
+				?>
+				<div id="publishing-action">
+				    <input class="btn btn-lg button button-large button-primary" type="submit" tabindex="4" value="<?php esc_attr_e( 'Update', 'gravityview'); ?>" name="save" />
+
+		            <a class="btn btn-sm button button-small" tabindex="5" href="<?php echo $back_link ?>"><?php esc_attr_e( 'Cancel', 'gravityview' ); ?></a>
+				</div>
+
+			</form>
+
+			<?php GFFormDisplay::footer_init_scripts( $this->form_id ); ?>
+
 		</div>
-<?php
-		GFFormDisplay::footer_init_scripts( $this->form_id );
-?>
-	</div>
-<?php
 
+		<?php
 	}
 
-}
+
+} // end class
 
 //add_action( 'plugins_loaded', array('GravityView_Edit_Entry', 'getInstance'), 6 );
 new GravityView_Edit_Entry;

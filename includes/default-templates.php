@@ -68,8 +68,8 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 }
 
 /**
- * GravityView_Default_Template_Table class.
- * Defines Table(default) template
+ * GravityView_Default_Template_Edit class.
+ * Defines Edit Table(default) template (Edit Entry)
  */
 class GravityView_Default_Template_Edit extends GravityView_Template {
 
