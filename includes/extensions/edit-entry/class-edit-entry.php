@@ -49,7 +49,10 @@ class GravityView_Edit_Entry {
 		add_filter( 'gform_pre_validation', array( $this, 'gform_pre_validation') );
 
 		// Modify the field options based on the name of the field type
-		add_filter( 'gravityview_template_edit_link_options', array( $this, 'field_options' ), 10, 5 );
+		add_filter( 'gravityview_template_edit_link_options', array( $this, 'edit_link_field_options' ), 10, 5 );
+
+		// custom fields' options for zone EDIT
+		add_filter( 'gravityview_template_field_options', array( $this, 'field_options' ), 10, 5 );
 
 		// add template path to check for field
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
@@ -132,16 +135,13 @@ class GravityView_Edit_Entry {
 	 * @param  [type] $input_type    [description]
 	 * @return [type]                [description]
 	 */
-	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+	function edit_link_field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		// Always a link, never a filter
 		unset( $field_options['show_as_link'], $field_options['search_filter'] );
 
 		// Edit Entry link should only appear to visitors capable of editing entries
 		unset( $field_options['only_loggedin'], $field_options['only_loggedin_cap'] );
-
-		// Edit Entry link cannot be editable
-		unset( $field_options['allow_edit'], $field_options['allow_edit_cap'] );
 
 		$add_option['edit_link'] = array(
 			'type' => 'text',
@@ -153,6 +153,41 @@ class GravityView_Edit_Entry {
 
 		return array_merge( $add_option, $field_options );
 	}
+
+
+	/**
+	 * Manipulate the fields' options for the EDIT ENTRY screen
+	 * @param  [type] $field_options [description]
+	 * @param  [type] $template_id   [description]
+	 * @param  [type] $field_id      [description]
+	 * @param  [type] $context       [description]
+	 * @param  [type] $input_type    [description]
+	 * @return [type]                [description]
+	 */
+	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+
+		if( 'edit' !== $context ) {
+			return $field_options;
+		}
+
+		//  Entry field is only for logged in users
+		unset( $field_options['only_loggedin'], $field_options['only_loggedin_cap'] );
+
+
+		$add_options = array(
+			'allow_edit_cap' => array(
+				'type' => 'select',
+				'label' => __( 'Make editable for:', 'gravityview' ),
+				'choices' => GravityView_Render_Settings::get_cap_choices( $template_id, $field_id, $context, $input_type ),
+				'class' => 'widefat',
+				'default' => 'read',
+			),
+		);
+
+		return array_merge( $field_options, $add_options );
+	}
+
+
 
 	/**
 	 * Add Edit Link as a default field, outside those set in the Gravity Form form
@@ -260,17 +295,14 @@ class GravityView_Edit_Entry {
 
 		$this->process_save();
 
-		// Override the output of the fields so we can re-process using our own class
-		add_filter("gform_field_content", array( 'GravityView_Edit_Entry', 'gform_field_content' ), 10, 5 );
-
-			$this->edit_entry_form();
-
-		// Remove the filter so it doesn't mess with other plugins.
-		remove_filter("gform_field_content", array( 'GravityView_Edit_Entry', 'gform_field_content' ), 10, 5 );
+		$this->edit_entry_form();
 
 	}
 
 	/**
+	 *
+	 * @deprecated since 1.4.1 ( replaced by GV_GFEntryDetail::lead_detail_edit() )
+	 *
 	 * Output table rows with error messages and labels
 	 * @param  [type]  $content [description]
 	 * @param  [type]  $field   [description]
@@ -285,10 +317,8 @@ class GravityView_Edit_Entry {
 		if( empty( $field['id'] )) { return $content; }
 
 		$td_id = "field_" . $form_id . "_" . $field['id'];
-
-		$label = esc_html(GFCommon::get_label($field));
-
-		$input = GV_GFCommon::get_field_input($field, $value, $lead_id, $form_id ) ;
+		$label = esc_html( GFCommon::get_label( $field ) );
+		$input = GV_GFCommon::get_field_input( $field, $value, $lead_id, $form_id );
 
 		$error_class = rgget("failed_validation", $field) ? "gfield_error" : "";
 
@@ -301,14 +331,17 @@ class GravityView_Edit_Entry {
 		}
 
 		//Add required indicator
-    $required = ($field['isRequired'] == 1) ? '<span class="required">*</span>' : '';
+    	$required = ( $field['isRequired'] == 1 ) ? '<span class="required">*</span>' : '';
 
-		$content = "
-		<tr valign='top'>
-			<td class='detail-view {$error_class}' id='{$td_id}'>
-				<label class='detail-label'>" . $label . $required . "</label>" . $input . "
-			</td>
-		</tr>";
+    	// custom class as defined on field details
+    	$custom_class = empty( $field['gvCustomClass'] ) ? '' : ' class="'. esc_attr( $field['gvCustomClass'] ) .'"';
+
+		$content =
+			'<tr valign="top"'. $custom_class .'>
+	    		<td class="detail-view '.$error_class.'" id="'. $td_id .'">
+	    			<label class="detail-label">' . $label . $required . '</label>' . $input . '
+	    		</td>
+	    	</tr>';
 
 		return apply_filters( 'gravityview_edit_entry_field_content', $content, $field, $value, $lead_id, $form_id );
 	}
@@ -555,12 +588,12 @@ class GravityView_Edit_Entry {
 		// prevent form scheduling from preventing editing
 		unset( $this->form['limitEntries'], $this->form['scheduleForm'] );
 
-    // Get all fields for form
-    $view_data = new GravityView_View_Data;
-    $properties = $view_data->get_fields( $this->view_id );
+	    // Get all fields for form
+	    $view_data = new GravityView_View_Data;
+	    $properties = $view_data->get_fields( $this->view_id );
 
-    // Hide fields depending on admin settings
-    $this->form['fields'] = GV_GFEntryDetail::filter_fields( $this->form['fields'], $properties["directory_table-columns"], 'GV_GFEntryDetail::filter_fields' );
+	    // Hide fields depending on admin settings
+	    $this->form['fields'] = GV_GFEntryDetail::filter_fields( $this->form['fields'], $properties['edit_edit-fields'] );
 
 		$this->is_valid = GFFormDisplay::validate( $this->form, $field_values, 1, $failed_validation_page );
 
