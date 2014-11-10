@@ -163,11 +163,6 @@ class GravityView_Admin_Views {
 			'value' => sprintf( __( 'Developers: The CSS classes will be sanitized using the %ssanitize_title_with_dashes()%s function.', 'gravityview'), '<code>', '</code>' )
 		);
 
-		$gv_tooltips['gv_allow_edit_field'] = array(
-			'title' => __( 'Make field editable?', 'gravityview' ),
-			'value' => __( 'Note it affects the entire field if it has multiple inputs, i.e. selections for "First" input will also affect "Last" under the "Name" field.', 'gravityview')
-		);
-
 		$gv_tooltips = apply_filters( 'gravityview_tooltips', $gv_tooltips );
 
 		foreach ( $gv_tooltips as $key => $tooltip ) {

@@ -68,19 +68,7 @@ class GravityView_Render_Settings {
 					'class' => 'widefat',
 					'value' => 'read',
 				),
-				'allow_edit' => array(
-					'type' => 'checkbox',
-					'label' => __( 'Make field editable?', 'gravityview' ),
-					'tooltip' => 'gv_allow_edit_field',
-					'default' => 1
-				),
-				'allow_edit_cap' => array(
-					'type' => 'select',
-					'label' => __( 'Make editable for:', 'gravityview' ),
-					'choices' => self::get_cap_choices( $template_id, $field_id, $context, $input_type ),
-					'class' => 'widefat',
-					'default' => 'read',
-				),
+
 			);
 
 		}
@@ -135,6 +123,7 @@ class GravityView_Render_Settings {
 	 * Render Field Options html (shown through a dialog box)
 	 *
 	 * @access public
+	 * @param string $field_type field / widget
 	 * @param string $template_id
 	 * @param string $field_id
 	 * @param string $field_label
