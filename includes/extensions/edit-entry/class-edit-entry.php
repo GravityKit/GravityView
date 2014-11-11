@@ -180,7 +180,7 @@ class GravityView_Edit_Entry {
 				'label' => __( 'Make editable for:', 'gravityview' ),
 				'choices' => GravityView_Render_Settings::get_cap_choices( $template_id, $field_id, $context, $input_type ),
 				'class' => 'widefat',
-				'default' => 'read',
+				'value' => 'read',
 			),
 		);
 
