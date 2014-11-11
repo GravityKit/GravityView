@@ -88,7 +88,7 @@ class GV_GFEntryDetail {
                         }
 
                         //Add required indicator
-                        $required = ( $field['isRequired'] == 1 ) ? '<span class="required">*</span>' : '';
+                        $required = ( !empty( $field['isRequired'] ) ) ? '<span class="required">*</span>' : '';
 
                         // custom class as defined on field details
                         $custom_class = empty( $field['gvCustomClass'] ) ? '' : ' class="'. esc_attr( $field['gvCustomClass'] ) .'"';
