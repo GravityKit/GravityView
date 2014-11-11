@@ -596,8 +596,11 @@ class GravityView_Edit_Entry {
 	    $view_data = new GravityView_View_Data;
 	    $properties = $view_data->get_fields( $this->view_id );
 
+	    // If edit tab not yet configured, show all fields
+	    $edit_fields = !empty( $properties['edit_edit-fields'] ) ? $properties['edit_edit-fields'] : NULL;
+
 	    // Hide fields depending on admin settings
-	    $this->form['fields'] = GV_GFEntryDetail::filter_fields( $this->form['fields'], $properties['edit_edit-fields'] );
+		$this->form['fields'] = GV_GFEntryDetail::filter_fields( $this->form['fields'], $edit_fields );
 
 		$this->is_valid = GFFormDisplay::validate( $this->form, $field_values, 1, $failed_validation_page );
 

@@ -61,15 +61,11 @@ class GV_GFEntryDetail {
                     $view_data = new GravityView_View_Data;
                     $properties = $view_data->get_fields( $view_id );
 
-                    // By default, allow editing all fields
-                    $fields = $form['fields'];
+                    // If edit tab not yet configured, show all fields
+                    $edit_fields = !empty( $properties['edit_edit-fields'] ) ? $properties['edit_edit-fields'] : NULL;
 
-                    if( !empty( $properties['edit_edit-fields'] ) ) {
-
-                    	// Hide fields depending on admin settings
-                    	$fields = self::filter_fields( $form['fields'], $properties['edit_edit-fields'] );
-
-                    }
+                    // Hide fields depending on admin settings
+                    $fields = self::filter_fields( $form['fields'], $edit_fields );
 
                     foreach( $fields as $field ){
 
@@ -143,12 +139,13 @@ class GV_GFEntryDetail {
     /**
      * Filter area fields based on specified conditions
      *
+     * @uses GravityView_Edit_Entry::user_can_edit_field() Check caps
      * @access private
      * @param array $fields
-     * @param array $properties
+     * @param array $configured_fields
      * @return array $fields
      */
-    static public function filter_fields( $fields, $properties ) {
+    static public function filter_fields( $fields, $configured_fields ) {
 
         if( empty( $fields ) || !is_array( $fields ) ) {
             return $fields;
@@ -156,37 +153,28 @@ class GV_GFEntryDetail {
 
         $edit_fields = array();
 
-        foreach ( $properties as $k => $prop ) {
 
-            foreach ( $fields as $k2 => $field ) {
-
-                if( $prop['id'] == $field['id'] ){
-
-                    if( self::is_field_editable( $prop ) ) {
-                       $edit_fields[] = self::merge_field_properties( $field, $prop );
-                    }
-
-                } elseif( !empty( $field['inputs'] ) ){
-
-                    //If any inputs for the field are not editable, disable that field
-                    //All inputs for that field will be disabled.
-                    foreach ( $field['inputs'] as $k3 => $input ) {
-
-                        if( $prop['id'] == $input['id'] ){
-
-                            if( self::is_field_editable( $prop ) ) {
-                                $edit_fields[] = self::merge_field_properties( $field, $prop );
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
+        // The Edit tab has not been configured, so we return all fields by default.
+        if( empty( $configured_fields ) ) {
+        	return $fields;
         }
+
+        // The edit tab has been configured, so we loop through to configured settings
+    	foreach ( $configured_fields as $configured_field ) {
+
+    	    foreach ( $fields as $field ) {
+
+    	    	if( intval( $configured_field['id'] ) === intval( $field['id'] ) ){
+
+    	    		if( GravityView_Edit_Entry::user_can_edit_field( $configured_field, false ) ) {
+    	               $edit_fields[] = self::merge_field_properties( $field, $configured_field );
+    	            }
+
+    	        }
+
+    	    }
+
+    	}
 
         return $edit_fields;
 
