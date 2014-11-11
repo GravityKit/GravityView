@@ -778,11 +778,18 @@ class GravityView_Edit_Entry {
 
 	}
 
-	function user_can_edit_field( $echo = false ) {
+	/**
+	 * Check whether a field is editable by the current user, and optionally display an error message
+	 * @uses  self::check_user_cap_edit_field() Check user capabilities
+	 * @param  array  $field Field or field settings array
+	 * @param  boolean $echo  Whether to show error message telling user they aren't allowed
+	 * @return boolean         True: user can edit the current field; False: nope, they can't.
+	 */
+	static function user_can_edit_field( $field, $echo = false ) {
 
 		$error = NULL;
 
-		if( ! self::check_user_cap_edit_field( $this->field ) ) {
+		if( ! self::check_user_cap_edit_field( $field ) ) {
 			$error = __( 'You do not have permission to edit this field.', 'gravity-view');
 		}
 
@@ -792,7 +799,7 @@ class GravityView_Edit_Entry {
 		}
 
 		if( $echo ) {
-			echo $this->generate_notice( wpautop( esc_html( $error ) ), 'gv-error error');
+			echo self::getInstance()->generate_notice( wpautop( esc_html( $error ) ), 'gv-error error');
 		}
 
 		do_action('gravityview_log_error', 'GravityView_Edit_Entry[user_can_edit_field]' . $error );
@@ -812,9 +819,16 @@ class GravityView_Edit_Entry {
 	public static function check_user_cap_edit_field( $field ) {
 		global $gravityview_view;
 
-		// Or if they can edit any entries (as defined in Gravity Forms), we're good.
+		// If they can edit any entries (as defined in Gravity Forms), we're good.
 		if( GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) ) {
 			return true;
+		}
+
+		$field_cap = isset( $field['allow_edit_cap'] ) ? $field['allow_edit_cap'] : false;
+
+		// If the field has custom editing capaibilities set, check those
+		if( $field_cap ) {
+			return GFCommon::current_user_can_any( $field['allow_edit_cap'] );
 		}
 
 		return false;

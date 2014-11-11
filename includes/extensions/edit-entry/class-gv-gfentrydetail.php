@@ -180,23 +180,6 @@ class GV_GFEntryDetail {
 
     }
 
-
-    /**
-     * Check wether a certain field should not be presented based on its own properties.
-     *
-     * @access private
-     * @param array $properties
-     * @return true (field should be hidden) or false (field should be presented)
-     */
-    static private function is_field_editable( $properties ) {
-
-        if( current_user_can( $properties['allow_edit_cap'] ) ) {
-            return true;
-        }
-
-        return false;
-    }
-
     /**
      * Override GF Form field properties with the ones defined on the View
      * @param  [type] $field GF Form field object
