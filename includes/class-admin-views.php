@@ -21,7 +21,7 @@ class GravityView_Admin_Views {
 		add_action( 'save_post', array( $this, 'save_postdata' ) );
 
 		// set the blacklist field types across the entire plugin
-		add_filter( 'gravityview_blacklist_field_types', array( $this, 'default_field_blacklist' ), 10 );
+		add_filter( 'gravityview_blacklist_field_types', array( $this, 'default_field_blacklist' ), 10, 2 );
 
 		// Tooltips
 		add_filter( 'gform_tooltips', array( $this, 'tooltips') );
@@ -123,10 +123,12 @@ class GravityView_Admin_Views {
 	/**
 	 * List the field types without presentation properties (on a View context)
 	 *
+	 * @param array $array Existing field types to add to a blacklist
+	 * @param string|null $context Context for the blacklist. Default: NULL.
 	 * @access public
 	 * @return void
 	 */
-	function default_field_blacklist( $array = array() ) {
+	function default_field_blacklist( $array = array(), $context = NULL ) {
 		return array_merge( $array, array( 'captcha', 'page' ) );
 	}
 
@@ -413,7 +415,7 @@ class GravityView_Admin_Views {
 	 */
 	function render_available_fields( $form = '', $context = 'single' ) {
 
-		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array() );
+		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array(), $context );
 
 		$fields = $this->get_available_fields( $form, $context );
 

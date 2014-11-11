@@ -62,6 +62,48 @@ class GravityView_Edit_Entry {
 
 		// Make sure this hook is run for non-admins
 		add_action('wp_ajax_rg_delete_file', array('RGForms', 'delete_file'));
+
+		add_filter( 'gravityview_blacklist_field_types', array( $this, 'modify_field_blacklist' ), 10, 2 );
+
+		add_filter( 'gravityview_tooltips', array( $this, 'tooltips') );
+	}
+
+	/**
+	 * Edit mode doesn't allow certain field types.
+	 * @param  array $fields  Existing blacklist fields
+	 * @param  string|null $context Context
+	 * @return array          If not edit context, original field blacklist. Otherwise, blacklist including post fields.
+	 */
+	function modify_field_blacklist( $fields = array(), $context = NULL ) {
+
+		if( empty( $context ) || $context !== 'edit' ) {
+			return $fields;
+		}
+
+		$add_fields = array(
+			'post_title',
+			'post_content',
+			'post_excerpt',
+			'post_tags',
+			'post_category',
+			'post_image',
+			'post_custom_field',
+			'product',
+			'quantity',
+			'shipping',
+			'total',
+			'option',
+			'coupon',
+			'payment_status',
+			'payment_date',
+			'payment_amount',
+			'is_fulfilled',
+			'transaction_id',
+			'transaction_type',
+			// 'payment_method', This is editable in the admin, so allowing it here
+		);
+
+		return array_merge( $fields, $add_fields );
 	}
 
 	static function getInstance() {
