@@ -224,6 +224,7 @@ class GravityView_Edit_Entry {
 	 */
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
+		// We only want to modify the settings for the edit context
 		if( 'edit' !== $context ) {
 			return $field_options;
 		}
@@ -231,15 +232,14 @@ class GravityView_Edit_Entry {
 		//  Entry field is only for logged in users
 		unset( $field_options['only_loggedin'], $field_options['only_loggedin_cap'] );
 
-
 		$add_options = array(
 			'allow_edit_cap' => array(
 				'type' => 'select',
-				'label' => __( 'Make editable for:', 'gravityview' ),
+				'label' => __( 'Make field editable to:', 'gravityview' ),
 				'choices' => GravityView_Render_Settings::get_cap_choices( $template_id, $field_id, $context, $input_type ),
 				'tooltip' => 'allow_edit_cap',
 				'class' => 'widefat',
-				'value' => 'read',
+				'value' => 'read', // Default: entry creator
 			),
 		);
 
@@ -834,6 +834,16 @@ class GravityView_Edit_Entry {
 		return false;
 	}
 
+	/**
+	 * Check if the user can edit the entry
+	 *
+	 * - Is the nonce valid?
+	 * - Does the user have the right caps for the entry
+	 * - Is the entry in the trash?
+	 *
+	 * @param  boolean $echo Show error messages in the form?
+	 * @return boolean        True: can edit form. False: nope.
+	 */
 	function user_can_edit_entry( $echo = false ) {
 
 		$error = NULL;

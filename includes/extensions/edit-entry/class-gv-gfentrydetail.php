@@ -15,7 +15,7 @@ class GV_GFEntryDetail {
      * @param array $entry
      * @return void
      */
-    public static function combine_update_existing ( $view_id, $entry ) {
+    public static function combine_update_existing( $view_id, $entry ) {
 
         // Get all fields for form
         $view_data = new GravityView_View_Data;
@@ -50,7 +50,7 @@ class GV_GFEntryDetail {
         ?>
         <div class="postbox">
             <h3>
-                    <label for="name"><?php _e( "Details", "gravityforms" ); ?></label>
+                    <label for="name"><?php esc_html_e( "Details", "gravityforms" ); ?></label>
             </h3>
             <div class="inside">
                 <table class="form-table entry-details">
@@ -182,23 +182,25 @@ class GV_GFEntryDetail {
 
     /**
      * Override GF Form field properties with the ones defined on the View
-     * @param  [type] $field GF Form field object
-     * @param  [type] $prop  GV field options
+     * @param  array $field GF Form field object
+     * @param  array $setting  GV field options
      * @return array
      */
-    static private function merge_field_properties( $field, $prop ) {
+    static private function merge_field_properties( $field, $field_setting ) {
 
-        if( empty( $prop['show_label'] ) ) {
-            $field['label'] = '';
-        } elseif ( !empty( $prop['custom_label'] ) ) {
-            $field['label'] = $prop['custom_label'];
+    	$return_field = $field;
+
+        if( empty( $field_setting['show_label'] ) ) {
+            $return_field['label'] = '';
+        } elseif ( !empty( $field_setting['custom_label'] ) ) {
+            $return_field['label'] = $field_setting['custom_label'];
         }
 
-        if( !empty( $prop['custom_class'] ) ) {
-             $field['gvCustomClass'] = gravityview_sanitize_html_class( $prop['custom_class'] );
+        if( !empty( $field_setting['custom_class'] ) ) {
+             $return_field['gvCustomClass'] = gravityview_sanitize_html_class( $field_setting['custom_class'] );
         }
 
-        return $field;
+        return $return_field;
 
     }
 
