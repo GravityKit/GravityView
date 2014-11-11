@@ -288,9 +288,9 @@ class GravityView_Edit_Entry {
 	}
 
 	/**
-	 * Only show edit link to logged-in users.
+	 * Change wording for the Edit context to read Entry Creator
 	 *
-	 * @param  array 	   $caps        Array of capabilities to display in field dropdown.
+	 * @param  array 	   $visibility_caps        Array of capabilities to display in field dropdown.
 	 * @param  string      $field_type  Type of field options to render (`field` or `widget`)
 	 * @param  string      $template_id Table slug
 	 * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
@@ -298,10 +298,17 @@ class GravityView_Edit_Entry {
 	 * @param  string      $input_type  (textarea, list, select, etc.)
 	 * @return array                   Array of field options with `label`, `value`, `type`, `default` keys
 	 */
-	function modify_visibility_caps( $caps, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
+	function modify_visibility_caps( $visibility_caps = array(), $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 
-		if( $field_id === 'edit_link' || $input_type === 'edit_link' ) {
-			unset($caps['read'] );
+		$caps = $visibility_caps;
+
+		// If we're configuring fields in the edit context, we want a limited selection
+		if( $context === 'edit' ) {
+
+			// Remove other built-in caps.
+			unset( $caps['publish_posts'], $caps['gravityforms_view_entries'], $caps['delete_others_posts'] );
+
+			$caps['read'] = _x('Entry Creator','User capability', 'gravityview');
 		}
 
 		return $caps;
