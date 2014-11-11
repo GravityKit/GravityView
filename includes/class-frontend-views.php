@@ -51,11 +51,11 @@ class GravityView_frontend {
 
 	static function getInstance() {
 
-		if( !empty( self::$instance ) ) {
-			return self::$instance;
-		} else {
-			return new GravityView_frontend;
+		if( empty( self::$instance ) ) {
+			self::$instance = new GravityView_frontend;
 		}
+
+		return self::$instance;
 	}
 
 	function parse_content() {
