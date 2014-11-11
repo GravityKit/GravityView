@@ -1215,7 +1215,7 @@
                 nonce: gvGlobals.nonce,
             };
 
-            var result = $.ajax({
+            $.ajax({
                 type: "POST",
                 url: ajaxurl,
                 data: data,
