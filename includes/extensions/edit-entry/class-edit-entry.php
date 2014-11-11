@@ -196,6 +196,23 @@ class GravityView_Edit_Entry {
 		return array_merge( $add_option, $field_options );
 	}
 
+	/**
+	 * Add tooltips
+	 * @param  array $tooltips Existing tooltips
+	 * @return array           Modified tooltips
+	 */
+	function tooltips( $tooltips ) {
+
+		$return = $tooltips;
+
+		$return['allow_edit_cap'] = array(
+			'title' => __('Limiting Edit Access', 'gravityview'),
+			'value' => __('Change this setting if you don\'t want the user who created the entry to be able to edit this field.', 'gravityview'),
+		);
+
+		return $return;
+	}
+
 
 	/**
 	 * Manipulate the fields' options for the EDIT ENTRY screen
@@ -221,6 +238,7 @@ class GravityView_Edit_Entry {
 				'type' => 'select',
 				'label' => __( 'Make editable for:', 'gravityview' ),
 				'choices' => GravityView_Render_Settings::get_cap_choices( $template_id, $field_id, $context, $input_type ),
+				'tooltip' => 'allow_edit_cap',
 				'class' => 'widefat',
 				'value' => 'read',
 			),
