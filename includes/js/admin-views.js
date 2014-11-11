@@ -979,7 +979,7 @@
             });
 
             //fields
-            $('#directory-fields, #single-fields').find(".active-drop-field").sortable({
+            $('#directory-fields, #single-fields, #edit-fields').find(".active-drop-field").sortable({
                 placeholder: "fields-placeholder",
                 items: '> .gv-fields',
                 distance: 2,
