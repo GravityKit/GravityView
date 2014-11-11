@@ -758,6 +758,19 @@
 
         },
 
+        // refresh Gravity Forms tooltips (the real help tooltips)
+        refreshGFtooltips: function() {
+            $( ".gf_tooltip" ).tooltip( {
+                show: 500,
+                hide: 1000,
+                content: function () {
+                    return $(this).prop('title');
+                }
+            });
+        },
+
+
+
         /**
          * Fetch the Available Fields for a given Form ID or Preset Template ID
          * @param  null|string    preset
@@ -922,6 +935,9 @@
                     	}
 
                     });
+
+                    // refresh the little help tooltips
+                    vcfg.refreshGFtooltips();
 
                 })
                 .fail(function (jqXHR) {
