@@ -61,8 +61,15 @@ class GV_GFEntryDetail {
                     $view_data = new GravityView_View_Data;
                     $properties = $view_data->get_fields( $view_id );
 
-                    // Hide fields depending on admin settings
-                    $fields = self::filter_fields( $form['fields'], $properties['edit_edit-fields'] );
+                    // By default, allow editing all fields
+                    $fields = $form['fields'];
+
+                    if( !empty( $properties['edit_edit-fields'] ) ) {
+
+                    	// Hide fields depending on admin settings
+                    	$fields = self::filter_fields( $form['fields'], $properties['edit_edit-fields'] );
+
+                    }
 
                     foreach( $fields as $field ){
 
