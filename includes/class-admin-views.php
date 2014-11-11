@@ -417,6 +417,11 @@ class GravityView_Admin_Views {
 					continue;
 				}
 
+				// Edit mode only allows editing the parent fields, not single inputs.
+				if( $context === 'edit' && !empty( $details['parent'] ) ) {
+					continue;
+				}
+
 				$output .= new GravityView_Admin_View_Field( $details['label'], $id, $details );
 
 			} // End foreach
