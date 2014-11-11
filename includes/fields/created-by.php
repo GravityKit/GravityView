@@ -15,7 +15,7 @@ class GravityView_Field_Created_By extends GravityView_Field {
 				'user_login' => __('Username (Example: "nostromo")', 'gravityview'),
 				'ID' => __('User ID # (Example: 426)', 'gravityview'),
 			),
-			'default' => 'display_name'
+			'value' => 'display_name'
 		);
 
 		return $field_options;
