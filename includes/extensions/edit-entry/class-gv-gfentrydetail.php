@@ -126,7 +126,7 @@ class GV_GFEntryDetail {
                 <br/>
                 <div class="gform_footer">
                     <input type="hidden" name="gform_unique_id" value="" />
-                    <input type="hidden" name="gform_uploaded_files" id='gform_uploaded_files_<?php echo $form_id; ?>' value="" />
+                    <input type="hidden" name="gform_uploaded_files" id="gform_uploaded_files_<?php echo $form_id; ?>" value="" />
                 </div>
             </div>
         </div>

@@ -53,14 +53,14 @@ class GV_GFCommon extends GFCommon {
             return $field_input;
         }
 
-        switch(RGFormsModel::get_input_type($field)){
+        switch( RGFormsModel::get_input_type( $field ) ){
 
 			case 'fileupload':
 
 			    $tabindex = self::get_tabindex();
-			    $multiple_files = rgar($field, "multipleFiles");
+			    $multiple_files = rgar( $field, "multipleFiles" );
 			    $file_list_id = "gform_preview_" . $form_id . "_". $id;
-			    $max_upload_size = ! IS_ADMIN && isset($field["maxFileSize"]) && $field["maxFileSize"] > 0 ? $field["maxFileSize"] * 1048576: wp_max_upload_size();
+			    $max_upload_size = ! IS_ADMIN && isset( $field["maxFileSize"] ) && $field["maxFileSize"] > 0 ? $field["maxFileSize"] * 1048576: wp_max_upload_size();
 
 			    if( empty( $multiple_files ) ) {
 
@@ -164,8 +164,9 @@ class GV_GFCommon extends GFCommon {
 			    } else {
 
 			    	// Otherwise, show the upload form
-			    	$preview = "<div id='upload_$id'>$upload</div>";
-			    	return $preview;
+					$preview = $multiple_files ? sprintf("<div id='%s'></div>", $file_list_id) : "";
+                    return "<div class='ginput_container'>$upload</div>" . $preview;
+
 			    }
 
 			break;
