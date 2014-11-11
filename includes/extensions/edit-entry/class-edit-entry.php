@@ -503,7 +503,8 @@ class GravityView_Edit_Entry {
 					} else {
 
 						// Fix PHP warning on line 1498 of form_display.php for post_image fields
-						$_FILES[ $input_name ] = array('name' => '');
+						// Fix PHP Notice:  Undefined index:  size in form_display.php on line 1511
+						$_FILES[ $input_name ] = array('name' => '', 'size' => '' );
 
 					}
 
