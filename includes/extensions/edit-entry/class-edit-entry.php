@@ -309,7 +309,7 @@ class GravityView_Edit_Entry {
 
 	/**
 	 * Force Gravity Forms to output scripts as if it were in the admin
-	 * @return [type]      [description]
+	 * @return void
 	 */
 	function print_scripts( $css_only = false ) {
 		global $gravityview_view;
@@ -357,53 +357,6 @@ class GravityView_Edit_Entry {
 
 		$this->edit_entry_form();
 
-	}
-
-	/**
-	 *
-	 * @deprecated since 1.4.1 ( replaced by GV_GFEntryDetail::lead_detail_edit() )
-	 *
-	 * Output table rows with error messages and labels
-	 * @param  [type]  $content [description]
-	 * @param  [type]  $field   [description]
-	 * @param  string  $value   [description]
-	 * @param  integer $lead_id [description]
-	 * @param  integer $form_id [description]
-	 * @return [type]           [description]
-	 */
-	static function gform_field_content( $content, $field, $value = '', $lead_id = 0, $form_id = 0 ) {
-
-		// There's something not right...
-		if( empty( $field['id'] )) { return $content; }
-
-		$td_id = "field_" . $form_id . "_" . $field['id'];
-		$label = esc_html( GFCommon::get_label( $field ) );
-		$input = GV_GFCommon::get_field_input( $field, $value, $lead_id, $form_id );
-
-		$error_class = rgget("failed_validation", $field) ? "gfield_error" : "";
-
-		$validation_message = (rgget("failed_validation", $field) && !empty($field["validation_message"])) ? sprintf("<div class='gfield_description validation_message'>%s</div>", $field["validation_message"]) : "";
-
-		if( rgar($field, "descriptionPlacement") == "above" ) {
-			$input = $validation_message . $input;
-		} else {
-			$input = $input . $validation_message;
-		}
-
-		//Add required indicator
-    	$required = ( $field['isRequired'] == 1 ) ? '<span class="required">*</span>' : '';
-
-    	// custom class as defined on field details
-    	$custom_class = empty( $field['gvCustomClass'] ) ? '' : ' class="'. esc_attr( $field['gvCustomClass'] ) .'"';
-
-		$content =
-			'<tr valign="top"'. $custom_class .'>
-	    		<td class="detail-view '.$error_class.'" id="'. $td_id .'">
-	    			<label class="detail-label">' . $label . $required . '</label>' . $input . '
-	    		</td>
-	    	</tr>';
-
-		return apply_filters( 'gravityview_edit_entry_field_content', $content, $field, $value, $lead_id, $form_id );
 	}
 
 	/**
