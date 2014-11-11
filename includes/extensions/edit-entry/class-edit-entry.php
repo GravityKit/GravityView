@@ -108,12 +108,11 @@ class GravityView_Edit_Entry {
 
 	static function getInstance() {
 
-		if( !empty( self::$instance ) ) {
-			return self::$instance;
-		} else {
+		if( empty( self::$instance ) ) {
 			self::$instance = new GravityView_Edit_Entry;
-			return self::$instance;
 		}
+
+		return self::$instance;
 	}
 
 	function setup_vars( $entry = null ) {
