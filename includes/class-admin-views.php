@@ -147,13 +147,23 @@ class GravityView_Admin_Views {
 			// If an arg has `tooltip` defined, but it's false, don't display a tooltip
 			if( isset( $arg['tooltip'] ) && empty( $arg['tooltip'] ) ) { continue; }
 
-			// And if there's no description to be used as a tooltip.
-			if( empty( $arg['desc'] ) ) { continue; }
+			// By default, use `tooltip` if defined.
+			$tooltip = empty( $arg['tooltip'] ) ? NULL : $arg['tooltip'];
+
+			// Otherwise, use the description as a tooltip.
+			if( empty( $tooltip ) && !empty( $arg['desc'] ) ) {
+				$tooltip = $arg['desc'];
+			}
+
+			// If there's no tooltip set, continue
+			if( empty( $tooltip ) ) {
+				continue;
+			}
 
 			// Add the tooltip
 			$gv_tooltips[ 'gv_'.$key ] = array(
 				'title'	=> $arg['label'],
-				'value'	=> $arg['desc'],
+				'value'	=> $tooltip,
 			);
 
 		}
