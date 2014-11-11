@@ -768,8 +768,9 @@
 
             var vcfg = viewConfiguration;
 
-            $("#directory-available-fields, #single-available-fields").find(".gv-fields").remove();
-            $("#directory-active-fields, #single-active-fields").find(".gv-fields").remove();
+            $("#directory-available-fields, #single-available-fields, #edit-available-fields").find(".gv-fields").remove();
+            $("#directory-active-fields, #single-active-fields, #edit-active-fields").find(".gv-fields").remove();
+
             vcfg.toggleDropMessage();
 
             var data = {
@@ -798,6 +799,15 @@
             $.post(ajaxurl, data, function (response) {
                 if (response) {
                     $("#single-available-fields").append(response);
+                }
+            });
+
+            // Now get the fields for the edit context
+            data.context = 'edit';
+
+            $.post(ajaxurl, data, function (response) {
+                if (response) {
+                    $("#edit-available-fields").append(response);
                 }
             });
 
