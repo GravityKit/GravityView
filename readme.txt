@@ -25,7 +25,10 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 	- Configure which fields are shown when editing an entry
 	- Set visibility for the fields (Entry Creator, Administrator, etc.)
 	- Set custom edit labels
-* Fixed: Entries are no longer visible by direct URL access if the form requires entries be approved
+* Fixed: Single entry view now respects View settings
+	- If an entry isn't included in View results, the single entry won't be available either
+	- If "Show Only Approved" is enabled, prevent viewing of unapproved entries
+	- Respects View filters, including those added by the Advanced Filtering extension
 * Fixed: Single entry Go back button context on Embedded Views
 * Fixed: Delete signature fields in Edit Entry (requires the Gravity Forms Signature Addon)
 * Added: Choose to open the link from a website field in the same window (field option)
