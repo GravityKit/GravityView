@@ -592,7 +592,7 @@ class GravityView_Edit_Entry {
 		unset( $this->form['limitEntries'], $this->form['scheduleForm'] );
 
 	    // Get all fields for form
-	    $view_data = new GravityView_View_Data;
+	    $view_data = GravityView_View_Data::getInstance();
 	    $properties = $view_data->get_fields( $this->view_id );
 
 	    // If edit tab not yet configured, show all fields

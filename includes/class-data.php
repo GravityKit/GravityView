@@ -37,6 +37,17 @@ class GravityView_View_Data {
 				$this->add_view( $id );
 			}
 		}
+
+		self::$instance = &$this;
+	}
+
+	static function getInstance() {
+
+		if( empty( self::$instance ) ) {
+			self::$instance = new GravityView_frontend;
+		}
+
+		return self::$instance;
 	}
 
 	function get_views() {

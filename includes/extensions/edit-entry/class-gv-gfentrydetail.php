@@ -18,7 +18,7 @@ class GV_GFEntryDetail {
     public static function combine_update_existing( $view_id, $entry ) {
 
         // Get all fields for form
-        $view_data = new GravityView_View_Data;
+        $view_data = GravityView_View_Data::getInstance();
         $fields = $view_data->get_fields( $view_id );
 
         $field_pairs = array();
@@ -58,7 +58,7 @@ class GV_GFEntryDetail {
                     <?php
 
                     // Get all fields for form
-                    $view_data = new GravityView_View_Data;
+                    $view_data = GravityView_View_Data::getInstance();
                     $properties = $view_data->get_fields( $view_id );
 
                     // If edit tab not yet configured, show all fields
