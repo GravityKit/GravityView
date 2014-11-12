@@ -385,6 +385,54 @@ if( !function_exists('gravityview_get_entry') ) {
 
 			}
 
+			// For simple entry searches, we don't need a form ID
+			$form_id = 0;
+
+			/**
+			 * Make sure that entries comply with View filter settings.
+			 *
+			 * - If any parsed View has `show_only_approved` set, we assume the entry requested requires approval. This may not be the case, and there may be multiple Views embedded in one page, but it's better to be more secure.
+			 * - Process the Entry through search criteria from the Advanced Filters extension. If the entry does not match the filters, it should not be shown.
+			 *
+			 * @since  1.5
+			 */
+			if( class_exists( 'GravityView_View_Data' ) ) {
+
+				$views = GravityView_View_Data::getInstance()->get_views();
+
+				foreach ( $views as $view ) {
+
+					$get_search_criteria = GravityView_frontend::get_search_criteria( $view['atts'], $view['form_id'] );
+
+					$view_criteria = array(
+						'search_criteria' => $get_search_criteria
+					);
+
+					// Allow Advanced Filtering extension to add additional parameters
+					$view_criteria = apply_filters( 'gravityview_search_criteria', $view_criteria, $view['form_id'], $view['id'] );
+
+					do_action( 'gravityview_log_debug', '[gravityview_get_entry] Single entry View filters', array(
+						'GravityView_frontend::get_search_criteria' => $get_search_criteria,
+						'after gravityview_search_criteria' => $view_criteria
+					) );
+
+					// If there are any filters to add, do so.
+					if( !empty( $view_criteria['search_criteria']['field_filters'] ) ) {
+
+						// If the Advanced Filtering extension added any parameters, then we need to set the Form ID.
+						// That's because any searches that use form field values need a Form ID.
+						if( sizeof( $view_criteria['search_criteria']['field_filters'] ) > sizeof( $get_search_criteria['field_filters'] )  ) {
+							$form_id = $view['form_id'];
+						}
+
+						$filters = array_merge( $filters, $view_criteria['search_criteria']['field_filters'] );
+
+						// Require the results to match the filters
+						$filters['mode'] = 'all';
+					}
+				}
+			}
+
 			$criteria = array(
 				'search_criteria' => array(
 					'field_filters' => $filters
@@ -393,7 +441,7 @@ if( !function_exists('gravityview_get_entry') ) {
 				'paging' => array("offset" => 0, "page_size" => 1)
 			);
 
-			$entries = gravityview_get_entries( 0, $criteria );
+			$entries = gravityview_get_entries( $form_id, $criteria );
 
 			if( !empty( $entries ) ) {
 				return $entries[0];
@@ -632,7 +680,7 @@ if( !function_exists('gravityview_get_sortable_fields') ) {
 
 		if( !empty( $fields ) ) {
 
-			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'list', 'textarea' ) );
+			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'list', 'textarea' ), NULL );
 
 			$output .= '<option value="date_created" '. selected( 'date_created', $current, false ).'>'. esc_html__( 'Date Created', 'gravityview' ) .'</option>';
 

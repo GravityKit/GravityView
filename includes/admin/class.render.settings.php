@@ -68,6 +68,7 @@ class GravityView_Render_Settings {
 					'class' => 'widefat',
 					'value' => 'read',
 				),
+
 			);
 
 		}
@@ -122,6 +123,7 @@ class GravityView_Render_Settings {
 	 * Render Field Options html (shown through a dialog box)
 	 *
 	 * @access public
+	 * @param string $field_type field / widget
 	 * @param string $template_id
 	 * @param string $field_id
 	 * @param string $field_label

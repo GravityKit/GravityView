@@ -12,6 +12,10 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 		// Always a link!
 		unset( $field_options['show_as_link'], $field_options['search_filter'] );
 
+		if( 'edit' === $context ) {
+			return $field_options;
+		}
+
 		$add_options = array();
 		$add_options['entry_link_text'] = array(
 			'type' => 'text',

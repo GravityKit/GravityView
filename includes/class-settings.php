@@ -99,7 +99,7 @@ if (!class_exists('GravityView_Settings')) {
 			$license_status = empty( $license['status'] ) ? 'site_inactive' : $license['status'];
 			$license_id = empty( $license['license'] ) ? 'license' : $license['license'];
 
-			$message = esc_html__('Your GravityView license %s. This means you&rsquo;re missing out on updates and support! %sActivate your license%s or %sget a license here%s.');
+			$message = esc_html__('Your GravityView license %s. This means you&rsquo;re missing out on updates and support! %sActivate your license%s or %sget a license here%s.', 'gravityview');
 
 			$title = __('Inactive License', 'gravityview');
 			$status = '';

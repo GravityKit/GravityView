@@ -257,51 +257,43 @@ class GravityView_Welcome {
 
 				<div class="feature-section col two-col">
 					<div class="col-1">
-						<img src="<?php echo plugins_url( 'images/screenshots/search-bar.png', GRAVITYVIEW_FILE ); ?>">
+						<img src="<?php echo plugins_url( 'images/screenshots/edit-tab.png', GRAVITYVIEW_FILE ); ?>">
 					</div>
+
 					<div class="col-2 last-feature">
-						<h3 class="higher">New Search Bar</h3>
-						<p>We started from scratch and created the new Search Bar widget. Easily add fields to your search form, drag and drop to re-order fields, and choose how search fields are displayed.</p>
-						<p>The Search Bar widgets in your existing Views have been converted to use the new format.</p>
+						<h3 class="higher">Edit Entry Configuration</h3>
+						<p>In previous versions of GravityView, all form fields were shown when editing a View. In Version 1.5, you can choose which fields are editable in the Edit Entry screen.</p>
+						<p><a href="https://gravityview.co/support/documentation/203176225/" class="button button-primary" rel="external">Learn How to Configure Edit Entry</a></p>
 					</div>
 				</div>
 
 				<hr />
 
-				<div class="feature-section col two-col">
-					<div class="col-1">
-						<h3 class="higher">Custom Content Field</h3>
-						<p>Sometimes you want to go free-form. With the Custom Content field, you can write HTML code or even a custom-generated paragraph using form field values.</p>
-						<p>The field also supports shortcodes, making it possible to add Gravity Forms forms!</p>
-					</div>
-					<div class="col-2 last-feature">
-						<img src="<?php echo plugins_url( 'images/screenshots/custom-content.png', GRAVITYVIEW_FILE ); ?>">
-					</div>
-				</div>
+				<h3>Changes in 1.5 (full list)</h3>
 
-				<hr />
+				<ul>
+					<li>Added: New "Edit Entry" configuration
+						<ul>
+							<li>Configure which fields are shown when editing an entry</li>
+							<li>Set visibility for the fields (Entry Creator, Administrator, etc.)</li>
+							<li>Set custom edit labels</li>
+						</ul>
+					</li>
+					<li>Fixed: Single entry view now respects View settings
+						<ul>
+							<li>If an entry isn't included in View results, the single entry won't be available either</li>
+							<li>If "Show Only Approved" is enabled, prevent viewing of unapproved entries</li>
+							<li>Respects View filters, including those added by the Advanced Filtering extension</li>
+						</ul>
+					</li>
+					<li>Fixed: Single entry Go back button context on Embedded Views</li>
+					<li>Fixed: Delete signature fields in Edit Entry (requires the Gravity Forms Signature Addon)</li>
+					<li>Fixed: Gravity Forms tooltip translations being overridden</li>
+					<li>Added: Choose to open the link from a website field in the same window (field option)</li>
+				</ul>
 
-				<div class="feature-section col three-col">
-					<div class="col-1">
-						<h3 class="higher">Better Field Picker</h3>
-						<img src="<?php echo plugins_url( 'images/screenshots/better-field-picker.png', GRAVITYVIEW_FILE ); ?>">
-						<p>We've added additional information to the field picker, so you know more about the fields before you add them. This makes adding fields from large forms much easier.</p>
-					</div>
-					<div class="col-2">
-						<h3 class="higher">Video &amp; Audio Embeds</h3>
-						<img src="<?php echo plugins_url( 'images/screenshots/video-embed.png', GRAVITYVIEW_FILE ); ?>">
-						<p>If you upload a video or audio file, they are now embedded in the View, ready to play.</p>
-					</div>
-					<div class="col-3 last-feature">
-						<h3 class="higher">Easier Access to Forms</h3>
-						<img src="<?php echo plugins_url( 'images/screenshots/form-links.png', GRAVITYVIEW_FILE ); ?>">
-						<p>Easily access all the links for a View&rsquo;s connected form. Find the links in the "Data Source" box when editing a View.</p>
-					</div>
-				</div>
 
-				<hr />
-
-				<h3 id="toc_0">Changes in 1.4 (full list)</h3>
+				<h3>Changes in 1.4 (full list)</h3>
 
 				<ul>
 					<li>Added: Custom entry slug capability. Instead of <code>/entry/123</code>, you can now use entry values in the URL, like <code>/entry/{company name}/</code> or <code>/entry/{first name}-{last name}/</code>. Requires some customization; <a href="https://gravityview.co/support/documentation/202239919">learn more here</a></li>
@@ -647,6 +639,7 @@ class GravityView_Welcome {
 						<li class="wp-person">Swedish translation by <a href="https://www.transifex.com/accounts/profile/adamrehal/">@adamrehal</a>
 						<li class="wp-person">Indonesian translation by <a href="https://www.transifex.com/accounts/profile/sariyanta/">@sariyanta</a>
 						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a></li>
+						<li class="wp-person">Code contributions by <a href="https://github.com/dmlinn">@dmlinn</a></li>
 
 						<!-- No translation strings yet... -->
 						<!-- <li class="wp-person">Greek translation by <a href="https://www.transifex.com/accounts/profile/asteri/">@asteri</a></li> -->

@@ -12,6 +12,10 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 		unset ( $field_options['search_filter'], $field_options['show_as_link'] );
 
+		if( 'edit' === $context ) {
+			return $field_options;
+		}
+
 		$new_fields = array(
 			'content' => array(
 				'type' => 'textarea',

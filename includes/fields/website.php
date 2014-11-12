@@ -12,6 +12,10 @@ class GravityView_Field_Website extends GravityView_Field {
 		// It makes no sense to use this as the link.
 		unset( $field_options['show_as_link'] );
 
+		if( 'edit' === $context ) {
+			return $field_options;
+		}
+
 		$field_options['truncatelink'] = array(
 			'type' => 'checkbox',
 			'value' => true,

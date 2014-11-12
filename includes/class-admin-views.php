@@ -21,7 +21,7 @@ class GravityView_Admin_Views {
 		add_action( 'save_post', array( $this, 'save_postdata' ) );
 
 		// set the blacklist field types across the entire plugin
-		add_filter( 'gravityview_blacklist_field_types', array( $this, 'default_field_blacklist' ), 10 );
+		add_filter( 'gravityview_blacklist_field_types', array( $this, 'default_field_blacklist' ), 10, 2 );
 
 		// Tooltips
 		add_filter( 'gform_tooltips', array( $this, 'tooltips') );
@@ -123,10 +123,12 @@ class GravityView_Admin_Views {
 	/**
 	 * List the field types without presentation properties (on a View context)
 	 *
+	 * @param array $array Existing field types to add to a blacklist
+	 * @param string|null $context Context for the blacklist. Default: NULL.
 	 * @access public
 	 * @return void
 	 */
-	function default_field_blacklist( $array = array() ) {
+	function default_field_blacklist( $array = array(), $context = NULL ) {
 		return array_merge( $array, array( 'captcha', 'page' ) );
 	}
 
@@ -147,20 +149,30 @@ class GravityView_Admin_Views {
 			// If an arg has `tooltip` defined, but it's false, don't display a tooltip
 			if( isset( $arg['tooltip'] ) && empty( $arg['tooltip'] ) ) { continue; }
 
-			// And if there's no description to be used as a tooltip.
-			if( empty( $arg['desc'] ) ) { continue; }
+			// By default, use `tooltip` if defined.
+			$tooltip = empty( $arg['tooltip'] ) ? NULL : $arg['tooltip'];
+
+			// Otherwise, use the description as a tooltip.
+			if( empty( $tooltip ) && !empty( $arg['desc'] ) ) {
+				$tooltip = $arg['desc'];
+			}
+
+			// If there's no tooltip set, continue
+			if( empty( $tooltip ) ) {
+				continue;
+			}
 
 			// Add the tooltip
 			$gv_tooltips[ 'gv_'.$key ] = array(
 				'title'	=> $arg['label'],
-				'value'	=> $arg['desc'],
+				'value'	=> $tooltip,
 			);
 
 		}
 
 		$gv_tooltips['gv_css_merge_tags'] = array(
-				'title' => __('CSS Merge Tags', 'gravityview'),
-				'value' => sprintf( __( 'Developers: The CSS classes will be sanitized using the %ssanitize_title_with_dashes()%s function.', 'gravityview'), '<code>', '</code>' )
+			'title' => __('CSS Merge Tags', 'gravityview'),
+			'value' => sprintf( __( 'Developers: The CSS classes will be sanitized using the %ssanitize_title_with_dashes()%s function.', 'gravityview'), '<code>', '</code>' )
 		);
 
 		$gv_tooltips = apply_filters( 'gravityview_tooltips', $gv_tooltips );
@@ -403,7 +415,7 @@ class GravityView_Admin_Views {
 	 */
 	function render_available_fields( $form = '', $context = 'single' ) {
 
-		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array() );
+		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array(), $context );
 
 		$fields = $this->get_available_fields( $form, $context );
 
@@ -417,12 +429,22 @@ class GravityView_Admin_Views {
 					continue;
 				}
 
+				// Edit mode only allows editing the parent fields, not single inputs.
+				if( $context === 'edit' && !empty( $details['parent'] ) ) {
+					continue;
+				}
+
 				$output .= new GravityView_Admin_View_Field( $details['label'], $id, $details );
 
 			} // End foreach
 		}
 
 		echo $output;
+
+		// For the EDIT view we only want to allow the form fields.
+		if( $context === 'edit' ) {
+			return;
+		}
 
 		$this->render_additional_fields( $form, $context );
 	}
@@ -476,52 +498,59 @@ class GravityView_Admin_Views {
 	 */
 	function get_entry_default_fields($form, $zone) {
 
+		$entry_default_fields = array();
 
-		$entry_default_fields = array(
-			'id' => array(
-				'label' => __('Entry ID', 'gravityview'),
-				'type' => 'id',
-				'desc'	=> __('The unique ID of the entry.', 'gravityview'),
-			),
-			'date_created' => array(
-				'label' => __('Entry Date', 'gravityview'),
-				'desc'	=> __('The date the entry was created.', 'gravityview'),
-				'type' => 'date_created',
-			),
-			'source_url' => array(
-				'label' => __('Source URL', 'gravityview'),
-				'type' => 'source_url',
-				'desc'	=> __('The URL of the page where the form was submitted.', 'gravityview'),
-			),
-			'ip' => array(
-				'label' => __('User IP', 'gravityview'),
-				'type' => 'ip',
-				'desc'	=> __('The IP Address of the user who created the entry.', 'gravityview'),
-			),
-			'created_by' => array(
-				'label' => __('User', 'gravityview'),
-				'type' => 'created_by',
-				'desc'	=> __('Details of the logged-in user who created the entry (if any).', 'gravityview'),
-			),
+		if( in_array( $zone, array( 'directory', 'single' ) ) ) {
 
-			/**
-			 * @since  1.2
-			 */
-			'custom'	=> array(
-				'label'	=> __('Custom Content', 'gravityview'),
-				'type'	=> 'custom',
-				'desc'	=> __('Insert custom text or HTML.', 'gravityview'),
-			),
-        );
+			$entry_default_fields = array(
+				'id' => array(
+					'label' => __('Entry ID', 'gravityview'),
+					'type' => 'id',
+					'desc'	=> __('The unique ID of the entry.', 'gravityview'),
+				),
+				'date_created' => array(
+					'label' => __('Entry Date', 'gravityview'),
+					'desc'	=> __('The date the entry was created.', 'gravityview'),
+					'type' => 'date_created',
+				),
+				'source_url' => array(
+					'label' => __('Source URL', 'gravityview'),
+					'type' => 'source_url',
+					'desc'	=> __('The URL of the page where the form was submitted.', 'gravityview'),
+				),
+				'ip' => array(
+					'label' => __('User IP', 'gravityview'),
+					'type' => 'ip',
+					'desc'	=> __('The IP Address of the user who created the entry.', 'gravityview'),
+				),
+				'created_by' => array(
+					'label' => __('User', 'gravityview'),
+					'type' => 'created_by',
+					'desc'	=> __('Details of the logged-in user who created the entry (if any).', 'gravityview'),
+				),
 
-		if('single' !== $zone) {
+				/**
+				 * @since  1.2
+				 */
+				'custom'	=> array(
+					'label'	=> __('Custom Content', 'gravityview'),
+					'type'	=> 'custom',
+					'desc'	=> __('Insert custom text or HTML.', 'gravityview'),
+				),
+	        );
 
-        	$entry_default_fields['entry_link'] = array(
-        		'label' => __('Link to Entry', 'gravityview'),
-        		'desc'	=> __('A dedicated link to the single entry with customizable text.', 'gravityview'),
-        		'type' => 'entry_link',
-        	);
-        }
+
+			if( 'single' !== $zone) {
+
+	        	$entry_default_fields['entry_link'] = array(
+	        		'label' => __('Link to Entry', 'gravityview'),
+	        		'desc'	=> __('A dedicated link to the single entry with customizable text.', 'gravityview'),
+	        		'type' => 'entry_link',
+	        	);
+	        }
+
+		} // if not zone directory or single
+
 
         return apply_filters( 'gravityview_entry_default_fields', $entry_default_fields, $form, $zone);
 	}
@@ -756,7 +785,6 @@ class GravityView_Admin_Views {
 
 		return $output;
 	}
-
 
 	/**
 	 * Uservoice feedback widget

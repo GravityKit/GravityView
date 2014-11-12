@@ -5,30 +5,30 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-10-28 21:29-0700\n"
-"PO-Revision-Date: 2014-10-28 10:41+0000\n"
-"Last-Translator: leooosterloo <leo@pronamic.nl>\n"
+"POT-Creation-Date: 2014-11-12 11:30-0700\n"
+"PO-Revision-Date: 2014-11-12 18:31+0000\n"
+"Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/gravityview/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.6.10\n"
+"X-Generator: Poedit 1.7beta1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: gravityview.php:239
+#: gravityview.php:237
 msgid "Top"
 msgstr "Top"
 
-#: gravityview.php:240
+#: gravityview.php:238
 msgid "Left"
 msgstr "Links"
 
-#: gravityview.php:240
+#: gravityview.php:238
 msgid "Right"
 msgstr "Rechts"
 
@@ -56,35 +56,35 @@ msgstr "Maak alleen zichtbaar voor ingelogde gebruikers?"
 msgid "Make visible for:"
 msgstr "Maak zichtbaar voor:"
 
-#: includes/admin/class.render.settings.php:98
+#: includes/admin/class.render.settings.php:99
 msgid "Any Logged-In User"
 msgstr "Elke Ingelogde Gebruiker"
 
-#: includes/admin/class.render.settings.php:99
+#: includes/admin/class.render.settings.php:100
 msgid "Author Or Higher"
 msgstr "Auteur Of hoger"
 
-#: includes/admin/class.render.settings.php:100
+#: includes/admin/class.render.settings.php:101
 msgid "Can View Gravity Forms Entries"
 msgstr "Kan Gravity Forms inzendingen inzien"
 
-#: includes/admin/class.render.settings.php:101
+#: includes/admin/class.render.settings.php:102
 msgid "Editor Or Higher"
 msgstr "Redacteur of hoger"
 
-#: includes/admin/class.render.settings.php:102
-msgid "Can Edit Gravity Forms Entries"
-msgstr ""
-
 #: includes/admin/class.render.settings.php:103
+msgid "Can Edit Gravity Forms Entries"
+msgstr "Kan Gravity Forms inzendingen bewerken"
+
+#: includes/admin/class.render.settings.php:104
 msgid "Administrator"
 msgstr "Beheerder"
 
-#: includes/admin/class.render.settings.php:107
+#: includes/admin/class.render.settings.php:108
 msgid "Multisite Super Admin"
-msgstr ""
+msgstr "Multisite Superbeheerder"
 
-#: includes/admin/class.render.settings.php:161
+#: includes/admin/class.render.settings.php:163
 #, php-format
 msgid "Options: %s"
 msgstr "Opties: %s"
@@ -97,7 +97,7 @@ msgstr "Bewerk deze inzending"
 msgid "Edit"
 msgstr "Bewerk"
 
-#: includes/admin/metaboxes.php:47 includes/class-admin-views.php:269
+#: includes/admin/metaboxes.php:47 includes/class-admin-views.php:281
 msgid "Data Source"
 msgstr "Data Bron"
 
@@ -182,47 +182,64 @@ msgstr "Meerdere Inzendingen"
 msgid "Single Entry"
 msgstr "Enkele Inzending"
 
-#: includes/admin/metaboxes.php:261
+#: includes/admin/metaboxes.php:255 includes/class-frontend-views.php:99
+#: includes/extensions/edit-entry/class-edit-entry.php:205
+#: includes/extensions/edit-entry/class-edit-entry.php:276
+#: includes/extensions/edit-entry/class-edit-entry.php:293
+#: includes/extensions/edit-entry/class-edit-entry.php:1177
+#: includes/extensions/edit-entry/fields/edit_link.php:12
+msgid "Edit Entry"
+msgstr "Bewerk deze inzending"
+
+#: includes/admin/metaboxes.php:262
 msgid "Above Entries Widgets"
 msgstr "Boven Inzendingen WIdgets"
 
-#: includes/admin/metaboxes.php:261
+#: includes/admin/metaboxes.php:262
 msgid "These widgets will be shown above entries."
 msgstr "Deze widgets worden boven de inzendingen getoond."
 
-#: includes/admin/metaboxes.php:265
+#: includes/admin/metaboxes.php:266
 msgid "Entries Fields"
 msgstr "Inzendingen Velden"
 
-#: includes/admin/metaboxes.php:265
+#: includes/admin/metaboxes.php:266
 msgid "These fields will be shown for each entry."
 msgstr "Deze velden worden bij elke inzending getoond."
 
-#: includes/admin/metaboxes.php:273
+#: includes/admin/metaboxes.php:274
 msgid "Below Entries Widgets"
 msgstr "Onder Inzendingen Widgets"
 
-#: includes/admin/metaboxes.php:273
+#: includes/admin/metaboxes.php:274
 msgid "These widgets will be shown below entries."
 msgstr "Deze widgets worden onder de inzendingen getoond."
 
-#: includes/admin/metaboxes.php:303
+#: includes/admin/metaboxes.php:304
 msgid "These fields will be shown in Single Entry view."
 msgstr "Deze velden worden getoond in de Enkele Inzending weergave."
 
-#: includes/admin/metaboxes.php:360
+#: includes/admin/metaboxes.php:325
+msgid "Fields shown when editing an entry."
+msgstr ""
+
+#: includes/admin/metaboxes.php:325
+msgid "If not configured, all form fields will be displayed."
+msgstr ""
+
+#: includes/admin/metaboxes.php:382
 msgid "Single Entry Settings"
 msgstr "Enkele Inzending Instellingen"
 
-#: includes/admin/metaboxes.php:437
+#: includes/admin/metaboxes.php:459
 msgid "Embed Shortcode"
 msgstr "Shortcode Invoegen"
 
-#: includes/admin/metaboxes.php:437
+#: includes/admin/metaboxes.php:459
 msgid "Add this shortcode to a post or page to embed this view."
 msgstr "Plaats deze shortcode in een bericht of pagina om deze weergave in te voegen."
 
-#: includes/admin/metaboxes.php:483
+#: includes/admin/metaboxes.php:505
 msgid "Layout Settings"
 msgstr "Layout Instellingen"
 
@@ -262,13 +279,13 @@ msgid "Insert View"
 msgstr "Weergave Invoegen"
 
 #: includes/class-admin-add-shortcode.php:125
-#: includes/class-admin-views.php:811
-#: includes/extensions/edit-entry/class-edit-entry.php:843
+#: includes/class-admin-views.php:839
+#: includes/extensions/edit-entry/class-edit-entry.php:1238
 msgid "Cancel"
 msgstr "Annuleer"
 
 #: includes/class-admin-add-shortcode.php:171
-#: includes/class-admin-views.php:815
+#: includes/class-admin-views.php:843
 msgid "Loading&hellip;"
 msgstr "Laden&hellip;"
 
@@ -345,40 +362,40 @@ msgstr "De Inzending afgekeurd voor GravityView"
 msgid "Approved the Entry for GravityView"
 msgstr "De Inzending goedgekeurd voor GravityView"
 
-#: includes/class-admin-approve-entries.php:433
+#: includes/class-admin-approve-entries.php:435
 msgid "Approve"
 msgstr "Toelaten"
 
-#: includes/class-admin-approve-entries.php:434
+#: includes/class-admin-approve-entries.php:436
 msgid "Disapprove"
 msgstr "Weigeren"
 
-#: includes/class-admin-approve-entries.php:436
+#: includes/class-admin-approve-entries.php:438
 msgid "Entry not approved for directory viewing. Click to approve this entry."
 msgstr "Inzending niet toegelaten voor directory weergave. Klik om deze inzending toe te laten."
 
-#: includes/class-admin-approve-entries.php:437
+#: includes/class-admin-approve-entries.php:439
 msgid "Entry approved for directory viewing. Click to disapprove this entry."
 msgstr "Inzending is toegelaten voor directory weergave. Klik om deze inzending te weigeren."
 
-#: includes/class-admin-approve-entries.php:438
+#: includes/class-admin-approve-entries.php:440
 msgid "Show entry in directory view?"
 msgstr "Toon inzending in directory weergave?"
 
 #: includes/class-admin-label.php:19
 #, php-format
 msgid "Type: %s"
-msgstr ""
+msgstr "Type: %s"
 
 #: includes/class-admin-label.php:23
 #, php-format
 msgid "Field ID: %s"
-msgstr ""
+msgstr "Veld ID: %s"
 
 #: includes/class-admin-label.php:36
 #, php-format
 msgid "Admin Label: %s"
-msgstr ""
+msgstr "Admin Label: %s"
 
 #: includes/class-admin-label.php:166
 #, php-format
@@ -398,7 +415,7 @@ msgstr "Dit veld linkt naar de Enkele Inzending"
 #, php-format
 msgctxt "Label in field picker for empty label"
 msgid "Field #%s (No Label)"
-msgstr ""
+msgstr "Veld #%s (Geen Label)"
 
 #: includes/class-admin-views.php:108
 msgid "Connected Views"
@@ -408,161 +425,161 @@ msgstr "Gekoppelde Weergaven"
 msgid "GravityView Views using this form as a data source"
 msgstr "GravityView Weergaven gebruikt dit formulier als databron"
 
-#: includes/class-admin-views.php:162
+#: includes/class-admin-views.php:174
 msgid "CSS Merge Tags"
 msgstr "CSS Samenvoeging Tags"
 
-#: includes/class-admin-views.php:163
+#: includes/class-admin-views.php:175
 #, php-format
 msgid ""
 "Developers: The CSS classes will be sanitized using the "
 "%ssanitize_title_with_dashes()%s function."
 msgstr "Ontwikkelaars: De CSS classes worden opgeschoond met de %ssanitize_title_with_dashes()%s functie."
 
-#: includes/class-admin-views.php:187
+#: includes/class-admin-views.php:199
 msgid "Not connected."
 msgstr "Niet gekoppeld."
 
-#: includes/class-admin-views.php:196
+#: includes/class-admin-views.php:208
 msgid "The connected form can not be found; it may no longer exist."
 msgstr "Het gekoppelde formulier kan niet worden gevonden; het bestaat wellicht niet meer."
 
-#: includes/class-admin-views.php:228
+#: includes/class-admin-views.php:240
 msgid "Edit Form"
 msgstr "Bewerk Formulier"
 
-#: includes/class-admin-views.php:233
+#: includes/class-admin-views.php:245
 msgid "Entries"
 msgstr "Inzendingen"
 
-#: includes/class-admin-views.php:238
+#: includes/class-admin-views.php:250
 msgid "Edit settings for this form"
 msgstr "Bewerk instellingen voor dit formulier"
 
-#: includes/class-admin-views.php:238 includes/class-settings.php:246
+#: includes/class-admin-views.php:250 includes/class-settings.php:246
 #: includes/class-settings.php:247
 msgid "Settings"
 msgstr "Instellingen"
 
-#: includes/class-admin-views.php:243
+#: includes/class-admin-views.php:255
 msgid "Preview this form"
 msgstr "Preview dit formulier"
 
-#: includes/class-admin-views.php:243
+#: includes/class-admin-views.php:255
 msgid "Preview"
 msgstr "Voorbeeld"
 
-#: includes/class-admin-views.php:434
+#: includes/class-admin-views.php:456
 msgid "+ Add All Fields"
 msgstr "+ Voeg Alle Velden toe"
 
-#: includes/class-admin-views.php:435
+#: includes/class-admin-views.php:457
 msgid "Add all the available fields at once."
 msgstr ""
 
-#: includes/class-admin-views.php:482
+#: includes/class-admin-views.php:507
 msgid "Entry ID"
 msgstr "Inzending ID"
 
-#: includes/class-admin-views.php:484
+#: includes/class-admin-views.php:509
 msgid "The unique ID of the entry."
-msgstr ""
+msgstr "Unieke ID van de Inzending."
 
-#: includes/class-admin-views.php:487
+#: includes/class-admin-views.php:512
 #: includes/extensions/search-widget/class-search-widget.php:186
 msgid "Entry Date"
 msgstr "Inzending Datum"
 
-#: includes/class-admin-views.php:488
+#: includes/class-admin-views.php:513
 msgid "The date the entry was created."
-msgstr ""
+msgstr "De inzendingsdatum. "
 
-#: includes/class-admin-views.php:492
+#: includes/class-admin-views.php:517
 msgid "Source URL"
 msgstr "Bron URL"
 
-#: includes/class-admin-views.php:494
+#: includes/class-admin-views.php:519
 msgid "The URL of the page where the form was submitted."
-msgstr ""
+msgstr "De URL van de pagina waarop het formulier werd verzonden. "
 
-#: includes/class-admin-views.php:497
+#: includes/class-admin-views.php:522
 msgid "User IP"
 msgstr "Gebruiker IP"
 
-#: includes/class-admin-views.php:499
+#: includes/class-admin-views.php:524
 msgid "The IP Address of the user who created the entry."
-msgstr ""
+msgstr "IP adres van de gebruiker die de Inzending heeft gecreëerd. "
 
-#: includes/class-admin-views.php:502
+#: includes/class-admin-views.php:527
 msgid "User"
 msgstr "Gebruiker"
 
-#: includes/class-admin-views.php:504
+#: includes/class-admin-views.php:529
 msgid "Details of the logged-in user who created the entry (if any)."
-msgstr ""
+msgstr "Details van de ingelogde gebruiker die deze Inzending aangemaakt heeft (als deze er is). "
 
-#: includes/class-admin-views.php:511 includes/fields/custom.php:18
+#: includes/class-admin-views.php:536 includes/fields/custom.php:22
 msgid "Custom Content"
-msgstr ""
+msgstr "Aangepaste Inhoud"
 
-#: includes/class-admin-views.php:513
+#: includes/class-admin-views.php:538
 msgid "Insert custom text or HTML."
-msgstr ""
+msgstr "Voeg aangepaste tekst of HTML toe. "
 
-#: includes/class-admin-views.php:520
+#: includes/class-admin-views.php:546
 msgid "Link to Entry"
 msgstr "Link naar Inzending"
 
-#: includes/class-admin-views.php:521
+#: includes/class-admin-views.php:547
 msgid "A dedicated link to the single entry with customizable text."
-msgstr ""
+msgstr "Een specifieke link naar de Inzending met aangepaste tekst. "
 
-#: includes/class-admin-views.php:595
+#: includes/class-admin-views.php:624
 msgid "Add Widget"
 msgstr "Widget Toevoegen"
 
-#: includes/class-admin-views.php:597
+#: includes/class-admin-views.php:626
 msgid "Add Field"
 msgstr "Veld Toevoegen"
 
-#: includes/class-admin-views.php:678
+#: includes/class-admin-views.php:707
 #, php-format
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr "\"+ %s\" of versleep bestaande %ss hierheen."
 
-#: includes/class-admin-views.php:809
+#: includes/class-admin-views.php:837
 msgid "Enter View name here"
 msgstr "Vul hier de Weergave naam in"
 
-#: includes/class-admin-views.php:810
+#: includes/class-admin-views.php:838
 msgid "Close"
 msgstr "Sluiten"
 
-#: includes/class-admin-views.php:812
+#: includes/class-admin-views.php:840
 msgid "Continue"
 msgstr "Doorgaan"
 
-#: includes/class-admin-views.php:813
+#: includes/class-admin-views.php:841
 msgid "Ok"
 msgstr "Ok"
 
-#: includes/class-admin-views.php:814
+#: includes/class-admin-views.php:842
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr "Fout tijdens het creeeren van de Weergave. Controleer de instellingen of neem contact op met GravityView support."
 
-#: includes/class-admin-views.php:816
+#: includes/class-admin-views.php:844
 msgid "There was an error loading dynamic content."
-msgstr ""
+msgstr "Fout tijdens het laden van de dynamische inhoud. "
 
-#: includes/class-admin-views.php:817
+#: includes/class-admin-views.php:845
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
-msgstr ""
+msgstr "Fout tijdens het toevoegen van het veld. Probeer het opnieuw of neem contact op met GravityView. "
 
-#: includes/class-admin-views.php:818
+#: includes/class-admin-views.php:846
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -570,7 +587,7 @@ msgstr ""
 
 #: includes/class-admin-welcome.php:56
 msgid "GravityView: Getting Started"
-msgstr ""
+msgstr "GravityView: Aan de slag"
 
 #: includes/class-admin-welcome.php:57 includes/class-admin-welcome.php:152
 msgid "Getting Started"
@@ -598,21 +615,21 @@ msgstr "Hartelijk dank voor het installeren van GravityView. Mooi weergeven van 
 
 #: includes/class-admin-welcome.php:155
 msgid "List of Changes"
-msgstr ""
+msgstr "Opsomming van Veranderingen"
 
-#: includes/class-admin-welcome.php:603
+#: includes/class-admin-welcome.php:608
 msgid "GravityView is brought to you by:"
 msgstr "GravityView wordt jou aangeboden door:"
 
-#: includes/class-admin-welcome.php:628
+#: includes/class-admin-welcome.php:633
 msgid "Contributors"
 msgstr "Bijdragers"
 
-#: includes/class-admin-welcome.php:651
+#: includes/class-admin-welcome.php:657
 msgid "Want to contribute?"
 msgstr "Wil je bijdragen?"
 
-#: includes/class-admin-welcome.php:652
+#: includes/class-admin-welcome.php:658
 #, php-format
 msgid ""
 "If you want to contribute to the code, you can %srequest access to the "
@@ -620,16 +637,16 @@ msgid ""
 " here."
 msgstr "Als je wilt bijdragen aan de code kan je %stoegang vragen tot de Github repository%s. Als je bijdragen zijn geaccepteerd, wordt je op deze plek bedankt."
 
-#: includes/class-admin.php:88
+#: includes/class-admin.php:90
 msgid "Support"
 msgstr "Support"
 
-#: includes/class-admin.php:133
+#: includes/class-admin.php:135
 #, php-format
 msgid "A new form was created for this View: \"%s\""
-msgstr ""
+msgstr "Een nieuw formulier is gecreëerd voor deze Weergave: \"%s\""
 
-#: includes/class-admin.php:134
+#: includes/class-admin.php:136
 #, php-format
 msgid ""
 "%sThere are no entries for the new form, so the View will also be empty.%s To start collecting entries, you can add submissions through %sthe preview form%s and also embed the form on a post or page using this code: %s\n"
@@ -638,114 +655,114 @@ msgid ""
 "\t\t\t\t\t"
 msgstr ""
 
-#: includes/class-admin.php:146 includes/class-admin.php:147
-#: includes/class-admin.php:149
+#: includes/class-admin.php:148 includes/class-admin.php:149
+#: includes/class-admin.php:151
 #, php-format
 msgid "View updated. %sView on website.%s"
 msgstr "Weergave ge&#252;pdatet. %sBekijk op website.%s"
 
-#: includes/class-admin.php:148
+#: includes/class-admin.php:150
 msgid "View deleted."
 msgstr "Weergave verwijderd."
 
-#: includes/class-admin.php:151
+#: includes/class-admin.php:153
 #, php-format
 msgid "View restored to revision from %s"
 msgstr "Weergave hersteld naar revisie vanaf %s"
 
-#: includes/class-admin.php:152
+#: includes/class-admin.php:154
 #, php-format
 msgid "View published. %sView on website.%s"
 msgstr "Weergave gepubliceerd. %sBekijk op website.%s"
 
-#: includes/class-admin.php:153
+#: includes/class-admin.php:155
 #, php-format
 msgid "View saved. %sView on website.%s"
 msgstr "Weergave opgeslagen. %sBekijk op website.%s"
 
-#: includes/class-admin.php:154
+#: includes/class-admin.php:156
 msgid "View submitted."
 msgstr "Toon ingediende."
 
-#: includes/class-admin.php:156
+#: includes/class-admin.php:158
 #, php-format
 msgid "View scheduled for: %1$s."
-msgstr ""
+msgstr "Weergave gepland op: %1$s."
 
-#: includes/class-admin.php:158
+#: includes/class-admin.php:160
 msgid "M j, Y @ G:i"
 msgstr "j M Y @ G:i"
 
-#: includes/class-admin.php:160
+#: includes/class-admin.php:162
 #, php-format
 msgid "View draft updated. %sView on website.%s"
 msgstr "Weergave concept ge&#252;pdatet. %sBekijk op website.%s"
 
-#: includes/class-admin.php:166
+#: includes/class-admin.php:168
 #, php-format
 msgid "%s View updated."
 msgid_plural "%s Views updated."
 msgstr[0] "%s Weergave bijgewerkt."
 msgstr[1] "%s Weergaven bijgewerkt."
 
-#: includes/class-admin.php:167
+#: includes/class-admin.php:169
 #, php-format
 msgid "%s View not updated, somebody is editing it."
 msgid_plural "%s Views not updated, somebody is editing them."
 msgstr[0] "%s Weergave niet bijgewerkt, iemand is bezig deze te bewerken."
 msgstr[1] "%s Weergaven niet bijgewerkt, iemand is bezig deze te bewerken."
 
-#: includes/class-admin.php:168
+#: includes/class-admin.php:170
 #, php-format
 msgid "%s View permanently deleted."
 msgid_plural "%s Views permanently deleted."
 msgstr[0] "%s Weergave permanent verwijderd."
 msgstr[1] "%s Weergaven permanent verwijderd."
 
-#: includes/class-admin.php:169
+#: includes/class-admin.php:171
 #, php-format
 msgid "%s View moved to the Trash."
 msgid_plural "%s Views moved to the Trash."
 msgstr[0] "%s Weergave verplaatst naar de Prullenbak."
 msgstr[1] "%s Weergaven verplaatst naar de Prullenbak."
 
-#: includes/class-admin.php:170
+#: includes/class-admin.php:172
 #, php-format
 msgid "%s View restored from the Trash."
 msgid_plural "%s Views restored from the Trash."
 msgstr[0] "%s Weergave hersteld vanuit de Prullenbak."
 msgstr[1] "%s Weergaven hersteld vanuit de Prullenbak."
 
-#: includes/class-admin.php:453
+#: includes/class-admin.php:455
 msgid "Dismiss"
-msgstr ""
+msgstr "Negeren"
 
-#: includes/class-admin.php:487
+#: includes/class-admin.php:489
 msgid "Potential Conflict"
-msgstr ""
+msgstr "Mogelijk Conflict"
 
-#: includes/class-admin.php:488
+#: includes/class-admin.php:490
 msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
 "plugin."
-msgstr ""
+msgstr "GravityView en Gravity Forms Directory zijn beide actief. Dit kan problemen veroorzaken. Deactiveer bij problemen de Gravity Forms Directory plugin. "
 
-#: includes/class-admin.php:513
+#: includes/class-admin.php:515
 #, php-format
 msgid ""
 "%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
 "Forms%s to use the GravityView plugin."
 msgstr "%sGravityView vereist dat Gravity Forms actief is. %sActiveer Gravity Forms%s om de GravityView plugin te gebruiken."
 
-#: includes/class-admin.php:515
+#: includes/class-admin.php:517
 #, php-format
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr "%sGravityView vereist dat Gravity Forms is geinstalleerd om goed te werken. %sKoop Gravity Forms%s - startend vanaf $39%s%s"
 
-#: includes/class-admin.php:521
+#: includes/class-admin.php:523
 #, php-format
 msgid ""
 "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n"
@@ -759,7 +776,7 @@ msgstr "Deze zoekopdracht geeft geen resultaten."
 
 #: includes/class-api.php:267
 msgid "No entries match your request."
-msgstr "Er zijn geen inzendingen die voldoen aan jou verzoek."
+msgstr "Er zijn geen inzendingen die voldoen aan jouw verzoek."
 
 #: includes/class-api.php:542
 msgid "&larr; Go back"
@@ -777,6 +794,8 @@ msgid "%s (ID #%d)"
 msgstr ""
 
 #: includes/class-change-entry-creator.php:113
+msgctxt ""
+"To show that the entry was unassigned from an actual user to no user."
 msgid "No User"
 msgstr ""
 
@@ -792,133 +811,139 @@ msgstr ""
 #: includes/class-change-entry-creator.php:155
 msgctxt "No user assigned to the entry"
 msgid "No User"
-msgstr ""
+msgstr "Geen Gebruiker"
 
-#: includes/class-data.php:305
+#: includes/class-data.php:316
 msgid "View ID"
-msgstr ""
+msgstr "Toon ID"
 
-#: includes/class-data.php:313
+#: includes/class-data.php:324
 msgid "Number of entries per page"
 msgstr "Aantal inzendingen per pagina"
 
-#: includes/class-data.php:321
+#: includes/class-data.php:332
 msgid "Enable lightbox for images"
 msgstr "Lightbox inschakelen voor afbeeldingen"
 
-#: includes/class-data.php:329
+#: includes/class-data.php:340
 msgid "Show only approved entries"
 msgstr "Alleen toegelaten inzendingen tonen"
 
-#: includes/class-data.php:336
+#: includes/class-data.php:347
 msgid "Hide empty fields"
 msgstr "Verberg lege velden"
 
-#: includes/class-data.php:343
+#: includes/class-data.php:354
 msgid "Allow User Edit"
-msgstr ""
+msgstr "Sta ingelogde gebruikers toe te bewerken"
 
-#: includes/class-data.php:345
+#: includes/class-data.php:356
 msgid "Allow logged-in users to edit entries they created."
 msgstr "Sta ingelogde gebruikers toe eigen inzendingen te bewerken."
 
-#: includes/class-data.php:351
+#: includes/class-data.php:358
+msgid ""
+"Display \"Edit Entry\" fields to non-administrator users if they created the"
+" entry. Edit Entry fields will always be displayed to site administrators."
+msgstr ""
+
+#: includes/class-data.php:363
 msgid "Sort by field"
 msgstr "Sorteer per veld"
 
-#: includes/class-data.php:356 includes/connector-functions.php:624
+#: includes/class-data.php:368 includes/connector-functions.php:672
 msgid "Default"
 msgstr "Stanadaard"
 
-#: includes/class-data.php:357 includes/connector-functions.php:637
+#: includes/class-data.php:369 includes/connector-functions.php:685
 msgid "Date Created"
 msgstr "Datum gecre&#235;erd"
 
-#: includes/class-data.php:362
+#: includes/class-data.php:374
 msgid "Sort direction"
 msgstr "Sorteer richting"
 
-#: includes/class-data.php:367
+#: includes/class-data.php:379
 msgid "ASC"
 msgstr "Oplopend"
 
-#: includes/class-data.php:368
+#: includes/class-data.php:380
 msgid "DESC"
 msgstr "Aflopend"
 
-#: includes/class-data.php:373
+#: includes/class-data.php:385
 msgid "Filter by Start Date"
 msgstr "Filter per Start Datum"
 
-#: includes/class-data.php:375
+#: includes/class-data.php:387
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
 msgstr "Toon inzendingen ingezonden na deze datum. Ondersteund relatieve data, zoals \"-1 week\" of \"-1 maand\"."
 
-#: includes/class-data.php:382
+#: includes/class-data.php:394
 msgid "Filter by End Date"
 msgstr "Filter per Eind Datum"
 
-#: includes/class-data.php:384
+#: includes/class-data.php:396
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
 msgstr "Toon inzendingen ingezonden voor deze datum. Ondersteund relative data, zoals \"nu\" of \"-3 dagen\"."
 
-#: includes/class-data.php:391
+#: includes/class-data.php:403
 msgid "CSS Class"
 msgstr ""
 
-#: includes/class-data.php:392
+#: includes/class-data.php:404
 msgid "CSS class to add to the wrapping HTML container."
 msgstr ""
 
-#: includes/class-data.php:399
+#: includes/class-data.php:411
 msgid "Search Value"
-msgstr ""
+msgstr "Zoek Waarde"
 
-#: includes/class-data.php:400
+#: includes/class-data.php:412
 msgid "Define a default search value for the View"
-msgstr ""
+msgstr "Bepaal een standaard zoek waarde voor de Weergave"
 
-#: includes/class-data.php:407
+#: includes/class-data.php:419
 #: includes/extensions/search-widget/class-search-widget.php:125
 msgid "Search Field"
-msgstr ""
+msgstr "Zoeken"
 
-#: includes/class-data.php:408
+#: includes/class-data.php:420
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
-msgstr ""
+msgstr "Als de Zoek Waarde vaststaat, kun je een specifiek veld kiezen om in te zoeken. Anders worden alle velden doorzocht. "
 
-#: includes/class-data.php:415
+#: includes/class-data.php:427
 msgid "Single Entry Title"
 msgstr "Enkele Inzending Titel"
 
-#: includes/class-data.php:417
+#: includes/class-data.php:429
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and Single"
 " Entry views."
 msgstr "Bij het bekijken van een enkele inzending, verander de titel van de pagina naar deze instelling. Anders zal de titel niet veranderen van Meervoudige Inzendingen naar Enkele Inzending weergaven."
 
-#: includes/class-data.php:424
+#: includes/class-data.php:436
 msgid "Back Link Label"
 msgstr "Inkomende Link Label"
 
-#: includes/class-data.php:426
+#: includes/class-data.php:438
 msgid "The text of the link that returns to the multiple entries view."
 msgstr "De tekst van de link die terugverwijst naar de meervoudige inzendingen weergave."
 
 #: includes/class-debug-bar.php:24
 msgid "GravityView"
-msgstr ""
+msgstr "GravityView"
 
 #: includes/class-debug-bar.php:91
 msgid "Warnings"
-msgstr ""
+msgstr "Waarschuwingen"
 
 #: includes/class-debug-bar.php:100
 msgid "Logs"
@@ -927,30 +952,22 @@ msgstr ""
 #: includes/class-debug-bar.php:169
 msgctxt "Debugging output data is empty."
 msgid "Empty"
-msgstr ""
-
-#: includes/class-frontend-views.php:99
-#: includes/extensions/edit-entry/class-edit-entry.php:147
-#: includes/extensions/edit-entry/class-edit-entry.php:163
-#: includes/extensions/edit-entry/class-edit-entry.php:178
-#: includes/extensions/edit-entry/class-edit-entry.php:789
-#: includes/extensions/edit-entry/fields/edit_link.php:12
-msgid "Edit Entry"
-msgstr "Bewerk deze inzending"
+msgstr "Leeg"
 
 #: includes/class-frontend-views.php:357
-msgid "You have attempted to view an entry that does not exist."
+msgid ""
+"You have attempted to view an entry that is not visible or may not exist."
 msgstr ""
 
 #: includes/class-gravityview-extension.php:169
 #, php-format
 msgid "Could not activate the %s Extension; GravityView is not active."
-msgstr ""
+msgstr "Kan de %s Uitbreiding niet activeren. GravityView is niet actief."
 
 #: includes/class-gravityview-extension.php:179
 #, php-format
 msgid "The %s Extension requires GravityView Version %s or newer."
-msgstr ""
+msgstr "De %s Uitbreiding heeft GravityView Versie %s of nieuwer nodig. "
 
 #: includes/class-post-types.php:35
 msgctxt "Post Type General Name"
@@ -1029,23 +1046,23 @@ msgstr ""
 
 #: includes/class-settings.php:104
 msgid "Inactive License"
-msgstr ""
+msgstr "Niet actieve Licentie"
 
 #: includes/class-settings.php:109
 msgid "Invalid License"
-msgstr ""
+msgstr "Ongeldige Licentie"
 
 #: includes/class-settings.php:110
 msgid "is invalid"
-msgstr ""
+msgstr "is ongeldig"
 
 #: includes/class-settings.php:113
 msgid "is inactive"
-msgstr ""
+msgstr "is niet actief"
 
 #: includes/class-settings.php:116
 msgid "has not been activated"
-msgstr ""
+msgstr "is niet geactiveerd"
 
 #: includes/class-settings.php:143
 msgid "Status"
@@ -1053,17 +1070,17 @@ msgstr ""
 
 #: includes/class-settings.php:144
 msgid "There was an error processing the request."
-msgstr ""
+msgstr "Fout tijdens het verwerken van het verzoek. "
 
 #: includes/class-settings.php:145
 msgid ""
 "Could not deactivate the license. The submitted license key may not be "
 "active."
-msgstr ""
+msgstr "Kon de licentie niet deactiveren. De ingevoerde licentie sleutel kan niet actief zijn. "
 
 #: includes/class-settings.php:146
 msgid "Not Activated"
-msgstr ""
+msgstr "Niet Geactiveerd"
 
 #: includes/class-settings.php:147
 msgid "Invalid; this license has reached its activation limit."
@@ -1071,39 +1088,39 @@ msgstr ""
 
 #: includes/class-settings.php:148
 msgid "Deactivated"
-msgstr ""
+msgstr "Gedeactiveerd"
 
 #: includes/class-settings.php:149
 msgid "Valid"
-msgstr ""
+msgstr "Geldig"
 
 #: includes/class-settings.php:150 includes/class-settings.php:151
 msgid "Not Valid"
-msgstr ""
+msgstr "Ongeldig"
 
 #: includes/class-settings.php:152
 msgid "The license key has been revoked."
-msgstr ""
+msgstr "De licentie sleutel is ingetrokken. "
 
 #: includes/class-settings.php:153
 msgid "The license key has expired."
-msgstr ""
+msgstr "De licentie sleutel is verlopen. "
 
 #: includes/class-settings.php:155
 msgid "Verifying license&hellip;"
-msgstr ""
+msgstr "Licentie verifiëren&hellip;"
 
 #: includes/class-settings.php:156
 msgid "Activate License"
-msgstr ""
+msgstr "Licentie Activeren"
 
 #: includes/class-settings.php:157
 msgid "Deactivate License"
-msgstr ""
+msgstr "Licentie Deactiveren"
 
 #: includes/class-settings.php:158
 msgid "Verify License"
-msgstr ""
+msgstr "Licentie Verifiëren"
 
 #: includes/class-settings.php:179
 msgid "License Key"
@@ -1113,7 +1130,7 @@ msgstr "Licentiesleutel"
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
-msgstr ""
+msgstr "Voeg de Licentie Sleutel toe die je hebt ontvangen bij aanschaf. Dit activeert plugin updates &amp; ondersteuning. "
 
 #: includes/class-settings.php:187
 msgid "Support Email"
@@ -1146,41 +1163,41 @@ msgstr "Volg ons op Google+"
 
 #: includes/connector-functions.php:143
 msgid "Payment Status"
-msgstr ""
+msgstr "Betaling Status"
 
 #: includes/connector-functions.php:148
 msgid "Payment Date"
-msgstr ""
+msgstr "Betaling Datum "
 
 #: includes/connector-functions.php:153
 msgid "Payment Amount"
-msgstr ""
+msgstr "Betaling Bedrag"
 
 #: includes/connector-functions.php:158
 msgid "Payment Method"
-msgstr ""
+msgstr "Betalingswijze"
 
 #: includes/connector-functions.php:163
 msgid "Is Fulfilled"
-msgstr ""
+msgstr "Is Voldaan"
 
 #: includes/connector-functions.php:168
 msgid "Transaction ID"
-msgstr ""
+msgstr "Transactie ID"
 
 #: includes/connector-functions.php:173
 msgid "Transaction Type"
-msgstr ""
+msgstr "Transactie Type"
 
 #: includes/default-templates.php:30
 msgid "Table (default)"
 msgstr "Tabel (standaard)"
 
-#: includes/default-templates.php:31
+#: includes/default-templates.php:31 includes/default-templates.php:82
 msgid "Display items in a table view."
 msgstr "Toon items in een tabel weergave."
 
-#: includes/default-templates.php:45 includes/default-templates.php:93
+#: includes/default-templates.php:45 includes/default-templates.php:137
 msgid "Link to single entry"
 msgstr "Link naar enkele inzending"
 
@@ -1190,117 +1207,125 @@ msgstr "Zichtbare Tabel Kolommen"
 
 #: includes/default-templates.php:57
 msgid "Each field will be displayed as a column in the table."
+msgstr "Elk veld wordt getoond als kolom in de tabel. "
+
+#: includes/default-templates.php:81
+msgid "Edit Table"
 msgstr ""
 
-#: includes/default-templates.php:82
+#: includes/default-templates.php:100
+msgid "Visible Edit Fields"
+msgstr ""
+
+#: includes/default-templates.php:126
 msgid "List (default)"
 msgstr "Lijst (standaard)"
 
-#: includes/default-templates.php:83
+#: includes/default-templates.php:127
 msgid "Display items in a listing view."
 msgstr "Toon items in een lijst weergave."
 
-#: includes/default-templates.php:102
+#: includes/default-templates.php:146
 msgid "Listing Title"
 msgstr "Vermeldingstitel"
 
-#: includes/default-templates.php:103
+#: includes/default-templates.php:147
 msgid "Subheading"
 msgstr "Subkop"
 
-#: includes/default-templates.php:106
+#: includes/default-templates.php:150
 msgid "Image"
 msgstr "Afbeelding"
 
-#: includes/default-templates.php:109
+#: includes/default-templates.php:153
 msgid "Other Fields"
-msgstr ""
+msgstr "Andere Velden"
 
-#: includes/default-templates.php:113
+#: includes/default-templates.php:157
 msgid "Footer Left"
 msgstr "Footer Links"
 
-#: includes/default-templates.php:116
+#: includes/default-templates.php:160
 msgid "Footer Right"
 msgstr "Footer Rechts"
 
-#: includes/default-templates.php:352
+#: includes/default-templates.php:396
 msgid "Business Data"
 msgstr "Bedrijfsdata"
 
-#: includes/default-templates.php:353
+#: includes/default-templates.php:397
 msgid "Display business information in a table."
 msgstr "Toon bedrijfsinformatie in een tabel."
 
-#: includes/default-templates.php:374
+#: includes/default-templates.php:418
 msgid "Resume Board"
 msgstr "CV Prikbord"
 
-#: includes/default-templates.php:375
+#: includes/default-templates.php:419
 msgid "Allow job-seekers to post their resumes."
 msgstr "Baanzoekenden toestaan om een CV te plaatsen."
 
-#: includes/default-templates.php:396
+#: includes/default-templates.php:440
 msgid "Job Board"
 msgstr "Banen Bord"
 
-#: includes/default-templates.php:397
+#: includes/default-templates.php:441
 msgid "Post available jobs in a simple job board."
 msgstr "Publiceer beschikbare banen op een eenvoudig banen bord."
 
-#: includes/default-templates.php:418
+#: includes/default-templates.php:462
 msgid "People Table"
 msgstr "Personen Tabel"
 
-#: includes/default-templates.php:419
+#: includes/default-templates.php:463
 msgid "Display information about people in a table."
 msgstr "Toon informatie over personen in een tabel."
 
-#: includes/default-templates.php:441
+#: includes/default-templates.php:485
 msgid "Issue Tracker"
 msgstr "Issue Tracker"
 
-#: includes/default-templates.php:442
+#: includes/default-templates.php:486
 msgid "Manage issues and their statuses."
 msgstr "Beheer issues en hun status."
 
-#: includes/default-templates.php:464
+#: includes/default-templates.php:508
 msgid "Business Listings"
 msgstr "Bedrijfsvermeldingen"
 
-#: includes/default-templates.php:465
+#: includes/default-templates.php:509
 msgid "Display business profiles."
 msgstr "Toon bedrijfsprofielen."
 
-#: includes/default-templates.php:486
+#: includes/default-templates.php:530
 msgid "Event Listings"
 msgstr "Evenement Vermeldingen"
 
-#: includes/default-templates.php:487
+#: includes/default-templates.php:531
 msgid "Present a list of your events."
 msgstr "Presenteer een lijst van al jou evenementen."
 
-#: includes/default-templates.php:508
+#: includes/default-templates.php:552
 msgid "People Profiles"
 msgstr "Persoonsprofielen"
 
-#: includes/default-templates.php:509
+#: includes/default-templates.php:553
 msgid "List people with individual profiles."
 msgstr "Toon personen met individuele profielen in een lijst."
 
-#: includes/default-templates.php:530
+#: includes/default-templates.php:574
 msgid "Staff Profiles"
 msgstr "Personeelsprofielen"
 
-#: includes/default-templates.php:531
+#: includes/default-templates.php:575
 msgid "List members of your team."
 msgstr "Toon leden van jouw team in een lijst."
 
-#: includes/default-templates.php:552
+#: includes/default-templates.php:596
 msgid "Website Showcase"
 msgstr "Website Weergeven"
 
-#: includes/default-templates.php:553
+#: includes/default-templates.php:597
 msgid "Feature submitted websites with screenshots."
 msgstr "Ingestuurde websites uitlichten met screenshots."
 
@@ -1331,84 +1356,115 @@ msgstr "Toon elke pagina nummer in plaats van een samenvatting (zoals: 1 2 3 ...
 
 #: includes/default-widgets.php:109
 msgid "Page Links"
-msgstr ""
+msgstr "Pagina Links"
 
-#: includes/extensions/edit-entry/class-edit-entry.php:145
+#: includes/extensions/edit-entry/class-edit-entry.php:203
 msgid "Edit Link Text"
+msgstr "Bewerk Tekst Link"
+
+#: includes/extensions/edit-entry/class-edit-entry.php:222
+msgid "Limiting Edit Access"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:165
+#: includes/extensions/edit-entry/class-edit-entry.php:223
+msgid ""
+"Change this setting if you don't want the user who created the entry to be "
+"able to edit this field."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry.php:252
+msgid "Make field editable to:"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry.php:278
 msgid "A link to edit the entry. Visible based on View settings."
+msgstr "Een link om de inzending te bewerken. Zichtbaar op basis van instellingen Weergave.  "
+
+#: includes/extensions/edit-entry/class-edit-entry.php:324
+msgctxt "User capability"
+msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:678
+#: includes/extensions/edit-entry/class-edit-entry.php:669
+msgid "Details"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry.php:933
+msgid "Maximum number of files reached"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry.php:1008
+msgid "You do not have permission to edit this field."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry.php:1066
 msgid "The link to edit this entry is not valid; it may have expired."
-msgstr ""
+msgstr "De link om deze inzending te bewerken is ongeldig; het kan verlopen zijn. "
 
-#: includes/extensions/edit-entry/class-edit-entry.php:682
+#: includes/extensions/edit-entry/class-edit-entry.php:1070
 msgid "You do not have permission to edit this entry."
-msgstr ""
+msgstr "Je hebt geen toestemming om deze inzending te bewerken. "
 
-#: includes/extensions/edit-entry/class-edit-entry.php:686
+#: includes/extensions/edit-entry/class-edit-entry.php:1074
 msgid "You cannot edit the entry; it is in the trash."
-msgstr ""
+msgstr "Je kunt deze inzending niet bewerken; het staat in de prullenbak. "
 
-#: includes/extensions/edit-entry/class-edit-entry.php:800
+#: includes/extensions/edit-entry/class-edit-entry.php:1188
 msgid "There was a problem with your submission."
-msgstr ""
+msgstr "Er was een probleem met jouw inzending. "
 
-#: includes/extensions/edit-entry/class-edit-entry.php:800
+#: includes/extensions/edit-entry/class-edit-entry.php:1188
 msgid "Errors have been highlighted below."
-msgstr ""
+msgstr "Fouten zijn hieronder opgelicht. "
 
-#: includes/extensions/edit-entry/class-edit-entry.php:806
+#: includes/extensions/edit-entry/class-edit-entry.php:1194
 #, php-format
 msgid "Entry Updated. %sReturn to Entry%s"
-msgstr ""
+msgstr "Inzending Geüpdatet. %sTerug naar Inzending%s"
 
-#: includes/extensions/edit-entry/class-edit-entry.php:841
+#: includes/extensions/edit-entry/class-edit-entry.php:1236
 msgid "Update"
 msgstr ""
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:34
 msgid "You don&rsquo;t have permission to edit this post."
-msgstr ""
+msgstr "Je hebt geen toestemming om dit bericht te bewerken. "
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:36
 #, php-format
 msgid "You can %sedit this post%s from the post page."
-msgstr ""
+msgstr "Je kunt %sdit bericht bewerken%s op de berichten pagina. "
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:100
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:119
 msgid "Allowed Files"
-msgstr ""
+msgstr "Toegestane Bestanden"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:132
 msgid "Drop files here or"
-msgstr ""
+msgstr "Sleep bestanden hier of"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:132
 msgid "Select files"
-msgstr ""
+msgstr "Selecteer bestanden"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:158
 msgid "Download file"
-msgstr ""
+msgstr "Download bestand"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:158
 msgid "Delete file"
-msgstr ""
+msgstr "Verwijder bestand"
 
 #: includes/extensions/edit-entry/inline-javascript.php:4
 msgid ""
 "Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to "
 "delete"
-msgstr ""
+msgstr "Wil je dit bestand permanent verwijderen? 'Cancel' om te stoppen. 'OK' om te verwijderen. "
 
 #: includes/extensions/edit-entry/inline-javascript.php:14
 msgid "Ajax error while deleting field."
-msgstr ""
+msgstr "Ajax fout tijdens het verwijderen van het veld. "
 
 #: includes/extensions/search-widget/class-search-widget.php:27
 msgid "Search form for searching entries."
@@ -1416,60 +1472,60 @@ msgstr ""
 
 #: includes/extensions/search-widget/class-search-widget.php:44
 msgid "Search Layout"
-msgstr ""
+msgstr "Zoek Layout"
 
 #: includes/extensions/search-widget/class-search-widget.php:47
 msgid "Horizontal"
-msgstr ""
+msgstr "Horizontaal"
 
 #: includes/extensions/search-widget/class-search-widget.php:48
 msgid "Vertical"
-msgstr ""
+msgstr "Verticaal"
 
 #: includes/extensions/search-widget/class-search-widget.php:52
 msgid "Search Bar"
-msgstr ""
+msgstr "Zoek Bar"
 
 #: includes/extensions/search-widget/class-search-widget.php:97
 msgid "Text"
-msgstr ""
+msgstr "Tekst"
 
 #: includes/extensions/search-widget/class-search-widget.php:98
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: includes/extensions/search-widget/class-search-widget.php:100
 msgid "Select (multiple values)"
-msgstr ""
+msgstr "Selecteer (meerdere waarden)"
 
 #: includes/extensions/search-widget/class-search-widget.php:101
 msgid "Radio"
-msgstr ""
+msgstr "Radio"
 
 #: includes/extensions/search-widget/class-search-widget.php:102
 #: includes/extensions/search-widget/class-search-widget.php:103
 msgid "Checkbox"
-msgstr ""
+msgstr "Checkbox"
 
 #: includes/extensions/search-widget/class-search-widget.php:104
 msgid "Links"
-msgstr ""
+msgstr "Links"
 
 #: includes/extensions/search-widget/class-search-widget.php:123
 msgid "No search fields configured yet."
-msgstr ""
+msgstr "Nog geen zoekvelden geconfigureerd."
 
 #: includes/extensions/search-widget/class-search-widget.php:124
 msgid "Add Search Field"
-msgstr ""
+msgstr "Zoekveld Toevoegen"
 
 #: includes/extensions/search-widget/class-search-widget.php:126
 msgid "Input Type"
-msgstr ""
+msgstr "Invoer Type"
 
 #: includes/extensions/search-widget/class-search-widget.php:185
 msgid "Search Everything"
-msgstr ""
+msgstr "Alles Doorzoeken"
 
 #: includes/extensions/search-widget/class-search-widget.php:634
 msgctxt "Close calendar"
@@ -1479,26 +1535,26 @@ msgstr "Sluiten"
 #: includes/extensions/search-widget/class-search-widget.php:635
 msgctxt "Previous month in calendar"
 msgid "Prev"
-msgstr ""
+msgstr "Vorige"
 
 #: includes/extensions/search-widget/class-search-widget.php:636
 msgctxt "Next month in calendar"
 msgid "Next"
-msgstr ""
+msgstr "Volgende"
 
 #: includes/extensions/search-widget/class-search-widget.php:637
 msgctxt "Today in calendar"
 msgid "Today"
-msgstr ""
+msgstr "Vandaag"
 
 #: includes/extensions/search-widget/class-search-widget.php:638
 msgctxt "Week in calendar"
 msgid "Week"
-msgstr ""
+msgstr "Week"
 
 #: includes/extensions/search-widget/class-search-widget.php:639
 msgid "Show a different month"
-msgstr ""
+msgstr "Toon een andere maand"
 
 #: includes/extensions/search-widget/templates/search-field-entry_date.php:15
 msgid "Filter by date:"
@@ -1514,7 +1570,7 @@ msgstr "Einddatum"
 
 #: includes/extensions/search-widget/templates/search-field-link.php:12
 msgid "Show only:"
-msgstr ""
+msgstr "Toon alleen: "
 
 #: includes/extensions/search-widget/templates/search-field-search_all.php:16
 msgid "Search Entries:"
@@ -1524,39 +1580,39 @@ msgstr "Zoek Inzendingen:"
 msgid "Search"
 msgstr "Zoeken"
 
-#: includes/fields/address.php:21
+#: includes/fields/address.php:25
 msgid "Show Map Link:"
-msgstr ""
+msgstr "Toon op kaart"
 
-#: includes/fields/address.php:22
+#: includes/fields/address.php:26
 msgid "Display a \"Map It\" link below the address"
-msgstr ""
+msgstr "Toont een 'Toon op kaart' link onder het adres."
 
 #: includes/fields/class.field.php:25
 msgid "Link to the post"
-msgstr ""
+msgstr "Link naar het bericht. "
 
 #: includes/fields/class.field.php:26
 msgid "Link to the post created by the entry."
-msgstr ""
+msgstr "Link naar het bericht gecreëerd door de Inzending. "
 
 #: includes/fields/class.field.php:31
 msgid "Link to the category or tag"
-msgstr ""
+msgstr "Link naar categorie of tag. "
 
 #: includes/fields/class.field.php:32
 msgid ""
 "Link to the current category or tag. \"Link to single entry\" must be "
 "unchecked."
-msgstr ""
+msgstr "Link naar de huidige categorie of tag. \"Link naar huidige inzending\" moet uit staan. "
 
 #: includes/fields/class.field.php:37
 msgid "Use the live post data"
-msgstr ""
+msgstr "Gebruik de informatie uit het huidige bericht. "
 
 #: includes/fields/class.field.php:38
 msgid "Instead of using the entry data, instead use the current post data."
-msgstr ""
+msgstr "Gebruik in plaats van informatie uit de Inzending informatie uit het huidige bericht."
 
 #: includes/fields/class.field.php:43
 msgid "Override Date Format"
@@ -1567,136 +1623,140 @@ msgstr "Overschrijf Datum Formaat"
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
 msgstr "Definieer hoe de datum moet worden weergegeven (gebruik %shet PHP datum formaat%s)"
 
-#: includes/fields/created-by.php:11
+#: includes/fields/created-by.php:15
 msgid "User Format"
 msgstr "Gebruiker Formaat"
 
-#: includes/fields/created-by.php:12
+#: includes/fields/created-by.php:16
 msgid "How should the User information be displayed?"
 msgstr "Hoe moet de Gebruiker informatie worden weergegeven?"
 
-#: includes/fields/created-by.php:14
+#: includes/fields/created-by.php:18
 msgid "Display Name (Example: \"Ellen Ripley\")"
 msgstr "Weergave Naam (Bijvoorbeeld: \"Ellen Ripley\")"
 
-#: includes/fields/created-by.php:15
+#: includes/fields/created-by.php:19
 msgid "Username (Example: \"nostromo\")"
 msgstr "Gebruikersnaam (Bijvoorbeeld: \"nostromo\")"
 
-#: includes/fields/created-by.php:16
+#: includes/fields/created-by.php:20
 msgid "User ID # (Example: 426)"
 msgstr "Gebruiker ID # (Bijvoorbeeld: 426)"
 
-#: includes/fields/custom.php:19
+#: includes/fields/custom.php:23
 msgid "Enter text or HTML. Also supports shortcodes."
-msgstr ""
+msgstr "Voeg tekst of HTML toe. Shortcodes werken ook. "
 
-#: includes/fields/custom.php:27
+#: includes/fields/custom.php:31
 msgid "Automatically add paragraphs to content"
-msgstr ""
+msgstr "Automatisch paragrafen toevoegen aan de tekst. "
 
-#: includes/fields/custom.php:28
+#: includes/fields/custom.php:32
 msgid ""
 "Wrap each block of text in an HTML paragraph tag (recommended for text)."
 msgstr ""
 
-#: includes/fields/email.php:19
+#: includes/fields/email.php:23
 msgid "Link the Email Address"
-msgstr ""
-
-#: includes/fields/email.php:20
-msgid "Clicking the link will generate a new email."
-msgstr ""
+msgstr "Link het Email Adres"
 
 #: includes/fields/email.php:24
+msgid "Clicking the link will generate a new email."
+msgstr "Op de link klinken maakt een nieuwe email."
+
+#: includes/fields/email.php:28
 msgid "Email Subject"
-msgstr ""
+msgstr "Email Onderwerp"
 
-#: includes/fields/email.php:26
+#: includes/fields/email.php:30
 msgid "Set the default email subject line."
-msgstr ""
+msgstr "Voeg een standaard email onderwerp in."
 
-#: includes/fields/email.php:31
+#: includes/fields/email.php:35
 msgid "Email Body"
-msgstr ""
+msgstr "Email tekst"
 
-#: includes/fields/email.php:33
+#: includes/fields/email.php:37
 msgid "Set the default email content."
-msgstr ""
+msgstr "Voeg de standaard email tekst toe. "
 
-#: includes/fields/email.php:40
+#: includes/fields/email.php:44
 msgid "Encrypt Email Address"
-msgstr ""
+msgstr "Versleutel het Email Adres"
 
-#: includes/fields/email.php:41
+#: includes/fields/email.php:45
 msgid ""
 "Make it harder for spammers to get email addresses from your entries. Email "
 "addresses will not be visible with Javascript disabled."
 msgstr ""
 
-#: includes/fields/entry-link.php:18 includes/fields/source-url.php:25
+#: includes/fields/entry-link.php:22 includes/fields/source-url.php:29
 msgid "Link Text:"
-msgstr ""
+msgstr "Link Tekst:"
 
-#: includes/fields/entry-link.php:20 templates/fields/entry_link.php:10
+#: includes/fields/entry-link.php:24 templates/fields/entry_link.php:10
 msgid "View Details"
 msgstr "Toon Details"
 
-#: includes/fields/fileupload.php:16
+#: includes/fields/fileupload.php:20
 msgid "Display as a Link:"
-msgstr ""
+msgstr "Toon als een Link:"
 
-#: includes/fields/fileupload.php:17
+#: includes/fields/fileupload.php:21
 msgid "Display the uploaded files as links, rather than embedded content."
-msgstr ""
+msgstr "Toon de geüploade bestanden als links in plaats van embedden. "
 
-#: includes/fields/source-url.php:18
+#: includes/fields/source-url.php:22
 msgid "Link to URL:"
-msgstr ""
+msgstr "Link naar URL:"
 
-#: includes/fields/source-url.php:19
+#: includes/fields/source-url.php:23
 msgid "Display as a link to the Source URL"
-msgstr ""
+msgstr "Toon een link naar de Bron URL"
 
-#: includes/fields/source-url.php:26
+#: includes/fields/source-url.php:30
 msgid "Customize the link text. If empty, the link text will be the the URL."
-msgstr ""
+msgstr "Bewerk de link tekst. "
 
-#: includes/fields/website.php:18
+#: includes/fields/website.php:22
 msgid "Shorten Link Display"
-msgstr ""
+msgstr "Verkort de Link"
 
-#: includes/fields/website.php:19
+#: includes/fields/website.php:23
 msgid "Only show the domain for a URL instead of the whole link."
 msgstr ""
 
-#: includes/fields/website.php:20
+#: includes/fields/website.php:24
 msgid "Don&rsquo;t show the full URL, only show the domain."
+msgstr "Laat niet de volledige URL zien, alleen de domeinnaam. "
+
+#: includes/fields/website.php:30
+msgid "Open link in the same window?"
 msgstr ""
 
 #: templates/fields/email.php:65
 msgid "Email hidden; Javascript is required."
-msgstr ""
+msgstr "Email is verborgen. Javascript is vereist. "
 
 #: templates/fields/is_fulfilled.php:8
 msgid "Not Fulfilled"
-msgstr ""
+msgstr "Niet Voldaan"
 
 #: templates/fields/is_fulfilled.php:10
 msgid "Fulfilled"
-msgstr ""
+msgstr "Voldaan"
 
 #: templates/fields/post_image.php:85
 msgctxt "Post Image field title heading"
 msgid "Title:"
-msgstr ""
+msgstr "Titel:"
 
 #: templates/fields/post_image.php:91
 msgctxt "Post Image field caption heading"
 msgid "Caption:"
-msgstr ""
+msgstr "Onderschrift:"
 
 #: templates/fields/post_image.php:97
 msgctxt "Post Image field description heading"
 msgid "Description:"
-msgstr ""
+msgstr "Beschrijving:"

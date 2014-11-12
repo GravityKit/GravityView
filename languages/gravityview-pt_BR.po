@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-10-28 21:29-0700\n"
-"PO-Revision-Date: 2014-10-20 23:02+0000\n"
+"POT-Creation-Date: 2014-11-12 11:30-0700\n"
+"PO-Revision-Date: 2014-11-12 18:31+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/gravityview/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -12,21 +12,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.10\n"
+"X-Generator: Poedit 1.7beta1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: gravityview.php:239
+#: gravityview.php:237
 msgid "Top"
 msgstr ""
 
-#: gravityview.php:240
+#: gravityview.php:238
 msgid "Left"
 msgstr ""
 
-#: gravityview.php:240
+#: gravityview.php:238
 msgid "Right"
 msgstr ""
 
@@ -54,35 +54,35 @@ msgstr ""
 msgid "Make visible for:"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:98
+#: includes/admin/class.render.settings.php:99
 msgid "Any Logged-In User"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:99
+#: includes/admin/class.render.settings.php:100
 msgid "Author Or Higher"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:100
+#: includes/admin/class.render.settings.php:101
 msgid "Can View Gravity Forms Entries"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:101
+#: includes/admin/class.render.settings.php:102
 msgid "Editor Or Higher"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:102
+#: includes/admin/class.render.settings.php:103
 msgid "Can Edit Gravity Forms Entries"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:103
+#: includes/admin/class.render.settings.php:104
 msgid "Administrator"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:107
+#: includes/admin/class.render.settings.php:108
 msgid "Multisite Super Admin"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:161
+#: includes/admin/class.render.settings.php:163
 #, php-format
 msgid "Options: %s"
 msgstr ""
@@ -95,7 +95,7 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/metaboxes.php:47 includes/class-admin-views.php:269
+#: includes/admin/metaboxes.php:47 includes/class-admin-views.php:281
 msgid "Data Source"
 msgstr ""
 
@@ -180,47 +180,64 @@ msgstr ""
 msgid "Single Entry"
 msgstr ""
 
-#: includes/admin/metaboxes.php:261
+#: includes/admin/metaboxes.php:255 includes/class-frontend-views.php:99
+#: includes/extensions/edit-entry/class-edit-entry.php:205
+#: includes/extensions/edit-entry/class-edit-entry.php:276
+#: includes/extensions/edit-entry/class-edit-entry.php:293
+#: includes/extensions/edit-entry/class-edit-entry.php:1177
+#: includes/extensions/edit-entry/fields/edit_link.php:12
+msgid "Edit Entry"
+msgstr ""
+
+#: includes/admin/metaboxes.php:262
 msgid "Above Entries Widgets"
 msgstr ""
 
-#: includes/admin/metaboxes.php:261
+#: includes/admin/metaboxes.php:262
 msgid "These widgets will be shown above entries."
 msgstr ""
 
-#: includes/admin/metaboxes.php:265
+#: includes/admin/metaboxes.php:266
 msgid "Entries Fields"
 msgstr ""
 
-#: includes/admin/metaboxes.php:265
+#: includes/admin/metaboxes.php:266
 msgid "These fields will be shown for each entry."
 msgstr ""
 
-#: includes/admin/metaboxes.php:273
+#: includes/admin/metaboxes.php:274
 msgid "Below Entries Widgets"
 msgstr ""
 
-#: includes/admin/metaboxes.php:273
+#: includes/admin/metaboxes.php:274
 msgid "These widgets will be shown below entries."
 msgstr ""
 
-#: includes/admin/metaboxes.php:303
+#: includes/admin/metaboxes.php:304
 msgid "These fields will be shown in Single Entry view."
 msgstr ""
 
-#: includes/admin/metaboxes.php:360
+#: includes/admin/metaboxes.php:325
+msgid "Fields shown when editing an entry."
+msgstr ""
+
+#: includes/admin/metaboxes.php:325
+msgid "If not configured, all form fields will be displayed."
+msgstr ""
+
+#: includes/admin/metaboxes.php:382
 msgid "Single Entry Settings"
 msgstr ""
 
-#: includes/admin/metaboxes.php:437
+#: includes/admin/metaboxes.php:459
 msgid "Embed Shortcode"
 msgstr ""
 
-#: includes/admin/metaboxes.php:437
+#: includes/admin/metaboxes.php:459
 msgid "Add this shortcode to a post or page to embed this view."
 msgstr ""
 
-#: includes/admin/metaboxes.php:483
+#: includes/admin/metaboxes.php:505
 msgid "Layout Settings"
 msgstr ""
 
@@ -260,13 +277,13 @@ msgid "Insert View"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:125
-#: includes/class-admin-views.php:811
-#: includes/extensions/edit-entry/class-edit-entry.php:843
+#: includes/class-admin-views.php:839
+#: includes/extensions/edit-entry/class-edit-entry.php:1238
 msgid "Cancel"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:171
-#: includes/class-admin-views.php:815
+#: includes/class-admin-views.php:843
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -343,23 +360,23 @@ msgstr ""
 msgid "Approved the Entry for GravityView"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:433
+#: includes/class-admin-approve-entries.php:435
 msgid "Approve"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:434
+#: includes/class-admin-approve-entries.php:436
 msgid "Disapprove"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:436
+#: includes/class-admin-approve-entries.php:438
 msgid "Entry not approved for directory viewing. Click to approve this entry."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:437
+#: includes/class-admin-approve-entries.php:439
 msgid "Entry approved for directory viewing. Click to disapprove this entry."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:438
+#: includes/class-admin-approve-entries.php:440
 msgid "Show entry in directory view?"
 msgstr ""
 
@@ -406,161 +423,161 @@ msgstr ""
 msgid "GravityView Views using this form as a data source"
 msgstr ""
 
-#: includes/class-admin-views.php:162
+#: includes/class-admin-views.php:174
 msgid "CSS Merge Tags"
 msgstr ""
 
-#: includes/class-admin-views.php:163
+#: includes/class-admin-views.php:175
 #, php-format
 msgid ""
 "Developers: The CSS classes will be sanitized using the "
 "%ssanitize_title_with_dashes()%s function."
 msgstr ""
 
-#: includes/class-admin-views.php:187
+#: includes/class-admin-views.php:199
 msgid "Not connected."
 msgstr ""
 
-#: includes/class-admin-views.php:196
+#: includes/class-admin-views.php:208
 msgid "The connected form can not be found; it may no longer exist."
 msgstr ""
 
-#: includes/class-admin-views.php:228
+#: includes/class-admin-views.php:240
 msgid "Edit Form"
 msgstr ""
 
-#: includes/class-admin-views.php:233
+#: includes/class-admin-views.php:245
 msgid "Entries"
 msgstr ""
 
-#: includes/class-admin-views.php:238
+#: includes/class-admin-views.php:250
 msgid "Edit settings for this form"
 msgstr ""
 
-#: includes/class-admin-views.php:238 includes/class-settings.php:246
+#: includes/class-admin-views.php:250 includes/class-settings.php:246
 #: includes/class-settings.php:247
 msgid "Settings"
 msgstr ""
 
-#: includes/class-admin-views.php:243
+#: includes/class-admin-views.php:255
 msgid "Preview this form"
 msgstr ""
 
-#: includes/class-admin-views.php:243
+#: includes/class-admin-views.php:255
 msgid "Preview"
 msgstr ""
 
-#: includes/class-admin-views.php:434
+#: includes/class-admin-views.php:456
 msgid "+ Add All Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:435
+#: includes/class-admin-views.php:457
 msgid "Add all the available fields at once."
 msgstr ""
 
-#: includes/class-admin-views.php:482
+#: includes/class-admin-views.php:507
 msgid "Entry ID"
 msgstr ""
 
-#: includes/class-admin-views.php:484
+#: includes/class-admin-views.php:509
 msgid "The unique ID of the entry."
 msgstr ""
 
-#: includes/class-admin-views.php:487
+#: includes/class-admin-views.php:512
 #: includes/extensions/search-widget/class-search-widget.php:186
 msgid "Entry Date"
 msgstr ""
 
-#: includes/class-admin-views.php:488
+#: includes/class-admin-views.php:513
 msgid "The date the entry was created."
 msgstr ""
 
-#: includes/class-admin-views.php:492
+#: includes/class-admin-views.php:517
 msgid "Source URL"
 msgstr ""
 
-#: includes/class-admin-views.php:494
+#: includes/class-admin-views.php:519
 msgid "The URL of the page where the form was submitted."
 msgstr ""
 
-#: includes/class-admin-views.php:497
+#: includes/class-admin-views.php:522
 msgid "User IP"
 msgstr ""
 
-#: includes/class-admin-views.php:499
+#: includes/class-admin-views.php:524
 msgid "The IP Address of the user who created the entry."
 msgstr ""
 
-#: includes/class-admin-views.php:502
+#: includes/class-admin-views.php:527
 msgid "User"
 msgstr ""
 
-#: includes/class-admin-views.php:504
+#: includes/class-admin-views.php:529
 msgid "Details of the logged-in user who created the entry (if any)."
 msgstr ""
 
-#: includes/class-admin-views.php:511 includes/fields/custom.php:18
+#: includes/class-admin-views.php:536 includes/fields/custom.php:22
 msgid "Custom Content"
 msgstr ""
 
-#: includes/class-admin-views.php:513
+#: includes/class-admin-views.php:538
 msgid "Insert custom text or HTML."
 msgstr ""
 
-#: includes/class-admin-views.php:520
+#: includes/class-admin-views.php:546
 msgid "Link to Entry"
 msgstr ""
 
-#: includes/class-admin-views.php:521
+#: includes/class-admin-views.php:547
 msgid "A dedicated link to the single entry with customizable text."
 msgstr ""
 
-#: includes/class-admin-views.php:595
+#: includes/class-admin-views.php:624
 msgid "Add Widget"
 msgstr ""
 
-#: includes/class-admin-views.php:597
+#: includes/class-admin-views.php:626
 msgid "Add Field"
 msgstr ""
 
-#: includes/class-admin-views.php:678
+#: includes/class-admin-views.php:707
 #, php-format
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr ""
 
-#: includes/class-admin-views.php:809
+#: includes/class-admin-views.php:837
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:810
+#: includes/class-admin-views.php:838
 msgid "Close"
 msgstr ""
 
-#: includes/class-admin-views.php:812
+#: includes/class-admin-views.php:840
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:813
+#: includes/class-admin-views.php:841
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:814
+#: includes/class-admin-views.php:842
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:816
+#: includes/class-admin-views.php:844
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:817
+#: includes/class-admin-views.php:845
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:818
+#: includes/class-admin-views.php:846
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -598,19 +615,19 @@ msgstr ""
 msgid "List of Changes"
 msgstr ""
 
-#: includes/class-admin-welcome.php:603
+#: includes/class-admin-welcome.php:608
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:628
+#: includes/class-admin-welcome.php:633
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:651
+#: includes/class-admin-welcome.php:657
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:652
+#: includes/class-admin-welcome.php:658
 #, php-format
 msgid ""
 "If you want to contribute to the code, you can %srequest access to the "
@@ -618,16 +635,16 @@ msgid ""
 " here."
 msgstr ""
 
-#: includes/class-admin.php:88
+#: includes/class-admin.php:90
 msgid "Support"
 msgstr ""
 
-#: includes/class-admin.php:133
+#: includes/class-admin.php:135
 #, php-format
 msgid "A new form was created for this View: \"%s\""
 msgstr ""
 
-#: includes/class-admin.php:134
+#: includes/class-admin.php:136
 #, php-format
 msgid ""
 "%sThere are no entries for the new form, so the View will also be empty.%s To start collecting entries, you can add submissions through %sthe preview form%s and also embed the form on a post or page using this code: %s\n"
@@ -636,114 +653,114 @@ msgid ""
 "\t\t\t\t\t"
 msgstr ""
 
-#: includes/class-admin.php:146 includes/class-admin.php:147
-#: includes/class-admin.php:149
+#: includes/class-admin.php:148 includes/class-admin.php:149
+#: includes/class-admin.php:151
 #, php-format
 msgid "View updated. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:148
+#: includes/class-admin.php:150
 msgid "View deleted."
-msgstr ""
-
-#: includes/class-admin.php:151
-#, php-format
-msgid "View restored to revision from %s"
-msgstr ""
-
-#: includes/class-admin.php:152
-#, php-format
-msgid "View published. %sView on website.%s"
 msgstr ""
 
 #: includes/class-admin.php:153
 #, php-format
-msgid "View saved. %sView on website.%s"
+msgid "View restored to revision from %s"
 msgstr ""
 
 #: includes/class-admin.php:154
-msgid "View submitted."
+#, php-format
+msgid "View published. %sView on website.%s"
+msgstr ""
+
+#: includes/class-admin.php:155
+#, php-format
+msgid "View saved. %sView on website.%s"
 msgstr ""
 
 #: includes/class-admin.php:156
+msgid "View submitted."
+msgstr ""
+
+#: includes/class-admin.php:158
 #, php-format
 msgid "View scheduled for: %1$s."
 msgstr ""
 
-#: includes/class-admin.php:158
+#: includes/class-admin.php:160
 msgid "M j, Y @ G:i"
 msgstr ""
 
-#: includes/class-admin.php:160
+#: includes/class-admin.php:162
 #, php-format
 msgid "View draft updated. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:166
+#: includes/class-admin.php:168
 #, php-format
 msgid "%s View updated."
 msgid_plural "%s Views updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:167
+#: includes/class-admin.php:169
 #, php-format
 msgid "%s View not updated, somebody is editing it."
 msgid_plural "%s Views not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:168
+#: includes/class-admin.php:170
 #, php-format
 msgid "%s View permanently deleted."
 msgid_plural "%s Views permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:169
+#: includes/class-admin.php:171
 #, php-format
 msgid "%s View moved to the Trash."
 msgid_plural "%s Views moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:170
+#: includes/class-admin.php:172
 #, php-format
 msgid "%s View restored from the Trash."
 msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:453
+#: includes/class-admin.php:455
 msgid "Dismiss"
 msgstr ""
 
-#: includes/class-admin.php:487
+#: includes/class-admin.php:489
 msgid "Potential Conflict"
 msgstr ""
 
-#: includes/class-admin.php:488
+#: includes/class-admin.php:490
 msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
 "plugin."
 msgstr ""
 
-#: includes/class-admin.php:513
+#: includes/class-admin.php:515
 #, php-format
 msgid ""
 "%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
 "Forms%s to use the GravityView plugin."
 msgstr ""
 
-#: includes/class-admin.php:515
+#: includes/class-admin.php:517
 #, php-format
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr ""
 
-#: includes/class-admin.php:521
+#: includes/class-admin.php:523
 #, php-format
 msgid ""
 "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n"
@@ -775,6 +792,8 @@ msgid "%s (ID #%d)"
 msgstr ""
 
 #: includes/class-change-entry-creator.php:113
+msgctxt ""
+"To show that the entry was unassigned from an actual user to no user."
 msgid "No User"
 msgstr ""
 
@@ -792,121 +811,127 @@ msgctxt "No user assigned to the entry"
 msgid "No User"
 msgstr ""
 
-#: includes/class-data.php:305
+#: includes/class-data.php:316
 msgid "View ID"
 msgstr ""
 
-#: includes/class-data.php:313
+#: includes/class-data.php:324
 msgid "Number of entries per page"
 msgstr ""
 
-#: includes/class-data.php:321
+#: includes/class-data.php:332
 msgid "Enable lightbox for images"
 msgstr ""
 
-#: includes/class-data.php:329
+#: includes/class-data.php:340
 msgid "Show only approved entries"
 msgstr ""
 
-#: includes/class-data.php:336
+#: includes/class-data.php:347
 msgid "Hide empty fields"
 msgstr ""
 
-#: includes/class-data.php:343
+#: includes/class-data.php:354
 msgid "Allow User Edit"
 msgstr ""
 
-#: includes/class-data.php:345
+#: includes/class-data.php:356
 msgid "Allow logged-in users to edit entries they created."
 msgstr ""
 
-#: includes/class-data.php:351
+#: includes/class-data.php:358
+msgid ""
+"Display \"Edit Entry\" fields to non-administrator users if they created the"
+" entry. Edit Entry fields will always be displayed to site administrators."
+msgstr ""
+
+#: includes/class-data.php:363
 msgid "Sort by field"
 msgstr ""
 
-#: includes/class-data.php:356 includes/connector-functions.php:624
+#: includes/class-data.php:368 includes/connector-functions.php:672
 msgid "Default"
 msgstr ""
 
-#: includes/class-data.php:357 includes/connector-functions.php:637
+#: includes/class-data.php:369 includes/connector-functions.php:685
 msgid "Date Created"
 msgstr ""
 
-#: includes/class-data.php:362
+#: includes/class-data.php:374
 msgid "Sort direction"
 msgstr ""
 
-#: includes/class-data.php:367
+#: includes/class-data.php:379
 msgid "ASC"
 msgstr ""
 
-#: includes/class-data.php:368
+#: includes/class-data.php:380
 msgid "DESC"
 msgstr ""
 
-#: includes/class-data.php:373
+#: includes/class-data.php:385
 msgid "Filter by Start Date"
 msgstr ""
 
-#: includes/class-data.php:375
+#: includes/class-data.php:387
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
 msgstr ""
 
-#: includes/class-data.php:382
+#: includes/class-data.php:394
 msgid "Filter by End Date"
 msgstr ""
 
-#: includes/class-data.php:384
+#: includes/class-data.php:396
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
 msgstr ""
 
-#: includes/class-data.php:391
+#: includes/class-data.php:403
 msgid "CSS Class"
 msgstr ""
 
-#: includes/class-data.php:392
+#: includes/class-data.php:404
 msgid "CSS class to add to the wrapping HTML container."
 msgstr ""
 
-#: includes/class-data.php:399
+#: includes/class-data.php:411
 msgid "Search Value"
 msgstr ""
 
-#: includes/class-data.php:400
+#: includes/class-data.php:412
 msgid "Define a default search value for the View"
 msgstr ""
 
-#: includes/class-data.php:407
+#: includes/class-data.php:419
 #: includes/extensions/search-widget/class-search-widget.php:125
 msgid "Search Field"
 msgstr ""
 
-#: includes/class-data.php:408
+#: includes/class-data.php:420
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
 msgstr ""
 
-#: includes/class-data.php:415
+#: includes/class-data.php:427
 msgid "Single Entry Title"
 msgstr ""
 
-#: includes/class-data.php:417
+#: includes/class-data.php:429
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and Single"
 " Entry views."
 msgstr ""
 
-#: includes/class-data.php:424
+#: includes/class-data.php:436
 msgid "Back Link Label"
 msgstr ""
 
-#: includes/class-data.php:426
+#: includes/class-data.php:438
 msgid "The text of the link that returns to the multiple entries view."
 msgstr ""
 
@@ -927,17 +952,9 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr ""
 
-#: includes/class-frontend-views.php:99
-#: includes/extensions/edit-entry/class-edit-entry.php:147
-#: includes/extensions/edit-entry/class-edit-entry.php:163
-#: includes/extensions/edit-entry/class-edit-entry.php:178
-#: includes/extensions/edit-entry/class-edit-entry.php:789
-#: includes/extensions/edit-entry/fields/edit_link.php:12
-msgid "Edit Entry"
-msgstr ""
-
 #: includes/class-frontend-views.php:357
-msgid "You have attempted to view an entry that does not exist."
+msgid ""
+"You have attempted to view an entry that is not visible or may not exist."
 msgstr ""
 
 #: includes/class-gravityview-extension.php:169
@@ -1174,11 +1191,11 @@ msgstr ""
 msgid "Table (default)"
 msgstr ""
 
-#: includes/default-templates.php:31
+#: includes/default-templates.php:31 includes/default-templates.php:82
 msgid "Display items in a table view."
 msgstr ""
 
-#: includes/default-templates.php:45 includes/default-templates.php:93
+#: includes/default-templates.php:45 includes/default-templates.php:137
 msgid "Link to single entry"
 msgstr ""
 
@@ -1190,115 +1207,123 @@ msgstr ""
 msgid "Each field will be displayed as a column in the table."
 msgstr ""
 
-#: includes/default-templates.php:82
+#: includes/default-templates.php:81
+msgid "Edit Table"
+msgstr ""
+
+#: includes/default-templates.php:100
+msgid "Visible Edit Fields"
+msgstr ""
+
+#: includes/default-templates.php:126
 msgid "List (default)"
 msgstr ""
 
-#: includes/default-templates.php:83
+#: includes/default-templates.php:127
 msgid "Display items in a listing view."
 msgstr ""
 
-#: includes/default-templates.php:102
+#: includes/default-templates.php:146
 msgid "Listing Title"
 msgstr ""
 
-#: includes/default-templates.php:103
+#: includes/default-templates.php:147
 msgid "Subheading"
 msgstr ""
 
-#: includes/default-templates.php:106
+#: includes/default-templates.php:150
 msgid "Image"
 msgstr ""
 
-#: includes/default-templates.php:109
+#: includes/default-templates.php:153
 msgid "Other Fields"
 msgstr ""
 
-#: includes/default-templates.php:113
+#: includes/default-templates.php:157
 msgid "Footer Left"
 msgstr ""
 
-#: includes/default-templates.php:116
+#: includes/default-templates.php:160
 msgid "Footer Right"
 msgstr ""
 
-#: includes/default-templates.php:352
+#: includes/default-templates.php:396
 msgid "Business Data"
 msgstr ""
 
-#: includes/default-templates.php:353
+#: includes/default-templates.php:397
 msgid "Display business information in a table."
 msgstr ""
 
-#: includes/default-templates.php:374
+#: includes/default-templates.php:418
 msgid "Resume Board"
 msgstr ""
 
-#: includes/default-templates.php:375
+#: includes/default-templates.php:419
 msgid "Allow job-seekers to post their resumes."
 msgstr ""
 
-#: includes/default-templates.php:396
+#: includes/default-templates.php:440
 msgid "Job Board"
 msgstr ""
 
-#: includes/default-templates.php:397
+#: includes/default-templates.php:441
 msgid "Post available jobs in a simple job board."
 msgstr ""
 
-#: includes/default-templates.php:418
+#: includes/default-templates.php:462
 msgid "People Table"
 msgstr ""
 
-#: includes/default-templates.php:419
+#: includes/default-templates.php:463
 msgid "Display information about people in a table."
 msgstr ""
 
-#: includes/default-templates.php:441
+#: includes/default-templates.php:485
 msgid "Issue Tracker"
 msgstr ""
 
-#: includes/default-templates.php:442
+#: includes/default-templates.php:486
 msgid "Manage issues and their statuses."
 msgstr ""
 
-#: includes/default-templates.php:464
+#: includes/default-templates.php:508
 msgid "Business Listings"
 msgstr ""
 
-#: includes/default-templates.php:465
+#: includes/default-templates.php:509
 msgid "Display business profiles."
 msgstr ""
 
-#: includes/default-templates.php:486
+#: includes/default-templates.php:530
 msgid "Event Listings"
 msgstr ""
 
-#: includes/default-templates.php:487
+#: includes/default-templates.php:531
 msgid "Present a list of your events."
 msgstr ""
 
-#: includes/default-templates.php:508
+#: includes/default-templates.php:552
 msgid "People Profiles"
 msgstr ""
 
-#: includes/default-templates.php:509
+#: includes/default-templates.php:553
 msgid "List people with individual profiles."
 msgstr ""
 
-#: includes/default-templates.php:530
+#: includes/default-templates.php:574
 msgid "Staff Profiles"
 msgstr ""
 
-#: includes/default-templates.php:531
+#: includes/default-templates.php:575
 msgid "List members of your team."
 msgstr ""
 
-#: includes/default-templates.php:552
+#: includes/default-templates.php:596
 msgid "Website Showcase"
 msgstr ""
 
-#: includes/default-templates.php:553
+#: includes/default-templates.php:597
 msgid "Feature submitted websites with screenshots."
 msgstr ""
 
@@ -1331,40 +1356,71 @@ msgstr ""
 msgid "Page Links"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:145
+#: includes/extensions/edit-entry/class-edit-entry.php:203
 msgid "Edit Link Text"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:165
+#: includes/extensions/edit-entry/class-edit-entry.php:222
+msgid "Limiting Edit Access"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry.php:223
+msgid ""
+"Change this setting if you don't want the user who created the entry to be "
+"able to edit this field."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry.php:252
+msgid "Make field editable to:"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry.php:278
 msgid "A link to edit the entry. Visible based on View settings."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:678
+#: includes/extensions/edit-entry/class-edit-entry.php:324
+msgctxt "User capability"
+msgid "Entry Creator"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry.php:669
+msgid "Details"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry.php:933
+msgid "Maximum number of files reached"
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry.php:1008
+msgid "You do not have permission to edit this field."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry.php:1066
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:682
+#: includes/extensions/edit-entry/class-edit-entry.php:1070
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:686
+#: includes/extensions/edit-entry/class-edit-entry.php:1074
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:800
+#: includes/extensions/edit-entry/class-edit-entry.php:1188
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:800
+#: includes/extensions/edit-entry/class-edit-entry.php:1188
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:806
+#: includes/extensions/edit-entry/class-edit-entry.php:1194
 #, php-format
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:841
+#: includes/extensions/edit-entry/class-edit-entry.php:1236
 msgid "Update"
 msgstr ""
 
@@ -1522,11 +1578,11 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: includes/fields/address.php:21
+#: includes/fields/address.php:25
 msgid "Show Map Link:"
 msgstr ""
 
-#: includes/fields/address.php:22
+#: includes/fields/address.php:26
 msgid "Display a \"Map It\" link below the address"
 msgstr ""
 
@@ -1565,111 +1621,115 @@ msgstr ""
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
 msgstr ""
 
-#: includes/fields/created-by.php:11
+#: includes/fields/created-by.php:15
 msgid "User Format"
 msgstr ""
 
-#: includes/fields/created-by.php:12
+#: includes/fields/created-by.php:16
 msgid "How should the User information be displayed?"
 msgstr ""
 
-#: includes/fields/created-by.php:14
+#: includes/fields/created-by.php:18
 msgid "Display Name (Example: \"Ellen Ripley\")"
 msgstr ""
 
-#: includes/fields/created-by.php:15
+#: includes/fields/created-by.php:19
 msgid "Username (Example: \"nostromo\")"
 msgstr ""
 
-#: includes/fields/created-by.php:16
+#: includes/fields/created-by.php:20
 msgid "User ID # (Example: 426)"
 msgstr ""
 
-#: includes/fields/custom.php:19
+#: includes/fields/custom.php:23
 msgid "Enter text or HTML. Also supports shortcodes."
 msgstr ""
 
-#: includes/fields/custom.php:27
+#: includes/fields/custom.php:31
 msgid "Automatically add paragraphs to content"
 msgstr ""
 
-#: includes/fields/custom.php:28
+#: includes/fields/custom.php:32
 msgid ""
 "Wrap each block of text in an HTML paragraph tag (recommended for text)."
 msgstr ""
 
-#: includes/fields/email.php:19
+#: includes/fields/email.php:23
 msgid "Link the Email Address"
 msgstr ""
 
-#: includes/fields/email.php:20
+#: includes/fields/email.php:24
 msgid "Clicking the link will generate a new email."
 msgstr ""
 
-#: includes/fields/email.php:24
+#: includes/fields/email.php:28
 msgid "Email Subject"
 msgstr ""
 
-#: includes/fields/email.php:26
+#: includes/fields/email.php:30
 msgid "Set the default email subject line."
 msgstr ""
 
-#: includes/fields/email.php:31
+#: includes/fields/email.php:35
 msgid "Email Body"
 msgstr ""
 
-#: includes/fields/email.php:33
+#: includes/fields/email.php:37
 msgid "Set the default email content."
 msgstr ""
 
-#: includes/fields/email.php:40
+#: includes/fields/email.php:44
 msgid "Encrypt Email Address"
 msgstr ""
 
-#: includes/fields/email.php:41
+#: includes/fields/email.php:45
 msgid ""
 "Make it harder for spammers to get email addresses from your entries. Email "
 "addresses will not be visible with Javascript disabled."
 msgstr ""
 
-#: includes/fields/entry-link.php:18 includes/fields/source-url.php:25
+#: includes/fields/entry-link.php:22 includes/fields/source-url.php:29
 msgid "Link Text:"
 msgstr ""
 
-#: includes/fields/entry-link.php:20 templates/fields/entry_link.php:10
+#: includes/fields/entry-link.php:24 templates/fields/entry_link.php:10
 msgid "View Details"
 msgstr ""
 
-#: includes/fields/fileupload.php:16
+#: includes/fields/fileupload.php:20
 msgid "Display as a Link:"
 msgstr ""
 
-#: includes/fields/fileupload.php:17
+#: includes/fields/fileupload.php:21
 msgid "Display the uploaded files as links, rather than embedded content."
 msgstr ""
 
-#: includes/fields/source-url.php:18
+#: includes/fields/source-url.php:22
 msgid "Link to URL:"
 msgstr ""
 
-#: includes/fields/source-url.php:19
+#: includes/fields/source-url.php:23
 msgid "Display as a link to the Source URL"
 msgstr ""
 
-#: includes/fields/source-url.php:26
+#: includes/fields/source-url.php:30
 msgid "Customize the link text. If empty, the link text will be the the URL."
 msgstr ""
 
-#: includes/fields/website.php:18
+#: includes/fields/website.php:22
 msgid "Shorten Link Display"
 msgstr ""
 
-#: includes/fields/website.php:19
+#: includes/fields/website.php:23
 msgid "Only show the domain for a URL instead of the whole link."
 msgstr ""
 
-#: includes/fields/website.php:20
+#: includes/fields/website.php:24
 msgid "Don&rsquo;t show the full URL, only show the domain."
+msgstr ""
+
+#: includes/fields/website.php:30
+msgid "Open link in the same window?"
 msgstr ""
 
 #: templates/fields/email.php:65

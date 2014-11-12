@@ -12,6 +12,10 @@ class GravityView_Field_Source_URL extends GravityView_Field {
 		// Don't link to entry; doesn't make sense.
 		unset( $field_options['show_as_link'] );
 
+		if( 'edit' === $context ) {
+			return $field_options;
+		}
+
 		$add_options = array();
 		$add_options['link_to_source'] = array(
 			'type' => 'checkbox',

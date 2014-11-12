@@ -37,6 +37,17 @@ class GravityView_View_Data {
 				$this->add_view( $id );
 			}
 		}
+
+		self::$instance = &$this;
+	}
+
+	static function getInstance() {
+
+		if( empty( self::$instance ) ) {
+			self::$instance = new GravityView_frontend;
+		}
+
+		return self::$instance;
 	}
 
 	function get_views() {
@@ -344,6 +355,7 @@ class GravityView_View_Data {
 				'group'	=> 'default',
 				'desc'	=> __('Allow logged-in users to edit entries they created.', 'gravityview'),
 				'value'	=> 0,
+				'tooltip' => __('Display "Edit Entry" fields to non-administrator users if they created the entry. Edit Entry fields will always be displayed to site administrators.', 'gravityview'),
 				'type'	=> 'checkbox',
 				'show_in_shortcode' => false,
 			),
