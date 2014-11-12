@@ -670,7 +670,7 @@ class GravityView_Edit_Entry {
 	    ?>
 	    <div class="postbox">
 	        <h3>
-	                <label for="name"><?php esc_html_e( "Details", "gravityforms" ); ?></label>
+	                <label for="name"><?php esc_html_e( 'Details', 'gravityview' ); ?></label>
 	        </h3>
 	        <div class="inside">
 	            <table class="form-table entry-details">
@@ -934,7 +934,7 @@ class GravityView_Edit_Entry {
 						$count_files = count( $file_names ) + count( $value );
 
 						if( $count_files > $field['maxFiles'] ) {
-							$field['validation_message'] = __( 'Maximum number of files reached', 'gravityforms' );
+							$field['validation_message'] = __( 'Maximum number of files reached', 'gravityview' );
 							$field['failed_validation'] = 1;
 							$gv_valid = false;
 						}
@@ -1009,7 +1009,7 @@ class GravityView_Edit_Entry {
 		$error = NULL;
 
 		if( ! self::check_user_cap_edit_field( $field ) ) {
-			$error = __( 'You do not have permission to edit this field.', 'gravity-view');
+			$error = __( 'You do not have permission to edit this field.', 'gravityview');
 		}
 
 		// No errors; everything's fine here!
@@ -1196,7 +1196,7 @@ class GravityView_Edit_Entry {
 				    echo $this->generate_notice( $message , 'gv-error' );
 
 				} else {
-					echo $this->generate_notice( sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', ''), '<a href="'.$back_link.'">', '</a>' ) );
+					echo $this->generate_notice( sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'.$back_link.'">', '</a>' ) );
 				}
 
 			}

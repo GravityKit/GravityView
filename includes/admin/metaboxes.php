@@ -502,7 +502,7 @@ class GravityView_Admin_Metaboxes {
 		// Genesis
 		if(function_exists('genesis_inpost_layout_box') && $pagenow !== 'post-new.php') {
 			// Add back in Genesis meta box
-			add_meta_box( 'genesis_inpost_layout_box', __( 'Layout Settings', 'genesis' ), 'genesis_inpost_layout_box', 'gravityview', 'advanced', 'default' );
+			add_meta_box( 'genesis_inpost_layout_box', __( 'Layout Settings', 'gravityview' ), 'genesis_inpost_layout_box', 'gravityview', 'advanced', 'default' );
 		}
 	}
 

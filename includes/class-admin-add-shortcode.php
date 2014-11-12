@@ -104,7 +104,7 @@ class GravityView_Admin_Add_Shortcode {
 
 					<table class="form-table hide-if-js">
 
-						<caption><?php esc_html_e( 'View Settings' ); ?></caption>
+						<caption><?php esc_html_e( 'View Settings', 'gravityview' ); ?></caption>
 
 						<?php
 

@@ -165,11 +165,11 @@ class GravityView_Admin {
 			 * These apply to `bulk_post_updated_messages`
 			 * @file wp-admin/edit.php
 			 */
-			'updated'   => _n( '%s View updated.', '%s Views updated.', $bulk_counts['updated'] ),
-			'locked'    => _n( '%s View not updated, somebody is editing it.', '%s Views not updated, somebody is editing them.', $bulk_counts['locked'] ),
-			'deleted'   => _n( '%s View permanently deleted.', '%s Views permanently deleted.', $bulk_counts['deleted'] ),
-			'trashed'   => _n( '%s View moved to the Trash.', '%s Views moved to the Trash.', $bulk_counts['trashed'] ),
-			'untrashed' => _n( '%s View restored from the Trash.', '%s Views restored from the Trash.', $bulk_counts['untrashed'] ),
+			'updated'   => _n( '%s View updated.', '%s Views updated.', $bulk_counts['updated'], 'gravityview' ),
+			'locked'    => _n( '%s View not updated, somebody is editing it.', '%s Views not updated, somebody is editing them.', $bulk_counts['locked'], 'gravityview' ),
+			'deleted'   => _n( '%s View permanently deleted.', '%s Views permanently deleted.', $bulk_counts['deleted'], 'gravityview' ),
+			'trashed'   => _n( '%s View moved to the Trash.', '%s Views moved to the Trash.', $bulk_counts['trashed'], 'gravityview' ),
+			'untrashed' => _n( '%s View restored from the Trash.', '%s Views restored from the Trash.', $bulk_counts['untrashed'], 'gravityview' ),
 		);
 
 		return $messages;
