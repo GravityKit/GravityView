@@ -15,21 +15,27 @@ class GV_GFEntryDetail {
      * @param array $entry
      * @return void
      */
-    public static function combine_update_existing( $view_id, $entry ) {
+    public static function combine_update_existing( $original_entry, $form_id ) {
 
-        // Get all fields for form
-        $view_data = GravityView_View_Data::getInstance();
-        $fields = $view_data->get_fields( $view_id );
+        $form = gravityview_get_form( $form_id );
 
-        $field_pairs = array();
+        foreach ( $original_entry as $field_id => $value ) {
 
-        //Fetch existing save data for this entry
-        foreach( $fields[ 'directory_table-columns' ] as $k => $field ){
-            $field_pairs[ 'input_' . $field['id'] ] = RGFormsModel::get_lead_field_value ( $entry, $field );
+        	$field = RGFormsModel::get_field( $form, $field_id );
+
+        	// Get the value of the field, including $_POSTed value
+        	$value = RGFormsModel::get_field_value( $field );
+
+        	$posted_entry[ $field_id ] = ( is_array( $value ) && isset( $value[ $field_id ] ) ) ? $value[ $field_id ] : $value;
+
+        	continue;
         }
 
-        //If the field doesn't exist, merge it in to $_POST
-        $_POST = array_merge( $field_pairs, $_POST );
+        // Remove empty
+        $posted_entry = array_filter( $posted_entry );
+
+        // If the field doesn't exist, merge it in to $_POST
+        $_POST = array_merge( $posted_entry, $_POST );
 
     }
 
@@ -58,8 +64,7 @@ class GV_GFEntryDetail {
                     <?php
 
                     // Get all fields for form
-                    $view_data = GravityView_View_Data::getInstance();
-                    $properties = $view_data->get_fields( $view_id );
+                    $properties = GravityView_View_Data::getInstance()->get_fields( $view_id );
 
                     // If edit tab not yet configured, show all fields
                     $edit_fields = !empty( $properties['edit_edit-fields'] ) ? $properties['edit_edit-fields'] : NULL;

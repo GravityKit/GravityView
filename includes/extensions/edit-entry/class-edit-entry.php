@@ -435,7 +435,7 @@ class GravityView_Edit_Entry {
 				$form = $this->form_prepare_for_save();
 
 				// Make sure hidden fields are represented in $_POST
-				GV_GFEntryDetail::combine_update_existing( $this->view_id, $this->entry );
+				GV_GFEntryDetail::combine_update_existing( $this->entry, $this->form_id );
 
 				GFFormsModel::save_lead( $form, $this->entry );
 
