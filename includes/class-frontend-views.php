@@ -67,12 +67,12 @@ class GravityView_frontend {
 		// If in admin and NOT AJAX request, get outta here.
 		if( is_admin() && !$doing_ajax )  { return; }
 
+		$this->gv_output_data = new GravityView_View_Data( $post );
 		$this->single_entry = self::is_single_entry();
 		$this->entry = ( $this->single_entry ) ? gravityview_get_entry( $this->single_entry ) : false;
 		$this->is_gravityview_post_type = ( get_post_type( $post ) === 'gravityview' );
 		$post_has_shortcode = !empty( $post->post_content ) ? gravityview_has_shortcode_r( $post->post_content, 'gravityview' ) : false;
 		$this->post_has_shortcode = empty( $this->is_gravityview_post_type ) ? !empty( $post_has_shortcode ) : NULL;
-		$this->gv_output_data = new GravityView_View_Data( $post );
 	}
 
 
@@ -354,7 +354,7 @@ class GravityView_frontend {
 
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.');
 
-				esc_attr_e( 'You have attempted to view an entry that does not exist.', 'gravityview');
+				esc_attr_e( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview');
 
 				return;
 			}
@@ -519,7 +519,6 @@ class GravityView_frontend {
 		$search_criteria = self::process_search_dates( $args, $search_criteria );
 
 		do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after date params: ', $search_criteria );
-
 
 		// remove not approved entries
 		if( !empty( $args['show_only_approved'] ) ) {
