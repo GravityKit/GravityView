@@ -6,6 +6,10 @@ class GravityView_Field_Created_By extends GravityView_Field {
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
+		if( 'edit' === $context ) {
+			return $field_options;
+		}
+
 		$field_options['name_display'] = array(
 			'type' => 'select',
 			'label' => __( 'User Format', 'gravityview' ),

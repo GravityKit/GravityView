@@ -12,6 +12,10 @@ class GravityView_Field_Email extends GravityView_Field {
 		// It makes no sense to use this as the link.
 		unset( $field_options['show_as_link'] );
 
+		if( 'edit' === $context ) {
+			return $field_options;
+		}
+
 		$email_options = array(
 			'emailmailto' => array(
 				'type' => 'checkbox',
