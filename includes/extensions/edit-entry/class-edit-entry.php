@@ -66,6 +66,21 @@ class GravityView_Edit_Entry {
 		add_filter( 'gravityview_blacklist_field_types', array( $this, 'modify_field_blacklist' ), 10, 2 );
 
 		add_filter( 'gravityview_tooltips', array( $this, 'tooltips') );
+
+		// Process hooks for addons that may or may not be present
+		$this->addon_specific_hooks();
+	}
+
+	/**
+	 * Trigger hooks that are normally run in the admin for Addons, but need to be triggered manually because we're not in the admin
+	 * @return void
+	 */
+	function addon_specific_hooks() {
+
+		if( class_exists( 'GFSignature') && is_callable( array('GFSignature', 'get_instance') ) ) {
+			add_filter('gform_admin_pre_render', array(GFSignature::get_instance(), 'edit_lead_script'));
+		}
+
 	}
 
 	/**

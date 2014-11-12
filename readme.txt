@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Single entry Go back button context on Embedded Views
 * Tweak: Choose to open the link from a website field in the same window (field option)
 * Modified: Define the editable fields on its own View configuration drop zone.
+* Fixed: Delete signature fields in Edit Entry (requires the Gravity Forms Signature Addon)
 
 = 1.4 on October 28 =
 * Added: Custom entry slug capability. Instead of `/entry/123`, you can now use entry values in the URL, like `/entry/{company name}/` or `/entry/{first name}-{last name}/`. Requires some customization; [learn more here](https://gravityview.co/support/documentation/202239919)
