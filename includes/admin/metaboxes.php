@@ -322,7 +322,7 @@ class GravityView_Admin_Metaboxes {
 
 				<div id="edit-fields" class="gv-section">
 
-					<h4><?php esc_html_e( 'These fields will be shown in Edit Entry view.', 'gravityview'); ?></h4>
+					<h4><?php esc_html_e( 'Fields shown when editing an entry.', 'gravityview'); ?> <span><?php esc_html_e('If not configured, all form fields will be displayed.', 'gravityview'); ?></span></h4>
 
 					<div id="edit-active-fields" class="gv-grid gv-grid-pad gv-grid-border">
 						<?php

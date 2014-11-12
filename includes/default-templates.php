@@ -97,8 +97,7 @@ class GravityView_Default_Template_Edit extends GravityView_Template {
 				'1-1' => array(
 					array(
 						'areaid' => 'edit-fields',
-						'title' => __('Visible Edit Fields', 'gravityview' ) ,
-						'subtitle' => __('If left blank, all fields will be editable.', 'gravityview'),
+						'title' => __('Visible Edit Fields', 'gravityview' )
 					)
 				)
 			)
