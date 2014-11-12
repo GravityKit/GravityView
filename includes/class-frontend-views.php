@@ -16,6 +16,8 @@ class GravityView_frontend {
 
 	var $is_gravityview_post_type = false;
 
+	var $post_has_shortcode = false;
+
 	var $post_id = NULL;
 
 	var $single_entry = false;
@@ -49,11 +51,11 @@ class GravityView_frontend {
 
 	static function getInstance() {
 
-		if( !empty( self::$instance ) ) {
-			return self::$instance;
-		} else {
-			return new GravityView_frontend;
+		if( empty( self::$instance ) ) {
+			self::$instance = new GravityView_frontend;
 		}
+
+		return self::$instance;
 	}
 
 	function parse_content() {
@@ -65,11 +67,12 @@ class GravityView_frontend {
 		// If in admin and NOT AJAX request, get outta here.
 		if( is_admin() && !$doing_ajax )  { return; }
 
+		$this->gv_output_data = new GravityView_View_Data( $post );
 		$this->single_entry = self::is_single_entry();
 		$this->entry = ( $this->single_entry ) ? gravityview_get_entry( $this->single_entry ) : false;
 		$this->is_gravityview_post_type = ( get_post_type( $post ) === 'gravityview' );
-
-		$this->gv_output_data = new GravityView_View_Data( $post );
+		$post_has_shortcode = !empty( $post->post_content ) ? gravityview_has_shortcode_r( $post->post_content, 'gravityview' ) : false;
+		$this->post_has_shortcode = empty( $this->is_gravityview_post_type ) ? !empty( $post_has_shortcode ) : NULL;
 	}
 
 
@@ -267,7 +270,7 @@ class GravityView_frontend {
 
 		$view_id = $passed_args['id'];
 
-		$view_data = $this->gv_output_data->get_view( $view_id );
+		$view_data = $this->gv_output_data->get_view( $view_id, $passed_args );
 
 		do_action( 'gravityview_log_debug', '[render_view] View Data: ', $view_data );
 
@@ -300,6 +303,8 @@ class GravityView_frontend {
 		global $gravityview_view;
 
 		$gravityview_view = new GravityView_View( $view_data );
+
+		$gravityview_view->post_id = !empty( $atts['post_id'] ) ? intval( $atts['post_id'] ) : $gravityview_view->post_id;
 
 		if( empty( $this->single_entry ) ) {
 
@@ -338,23 +343,31 @@ class GravityView_frontend {
 			// user requested Single Entry View
 			do_action( 'gravityview_log_debug', '[render_view] Executing Single View' );
 
+			if( did_action('gravityview_render_entry_'.$view_data['id']) ) {
+				return;
+			}
+
+			do_action('gravityview_render_entry_'.$view_data['id']);
+
 			// You are not permitted to view this entry.
 			if( false === $this->entry ) {
 
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.');
 
-				esc_attr_e( 'You have attempted to view an entry that does not exist.', 'gravityview');
+				esc_attr_e( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview');
 
 				return;
 			}
 
-			// We're in single view, but the view being processed is not the same view the single entry belongs to.
-			if( $view_data['form_id'] !== $this->entry['form_id'] ) {
 
+
+			// We're in single view, but the view being processed is not the same view the single entry belongs to.
+			if( intval( $view_data['form_id'] ) !== intval( $this->entry['form_id'] ) ) {
 				$view_id = isset( $view_entries['entries'][0]['id'] ) ? $view_entries['entries'][0]['id'] : '(empty)';
 				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '. $view_id);
 				return;
 			}
+
 
 			//fetch template and slug
 			$view_slug =  apply_filters( 'gravityview_template_slug_'. $view_data['template_id'], 'table', 'single' );
@@ -383,6 +396,8 @@ class GravityView_frontend {
 		// If Edit
 		if ( apply_filters( 'gravityview_is_edit_entry', false ) ) {
 
+			do_action( 'gravityview_log_debug', '[render_view] Edit Entry ' );
+
 			do_action( 'gravityview_edit_entry' );
 
 			return;
@@ -400,7 +415,8 @@ class GravityView_frontend {
 
 		}
 
-		if( $this->is_gravityview_post_type ) {
+		//@todo: check why we need the IF statement vs. print the view id always.
+		if( $this->is_gravityview_post_type || $this->post_has_shortcode ) {
 			// Print the View ID to enable proper cookie pagination ?>
 			<input type="hidden" id="gravityview-view-id" value="<?php echo $view_id; ?>">
 <?php
@@ -503,7 +519,6 @@ class GravityView_frontend {
 		$search_criteria = self::process_search_dates( $args, $search_criteria );
 
 		do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after date params: ', $search_criteria );
-
 
 		// remove not approved entries
 		if( !empty( $args['show_only_approved'] ) ) {
@@ -664,7 +679,9 @@ class GravityView_frontend {
 
 			$views = $this->gv_output_data->get_views();
 
-			$js_localization = array();
+			$js_localization = array(
+				'cookiepath' => COOKIEPATH
+			);
 
 			foreach ( $views as $view_id => $data ) {
 

@@ -12,12 +12,22 @@ class GravityView_Field_Website extends GravityView_Field {
 		// It makes no sense to use this as the link.
 		unset( $field_options['show_as_link'] );
 
+		if( 'edit' === $context ) {
+			return $field_options;
+		}
+
 		$field_options['truncatelink'] = array(
 			'type' => 'checkbox',
-			'default' => true,
+			'value' => true,
 			'label' => __( 'Shorten Link Display', 'gravityview' ),
 			'tooltip' => __( 'Only show the domain for a URL instead of the whole link.', 'gravityview' ),
 			'desc' => __( 'Don&rsquo;t show the full URL, only show the domain.', 'gravityview' )
+		);
+
+		$field_options['open_same_window'] = array(
+			'type' => 'checkbox',
+			'value' => false,
+			'label' => __( 'Open link in the same window?', 'gravityview' ),
 		);
 
 		return $field_options;

@@ -6,6 +6,10 @@ class GravityView_Field_Created_By extends GravityView_Field {
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
+		if( 'edit' === $context ) {
+			return $field_options;
+		}
+
 		$field_options['name_display'] = array(
 			'type' => 'select',
 			'label' => __( 'User Format', 'gravityview' ),
@@ -15,7 +19,7 @@ class GravityView_Field_Created_By extends GravityView_Field {
 				'user_login' => __('Username (Example: "nostromo")', 'gravityview'),
 				'ID' => __('User ID # (Example: 426)', 'gravityview'),
 			),
-			'default' => 'display_name'
+			'value' => 'display_name'
 		);
 
 		return $field_options;

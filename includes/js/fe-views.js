@@ -86,7 +86,7 @@ jQuery(document).ready( function( $ ) {
 					// directory view
 
 					//set cookie
-					$.cookie('gravityview_back_link_'+ viewId, window.location.href, { path: '/' } );
+					$.cookie('gravityview_back_link_'+ viewId, window.location.href, { path: gvGlobals.cookiepath } );
 
 				}
 			}

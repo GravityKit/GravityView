@@ -252,6 +252,7 @@ class GravityView_Admin_Metaboxes {
 			<ul class="nav-tab-wrapper">
 				<li><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page"></i> <?php esc_html_e( 'Multiple Entries', 'gravityview' ); ?></a></li>
 				<li><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default"></i> <?php esc_html_e( 'Single Entry', 'gravityview' ); ?></a></li>
+				<li><a href="#edit-view" class="nav-tab"><i class="dashicons dashicons-welcome-write-blog"></i> <?php esc_html_e( 'Edit Entry', 'gravityview' ); ?></a></li>
 			</ul>
 
 			<div id="directory-view">
@@ -316,6 +317,27 @@ class GravityView_Admin_Metaboxes {
 				</div>
 
 			</div> <?php // end single view tab ?>
+
+			<div id="edit-view">
+
+				<div id="edit-fields" class="gv-section">
+
+					<h4><?php esc_html_e( 'Fields shown when editing an entry.', 'gravityview'); ?> <span><?php esc_html_e('If not configured, all form fields will be displayed.', 'gravityview'); ?></span></h4>
+
+					<div id="edit-active-fields" class="gv-grid gv-grid-pad gv-grid-border">
+						<?php
+						do_action('gravityview_render_directory_active_areas', apply_filters( 'gravityview/template/edit', 'default_table_edit' ), 'edit', $post->ID, true );
+						 ?>
+					</div>
+
+					<div id="edit-available-fields" class="hide-if-js gv-tooltip">
+						<span class="close"><i class="dashicons dashicons-dismiss"></i></span>
+						<?php do_action('gravityview_render_available_fields', $curr_form, 'edit' ); ?>
+					</div>
+
+				</div>
+
+			</div> <?php // end edit view tab ?>
 
 		</div> <?php // end tabs ?>
 		<?php
@@ -480,7 +502,7 @@ class GravityView_Admin_Metaboxes {
 		// Genesis
 		if(function_exists('genesis_inpost_layout_box') && $pagenow !== 'post-new.php') {
 			// Add back in Genesis meta box
-			add_meta_box( 'genesis_inpost_layout_box', __( 'Layout Settings', 'genesis' ), 'genesis_inpost_layout_box', 'gravityview', 'advanced', 'default' );
+			add_meta_box( 'genesis_inpost_layout_box', __( 'Layout Settings', 'gravityview' ), 'genesis_inpost_layout_box', 'gravityview', 'advanced', 'default' );
 		}
 	}
 

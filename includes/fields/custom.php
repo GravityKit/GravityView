@@ -12,12 +12,16 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 		unset ( $field_options['search_filter'], $field_options['show_as_link'] );
 
+		if( 'edit' === $context ) {
+			return $field_options;
+		}
+
 		$new_fields = array(
 			'content' => array(
 				'type' => 'textarea',
 				'label' => __( 'Custom Content', 'gravityview' ),
 				'desc' => __( 'Enter text or HTML. Also supports shortcodes.', 'gravityview' ),
-				'default' => '',
+				'value' => '',
 				'class'	=> 'code',
 				'merge_tags' => 'force',
 				'show_all_fields' => true, // Show the `{all_fields}` and `{pricing_fields}` merge tags
@@ -26,7 +30,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 				'type' => 'checkbox',
 				'label' => __( 'Automatically add paragraphs to content', 'gravityview' ),
 				'tooltip' => __( 'Wrap each block of text in an HTML paragraph tag (recommended for text).', 'gravityview' ),
-				'default' => '',
+				'value' => '',
 			),
 		);
 

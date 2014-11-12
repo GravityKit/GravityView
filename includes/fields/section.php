@@ -12,7 +12,7 @@ class GravityView_Field_Section extends GravityView_Field {
 		unset ( $field_options['search_filter'], $field_options['show_as_link'] );
 
 		// Set the default CSS class to gv-section, which applies a border and top/bottom margin
-		$field_options['custom_class']['default'] = 'gv-section';
+		$field_options['custom_class']['value'] = 'gv-section';
 
 		return $field_options;
 	}

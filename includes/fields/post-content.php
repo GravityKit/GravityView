@@ -11,6 +11,10 @@ class GravityView_Field_Post_Content extends GravityView_Field {
 
 		unset( $field_options['show_as_link'] );
 
+		if( 'edit' === $context ) {
+			return $field_options;
+		}
+
 		$this->add_field_support('dynamic_data', $field_options );
 
 		return $field_options;

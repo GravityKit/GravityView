@@ -708,7 +708,8 @@
                 content: function () {
 
                 	// Is the field picker in single or directory mode?
-                	var context = ( $(this).parents('#single-view').length ) ? 'single' : 'directory';
+                //	var context = ( $(this).parents('#single-view').length ) ? 'single' : 'directory';
+                    var context = $(this).attr('data-context');
 
                     switch ($(this).attr('data-objecttype')) {
                         case 'field':
@@ -757,6 +758,19 @@
 
         },
 
+        // refresh Gravity Forms tooltips (the real help tooltips)
+        refreshGFtooltips: function() {
+            $( ".gf_tooltip" ).tooltip( {
+                show: 500,
+                hide: 1000,
+                content: function () {
+                    return $(this).prop('title');
+                }
+            });
+        },
+
+
+
         /**
          * Fetch the Available Fields for a given Form ID or Preset Template ID
          * @param  null|string    preset
@@ -767,8 +781,9 @@
 
             var vcfg = viewConfiguration;
 
-            $("#directory-available-fields, #single-available-fields").find(".gv-fields").remove();
-            $("#directory-active-fields, #single-active-fields").find(".gv-fields").remove();
+            $("#directory-available-fields, #single-available-fields, #edit-available-fields").find(".gv-fields").remove();
+            $("#directory-active-fields, #single-active-fields, #edit-active-fields").find(".gv-fields").remove();
+
             vcfg.toggleDropMessage();
 
             var data = {
@@ -797,6 +812,15 @@
             $.post(ajaxurl, data, function (response) {
                 if (response) {
                     $("#single-available-fields").append(response);
+                }
+            });
+
+            // Now get the fields for the edit context
+            data.context = 'edit';
+
+            $.post(ajaxurl, data, function (response) {
+                if (response) {
+                    $("#edit-available-fields").append(response);
                 }
             });
 
@@ -912,6 +936,9 @@
 
                     });
 
+                    // refresh the little help tooltips
+                    vcfg.refreshGFtooltips();
+
                 })
                 .fail(function (jqXHR) {
 
@@ -978,7 +1005,7 @@
             });
 
             //fields
-            $('#directory-fields, #single-fields').find(".active-drop-field").sortable({
+            $('#directory-fields, #single-fields, #edit-fields').find(".active-drop-field").sortable({
                 placeholder: "fields-placeholder",
                 items: '> .gv-fields',
                 distance: 2,
@@ -1149,6 +1176,7 @@
 			// On success, this also sets the vcfg.startFreshStatus to false.
 			if( vcfg.startFreshStatus ) {
 				vcfg.createPresetForm( e, templateId );
+                return false;
 			}
 
         	// If the View isn't a Start Fresh view, we just return true
@@ -1213,7 +1241,7 @@
                 nonce: gvGlobals.nonce,
             };
 
-            var result = $.ajax({
+            $.ajax({
                 type: "POST",
                 url: ajaxurl,
                 data: data,

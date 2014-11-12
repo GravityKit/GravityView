@@ -9,6 +9,10 @@ class GravityView_Field_Time extends GravityView_Field {
 
 	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 
+		if( 'edit' === $context ) {
+			return $field_options;
+		}
+
 		add_filter('gravityview_date_format', array( $this, 'date_format' ) );
 		$this->add_field_support('date_display', $field_options );
 		remove_filter('gravityview_date_format', array( $this, 'date_format' ) );

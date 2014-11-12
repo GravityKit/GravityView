@@ -9,6 +9,10 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
+		if( 'edit' === $context ) {
+			return $field_options;
+		}
+
 		$this->add_field_support('dynamic_data', $field_options );
 		$this->add_field_support('link_to_term', $field_options );
 

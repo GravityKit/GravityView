@@ -22,12 +22,17 @@ $links_sep = apply_filters( 'gravityview/extension/search/links_sep', '&nbsp;|&n
 
 			if( $k != 0 ) { echo esc_html( $links_sep ); }
 
-			$link = add_query_arg( array( $search_field['name'] => urlencode( $choice['value'] ) ), remove_query_arg( array('pagenum') ) );
+			$active = ( !empty( $_GET[ $search_field['name'] ] ) && $_GET[ $search_field['name'] ] === $choice['text'] ) ? ' class="active"' : false;
+
+			if( $active ) {
+				$link = remove_query_arg( array( 'pagenum', $search_field['name'] ) );
+			} else {
+				$link = add_query_arg( array( $search_field['name'] => urlencode( $choice['value'] ) ), remove_query_arg( array('pagenum') ) );
+			}
+
 		?>
 
-			<a href="<?php echo esc_url( $link ); ?>">
-				<?php echo esc_html( $choice['text'] ); ?>
-			</a>
+			<a href="<?php echo esc_url( $link ); ?>"<?php echo $active; ?>><?php echo esc_html( $choice['text'] ); ?></a>
 
 		<?php endforeach; ?>
 	</p>

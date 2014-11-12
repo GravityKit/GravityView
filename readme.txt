@@ -20,8 +20,42 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= 1.3.1 =
+= 1.5 on November 12 =
+* Added: New "Edit Entry" configuration
+	- Configure which fields are shown when editing an entry
+	- Set visibility for the fields (Entry Creator, Administrator, etc.)
+	- Set custom edit labels
+* Fixed: Single entry view now respects View settings
+	- If an entry isn't included in View results, the single entry won't be available either
+	- If "Show Only Approved" is enabled, prevent viewing of unapproved entries
+	- Respects View filters, including those added by the Advanced Filtering extension
+* Fixed: Single entry Go back button context on Embedded Views
+* Fixed: Delete signature fields in Edit Entry (requires the Gravity Forms Signature Addon)
+* Fixed: Gravity Forms tooltip translations being overridden
+* Added: Choose to open the link from a website field in the same window (field option)
+* Updated: Spanish (Mexican) translation by [@jorgepelaez](https://www.transifex.com/accounts/profile/jorgepelaez/), Dutch translation by [@erikvanbeek](https://www.transifex.com/accounts/profile/erikvanbeek/) and [@leooosterloo](https://www.transifex.com/accounts/profile/leooosterloo/), Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
+
+= 1.4 on October 28 =
+* Added: Custom entry slug capability. Instead of `/entry/123`, you can now use entry values in the URL, like `/entry/{company name}/` or `/entry/{first name}-{last name}/`. Requires some customization; [learn more here](https://gravityview.co/support/documentation/202239919)
+* Fixed: GravityView auto-updater script not showing updates
+* Fixed: Edit Entry when a form has required Upload Fields
+* Fixed: "Return to Directory" link not always working for sites in subdirectories
+* Fixed: Broken links to single entries when viewing paginated results
+* Fixed: Loaded field configurations when using "Start Fresh" presets
 * Fixed: Searches ending in a space caused PHP warning
+* Fixed: Custom "Edit Link Text" settings respected
+* Fixed: Don't rely on Gravity Forms code for escaping query
+* Fixed: When multiple Views are displayed on a page, Single Entry mode displays empty templates.
+* Fixed: PHP error when displaying Post Content fields using Live Data for a post that no longer is published
+* Tweak: Search Bar "Links" Input Type
+	- Make link bold when filter is active
+	- Clicking on an active filter removes the filter
+* Tweak: Fixed updates for Multisite installations
+* Modified: Now you can override which post a single entry links to. For example, if a shortcode is embedded on a home page and you want single entries to link to a page with an embedded View, not the View itself, you can pass the `post_id` parameter. This accepts the ID of the page where the View is embedded.
+* Modified: Added `$add_pagination` parameter to `GravityView_API::directory_link()`
+* Added: Indonesian translation (thanks, [@sariyanta](https://www.transifex.com/accounts/profile/sariyanta/))!
+* Updated: Swedish translation 100% translated - thanks, [@adamrehal](https://www.transifex.com/accounts/profile/adamrehal/)!
+* Updated: Dutch translation (thanks, [@leooosterloo](https://www.transifex.com/accounts/profile/leooosterloo/))!
 
 = 1.3 on October 13 =
 * Speed improvements - [Learn more about GravityView caching](https://gravityview.co/support/documentation/202827685/)

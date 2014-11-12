@@ -11,6 +11,10 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 
 		unset ( $field_options['search_filter'] );
 
+		if( 'edit' === $context ) {
+			return $field_options;
+		}
+
 		$this->add_field_support('link_to_post', $field_options );
 
 		return $field_options;

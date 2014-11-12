@@ -33,6 +33,7 @@
 
 .gv-notice {
 	padding: .5em .75em;
+	margin: 1em 0;
 	background-color: #ffffcc;
 	border: 1px solid #ddd;
 
@@ -91,14 +92,20 @@ AND ANY CHANGES MADE HERE WILL BE OVERWRITTEN.
 
 	.gfield_error {
 		background-color: #FFDFDF !important;
-		margin-top: 4px !important;
+		margin-top: 4px!important;
 		margin-bottom: 6px;
 		padding: 6px 6px 4px !important;
+		display: block;
 		border: 1px dotted #C89797;
 	}
 
 	table.entry-details {
 		border: none;
+		margin-bottom: 0;
+
+		tbody {
+			border-bottom: none;
+		}
 	}
 
 	td {

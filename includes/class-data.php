@@ -12,22 +12,21 @@ class GravityView_View_Data {
 
 			$id = NULL;
 
+			// Convert WP_Posts into array
+			if( $passed_post instanceof WP_Post ) {
+				$passed_post = array( $passed_post);
+			}
+
 			if( is_array( $passed_post ) ) {
 
 				foreach ( $passed_post as &$post) {
 					if( ( get_post_type( $post ) === 'gravityview' ) ) {
-						$id = $passed_post->ID;
+						$id = $post->ID;
 					} else{
 						$this->parse_post_content( $post->post_content );
 					}
 				}
 
-			} elseif( $passed_post instanceof WP_Post ) {
-				if( ( get_post_type( $passed_post ) === 'gravityview' ) ) {
-					$id = $passed_post->ID;
-				} else{
-					$this->parse_post_content( $passed_post->post_content );
-				}
 			} elseif( is_string( $passed_post ) ) {
 				$this->parse_post_content( $passed_post );
 			} else {
@@ -38,13 +37,24 @@ class GravityView_View_Data {
 				$this->add_view( $id );
 			}
 		}
+
+		self::$instance = &$this;
+	}
+
+	static function getInstance() {
+
+		if( empty( self::$instance ) ) {
+			self::$instance = new GravityView_frontend;
+		}
+
+		return self::$instance;
 	}
 
 	function get_views() {
 		return $this->views;
 	}
 
-	function get_view( $view_id ) {
+	function get_view( $view_id, $atts = NULL ) {
 
 		if( !is_numeric( $view_id) ) {
 			do_action('gravityview_log_error', sprintf('GravityView_View_Data[get_view] $view_id passed is not numeric.', $view_id) );
@@ -54,7 +64,7 @@ class GravityView_View_Data {
 		// Backup: the view hasn't been fetched yet. Doing it now.
 		if ( !isset( $this->views[ $view_id ] ) ) {
 			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[get_view] View #%s not set yet.', $view_id) );
-			return $this->add_view( $view_id );
+			return $this->add_view( $view_id, $atts );
 		}
 
 		if ( empty( $this->views[ $view_id ] ) ) {
@@ -101,6 +111,13 @@ class GravityView_View_Data {
 		}
 
 		$form_id = gravityview_get_form_id( $view_id );
+
+		if( empty( $form_id ) ) {
+
+			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] Returning; Post ID #%s does not have a connected form.', $view_id) );
+
+			return false;
+		}
 
 		// Get the settings for the View ID
 		$view_settings = gravityview_get_template_settings( $view_id );
@@ -338,6 +355,7 @@ class GravityView_View_Data {
 				'group'	=> 'default',
 				'desc'	=> __('Allow logged-in users to edit entries they created.', 'gravityview'),
 				'value'	=> 0,
+				'tooltip' => __('Display "Edit Entry" fields to non-administrator users if they created the entry. Edit Entry fields will always be displayed to site administrators.', 'gravityview'),
 				'type'	=> 'checkbox',
 				'show_in_shortcode' => false,
 			),

@@ -110,7 +110,7 @@ class GravityView_Change_Entry_Creator {
 
             $user_format = _x('%s (ID #%d)', 'The name and the ID of users who initiated changes to entry ownership', 'gravityview');
 
-            $original_name = $created_by_name = esc_attr__( 'No User', 'To show that the entry was unassigned from an actual user to no user.', 'gravityview');
+            $original_name = $created_by_name = esc_attr_x( 'No User', 'To show that the entry was unassigned from an actual user to no user.', 'gravityview');
 
             if( !empty( $originally_created_by ) ) {
                 $originally_created_by_user_data = get_userdata($originally_created_by);

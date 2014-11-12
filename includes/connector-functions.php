@@ -43,12 +43,12 @@ if( !function_exists('gravityview_get_form_from_entry_id') ) {
 
 	/**
 	 * Get the form array for an entry based only on the entry ID
-	 * @param  int $entry_id Entry ID
+	 * @param  int|string $entry_slug Entry slug
 	 * @return array           Gravity Forms form array
 	 */
-	function gravityview_get_form_from_entry_id( $entry_id ) {
+	function gravityview_get_form_from_entry_id( $entry_slug ) {
 
-		$entry = gravityview_get_entry( $entry_id );
+		$entry = gravityview_get_entry( $entry_slug );
 
 		$form = gravityview_get_form( $entry['form_id'] );
 
@@ -301,7 +301,7 @@ if( !function_exists('gravityview_get_entries') ) {
 			$entries = GFAPI::get_entries( $form_ids, $criteria['search_criteria'], $criteria['sorting'], $criteria['paging'], $total );
 
 			if( is_wp_error( $entries ) ) {
-				do_action( 'idx_plus_log_error', $entries->get_error_message(), $entries );
+				do_action( 'gravityview_log_error', $entries->get_error_message(), $entries );
 				return false;
 			}
 
@@ -321,36 +321,133 @@ if( !function_exists('gravityview_get_entries') ) {
 
 
 if( !function_exists('gravityview_get_entry') ) {
+
 	/**
 	 * Return a single entry object
+	 *
+	 * Since 1.4, supports custom entry slugs. The way that GravityView fetches an entry based on the custom slug is by searching `gravityview_unique_id` meta. The `$entry_slug` is fetched by getting the current query var set by `is_single_entry()`
 	 *
 	 * @access public
 	 * @param mixed $entry_id
 	 * @return object or false
 	 */
-	function gravityview_get_entry( $entry_id ) {
-		if( class_exists( 'GFAPI' ) && !empty( $entry_id ) ) {
+	function gravityview_get_entry( $entry_slug ) {
+
+		if( class_exists( 'GFAPI' ) && !empty( $entry_slug ) ) {
+
+			$filters = array(
+				'mode' => 'any'
+			);
+
+			/**
+			 * Enable custom entry slug functionality.
+			 *
+			 * @see  GravityView_API::get_entry_slug()
+			 * @var boolean
+			 */
+			$custom_slug = apply_filters('gravityview_custom_entry_slug', false );
+
+			/**
+			 * When using a custom slug, allow access to the entry using the original slug (the Entry ID).
+			 *
+			 * If disabled (default), only allow access to an entry using the custom slug value.  (example: `/entry/custom-slug/` NOT `/entry/123/`)
+			 * If enabled, you could access using the custom slug OR the entry id (example: `/entry/custom-slug/` OR `/entry/123/`)
+			 *
+			 * @var boolean
+			 */
+			$custom_slug_id_access = apply_filters('gravityview_custom_entry_slug_allow_id', false );
+
+			/**
+			 * If we're using custom entry slugs, we do a meta value search
+			 * instead of doing a straightup ID search.
+			 */
+			if( $custom_slug ) {
+
+				$filters[] = array(
+					'key' => 'gravityview_unique_id',
+					'value' => $entry_slug,
+					'operator' => 'is',
+					'type' => 'meta'
+				);
+
+			}
+
+			// If custom slug is off, search using the entry ID
+			// ID allow ID access is on, also use entry ID as a backup
+			if( empty( $custom_slug ) || !empty( $custom_slug_id_access ) ) {
+
+				// Search for IDs matching $entry_slug
+				$filters[] = array(
+					'key' => "id",
+					'value' => $entry_slug,
+					'operator' => 'is',
+				);
+
+			}
+
+			// For simple entry searches, we don't need a form ID
+			$form_id = 0;
+
+			/**
+			 * Make sure that entries comply with View filter settings.
+			 *
+			 * - If any parsed View has `show_only_approved` set, we assume the entry requested requires approval. This may not be the case, and there may be multiple Views embedded in one page, but it's better to be more secure.
+			 * - Process the Entry through search criteria from the Advanced Filters extension. If the entry does not match the filters, it should not be shown.
+			 *
+			 * @since  1.5
+			 */
+			if( class_exists( 'GravityView_View_Data' ) ) {
+
+				$views = GravityView_View_Data::getInstance()->get_views();
+
+				foreach ( $views as $view ) {
+
+					$get_search_criteria = GravityView_frontend::get_search_criteria( $view['atts'], $view['form_id'] );
+
+					$view_criteria = array(
+						'search_criteria' => $get_search_criteria
+					);
+
+					// Allow Advanced Filtering extension to add additional parameters
+					$view_criteria = apply_filters( 'gravityview_search_criteria', $view_criteria, $view['form_id'], $view['id'] );
+
+					do_action( 'gravityview_log_debug', '[gravityview_get_entry] Single entry View filters', array(
+						'GravityView_frontend::get_search_criteria' => $get_search_criteria,
+						'after gravityview_search_criteria' => $view_criteria
+					) );
+
+					// If there are any filters to add, do so.
+					if( !empty( $view_criteria['search_criteria']['field_filters'] ) ) {
+
+						// If the Advanced Filtering extension added any parameters, then we need to set the Form ID.
+						// That's because any searches that use form field values need a Form ID.
+						if( sizeof( $view_criteria['search_criteria']['field_filters'] ) > sizeof( $get_search_criteria['field_filters'] )  ) {
+							$form_id = $view['form_id'];
+						}
+
+						$filters = array_merge( $filters, $view_criteria['search_criteria']['field_filters'] );
+
+						// Require the results to match the filters
+						$filters['mode'] = 'all';
+					}
+				}
+			}
 
 			$criteria = array(
 				'search_criteria' => array(
-					'field_filters' => array(
-						array(
-							'key' => "id",
-							'value' => $entry_id,
-							'operator' => 'is',
-						)
-					)
+					'field_filters' => $filters
 				),
 				'sorting' => null,
 				'paging' => array("offset" => 0, "page_size" => 1)
 			);
 
-			$entries = gravityview_get_entries( 0, $criteria );
+			$entries = gravityview_get_entries( $form_id, $criteria );
 
 			if( !empty( $entries ) ) {
 				return $entries[0];
 			}
 		}
+
 		return false;
 	}
 
@@ -583,7 +680,7 @@ if( !function_exists('gravityview_get_sortable_fields') ) {
 
 		if( !empty( $fields ) ) {
 
-			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'list', 'textarea' ) );
+			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'list', 'textarea' ), NULL );
 
 			$output .= '<option value="date_created" '. selected( 'date_created', $current, false ).'>'. esc_html__( 'Date Created', 'gravityview' ) .'</option>';
 
@@ -597,5 +694,28 @@ if( !function_exists('gravityview_get_sortable_fields') ) {
 		}
 		return $output;
 	}
+
+}
+
+if( !function_exists('gravityview_get_field_type') ) {
+
+	/**
+	 * Returns the GF Form field type for a certain field(id) of a form
+	 * @param  object $form     Gravity Forms form
+	 * @param  mixed $field_id Field ID or Field array
+	 * @return string field type
+	 */
+	function gravityview_get_field_type(  $form = null , $field_id = '' ) {
+
+		if( !empty( $field_id ) && !is_array( $field_id ) ) {
+			$field = gravityview_get_field( $form, $field_id );
+		} else {
+			$field = $field_id;
+		}
+
+		return class_exists( 'RGFormsModel' ) ? RGFormsModel::get_input_type( $field ) : '';
+
+	}
+
 
 }
