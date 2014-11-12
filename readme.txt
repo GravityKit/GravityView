@@ -20,7 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= 1.5 on November 11 =
+= 1.5 on November 12 =
 * Added: New "Edit Entry" configuration
 	- Configure which fields are shown when editing an entry
 	- Set visibility for the fields (Entry Creator, Administrator, etc.)
@@ -33,6 +33,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Delete signature fields in Edit Entry (requires the Gravity Forms Signature Addon)
 * Fixed: Gravity Forms tooltip translations being overridden
 * Added: Choose to open the link from a website field in the same window (field option)
+* Updated: Spanish (Mexican) translation by [@jorgepelaez](https://www.transifex.com/accounts/profile/jorgepelaez/), Dutch translation by [@erikvanbeek](https://www.transifex.com/accounts/profile/erikvanbeek/) and [@leooosterloo](https://www.transifex.com/accounts/profile/leooosterloo/), Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
 
 = 1.4 on October 28 =
 * Added: Custom entry slug capability. Instead of `/entry/123`, you can now use entry values in the URL, like `/entry/{company name}/` or `/entry/{first name}-{last name}/`. Requires some customization; [learn more here](https://gravityview.co/support/documentation/202239919)
