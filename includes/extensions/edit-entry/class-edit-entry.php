@@ -155,7 +155,6 @@ class GravityView_Edit_Entry {
 	 * @return [type]             [description]
 	 */
 	static function get_edit_link( $entry, $field ) {
-		global $gravityview_view;
 
 		self::getInstance()->setup_vars( $entry );
 
@@ -352,7 +351,6 @@ class GravityView_Edit_Entry {
 	 * @return void
 	 */
 	function init() {
-		global $gravityview_view;
 
 		require_once(GFCommon::get_base_path() . "/form_display.php");
 		require_once(GFCommon::get_base_path() . "/entry_detail.php");
@@ -391,8 +389,6 @@ class GravityView_Edit_Entry {
 
 
 	function process_save() {
-
-		global $gravityview_view;
 
 		// If the form is submitted
 		if( RGForms::post("action") === "update") {
@@ -762,8 +758,7 @@ class GravityView_Edit_Entry {
 	 * @access private
 	 * @param array $fields
 	 * @param array $configured_fields
-	 * @todo Convert to non-static method
-	 * @todo  Use object vars instead of passed $fields
+	 * @since  1.5
 	 * @return array $fields
 	 */
 	private function filter_fields( $fields, $configured_fields ) {
@@ -805,6 +800,7 @@ class GravityView_Edit_Entry {
 	 * Override GF Form field properties with the ones defined on the View
 	 * @param  array $field GF Form field object
 	 * @param  array $setting  GV field options
+	 * @since  1.5
 	 * @return array
 	 */
 	private function merge_field_properties( $field, $field_setting ) {
@@ -999,7 +995,7 @@ class GravityView_Edit_Entry {
 
 	/**
 	 * Check whether a field is editable by the current user, and optionally display an error message
-	 * @uses  self::check_user_cap_edit_field() Check user capabilities
+	 * @uses  GravityView_Edit_Entry->check_user_cap_edit_field() Check user capabilities
 	 * @param  array  $field Field or field settings array
 	 * @param  boolean $echo  Whether to show error message telling user they aren't allowed
 	 * @return boolean         True: user can edit the current field; False: nope, they can't.
@@ -1008,7 +1004,7 @@ class GravityView_Edit_Entry {
 
 		$error = NULL;
 
-		if( ! self::check_user_cap_edit_field( $field ) ) {
+		if( ! $this->check_user_cap_edit_field( $field ) ) {
 			$error = __( 'You do not have permission to edit this field.', 'gravityview');
 		}
 
@@ -1035,8 +1031,7 @@ class GravityView_Edit_Entry {
 	 * @param  [type] $field [description]
 	 * @return bool
 	 */
-	public static function check_user_cap_edit_field( $field ) {
-		global $gravityview_view;
+	private function check_user_cap_edit_field( $field ) {
 
 		// If they can edit any entries (as defined in Gravity Forms), we're good.
 		if( GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) ) {
