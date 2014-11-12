@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 	- Respects View filters, including those added by the Advanced Filtering extension
 * Fixed: Single entry Go back button context on Embedded Views
 * Fixed: Delete signature fields in Edit Entry (requires the Gravity Forms Signature Addon)
+* Fixed: Gravity Forms tooltip translations being overridden
 * Added: Choose to open the link from a website field in the same window (field option)
 
 = 1.4 on October 28 =
