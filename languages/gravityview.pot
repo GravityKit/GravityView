@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-11-12 11:18-0700\n"
-"PO-Revision-Date: 2014-11-12 11:19-0700\n"
+"POT-Creation-Date: 2014-11-12 11:30-0700\n"
+"PO-Revision-Date: 2014-11-12 11:30-0700\n"
 "Last-Translator: Katz Web Services, Inc. <support@katz.co>\n"
 "Language-Team: Zack Katz <admin@gravityview.co>\n"
 "Language: en_US\n"
@@ -182,10 +182,10 @@ msgid "Single Entry"
 msgstr ""
 
 #: includes/admin/metaboxes.php:255 includes/class-frontend-views.php:99
-#: includes/extensions/edit-entry/class-edit-entry.php:206
-#: includes/extensions/edit-entry/class-edit-entry.php:277
-#: includes/extensions/edit-entry/class-edit-entry.php:294
-#: includes/extensions/edit-entry/class-edit-entry.php:1182
+#: includes/extensions/edit-entry/class-edit-entry.php:205
+#: includes/extensions/edit-entry/class-edit-entry.php:276
+#: includes/extensions/edit-entry/class-edit-entry.php:293
+#: includes/extensions/edit-entry/class-edit-entry.php:1177
 #: includes/extensions/edit-entry/fields/edit_link.php:12
 msgid "Edit Entry"
 msgstr ""
@@ -279,7 +279,7 @@ msgstr ""
 
 #: includes/class-admin-add-shortcode.php:125
 #: includes/class-admin-views.php:839
-#: includes/extensions/edit-entry/class-edit-entry.php:1243
+#: includes/extensions/edit-entry/class-edit-entry.php:1238
 msgid "Cancel"
 msgstr ""
 
@@ -1360,71 +1360,71 @@ msgstr ""
 msgid "Page Links"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:204
+#: includes/extensions/edit-entry/class-edit-entry.php:203
 msgid "Edit Link Text"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:223
+#: includes/extensions/edit-entry/class-edit-entry.php:222
 msgid "Limiting Edit Access"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:224
+#: includes/extensions/edit-entry/class-edit-entry.php:223
 msgid ""
 "Change this setting if you don't want the user who created the entry to be "
 "able to edit this field."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:253
+#: includes/extensions/edit-entry/class-edit-entry.php:252
 msgid "Make field editable to:"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:279
+#: includes/extensions/edit-entry/class-edit-entry.php:278
 msgid "A link to edit the entry. Visible based on View settings."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:325
+#: includes/extensions/edit-entry/class-edit-entry.php:324
 msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:673
+#: includes/extensions/edit-entry/class-edit-entry.php:669
 msgid "Details"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:937
+#: includes/extensions/edit-entry/class-edit-entry.php:933
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1012
+#: includes/extensions/edit-entry/class-edit-entry.php:1008
 msgid "You do not have permission to edit this field."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1071
+#: includes/extensions/edit-entry/class-edit-entry.php:1066
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1075
+#: includes/extensions/edit-entry/class-edit-entry.php:1070
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1079
+#: includes/extensions/edit-entry/class-edit-entry.php:1074
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1193
+#: includes/extensions/edit-entry/class-edit-entry.php:1188
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1193
+#: includes/extensions/edit-entry/class-edit-entry.php:1188
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1199
+#: includes/extensions/edit-entry/class-edit-entry.php:1194
 #, php-format
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1241
+#: includes/extensions/edit-entry/class-edit-entry.php:1236
 msgid "Update"
 msgstr ""
 
