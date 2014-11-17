@@ -28,13 +28,6 @@ class GravityView_frontend {
 
 	function __construct() {
 
-		/**
-		 * When frontpage is a page and contains an embed view, enable single view
-		 * @hack
-		 * Fixes https://core.trac.wordpress.org/ticket/23867
-		 */
-		add_filter( 'parse_query', array( $this, 'parse_query'), 10, 1 );
-
 		add_action( 'wp', array( $this, 'parse_content'), 11 );
 
 		// Shortcode to render view (directory)
@@ -63,45 +56,6 @@ class GravityView_frontend {
 		}
 
 		return self::$instance;
-	}
-
-	/**
-	 * When frontpage is a page and contains an embed view, enable single view
-	 * @hack to fix WordPress core
-	 * Fixes https://core.trac.wordpress.org/ticket/23867
-	 */
-	public function parse_query( $query ) {
-		$qv =& $query->query_vars;
-
-		if ( $query->is_home && 'page' == get_option('show_on_front') && get_option('page_on_front') ) {
-			$_query = wp_parse_args($query->query);
-			// pagename can be set and empty depending on matched rewrite rules. Ignore an empty pagename.
-			if ( isset( $_query['pagename'] ) && '' == $_query['pagename'] ) {
-				unset( $_query['pagename'] );
-			}
-
-			// this is where will break from core wordpress
-			$ignore = array('preview', 'page', 'paged', 'cpage');
-			global $wp_rewrite;
-			foreach( $wp_rewrite->endpoints as $endpoint ) {
-				$ignore[] = $endpoint[1];
-			}
-
-			if ( empty($_query) || !array_diff( array_keys($_query), $ignore ) ) {
-				$query->is_page = true;
-				$query->is_home = false;
-
-				$qv['page_id'] = get_option('page_on_front');
-				// Correct <!--nextpage--> for page_on_front
-				if ( !empty($qv['paged']) ) {
-				  $qv['page'] = $qv['paged'];
-				  unset($qv['paged']);
-				}
-			}
-		}
-
-		// reset the is_singular flag after our updated code above
-		$query->is_singular = $query->is_single || $query->is_page || $query->is_attachment;
 	}
 
 
