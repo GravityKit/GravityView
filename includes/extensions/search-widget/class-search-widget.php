@@ -362,7 +362,10 @@ class GravityView_Widget_Search extends GravityView_Widget {
 						}
 					}
 				} elseif( is_array( $value ) ) {
-					$filter['value'] = implode( ',', $value );
+					unset( $filter );
+					foreach ( $value as $val ) {
+						$filter[] = array( 'key' => $field_id, 'value' => $val );
+					}
 				}
 
 				break;
