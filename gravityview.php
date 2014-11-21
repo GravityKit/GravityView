@@ -180,6 +180,16 @@ final class GravityView_Plugin {
 
 	}
 
+	/**
+	 * Include the extension class
+	 *
+	 * @since 1.5.1
+	 * @return void
+	 */
+	public static function include_extension_framework() {
+	    require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-extension.php' );
+	}
+
 
 	/**
 	 * Loads the plugin's translated strings.
