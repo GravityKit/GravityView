@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 = 1.5.1 =
 * Fixed: Search Bar - When searching on checkbox field type using multiselect input not returning results
+* Fixed: Refresh the results cache when an entry is deleted
 
 = 1.5 on November 12 =
 * Added: New "Edit Entry" configuration

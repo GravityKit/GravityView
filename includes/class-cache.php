@@ -53,6 +53,27 @@ class GravityView_Cache {
 		add_action( 'gform_after_update_entry', array( $this, 'entry_updated' ), 10, 2 );
 
 		add_action('gform_entry_created', array($this, 'entry_created'), 10, 2 );
+
+		add_action('gform_delete_lead', array($this, 'entry_deleted'), 10, 2 );
+	}
+
+	/**
+	 * Force refreshing a cache when an entry is deleted.
+	 *
+	 * The `gform_delete_lead` action is called before the lead is deleted; we fetch the entry to find out the form ID so it can be added to the blacklist.
+	 *
+	 * @since  1.5.1
+	 * @param  int $lead_id Entry ID
+	 * @return void
+	 */
+	public function entry_deleted( $lead_id ) {
+
+		$entry = GFAPI::get_entry( $lead_id );
+
+		do_action( 'gravityview_log_debug', 'GravityView_Cache[entry_updated] adding form '.$entry['form_id'].' to blacklist because entry #'.$lead_id.' was deleted' );
+
+		$this->blacklist_add( $entry['form_id'] );
+
 	}
 
 	/**
