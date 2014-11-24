@@ -288,7 +288,7 @@ class GravityView_Cache {
 			 * Name format: `gravityview_cache_time_{$filter_name}`
 			 * @var string
 			 */
-			$cache_time = (int)apply_filters( 'gravityview_cache_time_' . $filter_name , DAY_IN_SECONDS * 7 );
+			$cache_time = (int)apply_filters( 'gravityview_cache_time_' . $filter_name , DAY_IN_SECONDS );
 
 			do_action( 'gravityview_log_debug', 'GravityView_Cache[set] Setting cache with transient key '. $this->key .' for '.$cache_time.' seconds' );
 
