@@ -11,4 +11,10 @@ global $gravityview_view;
 
 extract( $gravityview_view->field_data );
 
+if( !empty( $field_settings['trim_words'] ) ) {
+	$excerpt_more = apply_filters( 'excerpt_more', ' ' . '[&hellip;]' );
+	$value = wp_trim_words( $value, $field_settings['trim_words'], $excerpt_more );
+}
+
 echo wpautop( $value );
+
