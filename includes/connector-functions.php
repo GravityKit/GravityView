@@ -291,7 +291,7 @@ if( !function_exists('gravityview_get_entries') ) {
 					$total = GFAPI::count_entries( $form_ids, $criteria['search_criteria'] );
 				}
 
-				return $entries;
+				return apply_filters( 'gravityview_entries', $entries, $criteria, $passed_criteria, $total );
 			}
 
 		}
@@ -312,7 +312,7 @@ if( !function_exists('gravityview_get_entries') ) {
 
 			}
 
-			return $entries;
+			return apply_filters( 'gravityview_entries', $entries, $criteria, $passed_criteria, $total );
 		}
 
 		return false;
