@@ -174,8 +174,10 @@ class GravityView_API {
 
 		$display_value = apply_filters("gform_entry_field_value", $display_value, $field, $entry, $form);
 
-		$display_value = self::replace_variables( $display_value, $form, $entry );
-
+		// prevent the use of merge_tags for non-admin fields
+		if( !empty( $field['adminOnly'] ) ) {
+			$display_value = self::replace_variables( $display_value, $form, $entry );
+		}
 
 		// Check whether the field exists in /includes/fields/{$field_type}.php
 		// This can be overridden by user template files.
