@@ -285,9 +285,50 @@ class GravityView_API {
 		global $post;
 
 		if( empty( $post_id ) ) {
-			$post_id = is_a( $post, 'WP_Post' ) ? $post->ID : NULL;
+
+			$post_id = false;
+
+			// DataTables passes the Post ID
+			if( defined('DOING_AJAX') && DOING_AJAX ) {
+
+				$post_id = isset( $_POST['post_id'] ) ? (int)$_POST['post_id'] : false;
+
+			} else {
+
+				// The Post ID has been passed via the shortcode
+				if( !empty( $gravityview_view ) && !empty( $gravityview_view->post_id ) ) {
+
+					$post_id = $gravityview_view->post_id;
+
+				} else {
+
+					// This is a GravityView post type
+					if( GravityView_frontend::getInstance()->is_gravityview_post_type ) {
+
+						$post_id = isset( $gravityview_view ) ? $gravityview_view->view_id : $post->ID;
+
+					} else {
+
+						// This is an embedded GravityView; use the embedded post's ID as the base.
+						if( GravityView_frontend::getInstance()->post_has_shortcode && is_a( $post, 'WP_Post' ) ) {
+
+							$post_id = $post->ID;
+
+						} elseif( !empty( $gravityview_view->view_id ) ) {
+
+							// The GravityView has been embedded in a widget or in a template, and
+							// is not in the current content. Thus, we defer to the View's own ID.
+							$post_id = $gravityview_view->view_id;
+
+						}
+
+					}
+
+				}
+			}
 		}
 
+		// No post ID, get outta here.
 		if( empty( $post_id ) ) {
 			return NULL;
 		}
@@ -397,55 +438,17 @@ class GravityView_API {
 
 	// return href for single entry
 	public static function entry_link( $entry ) {
-		global $post, $gravityview_view;
-
-		$post_id = false;
-
-		if( defined('DOING_AJAX') && DOING_AJAX ) {
-
-			$post_id = isset( $_POST['post_id'] ) ? (int)$_POST['post_id'] : false;
-
-		} else {
-
-			// The Post ID has been passed via the shortcode
-			if( !empty( $gravityview_view ) && !empty( $gravityview_view->post_id ) ) {
-
-				$post_id = $gravityview_view->post_id;
-
-			} else {
-
-				// This is a GravityView post type
-				if( GravityView_frontend::getInstance()->is_gravityview_post_type ) {
-
-					$post_id = $gravityview_view->view_id;
-
-				} else {
-
-					// This is an embedded GravityView; use the embedded post's ID as the base.
-					if( GravityView_frontend::getInstance()->post_has_shortcode ) {
-
-						$post_id = $post->ID;
-
-					} else {
-
-						// The GravityView has been embedded in a widget or in a template, and
-						// is not in the current content. Thus, we defer to the View's own ID.
-						$post_id = $gravityview_view->view_id;
-
-					}
-
-				}
-
-			}
-		}
-
-		// No post ID, get outta here.
-		if( empty( $post_id ) ) { return ''; }
-
-		$query_arg_name = GravityView_Post_Types::get_entry_var_name();
+		global $gravityview_view;
 
 		// Get the permalink to the View
-		$directory_link = self::directory_link( $post_id, false );
+		$directory_link = self::directory_link( NULL, false );
+
+		// No post ID? Get outta here.
+		if( empty( $directory_link ) ) {
+			return '';
+		}
+
+		$query_arg_name = GravityView_Post_Types::get_entry_var_name();
 
 		$entry_slug = self::get_entry_slug( $entry['id'], $entry );
 
