@@ -498,7 +498,7 @@ class GravityView_frontend {
 	public static function get_search_criteria( $args, $form_id ) {
 
 		// Search Criteria
-		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ) );
+		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ), $form_id );
 		do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after hook gravityview_fe_search_criteria: ', $search_criteria );
 
 		// implicity search

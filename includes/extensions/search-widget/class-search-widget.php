@@ -52,7 +52,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		parent::__construct( __( 'Search Bar', 'gravityview' ) , 'search_bar', $default_values, $settings );
 
 		// frontend - filter entries
-		add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ) );
+		add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ), 10, 1 );
 
 		// frontend - add template path
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
