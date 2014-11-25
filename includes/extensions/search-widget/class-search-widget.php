@@ -184,6 +184,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		$output .= '<option value="search_all" '. selected( 'search_all', $current, false ).' data-inputtypes="text">'. esc_html__( 'Search Everything', 'gravityview') .'</option>';
 		$output .= '<option value="entry_date" '. selected( 'entry_date', $current, false ).' data-inputtypes="date">'. esc_html__( 'Entry Date', 'gravityview') .'</option>';
+		$output .= '<option value="entry_id" '. selected( 'entry_id', $current, false ).' data-inputtypes="text">'. esc_html__( 'Entry ID', 'gravityview') .'</option>';
 
 		if( !empty( $fields ) ) {
 
@@ -281,6 +282,14 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			$search_criteria['end_date'] = $curr_end;
 		}
 
+		// search for a specific entry ID
+		if( !empty( $_GET[ 'gv_id' ] ) ) {
+			$search_criteria['field_filters'][] = array(
+				'key' => 'id',
+				'value' => (int)$_GET[ 'gv_id' ],
+				'operator' => '='
+			);
+		}
 
 		// get the other search filters
 		foreach( $_GET as $key => $value ) {
@@ -451,24 +460,37 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// prepare fields
 		foreach( $search_fields as $k => $field ) {
 
-			if( $field['field'] === 'search_all' ) {
-				$search_fields[ $k ]['key'] = 'search_all';
-				$search_fields[ $k ]['input'] = 'search_all';
-				$search_fields[ $k ]['value'] = esc_attr( stripslashes_deep( rgget('gv_search') ) );
+			switch( $field['field'] ) {
 
-			} elseif( $field['field'] === 'entry_date' ) {
-				$search_fields[ $k ]['key'] = 'entry_date';
-				$search_fields[ $k ]['input'] = 'entry_date';
-				$search_fields[ $k ]['value'] = array(
-					'start' => esc_attr( stripslashes_deep( rgget('gv_start') ) ),
-					'end' => esc_attr( stripslashes_deep( rgget('gv_end') ) )
-				);
-				$has_date = true;
-			} else {
-				if( $field['input'] === 'date' ) {
+				case 'search_all':
+					$search_fields[ $k ]['key'] = 'search_all';
+					$search_fields[ $k ]['input'] = 'search_all';
+					$search_fields[ $k ]['value'] = esc_attr( stripslashes_deep( rgget('gv_search') ) );
+					break;
+
+				case 'entry_date':
+					$search_fields[ $k ]['key'] = 'entry_date';
+					$search_fields[ $k ]['input'] = 'entry_date';
+					$search_fields[ $k ]['value'] = array(
+						'start' => esc_attr( stripslashes_deep( rgget('gv_start') ) ),
+						'end' => esc_attr( stripslashes_deep( rgget('gv_end') ) )
+					);
 					$has_date = true;
-				}
-				$search_fields[ $k ] = $this->get_search_filter_details( $field );
+					break;
+
+				case 'entry_id':
+					$search_fields[ $k ]['key'] = 'entry_id';
+					$search_fields[ $k ]['input'] = 'entry_id';
+					$search_fields[ $k ]['value'] = esc_attr( stripslashes_deep( rgget( 'gv_id' ) ) );
+					break;
+
+				default:
+					if( $field['input'] === 'date' ) {
+						$has_date = true;
+					}
+					$search_fields[ $k ] = $this->get_search_filter_details( $field );
+					break;
+
 			}
 
 		}
