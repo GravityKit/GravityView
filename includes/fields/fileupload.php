@@ -188,6 +188,19 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			}
 
+			/**
+			 * Filter to alter the default behaviour of wrapping images (or image names) with a link to the content object
+			 *
+			 * @since 1.5.1
+			 *
+			 * @param bool $disable_wrapped_link whether to wrap the content with a link to the content object.
+			 * @param array $gravityview_view->field_data
+			 *
+			 * @see GravityView_API:field_value() for info about $gravityview_view->field_data
+			 *
+			 */
+			$disable_wrapped_link = apply_filters( 'gravityview/fields/fileupload/wraplink', $disable_wrapped_link, $gravityview_view->field_data );
+
 			// If the HTML output hasn't been overridden by the switch statement above, use the default format
 			if( !empty( $content ) && empty( $disable_wrapped_link ) ) {
 
