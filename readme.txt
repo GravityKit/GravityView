@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.5.1 =
+* Fixed: DataTables Extension hangs when a View has Custom Content fields
 * Fixed: Search Bar - When searching on checkbox field type using multiselect input not returning results
 * Fixed: Refresh the results cache when an entry is deleted
 * Fixed: Change cache time to one day (from one week) so that Edit Link field nonces aren't invalidated
