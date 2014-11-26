@@ -198,7 +198,8 @@ class GravityView_View_Data {
 		}
 
 		foreach( $dir_fields as $area => $fields ) {
-			foreach( $fields as $uniqid => $properties ) {
+
+			foreach( (array)$fields as $uniqid => $properties ) {
 
 				if( $this->hide_field_check_conditions( $properties ) ) {
 					unset( $dir_fields[ $area ][ $uniqid ] );
