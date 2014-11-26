@@ -199,7 +199,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			 * @see GravityView_API:field_value() for info about $gravityview_view->field_data
 			 *
 			 */
-			$disable_wrapped_link = apply_filters( 'gravityview/fields/fileupload/wraplink', $disable_wrapped_link, $gravityview_view->field_data );
+			$disable_wrapped_link = apply_filters( 'gravityview/fields/fileupload/disable_link', $disable_wrapped_link, $gravityview_view->field_data );
 
 			// If the HTML output hasn't been overridden by the switch statement above, use the default format
 			if( !empty( $content ) && empty( $disable_wrapped_link ) ) {
