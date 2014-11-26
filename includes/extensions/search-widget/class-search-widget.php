@@ -543,7 +543,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		/**
 		 * Modify the label for a search field
-		 * @var string
+		 * @param string $label Existing label text
+		 * @param array $form_field Gravity Forms field array, as returned by `GFFormsModel::get_field()`
 		 */
 		$label = apply_filters( 'gravityview_search_field_label', $label, $form_field );
 
