@@ -652,6 +652,24 @@ function gravityview_get_the_term_list( $post_id, $link = true, $taxonomy = 'pos
 
 }
 
+/**
+ * Do a _very_ basic match for second-level TLD domains, like `.co.uk`
+ *
+ * Ideally, we'd use https://github.com/jeremykendall/php-domain-parser to check for this, but it's too much work for such a basic functionality. Maybe if it's needed more in the future.
+ *
+ * @link http://stackoverflow.com/a/12372310 Basic matching regex
+ * @param  string $domain Domain to check if it's a TLD or subdomain
+ * @return string         Extracted domain if it has a subdomain
+ */
+function _gravityview_strip_subdomain( $string_maybe_has_subdomain ) {
+
+    if( preg_match("/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.(?:com\.|co\.|net\.|org\.|firm\.|me\.|school\.|law\.|gov\.|mod\.|msk\.|irkutsks\.|sa\.|act\.|police\.|plc\.|ac\.|tm\.|asso\.|biz\.|pro\.|cg\.|telememo\.)?[a-z\.]{2,6})$/i", $string_maybe_has_subdomain, $matches ) ) {
+        return $matches['domain'];
+    } else {
+        return $string_maybe_has_subdomain;
+    }
+}
+
 if( !function_exists( 'gravityview_format_link' ) ) {
 
 /**
@@ -659,27 +677,104 @@ if( !function_exists( 'gravityview_format_link' ) ) {
  * @param  [type] $value [description]
  * @return [type]        [description]
  */
-function gravityview_format_link($value = null) {
+function gravityview_format_link( $value = null ) {
 
-	if(apply_filters('gravityview_anchor_text_striphttp', true)) {
-		$value = str_replace('http://', '', $value);
-		$value = str_replace('https://', '', $value);
+
+	$parts = parse_url( $value );
+
+	// No domain? Strange...show the original text.
+	if( empty( $parts['host'] ) ) {
+		return $value;
 	}
 
-	if(apply_filters('gravityview_anchor_text_stripwww', true)) {
-		$value = str_replace('www.', '', $value);
+	// Start with empty value for the return URL
+	$return = '';
+
+	// Add in the scheme
+	if( false === apply_filters('gravityview_anchor_text_striphttp', true) ) {
+
+		if( isset( $parts['scheme'] ) ) {
+			$return .= $parts['scheme'];
+		}
+
 	}
-	if(apply_filters('gravityview_anchor_text_rootonly', true)) {
-		$value = preg_replace('/(.*?)\/(.+)/ism', '$1', $value);
+
+	// The domain, which may contain a subdomain
+	$domain = $parts['host'];
+
+	/**
+	 * Strip www from the domain
+	 *
+	 * http://www.example.com => example.com
+	 *
+	 * @param boolean $enable Whether to strip www. Return false to show www.
+	 */
+	$strip_www = apply_filters('gravityview_anchor_text_stripwww', true );
+
+	if( $strip_www ) {
+		$domain = str_replace('www.', '', $domain );
 	}
-	if(apply_filters('gravityview_anchor_text_nosubdomain', true)) {
-		$value = preg_replace('/((.*?)\.)+(.*?)\.(.*?)/ism', '$3.$4', $value);
+
+	/**
+	 * Strip subdomains from the domain
+	 *
+	 * Enabled:
+	 * http://demo.example.com => example.com
+	 *
+	 * Disabled:
+	 * http://demo.example.com => demo.example.com
+	 *
+	 * @param boolean $enable Whether to strip subdomains. Return false to show subdomains.
+	 */
+	$strip_subdomains = apply_filters('gravityview_anchor_text_nosubdomain', true);
+
+	if( $strip_subdomains ) {
+
+		$domain = _gravityview_strip_subdomain( $parts['host'] );
+
 	}
-	if(apply_filters('gravityview_anchor_text_noquerystring', true)) {
-		$ary = explode("?", $value);
-		$value = $ary[0];
+
+	// Add the domain
+	$return .= $domain;
+
+	/**
+	 * Display link path going only to the base directory, not a sub-directory or file.
+	 *
+	 * When enabled:
+	 * http://example.com/sub/directory/page.html => example.com
+	 *
+	 * When disabled:
+	 * http://example.com/sub/directory/page.html => example.com/sub/directory/page.html
+	 *
+	 * @param boolean $enable Whether to enable "root only". Return false to show full path.
+	 */
+	$root_only = apply_filters('gravityview_anchor_text_rootonly', true);
+
+	if( empty( $root_only ) ) {
+
+		if( isset( $parts['path'] ) ) {
+			$return .= $parts['path'];
+		}
 	}
-	return $value;
+
+	/**
+	 * Whether to strip the query string from the end of the URL
+	 *
+	 * http://example.com/?query=example => example.com
+	 *
+	 * @param boolean $enable Whether to enable "root only". Return false to show full path.
+	 */
+	$strip_query_string = apply_filters('gravityview_anchor_text_noquerystring', true );
+
+	if( empty( $strip_query_string ) ) {
+
+		if( isset( $parts['query'] ) ) {
+			$return .= '?'.$parts['query'];
+		}
+
+	}
+
+	return $return;
 }
 
 }

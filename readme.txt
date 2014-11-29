@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Search Bar - When searching on checkbox field type using multiselect input not returning results
 * Fixed: Refresh the results cache when an entry is deleted
 * Fixed: Change cache time to one day (from one week) so that Edit Link field nonces aren't invalidated
+* Fixed: Incorrect link shortening for domains when it is second-level (for example, `example.co.uk` or `example.gov.za`)
 * Added: Textarea field now supports an option to trim the number of words shown
 
 = 1.5 on November 12 =
