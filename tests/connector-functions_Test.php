@@ -4,11 +4,13 @@ class GravityView_Connector_Functions_Test extends PHPUnit_Framework_TestCase {
 
 	function setUp() {
 		parent::setUp();
-		require_once dirname( __FILE__ ) . '/../includes/class-frontend-views.php';
+
+		GravityView_Plugin::getInstance();
 	}
 
 	/**
 	 * @group shortcode
+	 * @covers gravityview_has_shortcode_r()
 	 */
 	function test_gravityview_has_shortcode_r() {
 
