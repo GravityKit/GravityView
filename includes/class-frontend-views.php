@@ -59,7 +59,7 @@ class GravityView_frontend {
 	}
 
 
-	function parse_content( $wp ) {
+	function parse_content( $wp = array() ) {
 		global $post;
 
 		// Are we in an AJAX request?
@@ -72,6 +72,8 @@ class GravityView_frontend {
 		$this->single_entry = self::is_single_entry();
 		$this->entry = ( $this->single_entry ) ? gravityview_get_entry( $this->single_entry ) : false;
 		$this->is_gravityview_post_type = ( get_post_type( $post ) === 'gravityview' );
+
+		$this->post_id = isset( $this->post_id ) ? $this->post_id : (isset( $post ) ? $post->ID : NULL );
 		$post_has_shortcode = !empty( $post->post_content ) ? gravityview_has_shortcode_r( $post->post_content, 'gravityview' ) : false;
 		$this->post_has_shortcode = empty( $this->is_gravityview_post_type ) ? !empty( $post_has_shortcode ) : NULL;
 	}
