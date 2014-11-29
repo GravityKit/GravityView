@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Refresh the results cache when an entry is deleted
 * Fixed: Change cache time to one day (from one week) so that Edit Link field nonces aren't invalidated
 * Fixed: Incorrect link shortening for domains when it is second-level (for example, `example.co.uk` or `example.gov.za`)
+* Fixed: Cached directory link didn't respect page numbers
 * Added: Textarea field now supports an option to trim the number of words shown
 * Added: Filter to alter the default behaviour of wrapping images (or image names) with a link to the content object ([learn more](https://gravityview.co/support/documentation/202705059/ "Read the support doc for the filter"))
 

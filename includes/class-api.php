@@ -284,7 +284,7 @@ class GravityView_API {
 	 * @return string      Permalink to multiple entries view
 	 */
 	public static function directory_link( $post_id = NULL, $add_pagination = true ) {
-		global $post;
+		global $post, $gravityview_view;
 
 		if( empty( $post_id ) ) {
 
@@ -337,20 +337,22 @@ class GravityView_API {
 
 		// If we've saved the permalink in memory, use it
 		// @since 1.3
-		if( $link = wp_cache_get( 'gv_directory_link_'.$post_id ) ) {
-			return $link;
-		}
+		$link = wp_cache_get( 'gv_directory_link_'.$post_id );
 
-		$link = get_permalink( $post_id );
+		if( empty( $link ) ) {
+
+			$link = get_permalink( $post_id );
+
+			// If not yet saved, cache the permalink.
+			// @since 1.3
+			wp_cache_set( 'gv_directory_link_'.$post_id, $link );
+
+		}
 
 		// Deal with returning to proper pagination for embedded views
 		if( $add_pagination && !empty( $_GET['pagenum'] ) && is_numeric( $_GET['pagenum'] ) ) {
 			$link = add_query_arg('pagenum', intval( $_GET['pagenum'] ), $link );
 		}
-
-		// If not yet saved, cache the permalink.
-		// @since 1.3
-		wp_cache_set( 'gv_directory_link_'.$post_id, $link );
 
 		return $link;
 	}
@@ -490,8 +492,8 @@ function gv_class( $field, $form = NULL, $entry = array() ) {
 /**
  * sanitize_html_class doesn't handle spaces (multiple classes). We remedy that.
  * @uses sanitize_html_class
- * @param  string      $string Text to sanitize
- * @return [type]              [description]
+ * @param  string|array      $classes Text or arrray of classes to sanitize
+ * @return string            Sanitized CSS string
  */
 function gravityview_sanitize_html_class( $classes ) {
 
