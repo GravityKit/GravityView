@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: DataTables Extension hangs when a View has Custom Content fields
 * Fixed: Search Bar - When searching on checkbox field type using multiselect input not returning results
 * Fixed: Refresh the results cache when an entry is deleted
+* Fixed: When users are created using the User Registration Addon, the resulting entry is now automatically assigned to them
 * Fixed: Change cache time to one day (from one week) so that Edit Link field nonces aren't invalidated
 * Fixed: Incorrect link shortening for domains when it is second-level (for example, `example.co.uk` or `example.gov.za`)
 * Fixed: Cached directory link didn't respect page numbers
