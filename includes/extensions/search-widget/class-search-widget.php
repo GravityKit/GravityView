@@ -294,7 +294,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// get the other search filters
 		foreach( $_GET as $key => $value ) {
 
-			if( 0 !== strpos( $key, 'filter_' ) || empty( $value ) ) {
+			if( 0 !== strpos( $key, 'filter_' ) || empty( $value ) || ( is_array( $value ) && count( $value ) === 1 && empty( $value[0] ) ) ) {
 				continue;
 			}
 
@@ -312,7 +312,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		/**
 		 * Set the Search Mode
 		 * - Match ALL filters
-		 * - Match ANY filter
+		 * - Match ANY filter (default)
 		 *
 		 * @since 1.5.1
 		 */
@@ -325,6 +325,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 	/**
 	 * Prepare the field filters to GFAPI
+	 *
+	 * The type post_category, multiselect and checkbox support multi-select search - each value needs to be separated in an independent filter so we could apply the ANY search mode.
+	 *
 	 * Format searched values
 	 * @param  string $key   $_GET search key
 	 * @param  string $value $_GET search value
@@ -354,11 +357,13 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				if( !is_array( $value ) ) {
 					$value = array( $value );
 				}
+
+				unset( $filter );
+
 				foreach( $value as $val ) {
 					$cat = get_term( $val, 'category' );
-					$vals[] = esc_attr( $cat->name ) . ':' . $val;
+					$filter[] = array( 'key' => $field_id, 'value' => esc_attr( $cat->name ) . ':' . $val );
 				}
-				$filter['value'] = implode( ',', $vals );
 
 				break;
 
