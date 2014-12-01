@@ -309,6 +309,15 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		}
 
+		/**
+		 * Set the Search Mode
+		 * - Match ALL filters
+		 * - Match ANY filter
+		 *
+		 * @since 1.5.1
+		 */
+		$search_criteria['field_filters']['mode'] = apply_filters( 'gravityview/search/mode', 'any' );
+
 		do_action( 'gravityview_log_debug', sprintf( '%s[filter_entries] Returned Search Criteria: ', get_class( $this ) ), $search_criteria );
 
 		return $search_criteria;
@@ -355,8 +364,13 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 			case 'multiselect':
 
-				if( is_array( $value ) ) {
-					$value = implode( ',', $value );
+				if( !is_array( $value ) ) {
+					break;
+				}
+
+				unset( $filter );
+				foreach( $value as $val ) {
+					$filter[] = array( 'key' => $field_id, 'value' => $val );
 				}
 
 				break;
