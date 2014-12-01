@@ -140,16 +140,21 @@ class GravityView_frontend {
 
 	/**
 	 * Filter the title for the single entry view
-	 * @todo Somehow make this work with multiple shortcodes on a page. The problem is that there's no form data passed...
+	 * @todo: find a way to know exactly the view_id from which the single entry view belongs!!
 	 * @param  string $title   current title
 	 * @param  int $passed_post_id Post ID
 	 * @return string          (modified) title
 	 */
 	public function single_entry_title( $title, $passed_post_id = NULL ) {
-		global $post, $gravityview_view;
+		global $post;
 
 		// If this is the directory view, return.
 		if( empty( $this->single_entry ) ) {
+			return $title;
+		}
+
+		// to apply the filter to the menu title and the meta tag <title> - outside the loop
+		if( !apply_filters( 'gravityview/single/title/out_loop' , in_the_loop(), $this->entry ) ) {
 			return $title;
 		}
 
@@ -164,7 +169,20 @@ class GravityView_frontend {
 			return $title;
 		}
 
-		$view_meta = $this->gv_output_data->get_view( $passed_post_id );
+		// get view data
+		if( 'gravityview' === get_post_type( $post ) ) {
+			// In case View post is called directly
+			$view_meta = $this->gv_output_data->get_view( $passed_post_id );
+		} else {
+			// in case View is embedded.
+			// @todo: find a way to know exactly the view id where the single entry view belongs!!
+			foreach ( $this->gv_output_data->get_views() as $view_id => $view_data ) {
+				if( intval( $view_data['form_id'] ) === intval( $this->entry['form_id'] ) ) {
+					$view_meta = $view_data;
+					break;
+				}
+			}
+		}
 
 		if( !empty( $view_meta['atts']['single_title'] ) ) {
 			// We are allowing HTML in the fields, so no escaping the output
