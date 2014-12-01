@@ -23,7 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 = 1.5.1 =
 * Fixed: DataTables Extension hangs when a View has Custom Content fields
 * Fixed: Search Bar - When searching on checkbox field type using multiselect input not returning results
-* Fixed: Search Bar - supports "Match Any" search mode by default
+* Fixed: Search Bar - supports "Match Any" search mode by default ([learn more](https://gravityview.co/support/documentation/202722979/ "How do I modify the Search mode?"))
 * Fixed: Single Entry View title when view is embedded
 * Fixed: Refresh the results cache when an entry is deleted
 * Fixed: When users are created using the User Registration Addon, the resulting entry is now automatically assigned to them
