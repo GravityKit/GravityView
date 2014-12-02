@@ -491,21 +491,28 @@ final class GravityView_Delete_Entry {
 
 		$current_user = wp_get_current_user();
 
-		// if field options are passed, check if current user can view the link
+		// If field options are passed, check if current user can view the link
 		if( !empty( $field ) ) {
 
-			// if cap is defined check it, else leave... something is not right!
-			if( !empty( $field['allow_edit_cap'] ) ) {
-				if( !GFCommon::current_user_can_any( $field['allow_edit_cap'] ) ) {
-					do_action( 'gravityview_log_debug', sprintf( 'GravityView_Delete_Entry[check_user_cap_delete_entry] User %s is not authorized to view delete entry link ', $current_user->ID ) );
-					return false;
-				} elseif( $field['allow_edit_cap'] !== 'read' ) {
-					// do not return true if cap is read, as we need to check if the current user created the entry
+			// If capability is not defined, something is not right!
+			if( empty( $field['allow_edit_cap'] ) ) {
+
+				do_action( 'gravityview_log_error', 'GravityView_Delete_Entry[check_user_cap_delete_entry] Cannot read delete entry field caps', $field );
+
+				return false;
+			}
+
+			if( GFCommon::current_user_can_any( $field['allow_edit_cap'] ) ) {
+
+				// Do not return true if cap is read, as we need to check if the current user created the entry
+				if( $field['allow_edit_cap'] !== 'read' ) {
 					return true;
 				}
 
 			} else {
-				do_action( 'gravityview_log_error', sprintf( 'GravityView_Delete_Entry[check_user_cap_delete_entry] Cannot read delete entry field caps', $field ) );
+
+				do_action( 'gravityview_log_debug', sprintf( 'GravityView_Delete_Entry[check_user_cap_delete_entry] User %s is not authorized to view delete entry link ', $current_user->ID ) );
+
 				return false;
 			}
 
@@ -518,7 +525,7 @@ final class GravityView_Delete_Entry {
 			return false;
 		}
 
-		// only checks user_delete view option if view is already set
+		// Only checks user_delete view option if view is already set
 		if( !empty( $gravityview_view->view_id ) ) {
 
 			$user_delete = !empty( $gravityview_view->atts['user_delete'] );
