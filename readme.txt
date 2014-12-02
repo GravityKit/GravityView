@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.5.1 =
+* Added: Delete Entry functionality!
+	- New "User Delete" setting: allow the user who created an entry to delete it
+	- Adds a "Delete" link in the Edit Entry form
+	- New "Delete Link" Field
 * Fixed: DataTables Extension hangs when a View has Custom Content fields
 * Fixed: Search Bar - When searching on checkbox field type using multiselect input not returning results
 * Fixed: Search Bar - supports "Match Any" search mode by default ([learn more](https://gravityview.co/support/documentation/202722979/ "How do I modify the Search mode?"))
