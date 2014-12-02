@@ -21,8 +21,17 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.5.1 =
+* Fixed: DataTables Extension hangs when a View has Custom Content fields
 * Fixed: Search Bar - When searching on checkbox field type using multiselect input not returning results
+* Fixed: Search Bar - supports "Match Any" search mode by default ([learn more](https://gravityview.co/support/documentation/202722979/ "How do I modify the Search mode?"))
+* Fixed: Single Entry View title when view is embedded
 * Fixed: Refresh the results cache when an entry is deleted
+* Fixed: When users are created using the User Registration Addon, the resulting entry is now automatically assigned to them
+* Fixed: Change cache time to one day (from one week) so that Edit Link field nonces aren't invalidated
+* Fixed: Incorrect link shortening for domains when it is second-level (for example, `example.co.uk` or `example.gov.za`)
+* Fixed: Cached directory link didn't respect page numbers
+* Added: Textarea field now supports an option to trim the number of words shown
+* Added: Filter to alter the default behaviour of wrapping images (or image names) with a link to the content object ([learn more](https://gravityview.co/support/documentation/202705059/ "Read the support doc for the filter"))
 
 = 1.5 on November 12 =
 * Added: New "Edit Entry" configuration

@@ -235,14 +235,19 @@
 			table.find('tr.new-row').each( function() {
 				$(this).removeClass('new-row');
 
-				// Set previous field
+				// Set saved search field value
 				if( curr !== null ) {
-					$(this)
-						.find('select.gv-search-fields').val( curr.field )
-						.find('select.gv-search-inputs').val( curr.input );
+					$(this).find('select.gv-search-fields').val( curr.field );
 				}
 
+				// update the available input types
 				gvSearchWidget.updateSelectInput( $(this) );
+
+				// Set saved input type value
+				// !! Do not try to optimize this line. This needs to come after 'gvSearchWidget.updateSelectInput()'
+ 				if( curr !== null ) {
+ 					$(this).find('select.gv-search-inputs').val( curr.input );
+ 				}
 
 				// Fade in
 				$(this).fadeIn( function() {

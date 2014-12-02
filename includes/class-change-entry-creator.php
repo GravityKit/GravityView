@@ -7,9 +7,61 @@ class GravityView_Change_Entry_Creator {
 
     function __construct() {
 
-        add_action('plugins_loaded', array( $this, 'load'), 100 );
+    	/**
+    	 * @since  1.5.1
+    	 */
+    	add_action('gform_user_registered', array( $this, 'assign_new_user_to_lead'), 10, 4 );
 
-        add_action('plugins_loaded', array( $this, 'prevent_conflicts') );
+    	// ONLY ADMIN FROM HERE ON.
+    	if( !is_admin() ) { return; }
+
+    	add_action('plugins_loaded', array( $this, 'load'), 100 );
+
+    	add_action('plugins_loaded', array( $this, 'prevent_conflicts') );
+
+    }
+
+    /**
+     * When an user is created using the User Registration add-on, assign the entry to them
+     *
+     * @since  1.5.1
+     * @uses RGFormsModel::update_lead_property() Modify the entry `created_by` field
+     * @param  int $user_id  WordPress User ID
+     * @param  array $config   User registration feed configuration
+     * @param  array  $entry     GF Entry array
+     * @param  string $password User password
+     * @return void
+     */
+    function assign_new_user_to_lead( $user_id, $config, $entry = array(), $password = '' ) {
+
+    	/**
+    	 * Disable assigning the new user to the entry by returning false.
+    	 * @param  int $user_id  WordPress User ID
+	     * @param  array $config   User registration feed configuration
+	     * @param  array  $entry     GF Entry array
+    	 */
+    	$assign_to_lead = apply_filters( 'gravityview_assign_new_user_to_entry', true, $user_id, $config, $entry );
+
+    	// If filter returns false, do not process
+    	if( empty( $assign_to_lead ) ) {
+    		return;
+    	}
+
+    	// Update the entry. The `false` prevents checking Akismet; `true` disables the user updated hook from firing
+    	$result = RGFormsModel::update_lead_property( $entry['id'], 'created_by', $user_id, false, true );
+
+    	if( empty( $result ) ) {
+    		$status = __('Error', 'gravityview');
+    	} else {
+    		$status = __('Success', 'gravityview');
+    	}
+
+    	$note = sprintf( _x('%s: Assigned User ID #%d as the entry creator.', 'First parameter: Success or error of the action. Second: User ID number', 'gravityview'), $status, $user_id );
+
+    	do_action( 'gravityview_log_debug', 'GravityView_Change_Entry_Creator[assign_new_user_to_lead] - '.$note );
+
+    	RGFormsModel::add_note( $entry['id'], -1, 'GravityView', $note );
+
     }
 
     /**
