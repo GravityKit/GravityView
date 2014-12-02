@@ -15,6 +15,8 @@ $output = apply_filters( 'gravityview_entry_link', GravityView_API::replace_vari
 
 $href = GravityView_Delete_Entry::get_delete_link( $entry, $field );
 
-$output = '<a href="'. $href .'">'. $output . '</a>';
+$onclick = GravityView_Delete_Entry::get_confirm_dialog();
+
+$output = '<a href="'. $href .'"'.$onclick.'>'. $output . '</a>';
 
 echo $output;

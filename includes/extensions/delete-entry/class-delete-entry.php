@@ -287,7 +287,7 @@ final class GravityView_Delete_Entry {
 		}
 
 		?>
-		<a class="btn btn-sm button button-small alignright pull-right btn-danger" tabindex="5" href="<?php echo self::get_delete_link( $entry ); ?>"><?php esc_attr_e( 'Delete', 'gravityview' ); ?></a>
+		<a class="btn btn-sm button button-small alignright pull-right btn-danger" tabindex="5" href="<?php echo self::get_delete_link( $entry ); ?>"<?php echo self::get_confirm_dialog(); ?>><?php esc_attr_e( 'Delete', 'gravityview' ); ?></a>
 		<?php
 	}
 
@@ -399,6 +399,27 @@ final class GravityView_Delete_Entry {
 
 		return wp_verify_nonce( $_GET['delete'], $nonce_key );
 
+	}
+
+	/**
+	 * Get the onclick attribute for the confirm dialogs that warns users before they delete an entry
+	 *
+	 * @since 1.5.1
+	 * @return string HTML `onclick` attribute
+	 */
+	public static function get_confirm_dialog() {
+
+		$confirm = __('Are you sure you want to delete this entry? This cannot be undone.', 'gravityview');
+
+		/**
+		 * Modify the confirmation text
+		 * @var string
+		 */
+		$confirm = apply_filters( 'gravityview/delete-entry/confirmtext', $confirm );
+
+		$html = ' onclick="return window.confirm(\''. esc_js( $confirm ) .'\');"';
+
+		return $html;
 	}
 
 	/**
