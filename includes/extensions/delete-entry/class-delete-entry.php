@@ -54,6 +54,7 @@ final class GravityView_Delete_Entry {
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
 
 	}
+		add_action( 'gravityview/edit-entry/publishing-action/after', array( $this, 'add_delete_button'), 10, 3 );
 
 	function display_message() {
 		// DISPLAY ERROR/SUCCESS MESSAGE
@@ -257,6 +258,27 @@ final class GravityView_Delete_Entry {
 		return $url;
 	}
 
+
+	/**
+	 * Add a Delete button to the #publishing-action section of the Delete Entry form
+	 *
+	 * @since 1.5.1
+	 * @param array $form    Gravity Forms form array
+	 * @param array $entry   Gravity Forms entry array
+	 * @param int $view_id GravityView View ID
+	 */
+	function add_delete_button( $form = array(), $entry = array(), $view_id = NULL ) {
+		global $gravityview_view;
+
+		// Only show the link to those who are allowed to see it.
+		if( !self::check_user_cap_delete_entry( $entry ) ) {
+			return;
+		}
+
+		?>
+		<a class="btn btn-sm button button-small alignright pull-right btn-danger" tabindex="5" href="<?php echo self::get_delete_link( $entry ); ?>"><?php esc_attr_e( 'Delete', 'gravityview' ); ?></a>
+		<?php
+	}
 	function process_delete() {
 
 		// If the form is submitted
