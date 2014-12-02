@@ -440,6 +440,37 @@ class GravityView_API {
 		return sanitize_title( $slug );
 	}
 
+	/**
+	 * Get the entry ID from the entry slug, which may or may not be the entry ID
+	 *
+	 * @since  1.5.1
+	 * @param  string $slug The entry slug, as returned by GravityView_API::get_entry_slug()
+	 * @return int|null       The entry ID, if exists; `NULL` if not
+	 */
+	public static function get_entry_id_from_slug( $slug ) {
+		global $wpdb;
+
+		$search_criteria = array(
+			'field_filters' => array(
+				array(
+					'key' => 'gravityview_unique_id', // Search the meta values
+					'value' => $slug
+				)
+			)
+		);
+
+		// Limit to one for speed
+		$paging = array(
+			'page_size' => 1
+		);
+
+		$results = GFAPI::get_entries( 0, $search_criteria, NULL, $paging );
+
+		$result = ( !empty( $results ) && !empty( $results[0]['id'] ) ) ? $results[0]['id'] : NULL;
+
+		return $result;
+	}
+
 	// return href for single entry
 	public static function entry_link( $entry ) {
 		global $gravityview_view;
