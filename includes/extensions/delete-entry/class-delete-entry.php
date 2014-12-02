@@ -232,7 +232,7 @@ final class GravityView_Delete_Entry {
 	 * @return string           Key used to validate request
 	 */
 	static function get_nonce_key( $entry_id ) {
-		return sprintf( 'delete_%d', $entry_id );
+		return sprintf( 'delete_%s', $entry_id );
 	}
 
 
