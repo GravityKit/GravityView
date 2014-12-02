@@ -294,6 +294,13 @@ class GravityView_Admin_ApproveEntries {
 				RGFormsModel::add_note( $entry_id, $current_user->ID, $current_user->display_name, $note );
 			}
 
+			/**
+			 * Destroy the cache for this form
+			 * @see class-cache.php
+			 * @since 1.5.1
+			 */
+			do_action( 'gravityview_clear_form_cache', $form_id );
+
 		}
 
 		return $result;
