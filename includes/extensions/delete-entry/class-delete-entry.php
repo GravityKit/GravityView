@@ -286,6 +286,17 @@ final class GravityView_Delete_Entry {
 			return;
 		}
 
+		/**
+		 * Show or hide the delete button in the Edit Entry screen
+		 * @param boolean $show_entry Default: true
+		 */
+		$show_delete_button = apply_filters( 'gravityview/delete-entry/show-delete-button', true );
+
+		// If the button is hidden by the filter, don't show.
+		if( !$show_delete_button ) {
+			return;
+		}
+
 		?>
 		<a class="btn btn-sm button button-small alignright pull-right btn-danger" tabindex="5" href="<?php echo self::get_delete_link( $entry ); ?>"<?php echo self::get_confirm_dialog(); ?>><?php esc_attr_e( 'Delete', 'gravityview' ); ?></a>
 		<?php
@@ -415,7 +426,7 @@ final class GravityView_Delete_Entry {
 		 * Modify the confirmation text
 		 * @var string
 		 */
-		$confirm = apply_filters( 'gravityview/delete-entry/confirmtext', $confirm );
+		$confirm = apply_filters( 'gravityview/delete-entry/confirm-text', $confirm );
 
 		$html = ' onclick="return window.confirm(\''. esc_js( $confirm ) .'\');"';
 
