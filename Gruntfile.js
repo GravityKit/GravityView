@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 				files: [{
 		          expand: true,
 		          cwd: 'includes/css/scss',
-		          src: ['*.scss','!admin-merge-tags.scss','!admin-tooltips.scss'],
+		          src: ['*.scss','!admin-merge-tags.scss','!admin-tooltips.scss','!font.scss'],
 		          dest: 'includes/css',
 		          ext: '.css'
 		      }]
@@ -21,7 +21,7 @@ module.exports = function(grunt) {
 				files: [{
 		          expand: true,
 		          cwd: 'templates/css/source/',
-		          src: ['*.scss','!search.scss'],
+		          src: ['*.scss','!search.scss','!edit.scss','!font.scss','!notice.scss'],
 		          dest: 'templates/css/',
 		          ext: '.css'
 		      }]
