@@ -243,10 +243,9 @@ final class GravityView_Delete_Entry {
 	 *
 	 * @since 1.5.1
 	 * @param  array      $entry Gravity Forms entry array
-	 * @param  array      $field GV field array, optional
 	 * @return string|null             If directory link is valid, the URL to process the delete request. Otherwise, `NULL`.
 	 */
-	static function get_delete_link( $entry, $field = array() ) {
+	static function get_delete_link( $entry ) {
 
 		self::getInstance()->set_entry( $entry );
 
@@ -452,11 +451,11 @@ final class GravityView_Delete_Entry {
 			$error = __( 'The link to delete this entry is not valid; it may have expired.', 'gravityview');
 		}
 
-		if( ! self::check_user_cap_delete_entry( $this->entry ) ) {
+		if( ! self::check_user_cap_delete_entry( $entry ) ) {
 			$error = __( 'You do not have permission to delete this entry.', 'gravityview');
 		}
 
-		if( $this->entry['status'] === 'trash' ) {
+		if( $entry['status'] === 'trash' ) {
 			$error = __('You cannot delete the entry; it is already in the trash.', 'gravityview' );
 		}
 
@@ -470,16 +469,16 @@ final class GravityView_Delete_Entry {
 		return new WP_Error( 'gravityview-delete-entry-permissions', $error );
 	}
 
+
 	/**
-	 * checks if user has permissions to edit a specific entry
-	 *
-	 * Needs to be used combined with GravityView_Delete_Entry::user_can_edit_entry for maximum security!!
+	 * checks if user has permissions to view the link or delete a specific entry
 	 *
 	 * @since 1.5.1
 	 * @param  array $entry Gravity Forms entry array
+	 * @param array $field Field settings (optional)
 	 * @return bool
 	 */
-	public static function check_user_cap_delete_entry( $entry ) {
+	public static function check_user_cap_delete_entry( $entry, $field = array() ) {
 		global $gravityview_view;
 
 		// Or if they can delete any entries (as defined in Gravity Forms), we're good.
@@ -490,6 +489,28 @@ final class GravityView_Delete_Entry {
 			return true;
 		}
 
+		$current_user = wp_get_current_user();
+
+		// if field options are passed, check if current user can view the link
+		if( !empty( $field ) ) {
+
+			// if cap is defined check it, else leave... something is not right!
+			if( !empty( $field['allow_edit_cap'] ) ) {
+				if( !GFCommon::current_user_can_any( $field['allow_edit_cap'] ) ) {
+					do_action( 'gravityview_log_debug', sprintf( 'GravityView_Delete_Entry[check_user_cap_delete_entry] User %s is not authorized to view delete entry link ', $current_user->ID ) );
+					return false;
+				} elseif( $field['allow_edit_cap'] !== 'read' ) {
+					// do not return true if cap is read, as we need to check if the current user created the entry
+					return true;
+				}
+
+			} else {
+				do_action( 'gravityview_log_error', sprintf( 'GravityView_Delete_Entry[check_user_cap_delete_entry] Cannot read delete entry field caps', $field ) );
+				return false;
+			}
+
+		}
+
 		if( !isset( $entry['created_by'] ) ) {
 
 			do_action('gravityview_log_error', 'GravityView_Delete_Entry[check_user_cap_delete_entry] Entry `created_by` doesn\'t exist.');
@@ -497,16 +518,18 @@ final class GravityView_Delete_Entry {
 			return false;
 		}
 
-		$user_delete = !empty( $gravityview_view->atts['user_delete'] );
+		// only checks user_delete view option if view is already set
+		if( !empty( $gravityview_view->view_id ) ) {
 
-		if( empty( $user_delete ) ) {
+			$user_delete = !empty( $gravityview_view->atts['user_delete'] );
 
-			do_action('gravityview_log_debug', 'GravityView_Delete_Entry[check_user_cap_delete_entry] User Delete is disabled. Returning false.' );
+			if( empty( $user_delete ) ) {
 
-			return false;
+				do_action('gravityview_log_debug', 'GravityView_Delete_Entry[check_user_cap_delete_entry] User Delete is disabled. Returning false.' );
+
+				return false;
+			}
 		}
-
-		$current_user = wp_get_current_user();
 
 		// If the logged-in user is the same as the user who created the entry, we're good.
 		if( is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
