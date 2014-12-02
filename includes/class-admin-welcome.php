@@ -257,17 +257,49 @@ class GravityView_Welcome {
 
 				<div class="feature-section col two-col">
 					<div class="col-1">
-						<img src="<?php echo plugins_url( 'images/screenshots/edit-tab.png', GRAVITYVIEW_FILE ); ?>">
+						<img src="<?php echo plugins_url( 'images/screenshots/delete-entry.png', GRAVITYVIEW_FILE ); ?>">
+						<h3 class="higher">Delete Entry Functionality</h3>
+						<p>Enable the new "Allow User Delete" setting to allow users to delete entries from the Edit Entry screen.</p>
+						<p>Once you enable User Delete, a "Delete" button will be displayed in the Edit Entry screen. You can also add a Delete Entry field to your View Configuration.</p>
+						<p><a href="https://gravityview.co/support/documentation/203458965/" class="button button-primary" rel="external">Learn How to Enable Delete Entry</a></p>
 					</div>
 
 					<div class="col-2 last-feature">
+						<img src="<?php echo plugins_url( 'images/screenshots/edit-tab.png', GRAVITYVIEW_FILE ); ?>">
 						<h3 class="higher">Edit Entry Configuration</h3>
-						<p>In previous versions of GravityView, all form fields were shown when editing a View. In Version 1.5, you can choose which fields are editable in the Edit Entry screen.</p>
+						<p>Starting in Version 1.5, you can choose which fields are editable in the Edit Entry screen.</p>
 						<p><a href="https://gravityview.co/support/documentation/203176225/" class="button button-primary" rel="external">Learn How to Configure Edit Entry</a></p>
 					</div>
 				</div>
 
 				<hr />
+
+
+				<h3>Changes in 1.5.1 (full list)</h3>
+
+				<ul>
+					<li>Added: Delete Entry functionality!
+					<strong>  - New "User Delete" setting:</strong> allow the user who created an entry to delete it
+
+					<ul>
+					<li>Adds a "Delete" link in the Edit Entry form</li>
+					<li>Added a new "Delete Link" Field to the Field Picker</li>
+					</ul>
+					</li>
+					<li>Fixed: DataTables Extension hangs when a View has Custom Content fields</li>
+					<li>Fixed: Search Bar - When searching on checkbox field type using multiselect input not returning results</li>
+					<li>Fixed: Search Bar - supports "Match Any" search mode by default (<a href="https://gravityview.co/support/documentation/202722979/" title="How do I modify the Search mode?">learn more</a>)</li>
+					<li>Fixed: Single Entry View title when view is embedded</li>
+					<li>Fixed: Refresh the results cache when an entry is deleted or is approved/disapproved</li>
+					<li>Fixed: When users are created using the User Registration Addon, the resulting entry is now automatically assigned to them</li>
+					<li>Fixed: Change cache time to one day (from one week) so that Edit Link field nonces aren't invalidated</li>
+					<li>Fixed: Incorrect link shortening for domains when it is second-level (for example, <code>example.co.uk</code> or <code>example.gov.za</code>)</li>
+					<li>Fixed: Cached directory link didn't respect page numbers</li>
+					<li>Fixed: Edit Entry Admin Bar link wouldn't work when using Custom Entry Slug</li>
+					<li>Added: Textarea field now supports an option to trim the number of words shown</li>
+					<li>Added: Filter to alter the default behaviour of wrapping images (or image names) with a link to the content object (<a href="https://gravityview.co/support/documentation/202705059/" title="Read the support doc for the filter">learn more</a>)</li>
+					<li>Updated: Portuguese translation (thanks <a href="https://www.transifex.com/accounts/profile/luistinygod/">@luistinygod</a>), Mexican translation (thanks, <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a>), Turkish translation (thanks <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a>)</li>
+				</ul>
 
 				<h3>Changes in 1.5 (full list)</h3>
 

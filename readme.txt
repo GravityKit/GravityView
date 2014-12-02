@@ -21,8 +21,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.5.1 on December 2 =
+
 * Added: Delete Entry functionality!
-	- New "User Delete" setting: allow the user who created an entry to delete it
+	- New "User Delete" setting allows the user who created an entry to delete it
 	- Adds a "Delete" link in the Edit Entry form
 	- Added a new "Delete Link" Field to the Field Picker
 * Fixed: DataTables Extension hangs when a View has Custom Content fields
