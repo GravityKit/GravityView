@@ -10,6 +10,11 @@ global $gravityview_view;
 
 extract( $gravityview_view->field_data );
 
+// Make sure the class is loaded in DataTables
+if( !class_exists( 'GFFormDisplay' ) ) {
+	include_once( GFCommon::get_base_path() . '/form_display.php' );
+}
+
 // Tell the renderer not to wrap this field in an anchor tag.
 $gravityview_view->field_data['field_settings']['show_as_link'] = false;
 

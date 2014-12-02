@@ -198,7 +198,8 @@ class GravityView_View_Data {
 		}
 
 		foreach( $dir_fields as $area => $fields ) {
-			foreach( $fields as $uniqid => $properties ) {
+
+			foreach( (array)$fields as $uniqid => $properties ) {
 
 				if( $this->hide_field_check_conditions( $properties ) ) {
 					unset( $dir_fields[ $area ][ $uniqid ] );
@@ -357,7 +358,16 @@ class GravityView_View_Data {
 				'value'	=> 0,
 				'tooltip' => __('Display "Edit Entry" fields to non-administrator users if they created the entry. Edit Entry fields will always be displayed to site administrators.', 'gravityview'),
 				'type'	=> 'checkbox',
-				'show_in_shortcode' => false,
+				'show_in_shortcode' => true,
+			),
+			'user_delete' => array(
+				'label'	=> __( 'Allow User Delete', 'gravityview' ),
+				'group'	=> 'default',
+				'desc'	=> __('Allow logged-in users to delete entries they created.', 'gravityview'),
+				'value'	=> 0,
+				'tooltip' => __('Display "Delete Entry" fields to non-administrator users if they created the entry. Delete Entry fields will always be displayed to site administrators.', 'gravityview'),
+				'type'	=> 'checkbox',
+				'show_in_shortcode' => true,
 			),
 			'sort_field' => array(
 				'label'	=> __('Sort by field', 'gravityview'),

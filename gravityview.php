@@ -14,7 +14,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.5
+ * Version:          	1.5.1
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravityview
@@ -67,7 +67,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.5';
+	const version = '1.5.1';
 
 	public static $theInstance;
 
@@ -103,6 +103,7 @@ final class GravityView_Plugin {
 		// Load Extensions
  		// @todo: Convert to a scan of the directory or a method where this all lives
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/edit-entry/class-edit-entry.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/extensions/delete-entry/class-delete-entry.php' );
 
 		// Add logging
 		require_once( GRAVITYVIEW_DIR . 'includes/class-logging.php');
@@ -180,6 +181,16 @@ final class GravityView_Plugin {
 
 	}
 
+	/**
+	 * Include the extension class
+	 *
+	 * @since 1.5.1
+	 * @return void
+	 */
+	public static function include_extension_framework() {
+	    require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-extension.php' );
+	}
+
 
 	/**
 	 * Loads the plugin's translated strings.
@@ -203,6 +214,7 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-template.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-api.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-change-entry-creator.php' );
 
 		// Nice place to insert extensions' frontend stuff
 		do_action('gravityview_include_frontend_actions');

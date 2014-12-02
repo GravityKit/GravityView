@@ -174,8 +174,10 @@ class GravityView_API {
 
 		$display_value = apply_filters("gform_entry_field_value", $display_value, $field, $entry, $form);
 
-		$display_value = self::replace_variables( $display_value, $form, $entry );
-
+		// prevent the use of merge_tags for non-admin fields
+		if( !empty( $field['adminOnly'] ) ) {
+			$display_value = self::replace_variables( $display_value, $form, $entry );
+		}
 
 		// Check whether the field exists in /includes/fields/{$field_type}.php
 		// This can be overridden by user template files.
@@ -282,32 +284,75 @@ class GravityView_API {
 	 * @return string      Permalink to multiple entries view
 	 */
 	public static function directory_link( $post_id = NULL, $add_pagination = true ) {
-		global $post;
+		global $post, $gravityview_view;
 
 		if( empty( $post_id ) ) {
-			$post_id = is_a( $post, 'WP_Post' ) ? $post->ID : NULL;
+
+			$post_id = false;
+
+			// DataTables passes the Post ID
+			if( defined('DOING_AJAX') && DOING_AJAX ) {
+
+				$post_id = isset( $_POST['post_id'] ) ? (int)$_POST['post_id'] : false;
+
+			} else {
+
+				// The Post ID has been passed via the shortcode
+				if( !empty( $gravityview_view ) && !empty( $gravityview_view->post_id ) ) {
+
+					$post_id = $gravityview_view->post_id;
+
+				} else {
+
+					// This is a GravityView post type
+					if( GravityView_frontend::getInstance()->is_gravityview_post_type ) {
+
+						$post_id = isset( $gravityview_view ) ? $gravityview_view->view_id : $post->ID;
+
+					} else {
+
+						// This is an embedded GravityView; use the embedded post's ID as the base.
+						if( GravityView_frontend::getInstance()->post_has_shortcode && is_a( $post, 'WP_Post' ) ) {
+
+							$post_id = $post->ID;
+
+						} elseif( !empty( $gravityview_view->view_id ) ) {
+
+							// The GravityView has been embedded in a widget or in a template, and
+							// is not in the current content. Thus, we defer to the View's own ID.
+							$post_id = $gravityview_view->view_id;
+
+						}
+
+					}
+
+				}
+			}
 		}
 
+		// No post ID, get outta here.
 		if( empty( $post_id ) ) {
 			return NULL;
 		}
 
 		// If we've saved the permalink in memory, use it
 		// @since 1.3
-		if( $link = wp_cache_get( 'gv_directory_link_'.$post_id ) ) {
-			return $link;
-		}
+		$link = wp_cache_get( 'gv_directory_link_'.$post_id );
 
-		$link = get_permalink( $post_id );
+		if( empty( $link ) ) {
+
+			$link = get_permalink( $post_id );
+
+			// If not yet saved, cache the permalink.
+			// @since 1.3
+			wp_cache_set( 'gv_directory_link_'.$post_id, $link );
+
+		}
 
 		// Deal with returning to proper pagination for embedded views
 		if( $add_pagination && !empty( $_GET['pagenum'] ) && is_numeric( $_GET['pagenum'] ) ) {
 			$link = add_query_arg('pagenum', intval( $_GET['pagenum'] ), $link );
 		}
-
-		// If not yet saved, cache the permalink.
-		// @since 1.3
-		wp_cache_set( 'gv_directory_link_'.$post_id, $link );
 
 		return $link;
 	}
@@ -395,57 +440,50 @@ class GravityView_API {
 		return sanitize_title( $slug );
 	}
 
+	/**
+	 * Get the entry ID from the entry slug, which may or may not be the entry ID
+	 *
+	 * @since  1.5.1
+	 * @param  string $slug The entry slug, as returned by GravityView_API::get_entry_slug()
+	 * @return int|null       The entry ID, if exists; `NULL` if not
+	 */
+	public static function get_entry_id_from_slug( $slug ) {
+		global $wpdb;
+
+		$search_criteria = array(
+			'field_filters' => array(
+				array(
+					'key' => 'gravityview_unique_id', // Search the meta values
+					'value' => $slug
+				)
+			)
+		);
+
+		// Limit to one for speed
+		$paging = array(
+			'page_size' => 1
+		);
+
+		$results = GFAPI::get_entries( 0, $search_criteria, NULL, $paging );
+
+		$result = ( !empty( $results ) && !empty( $results[0]['id'] ) ) ? $results[0]['id'] : NULL;
+
+		return $result;
+	}
+
 	// return href for single entry
 	public static function entry_link( $entry ) {
-		global $post, $gravityview_view;
-
-		$post_id = false;
-
-		if( defined('DOING_AJAX') && DOING_AJAX ) {
-
-			$post_id = isset( $_POST['post_id'] ) ? (int)$_POST['post_id'] : false;
-
-		} else {
-
-			// The Post ID has been passed via the shortcode
-			if( !empty( $gravityview_view ) && !empty( $gravityview_view->post_id ) ) {
-
-				$post_id = $gravityview_view->post_id;
-
-			} else {
-
-				// This is a GravityView post type
-				if( GravityView_frontend::getInstance()->is_gravityview_post_type ) {
-
-					$post_id = $gravityview_view->view_id;
-
-				} else {
-
-					// This is an embedded GravityView; use the embedded post's ID as the base.
-					if( GravityView_frontend::getInstance()->post_has_shortcode ) {
-
-						$post_id = $post->ID;
-
-					} else {
-
-						// The GravityView has been embedded in a widget or in a template, and
-						// is not in the current content. Thus, we defer to the View's own ID.
-						$post_id = $gravityview_view->view_id;
-
-					}
-
-				}
-
-			}
-		}
-
-		// No post ID, get outta here.
-		if( empty( $post_id ) ) { return ''; }
-
-		$query_arg_name = GravityView_Post_Types::get_entry_var_name();
+		global $gravityview_view;
 
 		// Get the permalink to the View
-		$directory_link = self::directory_link( $post_id, false );
+		$directory_link = self::directory_link( NULL, false );
+
+		// No post ID? Get outta here.
+		if( empty( $directory_link ) ) {
+			return '';
+		}
+
+		$query_arg_name = GravityView_Post_Types::get_entry_var_name();
 
 		$entry_slug = self::get_entry_slug( $entry['id'], $entry );
 
@@ -485,8 +523,8 @@ function gv_class( $field, $form = NULL, $entry = array() ) {
 /**
  * sanitize_html_class doesn't handle spaces (multiple classes). We remedy that.
  * @uses sanitize_html_class
- * @param  string      $string Text to sanitize
- * @return [type]              [description]
+ * @param  string|array      $classes Text or arrray of classes to sanitize
+ * @return string            Sanitized CSS string
  */
 function gravityview_sanitize_html_class( $classes ) {
 
@@ -647,6 +685,24 @@ function gravityview_get_the_term_list( $post_id, $link = true, $taxonomy = 'pos
 
 }
 
+/**
+ * Do a _very_ basic match for second-level TLD domains, like `.co.uk`
+ *
+ * Ideally, we'd use https://github.com/jeremykendall/php-domain-parser to check for this, but it's too much work for such a basic functionality. Maybe if it's needed more in the future.
+ *
+ * @link http://stackoverflow.com/a/12372310 Basic matching regex
+ * @param  string $domain Domain to check if it's a TLD or subdomain
+ * @return string         Extracted domain if it has a subdomain
+ */
+function _gravityview_strip_subdomain( $string_maybe_has_subdomain ) {
+
+    if( preg_match("/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.(?:com\.|co\.|net\.|org\.|firm\.|me\.|school\.|law\.|gov\.|mod\.|msk\.|irkutsks\.|sa\.|act\.|police\.|plc\.|ac\.|tm\.|asso\.|biz\.|pro\.|cg\.|telememo\.)?[a-z\.]{2,6})$/i", $string_maybe_has_subdomain, $matches ) ) {
+        return $matches['domain'];
+    } else {
+        return $string_maybe_has_subdomain;
+    }
+}
+
 if( !function_exists( 'gravityview_format_link' ) ) {
 
 /**
@@ -654,27 +710,104 @@ if( !function_exists( 'gravityview_format_link' ) ) {
  * @param  [type] $value [description]
  * @return [type]        [description]
  */
-function gravityview_format_link($value = null) {
+function gravityview_format_link( $value = null ) {
 
-	if(apply_filters('gravityview_anchor_text_striphttp', true)) {
-		$value = str_replace('http://', '', $value);
-		$value = str_replace('https://', '', $value);
+
+	$parts = parse_url( $value );
+
+	// No domain? Strange...show the original text.
+	if( empty( $parts['host'] ) ) {
+		return $value;
 	}
 
-	if(apply_filters('gravityview_anchor_text_stripwww', true)) {
-		$value = str_replace('www.', '', $value);
+	// Start with empty value for the return URL
+	$return = '';
+
+	// Add in the scheme
+	if( false === apply_filters('gravityview_anchor_text_striphttp', true) ) {
+
+		if( isset( $parts['scheme'] ) ) {
+			$return .= $parts['scheme'];
+		}
+
 	}
-	if(apply_filters('gravityview_anchor_text_rootonly', true)) {
-		$value = preg_replace('/(.*?)\/(.+)/ism', '$1', $value);
+
+	// The domain, which may contain a subdomain
+	$domain = $parts['host'];
+
+	/**
+	 * Strip www from the domain
+	 *
+	 * http://www.example.com => example.com
+	 *
+	 * @param boolean $enable Whether to strip www. Return false to show www.
+	 */
+	$strip_www = apply_filters('gravityview_anchor_text_stripwww', true );
+
+	if( $strip_www ) {
+		$domain = str_replace('www.', '', $domain );
 	}
-	if(apply_filters('gravityview_anchor_text_nosubdomain', true)) {
-		$value = preg_replace('/((.*?)\.)+(.*?)\.(.*?)/ism', '$3.$4', $value);
+
+	/**
+	 * Strip subdomains from the domain
+	 *
+	 * Enabled:
+	 * http://demo.example.com => example.com
+	 *
+	 * Disabled:
+	 * http://demo.example.com => demo.example.com
+	 *
+	 * @param boolean $enable Whether to strip subdomains. Return false to show subdomains.
+	 */
+	$strip_subdomains = apply_filters('gravityview_anchor_text_nosubdomain', true);
+
+	if( $strip_subdomains ) {
+
+		$domain = _gravityview_strip_subdomain( $parts['host'] );
+
 	}
-	if(apply_filters('gravityview_anchor_text_noquerystring', true)) {
-		$ary = explode("?", $value);
-		$value = $ary[0];
+
+	// Add the domain
+	$return .= $domain;
+
+	/**
+	 * Display link path going only to the base directory, not a sub-directory or file.
+	 *
+	 * When enabled:
+	 * http://example.com/sub/directory/page.html => example.com
+	 *
+	 * When disabled:
+	 * http://example.com/sub/directory/page.html => example.com/sub/directory/page.html
+	 *
+	 * @param boolean $enable Whether to enable "root only". Return false to show full path.
+	 */
+	$root_only = apply_filters('gravityview_anchor_text_rootonly', true);
+
+	if( empty( $root_only ) ) {
+
+		if( isset( $parts['path'] ) ) {
+			$return .= $parts['path'];
+		}
 	}
-	return $value;
+
+	/**
+	 * Whether to strip the query string from the end of the URL
+	 *
+	 * http://example.com/?query=example => example.com
+	 *
+	 * @param boolean $enable Whether to enable "root only". Return false to show full path.
+	 */
+	$strip_query_string = apply_filters('gravityview_anchor_text_noquerystring', true );
+
+	if( empty( $strip_query_string ) ) {
+
+		if( isset( $parts['query'] ) ) {
+			$return .= '?'.$parts['query'];
+		}
+
+	}
+
+	return $return;
 }
 
 }

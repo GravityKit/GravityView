@@ -58,7 +58,8 @@ class GravityView_frontend {
 		return self::$instance;
 	}
 
-	function parse_content() {
+
+	function parse_content( $wp = array() ) {
 		global $post;
 
 		// Are we in an AJAX request?
@@ -71,6 +72,8 @@ class GravityView_frontend {
 		$this->single_entry = self::is_single_entry();
 		$this->entry = ( $this->single_entry ) ? gravityview_get_entry( $this->single_entry ) : false;
 		$this->is_gravityview_post_type = ( get_post_type( $post ) === 'gravityview' );
+
+		$this->post_id = isset( $this->post_id ) ? $this->post_id : (isset( $post ) ? $post->ID : NULL );
 		$post_has_shortcode = !empty( $post->post_content ) ? gravityview_has_shortcode_r( $post->post_content, 'gravityview' ) : false;
 		$this->post_has_shortcode = empty( $this->is_gravityview_post_type ) ? !empty( $post_has_shortcode ) : NULL;
 	}
@@ -94,10 +97,12 @@ class GravityView_frontend {
 
 		if( GFCommon::current_user_can_any('gravityforms_edit_entries') && !empty( $this->single_entry ) ) {
 
+			$entry_id = GravityView_API::get_entry_id_from_slug( $this->single_entry );
+
 			$wp_admin_bar->add_menu( array(
 				'id' => 'edit-entry',
 				'title' => __('Edit Entry', 'gravityview'),
-				'href' => admin_url( sprintf('admin.php?page=gf_entries&amp;screen_mode=edit&amp;view=entry&amp;id=%d&lid=%d', $this->entry['form_id'], $this->single_entry ) ),
+				'href' => admin_url( sprintf('admin.php?page=gf_entries&amp;screen_mode=edit&amp;view=entry&amp;id=%d&lid=%d', $this->entry['form_id'], $entry_id ) ),
 			) );
 
 		}
@@ -137,16 +142,21 @@ class GravityView_frontend {
 
 	/**
 	 * Filter the title for the single entry view
-	 * @todo Somehow make this work with multiple shortcodes on a page. The problem is that there's no form data passed...
+	 * @todo: find a way to know exactly the view_id from which the single entry view belongs!!
 	 * @param  string $title   current title
 	 * @param  int $passed_post_id Post ID
 	 * @return string          (modified) title
 	 */
 	public function single_entry_title( $title, $passed_post_id = NULL ) {
-		global $post, $gravityview_view;
+		global $post;
 
 		// If this is the directory view, return.
 		if( empty( $this->single_entry ) ) {
+			return $title;
+		}
+
+		// to apply the filter to the menu title and the meta tag <title> - outside the loop
+		if( !apply_filters( 'gravityview/single/title/out_loop' , in_the_loop(), $this->entry ) ) {
 			return $title;
 		}
 
@@ -161,7 +171,20 @@ class GravityView_frontend {
 			return $title;
 		}
 
-		$view_meta = $this->gv_output_data->get_view( $passed_post_id );
+		// get view data
+		if( 'gravityview' === get_post_type( $post ) ) {
+			// In case View post is called directly
+			$view_meta = $this->gv_output_data->get_view( $passed_post_id );
+		} else {
+			// in case View is embedded.
+			// @todo: find a way to know exactly the view id where the single entry view belongs!!
+			foreach ( $this->gv_output_data->get_views() as $view_id => $view_data ) {
+				if( intval( $view_data['form_id'] ) === intval( $this->entry['form_id'] ) ) {
+					$view_meta = $view_data;
+					break;
+				}
+			}
+		}
 
 		if( !empty( $view_meta['atts']['single_title'] ) ) {
 			// We are allowing HTML in the fields, so no escaping the output
@@ -497,7 +520,7 @@ class GravityView_frontend {
 	public static function get_search_criteria( $args, $form_id ) {
 
 		// Search Criteria
-		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ) );
+		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ), $form_id );
 		do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after hook gravityview_fe_search_criteria: ', $search_criteria );
 
 		// implicity search

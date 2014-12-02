@@ -30,21 +30,8 @@ $has_inputs = false;
 	}
 
 	do_action( 'gravityview_search_widget_fields_after' );
-	?>
 
-	<?php
-
-	/**
-	 *  @deprecated filter gravityview_search_widget_fields
-	 *
-	 */
-
-		// search filters (fields)
-		//echo apply_filters( 'gravityview_search_widget_fields', $gravityview_view->search_fields );
-
-	?>
-
-	<?php if( $has_inputs ) : ?>
+	if( $has_inputs ) : ?>
 		<div class="gv-search-box gv-search-box-submit">
 			<?php
 

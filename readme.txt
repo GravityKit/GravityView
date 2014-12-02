@@ -20,6 +20,25 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.5.1 =
+* Added: Delete Entry functionality!
+	- New "User Delete" setting: allow the user who created an entry to delete it
+	- Adds a "Delete" link in the Edit Entry form
+	- Added a new "Delete Link" Field to the Field Picker
+* Fixed: DataTables Extension hangs when a View has Custom Content fields
+* Fixed: Search Bar - When searching on checkbox field type using multiselect input not returning results
+* Fixed: Search Bar - supports "Match Any" search mode by default ([learn more](https://gravityview.co/support/documentation/202722979/ "How do I modify the Search mode?"))
+* Fixed: Single Entry View title when view is embedded
+* Fixed: Refresh the results cache when an entry is deleted or is approved/disapproved
+* Fixed: When users are created using the User Registration Addon, the resulting entry is now automatically assigned to them
+* Fixed: Change cache time to one day (from one week) so that Edit Link field nonces aren't invalidated
+* Fixed: Incorrect link shortening for domains when it is second-level (for example, `example.co.uk` or `example.gov.za`)
+* Fixed: Cached directory link didn't respect page numbers
+* Fixed: Edit Entry Admin Bar link wouldn't work when using Custom Entry Slug
+* Added: Textarea field now supports an option to trim the number of words shown
+* Added: Filter to alter the default behaviour of wrapping images (or image names) with a link to the content object ([learn more](https://gravityview.co/support/documentation/202705059/ "Read the support doc for the filter"))
+* Updated: Portuguese translation (thanks [@luistinygod](https://www.transifex.com/accounts/profile/luistinygod/)), Mexican translation (thanks, [@jorgepelaez](https://www.transifex.com/accounts/profile/jorgepelaez/)), Turkish translation (thanks [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/))
+
 = 1.5 on November 12 =
 * Added: New "Edit Entry" configuration
 	- Configure which fields are shown when editing an entry
