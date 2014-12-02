@@ -373,6 +373,11 @@ class GravityView_Admin_Metaboxes {
 
 			GravityView_Render_Settings::render_setting_row( 'user_edit', $current_settings );
 
+			/**
+			 * @since  1.5.1
+			 */
+			GravityView_Render_Settings::render_setting_row( 'user_delete', $current_settings );
+
 			do_action( 'gravityview_admin_directory_settings', $current_settings );
 
 		?>
