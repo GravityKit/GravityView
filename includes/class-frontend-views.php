@@ -645,13 +645,22 @@ class GravityView_frontend {
 
 		/**
 		 * Filter the entries output to the View
-		 *
+		 * @deprecated since 1.5.2
 		 * @param array $args View settings associative array
 		 * @var array
 		 */
 		$entries = apply_filters( 'gravityview_view_entries', $entries, $args );
 
-		return compact( 'count', 'entries', 'paging' );
+		/**
+		 * Filter the entries output to the View
+		 *
+		 * @param array  associative array containing count, entries & paging
+		 * @param array $args View settings associative array
+		 *
+		 * @since 1.5.2
+		 */
+		return apply_filters( 'gravityview/view/entries', compact( 'count', 'entries', 'paging' ), $args );
+
 	}
 
 	/**
