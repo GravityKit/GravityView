@@ -263,7 +263,7 @@ function gravityview_get_template_setting( $post_id, $key ) {
  * @return array          Multi-array of fields with first level being the field zones. See code comment.
  */
 function gravityview_get_directory_fields( $post_id ) {
-	return get_post_meta( $post_id, '_gravityview_directory_fields', true );
+	return GVCommon::get_directory_fields( $post_id );
 }
 
 if( !function_exists('gravityview_get_sortable_fields') ) {
