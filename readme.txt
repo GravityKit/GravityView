@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.5.2 =
+* Fixed: Sorting numeric columns (field type number)
 * Fixed: View entries filter for Featured Entries extension
 * Fixed: Field options showing delete entry label
 * Fixed: PHP date formatting now keeps backslashes from being stripped
