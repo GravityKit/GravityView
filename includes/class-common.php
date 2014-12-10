@@ -44,9 +44,9 @@ class GVCommon {
 	 */
 	public static function get_form_from_entry_id( $entry_slug ) {
 
-		$entry = gravityview_get_entry( $entry_slug );
+		$entry = self::get_entry( $entry_slug );
 
-		$form = gravityview_get_form( $entry['form_id'] );
+		$form = self::get_form( $entry['form_id'] );
 
 		return $form;
 	}
@@ -83,7 +83,7 @@ class GVCommon {
 	public static function get_form_fields( $form = '', $add_default_properties = false, $include_parent_field = true ) {
 
 		if( !is_array( $form ) ) {
-			$form = gravityview_get_form( $form );
+			$form = self::get_form( $form );
 		}
 
 		$fields = array();
@@ -425,7 +425,7 @@ class GVCommon {
 				'paging' => array("offset" => 0, "page_size" => 1)
 			);
 
-			$entries = gravityview_get_entries( $form_id, $criteria );
+			$entries = self::get_entries( $form_id, $criteria );
 
 			if( !empty( $entries ) ) {
 				return $entries[0];
@@ -450,7 +450,7 @@ class GVCommon {
 			return '';
 		}
 
-		$field = gravityview_get_field( $form, $field_id );
+		$field = self::get_field( $form, $field_id );
 		return isset( $field['label'] ) ?  $field['label'] : '';
 
 	}
@@ -520,7 +520,7 @@ class GVCommon {
 					// Changed this to $shortcode instead of true so we get the parsed atts.
 					$shortcodes[] = $shortcode;
 
-				} else if ( isset( $shortcode[5] ) && $result = gravityview_has_shortcode_r( $shortcode[5], $tag ) ) {
+				} else if ( isset( $shortcode[5] ) && $result = self::has_shortcode_r( $shortcode[5], $tag ) ) {
 					$shortcodes = $result;
 				}
 			}
@@ -652,7 +652,7 @@ class GVCommon {
 		}
 
 		// Get fields with sub-inputs and no parent
-		$fields = gravityview_get_form_fields( $formid, true, false );
+		$fields = self::get_form_fields( $formid, true, false );
 
 		if( !empty( $fields ) ) {
 
