@@ -23,6 +23,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 = 1.5.2 =
 * Fixed: View entries filter for Featured Entries extension
 * Fixed: Field options showing delete entry label
+* Updated Translations:
+	- Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
+	- Romanian translation by [@ArianServ](https://www.transifex.com/accounts/profile/ArianServ/)
 
 = 1.5.1 on December 2 =
 
