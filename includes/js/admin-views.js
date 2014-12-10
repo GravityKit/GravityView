@@ -1203,7 +1203,10 @@
          */
         serializeForm: function () {
 
-        	// Add slashes to date fields so stripslashes doesn't strip all of them
+        	/**
+        	 * Add slashes to date fields so stripslashes doesn't strip all of them
+        	 * {@link http://phpjs.org/functions/addslashes/}
+        	 */
         	$('#post input[name*=date_display]').val(function() {
         		return $(this).val().replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
         	});
