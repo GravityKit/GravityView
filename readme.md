@@ -20,6 +20,14 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 ## Changelog ##
 
+### 1.5.2 ###
+* Fixed: View entries filter for Featured Entries extension
+* Fixed: Field options showing delete entry label
+* Modified: Allow license to be defined in `wp-config.php` ([Read how here](https://gravityview.co/support/documentation/202870789/))
+* Updated Translations:
+	- Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
+	- Romanian translation by [@ArianServ](https://www.transifex.com/accounts/profile/ArianServ/)
+
 ### 1.5.1 on December 2 ###
 
 * Added: Delete Entry functionality!
