@@ -1203,6 +1203,11 @@
          */
         serializeForm: function () {
 
+        	// Add slashes to date fields so stripslashes doesn't strip all of them
+        	$('#post input[name*=date_display]').val(function() {
+        		return $(this).val().replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+        	});
+
         	// Get all the fields where the `name` attribute start with `fields`
         	var $fields = $('#post :input[name^=fields]');
 

@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 ### 1.5.2 ###
 * Fixed: View entries filter for Featured Entries extension
 * Fixed: Field options showing delete entry label
+* Fixed: PHP date formatting now keeps backslashes from being stripped
 * Modified: Allow license to be defined in `wp-config.php` ([Read how here](https://gravityview.co/support/documentation/202870789/))
 * Updated Translations:
 	- Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
