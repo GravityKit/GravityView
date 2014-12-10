@@ -612,7 +612,8 @@ class GravityView_frontend {
 
 			$sorting = array(
 				'key' => $args['sort_field'],
-				'direction' => $args['sort_direction']
+				'direction' => $args['sort_direction'],
+				'is_numeric' => GVCommon::is_field_numeric( $form_id, $args['sort_field'] )
 			);
 
 		}
