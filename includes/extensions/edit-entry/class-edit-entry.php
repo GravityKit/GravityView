@@ -442,6 +442,8 @@ class GravityView_Edit_Entry {
 				foreach ($this->form['fields'] as $key => $field) {
 					GFFormsModel::refresh_lead_field_value( $this->entry['id'], $field['id'] );
 				}
+
+				do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'] );
 			}
 		} // endif action is update.
 
