@@ -47,8 +47,10 @@ if ( !defined('GV_MIN_GF_VERSION') ) {
 	define( 'GV_MIN_GF_VERSION', '1.8' );
 }
 
-/** Load connector functions */
+/** Load common & connector functions */
+require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
 require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
+
 
 /** Register Post Types and Rewrite Rules */
 require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
