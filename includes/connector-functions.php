@@ -122,10 +122,11 @@ if( !function_exists('gravityview_get_entry') ) {
 	 *
 	 * @access public
 	 * @param mixed $entry_id
+	 * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
 	 * @return object or false
 	 */
-	function gravityview_get_entry( $entry_slug ) {
-		return GVCommon::get_entry( $entry_slug );
+	function gravityview_get_entry( $entry_slug, $force_allow_ids = false ) {
+		return GVCommon::get_entry( $entry_slug, $force_allow_ids );
 	}
 
 }

@@ -44,7 +44,7 @@ class GVCommon {
 	 */
 	public static function get_form_from_entry_id( $entry_slug ) {
 
-		$entry = self::get_entry( $entry_slug );
+		$entry = self::get_entry( $entry_slug, true );
 
 		$form = self::get_form( $entry['form_id'] );
 
@@ -344,9 +344,10 @@ class GVCommon {
 	 *
 	 * @access public
 	 * @param mixed $entry_id
+	 * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
 	 * @return object or false
 	 */
-	public static function get_entry( $entry_slug ) {
+	public static function get_entry( $entry_slug, $force_allow_ids = false ) {
 
 		if( class_exists( 'GFAPI' ) && !empty( $entry_slug ) ) {
 
@@ -370,7 +371,7 @@ class GVCommon {
 			 *
 			 * @var boolean
 			 */
-			$custom_slug_id_access = apply_filters('gravityview_custom_entry_slug_allow_id', false );
+			$custom_slug_id_access = $force_allow_ids || apply_filters('gravityview_custom_entry_slug_allow_id', false );
 
 			/**
 			 * If we're using custom entry slugs, we do a meta value search
