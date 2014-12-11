@@ -44,7 +44,7 @@ class GravityView_View_Data {
 	static function getInstance() {
 
 		if( empty( self::$instance ) ) {
-			self::$instance = new GravityView_frontend;
+			self::$instance = new GravityView_View_Data;
 		}
 
 		return self::$instance;
