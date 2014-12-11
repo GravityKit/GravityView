@@ -97,7 +97,7 @@ class GravityView_frontend {
 
 		if( GFCommon::current_user_can_any('gravityforms_edit_entries') && !empty( $this->single_entry ) ) {
 
-			$entry_id = GravityView_API::get_entry_id_from_slug( $this->single_entry );
+			$entry_id = GVCommon::get_entry_id_from_slug( $this->single_entry );
 
 			$wp_admin_bar->add_menu( array(
 				'id' => 'edit-entry',

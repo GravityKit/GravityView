@@ -397,8 +397,8 @@ class GravityView_API {
 	 * @see gravityview_get_entry()
 	 * @uses GravityView_API::get_custom_entry_slug() If using custom slug, gets the custom slug value
 	 * @since 1.4
-	 * @param  [type] $id_or_string [description]
-	 * @param  array  $entry        [description]
+	 * @param  int|string $id_or_string ID of the entry, or custom slug string
+	 * @param  array  $entry        Gravity Forms Entry array, optional. Used only to provide data to customize the `gravityview_entry_slug` filter
 	 * @return string               Unique slug ID, passed through `sanitize_title()`
 	 */
 	public static function get_entry_slug( $id_or_string, $entry = array() ) {
@@ -438,37 +438,6 @@ class GravityView_API {
 		}
 
 		return sanitize_title( $slug );
-	}
-
-	/**
-	 * Get the entry ID from the entry slug, which may or may not be the entry ID
-	 *
-	 * @since  1.5.1
-	 * @param  string $slug The entry slug, as returned by GravityView_API::get_entry_slug()
-	 * @return int|null       The entry ID, if exists; `NULL` if not
-	 */
-	public static function get_entry_id_from_slug( $slug ) {
-		global $wpdb;
-
-		$search_criteria = array(
-			'field_filters' => array(
-				array(
-					'key' => 'gravityview_unique_id', // Search the meta values
-					'value' => $slug
-				)
-			)
-		);
-
-		// Limit to one for speed
-		$paging = array(
-			'page_size' => 1
-		);
-
-		$results = GFAPI::get_entries( 0, $search_criteria, NULL, $paging );
-
-		$result = ( !empty( $results ) && !empty( $results[0]['id'] ) ) ? $results[0]['id'] : NULL;
-
-		return $result;
 	}
 
 	/**
