@@ -158,7 +158,7 @@ class GravityView_Edit_Entry {
 
 		self::getInstance()->setup_vars( $entry );
 
-		$base = gv_entry_link( $entry, $field );
+		$base = gv_entry_link( $entry );
 
 		$url = add_query_arg( array(
 			'page' => 'gf_entries', // Needed for GFForms::get_page()

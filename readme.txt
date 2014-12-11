@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Field options showing delete entry label
 * Fixed: PHP date formatting now keeps backslashes from being stripped
 * Modified: Allow license to be defined in `wp-config.php` ([Read how here](https://gravityview.co/support/documentation/202870789/))
+* Modified: Added `$post_id` parameter as the second argument for the `gv_entry_link()` function. This is used to define the entry's parent post ID.
 * Updated Translations:
 	- Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
 	- Romanian translation by [@ArianServ](https://www.transifex.com/accounts/profile/ArianServ/)

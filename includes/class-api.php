@@ -221,7 +221,7 @@ class GravityView_API {
 		 */
 		if( !empty( $gravityview_view->field_data['field_settings']['show_as_link'] ) ) {
 
-			$href = self::entry_link( $entry, $field );
+			$href = self::entry_link( $entry );
 
 			$link = '<a href="'. $href .'">'. $output . '</a>';
 
@@ -471,12 +471,26 @@ class GravityView_API {
 		return $result;
 	}
 
-	// return href for single entry
-	public static function entry_link( $entry ) {
+	/**
+	 * return href for single entry
+	 * @param  array|int $entry   Entry array or entry ID
+	 * @param  int|null $post_id If wanting to define the parent post, pass a post ID
+	 * @return string          Link to the entry with the directory parent slug
+	 */
+	public static function entry_link( $entry, $post_id = NULL ) {
 		global $gravityview_view;
 
+		if( !is_array( $entry ) ) {
+			$entry = GVCommon::get_entry( $entry );
+		}
+
+		// Second parameter used to be passed as $field; this makes sure it's not an array
+		if( !is_numeric( $post_id ) ) {
+			$post_id = NULL;
+		}
+
 		// Get the permalink to the View
-		$directory_link = self::directory_link( NULL, false );
+		$directory_link = self::directory_link( $post_id, false );
 
 		// No post ID? Get outta here.
 		if( empty( $directory_link ) ) {
@@ -556,8 +570,8 @@ function gv_directory_link( $post = NULL, $add_pagination = true ) {
 	return GravityView_API::directory_link( $post, $add_pagination );
 }
 
-function gv_entry_link( $entry ) {
-	return GravityView_API::entry_link( $entry );
+function gv_entry_link( $entry, $post_id = NULL ) {
+	return GravityView_API::entry_link( $entry, $post_id );
 }
 
 function gv_no_results($wpautop = true) {

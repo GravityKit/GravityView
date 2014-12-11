@@ -11,7 +11,7 @@ $link_text = empty( $field_settings['entry_link_text'] ) ? __('View Details', 'g
 
 $output = apply_filters( 'gravityview_entry_link', GravityView_API::replace_variables( $link_text, $form, $entry ) );
 
-$href = GravityView_API::entry_link( $entry, $field );
+$href = GravityView_API::entry_link( $entry );
 $output = '<a href="'. $href .'">'. $output . '</a>';
 
 echo $output;
