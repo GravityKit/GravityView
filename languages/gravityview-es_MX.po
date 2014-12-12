@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-12-02 09:25-0700\n"
-"PO-Revision-Date: 2014-12-03 13:16+0000\n"
+"PO-Revision-Date: 2014-12-12 00:01+0000\n"
 "Last-Translator: Jorge Pelaez <jorgepelaez@gmail.com>\n"
 "Language-Team: Spanish (Mexico) (http://www.transifex.com/projects/p/gravityview/language/es_MX/)\n"
 "MIME-Version: 1.0\n"
@@ -878,7 +878,7 @@ msgid ""
 "Display \"Delete Entry\" fields to non-administrator users if they created "
 "the entry. Delete Entry fields will always be displayed to site "
 "administrators."
-msgstr ""
+msgstr "Mostrar campos de \"Borrar Entrada\" a usuarios no administradores si crearon la entrada. Eliminar campos de entrada siempre se mostrarán a los administradores del sitio."
 
 #: includes/class-data.php:373
 msgid "Sort by field"
@@ -1393,22 +1393,22 @@ msgstr "Página de enlaces"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:110
 msgid "Delete Link Text"
-msgstr ""
+msgstr "Borrar Texto Enlace"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:112
 #: includes/extensions/delete-entry/class-delete-entry.php:163
 #: includes/extensions/delete-entry/class-delete-entry.php:179
 #: includes/extensions/delete-entry/fields/delete_link.php:12
 msgid "Delete Entry"
-msgstr ""
+msgstr "Borrar Entrada"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:139
 msgid "Allow the following users to delete the entry:"
-msgstr ""
+msgstr "Permitir a los siguientes usuarios borrar la entrada:"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:165
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
-msgstr ""
+msgstr "Un enlace para eliminar la entrada . Respeta los permisos de Borrar Entrada."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:211
 #: includes/extensions/edit-entry/class-edit-entry.php:324
@@ -1418,36 +1418,36 @@ msgstr "Autor Entrada"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:301
 msgid "Delete"
-msgstr ""
+msgstr "Borrar"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:378
 msgid "The entry does not exist."
-msgstr ""
+msgstr "La entrada no existe."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:423
 msgid "Are you sure you want to delete this entry? This cannot be undone."
-msgstr ""
+msgstr "Está seguro de querer borrar esta entrada? Esto no puede deshacerse."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:452
 msgid "The link to delete this entry is not valid; it may have expired."
-msgstr ""
+msgstr "El enlace para borrar esta entrada no es válido; quizás expiró."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:456
 msgid "You do not have permission to delete this entry."
-msgstr ""
+msgstr "No tiene permiso para borrar esta entrada."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:460
 msgid "You cannot delete the entry; it is already in the trash."
-msgstr ""
+msgstr "No puede borrar esta entrada, ya está en la papelera."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:549
 #, php-format
 msgid "There was an error deleting the entry: %s"
-msgstr ""
+msgstr "Hubo un error al borrar la entrada: %s"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:554
 msgid "The entry was successfully deleted."
-msgstr ""
+msgstr "La entrada fue borrada exitosamente."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:203
 msgid "Edit Link Text"
@@ -1656,7 +1656,7 @@ msgstr "Fecha final"
 
 #: includes/extensions/search-widget/templates/search-field-entry_id.php:15
 msgid "Entry ID:"
-msgstr ""
+msgstr "ID Entrada:"
 
 #: includes/extensions/search-widget/templates/search-field-link.php:12
 msgid "Show only:"
@@ -1810,13 +1810,13 @@ msgstr "Personalizar el texto del enlace . Si está vacío , el texto del enlace
 
 #: includes/fields/textarea.php:20
 msgid "Maximum words shown"
-msgstr ""
+msgstr "Máximo de palabras mostradas"
 
 #: includes/fields/textarea.php:21
 msgid ""
 "Enter the number of words to be shown. If specified it truncates the text. "
 "Leave it blank if you want to show the full text."
-msgstr ""
+msgstr "Ingresar el número de palabras a mostrar. Si se especifica que trunca el texto. Déjelo en blanco si desea mostrar el texto completo "
 
 #: includes/fields/website.php:22
 msgid "Shorten Link Display"

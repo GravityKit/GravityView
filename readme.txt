@@ -20,7 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= 1.5.2 =
+= 1.5.2 on December 11 =
 * Added: Possibility to show the label of Dropdown field types instead of the value ([learn more](https://gravityview.co/support/documentation/202889199/ "How to display the text label (not the value) of a dropdown field?"))
 * Fixed: Sorting numeric columns (field type number)
 * Fixed: View entries filter for Featured Entries extension
@@ -33,6 +33,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Updated Translations:
 	- Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
 	- Romanian translation by [@ArianServ](https://www.transifex.com/accounts/profile/ArianServ/)
+	- Mexican Spanish translation by [@jorgepelaez](https://www.transifex.com/accounts/profile/jorgepelaez/)
 
 = 1.5.1 on December 2 =
 

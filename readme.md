@@ -20,14 +20,20 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 ## Changelog ##
 
-### 1.5.2 ###
+### 1.5.2 on December 11 ###
+* Added: Possibility to show the label of Dropdown field types instead of the value ([learn more](https://gravityview.co/support/documentation/202889199/ "How to display the text label (not the value) of a dropdown field?"))
+* Fixed: Sorting numeric columns (field type number)
 * Fixed: View entries filter for Featured Entries extension
 * Fixed: Field options showing delete entry label
 * Fixed: PHP date formatting now keeps backslashes from being stripped
 * Modified: Allow license to be defined in `wp-config.php` ([Read how here](https://gravityview.co/support/documentation/202870789/))
+* Modified: Added `$post_id` parameter as the second argument for the `gv_entry_link()` function. This is used to define the entry's parent post ID.
+* Modified: Moved `GravityView_API::get_entry_id_from_slug()` to `GVCommon::get_entry_id_from_slug()`
+* Modified: Added second parameter to `gravityview_get_entry()`, which forces the ability to fetch an entry by ID, even if custom slugs are enabled and `gravityview_custom_entry_slug_allow_id` is false.
 * Updated Translations:
 	- Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
 	- Romanian translation by [@ArianServ](https://www.transifex.com/accounts/profile/ArianServ/)
+	- Mexican Spanish translation by [@jorgepelaez](https://www.transifex.com/accounts/profile/jorgepelaez/)
 
 ### 1.5.1 on December 2 ###
 
