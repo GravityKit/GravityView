@@ -38,7 +38,7 @@ if( !empty( $field_settings['link_to_post'] ) ) {
 }
 // Link to the single entry
 else if ( !empty( $field_settings['show_as_link'] ) ) {
-	$href = gv_entry_link( $entry, $field );
+	$href = gv_entry_link( $entry );
 }
 // Link to the file itself
 else {

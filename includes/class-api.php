@@ -221,7 +221,7 @@ class GravityView_API {
 		 */
 		if( !empty( $gravityview_view->field_data['field_settings']['show_as_link'] ) ) {
 
-			$href = self::entry_link( $entry, $field );
+			$href = self::entry_link( $entry );
 
 			$link = '<a href="'. $href .'">'. $output . '</a>';
 
@@ -397,8 +397,8 @@ class GravityView_API {
 	 * @see gravityview_get_entry()
 	 * @uses GravityView_API::get_custom_entry_slug() If using custom slug, gets the custom slug value
 	 * @since 1.4
-	 * @param  [type] $id_or_string [description]
-	 * @param  array  $entry        [description]
+	 * @param  int|string $id_or_string ID of the entry, or custom slug string
+	 * @param  array  $entry        Gravity Forms Entry array, optional. Used only to provide data to customize the `gravityview_entry_slug` filter
 	 * @return string               Unique slug ID, passed through `sanitize_title()`
 	 */
 	public static function get_entry_slug( $id_or_string, $entry = array() ) {
@@ -441,42 +441,25 @@ class GravityView_API {
 	}
 
 	/**
-	 * Get the entry ID from the entry slug, which may or may not be the entry ID
-	 *
-	 * @since  1.5.1
-	 * @param  string $slug The entry slug, as returned by GravityView_API::get_entry_slug()
-	 * @return int|null       The entry ID, if exists; `NULL` if not
+	 * return href for single entry
+	 * @param  array|int $entry   Entry array or entry ID
+	 * @param  int|null $post_id If wanting to define the parent post, pass a post ID
+	 * @return string          Link to the entry with the directory parent slug
 	 */
-	public static function get_entry_id_from_slug( $slug ) {
-		global $wpdb;
-
-		$search_criteria = array(
-			'field_filters' => array(
-				array(
-					'key' => 'gravityview_unique_id', // Search the meta values
-					'value' => $slug
-				)
-			)
-		);
-
-		// Limit to one for speed
-		$paging = array(
-			'page_size' => 1
-		);
-
-		$results = GFAPI::get_entries( 0, $search_criteria, NULL, $paging );
-
-		$result = ( !empty( $results ) && !empty( $results[0]['id'] ) ) ? $results[0]['id'] : NULL;
-
-		return $result;
-	}
-
-	// return href for single entry
-	public static function entry_link( $entry ) {
+	public static function entry_link( $entry, $post_id = NULL ) {
 		global $gravityview_view;
 
+		if( !is_array( $entry ) ) {
+			$entry = GVCommon::get_entry( $entry );
+		}
+
+		// Second parameter used to be passed as $field; this makes sure it's not an array
+		if( !is_numeric( $post_id ) ) {
+			$post_id = NULL;
+		}
+
 		// Get the permalink to the View
-		$directory_link = self::directory_link( NULL, false );
+		$directory_link = self::directory_link( $post_id, false );
 
 		// No post ID? Get outta here.
 		if( empty( $directory_link ) ) {
@@ -556,8 +539,8 @@ function gv_directory_link( $post = NULL, $add_pagination = true ) {
 	return GravityView_API::directory_link( $post, $add_pagination );
 }
 
-function gv_entry_link( $entry ) {
-	return GravityView_API::entry_link( $entry );
+function gv_entry_link( $entry, $post_id = NULL ) {
+	return GravityView_API::entry_link( $entry, $post_id );
 }
 
 function gv_no_results($wpautop = true) {

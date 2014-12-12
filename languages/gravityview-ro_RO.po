@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-12-02 09:25-0700\n"
-"PO-Revision-Date: 2014-12-02 16:44+0000\n"
+"PO-Revision-Date: 2014-12-11 23:25+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/projects/p/gravityview/language/ro_RO/)\n"
 "MIME-Version: 1.0\n"
@@ -1420,7 +1420,7 @@ msgstr ""
 
 #: includes/extensions/delete-entry/class-delete-entry.php:301
 msgid "Delete"
-msgstr ""
+msgstr "Șterge"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:378
 msgid "The entry does not exist."

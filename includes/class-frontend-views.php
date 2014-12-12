@@ -97,7 +97,7 @@ class GravityView_frontend {
 
 		if( GFCommon::current_user_can_any('gravityforms_edit_entries') && !empty( $this->single_entry ) ) {
 
-			$entry_id = GravityView_API::get_entry_id_from_slug( $this->single_entry );
+			$entry_id = GVCommon::get_entry_id_from_slug( $this->single_entry );
 
 			$wp_admin_bar->add_menu( array(
 				'id' => 'edit-entry',
@@ -612,7 +612,8 @@ class GravityView_frontend {
 
 			$sorting = array(
 				'key' => $args['sort_field'],
-				'direction' => $args['sort_direction']
+				'direction' => $args['sort_direction'],
+				'is_numeric' => GVCommon::is_field_numeric( $form_id, $args['sort_field'] )
 			);
 
 		}
@@ -645,13 +646,22 @@ class GravityView_frontend {
 
 		/**
 		 * Filter the entries output to the View
-		 *
+		 * @deprecated since 1.5.2
 		 * @param array $args View settings associative array
 		 * @var array
 		 */
 		$entries = apply_filters( 'gravityview_view_entries', $entries, $args );
 
-		return compact( 'count', 'entries', 'paging' );
+		/**
+		 * Filter the entries output to the View
+		 *
+		 * @param array  associative array containing count, entries & paging
+		 * @param array $args View settings associative array
+		 *
+		 * @since 1.5.2
+		 */
+		return apply_filters( 'gravityview/view/entries', compact( 'count', 'entries', 'paging' ), $args );
+
 	}
 
 	/**

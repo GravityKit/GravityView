@@ -68,7 +68,7 @@ class GravityView_Cache {
 	 */
 	public function entry_deleted( $lead_id ) {
 
-		$entry = GFAPI::get_entry( $lead_id );
+		$entry = GFAPI::get_entry( $lead_id, true );
 
 		do_action( 'gravityview_log_debug', 'GravityView_Cache[entry_updated] adding form '.$entry['form_id'].' to blacklist because entry #'.$lead_id.' was deleted' );
 

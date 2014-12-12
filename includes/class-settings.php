@@ -165,13 +165,19 @@ if (!class_exists('GravityView_Settings')) {
 
 			ob_start();
 
+			// Set the default license in wp-config.php
+			$default_license = defined( 'GRAVITYVIEW_LICENSE_KEY' ) ? GRAVITYVIEW_LICENSE_KEY : '';
+
 			$fields = apply_filters( 'gravityview_settings_fields', array(
 					array(
 						'id'        => 'license',
 						'type'      => 'edd_license',
 						'remote_api_url' => 'https://gravityview.co',
 						'author'	=> 'Katz Web Services, Inc.',
-						'default'	=> array('license' => '', 'status' => ''),
+						'default'	=> array(
+							'license' => $default_license,
+							'status' => ''
+						),
 						'item_name'	=> 'GravityView',
 						'version'	=> GravityView_Plugin::version,
 						'mode'		=> 'plugin',

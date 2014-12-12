@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-12-02 09:25-0700\n"
-"PO-Revision-Date: 2014-12-02 16:44+0000\n"
+"PO-Revision-Date: 2014-12-11 23:25+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Bengali (http://www.transifex.com/projects/p/gravityview/language/bn/)\n"
 "MIME-Version: 1.0\n"
@@ -63,11 +63,11 @@ msgstr "যে কোন লগইন করা ব্যবহারকার�
 
 #: includes/admin/class.render.settings.php:100
 msgid "Author Or Higher"
-msgstr ""
+msgstr "সম্পাদক অথবা উচ্চতর"
 
 #: includes/admin/class.render.settings.php:101
 msgid "Can View Gravity Forms Entries"
-msgstr ""
+msgstr "গ্রাভিটি ফর্মের এন্ট্রিগুলো দেখতে পাবে"
 
 #: includes/admin/class.render.settings.php:102
 msgid "Editor Or Higher"
@@ -75,7 +75,7 @@ msgstr "সম্পাদক অথবা ঊর্ধ্বতন"
 
 #: includes/admin/class.render.settings.php:103
 msgid "Can Edit Gravity Forms Entries"
-msgstr ""
+msgstr "গ্রাভিটি ফর্মের এন্ট্রিগুলো সম্পাদন করতে পারবে"
 
 #: includes/admin/class.render.settings.php:104
 msgid "Administrator"
@@ -83,7 +83,7 @@ msgstr "প্রশাসক"
 
 #: includes/admin/class.render.settings.php:108
 msgid "Multisite Super Admin"
-msgstr ""
+msgstr "একাধিক সাইটের সুপার এডমিন"
 
 #: includes/admin/class.render.settings.php:163
 #, php-format
@@ -92,11 +92,11 @@ msgstr "বাছাই: %s"
 
 #: includes/admin/entry-list.php:66
 msgid "Edit this entry"
-msgstr ""
+msgstr "এই এন্ট্রি সম্পাদন করুন"
 
 #: includes/admin/entry-list.php:66
 msgid "Edit"
-msgstr ""
+msgstr "সম্পাদন করুন"
 
 #: includes/admin/metaboxes.php:47 includes/class-admin-views.php:281
 msgid "Data Source"
@@ -116,7 +116,7 @@ msgstr "দৃশ্যের বিন্যাস"
 
 #: includes/admin/metaboxes.php:59
 msgid "Filter &amp; Sort"
-msgstr ""
+msgstr "ফিল্টার &amp; সর্ট"
 
 #: includes/admin/metaboxes.php:86
 msgid "Where would you like the data to come from for this View?"
@@ -140,7 +140,7 @@ msgstr "দৃশ্য পরিবর্তন"
 
 #: includes/admin/metaboxes.php:115
 msgid "Switch View Type"
-msgstr ""
+msgstr "দৃশ্যের প্রকার পরিবর্তন করুন"
 
 #: includes/admin/metaboxes.php:119 includes/admin/metaboxes.php:124
 msgid "Attention"
@@ -150,13 +150,13 @@ msgstr "দৃষ্টি আকর্ষণ"
 msgid ""
 "Changing the form will reset your field configuration. Changes will be "
 "permanent once you save the View."
-msgstr ""
+msgstr "ফর্ম পরিবর্তন করলে আপনার ফিল্ডের কনফিগারেশন রিসেট হবে। দৃশ্য সংরক্ষণ করলে আপনার পরিবর্তন স্থায়ী হবে।"
 
 #: includes/admin/metaboxes.php:125
 msgid ""
 "Changing the View Type will reset your field configuration. Changes will be "
 "permanent once you save the View."
-msgstr ""
+msgstr "দৃশ্য পরিবর্তন করলে আপনার ফিল্ডের কনফিগারেশন রিসেট হবে। দৃশ্য সংরক্ষণ করলে আপনার পরিবর্তন স্থায়ী হবে।"
 
 #: includes/admin/metaboxes.php:130
 msgid "GravityView requires Javascript to be enabled."
@@ -173,7 +173,7 @@ msgstr "বাছাই"
 
 #: includes/admin/metaboxes.php:175
 msgid "View a live demo of this preset"
-msgstr ""
+msgstr "সরাসরি ডেমু দেখুন"
 
 #: includes/admin/metaboxes.php:253
 msgid "Multiple Entries"
@@ -190,7 +190,7 @@ msgstr "একক এন্ট্রি"
 #: includes/extensions/edit-entry/class-edit-entry.php:1177
 #: includes/extensions/edit-entry/fields/edit_link.php:12
 msgid "Edit Entry"
-msgstr ""
+msgstr "এন্ট্রি সম্পাদন করুন"
 
 #: includes/admin/metaboxes.php:262
 msgid "Above Entries Widgets"
@@ -222,11 +222,11 @@ msgstr "এই ফিল্ডগুলো একক দৃশ্যে দে�
 
 #: includes/admin/metaboxes.php:325
 msgid "Fields shown when editing an entry."
-msgstr ""
+msgstr "এন্ট্রি সম্পাদন করার সময় ফিল্ড দেখানো হচ্ছে।"
 
 #: includes/admin/metaboxes.php:325
 msgid "If not configured, all form fields will be displayed."
-msgstr ""
+msgstr "যদি কনফিগার করা না হয়, সব ফিল্ড দেখানো হবে।"
 
 #: includes/admin/metaboxes.php:387
 msgid "Single Entry Settings"
@@ -234,11 +234,11 @@ msgstr "একক এন্ট্রি সেটিংস"
 
 #: includes/admin/metaboxes.php:464
 msgid "Embed Shortcode"
-msgstr ""
+msgstr "সর্টকোড যুক্ত হয়েছে"
 
 #: includes/admin/metaboxes.php:464
 msgid "Add this shortcode to a post or page to embed this view."
-msgstr ""
+msgstr "এই দৃশ্যের এই সর্টকোড কোন পোস্ট অথবা পেজে যুক্ত করুন।"
 
 #: includes/admin/metaboxes.php:510
 msgid "Layout Settings"
@@ -261,7 +261,7 @@ msgstr "একটি দৃশ্য যুক্ত করুন"
 msgid ""
 "Use this form to embed a View into this %s. %sLearn more about using "
 "shortcodes.%s"
-msgstr ""
+msgstr "এই ফর্মটি দৃশ্য যুক্ত করতে %s ব্যবহার করুন। %sসর্টকোড কিভাবে ব্যবহার করতে হয় জানুন।%s"
 
 #: includes/class-admin-add-shortcode.php:92
 msgid "Select a View"
@@ -288,7 +288,7 @@ msgstr "বাতিল"
 #: includes/class-admin-add-shortcode.php:171
 #: includes/class-admin-views.php:843
 msgid "Loading&hellip;"
-msgstr ""
+msgstr "লোড হচ্ছে&hellip;"
 
 #: includes/class-admin-add-shortcode.php:172
 msgid "Please select a View"
@@ -296,21 +296,21 @@ msgstr "দয়াকরে একটি দৃশ্য বাছাই কর�
 
 #: includes/class-admin-approve-entries.php:55
 msgid "GravityView Fields"
-msgstr ""
+msgstr "গ্রাভিটিভিউ ফিল্ডগুলো"
 
 #: includes/class-admin-approve-entries.php:56
 msgid ""
 "Allow administrators to approve or reject entries and users to opt-in or "
 "opt-out of their entries being displayed."
-msgstr ""
+msgstr "এডমিনিস্ট্রেটরকে অনুনমোদন দিন, এন্ট্রি অনুমোদন অথবা বাতিল করার এবং ব্যবহারকারীকে তাদের এন্ট্রি দৃশ্যমান হবার ক্ষেত্রে।"
 
 #: includes/class-admin-approve-entries.php:78
 msgid "Approve/Reject"
-msgstr ""
+msgstr "অনুমোদন/বাতিল"
 
 #: includes/class-admin-approve-entries.php:83
 msgid "User Opt-In"
-msgstr ""
+msgstr "মুক্ত ব্যবহারকারী"
 
 #: includes/class-admin-approve-entries.php:105
 msgid "Approved? (Admin-only)"
@@ -326,15 +326,15 @@ msgstr "অনুমোদিত"
 
 #: includes/class-admin-approve-entries.php:127
 msgid "Show Entry on Website"
-msgstr ""
+msgstr "দৃশ্য ওয়েবসাইটে দেখান"
 
 #: includes/class-admin-approve-entries.php:129
 msgid "Opt-In"
-msgstr ""
+msgstr "মুক্ত"
 
 #: includes/class-admin-approve-entries.php:137
 msgid "Yes, display my entry on the website"
-msgstr ""
+msgstr "হ্যা, আমার এন্ট্রি ওয়েবসাইটে দেখান"
 
 #: includes/class-admin-approve-entries.php:208
 #, php-format
@@ -386,17 +386,17 @@ msgstr "এন্ট্রি ডিরেক্টরি দৃশ্যে দ
 #: includes/class-admin-label.php:19
 #, php-format
 msgid "Type: %s"
-msgstr ""
+msgstr "প্রকার: %s"
 
 #: includes/class-admin-label.php:23
 #, php-format
 msgid "Field ID: %s"
-msgstr ""
+msgstr "ফিল্ড আইডি: %s"
 
 #: includes/class-admin-label.php:36
 #, php-format
 msgid "Admin Label: %s"
-msgstr ""
+msgstr "এডমিন লেবেল: %s"
 
 #: includes/class-admin-label.php:166
 #, php-format
@@ -410,32 +410,32 @@ msgstr "মুছে ফেলুন %s"
 
 #: includes/class-admin-label.php:168
 msgid "This field links to the Single Entry"
-msgstr ""
+msgstr "এই ফিল্ড একক এন্ট্রির লিংক"
 
 #: includes/class-admin-label.php:180
 #, php-format
 msgctxt "Label in field picker for empty label"
 msgid "Field #%s (No Label)"
-msgstr ""
+msgstr "ফিল্ড # %s (কোন লেবেল নাই)"
 
 #: includes/class-admin-views.php:108
 msgid "Connected Views"
-msgstr ""
+msgstr "যুক্ত দৃশ্যগুলো"
 
 #: includes/class-admin-views.php:110
 msgid "GravityView Views using this form as a data source"
-msgstr ""
+msgstr "গ্রাভিটিভিউ দৃশ্যগুলো এই ফর্মকে ডাটা সোর্স হিসেবে ব্যবহার করছে"
 
 #: includes/class-admin-views.php:174
 msgid "CSS Merge Tags"
-msgstr ""
+msgstr "সিএসএস মার্জ ট্যাগ"
 
 #: includes/class-admin-views.php:175
 #, php-format
 msgid ""
 "Developers: The CSS classes will be sanitized using the "
 "%ssanitize_title_with_dashes()%s function."
-msgstr ""
+msgstr "ডেভেলপার: সিএসএস ক্লাস %ssanitize_title_with_dashes()%s ফাঙ্কসন ব্যবহার করলে পরিস্কার হবে।"
 
 #: includes/class-admin-views.php:199
 msgid "Not connected."
@@ -447,7 +447,7 @@ msgstr "সংযোগকৃত ফর্মটি পাওয়া যায়ন
 
 #: includes/class-admin-views.php:240
 msgid "Edit Form"
-msgstr ""
+msgstr "ফর্ম সম্পাদন করুন"
 
 #: includes/class-admin-views.php:245
 msgid "Entries"
@@ -455,7 +455,7 @@ msgstr "এন্ট্রিসমূহ"
 
 #: includes/class-admin-views.php:250
 msgid "Edit settings for this form"
-msgstr ""
+msgstr "এই ফর্মের সেটিংস সম্পাদন করুন"
 
 #: includes/class-admin-views.php:250 includes/class-settings.php:246
 #: includes/class-settings.php:247
@@ -464,7 +464,7 @@ msgstr "বিন্যাস"
 
 #: includes/class-admin-views.php:255
 msgid "Preview this form"
-msgstr ""
+msgstr "এই ফর্ম দেখুন"
 
 #: includes/class-admin-views.php:255
 msgid "Preview"
@@ -476,7 +476,7 @@ msgstr "+ সকল ফিল্ড যোগ করুন"
 
 #: includes/class-admin-views.php:457
 msgid "Add all the available fields at once."
-msgstr ""
+msgstr "প্রাপ্ত সকল ফিল্ডগুলো একসাথে যোগ করুন।"
 
 #: includes/class-admin-views.php:507
 #: includes/extensions/search-widget/class-search-widget.php:187
@@ -485,7 +485,7 @@ msgstr "এন্ট্রি আইডি"
 
 #: includes/class-admin-views.php:509
 msgid "The unique ID of the entry."
-msgstr ""
+msgstr "এন্ট্রির মৌলিক আইডি।"
 
 #: includes/class-admin-views.php:512
 #: includes/extensions/search-widget/class-search-widget.php:186
@@ -494,7 +494,7 @@ msgstr "এন্ট্রি তারিখ"
 
 #: includes/class-admin-views.php:513
 msgid "The date the entry was created."
-msgstr ""
+msgstr "এন্ট্রি তৈরির তারিখ"
 
 #: includes/class-admin-views.php:517
 msgid "Source URL"
@@ -502,7 +502,7 @@ msgstr "উৎস ইউআরএল"
 
 #: includes/class-admin-views.php:519
 msgid "The URL of the page where the form was submitted."
-msgstr ""
+msgstr "ফর্ম সাবমিট করা পেজের ইআরএল।"
 
 #: includes/class-admin-views.php:522
 msgid "User IP"
@@ -510,7 +510,7 @@ msgstr "ব্যবহারকারীর আইপি"
 
 #: includes/class-admin-views.php:524
 msgid "The IP Address of the user who created the entry."
-msgstr ""
+msgstr "এন্ট্রি তৈরিকারক ব্যবহারকারীর আইটি ঠিকানা।"
 
 #: includes/class-admin-views.php:527
 msgid "User"
@@ -518,15 +518,15 @@ msgstr "ব্যবহারকারী"
 
 #: includes/class-admin-views.php:529
 msgid "Details of the logged-in user who created the entry (if any)."
-msgstr ""
+msgstr "এন্ট্রি তৈরিকারক লগ-ইনকৃত ব্যবহারকারীর বিস্তারিত(যদি থাকে)।"
 
 #: includes/class-admin-views.php:536 includes/fields/custom.php:22
 msgid "Custom Content"
-msgstr ""
+msgstr "বিষয়বস্তু"
 
 #: includes/class-admin-views.php:538
 msgid "Insert custom text or HTML."
-msgstr ""
+msgstr "বাক্য অথবা এইচটিএমএল যুক্ত করুন।"
 
 #: includes/class-admin-views.php:546
 msgid "Link to Entry"
@@ -534,7 +534,7 @@ msgstr "এন্ট্রির সাথে সংযোগ"
 
 #: includes/class-admin-views.php:547
 msgid "A dedicated link to the single entry with customizable text."
-msgstr ""
+msgstr "একক এন্ট্রির একটি উৎসর্গীকৃত লিংক কাস্টমাইজড বাক্য সহ।"
 
 #: includes/class-admin-views.php:624
 msgid "Add Widget"
@@ -573,23 +573,23 @@ msgstr "দৃশ্য তৈরি করার সময় সমস্যা �
 
 #: includes/class-admin-views.php:844
 msgid "There was an error loading dynamic content."
-msgstr ""
+msgstr "ডাইনামিক বিষয়বস্তু লোড হতে এখানে একটি সমস্য রয়েছে।"
 
 #: includes/class-admin-views.php:845
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
-msgstr ""
+msgstr "ফিল্ড যুক্ত করার সময় সমস্যা হচ্ছে। দয়া করে পুণরায় চেষ্ঠা করুন অথবা গ্রাভিটিভিউ সাপোর্ট এর সাথে যোগাযোগ করুন।"
 
 #: includes/class-admin-views.php:846
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
-msgstr ""
+msgstr "আপনি কি এই জোনের অধিন সকল ফিল্ড মুছে ফেলতে চান? (আপনি এই মেসেজটি দেখছেন কারণ আপনি ALT কী চেপে আছেন)"
 
 #: includes/class-admin-welcome.php:56
 msgid "GravityView: Getting Started"
-msgstr ""
+msgstr "গ্রাভিটিভিউ: শুরু এখানেই"
 
 #: includes/class-admin-welcome.php:57 includes/class-admin-welcome.php:152
 msgid "Getting Started"
@@ -597,7 +597,7 @@ msgstr "শুরু"
 
 #: includes/class-admin-welcome.php:66 includes/class-admin-welcome.php:67
 msgid "Changelog"
-msgstr ""
+msgstr "পরিবর্তনের লগ"
 
 #: includes/class-admin-welcome.php:76 includes/class-admin-welcome.php:77
 #: includes/class-admin-welcome.php:158
@@ -617,7 +617,7 @@ msgstr "গ্রাভিটি ভিউ ইনস্টল করার জ�
 
 #: includes/class-admin-welcome.php:155
 msgid "List of Changes"
-msgstr ""
+msgstr "পরিবর্তনের লিস্ট"
 
 #: includes/class-admin-welcome.php:600
 msgid "GravityView is brought to you by:"
@@ -646,7 +646,7 @@ msgstr "সহায়তা"
 #: includes/class-admin.php:135
 #, php-format
 msgid "A new form was created for this View: \"%s\""
-msgstr ""
+msgstr "এই দৃশ্যের জন্য: \"%s\" একটি নতুন ফর্ম তৈরি করা হয়েছে"
 
 #: includes/class-admin.php:136
 #, php-format
@@ -655,7 +655,7 @@ msgid ""
 "\n"
 "\t\t\t\t\tYou can %sedit the form%s in Gravity Forms and the updated fields will be available here. Don&rsquo;t forget to %scustomize the form settings%s.\n"
 "\t\t\t\t\t"
-msgstr ""
+msgstr "%sএই নতুন ফর্ম-এর জন্য কোন এন্ট্রি নাই, তাই সকল দৃশ্য দেখান খালি। %s এন্ট্রি সংগ্রহ শুরু করতে, আপনি জমা যোগ করতে পারেন %sফর্ম দেখান%s এবং এই ফর্ম কোন পেজ অথবা পোস্টে যুক্ত করতে এই কোড: %s ব্যবহার করুন।\n\nআপনি এখান থেকে %sএই ফর্ম সম্পাদন করুন%s গ্রাভিটি ফর্ম সম্পাদন এবং আপডেট করতে পারবেন। %sফর্ম সেটিংস কাস্টমাইজ%s করতে ভুলবেন না।"
 
 #: includes/class-admin.php:148 includes/class-admin.php:149
 #: includes/class-admin.php:151
@@ -737,18 +737,18 @@ msgstr[1] "%s দৃশ্য আবর্জনার ঝুড়ি থেকে
 
 #: includes/class-admin.php:455
 msgid "Dismiss"
-msgstr ""
+msgstr "বাতিল করুন"
 
 #: includes/class-admin.php:489
 msgid "Potential Conflict"
-msgstr ""
+msgstr "সম্ভাব্য সংঘাত"
 
 #: includes/class-admin.php:490
 msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
 "plugin."
-msgstr ""
+msgstr "গ্রাভিটিভিউ এবং গ্রাভিটি ফর্ম ডিরেক্টরি দুটোই সক্রিয়। এটা সমস্যা তৈরি করতে পারে। যদি আপনি এ সমস্যার সম্মুখিন হন, গ্রাভিটি ফর্ম ডিরেক্টনি প্লাগইন নিস্ক্রিয় করুন।"
 
 #: includes/class-admin.php:515
 #, php-format
@@ -786,57 +786,57 @@ msgstr "&larr; পিছনে ফিরে যান"
 
 #: includes/class-api.php:905
 msgid "Map It"
-msgstr ""
+msgstr "মানচিত্রে এটি"
 
 #: includes/class-change-entry-creator.php:54
 msgid "Error"
-msgstr ""
+msgstr "ভুল"
 
 #: includes/class-change-entry-creator.php:56
 msgid "Success"
-msgstr ""
+msgstr "সফল"
 
 #: includes/class-change-entry-creator.php:59
 #, php-format
 msgctxt ""
 "First parameter: Success or error of the action. Second: User ID number"
 msgid "%s: Assigned User ID #%d as the entry creator."
-msgstr ""
+msgstr "এন্ট্রি তৈরিকারক হিসেবে%s: ব্যবহারকারীর আইডি#%d।"
 
 #: includes/class-change-entry-creator.php:163
 #, php-format
 msgctxt ""
 "The name and the ID of users who initiated changes to entry ownership"
 msgid "%s (ID #%d)"
-msgstr ""
+msgstr "%s (আইডি #%d)"
 
 #: includes/class-change-entry-creator.php:165
 msgctxt ""
 "To show that the entry was unassigned from an actual user to no user."
 msgid "No User"
-msgstr ""
+msgstr "কোন ব্যবহারকারী নেই"
 
 #: includes/class-change-entry-creator.php:177
 #, php-format
 msgid "Changed entry creator from %s to %s"
-msgstr ""
+msgstr "এন্ট্রি তৈরিকারক %s হতে %s পরিবর্তন করুন"
 
 #: includes/class-change-entry-creator.php:204
 msgid "Change Entry Creator:"
-msgstr ""
+msgstr "এন্ট্রি তৈরিকারক পরিবর্তন করুন:"
 
 #: includes/class-change-entry-creator.php:207
 msgctxt "No user assigned to the entry"
 msgid "No User"
-msgstr ""
+msgstr "কোন ব্যবহাকারী নেই"
 
 #: includes/class-data.php:317
 msgid "View ID"
-msgstr ""
+msgstr "দৃশ্যের আইডি"
 
 #: includes/class-data.php:325
 msgid "Number of entries per page"
-msgstr ""
+msgstr "প্রতি পৃষ্ঠায় এন্ট্রির সংখ্যা"
 
 #: includes/class-data.php:333
 msgid "Enable lightbox for images"
@@ -852,25 +852,25 @@ msgstr "শূন্য ফিল্ডগুলো লুকান"
 
 #: includes/class-data.php:355
 msgid "Allow User Edit"
-msgstr ""
+msgstr "ব্যবহারকারীর সম্পাদন ক্ষমতা দিন"
 
 #: includes/class-data.php:357
 msgid "Allow logged-in users to edit entries they created."
-msgstr ""
+msgstr "লগ-ইন করা ব্যবহারকারীকে তাদের তৈরিকৃত এন্ট্রি সম্পাদন করার ক্ষমতা দিন।"
 
 #: includes/class-data.php:359
 msgid ""
 "Display \"Edit Entry\" fields to non-administrator users if they created the"
 " entry. Edit Entry fields will always be displayed to site administrators."
-msgstr ""
+msgstr "\"এন্ট্রি সম্পাদন\" ফিল্ড এডমিনিস্ট্রেটর নয় এমন ব্যবহারকারীর নিকট দেখান যদি তারা একই এন্ট্রির তৈরিকারক হয়। এন্ট্রি সম্পাদন ফিল্ড সবসময় সাইট এডমিনিস্ট্রেটরদের নিকট সবসময় দেখানো হবে।"
 
 #: includes/class-data.php:364
 msgid "Allow User Delete"
-msgstr ""
+msgstr "ব্যবহারকারীকে তথ্য মুছে ফেলার ক্ষমতা দিন"
 
 #: includes/class-data.php:366
 msgid "Allow logged-in users to delete entries they created."
-msgstr ""
+msgstr "লগ-ইন করা ব্যবহারকারীকে তাদের তৈরিকৃত এন্ট্রি মুছে ফেলার ক্ষমতা দিন।"
 
 #: includes/class-data.php:368
 msgid ""

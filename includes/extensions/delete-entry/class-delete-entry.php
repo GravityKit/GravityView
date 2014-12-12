@@ -46,9 +46,6 @@ final class GravityView_Delete_Entry {
 		// Modify the field options based on the name of the field type
 		add_filter( 'gravityview_template_delete_link_options', array( $this, 'delete_link_field_options' ), 10, 5 );
 
-		// custom fields' options for zone EDIT
-		add_filter( 'gravityview_template_field_options', array( $this, 'field_options' ), 10, 5 );
-
 		// add template path to check for field
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
 
@@ -113,40 +110,18 @@ final class GravityView_Delete_Entry {
 			'merge_tags' => true,
 		);
 
-		return array_merge( $add_option, $field_options );
-	}
-
-
-	/**
-	 * Manipulate the fields' options for the EDIT ENTRY screen
-	 *
-	 * @since  1.5.1
-	 * @param  [type] $field_options [description]
-	 * @param  [type] $template_id   [description]
-	 * @param  [type] $field_id      [description]
-	 * @param  [type] $context       [description]
-	 * @param  [type] $input_type    [description]
-	 * @return [type]                [description]
-	 */
-	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
-
-		//  Entry field is only for logged in users
-		unset( $field_options['only_loggedin'], $field_options['only_loggedin_cap'] );
-
-		$add_options = array(
-			'allow_edit_cap' => array(
-				'type' => 'select',
-				'label' => __( 'Allow the following users to delete the entry:', 'gravityview' ),
-				'choices' => GravityView_Render_Settings::get_cap_choices( $template_id, $field_id, $context, $input_type ),
-				'tooltip' => 'allow_edit_cap',
-				'class' => 'widefat',
-				'value' => 'read', // Default: entry creator
-			),
+		$field_options['allow_edit_cap'] = array(
+			'type' => 'select',
+			'label' => __( 'Allow the following users to delete the entry:', 'gravityview' ),
+			'choices' => GravityView_Render_Settings::get_cap_choices( $template_id, $field_id, $context, $input_type ),
+			'tooltip' => 'allow_edit_cap',
+			'class' => 'widefat',
+			'value' => 'read', // Default: entry creator
 		);
 
-		return array_merge( $field_options, $add_options );
-	}
 
+		return array_merge( $add_option, $field_options );
+	}
 
 
 	/**
