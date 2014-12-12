@@ -274,6 +274,27 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>Changes in 1.5.2 (full list)</h3>
+
+				<ul>
+					<li>Added: Possibility to show the label of Dropdown field types instead of the value (<a href="https://gravityview.co/support/documentation/202889199/" title="How to display the text label (not the value) of a dropdown field?">learn more</a>)</li>
+					<li>Fixed: Sorting numeric columns (field type number)</li>
+					<li>Fixed: View entries filter for Featured Entries extension</li>
+					<li>Fixed: Field options showing delete entry label</li>
+					<li>Fixed: PHP date formatting now keeps backslashes from being stripped</li>
+					<li>Modified: Allow license to be defined in <code>wp-config.php</code> (<a href="https://gravityview.co/support/documentation/202870789/">Read how here</a>)</li>
+					<li>Modified: Added <code>$post_id</code> parameter as the second argument for the <code>gv_entry_link()</code> function. This is used to define the entry's parent post ID.</li>
+					<li>Modified: Moved <code>GravityView_API::get_entry_id_from_slug()</code> to <code>GVCommon::get_entry_id_from_slug()</code></li>
+					<li>Modified: Added second parameter to <code>gravityview_get_entry()</code>, which forces the ability to fetch an entry by ID, even if custom slugs are enabled and <code>gravityview_custom_entry_slug_allow_id</code> is false.</li>
+					<li>Updated Translations:
+						<ul>
+							<li>Bengali translation by <a href="https://www.transifex.com/accounts/profile/tareqhi/">@tareqhi</a></li>
+							<li>Romanian translation by <a href="https://www.transifex.com/accounts/profile/ArianServ/">@ArianServ</a></li>
+							<li>Mexican Spanish translation by <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a></li>
+						</ul>
+					</li>
+				</ul>
+
 
 				<h3>Changes in 1.5.1 (full list)</h3>
 
