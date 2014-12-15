@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.5.3 on December XX =
+* Fixed: When adding more than 100 fields to the View some fields weren't saved.
+
 = 1.5.2 on December 11 =
 * Added: Possibility to show the label of Dropdown field types instead of the value ([learn more](https://gravityview.co/support/documentation/202889199/ "How to display the text label (not the value) of a dropdown field?"))
 * Fixed: Sorting numeric columns (field type number)

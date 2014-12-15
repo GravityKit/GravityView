@@ -1184,9 +1184,7 @@
         	if (!vcfg.startFreshStatus || templateId === '') {
 
         		// Serialize the inputs so that `max_input_vars`
-        		vcfg.serializeForm( e );
-
-        		return true;
+        		return vcfg.serializeForm( e );
         	}
 
         	return false;
@@ -1201,7 +1199,9 @@
          * @param  {[type]} e [description]
          * @return {[type]}   [description]
          */
-        serializeForm: function () {
+        serializeForm: function (e) {
+
+            e.stopPropagation();
 
         	/**
         	 * Add slashes to date fields so stripslashes doesn't strip all of them
@@ -1226,6 +1226,8 @@
         		'value': serialized_data,
         		'type': 'hidden'
         	}));
+
+            return true;
 
         },
 
