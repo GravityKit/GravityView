@@ -363,7 +363,8 @@ class GravityView_Admin_Views {
 				if( !is_array( $_POST['fields'] ) ) {
 
 					// Fields are passed as a jQuery-serialized array, created in admin-views.js in the serializeForm method
-					parse_str( $_POST['fields'], $fields_holder );
+					// Not using parse_str due to max_input_vars limitation
+					GVCommon::gv_parse_str( $_POST['fields'], $fields_holder );
 
 					if( isset( $fields_holder['fields'] ) ) {
 
