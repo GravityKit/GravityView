@@ -22,6 +22,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 = 1.5.3 on December XX =
 * Fixed: When adding more than 100 fields to the View some fields weren't saved.
+* Fixed: Do not set class tickbox for non-images files
+* Tested with Gravity Forms 1.9beta5 and WordPress 4.1
 
 = 1.5.2 on December 11 =
 * Added: Possibility to show the label of Dropdown field types instead of the value ([learn more](https://gravityview.co/support/documentation/202889199/ "How to display the text label (not the value) of a dropdown field?"))
