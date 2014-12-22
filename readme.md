@@ -1,7 +1,7 @@
 # GravityView #
 **Tags:** gravity forms, directory, gravity forms directory  
 **Requires at least:** 3.3  
-**Tested up to:** 4.0  
+**Tested up to:** 4.1  
 **Stable tag:** trunk  
 **Contributors:** katzwebservices, luistinygod  
 **License:** GPL 3 or higher  

@@ -750,6 +750,7 @@ class GVCommon {
 	 * @param $string array string to parse (not altered like in the original parse_str(), use the second parameter!)
 	 * @param $result array  If the second parameter is present, variables are stored in this variable as array elements
 	 * @return bool true or false if $string is an empty string
+	 * @since  1.5.3
 	 *
 	 * @author rubo77 at https://gist.github.com/rubo77/6821632
 	 **/
@@ -780,6 +781,7 @@ class GVCommon {
 	*
 	* @see http://php.net/manual/en/function.array-merge-recursive.php
 	*
+	* @since  1.5.3
 	* @param array $array1
 	* @param array $array2
 	* @return array
