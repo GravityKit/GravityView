@@ -20,6 +20,14 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 ## Changelog ##
 
+### 1.5.3 on December 22 ###
+* Fixed: When adding more than 100 fields to the View some fields weren't saved.
+* Fixed: Do not set class tickbox for non-images files
+* Fixed: Display label "Is Fulfilled" on the search bar
+* Fixed: PHP Notice with Gravity Forms 1.9 and PHP 5.4+
+* Tested with Gravity Forms 1.9beta5 and WordPress 4.1
+* Updated: Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/) and Hungarian translation by [@dbalage](https://www.transifex.com/accounts/profile/dbalage/). Thanks!
+
 ### 1.5.2 on December 11 ###
 * Added: Possibility to show the label of Dropdown field types instead of the value ([learn more](https://gravityview.co/support/documentation/202889199/ "How to display the text label (not the value) of a dropdown field?"))
 * Fixed: Sorting numeric columns (field type number)

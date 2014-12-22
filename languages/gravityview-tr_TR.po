@@ -6,30 +6,30 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-12-02 09:25-0700\n"
-"PO-Revision-Date: 2014-12-11 23:25+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"POT-Creation-Date: 2014-12-22 14:33-0700\n"
+"PO-Revision-Date: 2014-12-12 12:51+0000\n"
+"Last-Translator: Süha Karalar <suhakaralar@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/projects/p/gravityview/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.7beta3\n"
+"X-Generator: Poedit 1.7.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: gravityview.php:249
+#: gravityview.php:251
 msgid "Top"
 msgstr "Üst"
 
-#: gravityview.php:250
+#: gravityview.php:252
 msgid "Left"
 msgstr "Sol"
 
-#: gravityview.php:250
+#: gravityview.php:252
 msgid "Right"
 msgstr "Sağ"
 
@@ -183,11 +183,11 @@ msgstr "Çoklu Kayıt"
 msgid "Single Entry"
 msgstr "Tekil Kayıt"
 
-#: includes/admin/metaboxes.php:255 includes/class-frontend-views.php:102
+#: includes/admin/metaboxes.php:255 includes/class-frontend-views.php:104
 #: includes/extensions/edit-entry/class-edit-entry.php:205
 #: includes/extensions/edit-entry/class-edit-entry.php:276
 #: includes/extensions/edit-entry/class-edit-entry.php:293
-#: includes/extensions/edit-entry/class-edit-entry.php:1177
+#: includes/extensions/edit-entry/class-edit-entry.php:1179
 #: includes/extensions/edit-entry/fields/edit_link.php:12
 msgid "Edit Entry"
 msgstr "Kaydı Düzenle"
@@ -280,13 +280,13 @@ msgid "Insert View"
 msgstr "Görünüm Ekle"
 
 #: includes/class-admin-add-shortcode.php:125
-#: includes/class-admin-views.php:839
-#: includes/extensions/edit-entry/class-edit-entry.php:1246
+#: includes/class-admin-views.php:840
+#: includes/extensions/edit-entry/class-edit-entry.php:1248
 msgid "Cancel"
 msgstr "İptal"
 
 #: includes/class-admin-add-shortcode.php:171
-#: includes/class-admin-views.php:843
+#: includes/class-admin-views.php:844
 msgid "Loading&hellip;"
 msgstr "data&hellip; yükleniyor"
 
@@ -457,8 +457,8 @@ msgstr "Kayıtlar"
 msgid "Edit settings for this form"
 msgstr "Bu formun ayarlarını değiştirin"
 
-#: includes/class-admin-views.php:250 includes/class-settings.php:246
-#: includes/class-settings.php:247
+#: includes/class-admin-views.php:250 includes/class-settings.php:252
+#: includes/class-settings.php:253
 msgid "Settings"
 msgstr "Ayarlar"
 
@@ -470,118 +470,118 @@ msgstr "Form Önizleme"
 msgid "Preview"
 msgstr "Önizleme"
 
-#: includes/class-admin-views.php:456
+#: includes/class-admin-views.php:457
 msgid "+ Add All Fields"
 msgstr "+ Tüm Alanları Ekle"
 
-#: includes/class-admin-views.php:457
+#: includes/class-admin-views.php:458
 msgid "Add all the available fields at once."
 msgstr "Mevcut tüm alanları tek seferde ekle."
 
-#: includes/class-admin-views.php:507
+#: includes/class-admin-views.php:508
 #: includes/extensions/search-widget/class-search-widget.php:187
 msgid "Entry ID"
 msgstr "Kayıt NO"
 
-#: includes/class-admin-views.php:509
+#: includes/class-admin-views.php:510
 msgid "The unique ID of the entry."
 msgstr "Kaydın eşsiz NO bilgisi."
 
-#: includes/class-admin-views.php:512
+#: includes/class-admin-views.php:513
 #: includes/extensions/search-widget/class-search-widget.php:186
 msgid "Entry Date"
 msgstr "Kayıt Tarihi"
 
-#: includes/class-admin-views.php:513
+#: includes/class-admin-views.php:514
 msgid "The date the entry was created."
 msgstr "Kaydın oluşturulduğu tarih."
 
-#: includes/class-admin-views.php:517
+#: includes/class-admin-views.php:518
 msgid "Source URL"
 msgstr "Kaynak URL"
 
-#: includes/class-admin-views.php:519
+#: includes/class-admin-views.php:520
 msgid "The URL of the page where the form was submitted."
 msgstr "Formun gönderildiği sayfanın URL adresi."
 
-#: includes/class-admin-views.php:522
+#: includes/class-admin-views.php:523
 msgid "User IP"
 msgstr "Kullanıcı IP"
 
-#: includes/class-admin-views.php:524
+#: includes/class-admin-views.php:525
 msgid "The IP Address of the user who created the entry."
 msgstr "Kaydı oluşturan kullanıcının IP adresi."
 
-#: includes/class-admin-views.php:527
+#: includes/class-admin-views.php:528
 msgid "User"
 msgstr "Kullanıcı"
 
-#: includes/class-admin-views.php:529
+#: includes/class-admin-views.php:530
 msgid "Details of the logged-in user who created the entry (if any)."
 msgstr "Kaydı oluşturan kayıtlı kullanıcının bilgileri (eğer varsa)."
 
-#: includes/class-admin-views.php:536 includes/fields/custom.php:22
+#: includes/class-admin-views.php:537 includes/fields/custom.php:22
 msgid "Custom Content"
 msgstr "Özel İçerik"
 
-#: includes/class-admin-views.php:538
+#: includes/class-admin-views.php:539
 msgid "Insert custom text or HTML."
 msgstr "Özel yazı yada HTML girin."
 
-#: includes/class-admin-views.php:546
+#: includes/class-admin-views.php:547
 msgid "Link to Entry"
 msgstr "Kayıt Bağlantısı"
 
-#: includes/class-admin-views.php:547
+#: includes/class-admin-views.php:548
 msgid "A dedicated link to the single entry with customizable text."
 msgstr "Sadece tekil kayda giden ve yazısı özelleştirilebilir bağlantı."
 
-#: includes/class-admin-views.php:624
+#: includes/class-admin-views.php:625
 msgid "Add Widget"
 msgstr "Bileşen Ekle"
 
-#: includes/class-admin-views.php:626
+#: includes/class-admin-views.php:627
 msgid "Add Field"
 msgstr "Alan Ekle"
 
-#: includes/class-admin-views.php:707
+#: includes/class-admin-views.php:708
 #, php-format
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr "\"+ %s\" yada mevcut %ss buraya sürükleyin."
 
-#: includes/class-admin-views.php:837
+#: includes/class-admin-views.php:838
 msgid "Enter View name here"
 msgstr "Görünüm Adını buraya girin"
 
-#: includes/class-admin-views.php:838
+#: includes/class-admin-views.php:839
 msgid "Close"
 msgstr "Kapat"
 
-#: includes/class-admin-views.php:840
+#: includes/class-admin-views.php:841
 msgid "Continue"
 msgstr "Devam Et"
 
-#: includes/class-admin-views.php:841
+#: includes/class-admin-views.php:842
 msgid "Ok"
 msgstr "Tamam"
 
-#: includes/class-admin-views.php:842
+#: includes/class-admin-views.php:843
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr "Görünüm oluşturulurken hata oluştu. Lütfen ayarları kontrol edin yada GravityView destek bölümüne başvurun."
 
-#: includes/class-admin-views.php:844
+#: includes/class-admin-views.php:845
 msgid "There was an error loading dynamic content."
 msgstr "Dinamik içeriği yüklerken bir hata oluştu."
 
-#: includes/class-admin-views.php:845
+#: includes/class-admin-views.php:846
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr "Alanı eklerken hata oluştu. Lütfen tekrar deneyin yada GravityView destek bölümüne başvurun."
 
-#: includes/class-admin-views.php:846
+#: includes/class-admin-views.php:847
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -619,19 +619,19 @@ msgstr "GravityView yüklediğiniz için teşekkür ederiz. Artık Gravity Forms
 msgid "List of Changes"
 msgstr "Değişiklik Listesi"
 
-#: includes/class-admin-welcome.php:600
+#: includes/class-admin-welcome.php:665
 msgid "GravityView is brought to you by:"
 msgstr "GravityView'i çıkaranlar:"
 
-#: includes/class-admin-welcome.php:625
+#: includes/class-admin-welcome.php:690
 msgid "Contributors"
 msgstr "Katkıda Bulunanlar"
 
-#: includes/class-admin-welcome.php:650
+#: includes/class-admin-welcome.php:715
 msgid "Want to contribute?"
 msgstr "Katkıda bulunmak istermisiniz?"
 
-#: includes/class-admin-welcome.php:651
+#: includes/class-admin-welcome.php:716
 #, php-format
 msgid ""
 "If you want to contribute to the code, you can %srequest access to the "
@@ -775,28 +775,28 @@ msgstr "Bu aramada hiç sonuç bulunamadı"
 msgid "No entries match your request."
 msgstr "Talebinize uyan kayıt bulunamadı."
 
-#: includes/class-api.php:549
+#: includes/class-api.php:563
 msgid "&larr; Go back"
 msgstr "&larr; Geri dön"
 
-#: includes/class-api.php:905
+#: includes/class-api.php:919
 msgid "Map It"
 msgstr "Haritada Göster"
 
 #: includes/class-change-entry-creator.php:54
 msgid "Error"
-msgstr ""
+msgstr "Hata"
 
 #: includes/class-change-entry-creator.php:56
 msgid "Success"
-msgstr ""
+msgstr "Başarılı"
 
 #: includes/class-change-entry-creator.php:59
 #, php-format
 msgctxt ""
 "First parameter: Success or error of the action. Second: User ID number"
 msgid "%s: Assigned User ID #%d as the entry creator."
-msgstr ""
+msgstr "%s: Kullanıcı NO #%d olan kişi kayıt sahibi olarak değiştirildi."
 
 #: includes/class-change-entry-creator.php:163
 #, php-format
@@ -824,6 +824,43 @@ msgstr "Kayıt Sahibini Değiştir:"
 msgctxt "No user assigned to the entry"
 msgid "No User"
 msgstr "Kullanıcı Yok"
+
+#: includes/class-common.php:164
+msgid "Payment Status"
+msgstr "Ödeme Durumu"
+
+#: includes/class-common.php:169
+msgid "Payment Date"
+msgstr "Ödeme Tarihi"
+
+#: includes/class-common.php:174
+msgid "Payment Amount"
+msgstr "Ödeme Miktarı"
+
+#: includes/class-common.php:179
+msgid "Payment Method"
+msgstr "Ödeme Yöntemi"
+
+#: includes/class-common.php:184
+#: includes/extensions/search-widget/class-search-widget.php:563
+msgid "Is Fulfilled"
+msgstr "Tamamlandı"
+
+#: includes/class-common.php:189
+msgid "Transaction ID"
+msgstr "İşlem NO"
+
+#: includes/class-common.php:194
+msgid "Transaction Type"
+msgstr "İşlem Türü"
+
+#: includes/class-common.php:680 includes/class-data.php:378
+msgid "Default"
+msgstr "Varsayılan"
+
+#: includes/class-common.php:693 includes/class-data.php:379
+msgid "Date Created"
+msgstr "Oluşturulma Tarihi"
 
 #: includes/class-data.php:317
 msgid "View ID"
@@ -861,30 +898,22 @@ msgstr "Eğer yönetici olmayan kullanıcılar tarafından oluşturulduysa \"Kay
 
 #: includes/class-data.php:364
 msgid "Allow User Delete"
-msgstr ""
+msgstr "Kayıt Silmeye İzin Ver"
 
 #: includes/class-data.php:366
 msgid "Allow logged-in users to delete entries they created."
-msgstr ""
+msgstr "Giriş yapmış kullanıcılara, sahibi oldukları kayıtları silmelerine izin ver."
 
 #: includes/class-data.php:368
 msgid ""
 "Display \"Delete Entry\" fields to non-administrator users if they created "
 "the entry. Delete Entry fields will always be displayed to site "
 "administrators."
-msgstr ""
+msgstr "Yönetici olmayan kullanıcılara, sahibi oldukları kayıtlar için  \"Kayıt Sil\" menüsünü görünür yap. Ayrıca yöneticiler için Kayıt Sil menüsü her zaman görünür."
 
 #: includes/class-data.php:373
 msgid "Sort by field"
 msgstr "Alana göre sırala"
-
-#: includes/class-data.php:378 includes/connector-functions.php:672
-msgid "Default"
-msgstr "Varsayılan"
-
-#: includes/class-data.php:379 includes/connector-functions.php:685
-msgid "Date Created"
-msgstr "Oluşturulma Tarihi"
 
 #: includes/class-data.php:384
 msgid "Sort direction"
@@ -981,7 +1010,7 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Boş"
 
-#: includes/class-frontend-views.php:378
+#: includes/class-frontend-views.php:380
 msgid ""
 "You have attempted to view an entry that is not visible or may not exist."
 msgstr "Görünür olmayan yada var olmayan bir kaydı görüntülemek istediniz."
@@ -1149,72 +1178,44 @@ msgstr "Lisansı Etkisizleştir"
 msgid "Verify License"
 msgstr "Lisansı Doğrula"
 
-#: includes/class-settings.php:179
+#: includes/class-settings.php:185
 msgid "License Key"
 msgstr "Lisans Anahtarı"
 
-#: includes/class-settings.php:180
+#: includes/class-settings.php:186
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
 msgstr "Satın alma esnasında size gönderilen lisans anahtarını giriniz. Bu sayede eklenti güncellemeleri ve desteği alabilirsiniz."
 
-#: includes/class-settings.php:187
+#: includes/class-settings.php:193
 msgid "Support Email"
 msgstr "Destek Eposta Adresi"
 
-#: includes/class-settings.php:188
+#: includes/class-settings.php:194
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
 msgstr "Destek taleplerinize yanıt verebilmemiz için lütfen eposta adresinizi yazınız."
 
-#: includes/class-settings.php:193
+#: includes/class-settings.php:199
 msgid "No-Conflict Mode"
 msgstr "Çakışmasız Durum"
 
-#: includes/class-settings.php:194
+#: includes/class-settings.php:200
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
 msgstr "Arkaplanda farklı betik ve sitil dosyalarının GravityView yönetim sayfasında yüklenmesini istemiyorsanız bu ayarı kullanmalısınız. Bu sayede diğer eklenti ve temalarla yaşanabilecek çakışmalar asgariye indirilmiş olur."
 
-#: includes/class-settings.php:212
+#: includes/class-settings.php:218
 msgid "GravityView Settings"
 msgstr "GravityView Ayarları"
 
-#: includes/class-settings.php:312
+#: includes/class-settings.php:318
 msgid "Follow us on Google+"
 msgstr "Bizi Google+ 'da takip edin"
-
-#: includes/connector-functions.php:143
-msgid "Payment Status"
-msgstr "Ödeme Durumu"
-
-#: includes/connector-functions.php:148
-msgid "Payment Date"
-msgstr "Ödeme Tarihi"
-
-#: includes/connector-functions.php:153
-msgid "Payment Amount"
-msgstr "Ödeme Miktarı"
-
-#: includes/connector-functions.php:158
-msgid "Payment Method"
-msgstr "Ödeme Yöntemi"
-
-#: includes/connector-functions.php:163
-msgid "Is Fulfilled"
-msgstr "Tamamlandı"
-
-#: includes/connector-functions.php:168
-msgid "Transaction ID"
-msgstr "İşlem NO"
-
-#: includes/connector-functions.php:173
-msgid "Transaction Type"
-msgstr "İşlem Türü"
 
 #: includes/default-templates.php:30
 msgid "Table (default)"
@@ -1385,63 +1386,63 @@ msgstr "Özeti yerine her sayfayı tek tek göster (örn: 1 2 3 ... 8 »)"
 msgid "Page Links"
 msgstr "Sayfa Bağlantıları"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:110
+#: includes/extensions/delete-entry/class-delete-entry.php:107
 msgid "Delete Link Text"
-msgstr ""
+msgstr "Bağlantı Yazısını Sil"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:112
-#: includes/extensions/delete-entry/class-delete-entry.php:163
-#: includes/extensions/delete-entry/class-delete-entry.php:179
+#: includes/extensions/delete-entry/class-delete-entry.php:109
+#: includes/extensions/delete-entry/class-delete-entry.php:138
+#: includes/extensions/delete-entry/class-delete-entry.php:154
 #: includes/extensions/delete-entry/fields/delete_link.php:12
 msgid "Delete Entry"
-msgstr ""
+msgstr "Kaydı Sil"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:139
+#: includes/extensions/delete-entry/class-delete-entry.php:115
 msgid "Allow the following users to delete the entry:"
-msgstr ""
+msgstr "Aşağıdaki kullanıcılara kayıt silme yetkisi ver:"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:165
+#: includes/extensions/delete-entry/class-delete-entry.php:140
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
-msgstr ""
+msgstr "Kaydı silmek için bağlantı. Kayıt Sil kurallarına tabidir."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:211
+#: includes/extensions/delete-entry/class-delete-entry.php:186
 #: includes/extensions/edit-entry/class-edit-entry.php:324
 msgctxt "User capability"
 msgid "Entry Creator"
 msgstr "Kayıt Sahibi"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:301
+#: includes/extensions/delete-entry/class-delete-entry.php:275
 msgid "Delete"
-msgstr ""
+msgstr "Sil"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:378
+#: includes/extensions/delete-entry/class-delete-entry.php:352
 msgid "The entry does not exist."
-msgstr ""
+msgstr "Kayıt mevcut değil."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:423
+#: includes/extensions/delete-entry/class-delete-entry.php:397
 msgid "Are you sure you want to delete this entry? This cannot be undone."
-msgstr ""
+msgstr "Bu kaydı silmek istediğinize eminmisiniz? Bu işlem geri alınamaz."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:452
+#: includes/extensions/delete-entry/class-delete-entry.php:426
 msgid "The link to delete this entry is not valid; it may have expired."
-msgstr ""
+msgstr "Kaydı silmek için verilen bağlantı artık geçerli değil; süresi dolmuş olabilir."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:456
+#: includes/extensions/delete-entry/class-delete-entry.php:430
 msgid "You do not have permission to delete this entry."
-msgstr ""
+msgstr "Bu kaydı silme yetkiniz yok."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:460
+#: includes/extensions/delete-entry/class-delete-entry.php:434
 msgid "You cannot delete the entry; it is already in the trash."
-msgstr ""
-
-#: includes/extensions/delete-entry/class-delete-entry.php:549
-#, php-format
-msgid "There was an error deleting the entry: %s"
-msgstr ""
+msgstr "Bu kaydı silemezsiniz; zaten çöp kutusunda."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:554
+#, php-format
+msgid "There was an error deleting the entry: %s"
+msgstr "%s kaydını silerken hata oluştu."
+
+#: includes/extensions/delete-entry/class-delete-entry.php:559
 msgid "The entry was successfully deleted."
-msgstr ""
+msgstr "Kayıt başarıyla silindi."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:203
 msgid "Edit Link Text"
@@ -1465,44 +1466,44 @@ msgstr "Alanı şunlar için düzenlenebilir yap:"
 msgid "A link to edit the entry. Visible based on View settings."
 msgstr "Kaydı düzenlemek için bağlantı. Görünüm ayarlarına bağlı olarak görünür."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:669
+#: includes/extensions/edit-entry/class-edit-entry.php:671
 msgid "Details"
 msgstr "Ayrıntılar"
 
-#: includes/extensions/edit-entry/class-edit-entry.php:933
+#: includes/extensions/edit-entry/class-edit-entry.php:935
 msgid "Maximum number of files reached"
 msgstr "Azami dosya erişim sayısı"
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1008
+#: includes/extensions/edit-entry/class-edit-entry.php:1010
 msgid "You do not have permission to edit this field."
 msgstr "Bu alanı düzenleme yetkiniz yok."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1066
+#: includes/extensions/edit-entry/class-edit-entry.php:1068
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "Bu kaydı düzenleyecek bağlantı geçerli değil, zamanaşımına uğramış olabilir."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1070
+#: includes/extensions/edit-entry/class-edit-entry.php:1072
 msgid "You do not have permission to edit this entry."
 msgstr "Bu kaydı düzenleme yetkiniz yok."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1074
+#: includes/extensions/edit-entry/class-edit-entry.php:1076
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "Bu kaydı düzenleyemezsiniz; çünnkü çöp kutusunda."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1188
+#: includes/extensions/edit-entry/class-edit-entry.php:1190
 msgid "There was a problem with your submission."
 msgstr "Gönderinizle ilgili bir sorun oluştu."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1188
+#: includes/extensions/edit-entry/class-edit-entry.php:1190
 msgid "Errors have been highlighted below."
 msgstr "Hatalar aşağıda belirtilmiştir."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1194
+#: includes/extensions/edit-entry/class-edit-entry.php:1196
 #, php-format
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "Kayıt güncellendi. %sKayda Dön%s"
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1244
+#: includes/extensions/edit-entry/class-edit-entry.php:1246
 msgid "Update"
 msgstr "Güncelle"
 
@@ -1607,32 +1608,32 @@ msgstr "Giriş Türü"
 msgid "Search Everything"
 msgstr "Herşeyde Ara"
 
-#: includes/extensions/search-widget/class-search-widget.php:679
+#: includes/extensions/search-widget/class-search-widget.php:682
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "Kapat"
 
-#: includes/extensions/search-widget/class-search-widget.php:680
+#: includes/extensions/search-widget/class-search-widget.php:683
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr "Önceki"
 
-#: includes/extensions/search-widget/class-search-widget.php:681
+#: includes/extensions/search-widget/class-search-widget.php:684
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr "Sonraki"
 
-#: includes/extensions/search-widget/class-search-widget.php:682
+#: includes/extensions/search-widget/class-search-widget.php:685
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr "Bugün"
 
-#: includes/extensions/search-widget/class-search-widget.php:683
+#: includes/extensions/search-widget/class-search-widget.php:686
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr "Hafta"
 
-#: includes/extensions/search-widget/class-search-widget.php:684
+#: includes/extensions/search-widget/class-search-widget.php:687
 msgid "Show a different month"
 msgstr "Farklı bir ay göster"
 
@@ -1650,7 +1651,7 @@ msgstr "Bitiş tarihi"
 
 #: includes/extensions/search-widget/templates/search-field-entry_id.php:15
 msgid "Entry ID:"
-msgstr ""
+msgstr "Kayıt NO:"
 
 #: includes/extensions/search-widget/templates/search-field-link.php:12
 msgid "Show only:"
@@ -1804,13 +1805,13 @@ msgstr "Bağlantı yazısını özelleştirin. Boş bırakırsanız, bağlantı 
 
 #: includes/fields/textarea.php:20
 msgid "Maximum words shown"
-msgstr ""
+msgstr "Gösterilen azami kelime sayısı"
 
 #: includes/fields/textarea.php:21
 msgid ""
 "Enter the number of words to be shown. If specified it truncates the text. "
 "Leave it blank if you want to show the full text."
-msgstr ""
+msgstr "Gösterilecek kelie sayısını giriniz. Girdiğiniz kelime kadar yazı özetlenecektir. Tüm yazıyı göstermek için boş bırakın."
 
 #: includes/fields/website.php:22
 msgid "Shorten Link Display"

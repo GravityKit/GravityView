@@ -743,5 +743,64 @@ class GVCommon {
 
 	}
 
+	/**
+	 *
+	 * Do the same than parse_str without max_input_vars limitation:
+	 * Parses $string as if it were the query string passed via a URL and sets variables in the current scope.
+	 * @param $string array string to parse (not altered like in the original parse_str(), use the second parameter!)
+	 * @param $result array  If the second parameter is present, variables are stored in this variable as array elements
+	 * @return bool true or false if $string is an empty string
+	 *
+	 * @author rubo77 at https://gist.github.com/rubo77/6821632
+	 **/
+	public static function gv_parse_str( $string, &$result ) {
+		if( $string === '' ) { return false; }
+		$result = array();
+		// find the pairs "name=value"
+		$pairs = explode( '&', $string );
+
+		foreach ( $pairs as $pair ) {
+			// use the original parse_str() on each element
+			parse_str( $pair, $params );
+
+			$k = key( $params );
+			if( !isset( $result[ $k ] ) ) {
+				$result+=$params;
+			} else {
+				$result[ $k ] = self::array_merge_recursive_distinct( $result[ $k ], $params[ $k ] );
+			}
+		}
+		return true;
+	}
+
+	/**
+	* array_merge_recursive does indeed merge arrays, but it converts values with duplicate
+	* keys to arrays rather than overwriting the value in the first array with the duplicate
+	* value in the second array, as array_merge does.
+	*
+	* @see http://php.net/manual/en/function.array-merge-recursive.php
+	*
+	* @param array $array1
+	* @param array $array2
+	* @return array
+	* @author Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
+	* @author Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>
+	*/
+	public static function array_merge_recursive_distinct ( array &$array1, array &$array2 ) {
+		$merged = $array1;
+
+		foreach ( $array2 as $key => &$value )  {
+			if ( is_array ( $value ) && isset ( $merged [$key] ) && is_array ( $merged [$key] ) ) {
+				$merged [$key] = self::array_merge_recursive_distinct ( $merged [$key], $value );
+			} else {
+				$merged [$key] = $value;
+			}
+		}
+
+		return $merged;
+	}
+
+
+
 
 } //end class

@@ -163,6 +163,14 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					$link = add_query_arg( array( 'TB_iframe' => 'true' ), $link );
 
 					break;
+
+				// if not image, do not set the lightbox (@since 1.5.3)
+				case !in_array( $extension, array( 'jpg', 'jpeg', 'jpe', 'gif', 'png' ) ):
+
+					$disable_lightbox = true;
+
+					break;
+
 			}
 
 			// If using Link to File, override the content.

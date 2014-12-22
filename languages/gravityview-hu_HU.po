@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-12-02 09:25-0700\n"
-"PO-Revision-Date: 2014-12-11 23:25+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2014-12-12 15:41+0000\n"
+"Last-Translator: dbalage <balazs@magonc.org>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/gravityview/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,35 +45,35 @@ msgstr "Egyéni CSS osztály:"
 
 #: includes/admin/class.render.settings.php:54
 msgid "This class will be added to the field container"
-msgstr ""
+msgstr "Ez a CSS osztály hozzá lesz adva a mező konténerhez"
 
 #: includes/admin/class.render.settings.php:61
 msgid "Make visible only to logged-in users?"
-msgstr ""
+msgstr "Csak bejelentkezett felhasználók tekinthessék meg?"
 
 #: includes/admin/class.render.settings.php:66
 msgid "Make visible for:"
-msgstr ""
+msgstr "Megtekintési jog:"
 
 #: includes/admin/class.render.settings.php:99
 msgid "Any Logged-In User"
-msgstr ""
+msgstr "Minden bejelentkezett felhasználó"
 
 #: includes/admin/class.render.settings.php:100
 msgid "Author Or Higher"
-msgstr ""
+msgstr "Szerző vagy magasabb szintű"
 
 #: includes/admin/class.render.settings.php:101
 msgid "Can View Gravity Forms Entries"
-msgstr ""
+msgstr "Megtekintheti a Gravity Form bejegyzéseket"
 
 #: includes/admin/class.render.settings.php:102
 msgid "Editor Or Higher"
-msgstr ""
+msgstr "Szerkesztő vagy magasabb szint"
 
 #: includes/admin/class.render.settings.php:103
 msgid "Can Edit Gravity Forms Entries"
-msgstr ""
+msgstr "Szerkesztheti a Gravity Form bejegyzéseket"
 
 #: includes/admin/class.render.settings.php:104
 msgid "Administrator"
@@ -81,20 +81,20 @@ msgstr "Adminisztrátor"
 
 #: includes/admin/class.render.settings.php:108
 msgid "Multisite Super Admin"
-msgstr ""
+msgstr "Multisite legfelső adminisztrátor"
 
 #: includes/admin/class.render.settings.php:163
 #, php-format
 msgid "Options: %s"
-msgstr ""
+msgstr "Opciók: %s"
 
 #: includes/admin/entry-list.php:66
 msgid "Edit this entry"
-msgstr ""
+msgstr "Bejegyzés szerkesztése"
 
 #: includes/admin/entry-list.php:66
 msgid "Edit"
-msgstr ""
+msgstr "Szerkesztés"
 
 #: includes/admin/metaboxes.php:47 includes/class-admin-views.php:281
 msgid "Data Source"
@@ -114,7 +114,7 @@ msgstr "Nézet beállításai"
 
 #: includes/admin/metaboxes.php:59
 msgid "Filter &amp; Sort"
-msgstr ""
+msgstr "Szűrés &amp; Rendezés"
 
 #: includes/admin/metaboxes.php:86
 msgid "Where would you like the data to come from for this View?"
@@ -138,7 +138,7 @@ msgstr "Nézet váltása"
 
 #: includes/admin/metaboxes.php:115
 msgid "Switch View Type"
-msgstr ""
+msgstr "Nézet típusának váltása"
 
 #: includes/admin/metaboxes.php:119 includes/admin/metaboxes.php:124
 msgid "Attention"
@@ -148,13 +148,13 @@ msgstr "Figyelem"
 msgid ""
 "Changing the form will reset your field configuration. Changes will be "
 "permanent once you save the View."
-msgstr ""
+msgstr "Az űrlap módosítása visszaállítja a mező beállításait. A Nézet mentésével a módosítások véglegesen lesznek. "
 
 #: includes/admin/metaboxes.php:125
 msgid ""
 "Changing the View Type will reset your field configuration. Changes will be "
 "permanent once you save the View."
-msgstr ""
+msgstr "A Nézet típusának módosítása visszaállítja a mező beállításait. A Nézet mentésével a módosítások véglegesek lesznek."
 
 #: includes/admin/metaboxes.php:130
 msgid "GravityView requires Javascript to be enabled."
@@ -171,7 +171,7 @@ msgstr "Kiválaszt"
 
 #: includes/admin/metaboxes.php:175
 msgid "View a live demo of this preset"
-msgstr ""
+msgstr "Előnézet megtekintése erről a sablonról"
 
 #: includes/admin/metaboxes.php:253
 msgid "Multiple Entries"
@@ -188,31 +188,31 @@ msgstr "Egyetlen bejegyzés"
 #: includes/extensions/edit-entry/class-edit-entry.php:1177
 #: includes/extensions/edit-entry/fields/edit_link.php:12
 msgid "Edit Entry"
-msgstr ""
+msgstr "Bejegyzés szerkesztése"
 
 #: includes/admin/metaboxes.php:262
 msgid "Above Entries Widgets"
-msgstr ""
+msgstr "Bejegyzések fölötti widgetek"
 
 #: includes/admin/metaboxes.php:262
 msgid "These widgets will be shown above entries."
-msgstr ""
+msgstr "Ezek a widgetek a bejegyzések fölött jelennek majd meg."
 
 #: includes/admin/metaboxes.php:266
 msgid "Entries Fields"
-msgstr ""
+msgstr "Bejegyzésmezők"
 
 #: includes/admin/metaboxes.php:266
 msgid "These fields will be shown for each entry."
-msgstr ""
+msgstr "Ezek a mezők az összes bejegyzéshez megjelennek."
 
 #: includes/admin/metaboxes.php:274
 msgid "Below Entries Widgets"
-msgstr ""
+msgstr "Bejegyzések alatti widgetek"
 
 #: includes/admin/metaboxes.php:274
 msgid "These widgets will be shown below entries."
-msgstr ""
+msgstr "Ezek a widgetek a bejegyzések alatt jelennek majd meg."
 
 #: includes/admin/metaboxes.php:304
 msgid "These fields will be shown in Single Entry view."

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2014-12-02 09:25-0700\n"
+"POT-Creation-Date: 2014-12-22 14:33-0700\n"
 "PO-Revision-Date: 2014-12-12 00:01+0000\n"
 "Last-Translator: Jorge Pelaez <jorgepelaez@gmail.com>\n"
 "Language-Team: Spanish (Mexico) (http://www.transifex.com/projects/p/gravityview/language/es_MX/)\n"
@@ -16,21 +16,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: es_MX\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.7beta3\n"
+"X-Generator: Poedit 1.7.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: gravityview.php:249
+#: gravityview.php:251
 msgid "Top"
 msgstr "Arriba"
 
-#: gravityview.php:250
+#: gravityview.php:252
 msgid "Left"
 msgstr "Izquierda"
 
-#: gravityview.php:250
+#: gravityview.php:252
 msgid "Right"
 msgstr "Derecha"
 
@@ -184,11 +184,11 @@ msgstr "Entradas Múltiples"
 msgid "Single Entry"
 msgstr "Entrada Individual"
 
-#: includes/admin/metaboxes.php:255 includes/class-frontend-views.php:102
+#: includes/admin/metaboxes.php:255 includes/class-frontend-views.php:104
 #: includes/extensions/edit-entry/class-edit-entry.php:205
 #: includes/extensions/edit-entry/class-edit-entry.php:276
 #: includes/extensions/edit-entry/class-edit-entry.php:293
-#: includes/extensions/edit-entry/class-edit-entry.php:1177
+#: includes/extensions/edit-entry/class-edit-entry.php:1179
 #: includes/extensions/edit-entry/fields/edit_link.php:12
 msgid "Edit Entry"
 msgstr "Editar Entrada"
@@ -281,13 +281,13 @@ msgid "Insert View"
 msgstr "Insertar Vista"
 
 #: includes/class-admin-add-shortcode.php:125
-#: includes/class-admin-views.php:839
-#: includes/extensions/edit-entry/class-edit-entry.php:1246
+#: includes/class-admin-views.php:840
+#: includes/extensions/edit-entry/class-edit-entry.php:1248
 msgid "Cancel"
 msgstr "Cancelar"
 
 #: includes/class-admin-add-shortcode.php:171
-#: includes/class-admin-views.php:843
+#: includes/class-admin-views.php:844
 msgid "Loading&hellip;"
 msgstr "Cargando&hellip;"
 
@@ -458,8 +458,8 @@ msgstr "Entradas"
 msgid "Edit settings for this form"
 msgstr "Editar ajustes de este formulario"
 
-#: includes/class-admin-views.php:250 includes/class-settings.php:246
-#: includes/class-settings.php:247
+#: includes/class-admin-views.php:250 includes/class-settings.php:252
+#: includes/class-settings.php:253
 msgid "Settings"
 msgstr "Ajustes"
 
@@ -471,118 +471,118 @@ msgstr "Vista previa de este formulario"
 msgid "Preview"
 msgstr "Vista Previa"
 
-#: includes/class-admin-views.php:456
+#: includes/class-admin-views.php:457
 msgid "+ Add All Fields"
 msgstr "+ Agregar Todos los Campos"
 
-#: includes/class-admin-views.php:457
+#: includes/class-admin-views.php:458
 msgid "Add all the available fields at once."
 msgstr "Agregue todos los campos disponibles a la vez."
 
-#: includes/class-admin-views.php:507
+#: includes/class-admin-views.php:508
 #: includes/extensions/search-widget/class-search-widget.php:187
 msgid "Entry ID"
 msgstr "ID de Entrada"
 
-#: includes/class-admin-views.php:509
+#: includes/class-admin-views.php:510
 msgid "The unique ID of the entry."
 msgstr "El ID único de la entrada"
 
-#: includes/class-admin-views.php:512
+#: includes/class-admin-views.php:513
 #: includes/extensions/search-widget/class-search-widget.php:186
 msgid "Entry Date"
 msgstr "Fecha de Entrada"
 
-#: includes/class-admin-views.php:513
+#: includes/class-admin-views.php:514
 msgid "The date the entry was created."
 msgstr "Fecha en que se creó la entrada."
 
-#: includes/class-admin-views.php:517
+#: includes/class-admin-views.php:518
 msgid "Source URL"
 msgstr "URL de Fuente"
 
-#: includes/class-admin-views.php:519
+#: includes/class-admin-views.php:520
 msgid "The URL of the page where the form was submitted."
 msgstr "URL de la página donde se envió el formulario."
 
-#: includes/class-admin-views.php:522
+#: includes/class-admin-views.php:523
 msgid "User IP"
 msgstr "IP de Usuario"
 
-#: includes/class-admin-views.php:524
+#: includes/class-admin-views.php:525
 msgid "The IP Address of the user who created the entry."
 msgstr "Dirección IP del usuario que creó la entrada."
 
-#: includes/class-admin-views.php:527
+#: includes/class-admin-views.php:528
 msgid "User"
 msgstr "Usuario"
 
-#: includes/class-admin-views.php:529
+#: includes/class-admin-views.php:530
 msgid "Details of the logged-in user who created the entry (if any)."
 msgstr "Detalles del usuario que ha iniciado sesión y que creó la entrada (si existe) ."
 
-#: includes/class-admin-views.php:536 includes/fields/custom.php:22
+#: includes/class-admin-views.php:537 includes/fields/custom.php:22
 msgid "Custom Content"
 msgstr "Contenido Personalizado"
 
-#: includes/class-admin-views.php:538
+#: includes/class-admin-views.php:539
 msgid "Insert custom text or HTML."
 msgstr "Inserte texto personalizado o HTML"
 
-#: includes/class-admin-views.php:546
+#: includes/class-admin-views.php:547
 msgid "Link to Entry"
 msgstr "Enlace a Entrada"
 
-#: includes/class-admin-views.php:547
+#: includes/class-admin-views.php:548
 msgid "A dedicated link to the single entry with customizable text."
 msgstr "Enlace dedicado a la entrada única con texto personalizado."
 
-#: includes/class-admin-views.php:624
+#: includes/class-admin-views.php:625
 msgid "Add Widget"
 msgstr "Agregar Widget"
 
-#: includes/class-admin-views.php:626
+#: includes/class-admin-views.php:627
 msgid "Add Field"
 msgstr "Agregar Campo"
 
-#: includes/class-admin-views.php:707
+#: includes/class-admin-views.php:708
 #, php-format
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr "\"+ %s\" o arrastre %ss existentes aquí."
 
-#: includes/class-admin-views.php:837
+#: includes/class-admin-views.php:838
 msgid "Enter View name here"
 msgstr "Ingresar nombre aquí"
 
-#: includes/class-admin-views.php:838
+#: includes/class-admin-views.php:839
 msgid "Close"
 msgstr "Cerrar"
 
-#: includes/class-admin-views.php:840
+#: includes/class-admin-views.php:841
 msgid "Continue"
 msgstr "Continuar"
 
-#: includes/class-admin-views.php:841
+#: includes/class-admin-views.php:842
 msgid "Ok"
 msgstr "Ok"
 
-#: includes/class-admin-views.php:842
+#: includes/class-admin-views.php:843
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr "Error mientras se creaba la Vista. Revise los ajustes o contacte al soporte de GravityView"
 
-#: includes/class-admin-views.php:844
+#: includes/class-admin-views.php:845
 msgid "There was an error loading dynamic content."
 msgstr "Hubo un error cargando el contenido dinámico."
 
-#: includes/class-admin-views.php:845
+#: includes/class-admin-views.php:846
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr "Error al agregar el campo . Por favor, inténtelo de nuevo o contacte a soporte de GravityView ."
 
-#: includes/class-admin-views.php:846
+#: includes/class-admin-views.php:847
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -620,19 +620,19 @@ msgstr "Gracias por instalar GravityView. Muestra hermosamente sus entradas de G
 msgid "List of Changes"
 msgstr "Lista de cambios"
 
-#: includes/class-admin-welcome.php:600
+#: includes/class-admin-welcome.php:665
 msgid "GravityView is brought to you by:"
 msgstr "GravityView es traído para Ud. por:"
 
-#: includes/class-admin-welcome.php:625
+#: includes/class-admin-welcome.php:690
 msgid "Contributors"
 msgstr "Colaboradores"
 
-#: includes/class-admin-welcome.php:650
+#: includes/class-admin-welcome.php:715
 msgid "Want to contribute?"
 msgstr "¿Desea colaborar?"
 
-#: includes/class-admin-welcome.php:651
+#: includes/class-admin-welcome.php:716
 #, php-format
 msgid ""
 "If you want to contribute to the code, you can %srequest access to the "
@@ -781,11 +781,11 @@ msgstr "La búsqueda no devolvió resultados."
 msgid "No entries match your request."
 msgstr "No hay entradas que correspondan a su solicitud."
 
-#: includes/class-api.php:549
+#: includes/class-api.php:563
 msgid "&larr; Go back"
 msgstr "&larr; Regresar"
 
-#: includes/class-api.php:905
+#: includes/class-api.php:919
 msgid "Map It"
 msgstr "Localizarlo"
 
@@ -830,6 +830,43 @@ msgstr "Cambiar autor de entrada"
 msgctxt "No user assigned to the entry"
 msgid "No User"
 msgstr "Sin usuario"
+
+#: includes/class-common.php:164
+msgid "Payment Status"
+msgstr "Status de Pago"
+
+#: includes/class-common.php:169
+msgid "Payment Date"
+msgstr "Fecha de Pago"
+
+#: includes/class-common.php:174
+msgid "Payment Amount"
+msgstr "Cantidad Pagada"
+
+#: includes/class-common.php:179
+msgid "Payment Method"
+msgstr "Método de Pago"
+
+#: includes/class-common.php:184
+#: includes/extensions/search-widget/class-search-widget.php:563
+msgid "Is Fulfilled"
+msgstr "Está completa"
+
+#: includes/class-common.php:189
+msgid "Transaction ID"
+msgstr "ID Transacción"
+
+#: includes/class-common.php:194
+msgid "Transaction Type"
+msgstr "Tipo de Transacción"
+
+#: includes/class-common.php:680 includes/class-data.php:378
+msgid "Default"
+msgstr "Defecto"
+
+#: includes/class-common.php:693 includes/class-data.php:379
+msgid "Date Created"
+msgstr "Fecha Creada"
 
 #: includes/class-data.php:317
 msgid "View ID"
@@ -883,14 +920,6 @@ msgstr "Mostrar campos de \"Borrar Entrada\" a usuarios no administradores si cr
 #: includes/class-data.php:373
 msgid "Sort by field"
 msgstr "Ordenar por campo"
-
-#: includes/class-data.php:378 includes/connector-functions.php:672
-msgid "Default"
-msgstr "Defecto"
-
-#: includes/class-data.php:379 includes/connector-functions.php:685
-msgid "Date Created"
-msgstr "Fecha Creada"
 
 #: includes/class-data.php:384
 msgid "Sort direction"
@@ -987,7 +1016,7 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Vacío"
 
-#: includes/class-frontend-views.php:378
+#: includes/class-frontend-views.php:380
 msgid ""
 "You have attempted to view an entry that is not visible or may not exist."
 msgstr "Ha intentado ver una entrada que no es visible o no existe."
@@ -1155,72 +1184,44 @@ msgstr "Desactivar Licencia"
 msgid "Verify License"
 msgstr "Verificar Licencia"
 
-#: includes/class-settings.php:179
+#: includes/class-settings.php:185
 msgid "License Key"
 msgstr "Llave de Licencia"
 
-#: includes/class-settings.php:180
+#: includes/class-settings.php:186
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
 msgstr "Ingrese la llave de licencia que le fue enviada en su compra. Esto habilita las actualizaciones y soporte del plugin."
 
-#: includes/class-settings.php:187
+#: includes/class-settings.php:193
 msgid "Support Email"
 msgstr "Email de Soporte"
 
-#: includes/class-settings.php:188
+#: includes/class-settings.php:194
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
 msgstr "Para obtener respuesta a su solicitud de soporte, por favor ingrese su correo electrónico"
 
-#: includes/class-settings.php:193
+#: includes/class-settings.php:199
 msgid "No-Conflict Mode"
 msgstr "Modo de No-Conflicto"
 
-#: includes/class-settings.php:194
+#: includes/class-settings.php:200
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
 msgstr "Active esta función para evitar que scripts y estilos extraños se imprima en las páginas de administración de GravityView, reduciendo los conflictos con otros plugins y temas."
 
-#: includes/class-settings.php:212
+#: includes/class-settings.php:218
 msgid "GravityView Settings"
 msgstr "Ajustes de GravityView"
 
-#: includes/class-settings.php:312
+#: includes/class-settings.php:318
 msgid "Follow us on Google+"
 msgstr "Síganos en Google+"
-
-#: includes/connector-functions.php:143
-msgid "Payment Status"
-msgstr "Status de Pago"
-
-#: includes/connector-functions.php:148
-msgid "Payment Date"
-msgstr "Fecha de Pago"
-
-#: includes/connector-functions.php:153
-msgid "Payment Amount"
-msgstr "Cantidad Pagada"
-
-#: includes/connector-functions.php:158
-msgid "Payment Method"
-msgstr "Método de Pago"
-
-#: includes/connector-functions.php:163
-msgid "Is Fulfilled"
-msgstr "Está completa"
-
-#: includes/connector-functions.php:168
-msgid "Transaction ID"
-msgstr "ID Transacción"
-
-#: includes/connector-functions.php:173
-msgid "Transaction Type"
-msgstr "Tipo de Transacción"
 
 #: includes/default-templates.php:30
 msgid "Table (default)"
@@ -1391,61 +1392,61 @@ msgstr "Mostrar cada número de página en vez de resumen (ej: 1 2 3 ... 8 »)"
 msgid "Page Links"
 msgstr "Página de enlaces"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:110
+#: includes/extensions/delete-entry/class-delete-entry.php:107
 msgid "Delete Link Text"
 msgstr "Borrar Texto Enlace"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:112
-#: includes/extensions/delete-entry/class-delete-entry.php:163
-#: includes/extensions/delete-entry/class-delete-entry.php:179
+#: includes/extensions/delete-entry/class-delete-entry.php:109
+#: includes/extensions/delete-entry/class-delete-entry.php:138
+#: includes/extensions/delete-entry/class-delete-entry.php:154
 #: includes/extensions/delete-entry/fields/delete_link.php:12
 msgid "Delete Entry"
 msgstr "Borrar Entrada"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:139
+#: includes/extensions/delete-entry/class-delete-entry.php:115
 msgid "Allow the following users to delete the entry:"
 msgstr "Permitir a los siguientes usuarios borrar la entrada:"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:165
+#: includes/extensions/delete-entry/class-delete-entry.php:140
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
 msgstr "Un enlace para eliminar la entrada . Respeta los permisos de Borrar Entrada."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:211
+#: includes/extensions/delete-entry/class-delete-entry.php:186
 #: includes/extensions/edit-entry/class-edit-entry.php:324
 msgctxt "User capability"
 msgid "Entry Creator"
 msgstr "Autor Entrada"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:301
+#: includes/extensions/delete-entry/class-delete-entry.php:275
 msgid "Delete"
 msgstr "Borrar"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:378
+#: includes/extensions/delete-entry/class-delete-entry.php:352
 msgid "The entry does not exist."
 msgstr "La entrada no existe."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:423
+#: includes/extensions/delete-entry/class-delete-entry.php:397
 msgid "Are you sure you want to delete this entry? This cannot be undone."
 msgstr "Está seguro de querer borrar esta entrada? Esto no puede deshacerse."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:452
+#: includes/extensions/delete-entry/class-delete-entry.php:426
 msgid "The link to delete this entry is not valid; it may have expired."
 msgstr "El enlace para borrar esta entrada no es válido; quizás expiró."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:456
+#: includes/extensions/delete-entry/class-delete-entry.php:430
 msgid "You do not have permission to delete this entry."
 msgstr "No tiene permiso para borrar esta entrada."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:460
+#: includes/extensions/delete-entry/class-delete-entry.php:434
 msgid "You cannot delete the entry; it is already in the trash."
 msgstr "No puede borrar esta entrada, ya está en la papelera."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:549
+#: includes/extensions/delete-entry/class-delete-entry.php:554
 #, php-format
 msgid "There was an error deleting the entry: %s"
 msgstr "Hubo un error al borrar la entrada: %s"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:554
+#: includes/extensions/delete-entry/class-delete-entry.php:559
 msgid "The entry was successfully deleted."
 msgstr "La entrada fue borrada exitosamente."
 
@@ -1471,44 +1472,44 @@ msgstr "Hacer campo editable para:"
 msgid "A link to edit the entry. Visible based on View settings."
 msgstr "Enlace para editar la entrada . Visible basado en configuración de la Vista. "
 
-#: includes/extensions/edit-entry/class-edit-entry.php:669
+#: includes/extensions/edit-entry/class-edit-entry.php:671
 msgid "Details"
 msgstr "Detalles"
 
-#: includes/extensions/edit-entry/class-edit-entry.php:933
+#: includes/extensions/edit-entry/class-edit-entry.php:935
 msgid "Maximum number of files reached"
 msgstr "Número máximo de archivos alcanzado"
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1008
+#: includes/extensions/edit-entry/class-edit-entry.php:1010
 msgid "You do not have permission to edit this field."
 msgstr "Usted no tiene permiso para editar este campo."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1066
+#: includes/extensions/edit-entry/class-edit-entry.php:1068
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "El enlace para editar esta entrada no es válido; puede que haya expirado."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1070
+#: includes/extensions/edit-entry/class-edit-entry.php:1072
 msgid "You do not have permission to edit this entry."
 msgstr "No tiene permiso para editar esta entrada."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1074
+#: includes/extensions/edit-entry/class-edit-entry.php:1076
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "No puede editar esta entrada; esta en la papelera."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1188
+#: includes/extensions/edit-entry/class-edit-entry.php:1190
 msgid "There was a problem with your submission."
 msgstr "Hubo un problema en su envío."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1188
+#: includes/extensions/edit-entry/class-edit-entry.php:1190
 msgid "Errors have been highlighted below."
 msgstr "Los errores han sido destacados abajo."
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1194
+#: includes/extensions/edit-entry/class-edit-entry.php:1196
 #, php-format
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "Entrada Actualizada. %sRegresar a Entrada%s"
 
-#: includes/extensions/edit-entry/class-edit-entry.php:1244
+#: includes/extensions/edit-entry/class-edit-entry.php:1246
 msgid "Update"
 msgstr "Actualizar"
 
@@ -1613,32 +1614,32 @@ msgstr "Tipo de Entrada"
 msgid "Search Everything"
 msgstr "Buscar Todo"
 
-#: includes/extensions/search-widget/class-search-widget.php:679
+#: includes/extensions/search-widget/class-search-widget.php:682
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "Cerrar"
 
-#: includes/extensions/search-widget/class-search-widget.php:680
+#: includes/extensions/search-widget/class-search-widget.php:683
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr "Ant"
 
-#: includes/extensions/search-widget/class-search-widget.php:681
+#: includes/extensions/search-widget/class-search-widget.php:684
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr "Sig"
 
-#: includes/extensions/search-widget/class-search-widget.php:682
+#: includes/extensions/search-widget/class-search-widget.php:685
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr "Hoy"
 
-#: includes/extensions/search-widget/class-search-widget.php:683
+#: includes/extensions/search-widget/class-search-widget.php:686
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr "Semana"
 
-#: includes/extensions/search-widget/class-search-widget.php:684
+#: includes/extensions/search-widget/class-search-widget.php:687
 msgid "Show a different month"
 msgstr "Mostrar un mes diferente"
 

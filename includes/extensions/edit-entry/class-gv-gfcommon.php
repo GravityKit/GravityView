@@ -11,10 +11,10 @@
  */
 class GV_GFCommon extends GFCommon {
 
-	public static function get_field_input( $field, $value = '', $lead_id = 0, $form_id = 0 ){
+	public static function get_field_input( $field, $value = '', $lead_id = 0, $form_id = 0, $form = null ){
 
 		// Check if we need to use this hack. Ideally, no.
-		switch(RGFormsModel::get_input_type($field)){
+		switch( RGFormsModel::get_input_type( $field ) ){
 
 			// We need to take control of this file type.
 			case 'fileupload':
