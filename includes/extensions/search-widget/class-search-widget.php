@@ -558,6 +558,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				$label = $value;
 				break;
 			}
+
+		} elseif( 'is_fulfilled' === $field['field'] ) {
+			$label = __( 'Is Fulfilled', 'gravityview' );
 		}
 
 		/**
