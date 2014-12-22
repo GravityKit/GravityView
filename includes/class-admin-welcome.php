@@ -281,6 +281,7 @@ class GravityView_Welcome {
 					<li>Fixed: Do not set class tickbox for non-images files</li>
 					<li>Fixed: Display label "Is Fulfilled" on the search bar</li>
 					<li>Tested with Gravity Forms 1.9beta5 and WordPress 4.1</li>
+					<li>Fixed: PHP Notice with Gravity Forms 1.9 and PHP 5.4+</li>
 					<li>Updated: Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a> and Hungarian translation by <a href="https://www.transifex.com/accounts/profile/dbalage/">@dbalage</a>. Thanks!</li>
 				</ul>
 

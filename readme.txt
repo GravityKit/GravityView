@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: When adding more than 100 fields to the View some fields weren't saved.
 * Fixed: Do not set class tickbox for non-images files
 * Fixed: Display label "Is Fulfilled" on the search bar
+* Fixed: PHP Notice with Gravity Forms 1.9 and PHP 5.4+
 * Tested with Gravity Forms 1.9beta5 and WordPress 4.1
 * Updated: Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/) and Hungarian translation by [@dbalage](https://www.transifex.com/accounts/profile/dbalage/). Thanks!
 
