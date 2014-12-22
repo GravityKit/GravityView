@@ -20,7 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= 1.5.3 on December XX =
+= 1.5.3 on December 22 =
 * Fixed: When adding more than 100 fields to the View some fields weren't saved.
 * Fixed: Do not set class tickbox for non-images files
 * Fixed: Display label "Is Fulfilled" on the search bar

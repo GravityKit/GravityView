@@ -274,7 +274,17 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>Changes in 1.5.3 (full list)</h3>
+
+				<ul>
+					<li>Fixed: When adding more than 100 fields to the View some fields weren't saved.</li>
+					<li>Fixed: Do not set class tickbox for non-images files</li>
+					<li>Fixed: Display label "Is Fulfilled" on the search bar</li>
+					<li>Tested with Gravity Forms 1.9beta5 and WordPress 4.1</li>
 					<li>Updated: Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a> and Hungarian translation by <a href="https://www.transifex.com/accounts/profile/dbalage/">@dbalage</a>. Thanks!</li>
+				</ul>
+
+
 				<h3>Changes in 1.5.2 (full list)</h3>
 
 				<ul>
