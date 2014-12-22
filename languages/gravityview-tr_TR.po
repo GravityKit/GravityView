@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-12-02 09:25-0700\n"
-"PO-Revision-Date: 2014-12-11 23:25+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2014-12-12 12:51+0000\n"
+"Last-Translator: Süha Karalar <suhakaralar@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/projects/p/gravityview/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -785,18 +785,18 @@ msgstr "Haritada Göster"
 
 #: includes/class-change-entry-creator.php:54
 msgid "Error"
-msgstr ""
+msgstr "Hata"
 
 #: includes/class-change-entry-creator.php:56
 msgid "Success"
-msgstr ""
+msgstr "Başarılı"
 
 #: includes/class-change-entry-creator.php:59
 #, php-format
 msgctxt ""
 "First parameter: Success or error of the action. Second: User ID number"
 msgid "%s: Assigned User ID #%d as the entry creator."
-msgstr ""
+msgstr "%s: Kullanıcı NO #%d olan kişi kayıt sahibi olarak değiştirildi."
 
 #: includes/class-change-entry-creator.php:163
 #, php-format
@@ -861,18 +861,18 @@ msgstr "Eğer yönetici olmayan kullanıcılar tarafından oluşturulduysa \"Kay
 
 #: includes/class-data.php:364
 msgid "Allow User Delete"
-msgstr ""
+msgstr "Kayıt Silmeye İzin Ver"
 
 #: includes/class-data.php:366
 msgid "Allow logged-in users to delete entries they created."
-msgstr ""
+msgstr "Giriş yapmış kullanıcılara, sahibi oldukları kayıtları silmelerine izin ver."
 
 #: includes/class-data.php:368
 msgid ""
 "Display \"Delete Entry\" fields to non-administrator users if they created "
 "the entry. Delete Entry fields will always be displayed to site "
 "administrators."
-msgstr ""
+msgstr "Yönetici olmayan kullanıcılara, sahibi oldukları kayıtlar için  \"Kayıt Sil\" menüsünü görünür yap. Ayrıca yöneticiler için Kayıt Sil menüsü her zaman görünür."
 
 #: includes/class-data.php:373
 msgid "Sort by field"
@@ -1387,22 +1387,22 @@ msgstr "Sayfa Bağlantıları"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:110
 msgid "Delete Link Text"
-msgstr ""
+msgstr "Bağlantı Yazısını Sil"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:112
 #: includes/extensions/delete-entry/class-delete-entry.php:163
 #: includes/extensions/delete-entry/class-delete-entry.php:179
 #: includes/extensions/delete-entry/fields/delete_link.php:12
 msgid "Delete Entry"
-msgstr ""
+msgstr "Kaydı Sil"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:139
 msgid "Allow the following users to delete the entry:"
-msgstr ""
+msgstr "Aşağıdaki kullanıcılara kayıt silme yetkisi ver:"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:165
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
-msgstr ""
+msgstr "Kaydı silmek için bağlantı. Kayıt Sil kurallarına tabidir."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:211
 #: includes/extensions/edit-entry/class-edit-entry.php:324
@@ -1412,36 +1412,36 @@ msgstr "Kayıt Sahibi"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:301
 msgid "Delete"
-msgstr ""
+msgstr "Sil"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:378
 msgid "The entry does not exist."
-msgstr ""
+msgstr "Kayıt mevcut değil."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:423
 msgid "Are you sure you want to delete this entry? This cannot be undone."
-msgstr ""
+msgstr "Bu kaydı silmek istediğinize eminmisiniz? Bu işlem geri alınamaz."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:452
 msgid "The link to delete this entry is not valid; it may have expired."
-msgstr ""
+msgstr "Kaydı silmek için verilen bağlantı artık geçerli değil; süresi dolmuş olabilir."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:456
 msgid "You do not have permission to delete this entry."
-msgstr ""
+msgstr "Bu kaydı silme yetkiniz yok."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:460
 msgid "You cannot delete the entry; it is already in the trash."
-msgstr ""
+msgstr "Bu kaydı silemezsiniz; zaten çöp kutusunda."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:549
 #, php-format
 msgid "There was an error deleting the entry: %s"
-msgstr ""
+msgstr "%s kaydını silerken hata oluştu."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:554
 msgid "The entry was successfully deleted."
-msgstr ""
+msgstr "Kayıt başarıyla silindi."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:203
 msgid "Edit Link Text"
@@ -1650,7 +1650,7 @@ msgstr "Bitiş tarihi"
 
 #: includes/extensions/search-widget/templates/search-field-entry_id.php:15
 msgid "Entry ID:"
-msgstr ""
+msgstr "Kayıt NO:"
 
 #: includes/extensions/search-widget/templates/search-field-link.php:12
 msgid "Show only:"
@@ -1804,13 +1804,13 @@ msgstr "Bağlantı yazısını özelleştirin. Boş bırakırsanız, bağlantı 
 
 #: includes/fields/textarea.php:20
 msgid "Maximum words shown"
-msgstr ""
+msgstr "Gösterilen azami kelime sayısı"
 
 #: includes/fields/textarea.php:21
 msgid ""
 "Enter the number of words to be shown. If specified it truncates the text. "
 "Leave it blank if you want to show the full text."
-msgstr ""
+msgstr "Gösterilecek kelie sayısını giriniz. Girdiğiniz kelime kadar yazı özetlenecektir. Tüm yazıyı göstermek için boş bırakın."
 
 #: includes/fields/website.php:22
 msgid "Shorten Link Display"

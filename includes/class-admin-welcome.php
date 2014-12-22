@@ -274,6 +274,7 @@ class GravityView_Welcome {
 
 				<hr />
 
+					<li>Updated: Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a> and Hungarian translation by <a href="https://www.transifex.com/accounts/profile/dbalage/">@dbalage</a>. Thanks!</li>
 				<h3>Changes in 1.5.2 (full list)</h3>
 
 				<ul>
