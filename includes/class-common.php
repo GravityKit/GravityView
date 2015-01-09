@@ -247,7 +247,7 @@ class GVCommon {
 	 * @access public
 	 * @param int|array $form_ids The ID of the form or an array IDs of the Forms. Zero for all forms.
 	 * @param mixed $passed_criteria (default: null)
-	 * @param mixed &$total (default: null)
+	 * @param mixed &$total Optional. An output parameter containing the total number of entries. Pass a non-null value to generate the total count. (default: null)
 	 * @return void
 	 */
 	public static function get_entries( $form_ids = null, $passed_criteria = null, &$total = null ) {
@@ -255,7 +255,8 @@ class GVCommon {
 		$search_criteria_defaults = array(
 			'search_criteria' => null,
 			'sorting' => null,
-			'paging' => null
+			'paging' => null,
+			'cache' => (isset( $passed_criteria['cache'] ) ? $passed_criteria['cache'] : true),
 		);
 
 		$criteria = wp_parse_args( $passed_criteria, $search_criteria_defaults );
@@ -271,7 +272,10 @@ class GVCommon {
 			}
 		}
 
-		// Prepare date formats to be in Gravity Forms DB format
+		/**
+		 * Prepare date formats to be in Gravity Forms DB format;
+		 * $passed_criteria may include date formats incompatible with Gravity Forms.
+		 */
 		foreach( array('start_date', 'end_date' ) as $key ) {
 
 			if( !empty( $criteria['search_criteria'][ $key ] ) ) {
@@ -298,6 +302,9 @@ class GVCommon {
 
 		do_action( 'gravityview_log_debug', '[gravityview_get_entries] Final Parameters', $criteria );
 
+		// Return value
+		$return = NULL;
+
 		if( !empty( $criteria['cache'] ) ) {
 
 			$Cache = new GravityView_Cache( $form_ids, $criteria );
@@ -309,7 +316,7 @@ class GVCommon {
 					$total = GFAPI::count_entries( $form_ids, $criteria['search_criteria'] );
 				}
 
-				return apply_filters( 'gravityview_entries', $entries, $criteria, $passed_criteria, $total );
+				$return = $entries;
 			}
 
 		}
@@ -330,10 +337,21 @@ class GVCommon {
 
 			}
 
-			return apply_filters( 'gravityview_entries', $entries, $criteria, $passed_criteria, $total );
+			$return = $entries;
 		}
 
-		return false;
+		/**
+		 * Modify the array of entries returned to GravityView after it has been fetched from the cache or from `GFAPI::get_entries()`.
+		 *
+		 * @param  array|null $entries Array of entries as returned by the cache or by `GFAPI::get_entries()`
+		 * @param  array $criteria The final search criteria used to generate the request to `GFAPI::get_entries()`
+		 * @param array $passed_criteria The original search criteria passed to `GVCommon::get_entries()`
+		 * @param  int|null $total Optional. An output parameter containing the total number of entries. Pass a non-null value to generate
+		 * @var array
+		 */
+		$return = apply_filters( 'gravityview_entries', $return, $criteria, $passed_criteria, $total );
+
+		return $return;
 	}
 
 
