@@ -137,6 +137,9 @@ final class GravityView_Plugin {
 		// Load default widgets
 		add_action( 'init', array( $this, 'register_default_widgets' ), 11 );
 
+		// Load WordPress widgets
+		add_action( 'after_setup_theme', array( $this, 'register_wordpress_widgets' ), 11 );
+
 	}
 
 
@@ -254,6 +257,15 @@ final class GravityView_Plugin {
 		);
 
 		return apply_filters( 'gravityview_widget_active_areas', $default_areas );
+	}
+
+	/**
+	 * Register WordPress widgets
+	 * @todo Move somehere logical
+	 * @return void
+	 */
+	function register_wordpress_widgets() {
+		include_once( GRAVITYVIEW_DIR .'includes/widgets/search-widget/search-widget.php' );
 	}
 
 	/** DEBUG */
