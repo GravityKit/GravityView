@@ -14,18 +14,43 @@
 
 class GravityView_frontend {
 
+	/**
+	 * Is the currently viewed post a `gravityview` post type?
+	 * @var boolean
+	 */
 	var $is_gravityview_post_type = false;
 
+	/**
+	 * Does the current post have a `[gravityview]` shortcode?
+	 * @var boolean
+	 */
 	var $post_has_shortcode = false;
 
+	/**
+	 * The Post ID of the currently viewed post. Not necessarily GV
+	 * @var int
+	 */
 	var $post_id = NULL;
 
+	/**
+	 * Are we currently viewing a single entry? If so, the int value of the entry ID. Otherwise, false.
+	 * @var int|boolean
+	 */
 	var $single_entry = false;
 
-	var $gv_output_data = array();
+	/**
+	 * The view data parsed from the $post
+	 *
+	 * @see  GravityView_View_Data::__construct()
+	 * @var GravityView_View_Data
+	 */
+	var $gv_output_data = NULL;
 
 	static $instance;
 
+	/**
+	 * Class constructor
+	 */
 	function __construct() {
 
 		add_action( 'wp', array( $this, 'parse_content'), 11 );
@@ -49,6 +74,10 @@ class GravityView_frontend {
 		self::$instance = &$this;
 	}
 
+	/**
+	 * Get the one true instantiated self
+	 * @return GravityView_frontend
+	 */
 	static function getInstance() {
 
 		if( empty( self::$instance ) ) {
@@ -59,6 +88,11 @@ class GravityView_frontend {
 	}
 
 
+	/**
+	 * Read the $post and process the View data inside
+	 * @param  array  $wp Passed in the `wp` hook. Not used.
+	 * @return void
+	 */
 	function parse_content( $wp = array() ) {
 		global $post;
 
@@ -78,19 +112,10 @@ class GravityView_frontend {
 		$this->post_has_shortcode = empty( $this->is_gravityview_post_type ) ? !empty( $post_has_shortcode ) : NULL;
 	}
 
-
-
-	static function r( $content = '', $die = false, $title ='') {
-		if( !empty($title)) { echo "<h3>{$title}</h3>"; }
-		echo '<pre>'; print_r($content); echo '</pre>';
-		if($die) { die(); }
-	}
-
 	/**
 	 * Add helpful GV links to the menu bar, like Edit Entry on single entry page.
-	 * @filter default text
-	 * @action default text
-	 * @return [type]      [description]
+	 *
+	 * @return void
 	 */
 	function admin_bar_add_links() {
 		global $wp_admin_bar, $post, $wp, $wp_the_query;
