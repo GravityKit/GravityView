@@ -241,8 +241,17 @@ class GravityView_frontend {
 	public function comments_open( $open, $post_id ) {
 
 		if( $this->is_gravityview_post_type ) {
-			return false;
+			$open = false;
 		}
+
+		/**
+		 * Whether to set comments to open or closed.
+		 *
+		 * @since  1.5.4
+		 * @param  boolean $open Open or closed status
+		 * @param  int $post_id Post ID to set comment status for
+		 */
+		$open = apply_filters( 'gravityview/comments_open', $open, $post_id );
 
 		return $open;
 	}
