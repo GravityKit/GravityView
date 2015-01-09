@@ -806,4 +806,14 @@ function the_gravityview( $view_id = '', $atts = array() ) {
 }
 
 
+/**
+ * Theme function to identify if it is a Single Entry View
+ *
+ * @return bool|string
+ */
+function gravityview_is_single_entry() {
+	return GravityView_frontend::is_single_entry();
+}
+
+
 
