@@ -42,15 +42,17 @@ abstract class GravityView_Extension {
 	}
 
 	/**
-	 * Load translations for the extension
-	 * @return void
-	 */
-	function load_plugin_textdomain() {
+     * Load translations for the extension
+     * @return void
+     */
+    function load_plugin_textdomain() {
 
-		if( empty( $this->_text_domain ) ) { return; }
+        if( empty( $this->_text_domain ) ) { return; }
 
-		load_plugin_textdomain( $this->_text_domain , false, plugin_dir_path( __FILE__ ). 'languages/' );
-	}
+        $path = dirname( plugin_basename( $this->_path ) ) . '/languages/';
+
+        load_plugin_textdomain( $this->_text_domain , false, $path );
+    }
 
 	function settings( $settings ) {
 
