@@ -13,3 +13,5 @@ node_modules/*
 *.codekit
 .tx
 .idea
+languages/gravityview-pt.mo
+languages/gravityview-pt.po
