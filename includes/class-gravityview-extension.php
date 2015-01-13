@@ -49,7 +49,9 @@ abstract class GravityView_Extension {
 
 		if( empty( $this->_text_domain ) ) { return; }
 
-		load_plugin_textdomain( $this->_text_domain , false, plugin_dir_path( __FILE__ ). 'languages/' );
+		$path = dirname( plugin_basename( $this->_path ) ) . '/languages/';
+
+		load_plugin_textdomain( $this->_text_domain , false, $path );
 	}
 
 	function settings( $settings ) {

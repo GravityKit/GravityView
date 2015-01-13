@@ -21,29 +21,130 @@
 
 		selectFields : null,
 
+		wp_widget_id: 'gravityview_search',
+
 		init: function() {
-			var gvsw = gvSearchWidget;
 
 			$('body')
 				// hook on all the open settings buttons for search_bar widget
-				.on( 'dialogopen', '[data-fieldid="search_bar"] .gv-dialog-options', gvsw.openDialog )
+				.on( 'dialogopen', '[data-fieldid="search_bar"] .gv-dialog-options', gvSearchWidget.openDialog )
 
 				// hook to add/remove rows
-				.on( 'click', ".gv-dialog-options a[href='#addSearchField']", gvsw.addField )
+				.on( 'click', ".gv-dialog-options a[href='#addSearchField']", gvSearchWidget.addField )
 
-				.on( 'click', ".gv-dialog-options a[href='#removeSearchField']", gvsw.removeField )
+				.on( 'click', ".gv-dialog-options a[href='#removeSearchField']", gvSearchWidget.removeField )
 
 				// hook to update row input types
-				.on( 'change', ".gv-dialog-options select.gv-search-fields", gvsw.updateRow )
+				.on( 'change', ".gv-dialog-options select.gv-search-fields", gvSearchWidget.updateRow )
 
 				// add alt class to table when sorting
-				.on('sortcreate sortupdate sort', '.gv-dialog-options table', gvsw.zebraStripe )
+				.on('sortcreate sortupdate sort', '.gv-dialog-options table', gvSearchWidget.zebraStripe )
 
 				// hook on dialog close to update widget config
-				.on( 'dialogbeforeclose', '[data-fieldid="search_bar"] .gv-dialog-options', gvsw.updateOnClose );
+				.on( 'dialogbeforeclose', '[data-fieldid="search_bar"] .gv-dialog-options', gvSearchWidget.updateOnClose )
 
-			// hook on assigned form/template change to clear cache
-			$('#gravityview_form_id, #gravityview_directory_template').change( gvsw.clearCache );
+				// hook on assigned form/template change to clear cache
+				.on('#gravityview_form_id, #gravityview_directory_template').change( gvSearchWidget.clearCache );
+
+		},
+
+		/**
+		 * Set up triggers for the WordPress Widgets page only
+		 */
+		wp_widget_init: function() {
+
+			$('body')
+				// Enable clicking the WP_Widget Configure link on widgets and also single-widget screens
+				.on('click', ".widget[id*='gravityview_search'] a[href='#gv-search-settings'], .widget-inside a[href='#gv-search-settings']", function( e ) {
+					$(this).parents('[data-fieldid="search_bar"]').trigger('dblclick');
+				})
+
+				// hook on dialog close to update widget config
+				.on( 'change', '[data-fieldid="search_bar"] .gv-dialog-options', gvSearchWidget.updateOnClose )
+
+				// hook on assigned form/template change to clear cache
+				.on('#gravityview_view_id').change( gvSearchWidget.wp_widget_show_settings_link );
+
+
+			// When saving the widget
+			//$(document).on('ajaxSuccess', gvSearchWidget.wp_widget_save );
+
+			$( document ).on('click.widgets-toggle', 'body', gvSearchWidget.wp_widget_open );
+
+			$( document ).on( 'widget-added widget-updated', gvSearchWidget.wp_widget_save );
+
+		},
+
+		/**
+		 * Check whether HTML widget DIV is an instance of the expected widget.
+		 *
+		 * The expected widget id is set as the `gvSearchWidget.wp_widget_id` var.
+		 *
+		 * @param  {HTML DOM}  widget HTML container
+		 * @return {Boolean}        True: Yes, expected widget. False: Nope, not the right widget.
+		 */
+		is_wp_widget: function( widget ) {
+
+			return $( widget ).is('[id*=' + gvSearchWidget.wp_widget_id + ']');
+
+		},
+
+		/**
+		 * Triggered when a widget is opened
+		 *
+		 * @param  {jQuery Event Object} e       Event object
+		 * @return {[type]}   [description]
+		 */
+		wp_widget_open: function( e ) {
+
+			var target = $(e.target),
+				widget;
+
+			/**
+			 * Make sure this is triggering open, not close, remove or save.
+			 * @see  /wp-admin/js/widgets.js ~line 36
+			 */
+			if ( target.parents('.widget-top').length && ! target.parents('#available-widgets').length ) {
+
+				widget = target.closest('div.widget');
+
+				if( gvSearchWidget.is_wp_widget( widget ) ) {
+
+					$('#gravityview_view_id').trigger('change');
+
+				}
+
+			}
+
+		},
+
+		/**
+		 * Triggered when a widget is added or saved.
+		 *
+		 * @param  {jQuery Event Object} e       Event object
+		 * @param  {DOM Object} $widget HTML DOM object of the DIV containing the widget.
+		 * @return {void}
+		 */
+		wp_widget_save: function( e, widget ) {
+
+			if( gvSearchWidget.is_wp_widget( widget ) ) {
+				$('#gravityview_view_id').trigger('change');
+			}
+		},
+
+		/**
+		 * Show and hide the settings configuration link for the WP_Widget based on the value of the View picker
+		 */
+		wp_widget_show_settings_link: function( e ) {
+
+			var value = $(e.target).val();
+			var $link = $(e.target).parents('.widget-content').find('#gv-widget-search-settings-link');
+
+			if( value.length > 0 ) {
+				$link.slideDown();
+			} else {
+				$link.slideUp();
+			}
 
 		},
 
@@ -364,17 +465,22 @@
 				return gvSearchWidget.selectFields.prop('outerHTML');
 			}
 
+			//var view_id = $(parent).parentsUntil('.widget').find('#gravityview_view_id').val();
+
+			var ajaxdata = {
+				action: 'gv_searchable_fields',
+				nonce: gvSearchVar.nonce,
+				formid: $('#gravityview_form_id', parent).val(),
+				view_id: $('#gravityview_view_id', parent).val(),
+				template_id: $('#gravityview_directory_template', parent).val()
+			};
+
 			$.ajax({
 				url: ajaxurl,
 				type: 'POST',
 				async: true,
 				dataType: 'html',
-				data: {
-					action: 'gv_searchable_fields',
-					nonce: gvSearchVar.nonce,
-					formid: $('#gravityview_form_id').val(),
-					template_id: $('#gravityview_directory_template').val()
-				},
+				data: ajaxdata,
 				success: function( response ) {
 					if( response !== '0' ) {
 						gvSearchWidget.selectFields = $(response);
@@ -428,6 +534,7 @@
 		 * @param  {[type]} ui    [description]
 		 */
 		updateOnClose: function( event, ui ) {
+
 			var configs = [];
 
 			//loop throught table rows
@@ -465,7 +572,12 @@
 
 
 	$(document).ready( function() {
+
 		gvSearchWidget.init();
+
+		if( $('body').hasClass('widgets-php') ) {
+			gvSearchWidget.wp_widget_init();
+		}
 
 	});
 

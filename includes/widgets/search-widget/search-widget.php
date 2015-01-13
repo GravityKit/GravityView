@@ -17,22 +17,30 @@
 class WP_Widget_GravityView_Search extends WP_Widget {
 
 	public function __construct() {
-		$widget_ops = array('classname' => 'widget_gravityview_search', 'description' => __( "A search form for a specific GravityForm view.") );
-		parent::__construct( 'gravityview_search', _x( 'GravityView Search', 'GravityView Search widget' ), $widget_ops );
+
+		$widget_ops = array(
+			'classname' => 'widget_gravityview_search',
+			'description' => __( "A search form for a specific GravityView.", 'gravityview')
+		);
+
+		$widget_display = array(
+			'width' => 400
+		);
+
+		parent::__construct( 'gravityview_search', __( 'GravityView Search', 'GravityView Search widget' ), $widget_ops, $widget_display );
+
+		if( !class_exists( 'GravityView_Widget_Search' ) ) {
+			GravityView_Plugin::getInstance()->register_widgets();
+		}
+
+		$gravityview_widget = GravityView_Widget_Search::getInstance();
 
 		// frontend - filter entries
-		add_filter( 'gravityview_fe_search_criteria', array( $this, 'filter_entries' ), 10, 1 );
+		add_filter( 'gravityview_fe_search_criteria', array( $gravityview_widget, 'filter_entries' ), 10, 1 );
 
 		// frontend - add template path
-		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
+		add_filter( 'gravityview_template_paths', array( $gravityview_widget, 'add_template_path' ) );
 
-
-		// admin - add scripts
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 999 );
-		add_filter( 'gravityview_noconflict_scripts', array( $this, 'register_no_conflict') );
-
-		// ajax - get the searchable fields
-		add_action( 'wp_ajax_gv_searchable_fields', array( 'GravityView_Widget_Search', 'get_searchable_fields' ) );
 	}
 
 	public function widget( $args, $instance ) {
@@ -45,8 +53,7 @@ class WP_Widget_GravityView_Search extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
-		// Use current theme search form if it exists
-		get_search_form();
+		GravityView_Widget_Search::getInstance()->render_frontend( $args, $content, $context );
 
 		echo $args['after_widget'];
 	}
@@ -57,7 +64,7 @@ class WP_Widget_GravityView_Search extends WP_Widget {
 		$view            = $instance['view'];
 		$search_settings = $instance['search_settings'];
 
-		$views = get_posts( array('post_type' => 'gravityview', 'posts_per_page' => -1 ) );
+		$views = GVCommon::get_all_views();
 
 		// If there are no views set up yet, we get outta here.
 		if( empty( $views ) ) {
@@ -66,20 +73,36 @@ class WP_Widget_GravityView_Search extends WP_Widget {
 		}
 		?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></label></p>
-		<p><label for="<?php echo $this->get_field_id('view'); ?>"><?php _e('View:'); ?>
-			<select id="<?php echo $this->get_field_id('view'); ?>" name="<?php echo $this->get_field_name('view'); ?>">
-				<option value=""><?php esc_html_e( '&mdash; Select a View &mdash;', 'gravityview' ); ?></option>
-				<?php
-				foreach( $views as $view_option ) {
-					$title = empty( $view_option->post_title ) ? __('(no title)', 'gravityview') : $view_option->post_title;
-					echo '<option value="'. $view_option->ID .'" ' . selected( esc_attr($view), $view_option->ID, false ) . '>'. esc_html( sprintf('%s #%d', $title, $view_option->ID ) ) .'</option>';
-				}
-				?>
-			</select>
-		</label></p>
-		<div class="gv-search-fields">
-			<p><a href="#gv-search-settings"><span class="dashicons-admin-generic dashicons" style="text-decoration: none;padding-right: 5px;"></span>Configure Search Settings</a></p>
-			<input id="<?php echo $this->get_field_id('search_settings'); ?>" name="<?php echo $this->get_field_name('search_settings'); ?>" type="hidden" value="" class="gv-search-fields-value">
+
+		<div class="gv-fields" data-fieldid="search_bar">
+
+			<p><label for="gravityview_view_id"><?php _e('View:', 'gravityview'); ?>
+				<select id="gravityview_view_id" name="<?php echo $this->get_field_name('view'); ?>">
+					<option value=""><?php esc_html_e( '&mdash; Select a View &mdash;', 'gravityview' ); ?></option>
+					<?php
+					foreach( $views as $view_option ) {
+						$title = empty( $view_option->post_title ) ? __('(no title)', 'gravityview') : $view_option->post_title;
+						echo '<option value="'. $view_option->ID .'" ' . selected( esc_attr($view), $view_option->ID, false ) . '>'. esc_html( sprintf('%s #%d', $title, $view_option->ID ) ) .'</option>';
+					}
+					?>
+				</select>
+			</label></p>
+
+			<p id="gv-widget-search-settings-link"><a href="#gv-search-settings"><span class="dashicons-admin-generic dashicons"></span>Configure Search Settings</a></p>
+
+			<div class="gv-dialog-options" title="<?php esc_html_e('Search Fields', 'gravityview'); ?>">
+				<div class="">
+					<div class="gv-setting-container screen-reader-text">
+						<input id="<?php echo $this->get_field_id('search_settings'); ?>" name="<?php echo $this->get_field_name('search_settings'); ?>" type="hidden" value="" class="gv-search-fields-value">
+					</div>
+				</div>
+			</div>
+
+			<!-- Placeholder. Required for JS. -->
+			<input type="hidden" id="gravityview_directory_template" />
+			<input type="hidden" id="gravityview_form_id" />
+			<!-- END Placeholder. Required for JS. -->
+
 		</div>
 		<?php
 	}
@@ -92,59 +115,16 @@ class WP_Widget_GravityView_Search extends WP_Widget {
 		return $instance;
 	}
 
-	function add_scripts_and_styles( $hook ) {
-
-		wp_enqueue_script( 'gravityview_searchwidget_admin', plugins_url( 'assets/js/search-widget.js', __FILE__ ), array( 'jquery' ), GravityView_Plugin::version );
-
-
-		/**
-		 * Input Type labels l10n
-		 * @see admin-search-widget.js (getSelectInput)
-		 * @var array
-		 */
-		$input_labels = array(
-			'input_text' => esc_html__( 'Text', 'gravityview'),
-			'date' => esc_html__('Date', 'gravityview'),
-			'select' => esc_html__( 'Select', 'gravityview' ),
-			'multiselect' => esc_html__( 'Select (multiple values)', 'gravityview' ),
-			'radio' => esc_html__('Radio', 'gravityview'),
-			'checkbox' => esc_html__( 'Checkbox', 'gravityview' ),
-			'single_checkbox' => esc_html__( 'Checkbox', 'gravityview' ),
-			'link' => esc_html__('Links', 'gravityview')
-		);
-
-		/**
-		 * Input Type groups
-		 * @see admin-search-widget.js (getSelectInput)
-		 * @var array
-		 */
-		$input_types = array(
-			'text' => array( 'input_text' ),
-			'address' => array( 'input_text' ),
-			'date' => array( 'date' ),
-			'boolean' => array( 'single_checkbox' ),
-			'select' => array( 'select', 'radio', 'link' ),
-			'multi' => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
-		);
-
-		wp_localize_script( 'gravityview_searchwidget_admin', 'gvSearchVar', array(
-			'nonce' => wp_create_nonce( 'gravityview_ajaxsearchwidget'),
-			'label_nofields' =>  esc_html__( 'No search fields configured yet.', 'gravityview' ),
-			'label_addfield' =>  esc_html__( 'Add Search Field', 'gravityview' ),
-			'label_searchfield' => esc_html__( 'Search Field', 'gravityview' ),
-			'label_inputtype' => esc_html__( 'Input Type', 'gravityview' ),
-			'input_labels' => json_encode( $input_labels ),
-			'input_types' => json_encode( $input_types ),
-		) );
-
-	}
-
 }
 
-
+/**
+ * Register the GravityView widget
+ * @return void
+ */
 function gravityview_register_search_widget() {
 
 	register_widget( 'WP_Widget_GravityView_Search' );
 
 }
-add_action( 'widgets_init', 'gravityview_register_search_widget' );
+
+add_action( 'widgets_init', 'gravityview_register_search_widget', 20 );

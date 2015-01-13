@@ -48,6 +48,15 @@ module.exports = function(grunt) {
 		          dest: 'includes/extensions/search-widget/assets/js/',
 		          ext: '.min.js'
 		      }]
+			},
+			widgets: {
+				files: [{
+		          expand: true,
+		          cwd: 'includes/widgets/search-widget/assets/js/source/',
+		          src: ['*.js','!*.min.js'],
+		          dest: 'includes/widgets/search-widget/assets/js/',
+		          ext: '.min.js'
+		      }]
 			}
 		},
 
@@ -59,6 +68,10 @@ module.exports = function(grunt) {
 			extension_js: {
 				files: ['includes/extensions/**/*.js','!includes/extensions/**/*.min.js'],
 				tasks: ['uglify:searchExt']
+			},
+			widget_js: {
+				files: ['includes/widgets/**/*.js','!includes/widgets/**/*.min.js'],
+				tasks: ['uglify:widgets']
 			},
 			templates: {
 				files: ['templates/css/**/*.scss','!templates/css/**/*.css'],
