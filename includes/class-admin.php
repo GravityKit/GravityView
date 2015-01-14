@@ -97,7 +97,7 @@ class GravityView_Admin {
 	 * @return string HTML image tag with floaty's cute mug on it
 	 */
 	public static function get_floaty() {
-		return '<img src="'.plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:10px 10px 10px 0;" />';
+		return '<img src="'.plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:10px 10px 10px 0;" />';
 	}
 
 	/**

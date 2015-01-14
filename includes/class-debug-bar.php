@@ -81,7 +81,7 @@ class GravityView_Debug_Bar extends Debug_Bar_Panel {
 		</style>
 		<div id='debug-bar-gravityview'>";
 
-			$output .= '<img src="'.plugins_url('/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignright" alt="" width="100" height="132" />';
+			$output .= '<img src="'.plugins_url('assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignright" alt="" width="100" height="132" />';
 
 
 			$warnings = $this->get_warnings();

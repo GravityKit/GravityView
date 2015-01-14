@@ -68,7 +68,7 @@ if (!class_exists('GravityView_Settings')) {
 			}
 
 			// Hide the sidebar and the sidebar toggle button in the settings.
-			wp_enqueue_style( 'gravityview_settings', plugins_url( 'includes/css/admin-settings.css', GRAVITYVIEW_FILE ) );
+			wp_enqueue_style( 'gravityview_settings', plugins_url( 'assets/css/admin-settings.css', GRAVITYVIEW_FILE ) );
 
 			get_redux_instance('gravityview_settings')->_enqueue();
 

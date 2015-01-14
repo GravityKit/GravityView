@@ -205,7 +205,6 @@ abstract class GravityView_Template {
 
 		$this->template_id = $id;
 
-		// $this->settings = wp_parse_args( $settings, array( 'slug' => '', 'css_source' => '', 'type' => '', 'label' => '', 'description' => '', 'logo' => '', 'preview' => plugins_url('images/placeholder-template-preview.gif', GRAVITYVIEW_FILE), 'buy_source' => '', 'preset_form' => '', 'preset_fields' => '' ) );
 		$this->merge_defaults( $settings );
 
 		$this->field_options = $field_options;

@@ -11,9 +11,9 @@ module.exports = function(grunt) {
 			dist: {
 				files: [{
 		          expand: true,
-		          cwd: 'includes/css/scss',
+		          cwd: 'assets/css/scss',
 		          src: ['*.scss','!admin-merge-tags.scss','!admin-tooltips.scss','!font.scss'],
-		          dest: 'includes/css',
+		          dest: 'assets/css',
 		          ext: '.css'
 		      }]
 			},
@@ -34,9 +34,9 @@ module.exports = function(grunt) {
 			main: {
 				files: [{
 		          expand: true,
-		          cwd: 'includes/js',
+		          cwd: 'assets/js',
 		          src: ['**/*.js','!**/*.min.js'],
-		          dest: 'includes/js',
+		          dest: 'assets/js',
 		          ext: '.min.js'
 		      }]
 			},
@@ -53,7 +53,7 @@ module.exports = function(grunt) {
 
 		watch: {
 			main: {
-				files: ['includes/js/*.js','!includes/js/*.min.js','readme.txt'],
+				files: ['assets/js/*.js','!assets/js/*.min.js','readme.txt'],
 				tasks: ['uglify:main','wp_readme_to_markdown']
 			},
 			extension_js: {
@@ -65,7 +65,7 @@ module.exports = function(grunt) {
 				tasks: ['sass:templates']
 			},
 			scss: {
-				files: ['includes/css/scss/*.scss'],
+				files: ['assets/css/scss/*.scss'],
 				tasks: ['sass:dist']
 			},
 		},
