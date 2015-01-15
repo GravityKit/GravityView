@@ -350,13 +350,19 @@ class GravityView_Edit_Entry {
 	 * Run when the is_edit_entry returns true.
 	 * @return void
 	 */
-	function init() {
+	function init( $gv_data ) {
 
 		require_once(GFCommon::get_base_path() . "/form_display.php");
 		require_once(GFCommon::get_base_path() . "/entry_detail.php");
 		require_once( self::$file . '/class-gv-gfcommon.php' );
 
 		$this->setup_vars();
+
+		// Multiple Views embedded, don't proceed if nonce fails
+		if( $gv_data->is_multiple_views && ! wp_verify_nonce( $_GET['edit'], self::$nonce_key ) ) {
+			$this->print_scripts( true );
+			return;
+		}
 
 		// Sorry, you're not allowed here.
 		if( false === $this->user_can_edit_entry( true ) ) {

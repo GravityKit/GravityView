@@ -6,6 +6,9 @@ class GravityView_View_Data {
 
 	protected $views = array();
 
+	// indicates whether we have multiple views embedded in the same page/post
+	public $is_multiple_views = false;
+
 	function __construct( $passed_post = NULL ) {
 
 		if( !empty( $passed_post ) ) {
@@ -38,6 +41,9 @@ class GravityView_View_Data {
 			}
 		}
 
+		// set the conditionals
+		$this->set_conditionals();
+
 		self::$instance = &$this;
 	}
 
@@ -48,6 +54,13 @@ class GravityView_View_Data {
 		}
 
 		return self::$instance;
+	}
+
+	function set_conditionals() {
+
+		//multiple views
+		$this->is_multiple_views = count( $this->get_views() ) > 1 ? true : false;
+
 	}
 
 	function get_views() {

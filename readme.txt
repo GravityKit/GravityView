@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 = 1.5.4 =
 * Add `gravityview/comments_open` filter to modify whether comments are open or closed for GravityView posts (previously always false)
 * Fixed: Loading translation files for Extensions
+* Fixed: Edit entry when embedding multiple views for the same form in the same page
 * Tweak: Moved `includes/css/`, `includes/js/` and `/images/` folders into `/assets/`
 
 = 1.5.3 on December 22 =

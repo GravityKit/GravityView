@@ -416,10 +416,8 @@ class GravityView_frontend {
 				return;
 			}
 
-
-
 			// We're in single view, but the view being processed is not the same view the single entry belongs to.
-			if( intval( $view_data['form_id'] ) !== intval( $this->entry['form_id'] ) ) {
+			if( $this->gv_output_data->is_multiple_views && intval( $view_data['form_id'] ) !== intval( $this->entry['form_id'] ) ) {
 				$view_id = isset( $view_entries['entries'][0]['id'] ) ? $view_entries['entries'][0]['id'] : '(empty)';
 				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '. $view_id);
 				return;
@@ -455,7 +453,7 @@ class GravityView_frontend {
 
 			do_action( 'gravityview_log_debug', '[render_view] Edit Entry ' );
 
-			do_action( 'gravityview_edit_entry' );
+			do_action( 'gravityview_edit_entry', $this->gv_output_data );
 
 			return;
 
