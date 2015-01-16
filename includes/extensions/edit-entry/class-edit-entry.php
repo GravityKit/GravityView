@@ -1199,7 +1199,8 @@ class GravityView_Edit_Entry {
 				    echo $this->generate_notice( $message , 'gv-error' );
 
 				} else {
-					echo $this->generate_notice( sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'.$back_link.'">', '</a>' ) );
+					$message = apply_filters( 'gravityview/edit_entry/success', sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'.$back_link.'">', '</a>' ), $this->view_id, $this->entry );
+					echo $this->generate_notice( $message );
 				}
 
 			}
