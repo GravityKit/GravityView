@@ -773,8 +773,10 @@ class GVCommon {
 	 * @author rubo77 at https://gist.github.com/rubo77/6821632
 	 **/
 	public static function gv_parse_str( $string, &$result ) {
-		if( $string === '' ) { return false; }
+		if( empty( $string ) ) { return false; }
+
 		$result = array();
+
 		// find the pairs "name=value"
 		$pairs = explode( '&', $string );
 
@@ -785,7 +787,7 @@ class GVCommon {
 			$k = key( $params );
 			if( !isset( $result[ $k ] ) ) {
 				$result+=$params;
-			} else {
+			} elseif( array_key_exists( $k, $params ) && is_array( $params[ $k ] ) ) {
 				$result[ $k ] = self::array_merge_recursive_distinct( $result[ $k ], $params[ $k ] );
 			}
 		}
