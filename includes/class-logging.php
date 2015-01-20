@@ -54,26 +54,47 @@ final class GravityView_Logging {
 		return self::$errors;
 	}
 
+	/**
+	 * Get the name of the function to print messages for debugging
+	 *
+	 * This is necessary because `ob_start()` doesn't allow `print_r()` inside it.
+	 *
+	 * @return string "print_r" or "var_dump"
+	 */
+	static function get_print_function() {
+		if( ob_get_level() > 0 ) {
+			$function = 'var_dump';
+		} else {
+			$function = 'print_r';
+		}
+
+		return $function;
+	}
+
 	static function log_debug( $message = '', $data = null ) {
 
+		$function = self::get_print_function();
+
 		self::$notices[] = array(
-			'message' => print_r( $message, true ),
+			'message' => $function( $message, true ),
 			'data' => $data
 		);
 
 		if ( class_exists("GFLogging") ) {
 			GFLogging::include_logger();
-	        GFLogging::log_message( 'gravityview', print_r( $message, true ) . print_r($data, true), KLogger::DEBUG );
+	        GFLogging::log_message( 'gravityview', $function( $message, true ) . $function($data, true), KLogger::DEBUG );
 	    }
 	}
 
 	static function log_error( $message = '', $data = null  ) {
 
+		$function = self::get_print_function();
+
 		self::$errors[] = array( 'message' => $message, 'data' => $data );
 
 		if ( class_exists("GFLogging") ) {
 		    GFLogging::include_logger();
-		    GFLogging::log_message( 'gravityview', print_r( $message, true ) . print_r($data, true), KLogger::ERROR );
+		    GFLogging::log_message( 'gravityview', $function ( $message, true ) . $function ($data, true), KLogger::ERROR );
 		}
 	}
 
