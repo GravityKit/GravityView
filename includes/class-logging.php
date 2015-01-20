@@ -59,11 +59,11 @@ final class GravityView_Logging {
 	 *
 	 * This is necessary because `ob_start()` doesn't allow `print_r()` inside it.
 	 *
-	 * @return string "print_r" or "var_dump"
+	 * @return string "print_r" or "var_export"
 	 */
 	static function get_print_function() {
 		if( ob_get_level() > 0 ) {
-			$function = 'var_dump';
+			$function = 'var_export';
 		} else {
 			$function = 'print_r';
 		}
