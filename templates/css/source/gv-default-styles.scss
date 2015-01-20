@@ -83,6 +83,16 @@
 	}
 }
 
+@media screen and ( max-width: 480px ) {
+  [class*='gv-grid-col-'] {
+	width: 100%;
+  }
+  .gv-right, .gv-left, .gv-right > div, .gv-left > div {
+	float: none;
+	text-align: left;
+  }
+}
+
 // "body" is here to overrule some themes
 body .gv-widget-page-links {
 
