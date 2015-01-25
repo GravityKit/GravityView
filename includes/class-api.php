@@ -69,6 +69,8 @@ class GravityView_API {
             }
 		}
 
+		// @todo: address this merge tag {user:role}
+
 		return GFCommon::replace_variables( $text, $form, $entry, false, false, false, "html");
 	}
 
@@ -447,7 +449,6 @@ class GravityView_API {
 	 * @return string          Link to the entry with the directory parent slug
 	 */
 	public static function entry_link( $entry, $post_id = NULL ) {
-		global $gravityview_view;
 
 		if( !is_array( $entry ) ) {
 			$entry = GVCommon::get_entry( $entry );
@@ -483,6 +484,13 @@ class GravityView_API {
 
 		if( !empty( $_GET['pagenum'] ) ) {
 			$args['pagenum'] = intval( $_GET['pagenum'] );
+		}
+
+		// Check if we have multiple views embedded in the same page and in that case make sure the single entry link
+		// has the view id so that Advanced Filters can be applied correctly when rendering the single view
+		// @see GravityView_frontend::get_context_view_id
+		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->is_multiple_views ) {
+			$args['gvid'] = gravityview_get_view_id();
 		}
 
 		return add_query_arg( $args, $directory_link );

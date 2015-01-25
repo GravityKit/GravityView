@@ -298,7 +298,16 @@ class GVCommon {
 			}
 		}
 
-		$criteria = apply_filters( 'gravityview_search_criteria', $criteria, $form_ids );
+
+		// When multiple views are embedded, calculate the context view id and send it to the advanced filter
+		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->is_multiple_views ) {
+			$criteria['context_view_id'] = GravityView_frontend::get_context_view_id();
+		} else {
+			$criteria['context_view_id'] = null;
+		}
+
+		// Apply final criteria filter (Used by the Advanced Filter extension)
+		$criteria = apply_filters( 'gravityview_search_criteria', $criteria, $form_ids, $criteria['context_view_id'] );
 
 		do_action( 'gravityview_log_debug', '[gravityview_get_entries] Final Parameters', $criteria );
 
@@ -421,7 +430,6 @@ class GVCommon {
 
 			// For simple entry searches, we don't need a form ID
 			$form_id = 0;
-
 			/**
 			 * Make sure that entries comply with View filter settings.
 			 *
@@ -430,7 +438,7 @@ class GVCommon {
 			 *
 			 * @since  1.5
 			 */
-			if( class_exists( 'GravityView_View_Data' ) ) {
+			if( false && class_exists( 'GravityView_View_Data' ) ) {
 
 				$views = GravityView_View_Data::getInstance()->get_views();
 
