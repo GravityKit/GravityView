@@ -48,7 +48,13 @@
 
 		&.gv-search-box-submit {
 			vertical-align: middle;
+
+		  	.gv-search-clear {
+			  	float: left;
+			  	margin-right: 5px;
+			}
 		}
+
 	}
 }
 

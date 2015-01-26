@@ -48,6 +48,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 					'vertical' => __( 'Vertical', 'gravityview' )
 				),
 			),
+			'search_clear' => array(
+				'type' => 'checkbox',
+				'label' => __( 'Show Clear button', 'gravityview' ),
+				'value' => false,
+			),
 		);
 		parent::__construct( __( 'Search Bar', 'gravityview' ) , 'search_bar', $default_values, $settings );
 
@@ -525,6 +530,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$gravityview_view->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this );
 
 		$gravityview_view->search_layout = !empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal';
+		$gravityview_view->search_clear = !empty( $widget_args['search_clear'] ) ? $widget_args['search_clear'] : false;
 
 		if( $has_date ) {
 			// enqueue datepicker stuff only if needed!
