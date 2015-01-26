@@ -64,12 +64,10 @@ class GravityView_API {
 		if( empty( $matches ) ) {
 
 			// Check for form variables
-			if( !preg_match( '/\{(all_fields(:(.*?))?|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id|embed_url|date_mdy|date_dmy|embed_post:(.*?)|custom_field:(.*?)|user_agent|referer|user:(.*?))\}/ism', $text ) ) {
+			if( !preg_match( '/\{(all_fields(:(.*?))?|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id|embed_url|date_mdy|date_dmy|embed_post:(.*?)|custom_field:(.*?)|user_agent|referer|gv:(.*?)|user:(.*?))\}/ism', $text ) ) {
                 return $text;
             }
 		}
-
-		// @todo: address this merge tag {user:role}
 
 		return GFCommon::replace_variables( $text, $form, $entry, false, false, false, "html");
 	}
