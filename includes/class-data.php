@@ -357,6 +357,14 @@ class GravityView_View_Data {
 				'value' => 0,
 				'show_in_shortcode' => false,
 			),
+			'show_only_searched' => array(
+				'label' => __( 'Show only searched results', 'gravityview' ),
+				'type' => 'checkbox',
+				'group'	=> 'default',
+				'tooltip' => __( 'When enabled it will only show any entries after a search is performed.', 'gravityview' ),
+				'value' => 0,
+				'show_in_shortcode' => false,
+			),
 			'hide_empty' => array(
 				'label' 	=> __( 'Hide empty fields', 'gravityview' ),
 				'group'	=> 'default',
