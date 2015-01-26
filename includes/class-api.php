@@ -271,6 +271,12 @@ class GravityView_API {
 			$output = __('No entries match your request.', 'gravityview');
 		}
 
+		/**
+		 * Modify the text displayed when there are no entries.
+		 *
+		 * @param string $output The existing "No Entries" text
+		 * @param boolean $is_search Is the current page a search result, or just a multiple entries screen?
+		 */
 		$output = apply_filters( 'gravitview_no_entries_text', $output, $is_search);
 
 		return $wpautop ? wpautop($output) : $output;
