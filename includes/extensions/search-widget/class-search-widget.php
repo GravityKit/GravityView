@@ -267,7 +267,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			foreach ( $words as $word ) {
 				$search_criteria['field_filters'][] = array(
 					'key' => null, // The field ID to search
-					'value' => esc_attr( $word ), // The value to search
+					'value' => $word, // The value to search
 					'operator' => 'contains', // What to search in. Options: `is` or `contains`
 				);
 			}
