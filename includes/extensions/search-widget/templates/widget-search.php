@@ -8,7 +8,7 @@
 global $gravityview_view, $wp_rewrite;
 
 $view_id = $gravityview_view->view_id;
-$search_class = gravityview_sanitize_html_class( apply_filters( 'gravityview_search_class', 'gv-search-'.$gravityview_view->search_layout ) );
+$search_class = gravityview_sanitize_html_class( apply_filters( 'gravityview_search_class', $gravityview_view->search_class ) );
 
 $has_inputs = false;
 

@@ -529,7 +529,12 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		 */
 		$gravityview_view->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this );
 
-		$gravityview_view->search_layout = !empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal';
+		// Compose CSS classes for the widget
+		$layout = !empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal';
+		$custom_class = !empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
+
+		$gravityview_view->search_class = trim( 'gv-search-'. $layout .' '. $custom_class );
+
 		$gravityview_view->search_clear = !empty( $widget_args['search_clear'] ) ? $widget_args['search_clear'] : false;
 
 		if( $has_date ) {
