@@ -39,6 +39,13 @@ class GravityView_frontend {
 	var $single_entry = false;
 
 	/**
+	 * The View is showing search results
+	 * @since 1.5.4
+	 * @var boolean
+	 */
+	var $is_search = false;
+
+	/**
 	 * The view data parsed from the $post
 	 *
 	 * @see  GravityView_View_Data::__construct()
@@ -113,6 +120,31 @@ class GravityView_frontend {
 		$this->post_id = isset( $this->post_id ) ? $this->post_id : (isset( $post ) ? $post->ID : NULL );
 		$post_has_shortcode = !empty( $post->post_content ) ? gravityview_has_shortcode_r( $post->post_content, 'gravityview' ) : false;
 		$this->post_has_shortcode = empty( $this->is_gravityview_post_type ) ? !empty( $post_has_shortcode ) : NULL;
+
+		// check if the View is showing search results (only for multiple entries View)
+		if( empty( $this->single_entry ) ) {
+			$this->is_searching();
+		}
+
+	}
+
+	/**
+	 * Checks if the current View is presenting search results
+	 *
+	 * @since 1.5.4
+	 */
+	function is_searching() {
+
+		if( empty( $_GET ) || !is_array( $_GET ) ) {
+			return;
+		}
+
+		$search_keys = implode( '', array_keys( $_GET ) );
+
+		if( preg_match( '/(gv_search|gv_start|gv_end|gv_id|filter_*)/i', $search_keys ) ) {
+			$this->is_search = true;
+		}
+
 	}
 
 	/**
@@ -121,7 +153,7 @@ class GravityView_frontend {
 	 * @return void
 	 */
 	function admin_bar_add_links() {
-		global $wp_admin_bar, $post, $wp, $wp_the_query;
+		global $wp_admin_bar;
 
 		if( GFCommon::current_user_can_any('gravityforms_edit_entries') && !empty( $this->single_entry ) ) {
 
@@ -382,6 +414,16 @@ class GravityView_frontend {
 			 * Disable fetching initial entries for views that don't need it (DataTables)
 			 */
 			$get_entries = apply_filters( 'gravityview_get_view_entries_'.$view_slug, true );
+
+			/**
+			 * Hide View data until search is performed
+			 * @since 1.5.4
+			 */
+			if( !empty( $atts['hide_until_searched'] ) && !$this->is_search ) {
+				$gravityview_view->hide_until_searched = true;
+				$get_entries = false;
+			}
+
 
 			if( $get_entries ) {
 

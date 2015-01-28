@@ -34,6 +34,13 @@ $has_inputs = false;
 	if( $has_inputs ) : ?>
 		<div class="gv-search-box gv-search-box-submit">
 			<?php
+			if( $gravityview_view->search_clear ) :
+
+				$url = strtok( add_query_arg( array() ), '?' );
+				?>
+				<a href="<?php echo esc_url( $url ); ?>" class="button gv-search-clear"><?php esc_html_e( 'Clear', 'gravityview' ); ?></a>
+
+			<?php endif;
 
 			// Support default permalink structure
 			if( !empty( $_GET['gravityview'] ) && false === $wp_rewrite->using_index_permalinks() ) {
