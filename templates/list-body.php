@@ -5,6 +5,12 @@
  * @package GravityView
  */
 
+/**
+ * Tap in before the entry loop has been displayed
+ *
+ * @param array $entry Gravity Forms Entry array
+ * @param GravityView_View $this The GravityView_View instance
+ */
 do_action( 'gravityview_list_body_before', $this );
 
 // There are no entries.
@@ -21,161 +27,219 @@ if( empty( $this->total_entries ) ) {
 } else {
 
 	// There are entries. Loop through them.
-	foreach( $this->entries as $entry ) : ?>
+	foreach ( $this->entries as $entry ) : ?>
 
 		<div id="gv_list_<?php echo $entry['id']; ?>" class="<?php esc_attr_e( apply_filters( 'gravityview_entry_class', 'gv-list-view', $entry, $this ) ); ?>">
 
-			<?php do_action( 'gravityview_entry_before', $entry, $this ); ?>
+		<?php do_action( 'gravityview_entry_before', $entry, $this ); ?>
 
-			<?php if( !empty(  $this->fields['directory_list-title'] ) || !empty(  $this->fields['directory_list-subtitle'] ) ): ?>
+		<?php if ( ! empty( $this->fields['directory_list-title'] ) || ! empty( $this->fields['directory_list-subtitle'] ) ): ?>
 
-				<?php do_action( 'gravityview_entry_title_before', $entry, $this ); ?>
+			<?php do_action( 'gravityview_entry_title_before', $entry, $this ); ?>
 
-				<div class="gv-list-view-title">
+			<div class="gv-list-view-title">
 
-					<?php if( !empty(  $this->fields['directory_list-title'] ) ):
-						$i = 0;
-						$title_args = array(
-							'entry' => $entry,
-							'form' => $this->form,
-							'hide_empty' => $this->atts['hide_empty'],
-						);
+				<?php if ( ! empty( $this->fields['directory_list-title'] ) ):
+					$i          = 0;
+					$title_args = array(
+						'entry'      => $entry,
+						'form'       => $this->form,
+						'hide_empty' => $this->atts['hide_empty'],
+					);
 
-						foreach( $this->fields['directory_list-title'] as $field ) :
-							$title_args['field'] = $field;
+					foreach ( $this->fields['directory_list-title'] as $field ) :
+						$title_args['field'] = $field;
 
-							// The first field in the title zone is the main
-							if( $i == 0 ) {
-								$title_args['markup'] = '<h3 class="{{class}}">{{label}}{{value}}</h3>';
-								echo gravityview_field_output( $title_args );
-							} else {
-								$title_args['wpautop'] = true;
-								echo gravityview_field_output( $title_args );
-							}
+						// The first field in the title zone is the main
+						if ( $i == 0 ) {
+							$title_args['markup'] = '<h3 class="{{class}}">{{label}}{{value}}</h3>';
+							echo gravityview_field_output( $title_args );
+						} else {
+							$title_args['wpautop'] = true;
+							echo gravityview_field_output( $title_args );
+						}
 
-							$i++;
-						endforeach;
-					endif;
+						$i ++;
+					endforeach;
+				endif;
 
-					if( !empty(  $this->fields['directory_list-subtitle'] ) ): ?>
+					if ( ! empty( $this->fields['directory_list-subtitle'] ) ): ?>
 						<div class="gv-list-view-subtitle">
-							<?php foreach( $this->fields['directory_list-subtitle'] as $field ) :
+							<?php foreach ( $this->fields['directory_list-subtitle'] as $field ) :
 
 								echo gravityview_field_output( array(
-									'entry' => $entry,
-									'field' => $field,
-									'form' => $this->form,
+									'entry'      => $entry,
+									'field'      => $field,
+									'form'       => $this->form,
 									'hide_empty' => $this->atts['hide_empty'],
-									'markup' => '<h4 class="{{class}}">{{label}}{{value}}</h4>',
+									'markup'     => '<h4 class="{{class}}">{{label}}{{value}}</h4>',
 								) );
 
 							endforeach; ?>
 						</div>
 					<?php endif; ?>
 
-				</div>
-
-				<?php do_action( 'gravityview_entry_title_after', $entry, $this ); ?>
-
-			<?php endif; ?>
-
-			<div class="gv-list-view-content">
-
-				<?php do_action( 'gravityview_entry_content_before', $entry, $this ); ?>
-
-				<?php if( !empty(  $this->fields['directory_list-image'] ) ): ?>
-					<div class="gv-list-view-content-image">
-						<?php foreach( $this->fields['directory_list-image'] as $field ) :
-
-							echo gravityview_field_output( array(
-								'entry' => $entry,
-								'field' => $field,
-								'form' => $this->form,
-								'hide_empty' => $this->atts['hide_empty'],
-							) );
-
-						endforeach; ?>
-					</div>
-				<?php endif; ?>
-
-				<?php if( !empty(  $this->fields['directory_list-description'] ) ): ?>
-					<div class="gv-list-view-content-description">
-						<?php foreach( $this->fields['directory_list-description'] as $field ) :
-
-							echo gravityview_field_output( array(
-								'entry' => $entry,
-								'field' => $field,
-								'form' => $this->form,
-								'hide_empty' => $this->atts['hide_empty'],
-								'label_markup' => '<h4>{{label}}</h4>',
-								'wpautop' => true
-							) );
-
-						 endforeach; ?>
-					</div>
-				<?php endif; ?>
-
-				<?php if( !empty(  $this->fields['directory_list-content-attributes'] ) ): ?>
-					<div class="gv-list-view-content-attributes">
-						<?php foreach( $this->fields['directory_list-content-attributes'] as $field ) :
-
-							echo gravityview_field_output( array(
-								'entry' => $entry,
-								'field' => $field,
-								'form' => $this->form,
-								'hide_empty' => $this->atts['hide_empty'],
-								'markup' => '<p class="{{class}}">{{label}}{{value}}</p>'
-							) );
-
-						endforeach; ?>
-					</div>
-				<?php endif; ?>
-
-				<?php do_action( 'gravityview_entry_content_after', $entry, $this ); ?>
-
 			</div>
 
-			<?php if( !empty(  $this->fields['directory_list-footer-left'] ) || !empty(  $this->fields['directory_list-footer-right'] ) ): ?>
+			<?php
 
-				<?php do_action( 'gravityview_entry_footer_before', $entry, $this ); ?>
+			/**
+			 * Tap in after the title block
+			 *
+			 * @param array $entry Gravity Forms Entry array
+			 * @param GravityView_View $this The GravityView_View instance
+			 */
+			do_action( 'gravityview_entry_title_after', $entry, $this );
 
-				<div class="gv-grid gv-list-view-footer">
-					<div class="gv-grid-col-1-2 gv-left">
-						<?php if( !empty(  $this->fields['directory_list-footer-left'] ) ): ?>
-							<?php foreach( $this->fields['directory_list-footer-left'] as $field ) :
+			?>
 
-								echo gravityview_field_output( array(
-									'entry' => $entry,
-									'field' => $field,
-									'form' => $this->form,
-									'hide_empty' => $this->atts['hide_empty'],
-								) );
+		<?php endif; ?>
 
-							endforeach; ?>
-						<?php endif; ?>
-					</div>
+		<div class="gv-list-view-content">
 
-					<div class="gv-grid-col-1-2 gv-right">
-						<?php if( !empty(  $this->fields['directory_list-footer-right'] ) ): ?>
-							<?php foreach( $this->fields['directory_list-footer-right'] as $field ) :
+			<?php
 
-								echo gravityview_field_output( array(
-									'entry' => $entry,
-									'field' => $field,
-									'form' => $this->form,
-									'hide_empty' => $this->atts['hide_empty'],
-								) );
+				/**
+				 * Tap in inside the View Content wrapper <div>
+				 *
+				 * @param array $entry Gravity Forms Entry array
+				 * @param GravityView_View $this The GravityView_View instance
+				 */
+				do_action( 'gravityview_entry_content_before', $entry, $this );
 
-							endforeach; ?>
-						<?php endif; ?>
-					</div>
+			?>
+
+			<?php if ( ! empty( $this->fields['directory_list-image'] ) ): ?>
+				<div class="gv-list-view-content-image">
+					<?php foreach ( $this->fields['directory_list-image'] as $field ) :
+
+						echo gravityview_field_output( array(
+							'entry'      => $entry,
+							'field'      => $field,
+							'form'       => $this->form,
+							'hide_empty' => $this->atts['hide_empty'],
+						) );
+
+					endforeach; ?>
 				</div>
-
-				<?php do_action( 'gravityview_entry_footer_after', $entry, $this ); ?>
-
 			<?php endif; ?>
 
-			<?php do_action( 'gravityview_entry_after', $entry, $this ); ?>
+			<?php if ( ! empty( $this->fields['directory_list-description'] ) ): ?>
+				<div class="gv-list-view-content-description">
+					<?php foreach ( $this->fields['directory_list-description'] as $field ) :
+
+						echo gravityview_field_output( array(
+							'entry'        => $entry,
+							'field'        => $field,
+							'form'         => $this->form,
+							'hide_empty'   => $this->atts['hide_empty'],
+							'label_markup' => '<h4>{{label}}</h4>',
+							'wpautop'      => true
+						) );
+
+					endforeach; ?>
+				</div>
+			<?php endif; ?>
+
+			<?php if ( ! empty( $this->fields['directory_list-content-attributes'] ) ): ?>
+				<div class="gv-list-view-content-attributes">
+					<?php foreach ( $this->fields['directory_list-content-attributes'] as $field ) :
+
+						echo gravityview_field_output( array(
+							'entry'      => $entry,
+							'field'      => $field,
+							'form'       => $this->form,
+							'hide_empty' => $this->atts['hide_empty'],
+							'markup'     => '<p class="{{class}}">{{label}}{{value}}</p>'
+						) );
+
+					endforeach; ?>
+				</div>
+			<?php endif; ?>
+
+			<?php
+
+				/**
+				 * Tap in at the end of the View Content wrapper <div>
+				 *
+				 * @param array $entry Gravity Forms Entry array
+				 * @param GravityView_View $this The GravityView_View instance
+				 */
+				do_action( 'gravityview_entry_content_after', $entry, $this );
+
+			?>
+
+		</div>
+
+		<?php
+
+		// Is the footer configured?
+		if ( ! empty( $this->fields['directory_list-footer-left'] ) || ! empty( $this->fields['directory_list-footer-right'] ) ) {
+
+			/**
+			 * Tap in before the footer wrapper
+			 *
+			 * @param array $entry Gravity Forms Entry array
+			 * @param GravityView_View $this The GravityView_View instance
+			 */
+			do_action( 'gravityview_entry_footer_before', $entry, $this );
+
+			?>
+
+			<div class="gv-grid gv-list-view-footer">
+				<div class="gv-grid-col-1-2 gv-left">
+					<?php if ( ! empty( $this->fields['directory_list-footer-left'] ) ): ?>
+						<?php foreach ( $this->fields['directory_list-footer-left'] as $field ) :
+
+							echo gravityview_field_output( array(
+								'entry'      => $entry,
+								'field'      => $field,
+								'form'       => $this->form,
+								'hide_empty' => $this->atts['hide_empty'],
+							) );
+
+						endforeach; ?>
+					<?php endif; ?>
+				</div>
+
+				<div class="gv-grid-col-1-2 gv-right">
+					<?php if ( ! empty( $this->fields['directory_list-footer-right'] ) ): ?>
+						<?php foreach ( $this->fields['directory_list-footer-right'] as $field ) :
+
+							echo gravityview_field_output( array(
+								'entry'      => $entry,
+								'field'      => $field,
+								'form'       => $this->form,
+								'hide_empty' => $this->atts['hide_empty'],
+							) );
+
+						endforeach; ?>
+					<?php endif; ?>
+				</div>
+			</div>
+
+			<?php
+
+			/**
+			 * Tap in after the footer wrapper
+			 *
+			 * @param array $entry Gravity Forms Entry array
+			 * @param GravityView_View $this The GravityView_View instance
+			 */
+			do_action( 'gravityview_entry_footer_after', $entry, $this );
+
+		} // End if footer is configured
+
+
+		/**
+		 * Tap in after the entry has been displayed, but before the container is closed
+		 *
+		 * @param array $entry Gravity Forms Entry array
+		 * @param GravityView_View $this The GravityView_View instance
+		 */
+		do_action( 'gravityview_entry_after', $entry, $this );
+
+		?>
 
 		</div>
 
@@ -183,4 +247,10 @@ if( empty( $this->total_entries ) ) {
 
 } // End if has entries
 
+/**
+ * Tap in after the entry loop has been displayed
+ *
+ * @param array $entry Gravity Forms Entry array
+ * @param GravityView_View $this The GravityView_View instance
+ */
 do_action( 'gravityview_list_body_after', $this );
