@@ -33,6 +33,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Added: Hide View data until a search is performed
 * Added: Possibility to add custom CSS classes to multiple view widget wrapper
 * Added: Possibility to add custom text or HTML as a widget in the header or footer of a View
+* Added: Field option to enable the use of the live post data for Post Image field
 
 = 1.5.3 on December 22 =
 * Fixed: When adding more than 100 fields to the View some fields weren't saved.

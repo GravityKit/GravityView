@@ -17,6 +17,9 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 
 		$this->add_field_support('link_to_post', $field_options );
 
+		// @since 1.5.4
+		$this->add_field_support('dynamic_data', $field_options );
+
 		return $field_options;
 	}
 
