@@ -663,6 +663,23 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	}
 
 
+	/**
+	 * Output the Clear Search Results button
+	 * @since 1.5.4
+	 */
+	public static function the_clear_search_button() {
+		global $gravityview_view;
+
+		if( $gravityview_view->search_clear ) :
+
+			$url = strtok( add_query_arg( array() ), '?' );
+			?>
+			<a href="<?php echo esc_url( $url ); ?>" class="button gv-search-clear"><?php esc_html_e( 'Clear', 'gravityview' ); ?></a>
+
+		<?php endif;
+	}
+
+
 
 	/**
 	 * Require the datepicker script for the frontend GV script
