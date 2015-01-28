@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Tweak: Moved `includes/css/`, `includes/js/` and `/images/` folders into `/assets/`
 * Added: Hook to filter the success Edit Entry message and link `gravityview/edit_entry/success`
 * Added: 'clear' results button to your GravityView Search Bar
+* Added: Hide View data until a search is performed
 
 = 1.5.3 on December 22 =
 * Fixed: When adding more than 100 fields to the View some fields weren't saved.

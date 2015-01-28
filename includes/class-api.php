@@ -515,6 +515,24 @@ function gv_class( $field, $form = NULL, $entry = array() ) {
 	return GravityView_API::field_class( $field, $form, $entry  );
 }
 
+function gv_container_class( $class = '' ) {
+
+	global $gravityview_view;
+
+	$default = ' gv-container';
+
+	if( $gravityview_view->hide_until_searched ) {
+		$default .= ' hidden';
+	}
+
+	$class = apply_filters( 'gravityview/render/container/class', $class . $default );
+
+	$class = gravityview_sanitize_html_class( $class );
+
+	echo $class;
+}
+
+
 /**
  * sanitize_html_class doesn't handle spaces (multiple classes). We remedy that.
  * @uses sanitize_html_class
@@ -1034,3 +1052,4 @@ function gv_selected( $value, $current, $echo = true, $type = 'selected' ) {
 	}
 
 }
+

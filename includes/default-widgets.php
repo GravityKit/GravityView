@@ -43,8 +43,7 @@ class GravityView_Widget_Pagination_Info extends GravityView_Widget {
 	public function render_frontend( $widget_args, $content = '', $context = '') {
 		global $gravityview_view;
 
-		if( empty( $gravityview_view )) {
-			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: $gravityview_view not instantiated yet.', get_class($this)) );
+		if( !$this->pre_render_frontend() ) {
 			return;
 		}
 
@@ -111,11 +110,9 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 	}
 
 	public function render_frontend( $widget_args, $content = '', $context = '') {
-		global $gravityview_view, $post;
+		global $gravityview_view;
 
-		if( empty( $gravityview_view )) {
-			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: $gravityview_view not instantiated yet.', get_class($this)) );
-
+		if( !$this->pre_render_frontend() ) {
 			return;
 		}
 
@@ -350,6 +347,28 @@ class GravityView_Widget {
 	/** Frontend logic */
 	public function render_frontend( $widget_args, $content = '', $context = '') {
 		// to be defined by child class
+		if( !$this->pre_render_frontend() ) {
+			return;
+		}
+	}
+
+	/**
+	 * General validations when rendering the widget
+	 */
+	public function pre_render_frontend() {
+		global $gravityview_view;
+
+		if( empty( $gravityview_view ) ) {
+			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: $gravityview_view not instantiated yet.', get_class($this)) );
+			return false;
+		}
+
+		if( $gravityview_view->hide_until_searched ) {
+			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: Hide View data until search is performed', get_class($this)) );
+			return false;
+		}
+
+		return true;
 	}
 
 

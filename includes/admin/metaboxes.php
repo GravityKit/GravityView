@@ -372,7 +372,7 @@ class GravityView_Admin_Metaboxes {
 			/**
 			 * @since 1.5.4
 			 */
-			GravityView_Render_Settings::render_setting_row( 'show_only_searched', $current_settings );
+			GravityView_Render_Settings::render_setting_row( 'hide_until_searched', $current_settings );
 
 			GravityView_Render_Settings::render_setting_row( 'hide_empty', $current_settings );
 

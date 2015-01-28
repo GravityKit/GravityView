@@ -357,11 +357,11 @@ class GravityView_View_Data {
 				'value' => 0,
 				'show_in_shortcode' => false,
 			),
-			'show_only_searched' => array(
-				'label' => __( 'Show only searched results', 'gravityview' ),
+			'hide_until_searched' => array(
+				'label' => __( 'Hide View data until search is performed', 'gravityview' ),
 				'type' => 'checkbox',
 				'group'	=> 'default',
-				'tooltip' => __( 'When enabled it will only show any entries after a search is performed.', 'gravityview' ),
+				'tooltip' => __( 'When enabled it will only show any View entries after a search is performed.', 'gravityview' ),
 				'value' => 0,
 				'show_in_shortcode' => false,
 			),
