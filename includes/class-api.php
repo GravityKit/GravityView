@@ -595,7 +595,7 @@ function gravityview_back_link() {
 	// filter link label
 	$label = apply_filters( 'gravityview_go_back_label', $label );
 
-	return '<a href="'. $href .'" id="gravityview_back_link">'. esc_html( $label ) . '</a>';
+	return '<a href="'. $href .'" id="gravityview_back_link" data-viewid="'. $gravityview_view->view_id .'">'. esc_html( $label ) . '</a>';
 }
 
 /**

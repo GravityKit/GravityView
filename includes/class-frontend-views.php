@@ -540,7 +540,7 @@ class GravityView_frontend {
 		//@todo: check why we need the IF statement vs. print the view id always.
 		if( $this->is_gravityview_post_type || $this->post_has_shortcode ) {
 			// Print the View ID to enable proper cookie pagination ?>
-			<input type="hidden" id="gravityview-view-id" value="<?php echo $view_id; ?>">
+			<input type="hidden" class="gravityview-view-id" value="<?php echo $view_id; ?>">
 <?php
 		}
 		$output = ob_get_clean();

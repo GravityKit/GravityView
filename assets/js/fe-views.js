@@ -17,7 +17,7 @@ jQuery(document).ready( function( $ ) {
 
 		init: function() {
 
-			//this.cookies(); // to be removed
+			this.cookies();
 			this.datepicker();
 
 			$('.gv-widget-search').on('keyup change', this.form_changed);
@@ -139,29 +139,29 @@ jQuery(document).ready( function( $ ) {
 			}
 		},
 
-		// Commented since version 1.5.4 (to be removed)
-        //
-		//cookies: function() {
-		//	if( $("#gravityview-view-id").length > 0 ) {
-        //
-		//		var viewId = $("#gravityview-view-id").val();
-        //
-		//		// Manages the Go Back link in single entry view based on cookies
-		//		if( $("#gravityview_back_link").length > 0 ) {
-		//			// single entry view
-		//			if( $.cookie('gravityview_back_link_'+ viewId ) != null ) {
-		//				$("#gravityview_back_link").attr('href', $.cookie('gravityview_back_link_'+ viewId) );
-		//			}
-        //
-		//		} else {
-		//			// directory view
-        //
-		//			//set cookie
-		//			$.cookie('gravityview_back_link_'+ viewId, window.location.href, { path: gvGlobals.cookiepath } );
-        //
-		//		}
-		//	}
-		//}
+		cookies: function() {
+			if( $("#gravityview_back_link").length > 0 ) {
+				gvFront.backGetCookie();
+			} else if( $(".gravityview-view-id").length > 0 ) {
+				$(".gravityview-view-id").each( gvFront.backSetCookie );
+			}
+		},
+
+		// Set the back link cookie
+		backSetCookie: function() {
+			var viewId = $(this).val();
+			$.cookie('gravityview_back_link_'+ viewId, window.location.href, { path: gvGlobals.cookiepath } );
+		},
+
+		// Get the back link cookie and replace the back link href
+		backGetCookie: function() {
+			var viewId = $("#gravityview_back_link").attr('data-viewid');
+			if( $.cookie('gravityview_back_link_'+ viewId ) != null ) {
+				$("#gravityview_back_link").attr('href', $.cookie('gravityview_back_link_'+ viewId) );
+			}
+		},
+
+
 	};
 
 	gvFront.init();
