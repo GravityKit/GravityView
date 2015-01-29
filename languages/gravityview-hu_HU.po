@@ -1,11 +1,12 @@
 # 
 # Translators:
-# dbalage <balazs@magonc.org>, 2014
+# dbalage <balazs@magonc.org>, 2014-2015
+# Robert Tokar <ultimate.invito@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-12-22 14:33-0700\n"
-"PO-Revision-Date: 2014-12-12 15:41+0000\n"
+"PO-Revision-Date: 2015-01-28 15:00+0000\n"
 "Last-Translator: dbalage <balazs@magonc.org>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/gravityview/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -216,31 +217,31 @@ msgstr "Ezek a widgetek a bejegyzések alatt jelennek majd meg."
 
 #: includes/admin/metaboxes.php:304
 msgid "These fields will be shown in Single Entry view."
-msgstr ""
+msgstr "Ezek a mezők a Single Entry nézetben láthatóak."
 
 #: includes/admin/metaboxes.php:325
 msgid "Fields shown when editing an entry."
-msgstr ""
+msgstr "A mezők bejegyzés szerkesztésekor lesznek láthatóak."
 
 #: includes/admin/metaboxes.php:325
 msgid "If not configured, all form fields will be displayed."
-msgstr ""
+msgstr "Hacsak máshogy nincs beállítva minden űrlapmező látható lesz."
 
 #: includes/admin/metaboxes.php:387
 msgid "Single Entry Settings"
-msgstr ""
+msgstr "Single Entry beállításai"
 
 #: includes/admin/metaboxes.php:464
 msgid "Embed Shortcode"
-msgstr ""
+msgstr "Beágyazott rövid kód"
 
 #: includes/admin/metaboxes.php:464
 msgid "Add this shortcode to a post or page to embed this view."
-msgstr ""
+msgstr "Add hozzá ezt a rövid kódot egy bejegyzéshez, vagy oldalhoz, hogy beágyazd ezt a nézetet."
 
 #: includes/admin/metaboxes.php:510
 msgid "Layout Settings"
-msgstr ""
+msgstr "Elrendezés beállítása"
 
 #: includes/class-admin-add-shortcode.php:53
 msgid "Add a Gravity Forms View"
@@ -252,14 +253,14 @@ msgstr "Nézet hozzáadása"
 
 #: includes/class-admin-add-shortcode.php:88
 msgid "Embed a View"
-msgstr ""
+msgstr "Nézet szerkesztése"
 
 #: includes/class-admin-add-shortcode.php:89
 #, php-format
 msgid ""
 "Use this form to embed a View into this %s. %sLearn more about using "
 "shortcodes.%s"
-msgstr ""
+msgstr "Használd ezt az űrlapot, hogy beágyazz egy View-t a %s. %sTudj meg többet a rövid kódok használatáról.%s"
 
 #: includes/class-admin-add-shortcode.php:92
 msgid "Select a View"
@@ -267,15 +268,15 @@ msgstr "Nézet kiválasztása"
 
 #: includes/class-admin-add-shortcode.php:95
 msgid "&mdash; Select a View to Insert &mdash;"
-msgstr ""
+msgstr "&mdash; View kiválasztása beillesztéshez &mdash;"
 
 #: includes/class-admin-add-shortcode.php:98
 msgid "(no title)"
-msgstr ""
+msgstr "(nincs cím)"
 
 #: includes/class-admin-add-shortcode.php:124
 msgid "Insert View"
-msgstr ""
+msgstr "View beillesztése"
 
 #: includes/class-admin-add-shortcode.php:125
 #: includes/class-admin-views.php:840
@@ -286,7 +287,7 @@ msgstr "Mégse"
 #: includes/class-admin-add-shortcode.php:171
 #: includes/class-admin-views.php:844
 msgid "Loading&hellip;"
-msgstr ""
+msgstr "Betöltés&hellip;"
 
 #: includes/class-admin-add-shortcode.php:172
 msgid "Please select a View"
@@ -294,21 +295,21 @@ msgstr "Kérlek, válassz nézetet"
 
 #: includes/class-admin-approve-entries.php:55
 msgid "GravityView Fields"
-msgstr ""
+msgstr "GravityView Fields"
 
 #: includes/class-admin-approve-entries.php:56
 msgid ""
 "Allow administrators to approve or reject entries and users to opt-in or "
 "opt-out of their entries being displayed."
-msgstr ""
+msgstr "Engedélyezi az adminisztrátoroknak, hogy felhasználók és bejegyzések fel- és leiratkozásainak mutatását fogadják vagy utasítsák el."
 
 #: includes/class-admin-approve-entries.php:78
 msgid "Approve/Reject"
-msgstr ""
+msgstr "Jóváhagy/Elutasít"
 
 #: includes/class-admin-approve-entries.php:83
 msgid "User Opt-In"
-msgstr ""
+msgstr "Felhasználó feliratkozás"
 
 #: includes/class-admin-approve-entries.php:105
 msgid "Approved? (Admin-only)"
@@ -324,15 +325,15 @@ msgstr "Jóváhagyva"
 
 #: includes/class-admin-approve-entries.php:127
 msgid "Show Entry on Website"
-msgstr ""
+msgstr "Bejegyzés mutatása az oldalon"
 
 #: includes/class-admin-approve-entries.php:129
 msgid "Opt-In"
-msgstr ""
+msgstr "Hírlevél feliratkozás"
 
 #: includes/class-admin-approve-entries.php:137
 msgid "Yes, display my entry on the website"
-msgstr ""
+msgstr "Mutassa a bejegyzésem az oldalon"
 
 #: includes/class-admin-approve-entries.php:208
 #, php-format
@@ -355,11 +356,11 @@ msgstr "%s elutasítva."
 
 #: includes/class-admin-approve-entries.php:290
 msgid "Disapproved the Entry for GravityView"
-msgstr ""
+msgstr "A bejegyzés elutasításra került a GravityView számára."
 
 #: includes/class-admin-approve-entries.php:290
 msgid "Approved the Entry for GravityView"
-msgstr ""
+msgstr "A bejegyzés elfogadásra került a GravityView -nak."
 
 #: includes/class-admin-approve-entries.php:442
 msgid "Approve"
@@ -384,68 +385,68 @@ msgstr "Bejegyzés mutatása könyvtárszerűen?"
 #: includes/class-admin-label.php:19
 #, php-format
 msgid "Type: %s"
-msgstr ""
+msgstr "Típus: %s"
 
 #: includes/class-admin-label.php:23
 #, php-format
 msgid "Field ID: %s"
-msgstr ""
+msgstr "Mező kód: %s"
 
 #: includes/class-admin-label.php:36
 #, php-format
 msgid "Admin Label: %s"
-msgstr ""
+msgstr "Admin címke: %s"
 
 #: includes/class-admin-label.php:166
 #, php-format
 msgid "Configure %s Settings"
-msgstr ""
+msgstr "Beállítások %s Szerkesztése"
 
 #: includes/class-admin-label.php:167
 #, php-format
 msgid "Remove %s"
-msgstr ""
+msgstr "Törlés %s"
 
 #: includes/class-admin-label.php:168
 msgid "This field links to the Single Entry"
-msgstr ""
+msgstr "Ez a mező az Egyetlen bejegyzéshez vezet."
 
 #: includes/class-admin-label.php:180
 #, php-format
 msgctxt "Label in field picker for empty label"
 msgid "Field #%s (No Label)"
-msgstr ""
+msgstr "Mező #%s (Nincs címke)"
 
 #: includes/class-admin-views.php:108
 msgid "Connected Views"
-msgstr ""
+msgstr "Összekapcsolt Views -ok."
 
 #: includes/class-admin-views.php:110
 msgid "GravityView Views using this form as a data source"
-msgstr ""
+msgstr "A Gravity View View-ja használja ezt az űrlapot, mint adatforrás."
 
 #: includes/class-admin-views.php:174
 msgid "CSS Merge Tags"
-msgstr ""
+msgstr "CSS egyesítő címkék"
 
 #: includes/class-admin-views.php:175
 #, php-format
 msgid ""
 "Developers: The CSS classes will be sanitized using the "
 "%ssanitize_title_with_dashes()%s function."
-msgstr ""
+msgstr "Fejlesztők: A CSS osztályok ellenőrizve lesznek a %ssanitize_title_with_dashes()%s funkcióval."
 
 #: includes/class-admin-views.php:199
 msgid "Not connected."
-msgstr ""
+msgstr "Nem kapcsolódik"
 
 #: includes/class-admin-views.php:208
 msgid "The connected form can not be found; it may no longer exist."
-msgstr ""
+msgstr "Az űrlap nem található, lehet, hogy már nem létezik"
 
 #: includes/class-admin-views.php:240
 msgid "Edit Form"
-msgstr ""
+msgstr "Űrlap szerkesztése"
 
 #: includes/class-admin-views.php:245
 msgid "Entries"
@@ -453,7 +454,7 @@ msgstr "Bejegyzések"
 
 #: includes/class-admin-views.php:250
 msgid "Edit settings for this form"
-msgstr ""
+msgstr "Az űrlap beállításainak szerkesztése"
 
 #: includes/class-admin-views.php:250 includes/class-settings.php:252
 #: includes/class-settings.php:253
@@ -462,7 +463,7 @@ msgstr "Beállítások"
 
 #: includes/class-admin-views.php:255
 msgid "Preview this form"
-msgstr ""
+msgstr "Az űrlap előnézete"
 
 #: includes/class-admin-views.php:255
 msgid "Preview"
@@ -470,11 +471,11 @@ msgstr "Előnézet"
 
 #: includes/class-admin-views.php:457
 msgid "+ Add All Fields"
-msgstr ""
+msgstr "Minden mező hozzáadása"
 
 #: includes/class-admin-views.php:458
 msgid "Add all the available fields at once."
-msgstr ""
+msgstr "Minden elérhető mező hozzáadása"
 
 #: includes/class-admin-views.php:508
 #: includes/extensions/search-widget/class-search-widget.php:187
@@ -483,7 +484,7 @@ msgstr "Bejegyzés AZ"
 
 #: includes/class-admin-views.php:510
 msgid "The unique ID of the entry."
-msgstr ""
+msgstr "A bejegyzés azonosítója"
 
 #: includes/class-admin-views.php:513
 #: includes/extensions/search-widget/class-search-widget.php:186
@@ -492,7 +493,7 @@ msgstr "Bejegyzés dátuma"
 
 #: includes/class-admin-views.php:514
 msgid "The date the entry was created."
-msgstr ""
+msgstr "A dátum, melyen a bejegyzést készítették"
 
 #: includes/class-admin-views.php:518
 msgid "Source URL"
@@ -500,7 +501,7 @@ msgstr "Forrás URL"
 
 #: includes/class-admin-views.php:520
 msgid "The URL of the page where the form was submitted."
-msgstr ""
+msgstr "Az oldal linkje, melyen az űrlapot benyújtották"
 
 #: includes/class-admin-views.php:523
 msgid "User IP"
@@ -508,7 +509,7 @@ msgstr "Felhasználó IP"
 
 #: includes/class-admin-views.php:525
 msgid "The IP Address of the user who created the entry."
-msgstr ""
+msgstr "A bejegyzést közzétevő felhasználó IP-címe"
 
 #: includes/class-admin-views.php:528
 msgid "User"
@@ -516,15 +517,15 @@ msgstr "Felhasználó"
 
 #: includes/class-admin-views.php:530
 msgid "Details of the logged-in user who created the entry (if any)."
-msgstr ""
+msgstr "A belépett, bejegyzést közzétevő felhasználó adatai (ha van ilyen)"
 
 #: includes/class-admin-views.php:537 includes/fields/custom.php:22
 msgid "Custom Content"
-msgstr ""
+msgstr "Egyedi tartalmak"
 
 #: includes/class-admin-views.php:539
 msgid "Insert custom text or HTML."
-msgstr ""
+msgstr "Egyedi szöveg vagy HTML kód bevitele"
 
 #: includes/class-admin-views.php:547
 msgid "Link to Entry"
@@ -532,7 +533,7 @@ msgstr "Link a bejegyzéshez"
 
 #: includes/class-admin-views.php:548
 msgid "A dedicated link to the single entry with customizable text."
-msgstr ""
+msgstr "Egy dedikált link a single entry számára testreszabható szöveggel."
 
 #: includes/class-admin-views.php:625
 msgid "Add Widget"
@@ -545,7 +546,7 @@ msgstr "Mező hozzáadása"
 #: includes/class-admin-views.php:708
 #, php-format
 msgid "\"+ %s\" or drag existing %ss here."
-msgstr ""
+msgstr "\"+%s\" vagy húzd a meglévő %ss ide."
 
 #: includes/class-admin-views.php:838
 msgid "Enter View name here"
@@ -567,27 +568,27 @@ msgstr "OK"
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
-msgstr ""
+msgstr "Hiba történt miközben a View elkészítése során. Ellenőrizd a beállításokat vagy vedd fel a kapcsolatot a GravityView csapattal."
 
 #: includes/class-admin-views.php:845
 msgid "There was an error loading dynamic content."
-msgstr ""
+msgstr "Hiba a dinamikus tartalmak betöltése közben"
 
 #: includes/class-admin-views.php:846
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
-msgstr ""
+msgstr "Hiba történt a mező kitöltése során. Kérjük próbálja meg újra, vagy vegye fel a kapcsolatot a GravityView csapatával."
 
 #: includes/class-admin-views.php:847
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
-msgstr ""
+msgstr "Szeretné a zóna összes mezőjét törölni? (Azért látod ezt az üzenetet, mert lenyomva tartod az ALT-ot)"
 
 #: includes/class-admin-welcome.php:56
 msgid "GravityView: Getting Started"
-msgstr ""
+msgstr "GracityView: Első lépések"
 
 #: includes/class-admin-welcome.php:57 includes/class-admin-welcome.php:152
 msgid "Getting Started"
@@ -595,12 +596,12 @@ msgstr "Első lépések"
 
 #: includes/class-admin-welcome.php:66 includes/class-admin-welcome.php:67
 msgid "Changelog"
-msgstr ""
+msgstr "Változáskövetés"
 
 #: includes/class-admin-welcome.php:76 includes/class-admin-welcome.php:77
 #: includes/class-admin-welcome.php:158
 msgid "Credits"
-msgstr ""
+msgstr "Stáblista"
 
 #: includes/class-admin-welcome.php:147
 #, php-format
@@ -611,23 +612,23 @@ msgstr "Üdvözöl a GravityView %s"
 msgid ""
 "Thank you for Installing GravityView. Beautifully display your Gravity Forms"
 " entries."
-msgstr ""
+msgstr "Köszönjük, hogy telepítetted a GravityView -t. Csodás megjelenést kölcsönöz Gravity űrlapjaidnak."
 
 #: includes/class-admin-welcome.php:155
 msgid "List of Changes"
-msgstr ""
+msgstr "A változások listája"
 
 #: includes/class-admin-welcome.php:665
 msgid "GravityView is brought to you by:"
-msgstr ""
+msgstr "A GravityView -t elhozták neked:"
 
 #: includes/class-admin-welcome.php:690
 msgid "Contributors"
-msgstr ""
+msgstr "Közreműködők:"
 
 #: includes/class-admin-welcome.php:715
 msgid "Want to contribute?"
-msgstr ""
+msgstr "Szeretnél bekapcsolódni?"
 
 #: includes/class-admin-welcome.php:716
 #, php-format
@@ -635,7 +636,7 @@ msgid ""
 "If you want to contribute to the code, you can %srequest access to the "
 "Github repository%s. If your contributions are accepted, you will be thanked"
 " here."
-msgstr ""
+msgstr "If you want to contribute to the code, you can %srequest access to the Github repository%s. If your contributions are accepted, you will be thanked here."
 
 #: includes/class-admin.php:90
 msgid "Support"
@@ -644,7 +645,7 @@ msgstr "Támogatás"
 #: includes/class-admin.php:135
 #, php-format
 msgid "A new form was created for this View: \"%s\""
-msgstr ""
+msgstr "Új űrlap készült ehhez a View -hoz: \"%s\""
 
 #: includes/class-admin.php:136
 #, php-format
@@ -653,7 +654,7 @@ msgid ""
 "\n"
 "\t\t\t\t\tYou can %sedit the form%s in Gravity Forms and the updated fields will be available here. Don&rsquo;t forget to %scustomize the form settings%s.\n"
 "\t\t\t\t\t"
-msgstr ""
+msgstr "%sNincsenek bejegyzések az űrlap számára, így a View is üres lesz.%s Hogy elkezdj bejegyzéseket gyűjteni adhatsz engedélyek az %sűrlap előnézet%s -nél és beágyazhatod az űrlapot is egy kommentbe vagy oldalba a következő kód használatval: %s\n\n\n⇥⇥⇥⇥⇥Tudod %sszerkeszteni az űrlapot%s a Gravity Forms -ban a frissített mezők elérhetőek lesznek itt. Ne felejtsd el a %stestreszabni az űrlap beállításait%s.\n\n⇥⇥⇥⇥⇥"
 
 #: includes/class-admin.php:148 includes/class-admin.php:149
 #: includes/class-admin.php:151
@@ -687,7 +688,7 @@ msgstr "Nézet beküldve."
 #: includes/class-admin.php:158
 #, php-format
 msgid "View scheduled for: %1$s."
-msgstr ""
+msgstr "A View ütemezésre került a: %1$s."
 
 #: includes/class-admin.php:160
 msgid "M j, Y @ G:i"
@@ -702,65 +703,65 @@ msgstr "Nézet vázlata frissítve. %sMegtekintés a weboldalon.%s"
 #, php-format
 msgid "%s View updated."
 msgid_plural "%s Views updated."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s View fissült."
+msgstr[1] "%s Views frissült."
 
 #: includes/class-admin.php:169
 #, php-format
 msgid "%s View not updated, somebody is editing it."
 msgid_plural "%s Views not updated, somebody is editing them."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s View nem frissült, mert valaki éppen szerkeszti."
+msgstr[1] "%s Views nem frissült, mert valaki éppen szerkeszti."
 
 #: includes/class-admin.php:170
 #, php-format
 msgid "%s View permanently deleted."
 msgid_plural "%s Views permanently deleted."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s View nem frissült, mert valaki éppen szerkeszti."
+msgstr[1] "%s Views véglegesen törlésre került."
 
 #: includes/class-admin.php:171
 #, php-format
 msgid "%s View moved to the Trash."
 msgid_plural "%s Views moved to the Trash."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s View a kukába került."
+msgstr[1] "%s Views a kukába került."
 
 #: includes/class-admin.php:172
 #, php-format
 msgid "%s View restored from the Trash."
 msgid_plural "%s Views restored from the Trash."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s View helyre lett állítva."
+msgstr[1] "%s Views helyre lett állítva."
 
 #: includes/class-admin.php:455
 msgid "Dismiss"
-msgstr ""
+msgstr "Elutasít"
 
 #: includes/class-admin.php:489
 msgid "Potential Conflict"
-msgstr ""
+msgstr "Lehetséges összeférhetetlenség."
 
 #: includes/class-admin.php:490
 msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
 "plugin."
-msgstr ""
+msgstr "A GravityView és a Gravity Forms könyvtár is aktív. Ez gondokat okozhat. Ha problémát tapasztalsz, kacsold ki a Gravity Forms Könyvtár bővítmény."
 
 #: includes/class-admin.php:515
 #, php-format
 msgid ""
 "%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
 "Forms%s to use the GravityView plugin."
-msgstr ""
+msgstr "%sGravityView -nak szüksége van aktív Gravity Forms -ra. %sGravity Forms aktiválása%s a GravityView bővítmény használatához."
 
 #: includes/class-admin.php:517
 #, php-format
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
-msgstr ""
+msgstr "%sGravityView -nak szüksége van a Gravity Form telepítésére, hogy megfelelően fusson. %sGet Gravity Forms%s - kezdő ár 39$%s%s"
 
 #: includes/class-admin.php:523
 #, php-format
@@ -768,7 +769,7 @@ msgid ""
 "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n"
 "\n"
 "You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
-msgstr ""
+msgstr "%sGravityView -nak szüksége van a Gravity Form 1.8 vagy újabb verziójára.%s\n\nAz általad használt verzió %s. Kérlek frissítsd a Gravity Form -ot, vagy vedd meg a licencet. %sGravity Forms beszerzése%s - kezdő ár $39%s%s"
 
 #: includes/class-api.php:267
 msgid "This search returned no results."
@@ -784,78 +785,78 @@ msgstr "&larr; Menj vissza"
 
 #: includes/class-api.php:919
 msgid "Map It"
-msgstr ""
+msgstr "Feltérképezés"
 
 #: includes/class-change-entry-creator.php:54
 msgid "Error"
-msgstr ""
+msgstr "Hiba"
 
 #: includes/class-change-entry-creator.php:56
 msgid "Success"
-msgstr ""
+msgstr "Siker"
 
 #: includes/class-change-entry-creator.php:59
 #, php-format
 msgctxt ""
 "First parameter: Success or error of the action. Second: User ID number"
 msgid "%s: Assigned User ID #%d as the entry creator."
-msgstr ""
+msgstr "%s: Kijelölt felhasználói azonosító #%d mint a bejegyzéskészítő."
 
 #: includes/class-change-entry-creator.php:163
 #, php-format
 msgctxt ""
 "The name and the ID of users who initiated changes to entry ownership"
 msgid "%s (ID #%d)"
-msgstr ""
+msgstr "%s (Azonosító #%d)"
 
 #: includes/class-change-entry-creator.php:165
 msgctxt ""
 "To show that the entry was unassigned from an actual user to no user."
 msgid "No User"
-msgstr ""
+msgstr "Nincs felhasználó"
 
 #: includes/class-change-entry-creator.php:177
 #, php-format
 msgid "Changed entry creator from %s to %s"
-msgstr ""
+msgstr "Megváltozott a bejegyzéskészítő %s -tól %s -ig."
 
 #: includes/class-change-entry-creator.php:204
 msgid "Change Entry Creator:"
-msgstr ""
+msgstr "Bejegyzés készítő megváltoztatása."
 
 #: includes/class-change-entry-creator.php:207
 msgctxt "No user assigned to the entry"
 msgid "No User"
-msgstr ""
+msgstr "Nincs felhasználó"
 
 #: includes/class-common.php:164
 msgid "Payment Status"
-msgstr ""
+msgstr "A fizetés állapota"
 
 #: includes/class-common.php:169
 msgid "Payment Date"
-msgstr ""
+msgstr "A fizetés dátuma"
 
 #: includes/class-common.php:174
 msgid "Payment Amount"
-msgstr ""
+msgstr "Kifizetés összege"
 
 #: includes/class-common.php:179
 msgid "Payment Method"
-msgstr ""
+msgstr "Fizetési mód"
 
 #: includes/class-common.php:184
 #: includes/extensions/search-widget/class-search-widget.php:563
 msgid "Is Fulfilled"
-msgstr ""
+msgstr "Teljesült"
 
 #: includes/class-common.php:189
 msgid "Transaction ID"
-msgstr ""
+msgstr "Tranzakciós aznonosító"
 
 #: includes/class-common.php:194
 msgid "Transaction Type"
-msgstr ""
+msgstr "Tranzakció típusa"
 
 #: includes/class-common.php:680 includes/class-data.php:378
 msgid "Default"
@@ -867,15 +868,15 @@ msgstr "Létrehozás dátuma"
 
 #: includes/class-data.php:317
 msgid "View ID"
-msgstr ""
+msgstr "View azonosító"
 
 #: includes/class-data.php:325
 msgid "Number of entries per page"
-msgstr ""
+msgstr "Bejegyzések száma oldalanként"
 
 #: includes/class-data.php:333
 msgid "Enable lightbox for images"
-msgstr ""
+msgstr "Lightbox bekapcsolása képek számára"
 
 #: includes/class-data.php:341
 msgid "Show only approved entries"
@@ -883,36 +884,36 @@ msgstr "Csak jóváhagyott bejegyzések mutatása"
 
 #: includes/class-data.php:348
 msgid "Hide empty fields"
-msgstr ""
+msgstr "Üres mezők elrejtése"
 
 #: includes/class-data.php:355
 msgid "Allow User Edit"
-msgstr ""
+msgstr "Szerkesztés engedélyezése a felhasználónak"
 
 #: includes/class-data.php:357
 msgid "Allow logged-in users to edit entries they created."
-msgstr ""
+msgstr "Engedélyezi a belépett felhasználóknak, hogy az általuk készített bejegyzéseket szerkessze."
 
 #: includes/class-data.php:359
 msgid ""
 "Display \"Edit Entry\" fields to non-administrator users if they created the"
 " entry. Edit Entry fields will always be displayed to site administrators."
-msgstr ""
+msgstr "Mutassa a \"Bejegyzés szerkesztése\" mezőt a nem admin felhasználóknak is, ha létrehoztak egy bejegyzést. Ez a mező mindig látható lesz az oldal adminisztrátorainak."
 
 #: includes/class-data.php:364
 msgid "Allow User Delete"
-msgstr ""
+msgstr "Felhasználó törlésének engedélyezése"
 
 #: includes/class-data.php:366
 msgid "Allow logged-in users to delete entries they created."
-msgstr ""
+msgstr "Engedi a belépett felhasználóknak, hogy töröljék a bejegyzéseket, amiket készítettek."
 
 #: includes/class-data.php:368
 msgid ""
 "Display \"Delete Entry\" fields to non-administrator users if they created "
 "the entry. Delete Entry fields will always be displayed to site "
 "administrators."
-msgstr ""
+msgstr "Mutassa a \"bejegyzés törlése\" mezőt a nem admin felhasználóknak az általuk létrehozott bejegyzésekhez. A bejegyzés törlése mező az oldal adminisztrátorainak mindig látható."
 
 #: includes/class-data.php:373
 msgid "Sort by field"
@@ -938,7 +939,7 @@ msgstr "Szűrés: kezdés dátuma"
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
-msgstr ""
+msgstr "Mutassa a megadott dátum után közzétett bejegyzéseket. Támogatja a relatív dátumokat, mint \"-1 hét\" vagy \"-1 hónap\"."
 
 #: includes/class-data.php:404
 msgid "Filter by End Date"
@@ -948,85 +949,85 @@ msgstr "Szűrés: befejezés dátuma"
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
-msgstr ""
+msgstr "Mutassa az ezen dátum előtt közzétett bejegyzéseket. Valós dátumok támogatása, mint \"most\" vagy \"-3 napja\""
 
 #: includes/class-data.php:413
 msgid "CSS Class"
-msgstr ""
+msgstr "CSS Class"
 
 #: includes/class-data.php:414
 msgid "CSS class to add to the wrapping HTML container."
-msgstr ""
+msgstr "CSS osztály hozzáadása a HTML konténerhez."
 
 #: includes/class-data.php:421
 msgid "Search Value"
-msgstr ""
+msgstr "Keresési érték"
 
 #: includes/class-data.php:422
 msgid "Define a default search value for the View"
-msgstr ""
+msgstr "Határozd meg az alapértelmezett keresési értéket a View számára."
 
 #: includes/class-data.php:429
 #: includes/extensions/search-widget/class-search-widget.php:125
 msgid "Search Field"
-msgstr ""
+msgstr "Keresési mező"
 
 #: includes/class-data.php:430
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
-msgstr ""
+msgstr "Ha a keresési értéke beállításra került, meghatározhatsz specifikus mezőt, melyben a keresés történik. Máskülönben minden mezőn keresve lesz."
 
 #: includes/class-data.php:437
 msgid "Single Entry Title"
-msgstr ""
+msgstr "Egyszerű beléptetés címe"
 
 #: includes/class-data.php:439
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and Single"
 " Entry views."
-msgstr ""
+msgstr "Egy bejegyzés megtekintésekor változtasd erre az oldal címét, különben a cím nem fog megváltozni több vagy egy bejegyzés megtekintése esetén."
 
 #: includes/class-data.php:446
 msgid "Back Link Label"
-msgstr ""
+msgstr "\"Vissza\" link cimkéje"
 
 #: includes/class-data.php:448
 msgid "The text of the link that returns to the multiple entries view."
-msgstr ""
+msgstr "A több bejegyzés megtekintéséhez visszavezető link szövege."
 
 #: includes/class-debug-bar.php:24
 msgid "GravityView"
-msgstr ""
+msgstr "GravityView"
 
 #: includes/class-debug-bar.php:91
 msgid "Warnings"
-msgstr ""
+msgstr "Figyelmeztetések"
 
 #: includes/class-debug-bar.php:100
 msgid "Logs"
-msgstr ""
+msgstr "Napló"
 
 #: includes/class-debug-bar.php:169
 msgctxt "Debugging output data is empty."
 msgid "Empty"
-msgstr ""
+msgstr "Üres"
 
 #: includes/class-frontend-views.php:380
 msgid ""
 "You have attempted to view an entry that is not visible or may not exist."
-msgstr ""
+msgstr "Olyan bejegyzést kíséreltél meg megtekinteni, mely nem látható vagy nem létezik."
 
 #: includes/class-gravityview-extension.php:173
 #, php-format
 msgid "Could not activate the %s Extension; GravityView is not active."
-msgstr ""
+msgstr "Nem lehet a bővítményt aktiválni a %s Bővítmény; GravityView nem aktív."
 
 #: includes/class-gravityview-extension.php:183
 #, php-format
 msgid "The %s Extension requires GravityView Version %s or newer."
-msgstr ""
+msgstr "A %s bővítménynek szüksége van a GravitView verzió %s vagy újabbra."
 
 #: includes/class-post-types.php:35
 msgctxt "Post Type General Name"
@@ -1094,92 +1095,92 @@ msgid ""
 "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n"
 "\n"
 "If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
-msgstr ""
+msgstr "%sNincs aktív nézeted. %sCsináljunk egyet%s!%s\n\nHa úgy érzed, hogy elvesztél, és segítésre van szükséged, lesd meg a %sKezdetek%s oldalt."
 
 #: includes/class-settings.php:102
 #, php-format
 msgid ""
 "Your GravityView license %s. This means you&rsquo;re missing out on updates "
 "and support! %sActivate your license%s or %sget a license here%s."
-msgstr ""
+msgstr "A GravityView licenced %s. Ez azt jelenti, hogy lemaradsz frissítésekről és támogatásokról! %s Aktiváld a licencedet%s vagy %sszerezd egy licencet itt%s."
 
 #: includes/class-settings.php:104
 msgid "Inactive License"
-msgstr ""
+msgstr "Inaktív licence"
 
 #: includes/class-settings.php:109
 msgid "Invalid License"
-msgstr ""
+msgstr "Érvénytelen licenc"
 
 #: includes/class-settings.php:110
 msgid "is invalid"
-msgstr ""
+msgstr "érvénytelen"
 
 #: includes/class-settings.php:113
 msgid "is inactive"
-msgstr ""
+msgstr "inaktív"
 
 #: includes/class-settings.php:116
 msgid "has not been activated"
-msgstr ""
+msgstr " Nincs aktiválva"
 
 #: includes/class-settings.php:143
 msgid "Status"
-msgstr ""
+msgstr "Státusz"
 
 #: includes/class-settings.php:144
 msgid "There was an error processing the request."
-msgstr ""
+msgstr "Hiba történt a kérés végrehajtása során"
 
 #: includes/class-settings.php:145
 msgid ""
 "Could not deactivate the license. The submitted license key may not be "
 "active."
-msgstr ""
+msgstr "Nem lehet deaktiválni a lincencet. Lehet, hogy a megadott licence kulcs nem aktív."
 
 #: includes/class-settings.php:146
 msgid "Not Activated"
-msgstr ""
+msgstr "Nincs aktiválva"
 
 #: includes/class-settings.php:147
 msgid "Invalid; this license has reached its activation limit."
-msgstr ""
+msgstr "Érvénytelen; ez a licence elérte az aktivációs limitet."
 
 #: includes/class-settings.php:148
 msgid "Deactivated"
-msgstr ""
+msgstr "Inaktiválódott"
 
 #: includes/class-settings.php:149
 msgid "Valid"
-msgstr ""
+msgstr "Érvényes"
 
 #: includes/class-settings.php:150 includes/class-settings.php:151
 msgid "Not Valid"
-msgstr ""
+msgstr "Érvénytelen"
 
 #: includes/class-settings.php:152
 msgid "The license key has been revoked."
-msgstr ""
+msgstr "A lincence kulcs visszavonásra került."
 
 #: includes/class-settings.php:153
 msgid "The license key has expired."
-msgstr ""
+msgstr "A licence kulcs lejárt."
 
 #: includes/class-settings.php:155
 msgid "Verifying license&hellip;"
-msgstr ""
+msgstr "Licence ellenőrzése&hellip;"
 
 #: includes/class-settings.php:156
 msgid "Activate License"
-msgstr ""
+msgstr "Licence aktiválása"
 
 #: includes/class-settings.php:157
 msgid "Deactivate License"
-msgstr ""
+msgstr "Licence inaktívvá tétele"
 
 #: includes/class-settings.php:158
 msgid "Verify License"
-msgstr ""
+msgstr "Lincence ellenőrzése"
 
 #: includes/class-settings.php:185
 msgid "License Key"
@@ -1189,17 +1190,17 @@ msgstr "Licensz kulcs"
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
-msgstr ""
+msgstr "Írja be a lincence kulcsot, melyet a vásárlás során kapott. Ezzel bekapcsolja a bővítmény frissítési &amp; támogatást."
 
 #: includes/class-settings.php:193
 msgid "Support Email"
-msgstr ""
+msgstr "E-mail a Támogatásnak"
 
 #: includes/class-settings.php:194
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
-msgstr ""
+msgstr "Annak érdekében, hogy válaszolni tudjon a Támogatás a levelére, kérjük adja meg e-mail címét."
 
 #: includes/class-settings.php:199
 msgid "No-Conflict Mode"
@@ -1238,15 +1239,15 @@ msgstr "Táblázat látható oszlopai"
 
 #: includes/default-templates.php:57
 msgid "Each field will be displayed as a column in the table."
-msgstr ""
+msgstr "Minden egyes mező oszlopként fog megjelenni a táblázatban."
 
 #: includes/default-templates.php:81
 msgid "Edit Table"
-msgstr ""
+msgstr "Tábla szerkesztése"
 
 #: includes/default-templates.php:100
 msgid "Visible Edit Fields"
-msgstr ""
+msgstr "Látható szerkesztési mezők"
 
 #: includes/default-templates.php:126
 msgid "List (default)"
@@ -1270,7 +1271,7 @@ msgstr "Kép"
 
 #: includes/default-templates.php:153
 msgid "Other Fields"
-msgstr ""
+msgstr "Egyéb mezők"
 
 #: includes/default-templates.php:157
 msgid "Footer Left"
@@ -1362,7 +1363,7 @@ msgstr "Képernyőképekkel mutatja be a beküldött weboldalakat."
 
 #: includes/default-widgets.php:31
 msgid "Summary of the number of visible entries out of the total results."
-msgstr ""
+msgstr "A látható bejegyzések számának összessége több az eredménynél"
 
 #: includes/default-widgets.php:40
 msgid "Show Pagination Info"
@@ -1375,7 +1376,7 @@ msgstr "Megjelenítés: %1$s - %2$s / %3$s"
 
 #: includes/default-widgets.php:100
 msgid "Links to multiple pages of results."
-msgstr ""
+msgstr "Link több találati oldalra."
 
 #: includes/default-widgets.php:105
 msgid "Show each page number"
@@ -1383,233 +1384,233 @@ msgstr "Mutass minden oldalszámot"
 
 #: includes/default-widgets.php:106
 msgid "Show every page number instead of summary (eg: 1 2 3 ... 8 »)"
-msgstr ""
+msgstr "Mutassa az összes lapszámot összegzés (pl: 1 2 3 ... 8 ») helyett"
 
 #: includes/default-widgets.php:109
 msgid "Page Links"
-msgstr ""
+msgstr "Oldal linkek"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:107
 msgid "Delete Link Text"
-msgstr ""
+msgstr "Link szövegének törlése"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:109
 #: includes/extensions/delete-entry/class-delete-entry.php:138
 #: includes/extensions/delete-entry/class-delete-entry.php:154
 #: includes/extensions/delete-entry/fields/delete_link.php:12
 msgid "Delete Entry"
-msgstr ""
+msgstr "Bejegyzés törlése"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:115
 msgid "Allow the following users to delete the entry:"
-msgstr ""
+msgstr "Engedélyezi a következő felhasználóknak, hogy töröljék a bejegyzést"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:140
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
-msgstr ""
+msgstr "Egy link a bejegyzés törléséhez. A bejegyzés törlés engedélyek tiszteletben tartása mellett."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:186
 #: includes/extensions/edit-entry/class-edit-entry.php:324
 msgctxt "User capability"
 msgid "Entry Creator"
-msgstr ""
+msgstr "Bejegyzés készítő"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:275
 msgid "Delete"
-msgstr ""
+msgstr "Törlés"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:352
 msgid "The entry does not exist."
-msgstr ""
+msgstr "A bejegyzés nem létezik."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:397
 msgid "Are you sure you want to delete this entry? This cannot be undone."
-msgstr ""
+msgstr "Biztos vagy benne, hogy törölni szeretnéd ezt a bejegyzést? Nem lehet visszacsinálni."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:426
 msgid "The link to delete this entry is not valid; it may have expired."
-msgstr ""
+msgstr "A bejegyzés törléséhez tartozó link helytelen; lehet, hogy lejárt."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:430
 msgid "You do not have permission to delete this entry."
-msgstr ""
+msgstr "Nincs engedélyed a bejegyzés törléséhez."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:434
 msgid "You cannot delete the entry; it is already in the trash."
-msgstr ""
+msgstr "Nem törölheted a bejegyzést; már a kukában van."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:554
 #, php-format
 msgid "There was an error deleting the entry: %s"
-msgstr ""
+msgstr "Hiba történt a bejegyzés törlése során: %s"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:559
 msgid "The entry was successfully deleted."
-msgstr ""
+msgstr "A bejegyzés sikeresen törlésre került."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:203
 msgid "Edit Link Text"
-msgstr ""
+msgstr "Link szöveg szerkesztése"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:222
 msgid "Limiting Edit Access"
-msgstr ""
+msgstr "Szerkesztési hozzájárulás korlátozása"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:223
 msgid ""
 "Change this setting if you don't want the user who created the entry to be "
 "able to edit this field."
-msgstr ""
+msgstr "Változtasd meg ezt a beállítást, ha nem akarod, hogy a felhasználó, aki ezt a bejegyzést létrehozta szerkeszteni tudja a mezőt."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:252
 msgid "Make field editable to:"
-msgstr ""
+msgstr "Tedd a mezőt szerkeszthetővé a következő számára:"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:278
 msgid "A link to edit the entry. Visible based on View settings."
-msgstr ""
+msgstr "Link a bejegyzés szerkesztéséhez. Látható a View beállítások alapján."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:671
 msgid "Details"
-msgstr ""
+msgstr "Részletek"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:935
 msgid "Maximum number of files reached"
-msgstr ""
+msgstr "Az elért fájlok maximális száma"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:1010
 msgid "You do not have permission to edit this field."
-msgstr ""
+msgstr "Nincs engedélyed a mező szerkesztésére."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:1068
 msgid "The link to edit this entry is not valid; it may have expired."
-msgstr ""
+msgstr "A bejegyzés szerkesztéséhez tartozó link helytelen; lehet, hogy lejárt."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:1072
 msgid "You do not have permission to edit this entry."
-msgstr ""
+msgstr "Nincs engedélyed a bejegyzése szerkesztéséhez."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:1076
 msgid "You cannot edit the entry; it is in the trash."
-msgstr ""
+msgstr "Nem tudod a bejegyzést szerkeszteni; a kukában van."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:1190
 msgid "There was a problem with your submission."
-msgstr ""
+msgstr "Probléma merült fel a beküldéssel."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:1190
 msgid "Errors have been highlighted below."
-msgstr ""
+msgstr "A hiba kiemelésre került lentebb."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:1196
 #, php-format
 msgid "Entry Updated. %sReturn to Entry%s"
-msgstr ""
+msgstr "Bejegyzés frissítve. %sVisszatérés a bejegyzéshez%s"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:1246
 msgid "Update"
-msgstr ""
+msgstr "Frissít"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:34
 msgid "You don&rsquo;t have permission to edit this post."
-msgstr ""
+msgstr "Nincs engedélyed a hozzászólás szerkesztéséhez."
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:36
 #, php-format
 msgid "You can %sedit this post%s from the post page."
-msgstr ""
+msgstr "%sszerkesztheted a hozzászólást%s a hozzászólás oldaláról."
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:100
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:119
 msgid "Allowed Files"
-msgstr ""
+msgstr "Engedélyezett fájlok"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:132
 msgid "Drop files here or"
-msgstr ""
+msgstr "Dobj ide fájlokat vagy"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:132
 msgid "Select files"
-msgstr ""
+msgstr "Válaszd ki a fájlokat"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:158
 msgid "Download file"
-msgstr ""
+msgstr "Fájl letöltése"
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:158
 msgid "Delete file"
-msgstr ""
+msgstr "Fájl törlése"
 
 #: includes/extensions/edit-entry/inline-javascript.php:4
 msgid ""
 "Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to "
 "delete"
-msgstr ""
+msgstr "Szeretnéd ideiglenesen törölni ezt a fájt? 'Mégsem' a folyamat leállítása. 'OK' a törlés."
 
 #: includes/extensions/edit-entry/inline-javascript.php:14
 msgid "Ajax error while deleting field."
-msgstr ""
+msgstr "Ajax hiba történt a mező törlése közben."
 
 #: includes/extensions/search-widget/class-search-widget.php:27
 msgid "Search form for searching entries."
-msgstr ""
+msgstr "Keresési mező a bejegyzések közötti kereséshez."
 
 #: includes/extensions/search-widget/class-search-widget.php:44
 msgid "Search Layout"
-msgstr ""
+msgstr "Keresés elrendezése"
 
 #: includes/extensions/search-widget/class-search-widget.php:47
 msgid "Horizontal"
-msgstr ""
+msgstr "Vízszintes"
 
 #: includes/extensions/search-widget/class-search-widget.php:48
 msgid "Vertical"
-msgstr ""
+msgstr "Függőleges"
 
 #: includes/extensions/search-widget/class-search-widget.php:52
 msgid "Search Bar"
-msgstr ""
+msgstr "Keresősáv"
 
 #: includes/extensions/search-widget/class-search-widget.php:97
 msgid "Text"
-msgstr ""
+msgstr "Szöveg"
 
 #: includes/extensions/search-widget/class-search-widget.php:98
 msgid "Date"
-msgstr ""
+msgstr "Dátum"
 
 #: includes/extensions/search-widget/class-search-widget.php:100
 msgid "Select (multiple values)"
-msgstr ""
+msgstr "Kiválaszt (több értéket)"
 
 #: includes/extensions/search-widget/class-search-widget.php:101
 msgid "Radio"
-msgstr ""
+msgstr "Rádió"
 
 #: includes/extensions/search-widget/class-search-widget.php:102
 #: includes/extensions/search-widget/class-search-widget.php:103
 msgid "Checkbox"
-msgstr ""
+msgstr "Jelölőnégyzet"
 
 #: includes/extensions/search-widget/class-search-widget.php:104
 msgid "Links"
-msgstr ""
+msgstr "Linkek"
 
 #: includes/extensions/search-widget/class-search-widget.php:123
 msgid "No search fields configured yet."
-msgstr ""
+msgstr "A keresési mező még nem lett beállítva."
 
 #: includes/extensions/search-widget/class-search-widget.php:124
 msgid "Add Search Field"
-msgstr ""
+msgstr "Keresési mező hozzáadása"
 
 #: includes/extensions/search-widget/class-search-widget.php:126
 msgid "Input Type"
-msgstr ""
+msgstr "Beviteli formátum"
 
 #: includes/extensions/search-widget/class-search-widget.php:185
 msgid "Search Everything"
-msgstr ""
+msgstr "Keresés mindenhol"
 
 #: includes/extensions/search-widget/class-search-widget.php:682
 msgctxt "Close calendar"
@@ -1619,26 +1620,26 @@ msgstr "Bezár"
 #: includes/extensions/search-widget/class-search-widget.php:683
 msgctxt "Previous month in calendar"
 msgid "Prev"
-msgstr ""
+msgstr "Előző"
 
 #: includes/extensions/search-widget/class-search-widget.php:684
 msgctxt "Next month in calendar"
 msgid "Next"
-msgstr ""
+msgstr "Következő"
 
 #: includes/extensions/search-widget/class-search-widget.php:685
 msgctxt "Today in calendar"
 msgid "Today"
-msgstr ""
+msgstr "Ma"
 
 #: includes/extensions/search-widget/class-search-widget.php:686
 msgctxt "Week in calendar"
 msgid "Week"
-msgstr ""
+msgstr "Hét"
 
 #: includes/extensions/search-widget/class-search-widget.php:687
 msgid "Show a different month"
-msgstr ""
+msgstr "Mutassa a különböző hónapokat"
 
 #: includes/extensions/search-widget/templates/search-field-entry_date.php:15
 msgid "Filter by date:"
@@ -1654,11 +1655,11 @@ msgstr "Befejező dátum"
 
 #: includes/extensions/search-widget/templates/search-field-entry_id.php:15
 msgid "Entry ID:"
-msgstr ""
+msgstr "Bejegyzés azonosító:"
 
 #: includes/extensions/search-widget/templates/search-field-link.php:12
 msgid "Show only:"
-msgstr ""
+msgstr "Mutassa csak a:"
 
 #: includes/extensions/search-widget/templates/search-field-search_all.php:16
 msgid "Search Entries:"
@@ -1670,117 +1671,117 @@ msgstr "Keresés"
 
 #: includes/fields/address.php:25
 msgid "Show Map Link:"
-msgstr ""
+msgstr "Mutassa a térkép linkjét:"
 
 #: includes/fields/address.php:26
 msgid "Display a \"Map It\" link below the address"
-msgstr ""
+msgstr "Mutassa a \"feltérképezés\" linket a cím alatt"
 
 #: includes/fields/class.field.php:25
 msgid "Link to the post"
-msgstr ""
+msgstr "Link a hozzászóláshoz"
 
 #: includes/fields/class.field.php:26
 msgid "Link to the post created by the entry."
-msgstr ""
+msgstr "Link az űrlap kitöltése által készített bejegyzéshez."
 
 #: includes/fields/class.field.php:31
 msgid "Link to the category or tag"
-msgstr ""
+msgstr "Link a kategóriához, vagy címkéhez"
 
 #: includes/fields/class.field.php:32
 msgid ""
 "Link to the current category or tag. \"Link to single entry\" must be "
 "unchecked."
-msgstr ""
+msgstr "Link a jelenlegi kategóriához vagy címkéhez. A \"Link a bejegyzéshez\"-t nem lehet bejelölni."
 
 #: includes/fields/class.field.php:37
 msgid "Use the live post data"
-msgstr ""
+msgstr "Használd a bejegyzés valós idejű adatait."
 
 #: includes/fields/class.field.php:38
 msgid "Instead of using the entry data, instead use the current post data."
-msgstr ""
+msgstr "Az űrlap kitöltésekor megadottak helyett a jelenlegi bejegyzés adatainak használata."
 
 #: includes/fields/class.field.php:43
 msgid "Override Date Format"
-msgstr ""
+msgstr "Adatformátum felülírása"
 
 #: includes/fields/class.field.php:44
 #, php-format
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
-msgstr ""
+msgstr "Határozza meg, hogy mutassa a dátumot (%sa PHP dátum formátum%s használatával)"
 
 #: includes/fields/created-by.php:15
 msgid "User Format"
-msgstr ""
+msgstr "Felhasználó formátum"
 
 #: includes/fields/created-by.php:16
 msgid "How should the User information be displayed?"
-msgstr ""
+msgstr "Hogy jelenjenek meg a felhasználó adatai?"
 
 #: includes/fields/created-by.php:18
 msgid "Display Name (Example: \"Ellen Ripley\")"
-msgstr ""
+msgstr "Név megjelenítése (Például: \"Ellen Ripley\")"
 
 #: includes/fields/created-by.php:19
 msgid "Username (Example: \"nostromo\")"
-msgstr ""
+msgstr "Felhasználónév: (Példa: \"nostromo\")"
 
 #: includes/fields/created-by.php:20
 msgid "User ID # (Example: 426)"
-msgstr ""
+msgstr "Felhasználó azonosító # (Például: 426)"
 
 #: includes/fields/custom.php:23
 msgid "Enter text or HTML. Also supports shortcodes."
-msgstr ""
+msgstr "Adjon meg szöveget, vagy HTML-t. A rövid kódokat is támogatja."
 
 #: includes/fields/custom.php:31
 msgid "Automatically add paragraphs to content"
-msgstr ""
+msgstr "Automatikusan adjon bekezdést a tartalomhoz"
 
 #: includes/fields/custom.php:32
 msgid ""
 "Wrap each block of text in an HTML paragraph tag (recommended for text)."
-msgstr ""
+msgstr "Minden szöveges egységet tegyen egy HTML bekezdés címkébe (szöveghez ajánlott)."
 
 #: includes/fields/email.php:23
 msgid "Link the Email Address"
-msgstr ""
+msgstr "Linkelje az e-mail címet"
 
 #: includes/fields/email.php:24
 msgid "Clicking the link will generate a new email."
-msgstr ""
+msgstr "A linkre kattintva egy új e-mail jön létre."
 
 #: includes/fields/email.php:28
 msgid "Email Subject"
-msgstr ""
+msgstr "E-mail Tárgya"
 
 #: includes/fields/email.php:30
 msgid "Set the default email subject line."
-msgstr ""
+msgstr "Állítsd be az alapértelmezett e-mail tárgyat."
 
 #: includes/fields/email.php:35
 msgid "Email Body"
-msgstr ""
+msgstr "E-mail test"
 
 #: includes/fields/email.php:37
 msgid "Set the default email content."
-msgstr ""
+msgstr "Alapértelmezett e-mail tartalom beállítása."
 
 #: includes/fields/email.php:44
 msgid "Encrypt Email Address"
-msgstr ""
+msgstr "E-mail címek titkosítása"
 
 #: includes/fields/email.php:45
 msgid ""
 "Make it harder for spammers to get email addresses from your entries. Email "
 "addresses will not be visible with Javascript disabled."
-msgstr ""
+msgstr "Tedd nehezebbé a spammerek számára, hogy a bejegyzésekből e-mail címeket szerezzenek meg. Az e-mail címek nem lesznek láthatóak kikapcsolt Javascripttel."
 
 #: includes/fields/entry-link.php:22 includes/fields/source-url.php:29
 msgid "Link Text:"
-msgstr ""
+msgstr "Link szövege:"
 
 #: includes/fields/entry-link.php:24 templates/fields/entry_link.php:10
 msgid "View Details"
@@ -1788,73 +1789,73 @@ msgstr "Nézet részletei"
 
 #: includes/fields/fileupload.php:20
 msgid "Display as a Link:"
-msgstr ""
+msgstr "Link-ként mutassa:"
 
 #: includes/fields/fileupload.php:21
 msgid "Display the uploaded files as links, rather than embedded content."
-msgstr ""
+msgstr "A feltöltött fájlokat linkekként mutassa, beágyazott tartalmak helyett."
 
 #: includes/fields/source-url.php:22
 msgid "Link to URL:"
-msgstr ""
+msgstr "Link URL címhez:"
 
 #: includes/fields/source-url.php:23
 msgid "Display as a link to the Source URL"
-msgstr ""
+msgstr "Mutassa, mint linket a forrás URL-hez."
 
 #: includes/fields/source-url.php:30
 msgid "Customize the link text. If empty, the link text will be the the URL."
-msgstr ""
+msgstr "Link szöveg testreszabása. Ha üres, a link szöveg maga az URL cím lesz."
 
 #: includes/fields/textarea.php:20
 msgid "Maximum words shown"
-msgstr ""
+msgstr "Legtöbb szó mutatása"
 
 #: includes/fields/textarea.php:21
 msgid ""
 "Enter the number of words to be shown. If specified it truncates the text. "
 "Leave it blank if you want to show the full text."
-msgstr ""
+msgstr "Írd be a megjeleníteni kívánt szavak számát. Csonkíthatja a szöveget. Hagy üresen, ha a teljes szöveget meg akarod jeleníteni."
 
 #: includes/fields/website.php:22
 msgid "Shorten Link Display"
-msgstr ""
+msgstr "Rövid link megjelenítés"
 
 #: includes/fields/website.php:23
 msgid "Only show the domain for a URL instead of the whole link."
-msgstr ""
+msgstr "A teljes elérési cím helyett, csak az URL domaint mutassa."
 
 #: includes/fields/website.php:24
 msgid "Don&rsquo;t show the full URL, only show the domain."
-msgstr ""
+msgstr "Ne mutassa a teljes URL címet, csak a domaint."
 
 #: includes/fields/website.php:30
 msgid "Open link in the same window?"
-msgstr ""
+msgstr "Megnyitod a linket ebben az ablakban?"
 
 #: templates/fields/email.php:65
 msgid "Email hidden; Javascript is required."
-msgstr ""
+msgstr "Rejtett e-mail; Javascript szükséges."
 
 #: templates/fields/is_fulfilled.php:8
 msgid "Not Fulfilled"
-msgstr ""
+msgstr "Nem teljesült"
 
 #: templates/fields/is_fulfilled.php:10
 msgid "Fulfilled"
-msgstr ""
+msgstr "Teljesült"
 
 #: templates/fields/post_image.php:85
 msgctxt "Post Image field title heading"
 msgid "Title:"
-msgstr ""
+msgstr "Cím:"
 
 #: templates/fields/post_image.php:91
 msgctxt "Post Image field caption heading"
 msgid "Caption:"
-msgstr ""
+msgstr "Felirat:"
 
 #: templates/fields/post_image.php:97
 msgctxt "Post Image field description heading"
 msgid "Description:"
-msgstr ""
+msgstr "Leírás:"

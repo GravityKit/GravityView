@@ -31,6 +31,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Searches with quotes now work properly
 * Added: 'clear' results button to your GravityView Search Bar
 * Added: Hide View data until a search is performed
+* Updated: Swedish translation - thanks, [@adamrehal](https://www.transifex.com/accounts/profile/adamrehal/)
+* Updated: Hungarian translation - thanks, [@Darqebus](https://www.transifex.com/accounts/profile/Darqebus/) (a new translator!) and [@dbalage](https://www.transifex.com/accounts/profile/dbalage/)
 
 = 1.5.3 on December 22 =
 * Fixed: When adding more than 100 fields to the View some fields weren't saved.

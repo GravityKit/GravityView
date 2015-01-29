@@ -1,12 +1,12 @@
 # 
 # Translators:
-# Adam Rehal <adam.rehal@nineyards.se>, 2014
+# Adam Rehal <adam.rehal@nineyards.se>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2014-12-22 14:33-0700\n"
-"PO-Revision-Date: 2014-12-11 23:25+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2015-01-18 19:21+0000\n"
+"Last-Translator: Adam Rehal <adam.rehal@nineyards.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/gravityview/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -220,11 +220,11 @@ msgstr "Dessa fält visas i Vyn för enskilda inlägg."
 
 #: includes/admin/metaboxes.php:325
 msgid "Fields shown when editing an entry."
-msgstr ""
+msgstr "Fält som visas när ett inlägg redigeras."
 
 #: includes/admin/metaboxes.php:325
 msgid "If not configured, all form fields will be displayed."
-msgstr ""
+msgstr "Om ingen inställning görs kommer alla fält att visas"
 
 #: includes/admin/metaboxes.php:387
 msgid "Single Entry Settings"
@@ -788,18 +788,18 @@ msgstr "Karta"
 
 #: includes/class-change-entry-creator.php:54
 msgid "Error"
-msgstr ""
+msgstr "Fel"
 
 #: includes/class-change-entry-creator.php:56
 msgid "Success"
-msgstr ""
+msgstr "Lyckades"
 
 #: includes/class-change-entry-creator.php:59
 #, php-format
 msgctxt ""
 "First parameter: Success or error of the action. Second: User ID number"
 msgid "%s: Assigned User ID #%d as the entry creator."
-msgstr ""
+msgstr "%s: satte användar- ID #%d som inläggsskapare"
 
 #: includes/class-change-entry-creator.php:163
 #, php-format
@@ -897,22 +897,22 @@ msgstr "Tillåt inloggade användare att redigera inlägg de skapat."
 msgid ""
 "Display \"Edit Entry\" fields to non-administrator users if they created the"
 " entry. Edit Entry fields will always be displayed to site administrators."
-msgstr ""
+msgstr "Visa \"Redigera inlägg\" för inläggets skapare även om hen inte är administratör. Visas alltid för administratörer."
 
 #: includes/class-data.php:364
 msgid "Allow User Delete"
-msgstr ""
+msgstr "Tillåt radering av användare"
 
 #: includes/class-data.php:366
 msgid "Allow logged-in users to delete entries they created."
-msgstr ""
+msgstr "Tillåt inloggade användare att redigera inlägg de skapat."
 
 #: includes/class-data.php:368
 msgid ""
 "Display \"Delete Entry\" fields to non-administrator users if they created "
 "the entry. Delete Entry fields will always be displayed to site "
 "administrators."
-msgstr ""
+msgstr "Visa \"Radera inlägg\" för inläggets skapare även om hen inte är administratör. Visas alltid för administratörer."
 
 #: includes/class-data.php:373
 msgid "Sort by field"
@@ -1016,7 +1016,7 @@ msgstr "Tom"
 #: includes/class-frontend-views.php:380
 msgid ""
 "You have attempted to view an entry that is not visible or may not exist."
-msgstr ""
+msgstr "Du försökte visa ett inlägg som inte är synligt eller kanske inte existerar."
 
 #: includes/class-gravityview-extension.php:173
 #, php-format
@@ -1242,11 +1242,11 @@ msgstr "Varje fält visas som en kolumn i tabellen."
 
 #: includes/default-templates.php:81
 msgid "Edit Table"
-msgstr ""
+msgstr "Redigera tabell"
 
 #: includes/default-templates.php:100
 msgid "Visible Edit Fields"
-msgstr ""
+msgstr "Synliga redigeringsfält"
 
 #: includes/default-templates.php:126
 msgid "List (default)"
@@ -1391,61 +1391,61 @@ msgstr "Sidlänkar"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:107
 msgid "Delete Link Text"
-msgstr ""
+msgstr "Radera länktext"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:109
 #: includes/extensions/delete-entry/class-delete-entry.php:138
 #: includes/extensions/delete-entry/class-delete-entry.php:154
 #: includes/extensions/delete-entry/fields/delete_link.php:12
 msgid "Delete Entry"
-msgstr ""
+msgstr "Radera inlägg"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:115
 msgid "Allow the following users to delete the entry:"
-msgstr ""
+msgstr "Låt följande användare radera inlägg:"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:140
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
-msgstr ""
+msgstr "En länk till radering av inlägget. Respekterar rättigheter för radering av inlägg."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:186
 #: includes/extensions/edit-entry/class-edit-entry.php:324
 msgctxt "User capability"
 msgid "Entry Creator"
-msgstr ""
+msgstr "Inläggets skapare"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:275
 msgid "Delete"
-msgstr ""
+msgstr "Radera"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:352
 msgid "The entry does not exist."
-msgstr ""
+msgstr "Inlägget finns inte"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:397
 msgid "Are you sure you want to delete this entry? This cannot be undone."
-msgstr ""
+msgstr "Är du säker på att du vill radera detta inlägg? Detta kan inte ångras."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:426
 msgid "The link to delete this entry is not valid; it may have expired."
-msgstr ""
+msgstr "Länken för att radera detta inlägg är inte giltig; den kan ha gått ut."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:430
 msgid "You do not have permission to delete this entry."
-msgstr ""
+msgstr "Du har inte tillåtelse att radera detta inlägg."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:434
 msgid "You cannot delete the entry; it is already in the trash."
-msgstr ""
+msgstr "Du kan inte radera detta inlägg; det ligger redan i papperskorgen."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:554
 #, php-format
 msgid "There was an error deleting the entry: %s"
-msgstr ""
+msgstr "Ett fel uppstod när inlägget %s skulle raderas"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:559
 msgid "The entry was successfully deleted."
-msgstr ""
+msgstr "Inlägget raderades."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:203
 msgid "Edit Link Text"
@@ -1453,17 +1453,17 @@ msgstr "Redigera textlänk"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:222
 msgid "Limiting Edit Access"
-msgstr ""
+msgstr "Begränsa redigeringsmöjligheter"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:223
 msgid ""
 "Change this setting if you don't want the user who created the entry to be "
 "able to edit this field."
-msgstr ""
+msgstr "Ändra denna inställning om du inte vill att användaren som skapade inlägget skall kunna redigera detta fält."
 
 #: includes/extensions/edit-entry/class-edit-entry.php:252
 msgid "Make field editable to:"
-msgstr ""
+msgstr "Gör fältet redigerbart för:"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:278
 msgid "A link to edit the entry. Visible based on View settings."
@@ -1471,15 +1471,15 @@ msgstr "Länk för att redigera inlägget. Synlig beroende på Vy-inställningar
 
 #: includes/extensions/edit-entry/class-edit-entry.php:671
 msgid "Details"
-msgstr ""
+msgstr "Detaljer"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:935
 msgid "Maximum number of files reached"
-msgstr ""
+msgstr "Maxgränsen för filer har uppnåtts"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:1010
 msgid "You do not have permission to edit this field."
-msgstr ""
+msgstr "Du har inte tillåtelse att redigera detta fält"
 
 #: includes/extensions/edit-entry/class-edit-entry.php:1068
 msgid "The link to edit this entry is not valid; it may have expired."
@@ -1654,7 +1654,7 @@ msgstr "Slutdatum"
 
 #: includes/extensions/search-widget/templates/search-field-entry_id.php:15
 msgid "Entry ID:"
-msgstr ""
+msgstr "Inläggs-ID:"
 
 #: includes/extensions/search-widget/templates/search-field-link.php:12
 msgid "Show only:"
@@ -1808,13 +1808,13 @@ msgstr "Redigera länktexten. Om fältet lämnas tomt blir URL:en länkad."
 
 #: includes/fields/textarea.php:20
 msgid "Maximum words shown"
-msgstr ""
+msgstr "Max antal ord att visa"
 
 #: includes/fields/textarea.php:21
 msgid ""
 "Enter the number of words to be shown. If specified it truncates the text. "
 "Leave it blank if you want to show the full text."
-msgstr ""
+msgstr "Ange antal ord som skall visas innan texten klipps. Lämna tomt för att visa hela texten."
 
 #: includes/fields/website.php:22
 msgid "Shorten Link Display"
@@ -1830,7 +1830,7 @@ msgstr "Visa inte hela URL:en utan endast domänen."
 
 #: includes/fields/website.php:30
 msgid "Open link in the same window?"
-msgstr ""
+msgstr "Öppna länk i samma fönster?"
 
 #: templates/fields/email.php:65
 msgid "Email hidden; Javascript is required."
