@@ -344,15 +344,29 @@ class GravityView_Widget {
 	 * @return array $settings Default settings
 	 */
 	protected function get_default_settings() {
-		return array(
-			'custom_class' => array(
+
+		$settings = array();
+
+		/**
+		 * Enable custom class for widgets
+		 * @param boolean False by default. Return true if you want to enable.
+		 * @param GravityView_Widget Current instance of GravityView_Widget
+		 */
+		$enable_custom_class = apply_filters('gravityview/widget/enable_custom_class', false, $this );
+
+		if( $enable_custom_class ) {
+
+			$settings['custom_class'] = array(
 				'type' => 'text',
 				'label' => __( 'Custom CSS Class:', 'gravityview' ),
 				'desc' => __( 'This class will be added to the widget container', 'gravityview'),
 				'value' => '',
 				'merge_tags' => true,
-			)
-		);
+			);
+
+		}
+
+		return $settings;
 	}
 
 	/**
