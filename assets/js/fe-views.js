@@ -20,7 +20,7 @@ jQuery(document).ready( function( $ ) {
 			this.cookies();
 			this.datepicker();
 
-			$('.gv-widget-search').on('keyup change', this.form_changed);
+			$('.gv-widget-search').on('keypress change', this.form_changed);
 
 			$('.gv-search-clear').on('click', this.clear_search );
 
@@ -34,6 +34,11 @@ jQuery(document).ready( function( $ ) {
 		 * @param e jQuery Event
 		 */
 		form_changed: function( e ) {
+
+			// Only trigger change on characters, not Shift or Command/Alt
+			if( e.type === 'keypress' && ( e.which === 0 || e.ctrlKey || e.metaKey || e.altKey ) ) {
+				return;
+			}
 
 			$(this).attr('data-form-changed', 1 );
 
