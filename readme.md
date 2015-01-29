@@ -23,8 +23,11 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 ### 1.5.4 ###
 * Added: "Hide View data until search is performed" setting - only show the Search Bar until a search is entered
 * Added: "Clear" button to your GravityView Search Bar - allows easy way to remove all searches & filters
+* Added: You can now add Custom Content GravityView Widgets (not just fields) - add custom text or HTMLin the header or footer of a View
 * Added: `gravityview/comments_open` filter to modify whether comments are open or closed for GravityView posts (previously always false)
 * Added: Hook to filter the success Edit Entry message and link `gravityview/edit_entry/success`
+* Added: Possibility to add custom CSS classes to multiple view widget wrapper
+* Added: Field option to enable Live Post Data for Post Image field
 * Fixed: Loading translation files for Extensions
 * Fixed: Edit entry when embedding multiple views for the same form in the same page
 * Fixed: Conflicts with Advanced Filter extension when embedding multiple views for the same form in the same page

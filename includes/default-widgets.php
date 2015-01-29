@@ -75,7 +75,10 @@ class GravityView_Widget_Pagination_Info extends GravityView_Widget {
 		 */
 		list( $first, $last, $total ) = apply_filters( 'gravityview_pagination_counts', array( $first, $last, $total ) );
 
-		$output = '<div class="gv-widget-pagination"><p>'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravityview' ), $first , $last , $total ) . '</p></div>';
+		$class = !empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
+		$class = gravityview_sanitize_html_class( $class );
+
+		$output = '<div class="gv-widget-pagination '.$class.'"><p>'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravityview' ), $first , $last , $total ) . '</p></div>';
 
 		echo apply_filters( 'gravityview_pagination_output', $output, $first, $last, $total );
 
@@ -153,7 +156,9 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 		$page_links = paginate_links( $page_link_args );
 
 		if( !empty( $page_links )) {
-			echo '<div class="gv-widget-page-links">'. $page_links .'</div>';
+			$class = !empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
+			$class = gravityview_sanitize_html_class( $class );
+			echo '<div class="gv-widget-page-links '.$class.'">'. $page_links .'</div>';
 		} else {
 			do_action( 'gravityview_log_debug', 'GravityView_Widget_Page_Links[render_frontend] No page links; paginate_links() returned empty response.' );
 		}
@@ -161,6 +166,98 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 	}
 
 } // GravityView_Widget_Page_Links
+
+
+/**
+ * Widget to add custom content
+ *
+ * @since 1.5.4
+ *
+ * @extends GravityView_Widget
+ */
+class GravityView_Widget_Custom_Content extends GravityView_Widget {
+
+	/**
+	 * Does this get displayed on a single entry?
+	 * @var boolean
+	 */
+	protected $show_on_single = false;
+
+	function __construct() {
+
+		$this->widget_description = __('Insert custom text or HTML as a widget', 'gravityview' );
+
+		$default_values = array(
+			'header' => 1,
+			'footer' => 1,
+		);
+
+		$settings = array(
+			'content' => array(
+				'type' => 'textarea',
+				'label' => __( 'Custom Content', 'gravityview' ),
+				'desc' => __( 'Enter text or HTML. Also supports shortcodes.', 'gravityview' ),
+				'value' => '',
+				'class'	=> 'code',
+				'merge_tags' => false,
+				'show_all_fields' => true, // Show the `{all_fields}` and `{pricing_fields}` merge tags
+			),
+			'wpautop' => array(
+				'type' => 'checkbox',
+				'label' => __( 'Automatically add paragraphs to content', 'gravityview' ),
+				'tooltip' => __( 'Wrap each block of text in an HTML paragraph tag (recommended for text).', 'gravityview' ),
+				'value' => '',
+			),
+		);
+
+		parent::__construct( __( 'Custom Content', 'gravityview' ) , 'custom_content', $default_values, $settings );
+	}
+
+	public function render_frontend( $widget_args, $content = '', $context = '') {
+
+		if( !$this->pre_render_frontend() ) {
+			return;
+		}
+
+		if( !empty( $widget_args['title'] ) ) {
+			echo $widget_args['title'];
+		}
+
+
+		// Make sure the class is loaded in DataTables
+		if( !class_exists( 'GFFormDisplay' ) ) {
+			include_once( GFCommon::get_base_path() . '/form_display.php' );
+		}
+
+		$widget_args['content'] = trim( rtrim( $widget_args['content'] ) );
+
+		// No custom content
+		if( empty( $widget_args['content'] ) ) {
+			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: No content.', get_class($this)) );
+			return;
+		}
+
+		// Add paragraphs?
+		if( !empty( $widget_args['wpautop'] ) ) {
+			$widget_args['content'] = wpautop( $widget_args['content'] );
+		}
+
+		// Enqueue scripts needed for Gravity Form display, if form shortcode exists.
+		// Also runs `do_shortcode()`
+		$content = GFCommon::gform_do_shortcode( $widget_args['content'] );
+
+		// Add custom class
+		$class = !empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
+		$class = gravityview_sanitize_html_class( $class );
+
+		echo '<div class="gv-widget-custom-content '.$class.'">'. $content .'</div>';
+
+	}
+
+} // GravityView_Widget_Custom_Content
+
+
+
 
 
 /**
@@ -221,6 +318,7 @@ class GravityView_Widget {
 		$this->defaults = array_merge( array( 'header' => 0, 'footer' => 0 ), $defaults );
 
 		// Make sure every widget has a title, even if empty
+		$this->settings = $this->get_default_settings();
 		$this->settings = wp_parse_args( $settings, $this->settings );
 
 		// register widgets to be listed in the View Configuration
@@ -237,6 +335,24 @@ class GravityView_Widget {
 
 		// Use shortcodes in text widgets.
 		add_filter('widget_text', array( $this, 'maybe_do_shortcode' ) );
+	}
+
+
+	/**
+	 * Define general widget settings
+	 * @since 1.5.4
+	 * @return array $settings Default settings
+	 */
+	protected function get_default_settings() {
+		return array(
+			'custom_class' => array(
+				'type' => 'text',
+				'label' => __( 'Custom CSS Class:', 'gravityview' ),
+				'desc' => __( 'This class will be added to the widget container', 'gravityview'),
+				'value' => '',
+				'merge_tags' => true,
+			)
+		);
 	}
 
 	/**
@@ -363,7 +479,7 @@ class GravityView_Widget {
 			return false;
 		}
 
-		if( $gravityview_view->hide_until_searched ) {
+		if( apply_filters( 'gravityview/widget/hide_until_searched', $gravityview_view->hide_until_searched, $this ) ) {
 			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: Hide View data until search is performed', get_class($this)) );
 			return false;
 		}
@@ -376,3 +492,4 @@ class GravityView_Widget {
 
 new GravityView_Widget_Pagination_Info;
 new GravityView_Widget_Page_Links;
+new GravityView_Widget_Custom_Content;

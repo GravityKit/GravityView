@@ -530,6 +530,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$gravityview_view->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this );
 
 		$gravityview_view->search_layout = !empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal';
+
+		$custom_class = !empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
+
+		$gravityview_view->search_class = self::get_search_class( $custom_class );
+
 		$gravityview_view->search_clear = !empty( $widget_args['search_clear'] ) ? $widget_args['search_clear'] : false;
 
 		if( $has_date ) {
@@ -548,10 +553,14 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 *
 	 * @return string Sanitized CSS class for the search form
 	 */
-	static function get_search_class() {
+	static function get_search_class( $custom_class = '' ) {
 		global $gravityview_view;
 
 		$search_class = 'gv-search-'.$gravityview_view->search_layout;
+
+		if( !empty( $custom_class )  ) {
+			$search_class .= ' '.$custom_class;
+		}
 
 		/**
 		 * Modify the CSS class for the search form
@@ -681,6 +690,23 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 
 		return $choices;
+	}
+
+
+	/**
+	 * Output the Clear Search Results button
+	 * @since 1.5.4
+	 */
+	public static function the_clear_search_button() {
+		global $gravityview_view;
+
+		if( $gravityview_view->search_clear ) :
+
+			$url = strtok( add_query_arg( array() ), '?' );
+			?>
+			<a href="<?php echo esc_url( $url ); ?>" class="button gv-search-clear"><?php esc_html_e( 'Clear', 'gravityview' ); ?></a>
+
+		<?php endif;
 	}
 
 
