@@ -541,6 +541,32 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	}
 
 	/**
+	 * Get the search class for a search form
+	 *
+	 * @global $gravityview_view
+	 * @since 1.5.4
+	 *
+	 * @return string Sanitized CSS class for the search form
+	 */
+	static function get_search_class() {
+		global $gravityview_view;
+
+		$search_class = 'gv-search-'.$gravityview_view->search_layout;
+
+		/**
+		 * Modify the CSS class for the search form
+		 *
+		 * @param string $search_class The CSS class for the search form
+		 */
+		$search_class = apply_filters( 'gravityview_search_class', $search_class );
+
+		// Is there an active search being performed? Used by fe-views.js
+		$search_class .= GravityView_frontend::getInstance()->is_search ? ' gv-is-search' : '';
+
+		return gravityview_sanitize_html_class( $search_class );
+	}
+
+	/**
 	 * Get the label for a search form field
 	 * @param  array $field      Field setting as sent by the GV configuration - has `field` and `input` (input type) keys
 	 * @param  array $form_field Form field data, as fetched by `gravityview_get_field()`

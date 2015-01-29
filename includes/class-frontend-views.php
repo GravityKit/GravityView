@@ -122,9 +122,7 @@ class GravityView_frontend {
 		$this->post_has_shortcode = empty( $this->is_gravityview_post_type ) ? !empty( $post_has_shortcode ) : NULL;
 
 		// check if the View is showing search results (only for multiple entries View)
-		if( empty( $this->single_entry ) ) {
-			$this->is_searching();
-		}
+		$this->is_search = $this->is_searching();
 
 	}
 
@@ -132,18 +130,39 @@ class GravityView_frontend {
 	 * Checks if the current View is presenting search results
 	 *
 	 * @since 1.5.4
+	 *
+	 * @return boolean True: Yes, it's a search; False: No, not a search.
 	 */
 	function is_searching() {
+		global $wp_query;
 
-		if( empty( $_GET ) || !is_array( $_GET ) ) {
-			return;
+		// Single entry
+		if( $this->single_entry ) {
+			return false;
 		}
+
+		// No $_GET parameters
+		if( empty( $_GET ) || !is_array( $_GET ) ) {
+			return false;
+		}
+
+		// Get the value of $_GET
+		$search_values = implode( '', array_values( $_GET ) );
+
+		// If the $_GET parameters are set, but they're empty, it's no search.
+		if ( empty( $search_values ) ) {
+			return false;
+		}
+
 
 		$search_keys = implode( '', array_keys( $_GET ) );
 
+		// Analyze the $_GET parameters and see if they match known GV args
 		if( preg_match( '/(gv_search|gv_start|gv_end|gv_id|filter_*)/i', $search_keys ) ) {
-			$this->is_search = true;
+			return true;
 		}
+
+		return false;
 
 	}
 
@@ -806,7 +825,9 @@ class GravityView_frontend {
 			$views = $this->gv_output_data->get_views();
 
 			$js_localization = array(
-				'cookiepath' => COOKIEPATH
+				'cookiepath' => COOKIEPATH,
+				'clear' => _x('Clear', 'Clear all data from the form', 'gravityview'),
+				'reset' => _x('Reset', 'Reset the search form to the state that existed on page load', 'gravityview'),
 			);
 
 			foreach ( $views as $view_id => $data ) {

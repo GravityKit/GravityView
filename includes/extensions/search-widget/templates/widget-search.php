@@ -8,13 +8,12 @@
 global $gravityview_view, $wp_rewrite;
 
 $view_id = $gravityview_view->view_id;
-$search_class = gravityview_sanitize_html_class( apply_filters( 'gravityview_search_class', 'gv-search-'.$gravityview_view->search_layout ) );
 
 $has_inputs = false;
 
 ?>
 
-<form class="gv-widget-search <?php echo $search_class; ?>" method="get" action="<?php echo esc_url( add_query_arg( array() ) ); ?>">
+<form class="gv-widget-search <?php echo GravityView_Widget_Search::get_search_class(); ?>" method="get" action="<?php echo esc_url( add_query_arg( array() ) ); ?>">
 
 	<?php
 	do_action( 'gravityview_search_widget_fields_before' );
