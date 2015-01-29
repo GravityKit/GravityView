@@ -21,16 +21,16 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.5.4 =
-* Add `gravityview/comments_open` filter to modify whether comments are open or closed for GravityView posts (previously always false)
+* Added: "Hide View data until search is performed" setting - only show the Search Bar until a search is entered
+* Added: "Clear" button to your GravityView Search Bar - allows easy way to remove all searches & filters
+* Added: `gravityview/comments_open` filter to modify whether comments are open or closed for GravityView posts (previously always false)
+* Added: Hook to filter the success Edit Entry message and link `gravityview/edit_entry/success`
 * Fixed: Loading translation files for Extensions
 * Fixed: Edit entry when embedding multiple views for the same form in the same page
 * Fixed: Conflicts with Advanced Filter extension when embedding multiple views for the same form in the same page
 * Fixed: Go Back link on embedded single entry view was linking to direct view url instead of page permalink
-* Tweak: Moved `includes/css/`, `includes/js/` and `/images/` folders into `/assets/`
-* Added: Hook to filter the success Edit Entry message and link `gravityview/edit_entry/success`
 * Fixed: Searches with quotes now work properly
-* Added: 'clear' results button to your GravityView Search Bar
-* Added: Hide View data until a search is performed
+* Tweak: Moved `includes/css/`, `includes/js/` and `/images/` folders into `/assets/`
 * Updated: Swedish translation - thanks, [@adamrehal](https://www.transifex.com/accounts/profile/adamrehal/)
 * Updated: Hungarian translation - thanks, [@Darqebus](https://www.transifex.com/accounts/profile/Darqebus/) (a new translator!) and [@dbalage](https://www.transifex.com/accounts/profile/dbalage/)
 
