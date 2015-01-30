@@ -51,6 +51,17 @@
 	}
 }
 
+// On all Admin pages
+.post-type-gravityview {
 
+  .changelog ul {
+	list-style-type: square;
 
+	ul {
+	  list-style: circle;
+	  margin: .5em 0 .5em 1.3em;
+	}
+  }
+
+}
 

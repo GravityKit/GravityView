@@ -20,7 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 ## Changelog ##
 
-### 1.5.4 ###
+### 1.5.4 on January 29 ###
 * Added: "Hide View data until search is performed" setting - only show the Search Bar until a search is entered
 * Added: "Clear" button to your GravityView Search Bar - allows easy way to remove all searches & filters
 * Added: You can now add Custom Content GravityView Widgets (not just fields) - add custom text or HTMLin the header or footer of a View
@@ -34,6 +34,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Go Back link on embedded single entry view was linking to direct view url instead of page permalink
 * Fixed: Searches with quotes now work properly
 * Tweak: Moved `includes/css/`, `includes/js/` and `/images/` folders into `/assets/`
+* Tweak: Improved the display of the changelog (yes, "this is *so* meta!")
 * Updated: Swedish translation - thanks, [@adamrehal](https://www.transifex.com/accounts/profile/adamrehal/)
 * Updated: Hungarian translation - thanks, [@Darqebus](https://www.transifex.com/accounts/profile/Darqebus/) (a new translator!) and [@dbalage](https://www.transifex.com/accounts/profile/dbalage/)
 
