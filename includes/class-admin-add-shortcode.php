@@ -158,13 +158,13 @@ class GravityView_Admin_Add_Shortcode {
 		wp_enqueue_style( 'jquery-ui-datepicker', $protocol.'ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css', array(), GravityView_Plugin::version );
 
 		//enqueue styles
-		wp_register_style( 'gravityview_postedit_styles', plugins_url('includes/css/admin-post-edit.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
+		wp_register_style( 'gravityview_postedit_styles', plugins_url('assets/css/admin-post-edit.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
 		wp_enqueue_style( 'gravityview_postedit_styles' );
 
 		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
 		// custom js
-		wp_register_script( 'gravityview_postedit_scripts',  plugins_url('includes/js/admin-post-edit'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery', 'jquery-ui-datepicker' ), GravityView_Plugin::version );
+		wp_register_script( 'gravityview_postedit_scripts',  plugins_url('assets/js/admin-post-edit'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery', 'jquery-ui-datepicker' ), GravityView_Plugin::version );
 		wp_enqueue_script( 'gravityview_postedit_scripts' );
 		wp_localize_script('gravityview_postedit_scripts', 'gvGlobals', array(
 			'nonce' => wp_create_nonce( 'gravityview_ajaxaddshortcode'),

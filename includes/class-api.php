@@ -64,7 +64,7 @@ class GravityView_API {
 		if( empty( $matches ) ) {
 
 			// Check for form variables
-			if( !preg_match( '/\{(all_fields(:(.*?))?|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id|embed_url|date_mdy|date_dmy|embed_post:(.*?)|custom_field:(.*?)|user_agent|referer|user:(.*?))\}/ism', $text ) ) {
+			if( !preg_match( '/\{(all_fields(:(.*?))?|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id|embed_url|date_mdy|date_dmy|embed_post:(.*?)|custom_field:(.*?)|user_agent|referer|gv:(.*?)|user:(.*?))\}/ism', $text ) ) {
                 return $text;
             }
 		}
@@ -269,6 +269,12 @@ class GravityView_API {
 			$output = __('No entries match your request.', 'gravityview');
 		}
 
+		/**
+		 * Modify the text displayed when there are no entries.
+		 *
+		 * @param string $output The existing "No Entries" text
+		 * @param boolean $is_search Is the current page a search result, or just a multiple entries screen?
+		 */
 		$output = apply_filters( 'gravitview_no_entries_text', $output, $is_search);
 
 		return $wpautop ? wpautop($output) : $output;
@@ -447,7 +453,6 @@ class GravityView_API {
 	 * @return string          Link to the entry with the directory parent slug
 	 */
 	public static function entry_link( $entry, $post_id = NULL ) {
-		global $gravityview_view;
 
 		if( !is_array( $entry ) ) {
 			$entry = GVCommon::get_entry( $entry );
@@ -485,6 +490,13 @@ class GravityView_API {
 			$args['pagenum'] = intval( $_GET['pagenum'] );
 		}
 
+		// Check if we have multiple views embedded in the same page and in that case make sure the single entry link
+		// has the view id so that Advanced Filters can be applied correctly when rendering the single view
+		// @see GravityView_frontend::get_context_view_id
+		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->is_multiple_views ) {
+			$args['gvid'] = gravityview_get_view_id();
+		}
+
 		return add_query_arg( $args, $directory_link );
 
 	}
@@ -502,6 +514,24 @@ function gv_label( $field, $entry = NULL ) {
 function gv_class( $field, $form = NULL, $entry = array() ) {
 	return GravityView_API::field_class( $field, $form, $entry  );
 }
+
+function gv_container_class( $class = '' ) {
+
+	global $gravityview_view;
+
+	$default = ' gv-container';
+
+	if( $gravityview_view->hide_until_searched ) {
+		$default .= ' hidden';
+	}
+
+	$class = apply_filters( 'gravityview/render/container/class', $class . $default );
+
+	$class = gravityview_sanitize_html_class( $class );
+
+	echo $class;
+}
+
 
 /**
  * sanitize_html_class doesn't handle spaces (multiple classes). We remedy that.
@@ -565,7 +595,7 @@ function gravityview_back_link() {
 	// filter link label
 	$label = apply_filters( 'gravityview_go_back_label', $label );
 
-	return '<a href="'. $href .'" id="gravityview_back_link">'. esc_html( $label ) . '</a>';
+	return '<a href="'. $href .'" id="gravityview_back_link" data-viewid="'. $gravityview_view->view_id .'">'. esc_html( $label ) . '</a>';
 }
 
 /**
@@ -1022,3 +1052,4 @@ function gv_selected( $value, $current, $echo = true, $type = 'selected' ) {
 	}
 
 }
+

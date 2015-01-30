@@ -188,7 +188,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			// Whether to use lightbox or not
 			if( $disable_lightbox || empty( $gravityview_view->atts['lightbox'] ) || !empty( $field_settings['show_as_link'] ) ) {
 
-				$link_atts = "target='_blank'";
+				$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', "target='_blank'", $gravityview_view->field_data );
 
 			} else {
 

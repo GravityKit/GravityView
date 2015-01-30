@@ -4,12 +4,12 @@
 
  .gravityview_page_settings #wpcontent #redux-header {
  	padding: 0;
- 	background: url(../../images/stars.jpg) left top repeat;
+ 	background: url(../images/stars.jpg) left top repeat;
  }
 
  .gravityview_page_settings #redux-header .display_header {
  	min-height: 110px;
- 	background: url(../../images/astronaut-200x263.png) -30px top no-repeat;
+ 	background: url(../images/astronaut-200x263.png) -30px top no-repeat;
  	margin: 0;
  	padding: 10px 0 0 160px;
  }

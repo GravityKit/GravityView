@@ -48,8 +48,16 @@
 
 		&.gv-search-box-submit {
 			vertical-align: middle;
+
+		  	.gv-search-clear {
+			  	float: left;
+			  	margin-right: 5px;
+			}
+
 		}
+
 	}
+
 }
 
 .gv-widget-search {
@@ -73,4 +81,12 @@
 	.gv-search-box-links .active {
 		font-weight: bold;
 	}
+}
+
+.gv-search-clear {
+  display: none;
+
+  .gv-is-search & {
+	display: block;
+  }
 }

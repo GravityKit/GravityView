@@ -48,6 +48,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 					'vertical' => __( 'Vertical', 'gravityview' )
 				),
 			),
+			'search_clear' => array(
+				'type' => 'checkbox',
+				'label' => __( 'Show Clear button', 'gravityview' ),
+				'value' => false,
+			),
 		);
 		parent::__construct( __( 'Search Bar', 'gravityview' ) , 'search_bar', $default_values, $settings );
 
@@ -267,7 +272,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			foreach ( $words as $word ) {
 				$search_criteria['field_filters'][] = array(
 					'key' => null, // The field ID to search
-					'value' => esc_attr( $word ), // The value to search
+					'value' => $word, // The value to search
 					'operator' => 'contains', // What to search in. Options: `is` or `contains`
 				);
 			}
@@ -526,12 +531,48 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		$gravityview_view->search_layout = !empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal';
 
+		$custom_class = !empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
+
+		$gravityview_view->search_class = self::get_search_class( $custom_class );
+
+		$gravityview_view->search_clear = !empty( $widget_args['search_clear'] ) ? $widget_args['search_clear'] : false;
+
 		if( $has_date ) {
 			// enqueue datepicker stuff only if needed!
 			$this->enqueue_datepicker();
 		}
 
 		$gravityview_view->render('widget', 'search', false );
+	}
+
+	/**
+	 * Get the search class for a search form
+	 *
+	 * @global $gravityview_view
+	 * @since 1.5.4
+	 *
+	 * @return string Sanitized CSS class for the search form
+	 */
+	static function get_search_class( $custom_class = '' ) {
+		global $gravityview_view;
+
+		$search_class = 'gv-search-'.$gravityview_view->search_layout;
+
+		if( !empty( $custom_class )  ) {
+			$search_class .= ' '.$custom_class;
+		}
+
+		/**
+		 * Modify the CSS class for the search form
+		 *
+		 * @param string $search_class The CSS class for the search form
+		 */
+		$search_class = apply_filters( 'gravityview_search_class', $search_class );
+
+		// Is there an active search being performed? Used by fe-views.js
+		$search_class .= GravityView_frontend::getInstance()->is_search ? ' gv-is-search' : '';
+
+		return gravityview_sanitize_html_class( $search_class );
 	}
 
 	/**
@@ -649,6 +690,23 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 
 		return $choices;
+	}
+
+
+	/**
+	 * Output the Clear Search Results button
+	 * @since 1.5.4
+	 */
+	public static function the_clear_search_button() {
+		global $gravityview_view;
+
+		if( $gravityview_view->search_clear ) :
+
+			$url = strtok( add_query_arg( array() ), '?' );
+			?>
+			<a href="<?php echo esc_url( $url ); ?>" class="button gv-search-clear"><?php esc_html_e( 'Clear', 'gravityview' ); ?></a>
+
+		<?php endif;
 	}
 
 

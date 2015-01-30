@@ -1,5 +1,5 @@
 <?php gravityview_before(); ?>
-<div class="gv-table-container gv-container">
+<div class="<?php gv_container_class('gv-table-container'); ?>">
 <table class="gv-table-view">
 	<thead>
 		<?php gravityview_header(); ?>

@@ -6,6 +6,9 @@ class GravityView_View_Data {
 
 	protected $views = array();
 
+	// indicates whether we have multiple views embedded in the same page/post
+	public $is_multiple_views = false;
+
 	function __construct( $passed_post = NULL ) {
 
 		if( !empty( $passed_post ) ) {
@@ -38,6 +41,9 @@ class GravityView_View_Data {
 			}
 		}
 
+		// set the conditionals
+		$this->set_conditionals();
+
 		self::$instance = &$this;
 	}
 
@@ -48,6 +54,13 @@ class GravityView_View_Data {
 		}
 
 		return self::$instance;
+	}
+
+	function set_conditionals() {
+
+		//multiple views
+		$this->is_multiple_views = count( $this->get_views() ) > 1 ? true : false;
+
 	}
 
 	function get_views() {
@@ -341,6 +354,14 @@ class GravityView_View_Data {
 				'label' => __( 'Show only approved entries', 'gravityview' ),
 				'type' => 'checkbox',
 				'group'	=> 'default',
+				'value' => 0,
+				'show_in_shortcode' => false,
+			),
+			'hide_until_searched' => array(
+				'label' => __( 'Hide View data until search is performed', 'gravityview' ),
+				'type' => 'checkbox',
+				'group'	=> 'default',
+				'tooltip' => __( 'When enabled it will only show any View entries after a search is performed.', 'gravityview' ),
 				'value' => 0,
 				'show_in_shortcode' => false,
 			),

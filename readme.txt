@@ -20,6 +20,24 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.5.4 on January 29 =
+* Added: "Hide View data until search is performed" setting - only show the Search Bar until a search is entered
+* Added: "Clear" button to your GravityView Search Bar - allows easy way to remove all searches & filters
+* Added: You can now add Custom Content GravityView Widgets (not just fields) - add custom text or HTMLin the header or footer of a View
+* Added: `gravityview/comments_open` filter to modify whether comments are open or closed for GravityView posts (previously always false)
+* Added: Hook to filter the success Edit Entry message and link `gravityview/edit_entry/success`
+* Added: Possibility to add custom CSS classes to multiple view widget wrapper ([Read how](https://gravityview.co/support/documentation/204144575/))
+* Added: Field option to enable Live Post Data for Post Image field
+* Fixed: Loading translation files for Extensions
+* Fixed: Edit entry when embedding multiple views for the same form in the same page
+* Fixed: Conflicts with Advanced Filter extension when embedding multiple views for the same form in the same page
+* Fixed: Go Back link on embedded single entry view was linking to direct view url instead of page permalink
+* Fixed: Searches with quotes now work properly
+* Tweak: Moved `includes/css/`, `includes/js/` and `/images/` folders into `/assets/`
+* Tweak: Improved the display of the changelog (yes, "this is *so* meta!")
+* Updated: Swedish translation - thanks, [@adamrehal](https://www.transifex.com/accounts/profile/adamrehal/)
+* Updated: Hungarian translation - thanks, [@Darqebus](https://www.transifex.com/accounts/profile/Darqebus/) (a new translator!) and [@dbalage](https://www.transifex.com/accounts/profile/dbalage/)
+
 = 1.5.3 on December 22 =
 * Fixed: When adding more than 100 fields to the View some fields weren't saved.
 * Fixed: Do not set class tickbox for non-images files

@@ -144,7 +144,7 @@ class GravityView_Welcome {
 		$selected = !empty( $plugin_page ) ? $plugin_page : 'gv-getting-started';
 		?>
 
-		<h1><img class="alignleft" src="<?php echo plugins_url( 'images/astronaut-200x263.png', GRAVITYVIEW_FILE ); ?>" width="100" height="132" /><?php printf( __( 'Welcome to GravityView %s', 'gravityview' ), $display_version ); ?></h1>
+		<h1><img class="alignleft" src="<?php echo plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ); ?>" width="100" height="132" /><?php printf( __( 'Welcome to GravityView %s', 'gravityview' ), $display_version ); ?></h1>
 		<div class="about-text"><?php _e( 'Thank you for Installing GravityView. Beautifully display your Gravity Forms entries.', 'gravityview' ); ?></div>
 
 		<h2 class="nav-tab-wrapper clear">
@@ -205,14 +205,14 @@ class GravityView_Welcome {
 
 				<div class="last-feature">
 				<h2>Embed Views in Posts &amp; Pages</h2>
-					<p><img src="<?php echo plugins_url( 'images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" class="gv-welcome-screenshots" height="35" width="97" />Unlike the Gravity Forms Directory plugin, views are stand-alone; they don&rsquo;t need to always be embedded, but you can still embed Views using the "Add View" button.</p>
+					<p><img src="<?php echo plugins_url( 'assets/images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" class="gv-welcome-screenshots" height="35" width="97" />Unlike the Gravity Forms Directory plugin, views are stand-alone; they don&rsquo;t need to always be embedded, but you can still embed Views using the "Add View" button.</p>
 				</div>
 
 			</div>
 
 			<div class="feature-section clear">
 				<h2>Configure Mulitple Entry &amp; Single Entry Layouts</h2>
-				<p><img src="<?php echo plugins_url( 'images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" class="gv-welcome-screenshots" />You can configure how <strong>Multiple Entry</strong> and <strong>Single Entry</strong>. These can be configured by using the tabs under "View Configuration."</p>
+				<p><img src="<?php echo plugins_url( 'assets/images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" class="gv-welcome-screenshots" />You can configure how <strong>Multiple Entry</strong> and <strong>Single Entry</strong>. These can be configured by using the tabs under "View Configuration."</p>
 
 				<ul class="ul-disc">
 					<li>Click "+ Add Field" to add a field to a zone</li>
@@ -255,24 +255,50 @@ class GravityView_Welcome {
 
 				<h3>What's New</h3>
 
-				<div class="feature-section col two-col">
+				<div class="feature-section col three-col">
 					<div class="col-1">
-						<img src="<?php echo plugins_url( 'images/screenshots/delete-entry.png', GRAVITYVIEW_FILE ); ?>">
-						<h3 class="higher">Delete Entry Functionality</h3>
-						<p>Enable the new "Allow User Delete" setting to allow users to delete entries from the Edit Entry screen.</p>
-						<p>Once you enable User Delete, a "Delete" button will be displayed in the Edit Entry screen. You can also add a Delete Entry field to your View Configuration.</p>
-						<p><a href="https://gravityview.co/support/documentation/203458965/" class="button button-primary" rel="external">Learn How to Enable Delete Entry</a></p>
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/hide-until-search.png', GRAVITYVIEW_FILE ); ?>" alt="'Hide View data until a search is performed' setting">
+						<h3 class="higher">Hide data until a search</h3>
+						<p>The new setting allows you to hide the View results until a search has been performed. All that will be displayed is the Search Bar widget.</p>
 					</div>
 
-					<div class="col-2 last-feature">
-						<img src="<?php echo plugins_url( 'images/screenshots/edit-tab.png', GRAVITYVIEW_FILE ); ?>">
-						<h3 class="higher">Edit Entry Configuration</h3>
-						<p>Starting in Version 1.5, you can choose which fields are editable in the Edit Entry screen.</p>
-						<p><a href="https://gravityview.co/support/documentation/203176225/" class="button button-primary" rel="external">Learn How to Configure Edit Entry</a></p>
+					<div class="col-2">
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/custom-content-widget.png', GRAVITYVIEW_FILE ); ?>" alt="Custom content widget being selected">
+						<h3 class="higher">Custom Content Widget</h3>
+						<p>Custom Content widgets allow you to add HTML, text, and shortcodes in the header or footer of a View.</p>
+					</div>
+
+					<div class="col-3 last-feature">
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/show-clear-button.png', GRAVITYVIEW_FILE ); ?>" alt="Clear existing search button setting">
+						<h3 class="higher">Clear existing search values</h3>
+						<p>Allow users to easily clear existing search values with a "Clear" button.</p>
+						<p><a href="https://gravityview.co/support/documentation/204158895/" class="button button-primary" rel="external">Learn about the Clear button</a></p>
 					</div>
 				</div>
 
 				<hr />
+
+				<h3>Changes in 1.5.4 (Full List)</h3>
+
+				<ul>
+					<li>Added: "Hide View data until search is performed" setting - only show the Search Bar until a search is entered</li>
+					<li>Added: "Clear" button to your GravityView Search Bar - allows easy way to remove all searches &amp; filters</li>
+					<li>Added: You can now add Custom Content GravityView Widgets (not just fields) - add custom text or HTMLin the header or footer of a View</li>
+					<li>Added: <code>gravityview/comments_open</code> filter to modify whether comments are open or closed for GravityView posts (previously always false)</li>
+					<li>Added: Hook to filter the success Edit Entry message and link <code>gravityview/edit_entry/success</code></li>
+					<li>Added: Possibility to add custom CSS classes to multiple view widget wrapper (<a href="https://gravityview.co/support/documentation/204144575/">Read how</a>)</li>
+					<li>Added: Field option to enable Live Post Data for Post Image field</li>
+					<li>Fixed: Loading translation files for Extensions</li>
+					<li>Fixed: Edit entry when embedding multiple views for the same form in the same page</li>
+					<li>Fixed: Conflicts with Advanced Filter extension when embedding multiple views for the same form in the same page</li>
+					<li>Fixed: Go Back link on embedded single entry view was linking to direct view url instead of page permalink</li>
+					<li>Fixed: Searches with quotes now work properly</li>
+					<li>Tweak: Moved <code>includes/css/</code>, <code>includes/js/</code> and <code>/images/</code> folders into <code>/assets/</code></li>
+					<li>Tweak: Improved the display of the changelog (yes, "this is <em>so</em> meta!")</li>
+					<li>Updated: Swedish translation - thanks, <a href="https://www.transifex.com/accounts/profile/adamrehal/">@adamrehal</a></li>
+					<li>Updated: Hungarian translation - thanks, <a href="https://www.transifex.com/accounts/profile/Darqebus/">@Darqebus</a> (a new translator!) and <a href="https://www.transifex.com/accounts/profile/dbalage/">@dbalage</a></li>
+				</ul>
+
 
 				<h3>Changes in 1.5.3 (full list)</h3>
 
@@ -511,7 +537,7 @@ class GravityView_Welcome {
 
 				<h3>What changed in 1.1.6</h3>
 				<ul>
-					<li><img src="<?php echo plugins_url( 'images/screenshots/single-entry-link.png', GRAVITYVIEW_FILE ); ?>" class="gv-welcome-screenshots alignright" />A link icon is shown when a field is being used as a link to the Single Entry mode (see screenshot)</li>
+					<li><img src="<?php echo plugins_url( 'assets/images/screenshots/single-entry-link.png', GRAVITYVIEW_FILE ); ?>" class="gv-welcome-screenshots alignright" />A link icon is shown when a field is being used as a link to the Single Entry mode (see screenshot)</li>
 					<li>Fixed: Approve / Disapprove all entries using Gravity Forms bulk edit entries form (previously, only visible entries were affected)</li>
 					<li>Email addresses are now encrypted by default to prevent spammers</li>
 					<li>Fixed: License Activation works when No-Conflict Mode is enabled</li>
@@ -620,7 +646,7 @@ class GravityView_Welcome {
 
 				<h3>What changed in 1.0.9</h3>
 				<div class="alignright">
-					<img src="<?php echo plugins_url( 'images/screenshots/edit-form-buttons.png', GRAVITYVIEW_FILE ); ?>" alt="Edit Form Buttons" class="gv-welcome-screenshots" />
+					<img src="<?php echo plugins_url( 'assets/images/screenshots/edit-form-buttons.png', GRAVITYVIEW_FILE ); ?>" alt="Edit Form Buttons" class="gv-welcome-screenshots" />
 					<p class="howto" style="text-align:center;">New Buttons form Gravity Forms</p>
 				</div>
 				<ul>
@@ -634,7 +660,7 @@ class GravityView_Welcome {
 
 				<h3>What changed in 1.0.8</h3>
 				<ul>
-					<li><img src="<?php echo plugins_url( 'images/screenshots/edit-entry-link.png', GRAVITYVIEW_FILE ); ?>" alt="Edit Entry Link" class="gv-welcome-screenshots alignright" /><strong>Edit Entry</strong> - you can add an Edit Entry link using the <q>Add Field</q> buttons in either the Multiple Entries or Single Entry tab.
+					<li><img src="<?php echo plugins_url( 'assets/images/screenshots/edit-entry-link.png', GRAVITYVIEW_FILE ); ?>" alt="Edit Entry Link" class="gv-welcome-screenshots alignright" /><strong>Edit Entry</strong> - you can add an Edit Entry link using the <q>Add Field</q> buttons in either the Multiple Entries or Single Entry tab.
 						<ul>
 							<li>For now, if the user has the ability to edit entries in Gravity Forms, they’ll be able to edit entries in GravityView. Moving forward, we&#39;ll be adding refined controls over who can edit which entries.</li>
 							<li>It supports modifying existing Entry uploads and the great Multiple-File Upload field.</li>
@@ -670,14 +696,14 @@ class GravityView_Welcome {
 					<h2>Zack Katz</h2>
 					<h4 style="font-weight:0; margin-top:0">Project Lead &amp; Developer</h4>
 					<p></p>
-					<p><img style="float:left; margin: 0 15px 0 0;" src="<?php echo plugins_url( 'images/zack.png', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Zack has been developing integrations with Gravity Forms since 2009. He is the President of Katz Web Services and lives with his wife and cat in Denver, Colorado.</p>
+					<p><img style="float:left; margin: 0 15px 0 0;" src="<?php echo plugins_url( 'assets/images/zack.png', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Zack has been developing integrations with Gravity Forms since 2009. He is the President of Katz Web Services and lives with his wife and cat in Denver, Colorado.</p>
 					<p><a href="https://katz.co">View Zack&rsquo;s website</a></p>
 				</div>
 
 				<div class="last-feature">
 					<h2>Luis Godinho</h2>
 					<h4 style="font-weight:0; margin-top:0">Developer &amp; Support</h4>
-					<p><img class="alignleft avatar" src="<?php echo plugins_url( 'images/luis.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Luis is a WordPress developer passionate about WordPress. He is a co-founder and partner of GOMO, a digital agency located in Lisbon, Portugal.</p>
+					<p><img style="margin: 0 15px 0 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/luis.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Luis is a WordPress developer passionate about WordPress. He is a co-founder and partner of GOMO, a digital agency located in Lisbon, Portugal.</p>
 					<p><a href="http://tinygod.pt">View Luis&rsquo;s website</a></p>
 				</div>
 
@@ -694,15 +720,15 @@ class GravityView_Welcome {
 						<li class="wp-person">German translation by <a href="https://www.transifex.com/accounts/profile/seschwarz/">@seschwarz</a>, <a href="https://www.transifex.com/accounts/profile/abdmc/">@abdmc</a>, and <a href="https://www.transifex.com/accounts/profile/deckerweb/">@deckerweb</a></li>
 						<li class="wp-person">Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
 						<li class="wp-person">Dutch translation by <a href="https://www.transifex.com/accounts/profile/leooosterloo/">@leooosterloo</a>, <a href="https://www.transifex.com/accounts/profile/Weergeven/">@Weergeven</a>, and <a href="https://www.transifex.com/accounts/profile/erikvanbeek/">@erikvanbeek</a></li>
-						<li class="wp-person">Hungarian translation by <a href="https://www.transifex.com/accounts/profile/dbalage/">@dbalage</a>!</li>
+						<li class="wp-person">Hungarian translation by <a href="https://www.transifex.com/accounts/profile/dbalage/">@dbalage</a> and <a href="https://www.transifex.com/accounts/profile/Darqebus/">@Darqebus</a></li>
 						<li class="wp-person">Italian translation by <a href="https://www.transifex.com/accounts/profile/ClaraDiGennaro/">@ClaraDiGennaro</a></li>
 						<li class="wp-person">French translation by <a href="https://www.transifex.com/accounts/profile/franckt/">@franckt</a> and <a href="https://www.transifex.com/accounts/profile/Newbdev/">@Newbdev</a></li>
 						<li class="wp-person">Portuguese translation by <a href="https://www.transifex.com/accounts/profile/luistinygod/">@luistinygod</a></li>
 						<li class="wp-person">Romanian translation by <a href="https://www.transifex.com/accounts/profile/ArianServ/">@ArianServ</a></li>
 						<li class="wp-person">Finnish translation by <a href="https://www.transifex.com/accounts/profile/harjuja/">@harjuja</a></li>
 						<li class="wp-person">Spanish translation by <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a>, <a href="https://www.transifex.com/accounts/profile/luisdiazvenero/">@luisdiazvenero</a>, and <a href="https://www.transifex.com/accounts/profile/josemv/">@josemv</a></li>
-						<li class="wp-person">Swedish translation by <a href="https://www.transifex.com/accounts/profile/adamrehal/">@adamrehal</a>
-						<li class="wp-person">Indonesian translation by <a href="https://www.transifex.com/accounts/profile/sariyanta/">@sariyanta</a>
+						<li class="wp-person">Swedish translation by <a href="https://www.transifex.com/accounts/profile/adamrehal/">@adamrehal</a></li>
+						<li class="wp-person">Indonesian translation by <a href="https://www.transifex.com/accounts/profile/sariyanta/">@sariyanta</a></li>
 						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a></li>
 						<li class="wp-person">Code contributions by <a href="https://github.com/dmlinn">@dmlinn</a></li>
 
