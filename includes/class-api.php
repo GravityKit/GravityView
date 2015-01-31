@@ -1033,7 +1033,18 @@ function gravityview_field_output( $args ) {
 	return $html;
 }
 
-
+/**
+ * Similar to the WordPress `selected()`, `checked()`, and `disabled()` functions, except it allows arrays to be passed as current value
+ *
+ * @see selected() WordPress core function
+ *
+ * @param string $value One of the values to compare
+ * @param mixed $current (true) The other value to compare if not just true
+ * @param bool $echo Whether to echo or just return the string
+ * @param string $type The type of checked|selected|disabled we are doing
+ *
+ * @return string html attribute or empty string
+ */
 function gv_selected( $value, $current, $echo = true, $type = 'selected' ) {
 
 	$output = '';
@@ -1047,9 +1058,8 @@ function gv_selected( $value, $current, $echo = true, $type = 'selected' ) {
 
 	if( $echo ) {
 		echo $output;
-	} else {
-		return $output;
 	}
 
+	return $output;
 }
 

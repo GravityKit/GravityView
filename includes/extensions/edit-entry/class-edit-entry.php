@@ -15,13 +15,32 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+
 class GravityView_Edit_Entry {
 
 	static $file;
 	static $nonce_key;
 	static $instance;
+
+	/**
+	 * Gravity Forms entry array
+	 *
+	 * @var array
+	 */
 	var $entry;
+
+	/**
+	 * Gravity Forms form array
+	 *
+	 * @var array
+	 */
 	var $form;
+
+	/**
+	 * ID of the current view
+	 *
+	 * @var int
+	 */
 	var $view_id;
 	var $is_valid = NULL;
 
@@ -449,6 +468,12 @@ class GravityView_Edit_Entry {
 					GFFormsModel::refresh_lead_field_value( $this->entry['id'], $field['id'] );
 				}
 
+				/**
+				 * Perform an action after the entry has been updated using Edit Entry
+				 *
+				 * @param array $form Gravity Forms form array
+				 * @param string $entry_id Numeric ID of the entry that was updated
+				 */
 				do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'] );
 			}
 		} // endif action is update.
@@ -1199,7 +1224,17 @@ class GravityView_Edit_Entry {
 				    echo $this->generate_notice( $message , 'gv-error' );
 
 				} else {
-					$message = apply_filters( 'gravityview/edit_entry/success', sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'.$back_link.'">', '</a>' ), $this->view_id, $this->entry );
+					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'.$back_link.'">', '</a>' );
+
+					/**
+					 * @since 1.5.4
+					 * @param string $entry_updated_message Existing message
+					 * @param int $view_id View ID
+					 * @param array $entry Gravity Forms entry array
+					 * @param string $back_link URL to return to the original entry. @since 1.6
+					 */
+					$message = apply_filters( 'gravityview/edit_entry/success', $entry_updated_message , $this->view_id, $this->entry, $back_link );
+
 					echo $this->generate_notice( $message );
 				}
 
