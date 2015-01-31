@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+* Fixed: Edit Entry Admin Bar link
 = 1.5.4 on January 29 =
 * Added: "Hide View data until search is performed" setting - only show the Search Bar until a search is entered
 * Added: "Clear" button to your GravityView Search Bar - allows easy way to remove all searches & filters

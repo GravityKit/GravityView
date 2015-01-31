@@ -112,6 +112,7 @@ class GravityView_frontend {
 		// If in admin and NOT AJAX request, get outta here.
 		if( is_admin() && !$doing_ajax )  { return; }
 
+
 		$this->gv_output_data = new GravityView_View_Data( $post );
 		$this->single_entry = self::is_single_entry();
 		$this->entry = ( $this->single_entry ) ? GVCommon::get_entry( $this->single_entry ) : false;
@@ -176,7 +177,7 @@ class GravityView_frontend {
 
 		if( GFCommon::current_user_can_any('gravityforms_edit_entries') && !empty( $this->single_entry ) ) {
 
-			$entry_id = GVCommon::get_entry_id_from_slug( $this->single_entry );
+			$entry_id = $this->entry['id'];
 
 			$wp_admin_bar->add_menu( array(
 				'id' => 'edit-entry',
