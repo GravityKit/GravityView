@@ -700,13 +700,13 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	public static function the_clear_search_button() {
 		global $gravityview_view;
 
-		if( $gravityview_view->search_clear ) :
+		if( $gravityview_view->search_clear ) {
 
 			$url = strtok( add_query_arg( array() ), '?' );
-			?>
-			<a href="<?php echo esc_url( $url ); ?>" class="button gv-search-clear"><?php esc_html_e( 'Clear', 'gravityview' ); ?></a>
 
-		<?php endif;
+			echo gravityview_get_link( $url, esc_html__( 'Clear', 'gravityview' ), 'class=button gv-search-clear' );
+
+		}
 	}
 
 

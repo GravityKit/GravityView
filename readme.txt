@@ -20,7 +20,11 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.6 =
 * Fixed: Edit Entry Admin Bar link
+* Added: `gravityview_get_link()` function to standardize generating HTML anchors
+* Added: `GravityView_API::entry_link_html()` method to generate entry link HTML
+
 = 1.5.4 on January 29 =
 * Added: "Hide View data until search is performed" setting - only show the Search Bar until a search is entered
 * Added: "Clear" button to your GravityView Search Bar - allows easy way to remove all searches & filters

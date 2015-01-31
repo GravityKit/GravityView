@@ -17,7 +17,9 @@ if( !empty( $field_settings['dynamic_data'] ) ) {
 
 // Link to the post URL?
 if( !empty( $field_settings['link_to_post'] )) {
-	echo '<a href="'.get_permalink( $entry['post_id'] ).'">'.esc_attr( $output ).'</a>';
+
+	echo gravityview_get_link( get_permalink( $entry['post_id'] ), esc_attr( $output ) );
+
 } else {
 	echo $output;
 }

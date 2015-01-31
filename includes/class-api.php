@@ -217,22 +217,11 @@ class GravityView_API {
 		 *
 		 * Fields can override this by modifying the field data variable inside the field. See /templates/fields/post_image.php for an example.
 		 *
-		 * @todo Move into its own function usingt `gravityview_field_entry_value` to tap in
 		 */
 		if( !empty( $gravityview_view->field_data['field_settings']['show_as_link'] ) ) {
 
-			$href = self::entry_link( $entry );
+			$output = self::entry_link_html( $entry, $output, array(), $gravityview_view->field_data['field_settings'] );
 
-			$link = '<a href="'. $href .'">'. $output . '</a>';
-
-			/**
-			 * Modify the link format
-			 * @param string $link HTML output of the link
-			 * @param string $href URL of the link
-			 * @param array  $entry The GF entry array
-			 * @param  array $field_settings Settings for the particular GV field
-			 */
-			$output = apply_filters( 'gravityview_field_entry_link', $link, $href, $entry, $field_settings );
 		}
 
 		/**
@@ -245,6 +234,40 @@ class GravityView_API {
 
 		// Free up the memory
 		unset( $gravityview_view->field_data );
+
+		return $output;
+	}
+
+	/**
+	 * Generate an anchor tag that links to an entry.
+	 *
+	 * @since 1.6
+	 *
+	 * @param string $anchor_text The text or HTML inside the link
+	 * @param array $entry Gravity Forms entry array
+	 * @param array $field_settings Array of field settings. Optional, but passed to the `gravityview_field_entry_link` filter
+	 */
+	public static function entry_link_html( $entry = array(), $anchor_text = '', $passed_tag_atts = array(), $field_settings = array() ) {
+
+		if ( empty( $entry ) || ! is_array( $entry ) || ! isset( $entry['id'] ) ) {
+
+			do_action( 'gravityview_log_debug', 'GravityView_API[entry_link_tag] Entry not defined; returning null', $entry );
+
+			return NULL;
+		}
+
+		$href = self::entry_link( $entry );
+
+		$link = gravityview_get_link( $href, $anchor_text, $passed_tag_atts );
+
+		/**
+		 * Modify the link format
+		 * @param string $link HTML output of the link
+		 * @param string $href URL of the link
+		 * @param array  $entry The GF entry array
+		 * @param  array $field_settings Settings for the particular GV field
+		 */
+		$output = apply_filters( 'gravityview_field_entry_link', $link, $href, $entry, $field_settings );
 
 		return $output;
 	}
@@ -595,7 +618,11 @@ function gravityview_back_link() {
 	// filter link label
 	$label = apply_filters( 'gravityview_go_back_label', $label );
 
-	return '<a href="'. $href .'" id="gravityview_back_link" data-viewid="'. $gravityview_view->view_id .'">'. esc_html( $label ) . '</a>';
+	$link = gravityview_get_link( $href, esc_html( $label ), array(
+		'data-viewid' => $gravityview_view->view_id
+	));
+
+	return $link;
 }
 
 /**
@@ -672,7 +699,7 @@ function gravityview_convert_value_to_term_list( $value, $taxonomy = 'post_tag' 
 			    continue;
 			}
 
-			$output[] = '<a href="' . esc_url( $term_link ) . '">' . esc_html( $term->name ) . '</a>';
+			$output[] = gravityview_get_link( $term_link, esc_html( $term->name ) );
 		}
 	}
 
@@ -945,8 +972,9 @@ function gravityview_get_map_link( $address ) {
 
 	$url = "https://maps.google.com/maps?q={$address_qs}";
 
-	// Generate HTML tag
-	$link = sprintf( '<a href="%s" class="map-it-link">%s</a>', esc_url( $url ), esc_html__( 'Map It', 'gravityview' ) );
+	$link_text = esc_html__( 'Map It', 'gravityview' );
+
+	$link = gravityview_get_link( $url, $link_text, 'class=map-it-link' );
 
 	/**
 	 * Modify the map link generated. You can use a different mapping service, for example.
@@ -961,6 +989,83 @@ function gravityview_get_map_link( $address ) {
 	return $link;
 }
 
+}
+
+/**
+ * Generate an HTML anchor tag with a list of supported attributes
+ *
+ * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a Supported attributes defined here
+ *
+ * @since 1.6
+ *
+ * @param string $href URL of the link.
+ * @param string $anchor_text The text or HTML inside the anchor. This is not sanitized in the function.
+ * @param array $atts Attributes to be added to the anchor tag
+ *
+ * @return string HTML output of anchor link. If empty $href, returns NULL
+ */
+function gravityview_get_link( $href = '', $anchor_text = '', $atts = array() ) {
+
+	// Supported attributes for anchor tags. HREF left out intentionally.
+	$allowed_atts = array(
+		'href' => NULL, // Will override the $href argument if set
+		'title' => NULL,
+		'rel' => NULL,
+		'id' => NULL,
+		'class' => NULL,
+		'target' => NULL,
+		'style' => NULL,
+
+		// Used by GravityView
+		'data-viewid' => NULL,
+
+		// Not standard
+		'hreflang' => NULL,
+		'type' => NULL,
+		'tabindex' => NULL,
+
+		// Deprecated HTML4 but still used
+		'name' => NULL,
+		'onclick' => NULL,
+		'onchange' => NULL,
+		'onkeyup' => NULL,
+
+		// HTML5 only
+		'download' => NULL,
+		'media' => NULL,
+		'ping' => NULL,
+	);
+
+	/**
+	 * Modify the attributes that are allowed to be used in generating links
+	 *
+	 * @param array $allowed_atts Array of attributes allowed
+	 */
+	$allowed_atts = apply_filters( 'gravityview/get_link/allowed_atts', $allowed_atts );
+
+	// Make sure the attributes are formatted as array
+	$passed_atts = wp_parse_args( $atts );
+
+	// Make sure the allowed attributes are only the ones in the $allowed_atts list
+	$final_atts = shortcode_atts( $allowed_atts, $passed_atts );
+
+	// Remove attributes with empty values
+	$final_atts = array_filter( $final_atts );
+
+	// If the href wasn't passed as an attribute, use the value passed to the function
+	if( empty( $final_atts['href'] ) && !empty( $href ) ) {
+		$final_atts['href'] = esc_url( $href );
+	}
+
+	// For each attribute, generate the code
+	$output = '';
+	foreach( $final_atts as $attr => $value ) {
+		$output .= sprintf( ' %s="%s"', $attr, esc_attr( $value ) );
+	}
+
+	$output = '<a'. $output .'>'. $anchor_text .'</a>';
+
+	return $output;
 }
 
 /**

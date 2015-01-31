@@ -24,7 +24,7 @@ if( !empty( $field_settings['link_to_source'] ) ) {
 
 	}
 
-	$output = '<a href="'. esc_url( $value ) .'">'. esc_html( $link_text ) . '</a>';
+	$output = gravityview_get_link( $value, esc_html( $link_text ) );
 
 } else {
 
