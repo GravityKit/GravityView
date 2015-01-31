@@ -182,6 +182,8 @@ class GravityView_Admin_View_Item {
 		// If there's a custom label, and show label is checked, use that as the field heading
 		if( !empty( $this->settings['custom_label'] ) && !empty( $this->settings['show_label'] ) ) {
 			$label = $this->settings['custom_label'];
+		} else if( !empty( $this->item['customLabel'] ) ) {
+			$label = $this->item['customLabel'];
 		}
 
 		$output = '<h5 class="selectable gfield field-id-'.esc_attr($this->id).'">';

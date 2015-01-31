@@ -22,21 +22,58 @@ class GravityView_API {
 	 *
 	 * @access public
 	 * @static
-	 * @param mixed $field
+	 * @param array $field GravityView field array
+	 * @param array $entry Gravity Forms entry array
+	 * @param boolean $force_show_label Whether to always show the label, regardless of field settings
 	 * @return string
 	 */
-	public static function field_label( $field, $entry = NULL ) {
+	public static function field_label( $field, $entry = array(), $force_show_label = false ) {
 		global $gravityview_view;
 
 		$form = $gravityview_view->form;
 
-		if( !empty( $field['show_label'] ) ) {
-			$label = empty( $field['custom_label'] ) ? $field['label'] : $field['custom_label'];
-			$label = self::replace_variables( $label, $form, $entry );
+		$label = '';
+
+		if( !empty( $field['show_label'] ) || $force_show_label ) {
+
+			$label = $field['label'];
+
+			// Support Gravity Forms 1.9+
+			if( class_exists( 'GF_Field' ) ) {
+
+				$field_object = RGFormsModel::get_field( $form, $field['id'] );
+
+				if( $field_object ) {
+
+					$input = GFFormsModel::get_input( $field_object, $field['id'] );
+
+					// This is a complex field, with lables on a per-input basis
+					if( $input ) {
+
+						// Does the input have a custom label on a per-input basis? Otherwise, default label.
+						$label = ! empty( $input['customLabel'] ) ? $input['customLabel'] : $input['label'];
+
+					} else {
+
+						// This is a field with one label
+						$label = $field_object->get_field_label( true, $field['label'] );
+
+					}
+
+				}
+
+			}
+
+			// Use Gravity Forms label by default, but if a custom label is defined in GV, use it.
+			if ( !empty( $field['custom_label'] ) ) {
+
+				$label = self::replace_variables( $field['custom_label'], $form, $entry );
+
+			}
+
 			$label .= apply_filters( 'gravityview_render_after_label', '', $field );
-		} else {
-			$label = '';
-		}
+
+		} // End $field['show_label']
 
 		return $label;
 	}

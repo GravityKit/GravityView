@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.6 =
+* Fixed: Respect Custom Input Labels added in Gravity Forms 1.9
 * Fixed: Edit Entry Admin Bar link
 * Added: `gravityview_get_link()` function to standardize generating HTML anchors
 * Added: `GravityView_API::entry_link_html()` method to generate entry link HTML

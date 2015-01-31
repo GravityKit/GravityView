@@ -143,6 +143,7 @@ class GVCommon {
 					foreach( $field['inputs'] as $input ) {
 						$fields[ (string)$input['id'] ] = array(
 							'label' => $input['label'],
+							'customLabel' => ( isset( $input['customLabel'] ) ? $input['customLabel'] : '' ),
 							'parent' => $field,
 							'type' => $field['type'],
 							'adminLabel' => $field['adminLabel'],
