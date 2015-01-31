@@ -18,7 +18,7 @@ class GVCommon {
 	 *
 	 * @access public
 	 * @param mixed $form_id
-	 * @return void
+	 * @return mixed False: no form ID specified or Gravity Forms isn't active. Array: Form returned from Gravity Forms
 	 */
 	public static function get_form( $form_id ) {
 		if(empty( $form_id ) ) {
@@ -248,7 +248,7 @@ class GVCommon {
 	 * @param int|array $form_ids The ID of the form or an array IDs of the Forms. Zero for all forms.
 	 * @param mixed $passed_criteria (default: null)
 	 * @param mixed &$total Optional. An output parameter containing the total number of entries. Pass a non-null value to generate the total count. (default: null)
-	 * @return void
+	 * @return mixed False: Error fetching entries. Array: Multi-dimensional array of Gravity Forms entry arrays
 	 */
 	public static function get_entries( $form_ids = null, $passed_criteria = null, &$total = null ) {
 
@@ -520,7 +520,7 @@ class GVCommon {
 	 * @access public
 	 * @param mixed $form
 	 * @param mixed $field_id
-	 * @return void
+	 * @return array|null Array: Gravity Forms field array; NULL: Gravity Forms GFFormsModel does not exist
 	 */
 	public static function get_field( $form, $field_id ) {
 		if( class_exists( 'GFFormsModel') ){

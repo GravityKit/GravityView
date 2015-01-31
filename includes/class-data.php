@@ -320,7 +320,18 @@ class GravityView_View_Data {
 	 * @param string $group Only fetch
 	 * @access public
 	 * @static
-	 * @return void
+	 * @return array {
+	 *      Associative array of default settings for a View
+	 *
+	 *      @type string $label Setting label shown in admin
+	 *      @type string $type Gravity Forms field type
+	 *      @type string $group The field group the setting is associated with. Default: "default"
+	 *      @type mixed  $value The default value for the setting
+	 *      @type string $tooltip Tooltip displayed for the setting
+	 *      @type boolean $show_in_shortcode Whether to show the setting in the shortcode configuration modal
+	 *      @type array  $options Array of values to use when generating select, multiselect, radio, or checkboxes fields
+	 *      @type boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
+	 * }
 	 * @filter gravityview_default_args Modify the default settings for new Views
 	 */
 	public static function get_default_args( $with_details = false, $group = NULL ) {
