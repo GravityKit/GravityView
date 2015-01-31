@@ -120,7 +120,8 @@ class GVCommon {
 		$fields = array();
 		$has_product_fields = false;
 
-		if( $add_default_properties ) {
+		// If GF_Field exists, we're using GF 1.9+, where add_default_properties has been deprecated.
+		if( false === class_exists('GF_Field') && $add_default_properties ) {
 			$form = RGFormsModel::add_default_properties( $form );
 		}
 
