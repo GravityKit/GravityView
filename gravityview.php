@@ -107,6 +107,9 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/edit-entry/class-edit-entry.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/delete-entry/class-delete-entry.php' );
 
+		// Load Widgets
+		include_once( GRAVITYVIEW_DIR .'includes/widgets.php' );
+
 		// Add logging
 		require_once( GRAVITYVIEW_DIR . 'includes/class-logging.php');
 
