@@ -19,13 +19,59 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		add_action('admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts') );
 
+		add_action( 'wp_ajax_gv_get_view_merge_tag_data', array( $this, 'ajax_get_view_merge_tag_data' ) );
 	}
 
+	/**
+	 * When the widget View is changed, update the Merge Tag data
+	 *
+	 * @since 1.6
+	 */
+	function ajax_get_view_merge_tag_data() {
+
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajax_widget' ) ) {
+			exit( false );
+		}
+
+		$form_id  = gravityview_get_form_id( $_POST['view_id'] );
+
+		$form = RGFormsModel::get_form_meta( $form_id );
+
+		$output = array(
+			'form' => array(
+				'id' => $form['id'],
+				'title' => $form['title'],
+				'fields' => $form['fields'],
+			),
+			'mergeTags' => GFCommon::get_merge_tags( $form['fields'], '', false ),
+		);
+
+		echo json_encode( $output );
+
+		exit;
+	}
+
+	/**
+	 * Enable the merge tags functionality
+	 *
+	 * @since 1.6
+	 */
 	function admin_enqueue_scripts() {
 		global $pagenow;
 
 		if( $pagenow === 'widgets.php' ) {
+
+			$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
+
 			GravityView_Admin_Views::enqueue_gravity_forms_scripts();
+
+			wp_enqueue_script( 'gravityview_widgets', plugins_url('assets/js/admin-widgets'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery', 'gform_gravityforms' ), GravityView_Plugin::version );
+
+			wp_localize_script( 'gravityview_widgets', 'GVWidgets', array(
+				'nonce' => wp_create_nonce( 'gravityview_ajax_widget' )
+			));
+
+			wp_enqueue_style( 'gravityview_views_styles', plugins_url('assets/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons' ), GravityView_Plugin::version );
 		}
 
 	}
@@ -49,44 +95,86 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		do_action( 'gravityview/widget/recent-entries/before_widget', $args, $instance );
 
-		$view_id = $instance['view_id'];
+		$form_id = gravityview_get_form_id( $instance['view_id'] );
+
+		$form = gravityview_get_form( $form_id );
+
+		$entries = $this->get_entries( $instance, $form_id );
+
+		$list_items = array();
+
+		if( empty( $entries ) ) {
+
+			$output = '<div class="gv-no-results">'.gv_no_results().'</div>';
+
+		} else {
+
+			foreach( $entries as $entry ) {
+
+				$link = GravityView_API::entry_link( $entry, $instance['view_id'] );
+				$text = $instance['link_format'];
+
+				$item_output = gravityview_get_link( $link, $text );
+
+				if( !empty( $instance['after_link'] ) ) {
+					$item_output .= '<div>'.$instance['after_link'].'</div>';
+				}
+
+				$item_output = Gravityview_API::replace_variables( $item_output, $form, $entry );
+
+				$item_output = apply_filters( 'gravityview/widget/recent-entries/item', $item_output, $entry, $instance );
+
+				$list_items[] = $item_output;
+			}
+
+			$output = '<ul><li>'. implode( '</li><li>', $list_items ) . '</li></ul>';
+
+		}
+
+		/**
+		 * Modify the HTML before it's echo'd
+		 * @param string $output HTML to be displayed
+		 * @param array $instance Widget settings
+		 */
+		$output = apply_filters( 'gravityview/widget/recent-entries/output', $output, $list_items, $instance );
+
+		echo $output;
+
+		/**
+		 * Modify the HTML before it's echo'd
+		 * @param array $args Widget args
+		 * @param array $instance Widget settings
+		 */
+		do_action( 'gravityview/widget/recent-entries/after_widget', $args, $instance );
+
+		echo $args['after_widget'];
+	}
+
+	/**
+	 * Get the entries that will be shown in the current widget
+	 *
+	 * @param  array $instance Settings for the current widget
+	 *
+	 * @return array $entries Multidimensional array of Gravity Forms entries
+	 */
+	private function get_entries( $instance, $form_id ) {
 
 		// Get the settings for the View ID
-		$view_settings = gravityview_get_template_settings( $view_id );
+		$view_settings = gravityview_get_template_settings( $instance['view_id'] );
 
 		// Merge the view settings with the defaults
 		$view_settings = wp_parse_args( $view_settings, GravityView_View_Data::get_default_args() );
 
-		$form_id = gravityview_get_form_id( $view_id );
-		$form = gravityview_get_form( $form_id );
-
 		$view_settings['page_size'] = $instance['number'];
+
+		/**
+		 * Modify the search parameters before the entries are fetched
+		 */
+		$view_settings = apply_filters('gravityview/widget/recent-entries/view_settings', $view_settings, $instance, $form_id );
 
 		$results = GravityView_frontend::get_view_entries( $view_settings, $form_id );
 
-		$list_item = array();
-
-		foreach( $results['entries'] as $entry ) {
-
-			$link = GravityView_API::entry_link( $entry, $view_id );
-			$text = $instance['link_format'];
-
-			$output = gravityview_get_link( $link, $text );
-
-			if( !empty( $instance['after_link'] ) ) {
-				$output .= '<div>'.$instance['after_link'].'</div>';
-			}
-
-			$output = Gravityview_API::replace_variables( $output, $form, $entry );
-
-			$list_item[] = $output;
-		}
-
-		echo '<ul><li>'. implode( '</li><li>', $list_item ) . '</li></ul>';
-
-		do_action( 'gravityview/widget/recent-entries/after_widget', $args, $instance );
-
-		echo $args['after_widget'];
+		return $results['entries'];
 	}
 
 	/**
@@ -97,10 +185,15 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		$instance = $old_instance;
 
-		$instance['title'] = strip_tags( $new_instance['title'] );
+		$instance['title'] = $new_instance['title'];
+
+		// Force positive number
 		$instance['number'] = empty( $new_instance['number'] ) ? 10 : absint( $new_instance['number'] );
+
 		$instance['view_id'] = (int) $new_instance['view_id'];
-		$instance['link_format'] = $new_instance['link_format'];
+
+		$new_instance['link_format'] = GFCommon::trim_all( $new_instance['link_format'] );
+		$instance['link_format'] = !empty( $new_instance['link_format'] ) ? $new_instance['link_format'] : $old_instance['link_format'];
 		$instance['after_link'] = $new_instance['after_link'];
 
 
@@ -125,7 +218,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
 
 		<!-- Title -->
-		<p xmlns="http://www.w3.org/1999/html">
+		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title:', 'edd' ) ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p>
@@ -171,40 +264,25 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		<p>
 			<label for="<?php echo $this->get_field_id( 'link_format' ); ?>">
-				<span><?php _e( 'Text of the link', 'gravityview' ); ?></span>
+				<span><?php _e( 'Entry link text (required)', 'gravityview' ); ?></span>
 			</label>
 			<input id="<?php echo $this->get_field_id( 'link_format' ); ?>" name="<?php echo $this->get_field_name( 'link_format' ); ?>" type="text" value="<?php echo esc_attr( $instance['link_format'] ); ?>" class="widefat merge-tag-support mt-position-right mt-hide_all_fields" />
 		</p>
 
 		<p>
 			<label for="<?php echo $this->get_field_id( 'after_link' ); ?>">
-				<span><?php _e( 'Text of the link', 'gravityview' ); ?></span>
+				<span><?php _e( 'Text or HTML to display after the link (optional)', 'gravityview' ); ?></span>
 			</label>
-			<textarea id="<?php echo $this->get_field_id( 'after_link' ); ?>" name="<?php echo $this->get_field_name( 'after_link' ); ?>" class="widefat merge-tag-support mt-position-right mt-hide_all_fields"><?php echo esc_textarea( $instance['after_link'] ); ?></textarea>
+			<textarea id="<?php echo $this->get_field_id( 'after_link' ); ?>" name="<?php echo $this->get_field_name( 'after_link' ); ?>" rows="5" class="widefat code merge-tag-support mt-position-right mt-hide_all_fields"><?php echo esc_textarea( $instance['after_link'] ); ?></textarea>
 		</p>
-
-		<script>
-			<?php
-				$form_id = 17;
-
-				$form = GFFormsModel::get_form_meta( $form_id );
-
-				GFCommon::gf_global();
-				GFCommon::gf_vars();
-
-				echo 'gf_vars.mergeTags = '.json_encode( GFCommon::get_merge_tags( $form['fields'], '', false ) ).';';
-				echo 'var form = '. json_encode( $form ) . ';';
-			?>
-
-			jQuery( document).ready(function( $ ) {
-				$('input[id~=link_format]').focus(function() {
-					window.gfMergeTagsObj.init();
-				});
-			});
-		</script>
 
 		<?php do_action( 'gravityview_recent_entries_widget_form' , $instance ); ?>
 
+		<script>
+			// When the widget is saved or added, refresh the Merge Tags (here for backward compatibility)
+			// WordPress 3.9 added widget-added and widget-updated actions
+			jQuery('#<?php echo $this->get_field_id( 'view_id' ); ?>').trigger( 'change' );
+		</script>
 	<?php }
 
 }

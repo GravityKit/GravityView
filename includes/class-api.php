@@ -319,7 +319,7 @@ class GravityView_API {
 
 		$is_search = false;
 
-		if($gravityview_view->curr_start || $gravityview_view->curr_end || $gravityview_view->curr_search) {
+		if( $gravityview_view && ( $gravityview_view->curr_start || $gravityview_view->curr_end || $gravityview_view->curr_search ) ) {
 			$is_search = true;
 		}
 
