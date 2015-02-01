@@ -342,20 +342,24 @@ class GravityView_frontend {
 
 
 	/**
-	 * Core function to render a View based on a set of arguments ($args):
-	 *   $id - View id
-	 *   $page_size - Page
-	 *   $sort_field - form field id to sort
-	 *   $sort_direction - ASC / DESC
-	 *   $start_date - Ymd
-	 *   $end_date - Ymd
-	 *   $class - assign a html class to the view
-	 *   $offset (optional) - This is the start point in the current data set (0 index based).
-	 *
+	 * Core function to render a View based on a set of arguments
 	 *
 	 * @access public
 	 * @static
-	 * @param mixed $args
+	 * @param array $passed_args {
+	 *
+	 *      Settings for rendering the View
+	 *
+	 *      @type int $id View id
+	 *      @type int $page_size Number of entries to show per page
+	 *      @type string $sort_field Form field id to sort
+	 *      @type string $sort_direction Sorting direction ('ASC' or 'DESC')
+	 *      @type string $start_date - Ymd
+	 *      @type string $end_date - Ymd
+	 *      @type string $class - assign a html class to the view
+	 *      @type string $offset (optional) - This is the start point in the current data set (0 index based).
+	 * }
+	 *
 	 * @return void
 	 */
 	public function render_view( $passed_args ) {

@@ -201,8 +201,15 @@ function gravityview_get_connected_views( $form_id ) {
 	return GVCommon::get_connected_views( $form_id );
 }
 
-function gravityview_get_form_id( $post_id ) {
-	return GVCommon::get_meta_form_id( $post_id );
+/**
+ * Get the connected form ID from a View ID
+ *
+ * @param int $view_id ID of the View you want the form of
+ *
+ * @return int
+ */
+function gravityview_get_form_id( $view_id ) {
+	return GVCommon::get_meta_form_id( $view_id );
 }
 
 function gravityview_get_template_id( $post_id ) {

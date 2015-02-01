@@ -550,9 +550,11 @@ class GravityView_API {
 			$args['pagenum'] = intval( $_GET['pagenum'] );
 		}
 
-		// Check if we have multiple views embedded in the same page and in that case make sure the single entry link
-		// has the view id so that Advanced Filters can be applied correctly when rendering the single view
-		// @see GravityView_frontend::get_context_view_id
+		/**
+		 * Check if we have multiple views embedded in the same page and in that case make sure the single entry link
+		 * has the view id so that Advanced Filters can be applied correctly when rendering the single view
+		 * @see GravityView_frontend::get_context_view_id()
+		 */
 		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->is_multiple_views ) {
 			$args['gvid'] = gravityview_get_view_id();
 		}
