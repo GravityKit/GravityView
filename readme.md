@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 ## Changelog ##
 
 ### 1.6 ###
+* Added: Duplicate View functionality allows you to clone a View from the All Views screen. [Learn more](PLACEHOLDER!!!!)
 * Fixed: Respect Custom Input Labels added in Gravity Forms 1.9
 * Fixed: Edit Entry Admin Bar link
 * Added: `gravityview_get_link()` function to standardize generating HTML anchors
