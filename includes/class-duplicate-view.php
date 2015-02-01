@@ -39,20 +39,39 @@ class GravityView_Admin_Duplicate_View {
 
 	}
 
-	function connected_form_links( $links, $form ) {
-		global $pagenow, $post;
+	/**
+	 * Add Duplicate View link to the Data Source metabox
+	 *
+	 * @param array $links Array of link HTML to display in the Data Source metabox
+	 * @param array $form Gravity Forms form array
+	 *
+	 * @return array If it's the All Views page, return unedited. Otherwise, add a link to create cloned draft of View
+	 */
+	function connected_form_links( $links = array(), $form = array() ) {
+		global $post;
 
 		// We only want to add Clone links to the Edit View metabox
-		if( $pagenow !== 'edit.php' ) {
+		if( !$this->is_all_views_page() ) {
 
 			$duplicate_links = $this->make_duplicate_link_row( array(), $post );
 
-			$links[] = '<span>'.$duplicate_links['clone'].'</span>';
+			$links[] = '<span>'.$duplicate_links['edit_as_new_draft'].'</span>';
 
 		}
 
 		return $links;
 
+	}
+
+	/**
+	 * Is the current screen the All Views screen?
+	 *
+	 * @return bool
+	 */
+	function is_all_views_page() {
+		global $pagenow;
+
+		return $pagenow === 'edit.php';
 	}
 
 	/**
@@ -199,14 +218,14 @@ class GravityView_Admin_Duplicate_View {
 		if ( $this->current_user_can_copy( $post ) ) {
 
 			$clone_link = $this->get_clone_view_link( $post->ID, 'display', false );
-			$clone_text = ($pagenow === 'edit.php') ? __( 'Clone', 'gravityview' ) : __( 'Clone this View', 'gravityview' );
+			$clone_text = __( 'Clone', 'gravityview' );
 			$clone_title = __( 'Clone this View', 'gravityview' );
 
 			$actions['clone'] = gravityview_get_link( $clone_link, $clone_text, 'title='.$clone_title );
 
 			$clone_draft_link = $this->get_clone_view_link( $post->ID );
-			$clone_draft_text = __( 'New Draft', 'gravityview' );
-			$clone_draft_title = __( 'Copy to a new draft View', 'gravityview' );
+			$clone_draft_text = $this->is_all_views_page() ? __( 'New Draft', 'gravityview' ) : __( 'Clone View', 'gravityview' );
+			$clone_draft_title = __( 'Copy as a new draft View', 'gravityview' );
 
 			$actions['edit_as_new_draft'] = gravityview_get_link( $clone_draft_link, $clone_draft_text, 'title='.$clone_draft_title );
 		}
