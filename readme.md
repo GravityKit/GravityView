@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Edit Entry Admin Bar link
 * Added: `gravityview_get_link()` function to standardize generating HTML anchors
 * Added: `GravityView_API::entry_link_html()` method to generate entry link HTML
+* Tweak: Allow [WordPress SEO](http://wordpress.org/plugins/wordpress-seo/) scripts and styles when in "No Conflict Mode"
 
 ### 1.5.4 on January 29 ###
 * Added: "Hide View data until search is performed" setting - only show the Search Bar until a search is entered
