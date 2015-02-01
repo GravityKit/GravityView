@@ -32,6 +32,9 @@ class GravityView_Admin {
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/entry-list.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-change-entry-creator.php' );
 
+		/** @since 1.6 */
+		require_once( GRAVITYVIEW_DIR . 'includes/class-duplicate-view.php' );
+
 		// Filter Admin messages
 		add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
 		add_filter( 'bulk_post_updated_messages', array( $this, 'post_updated_messages' ) );

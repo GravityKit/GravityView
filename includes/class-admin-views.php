@@ -236,23 +236,23 @@ class GravityView_Admin_Views {
 
 		if( GFCommon::current_user_can_any('gravityforms_edit_forms') ) {
 			$form_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;id=%d', $form_id ) );
-			$form_link = sprintf( '<strong class="gv-form-title"><a href="%s" class="row-title">%s</a></strong>', $form_url , $form['title'] );
-			$links[] = sprintf( '<span><a href="%s">%s</a></span>', $form_url , __('Edit Form', 'gravityview') );
+			$form_link = '<strong class="gv-form-title">'.gravityview_get_link( $form_url, $form['title'], 'class=row-title' ).'</strong>';
+			$links[] = '<span>'.gravityview_get_link( $form_url, __('Edit Form', 'gravityview') ).'</span>';
 		}
 
 		if( GFCommon::current_user_can_any('gravityforms_view_entries') ) {
 			$entries_url = admin_url( sprintf( 'admin.php?page=gf_entries&amp;id=%d', $form_id ) );
-			$links[] = sprintf( '<span><a href="%s">%s</a></span>', $entries_url , __( 'Entries', 'gravityview' ) );
+			$links[] = '<span>'.gravityview_get_link( $entries_url, __('Entries', 'gravityview') ).'</span>';
 		}
 
 		if( GFCommon::current_user_can_any('gravityforms_edit_settings') ) {
 			$settings_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;id=%d', $form_id ) );
-			$links[] = sprintf( '<span><a title="%s" href="%s">%s</a></span>', __('Edit settings for this form', 'gravityview'), $settings_url, __('Settings', 'gravityview') );
+			$links[] = '<span>'.gravityview_get_link( $settings_url, __('Settings', 'gravityview'), 'title='.__('Edit settings for this form', 'gravityview') ).'</span>';
 		}
 
 		if( GFCommon::current_user_can_any( array("gravityforms_edit_forms", "gravityforms_create_form", "gravityforms_preview_forms") ) ) {
 			$preview_url = site_url( sprintf( '?gf_page=preview&amp;id=%d', $form_id ) );
-			$links[] = sprintf( '<span><a title="%s" href="%s">%s</a></span>', __('Preview this form', 'gravityview'), $preview_url, __('Preview', 'gravityview') );
+			$links[] = '<span>'.gravityview_get_link( $preview_url, __('Preview Form', 'gravityview'), 'title='.__('Preview this form', 'gravityview') ).'</span>';
 		}
 
 		$output = '';
@@ -260,6 +260,16 @@ class GravityView_Admin_Views {
 		if( !empty( $include_form_link ) ) {
 			$output .= $form_link;
 		}
+
+		/**
+		 * Modify the links shown in the Connected Form links
+		 *
+		 * @since 1.6
+		 *
+		 * @param array $links Links to show
+		 * @param array $form Gravity Forms form array
+		 */
+		$links = apply_filters( 'gravityview_connected_form_links', $links, $form );
 
 		$output .= '<div class="row-actions">'. implode( ' | ', $links ) .'</div>';
 
