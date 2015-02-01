@@ -57,6 +57,10 @@ jQuery( document).ready(function( $ ){
 
             // No View defined
             if( view_id.length === 0 ) {
+
+                // No View? No merge tags make sense.
+                $('.all-merge-tags').remove();
+
                 return;
             }
 
