@@ -406,7 +406,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			case 'name':
 			case 'address':
 
-				if( false === strpos('.', $field_id ) ) {
+				if( false === strpos( $field_id, '.' ) ) {
 
 					$words = explode( ' ', $value );
 
@@ -586,7 +586,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$label = isset( $form_field['label'] ) ? $form_field['label'] : '';
 
 		// If this is a field input, not a field
-		if( strpos( $field['field'], '.') > 0 && !empty( $form_field['inputs'] ) ) {
+		if( strpos( $field['field'], '.' ) > 0 && !empty( $form_field['inputs'] ) ) {
 
 			// Get the label for the field in question, which returns an array
 			$items = wp_list_filter( $form_field['inputs'], array('id' => $field['field']) );
