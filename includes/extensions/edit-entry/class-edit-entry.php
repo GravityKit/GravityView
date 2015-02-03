@@ -674,7 +674,7 @@ class GravityView_Edit_Entry {
 	    // If edit tab not yet configured, show all fields
 	    $edit_fields = !empty( $properties['edit_edit-fields'] ) ? $properties['edit_edit-fields'] : NULL;
 
-	    // Hide fields depending on admin settings
+	    // Hide fields depending on Edit Entry settings
 		$this->form['fields'] = $this->filter_fields( $this->form['fields'], $edit_fields );
 
 		$this->is_valid = GFFormDisplay::validate( $this->form, $field_values, 1, $failed_validation_page );
@@ -849,6 +849,10 @@ class GravityView_Edit_Entry {
 	    if( !empty( $field_setting['custom_class'] ) ) {
 	         $return_field['gvCustomClass'] = gravityview_sanitize_html_class( $field_setting['custom_class'] );
 	    }
+
+		// @since 1.6
+		// Normalise page numbers - avoid conflicts with page validation
+		$return_field['pageNumber'] = 1;
 
 	    return $return_field;
 
