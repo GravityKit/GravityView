@@ -230,6 +230,7 @@ class GravityView_API {
 			'display_value' => $display_value,
 			'format' => $format,
 			'entry' => $entry,
+			'field_type' => $field_type, /** {@since 1.6} **/
 		);
 
 		if( $field_exists ) {
@@ -262,12 +263,23 @@ class GravityView_API {
 		}
 
 		/**
-		 * Modify the field value output
+		 * Modify the field value output for a field type
+		 *
+		 * @since 1.6
 		 * @param string $output HTML value output
 		 * @param array  $entry The GF entry array
 		 * @param  array $field_settings Settings for the particular GV field
 		 */
-		$output = apply_filters( 'gravityview_field_entry_value', $output, $entry, $field_settings );
+		$output = apply_filters( 'gravityview_field_entry_value_'.$field_type, $output, $entry, $field_settings, $gravityview_view->field_data );
+
+		/**
+		 * Modify the field value output
+		 * @param string $output HTML value output
+		 * @param array  $entry The GF entry array
+		 * @param  array $field_settings Settings for the particular GV field
+		 * @param array $field_data  {@since 1.6}
+		 */
+		$output = apply_filters( 'gravityview_field_entry_value', $output, $entry, $field_settings, $gravityview_view->field_data );
 
 		// Free up the memory
 		unset( $gravityview_view->field_data );

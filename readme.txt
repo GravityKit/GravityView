@@ -28,6 +28,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Single Entry links didn't work when previewing a draft View
 * Added: `gravityview_get_link()` function to standardize generating HTML anchors
 * Added: `GravityView_API::entry_link_html()` method to generate entry link HTML
+* Added: `gravityview_field_entry_value_{$field_type}` filter to modify the value of a field (in `includes/class-api.php`)
+* Added: `field_type` key has been added to the field data in the global `$gravityview_view->field_data` array
 * Tweak: Allow [WordPress SEO](http://wordpress.org/plugins/wordpress-seo/) scripts and styles when in "No Conflict Mode"
 
 = 1.5.4 on January 29 =
