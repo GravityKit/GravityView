@@ -535,7 +535,7 @@ class GravityView_API {
 
 		$entry_slug = self::get_entry_slug( $entry['id'], $entry );
 
-		if( get_option('permalink_structure') ) {
+		if( get_option('permalink_structure') && !is_preview() ) {
 
 			$args = array();
 

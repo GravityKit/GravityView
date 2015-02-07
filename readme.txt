@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Added: Recent Entries WordPress Widget - show the latest entries for your View. [Learn more](PLACEHOLDER!!!!)
 * Fixed: Respect Custom Input Labels added in Gravity Forms 1.9
 * Fixed: Edit Entry Admin Bar link
+* Fixed: Single Entry links didn't work when previewing a draft View
 * Added: `gravityview_get_link()` function to standardize generating HTML anchors
 * Added: `GravityView_API::entry_link_html()` method to generate entry link HTML
 * Tweak: Allow [WordPress SEO](http://wordpress.org/plugins/wordpress-seo/) scripts and styles when in "No Conflict Mode"
