@@ -20,14 +20,14 @@ class WP_Widget_GravityView_Search extends WP_Widget {
 
 		$widget_ops = array(
 			'classname' => 'widget_gravityview_search',
-			'description' => __( "A search form for a specific GravityView.", 'gravityview')
+			'description' => __( 'A search form for a specific GravityView.', 'gravityview')
 		);
 
 		$widget_display = array(
 			'width' => 400
 		);
 
-		parent::__construct( 'gravityview_search', __( 'GravityView Search', 'GravityView Search widget' ), $widget_ops, $widget_display );
+		parent::__construct( 'gravityview_search', __( 'GravityView Search', 'gravityview' ), $widget_ops, $widget_display );
 
 		if( !class_exists( 'GravityView_Widget_Search' ) ) {
 			GravityView_Plugin::getInstance()->register_widgets();
@@ -58,6 +58,14 @@ class WP_Widget_GravityView_Search extends WP_Widget {
 		echo $args['after_widget'];
 	}
 
+	public function update( $new_instance, $old_instance ) {
+		$instance = $old_instance;
+		$new_instance = wp_parse_args((array) $new_instance, array( 'title' => '', 'view' => 0 ));
+		$instance['title'] = strip_tags($new_instance['title']);
+		$instance['view'] = absint($new_instance['view']);
+		return $instance;
+	}
+
 	public function form( $instance ) {
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'view' => 0, 'search_settings' => '' ) );
 		$title           = $instance['title'];
@@ -67,26 +75,34 @@ class WP_Widget_GravityView_Search extends WP_Widget {
 		$views = GVCommon::get_all_views();
 
 		// If there are no views set up yet, we get outta here.
-		if( empty( $views ) ) {
-			echo '<div id="select_gravityview_view"><div class="wrap">'. GravityView_Post_Types::no_views_text() .'</div></div>';
-			return;
-		}
+		if( empty( $views ) ) : ?>
+			<div id="select_gravityview_view">
+				<div class="wrap"><?php echo GravityView_Post_Types::no_views_text(); ?></div>
+			</div>
+			<?php return;
+		endif;
 		?>
+
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></label></p>
+
+		<p>
+			<label for="gravityview_view_id"><?php _e( 'View:', 'gravityview' ); ?></label>
+			<select id="gravityview_view_id" name="<?php echo $this->get_field_name('view'); ?>" class="widefat">
+				<option value=""><?php esc_html_e( '&mdash; Select a View &mdash;', 'gravityview' ); ?></option>
+				<?php
+				foreach( $views as $view_option ) {
+					$title = empty( $view_option->post_title ) ? __('(no title)', 'gravityview') : $view_option->post_title;
+					echo '<option value="'. $view_option->ID .'" ' . selected( esc_attr($view), $view_option->ID, false ) . '>'. esc_html( sprintf('%s #%d', $title, $view_option->ID ) ) .'</option>';
+				}
+				?>
+			</select>
+
+		</p>
+
 
 		<div class="gv-fields" data-fieldid="search_bar">
 
-			<p><label for="gravityview_view_id"><?php _e('View:', 'gravityview'); ?>
-				<select id="gravityview_view_id" name="<?php echo $this->get_field_name('view'); ?>">
-					<option value=""><?php esc_html_e( '&mdash; Select a View &mdash;', 'gravityview' ); ?></option>
-					<?php
-					foreach( $views as $view_option ) {
-						$title = empty( $view_option->post_title ) ? __('(no title)', 'gravityview') : $view_option->post_title;
-						echo '<option value="'. $view_option->ID .'" ' . selected( esc_attr($view), $view_option->ID, false ) . '>'. esc_html( sprintf('%s #%d', $title, $view_option->ID ) ) .'</option>';
-					}
-					?>
-				</select>
-			</label></p>
+
 
 			<p id="gv-widget-search-settings-link"><a href="#gv-search-settings"><span class="dashicons-admin-generic dashicons"></span>Configure Search Settings</a></p>
 
@@ -107,13 +123,7 @@ class WP_Widget_GravityView_Search extends WP_Widget {
 		<?php
 	}
 
-	public function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
-		$new_instance = wp_parse_args((array) $new_instance, array( 'title' => '', 'view' => 0 ));
-		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['view'] = absint($new_instance['view']);
-		return $instance;
-	}
+
 
 }
 
