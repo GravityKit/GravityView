@@ -395,7 +395,7 @@
             buttons = buttons || default_buttons;
 
             thisDialog.dialog({
-                dialogClass: 'wp-dialog',
+                dialogClass: 'wp-dialog gv-dialog',
                 appendTo: thisDialog.parent(),
                 draggable: false,
                 resizable: false,
@@ -606,7 +606,7 @@
             e.stopImmediatePropagation();
             var parent = $(event.currentTarget).parents(".gv-view-types-module");
             parent.find(".gv-template-preview").dialog({
-                dialogClass: 'wp-dialog',
+                dialogClass: 'wp-dialog gv-dialog',
                 appendTo: $("#gravityview_select_template"),
                 width: 550,
                 open: function () {

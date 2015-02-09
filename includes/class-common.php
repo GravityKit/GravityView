@@ -36,6 +36,31 @@ class GVCommon {
 		return false;
 	}
 
+	/**
+	 * Get all existing Views
+	 *
+	 * @since  1.5.4
+	 * @return array Array of Views as `WP_Post`. Empty array if none found.
+	 */
+	public static function get_all_views() {
+
+		$params = array(
+			'post_type' => 'gravityview',
+			'posts_per_page' => -1,
+			'post_status' => 'publish',
+		);
+
+		/**
+		 * Modify the parameters sent to get all views.
+		 * @param  array $params description
+		 */
+		$views_params = apply_filters( 'gravityview/get_all_views/params', $params );
+
+		$views = get_posts( $params );
+
+		return $views;
+	}
+
 
 	/**
 	 * Get the form array for an entry based only on the entry ID

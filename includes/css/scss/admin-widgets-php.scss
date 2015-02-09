@@ -1,0 +1,23 @@
+
+.widgets-php .gv-overlay {
+	display: none;
+}
+
+#gv-widget-search-settings-link {
+
+	display: none;
+	text-align: center;
+	font-size: 110%;
+
+	.dashicons {
+		margin-right: 5px;
+		line-height: 20px!important;
+		height: 20px!important;
+		font-size: 20px!important;
+	}
+
+	a {
+		text-decoration: none;
+		text-align: center;
+	}
+}

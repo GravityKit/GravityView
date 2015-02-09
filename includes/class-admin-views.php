@@ -822,7 +822,9 @@ class GravityView_Admin_Views {
 	 * @return void
 	 */
 	static function add_scripts_and_styles( $hook ) {
-		global $plugin_page;
+		global $plugin_page, $pagenow;
+
+		$is_widgets_page = ( $pagenow === 'widgets.php' );
 
 		// Add the GV font (with the Astronaut)
 		wp_enqueue_style( 'gravityview_global', plugins_url('assets/css/admin-global.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
@@ -830,14 +832,19 @@ class GravityView_Admin_Views {
 		wp_register_script( 'gravityview-jquery-cookie', plugins_url('includes/lib/jquery-cookie/jquery_cookie.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
 
 		// Don't process any scripts below here if it's not a GravityView page.
-		if( !gravityview_is_admin_page($hook) ) { return; }
+		if( !gravityview_is_admin_page($hook) && !$is_widgets_page ) { return; }
 
 
-		// Add the UserVoice widget on all GV pages
-		self::enqueue_uservoice_widget();
+		if( !$is_widgets_page ) {
+
+			// Add the UserVoice widget on all GV pages
+			self::enqueue_uservoice_widget();
+
+		}
+
 
 		// Only enqueue the following on single pages
-		if( gravityview_is_admin_page($hook, 'single')) {
+		if( gravityview_is_admin_page($hook, 'single') || $is_widgets_page ) {
 
 			wp_enqueue_script( 'jquery-ui-datepicker' );
 			//wp_enqueue_style( 'gravityview_views_datepicker', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );

@@ -118,6 +118,8 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR . 'includes/class-frontend-views.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
 
+		include_once( GRAVITYVIEW_DIR .'includes/widgets/search-widget/search-widget.php' );
+
 		/**
 		 * Encrypt Email Addresses
 		 * @link  https://github.com/jnicol/standalone-phpenkoder
@@ -138,7 +140,7 @@ final class GravityView_Plugin {
 		add_action( 'init', array( $this, 'register_default_templates' ), 11 );
 
 		// Load default widgets
-		add_action( 'init', array( $this, 'register_default_widgets' ), 11 );
+		add_action( 'init', array( $this, 'register_widgets' ), 11 );
 
 	}
 
@@ -239,7 +241,7 @@ final class GravityView_Plugin {
 	 * @todo Move somehere logical
 	 * @return void
 	 */
-	function register_default_widgets() {
+	function register_widgets() {
 		include_once( GRAVITYVIEW_DIR .'includes/default-widgets.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/search-widget/class-search-widget.php' );
 	}
