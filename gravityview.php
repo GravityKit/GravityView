@@ -118,7 +118,6 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR . 'includes/class-frontend-views.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
 
-		include_once( GRAVITYVIEW_DIR .'includes/widgets/search-widget/search-widget.php' );
 
 		/**
 		 * Encrypt Email Addresses
