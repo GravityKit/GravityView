@@ -204,7 +204,20 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'gravityview', false, dirname( plugin_basename( GRAVITYVIEW_FILE ) ) . '/languages/' );
+
+		$loaded = load_plugin_textdomain( 'gravityview', false, '/languages/' );
+		if ( ! $loaded ) {
+			$loaded = load_muplugin_textdomain( 'gravityview', '/languages/' );
+		}
+		if ( ! $loaded ) {
+			$loaded = load_theme_textdomain( 'gravityview', '/languages/' );
+		}
+		if ( ! $loaded ) {
+			$locale = apply_filters( 'plugin_locale', get_locale(), 'gravityview' );
+			$mofile = dirname( __FILE__ ) . '/languages/gravityview-'. $locale .'.mo';
+			load_textdomain( 'gravityview', $mofile );
+		}
+
 	}
 
 	/**
