@@ -765,6 +765,17 @@ class GravityView_Edit_Entry {
 	                                    </td>
 	                                </tr>';
 
+		                        /**
+		                         * Modify the Edit Entry field content
+		                         *
+		                         * @param string $content Field HTML as rendered in the Edit Entry form
+		                         * @param array $field Gravity Forms field array, with extra GravityView keys such as `gvCustomClass`
+		                         * @param string $value Value of the field
+		                         * @param int $entry_id Entry ID
+		                         * @param int $form_id Form ID
+		                         *
+		                         * @return string HTML output for the field in the Edit Entry form
+		                         */
 	                            $content = apply_filters( 'gravityview_edit_entry_field_content', $content, $field, $value, $lead['id'], $form['id'] );
 
 	                            echo $content;
