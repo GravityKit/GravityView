@@ -23,9 +23,11 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 = 1.6 =
 * Added: Duplicate View functionality allows you to clone a View from the All Views screen. [Learn more](http://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view)
 * Added: Recent Entries WordPress Widget - show the latest entries for your View. [Learn more](PLACEHOLDER!!!!)
+* Added: Hook to customise the text message "You have attempted to view an entry that is not visible or may not exist." - `gravityview/render/entry/not_visible`
 * Fixed: Respect Custom Input Labels added in Gravity Forms 1.9
 * Fixed: Edit Entry Admin Bar link
 * Fixed: Single Entry links didn't work when previewing a draft View
+* Fixed: Edit entry validation hooks not running when form has multiple pages
 * Added: `gravityview_get_link()` function to standardize generating HTML anchors
 * Added: `GravityView_API::entry_link_html()` method to generate entry link HTML
 * Added: `gravityview_field_entry_value_{$field_type}` filter to modify the value of a field (in `includes/class-api.php`)

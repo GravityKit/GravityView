@@ -19,7 +19,7 @@ if( !function_exists('gravityview_get_form') ) {
 	 *
 	 * @access public
 	 * @param mixed $form_id
-	 * @return void
+	 * @return mixed False: no form ID specified or Gravity Forms isn't active. Array: Form returned from Gravity Forms
 	 */
 	function gravityview_get_form( $form_id ) {
 		return GVCommon::get_form( $form_id );

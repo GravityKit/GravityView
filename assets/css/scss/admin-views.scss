@@ -11,6 +11,7 @@
  */
 
 
+@import "admin-widgets-php";
 @import "admin-merge-tags";
 @import "admin-tooltips";
 
@@ -24,6 +25,8 @@
 }
 
 $dismiss-red: #d03a3a;
+
+$gv-overlay-index: 10000;
 
 /* GV Grid
 --------------------------------------- */
@@ -325,7 +328,7 @@ $dismiss-red: #d03a3a;
 
 	// Fix issue with theme conflicts where .gv-overlay gets in the way
 	.ui-front {
-		z-index: 999999;
+		z-index: $gv-overlay-index + 1;
 	}
 
 	.ui-tabs-nav {
@@ -393,10 +396,14 @@ $dismiss-red: #d03a3a;
 	.ui-tabs-hide { display: none!important; }
 }
 
+.gv-dialog {
+	z-index: $gv-overlay-index + 1;
+}
+
 .gv-overlay {
 	cursor: pointer;
 	position: fixed;
-	z-index: 10000;
+	z-index: $gv-overlay-index;
 	background: transparent; // For browsers without support for rgba
 	background: rgba(225, 225, 225, .4);
 	width: 100%;
@@ -493,7 +500,9 @@ hr{
 	border: 1px dashed #ccc;
 }
 
-.gv-fields {
+// Don't modify the display of the field in the Widget page
+.post-new-php .gv-fields,
+.post-php .gv-fields {
 	cursor: move;
 	border: 1px solid #ddd;
 	background: #f7f7f7;
@@ -668,6 +677,7 @@ hr{
 	&.gv-dialog-warning p {
 		font-size: 1.1em;
 	}
+
 	&.gv-dialog-warning .dashicons {
 		font-size: 70px;
 		width: 70px;

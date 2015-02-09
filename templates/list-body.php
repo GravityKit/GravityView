@@ -54,6 +54,7 @@ if( empty( $this->total_entries ) ) {
 						if ( $i == 0 ) {
 							$title_args['markup'] = '<h3 class="{{class}}">{{label}}{{value}}</h3>';
 							echo gravityview_field_output( $title_args );
+							unset( $title_args['markup'] );
 						} else {
 							$title_args['wpautop'] = true;
 							echo gravityview_field_output( $title_args );

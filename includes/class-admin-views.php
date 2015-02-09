@@ -14,14 +14,12 @@
 
 class GravityView_Admin_Views {
 
-	private $post_id;
-
 	function __construct() {
 
 		add_action( 'save_post', array( $this, 'save_postdata' ) );
 
 		// set the blacklist field types across the entire plugin
-		add_filter( 'gravityview_blacklist_field_types', array( $this, 'default_field_blacklist' ), 10, 2 );
+		add_filter( 'gravityview_blacklist_field_types', array( $this, 'default_field_blacklist' ), 10, 1 );
 
 		// Tooltips
 		add_filter( 'gform_tooltips', array( $this, 'tooltips') );
@@ -58,7 +56,7 @@ class GravityView_Admin_Views {
 	 */
 	public static function render_setting_row( $key = '', $current_settings = array(), $override_input = null, $name = 'template_settings[%s]', $id = 'gravityview_se_%s' ) {
         _deprecated_function( 'GravityView_Admin_Views::render_setting_row', '1.1.7', 'GravityView_Render_Settings::render_setting_row' );
-		return GravityView_Render_Settings::render_setting_row( $key, $current_settings, $override_input, $name , $id );
+		GravityView_Render_Settings::render_setting_row( $key, $current_settings, $override_input, $name , $id );
 	}
 
 	/**
@@ -128,7 +126,7 @@ class GravityView_Admin_Views {
 	 * @access public
 	 * @return void
 	 */
-	function default_field_blacklist( $array = array(), $context = NULL ) {
+	function default_field_blacklist( $array = array() ) {
 		return array_merge( $array, array( 'captcha', 'page' ) );
 	}
 
@@ -222,7 +220,7 @@ class GravityView_Admin_Views {
 
 		// Either the form is empty or the form ID is 0, not yet set.
 		if( empty( $form ) ) {
-			return;
+			return '';
 		}
 
 		// The $form is passed as the form ID
@@ -374,6 +372,7 @@ class GravityView_Admin_Views {
 
 					// Fields are passed as a jQuery-serialized array, created in admin-views.js in the serializeForm method
 					// Not using parse_str due to max_input_vars limitation
+					$fields_holder = array();
 					GVCommon::gv_parse_str( $_POST['fields'], $fields_holder );
 
 					if( isset( $fields_holder['fields'] ) ) {
@@ -777,18 +776,25 @@ class GravityView_Admin_Views {
 			return;
 		}
 
-		$output = '';
-
 		$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $template_id );
 
-		$fields = '';
-		if( !empty( $post_id ) ) {
-			$fields = gravityview_get_directory_fields( $post_id );
-		}
+		if( empty( $template_areas ) ) {
 
-		ob_start();
-		$this->render_active_areas( $template_id, 'field', $context, $template_areas, $fields );
-		$output = ob_get_clean();
+			do_action( 'gravityview_log_debug', '[render_directory_active_areas] No areas defined. Maybe template %s is disabled.', $template_id );
+			$output = '<div class="notice">'. sprintf( __( 'This view is configured with the view type id <em>%s</em> that seems to be disabled.', 'gravityview' ), $template_id ) .'</div>';
+
+		} else {
+
+			$fields = '';
+			if ( ! empty( $post_id ) ) {
+				$fields = gravityview_get_directory_fields( $post_id );
+			}
+
+			ob_start();
+			$this->render_active_areas( $template_id, 'field', $context, $template_areas, $fields );
+			$output = ob_get_clean();
+
+		}
 
 		if( $echo ) {
 			echo $output;
@@ -816,7 +822,9 @@ class GravityView_Admin_Views {
 	 * @return void
 	 */
 	static function add_scripts_and_styles( $hook ) {
-		global $plugin_page;
+		global $plugin_page, $pagenow;
+
+		$is_widgets_page = ( $pagenow === 'widgets.php' );
 
 		// Add the GV font (with the Astronaut)
 		wp_enqueue_style( 'gravityview_global', plugins_url('assets/css/admin-global.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
@@ -824,14 +832,19 @@ class GravityView_Admin_Views {
 		wp_register_script( 'gravityview-jquery-cookie', plugins_url('includes/lib/jquery-cookie/jquery_cookie.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
 
 		// Don't process any scripts below here if it's not a GravityView page.
-		if( !gravityview_is_admin_page($hook) ) { return; }
+		if( !gravityview_is_admin_page($hook) && !$is_widgets_page ) { return; }
 
 
-		// Add the UserVoice widget on all GV pages
-		self::enqueue_uservoice_widget();
+		if( !$is_widgets_page ) {
+
+			// Add the UserVoice widget on all GV pages
+			self::enqueue_uservoice_widget();
+
+		}
+
 
 		// Only enqueue the following on single pages
-		if( gravityview_is_admin_page($hook, 'single')) {
+		if( gravityview_is_admin_page($hook, 'single') || $is_widgets_page ) {
 
 			wp_enqueue_script( 'jquery-ui-datepicker' );
 			//wp_enqueue_style( 'gravityview_views_datepicker', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );

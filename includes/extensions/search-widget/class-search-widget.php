@@ -63,8 +63,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
 
 
-		// admin - add scripts
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 999 );
+		// admin - add scripts - run at 1100 to make sure GravityView_Admin_Views::add_scripts_and_styles() runs first at 999
+		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 1100 );
 		add_filter( 'gravityview_noconflict_scripts', array( $this, 'register_no_conflict') );
 
 		// ajax - get the searchable fields
@@ -85,12 +85,15 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * @param  mixed $hook
 	 */
 	function add_scripts_and_styles( $hook ) {
-		// Don't process any scripts below here if it's not a GravityView page.
-		if( !gravityview_is_admin_page( $hook ) ) { return; }
+		global $pagenow;
+
+		// Don't process any scripts below here if it's not a GravityView page or the widgets screen
+		if( !gravityview_is_admin_page( $hook ) && ( 'widgets.php' !== $pagenow ) ) { return; }
 
 		$script_min = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 		$script_source = empty( $script_min ) ? '/source' : '';
-		wp_enqueue_script( 'gravityview_searchwidget_admin', plugins_url( 'assets/js'.$script_source.'/admin-search-widget'.$script_min.'.js', __FILE__ ), array( 'jquery' ), GravityView_Plugin::version );
+
+		wp_enqueue_script( 'gravityview_searchwidget_admin', plugins_url( 'assets/js'.$script_source.'/admin-search-widget'.$script_min.'.js', __FILE__ ), array( 'jquery', 'gravityview_views_scripts' ), GravityView_Plugin::version );
 
 
 		/**
@@ -156,10 +159,20 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			exit(0);
 		}
 		$form = '';
-		if( !empty( $_POST['formid'] ) ) {
+
+		// Fetch the form for the current View
+		if( !empty( $_POST['view_id'] ) ) {
+
+			$form = gravityview_get_form_id( $_POST['view_id'] );
+
+		} elseif( !empty( $_POST['formid'] ) ) {
+
 			$form = (int) $_POST['formid'];
+
 		} elseif( !empty( $_POST['template_id'] ) && class_exists('GravityView_Ajax') ) {
+
 			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
+
 		}
 
 		// fetch form id assigned to the view
@@ -406,7 +419,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			case 'name':
 			case 'address':
 
-				if( false === strpos('.', $field_id ) ) {
+				if( false === strpos( $field_id, '.' ) ) {
 
 					$words = explode( ' ', $value );
 
@@ -586,7 +599,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$label = isset( $form_field['label'] ) ? $form_field['label'] : '';
 
 		// If this is a field input, not a field
-		if( strpos( $field['field'], '.') > 0 && !empty( $form_field['inputs'] ) ) {
+		if( strpos( $field['field'], '.' ) > 0 && !empty( $form_field['inputs'] ) ) {
 
 			// Get the label for the field in question, which returns an array
 			$items = wp_list_filter( $form_field['inputs'], array('id' => $field['field']) );

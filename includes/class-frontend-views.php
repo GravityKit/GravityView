@@ -483,7 +483,10 @@ class GravityView_frontend {
 
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.');
 
-				esc_attr_e( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview');
+				/**
+				 * @since 1.6
+				 */
+				echo esc_attr( apply_filters( 'gravityview/render/entry/not_visible', __( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview') ) );
 
 				return;
 			}
