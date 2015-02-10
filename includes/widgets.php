@@ -343,24 +343,25 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
-		GravityView_Widget_Search::getInstance()->render_frontend( $args, $content, $context );
+		GravityView_Widget_Search::getInstance()->render_frontend( $instance );
 
 		echo $args['after_widget'];
 	}
 
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		$new_instance = wp_parse_args((array) $new_instance, array( 'title' => '', 'view' => 0 ));
+		$new_instance = wp_parse_args( (array) $new_instance, array( 'title' => '', 'view' => 0, 'search_fields' => '' ) );
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['view'] = absint($new_instance['view']);
+		$instance['search_fields'] = $new_instance['search_fields'];
 		return $instance;
 	}
 
 	public function form( $instance ) {
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'view' => 0, 'search_settings' => '' ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'view' => 0, 'search_fields' => '' ) );
 		$title           = $instance['title'];
 		$view            = $instance['view'];
-		$search_settings = $instance['search_settings'];
+		$search_fields = $instance['search_fields'];
 
 		$views = GVCommon::get_all_views();
 
@@ -390,24 +391,20 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		</p>
 
 
-		<div class="gv-fields" data-fieldid="search_bar">
 
-			<p id="gv-widget-search-settings-link"><a href="#gv-search-settings"><span class="dashicons-admin-generic dashicons"></span>Configure Search Settings</a></p>
 
-			<div class="gv-dialog-options" title="<?php esc_html_e('Search Fields', 'gravityview'); ?>">
-				<div class="">
-					<div class="gv-setting-container screen-reader-text">
-						<input id="<?php echo $this->get_field_id('search_settings'); ?>" name="<?php echo $this->get_field_name('search_settings'); ?>" type="hidden" value="" class="gv-search-fields-value">
-					</div>
-				</div>
+		<?php // @todo: move style to CSS ?>
+		<div style="margin-bottom: 1em;">
+			<label for="<?php echo $this->get_field_id('search_settings'); ?>"><?php _e( 'Searchable fields:', 'gravityview' ); ?></label>
+			<div class="gv-widget-search-fields" title="<?php esc_html_e('Search Fields', 'gravityview'); ?>">
+				<input id="<?php echo $this->get_field_id('search_fields'); ?>" name="<?php echo $this->get_field_name('search_fields'); ?>" type="hidden" value="<?php echo esc_attr( $search_fields ); ?>" class="gv-search-fields-value">
 			</div>
 
-			<!-- Placeholder. Required for JS. -->
-			<input type="hidden" id="gravityview_directory_template" />
-			<input type="hidden" id="gravityview_form_id" />
-			<!-- END Placeholder. Required for JS. -->
-
 		</div>
+
+
+
+
 	<?php
 	}
 
