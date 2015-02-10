@@ -11,6 +11,10 @@
  * @since 1.0.0
  */
 
+/** If this file is called directly, abort. */
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
 
 class GravityView_Admin_Views {
 

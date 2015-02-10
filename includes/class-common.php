@@ -11,6 +11,11 @@
  * @since 1.5.2
  */
 
+/** If this file is called directly, abort. */
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 class GVCommon {
 
 	/**
