@@ -89,7 +89,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			$content = !empty( $content ) ? $content : $file_path_info['basename'];
 
 			// If pathinfo() gave us the extension of the file, run the switch statement using that.
-			$extension = empty( $file_path_info['extension'] ) ? NULL : $file_path_info['extension'];
+			$extension = empty( $file_path_info['extension'] ) ? NULL : strtolower( $file_path_info['extension'] );
 
 
 			switch( true ) {
