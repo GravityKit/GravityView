@@ -500,12 +500,14 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			switch( $field['field'] ) {
 
 				case 'search_all':
+					$search_fields[ $k ]['label'] =  __( 'Search Entries:', 'gravityview' );
 					$search_fields[ $k ]['key'] = 'search_all';
 					$search_fields[ $k ]['input'] = 'search_all';
 					$search_fields[ $k ]['value'] = esc_attr( stripslashes_deep( rgget('gv_search') ) );
 					break;
 
 				case 'entry_date':
+					$search_fields[ $k ]['label'] = __( 'Filter by date:', 'gravityview' );
 					$search_fields[ $k ]['key'] = 'entry_date';
 					$search_fields[ $k ]['input'] = 'entry_date';
 					$search_fields[ $k ]['value'] = array(
@@ -516,6 +518,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 					break;
 
 				case 'entry_id':
+					$search_fields[ $k ]['label'] = __( 'Entry ID:', 'gravityview' );
 					$search_fields[ $k ]['key'] = 'entry_id';
 					$search_fields[ $k ]['input'] = 'entry_id';
 					$search_fields[ $k ]['value'] = esc_attr( stripslashes_deep( rgget( 'gv_id' ) ) );
