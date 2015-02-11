@@ -352,6 +352,10 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
+		$instance['search_layout'] = apply_filters( 'gravityview/widget/search/layout', 'vertical', $instance );
+
+		global $gravityview_view;
+		$gravityview_view = new GravityView_View( $instance );
 		GravityView_Widget_Search::getInstance()->render_frontend( $instance );
 
 		echo $args['after_widget'];
@@ -359,17 +363,17 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		$new_instance = wp_parse_args( (array) $new_instance, array( 'title' => '', 'view' => 0, 'search_fields' => '' ) );
-		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['view'] = absint($new_instance['view']);
+		$new_instance = wp_parse_args( (array) $new_instance, array( 'title' => '', 'view_id' => 0, 'search_fields' => '' ) );
+		$instance['title'] = strip_tags( $new_instance['title'] );
+		$instance['view_id'] = absint( $new_instance['view_id'] );
 		$instance['search_fields'] = $new_instance['search_fields'];
 		return $instance;
 	}
 
 	public function form( $instance ) {
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'view' => 0, 'search_fields' => '' ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'view_id' => 0, 'search_fields' => '' ) );
 		$title           = $instance['title'];
-		$view            = $instance['view'];
+		$view_id            = $instance['view_id'];
 		$search_fields = $instance['search_fields'];
 
 		$views = GVCommon::get_all_views();
@@ -387,12 +391,12 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 		<p>
 			<label for="gravityview_view_id"><?php _e( 'View:', 'gravityview' ); ?></label>
-			<select id="gravityview_view_id" name="<?php echo $this->get_field_name('view'); ?>" class="widefat">
+			<select id="gravityview_view_id" name="<?php echo $this->get_field_name('view_id'); ?>" class="widefat">
 				<option value=""><?php esc_html_e( '&mdash; Select a View &mdash;', 'gravityview' ); ?></option>
 				<?php
 				foreach( $views as $view_option ) {
 					$title = empty( $view_option->post_title ) ? __('(no title)', 'gravityview') : $view_option->post_title;
-					echo '<option value="'. $view_option->ID .'" ' . selected( esc_attr($view), $view_option->ID, false ) . '>'. esc_html( sprintf('%s #%d', $title, $view_option->ID ) ) .'</option>';
+					echo '<option value="'. $view_option->ID .'" ' . selected( esc_attr( $view_id ), $view_option->ID, false ) . '>'. esc_html( sprintf('%s #%d', $title, $view_option->ID ) ) .'</option>';
 				}
 				?>
 			</select>

@@ -479,7 +479,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
 		global $gravityview_view;
 
-		if( empty( $gravityview_view )) {
+		if( empty( $gravityview_view ) ) {
 			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: $gravityview_view not instantiated yet.', get_class($this)) );
 			return;
 		}
