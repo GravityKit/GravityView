@@ -62,7 +62,7 @@
 				.on( 'change', '#gravityview_view_id', gvSearchWidget.clearWidgetSearchData );
 
 			// refresh widget searchable settings after saving
-			$(document).on( 'widget-updated', gvSearchWidget.refreshWidget );
+			$(document).on( 'widget-added widget-updated', gvSearchWidget.refreshWidget );
 
 		},
 
@@ -629,9 +629,12 @@
 		 */
 		clearWidgetSearchData: function() {
 			gvSearchWidget.selectFields = null;
+			var widget = $(this).closest('div.widget');
+			gvSearchWidget.widgetTarget = widget.find( 'div.'+ gvSearchWidget.wrapClass );
+
 			$( '.gv-search-fields-value', gvSearchWidget.widgetTarget ).val('');
 			$( 'table', gvSearchWidget.widgetTarget ).remove();
-			gvSearchWidget.renderUI( gvSearchWidget.widgetTarget.closest( 'div.widget' ) );
+			gvSearchWidget.renderUI( widget );
 		}
 
 
