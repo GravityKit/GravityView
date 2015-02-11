@@ -768,14 +768,15 @@ hr {
 			}
 		}
 
-		.cell-input-types {
-			width: 180px;
+	  	.gv-search-fields,
+		.gv-search-inputs {
+			width: 100%;
 		}
 
 		.cell-sort,
 		.cell-add-remove {
 
-			width: 40px;
+			//width: 40px;
 
 			a {
 				font-size: 18px;
@@ -798,7 +799,11 @@ hr {
 		}
 
 		.cell-sort {
-			width: 18px;
+			width: 24px;
+		}
+
+	  	.cell-add-remove {
+		  width: 50px;
 		}
 
 	}
