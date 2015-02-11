@@ -526,11 +526,23 @@ class GravityView_Edit_Entry {
 		$form = $this->form;
 
 		foreach( $form['fields'] as &$field ) {
-			$field['adminOnly'] = '';
+
+			// GF 1.9+
+			if( is_object( $field ) ) {
+				$field->adminOnly = '';
+			} else {
+				$field['adminOnly'] = '';
+			}
 
 			if( isset($field["inputs"] ) && is_array( $field["inputs"] ) ) {
-				foreach( $field["inputs"] as &$input ) {
-					$input['id'] = (string)$input['id'];
+				foreach( $field["inputs"] as $key => $input ) {
+
+					// GF 1.9+
+					if( is_object( $field ) ) {
+						$field->inputs[ $key ][ 'id' ] = (string)$input['id'];
+					} else {
+						$field["inputs"][ $key ]['id'] = (string)$input['id'];
+					}
 				}
 			}
 

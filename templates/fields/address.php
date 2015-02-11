@@ -12,6 +12,7 @@ extract( $gravityview_view->field_data );
 // If it's the full address
 if( floor( $field_id ) === floatval( $field_id ) ) {
 
+	// @todo Implement the `gform_disable_address_map_link` filter (boolean) added in GF 1.9 to enable/disable map link
 	// Use Gravity Forms' method to get the full address.
 	// Pass the `text` parameter so the map link isn't added like when passing `html`
 	$value_with_newline = GFCommon::get_lead_field_display( $field, $value, "", false, 'text' );
