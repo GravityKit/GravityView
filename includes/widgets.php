@@ -173,19 +173,28 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		// Get the settings for the View ID
 		$view_settings = gravityview_get_template_settings( $instance['view_id'] );
 
-		// Merge the view settings with the defaults
-		$view_settings = wp_parse_args( $view_settings, GravityView_View_Data::get_default_args() );
-
+		$view_settings['id'] = $instance['view_id'];
 		$view_settings['page_size'] = $instance['number'];
+
+		// Prepare paging criteria
+		$criteria['paging'] = array(
+			'offset' => 0,
+			'page_size' => $instance['number']
+		);
+
+		// Prepare Search Criteria
+		$criteria['search_criteria'] = array( 'field_filters' => array() );
+		$criteria['search_criteria'] = GravityView_frontend::process_search_only_approved( $view_settings, $criteria['search_criteria']);
+		$criteria['search_criteria']['status'] = apply_filters( 'gravityview_status', 'active', $view_settings );
 
 		/**
 		 * Modify the search parameters before the entries are fetched
 		 */
-		$view_settings = apply_filters('gravityview/widget/recent-entries/view_settings', $view_settings, $instance, $form_id );
+		$criteria = apply_filters('gravityview/widget/recent-entries/criteria', $criteria, $instance, $form_id );
 
-		$results = GravityView_frontend::get_view_entries( $view_settings, $form_id );
+		$results = GVCommon::get_entries( $form_id, $criteria );
 
-		return $results['entries'];
+		return $results;
 	}
 
 	/**
@@ -395,7 +404,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 		<?php // @todo: move style to CSS ?>
 		<div style="margin-bottom: 1em;">
-			<label for="<?php echo $this->get_field_id('search_settings'); ?>"><?php _e( 'Searchable fields:', 'gravityview' ); ?></label>
+			<label for="<?php echo $this->get_field_id('search_fields'); ?>"><?php _e( 'Searchable fields:', 'gravityview' ); ?></label>
 			<div class="gv-widget-search-fields" title="<?php esc_html_e('Search Fields', 'gravityview'); ?>">
 				<input id="<?php echo $this->get_field_id('search_fields'); ?>" name="<?php echo $this->get_field_name('search_fields'); ?>" type="hidden" value="<?php echo esc_attr( $search_fields ); ?>" class="gv-search-fields-value">
 			</div>

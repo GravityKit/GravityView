@@ -610,6 +610,26 @@ class GravityView_frontend {
 		return $search_criteria;
 	}
 
+
+	/**
+	 * Process the approved only search criteria according to the View settings
+	 *
+	 * @param  array      $args            View settings
+	 * @param  array      $search_criteria Search being performed, if any
+	 * @return array                       Modified `$search_criteria` array
+	 */
+	public static function process_search_only_approved( $args, $search_criteria ) {
+
+		if( !empty( $args['show_only_approved'] ) ) {
+			$search_criteria['field_filters'][] = array( 'key' => 'is_approved', 'value' => 'Approved' );
+			$search_criteria['field_filters']['mode'] = 'all'; // force all the criterias to be met
+
+			do_action( 'gravityview_log_debug', '[process_search_only_approved] Search Criteria if show only approved: ', $search_criteria );
+		}
+
+		return $search_criteria;
+	}
+
 	/**
 	 * Parse search criteria for a entries search.
 	 *
@@ -651,18 +671,15 @@ class GravityView_frontend {
 		do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after date params: ', $search_criteria );
 
 		// remove not approved entries
-		if( !empty( $args['show_only_approved'] ) ) {
-			$search_criteria['field_filters'][] = array( 'key' => 'is_approved', 'value' => 'Approved' );
-			$search_criteria['field_filters']['mode'] = 'all'; // force all the criterias to be met
-
-			do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria if show only approved: ', $search_criteria );
-		}
+		$search_criteria = self::process_search_only_approved( $args, $search_criteria );
 
 		// Only show active listings
 		$search_criteria['status'] = apply_filters( 'gravityview_status', 'active', $args );
 
 		return $search_criteria;
 	}
+
+
 
 	/**
 	 * Core function to calculate View multi entries (directory) based on a set of arguments ($args):
