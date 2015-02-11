@@ -9,19 +9,17 @@
  *
  * @since 1.0.0
  */
-
-
 @import "admin-widgets-php";
 @import "admin-merge-tags";
 @import "admin-tooltips";
 
 // http://blog.teamtreehouse.com/a-better-clearfix-with-sass
 %clearfix {
-  &:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
+	&:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
 }
 
 $dismiss-red: #d03a3a;
@@ -251,7 +249,6 @@ $gv-overlay-index: 10000;
 	}
 }
 
-
 // Don't display the arrow toggle for collapsing the metabox
 #gravityview_select_form .handlediv {
 	display: none;
@@ -275,7 +272,6 @@ $gv-overlay-index: 10000;
 	}
 }
 
-
 #gv_switch_view_button {
 	display: inline-block;
 }
@@ -288,6 +284,7 @@ $gv-overlay-index: 10000;
 	max-height: 450px;
 	overflow-x: auto;
 }
+
 #gravityview_select_template .gv-grid-col-1-3 {
 	max-width: 250px;
 	min-width: 200px;
@@ -324,7 +321,10 @@ $gv-overlay-index: 10000;
 
 /** View configuration tabs */
 .ui-tabs {
-	position: relative; padding: .1em; zoom: 1; margin-top: 1em;
+	position: relative;
+	padding: .1em;
+	zoom: 1;
+	margin-top: 1em;
 
 	// Fix issue with theme conflicts where .gv-overlay gets in the way
 	.ui-front {
@@ -332,7 +332,8 @@ $gv-overlay-index: 10000;
 	}
 
 	.ui-tabs-nav {
-		margin: 0; padding: .1em .1em 0;
+		margin: 0;
+		padding: .1em .1em 0;
 		-webkit-margin-before: 0;
 		-webkit-margin-after: 0;
 		-webkit-margin-start: 0;
@@ -363,7 +364,9 @@ $gv-overlay-index: 10000;
 			}
 
 			// Non-active state
-			.dashicons { color: #aaa; }
+			.dashicons {
+				color: #aaa;
+			}
 
 			&.ui-state-active,
 			&.ui-state-active.ui-state-hover {
@@ -375,7 +378,9 @@ $gv-overlay-index: 10000;
 
 				// Active text is #555 - we want a bit lighter
 				// since it's bolder.
-				.dashicons { color: #666; }
+				.dashicons {
+					color: #666;
+				}
 			}
 
 			&.ui-state-hover .dashicons {
@@ -393,7 +398,9 @@ $gv-overlay-index: 10000;
 		border: 1px solid #ddd;
 	}
 
-	.ui-tabs-hide { display: none!important; }
+	.ui-tabs-hide {
+		display: none !important;
+	}
 }
 
 .gv-dialog {
@@ -411,16 +418,14 @@ $gv-overlay-index: 10000;
 	overflow: hidden;
 }
 
-
 /** Sections */
 
-hr{
+hr {
 	border: 0;
 	height: 0;
 	border-bottom: 1px solid #ddd;
 	margin: 2em 0 2em 0;
 }
-
 
 /* GV Droppable Areas
 --------------------------------------- */
@@ -460,7 +465,9 @@ hr{
 		float: right;
 	}
 
-} // End .gv-droppable-area
+}
+
+// End .gv-droppable-area
 
 .active-drop {
 	padding: 3px 7px;
@@ -486,13 +493,14 @@ hr{
 
 	}
 
-} // End .active-drop
+}
+
+// End .active-drop
 
 .gv-grid-col-1-2 .drop-message {
 	padding-top: 0;
 	padding-bottom: 0;
 }
-
 
 .fields-placeholder {
 	margin: 5px 2px;
@@ -604,7 +612,7 @@ hr{
 
 			span {
 				&:after {
-					content:", ";
+					content: ", ";
 				}
 
 				&.gv-sublabel,
@@ -615,7 +623,9 @@ hr{
 		}
 	}
 
-} // End .gv-fields
+}
+
+// End .gv-fields
 
 .ui-dialog-content,
 .ui-dialog {
@@ -653,7 +663,6 @@ hr{
 	}
 }
 
-
 .gv-sublabel {
 	font-size: .9em;
 	display: block;
@@ -672,7 +681,7 @@ hr{
 
 	display: none;
 	width: 90%;
-	padding: 10px 0!important;
+	padding: 10px 0 !important;
 
 	&.gv-dialog-warning p {
 		font-size: 1.1em;
@@ -730,6 +739,10 @@ hr{
 		width: 95%;
 		margin: 0 auto;
 	}
+
+}
+
+.gv-widget-search-fields {
 
 	table {
 		padding-bottom: 15px;
@@ -789,23 +802,7 @@ hr{
 		}
 
 	}
-
-	#gv-loading {
-		text-align: center;
-		font-size: 16px;
-		line-height: 20px;
-		display: block;
-
-		.spinner {
-			display: inline-block;
-			margin-top: -3px;
-			float: none;
-		}
-	}
-
-
 }
-
 
 // Only modify GV post type
 .post-type-gravityview,
@@ -821,8 +818,20 @@ hr{
 		max-width: 300px;
 	}
 
-}
+	#gv-loading {
+		text-align: center;
+		font-size: 16px;
+		line-height: 20px;
+		display: block;
 
+		.spinner {
+			display: inline-block;
+			margin-top: -3px;
+			float: none;
+		}
+	}
+
+}
 
 .gv-label {
 	display: inline-block;
@@ -832,8 +841,8 @@ hr{
 
 .gv-label-checkbox {
 	padding-right: 1em;
-	display:block;
-	width:100%;
+	display: block;
+	width: 100%;
 }
 
 .gv-label-textarea,
@@ -844,7 +853,6 @@ hr{
 	display: block;
 	margin-bottom: 0.5em;
 }
-
 
 .gv-shortcode {
 	.dashicons-editor-code {
