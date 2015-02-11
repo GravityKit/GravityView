@@ -599,7 +599,7 @@
 			var configs = [];
 
 			//loop throught table rows
-			gvSearchWidget.widgetTarget.find('table tr.gv-search-field-row').each( function() {
+			$( gvSearchWidget.widgetTarget ).find('table tr.gv-search-field-row').each( function() {
 				var row = {};
 				row.field = $(this).find('select.gv-search-fields').val();
 				row.input = $(this).find('select.gv-search-inputs').val();
