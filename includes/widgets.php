@@ -296,7 +296,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 			<textarea id="<?php echo $this->get_field_id( 'after_link' ); ?>" name="<?php echo $this->get_field_name( 'after_link' ); ?>" rows="5" class="widefat code merge-tag-support mt-position-right mt-hide_all_fields"><?php echo esc_textarea( $instance['after_link'] ); ?></textarea>
 		</p>
 
-		<?php do_action( 'gravityview_recent_entries_widget_form' , $instance ); ?>
+		<?php do_action( 'gravityview_recent_entries_widget_form' , $this, $instance ); ?>
 
 		<script>
 			// When the widget is saved or added, refresh the Merge Tags (here for backward compatibility)
