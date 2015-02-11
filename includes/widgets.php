@@ -414,7 +414,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 		<?php // @todo: move style to CSS ?>
 		<div style="margin-bottom: 1em;">
-			<label for="<?php echo $this->get_field_id('search_fields'); ?>"><?php _e( 'Searchable fields:', 'gravityview' ); ?></label>
+			<label class="screen-reader-text" for="<?php echo $this->get_field_id('search_fields'); ?>"><?php _e( 'Searchable fields:', 'gravityview' ); ?></label>
 			<div class="gv-widget-search-fields" title="<?php esc_html_e('Search Fields', 'gravityview'); ?>">
 				<input id="<?php echo $this->get_field_id('search_fields'); ?>" name="<?php echo $this->get_field_name('search_fields'); ?>" type="hidden" value="<?php echo esc_attr( $search_fields ); ?>" class="gv-search-fields-value">
 			</div>
