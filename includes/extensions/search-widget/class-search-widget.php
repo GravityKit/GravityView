@@ -588,6 +588,25 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		return gravityview_sanitize_html_class( $search_class );
 	}
 
+
+	/**
+	 * Calculate the search form action
+	 * @since 1.6
+	 *
+	 * @return string
+	 */
+	static function get_search_form_action() {
+		global $gravityview_view;
+
+		if( 'wp_widget' == $gravityview_view->context ) {
+			$url = add_query_arg( array(), get_permalink( $gravityview_view->view_id ) );
+		} else {
+			$url = add_query_arg( array() );
+		}
+
+		return $url;
+	}
+
 	/**
 	 * Get the label for a search form field
 	 * @param  array $field      Field setting as sent by the GV configuration - has `field` and `input` (input type) keys

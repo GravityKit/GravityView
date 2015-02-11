@@ -354,6 +354,12 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 		$instance['search_layout'] = apply_filters( 'gravityview/widget/search/layout', 'vertical', $instance );
 
+		$instance['context'] = 'wp_widget';
+
+		// form
+		$instance['form_id'] = GVCommon::get_meta_form_id( $instance['view_id'] );
+		$instance['form'] = GVCommon::get_form( $instance['form_id'] );
+
 		global $gravityview_view;
 		$gravityview_view = new GravityView_View( $instance );
 		GravityView_Widget_Search::getInstance()->render_frontend( $instance );
