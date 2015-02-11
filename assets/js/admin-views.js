@@ -1287,7 +1287,7 @@
 
 
 
-	$(document).ready( function() {
+	jQuery(document).ready( function( $ ) {
 
 		// title placeholder
 		$('#title-prompt-text').text( gvGlobals.label_viewname );
