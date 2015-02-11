@@ -30,13 +30,14 @@
 		init: function( wrapClass ) {
 
 			gvSearchWidget.wrapClass = wrapClass;
+			var wp_widget_id = gvSearchWidget.wp_widget_id;
 
 			$('body')
 				// [View] hook on all the open settings buttons for search_bar widget
 				.on( 'dialogopen', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.openDialog )
 
 				// [WP widget] When opening the WP widget settings, trigger the search fields table
-				.on( 'click', ".widget[id*='gravityview_search'] a[href='#available-widgets']", gvSearchWidget.openWidget )
+				.on( 'click', ".widget[id*='"+ wp_widget_id +"'] a[href='#available-widgets']", gvSearchWidget.openWidget )
 
 				// [View, WP widget] hook to add/remove rows
 				.on( 'click', "." + wrapClass +" a[href='#addSearchField']", gvSearchWidget.addField )
@@ -50,10 +51,10 @@
 				.on('sortcreate sortupdate sort', '.'+ wrapClass +' table', gvSearchWidget.zebraStripe )
 
 				// [View] hook on dialog close to update widget config
-				.on( 'dialogbeforeclose', '[data-fieldid="search_bar"]' + wrapClass, gvSearchWidget.updateOnClose )
+				.on( 'dialogbeforeclose', '[data-fieldid="search_bar"] .' +  wrapClass, gvSearchWidget.updateOnClose )
 
 				// [WP widget] hook on update widget config to save the fields into the hidden input field
-				.on( 'click', ".widget[id*='gravityview_search'] input.widget-control-save", gvSearchWidget.updateOnClose )
+				.on( 'click', ".widget[id*='"+ wp_widget_id +"'] input.widget-control-save", gvSearchWidget.saveWidget )
 
 				// [View] hook on assigned form/template change to clear cache
 				.on( 'change', '#gravityview_form_id, #gravityview_directory_template', gvSearchWidget.clearViewSearchData )
@@ -67,114 +68,23 @@
 		},
 
 		/**
-		 * Set up triggers for the WordPress Widgets page only
-		 * DEPRECATED TO BE REMOVED BEFORE 1.6
+		 * [Specific for Search WP Widget]
+		 * Calculate the widget target and reset the view fields and the DOM target to insert the settings table
+		 * @param  object e event
 		 */
-		wp_widget_init: function() {
-			console.log('wp_widget_init');
-			$('body')
-				// Enable clicking the WP_Widget Configure link on widgets and also single-widget screens
-				.on( 'click', ".widget[id*='gravityview_search'] a[href='#available-widgets']", gvSearchWidget.openWidget )
-
-
-				// hook on dialog close to update widget config
-				.on( 'change', '[data-fieldid="search_bar"] .gv-dialog-options', gvSearchWidget.updateOnClose )
-
-				// hook on assigned form/template change to clear cache
-				.on('#gravityview_view_id').change( gvSearchWidget.wp_widget_show_settings_link );
-
-
-			// When saving the widget
-			//$(document).on('ajaxSuccess', gvSearchWidget.wp_widget_save );
-
-			$( document ).on('click.widgets-toggle', 'body', gvSearchWidget.wp_widget_open );
-
-			$( document ).on( 'widget-added widget-updated', gvSearchWidget.wp_widget_save );
-
+		resetWidgetTarget: function( obj ) {
+			gvSearchWidget.selectFields = null;
+			gvSearchWidget.widgetTarget = obj.closest('div.widget').find( 'div.'+ gvSearchWidget.wrapClass );
 		},
 
 		/**
-		 *
-		 *  DEPRECATED TO BE REMOVED BEFORE 1.6
-		 *
-		 * Check whether HTML widget DIV is an instance of the expected widget.
-		 *
-		 * The expected widget id is set as the `gvSearchWidget.wp_widget_id` var.
-		 *
-		 * @param  {HTML DOM}  widget HTML container
-		 * @return {Boolean}        True: Yes, expected widget. False: Nope, not the right widget.
+		 * [Specific for Search WP Widget]
+		 * Reset Widget target and removes the settings table
+		 * @param  object e event
 		 */
-		is_wp_widget: function( widget ) {
-
-			return $( widget ).is('[id*=' + gvSearchWidget.wp_widget_id + ']');
-
-		},
-
-		/**
-		 *
-		 * DEPRECATED TO BE REMOVED BEFORE 1.6
-		 *
-		 * Triggered when a widget is opened
-		 *
-		 * @param  {jQuery Event Object} e       Event object
-		 * @return {[type]}   [description]
-		 */
-		wp_widget_open: function( e ) {
-
-			var target = $(e.target),
-				widget;
-
-			/**
-			 * Make sure this is triggering open, not close, remove or save.
-			 * @see  /wp-admin/js/widgets.js ~line 36
-			 */
-			if ( target.parents('.widget-top').length && ! target.parents('#available-widgets').length ) {
-
-				widget = target.closest('div.widget');
-
-				if( gvSearchWidget.is_wp_widget( widget ) ) {
-
-					$('#gravityview_view_id').trigger('change');
-
-				}
-
-			}
-
-		},
-
-		/**
-		 *
-		 * DEPRECATED TO BE REMOVED BEFORE 1.6
-		 *
-		 * Triggered when a widget is added or saved.
-		 *
-		 * @param  {jQuery Event Object} e       Event object
-		 * @param  {DOM Object} $widget HTML DOM object of the DIV containing the widget.
-		 * @return {void}
-		 */
-		wp_widget_save: function( e, widget ) {
-
-			if( gvSearchWidget.is_wp_widget( widget ) ) {
-				$('#gravityview_view_id').trigger('change');
-			}
-		},
-
-		/**
-		 * DEPRECATED TO BE REMOVED BEFORE 1.6
-		 *
-		 * Show and hide the settings configuration link for the WP_Widget based on the value of the View picker
-		 */
-		wp_widget_show_settings_link: function( e ) {
-
-			var value = $(e.target).val();
-			var $link = $(e.target).parents('.widget-content').find('#gv-widget-search-settings-link');
-
-			if( value.length > 0 ) {
-				$link.slideDown();
-			} else {
-				$link.slideUp();
-			}
-
+		resetWidgetData: function( obj ) {
+			gvSearchWidget.resetWidgetTarget( obj );
+			$( 'table', gvSearchWidget.widgetTarget ).remove();
 		},
 
 		/**
@@ -186,9 +96,8 @@
 			e.preventDefault();
 			var widget = $(this).closest('div.widget');
 			if( ! widget.hasClass('open') ) {
-				gvSearchWidget.widgetTarget = widget.find( 'div.'+ gvSearchWidget.wrapClass );
+				gvSearchWidget.resetWidgetData( $(this) );
 				gvSearchWidget.renderUI( widget );
-
 			}
 		},
 
@@ -200,7 +109,7 @@
 		refreshWidget: function( e, w ) {
 			var id = $( w ).attr('id'), widget = $('#'+ id );
 
-			if( widget.hasClass('open') && id.indexOf('gravityview_search') > 0 ) {
+			if( widget.hasClass('open') && id.indexOf( gvSearchWidget.wp_widget_id ) > 0 ) {
 				gvSearchWidget.widgetTarget = widget.find( 'div.'+ gvSearchWidget.wrapClass );
 				gvSearchWidget.renderUI(  widget );
 
@@ -209,6 +118,7 @@
 
 
 		/**
+		 * [Specific for View Search Widget]
 		 * Capture the widget dialog and call to render the widget settings content
 		 * @param  object e event
 		 */
@@ -217,6 +127,9 @@
 			gvSearchWidget.widgetTarget = $(this);
 			gvSearchWidget.renderUI( $(this).parents('.gv-fields') );
 		},
+
+
+		/** Table manipulation */
 
 		/**
 		 * Add a search field to the table
@@ -287,7 +200,7 @@
 			if( $('table', gvSearchWidget.widgetTarget ).length && $('#gv-loading').length < 1 ) {
 				return;
 			}
-			console.log(fields);
+
 			//add table and header
 			table = gvSearchWidget.addTable();
 
@@ -526,8 +439,6 @@
 				return gvSearchWidget.selectFields.prop('outerHTML');
 			}
 
-			//var view_id = $(parent).parentsUntil('.widget').find('#gravityview_view_id').val();
-
 			var ajaxdata = {
 				action: 'gv_searchable_fields',
 				nonce: gvSearchVar.nonce,
@@ -589,6 +500,17 @@
 			return value;
 		},
 
+		/** Save Settings */
+
+		/**
+		 * [Specific for View Search Widget]
+		 * Update config on widget Save
+		 */
+		saveWidget: function() {
+			gvSearchWidget.resetWidgetTarget( $(this) );
+			gvSearchWidget.updateOnClose();
+		},
+
 		/**
 		 * Update widget config on dialog close
 		 * @param  {object} event
@@ -599,7 +521,7 @@
 			var configs = [];
 
 			//loop throught table rows
-			$( gvSearchWidget.widgetTarget ).find('table tr.gv-search-field-row').each( function() {
+			gvSearchWidget.widgetTarget.find('table tr.gv-search-field-row').each( function() {
 				var row = {};
 				row.field = $(this).find('select.gv-search-fields').val();
 				row.input = $(this).find('select.gv-search-inputs').val();
@@ -610,6 +532,8 @@
 			$( '.gv-search-fields-value', gvSearchWidget.widgetTarget ).val( JSON.stringify( configs ) );
 
 		},
+
+		/** Reset on View Change */
 
 		/**
 		 * [Specific for View Search Widget]
@@ -628,13 +552,9 @@
 		 * When view changes clear select fields cache, remove table and refresh the data
 		 */
 		clearWidgetSearchData: function() {
-			gvSearchWidget.selectFields = null;
-			var widget = $(this).closest('div.widget');
-			gvSearchWidget.widgetTarget = widget.find( 'div.'+ gvSearchWidget.wrapClass );
-
+			gvSearchWidget.resetWidgetData( $(this) );
 			$( '.gv-search-fields-value', gvSearchWidget.widgetTarget ).val('');
-			$( 'table', gvSearchWidget.widgetTarget ).remove();
-			gvSearchWidget.renderUI( widget );
+			gvSearchWidget.renderUI( gvSearchWidget.widgetTarget.closest('div.widget') );
 		}
 
 
