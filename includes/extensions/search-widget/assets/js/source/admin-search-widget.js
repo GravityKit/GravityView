@@ -20,6 +20,9 @@
 		// holds the settings div class (depending on the context)
 		wrapClass: null,
 
+		// 'multi' if possible to configure multiple widgets at the same time (like in widgets.php), otherwise, 'single'
+		mode: null,
+
 		// holds the current widget settings DOM object
 		widgetTarget: null,
 
@@ -27,9 +30,10 @@
 
 		wp_widget_id: 'gravityview_search',
 
-		init: function( wrapClass ) {
+		init: function( wrapClass, mode ) {
 
 			gvSearchWidget.wrapClass = wrapClass;
+			gvSearchWidget.mode = mode;
 			var wp_widget_id = gvSearchWidget.wp_widget_id;
 
 			$('body')
@@ -38,6 +42,7 @@
 
 				// [WP widget] When opening the WP widget settings, trigger the search fields table
 				.on( 'click', ".widget[id*='"+ wp_widget_id +"'] a[href='#available-widgets']", gvSearchWidget.openWidget )
+				.bind( 'click.widgets-toggle', gvSearchWidget.openWidget )
 
 				// [View, WP widget] hook to add/remove rows
 				.on( 'click', "." + wrapClass +" a[href='#addSearchField']", gvSearchWidget.addField )
@@ -64,7 +69,6 @@
 
 			// refresh widget searchable settings after saving
 			$(document).on( 'widget-added widget-updated', gvSearchWidget.refreshWidget );
-
 		},
 
 		/**
@@ -73,8 +77,10 @@
 		 * @param  object e event
 		 */
 		resetWidgetTarget: function( obj ) {
-			gvSearchWidget.selectFields = null;
 			gvSearchWidget.widgetTarget = obj.closest('div.widget').find( 'div.'+ gvSearchWidget.wrapClass );
+			// reset fields to the exist appended to the table (if none, it gets undefined)
+			gvSearchWidget.selectFields = null;
+
 		},
 
 		/**
@@ -94,8 +100,11 @@
 		 */
 		openWidget: function( e ) {
 			e.preventDefault();
-			var widget = $(this).closest('div.widget');
-			if( ! widget.hasClass('open') ) {
+			var widget = $(e.target).closest('div.widget'),
+				id = widget.attr( 'id' );
+			console.log( id );
+			// && id.indexOf( gvSearchWidget.wp_widget_id ) > 0
+			if( ! widget.hasClass('open') && id.indexOf( gvSearchWidget.wp_widget_id ) > 0 ) {
 				gvSearchWidget.resetWidgetData( $(this) );
 				gvSearchWidget.renderUI( widget );
 			}
@@ -145,6 +154,11 @@
 			if( row.hasClass('no-search-fields') ) {
 				row.remove();
 				row = null;
+			}
+
+			// make sure the select fields data is fetched from the target table
+			if( 'multi' === gvSearchWidget.mode ) {
+				gvSearchWidget.resetWidgetTarget( $(this) );
 			}
 
 			gvSearchWidget.addRow( table, row, null );
@@ -431,13 +445,22 @@
 		 */
 		getSelectFields: function( parent ) {
 
-			if( gvSearchWidget.selectFields !== null ) {
+			// check if fields exist on cache
+			if( gvSearchWidget.selectFields !== null  ) {
 
 				gvSearchWidget.updateAvailableFields();
 
 				// .html() returns the <option>s, we want the <select>
 				return gvSearchWidget.selectFields.prop('outerHTML');
 			}
+
+			var fields = gvSearchWidget.widgetTarget.data('gvSelectFields');
+			if( fields !== undefined ) {
+				gvSearchWidget.selectFields = $(fields);
+				gvSearchWidget.updateAvailableFields();
+				return gvSearchWidget.selectFields.prop('outerHTML');
+			}
+
 
 			var ajaxdata = {
 				action: 'gv_searchable_fields',
@@ -456,6 +479,7 @@
 				success: function( response ) {
 					if( response !== '0' ) {
 						gvSearchWidget.selectFields = $(response);
+						gvSearchWidget.widgetTarget.data('gvSelectFields', response );
 						gvSearchWidget.renderUI( parent );
 					}
 
@@ -554,7 +578,10 @@
 		clearWidgetSearchData: function() {
 			gvSearchWidget.resetWidgetData( $(this) );
 			$( '.gv-search-fields-value', gvSearchWidget.widgetTarget ).val('');
-			gvSearchWidget.renderUI( gvSearchWidget.widgetTarget.closest('div.widget') );
+			if( '' !== $(this).val() ) {
+				gvSearchWidget.renderUI( gvSearchWidget.widgetTarget.closest('div.widget') );
+			}
+
 		}
 
 
@@ -567,12 +594,14 @@
 
 	$(document).ready( function() {
 
-		var contextClass = 'gv-dialog-options';
+		var contextClass = 'gv-dialog-options',
+			mode = 'single';
 
 		if( $('body').hasClass('widgets-php') ) {
 			contextClass = 'gv-widget-search-fields';
+			mode = 'multi';
 		}
-		gvSearchWidget.init( contextClass );
+		gvSearchWidget.init( contextClass, mode );
 
 	});
 
