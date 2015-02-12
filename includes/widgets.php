@@ -369,6 +369,12 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
+
+		if( $this->is_preview() ) {
+			//Oh! Sorry but still not fully compatible with customizer
+			return $instance;
+		}
+
 		$new_instance = wp_parse_args( (array) $new_instance, array( 'title' => '', 'view_id' => 0, 'post_id' => '', 'search_fields' => '' ) );
 		$instance['title'] = strip_tags( $new_instance['title'] );
 		$instance['view_id'] = absint( $new_instance['view_id'] );
@@ -384,6 +390,15 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 	}
 
 	public function form( $instance ) {
+
+		if( $this->is_preview() ) {
+			//Oh! Sorry but still not fully compatible with customizer
+			?>
+			<p><?php esc_html_e( 'Sorry but this Widget is still not fully operational in this screen. Please configure it on Appearance > Widgets menu', 'gravityview' ); ?></p>
+			<?php
+			return;
+		}
+
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'view_id' => 0, 'post_id' => '', 'search_fields' => '' ) );
 		$title    = $instance['title'];
 		$view_id  = $instance['view_id'];
@@ -427,9 +442,6 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			</div>
 
 		</div>
-
-
-
 
 	<?php
 	}
