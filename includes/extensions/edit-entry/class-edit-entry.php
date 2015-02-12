@@ -360,7 +360,10 @@ class GravityView_Edit_Entry {
 		wp_register_script( 'gform_gravityforms', GFCommon::get_base_url().'/js/gravityforms.js', array( 'jquery', 'gform_json', 'gform_placeholder', 'sack','plupload-all' ) );
 
 		GFFormDisplay::enqueue_form_scripts($gravityview_view->form, false);
-		GFForms::print_scripts();
+
+		wp_enqueue_script("sack");
+
+		wp_print_scripts();
 	}
 
 	/**
