@@ -33,7 +33,7 @@ $link_atts = '';
  *
  * Dynamic data (get post featured image instead of GF entry field)
  */
-if( !empty( $field_settings['dynamic_data'] ) && has_post_thumbnail( $entry['post_id'] ) ) {
+if( !empty( $field_settings['dynamic_data'] ) && !empty( $entry['post_id'] ) && has_post_thumbnail( $entry['post_id'] ) ) {
 
 	/**
 	 * Modify what size is fetched for the post's Featured Image

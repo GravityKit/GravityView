@@ -99,7 +99,7 @@ class GravityView_Post_Types {
 	 *
 	 * @access public
 	 * @static
-	 * @return void
+	 * @return string Default: "entry"
 	 * @filter gravityview_directory_endpoint Change the slug used for single entries
 	 */
 	public static function get_entry_var_name() {

@@ -110,6 +110,9 @@ final class GravityView_Plugin {
 		// Load Widgets
 		include_once( GRAVITYVIEW_DIR .'includes/widgets.php' );
 
+		// Add oEmbed
+		include_once( GRAVITYVIEW_DIR . 'includes/class-oembed.php' );
+
 		// Add logging
 		require_once( GRAVITYVIEW_DIR . 'includes/class-logging.php');
 

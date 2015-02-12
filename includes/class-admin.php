@@ -100,7 +100,16 @@ class GravityView_Admin {
 	 * @return string HTML image tag with floaty's cute mug on it
 	 */
 	public static function get_floaty() {
-		return '<img src="'.plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:10px 10px 10px 0;" />';
+
+		if( is_rtl() ) {
+			$style = 'margin:10px 10px 10px 0;';
+			$class = 'alignright';
+		} else {
+			$style = 'margin:10px 10px 10px 0;';
+			$class = 'alignleft';
+		}
+
+		return '<img src="'.plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="'.$class.'" height="87" width="66" alt="The GravityView Astronaut Says:" style="'.$style.'" />';
 	}
 
 	/**

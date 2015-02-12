@@ -4,7 +4,7 @@
  *
  * Easily edit entries in GravityView.
  *
- * @package   GravityView-DataTables-Ext
+ * @package   GravityView
  * @license   GPL2+
  * @author    Katz Web Services, Inc.
  * @link      http://gravityview.co
@@ -419,7 +419,11 @@ class GravityView_Edit_Entry {
 		if( RGForms::post("action") === "update") {
 
 			// Make sure the entry, view, and form IDs are all correct
-			check_admin_referer( self::$nonce_key, self::$nonce_key );
+			$this->verify_nonce();
+
+			if( $this->entry['id'] !== $_POST['lid'] ) {
+				return;
+			}
 
 			do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
 
@@ -1122,8 +1126,33 @@ class GravityView_Edit_Entry {
 
 		$error = NULL;
 
-		if( ! $this->verify_nonce() ) {
-			$error = __( 'The link to edit this entry is not valid; it may have expired.', 'gravityview');
+		/**
+		 *  1. Permalinks are turned off
+		 *  2. There are two entries embedded using oEmbed
+		 *  3. One of the entries has just been saved
+		 */
+		if( !empty( $_POST['lid'] ) && !empty( $_GET['entry'] ) && ( $_POST['lid'] !== $_GET['entry'] ) ) {
+
+			$error = true;
+
+		}
+
+		if( !empty( $_GET['entry'] ) && (string)$this->entry['id'] !== $_GET['entry'] ) {
+
+			$error = true;
+
+		} elseif( ! $this->verify_nonce() ) {
+
+			/**
+			 * If the Entry is embedded, there may be two entries on the same page.
+			 * If that's the case, and one is being edited, the other should fail gracefully and not display an error.
+			 */
+			if( GravityView_oEmbed::getInstance()->get_entry_id() ) {
+				$error = true;
+			} else {
+				$error = __( 'The link to edit this entry is not valid; it may have expired.', 'gravityview');
+			}
+
 		}
 
 		if( ! self::check_user_cap_edit_entry( $this->entry ) ) {
@@ -1139,7 +1168,7 @@ class GravityView_Edit_Entry {
 			return true;
 		}
 
-		if( $echo ) {
+		if( $echo && $error !== true ) {
 			echo $this->generate_notice( wpautop( esc_html( $error ) ), 'gv-error error');
 		}
 
