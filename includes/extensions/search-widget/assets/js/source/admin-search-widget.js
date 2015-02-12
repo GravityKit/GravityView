@@ -41,7 +41,6 @@
 				.on( 'dialogopen', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.openDialog )
 
 				// [WP widget] When opening the WP widget settings, trigger the search fields table
-				.on( 'click', ".widget[id*='"+ wp_widget_id +"'] a[href='#available-widgets']", gvSearchWidget.openWidget )
 				.bind( 'click.widgets-toggle', gvSearchWidget.openWidget )
 
 				// [View, WP widget] hook to add/remove rows
@@ -67,7 +66,7 @@
 				// [WP widget] hook on assigned view id change to clear cache
 				.on( 'change', '#gravityview_view_id', gvSearchWidget.clearWidgetSearchData );
 
-			// refresh widget searchable settings after saving
+			// refresh widget searchable settings after saving or adding the widget
 			$(document).on( 'widget-added widget-updated', gvSearchWidget.refreshWidget );
 		},
 
@@ -99,14 +98,18 @@
 		 * @param  object e event
 		 */
 		openWidget: function( e ) {
-			e.preventDefault();
-			var widget = $(e.target).closest('div.widget'),
-				id = widget.attr( 'id' );
-			console.log( id );
-			// && id.indexOf( gvSearchWidget.wp_widget_id ) > 0
-			if( ! widget.hasClass('open') && id.indexOf( gvSearchWidget.wp_widget_id ) > 0 ) {
-				gvSearchWidget.resetWidgetData( $(this) );
-				gvSearchWidget.renderUI( widget );
+			var target = $(e.target),
+				widget, widgetId;
+
+			if( target.parents('.widget-top').length && ! target.parents('#available-widgets').length ) {
+				e.preventDefault();
+				widget = $(e.target).closest('div.widget');
+				widgetId = widget.attr('id');
+
+				if ( !widget.hasClass('open') && widgetId.indexOf( gvSearchWidget.wp_widget_id ) > 0) {
+					gvSearchWidget.resetWidgetData( target );
+					gvSearchWidget.renderUI( widget );
+				}
 			}
 		},
 
@@ -147,6 +150,11 @@
 		addField: function(e) {
 			e.preventDefault();
 
+			// make sure the select fields data is fetched from the target table
+			if( 'multi' === gvSearchWidget.mode ) {
+				gvSearchWidget.resetWidgetTarget( $(this) );
+			}
+
 			var table = $(this).parents( 'table' ),
 				row = $(this).parents( 'tr' );
 
@@ -154,11 +162,6 @@
 			if( row.hasClass('no-search-fields') ) {
 				row.remove();
 				row = null;
-			}
-
-			// make sure the select fields data is fetched from the target table
-			if( 'multi' === gvSearchWidget.mode ) {
-				gvSearchWidget.resetWidgetTarget( $(this) );
 			}
 
 			gvSearchWidget.addRow( table, row, null );
@@ -201,7 +204,12 @@
 		 */
 		renderUI: function( parent ) {
 
-			var fields = $('.gv-search-fields-value', parent ).val();
+			var fields = $('.gv-search-fields-value', parent ).val(),
+				viewId = $('#gravityview_view_id', parent ).val();
+
+			if( viewId === '' ) {
+				return;
+			}
 
 			// get fields from server
 			if( gvSearchWidget.selectFields === null ) {
@@ -455,10 +463,17 @@
 			}
 
 			var fields = gvSearchWidget.widgetTarget.data('gvSelectFields');
-			if( fields !== undefined ) {
+
+			if(  fields !== undefined ) {
 				gvSearchWidget.selectFields = $(fields);
 				gvSearchWidget.updateAvailableFields();
-				return gvSearchWidget.selectFields.prop('outerHTML');
+				if( $('table', gvSearchWidget.widgetTarget ).length ) {
+					return gvSearchWidget.selectFields.prop('outerHTML');
+				} else {
+					gvSearchWidget.renderUI( parent );
+					return;
+				}
+
 			}
 
 
@@ -479,7 +494,7 @@
 				success: function( response ) {
 					if( response !== '0' ) {
 						gvSearchWidget.selectFields = $(response);
-						gvSearchWidget.widgetTarget.data('gvSelectFields', response );
+						gvSearchWidget.widgetTarget.data( 'gvSelectFields', response );
 						gvSearchWidget.renderUI( parent );
 					}
 
@@ -577,6 +592,7 @@
 		 */
 		clearWidgetSearchData: function() {
 			gvSearchWidget.resetWidgetData( $(this) );
+			gvSearchWidget.widgetTarget.removeData( 'gvSelectFields' );
 			$( '.gv-search-fields-value', gvSearchWidget.widgetTarget ).val('');
 			if( '' !== $(this).val() ) {
 				gvSearchWidget.renderUI( gvSearchWidget.widgetTarget.closest('div.widget') );
