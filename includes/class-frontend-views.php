@@ -783,13 +783,23 @@ class GravityView_frontend {
 		// If not using permalinks, simply check whether the single entry $_GET parameter is set.
 		if( !empty( $wp_rewrite ) && !$wp_rewrite->using_permalinks() ) {
 			if( !empty( $_GET[ $var_name ] ) && is_numeric( $_GET[ $var_name ] ) ) {
-				return (int)$_GET[ $var_name ];
+				$single_entry = (int)$_GET[ $var_name ];
 			} else {
-				return false;
+				$single_entry = false;
 			}
+		} else {
+
+			$single_entry = get_query_var( $var_name );
+
 		}
 
-		$single_entry = get_query_var( $var_name );
+		/**
+		 * Modify the entry that is being displayed.
+		 *
+		 * @internal Should only be used by things like the oEmbed functionality.
+		 * @since 1.6
+		 */
+		$single_entry = apply_filters('gravityview/is_single_entry', $single_entry );
 
 		if( empty( $single_entry ) ){
 			return false;
@@ -903,7 +913,7 @@ new GravityView_frontend;
  * @access public
  * @param string $view_id (default: '')
  * @param array $atts (default: array())
- * @return void
+ * @return string HTML of the output. Empty string if $view_id is empty.
  */
 function get_gravityview( $view_id = '', $atts = array() ) {
 	if( !empty( $view_id ) ) {
