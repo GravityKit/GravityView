@@ -369,17 +369,25 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		$new_instance = wp_parse_args( (array) $new_instance, array( 'title' => '', 'view_id' => 0, 'search_fields' => '' ) );
+		$new_instance = wp_parse_args( (array) $new_instance, array( 'title' => '', 'view_id' => 0, 'post_id' => '', 'search_fields' => '' ) );
 		$instance['title'] = strip_tags( $new_instance['title'] );
 		$instance['view_id'] = absint( $new_instance['view_id'] );
 		$instance['search_fields'] = $new_instance['search_fields'];
+
+		//check if post_id is a valid post with embedded View
+
+		if( $this->is_valid_embed_post( $new_instance['post_id'], $instance['view_id'] ) ) {
+			$instance['post_id'] = $new_instance['post_id'];
+		}
+
 		return $instance;
 	}
 
 	public function form( $instance ) {
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'view_id' => 0, 'search_fields' => '' ) );
-		$title           = $instance['title'];
-		$view_id            = $instance['view_id'];
+		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'view_id' => 0, 'post_id' => '', 'search_fields' => '' ) );
+		$title    = $instance['title'];
+		$view_id  = $instance['view_id'];
+		$post_id  = $instance['post_id'];
 		$search_fields = $instance['search_fields'];
 
 		$views = GVCommon::get_all_views();
@@ -393,7 +401,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		endif;
 		?>
 
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></label></p>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" /></label></p>
 
 		<p>
 			<label for="gravityview_view_id"><?php _e( 'View:', 'gravityview' ); ?></label>
@@ -409,8 +417,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 		</p>
 
-
-
+		<p><label for="<?php echo $this->get_field_id('post_id'); ?>"><?php _e('If View is embedded specify the post ID or leave blank for default:', 'gravityview' ); ?> <input class="widefat" id="<?php echo $this->get_field_id('post_id'); ?>" name="<?php echo $this->get_field_name('post_id'); ?>" type="text" value="<?php echo esc_attr( $post_id ); ?>" /></label></p>
 
 		<?php // @todo: move style to CSS ?>
 		<div style="margin-bottom: 1em;">
@@ -427,7 +434,44 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 	<?php
 	}
 
+	/**
+	 * Checks if the passed post id has the passed view id embedded
+	 *
+	 * @param string $post_id Post ID where the view is embedded
+	 * @param string $view_id View ID
+	 *
+	 * @return bool
+	 */
+	function is_valid_embed_post( $post_id = '', $view_id = '' ) {
 
+		if ( empty( $post_id ) || empty( $view_id ) ) {
+			return false;
+		}
+
+		$post = get_post( $post_id );
+
+		// if post is valid and not a View, fetch valid shortcodes
+		if ( $post instanceof WP_Post && get_post_type( $post ) !== 'gravityview' ) {
+			$shortcodes = gravityview_has_shortcode_r( $post->post_content, 'gravityview' );
+		}
+
+		if ( empty( $shortcodes ) || ! is_array( $shortcodes ) ) {
+			return false;
+		}
+
+		// check if any of the shortcodes are embedding the configured view on the widget
+		foreach ( $shortcodes as $key => $shortcode ) {
+
+			$args = shortcode_parse_atts( $shortcode[3] );
+
+			if ( ! empty( $args['id'] ) && $args['id'] == $view_id ) {
+				return true;
+			}
+
+		}
+
+		return false;
+	}
 
 }
 

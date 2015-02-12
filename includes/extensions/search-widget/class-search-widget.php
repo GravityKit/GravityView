@@ -602,7 +602,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		global $gravityview_view;
 
 		if( 'wp_widget' == $gravityview_view->context ) {
-			$url = add_query_arg( array(), get_permalink( $gravityview_view->view_id ) );
+			$post_id = empty( $gravityview_view->post_id ) ? $gravityview_view->view_id : $gravityview_view->post_id;
+			$url = add_query_arg( array(), get_permalink( $post_id ) );
 		} else {
 			$url = add_query_arg( array() );
 		}
