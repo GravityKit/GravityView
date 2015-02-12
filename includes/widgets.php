@@ -381,9 +381,11 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		$instance['search_fields'] = $new_instance['search_fields'];
 
 		//check if post_id is a valid post with embedded View
-
+		unset( $instance['error_post_id'] );
 		if( $this->is_valid_embed_post( $new_instance['post_id'], $instance['view_id'] ) ) {
 			$instance['post_id'] = $new_instance['post_id'];
+		} elseif( !empty( $new_instance['post_id'] ) ) {
+			$instance['error_post_id'] = __( 'The post ID is not valid. Please check if you embedded the shortcode correctly in the post content.');
 		}
 
 		return $instance;
@@ -443,7 +445,14 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 		</div>
 
-	<?php
+		<?php
+		// check for errors
+		if( !empty( $instance['error_post_id'] ) ): ?>
+			<div class="error">
+				<p><?php echo esc_html( $instance['error_post_id'] ); ?></p>
+			</div>
+		<?php endif;
+
 	}
 
 	/**
