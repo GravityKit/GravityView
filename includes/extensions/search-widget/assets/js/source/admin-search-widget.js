@@ -587,8 +587,13 @@
 			gvSearchWidget.resetWidgetData( $(this) );
 			gvSearchWidget.widgetTarget.removeData( 'gvSelectFields' );
 			$( '.gv-search-fields-value', gvSearchWidget.widgetTarget ).val('');
+
+			var widget = gvSearchWidget.widgetTarget.closest('div.widget');
+
+			$( '.hide-on-view-change:visible', widget ).slideUp('fast');
+
 			if( '' !== $(this).val() ) {
-				gvSearchWidget.renderUI( gvSearchWidget.widgetTarget.closest('div.widget') );
+				gvSearchWidget.renderUI( widget );
 			}
 
 		}
