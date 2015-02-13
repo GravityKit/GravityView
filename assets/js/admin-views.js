@@ -736,25 +736,21 @@
                     my: "center bottom",
                     at: "center top-12",
                 },
-                /*position: {
-                 my: "center center",
-                 at: "center center",
-                 of: window
-                 },*/
                 tooltipClass: 'top',
             })
-                .on('mouseout focusout', function (e) {
-                    e.stopImmediatePropagation();
-                })
-                .click(function (e) {
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
+            // add title attribute so the tooltip can continue to work (jquery ui bug?)
+            .attr("title", "")
+            .on('mouseout focusout', function (e) {
+                e.stopImmediatePropagation();
+            })
+            .click(function (e) {
 
-                    $(this).tooltip("open");
+                e.preventDefault();
+                e.stopImmediatePropagation();
 
-                    // add title attribute so the tooltip can continue to work (jquery ui bug?)
-                    $(this).attr("title", "");
-                });
+                $(this).tooltip("open");
+
+            });
 
         },
 

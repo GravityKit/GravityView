@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Edit Entry Admin Bar link
 * Fixed: Single Entry links didn't work when previewing a draft View
 * Fixed: Edit entry validation hooks not running when form has multiple pages
+* Fixed: Annoying bug where you would have to click Add Field / Add Widget buttons twice to open the window
 * Added: `gravityview_get_link()` function to standardize generating HTML anchors
 * Added: `GravityView_API::entry_link_html()` method to generate entry link HTML
 * Added: `gravityview_field_entry_value_{$field_type}` filter to modify the value of a field (in `includes/class-api.php`)
