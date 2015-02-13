@@ -24,6 +24,7 @@ class GravityView_oEmbed {
 	protected $output = array();
 	protected $entry_id = NULL;
 	protected $view_id = NULL;
+	protected $is_full_oembed_preview = false;
 
 	static $instance = NULL;
 
@@ -154,14 +155,36 @@ class GravityView_oEmbed {
 			return '';
 		}
 
+		$return = '';
+
 		// Setup the data used
 		$this->set_vars( $matches, $attr, $url, $rawattr );
 
-		if( is_admin() ) {
-			return $this->render_admin( $matches, $attr, $url, $rawattr );
+		if( is_admin() && !$this->is_full_oembed_preview ) {
+			$return = $this->render_admin( $matches, $attr, $url, $rawattr );
 		} else {
-			return $this->render_frontend( $matches, $attr, $url, $rawattr );
+
+			if( $this->is_full_oembed_preview ) {
+				$return .= $this->generate_preview_notice();
+			}
+
+			$return .= $this->render_frontend( $matches, $attr, $url, $rawattr );
 		}
+
+		return $return;
+	}
+
+
+	/**
+	 * Generate a warning to users when previewing oEmbed in the Add Media modal
+	 *
+	 * @return string HTML notice
+	 */
+	private function generate_preview_notice() {
+		$floaty = GravityView_Admin::get_floaty();
+		$title = esc_html__( 'This will look better when it is embedded.', 'gravityview' );
+		$message = esc_html__('Styles don\'t get loaded when being previewed, so the content below will look strange. Don\'t be concerned!', 'gravityview');
+		return '<div class="updated notice">'. $floaty. '<h3>'.$title.'</h3><p>'.$message.'</p><br style="clear:both;" /></div>';
 	}
 
 	/**
@@ -190,6 +213,9 @@ class GravityView_oEmbed {
 			$this->view_id = $post_id;
 
 		}
+
+		// The inline content has $_POST['type'] set to "embed", while the "Add Media" modal doesn't set that.
+		$this->is_full_oembed_preview = ( isset( $_POST['action'] ) && $_POST['action'] === 'parse-embed' && !isset( $_POST['type'] ) );
 	}
 
 	/**
@@ -275,7 +301,6 @@ class GravityView_oEmbed {
 		}
 
 		$entry_output = $this->generate_entry_output();
-
 
 		// Wrap a container div around the output to allow for custom styling
 		$output = sprintf('<div class="gravityview-oembed gravityview-oembed-entry gravityview-oembed-entry-'.$this->entry_id.'">%s</div>', $entry_output );
