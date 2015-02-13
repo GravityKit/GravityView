@@ -697,7 +697,7 @@ function gravityview_get_field_value( $entry, $field_id, $display_value ) {
 	} else {
 
 		// For one part of the address (City, ZIP, etc.)
-		return $entry[ $field_id ];
+		return isset( $entry[ $field_id ] ) ? $entry[ $field_id ] : '';
 
 	}
 
