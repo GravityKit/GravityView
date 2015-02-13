@@ -13,15 +13,10 @@
 
 (function( $ ) {
 
-
-
 	var gvSearchWidget = {
 
 		// holds the settings div class (depending on the context)
 		wrapClass: null,
-
-		// 'multi' if possible to configure multiple widgets at the same time (like in widgets.php), otherwise, 'single'
-		mode: null,
 
 		// holds the current widget settings DOM object
 		widgetTarget: null,
@@ -30,10 +25,10 @@
 
 		wp_widget_id: 'gravityview_search',
 
-		init: function( wrapClass, mode ) {
+		init: function( wrapClass ) {
 
 			gvSearchWidget.wrapClass = wrapClass;
-			gvSearchWidget.mode = mode;
+
 			var wp_widget_id = gvSearchWidget.wp_widget_id;
 
 			$('body')
@@ -66,7 +61,8 @@
 				// [WP widget] hook on assigned view id change to clear cache
 				.on( 'change', '#gravityview_view_id', gvSearchWidget.clearWidgetSearchData );
 
-			// refresh widget searchable settings after saving or adding the widget
+			// Refresh widget searchable settings after saving or adding the widget
+			// Bind to document because WP triggers document, not body
 			$(document).on( 'widget-added widget-updated', gvSearchWidget.refreshWidget );
 		},
 
@@ -118,14 +114,13 @@
 		 * Refreshes the Widget table settings after saving
 		 * @param  object e event
 		 */
-		refreshWidget: function( e, w ) {
-			var id = $( w ).attr('id'), widget = $('#'+ id );
+		refreshWidget: function( e, widget ) {
 
-			if( widget.hasClass('open') && id.indexOf( gvSearchWidget.wp_widget_id ) > 0 ) {
-				gvSearchWidget.widgetTarget = widget.find( 'div.'+ gvSearchWidget.wrapClass );
+			if( $( widget ).hasClass('open') ) {
+				gvSearchWidget.widgetTarget = $( widget ).find( 'div.'+ gvSearchWidget.wrapClass );
 				gvSearchWidget.renderUI(  widget );
-
 			}
+
 		},
 
 
@@ -151,9 +146,7 @@
 			e.preventDefault();
 
 			// make sure the select fields data is fetched from the target table
-			if( 'multi' === gvSearchWidget.mode ) {
-				gvSearchWidget.resetWidgetTarget( $(this) );
-			}
+			gvSearchWidget.resetWidgetTarget( $(this) );
 
 			var table = $(this).parents( 'table' ),
 				row = $(this).parents( 'tr' );
@@ -604,20 +597,11 @@
 
 	}; // end
 
-
-
-
-
 	$(document).ready( function() {
 
-		var contextClass = 'gv-dialog-options',
-			mode = 'single';
+		var contextClass = $('body').hasClass('widgets-php') ? 'gv-widget-search-fields' : 'gv-dialog-options';
 
-		if( $('body').hasClass('widgets-php') ) {
-			contextClass = 'gv-widget-search-fields';
-			mode = 'multi';
-		}
-		gvSearchWidget.init( contextClass, mode );
+		gvSearchWidget.init( contextClass );
 
 	});
 
