@@ -77,13 +77,17 @@ class GravityView_oEmbed {
 
 		$rewrite_slug = apply_filters( 'gravityview_slug', 'view' );
 
-		if( $wp_rewrite->using_permalinks() ) {
-			$structure = "(?P<is_cpt>{$rewrite_slug})?/?(?P<slug>.+?)/{$entry_var_name}/(?P<entry_slug>.+?)/?\$";
-		} else {
-			$structure = "(?:index.php)?\?(?P<is_cpt>[^=]+)=(?P<slug>[^&]+)&?entry=(?P<entry_slug>[^&]+)\$";
-		}
+		// Only support embeds for current site
+		$prefix = trailingslashit( home_url() );
 
-		$match_regex = trailingslashit( home_url() ). $structure;
+		// Using permalinks
+		$using_permalinks = $prefix . "(?P<is_cpt>{$rewrite_slug})?/?(?P<slug>.+?)/{$entry_var_name}/(?P<entry_slug>.+?)/?\$";
+
+		// Not using permalinks
+		$not_using_permalinks = $prefix . "(?:index.php)?\?(?P<is_cpt2>[^=]+)=(?P<slug2>[^&]+)&entry=(?P<entry_slug2>[^&]+).+?\$";
+
+		// Catch either
+		$match_regex = "(?:{$using_permalinks}|{$not_using_permalinks})";
 
 		return '#'.$match_regex.'#i';
 	}
@@ -146,6 +150,14 @@ class GravityView_oEmbed {
 	 * @return string The embed HTML.
 	 */
 	public function render_handler( $matches, $attr, $url, $rawattr ) {
+
+		// If not using permalinks, re-assign values for matching groups
+		if( !empty( $matches['entry_slug2'] ) ) {
+			$matches['is_cpt'] = $matches['is_cpt2'];
+			$matches['slug'] = $matches['slug2'];
+			$matches['entry_slug'] = $matches['entry_slug2'];
+			unset( $matches['is_cpt2'], $matches['slug2'], $matches['entry_slug2'] );
+		}
 
 		// No Entry was found
 		if( empty( $matches['entry_slug'] ) ) {
