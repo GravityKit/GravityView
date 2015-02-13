@@ -271,9 +271,14 @@ final class GravityView_Delete_Entry {
 			return;
 		}
 
-		?>
-		<a class="btn btn-sm button button-small alignright pull-right btn-danger" tabindex="5" href="<?php echo self::get_delete_link( $entry ); ?>"<?php echo self::get_confirm_dialog(); ?>><?php esc_attr_e( 'Delete', 'gravityview' ); ?></a>
-		<?php
+		$attributes = array(
+			'class' => 'btn btn-sm button button-small alignright pull-right btn-danger',
+			'tabindex' => '5',
+			'onclick' => self::get_confirm_dialog(),
+		);
+
+		echo gravityview_get_link( self::get_delete_link( $entry ), esc_attr__( 'Delete', 'gravityview' ), $attributes );
+
 	}
 
 	/**
@@ -402,9 +407,7 @@ final class GravityView_Delete_Entry {
 		 */
 		$confirm = apply_filters( 'gravityview/delete-entry/confirm-text', $confirm );
 
-		$html = ' onclick="return window.confirm(\''. esc_js( $confirm ) .'\');"';
-
-		return $html;
+		return 'return window.confirm(\''. esc_js( $confirm ) .'\');';
 	}
 
 	/**

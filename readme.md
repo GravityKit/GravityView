@@ -20,6 +20,29 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 ## Changelog ##
 
+### 1.6 on February 12 ###
+* Our support site has moved to [docs.gravityview.co](http://docs.gravityview.co). We hope you enjoy the improved experience!
+* Added: GravityView Search Widget - Configure a WordPress widget that searches any of your Views. [Read how to set it up](http://docs.gravityview.co/article/222-the-search-widget)
+* Added: Duplicate View functionality allows you to clone a View from the All Views screen. [Learn more](http://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view)
+* Added: Recent Entries WordPress Widget - show the latest entries for your View. [Learn more](http://docs.gravityview.co/article/223-the-recent-entries-widget)
+* Added: Embed Single Entries - You can now embed entries in a post or page! [See how](http://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view)
+* Fixed: Fatal errors caused by Gravity Forms 1.9.1 conflict
+* Fixed: Respect Custom Input Labels added in Gravity Forms 1.9
+* Fixed: Edit Entry Admin Bar link
+* Fixed: Single Entry links didn't work when previewing a draft View
+* Fixed: Edit entry validation hooks not running when form has multiple pages
+* Fixed: Annoying bug where you would have to click Add Field / Add Widget buttons twice to open the window
+* Added: `gravityview_get_link()` function to standardize generating HTML anchors
+* Added: `GravityView_API::entry_link_html()` method to generate entry link HTML
+* Added: `gravityview_field_entry_value_{$field_type}` filter to modify the value of a field (in `includes/class-api.php`)
+* Added: `field_type` key has been added to the field data in the global `$gravityview_view->field_data` array
+* Added: `GravityView_View_Data::maybe_get_view_id()` method to determine whether an ID, post content, or object passed to it is a View or contains a View shortcode.
+* Added: Hook to customise the text message "You have attempted to view an entry that is not visible or may not exist." - `gravityview/render/entry/not_visible`
+* Added: Included in hook `gravityview_widget_search_filters` the labels for search all, entry date and entry id.
+* Tweak: Allow [WordPress SEO](http://wordpress.org/plugins/wordpress-seo/) scripts and styles when in "No Conflict Mode"
+* Fixed: For Post Dynamic Data, make sure Post ID is set
+* Fixed: Make sure search field choices are available before displaying field
+
 ### 1.5.4 on January 29 ###
 * Added: "Hide View data until search is performed" setting - only show the Search Bar until a search is entered
 * Added: "Clear" button to your GravityView Search Bar - allows easy way to remove all searches & filters

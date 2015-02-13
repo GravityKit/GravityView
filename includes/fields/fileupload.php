@@ -89,7 +89,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			$content = !empty( $content ) ? $content : $file_path_info['basename'];
 
 			// If pathinfo() gave us the extension of the file, run the switch statement using that.
-			$extension = empty( $file_path_info['extension'] ) ? NULL : $file_path_info['extension'];
+			$extension = empty( $file_path_info['extension'] ) ? NULL : strtolower( $file_path_info['extension'] );
 
 
 			switch( true ) {
@@ -188,7 +188,9 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			// Whether to use lightbox or not
 			if( $disable_lightbox || empty( $gravityview_view->atts['lightbox'] ) || !empty( $field_settings['show_as_link'] ) ) {
 
-				$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', "target='_blank'", $gravityview_view->field_data );
+				$link_atts = empty( $field_settings['show_as_link'] ) ? "target='_blank'" : '';
+
+				$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', $link_atts, $gravityview_view->field_data );
 
 			} else {
 

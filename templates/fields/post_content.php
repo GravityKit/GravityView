@@ -4,7 +4,10 @@ global $gravityview_view;
 
 extract( $gravityview_view->field_data );
 
-if( !empty( $field_settings['dynamic_data'] ) ) {
+if( !empty( $field_settings['dynamic_data'] ) && !empty( $entry['post_id'] ) ) {
+
+	global $post;
+
 	$post = get_post( $entry['post_id'] );
 
 	if( empty( $post ) ) {

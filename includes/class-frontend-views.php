@@ -112,6 +112,7 @@ class GravityView_frontend {
 		// If in admin and NOT AJAX request, get outta here.
 		if( is_admin() && !$doing_ajax )  { return; }
 
+
 		$this->gv_output_data = new GravityView_View_Data( $post );
 		$this->single_entry = self::is_single_entry();
 		$this->entry = ( $this->single_entry ) ? GVCommon::get_entry( $this->single_entry ) : false;
@@ -176,7 +177,7 @@ class GravityView_frontend {
 
 		if( GFCommon::current_user_can_any('gravityforms_edit_entries') && !empty( $this->single_entry ) ) {
 
-			$entry_id = GVCommon::get_entry_id_from_slug( $this->single_entry );
+			$entry_id = $this->entry['id'];
 
 			$wp_admin_bar->add_menu( array(
 				'id' => 'edit-entry',
@@ -341,20 +342,24 @@ class GravityView_frontend {
 
 
 	/**
-	 * Core function to render a View based on a set of arguments ($args):
-	 *   $id - View id
-	 *   $page_size - Page
-	 *   $sort_field - form field id to sort
-	 *   $sort_direction - ASC / DESC
-	 *   $start_date - Ymd
-	 *   $end_date - Ymd
-	 *   $class - assign a html class to the view
-	 *   $offset (optional) - This is the start point in the current data set (0 index based).
-	 *
+	 * Core function to render a View based on a set of arguments
 	 *
 	 * @access public
 	 * @static
-	 * @param mixed $args
+	 * @param array $passed_args {
+	 *
+	 *      Settings for rendering the View
+	 *
+	 *      @type int $id View id
+	 *      @type int $page_size Number of entries to show per page
+	 *      @type string $sort_field Form field id to sort
+	 *      @type string $sort_direction Sorting direction ('ASC' or 'DESC')
+	 *      @type string $start_date - Ymd
+	 *      @type string $end_date - Ymd
+	 *      @type string $class - assign a html class to the view
+	 *      @type string $offset (optional) - This is the start point in the current data set (0 index based).
+	 * }
+	 *
 	 * @return void
 	 */
 	public function render_view( $passed_args ) {
@@ -478,7 +483,10 @@ class GravityView_frontend {
 
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.');
 
-				esc_attr_e( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview');
+				/**
+				 * @since 1.6
+				 */
+				echo esc_attr( apply_filters( 'gravityview/render/entry/not_visible', __( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview') ) );
 
 				return;
 			}
@@ -602,6 +610,26 @@ class GravityView_frontend {
 		return $search_criteria;
 	}
 
+
+	/**
+	 * Process the approved only search criteria according to the View settings
+	 *
+	 * @param  array      $args            View settings
+	 * @param  array      $search_criteria Search being performed, if any
+	 * @return array                       Modified `$search_criteria` array
+	 */
+	public static function process_search_only_approved( $args, $search_criteria ) {
+
+		if( !empty( $args['show_only_approved'] ) ) {
+			$search_criteria['field_filters'][] = array( 'key' => 'is_approved', 'value' => 'Approved' );
+			$search_criteria['field_filters']['mode'] = 'all'; // force all the criterias to be met
+
+			do_action( 'gravityview_log_debug', '[process_search_only_approved] Search Criteria if show only approved: ', $search_criteria );
+		}
+
+		return $search_criteria;
+	}
+
 	/**
 	 * Parse search criteria for a entries search.
 	 *
@@ -643,18 +671,15 @@ class GravityView_frontend {
 		do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after date params: ', $search_criteria );
 
 		// remove not approved entries
-		if( !empty( $args['show_only_approved'] ) ) {
-			$search_criteria['field_filters'][] = array( 'key' => 'is_approved', 'value' => 'Approved' );
-			$search_criteria['field_filters']['mode'] = 'all'; // force all the criterias to be met
-
-			do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria if show only approved: ', $search_criteria );
-		}
+		$search_criteria = self::process_search_only_approved( $args, $search_criteria );
 
 		// Only show active listings
 		$search_criteria['status'] = apply_filters( 'gravityview_status', 'active', $args );
 
 		return $search_criteria;
 	}
+
+
 
 	/**
 	 * Core function to calculate View multi entries (directory) based on a set of arguments ($args):
@@ -775,13 +800,23 @@ class GravityView_frontend {
 		// If not using permalinks, simply check whether the single entry $_GET parameter is set.
 		if( !empty( $wp_rewrite ) && !$wp_rewrite->using_permalinks() ) {
 			if( !empty( $_GET[ $var_name ] ) && is_numeric( $_GET[ $var_name ] ) ) {
-				return (int)$_GET[ $var_name ];
+				$single_entry = (int)$_GET[ $var_name ];
 			} else {
-				return false;
+				$single_entry = false;
 			}
+		} else {
+
+			$single_entry = get_query_var( $var_name );
+
 		}
 
-		$single_entry = get_query_var( $var_name );
+		/**
+		 * Modify the entry that is being displayed.
+		 *
+		 * @internal Should only be used by things like the oEmbed functionality.
+		 * @since 1.6
+		 */
+		$single_entry = apply_filters('gravityview/is_single_entry', $single_entry );
 
 		if( empty( $single_entry ) ){
 			return false;
@@ -895,7 +930,7 @@ new GravityView_frontend;
  * @access public
  * @param string $view_id (default: '')
  * @param array $atts (default: array())
- * @return void
+ * @return string HTML of the output. Empty string if $view_id is empty.
  */
 function get_gravityview( $view_id = '', $atts = array() ) {
 	if( !empty( $view_id ) ) {

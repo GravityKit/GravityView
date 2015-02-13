@@ -4,7 +4,7 @@
  *
  * Easily edit entries in GravityView.
  *
- * @package   GravityView-DataTables-Ext
+ * @package   GravityView
  * @license   GPL2+
  * @author    Katz Web Services, Inc.
  * @link      http://gravityview.co
@@ -15,13 +15,32 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+
 class GravityView_Edit_Entry {
 
 	static $file;
 	static $nonce_key;
 	static $instance;
+
+	/**
+	 * Gravity Forms entry array
+	 *
+	 * @var array
+	 */
 	var $entry;
+
+	/**
+	 * Gravity Forms form array
+	 *
+	 * @var array
+	 */
 	var $form;
+
+	/**
+	 * ID of the current view
+	 *
+	 * @var int
+	 */
 	var $view_id;
 	var $is_valid = NULL;
 
@@ -341,7 +360,10 @@ class GravityView_Edit_Entry {
 		wp_register_script( 'gform_gravityforms', GFCommon::get_base_url().'/js/gravityforms.js', array( 'jquery', 'gform_json', 'gform_placeholder', 'sack','plupload-all' ) );
 
 		GFFormDisplay::enqueue_form_scripts($gravityview_view->form, false);
-		GFForms::print_scripts();
+
+		wp_enqueue_script("sack");
+
+		wp_print_scripts();
 	}
 
 	/**
@@ -400,7 +422,11 @@ class GravityView_Edit_Entry {
 		if( RGForms::post("action") === "update") {
 
 			// Make sure the entry, view, and form IDs are all correct
-			check_admin_referer( self::$nonce_key, self::$nonce_key );
+			$this->verify_nonce();
+
+			if( $this->entry['id'] !== $_POST['lid'] ) {
+				return;
+			}
 
 			do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
 
@@ -449,6 +475,12 @@ class GravityView_Edit_Entry {
 					GFFormsModel::refresh_lead_field_value( $this->entry['id'], $field['id'] );
 				}
 
+				/**
+				 * Perform an action after the entry has been updated using Edit Entry
+				 *
+				 * @param array $form Gravity Forms form array
+				 * @param string $entry_id Numeric ID of the entry that was updated
+				 */
 				do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'] );
 			}
 		} // endif action is update.
@@ -501,11 +533,23 @@ class GravityView_Edit_Entry {
 		$form = $this->form;
 
 		foreach( $form['fields'] as &$field ) {
-			$field['adminOnly'] = '';
+
+			// GF 1.9+
+			if( is_object( $field ) ) {
+				$field->adminOnly = '';
+			} else {
+				$field['adminOnly'] = '';
+			}
 
 			if( isset($field["inputs"] ) && is_array( $field["inputs"] ) ) {
-				foreach( $field["inputs"] as &$input ) {
-					$input['id'] = (string)$input['id'];
+				foreach( $field["inputs"] as $key => $input ) {
+
+					// GF 1.9+
+					if( is_object( $field ) ) {
+						$field->inputs[ $key ][ 'id' ] = (string)$input['id'];
+					} else {
+						$field["inputs"][ $key ]['id'] = (string)$input['id'];
+					}
 				}
 			}
 
@@ -649,7 +693,7 @@ class GravityView_Edit_Entry {
 	    // If edit tab not yet configured, show all fields
 	    $edit_fields = !empty( $properties['edit_edit-fields'] ) ? $properties['edit_edit-fields'] : NULL;
 
-	    // Hide fields depending on admin settings
+	    // Hide fields depending on Edit Entry settings
 		$this->form['fields'] = $this->filter_fields( $this->form['fields'], $edit_fields );
 
 		$this->is_valid = GFFormDisplay::validate( $this->form, $field_values, 1, $failed_validation_page );
@@ -740,6 +784,17 @@ class GravityView_Edit_Entry {
 	                                    </td>
 	                                </tr>';
 
+		                        /**
+		                         * Modify the Edit Entry field content
+		                         *
+		                         * @param string $content Field HTML as rendered in the Edit Entry form
+		                         * @param array $field Gravity Forms field array, with extra GravityView keys such as `gvCustomClass`
+		                         * @param string $value Value of the field
+		                         * @param int $entry_id Entry ID
+		                         * @param int $form_id Form ID
+		                         *
+		                         * @return string HTML output for the field in the Edit Entry form
+		                         */
 	                            $content = apply_filters( 'gravityview_edit_entry_field_content', $content, $field, $value, $lead['id'], $form['id'] );
 
 	                            echo $content;
@@ -824,6 +879,10 @@ class GravityView_Edit_Entry {
 	    if( !empty( $field_setting['custom_class'] ) ) {
 	         $return_field['gvCustomClass'] = gravityview_sanitize_html_class( $field_setting['custom_class'] );
 	    }
+
+		// @since 1.6
+		// Normalise page numbers - avoid conflicts with page validation
+		$return_field['pageNumber'] = 1;
 
 	    return $return_field;
 
@@ -1070,8 +1129,33 @@ class GravityView_Edit_Entry {
 
 		$error = NULL;
 
-		if( ! $this->verify_nonce() ) {
-			$error = __( 'The link to edit this entry is not valid; it may have expired.', 'gravityview');
+		/**
+		 *  1. Permalinks are turned off
+		 *  2. There are two entries embedded using oEmbed
+		 *  3. One of the entries has just been saved
+		 */
+		if( !empty( $_POST['lid'] ) && !empty( $_GET['entry'] ) && ( $_POST['lid'] !== $_GET['entry'] ) ) {
+
+			$error = true;
+
+		}
+
+		if( !empty( $_GET['entry'] ) && (string)$this->entry['id'] !== $_GET['entry'] ) {
+
+			$error = true;
+
+		} elseif( ! $this->verify_nonce() ) {
+
+			/**
+			 * If the Entry is embedded, there may be two entries on the same page.
+			 * If that's the case, and one is being edited, the other should fail gracefully and not display an error.
+			 */
+			if( GravityView_oEmbed::getInstance()->get_entry_id() ) {
+				$error = true;
+			} else {
+				$error = __( 'The link to edit this entry is not valid; it may have expired.', 'gravityview');
+			}
+
 		}
 
 		if( ! self::check_user_cap_edit_entry( $this->entry ) ) {
@@ -1087,7 +1171,7 @@ class GravityView_Edit_Entry {
 			return true;
 		}
 
-		if( $echo ) {
+		if( $echo && $error !== true ) {
 			echo $this->generate_notice( wpautop( esc_html( $error ) ), 'gv-error error');
 		}
 
@@ -1199,7 +1283,17 @@ class GravityView_Edit_Entry {
 				    echo $this->generate_notice( $message , 'gv-error' );
 
 				} else {
-					$message = apply_filters( 'gravityview/edit_entry/success', sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'.$back_link.'">', '</a>' ), $this->view_id, $this->entry );
+					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'.$back_link.'">', '</a>' );
+
+					/**
+					 * @since 1.5.4
+					 * @param string $entry_updated_message Existing message
+					 * @param int $view_id View ID
+					 * @param array $entry Gravity Forms entry array
+					 * @param string $back_link URL to return to the original entry. @since 1.6
+					 */
+					$message = apply_filters( 'gravityview/edit_entry/success', $entry_updated_message , $this->view_id, $this->entry, $back_link );
+
 					echo $this->generate_notice( $message );
 				}
 

@@ -14,7 +14,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.5.4
+ * Version:          	1.6
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravityview
@@ -69,7 +69,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.5.4';
+	const version = '1.6';
 
 	public static $theInstance;
 
@@ -107,6 +107,12 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/edit-entry/class-edit-entry.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/delete-entry/class-delete-entry.php' );
 
+		// Load Widgets
+		include_once( GRAVITYVIEW_DIR .'includes/widgets.php' );
+
+		// Add oEmbed
+		include_once( GRAVITYVIEW_DIR . 'includes/class-oembed.php' );
+
 		// Add logging
 		require_once( GRAVITYVIEW_DIR . 'includes/class-logging.php');
 
@@ -114,6 +120,7 @@ final class GravityView_Plugin {
 		require_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
 		include_once( GRAVITYVIEW_DIR . 'includes/class-frontend-views.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
+
 
 		/**
 		 * Encrypt Email Addresses
@@ -135,7 +142,7 @@ final class GravityView_Plugin {
 		add_action( 'init', array( $this, 'register_default_templates' ), 11 );
 
 		// Load default widgets
-		add_action( 'init', array( $this, 'register_default_widgets' ), 11 );
+		add_action( 'init', array( $this, 'register_widgets' ), 11 );
 
 	}
 
@@ -201,7 +208,20 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'gravityview', false, dirname( plugin_basename( GRAVITYVIEW_FILE ) ) . '/languages/' );
+
+		$loaded = load_plugin_textdomain( 'gravityview', false, '/languages/' );
+		if ( ! $loaded ) {
+			$loaded = load_muplugin_textdomain( 'gravityview', '/languages/' );
+		}
+		if ( ! $loaded ) {
+			$loaded = load_theme_textdomain( 'gravityview', '/languages/' );
+		}
+		if ( ! $loaded ) {
+			$locale = apply_filters( 'plugin_locale', get_locale(), 'gravityview' );
+			$mofile = dirname( __FILE__ ) . '/languages/gravityview-'. $locale .'.mo';
+			load_textdomain( 'gravityview', $mofile );
+		}
+
 	}
 
 	/**
@@ -236,7 +256,7 @@ final class GravityView_Plugin {
 	 * @todo Move somehere logical
 	 * @return void
 	 */
-	function register_default_widgets() {
+	function register_widgets() {
 		include_once( GRAVITYVIEW_DIR .'includes/default-widgets.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/search-widget/class-search-widget.php' );
 	}

@@ -13,7 +13,7 @@ $has_inputs = false;
 
 ?>
 
-<form class="gv-widget-search <?php echo GravityView_Widget_Search::get_search_class(); ?>" method="get" action="<?php echo esc_url( add_query_arg( array() ) ); ?>">
+<form class="gv-widget-search <?php echo GravityView_Widget_Search::get_search_class(); ?>" method="get" action="<?php echo esc_url( GravityView_Widget_Search::get_search_form_action() ); ?>">
 
 	<?php
 	do_action( 'gravityview_search_widget_fields_before' );

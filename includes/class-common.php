@@ -11,6 +11,11 @@
  * @since 1.5.2
  */
 
+/** If this file is called directly, abort. */
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 class GVCommon {
 
 	/**
@@ -18,7 +23,7 @@ class GVCommon {
 	 *
 	 * @access public
 	 * @param mixed $form_id
-	 * @return void
+	 * @return mixed False: no form ID specified or Gravity Forms isn't active. Array: Form returned from Gravity Forms
 	 */
 	public static function get_form( $form_id ) {
 		if(empty( $form_id ) ) {
@@ -34,6 +39,31 @@ class GVCommon {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get all existing Views
+	 *
+	 * @since  1.5.4
+	 * @return array Array of Views as `WP_Post`. Empty array if none found.
+	 */
+	public static function get_all_views() {
+
+		$params = array(
+			'post_type' => 'gravityview',
+			'posts_per_page' => -1,
+			'post_status' => 'publish',
+		);
+
+		/**
+		 * Modify the parameters sent to get all views.
+		 * @param  array $params description
+		 */
+		$views_params = apply_filters( 'gravityview/get_all_views/params', $params );
+
+		$views = get_posts( $params );
+
+		return $views;
 	}
 
 
@@ -120,7 +150,8 @@ class GVCommon {
 		$fields = array();
 		$has_product_fields = false;
 
-		if( $add_default_properties ) {
+		// If GF_Field exists, we're using GF 1.9+, where add_default_properties has been deprecated.
+		if( false === class_exists('GF_Field') && $add_default_properties ) {
 			$form = RGFormsModel::add_default_properties( $form );
 		}
 
@@ -142,6 +173,7 @@ class GVCommon {
 					foreach( $field['inputs'] as $input ) {
 						$fields[ (string)$input['id'] ] = array(
 							'label' => $input['label'],
+							'customLabel' => ( isset( $input['customLabel'] ) ? $input['customLabel'] : '' ),
 							'parent' => $field,
 							'type' => $field['type'],
 							'adminLabel' => $field['adminLabel'],
@@ -248,7 +280,7 @@ class GVCommon {
 	 * @param int|array $form_ids The ID of the form or an array IDs of the Forms. Zero for all forms.
 	 * @param mixed $passed_criteria (default: null)
 	 * @param mixed &$total Optional. An output parameter containing the total number of entries. Pass a non-null value to generate the total count. (default: null)
-	 * @return void
+	 * @return mixed False: Error fetching entries. Array: Multi-dimensional array of Gravity Forms entry arrays
 	 */
 	public static function get_entries( $form_ids = null, $passed_criteria = null, &$total = null ) {
 
@@ -520,7 +552,7 @@ class GVCommon {
 	 * @access public
 	 * @param mixed $form
 	 * @param mixed $field_id
-	 * @return void
+	 * @return array|null Array: Gravity Forms field array; NULL: Gravity Forms GFFormsModel does not exist
 	 */
 	public static function get_field( $form, $field_id ) {
 		if( class_exists( 'GFFormsModel') ){
@@ -802,6 +834,84 @@ class GVCommon {
 		return true;
 	}
 
+
+	/**
+	 * Generate an HTML anchor tag with a list of supported attributes
+	 *
+	 * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a Supported attributes defined here
+	 *
+	 * @since 1.6
+	 *
+	 * @param string $href URL of the link.
+	 * @param string $anchor_text The text or HTML inside the anchor. This is not sanitized in the function.
+	 * @param array $atts Attributes to be added to the anchor tag
+	 *
+	 * @return string HTML output of anchor link. If empty $href, returns NULL
+	 */
+	public static function get_link_html( $href = '', $anchor_text = '', $atts = array() ) {
+
+		// Supported attributes for anchor tags. HREF left out intentionally.
+		$allowed_atts = array(
+			'href' => NULL, // Will override the $href argument if set
+			'title' => NULL,
+			'rel' => NULL,
+			'id' => NULL,
+			'class' => NULL,
+			'target' => NULL,
+			'style' => NULL,
+
+			// Used by GravityView
+			'data-viewid' => NULL,
+
+			// Not standard
+			'hreflang' => NULL,
+			'type' => NULL,
+			'tabindex' => NULL,
+
+			// Deprecated HTML4 but still used
+			'name' => NULL,
+			'onclick' => NULL,
+			'onchange' => NULL,
+			'onkeyup' => NULL,
+
+			// HTML5 only
+			'download' => NULL,
+			'media' => NULL,
+			'ping' => NULL,
+		);
+
+		/**
+		 * Modify the attributes that are allowed to be used in generating links
+		 *
+		 * @param array $allowed_atts Array of attributes allowed
+		 */
+		$allowed_atts = apply_filters( 'gravityview/get_link/allowed_atts', $allowed_atts );
+
+		// Make sure the attributes are formatted as array
+		$passed_atts = wp_parse_args( $atts );
+
+		// Make sure the allowed attributes are only the ones in the $allowed_atts list
+		$final_atts = shortcode_atts( $allowed_atts, $passed_atts );
+
+		// Remove attributes with empty values
+		$final_atts = array_filter( $final_atts );
+
+		// If the href wasn't passed as an attribute, use the value passed to the function
+		if( empty( $final_atts['href'] ) && !empty( $href ) ) {
+			$final_atts['href'] = esc_url( $href );
+		}
+
+		// For each attribute, generate the code
+		$output = '';
+		foreach( $final_atts as $attr => $value ) {
+			$output .= sprintf( ' %s="%s"', $attr, esc_attr( $value ) );
+		}
+
+		$output = '<a'. $output .'>'. $anchor_text .'</a>';
+
+		return $output;
+	}
+
 	/**
 	* array_merge_recursive does indeed merge arrays, but it converts values with duplicate
 	* keys to arrays rather than overwriting the value in the first array with the duplicate
@@ -830,7 +940,24 @@ class GVCommon {
 		return $merged;
 	}
 
-
-
-
 } //end class
+
+
+
+	/**
+	 * Generate an HTML anchor tag with a list of supported attributes
+	 *
+	 * @see GVCommon::get_link_html()
+	 *
+	 * @since 1.6
+	 *
+	 * @param string $href URL of the link.
+	 * @param string $anchor_text The text or HTML inside the anchor. This is not sanitized in the function.
+	 * @param array $atts Attributes to be added to the anchor tag
+	 *
+	 * @return string HTML output of anchor link. If empty $href, returns NULL
+	 */
+	function gravityview_get_link( $href = '', $anchor_text = '', $atts = array() ) {
+
+		return GVCommon::get_link_html( $href, $anchor_text, $atts );
+	}

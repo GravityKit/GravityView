@@ -1,5 +1,10 @@
 <?php
 
+/** If this file is called directly, abort. */
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 class GravityView_View_Data {
 
 	static $instance = NULL;
@@ -13,28 +18,7 @@ class GravityView_View_Data {
 
 		if( !empty( $passed_post ) ) {
 
-			$id = NULL;
-
-			// Convert WP_Posts into array
-			if( $passed_post instanceof WP_Post ) {
-				$passed_post = array( $passed_post);
-			}
-
-			if( is_array( $passed_post ) ) {
-
-				foreach ( $passed_post as &$post) {
-					if( ( get_post_type( $post ) === 'gravityview' ) ) {
-						$id = $post->ID;
-					} else{
-						$this->parse_post_content( $post->post_content );
-					}
-				}
-
-			} elseif( is_string( $passed_post ) ) {
-				$this->parse_post_content( $passed_post );
-			} else {
-				$id = $this->get_id_from_atts( $passed_post );
-			}
+			$id = self::maybe_get_view_id( $passed_post );
 
 			if( !empty( $id ) ) {
 				$this->add_view( $id );
@@ -47,10 +31,79 @@ class GravityView_View_Data {
 		self::$instance = &$this;
 	}
 
-	static function getInstance() {
+	/**
+	 * Figure out what the View ID is for a variable, if any.
+	 *
+	 * Can be:
+	 *      - WP_Post (Either a `gravityview` post type or not)
+	 *      - Multi-dimensional array of WP_Post objects
+	 *      - Array with `view_id` or `id` key(s) set
+	 *      - String of content that may include GravityView shortcode
+	 *      - Number representing the Post ID or View ID
+	 *
+	 * @param mixed $passed_post See method description
+	 *
+	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
+	 */
+	static public function maybe_get_view_id( $passed_post ) {
+
+		$ids = array();
+
+		if( !empty( $passed_post ) ) {
+
+			if( is_numeric( $passed_post ) ) {
+				$passed_post = get_post( $passed_post );
+			}
+
+			// Convert WP_Posts into array
+			if( $passed_post instanceof WP_Post ) {
+				$passed_post = array( $passed_post);
+			}
+
+			if( is_array( $passed_post ) ) {
+
+				foreach ( $passed_post as &$post) {
+					if( ( get_post_type( $post ) === 'gravityview' ) ) {
+
+						$ids[] = $post->ID;
+
+					} else{
+						$id = self::getInstance()->parse_post_content( $post->post_content );
+
+						$ids = array_merge( $ids, (array)$id );
+					}
+
+				}
+
+			} else {
+
+				if ( is_string( $passed_post ) ) {
+
+					$id = self::getInstance()->parse_post_content( $passed_post );
+					$ids = array_merge( $ids, (array)$id );
+
+				} else {
+					$id = self::getInstance()->get_id_from_atts( $passed_post );
+					$ids[] = intval( $id );
+				}
+
+
+			}
+		}
+
+		if( empty($ids) ) {
+			return NULL;
+		}
+
+		// If it's just one ID, return that.
+		// Otherwise, return array of IDs
+		return ( sizeof( $ids ) === 1 ) ? $ids[0] : $ids;
+	}
+
+	static function getInstance( $passed_post = NULL ) {
 
 		if( empty( self::$instance ) ) {
-			self::$instance = new GravityView_View_Data;
+			self::$instance = new GravityView_View_Data( $passed_post );
 		}
 
 		return self::$instance;
@@ -105,11 +158,18 @@ class GravityView_View_Data {
 	 *
 	 * Add a view to the views array
 	 *
-	 * @param type $view_id
+	 * @param int|array $view_id View ID or array of View IDs
 	 * @param type $atts Combine other attributes (eg. from shortcode) with the view settings (optional)
 	 * @return type
 	 */
 	function add_view( $view_id, $atts = NULL ) {
+
+		// Handle array of IDs
+		if( is_array( $view_id ) ) {
+			foreach( $view_id as $id ) {
+				return $this->add_view( $id, $atts );
+			}
+		}
 
 		// The view has been set already; returning stored view.
 		if ( !empty( $this->views[ $view_id ] ) ) {
@@ -271,15 +331,27 @@ class GravityView_View_Data {
 	 * @uses shortcode_parse_atts() Parse each GV shortcode
 	 * @uses  gravityview_get_template_settings() Get the settings for the View ID
 	 * @param  string $content $post->post_content content
-	 * @return void
+	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
 	 */
 	function parse_post_content( $content ) {
 
+		/**
+		 * @hack This is so that the shortcode is registered for the oEmbed preview in the Admin
+		 * @since 1.6
+		 */
+		if( !shortcode_exists('gravityview') ) {
+			add_shortcode( 'gravityview', array( GravityView_frontend::getInstance(), 'shortcode' ) );
+		}
+
 		$shortcodes = gravityview_has_shortcode_r( $content, 'gravityview' );
 
-		if( empty( $shortcodes ) ) { return array(); }
+		if( empty( $shortcodes ) ) {
+			return NULL;
+		}
 
 		do_action('gravityview_log_debug', 'GravityView_View_Data[parse_post_content] Parsing content, found shortcodes:', $shortcodes );
+
+		$ids = array();
 
 		foreach ($shortcodes as $key => $shortcode) {
 
@@ -287,14 +359,24 @@ class GravityView_View_Data {
 
 			if( empty( $args['id'] ) ) {
 				do_action('gravityview_log_error', sprintf( 'GravityView_View_Data[parse_post_content] Returning; no ID defined in shortcode atts for Post #%s (Atts)', $post->ID ), $shortcode );
-				return false;
+				continue;
 			}
 
 			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[parse_post_content] Adding view #%s with shortcode args', $args['id']), $args );
 
 			// Store the View to the object for later fetching.
-			$this->add_view( $args['id'] , $args );
+			$this->add_view( $args['id'], $args );
+
+			$ids[] = $args['id'];
 		}
+
+		if( empty($ids) ) {
+			return NULL;
+		}
+
+		// If it's just one ID, return that.
+		// Otherwise, return array of IDs
+		return ( sizeof( $ids ) === 1 ) ? $ids[0] : $ids;
 
 	}
 
@@ -320,7 +402,18 @@ class GravityView_View_Data {
 	 * @param string $group Only fetch
 	 * @access public
 	 * @static
-	 * @return void
+	 * @return array {
+	 *      Associative array of default settings for a View
+	 *
+	 *      @type string $label Setting label shown in admin
+	 *      @type string $type Gravity Forms field type
+	 *      @type string $group The field group the setting is associated with. Default: "default"
+	 *      @type mixed  $value The default value for the setting
+	 *      @type string $tooltip Tooltip displayed for the setting
+	 *      @type boolean $show_in_shortcode Whether to show the setting in the shortcode configuration modal
+	 *      @type array  $options Array of values to use when generating select, multiselect, radio, or checkboxes fields
+	 *      @type boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
+	 * }
 	 * @filter gravityview_default_args Modify the default settings for new Views
 	 */
 	public static function get_default_args( $with_details = false, $group = NULL ) {

@@ -15,6 +15,4 @@ $output = apply_filters( 'gravityview_entry_link', GravityView_API::replace_vari
 
 $href = GravityView_Edit_Entry::get_edit_link( $entry, $field );
 
-$output = '<a href="'. $href .'">'. $output . '</a>';
-
-echo $output;
+echo gravityview_get_link( $href, $output );

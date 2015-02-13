@@ -22,21 +22,58 @@ class GravityView_API {
 	 *
 	 * @access public
 	 * @static
-	 * @param mixed $field
+	 * @param array $field GravityView field array
+	 * @param array $entry Gravity Forms entry array
+	 * @param boolean $force_show_label Whether to always show the label, regardless of field settings
 	 * @return string
 	 */
-	public static function field_label( $field, $entry = NULL ) {
+	public static function field_label( $field, $entry = array(), $force_show_label = false ) {
 		global $gravityview_view;
 
 		$form = $gravityview_view->form;
 
-		if( !empty( $field['show_label'] ) ) {
-			$label = empty( $field['custom_label'] ) ? $field['label'] : $field['custom_label'];
-			$label = self::replace_variables( $label, $form, $entry );
+		$label = '';
+
+		if( !empty( $field['show_label'] ) || $force_show_label ) {
+
+			$label = $field['label'];
+
+			// Support Gravity Forms 1.9+
+			if( class_exists( 'GF_Field' ) ) {
+
+				$field_object = RGFormsModel::get_field( $form, $field['id'] );
+
+				if( $field_object ) {
+
+					$input = GFFormsModel::get_input( $field_object, $field['id'] );
+
+					// This is a complex field, with lables on a per-input basis
+					if( $input ) {
+
+						// Does the input have a custom label on a per-input basis? Otherwise, default label.
+						$label = ! empty( $input['customLabel'] ) ? $input['customLabel'] : $input['label'];
+
+					} else {
+
+						// This is a field with one label
+						$label = $field_object->get_field_label( true, $field['label'] );
+
+					}
+
+				}
+
+			}
+
+			// Use Gravity Forms label by default, but if a custom label is defined in GV, use it.
+			if ( !empty( $field['custom_label'] ) ) {
+
+				$label = self::replace_variables( $field['custom_label'], $form, $entry );
+
+			}
+
 			$label .= apply_filters( 'gravityview_render_after_label', '', $field );
-		} else {
-			$label = '';
-		}
+
+		} // End $field['show_label']
 
 		return $label;
 	}
@@ -193,6 +230,7 @@ class GravityView_API {
 			'display_value' => $display_value,
 			'format' => $format,
 			'entry' => $entry,
+			'field_type' => $field_type, /** {@since 1.6} **/
 		);
 
 		if( $field_exists ) {
@@ -217,34 +255,68 @@ class GravityView_API {
 		 *
 		 * Fields can override this by modifying the field data variable inside the field. See /templates/fields/post_image.php for an example.
 		 *
-		 * @todo Move into its own function usingt `gravityview_field_entry_value` to tap in
 		 */
 		if( !empty( $gravityview_view->field_data['field_settings']['show_as_link'] ) ) {
 
-			$href = self::entry_link( $entry );
+			$output = self::entry_link_html( $entry, $output, array(), $gravityview_view->field_data['field_settings'] );
 
-			$link = '<a href="'. $href .'">'. $output . '</a>';
-
-			/**
-			 * Modify the link format
-			 * @param string $link HTML output of the link
-			 * @param string $href URL of the link
-			 * @param array  $entry The GF entry array
-			 * @param  array $field_settings Settings for the particular GV field
-			 */
-			$output = apply_filters( 'gravityview_field_entry_link', $link, $href, $entry, $field_settings );
 		}
+
+		/**
+		 * Modify the field value output for a field type
+		 *
+		 * @since 1.6
+		 * @param string $output HTML value output
+		 * @param array  $entry The GF entry array
+		 * @param  array $field_settings Settings for the particular GV field
+		 */
+		$output = apply_filters( 'gravityview_field_entry_value_'.$field_type, $output, $entry, $field_settings, $gravityview_view->field_data );
 
 		/**
 		 * Modify the field value output
 		 * @param string $output HTML value output
 		 * @param array  $entry The GF entry array
 		 * @param  array $field_settings Settings for the particular GV field
+		 * @param array $field_data  {@since 1.6}
 		 */
-		$output = apply_filters( 'gravityview_field_entry_value', $output, $entry, $field_settings );
+		$output = apply_filters( 'gravityview_field_entry_value', $output, $entry, $field_settings, $gravityview_view->field_data );
 
 		// Free up the memory
 		unset( $gravityview_view->field_data );
+
+		return $output;
+	}
+
+	/**
+	 * Generate an anchor tag that links to an entry.
+	 *
+	 * @since 1.6
+	 *
+	 * @param string $anchor_text The text or HTML inside the link
+	 * @param array $entry Gravity Forms entry array
+	 * @param array $field_settings Array of field settings. Optional, but passed to the `gravityview_field_entry_link` filter
+	 */
+	public static function entry_link_html( $entry = array(), $anchor_text = '', $passed_tag_atts = array(), $field_settings = array() ) {
+
+		if ( empty( $entry ) || ! is_array( $entry ) || ! isset( $entry['id'] ) ) {
+
+			do_action( 'gravityview_log_debug', 'GravityView_API[entry_link_tag] Entry not defined; returning null', $entry );
+
+			return NULL;
+		}
+
+		$href = self::entry_link( $entry );
+
+		$link = gravityview_get_link( $href, $anchor_text, $passed_tag_atts );
+
+		/**
+		 * Modify the link format
+		 * @param string $link HTML output of the link
+		 * @param string $href URL of the link
+		 * @param array  $entry The GF entry array
+		 * @param  array $field_settings Settings for the particular GV field
+		 */
+		$output = apply_filters( 'gravityview_field_entry_link', $link, $href, $entry, $field_settings );
 
 		return $output;
 	}
@@ -259,7 +331,7 @@ class GravityView_API {
 
 		$is_search = false;
 
-		if($gravityview_view->curr_start || $gravityview_view->curr_end || $gravityview_view->curr_search) {
+		if( $gravityview_view && ( $gravityview_view->curr_start || $gravityview_view->curr_end || $gravityview_view->curr_search ) ) {
 			$is_search = true;
 		}
 
@@ -475,7 +547,7 @@ class GravityView_API {
 
 		$entry_slug = self::get_entry_slug( $entry['id'], $entry );
 
-		if( get_option('permalink_structure') ) {
+		if( get_option('permalink_structure') && !is_preview() ) {
 
 			$args = array();
 
@@ -490,9 +562,11 @@ class GravityView_API {
 			$args['pagenum'] = intval( $_GET['pagenum'] );
 		}
 
-		// Check if we have multiple views embedded in the same page and in that case make sure the single entry link
-		// has the view id so that Advanced Filters can be applied correctly when rendering the single view
-		// @see GravityView_frontend::get_context_view_id
+		/**
+		 * Check if we have multiple views embedded in the same page and in that case make sure the single entry link
+		 * has the view id so that Advanced Filters can be applied correctly when rendering the single view
+		 * @see GravityView_frontend::get_context_view_id()
+		 */
 		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->is_multiple_views ) {
 			$args['gvid'] = gravityview_get_view_id();
 		}
@@ -595,7 +669,11 @@ function gravityview_back_link() {
 	// filter link label
 	$label = apply_filters( 'gravityview_go_back_label', $label );
 
-	return '<a href="'. $href .'" id="gravityview_back_link" data-viewid="'. $gravityview_view->view_id .'">'. esc_html( $label ) . '</a>';
+	$link = gravityview_get_link( $href, esc_html( $label ), array(
+		'data-viewid' => $gravityview_view->view_id
+	));
+
+	return $link;
 }
 
 /**
@@ -619,7 +697,7 @@ function gravityview_get_field_value( $entry, $field_id, $display_value ) {
 	} else {
 
 		// For one part of the address (City, ZIP, etc.)
-		return $entry[ $field_id ];
+		return isset( $entry[ $field_id ] ) ? $entry[ $field_id ] : '';
 
 	}
 
@@ -672,7 +750,7 @@ function gravityview_convert_value_to_term_list( $value, $taxonomy = 'post_tag' 
 			    continue;
 			}
 
-			$output[] = '<a href="' . esc_url( $term_link ) . '">' . esc_html( $term->name ) . '</a>';
+			$output[] = gravityview_get_link( $term_link, esc_html( $term->name ) );
 		}
 	}
 
@@ -945,8 +1023,9 @@ function gravityview_get_map_link( $address ) {
 
 	$url = "https://maps.google.com/maps?q={$address_qs}";
 
-	// Generate HTML tag
-	$link = sprintf( '<a href="%s" class="map-it-link">%s</a>', esc_url( $url ), esc_html__( 'Map It', 'gravityview' ) );
+	$link_text = esc_html__( 'Map It', 'gravityview' );
+
+	$link = gravityview_get_link( $url, $link_text, 'class=map-it-link' );
 
 	/**
 	 * Modify the map link generated. You can use a different mapping service, for example.
@@ -1033,7 +1112,18 @@ function gravityview_field_output( $args ) {
 	return $html;
 }
 
-
+/**
+ * Similar to the WordPress `selected()`, `checked()`, and `disabled()` functions, except it allows arrays to be passed as current value
+ *
+ * @see selected() WordPress core function
+ *
+ * @param string $value One of the values to compare
+ * @param mixed $current (true) The other value to compare if not just true
+ * @param bool $echo Whether to echo or just return the string
+ * @param string $type The type of checked|selected|disabled we are doing
+ *
+ * @return string html attribute or empty string
+ */
 function gv_selected( $value, $current, $echo = true, $type = 'selected' ) {
 
 	$output = '';
@@ -1047,9 +1137,8 @@ function gv_selected( $value, $current, $echo = true, $type = 'selected' ) {
 
 	if( $echo ) {
 		echo $output;
-	} else {
-		return $output;
 	}
 
+	return $output;
 }
 

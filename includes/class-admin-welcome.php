@@ -144,8 +144,8 @@ class GravityView_Welcome {
 		$selected = !empty( $plugin_page ) ? $plugin_page : 'gv-getting-started';
 		?>
 
-		<h1><img class="alignleft" src="<?php echo plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ); ?>" width="100" height="132" /><?php printf( __( 'Welcome to GravityView %s', 'gravityview' ), $display_version ); ?></h1>
-		<div class="about-text"><?php _e( 'Thank you for Installing GravityView. Beautifully display your Gravity Forms entries.', 'gravityview' ); ?></div>
+		<h1><img class="alignleft" src="<?php echo plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ); ?>" width="100" height="132" /><?php printf( esc_html__( 'Welcome to GravityView %s', 'gravityview' ), $display_version ); ?></h1>
+		<div class="about-text"><?php esc_html_e( 'Thank you for Installing GravityView. Beautifully display your Gravity Forms entries.', 'gravityview' ); ?></div>
 
 		<h2 class="nav-tab-wrapper clear">
 			<a class="nav-tab <?php echo $selected == 'gv-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-getting-started', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
@@ -174,12 +174,12 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 		</div>
 
-		<div style="text-align:center; padding-top: 1em;">
-			<h2>Read more articles on using GravityView</h2>
-			<p><a class="button button-primary button-hero" href="https://gravityview.co/support/documentation/?zen_section=200480627">Getting Started Articles</a></p>
-		</div>
-
 		<div class="wrap about-wrap">
+
+			<div style="text-align:center; padding-top: 1em;">
+				<h2>Read more articles on using GravityView</h2>
+				<p><a class="button button-primary button-hero" href="http://docs.gravityview.co/category/24-category">Getting Started Articles</a></p>
+			</div>
 
 			<div class="changelog"><h2 class="about-headline-callout">Configuring a View</h2></div>
 
@@ -253,30 +253,75 @@ class GravityView_Welcome {
 
 			<div class="changelog point-releases">
 
-				<h3>What's New</h3>
+				<h3><?php esc_html__('What&rsquo;s New', 'gravityview' ); ?></h3>
+
+				<div class="feature-section col two-col">
+
+					<div class="col-1">
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/search-widget.png', GRAVITYVIEW_FILE ); ?>" alt="A new WordPress search widget">
+						<h4 class="higher">A WordPress Search Widget</h4>
+						<p>A GravityView search widget that you can place anywhere on your site. Very powerful!</p>
+						<p><a href="http://docs.gravityview.co/article/222-the-search-widget" class="button button-primary" rel="external" title="Learn how to configure the Widget">Learn more</a></p>
+					</div>
+
+					<div class="col-2 last-feature">
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/recent-entries.png', GRAVITYVIEW_FILE ); ?>" alt="Recent entries widget output">
+						<h4 class="higher">Recent Entries Widget</h4>
+						<p>Display the most recent entries in your sidebar and customize how it's displayed.</p>
+						<p><a href="http://docs.gravityview.co/article/223-the-recent-entries-widget" class="button button-primary">Setting up recent entries</a></p>
+					</div>
+
+				</div>
 
 				<div class="feature-section col three-col">
 					<div class="col-1">
-						<img src="<?php echo plugins_url( 'assets/images/screenshots/hide-until-search.png', GRAVITYVIEW_FILE ); ?>" alt="'Hide View data until a search is performed' setting">
-						<h3 class="higher">Hide data until a search</h3>
-						<p>The new setting allows you to hide the View results until a search has been performed. All that will be displayed is the Search Bar widget.</p>
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/embed-entry.png', GRAVITYVIEW_FILE ); ?>" alt="Entry embedded in the Admin editor">
+						<h4 class="higher">Embed Entries in a post or page</h4>
+						<p>You've got an entry you want to blog about, but you want to do more than link to it. Now you can embed it!</p>
+						<p><a href="http://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view" rel="external" class="button button-secondary">How to embed entries</a></p>
 					</div>
 
 					<div class="col-2">
-						<img src="<?php echo plugins_url( 'assets/images/screenshots/custom-content-widget.png', GRAVITYVIEW_FILE ); ?>" alt="Custom content widget being selected">
-						<h3 class="higher">Custom Content Widget</h3>
-						<p>Custom Content widgets allow you to add HTML, text, and shortcodes in the header or footer of a View.</p>
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/clone-view.png', GRAVITYVIEW_FILE ); ?>" alt="Cloning a view" style="margin:50px 0">
+						<h4 class="higher">Duplicate View</h4>
+						<p>Have a View you want to use again? It's simple to clone a view using the new "Clone View" link.</p>
+						<p><a href="http://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view" rel="external" class="button button-secondary">See how to clone Views</a></p>
 					</div>
 
 					<div class="col-3 last-feature">
-						<img src="<?php echo plugins_url( 'assets/images/screenshots/show-clear-button.png', GRAVITYVIEW_FILE ); ?>" alt="Clear existing search button setting">
-						<h3 class="higher">Clear existing search values</h3>
-						<p>Allow users to easily clear existing search values with a "Clear" button.</p>
-						<p><a href="https://gravityview.co/support/documentation/204158895/" class="button button-primary" rel="external">Learn about the Clear button</a></p>
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/helpscout-docs.png', GRAVITYVIEW_FILE ); ?>" alt="Screenshot of new documentation site">
+						<h4 class="higher">New Help Site</h4>
+						<p>Our old site was hard to search for solutions. We've fixed that&mdash;check out our new docs site!</p>
+						<p><a href="http://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view" rel="external" class="button button-secondary">Read how-to's!</a></p>
 					</div>
 				</div>
 
 				<hr />
+
+				<h3>Changes in 1.6 (Full List)</h3>
+
+				<ul>
+					<li>Our support site has moved to <a href="http://docs.gravityview.co">docs.gravityview.co</a>. We hope you enjoy the improved experience!</li>
+					<li>Added: GravityView Search Widget - Configure a WordPress widget that searches any of your Views. <a href="http://docs.gravityview.co/article/222-the-search-widget">Read how to set it up</a></li>
+					<li>Added: Duplicate View functionality allows you to clone a View from the All Views screen. <a href="http://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view">Learn more</a></li>
+					<li>Added: Recent Entries WordPress Widget - show the latest entries for your View. <a href="http://docs.gravityview.co/article/223-the-recent-entries-widget">Learn more</a></li>
+					<li>Added: Embed Single Entries - You can now embed entries in a post or page! <a href="http://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view">See how</a></li>
+					<li>Fixed: Respect Custom Input Labels added in Gravity Forms 1.9</li>
+					<li>Fixed: Edit Entry Admin Bar link</li>
+					<li>Fixed: Single Entry links didn't work when previewing a draft View</li>
+					<li>Fixed: Edit entry validation hooks not running when form has multiple pages</li>
+					<li>Fixed: Annoying bug where you would have to click Add Field / Add Widget buttons twice to open the window</li>
+					<li>Added: <code>gravityview_get_link()</code> function to standardize generating HTML anchors</li>
+					<li>Added: <code>GravityView_API::entry_link_html()</code> method to generate entry link HTML</li>
+					<li>Added: <code>gravityview_field_entry_value_{$field_type}</code> filter to modify the value of a field (in <code>includes/class-api.php</code>)</li>
+					<li>Added: <code>field_type</code> key has been added to the field data in the global <code>$gravityview_view-&gt;field_data</code> array</li>
+					<li>Added: <code>GravityView_View_Data::maybe_get_view_id()</code> method to determine whether an ID, post content, or object passed to it is a View or contains a View shortcode.</li>
+					<li>Added: Hook to customise the text message "You have attempted to view an entry that is not visible or may not exist." - <code>gravityview/render/entry/not_visible</code></li>
+					<li>Added: Included in hook <code>gravityview_widget_search_filters</code> the labels for search all, entry date and entry id.</li>
+					<li>Tweak: Allow <a href="http://wordpress.org/plugins/wordpress-seo/" rel="external">WordPress SEO</a> scripts and styles when in "No Conflict Mode"</li>
+					<li>Fixed: For Post Dynamic Data, make sure Post ID is set</li>
+					<li>Fixed: Make sure search field choices are available before displaying field</li>
+				</ul>
 
 				<h3>Changes in 1.5.4 (Full List)</h3>
 
@@ -757,6 +802,7 @@ class GravityView_Welcome {
 					<li><a href="http://katz.si/gf">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>
 					<li>GravityView uses icons made by Freepik, Adam Whitcroft, Amit Jakhu, Zurb, Scott de Jonge, Yannick, Picol, Icomoon, TutsPlus, Dave Gandy, SimpleIcon from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a></li>
 					<li><a href="https://github.com/jnicol/standalone-phpenkoder">PHPEnkoder</a> script encodes the email addresses.</li>
+					<li>The Duplicate View functionality is based on the excellent <a href="http://lopo.it/duplicate-post-plugin/">Duplicate Post plugin</a> by Enrico Battocchi</li>
 				</ul>
 
 			</div>

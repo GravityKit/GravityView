@@ -32,6 +32,9 @@ class GravityView_Admin {
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/entry-list.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-change-entry-creator.php' );
 
+		/** @since 1.6 */
+		require_once( GRAVITYVIEW_DIR . 'includes/class-duplicate-view.php' );
+
 		// Filter Admin messages
 		add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
 		add_filter( 'bulk_post_updated_messages', array( $this, 'post_updated_messages' ) );
@@ -97,7 +100,16 @@ class GravityView_Admin {
 	 * @return string HTML image tag with floaty's cute mug on it
 	 */
 	public static function get_floaty() {
-		return '<img src="'.plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignleft" height="87" width="66" alt="The GravityView Astronaut Says:" style="margin:10px 10px 10px 0;" />';
+
+		if( is_rtl() ) {
+			$style = 'margin:10px 10px 10px 0;';
+			$class = 'alignright';
+		} else {
+			$style = 'margin:10px 10px 10px 0;';
+			$class = 'alignleft';
+		}
+
+		return '<img src="'.plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="'.$class.'" height="87" width="66" alt="The GravityView Astronaut Says:" style="'.$style.'" />';
 	}
 
 	/**
@@ -234,14 +246,19 @@ class GravityView_Admin {
             'jquery-ui-accordion',
             'redux-edd_license',
             'redux-field-edd-js',
-            );
+
+			// WP SEO
+			'wp-seo-metabox',
+			'wpseo-admin-media',
+			'jquery-qtip',
+			'jquery-ui-autocomplete',
+		);
 
 		$this->remove_conflicts( $wp_scripts, $wp_required_scripts, 'scripts' );
 	}
 
 	/**
 	 * Callback to eliminate any non-registered style
-	 * @todo  Move this to GravityView_Admin_Views
 	 * @return void
 	 */
 	function no_conflict_styles() {
@@ -298,6 +315,16 @@ class GravityView_Admin {
 	        'redux-field-edd-css',
 	        'redux-field-info-css',
 	        'redux-edd_license',
+
+	        // WP SEO
+	        'wp-seo-metabox',
+	        'wpseo-admin-media',
+	        'metabox-tabs',
+	        'metabox-classic',
+	        'metabox-fresh',
+
+	        // @todo qTip styles not loading for some reason!
+	        'jquery-qtip.js',
 	    );
 
 		$this->remove_conflicts( $wp_styles, $wp_required_styles, 'styles' );

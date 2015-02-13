@@ -4,7 +4,7 @@ global $gravityview_view;
 
 extract( $gravityview_view->field_data );
 
-if( !empty( $field_settings['dynamic_data'] ) ) {
+if( !empty( $field_settings['dynamic_data'] ) && !empty( $entry['post_id'] ) ) {
 
 	$term_list = gravityview_get_the_term_list( $entry['post_id'], $field_settings['link_to_term'] );
 

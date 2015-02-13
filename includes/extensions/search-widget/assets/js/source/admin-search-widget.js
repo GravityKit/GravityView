@@ -13,49 +13,130 @@
 
 (function( $ ) {
 
-
-
 	var gvSearchWidget = {
 
-		dialog: null,
+		// holds the settings div class (depending on the context)
+		wrapClass: null,
+
+		// holds the current widget settings DOM object
+		widgetTarget: null,
 
 		selectFields : null,
 
-		init: function() {
-			var gvsw = gvSearchWidget;
+		wp_widget_id: 'gravityview_search',
+
+		init: function( wrapClass ) {
+
+			gvSearchWidget.wrapClass = wrapClass;
+
+			var wp_widget_id = gvSearchWidget.wp_widget_id;
 
 			$('body')
-				// hook on all the open settings buttons for search_bar widget
-				.on( 'dialogopen', '[data-fieldid="search_bar"] .gv-dialog-options', gvsw.openDialog )
+				// [View] hook on all the open settings buttons for search_bar widget
+				.on( 'dialogopen', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.openDialog )
 
-				// hook to add/remove rows
-				.on( 'click', ".gv-dialog-options a[href='#addSearchField']", gvsw.addField )
+				// [WP widget] When opening the WP widget settings, trigger the search fields table
+				.bind( 'click.widgets-toggle', gvSearchWidget.openWidget )
 
-				.on( 'click', ".gv-dialog-options a[href='#removeSearchField']", gvsw.removeField )
+				// [View, WP widget] hook to add/remove rows
+				.on( 'click', "." + wrapClass +" a[href='#addSearchField']", gvSearchWidget.addField )
 
-				// hook to update row input types
-				.on( 'change', ".gv-dialog-options select.gv-search-fields", gvsw.updateRow )
+				.on( 'click', "." + wrapClass +" a[href='#removeSearchField']", gvSearchWidget.removeField )
 
-				// add alt class to table when sorting
-				.on('sortcreate sortupdate sort', '.gv-dialog-options table', gvsw.zebraStripe )
+				// [View, WP widget] hook to update row input types
+				.on( 'change', "." + wrapClass +" select.gv-search-fields", gvSearchWidget.updateRow )
 
-				// hook on dialog close to update widget config
-				.on( 'dialogbeforeclose', '[data-fieldid="search_bar"] .gv-dialog-options', gvsw.updateOnClose );
+				// [View, WP widget] add alt class to table when sorting
+				.on('sortcreate sortupdate sort', '.'+ wrapClass +' table', gvSearchWidget.zebraStripe )
 
-			// hook on assigned form/template change to clear cache
-			$('#gravityview_form_id, #gravityview_directory_template').change( gvsw.clearCache );
+				// [View] hook on dialog close to update widget config
+				.on( 'dialogbeforeclose', '[data-fieldid="search_bar"] .' +  wrapClass, gvSearchWidget.updateOnClose )
+
+				// [WP widget] hook on update widget config to save the fields into the hidden input field
+				.on( 'click', ".widget[id*='"+ wp_widget_id +"'] input.widget-control-save", gvSearchWidget.saveWidget )
+
+				// [View] hook on assigned form/template change to clear cache
+				.on( 'change', '#gravityview_form_id, #gravityview_directory_template', gvSearchWidget.clearViewSearchData )
+
+				// [WP widget] hook on assigned view id change to clear cache
+				.on( 'change', '#gravityview_view_id', gvSearchWidget.clearWidgetSearchData );
+
+			// Refresh widget searchable settings after saving or adding the widget
+			// Bind to document because WP triggers document, not body
+			$(document).on( 'widget-added widget-updated', gvSearchWidget.refreshWidget );
+		},
+
+		/**
+		 * [Specific for Search WP Widget]
+		 * Calculate the widget target and reset the view fields and the DOM target to insert the settings table
+		 * @param  object e event
+		 */
+		resetWidgetTarget: function( obj ) {
+			gvSearchWidget.widgetTarget = obj.closest('div.widget').find( 'div.'+ gvSearchWidget.wrapClass );
+			// reset fields to the exist appended to the table (if none, it gets undefined)
+			gvSearchWidget.selectFields = null;
 
 		},
 
 		/**
+		 * [Specific for Search WP Widget]
+		 * Reset Widget target and removes the settings table
+		 * @param  object e event
+		 */
+		resetWidgetData: function( obj ) {
+			gvSearchWidget.resetWidgetTarget( obj );
+			$( 'table', gvSearchWidget.widgetTarget ).remove();
+		},
+
+		/**
+		 * [Specific for Search WP Widget]
+		 * Capture the widget slidedown and call to render the widget settings content
+		 * @param  object e event
+		 */
+		openWidget: function( e ) {
+			var target = $(e.target),
+				widget, widgetId;
+
+			if( target.parents('.widget-top').length && ! target.parents('#available-widgets').length ) {
+				e.preventDefault();
+				widget = $(e.target).closest('div.widget');
+				widgetId = widget.attr('id');
+
+				if ( !widget.hasClass('open') && widgetId.indexOf( gvSearchWidget.wp_widget_id ) > 0) {
+					gvSearchWidget.resetWidgetData( target );
+					gvSearchWidget.renderUI( widget );
+				}
+			}
+		},
+
+		/**
+		 * [Specific for Search WP Widget]
+		 * Refreshes the Widget table settings after saving
+		 * @param  object e event
+		 */
+		refreshWidget: function( e, widget ) {
+
+			if( $( widget ).hasClass('open') ) {
+				gvSearchWidget.widgetTarget = $( widget ).find( 'div.'+ gvSearchWidget.wrapClass );
+				gvSearchWidget.renderUI(  widget );
+			}
+
+		},
+
+
+		/**
+		 * [Specific for View Search Widget]
 		 * Capture the widget dialog and call to render the widget settings content
 		 * @param  object e event
 		 */
-		openDialog: function(e) {
+		openDialog: function( e ) {
 			e.preventDefault();
-			gvSearchWidget.dialog = $(this);
+			gvSearchWidget.widgetTarget = $(this);
 			gvSearchWidget.renderUI( $(this).parents('.gv-fields') );
 		},
+
+
+		/** Table manipulation */
 
 		/**
 		 * Add a search field to the table
@@ -63,6 +144,9 @@
 		 */
 		addField: function(e) {
 			e.preventDefault();
+
+			// make sure the select fields data is fetched from the target table
+			gvSearchWidget.resetWidgetTarget( $(this) );
 
 			var table = $(this).parents( 'table' ),
 				row = $(this).parents( 'tr' );
@@ -113,17 +197,22 @@
 		 */
 		renderUI: function( parent ) {
 
-			var fields = $('.gv-search-fields-value', parent ).val();
+			var fields = $('.gv-search-fields-value', parent ).val(),
+				viewId = $('#gravityview_view_id', parent ).val();
+
+			if( viewId === '' ) {
+				return;
+			}
 
 			// get fields from server
 			if( gvSearchWidget.selectFields === null ) {
-				gvSearchWidget.dialog.append( '<p id="gv-loading"><span class="spinner"></span>' + gvGlobals.loading_text + '</p>' );
+				gvSearchWidget.widgetTarget.append( '<p id="gv-loading"><span class="spinner"></span>' + gvGlobals.loading_text + '</p>' );
 				gvSearchWidget.getSelectFields( parent );
 				return;
 			}
 
 			// Is this dialog already rendered before & not loading fields again
-			if( $('table', gvSearchWidget.dialog ).length && $('#gv-loading').length < 1 ) {
+			if( $('table', gvSearchWidget.widgetTarget ).length && $('#gv-loading').length < 1 ) {
 				return;
 			}
 
@@ -136,10 +225,10 @@
 				gvSearchWidget.populateRows( table, fields );
 			}
 
-			gvSearchWidget.dialog.append( table );
+			gvSearchWidget.widgetTarget.append( table );
 
 			//
-			gvSearchWidget.dialog.find('table tbody').sortable({
+			gvSearchWidget.widgetTarget.find('table tbody').sortable({
 				start: function( event, ui ) {
 					$( ui.item ).removeClass( 'alt' );
 				}
@@ -158,7 +247,7 @@
 		zebraStripe: function() {
 
 			// Zebra stripe the rows
-			$( gvSearchWidget.dialog )
+			$( gvSearchWidget.widgetTarget )
 				.find('tr.gv-search-field-row')
 					.removeClass('alt')
 					.filter(':even').addClass('alt');
@@ -266,9 +355,9 @@
 		 */
 		styleRow: function( table ) {
 
-			var sort_icon = $( '.cell-sort .icon', gvSearchWidget.dialog );
+			var sort_icon = $( '.cell-sort .icon', gvSearchWidget.widgetTarget );
 
-			if( $( 'tbody tr', gvSearchWidget.dialog ).length === 1 ) {
+			if( $( 'tbody tr', gvSearchWidget.widgetTarget ).length === 1 ) {
 				sort_icon.fadeOut('fast', function() {
 					$(this).parents('td').addClass('no-sort');
 				});
@@ -286,7 +375,7 @@
 		 * When field is changed, update the search fields selector (disable the ones in use) and the input types for the new field selected
 		 * @return {[type]} [description]
 		 */
-		updateRow: function() {
+		updateRow: function(e) {
 			var row = $(this).parents('tr');
 			gvSearchWidget.updateSelectInput( row );
 			gvSearchWidget.updateAvailableFields();
@@ -299,10 +388,10 @@
 		updateAvailableFields: function() {
 
 			// Clear out the disabled options first
-			$( 'option', gvSearchWidget.selectFields).attr('disabled', null );
+			$( 'option', gvSearchWidget.selectFields ).attr('disabled', null );
 
 
-			$('tr.gv-search-field-row .gv-search-fields', gvSearchWidget.dialog)
+			$('tr.gv-search-field-row .gv-search-fields', gvSearchWidget.widgetTarget )
 
 				// Update the selectFields var to disable all existing values
 				.each( function() {
@@ -326,6 +415,7 @@
 					// Replace the select with the generated one
 					$(this).replaceWith( select );
 				});
+
 
 		},
 
@@ -356,7 +446,8 @@
 		 */
 		getSelectFields: function( parent ) {
 
-			if( gvSearchWidget.selectFields !== null ) {
+			// check if fields exist on cache
+			if( gvSearchWidget.selectFields !== null  ) {
 
 				gvSearchWidget.updateAvailableFields();
 
@@ -364,20 +455,39 @@
 				return gvSearchWidget.selectFields.prop('outerHTML');
 			}
 
+			var fields = gvSearchWidget.widgetTarget.data('gvSelectFields');
+
+			if(  fields !== undefined ) {
+				gvSearchWidget.selectFields = $(fields);
+				gvSearchWidget.updateAvailableFields();
+				if( $('table', gvSearchWidget.widgetTarget ).length ) {
+					return gvSearchWidget.selectFields.prop('outerHTML');
+				} else {
+					gvSearchWidget.renderUI( parent );
+					return;
+				}
+
+			}
+
+
+			var ajaxdata = {
+				action: 'gv_searchable_fields',
+				nonce: gvSearchVar.nonce,
+				formid: $('#gravityview_form_id').val(),
+				view_id: $('#gravityview_view_id', parent ).val(),
+				template_id: $('#gravityview_directory_template' ).val()
+			};
+
 			$.ajax({
 				url: ajaxurl,
 				type: 'POST',
 				async: true,
 				dataType: 'html',
-				data: {
-					action: 'gv_searchable_fields',
-					nonce: gvSearchVar.nonce,
-					formid: $('#gravityview_form_id').val(),
-					template_id: $('#gravityview_directory_template').val()
-				},
+				data: ajaxdata,
 				success: function( response ) {
 					if( response !== '0' ) {
 						gvSearchWidget.selectFields = $(response);
+						gvSearchWidget.widgetTarget.data( 'gvSelectFields', response );
 						gvSearchWidget.renderUI( parent );
 					}
 
@@ -422,16 +532,28 @@
 			return value;
 		},
 
+		/** Save Settings */
+
+		/**
+		 * [Specific for View Search Widget]
+		 * Update config on widget Save
+		 */
+		saveWidget: function() {
+			gvSearchWidget.resetWidgetTarget( $(this) );
+			gvSearchWidget.updateOnClose();
+		},
+
 		/**
 		 * Update widget config on dialog close
 		 * @param  {object} event
 		 * @param  {[type]} ui    [description]
 		 */
-		updateOnClose: function( event, ui ) {
+		updateOnClose: function() {
+
 			var configs = [];
 
 			//loop throught table rows
-			gvSearchWidget.dialog.find('table tr.gv-search-field-row').each( function() {
+			gvSearchWidget.widgetTarget.find('table tr.gv-search-field-row').each( function() {
 				var row = {};
 				row.field = $(this).find('select.gv-search-fields').val();
 				row.input = $(this).find('select.gv-search-inputs').val();
@@ -439,20 +561,40 @@
 			});
 
 			// save
-			$( '.gv-search-fields-value', gvSearchWidget.dialog ).val( JSON.stringify( configs ) );
+			$( '.gv-search-fields-value', gvSearchWidget.widgetTarget ).val( JSON.stringify( configs ) );
 
 		},
 
+		/** Reset on View Change */
+
 		/**
+		 * [Specific for View Search Widget]
 		 * When form or template change, clear the select fields cache and remove all the search_bar configs
 		 */
-		clearCache: function() {
+		clearViewSearchData: function() {
 			gvSearchWidget.selectFields = null;
-			// clean table & values
 			$('.gv-search-fields-value').each( function() {
-				$(this).parents('.gv-dialog-options').find('table').remove();
+				$(this).parents('.'+ gvSearchWidget.wrapClass ).find('table').remove();
 				$(this).val('');
 			});
+		},
+
+		/**
+		 * [Specific for Search WP Widget]
+		 * When view changes clear select fields cache, remove table and refresh the data
+		 */
+		clearWidgetSearchData: function() {
+			gvSearchWidget.resetWidgetData( $(this) );
+			gvSearchWidget.widgetTarget.removeData( 'gvSelectFields' );
+			$( '.gv-search-fields-value', gvSearchWidget.widgetTarget ).val('');
+
+			var widget = gvSearchWidget.widgetTarget.closest('div.widget');
+
+			$( '.hide-on-view-change:visible', widget ).slideUp('fast');
+
+			if( '' !== $(this).val() ) {
+				gvSearchWidget.renderUI( widget );
+			}
 
 		}
 
@@ -460,12 +602,11 @@
 
 	}; // end
 
-
-
-
-
 	$(document).ready( function() {
-		gvSearchWidget.init();
+
+		var contextClass = $('body').hasClass('widgets-php') ? 'gv-widget-search-fields' : 'gv-dialog-options';
+
+		gvSearchWidget.init( contextClass );
 
 	});
 
