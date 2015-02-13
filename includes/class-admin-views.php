@@ -785,8 +785,10 @@ class GravityView_Admin_Views {
 		if( empty( $template_areas ) ) {
 
 			do_action( 'gravityview_log_debug', '[render_directory_active_areas] No areas defined. Maybe template %s is disabled.', $template_id );
-			$output = '<div class="notice">'. sprintf( __( 'This view is configured with the view type id <em>%s</em> that seems to be disabled.', 'gravityview' ), $template_id ) .'</div>';
-
+			$output = '<div>';
+			$output .= '<h2 class="description" style="font-size: 16px; margin:0">'. sprintf( esc_html__( 'This View is configured using the %s View type, which is disabled.', 'gravityview' ), '<em>'.$template_id.'</em>' ) .'</h2>';
+			$output .= '<p class="description" style="font-size: 14px; margin:0 0 1em 0;padding:0">'.esc_html__('The data is not lost; re-activate the associated plugin and the configuration will re-appear.', 'gravityview').'</p>';
+			$output .= '</div>';
 		} else {
 
 			$fields = '';
