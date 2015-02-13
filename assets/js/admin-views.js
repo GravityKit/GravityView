@@ -704,53 +704,57 @@
 
         init_tooltips: function () {
 
-            $(".gv-add-field").tooltip({
-                content: function () {
+            $(".gv-add-field")
+                .tooltip({
+                    content: function () {
 
-                	// Is the field picker in single or directory mode?
-                //	var context = ( $(this).parents('#single-view').length ) ? 'single' : 'directory';
-                    var context = $(this).attr('data-context');
+                        // Is the field picker in single or directory mode?
+                    //	var context = ( $(this).parents('#single-view').length ) ? 'single' : 'directory';
+                        var context = $(this).attr('data-context');
 
-                    switch ($(this).attr('data-objecttype')) {
-                        case 'field':
-                        	// If in Single context, show fields available in single
-                        	// If it Directory, same for directory
-                            return $("#"+ context + "-available-fields").html();
-                        case 'widget':
-                            return $("#directory-available-widgets").html();
-                    }
-                },
-                close: function () {
-                    $(this).attr('data-tooltip', '');
-                },
-                open: function () {
+                        switch ($(this).attr('data-objecttype')) {
+                            case 'field':
+                                // If in Single context, show fields available in single
+                                // If it Directory, same for directory
+                                return $("#"+ context + "-available-fields").html();
+                            case 'widget':
+                                return $("#directory-available-widgets").html();
+                        }
+                    },
+                    close: function () {
+                        $(this).attr('data-tooltip', null );
+                    },
+                    open: function () {
 
-                    $(this)
-                        .attr('data-tooltip', 'active')
-                        .attr('data-tooltip-id', $(this).attr('aria-describedby'));
+                        $(this)
+                            .attr('data-tooltip', 'active')
+                            .attr('data-tooltip-id', $(this).attr('aria-describedby'));
 
-                },
-                closeOnEscape: true,
-                disabled: true,
-                position: {
-                    my: "center bottom",
-                    at: "center top-12",
-                },
-                tooltipClass: 'top',
-            })
-            // add title attribute so the tooltip can continue to work (jquery ui bug?)
-            .attr("title", "")
-            .on('mouseout focusout', function (e) {
-                e.stopImmediatePropagation();
-            })
-            .click(function (e) {
+                    },
+                    closeOnEscape: true,
+                    disabled: true, // Don't open on hover
+                    position: {
+                        my: "center bottom",
+                        at: "center top-12",
+                    },
+                    tooltipClass: 'top',
+                })
+                // add title attribute so the tooltip can continue to work (jquery ui bug?)
+                .attr("title", "")
+                .on('mouseout focusout', function (e) {
+                    e.stopImmediatePropagation();
+                })
+                .click(function (e) {
 
-                e.preventDefault();
-                e.stopImmediatePropagation();
+                    // add title attribute so the tooltip can continue to work (jquery ui bug?)
+                    $(this).attr("title", "");
 
-                $(this).tooltip("open");
+                    e.preventDefault();
+                    //e.stopImmediatePropagation();
 
-            });
+                    $(this).tooltip("open");
+
+                });
 
         },
 
