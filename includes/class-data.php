@@ -335,6 +335,14 @@ class GravityView_View_Data {
 	 */
 	function parse_post_content( $content ) {
 
+		/**
+		 * @hack This is so that the shortcode is registered for the oEmbed preview in the Admin
+		 * @since 1.6
+		 */
+		if( !shortcode_exists('gravityview') ) {
+			add_shortcode( 'gravityview', array( GravityView_frontend::getInstance(), 'shortcode' ) );
+		}
+
 		$shortcodes = gravityview_has_shortcode_r( $content, 'gravityview' );
 
 		if( empty( $shortcodes ) ) {
