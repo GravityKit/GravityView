@@ -43,11 +43,11 @@ class GravityView_View_Data {
 	 *
 	 * @param mixed $passed_post See method description
 	 *
-	 * @return int|null $id View ID, if exists. Otherwise, NULL.
+	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
 	 */
 	static public function maybe_get_view_id( $passed_post ) {
 
-		$id = NULL;
+		$ids = array();
 
 		if( !empty( $passed_post ) ) {
 
@@ -64,24 +64,40 @@ class GravityView_View_Data {
 
 				foreach ( $passed_post as &$post) {
 					if( ( get_post_type( $post ) === 'gravityview' ) ) {
-						$id = $post->ID;
+
+						$ids[] = $post->ID;
+
 					} else{
 						$id = self::getInstance()->parse_post_content( $post->post_content );
+
+						$ids = array_merge( $ids, (array)$id );
 					}
+
 				}
 
-			} elseif( is_string( $passed_post ) ) {
-
-				$id = self::getInstance()->parse_post_content( $passed_post );
-
 			} else {
-				$id = self::getInstance()->get_id_from_atts( $passed_post );
-			}
 
-			$id = intval( $id );
+				if ( is_string( $passed_post ) ) {
+
+					$id = self::getInstance()->parse_post_content( $passed_post );
+					$ids = array_merge( $ids, (array)$id );
+
+				} else {
+					$id = self::getInstance()->get_id_from_atts( $passed_post );
+					$ids[] = intval( $id );
+				}
+
+
+			}
 		}
 
-		return $id;
+		if( empty($ids) ) {
+			return NULL;
+		}
+
+		// If it's just one ID, return that.
+		// Otherwise, return array of IDs
+		return ( sizeof( $ids ) === 1 ) ? $ids[0] : $ids;
 	}
 
 	static function getInstance( $passed_post = NULL ) {
@@ -142,11 +158,18 @@ class GravityView_View_Data {
 	 *
 	 * Add a view to the views array
 	 *
-	 * @param type $view_id
+	 * @param int|array $view_id View ID or array of View IDs
 	 * @param type $atts Combine other attributes (eg. from shortcode) with the view settings (optional)
 	 * @return type
 	 */
 	function add_view( $view_id, $atts = NULL ) {
+
+		// Handle array of IDs
+		if( is_array( $view_id ) ) {
+			foreach( $view_id as $id ) {
+				return $this->add_view( $id, $atts );
+			}
+		}
 
 		// The view has been set already; returning stored view.
 		if ( !empty( $this->views[ $view_id ] ) ) {
@@ -308,7 +331,7 @@ class GravityView_View_Data {
 	 * @uses shortcode_parse_atts() Parse each GV shortcode
 	 * @uses  gravityview_get_template_settings() Get the settings for the View ID
 	 * @param  string $content $post->post_content content
-	 * @return int|null ID of the View. If there are multiple views in the content, ID of the last view parsed.
+	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
 	 */
 	function parse_post_content( $content ) {
 
@@ -320,7 +343,7 @@ class GravityView_View_Data {
 
 		do_action('gravityview_log_debug', 'GravityView_View_Data[parse_post_content] Parsing content, found shortcodes:', $shortcodes );
 
-		$id = NULL;
+		$ids = array();
 
 		foreach ($shortcodes as $key => $shortcode) {
 
@@ -336,10 +359,16 @@ class GravityView_View_Data {
 			// Store the View to the object for later fetching.
 			$this->add_view( $args['id'], $args );
 
-			$id = $args['id'];
+			$ids[] = $args['id'];
 		}
 
-		return $id;
+		if( empty($ids) ) {
+			return NULL;
+		}
+
+		// If it's just one ID, return that.
+		// Otherwise, return array of IDs
+		return ( sizeof( $ids ) === 1 ) ? $ids[0] : $ids;
 
 	}
 

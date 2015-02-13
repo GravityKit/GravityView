@@ -33,6 +33,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Added: `GravityView_API::entry_link_html()` method to generate entry link HTML
 * Added: `gravityview_field_entry_value_{$field_type}` filter to modify the value of a field (in `includes/class-api.php`)
 * Added: `field_type` key has been added to the field data in the global `$gravityview_view->field_data` array
+* Added: `GravityView_View_Data::maybe_get_view_id()` method to determine whether an ID, post content, or object passed to it is a View or contains a View shortcode.
 * Tweak: Allow [WordPress SEO](http://wordpress.org/plugins/wordpress-seo/) scripts and styles when in "No Conflict Mode"
 * Fixed: For Post Dynamic Data, make sure Post ID is set
 * Fixed: Make sure search field choices are available before displaying field
