@@ -35,6 +35,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Added: `field_type` key has been added to the field data in the global `$gravityview_view->field_data` array
 * Tweak: Allow [WordPress SEO](http://wordpress.org/plugins/wordpress-seo/) scripts and styles when in "No Conflict Mode"
 * Fixed: For Post Dynamic Data, make sure Post ID is set
+* Fixed: Make sure search field choices are available before displaying field
 
 = 1.5.4 on January 29 =
 * Added: "Hide View data until search is performed" setting - only show the Search Bar until a search is entered

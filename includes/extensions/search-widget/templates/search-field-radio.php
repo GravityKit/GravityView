@@ -9,16 +9,22 @@ global $gravityview_view;
 $view_id = $gravityview_view->view_id;
 $search_field = $gravityview_view->search_field;
 
+// Make sure that there are choices to display
+if( empty( $search_field['choices'] ) ) {
+	do_action('gravityview_log_debug', 'search-field-radio.php - No choices for field' );
+	return;
+}
+
 ?>
 <div class="gv-search-box">
 
-	<?php foreach( $search_field['choices'] as $choice ) : ?>
+	<?php foreach( $search_field['choices'] as $choice ) { ?>
 
 		<label for="search-box-<?php echo sanitize_html_class( $search_field['name'].$choice['value'].$choice['text'] ); ?>" class="gv-check-radio">
 			<input type="radio" name="<?php echo esc_attr( $search_field['name'] ); ?>" value="<?php echo esc_attr( $choice['value'] ); ?>" id="search-box-<?php echo sanitize_html_class( $search_field['name'].$choice['value'].$choice['text'] ); ?>" <?php checked( $choice['value'], $search_field['value'], true ); ?>>
 			<?php echo esc_html( $choice['text'] ); ?>
 		</label>
 
-	<?php endforeach; ?>
+	<?php } ?>
 
 </div>

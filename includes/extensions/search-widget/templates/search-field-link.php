@@ -9,6 +9,12 @@ global $gravityview_view;
 $view_id = $gravityview_view->view_id;
 $search_field = $gravityview_view->search_field;
 
+// Make sure that there are choices to display
+if( empty( $search_field['choices'] ) ) {
+	do_action('gravityview_log_debug', 'search-field-link.php - No choices for field' );
+	return;
+}
+
 $links_label = apply_filters( 'gravityview/extension/search/links_label', __( 'Show only:', 'gravityview' ) );
 $links_sep = apply_filters( 'gravityview/extension/search/links_sep', '&nbsp;|&nbsp;' );
 ?>

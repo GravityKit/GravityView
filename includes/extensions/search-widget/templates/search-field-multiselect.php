@@ -9,6 +9,12 @@ global $gravityview_view;
 $view_id = $gravityview_view->view_id;
 $search_field = $gravityview_view->search_field;
 
+// Make sure that there are choices to display
+if( empty( $search_field['choices'] ) ) {
+	do_action('gravityview_log_debug', 'search-field-multiselect.php - No choices for field' );
+	return;
+}
+
 ?>
 <div class="gv-search-box">
 	<label for=search-box-<?php echo esc_attr( $search_field['name'] ); ?>>
