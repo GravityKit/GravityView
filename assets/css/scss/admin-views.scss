@@ -508,9 +508,7 @@ hr {
 	border: 1px dashed #ccc;
 }
 
-// Don't modify the display of the field in the Widget page
-.post-new-php .gv-fields,
-.post-php .gv-fields {
+.gv-fields {
 	cursor: move;
 	border: 1px solid #ddd;
 	background: #f7f7f7;
