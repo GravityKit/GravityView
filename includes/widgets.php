@@ -344,14 +344,24 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 	public function widget( $args, $instance ) {
 
+		// Don't show unless a View ID has been set.
+		if( empty( $instance['view_id'] ) ) {
+
+			do_action('gravityview_log_debug', sprintf( '%s[widget]: No View ID has been defined. Not showing the widget.', get_class($this)), $instance );
+
+			return;
+		}
+
 		/** This filter is documented in wp-includes/default-widgets.php */
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
 
 		echo $args['before_widget'];
+
 		if ( $title ) {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
+		// @todo Add to the widget configuration form
 		$instance['search_layout'] = apply_filters( 'gravityview/widget/search/layout', 'vertical', $instance );
 
 		$instance['context'] = 'wp_widget';
@@ -375,33 +385,50 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			return $instance;
 		}
 
-		$new_instance = wp_parse_args( (array) $new_instance, array( 'title' => '', 'view_id' => 0, 'post_id' => '', 'search_fields' => '' ) );
+		$defaults = array(
+			'title' => '',
+			'view_id' => 0,
+			'post_id' => '',
+			'search_fields' => '',
+		);
+
+		$new_instance = wp_parse_args( (array) $new_instance, $defaults );
+
 		$instance['title'] = strip_tags( $new_instance['title'] );
 		$instance['view_id'] = absint( $new_instance['view_id'] );
 		$instance['search_fields'] = $new_instance['search_fields'];
+		$instance['post_id'] = $new_instance['post_id'];
 
 		//check if post_id is a valid post with embedded View
-		unset( $instance['error_post_id'] );
-		if( $this->is_valid_embed_post( $new_instance['post_id'], $instance['view_id'] ) ) {
-			$instance['post_id'] = $new_instance['post_id'];
-		} elseif( !empty( $new_instance['post_id'] ) ) {
-			$instance['error_post_id'] = __( 'The post ID is not valid. Please check if you embedded the shortcode correctly in the post content.');
-		}
+		$instance['error_post_id'] = $this->is_invalid_embed_post( $new_instance['post_id'], $instance['view_id'] );
 
 		return $instance;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function form( $instance ) {
 
+		// @todo Make compatible with Customizer
 		if( $this->is_preview() ) {
-			//Oh! Sorry but still not fully compatible with customizer
-			?>
-			<p><?php esc_html_e( 'Sorry but this Widget is still not fully operational in this screen. Please configure it on Appearance > Widgets menu', 'gravityview' ); ?></p>
-			<?php
+
+			$warning = printf( esc_html__( 'This widget is not configurable from this screen. Please configure it on the %sWidgets page%s.', 'gravityview' ), '<a href="'.admin_url('widgets.php').'">', '</a>' );
+
+			echo wpautop( GravityView_Admin::get_floaty() . $warning );
+
 			return;
 		}
 
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'view_id' => 0, 'post_id' => '', 'search_fields' => '' ) );
+		$defaults = array(
+			'title' => '',
+			'view_id' => 0,
+			'post_id' => '',
+			'search_fields' => ''
+		);
+
+		$instance = wp_parse_args( (array) $instance, $defaults );
+
 		$title    = $instance['title'];
 		$view_id  = $instance['view_id'];
 		$post_id  = $instance['post_id'];
@@ -434,7 +461,31 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 		</p>
 
-		<p><label for="<?php echo $this->get_field_id('post_id'); ?>"><?php _e('If View is embedded specify the post ID or leave blank for default:', 'gravityview' ); ?> <input class="widefat" id="<?php echo $this->get_field_id('post_id'); ?>" name="<?php echo $this->get_field_name('post_id'); ?>" type="text" value="<?php echo esc_attr( $post_id ); ?>" /></label></p>
+		<?php
+			/**
+			 * Display errors generated for invalid embed IDs
+			 * @see is_invalid_embed_post
+			 */
+			if( $instance['error_post_id'] ) {
+		?>
+				<div class="error inline">
+					<p><?php echo $instance['error_post_id']; ?></p>
+				</div>
+		<?php
+				unset ( $error );
+			}
+		?>
+
+		<p>
+			<label for="<?php echo $this->get_field_id('post_id'); ?>"><?php esc_html_e( 'If Embedded, Page ID:', 'gravityview' ); ?></label>
+			<input class="code" size="3" id="<?php echo $this->get_field_id('post_id'); ?>" name="<?php echo $this->get_field_name('post_id'); ?>" type="text" value="<?php echo esc_attr( $post_id ); ?>" />
+			<span class="howto"><?php
+				esc_html_e('To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded.', 'gravityview' );
+				echo ' '.gravityview_get_link('http://docs.gravityview.co/article/221-the-gravityview-search-widget', __('Learn more&hellip;', 'gravityview' ), 'target=_blank' );
+			?></span>
+		</p>
+
+		<hr />
 
 		<?php // @todo: move style to CSS ?>
 		<div style="margin-bottom: 1em;">
@@ -444,51 +495,48 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			</div>
 
 		</div>
-
 		<?php
-		// check for errors
-		if( !empty( $instance['error_post_id'] ) ): ?>
-			<div class="error">
-				<p><?php echo esc_html( $instance['error_post_id'] ); ?></p>
-			</div>
-		<?php endif;
-
 	}
 
 	/**
-	 * Checks if the passed post id has the passed view id embedded
+	 * Checks if the passed post id has the passed View id embedded
 	 *
-	 * @param string $post_id Post ID where the view is embedded
+	 * @param string $post_id Post ID where the View is embedded
 	 * @param string $view_id View ID
 	 *
 	 * @return bool
 	 */
-	function is_valid_embed_post( $post_id = '', $view_id = '' ) {
+	function is_invalid_embed_post( $post_id = '', $view_id = '' ) {
 
-		if ( empty( $post_id ) || empty( $view_id ) ) {
+		// Not invalid if not set!
+		if( empty( $post_id ) ) {
 			return false;
 		}
 
-		$post = get_post( $post_id );
+		$status = get_post_status( $view_id );
 
-		// if post is valid and not a View, fetch valid shortcodes
-		if ( $post instanceof WP_Post && get_post_type( $post ) !== 'gravityview' ) {
-			$shortcodes = gravityview_has_shortcode_r( $post->post_content, 'gravityview' );
+		// Nothing exists with that post ID.
+		if( !is_numeric( $post_id ) ) {
+			$return = esc_html__( 'You did not enter a number. The value entered should be a number, representing the ID of the post or page the View is embedded on.', 'gravityview' );
+			$return .= ' '.gravityview_get_link('http://docs.gravityview.co/article/221-the-gravityview-search-widget', __('Learn more&hellip;', 'gravityview' ), 'target=_blank' );
+			return $return;
 		}
 
-		if ( empty( $shortcodes ) || ! is_array( $shortcodes ) ) {
-			return false;
+		// Nothing exists with that post ID.
+		if( empty( $status ) || in_array( $status, array('revision', 'attachment' ) ) ) {
+			return esc_html__( 'There is no post or page with that ID.', 'gravityview' );
 		}
 
-		// check if any of the shortcodes are embedding the configured view on the widget
-		foreach ( $shortcodes as $key => $shortcode ) {
+		$view_ids_in_post = GravityView_View_Data::maybe_get_view_id( $post_id );
 
-			$args = shortcode_parse_atts( $shortcode[3] );
+		// The post or page specified does not contain the shortcode.
+		if( false === in_array( $view_id, (array) $view_ids_in_post ) ) {
+			return sprintf( esc_html__( 'The Post ID entered is not valid. You may have entered a post or page that does not contain the selected View. Make sure the post contains the following shortcode: %s', 'gravityview' ), '<br /><code>[gravityview id="' . intval( $view_id ) . '"]</code>' );
+		}
 
-			if ( ! empty( $args['id'] ) && $args['id'] == $view_id ) {
-				return true;
-			}
-
+		// It's a View
+		if( 'gravityview' === get_post_type( $post_id ) ) {
+			return esc_html__( 'The ID is already a View.', 'gravityview' );;
 		}
 
 		return false;
