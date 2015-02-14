@@ -277,8 +277,8 @@ class GravityView_Welcome {
 					<div class="col-1">
 						<img src="<?php echo plugins_url( 'assets/images/screenshots/embed-entry.png', GRAVITYVIEW_FILE ); ?>" alt="Entry embedded in the Admin editor">
 						<h4 class="higher">Embed Entries in a post or page</h4>
-						<p>You've got an entry you want to blog about, but you want to do more than link to it. Now you can embed it!</p>
-						<p><a href="http://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view" rel="external" class="button button-secondary">How to embed entries</a></p>
+						<p>You&rsquo;ve got an entry you want to blog about, but you want to do more than link to it. Now you can embed it!</p>
+						<p><a href="http://docs.gravityview.co/article/224-how-to-embed-entries" rel="external" class="button button-secondary">How to embed entries</a></p>
 					</div>
 
 					<div class="col-2">
