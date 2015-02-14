@@ -21,9 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.6.1 =
-* Fixed: Link to Embed Entries howto on the Welcome page
 * Added: Allow Recent Entries to have an Embed ID
 * Fixed: # of Recent Entries not saving
+* Fixed: Link to Embed Entries how-to on the Welcome page
+* Fixed: Don't show "Please select View to search" message until Search Widget is saved
 
 = 1.6 on February 12 =
 * Our support site has moved to [docs.gravityview.co](http://docs.gravityview.co). We hope you enjoy the improved experience!

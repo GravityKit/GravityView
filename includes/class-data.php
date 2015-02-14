@@ -381,6 +381,78 @@ class GravityView_View_Data {
 	}
 
 	/**
+	 * Checks if the passed post id has the passed View id embedded.
+	 *
+	 * Returns
+	 *
+	 * @since 1.6.1
+	 *
+	 * @param string $post_id Post ID where the View is embedded
+	 * @param string $view_id View ID
+	 *
+	 * @return bool|WP_Error If valid, returns true. If invalid, returns WP_Error containing error message.
+	 */
+	public static function is_valid_embed_id( $post_id = '', $view_id = '', $empty_is_valid = true ) {
+
+		$message = NULL;
+
+		// Not invalid if not set!
+		if( empty( $post_id ) || empty( $view_id ) ) {
+
+			if( $empty_is_valid ) {
+				return true;
+			}
+
+			$message = esc_html__( 'The ID is required.', 'gravityview' );
+		}
+
+		if( !$message ) {
+			$status = get_post_status( $post_id );
+
+			// Nothing exists with that post ID.
+			if ( ! is_numeric( $post_id ) ) {
+				$message = esc_html__( 'You did not enter a number. The value entered should be a number, representing the ID of the post or page the View is embedded on.', 'gravityview' );
+
+				// @todo Convert to generic article about Embed IDs
+				$message .= ' ' . gravityview_get_link( 'http://docs.gravityview.co/article/222-the-search-widget', __( 'Learn more&hellip;', 'gravityview' ), 'target=_blank' );
+			}
+		}
+
+		if( !$message ) {
+
+			// Nothing exists with that post ID.
+			if ( empty( $status ) || in_array( $status, array( 'revision', 'attachment' ) ) ) {
+				$message = esc_html__( 'There is no post or page with that ID.', 'gravityview' );
+			}
+
+		}
+
+		if( !$message ) {
+			$view_ids_in_post = GravityView_View_Data::maybe_get_view_id( $post_id );
+
+			// The post or page specified does not contain the shortcode.
+			if ( false === in_array( $view_id, (array) $view_ids_in_post ) ) {
+				$message = sprintf( esc_html__( 'The Post ID entered is not valid. You may have entered a post or page that does not contain the selected View. Make sure the post contains the following shortcode: %s', 'gravityview' ), '<br /><code>[gravityview id="' . intval( $view_id ) . '"]</code>' );
+			}
+		}
+
+		if( !$message ) {
+
+			// It's a View
+			if( 'gravityview' === get_post_type( $post_id ) ) {
+				$message = esc_html__( 'The ID is already a View.', 'gravityview' );;
+			}
+
+		}
+
+		if( $message ) {
+			return new WP_Error( 'invalid_embed_id', $message );
+		}
+
+		return true;
+	}
+
+	/**
 	 * Get a specific default setting
 	 * @param  string  $key          The key of the setting array item
 	 * @param  boolean $with_details Include details

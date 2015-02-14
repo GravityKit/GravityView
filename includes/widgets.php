@@ -545,7 +545,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		<?php
 			/**
 			 * Display errors generated for invalid embed IDs
-			 * @see is_invalid_embed_post
+			 * @see GravityView_View_Data::is_valid_embed_id
 			 */
 			if( !empty( $instance['error_post_id'] ) ) {
 		?>
@@ -576,51 +576,13 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			</div>
 
 		</div>
+
+		<script>
+			// When the widget is saved or added, refresh the Merge Tags (here for backward compatibility)
+			// WordPress 3.9 added widget-added and widget-updated actions
+			jQuery('#<?php echo $this->get_field_id( 'view_id' ); ?>').trigger( 'change' );
+		</script>
 		<?php
-	}
-
-	/**
-	 * Checks if the passed post id has the passed View id embedded
-	 *
-	 * @param string $post_id Post ID where the View is embedded
-	 * @param string $view_id View ID
-	 *
-	 * @return bool
-	 */
-	function is_invalid_embed_post( $post_id = '', $view_id = '' ) {
-
-		// Not invalid if not set!
-		if( empty( $post_id ) || empty( $view_id ) ) {
-			return false;
-		}
-
-		$status = get_post_status( $post_id );
-
-		// Nothing exists with that post ID.
-		if( !is_numeric( $post_id ) ) {
-			$return = esc_html__( 'You did not enter a number. The value entered should be a number, representing the ID of the post or page the View is embedded on.', 'gravityview' );
-			$return .= ' '.gravityview_get_link('http://docs.gravityview.co/article/222-the-search-widget', __('Learn more&hellip;', 'gravityview' ), 'target=_blank' );
-			return $return;
-		}
-
-		// Nothing exists with that post ID.
-		if( empty( $status ) || in_array( $status, array('revision', 'attachment' ) ) ) {
-			return esc_html__( 'There is no post or page with that ID.', 'gravityview' );
-		}
-
-		$view_ids_in_post = GravityView_View_Data::maybe_get_view_id( $post_id );
-
-		// The post or page specified does not contain the shortcode.
-		if( false === in_array( $view_id, (array) $view_ids_in_post ) ) {
-			return sprintf( esc_html__( 'The Post ID entered is not valid. You may have entered a post or page that does not contain the selected View. Make sure the post contains the following shortcode: %s', 'gravityview' ), '<br /><code>[gravityview id="' . intval( $view_id ) . '"]</code>' );
-		}
-
-		// It's a View
-		if( 'gravityview' === get_post_type( $post_id ) ) {
-			return esc_html__( 'The ID is already a View.', 'gravityview' );;
-		}
-
-		return false;
 	}
 
 }
