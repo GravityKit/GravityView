@@ -219,7 +219,7 @@
 			//add table and header
 			table = gvSearchWidget.addTable();
 
-			if( fields.length === 0 ) {
+			if( fields && fields.length === 0 ) {
 				gvSearchWidget.addRow( table, null, null );
 			} else {
 				gvSearchWidget.populateRows( table, fields );
@@ -263,7 +263,7 @@
 			var rows = $.parseJSON( fields ),
 				pos = null;
 
-			if( rows.length === 0 ) {
+			if( !rows || rows.length === 0 ) {
 				gvSearchWidget.addEmptyMsg( table );
 				return;
 			}
