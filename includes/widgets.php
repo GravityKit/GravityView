@@ -174,12 +174,12 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		$view_settings = gravityview_get_template_settings( $instance['view_id'] );
 
 		$view_settings['id'] = $instance['view_id'];
-		$view_settings['page_size'] = $instance['number'];
+		$view_settings['page_size'] = $instance['limit'];
 
 		// Prepare paging criteria
 		$criteria['paging'] = array(
 			'offset' => 0,
-			'page_size' => $instance['number']
+			'page_size' => $instance['limit']
 		);
 
 		// Prepare Search Criteria
@@ -208,7 +208,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		$instance['title'] = $new_instance['title'];
 
 		// Force positive number
-		$instance['number'] = empty( $new_instance['number'] ) ? 10 : absint( $new_instance['number'] );
+		$instance['limit'] = empty( $new_instance['limit'] ) ? 10 : absint( $new_instance['limit'] );
 
 		$instance['view_id'] = (int) $new_instance['view_id'];
 
@@ -230,7 +230,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		$defaults = array(
 			'title' 			=> __('Recent Entries'),
 			'view_id'           => NULL,
-			'number'            => 10,
+			'limit'            => 10,
 			'link_format'       => __('Entry #{entry_id}', 'gravityview'),
 			'after_link'        => ''
 		);
@@ -276,10 +276,10 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'number' ); ?>">
+			<label for="<?php echo $this->get_field_id( 'limit' ); ?>">
 				<span><?php _e( 'Number of entries to show:', 'gravityview' ); ?></span>
 			</label>
-			<input id="<?php echo $this->get_field_id( 'number' ); ?>" name="<?php echo $this->get_field_name( 'number' ); ?>" type="number" value="<?php echo intval( $instance['number'] ); ?>" size="3" />
+			<input class="code" id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="number" value="<?php echo intval( $instance['limit'] ); ?>" size="3" />
 		</p>
 
 		<p>
