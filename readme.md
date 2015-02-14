@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 ### 1.6.1 ###
 * Fixed: Link to Embed Entries howto on the Welcome page
+* Added: Allow Recent Entries to have an Embed ID
 * Fixed: # of Recent Entries not saving
 
 ### 1.6 on February 12 ###

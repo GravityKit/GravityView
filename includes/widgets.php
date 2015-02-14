@@ -112,6 +112,12 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		$entries = $this->get_entries( $instance, $form_id );
 
+		/**
+		 * @since 1.6.1
+		 * @var int $entry_link_post_id The ID to use as the parent post for the entry
+		 */
+		$entry_link_post_id = ( empty( $instance['error_post_id'] ) && !empty( $instance['post_id'] ) ) ? $instance['post_id'] : $instance['view_id'];
+
 		$list_items = array();
 
 		if( empty( $entries ) ) {
@@ -122,7 +128,8 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 			foreach( $entries as $entry ) {
 
-				$link = GravityView_API::entry_link( $entry, $instance['view_id'] );
+				$link = GravityView_API::entry_link( $entry, $entry_link_post_id );
+
 				$text = $instance['link_format'];
 
 				$item_output = gravityview_get_link( $link, $text );
@@ -216,6 +223,15 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		$instance['link_format'] = !empty( $new_instance['link_format'] ) ? $new_instance['link_format'] : $old_instance['link_format'];
 		$instance['after_link'] = $new_instance['after_link'];
 
+		$instance['post_id'] = $new_instance['post_id'];
+
+		$is_valid_embed_id = GravityView_View_Data::is_valid_embed_id( $new_instance['post_id'], $instance['view_id'] );
+
+		//check if post_id is a valid post with embedded View
+		$instance['error_post_id'] = is_wp_error( $is_valid_embed_id ) ? $is_valid_embed_id->get_error_message() : NULL;
+
+		// Share that the widget isn't brand new
+		$instance['updated']  = 1;
 
 		return $instance;
 	}
@@ -230,12 +246,15 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		$defaults = array(
 			'title' 			=> __('Recent Entries'),
 			'view_id'           => NULL,
+			'post_id'           => NULL,
 			'limit'            => 10,
 			'link_format'       => __('Entry #{entry_id}', 'gravityview'),
 			'after_link'        => ''
 		);
 
-		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
+		$instance = wp_parse_args( (array) $instance, $defaults );
+
+		?>
 
 		<!-- Title -->
 		<p>
@@ -260,6 +279,21 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		?>
 
+		<?php
+		/**
+		 * Display errors generated for invalid embed IDs
+		 * @see GravityView_View_Data::is_valid_embed_id
+		 */
+		if( isset( $instance['updated'] ) && empty( $instance['view_id'] ) ) {
+			?>
+			<div class="error inline hide-on-view-change">
+				<p><?php esc_html_e('Please select a View to search.', 'gravityview'); ?></p>
+			</div>
+			<?php
+			unset ( $error );
+		}
+		?>
+
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'view_id' ) ); ?>"><?php esc_html_e('Select a View', 'gravityview'); ?></label>
 			<select class="widefat gv-recent-entries-select-view" name="<?php echo esc_attr( $this->get_field_name( 'view_id' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'view_id' ) ); ?>">
@@ -273,6 +307,30 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 				?>
 			</select>
+		</p>
+
+		<?php
+		/**
+		 * Display errors generated for invalid embed IDs
+		 * @see GravityView_View_Data::is_valid_embed_id
+		 */
+		if( !empty( $instance['error_post_id'] ) ) {
+			?>
+			<div class="error inline">
+				<p><?php echo $instance['error_post_id']; ?></p>
+			</div>
+			<?php
+			unset ( $error );
+		}
+		?>
+
+		<p>
+			<label for="<?php echo $this->get_field_id('post_id'); ?>"><?php esc_html_e( 'If Embedded, Page ID:', 'gravityview' ); ?></label>
+			<input class="code" size="3" id="<?php echo $this->get_field_id('post_id'); ?>" name="<?php echo $this->get_field_name('post_id'); ?>" type="text" value="<?php echo esc_attr( $instance['post_id'] ); ?>" />
+			<span class="howto"><?php
+					esc_html_e('To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded.', 'gravityview' );
+					echo ' '.gravityview_get_link('http://docs.gravityview.co/article/222-the-search-widget', __('Learn more&hellip;', 'gravityview' ), 'target=_blank' );
+				?></span>
 		</p>
 
 		<p>
@@ -377,6 +435,9 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		echo $args['after_widget'];
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 
@@ -399,8 +460,13 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		$instance['search_fields'] = $new_instance['search_fields'];
 		$instance['post_id'] = $new_instance['post_id'];
 
+		$is_valid_embed_id = GravityView_View_Data::is_valid_embed_id( $new_instance['post_id'], $instance['view_id'] );
+
 		//check if post_id is a valid post with embedded View
-		$instance['error_post_id'] = $this->is_invalid_embed_post( $new_instance['post_id'], $instance['view_id'] );
+		$instance['error_post_id'] = is_wp_error( $is_valid_embed_id ) ? $is_valid_embed_id->get_error_message() : NULL;
+
+		// Share that the widget isn't brand new
+		$instance['updated']  = 1;
 
 		return $instance;
 	}
@@ -450,9 +516,9 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		<?php
 		/**
 		 * Display errors generated for invalid embed IDs
-		 * @see is_invalid_embed_post
+		 * @see GravityView_View_Data::is_valid_embed_id
 		 */
-		if( empty( $instance['view_id'] ) ) {
+		if( isset( $instance['updated'] ) && empty( $instance['view_id'] ) ) {
 			?>
 			<div class="error inline hide-on-view-change">
 				<p><?php esc_html_e('Please select a View to search.', 'gravityview'); ?></p>
