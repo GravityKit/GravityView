@@ -413,7 +413,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		// @todo Make compatible with Customizer
 		if( $this->is_preview() ) {
 
-			$warning = printf( esc_html__( 'This widget is not configurable from this screen. Please configure it on the %sWidgets page%s.', 'gravityview' ), '<a href="'.admin_url('widgets.php').'">', '</a>' );
+			$warning = sprintf( esc_html__( 'This widget is not configurable from this screen. Please configure it on the %sWidgets page%s.', 'gravityview' ), '<a href="'.admin_url('widgets.php').'">', '</a>' );
 
 			echo wpautop( GravityView_Admin::get_floaty() . $warning );
 
