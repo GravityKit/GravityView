@@ -459,6 +459,13 @@ class GravityView_Edit_Entry {
 				// Make sure hidden fields are represented in $_POST
 				$this->combine_update_existing();
 
+				/**
+				 * @hack to avoid the capability validation of the method save_lead for GF 1.9+
+				 */
+				if( isset( $_GET['page'] ) && isset( GFForms::$version ) && version_compare( GFForms::$version, '1.9', '>=' ) ) {
+					unset( $_GET['page'] );
+				}
+
 				GFFormsModel::save_lead( $form, $this->entry );
 
 				do_action("gform_after_update_entry", $this->form, $this->entry["id"]);
