@@ -5,11 +5,15 @@
 		<?php gravityview_header(); ?>
 		<tr>
 			<?php
-			if( !empty( $this->fields['directory_table-columns'] ) ) {
-				foreach( $this->fields['directory_table-columns'] as $field ) {
-					echo '<th class="'. gv_class( $field ) .'" scope="col">' . esc_html( gv_label( $field ) ) . '</th>';
-				}
-			}
+
+				// Make sure this wasn't overridden by search
+				$this->setTemplatePartSlug('table');
+
+				$this->renderZone( 'columns', array(
+					'markup' => '<th class="{{class}}">{{label}}</th>',
+					'hide_empty' => false, // Always show <th>
+				));
+
 			?>
 		</tr>
 	</thead>

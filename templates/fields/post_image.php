@@ -5,12 +5,12 @@
  * @package GravityView
  */
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 // Tell the renderer not to wrap this field in an anchor tag.
-$gravityview_view->field_data['field_settings']['show_as_link'] = false;
+$gravityview_view->setCurrentFieldSetting('show_as_link', false);
 
 /**
  * Parse the stored value of the post image
@@ -68,7 +68,7 @@ else {
 	$href = $url;
 
 	// Only show the lightbox if linking to the file itself
-	if( !empty( $gravityview_view->atts['lightbox'] ) ) {
+	if( !empty( $gravityview_view->getAtts('lightbox') ) ) {
 		$link_atts .= "target='_blank' class='thickbox'";
 	}
 

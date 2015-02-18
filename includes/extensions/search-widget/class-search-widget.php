@@ -353,13 +353,13 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 */
 	function prepare_field_filter( $key, $value ) {
 
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
 		// calculates field_id, removing 'filter_' and for '_' for advanced fields ( like name or checkbox )
 		$field_id = str_replace( '_', '.', str_replace( 'filter_', '', $key ) );
 
 		// get form field array
-		$form = $gravityview_view->form;
+		$form = $gravityview_view->getForm();
 		$form_field = gravityview_get_field( $form, $field_id );
 
 		// default filter array
@@ -477,7 +477,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * @return type
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
 		if( empty( $gravityview_view ) ) {
 			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: $gravityview_view not instantiated yet.', get_class($this)) );
@@ -564,13 +564,12 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	/**
 	 * Get the search class for a search form
 	 *
-	 * @global $gravityview_view
 	 * @since 1.5.4
 	 *
 	 * @return string Sanitized CSS class for the search form
 	 */
 	static function get_search_class( $custom_class = '' ) {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
 		$search_class = 'gv-search-'.$gravityview_view->search_layout;
 
@@ -599,10 +598,10 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * @return string
 	 */
 	static function get_search_form_action() {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
-		if( 'wp_widget' == $gravityview_view->context ) {
-			$post_id = empty( $gravityview_view->post_id ) ? $gravityview_view->view_id : $gravityview_view->post_id;
+		if( 'wp_widget' == $gravityview_view->getContext() ) {
+			$post_id = empty( $gravityview_view->getPostId() ) ? $gravityview_view->getViewId() : $gravityview_view->getPostId();
 			$url = add_query_arg( array(), get_permalink( $post_id ) );
 		} else {
 			$url = add_query_arg( array() );
@@ -658,9 +657,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 */
 	private function get_search_filter_details( $field ) {
 
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
-		$form = $gravityview_view->form;
+		$form = $gravityview_view->getForm();
 
 		// for advanced field ids (eg, first name / last name )
 		$name = 'filter_' . str_replace( '.', '_', $field['field'] );
@@ -734,7 +733,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * @since 1.5.4
 	 */
 	public static function the_clear_search_button() {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
 		if( $gravityview_view->search_clear ) {
 
@@ -806,7 +805,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * @return void
 	 */
 	function enqueue_datepicker() {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
 		wp_enqueue_script( 'jquery-ui-datepicker' );
 

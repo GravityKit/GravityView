@@ -1,11 +1,12 @@
 	<tfoot>
 		<tr>
 			<?php
-			if( !empty( $this->fields['directory_table-columns'] ) ) {
-				foreach( $this->fields['directory_table-columns'] as $field ) {
-					echo '<th class="'. gv_class( $field ) .'">' . esc_html( gv_label( $field ) ) . '</th>';
-				}
-			}
+
+			$this->renderZone( 'columns', array(
+				'markup' => '<th class="{{class}}">{{label}}</th>',
+				'hide_empty' => false, // Always show <th>
+			));
+
 			?>
 		</tr>
 		<?php gravityview_footer(); ?>

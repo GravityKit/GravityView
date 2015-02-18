@@ -11,25 +11,29 @@ class GravityView_View_Data {
 
 	protected $views = array();
 
-	// indicates whether we have multiple views embedded in the same page/post
-	public $is_multiple_views = false;
-
 	function __construct( $passed_post = NULL ) {
 
 		if( !empty( $passed_post ) ) {
 
-			$id = self::maybe_get_view_id( $passed_post );
+			$id_or_id_array = self::maybe_get_view_id( $passed_post );
 
-			if( !empty( $id ) ) {
-				$this->add_view( $id );
+			if( !empty( $id_or_id_array ) ) {
+				$this->add_view( $id_or_id_array );
 			}
 		}
 
-		// set the conditionals
-		$this->set_conditionals();
-
 		self::$instance = &$this;
 	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isMultipleViews() {
+
+		//multiple views
+		return count( $this->get_views() ) > 1 ? true : false;
+	}
+
 
 	/**
 	 * Figure out what the View ID is for a variable, if any.
@@ -109,13 +113,6 @@ class GravityView_View_Data {
 		return self::$instance;
 	}
 
-	function set_conditionals() {
-
-		//multiple views
-		$this->is_multiple_views = count( $this->get_views() ) > 1 ? true : false;
-
-	}
-
 	function get_views() {
 		return $this->views;
 	}
@@ -164,11 +161,15 @@ class GravityView_View_Data {
 	 */
 	function add_view( $view_id, $atts = NULL ) {
 
+
 		// Handle array of IDs
 		if( is_array( $view_id ) ) {
 			foreach( $view_id as $id ) {
-				return $this->add_view( $id, $atts );
+
+				$this->add_view( $id, $atts );
 			}
+
+			return $this->views;
 		}
 
 		// The view has been set already; returning stored view.

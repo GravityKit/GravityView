@@ -150,12 +150,18 @@ class GravityView_Edit_Entry {
 	}
 
 	function setup_vars( $entry = null ) {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
-		$this->entry = empty( $entry ) ? $gravityview_view->entries[0] : $entry;
-		$this->form = $gravityview_view->form;
-		$this->form_id = $gravityview_view->form_id;
-		$this->view_id = $gravityview_view->view_id;
+		if( empty( $entry ) ) {
+			$entries = $gravityview_view->getEntries();
+			$this->entry = $entries[0];
+		} else {
+			$this->entry = $entry;
+		}
+
+		$this->form = $gravityview_view->getForm();
+		$this->form_id = $gravityview_view->getFormId();
+		$this->view_id = $gravityview_view->getViewId();
 
 		self::$nonce_key = sprintf( 'edit_%d_%d_%d', $this->view_id, $this->form_id, $this->entry['id'] );
 	}
@@ -351,7 +357,7 @@ class GravityView_Edit_Entry {
 	 * @return void
 	 */
 	function print_scripts( $css_only = false ) {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
 		wp_enqueue_style('gravityview-edit-entry', plugins_url('/assets/css/gv-edit-entry-admin.css', __FILE__ ), array(), GravityView_Plugin::version );
 
@@ -359,7 +365,7 @@ class GravityView_Edit_Entry {
 
 		wp_register_script( 'gform_gravityforms', GFCommon::get_base_url().'/js/gravityforms.js', array( 'jquery', 'gform_json', 'gform_placeholder', 'sack','plupload-all' ) );
 
-		GFFormDisplay::enqueue_form_scripts($gravityview_view->form, false);
+		GFFormDisplay::enqueue_form_scripts($gravityview_view->getForm(), false);
 
 		wp_enqueue_script("sack");
 
@@ -370,6 +376,8 @@ class GravityView_Edit_Entry {
 	 * Load required files and trigger edit flow
 	 *
 	 * Run when the is_edit_entry returns true.
+	 *
+	 * @param GravityView_View_Data $gv_data GravityView Data object
 	 * @return void
 	 */
 	function init( $gv_data ) {
@@ -381,7 +389,7 @@ class GravityView_Edit_Entry {
 		$this->setup_vars();
 
 		// Multiple Views embedded, don't proceed if nonce fails
-		if( $gv_data->is_multiple_views && ! wp_verify_nonce( $_GET['edit'], self::$nonce_key ) ) {
+		if( $gv_data->isMultipleViews() && ! wp_verify_nonce( $_GET['edit'], self::$nonce_key ) ) {
 			$this->print_scripts( true );
 			return;
 		}
@@ -1196,7 +1204,7 @@ class GravityView_Edit_Entry {
 	 * @return bool
 	 */
 	public static function check_user_cap_edit_entry( $entry ) {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
 		// Or if they can edit any entries (as defined in Gravity Forms), we're good.
 		if( GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) ) {
@@ -1210,7 +1218,7 @@ class GravityView_Edit_Entry {
 			return false;
 		}
 
-		$user_edit = !empty( $gravityview_view->atts['user_edit'] );
+		$user_edit = $gravityview_view->getAtts('user_edit');
 		$current_user = wp_get_current_user();
 
 		if( empty( $user_edit ) ) {

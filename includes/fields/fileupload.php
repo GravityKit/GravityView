@@ -45,9 +45,9 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 	 */
 	static function get_files_array( $value, $gv_class ) {
 
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
-		extract( $gravityview_view->field_data );
+		extract( $gravityview_view->getCurrentField() );
 
 		$output_arr = array();
 
@@ -190,7 +190,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 				$link_atts = empty( $field_settings['show_as_link'] ) ? "target='_blank'" : '';
 
-				$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', $link_atts, $gravityview_view->field_data );
+				$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', $link_atts, $gravityview_view->getCurrentField() );
 
 			} else {
 
@@ -209,7 +209,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			 * @see GravityView_API:field_value() for info about $gravityview_view->field_data
 			 *
 			 */
-			$disable_wrapped_link = apply_filters( 'gravityview/fields/fileupload/disable_link', $disable_wrapped_link, $gravityview_view->field_data );
+			$disable_wrapped_link = apply_filters( 'gravityview/fields/fileupload/disable_link', $disable_wrapped_link, $gravityview_view->getCurrentField() );
 
 			// If the HTML output hasn't been overridden by the switch statement above, use the default format
 			if( !empty( $content ) && empty( $disable_wrapped_link ) ) {

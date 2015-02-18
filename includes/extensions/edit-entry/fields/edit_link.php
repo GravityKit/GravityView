@@ -1,8 +1,8 @@
 <?php
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 // Only show the link to logged-in users.
 if( !GravityView_Edit_Entry::check_user_cap_edit_entry( $entry ) ) {

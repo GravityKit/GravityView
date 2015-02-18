@@ -1,8 +1,8 @@
 <?php
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 if( !empty( $field_settings['dynamic_data'] ) && !empty( $entry['post_id'] ) ) {
 
@@ -19,6 +19,7 @@ if( !empty( $field_settings['dynamic_data'] ) && !empty( $entry['post_id'] ) ) {
 	setup_postdata( $post );
 	the_content();
 	wp_reset_postdata();
+
 } else {
 	echo $display_value;
 }

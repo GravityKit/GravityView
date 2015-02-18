@@ -1,8 +1,8 @@
 <?php
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 // Only show the link to logged-in users with the rigth caps.
 if( !GravityView_Delete_Entry::check_user_cap_delete_entry( $entry, $field_settings ) ) {

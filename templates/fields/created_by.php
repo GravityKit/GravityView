@@ -5,9 +5,9 @@
  * @package GravityView
  */
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 // There was no logged in user.
 if( empty( $value ) ) {

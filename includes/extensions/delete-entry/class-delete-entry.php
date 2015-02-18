@@ -253,7 +253,7 @@ final class GravityView_Delete_Entry {
 	 * @param int $view_id GravityView View ID
 	 */
 	function add_delete_button( $form = array(), $entry = array(), $view_id = NULL ) {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
 		// Only show the link to those who are allowed to see it.
 		if( !self::check_user_cap_delete_entry( $entry ) ) {
@@ -457,7 +457,7 @@ final class GravityView_Delete_Entry {
 	 * @return bool
 	 */
 	public static function check_user_cap_delete_entry( $entry, $field = array() ) {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
 		// Or if they can delete any entries (as defined in Gravity Forms), we're good.
 		if( GFCommon::current_user_can_any( 'gravityforms_delete_entries' ) ) {
@@ -504,9 +504,9 @@ final class GravityView_Delete_Entry {
 		}
 
 		// Only checks user_delete view option if view is already set
-		if( !empty( $gravityview_view->view_id ) ) {
+		if( !empty( $gravityview_view->getViewId() ) ) {
 
-			$user_delete = !empty( $gravityview_view->atts['user_delete'] );
+			$user_delete = $gravityview_view->getAtts('user_delete');
 
 			if( empty( $user_delete ) ) {
 

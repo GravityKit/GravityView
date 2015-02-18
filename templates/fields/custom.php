@@ -6,9 +6,9 @@
  * @since  1.2
  */
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 // Make sure the class is loaded in DataTables
 if( !class_exists( 'GFFormDisplay' ) ) {
@@ -16,7 +16,7 @@ if( !class_exists( 'GFFormDisplay' ) ) {
 }
 
 // Tell the renderer not to wrap this field in an anchor tag.
-$gravityview_view->field_data['field_settings']['show_as_link'] = false;
+$gravityview_view->setCurrentFieldSetting('show_as_link', false);
 
 $field_settings['content'] = trim(rtrim($field_settings['content']));
 

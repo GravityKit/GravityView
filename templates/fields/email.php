@@ -1,8 +1,8 @@
 <?php
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 // If there's no email, don't bother continuing.
 if( empty( $value ) ) {

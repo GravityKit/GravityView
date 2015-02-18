@@ -1,8 +1,8 @@
 <?php
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 $show_label = apply_filters( 'gravityview/fields/select/output_label', false, $entry, $field );
 

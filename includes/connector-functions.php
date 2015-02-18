@@ -157,7 +157,7 @@ if( !function_exists('gravityview_get_field') ) {
 	 * @access public
 	 * @param mixed $form
 	 * @param mixed $field_id
-	 * @return void
+	 * @return array
 	 */
 	function gravityview_get_field( $form, $field_id ) {
 		return GVCommon::get_field( $form, $field_id );

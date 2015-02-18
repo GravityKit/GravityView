@@ -9,19 +9,18 @@
 				<?php gravityview_header(); ?>
 			</thead>
 			<tbody>
-				<?php foreach( $this->entries as $entry ) : ?>
-					<?php foreach( $this->fields['single_table-columns'] as $field ) :
+				<?php
 
-						$value = gv_value( $entry, $field );
+					$markup = '
+						<tr class="{{class}}">
+							<th scope="row">{{label}}</th>
+							<td>{{value}}</td>
+						</tr>';
 
-						if( $value === '' && $this->atts['hide_empty'] ) { continue; }
-					?>
-						<tr class="<?php echo gv_class( $field, $this->form, $entry ); ?>">
-							<th scope="row"><?php echo esc_html( gv_label( $field, $entry ) ); ?></th>
-							<td><?php echo $value; ?></td>
-						</tr>
-						<?php endforeach; ?>
-				<?php endforeach; ?>
+					$this->renderZone( 'columns', array(
+						'markup' => $markup,
+					));
+			?>
 			</tbody>
 			<tfoot>
 				<?php gravityview_footer(); ?>

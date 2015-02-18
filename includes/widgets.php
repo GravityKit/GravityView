@@ -434,8 +434,8 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		$instance['form_id'] = GVCommon::get_meta_form_id( $instance['view_id'] );
 		$instance['form'] = GVCommon::get_form( $instance['form_id'] );
 
-		global $gravityview_view;
 		$gravityview_view = new GravityView_View( $instance );
+
 		GravityView_Widget_Search::getInstance()->render_frontend( $instance );
 
 		echo $args['after_widget'];
