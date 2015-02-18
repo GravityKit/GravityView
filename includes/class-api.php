@@ -1054,12 +1054,12 @@ function gravityview_get_map_link( $address ) {
  *   wpautop - true will filter the value using wpautop function
  *
  * @since  1.1.5
- * @param  array $args Associative array with field data. `entry`, `field` and `form` are required.
+ * @param  array $passed_args Associative array with field data. `field` and `form` are required.
  * @return string
  */
-function gravityview_field_output( $args ) {
+function gravityview_field_output( $passed_args ) {
 
-	$args = wp_parse_args( $args, array(
+	$args = wp_parse_args( $passed_args, array(
 		'entry' => NULL,
 		'field' => NULL,
 		'form' => NULL,
@@ -1070,23 +1070,25 @@ function gravityview_field_output( $args ) {
 	) );
 
 	// Required fields.
-	if( empty( $args['entry'] ) || empty( $args['field'] ) || empty( $args['form'] ) ) {
-		do_action( 'gravityview_log_error', '[gravityview_field_output] Entry, field, or form are empty.', $args );
+	if( empty( $args['field'] ) || empty( $args['form'] ) ) {
+		do_action( 'gravityview_log_error', '[gravityview_field_output] Field or form are empty.', $args );
 		return '';
 	}
 
-	$value = gv_value( $args['entry'], $args['field'] );
+	$entry = empty( $args['entry'] ) ? array() : $args['entry'];
+
+	$value = gv_value( $entry, $args['field'] );
 
 	// If the value is empty and we're hiding empty, return empty.
 	if( $value === '' && !empty( $args['hide_empty'] ) ) { return ''; }
 
-	if( !empty( $args['wpautop'] ) ) {
+	if( $value !== '' && !empty( $args['wpautop'] ) ) {
 		$value = wpautop( $value );
 	}
 
-	$class = gv_class( $args['field'], $args['form'], $args['entry'] );
+	$class = gv_class( $args['field'], $args['form'], $entry );
 
-	$label = esc_html( gv_label( $args['field'], $args['entry'] ) );
+	$label = esc_html( gv_label( $args['field'], $entry ) );
 
 	if( !empty( $label ) ) {
 		// If the label markup is overridden
