@@ -12,6 +12,7 @@ if( !empty( $field_settings['dynamic_data'] ) && !empty( $entry['post_id'] ) ) {
 
 	if( empty( $post ) ) {
 		do_action('gravityview_log_debug', 'Dynamic data for post #'.$entry['post_id'].' doesnt exist.' );
+		wp_reset_postdata();
 		return;
 	}
 
