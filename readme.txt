@@ -20,7 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= 1.6.1 =
+= 1.6.1 on February 17 =
 * Added: Allow Recent Entries to have an Embed Page ID
 * Fixed: # of Recent Entries not saving
 * Fixed: Link to Embed Entries how-to on the Welcome page
