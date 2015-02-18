@@ -145,8 +145,10 @@
 		addField: function(e) {
 			e.preventDefault();
 
-			// make sure the select fields data is fetched from the target table
-			gvSearchWidget.resetWidgetTarget( $(this) );
+			// make sure the select fields data is fetched from the target table (only for WP Widget!)
+			if( 'gv-widget-search-fields' === gvSearchWidget.wrapClass ) {
+				gvSearchWidget.resetWidgetTarget( $(this) );
+			}
 
 			var table = $(this).parents( 'table' ),
 				row = $(this).parents( 'tr' );
@@ -219,7 +221,7 @@
 			//add table and header
 			table = gvSearchWidget.addTable();
 
-			if( fields.length === 0 ) {
+			if( fields && fields.length === 0 ) {
 				gvSearchWidget.addRow( table, null, null );
 			} else {
 				gvSearchWidget.populateRows( table, fields );
@@ -263,7 +265,7 @@
 			var rows = $.parseJSON( fields ),
 				pos = null;
 
-			if( rows.length === 0 ) {
+			if( !rows || rows.length === 0 ) {
 				gvSearchWidget.addEmptyMsg( table );
 				return;
 			}
