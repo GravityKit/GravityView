@@ -487,7 +487,7 @@ class GravityView_frontend {
 
 		// Solve problem when loading content via admin-ajax.php
 		// @hack
-		if( empty( $this->getGvOutputData() ) ) {
+		if( ! $this->getGvOutputData() ) {
 
 			do_action( 'gravityview_log_error', '[render_view] gv_output_data not defined; parsing content.', $passed_args );
 
@@ -978,7 +978,7 @@ class GravityView_frontend {
 		//foreach ($posts as $p) {
 
 		// enqueue template specific styles
-		if( !empty( $this->getGvOutputData() ) ) {
+		if( $this->getGvOutputData() ) {
 
 			$views = $this->getGvOutputData()->get_views();
 
