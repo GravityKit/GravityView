@@ -21,14 +21,15 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.6.1 =
-* Added: Allow Recent Entries to have an Embed ID
+* Added: Allow Recent Entries to have an Embed Page ID
 * Fixed: # of Recent Entries not saving
 * Fixed: Link to Embed Entries how-to on the Welcome page
 * Fixed: Don't show "Please select View to search" message until Search Widget is saved
 * Fixed: Minor Javascript errors for new Search widget
 * Fixed: Custom templates loading from the theme directory.
 * Fixed: Adding new search fields to the View search bar widget
-* Fixed: Allow entry creator to edit its own entries since Gravity Forms 1.9+
+* Fixed: Entry creators can edit their own entries in Gravity Forms 1.9+
+* Fixed: Recent Entries widget will be hidden in the Customizer preview until View ID is configured
 
 = 1.6 on February 12 =
 * Our support site has moved to [docs.gravityview.co](http://docs.gravityview.co). We hope you enjoy the improved experience!

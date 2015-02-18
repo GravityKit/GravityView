@@ -93,6 +93,11 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 	 */
 	function widget( $args, $instance ) {
 
+		// Don't have the Customizer render too soon.
+		if( empty( $instance['view_id'] ) ) {
+			return;
+		}
+
 		$args['id']        = ( isset( $args['id'] ) ) ? $args['id'] : 'gv_recent_entries';
 		$instance['title'] = ( isset( $instance['title'] ) ) ? $instance['title'] : '';
 
@@ -180,6 +185,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		// Get the settings for the View ID
 		$view_settings = gravityview_get_template_settings( $instance['view_id'] );
 
+		$instance['limit'] = isset( $instance['limit'] ) ? $instance['limit'] : 10;
 		$view_settings['id'] = $instance['view_id'];
 		$view_settings['page_size'] = $instance['limit'];
 
