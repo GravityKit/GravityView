@@ -298,6 +298,21 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>Changes in 1.6.1 (Full List)</h3>
+
+				<ul>
+					<li>Added: Allow Recent Entries to have an Embed Page ID</li>
+					<li>Fixed: # of Recent Entries not saving</li>
+					<li>Fixed: Link to Embed Entries how-to on the Welcome page</li>
+					<li>Fixed: Don't show "Please select View to search" message until Search Widget is saved</li>
+					<li>Fixed: Minor Javascript errors for new Search widget</li>
+					<li>Fixed: Custom templates loading from the theme directory.</li>
+					<li>Fixed: Adding new search fields to the View search bar widget</li>
+					<li>Fixed: Entry creators can edit their own entries in Gravity Forms 1.9+</li>
+					<li>Fixed: Recent Entries widget will be hidden in the Customizer preview until View ID is configured</li>
+					<li>Updated: Hungarian, Norwegian, Portuguese, Swedish, Turkish, and Spanish translations (thanks to all the translators!)</li>
+				</ul>
+				
 				<h3>Changes in 1.6 (Full List)</h3>
 
 				<ul>

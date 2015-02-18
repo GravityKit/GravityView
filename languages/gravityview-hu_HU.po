@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2015-02-13 00:24-0700\n"
-"PO-Revision-Date: 2015-02-13 07:25+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2015-02-15 16:11+0000\n"
+"Last-Translator: dbalage <balazs@magonc.org>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/gravityview/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -465,7 +465,7 @@ msgstr "Az űrlap beállításainak szerkesztése"
 
 #: includes/class-admin-views.php:257
 msgid "Preview Form"
-msgstr ""
+msgstr "Az űrlap előnézete"
 
 #: includes/class-admin-views.php:257
 msgid "Preview this form"
@@ -554,7 +554,7 @@ msgstr "\"+%s\" vagy húzd a meglévő %ss ide."
 #: includes/class-admin-views.php:789
 #, php-format
 msgid "This View is configured using the %s View type, which is disabled."
-msgstr ""
+msgstr "Ez a Nézet a %s nézettípust használná, ami ki van kapcsolva."
 
 #: includes/class-admin-views.php:790
 msgid ""
@@ -803,7 +803,7 @@ msgstr "&larr; Menj vissza"
 
 #: includes/class-api.php:1026
 msgid "Map It"
-msgstr "Feltérképezés"
+msgstr "Térképen"
 
 #: includes/class-change-entry-creator.php:54
 msgid "Error"
@@ -1953,7 +1953,7 @@ msgstr ""
 
 #: includes/widgets.php:242 includes/widgets.php:448
 msgid "Title:"
-msgstr ""
+msgstr "Cím:"
 
 #: includes/widgets.php:266
 msgid "&mdash; Select a View as Entries Source &mdash;"

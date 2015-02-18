@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Adding new search fields to the View search bar widget
 * Fixed: Entry creators can edit their own entries in Gravity Forms 1.9+
 * Fixed: Recent Entries widget will be hidden in the Customizer preview until View ID is configured
+* Updated: Hungarian, Norwegian, Portuguese, Swedish, Turkish, and Spanish translations (thanks to all the translators!)
 
 = 1.6 on February 12 =
 * Our support site has moved to [docs.gravityview.co](http://docs.gravityview.co). We hope you enjoy the improved experience!
