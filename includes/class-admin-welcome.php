@@ -310,9 +310,10 @@ class GravityView_Welcome {
 					<li>Fixed: Adding new search fields to the View search bar widget</li>
 					<li>Fixed: Entry creators can edit their own entries in Gravity Forms 1.9+</li>
 					<li>Fixed: Recent Entries widget will be hidden in the Customizer preview until View ID is configured</li>
+					<li>Tweak: Added Floaty icon to Customizer widget selectors</li>
 					<li>Updated: Hungarian, Norwegian, Portuguese, Swedish, Turkish, and Spanish translations (thanks to all the translators!)</li>
 				</ul>
-				
+
 				<h3>Changes in 1.6 (Full List)</h3>
 
 				<ul>
