@@ -13,7 +13,9 @@
 @import "font";
 
 /* add gravityview menu icon */
-#adminmenu .menu-icon-gravityview div.wp-menu-image:before {
+#adminmenu .menu-icon-gravityview div.wp-menu-image:before,
+#available-widgets [class*=gv_recent_entries] .widget-title:before,
+#available-widgets [class*=gravityview_search] .widget-title:before {
 	@extend [data-icon]:before;
 	@extend .gv-icon-astronaut-head:before;
 }
@@ -64,4 +66,3 @@
   }
 
 }
-

@@ -25,11 +25,12 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: # of Recent Entries not saving
 * Fixed: Link to Embed Entries how-to on the Welcome page
 * Fixed: Don't show "Please select View to search" message until Search Widget is saved
-* Fixed: Minor Javascript errors for new Search widget
-* Fixed: Custom templates loading from the theme directory.
-* Fixed: Adding new search fields to the View search bar widget
+* Fixed: Minor Javascript errors for new WordPress Search Widget
+* Fixed: Custom template loading from the theme directory
+* Fixed: Adding new search fields to the Search Bar widget in the Edit View screen
 * Fixed: Entry creators can edit their own entries in Gravity Forms 1.9+
 * Fixed: Recent Entries widget will be hidden in the Customizer preview until View ID is configured
+* Tweak: Added Floaty icon to Customizer widget selectors
 * Updated: Hungarian, Norwegian, Portuguese, Swedish, Turkish, and Spanish translations (thanks to all the translators!)
 
 ### 1.6 on February 12 ###
