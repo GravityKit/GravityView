@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 = 1.6.2 =
 * Fixed: Properly reset `$post` after Live Post Data is displayed
+* Tweak: Display spinning cursor while waiting for View configurations to load
 
 = 1.6.1 on February 17 =
 * Added: Allow Recent Entries to have an Embed Page ID

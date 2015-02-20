@@ -632,6 +632,8 @@
         updateActiveAreas: function (template) {
             var vcfg = viewConfiguration;
 
+            $('#wpcontent,.gv-fields').addClass('gv-wait');
+
             $("#directory-active-fields, #single-active-fields").children().remove();
 
             var data = {
@@ -647,6 +649,7 @@
                     $('#directory-footer-widgets').html(content.footer);
                     $('#directory-active-fields').append(content.directory);
                     $('#single-active-fields').append(content.single);
+                    $('#wpcontent,.gv-fields').removeClass('gv-wait');
                     vcfg.showViewConfig();
                 }
             });
@@ -758,7 +761,9 @@
 
         },
 
-        // refresh Gravity Forms tooltips (the real help tooltips)
+        /**
+         * Refresh Gravity Forms tooltips (the real help tooltips)
+         */
         refreshGFtooltips: function() {
             $( ".gf_tooltip" ).tooltip( {
                 show: 500,
@@ -768,7 +773,6 @@
                 }
             });
         },
-
 
 
         /**
@@ -797,6 +801,7 @@
             } else {
                 data.form_id = vcfg.gvSelectForm.val();
             }
+
 
             // Get the fields for the directory context
             $.post(ajaxurl, data, function (response) {
@@ -1319,7 +1324,8 @@
 		});
 
 		// Make zebra table rows
-		$("#gravityview_template_settings .form-table tr:even").addClass('alternate');
+		$('#gravityview_template_settings .form-table tr:even, #gravityview_sort_filter .form-table tr:even').addClass('alternate');
+
 
 		// Force the sort metabox to be directly under the view configuration.
 		// Damn 3rd party metaboxes!

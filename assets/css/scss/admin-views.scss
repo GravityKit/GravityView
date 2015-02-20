@@ -319,6 +319,11 @@ $gv-overlay-index: 10000;
 	display: none;
 }
 
+/** Show spinner cursor while the View is being AJAX updated. **/
+.gv-wait {
+  cursor: wait;
+}
+
 /** View configuration tabs */
 .ui-tabs {
 	position: relative;
