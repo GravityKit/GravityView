@@ -1319,7 +1319,8 @@
 		});
 
 		// Make zebra table rows
-		$("#gravityview_template_settings .form-table tr:even").addClass('alternate');
+		$('#gravityview_template_settings .form-table tr:even, #gravityview_sort_filter .form-table tr:even').addClass('alternate');
+
 
 		// Force the sort metabox to be directly under the view configuration.
 		// Damn 3rd party metaboxes!
