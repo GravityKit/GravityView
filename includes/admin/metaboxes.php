@@ -427,6 +427,11 @@ class GravityView_Admin_Metaboxes {
 
 			GravityView_Render_Settings::render_setting_row( 'sort_direction', $current_settings );
 
+			/**
+			 * @since 1.7
+			 */
+			GravityView_Render_Settings::render_setting_row( 'sort_columns', $current_settings );
+
 			// End Sort fields
 			do_action( 'gravityview_metabox_sort_after', $current_settings );
 

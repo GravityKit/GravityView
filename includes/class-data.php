@@ -578,6 +578,14 @@ class GravityView_View_Data {
 				),
 				'show_in_shortcode' => true,
 			),
+			'sort_columns' => array(
+				'label' 	=> __( 'Enable columns sorting', 'gravityview' ),
+				'type' => 'checkbox',
+				'value' => false,
+				'group'	=> 'sort',
+				'tooltip' => NULL,
+				'show_in_shortcode' => true,
+			),
 			'start_date' => array(
 				'label' 	=> __('Filter by Start Date', 'gravityview'),
 				'class'	=> 'gv-datepicker',
