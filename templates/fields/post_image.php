@@ -68,7 +68,7 @@ else {
 	$href = $url;
 
 	// Only show the lightbox if linking to the file itself
-	if( !empty( $gravityview_view->getAtts('lightbox') ) ) {
+	if( $gravityview_view->getAtts('lightbox') ) {
 		$link_atts .= "target='_blank' class='thickbox'";
 	}
 
