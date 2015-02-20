@@ -12,6 +12,10 @@
 
 }
 
+a.icon {
+  text-decoration: none;
+}
+
 [data-icon]:before {
   font-family: "gravityview" !important;
   content: attr(data-icon);

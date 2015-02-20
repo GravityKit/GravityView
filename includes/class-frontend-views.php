@@ -1035,6 +1035,10 @@ class GravityView_frontend {
 				 */
 				$js_localization = apply_filters('gravityview_js_localization', $js_localization, $data );
 
+				if( !empty( $data['atts']['sort_columns'] ) ) {
+					wp_enqueue_style( 'gravityview_font', plugins_url('assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
+				}
+
 				wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), $css_dependencies, GravityView_Plugin::version, 'all' );
 
 				self::add_style( $data['template_id'] );
@@ -1093,10 +1097,10 @@ class GravityView_frontend {
 			//toggle sorting direction.
 			if( $sorting['direction'] == 'asc' ) {
 				$sort_args['dir'] = 'desc';
-				$class .= ' gv-icon-caret-up';
+				$class .= ' gv-icon-sort-desc';
 			} else {
 				$sort_args['dir'] = 'asc';
-				$class .= ' gv-icon-caret-down';
+				$class .= ' gv-icon-sort-asc';
 			}
 		} else {
 			$class .= ' gv-icon-caret-up-down';
