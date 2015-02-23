@@ -18,11 +18,10 @@ if( !class_exists( 'GFFormDisplay' ) ) {
 // Tell the renderer not to wrap this field in an anchor tag.
 $gravityview_view->field_data['field_settings']['show_as_link'] = false;
 
+// allow for custom content behavior before merge tags replacement
+$field_settings['content'] = apply_filters( 'gravityview/fields/custom/content_before', $field_settings['content'], compact( 'field_settings', 'form', 'field_id', 'entry' ) );
+
 $field_settings['content'] = trim( rtrim( $field_settings['content'] ) );
-
-// allow for custom content behavior
-$field_settings['content'] = apply_filters( 'gravityview/fields/custom/content', $field_settings['content'], compact( 'field_settings', 'form', 'field_id', 'entry' ) );
-
 
 // No custom content
 if( empty( $field_settings['content'] ) ) {
@@ -38,6 +37,8 @@ if( !empty( $field_settings['wpautop'] ) ) {
 	$content = wpautop( $content );
 
 }
+
+$content = apply_filters( 'gravityview/fields/custom/content_after', $content, compact( 'field_settings', 'form', 'field_id', 'entry' ) );
 
 // Enqueue scripts needed for Gravity Form display, if form shortcode exists.
 // Also runs `do_shortcode()`
