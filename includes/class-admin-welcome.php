@@ -298,6 +298,13 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>Changes in 1.6.2 (Full List)</h3>
+				<ul>
+					<li>Added: Two new hooks in the Custom Content field to enable conditional logic or enable <code>the_content</code> WordPress filter which will trigger the Video embed (<a href="http://docs.gravityview.co/article/227-how-can-i-transform-a-video-link-into-a-player-using-the-custom-content-field">read how</a>)</li>
+					<li>Fixed: Issue when embedding multiple DataTables views in the same page</li>
+					<li>Tweak: A more robust "Save View" procedure to prevent losing field configuration on certain browsers</li>
+				</ul>
+
 				<h3>Changes in 1.6.1 (Full List)</h3>
 
 				<ul>

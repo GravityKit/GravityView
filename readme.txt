@@ -21,9 +21,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.6.2 on February 23 =
-* Added: Two new hooks in the Custom Content field to enable conditional logic or enable "the_content" WordPress filter which will trigger the Video embed
-* Tweak: A more robust save View procedure to prevent losing fields configuration.
+* Added: Two new hooks in the Custom Content field to enable conditional logic or enable `the_content` WordPress filter which will trigger the Video embed ([read how](http://docs.gravityview.co/article/227-how-can-i-transform-a-video-link-into-a-player-using-the-custom-content-field))
 * Fixed: Issue when embedding multiple DataTables views in the same page
+* Tweak: A more robust "Save View" procedure to prevent losing field configuration on certain browsers
 
 = 1.6.1 on February 17 =
 * Added: Allow Recent Entries to have an Embed Page ID
