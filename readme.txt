@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.1
+Tested up to: 4.1.1
 Stable tag: trunk
 Contributors: katzwebservices, luistinygod
 License: GPL 3 or higher
@@ -24,6 +24,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Added: Two new hooks in the Custom Content field to enable conditional logic or enable `the_content` WordPress filter which will trigger the Video embed ([read how](http://docs.gravityview.co/article/227-how-can-i-transform-a-video-link-into-a-player-using-the-custom-content-field))
 * Fixed: Issue when embedding multiple DataTables views in the same page
 * Tweak: A more robust "Save View" procedure to prevent losing field configuration on certain browsers
+* Updated Translations:
+	- Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
+	- Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
 
 = 1.6.1 on February 17 =
 * Added: Allow Recent Entries to have an Embed Page ID
