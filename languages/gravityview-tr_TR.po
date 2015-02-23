@@ -1,14 +1,14 @@
 # 
 # Translators:
 # Süha Karalar <suhakaralar@gmail.com>, 2014
-# Süha Karalar <suhakaralar@gmail.com>, 2014
+# Süha Karalar <suhakaralar@gmail.com>, 2014-2015
 # Zachary Katz <zack@katz.co>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2015-02-13 00:24-0700\n"
-"PO-Revision-Date: 2015-02-13 10:34+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2015-02-20 22:11+0000\n"
+"Last-Translator: Süha Karalar <suhakaralar@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/projects/p/gravityview/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -466,7 +466,7 @@ msgstr "Bu formun ayarlarını değiştirin"
 
 #: includes/class-admin-views.php:257
 msgid "Preview Form"
-msgstr ""
+msgstr "Form Önizleme"
 
 #: includes/class-admin-views.php:257
 msgid "Preview this form"
@@ -555,13 +555,13 @@ msgstr "\"+ %s\" yada mevcut %ss buraya sürükleyin."
 #: includes/class-admin-views.php:789
 #, php-format
 msgid "This View is configured using the %s View type, which is disabled."
-msgstr ""
+msgstr "Görünüm, kullanılmayan %s Görünüm türü ile ayarlanmış."
 
 #: includes/class-admin-views.php:790
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
-msgstr ""
+msgstr "Veriler kaybolmadı; alakalı eklentiyi yeniden etkinleştirdiğinizde yapılandırma seçenekleri yeniden görüntülenecektir."
 
 #: includes/class-admin-views.php:867
 msgid "Enter View name here"
@@ -635,7 +635,7 @@ msgstr "Değişiklik Listesi"
 
 #: includes/class-admin-welcome.php:256
 msgid "What&rsquo;s New"
-msgstr ""
+msgstr "Yenilikler"
 
 #: includes/class-admin-welcome.php:736
 msgid "GravityView is brought to you by:"
@@ -898,12 +898,12 @@ msgstr "Sadece onaylı kayıtları göster"
 
 #: includes/class-data.php:454
 msgid "Hide View data until search is performed"
-msgstr ""
+msgstr "Arama gerçekleşmeden Görünüm verisini gösterme"
 
 #: includes/class-data.php:457
 msgid ""
 "When enabled it will only show any View entries after a search is performed."
-msgstr ""
+msgstr "Etkinleştirildiğinde arama yapıldıktan sonra Görünüm kayıtlarını gösterir."
 
 #: includes/class-data.php:462
 msgid "Hide empty fields"
@@ -1039,32 +1039,32 @@ msgstr "Boş"
 
 #: includes/class-duplicate-view.php:221
 msgid "Clone"
-msgstr ""
+msgstr "Çoğalt"
 
 #: includes/class-duplicate-view.php:222
 msgid "Clone this View"
-msgstr ""
+msgstr "Bu Görünümü Çoğalt"
 
 #: includes/class-duplicate-view.php:227
 msgid "New Draft"
-msgstr ""
+msgstr "Yeni Taslak"
 
 #: includes/class-duplicate-view.php:227
 msgid "Clone View"
-msgstr ""
+msgstr "Görünümü Çoğalt"
 
 #: includes/class-duplicate-view.php:228
 msgid "Copy as a new draft View"
-msgstr ""
+msgstr "Yeni taslak Görünüm olarak kopyala"
 
 #: includes/class-duplicate-view.php:296
 msgid "No post to duplicate has been supplied!"
-msgstr ""
+msgstr "Suret oluşturacak yazı tedarik edilmedi!"
 
 #: includes/class-duplicate-view.php:319
 #, php-format
 msgid "Copy creation failed, could not find original View with ID #%d"
-msgstr ""
+msgstr "Kopyalama yapılamadı, #%d NO lu esas Görünüm bulunamadı"
 
 #: includes/class-frontend-views.php:489
 msgid ""
@@ -1074,12 +1074,12 @@ msgstr "Görünür olmayan yada var olmayan bir kaydı görüntülemek istediniz
 #: includes/class-frontend-views.php:864
 msgctxt "Clear all data from the form"
 msgid "Clear"
-msgstr ""
+msgstr "Temizle"
 
 #: includes/class-frontend-views.php:865
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
-msgstr ""
+msgstr "Sıfırla"
 
 #: includes/class-gravityview-extension.php:175
 #, php-format
@@ -1093,23 +1093,23 @@ msgstr "%s eklentisi en az GravityView %s sürümü yada daha yenisini gerektirm
 
 #: includes/class-oembed.php:197
 msgid "This will look better when it is embedded."
-msgstr ""
+msgstr "Gömüldüğünde daha iyi görünecektir."
 
 #: includes/class-oembed.php:198
 msgid ""
 "Styles don't get loaded when being previewed, so the content below will look"
 " strange. Don't be concerned!"
-msgstr ""
+msgstr "Önizleme esnasında stil dosyası yüklenmediği için aşağıdaki içerik biraz garip görünebilir. Lütfen kaygılanmayın!"
 
 #: includes/class-oembed.php:248
 #, php-format
 msgid "Embed Entry %d"
-msgstr ""
+msgstr "Gömülü Kayıt %d"
 
 #: includes/class-oembed.php:250
 #, php-format
 msgid "This entry will be displayed as it is configured in View %d"
-msgstr ""
+msgstr "BU kayıt %d Görünümünde ayarlandığı şekilde görüntülenecektir."
 
 #: includes/class-post-types.php:35
 msgctxt "Post Type General Name"
@@ -1474,7 +1474,7 @@ msgstr "Sayfa Bağlantıları"
 
 #: includes/default-widgets.php:188
 msgid "Insert custom text or HTML as a widget"
-msgstr ""
+msgstr "Bileşen olarak özel yazı yada HTML ekleyin"
 
 #: includes/default-widgets.php:199 includes/fields/custom.php:23
 msgid "Enter text or HTML. Also supports shortcodes."
@@ -1491,7 +1491,7 @@ msgstr "Her yazı bloğunu HTML paragraf etiketi ile çevrele (düz yazılar iç
 
 #: includes/default-widgets.php:362
 msgid "This class will be added to the widget container"
-msgstr ""
+msgstr "Bu sınıf bileşeni kapsayan seçici etiket olarak eklenecektir"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:107
 msgid "Delete Link Text"
@@ -1672,7 +1672,7 @@ msgstr "Dikey"
 
 #: includes/extensions/search-widget/class-search-widget.php:53
 msgid "Show Clear button"
-msgstr ""
+msgstr "Temizle düğmesini göster"
 
 #: includes/extensions/search-widget/class-search-widget.php:57
 msgid "Search Bar"
@@ -1733,7 +1733,7 @@ msgstr "Kayıt NO:"
 
 #: includes/extensions/search-widget/class-search-widget.php:743
 msgid "Clear"
-msgstr ""
+msgstr "Temizle"
 
 #: includes/extensions/search-widget/class-search-widget.php:776
 msgctxt "Close calendar"
@@ -1933,19 +1933,19 @@ msgstr "Bağlantı aynı pencerede mi açılsın?"
 
 #: includes/widgets.php:23
 msgid "GravityView Recent Entries"
-msgstr ""
+msgstr "GravityView En Son Kayıtlar"
 
 #: includes/widgets.php:26
 msgid "Display the most recent entries for a View"
-msgstr ""
+msgstr "Görünüme ait en son kayıtları görüntüleyin"
 
 #: includes/widgets.php:231
 msgid "Recent Entries"
-msgstr ""
+msgstr "En Son Kayıtlar"
 
 #: includes/widgets.php:234
 msgid "Entry #{entry_id}"
-msgstr ""
+msgstr "#{entry_id} Kayıt"
 
 #: includes/widgets.php:242 includes/widgets.php:448
 msgid "Title:"
@@ -1953,78 +1953,78 @@ msgstr "Başlık:"
 
 #: includes/widgets.php:266
 msgid "&mdash; Select a View as Entries Source &mdash;"
-msgstr ""
+msgstr "&mdash; Kayıt Kaynağı olacak Görünümü seçiniz &mdash;"
 
 #: includes/widgets.php:280
 msgid "Number of entries to show:"
-msgstr ""
+msgstr "Görüntülenecek kayıt sayısı:"
 
 #: includes/widgets.php:287
 msgid "Entry link text (required)"
-msgstr ""
+msgstr "Kayıt bağlantı yazısı (zorunlu)"
 
 #: includes/widgets.php:294
 msgid "Text or HTML to display after the link (optional)"
-msgstr ""
+msgstr "Bağlantıdan sonra görünecek yazı yada HTML (isteğe bağlı)"
 
 #: includes/widgets.php:322
 msgid "A search form for a specific GravityView."
-msgstr ""
+msgstr "Belirli bir Görünüme özel arama formu."
 
 #: includes/widgets.php:329
 msgid "GravityView Search"
-msgstr ""
+msgstr "GravityView Arama"
 
 #: includes/widgets.php:416
 #, php-format
 msgid ""
 "This widget is not configurable from this screen. Please configure it on the"
 " %sWidgets page%s."
-msgstr ""
+msgstr "Bileşeni bu ekrandan ayarlayamazsınız. Lütfen %sEklentiler sayfasına%s gidiniz."
 
 #: includes/widgets.php:458
 msgid "Please select a View to search."
-msgstr ""
+msgstr "Arama yapmak için lütfen Görünüm seçiniz."
 
 #: includes/widgets.php:466
 msgid "View:"
-msgstr ""
+msgstr "Görünüm:"
 
 #: includes/widgets.php:468
 msgid "&mdash; Select a View &mdash;"
-msgstr ""
+msgstr "&mdash; Görünüm Seçin &mdash;"
 
 #: includes/widgets.php:495
 msgid "If Embedded, Page ID:"
-msgstr ""
+msgstr "Eğer Gömülüyse, Sayfa NO:"
 
 #: includes/widgets.php:498
 msgid ""
 "To have a search performed on an embedded View, enter the ID of the post or "
 "page where the View is embedded."
-msgstr ""
+msgstr "Gömülü bir Görünüm üzerinde arama yapmak istiyorsanız lütfen Görünümün gömülü olduğu sayfa yada yazı NO sunu giriniz."
 
 #: includes/widgets.php:499 includes/widgets.php:536
 msgid "Learn more&hellip;"
-msgstr ""
+msgstr "Daha fazlası için&hellip;"
 
 #: includes/widgets.php:507
 msgid "Searchable fields:"
-msgstr ""
+msgstr "Aranabilir alanlar:"
 
 #: includes/widgets.php:508
 msgid "Search Fields"
-msgstr ""
+msgstr "Arama Alanları"
 
 #: includes/widgets.php:535
 msgid ""
 "You did not enter a number. The value entered should be a number, "
 "representing the ID of the post or page the View is embedded on."
-msgstr ""
+msgstr "Bir sayı girmediniz. Girdiğiniz değer gömülü Görünümü içinde barındıran sayfa yada yazının NO su olmalıdır."
 
 #: includes/widgets.php:542
 msgid "There is no post or page with that ID."
-msgstr ""
+msgstr "Girdiğiniz NO herhangi bir sayfa yada yazıya ait değil."
 
 #: includes/widgets.php:549
 #, php-format
@@ -2032,11 +2032,11 @@ msgid ""
 "The Post ID entered is not valid. You may have entered a post or page that "
 "does not contain the selected View. Make sure the post contains the "
 "following shortcode: %s"
-msgstr ""
+msgstr "Girilen NO geçerli değil. Seçili Görünümü barındırmayan bir sayfa yada yazı NO su girmiş olabilirsiniz. Lütfen %s kısakodunu içeren yazıya ait NO yu giriniz."
 
 #: includes/widgets.php:554
 msgid "The ID is already a View."
-msgstr ""
+msgstr "NO zaten bir Görünüme ait."
 
 #: templates/fields/email.php:65
 msgid "Email hidden; Javascript is required."
