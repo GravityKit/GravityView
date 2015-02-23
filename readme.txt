@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.6.2 on February 23 =
+* Added: A new hook in the Custom Content field to enable conditional logic or enable "the_content" WordPress filter which will trigger the Video embed
 * Tweak: A more robust save View procedure to prevent losing fields configuration.
 * Fixed: Issue when embedding multiple DataTables views in the same page
 

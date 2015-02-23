@@ -18,7 +18,11 @@ if( !class_exists( 'GFFormDisplay' ) ) {
 // Tell the renderer not to wrap this field in an anchor tag.
 $gravityview_view->field_data['field_settings']['show_as_link'] = false;
 
-$field_settings['content'] = trim(rtrim($field_settings['content']));
+$field_settings['content'] = trim( rtrim( $field_settings['content'] ) );
+
+// allow for custom content behavior
+$field_settings['content'] = apply_filters( 'gravityview/fields/custom/content', $field_settings['content'], compact( 'field_settings', 'form', 'field_id', 'entry' ) );
+
 
 // No custom content
 if( empty( $field_settings['content'] ) ) {
