@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 = 1.6.2 on February 23 =
 * Tweak: A more robust save View procedure to prevent losing fields configuration.
+* Fixed: Issue when embedding multiple DataTables views in the same page
 
 = 1.6.1 on February 17 =
 * Added: Allow Recent Entries to have an Embed Page ID

@@ -167,8 +167,11 @@ class GravityView_View_Data {
 		// Handle array of IDs
 		if( is_array( $view_id ) ) {
 			foreach( $view_id as $id ) {
-				return $this->add_view( $id, $atts );
+
+				$this->add_view( $id, $atts );
 			}
+
+			return $this->views;
 		}
 
 		// The view has been set already; returning stored view.
