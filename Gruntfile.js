@@ -97,14 +97,6 @@ module.exports = function(grunt) {
 
 			// Create a ZIP file
 			zip: 'python /usr/bin/git-archive-all ../gravityview.zip'
-		},
-
-		wp_readme_to_markdown: {
-			your_target: {
-				files: {
-					'readme.md': 'readme.txt'
-				},
-			},
 		}
 	});
 

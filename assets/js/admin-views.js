@@ -35,7 +35,7 @@
             // Start by showing/hiding on load
             vcfg.toggleInitialVisibility(vcfg);
 
-		// Start bind to $('body')
+		    // Start bind to $('body')
             $('body')
 
             	// select form
@@ -474,7 +474,7 @@
 
             var data = {
                 action: 'gv_sortable_fields_form',
-                nonce: gvGlobals.nonce,
+                nonce: gvGlobals.nonce
             };
 
             if (context !== undefined && 'preset' === context) {
@@ -639,7 +639,7 @@
             var data = {
                 action: 'gv_get_active_areas',
                 template_id: template,
-                nonce: gvGlobals.nonce,
+                nonce: gvGlobals.nonce
             };
 
             $.post(ajaxurl, data, function (response) {
@@ -664,7 +664,7 @@
             var data = {
                 action: 'gv_get_preset_fields',
                 template_id: template,
-                nonce: gvGlobals.nonce,
+                nonce: gvGlobals.nonce
             };
 
             $.post(ajaxurl, data, function (response) {
@@ -738,9 +738,9 @@
                     disabled: true, // Don't open on hover
                     position: {
                         my: "center bottom",
-                        at: "center top-12",
+                        at: "center top-12"
                     },
-                    tooltipClass: 'top',
+                    tooltipClass: 'top'
                 })
                 // add title attribute so the tooltip can continue to work (jquery ui bug?)
                 .attr("title", "")
@@ -1186,10 +1186,11 @@
 
         	// If the View isn't a Start Fresh view, we just return true
         	// so that the click on the Publish button can process.
-        	if (!vcfg.startFreshStatus || templateId === '') {
+        	if ( !vcfg.startFreshStatus || templateId === '' ) {
 
         		// Serialize the inputs so that `max_input_vars`
-        		return vcfg.serializeForm( e );
+                return vcfg.serializeForm();
+
         	}
 
         	return false;
@@ -1204,9 +1205,15 @@
          * @param  {[type]} e [description]
          * @return {[type]}   [description]
          */
-        serializeForm: function (e) {
+        serializeForm: function( e ) {
 
-            e.stopPropagation();
+            if( $( e.target ).data('gv-valid') ) {
+                return true;
+            }
+
+            e.stopImmediatePropagation();
+
+            $( e.target ).data('gv-valid', false );
 
         	/**
         	 * Add slashes to date fields so stripslashes doesn't strip all of them
@@ -1232,7 +1239,15 @@
         		'type': 'hidden'
         	}));
 
-            return true;
+
+            // make sure the "slow" browsers did append all the serialized data to the form
+            setTimeout( function() {
+
+                $( e.target ).data( 'gv-valid', true ).submit();
+
+            }, 101 );
+
+            return false;
 
         },
 
