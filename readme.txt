@@ -20,10 +20,11 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= 1.6.2 =
+= 1.7 =
 * Fixed: Properly reset `$post` after Live Post Data is displayed
 * Tweak: Display spinning cursor while waiting for View configurations to load
 * Tweak: Updated GravityView Form Editor buttons to be 1.9 compatible
+* Added: `gravityview/field_output/args` filter to modify field output settings before rendering
 
 = 1.6.1 on February 17 =
 * Added: Allow Recent Entries to have an Embed Page ID
