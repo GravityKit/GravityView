@@ -511,9 +511,9 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		$output = '';
 
-		$zone_id = "{$final_atts['context']}_{$final_atts['slug']}-{$zone}";
+		$final_atts['zone_id'] = "{$final_atts['context']}_{$final_atts['slug']}-{$zone}";
 
-		$fields = $this->getField( $zone_id );
+		$fields = $this->getField( $final_atts['zone_id'] );
 
 		// Backward compatibility
 		if( 'table' === $this->getTemplatePartSlug() ) {
