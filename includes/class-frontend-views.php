@@ -1122,7 +1122,7 @@ class GravityView_frontend {
 	 */
 	public function is_field_sortable( $field_id = '' , $form ) {
 
-		$not_sortable = array( 'entry_link', 'edit_link', 'delete_link' );
+		$not_sortable = array( 'entry_link', 'edit_link', 'delete_link', 'custom' );
 
 		if( in_array( $field_id, $not_sortable ) ) {
 			return false;
