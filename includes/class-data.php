@@ -580,11 +580,13 @@ class GravityView_View_Data {
 			),
 			'sort_columns' => array(
 				'label' 	=> __( 'Enable columns sorting', 'gravityview' ),
+				'left_label' => __( 'Column Sorting', 'gravityview' ),
 				'type' => 'checkbox',
 				'value' => false,
 				'group'	=> 'sort',
 				'tooltip' => NULL,
 				'show_in_shortcode' => true,
+				'show_in_template' => array( 'default_table' ),
 			),
 			'start_date' => array(
 				'label' 	=> __('Filter by Start Date', 'gravityview'),

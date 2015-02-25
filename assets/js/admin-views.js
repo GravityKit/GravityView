@@ -14,7 +14,7 @@
 
 (function( $ ) {
 
-    var viewConfiguration;
+    var viewConfiguration, viewGeneralSettings;
 
     viewConfiguration = {
 
@@ -1268,7 +1268,7 @@
             var data = {
                 action: 'gv_set_preset_form',
                 template_id: templateId,
-                nonce: gvGlobals.nonce,
+                nonce: gvGlobals.nonce
             };
 
             $.ajax({
@@ -1306,11 +1306,74 @@
     }; // end viewConfiguration object
 
 
+    /**
+     * Manages the General View Settings
+     *
+     * @since 1.7
+     *
+     * @type {{templateId: null, init: Function, updateSettingsDisplay: Function, toggleSetting: Function}}
+     */
+    viewGeneralSettings = {
+
+        /**
+         * Holds the current view type id (template)
+         */
+        templateId: null,
+
+        /**
+         * Init method
+         */
+        init: function() {
+
+            // Conditional display general settings & trigger display settings if template changes
+            $('#gravityview_directory_template').change( viewGeneralSettings.updateSettingsDisplay ).trigger('change');
+
+        },
+
+        /**
+         * Callback method to show/hide settings if template changes and settings have a specific template attribute
+         */
+        updateSettingsDisplay: function() {
+
+            viewGeneralSettings.templateId = $(this).val();
+
+            $('tr[data-show-if]').each( viewGeneralSettings.toggleSetting );
+
+        },
+
+        /**
+         * Show/Hides setting based on the template
+         */
+        toggleSetting: function() {
+            var row = $(this),
+                templates = row.attr( 'data-show-if' );
+
+            // if setting field attribute is empty, leave..
+            if( templates.length < 1 ) {
+                return;
+            }
+
+
+            if( viewGeneralSettings.templateId.length > 0 && templates.indexOf( viewGeneralSettings.templateId ) > -1 ) {
+                row.show();
+            } else {
+                row.find('select, input').val('').prop('checked', false );
+                row.hide();
+            }
+
+        }
+
+    };  // end viewGeneralSettings object
+
+    
 
 	jQuery(document).ready( function( $ ) {
 
 		// title placeholder
 		$('#title-prompt-text').text( gvGlobals.label_viewname );
+
+        // start the general view settings magic
+        viewGeneralSettings.init();
 
 		// start the View Configuration magic
 		viewConfiguration.init();
