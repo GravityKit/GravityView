@@ -93,6 +93,9 @@ abstract class GravityView_FieldType {
 
 	/**
 	 * Retrieve field left label
+     *
+     * @since 1.7
+     *
 	 * @return string
 	 */
 	function get_field_left_label() {

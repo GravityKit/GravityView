@@ -579,7 +579,7 @@ class GravityView_View_Data {
 				'show_in_shortcode' => true,
 			),
 			'sort_columns' => array(
-				'label' 	=> __( 'Enable columns sorting', 'gravityview' ),
+				'label' 	=> __( 'Enable sorting by column', 'gravityview' ),
 				'left_label' => __( 'Column Sorting', 'gravityview' ),
 				'type' => 'checkbox',
 				'value' => false,

@@ -75,7 +75,12 @@ class GravityView_API {
 
 		} // End $field['show_label']
 
-		return apply_filters( 'gravityview/template/field_label', $label, $field, $form, $entry );
+		/**
+		 * @since 1.7
+		 */
+		$label = apply_filters( 'gravityview/template/field_label', $label, $field, $form, $entry );
+
+		return $label;
 	}
 
 	/**

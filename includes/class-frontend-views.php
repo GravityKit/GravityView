@@ -909,8 +909,9 @@ class GravityView_frontend {
 	 *
 	 * @since 1.7
 	 *
-	 * @param $args View
-	 * @return array $sorting
+	 * @param $args View settings. Required to have `sort_field` and `sort_direction` keys
+	 * @param int $form_id The ID of the form used to sort
+	 * @return array $sorting Array with `key`, `direction` and `is_numeric` keys
 	 */
 	public static function updateViewSorting( $args, $form_id ) {
 
@@ -937,7 +938,7 @@ class GravityView_frontend {
 
 	/**
 	 * Verify if user requested a single entry view
-	 * @return boolean|string false if not, single entry id if true
+	 * @return boolean|string false if not, single entry slug if true
 	 */
 	public static function is_single_entry() {
 		global $wp_rewrite;
@@ -1074,7 +1075,9 @@ class GravityView_frontend {
 	 * Inject the sorting links on the table columns
 	 *
 	 * Callback function for hook 'gravityview/template/field_label'
-	 * @see includes/class-api.php GravityView_API::field_label()
+	 * @see GravityView_API::field_label() (in includes/class-api.php)
+	 *
+	 * @since 1.7
 	 *
 	 * @param $label Field label
 	 * @param $field Field settings
@@ -1118,7 +1121,9 @@ class GravityView_frontend {
 	 * @param string $field Field settings
 	 * @param $form Gravity Forms form object
 	 *
-	 * @return bool|mixed|void
+	 * @since 1.7
+	 *
+	 * @return bool True: Yes, field is sortable; False: not sortable
 	 */
 	public function is_field_sortable( $field_id = '' , $form ) {
 
@@ -1183,7 +1188,7 @@ function the_gravityview( $view_id = '', $atts = array() ) {
  * Theme function to identify if it is a Single Entry View
  *
  * @since  1.5.4
- * @return bool|string
+ * @return bool|string False if not, single entry slug if true
  */
 function gravityview_is_single_entry() {
 	return GravityView_frontend::is_single_entry();
