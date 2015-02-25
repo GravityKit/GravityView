@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Tweak: Display spinning cursor while waiting for View configurations to load
 * Tweak: Updated GravityView Form Editor buttons to be 1.9 compatible
 * Added: `gravityview/field_output/args` filter to modify field output settings before rendering
+* Added: Sorting Table columns ([read how](http://docs.gravityview.co/article/230-how-to-enable-the-table-column-sorting-feature))
 
 = 1.6.2 on February 23 =
 * Added: Two new hooks in the Custom Content field to enable conditional logic or enable `the_content` WordPress filter which will trigger the Video embed ([read how](http://docs.gravityview.co/article/227-how-can-i-transform-a-video-link-into-a-player-using-the-custom-content-field))
