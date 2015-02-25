@@ -297,7 +297,18 @@ class GravityView_Render_Settings {
 			$output = ob_get_clean();
 		}
 
-		echo '<tr valign="top">' . $output . '</tr>';
+		// Check if setting is specific for a template
+		if( !empty( $setting['show_in_template'] ) ) {
+			if( !is_array( $setting['show_in_template'] ) ) {
+				$setting['show_in_template'] = array( $setting['show_in_template'] );
+			}
+			$show_if = ' data-show-if="'. implode( ' ', $setting['show_in_template'] ).'"';
+		} else {
+			$show_if = '';
+		}
+
+		// output
+		echo '<tr valign="top" '. $show_if .'>' . $output . '</tr>';
 
 	}
 

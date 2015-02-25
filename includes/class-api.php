@@ -75,6 +75,11 @@ class GravityView_API {
 
 		} // End $field['show_label']
 
+		/**
+		 * @since 1.7
+		 */
+		$label = apply_filters( 'gravityview/template/field_label', $label, $field, $form, $entry );
+
 		return $label;
 	}
 
@@ -1113,7 +1118,12 @@ function gravityview_field_output( $passed_args ) {
 
 	$class = gv_class( $args['field'], $args['form'], $entry );
 
-	$label = esc_html( gv_label( $args['field'], $entry ) );
+	// get field label if needed
+	if( !empty( $args['label_markup'] ) || false !== strpos( $args['markup'], '{{label}}' ) ) {
+		$label = gv_label( $args['field'], $entry );
+	} else {
+		$label = '';
+	}
 
 	if( !empty( $label ) ) {
 		// If the label markup is overridden

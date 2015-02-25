@@ -84,8 +84,8 @@ class GravityView_frontend {
 		add_filter( 'the_content', array( $this, 'insert_view_in_content' ) );
 		add_filter( 'comments_open', array( $this, 'comments_open' ), 10, 2);
 
-		add_action('add_admin_bar_menus', array($this, 'admin_bar_remove_links'), 80 );
-		add_action('admin_bar_menu', array($this, 'admin_bar_add_links'), 85 );
+		add_action('add_admin_bar_menus', array( $this, 'admin_bar_remove_links'), 80 );
+		add_action('admin_bar_menu', array( $this, 'admin_bar_add_links'), 85 );
 
 		self::$instance = &$this;
 	}
@@ -248,7 +248,6 @@ class GravityView_frontend {
 	 * @return boolean True: Yes, it's a search; False: No, not a search.
 	 */
 	function is_searching() {
-		global $wp_query;
 
 		// Single entry
 		if( $this->getSingleEntry() ) {
@@ -487,7 +486,7 @@ class GravityView_frontend {
 
 		// Solve problem when loading content via admin-ajax.php
 		// @hack
-		if( empty( $this->getGvOutputData() ) ) {
+		if( ! $this->getGvOutputData() ) {
 
 			do_action( 'gravityview_log_error', '[render_view] gv_output_data not defined; parsing content.', $passed_args );
 
@@ -570,6 +569,11 @@ class GravityView_frontend {
 
 
 			if( $get_entries ) {
+
+				if( !empty( $atts['sort_columns'] ) ) {
+					// add filter to enable column sorting
+					add_filter( 'gravityview/template/field_label', array( $this, 'add_columns_sort_links' ) , 100, 3 );
+				}
 
 				$view_entries = self::get_view_entries( $atts, $view_data['form_id'] );
 
@@ -819,7 +823,6 @@ class GravityView_frontend {
 	 *
 	 * @uses  gravityview_get_entries()
 	 * @access public
-	 * @static
 	 * @param mixed $args
 	 * @param int $form_id
 	 * @return array Associative array with `count`, `entries`, and `paging` keys. `count` has the total entries count, `entries` is an array with Gravity Forms full entry data, `paging` is an array with `offset` and `page_size` keys
@@ -854,18 +857,7 @@ class GravityView_frontend {
 
 
 		// Sorting
-		$sorting = array();
-		if( !empty( $args['sort_field'] ) ) {
-
-			$sorting = array(
-				'key' => $args['sort_field'],
-				'direction' => $args['sort_direction'],
-				'is_numeric' => GVCommon::is_field_numeric( $form_id, $args['sort_field'] )
-			);
-
-		}
-
-		do_action( 'gravityview_log_debug', '[get_view_entries] Sort Criteria : ', $sorting );
+		$sorting = self::updateViewSorting( $args, $form_id );
 
 		$parameters = array(
 			'search_criteria' => $search_criteria,
@@ -911,9 +903,42 @@ class GravityView_frontend {
 
 	}
 
+
+	/**
+	 * Updates the View sorting criteria
+	 *
+	 * @since 1.7
+	 *
+	 * @param $args View settings. Required to have `sort_field` and `sort_direction` keys
+	 * @param int $form_id The ID of the form used to sort
+	 * @return array $sorting Array with `key`, `direction` and `is_numeric` keys
+	 */
+	public static function updateViewSorting( $args, $form_id ) {
+
+		$sorting = array();
+		$sort_field = isset( $_GET['sort'] ) ? $_GET['sort'] : $args['sort_field'];
+		$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : $args['sort_direction'];
+		if( !empty( $sort_field ) ) {
+			$sorting = array(
+				'key' => $sort_field,
+				'direction' => strtolower( $sort_direction ),
+				'is_numeric' => GVCommon::is_field_numeric( $form_id, $sort_field )
+			);
+		}
+
+		GravityView_View::getInstance()->setSorting( $sorting );
+
+		do_action( 'gravityview_log_debug', '[updateViewSorting] Sort Criteria : ', $sorting );
+
+		return $sorting;
+
+	}
+
+
+
 	/**
 	 * Verify if user requested a single entry view
-	 * @return boolean|string false if not, single entry id if true
+	 * @return boolean|string false if not, single entry slug if true
 	 */
 	public static function is_single_entry() {
 		global $wp_rewrite;
@@ -978,7 +1003,7 @@ class GravityView_frontend {
 		//foreach ($posts as $p) {
 
 		// enqueue template specific styles
-		if( !empty( $this->getGvOutputData() ) ) {
+		if( $this->getGvOutputData() ) {
 
 			$views = $this->getGvOutputData()->get_views();
 
@@ -1011,6 +1036,10 @@ class GravityView_frontend {
 				 */
 				$js_localization = apply_filters('gravityview_js_localization', $js_localization, $data );
 
+				if( !empty( $data['atts']['sort_columns'] ) ) {
+					wp_enqueue_style( 'gravityview_font', plugins_url('assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
+				}
+
 				wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), $css_dependencies, GravityView_Plugin::version, 'all' );
 
 				self::add_style( $data['template_id'] );
@@ -1041,6 +1070,83 @@ class GravityView_frontend {
 
 	}
 
+
+	/**
+	 * Inject the sorting links on the table columns
+	 *
+	 * Callback function for hook 'gravityview/template/field_label'
+	 * @see GravityView_API::field_label() (in includes/class-api.php)
+	 *
+	 * @since 1.7
+	 *
+	 * @param $label Field label
+	 * @param $field Field settings
+	 *
+	 * @return string Field Label
+	 */
+	public function add_columns_sort_links( $label = '', $field, $form ) {
+
+		if( !$this->is_field_sortable( $field['id'], $form ) ) {
+			return $label;
+		}
+
+		$sorting = GravityView_View::getInstance()->getSorting();
+
+		$class = 'icon';
+
+		$sort_args = array( 'sort' => $field['id'], 'dir' => 'asc' );
+
+		if( !empty( $sorting['key'] ) && $field['id'] == $sorting['key'] ) {
+			//toggle sorting direction.
+			if( $sorting['direction'] == 'asc' ) {
+				$sort_args['dir'] = 'desc';
+				$class .= ' gv-icon-sort-desc';
+			} else {
+				$sort_args['dir'] = 'asc';
+				$class .= ' gv-icon-sort-asc';
+			}
+		} else {
+			$class .= ' gv-icon-caret-up-down';
+		}
+
+		$url = add_query_arg( $sort_args );
+
+		return '<a href="'. $url .'" class="'. $class .'" ></a>&nbsp;'. $label;
+
+	}
+
+	/**
+	 * Checks if field (column) is sortable
+	 *
+	 * @param string $field Field settings
+	 * @param $form Gravity Forms form object
+	 *
+	 * @since 1.7
+	 *
+	 * @return bool True: Yes, field is sortable; False: not sortable
+	 */
+	public function is_field_sortable( $field_id = '' , $form ) {
+
+		$not_sortable = array(
+			'entry_link',
+			'edit_link',
+			'delete_link',
+			'custom'
+		);
+
+		/**
+		 * Modify what fields should never be sortable.
+		 * @since 1.7
+		 */
+		$not_sortable = apply_filters( 'gravityview/sortable/field_blacklist', $not_sortable, $field_id, $form );
+
+		if( in_array( $field_id, $not_sortable ) ) {
+			return false;
+		}
+
+		return apply_filters( "gravityview/sortable/formfield_{$form['id']}_{$field_id}", apply_filters( "gravityview/sortable/field_{$field_id}", true, $form ) );
+
+	}
 
 }
 
@@ -1082,7 +1188,7 @@ function the_gravityview( $view_id = '', $atts = array() ) {
  * Theme function to identify if it is a Single Entry View
  *
  * @since  1.5.4
- * @return bool|string
+ * @return bool|string False if not, single entry slug if true
  */
 function gravityview_is_single_entry() {
 	return GravityView_frontend::is_single_entry();

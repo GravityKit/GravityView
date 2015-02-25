@@ -39,6 +39,7 @@ abstract class GravityView_FieldType {
      * - desc       // option description
      * - value      // the option default value
      * - label      // the option label
+     * - left_label // In case of checkboxes, left label will appear on the left of the checkbox
      * - id         // the field id
      * - type       // the option type ( text, checkbox, select, ... )
      * - options    // when type is select, define the select options ('choices' is @deprecated)
@@ -89,6 +90,17 @@ abstract class GravityView_FieldType {
     function get_field_label() {
         return esc_html( trim( $this->field['label'] ) );
     }
+
+	/**
+	 * Retrieve field left label
+     *
+     * @since 1.7
+     *
+	 * @return string
+	 */
+	function get_field_left_label() {
+		return esc_html( trim( $this->field['left_label'] ) );
+	}
 
     /**
      * Retrieve field label class

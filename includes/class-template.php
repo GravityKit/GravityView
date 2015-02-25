@@ -102,6 +102,11 @@ class GravityView_View extends Gamajo_Template_Loader {
 	protected $paging = array();
 
 	/**
+	 * @var array Array with `sort_field` and `sort_direction` keys
+	 */
+	protected $sorting = array();
+
+	/**
 	 * @var bool Whether to hide the results until a search is performed
 	 * @since 1.5.4
 	 */
@@ -393,6 +398,20 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 */
 	public function setPaging( $paging ) {
 		$this->paging = $paging;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getSorting() {
+		return $this->sorting;
+	}
+
+	/**
+	 * @param array $sorting
+	 */
+	public function setSorting( $sorting ) {
+		$this->sorting = $sorting;
 	}
 
 	/**
