@@ -1122,7 +1122,18 @@ class GravityView_frontend {
 	 */
 	public function is_field_sortable( $field_id = '' , $form ) {
 
-		$not_sortable = array( 'entry_link', 'edit_link', 'delete_link', 'custom' );
+		$not_sortable = array(
+			'entry_link',
+			'edit_link',
+			'delete_link',
+			'custom'
+		);
+
+		/**
+		 * Modify what fields should never be sortable.
+		 * @since 1.7
+		 */
+		$not_sortable = apply_filters( 'gravityview/sortable/field_blacklist', $not_sortable, $field_id, $form );
 
 		if( in_array( $field_id, $not_sortable ) ) {
 			return false;
