@@ -1108,7 +1108,7 @@ class GravityView_frontend {
 
 		$url = add_query_arg( $sort_args );
 
-		return '<a href="'. $url .'" class="'. $class .'" ></a> '. $label;
+		return '<a href="'. $url .'" class="'. $class .'" ></a>&nbsp;'. $label;
 
 	}
 
