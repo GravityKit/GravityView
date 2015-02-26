@@ -36,8 +36,6 @@ class GV_GFCommon extends GFCommon {
 
 		$entry_post = get_post( $entry['post_id'] );
 
-		$field_array = GVCommon::get_field_array( $field );
-
 		$field_object_or_array = class_exists( 'GF_Fields' ) ? GF_Fields::create( $field ) : $field;
 
 		switch( $field['type'] ) {
@@ -58,6 +56,9 @@ class GV_GFCommon extends GFCommon {
 				// Get the post's current category IDs as an array
 				$value = wp_get_post_categories( $entry['post_id'] );
 
+				// We need to pre-fill the choices, otherwise they will be empty if the form hasn't been submitted.
+				$field_object_or_array = GFCommon::add_categories_as_choices( $field_object_or_array, $value );
+
 				// Depending on the input type for post category, we need to pass it in differently
 				switch( $input_type ) {
 
@@ -75,6 +76,11 @@ class GV_GFCommon extends GFCommon {
 					 * @see GF_Field_Checkbox::get_checkbox_choices() for code inspiration
 					 */
 					case 'checkbox':
+
+						/**
+						 * Standardize field into array, since GF 1.9
+						 */
+						$field_array = GVCommon::get_field_array( $field_object_or_array );
 
 						$post_categories = $value;
 
