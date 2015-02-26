@@ -99,7 +99,7 @@ abstract class GravityView_FieldType {
 	 * @return string
 	 */
 	function get_field_left_label() {
-		return esc_html( trim( $this->field['left_label'] ) );
+		return isset( $this->field['left_label'] ) ? esc_html( trim( $this->field['left_label'] ) ) : NULL;
 	}
 
     /**
