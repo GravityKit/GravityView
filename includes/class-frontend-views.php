@@ -1028,7 +1028,10 @@ class GravityView_frontend {
 				wp_register_script( 'gravityview-jquery-cookie', plugins_url('includes/lib/jquery-cookie/jquery_cookie.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
 
 				$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
-				wp_enqueue_script( 'gravityview-fe-view', plugins_url('assets/js/fe-views'.$script_debug.'.js', GRAVITYVIEW_FILE), apply_filters('gravityview_js_dependencies', $js_dependencies ) , GravityView_Plugin::version, true );
+
+				wp_register_script( 'gravityview-fe-view', plugins_url('assets/js/fe-views'.$script_debug.'.js', GRAVITYVIEW_FILE), apply_filters('gravityview_js_dependencies', $js_dependencies ) , GravityView_Plugin::version, true );
+
+				wp_enqueue_script( 'gravityview-fe-view' );
 
 				/**
 				 * Modify the array passed to wp_localize_script

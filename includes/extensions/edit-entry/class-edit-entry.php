@@ -115,13 +115,7 @@ class GravityView_Edit_Entry {
 		}
 
 		$add_fields = array(
-			'post_title',
-			'post_content',
-			'post_excerpt',
-			'post_tags',
-			'post_category',
 			'post_image',
-			'post_custom_field',
 			'product',
 			'quantity',
 			'shipping',
@@ -363,13 +357,12 @@ class GravityView_Edit_Entry {
 
 		if( $css_only ) { return; }
 
-		wp_register_script( 'gform_gravityforms', GFCommon::get_base_url().'/js/gravityforms.js', array( 'jquery', 'gform_json', 'gform_placeholder', 'sack','plupload-all' ) );
+		wp_register_script( 'gform_gravityforms', GFCommon::get_base_url().'/js/gravityforms.js', array( 'jquery', 'gform_json', 'gform_placeholder', 'sack', 'plupload-all', 'gravityview-fe-view' ) );
 
 		GFFormDisplay::enqueue_form_scripts($gravityview_view->getForm(), false);
 
-		wp_enqueue_script("sack");
-
-		wp_print_scripts();
+		// Sack is required for images
+		wp_print_scripts( array( 'sack', 'gform_gravityforms' ) );
 	}
 
 	/**
@@ -476,6 +469,14 @@ class GravityView_Edit_Entry {
 
 				GFFormsModel::save_lead( $form, $this->entry );
 
+
+				// If there's a post associated with the entry, process post fields
+				if( !empty( $this->entry['post_id'] ) ) {
+
+					$this->maybe_update_post_fields( $form );
+
+				}
+
 				do_action("gform_after_update_entry", $this->form, $this->entry["id"]);
 				do_action("gform_after_update_entry_{$this->form["id"]}", $this->form, $this->entry["id"]);
 
@@ -501,6 +502,87 @@ class GravityView_Edit_Entry {
 		} // endif action is update.
 
 	} // process_save
+
+	/**
+	 * Loop through the fields being edited and if they include Post fields, update the Entry's post object
+	 *
+	 * @param array $form Gravity Forms form
+	 *
+	 * @return void
+	 */
+	function maybe_update_post_fields( $form ) {
+
+		$post_id = $this->entry['post_id'];
+
+		// Security check
+		if( false === current_user_can( 'edit_post', $post_id ) ) {
+			do_action( 'gravityview_log_error', 'The current user does not have the ability to edit Post #'.$post_id );
+			return;
+		}
+
+		$updated_post = $original_post = get_post( $post_id );
+
+		foreach ( $this->entry as $field_id => $value ) {
+
+			$field = RGFormsModel::get_field( $form, $field_id );
+
+			if( class_exists('GF_Fields') ) {
+				$field = GF_Fields::create( $field );
+			}
+
+			if( GFCommon::is_post_field( $field ) ) {
+
+				// Get the value of the field, including $_POSTed value
+				$value = RGFormsModel::get_field_value( $field );
+
+				// Convert the field object in 1.9 to an array for backward compatibility
+				$field_array = get_object_vars( $field );
+
+				switch( $field_array['type'] ) {
+
+					case 'post_title':
+					case 'post_content':
+					case 'post_excerpt':
+						$updated_post->{$field_array['type']} = $value;
+						break;
+					case 'post_tags':
+						wp_set_post_tags( $post_id, $value, false );
+						break;
+					case 'post_category':
+
+						$value = is_array( $value ) ? array_values( $value ) : (array)$value;
+						$value = array_filter( $value );
+
+						wp_set_post_categories( $post_id, $value, false );
+
+						break;
+					case 'post_custom_field':
+
+						$input_type = RGFormsModel::get_input_type( $field );
+						$custom_field_name = $field_array['postCustomFieldName'];
+
+						// Only certain custom field types are supported
+						if( !in_array( $input_type, array( 'list', 'fileupload' ) ) ) {
+							update_post_meta( $post_id, $custom_field_name, $value );
+						}
+
+						break;
+
+				}
+			}
+
+			continue;
+		}
+
+		$return_post = wp_update_post( $updated_post, true );
+
+		if( is_wp_error( $return_post ) ) {
+			do_action( 'gravityview_log_error', 'Updating the post content failed', $return_post );
+		} else {
+			do_action( 'gravityview_log_debug', 'Updating the post content for post #'.$post_id.' succeeded' );
+		}
+
+	}
 
 	/**
 	 * Gets stored entry data and combines it in to $_POST array.
@@ -936,14 +1018,8 @@ class GravityView_Edit_Entry {
 					// Captchas don't need to be re-entered.
 					case 'captcha':
 
-					// Post Fields aren't editable, so we un-fail them.
-					case 'post_title':
-					case 'post_content':
-					case 'post_excerpt':
-					case 'post_tags':
-					case 'post_category':
+					// Post Image fields aren't editable, so we un-fail them.
 					case 'post_image':
-					case 'post_custom_field':
 						$field['failed_validation'] = false;
 						unset( $field['validation_message'] );
 						break;
