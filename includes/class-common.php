@@ -42,6 +42,30 @@ class GVCommon {
 	}
 
 	/**
+	 * Return a Gravity Forms field array, whether using GF 1.9 or not
+	 *
+	 * @since 1.7
+	 *
+	 * @param array|GF_Fields $field Gravity Forms field or array
+	 * @return array Array version of $field
+	 */
+	public static function get_field_array( $field ) {
+
+		if( class_exists('GF_Fields') ) {
+
+			$field_object = GF_Fields::create( $field );
+
+			// Convert the field object in 1.9 to an array for backward compatibility
+			$field_array = get_object_vars( $field_object );
+
+		} else {
+			$field_array = $field;
+		}
+
+		return $field_array;
+	}
+
+	/**
 	 * Get all existing Views
 	 *
 	 * @since  1.5.4

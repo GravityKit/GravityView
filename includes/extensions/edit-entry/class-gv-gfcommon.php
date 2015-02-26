@@ -11,30 +11,203 @@
  */
 class GV_GFCommon extends GFCommon {
 
+	/**
+	 * Generate the output for post fields inputs.
+	 *
+	 * We need to override the default display because the default display only handles the submitted data, not live data from the created post.
+	 *
+	 * @since 1.7
+	 *
+	 * @param $field
+	 * @param $value
+	 * @param $input_type
+	 * @param $entry
+	 *
+	 * @return array|mixed|string|void
+	 */
+	static function get_post_value( $field, $value, $input_type, $entry ) {
+
+		// First, make sure they have the capability to edit the post.
+		if( false === current_user_can( 'edit_post', $entry["post_id"] ) ) {
+			return __('You don&rsquo;t have permission to edit this post.', 'gravityview');
+		}
+
+		$unsupported_field = sprintf( __('You can %sedit this value%s from the post page.', 'gravityview'), "<a href='".admin_url("post.php?action=edit&amp;post={$entry["post_id"]}")."''>", '</a>' );
+
+		$entry_post = get_post( $entry['post_id'] );
+
+		$field_object_or_array = class_exists( 'GF_Fields' ) ? GF_Fields::create( $field ) : $field;
+
+		switch( $field['type'] ) {
+
+			// @todo Too tough to handle in V1 of edit post fields
+			case 'post_image':
+				return $unsupported_field;
+				break;
+
+			case 'post_title':
+			case 'post_content':
+			case 'post_excerpt':
+				$value = $entry_post->{$input_type};
+				$field_type_1_8 = ( $field['type'] === 'post_title' ) ? 'text' : 'textarea';
+				break;
+
+			case 'post_category':
+
+				// Get the post's current category IDs as an array
+				$value = wp_get_post_categories( $entry['post_id'] );
+
+				// We need to pre-fill the choices, otherwise they will be empty if the form hasn't been submitted.
+				$field_object_or_array = GFCommon::add_categories_as_choices( $field_object_or_array, $value );
+
+				// Depending on the input type for post category, we need to pass it in differently
+				switch( $input_type ) {
+
+					/**
+					 * If radio, we only want the first category from the array.
+					 *
+					 * For some reason, other single cat. input types handle this okay, but not radios.
+					 */
+					case 'radio':
+						$value = !empty( $value ) ? array_shift( $value ) : '';
+						break;
+
+					/**
+					 * We need to generate an array where the keys are the input IDs and the values are the category IDs
+					 * @see GF_Field_Checkbox::get_checkbox_choices() for code inspiration
+					 */
+					case 'checkbox':
+
+						/**
+						 * Standardize field into array, since GF 1.9
+						 */
+						$field_array = GVCommon::get_field_array( $field_object_or_array );
+
+						$post_categories = $value;
+
+						$value = array();
+
+						$choice_number = 1;
+						foreach ( $field_array['choices'] as $choice ) {
+
+							if ( $choice_number % 10 == 0 ) { //hack to skip numbers ending in 0. so that 5.1 doesn't conflict with 5.10
+								$choice_number ++;
+							}
+
+							if ( in_array( $choice['value'], $post_categories ) ) {
+								$input_id = $field_array['id'] . '.' . $choice_number;
+								$value[ $input_id ] = $choice['value'];
+							}
+
+							$choice_number ++;
+						}
+						break;
+				}
+
+				$field_object_or_array = GFCommon::add_categories_as_choices( $field_object_or_array, $value );
+
+				break;
+			case 'post_custom_field':
+
+				/**
+				 * Standardize field into array, since GF 1.9
+				 */
+				$field_array = GVCommon::get_field_array( $field_object_or_array );
+
+				$meta_name = $field_array['postCustomFieldName'];
+
+				$value = get_post_meta( $entry['post_id'], $meta_name, true );
+
+				// Only certain custom field types are supported
+				if( in_array( $input_type, array( 'list', 'fileupload' ) ) ) {
+					return $unsupported_field;
+				}
+
+				break;
+			case 'post_tags':
+
+				$field_type_1_8 = 'text';
+
+				$post_tags = wp_get_post_tags( $entry['post_id'] );
+
+				// Get the tags as an array with the value set to the `name` key and the key set to the `term_id`
+				$tags = wp_list_pluck( $post_tags, 'name', 'term_id' );
+
+				// Convert into a CSV
+				$value = implode(', ', $tags );
+
+				break;
+		}
+
+		$form = GFAPI::get_form( $entry['form_id'] );
+
+		// Have the Post Content field display using rich text editor
+		if( $field['type'] === 'post_content' ) {
+
+			/**
+			 * Modify the settings passed to wp_editor()
+			 * @see wp_editor()
+			 */
+			$editor_settings = apply_filters( 'gravityview/edit_entry/post_content/wp_editor_settings', array(
+				'media_buttons' => false,
+				'textarea_rows' => 15,
+				'quicktags' => false
+			));
+
+			// Get the editor output
+			ob_start();
+			wp_editor( $value, 'input_'.$field['id'], $editor_settings );
+			$value = ob_get_clean();
+
+		} else {
+
+			// Otherwise, hand of input generation to Gravity Forms
+
+			if( is_object( $field_object_or_array ) ) {
+				// Gravity Forms 1.9+
+				$value = $field_object_or_array->get_field_input( $form, $value, $entry );
+			} else {
+
+				$field = GVCommon::get_field_array( $field_object_or_array );
+
+				$field['type'] = isset( $field_type_1_8 ) ? $field_type_1_8 : $input_type;
+
+				// 1.9 backward compatibility
+				$value = GFCommon::get_field_input( $field, $value, $entry['id'], $form['id'] );
+			}
+
+		}
+
+		return $value;
+	}
+
 	public static function get_field_input( $field, $value = '', $lead_id = 0, $form_id = 0, $form = null ){
 
+		// We override the is_post_field validation message because:
+		// 1. We don't like the default message much;
+		// 2. We want it to be translatable, where the Gravity Forms one isn't
+		// 3. We wanted to check whether the current user could edit the post in question.
+		$lead = RGFormsModel::get_lead($lead_id);
+
+		$input_type = RGFormsModel::get_input_type( $field );
+
 		// Check if we need to use this hack. Ideally, no.
-		switch( RGFormsModel::get_input_type( $field ) ){
+		switch( $field['type'] ){
 
 			// We need to take control of this file type.
 			case 'fileupload':
-			break;
+				break;
 
 			// We have no problem with you, other field input babies.
 			default:
 
-				// We override the is_post_field validation message because:
-				// 1. We don't like the default message much;
-				// 2. We want it to be translatable, where the Gravity Forms one isn't
-				// 3. We wanted to check whether the current user could edit the post in question.
-				$lead = RGFormsModel::get_lead($lead_id);
-
 				if( is_numeric( $lead["post_id"] ) && parent::is_post_field( $field ) ){
-					if( false === current_user_can( 'edit_post', $lead["post_id"] ) ) {
-				    	return __('You don&rsquo;t have permission to edit this post.', 'gravityview');
-				    } else {
-				    	return sprintf( __('You can %sedit this post%s from the post page.', 'gravityview'), "<a href='".admin_url("post.php?action=edit&amp;post={$lead["post_id"]}")."''>", '</a>' );
-				    }
+
+					/**
+					 * Handle post field inputs
+					 * @since 1.7
+					 */
+					return self::get_post_value( $field, $value, $input_type, $lead );
 				}
 
 				return parent::get_field_input( $field, $value, $lead_id, $form_id );
@@ -45,7 +218,6 @@ class GV_GFCommon extends GFCommon {
         $field_id = "input_" . $form_id . "_$id";
 
         $class = rgar($field, "size");
-        $class_suffix = "";
 
         $field_input = apply_filters("gform_field_input", "", $field, $value, $lead_id, $form_id);
 
