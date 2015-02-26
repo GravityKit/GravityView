@@ -23,8 +23,10 @@ class GravityView_FieldType_checkbox extends GravityView_FieldType {
 				</label>
 			</td>
 			<td>
+				<label>
 				<?php $this->render_input( $override_input ); ?>
 				&nbsp;<?php echo $this->get_field_label() . $this->get_tooltip() . $this->get_field_desc(); ?>
+				</label>
 			</td>
 
 		<?php else: ?>
