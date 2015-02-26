@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 				files: [{
 		          expand: true,
 		          cwd: 'assets/css/scss',
-		          src: ['*.scss','!admin-merge-tags.scss','!admin-tooltips.scss','!font.scss'],
+		          src: ['*.scss','!admin-merge-tags.scss','!admin-tooltips.scss'],
 		          dest: 'assets/css',
 		          ext: '.css'
 		      }]
@@ -97,14 +97,6 @@ module.exports = function(grunt) {
 
 			// Create a ZIP file
 			zip: 'python /usr/bin/git-archive-all ../gravityview.zip'
-		},
-
-		wp_readme_to_markdown: {
-			your_target: {
-				files: {
-					'readme.md': 'readme.txt'
-				},
-			},
 		}
 	});
 

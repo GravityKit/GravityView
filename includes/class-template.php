@@ -102,6 +102,11 @@ class GravityView_View extends Gamajo_Template_Loader {
 	protected $paging = array();
 
 	/**
+	 * @var array Array with `sort_field` and `sort_direction` keys
+	 */
+	protected $sorting = array();
+
+	/**
 	 * @var bool Whether to hide the results until a search is performed
 	 * @since 1.5.4
 	 */
@@ -396,6 +401,20 @@ class GravityView_View extends Gamajo_Template_Loader {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getSorting() {
+		return $this->sorting;
+	}
+
+	/**
+	 * @param array $sorting
+	 */
+	public function setSorting( $sorting ) {
+		$this->sorting = $sorting;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getBackLinkLabel() {
@@ -492,9 +511,9 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		$output = '';
 
-		$zone_id = "{$final_atts['context']}_{$final_atts['slug']}-{$zone}";
+		$final_atts['zone_id'] = "{$final_atts['context']}_{$final_atts['slug']}-{$zone}";
 
-		$fields = $this->getField( $zone_id );
+		$fields = $this->getField( $final_atts['zone_id'] );
 
 		// Backward compatibility
 		if( 'table' === $this->getTemplatePartSlug() ) {

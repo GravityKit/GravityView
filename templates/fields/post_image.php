@@ -31,9 +31,12 @@ $link_atts = '';
 /**
  * @since 1.5.4
  *
+ * $field['postFeaturedImage'] - holds if the Post Image field is set as post featured image
+ * $field_settings['dynamic_data'] - whether the field content should be fetched from the Post (dynamic data) or from the GF entry
+ *
  * Dynamic data (get post featured image instead of GF entry field)
  */
-if( !empty( $field_settings['dynamic_data'] ) && !empty( $entry['post_id'] ) && has_post_thumbnail( $entry['post_id'] ) ) {
+if( !empty( $field['postFeaturedImage'] ) && !empty( $field_settings['dynamic_data'] ) && !empty( $entry['post_id'] ) && has_post_thumbnail( $entry['post_id'] ) ) {
 
 	/**
 	 * Modify what size is fetched for the post's Featured Image
@@ -68,7 +71,7 @@ else {
 	$href = $url;
 
 	// Only show the lightbox if linking to the file itself
-	if( !empty( $gravityview_view->getAtts('lightbox') ) ) {
+	if( $gravityview_view->getAtts('lightbox') ) {
 		$link_atts .= "target='_blank' class='thickbox'";
 	}
 

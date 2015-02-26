@@ -1,14 +1,14 @@
 # 
 # Translators:
-# Md Akter Hosen <tareqhi@gmail.com>, 2014
+# Md Akter Hosen <tareqhi@gmail.com>, 2014-2015
 # Md Akter Hosen <tareqhi@gmail.com>, 2014
 # Zachary Katz <zack@katz.co>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2015-02-13 00:24-0700\n"
-"PO-Revision-Date: 2015-02-13 07:25+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2015-02-23 09:31+0000\n"
+"Last-Translator: Md Akter Hosen <tareqhi@gmail.com>\n"
 "Language-Team: Bengali (http://www.transifex.com/projects/p/gravityview/language/bn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -466,7 +466,7 @@ msgstr "এই ফর্মের সেটিংস সম্পাদন ক�
 
 #: includes/class-admin-views.php:257
 msgid "Preview Form"
-msgstr ""
+msgstr "ফরম দেখুন"
 
 #: includes/class-admin-views.php:257
 msgid "Preview this form"
@@ -555,13 +555,13 @@ msgstr "\"+ %s\" অথবা এখানে পুরাতনগুলো ট
 #: includes/class-admin-views.php:789
 #, php-format
 msgid "This View is configured using the %s View type, which is disabled."
-msgstr ""
+msgstr "এই দৃশ্যটি %s দৃশ্য ব্যবহার করে কনফিগার করা হয়েছে, যেটি নিস্ক্রিয় রয়েছে।"
 
 #: includes/class-admin-views.php:790
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
-msgstr ""
+msgstr "তথ্য হারিয়ে যায়নি। সংশ্লিষ্ঠ প্লাগইন্সটি সক্রিয় করুন এবং কনফিগারেশন পুনরায় দেখাবে।"
 
 #: includes/class-admin-views.php:867
 msgid "Enter View name here"
@@ -635,7 +635,7 @@ msgstr "পরিবর্তনের লিস্ট"
 
 #: includes/class-admin-welcome.php:256
 msgid "What&rsquo;s New"
-msgstr ""
+msgstr "নতুন &rsquo; কি"
 
 #: includes/class-admin-welcome.php:736
 msgid "GravityView is brought to you by:"

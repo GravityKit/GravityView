@@ -75,6 +75,11 @@ class GravityView_API {
 
 		} // End $field['show_label']
 
+		/**
+		 * @since 1.7
+		 */
+		$label = apply_filters( 'gravityview/template/field_label', $label, $field, $form, $entry );
+
 		return $label;
 	}
 
@@ -1077,15 +1082,29 @@ function gravityview_get_map_link( $address ) {
  */
 function gravityview_field_output( $passed_args ) {
 
-	$args = wp_parse_args( $passed_args, array(
+	$defaults = array(
 		'entry' => NULL,
 		'field' => NULL,
 		'form' => NULL,
 		'hide_empty' => true,
 		'markup' => '<div class="{{class}}">{{label}}{{value}}</div>',
 		'label_markup' => '',
-		'wpautop' => false
-	) );
+		'wpautop' => false,
+		'zone_id' => NULL,
+	);
+
+	$args = wp_parse_args( $passed_args, $defaults );
+
+	/**
+	 * Modify the args before generation begins
+	 *
+	 * @since 1.7
+	 *
+	 * @param array $args Associative array; `field` and `form` is required.
+	 * @param array $passed_args Original associative array with field data. `field` and `form` are required.
+	 *
+	 */
+	$args = apply_filters( 'gravityview/field_output/args', $args, $passed_args );
 
 	// Required fields.
 	if( empty( $args['field'] ) || empty( $args['form'] ) ) {
@@ -1106,7 +1125,12 @@ function gravityview_field_output( $passed_args ) {
 
 	$class = gv_class( $args['field'], $args['form'], $entry );
 
-	$label = esc_html( gv_label( $args['field'], $entry ) );
+	// get field label if needed
+	if( !empty( $args['label_markup'] ) || false !== strpos( $args['markup'], '{{label}}' ) ) {
+		$label = gv_label( $args['field'], $entry );
+	} else {
+		$label = '';
+	}
 
 	if( !empty( $label ) ) {
 		// If the label markup is overridden

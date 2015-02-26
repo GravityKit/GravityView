@@ -14,7 +14,7 @@
 
 (function( $ ) {
 
-    var viewConfiguration;
+    var viewConfiguration, viewGeneralSettings;
 
     viewConfiguration = {
 
@@ -35,7 +35,7 @@
             // Start by showing/hiding on load
             vcfg.toggleInitialVisibility(vcfg);
 
-		// Start bind to $('body')
+		    // Start bind to $('body')
             $('body')
 
             	// select form
@@ -474,7 +474,7 @@
 
             var data = {
                 action: 'gv_sortable_fields_form',
-                nonce: gvGlobals.nonce,
+                nonce: gvGlobals.nonce
             };
 
             if (context !== undefined && 'preset' === context) {
@@ -639,7 +639,7 @@
             var data = {
                 action: 'gv_get_active_areas',
                 template_id: template,
-                nonce: gvGlobals.nonce,
+                nonce: gvGlobals.nonce
             };
 
             $.post(ajaxurl, data, function (response) {
@@ -664,7 +664,7 @@
             var data = {
                 action: 'gv_get_preset_fields',
                 template_id: template,
-                nonce: gvGlobals.nonce,
+                nonce: gvGlobals.nonce
             };
 
             $.post(ajaxurl, data, function (response) {
@@ -738,9 +738,9 @@
                     disabled: true, // Don't open on hover
                     position: {
                         my: "center bottom",
-                        at: "center top-12",
+                        at: "center top-12"
                     },
-                    tooltipClass: 'top',
+                    tooltipClass: 'top'
                 })
                 // add title attribute so the tooltip can continue to work (jquery ui bug?)
                 .attr("title", "")
@@ -1186,10 +1186,11 @@
 
         	// If the View isn't a Start Fresh view, we just return true
         	// so that the click on the Publish button can process.
-        	if (!vcfg.startFreshStatus || templateId === '') {
+        	if ( !vcfg.startFreshStatus || templateId === '' ) {
 
         		// Serialize the inputs so that `max_input_vars`
-        		return vcfg.serializeForm( e );
+                return vcfg.serializeForm();
+
         	}
 
         	return false;
@@ -1204,9 +1205,15 @@
          * @param  {[type]} e [description]
          * @return {[type]}   [description]
          */
-        serializeForm: function (e) {
+        serializeForm: function( e ) {
 
-            e.stopPropagation();
+            if( $( e.target ).data('gv-valid') ) {
+                return true;
+            }
+
+            e.stopImmediatePropagation();
+
+            $( e.target ).data('gv-valid', false );
 
         	/**
         	 * Add slashes to date fields so stripslashes doesn't strip all of them
@@ -1232,7 +1239,15 @@
         		'type': 'hidden'
         	}));
 
-            return true;
+
+            // make sure the "slow" browsers did append all the serialized data to the form
+            setTimeout( function() {
+
+                $( e.target ).data( 'gv-valid', true ).submit();
+
+            }, 101 );
+
+            return false;
 
         },
 
@@ -1253,7 +1268,7 @@
             var data = {
                 action: 'gv_set_preset_form',
                 template_id: templateId,
-                nonce: gvGlobals.nonce,
+                nonce: gvGlobals.nonce
             };
 
             $.ajax({
@@ -1291,11 +1306,74 @@
     }; // end viewConfiguration object
 
 
+    /**
+     * Manages the General View Settings
+     *
+     * @since 1.7
+     *
+     * @type {{templateId: null, init: Function, updateSettingsDisplay: Function, toggleSetting: Function}}
+     */
+    viewGeneralSettings = {
+
+        /**
+         * Holds the current view type id (template)
+         */
+        templateId: null,
+
+        /**
+         * Init method
+         */
+        init: function() {
+
+            // Conditional display general settings & trigger display settings if template changes
+            $('#gravityview_directory_template').change( viewGeneralSettings.updateSettingsDisplay ).trigger('change');
+
+        },
+
+        /**
+         * Callback method to show/hide settings if template changes and settings have a specific template attribute
+         */
+        updateSettingsDisplay: function() {
+
+            viewGeneralSettings.templateId = $(this).val();
+
+            $('tr[data-show-if]').each( viewGeneralSettings.toggleSetting );
+
+        },
+
+        /**
+         * Show/Hides setting based on the template
+         */
+        toggleSetting: function() {
+            var row = $(this),
+                templates = row.attr( 'data-show-if' );
+
+            // if setting field attribute is empty, leave..
+            if( templates.length < 1 ) {
+                return;
+            }
+
+
+            if( viewGeneralSettings.templateId.length > 0 && templates.indexOf( viewGeneralSettings.templateId ) > -1 ) {
+                row.show();
+            } else {
+                row.find('select, input').val('').prop('checked', false );
+                row.hide();
+            }
+
+        }
+
+    };  // end viewGeneralSettings object
+
+    
 
 	jQuery(document).ready( function( $ ) {
 
 		// title placeholder
 		$('#title-prompt-text').text( gvGlobals.label_viewname );
+
+        // start the general view settings magic
+        viewGeneralSettings.init();
 
 		// start the View Configuration magic
 		viewConfiguration.init();

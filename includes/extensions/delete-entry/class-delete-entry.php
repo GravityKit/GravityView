@@ -196,7 +196,7 @@ final class GravityView_Delete_Entry {
 	 * @param [type] $entry [description]
 	 */
 	function set_entry( $entry = null ) {
-		$this->entry = empty( $entry ) ? $gravityview_view->entries[0] : $entry;
+		$this->entry = empty( $entry ) ? GravityView_View::getInstance()->entries[0] : $entry;
 	}
 
 	/**
@@ -504,7 +504,7 @@ final class GravityView_Delete_Entry {
 		}
 
 		// Only checks user_delete view option if view is already set
-		if( !empty( $gravityview_view->getViewId() ) ) {
+		if( $gravityview_view->getViewId() ) {
 
 			$user_delete = $gravityview_view->getAtts('user_delete');
 
