@@ -536,7 +536,7 @@ class GravityView_Edit_Entry {
 				$value = RGFormsModel::get_field_value( $field );
 
 				// Convert the field object in 1.9 to an array for backward compatibility
-				$field_array = get_object_vars( $field );
+				$field_array = GVCommon::get_field_array( $field );
 
 				switch( $field_array['type'] ) {
 

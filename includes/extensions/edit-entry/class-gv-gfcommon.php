@@ -49,6 +49,7 @@ class GV_GFCommon extends GFCommon {
 			case 'post_content':
 			case 'post_excerpt':
 				$value = $entry_post->{$input_type};
+				$field_type_1_8 = ( $field['type'] === 'post_title' ) ? 'text' : 'textarea';
 				break;
 
 			case 'post_category':
@@ -108,7 +109,12 @@ class GV_GFCommon extends GFCommon {
 				break;
 			case 'post_custom_field':
 
-				$meta_name = $field->postCustomFieldName;
+				/**
+				 * Standardize field into array, since GF 1.9
+				 */
+				$field_array = GVCommon::get_field_array( $field_object_or_array );
+
+				$meta_name = $field_array['postCustomFieldName'];
 
 				$value = get_post_meta( $entry['post_id'], $meta_name, true );
 
@@ -119,6 +125,9 @@ class GV_GFCommon extends GFCommon {
 
 				break;
 			case 'post_tags':
+
+				$field_type_1_8 = 'text';
+
 				$post_tags = wp_get_post_tags( $entry['post_id'] );
 
 				// Get the tags as an array with the value set to the `name` key and the key set to the `term_id`
@@ -158,6 +167,11 @@ class GV_GFCommon extends GFCommon {
 				// Gravity Forms 1.9+
 				$value = $field_object_or_array->get_field_input( $form, $value, $entry );
 			} else {
+
+				$field = GVCommon::get_field_array( $field_object_or_array );
+
+				$field['type'] = isset( $field_type_1_8 ) ? $field_type_1_8 : $input_type;
+
 				// 1.9 backward compatibility
 				$value = GFCommon::get_field_input( $field, $value, $entry['id'], $form['id'] );
 			}
