@@ -51,7 +51,7 @@
 						'markup'     => '<h4 class="{{class}}">{{label}}{{value}}</h4>'
 					));
 
-					$this->renderZone('image', array(
+					$this->renderZone('description', array(
 						'wrapper_class' => 'gv-list-view-content-description',
 						'label_markup' => '<h4>{{label}}</h4>',
 						'wpautop' => true

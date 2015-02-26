@@ -605,7 +605,7 @@ class GravityView_frontend {
 			$entry = $this->getEntry();
 
 			// You are not permitted to view this entry.
-			if( empty( $entry ) ) {
+			if( empty( $entry ) || !self::is_entry_approved( $entry, $atts ) ) {
 
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.');
 
@@ -755,6 +755,36 @@ class GravityView_frontend {
 		}
 
 		return $search_criteria;
+	}
+
+
+	/**
+	 * Check if a certain entry is approved.
+	 *
+	 * If we pass the View settings ($args) it will check the 'show_only_approved' setting before
+	 *   checking the entry approved field, returning true if show_only_approved = false.
+	 *
+	 * @since 1.7
+	 *
+	 * @param array $entry  Entry object
+	 * @param array $args   View settings (optional)
+	 *
+	 * @return bool
+	 */
+	public static function is_entry_approved( $entry, $args = array() ) {
+
+		if( empty( $entry['id'] ) || ( array_key_exists( 'show_only_approved', $args ) && !$args['show_only_approved'] ) ) {
+			// is implicitly approved if entry is null or View settings doesn't require to check for approval
+			return true;
+		}
+
+		$is_approved = gform_get_meta( $entry['id'], 'is_approved' );
+
+		if( $is_approved ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -1095,7 +1125,7 @@ class GravityView_frontend {
 
 		$sorting = GravityView_View::getInstance()->getSorting();
 
-		$class = 'icon';
+		$class = 'gv-sort icon';
 
 		$sort_args = array( 'sort' => $field['id'], 'dir' => 'asc' );
 
