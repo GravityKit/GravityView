@@ -208,7 +208,14 @@ class GravityView_API {
 			$value = isset($entry[$field_type]) ? $entry[$field_type] : NULL;
 		}
 
+		// Prevent any PHP warnings that may be generated
+		ob_start();
+
 		$display_value = GFCommon::get_lead_field_display($field, $value, $entry["currency"], false, $format);
+
+		if( $errors = ob_get_clean() ) {
+			do_action( 'gravityview_log_error', 'GravityView_API[field_value] Errors when calling GFCommon::get_lead_field_display()', $errors );
+		}
 
 		$display_value = apply_filters("gform_entry_field_value", $display_value, $field, $entry, $form);
 
