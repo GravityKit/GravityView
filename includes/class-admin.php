@@ -537,7 +537,7 @@ class GravityView_Admin {
 
 		$gf_status = self::get_plugin_status( 'gravityforms/gravityforms.php' );
 
-		if( $gf_status !== true ) {
+		if( $gf_status !== true && !class_exists( 'GFCommon' ) ) {
 			if( $gf_status === 'inactive' ) {
 				self::$admin_notices['gf_inactive'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravityview' ), '<h3>', "</h3>\n\n".'<strong><a href="'. wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php') . '" class="button button-large">', '</a></strong>' ) );
 			} else {
