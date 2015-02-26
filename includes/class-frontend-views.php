@@ -1092,7 +1092,7 @@ class GravityView_frontend {
 
 		$sorting = GravityView_View::getInstance()->getSorting();
 
-		$class = 'icon';
+		$class = 'gv-sort icon';
 
 		$sort_args = array( 'sort' => $field['id'], 'dir' => 'asc' );
 
