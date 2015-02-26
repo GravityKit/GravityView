@@ -136,6 +136,7 @@ class GV_GFCommon extends GFCommon {
 			$editor_settings = apply_filters( 'gravityview/edit_entry/post_content/wp_editor_settings', array(
 				'media_buttons' => false,
 				'textarea_rows' => 15,
+				'quicktags' => false
 			));
 
 			// Get the editor output
