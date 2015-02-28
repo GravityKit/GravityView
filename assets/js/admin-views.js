@@ -1189,7 +1189,7 @@
         	if ( !vcfg.startFreshStatus || templateId === '' ) {
 
         		// Serialize the inputs so that `max_input_vars`
-                return vcfg.serializeForm();
+                return vcfg.serializeForm( e );
 
         	}
 
