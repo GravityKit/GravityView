@@ -53,8 +53,9 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 	/**
 	 * @var int View ID
+	 * @todo: this needs to be public until extensions support 1.7+
 	 */
-	protected $view_id = NULL;
+	public $view_id = NULL;
 
 	/**
 	 * @var array Fields for the form
