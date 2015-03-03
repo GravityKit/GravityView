@@ -211,7 +211,7 @@ class GravityView_Welcome {
 			</div>
 
 			<div class="feature-section clear">
-				<h2>Configure Mulitple Entry &amp; Single Entry Layouts</h2>
+				<h2>Configure Multiple Entry &amp; Single Entry Layouts</h2>
 				<p><img src="<?php echo plugins_url( 'assets/images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" class="gv-welcome-screenshots" />You can configure how <strong>Multiple Entry</strong> and <strong>Single Entry</strong>. These can be configured by using the tabs under "View Configuration."</p>
 
 				<ul class="ul-disc">
