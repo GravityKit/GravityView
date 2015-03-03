@@ -185,23 +185,23 @@ class GVCommon {
 
 				if( $include_parent_field || empty( $field['inputs'] ) ) {
 					$fields[ $field['id'] ] = array(
-						'label' => $field['label'],
+						'label' => rgar( $field, 'label' ),
 						'parent' => null,
-						'type' => $field['type'],
-						'adminLabel' => $field['adminLabel'],
-						'adminOnly' => $field['adminOnly'],
+						'type' => rgar( $field, 'type' ),
+						'adminLabel' => rgar( $field, 'adminLabel' ),
+						'adminOnly' => rgar( $field, 'adminOnly' ),
 					);
 				}
 
 				if( $add_default_properties && !empty( $field['inputs'] ) ) {
 					foreach( $field['inputs'] as $input ) {
 						$fields[ (string)$input['id'] ] = array(
-							'label' => $input['label'],
-							'customLabel' => ( isset( $input['customLabel'] ) ? $input['customLabel'] : '' ),
+							'label' => rgar( $input, 'label' ),
+							'customLabel' => rgar( $input, 'customLabel' ),
 							'parent' => $field,
-							'type' => $field['type'],
-							'adminLabel' => $field['adminLabel'],
-							'adminOnly' => $field['adminOnly'],
+							'type' => rgar( $field, 'type' ),
+							'adminLabel' => rgar( $field, 'adminLabel' ),
+							'adminOnly' => rgar( $field, 'adminOnly' ),
 						);
 					}
 
