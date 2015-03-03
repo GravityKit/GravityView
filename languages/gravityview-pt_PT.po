@@ -1,13 +1,13 @@
 # 
 # Translators:
-# luistinygod <luis@gomo.pt>, 2014
+# luistinygod <luis@gomo.pt>, 2014-2015
 # Zachary Katz <zack@katz.co>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2015-02-13 00:24-0700\n"
-"PO-Revision-Date: 2015-02-13 10:34+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2015-03-03 17:24+0000\n"
+"Last-Translator: luistinygod <luis@gomo.pt>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/gravityview/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -465,7 +465,7 @@ msgstr "Editar as configurações deste formulário"
 
 #: includes/class-admin-views.php:257
 msgid "Preview Form"
-msgstr ""
+msgstr "Previsão do formulário"
 
 #: includes/class-admin-views.php:257
 msgid "Preview this form"
@@ -554,13 +554,13 @@ msgstr "\"%s\" ou arrastar %ss para aqui."
 #: includes/class-admin-views.php:789
 #, php-format
 msgid "This View is configured using the %s View type, which is disabled."
-msgstr ""
+msgstr "Esta Vista foi configurada para utilizar o template %s que se encontra desactivado."
 
 #: includes/class-admin-views.php:790
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
-msgstr ""
+msgstr "A configuração anterior encontra-se guardada na base de dados. Active novamente o plugin e a configuração aparece novamente."
 
 #: includes/class-admin-views.php:867
 msgid "Enter View name here"
@@ -634,7 +634,7 @@ msgstr "Lista de Alterações"
 
 #: includes/class-admin-welcome.php:256
 msgid "What&rsquo;s New"
-msgstr ""
+msgstr "Novidades"
 
 #: includes/class-admin-welcome.php:736
 msgid "GravityView is brought to you by:"
@@ -902,12 +902,12 @@ msgstr "Mostrar apenas entradas aprovadas"
 
 #: includes/class-data.php:454
 msgid "Hide View data until search is performed"
-msgstr ""
+msgstr "Esconder a Vista até efectuar pesquisa"
 
 #: includes/class-data.php:457
 msgid ""
 "When enabled it will only show any View entries after a search is performed."
-msgstr ""
+msgstr "Mostra as entradas da Vista apenas depois de efectuar uma pesquisa."
 
 #: includes/class-data.php:462
 msgid "Hide empty fields"
@@ -1043,32 +1043,32 @@ msgstr "Vazio"
 
 #: includes/class-duplicate-view.php:221
 msgid "Clone"
-msgstr ""
+msgstr "Clonar"
 
 #: includes/class-duplicate-view.php:222
 msgid "Clone this View"
-msgstr ""
+msgstr "Clonar esta Vista"
 
 #: includes/class-duplicate-view.php:227
 msgid "New Draft"
-msgstr ""
+msgstr "Novo Rascunho"
 
 #: includes/class-duplicate-view.php:227
 msgid "Clone View"
-msgstr ""
+msgstr "Clonar Vista"
 
 #: includes/class-duplicate-view.php:228
 msgid "Copy as a new draft View"
-msgstr ""
+msgstr "Copiar a Vista como Rascunho"
 
 #: includes/class-duplicate-view.php:296
 msgid "No post to duplicate has been supplied!"
-msgstr ""
+msgstr "Não foi indicado nenhum artigo para ser duplicado!"
 
 #: includes/class-duplicate-view.php:319
 #, php-format
 msgid "Copy creation failed, could not find original View with ID #%d"
-msgstr ""
+msgstr "Ocorreu um erro: não foi possível encontrar a Vista original com o ID #%d."
 
 #: includes/class-frontend-views.php:489
 msgid ""
@@ -1078,12 +1078,12 @@ msgstr "Tentou ver uma entrada que não existe ou não está visível."
 #: includes/class-frontend-views.php:864
 msgctxt "Clear all data from the form"
 msgid "Clear"
-msgstr ""
+msgstr "Apagar"
 
 #: includes/class-frontend-views.php:865
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
-msgstr ""
+msgstr "Reset"
 
 #: includes/class-gravityview-extension.php:175
 #, php-format
@@ -1097,23 +1097,23 @@ msgstr "A extensão %s necessita do GravityView com a versão %s ou superior."
 
 #: includes/class-oembed.php:197
 msgid "This will look better when it is embedded."
-msgstr ""
+msgstr "Vai gostar mais de ver quando o conteúdo estiver embebido."
 
 #: includes/class-oembed.php:198
 msgid ""
 "Styles don't get loaded when being previewed, so the content below will look"
 " strange. Don't be concerned!"
-msgstr ""
+msgstr "Não se preocupe se o conteúdo em baixo não estiver formatado. Os estilos não foram carregados na previsão."
 
 #: includes/class-oembed.php:248
 #, php-format
 msgid "Embed Entry %d"
-msgstr ""
+msgstr "A Entrada %d foi embebida"
 
 #: includes/class-oembed.php:250
 #, php-format
 msgid "This entry will be displayed as it is configured in View %d"
-msgstr ""
+msgstr "Esta entrada será formatada de acordo com as definições da Vista %d"
 
 #: includes/class-post-types.php:35
 msgctxt "Post Type General Name"
@@ -1478,7 +1478,7 @@ msgstr "Links Páginas"
 
 #: includes/default-widgets.php:188
 msgid "Insert custom text or HTML as a widget"
-msgstr ""
+msgstr "Inserir texto personalizado ou HTML"
 
 #: includes/default-widgets.php:199 includes/fields/custom.php:23
 msgid "Enter text or HTML. Also supports shortcodes."
@@ -1495,7 +1495,7 @@ msgstr "Envolver cada bloco de texto com uma tag HTML de parágrafo (recomendado
 
 #: includes/default-widgets.php:362
 msgid "This class will be added to the widget container"
-msgstr ""
+msgstr "Esta classe será adicionada ao widget (HTML container)"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:107
 msgid "Delete Link Text"
@@ -1676,7 +1676,7 @@ msgstr "Vertical"
 
 #: includes/extensions/search-widget/class-search-widget.php:53
 msgid "Show Clear button"
-msgstr ""
+msgstr "Mostrar botão de Apagar"
 
 #: includes/extensions/search-widget/class-search-widget.php:57
 msgid "Search Bar"
@@ -1737,7 +1737,7 @@ msgstr "Entrada ID:"
 
 #: includes/extensions/search-widget/class-search-widget.php:743
 msgid "Clear"
-msgstr ""
+msgstr "Apagar"
 
 #: includes/extensions/search-widget/class-search-widget.php:776
 msgctxt "Close calendar"
@@ -1937,19 +1937,19 @@ msgstr "Abrir o link na mesma janela?"
 
 #: includes/widgets.php:23
 msgid "GravityView Recent Entries"
-msgstr ""
+msgstr "GravityView Entradas Recentes"
 
 #: includes/widgets.php:26
 msgid "Display the most recent entries for a View"
-msgstr ""
+msgstr "Mostrar as entradas mais recentes de uma Vista"
 
 #: includes/widgets.php:231
 msgid "Recent Entries"
-msgstr ""
+msgstr "Entradas Recentes"
 
 #: includes/widgets.php:234
 msgid "Entry #{entry_id}"
-msgstr ""
+msgstr "Entrada #{entry_id}"
 
 #: includes/widgets.php:242 includes/widgets.php:448
 msgid "Title:"
@@ -1957,78 +1957,78 @@ msgstr "Título:"
 
 #: includes/widgets.php:266
 msgid "&mdash; Select a View as Entries Source &mdash;"
-msgstr ""
+msgstr "&mdash; Escolha uma Vista como origem das entradas &mdash;"
 
 #: includes/widgets.php:280
 msgid "Number of entries to show:"
-msgstr ""
+msgstr "Número de entradas visíveis:"
 
 #: includes/widgets.php:287
 msgid "Entry link text (required)"
-msgstr ""
+msgstr "Texto no link da entrada (obrigatório)"
 
 #: includes/widgets.php:294
 msgid "Text or HTML to display after the link (optional)"
-msgstr ""
+msgstr "Texto ou HTML visível depois do link (opcional)"
 
 #: includes/widgets.php:322
 msgid "A search form for a specific GravityView."
-msgstr ""
+msgstr "Formulário de pesquisa para uma vista GravityView específica."
 
 #: includes/widgets.php:329
 msgid "GravityView Search"
-msgstr ""
+msgstr "GravityView - Pesquisa"
 
 #: includes/widgets.php:416
 #, php-format
 msgid ""
 "This widget is not configurable from this screen. Please configure it on the"
 " %sWidgets page%s."
-msgstr ""
+msgstr "Este widget não pode ser configurado a partir deste ecrã. Por favor configure-o na %spágina dos Widgets%s."
 
 #: includes/widgets.php:458
 msgid "Please select a View to search."
-msgstr ""
+msgstr "Por favor escolha uma Vista para ser pesquisada"
 
 #: includes/widgets.php:466
 msgid "View:"
-msgstr ""
+msgstr "Vista:"
 
 #: includes/widgets.php:468
 msgid "&mdash; Select a View &mdash;"
-msgstr ""
+msgstr "&mdash; Escolha uma Vista &mdash;"
 
 #: includes/widgets.php:495
 msgid "If Embedded, Page ID:"
-msgstr ""
+msgstr "Se embebida, ID página:"
 
 #: includes/widgets.php:498
 msgid ""
 "To have a search performed on an embedded View, enter the ID of the post or "
 "page where the View is embedded."
-msgstr ""
+msgstr "Para que os resultados da pesquisa sejam visíveis na página onde a Vista foi embebida, introduza o ID do artigo ou da página onde a Vista foi embebida."
 
 #: includes/widgets.php:499 includes/widgets.php:536
 msgid "Learn more&hellip;"
-msgstr ""
+msgstr "Saiba mais&hellip;"
 
 #: includes/widgets.php:507
 msgid "Searchable fields:"
-msgstr ""
+msgstr "Campos pesquisáveis:"
 
 #: includes/widgets.php:508
 msgid "Search Fields"
-msgstr ""
+msgstr "Campos de Pesquisa"
 
 #: includes/widgets.php:535
 msgid ""
 "You did not enter a number. The value entered should be a number, "
 "representing the ID of the post or page the View is embedded on."
-msgstr ""
+msgstr "Não foi introduzido um número. O valor introduzido tem de ser numérico e deve coincidir com o ID do artigo ou da página onde a Vista foi embebida."
 
 #: includes/widgets.php:542
 msgid "There is no post or page with that ID."
-msgstr ""
+msgstr "Não existe nenhum artigo ou página com o ID introduzido."
 
 #: includes/widgets.php:549
 #, php-format
@@ -2036,11 +2036,11 @@ msgid ""
 "The Post ID entered is not valid. You may have entered a post or page that "
 "does not contain the selected View. Make sure the post contains the "
 "following shortcode: %s"
-msgstr ""
+msgstr "O ID introduzido não é válido. Poderá ter introduzido um artigo ou página que não contem a Vista escolhida. Verifique novamente que introduziu o seguinte shortcode: %s"
 
 #: includes/widgets.php:554
 msgid "The ID is already a View."
-msgstr ""
+msgstr "O ID introduzido já é uma Vista."
 
 #: templates/fields/email.php:65
 msgid "Email hidden; Javascript is required."
