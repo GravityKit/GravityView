@@ -526,13 +526,22 @@ class GravityView_Admin {
 	 * Check if Gravity Forms plugin is active and show notice if not.
 	 *
 	 * @access public
-	 * @return void
+	 * @return boolean True: checks have been passed; GV is fine to run; False: checks have failed, don't continue loading
 	 */
 	public static function check_gravityforms() {
 
-		// Bypass other checks: if the class exists and the version's right, we're good.
-		if( class_exists( 'GFCommon' ) && true === version_compare( GFCommon::$version, GV_MIN_GF_VERSION, ">=" ) ) {
-			return true;
+		// Bypass other checks: if the class exists
+		if( class_exists( 'GFCommon' ) ) {
+
+			// and the version's right, we're good.
+			if( true === version_compare( GFCommon::$version, GV_MIN_GF_VERSION, ">=" ) ) {
+				return true;
+			}
+
+			// Or the version's wrong
+			self::$admin_notices['gf_version'] = array( 'class' => 'error', 'message' => sprintf( __( "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', "</h3>\n\n", '<tt>'.GFCommon::$version.'</tt>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
+
+			return false;
 		}
 
 		$gf_status = self::get_plugin_status( 'gravityforms/gravityforms.php' );
@@ -545,11 +554,6 @@ class GravityView_Admin {
 			}
 			return false;
 
-		} else if( class_exists( 'GFCommon' ) && false === version_compare( GFCommon::$version, GV_MIN_GF_VERSION, ">=" ) ) {
-
-			self::$admin_notices['gf_version'] = array( 'class' => 'error', 'message' => sprintf( __( "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', "</h3>\n\n", '<tt>'.GFCommon::$version.'</tt>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
-
-			return false;
 		}
 
 		return true;
@@ -561,7 +565,7 @@ class GravityView_Admin {
 	 * @access public
 	 * @static
 	 * @param string $location (default: '')
-	 * @return void
+	 * @return boolean|string True: plugin is active; False: plugin file doesn't exist at path; 'inactive' it's inactive
 	 */
 	static function get_plugin_status( $location = '' ) {
 
