@@ -1199,6 +1199,7 @@ function get_gravityview( $view_id = '', $atts = array() ) {
 		$atts['id'] = $view_id;
 		$args = wp_parse_args( $atts, GravityView_View_Data::get_default_args() );
 		$GravityView_frontend = new GravityView_frontend;
+		$GravityView_frontend->setGvOutputData( new GravityView_View_Data( $view_id ) );
 		return $GravityView_frontend->render_view( $args );
 	}
 	return '';
