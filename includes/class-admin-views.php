@@ -23,7 +23,7 @@ class GravityView_Admin_Views {
 		add_action( 'save_post', array( $this, 'save_postdata' ) );
 
 		// set the blacklist field types across the entire plugin
-		add_filter( 'gravityview_blacklist_field_types', array( $this, 'default_field_blacklist' ), 10, 1 );
+		add_filter( 'gravityview_blacklist_field_types', array( $this, 'default_field_blacklist' ), 10, 2 );
 
 		// Tooltips
 		add_filter( 'gform_tooltips', array( $this, 'tooltips') );
@@ -130,8 +130,18 @@ class GravityView_Admin_Views {
 	 * @access public
 	 * @return void
 	 */
-	function default_field_blacklist( $array = array() ) {
-		return array_merge( $array, array( 'captcha', 'page' ) );
+	function default_field_blacklist( $array = array(), $context = NULL ) {
+
+		$add = array( 'captcha', 'page' );
+
+		// Don't allowing editing the following values:
+		if( $context === 'edit' ) {
+			$add[] = 'post_id';
+		}
+
+		$return = array_merge( $array, $add );
+
+		return $return;
 	}
 
 	/**

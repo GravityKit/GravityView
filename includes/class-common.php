@@ -214,6 +214,18 @@ class GVCommon {
 			}
 		}
 
+		/**
+		 * @since 1.7
+		 */
+		if( GFCommon::has_post_field( $form['fields'] ) ) {
+
+			$fields['post_id'] = array(
+				"label" => __( 'Post ID', 'gravityview' ),
+				"type" => 'post_id'
+			);
+
+		}
+
 		if( $has_product_fields ) {
 
 			$fields['payment_status'] = array(
