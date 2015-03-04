@@ -1142,7 +1142,7 @@ class GravityView_frontend {
 			$class .= ' gv-icon-caret-up-down';
 		}
 
-		$url = add_query_arg( $sort_args );
+		$url = add_query_arg( $sort_args, remove_query_arg( array('pagenum') ) );
 
 		return '<a href="'. $url .'" class="'. $class .'" ></a>&nbsp;'. $label;
 
