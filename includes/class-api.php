@@ -370,10 +370,10 @@ class GravityView_API {
 	 * Uses `wp_cache_get` and `wp_cache_get` (since 1.3) to speed up repeated requests to get permalink, which improves load time. Since we may be doing this hundreds of times per request, it adds up!
 	 *
 	 * @param int $post_id Post ID
-	 * @param boolean $add_pagination Add pagination arguments
+	 * @param boolean $add_query_args Add pagination and sorting arguments
 	 * @return string      Permalink to multiple entries view
 	 */
-	public static function directory_link( $post_id = NULL, $add_pagination = true ) {
+	public static function directory_link( $post_id = NULL, $add_query_args = true ) {
 		global $post;
 
 		$gravityview_view = GravityView_View::getInstance();
@@ -442,8 +442,20 @@ class GravityView_API {
 		}
 
 		// Deal with returning to proper pagination for embedded views
-		if( $add_pagination && !empty( $_GET['pagenum'] ) && is_numeric( $_GET['pagenum'] ) ) {
-			$link = add_query_arg('pagenum', intval( $_GET['pagenum'] ), $link );
+		if( $add_query_args ) {
+
+			$args = array();
+
+			if( $pagenum = rgget('pagenum') ) {
+				$args['pagenum'] = intval( $pagenum );
+			}
+
+			if( $sort = rgget('sort') ) {
+				$args['sort'] = $sort;
+				$args['dir'] = rgget('dir');
+			}
+
+			$link = add_query_arg( $args, $link );
 		}
 
 		return $link;
@@ -577,6 +589,14 @@ class GravityView_API {
 		}
 
 		/**
+		 * @since 1.7
+		 */
+		if( $sort = rgget('sort') ) {
+			$args['sort'] = $sort;
+			$args['dir'] = rgget('dir');
+		}
+
+		/**
 		 * Check if we have multiple views embedded in the same page and in that case make sure the single entry link
 		 * has the view id so that Advanced Filters can be applied correctly when rendering the single view
 		 * @see GravityView_frontend::get_context_view_id()
@@ -584,8 +604,6 @@ class GravityView_API {
 		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->isMultipleViews() ) {
 			$args['gvid'] = gravityview_get_view_id();
 		}
-
-		#die( var_dump($args) );
 
 		return add_query_arg( $args, $directory_link );
 
