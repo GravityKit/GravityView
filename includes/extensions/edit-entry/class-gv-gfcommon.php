@@ -36,6 +36,10 @@ class GV_GFCommon extends GFCommon {
 
 		$entry_post = get_post( $entry['post_id'] );
 
+		if( $entry_post === null ) {
+			return __('This field is not editable; the post no longer exists.', 'gravityview' );
+		}
+
 		$field_object_or_array = class_exists( 'GF_Fields' ) ? GF_Fields::create( $field ) : $field;
 
 		switch( $field['type'] ) {
