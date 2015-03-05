@@ -382,7 +382,7 @@ class GravityView_Edit_Entry {
 		$this->setup_vars();
 
 		// Multiple Views embedded, don't proceed if nonce fails
-		if( $gv_data->isMultipleViews() && ! wp_verify_nonce( $_GET['edit'], self::$nonce_key ) ) {
+		if( $gv_data->has_multiple_views() && ! wp_verify_nonce( $_GET['edit'], self::$nonce_key ) ) {
 			$this->print_scripts( true );
 			return;
 		}

@@ -28,7 +28,7 @@ class GravityView_View_Data {
 	/**
 	 * @return boolean
 	 */
-	public function isMultipleViews() {
+	public function has_multiple_views() {
 
 		//multiple views
 		return count( $this->get_views() ) > 1 ? true : false;

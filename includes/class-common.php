@@ -368,7 +368,7 @@ class GVCommon {
 
 
 		// When multiple views are embedded, calculate the context view id and send it to the advanced filter
-		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->isMultipleViews() ) {
+		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() ) {
 			$criteria['context_view_id'] = GravityView_frontend::get_context_view_id();
 		} else {
 			$criteria['context_view_id'] = null;

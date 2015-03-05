@@ -372,7 +372,7 @@ class GravityView_frontend {
 		} else {
 			// in case View is embedded.
 			$context_view_id = self::get_context_view_id();
-			if( $this->getGvOutputData()->isMultipleViews() && $context_view_id != '' ) {
+			if( $this->getGvOutputData()->has_multiple_views() && $context_view_id != '' ) {
 				$view_meta = $this->getGvOutputData()->get_view( $context_view_id );
 			} else {
 				foreach ( $this->getGvOutputData()->get_views() as $view_id => $view_data ) {
@@ -619,7 +619,7 @@ class GravityView_frontend {
 
 			// We're in single view, but the view being processed is not the same view the single entry belongs to.
 			// important: do not remove this as it prevents fake attempts of displaying entries from other views/forms
-			if( $this->getGvOutputData()->isMultipleViews() && $view_id != self::get_context_view_id() ) {
+			if( $this->getGvOutputData()->has_multiple_views() && $view_id != self::get_context_view_id() ) {
 				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '. $view_id );
 				return;
 			}

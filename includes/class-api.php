@@ -601,7 +601,7 @@ class GravityView_API {
 		 * has the view id so that Advanced Filters can be applied correctly when rendering the single view
 		 * @see GravityView_frontend::get_context_view_id()
 		 */
-		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->isMultipleViews() ) {
+		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() ) {
 			$args['gvid'] = gravityview_get_view_id();
 		}
 
