@@ -173,6 +173,7 @@ class GVCommon {
 
 		$fields = array();
 		$has_product_fields = false;
+		$has_post_fields = false;
 
 		// If GF_Field exists, we're using GF 1.9+, where add_default_properties has been deprecated.
 		if( false === class_exists('GF_Field') && $add_default_properties ) {
@@ -211,13 +212,21 @@ class GVCommon {
 					$has_product_fields = true;
 				}
 
+				/**
+				 * @hack Version 1.9
+				 */
+				$field_for_is_post_field = class_exists('GF_Fields') ? (object)$field : (array)$field;
+
+				if( GFCommon::is_post_field( $field_for_is_post_field ) ) {
+					$has_post_fields = true;
+				}
 			}
 		}
 
 		/**
 		 * @since 1.7
 		 */
-		if( GFCommon::has_post_field( $form['fields'] ) ) {
+		if( $has_post_fields ) {
 
 			$fields['post_id'] = array(
 				"label" => __( 'Post ID', 'gravityview' ),
