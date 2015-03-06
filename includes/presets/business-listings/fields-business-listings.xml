@@ -72,7 +72,7 @@
 			</wp:postmeta>
 			<wp:postmeta>
 				<wp:meta_key>_gravityview_directory_widgets</wp:meta_key>
-				<wp:meta_value><![CDATA[a:4:{s:10:"header_top";a:1:{s:13:"5370ec9b00e85";a:4:{s:2:"id";s:10:"search_bar";s:5:"label";s:10:"Search Bar";s:13:"search_fields";s:72:"[{"field":"4","input":"input_text"},{"field":"15","input":"input_text"}]";s:13:"search_layout";s:10:"horizontal";}}s:11:"header_left";a:1:{s:13:"536fb4f7da1ce";a:2:{s:2:"id";s:9:"page_info";s:5:"label";s:20:"Show Pagination Info";}}s:12:"header_right";a:1:{s:13:"5370ec9da328a";a:3:{s:2:"id";s:10:"page_links";s:5:"label";s:10:"Page Links";s:8:"show_all";s:1:"0";}}s:12:"footer_right";a:1:{s:13:"53712d4a7c16a";a:3:{s:2:"id";s:10:"page_links";s:5:"label";s:10:"Page Links";s:8:"show_all";s:1:"0";}}}]]></wp:meta_value>
+				<wp:meta_value><![CDATA[a:4:{s:10:"header_top";a:1:{s:13:"5370ec9b00e85";a:5:{s:2:"id";s:10:"search_bar";s:5:"label";s:10:"Search Bar";s:13:"search_fields";s:80:"[{"field":"4","input":"input_text"},{"field":"search_all","input":"input_text"}]";s:13:"search_layout";s:10:"horizontal";s:12:"search_clear";s:1:"0";}}s:11:"header_left";a:1:{s:13:"536fb4f7da1ce";a:2:{s:2:"id";s:9:"page_info";s:5:"label";s:20:"Show Pagination Info";}}s:12:"header_right";a:1:{s:13:"5370ec9da328a";a:3:{s:2:"id";s:10:"page_links";s:5:"label";s:10:"Page Links";s:8:"show_all";s:1:"0";}}s:12:"footer_right";a:1:{s:13:"53712d4a7c16a";a:3:{s:2:"id";s:10:"page_links";s:5:"label";s:10:"Page Links";s:8:"show_all";s:1:"0";}}}]]></wp:meta_value>
 			</wp:postmeta>
 			<wp:postmeta>
 				<wp:meta_key>_gravityview_datatables_settings</wp:meta_key>
