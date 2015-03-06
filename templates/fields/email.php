@@ -15,6 +15,9 @@ if( empty( $value ) ) {
 	return;
 }
 
+// Default: plain email, no link
+$output = $value;
+
 if( !isset( $field_settings['emailmailto'] ) || !empty( $field_settings['emailmailto'] ) ) {
 
 	$params = array();
@@ -44,17 +47,13 @@ if( !isset( $field_settings['emailmailto'] ) || !empty( $field_settings['emailma
 	}
 
 	// Generate the link HTML
-	$output = '<a href="'.esc_attr( $link ).'">'.$value.'</a>';
-
-} else {
-
-	// Plain email, no link
-	$output = $value;
+	$output = gravityview_get_link( $link, $value );
 
 }
 
 /**
  * Prevent encrypting emails no matter what - this is handy for DataTables exports, for example
+ * @since 1.1.6
  * @var boolean
  */
 $prevent_encrypt = apply_filters( 'gravityview_email_prevent_encrypt', false );
