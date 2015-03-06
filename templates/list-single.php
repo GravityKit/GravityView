@@ -1,3 +1,11 @@
+<?php
+/**
+ * Display a single entry when using a list template
+ *
+ * @package GravityView
+ * @subpackage GravityView/templates
+ */
+?>
 <?php gravityview_before(); ?>
 
 <div class="gv-container gv-list-single-container gv-list-container">
@@ -69,15 +77,11 @@
 
 				<div class="gv-grid gv-list-view-footer">
 					<div class="gv-grid-col-1-2 gv-left">
-						<?php
-							$this->renderZone('footer-left');
-						?>
+						<?php $this->renderZone('footer-left'); ?>
 					</div>
 
 					<div class="gv-grid-col-1-2 gv-right">
-						<?php
-							$this->renderZone('footer-right');
-						?>
+						<?php $this->renderZone('footer-right'); ?>
 					</div>
 				</div>
 

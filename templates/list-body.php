@@ -1,8 +1,9 @@
 <?php
 /**
- * Display multiple entries as a list
+ * Display the entries loop when using a list layout
  *
  * @package GravityView
+ * @subpackage GravityView/templates
  */
 
 /**
@@ -102,9 +103,7 @@ if( !$this->getTotalEntries() ) {
 				 */
 				do_action( 'gravityview_entry_content_before', $entry, $this );
 
-
 				$this->renderZone('image', 'wrapper_class="gv-list-view-content-image"');
-
 
 				$this->renderZone('description', array(
 					'wrapper_class' => 'gv-list-view-content-description',
@@ -146,15 +145,11 @@ if( !$this->getTotalEntries() ) {
 
 			<div class="gv-grid gv-list-view-footer">
 				<div class="gv-grid-col-1-2 gv-left">
-					<?php
-						$this->renderZone('footer-left');
-					?>
+					<?php $this->renderZone('footer-left'); ?>
 				</div>
 
 				<div class="gv-grid-col-1-2 gv-right">
-					<?php
-						$this->renderZone('footer-right');
-					?>
+					<?php $this->renderZone('footer-right'); ?>
 				</div>
 			</div>
 

@@ -5,13 +5,25 @@
  */
 abstract class GravityView_FieldType {
 
-    //field form html name
+	/**
+	 * Field form html `name`
+	 *
+	 * @var string
+	 */
     protected $name;
 
-    // field settings
+	/**
+	 * Field settings
+	 *
+	 * @var array
+	 */
     protected $field;
 
-    // field current value
+	/**
+	 * Field current value
+	 *
+	 * @var mixed
+	 */
     protected $value;
 
     function __construct( $name = '', $field = array(), $curr_value = NULL ) {

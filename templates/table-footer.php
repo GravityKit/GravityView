@@ -1,3 +1,11 @@
+<?php
+/**
+ * Display below the entries loop when using a table layout
+ *
+ * @package GravityView
+ * @subpackage GravityView/templates
+ */
+?>
 	<tfoot>
 		<tr>
 			<?php

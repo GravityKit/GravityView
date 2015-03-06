@@ -1,3 +1,11 @@
+<?php
+/**
+ * Display the entry loop when using a table template
+ *
+ * @package GravityView
+ * @subpackage GravityView/templates
+ */
+?>
 	<tbody>
 		<?php
 

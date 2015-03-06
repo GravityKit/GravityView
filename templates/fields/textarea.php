@@ -5,6 +5,7 @@
  * Use wpautop() to format paragraphs, as expected, instead of line breaks like Gravity Forms displays by default.
  *
  * @package GravityView
+ * @subpackage GravityView/templates/fields
  */
 
 $gravityview_view = GravityView_View::getInstance();

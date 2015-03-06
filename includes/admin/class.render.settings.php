@@ -452,4 +452,4 @@ class GravityView_Render_Settings {
 	}
 
 
-} // end class GravityView_Field_Options
+}

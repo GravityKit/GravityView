@@ -1,4 +1,10 @@
 <?php
+/**
+ * Display the radio field type
+ *
+ * @package GravityView
+ * @subpackage GravityView/templates/fields
+ */
 
 $gravityview_view = GravityView_View::getInstance();
 

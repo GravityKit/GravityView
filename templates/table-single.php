@@ -1,3 +1,11 @@
+<?php
+/**
+ * Display a single entry when using a table template
+ *
+ * @package GravityView
+ * @subpackage GravityView/templates
+ */
+?>
 <?php gravityview_before(); ?>
 
 <p class="gv-back-link"><?php echo gravityview_back_link(); ?></p>

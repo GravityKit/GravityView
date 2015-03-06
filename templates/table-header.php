@@ -1,3 +1,11 @@
+<?php
+/**
+ * Display above the entries loop when using a table layout
+ *
+ * @package GravityView
+ * @subpackage GravityView/templates
+ */
+?>
 <?php gravityview_before(); ?>
 <div class="<?php gv_container_class('gv-table-container'); ?>">
 <table class="gv-table-view">

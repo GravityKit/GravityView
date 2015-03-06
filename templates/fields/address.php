@@ -2,7 +2,9 @@
 /**
  * Address field output, with "Map It" link removed
  *
- * @group GravityView
+ * @package GravityView
+ * @subpackage GravityView/templates/fields
+ *
  */
 
 $gravityview_view = GravityView_View::getInstance();

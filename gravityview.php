@@ -253,7 +253,7 @@ final class GravityView_Plugin {
 
 	/**
 	 * helper function to define the default widget areas
-	 * @todo Move somehere logical
+	 * @todo Move somewhere logical
 	 * @return array definition for default widget areas
 	 */
 	public static function get_default_widget_areas() {

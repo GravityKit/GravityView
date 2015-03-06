@@ -18,7 +18,9 @@ if (!class_exists('GravityView_Settings')) {
 
 			add_filter( 'redux/gravityview_settings/field/class/edd_license/strings', array($this, 'edd_settings_strings') );
 
-			if (!class_exists('ReduxFramework')) { return; }
+			if ( !class_exists('ReduxFramework') ) {
+				return;
+			}
 
 			add_action('plugins_loaded', array($this, 'initSettings'), 10);
 

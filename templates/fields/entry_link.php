@@ -1,4 +1,10 @@
 <?php
+/**
+ * Display the entry_link field type
+ *
+ * @package GravityView
+ * @subpackage GravityView/templates/fields
+ */
 
 $gravityview_view = GravityView_View::getInstance();
 
