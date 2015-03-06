@@ -121,16 +121,6 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR . 'includes/class-frontend-views.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
 
-
-		/**
-		 * Encrypt Email Addresses
-		 * @link  https://github.com/jnicol/standalone-phpenkoder
-		 */
-		if( !class_exists( 'StandalonePHPEnkoder' ) ) {
-			include_once( GRAVITYVIEW_DIR . 'includes/lib/standalone-phpenkoder/StandalonePHPEnkoder.php' );
-		}
-
-
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ), 1 );
 

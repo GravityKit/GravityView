@@ -32,6 +32,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: If Gravity Forms is installed using a non-standard directory name, GravityView would think it wasn't activated
 * Fixed: Fixed single entry links when inserting views with `the_gravityview()` template tag
 * Updated: Portuguese translation (thanks, Luis!)
+* Added: `gravityview/fields/email/javascript_required` filter to modify message displayed when encrypting email addresses and Javascript is disabled
+* Added: `GFCommon:js_encrypt()` method to encrypt text for Javascript email encryption
 
 = 1.6.2 on February 23 =
 * Added: Two new hooks in the Custom Content field to enable conditional logic or enable `the_content` WordPress filter which will trigger the Video embed ([read how](http://docs.gravityview.co/article/227-how-can-i-transform-a-video-link-into-a-player-using-the-custom-content-field))

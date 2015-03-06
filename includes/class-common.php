@@ -838,6 +838,52 @@ class GVCommon {
 	}
 
 	/**
+	 * Encrypt content using Javascript so that it's hidden when JS is disabled.
+	 *
+	 * This is mostly used to hide email addresses from scraper bots.
+	 *
+	 * @param string $content Content to encrypt
+	 * @param string $message Message shown if Javascript is disabled
+	 *
+	 * @uses StandalonePHPEnkoder
+	 * @link  https://github.com/jnicol/standalone-phpenkoder
+	 *
+	 * @since 1.7
+	 *
+	 * @return string Content, encrypted
+	 */
+	public static function js_encrypt( $content, $message = '' ) {
+
+		$output = $content;
+
+		if( !class_exists( 'StandalonePHPEnkoder' ) ) {
+			include_once( GRAVITYVIEW_DIR . 'includes/lib/standalone-phpenkoder/StandalonePHPEnkoder.php' );
+		}
+
+		if( class_exists( 'StandalonePHPEnkoder' ) ) {
+
+			$enkoder = new StandalonePHPEnkoder;
+
+			$message = empty( $message ) ? __( 'Email hidden; Javascript is required.', 'gravityview' ) : $message;
+
+			/**
+			 * Modify the message shown when Javascript is disabled
+			 *
+			 * @since 1.7
+			 *
+			 * @param string $message Existing message
+			 * @param string $content Content to encrypt
+			 *
+			 */
+			$enkoder->enkode_msg = apply_filters( 'gravityview/phpenkoder/msg', $message, $content );
+
+			$output = $enkoder->enkode( $content );
+		}
+
+		return $output;
+	}
+
+	/**
 	 *
 	 * Do the same than parse_str without max_input_vars limitation:
 	 * Parses $string as if it were the query string passed via a URL and sets variables in the current scope.

@@ -53,18 +53,11 @@ if( !isset( $field_settings['emailmailto'] ) || !empty( $field_settings['emailma
  */
 $prevent_encrypt = apply_filters( 'gravityview_email_prevent_encrypt', false );
 
-// If not encrypting the link
-if( empty( $field_settings['emailencrypt'] ) || $prevent_encrypt ) {
+// If encrypting the link
+if( !empty( $field_settings['emailencrypt'] ) && !$prevent_encrypt ) {
 
-	echo $output;
+	$output = GVCommon::js_encrypt( $output );
 
-} else {
-
-	$enkoder = new StandalonePHPEnkoder;
-
-	$enkoder->enkode_msg = __( 'Email hidden; Javascript is required.', 'gravityview' );
-
-	$encrypted =  $enkoder->enkode( $output );
-
-	echo $encrypted;
 }
+
+echo $output;
