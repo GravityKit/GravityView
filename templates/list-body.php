@@ -4,6 +4,8 @@
  *
  * @package GravityView
  * @subpackage GravityView/templates
+ *
+ * @global GravityView_View $this
  */
 
 /**

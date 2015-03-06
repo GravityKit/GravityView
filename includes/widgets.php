@@ -90,6 +90,9 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 	/**
 	 * @since 1.6
 	 * @see WP_Widget::widget()
+	 *
+	 * @param array $args     Display arguments including before_title, after_title, before_widget, and after_widget.
+	 * @param array $instance The settings for the particular instance of the widget.
 	 */
 	function widget( $args, $instance ) {
 
@@ -145,6 +148,15 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 				$item_output = Gravityview_API::replace_variables( $item_output, $form, $entry );
 
+				/**
+				 * Modify the item output HTML
+				 *
+				 * @since 1.6
+				 *
+				 * @param string $item_output The HTML output for the item
+				 * @param array $entry Gravity Forms entry array
+				 * @param array $instance The settings for the particular instance of the widget.
+				 */
 				$item_output = apply_filters( 'gravityview/widget/recent-entries/item', $item_output, $entry, $instance );
 
 				$list_items[] = $item_output;
@@ -232,7 +244,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		$instance['link_format'] = empty( $instance['link_format'] ) ? $old_instance['link_format'] : $instance['link_format'];
 
-		$instance['post_id'] = intval( $new_instance['post_id'] );
+		$instance['post_id'] = empty( $instance['post_id'] ) ? '' : intval( $instance['post_id'] );
 
 		$is_valid_embed_id = GravityView_View_Data::is_valid_embed_id( $instance['post_id'], $instance['view_id'] );
 
