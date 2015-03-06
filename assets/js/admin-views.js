@@ -555,6 +555,8 @@
             $parent.parents(".gv-grid").find(".gv-view-types-module").removeClass('gv-selected');
             $parent.addClass('gv-selected');
 
+            $('#wpcontent,.gv-fields').addClass('gv-wait');
+
             // check for start fresh context
             if (vcfg.startFreshStatus) {
 
@@ -632,8 +634,6 @@
         updateActiveAreas: function (template) {
             var vcfg = viewConfiguration;
 
-            $('#wpcontent,.gv-fields').addClass('gv-wait');
-
             $("#directory-active-fields, #single-active-fields").children().remove();
 
             var data = {
@@ -674,6 +674,7 @@
                     $('#directory-footer-widgets').html(content.footer);
                     $('#directory-active-fields').append(content.directory);
                     $('#single-active-fields').append(content.single);
+                    $('#wpcontent,.gv-fields').removeClass('gv-wait');
                     vcfg.showViewConfig();
                 }
             });
