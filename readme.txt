@@ -20,7 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= 1.7 =
+= 1.7 on March 10 =
 * Added: Post ID field now available - shows the ID of the post that was created by the Gravity Forms entry
 * Fixed: Properly reset `$post` after Live Post Data is displayed
 * Tweak: Display spinning cursor while waiting for View configurations to load
@@ -81,7 +81,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: For Post Dynamic Data, make sure Post ID is set
 * Fixed: Make sure search field choices are available before displaying field
 
-= 1.5.4 on January 29 =
+= 1.5.4 on January 29, 2015 =
 * Added: "Hide View data until search is performed" setting - only show the Search Bar until a search is entered
 * Added: "Clear" button to your GravityView Search Bar - allows easy way to remove all searches & filters
 * Added: You can now add Custom Content GravityView Widgets (not just fields) - add custom text or HTMLin the header or footer of a View
