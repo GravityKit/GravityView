@@ -418,7 +418,7 @@ class GravityView_Admin {
     	$dismissed_notices = array_unique( $dismissed_notices );
 
     	// Remind users every 8 weeks
-    	set_transient( 'gravityview_dismissed_notices', $dismissed_notices, WEEK_IN_SECONDS * 8 );
+    	set_transient( 'gravityview_dismissed_notices', $dismissed_notices, WEEK_IN_SECONDS * 16 );
 
     }
 
