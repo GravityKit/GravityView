@@ -12,13 +12,13 @@ class GravityView_Admin {
 		add_action( 'admin_notices', array( $this, 'dismiss_notice' ), 50 );
 		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
 
-		// Check if Gravity Forms Directory is running.
-		self::check_gf_directory();
-
 		// If Gravity Forms isn't active or compatibile, stop loading
 		if( false === self::check_gravityforms() ) {
 			return;
 		}
+
+		// Check if Gravity Forms Directory is running.
+		self::add_default_notices();
 
 		// Migrate Class
 		require_once( GRAVITYVIEW_DIR . 'includes/class-migrate.php' );
@@ -519,14 +519,21 @@ class GravityView_Admin {
 	public static function add_default_notices() {
 
 		if( class_exists( 'GFDirectory' ) ) {
-
 			self::$admin_notices['gf_directory'] = array(
 				'class' => 'error',
 				'title' => __('Potential Conflict', 'gravityview' ),
 				'message' => __( 'GravityView and Gravity Forms Directory are both active. This may cause problems. If you experience issues, disable the Gravity Forms Directory plugin.', 'gravityview' ),
 				'dismiss' => 'gf_directory',
 			);
+		}
 
+		if( !class_exists('GF_Fields') ) {
+			self::$admin_notices['gf_directory'] = array(
+				'class' => 'error',
+				'title' => __('GravityView will soon require Gravity Forms 1.9 or higher.', 'gravityview' ),
+				'message' => esc_html__( 'You are using an older version of Gravity Forms. Please update Gravity Forms plugin to the latest version.', 'gravityview' ),
+				'dismiss' => 'gf_version',
+			);
 		}
 
 	}
@@ -548,7 +555,7 @@ class GravityView_Admin {
 			}
 
 			// Or the version's wrong
-			self::$admin_notices['gf_version'] = array( 'class' => 'error', 'message' => sprintf( __( "%sGravityView requires Gravity Forms Version 1.8 or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', "</h3>\n\n", '<tt>'.GFCommon::$version.'</tt>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
+			self::$admin_notices['gf_version'] = array( 'class' => 'error', 'message' => sprintf( __( "%sGravityView requires Gravity Forms Version %s or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', GV_MIN_GF_VERSION, "</h3>\n\n", '<tt>'.GFCommon::$version.'</tt>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
 
 			return false;
 		}

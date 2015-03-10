@@ -36,6 +36,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Added: `GFCommon:js_encrypt()` method to encrypt text for Javascript email encryption
 * Fixed: Recent Entries widget didn't allow externally added settings to save properly
 * Tweak: Updated View Presets to have improved Search Bar configurations
+* GravityView will soon require Gravity Forms 1.9 or higher. If you are running Gravity Forms Version 1.8.x, please update to the latest version.
 
 = 1.6.2 on February 23 =
 * Added: Two new hooks in the Custom Content field to enable conditional logic or enable `the_content` WordPress filter which will trigger the Video embed ([read how](http://docs.gravityview.co/article/227-how-can-i-transform-a-video-link-into-a-player-using-the-custom-content-field))
