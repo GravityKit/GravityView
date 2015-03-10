@@ -392,6 +392,10 @@ class GravityView_Admin {
         return $scripts;
     }
 
+	/**
+	 * Dismiss a GravityView notice - stores the dismissed notices for 16 weeks
+	 * @return void
+	 */
     function dismiss_notice() {
 
     	// No dismiss sent
@@ -507,7 +511,12 @@ class GravityView_Admin {
 		self::$admin_notices[] = $notice;
 	}
 
-	public static function check_gf_directory() {
+	/**
+	 * Check for potential conflicts and let users know about common issues.
+	 *
+	 * @return void
+	 */
+	public static function add_default_notices() {
 
 		if( class_exists( 'GFDirectory' ) ) {
 

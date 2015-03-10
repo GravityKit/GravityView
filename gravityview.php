@@ -29,15 +29,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /** Constants */
-if( !defined('GRAVITYVIEW_FILE') )
+if( !defined('GRAVITYVIEW_FILE') ) {
 	define( 'GRAVITYVIEW_FILE', __FILE__ );
+}
 
-if ( !defined('GRAVITYVIEW_URL') )
+if ( !defined('GRAVITYVIEW_URL') ) {
 	define( 'GRAVITYVIEW_URL', plugin_dir_url( __FILE__ ) );
+}
 
-if ( !defined('GRAVITYVIEW_DIR') )
+if ( !defined('GRAVITYVIEW_DIR') ) {
 	define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
-
+}
 
 if ( !defined('GV_MIN_GF_VERSION') ) {
 	/**
@@ -58,10 +60,8 @@ require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
 require_once( GRAVITYVIEW_DIR . 'includes/class-cache.php');
 
 /** Register hooks that are fired when the plugin is activated and deactivated. */
-if( is_admin() ) {
-	register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
-	register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
-}
+register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
 
 /**
  * GravityView_Plugin main class.
