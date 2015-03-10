@@ -29,16 +29,31 @@ class GV_GFCommon extends GFCommon {
 
 		// First, make sure they have the capability to edit the post.
 		if( false === current_user_can( 'edit_post', $entry["post_id"] ) ) {
-			return __('You don&rsquo;t have permission to edit this post.', 'gravityview');
+
+			/**
+			 * @param string $message The existing "You don't have permission..." text
+			 */
+			$message = apply_filters('gravityview/edit_entry/unsupported_post_field_text', __('You don&rsquo;t have permission to edit this post.', 'gravityview') );
+
+			return $message;
+		}
+
+		$entry_post = get_post( $entry['post_id'] );
+
+		// Post doesn't exist.
+		if( $entry_post === null ) {
+			return apply_filters('gravityview/edit_entry/no_post_text', __('This field is not editable; the post no longer exists.', 'gravityview' ) );
 		}
 
 		$unsupported_field = sprintf( __('You can %sedit this value%s from the post page.', 'gravityview'), "<a href='".admin_url("post.php?action=edit&amp;post={$entry["post_id"]}")."''>", '</a>' );
 
-		$entry_post = get_post( $entry['post_id'] );
-
-		if( $entry_post === null ) {
-			return apply_filters('gravityview/edit_entry/no_post_text', __('This field is not editable; the post no longer exists.', 'gravityview' ) );
-		}
+		/**
+		 * @param string $unsupported_field The existing "Edit from Post Page" text
+		 * @param array $field The current field being edited
+		 * @param array $entry The current entry being edited
+		 * @param WP_Post $entry_post The post connected to the current entry
+		 */
+		$unsupported_field = apply_filters('gravityview/edit_entry/unsupported_post_field_text', $unsupported_field, $field, $entry, $entry_post );
 
 		$field_object_or_array = class_exists( 'GF_Fields' ) ? GF_Fields::create( $field ) : $field;
 
