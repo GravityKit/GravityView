@@ -253,50 +253,80 @@ class GravityView_Welcome {
 
 			<div class="changelog point-releases">
 
-				<h3><?php esc_html__('What&rsquo;s New', 'gravityview' ); ?></h3>
+				<h2 class="subtitle" style="text-align: center;"><?php esc_html_e('What&rsquo;s New', 'gravityview' ); ?></h2>
 
 				<div class="feature-section col two-col">
 
 					<div class="col-1">
-						<img src="<?php echo plugins_url( 'assets/images/screenshots/search-widget.png', GRAVITYVIEW_FILE ); ?>" alt="A new WordPress search widget">
-						<h4 class="higher">A WordPress Search Widget</h4>
-						<p>A GravityView search widget that you can place anywhere on your site. Very powerful!</p>
-						<p><a href="http://docs.gravityview.co/article/222-the-search-widget" class="button button-primary" rel="external" title="Learn how to configure the Widget">Learn more</a></p>
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/edit-post-content.png', GRAVITYVIEW_FILE ); ?>" alt="Edit Post Content">
+						<h4 class="higher">Edit Post Content</h4>
+						<p>You can now edit most Post Fields when you edit an entry.</p>
+						<p><a href="http://docs.gravityview.co/article/245-editable-post-fields" class="button button-primary" rel="external" title="Learn what fields are editable">Learn what fields are editable</a></p>
 					</div>
 
 					<div class="col-2 last-feature">
-						<img src="<?php echo plugins_url( 'assets/images/screenshots/recent-entries.png', GRAVITYVIEW_FILE ); ?>" alt="Recent entries widget output">
-						<h4 class="higher">Recent Entries Widget</h4>
-						<p>Display the most recent entries in your sidebar and customize how it's displayed.</p>
-						<p><a href="http://docs.gravityview.co/article/223-the-recent-entries-widget" class="button button-primary">Setting up recent entries</a></p>
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/sort-by-column.png', GRAVITYVIEW_FILE ); ?>" alt="Column being sorted">
+						<h4 class="higher">Sort Tables by Column</h4>
+						<p>Users can sort View results by clicking the sort icons at the top of a table.</p>
+						<p><a href="http://docs.gravityview.co/article/230-how-to-enable-the-table-column-sorting-feature" class="button button-primary" rel="external" title="Read how to enable column sorting">Learn how to enable</a></p>
 					</div>
 
 				</div>
 
 				<div class="feature-section col three-col">
+
 					<div class="col-1">
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/search-widget.png', GRAVITYVIEW_FILE ); ?>" alt="A new WordPress search widget">
+						<h4 class="higher">A WordPress Search Widget</h4>
+						<p>A GravityView search widget that you can place anywhere on your site. Very powerful!</p>
+						<p><a href="http://docs.gravityview.co/article/222-the-search-widget" class="button button-secondary" rel="external" title="Learn how to configure the Widget">Learn more</a></p>
+					</div>
+
+					<div class="col-2">
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/recent-entries.png', GRAVITYVIEW_FILE ); ?>" alt="Recent entries widget output">
+						<h4 class="higher">Recent Entries Widget</h4>
+						<p>Display the most recent entries in your sidebar and customize how it's displayed.</p>
+						<p><a href="http://docs.gravityview.co/article/223-the-recent-entries-widget" class="button button-secondary">Setting up recent entries</a></p>
+					</div>
+
+					<div class="col-3 last-feature">
 						<img src="<?php echo plugins_url( 'assets/images/screenshots/embed-entry.png', GRAVITYVIEW_FILE ); ?>" alt="Entry embedded in the Admin editor">
 						<h4 class="higher">Embed Entries in a post or page</h4>
 						<p>You&rsquo;ve got an entry you want to blog about, but you want to do more than link to it. Now you can embed it!</p>
 						<p><a href="http://docs.gravityview.co/article/224-how-to-embed-entries" rel="external" class="button button-secondary">How to embed entries</a></p>
 					</div>
-
-					<div class="col-2">
-						<img src="<?php echo plugins_url( 'assets/images/screenshots/clone-view.png', GRAVITYVIEW_FILE ); ?>" alt="Cloning a view" style="margin:50px 0">
-						<h4 class="higher">Duplicate View</h4>
-						<p>Have a View you want to use again? It's simple to clone a view using the new "Clone View" link.</p>
-						<p><a href="http://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view" rel="external" class="button button-secondary">See how to clone Views</a></p>
-					</div>
-
-					<div class="col-3 last-feature">
-						<img src="<?php echo plugins_url( 'assets/images/screenshots/helpscout-docs.png', GRAVITYVIEW_FILE ); ?>" alt="Screenshot of new documentation site">
-						<h4 class="higher">New Help Site</h4>
-						<p>Our old site was hard to search for solutions. We've fixed that&mdash;check out our new docs site!</p>
-						<p><a href="http://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view" rel="external" class="button button-secondary">Read how-to's!</a></p>
-					</div>
 				</div>
 
 				<hr />
+
+				<h3>Changes in 1.7 (Full List)</h3>
+
+				<ul>
+					<li>Added: You can now edit most Post Fields using GravityView Edit Entry
+
+						<ul>
+							<li>Post Content, Post Title, Post Excerpt, Post Tags, Post Category, and most Post Custom Field configurations</li>
+						</ul>
+					</li>
+					<li>Added: Post ID field now available - shows the ID of the post that was created by the Gravity Forms entry</li>
+					<li>Fixed: Properly reset <code>$post</code> after Live Post Data is displayed</li>
+					<li>Tweak: Display spinning cursor while waiting for View configurations to load</li>
+					<li>Tweak: Updated GravityView Form Editor buttons to be 1.9 compatible</li>
+					<li>Added: <code>gravityview/field_output/args</code> filter to modify field output settings before rendering</li>
+					<li>Added: Sorting Table columns (<a href="http://docs.gravityview.co/article/230-how-to-enable-the-table-column-sorting-feature">read how</a>)</li>
+					<li>Fixed: Don't show date field value if set to Unix Epoch (1/1/1970), since this normally means that in fact, no date has been set</li>
+					<li>Fixed: PHP notices when choosing "Start Fresh"</li>
+					<li>Fixed: If Gravity Forms is installed using a non-standard directory name, GravityView would think it wasn't activated</li>
+					<li>Fixed: Fixed single entry links when inserting views with <code>the_gravityview()</code> template tag</li>
+					<li>Updated: Portuguese translation (thanks, Luis!)</li>
+					<li>Added: <code>gravityview/fields/email/javascript_required</code> filter to modify message displayed when encrypting email addresses and Javascript is disabled</li>
+					<li>Added: <code>GFCommon:js_encrypt()</code> method to encrypt text for Javascript email encryption</li>
+					<li>Fixed: Recent Entries widget didn't allow externally added settings to save properly</li>
+					<li>Tweak: Updated View Presets to have improved Search Bar configurations</li>
+					<li>Fixed: `gravityview/get_all_views/params` filter restored (Modify Views returned by the `GVCommon::get_all_views()` method)</li>
+					<li>GravityView will soon require Gravity Forms 1.9 or higher. If you are running Gravity Forms Version 1.8.x, please update to the latest version.</li>
+				</ul>
+
 
 				<h3>Changes in 1.6.2 (Full List)</h3>
 				<ul>

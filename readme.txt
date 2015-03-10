@@ -21,12 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.7 on March 10 =
+* Added: You can now edit most Post Fields in Edit Entry mode
+    - Supports Post Content, Post Title, Post Excerpt, Post Tags, Post Category, and most Post Custom Field configurations ([Learn more](http://docs.gravityview.co/article/245-editable-post-fields))
+* Added: Sort Table columns ([read how](http://docs.gravityview.co/article/230-how-to-enable-the-table-column-sorting-feature))
 * Added: Post ID field now available - shows the ID of the post that was created by the Gravity Forms entry
 * Fixed: Properly reset `$post` after Live Post Data is displayed
 * Tweak: Display spinning cursor while waiting for View configurations to load
 * Tweak: Updated GravityView Form Editor buttons to be 1.9 compatible
 * Added: `gravityview/field_output/args` filter to modify field output settings before rendering
-* Added: Sorting Table columns ([read how](http://docs.gravityview.co/article/230-how-to-enable-the-table-column-sorting-feature))
 * Fixed: Don't show date field value if set to Unix Epoch (1/1/1970), since this normally means that in fact, no date has been set
 * Fixed: PHP notices when choosing "Start Fresh"
 * Fixed: If Gravity Forms is installed using a non-standard directory name, GravityView would think it wasn't activated
