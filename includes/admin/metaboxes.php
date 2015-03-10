@@ -1,5 +1,30 @@
 <?php
 
+include_once GRAVITYVIEW_DIR .'includes/admin/metaboxes/class-gravityview-metabox.php';
+
+// Filter & Sort box
+#add_meta_box( 'gravityview_', );
+
+/*class GravityView_Metabox_Sort_Filter extends GravityView_Metabox {
+	protected $id = 'sort_filter';
+
+	function render() {
+
+	}
+}*/
+
+
+include_once GRAVITYVIEW_DIR .'includes/admin/metaboxes/class-gravityview-metaboxes.php';
+
+include_once GRAVITYVIEW_DIR .'includes/admin/metaboxes/class-gravityview-metaboxes-render.php';
+
+GravityView_Metaboxes::add( new GravityView_Metabox('sort_filter', __( 'Filter &amp; Sort', 'gravityview' ), 'sort-filter.php', '' ) );
+
+GravityView_Metaboxes::add( new GravityView_Metabox('template_settings', __( 'View Settings', 'gravityview' ), 'view-settings.php', 'dashicons-admin-settings' ) );
+
+
+
+
 class GravityView_Admin_Metaboxes {
 
 	function __construct() {
