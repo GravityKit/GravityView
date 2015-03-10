@@ -36,6 +36,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Added: `GFCommon:js_encrypt()` method to encrypt text for Javascript email encryption
 * Fixed: Recent Entries widget didn't allow externally added settings to save properly
 * Tweak: Updated View Presets to have improved Search Bar configurations
+* Fixed: `gravityview/get_all_views/params` filter restored (Modify Views returned by the `GVCommon::get_all_views()` method)
 * GravityView will soon require Gravity Forms 1.9 or higher. If you are running Gravity Forms Version 1.8.x, please update to the latest version.
 
 = 1.6.2 on February 23 =

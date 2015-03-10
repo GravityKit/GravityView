@@ -85,7 +85,7 @@ class GVCommon {
 		 */
 		$views_params = apply_filters( 'gravityview/get_all_views/params', $params );
 
-		$views = get_posts( $params );
+		$views = get_posts( $views_params );
 
 		return $views;
 	}
