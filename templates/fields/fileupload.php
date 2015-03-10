@@ -3,17 +3,18 @@
  * Display the fileupload field type
  *
  * @package GravityView
+ * @subpackage GravityView/templates/fields
  */
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 $output = '';
 
 if( !empty( $value ) ){
 
-	$gv_class = gv_class( $field, $gravityview_view->form, $entry );
+	$gv_class = gv_class( $field, $gravityview_view->getForm(), $entry );
 
 	$output_arr = gravityview_get_files_array( $value, $gv_class );
 

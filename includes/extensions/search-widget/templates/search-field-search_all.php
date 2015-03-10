@@ -5,8 +5,8 @@
  * @see class-search-widget.php
  */
 
-global $gravityview_view;
-$view_id = $gravityview_view->view_id;
+$gravityview_view = GravityView_View::getInstance();
+$view_id = $gravityview_view->getViewId();
 $value = $gravityview_view->search_field['value'];
 $label = $gravityview_view->search_field['label'];
 

@@ -18,12 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GravityView_Admin_Views {
 
+
+
 	function __construct() {
 
 		add_action( 'save_post', array( $this, 'save_postdata' ) );
 
 		// set the blacklist field types across the entire plugin
-		add_filter( 'gravityview_blacklist_field_types', array( $this, 'default_field_blacklist' ), 10, 1 );
+		add_filter( 'gravityview_blacklist_field_types', array( $this, 'default_field_blacklist' ), 10, 2 );
 
 		// Tooltips
 		add_filter( 'gform_tooltips', array( $this, 'tooltips') );
@@ -130,8 +132,18 @@ class GravityView_Admin_Views {
 	 * @access public
 	 * @return void
 	 */
-	function default_field_blacklist( $array = array() ) {
-		return array_merge( $array, array( 'captcha', 'page' ) );
+	function default_field_blacklist( $array = array(), $context = NULL ) {
+
+		$add = array( 'captcha', 'page' );
+
+		// Don't allowing editing the following values:
+		if( $context === 'edit' ) {
+			$add[] = 'post_id';
+		}
+
+		$return = array_merge( $array, $add );
+
+		return $return;
 	}
 
 	/**
@@ -189,6 +201,12 @@ class GravityView_Admin_Views {
 		return $tooltips;
 	}
 
+	/**
+	 * Add the Data Source information
+	 *
+	 * @param null $column_name
+	 * @param $post_id
+	 */
 	static public function add_connected_form_column_content( $column_name = NULL, $post_id )	{
 
 		if( !empty( $column_name ) && $column_name !== 'gv_connected_form' )  { return; }

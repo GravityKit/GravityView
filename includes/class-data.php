@@ -11,25 +11,29 @@ class GravityView_View_Data {
 
 	protected $views = array();
 
-	// indicates whether we have multiple views embedded in the same page/post
-	public $is_multiple_views = false;
-
 	function __construct( $passed_post = NULL ) {
 
 		if( !empty( $passed_post ) ) {
 
-			$id = self::maybe_get_view_id( $passed_post );
+			$id_or_id_array = self::maybe_get_view_id( $passed_post );
 
-			if( !empty( $id ) ) {
-				$this->add_view( $id );
+			if( !empty( $id_or_id_array ) ) {
+				$this->add_view( $id_or_id_array );
 			}
 		}
 
-		// set the conditionals
-		$this->set_conditionals();
-
 		self::$instance = &$this;
 	}
+
+	/**
+	 * @return boolean
+	 */
+	public function has_multiple_views() {
+
+		//multiple views
+		return count( $this->get_views() ) > 1 ? true : false;
+	}
+
 
 	/**
 	 * Figure out what the View ID is for a variable, if any.
@@ -109,13 +113,6 @@ class GravityView_View_Data {
 		return self::$instance;
 	}
 
-	function set_conditionals() {
-
-		//multiple views
-		$this->is_multiple_views = count( $this->get_views() ) > 1 ? true : false;
-
-	}
-
 	function get_views() {
 		return $this->views;
 	}
@@ -163,6 +160,7 @@ class GravityView_View_Data {
 	 * @return type
 	 */
 	function add_view( $view_id, $atts = NULL ) {
+
 
 		// Handle array of IDs
 		if( is_array( $view_id ) ) {
@@ -580,6 +578,16 @@ class GravityView_View_Data {
 				),
 				'show_in_shortcode' => true,
 			),
+			'sort_columns' => array(
+				'label' 	=> __( 'Enable sorting by column', 'gravityview' ),
+				'left_label' => __( 'Column Sorting', 'gravityview' ),
+				'type' => 'checkbox',
+				'value' => false,
+				'group'	=> 'sort',
+				'tooltip' => NULL,
+				'show_in_shortcode' => true,
+				'show_in_template' => array( 'default_table' ),
+			),
 			'start_date' => array(
 				'label' 	=> __('Filter by Start Date', 'gravityview'),
 				'class'	=> 'gv-datepicker',
@@ -674,15 +682,5 @@ class GravityView_View_Data {
 		}
 	}
 
-	static function shortcode_atts( $atts ) {
-
-		do_action( 'gravityview_log_debug', 'GravityView_View_Data[shortcode_atts] Init Shortcode. Attributes: ',  $atts );
-
-		//confront attributes with defaults
-		$args = shortcode_atts( self::get_default_args() , $atts, 'gravityview' );
-
-		do_action( 'gravityview_log_debug', 'GravityView_View_Data[shortcode_atts] Init Shortcode. Merged Attributes: ', $args );
-
-	}
 
 }

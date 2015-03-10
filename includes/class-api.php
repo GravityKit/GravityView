@@ -28,9 +28,9 @@ class GravityView_API {
 	 * @return string
 	 */
 	public static function field_label( $field, $entry = array(), $force_show_label = false ) {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
-		$form = $gravityview_view->form;
+		$form = $gravityview_view->getForm();
 
 		$label = '';
 
@@ -74,6 +74,11 @@ class GravityView_API {
 			$label .= apply_filters( 'gravityview_render_after_label', '', $field );
 
 		} // End $field['show_label']
+
+		/**
+		 * @since 1.7
+		 */
+		$label = apply_filters( 'gravityview/template/field_label', $label, $field, $form, $entry );
 
 		return $label;
 	}
@@ -119,7 +124,7 @@ class GravityView_API {
 	 * @return string
 	 */
 	public static function field_class( $field, $form = NULL, $entry = NULL ) {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
 		$classes = array();
 
@@ -144,7 +149,7 @@ class GravityView_API {
 			if( !empty( $form ) && !empty( $form['id'] ) ) {
 				$form_id = '-'.$form['id'];
 			} else {
-				$form_id = empty( $gravityview_view->form_id ) ? '' : '-'. $gravityview_view->form_id;
+				$form_id = $gravityview_view->getFormId() ? '-'. $gravityview_view->getFormId() : '';
 			}
 
 			$classes[] = 'gv-field'.$form_id.'-'.$field['id'];
@@ -163,11 +168,12 @@ class GravityView_API {
 	 * @return null|string
 	 */
 	public static function field_value( $entry, $field_settings, $format = 'html') {
-		global $gravityview_view;
 
 		if( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
 			return NULL;
 		}
+
+		$gravityview_view = GravityView_View::getInstance();
 
 		if( class_exists( 'GFCache' ) ) {
 			/**
@@ -191,7 +197,7 @@ class GravityView_API {
 
 		$output = '';
 
-		$form = $gravityview_view->form;
+		$form = $gravityview_view->getForm();
 
 		$field = gravityview_get_field( $form, $field_id );
 
@@ -207,7 +213,14 @@ class GravityView_API {
 			$value = isset($entry[$field_type]) ? $entry[$field_type] : NULL;
 		}
 
+		// Prevent any PHP warnings that may be generated
+		ob_start();
+
 		$display_value = GFCommon::get_lead_field_display($field, $value, $entry["currency"], false, $format);
+
+		if( $errors = ob_get_clean() ) {
+			do_action( 'gravityview_log_error', 'GravityView_API[field_value] Errors when calling GFCommon::get_lead_field_display()', $errors );
+		}
 
 		$display_value = apply_filters("gform_entry_field_value", $display_value, $field, $entry, $form);
 
@@ -221,7 +234,7 @@ class GravityView_API {
 		$field_exists = $gravityview_view->locate_template("fields/{$field_type}.php");
 
 		// Set the field data to be available in the templates
-		$gravityview_view->field_data = array(
+		$gravityview_view->setCurrentField( array(
 			'form' => $form,
 			'field_id' => $field_id,
 			'field' => $field,
@@ -231,7 +244,7 @@ class GravityView_API {
 			'format' => $format,
 			'entry' => $entry,
 			'field_type' => $field_type, /** {@since 1.6} **/
-		);
+		));
 
 		if( $field_exists ) {
 
@@ -250,15 +263,17 @@ class GravityView_API {
 
 		}
 
+		$field_settings = $gravityview_view->getCurrentField('field_settings');
+
 		/**
 		 * Link to the single entry by wrapping the output in an anchor tag
 		 *
 		 * Fields can override this by modifying the field data variable inside the field. See /templates/fields/post_image.php for an example.
 		 *
 		 */
-		if( !empty( $gravityview_view->field_data['field_settings']['show_as_link'] ) ) {
+		if( !empty( $field_settings['show_as_link'] ) ) {
 
-			$output = self::entry_link_html( $entry, $output, array(), $gravityview_view->field_data['field_settings'] );
+			$output = self::entry_link_html( $entry, $output, array(), $field_settings );
 
 		}
 
@@ -270,7 +285,7 @@ class GravityView_API {
 		 * @param array  $entry The GF entry array
 		 * @param  array $field_settings Settings for the particular GV field
 		 */
-		$output = apply_filters( 'gravityview_field_entry_value_'.$field_type, $output, $entry, $field_settings, $gravityview_view->field_data );
+		$output = apply_filters( 'gravityview_field_entry_value_'.$field_type, $output, $entry, $field_settings, $gravityview_view->getCurrentField() );
 
 		/**
 		 * Modify the field value output
@@ -279,10 +294,7 @@ class GravityView_API {
 		 * @param  array $field_settings Settings for the particular GV field
 		 * @param array $field_data  {@since 1.6}
 		 */
-		$output = apply_filters( 'gravityview_field_entry_value', $output, $entry, $field_settings, $gravityview_view->field_data );
-
-		// Free up the memory
-		unset( $gravityview_view->field_data );
+		$output = apply_filters( 'gravityview_field_entry_value', $output, $entry, $field_settings, $gravityview_view->getCurrentField() );
 
 		return $output;
 	}
@@ -327,7 +339,7 @@ class GravityView_API {
 	 * @return string               HTML of "no results" text
 	 */
 	public static function no_results($wpautop = true) {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
 		$is_search = false;
 
@@ -358,11 +370,13 @@ class GravityView_API {
 	 * Uses `wp_cache_get` and `wp_cache_get` (since 1.3) to speed up repeated requests to get permalink, which improves load time. Since we may be doing this hundreds of times per request, it adds up!
 	 *
 	 * @param int $post_id Post ID
-	 * @param boolean $add_pagination Add pagination arguments
+	 * @param boolean $add_query_args Add pagination and sorting arguments
 	 * @return string      Permalink to multiple entries view
 	 */
-	public static function directory_link( $post_id = NULL, $add_pagination = true ) {
-		global $post, $gravityview_view;
+	public static function directory_link( $post_id = NULL, $add_query_args = true ) {
+		global $post;
+
+		$gravityview_view = GravityView_View::getInstance();
 
 		if( empty( $post_id ) ) {
 
@@ -376,16 +390,16 @@ class GravityView_API {
 			} else {
 
 				// The Post ID has been passed via the shortcode
-				if( !empty( $gravityview_view ) && !empty( $gravityview_view->post_id ) ) {
+				if( !empty( $gravityview_view ) && $gravityview_view->getPostId() ) {
 
-					$post_id = $gravityview_view->post_id;
+					$post_id = $gravityview_view->getPostId();
 
 				} else {
 
 					// This is a GravityView post type
 					if( GravityView_frontend::getInstance()->is_gravityview_post_type ) {
 
-						$post_id = isset( $gravityview_view ) ? $gravityview_view->view_id : $post->ID;
+						$post_id = isset( $gravityview_view ) ? $gravityview_view->getViewId() : $post->ID;
 
 					} else {
 
@@ -394,11 +408,11 @@ class GravityView_API {
 
 							$post_id = $post->ID;
 
-						} elseif( !empty( $gravityview_view->view_id ) ) {
+						} elseif( $gravityview_view->getViewId() ) {
 
 							// The GravityView has been embedded in a widget or in a template, and
 							// is not in the current content. Thus, we defer to the View's own ID.
-							$post_id = $gravityview_view->view_id;
+							$post_id = $gravityview_view->getViewId();
 
 						}
 
@@ -428,8 +442,20 @@ class GravityView_API {
 		}
 
 		// Deal with returning to proper pagination for embedded views
-		if( $add_pagination && !empty( $_GET['pagenum'] ) && is_numeric( $_GET['pagenum'] ) ) {
-			$link = add_query_arg('pagenum', intval( $_GET['pagenum'] ), $link );
+		if( $add_query_args ) {
+
+			$args = array();
+
+			if( $pagenum = rgget('pagenum') ) {
+				$args['pagenum'] = intval( $pagenum );
+			}
+
+			if( $sort = rgget('sort') ) {
+				$args['sort'] = $sort;
+				$args['dir'] = rgget('dir');
+			}
+
+			$link = add_query_arg( $args, $link );
 		}
 
 		return $link;
@@ -563,11 +589,19 @@ class GravityView_API {
 		}
 
 		/**
+		 * @since 1.7
+		 */
+		if( $sort = rgget('sort') ) {
+			$args['sort'] = $sort;
+			$args['dir'] = rgget('dir');
+		}
+
+		/**
 		 * Check if we have multiple views embedded in the same page and in that case make sure the single entry link
 		 * has the view id so that Advanced Filters can be applied correctly when rendering the single view
 		 * @see GravityView_frontend::get_context_view_id()
 		 */
-		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->is_multiple_views ) {
+		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() ) {
 			$args['gvid'] = gravityview_get_view_id();
 		}
 
@@ -591,11 +625,9 @@ function gv_class( $field, $form = NULL, $entry = array() ) {
 
 function gv_container_class( $class = '' ) {
 
-	global $gravityview_view;
-
 	$default = ' gv-container';
 
-	if( $gravityview_view->hide_until_searched ) {
+	if( GravityView_View::getInstance()->isHideUntilSearched() ) {
 		$default .= ' hidden';
 	}
 
@@ -663,14 +695,15 @@ function gravityview_back_link() {
 	if( empty( $href ) ) { return NULL; }
 
 	// calculate link label
-	global $gravityview_view;
-	$label = !empty( $gravityview_view->back_link_label ) ? $gravityview_view->back_link_label : __( '&larr; Go back', 'gravityview' );
+	$gravityview_view = GravityView_View::getInstance();
+
+	$label = $gravityview_view->getBackLinkLabel() ? $gravityview_view->getBackLinkLabel() : __( '&larr; Go back', 'gravityview' );
 
 	// filter link label
 	$label = apply_filters( 'gravityview_go_back_label', $label );
 
 	$link = gravityview_get_link( $href, esc_html( $label ), array(
-		'data-viewid' => $gravityview_view->view_id
+		'data-viewid' => $gravityview_view->getViewId()
 	));
 
 	return $link;
@@ -914,7 +947,7 @@ function gravityview_get_current_views() {
 	$fe = GravityView_frontend::getInstance();
 
 	// Solve problem when loading content via admin-ajax.php
-	if( empty( $fe->gv_output_data ) ) {
+	if( ! $fe->getGvOutputData() ) {
 
 		do_action( 'gravityview_log_debug', '[gravityview_get_current_views] gv_output_data not defined; parsing content.' );
 
@@ -922,14 +955,14 @@ function gravityview_get_current_views() {
 	}
 
 	// Make 100% sure that we're dealing with a properly called situation
-	if( !isset( $fe->gv_output_data ) || !is_a( $fe->gv_output_data, 'GravityView_View_Data' ) ) {
+	if( !is_a( $fe->getGvOutputData(), 'GravityView_View_Data' ) ) {
 
-		do_action( 'gravityview_log_debug', '[gravityview_get_current_views] gv_output_data not an object or get_view not callable.', $this->gv_output_data );
+		do_action( 'gravityview_log_debug', '[gravityview_get_current_views] gv_output_data not an object or get_view not callable.', $fe->getGvOutputData() );
 
 		return array();
 	}
 
-	return $fe->gv_output_data->get_views();
+	return $fe->getGvOutputData()->get_views();
 }
 
 /**
@@ -942,9 +975,9 @@ function gravityview_get_current_view_data( $view_id ) {
 
 	$fe = GravityView_frontend::getInstance();
 
-	if( empty( $fe->gv_output_data ) ) { return array(); }
+	if( ! $fe->getGvOutputData() ) { return array(); }
 
-	return $fe->gv_output_data->get_view( $view_id );
+	return $fe->getGvOutputData()->get_view( $view_id );
 }
 
 // Templates' hooks
@@ -964,14 +997,22 @@ function gravityview_after() {
 	do_action( 'gravityview_after', gravityview_get_view_id() );
 }
 
+/**
+ * Get the current View ID being rendered
+ *
+ * @global GravityView_View $gravityview_view
+ * @return string View context "directory" or "single"
+ */
 function gravityview_get_view_id() {
-	global $gravityview_view;
-	return $gravityview_view->view_id;
+	return GravityView_View::getInstance()->getViewId();
 }
 
+/**
+ * @global GravityView_View $gravityview_view
+ * @return string View context "directory" or "single"
+ */
 function gravityview_get_context() {
-	global $gravityview_view;
-	return $gravityview_view->context;
+	return GravityView_View::getInstance()->getContext();
 }
 
 
@@ -1054,39 +1095,60 @@ function gravityview_get_map_link( $address ) {
  *   wpautop - true will filter the value using wpautop function
  *
  * @since  1.1.5
- * @param  array $args Associative array with field data. `entry`, `field` and `form` are required.
+ * @param  array $passed_args Associative array with field data. `field` and `form` are required.
  * @return string
  */
-function gravityview_field_output( $args ) {
+function gravityview_field_output( $passed_args ) {
 
-	$args = wp_parse_args( $args, array(
+	$defaults = array(
 		'entry' => NULL,
 		'field' => NULL,
 		'form' => NULL,
 		'hide_empty' => true,
 		'markup' => '<div class="{{class}}">{{label}}{{value}}</div>',
 		'label_markup' => '',
-		'wpautop' => false
-	) );
+		'wpautop' => false,
+		'zone_id' => NULL,
+	);
+
+	$args = wp_parse_args( $passed_args, $defaults );
+
+	/**
+	 * Modify the args before generation begins
+	 *
+	 * @since 1.7
+	 *
+	 * @param array $args Associative array; `field` and `form` is required.
+	 * @param array $passed_args Original associative array with field data. `field` and `form` are required.
+	 *
+	 */
+	$args = apply_filters( 'gravityview/field_output/args', $args, $passed_args );
 
 	// Required fields.
-	if( empty( $args['entry'] ) || empty( $args['field'] ) || empty( $args['form'] ) ) {
-		do_action( 'gravityview_log_error', '[gravityview_field_output] Entry, field, or form are empty.', $args );
+	if( empty( $args['field'] ) || empty( $args['form'] ) ) {
+		do_action( 'gravityview_log_error', '[gravityview_field_output] Field or form are empty.', $args );
 		return '';
 	}
 
-	$value = gv_value( $args['entry'], $args['field'] );
+	$entry = empty( $args['entry'] ) ? array() : $args['entry'];
+
+	$value = gv_value( $entry, $args['field'] );
 
 	// If the value is empty and we're hiding empty, return empty.
 	if( $value === '' && !empty( $args['hide_empty'] ) ) { return ''; }
 
-	if( !empty( $args['wpautop'] ) ) {
+	if( $value !== '' && !empty( $args['wpautop'] ) ) {
 		$value = wpautop( $value );
 	}
 
-	$class = gv_class( $args['field'], $args['form'], $args['entry'] );
+	$class = gv_class( $args['field'], $args['form'], $entry );
 
-	$label = esc_html( gv_label( $args['field'], $args['entry'] ) );
+	// get field label if needed
+	if( !empty( $args['label_markup'] ) || false !== strpos( $args['markup'], '{{label}}' ) ) {
+		$label = gv_label( $args['field'], $entry );
+	} else {
+		$label = '';
+	}
 
 	if( !empty( $label ) ) {
 		// If the label markup is overridden

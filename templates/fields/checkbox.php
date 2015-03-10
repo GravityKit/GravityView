@@ -1,8 +1,15 @@
 <?php
+/**
+ * Checkbox field output
+ *
+ * @package GravityView
+ * @subpackage GravityView/templates/fields
+ *
+ */
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 if( in_array( $field['type'], array( 'radio', 'checkbox' ) ) && !empty( $entry[ $field_id ] ) ) {
 	$output = apply_filters( 'gravityview_field_tick', '<span class="dashicons dashicons-yes"></span>', $entry, $field);

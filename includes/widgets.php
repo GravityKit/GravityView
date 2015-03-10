@@ -90,6 +90,9 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 	/**
 	 * @since 1.6
 	 * @see WP_Widget::widget()
+	 *
+	 * @param array $args     Display arguments including before_title, after_title, before_widget, and after_widget.
+	 * @param array $instance The settings for the particular instance of the widget.
 	 */
 	function widget( $args, $instance ) {
 
@@ -145,6 +148,15 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 				$item_output = Gravityview_API::replace_variables( $item_output, $form, $entry );
 
+				/**
+				 * Modify the item output HTML
+				 *
+				 * @since 1.6
+				 *
+				 * @param string $item_output The HTML output for the item
+				 * @param array $entry Gravity Forms entry array
+				 * @param array $instance The settings for the particular instance of the widget.
+				 */
 				$item_output = apply_filters( 'gravityview/widget/recent-entries/item', $item_output, $entry, $instance );
 
 				$list_items[] = $item_output;
@@ -213,31 +225,43 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 	/**
 	 * @since 1.6
 	 * @see WP_Widget::update()
+	 *
+	 * @param array $new_instance Widget form settings after update
+	 * @param array $old_instance Widget form settings before update
+	 *
+	 * @return array Calculated widget settings after processing
 	 */
 	public function update( $new_instance, $old_instance ) {
 
-		$instance = $old_instance;
-
-		$instance['title'] = $new_instance['title'];
+		$instance = $new_instance;
 
 		// Force positive number
-		$instance['limit'] = empty( $new_instance['limit'] ) ? 10 : absint( $new_instance['limit'] );
+		$instance['limit'] = empty( $instance['limit'] ) ? 10 : absint( $instance['limit'] );
 
-		$instance['view_id'] = (int) $new_instance['view_id'];
+		$instance['view_id'] = intval( $instance['view_id'] );
 
-		$new_instance['link_format'] = GFCommon::trim_all( $new_instance['link_format'] );
-		$instance['link_format'] = !empty( $new_instance['link_format'] ) ? $new_instance['link_format'] : $old_instance['link_format'];
-		$instance['after_link'] = $new_instance['after_link'];
+		$instance['link_format'] = trim( rtrim( $instance['link_format'] ) );
 
-		$instance['post_id'] = $new_instance['post_id'];
+		$instance['link_format'] = empty( $instance['link_format'] ) ? $old_instance['link_format'] : $instance['link_format'];
 
-		$is_valid_embed_id = GravityView_View_Data::is_valid_embed_id( $new_instance['post_id'], $instance['view_id'] );
+		$instance['post_id'] = empty( $instance['post_id'] ) ? '' : intval( $instance['post_id'] );
+
+		$is_valid_embed_id = GravityView_View_Data::is_valid_embed_id( $instance['post_id'], $instance['view_id'] );
 
 		//check if post_id is a valid post with embedded View
 		$instance['error_post_id'] = is_wp_error( $is_valid_embed_id ) ? $is_valid_embed_id->get_error_message() : NULL;
 
 		// Share that the widget isn't brand new
 		$instance['updated']  = 1;
+
+		/**
+		 * Modify the updated instance. This will allow for validating any added instance settings externally.
+		 *
+		 * @param array $instance Calculated widget settings after processing
+		 * @param array $new_instance Widget form settings after update
+		 * @param array $old_instance Widget form settings before update
+		 */
+		$instance = apply_filters( 'gravityview/widget/update', $instance, $new_instance, $old_instance );
 
 		return $instance;
 	}
@@ -434,8 +458,8 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		$instance['form_id'] = GVCommon::get_meta_form_id( $instance['view_id'] );
 		$instance['form'] = GVCommon::get_form( $instance['form_id'] );
 
-		global $gravityview_view;
 		$gravityview_view = new GravityView_View( $instance );
+
 		GravityView_Widget_Search::getInstance()->render_frontend( $instance );
 
 		echo $args['after_widget'];
@@ -445,6 +469,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 	 * @inheritDoc
 	 */
 	public function update( $new_instance, $old_instance ) {
+
 		$instance = $old_instance;
 
 		if( $this->is_preview() ) {

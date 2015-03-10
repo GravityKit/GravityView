@@ -115,13 +115,7 @@ class GravityView_Edit_Entry {
 		}
 
 		$add_fields = array(
-			'post_title',
-			'post_content',
-			'post_excerpt',
-			'post_tags',
-			'post_category',
 			'post_image',
-			'post_custom_field',
 			'product',
 			'quantity',
 			'shipping',
@@ -150,12 +144,18 @@ class GravityView_Edit_Entry {
 	}
 
 	function setup_vars( $entry = null ) {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
-		$this->entry = empty( $entry ) ? $gravityview_view->entries[0] : $entry;
-		$this->form = $gravityview_view->form;
-		$this->form_id = $gravityview_view->form_id;
-		$this->view_id = $gravityview_view->view_id;
+		if( empty( $entry ) ) {
+			$entries = $gravityview_view->getEntries();
+			$this->entry = $entries[0];
+		} else {
+			$this->entry = $entry;
+		}
+
+		$this->form = $gravityview_view->getForm();
+		$this->form_id = $gravityview_view->getFormId();
+		$this->view_id = $gravityview_view->getViewId();
 
 		self::$nonce_key = sprintf( 'edit_%d_%d_%d', $this->view_id, $this->form_id, $this->entry['id'] );
 	}
@@ -351,25 +351,26 @@ class GravityView_Edit_Entry {
 	 * @return void
 	 */
 	function print_scripts( $css_only = false ) {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
 		wp_enqueue_style('gravityview-edit-entry', plugins_url('/assets/css/gv-edit-entry-admin.css', __FILE__ ), array(), GravityView_Plugin::version );
 
 		if( $css_only ) { return; }
 
-		wp_register_script( 'gform_gravityforms', GFCommon::get_base_url().'/js/gravityforms.js', array( 'jquery', 'gform_json', 'gform_placeholder', 'sack','plupload-all' ) );
+		wp_register_script( 'gform_gravityforms', GFCommon::get_base_url().'/js/gravityforms.js', array( 'jquery', 'gform_json', 'gform_placeholder', 'sack', 'plupload-all', 'gravityview-fe-view' ) );
 
-		GFFormDisplay::enqueue_form_scripts($gravityview_view->form, false);
+		GFFormDisplay::enqueue_form_scripts($gravityview_view->getForm(), false);
 
-		wp_enqueue_script("sack");
-
-		wp_print_scripts();
+		// Sack is required for images
+		wp_print_scripts( array( 'sack', 'gform_gravityforms' ) );
 	}
 
 	/**
 	 * Load required files and trigger edit flow
 	 *
 	 * Run when the is_edit_entry returns true.
+	 *
+	 * @param GravityView_View_Data $gv_data GravityView Data object
 	 * @return void
 	 */
 	function init( $gv_data ) {
@@ -381,7 +382,7 @@ class GravityView_Edit_Entry {
 		$this->setup_vars();
 
 		// Multiple Views embedded, don't proceed if nonce fails
-		if( $gv_data->is_multiple_views && ! wp_verify_nonce( $_GET['edit'], self::$nonce_key ) ) {
+		if( $gv_data->has_multiple_views() && ! wp_verify_nonce( $_GET['edit'], self::$nonce_key ) ) {
 			$this->print_scripts( true );
 			return;
 		}
@@ -468,6 +469,14 @@ class GravityView_Edit_Entry {
 
 				GFFormsModel::save_lead( $form, $this->entry );
 
+
+				// If there's a post associated with the entry, process post fields
+				if( !empty( $this->entry['post_id'] ) ) {
+
+					$this->maybe_update_post_fields( $form );
+
+				}
+
 				do_action("gform_after_update_entry", $this->form, $this->entry["id"]);
 				do_action("gform_after_update_entry_{$this->form["id"]}", $this->form, $this->entry["id"]);
 
@@ -493,6 +502,87 @@ class GravityView_Edit_Entry {
 		} // endif action is update.
 
 	} // process_save
+
+	/**
+	 * Loop through the fields being edited and if they include Post fields, update the Entry's post object
+	 *
+	 * @param array $form Gravity Forms form
+	 *
+	 * @return void
+	 */
+	function maybe_update_post_fields( $form ) {
+
+		$post_id = $this->entry['post_id'];
+
+		// Security check
+		if( false === current_user_can( 'edit_post', $post_id ) ) {
+			do_action( 'gravityview_log_error', 'The current user does not have the ability to edit Post #'.$post_id );
+			return;
+		}
+
+		$updated_post = $original_post = get_post( $post_id );
+
+		foreach ( $this->entry as $field_id => $value ) {
+
+			$field = RGFormsModel::get_field( $form, $field_id );
+
+			if( class_exists('GF_Fields') ) {
+				$field = GF_Fields::create( $field );
+			}
+
+			if( GFCommon::is_post_field( $field ) ) {
+
+				// Get the value of the field, including $_POSTed value
+				$value = RGFormsModel::get_field_value( $field );
+
+				// Convert the field object in 1.9 to an array for backward compatibility
+				$field_array = GVCommon::get_field_array( $field );
+
+				switch( $field_array['type'] ) {
+
+					case 'post_title':
+					case 'post_content':
+					case 'post_excerpt':
+						$updated_post->{$field_array['type']} = $value;
+						break;
+					case 'post_tags':
+						wp_set_post_tags( $post_id, $value, false );
+						break;
+					case 'post_category':
+
+						$value = is_array( $value ) ? array_values( $value ) : (array)$value;
+						$value = array_filter( $value );
+
+						wp_set_post_categories( $post_id, $value, false );
+
+						break;
+					case 'post_custom_field':
+
+						$input_type = RGFormsModel::get_input_type( $field );
+						$custom_field_name = $field_array['postCustomFieldName'];
+
+						// Only certain custom field types are supported
+						if( !in_array( $input_type, array( 'list', 'fileupload' ) ) ) {
+							update_post_meta( $post_id, $custom_field_name, $value );
+						}
+
+						break;
+
+				}
+			}
+
+			continue;
+		}
+
+		$return_post = wp_update_post( $updated_post, true );
+
+		if( is_wp_error( $return_post ) ) {
+			do_action( 'gravityview_log_error', 'Updating the post content failed', $return_post );
+		} else {
+			do_action( 'gravityview_log_debug', 'Updating the post content for post #'.$post_id.' succeeded' );
+		}
+
+	}
 
 	/**
 	 * Gets stored entry data and combines it in to $_POST array.
@@ -928,14 +1018,8 @@ class GravityView_Edit_Entry {
 					// Captchas don't need to be re-entered.
 					case 'captcha':
 
-					// Post Fields aren't editable, so we un-fail them.
-					case 'post_title':
-					case 'post_content':
-					case 'post_excerpt':
-					case 'post_tags':
-					case 'post_category':
+					// Post Image fields aren't editable, so we un-fail them.
 					case 'post_image':
-					case 'post_custom_field':
 						$field['failed_validation'] = false;
 						unset( $field['validation_message'] );
 						break;
@@ -1196,7 +1280,7 @@ class GravityView_Edit_Entry {
 	 * @return bool
 	 */
 	public static function check_user_cap_edit_entry( $entry ) {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
 		// Or if they can edit any entries (as defined in Gravity Forms), we're good.
 		if( GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) ) {
@@ -1210,7 +1294,7 @@ class GravityView_Edit_Entry {
 			return false;
 		}
 
-		$user_edit = !empty( $gravityview_view->atts['user_edit'] );
+		$user_edit = $gravityview_view->getAtts('user_edit');
 		$current_user = wp_get_current_user();
 
 		if( empty( $user_edit ) ) {

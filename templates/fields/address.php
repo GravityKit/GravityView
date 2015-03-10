@@ -2,12 +2,14 @@
 /**
  * Address field output, with "Map It" link removed
  *
- * @group GravityView
+ * @package GravityView
+ * @subpackage GravityView/templates/fields
+ *
  */
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 // If it's the full address
 if( floor( $field_id ) === floatval( $field_id ) ) {

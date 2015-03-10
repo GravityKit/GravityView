@@ -3,11 +3,12 @@
  * Display the website field type
  *
  * @package GravityView
+ * @subpackage GravityView/templates/fields
  */
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 if( !empty( $field_settings['truncatelink'] ) && function_exists( 'gravityview_format_link' ) ) {
 	if( !empty( $value ) ) {

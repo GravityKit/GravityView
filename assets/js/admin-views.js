@@ -14,7 +14,7 @@
 
 (function( $ ) {
 
-    var viewConfiguration;
+    var viewConfiguration, viewGeneralSettings;
 
     viewConfiguration = {
 
@@ -555,6 +555,8 @@
             $parent.parents(".gv-grid").find(".gv-view-types-module").removeClass('gv-selected');
             $parent.addClass('gv-selected');
 
+            $('#wpcontent,.gv-fields').addClass('gv-wait');
+
             // check for start fresh context
             if (vcfg.startFreshStatus) {
 
@@ -647,6 +649,7 @@
                     $('#directory-footer-widgets').html(content.footer);
                     $('#directory-active-fields').append(content.directory);
                     $('#single-active-fields').append(content.single);
+                    $('#wpcontent,.gv-fields').removeClass('gv-wait');
                     vcfg.showViewConfig();
                 }
             });
@@ -671,6 +674,7 @@
                     $('#directory-footer-widgets').html(content.footer);
                     $('#directory-active-fields').append(content.directory);
                     $('#single-active-fields').append(content.single);
+                    $('#wpcontent,.gv-fields').removeClass('gv-wait');
                     vcfg.showViewConfig();
                 }
             });
@@ -758,7 +762,9 @@
 
         },
 
-        // refresh Gravity Forms tooltips (the real help tooltips)
+        /**
+         * Refresh Gravity Forms tooltips (the real help tooltips)
+         */
         refreshGFtooltips: function() {
             $( ".gf_tooltip" ).tooltip( {
                 show: 500,
@@ -768,7 +774,6 @@
                 }
             });
         },
-
 
 
         /**
@@ -797,6 +802,7 @@
             } else {
                 data.form_id = vcfg.gvSelectForm.val();
             }
+
 
             // Get the fields for the directory context
             $.post(ajaxurl, data, function (response) {
@@ -1184,7 +1190,7 @@
         	if ( !vcfg.startFreshStatus || templateId === '' ) {
 
         		// Serialize the inputs so that `max_input_vars`
-                return vcfg.serializeForm();
+                return vcfg.serializeForm( e );
 
         	}
 
@@ -1263,7 +1269,7 @@
             var data = {
                 action: 'gv_set_preset_form',
                 template_id: templateId,
-                nonce: gvGlobals.nonce,
+                nonce: gvGlobals.nonce
             };
 
             $.ajax({
@@ -1301,11 +1307,74 @@
     }; // end viewConfiguration object
 
 
+    /**
+     * Manages the General View Settings
+     *
+     * @since 1.7
+     *
+     * @type {{templateId: null, init: Function, updateSettingsDisplay: Function, toggleSetting: Function}}
+     */
+    viewGeneralSettings = {
+
+        /**
+         * Holds the current view type id (template)
+         */
+        templateId: null,
+
+        /**
+         * Init method
+         */
+        init: function() {
+
+            // Conditional display general settings & trigger display settings if template changes
+            $('#gravityview_directory_template').change( viewGeneralSettings.updateSettingsDisplay ).trigger('change');
+
+        },
+
+        /**
+         * Callback method to show/hide settings if template changes and settings have a specific template attribute
+         */
+        updateSettingsDisplay: function() {
+
+            viewGeneralSettings.templateId = $(this).val();
+
+            $('tr[data-show-if]').each( viewGeneralSettings.toggleSetting );
+
+        },
+
+        /**
+         * Show/Hides setting based on the template
+         */
+        toggleSetting: function() {
+            var row = $(this),
+                templates = row.attr( 'data-show-if' );
+
+            // if setting field attribute is empty, leave..
+            if( templates.length < 1 ) {
+                return;
+            }
+
+
+            if( viewGeneralSettings.templateId.length > 0 && templates.indexOf( viewGeneralSettings.templateId ) > -1 ) {
+                row.show();
+            } else {
+                row.find('select, input').val('').prop('checked', false );
+                row.hide();
+            }
+
+        }
+
+    };  // end viewGeneralSettings object
+
+    
 
 	jQuery(document).ready( function( $ ) {
 
 		// title placeholder
 		$('#title-prompt-text').text( gvGlobals.label_viewname );
+
+        // start the general view settings magic
+        viewGeneralSettings.init();
 
 		// start the View Configuration magic
 		viewConfiguration.init();
@@ -1334,7 +1403,8 @@
 		});
 
 		// Make zebra table rows
-		$("#gravityview_template_settings .form-table tr:even").addClass('alternate');
+		$('#gravityview_template_settings .form-table tr:even, #gravityview_sort_filter .form-table tr:even').addClass('alternate');
+
 
 		// Force the sort metabox to be directly under the view configuration.
 		// Damn 3rd party metaboxes!

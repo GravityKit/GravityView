@@ -5,8 +5,8 @@
  * @see class-search-widget.php
  */
 
-global $gravityview_view;
-$view_id = $gravityview_view->view_id;
+$gravityview_view = GravityView_View::getInstance();
+$view_id = $gravityview_view->getViewId();
 $search_field = $gravityview_view->search_field;
 
 // Make sure that there are choices to display

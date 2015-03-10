@@ -119,23 +119,19 @@ class GravityView_Ajax {
 
 		ob_start();
 		do_action('gravityview_render_active_areas', $template_id, 'widget', 'header', $default_widget_areas, $presets['widgets'] );
-		$response['header'] = ob_get_contents();
-		ob_end_clean();
+		$response['header'] = ob_get_clean();
 
 		ob_start();
 		do_action('gravityview_render_active_areas', $template_id, 'widget', 'footer', $default_widget_areas, $presets['widgets'] );
-		$response['footer'] = ob_get_contents();
-		ob_end_clean();
+		$response['footer'] = ob_get_clean();
 
 		ob_start();
 		do_action('gravityview_render_active_areas', $template_id, 'field', 'directory', $template_areas, $presets['fields'] );
-		$response['directory'] = ob_get_contents();
-		ob_end_clean();
+		$response['directory'] = ob_get_clean();
 
 		ob_start();
 		do_action('gravityview_render_active_areas', $template_id, 'field', 'single', $template_areas, $presets['fields'] );
-		$response['single'] = ob_get_contents();
-		ob_end_clean();
+		$response['single'] = ob_get_clean();
 
 		do_action( 'gravityview_log_debug', '[get_preset_fields_config] AJAX Response', $response );
 

@@ -76,12 +76,14 @@ class GravityView_Admin_ApproveEntries {
 				array(
 					'class' => 'button',
 					'value' => __( 'Approve/Reject', 'gravityview' ),
-					'onclick' => "StartAddField('gravityviewapproved_admin');"
+					'onclick' => "StartAddField('gravityviewapproved_admin');",
+					'data-type' => 'gravityviewapproved_admin'
 				),
 				array(
 					'class' => 'button',
 					'value' => __( 'User Opt-In', 'gravityview' ),
-					'onclick' => "StartAddField('gravityviewapproved');"
+					'onclick' => "StartAddField('gravityviewapproved');",
+					'data-type' => 'gravityviewapproved'
 				),
 			)
 		);

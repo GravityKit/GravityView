@@ -1,13 +1,22 @@
 <?php
+/**
+ * Display the Email field type
+ *
+ * @package GravityView
+ * @subpackage GravityView/templates/fields
+ */
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 // If there's no email, don't bother continuing.
 if( empty( $value ) ) {
 	return;
 }
+
+// Default: plain email, no link
+$output = $value;
 
 if( !isset( $field_settings['emailmailto'] ) || !empty( $field_settings['emailmailto'] ) ) {
 
@@ -38,33 +47,22 @@ if( !isset( $field_settings['emailmailto'] ) || !empty( $field_settings['emailma
 	}
 
 	// Generate the link HTML
-	$output = '<a href="'.esc_attr( $link ).'">'.$value.'</a>';
-
-} else {
-
-	// Plain email, no link
-	$output = $value;
+	$output = gravityview_get_link( $link, $value );
 
 }
 
 /**
  * Prevent encrypting emails no matter what - this is handy for DataTables exports, for example
+ * @since 1.1.6
  * @var boolean
  */
 $prevent_encrypt = apply_filters( 'gravityview_email_prevent_encrypt', false );
 
-// If not encrypting the link
-if( empty( $field_settings['emailencrypt'] ) || $prevent_encrypt ) {
+// If encrypting the link
+if( !empty( $field_settings['emailencrypt'] ) && !$prevent_encrypt ) {
 
-	echo $output;
+	$output = GVCommon::js_encrypt( $output );
 
-} else {
-
-	$enkoder = new StandalonePHPEnkoder;
-
-	$enkoder->enkode_msg = __( 'Email hidden; Javascript is required.', 'gravityview' );
-
-	$encrypted =  $enkoder->enkode( $output );
-
-	echo $encrypted;
 }
+
+echo $output;

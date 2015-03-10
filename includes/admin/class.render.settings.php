@@ -282,10 +282,12 @@ class GravityView_Render_Settings {
 		$setting['type'] = empty( $setting['type'] ) ? 'text' : $setting['type'];
 
 		// merge tags
-		if( $setting['type'] === 'text' ) {
-			$setting['merge_tags'] = true;
-		} else {
-			$setting['merge_tags'] = false;
+		if( !isset( $setting['merge_tags'] ) ) {
+			if( $setting['type'] === 'text' ) {
+				$setting['merge_tags'] = true;
+			} else {
+				$setting['merge_tags'] = false;
+			}
 		}
 
 		// render the setting
@@ -297,7 +299,18 @@ class GravityView_Render_Settings {
 			$output = ob_get_clean();
 		}
 
-		echo '<tr valign="top">' . $output . '</tr>';
+		// Check if setting is specific for a template
+		if( !empty( $setting['show_in_template'] ) ) {
+			if( !is_array( $setting['show_in_template'] ) ) {
+				$setting['show_in_template'] = array( $setting['show_in_template'] );
+			}
+			$show_if = ' data-show-if="'. implode( ' ', $setting['show_in_template'] ).'"';
+		} else {
+			$show_if = '';
+		}
+
+		// output
+		echo '<tr valign="top" '. $show_if .'>' . $output . '</tr>';
 
 	}
 
@@ -441,4 +454,4 @@ class GravityView_Render_Settings {
 	}
 
 
-} // end class GravityView_Field_Options
+}

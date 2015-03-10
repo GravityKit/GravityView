@@ -2,12 +2,13 @@
 /**
  * Generate output for the Source URL field
  * @package GravityView
+ * @subpackage GravityView/templates/fields
  * @since 1.1.6
  */
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 // If linking to the source URL
 if( !empty( $field_settings['link_to_source'] ) ) {

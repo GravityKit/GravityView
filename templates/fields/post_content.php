@@ -1,8 +1,14 @@
 <?php
+/**
+ * Display the post_content field type
+ *
+ * @package GravityView
+ * @subpackage GravityView/templates/fields
+ */
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 if( !empty( $field_settings['dynamic_data'] ) && !empty( $entry['post_id'] ) ) {
 
@@ -12,12 +18,14 @@ if( !empty( $field_settings['dynamic_data'] ) && !empty( $entry['post_id'] ) ) {
 
 	if( empty( $post ) ) {
 		do_action('gravityview_log_debug', 'Dynamic data for post #'.$entry['post_id'].' doesnt exist.' );
+		wp_reset_postdata();
 		return;
 	}
 
 	setup_postdata( $post );
 	the_content();
 	wp_reset_postdata();
+
 } else {
 	echo $display_value;
 }

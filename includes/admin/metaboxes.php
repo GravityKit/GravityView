@@ -198,10 +198,10 @@ class GravityView_Admin_Metaboxes {
 	 * Creates
 	 * @filter default text
 	 * @action default text
-	 * @param  [type]      $curr_form [description]
-	 * @return [type]                 [description]
+	 * @param  mixed      $curr_form Form ID
+	 * @return string     Merge tags html
 	 */
-	function render_merge_tags_scripts( $curr_form ) {
+	public static function render_merge_tags_scripts( $curr_form ) {
 
 		if( empty( $curr_form )) { return; }
 
@@ -245,7 +245,7 @@ class GravityView_Admin_Metaboxes {
 		// Selected template
 		$curr_template = gravityview_get_template_id( $post->ID );
 
-		echo $this->render_merge_tags_scripts( $curr_form );
+		echo self::render_merge_tags_scripts( $curr_form );
 ?>
 		<div id="gv-view-configuration-tabs">
 
@@ -421,11 +421,17 @@ class GravityView_Admin_Metaboxes {
 			// Begin Sort fields
 			do_action( 'gravityview_metabox_sort_before', $current_settings );
 
+			/**
+			 * @since 1.7
+			 */
+			GravityView_Render_Settings::render_setting_row( 'sort_columns', $current_settings );
+
 			$sort_fields_input = '<select name="template_settings[sort_field]" id="gravityview_sort_field">'.gravityview_get_sortable_fields( $curr_form, $current_settings['sort_field'] ).'</select>';
 
 			GravityView_Render_Settings::render_setting_row( 'sort_field', $current_settings, $sort_fields_input );
 
 			GravityView_Render_Settings::render_setting_row( 'sort_direction', $current_settings );
+
 
 			// End Sort fields
 			do_action( 'gravityview_metabox_sort_after', $current_settings );

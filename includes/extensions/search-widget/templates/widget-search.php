@@ -5,9 +5,11 @@
  * @see class-search-widget.php
  */
 
-global $gravityview_view, $wp_rewrite;
+global $wp_rewrite;
 
-$view_id = $gravityview_view->view_id;
+$gravityview_view = GravityView_View::getInstance();
+
+$view_id = $gravityview_view->getViewId();
 
 $has_inputs = false;
 

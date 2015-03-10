@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 				files: [{
 		          expand: true,
 		          cwd: 'assets/css/scss',
-		          src: ['*.scss','!admin-merge-tags.scss','!admin-tooltips.scss','!font.scss'],
+		          src: ['*.scss','!admin-merge-tags.scss','!admin-tooltips.scss'],
 		          dest: 'assets/css',
 		          ext: '.css'
 		      }]
@@ -28,6 +28,19 @@ module.exports = function(grunt) {
 			}
 		},
 
+        imagemin: {
+            dynamic: {
+                files: [{
+                    options: {
+                        optimizationLevel: 7
+                    },
+                    expand: true,
+                    cwd: 'assets/images',
+                    src: ['**/*.{png,jpg,gif}'],
+                    dest: 'assets/images',
+                }]
+            }
+        },
 
 		uglify: {
 			options: { mangle: false },
@@ -54,7 +67,7 @@ module.exports = function(grunt) {
 		watch: {
 			main: {
 				files: ['assets/js/*.js','!assets/js/*.min.js','readme.txt'],
-				tasks: ['uglify:main','wp_readme_to_markdown']
+				tasks: ['uglify:main','wp_readme_to_markdown','newer:jshint:all']
 			},
 			extension_js: {
 				files: ['includes/extensions/**/*.js','!includes/extensions/**/*.min.js'],
@@ -67,7 +80,7 @@ module.exports = function(grunt) {
 			scss: {
 				files: ['assets/css/scss/*.scss'],
 				tasks: ['sass:dist']
-			},
+			}
 		},
 
 		dirs: {
@@ -106,8 +119,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-wp-readme-to-markdown');
 	grunt.loadNpmTasks('grunt-potomo');
 	grunt.loadNpmTasks('grunt-exec');
+    grunt.loadNpmTasks('grunt-contrib-imagemin');
+    grunt.loadNpmTasks('grunt-newer');
 
-
-	grunt.registerTask( 'default', [ 'sass', 'uglify', 'exec:transifex','potomo', 'watch'] );
+	grunt.registerTask( 'default', [ 'sass', 'uglify', 'exec:transifex','potomo', 'imagemin', 'watch' ] );
 
 };

@@ -3,11 +3,12 @@
  * Display the signature field type
  *
  * @package GravityView
+ * @subpackage GravityView/templates/fields
  */
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 // If empty, there's no signature to show
 if( empty( $value ) ) { return; }

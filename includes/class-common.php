@@ -26,7 +26,7 @@ class GVCommon {
 	 * @return mixed False: no form ID specified or Gravity Forms isn't active. Array: Form returned from Gravity Forms
 	 */
 	public static function get_form( $form_id ) {
-		if(empty( $form_id ) ) {
+		if( empty( $form_id ) ) {
 			return false;
 		}
 
@@ -39,6 +39,30 @@ class GVCommon {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Return a Gravity Forms field array, whether using GF 1.9 or not
+	 *
+	 * @since 1.7
+	 *
+	 * @param array|GF_Fields $field Gravity Forms field or array
+	 * @return array Array version of $field
+	 */
+	public static function get_field_array( $field ) {
+
+		if( class_exists('GF_Fields') ) {
+
+			$field_object = GF_Fields::create( $field );
+
+			// Convert the field object in 1.9 to an array for backward compatibility
+			$field_array = get_object_vars( $field_object );
+
+		} else {
+			$field_array = $field;
+		}
+
+		return $field_array;
 	}
 
 	/**
@@ -61,7 +85,7 @@ class GVCommon {
 		 */
 		$views_params = apply_filters( 'gravityview/get_all_views/params', $params );
 
-		$views = get_posts( $params );
+		$views = get_posts( $views_params );
 
 		return $views;
 	}
@@ -149,6 +173,7 @@ class GVCommon {
 
 		$fields = array();
 		$has_product_fields = false;
+		$has_post_fields = false;
 
 		// If GF_Field exists, we're using GF 1.9+, where add_default_properties has been deprecated.
 		if( false === class_exists('GF_Field') && $add_default_properties ) {
@@ -161,23 +186,23 @@ class GVCommon {
 
 				if( $include_parent_field || empty( $field['inputs'] ) ) {
 					$fields[ $field['id'] ] = array(
-						'label' => $field['label'],
+						'label' => rgar( $field, 'label' ),
 						'parent' => null,
-						'type' => $field['type'],
-						'adminLabel' => $field['adminLabel'],
-						'adminOnly' => $field['adminOnly'],
+						'type' => rgar( $field, 'type' ),
+						'adminLabel' => rgar( $field, 'adminLabel' ),
+						'adminOnly' => rgar( $field, 'adminOnly' ),
 					);
 				}
 
 				if( $add_default_properties && !empty( $field['inputs'] ) ) {
 					foreach( $field['inputs'] as $input ) {
 						$fields[ (string)$input['id'] ] = array(
-							'label' => $input['label'],
-							'customLabel' => ( isset( $input['customLabel'] ) ? $input['customLabel'] : '' ),
+							'label' => rgar( $input, 'label' ),
+							'customLabel' => rgar( $input, 'customLabel' ),
 							'parent' => $field,
-							'type' => $field['type'],
-							'adminLabel' => $field['adminLabel'],
-							'adminOnly' => $field['adminOnly'],
+							'type' => rgar( $field, 'type' ),
+							'adminLabel' => rgar( $field, 'adminLabel' ),
+							'adminOnly' => rgar( $field, 'adminOnly' ),
 						);
 					}
 
@@ -187,7 +212,27 @@ class GVCommon {
 					$has_product_fields = true;
 				}
 
+				/**
+				 * @hack Version 1.9
+				 */
+				$field_for_is_post_field = class_exists('GF_Fields') ? (object)$field : (array)$field;
+
+				if( GFCommon::is_post_field( $field_for_is_post_field ) ) {
+					$has_post_fields = true;
+				}
 			}
+		}
+
+		/**
+		 * @since 1.7
+		 */
+		if( $has_post_fields ) {
+
+			$fields['post_id'] = array(
+				"label" => __( 'Post ID', 'gravityview' ),
+				"type" => 'post_id'
+			);
+
 		}
 
 		if( $has_product_fields ) {
@@ -332,7 +377,7 @@ class GVCommon {
 
 
 		// When multiple views are embedded, calculate the context view id and send it to the advanced filter
-		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->is_multiple_views ) {
+		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() ) {
 			$criteria['context_view_id'] = GravityView_frontend::get_context_view_id();
 		} else {
 			$criteria['context_view_id'] = null;
@@ -799,6 +844,52 @@ class GVCommon {
 
 		return in_array( $type, $numeric_types );
 
+	}
+
+	/**
+	 * Encrypt content using Javascript so that it's hidden when JS is disabled.
+	 *
+	 * This is mostly used to hide email addresses from scraper bots.
+	 *
+	 * @param string $content Content to encrypt
+	 * @param string $message Message shown if Javascript is disabled
+	 *
+	 * @uses StandalonePHPEnkoder
+	 * @link  https://github.com/jnicol/standalone-phpenkoder
+	 *
+	 * @since 1.7
+	 *
+	 * @return string Content, encrypted
+	 */
+	public static function js_encrypt( $content, $message = '' ) {
+
+		$output = $content;
+
+		if( !class_exists( 'StandalonePHPEnkoder' ) ) {
+			include_once( GRAVITYVIEW_DIR . 'includes/lib/standalone-phpenkoder/StandalonePHPEnkoder.php' );
+		}
+
+		if( class_exists( 'StandalonePHPEnkoder' ) ) {
+
+			$enkoder = new StandalonePHPEnkoder;
+
+			$message = empty( $message ) ? __( 'Email hidden; Javascript is required.', 'gravityview' ) : $message;
+
+			/**
+			 * Modify the message shown when Javascript is disabled
+			 *
+			 * @since 1.7
+			 *
+			 * @param string $message Existing message
+			 * @param string $content Content to encrypt
+			 *
+			 */
+			$enkoder->enkode_msg = apply_filters( 'gravityview/phpenkoder/msg', $message, $content );
+
+			$output = $enkoder->enkode( $content );
+		}
+
+		return $output;
 	}
 
 	/**

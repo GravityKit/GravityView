@@ -5,7 +5,7 @@
  * @see class-search-widget.php
  */
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 $search_field = $gravityview_view->search_field;
 
 ?>

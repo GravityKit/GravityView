@@ -1,11 +1,18 @@
 <?php
+/**
+ * Display the date_created field type
+ *
+ * @package GravityView
+ * @subpackage GravityView/templates/fields
+ */
 
-global $gravityview_view;
+$gravityview_view = GravityView_View::getInstance();
 
-extract( $gravityview_view->field_data );
+extract( $gravityview_view->getCurrentField() );
 
 /**
  * date_created is stored in UTC format. Fetch in the current blog's timezone.
+ * @since 1.1.6
  * @param boolean Use timezone-adjusted datetime? If true, adjusts date based on blog's timezone setting. If false, uses UTC setting.
  * @var string
  */

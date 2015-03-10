@@ -14,14 +14,13 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.6.2
+ * Version:          	1.7
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravityview
  * License:           	GPLv2 or later
  * License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
  * Domain Path:			/languages
- * GitHub Plugin URI: 	ToBeDefined
  */
 
 /** If this file is called directly, abort. */
@@ -30,15 +29,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /** Constants */
-if( !defined('GRAVITYVIEW_FILE') )
+if( !defined('GRAVITYVIEW_FILE') ) {
 	define( 'GRAVITYVIEW_FILE', __FILE__ );
+}
 
-if ( !defined('GRAVITYVIEW_URL') )
+if ( !defined('GRAVITYVIEW_URL') ) {
 	define( 'GRAVITYVIEW_URL', plugin_dir_url( __FILE__ ) );
+}
 
-if ( !defined('GRAVITYVIEW_DIR') )
+if ( !defined('GRAVITYVIEW_DIR') ) {
 	define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
-
+}
 
 if ( !defined('GV_MIN_GF_VERSION') ) {
 	/**
@@ -59,17 +60,15 @@ require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
 require_once( GRAVITYVIEW_DIR . 'includes/class-cache.php');
 
 /** Register hooks that are fired when the plugin is activated and deactivated. */
-if( is_admin() ) {
-	register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
-	register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
-}
+register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
 
 /**
  * GravityView_Plugin main class.
  */
 final class GravityView_Plugin {
 
-	const version = '1.6.2';
+	const version = '1.7';
 
 	public static $theInstance;
 
@@ -120,16 +119,6 @@ final class GravityView_Plugin {
 		require_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
 		include_once( GRAVITYVIEW_DIR . 'includes/class-frontend-views.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
-
-
-		/**
-		 * Encrypt Email Addresses
-		 * @link  https://github.com/jnicol/standalone-phpenkoder
-		 */
-		if( !class_exists( 'StandalonePHPEnkoder' ) ) {
-			include_once( GRAVITYVIEW_DIR . 'includes/lib/standalone-phpenkoder/StandalonePHPEnkoder.php' );
-		}
-
 
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ), 1 );
@@ -263,7 +252,7 @@ final class GravityView_Plugin {
 
 	/**
 	 * helper function to define the default widget areas
-	 * @todo Move somehere logical
+	 * @todo Move somewhere logical
 	 * @return array definition for default widget areas
 	 */
 	public static function get_default_widget_areas() {

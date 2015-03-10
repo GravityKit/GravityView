@@ -104,7 +104,7 @@ if( !function_exists('gravityview_get_entries') ) {
 	 * @param int|array $form_ids The ID of the form or an array IDs of the Forms. Zero for all forms.
 	 * @param mixed $passed_criteria (default: null)
 	 * @param mixed &$total (default: null)
-	 * @return void
+	 * @return mixed False: Error fetching entries. Array: Multi-dimensional array of Gravity Forms entry arrays
 	 */
 	function gravityview_get_entries( $form_ids = null, $passed_criteria = null, &$total = null ) {
 		return GVCommon::get_entries( $form_ids, $passed_criteria, $total );
@@ -157,7 +157,7 @@ if( !function_exists('gravityview_get_field') ) {
 	 * @access public
 	 * @param mixed $form
 	 * @param mixed $field_id
-	 * @return void
+	 * @return array
 	 */
 	function gravityview_get_field( $form, $field_id ) {
 		return GVCommon::get_field( $form, $field_id );

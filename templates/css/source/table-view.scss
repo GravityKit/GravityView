@@ -23,3 +23,15 @@
 	width: 35%;
 	vertical-align: top;
 }
+
+// 2. Sorting links
+// Change accordingly to your website styles
+// ------------------------------------------------
+
+a.gv-sort.gv-icon-caret-up-down {
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1;
+    }
+}

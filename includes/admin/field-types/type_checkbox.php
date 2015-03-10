@@ -14,14 +14,31 @@ class GravityView_FieldType_checkbox extends GravityView_FieldType {
 	}
 
 	function render_setting( $override_input = NULL ) {
-		?>
-		<td scope="row" colspan="2">
-			<label for="<?php echo $this->get_field_id(); ?>">
+
+		if( $this->get_field_left_label() ) : ?>
+
+			<td scope="row">
+				<label for="<?php echo $this->get_field_id(); ?>">
+					<?php echo $this->get_field_left_label() . $this->get_tooltip(); ?>
+				</label>
+			</td>
+			<td>
+				<label>
 				<?php $this->render_input( $override_input ); ?>
 				&nbsp;<?php echo $this->get_field_label() . $this->get_tooltip() . $this->get_field_desc(); ?>
-			</label>
-		</td>
-		<?php
+				</label>
+			</td>
+
+		<?php else: ?>
+
+			<td scope="row" colspan="2">
+				<label for="<?php echo $this->get_field_id(); ?>">
+					<?php $this->render_input( $override_input ); ?>
+					&nbsp;<?php echo $this->get_field_label() . $this->get_tooltip() . $this->get_field_desc(); ?>
+				</label>
+			</td>
+
+		<?php endif;
 	}
 
 	function render_input( $override_input = NULL ) {

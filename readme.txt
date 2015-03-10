@@ -20,6 +20,28 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.7 on March 10 =
+* Added: You can now edit most Post Fields in Edit Entry mode
+    - Supports Post Content, Post Title, Post Excerpt, Post Tags, Post Category, and most Post Custom Field configurations ([Learn more](http://docs.gravityview.co/article/245-editable-post-fields))
+* Added: Sort Table columns ([read how](http://docs.gravityview.co/article/230-how-to-enable-the-table-column-sorting-feature))
+* Added: Post ID field now available - shows the ID of the post that was created by the Gravity Forms entry
+* Fixed: Properly reset `$post` after Live Post Data is displayed
+* Tweak: Display spinning cursor while waiting for View configurations to load
+* Tweak: Updated GravityView Form Editor buttons to be 1.9 compatible
+* Added: `gravityview/field_output/args` filter to modify field output settings before rendering
+* Fixed: Don't show date field value if set to Unix Epoch (1/1/1970), since this normally means that in fact, no date has been set
+* Fixed: PHP notices when choosing "Start Fresh"
+* Fixed: If Gravity Forms is installed using a non-standard directory name, GravityView would think it wasn't activated
+* Fixed: Fixed single entry links when inserting views with `the_gravityview()` template tag
+* Updated: Portuguese translation (thanks, Luis!)
+* Added: `gravityview/fields/email/javascript_required` filter to modify message displayed when encrypting email addresses and Javascript is disabled
+* Added: `GFCommon:js_encrypt()` method to encrypt text for Javascript email encryption
+* Fixed: Recent Entries widget didn't allow externally added settings to save properly
+* Fixed: Delete Entry respects previous pagination and sorting
+* Tweak: Updated View Presets to have improved Search Bar configurations
+* Fixed: `gravityview/get_all_views/params` filter restored (Modify Views returned by the `GVCommon::get_all_views()` method)
+* GravityView will soon require Gravity Forms 1.9 or higher. If you are running Gravity Forms Version 1.8.x, please update to the latest version.
+
 = 1.6.2 on February 23 =
 * Added: Two new hooks in the Custom Content field to enable conditional logic or enable `the_content` WordPress filter which will trigger the Video embed ([read how](http://docs.gravityview.co/article/227-how-can-i-transform-a-video-link-into-a-player-using-the-custom-content-field))
 * Fixed: Issue when embedding multiple DataTables views in the same page
@@ -64,7 +86,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: For Post Dynamic Data, make sure Post ID is set
 * Fixed: Make sure search field choices are available before displaying field
 
-= 1.5.4 on January 29 =
+= 1.5.4 on January 29, 2015 =
 * Added: "Hide View data until search is performed" setting - only show the Search Bar until a search is entered
 * Added: "Clear" button to your GravityView Search Bar - allows easy way to remove all searches & filters
 * Added: You can now add Custom Content GravityView Widgets (not just fields) - add custom text or HTMLin the header or footer of a View

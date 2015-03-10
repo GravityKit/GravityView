@@ -41,7 +41,7 @@ class GravityView_Widget_Pagination_Info extends GravityView_Widget {
 	}
 
 	public function render_frontend( $widget_args, $content = '', $context = '') {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
 		if( !$this->pre_render_frontend() ) {
 			return;
@@ -113,7 +113,7 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 	}
 
 	public function render_frontend( $widget_args, $content = '', $context = '') {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
 		if( !$this->pre_render_frontend() ) {
 			return;
@@ -417,7 +417,7 @@ class GravityView_Widget {
 	 * Add $this->shortcode_name shortcode to output self::render_frontend()
 	 */
 	function add_shortcode( $run_on_singular = true ) {
-		global $gravityview_view, $post;
+		global $post;
 
 		if( is_admin() ) { return; }
 
@@ -486,7 +486,7 @@ class GravityView_Widget {
 	 * General validations when rendering the widget
 	 */
 	public function pre_render_frontend() {
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
 		if( empty( $gravityview_view ) ) {
 			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: $gravityview_view not instantiated yet.', get_class($this)) );

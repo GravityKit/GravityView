@@ -45,9 +45,9 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 	 */
 	static function get_files_array( $value, $gv_class ) {
 
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
 
-		extract( $gravityview_view->field_data );
+		extract( $gravityview_view->getCurrentField() );
 
 		$output_arr = array();
 
@@ -190,7 +190,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 				$link_atts = empty( $field_settings['show_as_link'] ) ? "target='_blank'" : '';
 
-				$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', $link_atts, $gravityview_view->field_data );
+				$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', $link_atts, $gravityview_view->getCurrentField() );
 
 			} else {
 
@@ -209,10 +209,20 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			 * @see GravityView_API:field_value() for info about $gravityview_view->field_data
 			 *
 			 */
-			$disable_wrapped_link = apply_filters( 'gravityview/fields/fileupload/disable_link', $disable_wrapped_link, $gravityview_view->field_data );
+			$disable_wrapped_link = apply_filters( 'gravityview/fields/fileupload/disable_link', $disable_wrapped_link, $gravityview_view->getCurrentField() );
 
 			// If the HTML output hasn't been overridden by the switch statement above, use the default format
 			if( !empty( $content ) && empty( $disable_wrapped_link ) ) {
+
+				/**
+				 * Modify the link text (defaults to the file name)
+				 *
+				 * @since 1.7
+				 *
+				 * @param string $content The existing anchor content. Could be `<img>` tag, audio/video embed or the file name
+				 * @param array $field GravityView array of the current field being processed
+				 */
+				$content = apply_filters( 'gravityview/fields/fileupload/link_content', $content, $gravityview_view->getCurrentField() );
 
 				$content = "<a href='{$link}' {$link_atts}>" . $content . "</a>";
 
@@ -224,6 +234,19 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			);
 
 		} // End foreach loop
+
+		/**
+		 * Modify the files array
+		 *
+		 * @since 1.7
+		 *
+		 * @param array $output_arr Associative array of files {
+		 *      @type string $file_path The path to the file as stored in Gravity Forms
+		 *      @type string $content The generated output for the file
+		 * }
+		 * @param array $field GravityView array of the current field being processed
+		 */
+		$output_arr = apply_filters( 'gravityview/fields/fileupload/files_array', $output_arr, $gravityview_view->getCurrentField() );
 
 		return $output_arr;
 	}
