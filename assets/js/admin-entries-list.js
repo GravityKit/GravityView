@@ -52,7 +52,7 @@
 			form_id: gvGlobals.form_id,
 			approved: approved,
 			nonce: gvGlobals.nonce,
-		}
+		};
 
 		$.post( ajaxurl, data, function( response ) {
 			if( response ) {

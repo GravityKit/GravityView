@@ -41,6 +41,8 @@ jQuery(document).ready( function( $ ) {
 		 */
 		$("#select_gravityview_view_form :input:enabled").each(function() {
 
+			var setting_value = '';
+
 			// CHECKBOX or RADIO
 			// Checkboxes and Radio inputs have their own `defaultChecked` property
 			// so we process them separately
@@ -57,7 +59,7 @@ jQuery(document).ready( function( $ ) {
 				}
 
 				// 1 = checked; 0 = not checked
-				var setting_value = $(this).is(':checked') ? '1' : '0';
+				setting_value = $(this).is(':checked') ? '1' : '0';
 
 				// Reset to default
 				$(this).prop( 'checked', $(this).prop('defaultChecked') );
@@ -81,7 +83,7 @@ jQuery(document).ready( function( $ ) {
 				} else {
 
 					// Get the value
-					var setting_value = $(this).val();
+					setting_value = $(this).val();
 
 					// Reset to default
 					$(this).val( $(this).prop('defaultValue') );
@@ -94,7 +96,7 @@ jQuery(document).ready( function( $ ) {
 			var setting_attr = $(this).prop('name').replace(/^gravityview_/, '');
 
 			// Add to the output
-			shortcode += ' ' + setting_attr + '="' + setting_value + '"';;
+			shortcode += ' ' + setting_attr + '="' + setting_value + '"';
 
 		});
 

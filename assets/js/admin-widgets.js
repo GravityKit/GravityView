@@ -102,7 +102,7 @@ jQuery( document).ready(function( $ ){
             });
         } // End refreshMergeTags
 
-    } // End gvWidgets
+    }; // End gvWidgets
 
     gvWidgets.init();
 

@@ -8,6 +8,8 @@
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
+ *
+ * globals jQuery
  */
 
 
@@ -161,7 +163,7 @@ jQuery(document).ready( function( $ ) {
 		// Get the back link cookie and replace the back link href
 		backGetCookie: function() {
 			var viewId = $("#gravityview_back_link").attr('data-viewid');
-			if( $.cookie('gravityview_back_link_'+ viewId ) != null ) {
+			if( $.cookie('gravityview_back_link_'+ viewId ) !== null ) {
 				$("#gravityview_back_link").attr('href', $.cookie('gravityview_back_link_'+ viewId) );
 			}
 		},
