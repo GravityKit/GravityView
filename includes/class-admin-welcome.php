@@ -299,6 +299,12 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>Changes in 1.7.1 (Full List)</h3>
+
+				<ul>
+					<li>Fixed: Fatal error on the <code>list-body.php</code> template</li>
+				</ul>
+
 				<h3>Changes in 1.7 (Full List)</h3>
 
 				<ul>
