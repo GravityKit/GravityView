@@ -49,6 +49,13 @@ class GravityView_Admin_ApproveEntries {
 
 	}
 
+	/**
+	 * Add the GravityView Fields group tooltip
+	 *
+	 * @param $tooltips
+	 *
+	 * @return array Tooltips array with GravityView fields tooltip
+	 */
 	function tooltips( $tooltips ) {
 
 		$tooltips['form_gravityview_fields'] = array(
@@ -65,7 +72,7 @@ class GravityView_Admin_ApproveEntries {
 	 *
 	 * @access public
 	 * @param mixed $field_groups
-	 * @return void
+	 * @return array Array of fields
 	 */
 	function add_field_buttons( $field_groups ) {
 
@@ -98,6 +105,7 @@ class GravityView_Admin_ApproveEntries {
 	/**
 	 * At edit form page, set the field Approve defaults
 	 *
+	 * @todo Convert to a partial include file
 	 * @access public
 	 * @return void
 	 */
@@ -397,6 +405,7 @@ class GravityView_Admin_ApproveEntries {
 		if( empty( $entry['id'] ) ) {
 			return;
 		}
+
 		if( gform_get_meta( $entry['id'], 'is_approved' ) ) {
 			echo '<input type="hidden" class="entry_approved" id="entry_approved_'. $entry['id'] .'" value="true" />';
 		}

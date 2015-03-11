@@ -130,7 +130,7 @@ class GravityView_Admin_Views {
 	 * @param array $array Existing field types to add to a blacklist
 	 * @param string|null $context Context for the blacklist. Default: NULL.
 	 * @access public
-	 * @return void
+	 * @return array Default blacklist fields merged with existing blacklist fields
 	 */
 	function default_field_blacklist( $array = array(), $context = NULL ) {
 
@@ -206,6 +206,8 @@ class GravityView_Admin_Views {
 	 *
 	 * @param null $column_name
 	 * @param $post_id
+	 *
+	 * @return void
 	 */
 	static public function add_connected_form_column_content( $column_name = NULL, $post_id )	{
 
