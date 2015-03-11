@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.7.1 on March 11 =
+* Fixed: Fatal error on the list-body template.
+
 = 1.7 on March 10 =
 * Added: You can now edit most Post Fields in Edit Entry mode
     - Supports Post Content, Post Title, Post Excerpt, Post Tags, Post Category, and most Post Custom Field configurations ([Learn more](http://docs.gravityview.co/article/245-editable-post-fields))
