@@ -33,7 +33,8 @@ class GravityView_frontend {
 	var $post_id = NULL;
 
 	/**
-	 * Are we currently viewing a single entry? If so, the int value of the entry ID. Otherwise, false.
+	 * Are we currently viewing a single entry?
+	 * If so, the int value of the entry ID. Otherwise, false.
 	 * @var int|boolean
 	 */
 	var $single_entry = false;
@@ -65,7 +66,7 @@ class GravityView_frontend {
 	static $instance;
 
 	/**
-	 * Class constructor
+	 * Class constructor, enforce Singleton pattern
 	 */
 	private function __construct() {}
 
@@ -222,7 +223,9 @@ class GravityView_frontend {
 		$doing_ajax = ( defined( 'DOING_AJAX' ) && DOING_AJAX );
 
 		// If in admin and NOT AJAX request, get outta here.
-		if( is_admin() && !$doing_ajax )  { return; }
+		if( is_admin() && ! $doing_ajax )  {
+			return;
+		}
 
 
 		$this->setGvOutputData( GravityView_View_Data::getInstance( $post ) );
@@ -366,6 +369,7 @@ class GravityView_frontend {
 		}
 
 		// get view data
+		// todo: refactor
 		if( 'gravityview' === get_post_type( $post ) ) {
 			// In case View post is called directly
 			$view_meta = $this->getGvOutputData()->get_view( $passed_post_id );
@@ -1189,6 +1193,7 @@ GravityView_frontend::getInstance();
 /**
  * Theme function to get a GravityView view
  *
+ * @todo Move to functions file
  * @access public
  * @param string $view_id (default: '')
  * @param array $atts (default: array())
@@ -1208,6 +1213,7 @@ function get_gravityview( $view_id = '', $atts = array() ) {
 /**
  * Theme function to render a GravityView view
  *
+ * @todo Move to functions file
  * @access public
  * @param string $view_id (default: '')
  * @param array $atts (default: array())
@@ -1221,6 +1227,7 @@ function the_gravityview( $view_id = '', $atts = array() ) {
 /**
  * Theme function to identify if it is a Single Entry View
  *
+ * @todo Move to functions file
  * @since  1.5.4
  * @return bool|string False if not, single entry slug if true
  */
