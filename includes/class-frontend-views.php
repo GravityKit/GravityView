@@ -67,7 +67,7 @@ class GravityView_frontend {
 	/**
 	 * Class constructor
 	 */
-	function __construct() {
+	private function __construct() {}
 
 		add_action( 'wp', array( $this, 'parse_content'), 11 );
 
@@ -86,15 +86,13 @@ class GravityView_frontend {
 
 		add_action('add_admin_bar_menus', array( $this, 'admin_bar_remove_links'), 80 );
 		add_action('admin_bar_menu', array( $this, 'admin_bar_add_links'), 85 );
-
-		self::$instance = &$this;
 	}
 
 	/**
 	 * Get the one true instantiated self
 	 * @return GravityView_frontend
 	 */
-	static function getInstance() {
+	public static function getInstance() {
 
 		if( empty( self::$instance ) ) {
 			self::$instance = new GravityView_frontend;
@@ -225,7 +223,7 @@ class GravityView_frontend {
 		if( is_admin() && !$doing_ajax )  { return; }
 
 
-		$this->setGvOutputData( new GravityView_View_Data( $post ) );
+		$this->setGvOutputData( GravityView_View_Data::getInstance( $post ) );
 		$this->setSingleEntry( self::is_single_entry() );
 		$this->setIsGravityviewPostType( get_post_type( $post ) === 'gravityview' );
 
@@ -1183,7 +1181,7 @@ class GravityView_frontend {
 
 }
 
-new GravityView_frontend;
+GravityView_frontend::getInstance();
 
 
 /**
@@ -1198,8 +1196,8 @@ function get_gravityview( $view_id = '', $atts = array() ) {
 	if( !empty( $view_id ) ) {
 		$atts['id'] = $view_id;
 		$args = wp_parse_args( $atts, GravityView_View_Data::get_default_args() );
-		$GravityView_frontend = new GravityView_frontend;
-		$GravityView_frontend->setGvOutputData( new GravityView_View_Data( $view_id ) );
+		$GravityView_frontend = GravityView_frontend::getInstance();
+		$GravityView_frontend->setGvOutputData( GravityView_View_Data::getInstance( $view_id ) );
 		return $GravityView_frontend->render_view( $args );
 	}
 	return '';

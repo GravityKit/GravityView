@@ -28,11 +28,11 @@ class GravityView_oEmbed {
 
 	static $instance = NULL;
 
-	function __construct() {
+	private function __construct() {}
+
+	private function initialize() {
 
 		add_action( 'init', array( $this, 'register_handler' ) );
-
-		self::$instance = &$this;
 
 	}
 
@@ -44,6 +44,8 @@ class GravityView_oEmbed {
 
 		if( empty( self::$instance ) ) {
 			self::$instance = new self;
+
+			self::$instance->initialize();
 		}
 
 		return self::$instance;
@@ -342,4 +344,4 @@ class GravityView_oEmbed {
 
 }
 
-new GravityView_oEmbed;
+GravityView_oEmbed::getInstance();

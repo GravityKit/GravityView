@@ -11,7 +11,11 @@ class GravityView_View_Data {
 
 	protected $views = array();
 
-	function __construct( $passed_post = NULL ) {
+	/**
+	 *
+	 * @param null $passed_post
+	 */
+	private function __construct( $passed_post = NULL ) {
 
 		if( !empty( $passed_post ) ) {
 
@@ -22,7 +26,6 @@ class GravityView_View_Data {
 			}
 		}
 
-		self::$instance = &$this;
 	}
 
 	/**
@@ -104,7 +107,7 @@ class GravityView_View_Data {
 		return ( sizeof( $ids ) === 1 ) ? $ids[0] : $ids;
 	}
 
-	static function getInstance( $passed_post = NULL ) {
+	public static function getInstance( $passed_post = NULL ) {
 
 		if( empty( self::$instance ) ) {
 			self::$instance = new GravityView_View_Data( $passed_post );
