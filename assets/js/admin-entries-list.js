@@ -26,13 +26,19 @@
 
 		self.maybeDisplayMessages();
 
-		self.addApprovedColumn();
-
 		self.addBulkAction();
 
-		self.setInitialApprovedEntries();
+		// Only support approve/reject if the column is visible
+		if( 1 === ( gvGlobals.show_column * 1 ) ) {
 
-		$( '.toggleApproved' ).click( self.toggleApproved );
+			self.addApprovedColumn();
+
+			self.setInitialApprovedEntries();
+
+			$( '.toggleApproved' ).click( self.toggleApproved );
+
+		}
+
 	};
 
 	/**
@@ -170,10 +176,6 @@
 
 	};
 
-	// Only support approve/reject if the column is visible
-	if( gvGlobals.show_column * 1 === 1 ) {
-		$( self.init );
-	}
-
+	$( self.init );
 
 } (jQuery) );
