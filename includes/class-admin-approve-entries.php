@@ -20,6 +20,11 @@ class GravityView_Admin_ApproveEntries {
 
 	function __construct() {
 
+		$this->add_hooks();
+
+	}
+
+	private function add_hooks() {
 		/** Edit Gravity Form page */
 
 		// Add button to left menu
@@ -46,7 +51,6 @@ class GravityView_Admin_ApproveEntries {
 		// bypass Gravity Forms no-conflict mode
 		add_filter( 'gform_noconflict_scripts', array( $this, 'register_gform_noconflict_script' ) );
 		add_filter( 'gform_noconflict_styles', array( $this, 'register_gform_noconflict_style' ) );
-
 	}
 
 	/**
@@ -159,7 +163,6 @@ class GravityView_Admin_ApproveEntries {
 			break;
 		<?php
 	}
-
 
 
 

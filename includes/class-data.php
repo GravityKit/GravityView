@@ -54,9 +54,11 @@ class GravityView_View_Data {
 	 */
 	static public function maybe_get_view_id( $passed_post ) {
 
+		$self = self::getInstance();
+
 		$ids = array();
 
-		if( !empty( $passed_post ) ) {
+		if( ! empty( $passed_post ) ) {
 
 			if( is_numeric( $passed_post ) ) {
 				$passed_post = get_post( $passed_post );
@@ -75,7 +77,7 @@ class GravityView_View_Data {
 						$ids[] = $post->ID;
 
 					} else{
-						$id = self::getInstance()->parse_post_content( $post->post_content );
+						$id = $self->parse_post_content( $post->post_content );
 
 						$ids = array_merge( $ids, (array)$id );
 					}
@@ -86,11 +88,11 @@ class GravityView_View_Data {
 
 				if ( is_string( $passed_post ) ) {
 
-					$id = self::getInstance()->parse_post_content( $passed_post );
+					$id = $self->parse_post_content( $passed_post );
 					$ids = array_merge( $ids, (array)$id );
 
 				} else {
-					$id = self::getInstance()->get_id_from_atts( $passed_post );
+					$id = $self->get_id_from_atts( $passed_post );
 					$ids[] = intval( $id );
 				}
 
@@ -122,13 +124,13 @@ class GravityView_View_Data {
 
 	function get_view( $view_id, $atts = NULL ) {
 
-		if( !is_numeric( $view_id) ) {
+		if( ! is_numeric( $view_id) ) {
 			do_action('gravityview_log_error', sprintf('GravityView_View_Data[get_view] $view_id passed is not numeric.', $view_id) );
 			return false;
 		}
 
 		// Backup: the view hasn't been fetched yet. Doing it now.
-		if ( !isset( $this->views[ $view_id ] ) ) {
+		if ( ! isset( $this->views[ $view_id ] ) ) {
 			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[get_view] View #%s not set yet.', $view_id) );
 			return $this->add_view( $view_id, $atts );
 		}
@@ -159,11 +161,10 @@ class GravityView_View_Data {
 	 * Add a view to the views array
 	 *
 	 * @param int|array $view_id View ID or array of View IDs
-	 * @param type $atts Combine other attributes (eg. from shortcode) with the view settings (optional)
+	 * @param array|string $atts Combine other attributes (eg. from shortcode) with the view settings (optional)
 	 * @return type
 	 */
 	function add_view( $view_id, $atts = NULL ) {
-
 
 		// Handle array of IDs
 		if( is_array( $view_id ) ) {
@@ -176,13 +177,13 @@ class GravityView_View_Data {
 		}
 
 		// The view has been set already; returning stored view.
-		if ( !empty( $this->views[ $view_id ] ) ) {
+		if ( ! empty( $this->views[ $view_id ] ) ) {
 			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] Returning; View #%s already exists.', $view_id) );
 
 			return $this->views[ $view_id ];
 		}
 
-		if( !$this->view_exists( $view_id ) ) {
+		if( ! $this->view_exists( $view_id ) ) {
 			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] Returning; View #%s does not exist.', $view_id) );
 			return false;
 		}
@@ -206,7 +207,7 @@ class GravityView_View_Data {
 
 		do_action('gravityview_log_debug', 'GravityView_View_Data[add_view] View Defaults after merging View Settings with the default args.', $view_defaults );
 
-		if( !empty( $atts ) && is_array( $atts ) ) {
+		if( ! empty( $atts ) && is_array( $atts ) ) {
 
 			do_action('gravityview_log_debug', 'GravityView_View_Data[add_view] $atts before merging  with the $view_defaults', $atts );
 
@@ -266,7 +267,7 @@ class GravityView_View_Data {
 	 *
 	 * @access public
 	 * @param array $dir_fields
-	 * @return void
+	 * @return array
 	 */
 	private function filter_fields( $dir_fields ) {
 
@@ -295,12 +296,12 @@ class GravityView_View_Data {
 	 *
 	 * @access public
 	 * @param array $properties
-	 * @return true (field should be hidden) or false (field should be presented)
+	 * @return void|boolean (field should be hidden) or false (field should be presented)
 	 */
 	private function hide_field_check_conditions( $properties ) {
 
 		// logged-in visibility
-		if( !empty( $properties['only_loggedin'] ) && !current_user_can( $properties['only_loggedin_cap'] ) ) {
+		if( ! empty( $properties['only_loggedin'] ) && ! current_user_can( $properties['only_loggedin_cap'] ) ) {
 			return true;
 		}
 
@@ -314,7 +315,7 @@ class GravityView_View_Data {
 		// Get the settings from the shortcode and merge them with defaults.
 		$atts = wp_parse_args( $atts, self::get_default_args() );
 
-		$view_id = !empty( $atts['view_id'] ) ? (int)$atts['view_id'] : NULL;
+		$view_id = ! empty( $atts['view_id'] ) ? (int)$atts['view_id'] : NULL;
 
 		if( empty( $view_id ) && !empty( $atts['id'] ) ) {
 			$view_id = (int)$atts['id'];
@@ -343,7 +344,7 @@ class GravityView_View_Data {
 		 * @hack This is so that the shortcode is registered for the oEmbed preview in the Admin
 		 * @since 1.6
 		 */
-		if( !shortcode_exists('gravityview') ) {
+		if( ! shortcode_exists('gravityview') ) {
 			add_shortcode( 'gravityview', array( GravityView_frontend::getInstance(), 'shortcode' ) );
 		}
 
@@ -410,7 +411,7 @@ class GravityView_View_Data {
 			$message = esc_html__( 'The ID is required.', 'gravityview' );
 		}
 
-		if( !$message ) {
+		if( ! $message ) {
 			$status = get_post_status( $post_id );
 
 			// Nothing exists with that post ID.
@@ -422,7 +423,7 @@ class GravityView_View_Data {
 			}
 		}
 
-		if( !$message ) {
+		if( ! $message ) {
 
 			// Nothing exists with that post ID.
 			if ( empty( $status ) || in_array( $status, array( 'revision', 'attachment' ) ) ) {
@@ -431,7 +432,7 @@ class GravityView_View_Data {
 
 		}
 
-		if( !$message ) {
+		if( ! $message ) {
 			$view_ids_in_post = GravityView_View_Data::maybe_get_view_id( $post_id );
 
 			// The post or page specified does not contain the shortcode.
@@ -440,7 +441,7 @@ class GravityView_View_Data {
 			}
 		}
 
-		if( !$message ) {
+		if( ! $message ) {
 
 			// It's a View
 			if( 'gravityview' === get_post_type( $post_id ) ) {

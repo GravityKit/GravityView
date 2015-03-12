@@ -69,6 +69,7 @@ class GravityView_frontend {
 	 */
 	private function __construct() {}
 
+	private function initialize() {
 		add_action( 'wp', array( $this, 'parse_content'), 11 );
 
 		// Shortcode to render view (directory)
@@ -95,7 +96,8 @@ class GravityView_frontend {
 	public static function getInstance() {
 
 		if( empty( self::$instance ) ) {
-			self::$instance = new GravityView_frontend;
+			self::$instance = new self;
+			self::$instance->initialize();
 		}
 
 		return self::$instance;
