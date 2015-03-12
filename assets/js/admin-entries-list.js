@@ -9,7 +9,7 @@
  *
  * @since 1.0.0
  *
- * global gvGlobals
+ * globals jQuery, gvGlobals, ajaxurl
  */
 
 
@@ -29,7 +29,7 @@
 		self.addBulkAction();
 
 		// Only support approve/reject if the column is visible
-		if( 1 === ( gvGlobals.show_column * 1 ) ) {
+		if( 1 === parseInt( gvGlobals.show_column, 10 ) ) {
 
 			self.addApprovedColumn();
 
@@ -86,7 +86,7 @@
 	 * Toggle a specific entry
 	 *
 	 * @param e The clicked entry event object
-	 * @returns {false}
+	 * @returns {boolean}
 	 */
 	self.toggleApproved = function ( e ) {
 		e.preventDefault();
@@ -121,9 +121,9 @@
 		var messageBox = $( '<div class="message ' + messageClass + '" style="display:none;"><p>' + message + '</p></div>' );
 		$( messageBox ).prependTo( container ).slideDown();
 
-		if ( messageClass == 'updated' ) {
-			messageTimeout = setTimeout( function () {
-				hideMessage( container, false );
+		if ( messageClass === 'updated' ) {
+			window.setTimeout( function () {
+				self.hideMessage( container, false );
 			}, 10000 );
 		}
 
@@ -153,14 +153,14 @@
 	/**
 	 * Update an entry status via AJAX
  	 */
-	self.updateApproved = function ( entryid, approved, $target ) {
+	self.updateApproved = function ( entryID, approved, $target ) {
 
 		var data = {
 			action: 'gv_update_approved',
-			entry_id: entryid,
+			entry_id: entryID,
 			form_id: gvGlobals.form_id,
 			approved: approved,
-			nonce: gvGlobals.nonce,
+			nonce: gvGlobals.nonce
 		};
 
 		$.post( ajaxurl, data, function ( response ) {
