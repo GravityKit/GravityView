@@ -453,6 +453,7 @@ class GravityView_Admin_ApproveEntries {
 			wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array(
 				'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries'),
 				'form_id' => $form_id,
+				'show_column' => $this->show_approve_entry_column( $form_id ),
 				'label_approve' => __( 'Approve', 'gravityview' ) ,
 				'label_disapprove' => __( 'Disapprove', 'gravityview' ),
 				'bulk_message' => $this->bulk_update_message,
@@ -464,6 +465,48 @@ class GravityView_Admin_ApproveEntries {
 
 		}
 
+	}
+
+	/**
+	 * Should the Approve/Reject Entry column be shown in the GF Entries page?
+	 *
+	 * @filter gravityview/approve_entries/hide-if-no-connections
+	 * @filter gravityview/approve_entries/show-column
+	 *
+	 * @since 1.7.2
+	 *
+	 * @param int $form_id The ID of the Gravity Forms form for which entries are being shown
+	 *
+	 * @return bool True: Show column; False: hide column
+	 */
+	private function show_approve_entry_column( $form_id ) {
+
+		$show_approve_column = true;
+
+		/**
+		 * Return true to hide reject/approve if there are no connected Views
+		 * @since 1.7.2
+		 * @param boolean $hide_if_no_connections
+		 */
+		$hide_if_no_connections = apply_filters('gravityview/approve_entries/hide-if-no-connections', false );
+
+		if( $hide_if_no_connections ) {
+
+			$connected_views = gravityview_get_connected_views( $form_id );
+
+			if( empty( $connected_views ) ) {
+				$show_approve_column = false;
+			}
+		}
+
+		/**
+		 * Override whether the column is shown
+		 * @param boolean $show_approve_column Whether the column will be shown
+		 * @param int $form_id The ID of the Gravity Forms form for which entries are being shown
+		 */
+		$show_approve_column = apply_filters('gravityview/approve_entries/show-column', $show_approve_column, $form_id );
+
+		return $show_approve_column;
 	}
 
 	function register_gform_noconflict_script( $scripts ) {

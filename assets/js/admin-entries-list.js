@@ -106,6 +106,10 @@
 
 		} );
 
+	// Only support approve/reject if the column is visible
+	if( gvGlobals.show_column * 1 === 1 ) {
+		$( self.init );
+	}
 
 	} );
 
