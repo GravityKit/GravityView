@@ -1,3 +1,8 @@
+/**
+ * Much of the code from WooCommerce
+ * @link https://github.com/woothemes/woocommerce/blob/master/assets/css/admin.scss
+ */
+
 @import "_mixins";
 
 #gravityview-metabox-content-container {
@@ -9,7 +14,7 @@
 
     @include clearfix();
     @include borderbox();
-
+    
     // Overrides
     padding: 0;
     border: none;
@@ -34,11 +39,6 @@
       display: inline;
     }
 
-    .description-block {
-      margin-left: 0;
-      display: block;
-    }
-
     textarea,
     input,
     select {
@@ -51,13 +51,6 @@
       line-height: 1.5em;
     }
 
-    input[type="text"],
-    input[type="email"],
-    input[type="number"] {
-      width: 50%;
-      float: left;
-    }
-
     input.button {
       width: auto;
       margin-left: 8px;
@@ -67,73 +60,5 @@
       float: left;
     }
 
-    input[type="text"].short,
-    input[type="email"].short,
-    input[type="number"].short,
-    .short {
-      width: 50%;
-    }
-
-    .sized {
-      width: auto !important;
-      margin-right: 6px;
-    }
-
-    .options_group {
-      border-top: 1px solid white;
-      border-bottom: 1px solid #eee;
-    }
-
-    .options_group:first-child {
-      border-top: 0;
-    }
-
-    .options_group:last-child {
-      border-bottom: 0;
-    }
-
-    .options_group fieldset {
-      margin: 9px 0;
-      font-size: 12px;
-      padding: 5px 9px;
-      line-height: 24px;
-
-      label {
-        width: auto;
-        float: none;
-      }
-
-      ul {
-        float: left;
-        width: 50%;
-        margin: 0;
-        padding: 0;
-
-        li {
-          margin: 0;
-          width: auto;
-
-          input {
-            width: auto;
-            float: none;
-            margin-right: 4px;
-          }
-        }
-      }
-
-      ul.wc-radios {
-        label {
-          margin-left: 0;
-        }
-      }
-    }
-
-    &.padded {
-      padding: 1em;
-    }
-
-    .select2-container {
-      float: left;
-    }
   }
 }
