@@ -2,7 +2,7 @@
 /**
  * @package GravityView
  * @subpackage Gravityview/admin/metaboxes/partials
- * @global $post
+ * @global WP_Post $post
  */
 global $post;
 

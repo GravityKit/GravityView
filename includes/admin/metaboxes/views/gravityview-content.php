@@ -5,7 +5,7 @@ $metaboxes = GravityView_Metaboxes::get_all();
 
 ?>
 
-<div id="gravityview-metabox-content-container" style="width: 70%; float: right;">
+<div id="gravityview-metabox-content-container">
 <?php
 foreach( $metaboxes as $metabox ) {
 ?>

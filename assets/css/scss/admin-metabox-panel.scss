@@ -1,0 +1,139 @@
+@import "_mixins";
+
+#gravityview-metabox-content-container {
+
+  float: left;
+  width: 80%;
+
+  .ui-tabs-panel {
+
+    @include clearfix();
+    @include borderbox();
+
+    // Overrides
+    padding: 0;
+    border: none;
+
+    .form-table {
+      margin-top: 0;
+    }
+
+    p {
+      margin: 9px 0 9px;
+    }
+
+    p.form-field,
+    fieldset.form-field {
+      padding: 5px 20px 5px 162px !important; /** Padding for aligning labels left - 12px + 150 label width **/
+    }
+
+    .description {
+      padding: 0;
+      margin: 0 0 0 7px;
+      clear: none;
+      display: inline;
+    }
+
+    .description-block {
+      margin-left: 0;
+      display: block;
+    }
+
+    textarea,
+    input,
+    select {
+      margin: 0;
+    }
+
+    textarea {
+      vertical-align: top;
+      height: 3.5em;
+      line-height: 1.5em;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"] {
+      width: 50%;
+      float: left;
+    }
+
+    input.button {
+      width: auto;
+      margin-left: 8px;
+    }
+
+    select {
+      float: left;
+    }
+
+    input[type="text"].short,
+    input[type="email"].short,
+    input[type="number"].short,
+    .short {
+      width: 50%;
+    }
+
+    .sized {
+      width: auto !important;
+      margin-right: 6px;
+    }
+
+    .options_group {
+      border-top: 1px solid white;
+      border-bottom: 1px solid #eee;
+    }
+
+    .options_group:first-child {
+      border-top: 0;
+    }
+
+    .options_group:last-child {
+      border-bottom: 0;
+    }
+
+    .options_group fieldset {
+      margin: 9px 0;
+      font-size: 12px;
+      padding: 5px 9px;
+      line-height: 24px;
+
+      label {
+        width: auto;
+        float: none;
+      }
+
+      ul {
+        float: left;
+        width: 50%;
+        margin: 0;
+        padding: 0;
+
+        li {
+          margin: 0;
+          width: auto;
+
+          input {
+            width: auto;
+            float: none;
+            margin-right: 4px;
+          }
+        }
+      }
+
+      ul.wc-radios {
+        label {
+          margin-left: 0;
+        }
+      }
+    }
+
+    &.padded {
+      padding: 1em;
+    }
+
+    .select2-container {
+      float: left;
+    }
+  }
+}

@@ -13,7 +13,7 @@ $metaboxes = GravityView_Metaboxes::get_all();
 <style>
 
 </style>
-<ul style="width: 30%; float: left;">
+<ul>
 	<?php
 	foreach( $metaboxes as $metabox ) {
 

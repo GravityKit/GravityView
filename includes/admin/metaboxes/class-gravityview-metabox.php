@@ -64,7 +64,8 @@ class GravityView_Metabox {
 
 	public $icon_class_name = '';
 
-	function __construct( $id, $title, $file = '', $icon_class_name = '', $callback_args = null  ) {
+	function __construct( $id, $title = '', $file = '', $icon_class_name = '', $callback_args = null  ) {
+
 		$this->id = $this->prefix.$id;
 		$this->title = $title;
 		$this->render_template_file = $file;
@@ -85,7 +86,12 @@ class GravityView_Metabox {
 
 		if( $file = $this->render_template_file ) {
 
-			$path = GRAVITYVIEW_DIR .'includes/admin/metaboxes/views/'.$file;
+			// If the full path exists, use it
+			if( file_exists( $file ) ) {
+				$path = $file;
+			} else {
+				$path = GRAVITYVIEW_DIR .'includes/admin/metaboxes/views/'.$file;
+			}
 
 			if( file_exists( $path ) ) {
 				include_once( $path );

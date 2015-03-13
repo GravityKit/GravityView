@@ -1,7 +1,7 @@
 <?php
 /**
  * @package GravityView
- * @subpackage Gravityview/admin/metaboxes/partials
+ * @subpackage Gravityview/admin/metaboxes/views
  * @global $post
  */
 global $post;
