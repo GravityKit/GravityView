@@ -1416,6 +1416,7 @@
 				.removeClass( "ui-corner-top" )
 
 			// Make zebra table rows
+			.end()
 			.find('.form-table tr:even' )
 				.addClass('alternate');
 
