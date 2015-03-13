@@ -683,15 +683,5 @@ class GravityView_View_Data {
 		}
 	}
 
-	static function shortcode_atts( $atts ) {
-
-		do_action( 'gravityview_log_debug', 'GravityView_View_Data[shortcode_atts] Init Shortcode. Attributes: ',  $atts );
-
-		//confront attributes with defaults
-		$args = shortcode_atts( self::get_default_args() , $atts, 'gravityview' );
-
-		do_action( 'gravityview_log_debug', 'GravityView_View_Data[shortcode_atts] Init Shortcode. Merged Attributes: ', $args );
-
-	}
 
 }

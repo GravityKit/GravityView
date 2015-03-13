@@ -18,6 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GravityView_Admin_Views {
 
+
+
 	function __construct() {
 
 		add_action( 'save_post', array( $this, 'save_postdata' ) );
@@ -199,6 +201,12 @@ class GravityView_Admin_Views {
 		return $tooltips;
 	}
 
+	/**
+	 * Add the Data Source information
+	 *
+	 * @param null $column_name
+	 * @param $post_id
+	 */
 	static public function add_connected_form_column_content( $column_name = NULL, $post_id )	{
 
 		if( !empty( $column_name ) && $column_name !== 'gv_connected_form' )  { return; }

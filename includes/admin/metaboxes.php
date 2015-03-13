@@ -223,10 +223,10 @@ class GravityView_Admin_Metaboxes {
 	 * Creates
 	 * @filter default text
 	 * @action default text
-	 * @param  [type]      $curr_form [description]
-	 * @return [type]                 [description]
+	 * @param  mixed      $curr_form Form ID
+	 * @return string     Merge tags html
 	 */
-	function render_merge_tags_scripts( $curr_form ) {
+	public static function render_merge_tags_scripts( $curr_form ) {
 
 		if( empty( $curr_form )) { return; }
 
@@ -270,7 +270,7 @@ class GravityView_Admin_Metaboxes {
 		// Selected template
 		$curr_template = gravityview_get_template_id( $post->ID );
 
-		echo $this->render_merge_tags_scripts( $curr_form );
+		echo self::render_merge_tags_scripts( $curr_form );
 ?>
 		<div id="gv-view-configuration-tabs">
 

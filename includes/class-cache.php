@@ -13,9 +13,19 @@ class GravityView_Cache {
 	 */
 	protected $form_ids;
 
+	/**
+	 * Extra request parameters used to generate the query. This is used to generate the unique transient key.
+	 *
+	 * @var array
+	 */
 	protected $args;
 
-	private $key = NULL;
+	/**
+	 * The transient key used to store the cached item. 45 characters long.
+	 *
+	 * @var string
+	 */
+	private $key = '';
 
 	/**
 	 *

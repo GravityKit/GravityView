@@ -282,10 +282,12 @@ class GravityView_Render_Settings {
 		$setting['type'] = empty( $setting['type'] ) ? 'text' : $setting['type'];
 
 		// merge tags
-		if( $setting['type'] === 'text' ) {
-			$setting['merge_tags'] = true;
-		} else {
-			$setting['merge_tags'] = false;
+		if( !isset( $setting['merge_tags'] ) ) {
+			if( $setting['type'] === 'text' ) {
+				$setting['merge_tags'] = true;
+			} else {
+				$setting['merge_tags'] = false;
+			}
 		}
 
 		// render the setting

@@ -224,7 +224,7 @@ final class GravityView_Delete_Entry {
 
 		self::getInstance()->set_entry( $entry );
 
-		$base = GravityView_API::directory_link( NULL, false );
+		$base = GravityView_API::directory_link( NULL, true );
 
 		if( empty( $base ) ) {
 			return NULL;

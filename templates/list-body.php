@@ -46,7 +46,7 @@ if( !$this->getTotalEntries() ) {
 
 			<div class="gv-list-view-title">
 
-				<?php if ( ! empty( $this->getField('directory_list-title') ) ):
+				<?php if ( $this->getField('directory_list-title') ) :
 					$i          = 0;
 					$title_args = array(
 						'entry'      => $entry,
