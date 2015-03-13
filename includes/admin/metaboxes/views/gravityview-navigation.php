@@ -1,18 +1,8 @@
 <?php
 
-$metaboxes = GravityView_Metaboxes::get_all();
+$metaboxes = GravityView_Metabox_Tabs::get_all();
 
 ?>
-<script>
-	jQuery(document).ready(function($) {
-		$( "#gravityview_settings" )
-			.tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" )
-			.find('li').removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
-	});
-</script>
-<style>
-
-</style>
 <ul>
 	<?php
 	foreach( $metaboxes as $metabox ) {

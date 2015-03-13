@@ -1,7 +1,7 @@
 <?php
 
 
-$metaboxes = GravityView_Metaboxes::get_all();
+$metaboxes = GravityView_Metabox_Tabs::get_all();
 
 ?>
 
@@ -11,7 +11,7 @@ foreach( $metaboxes as $metabox ) {
 ?>
 	<div id="<?php echo esc_attr( $metabox->id ); ?>">
 <?php
-	$metabox->render();
+	$metabox->render( $post );
 ?>
 	</div>
 <?php

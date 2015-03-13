@@ -12,9 +12,9 @@ class GravityView_Admin_Metaboxes {
 	 */
 	function __construct() {
 
-		include_once self::$metaboxes_dir . 'class-gravityview-metabox.php';
+		include_once self::$metaboxes_dir . 'class-gravityview-metabox-tab.php';
 
-		include_once self::$metaboxes_dir . 'class-gravityview-metaboxes.php';
+		include_once self::$metaboxes_dir . 'class-gravityview-metabox-tabs.php';
 
 		$this->initialize();
 
@@ -105,7 +105,7 @@ class GravityView_Admin_Metaboxes {
 				'id' => 'template_settings',
 				'title' => __( 'View Settings', 'gravityview' ),
 				'file' => 'view-settings.php',
-				'icon-class' => 'dashicons-admin-settings',
+				'icon-class' => 'dashicons-admin-generic',
 				'callback_args' => '',
 			),
 			array(
@@ -119,10 +119,13 @@ class GravityView_Admin_Metaboxes {
 
 		foreach( $metaboxes as $m ) {
 
-			$metabox = new GravityView_Metabox( $m['id'], $m['title'], $m['file'], $m['icon-class'], $m['callback_args'] );
+			$tab = new GravityView_Metabox_Tab( $m['id'], $m['title'], $m['file'], $m['icon-class'], $m['callback_args'] );
 
-			GravityView_Metaboxes::add( $metabox );
+			GravityView_Metabox_Tabs::add( $tab );
+
 		}
+
+		unset( $tab );
 
 	}
 

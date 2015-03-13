@@ -1,12 +1,15 @@
 <?php
 
-class GravityView_Metabox {
+/**
+ * The class for a metabox tab in the GravityView View Settings metabox
+ */
+class GravityView_Metabox_Tab {
 
 	/**
 	 * String prepended to the $id when registering the metabox
 	 * @var string
 	 */
-	protected $prefix = 'gravityview_';
+	private $prefix = 'gravityview_';
 
 	/**
 	 * String for use in the 'id' attribute of tags.
@@ -64,11 +67,12 @@ class GravityView_Metabox {
 
 	public $icon_class_name = '';
 
-	function __construct( $id, $title = '', $file = '', $icon_class_name = '', $callback_args = null  ) {
+	function __construct( $id, $title = '', $file = '', $icon_class_name = '', $callback = '', $callback_args = null  ) {
 
 		$this->id = $this->prefix.$id;
 		$this->title = $title;
 		$this->render_template_file = $file;
+		$this->callback = $callback;
 		$this->callback_args = $callback_args;
 		$this->icon_class_name = $this->set_icon_class_name( $icon_class_name );
 	}
@@ -82,9 +86,11 @@ class GravityView_Metabox {
 		return esc_attr( $icon_class_name );
 	}
 
-	function render() {
+	function render( $post ) {
 
-		if( $file = $this->render_template_file ) {
+		if( !empty( $this->render_template_file ) ) {
+
+			$file = $this->render_template_file;
 
 			// If the full path exists, use it
 			if( file_exists( $file ) ) {
@@ -94,8 +100,13 @@ class GravityView_Metabox {
 			}
 
 			if( file_exists( $path ) ) {
-				include_once( $path );
+				include $path;
 			}
+
+		} else if( is_callable( $this->callback ) ) {
+
+			/** @see do_accordion_sections() */
+			call_user_func( $this->callback, $post, (array)$this );
 		}
 	}
 
