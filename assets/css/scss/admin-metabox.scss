@@ -11,6 +11,12 @@
 
   padding: 0;
 
+  // For the Advanced Filter plugin, and any other field filters
+  .gform-field-filter {
+    clear: both;
+    padding: .5em 0 0;
+  }
+
   .inside {
     padding: 0;
     margin: 0;
