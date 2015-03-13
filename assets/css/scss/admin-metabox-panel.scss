@@ -10,6 +10,17 @@
   float: left;
   width: 80%;
 
+  #side-sortables & {
+    width: 100%;
+
+    th, td {
+      @include clearfix();
+      display: block;
+      padding: 10px 10px 3px;
+    }
+
+  }
+
   .ui-tabs-panel {
 
     @include clearfix();
@@ -18,6 +29,11 @@
     // Overrides
     padding: 0;
     border: none;
+
+    #side-sortables & {
+      margin-top: 1px; // Move away a bit from the border radius
+      border-top: 2px solid #ccc;
+    }
 
     .form-table {
       margin-top: 0;
