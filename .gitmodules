@@ -7,6 +7,3 @@
 [submodule "includes/lib/edd-redux-extension"]
 	path = includes/lib/edd-redux-extension
 	url = git://github.com/katzwebservices/EDD-Redux-Extension.git
-[submodule "includes/lib/CMB2"]
-	path = includes/lib/CMB2
-	url = git://github.com/WebDevStudios/CMB2.git
