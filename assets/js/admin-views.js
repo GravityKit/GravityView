@@ -1402,13 +1402,22 @@
 			}
 		});
 
-		// Make zebra table rows
-		$('#gravityview_settings .form-table tr:even').addClass('alternate');
+		/**
+		 * @since 1.8
+		 */
+		$('#gravityview_settings')
+			// Force the sort metabox to be directly under the view configuration. Damn 3rd party metaboxes!
+			.insertAfter( $('#gravityview_view_config') )
 
+			// Make vertical tabs
+			.tabs()
+			.addClass( "ui-tabs-vertical ui-helper-clearfix" )
+			.find('li')
+				.removeClass( "ui-corner-top" )
 
-		// Force the sort metabox to be directly under the view configuration.
-		// Damn 3rd party metaboxes!
-		$('#gravityview_settings').insertAfter($('#gravityview_view_config'));
+			// Make zebra table rows
+			.find('.form-table tr:even' )
+				.addClass('alternate');
 
 	});
 
