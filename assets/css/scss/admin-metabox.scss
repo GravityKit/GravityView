@@ -61,6 +61,10 @@
       margin: 0;
       width: 100%;
 
+      &.ui-state-disabled {
+        display: none;
+      }
+
       a {
         @include borderbox();
         padding: 10px;
