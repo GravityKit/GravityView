@@ -111,6 +111,13 @@ class GravityView_Admin_Metaboxes {
 				'callback_args' => '',
 			),
 			array(
+				'id' => 'single_entry', // Use the same ID as View Settings for backward compatibility
+				'title' => __( 'Single Entry Settings', 'gravityview' ),
+				'file' => 'single-entry.php',
+				'icon-class' => 'dashicons-media-default',
+				'callback_args' => '',
+			),
+			array(
 				'id' => 'sort_filter',
 				'title' => __( 'Filter &amp; Sort', 'gravityview' ),
 				'file' => 'sort-filter.php',

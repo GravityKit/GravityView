@@ -42,14 +42,3 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 	?>
 
 </table>
-
-<h3 style="margin-top:1em;"><?php esc_html_e( 'Single Entry Settings', 'gravityview'); ?>:</h3>
-
-<table class="form-table"><?php
-
-	GravityView_Render_Settings::render_setting_row( 'single_title', $current_settings );
-
-	GravityView_Render_Settings::render_setting_row( 'back_link_label', $current_settings );
-
-	?>
-</table>
