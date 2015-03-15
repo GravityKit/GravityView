@@ -569,6 +569,15 @@ class GravityView_Admin_Views {
 					'type'	=> 'custom',
 					'desc'	=> __('Insert custom text or HTML.', 'gravityview'),
 				),
+
+				/**
+				 * @since 1.7.2
+				 */
+			    'other_entries' => array(
+				    'label'	=> __('Other Entries', 'gravityview'),
+				    'type'	=> 'other_entries',
+				    'desc'	=> __('Display other entries created by the entry creator.', 'gravityview'),
+			    ),
 	        );
 
 
