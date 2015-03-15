@@ -950,8 +950,8 @@ class GravityView_frontend {
 	public static function updateViewSorting( $args, $form_id ) {
 
 		$sorting = array();
-		$sort_field = isset( $_GET['sort'] ) ? $_GET['sort'] : $args['sort_field'];
-		$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : $args['sort_direction'];
+		$sort_field = isset( $_GET['sort'] ) ? $_GET['sort'] : rgar( $args, 'sort_field' );
+		$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : rgar( $args, 'sort_direction' );
 		if( !empty( $sort_field ) ) {
 			$sorting = array(
 				'key' => $sort_field,
