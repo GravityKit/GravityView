@@ -871,6 +871,10 @@ class GravityView_frontend {
 		// Paging & offset
 		$page_size = !empty( $args['page_size'] ) ? intval( $args['page_size'] ) : apply_filters( 'gravityview_default_page_size', 25 );
 
+		if( $page_size === -1 ) {
+			$page_size = PHP_INT_MAX;
+		}
+
 		if( isset( $args['offset'] ) ) {
 			$offset = intval( $args['offset'] );
 		} else {
