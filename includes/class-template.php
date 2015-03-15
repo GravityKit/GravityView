@@ -11,11 +11,14 @@
  * @since 1.0.0
  */
 
+/** If this file is called directly, abort. */
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
 
 if( ! class_exists( 'Gamajo_Template_Loader' ) ) {
 	require( GRAVITYVIEW_DIR . 'includes/lib/class-gamajo-template-loader.php' );
 }
-
 
 class GravityView_View extends Gamajo_Template_Loader {
 
@@ -501,12 +504,19 @@ class GravityView_View extends Gamajo_Template_Loader {
 		$this->_current_entry = $current_entry;
 	}
 
-
+	/**
+	 * Render an output zone, as configured in the Admin
+	 *
+	 * @param string $zone The zone name, like 'footer-left'
+	 * @param array $atts
+	 *
+	 * @return string|null
+	 */
 	public function renderZone( $zone = '', $atts = array() ) {
 
 		if( empty( $zone ) ) {
 			do_action('gravityview_log_error', 'GravityView_View[renderZone] No zone defined.');
-			return;
+			return NULL;
 		}
 
 		$defaults = array(
@@ -535,7 +545,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 		}
 
 		if( empty( $fields ) ) {
-			return;
+			return NULL;
 		}
 
 		if( !empty( $final_atts['wrapper_class'] ) ) {
@@ -559,7 +569,6 @@ class GravityView_View extends Gamajo_Template_Loader {
 		return $output;
 	}
 
-
 	/**
 	 * In order to improve lookup times, we store located templates in a local array.
 	 *
@@ -571,9 +580,8 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 */
 	function locate_template( $template_names, $load = false, $require_once = true ) {
 
-		$located = false;
-
 		if( is_string( $template_names ) && isset( $this->located_templates[ $template_names ] ) ) {
+
 			$located = $this->located_templates[ $template_names ];
 
 		} else {

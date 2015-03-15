@@ -118,6 +118,7 @@ final class GravityView_Plugin {
 		require_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
 		include_once( GRAVITYVIEW_DIR . 'includes/class-frontend-views.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-entry-list.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
 
 		// Load plugin text domain

@@ -28,9 +28,15 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		parent::__construct( 'gv_recent_entries', $name, $widget_options );
 
+		$this->initialize();
+	}
+
+	private function initialize() {
+
 		add_action('admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts') );
 
 		add_action( 'wp_ajax_gv_get_view_merge_tag_data', array( $this, 'ajax_get_view_merge_tag_data' ) );
+
 	}
 
 	/**
@@ -114,6 +120,25 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		do_action( 'gravityview/widget/recent-entries/before_widget', $args, $instance );
 
+		// Print the entry list
+		echo $this->get_output( $instance );
+
+		do_action( 'gravityview/widget/recent-entries/after_widget', $args, $instance );
+
+		echo $args['after_widget'];
+	}
+
+	/**
+	 * Get the HTML output for the entry list.
+	 *
+	 * @since 1.8
+	 *
+	 * @param array $instance The settings for the particular instance of the widget.
+	 *
+	 * @return string
+	 */
+	private function get_output( $instance ) {
+
 		$form_id = gravityview_get_form_id( $instance['view_id'] );
 
 		$form = gravityview_get_form( $form_id );
@@ -126,64 +151,24 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		 */
 		$entry_link_post_id = ( empty( $instance['error_post_id'] ) && !empty( $instance['post_id'] ) ) ? $instance['post_id'] : $instance['view_id'];
 
-		$list_items = array();
+		/**
+		 * Generate list output
+		 * @since 1.8
+		 */
+		$List = new GravityView_Entry_List( $entries, $entry_link_post_id, $form, $instance['link_format'], $instance['after_link'], 'recent-entries-widget' );
 
-		if( empty( $entries ) ) {
-
-			$output = '<div class="gv-no-results">'.gv_no_results().'</div>';
-
-		} else {
-
-			foreach( $entries as $entry ) {
-
-				$link = GravityView_API::entry_link( $entry, $entry_link_post_id );
-
-				$text = $instance['link_format'];
-
-				$item_output = gravityview_get_link( $link, $text );
-
-				if( !empty( $instance['after_link'] ) ) {
-					$item_output .= '<div>'.$instance['after_link'].'</div>';
-				}
-
-				$item_output = Gravityview_API::replace_variables( $item_output, $form, $entry );
-
-				/**
-				 * Modify the item output HTML
-				 *
-				 * @since 1.6
-				 *
-				 * @param string $item_output The HTML output for the item
-				 * @param array $entry Gravity Forms entry array
-				 * @param array $instance The settings for the particular instance of the widget.
-				 */
-				$item_output = apply_filters( 'gravityview/widget/recent-entries/item', $item_output, $entry, $instance );
-
-				$list_items[] = $item_output;
-			}
-
-			$output = '<ul><li>'. implode( '</li><li>', $list_items ) . '</li></ul>';
-
-		}
+		$output = $List->get_output();
 
 		/**
 		 * Modify the HTML before it's echo'd
 		 * @param string $output HTML to be displayed
 		 * @param array $instance Widget settings
 		 */
-		$output = apply_filters( 'gravityview/widget/recent-entries/output', $output, $list_items, $instance );
+		$output = apply_filters( 'gravityview/widget/recent-entries/output', $output, $instance );
 
-		echo $output;
-
-		/**
-		 * Modify the HTML before it's echo'd
-		 * @param array $args Widget args
-		 * @param array $instance Widget settings
-		 */
-		do_action( 'gravityview/widget/recent-entries/after_widget', $args, $instance );
-
-		echo $args['after_widget'];
+		return $output;
 	}
+
 
 	/**
 	 * Get the entries that will be shown in the current widget

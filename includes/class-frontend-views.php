@@ -309,10 +309,9 @@ class GravityView_frontend {
 	 * @return void
 	 */
 	function admin_bar_remove_links() {
-		global $wp_admin_bar, $post, $wp, $wp_the_query;
 
 		// If we're on the single entry page, we don't want to cause confusion.
-		if( is_admin() || ($this->single_entry && !$this->isGravityviewPostType() ) ) {
+		if( is_admin() || ($this->getSingleEntry() && !$this->isGravityviewPostType() ) ) {
 			remove_action( 'admin_bar_menu', 'wp_admin_bar_edit_menu', 80 );
 		}
 	}
@@ -323,12 +322,14 @@ class GravityView_frontend {
 	 * @access public
 	 * @static
 	 * @param mixed $atts
-	 * @return void
+	 * @return null|string If admin, null. Otherwise, output of $this->render_view()
 	 */
 	public function shortcode( $atts, $content = NULL ) {
 
 		// Don't process when saving post.
-		if( is_admin() ) { return; }
+		if( is_admin() ) {
+			return;
+		}
 
 		do_action( 'gravityview_log_debug', '[shortcode] $atts: ', $atts );
 
@@ -403,7 +404,7 @@ class GravityView_frontend {
 	 * @access public
 	 * @static
 	 * @param mixed $content
-	 * @return void
+	 * @return string Add the View output into View CPT content
 	 */
 	public function insert_view_in_content( $content ) {
 
@@ -817,8 +818,10 @@ class GravityView_frontend {
 			// Search operator options. Options: `is` or `contains`
 			$operator = !empty( $args['search_operator'] ) && in_array( $args['search_operator'], array('is', 'isnot', '>', '<', 'contains' ) ) ? $args['search_operator'] : 'contains';
 
+
+
 			$search_criteria['field_filters'][] = array(
-				'key' => ( ( !empty( $args['search_field'] ) && is_numeric( $args['search_field'] ) ) ? $args['search_field'] : null ), // The field ID to search
+				'key' => rgget('search_field', $args ), // The field ID to search
 				'value' => esc_attr( $args['search_value'] ), // The value to search
 				'operator' => $operator,
 			);
@@ -858,7 +861,7 @@ class GravityView_frontend {
 	 * @uses  gravityview_get_entries()
 	 * @access public
 	 * @param mixed $args
-	 * @param int $form_id
+	 * @param int $form_id Gravity Forms Form ID
 	 * @return array Associative array with `count`, `entries`, and `paging` keys. `count` has the total entries count, `entries` is an array with Gravity Forms full entry data, `paging` is an array with `offset` and `page_size` keys
 	 */
 	public static function get_view_entries( $args, $form_id ) {
@@ -874,6 +877,10 @@ class GravityView_frontend {
 
 		// Paging & offset
 		$page_size = !empty( $args['page_size'] ) ? intval( $args['page_size'] ) : apply_filters( 'gravityview_default_page_size', 25 );
+
+		if( $page_size === -1 ) {
+			$page_size = PHP_INT_MAX;
+		}
 
 		if( isset( $args['offset'] ) ) {
 			$offset = intval( $args['offset'] );
@@ -950,8 +957,8 @@ class GravityView_frontend {
 	public static function updateViewSorting( $args, $form_id ) {
 
 		$sorting = array();
-		$sort_field = isset( $_GET['sort'] ) ? $_GET['sort'] : $args['sort_field'];
-		$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : $args['sort_direction'];
+		$sort_field = isset( $_GET['sort'] ) ? $_GET['sort'] : rgar( $args, 'sort_field' );
+		$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : rgar( $args, 'sort_direction' );
 		if( !empty( $sort_field ) ) {
 			$sorting = array(
 				'key' => $sort_field,
