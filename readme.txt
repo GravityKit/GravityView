@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.7.2 =
+* Fixed: Missing quick action links on the posts list.
+
 = 1.7.1 on March 11 =
 * Fixed: Fatal error on the `list-body.php` template
 
