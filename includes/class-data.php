@@ -19,7 +19,7 @@ class GravityView_View_Data {
 
 		if( !empty( $passed_post ) ) {
 
-			$id_or_id_array = self::maybe_get_view_id( $passed_post );
+			$id_or_id_array = $this->maybe_get_view_id( $passed_post );
 
 			if( !empty( $id_or_id_array ) ) {
 				$this->add_view( $id_or_id_array );
@@ -52,9 +52,7 @@ class GravityView_View_Data {
 	 *
 	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
 	 */
-	static public function maybe_get_view_id( $passed_post ) {
-
-		$self = self::getInstance();
+	public function maybe_get_view_id( $passed_post ) {
 
 		$ids = array();
 
@@ -77,7 +75,7 @@ class GravityView_View_Data {
 						$ids[] = $post->ID;
 
 					} else{
-						$id = $self->parse_post_content( $post->post_content );
+						$id = $this->parse_post_content( $post->post_content );
 
 						$ids = array_merge( $ids, (array)$id );
 					}
@@ -88,11 +86,11 @@ class GravityView_View_Data {
 
 				if ( is_string( $passed_post ) ) {
 
-					$id = $self->parse_post_content( $passed_post );
+					$id = $this->parse_post_content( $passed_post );
 					$ids = array_merge( $ids, (array)$id );
 
 				} else {
-					$id = $self->get_id_from_atts( $passed_post );
+					$id = $this->get_id_from_atts( $passed_post );
 					$ids[] = intval( $id );
 				}
 
@@ -177,9 +175,8 @@ class GravityView_View_Data {
 		}
 
 		// The view has been set already; returning stored view.
-		if ( ! empty( $this->views[ $view_id ] ) ) {
+		if ( !empty( $this->views[ $view_id ] ) ) {
 			do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] Returning; View #%s already exists.', $view_id) );
-
 			return $this->views[ $view_id ];
 		}
 
@@ -433,7 +430,7 @@ class GravityView_View_Data {
 		}
 
 		if( ! $message ) {
-			$view_ids_in_post = GravityView_View_Data::maybe_get_view_id( $post_id );
+			$view_ids_in_post = GravityView_View_Data::getInstance()->maybe_get_view_id( $post_id );
 
 			// The post or page specified does not contain the shortcode.
 			if ( false === in_array( $view_id, (array) $view_ids_in_post ) ) {
