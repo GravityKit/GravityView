@@ -79,6 +79,7 @@ class GravityView_Admin_Metaboxes {
 
 	/**
 	 * Render the View Settings metabox
+	 * @since 1.8
 	 * @param WP_Post $post
 	 */
 	function settings_metabox_render( $post ) {
@@ -100,6 +101,7 @@ class GravityView_Admin_Metaboxes {
 	}
 
 	/**
+	 * Add default tabs to the Settings metabox
 	 * @since 1.8
 	 */
 	private function add_settings_metabox_tabs() {
