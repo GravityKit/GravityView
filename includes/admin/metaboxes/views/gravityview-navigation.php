@@ -1,10 +1,19 @@
 <?php
-
-$metaboxes = GravityView_Metabox_Tabs::get_all();
+/**
+ * Display the tab navigation for the Settings metabox
+ *
+ * @package GravityView
+ * @subpackage Gravityview/admin/metaboxes/views
+ * @since 1.8
+ *
+ * @global GravityView_Metabox_Tab[] $metaboxes
+ * @global WP_Post $post
+ */
 
 ?>
 <ul>
 	<?php
+
 	foreach( $metaboxes as $metabox ) {
 
 		$class = !isset( $class ) ? 'nav-tab-active' : '';

@@ -83,6 +83,8 @@ class GravityView_Admin_Metaboxes {
 	 */
 	function settings_metabox_render( $post ) {
 
+		$metaboxes = GravityView_Metabox_Tabs::get_all();
+
 		/**
 		 * @param WP_Post $post
 		 */
