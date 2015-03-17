@@ -67,10 +67,12 @@
 
       a {
         @include borderbox();
+
         padding: 10px;
         line-height: 20px !important;
         margin: 0;
         display: block;
+        width: 100%;
         text-decoration: none;
         border: none;
         outline: none;
