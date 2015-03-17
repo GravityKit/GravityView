@@ -78,6 +78,10 @@
         border-bottom: 1px solid #eee;
         background: none;
         transition-duration: 0;
+
+        // Prevent overflowing text on the tabs
+        text-overflow: ellipsis;
+        overflow-x:hidden;
       }
 
       &:first-child {
