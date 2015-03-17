@@ -1324,6 +1324,9 @@
          */
         templateId: null,
 
+	    /**
+	     * Holds the tabbed Settings metabox container
+	     */
         metaboxObj: null,
 
         /**
@@ -1331,10 +1334,12 @@
          */
         init: function() {
 
-            viewGeneralSettings.metaboxObj = $('#gravityview_settings' );
+            viewGeneralSettings.metaboxObj = $( '#gravityview_settings' );
 
             // Init general settings tabs
             viewGeneralSettings.initTabs();
+	        viewGeneralSettings.zebraStripe();
+
 
             // Conditional display general settings & trigger display settings if template changes
             $('#gravityview_directory_template')
@@ -1383,8 +1388,24 @@
 
         },
 
+	    /**
+	     * Make zebra table rows
+	     * @since 1.8
+	     * @return {void}
+	     */
+	    zebraStripe: function() {
+
+		    viewGeneralSettings.metaboxObj
+			    .find('.form-table tr:even' )
+			    .addClass('alternate');
+
+	    },
+
         /**
+         * Set up the settings metabox vertical tabs
+         *
          * @since 1.8
+         * @return {void}
          */
         initTabs: function() {
 
@@ -1396,42 +1417,47 @@
                 .tabs()
                 .addClass( "ui-tabs-vertical ui-helper-clearfix" )
                 .find('li')
-                .removeClass( "ui-corner-top" )
-
-                // Make zebra table rows
-                .end()
-                .find('.form-table tr:even' )
-                .addClass('alternate');
+                .removeClass( "ui-corner-top" );
         },
 
-        refreshTabs: function() {
-
-            viewGeneralSettings.metaboxObj
-                    .tabs('refresh');
-
-        },
-
+	    /**
+	     * Enable a tab in the settings metabox
+	     *
+	     * @since 1.8
+	     *
+	     * @param {jQuery} e jQuery Event
+	     * @param {jQuery} tab DOM of tab to enable
+	     *
+	     * @return {void}
+	     */
         enableSettingTab: function( e, tab ) {
 
             viewGeneralSettings.metaboxObj
-                .tabs('enable', $( tab ).attr('id') )
-                .tabs('refresh');
+                .tabs('enable', $( tab ).attr('id') );
 
         },
 
+	    /**
+	     * Disable a tab in the settings metabox
+	     *
+	     * @since 1.8
+	     *
+	     * @param {jQuery} e jQuery Event
+	     * @param {jQuery} tab DOM of tab to enable
+	     *
+	     * @return {void}
+	     */
         disableSettingTab: function( e, tab ) {
 
             viewGeneralSettings.metaboxObj
-                .tabs('disable', $( tab ).attr('id') )
-                .tabs('refresh');
+                .tabs('disable', $( tab ).attr('id') );
 
         },
 
     };  // end viewGeneralSettings object
 
-    
 
-	jQuery(document).ready( function( $ ) {
+	jQuery( document ).ready( function( $ ) {
 
 		// title placeholder
 		$('#title-prompt-text').text( gvGlobals.label_viewname );
