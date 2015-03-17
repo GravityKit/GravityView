@@ -9,6 +9,7 @@
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
+ *
  */
 
 
@@ -81,11 +82,33 @@
                 .on('click', ".gv-field-controls a[href='#settings']", vcfg.openFieldSettings)
 
                 // Double-clicking a field/widget label opens settings
-                .on('dblclick', ".gv-fields", vcfg.openFieldSettings );
+                .on('dblclick', ".gv-fields", vcfg.openFieldSettings )
+
+	            // Enable a setting tab
+	            .on('gravityview/settings/tab/enable', vcfg.enableSettingTab )
+
+                // Disable a setting tab
+	            .on('gravityview/settings/tab/disable', vcfg.disableSettingTab );
 
         	// End bind to $('body')
 
         },
+
+	    enableSettingTab: function( e, tab ) {
+
+		    $('#gravityview_settings' )
+			    .tabs('enable', $( tab ).attr('id') )
+			    .tabs('refresh');
+
+	    },
+
+	    disableSettingTab: function( e, tab ) {
+
+		    $('#gravityview_settings' )
+			    .tabs('disable', $( tab ).attr('id') )
+			    .tabs('refresh');
+
+	    },
 
         /**
          * Close all tooltips if user clicks outside the tooltip or presses escape key
@@ -778,8 +801,8 @@
 
         /**
          * Fetch the Available Fields for a given Form ID or Preset Template ID
-         * @param  null|string    preset
-         * @param  string    templateid      The "slug" of the View template
+         * @param  {null|string}    preset
+         * @param  {string}    templateid      The "slug" of the View template
          * @return void
          */
         getAvailableFields: function (preset, templateid) {
@@ -834,7 +857,7 @@
 
         /**
          * When a field is clicked in the field picker, add the field or add all fields
-         * @param  {[type]} e [description]
+         * @param  {jQuery} e [description]
          * @return {void}
          */
         startAddField: function (e) {
@@ -851,7 +874,7 @@
 
         /**
          * Add all the fields available at once. Bam!
-         * @param  object    clicked jQuery object of the clicked "+ Add All Fields" link
+         * @param  {jQuery}    clicked jQuery object of the clicked "+ Add All Fields" link
          */
         addAllFields: function (clicked) {
 
@@ -866,7 +889,7 @@
 
         /**
          * Drop selected field in the active area
-         * @param  object    e     jQuery Event object
+         * @param  {jQuery}    e     jQuery Event object
          */
         addField: function (clicked, e) {
             e.preventDefault();
@@ -1148,8 +1171,8 @@
         /**
          * Show/Hide Visibility of an input's container list item based on the value of a checkbox
          *
-         * @param  {jQuery DOM Object} $checkbox The checkbox to use when determining show/hide. Checked: show; unchecked: hide
-         * @param  {jQuery DOM Object} $toggled  The field whose container to show/hide
+         * @param  {jQuery} $checkbox The checkbox to use when determining show/hide. Checked: show; unchecked: hide
+         * @param  {jQuery} $toggled  The field whose container to show/hide
          * @param  {boolean} first_run Is this the first run (on load)? If so, show/hide immediately
          * @return {void}
          */
@@ -1220,12 +1243,12 @@
         	 * Add slashes to date fields so stripslashes doesn't strip all of them
         	 * {@link http://phpjs.org/functions/addslashes/}
         	 */
-        	$('#post input[name*=date_display]').val(function() {
+        	$('#post').find( 'input[name*=date_display]' ).val(function() {
         		return $(this).val().replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
         	});
 
         	// Get all the fields where the `name` attribute start with `fields`
-        	var $fields = $('#post :input[name^=fields]');
+        	var $fields = $('#post').find(':input[name^=fields]');
 
         	// Serialize the data
         	var serialized_data = $fields.serialize();

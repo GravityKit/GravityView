@@ -37,6 +37,19 @@
 
     .form-table {
       margin-top: 0;
+
+      caption {
+        text-align: left;
+        .rtl & {
+          text-align: right;
+        }
+
+        font-size: 14px;
+        padding: 8px 10px;
+        margin: 0;
+        line-height: 1.4;
+        font-weight: 600;
+      }
     }
 
     p {
