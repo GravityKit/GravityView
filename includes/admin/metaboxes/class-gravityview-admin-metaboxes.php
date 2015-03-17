@@ -131,6 +131,13 @@ class GravityView_Admin_Metaboxes {
 			),
 		);
 
+		/**
+		 * Modify the default settings metabox tabs
+		 * @param array $metaboxes
+		 * @since 1.8
+		 */
+		$metaboxes = apply_filters( 'gravityview/metaboxes/default', $metaboxes );
+
 		foreach( $metaboxes as $m ) {
 
 			$tab = new GravityView_Metabox_Tab( $m['id'], $m['title'], $m['file'], $m['icon-class'], $m['callback'], $m['callback_args'] );
