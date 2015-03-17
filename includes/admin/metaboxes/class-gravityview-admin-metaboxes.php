@@ -5,12 +5,14 @@
  */
 class GravityView_Admin_Metaboxes {
 
-	static $metaboxes_dir = GRAVITYVIEW_DIR .'includes/admin/metaboxes/';
+	static $metaboxes_dir;
 
 	/**
 	 *
 	 */
 	function __construct() {
+
+        self::$metaboxes_dir = GRAVITYVIEW_DIR . 'includes/admin/metaboxes/';
 
 		include_once self::$metaboxes_dir . 'class-gravityview-metabox-tab.php';
 
