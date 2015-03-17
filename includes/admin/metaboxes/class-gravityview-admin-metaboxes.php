@@ -115,7 +115,7 @@ class GravityView_Admin_Metaboxes {
 			),
 			array(
 				'id' => 'single_entry', // Use the same ID as View Settings for backward compatibility
-				'title' => __( 'Single Entry Settings', 'gravityview' ),
+				'title' => __( 'Single Entry', 'gravityview' ),
 				'file' => 'single-entry.php',
 				'icon-class' => 'dashicons-media-default',
 				'callback' => '',
