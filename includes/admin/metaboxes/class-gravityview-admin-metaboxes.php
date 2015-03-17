@@ -110,6 +110,7 @@ class GravityView_Admin_Metaboxes {
 				'title' => __( 'View Settings', 'gravityview' ),
 				'file' => 'view-settings.php',
 				'icon-class' => 'dashicons-admin-generic',
+				'callback' => '',
 				'callback_args' => '',
 			),
 			array(
@@ -117,6 +118,7 @@ class GravityView_Admin_Metaboxes {
 				'title' => __( 'Single Entry Settings', 'gravityview' ),
 				'file' => 'single-entry.php',
 				'icon-class' => 'dashicons-media-default',
+				'callback' => '',
 				'callback_args' => '',
 			),
 			array(
@@ -124,13 +126,14 @@ class GravityView_Admin_Metaboxes {
 				'title' => __( 'Filter &amp; Sort', 'gravityview' ),
 				'file' => 'sort-filter.php',
 				'icon-class' => 'dashicons-sort',
+				'callback' => '',
 				'callback_args' => '',
 			),
 		);
 
 		foreach( $metaboxes as $m ) {
 
-			$tab = new GravityView_Metabox_Tab( $m['id'], $m['title'], $m['file'], $m['icon-class'], $m['callback_args'] );
+			$tab = new GravityView_Metabox_Tab( $m['id'], $m['title'], $m['file'], $m['icon-class'], $m['callback'], $m['callback_args'] );
 
 			GravityView_Metabox_Tabs::add( $tab );
 
