@@ -82,33 +82,13 @@
                 .on('click', ".gv-field-controls a[href='#settings']", vcfg.openFieldSettings)
 
                 // Double-clicking a field/widget label opens settings
-                .on('dblclick', ".gv-fields", vcfg.openFieldSettings )
-
-	            // Enable a setting tab
-	            .on('gravityview/settings/tab/enable', vcfg.enableSettingTab )
-
-                // Disable a setting tab
-	            .on('gravityview/settings/tab/disable', vcfg.disableSettingTab );
+                .on('dblclick', ".gv-fields", vcfg.openFieldSettings );
 
         	// End bind to $('body')
 
         },
 
-	    enableSettingTab: function( e, tab ) {
 
-		    $('#gravityview_settings' )
-			    .tabs('enable', $( tab ).attr('id') )
-			    .tabs('refresh');
-
-	    },
-
-	    disableSettingTab: function( e, tab ) {
-
-		    $('#gravityview_settings' )
-			    .tabs('disable', $( tab ).attr('id') )
-			    .tabs('refresh');
-
-	    },
 
         /**
          * Close all tooltips if user clicks outside the tooltip or presses escape key
@@ -252,7 +232,7 @@
             var vcfg = viewConfiguration;
 
             vcfg.currentFormId = '';
-            $("#gravityview_view_config, #gravityview_select_template, #gravityview_sort_filter, .gv-form-links").hide();
+            $("#gravityview_view_config, #gravityview_select_template, .gv-form-links").hide();
 
         },
 
@@ -710,14 +690,14 @@
          * @return {void}
          */
         hideViewConfig: function () {
-            $("#gravityview_view_config,#gravityview_sort_filter").slideUp(150);
+            $("#gravityview_view_config").slideUp(150);
 
             $(document).trigger('gv_admin_views_hideViewConfig');
         },
 
         showViewConfig: function () {
 
-            $("#gravityview_view_config, #gravityview_sort_filter").slideDown(150);
+            $("#gravityview_view_config").slideDown(150);
 
             viewConfiguration.toggleDropMessage();
             viewConfiguration.init_droppables();
@@ -911,7 +891,7 @@
                 field_label: newField.find('.gv-field-label').attr('data-original-title'),
                 field_type: addButton.attr('data-objecttype'),
                 input_type: newField.attr('data-inputtype'),
-                nonce: gvGlobals.nonce,
+                nonce: gvGlobals.nonce
             };
 
             // Get the HTML for the Options <div>
@@ -1344,13 +1324,29 @@
          */
         templateId: null,
 
+        metaboxObj: null,
+
         /**
          * Init method
          */
         init: function() {
 
+            viewGeneralSettings.metaboxObj = $('#gravityview_settings' );
+
+            // Init general settings tabs
+            viewGeneralSettings.initTabs();
+
             // Conditional display general settings & trigger display settings if template changes
-            $('#gravityview_directory_template').change( viewGeneralSettings.updateSettingsDisplay ).trigger('change');
+            $('#gravityview_directory_template')
+                .change( viewGeneralSettings.updateSettingsDisplay )
+                .trigger('change');
+
+            $('body')
+                // Enable a setting tab
+                .on('gravityview/settings/tab/enable', viewGeneralSettings.enableSettingTab )
+
+                // Disable a setting tab
+                .on('gravityview/settings/tab/disable', viewGeneralSettings.disableSettingTab );
 
         },
 
@@ -1385,7 +1381,51 @@
                 row.hide();
             }
 
-        }
+        },
+
+        /**
+         * @since 1.8
+         */
+        initTabs: function() {
+
+            viewGeneralSettings.metaboxObj
+                // Force the sort metabox to be directly under the view configuration. Damn 3rd party metaboxes!
+                .insertAfter( $('#gravityview_view_config') )
+
+                // Make vertical tabs
+                .tabs()
+                .addClass( "ui-tabs-vertical ui-helper-clearfix" )
+                .find('li')
+                .removeClass( "ui-corner-top" )
+
+                // Make zebra table rows
+                .end()
+                .find('.form-table tr:even' )
+                .addClass('alternate');
+        },
+
+        refreshTabs: function() {
+
+            viewGeneralSettings.metaboxObj
+                    .tabs('refresh');
+
+        },
+
+        enableSettingTab: function( e, tab ) {
+
+            viewGeneralSettings.metaboxObj
+                .tabs('enable', $( tab ).attr('id') )
+                .tabs('refresh');
+
+        },
+
+        disableSettingTab: function( e, tab ) {
+
+            viewGeneralSettings.metaboxObj
+                .tabs('disable', $( tab ).attr('id') )
+                .tabs('refresh');
+
+        },
 
     };  // end viewGeneralSettings object
 
@@ -1425,23 +1465,6 @@
 			}
 		});
 
-		/**
-		 * @since 1.8
-		 */
-		$('#gravityview_settings')
-			// Force the sort metabox to be directly under the view configuration. Damn 3rd party metaboxes!
-			.insertAfter( $('#gravityview_view_config') )
-
-			// Make vertical tabs
-			.tabs()
-			.addClass( "ui-tabs-vertical ui-helper-clearfix" )
-			.find('li')
-				.removeClass( "ui-corner-top" )
-
-			// Make zebra table rows
-			.end()
-			.find('.form-table tr:even' )
-				.addClass('alternate');
 
 	});
 
