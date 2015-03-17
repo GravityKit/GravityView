@@ -28,6 +28,14 @@ module.exports = function(grunt) {
 			}
 		},
 
+		jshint: [
+			"assets/js/admin-views.js",
+			"assets/js/admin-post-edit.js",
+			"assets/js/admin-widgets.js",
+			"assets/js/admin-entries-list.js",
+			"assets/js/fe-views.js"
+		],
+
         imagemin: {
             dynamic: {
                 files: [{
@@ -43,7 +51,9 @@ module.exports = function(grunt) {
         },
 
 		uglify: {
-			options: { mangle: false },
+			options: {
+				mangle: false
+			},
 			main: {
 				files: [{
 		          expand: true,
@@ -65,9 +75,9 @@ module.exports = function(grunt) {
 		},
 
 		watch: {
-			main: {
-				files: ['assets/js/*.js','!assets/js/*.min.js','readme.txt'],
-				tasks: ['uglify:main','wp_readme_to_markdown','newer:jshint:all']
+			scripts: {
+				files: ['assets/js/*.js','!assets/js/*.min.js'],
+				tasks: ['uglify:main','newer:jshint']
 			},
 			extension_js: {
 				files: ['includes/extensions/**/*.js','!includes/extensions/**/*.min.js'],
@@ -114,9 +124,9 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-sass');
+	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-wp-readme-to-markdown');
 	grunt.loadNpmTasks('grunt-potomo');
 	grunt.loadNpmTasks('grunt-exec');
     grunt.loadNpmTasks('grunt-contrib-imagemin');
