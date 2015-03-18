@@ -45,7 +45,7 @@
 				.on( 'click', 'a[href="#gv_start_fresh"]', vcfg.startFresh )
 
 				// when saving the View, try to create form before proceeding
-				.on( 'submit', '#post', vcfg.processFormSubmit )
+                .on( 'click', '#publish, #save-post', vcfg.processFormSubmit )
 
 				// Hover overlay show/hide
 				.on( 'click', ".gv-view-types-hover", vcfg.selectTemplateHover )
@@ -1228,7 +1228,7 @@
 			// make sure the "slow" browsers did append all the serialized data to the form
 			setTimeout( function () {
 
-				$( e.target ).data( 'gv-valid', true ).submit();
+				$( e.target ).data( 'gv-valid', true ).click();
 
 			}, 101 );
 
@@ -1272,7 +1272,7 @@
 						vcfg.gvSelectForm.find( "option:selected" ).removeAttr( "selected" ).end().append( response );
 
 						// Continue submitting the form, since we preventDefault() above
-						$( e.target ).submit();
+						$( e.target ).click();
 
 					} else {
 
