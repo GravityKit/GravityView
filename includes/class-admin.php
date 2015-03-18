@@ -212,6 +212,7 @@ class GravityView_Admin {
             'puc-debug-bar-js',
             'autosave',
             'post',
+			'inline-edit-post',
             'utils',
             'svg-painter',
             'wp-auth-check',
@@ -246,6 +247,7 @@ class GravityView_Admin {
             'jquery-ui-accordion',
             'redux-edd_license',
             'redux-field-edd-js',
+			'redux-field-media-js',
 
 			// WP SEO
 			'wp-seo-metabox',
