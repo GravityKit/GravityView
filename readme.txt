@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.7.2 on March 18 =
+* Fixed: Not possible to 'publish' new Views
+
 = 1.7.1 on March 11 =
 * Fixed: Fatal error on the `list-body.php` template
 
