@@ -212,7 +212,7 @@ class GravityView_Admin_Duplicate_View {
 
 		// Only process on GravityView Views
 		if( get_post_type( $post ) !== 'gravityview' ) {
-			return;
+			return $actions;
 		}
 
 		if ( $this->current_user_can_copy( $post ) ) {

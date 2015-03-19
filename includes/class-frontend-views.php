@@ -33,7 +33,8 @@ class GravityView_frontend {
 	var $post_id = NULL;
 
 	/**
-	 * Are we currently viewing a single entry? If so, the int value of the entry ID. Otherwise, false.
+	 * Are we currently viewing a single entry?
+	 * If so, the int value of the entry ID. Otherwise, false.
 	 * @var int|boolean
 	 */
 	var $single_entry = false;
@@ -65,10 +66,11 @@ class GravityView_frontend {
 	static $instance;
 
 	/**
-	 * Class constructor
+	 * Class constructor, enforce Singleton pattern
 	 */
-	function __construct() {
+	private function __construct() {}
 
+	private function initialize() {
 		add_action( 'wp', array( $this, 'parse_content'), 11 );
 
 		// Shortcode to render view (directory)
@@ -86,18 +88,17 @@ class GravityView_frontend {
 
 		add_action('add_admin_bar_menus', array( $this, 'admin_bar_remove_links'), 80 );
 		add_action('admin_bar_menu', array( $this, 'admin_bar_add_links'), 85 );
-
-		self::$instance = &$this;
 	}
 
 	/**
 	 * Get the one true instantiated self
 	 * @return GravityView_frontend
 	 */
-	static function getInstance() {
+	public static function getInstance() {
 
 		if( empty( self::$instance ) ) {
-			self::$instance = new GravityView_frontend;
+			self::$instance = new self;
+			self::$instance->initialize();
 		}
 
 		return self::$instance;
@@ -222,10 +223,12 @@ class GravityView_frontend {
 		$doing_ajax = ( defined( 'DOING_AJAX' ) && DOING_AJAX );
 
 		// If in admin and NOT AJAX request, get outta here.
-		if( is_admin() && !$doing_ajax )  { return; }
+		if( is_admin() && ! $doing_ajax )  {
+			return;
+		}
 
 
-		$this->setGvOutputData( new GravityView_View_Data( $post ) );
+		$this->setGvOutputData( GravityView_View_Data::getInstance( $post ) );
 		$this->setSingleEntry( self::is_single_entry() );
 		$this->setIsGravityviewPostType( get_post_type( $post ) === 'gravityview' );
 
@@ -306,10 +309,9 @@ class GravityView_frontend {
 	 * @return void
 	 */
 	function admin_bar_remove_links() {
-		global $wp_admin_bar, $post, $wp, $wp_the_query;
 
 		// If we're on the single entry page, we don't want to cause confusion.
-		if( is_admin() || ($this->single_entry && !$this->isGravityviewPostType() ) ) {
+		if( is_admin() || ($this->getSingleEntry() && !$this->isGravityviewPostType() ) ) {
 			remove_action( 'admin_bar_menu', 'wp_admin_bar_edit_menu', 80 );
 		}
 	}
@@ -320,12 +322,14 @@ class GravityView_frontend {
 	 * @access public
 	 * @static
 	 * @param mixed $atts
-	 * @return void
+	 * @return null|string If admin, null. Otherwise, output of $this->render_view()
 	 */
 	public function shortcode( $atts, $content = NULL ) {
 
 		// Don't process when saving post.
-		if( is_admin() ) { return; }
+		if( is_admin() ) {
+			return;
+		}
 
 		do_action( 'gravityview_log_debug', '[shortcode] $atts: ', $atts );
 
@@ -366,6 +370,7 @@ class GravityView_frontend {
 		}
 
 		// get view data
+		// todo: refactor
 		if( 'gravityview' === get_post_type( $post ) ) {
 			// In case View post is called directly
 			$view_meta = $this->getGvOutputData()->get_view( $passed_post_id );
@@ -399,7 +404,7 @@ class GravityView_frontend {
 	 * @access public
 	 * @static
 	 * @param mixed $content
-	 * @return void
+	 * @return string Add the View output into View CPT content
 	 */
 	public function insert_view_in_content( $content ) {
 
@@ -813,8 +818,10 @@ class GravityView_frontend {
 			// Search operator options. Options: `is` or `contains`
 			$operator = !empty( $args['search_operator'] ) && in_array( $args['search_operator'], array('is', 'isnot', '>', '<', 'contains' ) ) ? $args['search_operator'] : 'contains';
 
+
+
 			$search_criteria['field_filters'][] = array(
-				'key' => ( ( !empty( $args['search_field'] ) && is_numeric( $args['search_field'] ) ) ? $args['search_field'] : null ), // The field ID to search
+				'key' => rgget('search_field', $args ), // The field ID to search
 				'value' => esc_attr( $args['search_value'] ), // The value to search
 				'operator' => $operator,
 			);
@@ -854,7 +861,7 @@ class GravityView_frontend {
 	 * @uses  gravityview_get_entries()
 	 * @access public
 	 * @param mixed $args
-	 * @param int $form_id
+	 * @param int $form_id Gravity Forms Form ID
 	 * @return array Associative array with `count`, `entries`, and `paging` keys. `count` has the total entries count, `entries` is an array with Gravity Forms full entry data, `paging` is an array with `offset` and `page_size` keys
 	 */
 	public static function get_view_entries( $args, $form_id ) {
@@ -870,6 +877,10 @@ class GravityView_frontend {
 
 		// Paging & offset
 		$page_size = !empty( $args['page_size'] ) ? intval( $args['page_size'] ) : apply_filters( 'gravityview_default_page_size', 25 );
+
+		if( $page_size === -1 ) {
+			$page_size = PHP_INT_MAX;
+		}
 
 		if( isset( $args['offset'] ) ) {
 			$offset = intval( $args['offset'] );
@@ -946,8 +957,8 @@ class GravityView_frontend {
 	public static function updateViewSorting( $args, $form_id ) {
 
 		$sorting = array();
-		$sort_field = isset( $_GET['sort'] ) ? $_GET['sort'] : $args['sort_field'];
-		$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : $args['sort_direction'];
+		$sort_field = isset( $_GET['sort'] ) ? $_GET['sort'] : rgar( $args, 'sort_field' );
+		$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : rgar( $args, 'sort_direction' );
 		if( !empty( $sort_field ) ) {
 			$sorting = array(
 				'key' => $sort_field,
@@ -1183,12 +1194,13 @@ class GravityView_frontend {
 
 }
 
-new GravityView_frontend;
+GravityView_frontend::getInstance();
 
 
 /**
  * Theme function to get a GravityView view
  *
+ * @todo Move to functions file
  * @access public
  * @param string $view_id (default: '')
  * @param array $atts (default: array())
@@ -1198,8 +1210,8 @@ function get_gravityview( $view_id = '', $atts = array() ) {
 	if( !empty( $view_id ) ) {
 		$atts['id'] = $view_id;
 		$args = wp_parse_args( $atts, GravityView_View_Data::get_default_args() );
-		$GravityView_frontend = new GravityView_frontend;
-		$GravityView_frontend->setGvOutputData( new GravityView_View_Data( $view_id ) );
+		$GravityView_frontend = GravityView_frontend::getInstance();
+		$GravityView_frontend->setGvOutputData( GravityView_View_Data::getInstance( $view_id ) );
 		return $GravityView_frontend->render_view( $args );
 	}
 	return '';
@@ -1208,6 +1220,7 @@ function get_gravityview( $view_id = '', $atts = array() ) {
 /**
  * Theme function to render a GravityView view
  *
+ * @todo Move to functions file
  * @access public
  * @param string $view_id (default: '')
  * @param array $atts (default: array())
@@ -1221,6 +1234,7 @@ function the_gravityview( $view_id = '', $atts = array() ) {
 /**
  * Theme function to identify if it is a Single Entry View
  *
+ * @todo Move to functions file
  * @since  1.5.4
  * @return bool|string False if not, single entry slug if true
  */

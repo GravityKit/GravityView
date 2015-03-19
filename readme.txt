@@ -20,6 +20,17 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.7.2 on March 18 =
+* Added: Other Entries field - Show what other entries the entry creator has in the current View
+* Added: Ability to hide the Approve/Reject column when viewing Gravity Forms entries ([Learn how](http://docs.gravityview.co/article/248-how-to-hide-the-approve-reject-entry-column))
+* Fixed: Missing Row Action links for non-View types (posts, pages)
+* Fixed: Embedded DataTable Views with `search_value` not filtering correctly
+* Fixed: Not possible to change View status to 'Publish'
+* Fixed: Not able to turn off No-Conflict mode on the Settings page (oh, the irony!)
+* Fixed: Allow for non-numeric search fields in `gravityview_get_entries()`
+* Fixed: Social icons displaying on GravityView settings page
+* Tweak: Improved Javascript & PHP speed and structure
+
 = 1.7.1 on March 11 =
 * Fixed: Fatal error on the `list-body.php` template
 

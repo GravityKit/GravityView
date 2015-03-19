@@ -130,7 +130,7 @@ class GravityView_Admin_Views {
 	 * @param array $array Existing field types to add to a blacklist
 	 * @param string|null $context Context for the blacklist. Default: NULL.
 	 * @access public
-	 * @return void
+	 * @return array Default blacklist fields merged with existing blacklist fields
 	 */
 	function default_field_blacklist( $array = array(), $context = NULL ) {
 
@@ -206,6 +206,8 @@ class GravityView_Admin_Views {
 	 *
 	 * @param null $column_name
 	 * @param $post_id
+	 *
+	 * @return void
 	 */
 	static public function add_connected_form_column_content( $column_name = NULL, $post_id )	{
 
@@ -569,6 +571,15 @@ class GravityView_Admin_Views {
 					'type'	=> 'custom',
 					'desc'	=> __('Insert custom text or HTML.', 'gravityview'),
 				),
+
+				/**
+				 * @since 1.7.2
+				 */
+			    'other_entries' => array(
+				    'label'	=> __('Other Entries', 'gravityview'),
+				    'type'	=> 'other_entries',
+				    'desc'	=> __('Display other entries created by the entry creator.', 'gravityview'),
+			    ),
 	        );
 
 
@@ -871,7 +882,6 @@ class GravityView_Admin_Views {
 		if( gravityview_is_admin_page($hook, 'single') || $is_widgets_page ) {
 
 			wp_enqueue_script( 'jquery-ui-datepicker' );
-			//wp_enqueue_style( 'gravityview_views_datepicker', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
 			wp_enqueue_style( 'gravityview_views_datepicker', plugins_url('assets/css/admin-datepicker.css', GRAVITYVIEW_FILE), GravityView_Plugin::version );
 
 			$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';

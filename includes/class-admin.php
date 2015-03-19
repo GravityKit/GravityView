@@ -212,6 +212,7 @@ class GravityView_Admin {
             'puc-debug-bar-js',
             'autosave',
             'post',
+			'inline-edit-post',
             'utils',
             'svg-painter',
             'wp-auth-check',
@@ -245,7 +246,9 @@ class GravityView_Admin {
             'wp-color-picker',
             'jquery-ui-accordion',
             'redux-edd_license',
-            'redux-field-edd-js',
+			'redux-field-edd_license-js',
+		    'redux-field-switch-js',
+		    'redux-field-media-js',
 
 			// WP SEO
 			'wp-seo-metabox',
@@ -307,6 +310,8 @@ class GravityView_Admin {
 	        'redux-elusive-icon',
 	        'redux-elusive-icon-ie7',
 	        'select2-css',
+	        'redux-fields-css',
+	        'redux-admin-css',
 	        'qtip-css',
 	        'nouislider-css',
 	        'jquery-ui-css',
@@ -314,7 +319,7 @@ class GravityView_Admin {
 	        'wp-color-picker',
 	        'redux-field-edd-css',
 	        'redux-field-info-css',
-	        'redux-edd_license',
+	        'redux-field-edd_license-css',
 
 	        // WP SEO
 	        'wp-seo-metabox',
@@ -349,7 +354,7 @@ class GravityView_Admin {
         //reset queue
         $queue = array();
         foreach( $wp_objects->queue as $object ) {
-            if( in_array( $object, $required_objects ) ) {
+	        if( in_array( $object, $required_objects ) || preg_match('/gravityview|redux/ism', $object ) ) {
                 $queue[] = $object;
             }
         }

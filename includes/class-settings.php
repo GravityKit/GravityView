@@ -254,6 +254,9 @@ if (!class_exists('GravityView_Settings')) {
 				'menu_title'        => __('Settings', 'gravityview'),
 				'page_title'        => __('Settings', 'gravityview'),
 
+				// Hide footer credit
+				'footer_credit'     => '<i class="dashicons dashicons-heart"></i><i class="gv-icon-astronaut-head" style="font-size: 20px"></i><i class="dashicons dashicons-heart"></i> '. __('Thank you.', 'gravityview'),
+
 				'async_typography'  => false,                    // Use a asynchronous font on the front end or font string
 				'admin_bar'         => false,                    // Show the panel pages on the admin bar
 				'global_variable'   => '',                      // Set a different name for your global variable other than the opt_name
@@ -308,17 +311,17 @@ if (!class_exists('GravityView_Settings')) {
 				array(
 					'url'   => 'https://twitter.com/Gravity_View',
 					'title' => 'Follow us on Twitter',
-					'icon'  => 'el-icon-twitter'
+					'icon'  => 'el el-icon-twitter'
 				),
 				array(
 					'url'   => 'https://www.facebook.com/GravityView',
 					'title' => 'Like us on Facebook',
-					'icon'  => 'el-icon-facebook'
+					'icon'  => 'el el-icon-facebook'
 				),
 				array(
 					'url'   => 'https://plus.google.com/115639371871185834833/about',
 					'title' => __('Follow us on Google+', 'gravityview' ),
-					'icon' => 'el-icon-googleplus',
+					'icon' => 'el el-icon-googleplus',
 				),
 			);
 		}

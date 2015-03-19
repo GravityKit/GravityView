@@ -1,17 +1,63 @@
+# Help from https://www.gitignore.io
 
+### Mac ###
+.DS_Store
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+### SublimeText ###
 *.sublime-project
-
 *.sublime-workspace
 
+### Composer ###
 composer.lock
 
+### Libraries ###
 vendor/.git
 vendor/*/.git
 
+### Grunt ###
 node_modules/*
+
+### CodeKit ####
 .sass-cache
 *.codekit
+
+### Transifex ####
 .tx
-.idea
 languages/gravityview-pt.mo
 languages/gravityview-pt.po
+
+### PhpStorm ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
+
+*.iml
+
+# User-specific stuff:
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/deployment.xml
+
+# Sensitive or high-churn files:
+.idea/dataSources.ids
+.idea/dataSources.xml
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
+
+## File-based project format:
+*.ipr
+*.iws
+
+## Plugin-specific files:
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+
+# JIRA plugin
+atlassian-ide-plugin.xml

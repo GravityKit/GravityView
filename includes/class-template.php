@@ -11,21 +11,33 @@
  * @since 1.0.0
  */
 
+/** If this file is called directly, abort. */
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
 
 if( ! class_exists( 'Gamajo_Template_Loader' ) ) {
 	require( GRAVITYVIEW_DIR . 'includes/lib/class-gamajo-template-loader.php' );
 }
 
-
 class GravityView_View extends Gamajo_Template_Loader {
 
-	// Prefix for filter names.
+	/**
+	 * Prefix for filter names.
+	 * @var string
+	 */
 	protected $filter_prefix = 'gravityview';
 
-	// Directory name where custom templates for this plugin should be found in the theme.
+	/**
+	 * Directory name where custom templates for this plugin should be found in the theme.
+	 * @var string
+	 */
 	protected $theme_template_directory = 'gravityview';
 
-	// Reference to the root directory path of this plugin.
+	/**
+	 * Reference to the root directory path of this plugin.
+	 * @var string
+	 */
 	protected $plugin_directory = GRAVITYVIEW_DIR;
 
 	/**
@@ -492,12 +504,19 @@ class GravityView_View extends Gamajo_Template_Loader {
 		$this->_current_entry = $current_entry;
 	}
 
-
+	/**
+	 * Render an output zone, as configured in the Admin
+	 *
+	 * @param string $zone The zone name, like 'footer-left'
+	 * @param array $atts
+	 *
+	 * @return string|null
+	 */
 	public function renderZone( $zone = '', $atts = array() ) {
 
 		if( empty( $zone ) ) {
 			do_action('gravityview_log_error', 'GravityView_View[renderZone] No zone defined.');
-			return;
+			return NULL;
 		}
 
 		$defaults = array(
@@ -526,7 +545,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 		}
 
 		if( empty( $fields ) ) {
-			return;
+			return NULL;
 		}
 
 		if( !empty( $final_atts['wrapper_class'] ) ) {
@@ -550,7 +569,6 @@ class GravityView_View extends Gamajo_Template_Loader {
 		return $output;
 	}
 
-
 	/**
 	 * In order to improve lookup times, we store located templates in a local array.
 	 *
@@ -562,9 +580,8 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 */
 	function locate_template( $template_names, $load = false, $require_once = true ) {
 
-		$located = false;
-
 		if( is_string( $template_names ) && isset( $this->located_templates[ $template_names ] ) ) {
+
 			$located = $this->located_templates[ $template_names ];
 
 		} else {
@@ -658,6 +675,10 @@ class GravityView_View extends Gamajo_Template_Loader {
 		}
 	}
 
+	/**
+	 *
+	 * @param $view_id
+	 */
 	public function render_widget_hooks( $view_id ) {
 
 		if( empty( $view_id ) || 'single' == gravityview_get_context() ) {
@@ -666,6 +687,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		$view_data = gravityview_get_current_view_data( $view_id );
 
+		// TODO: Move to sep. method, use an action instead
 		wp_enqueue_style( 'gravityview_default_style');
 
 		// get View widget configuration
@@ -685,12 +707,12 @@ class GravityView_View extends Gamajo_Template_Loader {
 		// Prevent being called twice
 		if( did_action( $zone.'_'.$view_id.'_widgets' ) ) { return; }
 
+		// TODO Convert to partials
 		?>
-
 		<div class="gv-grid">
 			<?php
-			foreach( $rows as $row ) :
-				foreach( $row as $col => $areas ) :
+			foreach( $rows as $row ) {
+				foreach( $row as $col => $areas ) {
 					$column = ($col == '2-2') ? '1-2 gv-right' : $col.' gv-left';
 				?>
 					<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
@@ -705,8 +727,8 @@ class GravityView_View extends Gamajo_Template_Loader {
 							}
 						} ?>
 					</div>
-				<?php endforeach; ?>
-			<?php endforeach; ?>
+				<?php } // $row ?>
+			<?php } // $rows ?>
 		</div>
 
 		<?php
