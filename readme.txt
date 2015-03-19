@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 = 1.7.2 =
 * Fixed: Missing quick action links on the posts list.
 * Fixed: Embedded DataTable Views with search_value not filtering correctly
+* Added: Other Entries field - Show what other entries the entry creator has in the current View
 * Fixed: Not possible to change View status to 'Publish'
 * Fixed: Settings page not able to turn off No-Conflict mode (oh, the irony!)
 * Fixed: Social icons displaying on GravityView settings page
