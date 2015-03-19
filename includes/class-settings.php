@@ -254,6 +254,9 @@ if (!class_exists('GravityView_Settings')) {
 				'menu_title'        => __('Settings', 'gravityview'),
 				'page_title'        => __('Settings', 'gravityview'),
 
+				// Hide footer credit
+				'footer_credit'     => '<i class="dashicons dashicons-heart"></i><i class="gv-icon-astronaut-head" style="font-size: 20px"></i><i class="dashicons dashicons-heart"></i> '. __('Thank you.', 'gravityview'),
+
 				'async_typography'  => false,                    // Use a asynchronous font on the front end or font string
 				'admin_bar'         => false,                    // Show the panel pages on the admin bar
 				'global_variable'   => '',                      // Set a different name for your global variable other than the opt_name
