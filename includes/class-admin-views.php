@@ -882,7 +882,6 @@ class GravityView_Admin_Views {
 		if( gravityview_is_admin_page($hook, 'single') || $is_widgets_page ) {
 
 			wp_enqueue_script( 'jquery-ui-datepicker' );
-			//wp_enqueue_style( 'gravityview_views_datepicker', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
 			wp_enqueue_style( 'gravityview_views_datepicker', plugins_url('assets/css/admin-datepicker.css', GRAVITYVIEW_FILE), GravityView_Plugin::version );
 
 			$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';

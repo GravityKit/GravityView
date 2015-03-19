@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Generate linked list output for a list of entries.
  *
- * @since 1.8
+ * @since 1.7.2
  */
 class GravityView_Entry_List {
 
@@ -232,7 +232,7 @@ class GravityView_Entry_List {
 	 *
 	 * @param array $entry GF Entry array
 	 *
-	 * @since 1.8
+	 * @since 1.7.2
 	 *
 	 * @uses gravityview_get_link
 	 * @uses GravityView_API::entry_link
@@ -251,7 +251,7 @@ class GravityView_Entry_List {
 			/**
 			 * Modify the item output HTML
 			 *
-			 * @since 1.8
+			 * @since 1.7.2
 			 *
 			 * @param string $item_output The HTML output for the after_link content
 			 * @param array $entry Gravity Forms entry array
@@ -269,7 +269,7 @@ class GravityView_Entry_List {
 		/**
 		 * Modify the item output HTML
 		 *
-		 * @since 1.8
+		 * @since 1.7.2
 		 *
 		 * @param string $item_output The HTML output for the item
 		 * @param array $entry Gravity Forms entry array

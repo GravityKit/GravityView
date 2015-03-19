@@ -131,7 +131,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 	/**
 	 * Get the HTML output for the entry list.
 	 *
-	 * @since 1.8
+	 * @since 1.7.2
 	 *
 	 * @param array $instance The settings for the particular instance of the widget.
 	 *
@@ -153,7 +153,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		/**
 		 * Generate list output
-		 * @since 1.8
+		 * @since 1.7.2
 		 */
 		$List = new GravityView_Entry_List( $entries, $entry_link_post_id, $form, $instance['link_format'], $instance['after_link'], 'recent-entries-widget' );
 
