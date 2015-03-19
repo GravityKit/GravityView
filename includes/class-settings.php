@@ -308,17 +308,17 @@ if (!class_exists('GravityView_Settings')) {
 				array(
 					'url'   => 'https://twitter.com/Gravity_View',
 					'title' => 'Follow us on Twitter',
-					'icon'  => 'el-icon-twitter'
+					'icon'  => 'el el-icon-twitter'
 				),
 				array(
 					'url'   => 'https://www.facebook.com/GravityView',
 					'title' => 'Like us on Facebook',
-					'icon'  => 'el-icon-facebook'
+					'icon'  => 'el el-icon-facebook'
 				),
 				array(
 					'url'   => 'https://plus.google.com/115639371871185834833/about',
 					'title' => __('Follow us on Google+', 'gravityview' ),
-					'icon' => 'el-icon-googleplus',
+					'icon' => 'el el-icon-googleplus',
 				),
 			);
 		}

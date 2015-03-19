@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Embedded DataTable Views with search_value not filtering correctly
 * Fixed: Not possible to change View status to 'Publish'
 * Fixed: Settings page not able to turn off No-Conflict mode (oh, the irony!)
+* Fixed: Social icons displaying on GravityView settings page
 
 = 1.7.1 on March 11 =
 * Fixed: Fatal error on the `list-body.php` template
