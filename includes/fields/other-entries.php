@@ -2,6 +2,8 @@
 
 /**
  * A field that displays other entries by the entry_creator for the same View in a list format
+ *
+ * @since 1.7.2
  */
 class GravityView_Field_Other_Entries extends GravityView_Field {
 
@@ -9,6 +11,7 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 
 	/**
 	 * @inheritDoc
+	 * @since 1.7.2
 	 */
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
