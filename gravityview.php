@@ -60,8 +60,10 @@ require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
 require_once( GRAVITYVIEW_DIR . 'includes/class-cache.php');
 
 /** Register hooks that are fired when the plugin is activated and deactivated. */
-register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
+if( is_admin() ) {
+	register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
+	register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
+}
 
 /**
  * GravityView_Plugin main class.
