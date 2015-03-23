@@ -45,6 +45,12 @@ class GravityView_frontend {
 	 */
 	var $entry = false;
 
+    /**
+     * When displaying the single entry we should always know to which View it belongs (the context is everything!)
+     * @var null
+     */
+    var $context_view_id = NULL;
+
 	/**
 	 * The View is showing search results
 	 * @since 1.5.4
@@ -210,6 +216,43 @@ class GravityView_frontend {
 		$this->is_gravityview_post_type = $is_gravityview_post_type;
 	}
 
+    /**
+     * Set the context view ID used when page contains multiple embedded views or displaying the single entry view
+     *
+     *
+     *
+     * @param null $view_id
+     */
+    public function set_context_view_id( $view_id = null ) {
+
+        if ( !empty( $view_id ) ) {
+
+            $this->context_view_id = $view_id;
+
+        } elseif( isset( $_GET['gvid'] ) && $this->getGvOutputData()->has_multiple_views() ) {
+            /**
+             * used on a has_multiple_views context
+             * @see GravityView_API::entry_link
+             * @see GravityView_View_Data::getInstance()->has_multiple_views()
+             */
+            $this->context_view_id = $_GET['gvid'];
+
+        } elseif( !$this->getGvOutputData()->has_multiple_views() )  {
+            $this->context_view_id = array_pop( array_keys( $this->getGvOutputData()->get_views() ) );
+        }
+
+    }
+
+    /**
+     * Returns the the view_id context when page contains multiple embedded views or displaying single entry view
+     *
+     * @since 1.5.4
+     *
+     * @return string
+     */
+    public function get_context_view_id() {
+        return $this->context_view_id;
+    }
 
 	/**
 	 * Read the $post and process the View data inside
@@ -227,9 +270,14 @@ class GravityView_frontend {
 			return;
 		}
 
-
+        // Calculate requested Views
 		$this->setGvOutputData( GravityView_View_Data::getInstance( $post ) );
-		$this->setSingleEntry( self::is_single_entry() );
+
+        // !important: we need to run this before getting single entry (to kick the advanced filter)
+        $this->set_context_view_id();
+
+        $this->setSingleEntry( self::is_single_entry() );
+
 		$this->setIsGravityviewPostType( get_post_type( $post ) === 'gravityview' );
 
 		$post_id = $this->getPostId() ? $this->getPostId() : (isset( $post ) ? $post->ID : NULL );
@@ -376,8 +424,8 @@ class GravityView_frontend {
 			$view_meta = $this->getGvOutputData()->get_view( $passed_post_id );
 		} else {
 			// in case View is embedded.
-			$context_view_id = self::get_context_view_id();
-			if( $this->getGvOutputData()->has_multiple_views() && $context_view_id != '' ) {
+			$context_view_id = $this->get_context_view_id();
+			if( $this->getGvOutputData()->has_multiple_views() && !empty( $context_view_id ) ) {
 				$view_meta = $this->getGvOutputData()->get_view( $context_view_id );
 			} else {
 				foreach ( $this->getGvOutputData()->get_views() as $view_id => $view_data ) {
@@ -624,7 +672,7 @@ class GravityView_frontend {
 
 			// We're in single view, but the view being processed is not the same view the single entry belongs to.
 			// important: do not remove this as it prevents fake attempts of displaying entries from other views/forms
-			if( $this->getGvOutputData()->has_multiple_views() && $view_id != self::get_context_view_id() ) {
+			if( $this->getGvOutputData()->has_multiple_views() && $view_id != $this->get_context_view_id() ) {
 				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '. $view_id );
 				return;
 			}
@@ -1013,21 +1061,6 @@ class GravityView_frontend {
 			return $single_entry;
 		}
 	}
-
-	/**
-	 * Returns the the view_id context when page contains multiple embedded views
-	 *
-	 * @see GravityView_API::entry_link
-	 *
-	 * @since 1.5.4
-	 *
-	 * @return string
-	 */
-	public static function get_context_view_id() {
-		return isset( $_GET['gvid'] ) ? $_GET['gvid'] : '';
-	}
-
-
 
 
 	/**
