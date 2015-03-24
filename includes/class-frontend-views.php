@@ -1246,7 +1246,7 @@ function get_gravityview( $view_id = '', $atts = array() ) {
 		$GravityView_frontend = GravityView_frontend::getInstance();
 		$GravityView_frontend->setGvOutputData( GravityView_View_Data::getInstance( $view_id ) );
         $GravityView_frontend->set_context_view_id( $view_id );
-        $GravityView_frontend->setSingleEntry( GravityView_frontend::is_single_entry() );
+		$GravityView_frontend->set_entry_data();
 		return $GravityView_frontend->render_view( $args );
 	}
 	return '';
