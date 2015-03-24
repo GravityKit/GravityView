@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 = 1.7.3 =
 * Fixed: Prevent displaying a single Entry that doesn't match configured Advanced Filters
 * Fixed: Embedding entries when not using permalinks
+* Fixed: Hide "Data Source" metabox links in the Screen Options tab in the Admin
 * Added: `gravityview_has_archive` filter to enable View archive (see all Views by going to [sitename.com]/view/)
 * Tweak: Clear `GravityView_View->_current_entry` after the View is displayed
 * Added: Third parameter to `GravityView_API::entry_link()` method:

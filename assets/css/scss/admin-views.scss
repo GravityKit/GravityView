@@ -259,6 +259,10 @@ $gv-overlay-index: 10000;
  */
 .gv-form-links {
 
+    .metabox-prefs & {
+      display: none;
+    }
+
 	color: #ddd;
 	font-weight: normal;
 	padding: 0 0 0 10px;
