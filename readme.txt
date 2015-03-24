@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Tweak: Clear `GravityView_View->_current_entry` after the View is displayed
 * Added: Third parameter to `GravityView_API::entry_link()` method:
     * `$add_directory_args` *boolean* True: Add URL parameters to help return to directory; False: only include args required to get to entry
+* Tweak: Register `entry` endpoint even when not using rewrites
 
 = 1.7.2 on March 18 =
 * Added: Other Entries field - Show what other entries the entry creator has in the current View

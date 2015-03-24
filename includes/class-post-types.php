@@ -87,12 +87,6 @@ class GravityView_Post_Types {
 	 */
 	public static function init_rewrite() {
 
-		global $wp_rewrite;
-
-		if( !$wp_rewrite->using_permalinks() ) {
-			return;
-		}
-
 		$endpoint = self::get_entry_var_name();
 
 		//add_permastruct( "{$endpoint}", $endpoint.'/%'.$endpoint.'%/?', true);
