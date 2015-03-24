@@ -280,8 +280,7 @@ class GravityView_frontend {
         // !important: we need to run this before getting single entry (to kick the advanced filter)
         $this->set_context_view_id();
 
-        $this->setSingleEntry( self::is_single_entry() );
-
+        
 		$this->setIsGravityviewPostType( get_post_type( $post ) === 'gravityview' );
 
 		$post_id = $this->getPostId() ? $this->getPostId() : (isset( $post ) ? $post->ID : NULL );
