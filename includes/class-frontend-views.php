@@ -78,6 +78,7 @@ class GravityView_frontend {
 
 	private function initialize() {
 		add_action( 'wp', array( $this, 'parse_content'), 11 );
+		add_action( 'template_redirect', array( $this, 'set_entry_data'), 1 );
 
 		// Shortcode to render view (directory)
 		add_shortcode( 'gravityview', array( $this, 'shortcode' ) );
@@ -153,11 +154,6 @@ class GravityView_frontend {
 
 		$this->single_entry = $single_entry;
 
-		$entry = $this->getSingleEntry() ? GVCommon::get_entry( $this->getSingleEntry() ) : false;
-
-		$this->setEntry( $entry );
-
-		unset( $entry );
 	}
 
 	/**
@@ -168,9 +164,15 @@ class GravityView_frontend {
 	}
 
 	/**
-	 * @param array $entry
+	 * Set the current entry
+	 * @param array|int $entry Entry array or entry ID
 	 */
 	public function setEntry( $entry ) {
+
+		if( is_numeric( $entry ) ) {
+			$entry = GVCommon::get_entry( $entry );
+		}
+
 		$this->entry = $entry;
 	}
 
@@ -289,6 +291,15 @@ class GravityView_frontend {
 		$this->setIsSearch( $this->is_searching() );
 
 		unset( $entry, $post_id, $post_has_shortcode );
+	}
+
+	/**
+	 * Set the entry
+	 */
+	function set_entry_data() {
+		$entry_id = self::is_single_entry();
+		$this->setSingleEntry( $entry_id );
+		$this->setEntry( $entry_id );
 	}
 
 	/**
