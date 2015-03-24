@@ -73,7 +73,6 @@ class GravityView_oEmbed {
 	 * @return string Regex code
 	 */
 	private function get_handler_regex() {
-		global $wp_rewrite;
 
 		$entry_var_name = GravityView_Post_Types::get_entry_var_name();
 
@@ -86,7 +85,7 @@ class GravityView_oEmbed {
 		$using_permalinks = $prefix . "(?P<is_cpt>{$rewrite_slug})?/?(?P<slug>.+?)/{$entry_var_name}/(?P<entry_slug>.+?)/?\$";
 
 		// Not using permalinks
-		$not_using_permalinks = $prefix . "(?:index.php)?\?(?P<is_cpt2>[^=]+)=(?P<slug2>[^&]+)&entry=(?P<entry_slug2>[^&]+).+?\$";
+		$not_using_permalinks = $prefix . "(?:index.php)?\?(?P<is_cpt2>[^=]+)=(?P<slug2>[^&]+)&entry=(?P<entry_slug2>[^&]+)\$";
 
 		// Catch either
 		$match_regex = "(?:{$using_permalinks}|{$not_using_permalinks})";
