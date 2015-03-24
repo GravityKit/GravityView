@@ -24,6 +24,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Prevent displaying a single Entry that doesn't match configured Advanced Filters
 * Added: `gravityview_has_archive` filter to enable View archive (see all Views by going to [sitename.com]/view/)
 * Tweak: Clear `GravityView_View->_current_entry` after the View is displayed
+* Added: Third parameter to `GravityView_API::entry_link()` method:
+    * `$add_directory_args` *boolean* True: Add URL parameters to help return to directory; False: only include args required to get to entry
 
 = 1.7.2 on March 18 =
 * Added: Other Entries field - Show what other entries the entry creator has in the current View

@@ -548,12 +548,15 @@ class GravityView_API {
 	 * return href for single entry
 	 * @param  array|int $entry   Entry array or entry ID
 	 * @param  int|null $post_id If wanting to define the parent post, pass a post ID
+	 * @param boolean $add_directory_args True: Add args to help return to directory; False: only include args required to get to entry {@since 1.7.3}
 	 * @return string          Link to the entry with the directory parent slug
 	 */
-	public static function entry_link( $entry, $post_id = NULL ) {
+	public static function entry_link( $entry, $post_id = NULL, $add_directory_args = true ) {
 
-		if( !is_array( $entry ) ) {
+		if( is_numeric( $entry ) ) {
 			$entry = GVCommon::get_entry( $entry );
+		} else if( empty( $entry ) ) {
+			$entry = GravityView_frontend::getInstance()->getEntry();
 		}
 
 		// Second parameter used to be passed as $field; this makes sure it's not an array
@@ -584,22 +587,29 @@ class GravityView_API {
 			$args = array( $query_arg_name => $entry_slug );
 		}
 
-		if( !empty( $_GET['pagenum'] ) ) {
-			$args['pagenum'] = intval( $_GET['pagenum'] );
-		}
-
 		/**
-		 * @since 1.7
+		 * @since 1.7.3
 		 */
-		if( $sort = rgget('sort') ) {
-			$args['sort'] = $sort;
-			$args['dir'] = rgget('dir');
+		if( $add_directory_args ) {
+
+			if( !empty( $_GET['pagenum'] ) ) {
+				$args['pagenum'] = intval( $_GET['pagenum'] );
+			}
+
+			/**
+			 * @since 1.7
+			 */
+			if( $sort = rgget('sort') ) {
+				$args['sort'] = $sort;
+				$args['dir'] = rgget('dir');
+			}
+
 		}
 
 		/**
 		 * Check if we have multiple views embedded in the same page and in that case make sure the single entry link
 		 * has the view id so that Advanced Filters can be applied correctly when rendering the single view
-		 * @see GravityView_frontend->get_context_view_id()
+		 * @see GravityView_frontend::get_context_view_id()
 		 */
 		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() ) {
 			$args['gvid'] = gravityview_get_view_id();
