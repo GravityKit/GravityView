@@ -1246,6 +1246,8 @@ function get_gravityview( $view_id = '', $atts = array() ) {
 		$args = wp_parse_args( $atts, GravityView_View_Data::get_default_args() );
 		$GravityView_frontend = GravityView_frontend::getInstance();
 		$GravityView_frontend->setGvOutputData( GravityView_View_Data::getInstance( $view_id ) );
+        $GravityView_frontend->set_context_view_id( $view_id );
+        $GravityView_frontend->setSingleEntry( GravityView_frontend::is_single_entry() );
 		return $GravityView_frontend->render_view( $args );
 	}
 	return '';
