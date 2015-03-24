@@ -240,7 +240,9 @@ class GravityView_frontend {
             $this->context_view_id = $_GET['gvid'];
 
         } elseif( !$this->getGvOutputData()->has_multiple_views() )  {
-            $this->context_view_id = array_pop( array_keys( $this->getGvOutputData()->get_views() ) );
+	        $array_keys = array_keys( $this->getGvOutputData()->get_views() );
+            $this->context_view_id = array_pop( $array_keys );
+	        unset( $array_keys );
         }
 
     }
