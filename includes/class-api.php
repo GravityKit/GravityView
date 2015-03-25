@@ -981,11 +981,16 @@ function gravityview_get_current_views() {
  * @see  GravityView_View_Data::get_view()
  * @return array View data with `id`, `view_id`, `form_id`, `template_id`, `atts`, `fields`, `widgets`, `form` keys.
  */
-function gravityview_get_current_view_data( $view_id ) {
+function gravityview_get_current_view_data( $view_id = 0 ) {
 
 	$fe = GravityView_frontend::getInstance();
 
 	if( ! $fe->getGvOutputData() ) { return array(); }
+
+	// If not set, grab the current view ID
+	if( empty( $view_id ) ) {
+		$view_id = $fe->get_context_view_id();
+	}
 
 	return $fe->getGvOutputData()->get_view( $view_id );
 }
