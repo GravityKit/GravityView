@@ -172,6 +172,12 @@ class GravityView_View extends Gamajo_Template_Loader {
 		add_action( 'gravityview_before', array( $this, 'render_widget_hooks' ) );
 		add_action( 'gravityview_after', array( $this, 'render_widget_hooks' ) );
 
+		/**
+		 * Clear the current entry after the loop is done
+		 * @since 1.7.3
+		 */
+		add_action( 'gravityview_footer', array( $this, 'clearCurrentEntry' ), 500 );
+
 		self::$instance = &$this;
 	}
 
@@ -499,9 +505,20 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 	/**
 	 * @param array $current_entry
+	 * @return void
 	 */
 	public function setCurrentEntry( $current_entry ) {
 		$this->_current_entry = $current_entry;
+	}
+
+	/**
+	 * Clear the current entry after all entries in the loop have been displayed.
+	 *
+	 * @since 1.7.3
+	 * @return void
+	 */
+	public function clearCurrentEntry() {
+		$this->_current_entry = NULL;
 	}
 
 	/**

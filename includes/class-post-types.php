@@ -60,7 +60,12 @@ class GravityView_Post_Types {
 			'menu_position'       => 17,
 			'menu_icon'           => '',
 			'can_export'          => true,
-			'has_archive'         => false,
+			/**
+			 * Enable Custom Post Type archive
+			 * @since 1.7.3
+			 * @param boolean False: don't have frontend archive; True: yes, have archive
+			 */
+			'has_archive'         => apply_filters( 'gravityview_has_archive', false ),
 			'exclude_from_search' => true,
 			'publicly_queryable'  => true,
 			'rewrite'             => array(
@@ -81,12 +86,6 @@ class GravityView_Post_Types {
 	 * @return void
 	 */
 	public static function init_rewrite() {
-
-		global $wp_rewrite;
-
-		if( !$wp_rewrite->using_permalinks() ) {
-			return;
-		}
 
 		$endpoint = self::get_entry_var_name();
 

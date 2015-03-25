@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{Node.js Core Modules, jQuery, jQuery UI, node_modules}" />
-  </component>
-</project>

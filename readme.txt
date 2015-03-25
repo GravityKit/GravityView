@@ -20,6 +20,18 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.7.3 on March 25 =
+* Fixed: Prevent displaying a single Entry that doesn't match configured Advanced Filters
+* Fixed: Issue with permalink settings needing to be re-saved after updating GravityView
+* Fixed: Embedding entries when not using permalinks
+* Fixed: Hide "Data Source" metabox links in the Screen Options tab in the Admin
+* Added: `gravityview_has_archive` filter to enable View archive (see all Views by going to [sitename.com]/view/)
+* Added: Third parameter to `GravityView_API::entry_link()` method:
+    * `$add_directory_args` *boolean* True: Add URL parameters to help return to directory; False: only include args required to get to entry
+* Tweak: Register `entry` endpoint even when not using rewrites
+* Tweak: Clear `GravityView_View->_current_entry` after the View is displayed (fixes issue with Social Sharing Extension, coming soon!)
+* Added: Norwegian translation (thanks, [@aleksanderespegard](https://www.transifex.com/accounts/profile/aleksanderespegard/)!)
+
 = 1.7.2 on March 18 =
 * Added: Other Entries field - Show what other entries the entry creator has in the current View
 * Added: Ability to hide the Approve/Reject column when viewing Gravity Forms entries ([Learn how](http://docs.gravityview.co/article/248-how-to-hide-the-approve-reject-entry-column))

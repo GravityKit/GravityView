@@ -14,7 +14,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.7.2
+ * Version:          	1.7.3
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravityview
@@ -60,15 +60,17 @@ require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
 require_once( GRAVITYVIEW_DIR . 'includes/class-cache.php');
 
 /** Register hooks that are fired when the plugin is activated and deactivated. */
-register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
+if( is_admin() ) {
+	register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
+	register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
+}
 
 /**
  * GravityView_Plugin main class.
  */
 final class GravityView_Plugin {
 
-	const version = '1.7.2';
+	const version = '1.7.3';
 
 	public static $theInstance;
 
