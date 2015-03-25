@@ -299,6 +299,25 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>Changes in 1.7.3</h3>
+
+				<ul>
+					<li>Fixed: Prevent displaying a single Entry that doesn't match configured Advanced Filters</li>
+					<li>Fixed: Embedding entries when not using permalinks</li>
+					<li>Fixed: Issue with permalink settings needing to be re-saved after updating GravityView</li>
+					<li>Fixed: Hide "Data Source" metabox links in the Screen Options tab in the Admin</li>
+					<li>Added: <code>gravityview_has_archive</code> filter to enable View archive (see all Views by going to [sitename.com]/view/)</li>
+					<li>Added: Third parameter to <code>GravityView_API::entry_link()</code> method:
+
+						<ul>
+							<li><code>$add_directory_args</code> <em>boolean</em> True: Add URL parameters to help return to directory; False: only include args required to get to entry</li>
+						</ul>
+					</li>
+					<li>Tweak: Register <code>entry</code> endpoint even when not using rewrites</li>
+					<li>Tweak: Clear <code>GravityView_View-&gt;_current_entry</code> after the View is displayed (fixes issue with Social Sharing Extension, coming soon!)</li>
+					<li>Added: Norwegian translation (thanks, <a href="https://www.transifex.com/accounts/profile/aleksanderespegard/">@aleksanderespegard</a>!)</li>
+				</ul>
+
 				<h3>Changes in 1.7.2</h3>
 
 				<ul>
@@ -518,15 +537,10 @@ class GravityView_Welcome {
 						<li class="wp-person">Norwegian translation by <a href="https://www.transifex.com/accounts/profile/aleksanderespegard/">@aleksanderespegard</a></li>
 						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a></li>
 						<li class="wp-person">Code contributions by <a href="https://github.com/dmlinn">@dmlinn</a></li>
-
-						<!-- No translation strings yet... -->
-						<!-- <li class="wp-person">Greek translation by <a href="https://www.transifex.com/accounts/profile/asteri/">@asteri</a></li> -->
-						<!-- <li class="wp-person">Russian translation by <a href="https://www.transifex.com/accounts/profile/badsmiley/">@badsmiley</a></li> -->
-
 					</ul>
 
 					<h4><?php esc_attr_e( 'Want to contribute?', 'gravityview' ); ?></h4>
-					<p><?php echo sprintf( esc_attr__( 'If you want to contribute to the code, you can %srequest access to the Github repository%s. If your contributions are accepted, you will be thanked here.', 'gravityview'), '<a href="mailto:zack@katzwebservices.com?subject=Github%20Access">', '</a>' ); ?></p>
+					<p><?php echo sprintf( esc_attr__( 'If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here.', 'gravityview'), '<a href="https://github.com/katzwebservices/GravityView">', '</a>' ); ?></p>
 				</div>
 			</div>
 
