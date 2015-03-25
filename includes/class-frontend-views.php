@@ -429,22 +429,15 @@ class GravityView_frontend {
 			return $title;
 		}
 
-		// get view data
-		// todo: refactor
-		if( 'gravityview' === get_post_type( $post ) ) {
-			// In case View post is called directly
-			$view_meta = $this->getGvOutputData()->get_view( $passed_post_id );
+		$context_view_id = $this->get_context_view_id();
+
+		if( $this->getGvOutputData()->has_multiple_views() && !empty( $context_view_id ) ) {
+			$view_meta = $this->getGvOutputData()->get_view( $context_view_id );
 		} else {
-			// in case View is embedded.
-			$context_view_id = $this->get_context_view_id();
-			if( $this->getGvOutputData()->has_multiple_views() && !empty( $context_view_id ) ) {
-				$view_meta = $this->getGvOutputData()->get_view( $context_view_id );
-			} else {
-				foreach ( $this->getGvOutputData()->get_views() as $view_id => $view_data ) {
-					if ( intval( $view_data['form_id'] ) === intval( $entry['form_id'] ) ) {
-						$view_meta = $view_data;
-						break;
-					}
+			foreach ( $this->getGvOutputData()->get_views() as $view_id => $view_data ) {
+				if ( intval( $view_data['form_id'] ) === intval( $entry['form_id'] ) ) {
+					$view_meta = $view_data;
+					break;
 				}
 			}
 		}
