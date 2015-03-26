@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.7.4 =
+* Added: `gravityview_disable_change_entry_creator` filter to disable the Change Entry Creator functionality
+
 = 1.7.3 on March 25 =
 * Fixed: Prevent displaying a single Entry that doesn't match configured Advanced Filters
 * Fixed: Issue with permalink settings needing to be re-saved after updating GravityView
