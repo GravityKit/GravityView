@@ -219,7 +219,7 @@ abstract class GravityView_Template {
 		add_filter( 'gravityview_template_fieldsxml', array( $this, 'assign_fields_xml' ), 10 , 2);
 
 		// assign active areas
-		add_filter( 'gravityview_template_active_areas', array( $this, 'assign_active_areas' ), 10, 2 );
+		add_filter( 'gravityview_template_active_areas', array( $this, 'assign_active_areas' ), 10, 3 );
 
 		// field options
 		add_filter( 'gravityview_template_field_options', array( $this, 'assign_field_options' ), 10, 4 );
@@ -280,12 +280,20 @@ abstract class GravityView_Template {
 	 * @param string $template (default: '')
 	 * @return array Array of active areas
 	 */
-	public function assign_active_areas( $areas, $template = '' ) {
+	public function assign_active_areas( $areas, $template = '', $context = 'directory' ) {
 		if( $this->template_id === $template ) {
-			$areas = $this->active_areas;
+			$areas = $this->get_active_areas( $context );
 		}
 		return $areas;
 	}
+
+    public function get_active_areas( $context ) {
+        if( isset( $this->active_areas[ $context ] ) ) {
+            return $this->active_areas[ $context ];
+        } else {
+            return $this->active_areas;
+        }
+    }
 
 
 	/**
