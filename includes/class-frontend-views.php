@@ -1213,9 +1213,14 @@ class GravityView_frontend {
 
 		$class = 'gv-sort icon';
 
-		$sort_args = array( 'sort' => $field['id'], 'dir' => 'asc' );
+		$sort_field_id = self::_override_sorting_id_by_field_type( $field['id'], $form['id'] );
 
-		if( !empty( $sorting['key'] ) && $field['id'] == $sorting['key'] ) {
+		$sort_args = array(
+			'sort' => $field['id'],
+			'dir' => 'asc'
+		);
+
+		if( !empty( $sorting['key'] ) && (string)$sort_field_id === (string)$sorting['key'] ) {
 			//toggle sorting direction.
 			if( $sorting['direction'] == 'asc' ) {
 				$sort_args['dir'] = 'desc';
