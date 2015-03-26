@@ -654,10 +654,6 @@ class GravityView_frontend {
 			// user requested Single Entry View
 			do_action( 'gravityview_log_debug', '[render_view] Executing Single View' );
 
-			if( did_action('gravityview_render_entry_'.$view_data['id']) ) {
-				return;
-			}
-
 			do_action('gravityview_render_entry_'.$view_data['id']);
 
 			$entry = $this->getEntry();
