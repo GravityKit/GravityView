@@ -1010,13 +1010,16 @@ class GravityView_frontend {
 	public static function updateViewSorting( $args, $form_id ) {
 
 		$sorting = array();
-		$sort_field = isset( $_GET['sort'] ) ? $_GET['sort'] : rgar( $args, 'sort_field' );
+		$sort_field_id = isset( $_GET['sort'] ) ? $_GET['sort'] : rgar( $args, 'sort_field' );
 		$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : rgar( $args, 'sort_direction' );
-		if( !empty( $sort_field ) ) {
+
+		$sort_field_id = self::_override_sorting_id_by_field_type( $sort_field_id, $form_id );
+
+		if( !empty( $sort_field_id ) ) {
 			$sorting = array(
-				'key' => $sort_field,
+				'key' => $sort_field_id,
 				'direction' => strtolower( $sort_direction ),
-				'is_numeric' => GVCommon::is_field_numeric( $form_id, $sort_field )
+				'is_numeric' => GVCommon::is_field_numeric( $form_id, $sort_field_id )
 			);
 		}
 
@@ -1028,7 +1031,53 @@ class GravityView_frontend {
 
 	}
 
+	/**
+	 * Override sorting per field
+	 *
+	 * Currently only modifies sorting ID when sorting by the full name. Sorts by first name.
+	 * Use the `gravityview/sorting/full-name` filter to override.
+	 *
+	 * @since 1.7.4
+	 *
+	 * @param int|string $sort_field_id Field used for sorting (`id` or `1.2`)
+	 * @param int $form_id GF Form ID
+	 *
+	 * @return string Possibly modified sorting ID
+	 */
+	private static function _override_sorting_id_by_field_type( $sort_field_id, $form_id ) {
 
+		$form = GFAPI::get_form( $form_id );
+
+		$sort_field = GFFormsModel::get_field( $form, $sort_field_id );
+
+		switch( $sort_field['type'] ) {
+			case 'name':
+				// Sorting by full name, not first, last, etc.
+				if( floatval( $sort_field_id ) === floor( $sort_field_id ) ) {
+
+					/**
+					 * Override how to sort when sorting full name.
+					 *
+					 * @since 1.7.4
+					 *
+					 * @param string $name_part `first` or `last` (default: `first`)
+					 * @param string $sort_field_id Field used for sorting
+					 * @param int $form_id GF Form ID
+					 */
+					$name_part = apply_filters('gravityview/sorting/full-name', 'first', $sort_field_id, $form_id );
+
+					if( strtolower( $name_part ) === 'last' ) {
+						$sort_field_id .= '.6';
+					} else {
+						$sort_field_id .= '.3';
+					}
+
+				}
+				break;
+		}
+
+		return $sort_field_id;
+	}
 
 	/**
 	 * Verify if user requested a single entry view

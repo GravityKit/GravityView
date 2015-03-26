@@ -21,6 +21,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.7.4 =
+* Fixed: Sorting by full name. Now sorts by first name by default.
+    * Added `gravityview/sorting/full-name` filter to sort by last name ([see how](https://gist.github.com/zackkatz/cd42bee4f361f422824e))
 * Added: `gravityview_disable_change_entry_creator` filter to disable the Change Entry Creator functionality
 
 = 1.7.3 on March 25 =
