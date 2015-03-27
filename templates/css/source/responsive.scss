@@ -1,0 +1,29 @@
+/**
+ * Responsive CSS for GravityView Frontend
+ *
+ * @package   GravityView
+ * @author    Zack Katz <zack@katzwebservices.com>
+ * @license   ToBeDefined
+ * @link      http://www.katzwebservices.com
+ * @copyright Copyright 2014, Katz Web Services, Inc.
+ *
+ * @since 1.0.0
+ */
+
+
+/* Responsive
+--------------------------------------- */
+
+$mobile-portrait: 320px;
+$mobile-landscape: 480px;
+$small-tablet: 600px;
+$tablet-portrait: 768px;
+$tablet-landscape: 1024px;
+$desktop: 1280px;
+$widescreen: 1400px;
+
+@mixin respond($breakpoint) {
+  @media screen and (max-width: $breakpoint) {
+    @content;
+  }
+}
