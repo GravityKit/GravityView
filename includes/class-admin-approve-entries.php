@@ -330,6 +330,7 @@ class GravityView_Admin_ApproveEntries {
 		$approvedcolumn = (string)self::get_approved_column( $form['id'] );
 
 		$entry = GFAPI::get_entry( $entry_id );
+
 		$approved = !empty( $entry[ $approvedcolumn ] ) ? $entry[ $approvedcolumn ] : 0;
 
 		// update entry meta
@@ -372,17 +373,22 @@ class GravityView_Admin_ApproveEntries {
 	 *
 	 * @access public
 	 * @static
-	 * @param mixed $form_id
+	 * @param mixed $form GF Form or Form ID
 	 * @return false|null|string Returns the input ID of the approved field. Returns NULL if no approved fields were found. Returns false if $form_id wasn't set.
 	 */
-	static public function get_approved_column( $form_id ) {
-		if( empty( $form_id ) ) {
-			return false;
-		}
+	static public function get_approved_column( $form ) {
 
-		$form = gravityview_get_form( $form_id );
+        if( empty( $form ) ) {
+            return false;
+        }
+
+        if( !is_array( $form ) ) {
+            $form = GVCommon::get_form( $form );
+        }
 
 		foreach( $form['fields'] as $key => $field ) {
+
+            $field = (array) $field;
 
 			if( !empty( $field['gravityview_approved'] ) ) {
 				if( !empty($field['inputs'][0]['id']) ) {
@@ -390,13 +396,14 @@ class GravityView_Admin_ApproveEntries {
 				}
 			}
 
-			if( !empty( $field['adminOnly'] ) && 'checkbox' == $field['type'] && isset( $field['inputs'] ) && is_array( $field['inputs'] ) ) {
-				foreach( $field['inputs'] as $key2 => $input) {
-					if( strtolower( $input['label'] ) == 'approved' ) {
-						return $input['id'];
-					}
-				}
-			}
+            // Note: This is just for backward compatibility from GF Directory plugin and old GV versions - when using i18n it may not work..
+            if( 'checkbox' == $field['type'] && isset( $field['inputs'] ) && is_array( $field['inputs'] ) ) {
+                foreach ( $field['inputs'] as $key2 => $input ) {
+                    if ( strtolower( $input['label'] ) == 'approved' ) {
+                        return $input['id'];
+                    }
+                }
+            }
 		}
 
 		return null;
