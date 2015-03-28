@@ -553,7 +553,7 @@ class GravityView_API {
 	 */
 	public static function entry_link( $entry, $post_id = NULL, $add_directory_args = true ) {
 
-		if( is_numeric( $entry ) ) {
+		if( ! empty( $entry ) && ! is_array( $entry ) ) {
 			$entry = GVCommon::get_entry( $entry );
 		} else if( empty( $entry ) ) {
 			$entry = GravityView_frontend::getInstance()->getEntry();

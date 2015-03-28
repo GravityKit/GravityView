@@ -169,7 +169,7 @@ class GravityView_frontend {
 	 */
 	public function setEntry( $entry ) {
 
-		if( is_numeric( $entry ) ) {
+		if( !is_array( $entry ) ) {
 			$entry = GVCommon::get_entry( $entry );
 		}
 
