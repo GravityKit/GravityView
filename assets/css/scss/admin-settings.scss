@@ -10,7 +10,8 @@
     border: 1px solid;
     border-radius: 4px;
     position: relative;
-    display: block;
+
+    display: block!important; // Overwrite .inline class declaration
 
     background-color: #eeeeee;
     border-color: #cccccc;

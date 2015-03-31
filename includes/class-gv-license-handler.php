@@ -188,7 +188,7 @@ class GV_License_Handler {
 
 	private function generate_license_box( $message, $class = '' ) {
 
-		$template = '<div id="gv-edd-status" class="gv-edd-message %s">%s</div>';
+		$template = '<div id="gv-edd-status" class="gv-edd-message inline %s">%s</div>';
 
 		$output = sprintf( $template, esc_attr( $class ), $message );
 
