@@ -119,7 +119,9 @@ class GVCommon {
 			'field_filters' => array(
 				array(
 					'key' => 'gravityview_unique_id', // Search the meta values
-					'value' => $slug
+					'value' => $slug,
+                    'operator' => 'is',
+                    'type' => 'meta'
 				)
 			)
 		);
@@ -315,6 +317,80 @@ class GVCommon {
 		return GFFormsModel::search_lead_ids( $form_id, $search_criteria );
 	}
 
+    /**
+     * Calculates the Search Criteria used on the self::get_entries / self::get_entry methods
+     *
+     * @hook gravityview_search_criteria used by the Advanced Filter Extension
+     *
+     * @since 1.7.4
+     *
+     * @param null $passed_criteria array Input Criteria (search_criteria, sorting, paging)
+     * @param null $form_ids array Gravity Forms form IDs
+     * @return array|mixed|void
+     */
+    public static function calculate_get_entries_criteria( $passed_criteria = null, $form_ids = null ) {
+
+        $search_criteria_defaults = array(
+            'search_criteria' => null,
+            'sorting' => null,
+            'paging' => null,
+            'cache' => (isset( $passed_criteria['cache'] ) ? $passed_criteria['cache'] : true),
+        );
+
+        $criteria = wp_parse_args( $passed_criteria, $search_criteria_defaults );
+
+        if( !empty( $criteria['search_criteria']['field_filters'] ) ) {
+            foreach ( $criteria['search_criteria']['field_filters'] as &$filter ) {
+
+                if( !is_array( $filter ) ) { continue; }
+
+                // By default, we want searches to be wildcard for each field.
+                $filter['operator'] = empty( $filter['operator'] ) ? 'like' : $filter['operator'];
+                $filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter );
+            }
+        }
+
+        /**
+         * Prepare date formats to be in Gravity Forms DB format;
+         * $passed_criteria may include date formats incompatible with Gravity Forms.
+         */
+        foreach( array('start_date', 'end_date' ) as $key ) {
+
+            if( !empty( $criteria['search_criteria'][ $key ] ) ) {
+
+                // Use date_create instead of new DateTime so it returns false if invalid date format.
+                $date = date_create( $criteria['search_criteria'][ $key ] );
+
+                if( $date ) {
+
+                    // Gravity Forms wants dates in the `Y-m-d H:i:s` format.
+                    $criteria['search_criteria'][ $key ] = $date->format('Y-m-d H:i:s');
+
+                } else {
+
+                    // If it's an invalid date, unset it. Gravity Forms freaks out otherwise.
+                    unset( $criteria['search_criteria'][ $key ] );
+
+                    do_action( 'gravityview_log_error', '[filter_get_entries_criteria] '.$key.' Date format not valid:', $criteria['search_criteria'][ $key ] );
+                }
+            }
+        }
+
+
+        // When multiple views are embedded, OR single entry, calculate the context view id and send it to the advanced filter
+        if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() || GravityView_frontend::getInstance()->single_entry ) {
+            $criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
+        } else {
+            $criteria['context_view_id'] = null;
+        }
+
+        // Apply final criteria filter (Used by the Advanced Filter extension)
+        $criteria = apply_filters( 'gravityview_search_criteria', $criteria, $form_ids, $criteria['context_view_id'] );
+
+        return $criteria;
+
+    }
+
 
 	/**
 	 * Retrieve entries given search, sort, paging criteria
@@ -329,62 +405,8 @@ class GVCommon {
 	 */
 	public static function get_entries( $form_ids = null, $passed_criteria = null, &$total = null ) {
 
-		$search_criteria_defaults = array(
-			'search_criteria' => null,
-			'sorting' => null,
-			'paging' => null,
-			'cache' => (isset( $passed_criteria['cache'] ) ? $passed_criteria['cache'] : true),
-		);
-
-		$criteria = wp_parse_args( $passed_criteria, $search_criteria_defaults );
-
-		if( !empty( $criteria['search_criteria']['field_filters'] ) ) {
-			foreach ( $criteria['search_criteria']['field_filters'] as &$filter ) {
-
-				if( !is_array( $filter ) ) { continue; }
-
-				// By default, we want searches to be wildcard for each field.
-				$filter['operator'] = empty( $filter['operator'] ) ? 'like' : $filter['operator'];
-				$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter );
-			}
-		}
-
-		/**
-		 * Prepare date formats to be in Gravity Forms DB format;
-		 * $passed_criteria may include date formats incompatible with Gravity Forms.
-		 */
-		foreach( array('start_date', 'end_date' ) as $key ) {
-
-			if( !empty( $criteria['search_criteria'][ $key ] ) ) {
-
-				// Use date_create instead of new DateTime so it returns false if invalid date format.
-				$date = date_create( $criteria['search_criteria'][ $key ] );
-
-				if( $date ) {
-
-					// Gravity Forms wants dates in the `Y-m-d H:i:s` format.
-					$criteria['search_criteria'][ $key ] = $date->format('Y-m-d H:i:s');
-
-				} else {
-
-					// If it's an invalid date, unset it. Gravity Forms freaks out otherwise.
-					unset( $criteria['search_criteria'][ $key ] );
-
-					do_action( 'gravityview_log_error', '[gravityview_get_entries] '.$key.' Date format not valid:', $criteria['search_criteria'][ $key ] );
-				}
-			}
-		}
-
-
-		// When multiple views are embedded, OR single entry, calculate the context view id and send it to the advanced filter
-		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() || GravityView_frontend::getInstance()->single_entry ) {
-			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
-		} else {
-			$criteria['context_view_id'] = null;
-		}
-
-		// Apply final criteria filter (Used by the Advanced Filter extension)
-		$criteria = apply_filters( 'gravityview_search_criteria', $criteria, $form_ids, $criteria['context_view_id'] );
+        // Filter the criteria before query (includes Adv Filter)
+        $criteria = self::calculate_get_entries_criteria( $passed_criteria, $form_ids );
 
 		do_action( 'gravityview_log_debug', '[gravityview_get_entries] Final Parameters', $criteria );
 
@@ -455,10 +477,6 @@ class GVCommon {
 
 		if( class_exists( 'GFAPI' ) && !empty( $entry_slug ) ) {
 
-			$filters = array(
-				'mode' => 'any'
-			);
-
 			/**
 			 * Enable custom entry slug functionality.
 			 *
@@ -483,12 +501,7 @@ class GVCommon {
 			 */
 			if( $custom_slug ) {
 
-				$filters[] = array(
-					'key' => 'gravityview_unique_id',
-					'value' => $entry_slug,
-					'operator' => 'is',
-					'type' => 'meta'
-				);
+                $entry_id = self::get_entry_id_from_slug( $entry_slug );
 
 			}
 
@@ -497,78 +510,114 @@ class GVCommon {
 			if( empty( $custom_slug ) || !empty( $custom_slug_id_access ) ) {
 
 				// Search for IDs matching $entry_slug
-				$filters[] = array(
-					'key' => "id",
-					'value' => $entry_slug,
-					'operator' => 'is',
-				);
+                $entry_id = $entry_slug;
 
 			}
 
-			// For simple entry searches, we don't need a form ID
-			$form_id = 0;
-			/**
-			 * Make sure that entries comply with View filter settings.
-			 *
-			 * - If any parsed View has `show_only_approved` set, we assume the entry requested requires approval. This may not be the case, and there may be multiple Views embedded in one page, but it's better to be more secure.
-			 * - Process the Entry through search criteria from the Advanced Filters extension. If the entry does not match the filters, it should not be shown.
-			 *
-			 * @since  1.5
-			 */
-			if( false && class_exists( 'GravityView_View_Data' ) ) {
+            if( empty( $entry_id ) ) {
+                return false;
+            }
 
-				$views = GravityView_View_Data::getInstance()->get_views();
+            // fetch the entry
+            $entry = GFAPI::get_entry( $entry_id );
 
-				foreach ( $views as $view ) {
+            // Is the entry allowed
+            $entry = self::apply_filters_to_entry( $entry );
 
-					$get_search_criteria = GravityView_frontend::get_search_criteria( $view['atts'], $view['form_id'] );
+            return $entry;
 
-					$view_criteria = array(
-						'search_criteria' => $get_search_criteria
-					);
-
-					// Allow Advanced Filtering extension to add additional parameters
-					$view_criteria = apply_filters( 'gravityview_search_criteria', $view_criteria, $view['form_id'], $view['id'] );
-
-					do_action( 'gravityview_log_debug', '[gravityview_get_entry] Single entry View filters', array(
-						'GravityView_frontend::get_search_criteria' => $get_search_criteria,
-						'after gravityview_search_criteria' => $view_criteria
-					) );
-
-					// If there are any filters to add, do so.
-					if( !empty( $view_criteria['search_criteria']['field_filters'] ) ) {
-
-						// If the Advanced Filtering extension added any parameters, then we need to set the Form ID.
-						// That's because any searches that use form field values need a Form ID.
-						if( sizeof( $view_criteria['search_criteria']['field_filters'] ) > sizeof( $get_search_criteria['field_filters'] )  ) {
-							$form_id = $view['form_id'];
-						}
-
-						$filters = array_merge( $filters, $view_criteria['search_criteria']['field_filters'] );
-
-						// Require the results to match the filters
-						$filters['mode'] = 'all';
-					}
-				}
-			}
-
-			$criteria = array(
-				'search_criteria' => array(
-					'field_filters' => $filters
-				),
-				'sorting' => null,
-				'paging' => array("offset" => 0, "page_size" => 1)
-			);
-
-			$entries = self::get_entries( $form_id, $criteria );
-
-			if( !empty( $entries ) ) {
-				return $entries[0];
-			}
 		}
 
 		return false;
 	}
+
+    /**
+     *
+     * Checks if a certain entry is valid according to the View search filters (specially the Adv Filters)
+     *
+     * @since 1.7.4
+     *
+     * @param $entry array Gravity Forms Entry object
+     * @return bool|array Returns 'false' if entry is not valid according to the view search filters (Adv Filter)
+     */
+    public static function apply_filters_to_entry( $entry ) {
+
+        $criteria = self::calculate_get_entries_criteria();
+
+        if( empty( $criteria['search_criteria'] ) || !is_array( $criteria['search_criteria'] ) ) {
+            do_action( 'gravityview_log_debug', '[apply_filters_to_entry] No search criteria found:', $criteria );
+            return $entry;
+        }
+
+        $search_criteria = $criteria['search_criteria'];
+        unset( $criteria );
+
+        // check entry status
+        if( array_key_exists( 'status', $search_criteria ) && $search_criteria['status'] != $entry['status'] ) {
+            do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry status is not valid according to filter:', $search_criteria );
+            return false;
+        }
+
+        // check entry date
+        // @todo: Does it make sense to apply the Date create filters to the single entry?
+
+        // field_filters
+        if( empty( $search_criteria['field_filters'] ) || !is_array( $search_criteria['field_filters'] ) ) {
+            return $entry;
+        }
+
+        $filters = $search_criteria['field_filters'];
+        unset( $search_criteria );
+
+        $mode = array_key_exists( 'mode', $filters ) ? strtolower( $filters['mode'] ) : 'all';
+        unset( $filters['mode'] );
+
+        foreach( $filters as $filter ) {
+
+            if( isset( $filter['key'] ) && array_key_exists( (string)$filter['key'], $entry ) ) {
+
+                $k = $filter['key'];
+                $operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
+
+                switch( $operator ) {
+                    case 'is':
+                        if( $filter['value'] != $entry[ (string)$k ] && 'all' === $mode ) {
+                            return false;
+                        } elseif( $filter['value'] == $entry[ (string)$k ] && 'any' === $mode ) {
+                            return $entry;
+                        }
+                        break;
+
+                    case 'isnot':
+                        if( $filter['value'] == $entry[ (string)$k ] && 'all' === $mode ) {
+                            return false;
+                        } elseif( $filter['value'] != $entry[ (string)$k ] && 'any' === $mode ) {
+                            return $entry;
+                        }
+                        break;
+
+                    case 'contains':
+                        $pos = strpos( $entry[ (string)$k ], $filter['value'] );
+                        if( false === $pos && 'all' === $mode ) {
+                            return false;
+                        } elseif( false !== $pos && 'any' === $mode ) {
+                            return $entry;
+                        }
+                        break;
+
+                }
+
+            }
+
+        }
+
+        if( 'all' === $mode ) {
+            return $entry;
+        } else {
+            return false;
+        }
+
+    }
 
 
 	/**
