@@ -34,7 +34,7 @@ class GravityView_Welcome {
 	 * @since 1.0
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'admin_menus') );
+		add_action( 'admin_menu', array( $this, 'admin_menus'), 200 );
 		add_action( 'admin_head', array( $this, 'admin_head' ) );
 		add_action( 'admin_init', array( $this, 'welcome'    ) );
 		add_filter( 'gravityview_is_admin_page', array( $this, 'is_dashboard_page'), 10, 2 );
