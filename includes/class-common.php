@@ -522,7 +522,7 @@ class GVCommon {
             $entry = GFAPI::get_entry( $entry_id );
 
             // Is the entry allowed
-            $entry = self::apply_filters_to_entry( $entry );
+            $entry = self::check_entry_display( $entry );
 
             return $entry;
 
@@ -535,17 +535,24 @@ class GVCommon {
      *
      * Checks if a certain entry is valid according to the View search filters (specially the Adv Filters)
      *
+     * @see GFFormsModel::is_value_match()
+     *
      * @since 1.7.4
      *
      * @param $entry array Gravity Forms Entry object
      * @return bool|array Returns 'false' if entry is not valid according to the view search filters (Adv Filter)
      */
-    public static function apply_filters_to_entry( $entry ) {
+    public static function check_entry_display( $entry ) {
+
+        if( empty( $entry['form_id'] ) ) {
+            do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry is empty! Entry:', $entry );
+            return false;
+        }
 
         $criteria = self::calculate_get_entries_criteria();
 
         if( empty( $criteria['search_criteria'] ) || !is_array( $criteria['search_criteria'] ) ) {
-            do_action( 'gravityview_log_debug', '[apply_filters_to_entry] No search criteria found:', $criteria );
+            do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry approved! No search criteria found:', $criteria );
             return $entry;
         }
 
@@ -554,7 +561,7 @@ class GVCommon {
 
         // check entry status
         if( array_key_exists( 'status', $search_criteria ) && $search_criteria['status'] != $entry['status'] ) {
-            do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry status is not valid according to filter:', $search_criteria );
+            do_action( 'gravityview_log_debug', sprintf( '[apply_filters_to_entry] Entry status - %s - is not valid according to filter:', $entry['status'] ), $search_criteria );
             return false;
         }
 
@@ -563,6 +570,7 @@ class GVCommon {
 
         // field_filters
         if( empty( $search_criteria['field_filters'] ) || !is_array( $search_criteria['field_filters'] ) ) {
+            do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry approved! No field filters criteria found:', $criteria );
             return $entry;
         }
 
@@ -572,45 +580,29 @@ class GVCommon {
         $mode = array_key_exists( 'mode', $filters ) ? strtolower( $filters['mode'] ) : 'all';
         unset( $filters['mode'] );
 
+        $form = self::get_form( $entry['form_id'] );
+
         foreach( $filters as $filter ) {
 
             if( isset( $filter['key'] ) && array_key_exists( (string)$filter['key'], $entry ) ) {
 
                 $k = $filter['key'];
+                $field = self::get_field( $form, $k );
                 $operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
 
-                switch( $operator ) {
-                    case 'is':
-                        if( $filter['value'] != $entry[ (string)$k ] && 'all' === $mode ) {
-                            return false;
-                        } elseif( $filter['value'] == $entry[ (string)$k ] && 'any' === $mode ) {
-                            return $entry;
-                        }
-                        break;
+                $is_value_match = GFFormsModel::is_value_match( $entry[ (string)$k ], $filter['value'], $operator, $field );
 
-                    case 'isnot':
-                        if( $filter['value'] == $entry[ (string)$k ] && 'all' === $mode ) {
-                            return false;
-                        } elseif( $filter['value'] != $entry[ (string)$k ] && 'any' === $mode ) {
-                            return $entry;
-                        }
-                        break;
-
-                    case 'contains':
-                        $pos = strpos( $entry[ (string)$k ], $filter['value'] );
-                        if( false === $pos && 'all' === $mode ) {
-                            return false;
-                        } elseif( false !== $pos && 'any' === $mode ) {
-                            return $entry;
-                        }
-                        break;
-
+                // verify if we are already free to go!
+                if( !$is_value_match && 'all' === $mode ) {
+                    return false;
+                } elseif( $is_value_match && 'any' === $mode ) {
+                    return $entry;
                 }
-
             }
-
         }
 
+        // at this point, if in ALL mode, then entry is approved - all conditions were met.
+        // Or, for ANY mode, means none of the conditions were satisfied, so entry is not approved
         if( 'all' === $mode ) {
             return $entry;
         } else {
