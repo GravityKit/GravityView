@@ -1,9 +1,3 @@
-[submodule "includes/lib/redux-framework"]
-	path = includes/lib/redux-framework
-	url = git://github.com/ReduxFramework/redux-framework.git
 [submodule "includes/lib/standalone-phpenkoder"]
 	path = includes/lib/standalone-phpenkoder
 	url = git://github.com/jnicol/standalone-phpenkoder.git
-[submodule "includes/lib/edd-redux-extension"]
-	path = includes/lib/edd-redux-extension
-	url = git://github.com/katzwebservices/EDD-Redux-Extension.git

@@ -20,8 +20,18 @@ class GravityView_Migrate {
 
 
 
-	function update_settings() {
+	public function update_settings() {
 
+		$this->maybe_migrate_search_widget();
+
+		$this->migrate_redux_settings();
+
+	}
+
+	/**
+	 * @since 1.7.4
+	 */
+	private function maybe_migrate_search_widget() {
 		// check if search migration is already performed
 		$is_updated = get_option( 'gv_migrate_searchwidget' );
 		if ( $is_updated ) {
@@ -29,7 +39,63 @@ class GravityView_Migrate {
 		} else {
 			$this->update_search_on_views();
 		}
+	}
 
+	/**
+	 * Set app settings from prior Redux settings, if exists
+	 *
+	 * @since 1.7.4
+	 * @return mixed|void
+	 */
+	private function migrate_redux_settings() {
+
+		$redux_settings = $this->get_redux_settings();
+
+		// No need to process
+		if( false === $redux_settings ) {
+			return;
+		}
+
+		// Get the current app settings (just defaults)
+		$current = GravityView_Settings::get_instance()->get_app_settings();
+
+		// Merge the redux settings with the defaults
+		$updated_settings = wp_parse_args( $redux_settings, $current );
+
+		// Update the defaults to the new merged
+		GravityView_Settings::get_instance()->update_app_settings( $updated_settings );
+
+		// And now remove the previous option, so this is a one-time thing.
+		delete_option('gravityview_settings');
+	}
+
+	/**
+	 * Get Redux settings, if they exist
+	 * @since 1.7.4
+	 * @return array|bool
+	 */
+	function get_redux_settings() {
+
+		// Previous settings set by Redux
+		$redux_option = get_option('gravityview_settings');
+
+		// No Redux settings? Don't proceed.
+		if( false === $redux_option ) {
+			return false;
+		}
+
+		$redux_settings = array(
+			'support-email' => rgget( 'support-email', $redux_option ),
+			'no-conflict-mode' => rgget( 'no-conflict-mode', $redux_option ),
+		);
+
+		if( $license = rgget( 'license', $redux_option ) ) {
+			$redux_settings['license_key'] = rgget( 'license', $license );
+			$redux_settings['license_key_response'] = rgget( 'status', $license );
+			$redux_settings['license_key_status'] = rgget( 'response', $license );
+		}
+
+		return $redux_settings;
 	}
 
 
