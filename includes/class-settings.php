@@ -81,28 +81,6 @@ class GravityView_Settings extends GFAddOn {
 	}
 
 	/**
-	 * Before initialization
-	 *
-	 * @inheritDoc
-	 */
-	public function pre_init() {
-
-		require_once( GRAVITYVIEW_DIR . 'includes/class-gv-license-handler.php');
-
-		$this->License_Handler = GV_License_Handler::get_instance( $this );
-
-		$this->_capabilities_app_settings = apply_filters( 'gravityview_settings_capability' , 'manage_options' );
-	}
-
-	/**
-	 * Should the Uninstall tab be shown?
-	 * @return bool
-	 */
-	protected function show_uninstall_tab() {
-		return false;
-	}
-
-	/**
 	 * Prevent uninstall tab from being shown by returning false for the uninstall capability check. Otherwise:
 	 * @inheritDoc
 	 *
@@ -118,15 +96,107 @@ class GravityView_Settings extends GFAddOn {
 		 * Don't show uninstall tab
 		 * @hack
 		 */
-		if( $caps === $this->_capabilities_uninstall && false === $this->show_uninstall_tab() ) {
+		if( $caps === $this->_capabilities_uninstall ) {
 			return false;
 		}
 
 		return parent::current_user_can_any( $caps );
 	}
 
+	/**
+	 * Run actions when initializing admin
+	 *
+	 * Triggers the license key notice
+	 *
+	 * @return void
+	 */
 	function init_admin() {
+
+		$this->_load_license_handler();
+
+		$this->_capabilities_app_settings = apply_filters( 'gravityview_settings_capability' , 'manage_options' );
+
+		$this->license_key_notice();
+
+		add_filter( 'gform_addon_app_settings_menu_gravityview', array( $this, 'modify_app_settings_menu_title' ) );
+
 		parent::init_admin();
+	}
+
+	/**
+	 * Change the settings page header title to "GravityView"
+	 *
+	 * @param $setting_tabs
+	 *
+	 * @return array
+	 */
+	public function modify_app_settings_menu_title( $setting_tabs ) {
+
+		$setting_tabs[0]['label'] = __( 'GravityView Settings', 'gravityview');
+
+		return $setting_tabs;
+	}
+
+	/**
+	 * Load license handler in admin-ajax.php
+	 */
+	public function init_ajax() {
+		$this->_load_license_handler();
+	}
+
+	/**
+	 * Make sure the license handler is available
+	 */
+	private function _load_license_handler() {
+
+		if( !empty( $this->License_Handler ) ) {
+			return;
+		}
+
+		require_once( GRAVITYVIEW_DIR . 'includes/class-gv-license-handler.php');
+
+		$this->License_Handler = GV_License_Handler::get_instance( $this );
+	}
+
+	/**
+	 * Display a notice if the plugin is inactive.
+	 * @return void
+	 */
+	function license_key_notice() {
+
+		// Show license notice on all GV pages, except for settings page
+		if( gravityview_is_admin_page( '', 'settings' ) ) {
+			return;
+		}
+
+		$license_status = self::getSetting('license_key_status');
+		$license_id = self::getSetting('license_key');
+		$license_id = empty( $license_id ) ? 'license' : $license_id;
+
+		$message = esc_html__('Your GravityView license %s. This means you&rsquo;re missing out on updates and support! %sActivate your license%s or %sget a license here%s.', 'gravityview');
+		$title = __('Inactive License', 'gravityview');
+		$status = '';
+		switch ( $license_status ) {
+			case 'invalid':
+				$title = __('Invalid License', 'gravityview');
+				$status = __('is invalid', 'gravityview');
+				break;
+			case 'deactivated':
+				$status = __('is inactive', 'gravityview');
+				break;
+			case 'site_inactive':
+				$status = __('has not been activated', 'gravityview');
+				break;
+		}
+		$message = sprintf( $message, $status, '<a href="'.admin_url( 'edit.php?post_type=gravityview&amp;page=gravityview_settings' ).'">', '</a>', '<a href="https://gravityview.co/pricing/">', '</a>' );
+		if( !empty( $status ) ) {
+			GravityView_Admin::add_notice( array(
+				'message' => $message,
+				'class'	=> 'updated',
+				'title' => $title,
+				'dismiss' => sha1( $license_status.'_'.$license_id ),
+			));
+		}
 	}
 
 	/**
@@ -137,19 +207,13 @@ class GravityView_Settings extends GFAddOn {
 
 		$styles = parent::styles();
 
-		/**
-		 * Fix a reported bug that GF Apps don't have the CSS file enqueued properly
-		 */
-		foreach( $styles as &$style ) {
-			if( $style['handle'] === 'gaddon_form_settings_css' ) {
-				$style['enqueue']['admin_page'][] = 'app_settings';
-			}
-		}
-
 		$styles[] = array(
 			'handle'  => 'gravityview_settings',
 			'src'     => plugins_url( 'assets/css/admin-settings.css', GRAVITYVIEW_FILE ),
 			'version' => GravityView_Plugin::version,
+			"deps" => array(
+				'gaddon_form_settings_css'
+			),
 			'enqueue' => array(
 				array( 'admin_page' => array(
 					'app_settings'
@@ -173,7 +237,7 @@ class GravityView_Settings extends GFAddOn {
 	 * @return string
 	 */
 	public function app_settings_title() {
-		return __('GravityView Settings', 'gravityview');
+		return sprintf( '<span class="version-info description">%s</span>', sprintf( __('You are running GravityView Version %s', 'gravityview'), GravityView_Plugin::version ) );
 	}
 
 	/**
@@ -181,7 +245,7 @@ class GravityView_Settings extends GFAddOn {
 	 * @return string
 	 */
 	public function app_settings_icon() {
-		return '<i class="gv-icon-astronaut-head"></i>';
+		return '<i></i>';
 	}
 
 	/**
@@ -190,6 +254,18 @@ class GravityView_Settings extends GFAddOn {
 	 * @access public
 	 */
 	public function get_app_setting( $setting_name ) {
+
+		/**
+		 * Backward compatibility
+		 */
+		if( $setting_name === 'license' ) {
+			return array(
+				'license' => parent::get_app_setting( 'license_key' ),
+				'status' => parent::get_app_setting( 'license_key_status' ),
+				'response' => parent::get_app_setting( 'license_key_response' ),
+			);
+		}
+
 		return parent::get_app_setting( $setting_name );
 	}
 
@@ -293,9 +369,28 @@ class GravityView_Settings extends GFAddOn {
 		return $html;
 	}
 
+	public function settings_save( $field, $echo = true ) {
+		$field['type']  = 'submit';
+		$field['name']  = 'gform-settings-save';
+		$field['class'] = isset( $field['class'] ) ? $field['class'] : 'button-primary gfbutton';
+
+		if ( ! rgar( $field, 'value' ) )
+			$field['value'] = __( 'Update Settings', 'gravityforms' );
+
+		$output = $this->settings_submit( $field, false );
+
+		if( $echo ) {
+			echo $output;
+		}
+
+		return $output;
+	}
+
 	/**
 	 * Gets the invalid field icon
 	 * Returns the markup for an alert icon to indicate and highlight invalid fields.
+	 *
+	 * Instead of showing the error as a tooltip (default GFAddon), we display the error text.
 	 *
 	 * @param array $field - The field meta.
 	 *
@@ -307,7 +402,7 @@ class GravityView_Settings extends GFAddOn {
 
 		$icon = '<i class="fa fa-exclamation-circle icon-exclamation-sign gf_invalid"></i>';
 
-		$error = '<div class="error">' . $error .'</div>';
+		$error = '<div class="error inline">' . $error .'</div>';
 
 		return $icon . $error;
 	}
@@ -350,7 +445,7 @@ class GravityView_Settings extends GFAddOn {
 			// Set the default license in wp-config.php
 			'license_key' => defined( 'GRAVITYVIEW_LICENSE_KEY' ) ? GRAVITYVIEW_LICENSE_KEY : '',
 			'license_key_response' => '',
-			'license_key_status' => '',
+			'license_key_status' => 'site_inactive',
 			'support-email' => get_bloginfo( 'admin_email' ),
 			'no-conflict-mode' => '0',
 		);
@@ -374,8 +469,7 @@ class GravityView_Settings extends GFAddOn {
 				'type'              => 'edd_license',
 				'data-pending-text' => __('Verifying license&hellip;', 'gravityview'),
 				'default_value'           => $default_settings['license_key'],
-				'feedback_callback' => array( $this->License_Handler, 'validate_license_key' ),
-				'class'             => ( '' == $this->get_app_setting( 'license_key' ) ) ? 'activate code regular-text' : 'deactivate code regular-text edd-license-key',
+				'class'             => ( '' == $this->get_app_setting( 'license_key' ) ) ? 'activate code regular-text edd-license-key' : 'deactivate code regular-text edd-license-key',
 			),
 			array(
 				'name'       => 'license_key_response',
@@ -404,16 +498,20 @@ class GravityView_Settings extends GFAddOn {
 				'horizontal' => 1,
 				'choices'    => array(
 					array(
-						'label' => 'On',
+						'label' => _x('On', 'Setting: On or off', 'gravityview'),
 						'value' => 1
 					),
 					array(
-						'label' => 'Off',
+						'label' => _x('Off', 'Setting: On or off', 'gravityview'),
 						'value' => 0,
 					),
 				),
 				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ),
-			)
+			),
+			array(
+				'class' => 'button button-primary button-hero',
+				'type'     => 'save',
+			),
 		) );
 
 		// Extensions can tap in here.
@@ -443,11 +541,6 @@ class GravityView_Settings extends GFAddOn {
 
 		$sections = array(
 			array(
-				'title'       => '',
-				'description' => '',
-				'id'          => '',
-				'class'       => '',
-				'style'       => '',
 				'fields'      => $fields,
 			)
 		);
@@ -457,8 +550,6 @@ class GravityView_Settings extends GFAddOn {
 
 	/**
 	 * Get the setting for GravityView by name
-	 *
-	 * @deprecated 1.7.4 Now you should use `GravityView_Settings::get_instance()->get_app_setting( $key );` instead
 	 *
 	 * @param  string $key     Option key to fetch
 	 *

@@ -68,28 +68,31 @@ class GV_License_Handler {
 		$fields = array(
 			array(
 				'name'  => 'edd-activate',
-				'value' => 'Activate License',
+				'value' => __('Activate License', 'gravityview'),
 				'data-pending_text' => __('Verifying license&hellip;', 'gravityview'),
 				'data-edd_action' => 'activate_license',
-				'class' => ( !empty( $key ) && $status !== 'valid' ) ? '' : 'hide',
+				'class' => 'button-primary',
 			),
 			array(
 				'name'  => 'edd-deactivate',
-				'value' => 'Deactivate License',
+				'value' => __('Deactivate License', 'gravityview'),
 				'data-pending_text' => __('Deactivating license&hellip;', 'gravityview'),
 				'data-edd_action' => 'deactivate_license',
-				'class' => ( !empty( $key ) && $status === 'valid' ) ? '' : 'hide',
+				'class' => 'button-primary',
 			),
 			array(
 				'name'  => 'edd-check',
-				'value' => 'Check License',
+				'value' => __('Check License', 'gravityview'),
 				'data-pending_text' => __('Verifying license&hellip;', 'gravityview'),
+				'title' => 'Check the license before saving it',
 				'data-edd_action' => 'check_license',
-				'class' => 'hide',
+				'class' => 'button-secondary',
 			),
 		);
 
-		$class = 'button button-secondary gv-edd-action';
+		$class = 'button gv-edd-action';
+
+		$class .= ( !empty( $key ) && $status !== 'valid' ) ? '' : ' hide';
 
 		$submit = '';
 		foreach ( $fields as $field ) {
@@ -104,7 +107,9 @@ class GV_License_Handler {
 
 	private function setup_edd() {
 
-		require_once( GRAVITYVIEW_DIR . 'includes/lib/EDD_SL_Plugin_Updater.php');
+		if( !class_exists('EDD_SL_Plugin_Updater') ) {
+			require_once( GRAVITYVIEW_DIR . 'includes/lib/EDD_SL_Plugin_Updater.php');
+		}
 
 		// setup the updater
 		$this->EDD_SL_Plugin_Updater = new EDD_SL_Plugin_Updater(
@@ -115,10 +120,10 @@ class GV_License_Handler {
 
 	}
 
-	function _get_edd_settings( $action = '' ) {
+	function _get_edd_settings( $action = '', $license = null ) {
 
 		// retrieve our license key from the DB
-		$license_key = trim( $this->Addon->get_app_setting( 'license_key' ) );
+		$license_key = empty( $license ) ? trim( $this->Addon->get_app_setting( 'license_key' ) ) : $license;
 
 		$settings = array(
 			'version'   => self::version,
@@ -141,9 +146,9 @@ class GV_License_Handler {
 	 * Perform the call
 	 * @return array|WP_Error
 	 */
-	private function _license_get_remote_response( $data ) {
+	private function _license_get_remote_response( $data, $license = '' ) {
 
-		$api_params = $this->_get_edd_settings( $data['edd_action'] );
+		$api_params = $this->_get_edd_settings( $data['edd_action'], $license );
 
 		$url = add_query_arg( $api_params, self::url );
 
@@ -175,17 +180,23 @@ class GV_License_Handler {
 		if( empty( $license_data ) ) {
 			$class = 'hide';
 			$message = '';
-		} else if ( ! empty( $license_data->error ) ) {
-			$message = $this->strings( $license_data->error );
-			$class = 'error';
 		} else {
+
+			$class = ! empty( $license_data->error ) ? 'error' : $license_data->license;
+
 			$message = sprintf( '<p><strong>%s: %s</strong></p>', $this->strings('status'), $this->strings( $license_data->license ) );
-			$class = $license_data->license;
 		}
 
 		return $this->generate_license_box( $message, $class );
 	}
 
+	/**
+	 * Generate the status message box HTML based on the
+	 * @param $message
+	 * @param string $class
+	 *
+	 * @return string
+	 */
 	private function generate_license_box( $message, $class = '' ) {
 
 		$template = '<div id="gv-edd-status" class="gv-edd-message inline %s">%s</div>';
@@ -195,8 +206,7 @@ class GV_License_Handler {
 		return $output;
 	}
 
-	function license_call( $array = array() ) {
-		global $wp_version;
+	public function license_call( $array = array() ) {
 
 		$data = empty( $array ) ? $_POST['data'] : $array;
 
@@ -204,7 +214,8 @@ class GV_License_Handler {
 			die( - 1 );
 		}
 
-		$license_data = $this->_license_get_remote_response( $data );
+		$license = rgget( 'license', $data );
+		$license_data = $this->_license_get_remote_response( $data, $license );
 
 		if ( empty( $license_data ) ) {
 			if ( empty( $array ) ) {
@@ -222,7 +233,7 @@ class GV_License_Handler {
 		// This likely happened because people entered in a different key and clicked "Deactivate",
 		// meaning to deactivate the original key. We don't want to save this response, since it is
 		// most likely a mistake.
-		if ( $license_data->license !== 'failed' ) {
+		if ( $license_data->license !== 'failed' && ( 'check_license' !== $data['edd_action'] ) ) {
 
 			set_transient( 'redux_edd_license_' . esc_attr( $data['field_id'] ) . '_valid', $license_data, DAY_IN_SECONDS );
 
@@ -231,7 +242,7 @@ class GV_License_Handler {
 
 			$settings['license_key'] = trim( $data['license'] );
 			$settings['license_key_status'] = $license_data->license;
-			$settings['license_key_response'] = $json;
+			$settings['license_key_response'] = (array)$license_data;
 
 			$this->Addon->update_app_settings( $settings );
 		}
@@ -253,15 +264,15 @@ class GV_License_Handler {
 		$strings = array(
 			'status' => esc_html__('Status', 'gravityview'),
 			'error' => esc_html__('There was an error processing the request.', 'gravityview'),
-			'failed'  => esc_html__('Could not deactivate the license. The submitted license key may not be active.', 'gravityview'),
-			'site_inactive' => esc_html__('Not Activated', 'gravityview'),
-			'no_activations_left' => esc_html__('Invalid; this license has reached its activation limit.', 'gravityview'),
-			'deactivated' => esc_html__('Deactivated', 'gravityview'),
-			'valid' => esc_html__('Valid', 'gravityview'),
-			'invalid' => esc_html__('Not Valid', 'gravityview'),
-			'missing' => esc_html__('Not Valid', 'gravityview'),
-			'revoked' => esc_html__('The license key has been revoked.', 'gravityview'),
-			'expired' => esc_html__('The license key has expired.', 'gravityview'),
+			'failed'  => esc_html__('Could not deactivate the license. The license key you attempted to deactivate may not be active or valid.', 'gravityview'),
+			'site_inactive' => esc_html__('The license is valid, but it has not been activated for this site.', 'gravityview'),
+			'no_activations_left' => esc_html__('Invalid: this license has reached its activation limit.', 'gravityview'),
+			'deactivated' => esc_html__('The license has been deactivated.', 'gravityview'),
+			'valid' => esc_html__('This license is valid.', 'gravityview'),
+			'invalid' => esc_html__('This license is invalid.', 'gravityview'),
+			'missing' => esc_html__('The license was not defined.', 'gravityview'),
+			'revoked' => esc_html__('This license key has been revoked.', 'gravityview'),
+			'expired' => sprintf( esc_html__('This license key has expired. %sRenew your license on the GravityView website%s', 'gravityview'), '<a href="">', '</a>' ),
 
 			'verifying_license' => esc_html__('Verifying license&hellip;', 'gravityview'),
 			'activate_license' => esc_html__('Activate License', 'gravityview'),
@@ -287,12 +298,15 @@ class GV_License_Handler {
 			return NULL;
 		}
 
-		$status = $this->Addon->get_app_setting( 'license_key_status' );
-		$response = $this->Addon->get_app_setting( 'license_key_response' );
+		$response = $this->license_call(array(
+			'license' => $this->Addon->get_app_setting( 'license_key' ),
+			'edd_action' => 'check_license',
+			'field_id' => $field['name'],
+		));
 
 		$response = is_string( $response ) ? json_decode( $response, true ) : $response;
 
-		switch( $status ) {
+		switch( $response['license'] ) {
 			case 'valid':
 				$return = true;
 				break;
