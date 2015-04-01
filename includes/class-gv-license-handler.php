@@ -166,7 +166,7 @@ class GV_License_Handler {
 		// Not JSON
 		if ( empty( $license_data ) ) {
 
-			delete_transient( 'redux_edd_license_' . esc_attr( $data['field_id'] ) . '_valid' );
+			delete_transient( 'gravityview_' . esc_attr( $data['field_id'] ) . '_valid' );
 
 			// Change status
 			return array();
@@ -206,6 +206,11 @@ class GV_License_Handler {
 		return $output;
 	}
 
+	/**
+	 * @param array $array Prevent updating the data by setting an `update` key to false
+	 *
+	 * @return mixed|string|void
+	 */
 	public function license_call( $array = array() ) {
 
 		$data = empty( $array ) ? $_POST['data'] : $array;
@@ -229,29 +234,46 @@ class GV_License_Handler {
 
 		$json = json_encode( $license_data );
 
+		$update_license = ( !isset( $data['update'] ) || !empty( $data['update'] ) );
+
+		$is_check_action_button = ( 'check_license' === $data['edd_action'] && defined('DOING_AJAX') && DOING_AJAX );
+
 		// Failed is the response from trying to de-activate a license and it didn't work.
 		// This likely happened because people entered in a different key and clicked "Deactivate",
 		// meaning to deactivate the original key. We don't want to save this response, since it is
 		// most likely a mistake.
-		if ( $license_data->license !== 'failed' && ( 'check_license' !== $data['edd_action'] ) ) {
+		if ( $license_data->license !== 'failed' && !$is_check_action_button && $update_license ) {
 
-			set_transient( 'redux_edd_license_' . esc_attr( $data['field_id'] ) . '_valid', $license_data, DAY_IN_SECONDS );
+			if( !empty( $data['field_id'] ) ) {
+				set_transient( 'gravityview_' . esc_attr( $data['field_id'] ) . '_valid', $license_data, DAY_IN_SECONDS );
+			}
 
-			// Update option with passed data license
-			$settings = $this->Addon->get_app_settings();
+			$this->license_call_update_settings( $license_data );
 
-			$settings['license_key'] = trim( $data['license'] );
-			$settings['license_key_status'] = $license_data->license;
-			$settings['license_key_response'] = (array)$license_data;
-
-			$this->Addon->update_app_settings( $settings );
 		}
 
 		if ( empty( $array ) ) {
 			exit( $json );
 		} else { // Non-ajax call
-			return $json;
+			return ( rgget('format', $data ) === 'object' ) ? $license_data : $json;
 		}
+	}
+
+	/**
+	 * Update the license after fetching it
+	 * @param object $license_data
+	 * @return void
+	 */
+	private function license_call_update_settings( $license_data ) {
+
+		// Update option with passed data license
+		$settings = $this->Addon->get_app_settings();
+
+		$settings['license_key'] = trim( $data['license'] );
+		$settings['license_key_status'] = $license_data->license;
+		$settings['license_key_response'] = (array)$license_data;
+
+		$this->Addon->update_app_settings( $settings );
 	}
 
 	/**

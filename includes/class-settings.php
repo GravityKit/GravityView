@@ -329,6 +329,15 @@ class GravityView_Settings extends GFAddOn {
 		return $return;
 	}
 
+	/**
+	 * @since 1.7.4
+	 *
+	 * @return GV_License_Handler
+	 */
+	public function get_license_handler() {
+		return $this->License_Handler;
+	}
+
 	/***
 	 * Renders the save button for settings pages
 	 *
@@ -445,7 +454,7 @@ class GravityView_Settings extends GFAddOn {
 			// Set the default license in wp-config.php
 			'license_key' => defined( 'GRAVITYVIEW_LICENSE_KEY' ) ? GRAVITYVIEW_LICENSE_KEY : '',
 			'license_key_response' => '',
-			'license_key_status' => 'site_inactive',
+			'license_key_status' => '',
 			'support-email' => get_bloginfo( 'admin_email' ),
 			'no-conflict-mode' => '0',
 		);
@@ -518,14 +527,14 @@ class GravityView_Settings extends GFAddOn {
 		$extension_fields = apply_filters( 'gravityview_extension_fields', array() );
 
 		// If there are extensions, add a section for them
-		if ( ! empty( $extension_fields ) ) {
+		#if ( ! empty( $extension_fields ) ) {
 			array_unshift( $extension_fields, array(
-				'title'  => 'GravityView Extension Settings',
+				'title'  => __('GravityView Extension Settings', 'gravityview'),
 				'id'     => 'gravityview-extensions-header',
 				'type'   => 'section',
 				'indent' => false,
 			) );
-		}
+		#}
 
 		$fields = array_merge( $fields, $extension_fields );
 
