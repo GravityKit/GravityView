@@ -136,8 +136,8 @@ class GravityView_Migrate {
 
 				// Only use the last-saved values if they are for the same license
 				if( $saved_license && rgget( 'license', $saved_license ) === $license_key ) {
-					$redux_settings['license_key_response'] = rgget( 'status', $saved_license );
-					$redux_settings['license_key_status'] = rgget( 'response', $saved_license );
+					$redux_settings['license_key_status'] = rgget( 'status', $saved_license );
+					$redux_settings['license_key_response'] = rgget( 'response', $saved_license );
 				}
 			}
 		}
