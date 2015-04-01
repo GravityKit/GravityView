@@ -508,11 +508,11 @@ class GravityView_Settings extends GFAddOn {
 				'choices'    => array(
 					array(
 						'label' => _x('On', 'Setting: On or off', 'gravityview'),
-						'value' => 1
+						'value' => '1'
 					),
 					array(
 						'label' => _x('Off', 'Setting: On or off', 'gravityview'),
-						'value' => 0,
+						'value' => '0',
 					),
 				),
 				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ),
