@@ -527,14 +527,14 @@ class GravityView_Settings extends GFAddOn {
 		$extension_fields = apply_filters( 'gravityview_extension_fields', array() );
 
 		// If there are extensions, add a section for them
-		#if ( ! empty( $extension_fields ) ) {
+		if ( ! empty( $extension_fields ) ) {
 			array_unshift( $extension_fields, array(
 				'title'  => __('GravityView Extension Settings', 'gravityview'),
 				'id'     => 'gravityview-extensions-header',
 				'type'   => 'section',
 				'indent' => false,
 			) );
-		#}
+		}
 
 		$fields = array_merge( $fields, $extension_fields );
 

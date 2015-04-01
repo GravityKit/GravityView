@@ -248,7 +248,7 @@ class GV_License_Handler {
 				set_transient( 'gravityview_' . esc_attr( $data['field_id'] ) . '_valid', $license_data, DAY_IN_SECONDS );
 			}
 
-			$this->license_call_update_settings( $license_data );
+			$this->license_call_update_settings( $license_data, $data );
 
 		}
 
@@ -264,7 +264,7 @@ class GV_License_Handler {
 	 * @param object $license_data
 	 * @return void
 	 */
-	private function license_call_update_settings( $license_data ) {
+	private function license_call_update_settings( $license_data, $data ) {
 
 		// Update option with passed data license
 		$settings = $this->Addon->get_app_settings();
