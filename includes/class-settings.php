@@ -348,7 +348,7 @@ class GravityView_Settings extends GFAddOn {
 	 */
 	public function settings_submit( $field, $echo = true ) {
 
-		$field['type']  = ( isset($field['type']) && in_array( $field['type'], array('submit','reset') ) ) ? $field['type'] : 'submit';
+		$field['type']  = ( isset($field['type']) && in_array( $field['type'], array('submit','reset','button') ) ) ? $field['type'] : 'submit';
 
 		$attributes    = $this->get_field_attributes( $field );
 		$default_value = rgar( $field, 'value' ) ? rgar( $field, 'value' ) : rgar( $field, 'default_value' );
