@@ -451,10 +451,9 @@ class GravityView_Settings extends GFAddOn {
 
 	public function get_posted_settings() {
 
-		$previous_settings = $this->get_previous_settings();
 		$posted_settings = parent::get_posted_settings();
 
-		if( $posted_settings['license_key'] !== $posted_settings['license_key_response']['license_key'] ) {
+		if( isset( $posted_settings['license_key'] ) && $posted_settings['license_key'] !== $posted_settings['license_key_response']['license_key'] ) {
 			unset( $posted_settings['license_key_response'] );
 			unset( $posted_settings['license_key_status'] );
 			GFCommon::add_error_message('The license key you entered has not been saved, but not activated. Please activate the license.');
