@@ -96,6 +96,7 @@ class GravityView_Migrate {
 
 		if( is_object( $license_call ) && isset( $license_call->license ) ) {
 			$redux_settings['license_key_status'] = $license_call->license;
+			$redux_settings['license_key_response'] = json_encode( $license_call );
 		}
 
 		return $redux_settings;
@@ -118,14 +119,12 @@ class GravityView_Migrate {
 
 		$redux_settings = array(
 			'support-email' => rgget( 'support-email', $redux_option ),
-			'no-conflict-mode' => rgget( 'no-conflict-mode', $redux_option ),
+			'no-conflict-mode' => rgget( 'no-conflict-mode', $redux_option ) ? '1' : '0',
 		);
 
 		if( $license_array = rgget( 'license', $redux_option ) ) {
 
-			$license_key = rgget( 'license', $license_array );
-
-			$redux_settings['license_key'] = $license_key;
+			$redux_settings['license_key'] = $license_key = rgget( 'license', $license_array );
 
 			$redux_last_changed_values = get_option('gravityview_settings-transients');
 
