@@ -464,6 +464,18 @@ class GravityView_Settings extends GFAddOn {
 	}
 
 	/**
+	 * Gets the required indicator
+	 * Gets the markup of the required indicator symbol to highlight fields that are required
+	 *
+	 * @param $field - The field meta.
+	 *
+	 * @return string - Returns markup of the required indicator symbol
+	 */
+	public function get_required_indicator( $field ) {
+		return '<span class="required" title="' . esc_attr__( 'Required', 'gravityview' ) . '">*</span>';
+	}
+
+	/**
 	 * Specify the settings fields to be rendered on the plugin settings page
 	 * @return array
 	 */
