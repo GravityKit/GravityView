@@ -237,11 +237,11 @@ class GravityView_Settings extends GFAddOn {
 	 * @return string
 	 */
 	public function app_settings_title() {
-		return sprintf( '<span class="version-info description">%s</span>', sprintf( __('You are running GravityView Version %s', 'gravityview'), GravityView_Plugin::version ) );
+		return null;
 	}
 
 	/**
-	 * Add the Floaty icon to the settings title
+	 * Prevent displaying of any icon
 	 * @return string
 	 */
 	public function app_settings_icon() {
@@ -256,7 +256,7 @@ class GravityView_Settings extends GFAddOn {
 	public function get_app_setting( $setting_name ) {
 
 		/**
-		 * Backward compatibility
+		 * Backward compatibility with Redux
 		 */
 		if( $setting_name === 'license' ) {
 			return array(
@@ -378,6 +378,14 @@ class GravityView_Settings extends GFAddOn {
 		return $html;
 	}
 
+	/**
+	 * Allow customizing the Save field parameters
+	 *
+	 * @param array $field
+	 * @param bool $echo
+	 *
+	 * @return string
+	 */
 	public function settings_save( $field, $echo = true ) {
 		$field['type']  = 'submit';
 		$field['name']  = 'gform-settings-save';
@@ -393,27 +401,6 @@ class GravityView_Settings extends GFAddOn {
 		}
 
 		return $output;
-	}
-
-	/**
-	 * Gets the invalid field icon
-	 * Returns the markup for an alert icon to indicate and highlight invalid fields.
-	 *
-	 * Instead of showing the error as a tooltip (default GFAddon), we display the error text.
-	 *
-	 * @param array $field - The field meta.
-	 *
-	 * @return string - The full markup for the icon
-	 */
-	public function get_error_icon( $field ) {
-
-		$error = $this->get_field_errors( $field );
-
-		$icon = '<i class="fa fa-exclamation-circle icon-exclamation-sign gf_invalid"></i>';
-
-		$error = '<div class="error inline">' . $error .'</div>';
-
-		return $icon . $error;
 	}
 
 	/**
@@ -462,6 +449,20 @@ class GravityView_Settings extends GFAddOn {
 		return $defaults;
 	}
 
+	public function get_posted_settings() {
+
+		$previous_settings = $this->get_previous_settings();
+		$posted_settings = parent::get_posted_settings();
+
+		if( $posted_settings['license_key'] !== $posted_settings['license_key_response']['license_key'] ) {
+			unset( $posted_settings['license_key_response'] );
+			unset( $posted_settings['license_key_status'] );
+			GFCommon::add_error_message('The license key you entered has not been saved, but not activated. Please activate the license.');
+		}
+
+		return $posted_settings;
+	}
+
 	/**
 	 * Specify the settings fields to be rendered on the plugin settings page
 	 * @return array
@@ -473,6 +474,7 @@ class GravityView_Settings extends GFAddOn {
 		$fields = apply_filters( 'gravityview_settings_fields', array(
 			array(
 				'name'                => 'license_key',
+				'required'               => true,
 				'label'             => __( 'License Key', 'gravityview' ),
 				'description'          => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ),
 				'type'              => 'edd_license',
@@ -550,6 +552,7 @@ class GravityView_Settings extends GFAddOn {
 
 		$sections = array(
 			array(
+				'description' =>      sprintf( '<span class="version-info description">%s</span>', sprintf( __('You are running GravityView version %s', 'gravityview'), GravityView_Plugin::version ) ),
 				'fields'      => $fields,
 			)
 		);

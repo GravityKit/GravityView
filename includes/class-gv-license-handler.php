@@ -78,7 +78,7 @@ class GV_License_Handler {
 				'value' => __('Deactivate License', 'gravityview'),
 				'data-pending_text' => __('Deactivating license&hellip;', 'gravityview'),
 				'data-edd_action' => 'deactivate_license',
-				'class' => 'button-primary',
+				'class' => ( empty( $status ) ? 'button-primary hide' : 'button-primary' ),
 			),
 			array(
 				'name'  => 'edd-check',
@@ -171,6 +171,9 @@ class GV_License_Handler {
 			// Change status
 			return array();
 		}
+
+		// Store the license key inside the data array
+		$license_data->license_key = $license;
 
 		return $license_data;
 	}

@@ -68,10 +68,12 @@
     margin: 0 0 0 10px
   }
 
+  // Add the stars to the top
   #gform_tab_group {
     padding: 0;
     background: url(../images/stars.jpg) left top repeat-x;
 
+    // Add Floaty
     &:before {
       content: '';
       display: block;
@@ -84,18 +86,35 @@
       margin: 0;
       padding: 10px 0 0 160px;
     }
+
   }
 
+  .gform_tab_content {
+    position: relative;
+
+    // Don't change the position of the inputs when the .updated div slideUps
+    #message {
+      position: absolute;
+      width: 100%;
+      margin-bottom: 10px;
+      z-index: 1000;
+      opacity: .95;
+    }
+  }
+
+  // Don't have tab margins
   #gform_tab_container {
     margin-left: 0;
     background-color: #fff;
     padding-bottom: 0;
   }
 
+  // Hide the tabs
   #gform_tabs {
     margin-top: 0;
     display: none;
   }
+
 
   #gform-settings {
 
@@ -120,7 +139,6 @@
     }
 
     td {
-//      vertical-align: text-top;
       width: 70%;
 
       div {
@@ -140,11 +158,6 @@
       color: #666;
     }
 
-    th span:first-child {
-      font-weight: normal;
-      display: block;
-      color: #666
-    }
   }
 
 }

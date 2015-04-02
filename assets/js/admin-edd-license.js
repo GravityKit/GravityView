@@ -15,6 +15,8 @@
 			GV_EDD.message_fadeout();
 			GV_EDD.add_status_container();
 
+			$( '.version-info' ).insertBefore('#gform_tab_group');
+
 			$( document )
 				.on( 'ready keyup', GV_EDD.license_field, GV_EDD.key_change )
 				.on( 'click', ".gv-edd-action", GV_EDD.clicked )
