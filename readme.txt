@@ -21,13 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.7.4 =
-* Fixed: When editing an entry in the frontend it gets unapproved.
-* Fixed: Conflicts between the Advanced Filter extension and the single entry view (if using ANY mode)
+* Modified: The List template is now responsive! Looks great on big and small screens.
+* Fixed: When editing an entry in the frontend it gets unapproved
+* Fixed: Conflicts between the Advanced Filter extension and the Single Entry mode (if using `ANY` mode for filters)
 * Fixed: Sorting by full name. Now sorts by first name by default.
     * Added `gravityview/sorting/full-name` filter to sort by last name ([see how](https://gist.github.com/zackkatz/cd42bee4f361f422824e))
 * Added: `gravityview_disable_change_entry_creator` filter to disable the Change Entry Creator functionality
-* Added: Default list template is now responsive!
-
+* Modified: Migrated to use Gravity Forms settings
 
 = 1.7.3 on March 25 =
 * Fixed: Prevent displaying a single Entry that doesn't match configured Advanced Filters

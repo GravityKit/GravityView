@@ -105,6 +105,11 @@ class GV_License_Handler {
 		return $submit;
 	}
 
+	/**
+	 * Include the EDD plugin updater class, if not exists
+	 * @since 1.7.4
+	 * @return void
+	 */
 	private function setup_edd() {
 
 		if( !class_exists('EDD_SL_Plugin_Updater') ) {
@@ -120,7 +125,17 @@ class GV_License_Handler {
 
 	}
 
-	function _get_edd_settings( $action = '', $license = null ) {
+	/**
+	 * Generate the array of settings passed to the EDD license call
+	 *
+	 * @since 1.7.4
+	 *
+	 * @param string $action The action to send to edd, such as `check_license`
+	 * @param string $license The license key to have passed to EDD
+	 *
+	 * @return array
+	 */
+	function _get_edd_settings( $action = '', $license = '' ) {
 
 		// retrieve our license key from the DB
 		$license_key = empty( $license ) ? trim( $this->Addon->get_app_setting( 'license_key' ) ) : $license;
@@ -178,6 +193,14 @@ class GV_License_Handler {
 		return $license_data;
 	}
 
+	/**
+	 * Generate the status message displayed in the license field
+	 *
+	 * @since 1.7.4
+	 * @param $license_data
+	 *
+	 * @return string
+	 */
 	function get_license_message( $license_data ) {
 
 		if( empty( $license_data ) ) {
@@ -194,7 +217,9 @@ class GV_License_Handler {
 	}
 
 	/**
-	 * Generate the status message box HTML based on the
+	 * Generate the status message box HTML based on the current status
+	 *
+	 * @since 1.7.4
 	 * @param $message
 	 * @param string $class
 	 *
@@ -210,7 +235,17 @@ class GV_License_Handler {
 	}
 
 	/**
-	 * @param array $array Prevent updating the data by setting an `update` key to false
+	 * Perform the call to EDD based on the AJAX call or passed data
+	 *
+	 * @since 1.7.4
+	 *
+	 * @param array $array {
+	 * @type string $license The license key
+	 * @type string $edd_action The EDD action to perform, like `check_license`
+	 * @type string $field_id The ID of the field to check
+	 * @type boolean $update Whether to update plugin settings. Prevent updating the data by setting an `update` key to false
+	 * @type string $format If `object`, return the object of the license data. Else, return the JSON-encoded object
+	 * }
 	 *
 	 * @return mixed|string|void
 	 */
@@ -222,7 +257,7 @@ class GV_License_Handler {
 			die( - 1 );
 		}
 
-		$license = rgget( 'license', $data );
+		$license = esc_attr( rgget( 'license', $data ) );
 		$license_data = $this->_license_get_remote_response( $data, $license );
 
 		if ( empty( $license_data ) ) {
