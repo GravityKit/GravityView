@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Conflicts between the Advanced Filter extension and the Single Entry mode (if using `ANY` mode for filters)
 * Fixed: Sorting by full name. Now sorts by first name by default.
     * Added `gravityview/sorting/full-name` filter to sort by last name ([see how](https://gist.github.com/zackkatz/cd42bee4f361f422824e))
+* Fixed: Date and Time fields now properly internationalized (using `date_i18n` instead of `date`)
 * Added: `gravityview_disable_change_entry_creator` filter to disable the Change Entry Creator functionality
 * Modified: Migrated to use Gravity Forms settings
 
