@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Modified: Migrated to use Gravity Forms settings
 * Modified: Updated limit to 750 users (up from 300) in Change Entry Creator dropdown.
 * Confirmed WordPress 4.2 compatibility
+* Updated: Dutch translation (thanks, [@erikvanbeek](https://www.transifex.com/accounts/profile/erikvanbeek/)!)
 
 = 1.7.3 on March 25 =
 * Fixed: Prevent displaying a single Entry that doesn't match configured Advanced Filters

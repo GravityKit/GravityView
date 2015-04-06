@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2015-03-18 21:33-0700\n"
-"PO-Revision-Date: 2015-03-19 03:36+0000\n"
+"POT-Creation-Date: 2015-04-06 12:06-0700\n"
+"PO-Revision-Date: 2015-04-06 18:07+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Bengali (http://www.transifex.com/projects/p/gravityview/language/bn/)\n"
 "MIME-Version: 1.0\n"
@@ -21,15 +21,15 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: gravityview.php:261
+#: gravityview.php:263
 msgid "Top"
 msgstr "উপরে"
 
-#: gravityview.php:262
+#: gravityview.php:264
 msgid "Left"
 msgstr "বামে"
 
-#: gravityview.php:262
+#: gravityview.php:264
 msgid "Right"
 msgstr "ডানে"
 
@@ -184,7 +184,7 @@ msgstr "একাধিক এন্ট্রি"
 msgid "Single Entry"
 msgstr "একক এন্ট্রি"
 
-#: includes/admin/metaboxes.php:255 includes/class-frontend-views.php:299
+#: includes/admin/metaboxes.php:255 includes/class-frontend-views.php:359
 #: includes/extensions/edit-entry/class-edit-entry.php:224
 #: includes/extensions/edit-entry/class-edit-entry.php:295
 #: includes/extensions/edit-entry/class-edit-entry.php:312
@@ -282,13 +282,13 @@ msgid "Insert View"
 msgstr "দৃশ্য ঢোকান"
 
 #: includes/class-admin-add-shortcode.php:130
-#: includes/class-admin-views.php:897
+#: includes/class-admin-views.php:899
 #: includes/extensions/edit-entry/class-edit-entry.php:1440
 msgid "Cancel"
 msgstr "বাতিল"
 
 #: includes/class-admin-add-shortcode.php:176
-#: includes/class-admin-views.php:901
+#: includes/class-admin-views.php:903
 msgid "Loading&hellip;"
 msgstr "লোড হচ্ছে&hellip;"
 
@@ -365,23 +365,23 @@ msgstr "গ্রাভিটি ভিউ এর এই এন্ট্রি �
 msgid "Approved the Entry for GravityView"
 msgstr "গ্রাভিটি ভিউ এর এই এন্ট্রি অনুমোদন করুন"
 
-#: includes/class-admin-approve-entries.php:457
+#: includes/class-admin-approve-entries.php:464
 msgid "Approve"
 msgstr "অনুমোদন"
 
-#: includes/class-admin-approve-entries.php:458
+#: includes/class-admin-approve-entries.php:465
 msgid "Disapprove"
 msgstr "অমনোনীত"
 
-#: includes/class-admin-approve-entries.php:460
+#: includes/class-admin-approve-entries.php:467
 msgid "Entry not approved for directory viewing. Click to approve this entry."
 msgstr "এন্ট্রি দেখানোর জন্য অনুমোদন করা হয়নি। অনুমোদন করার জন্য ক্লিক করুন।"
 
-#: includes/class-admin-approve-entries.php:461
+#: includes/class-admin-approve-entries.php:468
 msgid "Entry approved for directory viewing. Click to disapprove this entry."
 msgstr "এন্ট্রি দেখানোর জন্য অনুমোদন করা হয়েছে। অননুমোদিত করার জন্য ক্লিক করুন।"
 
-#: includes/class-admin-approve-entries.php:462
+#: includes/class-admin-approve-entries.php:469
 msgid "Show entry in directory view?"
 msgstr "এন্ট্রি ডিরেক্টরি দৃশ্যে দেখাবে কি?"
 
@@ -455,8 +455,7 @@ msgstr "ফর্ম সম্পাদন করুন"
 msgid "Entries"
 msgstr "এন্ট্রিসমূহ"
 
-#: includes/class-admin-views.php:272 includes/class-settings.php:254
-#: includes/class-settings.php:255
+#: includes/class-admin-views.php:272 includes/class-settings.php:232
 msgid "Settings"
 msgstr "বিন্যাস"
 
@@ -571,39 +570,39 @@ msgid ""
 "configuration will re-appear."
 msgstr "তথ্য হারিয়ে যায়নি। সংশ্লিষ্ঠ প্লাগইন্সটি সক্রিয় করুন এবং কনফিগারেশন পুনরায় দেখাবে।"
 
-#: includes/class-admin-views.php:895
+#: includes/class-admin-views.php:897
 msgid "Enter View name here"
 msgstr "দৃশ্যের নাম এখানে প্রবেশ করান"
 
-#: includes/class-admin-views.php:896
+#: includes/class-admin-views.php:898
 msgid "Close"
 msgstr "বন্ধ"
 
-#: includes/class-admin-views.php:898
+#: includes/class-admin-views.php:900
 msgid "Continue"
 msgstr "চলমান"
 
-#: includes/class-admin-views.php:899
+#: includes/class-admin-views.php:901
 msgid "Ok"
 msgstr "ঠিক আছে"
 
-#: includes/class-admin-views.php:900
+#: includes/class-admin-views.php:902
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr "দৃশ্য তৈরি করার সময় সমস্যা হয়েছে। সেটিংস দেখুন অথবা গ্রাভিটি ভিউ সাপোর্ট দেখুন"
 
-#: includes/class-admin-views.php:902
+#: includes/class-admin-views.php:904
 msgid "There was an error loading dynamic content."
 msgstr "ডাইনামিক বিষয়বস্তু লোড হতে এখানে একটি সমস্য রয়েছে।"
 
-#: includes/class-admin-views.php:903
+#: includes/class-admin-views.php:905
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr "ফিল্ড যুক্ত করার সময় সমস্যা হচ্ছে। দয়া করে পুণরায় চেষ্ঠা করুন অথবা গ্রাভিটিভিউ সাপোর্ট এর সাথে যোগাযোগ করুন।"
 
-#: includes/class-admin-views.php:904
+#: includes/class-admin-views.php:906
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -645,25 +644,24 @@ msgstr "পরিবর্তনের লিস্ট"
 msgid "What&rsquo;s New"
 msgstr "নতুন &rsquo; কি"
 
-#: includes/class-admin-welcome.php:477
+#: includes/class-admin-welcome.php:515
 msgid "GravityView is brought to you by:"
 msgstr "গ্রাভিটি ভিউ আপনার জন্য নিয়ে এল:"
 
-#: includes/class-admin-welcome.php:502
+#: includes/class-admin-welcome.php:540
 msgid "Contributors"
 msgstr "সহযোগী যারা"
 
-#: includes/class-admin-welcome.php:527
+#: includes/class-admin-welcome.php:561
 msgid "Want to contribute?"
 msgstr "সহযোগীতা করতে চান?"
 
-#: includes/class-admin-welcome.php:528
+#: includes/class-admin-welcome.php:562
 #, php-format
 msgid ""
-"If you want to contribute to the code, you can %srequest access to the "
-"Github repository%s. If your contributions are accepted, you will be thanked"
-" here."
-msgstr "যদি আপনি কোডিং-এ সহযোগীতা করতে চান তাহলে আপনি %sগিটহাব এর জন্য আবেদন করতে পারেন%s। যদি আপনার সহযোগীতা অনুমোদন করা হয় তবে আপনি এখানে ধন্যবাদ পাবেন।"
+"If you want to contribute to the code, %syou can on Github%s. If your "
+"contributions are accepted, you will be thanked here."
+msgstr ""
 
 #: includes/class-admin.php:93
 msgid "Support"
@@ -816,98 +814,98 @@ msgstr "এই অনুসন্ধানের কোন ফলাফল প�
 msgid "No entries match your request."
 msgstr "আপনার অনুরোধ কোন এন্ট্রির সাথে মিলেনি।"
 
-#: includes/class-api.php:700
+#: includes/class-api.php:710
 msgid "&larr; Go back"
 msgstr "&larr; পিছনে ফিরে যান"
 
-#: includes/class-api.php:1067
+#: includes/class-api.php:1082
 msgid "Map It"
 msgstr "মানচিত্রে এটি"
 
-#: includes/class-change-entry-creator.php:54
+#: includes/class-change-entry-creator.php:62
 msgid "Error"
 msgstr "ভুল"
 
-#: includes/class-change-entry-creator.php:56
+#: includes/class-change-entry-creator.php:64
 msgid "Success"
 msgstr "সফল"
 
-#: includes/class-change-entry-creator.php:59
+#: includes/class-change-entry-creator.php:67
 #, php-format
 msgctxt ""
 "First parameter: Success or error of the action. Second: User ID number"
 msgid "%s: Assigned User ID #%d as the entry creator."
 msgstr "এন্ট্রি তৈরিকারক হিসেবে%s: ব্যবহারকারীর আইডি#%d।"
 
-#: includes/class-change-entry-creator.php:163
+#: includes/class-change-entry-creator.php:171
 #, php-format
 msgctxt ""
 "The name and the ID of users who initiated changes to entry ownership"
 msgid "%s (ID #%d)"
 msgstr "%s (আইডি #%d)"
 
-#: includes/class-change-entry-creator.php:165
+#: includes/class-change-entry-creator.php:173
 msgctxt ""
 "To show that the entry was unassigned from an actual user to no user."
 msgid "No User"
 msgstr "কোন ব্যবহারকারী নেই"
 
-#: includes/class-change-entry-creator.php:177
+#: includes/class-change-entry-creator.php:185
 #, php-format
 msgid "Changed entry creator from %s to %s"
 msgstr "এন্ট্রি তৈরিকারক %s হতে %s পরিবর্তন করুন"
 
-#: includes/class-change-entry-creator.php:204
+#: includes/class-change-entry-creator.php:212
 msgid "Change Entry Creator:"
 msgstr "এন্ট্রি তৈরিকারক পরিবর্তন করুন:"
 
-#: includes/class-change-entry-creator.php:207
+#: includes/class-change-entry-creator.php:215
 msgctxt "No user assigned to the entry"
 msgid "No User"
 msgstr "কোন ব্যবহাকারী নেই"
 
-#: includes/class-common.php:232
+#: includes/class-common.php:234
 msgid "Post ID"
 msgstr ""
 
-#: includes/class-common.php:241
+#: includes/class-common.php:243
 msgid "Payment Status"
 msgstr "পেমেন্টের অবস্থা"
 
-#: includes/class-common.php:246
+#: includes/class-common.php:248
 msgid "Payment Date"
 msgstr "পেমেন্টের তারিখ"
 
-#: includes/class-common.php:251
+#: includes/class-common.php:253
 msgid "Payment Amount"
 msgstr "পেমেন্টের পরিমাণ"
 
-#: includes/class-common.php:256
+#: includes/class-common.php:258
 msgid "Payment Method"
 msgstr "পেমেন্টের প্রক্রিয়া"
 
-#: includes/class-common.php:261
+#: includes/class-common.php:263
 #: includes/extensions/search-widget/class-search-widget.php:639
 msgid "Is Fulfilled"
 msgstr "সম্পন্ন"
 
-#: includes/class-common.php:266
+#: includes/class-common.php:268
 msgid "Transaction ID"
 msgstr "লেনদেনের আইডি"
 
-#: includes/class-common.php:271
+#: includes/class-common.php:273
 msgid "Transaction Type"
 msgstr "লেনদেনের প্রকার"
 
-#: includes/class-common.php:783 includes/class-data.php:566
+#: includes/class-common.php:824 includes/class-data.php:566
 msgid "Default"
 msgstr "ডিফল্ট"
 
-#: includes/class-common.php:796 includes/class-data.php:567
+#: includes/class-common.php:837 includes/class-data.php:567
 msgid "Date Created"
 msgstr "নির্মাণের তারিখ"
 
-#: includes/class-common.php:876
+#: includes/class-common.php:917
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -1107,17 +1105,23 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "খালি"
 
-#: includes/class-frontend-views.php:620
+#: includes/class-frontend-views.php:482
+msgid ""
+"When using a Start Fresh template, you must save the View before a Preview "
+"is available."
+msgstr ""
+
+#: includes/class-frontend-views.php:674
 msgid ""
 "You have attempted to view an entry that is not visible or may not exist."
 msgstr "আপনি এমন একটি এন্ট্রি দেখতে চাইছেন যেটি দৃশ্যমান নয় অথবা অস্তিত্ব নেই।"
 
-#: includes/class-frontend-views.php:1053
+#: includes/class-frontend-views.php:1129
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "পরিস্কার"
 
-#: includes/class-frontend-views.php:1054
+#: includes/class-frontend-views.php:1130
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "রিসেট"
@@ -1161,22 +1165,99 @@ msgstr "%s এক্সটেনশন সক্রিয় করা যায়ন
 msgid "The %s Extension requires GravityView Version %s or newer."
 msgstr "%s এক্সটেনশন চালানোর জন্য গ্রাভিটি ভিউ ভার্সন %s অথবা নতুনতর প্রয়োজন।"
 
-#: includes/class-oembed.php:199
+#: includes/class-gv-license-handler.php:71
+#: includes/class-gv-license-handler.php:338
+msgid "Activate License"
+msgstr "লাইসেন্স সক্রিয় করুন"
+
+#: includes/class-gv-license-handler.php:72
+#: includes/class-gv-license-handler.php:86
+#: includes/class-gv-license-handler.php:337 includes/class-settings.php:500
+msgid "Verifying license&hellip;"
+msgstr "&hellip;লাইসেন্স যাছাই করা হচ্ছে"
+
+#: includes/class-gv-license-handler.php:78
+#: includes/class-gv-license-handler.php:339
+msgid "Deactivate License"
+msgstr "লাইসেন্স নিস্ক্রিয় করুন"
+
+#: includes/class-gv-license-handler.php:79
+msgid "Deactivating license&hellip;"
+msgstr ""
+
+#: includes/class-gv-license-handler.php:85
+msgid "Check License"
+msgstr ""
+
+#: includes/class-gv-license-handler.php:325
+msgid "Status"
+msgstr "অবস্থা"
+
+#: includes/class-gv-license-handler.php:326
+msgid "There was an error processing the request."
+msgstr "অনুরোধ প্রক্রিয়াকরণে সমস্যা হচ্ছে।"
+
+#: includes/class-gv-license-handler.php:327
+msgid ""
+"Could not deactivate the license. The license key you attempted to "
+"deactivate may not be active or valid."
+msgstr ""
+
+#: includes/class-gv-license-handler.php:328
+msgid "The license key is valid, but it has not been activated for this site."
+msgstr ""
+
+#: includes/class-gv-license-handler.php:329
+msgid "Invalid: this license has reached its activation limit."
+msgstr ""
+
+#: includes/class-gv-license-handler.php:330
+msgid "The license has been deactivated."
+msgstr ""
+
+#: includes/class-gv-license-handler.php:331
+msgid "The license key is valid and active."
+msgstr ""
+
+#: includes/class-gv-license-handler.php:332
+msgid "The license key entered is invalid."
+msgstr ""
+
+#: includes/class-gv-license-handler.php:333
+msgid "The license key was not defined."
+msgstr ""
+
+#: includes/class-gv-license-handler.php:334
+msgid "This license key has been revoked."
+msgstr ""
+
+#: includes/class-gv-license-handler.php:335
+#, php-format
+msgid ""
+"This license key has expired. %sRenew your license on the GravityView "
+"website%s"
+msgstr ""
+
+#: includes/class-gv-license-handler.php:340
+msgid "Verify License"
+msgstr "লাইসেন্স যাছাই করুন"
+
+#: includes/class-oembed.php:198
 msgid "This will look better when it is embedded."
 msgstr "এটি যখন সংযুক্ত করা হবে, উন্নততর দেখাবে।"
 
-#: includes/class-oembed.php:200
+#: includes/class-oembed.php:199
 msgid ""
 "Styles don't get loaded when being previewed, so the content below will look"
 " strange. Don't be concerned!"
 msgstr "প্রিভিউ দেখার সময় স্টাইল লোড হবে না, তাই নিছের বিষয়বস্তু অদ্ভুত দেখাবে। এটা নিয়ে চিন্তা করবেন না।"
 
-#: includes/class-oembed.php:250
+#: includes/class-oembed.php:249
 #, php-format
 msgid "Embed Entry %d"
 msgstr "%d এন্ট্রি সংযুক্ত করুন"
 
-#: includes/class-oembed.php:252
+#: includes/class-oembed.php:251
 #, php-format
 msgid "This entry will be displayed as it is configured in View %d"
 msgstr "এই এন্ট্রি দৃশ্যে %d যেভাবে কনফিগার করা আছে সেভাবে দেখাবে"
@@ -1241,7 +1322,7 @@ msgstr "দৃশ্য"
 msgid "Create views based on a Gravity Forms form"
 msgstr "গ্রাভিটি ফর্মের ভিত্তিতে দৃশ্য তৈরি করুন"
 
-#: includes/class-post-types.php:123
+#: includes/class-post-types.php:122
 #, php-format
 msgid ""
 "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n"
@@ -1249,133 +1330,100 @@ msgid ""
 "If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
 msgstr "%s আপনার কোন সক্রিয় দৃশ্য নাই। %sএকটি দৃশ্য তৈরি করুন!%s\n\nযদি আপনি মনে করেন আপনার জায়গার অভাব আছে এবং কিভাবে শুরু করতে হবে তা দেখতে %sশুরুর পৃষ্ঠা%s দেখুন।%s "
 
-#: includes/class-settings.php:104
+#: includes/class-settings.php:135
+msgid "GravityView Settings"
+msgstr "গ্রাভিটি ভিউ এর বিন্যাস"
+
+#: includes/class-settings.php:176
 #, php-format
 msgid ""
 "Your GravityView license %s. This means you&rsquo;re missing out on updates "
 "and support! %sActivate your license%s or %sget a license here%s."
 msgstr "আপনার গ্রাভিটি ভিউ লাইসেন্স %s । এর মানে আপনি হালনাগাদ এবং সহয়তা থেকে বঞ্চিত হচ্ছেন! %sআপনার লাইসেন্স সক্রিয় করুন%s অথবা %sনতুন একটি লাইসেন্স নিন%s।"
 
-#: includes/class-settings.php:106
+#: includes/class-settings.php:177
 msgid "Inactive License"
 msgstr "লাইসেন্স নিস্ক্রিয়"
 
-#: includes/class-settings.php:111
+#: includes/class-settings.php:181
 msgid "Invalid License"
 msgstr "অকার্যকর লাইসেন্স"
 
-#: includes/class-settings.php:112
+#: includes/class-settings.php:182
 msgid "is invalid"
 msgstr "অকার্যকর"
 
-#: includes/class-settings.php:115
+#: includes/class-settings.php:185
 msgid "is inactive"
 msgstr "নিস্ক্রিয়"
 
-#: includes/class-settings.php:118
+#: includes/class-settings.php:188
 msgid "has not been activated"
 msgstr "সক্রিয় করা হয়নি"
 
-#: includes/class-settings.php:145
-msgid "Status"
-msgstr "অবস্থা"
+#: includes/class-settings.php:363 includes/class-settings.php:396
+msgid "Update Settings"
+msgstr ""
 
-#: includes/class-settings.php:146
-msgid "There was an error processing the request."
-msgstr "অনুরোধ প্রক্রিয়াকরণে সমস্যা হচ্ছে।"
-
-#: includes/class-settings.php:147
+#: includes/class-settings.php:467
 msgid ""
-"Could not deactivate the license. The submitted license key may not be "
-"active."
-msgstr "লাইসেন্স নিস্ক্রিয় করা যায়নি। উপস্থাপিত লাইসেন্স নম্বর সক্রিয় নয়।"
+"The license key you entered has been saved, but not activated. Please "
+"activate the license."
+msgstr ""
 
-#: includes/class-settings.php:148
-msgid "Not Activated"
-msgstr "সক্রিয় নয়"
+#: includes/class-settings.php:482
+msgid "Required"
+msgstr ""
 
-#: includes/class-settings.php:149
-msgid "Invalid; this license has reached its activation limit."
-msgstr "অকার্যকর; এই লাইসেন্স সর্বোচ্চ পরিমাণে পৌছেচে।"
-
-#: includes/class-settings.php:150
-msgid "Deactivated"
-msgstr "নিস্ক্রিয়"
-
-#: includes/class-settings.php:151
-msgid "Valid"
-msgstr "কার্যকর"
-
-#: includes/class-settings.php:152 includes/class-settings.php:153
-msgid "Not Valid"
-msgstr "কার্যকর নয়"
-
-#: includes/class-settings.php:154
-msgid "The license key has been revoked."
-msgstr "এই লাইসেন্স নম্বর প্রত্যাহার করা হয়েছে।"
-
-#: includes/class-settings.php:155
-msgid "The license key has expired."
-msgstr "এই লাইসেন্স নম্বর মেয়াদ উত্তীর্ণ হয়েছে।"
-
-#: includes/class-settings.php:157
-msgid "Verifying license&hellip;"
-msgstr "&hellip;লাইসেন্স যাছাই করা হচ্ছে"
-
-#: includes/class-settings.php:158
-msgid "Activate License"
-msgstr "লাইসেন্স সক্রিয় করুন"
-
-#: includes/class-settings.php:159
-msgid "Deactivate License"
-msgstr "লাইসেন্স নিস্ক্রিয় করুন"
-
-#: includes/class-settings.php:160
-msgid "Verify License"
-msgstr "লাইসেন্স যাছাই করুন"
-
-#: includes/class-settings.php:187
+#: includes/class-settings.php:497
 msgid "License Key"
 msgstr "লাইসেন্স নম্বর"
 
-#: includes/class-settings.php:188
+#: includes/class-settings.php:498
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
 msgstr "ক্রয়ের সময় যে লাইসেন্স নম্বর দেয়া হয়েছে সেটি প্রবেশ করান। এটি প্লাগইন্স হালনাগাদ এবং সহায়তা সক্রিয় করবে।"
 
-#: includes/class-settings.php:195
+#: includes/class-settings.php:519
 msgid "Support Email"
 msgstr "সাপোর্ট ইমেইল"
 
-#: includes/class-settings.php:196
+#: includes/class-settings.php:520
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
 msgstr "আপনার আবেদন গ্রহন করতে দয়া করে আপনার ইমেইল ঠিকানা দিন।"
 
-#: includes/class-settings.php:201
+#: includes/class-settings.php:526
 msgid "No-Conflict Mode"
 msgstr "সংঘাতহীন মোড"
 
-#: includes/class-settings.php:202
+#: includes/class-settings.php:531
+msgctxt "Setting: On or off"
+msgid "On"
+msgstr ""
+
+#: includes/class-settings.php:535
+msgctxt "Setting: On or off"
+msgid "Off"
+msgstr ""
+
+#: includes/class-settings.php:539
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
 msgstr "অন্যান্য প্লাগিন ও থিম সহ দ্বন্দ্ব হ্রাস গ্রাভিটি ভিউ অ্যাডমিন পাতায় ছাপা হওয়া থেকে বিদেশী স্ক্রিপ্ট এবং শৈলী প্রতিরোধ চালু করার জন্য এই সেট করুন -অসম্পূর্ণ"
 
-#: includes/class-settings.php:220
-msgid "GravityView Settings"
-msgstr "গ্রাভিটি ভিউ এর বিন্যাস"
-
-#: includes/class-settings.php:258
-msgid "Thank you."
+#: includes/class-settings.php:553
+msgid "GravityView Extension Settings"
 msgstr ""
 
-#: includes/class-settings.php:323
-msgid "Follow us on Google+"
-msgstr "গুগল+ এ আমাদের অনুসরণ করুন"
+#: includes/class-settings.php:575
+#, php-format
+msgid "You are running GravityView version %s"
+msgstr ""
 
 #: includes/default-templates.php:30
 msgid "Table (default)"
@@ -1437,83 +1485,83 @@ msgstr "বামের ফুটার"
 msgid "Footer Right"
 msgstr "ডানের ফুটার"
 
-#: includes/default-templates.php:395
+#: includes/default-templates.php:403
 msgid "Business Data"
 msgstr "ব্যবসায়িক তথ্য"
 
-#: includes/default-templates.php:396
+#: includes/default-templates.php:404
 msgid "Display business information in a table."
 msgstr "ব্যবসায়িক তথ্য ছক আকারে দেখান"
 
-#: includes/default-templates.php:417
+#: includes/default-templates.php:425
 msgid "Resume Board"
 msgstr "সংক্ষিপ্ত বোর্ড"
 
-#: includes/default-templates.php:418
+#: includes/default-templates.php:426
 msgid "Allow job-seekers to post their resumes."
 msgstr "চাকুরী-প্রার্থীদের তাদের সংক্ষিপ্ত বিবরণ পোষ্ট করতে অনুমতি দিন"
 
-#: includes/default-templates.php:439
+#: includes/default-templates.php:447
 msgid "Job Board"
 msgstr "চাকুরী বোর্ড"
 
-#: includes/default-templates.php:440
+#: includes/default-templates.php:448
 msgid "Post available jobs in a simple job board."
 msgstr "প্রাপ্তব্য চাকুরীসমূহ একটি সহজ চাকুরী বোর্ডে পোস্ট করুন।"
 
-#: includes/default-templates.php:461
+#: includes/default-templates.php:469
 msgid "People Table"
 msgstr "মানুষ ছক"
 
-#: includes/default-templates.php:462
+#: includes/default-templates.php:470
 msgid "Display information about people in a table."
 msgstr "ছকে মানুষের তথ্য দেখান"
 
-#: includes/default-templates.php:484
+#: includes/default-templates.php:492
 msgid "Issue Tracker"
 msgstr "বিষয় অনুসরণ"
 
-#: includes/default-templates.php:485
+#: includes/default-templates.php:493
 msgid "Manage issues and their statuses."
 msgstr "বিষয় এবং তাদের স্থিতিগুলোকে পরিচালনা করুন।"
 
-#: includes/default-templates.php:507
+#: includes/default-templates.php:515
 msgid "Business Listings"
 msgstr "ব্যবসায়িক তালিকা"
 
-#: includes/default-templates.php:508
+#: includes/default-templates.php:516
 msgid "Display business profiles."
 msgstr "ব্যবসায়িক পাশ্বচিত্র দেখান।"
 
-#: includes/default-templates.php:529
+#: includes/default-templates.php:537
 msgid "Event Listings"
 msgstr "ঘটনার তালিকা"
 
-#: includes/default-templates.php:530
+#: includes/default-templates.php:538
 msgid "Present a list of your events."
 msgstr "আপনার ঘটনাসমূহের তালিকা উপস্থাপন করুন।"
 
-#: includes/default-templates.php:551
+#: includes/default-templates.php:559
 msgid "People Profiles"
 msgstr "মানুষের পাশ্বচিত্র"
 
-#: includes/default-templates.php:552
+#: includes/default-templates.php:560
 msgid "List people with individual profiles."
 msgstr "পৃথক প্রোফাইলের ব্যক্তিদের তালিকা।"
 
-#: includes/default-templates.php:573
+#: includes/default-templates.php:581
 msgid "Staff Profiles"
 msgstr "স্টাফ প্রোফাইল"
 
-#: includes/default-templates.php:574
+#: includes/default-templates.php:582
 msgid "List members of your team."
 msgstr "আপনার দলের সদস্যদের তালিকা।"
 
-#: includes/default-templates.php:595
+#: includes/default-templates.php:603
 msgid "Website Showcase"
 msgstr "ওয়েবসাইট প্রদর্শনী"
 
-#: includes/default-templates.php:596
+#: includes/default-templates.php:604
 msgid "Feature submitted websites with screenshots."
 msgstr "স্ক্রিনশটসহ ওয়েবসাইটের বৈশিষ্ট্য জমা হয়েছে"
 
