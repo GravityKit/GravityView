@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2015-03-18 21:33-0700\n"
-"PO-Revision-Date: 2015-03-19 03:36+0000\n"
+"POT-Creation-Date: 2015-04-06 12:06-0700\n"
+"PO-Revision-Date: 2015-04-06 18:07+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Spanish (Mexico) (http://www.transifex.com/projects/p/gravityview/language/es_MX/)\n"
 "MIME-Version: 1.0\n"
@@ -22,15 +22,15 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: gravityview.php:261
+#: gravityview.php:263
 msgid "Top"
 msgstr "Arriba"
 
-#: gravityview.php:262
+#: gravityview.php:264
 msgid "Left"
 msgstr "Izquierda"
 
-#: gravityview.php:262
+#: gravityview.php:264
 msgid "Right"
 msgstr "Derecha"
 
@@ -185,7 +185,7 @@ msgstr "Entradas Múltiples"
 msgid "Single Entry"
 msgstr "Entrada Individual"
 
-#: includes/admin/metaboxes.php:255 includes/class-frontend-views.php:299
+#: includes/admin/metaboxes.php:255 includes/class-frontend-views.php:359
 #: includes/extensions/edit-entry/class-edit-entry.php:224
 #: includes/extensions/edit-entry/class-edit-entry.php:295
 #: includes/extensions/edit-entry/class-edit-entry.php:312
@@ -283,13 +283,13 @@ msgid "Insert View"
 msgstr "Insertar Vista"
 
 #: includes/class-admin-add-shortcode.php:130
-#: includes/class-admin-views.php:897
+#: includes/class-admin-views.php:899
 #: includes/extensions/edit-entry/class-edit-entry.php:1440
 msgid "Cancel"
 msgstr "Cancelar"
 
 #: includes/class-admin-add-shortcode.php:176
-#: includes/class-admin-views.php:901
+#: includes/class-admin-views.php:903
 msgid "Loading&hellip;"
 msgstr "Cargando&hellip;"
 
@@ -366,23 +366,23 @@ msgstr "Desaprobar la Entrada para GravityView"
 msgid "Approved the Entry for GravityView"
 msgstr "Aprobar la Entrada para Gravity View"
 
-#: includes/class-admin-approve-entries.php:457
+#: includes/class-admin-approve-entries.php:464
 msgid "Approve"
 msgstr "Aprobar"
 
-#: includes/class-admin-approve-entries.php:458
+#: includes/class-admin-approve-entries.php:465
 msgid "Disapprove"
 msgstr "Desaprobar"
 
-#: includes/class-admin-approve-entries.php:460
+#: includes/class-admin-approve-entries.php:467
 msgid "Entry not approved for directory viewing. Click to approve this entry."
 msgstr "Entrada no aprobada para vista de directorio. Clic para aprobar esta entrada."
 
-#: includes/class-admin-approve-entries.php:461
+#: includes/class-admin-approve-entries.php:468
 msgid "Entry approved for directory viewing. Click to disapprove this entry."
 msgstr "Entrada aprobada para vista de directorio. Clic para desaprobar esta entrada."
 
-#: includes/class-admin-approve-entries.php:462
+#: includes/class-admin-approve-entries.php:469
 msgid "Show entry in directory view?"
 msgstr "¿Mostrar entrada en vista directorio?"
 
@@ -456,8 +456,7 @@ msgstr "Editar Formulario"
 msgid "Entries"
 msgstr "Entradas"
 
-#: includes/class-admin-views.php:272 includes/class-settings.php:254
-#: includes/class-settings.php:255
+#: includes/class-admin-views.php:272 includes/class-settings.php:232
 msgid "Settings"
 msgstr "Ajustes"
 
@@ -572,39 +571,39 @@ msgid ""
 "configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:895
+#: includes/class-admin-views.php:897
 msgid "Enter View name here"
 msgstr "Ingresar nombre aquí"
 
-#: includes/class-admin-views.php:896
+#: includes/class-admin-views.php:898
 msgid "Close"
 msgstr "Cerrar"
 
-#: includes/class-admin-views.php:898
+#: includes/class-admin-views.php:900
 msgid "Continue"
 msgstr "Continuar"
 
-#: includes/class-admin-views.php:899
+#: includes/class-admin-views.php:901
 msgid "Ok"
 msgstr "Ok"
 
-#: includes/class-admin-views.php:900
+#: includes/class-admin-views.php:902
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr "Error mientras se creaba la Vista. Revise los ajustes o contacte al soporte de GravityView"
 
-#: includes/class-admin-views.php:902
+#: includes/class-admin-views.php:904
 msgid "There was an error loading dynamic content."
 msgstr "Hubo un error cargando el contenido dinámico."
 
-#: includes/class-admin-views.php:903
+#: includes/class-admin-views.php:905
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr "Error al agregar el campo . Por favor, inténtelo de nuevo o contacte a soporte de GravityView ."
 
-#: includes/class-admin-views.php:904
+#: includes/class-admin-views.php:906
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -646,25 +645,24 @@ msgstr "Lista de cambios"
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:477
+#: includes/class-admin-welcome.php:515
 msgid "GravityView is brought to you by:"
 msgstr "GravityView es traído para Ud. por:"
 
-#: includes/class-admin-welcome.php:502
+#: includes/class-admin-welcome.php:540
 msgid "Contributors"
 msgstr "Colaboradores"
 
-#: includes/class-admin-welcome.php:527
+#: includes/class-admin-welcome.php:561
 msgid "Want to contribute?"
 msgstr "¿Desea colaborar?"
 
-#: includes/class-admin-welcome.php:528
+#: includes/class-admin-welcome.php:562
 #, php-format
 msgid ""
-"If you want to contribute to the code, you can %srequest access to the "
-"Github repository%s. If your contributions are accepted, you will be thanked"
-" here."
-msgstr "Si desea contribuir al código, puede %ssolicitar acceso al repositorio de Github%s. Si sus contribuciones son aceptadas, se le agradecerá aquí."
+"If you want to contribute to the code, %syou can on Github%s. If your "
+"contributions are accepted, you will be thanked here."
+msgstr ""
 
 #: includes/class-admin.php:93
 msgid "Support"
@@ -817,98 +815,98 @@ msgstr "La búsqueda no devolvió resultados."
 msgid "No entries match your request."
 msgstr "No hay entradas que correspondan a su solicitud."
 
-#: includes/class-api.php:700
+#: includes/class-api.php:710
 msgid "&larr; Go back"
 msgstr "&larr; Regresar"
 
-#: includes/class-api.php:1067
+#: includes/class-api.php:1082
 msgid "Map It"
 msgstr "Localizarlo"
 
-#: includes/class-change-entry-creator.php:54
+#: includes/class-change-entry-creator.php:62
 msgid "Error"
 msgstr "Error"
 
-#: includes/class-change-entry-creator.php:56
+#: includes/class-change-entry-creator.php:64
 msgid "Success"
 msgstr "Éxito"
 
-#: includes/class-change-entry-creator.php:59
+#: includes/class-change-entry-creator.php:67
 #, php-format
 msgctxt ""
 "First parameter: Success or error of the action. Second: User ID number"
 msgid "%s: Assigned User ID #%d as the entry creator."
 msgstr "%s: ID #%d Usuario Asignado como creador de la entrada"
 
-#: includes/class-change-entry-creator.php:163
+#: includes/class-change-entry-creator.php:171
 #, php-format
 msgctxt ""
 "The name and the ID of users who initiated changes to entry ownership"
 msgid "%s (ID #%d)"
 msgstr "%s (ID #%d)"
 
-#: includes/class-change-entry-creator.php:165
+#: includes/class-change-entry-creator.php:173
 msgctxt ""
 "To show that the entry was unassigned from an actual user to no user."
 msgid "No User"
 msgstr "Sin usuario"
 
-#: includes/class-change-entry-creator.php:177
+#: includes/class-change-entry-creator.php:185
 #, php-format
 msgid "Changed entry creator from %s to %s"
 msgstr "Autor de entrada cambiado de %s a %s"
 
-#: includes/class-change-entry-creator.php:204
+#: includes/class-change-entry-creator.php:212
 msgid "Change Entry Creator:"
 msgstr "Cambiar autor de entrada"
 
-#: includes/class-change-entry-creator.php:207
+#: includes/class-change-entry-creator.php:215
 msgctxt "No user assigned to the entry"
 msgid "No User"
 msgstr "Sin usuario"
 
-#: includes/class-common.php:232
+#: includes/class-common.php:234
 msgid "Post ID"
 msgstr ""
 
-#: includes/class-common.php:241
+#: includes/class-common.php:243
 msgid "Payment Status"
 msgstr "Status de Pago"
 
-#: includes/class-common.php:246
+#: includes/class-common.php:248
 msgid "Payment Date"
 msgstr "Fecha de Pago"
 
-#: includes/class-common.php:251
+#: includes/class-common.php:253
 msgid "Payment Amount"
 msgstr "Cantidad Pagada"
 
-#: includes/class-common.php:256
+#: includes/class-common.php:258
 msgid "Payment Method"
 msgstr "Método de Pago"
 
-#: includes/class-common.php:261
+#: includes/class-common.php:263
 #: includes/extensions/search-widget/class-search-widget.php:639
 msgid "Is Fulfilled"
 msgstr "Está completa"
 
-#: includes/class-common.php:266
+#: includes/class-common.php:268
 msgid "Transaction ID"
 msgstr "ID Transacción"
 
-#: includes/class-common.php:271
+#: includes/class-common.php:273
 msgid "Transaction Type"
 msgstr "Tipo de Transacción"
 
-#: includes/class-common.php:783 includes/class-data.php:566
+#: includes/class-common.php:824 includes/class-data.php:566
 msgid "Default"
 msgstr "Defecto"
 
-#: includes/class-common.php:796 includes/class-data.php:567
+#: includes/class-common.php:837 includes/class-data.php:567
 msgid "Date Created"
 msgstr "Fecha Creada"
 
-#: includes/class-common.php:876
+#: includes/class-common.php:917
 msgid "Email hidden; Javascript is required."
 msgstr "Email oculto; Se requiere Javascript ."
 
@@ -1108,17 +1106,23 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Vacío"
 
-#: includes/class-frontend-views.php:620
+#: includes/class-frontend-views.php:482
+msgid ""
+"When using a Start Fresh template, you must save the View before a Preview "
+"is available."
+msgstr ""
+
+#: includes/class-frontend-views.php:674
 msgid ""
 "You have attempted to view an entry that is not visible or may not exist."
 msgstr "Ha intentado ver una entrada que no es visible o no existe."
 
-#: includes/class-frontend-views.php:1053
+#: includes/class-frontend-views.php:1129
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1054
+#: includes/class-frontend-views.php:1130
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""
@@ -1162,22 +1166,99 @@ msgstr "La extensión %s no pudo ser activada; GravityView no está activo."
 msgid "The %s Extension requires GravityView Version %s or newer."
 msgstr "La %s extensión requiere GravityView versión %s o más reciente."
 
-#: includes/class-oembed.php:199
+#: includes/class-gv-license-handler.php:71
+#: includes/class-gv-license-handler.php:338
+msgid "Activate License"
+msgstr "Activar Licencia"
+
+#: includes/class-gv-license-handler.php:72
+#: includes/class-gv-license-handler.php:86
+#: includes/class-gv-license-handler.php:337 includes/class-settings.php:500
+msgid "Verifying license&hellip;"
+msgstr "Verificando licencia&hellip;"
+
+#: includes/class-gv-license-handler.php:78
+#: includes/class-gv-license-handler.php:339
+msgid "Deactivate License"
+msgstr "Desactivar Licencia"
+
+#: includes/class-gv-license-handler.php:79
+msgid "Deactivating license&hellip;"
+msgstr ""
+
+#: includes/class-gv-license-handler.php:85
+msgid "Check License"
+msgstr ""
+
+#: includes/class-gv-license-handler.php:325
+msgid "Status"
+msgstr "Estado"
+
+#: includes/class-gv-license-handler.php:326
+msgid "There was an error processing the request."
+msgstr "Hubo un error al procesar la solicitud."
+
+#: includes/class-gv-license-handler.php:327
+msgid ""
+"Could not deactivate the license. The license key you attempted to "
+"deactivate may not be active or valid."
+msgstr ""
+
+#: includes/class-gv-license-handler.php:328
+msgid "The license key is valid, but it has not been activated for this site."
+msgstr ""
+
+#: includes/class-gv-license-handler.php:329
+msgid "Invalid: this license has reached its activation limit."
+msgstr ""
+
+#: includes/class-gv-license-handler.php:330
+msgid "The license has been deactivated."
+msgstr ""
+
+#: includes/class-gv-license-handler.php:331
+msgid "The license key is valid and active."
+msgstr ""
+
+#: includes/class-gv-license-handler.php:332
+msgid "The license key entered is invalid."
+msgstr ""
+
+#: includes/class-gv-license-handler.php:333
+msgid "The license key was not defined."
+msgstr ""
+
+#: includes/class-gv-license-handler.php:334
+msgid "This license key has been revoked."
+msgstr ""
+
+#: includes/class-gv-license-handler.php:335
+#, php-format
+msgid ""
+"This license key has expired. %sRenew your license on the GravityView "
+"website%s"
+msgstr ""
+
+#: includes/class-gv-license-handler.php:340
+msgid "Verify License"
+msgstr "Verificar Licencia"
+
+#: includes/class-oembed.php:198
 msgid "This will look better when it is embedded."
 msgstr ""
 
-#: includes/class-oembed.php:200
+#: includes/class-oembed.php:199
 msgid ""
 "Styles don't get loaded when being previewed, so the content below will look"
 " strange. Don't be concerned!"
 msgstr ""
 
-#: includes/class-oembed.php:250
+#: includes/class-oembed.php:249
 #, php-format
 msgid "Embed Entry %d"
 msgstr ""
 
-#: includes/class-oembed.php:252
+#: includes/class-oembed.php:251
 #, php-format
 msgid "This entry will be displayed as it is configured in View %d"
 msgstr ""
@@ -1242,7 +1323,7 @@ msgstr "vista"
 msgid "Create views based on a Gravity Forms form"
 msgstr "Crear vistas basadas en un formulario Gravity Forms"
 
-#: includes/class-post-types.php:123
+#: includes/class-post-types.php:122
 #, php-format
 msgid ""
 "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n"
@@ -1250,133 +1331,100 @@ msgid ""
 "If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
 msgstr "%sNo tiene ninguna vista activa. Vamos a %screar una%s!%s \n\nSi se siente perdido en el espacio y necesita ayuda para comenzar, eche un vistazo a la página de %sComenzar Usando%s."
 
-#: includes/class-settings.php:104
+#: includes/class-settings.php:135
+msgid "GravityView Settings"
+msgstr "Ajustes de GravityView"
+
+#: includes/class-settings.php:176
 #, php-format
 msgid ""
 "Your GravityView license %s. This means you&rsquo;re missing out on updates "
 "and support! %sActivate your license%s or %sget a license here%s."
 msgstr "Su licencia de GravityView %s. Esto siginifica que se está perdiendo de actualizaciones y soporte! %sActive su licencia%s u %sobtenga una aquí%s."
 
-#: includes/class-settings.php:106
+#: includes/class-settings.php:177
 msgid "Inactive License"
 msgstr "Licencia Inactiva"
 
-#: includes/class-settings.php:111
+#: includes/class-settings.php:181
 msgid "Invalid License"
 msgstr "Licencia Inválida"
 
-#: includes/class-settings.php:112
+#: includes/class-settings.php:182
 msgid "is invalid"
 msgstr "es inválida"
 
-#: includes/class-settings.php:115
+#: includes/class-settings.php:185
 msgid "is inactive"
 msgstr "es inactiva"
 
-#: includes/class-settings.php:118
+#: includes/class-settings.php:188
 msgid "has not been activated"
 msgstr "no ha sido activada"
 
-#: includes/class-settings.php:145
-msgid "Status"
-msgstr "Estado"
+#: includes/class-settings.php:363 includes/class-settings.php:396
+msgid "Update Settings"
+msgstr ""
 
-#: includes/class-settings.php:146
-msgid "There was an error processing the request."
-msgstr "Hubo un error al procesar la solicitud."
-
-#: includes/class-settings.php:147
+#: includes/class-settings.php:467
 msgid ""
-"Could not deactivate the license. The submitted license key may not be "
-"active."
-msgstr "No se puede desactivar la licencia . La llave enviada puede no estar activa "
+"The license key you entered has been saved, but not activated. Please "
+"activate the license."
+msgstr ""
 
-#: includes/class-settings.php:148
-msgid "Not Activated"
-msgstr "No Activado"
+#: includes/class-settings.php:482
+msgid "Required"
+msgstr ""
 
-#: includes/class-settings.php:149
-msgid "Invalid; this license has reached its activation limit."
-msgstr "Inválida; esta licencia ha llegado al límite de activaciones."
-
-#: includes/class-settings.php:150
-msgid "Deactivated"
-msgstr "Desactivada"
-
-#: includes/class-settings.php:151
-msgid "Valid"
-msgstr "Válida"
-
-#: includes/class-settings.php:152 includes/class-settings.php:153
-msgid "Not Valid"
-msgstr "No válida"
-
-#: includes/class-settings.php:154
-msgid "The license key has been revoked."
-msgstr "Esta licencia ha sido revocada."
-
-#: includes/class-settings.php:155
-msgid "The license key has expired."
-msgstr "Esta licencia ha expirado."
-
-#: includes/class-settings.php:157
-msgid "Verifying license&hellip;"
-msgstr "Verificando licencia&hellip;"
-
-#: includes/class-settings.php:158
-msgid "Activate License"
-msgstr "Activar Licencia"
-
-#: includes/class-settings.php:159
-msgid "Deactivate License"
-msgstr "Desactivar Licencia"
-
-#: includes/class-settings.php:160
-msgid "Verify License"
-msgstr "Verificar Licencia"
-
-#: includes/class-settings.php:187
+#: includes/class-settings.php:497
 msgid "License Key"
 msgstr "Llave de Licencia"
 
-#: includes/class-settings.php:188
+#: includes/class-settings.php:498
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
 msgstr "Ingrese la llave de licencia que le fue enviada en su compra. Esto habilita las actualizaciones y soporte del plugin."
 
-#: includes/class-settings.php:195
+#: includes/class-settings.php:519
 msgid "Support Email"
 msgstr "Email de Soporte"
 
-#: includes/class-settings.php:196
+#: includes/class-settings.php:520
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
 msgstr "Para obtener respuesta a su solicitud de soporte, por favor ingrese su correo electrónico"
 
-#: includes/class-settings.php:201
+#: includes/class-settings.php:526
 msgid "No-Conflict Mode"
 msgstr "Modo de No-Conflicto"
 
-#: includes/class-settings.php:202
+#: includes/class-settings.php:531
+msgctxt "Setting: On or off"
+msgid "On"
+msgstr ""
+
+#: includes/class-settings.php:535
+msgctxt "Setting: On or off"
+msgid "Off"
+msgstr ""
+
+#: includes/class-settings.php:539
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
 msgstr "Active esta función para evitar que scripts y estilos extraños se imprima en las páginas de administración de GravityView, reduciendo los conflictos con otros plugins y temas."
 
-#: includes/class-settings.php:220
-msgid "GravityView Settings"
-msgstr "Ajustes de GravityView"
-
-#: includes/class-settings.php:258
-msgid "Thank you."
+#: includes/class-settings.php:553
+msgid "GravityView Extension Settings"
 msgstr ""
 
-#: includes/class-settings.php:323
-msgid "Follow us on Google+"
-msgstr "Síganos en Google+"
+#: includes/class-settings.php:575
+#, php-format
+msgid "You are running GravityView version %s"
+msgstr ""
 
 #: includes/default-templates.php:30
 msgid "Table (default)"
@@ -1438,83 +1486,83 @@ msgstr "Pie de página izquierdo"
 msgid "Footer Right"
 msgstr "Pie de página derecho"
 
-#: includes/default-templates.php:395
+#: includes/default-templates.php:403
 msgid "Business Data"
 msgstr "Data de Negocio"
 
-#: includes/default-templates.php:396
+#: includes/default-templates.php:404
 msgid "Display business information in a table."
 msgstr "Mostrar información de negocio en una tabla."
 
-#: includes/default-templates.php:417
+#: includes/default-templates.php:425
 msgid "Resume Board"
 msgstr "Tablero de Resumen"
 
-#: includes/default-templates.php:418
+#: includes/default-templates.php:426
 msgid "Allow job-seekers to post their resumes."
 msgstr "Permitir a solicitantes de empleo publicar su currículum."
 
-#: includes/default-templates.php:439
+#: includes/default-templates.php:447
 msgid "Job Board"
 msgstr "Tablero de Trabajo"
 
-#: includes/default-templates.php:440
+#: includes/default-templates.php:448
 msgid "Post available jobs in a simple job board."
 msgstr "Publicar empleos disponibles en un tablero de trabajo simple."
 
-#: includes/default-templates.php:461
+#: includes/default-templates.php:469
 msgid "People Table"
 msgstr "Tabla de Personas"
 
-#: includes/default-templates.php:462
+#: includes/default-templates.php:470
 msgid "Display information about people in a table."
 msgstr "Mostrar información acerca de personas en una tabla."
 
-#: includes/default-templates.php:484
+#: includes/default-templates.php:492
 msgid "Issue Tracker"
 msgstr "Seguimiento de Incidencias"
 
-#: includes/default-templates.php:485
+#: includes/default-templates.php:493
 msgid "Manage issues and their statuses."
 msgstr "Gestionar incidencias y sus estados."
 
-#: includes/default-templates.php:507
+#: includes/default-templates.php:515
 msgid "Business Listings"
 msgstr "Listados de Negocios"
 
-#: includes/default-templates.php:508
+#: includes/default-templates.php:516
 msgid "Display business profiles."
 msgstr "Mostrar perfiles de negocios."
 
-#: includes/default-templates.php:529
+#: includes/default-templates.php:537
 msgid "Event Listings"
 msgstr "Listados de Eventos"
 
-#: includes/default-templates.php:530
+#: includes/default-templates.php:538
 msgid "Present a list of your events."
 msgstr "Muestra una lista de sus eventos."
 
-#: includes/default-templates.php:551
+#: includes/default-templates.php:559
 msgid "People Profiles"
 msgstr "Perfiles de Personas"
 
-#: includes/default-templates.php:552
+#: includes/default-templates.php:560
 msgid "List people with individual profiles."
 msgstr "Listar personas con perfiles individuales."
 
-#: includes/default-templates.php:573
+#: includes/default-templates.php:581
 msgid "Staff Profiles"
 msgstr "Perfiles de Personal"
 
-#: includes/default-templates.php:574
+#: includes/default-templates.php:582
 msgid "List members of your team."
 msgstr "Lista miembros de su equipo."
 
-#: includes/default-templates.php:595
+#: includes/default-templates.php:603
 msgid "Website Showcase"
 msgstr "Muestra de sitios web"
 
-#: includes/default-templates.php:596
+#: includes/default-templates.php:604
 msgid "Feature submitted websites with screenshots."
 msgstr "Principales sitios web enviados con capturas de pantalla."
 

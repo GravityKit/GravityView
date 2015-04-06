@@ -3,6 +3,8 @@
 // http://katz.co/gravityview/
 // ================================================
 
+@import "responsive";
+
 // 1. Variables
 // ================================================
 
@@ -28,6 +30,22 @@ $color-description: #999;
 	}
 	*zoom: 1;
 }
+
+.gv-grid-col-1-3 {
+  @include respond($small-tablet) {
+    width: 100%;
+    float: none;
+  }
+}
+
+.gv-grid-col-2-3 {
+  @include respond($small-tablet) {
+    width: 100%;
+    float: none;
+  }
+}
+
+
 
 // 3. Structure
 // ================================================
@@ -85,17 +103,18 @@ $color-description: #999;
 		padding: 0;
 	}
 
-	img {
+    .gv-list-view-content-image img {
 		display: block;
+        width: 100%;
+        margin: 0 1em 1em 0;
 	}
 
 	// Featured Image
 	.gv-list-view-content-image {
-		float: left;
-		margin: 0 1em 1em 0;
+		//float: left;
 
-		max-width: 45%;
-		max-height: 400px;
+		//max-width: 45%;
+		//max-height: 400px;
 
 		.gv-field-file-uploads li,
 		.gv-field-file-uploads {

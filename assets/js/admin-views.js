@@ -220,6 +220,24 @@
 				}
 			}
 
+			vcfg.togglePreviewButton();
+
+		},
+
+		/**
+		 * Only show the Preview button if a form is selected.
+		 * Otherwise, gravityview_get_entries() doesn't work.
+		 */
+		togglePreviewButton: function() {
+
+			var preview_button = $('#preview-action .button');
+
+			if( '' === viewConfiguration.gvSelectForm.val() ) {
+				preview_button.hide();
+			} else {
+				preview_button.show();
+			}
+
 		},
 
 		// hides template picker metabox and view config metabox
@@ -227,6 +245,7 @@
 			var vcfg = viewConfiguration;
 
 			vcfg.currentFormId = '';
+			vcfg.togglePreviewButton();
 			$( "#gravityview_view_config, #gravityview_select_template, #gravityview_sort_filter, .gv-form-links" ).hide();
 
 		},
@@ -308,6 +327,8 @@
 
 			// hide config metabox
 			vcfg.hideViewConfig();
+
+			vcfg.togglePreviewButton();
 		},
 
 		/**
@@ -325,6 +346,8 @@
 			} else {
 				vcfg.formChangeContinue();
 			}
+
+			vcfg.togglePreviewButton();
 		},
 
 		formChangeContinue: function () {

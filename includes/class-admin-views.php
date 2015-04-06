@@ -809,7 +809,7 @@ class GravityView_Admin_Views {
 			return;
 		}
 
-		$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $template_id );
+		$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $template_id, $context );
 
 		if( empty( $template_areas ) ) {
 
@@ -837,6 +837,8 @@ class GravityView_Admin_Views {
 
 		return $output;
 	}
+
+
 
 	/**
 	 * Uservoice feedback widget
