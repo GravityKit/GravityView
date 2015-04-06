@@ -307,7 +307,7 @@ class GV_License_Handler {
 		// Update option with passed data license
 		$settings = $this->Addon->get_app_settings();
 
-		$settings['license_key'] = trim( $data['license'] );
+        $settings['license_key'] = $license_data->license_key = trim( $data['license'] );
 		$settings['license_key_status'] = $license_data->license;
 		$settings['license_key_response'] = (array)$license_data;
 
