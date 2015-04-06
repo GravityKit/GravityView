@@ -204,7 +204,7 @@ class GravityView_Change_Entry_Creator {
          * @link   text http://codex.wordpress.org/Function_Reference/get_users
          * @var  array Settings array
          */
-        $get_users_settings = apply_filters( 'gravityview_change_entry_creator_user_parameters', array( 'number' => 300 ) );
+        $get_users_settings = apply_filters( 'gravityview_change_entry_creator_user_parameters', array( 'number' => 750 ) );
 
         $users = get_users( $get_users_settings );
 

@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Date and Time fields now properly internationalized (using `date_i18n` instead of `date`)
 * Added: `gravityview_disable_change_entry_creator` filter to disable the Change Entry Creator functionality
 * Modified: Migrated to use Gravity Forms settings
+* Modified: Update limit to 750 users in Change Entry Creator dropdown (up from 300)
 
 = 1.7.3 on March 25 =
 * Fixed: Prevent displaying a single Entry that doesn't match configured Advanced Filters
