@@ -330,6 +330,7 @@ class GravityView_Settings extends GFAddOn {
 	}
 
 	/**
+	 * Allow public access to the GV_License_Handler class
 	 * @since 1.7.4
 	 *
 	 * @return GV_License_Handler
@@ -449,10 +450,17 @@ class GravityView_Settings extends GFAddOn {
 		return $defaults;
 	}
 
+	/**
+	 * When the settings are saved, make sure the license key matches the previously activated key
+	 *
+	 * @return array settings from parent::get_posted_settings(), with `license_key_response` and `license_key_status` potentially unset
+	 */
 	public function get_posted_settings() {
 
 		$posted_settings = parent::get_posted_settings();
 
+		// If the posted key doesn't match the activated/deactivated key (set using the Activate License button, AJAX response),
+		// then we assume it's changed. If it's changed, unset the status and the previous response.
 		if( isset( $posted_settings['license_key'] ) && $posted_settings['license_key'] !== $posted_settings['license_key_response']['license_key'] ) {
 			unset( $posted_settings['license_key_response'] );
 			unset( $posted_settings['license_key_status'] );
@@ -553,6 +561,7 @@ class GravityView_Settings extends GFAddOn {
 
 		/**
 		 * Redux backward compatibility
+		 * @since 1.7.4
 		 */
 		foreach ( $fields as &$field ) {
 			$field['name']          = isset( $field['name'] ) ? $field['name'] : rgget('id', $field );

@@ -299,6 +299,25 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>Changes in 1.7.4</h3>
+
+				<ul>
+					<li>Modified: The List template is now responsive! Looks great on big and small screens.</li>
+					<li>Fixed: When editing an entry in the frontend it gets unapproved</li>
+					<li>Fixed: Conflicts between the Advanced Filter extension and the Single Entry mode (if using <code>ANY</code> mode for filters)</li>
+					<li>Fixed: Sorting by full name. Now sorts by first name by default.
+
+						<ul>
+							<li>Added <code>gravityview/sorting/full-name</code> filter to sort by last name (<a href="https://gist.github.com/zackkatz/cd42bee4f361f422824e">see how</a>)</li>
+						</ul>
+					</li>
+					<li>Fixed: Date and Time fields now properly internationalized (using <code>date_i18n</code> instead of <code>date</code>)</li>
+					<li>Added: <code>gravityview_disable_change_entry_creator</code> filter to disable the Change Entry Creator functionality</li>
+					<li>Modified: Migrated to use Gravity Forms settings</li>
+					<li>Modified: Updated limit to 750 users (up from 300) in Change Entry Creator dropdown.</li>
+					<li>Confirmed WordPress 4.2 compatibility</li>
+				</ul>
+				
 				<h3>Changes in 1.7.3</h3>
 
 				<ul>

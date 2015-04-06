@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.1.1
+Tested up to: 4.2
 Stable tag: trunk
 Contributors: katzwebservices, luistinygod
 License: GPL 3 or higher
@@ -20,7 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= 1.7.4 =
+= 1.7.4 on April 6 =
 * Modified: The List template is now responsive! Looks great on big and small screens.
 * Fixed: When editing an entry in the frontend it gets unapproved
 * Fixed: Conflicts between the Advanced Filter extension and the Single Entry mode (if using `ANY` mode for filters)
@@ -29,7 +29,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Date and Time fields now properly internationalized (using `date_i18n` instead of `date`)
 * Added: `gravityview_disable_change_entry_creator` filter to disable the Change Entry Creator functionality
 * Modified: Migrated to use Gravity Forms settings
-* Modified: Update limit to 750 users in Change Entry Creator dropdown (up from 300)
+* Modified: Updated limit to 750 users (up from 300) in Change Entry Creator dropdown.
+* Confirmed WordPress 4.2 compatibility
 
 = 1.7.3 on March 25 =
 * Fixed: Prevent displaying a single Entry that doesn't match configured Advanced Filters
