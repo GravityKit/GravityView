@@ -95,16 +95,36 @@
 
   }
 
-  .gform_tab_content {
+  .gform_tab_group {
     position: relative;
 
     // Don't change the position of the inputs when the .updated div slideUps
     #message {
       position: absolute;
-      width: 100%;
-      margin-bottom: 10px;
+
+      // As wide as it needs to be
+      width: auto;
+      white-space: nowrap;
+
+      // Make it look like Floaty is saying it
+      top: 35px;
+      left: 150px;
+
+      margin-bottom: 10px; // For when JS is off, make sure it has some space
+
+      padding-top: 5px;
+      padding-bottom: 5px;
       z-index: 1000;
       opacity: .95;
+
+      p {
+        margin: 0;
+        padding: .25em 5px;
+        font-size: 16px;
+          strong {
+            font-weight: 400;
+          }
+      }
     }
   }
 
@@ -125,17 +145,22 @@
   #gform-settings {
 
     clear: both;
-    margin-top: 30px;
 
     tr {
-      border-bottom:1px solid #E7E7E7
+      border-top:1px solid #E7E7E7
+    }
+
+    tr:first-child,
+    tr:last-child {
+      border-top: none;
+      td, th {
+        padding-top: 10px!important;
+      }
     }
 
     tr:last-child {
-      border-bottom: none;
-
       td, th {
-        padding-bottom: 0!important;
+        padding-bottom: 10px!important;
       }
     }
 

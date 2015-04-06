@@ -32,7 +32,7 @@
 		 */
 		message_fadeout: function() {
 			setTimeout( function() {
-				$('#gform_tab_group #message').slideUp();
+				$('#gform_tab_group #message' ).toggle('scale');
 			}, 2000 );
 		},
 
