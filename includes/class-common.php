@@ -539,7 +539,7 @@ class GVCommon {
      *
      * @since 1.7.4
      *
-     * @param $entry array Gravity Forms Entry object
+     * @param array $entry Gravity Forms Entry object
      * @return bool|array Returns 'false' if entry is not valid according to the view search filters (Adv Filter)
      */
     public static function check_entry_display( $entry ) {

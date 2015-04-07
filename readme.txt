@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 = 1.7.4.1 =
 * Fixed: Fatal error when attempting to view entry that does not exist (introduced in 1.7.4)
+* Updated: Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/). Thanks!
 
 = 1.7.4 on April 6 =
 * Modified: The List template is now responsive! Looks great on big and small screens.
