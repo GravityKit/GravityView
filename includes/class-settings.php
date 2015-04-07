@@ -541,13 +541,6 @@ class GravityView_Settings extends GFAddOn {
 
 		) );
 
-		$fields = array_merge( $fields, $extension_fields );
-
-        $fields[] = array(
-            'class' => 'button button-primary button-hero',
-            'type'     => 'save',
-        );
-
 		/**
 		 * Redux backward compatibility
 		 * @since 1.7.4
@@ -559,23 +552,34 @@ class GravityView_Settings extends GFAddOn {
 			$field['description']   = isset( $field['description'] ) ? $field['description'] : rgget('subtitle', $field );
 		}
 
-		$sections = array(
-			array(
-				'description' =>      sprintf( '<span class="version-info description">%s</span>', sprintf( __('You are running GravityView version %s', 'gravityview'), GravityView_Plugin::version ) ),
-				'fields'      => $fields,
-			)
-		);
 
-		// Extensions can tap in here.
-		$extension_fields = apply_filters( 'gravityview_extension_fields', array() );
+        $sections = array(
+            array(
+                'description' =>      sprintf( '<span class="version-info description">%s</span>', sprintf( __('You are running GravityView version %s', 'gravityview'), GravityView_Plugin::version ) ),
+                'fields'      => $fields,
+            )
+        );
+
+        // custom 'update settings' button
+        $button = array(
+            'class' => 'button button-primary button-hero',
+            'type'     => 'save',
+        );
+
+        // Extensions can tap in here.
+        $extension_fields = apply_filters( 'gravityview_extension_fields', array() );
 
 		// If there are extensions, add a section for them
 		if ( ! empty( $extension_fields ) ) {
+            $extension_fields[] = $button;
 			$sections[] = array(
-				'title' => __('GravityView Extension Settings', 'gravityview'),
+				'title' => __( 'GravityView Extension Settings', 'gravityview' ),
 				'fields' => $extension_fields,
 			);
-		}
+		} else {
+            // add the 'update settings' button to the general section
+            $sections[0]['fields'][] = $button;
+        }
 
 		return $sections;
 	}
