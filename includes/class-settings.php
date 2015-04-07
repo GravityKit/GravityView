@@ -541,19 +541,6 @@ class GravityView_Settings extends GFAddOn {
 
 		) );
 
-		// Extensions can tap in here.
-		$extension_fields = apply_filters( 'gravityview_extension_fields', array() );
-
-		// If there are extensions, add a section for them
-		if ( ! empty( $extension_fields ) ) {
-			array_unshift( $extension_fields, array(
-				'title'  => __('GravityView Extension Settings', 'gravityview'),
-				'id'     => 'gravityview-extensions-header',
-				'type'   => 'gv_section',
-				'indent' => false,
-			) );
-		}
-
 		$fields = array_merge( $fields, $extension_fields );
 
         $fields[] = array(
@@ -579,6 +566,17 @@ class GravityView_Settings extends GFAddOn {
 			)
 		);
 
+		// Extensions can tap in here.
+		$extension_fields = apply_filters( 'gravityview_extension_fields', array() );
+
+		// If there are extensions, add a section for them
+		if ( ! empty( $extension_fields ) ) {
+			$sections[] = array(
+				'title' => __('GravityView Extension Settings', 'gravityview'),
+				'fields' => $extension_fields,
+			);
+		}
+
 		return $sections;
 	}
 
@@ -592,15 +590,6 @@ class GravityView_Settings extends GFAddOn {
 	static public function getSetting( $key ) {
 		return self::get_instance()->get_app_setting( $key );
 	}
-
-    /**
-     * Render the custom type 'gv_section'
-     * 
-     * @link http://www.gravityhelp.com/documentation/gravity-forms/extending-gravity-forms/add-on-framework/gfaddon/#section-example
-     */
-    public function settings_gv_section() {
-        //void on purpose!
-    }
 
 }
 
