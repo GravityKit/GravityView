@@ -539,10 +539,15 @@ class GVCommon {
      *
      * @since 1.7.4
      *
-     * @param $entry array Gravity Forms Entry object
+     * @param array $entry Gravity Forms Entry object
      * @return bool|array Returns 'false' if entry is not valid according to the view search filters (Adv Filter)
      */
     public static function check_entry_display( $entry ) {
+
+	    if( ! $entry || is_wp_error( $entry ) ) {
+		    do_action( 'gravityview_log_debug', __METHOD__ . ' Entry was not found.', $entry );
+		    return false;
+	    }
 
         if( empty( $entry['form_id'] ) ) {
             do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry is empty! Entry:', $entry );
