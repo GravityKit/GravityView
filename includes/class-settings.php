@@ -538,10 +538,7 @@ class GravityView_Settings extends GFAddOn {
 				),
 				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ),
 			),
-			array(
-				'class' => 'button button-primary button-hero',
-				'type'     => 'save',
-			),
+
 		) );
 
 		// Extensions can tap in here.
@@ -552,12 +549,17 @@ class GravityView_Settings extends GFAddOn {
 			array_unshift( $extension_fields, array(
 				'title'  => __('GravityView Extension Settings', 'gravityview'),
 				'id'     => 'gravityview-extensions-header',
-				'type'   => 'section',
+				'type'   => 'gv_section',
 				'indent' => false,
 			) );
 		}
 
 		$fields = array_merge( $fields, $extension_fields );
+
+        $fields[] = array(
+            'class' => 'button button-primary button-hero',
+            'type'     => 'save',
+        );
 
 		/**
 		 * Redux backward compatibility
@@ -590,6 +592,15 @@ class GravityView_Settings extends GFAddOn {
 	static public function getSetting( $key ) {
 		return self::get_instance()->get_app_setting( $key );
 	}
+
+    /**
+     * Render the custom type 'gv_section'
+     * 
+     * @link http://www.gravityhelp.com/documentation/gravity-forms/extending-gravity-forms/add-on-framework/gfaddon/#section-example
+     */
+    public function settings_gv_section() {
+        //void on purpose!
+    }
 
 }
 
