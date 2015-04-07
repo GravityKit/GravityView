@@ -544,6 +544,11 @@ class GVCommon {
      */
     public static function check_entry_display( $entry ) {
 
+	    if( ! $entry || is_wp_error( $entry ) ) {
+		    do_action( 'gravityview_log_debug', __METHOD__ . ' Entry was not found.', $entry );
+		    return false;
+	    }
+
         if( empty( $entry['form_id'] ) ) {
             do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry is empty! Entry:', $entry );
             return false;

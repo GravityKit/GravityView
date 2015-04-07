@@ -299,6 +299,11 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>Changes in 1.7.4.1</h3>
+				<ul>
+					<li>* Fixed: Fatal error when attempting to view entry that does not exist (introduced in 1.7.4)</li>
+				</ul>
+
 				<h3>Changes in 1.7.4</h3>
 
 				<ul>
