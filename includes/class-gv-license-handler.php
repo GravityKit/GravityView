@@ -20,7 +20,7 @@ class GV_License_Handler {
 	/**
 	 * @var GV_License_Handler
 	 */
-	static $instance;
+	public static $instance;
 
 	/**
 	 * @param GravityView_Settings $GFAddOn
@@ -251,17 +251,19 @@ class GV_License_Handler {
 	 */
 	public function license_call( $array = array() ) {
 
+		$is_ajax = ( defined('DOING_AJAX') && DOING_AJAX );
 		$data = empty( $array ) ? $_POST['data'] : $array;
 
-		if ( empty( $data['license'] ) ) {
+		if ( $is_ajax && empty( $data['license'] ) ) {
 			die( - 1 );
 		}
 
 		$license = esc_attr( rgget( 'license', $data ) );
 		$license_data = $this->_license_get_remote_response( $data, $license );
 
+		// Empty is returned when there's an error.
 		if ( empty( $license_data ) ) {
-			if ( empty( $array ) ) {
+			if ( $is_ajax ) {
 				exit( json_encode( array() ) );
 			} else { // Non-ajax call
 				return json_encode( array() );
@@ -290,7 +292,7 @@ class GV_License_Handler {
 
 		}
 
-		if ( empty( $array ) ) {
+		if ( $is_ajax ) {
 			exit( $json );
 		} else { // Non-ajax call
 			return ( rgget('format', $data ) === 'object' ) ? $license_data : $json;

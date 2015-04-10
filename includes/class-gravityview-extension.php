@@ -56,12 +56,13 @@ abstract class GravityView_Extension {
 
 	function settings( $settings ) {
 
-		if( defined('DOING_AJAX') && DOING_AJAX ) {
+		// If doing ajax, get outta here
+		if( false === GravityView_Plugin::is_admin() )  {
 			return;
 		}
 
 		if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-			include_once plugin_dir_path( __FILE__ ) . 'lib/edd-redux-extension/edd_license/EDD_SL_Plugin_Updater.php';
+			include_once plugin_dir_path( __FILE__ ) . 'lib/EDD_SL_Plugin_Updater.php';
 		}
 
 		if( !class_exists( 'GravityView_Settings' ) ) { return; }

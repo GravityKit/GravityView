@@ -20,7 +20,16 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= 1.7.4.1 =
+= 1.7.5 on April 10 =
+* Added: `[gvlogic]` Shortcode - allows you to show or hide content based on the value of merge tags in Custom Content fields! [Learn how to use the shortcode](http://docs.gravityview.co/article/252-gvlogic-shortcode).
+* Fixed: White Screen error when license key wasn't set and settings weren't migrated (introduced in 1.7.4)
+* Fixed: No-Conflict Mode not working (introduced in 1.7.4)
+* Fixed: PHP notices when visiting complex URLs
+* Fixed: Path to plugin updater file, used by Extensions
+* Fixed: Extension global settings layout improved (yet to be implemented)
+* Tweak: Restructure plugin file locations
+
+= 1.7.4.1 on April 7 =
 * Fixed: Fatal error when attempting to view entry that does not exist (introduced in 1.7.4)
 * Updated: Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/). Thanks!
 

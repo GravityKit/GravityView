@@ -18,8 +18,6 @@ class GravityView_Migrate {
 		add_action( 'admin_init', array( $this, 'update_settings' ), 1 );
 	}
 
-
-
 	public function update_settings() {
 
 		$this->maybe_migrate_search_widget();
@@ -32,6 +30,7 @@ class GravityView_Migrate {
 	 * @since 1.7.4
 	 */
 	private function maybe_migrate_search_widget() {
+
 		// check if search migration is already performed
 		$is_updated = get_option( 'gv_migrate_searchwidget' );
 		if ( $is_updated ) {
@@ -87,7 +86,7 @@ class GravityView_Migrate {
 
 		$data = array(
 			'edd_action' => 'check_license',
-			'license' => $redux_settings['license_key'],
+			'license' => rgget('license_key', $redux_settings ),
 			'update' => false,
 			'format' => 'object',
 		);
@@ -117,9 +116,10 @@ class GravityView_Migrate {
 			return false;
 		}
 
+
 		$redux_settings = array(
 			'support-email' => rgget( 'support-email', $redux_option ),
-			'no-conflict-mode' => rgget( 'no-conflict-mode', $redux_option ) ? '1' : '0',
+			'no-conflict-mode' => ( rgget( 'no-conflict-mode', $redux_option ) ? '1' : '0' ),
 		);
 
 		if( $license_array = rgget( 'license', $redux_option ) ) {

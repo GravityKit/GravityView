@@ -461,7 +461,7 @@ class GravityView_Settings extends GFAddOn {
 
 		// If the posted key doesn't match the activated/deactivated key (set using the Activate License button, AJAX response),
 		// then we assume it's changed. If it's changed, unset the status and the previous response.
-		if( isset( $posted_settings['license_key'] ) && $posted_settings['license_key'] !== $posted_settings['license_key_response']['license_key'] ) {
+		if( isset( $posted_settings['license_key'] ) && isset( $posted_settings['license_key_response']['license_key'] ) && $posted_settings['license_key'] !== $posted_settings['license_key_response']['license_key'] ) {
 			unset( $posted_settings['license_key_response'] );
 			unset( $posted_settings['license_key_status'] );
 			GFCommon::add_error_message( __('The license key you entered has been saved, but not activated. Please activate the license.', 'gravityview' ) );
@@ -538,26 +538,8 @@ class GravityView_Settings extends GFAddOn {
 				),
 				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ),
 			),
-			array(
-				'class' => 'button button-primary button-hero',
-				'type'     => 'save',
-			),
+
 		) );
-
-		// Extensions can tap in here.
-		$extension_fields = apply_filters( 'gravityview_extension_fields', array() );
-
-		// If there are extensions, add a section for them
-		if ( ! empty( $extension_fields ) ) {
-			array_unshift( $extension_fields, array(
-				'title'  => __('GravityView Extension Settings', 'gravityview'),
-				'id'     => 'gravityview-extensions-header',
-				'type'   => 'section',
-				'indent' => false,
-			) );
-		}
-
-		$fields = array_merge( $fields, $extension_fields );
 
 		/**
 		 * Redux backward compatibility
@@ -570,12 +552,34 @@ class GravityView_Settings extends GFAddOn {
 			$field['description']   = isset( $field['description'] ) ? $field['description'] : rgget('subtitle', $field );
 		}
 
-		$sections = array(
-			array(
-				'description' =>      sprintf( '<span class="version-info description">%s</span>', sprintf( __('You are running GravityView version %s', 'gravityview'), GravityView_Plugin::version ) ),
-				'fields'      => $fields,
-			)
-		);
+
+        $sections = array(
+            array(
+                'description' =>      sprintf( '<span class="version-info description">%s</span>', sprintf( __('You are running GravityView version %s', 'gravityview'), GravityView_Plugin::version ) ),
+                'fields'      => $fields,
+            )
+        );
+
+        // custom 'update settings' button
+        $button = array(
+            'class' => 'button button-primary button-hero',
+            'type'     => 'save',
+        );
+
+        // Extensions can tap in here.
+        $extension_fields = apply_filters( 'gravityview_extension_fields', array() );
+
+		// If there are extensions, add a section for them
+		if ( ! empty( $extension_fields ) ) {
+            $extension_fields[] = $button;
+			$sections[] = array(
+				'title' => __( 'GravityView Extension Settings', 'gravityview' ),
+				'fields' => $extension_fields,
+			);
+		} else {
+            // add the 'update settings' button to the general section
+            $sections[0]['fields'][] = $button;
+        }
 
 		return $sections;
 	}
@@ -593,4 +597,4 @@ class GravityView_Settings extends GFAddOn {
 
 }
 
-new GravityView_Settings;
+GravityView_Settings::get_instance();
