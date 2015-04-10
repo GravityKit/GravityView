@@ -75,13 +75,13 @@ class GVLogic_Shortcode {
 	var $is_match = false;
 
 	/**
-	 * @var GV_If_Shortcode
+	 * @var GVLogic_Shortcode
 	 */
 	private static $instance;
 
 	/**
 	 * Instantiate!
-	 * @return GV_If_Shortcode
+	 * @return GVLogic_Shortcode
 	 */
 	public static function get_instance() {
 
@@ -182,13 +182,13 @@ class GVLogic_Shortcode {
 	 * @param null $content
 	 * @param string $shortcode_tag
 	 *
-	 * @return mixed|void
+	 * @return string|null
 	 */
 	public function shortcode( $atts = array(), $content = NULL, $shortcode_tag = '' ) {
 
 		// Don't process except on frontend
 		if ( is_admin() ) {
-			return;
+			return null;
 		}
 
 		$this->passed_atts = $atts;
@@ -200,7 +200,7 @@ class GVLogic_Shortcode {
 		// We need an "if"
 		if( empty( $this->if ) ) {
 			do_action( 'gravityview_log_debug', __METHOD__.' $atts if is empty.', $this->atts );
-			return;
+			return null;
 		}
 
 		$setup = $this->setup_operation_and_comparison();
@@ -208,7 +208,7 @@ class GVLogic_Shortcode {
 		// We need an operation and comparison value
 		if( ! $setup ) {
 			do_action( 'gravityview_log_debug', __METHOD__.' No valid operators were passed.', $this->atts );
-			return;
+			return null;
 		}
 
 		// Set the content and else_content
@@ -223,52 +223,12 @@ class GVLogic_Shortcode {
 
 	/**
 	 * Does the if and the comparson match?
-	 * @uses GFFormsModel::matches_operation
+	 * @uses GVCommon::matches_operation
 	 *
 	 * @return boolean True: yep; false: nope
 	 */
 	function set_is_match() {
-		$this->is_match = $this->matches_operation( $this->if, $this->comparison, $this->operation );
-	}
-
-	/**
-	 * Wrapper for the GFFormsModel::matches_operation() method that adds additional comparisons, including:
-	 * 'equals', 'greater_than_or_is', 'greater_than_or_equals', 'less_than_or_is', 'less_than_or_equals',
-	 * and 'not contains'
-	 *
-	 * @param string $val1 Left side of comparison
-	 * @param string $val2 Right side of comparison
-	 * @param string $operation Type of comparison
-	 *
-	 * @return bool True: matches, false: not matches
-	 */
-	function matches_operation( $val1, $val2, $operation ) {
-
-		switch( $operation ) {
-			case 'equals':
-				$value = GFFormsModel::matches_operation( $this->if, $this->comparison, 'is' );
-				break;
-			case 'greater_than_or_is':
-			case 'greater_than_or_equals':
-				$is = GFFormsModel::matches_operation( $this->if, $this->comparison, 'is' );
-				$gt = GFFormsModel::matches_operation( $this->if, $this->comparison, 'greater_than' );
-				$value = ( $is || $gt );
-				break;
-			case 'less_than_or_is':
-			case 'less_than_or_equals':
-				$is = GFFormsModel::matches_operation( $this->if, $this->comparison, 'is' );
-				$gt = GFFormsModel::matches_operation( $this->if, $this->comparison, 'less_than' );
-				$value = ( $is || $gt );
-				break;
-			case 'not_contains':
-				$contains = GFFormsModel::matches_operation( $this->if, $this->comparison, 'contains' );
-				$value = !$contains;
-				break;
-			default:
-				$value = GFFormsModel::matches_operation( $this->if, $this->comparison, $this->operation );
-		}
-
-		return $value;
+		$this->is_match = GVCommon::matches_operation( $this->if, $this->comparison, $this->operation );
 	}
 
 	/**

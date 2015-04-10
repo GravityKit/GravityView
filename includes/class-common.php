@@ -531,6 +531,50 @@ class GVCommon {
 		return false;
 	}
 
+	/**
+	 * Wrapper for the GFFormsModel::matches_operation() method that adds additional comparisons, including:
+	 * 'equals', 'greater_than_or_is', 'greater_than_or_equals', 'less_than_or_is', 'less_than_or_equals',
+	 * and 'not_contains'
+	 *
+	 * @link http://docs.gravityview.co/article/252-gvlogic-shortcode
+	 * @uses GFFormsModel::matches_operation
+	 * @since 1.7.5
+	 *
+	 * @param string $val1 Left side of comparison
+	 * @param string $val2 Right side of comparison
+	 * @param string $operation Type of comparison
+	 *
+	 * @return bool True: matches, false: not matches
+	 */
+	public static function matches_operation( $val1, $val2, $operation ) {
+
+		switch( $operation ) {
+			case 'equals':
+				$value = GFFormsModel::matches_operation( $val1, $val2, 'is' );
+				break;
+			case 'greater_than_or_is':
+			case 'greater_than_or_equals':
+				$is = GFFormsModel::matches_operation( $val1, $val2, 'is' );
+				$gt = GFFormsModel::matches_operation( $val1, $val2, 'greater_than' );
+				$value = ( $is || $gt );
+				break;
+			case 'less_than_or_is':
+			case 'less_than_or_equals':
+				$is = GFFormsModel::matches_operation( $val1, $val2, 'is' );
+				$gt = GFFormsModel::matches_operation( $val1, $val2, 'less_than' );
+				$value = ( $is || $gt );
+				break;
+			case 'not_contains':
+				$contains = GFFormsModel::matches_operation( $val1, $val2, 'contains' );
+				$value = !$contains;
+				break;
+			default:
+				$value = GFFormsModel::matches_operation( $val1, $val2, $operation );
+		}
+
+		return $value;
+	}
+
     /**
      *
      * Checks if a certain entry is valid according to the View search filters (specially the Adv Filters)
