@@ -108,8 +108,11 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/edit-entry/class-edit-entry.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/delete-entry/class-delete-entry.php' );
 
-		// Load Widgets
-		include_once( GRAVITYVIEW_DIR .'includes/widgets.php' );
+		// Load WordPress Widgets
+		include_once( GRAVITYVIEW_DIR .'includes/wordpress-widgets/register-wordpress-widgets.php' );
+
+		// Load GravityView Widgets
+		include_once( GRAVITYVIEW_DIR .'includes/widgets/register-gravityview-widgets.php' );
 
 		// Add oEmbed
 		include_once( GRAVITYVIEW_DIR . 'includes/class-oembed.php' );
@@ -134,8 +137,7 @@ final class GravityView_Plugin {
 		// Load default templates
 		add_action( 'init', array( $this, 'register_default_templates' ), 11 );
 
-		// Load default widgets
-		add_action( 'init', array( $this, 'register_widgets' ), 11 );
+
 
 	}
 
@@ -256,16 +258,6 @@ final class GravityView_Plugin {
 	 */
 	function register_default_templates() {
 		include_once( GRAVITYVIEW_DIR .'includes/default-templates.php' );
-	}
-
-	/**
-	 * Register the default widgets
-	 * @todo Move somehere logical
-	 * @return void
-	 */
-	function register_widgets() {
-		include_once( GRAVITYVIEW_DIR .'includes/default-widgets.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/extensions/search-widget/class-search-widget.php' );
 	}
 
 	/**
