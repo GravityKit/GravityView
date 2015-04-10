@@ -7,7 +7,7 @@ class GravityView_Admin {
 
 	function __construct() {
 
-		if( !GravityView_Plugin::is_admin() ) { return; }
+		if( !is_admin() ) { return; }
 
 		$this->add_hooks();
 	}
