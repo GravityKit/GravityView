@@ -7,7 +7,15 @@ class GravityView_Admin {
 
 	function __construct() {
 
-		if( !is_admin() ) { return; }
+		if( !GravityView_Plugin::is_admin() ) { return; }
+
+		$this->add_hooks();
+	}
+
+	/**
+	 * @since 1.7.5
+	 */
+	function add_hooks() {
 
 		add_action( 'admin_notices', array( $this, 'dismiss_notice' ), 50 );
 		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
@@ -44,13 +52,14 @@ class GravityView_Admin {
 		add_action( 'plugins_loaded', array( $this, 'backend_actions' ), 100 );
 
 		//Hooks for no-conflict functionality
-	    add_action( 'wp_print_scripts', array( $this, 'no_conflict_scripts' ), 1000);
-	    add_action( 'admin_print_footer_scripts', array( $this, 'no_conflict_scripts' ), 9);
+		add_action( 'wp_print_scripts', array( $this, 'no_conflict_scripts' ), 1000);
+		add_action( 'admin_print_footer_scripts', array( $this, 'no_conflict_scripts' ), 9);
 
-	    add_action( 'wp_print_styles', array( $this, 'no_conflict_styles' ), 1000);
-	    add_action( 'admin_print_styles', array( $this, 'no_conflict_styles' ), 1);
-	    add_action( 'admin_print_footer_scripts', array( $this, 'no_conflict_styles' ), 1);
-	    add_action( 'admin_footer', array( $this, 'no_conflict_styles' ), 1);
+		add_action( 'wp_print_styles', array( $this, 'no_conflict_styles' ), 1000);
+		add_action( 'admin_print_styles', array( $this, 'no_conflict_styles' ), 11);
+		add_action( 'admin_print_footer_scripts', array( $this, 'no_conflict_styles' ), 1);
+		add_action( 'admin_footer', array( $this, 'no_conflict_styles' ), 1);
+
 	}
 
 	/**
@@ -86,11 +95,11 @@ class GravityView_Admin {
 	 * @access public
 	 * @static
 	 * @param mixed $links
-	 * @return void
+	 * @return array Action links with Support included
 	 */
 	public static function plugin_action_links( $links ) {
 
-		$action = array( '<a href="https://gravityview.co/support/documentation/">'. esc_html__( 'Support', 'gravityview' ) .'</a>' );
+		$action = array( '<a href="http://docs.gravityview.co">'. esc_html__( 'Support', 'gravityview' ) .'</a>' );
 
 		return array_merge( $action, $links );
 	}
@@ -412,7 +421,7 @@ class GravityView_Admin {
 
     	$dismissed_notices = array_unique( $dismissed_notices );
 
-    	// Remind users every 8 weeks
+    	// Remind users every 16 weeks
     	set_transient( 'gravityview_dismissed_notices', $dismissed_notices, WEEK_IN_SECONDS * 16 );
 
     }
