@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2015-04-06 12:06-0700\n"
-"PO-Revision-Date: 2015-04-06 18:07+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2015-04-07 10:31+0000\n"
+"Last-Translator: Süha Karalar <suhakaralar@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/projects/p/gravityview/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -532,11 +532,11 @@ msgstr "Özel yazı yada HTML girin."
 
 #: includes/class-admin-views.php:579
 msgid "Other Entries"
-msgstr ""
+msgstr "Diğer Kayıtlar"
 
 #: includes/class-admin-views.php:581
 msgid "Display other entries created by the entry creator."
-msgstr ""
+msgstr "Kayıt sahibine ait diğer kayıtları görüntüle."
 
 #: includes/class-admin-views.php:589
 msgid "Link to Entry"
@@ -661,7 +661,7 @@ msgstr "Katkıda bulunmak istermisiniz?"
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
-msgstr ""
+msgstr "Kodlara katkı yapmak isterseniz, %sGithub üzerinden yapabilirsiniz%s. Katkınız onaylanırsa size buradan teşekkür edilecektir."
 
 #: includes/class-admin.php:93
 msgid "Support"
@@ -771,13 +771,13 @@ msgstr "GravityView ve Gravity Forms Directory eklentilerinin ikiside etkin. Bu 
 
 #: includes/class-admin.php:538
 msgid "GravityView will soon require Gravity Forms 1.9 or higher."
-msgstr ""
+msgstr "GravityView yakın zamanda Gravity Forms Sürüm 1.9 ve üstü gerektirecektir."
 
 #: includes/class-admin.php:539
 msgid ""
 "You are using an older version of Gravity Forms. Please update Gravity Forms"
 " plugin to the latest version."
-msgstr ""
+msgstr "Gravity Forms sürümünüz eski. Lütfen en son sürüme güncelleyiniz."
 
 #: includes/class-admin.php:563
 #, php-format
@@ -785,7 +785,7 @@ msgid ""
 "%sGravityView requires Gravity Forms Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
-msgstr ""
+msgstr "%sGravityView eklentisi Gravity Forms Sürüm %s yada daha yukarısını gerektirir.%s \n\nKullandığınız Sürüm %s. Lütfen Gravity Forms eklentinizi güncelleyin yada yeni bir lisans satın alın.  %sŞimdi Gravity Forms satın al%s -  $39 dan başlayan fiyatlarla%s%s"
 
 #: includes/class-admin.php:572
 #, php-format
@@ -861,7 +861,7 @@ msgstr "Kullanıcı Yok"
 
 #: includes/class-common.php:234
 msgid "Post ID"
-msgstr ""
+msgstr "Yazı NO"
 
 #: includes/class-common.php:243
 msgid "Payment Status"
@@ -906,7 +906,7 @@ msgstr "Eposta gizlenmiş; Javascript etkin olmalı."
 
 #: includes/class-data.php:408
 msgid "The ID is required."
-msgstr ""
+msgstr "NO gereklidir."
 
 #: includes/class-data.php:416
 msgid ""
@@ -1011,11 +1011,11 @@ msgstr "Azalan"
 
 #: includes/class-data.php:583
 msgid "Enable sorting by column"
-msgstr ""
+msgstr "Sütuna göre sıralamayı etkinleştir"
 
 #: includes/class-data.php:584
 msgid "Column Sorting"
-msgstr ""
+msgstr "Sütun Sıralama"
 
 #: includes/class-data.php:593
 msgid "Filter by Start Date"
@@ -1104,7 +1104,7 @@ msgstr "Boş"
 msgid ""
 "When using a Start Fresh template, you must save the View before a Preview "
 "is available."
-msgstr ""
+msgstr "Yeni bir taslak kullanırken önizleme yapabilmek için Görünümü kaydetmelisiniz."
 
 #: includes/class-frontend-views.php:674
 msgid ""
@@ -1174,15 +1174,15 @@ msgstr "Lisans anahtarı doğrulanıyor&hellip;"
 #: includes/class-gv-license-handler.php:78
 #: includes/class-gv-license-handler.php:339
 msgid "Deactivate License"
-msgstr "Lisansı Etkisizleştir"
+msgstr "Lisansı İptal Et"
 
 #: includes/class-gv-license-handler.php:79
 msgid "Deactivating license&hellip;"
-msgstr ""
+msgstr "Lisansı iptal ediliyor&hellip;"
 
 #: includes/class-gv-license-handler.php:85
 msgid "Check License"
-msgstr ""
+msgstr "Lisansı Kontrol Et"
 
 #: includes/class-gv-license-handler.php:325
 msgid "Status"
@@ -1196,42 +1196,42 @@ msgstr "Talep işlenirken hata oluştu."
 msgid ""
 "Could not deactivate the license. The license key you attempted to "
 "deactivate may not be active or valid."
-msgstr ""
+msgstr "Lisans pasif hale getirilemedi. İptal etmeye çalıştığınız lisans anahtarı etkin yada geçerli olmayabilir."
 
 #: includes/class-gv-license-handler.php:328
 msgid "The license key is valid, but it has not been activated for this site."
-msgstr ""
+msgstr "Lisans anahtarı geçerli, fakat bu site için etkinleştirilemedi."
 
 #: includes/class-gv-license-handler.php:329
 msgid "Invalid: this license has reached its activation limit."
-msgstr ""
+msgstr "Geçersiz: bu lisans anahtarı etkinleştirme haddine ulaştı."
 
 #: includes/class-gv-license-handler.php:330
 msgid "The license has been deactivated."
-msgstr ""
+msgstr "Lisans iptal edildi."
 
 #: includes/class-gv-license-handler.php:331
 msgid "The license key is valid and active."
-msgstr ""
+msgstr "Lisans anahtarı etkin ve geçerli."
 
 #: includes/class-gv-license-handler.php:332
 msgid "The license key entered is invalid."
-msgstr ""
+msgstr "Girilen lisans anahtarı geçersiz."
 
 #: includes/class-gv-license-handler.php:333
 msgid "The license key was not defined."
-msgstr ""
+msgstr "Lisans anahtarı tanımlanmadı."
 
 #: includes/class-gv-license-handler.php:334
 msgid "This license key has been revoked."
-msgstr ""
+msgstr "Lisans anahtarı iptal edilmiştir."
 
 #: includes/class-gv-license-handler.php:335
 #, php-format
 msgid ""
 "This license key has expired. %sRenew your license on the GravityView "
 "website%s"
-msgstr ""
+msgstr "Bu lisans anahtarının süresi dolmuş. %sGravityView sitesinden yenileyebilirsiniz%s"
 
 #: includes/class-gv-license-handler.php:340
 msgid "Verify License"
@@ -1358,17 +1358,17 @@ msgstr "etkinleştirilmedi"
 
 #: includes/class-settings.php:363 includes/class-settings.php:396
 msgid "Update Settings"
-msgstr ""
+msgstr "Ayarları Güncelle"
 
 #: includes/class-settings.php:467
 msgid ""
 "The license key you entered has been saved, but not activated. Please "
 "activate the license."
-msgstr ""
+msgstr "Girdiğiniz lisans anahtarı kaydedildi fakat etkinleştirilmedi. Lütfen etkinleştirin."
 
 #: includes/class-settings.php:482
 msgid "Required"
-msgstr ""
+msgstr "Zorunlu"
 
 #: includes/class-settings.php:497
 msgid "License Key"
@@ -1397,12 +1397,12 @@ msgstr "Çakışmasız Durum"
 #: includes/class-settings.php:531
 msgctxt "Setting: On or off"
 msgid "On"
-msgstr ""
+msgstr "Açık"
 
 #: includes/class-settings.php:535
 msgctxt "Setting: On or off"
 msgid "Off"
-msgstr ""
+msgstr "Kapalı"
 
 #: includes/class-settings.php:539
 msgid ""
@@ -1413,12 +1413,12 @@ msgstr "Arkaplanda farklı betik ve sitil dosyalarının GravityView yönetim sa
 
 #: includes/class-settings.php:553
 msgid "GravityView Extension Settings"
-msgstr ""
+msgstr "GravityView Eklenti Ayarları"
 
 #: includes/class-settings.php:575
 #, php-format
 msgid "You are running GravityView version %s"
-msgstr ""
+msgstr "GravityView sürüm %s kullanıyorsunuz"
 
 #: includes/default-templates.php:30
 msgid "Table (default)"
@@ -1737,12 +1737,12 @@ msgstr "Bu yazıyı düzenleme yetkiniz yok."
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:45
 msgid "This field is not editable; the post no longer exists."
-msgstr ""
+msgstr "Bu alan düzenlenebilir değil; yazı silinmiş olabilir."
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:48
 #, php-format
 msgid "You can %sedit this value%s from the post page."
-msgstr ""
+msgstr "%sbu değeri%s yazı sayfasından düzenleyebilirsiniz."
 
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:291
 #: includes/extensions/edit-entry/class-gv-gfcommon.php:310
@@ -2028,37 +2028,37 @@ msgstr "Bağlantıdan sonra görünecek yazı yada HTML (isteğe bağlı)"
 
 #: includes/fields/other-entries.php:37
 msgid "This content will be displayed below each entry link."
-msgstr ""
+msgstr "Bu içerik her kayıt bağlantısının hemen altında gösterilecektir."
 
 #: includes/fields/other-entries.php:45
 msgid "Entries to Display"
-msgstr ""
+msgstr "Görüntülenecek Kayıtlar"
 
 #: includes/fields/other-entries.php:46
 msgid "What is the maximum number of entries that should be shown?"
-msgstr ""
+msgstr "Gösterilecek azami kayıt sayısı nedir?"
 
 #: includes/fields/other-entries.php:53
 msgid "Hide if no entries"
-msgstr ""
+msgstr "Hiç kayıt yoksa bu alanı gizle"
 
 #: includes/fields/other-entries.php:54
 msgid "Don't display this field if the entry creator has no other entries"
-msgstr ""
+msgstr "Eğer kayıt sahibine ait başka kayıtlar yoksa bu alanı gösterme"
 
 #: includes/fields/other-entries.php:60
 msgid "No Entries Text"
-msgstr ""
+msgstr "Kayıt Yok Yazısı"
 
 #: includes/fields/other-entries.php:61
 msgid ""
 "The text that is shown if the entry creator has no other entries (and \"Hide"
 " if no entries\" is disabled)."
-msgstr ""
+msgstr "Eğer kayıt sahibine ait başka kayıtlar yoksa (ve \"Bu alanı gizle\" seçilmemişse) buraya girdiğiniz yazı gösterilir."
 
 #: includes/fields/other-entries.php:62
 msgid "This user has no other entries."
-msgstr ""
+msgstr "Bu kullanıcıya ait başka kayıt yok."
 
 #: includes/fields/source-url.php:22
 msgid "Link to URL:"
