@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Path to plugin updater file, used by Extensions
 * Fixed: Extension global settings layout improved (yet to be implemented)
 * Tweak: Restructure plugin file locations
+* Updated: Dutch translation by [@erikvanbeek](https://www.transifex.com/accounts/profile/erikvanbeek/). Thanks!
 
 = 1.7.4.1 on April 7 =
 * Fixed: Fatal error when attempting to view entry that does not exist (introduced in 1.7.4)

@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
-"POT-Creation-Date: 2015-04-06 12:06-0700\n"
-"PO-Revision-Date: 2015-04-06 18:07+0000\n"
+"POT-Creation-Date: 2015-04-10 17:11-0700\n"
+"PO-Revision-Date: 2015-04-10 23:12+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/gravityview/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -20,15 +20,15 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: gravityview.php:263
+#: gravityview.php:269
 msgid "Top"
 msgstr "Fent"
 
-#: gravityview.php:264
+#: gravityview.php:270
 msgid "Left"
 msgstr "Bal"
 
-#: gravityview.php:264
+#: gravityview.php:270
 msgid "Right"
 msgstr "Jobb"
 
@@ -41,7 +41,7 @@ msgid "Custom Label:"
 msgstr "Egyéni cimke:"
 
 #: includes/admin/class.render.settings.php:53
-#: includes/default-widgets.php:361
+#: includes/widgets/class-gravityview-widget.php:101
 msgid "Custom CSS Class:"
 msgstr "Egyéni CSS osztály:"
 
@@ -167,7 +167,7 @@ msgid "Buy Now"
 msgstr "Vásárlás"
 
 #: includes/admin/metaboxes.php:173
-#: includes/extensions/search-widget/class-search-widget.php:107
+#: includes/widgets/search-widget/class-search-widget.php:107
 msgid "Select"
 msgstr "Kiválaszt"
 
@@ -183,7 +183,7 @@ msgstr "Több bejegyzés"
 msgid "Single Entry"
 msgstr "Egyetlen bejegyzés"
 
-#: includes/admin/metaboxes.php:255 includes/class-frontend-views.php:359
+#: includes/admin/metaboxes.php:255 includes/class-frontend-views.php:367
 #: includes/extensions/edit-entry/class-edit-entry.php:224
 #: includes/extensions/edit-entry/class-edit-entry.php:295
 #: includes/extensions/edit-entry/class-edit-entry.php:312
@@ -263,7 +263,8 @@ msgid ""
 "shortcodes.%s"
 msgstr "Használd ezt az űrlapot, hogy beágyazz egy View-t a %s. %sTudj meg többet a rövid kódok használatáról.%s"
 
-#: includes/class-admin-add-shortcode.php:97 includes/widgets.php:313
+#: includes/class-admin-add-shortcode.php:97
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:302
 msgid "Select a View"
 msgstr "Nézet kiválasztása"
 
@@ -271,8 +272,9 @@ msgstr "Nézet kiválasztása"
 msgid "&mdash; Select a View to Insert &mdash;"
 msgstr "&mdash; View kiválasztása beillesztéshez &mdash;"
 
-#: includes/class-admin-add-shortcode.php:103 includes/widgets.php:319
-#: includes/widgets.php:553
+#: includes/class-admin-add-shortcode.php:103
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:308
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:177
 msgid "(no title)"
 msgstr "(nincs cím)"
 
@@ -479,7 +481,7 @@ msgid "Add all the available fields at once."
 msgstr "Minden elérhető mező hozzáadása"
 
 #: includes/class-admin-views.php:541
-#: includes/extensions/search-widget/class-search-widget.php:205
+#: includes/widgets/search-widget/class-search-widget.php:205
 msgid "Entry ID"
 msgstr "Bejegyzés AZ"
 
@@ -488,7 +490,7 @@ msgid "The unique ID of the entry."
 msgstr "A bejegyzés azonosítója"
 
 #: includes/class-admin-views.php:546
-#: includes/extensions/search-widget/class-search-widget.php:204
+#: includes/widgets/search-widget/class-search-widget.php:204
 msgid "Entry Date"
 msgstr "Bejegyzés dátuma"
 
@@ -520,8 +522,9 @@ msgstr "Felhasználó"
 msgid "Details of the logged-in user who created the entry (if any)."
 msgstr "A belépett, bejegyzést közzétevő felhasználó adatai (ha van ilyen)"
 
-#: includes/class-admin-views.php:570 includes/default-widgets.php:198
-#: includes/default-widgets.php:213 includes/fields/custom.php:22
+#: includes/class-admin-views.php:570 includes/fields/custom.php:22
+#: includes/widgets/class-gravityview-widget-custom-content.php:30
+#: includes/widgets/class-gravityview-widget-custom-content.php:45
 msgid "Custom Content"
 msgstr "Egyedi tartalmak"
 
@@ -643,35 +646,35 @@ msgstr "A változások listája"
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:515
+#: includes/class-admin-welcome.php:540
 msgid "GravityView is brought to you by:"
 msgstr "A GravityView -t elhozták neked:"
 
-#: includes/class-admin-welcome.php:540
+#: includes/class-admin-welcome.php:565
 msgid "Contributors"
 msgstr "Közreműködők:"
 
-#: includes/class-admin-welcome.php:561
+#: includes/class-admin-welcome.php:586
 msgid "Want to contribute?"
 msgstr "Szeretnél bekapcsolódni?"
 
-#: includes/class-admin-welcome.php:562
+#: includes/class-admin-welcome.php:587
 #, php-format
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
 msgstr ""
 
-#: includes/class-admin.php:93
+#: includes/class-admin.php:102
 msgid "Support"
 msgstr "Támogatás"
 
-#: includes/class-admin.php:147
+#: includes/class-admin.php:156
 #, php-format
 msgid "A new form was created for this View: \"%s\""
 msgstr "Új űrlap készült ehhez a View -hoz: \"%s\""
 
-#: includes/class-admin.php:148
+#: includes/class-admin.php:157
 #, php-format
 msgid ""
 "%sThere are no entries for the new form, so the View will also be empty.%s To start collecting entries, you can add submissions through %sthe preview form%s and also embed the form on a post or page using this code: %s\n"
@@ -680,110 +683,110 @@ msgid ""
 "\t\t\t\t\t"
 msgstr "%sNincsenek bejegyzések az űrlap számára, így a View is üres lesz.%s Hogy elkezdj bejegyzéseket gyűjteni adhatsz engedélyek az %sűrlap előnézet%s -nél és beágyazhatod az űrlapot is egy kommentbe vagy oldalba a következő kód használatval: %s\n\n\n⇥⇥⇥⇥⇥Tudod %sszerkeszteni az űrlapot%s a Gravity Forms -ban a frissített mezők elérhetőek lesznek itt. Ne felejtsd el a %stestreszabni az űrlap beállításait%s.\n\n⇥⇥⇥⇥⇥"
 
-#: includes/class-admin.php:160 includes/class-admin.php:161
-#: includes/class-admin.php:163
+#: includes/class-admin.php:169 includes/class-admin.php:170
+#: includes/class-admin.php:172
 #, php-format
 msgid "View updated. %sView on website.%s"
 msgstr "Nézet frissítve. %sMegtekintés a weboldalon.%s"
 
-#: includes/class-admin.php:162
+#: includes/class-admin.php:171
 msgid "View deleted."
 msgstr "Nézet törölve."
 
-#: includes/class-admin.php:165
+#: includes/class-admin.php:174
 #, php-format
 msgid "View restored to revision from %s"
 msgstr "Nézet visszaállítva %s változatra"
 
-#: includes/class-admin.php:166
+#: includes/class-admin.php:175
 #, php-format
 msgid "View published. %sView on website.%s"
 msgstr "Nézet publikálva. %sMegtekintés a weboldalon.%s"
 
-#: includes/class-admin.php:167
+#: includes/class-admin.php:176
 #, php-format
 msgid "View saved. %sView on website.%s"
 msgstr "Nézet elmentve. %sMegtekintés a weboldalon.%s"
 
-#: includes/class-admin.php:168
+#: includes/class-admin.php:177
 msgid "View submitted."
 msgstr "Nézet beküldve."
 
-#: includes/class-admin.php:170
+#: includes/class-admin.php:179
 #, php-format
 msgid "View scheduled for: %1$s."
 msgstr "A View ütemezésre került a: %1$s."
 
-#: includes/class-admin.php:172
+#: includes/class-admin.php:181
 msgid "M j, Y @ G:i"
 msgstr "Y. m j. @ G:i"
 
-#: includes/class-admin.php:174
+#: includes/class-admin.php:183
 #, php-format
 msgid "View draft updated. %sView on website.%s"
 msgstr "Nézet vázlata frissítve. %sMegtekintés a weboldalon.%s"
 
-#: includes/class-admin.php:180
+#: includes/class-admin.php:189
 #, php-format
 msgid "%s View updated."
 msgid_plural "%s Views updated."
 msgstr[0] "%s View fissült."
 msgstr[1] "%s Views frissült."
 
-#: includes/class-admin.php:181
+#: includes/class-admin.php:190
 #, php-format
 msgid "%s View not updated, somebody is editing it."
 msgid_plural "%s Views not updated, somebody is editing them."
 msgstr[0] "%s View nem frissült, mert valaki éppen szerkeszti."
 msgstr[1] "%s Views nem frissült, mert valaki éppen szerkeszti."
 
-#: includes/class-admin.php:182
+#: includes/class-admin.php:191
 #, php-format
 msgid "%s View permanently deleted."
 msgid_plural "%s Views permanently deleted."
 msgstr[0] "%s View nem frissült, mert valaki éppen szerkeszti."
 msgstr[1] "%s Views véglegesen törlésre került."
 
-#: includes/class-admin.php:183
+#: includes/class-admin.php:192
 #, php-format
 msgid "%s View moved to the Trash."
 msgid_plural "%s Views moved to the Trash."
 msgstr[0] "%s View a kukába került."
 msgstr[1] "%s Views a kukába került."
 
-#: includes/class-admin.php:184
+#: includes/class-admin.php:193
 #, php-format
 msgid "%s View restored from the Trash."
 msgid_plural "%s Views restored from the Trash."
 msgstr[0] "%s View helyre lett állítva."
 msgstr[1] "%s Views helyre lett állítva."
 
-#: includes/class-admin.php:491
+#: includes/class-admin.php:490
 msgid "Dismiss"
 msgstr "Elutasít"
 
-#: includes/class-admin.php:529
+#: includes/class-admin.php:528
 msgid "Potential Conflict"
 msgstr "Lehetséges összeférhetetlenség."
 
-#: includes/class-admin.php:530
+#: includes/class-admin.php:529
 msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
 "plugin."
 msgstr "A GravityView és a Gravity Forms könyvtár is aktív. Ez gondokat okozhat. Ha problémát tapasztalsz, kacsold ki a Gravity Forms Könyvtár bővítmény."
 
-#: includes/class-admin.php:538
+#: includes/class-admin.php:537
 msgid "GravityView will soon require Gravity Forms 1.9 or higher."
 msgstr ""
 
-#: includes/class-admin.php:539
+#: includes/class-admin.php:538
 msgid ""
 "You are using an older version of Gravity Forms. Please update Gravity Forms"
 " plugin to the latest version."
 msgstr ""
 
-#: includes/class-admin.php:563
+#: includes/class-admin.php:562
 #, php-format
 msgid ""
 "%sGravityView requires Gravity Forms Version %s or newer.%s \n"
@@ -791,14 +794,14 @@ msgid ""
 "You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr ""
 
-#: includes/class-admin.php:572
+#: includes/class-admin.php:571
 #, php-format
 msgid ""
 "%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
 "Forms%s to use the GravityView plugin."
 msgstr "%sGravityView -nak szüksége van aktív Gravity Forms -ra. %sGravity Forms aktiválása%s a GravityView bővítmény használatához."
 
-#: includes/class-admin.php:574
+#: includes/class-admin.php:573
 #, php-format
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
@@ -884,7 +887,7 @@ msgid "Payment Method"
 msgstr "Fizetési mód"
 
 #: includes/class-common.php:263
-#: includes/extensions/search-widget/class-search-widget.php:639
+#: includes/widgets/search-widget/class-search-widget.php:639
 msgid "Is Fulfilled"
 msgstr "Teljesült"
 
@@ -896,15 +899,15 @@ msgstr "Tranzakciós aznonosító"
 msgid "Transaction Type"
 msgstr "Tranzakció típusa"
 
-#: includes/class-common.php:824 includes/class-data.php:566
+#: includes/class-common.php:873 includes/class-data.php:566
 msgid "Default"
 msgstr "Alapértelmezett"
 
-#: includes/class-common.php:837 includes/class-data.php:567
+#: includes/class-common.php:886 includes/class-data.php:567
 msgid "Date Created"
 msgstr "Létrehozás dátuma"
 
-#: includes/class-common.php:917
+#: includes/class-common.php:966
 msgid "Email hidden; Javascript is required."
 msgstr "Rejtett e-mail; Javascript szükséges."
 
@@ -918,8 +921,9 @@ msgid ""
 "representing the ID of the post or page the View is embedded on."
 msgstr ""
 
-#: includes/class-data.php:419 includes/widgets.php:347
-#: includes/widgets.php:581
+#: includes/class-data.php:419
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:336
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:205
 msgid "Learn more&hellip;"
 msgstr ""
 
@@ -1058,7 +1062,7 @@ msgid "Define a default search value for the View"
 msgstr "Határozd meg az alapértelmezett keresési értéket a View számára."
 
 #: includes/class-data.php:627
-#: includes/extensions/search-widget/class-search-widget.php:133
+#: includes/widgets/search-widget/class-search-widget.php:133
 msgid "Search Field"
 msgstr "Keresési mező"
 
@@ -1104,23 +1108,23 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Üres"
 
-#: includes/class-frontend-views.php:482
+#: includes/class-frontend-views.php:490
 msgid ""
 "When using a Start Fresh template, you must save the View before a Preview "
 "is available."
 msgstr ""
 
-#: includes/class-frontend-views.php:674
+#: includes/class-frontend-views.php:682
 msgid ""
 "You have attempted to view an entry that is not visible or may not exist."
 msgstr "Olyan bejegyzést kíséreltél meg megtekinteni, mely nem látható vagy nem létezik."
 
-#: includes/class-frontend-views.php:1129
+#: includes/class-frontend-views.php:1137
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1130
+#: includes/class-frontend-views.php:1138
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""
@@ -1154,29 +1158,29 @@ msgstr ""
 msgid "Copy creation failed, could not find original View with ID #%d"
 msgstr ""
 
-#: includes/class-gravityview-extension.php:175
+#: includes/class-gravityview-extension.php:176
 #, php-format
 msgid "Could not activate the %s Extension; GravityView is not active."
 msgstr "Nem lehet a bővítményt aktiválni a %s Bővítmény; GravityView nem aktív."
 
-#: includes/class-gravityview-extension.php:185
+#: includes/class-gravityview-extension.php:186
 #, php-format
 msgid "The %s Extension requires GravityView Version %s or newer."
 msgstr "A %s bővítménynek szüksége van a GravitView verzió %s vagy újabbra."
 
 #: includes/class-gv-license-handler.php:71
-#: includes/class-gv-license-handler.php:338
+#: includes/class-gv-license-handler.php:340
 msgid "Activate License"
 msgstr "Licence aktiválása"
 
 #: includes/class-gv-license-handler.php:72
 #: includes/class-gv-license-handler.php:86
-#: includes/class-gv-license-handler.php:337 includes/class-settings.php:500
+#: includes/class-gv-license-handler.php:339 includes/class-settings.php:500
 msgid "Verifying license&hellip;"
 msgstr "Licence ellenőrzése&hellip;"
 
 #: includes/class-gv-license-handler.php:78
-#: includes/class-gv-license-handler.php:339
+#: includes/class-gv-license-handler.php:341
 msgid "Deactivate License"
 msgstr "Licence inaktívvá tétele"
 
@@ -1188,56 +1192,56 @@ msgstr ""
 msgid "Check License"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:325
+#: includes/class-gv-license-handler.php:327
 msgid "Status"
 msgstr "Státusz"
 
-#: includes/class-gv-license-handler.php:326
+#: includes/class-gv-license-handler.php:328
 msgid "There was an error processing the request."
 msgstr "Hiba történt a kérés végrehajtása során"
 
-#: includes/class-gv-license-handler.php:327
+#: includes/class-gv-license-handler.php:329
 msgid ""
 "Could not deactivate the license. The license key you attempted to "
 "deactivate may not be active or valid."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:328
+#: includes/class-gv-license-handler.php:330
 msgid "The license key is valid, but it has not been activated for this site."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:329
+#: includes/class-gv-license-handler.php:331
 msgid "Invalid: this license has reached its activation limit."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:330
+#: includes/class-gv-license-handler.php:332
 msgid "The license has been deactivated."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:331
+#: includes/class-gv-license-handler.php:333
 msgid "The license key is valid and active."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:332
+#: includes/class-gv-license-handler.php:334
 msgid "The license key entered is invalid."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:333
+#: includes/class-gv-license-handler.php:335
 msgid "The license key was not defined."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:334
+#: includes/class-gv-license-handler.php:336
 msgid "This license key has been revoked."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:335
+#: includes/class-gv-license-handler.php:337
 #, php-format
 msgid ""
 "This license key has expired. %sRenew your license on the GravityView "
 "website%s"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:340
+#: includes/class-gv-license-handler.php:342
 msgid "Verify License"
 msgstr "Lincence ellenőrzése"
 
@@ -1415,13 +1419,13 @@ msgid ""
 "themes."
 msgstr "Kapcsold be, ha a GravityView ütközik más bővítményekkel vagy sablonokkal."
 
-#: includes/class-settings.php:553
-msgid "GravityView Extension Settings"
-msgstr ""
-
-#: includes/class-settings.php:575
+#: includes/class-settings.php:558
 #, php-format
 msgid "You are running GravityView version %s"
+msgstr ""
+
+#: includes/class-settings.php:576
+msgid "GravityView Extension Settings"
 msgstr ""
 
 #: includes/default-templates.php:30
@@ -1563,56 +1567,6 @@ msgstr "Weboldal bemutató"
 #: includes/default-templates.php:604
 msgid "Feature submitted websites with screenshots."
 msgstr "Képernyőképekkel mutatja be a beküldött weboldalakat."
-
-#: includes/default-widgets.php:31
-msgid "Summary of the number of visible entries out of the total results."
-msgstr "A látható bejegyzések számának összessége több az eredménynél"
-
-#: includes/default-widgets.php:40
-msgid "Show Pagination Info"
-msgstr "Mutasd az oldalszámozást"
-
-#: includes/default-widgets.php:81
-#, php-format
-msgid "Displaying %1$s - %2$s of %3$s"
-msgstr "Megjelenítés: %1$s - %2$s / %3$s"
-
-#: includes/default-widgets.php:102
-msgid "Links to multiple pages of results."
-msgstr "Link több találati oldalra."
-
-#: includes/default-widgets.php:107
-msgid "Show each page number"
-msgstr "Mutass minden oldalszámot"
-
-#: includes/default-widgets.php:108
-msgid "Show every page number instead of summary (eg: 1 2 3 ... 8 »)"
-msgstr "Mutassa az összes lapszámot összegzés (pl: 1 2 3 ... 8 ») helyett"
-
-#: includes/default-widgets.php:111
-msgid "Page Links"
-msgstr "Oldal linkek"
-
-#: includes/default-widgets.php:188
-msgid "Insert custom text or HTML as a widget"
-msgstr ""
-
-#: includes/default-widgets.php:199 includes/fields/custom.php:23
-msgid "Enter text or HTML. Also supports shortcodes."
-msgstr "Adjon meg szöveget, vagy HTML-t. A rövid kódokat is támogatja."
-
-#: includes/default-widgets.php:207 includes/fields/custom.php:31
-msgid "Automatically add paragraphs to content"
-msgstr "Automatikusan adjon bekezdést a tartalomhoz"
-
-#: includes/default-widgets.php:208 includes/fields/custom.php:32
-msgid ""
-"Wrap each block of text in an HTML paragraph tag (recommended for text)."
-msgstr "Minden szöveges egységet tegyen egy HTML bekezdés címkébe (szöveghez ajánlott)."
-
-#: includes/default-widgets.php:362
-msgid "This class will be added to the widget container"
-msgstr ""
 
 #: includes/extensions/delete-entry/class-delete-entry.php:107
 msgid "Delete Link Text"
@@ -1779,132 +1733,6 @@ msgstr "Szeretnéd ideiglenesen törölni ezt a fájt? 'Mégsem' a folyamat leá
 msgid "Ajax error while deleting field."
 msgstr "Ajax hiba történt a mező törlése közben."
 
-#: includes/extensions/search-widget/class-search-widget.php:27
-msgid "Search form for searching entries."
-msgstr "Keresési mező a bejegyzések közötti kereséshez."
-
-#: includes/extensions/search-widget/class-search-widget.php:44
-msgid "Search Layout"
-msgstr "Keresés elrendezése"
-
-#: includes/extensions/search-widget/class-search-widget.php:47
-msgid "Horizontal"
-msgstr "Vízszintes"
-
-#: includes/extensions/search-widget/class-search-widget.php:48
-msgid "Vertical"
-msgstr "Függőleges"
-
-#: includes/extensions/search-widget/class-search-widget.php:53
-msgid "Show Clear button"
-msgstr ""
-
-#: includes/extensions/search-widget/class-search-widget.php:57
-msgid "Search Bar"
-msgstr "Keresősáv"
-
-#: includes/extensions/search-widget/class-search-widget.php:105
-msgid "Text"
-msgstr "Szöveg"
-
-#: includes/extensions/search-widget/class-search-widget.php:106
-msgid "Date"
-msgstr "Dátum"
-
-#: includes/extensions/search-widget/class-search-widget.php:108
-msgid "Select (multiple values)"
-msgstr "Kiválaszt (több értéket)"
-
-#: includes/extensions/search-widget/class-search-widget.php:109
-msgid "Radio"
-msgstr "Rádió"
-
-#: includes/extensions/search-widget/class-search-widget.php:110
-#: includes/extensions/search-widget/class-search-widget.php:111
-msgid "Checkbox"
-msgstr "Jelölőnégyzet"
-
-#: includes/extensions/search-widget/class-search-widget.php:112
-msgid "Links"
-msgstr "Linkek"
-
-#: includes/extensions/search-widget/class-search-widget.php:131
-msgid "No search fields configured yet."
-msgstr "A keresési mező még nem lett beállítva."
-
-#: includes/extensions/search-widget/class-search-widget.php:132
-msgid "Add Search Field"
-msgstr "Keresési mező hozzáadása"
-
-#: includes/extensions/search-widget/class-search-widget.php:134
-msgid "Input Type"
-msgstr "Beviteli formátum"
-
-#: includes/extensions/search-widget/class-search-widget.php:203
-msgid "Search Everything"
-msgstr "Keresés mindenhol"
-
-#: includes/extensions/search-widget/class-search-widget.php:503
-msgid "Search Entries:"
-msgstr "Keresés a bejegyzésekben:"
-
-#: includes/extensions/search-widget/class-search-widget.php:510
-msgid "Filter by date:"
-msgstr "Szűrés dátum alapján:"
-
-#: includes/extensions/search-widget/class-search-widget.php:521
-msgid "Entry ID:"
-msgstr "Bejegyzés azonosító:"
-
-#: includes/extensions/search-widget/class-search-widget.php:742
-msgid "Clear"
-msgstr ""
-
-#: includes/extensions/search-widget/class-search-widget.php:775
-msgctxt "Close calendar"
-msgid "Close"
-msgstr "Bezár"
-
-#: includes/extensions/search-widget/class-search-widget.php:776
-msgctxt "Previous month in calendar"
-msgid "Prev"
-msgstr "Előző"
-
-#: includes/extensions/search-widget/class-search-widget.php:777
-msgctxt "Next month in calendar"
-msgid "Next"
-msgstr "Következő"
-
-#: includes/extensions/search-widget/class-search-widget.php:778
-msgctxt "Today in calendar"
-msgid "Today"
-msgstr "Ma"
-
-#: includes/extensions/search-widget/class-search-widget.php:779
-msgctxt "Week in calendar"
-msgid "Week"
-msgstr "Hét"
-
-#: includes/extensions/search-widget/class-search-widget.php:780
-msgid "Show a different month"
-msgstr "Mutassa a különböző hónapokat"
-
-#: includes/extensions/search-widget/templates/search-field-entry_date.php:18
-msgid "Start date"
-msgstr "Kezdő dátum"
-
-#: includes/extensions/search-widget/templates/search-field-entry_date.php:19
-msgid "End date"
-msgstr "Befejező dátum"
-
-#: includes/extensions/search-widget/templates/search-field-link.php:18
-msgid "Show only:"
-msgstr "Mutassa csak a:"
-
-#: includes/extensions/search-widget/templates/widget-search.php:47
-msgid "Search"
-msgstr "Keresés"
-
 #: includes/fields/address.php:25
 msgid "Show Map Link:"
 msgstr "Mutassa a térkép linkjét:"
@@ -1968,6 +1796,24 @@ msgstr "Felhasználónév: (Példa: \"nostromo\")"
 msgid "User ID # (Example: 426)"
 msgstr "Felhasználó azonosító # (Például: 426)"
 
+#: includes/fields/custom.php:23
+#, php-format
+msgid ""
+"Enter text or HTML. Also supports shortcodes. You can show or hide data "
+"using the %s shortcode (%slearn more%s)."
+msgstr ""
+
+#: includes/fields/custom.php:31
+#: includes/widgets/class-gravityview-widget-custom-content.php:39
+msgid "Automatically add paragraphs to content"
+msgstr "Automatikusan adjon bekezdést a tartalomhoz"
+
+#: includes/fields/custom.php:32
+#: includes/widgets/class-gravityview-widget-custom-content.php:40
+msgid ""
+"Wrap each block of text in an HTML paragraph tag (recommended for text)."
+msgstr "Minden szöveges egységet tegyen egy HTML bekezdés címkébe (szöveghez ajánlott)."
+
 #: includes/fields/email.php:23
 msgid "Link the Email Address"
 msgstr "Linkelje az e-mail címet"
@@ -2018,15 +1864,18 @@ msgstr "Link-ként mutassa:"
 msgid "Display the uploaded files as links, rather than embedded content."
 msgstr "A feltöltött fájlokat linkekként mutassa, beágyazott tartalmak helyett."
 
-#: includes/fields/other-entries.php:29 includes/widgets.php:360
+#: includes/fields/other-entries.php:29
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:349
 msgid "Entry link text (required)"
 msgstr ""
 
-#: includes/fields/other-entries.php:30 includes/widgets.php:266
+#: includes/fields/other-entries.php:30
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:255
 msgid "Entry #{entry_id}"
 msgstr ""
 
-#: includes/fields/other-entries.php:36 includes/widgets.php:367
+#: includes/fields/other-entries.php:36
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:356
 msgid "Text or HTML to display after the link (optional)"
 msgstr ""
 
@@ -2102,72 +1951,243 @@ msgstr "Ne mutassa a teljes URL címet, csak a domaint."
 msgid "Open link in the same window?"
 msgstr "Megnyitod a linket ebben az ablakban?"
 
-#: includes/widgets.php:23
+#: includes/widgets/class-gravityview-widget-custom-content.php:20
+msgid "Insert custom text or HTML as a widget"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-custom-content.php:31
+msgid "Enter text or HTML. Also supports shortcodes."
+msgstr "Adjon meg szöveget, vagy HTML-t. A rövid kódokat is támogatja."
+
+#: includes/widgets/class-gravityview-widget-page-links.php:14
+msgid "Links to multiple pages of results."
+msgstr "Link több találati oldalra."
+
+#: includes/widgets/class-gravityview-widget-page-links.php:19
+msgid "Show each page number"
+msgstr "Mutass minden oldalszámot"
+
+#: includes/widgets/class-gravityview-widget-page-links.php:20
+msgid "Show every page number instead of summary (eg: 1 2 3 ... 8 »)"
+msgstr "Mutassa az összes lapszámot összegzés (pl: 1 2 3 ... 8 ») helyett"
+
+#: includes/widgets/class-gravityview-widget-page-links.php:23
+msgid "Page Links"
+msgstr "Oldal linkek"
+
+#: includes/widgets/class-gravityview-widget-pagination-info.php:19
+msgid "Summary of the number of visible entries out of the total results."
+msgstr "A látható bejegyzések számának összessége több az eredménynél"
+
+#: includes/widgets/class-gravityview-widget-pagination-info.php:28
+msgid "Show Pagination Info"
+msgstr "Mutasd az oldalszámozást"
+
+#: includes/widgets/class-gravityview-widget-pagination-info.php:69
+#, php-format
+msgid "Displaying %1$s - %2$s of %3$s"
+msgstr "Megjelenítés: %1$s - %2$s / %3$s"
+
+#: includes/widgets/class-gravityview-widget.php:102
+msgid "This class will be added to the widget container"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:27
+msgid "Search form for searching entries."
+msgstr "Keresési mező a bejegyzések közötti kereséshez."
+
+#: includes/widgets/search-widget/class-search-widget.php:44
+msgid "Search Layout"
+msgstr "Keresés elrendezése"
+
+#: includes/widgets/search-widget/class-search-widget.php:47
+msgid "Horizontal"
+msgstr "Vízszintes"
+
+#: includes/widgets/search-widget/class-search-widget.php:48
+msgid "Vertical"
+msgstr "Függőleges"
+
+#: includes/widgets/search-widget/class-search-widget.php:53
+msgid "Show Clear button"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:57
+msgid "Search Bar"
+msgstr "Keresősáv"
+
+#: includes/widgets/search-widget/class-search-widget.php:105
+msgid "Text"
+msgstr "Szöveg"
+
+#: includes/widgets/search-widget/class-search-widget.php:106
+msgid "Date"
+msgstr "Dátum"
+
+#: includes/widgets/search-widget/class-search-widget.php:108
+msgid "Select (multiple values)"
+msgstr "Kiválaszt (több értéket)"
+
+#: includes/widgets/search-widget/class-search-widget.php:109
+msgid "Radio"
+msgstr "Rádió"
+
+#: includes/widgets/search-widget/class-search-widget.php:110
+#: includes/widgets/search-widget/class-search-widget.php:111
+msgid "Checkbox"
+msgstr "Jelölőnégyzet"
+
+#: includes/widgets/search-widget/class-search-widget.php:112
+msgid "Links"
+msgstr "Linkek"
+
+#: includes/widgets/search-widget/class-search-widget.php:131
+msgid "No search fields configured yet."
+msgstr "A keresési mező még nem lett beállítva."
+
+#: includes/widgets/search-widget/class-search-widget.php:132
+msgid "Add Search Field"
+msgstr "Keresési mező hozzáadása"
+
+#: includes/widgets/search-widget/class-search-widget.php:134
+msgid "Input Type"
+msgstr "Beviteli formátum"
+
+#: includes/widgets/search-widget/class-search-widget.php:203
+msgid "Search Everything"
+msgstr "Keresés mindenhol"
+
+#: includes/widgets/search-widget/class-search-widget.php:503
+msgid "Search Entries:"
+msgstr "Keresés a bejegyzésekben:"
+
+#: includes/widgets/search-widget/class-search-widget.php:510
+msgid "Filter by date:"
+msgstr "Szűrés dátum alapján:"
+
+#: includes/widgets/search-widget/class-search-widget.php:521
+msgid "Entry ID:"
+msgstr "Bejegyzés azonosító:"
+
+#: includes/widgets/search-widget/class-search-widget.php:742
+msgid "Clear"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:775
+msgctxt "Close calendar"
+msgid "Close"
+msgstr "Bezár"
+
+#: includes/widgets/search-widget/class-search-widget.php:776
+msgctxt "Previous month in calendar"
+msgid "Prev"
+msgstr "Előző"
+
+#: includes/widgets/search-widget/class-search-widget.php:777
+msgctxt "Next month in calendar"
+msgid "Next"
+msgstr "Következő"
+
+#: includes/widgets/search-widget/class-search-widget.php:778
+msgctxt "Today in calendar"
+msgid "Today"
+msgstr "Ma"
+
+#: includes/widgets/search-widget/class-search-widget.php:779
+msgctxt "Week in calendar"
+msgid "Week"
+msgstr "Hét"
+
+#: includes/widgets/search-widget/class-search-widget.php:780
+msgid "Show a different month"
+msgstr "Mutassa a különböző hónapokat"
+
+#: includes/widgets/search-widget/templates/search-field-entry_date.php:18
+msgid "Start date"
+msgstr "Kezdő dátum"
+
+#: includes/widgets/search-widget/templates/search-field-entry_date.php:19
+msgid "End date"
+msgstr "Befejező dátum"
+
+#: includes/widgets/search-widget/templates/search-field-link.php:18
+msgid "Show only:"
+msgstr "Mutassa csak a:"
+
+#: includes/widgets/search-widget/templates/widget-search.php:47
+msgid "Search"
+msgstr "Keresés"
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:12
 msgid "GravityView Recent Entries"
 msgstr ""
 
-#: includes/widgets.php:26
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:15
 msgid "Display the most recent entries for a View"
 msgstr ""
 
-#: includes/widgets.php:262
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:251
 msgid "Recent Entries"
 msgstr ""
 
-#: includes/widgets.php:276 includes/widgets.php:530
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:265
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:154
 msgid "Title:"
 msgstr "Cím:"
 
-#: includes/widgets.php:305 includes/widgets.php:540
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:294
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:164
 msgid "Please select a View to search."
 msgstr ""
 
-#: includes/widgets.php:315
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:304
 msgid "&mdash; Select a View as Entries Source &mdash;"
 msgstr ""
 
-#: includes/widgets.php:343 includes/widgets.php:577
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:332
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:201
 msgid "If Embedded, Page ID:"
 msgstr ""
 
-#: includes/widgets.php:346 includes/widgets.php:580
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:335
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:204
 msgid ""
 "To have a search performed on an embedded View, enter the ID of the post or "
 "page where the View is embedded."
 msgstr ""
 
-#: includes/widgets.php:353
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:342
 msgid "Number of entries to show:"
 msgstr ""
 
-#: includes/widgets.php:395
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:14
 msgid "A search form for a specific GravityView."
 msgstr ""
 
-#: includes/widgets.php:402
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:21
 msgid "GravityView Search"
 msgstr ""
 
-#: includes/widgets.php:498
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:122
 #, php-format
 msgid ""
 "This widget is not configurable from this screen. Please configure it on the"
 " %sWidgets page%s."
 msgstr ""
 
-#: includes/widgets.php:548
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:172
 msgid "View:"
 msgstr ""
 
-#: includes/widgets.php:550
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:174
 msgid "&mdash; Select a View &mdash;"
 msgstr ""
 
-#: includes/widgets.php:589
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:213
 msgid "Searchable fields:"
 msgstr ""
 
-#: includes/widgets.php:590
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:214
 msgid "Search Fields"
 msgstr ""
 
