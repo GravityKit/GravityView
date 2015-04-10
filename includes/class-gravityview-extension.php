@@ -56,7 +56,8 @@ abstract class GravityView_Extension {
 
 	function settings( $settings ) {
 
-		if( defined('DOING_AJAX') && DOING_AJAX ) {
+		// If doing ajax, get outta here
+		if( false === GravityView_Plugin::is_admin() )  {
 			return;
 		}
 

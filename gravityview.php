@@ -128,9 +128,8 @@ final class GravityView_Plugin {
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ), 1 );
 
-		if( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-			add_action( 'init', array( $this, 'frontend_actions' ), 20 );
-		}
+		// Load frontend files
+		add_action( 'init', array( $this, 'frontend_actions' ), 20 );
 
 		// Load default templates
 		add_action( 'init', array( $this, 'register_default_templates' ), 11 );
@@ -219,12 +218,26 @@ final class GravityView_Plugin {
 	}
 
 	/**
+	 * Check if is_admin(), and make sure not DOING_AJAX
+	 * @since 1.7.5
+	 * @return bool
+	 */
+	public static function is_admin() {
+
+		$doing_ajax = defined( 'DOING_AJAX' ) ? DOING_AJAX : false;
+
+		return is_admin() && ! $doing_ajax;
+	}
+
+	/**
 	 * Function to launch frontend objects
 	 *
 	 * @access public
 	 * @return void
 	 */
 	public function frontend_actions() {
+
+		if( self::is_admin() ) { return; }
 
 		include_once( GRAVITYVIEW_DIR .'includes/class-image.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-template.php' );

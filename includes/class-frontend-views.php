@@ -274,11 +274,8 @@ class GravityView_frontend {
 	function parse_content( $wp = array() ) {
 		global $post;
 
-		// Are we in an AJAX request?
-		$doing_ajax = ( defined( 'DOING_AJAX' ) && DOING_AJAX );
-
 		// If in admin and NOT AJAX request, get outta here.
-		if( is_admin() && ! $doing_ajax )  {
+		if( GravityView_Plugin::is_admin() )  {
 			return;
 		}
 
