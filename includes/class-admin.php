@@ -192,14 +192,18 @@ class GravityView_Admin {
 	 * @return void
 	 */
 	function no_conflict_scripts() {
+		global $wp_scripts;
 
-		global $gravityview_settings;
-
-		if( ! gravityview_is_admin_page() || empty( $gravityview_settings['no-conflict-mode'] ) ) {
+		if( ! gravityview_is_admin_page() ) {
 			return;
 		}
 
-		global $wp_scripts;
+		$no_conflict_mode = GravityView_Settings::getSetting('no-conflict-mode');
+
+		if( empty( $no_conflict_mode ) ) {
+			return;
+		}
+
 
 		$wp_required_scripts = array(
 			'debug-bar-extender',
@@ -220,35 +224,31 @@ class GravityView_Admin {
 			'media-editor',
 			'media-upload',
             'thickbox',
-            'jquery-ui-dialog',
-            'jquery-ui-tabs',
-            'jquery-ui-draggable',
-            'jquery-ui-droppable',
+			'wp-color-picker',
 
             'gform_tooltip_init',
             'gform_field_filter',
             'gform_forms',
 
-            // Redux Framework
+		    // Settings
+			'gv-admin-edd-license',
+
+            // Common
             'select2-js',
             'qtip-js',
-            'nouislider-js',
-            'serializeForm-js',
-            'ace-editor-js',
-            'redux-vendor',
-            'redux-js',
-            'jquery',
+
+            // jQuery
+			'jquery',
             'jquery-ui-core',
             'jquery-ui-sortable',
             'jquery-ui-datepicker',
             'jquery-ui-dialog',
             'jquery-ui-slider',
-            'wp-color-picker',
+			'jquery-ui-dialog',
+			'jquery-ui-tabs',
+			'jquery-ui-draggable',
+			'jquery-ui-droppable',
             'jquery-ui-accordion',
-            'redux-edd_license',
-			'redux-field-edd_license-js',
-		    'redux-field-switch-js',
-		    'redux-field-media-js',
 
 			// WP SEO
 			'wp-seo-metabox',
@@ -265,13 +265,14 @@ class GravityView_Admin {
 	 * @return void
 	 */
 	function no_conflict_styles() {
-		global $gravityview_settings, $wp_styles;
+		global $wp_styles;
 
 		if( ! gravityview_is_admin_page() ) {
 			return;
 		}
 
-		// Something's not right; the styles aren't registered.
+		// Dequeue other jQuery styles even if no-conflict is off.
+		// Terrible-looking tabs help no one.
 		if( !empty( $wp_styles->registered ) )  {
 			foreach ($wp_styles->registered as $key => $style) {
 				if( preg_match( '/^(?:wp\-)?jquery/ism', $key ) ) {
@@ -280,8 +281,10 @@ class GravityView_Admin {
 			}
 		}
 
-		// Making sure jQuery is unset will be enough
-		if( empty( $gravityview_settings['no-conflict-mode'] ) ) {
+		$no_conflict_mode = GravityView_Settings::getSetting('no-conflict-mode');
+
+		// If no conflict is off, jQuery will suffice.
+		if( empty( $no_conflict_mode ) ) {
 			return;
 		}
 
@@ -305,21 +308,8 @@ class GravityView_Admin {
 	        'gform_tooltip',
 	        'gform_font_awesome',
 
-	        // Redux Framework
-	        'redux-css',
-	        'redux-elusive-icon',
-	        'redux-elusive-icon-ie7',
-	        'select2-css',
-	        'redux-fields-css',
-	        'redux-admin-css',
-	        'qtip-css',
-	        'nouislider-css',
-	        'jquery-ui-css',
-	        'redux-rtl-css',
-	        'wp-color-picker',
-	        'redux-field-edd-css',
-	        'redux-field-info-css',
-	        'redux-field-edd_license-css',
+            // Settings
+	        'gravityview_settings',
 
 	        // WP SEO
 	        'wp-seo-metabox',
@@ -354,7 +344,7 @@ class GravityView_Admin {
         //reset queue
         $queue = array();
         foreach( $wp_objects->queue as $object ) {
-	        if( in_array( $object, $required_objects ) || preg_match('/gravityview|redux/ism', $object ) ) {
+	        if( in_array( $object, $required_objects ) || preg_match('/gravityview|gf_|gravityforms/ism', $object ) ) {
                 $queue[] = $object;
             }
         }

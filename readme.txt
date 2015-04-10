@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.7.4.1 =
+* Fixed: No-Conflict Mode not working (introduced in 1.7.4)
 * Fixed: Fatal error when attempting to view entry that does not exist (introduced in 1.7.4)
 * Updated: Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/). Thanks!
 
