@@ -461,7 +461,7 @@ class GravityView_Settings extends GFAddOn {
 
 		// If the posted key doesn't match the activated/deactivated key (set using the Activate License button, AJAX response),
 		// then we assume it's changed. If it's changed, unset the status and the previous response.
-		if( isset( $posted_settings['license_key'] ) && $posted_settings['license_key'] !== $posted_settings['license_key_response']['license_key'] ) {
+		if( isset( $posted_settings['license_key'] ) && isset( $posted_settings['license_key_response']['license_key'] ) && $posted_settings['license_key'] !== $posted_settings['license_key_response']['license_key'] ) {
 			unset( $posted_settings['license_key_response'] );
 			unset( $posted_settings['license_key_status'] );
 			GFCommon::add_error_message( __('The license key you entered has been saved, but not activated. Please activate the license.', 'gravityview' ) );
@@ -597,4 +597,4 @@ class GravityView_Settings extends GFAddOn {
 
 }
 
-new GravityView_Settings;
+GravityView_Settings::get_instance();
