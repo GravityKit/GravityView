@@ -15,6 +15,14 @@
 class GravityView_frontend {
 
 	/**
+	 * Regex strings that are used to determine whether the current request is a GravityView search or not.
+	 * @see GravityView_frontend::is_searching()
+	 * @since 1.7.4.1
+	 * @var array
+	 */
+	private static $search_parameters = array( 'gv_search', 'gv_start', 'gv_end', 'gv_id', 'filter_*' );
+
+	/**
 	 * Is the currently viewed post a `gravityview` post type?
 	 * @var boolean
 	 */
@@ -274,13 +282,13 @@ class GravityView_frontend {
 			return;
 		}
 
-        // Calculate requested Views
+		// Calculate requested Views
 		$this->setGvOutputData( GravityView_View_Data::getInstance( $post ) );
 
-        // !important: we need to run this before getting single entry (to kick the advanced filter)
-        $this->set_context_view_id();
+		// !important: we need to run this before getting single entry (to kick the advanced filter)
+		$this->set_context_view_id();
 
-        
+
 		$this->setIsGravityviewPostType( get_post_type( $post ) === 'gravityview' );
 
 		$post_id = $this->getPostId() ? $this->getPostId() : (isset( $post ) ? $post->ID : NULL );
@@ -312,7 +320,7 @@ class GravityView_frontend {
 	 */
 	function is_searching() {
 
-		// Single entry
+		// It's a single entry, not search
 		if( $this->getSingleEntry() ) {
 			return false;
 		}
@@ -322,24 +330,27 @@ class GravityView_frontend {
 			return false;
 		}
 
-		// Get the value of $_GET
-		$search_values = implode( '', array_values( $_GET ) );
+		// Remove empty values
+		$get = array_filter( $_GET );
 
-		// If the $_GET parameters are set, but they're empty, it's no search.
-		if ( empty( $search_values ) ) {
+		// If the $_GET parameters are empty, it's no search.
+		if ( empty( $get ) ) {
 			return false;
 		}
 
+		$search_keys = array_keys( $get );
 
-		$search_keys = implode( '', array_keys( $_GET ) );
+		$search_match = implode( '|', self::$search_parameters );
 
-		// Analyze the $_GET parameters and see if they match known GV args
-		if( preg_match( '/(gv_search|gv_start|gv_end|gv_id|filter_*)/i', $search_keys ) ) {
-			return true;
+		foreach( $search_keys as $search_key ) {
+
+			// Analyze the search key $_GET parameter and see if it matches known GV args
+			if( preg_match( '/('.$search_match.')/i', $search_key ) ) {
+				return true;
+			}
 		}
 
 		return false;
-
 	}
 
 	/**
@@ -537,14 +548,14 @@ class GravityView_frontend {
 	 *      @type string $offset (optional) - This is the start point in the current data set (0 index based).
 	 * }
 	 *
-	 * @return void
+	 * @return string|null HTML output of a View, NULL if View isn't found
 	 */
 	public function render_view( $passed_args ) {
 
 		// validate attributes
 		if( empty( $passed_args['id'] ) ) {
 			do_action( 'gravityview_log_error', '[render_view] Returning; no ID defined.', $passed_args );
-			return;
+			return NULL;
 		}
 
 		// Solve problem when loading content via admin-ajax.php
@@ -561,7 +572,7 @@ class GravityView_frontend {
 
 			do_action( 'gravityview_log_error', '[render_view] gv_output_data not an object or get_view not callable.', $this->getGvOutputData() );
 
-			return;
+			return NULL;
 		}
 
 		$view_id = $passed_args['id'];
@@ -590,7 +601,7 @@ class GravityView_frontend {
 			if( get_the_ID() !== $view_id ) { return get_the_password_form(); }
 
 			// Otherwise, just get outta here
-			return;
+			return NULL;
 		}
 
 		ob_start();
@@ -673,14 +684,14 @@ class GravityView_frontend {
 				 */
 				echo esc_attr( apply_filters( 'gravityview/render/entry/not_visible', __( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview') ) );
 
-				return;
+				return NULL;
 			}
 
 			// We're in single view, but the view being processed is not the same view the single entry belongs to.
 			// important: do not remove this as it prevents fake attempts of displaying entries from other views/forms
 			if( $this->getGvOutputData()->has_multiple_views() && $view_id != $this->get_context_view_id() ) {
 				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '. $view_id );
-				return;
+				return NULL;
 			}
 
 
@@ -716,7 +727,7 @@ class GravityView_frontend {
 
 			do_action( 'gravityview_edit_entry', $this->getGvOutputData() );
 
-			return;
+			return NULL;
 
 		} else {
 			// finaly we'll render some html
