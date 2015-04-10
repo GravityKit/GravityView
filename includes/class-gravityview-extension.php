@@ -62,7 +62,7 @@ abstract class GravityView_Extension {
 		}
 
 		if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-			include_once plugin_dir_path( __FILE__ ) . 'lib/edd-redux-extension/edd_license/EDD_SL_Plugin_Updater.php';
+			include_once plugin_dir_path( __FILE__ ) . 'lib/EDD_SL_Plugin_Updater.php';
 		}
 
 		if( !class_exists( 'GravityView_Settings' ) ) { return; }
