@@ -255,15 +255,22 @@ class GravityView_Welcome {
 
 				<h2 class="subtitle" style="text-align: center;"><?php esc_html_e('What&rsquo;s New', 'gravityview' ); ?></h2>
 
-				<div class="feature-section col two-col">
+				<div class="feature-section col three-col">
 
 					<div class="col-1">
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/gvlogic.png', GRAVITYVIEW_FILE ); ?>" alt="gvlogic: conditional content display">
+						<h4 class="higher">Conditional Content Display</h4>
+						<p>Show or hide content in Custom Content fields using the new <code>[gvlogic]</code> shortcode.</p>
+						<p><a href="http://docs.gravityview.co/article/252-gvlogic-shortcode" class="button button-primary" rel="external" title="Learn how to use it">Learn how to use the shortcode</a></p>
+					</div>
+
+					<div class="col-2">
 						<img src="<?php echo plugins_url( 'assets/images/screenshots/other-entries.png', GRAVITYVIEW_FILE ); ?>" alt="Configuring the Other Entries field">
 						<h4 class="higher">New "Other Entries" Field</h4>
 						<p>In Version 1.7.2, you can now list other entries created by the Entry creator.</p>
 					</div>
 
-					<div class="col-2 last-feature">
+					<div class="col-3 last-feature">
 						<img src="<?php echo plugins_url( 'assets/images/screenshots/edit-post-content.png', GRAVITYVIEW_FILE ); ?>" alt="Edit Post Content">
 						<h4 class="higher">Edit Post Content</h4>
 						<p>You can now edit most Post Fields when you edit an entry.</p>
@@ -298,6 +305,19 @@ class GravityView_Welcome {
 				</div>
 
 				<hr />
+
+				<h3>1.7.5 on April 10</h3>
+
+				<ul>
+					<li>Added: <code>[gvlogic]</code> Shortcode - allows you to show or hide content based on the value of merge tags in Custom Content fields! <a href="http://docs.gravityview.co/article/252-gvlogic-shortcode">Learn how to use the shortcode</a>.</li>
+					<li>Fixed: White Screen error when license key wasn't set and settings weren't migrated (introduced in 1.7.4)</li>
+					<li>Fixed: No-Conflict Mode not working (introduced in 1.7.4)</li>
+					<li>Fixed: PHP notices when visiting complex URLs</li>
+					<li>Fixed: Path to plugin updater file, used by Extensions</li>
+					<li>Fixed: Extension global settings layout improved (yet to be implemented)</li>
+					<li>Tweak: Restructure plugin file locations</li>
+					<li>Updated: Dutch translation by <a href="https://www.transifex.com/accounts/profile/erikvanbeek/">@erikvanbeek</a>. Thanks!</li>
+				</ul>
 
 				<h3>Changes in 1.7.4.1</h3>
 				<ul>
