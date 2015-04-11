@@ -117,10 +117,10 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR . 'includes/class-oembed.php' );
 
 		// Add logging
-		require_once( GRAVITYVIEW_DIR . 'includes/class-logging.php');
+		include_once( GRAVITYVIEW_DIR . 'includes/class-logging.php');
 
-		require_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
-		require_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
+		include_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
 		include_once( GRAVITYVIEW_DIR . 'includes/class-frontend-views.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/helper-functions.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-entry-list.php' );
@@ -136,9 +136,9 @@ final class GravityView_Plugin {
 		// Load default templates
 		add_action( 'init', array( $this, 'register_default_templates' ), 11 );
 
-
-
 	}
+
+
 
 
 	/**
@@ -192,6 +192,15 @@ final class GravityView_Plugin {
 	 */
 	public static function include_extension_framework() {
 	    require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-extension.php' );
+	}
+
+	/**
+	 * Load GravityView_Widget class
+	 *
+	 * @since 1.7.5.1
+	 */
+	public static function include_widget_class() {
+		include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget.php' );
 	}
 
 

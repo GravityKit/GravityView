@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.7.5.1 on April 10 =
+* Fixed: Path issue with the A-Z Filters Extension
+
 = 1.7.5 on April 10 =
 * Added: `[gvlogic]` Shortcode - allows you to show or hide content based on the value of merge tags in Custom Content fields! [Learn how to use the shortcode](http://docs.gravityview.co/article/252-gvlogic-shortcode).
 * Fixed: White Screen error when license key wasn't set and settings weren't migrated (introduced in 1.7.4)
