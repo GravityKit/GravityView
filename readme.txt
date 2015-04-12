@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.7.5.2 on April XX =
+* Fixed: Wrong width for the images in the list template (single entry view)
+
 = 1.7.5.1 on April 10 =
 * Fixed: Path issue with the A-Z Filters Extension
 
