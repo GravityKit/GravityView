@@ -53,16 +53,16 @@
 				</div>
 			<?php endif; ?>
 
-			<div class="gv-grid gv-list-view-content">
+			<div class="gv-list-view-content">
 				<?php
 
 					$this->renderZone('image', array(
-						'wrapper_class' => 'gv-grid-col-1-3 gv-list-view-content-image',
+						'wrapper_class' => 'gv-list-view-content-image',
 						'markup'     => '<h4 class="{{class}}">{{label}}{{value}}</h4>'
 					));
 
 					$this->renderZone('description', array(
-						'wrapper_class' => 'gv-grid-col-2-3 gv-list-view-content-description',
+						'wrapper_class' => 'gv-list-view-content-description',
 						'label_markup' => '<h4>{{label}}</h4>',
 						'wpautop' => true
 					));

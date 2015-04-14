@@ -90,41 +90,40 @@ $color-description: #999;
 
 .gv-list-view-content {
 
-	padding: .75em 1em;
+  padding: .75em 1em;
 
-	@extend %clearfix; // Clears image floats
+  @extend %clearfix; // Clears image floats
 
-	h4 {
-		clear: none; // Fix themes with H4 clearing the images
-	}
+  h4 {
+    clear: none; // Fix themes with H4 clearing the images
+  }
 
-	p {
-		margin: 0 0 1em 0;
-		padding: 0;
-	}
+  p {
+    margin: 0 0 1em 0;
+    padding: 0;
+  }
 
-    .gv-list-view-content-image img {
-		display: block;
-        width: 100%;
-        margin: 0 1em 1em 0;
-	}
+  .gv-list-view-content-image {
+    padding: 0 1em 1em 0;
 
-	// Featured Image
-	.gv-list-view-content-image {
-		//float: left;
+    .gv-field-file-uploads li,
+    .gv-field-file-uploads {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
 
-		//max-width: 45%;
-		//max-height: 400px;
-
-		.gv-field-file-uploads li,
-		.gv-field-file-uploads {
-			list-style: none;
-			margin: 0;
-			padding: 0;
-		}
-	}
-
+  }
 }
+
+.gv-list-single-container .gv-list-view-content-image {
+  float:left;
+  img {
+    max-height: 400px;
+    max-width: 100%;
+  }
+}
+
 
 // 3.4. Footer
 // ------------------------------------------------
