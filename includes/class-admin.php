@@ -597,7 +597,10 @@ class GravityView_Admin {
 			return true;
 		}
 
-		if( !file_exists( trailingslashit( WP_PLUGIN_DIR ) . $location ) ) {
+		if(
+			!file_exists( trailingslashit( WP_PLUGIN_DIR ) . $location ) &&
+			!file_exists( trailingslashit( WPMU_PLUGIN_DIR ) . $location )
+		) {
 			return false;
 		}
 
