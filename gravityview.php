@@ -30,6 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /** Constants */
 if( !defined('GRAVITYVIEW_FILE') ) {
+	/** @define "GRAVITYVIEW_FILE" "./gravityview.php" */
 	define( 'GRAVITYVIEW_FILE', __FILE__ );
 }
 
@@ -38,6 +39,7 @@ if ( !defined('GRAVITYVIEW_URL') ) {
 }
 
 if ( !defined('GRAVITYVIEW_DIR') ) {
+	/** @define "GRAVITYVIEW_DIR" "./" */
 	define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
 }
 
