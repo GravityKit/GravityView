@@ -94,13 +94,14 @@ class GV_License_Handler {
 
 		$class .= ( !empty( $key ) && $status !== 'valid' ) ? '' : ' hide';
 
-		$submit = '';
+		$submit = '<div class="gv-edd-button-wrapper">';
 		foreach ( $fields as $field ) {
 			$field['type'] = 'button';
 			$field['class'] = isset( $field['class'] ) ? $field['class'] . ' '. $class : $class;
 			$field['style'] = 'margin-left: 10px;';
 			$submit .= $this->Addon->settings_submit( $field, $echo );
 		}
+		$submit .= '</div>';
 
 		return $submit;
 	}

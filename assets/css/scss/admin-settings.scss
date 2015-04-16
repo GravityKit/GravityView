@@ -1,3 +1,5 @@
+@import "admin-license-key-fields";
+
 /**
  * Modify the GFAddon App Settings page
  */
@@ -69,10 +71,6 @@
 
   .hide {
     display: none;
-  }
-
-  #gaddon-setting-row-license_key .button {
-    margin: 0 0 0 10px
   }
 
   // Add the stars to the top
