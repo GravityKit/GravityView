@@ -120,6 +120,9 @@ class GravityView_Settings extends GFAddOn {
 
 		add_filter( 'gform_addon_app_settings_menu_gravityview', array( $this, 'modify_app_settings_menu_title' ) );
 
+		/** @since 1.7.6 */
+		add_action('network_admin_menu', array( $this, 'add_network_menu' ) );
+
 		parent::init_admin();
 	}
 
@@ -225,11 +228,40 @@ class GravityView_Settings extends GFAddOn {
 	}
 
 	/**
+	 * Add global Settings page for Multisite
+	 * @since 1.7.6
+	 * @return void
+	 */
+	public function add_network_menu() {
+		if( GravityView_Plugin::is_network_activated() ) {
+			add_menu_page( __( 'Settings', 'gravityview' ), __( 'GravityView', 'gravityview' ), 'manage_options', "edit.php?post_type=gravityview&page={$this->_slug}_settings", array( $this, 'app_tab_page' ), 'none' );
+		}
+	}
+
+	/**
 	 * Add Settings link to GravityView menu
 	 * @return void
 	 */
 	public function create_app_menu() {
-		add_submenu_page( 'edit.php?post_type=gravityview', __( 'Settings', 'gravityview' ), __( 'Settings', 'gravityview' ), $this->_capabilities_app_settings, $this->_slug . '_settings', array( $this, 'app_tab_page' ) );
+
+		/**
+		 * If not multisite, always show.
+		 * If multisite and the plugin is network activated, show; we need to register the submenu page for the Network Admin settings to work.
+		 * If multisite and not network admin, we don't want the settings to show.
+		 * @since 1.7.6
+		 */
+		$show_submenu = !is_multisite() || !GravityView_Plugin::is_network_activated() || ( is_network_admin() && GravityView_Plugin::is_network_activated() );
+
+		/**
+		 * Override whether to show the Settings menu on a per-blog basis.
+		 * @since 1.7.6
+		 * @param bool $hide_if_network_activated Default: true
+		 */
+		$show_submenu = apply_filters( 'gravityview/show-settings-menu', $show_submenu );
+
+		if( $show_submenu ) {
+			add_submenu_page( 'edit.php?post_type=gravityview', __( 'Settings', 'gravityview' ), __( 'Settings', 'gravityview' ), $this->_capabilities_app_settings, $this->_slug . '_settings', array( $this, 'app_tab_page' ) );
+		}
 	}
 
 	/**

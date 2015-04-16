@@ -20,6 +20,10 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.7.6 =
+* Added WordPress Multisite settings page support
+    - By default, settings aren't shown on single blogs if GravityView is Network Activated
+
 = 1.7.5.1 on April 10 =
 * Fixed: Path issue with the A-Z Filters Extension
 

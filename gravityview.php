@@ -140,7 +140,14 @@ final class GravityView_Plugin {
 
 	}
 
-
+	/**
+	 * Check whether GravityView is network activated
+	 * @since 1.7.6
+	 * @return bool
+	 */
+	public static function is_network_activated() {
+		return is_multisite() && ( function_exists('is_plugin_active_for_network') && is_plugin_active_for_network( 'gravityview/gravityview.php' ) );
+	}
 
 
 	/**
