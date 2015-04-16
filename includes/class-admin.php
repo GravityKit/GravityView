@@ -17,8 +17,10 @@ class GravityView_Admin {
 	 */
 	function add_hooks() {
 
+		add_action( 'network_admin_notices', array( $this, 'dismiss_notice' ), 50 );
 		add_action( 'admin_notices', array( $this, 'dismiss_notice' ), 50 );
 		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
+		add_action( 'network_admin_notices', array( $this, 'admin_notice' ), 100 );
 
 		// If Gravity Forms isn't active or compatibile, stop loading
 		if( false === self::check_gravityforms() ) {
@@ -439,7 +441,7 @@ class GravityView_Admin {
      */
     function _maybe_show_notice( $notice ) {
 
-    	// There are no dismissed notices.
+	    // There are no dismissed notices.
     	if( empty( self::$dismissed_notices ) ) {
     		return true;
     	}
@@ -458,6 +460,10 @@ class GravityView_Admin {
 	function admin_notice() {
 
 		if( empty( self::$admin_notices ) ) {
+			return;
+		}
+
+		if( GravityView_Plugin::is_network_activated() && !is_main_site() ) {
 			return;
 		}
 
