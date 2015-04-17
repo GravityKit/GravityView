@@ -248,7 +248,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		// Set up some default widget settings.
 		$defaults = array(
-			'title' 			=> __('Recent Entries'),
+			'title' 			=> __('Recent Entries', 'gravityview'),
 			'view_id'           => NULL,
 			'post_id'           => NULL,
 			'limit'            => 10,
@@ -262,7 +262,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		<!-- Title -->
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title:', 'edd' ) ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title:', 'gravityview' ) ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p>
 

@@ -392,7 +392,7 @@ class GravityView_Settings extends GFAddOn {
 		$name    = ( $field['name'] === 'gform-settings-save' ) ? $field['name'] : '_gaddon_setting_'.$field['name'];
 
 		if ( empty( $value ) ) {
-			$value = __( 'Update Settings', 'gravityforms' );
+			$value = __( 'Update Settings', 'gravityview' );
 		}
 
 		$attributes = $this->get_field_attributes( $field );
@@ -425,7 +425,7 @@ class GravityView_Settings extends GFAddOn {
 		$field['class'] = isset( $field['class'] ) ? $field['class'] : 'button-primary gfbutton';
 
 		if ( ! rgar( $field, 'value' ) )
-			$field['value'] = __( 'Update Settings', 'gravityforms' );
+			$field['value'] = __( 'Update Settings', 'gravityview' );
 
 		$output = $this->settings_submit( $field, false );
 
