@@ -566,16 +566,23 @@ class GravityView_Settings extends GFAddOn {
             'type'     => 'save',
         );
 
-        // Extensions can tap in here.
-        $extension_fields = apply_filters( 'gravityview_extension_fields', array() );
+
+        /**
+         * Extensions can tap in here to insert their own section and settings.
+         *
+         *   $sections[] = array(
+         *      'title' => __( 'GravityView My Extension Settings', 'gravityview' ),
+         *      'fields' => $settings,
+         *   );
+         *
+         */
+        $extension_sections = apply_filters( 'gravityview/settings/extension/sections', array() );
 
 		// If there are extensions, add a section for them
-		if ( ! empty( $extension_fields ) ) {
-            $extension_fields[] = $button;
-			$sections[] = array(
-				'title' => __( 'GravityView Extension Settings', 'gravityview' ),
-				'fields' => $extension_fields,
-			);
+		if ( ! empty( $extension_sections ) ) {
+            $k = count( $extension_sections ) - 1 ;
+            $extension_sections[ $k ]['fields'][] = $button;
+			$sections = array_merge( $sections, $extension_sections );
 		} else {
             // add the 'update settings' button to the general section
             $sections[0]['fields'][] = $button;
