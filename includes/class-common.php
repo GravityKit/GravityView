@@ -633,16 +633,17 @@ class GVCommon {
 
         foreach( $filters as $filter ) {
 
-            if( isset( $filter['key'] ) && array_key_exists( (string)$filter['key'], $entry ) ) {
-
+            if( isset( $filter['key'] ) ) {
                 $k = $filter['key'];
                 $field = self::get_field( $form, $k );
+                $field_value  = GFFormsModel::get_lead_field_value( $entry, $field );
                 $operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
 
-                $is_value_match = GFFormsModel::is_value_match( $entry[ (string)$k ], $filter['value'], $operator, $field );
+                $is_value_match = GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field );
 
                 // verify if we are already free to go!
                 if( !$is_value_match && 'all' === $mode ) {
+                    do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry cannot be displayed. Failed one criteria for ALL mode', $filter );
                     return false;
                 } elseif( $is_value_match && 'any' === $mode ) {
                     return $entry;
@@ -655,6 +656,7 @@ class GVCommon {
         if( 'all' === $mode ) {
             return $entry;
         } else {
+            do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry cannot be displayed. Failed all the criteria for ANY mode', $filters );
             return false;
         }
 
