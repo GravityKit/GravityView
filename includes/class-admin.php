@@ -485,7 +485,7 @@ class GravityView_Admin {
 
 				$dismiss = esc_attr($notice['dismiss']);
 
-				$url = add_query_arg( array( 'gv-dismiss' => wp_create_nonce( 'dismiss' ), 'notice' => $dismiss ) );
+				$url = esc_url( add_query_arg( array( 'gv-dismiss' => wp_create_nonce( 'dismiss' ), 'notice' => $dismiss ) ) );
 
 				echo wpautop( '<a href="'.$url.'" data-notice="'.$dismiss.'" class="button-small button button-secondary">'.esc_html__('Dismiss', 'gravityview' ).'</a>' );
 			}

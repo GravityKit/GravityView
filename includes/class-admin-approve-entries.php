@@ -467,7 +467,7 @@ class GravityView_Admin_ApproveEntries {
 				'approve_title' => __( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravityview'),
 				'unapprove_title' => __( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravityview'),
 				'column_title' => __( 'Show entry in directory view?', 'gravityview'),
-				'column_link' => add_query_arg( array('sort' => $approvedcolumn) ),
+				'column_link' => esc_url( add_query_arg( array('sort' => $approvedcolumn) ) ),
 			) );
 
 		}

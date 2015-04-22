@@ -165,7 +165,7 @@ class GV_License_Handler {
 
 		$api_params = $this->_get_edd_settings( $data['edd_action'], $license );
 
-		$url = add_query_arg( $api_params, self::url );
+		$url = esc_url( add_query_arg( $api_params, self::url ) );
 
 		$response = wp_remote_get( $url, array(
 			'timeout'   => 15,

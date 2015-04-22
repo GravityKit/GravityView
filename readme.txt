@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.7.5.2 on April XX =
+* Fixed: Security vulnerability caused by the usage of add_query_arg / remove_query_arg
 * Fixed: Wrong width for the images in the list template (single entry view)
 * Fixed: Conflict with the "The Events Calendar" plugin when saving View Advanced Filter configuration
 * Added: Option to convert text URI, www, FTP, and email addresses on a paragraph field in HTML links

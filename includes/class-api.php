@@ -455,7 +455,7 @@ class GravityView_API {
 				$args['dir'] = rgget('dir');
 			}
 
-			$link = add_query_arg( $args, $link );
+			$link = esc_url( add_query_arg( $args, $link ) );
 		}
 
 		return $link;
@@ -615,7 +615,7 @@ class GravityView_API {
 			$args['gvid'] = gravityview_get_view_id();
 		}
 
-		return add_query_arg( $args, $directory_link );
+		return esc_url( add_query_arg( $args, $directory_link ) );
 
 	}
 

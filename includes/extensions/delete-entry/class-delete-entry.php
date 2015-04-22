@@ -240,7 +240,7 @@ final class GravityView_Delete_Entry {
 
 		$url = wp_nonce_url( $actionurl, 'delete_'.$entry_slug, 'delete' );
 
-		return $url;
+		return esc_url( $url );
 	}
 
 
@@ -361,7 +361,7 @@ final class GravityView_Delete_Entry {
 
 			$redirect_to_base = remove_query_arg( array('action') );
 
-			$redirect_to = add_query_arg( $messages, $redirect_to_base );
+			$redirect_to = esc_url( add_query_arg( $messages, $redirect_to_base ) );
 
 			wp_safe_redirect( $redirect_to );
 

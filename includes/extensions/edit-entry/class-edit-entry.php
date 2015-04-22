@@ -185,7 +185,7 @@ class GravityView_Edit_Entry {
 			'edit' => wp_create_nonce( self::$nonce_key )
 		), $base );
 
-		return $url;
+		return esc_url( $url );
 	}
 
 	/**
@@ -1374,7 +1374,7 @@ class GravityView_Edit_Entry {
 				    echo $this->generate_notice( $message , 'gv-error' );
 
 				} else {
-					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'.$back_link.'">', '</a>' );
+					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. esc_url( $back_link ).'">', '</a>' );
 
 					/**
 					 * @since 1.5.4
