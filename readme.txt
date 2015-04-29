@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Not showing the single entry when using Advanced Filter (ANY mode) with complex fields types like checkboxes.
 * Fixed: Wrong width for the images in the list template (single entry view)
 * Fixed: Conflict with the "The Events Calendar" plugin when saving View Advanced Filter configuration
+* Fixed: When editing an entry in the frontend it gets unapproved (when not using the approve form field)
 * Added: Option to convert text URI, www, FTP, and email addresses on a paragraph field in HTML links
 
 = 1.7.5.1 on April 10 =

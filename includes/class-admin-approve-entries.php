@@ -327,15 +327,20 @@ class GravityView_Admin_ApproveEntries {
 	 */
 	public static function update_approved_meta( $form, $entry_id = NULL ) {
 
-		$approvedcolumn = (string)self::get_approved_column( $form['id'] );
+		$approvedcolumn = self::get_approved_column( $form['id'] );
+
+        /**
+         * If the form doesn't contain the approve field, don't assume anything.
+         */
+        if( empty( $approvedcolumn ) ) {
+            return;
+        }
 
 		$entry = GFAPI::get_entry( $entry_id );
 
-		$approved = !empty( $entry[ $approvedcolumn ] ) ? $entry[ $approvedcolumn ] : 0;
-
 		// update entry meta
 		if( function_exists('gform_update_meta') ) {
-			gform_update_meta( $entry_id, 'is_approved', $approved );
+			gform_update_meta( $entry_id, 'is_approved', $entry[ (string)$approvedcolumn ] );
 		}
 
 	}
@@ -346,7 +351,6 @@ class GravityView_Admin_ApproveEntries {
 	 * @return void
 	 */
 	public function ajax_update_approved() {
-		$response = false;
 
 		if( empty( $_POST['entry_id'] ) || empty( $_POST['form_id'] ) ) {
 
@@ -379,7 +383,7 @@ class GravityView_Admin_ApproveEntries {
 	static public function get_approved_column( $form ) {
 
         if( empty( $form ) ) {
-            return false;
+            return null;
         }
 
         if( !is_array( $form ) ) {
