@@ -1244,7 +1244,7 @@ class GravityView_frontend {
 
 		$url = add_query_arg( $sort_args, remove_query_arg( array('pagenum') ) );
 
-		return '<a href="'. $url .'" class="'. $class .'" ></a>&nbsp;'. $label;
+		return '<a href="'. esc_url( $url ) .'" class="'. $class .'" ></a>&nbsp;'. $label;
 
 	}
 

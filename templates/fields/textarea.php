@@ -17,5 +17,9 @@ if( !empty( $field_settings['trim_words'] ) ) {
 	$value = wp_trim_words( $value, $field_settings['trim_words'], $excerpt_more );
 }
 
+if( !empty( $field_settings['make_clickable'] ) ) {
+    $value = make_clickable( $value );
+}
+
 echo wpautop( $value );
 

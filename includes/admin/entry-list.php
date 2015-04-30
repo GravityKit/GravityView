@@ -63,7 +63,7 @@ class GravityView_GF_Entries_List {
 
 		<span class="edit edit_entry">
 			|
-		    <a title="<?php esc_attr_e( 'Edit this entry', 'gravityview'); ?>" href="<?php echo add_query_arg( $params, admin_url( 'admin.php?page='.$query_string ) ); ?>"><?php esc_html_e( 'Edit', 'gravityview' ); ?></a>
+		    <a title="<?php esc_attr_e( 'Edit this entry', 'gravityview'); ?>" href="<?php echo esc_url( add_query_arg( $params, admin_url( 'admin.php?page='.$query_string ) ) ); ?>"><?php esc_html_e( 'Edit', 'gravityview' ); ?></a>
 		</span>
 		<?php
 	}

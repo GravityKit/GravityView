@@ -607,7 +607,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			$url = add_query_arg( array() );
 		}
 
-		return $url;
+		return esc_url( $url );
 	}
 
 	/**

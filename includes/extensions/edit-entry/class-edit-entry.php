@@ -1348,7 +1348,7 @@ class GravityView_Edit_Entry {
 	 */
 	public function edit_entry_form() {
 
-		$back_link = remove_query_arg( array( 'page', 'view', 'edit' ) );
+		$back_link = esc_url( remove_query_arg( array( 'page', 'view', 'edit' ) ) );
 
 		?>
 
@@ -1374,7 +1374,7 @@ class GravityView_Edit_Entry {
 				    echo $this->generate_notice( $message , 'gv-error' );
 
 				} else {
-					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'.$back_link.'">', '</a>' );
+					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. $back_link .'">', '</a>' );
 
 					/**
 					 * @since 1.5.4
