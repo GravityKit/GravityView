@@ -233,9 +233,12 @@ final class GravityView_Delete_Entry {
 		// Use the slug instead of the ID for consistent security
 		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
 
+        $view_id = gravityview_get_view_id();
+
 		$actionurl = add_query_arg( array(
 			'action'	=> 'delete',
-			'entry_id'		=> $entry_slug
+			'entry_id'		=> $entry_slug,
+            'view_id' => $view_id
 		), $base );
 
 		$url = wp_nonce_url( $actionurl, 'delete_'.$entry_slug, 'delete' );
@@ -253,7 +256,6 @@ final class GravityView_Delete_Entry {
 	 * @param int $view_id GravityView View ID
 	 */
 	function add_delete_button( $form = array(), $entry = array(), $view_id = NULL ) {
-		$gravityview_view = GravityView_View::getInstance();
 
 		// Only show the link to those who are allowed to see it.
 		if( !self::check_user_cap_delete_entry( $entry ) ) {
@@ -359,9 +361,8 @@ final class GravityView_Delete_Entry {
 				);
 			}
 
-			$redirect_to_base = remove_query_arg( array('action') );
-
-			$redirect_to = esc_url( add_query_arg( $messages, $redirect_to_base ) );
+			$redirect_to_base = esc_url( remove_query_arg( array('action') ) );
+			$redirect_to = add_query_arg( $messages, $redirect_to_base );
 
 			wp_safe_redirect( $redirect_to );
 
@@ -538,10 +539,6 @@ final class GravityView_Delete_Entry {
 	 * @return void
 	 */
 	function display_message() {
-
-		if( !$this->verify_nonce() ) {
-			return;
-		}
 
 		if( empty( $_GET['status'] ) ) {
 			return;
