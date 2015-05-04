@@ -14,7 +14,7 @@
 
 (function( $ ) {
 
-	var viewConfiguration, viewGeneralSettings;
+	var viewConfiguration, viewGeneralSettings, viewWidgetSum;
 
 	viewConfiguration = {
 
@@ -1370,6 +1370,20 @@
 
 	};  // end viewGeneralSettings object
 
+    viewWidgetSum = {
+
+        init: function() {
+            $('body')
+                // [View] hook on all the open settings buttons for column_sum widget
+                .on( 'dialogopen', '[data-fieldid="column_sum"]', viewWidgetSum.openDialog );
+        },
+
+        openDialog: function() {
+
+        }
+
+    };
+
 
 	jQuery( document ).ready( function ( $ ) {
 
@@ -1381,6 +1395,9 @@
 
 		// start the View Configuration magic
 		viewConfiguration.init();
+
+
+        viewWidgetSum.init();
 
 		//datepicker
 		$( '.gv-datepicker' ).datepicker( {

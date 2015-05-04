@@ -24,7 +24,7 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 
 	}
 
-	public function render_frontend( $widget_args, $content = '', $context = '') {
+	public function render_frontend( $widget_args ) {
 		$gravityview_view = GravityView_View::getInstance();
 
 		if( !$this->pre_render_frontend() ) {

@@ -215,7 +215,7 @@ class GravityView_Widget {
 
 
 	/** Frontend logic */
-	public function render_frontend( $widget_args, $content = '', $context = '') {
+	public function render_frontend( $widget_args ) {
 		// to be defined by child class
 		if( !$this->pre_render_frontend() ) {
 			return;

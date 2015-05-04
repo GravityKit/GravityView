@@ -472,11 +472,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	/**
 	 * Renders the Search Widget
 	 * @param type $widget_args
-	 * @param type $content
-	 * @param type $context
 	 * @return type
 	 */
-	public function render_frontend( $widget_args, $content = '', $context = '' ) {
+	public function render_frontend( $widget_args ) {
 		$gravityview_view = GravityView_View::getInstance();
 
 		if( empty( $gravityview_view ) ) {

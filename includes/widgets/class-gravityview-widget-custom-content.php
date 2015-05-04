@@ -45,7 +45,7 @@ class GravityView_Widget_Custom_Content extends GravityView_Widget {
 		parent::__construct( __( 'Custom Content', 'gravityview' ) , 'custom_content', $default_values, $settings );
 	}
 
-	public function render_frontend( $widget_args, $content = '', $context = '') {
+	public function render_frontend( $widget_args ) {
 
 		if( !$this->pre_render_frontend() ) {
 			return;

@@ -28,7 +28,7 @@ class GravityView_Widget_Pagination_Info extends GravityView_Widget {
 		parent::__construct( __( 'Show Pagination Info', 'gravityview' ) , 'page_info', $default_values, $settings );
 	}
 
-	public function render_frontend( $widget_args, $content = '', $context = '') {
+	public function render_frontend( $widget_args ) {
 		$gravityview_view = GravityView_View::getInstance();
 
 		if( !$this->pre_render_frontend() ) {
