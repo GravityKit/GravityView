@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Conflict with the "The Events Calendar" plugin when saving View Advanced Filter configuration
 * Fixed: When editing an entry in the frontend it gets unapproved (when not using the approve form field)
 * Added: Option to convert text URI, www, FTP, and email addresses on a paragraph field in HTML links
+* Added: `gravityview/field/other_entries/args` filter to modify arguments used to generate the Other Entries list. This allows showing other user entries from any View, not just the current view
 
 = 1.7.5.1 on April 10 =
 * Fixed: Path issue with the A-Z Filters Extension
