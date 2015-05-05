@@ -21,15 +21,16 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 
-= 1.7.6 =
+= 1.7.6 on May 5 =
 * Added WordPress Multisite settings page support
     - By default, settings aren't shown on single blogs if GravityView is Network Activated
-* Fixed: Security vulnerability caused by the usage of add_query_arg / remove_query_arg
-* Fixed: Not showing the single entry when using Advanced Filter (ANY mode) with complex fields types like checkboxes.
+* Fixed: Security vulnerability caused by the usage of `add_query_arg` / `remove_query_arg`. [Read more about it](https://blog.sucuri.net/2015/04/security-advisory-xss-vulnerability-affecting-multiple-wordpress-plugins.html)
+* Fixed: Not showing the single entry when using Advanced Filter (`ANY` mode) with complex fields types like checkboxes
 * Fixed: Wrong width for the images in the list template (single entry view)
 * Fixed: Conflict with the "The Events Calendar" plugin when saving View Advanced Filter configuration
-* Fixed: When editing an entry in the frontend it gets unapproved (when not using the approve form field)
+* Fixed: When editing an entry in the frontend it gets unapproved when not using the approve form field
 * Added: Option to convert text URI, www, FTP, and email addresses on a paragraph field in HTML links
+* Fixed: Activate/Check License buttons weren't properly visible
 * Added: `gravityview/field/other_entries/args` filter to modify arguments used to generate the Other Entries list. This allows showing other user entries from any View, not just the current view
 * Added: `gravityview/render/hide-empty-zone` filter to hide empty zone. Use `__return_true` to prevent wrapper `<div>` from being rendered
 * Updated Translations:

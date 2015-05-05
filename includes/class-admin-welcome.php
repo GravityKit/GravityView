@@ -306,6 +306,35 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>1.7.6 on May 5</h3>
+
+				<ul>
+					<li>Added WordPress Multisite settings page support
+
+						<ul>
+							<li>By default, settings aren't shown on single blogs if GravityView is Network Activated</li>
+						</ul>
+					</li>
+					<li>Fixed: Security vulnerability caused by the usage of <code>add_query_arg</code> / <code>remove_query_arg</code>. <a href="https://blog.sucuri.net/2015/04/security-advisory-xss-vulnerability-affecting-multiple-wordpress-plugins.html">Read more about it</a></li>
+					<li>Fixed: Not showing the single entry when using Advanced Filter (<code>ANY</code> mode) with complex fields types like checkboxes</li>
+					<li>Fixed: Wrong width for the images in the list template (single entry view)</li>
+					<li>Fixed: Conflict with the "The Events Calendar" plugin when saving View Advanced Filter configuration</li>
+					<li>Fixed: When editing an entry in the frontend it gets unapproved when not using the approve form field</li>
+					<li>Added: Option to convert text URI, www, FTP, and email addresses on a paragraph field in HTML links</li>
+					<li>Fixed: Activate/Check License buttons weren't properly visible</li>
+					<li>Added: <code>gravityview/field/other_entries/args</code> filter to modify arguments used to generate the Other Entries list. This allows showing other user entries from any View, not just the current view</li>
+					<li>Added: <code>gravityview/render/hide-empty-zone</code> filter to hide empty zone. Use <code>__return_true</code> to prevent wrapper <code>&lt;div&gt;</code> from being rendered</li>
+					<li>Updated Translations:
+
+						<ul>
+							<li>Bengali translation by <a href="https://www.transifex.com/accounts/profile/tareqhi/">@tareqhi</a></li>
+							<li>Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
+							<li>Hungarian translation by <a href="https://www.transifex.com/accounts/profile/Darqebus/">@Darqebus</a></li>
+						</ul>
+					</li>
+				</ul>
+
+
 				<h3>1.7.5 on April 10</h3>
 
 				<ul>
@@ -408,110 +437,6 @@ class GravityView_Welcome {
 					<li>Tweak: Updated View Presets to have improved Search Bar configurations</li>
 					<li>Fixed: `gravityview/get_all_views/params` filter restored (Modify Views returned by the `GVCommon::get_all_views()` method)</li>
 					<li>GravityView will soon require Gravity Forms 1.9 or higher. If you are running Gravity Forms Version 1.8.x, please update to the latest version.</li>
-				</ul>
-
-
-				<h3>Changes in 1.6.2</h3>
-				<ul>
-					<li>Added: Two new hooks in the Custom Content field to enable conditional logic or enable <code>the_content</code> WordPress filter which will trigger the Video embed (<a href="http://docs.gravityview.co/article/227-how-can-i-transform-a-video-link-into-a-player-using-the-custom-content-field">read how</a>)</li>
-					<li>Fixed: Issue when embedding multiple DataTables views in the same page</li>
-					<li>Tweak: A more robust "Save View" procedure to prevent losing field configuration on certain browsers</li>
-				</ul>
-
-				<h3>Changes in 1.6.1</h3>
-
-				<ul>
-					<li>Added: Allow Recent Entries to have an Embed Page ID</li>
-					<li>Fixed: # of Recent Entries not saving</li>
-					<li>Fixed: Link to Embed Entries how-to on the Welcome page</li>
-					<li>Fixed: Don't show "Please select View to search" message until Search Widget is saved</li>
-					<li>Fixed: Minor Javascript errors for new Search widget</li>
-					<li>Fixed: Custom templates loading from the theme directory.</li>
-					<li>Fixed: Adding new search fields to the View search bar widget</li>
-					<li>Fixed: Entry creators can edit their own entries in Gravity Forms 1.9+</li>
-					<li>Fixed: Recent Entries widget will be hidden in the Customizer preview until View ID is configured</li>
-					<li>Tweak: Added Floaty icon to Customizer widget selectors</li>
-					<li>Updated: Hungarian, Norwegian, Portuguese, Swedish, Turkish, and Spanish translations (thanks to all the translators!)</li>
-				</ul>
-
-				<h3>Changes in 1.6</h3>
-
-				<ul>
-					<li>Our support site has moved to <a href="http://docs.gravityview.co">docs.gravityview.co</a>. We hope you enjoy the improved experience!</li>
-					<li>Added: GravityView Search Widget - Configure a WordPress widget that searches any of your Views. <a href="http://docs.gravityview.co/article/222-the-search-widget">Read how to set it up</a></li>
-					<li>Added: Duplicate View functionality allows you to clone a View from the All Views screen. <a href="http://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view">Learn more</a></li>
-					<li>Added: Recent Entries WordPress Widget - show the latest entries for your View. <a href="http://docs.gravityview.co/article/223-the-recent-entries-widget">Learn more</a></li>
-					<li>Added: Embed Single Entries - You can now embed entries in a post or page! <a href="http://docs.gravityview.co/article/105-how-to-duplicate-or-copy-a-view">See how</a></li>
-					<li>Fixed: Respect Custom Input Labels added in Gravity Forms 1.9</li>
-					<li>Fixed: Edit Entry Admin Bar link</li>
-					<li>Fixed: Single Entry links didn't work when previewing a draft View</li>
-					<li>Fixed: Edit entry validation hooks not running when form has multiple pages</li>
-					<li>Fixed: Annoying bug where you would have to click Add Field / Add Widget buttons twice to open the window</li>
-					<li>Added: <code>gravityview_get_link()</code> function to standardize generating HTML anchors</li>
-					<li>Added: <code>GravityView_API::entry_link_html()</code> method to generate entry link HTML</li>
-					<li>Added: <code>gravityview_field_entry_value_{$field_type}</code> filter to modify the value of a field (in <code>includes/class-api.php</code>)</li>
-					<li>Added: <code>field_type</code> key has been added to the field data in the global <code>$gravityview_view-&gt;field_data</code> array</li>
-					<li>Added: <code>GravityView_View_Data::maybe_get_view_id()</code> method to determine whether an ID, post content, or object passed to it is a View or contains a View shortcode.</li>
-					<li>Added: Hook to customise the text message "You have attempted to view an entry that is not visible or may not exist." - <code>gravityview/render/entry/not_visible</code></li>
-					<li>Added: Included in hook <code>gravityview_widget_search_filters</code> the labels for search all, entry date and entry id.</li>
-					<li>Tweak: Allow <a href="http://wordpress.org/plugins/wordpress-seo/" rel="external">WordPress SEO</a> scripts and styles when in "No Conflict Mode"</li>
-					<li>Fixed: For Post Dynamic Data, make sure Post ID is set</li>
-					<li>Fixed: Make sure search field choices are available before displaying field</li>
-				</ul>
-
-				<h3>Changes in 1.5.4</h3>
-
-				<ul>
-					<li>Added: "Hide View data until search is performed" setting - only show the Search Bar until a search is entered</li>
-					<li>Added: "Clear" button to your GravityView Search Bar - allows easy way to remove all searches &amp; filters</li>
-					<li>Added: You can now add Custom Content GravityView Widgets (not just fields) - add custom text or HTMLin the header or footer of a View</li>
-					<li>Added: <code>gravityview/comments_open</code> filter to modify whether comments are open or closed for GravityView posts (previously always false)</li>
-					<li>Added: Hook to filter the success Edit Entry message and link <code>gravityview/edit_entry/success</code></li>
-					<li>Added: Possibility to add custom CSS classes to multiple view widget wrapper (<a href="https://gravityview.co/support/documentation/204144575/">Read how</a>)</li>
-					<li>Added: Field option to enable Live Post Data for Post Image field</li>
-					<li>Fixed: Loading translation files for Extensions</li>
-					<li>Fixed: Edit entry when embedding multiple views for the same form in the same page</li>
-					<li>Fixed: Conflicts with Advanced Filter extension when embedding multiple views for the same form in the same page</li>
-					<li>Fixed: Go Back link on embedded single entry view was linking to direct view url instead of page permalink</li>
-					<li>Fixed: Searches with quotes now work properly</li>
-					<li>Tweak: Moved <code>includes/css/</code>, <code>includes/js/</code> and <code>/images/</code> folders into <code>/assets/</code></li>
-					<li>Tweak: Improved the display of the changelog (yes, "this is <em>so</em> meta!")</li>
-					<li>Updated: Swedish translation - thanks, <a href="https://www.transifex.com/accounts/profile/adamrehal/">@adamrehal</a></li>
-					<li>Updated: Hungarian translation - thanks, <a href="https://www.transifex.com/accounts/profile/Darqebus/">@Darqebus</a> (a new translator!) and <a href="https://www.transifex.com/accounts/profile/dbalage/">@dbalage</a></li>
-				</ul>
-
-
-				<h3>Changes in 1.5.3</h3>
-
-				<ul>
-					<li>Fixed: When adding more than 100 fields to the View some fields weren't saved.</li>
-					<li>Fixed: Do not set class tickbox for non-images files</li>
-					<li>Fixed: Display label "Is Fulfilled" on the search bar</li>
-					<li>Tested with Gravity Forms 1.9beta5 and WordPress 4.1</li>
-					<li>Fixed: PHP Notice with Gravity Forms 1.9 and PHP 5.4+</li>
-					<li>Updated: Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a> and Hungarian translation by <a href="https://www.transifex.com/accounts/profile/dbalage/">@dbalage</a>. Thanks!</li>
-				</ul>
-
-
-				<h3>Changes in 1.5.2</h3>
-
-				<ul>
-					<li>Added: Possibility to show the label of Dropdown field types instead of the value (<a href="https://gravityview.co/support/documentation/202889199/" title="How to display the text label (not the value) of a dropdown field?">learn more</a>)</li>
-					<li>Fixed: Sorting numeric columns (field type number)</li>
-					<li>Fixed: View entries filter for Featured Entries extension</li>
-					<li>Fixed: Field options showing delete entry label</li>
-					<li>Fixed: PHP date formatting now keeps backslashes from being stripped</li>
-					<li>Modified: Allow license to be defined in <code>wp-config.php</code> (<a href="https://gravityview.co/support/documentation/202870789/">Read how here</a>)</li>
-					<li>Modified: Added <code>$post_id</code> parameter as the second argument for the <code>gv_entry_link()</code> function. This is used to define the entry's parent post ID.</li>
-					<li>Modified: Moved <code>GravityView_API::get_entry_id_from_slug()</code> to <code>GVCommon::get_entry_id_from_slug()</code></li>
-					<li>Modified: Added second parameter to <code>gravityview_get_entry()</code>, which forces the ability to fetch an entry by ID, even if custom slugs are enabled and <code>gravityview_custom_entry_slug_allow_id</code> is false.</li>
-					<li>Updated Translations:
-						<ul>
-							<li>Bengali translation by <a href="https://www.transifex.com/accounts/profile/tareqhi/">@tareqhi</a></li>
-							<li>Romanian translation by <a href="https://www.transifex.com/accounts/profile/ArianServ/">@ArianServ</a></li>
-							<li>Mexican Spanish translation by <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a></li>
-						</ul>
-					</li>
 				</ul>
 
 				<p style="text-align: center">
