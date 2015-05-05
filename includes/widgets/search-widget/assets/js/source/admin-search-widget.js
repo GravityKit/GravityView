@@ -423,7 +423,7 @@
 
 		/**
 		 * Update the input types for the new field selected
-		 * @param  {jQuery DOM object} tr table row object
+		 * @param  {jQuery} tr table row object
 		 * @return {[type]}    [description]
 		 */
 		updateSelectInput: function( tr ) {
@@ -444,7 +444,7 @@
 		/**
 		 * Get the Select DOM object populated with the available search fields
 		 * If not already in cache, get it from server using AJAX request
-		 * @param  {jQuery DOM object} parent The dialog div object
+		 * @param  {jQuery} parent The dialog div object
 		 */
 		getSelectFields: function( parent ) {
 

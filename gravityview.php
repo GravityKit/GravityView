@@ -14,7 +14,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.7.5.1
+ * Version:          	1.7.6
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravityview
@@ -30,6 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /** Constants */
 if( !defined('GRAVITYVIEW_FILE') ) {
+	/** @define "GRAVITYVIEW_FILE" "./gravityview.php" */
 	define( 'GRAVITYVIEW_FILE', __FILE__ );
 }
 
@@ -38,6 +39,7 @@ if ( !defined('GRAVITYVIEW_URL') ) {
 }
 
 if ( !defined('GRAVITYVIEW_DIR') ) {
+	/** @define "GRAVITYVIEW_DIR" "./" */
 	define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
 }
 
@@ -69,7 +71,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.7.5.1';
+	const version = '1.7.6';
 
 	public static $theInstance;
 
@@ -138,7 +140,14 @@ final class GravityView_Plugin {
 
 	}
 
-
+	/**
+	 * Check whether GravityView is network activated
+	 * @since 1.7.6
+	 * @return bool
+	 */
+	public static function is_network_activated() {
+		return is_multisite() && ( function_exists('is_plugin_active_for_network') && is_plugin_active_for_network( 'gravityview/gravityview.php' ) );
+	}
 
 
 	/**

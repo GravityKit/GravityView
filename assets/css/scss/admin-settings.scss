@@ -1,6 +1,9 @@
+@import "admin-license-key-fields";
+
 /**
  * Modify the GFAddon App Settings page
  */
+.admin_page_gravityview_settings,
 .gravityview_page_gravityview_settings {
 
   .gform_tab_content > h3 {
@@ -68,10 +71,6 @@
 
   .hide {
     display: none;
-  }
-
-  #gaddon-setting-row-license_key .button {
-    margin: 0 0 0 10px
   }
 
   // Add the stars to the top

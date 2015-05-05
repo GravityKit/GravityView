@@ -36,7 +36,7 @@ if( !$this->getTotalEntries() ) {
 
 	?>
 
-		<div id="gv_list_<?php echo $entry['id']; ?>" class="<?php esc_attr_e( apply_filters( 'gravityview_entry_class', 'gv-list-view', $entry, $this ) ); ?>">
+		<div id="gv_list_<?php echo $entry['id']; ?>" class="<?php echo esc_attr( apply_filters( 'gravityview_entry_class', 'gv-list-view', $entry, $this ) ); ?>">
 
 		<?php do_action( 'gravityview_entry_before', $entry, $this ); ?>
 

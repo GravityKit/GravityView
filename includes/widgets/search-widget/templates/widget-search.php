@@ -18,7 +18,7 @@ $has_inputs = false;
 <form class="gv-widget-search <?php echo GravityView_Widget_Search::get_search_class(); ?>" method="get" action="<?php echo esc_url( GravityView_Widget_Search::get_search_form_action() ); ?>">
 
 	<?php
-	do_action( 'gravityview_search_widget_fields_before' );
+	do_action( 'gravityview_search_widget_fields_before', $this );
 
 	foreach( $this->search_fields as $search_field ) {
 		$gravityview_view->search_field = $search_field;
@@ -30,7 +30,7 @@ $has_inputs = false;
 		}
 	}
 
-	do_action( 'gravityview_search_widget_fields_after' );
+	do_action( 'gravityview_search_widget_fields_after', $this );
 
 	if( $has_inputs ) : ?>
 		<div class="gv-search-box gv-search-box-submit">

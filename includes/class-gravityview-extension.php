@@ -34,8 +34,8 @@ abstract class GravityView_Extension {
 
 		add_filter( 'gravityview_tooltips', array( $this, 'tooltips' ) );
 
-		// Save the form configuration. Run at 20 so that View metadata is already saved (at 10)
-		add_action( 'save_post', array( $this, 'save_post' ), 20 );
+		// Save the form configuration. Run at 14 so that View metadata is already saved (at 10)
+		add_action( 'save_post', array( $this, 'save_post' ), 14 );
 
 		$this->add_hooks();
 

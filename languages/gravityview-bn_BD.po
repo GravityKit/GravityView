@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-04-10 23:12+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2015-04-29 07:23+0000\n"
+"Last-Translator: Md Akter Hosen <tareqhi@gmail.com>\n"
 "Language-Team: Bengali (http://www.transifex.com/projects/p/gravityview/language/bn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -535,11 +535,11 @@ msgstr "বাক্য অথবা এইচটিএমএল যুক্ত
 
 #: includes/class-admin-views.php:579
 msgid "Other Entries"
-msgstr ""
+msgstr "অন্যান্য এন্ট্রিসমূহ"
 
 #: includes/class-admin-views.php:581
 msgid "Display other entries created by the entry creator."
-msgstr ""
+msgstr "এন্ট্রি প্রস্তুতকারক কর্তৃক অন্যান্য এন্ট্রগুলো দেখান।"
 
 #: includes/class-admin-views.php:589
 msgid "Link to Entry"
@@ -664,7 +664,7 @@ msgstr "সহযোগীতা করতে চান?"
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
-msgstr ""
+msgstr "যদি আপনি কোডে সহায়তা করতে চান তাহলে আপনি %sগিটহাব এ সহায়তা করতে পারেন%s। যদি আপনার সহায়তা গ্রহন করা হয়, আপনি এখানে ধন্যবাদ পাবেন।"
 
 #: includes/class-admin.php:102
 msgid "Support"
@@ -779,13 +779,13 @@ msgstr "গ্রাভিটিভিউ এবং গ্রাভিটি ফ
 
 #: includes/class-admin.php:537
 msgid "GravityView will soon require Gravity Forms 1.9 or higher."
-msgstr ""
+msgstr "গ্রাভিটিভিউ শীগ্রই গ্রাভিটি ফর্ম 1.9 অথবা উচ্চতর দরকার হবে।"
 
 #: includes/class-admin.php:538
 msgid ""
 "You are using an older version of Gravity Forms. Please update Gravity Forms"
 " plugin to the latest version."
-msgstr ""
+msgstr "আপনি গ্রাভিটি ফর্মের একটি পুরাতন ভার্সন ব্যবহার করছেন। দয়া করে গ্রাভিটি ফর্ম হালনাগাদ করুন।"
 
 #: includes/class-admin.php:562
 #, php-format
@@ -793,7 +793,7 @@ msgid ""
 "%sGravityView requires Gravity Forms Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
-msgstr ""
+msgstr "%sগ্রাভিটিভিউ গ্রাভিটি ফর্মের %s অথবা %s দরকার হবে।\n\nআপনি %s ভার্সন ব্যবহার করছেন। দয়া করে গ্রাভিটি ফর্ম হালনাগাদ করুন। %sগ্রাভিটি ফর্ম কিনুন%s - মাত্র $39%s%s এ শুরু"
 
 #: includes/class-admin.php:571
 #, php-format
@@ -869,7 +869,7 @@ msgstr "কোন ব্যবহাকারী নেই"
 
 #: includes/class-common.php:234
 msgid "Post ID"
-msgstr ""
+msgstr "পোস্ট আইডি"
 
 #: includes/class-common.php:243
 msgid "Payment Status"
@@ -910,23 +910,23 @@ msgstr "নির্মাণের তারিখ"
 
 #: includes/class-common.php:966
 msgid "Email hidden; Javascript is required."
-msgstr ""
+msgstr "ইমেইল লুকানো; জাভাস্ক্রীপ্ট দরকার।"
 
 #: includes/class-data.php:408
 msgid "The ID is required."
-msgstr ""
+msgstr "আইডি দরকার।"
 
 #: includes/class-data.php:416
 msgid ""
 "You did not enter a number. The value entered should be a number, "
 "representing the ID of the post or page the View is embedded on."
-msgstr ""
+msgstr "আপনি নাম্বার প্রবেশ করাননি। প্রবেশ করানো তথ্য অবশ্যই নাম্বার হতে হবে, পোস্টের আইডি অথবা পেজ নাম্বার যেখানে দৃশ্য সংযুক্ত করানো হয়েছে।"
 
 #: includes/class-data.php:419
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:336
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:205
 msgid "Learn more&hellip;"
-msgstr ""
+msgstr "আরো শিখুন &hellip;"
 
 #: includes/class-data.php:427
 msgid "There is no post or page with that ID."

@@ -26,6 +26,11 @@ $args = array(
 	'search_operator' => 'is',
 );
 
+/**
+ * @since 1.7.6
+ */
+$args = apply_filters( 'gravityview/field/other_entries/args', $args, $field );
+
 // Get the entries for the search
 $entries = GravityView_frontend::get_view_entries( $args, $field['form']['id'] );
 

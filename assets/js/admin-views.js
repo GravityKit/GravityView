@@ -1155,8 +1155,8 @@
 		/**
 		 * Show/Hide Visibility of an input's container list item based on the value of a checkbox
 		 *
-		 * @param  {jQuery DOM Object} $checkbox The checkbox to use when determining show/hide. Checked: show; unchecked: hide
-		 * @param  {jQuery DOM Object} $toggled  The field whose container to show/hide
+		 * @param  {jQuery} $checkbox The checkbox to use when determining show/hide. Checked: show; unchecked: hide
+		 * @param  {jQuery} $toggled  The field whose container to show/hide
 		 * @param  {boolean} first_run Is this the first run (on load)? If so, show/hide immediately
 		 * @return {void}
 		 */

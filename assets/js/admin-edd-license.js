@@ -64,6 +64,7 @@
 						break;
 					case 'deactivated':
 					case 'site_inactive':
+					default:
 						hidebuttons = $('[data-edd_action=deactivate_license]' );
 						showbuttons = $('[data-edd_action=activate_license],[data-edd_action=check_license]' );
 						break;

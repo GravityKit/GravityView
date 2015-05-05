@@ -17,8 +17,10 @@ class GravityView_Admin {
 	 */
 	function add_hooks() {
 
+		add_action( 'network_admin_notices', array( $this, 'dismiss_notice' ), 50 );
 		add_action( 'admin_notices', array( $this, 'dismiss_notice' ), 50 );
 		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
+		add_action( 'network_admin_notices', array( $this, 'admin_notice' ), 100 );
 
 		// If Gravity Forms isn't active or compatibile, stop loading
 		if( false === self::check_gravityforms() ) {
@@ -439,7 +441,7 @@ class GravityView_Admin {
      */
     function _maybe_show_notice( $notice ) {
 
-    	// There are no dismissed notices.
+	    // There are no dismissed notices.
     	if( empty( self::$dismissed_notices ) ) {
     		return true;
     	}
@@ -458,6 +460,10 @@ class GravityView_Admin {
 	function admin_notice() {
 
 		if( empty( self::$admin_notices ) ) {
+			return;
+		}
+
+		if( GravityView_Plugin::is_network_activated() && !is_main_site() ) {
 			return;
 		}
 
@@ -485,7 +491,7 @@ class GravityView_Admin {
 
 				$dismiss = esc_attr($notice['dismiss']);
 
-				$url = add_query_arg( array( 'gv-dismiss' => wp_create_nonce( 'dismiss' ), 'notice' => $dismiss ) );
+				$url = esc_url( add_query_arg( array( 'gv-dismiss' => wp_create_nonce( 'dismiss' ), 'notice' => $dismiss ) ) );
 
 				echo wpautop( '<a href="'.$url.'" data-notice="'.$dismiss.'" class="button-small button button-secondary">'.esc_html__('Dismiss', 'gravityview' ).'</a>' );
 			}
@@ -566,17 +572,27 @@ class GravityView_Admin {
 
 		$gf_status = self::get_plugin_status( 'gravityforms/gravityforms.php' );
 
-		if( $gf_status !== true && !class_exists( 'GFCommon' ) ) {
-			if( $gf_status === 'inactive' ) {
-				self::$admin_notices['gf_inactive'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravityview' ), '<h3>', "</h3>\n\n".'<strong><a href="'. wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php') . '" class="button button-large">', '</a></strong>' ) );
-			} else {
-				self::$admin_notices['gf_installed'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $39%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
-			}
-			return false;
+		// If GFCommon doesn't exist, assume GF not active
+		$return = false;
 
+		switch( $gf_status ) {
+			case 'inactive':
+				$return = false;
+				self::$admin_notices['gf_inactive'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravityview' ), '<h3>', "</h3>\n\n".'<strong><a href="'. wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php') . '" class="button button-large">', '</a></strong>' ) );
+				break;
+			default:
+				/**
+				 * The plugin is activated and yet somehow GFCommon didn't get picked up...
+				 */
+				if( $gf_status === true ) {
+					$return = true;
+				} else {
+					self::$admin_notices['gf_installed'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $39%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
+				}
+				break;
 		}
 
-		return true;
+		return $return;
 	}
 
 	/**
@@ -597,7 +613,10 @@ class GravityView_Admin {
 			return true;
 		}
 
-		if( !file_exists( trailingslashit( WP_PLUGIN_DIR ) . $location ) ) {
+		if(
+			!file_exists( trailingslashit( WP_PLUGIN_DIR ) . $location ) &&
+			!file_exists( trailingslashit( WPMU_PLUGIN_DIR ) . $location )
+		) {
 			return false;
 		}
 

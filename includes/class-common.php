@@ -380,6 +380,8 @@ class GVCommon {
         // When multiple views are embedded, OR single entry, calculate the context view id and send it to the advanced filter
         if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() || GravityView_frontend::getInstance()->single_entry ) {
             $criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
+        } elseif( RGForms::get("action") === "delete" ) {
+            $criteria['context_view_id'] = isset( $_GET['view_id'] ) ? $_GET['view_id'] : null;
         } else {
             $criteria['context_view_id'] = null;
         }
@@ -633,21 +635,31 @@ class GVCommon {
 
         foreach( $filters as $filter ) {
 
-            if( isset( $filter['key'] ) && array_key_exists( (string)$filter['key'], $entry ) ) {
-
-                $k = $filter['key'];
-                $field = self::get_field( $form, $k );
-                $operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
-
-                $is_value_match = GFFormsModel::is_value_match( $entry[ (string)$k ], $filter['value'], $operator, $field );
-
-                // verify if we are already free to go!
-                if( !$is_value_match && 'all' === $mode ) {
-                    return false;
-                } elseif( $is_value_match && 'any' === $mode ) {
-                    return $entry;
-                }
+            if( !isset( $filter['key'] ) ) {
+                continue;
             }
+
+            $k = $filter['key'];
+
+            if( 'created_by' === $k ) {
+                $field_value = $entry['created_by'];
+                $field = null;
+            } else {
+                $field = self::get_field( $form, $k );
+                $field_value  = GFFormsModel::get_lead_field_value( $entry, $field );
+            }
+
+            $operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
+            $is_value_match = GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field );
+
+            // verify if we are already free to go!
+            if( !$is_value_match && 'all' === $mode ) {
+                do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry cannot be displayed. Failed one criteria for ALL mode', $filter );
+                return false;
+            } elseif( $is_value_match && 'any' === $mode ) {
+                return $entry;
+            }
+
         }
 
         // at this point, if in ALL mode, then entry is approved - all conditions were met.
@@ -655,6 +667,7 @@ class GVCommon {
         if( 'all' === $mode ) {
             return $entry;
         } else {
+            do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry cannot be displayed. Failed all the criteria for ANY mode', $filters );
             return false;
         }
 
@@ -1079,8 +1092,10 @@ class GVCommon {
 
 		// If the href wasn't passed as an attribute, use the value passed to the function
 		if( empty( $final_atts['href'] ) && !empty( $href ) ) {
-			$final_atts['href'] = esc_url( $href );
+			$final_atts['href'] = $href;
 		}
+
+		$final_atts['href'] = esc_url( $href );
 
 		// For each attribute, generate the code
 		$output = '';
