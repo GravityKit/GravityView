@@ -565,17 +565,28 @@ class GravityView_View extends Gamajo_Template_Loader {
 			return NULL;
 		}
 
+		$field_output = '';
+		foreach ( $fields as $field ) {
+			$final_atts['field'] = $field;
+
+			$field_output .= gravityview_field_output( $final_atts );
+		}
+
+		/**
+		 * If a zone has no field output, choose whether to show wrapper
+		 * False by default to keep backward compatibility
+		 * @since 1.7.6
+		 * @param boolean $hide_empty_zone Default: false
+		 */
+		if( empty( $field_output ) && apply_filters( 'gravityview/render/hide-empty-zone', false ) ) {
+			return NULL;
+		}
+
 		if( !empty( $final_atts['wrapper_class'] ) ) {
 			$output .= '<div class="'.gravityview_sanitize_html_class( $final_atts['wrapper_class'] ).'">';
 		}
 
-		foreach ( $fields as $field ) {
-
-			$final_atts['field'] = $field;
-
-			$output .= gravityview_field_output( $final_atts );
-
-		}
+		$output .= $field_output;
 
 		if( !empty( $final_atts['wrapper_class'] ) ) {
 			$output .= '</div>';

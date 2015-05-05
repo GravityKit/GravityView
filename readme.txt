@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: When editing an entry in the frontend it gets unapproved (when not using the approve form field)
 * Added: Option to convert text URI, www, FTP, and email addresses on a paragraph field in HTML links
 * Added: `gravityview/field/other_entries/args` filter to modify arguments used to generate the Other Entries list. This allows showing other user entries from any View, not just the current view
+* Added: `gravityview/render/hide-empty-zone` filter to hide empty zone. Use `__return_true` to prevent wrapper `<div>` from being rendered
 
 = 1.7.5.1 on April 10 =
 * Fixed: Path issue with the A-Z Filters Extension
