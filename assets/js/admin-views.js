@@ -1346,10 +1346,10 @@
                 .trigger('change');
 
             $('body')
-                // Enable a setting tab
+	            // Enable a setting tab (since 1.8)
                 .on('gravityview/settings/tab/enable', viewGeneralSettings.enableSettingTab )
 
-                // Disable a setting tab
+                // Disable a setting tab (since 1.8)
                 .on('gravityview/settings/tab/disable', viewGeneralSettings.disableSettingTab );
 
 		},
@@ -1407,6 +1407,7 @@
          */
         initTabs: function() {
 
+	        // TODO: set minimum height for tabbed metabox so that the window height doesn't jump around when switching tabs
             viewGeneralSettings.metaboxObj
                 // Force the sort metabox to be directly under the view configuration. Damn 3rd party metaboxes!
                 .insertAfter( $('#gravityview_view_config') )
@@ -1420,6 +1421,8 @@
 
 	    /**
 	     * Enable a tab in the settings metabox
+	     *
+	     * Useful for when switching View types that support a type of setting (DataTables)
 	     *
 	     * @since 1.8
 	     *
@@ -1437,6 +1440,8 @@
 
 	    /**
 	     * Disable a tab in the settings metabox
+	     *
+	     * Useful for when switching View types that may not support a type of setting (DataTables)
 	     *
 	     * @since 1.8
 	     *
