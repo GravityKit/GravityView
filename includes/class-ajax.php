@@ -112,7 +112,8 @@ class GravityView_Ajax {
 		$template_id = esc_attr( $_POST['template_id'] );
 
 		// template areas
-		$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $template_id );
+		$template_areas_directory = apply_filters( 'gravityview_template_active_areas', array(), $template_id, 'directory' );
+        $template_areas_single = apply_filters( 'gravityview_template_active_areas', array(), $template_id, 'single' );
 
 		// widget areas
 		$default_widget_areas = GravityView_Plugin::get_default_widget_areas();
@@ -126,11 +127,11 @@ class GravityView_Ajax {
 		$response['footer'] = ob_get_clean();
 
 		ob_start();
-		do_action('gravityview_render_active_areas', $template_id, 'field', 'directory', $template_areas, $presets['fields'] );
+		do_action('gravityview_render_active_areas', $template_id, 'field', 'directory', $template_areas_directory, $presets['fields'] );
 		$response['directory'] = ob_get_clean();
 
 		ob_start();
-		do_action('gravityview_render_active_areas', $template_id, 'field', 'single', $template_areas, $presets['fields'] );
+		do_action('gravityview_render_active_areas', $template_id, 'field', 'single', $template_areas_single, $presets['fields'] );
 		$response['single'] = ob_get_clean();
 
 		do_action( 'gravityview_log_debug', '[get_preset_fields_config] AJAX Response', $response );

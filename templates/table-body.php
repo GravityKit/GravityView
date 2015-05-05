@@ -17,7 +17,7 @@
 			?>
 			<tr>
 				<?php do_action('gravityview_table_tr_before', $this ); ?>
-				<td colspan="<?php echo sizeof($this->fields['directory_table-columns']); ?>" class="gv-no-results">
+				<td colspan="<?php echo isset( $this->fields['directory_table-columns'] ) ? sizeof($this->fields['directory_table-columns']) : ''; ?>" class="gv-no-results">
 					<?php echo gv_no_results(); ?>
 				</td>
 				<?php do_action('gravityview_table_tr_after', $this ); ?>

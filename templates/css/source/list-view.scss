@@ -3,6 +3,8 @@
 // http://katz.co/gravityview/
 // ================================================
 
+@import "responsive";
+
 // 1. Variables
 // ================================================
 
@@ -28,6 +30,22 @@ $color-description: #999;
 	}
 	*zoom: 1;
 }
+
+.gv-grid-col-1-3 {
+  @include respond($small-tablet) {
+    width: 100%;
+    float: none;
+  }
+}
+
+.gv-grid-col-2-3 {
+  @include respond($small-tablet) {
+    width: 100%;
+    float: none;
+  }
+}
+
+
 
 // 3. Structure
 // ================================================
@@ -72,40 +90,40 @@ $color-description: #999;
 
 .gv-list-view-content {
 
-	padding: .75em 1em;
+  padding: .75em 1em;
 
-	@extend %clearfix; // Clears image floats
+  @extend %clearfix; // Clears image floats
 
-	h4 {
-		clear: none; // Fix themes with H4 clearing the images
-	}
+  h4 {
+    clear: none; // Fix themes with H4 clearing the images
+  }
 
-	p {
-		margin: 0 0 1em 0;
-		padding: 0;
-	}
+  p {
+    margin: 0 0 1em 0;
+    padding: 0;
+  }
 
-	img {
-		display: block;
-	}
+  .gv-list-view-content-image {
+    padding: 0 1em 1em 0;
 
-	// Featured Image
-	.gv-list-view-content-image {
-		float: left;
-		margin: 0 1em 1em 0;
+    .gv-field-file-uploads li,
+    .gv-field-file-uploads {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
 
-		max-width: 45%;
-		max-height: 400px;
-
-		.gv-field-file-uploads li,
-		.gv-field-file-uploads {
-			list-style: none;
-			margin: 0;
-			padding: 0;
-		}
-	}
-
+  }
 }
+
+.gv-list-single-container .gv-list-view-content-image {
+  float:left;
+  img {
+    max-height: 400px;
+    max-width: 100%;
+  }
+}
+
 
 // 3.4. Footer
 // ------------------------------------------------

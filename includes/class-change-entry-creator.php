@@ -15,6 +15,14 @@ class GravityView_Change_Entry_Creator {
     	// ONLY ADMIN FROM HERE ON.
     	if( !is_admin() ) { return; }
 
+	    /**
+	     * @since 1.7.4
+	     * @param boolean $disable Disable the Change Entry Creator functionality
+	     */
+	    if( apply_filters('gravityview_disable_change_entry_creator', false ) ) {
+		    return;
+	    }
+
     	add_action('plugins_loaded', array( $this, 'load'), 100 );
 
     	add_action('plugins_loaded', array( $this, 'prevent_conflicts') );
@@ -196,7 +204,7 @@ class GravityView_Change_Entry_Creator {
          * @link   text http://codex.wordpress.org/Function_Reference/get_users
          * @var  array Settings array
          */
-        $get_users_settings = apply_filters( 'gravityview_change_entry_creator_user_parameters', array( 'number' => 300 ) );
+        $get_users_settings = apply_filters( 'gravityview_change_entry_creator_user_parameters', array( 'number' => 750 ) );
 
         $users = get_users( $get_users_settings );
 

@@ -36,7 +36,7 @@ if( !$this->getTotalEntries() ) {
 
 	?>
 
-		<div id="gv_list_<?php echo $entry['id']; ?>" class="<?php esc_attr_e( apply_filters( 'gravityview_entry_class', 'gv-list-view', $entry, $this ) ); ?>">
+		<div id="gv_list_<?php echo $entry['id']; ?>" class="<?php echo esc_attr( apply_filters( 'gravityview_entry_class', 'gv-list-view', $entry, $this ) ); ?>">
 
 		<?php do_action( 'gravityview_entry_before', $entry, $this ); ?>
 
@@ -93,7 +93,7 @@ if( !$this->getTotalEntries() ) {
 
 		<?php endif; ?>
 
-		<div class="gv-list-view-content">
+		<div class="gv-grid gv-list-view-content">
 
 			<?php
 
@@ -105,10 +105,10 @@ if( !$this->getTotalEntries() ) {
 				 */
 				do_action( 'gravityview_entry_content_before', $entry, $this );
 
-				$this->renderZone('image', 'wrapper_class="gv-list-view-content-image"');
+				$this->renderZone('image', 'wrapper_class="gv-grid-col-1-3 gv-list-view-content-image"');
 
 				$this->renderZone('description', array(
-					'wrapper_class' => 'gv-list-view-content-description',
+					'wrapper_class' => 'gv-grid-col-2-3 gv-list-view-content-description',
 					'label_markup' => '<h4>{{label}}</h4>',
 					'wpautop'      => true
 				));

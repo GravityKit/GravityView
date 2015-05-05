@@ -1,5 +1,9 @@
 module.exports = function(grunt) {
 
+	// Only need to install one package and this will load them all for you. Run:
+	// npm install --save-dev load-grunt-tasks
+	require('load-grunt-tasks')(grunt);
+
 	grunt.initConfig({
 
 		pkg: grunt.file.readJSON('package.json'),
@@ -21,7 +25,7 @@ module.exports = function(grunt) {
 				files: [{
 		          expand: true,
 		          cwd: 'templates/css/source/',
-		          src: ['*.scss','!search.scss','!edit.scss','!font.scss','!notice.scss','!oembed.scss'],
+		          src: ['*.scss','!search.scss','!edit.scss','!font.scss','!notice.scss','!oembed.scss','!responsive.scss'],
 		          dest: 'templates/css/',
 		          ext: '.css'
 		      }]
@@ -120,18 +124,80 @@ module.exports = function(grunt) {
 
 			// Create a ZIP file
 			zip: 'python /usr/bin/git-archive-all ../gravityview.zip'
+		},
+
+		// Build translations without POEdit
+		makepot: {
+			target: {
+				options: {
+					mainFile: 'gravityview.php',
+					type: 'wp-plugin',
+					domainPath: '/languages',
+					updateTimestamp: false,
+					exclude: ['node_modules/.*', 'assets/.*', 'vendor/.*', 'includes/lib/xml-parsers/.*', 'includes/lib/jquery-cookie/.*', 'includes/lib/standalone-phpenkoder/.*' ],
+					potHeaders: {
+						poedit: true,
+						'x-poedit-keywordslist': true
+					},
+					processPot: function( pot, options ) {
+						pot.headers['language'] = 'en_US';
+						pot.headers['language-team'] = 'Katz Web Services, Inc. <support@katz.co>';
+						pot.headers['last-translator'] = 'Katz Web Services, Inc. <support@katz.co>';
+						pot.headers['report-msgid-bugs-to'] = 'https://gravityview.co/support/';
+
+						var translation,
+							excluded_meta = [
+								'GravityView',
+								'Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.',
+								'http://gravityview.co',
+								'Katz Web Services, Inc.',
+								'http://www.katzwebservices.com'
+							];
+
+						for ( translation in pot.translations[''] ) {
+							if ( 'undefined' !== typeof pot.translations[''][ translation ].comments.extracted ) {
+								if ( excluded_meta.indexOf( pot.translations[''][ translation ].msgid ) >= 0 ) {
+									console.log( 'Excluded meta: ' + pot.translations[''][ translation ].msgid );
+									delete pot.translations[''][ translation ];
+								}
+							}
+						}
+
+						return pot;
+					}
+				}
+			}
+		},
+
+		// Add textdomain to all strings, and modify existing textdomains in included packages.
+		addtextdomain: {
+			options: {
+				textdomain: 'gravityview',    // Project text domain.
+				updateDomains: [ 'gravityview', 'gravityforms', 'edd_sl', 'edd' ]  // List of text domains to replace.
+			},
+			target: {
+				files: {
+					src: [
+						'*.php',
+						'**/*.php',
+						'!node_modules/**',
+						'!tests/**',
+						'!includes/lib/xml-parsers/**',
+						'!includes/lib/jquery-cookie/**',
+						'!includes/lib/standalone-phpenkoder/**'
+					]
+				}
+			}
 		}
 	});
 
-	grunt.loadNpmTasks('grunt-sass');
-	grunt.loadNpmTasks("grunt-contrib-jshint");
-	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-potomo');
-	grunt.loadNpmTasks('grunt-exec');
-    grunt.loadNpmTasks('grunt-contrib-imagemin');
-    grunt.loadNpmTasks('grunt-newer');
+	// Still have to manually add this one...
+	grunt.loadNpmTasks('grunt-wp-i18n');
 
-	grunt.registerTask( 'default', [ 'sass', 'uglify', 'exec:transifex','potomo', 'imagemin', 'watch' ] );
+	// Regular CSS/JS/Image Compression stuff
+	grunt.registerTask( 'default', [ 'sass', 'uglify', 'imagemin', 'watch' ] );
+
+	// Translation stuff
+	grunt.registerTask( 'translate', [ 'exec:transifex', 'potomo', 'addtextdomain', 'makepot' ] );
 
 };

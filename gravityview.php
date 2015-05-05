@@ -14,7 +14,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.7.1
+ * Version:          	1.7.6
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravityview
@@ -30,6 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /** Constants */
 if( !defined('GRAVITYVIEW_FILE') ) {
+	/** @define "GRAVITYVIEW_FILE" "./gravityview.php" */
 	define( 'GRAVITYVIEW_FILE', __FILE__ );
 }
 
@@ -38,6 +39,7 @@ if ( !defined('GRAVITYVIEW_URL') ) {
 }
 
 if ( !defined('GRAVITYVIEW_DIR') ) {
+	/** @define "GRAVITYVIEW_DIR" "./" */
 	define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
 }
 
@@ -52,7 +54,6 @@ if ( !defined('GV_MIN_GF_VERSION') ) {
 require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
 require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
 
-
 /** Register Post Types and Rewrite Rules */
 require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
 
@@ -60,15 +61,17 @@ require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
 require_once( GRAVITYVIEW_DIR . 'includes/class-cache.php');
 
 /** Register hooks that are fired when the plugin is activated and deactivated. */
-register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
+if( is_admin() ) {
+	register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
+	register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
+}
 
 /**
  * GravityView_Plugin main class.
  */
 final class GravityView_Plugin {
 
-	const version = '1.7.1';
+	const version = '1.7.6';
 
 	public static $theInstance;
 
@@ -86,7 +89,7 @@ final class GravityView_Plugin {
 		return self::$theInstance;
 	}
 
-	public function __construct() {
+	private function __construct() {
 
 		require_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
 
@@ -106,33 +109,44 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/edit-entry/class-edit-entry.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/delete-entry/class-delete-entry.php' );
 
-		// Load Widgets
-		include_once( GRAVITYVIEW_DIR .'includes/widgets.php' );
+		// Load WordPress Widgets
+		include_once( GRAVITYVIEW_DIR .'includes/wordpress-widgets/register-wordpress-widgets.php' );
+
+		// Load GravityView Widgets
+		include_once( GRAVITYVIEW_DIR .'includes/widgets/register-gravityview-widgets.php' );
 
 		// Add oEmbed
 		include_once( GRAVITYVIEW_DIR . 'includes/class-oembed.php' );
 
 		// Add logging
-		require_once( GRAVITYVIEW_DIR . 'includes/class-logging.php');
+		include_once( GRAVITYVIEW_DIR . 'includes/class-logging.php');
 
-		require_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
-		require_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
+		include_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
 		include_once( GRAVITYVIEW_DIR . 'includes/class-frontend-views.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/helper-functions.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-entry-list.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gvlogic-shortcode.php' );
 
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ), 1 );
 
-		if( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-			add_action( 'init', array( $this, 'frontend_actions' ), 20 );
-		}
+		// Load frontend files
+		add_action( 'init', array( $this, 'frontend_actions' ), 20 );
 
 		// Load default templates
 		add_action( 'init', array( $this, 'register_default_templates' ), 11 );
 
-		// Load default widgets
-		add_action( 'init', array( $this, 'register_widgets' ), 11 );
+	}
 
+	/**
+	 * Check whether GravityView is network activated
+	 * @since 1.7.6
+	 * @return bool
+	 */
+	public static function is_network_activated() {
+		return is_multisite() && ( function_exists('is_plugin_active_for_network') && is_plugin_active_for_network( 'gravityview/gravityview.php' ) );
 	}
 
 
@@ -189,6 +203,15 @@ final class GravityView_Plugin {
 	    require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-extension.php' );
 	}
 
+	/**
+	 * Load GravityView_Widget class
+	 *
+	 * @since 1.7.5.1
+	 */
+	public static function include_widget_class() {
+		include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget.php' );
+	}
+
 
 	/**
 	 * Loads the plugin's translated strings.
@@ -214,12 +237,26 @@ final class GravityView_Plugin {
 	}
 
 	/**
+	 * Check if is_admin(), and make sure not DOING_AJAX
+	 * @since 1.7.5
+	 * @return bool
+	 */
+	public static function is_admin() {
+
+		$doing_ajax = defined( 'DOING_AJAX' ) ? DOING_AJAX : false;
+
+		return is_admin() && ! $doing_ajax;
+	}
+
+	/**
 	 * Function to launch frontend objects
 	 *
 	 * @access public
 	 * @return void
 	 */
 	public function frontend_actions() {
+
+		if( self::is_admin() ) { return; }
 
 		include_once( GRAVITYVIEW_DIR .'includes/class-image.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-template.php' );
@@ -238,16 +275,6 @@ final class GravityView_Plugin {
 	 */
 	function register_default_templates() {
 		include_once( GRAVITYVIEW_DIR .'includes/default-templates.php' );
-	}
-
-	/**
-	 * Register the default widgets
-	 * @todo Move somehere logical
-	 * @return void
-	 */
-	function register_widgets() {
-		include_once( GRAVITYVIEW_DIR .'includes/default-widgets.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/extensions/search-widget/class-search-widget.php' );
 	}
 
 	/**

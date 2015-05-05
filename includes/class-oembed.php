@@ -28,11 +28,11 @@ class GravityView_oEmbed {
 
 	static $instance = NULL;
 
-	function __construct() {
+	private function __construct() {}
+
+	private function initialize() {
 
 		add_action( 'init', array( $this, 'register_handler' ) );
-
-		self::$instance = &$this;
 
 	}
 
@@ -44,6 +44,8 @@ class GravityView_oEmbed {
 
 		if( empty( self::$instance ) ) {
 			self::$instance = new self;
+
+			self::$instance->initialize();
 		}
 
 		return self::$instance;
@@ -71,7 +73,6 @@ class GravityView_oEmbed {
 	 * @return string Regex code
 	 */
 	private function get_handler_regex() {
-		global $wp_rewrite;
 
 		$entry_var_name = GravityView_Post_Types::get_entry_var_name();
 
@@ -84,7 +85,7 @@ class GravityView_oEmbed {
 		$using_permalinks = $prefix . "(?P<is_cpt>{$rewrite_slug})?/?(?P<slug>.+?)/{$entry_var_name}/(?P<entry_slug>.+?)/?\$";
 
 		// Not using permalinks
-		$not_using_permalinks = $prefix . "(?:index.php)?\?(?P<is_cpt2>[^=]+)=(?P<slug2>[^&]+)&entry=(?P<entry_slug2>[^&]+).+?\$";
+		$not_using_permalinks = $prefix . "(?:index.php)?\?(?P<is_cpt2>[^=]+)=(?P<slug2>[^&]+)&entry=(?P<entry_slug2>[^&]+)\$";
 
 		// Catch either
 		$match_regex = "(?:{$using_permalinks}|{$not_using_permalinks})";
@@ -218,7 +219,7 @@ class GravityView_oEmbed {
 
 			do_action('gravityview_log_debug', 'GravityView_oEmbed[render_handler] Embedding an entry inside a post or page', $matches );
 
-			$this->view_id = GravityView_View_Data::maybe_get_view_id( $post_id );
+			$this->view_id = GravityView_View_Data::getInstance()->maybe_get_view_id( $post_id );
 
 		} else {
 
@@ -342,4 +343,4 @@ class GravityView_oEmbed {
 
 }
 
-new GravityView_oEmbed;
+GravityView_oEmbed::getInstance();

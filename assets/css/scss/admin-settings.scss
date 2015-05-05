@@ -1,0 +1,194 @@
+@import "admin-license-key-fields";
+
+/**
+ * Modify the GFAddon App Settings page
+ */
+.admin_page_gravityview_settings,
+.gravityview_page_gravityview_settings {
+
+  .gform_tab_content > h3 {
+    position: absolute;
+    top: .5em;
+    right:10px;
+  }
+
+  .version-info {
+    position: absolute;
+    right: 10px;
+    top: .5em
+  }
+
+  .gv-edd-message {
+    min-height: 20px;
+    padding: 8px 19px;
+    margin: 10px 0!important;
+    border: 1px solid;
+    border-radius: 4px;
+    position: relative;
+
+    display: block!important; // Overwrite .inline class declaration
+
+    background-color: #eeeeee;
+    border-color: #cccccc;
+    color: #666666;
+
+    &.valid {
+      background-color: #c4ee91;
+      border-color: #71af5d;
+      color: #4d7615;
+    }
+
+    &.error,
+    &.invalid,
+    &.failed {
+      background-color: #fba1a3;
+      border-color: #b84f5b;
+      color: #981225
+    }
+
+    &.site_inactive,
+    &.deactivated {
+      background-color: #fbeba4;
+      border-color: #d7c281;
+      color: #958234
+    }
+
+    &.pending {
+      background-color: #d3e4f4;
+      border-color: #a9b6c2;
+      color: #5c80a1;
+    }
+
+    p:first-child {
+      margin: 0;
+      padding: 2px;
+    }
+  }
+
+  .inline.hide:empty {
+    display: none!important;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  // Add the stars to the top
+  #gform_tab_group {
+    padding: 0;
+    background: url(../images/stars.jpg) left top repeat-x;
+
+    // Add Floaty
+    &:before {
+      content: '';
+      display: block;
+      position: relative;
+      margin-left: 0;
+      background-color: #fff;
+
+      min-height: 110px;
+      background: url(../images/astronaut-200x263.png) -30px top no-repeat;
+      margin: 0;
+      padding: 10px 0 0 160px;
+    }
+
+  }
+
+  .gform_tab_group {
+    position: relative;
+
+    // Don't change the position of the inputs when the .updated div slideUps
+    #message {
+      position: absolute;
+
+      // As wide as it needs to be
+      width: auto;
+      white-space: nowrap;
+
+      // Make it look like Floaty is saying it
+      top: 35px;
+      left: 150px;
+
+      margin-bottom: 10px; // For when JS is off, make sure it has some space
+
+      padding-top: 5px;
+      padding-bottom: 5px;
+      z-index: 1000;
+      opacity: .95;
+
+      p {
+        margin: 0;
+        padding: .25em 5px;
+        font-size: 16px;
+          strong {
+            font-weight: 400;
+          }
+      }
+    }
+  }
+
+  // Don't have tab margins
+  #gform_tab_container {
+    margin-left: 0;
+    background-color: #fff;
+    padding-bottom: 0;
+  }
+
+  // Hide the tabs
+  #gform_tabs {
+    margin-top: 0;
+    display: none;
+  }
+
+
+  #gform-settings {
+
+    clear: both;
+
+    tr {
+      border-top:1px solid #E7E7E7
+    }
+
+    tr:first-child,
+    tr:last-child {
+      border-top: none;
+      td, th {
+        padding-top: 10px!important;
+      }
+    }
+
+    tr:last-child {
+      td, th {
+        padding-bottom: 10px!important;
+      }
+    }
+
+    th, td {
+      margin: 0;
+      padding: 20px 10px 20px 0px;
+      width: auto;
+    }
+
+    td {
+      width: 70%;
+
+      div {
+        padding-left: 10px;
+      }
+    }
+
+    th {
+      font-weight: bold;
+      display: block
+    }
+
+    span.description {
+      display: block;
+      font-style: normal;
+      font-weight: 400;
+      color: #666;
+    }
+
+  }
+
+}

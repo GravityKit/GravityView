@@ -20,6 +20,11 @@ class GravityView_Admin_ApproveEntries {
 
 	function __construct() {
 
+		$this->add_hooks();
+
+	}
+
+	private function add_hooks() {
 		/** Edit Gravity Form page */
 
 		// Add button to left menu
@@ -46,9 +51,15 @@ class GravityView_Admin_ApproveEntries {
 		// bypass Gravity Forms no-conflict mode
 		add_filter( 'gform_noconflict_scripts', array( $this, 'register_gform_noconflict_script' ) );
 		add_filter( 'gform_noconflict_styles', array( $this, 'register_gform_noconflict_style' ) );
-
 	}
 
+	/**
+	 * Add the GravityView Fields group tooltip
+	 *
+	 * @param $tooltips
+	 *
+	 * @return array Tooltips array with GravityView fields tooltip
+	 */
 	function tooltips( $tooltips ) {
 
 		$tooltips['form_gravityview_fields'] = array(
@@ -65,7 +76,7 @@ class GravityView_Admin_ApproveEntries {
 	 *
 	 * @access public
 	 * @param mixed $field_groups
-	 * @return void
+	 * @return array Array of fields
 	 */
 	function add_field_buttons( $field_groups ) {
 
@@ -98,6 +109,7 @@ class GravityView_Admin_ApproveEntries {
 	/**
 	 * At edit form page, set the field Approve defaults
 	 *
+	 * @todo Convert to a partial include file
 	 * @access public
 	 * @return void
 	 */
@@ -151,7 +163,6 @@ class GravityView_Admin_ApproveEntries {
 			break;
 		<?php
 	}
-
 
 
 
@@ -316,14 +327,20 @@ class GravityView_Admin_ApproveEntries {
 	 */
 	public static function update_approved_meta( $form, $entry_id = NULL ) {
 
-		$approvedcolumn = (string)self::get_approved_column( $form['id'] );
+		$approvedcolumn = self::get_approved_column( $form['id'] );
+
+        /**
+         * If the form doesn't contain the approve field, don't assume anything.
+         */
+        if( empty( $approvedcolumn ) ) {
+            return;
+        }
 
 		$entry = GFAPI::get_entry( $entry_id );
-		$approved = !empty( $entry[ $approvedcolumn ] ) ? $entry[ $approvedcolumn ] : 0;
 
 		// update entry meta
 		if( function_exists('gform_update_meta') ) {
-			gform_update_meta( $entry_id, 'is_approved', $approved );
+			gform_update_meta( $entry_id, 'is_approved', $entry[ (string)$approvedcolumn ] );
 		}
 
 	}
@@ -334,7 +351,6 @@ class GravityView_Admin_ApproveEntries {
 	 * @return void
 	 */
 	public function ajax_update_approved() {
-		$response = false;
 
 		if( empty( $_POST['entry_id'] ) || empty( $_POST['form_id'] ) ) {
 
@@ -361,17 +377,22 @@ class GravityView_Admin_ApproveEntries {
 	 *
 	 * @access public
 	 * @static
-	 * @param mixed $form_id
+	 * @param mixed $form GF Form or Form ID
 	 * @return false|null|string Returns the input ID of the approved field. Returns NULL if no approved fields were found. Returns false if $form_id wasn't set.
 	 */
-	static public function get_approved_column( $form_id ) {
-		if( empty( $form_id ) ) {
-			return false;
-		}
+	static public function get_approved_column( $form ) {
 
-		$form = gravityview_get_form( $form_id );
+        if( empty( $form ) ) {
+            return null;
+        }
+
+        if( !is_array( $form ) ) {
+            $form = GVCommon::get_form( $form );
+        }
 
 		foreach( $form['fields'] as $key => $field ) {
+
+            $field = (array) $field;
 
 			if( !empty( $field['gravityview_approved'] ) ) {
 				if( !empty($field['inputs'][0]['id']) ) {
@@ -379,13 +400,14 @@ class GravityView_Admin_ApproveEntries {
 				}
 			}
 
-			if( !empty( $field['adminOnly'] ) && 'checkbox' == $field['type'] && isset( $field['inputs'] ) && is_array( $field['inputs'] ) ) {
-				foreach( $field['inputs'] as $key2 => $input) {
-					if( strtolower( $input['label'] ) == 'approved' ) {
-						return $input['id'];
-					}
-				}
-			}
+            // Note: This is just for backward compatibility from GF Directory plugin and old GV versions - when using i18n it may not work..
+            if( 'checkbox' == $field['type'] && isset( $field['inputs'] ) && is_array( $field['inputs'] ) ) {
+                foreach ( $field['inputs'] as $key2 => $input ) {
+                    if ( strtolower( $input['label'] ) == 'approved' ) {
+                        return $input['id'];
+                    }
+                }
+            }
 		}
 
 		return null;
@@ -397,6 +419,7 @@ class GravityView_Admin_ApproveEntries {
 		if( empty( $entry['id'] ) ) {
 			return;
 		}
+
 		if( gform_get_meta( $entry['id'], 'is_approved' ) ) {
 			echo '<input type="hidden" class="entry_approved" id="entry_approved_'. $entry['id'] .'" value="true" />';
 		}
@@ -441,17 +464,60 @@ class GravityView_Admin_ApproveEntries {
 			wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array(
 				'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries'),
 				'form_id' => $form_id,
+				'show_column' => $this->show_approve_entry_column( $form_id ),
 				'label_approve' => __( 'Approve', 'gravityview' ) ,
 				'label_disapprove' => __( 'Disapprove', 'gravityview' ),
 				'bulk_message' => $this->bulk_update_message,
 				'approve_title' => __( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravityview'),
 				'unapprove_title' => __( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravityview'),
 				'column_title' => __( 'Show entry in directory view?', 'gravityview'),
-				'column_link' => add_query_arg( array('sort' => $approvedcolumn) ),
+				'column_link' => esc_url( add_query_arg( array('sort' => $approvedcolumn) ) ),
 			) );
 
 		}
 
+	}
+
+	/**
+	 * Should the Approve/Reject Entry column be shown in the GF Entries page?
+	 *
+	 * @filter gravityview/approve_entries/hide-if-no-connections
+	 * @filter gravityview/approve_entries/show-column
+	 *
+	 * @since 1.7.2
+	 *
+	 * @param int $form_id The ID of the Gravity Forms form for which entries are being shown
+	 *
+	 * @return bool True: Show column; False: hide column
+	 */
+	private function show_approve_entry_column( $form_id ) {
+
+		$show_approve_column = true;
+
+		/**
+		 * Return true to hide reject/approve if there are no connected Views
+		 * @since 1.7.2
+		 * @param boolean $hide_if_no_connections
+		 */
+		$hide_if_no_connections = apply_filters('gravityview/approve_entries/hide-if-no-connections', false );
+
+		if( $hide_if_no_connections ) {
+
+			$connected_views = gravityview_get_connected_views( $form_id );
+
+			if( empty( $connected_views ) ) {
+				$show_approve_column = false;
+			}
+		}
+
+		/**
+		 * Override whether the column is shown
+		 * @param boolean $show_approve_column Whether the column will be shown
+		 * @param int $form_id The ID of the Gravity Forms form for which entries are being shown
+		 */
+		$show_approve_column = apply_filters('gravityview/approve_entries/show-column', $show_approve_column, $form_id );
+
+		return $show_approve_column;
 	}
 
 	function register_gform_noconflict_script( $scripts ) {

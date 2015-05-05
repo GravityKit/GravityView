@@ -15,12 +15,21 @@
 class GravityView_Migrate {
 
 	function __construct() {
-		add_action( 'admin_init', array( $this, 'update_settings' ) );
+		add_action( 'admin_init', array( $this, 'update_settings' ), 1 );
 	}
 
+	public function update_settings() {
 
+		$this->maybe_migrate_search_widget();
 
-	function update_settings() {
+		$this->migrate_redux_settings();
+
+	}
+
+	/**
+	 * @since 1.7.4
+	 */
+	private function maybe_migrate_search_widget() {
 
 		// check if search migration is already performed
 		$is_updated = get_option( 'gv_migrate_searchwidget' );
@@ -29,7 +38,110 @@ class GravityView_Migrate {
 		} else {
 			$this->update_search_on_views();
 		}
+	}
 
+	/**
+	 * Set app settings from prior Redux settings, if exists
+	 *
+	 * @since 1.7.4
+	 * @return mixed|void
+	 */
+	private function migrate_redux_settings() {
+
+		$redux_settings = $this->get_redux_settings();
+
+		// No need to process
+		if( false === $redux_settings ) {
+			return;
+		}
+
+		if( empty(  $redux_settings['license_key_status'] ) ) {
+			$redux_settings = $this->get_redux_license_status( $redux_settings );
+		}
+
+		// Get the current app settings (just defaults)
+		$current = GravityView_Settings::get_instance()->get_app_settings();
+
+		// Merge the redux settings with the defaults
+		$updated_settings = wp_parse_args( $redux_settings, $current );
+
+		// Update the defaults to the new merged
+		GravityView_Settings::get_instance()->update_app_settings( $updated_settings );
+
+		// And now remove the previous option, so this is a one-time thing.
+		delete_option('gravityview_settings');
+		delete_option('gravityview_settings-transients');
+	}
+
+	/**
+	 * If the settings transient wasn't set, we need to set the default status for the license
+	 *
+	 * @since 1.7.4
+	 *
+	 * @param array $redux_settings
+	 *
+	 * @return array
+	 */
+	function get_redux_license_status( $redux_settings = array() ) {
+
+		$data = array(
+			'edd_action' => 'check_license',
+			'license' => rgget('license_key', $redux_settings ),
+			'update' => false,
+			'format' => 'object',
+		);
+
+		$license_call = GravityView_Settings::get_instance()->get_license_handler()->license_call( $data );
+
+		if( is_object( $license_call ) && isset( $license_call->license ) ) {
+			$redux_settings['license_key_status'] = $license_call->license;
+			$redux_settings['license_key_response'] = json_encode( $license_call );
+		}
+
+		return $redux_settings;
+	}
+
+	/**
+	 * Get Redux settings, if they exist
+	 * @since 1.7.4
+	 * @return array|bool
+	 */
+	function get_redux_settings() {
+
+		// Previous settings set by Redux
+		$redux_option = get_option('gravityview_settings');
+
+		// No Redux settings? Don't proceed.
+		if( false === $redux_option ) {
+			return false;
+		}
+
+
+		$redux_settings = array(
+			'support-email' => rgget( 'support-email', $redux_option ),
+			'no-conflict-mode' => ( rgget( 'no-conflict-mode', $redux_option ) ? '1' : '0' ),
+		);
+
+		if( $license_array = rgget( 'license', $redux_option ) ) {
+
+			$redux_settings['license_key'] = $license_key = rgget( 'license', $license_array );
+
+			$redux_last_changed_values = get_option('gravityview_settings-transients');
+
+			// This contains the last response for license validation
+			if( !empty( $redux_last_changed_values ) && $saved_values = rgget( 'changed_values', $redux_last_changed_values ) ) {
+
+				$saved_license = rgget('license', $saved_values );
+
+				// Only use the last-saved values if they are for the same license
+				if( $saved_license && rgget( 'license', $saved_license ) === $license_key ) {
+					$redux_settings['license_key_status'] = rgget( 'status', $saved_license );
+					$redux_settings['license_key_response'] = rgget( 'response', $saved_license );
+				}
+			}
+		}
+
+		return $redux_settings;
 	}
 
 
