@@ -1,11 +1,11 @@
 # 
 # Translators:
-# franckt <franckthomaspro@hotmail.com>, 2014
+# franckt, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-04-10 23:12+0000\n"
+"PO-Revision-Date: 2015-04-24 20:36+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/gravityview/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-04-10 23:12+0000\n"
+"PO-Revision-Date: 2015-04-29 18:12+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/gravityview/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -868,7 +868,7 @@ msgstr "Nincs felhasználó"
 
 #: includes/class-common.php:234
 msgid "Post ID"
-msgstr ""
+msgstr "Bejegyzés azonosító"
 
 #: includes/class-common.php:243
 msgid "Payment Status"
@@ -1190,7 +1190,7 @@ msgstr ""
 
 #: includes/class-gv-license-handler.php:85
 msgid "Check License"
-msgstr ""
+msgstr "Lincenc ellenőrzése"
 
 #: includes/class-gv-license-handler.php:327
 msgid "Status"
@@ -1208,23 +1208,23 @@ msgstr ""
 
 #: includes/class-gv-license-handler.php:330
 msgid "The license key is valid, but it has not been activated for this site."
-msgstr ""
+msgstr "A licenc kulcs megfelelő, de nem aktiválódott a weboldalhoz."
 
 #: includes/class-gv-license-handler.php:331
 msgid "Invalid: this license has reached its activation limit."
-msgstr ""
+msgstr "Nem megfelelő: A licenc kulcsot nem lehet többször aktiválni."
 
 #: includes/class-gv-license-handler.php:332
 msgid "The license has been deactivated."
-msgstr ""
+msgstr "A licenc deaktiválva lett."
 
 #: includes/class-gv-license-handler.php:333
 msgid "The license key is valid and active."
-msgstr ""
+msgstr "A licenc kulcs megfelelő és aktív."
 
 #: includes/class-gv-license-handler.php:334
 msgid "The license key entered is invalid."
-msgstr ""
+msgstr "A beírt licenc kulcs nem megfelelő."
 
 #: includes/class-gv-license-handler.php:335
 msgid "The license key was not defined."
@@ -1232,14 +1232,14 @@ msgstr ""
 
 #: includes/class-gv-license-handler.php:336
 msgid "This license key has been revoked."
-msgstr ""
+msgstr "A lincenc kulcsot visszavontuk."
 
 #: includes/class-gv-license-handler.php:337
 #, php-format
 msgid ""
 "This license key has expired. %sRenew your license on the GravityView "
 "website%s"
-msgstr ""
+msgstr "A licence kulcs lejárt. %sÚjítsd meg a GravityView weboldal licence kulcsát%s"
 
 #: includes/class-gv-license-handler.php:342
 msgid "Verify License"
@@ -1366,7 +1366,7 @@ msgstr " Nincs aktiválva"
 
 #: includes/class-settings.php:363 includes/class-settings.php:396
 msgid "Update Settings"
-msgstr ""
+msgstr "Beállítások frissítése"
 
 #: includes/class-settings.php:467
 msgid ""
