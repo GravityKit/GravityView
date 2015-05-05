@@ -1092,8 +1092,10 @@ class GVCommon {
 
 		// If the href wasn't passed as an attribute, use the value passed to the function
 		if( empty( $final_atts['href'] ) && !empty( $href ) ) {
-			$final_atts['href'] = esc_url( $href );
+			$final_atts['href'] = $href;
 		}
+
+		$final_atts['href'] = esc_url( $href );
 
 		// For each attribute, generate the code
 		$output = '';
