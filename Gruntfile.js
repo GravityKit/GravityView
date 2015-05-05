@@ -131,6 +131,7 @@ module.exports = function(grunt) {
 					mainFile: 'gravityview.php',
 					type: 'wp-plugin',
 					domainPath: '/languages',
+					updateTimestamp: false,
 					exclude: ['node_modules/.*', 'assets/.*', 'vendor/.*', 'includes/lib/xml-parsers/.*', 'includes/lib/jquery-cookie/.*', 'includes/lib/standalone-phpenkoder/.*' ],
 					potHeaders: {
 						poedit: true,
@@ -139,6 +140,8 @@ module.exports = function(grunt) {
 					processPot: function( pot, options ) {
 						pot.headers['language'] = 'en_US';
 						pot.headers['language-team'] = 'Katz Web Services, Inc. <support@katz.co>';
+						pot.headers['last-translator'] = 'Katz Web Services, Inc. <support@katz.co>';
+						pot.headers['report-msgid-bugs-to'] = 'https://gravityview.co/support/';
 
 						var translation,
 							excluded_meta = [
