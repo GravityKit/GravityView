@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.7.6.1 on May 7 =
+* Fixed: Pagination links not working when a search is performed
+
 
 = 1.7.6 on May 5 =
 * Added WordPress Multisite settings page support
