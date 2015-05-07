@@ -236,7 +236,7 @@ class GravityView_Entry_List {
 	 *
 	 * @uses gravityview_get_link
 	 * @uses GravityView_API::entry_link
-	 * @uses Gravityview_API::replace_variables
+	 * @uses GravityView_API::replace_variables
 	 *
 	 * @return string HTML output for the entry
 	 */
@@ -262,7 +262,7 @@ class GravityView_Entry_List {
 			$item_output .= $after_link;
 		}
 
-		$item_output = Gravityview_API::replace_variables( $item_output, $this->form, $entry );
+		$item_output = GravityView_API::replace_variables( $item_output, $this->form, $entry );
 
 		$item_output = '<'. $this->item_tag .'>'. $item_output .'</'. $this->item_tag .'>';
 
