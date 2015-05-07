@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.7.6.1 on May 7 =
-* Fixed: Page links not working when search is done.
+* Fixed: Pagination links not working when a search is performed
 
 
 = 1.7.6 on May 5 =
