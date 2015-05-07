@@ -1276,7 +1276,7 @@ class GravityView_Edit_Entry {
 	 *
 	 * Needs to be used combined with GravityView_Edit_Entry::user_can_edit_entry for maximum security!!
 	 *
-	 * @param  [type] $entry [description]
+	 * @param  array $entry Gravity Forms entry array
 	 * @return bool
 	 */
 	public static function check_user_cap_edit_entry( $entry ) {
