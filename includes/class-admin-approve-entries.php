@@ -42,7 +42,7 @@ class GravityView_Admin_ApproveEntries {
 		add_action('wp_ajax_gv_update_approved', array( $this, 'ajax_update_approved'));
 
 		// in case entry is edited (on admin or frontend)
-		add_action( 'gform_after_update_entry', array( $this, 'update_approved_meta' ), 10, 2);
+		add_action( 'gform_after_update_entry', array( $this, 'after_update_entry_update_approved_meta' ), 10, 2);
 
 		add_filter( 'gravityview_tooltips', array( $this, 'tooltips' ) );
 
@@ -291,12 +291,14 @@ class GravityView_Admin_ApproveEntries {
 
 		//update entry
 		$entry[ (string)$approvedcolumn ] = $approved;
+
+		/** @var bool|WP_Error $result */
 		$result = GFAPI::update_entry( $entry );
 
-		// update entry meta
-		if( function_exists('gform_update_meta') ) {
-			gform_update_meta( $entry_id, 'is_approved', $approved);
-		}
+		/**
+		 * GFAPI::update_entry() doesn't trigger `gform_after_update_entry`, so we trigger updating the meta ourselves.
+		 */
+		self::update_approved_meta( $entry_id, $approved );
 
 		// add note to entry
 		if( $result === true ) {
@@ -314,18 +316,27 @@ class GravityView_Admin_ApproveEntries {
 			 */
 			do_action( 'gravityview_clear_form_cache', $form_id );
 
+		} else if( is_wp_error( $result ) ) {
+
+			do_action( 'gravityview_log_error', __METHOD__ . sprintf( ' - Entry approval not updated: %s', $result->get_error_message() ) );
+
+			$result = false;
 		}
 
 		return $result;
 
 	}
+
 	/**
 	 * Update the is_approved meta whenever the entry is updated
+	 *
+	 * @since 1.7.6.1 Was previously named `update_approved_meta`
+	 *
 	 * @param  array $form     Gravity Forms form array
 	 * @param  int $entry_id ID of the Gravity Forms entry
 	 * @return void
 	 */
-	public static function update_approved_meta( $form, $entry_id = NULL ) {
+	public static function after_update_entry_update_approved_meta( $form, $entry_id = NULL ) {
 
 		$approvedcolumn = self::get_approved_column( $form['id'] );
 
@@ -338,11 +349,60 @@ class GravityView_Admin_ApproveEntries {
 
 		$entry = GFAPI::get_entry( $entry_id );
 
+		self::update_approved_meta( $entry[ (string)$approvedcolumn ] );
+
+	}
+
+	/**
+	 * Update the `is_approved` entry meta value
+	 * @param  int $entry_id ID of the Gravity Forms entry
+	 * @param  string $is_approved String whether entry is approved or not. `0` for not approved, `Approved` for approved.
+	 *
+	 * @action gravityview/approve_entries/updated Triggered when an entry approval is updated {@added 1.7.6.1}
+	 * @action gravityview/approve_entries/approved Triggered when an entry is approved {@added 1.7.6.1}
+	 * @action gravityview/approve_entries/disapproved Triggered when an entry is rejected {@added 1.7.6.1}
+	 *
+	 * @since 1.7.6.1 `after_update_entry_update_approved_meta` was previously to be named `update_approved_meta`
+	 *
+	 * @return void
+	 */
+	private static function update_approved_meta( $entry_id, $is_approved ) {
+
 		// update entry meta
 		if( function_exists('gform_update_meta') ) {
-			gform_update_meta( $entry_id, 'is_approved', $entry[ (string)$approvedcolumn ] );
-		}
 
+			gform_update_meta( $entry_id, 'is_approved', $is_approved );
+
+			/**
+			 * @param  int $entry_id ID of the Gravity Forms entry
+			 * @param  string $is_approved String whether entry is approved or not. `0` for not approved, `Approved` for approved.
+			 * @since 1.7.6.1
+			 */
+			do_action( 'gravityview/approve_entries/updated', $entry_id, $is_approved );
+
+			if( empty( $is_approved ) ) {
+
+				/**
+				 * @param  int $entry_id ID of the Gravity Forms entry
+				 * @since 1.7.6.1
+				 */
+				do_action( 'gravityview/approve_entries/disapproved', $entry_id );
+
+			} else {
+
+				/**
+				 * @param  int $entry_id ID of the Gravity Forms entry
+				 * @since 1.7.6.1
+				 */
+				do_action( 'gravityview/approve_entries/approved', $entry_id );
+
+			}
+
+		} else {
+
+			do_action('gravityview_log_error', __METHOD__ . ' - `gform_update_meta` does not exist.' );
+
+		}
 	}
 
 

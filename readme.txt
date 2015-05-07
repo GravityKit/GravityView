@@ -20,6 +20,14 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.7.6.1 on May 7 =
+* Fixed: Pagination links not working when a search is performed
+* Fixed: Return false instead of error if updating approved status fails
+* Added: Hooks when an entry approval is updated, approved, or disapproved:
+    - `gravityview/approve_entries/updated` - Approval status changed (passes $entry_id and status)
+    - `gravityview/approve_entries/approved` - Entry approved (passes $entry_id)
+    - `gravityview/approve_entries/disapproved` - Entry disapproved (passes $entry_id)
+
 = 1.7.6 on May 5 =
 * Added WordPress Multisite settings page support
     - By default, settings aren't shown on single blogs if GravityView is Network Activated
