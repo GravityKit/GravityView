@@ -1280,39 +1280,53 @@ class GravityView_Edit_Entry {
 	 * @return bool
 	 */
 	public static function check_user_cap_edit_entry( $entry ) {
-		$gravityview_view = GravityView_View::getInstance();
+
+		// No permission by default
+		$user_can_edit = false;
 
 		// Or if they can edit any entries (as defined in Gravity Forms), we're good.
 		if( GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) ) {
-			return true;
-		}
 
-		if( !isset( $entry['created_by'] ) ) {
+			$user_can_edit = true;
+
+		} else if( !isset( $entry['created_by'] ) ) {
 
 			do_action('gravityview_log_error', 'GravityView_Edit_Entry[check_user_cap_edit_entry] Entry `created_by` doesn\'t exist.');
 
-			return false;
+			$user_can_edit = false;
+
+		} else {
+
+			$gravityview_view = GravityView_View::getInstance();
+
+			$user_edit = $gravityview_view->getAtts('user_edit');
+
+			$current_user = wp_get_current_user();
+
+			// User edit is disabled
+			if( empty( $user_edit ) ) {
+
+				do_action('gravityview_log_debug', 'GravityView_Edit_Entry[check_user_cap_edit_entry] User Edit is disabled. Returning false.' );
+
+				$user_can_edit = false;
+			}
+
+			// User edit is enabled and the logged-in user is the same as the user who created the entry. We're good.
+			else if( is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
+
+				do_action('gravityview_log_debug', sprintf( 'GravityView_Edit_Entry[check_user_cap_edit_entry] User %s created the entry.', $current_user->ID ) );
+
+				$user_can_edit = true;
+			}
+
 		}
 
-		$user_edit = $gravityview_view->getAtts('user_edit');
-		$current_user = wp_get_current_user();
+		/**
+		 * @param boolean $user_can_edit Can the current user edit the current entry? (Default: false)
+		 */
+		$user_can_edit = apply_filters( 'gravityview/edit_entry/user_can_edit_entry', $user_can_edit );
 
-		if( empty( $user_edit ) ) {
-
-			do_action('gravityview_log_debug', 'GravityView_Edit_Entry[check_user_cap_edit_entry] User Edit is disabled. Returning false.' );
-
-			return false;
-		}
-
-		// If the logged-in user is the same as the user who created the entry, we're good.
-		if( is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
-
-			do_action('gravityview_log_debug', sprintf( 'GravityView_Edit_Entry[check_user_cap_edit_entry] User %s created the entry.', $current_user->ID ) );
-
-			return true;
-		}
-
-		return false;
+		return (bool)$user_can_edit;
 	}
 
 
