@@ -306,6 +306,22 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>1.7.6.1 on May 7</h3>
+
+				<ul>
+					<li>Fixed: Pagination links not working when a search is performed</li>
+					<li>Fixed: Return false instead of error if updating approved status fails</li>
+					<li>Added: Hooks when an entry approval is updated, approved, or disapproved:
+
+						<ul>
+							<li><code>gravityview/approve_entries/updated</code> - Approval status changed (passes $entry_id and status)</li>
+							<li><code>gravityview/approve_entries/approved</code> - Entry approved (passes $entry_id)</li>
+							<li><code>gravityview/approve_entries/disapproved</code> - Entry disapproved (passes $entry_id)</li>
+						</ul>
+					</li>
+				</ul>
+
+
 				<h3>1.7.6 on May 5</h3>
 
 				<ul>
