@@ -20,7 +20,9 @@
   .inside {
     padding: 0;
     margin: 0;
-    overflow: hidden;
+    background: #fafafa;
+
+    @include clearfix();
   }
 
   ul.ui-tabs-nav {
@@ -32,27 +34,12 @@
     position: relative;
     padding: 0 0 30px;
     background-color: #fafafa;
-    border-right: 1px solid #eee;
     @include borderbox();
 
     #side-sortables & {
       width: 100%;
       padding-bottom: 0;
       border: none;
-    }
-
-    // Set the background color for the bar
-    #normal-sortables &:after,
-    #advanced-sortables &:after{
-      content: "";
-      display: block;
-      width: 100%;
-      height: 9999em;
-      position: absolute;
-      bottom: -9999em;
-      left: 0;
-      background-color: #fafafa;
-      border-right: 1px solid #eee;
     }
 
     li {

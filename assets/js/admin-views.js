@@ -1409,6 +1409,9 @@
 
 			// TODO: set minimum height for tabbed metabox so that the window height doesn't jump around when switching tabs
 			viewGeneralSettings.metaboxObj
+				// What happens after tabs are generated
+				.on( 'tabscreate', viewGeneralSettings.tabsCreate )
+
 				// Force the sort metabox to be directly under the view configuration. Damn 3rd party metaboxes!
 				.insertAfter( $('#gravityview_view_config') )
 
@@ -1417,6 +1420,29 @@
 				.addClass( "ui-tabs-vertical ui-helper-clearfix" )
 				.find('li')
 				.removeClass( "ui-corner-top" );
+
+		},
+
+		/**
+		 * After creating the Tabs we need to do a few tweaks to make it look good
+		 *
+		 * @since 1.8
+		 *
+		 * @param {Object} event jQuery Event
+		 * @param {Object} ui jQuery UI Tab element, with: `ui.tab` and `ui.panel`
+		 *
+		 * @return {void}
+		 */
+		tabsCreate: function( event, ui ){
+			var $container = $( this ),
+				$inside = $container.children( '.inside' ),
+				$panels = $container.find( '.ui-tabs-panel' ),
+				$panel = ui.panel,
+				max = [];
+
+			$panels.each( function(){
+				max.push( $( this ).outerHeight( true ) );
+			} ).css( { 'min-height': _.max( max ) } );
 		},
 
 		/**

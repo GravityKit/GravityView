@@ -9,6 +9,9 @@
 
   float: left;
   width: 80%;
+  border-left: 1px solid #eee;
+  @include borderbox();
+
 
   #side-sortables & {
     width: 100%;
@@ -25,7 +28,7 @@
 
     @include clearfix();
     @include borderbox();
-    
+
     // Overrides
     padding: 0;
     border: none;
@@ -50,6 +53,12 @@
         line-height: 1.4;
         font-weight: 600;
       }
+
+      label {
+      	.howto {
+      		margin-top: 5px;
+      	}
+      }
     }
 
     p {
@@ -68,10 +77,18 @@
       display: inline;
     }
 
+    div + input {
+    	margin-top: 5px;
+    }
+
     textarea,
     input,
     select {
       margin: 0;
+
+      &[type="checkbox"]{
+      	margin-top: -4px;
+      }
     }
 
     textarea {
