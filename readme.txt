@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.7.6.2 =
+Fixed: PHP warning when trying to update an entry with the approved field.
+
 = 1.7.6.1 on May 7 =
 * Fixed: Pagination links not working when a search is performed
 * Fixed: Return false instead of error if updating approved status fails
