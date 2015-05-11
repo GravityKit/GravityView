@@ -349,7 +349,7 @@ class GravityView_Admin_ApproveEntries {
 
 		$entry = GFAPI::get_entry( $entry_id );
 
-		self::update_approved_meta( $entry[ (string)$approvedcolumn ] );
+		self::update_approved_meta( $entry_id, $entry[ (string)$approvedcolumn ] );
 
 	}
 
