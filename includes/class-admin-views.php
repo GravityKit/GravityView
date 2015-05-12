@@ -101,9 +101,10 @@ class GravityView_Admin_Views {
 		);
 
 		foreach ( (array)$connected_views as $view ) {
+			$label = empty( $view->post_title ) ? sprintf( __('No Title (View #%d)', 'gravityview' ), $view->ID ) : $view->post_title;
 			$sub_menu_items[] = array(
 				'url' => admin_url( 'post.php?action=edit&post='.$view->ID ),
-				'label' => esc_attr( $view->post_title ),
+				'label' => esc_attr( $label ),
 				'capabilities' => current_user_can( 'edit_post', $view->ID ),
 			);
 		}
