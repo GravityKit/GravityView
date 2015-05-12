@@ -306,6 +306,13 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>1.7.6.2 on May 12</h3>
+
+				<ul>
+					<li>Fixed: PHP warning when trying to update an entry with the approved field.</li>
+					<li>Fixed: Views without titles in the "Connected Views" dropdown would appear blank</li>
+				</ul>
+
 				<h3>1.7.6.1 on May 7</h3>
 
 				<ul>
