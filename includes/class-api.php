@@ -195,8 +195,6 @@ class GravityView_API {
 
 		$field_id = $field_settings['id'];
 
-		$output = '';
-
 		$form = $gravityview_view->getForm();
 
 		$field = gravityview_get_field( $form, $field_id );

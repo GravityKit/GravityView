@@ -1,23 +1,64 @@
 <?php
 /**
- * @version 1.0.4
+ * @package GravityView
+ * @license   GPL2+
+ * @author    Katz Web Services, Inc.
+ * @link      https://gravityview.co
+ * @copyright Copyright 2015, Katz Web Services, Inc.
+ */
+
+/**
+ * Extend this class to create a GravityView extension that gets updates from GravityView.co
+ *
+ * @since 1.1
+ *
+ * @version 1.0.7
  */
 abstract class GravityView_Extension {
 
+	/**
+	 * @var string Name of the plugin in GravityView.co
+	 */
 	protected $_title = NULL;
 
+	/**
+	 * @var string Version number of the plugin
+	 */
 	protected $_version = NULL;
 
+	/**
+	 * @var string Translation textdomain
+	 */
 	protected $_text_domain = 'gravityview';
 
-	protected $_min_gravityview_version = '1.1.2';
+	/**
+	 * @var string Minimum version of GravityView the Extension requires
+	 */
+	protected $_min_gravityview_version = '1.1.5';
 
+	/**
+	 * @var string The URL to fetch license info from. Do not change unless you know what you're doing.
+	 */
 	protected $_remote_update_url = 'https://gravityview.co';
 
+	/**
+	 * @var string Author of plugin, sent when fetching license info.
+	 */
 	protected $_author = 'Katz Web Services, Inc.';
 
+	/**
+	 * @var string Path to the plugin file. Must be in the plugin root directory for successful automatic updates
+	 */
+	public $_path = __FILE__;
+
+	/**
+	 * @var array Admin notices to display
+	 */
 	static private $admin_notices = array();
 
+	/**
+	 * @var bool Is the extension able to be run based on GV version and whether GV is activated
+	 */
 	static $is_compatible = true;
 
 	function __construct() {
@@ -27,6 +68,8 @@ abstract class GravityView_Extension {
 		add_action( 'admin_init', array( $this, 'settings') );
 
 		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
+
+		add_action( 'gravityview/metaboxes/before_render', array( $this, 'add_metabox_tab' ) );
 
 		if( false === $this->is_extension_supported() ) {
 			return;
@@ -42,19 +85,132 @@ abstract class GravityView_Extension {
 	}
 
 	/**
-	 * Load translations for the extension
+	 * Add a tab to GravityView Edit View tabbed metabox. By overriding this method, you will add a tab to View settings
+	 *
+	 * @since 1.8 (Extension version 1.0.7)
+	 *
+	 * @see https://gist.github.com/zackkatz/6cc381bcf54849f2ed41 For example of adding a metabox
+	 *
+	 * @return array {
+	 *      @type string $id Metabox HTML ID, without `gravityview_` prefix
+	 *      @type string $title Name of the metabox. Shown in the tab.
+	 *      @type string $file The file name of a file stored in the /gravityview/includes/admin/metaboxes/views/ directory to render the metabox output, or the full path to a file. If defined, `callback` is not used.
+	 *      @type string $icon_class_name Icon class used in vertical tabs. Supports non-dashicon. If dashicons, no need for `dashicons ` prefix
+	 *      @type string $callback Function to render the metabox, if $file is not defined.
+	 *      @type null $callback_args Arguments passed to the callback
+	 * }
+	 */
+	protected function tab_settings() {
+		// When overriding, return array with expected keys
+		return array();
+	}
+
+	/**
+	 * If Extension overrides tab_settings() and passes its own tab, add it to the tabbed settings metabox
+	 *
+	 * @since 1.8 (Extension version 1.0.7)
+	 *
 	 * @return void
 	 */
-	function load_plugin_textdomain() {
+	function add_metabox_tab() {
 
+		$tab_settings = $this->tab_settings();
+
+		// Don't add a tab if it's empty.
+		if( empty( $tab_settings ) ) {
+			return;
+		}
+
+		$tab_defaults = array(
+			'id' => '',
+			'title' => '',
+			'callback' => '',
+			'icon-class' => '',
+			'file' => '',
+			'callback_args' => '',
+			'context' => 'side',
+			'priority' => 'default',
+		);
+
+		$tab = wp_parse_args( $tab_settings, $tab_defaults );
+
+		// Force the screen to be GravityView
+		$tab['screen'] = 'gravityview';
+
+		if( class_exists('GravityView_Metabox_Tab') ) {
+
+			$metabox = new GravityView_Metabox_Tab( $tab['id'], $tab['title'], $tab['file'], $tab['icon-class'], $tab['callback'], $tab['callback_args'] );
+
+			GravityView_Metabox_Tabs::add( $metabox );
+
+		} else {
+
+			add_meta_box( 'gravityview_'.$tab['id'], $tab['title'], $tab['callback'], $tab['screen'], $tab['context'], $tab['priority'] );
+
+		}
+	}
+
+	/**
+	 * Load translations for the extension
+	 *
+	 * 1. Check  `wp-content/languages/gravityview/` folder and load using `load_textdomain()`
+	 * 2. Check  `wp-content/plugins/gravityview/languages/` folder for `gravityview-[locale].mo` file and load using `load_textdomain()`
+	 * 3. Load default file using `load_plugin_textdomain()` from `wp-content/plugins/gravityview/languages/`
+	 *
+	 * @return void
+	 */
+	public function load_plugin_textdomain() {
 		if( empty( $this->_text_domain ) ) { return; }
 
-        $path = dirname( plugin_basename( $this->_path ) ) . '/languages/';
+		// Set filter for plugin's languages directory
+		$lang_dir = dirname( plugin_basename( __FILE__ ) ) . '/languages/';
 
-        load_plugin_textdomain( $this->_text_domain , false, $path );
-    }
+		// Traditional WordPress plugin locale filter
+		$locale = apply_filters( 'plugin_locale',  get_locale(), $this->_text_domain );
 
-	function settings( $settings ) {
+		$mofile = sprintf( '%1$s-%2$s.mo', $this->_text_domain, $locale );
+
+		// Setup paths to current locale file
+		$mofile_local  = $lang_dir . $mofile;
+		$mofile_global = WP_LANG_DIR . '/' . $this->_text_domain . '/' . $mofile;
+
+		if ( file_exists( $mofile_global ) ) {
+			// Look in global /wp-content/languages/[plugin-dir]/ folder
+			load_textdomain( $this->_text_domain, $mofile_global );
+		}
+		elseif ( file_exists( $mofile_local ) ) {
+			// Look in local /wp-content/plugins/[plugin-dir]/languages/ folder
+			load_textdomain( $this->_text_domain, $mofile_local );
+		}
+		else {
+			// Load the default language files
+			load_plugin_textdomain( $this->_text_domain, false, $lang_dir );
+		}
+	}
+
+	/**
+	 * Get license information from GravityView
+	 *
+	 * @since 1.8 (Extension version 1.0.7)
+	 * @return bool|array False: GravityView_Settings class does not exist. Array: array of GV license data.
+	 */
+	protected function get_license() {
+
+		if( !class_exists( 'GravityView_Settings' ) ) {
+			return false;
+		}
+
+		$license = GravityView_Settings::getSetting('license');
+
+		return $license;
+	}
+
+	/**
+	 * Register the updater for the Extension using GravityView license information
+	 *
+	 * @return void
+	 */
+	public function settings() {
 
 		// If doing ajax, get outta here
 		if( false === GravityView_Plugin::is_admin() )  {
@@ -65,12 +221,10 @@ abstract class GravityView_Extension {
 			include_once plugin_dir_path( __FILE__ ) . 'lib/EDD_SL_Plugin_Updater.php';
 		}
 
-		if( !class_exists( 'GravityView_Settings' ) ) { return; }
-
-		$license = GravityView_Settings::getSetting('license');
+		$license = $this->get_license();
 
 		// Don't update if invalid license.
-		if( empty( $license['status'] ) || strtolower( $license['status'] ) !== 'valid' ) { return; }
+		if( false === $license || empty( $license['status'] ) || strtolower( $license['status'] ) !== 'valid' ) { return; }
 
 		new EDD_SL_Plugin_Updater(
 			$this->_remote_update_url,
@@ -89,7 +243,7 @@ abstract class GravityView_Extension {
 	 *
 	 * @return void
 	 */
-	function admin_notice() {
+	public function admin_notice() {
 
 		if( empty( self::$admin_notices ) ) {
 			return;
@@ -125,14 +279,17 @@ abstract class GravityView_Extension {
 		self::$admin_notices[] = $notice;
 	}
 
-	function add_hooks() { }
+	/**
+	 * Extensions should override this hook to add their hooks instead of
+	 */
+	public function add_hooks() { }
 
 	/**
 	 * Store the filter settings in the `_gravityview_filters` post meta
 	 * @param  int $post_id Post ID
 	 * @return void
 	 */
-	function save_post( $post_id ) {}
+	public function save_post( $post_id ) {}
 
 	/**
 	 * Add tooltips for the extension.
@@ -151,7 +308,7 @@ abstract class GravityView_Extension {
 	 * @param  array  $tooltips Existing GV tooltips, with `title` and `value` keys
 	 * @return array           Modified tooltips
 	 */
-	function tooltips( $tooltips = array() ) {
+	public function tooltips( $tooltips = array() ) {
 
 		return $tooltips;
 
@@ -162,7 +319,7 @@ abstract class GravityView_Extension {
 	 *
 	 * - Checks if GravityView and Gravity Forms exist
 	 * - Checks GravityView and Gravity Forms version numbers
-	 * - Sets
+	 * - Sets self::$is_compatible to boolean value
 	 *
 	 * @uses GravityView_Admin::check_gravityforms()
 	 * @return boolean Is the extension supported?
@@ -177,7 +334,7 @@ abstract class GravityView_Extension {
 
 			self::add_notice( $message );
 
-			do_action( 'gravityview_log_error', __CLASS__.'[is_compatible] ' . $message );
+			do_action( 'gravityview_log_error', __METHOD__. ' ' . $message );
 
 			self::$is_compatible = false;
 
@@ -187,7 +344,7 @@ abstract class GravityView_Extension {
 
 			self::add_notice( $message );
 
-			do_action( 'gravityview_log_error', __CLASS__.'[is_compatible] ' . $message );
+			do_action( 'gravityview_log_error', __METHOD__. ' ' . $message );
 
 			self::$is_compatible = false;
 

@@ -12,6 +12,7 @@
 @import "admin-widgets-php";
 @import "admin-merge-tags";
 @import "admin-tooltips";
+@import "admin-metabox";
 
 // http://blog.teamtreehouse.com/a-better-clearfix-with-sass
 %clearfix {
@@ -303,8 +304,7 @@ $gv-overlay-index: 10000;
 /**
  * Sidebar Widget: View Settings
  */
-#gravityview_template_settings th,
-#gravityview_sort_filter th {
+#gravityview_settings th {
 	white-space: nowrap;
 	font-weight: normal;
 	max-width: 200px; // Default th width in forms.css

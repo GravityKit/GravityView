@@ -889,26 +889,55 @@ class GVCommon {
 			return $output;
 		}
 
-		// Get fields with sub-inputs and no parent
-		$fields = self::get_form_fields( $formid, true, false );
+		$fields = self::get_sortable_fields_array( $formid );
 
 		if( !empty( $fields ) ) {
 
-			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'list', 'textarea' ), NULL );
-
-			$output .= '<option value="date_created" '. selected( 'date_created', $current, false ).'>'. esc_html__( 'Date Created', 'gravityview' ) .'</option>';
-
 			foreach( $fields as $id => $field ) {
-
-				if( in_array( $field['type'], $blacklist_field_types ) ) { continue; }
-
 				$output .= '<option value="'. $id .'" '. selected( $id, $current, false ).'>'. esc_attr( $field['label'] ) .'</option>';
 			}
-
 		}
+
 		return $output;
 	}
 
+	/**
+	 *
+	 * @param int $formid Gravity Forms form ID
+	 * @param array $blacklist Field types to exclude
+	 *
+	 * @since TODO
+	 *
+	 * @todo Get all fields, check if sortable dynamically
+	 *
+	 * @return array
+	 */
+	public static function get_sortable_fields_array( $formid, $blacklist = array( 'list', 'textarea' ) ) {
+
+		// Get fields with sub-inputs and no parent
+		$fields = self::get_form_fields( $formid, true, false );
+
+		$date_created = array(
+			'date_created' => array(
+				'type' => 'date_created',
+				'label' => __( 'Date Created', 'gravityview' ),
+			),
+		);
+
+		$fields = array_merge( $date_created, $fields );
+
+		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', $blacklist, NULL );
+
+		// TODO: Convert to using array_filter
+		foreach( $fields as $id => $field ) {
+
+			if( in_array( $field['type'], $blacklist_field_types ) ) {
+				unset( $fields[ $id ] );
+			}
+		}
+
+		return $fields;
+	}
 
 	/**
 	 * Returns the GF Form field type for a certain field(id) of a form
