@@ -200,7 +200,9 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public static function include_extension_framework() {
-	    require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-extension.php' );
+		if ( ! class_exists( 'GravityView_Extension' ) ) {
+			require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-extension.php' );
+		}
 	}
 
 	/**
