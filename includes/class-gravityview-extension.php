@@ -47,11 +47,6 @@ abstract class GravityView_Extension {
 	protected $_author = 'Katz Web Services, Inc.';
 
 	/**
-	 * @var string Path to the plugin file. Must be in the plugin root directory for successful automatic updates
-	 */
-	public $_path = __FILE__;
-
-	/**
 	 * @var array Admin notices to display
 	 */
 	static private $admin_notices = array();
