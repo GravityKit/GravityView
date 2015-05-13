@@ -1,23 +1,64 @@
 <?php
 /**
- * @version 1.0.4
+ * @package GravityView
+ * @license   GPL2+
+ * @author    Katz Web Services, Inc.
+ * @link      https://gravityview.co
+ * @copyright Copyright 2015, Katz Web Services, Inc.
+ */
+
+/**
+ * Extend this class to create a GravityView extension that gets updates from GravityView.co
+ *
+ * @since 1.1
+ *
+ * @version 1.0.7
  */
 abstract class GravityView_Extension {
 
+	/**
+	 * @var string Name of the plugin in GravityView.co
+	 */
 	protected $_title = NULL;
 
+	/**
+	 * @var string Version number of the plugin
+	 */
 	protected $_version = NULL;
 
+	/**
+	 * @var string Translation textdomain
+	 */
 	protected $_text_domain = 'gravityview';
 
-	protected $_min_gravityview_version = '1.1.2';
+	/**
+	 * @var string Minimum version of GravityView the Extension requires
+	 */
+	protected $_min_gravityview_version = '1.1.5';
 
+	/**
+	 * @var string The URL to fetch license info from. Do not change unless you know what you're doing.
+	 */
 	protected $_remote_update_url = 'https://gravityview.co';
 
+	/**
+	 * @var string Author of plugin, sent when fetching license info.
+	 */
 	protected $_author = 'Katz Web Services, Inc.';
 
+	/**
+	 * @var string Path to the plugin file. Must be in the plugin root directory for successful automatic updates
+	 */
+	public $_path = __FILE__;
+
+	/**
+	 * @var array Admin notices to display
+	 */
 	static private $admin_notices = array();
 
+	/**
+	 * @var bool Is the extension able to be run based on GV version and whether GV is activated
+	 */
 	static $is_compatible = true;
 
 	function __construct() {
@@ -113,8 +154,7 @@ abstract class GravityView_Extension {
 	 * Load translations for the extension
 	 * @return void
 	 */
-	function load_plugin_textdomain() {
-
+	public function load_plugin_textdomain() {
 		if( empty( $this->_text_domain ) ) { return; }
 
 		// Set filter for plugin's languages directory
@@ -198,7 +238,7 @@ abstract class GravityView_Extension {
 	 *
 	 * @return void
 	 */
-	function admin_notice() {
+	public function admin_notice() {
 
 		if( empty( self::$admin_notices ) ) {
 			return;
@@ -234,14 +274,17 @@ abstract class GravityView_Extension {
 		self::$admin_notices[] = $notice;
 	}
 
-	function add_hooks() { }
+	/**
+	 * Extensions should override this hook to add their hooks instead of
+	 */
+	public function add_hooks() { }
 
 	/**
 	 * Store the filter settings in the `_gravityview_filters` post meta
 	 * @param  int $post_id Post ID
 	 * @return void
 	 */
-	function save_post( $post_id ) {}
+	public function save_post( $post_id ) {}
 
 	/**
 	 * Add tooltips for the extension.
@@ -260,7 +303,7 @@ abstract class GravityView_Extension {
 	 * @param  array  $tooltips Existing GV tooltips, with `title` and `value` keys
 	 * @return array           Modified tooltips
 	 */
-	function tooltips( $tooltips = array() ) {
+	public function tooltips( $tooltips = array() ) {
 
 		return $tooltips;
 
@@ -271,7 +314,7 @@ abstract class GravityView_Extension {
 	 *
 	 * - Checks if GravityView and Gravity Forms exist
 	 * - Checks GravityView and Gravity Forms version numbers
-	 * - Sets
+	 * - Sets self::$is_compatible to boolean value
 	 *
 	 * @uses GravityView_Admin::check_gravityforms()
 	 * @return boolean Is the extension supported?
@@ -286,7 +329,7 @@ abstract class GravityView_Extension {
 
 			self::add_notice( $message );
 
-			do_action( 'gravityview_log_error', __CLASS__.'[is_compatible] ' . $message );
+			do_action( 'gravityview_log_error', __METHOD__. ' ' . $message );
 
 			self::$is_compatible = false;
 
@@ -296,7 +339,7 @@ abstract class GravityView_Extension {
 
 			self::add_notice( $message );
 
-			do_action( 'gravityview_log_error', __CLASS__.'[is_compatible] ' . $message );
+			do_action( 'gravityview_log_error', __METHOD__. ' ' . $message );
 
 			self::$is_compatible = false;
 
