@@ -117,10 +117,31 @@ abstract class GravityView_Extension {
 
 		if( empty( $this->_text_domain ) ) { return; }
 
-        $path = dirname( plugin_basename( $this->_path ) ) . '/languages/';
+		// Set filter for plugin's languages directory
+		$lang_dir = dirname( plugin_basename( __FILE__ ) ) . '/languages/';
 
-        load_plugin_textdomain( $this->_text_domain , false, $path );
-    }
+		// Traditional WordPress plugin locale filter
+		$locale = apply_filters( 'plugin_locale',  get_locale(), $this->_text_domain );
+
+		$mofile = sprintf( '%1$s-%2$s.mo', $this->_text_domain, $locale );
+
+		// Setup paths to current locale file
+		$mofile_local  = $lang_dir . $mofile;
+		$mofile_global = WP_LANG_DIR . '/' . $this->_text_domain . '/' . $mofile;
+
+		if ( file_exists( $mofile_global ) ) {
+			// Look in global /wp-content/languages/[plugin-dir]/ folder
+			load_textdomain( $this->_text_domain, $mofile_global );
+		}
+		elseif ( file_exists( $mofile_local ) ) {
+			// Look in local /wp-content/plugins/[plugin-dir]/languages/ folder
+			load_textdomain( $this->_text_domain, $mofile_local );
+		}
+		else {
+			// Load the default language files
+			load_plugin_textdomain( $this->_text_domain, false, $lang_dir );
+		}
+	}
 
 	function settings( $settings ) {
 
