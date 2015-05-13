@@ -69,7 +69,7 @@ abstract class GravityView_Extension {
 
 		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
 
-		add_action( 'gravityview/metaboxes/before_render', array( $this, 'add_settings_tab' ) );
+		add_action( 'gravityview/metaboxes/before_render', array( $this, 'add_metabox_tab' ) );
 
 		if( false === $this->is_extension_supported() ) {
 			return;
@@ -112,7 +112,7 @@ abstract class GravityView_Extension {
 	 *
 	 * @return void
 	 */
-	function add_settings_tab() {
+	function add_metabox_tab() {
 
 		$tab_settings = $this->tab_settings();
 
