@@ -84,12 +84,12 @@ class GravityView_Admin_Metaboxes {
 	 */
 	function settings_metabox_render( $post ) {
 
-		$metaboxes = GravityView_Metabox_Tabs::get_all();
-
 		/**
 		 * @param WP_Post $post
 		 */
 		do_action( 'gravityview/metaboxes/before_render', $post );
+
+		$metaboxes = GravityView_Metabox_Tabs::get_all();
 
 		include self::$metaboxes_dir . 'views/gravityview-navigation.php';
 		include self::$metaboxes_dir . 'views/gravityview-content.php';
