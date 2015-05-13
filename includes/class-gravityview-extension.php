@@ -143,7 +143,29 @@ abstract class GravityView_Extension {
 		}
 	}
 
-	function settings( $settings ) {
+	/**
+	 * Get license information from GravityView
+	 *
+	 * @since 1.8 (Extension version 1.0.7)
+	 * @return bool|array False: GravityView_Settings class does not exist. Array: array of GV license data.
+	 */
+	protected function get_license() {
+
+		if( !class_exists( 'GravityView_Settings' ) ) {
+			return false;
+		}
+
+		$license = GravityView_Settings::getSetting('license');
+
+		return $license;
+	}
+
+	/**
+	 * Register the updater for the Extension using GravityView license information
+	 *
+	 * @return void
+	 */
+	public function settings() {
 
 		// If doing ajax, get outta here
 		if( false === GravityView_Plugin::is_admin() )  {
@@ -154,12 +176,10 @@ abstract class GravityView_Extension {
 			include_once plugin_dir_path( __FILE__ ) . 'lib/EDD_SL_Plugin_Updater.php';
 		}
 
-		if( !class_exists( 'GravityView_Settings' ) ) { return; }
-
-		$license = GravityView_Settings::getSetting('license');
+		$license = $this->get_license();
 
 		// Don't update if invalid license.
-		if( empty( $license['status'] ) || strtolower( $license['status'] ) !== 'valid' ) { return; }
+		if( false === $license || empty( $license['status'] ) || strtolower( $license['status'] ) !== 'valid' ) { return; }
 
 		new EDD_SL_Plugin_Updater(
 			$this->_remote_update_url,
