@@ -109,6 +109,13 @@ class GravityView_Widget {
 		return $settings;
 	}
 
+    /**
+     * @return string
+     */
+    public function get_widget_id() {
+        return $this->widget_id;
+    }
+
 	/**
 	 * Get the widget settings
 	 * @return array|null   Settings array; NULL if not set
