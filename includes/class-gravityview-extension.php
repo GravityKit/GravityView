@@ -28,6 +28,8 @@ abstract class GravityView_Extension {
 
 		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
 
+		add_action( 'gravityview/metaboxes/before_render', array( $this, 'add_settings_tab' ) );
+
 		if( false === $this->is_extension_supported() ) {
 			return;
 		}
@@ -39,6 +41,72 @@ abstract class GravityView_Extension {
 
 		$this->add_hooks();
 
+	}
+
+	/**
+	 * Add a tab to GravityView Edit View tabbed metabox. By overriding this method, you will add a tab to View settings
+	 *
+	 * @since 1.8 (Extension version 1.0.7)
+	 *
+	 * @see https://gist.github.com/zackkatz/6cc381bcf54849f2ed41 For example of adding a metabox
+	 *
+	 * @return array {
+	 *      @type string $id Metabox HTML ID, without `gravityview_` prefix
+	 *      @type string $title Name of the metabox. Shown in the tab.
+	 *      @type string $file The file name of a file stored in the /gravityview/includes/admin/metaboxes/views/ directory to render the metabox output, or the full path to a file. If defined, `callback` is not used.
+	 *      @type string $icon_class_name Icon class used in vertical tabs. Supports non-dashicon. If dashicons, no need for `dashicons ` prefix
+	 *      @type string $callback Function to render the metabox, if $file is not defined.
+	 *      @type null $callback_args Arguments passed to the callback
+	 * }
+	 */
+	protected function tab_settings() {
+		// When overriding, return array with expected keys
+		return array();
+	}
+
+	/**
+	 * If Extension overrides tab_settings() and passes its own tab, add it to the tabbed settings metabox
+	 *
+	 * @since 1.8 (Extension version 1.0.7)
+	 *
+	 * @return void
+	 */
+	function add_settings_tab() {
+
+		$tab_settings = $this->tab_settings();
+
+		// Don't add a tab if it's empty.
+		if( empty( $tab_settings ) ) {
+			return;
+		}
+
+		$tab_defaults = array(
+			'id' => '',
+			'title' => '',
+			'callback' => '',
+			'icon-class' => '',
+			'file' => '',
+			'callback_args' => '',
+			'context' => 'side',
+			'priority' => 'default',
+		);
+
+		$tab = wp_parse_args( $tab_settings, $tab_defaults );
+
+		// Force the screen to be GravityView
+		$tab['screen'] = 'gravityview';
+
+		if( class_exists('GravityView_Metabox_Tab') ) {
+
+			$metabox = new GravityView_Metabox_Tab( $tab['id'], $tab['title'], $tab['file'], $tab['icon-class'], $tab['callback'], $tab['callback_args'] );
+
+			GravityView_Metabox_Tabs::add( $metabox );
+
+		} else {
+
+			add_meta_box( 'gravityview_'.$tab['id'], $tab['title'], $tab['callback'], $tab['screen'], $tab['context'], $tab['priority'] );
+
+		}
 	}
 
 	/**
