@@ -152,6 +152,11 @@ abstract class GravityView_Extension {
 
 	/**
 	 * Load translations for the extension
+	 *
+	 * 1. Check  `wp-content/languages/gravityview/` folder and load using `load_textdomain()`
+	 * 2. Check  `wp-content/plugins/gravityview/languages/` folder for `gravityview-[locale].mo` file and load using `load_textdomain()`
+	 * 3. Load default file using `load_plugin_textdomain()` from `wp-content/plugins/gravityview/languages/`
+	 *
 	 * @return void
 	 */
 	public function load_plugin_textdomain() {
