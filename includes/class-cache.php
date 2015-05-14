@@ -110,7 +110,7 @@ class GravityView_Cache {
 	 */
 	public function entry_created( $entry, $form ) {
 
-		do_action( 'gravityview_log_debug', 'GravityView_Cache[entry_created] adding form '.$form['id'].' to blacklist because entry #'.$entry['id'].' was updated' );
+		do_action( 'gravityview_log_debug', 'GravityView_Cache[entry_created] adding form '.$form['id'].' to blacklist because entry #'.$entry['id'].' was created' );
 
 		$this->blacklist_add( $form['id'] );
 	}

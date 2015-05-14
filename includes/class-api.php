@@ -542,6 +542,33 @@ class GravityView_API {
 		return sanitize_title( $slug );
 	}
 
+    /**
+     * If using the entry custom slug feature, make sure the new entries have the custom slug created and saved as meta
+     *
+     * Triggered by add_action( 'gform_entry_created', array( 'GravityView_API', 'entry_create_custom_slug' ), 10, 2 );
+     *
+     * @param $entry array Gravity Forms entry object
+     * @param $form array Gravity Forms form object
+     */
+    public static function entry_create_custom_slug( $entry, $form ) {
+        /**
+         * On entry creation check if we are using the custom entry slug feature
+         * and update the meta
+         */
+        $custom = apply_filters( 'gravityview_custom_entry_slug', false );
+        if( $custom ) {
+            // create the gravityview_unique_id and save it
+
+            // Get the entry hash
+            $hash = self::get_custom_entry_slug( $entry['id'], $entry );
+            gform_update_meta( $entry['id'], 'gravityview_unique_id', $hash );
+
+        }
+    }
+
+
+
+
 	/**
 	 * return href for single entry
 	 * @param  array|int $entry   Entry array or entry ID

@@ -266,6 +266,13 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-change-entry-creator.php' );
 
+
+        /**
+         * When an entry is created, check if we need to update the custom slug meta
+         * todo: move this to its own class..
+         */
+        add_action( 'gform_entry_created', array( 'GravityView_API', 'entry_create_custom_slug' ), 10, 2 );
+
 		// Nice place to insert extensions' frontend stuff
 		do_action('gravityview_include_frontend_actions');
 	}

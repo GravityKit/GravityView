@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.7.6.3 =
+* Fixed: Newly created entries cannot be directly accessed when using the custom slug feature
+
 = 1.7.6.2 on May 12 =
 * Fixed: PHP warning when trying to update an entry with the approved field.
 * Fixed: Views without titles in the "Connected Views" dropdown would appear blank
