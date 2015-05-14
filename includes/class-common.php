@@ -176,6 +176,8 @@ class GVCommon {
 		$fields = array();
 		$has_product_fields = false;
 		$has_post_fields = false;
+		$has_quiz_fields = false;
+		$has_poll_fields = false;
 
 		// If GF_Field exists, we're using GF 1.9+, where add_default_properties has been deprecated.
 		if( false === class_exists('GF_Field') && $add_default_properties ) {
@@ -208,6 +210,20 @@ class GVCommon {
 						);
 					}
 
+				}
+
+				/**
+				 * @since 1.8
+				 */
+				if( 'quiz' === $field['type'] ) {
+					$has_quiz_fields = true;
+				}
+
+				/**
+				 * @since 1.8
+				 */
+				if( 'poll' === $field['type'] ) {
+					$has_poll_fields = true;
 				}
 
 				if( GFCommon::is_product_field( $field['type'] ) ){
@@ -274,6 +290,36 @@ class GVCommon {
 			    "type" => 'transaction_type',
 			);
 
+		}
+
+		/**
+		 * @since 1.8
+		 */
+		if( $has_poll_fields ) {
+
+		}
+
+		/**
+		 * @since 1.8
+		 */
+		if( $has_quiz_fields ) {
+
+			$fields['gquiz_score']   = array(
+				'label' => __( 'Quiz Score Total', 'gravityview' ),
+				'type'  => 'quiz_score',
+			);
+			$fields['gquiz_percent'] = array(
+				'label' => __( 'Quiz Percentage', 'gravityview' ),
+				'type'  => 'quiz_percent',
+			);
+			$fields['gquiz_grade']   = array(
+				'label' => __( 'Quiz Grade', 'gravityview' ),
+				'type'  => 'quiz_grade',
+			);
+			$fields['gquiz_is_pass'] = array(
+				'label' => __( 'Quiz Pass/Fail', 'gravityview' ),
+				'type'  => 'quiz_is_pass',
+			);
 		}
 
 		return $fields;
@@ -840,6 +886,55 @@ class GVCommon {
 	}
 
 	/**
+	 * Get all the settings for a View
+	 *
+	 * @uses  GravityView_View_Data::get_default_args() Parses the settings with the plugin defaults as backups.
+	 * @param  int $post_id View ID
+	 * @param string $zone Zone location: `header_top` or `header_bottom`. Default:blank (return all zones)
+	 * @return array|null          Associative array of widgets set in the View. NULL if $zone is set and not exists.
+	 */
+	public static function get_template_widgets( $post_id, $zone = '' ) {
+
+		$widgets = get_post_meta( $post_id, '_gravityview_directory_widgets', true );
+
+		if( ! empty( $zone ) ) {
+			return isset( $widgets[ $zone ] ) ? $widgets[ $zone ] : NULL;
+		}
+
+		// Backup, in case GravityView_View_Data isn't loaded yet.
+		return $widgets;
+	}
+
+	/**
+	 * Get a widget for a View
+	 *
+	 * If the widget isn't set by the View, it returns NULL
+	 *
+	 * @param  int $post_id View ID
+	 * @param  string $key     Widget ID
+	 * @return array          Widget settings, or NULL if not set.
+	 */
+	public static function get_template_widget( $post_id, $key ) {
+
+		$widget_zones = self::get_template_widgets( $post_id );
+
+		$widgets = array();
+		foreach( $widget_zones as $widget_zone ) {
+
+			$zone_widgets = wp_list_filter( $widget_zone, array( 'id' => $key ) );
+
+			foreach( $zone_widgets as $zone_widget ) {
+				if( ! empty( $zone_widget ) ) {
+					$widgets[] = $zone_widget;
+				}
+			}
+
+		}
+
+		return ! empty( $widgets ) ? $widgets : NULL;
+	}
+
+	/**
 	 * Get the field configuration for the View
 	 *
 	 * array(
@@ -889,55 +984,26 @@ class GVCommon {
 			return $output;
 		}
 
-		$fields = self::get_sortable_fields_array( $formid );
-
-		if( !empty( $fields ) ) {
-
-			foreach( $fields as $id => $field ) {
-				$output .= '<option value="'. $id .'" '. selected( $id, $current, false ).'>'. esc_attr( $field['label'] ) .'</option>';
-			}
-		}
-
-		return $output;
-	}
-
-	/**
-	 *
-	 * @param int $formid Gravity Forms form ID
-	 * @param array $blacklist Field types to exclude
-	 *
-	 * @since TODO
-	 *
-	 * @todo Get all fields, check if sortable dynamically
-	 *
-	 * @return array
-	 */
-	public static function get_sortable_fields_array( $formid, $blacklist = array( 'list', 'textarea' ) ) {
-
 		// Get fields with sub-inputs and no parent
 		$fields = self::get_form_fields( $formid, true, false );
 
-		$date_created = array(
-			'date_created' => array(
-				'type' => 'date_created',
-				'label' => __( 'Date Created', 'gravityview' ),
-			),
-		);
+		if( !empty( $fields ) ) {
 
-		$fields = array_merge( $date_created, $fields );
+			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'list', 'textarea' ), NULL );
 
-		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', $blacklist, NULL );
+			$output .= '<option value="date_created" '. selected( 'date_created', $current, false ).'>'. esc_html__( 'Date Created', 'gravityview' ) .'</option>';
 
-		// TODO: Convert to using array_filter
-		foreach( $fields as $id => $field ) {
+			foreach( $fields as $id => $field ) {
 
-			if( in_array( $field['type'], $blacklist_field_types ) ) {
-				unset( $fields[ $id ] );
+				if( in_array( $field['type'], $blacklist_field_types ) ) { continue; }
+
+				$output .= '<option value="'. $id .'" '. selected( $id, $current, false ).'>'. esc_attr( $field['label'] ) .'</option>';
 			}
-		}
 
-		return $fields;
+		}
+		return $output;
 	}
+
 
 	/**
 	 * Returns the GF Form field type for a certain field(id) of a form
