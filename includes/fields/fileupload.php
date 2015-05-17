@@ -224,7 +224,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				 */
 				$content = apply_filters( 'gravityview/fields/fileupload/link_content', $content, $gravityview_view->getCurrentField() );
 
-                $content = '<a href="'. esc_url( $link ) .'" '. $link_atts .'>'. $content .'</a>';
+                $content = '<a href="'. esc_url_raw( $link ) .'" '. $link_atts .'>'. $content .'</a>';
 
 			}
 
