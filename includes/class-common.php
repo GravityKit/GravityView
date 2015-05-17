@@ -1083,7 +1083,7 @@ class GVCommon {
 			$final_atts['href'] = $href;
 		}
 
-		$final_atts['href'] = esc_url( $href );
+		$final_atts['href'] = esc_url_raw( $href );
 
 		// For each attribute, generate the code
 		$output = '';
