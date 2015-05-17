@@ -177,7 +177,7 @@ class GravityView_frontend {
 	 */
 	public function setEntry( $entry ) {
 
-		if( !is_array( $entry ) ) {
+		if ( ! is_array( $entry ) ) {
 			$entry = GVCommon::get_entry( $entry );
 		}
 
@@ -235,11 +235,11 @@ class GravityView_frontend {
 	 */
 	public function set_context_view_id( $view_id = null ) {
 
-		if ( !empty( $view_id ) ) {
+		if ( ! empty( $view_id ) ) {
 
 			$this->context_view_id = $view_id;
 
-		} elseif( isset( $_GET['gvid'] ) && $this->getGvOutputData()->has_multiple_views() ) {
+		} elseif ( isset( $_GET['gvid'] ) && $this->getGvOutputData()->has_multiple_views() ) {
 			/**
 			 * used on a has_multiple_views context
 			 * @see GravityView_API::entry_link
@@ -247,7 +247,7 @@ class GravityView_frontend {
 			 */
 			$this->context_view_id = $_GET['gvid'];
 
-		} elseif( !$this->getGvOutputData()->has_multiple_views() )  {
+		} elseif ( ! $this->getGvOutputData()->has_multiple_views() )  {
 			$array_keys = array_keys( $this->getGvOutputData()->get_views() );
 			$this->context_view_id = array_pop( $array_keys );
 			unset( $array_keys );
@@ -933,13 +933,13 @@ class GravityView_frontend {
 		$search_criteria = self::get_search_criteria( $args, $form_id );
 
 		// Paging & offset
-		$page_size = !empty( $args['page_size'] ) ? intval( $args['page_size'] ) : apply_filters( 'gravityview_default_page_size', 25 );
+		$page_size = ! empty( $args['page_size'] ) ? intval( $args['page_size'] ) : apply_filters( 'gravityview_default_page_size', 25 );
 
-		if( $page_size === -1 ) {
+		if ( -1 === $page_size ) {
 			$page_size = PHP_INT_MAX;
 		}
 
-		if( isset( $args['offset'] ) ) {
+		if ( isset( $args['offset'] ) ) {
 			$offset = intval( $args['offset'] );
 		} else {
 			$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
@@ -948,11 +948,10 @@ class GravityView_frontend {
 
 		$paging = array(
 			'offset' => $offset,
-			'page_size' => $page_size
+			'page_size' => $page_size,
 		);
 
 		do_action( 'gravityview_log_debug', '[get_view_entries] Paging: ', $paging );
-
 
 		// Sorting
 		$sorting = self::updateViewSorting( $args, $form_id );
