@@ -621,7 +621,7 @@ class GravityView_frontend {
 			do_action( 'gravityview_log_debug', '[render_view] Executing Directory View' );
 
 			//fetch template and slug
-			$view_slug =  apply_filters( 'gravityview_template_slug_'. $view_data['template_id'], 'table', 'directory' );
+			$view_slug = apply_filters( 'gravityview_template_slug_'. $view_data['template_id'], 'table', 'directory' );
 			do_action( 'gravityview_log_debug', '[render_view] View template slug: ', $view_slug );
 
 			/**
@@ -633,15 +633,15 @@ class GravityView_frontend {
 			 * Hide View data until search is performed
 			 * @since 1.5.4
 			 */
-			if( !empty( $atts['hide_until_searched'] ) && !$this->isSearch() ) {
+			if ( ! empty( $atts['hide_until_searched'] ) && ! $this->isSearch() ) {
 				$gravityview_view->setHideUntilSearched( true );
 				$get_entries = false;
 			}
 
 
-			if( $get_entries ) {
+			if ( $get_entries ) {
 
-				if( !empty( $atts['sort_columns'] ) ) {
+				if ( ! empty( $atts['sort_columns'] ) ) {
 					// add filter to enable column sorting
 					add_filter( 'gravityview/template/field_label', array( $this, 'add_columns_sort_links' ) , 100, 3 );
 				}
@@ -652,14 +652,13 @@ class GravityView_frontend {
 
 			} else {
 
-				$view_entries = array( 'count' => NULL, 'entries' => NULL, 'paging' => NULL );
+				$view_entries = array( 'count' => null, 'entries' => null, 'paging' => null );
 
-				do_action( 'gravityview_log_debug', '[render_view] Not fetching entries because `gravityview_get_view_entries_'.$view_slug.'` is false');
-
+				do_action( 'gravityview_log_debug', '[render_view] Not fetching entries because `gravityview_get_view_entries_'.$view_slug.'` is false' );
 			}
 
 			$gravityview_view->setPaging( $view_entries['paging'] );
-			$gravityview_view->setContext('directory');
+			$gravityview_view->setContext( 'directory' );
 			$sections = array( 'header', 'body', 'footer' );
 
 		} else {
@@ -667,33 +666,32 @@ class GravityView_frontend {
 			// user requested Single Entry View
 			do_action( 'gravityview_log_debug', '[render_view] Executing Single View' );
 
-			do_action('gravityview_render_entry_'.$view_data['id']);
+			do_action( 'gravityview_render_entry_'.$view_data['id'] );
 
 			$entry = $this->getEntry();
 
 			// You are not permitted to view this entry.
-			if( empty( $entry ) || !self::is_entry_approved( $entry, $atts ) ) {
+			if ( empty( $entry ) || ! self::is_entry_approved( $entry, $atts ) ) {
 
-				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.');
+				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.' );
 
 				/**
 				 * @since 1.6
 				 */
-				echo esc_attr( apply_filters( 'gravityview/render/entry/not_visible', __( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview') ) );
+				echo esc_attr( apply_filters( 'gravityview/render/entry/not_visible', __( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview' ) ) );
 
-				return NULL;
+				return null;
 			}
 
 			// We're in single view, but the view being processed is not the same view the single entry belongs to.
 			// important: do not remove this as it prevents fake attempts of displaying entries from other views/forms
-			if( $this->getGvOutputData()->has_multiple_views() && $view_id != $this->get_context_view_id() ) {
+			if ( $this->getGvOutputData()->has_multiple_views() && $view_id != $this->get_context_view_id() ) {
 				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '. $view_id );
-				return NULL;
+				return null;
 			}
 
-
 			//fetch template and slug
-			$view_slug =  apply_filters( 'gravityview_template_slug_'. $view_data['template_id'], 'table', 'single' );
+			$view_slug = apply_filters( 'gravityview_template_slug_' . $view_data['template_id'], 'table', 'single' );
 			do_action( 'gravityview_log_debug', '[render_view] View single template slug: ', $view_slug );
 
 			//fetch entry detail
@@ -701,7 +699,7 @@ class GravityView_frontend {
 			$view_entries['entries'][] = $entry;
 			do_action( 'gravityview_log_debug', '[render_view] Get single entry: ', $view_entries['entries'] );
 
-			$back_link_label = isset( $atts['back_link_label'] ) ? $atts['back_link_label'] : NULL;
+			$back_link_label = isset( $atts['back_link_label'] ) ? $atts['back_link_label'] : null;
 
 			// set back link label
 			$gravityview_view->setBackLinkLabel( $back_link_label );
