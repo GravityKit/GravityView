@@ -705,7 +705,7 @@ class GravityView_frontend {
 
 			// set back link label
 			$gravityview_view->setBackLinkLabel( $back_link_label );
-			$gravityview_view->setContext('single');
+			$gravityview_view->setContext( 'single' );
 			$sections = array( 'single' );
 
 		}
@@ -724,26 +724,23 @@ class GravityView_frontend {
 
 			do_action( 'gravityview_edit_entry', $this->getGvOutputData() );
 
-			return NULL;
+			return null;
 
 		} else {
 			// finaly we'll render some html
 			$sections = apply_filters( 'gravityview_render_view_sections', $sections, $view_data['template_id'] );
 
 			do_action( 'gravityview_log_debug', '[render_view] Sections to render: ', $sections );
-			foreach( $sections as $section ) {
-
+			foreach ( $sections as $section ) {
 				do_action( 'gravityview_log_debug', '[render_view] Rendering '. $section . ' section.' );
 				$gravityview_view->render( $view_slug, $section, false );
 			}
-
 		}
 
 		//@todo: check why we need the IF statement vs. print the view id always.
-		if( $this->isGravityviewPostType() || $this->isPostHasShortcode() ) {
-			// Print the View ID to enable proper cookie pagination ?>
-			<input type="hidden" class="gravityview-view-id" value="<?php echo $view_id; ?>">
-<?php
+		if ( $this->isGravityviewPostType() || $this->isPostHasShortcode() ) {
+			// Print the View ID to enable proper cookie pagination
+			echo '<input type="hidden" class="gravityview-view-id" value="' . esc_attr( $view_id ) . '">';
 		}
 		$output = ob_get_clean();
 
@@ -770,27 +767,27 @@ class GravityView_frontend {
 
 			// Is the start date or end date set in the view or shortcode?
 			// If so, we want to make sure that the search doesn't go outside the bounds defined.
-			if( !empty( $args[ $key ] ) ) {
+			if ( ! empty( $args[ $key ] ) ) {
 
 				// Get a timestamp and see if it's a valid date format
 				$date = strtotime( $args[ $key ] );
 
 				// The date was invalid
-				if( empty( $date ) ) {
-					do_action( 'gravityview_log_error', '[process_search_dates] Invalid '.$key.' date format: ' . $args[ $key ]);
+				if ( empty( $date ) ) {
+					do_action( 'gravityview_log_error', '[process_search_dates] Invalid ' . $key . ' date format: ' . $args[ $key ] );
 					continue;
 				}
 
-				if(
+				if (
 					// If there is no search being performed
 					empty( $search_criteria[ $key ] ) ||
 
 					// Or if there is a search being performed
-					( !empty( $search_criteria[ $key ] )
+					( ! empty( $search_criteria[ $key ] )
 						// And the search is for entries before the start date defined by the settings
 						&& (
-							( $key === 'start_date' && strtotime( $search_criteria[ $key ] ) < $date ) ||
-							( $key === 'end_date' && strtotime( $search_criteria[ $key ] ) > $date )
+							( 'start_date' === $key && strtotime( $search_criteria[ $key ] ) < $date ) ||
+							( 'end_date' === $key && strtotime( $search_criteria[ $key ] ) > $date )
 						)
 					)
 				) {
@@ -798,7 +795,6 @@ class GravityView_frontend {
 					$search_criteria[ $key ] = date( 'Y-m-d H:i:s' , $date );
 				}
 			}
-
 		}
 
 		return $search_criteria;
@@ -814,7 +810,7 @@ class GravityView_frontend {
 	 */
 	public static function process_search_only_approved( $args, $search_criteria ) {
 
-		if( !empty( $args['show_only_approved'] ) ) {
+		if ( ! empty( $args['show_only_approved'] ) ) {
 			$search_criteria['field_filters'][] = array( 'key' => 'is_approved', 'value' => 'Approved' );
 			$search_criteria['field_filters']['mode'] = 'all'; // force all the criterias to be met
 
@@ -840,14 +836,14 @@ class GravityView_frontend {
 	 */
 	public static function is_entry_approved( $entry, $args = array() ) {
 
-		if( empty( $entry['id'] ) || ( array_key_exists( 'show_only_approved', $args ) && !$args['show_only_approved'] ) ) {
+		if ( empty( $entry['id'] ) || ( array_key_exists( 'show_only_approved', $args ) && ! $args['show_only_approved'] ) ) {
 			// is implicitly approved if entry is null or View settings doesn't require to check for approval
 			return true;
 		}
 
 		$is_approved = gform_get_meta( $entry['id'], 'is_approved' );
 
-		if( $is_approved ) {
+		if ( $is_approved ) {
 			return true;
 		}
 
@@ -875,15 +871,13 @@ class GravityView_frontend {
 		do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after hook gravityview_fe_search_criteria: ', $search_criteria );
 
 		// implicity search
-		if( !empty( $args['search_value'] ) ) {
+		if ( ! empty( $args['search_value'] ) ) {
 
 			// Search operator options. Options: `is` or `contains`
-			$operator = !empty( $args['search_operator'] ) && in_array( $args['search_operator'], array('is', 'isnot', '>', '<', 'contains' ) ) ? $args['search_operator'] : 'contains';
-
-
+			$operator = ! empty( $args['search_operator'] ) && in_array( $args['search_operator'], array( 'is', 'isnot', '>', '<', 'contains' ) ) ? $args['search_operator'] : 'contains';
 
 			$search_criteria['field_filters'][] = array(
-				'key' => rgget('search_field', $args ), // The field ID to search
+				'key' => rgget( 'search_field', $args ), // The field ID to search
 				'value' => esc_attr( $args['search_value'] ), // The value to search
 				'operator' => $operator,
 			);
@@ -1017,14 +1011,13 @@ class GravityView_frontend {
 	 * @return array $sorting Array with `key`, `direction` and `is_numeric` keys
 	 */
 	public static function updateViewSorting( $args, $form_id ) {
-
 		$sorting = array();
 		$sort_field_id = isset( $_GET['sort'] ) ? $_GET['sort'] : rgar( $args, 'sort_field' );
 		$sort_direction = isset( $_GET['dir'] ) ? $_GET['dir'] : rgar( $args, 'sort_direction' );
 
 		$sort_field_id = self::_override_sorting_id_by_field_type( $sort_field_id, $form_id );
 
-		if( !empty( $sort_field_id ) ) {
+		if ( ! empty( $sort_field_id ) ) {
 			$sorting = array(
 				'key' => $sort_field_id,
 				'direction' => strtolower( $sort_direction ),
@@ -1059,11 +1052,10 @@ class GravityView_frontend {
 
 		$sort_field = GFFormsModel::get_field( $form, $sort_field_id );
 
-		switch( $sort_field['type'] ) {
+		switch ( $sort_field['type'] ) {
 			case 'name':
 				// Sorting by full name, not first, last, etc.
-				if( floatval( $sort_field_id ) === floor( $sort_field_id ) ) {
-
+				if ( floatval( $sort_field_id ) === floor( $sort_field_id ) ) {
 					/**
 					 * Override how to sort when sorting full name.
 					 *
@@ -1073,14 +1065,13 @@ class GravityView_frontend {
 					 * @param string $sort_field_id Field used for sorting
 					 * @param int $form_id GF Form ID
 					 */
-					$name_part = apply_filters('gravityview/sorting/full-name', 'first', $sort_field_id, $form_id );
+					$name_part = apply_filters( 'gravityview/sorting/full-name', 'first', $sort_field_id, $form_id );
 
-					if( strtolower( $name_part ) === 'last' ) {
+					if ( 'last' === strtolower( $name_part ) ) {
 						$sort_field_id .= '.6';
 					} else {
 						$sort_field_id .= '.3';
 					}
-
 				}
 				break;
 		}
@@ -1104,9 +1095,9 @@ class GravityView_frontend {
 		 * @internal Should only be used by things like the oEmbed functionality.
 		 * @since 1.6
 		 */
-		$single_entry = apply_filters('gravityview/is_single_entry', $single_entry );
+		$single_entry = apply_filters( 'gravityview/is_single_entry', $single_entry );
 
-		if( empty( $single_entry ) ){
+		if ( empty( $single_entry ) ){
 			return false;
 		} else {
 			return $single_entry;
@@ -1124,18 +1115,15 @@ class GravityView_frontend {
 	 */
 	public function add_scripts_and_styles() {
 		global $post, $posts;
-
-		//foreach ($posts as $p) {
-
 		// enqueue template specific styles
-		if( $this->getGvOutputData() ) {
+		if ( $this->getGvOutputData() ) {
 
 			$views = $this->getGvOutputData()->get_views();
 
 			$js_localization = array(
 				'cookiepath' => COOKIEPATH,
-				'clear' => _x('Clear', 'Clear all data from the form', 'gravityview'),
-				'reset' => _x('Reset', 'Reset the search form to the state that existed on page load', 'gravityview'),
+				'clear' => _x( 'Clear', 'Clear all data from the form', 'gravityview' ),
+				'reset' => _x( 'Reset', 'Reset the search form to the state that existed on page load', 'gravityview' ),
 			);
 
 			foreach ( $views as $view_id => $data ) {
@@ -1145,16 +1133,16 @@ class GravityView_frontend {
 				$css_dependencies = array();
 
 				// If the thickbox is enqueued, add dependencies
-				if( !empty( $data['atts']['lightbox'] ) ) {
+				if ( ! empty( $data['atts']['lightbox'] ) ) {
 					$js_dependencies[] = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
 					$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
 				}
 
-				wp_register_script( 'gravityview-jquery-cookie', plugins_url('includes/lib/jquery-cookie/jquery_cookie.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
+				wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'includes/lib/jquery-cookie/jquery_cookie.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GravityView_Plugin::version, true );
 
-				$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
+				$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-				wp_register_script( 'gravityview-fe-view', plugins_url('assets/js/fe-views'.$script_debug.'.js', GRAVITYVIEW_FILE), apply_filters('gravityview_js_dependencies', $js_dependencies ) , GravityView_Plugin::version, true );
+				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ) , GravityView_Plugin::version, true );
 
 				wp_enqueue_script( 'gravityview-fe-view' );
 
@@ -1162,22 +1150,21 @@ class GravityView_frontend {
 				 * Modify the array passed to wp_localize_script
 				 * @var array Contains `datepicker` key, which passes settings to the JS file
 				 */
-				$js_localization = apply_filters('gravityview_js_localization', $js_localization, $data );
+				$js_localization = apply_filters( 'gravityview_js_localization', $js_localization, $data );
 
-				if( !empty( $data['atts']['sort_columns'] ) ) {
-					wp_enqueue_style( 'gravityview_font', plugins_url('assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
+				if ( ! empty( $data['atts']['sort_columns'] ) ) {
+					wp_enqueue_style( 'gravityview_font', plugins_url( 'assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
 				}
 
-				wp_enqueue_style( 'gravityview_default_style', plugins_url('templates/css/gv-default-styles.css', GRAVITYVIEW_FILE), $css_dependencies, GravityView_Plugin::version, 'all' );
+				wp_enqueue_style( 'gravityview_default_style', plugins_url( 'templates/css/gv-default-styles.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
 
 				self::add_style( $data['template_id'] );
 
 			}
 
-			if( current_filter() === 'wp_print_footer_scripts' ) {
+			if ( 'wp_print_footer_scripts' === current_filter() ) {
 				wp_localize_script( 'gravityview-fe-view', 'gvGlobals', $js_localization );
 			}
-
 		}
 	}
 
@@ -1187,10 +1174,10 @@ class GravityView_frontend {
 	 */
 	public static function add_style( $template_id ) {
 
-		if( !empty( $template_id ) && wp_style_is( 'gravityview_style_' . $template_id, 'registered' ) ) {
+		if ( ! empty( $template_id ) && wp_style_is( 'gravityview_style_' . $template_id, 'registered' ) ) {
 			do_action( 'gravityview_log_debug', sprintf( '[add_style] Adding extra template style for %s', $template_id ) );
 			wp_enqueue_style( 'gravityview_style_' . $template_id );
-		} else if( empty( $template_id ) ) {
+		} elseif ( empty( $template_id ) ) {
 			do_action( 'gravityview_log_error', '[add_style] Cannot add template style; template_id is empty' );
 		} else {
 			do_action( 'gravityview_log_error', sprintf( '[add_style] Cannot add template style; %s is not registered', 'gravityview_style_'.$template_id ) );
@@ -1213,8 +1200,7 @@ class GravityView_frontend {
 	 * @return string Field Label
 	 */
 	public function add_columns_sort_links( $label = '', $field, $form ) {
-
-		if( !$this->is_field_sortable( $field['id'], $form ) ) {
+		if ( ! $this->is_field_sortable( $field['id'], $form ) ) {
 			return $label;
 		}
 
@@ -1226,12 +1212,12 @@ class GravityView_frontend {
 
 		$sort_args = array(
 			'sort' => $field['id'],
-			'dir' => 'asc'
+			'dir' => 'asc',
 		);
 
-		if( !empty( $sorting['key'] ) && (string)$sort_field_id === (string)$sorting['key'] ) {
+		if ( ! empty( $sorting['key'] ) && (string) $sort_field_id === (string) $sorting['key'] ) {
 			//toggle sorting direction.
-			if( $sorting['direction'] == 'asc' ) {
+			if ( 'asc' === $sorting['direction'] ) {
 				$sort_args['dir'] = 'desc';
 				$class .= ' gv-icon-sort-desc';
 			} else {
@@ -1244,7 +1230,7 @@ class GravityView_frontend {
 
 		$url = add_query_arg( $sort_args, remove_query_arg( array('pagenum') ) );
 
-		return '<a href="'. esc_url( $url ) .'" class="'. $class .'" ></a>&nbsp;'. $label;
+		return '<a href="'. esc_url_raw( $url ) .'" class="'. $class .'" ></a>&nbsp;'. $label;
 
 	}
 
@@ -1258,13 +1244,13 @@ class GravityView_frontend {
 	 *
 	 * @return bool True: Yes, field is sortable; False: not sortable
 	 */
-	public function is_field_sortable( $field_id = '' , $form ) {
+	public function is_field_sortable( $field_id = '', $form ) {
 
 		$not_sortable = array(
 			'entry_link',
 			'edit_link',
 			'delete_link',
-			'custom'
+			'custom',
 		);
 
 		/**
@@ -1273,7 +1259,7 @@ class GravityView_frontend {
 		 */
 		$not_sortable = apply_filters( 'gravityview/sortable/field_blacklist', $not_sortable, $field_id, $form );
 
-		if( in_array( $field_id, $not_sortable ) ) {
+		if ( in_array( $field_id, $not_sortable ) ) {
 			return false;
 		}
 
