@@ -26,15 +26,15 @@ class GVCommon {
 	 * @return mixed False: no form ID specified or Gravity Forms isn't active. Array: Form returned from Gravity Forms
 	 */
 	public static function get_form( $form_id ) {
-		if( empty( $form_id ) ) {
+		if ( empty( $form_id ) ) {
 			return false;
 		}
 
-		if(class_exists( 'GFAPI' )) {
+		if ( class_exists( 'GFAPI' ) ) {
 			return GFAPI::get_form( $form_id );
 		}
 
-		if(class_exists( 'RGFormsModel' )) {
+		if ( class_exists( 'RGFormsModel' ) ) {
 			return RGFormsModel::get_form( $form_id );
 		}
 
@@ -51,7 +51,7 @@ class GVCommon {
 	 */
 	public static function get_field_array( $field ) {
 
-		if( class_exists('GF_Fields') ) {
+		if ( class_exists( 'GF_Fields' ) ) {
 
 			$field_object = GF_Fields::create( $field );
 
@@ -120,20 +120,20 @@ class GVCommon {
 				array(
 					'key' => 'gravityview_unique_id', // Search the meta values
 					'value' => $slug,
-                    'operator' => 'is',
-                    'type' => 'meta'
-				)
+					'operator' => 'is',
+					'type' => 'meta',
+				),
 			)
 		);
 
 		// Limit to one for speed
 		$paging = array(
-			'page_size' => 1
+			'page_size' => 1,
 		);
 
-		$results = GFAPI::get_entries( 0, $search_criteria, NULL, $paging );
+		$results = GFAPI::get_entries( 0, $search_criteria, null, $paging );
 
-		$result = ( !empty( $results ) && !empty( $results[0]['id'] ) ) ? $results[0]['id'] : NULL;
+		$result = ( ! empty( $results ) && ! empty( $results[0]['id'] ) ) ? $results[0]['id'] : null;
 
 		return $result;
 	}
@@ -147,11 +147,10 @@ class GVCommon {
 	 * @return array (id, title)
 	 */
 	public static function get_forms() {
-
-		if( class_exists( 'RGFormsModel' ) ) {
+		if ( class_exists( 'RGFormsModel' ) ) {
 			$gf_forms = RGFormsModel::get_forms( null, 'title' );
 			$forms = array();
-			foreach( $gf_forms as $form ) {
+			foreach ( $gf_forms as $form ) {
 				$forms[] = array( 'id' => $form->id, 'title' => $form->title );
 			}
 			return $forms;
@@ -169,7 +168,7 @@ class GVCommon {
 	 */
 	public static function get_form_fields( $form = '', $add_default_properties = false, $include_parent_field = true ) {
 
-		if( !is_array( $form ) ) {
+		if ( ! is_array( $form ) ) {
 			$form = self::get_form( $form );
 		}
 
@@ -178,15 +177,13 @@ class GVCommon {
 		$has_post_fields = false;
 
 		// If GF_Field exists, we're using GF 1.9+, where add_default_properties has been deprecated.
-		if( false === class_exists('GF_Field') && $add_default_properties ) {
+		if ( false === class_exists( 'GF_Field' ) && $add_default_properties ) {
 			$form = RGFormsModel::add_default_properties( $form );
 		}
 
-		if( $form ) {
-
-			foreach( $form['fields'] as $field ) {
-
-				if( $include_parent_field || empty( $field['inputs'] ) ) {
+		if ( $form ) {
+			foreach ( $form['fields'] as $field ) {
+				if ( $include_parent_field || empty( $field['inputs'] ) ) {
 					$fields[ $field['id'] ] = array(
 						'label' => rgar( $field, 'label' ),
 						'parent' => null,
@@ -196,8 +193,8 @@ class GVCommon {
 					);
 				}
 
-				if( $add_default_properties && !empty( $field['inputs'] ) ) {
-					foreach( $field['inputs'] as $input ) {
+				if ( $add_default_properties && ! empty( $field['inputs'] ) ) {
+					foreach ( $field['inputs'] as $input ) {
 						$fields[ (string)$input['id'] ] = array(
 							'label' => rgar( $input, 'label' ),
 							'customLabel' => rgar( $input, 'customLabel' ),
@@ -207,19 +204,18 @@ class GVCommon {
 							'adminOnly' => rgar( $field, 'adminOnly' ),
 						);
 					}
-
 				}
 
-				if( GFCommon::is_product_field( $field['type'] ) ){
+				if ( GFCommon::is_product_field( $field['type'] ) ){
 					$has_product_fields = true;
 				}
 
 				/**
 				 * @hack Version 1.9
 				 */
-				$field_for_is_post_field = class_exists('GF_Fields') ? (object)$field : (array)$field;
+				$field_for_is_post_field = class_exists( 'GF_Fields' ) ? (object) $field : (array) $field;
 
-				if( GFCommon::is_post_field( $field_for_is_post_field ) ) {
+				if ( GFCommon::is_post_field( $field_for_is_post_field ) ) {
 					$has_post_fields = true;
 				}
 			}
@@ -228,50 +224,48 @@ class GVCommon {
 		/**
 		 * @since 1.7
 		 */
-		if( $has_post_fields ) {
-
+		if ( $has_post_fields ) {
 			$fields['post_id'] = array(
-				"label" => __( 'Post ID', 'gravityview' ),
-				"type" => 'post_id'
+				'label' => __( 'Post ID', 'gravityview' ),
+				'type' => 'post_id',
 			);
-
 		}
 
-		if( $has_product_fields ) {
+		if ( $has_product_fields ) {
 
 			$fields['payment_status'] = array(
-			    "label" => __( 'Payment Status', 'gravityview' ),
-			    "type" => 'payment_status'
+				'label' => __( 'Payment Status', 'gravityview' ),
+				'type' => 'payment_status',
 			);
 
 			$fields['payment_date'] = array(
-			    "label" => __( 'Payment Date', 'gravityview' ),
-			    "type" => 'payment_date',
+				'label' => __( 'Payment Date', 'gravityview' ),
+				'type' => 'payment_date',
 			);
 
 			$fields['payment_amount'] = array(
-			    "label" => __( 'Payment Amount', 'gravityview' ),
-			    "type" => 'payment_amount'
+				'label' => __( 'Payment Amount', 'gravityview' ),
+				'type' => 'payment_amount',
 			);
 
 			$fields['payment_method'] = array(
-			    "label" => __( 'Payment Method', 'gravityview' ),
-			    "type" => 'payment_method'
+				'label' => __( 'Payment Method', 'gravityview' ),
+				'type' => 'payment_method',
 			);
 
 			$fields['is_fulfilled'] = array(
-			    "label" => __( 'Is Fulfilled', 'gravityview' ),
-			    "type" => 'is_fulfilled',
+				'label' => __( 'Is Fulfilled', 'gravityview' ),
+				'type' => 'is_fulfilled',
 			);
 
 			$fields['transaction_id'] = array(
-			    "label" => __( 'Transaction ID', 'gravityview' ),
-			    "type" => 'transaction_id',
+				'label' => __( 'Transaction ID', 'gravityview' ),
+				'type' => 'transaction_id',
 			);
 
 			$fields['transaction_type'] = array(
-			    "label" => __( 'Transaction Type', 'gravityview' ),
-			    "type" => 'transaction_type',
+				'label' => __( 'Transaction Type', 'gravityview' ),
+				'type' => 'transaction_type',
 			);
 
 		}
@@ -292,13 +286,13 @@ class GVCommon {
 
 		$fields = array();
 
-		foreach( $extra_fields as $key => $field ){
-			if( !empty( $only_default_column ) && !empty( $field['is_default_column'] ) ) {
+		foreach ( $extra_fields as $key => $field ){
+			if ( ! empty( $only_default_column ) && ! empty( $field['is_default_column'] ) ) {
 				$fields[ $key ] = array( 'label' => $field['label'], 'type' => 'entry_meta' );
 			}
-	    }
+		}
 
-	    return $fields;
+		return $fields;
 	}
 
 
@@ -312,86 +306,87 @@ class GVCommon {
 	 */
 	public static function get_entry_ids( $form_id, $search_criteria = array() ) {
 
-		if( !class_exists( 'GFFormsModel' ) ) { return; }
+		if ( ! class_exists( 'GFFormsModel' ) ) {
+			return;
+		}
 
 		return GFFormsModel::search_lead_ids( $form_id, $search_criteria );
 	}
 
-    /**
-     * Calculates the Search Criteria used on the self::get_entries / self::get_entry methods
-     *
-     * @hook gravityview_search_criteria used by the Advanced Filter Extension
-     *
-     * @since 1.7.4
-     *
-     * @param null $passed_criteria array Input Criteria (search_criteria, sorting, paging)
-     * @param null $form_ids array Gravity Forms form IDs
-     * @return array|mixed|void
-     */
-    public static function calculate_get_entries_criteria( $passed_criteria = null, $form_ids = null ) {
+	/**
+	 * Calculates the Search Criteria used on the self::get_entries / self::get_entry methods
+	 *
+	 * @hook gravityview_search_criteria used by the Advanced Filter Extension
+	 *
+	 * @since 1.7.4
+	 *
+	 * @param null $passed_criteria array Input Criteria (search_criteria, sorting, paging)
+	 * @param null $form_ids array Gravity Forms form IDs
+	 * @return array|mixed|void
+	 */
+	public static function calculate_get_entries_criteria( $passed_criteria = null, $form_ids = null ) {
 
-        $search_criteria_defaults = array(
-            'search_criteria' => null,
-            'sorting' => null,
-            'paging' => null,
-            'cache' => (isset( $passed_criteria['cache'] ) ? $passed_criteria['cache'] : true),
-        );
+		$search_criteria_defaults = array(
+			'search_criteria' => null,
+			'sorting' => null,
+			'paging' => null,
+			'cache' => (isset( $passed_criteria['cache'] ) ? $passed_criteria['cache'] : true),
+		);
 
-        $criteria = wp_parse_args( $passed_criteria, $search_criteria_defaults );
+		$criteria = wp_parse_args( $passed_criteria, $search_criteria_defaults );
 
-        if( !empty( $criteria['search_criteria']['field_filters'] ) ) {
-            foreach ( $criteria['search_criteria']['field_filters'] as &$filter ) {
+		if ( ! empty( $criteria['search_criteria']['field_filters'] ) ) {
+			foreach ( $criteria['search_criteria']['field_filters'] as &$filter ) {
 
-                if( !is_array( $filter ) ) { continue; }
+				if ( ! is_array( $filter ) ) {
+					continue;
+				}
 
-                // By default, we want searches to be wildcard for each field.
-                $filter['operator'] = empty( $filter['operator'] ) ? 'like' : $filter['operator'];
-                $filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter );
-            }
-        }
+				// By default, we want searches to be wildcard for each field.
+				$filter['operator'] = empty( $filter['operator'] ) ? 'like' : $filter['operator'];
+				$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter );
+			}
+		}
 
-        /**
-         * Prepare date formats to be in Gravity Forms DB format;
-         * $passed_criteria may include date formats incompatible with Gravity Forms.
-         */
-        foreach( array('start_date', 'end_date' ) as $key ) {
+		/**
+		 * Prepare date formats to be in Gravity Forms DB format;
+		 * $passed_criteria may include date formats incompatible with Gravity Forms.
+		 */
+		foreach ( array('start_date', 'end_date' ) as $key ) {
 
-            if( !empty( $criteria['search_criteria'][ $key ] ) ) {
+			if ( ! empty( $criteria['search_criteria'][ $key ] ) ) {
 
-                // Use date_create instead of new DateTime so it returns false if invalid date format.
-                $date = date_create( $criteria['search_criteria'][ $key ] );
+				// Use date_create instead of new DateTime so it returns false if invalid date format.
+				$date = date_create( $criteria['search_criteria'][ $key ] );
 
-                if( $date ) {
+				if ( $date ) {
+					// Gravity Forms wants dates in the `Y-m-d H:i:s` format.
+					$criteria['search_criteria'][ $key ] = $date->format( 'Y-m-d H:i:s' );
+				} else {
+					// If it's an invalid date, unset it. Gravity Forms freaks out otherwise.
+					unset( $criteria['search_criteria'][ $key ] );
 
-                    // Gravity Forms wants dates in the `Y-m-d H:i:s` format.
-                    $criteria['search_criteria'][ $key ] = $date->format('Y-m-d H:i:s');
-
-                } else {
-
-                    // If it's an invalid date, unset it. Gravity Forms freaks out otherwise.
-                    unset( $criteria['search_criteria'][ $key ] );
-
-                    do_action( 'gravityview_log_error', '[filter_get_entries_criteria] '.$key.' Date format not valid:', $criteria['search_criteria'][ $key ] );
-                }
-            }
-        }
+					do_action( 'gravityview_log_error', '[filter_get_entries_criteria] '.$key.' Date format not valid:', $criteria['search_criteria'][ $key ] );
+				}
+			}
+		}
 
 
-        // When multiple views are embedded, OR single entry, calculate the context view id and send it to the advanced filter
-        if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() || GravityView_frontend::getInstance()->single_entry ) {
-            $criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
-        } elseif( RGForms::get("action") === "delete" ) {
-            $criteria['context_view_id'] = isset( $_GET['view_id'] ) ? $_GET['view_id'] : null;
-        } else {
-            $criteria['context_view_id'] = null;
-        }
+		// When multiple views are embedded, OR single entry, calculate the context view id and send it to the advanced filter
+		if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() || GravityView_frontend::getInstance()->single_entry ) {
+			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
+		} elseif ( 'delete' === RGForms::get( 'action' ) ) {
+			$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? $_GET['view_id'] : null;
+		} else {
+			$criteria['context_view_id'] = null;
+		}
 
-        // Apply final criteria filter (Used by the Advanced Filter extension)
-        $criteria = apply_filters( 'gravityview_search_criteria', $criteria, $form_ids, $criteria['context_view_id'] );
+		// Apply final criteria filter (Used by the Advanced Filter extension)
+		$criteria = apply_filters( 'gravityview_search_criteria', $criteria, $form_ids, $criteria['context_view_id'] );
 
-        return $criteria;
+		return $criteria;
 
-    }
+	}
 
 
 	/**
@@ -407,40 +402,39 @@ class GVCommon {
 	 */
 	public static function get_entries( $form_ids = null, $passed_criteria = null, &$total = null ) {
 
-        // Filter the criteria before query (includes Adv Filter)
-        $criteria = self::calculate_get_entries_criteria( $passed_criteria, $form_ids );
+		// Filter the criteria before query (includes Adv Filter)
+		$criteria = self::calculate_get_entries_criteria( $passed_criteria, $form_ids );
 
 		do_action( 'gravityview_log_debug', '[gravityview_get_entries] Final Parameters', $criteria );
 
 		// Return value
-		$return = NULL;
+		$return = null;
 
-		if( !empty( $criteria['cache'] ) ) {
+		if ( ! empty( $criteria['cache'] ) ) {
 
 			$Cache = new GravityView_Cache( $form_ids, $criteria );
 
-			if( $entries = $Cache->get() ) {
+			if ( $entries = $Cache->get() ) {
 
 				// Still update the total count when using cached results
-				if( !is_null( $total ) ) {
+				if ( ! is_null( $total ) ) {
 					$total = GFAPI::count_entries( $form_ids, $criteria['search_criteria'] );
 				}
 
 				$return = $entries;
 			}
-
 		}
 
-		if( class_exists( 'GFAPI' ) && ( is_numeric( $form_ids ) || is_array( $form_ids ) ) ) {
+		if ( class_exists( 'GFAPI' ) && ( is_numeric( $form_ids ) || is_array( $form_ids ) ) ) {
 
 			$entries = GFAPI::get_entries( $form_ids, $criteria['search_criteria'], $criteria['sorting'], $criteria['paging'], $total );
 
-			if( is_wp_error( $entries ) ) {
+			if ( is_wp_error( $entries ) ) {
 				do_action( 'gravityview_log_error', $entries->get_error_message(), $entries );
 				return false;
 			}
 
-			if( !empty( $criteria['cache'] ) ) {
+			if ( ! empty( $criteria['cache'] ) ) {
 
 				// Cache results
 				$Cache->set( $entries, 'entries' );
@@ -477,15 +471,14 @@ class GVCommon {
 	 */
 	public static function get_entry( $entry_slug, $force_allow_ids = false ) {
 
-		if( class_exists( 'GFAPI' ) && !empty( $entry_slug ) ) {
-
+		if ( class_exists( 'GFAPI' ) && ! empty( $entry_slug ) ) {
 			/**
 			 * Enable custom entry slug functionality.
 			 *
 			 * @see  GravityView_API::get_entry_slug()
 			 * @var boolean
 			 */
-			$custom_slug = apply_filters('gravityview_custom_entry_slug', false );
+			$custom_slug = apply_filters( 'gravityview_custom_entry_slug', false );
 
 			/**
 			 * When using a custom slug, allow access to the entry using the original slug (the Entry ID).
@@ -495,38 +488,36 @@ class GVCommon {
 			 *
 			 * @var boolean
 			 */
-			$custom_slug_id_access = $force_allow_ids || apply_filters('gravityview_custom_entry_slug_allow_id', false );
+			$custom_slug_id_access = $force_allow_ids || apply_filters( 'gravityview_custom_entry_slug_allow_id', false );
 
 			/**
 			 * If we're using custom entry slugs, we do a meta value search
 			 * instead of doing a straightup ID search.
 			 */
-			if( $custom_slug ) {
+			if ( $custom_slug ) {
 
-                $entry_id = self::get_entry_id_from_slug( $entry_slug );
+				$entry_id = self::get_entry_id_from_slug( $entry_slug );
 
 			}
 
 			// If custom slug is off, search using the entry ID
 			// ID allow ID access is on, also use entry ID as a backup
-			if( empty( $custom_slug ) || !empty( $custom_slug_id_access ) ) {
-
+			if ( empty( $custom_slug ) || ! empty( $custom_slug_id_access ) ) {
 				// Search for IDs matching $entry_slug
-                $entry_id = $entry_slug;
-
+				$entry_id = $entry_slug;
 			}
 
-            if( empty( $entry_id ) ) {
-                return false;
-            }
+			if ( empty( $entry_id ) ) {
+				return false;
+			}
 
-            // fetch the entry
-            $entry = GFAPI::get_entry( $entry_id );
+			// fetch the entry
+			$entry = GFAPI::get_entry( $entry_id );
 
-            // Is the entry allowed
-            $entry = self::check_entry_display( $entry );
+			// Is the entry allowed
+			$entry = self::check_entry_display( $entry );
 
-            return $entry;
+			return $entry;
 
 		}
 
@@ -549,8 +540,7 @@ class GVCommon {
 	 * @return bool True: matches, false: not matches
 	 */
 	public static function matches_operation( $val1, $val2, $operation ) {
-
-		switch( $operation ) {
+		switch ( $operation ) {
 			case 'equals':
 				$value = GFFormsModel::matches_operation( $val1, $val2, 'is' );
 				break;
@@ -568,7 +558,7 @@ class GVCommon {
 				break;
 			case 'not_contains':
 				$contains = GFFormsModel::matches_operation( $val1, $val2, 'contains' );
-				$value = !$contains;
+				$value = ! $contains;
 				break;
 			default:
 				$value = GFFormsModel::matches_operation( $val1, $val2, $operation );
@@ -577,101 +567,100 @@ class GVCommon {
 		return $value;
 	}
 
-    /**
-     *
-     * Checks if a certain entry is valid according to the View search filters (specially the Adv Filters)
-     *
-     * @see GFFormsModel::is_value_match()
-     *
-     * @since 1.7.4
-     *
-     * @param array $entry Gravity Forms Entry object
-     * @return bool|array Returns 'false' if entry is not valid according to the view search filters (Adv Filter)
-     */
-    public static function check_entry_display( $entry ) {
+	/**
+	 *
+	 * Checks if a certain entry is valid according to the View search filters (specially the Adv Filters)
+	 *
+	 * @see GFFormsModel::is_value_match()
+	 *
+	 * @since 1.7.4
+	 *
+	 * @param array $entry Gravity Forms Entry object
+	 * @return bool|array Returns 'false' if entry is not valid according to the view search filters (Adv Filter)
+	 */
+	public static function check_entry_display( $entry ) {
 
-	    if( ! $entry || is_wp_error( $entry ) ) {
-		    do_action( 'gravityview_log_debug', __METHOD__ . ' Entry was not found.', $entry );
-		    return false;
-	    }
+		if ( ! $entry || is_wp_error( $entry ) ) {
+			do_action( 'gravityview_log_debug', __METHOD__ . ' Entry was not found.', $entry );
+			return false;
+		}
 
-        if( empty( $entry['form_id'] ) ) {
-            do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry is empty! Entry:', $entry );
-            return false;
-        }
+		if ( empty( $entry['form_id'] ) ) {
+			do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry is empty! Entry:', $entry );
+			return false;
+		}
 
-        $criteria = self::calculate_get_entries_criteria();
+		$criteria = self::calculate_get_entries_criteria();
 
-        if( empty( $criteria['search_criteria'] ) || !is_array( $criteria['search_criteria'] ) ) {
-            do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry approved! No search criteria found:', $criteria );
-            return $entry;
-        }
+		if ( empty( $criteria['search_criteria'] ) || ! is_array( $criteria['search_criteria'] ) ) {
+			do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry approved! No search criteria found:', $criteria );
+			return $entry;
+		}
 
-        $search_criteria = $criteria['search_criteria'];
-        unset( $criteria );
+		$search_criteria = $criteria['search_criteria'];
+		unset( $criteria );
 
-        // check entry status
-        if( array_key_exists( 'status', $search_criteria ) && $search_criteria['status'] != $entry['status'] ) {
-            do_action( 'gravityview_log_debug', sprintf( '[apply_filters_to_entry] Entry status - %s - is not valid according to filter:', $entry['status'] ), $search_criteria );
-            return false;
-        }
+		// check entry status
+		if ( array_key_exists( 'status', $search_criteria ) && $search_criteria['status'] != $entry['status'] ) {
+			do_action( 'gravityview_log_debug', sprintf( '[apply_filters_to_entry] Entry status - %s - is not valid according to filter:', $entry['status'] ), $search_criteria );
+			return false;
+		}
 
-        // check entry date
-        // @todo: Does it make sense to apply the Date create filters to the single entry?
+		// check entry date
+		// @todo: Does it make sense to apply the Date create filters to the single entry?
 
-        // field_filters
-        if( empty( $search_criteria['field_filters'] ) || !is_array( $search_criteria['field_filters'] ) ) {
-            do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry approved! No field filters criteria found:', $criteria );
-            return $entry;
-        }
+		// field_filters
+		if ( empty( $search_criteria['field_filters'] ) || ! is_array( $search_criteria['field_filters'] ) ) {
+			do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry approved! No field filters criteria found:', $criteria );
+			return $entry;
+		}
 
-        $filters = $search_criteria['field_filters'];
-        unset( $search_criteria );
+		$filters = $search_criteria['field_filters'];
+		unset( $search_criteria );
 
-        $mode = array_key_exists( 'mode', $filters ) ? strtolower( $filters['mode'] ) : 'all';
-        unset( $filters['mode'] );
+		$mode = array_key_exists( 'mode', $filters ) ? strtolower( $filters['mode'] ) : 'all';
+		unset( $filters['mode'] );
 
-        $form = self::get_form( $entry['form_id'] );
+		$form = self::get_form( $entry['form_id'] );
 
-        foreach( $filters as $filter ) {
+		foreach ( $filters as $filter ) {
 
-            if( !isset( $filter['key'] ) ) {
-                continue;
-            }
+			if ( ! isset( $filter['key'] ) ) {
+				continue;
+			}
 
-            $k = $filter['key'];
+			$k = $filter['key'];
 
-            if( 'created_by' === $k ) {
-                $field_value = $entry['created_by'];
-                $field = null;
-            } else {
-                $field = self::get_field( $form, $k );
-                $field_value  = GFFormsModel::get_lead_field_value( $entry, $field );
-            }
+			if ( 'created_by' === $k ) {
+				$field_value = $entry['created_by'];
+				$field = null;
+			} else {
+				$field = self::get_field( $form, $k );
+				$field_value  = GFFormsModel::get_lead_field_value( $entry, $field );
+			}
 
-            $operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
-            $is_value_match = GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field );
+			$operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
+			$is_value_match = GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field );
 
-            // verify if we are already free to go!
-            if( !$is_value_match && 'all' === $mode ) {
-                do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry cannot be displayed. Failed one criteria for ALL mode', $filter );
-                return false;
-            } elseif( $is_value_match && 'any' === $mode ) {
-                return $entry;
-            }
+			// verify if we are already free to go!
+			if ( ! $is_value_match && 'all' === $mode ) {
+				do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry cannot be displayed. Failed one criteria for ALL mode', $filter );
+				return false;
+			} elseif ( $is_value_match && 'any' === $mode ) {
+				return $entry;
+			}
+		}
 
-        }
+		// at this point, if in ALL mode, then entry is approved - all conditions were met.
+		// Or, for ANY mode, means none of the conditions were satisfied, so entry is not approved
+		if ( 'all' === $mode ) {
+			return $entry;
+		} else {
+			do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry cannot be displayed. Failed all the criteria for ANY mode', $filters );
+			return false;
+		}
 
-        // at this point, if in ALL mode, then entry is approved - all conditions were met.
-        // Or, for ANY mode, means none of the conditions were satisfied, so entry is not approved
-        if( 'all' === $mode ) {
-            return $entry;
-        } else {
-            do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry cannot be displayed. Failed all the criteria for ANY mode', $filters );
-            return false;
-        }
-
-    }
+	}
 
 
 	/**
@@ -684,7 +673,7 @@ class GVCommon {
 	 */
 	public static function get_field_label( $form, $field_id ) {
 
-		if( empty($form) || empty( $field_id ) ) {
+		if ( empty( $form ) || empty( $field_id ) ) {
 			return '';
 		}
 
@@ -703,7 +692,7 @@ class GVCommon {
 	 * @return array|null Array: Gravity Forms field array; NULL: Gravity Forms GFFormsModel does not exist
 	 */
 	public static function get_field( $form, $field_id ) {
-		if( class_exists( 'GFFormsModel') ){
+		if ( class_exists( 'GFFormsModel' ) ){
 			return GFFormsModel::get_field( $form, $field_id );
 		} else {
 			return null;
@@ -720,17 +709,16 @@ class GVCommon {
 	 * @param  WP_Post      $post WordPress post object
 	 * @return boolean           True: yep, GravityView; No: not!
 	 */
-	public static function has_gravityview_shortcode( $post = NULL ) {
-
-		if( !is_a( $post, 'WP_Post' ) ) {
+	public static function has_gravityview_shortcode( $post = null ) {
+		if ( ! is_a( $post, 'WP_Post' ) ) {
 			return false;
 		}
 
-		if( 'gravityview' === get_post_type( $post ) ) {
+		if ( 'gravityview' === get_post_type( $post ) ) {
 			return true;
 		}
 
-		return self::has_shortcode_r( $post->post_content, 'gravityview');
+		return self::has_shortcode_r( $post->post_content, 'gravityview' );
 
 	}
 
@@ -749,8 +737,9 @@ class GVCommon {
 			$shortcodes = array();
 
 			preg_match_all( '/' . get_shortcode_regex() . '/s', $content, $matches, PREG_SET_ORDER );
-			if ( empty( $matches ) )
+			if ( empty( $matches ) ){
 				return false;
+			}
 
 			foreach ( $matches as $shortcode ) {
 				if ( $tag === $shortcode[2] ) {
@@ -807,7 +796,7 @@ class GVCommon {
 
 		$settings = get_post_meta( $post_id, '_gravityview_template_settings', true );
 
-		if( class_exists( 'GravityView_View_Data' ) ) {
+		if ( class_exists( 'GravityView_View_Data' ) ) {
 
 			$defaults = GravityView_View_Data::get_default_args();
 
@@ -829,14 +818,13 @@ class GVCommon {
 	 * @return mixed|null          Setting value, or NULL if not set.
 	 */
 	public static function get_template_setting( $post_id, $key ) {
-
 		$settings = self::get_template_settings( $post_id );
 
-		if( isset( $settings[ $key ] ) ) {
+		if ( isset( $settings[ $key ] ) ) {
 			return $settings[ $key ];
 		}
 
-		return NULL;
+		return null;
 	}
 
 	/**
@@ -882,29 +870,27 @@ class GVCommon {
 	 * @return string         html
 	 */
 	public static function get_sortable_fields( $formid, $current = '' ) {
+		$output = '<option value="" ' . selected( '', $current, false ).'>' . esc_html__( 'Default', 'gravityview' ) .'</option>';
 
-		$output = '<option value="" '. selected( '', $current, false ).'>'. esc_html__( 'Default', 'gravityview') .'</option>';
-
-		if( empty( $formid ) ) {
+		if ( empty( $formid ) ) {
 			return $output;
 		}
 
 		// Get fields with sub-inputs and no parent
 		$fields = self::get_form_fields( $formid, true, false );
 
-		if( !empty( $fields ) ) {
+		if ( ! empty( $fields ) ) {
 
-			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'list', 'textarea' ), NULL );
+			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'list', 'textarea' ), null );
 
 			$output .= '<option value="date_created" '. selected( 'date_created', $current, false ).'>'. esc_html__( 'Date Created', 'gravityview' ) .'</option>';
 
-			foreach( $fields as $id => $field ) {
-
-				if( in_array( $field['type'], $blacklist_field_types ) ) { continue; }
-
+			foreach ( $fields as $id => $field ) {
+				if ( in_array( $field['type'], $blacklist_field_types ) ) {
+					continue;
+				}
 				$output .= '<option value="'. $id .'" '. selected( $id, $current, false ).'>'. esc_attr( $field['label'] ) .'</option>';
 			}
-
 		}
 		return $output;
 	}
@@ -916,9 +902,9 @@ class GVCommon {
 	 * @param  mixed $field_id Field ID or Field array
 	 * @return string field type
 	 */
-	public static function get_field_type(  $form = null , $field_id = '' ) {
+	public static function get_field_type( $form = null, $field_id = '' ) {
 
-		if( !empty( $field_id ) && !is_array( $field_id ) ) {
+		if ( ! empty( $field_id ) && ! is_array( $field_id ) ) {
 			$field = self::get_field( $form, $field_id );
 		} else {
 			$field = $field_id;
@@ -935,11 +921,11 @@ class GVCommon {
 	 * @param  int|array  $field field key or field array
 	 * @return boolean
 	 */
-	public static function is_field_numeric(  $form = null , $field = '' ) {
+	public static function is_field_numeric(  $form = null, $field = '' ) {
 
 		$numeric_types = apply_filters( 'gravityview/common/numeric_types', array( 'number' ) );
 
-		if( !is_array( $form ) && !is_array( $field ) ) {
+		if ( ! is_array( $form ) && ! is_array( $field ) ) {
 			$form = self::get_form( $form );
 		}
 
@@ -968,11 +954,11 @@ class GVCommon {
 
 		$output = $content;
 
-		if( !class_exists( 'StandalonePHPEnkoder' ) ) {
+		if ( ! class_exists( 'StandalonePHPEnkoder' ) ) {
 			include_once( GRAVITYVIEW_DIR . 'includes/lib/standalone-phpenkoder/StandalonePHPEnkoder.php' );
 		}
 
-		if( class_exists( 'StandalonePHPEnkoder' ) ) {
+		if ( class_exists( 'StandalonePHPEnkoder' ) ) {
 
 			$enkoder = new StandalonePHPEnkoder;
 
@@ -1007,7 +993,9 @@ class GVCommon {
 	 * @author rubo77 at https://gist.github.com/rubo77/6821632
 	 **/
 	public static function gv_parse_str( $string, &$result ) {
-		if( empty( $string ) ) { return false; }
+		if ( empty( $string ) ) {
+			return false;
+		}
 
 		$result = array();
 
@@ -1019,9 +1007,9 @@ class GVCommon {
 			parse_str( $pair, $params );
 
 			$k = key( $params );
-			if( !isset( $result[ $k ] ) ) {
-				$result+=$params;
-			} elseif( array_key_exists( $k, $params ) && is_array( $params[ $k ] ) ) {
+			if ( ! isset( $result[ $k ] ) ) {
+				$result += $params;
+			} elseif ( array_key_exists( $k, $params ) && is_array( $params[ $k ] ) ) {
 				$result[ $k ] = self::array_merge_recursive_distinct( $result[ $k ], $params[ $k ] );
 			}
 		}
@@ -1046,32 +1034,32 @@ class GVCommon {
 
 		// Supported attributes for anchor tags. HREF left out intentionally.
 		$allowed_atts = array(
-			'href' => NULL, // Will override the $href argument if set
-			'title' => NULL,
-			'rel' => NULL,
-			'id' => NULL,
-			'class' => NULL,
-			'target' => NULL,
-			'style' => NULL,
+			'href' => null, // Will override the $href argument if set
+			'title' => null,
+			'rel' => null,
+			'id' => null,
+			'class' => null,
+			'target' => null,
+			'style' => null,
 
 			// Used by GravityView
-			'data-viewid' => NULL,
+			'data-viewid' => null,
 
 			// Not standard
-			'hreflang' => NULL,
-			'type' => NULL,
-			'tabindex' => NULL,
+			'hreflang' => null,
+			'type' => null,
+			'tabindex' => null,
 
 			// Deprecated HTML4 but still used
-			'name' => NULL,
-			'onclick' => NULL,
-			'onchange' => NULL,
-			'onkeyup' => NULL,
+			'name' => null,
+			'onclick' => null,
+			'onchange' => null,
+			'onkeyup' => null,
 
 			// HTML5 only
-			'download' => NULL,
-			'media' => NULL,
-			'ping' => NULL,
+			'download' => null,
+			'media' => null,
+			'ping' => null,
 		);
 
 		/**
@@ -1091,7 +1079,7 @@ class GVCommon {
 		$final_atts = array_filter( $final_atts );
 
 		// If the href wasn't passed as an attribute, use the value passed to the function
-		if( empty( $final_atts['href'] ) && !empty( $href ) ) {
+		if ( empty( $final_atts['href'] ) && ! empty( $href ) ) {
 			$final_atts['href'] = $href;
 		}
 
@@ -1099,7 +1087,7 @@ class GVCommon {
 
 		// For each attribute, generate the code
 		$output = '';
-		foreach( $final_atts as $attr => $value ) {
+		foreach ( $final_atts as $attr => $value ) {
 			$output .= sprintf( ' %s="%s"', $attr, esc_attr( $value ) );
 		}
 
@@ -1122,14 +1110,14 @@ class GVCommon {
 	* @author Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
 	* @author Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>
 	*/
-	public static function array_merge_recursive_distinct ( array &$array1, array &$array2 ) {
+	public static function array_merge_recursive_distinct( array &$array1, array &$array2 ) {
 		$merged = $array1;
 
 		foreach ( $array2 as $key => &$value )  {
-			if ( is_array ( $value ) && isset ( $merged [$key] ) && is_array ( $merged [$key] ) ) {
-				$merged [$key] = self::array_merge_recursive_distinct ( $merged [$key], $value );
+			if ( is_array( $value ) && isset( $merged[ $key ] ) && is_array( $merged[ $key ] ) ) {
+				$merged[ $key ] = self::array_merge_recursive_distinct( $merged[ $key ], $value );
 			} else {
-				$merged [$key] = $value;
+				$merged[ $key ] = $value;
 			}
 		}
 
@@ -1139,21 +1127,19 @@ class GVCommon {
 } //end class
 
 
-
-	/**
-	 * Generate an HTML anchor tag with a list of supported attributes
-	 *
-	 * @see GVCommon::get_link_html()
-	 *
-	 * @since 1.6
-	 *
-	 * @param string $href URL of the link.
-	 * @param string $anchor_text The text or HTML inside the anchor. This is not sanitized in the function.
-	 * @param array $atts Attributes to be added to the anchor tag
-	 *
-	 * @return string HTML output of anchor link. If empty $href, returns NULL
-	 */
-	function gravityview_get_link( $href = '', $anchor_text = '', $atts = array() ) {
-
-		return GVCommon::get_link_html( $href, $anchor_text, $atts );
-	}
+/**
+ * Generate an HTML anchor tag with a list of supported attributes
+ *
+ * @see GVCommon::get_link_html()
+ *
+ * @since 1.6
+ *
+ * @param string $href URL of the link.
+ * @param string $anchor_text The text or HTML inside the anchor. This is not sanitized in the function.
+ * @param array $atts Attributes to be added to the anchor tag
+ *
+ * @return string HTML output of anchor link. If empty $href, returns NULL
+ */
+function gravityview_get_link( $href = '', $anchor_text = '', $atts = array() ) {
+	return GVCommon::get_link_html( $href, $anchor_text, $atts );
+}
