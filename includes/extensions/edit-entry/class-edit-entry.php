@@ -419,91 +419,107 @@ class GravityView_Edit_Entry {
 
 	function process_save() {
 
-		var_dump( $_POST );
-		die();
-		// If the form is submitted
-		if( RGForms::post("action") === "update") {
+		if( empty( $_POST ) ) {
+			return;
+		}
 
-			// Make sure the entry, view, and form IDs are all correct
-			$this->verify_nonce();
+		// Make sure the entry, view, and form IDs are all correct
+		$valid = $this->verify_nonce();
 
-			if( $this->entry['id'] !== $_POST['lid'] ) {
-				return;
+		if( !$valid ) {
+			do_action('gravityview_log_error', __METHOD__ . ' Nonce validation failed.' );
+			return;
+		}
+
+		if( $this->entry['id'] !== $_POST['lid'] ) {
+			do_action('gravityview_log_error', __METHOD__ . ' Entry ID did not match posted entry ID.' );
+			return;
+		}
+
+		do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
+
+		//Loading files that have been uploaded to temp folder
+		$files = GFCommon::json_decode( stripslashes( RGForms::post( "gform_uploaded_files" ) ) );
+
+		if( !is_array( $files ) ) {
+		    $files = array();
+		}
+
+		// When Gravity Forms validates upload fields, they expect this variable to be set.
+		GFFormsModel::$uploaded_files[ $this->form_id ] = $files;
+
+		$this->validate();
+
+		if( $this->is_valid ) {
+
+			do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] Submission is valid.' );
+
+			/**
+			 * @hack This step is needed to unset the adminOnly from form fields
+			 */
+			$form = $this->form_prepare_for_save();
+
+			// TODO: Only run in form layout?
+			// Make sure hidden fields are represented in $_POST
+			#$this->combine_update_existing();
+
+			var_dump( $_POST );
+
+			/**
+			 * @hack to avoid the capability validation of the method save_lead for GF 1.9+
+			 */
+			if( isset( $_GET['page'] ) && isset( GFForms::$version ) && version_compare( GFForms::$version, '1.9', '>=' ) ) {
+				unset( $_GET['page'] );
 			}
 
-			do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
+			GFFormsModel::save_lead( $form, $this->entry );
 
-			$lead_id = absint( $_POST['lid'] );
 
-			//Loading files that have been uploaded to temp folder
-			$files = GFCommon::json_decode( stripslashes( RGForms::post( "gform_uploaded_files" ) ) );
-
-			if( !is_array( $files ) ) {
-			 	$files = array();
+			// If there's a post associated with the entry, process post fields
+			if( !empty( $this->entry['post_id'] ) ) {
+				$this->maybe_update_post_fields( $form );
 			}
 
+			$this->after_update();
 
-			// When Gravity Forms validates upload fields, they expect this variable to be set.
-			GFFormsModel::$uploaded_files[ $this->form_id ] = $files;
-
-
-			$this->validate();
-
-
-			if( $this->is_valid ) {
-
-				do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] Submission is valid.' );
-
-				/**
-				 * @hack This step is needed to unset the adminOnly from form fields
-				 */
-				$form = $this->form_prepare_for_save();
-
-				// Make sure hidden fields are represented in $_POST
-				$this->combine_update_existing();
-
-				/**
-				 * @hack to avoid the capability validation of the method save_lead for GF 1.9+
-				 */
-				if( isset( $_GET['page'] ) && isset( GFForms::$version ) && version_compare( GFForms::$version, '1.9', '>=' ) ) {
-					unset( $_GET['page'] );
-				}
-
-				GFFormsModel::save_lead( $form, $this->entry );
-
-
-				// If there's a post associated with the entry, process post fields
-				if( !empty( $this->entry['post_id'] ) ) {
-
-					$this->maybe_update_post_fields( $form );
-
-				}
-
-				do_action("gform_after_update_entry", $this->form, $this->entry["id"]);
-				do_action("gform_after_update_entry_{$this->form["id"]}", $this->form, $this->entry["id"]);
-
-				// Re-define the entry now that we've updated it.
-				$this->entry = RGFormsModel::get_lead( $this->entry["id"] );
-
-				$this->entry = GFFormsModel::set_entry_meta( $this->entry, $this->form );
-
-				// We need to clear the cache because Gravity Forms caches the field values, which
-				// we have just updated.
-				foreach ($this->form['fields'] as $key => $field) {
-					GFFormsModel::refresh_lead_field_value( $this->entry['id'], $field['id'] );
-				}
-
-				/**
-				 * Perform an action after the entry has been updated using Edit Entry
-				 *
-				 * @param array $form Gravity Forms form array
-				 * @param string $entry_id Numeric ID of the entry that was updated
-				 */
-				do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'] );
-			}
-		} // endif action is update.
+			/**
+			 * Perform an action after the entry has been updated using Edit Entry
+			 *
+			 * @param array $form Gravity Forms form array
+			 * @param string $entry_id Numeric ID of the entry that was updated
+			 */
+			do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'] );
+		}
 
 	} // process_save
+
+	/**
+	 * Perform actions normally performed after updating a lead
+	 *
+	 * @since 1.8
+	 *
+	 * @see GFEntryDetail::lead_detail_page()
+	 *
+	 * @return void
+	 */
+	function after_update() {
+
+		do_action("gform_after_update_entry", $this->form, $this->entry["id"]);
+		do_action("gform_after_update_entry_{$this->form["id"]}", $this->form, $this->entry["id"]);
+
+		// Re-define the entry now that we've updated it.
+		$entry = RGFormsModel::get_lead( $this->entry["id"] );
+
+		$entry = GFFormsModel::set_entry_meta( $entry, $this->form );
+
+		// We need to clear the cache because Gravity Forms caches the field values, which
+		// we have just updated.
+		foreach ($this->form['fields'] as $key => $field) {
+			GFFormsModel::refresh_lead_field_value( $entry['id'], $field['id'] );
+		}
+
+		$this->entry = $entry;
+	}
 
 	/**
 	 * Loop through the fields being edited and if they include Post fields, update the Entry's post object
@@ -770,6 +786,9 @@ class GravityView_Edit_Entry {
 	 */
 	function validate() {
 
+		$this->is_valid = true;
+		return;
+
 		/**
 		 * For some crazy reason, Gravity Forms doesn't validate Edit Entry form submissions.
 		 * You can enter whatever you want!
@@ -779,7 +798,7 @@ class GravityView_Edit_Entry {
 
 		// Needed by the validate funtion
 		$failed_validation_page = NULL;
-		$field_values = RGForms::post("gform_field_values"); // this returns empty!!!
+		$field_values = RGForms::post("gform_field_values"); // this returns empty when using the Table layout
 
 		// Prevent entry limit from running when editing an entry, also
 		// prevent form scheduling from preventing editing
@@ -857,7 +876,7 @@ class GravityView_Edit_Entry {
 		add_filter( 'gform_submit_button', array( $this, 'lead_detail_form_buttons') );
 		add_filter( 'gform_disable_view_counter', '__return_true' );
 
-		add_filter( 'gform_field_input', array( $this, 'lead_detail_edit_lead_value' ), 10, 5 );
+		add_filter( 'gform_field_input', array( $this, 'lead_detail_edit_field_input' ), 10, 5 );
 
 		// TODO: REMOVE THIS
 		unset( $_GET['page'] );
@@ -868,11 +887,13 @@ class GravityView_Edit_Entry {
 		// TODO: Make sure validation isn't handled by GF
 		// TODO: Include CSS for file upload fields
 		// TODO: Verify multiple-page forms
+		// TODO: 1. Save Single File; 2. update the form; 3. Single file disappears
+		// TODO: Product fields are not editable
 		$html = GFFormDisplay::get_form( $form["id"], false, false, true, $lead );
 
 		remove_filter( 'gform_submit_button', array( $this, 'lead_detail_form_buttons') );
 		remove_filter( 'gform_disable_view_counter', '__return_true' );
-		remove_filter( 'gform_field_input', array( $this, 'lead_detail_edit_lead_value' ), 10, 5 );
+		remove_filter( 'gform_field_input', array( $this, 'lead_detail_edit_field_input' ), 10, 5 );
 		remove_filter( 'gform_pre_render', array( $this, 'lead_detail_edit_form_modify_form_fields'), 5000, 3 );
 
 		echo $html;
@@ -887,10 +908,18 @@ class GravityView_Edit_Entry {
 	 *
 	 * @return mixed
 	 */
-	function lead_detail_edit_lead_value( $field_content = '', $field, $value, $lead_id = 0, $form_id ) {
+	function lead_detail_edit_field_input( $field_content = '', $field, $value, $lead_id = 0, $form_id ) {
+
+		// If the form has been submitted, then we don't need to pre-fill the values.
+		if( !empty( $_POST['is_gv_edit_entry'] ) ) {
+
+			if( ! GFCommon::is_post_field( $field ) ) {
+				return $field_content;
+			}
+		}
 
 		// Turn on Admin-style display for file upload fields only
-		if( $field->type === 'fileupload' ) {
+		if( 'fileupload' === $field->type ) {
 			$_GET['page'] = 'gf_entries';
 		}
 

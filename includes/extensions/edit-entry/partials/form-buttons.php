@@ -18,4 +18,6 @@
 	do_action( 'gravityview/edit-entry/publishing-action/after', $this->form, $this->entry, $this->view_id );
 
 	?>
+	<input type="hidden" name="action" value="update" />
+	<input type="hidden" name="lid" value="<?php echo esc_attr( $this->entry['id'] ); ?>" />
 </div>
