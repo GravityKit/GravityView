@@ -101,9 +101,10 @@ class GravityView_Admin_Views {
 		);
 
 		foreach ( (array)$connected_views as $view ) {
+			$label = empty( $view->post_title ) ? sprintf( __('No Title (View #%d)', 'gravityview' ), $view->ID ) : $view->post_title;
 			$sub_menu_items[] = array(
 				'url' => admin_url( 'post.php?action=edit&post='.$view->ID ),
-				'label' => esc_attr( $view->post_title ),
+				'label' => esc_attr( $label ),
 				'capabilities' => current_user_can( 'edit_post', $view->ID ),
 			);
 		}
@@ -889,7 +890,7 @@ class GravityView_Admin_Views {
 			$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
 			//enqueue scripts
-			wp_enqueue_script( 'gravityview_views_scripts', plugins_url('assets/js/admin-views'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie', 'jquery-ui-datepicker' ), GravityView_Plugin::version );
+			wp_enqueue_script( 'gravityview_views_scripts', plugins_url( 'assets/js/admin-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie', 'jquery-ui-datepicker', 'underscore' ), GravityView_Plugin::version );
 
 			wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
 				'cookiepath' => COOKIEPATH,
@@ -906,7 +907,7 @@ class GravityView_Admin_Views {
 				'remove_all_fields' => __( 'Would you like to remove all fields in this zone? (You are seeing this message because you were holding down the ALT key)', 'gravityview' ),
 			));
 
-			wp_enqueue_style( 'gravityview_views_styles', plugins_url('assets/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
+			wp_enqueue_style( 'gravityview_views_styles', plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
 
 			self::enqueue_gravity_forms_scripts();
 

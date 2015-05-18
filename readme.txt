@@ -20,6 +20,14 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+* Added: Custom Link Text in Website fields
+* Fixed: Newly created entries cannot be directly accessed when using the custom slug feature
+* Fixed: Merge Tag autocomplete hidden behind the Field settings (did you know you can type `{` in a field that has Merge Tags enabled and you will get autocomplete?)
+
+= 1.7.6.2 on May 12 =
+* Fixed: PHP warning when trying to update an entry with the approved field.
+* Fixed: Views without titles in the "Connected Views" dropdown would appear blank
+
 = 1.7.6.1 on May 7 =
 * Fixed: Pagination links not working when a search is performed
 * Fixed: Return false instead of error if updating approved status fails

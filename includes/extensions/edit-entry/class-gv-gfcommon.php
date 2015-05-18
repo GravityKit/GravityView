@@ -138,6 +138,7 @@ class GV_GFCommon extends GFCommon {
 				$value = get_post_meta( $entry['post_id'], $meta_name, true );
 
 				// Only certain custom field types are supported
+				// TODO: Look into whether GF_Field_List::create_list_array() can be used to fix issue with List type
 				if( in_array( $input_type, array( 'list', 'fileupload' ) ) ) {
 					return $unsupported_field;
 				}

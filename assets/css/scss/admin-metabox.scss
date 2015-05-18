@@ -1,0 +1,91 @@
+/**
+ * Much of the code from WooCommerce
+ * @link https://github.com/woothemes/woocommerce/blob/master/assets/css/admin.scss
+ */
+
+@import "_mixins";
+
+#gravityview_settings {
+
+  @import "admin-metabox-panel";
+
+  padding: 0;
+
+  // For the Advanced Filter plugin, and any other field filters
+  .gform-field-filter {
+    clear: both;
+    padding: .5em 0 0;
+  }
+
+  .inside {
+    padding: 0;
+    margin: 0;
+    background: #fafafa;
+
+    @include clearfix();
+  }
+
+  ul.ui-tabs-nav {
+    line-height: 1em;
+    float: left;
+    width: 20%;
+
+    margin: 0;
+    position: relative;
+    padding: 0 0 30px;
+    background-color: #fafafa;
+    @include borderbox();
+
+    #side-sortables & {
+      width: 100%;
+      padding-bottom: 0;
+      border: none;
+    }
+
+    li {
+      display: block;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+
+      &.ui-state-disabled {
+        display: none;
+      }
+
+      a {
+        @include borderbox();
+
+        padding: 10px;
+        line-height: 20px !important;
+        margin: 0;
+        display: block;
+        width: 100%;
+        text-decoration: none;
+        border: none;
+        outline: none;
+        box-shadow: none; // Prevent the blue glow in Safari OSX
+        border-bottom: 1px solid #eee;
+        background: none;
+        transition-duration: 0;
+
+        // Prevent overflowing text on the tabs
+        text-overflow: ellipsis;
+        overflow-x:hidden;
+      }
+
+      &:first-child {
+        a {
+          border-top: 0 !important;
+        }
+      }
+
+      &.ui-state-active {
+        a {
+          position: relative;
+          background-color: #eee;
+          color: #555;
+        }
+      }
+    }
+  }
+}

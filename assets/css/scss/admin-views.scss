@@ -12,6 +12,7 @@
 @import "admin-widgets-php";
 @import "admin-merge-tags";
 @import "admin-tooltips";
+@import "admin-metabox";
 
 // http://blog.teamtreehouse.com/a-better-clearfix-with-sass
 %clearfix {
@@ -303,8 +304,7 @@ $gv-overlay-index: 10000;
 /**
  * Sidebar Widget: View Settings
  */
-#gravityview_template_settings th,
-#gravityview_sort_filter th {
+#gravityview_settings th {
 	white-space: nowrap;
 	font-weight: normal;
 	max-width: 200px; // Default th width in forms.css
@@ -328,17 +328,17 @@ $gv-overlay-index: 10000;
   cursor: wait;
 }
 
+// Fix issue with theme conflicts where .gv-overlay gets in the way
+.ui-front {
+  z-index: $gv-overlay-index + 1;
+}
+
 /** View configuration tabs */
 .ui-tabs {
 	position: relative;
 	padding: .1em;
 	zoom: 1;
 	margin-top: 1em;
-
-	// Fix issue with theme conflicts where .gv-overlay gets in the way
-	.ui-front {
-		z-index: $gv-overlay-index + 1;
-	}
 
 	.ui-tabs-nav {
 		margin: 0;
