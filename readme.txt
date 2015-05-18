@@ -20,8 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= 1.7.6.3 =
+* Added: Custom Link Text in Website fields
 * Fixed: Newly created entries cannot be directly accessed when using the custom slug feature
+* Fixed: Merge Tag autocomplete hidden behind the Field settings (did you know you can type `{` in a field that has Merge Tags enabled and you will get autocomplete?)
 
 = 1.7.6.2 on May 12 =
 * Fixed: PHP warning when trying to update an entry with the approved field.
