@@ -855,7 +855,13 @@ function gravityview_format_link( $value = null ) {
 	// Start with empty value for the return URL
 	$return = '';
 
-	// Add in the scheme
+	/**
+	 * Strip scheme from the displayed URL
+	 *
+	 * http://example.com => example.com
+	 *
+	 * @param boolean $enable Whether to strip the scheme. Return false to show scheme.
+	 */
 	if( false === apply_filters('gravityview_anchor_text_striphttp', true) ) {
 
 		if( isset( $parts['scheme'] ) ) {
