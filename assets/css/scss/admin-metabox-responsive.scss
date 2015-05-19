@@ -1,0 +1,43 @@
+
+// Size used by WordPress
+$small_screen_width: 768px;
+
+@media only screen and ( max-width: $small_screen_width ) {
+
+  // Hide icons when small screen
+  .gv-nav-tab-title {
+    position: absolute;
+    left: -999px;
+    overflow: hidden;
+    height: 1px;
+    width: 1px;
+  }
+
+  // The column that contains the navigation tabs and icons
+  ul.ui-tabs-nav {
+    // Min-width double the icon size
+    min-width: 40px;
+    width: 10%;
+
+    li {
+      text-align: center; // Align the icons center
+    }
+  }
+
+  #gravityview-metabox-content-container {
+
+    width: 90%;
+
+    td, th {
+      padding: 7px 15px;
+      margin-bottom: 0;
+    }
+    // Checkbox rows that span both columns and have no <th>
+    td[colspan="2"] {
+      padding-top: 15px;
+    }
+    td {
+      padding-bottom: 15px;
+    }
+  }
+}
