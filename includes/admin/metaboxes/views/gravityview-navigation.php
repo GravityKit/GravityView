@@ -15,12 +15,13 @@
 	<?php
 
 	foreach( $metaboxes as $metabox ) {
+		$title = esc_html( trim( rtrim( $metabox->title ) ) );
 		$class = !isset( $class ) ? 'nav-tab-active' : '';
 	?>
 	<li class="ui-state-default">
 		<a class="nav-tab ui-tabs-anchor <?php echo $class; ?>" href="#<?php echo esc_attr( $metabox->id ); ?>">
-			<span class="<?php echo $metabox->icon_class_name; ?>"></span>&nbsp;
-			<?php echo esc_html( $metabox->title ); ?>
+			<span class="<?php echo $metabox->icon_class_name; ?>" title="<?php echo $title; ?>"></span>&nbsp;
+			<span class="gv-nav-tab-title"><?php echo $title; ?></span>
 		</a>
 	</li>
 	<?php
