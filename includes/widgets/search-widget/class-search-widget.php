@@ -62,6 +62,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// frontend - add template path
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
 
+		// Add hidden fields for "Default" permalink structure
+		add_action( 'gravityview_search_widget_fields_after', array( $this, 'render_no_permalink_fields' ) );
 
 		// admin - add scripts - run at 1100 to make sure GravityView_Admin_Views::add_scripts_and_styles() runs first at 999
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 1100 );
@@ -84,7 +86,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * Add script to Views edit screen (admin)
 	 * @param  mixed $hook
 	 */
-	function add_scripts_and_styles( $hook ) {
+	public function add_scripts_and_styles( $hook ) {
 		global $pagenow;
 
 		// Don't process any scripts below here if it's not a GravityView page or the widgets screen
@@ -256,6 +258,33 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		return apply_filters( 'gravityview/extension/search/input_type', $types, $field_type );
 
+	}
+
+	/**
+	 * Display hidden fields to add support for sites using Default permalink structure
+	 *
+	 * @since 1.8
+	 * @return void
+	 */
+	public function render_no_permalink_fields() {
+		/** @global WP_Rewrite $wp_rewrite */
+		global $wp_rewrite;
+
+		// Support default permalink structure
+		if( false === $wp_rewrite->using_permalinks() ) {
+			$output = '<div>';
+
+			if( is_page() ) {
+				$output .= '<input type="hidden" name="page_id" value="'. get_queried_object_id() .'" />';
+			} elseif( is_single() ) {
+				$q = get_queried_object();
+				$output .= '<input type="hidden" name="p" value="'. esc_attr( $q->ID ) .'" />';
+				$output .= '<input type="hidden" name="post_type" value="'. esc_attr( $q->post_type ) .'" />';
+			}
+			$output .= '</div>';
+
+			echo $output;
+		}
 	}
 
 

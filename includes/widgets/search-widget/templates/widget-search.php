@@ -5,8 +5,6 @@
  * @see class-search-widget.php
  */
 
-global $wp_rewrite;
-
 $gravityview_view = GravityView_View::getInstance();
 
 $view_id = $gravityview_view->getViewId();
@@ -39,16 +37,6 @@ $has_inputs = false;
 			// Output the Clear button, if enabled
 			GravityView_Widget_Search::the_clear_search_button();
 
-			// Support default permalink structure
-            if( false === $wp_rewrite->using_permalinks() ) {
-                if( is_page() && !empty( $_GET['page_id'] ) ) {
-                    echo '<input type="hidden" name="page_id" value="'. esc_attr( $_GET['page_id'] ) .'" />';
-                } elseif( is_single() ) {
-                    $q = get_queried_object();
-                    echo '<input type="hidden" name="p" value="'. esc_attr( $q->ID ) .'" />';
-                    echo '<input type="hidden" name="post_type" value="'. esc_attr( $q->post_type ) .'" />';
-                }
-            }
 			?>
 			<input type="submit" class="button gv-search-button" id="gv_search_button_<?php echo $view_id; ?>" value="<?php esc_attr_e( 'Search', 'gravityview' ); ?>" />
 		</div>
