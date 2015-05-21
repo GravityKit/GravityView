@@ -271,19 +271,20 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		global $wp_rewrite;
 
 		// Support default permalink structure
-		if( false === $wp_rewrite->using_permalinks() ) {
-			$output = '<div>';
+		if( false === $wp_rewrite->using_permalinks() && is_singular() ) {
 
-			if( is_page() ) {
-				$output .= '<input type="hidden" name="page_id" value="'. get_queried_object_id() .'" />';
-			} elseif( is_single() ) {
-				$q = get_queried_object();
-				$output .= '<input type="hidden" name="p" value="'. esc_attr( $q->ID ) .'" />';
-				$output .= '<input type="hidden" name="post_type" value="'. esc_attr( $q->post_type ) .'" />';
+			$args = gravityview_get_permalink_query_args();
+
+			if( ! empty( $args ) ) {
+				$output = '<div>';
+
+				foreach( $args as $key => $value ) {
+					$output .= sprintf( '<input type="hidden" name="%s" value="%s" />', esc_attr( $key ), esc_attr( $value ) );
+				}
+				$output .= '</div>';
+
+				echo $output;
 			}
-			$output .= '</div>';
-
-			echo $output;
 		}
 	}
 
