@@ -286,9 +286,6 @@ class GVLogic_Shortcode {
 
 		$this->atts = shortcode_atts( $supported_args, $this->passed_atts, $this->shortcode );
 
-		// remove empties
-		$this->atts = array_filter( $this->atts );
-
 		if( isset( $this->atts['if'] ) ) {
 			$this->if = $this->atts['if'];
 			unset( $this->atts['if'] );
