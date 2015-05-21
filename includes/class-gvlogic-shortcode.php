@@ -164,7 +164,7 @@ class GVLogic_Shortcode {
 	 */
 	function setup_operation_and_comparison() {
 
-		foreach( $this->atts as $key => $value ) {
+		foreach( $this->passed_atts as $key => $value ) {
 
 			$valid = $this->set_operation( $key );
 
