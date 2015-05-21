@@ -164,7 +164,7 @@ class GVLogic_Shortcode {
 	 */
 	function setup_operation_and_comparison() {
 
-		foreach( $this->atts as $key => $value ) {
+		foreach( $this->passed_atts as $key => $value ) {
 
 			$valid = $this->set_operation( $key );
 
@@ -285,9 +285,6 @@ class GVLogic_Shortcode {
 		$supported_args = $supported + $this->get_operators( true );
 
 		$this->atts = shortcode_atts( $supported_args, $this->passed_atts, $this->shortcode );
-
-		// remove empties
-		$this->atts = array_filter( $this->atts );
 
 		if( isset( $this->atts['if'] ) ) {
 			$this->if = $this->atts['if'];

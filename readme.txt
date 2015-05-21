@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 * Added: Custom Link Text in Website fields
+* Fixed: `[gvlogic]` shortcode now properly handles comparing empty values.
+    * Use `[gvlogic if="{example} is=""]` to determine if a value is blank.
+    * Use `[gvlogic if="{example} isnot=""]` to determine if a value is not blank.
+    * See "Matching blank values" in the [shortcode documentation](http://docs.gravityview.co/article/252-gvlogic-shortcode)
 * Fixed: Newly created entries cannot be directly accessed when using the custom slug feature
 * Fixed: Merge Tag autocomplete hidden behind the Field settings (did you know you can type `{` in a field that has Merge Tags enabled and you will get autocomplete?)
 * Tweak: When GravityView is disabled, only show "Could not activate the Extension; GravityView is not active." on the Plugins page
