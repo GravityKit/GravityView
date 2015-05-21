@@ -54,11 +54,13 @@ function gravityview_is_single_entry() {
  *
  * We could do this in a cleaner fashion, but this prevents a lot of code duplication, checking for URL structure, etc.
  *
+ * @param int|WP_Post $id        Optional. Post ID or post object. Default current post.
+ *
  * @return array URL args, if exists. Empty array if not.
  */
-function gravityview_get_permalink_query_args() {
+function gravityview_get_permalink_query_args( $id = 0 ) {
 
-	$parsed_permalink = parse_url( get_permalink() );
+	$parsed_permalink = parse_url( get_permalink( $id ) );
 
 	$permalink_args =  isset( $parsed_permalink['query'] ) ? $parsed_permalink['query'] : false;
 
