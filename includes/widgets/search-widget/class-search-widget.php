@@ -264,7 +264,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * Display hidden fields to add support for sites using Default permalink structure
 	 *
 	 * @since 1.8
-	 * @return void
+	 * @return array Search fields, modified if not using permalinks
 	 */
 	function add_no_permalink_fields( $search_fields, $object, $widget_args = array() ) {
 		/** @global WP_Rewrite $wp_rewrite */
@@ -645,12 +645,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	static function get_search_form_action() {
 		$gravityview_view = GravityView_View::getInstance();
 
-		if( 'wp_widget' == $gravityview_view->getContext() ) {
-			$post_id = $gravityview_view->getPostId() ? $gravityview_view->getPostId() : $gravityview_view->getViewId();
-			$url = add_query_arg( array(), get_permalink( $post_id ) );
-		} else {
-			$url = add_query_arg( array() );
-		}
+		$post_id = $gravityview_view->getPostId() ? $gravityview_view->getPostId() : $gravityview_view->getViewId();
+
+		$url = add_query_arg( array(), get_permalink( $post_id ) );
 
 		return esc_url( $url );
 	}
