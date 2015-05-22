@@ -205,6 +205,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$output .= '<option value="search_all" '. selected( 'search_all', $current, false ).' data-inputtypes="text">'. esc_html__( 'Search Everything', 'gravityview') .'</option>';
 		$output .= '<option value="entry_date" '. selected( 'entry_date', $current, false ).' data-inputtypes="date">'. esc_html__( 'Entry Date', 'gravityview') .'</option>';
 		$output .= '<option value="entry_id" '. selected( 'entry_id', $current, false ).' data-inputtypes="text">'. esc_html__( 'Entry ID', 'gravityview') .'</option>';
+        $output .= '<option value="created_by" '. selected( 'created_by', $current, false ).' data-inputtypes="select">'. esc_html__( 'Entry Creator', 'gravityview') .'</option>';
+
 
 		if( !empty( $fields ) ) {
 
@@ -348,10 +350,19 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		if( !empty( $_GET[ 'gv_id' ] ) ) {
 			$search_criteria['field_filters'][] = array(
 				'key' => 'id',
-				'value' => (int)$_GET[ 'gv_id' ],
+				'value' => absint( $_GET[ 'gv_id' ] ),
 				'operator' => '='
 			);
 		}
+
+        // search for a specific Created_by ID
+        if( !empty( $_GET[ 'gv_by' ] ) ) {
+            $search_criteria['field_filters'][] = array(
+                'key' => 'created_by',
+                'value' => absint( $_GET['gv_by'] ),
+                'operator' => '='
+            );
+        }
 
 		// get the other search filters
 		foreach( $_GET as $key => $value ) {
@@ -568,6 +579,16 @@ class GravityView_Widget_Search extends GravityView_Widget {
 					$search_fields[ $k ]['value'] = esc_attr( stripslashes_deep( rgget( 'gv_id' ) ) );
 					break;
 
+                case 'created_by':
+                    $search_fields[ $k ]['label'] = __( 'Submitted by:', 'gravityview' );
+                    $search_fields[ $k ]['key'] = 'created_by';
+                    $search_fields[ $k ]['name'] = 'gv_by';
+                    $search_fields[ $k ]['input'] = $field['input'];
+                    $search_fields[ $k ]['value'] = esc_attr( stripslashes_deep( rgget( 'gv_by' ) ) );
+                    $search_fields[ $k ]['choices'] = self::get_created_by_choices();
+                    break;
+
+
 				default:
 					if( $field['input'] === 'date' ) {
 						$has_date = true;
@@ -603,7 +624,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			$this->enqueue_datepicker();
 		}
 
-		$gravityview_view->render('widget', 'search', false );
+		$gravityview_view->render( 'widget', 'search', false );
 	}
 
 	/**
@@ -738,10 +759,35 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			$filter['choices'] = $form_field['choices'];
 		}
 
-
 		return $filter;
 
 	}
+
+    /**
+     * Calculate the search choices for the users
+     *
+     * @since 1.8
+     *
+     * @return array Array of user choices (value = ID, text = display name)
+     */
+    static private function get_created_by_choices() {
+
+        /**
+         * filter gravityview/get_users/search_widget
+         * @see \GVCommon::get_users
+         */
+        $users = GVCommon::get_users( 'search_widget' );
+
+        $choices = array();
+        foreach ( $users as $user ) {
+            $choices[] = array(
+                'value' => $user->ID,
+                'text' => $user->display_name
+            );
+        }
+
+        return $choices;
+    }
 
 
 	static private function get_post_categories_choices() {

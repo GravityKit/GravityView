@@ -199,14 +199,7 @@ class GravityView_Change_Entry_Creator {
             return;
         }
 
-        /**
-         * There are issues with too many users where it breaks the select. We try to keep it at a reasonable number.
-         * @link   text http://codex.wordpress.org/Function_Reference/get_users
-         * @var  array Settings array
-         */
-        $get_users_settings = apply_filters( 'gravityview_change_entry_creator_user_parameters', array( 'number' => 750 ) );
-
-        $users = get_users( $get_users_settings );
+        $users = GVCommon::get_users( 'change_entry_creator' );
 
         $output = '<label for="change_created_by">';
         $output .= esc_html__('Change Entry Creator:', 'gravityview');

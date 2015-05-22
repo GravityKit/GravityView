@@ -1162,6 +1162,27 @@ class GVCommon {
 		return $merged;
 	}
 
+    /**
+     * Get WordPress users, by default limited to 750 users for performance reasons
+     *
+     * @param string $context Where are we using this information (e.g. change_entry_creator, search_widget ..)
+     * @return array Array of WP_User objects.
+     */
+    public static function get_users( $context = 'change_entry_creator' ) {
+
+        /**
+         * There are issues with too many users where it breaks the select. We try to keep it at a reasonable number.
+         * @link   text http://codex.wordpress.org/Function_Reference/get_users
+         * @var  array Settings array
+         */
+        $get_users_settings = apply_filters( 'gravityview/get_users/'. $context, apply_filters( 'gravityview_change_entry_creator_user_parameters', array( 'number' => 750 ) ) );
+
+        return get_users( $get_users_settings );
+    }
+
+
+
+
 } //end class
 
 
