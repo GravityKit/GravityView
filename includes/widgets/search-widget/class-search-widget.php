@@ -62,6 +62,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// frontend - add template path
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
 
+		// Add hidden fields for "Default" permalink structure
+		add_filter( 'gravityview_widget_search_filters', array( $this, 'add_no_permalink_fields' ), 10, 3 );
 
 		// admin - add scripts - run at 1100 to make sure GravityView_Admin_Views::add_scripts_and_styles() runs first at 999
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 1100 );
@@ -84,7 +86,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * Add script to Views edit screen (admin)
 	 * @param  mixed $hook
 	 */
-	function add_scripts_and_styles( $hook ) {
+	public function add_scripts_and_styles( $hook ) {
 		global $pagenow;
 
 		// Don't process any scripts below here if it's not a GravityView page or the widgets screen
@@ -256,6 +258,48 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		return apply_filters( 'gravityview/extension/search/input_type', $types, $field_type );
 
+	}
+
+	/**
+	 * Display hidden fields to add support for sites using Default permalink structure
+	 *
+	 * @since 1.8
+	 * @return array Search fields, modified if not using permalinks
+	 */
+	function add_no_permalink_fields( $search_fields, $object, $widget_args = array() ) {
+		/** @global WP_Rewrite $wp_rewrite */
+		global $wp_rewrite;
+
+		// Support default permalink structure
+		if ( false === $wp_rewrite->using_permalinks() ) {
+
+			// By default, use current post.
+			$post_id = 0;
+
+			// We're in the WordPress Widget context, and an overriding post ID has been set.
+			if( ! empty( $widget_args['post_id'] ) ) {
+				$post_id = absint( $widget_args['post_id'] );
+			}
+			// We're in the WordPress Widget context, and the base View ID should be used
+			else if( ! empty( $widget_args['view_id'] ) ) {
+				$post_id = absint( $widget_args['view_id'] );
+			}
+
+			$args = gravityview_get_permalink_query_args( $post_id );
+
+			// Add hidden fields to the search form
+			foreach ( $args as $key => $value ) {
+				$search_fields[] = array(
+					'name'  => $key,
+					'input' => 'hidden',
+					'value' => $value,
+				);
+			}
+
+		}
+
+
+		return $search_fields;
 	}
 
 
@@ -541,9 +585,10 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		 * Modify what fields are shown. The order of the fields in the $search_filters array controls the order as displayed in the search bar widget.
 		 * @param array $search_fields Array of search filters with `key`, `label`, `value`, `type` keys
 		 * @param $this Current widget object
+		 * @param array $widget_args Args passed to this method. {@since 1.8}
 		 * @var array
 		 */
-		$gravityview_view->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this );
+		$gravityview_view->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this, $widget_args );
 
 		$gravityview_view->search_layout = !empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal';
 
@@ -600,12 +645,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	static function get_search_form_action() {
 		$gravityview_view = GravityView_View::getInstance();
 
-		if( 'wp_widget' == $gravityview_view->getContext() ) {
-			$post_id = $gravityview_view->getPostId() ? $gravityview_view->getPostId() : $gravityview_view->getViewId();
-			$url = add_query_arg( array(), get_permalink( $post_id ) );
-		} else {
-			$url = add_query_arg( array() );
-		}
+		$post_id = $gravityview_view->getPostId() ? $gravityview_view->getPostId() : $gravityview_view->getViewId();
+
+		$url = add_query_arg( array(), get_permalink( $post_id ) );
 
 		return esc_url( $url );
 	}

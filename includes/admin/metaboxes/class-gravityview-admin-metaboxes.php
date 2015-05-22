@@ -89,7 +89,6 @@ class GravityView_Admin_Metaboxes {
 		 */
 		do_action( 'gravityview/metaboxes/before_render', $post );
 
-		// Used in the includes
 		$metaboxes = GravityView_Metabox_Tabs::get_all();
 
 		include self::$metaboxes_dir . 'views/gravityview-navigation.php';

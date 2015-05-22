@@ -316,24 +316,18 @@ abstract class GravityView_Extension {
 	 * - Checks GravityView and Gravity Forms version numbers
 	 * - Sets self::$is_compatible to boolean value
 	 *
-	 * @global string $pagenow Current page in the admin
 	 * @uses GravityView_Admin::check_gravityforms()
 	 * @return boolean Is the extension supported?
 	 */
 	protected function is_extension_supported() {
-		global $pagenow;
 
 		self::$is_compatible = true;
-
-		$is_plugin_page = is_admin() && ( $pagenow && 'plugins.php' === $pagenow );
 
 		if( !class_exists( 'GravityView_Plugin' ) ) {
 
 			$message = sprintf( __('Could not activate the %s Extension; GravityView is not active.', 'gravityview'), $this->_title );
 
-			if( $is_plugin_page ) {
-				self::add_notice( $message );
-			}
+			self::add_notice( $message );
 
 			do_action( 'gravityview_log_error', __METHOD__. ' ' . $message );
 
@@ -343,9 +337,7 @@ abstract class GravityView_Extension {
 
 			$message = sprintf( __('The %s Extension requires GravityView Version %s or newer.', 'gravityview' ), $this->_title, '<tt>'.$this->_min_gravityview_version.'</tt>' );
 
-			if( $is_plugin_page ) {
-				self::add_notice( $message );
-			}
+			self::add_notice( $message );
 
 			do_action( 'gravityview_log_error', __METHOD__. ' ' . $message );
 

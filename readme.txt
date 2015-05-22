@@ -27,7 +27,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
     * See "Matching blank values" in the [shortcode documentation](http://docs.gravityview.co/article/252-gvlogic-shortcode)
 * Fixed: Newly created entries cannot be directly accessed when using the custom slug feature
 * Fixed: Merge Tag autocomplete hidden behind the Field settings (did you know you can type `{` in a field that has Merge Tags enabled and you will get autocomplete?)
+* Fixed: For sites not using [Permalinks](http://codex.wordpress.org/Permalinks), the Search Bar was not working for embedded Views
 * Tweak: When GravityView is disabled, only show "Could not activate the Extension; GravityView is not active." on the Plugins page
+* Added: Third parameter to `gravityview_widget_search_filters` filter that passes the search widget arguments
 
 = 1.7.6.2 on May 12 =
 * Fixed: PHP warning when trying to update an entry with the approved field.
