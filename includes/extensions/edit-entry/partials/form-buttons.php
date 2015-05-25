@@ -1,6 +1,8 @@
 <div id="publishing-action">
 	<?php
 
+	$back_link = esc_url( remove_query_arg( array( 'page', 'view', 'edit' ) ) );
+
 	/**
 	 * @since 1.5.1
 	 */
