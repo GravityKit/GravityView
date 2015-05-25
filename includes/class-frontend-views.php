@@ -1053,6 +1053,46 @@ class GravityView_frontend {
 		$sort_field = GFFormsModel::get_field( $form, $sort_field_id );
 
 		switch ( $sort_field['type'] ) {
+
+			case 'address':
+				// Sorting by full address
+				if ( floatval( $sort_field_id ) === floor( $sort_field_id ) ) {
+
+					/**
+					 * Override how to sort when sorting address
+					 *
+					 * @since 1.8
+					 *
+					 * @param string $address_part `street`, `street2`, `city`, `state`, `zip`, or `country` (default: `city`)
+					 * @param string $sort_field_id Field used for sorting
+					 * @param int $form_id GF Form ID
+					 */
+					$address_part = apply_filters( 'gravityview/sorting/address', 'city', $sort_field_id, $form_id );
+
+					switch( strtolower( $address_part ) ){
+						case 'street':
+							$sort_field_id .= '.1';
+							break;
+						case 'street2':
+							$sort_field_id .= '.2';
+							break;
+						default:
+						case 'city':
+							$sort_field_id .= '.3';
+							break;
+						case 'state':
+							$sort_field_id .= '.4';
+							break;
+						case 'zip':
+							$sort_field_id .= '.5';
+							break;
+						case 'country':
+							$sort_field_id .= '.6';
+							break;
+					}
+
+				}
+				break;
 			case 'name':
 				// Sorting by full name, not first, last, etc.
 				if ( floatval( $sort_field_id ) === floor( $sort_field_id ) ) {
