@@ -229,7 +229,11 @@ class GravityView_Widget {
 	}
 
 
-	/** Frontend logic */
+	/**
+	 * Frontend logic
+	 *
+	 * @return void
+	 */
 	public function render_frontend( $widget_args, $content = '', $context = '') {
 		// to be defined by child class
 		if( !$this->pre_render_frontend() ) {
@@ -239,6 +243,7 @@ class GravityView_Widget {
 
 	/**
 	 * General validations when rendering the widget
+	 * @return boolean True: render frontend; False: don't render frontend
 	 */
 	public function pre_render_frontend() {
 		$gravityview_view = GravityView_View::getInstance();

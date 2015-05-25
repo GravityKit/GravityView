@@ -96,6 +96,64 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 	}
 
 	/**
+	 * @inheritDoc
+	 *
+	 * @since 1.8
+	 */
+	public function pre_render_frontend() {
+
+		if( !class_exists('GFPolls') ) {
+
+			$return = false;
+
+			do_action( 'gravityview_log_error', 'Poll Widget not displayed; the Poll Addon is not loaded' );
+
+		} else {
+
+			$return = parent::pre_render_frontend();
+
+			$poll_fields = GFCommon::get_fields_by_type( GravityView_View::getInstance()->getForm(), array( 'poll' ) );
+
+			if ( empty ( $poll_fields ) ) {
+				do_action( 'gravityview_log_error', 'Poll Widget not displayed; there are no poll fields for the form' );
+				$return = false;
+			}
+		}
+
+		return $return;
+	}
+
+	/**
+	 * Get the display settings for the Poll widget
+	 *
+	 * @filter gravityview/widget/poll/settings Modify display settings
+	 *
+	 * @param array $widget_settings Settings for the Poll widget
+	 *
+	 * @return array Final poll widget settings
+	 */
+	function get_frontend_settings( $widget_settings ) {
+
+		$default_settings = array(
+			'field' => 0,
+			'style' => 'green',
+			'percentages' => true,
+			'counts' => true,
+		);
+
+		$settings = wp_parse_args( $widget_settings, $default_settings );
+
+		/**
+		 * Modify the widget settings
+		 * @since 1.8
+		 * @param array $settings
+		 */
+		$settings = apply_filters( 'gravityview/widget/poll/settings', $settings );
+
+		return $settings;
+	}
+
+	/**
 	 * Render the widget
 	 *
 	 * @see https://www.gravityhelp.com/documentation/article/polls-add-on/
@@ -113,32 +171,9 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 			include_once( GFCommon::get_base_path() . '/form_display.php' );
 		}
 
-		$gravityview_view = GravityView_View::getInstance();
-
-		$poll_fields = GFCommon::get_fields_by_type( $gravityview_view->getForm(), array( 'poll' ) );
-
-		// If no poll fields, get outta here!
-		if ( empty ( $poll_fields ) ) {
-			return $text;
-		}
-
 		$this->enqueue_scripts_and_styles();
 
-		$default_settings = array(
-			'field' => 0,
-			'style' => 'green',
-			'percentages' => true,
-			'counts' => true,
-		);
-
-		$widget_settings = $widget_args;
-
-		$settings = wp_parse_args( $widget_settings, $default_settings );
-
-		/**
-		 * Modify the widget
-		 */
-		$settings = apply_filters( 'gravityview/widget/poll/settings', $settings );
+		$settings = $this->get_frontend_settings( $widget_args );
 
 		$percentages = empty( $settings['percentages'] ) ? 'false' : 'true';
 
@@ -149,6 +184,8 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 		} else {
 			$merge_tag = sprintf( '{all_poll_results: style="%s" percentages="%s" counts="%s"}', $settings['style'], $percentages, $counts );
 		}
+
+		$gravityview_view = GravityView_View::getInstance();
 
 		$gravityview_view->poll_merge_tag = $merge_tag;
 
