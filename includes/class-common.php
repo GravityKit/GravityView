@@ -304,7 +304,7 @@ class GVCommon {
 				'desc'  => __( 'Displays the number of correct Quiz answers the user submitted.', 'gravityview' ),
 			);
 			$fields['gquiz_percent'] = array(
-				'label' => __( 'Quiz Percentage', 'gravityview' ),
+				'label' => __( 'Quiz Percentage Grade', 'gravityview' ),
 				'type'  => 'quiz_percent',
 				'desc'  => __( 'Displays the percentage of correct Quiz answers the user submitted.', 'gravityview' ),
 			);
