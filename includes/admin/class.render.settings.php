@@ -122,6 +122,9 @@ class GravityView_Render_Settings {
 	/**
 	 * Render Field Options html (shown through a dialog box)
 	 *
+	 * @see GravityView_Ajax::get_field_options
+	 * @see GravityView_Admin_Views::render_active_areas
+	 *
 	 * @access public
 	 * @param string $field_type field / widget
 	 * @param string $template_id
@@ -131,9 +134,11 @@ class GravityView_Render_Settings {
 	 * @param string $uniqid (default: '')
 	 * @param string $current (default: '')
 	 * @param string $context (default: 'single')
-	 * @return void
+	 * @param array $item Field or widget array that's being rendered
+	 *
+	 * @return string HTML of dialog box
 	 */
-	public static function render_field_options( $field_type, $template_id, $field_id, $field_label, $area, $input_type = NULL, $uniqid = '', $current = '', $context = 'single' ) {
+	public static function render_field_options( $field_type, $template_id, $field_id, $field_label, $area, $input_type = NULL, $uniqid = '', $current = '', $context = 'single', $item = array() ) {
 
 		if( empty( $uniqid ) ) {
 			//generate a unique field id
@@ -161,6 +166,13 @@ class GravityView_Render_Settings {
 		}
 
 		$output .= '<div class="gv-dialog-options" title="'. esc_attr( sprintf( __( 'Options: %s', 'gravityview' ) , strip_tags( html_entity_decode( $field_label ) ) ) ) .'">';
+
+		/**
+		 * @since 1.8
+		 */
+		if( !empty( $item['subtitle'] ) ) {
+			$output .= '<div class="subtitle">' . $item['subtitle'] . '</div>';
+		}
 
 		foreach( $options as $key => $option ) {
 

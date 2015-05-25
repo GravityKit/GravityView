@@ -158,7 +158,6 @@ class GVCommon {
 		return false;
 	}
 
-
 	/**
 	 * Return array of fields' id and label, for a given Form ID
 	 *
@@ -175,6 +174,8 @@ class GVCommon {
 		$fields = array();
 		$has_product_fields = false;
 		$has_post_fields = false;
+		$has_quiz_fields = false;
+		$has_poll_fields = false;
 
 		// If GF_Field exists, we're using GF 1.9+, where add_default_properties has been deprecated.
 		if ( false === class_exists( 'GF_Field' ) && $add_default_properties ) {
@@ -206,7 +207,21 @@ class GVCommon {
 					}
 				}
 
-				if ( GFCommon::is_product_field( $field['type'] ) ){
+				/**
+				 * @since 1.8
+				 */
+				if( 'quiz' === $field['type'] ) {
+					$has_quiz_fields = true;
+				}
+
+				/**
+				 * @since 1.8
+				 */
+				if( 'poll' === $field['type'] ) {
+					$has_poll_fields = true;
+				}
+
+				if( GFCommon::is_product_field( $field['type'] ) ){
 					$has_product_fields = true;
 				}
 
@@ -268,6 +283,33 @@ class GVCommon {
 				'type' => 'transaction_type',
 			);
 
+		}
+
+		/**
+		 * @since 1.8
+		 */
+		if( $has_quiz_fields ) {
+
+			$fields['gquiz_score']   = array(
+				'label' => __( 'Quiz Score Total', 'gravityview' ),
+				'type'  => 'quiz_score',
+				'desc'  => __( 'Displays the number of correct Quiz answers the user submitted.', 'gravityview' ),
+			);
+			$fields['gquiz_percent'] = array(
+				'label' => __( 'Quiz Percentage Grade', 'gravityview' ),
+				'type'  => 'quiz_percent',
+				'desc'  => __( 'Displays the percentage of correct Quiz answers the user submitted.', 'gravityview' ),
+			);
+			$fields['gquiz_grade']   = array(
+				'label' => __( 'Quiz Letter Grade', 'gravityview' ),
+				'type'  => 'quiz_grade',
+				'desc'  => __( 'Displays the Grade the user achieved based on Letter Grading configured in the Quiz Settings.', 'gravityview' ),
+			);
+			$fields['gquiz_is_pass'] = array(
+				'label' => __( 'Quiz Pass/Fail', 'gravityview' ),
+				'type'  => 'quiz_is_pass',
+				'desc'  => __( 'Displays either Passed or Failed based on the Pass/Fail settings configured in the Quiz Settings.', 'gravityview' ),
+			);
 		}
 
 		return $fields;
@@ -1135,19 +1177,19 @@ class GVCommon {
 	}
 
 	/**
-	* array_merge_recursive does indeed merge arrays, but it converts values with duplicate
-	* keys to arrays rather than overwriting the value in the first array with the duplicate
-	* value in the second array, as array_merge does.
-	*
-	* @see http://php.net/manual/en/function.array-merge-recursive.php
-	*
-	* @since  1.5.3
-	* @param array $array1
-	* @param array $array2
-	* @return array
-	* @author Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
-	* @author Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>
-	*/
+	 * array_merge_recursive does indeed merge arrays, but it converts values with duplicate
+	 * keys to arrays rather than overwriting the value in the first array with the duplicate
+	 * value in the second array, as array_merge does.
+	 *
+	 * @see http://php.net/manual/en/function.array-merge-recursive.php
+	 *
+	 * @since  1.5.3
+	 * @param array $array1
+	 * @param array $array2
+	 * @return array
+	 * @author Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
+	 * @author Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>
+	 */
 	public static function array_merge_recursive_distinct( array &$array1, array &$array2 ) {
 		$merged = $array1;
 
@@ -1162,23 +1204,23 @@ class GVCommon {
 		return $merged;
 	}
 
-    /**
-     * Get WordPress users, by default limited to 750 users for performance reasons
-     *
-     * @param string $context Where are we using this information (e.g. change_entry_creator, search_widget ..)
-     * @return array Array of WP_User objects.
-     */
-    public static function get_users( $context = 'change_entry_creator' ) {
+	/**
+	 * Get WordPress users, by default limited to 750 users for performance reasons
+	 *
+	 * @param string $context Where are we using this information (e.g. change_entry_creator, search_widget ..)
+	 * @return array Array of WP_User objects.
+	 */
+	public static function get_users( $context = 'change_entry_creator' ) {
 
-        /**
-         * There are issues with too many users where it breaks the select. We try to keep it at a reasonable number.
-         * @link   text http://codex.wordpress.org/Function_Reference/get_users
-         * @var  array Settings array
-         */
-        $get_users_settings = apply_filters( 'gravityview/get_users/'. $context, apply_filters( 'gravityview_change_entry_creator_user_parameters', array( 'number' => 750 ) ) );
+		/**
+		 * There are issues with too many users where it breaks the select. We try to keep it at a reasonable number.
+		 * @link   text http://codex.wordpress.org/Function_Reference/get_users
+		 * @var  array Settings array
+		 */
+		$get_users_settings = apply_filters( 'gravityview/get_users/'. $context, apply_filters( 'gravityview_change_entry_creator_user_parameters', array( 'number' => 750 ) ) );
 
-        return get_users( $get_users_settings );
-    }
+		return get_users( $get_users_settings );
+	}
 
 
 
