@@ -1337,8 +1337,6 @@
 
 			// Init general settings tabs
 			viewGeneralSettings.initTabs();
-			viewGeneralSettings.zebraStripe();
-
 
 			// Conditional display general settings & trigger display settings if template changes
 			$('#gravityview_directory_template')
@@ -1387,19 +1385,6 @@
 		},
 
 		/**
-		 * Make zebra table rows
-		 * @since 1.8
-		 * @return {void}
-		 */
-		zebraStripe: function() {
-
-			viewGeneralSettings.metaboxObj
-				.find('.form-table tr:even' )
-				.addClass('alternate');
-
-		},
-
-		/**
 		 * Set up the settings metabox vertical tabs
 		 *
 		 * @since 1.8
@@ -1407,7 +1392,6 @@
 		 */
 		initTabs: function() {
 
-			// TODO: set minimum height for tabbed metabox so that the window height doesn't jump around when switching tabs
 			viewGeneralSettings.metaboxObj
 				// What happens after tabs are generated
 				.on( 'tabscreate', viewGeneralSettings.tabsCreate )
