@@ -159,6 +159,8 @@ class GVCommon {
 	}
 
 
+<?php
+
 	/**
 	 * Return array of fields' id and label, for a given Form ID
 	 *
@@ -283,13 +285,6 @@ class GVCommon {
 				'label' => __( 'Transaction Type', 'gravityview' ),
 				'type' => 'transaction_type',
 			);
-
-		}
-
-		/**
-		 * @since 1.8
-		 */
-		if( $has_poll_fields ) {
 
 		}
 
@@ -951,7 +946,7 @@ class GVCommon {
 	 * @param int $formid Gravity Forms form ID
 	 * @param array $blacklist Field types to exclude
 	 *
-	 * @since 1.8
+	 * @since TODO
 	 *
 	 * @todo Get all fields, check if sortable dynamically
 	 *
