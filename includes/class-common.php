@@ -878,55 +878,6 @@ class GVCommon {
 	}
 
 	/**
-	 * Get all the settings for a View
-	 *
-	 * @uses  GravityView_View_Data::get_default_args() Parses the settings with the plugin defaults as backups.
-	 * @param  int $post_id View ID
-	 * @param string $zone Zone location: `header_top` or `header_bottom`. Default:blank (return all zones)
-	 * @return array|null          Associative array of widgets set in the View. NULL if $zone is set and not exists.
-	 */
-	public static function get_template_widgets( $post_id, $zone = '' ) {
-
-		$widgets = get_post_meta( $post_id, '_gravityview_directory_widgets', true );
-
-		if( ! empty( $zone ) ) {
-			return isset( $widgets[ $zone ] ) ? $widgets[ $zone ] : NULL;
-		}
-
-		// Backup, in case GravityView_View_Data isn't loaded yet.
-		return $widgets;
-	}
-
-	/**
-	 * Get a widget for a View
-	 *
-	 * If the widget isn't set by the View, it returns NULL
-	 *
-	 * @param  int $post_id View ID
-	 * @param  string $key     Widget ID
-	 * @return array          Widget settings, or NULL if not set.
-	 */
-	public static function get_template_widget( $post_id, $key ) {
-
-		$widget_zones = self::get_template_widgets( $post_id );
-
-		$widgets = array();
-		foreach( $widget_zones as $widget_zone ) {
-
-			$zone_widgets = wp_list_filter( $widget_zone, array( 'id' => $key ) );
-
-			foreach( $zone_widgets as $zone_widget ) {
-				if( ! empty( $zone_widget ) ) {
-					$widgets[] = $zone_widget;
-				}
-			}
-
-		}
-
-		return ! empty( $widgets ) ? $widgets : NULL;
-	}
-
-	/**
 	 * Get the field configuration for the View
 	 *
 	 * array(
@@ -1234,19 +1185,19 @@ class GVCommon {
 	}
 
 	/**
-	* array_merge_recursive does indeed merge arrays, but it converts values with duplicate
-	* keys to arrays rather than overwriting the value in the first array with the duplicate
-	* value in the second array, as array_merge does.
-	*
-	* @see http://php.net/manual/en/function.array-merge-recursive.php
-	*
-	* @since  1.5.3
-	* @param array $array1
-	* @param array $array2
-	* @return array
-	* @author Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
-	* @author Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>
-	*/
+	 * array_merge_recursive does indeed merge arrays, but it converts values with duplicate
+	 * keys to arrays rather than overwriting the value in the first array with the duplicate
+	 * value in the second array, as array_merge does.
+	 *
+	 * @see http://php.net/manual/en/function.array-merge-recursive.php
+	 *
+	 * @since  1.5.3
+	 * @param array $array1
+	 * @param array $array2
+	 * @return array
+	 * @author Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
+	 * @author Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>
+	 */
 	public static function array_merge_recursive_distinct( array &$array1, array &$array2 ) {
 		$merged = $array1;
 
@@ -1261,23 +1212,23 @@ class GVCommon {
 		return $merged;
 	}
 
-    /**
-     * Get WordPress users, by default limited to 750 users for performance reasons
-     *
-     * @param string $context Where are we using this information (e.g. change_entry_creator, search_widget ..)
-     * @return array Array of WP_User objects.
-     */
-    public static function get_users( $context = 'change_entry_creator' ) {
+	/**
+	 * Get WordPress users, by default limited to 750 users for performance reasons
+	 *
+	 * @param string $context Where are we using this information (e.g. change_entry_creator, search_widget ..)
+	 * @return array Array of WP_User objects.
+	 */
+	public static function get_users( $context = 'change_entry_creator' ) {
 
-        /**
-         * There are issues with too many users where it breaks the select. We try to keep it at a reasonable number.
-         * @link   text http://codex.wordpress.org/Function_Reference/get_users
-         * @var  array Settings array
-         */
-        $get_users_settings = apply_filters( 'gravityview/get_users/'. $context, apply_filters( 'gravityview_change_entry_creator_user_parameters', array( 'number' => 750 ) ) );
+		/**
+		 * There are issues with too many users where it breaks the select. We try to keep it at a reasonable number.
+		 * @link   text http://codex.wordpress.org/Function_Reference/get_users
+		 * @var  array Settings array
+		 */
+		$get_users_settings = apply_filters( 'gravityview/get_users/'. $context, apply_filters( 'gravityview_change_entry_creator_user_parameters', array( 'number' => 750 ) ) );
 
-        return get_users( $get_users_settings );
-    }
+		return get_users( $get_users_settings );
+	}
 
 
 
