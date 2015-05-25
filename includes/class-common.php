@@ -158,9 +158,6 @@ class GVCommon {
 		return false;
 	}
 
-
-<?php
-
 	/**
 	 * Return array of fields' id and label, for a given Form ID
 	 *
