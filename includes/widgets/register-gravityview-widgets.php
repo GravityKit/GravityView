@@ -28,7 +28,7 @@ function gravityview_register_gravityview_widgets() {
 	include_once( GRAVITYVIEW_DIR .'includes/widgets/search-widget/class-search-widget.php' );
 
 	if( class_exists('GFPolls') ) {
-		include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget-poll.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/widgets/poll/class-gravityview-widget-poll.php' );
 	}
 
 }

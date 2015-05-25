@@ -15,9 +15,15 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 	 */
 	protected $show_on_single = false;
 
+	/**
+	 * @todo add support for specifying poll field to display (via AJAX in field settings)
+	 * @since 1.8
+	 */
 	function __construct() {
 
-		$this->widget_description = __('Insert custom text or HTML as a widget', 'gravityview' );
+		$this->widget_description = __('Displays the results of Poll Fields that exist in the form.', 'gravityview' );
+
+		$this->widget_subtitle = sprintf( _x('Note: this will display poll results for %sall form entries%s, not only the entries displayed in the View.', 'The string placeholders are for emphasis HTML', 'gravityview' ), '<em>', '</em>' );
 
 		$default_values = array(
 			'header' => 1,
@@ -52,6 +58,25 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 		);
 
 		parent::__construct( __( 'Poll Results', 'gravityview' ) , 'poll', $default_values, $settings );
+
+		// frontend - add template path
+		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
+
+	}
+
+	/**
+	 * Include this extension templates path
+	 * @since 1.8
+	 * @param array $file_paths List of template paths ordered
+	 */
+	function add_template_path( $file_paths ) {
+
+		$index = 126;
+
+		// Index 100 is the default GravityView template path.
+		$file_paths[ $index ] = plugin_dir_path( __FILE__ ) . 'templates/';
+
+		return $file_paths;
 	}
 
 	/**
@@ -73,6 +98,8 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 	/**
 	 * Render the widget
 	 *
+	 * @see https://www.gravityhelp.com/documentation/article/polls-add-on/
+	 *
 	 * @since 1.8
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = '') {
@@ -81,58 +108,53 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 			return;
 		}
 
-		if( !empty( $widget_args['title'] ) ) {
-			echo $widget_args['title'];
-		}
-
 		// Make sure the class is loaded in DataTables
 		if( !class_exists( 'GFFormDisplay' ) ) {
 			include_once( GFCommon::get_base_path() . '/form_display.php' );
 		}
 
-		global $gravityview_view;
+		$gravityview_view = GravityView_View::getInstance();
+
+		$poll_fields = GFCommon::get_fields_by_type( $gravityview_view->getForm(), array( 'poll' ) );
+
+		// If no poll fields, get outta here!
+		if ( empty ( $poll_fields ) ) {
+			return $text;
+		}
 
 		$this->enqueue_scripts_and_styles();
 
 		$default_settings = array(
-			'action' => 'polls',
 			'field' => 0,
-			'id' => 0,
-			'mode' => 'results',
-			'display_results' => true,
-			'ajax' => false,
-			'disable_scripts' => false,
-			'tabindex' => null,
-			'title' => false,
-			'description' => false,
 			'style' => 'green',
 			'percentages' => true,
 			'counts' => true,
 		);
 
-		$widget_settings = array(
-			'id' => $gravityview_view->getFormId(),
-			'style' => $this->get_setting('style'),
-			'percentages' => $this->get_setting('percentages'),
-			'counts' => $this->get_setting('counts'),
-		);
+		$widget_settings = $widget_args;
 
 		$settings = wp_parse_args( $widget_settings, $default_settings );
-		#var_dump( $settings );
-		#die();
 
-		foreach( $settings as $key => $value ) {
+		/**
+		 * Modify the widget
+		 */
+		$settings = apply_filters( 'gravityview/widget/poll/settings', $settings );
 
-			$value = empty( $value ) ? 'false' : 'true';
+		$percentages = empty( $settings['percentages'] ) ? 'false' : 'true';
 
-			$shortcode_atts[] = $key.'="'.$value.'"';
+		$counts = empty( $settings['counts'] ) ? 'false' : 'true';
+
+		if( !empty( $settings['field'] ) ) {
+			$merge_tag = sprintf( '{gpoll: field="%d" style="%s" percentages="%s" counts="%s"}', $settings['field'], $settings['style'], $percentages, $counts );
+		} else {
+			$merge_tag = sprintf( '{all_poll_results: style="%s" percentages="%s" counts="%s"}', $settings['style'], $percentages, $counts );
 		}
 
-		$shortcode_string = implode( ' ', $shortcode_atts );
+		$gravityview_view->poll_merge_tag = $merge_tag;
 
-		$shortcode = "[gravityforms {$shortcode_string}]";
+		$gravityview_view->poll_settings = $settings;
 
-		echo do_shortcode($shortcode);
+		$gravityview_view->render('widget', 'poll', false );
 
 	}
 
