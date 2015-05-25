@@ -416,6 +416,24 @@ class GravityView_Edit_Entry {
 		}
 	}
 
+	/**
+	 * Have GF handle file uploads
+	 *
+	 * Copy of code from GFFormDisplay::process_form()
+	 *
+	 * @param int $form_id
+	 */
+	function process_save_process_files( $form_id ) {
+
+		//Loading files that have been uploaded to temp folder
+		$files = GFCommon::json_decode( stripslashes( RGForms::post( 'gform_uploaded_files' ) ) );
+		if ( ! is_array( $files ) ) {
+			$files = array();
+		}
+
+		RGFormsModel::$uploaded_files[ $form_id ] = $files;
+	}
+
 
 	function process_save() {
 
@@ -438,15 +456,7 @@ class GravityView_Edit_Entry {
 
 		do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
 
-		//Loading files that have been uploaded to temp folder
-		$files = GFCommon::json_decode( stripslashes( RGForms::post( "gform_uploaded_files" ) ) );
-
-		if( !is_array( $files ) ) {
-		    $files = array();
-		}
-
-		// When Gravity Forms validates upload fields, they expect this variable to be set.
-		GFFormsModel::$uploaded_files[ $this->form_id ] = $files;
+		$this->process_save_process_files( $this->form_id );
 
 		$this->validate();
 
@@ -459,11 +469,10 @@ class GravityView_Edit_Entry {
 			 */
 			$form = $this->form_prepare_for_save();
 
-			// TODO: Only run in form layout?
+			// TODO: Only run in table layout?
 			// Make sure hidden fields are represented in $_POST
-			#$this->combine_update_existing();
+			$this->combine_update_existing();
 
-			var_dump( $_POST );
 
 			/**
 			 * @hack to avoid the capability validation of the method save_lead for GF 1.9+
@@ -651,9 +660,9 @@ class GravityView_Edit_Entry {
 
 			// GF 1.9+
 			if( is_object( $field ) ) {
-				$field->adminOnly = '';
+				$field->adminOnly = false;
 			} else {
-				$field['adminOnly'] = '';
+				$field['adminOnly'] = false;
 			}
 
 			if( isset($field["inputs"] ) && is_array( $field["inputs"] ) ) {
@@ -786,9 +795,6 @@ class GravityView_Edit_Entry {
 	 */
 	function validate() {
 
-		$this->is_valid = true;
-		return;
-
 		/**
 		 * For some crazy reason, Gravity Forms doesn't validate Edit Entry form submissions.
 		 * You can enter whatever you want!
@@ -872,10 +878,8 @@ class GravityView_Edit_Entry {
 		$this->form = $form;
 
 		add_filter( 'gform_pre_render', array( $this, 'lead_detail_edit_form_modify_form_fields'), 5000, 3 );
-
 		add_filter( 'gform_submit_button', array( $this, 'lead_detail_form_buttons') );
 		add_filter( 'gform_disable_view_counter', '__return_true' );
-
 		add_filter( 'gform_field_input', array( $this, 'lead_detail_edit_field_input' ), 10, 5 );
 
 		// TODO: REMOVE THIS
@@ -917,6 +921,9 @@ class GravityView_Edit_Entry {
 				return $field_content;
 			}
 		}
+
+		// SET SOME FIELD DEFAULTS TO PREVENT ISSUES
+		$field->adminOnly = false; /** @see GFFormDisplay::get_counter_init_script() need to prevent adminOnly */
 
 		// Turn on Admin-style display for file upload fields only
 		if( 'fileupload' === $field->type ) {
@@ -1070,6 +1077,16 @@ class GravityView_Edit_Entry {
 
 	    $edit_fields = array();
 
+		$field_type_blacklist = array(
+			'page',
+		);
+
+		// First, remove blacklist
+		foreach ( $fields as $key => $field ) {
+			if( in_array( $field['type'], $field_type_blacklist ) ) {
+				unset( $fields[ $key ] );
+			}
+		}
 
 	    // The Edit tab has not been configured, so we return all fields by default.
 	    if( empty( $configured_fields ) ) {
@@ -1589,7 +1606,10 @@ class GravityView_Edit_Entry {
 				?>
 			</form>
 
-			<?php GFFormDisplay::footer_init_scripts( $this->form_id ); ?>
+			<?php
+			// TODO: Only initialize here if not using Form layout
+			//GFFormDisplay::footer_init_scripts( $this->form_id );
+			?>
 
 		</div>
 
