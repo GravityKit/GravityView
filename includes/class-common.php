@@ -307,18 +307,22 @@ class GVCommon {
 			$fields['gquiz_score']   = array(
 				'label' => __( 'Quiz Score Total', 'gravityview' ),
 				'type'  => 'quiz_score',
+				'desc'  => __( 'Displays the number of correct Quiz answers the user submitted.', 'gravityview' ),
 			);
 			$fields['gquiz_percent'] = array(
 				'label' => __( 'Quiz Percentage', 'gravityview' ),
 				'type'  => 'quiz_percent',
+				'desc'  => __( 'Displays the percentage of correct Quiz answers the user submitted.', 'gravityview' ),
 			);
 			$fields['gquiz_grade']   = array(
-				'label' => __( 'Quiz Grade', 'gravityview' ),
+				'label' => __( 'Quiz Letter Grade', 'gravityview' ),
 				'type'  => 'quiz_grade',
+				'desc'  => __( 'Displays the Grade the user achieved based on Letter Grading configured in the Quiz Settings.', 'gravityview' ),
 			);
 			$fields['gquiz_is_pass'] = array(
 				'label' => __( 'Quiz Pass/Fail', 'gravityview' ),
 				'type'  => 'quiz_is_pass',
+				'desc'  => __( 'Displays either Passed or Failed based on the Pass/Fail settings configured in the Quiz Settings.', 'gravityview' ),
 			);
 		}
 
