@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
     * Use `[gvlogic if="{example} is=""]` to determine if a value is blank.
     * Use `[gvlogic if="{example} isnot=""]` to determine if a value is not blank.
     * See "Matching blank values" in the [shortcode documentation](http://docs.gravityview.co/article/252-gvlogic-shortcode)
+* Fixed: Sorting by full address. Now defaults to sorting by city. Use the `gravityview/sorting/address` filter to modify what data to use ([here's how](https://gist.github.com/zackkatz/8b8f296c6f7dc99d227d))
 * Fixed: Newly created entries cannot be directly accessed when using the custom slug feature
 * Fixed: Merge Tag autocomplete hidden behind the Field settings (did you know you can type `{` in a field that has Merge Tags enabled and you will get autocomplete?)
 * Fixed: For sites not using [Permalinks](http://codex.wordpress.org/Permalinks), the Search Bar was not working for embedded Views
