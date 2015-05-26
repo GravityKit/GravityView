@@ -1383,6 +1383,8 @@ class GravityView_Edit_Entry {
 	 * - Does the user have the right caps for the entry
 	 * - Is the entry in the trash?
 	 *
+	 * @todo Move to GVCommon
+	 *
 	 * @param  boolean $echo Show error messages in the form?
 	 * @return boolean        True: can edit form. False: nope.
 	 */
@@ -1500,6 +1502,14 @@ class GravityView_Edit_Entry {
 	}
 
 
+	/**
+	 * Display updated/error notice
+	 *
+	 * @param string $notice text/HTML of notice
+	 * @param string $class CSS class for notice (`updated` or `error`)
+	 *
+	 * @return string
+	 */
 	function generate_notice( $notice, $class = '' ) {
 		return '<div class="gv-notice '.esc_attr( $class ) .'">'. $notice .'</div>';
 	}
