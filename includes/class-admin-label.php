@@ -74,7 +74,7 @@ class GravityView_Admin_View_Item {
 	protected $id;
 	protected $subtitle;
 	protected $settings_html;
-	private $label_type;
+	private   $label_type;
 	protected $item;
 
 	function __construct( $title = '', $field_id, $item = array(), $settings = array() ) {
@@ -95,6 +95,7 @@ class GravityView_Admin_View_Item {
 			'settings_html' => NULL,
 			'adminLabel' => NULL,
 			'adminOnly' => NULL,
+			'subtitle' => NULL,
 		));
 
 		$this->title = $title;
@@ -102,7 +103,6 @@ class GravityView_Admin_View_Item {
 		$this->id = $field_id;
 		$this->settings = $settings;
 		$this->label_type = $item['label_type'];
-
 	}
 
 	/**
@@ -162,7 +162,13 @@ class GravityView_Admin_View_Item {
 
 	}
 
+	/**
+	 * Generate HTML for field or a widget modal
+	 *
+	 * @return string
+	 */
 	function getOutput() {
+
 		$settings_title = sprintf(__('Configure %s Settings', 'gravityview'), ucfirst($this->label_type));
 		$delete_title = sprintf(__('Remove %s', 'gravityview'), ucfirst($this->label_type));
 		$single_link_title = __('This field links to the Single Entry', 'gravityview');
@@ -194,7 +200,7 @@ class GravityView_Admin_View_Item {
 			$label .= ' <small>('.esc_attr( $this->item['parent']['label'] ) .')</small>';
 		}
 
-		// Name of field
+		// Name of field / widget
 		$output .= '<span class="gv-field-label" data-original-title="'.esc_attr( $label ).'" title="'. $this->get_item_info( false ) .'">'. $label . '</span>';
 
 
@@ -208,7 +214,6 @@ class GravityView_Admin_View_Item {
 		$output .= '</h5>';
 
 		$container_class = !empty( $this->item['parent'] ) ? ' gv-child-field' : '';
-
 
 		$output = '<div data-fieldid="'.esc_attr($this->id).'" data-inputtype="'.esc_attr( $this->item['input_type'] ).'" class="gv-fields'.$container_class.'">'.$output.$this->item['settings_html'].'</div>';
 

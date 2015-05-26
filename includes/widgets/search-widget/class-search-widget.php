@@ -62,6 +62,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// frontend - add template path
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
 
+		// Add hidden fields for "Default" permalink structure
+		add_filter( 'gravityview_widget_search_filters', array( $this, 'add_no_permalink_fields' ), 10, 3 );
 
 		// admin - add scripts - run at 1100 to make sure GravityView_Admin_Views::add_scripts_and_styles() runs first at 999
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 1100 );
@@ -84,7 +86,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * Add script to Views edit screen (admin)
 	 * @param  mixed $hook
 	 */
-	function add_scripts_and_styles( $hook ) {
+	public function add_scripts_and_styles( $hook ) {
 		global $pagenow;
 
 		// Don't process any scripts below here if it's not a GravityView page or the widgets screen
@@ -203,6 +205,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$output .= '<option value="search_all" '. selected( 'search_all', $current, false ).' data-inputtypes="text">'. esc_html__( 'Search Everything', 'gravityview') .'</option>';
 		$output .= '<option value="entry_date" '. selected( 'entry_date', $current, false ).' data-inputtypes="date">'. esc_html__( 'Entry Date', 'gravityview') .'</option>';
 		$output .= '<option value="entry_id" '. selected( 'entry_id', $current, false ).' data-inputtypes="text">'. esc_html__( 'Entry ID', 'gravityview') .'</option>';
+        $output .= '<option value="created_by" '. selected( 'created_by', $current, false ).' data-inputtypes="select">'. esc_html__( 'Entry Creator', 'gravityview') .'</option>';
+
 
 		if( !empty( $fields ) ) {
 
@@ -258,6 +262,48 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 	}
 
+	/**
+	 * Display hidden fields to add support for sites using Default permalink structure
+	 *
+	 * @since 1.8
+	 * @return array Search fields, modified if not using permalinks
+	 */
+	function add_no_permalink_fields( $search_fields, $object, $widget_args = array() ) {
+		/** @global WP_Rewrite $wp_rewrite */
+		global $wp_rewrite;
+
+		// Support default permalink structure
+		if ( false === $wp_rewrite->using_permalinks() ) {
+
+			// By default, use current post.
+			$post_id = 0;
+
+			// We're in the WordPress Widget context, and an overriding post ID has been set.
+			if( ! empty( $widget_args['post_id'] ) ) {
+				$post_id = absint( $widget_args['post_id'] );
+			}
+			// We're in the WordPress Widget context, and the base View ID should be used
+			else if( ! empty( $widget_args['view_id'] ) ) {
+				$post_id = absint( $widget_args['view_id'] );
+			}
+
+			$args = gravityview_get_permalink_query_args( $post_id );
+
+			// Add hidden fields to the search form
+			foreach ( $args as $key => $value ) {
+				$search_fields[] = array(
+					'name'  => $key,
+					'input' => 'hidden',
+					'value' => $value,
+				);
+			}
+
+		}
+
+
+		return $search_fields;
+	}
+
 
 	/** --- Frontend --- */
 
@@ -304,10 +350,19 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		if( !empty( $_GET[ 'gv_id' ] ) ) {
 			$search_criteria['field_filters'][] = array(
 				'key' => 'id',
-				'value' => (int)$_GET[ 'gv_id' ],
+				'value' => absint( $_GET[ 'gv_id' ] ),
 				'operator' => '='
 			);
 		}
+
+        // search for a specific Created_by ID
+        if( !empty( $_GET[ 'gv_by' ] ) ) {
+            $search_criteria['field_filters'][] = array(
+                'key' => 'created_by',
+                'value' => absint( $_GET['gv_by'] ),
+                'operator' => '='
+            );
+        }
 
 		// get the other search filters
 		foreach( $_GET as $key => $value ) {
@@ -524,6 +579,16 @@ class GravityView_Widget_Search extends GravityView_Widget {
 					$search_fields[ $k ]['value'] = esc_attr( stripslashes_deep( rgget( 'gv_id' ) ) );
 					break;
 
+                case 'created_by':
+                    $search_fields[ $k ]['label'] = __( 'Submitted by:', 'gravityview' );
+                    $search_fields[ $k ]['key'] = 'created_by';
+                    $search_fields[ $k ]['name'] = 'gv_by';
+                    $search_fields[ $k ]['input'] = $field['input'];
+                    $search_fields[ $k ]['value'] = esc_attr( stripslashes_deep( rgget( 'gv_by' ) ) );
+                    $search_fields[ $k ]['choices'] = self::get_created_by_choices();
+                    break;
+
+
 				default:
 					if( $field['input'] === 'date' ) {
 						$has_date = true;
@@ -541,9 +606,10 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		 * Modify what fields are shown. The order of the fields in the $search_filters array controls the order as displayed in the search bar widget.
 		 * @param array $search_fields Array of search filters with `key`, `label`, `value`, `type` keys
 		 * @param $this Current widget object
+		 * @param array $widget_args Args passed to this method. {@since 1.8}
 		 * @var array
 		 */
-		$gravityview_view->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this );
+		$gravityview_view->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this, $widget_args );
 
 		$gravityview_view->search_layout = !empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal';
 
@@ -558,7 +624,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			$this->enqueue_datepicker();
 		}
 
-		$gravityview_view->render('widget', 'search', false );
+		$gravityview_view->render( 'widget', 'search', false );
 	}
 
 	/**
@@ -600,12 +666,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	static function get_search_form_action() {
 		$gravityview_view = GravityView_View::getInstance();
 
-		if( 'wp_widget' == $gravityview_view->getContext() ) {
-			$post_id = $gravityview_view->getPostId() ? $gravityview_view->getPostId() : $gravityview_view->getViewId();
-			$url = add_query_arg( array(), get_permalink( $post_id ) );
-		} else {
-			$url = add_query_arg( array() );
-		}
+		$post_id = $gravityview_view->getPostId() ? $gravityview_view->getPostId() : $gravityview_view->getViewId();
+
+		$url = add_query_arg( array(), get_permalink( $post_id ) );
 
 		return esc_url( $url );
 	}
@@ -696,10 +759,35 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			$filter['choices'] = $form_field['choices'];
 		}
 
-
 		return $filter;
 
 	}
+
+    /**
+     * Calculate the search choices for the users
+     *
+     * @since 1.8
+     *
+     * @return array Array of user choices (value = ID, text = display name)
+     */
+    static private function get_created_by_choices() {
+
+        /**
+         * filter gravityview/get_users/search_widget
+         * @see \GVCommon::get_users
+         */
+        $users = GVCommon::get_users( 'search_widget' );
+
+        $choices = array();
+        foreach ( $users as $user ) {
+            $choices[] = array(
+                'value' => $user->ID,
+                'text' => $user->display_name
+            );
+        }
+
+        return $choices;
+    }
 
 
 	static private function get_post_categories_choices() {

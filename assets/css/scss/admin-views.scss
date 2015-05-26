@@ -328,17 +328,17 @@ $gv-overlay-index: 10000;
   cursor: wait;
 }
 
+// Fix issue with theme conflicts where .gv-overlay gets in the way
+.ui-front {
+  z-index: $gv-overlay-index + 1;
+}
+
 /** View configuration tabs */
 .ui-tabs {
 	position: relative;
 	padding: .1em;
 	zoom: 1;
 	margin-top: 1em;
-
-	// Fix issue with theme conflicts where .gv-overlay gets in the way
-	.ui-front {
-		z-index: $gv-overlay-index + 1;
-	}
 
 	.ui-tabs-nav {
 		margin: 0;
@@ -691,8 +691,17 @@ hr {
 	width: 90%;
 	padding: 10px 0 !important;
 
+    /** @since 1.8 **/
+    .subtitle {
+      margin: 0 15px .8em;
+      padding: .5em 0 .8em;
+      border-bottom: 1px solid #eee;
+    }
+
 	&.gv-dialog-warning p {
 		font-size: 1.1em;
+        margin: 0 !important;
+        padding: 1.5em !important;
 	}
 
 	&.gv-dialog-warning .dashicons {
@@ -703,11 +712,6 @@ hr {
 		float: right;
 		text-align: right;
 		color: #ddd;
-	}
-
-	p {
-		margin: 0 !important;
-		padding: 1.5em !important;
 	}
 
 	// Each setting row ( Used to be ul and ul li )

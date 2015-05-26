@@ -7,6 +7,17 @@
 
 #gravityview-metabox-content-container {
 
+  // Pre-JS loading
+  max-height: 442px;
+  overflow-y: auto;
+
+  // Once the JS has loaded
+  &.ui-tabs-panel {
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  background: white; // Allow .striped rows to show
   float: left;
   width: 80%;
   border-left: 1px solid #eee;
@@ -24,6 +35,30 @@
 
   }
 
+  .form-table {
+    margin-top: 0;
+    padding-top: 0;
+
+    caption {
+      text-align: left;
+      .rtl & {
+        text-align: right;
+      }
+
+      font-size: 14px;
+      padding: 8px 10px;
+      margin: 0;
+      line-height: 1.4;
+      font-weight: 600;
+    }
+
+    label {
+      .howto {
+        margin-top: 5px;
+      }
+    }
+  }
+
   .ui-tabs-panel {
 
     @include clearfix();
@@ -36,29 +71,6 @@
     #side-sortables & {
       margin-top: 1px; // Move away a bit from the border radius
       border-top: 2px solid #ccc;
-    }
-
-    .form-table {
-      margin-top: 0;
-
-      caption {
-        text-align: left;
-        .rtl & {
-          text-align: right;
-        }
-
-        font-size: 14px;
-        padding: 8px 10px;
-        margin: 0;
-        line-height: 1.4;
-        font-weight: 600;
-      }
-
-      label {
-      	.howto {
-      		margin-top: 5px;
-      	}
-      }
     }
 
     p {
@@ -100,10 +112,6 @@
     input.button {
       width: auto;
       margin-left: 8px;
-    }
-
-    select {
-      float: left;
     }
 
   }

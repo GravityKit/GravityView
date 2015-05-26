@@ -641,13 +641,14 @@ class GravityView_Admin_Views {
 		// get the list of registered widgets
 		$widgets = apply_filters( 'gravityview_register_directory_widgets', array() );
 
-		if( !empty( $widgets ) ) :
-			foreach( $widgets as $id => $details ) :
+		if( !empty( $widgets ) ) {
+
+			foreach( $widgets as $id => $details ) {
 
 				echo new GravityView_Admin_View_Widget( $details['label'], $id, $details );
 
-			endforeach;
-		endif;
+			}
+		}
 
 	}
 
@@ -662,13 +663,13 @@ class GravityView_Admin_Views {
 	function render_active_areas( $template_id, $type, $zone, $rows, $values ) {
 		global $post;
 
-		$available_items = array();
-
 		if( $type === 'widget' ) {
 			$button_label = __( 'Add Widget', 'gravityview' );
-		} elseif( $type === 'field' ) {
+		} else {
 			$button_label = __( 'Add Field', 'gravityview' );
 		}
+
+		$available_items = array();
 
 		// if saved values, get available fields to label everyone
 		if( !empty( $values ) && ( !empty( $post->ID ) || !empty( $_POST['template_id'] ) ) ) {
@@ -710,7 +711,7 @@ class GravityView_Admin_Views {
 
 										if( !$original_item ) {
 
-											do_action('gravityview_log_error', 'An item was not available when rendering the output; maybe it was added by a plugn that is now de-activated.', array('available_items' => $available_items, 'field' => $field ));
+											do_action('gravityview_log_error', 'An item was not available when rendering the output; maybe it was added by a plugin that is now de-activated.', array('available_items' => $available_items, 'field' => $field ));
 
 											$original_item = $field;
 										} else {
@@ -720,7 +721,7 @@ class GravityView_Admin_Views {
 										}
 
 										// Field options dialog box
-										$field_options = GravityView_Render_Settings::render_field_options( $type, $template_id, $field['id'], $original_item['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone );
+										$field_options = GravityView_Render_Settings::render_field_options( $type, $template_id, $field['id'], $original_item['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone, $original_item );
 
 										$item = array(
 											'input_type' => $input_type,
