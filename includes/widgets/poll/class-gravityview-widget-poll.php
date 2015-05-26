@@ -32,27 +32,27 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 
 		$settings = array(
 			'percentages' => array(
-				'label' => __('Display Percentages'),
+				'label' => __('Display Percentages', 'gravityview'),
 				'type' => 'checkbox',
 				'value' => true,
 				'tooltip' => __( 'Display results percentages as part of results? Supported values are: true, false. Defaults to "true".', 'gravityview' ),
 			),
 			'counts' => array(
-				'label' => __('Display Counts'),
+				'label' => __('Display Counts', 'gravityview'),
 				'type' => 'checkbox',
 				'value' => true,
 				'tooltip' => __( 'Display number of times each choice has been selected when displaying results? Supported values are: true, false. Defaults to "true".', 'gravityview' ),
 			),
 			'style' => array(
 				'type' => 'select',
-				'label' => __('Style'),
+				'label' => __('Style', 'gravityview'),
 				'tooltip' => __( 'The Polls Add-On currently supports 4 built in styles: red, green, orange, blue. Defaults to "green".', 'gravityview' ),
 				'value' => 'green',
 				'choices' => array(
-					'green' => __('Green'),
-					'blue' => __('Blue'),
-					'red' => __('Red'),
-					'orange' => __('Orange'),
+					'green' => __('Green', 'gravityview'),
+					'blue' => __('Blue', 'gravityview'),
+					'red' => __('Red', 'gravityview'),
+					'orange' => __('Orange', 'gravityview'),
 				)
 			)
 		);
