@@ -255,56 +255,50 @@ class GravityView_Welcome {
 
 				<h2 class="subtitle" style="text-align: center;"><?php esc_html_e('What&rsquo;s New', 'gravityview' ); ?></h2>
 
-				<div class="feature-section col three-col">
+				<div class="feature-section col two-col">
 
 					<div class="col-1">
-						<img src="<?php echo plugins_url( 'assets/images/screenshots/gvlogic.png', GRAVITYVIEW_FILE ); ?>" alt="gvlogic: conditional content display">
-						<h4 class="higher">Conditional Content Display</h4>
-						<p>Show or hide content in Custom Content fields using the new <code>[gvlogic]</code> shortcode.</p>
-						<p><a href="http://docs.gravityview.co/article/252-gvlogic-shortcode" class="button button-primary" rel="external" title="Learn how to use it">Learn how to use the shortcode</a></p>
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/tabbed-settings.jpg', GRAVITYVIEW_FILE ); ?>" alt="gvlogic: conditional content display">
+						<h4 class="higher">Improved View Settings</h4>
+						<p>All View settings are now combined in a single View Settings metabox, separated with tabs. No more managing settings in multiple places!</p>
+						<p><a href="http://docs.gravityview.co/article/275-view-settings" class="button button-primary" rel="external" title="Learn how to use it">Learn More</a></p>
 					</div>
 
-					<div class="col-2">
-						<img src="<?php echo plugins_url( 'assets/images/screenshots/other-entries.png', GRAVITYVIEW_FILE ); ?>" alt="Configuring the Other Entries field">
-						<h4 class="higher">New "Other Entries" Field</h4>
-						<p>In Version 1.7.2, you can now list other entries created by the Entry creator.</p>
-					</div>
-
-					<div class="col-3 last-feature">
-						<img src="<?php echo plugins_url( 'assets/images/screenshots/edit-post-content.png', GRAVITYVIEW_FILE ); ?>" alt="Edit Post Content">
-						<h4 class="higher">Edit Post Content</h4>
-						<p>You can now edit most Post Fields when you edit an entry.</p>
-						<p><a href="http://docs.gravityview.co/article/245-editable-post-fields" class="button button-primary" rel="external" title="Learn what fields are editable">Learn what fields are editable</a></p>
-					</div>
-
-				</div>
-
-				<div class="feature-section col three-col">
-
-					<div class="col-1">
-						<img src="<?php echo plugins_url( 'assets/images/screenshots/sort-by-column.png', GRAVITYVIEW_FILE ); ?>" alt="Column being sorted">
-						<h4 class="higher">Sort Tables by Column</h4>
-						<p>Users can sort View results by clicking the sort icons at the top of a table.</p>
-						<p><a href="http://docs.gravityview.co/article/230-how-to-enable-the-table-column-sorting-feature" class="button button-secondary" rel="external" title="Read how to enable column sorting">Learn how to enable</a></p>
-					</div>
-
-					<div class="col-2">
-						<img src="<?php echo plugins_url( 'assets/images/screenshots/search-widget.png', GRAVITYVIEW_FILE ); ?>" alt="A new WordPress search widget">
-						<h4 class="higher">A WordPress Search Widget</h4>
-						<p>A GravityView search widget that you can place anywhere on your site. Very powerful!</p>
-						<p><a href="http://docs.gravityview.co/article/222-the-search-widget" class="button button-secondary" rel="external" title="Learn how to configure the Widget">Learn more</a></p>
-					</div>
-
-					<div class="col-3 last-feature">
-						<img src="<?php echo plugins_url( 'assets/images/screenshots/recent-entries.png', GRAVITYVIEW_FILE ); ?>" alt="Recent entries widget output">
-						<h4 class="higher">Recent Entries Widget</h4>
-						<p>Display the most recent entries in your sidebar and customize how it's displayed.</p>
-						<p><a href="http://docs.gravityview.co/article/223-the-recent-entries-widget" class="button button-secondary">Setting up recent entries</a></p>
+					<div class="col-2 last-feature">
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/poll-widget.jpg', GRAVITYVIEW_FILE ); ?>" alt="Configuring the Other Entries field">
+						<h4 class="higher">GravityView Poll Widget</h4>
+						<p>Display your Poll Addon results at the top of your View. Requires <a href="http://www.gravityforms.com/add-ons/polls/">Gravity Forms Poll Addon</a>.</p>
 					</div>
 
 				</div>
 
 				<hr />
+
+				<h3>1.8 on May 26</h3>
+
+				<ul>
+					<li>View settings have been consolidated to a single location. <a href="http://docs.gravityview.co/article/275-view-settings">Learn more about the new View Settings layout</a>.</li>
+					<li>Added: Custom Link Text in Website fields</li>
+					<li>Added: Poll Addon GravityView widget</li>
+					<li>Added: Quiz Addon support: add Quiz score fields to your View configuration</li>
+					<li>Added: Possibility to search by entry creator on Search Bar and Widget</li>
+					<li>Fixed: <code>[gvlogic]</code> shortcode now properly handles comparing empty values.
+
+						<ul>
+							<li>Use <code>[gvlogic if="{example} is=""]</code> to determine if a value is blank.</li>
+							<li>Use <code>[gvlogic if="{example} isnot=""]</code> to determine if a value is not blank.</li>
+							<li>See "Matching blank values" in the <a href="http://docs.gravityview.co/article/252-gvlogic-shortcode">shortcode documentation</a></li>
+						</ul>
+					</li>
+					<li>Fixed: Sorting by full address. Now defaults to sorting by city. Use the <code>gravityview/sorting/address</code> filter to modify what data to use (<a href="https://gist.github.com/zackkatz/8b8f296c6f7dc99d227d">here's how</a>)</li>
+					<li>Fixed: Newly created entries cannot be directly accessed when using the custom slug feature</li>
+					<li>Fixed: Merge Tag autocomplete hidden behind the Field settings (did you know you can type <code>{</code> in a field that has Merge Tags enabled and you will get autocomplete?)</li>
+					<li>Fixed: For sites not using <a href="http://codex.wordpress.org/Permalinks">Permalinks</a>, the Search Bar was not working for embedded Views</li>
+					<li>Tweak: When GravityView is disabled, only show "Could not activate the Extension; GravityView is not active." on the Plugins page</li>
+					<li>Tweak: Added third parameter to <code>gravityview_widget_search_filters</code> filter that passes the search widget arguments</li>
+					<li>Updated: Italian translation by <a href="https://www.transifex.com/accounts/profile/Lurtz/">@Lurtz</a></li>
+					<li>Updated: Danish translation by <a href="https://www.transifex.com/accounts/profile/jaegerbo/">@jaegerbo</a></li>
+				</ul>
 
 				<h3>1.7.6.2 on May 12</h3>
 
@@ -535,8 +529,7 @@ class GravityView_Welcome {
 						<li class="wp-person">Indonesian translation by <a href="https://www.transifex.com/accounts/profile/sariyanta/">@sariyanta</a></li>
 						<li class="wp-person">Norwegian translation by <a href="https://www.transifex.com/accounts/profile/aleksanderespegard/">@aleksanderespegard</a></li>
 						<li class="wp-person">Danish translation by <a href="https://www.transifex.com/accounts/profile/jaegerbo/">@jaegerbo</a></li>
-						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a></li>
-						<li class="wp-person">Code contributions by <a href="https://github.com/dmlinn">@dmlinn</a></li>
+						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a> and <a href="https://github.com/dmlinn">@dmlinn</a></li>
 					</ul>
 
 					<h4><?php esc_attr_e( 'Want to contribute?', 'gravityview' ); ?></h4>
