@@ -837,6 +837,7 @@ class GravityView_Edit_Entry {
 	 */
 	private function lead_detail_edit( $form, $lead, $view_id ){
 
+		// TODO: Allow users to use original table mode? If so, add a filter or a setting. If not, remove the logic here.
 		$type = 'form';
 
 		if( 'table' === $type ) {
@@ -871,18 +872,29 @@ class GravityView_Edit_Entry {
 	}
 
 
+	/**
+	 * Display the Edit Entry form in the original Gravity Forms format
+	 *
+	 * @since 1.9
+	 *
+	 * @param $form
+	 * @param $lead
+	 * @param $view_id
+	 *
+	 * @return void
+	 */
 	private function lead_detail_edit_form( $form, $lead, $view_id ) {
 
 		$this->view_id = $view_id;
 		$this->entry = $lead;
 		$this->form = $form;
 
-		add_filter( 'gform_pre_render', array( $this, 'lead_detail_edit_form_modify_form_fields'), 5000, 3 );
+		add_filter( 'gform_pre_render', array( $this, 'filter_lead_detail_edit_form_modify_form_fields'), 5000, 3 );
 		add_filter( 'gform_submit_button', array( $this, 'lead_detail_form_buttons') );
 		add_filter( 'gform_disable_view_counter', '__return_true' );
 		add_filter( 'gform_field_input', array( $this, 'lead_detail_edit_field_input' ), 10, 5 );
 
-		// TODO: REMOVE THIS
+		// TODO: REMOVE THIS - it's removing something that was added to fake GF into thinking it's in the Admin
 		unset( $_GET['page'] );
 
 		// DONE: Modify the form fields for the Form to be the same as the configured fields. This can be done using gform_pre_render
@@ -893,12 +905,17 @@ class GravityView_Edit_Entry {
 		// TODO: Verify multiple-page forms
 		// TODO: 1. Save Single File; 2. update the form; 3. Single file disappears
 		// TODO: Product fields are not editable
+		// TODO: Does Conditional Logic work?
+		// TODO: Check Updated and Error messages
+		//      TODO: make sure `gravityview/edit_entry/success` filter is applied
+		//      TODO: make sure default text is the same
+		//
 		$html = GFFormDisplay::get_form( $form["id"], false, false, true, $lead );
 
 		remove_filter( 'gform_submit_button', array( $this, 'lead_detail_form_buttons') );
 		remove_filter( 'gform_disable_view_counter', '__return_true' );
 		remove_filter( 'gform_field_input', array( $this, 'lead_detail_edit_field_input' ), 10, 5 );
-		remove_filter( 'gform_pre_render', array( $this, 'lead_detail_edit_form_modify_form_fields'), 5000, 3 );
+		remove_filter( 'gform_pre_render', array( $this, 'filter_lead_detail_edit_form_modify_form_fields'), 5000, 3 );
 
 		echo $html;
 	}
@@ -951,7 +968,20 @@ class GravityView_Edit_Entry {
 		return $return;
 	}
 
-	public function lead_detail_edit_form_modify_form_fields( $form, $ajax, $field_values ) {
+	/**
+	 * Modify the form fields that are shown when using GFFormDisplay::get_form()
+	 *
+	 * By default, all fields will be shown. We only want the Edit Tab configured fields to be shown.
+	 *
+	 * @param array $form
+	 * @param boolean $ajax Whether in AJAX mode
+	 * @param array|string $field_values Passed parameters to the form
+	 *
+	 * @since 1.9
+	 *
+	 * @return array Modified form array
+	 */
+	public function filter_lead_detail_edit_form_modify_form_fields( $form, $ajax = false, $field_values = '' ) {
 
 		$edit_fields = $this->lead_detail_edit_get_fields( $form, $this->view_id );
 
@@ -962,6 +992,15 @@ class GravityView_Edit_Entry {
 		return $form;
 	}
 
+	/**
+	 * Edit entry in table mode
+	 *
+	 * @since 1.9
+	 *
+	 * @param $form
+	 * @param $lead
+	 * @param $view_id
+	 */
 	private function lead_detail_edit_table( $form, $lead, $view_id ) {
 
 		$form = apply_filters( "gform_admin_pre_render_" . $form["id"], apply_filters( "gform_admin_pre_render", $form ) );
