@@ -297,6 +297,7 @@ class GravityView_Welcome {
 					<li>Tweak: When GravityView is disabled, only show "Could not activate the Extension; GravityView is not active." on the Plugins page</li>
 					<li>Tweak: Added third parameter to <code>gravityview_widget_search_filters</code> filter that passes the search widget arguments</li>
 					<li>Updated: Italian translation by <a href="https://www.transifex.com/accounts/profile/Lurtz/">@Lurtz</a></li>
+					<li>Updated: Bengali translation by <a href="https://www.transifex.com/accounts/profile/tareqhi/">@tareqhi</a></li>
 					<li>Updated: Danish translation by <a href="https://www.transifex.com/accounts/profile/jaegerbo/">@jaegerbo</a></li>
 				</ul>
 

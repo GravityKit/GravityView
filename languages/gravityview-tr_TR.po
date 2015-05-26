@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-05-26 15:32+0000\n"
+"PO-Revision-Date: 2015-05-26 15:51+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/projects/p/gravityview/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -1893,18 +1893,18 @@ msgstr "Bağlantı aynı pencerede mi açılsın?"
 msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" "
 "class=\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
-msgstr ""
+msgstr "%1$s için yeni sürüm mevcut. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s\">Sürüm %3$s detaylarını görüntüle </a>."
 
 #: includes/lib/EDD_SL_Plugin_Updater.php:184
 msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" "
 "class=\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a "
 "href=\"%4$s\">update now</a>."
-msgstr ""
+msgstr "%1$s için yeni sürüm mevcut. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s\">Sürüm %3$s detaylarını görüntüle </a> yada <a href=\"%4$s\">şimdi güncelleyin</a>."
 
 #: includes/lib/EDD_SL_Plugin_Updater.php:324
 msgid "You do not have permission to install plugin updates"
-msgstr ""
+msgstr "Eklenti güncellemelerini yükleme yetkiniz yok"
 
 #: includes/widgets/class-gravityview-widget-custom-content.php:20
 msgid "Insert custom text or HTML as a widget"
@@ -2067,7 +2067,7 @@ msgstr "Herşeyde Ara"
 
 #: includes/widgets/search-widget/class-search-widget.php:208
 msgid "Entry Creator"
-msgstr ""
+msgstr "Kayıt Sahibi"
 
 #: includes/widgets/search-widget/class-search-widget.php:558
 msgid "Search Entries:"

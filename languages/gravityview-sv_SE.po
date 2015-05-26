@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-05-26 15:32+0000\n"
+"PO-Revision-Date: 2015-05-26 15:51+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/gravityview/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -2070,7 +2070,7 @@ msgstr "Sök i allt"
 
 #: includes/widgets/search-widget/class-search-widget.php:208
 msgid "Entry Creator"
-msgstr ""
+msgstr "Inläggets skapare"
 
 #: includes/widgets/search-widget/class-search-widget.php:558
 msgid "Search Entries:"

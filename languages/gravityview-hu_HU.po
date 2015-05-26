@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-05-26 15:32+0000\n"
+"PO-Revision-Date: 2015-05-26 15:51+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/gravityview/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -1897,18 +1897,18 @@ msgstr "Megnyitod a linket ebben az ablakban?"
 msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" "
 "class=\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
-msgstr ""
+msgstr "Új verzió elérhető a következő számára: %1$s. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s\">Tekintsd meg a %3$s verzió részleteit</a>."
 
 #: includes/lib/EDD_SL_Plugin_Updater.php:184
 msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" "
 "class=\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a "
 "href=\"%4$s\">update now</a>."
-msgstr ""
+msgstr "Új verzió elérhető a következő számára: %1$s. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s\">Tekintsd meg %3$s details</a> vagy <a href=\"%4$s\">frissítsd most</a>."
 
 #: includes/lib/EDD_SL_Plugin_Updater.php:324
 msgid "You do not have permission to install plugin updates"
-msgstr ""
+msgstr "Nincs jogosultságod a bővítmények frissítéséhez"
 
 #: includes/widgets/class-gravityview-widget-custom-content.php:20
 msgid "Insert custom text or HTML as a widget"
@@ -2071,7 +2071,7 @@ msgstr "Keresés mindenhol"
 
 #: includes/widgets/search-widget/class-search-widget.php:208
 msgid "Entry Creator"
-msgstr ""
+msgstr "Bejegyzés készítő"
 
 #: includes/widgets/search-widget/class-search-widget.php:558
 msgid "Search Entries:"
