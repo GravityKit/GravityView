@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.8 on May 26 =
 * View settings have been consolidated to a single location. [Learn more about the new View Settings layout](http://docs.gravityview.co/article/275-view-settings).
 * Added: Custom Link Text in Website fields
 * Added: Poll Addon GravityView widget
