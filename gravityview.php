@@ -47,7 +47,7 @@ if ( !defined('GV_MIN_GF_VERSION') ) {
 	/**
 	 * GravityView requires at least this version of Gravity Forms to function properly.
 	 */
-	define( 'GV_MIN_GF_VERSION', '1.8' );
+	define( 'GV_MIN_GF_VERSION', '1.8.7' );
 }
 
 /** Load common & connector functions */
