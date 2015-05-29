@@ -96,8 +96,8 @@ class GravityView_Edit_Entry {
 	 */
 	private function addon_specific_hooks() {
 
-		if( class_exists( 'GFSignature') && is_callable( array('GFSignature', 'get_instance') ) ) {
-			add_filter('gform_admin_pre_render', array(GFSignature::get_instance(), 'edit_lead_script'));
+		if( class_exists( 'GFSignature' ) && is_callable( array( 'GFSignature', 'get_instance' ) ) ) {
+			add_filter('gform_admin_pre_render', array( GFSignature::get_instance(), 'edit_lead_script'));
 		}
 
 	}
@@ -374,6 +374,7 @@ class GravityView_Edit_Entry {
 	 * @return void
 	 */
 	function init( $gv_data ) {
+        error_log( '$_POST:' . print_r( $_POST , true ) );
 
 		require_once(GFCommon::get_base_path() . "/form_display.php");
 		require_once(GFCommon::get_base_path() . "/entry_detail.php");
@@ -434,7 +435,9 @@ class GravityView_Edit_Entry {
 		RGFormsModel::$uploaded_files[ $form_id ] = $files;
 	}
 
-
+    /**
+     * Process edit entry form save
+     */
 	function process_save() {
 
 		if( empty( $_POST ) ) {
@@ -921,6 +924,9 @@ class GravityView_Edit_Entry {
 	}
 
 	/**
+     *
+     *
+     *
 	 * @param string $field_content Always empty.
 	 * @param GF_Field $field
 	 * @param string|array $value If array, it's a field with multiple inputs. If string, single input.
@@ -931,12 +937,16 @@ class GravityView_Edit_Entry {
 	 */
 	function lead_detail_edit_field_input( $field_content = '', $field, $value, $lead_id = 0, $form_id ) {
 
+        error_log( '$field_content:' . print_r($field_content  , true ) );
+        error_log( '$field:' . print_r($field  , true ) );
+        error_log( '$value:' . print_r($value  , true ) );
+
 		// If the form has been submitted, then we don't need to pre-fill the values.
 		if( !empty( $_POST['is_gv_edit_entry'] ) ) {
 
-			if( ! GFCommon::is_post_field( $field ) ) {
+			/*if( ! GFCommon::is_post_field( $field ) ) {
 				return $field_content;
-			}
+			}*/
 		}
 
 		// SET SOME FIELD DEFAULTS TO PREVENT ISSUES
@@ -965,7 +975,15 @@ class GravityView_Edit_Entry {
 
 		$return = $field->get_field_input( $this->form, $field_value, $this->entry );
 
-		return $return;
+
+        /**
+         * Unset hack $_GET['page'] = 'gf_entries'
+         * We need the fileupload html field to render with the proper id
+         *  ( <li id="field_80_16" ... > )
+         */
+        unset( $_GET['page'] );
+
+        return $return;
 	}
 
 	/**
