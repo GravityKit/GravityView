@@ -961,7 +961,7 @@ class GVCommon {
 			),
 		);
 
-		$fields = array_merge( $date_created, $fields );
+        $fields = $date_created + $fields;
 
 		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', $blacklist, NULL );
 
