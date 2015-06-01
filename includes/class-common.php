@@ -924,8 +924,6 @@ class GVCommon {
 
 			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'list', 'textarea' ), null );
 
-			$output .= '<option value="date_created" '. selected( 'date_created', $current, false ).'>'. esc_html__( 'Date Created', 'gravityview' ) .'</option>';
-
 			foreach ( $fields as $id => $field ) {
 				if ( in_array( $field['type'], $blacklist_field_types ) ) {
 					continue;
