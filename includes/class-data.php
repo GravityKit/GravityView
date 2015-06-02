@@ -576,7 +576,7 @@ class GravityView_View_Data {
 				'options' => array(
 					'ASC' => __('ASC', 'gravityview'),
 					'DESC' => __('DESC', 'gravityview'),
-					'RAND' => __('Random', 'gravityview'),
+					//'RAND' => __('Random', 'gravityview'),
 				),
 				'show_in_shortcode' => true,
 			),
