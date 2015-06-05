@@ -14,10 +14,12 @@
 		do_action('gravityview_table_body_before', $this );
 
 		if( 0 === $this->getTotalEntries() ) {
+
+			$directory_table_columns = $this->getFields('directory_table-columns');
 			?>
 			<tr>
 				<?php do_action('gravityview_table_tr_before', $this ); ?>
-				<td colspan="<?php echo isset( $this->fields['directory_table-columns'] ) ? sizeof($this->fields['directory_table-columns']) : ''; ?>" class="gv-no-results">
+				<td colspan="<?php echo $directory_table_columns ? sizeof( $directory_table_columns ) : ''; ?>" class="gv-no-results">
 					<?php echo gv_no_results(); ?>
 				</td>
 				<?php do_action('gravityview_table_tr_after', $this ); ?>

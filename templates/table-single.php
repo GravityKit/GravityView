@@ -14,7 +14,7 @@
 
 <div class="gv-table-view gv-container gv-table-single-container">
 	<table class="gv-table-view-content">
-		<?php if( !empty( $this->fields['single_table-columns'] ) ): ?>
+		<?php if( $this->getFields('single_table-columns') ) { ?>
 			<thead>
 				<?php gravityview_header(); ?>
 			</thead>
@@ -35,7 +35,7 @@
 			<tfoot>
 				<?php gravityview_footer(); ?>
 			</tfoot>
-		<?php endif; ?>
+		<?php } ?>
 	</table>
 </div>
 <?php gravityview_after(); ?>
