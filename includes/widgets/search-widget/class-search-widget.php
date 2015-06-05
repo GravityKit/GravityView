@@ -441,7 +441,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 					$value = array( $value );
 				}
 
-				unset( $filter );
+				// Reset filter variable
+				$filter = array();
 
 				foreach( $value as $val ) {
 					$cat = get_term( $val, 'category' );
@@ -456,7 +457,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 					break;
 				}
 
-				unset( $filter );
+				// Reset filter variable
+				$filter = array();
+
 				foreach( $value as $val ) {
 					$filter[] = array( 'key' => $field_id, 'value' => $val );
 				}
@@ -473,7 +476,10 @@ class GravityView_Widget_Search extends GravityView_Widget {
 						}
 					}
 				} elseif( is_array( $value ) ) {
-					unset( $filter );
+
+					// Reset filter variable
+					$filter = array();
+					
 					foreach ( $value as $val ) {
 						$filter[] = array( 'key' => $field_id, 'value' => $val );
 					}
@@ -488,6 +494,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 					$words = explode( ' ', $value );
 
+					$filters = array();
 					foreach( $words as $word ) {
 						if( !empty( $word ) && strlen( $word ) > 1 ) {
 							// Keep the same key for each filter
@@ -498,7 +505,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 					}
 
 					$filter = $filters;
-
 				}
 
 				break;
@@ -506,13 +512,21 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			case 'date':
 
                 if( is_array( $value ) ) {
-                    unset( $filter );
+
+	                // Reset filter variable
+	                $filter = array();
+
                     foreach( $value as $k => $date ) {
                         if( empty( $date ) ) {
                             continue;
                         }
-                        $op = 'start' === $k ? '>' : '<';
-                        $filter[] = array( 'key' => $field_id, 'value' => self::get_formatted_date( $date, 'Y-m-d' ), 'operator' => $op );
+                        $operator = 'start' === $k ? '>' : '<';
+
+	                    $filter[] = array(
+	                        'key' => $field_id,
+	                        'value' => self::get_formatted_date( $date, 'Y-m-d' ),
+	                        'operator' => $operator
+                        );
                     }
                 } else {
                     $filter['value'] = self::get_formatted_date( $value, 'Y-m-d' );
