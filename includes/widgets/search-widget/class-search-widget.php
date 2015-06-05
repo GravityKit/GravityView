@@ -74,6 +74,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 	}
 
+	/**
+	 * @return GravityView_Widget_Search
+	 */
 	static function getInstance() {
 		if( empty( self::$instance ) ) {
 			self::$instance = new GravityView_Widget_Search;
@@ -234,33 +237,39 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * Assign an input type according to the form field type
 	 * @see admin-search-widget.js
 	 *
-	 * @param  string $field_type
-	 * @return string
+	 * @param int $id Gravity Forms field ID
+	 * @param string $field_type Gravity Forms field type
+	 *
+	 * @return string GV field search input type ('multi', 'boolean', 'select', 'date', 'text')
 	 */
 	static function get_search_input_types( $id = '', $field_type = null ) {
 
 		// @todo - This needs to be improved - many fields have . including products and addresses
 		if( false !== strpos( (string)$id, '.' ) && in_array( $field_type, array( 'checkbox' ) ) || in_array( $id, array( 'is_fulfilled' ) ) ) {
 			// on/off checkbox
-			$types = 'boolean';
+			$input_type = 'boolean';
 		} elseif( in_array( $field_type, array( 'checkbox', 'post_category', 'multiselect' ) ) ) {
 			//multiselect
-			$types = 'multi';
+			$input_type = 'multi';
 
 		} elseif( in_array( $field_type, array( 'select', 'radio' ) ) ) {
 			//single select
-			$types = 'select';
+			$input_type = 'select';
 
 		} elseif( in_array( $field_type, array( 'date' ) ) || in_array( $id, array( 'payment_date' ) ) ) {
 			// date
-			$types = 'date';
+			$input_type = 'date';
 		} else {
 			// input type = text
-			$types = 'text';
+			$input_type = 'text';
 		}
 
-		return apply_filters( 'gravityview/extension/search/input_type', $types, $field_type );
+		/**
+		 * @since 1.2
+		 */
+		$input_type = apply_filters( 'gravityview/extension/search/input_type', $input_type, $field_type );
 
+		return $input_type;
 	}
 
 	/**
@@ -479,7 +488,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 					// Reset filter variable
 					$filter = array();
-					
+
 					foreach ( $value as $val ) {
 						$filter[] = array( 'key' => $field_id, 'value' => $val );
 					}
