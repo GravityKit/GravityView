@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+* Added: New search filter for date type fields to allow searching over date ranges (from X to Y)
 * Updated: The minimum required version of Gravity Forms is now 1.8.7. **GravityView will be requiring Gravity Forms 1.9 soon.** Please update Gravity Forms if you are running an older version!
 * Fixed: Conflicts with A-Z filter extension and View sorting due to wrong field mapping
 * Fixed: The links field type on Search WP widget was opening the wrong page
