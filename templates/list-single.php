@@ -14,24 +14,27 @@
 
 	<p class="gv-back-link"><?php echo gravityview_back_link(); ?></p>
 
-	<?php foreach( $this->getEntries() as $entry ) :
+	<?php foreach( $this->getEntries() as $entry ) {
 
 		$this->setCurrentEntry( $entry );
 	?>
 
 		<div id="gv_list_<?php echo $entry['id']; ?>" class="gv-list-view">
 
-			<?php if( !empty(  $this->fields['single_list-title'] ) || !empty(  $this->fields['single_list-subtitle'] ) ): ?>
+		<?php if( $this->getFields('single_table-columns') ) { ?>
+			<?php if( $this->getFields('single_list-title') || $this->getFields('single_list-subtitle') ) { ?>
 				<div class="gv-list-view-title">
 
-					<?php if( !empty(  $this->fields['single_list-title'] ) ):
+					<?php
+
+					if( $fields = $this->getFields('single_list-title') ) {
 						$i = 0;
 						$title_args = array(
 							'entry' => $entry,
 							'form' => $this->form,
 							'hide_empty' => $this->atts['hide_empty'],
 						);
-						foreach( $this->fields['single_list-title'] as $field ) :
+						foreach( $fields as $field ) {
 							$title_args['field'] = $field;
 							if( $i == 0 ) {
 								$title_args['markup'] = '<h3 class="{{class}}">{{label}}{{value}}</h3>';
@@ -41,8 +44,8 @@
 								echo gravityview_field_output( $title_args );
 							}
 							$i++;
-						endforeach;
-					endif;
+						}
+					}
 
 					$this->renderZone('subtitle', array(
 						'wrapper_class' => 'gv-list-view-subtitle',
@@ -51,7 +54,7 @@
 
 					?>
 				</div>
-			<?php endif; ?>
+			<?php } ?>
 
 			<div class="gv-list-view-content">
 				<?php
@@ -75,7 +78,7 @@
 				?>
 			</div>
 
-			<?php if( !empty(  $this->fields['single_list-footer-left'] ) || !empty(  $this->fields['single_list-footer-right'] ) ): ?>
+			<?php if( $this->getFields('single_list-footer-left') || $this->getFields('single_list-footer-right') ) { ?>
 
 				<div class="gv-grid gv-list-view-footer">
 					<div class="gv-grid-col-1-2 gv-left">
@@ -87,11 +90,11 @@
 					</div>
 				</div>
 
-			<?php endif; ?>
+			<?php } ?>
 
 		</div>
 
-	<?php endforeach; ?>
+	<?php } // End foreach $this->getEntries() ?>
 
 </div>
 
