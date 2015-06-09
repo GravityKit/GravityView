@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-05-26 15:51+0000\n"
+"PO-Revision-Date: 2015-06-09 22:44+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Spanish (Mexico) (http://www.transifex.com/projects/p/gravityview/language/es_MX/)\n"
 "MIME-Version: 1.0\n"
@@ -186,7 +186,7 @@ msgid "Buy Now"
 msgstr "Comprar Ahora"
 
 #: includes/admin/metaboxes/views/select-template.php:35
-#: includes/widgets/search-widget/class-search-widget.php:109
+#: includes/widgets/search-widget/class-search-widget.php:112
 msgid "Select"
 msgstr "Seleccione"
 
@@ -346,47 +346,47 @@ msgstr "Opt-In"
 msgid "Yes, display my entry on the website"
 msgstr "Si, mostrar mi entrada en el website"
 
-#: includes/class-admin-approve-entries.php:221
+#: includes/class-admin-approve-entries.php:227
 msgid "%d entries"
 msgstr "%d entradas"
 
-#: includes/class-admin-approve-entries.php:221
+#: includes/class-admin-approve-entries.php:227
 msgid "1 entry"
 msgstr "1 entrada"
 
-#: includes/class-admin-approve-entries.php:226
+#: includes/class-admin-approve-entries.php:232
 msgid "%s approved."
 msgstr "%s aprobadas."
 
-#: includes/class-admin-approve-entries.php:231
+#: includes/class-admin-approve-entries.php:237
 msgid "%s disapproved."
 msgstr "%s no aprobadas."
 
-#: includes/class-admin-approve-entries.php:305
+#: includes/class-admin-approve-entries.php:311
 msgid "Disapproved the Entry for GravityView"
 msgstr "Desaprobar la Entrada para GravityView"
 
-#: includes/class-admin-approve-entries.php:305
+#: includes/class-admin-approve-entries.php:311
 msgid "Approved the Entry for GravityView"
 msgstr "Aprobar la Entrada para Gravity View"
 
-#: includes/class-admin-approve-entries.php:528
+#: includes/class-admin-approve-entries.php:534
 msgid "Approve"
 msgstr "Aprobar"
 
-#: includes/class-admin-approve-entries.php:529
+#: includes/class-admin-approve-entries.php:535
 msgid "Disapprove"
 msgstr "Desaprobar"
 
-#: includes/class-admin-approve-entries.php:531
+#: includes/class-admin-approve-entries.php:537
 msgid "Entry not approved for directory viewing. Click to approve this entry."
 msgstr "Entrada no aprobada para vista de directorio. Clic para aprobar esta entrada."
 
-#: includes/class-admin-approve-entries.php:532
+#: includes/class-admin-approve-entries.php:538
 msgid "Entry approved for directory viewing. Click to disapprove this entry."
 msgstr "Entrada aprobada para vista de directorio. Clic para desaprobar esta entrada."
 
-#: includes/class-admin-approve-entries.php:533
+#: includes/class-admin-approve-entries.php:539
 msgid "Show entry in directory view?"
 msgstr "¿Mostrar entrada en vista directorio?"
 
@@ -478,7 +478,7 @@ msgid "Add all the available fields at once."
 msgstr "Agregue todos los campos disponibles a la vez."
 
 #: includes/class-admin-views.php:542
-#: includes/widgets/search-widget/class-search-widget.php:207
+#: includes/widgets/search-widget/class-search-widget.php:211
 msgid "Entry ID"
 msgstr "ID de Entrada"
 
@@ -487,7 +487,7 @@ msgid "The unique ID of the entry."
 msgstr "El ID único de la entrada"
 
 #: includes/class-admin-views.php:547
-#: includes/widgets/search-widget/class-search-widget.php:206
+#: includes/widgets/search-widget/class-search-widget.php:210
 msgid "Entry Date"
 msgstr "Fecha de Entrada"
 
@@ -640,19 +640,19 @@ msgstr "Lista de cambios"
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:505
+#: includes/class-admin-welcome.php:495
 msgid "GravityView is brought to you by:"
 msgstr "GravityView es traído para Ud. por:"
 
-#: includes/class-admin-welcome.php:537
+#: includes/class-admin-welcome.php:527
 msgid "Contributors"
 msgstr "Colaboradores"
 
-#: includes/class-admin-welcome.php:558
+#: includes/class-admin-welcome.php:548
 msgid "Want to contribute?"
 msgstr "¿Desea colaborar?"
 
-#: includes/class-admin-welcome.php:559
+#: includes/class-admin-welcome.php:549
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -795,11 +795,11 @@ msgstr "La búsqueda no devolvió resultados."
 msgid "No entries match your request."
 msgstr "No hay entradas que correspondan a su solicitud."
 
-#: includes/class-api.php:735
+#: includes/class-api.php:736
 msgid "&larr; Go back"
 msgstr "&larr; Regresar"
 
-#: includes/class-api.php:1113
+#: includes/class-api.php:1132
 msgid "Map It"
 msgstr "Localizarlo"
 
@@ -841,7 +841,7 @@ msgid "Payment Method"
 msgstr "Método de Pago"
 
 #: includes/class-common.php:272
-#: includes/widgets/search-widget/class-search-widget.php:702
+#: includes/widgets/search-widget/class-search-widget.php:756
 msgid "Is Fulfilled"
 msgstr "Está completa"
 
@@ -893,12 +893,11 @@ msgstr ""
 msgid "Default"
 msgstr "Defecto"
 
-#: includes/class-common.php:927 includes/class-common.php:960
-#: includes/class-data.php:567
+#: includes/class-common.php:958 includes/class-data.php:567
 msgid "Date Created"
 msgstr "Fecha Creada"
 
-#: includes/class-common.php:1045
+#: includes/class-common.php:1043
 msgid "Email hidden; Javascript is required."
 msgstr "Email oculto; Se requiere Javascript ."
 
@@ -1007,10 +1006,6 @@ msgstr "ASC"
 msgid "DESC"
 msgstr "DESC"
 
-#: includes/class-data.php:579
-msgid "Random"
-msgstr ""
-
 #: includes/class-data.php:584
 msgid "Enable sorting by column"
 msgstr ""
@@ -1056,7 +1051,7 @@ msgid "Define a default search value for the View"
 msgstr "Define un valor de búsqueda por defecto para la Vista"
 
 #: includes/class-data.php:628
-#: includes/widgets/search-widget/class-search-widget.php:135
+#: includes/widgets/search-widget/class-search-widget.php:139
 msgid "Search Field"
 msgstr "Campo de búsqueda"
 
@@ -2030,84 +2025,90 @@ msgstr ""
 msgid "Search Bar"
 msgstr "Barra de Búsqueda"
 
-#: includes/widgets/search-widget/class-search-widget.php:107
+#: includes/widgets/search-widget/class-search-widget.php:110
 msgid "Text"
 msgstr "Texto"
 
-#: includes/widgets/search-widget/class-search-widget.php:108
+#: includes/widgets/search-widget/class-search-widget.php:111
 msgid "Date"
 msgstr "Fecha"
 
-#: includes/widgets/search-widget/class-search-widget.php:110
+#: includes/widgets/search-widget/class-search-widget.php:113
 msgid "Select (multiple values)"
 msgstr "Seleccionar (múltiples valores)"
 
-#: includes/widgets/search-widget/class-search-widget.php:111
+#: includes/widgets/search-widget/class-search-widget.php:114
 msgid "Radio"
 msgstr "Radio"
 
-#: includes/widgets/search-widget/class-search-widget.php:112
-#: includes/widgets/search-widget/class-search-widget.php:113
+#: includes/widgets/search-widget/class-search-widget.php:115
+#: includes/widgets/search-widget/class-search-widget.php:116
 msgid "Checkbox"
 msgstr "Casilla"
 
-#: includes/widgets/search-widget/class-search-widget.php:114
+#: includes/widgets/search-widget/class-search-widget.php:117
 msgid "Links"
 msgstr "Enlaces"
 
-#: includes/widgets/search-widget/class-search-widget.php:133
+#: includes/widgets/search-widget/class-search-widget.php:118
+msgid "Date range"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:137
 msgid "No search fields configured yet."
 msgstr "No hay campos de búsqueda configurados todavía."
 
-#: includes/widgets/search-widget/class-search-widget.php:134
+#: includes/widgets/search-widget/class-search-widget.php:138
 msgid "Add Search Field"
 msgstr "Agregar campo de búsqueda"
 
-#: includes/widgets/search-widget/class-search-widget.php:136
+#: includes/widgets/search-widget/class-search-widget.php:140
 msgid "Input Type"
 msgstr "Tipo de Entrada"
 
-#: includes/widgets/search-widget/class-search-widget.php:205
+#: includes/widgets/search-widget/class-search-widget.php:209
 msgid "Search Everything"
 msgstr "Buscar Todo"
 
-#: includes/widgets/search-widget/class-search-widget.php:208
+#: includes/widgets/search-widget/class-search-widget.php:212
 msgid "Entry Creator"
 msgstr "Autor Entrada"
 
-#: includes/widgets/search-widget/class-search-widget.php:558
+#: includes/widgets/search-widget/class-search-widget.php:612
 msgid "Search Entries:"
 msgstr "Buscar Entradas:"
 
-#: includes/widgets/search-widget/class-search-widget.php:565
+#: includes/widgets/search-widget/class-search-widget.php:619
 msgid "Filter by date:"
 msgstr "Filtrar por fecha:"
 
-#: includes/widgets/search-widget/class-search-widget.php:576
+#: includes/widgets/search-widget/class-search-widget.php:630
 msgid "Entry ID:"
 msgstr "ID Entrada:"
 
-#: includes/widgets/search-widget/class-search-widget.php:583
+#: includes/widgets/search-widget/class-search-widget.php:637
 msgid "Submitted by:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:830
+#: includes/widgets/search-widget/class-search-widget.php:888
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:868
+#: includes/widgets/search-widget/class-search-widget.php:926
 msgid "Show a different month"
 msgstr "Mostrar un mes diferente"
 
+#: includes/widgets/search-widget/templates/search-field-date_range.php:19
 #: includes/widgets/search-widget/templates/search-field-entry_date.php:18
 msgid "Start date"
 msgstr "Fecha de inicio"
 
+#: includes/widgets/search-widget/templates/search-field-date_range.php:20
 #: includes/widgets/search-widget/templates/search-field-entry_date.php:19
 msgid "End date"
 msgstr "Fecha final"
 
-#: includes/widgets/search-widget/templates/search-field-link.php:18
+#: includes/widgets/search-widget/templates/search-field-link.php:21
 msgid "Show only:"
 msgstr "Mostrar solo:"
 
@@ -2289,27 +2290,27 @@ msgid ""
 "entries displayed in the View."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:863
+#: includes/widgets/search-widget/class-search-widget.php:921
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "Cerrar"
 
-#: includes/widgets/search-widget/class-search-widget.php:864
+#: includes/widgets/search-widget/class-search-widget.php:922
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr "Ant"
 
-#: includes/widgets/search-widget/class-search-widget.php:865
+#: includes/widgets/search-widget/class-search-widget.php:923
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr "Sig"
 
-#: includes/widgets/search-widget/class-search-widget.php:866
+#: includes/widgets/search-widget/class-search-widget.php:924
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr "Hoy"
 
-#: includes/widgets/search-widget/class-search-widget.php:867
+#: includes/widgets/search-widget/class-search-widget.php:925
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr "Semana"
