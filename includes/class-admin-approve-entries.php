@@ -171,7 +171,7 @@ class GravityView_Admin_ApproveEntries {
 	 *
 	 * @uses  GravityView_frontend::get_search_criteria() Convert the $_POST search request into a properly formatted request.
 	 * @access public
-	 * @return void
+	 * @return void|boolean
 	 */
 	public function process_bulk_action() {
 		if( !class_exists( 'RGForms' ) ) {
@@ -184,6 +184,12 @@ class GravityView_Admin_ApproveEntries {
 
 			// The action is formatted like: approve-16 or disapprove-16, where the first word is the name of the action and the second is the ID of the form. Bulk action 2 is the bottom bulk action select form.
 			$bulk_action = !empty( $_POST['bulk_action'] ) ? $_POST['bulk_action'] : $_POST['bulk_action2'];
+
+			/**
+			 * The extra '-' is to make sure that there are at *least* two items in array.
+			 * @see https://github.com/katzwebservices/GravityView/issues/370
+			 */
+			$bulk_action .= '-';
 
 			list( $approved_status, $form_id ) = explode( '-', $bulk_action );
 

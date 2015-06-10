@@ -160,8 +160,7 @@ jQuery(document).ready( function( $ ) {
 			if ( $.cookie( 'gravityview_back_link_' + viewId ) !== null ) {
 				$( "#gravityview_back_link" ).attr( 'href', $.cookie( 'gravityview_back_link_' + viewId ) );
 			}
-		},
-
+		}
 
 	};
 

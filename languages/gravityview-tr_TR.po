@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-05-26 15:51+0000\n"
+"PO-Revision-Date: 2015-06-09 22:44+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/projects/p/gravityview/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -185,7 +185,7 @@ msgid "Buy Now"
 msgstr "Şimdi Satın Al"
 
 #: includes/admin/metaboxes/views/select-template.php:35
-#: includes/widgets/search-widget/class-search-widget.php:109
+#: includes/widgets/search-widget/class-search-widget.php:112
 msgid "Select"
 msgstr "Seç"
 
@@ -345,47 +345,47 @@ msgstr "Seçmeli"
 msgid "Yes, display my entry on the website"
 msgstr "Evet, kaydımı site üzerinde göster"
 
-#: includes/class-admin-approve-entries.php:221
+#: includes/class-admin-approve-entries.php:227
 msgid "%d entries"
 msgstr "%d kayıt"
 
-#: includes/class-admin-approve-entries.php:221
+#: includes/class-admin-approve-entries.php:227
 msgid "1 entry"
 msgstr "1 kayıt"
 
-#: includes/class-admin-approve-entries.php:226
+#: includes/class-admin-approve-entries.php:232
 msgid "%s approved."
 msgstr "%s onaylandı."
 
-#: includes/class-admin-approve-entries.php:231
+#: includes/class-admin-approve-entries.php:237
 msgid "%s disapproved."
 msgstr "%s onaylanmadı."
 
-#: includes/class-admin-approve-entries.php:305
+#: includes/class-admin-approve-entries.php:311
 msgid "Disapproved the Entry for GravityView"
 msgstr "GravityView için kaydın onayını geri al"
 
-#: includes/class-admin-approve-entries.php:305
+#: includes/class-admin-approve-entries.php:311
 msgid "Approved the Entry for GravityView"
 msgstr "GravityView için kaydı onayla"
 
-#: includes/class-admin-approve-entries.php:528
+#: includes/class-admin-approve-entries.php:534
 msgid "Approve"
 msgstr "Onayla"
 
-#: includes/class-admin-approve-entries.php:529
+#: includes/class-admin-approve-entries.php:535
 msgid "Disapprove"
 msgstr "Onayı Geri Al"
 
-#: includes/class-admin-approve-entries.php:531
+#: includes/class-admin-approve-entries.php:537
 msgid "Entry not approved for directory viewing. Click to approve this entry."
 msgstr "Kayıt dizin görüntülemesi için onaylanmamış. Kaydı onaylamak için tıklayın."
 
-#: includes/class-admin-approve-entries.php:532
+#: includes/class-admin-approve-entries.php:538
 msgid "Entry approved for directory viewing. Click to disapprove this entry."
 msgstr "Kayıt dizin görüntülemesi için onaylanmış. Onayı geri almak için tıklayın."
 
-#: includes/class-admin-approve-entries.php:533
+#: includes/class-admin-approve-entries.php:539
 msgid "Show entry in directory view?"
 msgstr "Kaydı dizin içinde göster?"
 
@@ -477,7 +477,7 @@ msgid "Add all the available fields at once."
 msgstr "Mevcut tüm alanları tek seferde ekle."
 
 #: includes/class-admin-views.php:542
-#: includes/widgets/search-widget/class-search-widget.php:207
+#: includes/widgets/search-widget/class-search-widget.php:211
 msgid "Entry ID"
 msgstr "Kayıt NO"
 
@@ -486,7 +486,7 @@ msgid "The unique ID of the entry."
 msgstr "Kaydın eşsiz NO bilgisi."
 
 #: includes/class-admin-views.php:547
-#: includes/widgets/search-widget/class-search-widget.php:206
+#: includes/widgets/search-widget/class-search-widget.php:210
 msgid "Entry Date"
 msgstr "Kayıt Tarihi"
 
@@ -639,19 +639,19 @@ msgstr "Değişiklik Listesi"
 msgid "What&rsquo;s New"
 msgstr "Yenilikler"
 
-#: includes/class-admin-welcome.php:505
+#: includes/class-admin-welcome.php:495
 msgid "GravityView is brought to you by:"
 msgstr "GravityView'i çıkaranlar:"
 
-#: includes/class-admin-welcome.php:537
+#: includes/class-admin-welcome.php:527
 msgid "Contributors"
 msgstr "Katkıda Bulunanlar"
 
-#: includes/class-admin-welcome.php:558
+#: includes/class-admin-welcome.php:548
 msgid "Want to contribute?"
 msgstr "Katkıda bulunmak istermisiniz?"
 
-#: includes/class-admin-welcome.php:559
+#: includes/class-admin-welcome.php:549
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -789,11 +789,11 @@ msgstr "Bu aramada hiç sonuç bulunamadı"
 msgid "No entries match your request."
 msgstr "Talebinize uyan kayıt bulunamadı."
 
-#: includes/class-api.php:735
+#: includes/class-api.php:736
 msgid "&larr; Go back"
 msgstr "&larr; Geri dön"
 
-#: includes/class-api.php:1113
+#: includes/class-api.php:1132
 msgid "Map It"
 msgstr "Haritada Göster"
 
@@ -835,7 +835,7 @@ msgid "Payment Method"
 msgstr "Ödeme Yöntemi"
 
 #: includes/class-common.php:272
-#: includes/widgets/search-widget/class-search-widget.php:702
+#: includes/widgets/search-widget/class-search-widget.php:756
 msgid "Is Fulfilled"
 msgstr "Tamamlandı"
 
@@ -887,12 +887,11 @@ msgstr ""
 msgid "Default"
 msgstr "Varsayılan"
 
-#: includes/class-common.php:927 includes/class-common.php:960
-#: includes/class-data.php:567
+#: includes/class-common.php:958 includes/class-data.php:567
 msgid "Date Created"
 msgstr "Oluşturulma Tarihi"
 
-#: includes/class-common.php:1045
+#: includes/class-common.php:1043
 msgid "Email hidden; Javascript is required."
 msgstr "Eposta gizlenmiş; Javascript etkin olmalı."
 
@@ -1001,10 +1000,6 @@ msgstr "Artan"
 msgid "DESC"
 msgstr "Azalan"
 
-#: includes/class-data.php:579
-msgid "Random"
-msgstr ""
-
 #: includes/class-data.php:584
 msgid "Enable sorting by column"
 msgstr "Sütuna göre sıralamayı etkinleştir"
@@ -1050,7 +1045,7 @@ msgid "Define a default search value for the View"
 msgstr "Görünüm için varsayılan arama değeri belirle"
 
 #: includes/class-data.php:628
-#: includes/widgets/search-widget/class-search-widget.php:135
+#: includes/widgets/search-widget/class-search-widget.php:139
 msgid "Search Field"
 msgstr "Alanlarda Ara"
 
@@ -2024,84 +2019,90 @@ msgstr "Temizle düğmesini göster"
 msgid "Search Bar"
 msgstr "Arama Kutusu"
 
-#: includes/widgets/search-widget/class-search-widget.php:107
+#: includes/widgets/search-widget/class-search-widget.php:110
 msgid "Text"
 msgstr "Yazı"
 
-#: includes/widgets/search-widget/class-search-widget.php:108
+#: includes/widgets/search-widget/class-search-widget.php:111
 msgid "Date"
 msgstr "Tarih"
 
-#: includes/widgets/search-widget/class-search-widget.php:110
+#: includes/widgets/search-widget/class-search-widget.php:113
 msgid "Select (multiple values)"
 msgstr "Seç (çoklu değerler)"
 
-#: includes/widgets/search-widget/class-search-widget.php:111
+#: includes/widgets/search-widget/class-search-widget.php:114
 msgid "Radio"
 msgstr "Radyo Düğmesi"
 
-#: includes/widgets/search-widget/class-search-widget.php:112
-#: includes/widgets/search-widget/class-search-widget.php:113
+#: includes/widgets/search-widget/class-search-widget.php:115
+#: includes/widgets/search-widget/class-search-widget.php:116
 msgid "Checkbox"
 msgstr "Onay Kutusu"
 
-#: includes/widgets/search-widget/class-search-widget.php:114
+#: includes/widgets/search-widget/class-search-widget.php:117
 msgid "Links"
 msgstr "Bağlantılar"
 
-#: includes/widgets/search-widget/class-search-widget.php:133
+#: includes/widgets/search-widget/class-search-widget.php:118
+msgid "Date range"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:137
 msgid "No search fields configured yet."
 msgstr "Hiçbir arama alanı belirlenmemiş."
 
-#: includes/widgets/search-widget/class-search-widget.php:134
+#: includes/widgets/search-widget/class-search-widget.php:138
 msgid "Add Search Field"
 msgstr "Arama Alanı Ekle"
 
-#: includes/widgets/search-widget/class-search-widget.php:136
+#: includes/widgets/search-widget/class-search-widget.php:140
 msgid "Input Type"
 msgstr "Giriş Türü"
 
-#: includes/widgets/search-widget/class-search-widget.php:205
+#: includes/widgets/search-widget/class-search-widget.php:209
 msgid "Search Everything"
 msgstr "Herşeyde Ara"
 
-#: includes/widgets/search-widget/class-search-widget.php:208
+#: includes/widgets/search-widget/class-search-widget.php:212
 msgid "Entry Creator"
 msgstr "Kayıt Sahibi"
 
-#: includes/widgets/search-widget/class-search-widget.php:558
+#: includes/widgets/search-widget/class-search-widget.php:612
 msgid "Search Entries:"
 msgstr "Kayıtlarda ara:"
 
-#: includes/widgets/search-widget/class-search-widget.php:565
+#: includes/widgets/search-widget/class-search-widget.php:619
 msgid "Filter by date:"
 msgstr "Tarihe göre sırala:"
 
-#: includes/widgets/search-widget/class-search-widget.php:576
+#: includes/widgets/search-widget/class-search-widget.php:630
 msgid "Entry ID:"
 msgstr "Kayıt NO:"
 
-#: includes/widgets/search-widget/class-search-widget.php:583
+#: includes/widgets/search-widget/class-search-widget.php:637
 msgid "Submitted by:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:830
+#: includes/widgets/search-widget/class-search-widget.php:888
 msgid "Clear"
 msgstr "Temizle"
 
-#: includes/widgets/search-widget/class-search-widget.php:868
+#: includes/widgets/search-widget/class-search-widget.php:926
 msgid "Show a different month"
 msgstr "Farklı bir ay göster"
 
+#: includes/widgets/search-widget/templates/search-field-date_range.php:19
 #: includes/widgets/search-widget/templates/search-field-entry_date.php:18
 msgid "Start date"
 msgstr "Başlangıç tarihi"
 
+#: includes/widgets/search-widget/templates/search-field-date_range.php:20
 #: includes/widgets/search-widget/templates/search-field-entry_date.php:19
 msgid "End date"
 msgstr "Bitiş tarihi"
 
-#: includes/widgets/search-widget/templates/search-field-link.php:18
+#: includes/widgets/search-widget/templates/search-field-link.php:21
 msgid "Show only:"
 msgstr "Sadece göster:"
 
@@ -2283,27 +2284,27 @@ msgid ""
 "entries displayed in the View."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:863
+#: includes/widgets/search-widget/class-search-widget.php:921
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "Kapat"
 
-#: includes/widgets/search-widget/class-search-widget.php:864
+#: includes/widgets/search-widget/class-search-widget.php:922
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr "Önceki"
 
-#: includes/widgets/search-widget/class-search-widget.php:865
+#: includes/widgets/search-widget/class-search-widget.php:923
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr "Sonraki"
 
-#: includes/widgets/search-widget/class-search-widget.php:866
+#: includes/widgets/search-widget/class-search-widget.php:924
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr "Bugün"
 
-#: includes/widgets/search-widget/class-search-widget.php:867
+#: includes/widgets/search-widget/class-search-widget.php:925
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr "Hafta"

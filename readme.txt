@@ -20,10 +20,13 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-* Added: New search filter for date type fields to allow searching over date ranges (from X to Y)
+= 1.8.1 on June 9 =
+* Added: New search filter for Date fields to allow searching over date ranges ("from X to Y")
 * Updated: The minimum required version of Gravity Forms is now 1.8.7. **GravityView will be requiring Gravity Forms 1.9 soon.** Please update Gravity Forms if you are running an older version!
-* Fixed: Conflicts with A-Z filter extension and View sorting due to wrong field mapping
-* Fixed: The links field type on Search WP widget was opening the wrong page
+* Fixed: Conflicts with [A-Z Filter Extension](https://gravityview.co/extensions/a-z-filter/) and View sorting due to wrong field mapping
+* Fixed: The "links" field type on the GravityView WordPress search widget was opening the wrong page
+* Fixed: IE8 Javascript error when script debugging is on. Props, [@Idealien](https://github.com/Idealien). [Issue #361 on Github](https://github.com/katzwebservices/GravityView/issues/361)
+* Fixed: PHP warning when trashing entries. [Issue #370 on Github](https://github.com/katzwebservices/GravityView/issues/370)
 * Tweak: Updated the `list-single.php`, `table-body.php`, `table-single.php` templates to use `GravityView_View->getFields()` method
 
 = 1.8 on May 26 =

@@ -538,7 +538,7 @@ class GravityView_Admin {
 		}
 
 		if( !class_exists('GF_Fields') ) {
-			self::$admin_notices['gf_directory'] = array(
+			self::$admin_notices['gf_19'] = array(
 				'class' => 'error',
 				'title' => __('GravityView will soon require Gravity Forms 1.9 or higher.', 'gravityview' ),
 				'message' => esc_html__( 'You are using an older version of Gravity Forms. Please update Gravity Forms plugin to the latest version.', 'gravityview' ),

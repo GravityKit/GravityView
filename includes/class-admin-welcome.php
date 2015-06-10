@@ -274,6 +274,18 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>1.8.1 on June 9</h3>
+
+				<ul>
+					<li>Added: New search filter for Date fields to allow searching over date ranges ("from X to Y")</li>
+					<li>Updated: The minimum required version of Gravity Forms is now 1.8.7. <strong>GravityView will be requiring Gravity Forms 1.9 soon.</strong> Please update Gravity Forms if you are running an older version!</li>
+					<li>Fixed: Conflicts with <a href="https://gravityview.co/extensions/a-z-filter/">A-Z Filter Extension</a> and View sorting due to wrong field mapping</li>
+					<li>Fixed: The "links" field type on the GravityView WordPress search widget was opening the wrong page</li>
+					<li>Fixed: IE8 Javascript error when script debugging is on. Props, <a href="https://github.com/Idealien">@Idealien</a>. <a href="https://github.com/katzwebservices/GravityView/issues/361">Issue #361 on Github</a></li>
+					<li>Fixed: PHP warning when trashing entries. <a href="https://github.com/katzwebservices/GravityView/issues/370">Issue #370 on Github</a></li>
+					<li>Tweak: Updated the <code>list-single.php</code>, <code>table-body.php</code>, <code>table-single.php</code> templates to use <code>GravityView_View-&gt;getFields()</code> method</li>
+				</ul>
+
 				<h3>1.8 on May 26</h3>
 
 				<ul>
@@ -389,7 +401,7 @@ class GravityView_Welcome {
 					<li>Modified: Updated limit to 750 users (up from 300) in Change Entry Creator dropdown.</li>
 					<li>Confirmed WordPress 4.2 compatibility</li>
 				</ul>
-				
+
 				<h3>Changes in 1.7.3</h3>
 
 				<ul>
