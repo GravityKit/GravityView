@@ -261,8 +261,10 @@ class GV_GFCommon extends GFCommon {
 
 			    } else {
 
-			        $upload_action_url = trailingslashit(site_url()) . "?gf_page=upload";
-			        $max_files = isset($field["maxFiles"]) && $field["maxFiles"] > 0 ? $field["maxFiles"]: 0;
+			        //$upload_action_url = trailingslashit(site_url()) . "?gf_page=upload";
+                    $upload_action_url = trailingslashit( site_url() ) . '?gf_page=' . GFCommon::get_upload_page_slug();
+
+                    $max_files = isset($field["maxFiles"]) && $field["maxFiles"] > 0 ? $field["maxFiles"]: 0;
 			        $browse_button_id = 'gform_browse_button_' . $form_id . "_" . $id;
 			        $container_id = 'gform_multifile_upload_' . $form_id . "_" . $id;
 			        $drag_drop_id = 'gform_drag_drop_area_' . $form_id . "_" . $id;
