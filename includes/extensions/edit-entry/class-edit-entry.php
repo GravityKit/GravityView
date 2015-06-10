@@ -59,6 +59,8 @@ class GravityView_Edit_Entry {
 
 		add_action( 'gravityview_edit_entry', array( $this, 'init' ) );
 
+        add_filter( 'gform_plupload_settings', array( $this, 'modify_fileupload_settings' ), 10, 3 );
+
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field'), 10, 3 );
 
 		// For the Edit Entry Link, you don't want visible to all users.
@@ -400,6 +402,25 @@ class GravityView_Edit_Entry {
 		$this->edit_entry_form();
 
 	}
+
+    /**
+     * Remove max_files validation (done on gravityforms.js) to avoid conflicts with GravityView
+     * Late validation done on self::custom_validation
+     *
+     * @param $plupload_init array Plupload settings
+     * @param $form_id
+     * @param $instance
+     * @return mixed
+     */
+    public function modify_fileupload_settings( $plupload_init, $form_id, $instance ) {
+        if( !self::is_edit_entry() ) {
+            return $plupload_init;
+        }
+
+        $plupload_init['gf_vars']['max_files'] = 0;
+
+        return $plupload_init;
+    }
 
 	/**
 	 * Because we're mimicking being a front-end Gravity Forms form while using a Gravity Forms
@@ -1214,16 +1235,63 @@ class GravityView_Edit_Entry {
 
 		$gv_valid = true;
 
-		foreach ($validation_results['form']['fields'] as $key => &$field ) {
+		foreach ( $validation_results['form']['fields'] as $key => &$field ) {
+
+            $value = RGFormsModel::get_field_value( $field );
+            $field_type = RGFormsModel::get_input_type( $field );
+
+            // Validate always
+            switch ( $field_type ) {
+
+
+                case 'fileupload' :
+
+                    // in case nothing is uploaded but there are already files saved
+                    if( !empty( $field['failed_validation'] ) && !empty( $field['isRequired'] ) && !empty( $value ) ) {
+                        $field['failed_validation'] = false;
+                        unset( $field['validation_message'] );
+                    }
+
+                    // validate if multi file upload reached max number of files [maxFiles] => 2
+                    if( rgar( $field, 'maxFiles') && rgar( $field, 'multipleFiles') ) {
+
+                        $input_name = 'input_' . $field['id'];
+                        //uploaded
+                        $file_names = isset( GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] ) ? GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] : array();
+
+                        //existent
+                        $entry = $this->get_entry();
+                        $value = NULL;
+                        if( isset( $entry[ $field['id'] ] ) ) {
+                            $value = json_decode( $entry[ $field['id'] ], true );
+                        }
+
+                        // count uploaded files and existent entry files
+                        $count_files = count( $file_names ) + count( $value );
+
+                        if( $count_files > $field['maxFiles'] ) {
+                            $field['validation_message'] = __( 'Maximum number of files reached', 'gravityview' );
+                            $field['failed_validation'] = 1;
+                            $gv_valid = false;
+
+                            // in case of error make sure the newest upload files are removed from the upload input
+                            GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ] = null;
+                        }
+
+                    }
+
+
+                    break;
+
+            }
+
 
 			// This field has failed validation.
 			if( !empty( $field['failed_validation'] ) ) {
 
-				$value = RGFormsModel::get_field_value( $field );
+				do_action( 'gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Field is invalid.', array( 'field' => $field, 'value' => $value ) );
 
-				do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Field is invalid.', array( 'field' => $field, 'value' => $value ) );
-
-				switch ( RGFormsModel::get_input_type( $field ) ) {
+				switch ( $field_type ) {
 
 					// Captchas don't need to be re-entered.
 					case 'captcha':
@@ -1234,17 +1302,7 @@ class GravityView_Edit_Entry {
 						unset( $field['validation_message'] );
 						break;
 
-					case 'fileupload':
-						// in case nothing is uploaded but there are already files saved
-						if( !empty( $field['isRequired'] ) && !empty( $value ) ) {
-							$field['failed_validation'] = false;
-							unset( $field['validation_message'] );
-						}
-
-						break;
 				}
-
-
 
 				// You can't continue inside a switch, so we do it after.
 				if( empty( $field['failed_validation'] ) ) {
@@ -1272,40 +1330,6 @@ class GravityView_Edit_Entry {
 				}
 
 				$gv_valid = false;
-
-			}
-
-
-			switch ( RGFormsModel::get_input_type( $field ) ) {
-
-				// validate if multi file upload reached max number of files [maxFiles] => 2
-				case 'fileupload' :
-
-					if( rgar( $field, 'maxFiles') && rgar( $field, 'multipleFiles') ) {
-
-						$input_name = 'input_' . $field['id'];
-						//uploaded
-						$file_names = isset( GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] ) ? GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] : array();
-
-						//existent
-						$entry = $this->get_entry();
-						$value = NULL;
-						if( isset( $entry[ $field['id'] ] ) ) {
-							$value = json_decode( $entry[ $field['id'] ], true );
-						}
-
-						// count uploaded files and existent entry files
-						$count_files = count( $file_names ) + count( $value );
-
-						if( $count_files > $field['maxFiles'] ) {
-							$field['validation_message'] = __( 'Maximum number of files reached', 'gravityview' );
-							$field['failed_validation'] = 1;
-							$gv_valid = false;
-						}
-
-					}
-
-				break;
 
 			}
 
