@@ -274,6 +274,12 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>1.8.2 on June 10</h3>
+
+				<ul>
+					<li>Fixed: Error on <code>list-single.php</code> template</li>
+				</ul>
+
 				<h3>1.8.1 on June 9</h3>
 
 				<ul>
