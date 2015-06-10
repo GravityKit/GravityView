@@ -374,7 +374,6 @@ class GravityView_Edit_Entry {
 	 * @return void
 	 */
 	function init( $gv_data ) {
-        error_log( '$_POST:' . print_r( $_POST , true ) );
 
 		require_once(GFCommon::get_base_path() . "/form_display.php");
 		require_once(GFCommon::get_base_path() . "/entry_detail.php");
@@ -936,10 +935,6 @@ class GravityView_Edit_Entry {
 	 * @return mixed
 	 */
 	function lead_detail_edit_field_input( $field_content = '', $field, $value, $lead_id = 0, $form_id ) {
-
-        error_log( '$field_content:' . print_r($field_content  , true ) );
-        error_log( '$field:' . print_r($field  , true ) );
-        error_log( '$value:' . print_r($value  , true ) );
 
 		// If the form has been submitted, then we don't need to pre-fill the values.
 		if( !empty( $_POST['is_gv_edit_entry'] ) ) {
