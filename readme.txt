@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.8.2 =
+* Fixed: Error on `list-single.php` template
+
 = 1.8.1 on June 9 =
 * Added: New search filter for Date fields to allow searching over date ranges ("from X to Y")
 * Updated: The minimum required version of Gravity Forms is now 1.8.7. **GravityView will be requiring Gravity Forms 1.9 soon.** Please update Gravity Forms if you are running an older version!
