@@ -59,6 +59,10 @@ class GravityView_Edit_Entry {
 
 		add_action( 'gravityview_edit_entry', array( $this, 'init' ) );
 
+        // Disable conditional logic if needed (since 1.9)
+        add_filter( 'gform_has_conditional_logic', array( $this, 'manage_conditional_logic' ), 10, 2 );
+
+        // Make sure GF doesn't validate max files (since 1.9)
         add_filter( 'gform_plupload_settings', array( $this, 'modify_fileupload_settings' ), 10, 3 );
 
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field'), 10, 3 );
@@ -1023,6 +1027,8 @@ class GravityView_Edit_Entry {
 			$form['fields'] = $edit_fields;
 		}
 
+        $form = $this->filter_conditional_logic( $form );
+
 		return $form;
 	}
 
@@ -1701,6 +1707,53 @@ class GravityView_Edit_Entry {
 
 		<?php
 	}
+
+
+    /**
+     * Disable the Gravity Forms conditional logic script and features on the Edit Entry screen
+     *
+     * @since 1.9
+     *
+     * @param $has_conditional_logic
+     * @param $form
+     * @return mixed|void
+     */
+    function manage_conditional_logic( $has_conditional_logic, $form ) {
+
+        if( ! self::is_edit_entry() ) {
+            return $has_conditional_logic;
+        }
+
+        return apply_filters( 'gravityview/edit_entry/conditional_logic', $has_conditional_logic, $form );
+
+    }
+
+    /**
+     * Remove the conditional logic rules from the form button and the form fields, if needed.
+     *
+     * @since 1.9
+     *
+     * @param $form
+     * @return mixed
+     */
+    function filter_conditional_logic( $form ) {
+
+        if( apply_filters( 'gravityview/edit_entry/conditional_logic', true, $form ) ) {
+            return $form;
+        }
+
+        foreach( $form['fields'] as &$field ) {
+            /* @var GF_Field $field */
+            $field->conditionalLogic = null;
+        }
+
+        unset( $form['button']['conditionalLogic'] );
+
+        return $form;
+
+    }
+
+
 
 
 } // end class
