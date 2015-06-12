@@ -20,7 +20,10 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= 1.8.2 =
+= 1.8.3 on June 12 =
+* Fixed: Missing title and subtitle field zones on `list-single.php` template
+
+= 1.8.2 on June 10 =
 * Fixed: Error on `list-single.php` template
 
 = 1.8.1 on June 9 =
