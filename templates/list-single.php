@@ -18,39 +18,38 @@
 
 		<div id="gv_list_<?php echo $entry['id']; ?>" class="gv-list-view">
 	<?php
-	if ( $this->getFields( 'single_table-columns' ) ) {
-		if ( $this->getFields( 'single_list-title' ) || $this->getFields( 'single_list-subtitle' ) ) { ?>
-			<div class="gv-list-view-title">
-			<?php
-			if ( $fields = $this->getFields( 'single_list-title' ) ) {
-				$i = 0;
-				$title_args = array(
-					'entry' => $entry,
-					'form' => $this->form,
-					'hide_empty' => $this->atts['hide_empty'],
-				);
-				foreach ( $fields as $field ) {
-					$title_args['field'] = $field;
-					if ( 0 === $i ) {
-						$title_args['markup'] = '<h3 class="{{class}}">{{label}}{{value}}</h3>';
-						echo gravityview_field_output( $title_args );
-					} else {
-						$title_args['wpautop'] = true;
-						echo gravityview_field_output( $title_args );
-					}
-					$i++;
-				}
-			}
 
-			$this->renderZone('subtitle', array(
-				'wrapper_class' => 'gv-list-view-subtitle',
-				'markup'     => '<h4 class="{{class}}">{{label}}{{value}}</h4>',
-			));
-
-			?>
-			</div>
+	if ( $this->getFields( 'single_list-title' ) || $this->getFields( 'single_list-subtitle' ) ) { ?>
+		<div class="gv-list-view-title">
 		<?php
+		if ( $fields = $this->getFields( 'single_list-title' ) ) {
+			$i = 0;
+			$title_args = array(
+				'entry' => $entry,
+				'form' => $this->form,
+				'hide_empty' => $this->atts['hide_empty'],
+			);
+			foreach ( $fields as $field ) {
+				$title_args['field'] = $field;
+				if ( 0 === $i ) {
+					$title_args['markup'] = '<h3 class="{{class}}">{{label}}{{value}}</h3>';
+					echo gravityview_field_output( $title_args );
+				} else {
+					$title_args['wpautop'] = true;
+					echo gravityview_field_output( $title_args );
+				}
+				$i++;
+			}
 		}
+
+		$this->renderZone('subtitle', array(
+			'wrapper_class' => 'gv-list-view-subtitle',
+			'markup'     => '<h4 class="{{class}}">{{label}}{{value}}</h4>',
+		));
+
+		?>
+		</div>
+	<?php
 	}
 	?>
 
