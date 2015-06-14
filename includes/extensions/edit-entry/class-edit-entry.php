@@ -977,21 +977,42 @@ class GravityView_Edit_Entry {
 			$_GET['page'] = 'gf_entries';
 		}
 
-		// We're dealing with multiple inputs
-		if( is_array( $value ) ) {
+
+		// We're dealing with multiple inputs (e.g. checkbox)
+		if( isset( $field->inputs ) && is_array( $field->inputs ) ) {
 
 			$field_value = array();
 
-			foreach( $value as $key => $empty ) {
-				$field_value[ $key ] = $this->entry[ $key ];
+            // only accept pre-populated values if the field doesn't have any choice selected.
+            $allow_pre_populated = true;
+
+			foreach ( $field->inputs as $input ) {
+
+                if ( ! empty( $this->entry[ strval( $input['id'] ) ] ) ) {
+                    $allow_pre_populated = false;
+                    $field_value[ strval( $input['id'] ) ] = $this->entry[ strval( $input['id'] ) ];
+                }
+
 			}
+
+            if( $allow_pre_populated ) {
+                $field_value = $field->get_value_submission( array(), false );
+            }
 
 		} else {
 
 			$id = intval( $field->id );
 
-			$field_value = isset( $this->entry[ $id ] ) ? $this->entry[ $id ] : '';
+            // get pre-populated value if exists
+            $pre_value = $field->allowsPrepopulate ? GFFormsModel::get_parameter_value( $field->inputName, array(), $field ) : '';
+
+            // saved field entry value (if empty, fallback to the pre-populated value, if exists)
+            $field_value = !empty( $this->entry[ $id ] ) ? $this->entry[ $id ] : $pre_value;
+
 		}
+
+        // if value is empty get the default value if defined
+        $field_value = $field->get_value_default_if_empty( $field_value );
 
 		$return = $field->get_field_input( $this->form, $field_value, $this->entry );
 
