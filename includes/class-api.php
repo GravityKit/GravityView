@@ -101,12 +101,13 @@ class GravityView_API {
 			return $text;
 		}
 
-		// Check for fields
+		// Check for fields - if they exist, we let Gravity Forms handle it.
 		preg_match_all('/{[^{]*?:(\d+(\.\d+)?)(:(.*?))?}/mi', $text, $matches, PREG_SET_ORDER);
+
 		if( empty( $matches ) ) {
 
 			// Check for form variables
-			if( !preg_match( '/\{(all_fields(:(.*?))?|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id|embed_url|date_mdy|date_dmy|embed_post:(.*?)|custom_field:(.*?)|user_agent|referer|gv:(.*?)|user:(.*?))\}/ism', $text ) ) {
+			if( !preg_match( '/\{(all_fields(:(.*?))?|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id|embed_url|date_mdy|date_dmy|embed_post:(.*?)|custom_field:(.*?)|user_agent|referer|gv:(.*?)|user:(.*?)|created_by:(.*?))\}/ism', $text ) ) {
                 return $text;
             }
 		}

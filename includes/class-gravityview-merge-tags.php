@@ -1,0 +1,140 @@
+<?php
+
+/**
+ * Enhance Gravity Forms' merge tag functionality by adding additional merge tags
+ * @since 1.8.4
+ */
+class GravityView_Merge_Tags {
+
+	/**
+	 * @since 1.8.4
+	 */
+	public function __construct() {
+		$this->add_hooks();
+	}
+
+	/**
+	 * Tap in to gform_replace_merge_tags to add merge tags
+	 * @since 1.8.4
+	 */
+	private function add_hooks() {
+
+		add_filter( 'gform_custom_merge_tags', array( $this, '_gform_custom_merge_tags' ), 10, 4 );
+
+		add_filter( 'gform_replace_merge_tags', array( $this, '_gform_replace_merge_tags' ), 10, 7 );
+
+	}
+
+	/**
+	 * Add custom merge tags to merge tag options
+	 *
+	 * @since 1.8.4
+	 *
+	 * @param array $existing_merge_tags
+	 * @param int $form_id GF Form ID
+	 * @param GF_Field[] $fields Array of fields in the form
+	 * @param string $element_id The ID of the input that Merge Tags are being used on
+	 *
+	 * @return array Modified merge tags
+	 */
+	public function _gform_custom_merge_tags( $existing_merge_tags = array(), $form_id, $fields = array(), $element_id = '' ) {
+
+		$created_by_merge_tags = array(
+			array(
+				'label' => __('Entry Creator: Display Name', 'gravityview'),
+				'tag' => '{created_by:display_name}'
+			),
+			array(
+				'label' => __('Entry Creator: Email', 'gravityview'),
+				'tag' => '{created_by:user_email}'
+			),
+			array(
+				'label' => __('Entry Creator: Username', 'gravityview'),
+				'tag' => '{created_by:user_login}'
+			),
+			array(
+				'label' => __('Entry Creator: User ID', 'gravityview'),
+				'tag' => '{created_by:ID}'
+			)
+		);
+
+		//return the form object from the php hook
+		return array_merge( $existing_merge_tags, $created_by_merge_tags );
+	}
+
+	/**
+	 * Instead of adding multiple hooks, add all hooks into this one method to improve speed
+	 *
+	 * @since 1.8.4
+	 *
+	 * @param string $text Text to replace
+	 * @param array|boolean $form Gravity Forms form array
+	 * @param array $entry Entry array
+	 * @param bool $url_encode Whether to URL-encode output
+	 * @param bool $esc_html Whether to apply `esc_html()` to output
+	 *
+	 * @return mixed
+	 */
+	public function _gform_replace_merge_tags(  $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+
+		/**
+		 * This prevents the gform_replace_merge_tags filter from being called twice, as defined in:
+		 * @see GFCommon::replace_variables()
+		 * @see GFCommon::replace_variables_prepopulate()
+		 */
+		if( false === $form ) {
+			return $text;
+		}
+
+		// Process the merge vars here
+		$text = $this->replace_user_variables_created_by( $text, $form, $entry, $url_encode, $esc_html );
+
+		return $text;
+	}
+
+	/**
+	 * Exactly like Gravity Forms' User Meta functionality, but instead shows information on the user who created the entry
+	 * instead of the currently logged-in user.
+	 *
+	 * @see http://docs.gravityview.co/article/281-the-createdby-merge-tag
+	 *
+	 * @since 1.8.4
+	 *
+	 * @param string $text Text to replace
+	 * @param array $form Gravity Forms form array
+	 * @param array $entry Entry array
+	 * @param bool $url_encode Whether to URL-encode output
+	 * @param bool $esc_html Whether to apply `esc_html()` to output
+	 */
+	private function replace_user_variables_created_by( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+
+		// Is there is {created_by:[xyz]} merge tag?
+		preg_match_all( "/\{created_by:(.*?)\}/", $text, $matches, PREG_SET_ORDER );
+
+		// If there are no matches OR the Entry `created_by` isn't set or is 0 (no user)
+		if( empty( $matches ) || empty( $entry['created_by'] ) ) {
+			return $text;
+		}
+
+		// Get the creator of the entry
+		$entry_creator = new WP_User( $entry['created_by'] );
+
+		foreach ( $matches as $match ) {
+
+			$full_tag = $match[0];
+			$property = $match[1];
+
+			$value = $entry_creator->get( $property );
+
+			$value = $url_encode ? urlencode( $value ) : $value;
+
+			$esc_html = $esc_html ? esc_html( $value ) : $value;
+
+			$text = str_replace( $full_tag, $value, $text );
+		}
+
+		return $text;
+	}
+}
+
+new GravityView_Merge_Tags;
