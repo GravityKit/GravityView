@@ -15,8 +15,6 @@
 
 class GravityView_API {
 
-
-
 	/**
 	 * Fetch Field Label
 	 *
@@ -84,11 +82,9 @@ class GravityView_API {
 	}
 
 	/**
-	 * Check for merge tags before passing to Gravity Forms to improve speed.
+	 * Alias for GravityView_Merge_Tags::replace_variables()
 	 *
-	 * GF doesn't check for whether `{` exists before it starts diving in. They not only replace fields, they do `str_replace()` on things like ip address, which is a lot of work just to check if there's any hint of a replacement variable.
-	 *
-	 * We check for the basics first, which is more efficient.
+	 * @see GravityView_Merge_Tags::replace_variables() Moved in 1.8.4
 	 *
 	 * @param  string      $text       Text to replace variables in
 	 * @param  array      $form        GF Form array
@@ -96,25 +92,8 @@ class GravityView_API {
 	 * @return string                  Text with variables maybe replaced
 	 */
 	public static function replace_variables($text, $form, $entry ) {
-
-		if( strpos( $text, '{') === false ) {
-			return $text;
-		}
-
-		// Check for fields - if they exist, we let Gravity Forms handle it.
-		preg_match_all('/{[^{]*?:(\d+(\.\d+)?)(:(.*?))?}/mi', $text, $matches, PREG_SET_ORDER);
-
-		if( empty( $matches ) ) {
-
-			// Check for form variables
-			if( !preg_match( '/\{(all_fields(:(.*?))?|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id|embed_url|date_mdy|date_dmy|embed_post:(.*?)|custom_field:(.*?)|user_agent|referer|gv:(.*?)|user:(.*?)|created_by:(.*?))\}/ism', $text ) ) {
-                return $text;
-            }
-		}
-
-		return GFCommon::replace_variables( $text, $form, $entry, false, false, false, "html");
+		return GravityView_Merge_Tags::replace_variables( $text, $form, $entry );
 	}
-
 
 	/**
 	 * Fetch Field class
