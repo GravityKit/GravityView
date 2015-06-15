@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+* Added: `{created_by}` Merge Tag that displays information from the creator of the entry.
+* Fixed: Shortcodes not processing properly in DataTables Extension
+
 = 1.8.3 on June 12 =
 * Fixed: Missing title and subtitle field zones on `list-single.php` template
 
