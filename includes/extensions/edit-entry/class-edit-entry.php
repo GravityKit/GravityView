@@ -86,7 +86,7 @@ class GravityView_Edit_Entry {
 		add_action('wp_ajax_nopriv_rg_delete_file', array('RGForms', 'delete_file'));
 
 		// Make sure this hook is run for non-admins
-		add_action('wp_ajax_rg_delete_file', array('RGForms', 'delete_file'));
+		add_action( 'wp_ajax_rg_delete_file', array('RGForms', 'delete_file'));
 
 		add_filter( 'gravityview_blacklist_field_types', array( $this, 'modify_field_blacklist' ), 10, 2 );
 
@@ -121,7 +121,7 @@ class GravityView_Edit_Entry {
 		}
 
 		$add_fields = array(
-			'post_image',
+			// 'post_image',
 			'product',
 			'quantity',
 			'shipping',
@@ -516,6 +516,7 @@ class GravityView_Edit_Entry {
 				$this->maybe_update_post_fields( $form );
 			}
 
+            // Perform actions normally performed after updating a lead
 			$this->after_update();
 
 			/**
@@ -574,6 +575,8 @@ class GravityView_Edit_Entry {
 			return;
 		}
 
+        $update_entry = false;
+
 		$updated_post = $original_post = get_post( $post_id );
 
 		foreach ( $this->entry as $field_id => $value ) {
@@ -609,6 +612,10 @@ class GravityView_Edit_Entry {
 
 						wp_set_post_categories( $post_id, $value, false );
 
+                        // prepare value to be saved in the entry
+                        $input_name = 'input_' . str_replace( '.', '_', $field_id );
+                        $value = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $this->entry['id'] );
+
 						break;
 					case 'post_custom_field':
 
@@ -622,11 +629,37 @@ class GravityView_Edit_Entry {
 
 						break;
 
+                    case 'post_image':
+
+                        $value = '';
+                        break;
+
 				}
+
+                //ignore fields that have not changed
+                if ( $value === rgget( (string) $field_id, $this->entry ) ) {
+                    continue;
+                }
+
+                // update entry
+                $this->entry[ strval( $field_id ) ] = $value;
+                $update_entry = true;
+
 			}
 
-			continue;
 		}
+
+        if( $update_entry ) {
+
+            $return_entry = GFAPI::update_entry( $this->entry );
+
+            if( is_wp_error( $return_entry ) ) {
+                do_action( 'gravityview_log_error', 'Updating the entry post fields failed', $return_entry );
+            } else {
+                do_action( 'gravityview_log_debug', 'Updating the entry post fields for post #'.$post_id.' succeeded' );
+            }
+
+        }
 
 		$return_post = wp_update_post( $updated_post, true );
 
@@ -963,10 +996,7 @@ class GravityView_Edit_Entry {
 
 		// If the form has been submitted, then we don't need to pre-fill the values.
 		if( !empty( $_POST['is_gv_edit_entry'] ) ) {
-
-			/*if( ! GFCommon::is_post_field( $field ) ) {
-				return $field_content;
-			}*/
+            return $field_content;
 		}
 
 		// SET SOME FIELD DEFAULTS TO PREVENT ISSUES
@@ -976,6 +1006,11 @@ class GravityView_Edit_Entry {
 		if( 'fileupload' === $field->type ) {
 			$_GET['page'] = 'gf_entries';
 		}
+
+        // add categories as choices for Post Category field
+        if ( $field->type == 'post_category' ) {
+            $field = GFCommon::add_categories_as_choices( $field, $value );
+        }
 
 
 		// We're dealing with multiple inputs (e.g. checkbox)
@@ -990,7 +1025,7 @@ class GravityView_Edit_Entry {
 
                 if ( ! empty( $this->entry[ strval( $input['id'] ) ] ) ) {
                     $allow_pre_populated = false;
-                    $field_value[ strval( $input['id'] ) ] = $this->entry[ strval( $input['id'] ) ];
+                    $field_value[ strval( $input['id'] ) ] =  'post_category' === $field->type ? GFCommon::format_post_category( $this->entry[ strval( $input['id'] ) ], true ) : $this->entry[ strval( $input['id'] ) ];
                 }
 
 			}
@@ -1008,6 +1043,15 @@ class GravityView_Edit_Entry {
 
             // saved field entry value (if empty, fallback to the pre-populated value, if exists)
             $field_value = !empty( $this->entry[ $id ] ) ? $this->entry[ $id ] : $pre_value;
+
+            // in case field is post_category but inputType is select, multi-select or radio, convert value into array of category IDs.
+            if ( $field->type == 'post_category' && !empty( $field_value ) ) {
+                $categories = array();
+                foreach ( explode( ',', $field_value ) as $cat_string ) {
+                    $categories[] = GFCommon::format_post_category( $cat_string, true );
+                }
+                $field_value = 'multiselect' === $field->get_input_type() ? $categories : implode( '', $categories );
+            }
 
 		}
 
