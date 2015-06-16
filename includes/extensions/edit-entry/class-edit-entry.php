@@ -259,6 +259,16 @@ class GravityView_Edit_Entry {
 
 		// We only want to modify the settings for the edit context
 		if( 'edit' !== $context ) {
+
+			/**
+			 * @since 1.8.4
+			 */
+			$field_options['new_window'] = array(
+				'type' => 'checkbox',
+				'label' => __( 'Open link in a new tab or window?', 'gravityview' ),
+				'value' => false,
+			);
+
 			return $field_options;
 		}
 

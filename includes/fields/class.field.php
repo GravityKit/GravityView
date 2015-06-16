@@ -43,7 +43,12 @@ abstract class GravityView_Field {
 				'label' => __( 'Override Date Format', 'gravityview' ),
 				'desc' => sprintf( __( 'Define how the date is displayed (using %sthe PHP date format%s)', 'gravityview'), '<a href="https://codex.wordpress.org/Formatting_Date_and_Time">', '</a>' ),
 				'value' => apply_filters( 'gravityview_date_format', NULL )
-			)
+			),
+			'new_window' => array(
+				'type' => 'checkbox',
+				'label' => __( 'Open link in a new tab or window?', 'gravityview' ),
+				'value' => false,
+			),
 		);
 
 		return apply_filters( 'gravityview_field_support_options', $options );
