@@ -14,7 +14,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.8.2
+ * Version:          	1.8.3
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravityview
@@ -71,7 +71,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.8.2';
+	const version = '1.8.3';
 
 	public static $theInstance;
 
@@ -126,6 +126,7 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR . 'includes/class-frontend-views.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/helper-functions.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-entry-list.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-merge-tags.php'); /** @since 1.8.4 */
 		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gvlogic-shortcode.php' );
 

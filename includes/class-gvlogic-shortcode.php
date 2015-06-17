@@ -187,7 +187,7 @@ class GVLogic_Shortcode {
 	public function shortcode( $atts = array(), $content = NULL, $shortcode_tag = '' ) {
 
 		// Don't process except on frontend
-		if ( is_admin() ) {
+		if ( GravityView_Plugin::is_admin() ) {
 			return null;
 		}
 
