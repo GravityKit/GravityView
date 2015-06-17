@@ -607,14 +607,24 @@ class GravityView_Edit_Entry {
 						break;
 					case 'post_category':
 
-						$value = is_array( $value ) ? array_values( $value ) : (array)$value;
-						$value = array_filter( $value );
+						$categories = is_array( $value ) ? array_values( $value ) : (array)$value;
+                        $categories = array_filter( $categories );
 
-						wp_set_post_categories( $post_id, $value, false );
+						wp_set_post_categories( $post_id, $categories, false );
 
                         // prepare value to be saved in the entry
-                        $input_name = 'input_' . str_replace( '.', '_', $field_id );
-                        $value = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $this->entry['id'] );
+                        $field = GFCommon::add_categories_as_choices( $field, '' );
+
+                        // if post_category is type checkbox, then value is an array of inputs
+                        if( isset( $value[ strval( $field_id ) ] ) ) {
+                            foreach( $value as $input_id => $val ) {
+                                $input_name = 'input_' . str_replace( '.', '_', $input_id );
+                                $this->entry[ strval( $input_id ) ] = RGFormsModel::prepare_value( $form, $field, $val, $input_name, $this->entry['id'] );
+                            }
+                        } else {
+                            $input_name = 'input_' . str_replace( '.', '_', $field_id );
+                            $this->entry[ strval( $field_id ) ] = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $this->entry['id'] );
+                        }
 
 						break;
 					case 'post_custom_field':
@@ -642,7 +652,10 @@ class GravityView_Edit_Entry {
                 }
 
                 // update entry
-                $this->entry[ strval( $field_id ) ] = $value;
+                if( 'post_category' !== $field->type ) {
+                    $this->entry[ strval( $field_id ) ] = $value;
+                }
+
                 $update_entry = true;
 
 			}
