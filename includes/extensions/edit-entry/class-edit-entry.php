@@ -121,7 +121,7 @@ class GravityView_Edit_Entry {
 		}
 
 		$add_fields = array(
-			// 'post_image',
+			'post_image',
 			'product',
 			'quantity',
 			'shipping',
@@ -580,6 +580,8 @@ class GravityView_Edit_Entry {
 		$updated_post = $original_post = get_post( $post_id );
 
 		foreach ( $this->entry as $field_id => $value ) {
+
+            //todo: only run through the edit entry configured fields
 
 			$field = RGFormsModel::get_field( $form, $field_id );
 
