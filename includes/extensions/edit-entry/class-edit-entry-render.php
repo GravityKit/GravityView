@@ -227,10 +227,6 @@ class GravityView_Edit_Entry_Render {
              */
             $form = $this->form_prepare_for_save();
 
-            // TODO: Only run in table layout?
-            // Make sure hidden fields are represented in $_POST
-            $this->combine_update_existing();
-
 
             /**
              * @hack to avoid the capability validation of the method save_lead for GF 1.9+
@@ -331,46 +327,7 @@ class GravityView_Edit_Entry_Render {
         }
         return $form;
     }
-
-
-    /**
-     * Gets stored entry data and combines it in to $_POST array.
-     *
-     * Reason: If a form field doesn't exist in the $_POST data,
-     * its value will be cleared from the DB. Since some form
-     * fields could be hidden, we need to make sure existing
-     * vales are passed through $_POST.
-     *
-     * @access public
-     * @param int $view_id
-     * @param array $entry
-     * @return void
-     */
-    private function combine_update_existing() {
-
-        // Get the original form, not modified form stored in the class
-        $form = gravityview_get_form( $this->form['id'] );
-
-        foreach ( $this->entry as $field_id => $value ) {
-
-            $field = RGFormsModel::get_field( $form, $field_id );
-
-            // Get the value of the field, including $_POSTed value
-            $value = RGFormsModel::get_field_value( $field );
-
-            $posted_entry[ $field_id ] = ( is_array( $value ) && isset( $value[ $field_id ] ) ) ? $value[ $field_id ] : $value;
-
-            continue;
-        }
-
-        // Remove empty
-        $posted_entry = array_filter( $posted_entry );
-
-        // If the field doesn't exist, merge it in to $_POST
-        //todo: check this..
-        $_POST = array_merge( $posted_entry, $_POST );
-
-    }
+    
 
     /**
      * Loop through the fields being edited and if they include Post fields, update the Entry's post object
