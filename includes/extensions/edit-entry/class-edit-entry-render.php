@@ -145,7 +145,6 @@ class GravityView_Edit_Entry_Render {
 
         require_once( GFCommon::get_base_path() . '/form_display.php' );
         require_once( GFCommon::get_base_path() . '/entry_detail.php' );
-        require_once( GravityView_Edit_Entry::$file . '/class-gv-gfcommon.php' );
 
         $this->setup_vars();
 
@@ -226,7 +225,6 @@ class GravityView_Edit_Entry_Render {
              * @hack This step is needed to unset the adminOnly from form fields
              */
             $form = $this->form_prepare_for_save();
-
 
             /**
              * @hack to avoid the capability validation of the method save_lead for GF 1.9+
@@ -327,7 +325,7 @@ class GravityView_Edit_Entry_Render {
         }
         return $form;
     }
-    
+
 
     /**
      * Loop through the fields being edited and if they include Post fields, update the Entry's post object
@@ -558,12 +556,12 @@ class GravityView_Edit_Entry_Render {
                 /**
                  * By default, the lead_detail_edit method uses the `RGFormsModel::get_lead_field_value()` method, which doesn't fill in $_POST values when there is a validation error, because it was designed to work in the admin. We want to use the `RGFormsModel::get_field_value()` If the form has been submitted, use the values for the fields.
                  */
-                add_filter( 'gform_get_field_value', array( $this, 'get_field_value' ), 10, 3 );
+                //add_filter( 'gform_get_field_value', array( $this, 'get_field_value' ), 10, 3 );
 
                 // Print the actual form HTML
                 $this->render_edit_form();
 
-               // echo $this->render_form_buttons();
+                //echo $this->render_form_buttons();
 
                 ?>
             </form>
@@ -591,11 +589,9 @@ class GravityView_Edit_Entry_Render {
         add_filter( 'gform_disable_view_counter', '__return_true' );
         add_filter( 'gform_field_input', array( $this, 'modify_edit_field_input' ), 10, 5 );
 
-        // TODO: REMOVE THIS - it's removing something that was added to fake GF into thinking it's in the Admin
+        // We need to remove the fake $_GET['page'] arg to avoid rendering form as if in admin.
         unset( $_GET['page'] );
 
-
-        // TODO: For the Table layout, we need to fake the admin to allow for the table layout to work. That means adding ?page=gf_entries to the URL. This makes the display wonky for the form layout though.
         // TODO: Make sure validation isn't handled by GF
         // TODO: Include CSS for file upload fields
         // TODO: Verify multiple-page forms
@@ -661,24 +657,24 @@ class GravityView_Edit_Entry_Render {
      */
     function modify_edit_field_input( $field_content = '', $field, $value, $lead_id = 0, $form_id ) {
 
-        // If the form has been submitted, then we don't need to pre-fill the values.
-        if( !empty( $_POST['is_gv_edit_entry'] ) ) {
+        // If the form has been submitted, then we don't need to pre-fill the values,
+        // Except for fileupload type - run always!!
+        if( !empty( $_POST['is_gv_edit_entry'] ) && 'fileupload' !== $field->type ) {
             return $field_content;
         }
-
-        // SET SOME FIELD DEFAULTS TO PREVENT ISSUES
-        $field->adminOnly = false; /** @see GFFormDisplay::get_counter_init_script() need to prevent adminOnly */
 
         // Turn on Admin-style display for file upload fields only
         if( 'fileupload' === $field->type ) {
             $_GET['page'] = 'gf_entries';
         }
 
+        // SET SOME FIELD DEFAULTS TO PREVENT ISSUES
+        $field->adminOnly = false; /** @see GFFormDisplay::get_counter_init_script() need to prevent adminOnly */
+
         // add categories as choices for Post Category field
         if ( $field->type == 'post_category' ) {
             $field = GFCommon::add_categories_as_choices( $field, $value );
         }
-
 
         // We're dealing with multiple inputs (e.g. checkbox)
         if( isset( $field->inputs ) && is_array( $field->inputs ) ) {
@@ -1038,7 +1034,6 @@ class GravityView_Edit_Entry_Render {
     private function get_entry() {
 
         if( empty( $this->entry ) ) {
-            error_log( 'Hey- I was in get_entry hen!!' );
             // Get the database value of the entry that's being edited
             $this->entry = gravityview_get_entry( GravityView_frontend::is_single_entry() );
         }
