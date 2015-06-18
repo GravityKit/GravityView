@@ -73,17 +73,14 @@ class GravityView_Edit_Entry_Render {
 
         add_action( 'gravityview_edit_entry', array( $this, 'init' ) );
 
-
         // Disable conditional logic if needed (since 1.9)
         add_filter( 'gform_has_conditional_logic', array( $this, 'manage_conditional_logic' ), 10, 2 );
 
         // Make sure GF doesn't validate max files (since 1.9)
         add_filter( 'gform_plupload_settings', array( $this, 'modify_fileupload_settings' ), 10, 3 );
 
-
         // Add fields expected by GFFormDisplay::validate()
         add_filter( 'gform_pre_validation', array( $this, 'gform_pre_validation') );
-
 
     }
 
