@@ -1221,6 +1221,19 @@ class GVCommon {
 	}
 
 
+    /**
+     * Display updated/error notice
+     *
+     * @param string $notice text/HTML of notice
+     * @param string $class CSS class for notice (`updated` or `error`)
+     *
+     * @return string
+     */
+    public static function generate_notice( $notice, $class = '' ) {
+        return '<div class="gv-notice '.esc_attr( $class ) .'">'. $notice .'</div>';
+    }
+
+
 
 
 } //end class
