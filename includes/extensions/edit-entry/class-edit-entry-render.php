@@ -639,6 +639,8 @@ class GravityView_Edit_Entry_Render {
 
         $form = $this->filter_conditional_logic( $form );
 
+      //  $form = $this->filter_save_continue( $form );
+
         return $form;
     }
 
@@ -1010,6 +1012,13 @@ class GravityView_Edit_Entry_Render {
 
                         continue;
                     }
+                }
+
+                // if here then probably we are facing the validation 'At least one field must be filled out'
+                if( GFFormDisplay::is_empty( $field, $this->form_id  ) && empty( $field['isRequired'] ) ) {
+                    unset( $field['validation_message'] );
+                    $field['failed_validation'] = false;
+                    continue;
                 }
 
                 $gv_valid = false;
