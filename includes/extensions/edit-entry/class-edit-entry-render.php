@@ -639,7 +639,8 @@ class GravityView_Edit_Entry_Render {
 
         $form = $this->filter_conditional_logic( $form );
 
-      //  $form = $this->filter_save_continue( $form );
+        // for now we don't support Save and Continue feature.
+        unset( $form['save'] );
 
         return $form;
     }
