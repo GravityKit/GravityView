@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+* Added: Define column widths for fields in each field's settings (for Table and DataTable layouts only)
 * Added: `{created_by}` Merge Tag that displays information from the creator of the entry.
 * Added: Edit Entry field setting to open link in new tab/window
 * Fixed: Shortcodes not processing properly in DataTables Extension

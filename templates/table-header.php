@@ -20,7 +20,7 @@
 				$this->setTemplatePartSlug('table');
 
 				$this->renderZone( 'columns', array(
-					'markup' => '<th class="{{class}}">{{label}}</th>',
+					'markup' => '<th class="{{class}}" style="{{width:style}}">{{label}}</th>',
 					'hide_empty' => false, // Always show <th>
 				));
 

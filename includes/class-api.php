@@ -96,6 +96,28 @@ class GravityView_API {
 	}
 
 	/**
+	 * Get column width from the field setting
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $field_setting Array of settings for the field
+	 * @param string $format Format for width. "%" (default) will return
+	 *
+	 * @return string|null If not empty, string in $format format. Otherwise, null.
+	 */
+	public static function field_width( $field, $format = '%d%%' ) {
+
+		$width = NULL;
+
+		if( !empty( $field['width'] ) ) {
+			$width = absint( $field['width'] );
+			$width = $width > 100 ? 100 : sprintf( $format, $width );
+		}
+
+		return $width;
+	}
+
+	/**
 	 * Fetch Field class
 	 *
 	 * @access public
@@ -1186,6 +1208,12 @@ function gravityview_field_output( $passed_args ) {
 		$value = wpautop( $value );
 	}
 
+	// Get width setting, if exists
+	$width = GravityView_API::field_width( $args['field'] );
+
+	//If replacing with CSS inline formatting, let's do it.
+	$width_style = GravityView_API::field_width( $args['field'], 'width:'.$width.'%%;' );
+
 	$class = gv_class( $args['field'], $args['form'], $entry );
 
 	// get field label if needed
@@ -1205,6 +1233,8 @@ function gravityview_field_output( $passed_args ) {
 	}
 
 	$html = $args['markup'];
+	$html = str_replace( '{{width}}', $width, $html );
+	$html = str_replace( '{{width:style}}', $width_style, $html );
 	$html = str_replace( '{{class}}', $class, $html );
 	$html = str_replace( '{{label}}', $label, $html );
 	$html = str_replace( '{{value}}', $value, $html );
@@ -1215,6 +1245,8 @@ function gravityview_field_output( $passed_args ) {
 	 * @param array $args Arguments passed to the function
 	 */
 	$html = apply_filters( 'gravityview_field_output', $html, $args );
+
+	unset( $value, $label, $class, $width, $width_style, $args, $passed_args, $entry );
 
 	return $html;
 }

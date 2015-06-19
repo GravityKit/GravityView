@@ -68,8 +68,18 @@ class GravityView_Render_Settings {
 					'class' => 'widefat',
 					'value' => 'read',
 				),
-
 			);
+
+			// Match Table as well as DataTables
+			if( preg_match( '/table/ism', $template_id ) ) {
+				$field_options['width'] = array(
+					'type' => 'number',
+					'label' => __('Percent Width', 'gravityview'),
+					'desc' => __( 'Leave blank for column width to be based on the field content.', 'gravityview'),
+					'class' => 'code widefat',
+					'value' => '',
+				);
+			}
 
 		}
 
