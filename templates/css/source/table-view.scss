@@ -10,6 +10,10 @@
 // Change accordingly to your website styles
 // ------------------------------------------------
 
+/**
+ * @todo: Should we convert to `table-layout: fixed;`?
+ * @see https://css-tricks.com/fixing-tables-long-strings/
+ */
 .gv-table-view {
 	width: 100%;
 }
@@ -19,9 +23,15 @@
 	padding: .3em;
 }
 
-.gv-table-view-content th {
-	width: 35%;
-	vertical-align: top;
+.gv-table-view-content {
+
+	table-layout: fixed;
+
+	// The single entry view left column
+	th {
+		width: 35%;
+		vertical-align: top;
+	}
 }
 
 // 2. Sorting links
