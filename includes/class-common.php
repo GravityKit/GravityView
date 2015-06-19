@@ -196,6 +196,13 @@ class GVCommon {
 
 				if ( $add_default_properties && ! empty( $field['inputs'] ) ) {
 					foreach ( $field['inputs'] as $input ) {
+                        /**
+                         * @hack
+                         * In case of email/email confirmation, the input for email has the same id as the parent field
+                         */
+                        if( 'email' == rgar( $field, 'type' ) && false === strpos( $input['id'], '.' ) ) {
+                            continue;
+                        }
 						$fields[ (string)$input['id'] ] = array(
 							'label' => rgar( $input, 'label' ),
 							'customLabel' => rgar( $input, 'customLabel' ),
