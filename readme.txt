@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Added: Edit Entry field setting to open link in new tab/window
 * Added: CSS classes to the Update/Cancel/Delete buttons
 * Fixed: Shortcodes not processing properly in DataTables Extension
+* Added: Live Chat customer support and feedback form widget
 
 = 1.8.3 on June 12 =
 * Fixed: Missing title and subtitle field zones on `list-single.php` template
