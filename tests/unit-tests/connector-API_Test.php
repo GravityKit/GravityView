@@ -117,7 +117,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @uses $this->_override_no_entries_text_output()
+	 * @uses GravityView_API_Test::_override_no_entries_text_output()
 	 * @covers GravityView_API::no_results()
 	 */
 	function test_no_results() {
