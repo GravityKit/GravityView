@@ -880,6 +880,9 @@ class GravityView_Admin_Views {
 
 		$chat_settings = array(
 			'onlineTitle' => __('Ask GravityView Support', 'gravityview'),
+			'offlineTitle' => __('GravityView Support', 'gravityview'),
+			'offlineGreeting' => __('If you have any questions, send us an email and we will get respond to you as soon as possible.', 'gravityview'),
+			'offlineNamePlaceholder' => __('Your Name', 'gravityview'),
 			"autoResponseMessage" => sprintf( __('Question or comment? We are online and ready to answer! If you don\'t hear back from us, you can send your question to %s', 'gravityview'), '<a href="mailto:support@gravityview.co">support@gravityview.co</a>' ),
 			"agentLabel" => __('GravityView Support', 'gravityview'),
 			'css' => plugins_url( 'assets/css/feedback.css', GRAVITYVIEW_FILE ),
