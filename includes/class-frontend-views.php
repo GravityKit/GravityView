@@ -725,7 +725,7 @@ class GravityView_frontend {
 
 			do_action( 'gravityview_edit_entry', $this->getGvOutputData() );
 
-			return null;
+			return ob_get_clean();
 
 		} else {
 			// finaly we'll render some html
