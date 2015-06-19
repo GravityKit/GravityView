@@ -75,7 +75,7 @@ class GravityView_Render_Settings {
 				$field_options['width'] = array(
 					'type' => 'number',
 					'label' => __('Percent Width', 'gravityview'),
-					'desc' => __( 'Leave blank for width to be automatically applied.', 'gravityview'),
+					'desc' => __( 'Leave blank for column width to be based on the field content.', 'gravityview'),
 					'class' => 'code widefat',
 					'value' => '',
 				);
