@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Added: `{created_by}` Merge Tag that displays information from the creator of the entry.
 * Added: Edit Entry field setting to open link in new tab/window
 * Fixed: Shortcodes not processing properly in DataTables Extension
+* Added: Live Chat customer support and feedback form widget
 
 = 1.8.3 on June 12 =
 * Fixed: Missing title and subtitle field zones on `list-single.php` template
