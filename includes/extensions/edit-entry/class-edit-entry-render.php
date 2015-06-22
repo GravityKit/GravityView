@@ -1327,7 +1327,17 @@ class GravityView_Edit_Entry_Render {
         }
 
         if( $echo && $error !== true ) {
-            echo GVCommon::generate_notice( wpautop( esc_html( $error ) ), 'gv-error error');
+
+	        $error = esc_html( $error );
+
+	        /**
+	         * @since 1.9
+	         */
+	        if ( ! empty( $this->entry ) ) {
+		        $error .= ' ' . GravityView_API::entry_link_html( $this->entry, _x('Return to entry.', 'Link shown when invalid Edit Entry link is clicked', 'gravityview' ) );
+	        }
+
+            echo GVCommon::generate_notice( wpautop( $error ), 'gv-error error');
         }
 
         do_action('gravityview_log_error', 'GravityView_Edit_Entry[user_can_edit_entry]' . $error );
