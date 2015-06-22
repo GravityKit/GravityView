@@ -2,6 +2,8 @@
 
 $gravityview_view = GravityView_View::getInstance();
 
+$view_id = $gravityview_view->getViewId();
+
 extract( $gravityview_view->getCurrentField() );
 
 // Only show the link to logged-in users.
@@ -15,6 +17,6 @@ $link_atts = empty( $field_settings['new_window'] ) ? '' : 'target="_blank"';
 
 $output = apply_filters( 'gravityview_entry_link', GravityView_API::replace_variables( $link_text, $form, $entry ) );
 
-$href = GravityView_Edit_Entry::get_edit_link( $entry, $field );
+$href = GravityView_Edit_Entry::get_edit_link( $entry, $view_id );
 
 echo gravityview_get_link( $href, $output, $link_atts );

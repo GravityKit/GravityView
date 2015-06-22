@@ -274,7 +274,7 @@ final class GravityView_Delete_Entry {
 		}
 
 		$attributes = array(
-			'class' => 'btn btn-sm button button-small alignright pull-right btn-danger',
+			'class' => 'btn btn-sm button button-small alignright pull-right btn-danger gv-button-delete',
 			'tabindex' => '5',
 			'onclick' => self::get_confirm_dialog(),
 		);

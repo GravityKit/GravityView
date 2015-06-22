@@ -49,6 +49,7 @@ languages/gravityview-pt.po
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
+.idea/encodings.xml
 
 ## File-based project format:
 *.ipr
