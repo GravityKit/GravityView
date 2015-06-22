@@ -18,9 +18,16 @@ class GravityView_Edit_Entry_Render {
 
     protected $loader;
 
+	/**
+	 * @var string String used to generate unique nonce for the entry/form/view combination. Allows access to edit page.
+	 */
     static $nonce_key;
 
-
+	/**
+	 * @since 1.9
+	 * @var string String used for check valid edit entry form submission. Allows saving edit form values.
+	 */
+	private static $nonce_field = 'is_gv_edit_entry';
 
     /**
      * Gravity Forms entry array
@@ -95,7 +102,7 @@ class GravityView_Edit_Entry_Render {
 
         do_action('gravityview_log_debug', 'GravityView_Edit_Entry[prevent_maybe_process_form] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
 
-        if( !empty( $_POST['is_gv_edit_entry'] ) && wp_verify_nonce( $_POST['is_gv_edit_entry'], 'is_gv_edit_entry' ) ) {
+        if( $this->is_edit_entry_submission() && $this->verify_nonce() ) {
             remove_action( 'wp',  array( 'RGForms', 'maybe_process_form'), 9 );
         }
     }
@@ -110,6 +117,15 @@ class GravityView_Edit_Entry_Render {
 
         return ( $gf_page && isset( $_GET['edit'] ) || RGForms::post( 'action' ) === 'update' );
     }
+
+	/**
+	 * Is the current page an Edit Entry page?
+	 * @since 1.9
+	 * @return boolean
+	 */
+	public function is_edit_entry_submission() {
+		return !empty( $_POST[ self::$nonce_field ] );
+	}
 
     /**
      * When Edit entry view is requested setup the vars
@@ -541,7 +557,7 @@ class GravityView_Edit_Entry_Render {
 
                 wp_nonce_field( self::$nonce_key, self::$nonce_key );
 
-                wp_nonce_field( 'is_gv_edit_entry', 'is_gv_edit_entry', false );
+                wp_nonce_field( self::$nonce_field, self::$nonce_field, false );
 
                 // Most of this is needed for GFFormDisplay::validate(), but `gform_unique_id` is needed for file cleanup.
 
@@ -659,7 +675,7 @@ class GravityView_Edit_Entry_Render {
 
         // If the form has been submitted, then we don't need to pre-fill the values,
         // Except for fileupload type - run always!!
-        if( !empty( $_POST['is_gv_edit_entry'] ) && 'fileupload' !== $field->type ) {
+        if( $this->is_edit_entry_submission() && 'fileupload' !== $field->type ) {
             return $field_content;
         }
 
@@ -748,7 +764,7 @@ class GravityView_Edit_Entry_Render {
     public function get_field_value( $value, $lead, $field ) {
 
         // The form's not being edited; use the original value
-        if( empty( $_POST['is_gv_edit_entry'] ) ) {
+        if( ! $this->is_edit_entry_submission() ) {
             return $value;
         }
 
@@ -1341,8 +1357,8 @@ class GravityView_Edit_Entry_Render {
     public function verify_nonce() {
 
         // Verify form submitted for editing single
-        if( !empty( $_POST['is_gv_edit_entry'] ) ) {
-            return wp_verify_nonce( $_POST['is_gv_edit_entry'], 'is_gv_edit_entry' );
+        if( $this->is_edit_entry_submission() ) {
+            return wp_verify_nonce( $_POST[ self::$nonce_field ], self::$nonce_field );
         }
 
         // Verify
