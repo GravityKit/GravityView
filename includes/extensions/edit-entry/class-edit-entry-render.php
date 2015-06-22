@@ -613,10 +613,10 @@ class GravityView_Edit_Entry_Render {
 
         $html = GFFormDisplay::get_form( $this->form['id'], false, false, true, $this->entry );
 
+	    remove_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields' ), 5000, 3 );
         remove_filter( 'gform_submit_button', array( $this, 'render_form_buttons' ) );
         remove_filter( 'gform_disable_view_counter', '__return_true' );
         remove_filter( 'gform_field_input', array( $this, 'modify_edit_field_input' ), 10, 5 );
-        remove_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields' ), 5000, 3 );
 
         echo $html;
     }
