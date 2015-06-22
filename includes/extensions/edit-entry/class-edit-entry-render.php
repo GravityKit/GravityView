@@ -675,8 +675,11 @@ class GravityView_Edit_Entry_Render {
 
         // If the form has been submitted, then we don't need to pre-fill the values,
         // Except for fileupload type - run always!!
-        if( $this->is_edit_entry_submission() && 'fileupload' !== $field->type ) {
-            return $field_content;
+        if(
+	        $this->is_edit_entry_submission() && 'fileupload' !== $field->type
+        ||  GFCommon::is_product_field( $field->type ) // Prevent product fields from appearing editable
+        ) {
+	        return $field_content;
         }
 
         // Turn on Admin-style display for file upload fields only
