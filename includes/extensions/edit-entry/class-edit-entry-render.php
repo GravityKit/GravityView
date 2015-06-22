@@ -703,7 +703,7 @@ class GravityView_Edit_Entry_Render {
             // only accept pre-populated values if the field doesn't have any choice selected.
             $allow_pre_populated = true;
 
-	        foreach ( $field->inputs as $input ) {
+	        foreach ( (array)$field->inputs as $input ) {
 
 	            $input_id = strval( $input['id'] );
 
