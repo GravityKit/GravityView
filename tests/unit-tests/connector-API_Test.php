@@ -2,7 +2,7 @@
 
 class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
 
 		// Add form meta table
@@ -15,7 +15,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 	/**
 	 * @covers GravityView_API::replace_variables()
 	 */
-	function test_replace_variables() {
+	public function test_replace_variables() {
 
 		$entry = array(
 			'id' => 5384,
@@ -58,9 +58,9 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals( $entry['post_id'], GravityView_API::replace_variables( '{post_id}', $form, $entry ) );
 
-		$this->assertEquals( date('m/d/Y'), GravityView_API::replace_variables( '{date_mdy}', $form, $entry ) );
+		$this->assertEquals( date( 'm/d/Y' ), GravityView_API::replace_variables( '{date_mdy}', $form, $entry ) );
 
-		$this->assertEquals( get_option('admin_email'), GravityView_API::replace_variables( '{admin_email}', $form, $entry ) );
+		$this->assertEquals( get_option( 'admin_email' ), GravityView_API::replace_variables( '{admin_email}', $form, $entry ) );
 
 		$var_content = '<p>I expect <strong>Entry #{entry_id}</strong> will be in Form #{form_id}</p>';
 		$expected_content = '<p>I expect <strong>Entry #5384</strong> will be in Form #123</p>';
@@ -71,7 +71,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 	/**
 	 * @covers GravityView_API::field_class()
 	 */
-	function test_field_class() {
+	public function test_field_class() {
 
 		$entry = array(
 			'id' => 5384,
@@ -95,7 +95,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 		);
 
 		$field = array(
-			'id' => '8'
+			'id' => '8',
 		);
 
 		$this->assertEquals( 'gv-field-123-8', GravityView_API::field_class( $field, $form, $entry ) );
@@ -103,7 +103,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 
 		$field = array(
 			'id' => '8',
-			'custom_class' => 'custom-class-{entry_id}'
+			'custom_class' => 'custom-class-{entry_id}',
 		);
 
 		// Test the replace_variables functionality
@@ -120,7 +120,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 	 * @uses $this->_override_no_entries_text_output()
 	 * @covers GravityView_API::no_results()
 	 */
-	function test_no_results() {
+	public function test_no_results() {
 
 		global $gravityview_view;
 
@@ -142,7 +142,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 
 
 		// Add the filter that modifies output
-		add_filter('gravitview_no_entries_text', array( $this, '_override_no_entries_text_output' ), 10, 2);
+		add_filter( 'gravitview_no_entries_text', array( $this, '_override_no_entries_text_output' ), 10, 2 );
 
 		// Test to make sure the $is_search parameter is passed correctly
 		$this->assertEquals( 'SEARCH override the no entries text output', GravityView_API::no_results( false ) );
@@ -153,13 +153,13 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'NO SEARCH override the no entries text output', GravityView_API::no_results( false ) );
 
 		// Remove the filter for later
-		remove_filter('gravitview_no_entries_text', array( $this, '_override_no_entries_text_output' ));
+		remove_filter( 'gravitview_no_entries_text', array( $this, '_override_no_entries_text_output' ) );
 
 	}
 
-	function _override_no_entries_text_output( $previous, $is_search = false ) {
+	public function _override_no_entries_text_output( $previous, $is_search = false ) {
 
-		if( $is_search ) {
+		if ( $is_search ) {
 			return 'SEARCH override the no entries text output';
 		} else {
 			return 'NO SEARCH override the no entries text output';
@@ -167,7 +167,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 
 	}
 
-	function _get_new_view_id() {
+	public function _get_new_view_id() {
 
 		$view_array = array(
 			'post_content' => '',
@@ -188,7 +188,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 
 	}
 
-	function test_directory_link( ) {
+	public function test_directory_link( ) {
 
 		$post_array = array(
 			'post_content' => 'asdasdsd',
@@ -200,21 +200,20 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 
 		$view_post_type_id = $this->_get_new_view_id();
 
-
 		$_GET['pagenum'] = 2;
 
 		$add_pagination = false;
-		$this->assertEquals( site_url('?p='.$post_id), GravityView_API::directory_link( $post_id, $add_pagination ) );
+		$this->assertEquals( site_url( '?p=' . $post_id ), GravityView_API::directory_link( $post_id, $add_pagination ) );
 
 		$add_pagination = true;
-		$this->assertEquals( site_url('?p='.$post_id.'&pagenum=2'), GravityView_API::directory_link( $post_id, $add_pagination ) );
+		$this->assertEquals( site_url( '?p=' . $post_id . '&pagenum=2' ), GravityView_API::directory_link( $post_id, $add_pagination ) );
 
 		// Make sure the cache is working properly
-		$this->assertEquals( site_url('?p='.$post_id), wp_cache_get( 'gv_directory_link_'.$post_id ) );
+		$this->assertEquals( site_url( '?p=' . $post_id ), wp_cache_get( 'gv_directory_link_' . $post_id ) );
 
-	//
-	// Use $gravityview_view data
-	//
+		//
+		// Use $gravityview_view data
+		//
 		global $gravityview_view;
 		global $post;
 
@@ -229,13 +228,13 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 		// Test post_id has been set
 		$gravityview_view->post_id = $post_id;
 
-		$this->assertEquals( site_url('?p='.$post_id.'&pagenum=2'), GravityView_API::directory_link() );
+		$this->assertEquals( site_url( '?p=' . $post_id . '&pagenum=2' ), GravityView_API::directory_link() );
 
 		$gravityview_view->post_id = $post_id;
 
-	//
-	// TESTING AJAX
-	//
+		//
+		// TESTING AJAX
+		//
 		define( 'DOING_AJAX', true );
 
 		// No passed post_id; use $_POST when DOING_AJAX is set
@@ -243,28 +242,31 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 
 		$_POST['post_id'] = $post_id;
 		// No passed post_id; use $_POST when DOING_AJAX is set
-		$this->assertEquals( site_url('?p='.$post_id.'&pagenum=2'), GravityView_API::directory_link() );
+		$this->assertEquals( site_url( '?p=' . $post_id . '&pagenum=2' ), GravityView_API::directory_link() );
 
 	}
 
-	function test_gravityview_get_current_views() {
+	public function test_gravityview_get_current_views() {
 		global $post;
 
 		$fe = GravityView_frontend::getInstance();
 
 		// Clear the data so that gravityview_get_current_views() runs parse_content()
-		$fe->gv_output_data = NULL;
+		$fe->gv_output_data = null;
 
 		$view_post_type_id = $this->_get_new_view_id();
 		$post = get_post( $view_post_type_id );
 
 		$current_views = gravityview_get_current_views();
 
+		// Check if the view post is set
+		$this->assertTrue( isset( $current_views[ $view_post_type_id ] ) );
+
 		// When the view is added, the key is set to the View ID and the `id` is also set to that
 		$this->assertEquals( $view_post_type_id, $current_views[ $view_post_type_id ]['id'] );
 
 		// Just one View
-		$this->assertEquals( 1, sizeof( $current_views ) );
+		$this->assertEquals( 1, count( $current_views ) );
 
 		$second_view_post_type_id = $this->_get_new_view_id();
 
@@ -276,14 +278,14 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( $second_view_post_type_id, $second_current_views[ $second_view_post_type_id ]['id'] );
 
 		// Now two Views
-		$this->assertEquals( 2, sizeof( $second_current_views ) );
+		$this->assertEquals( 2, count( $second_current_views ) );
 
 	}
 
 	/**
 	 * @covers gravityview_sanitize_html_class()
 	 */
-	function test_gravityview_sanitize_html_class() {
+	public function test_gravityview_sanitize_html_class() {
 
 		$classes = array(
 
@@ -297,13 +299,13 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 			'example dash' => gravityview_sanitize_html_class( 'example dash' ),
 
 			// Implode with spaces
-			'example dash bar' => gravityview_sanitize_html_class( array('example', 'dash', 'bar' ) ),
+			'example dash bar' => gravityview_sanitize_html_class( array( 'example', 'dash', 'bar' ) ),
 
 			// Again, don't strip spaces and implode
-			'example-dash bar' => gravityview_sanitize_html_class( array('example-dash', 'bar' ) ),
+			'example-dash bar' => gravityview_sanitize_html_class( array( 'example-dash', 'bar' ) ),
 
 			// Don't strip numbers or caps
-			'Foo Bar0' => gravityview_sanitize_html_class( array('Foo', 'Bar0' ) ),
+			'Foo Bar0' => gravityview_sanitize_html_class( array( 'Foo', 'Bar0' ) ),
 
 			// Strip not A-Z a-z 0-9 _ -
 			'Foo Bar2_-' => gravityview_sanitize_html_class( 'Foo Bar2!_-' ),
@@ -318,7 +320,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group api
 	 */
-	function test_gravityview_format_link_DEFAULT() {
+	public function test_gravityview_format_link_DEFAULT() {
 
 		$urls = array(
 
@@ -354,49 +356,49 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 
 			// Don't strip actual domain when using 2nd tier TLD
 			'http://example.ac.za' => 'example.ac.za',
-			'http://example.gov.za'=> 'example.gov.za',
-			'http://example.law.za'=> 'example.law.za',
-			'http://example.school.za'=> 'example.school.za',
-			'http://example.me.uk'=> 'example.me.uk',
-			'http://example.tm.fr'=> 'example.tm.fr',
-			'http://example.asso.fr'=> 'example.asso.fr',
-			'http://example.com.fr'=> 'example.com.fr',
-			'http://example.telememo.au'=> 'example.telememo.au',
-			'http://example.cg.yu'=> 'example.cg.yu',
-			'http://example.msk.ru'=> 'example.msk.ru',
-			'http://example.irkutsks.ru'=> 'example.irkutsks.ru',
-			'http://example.com.ru'=> 'example.com.ru',
-			'http://example.sa.au'=> 'example.sa.au',
-			'http://example.act.au'=> 'example.act.au',
-			'http://example.net.uk'=> 'example.net.uk',
-			'http://example.police.uk'=> 'example.police.uk',
-			'http://example.plc.uk'=> 'example.plc.uk',
-			'http://example.co.uk'=> 'example.co.uk',
-			'http://example.gov.uk'=> 'example.gov.uk',
-			'http://example.mod.uk'=> 'example.mod.uk',
+			'http://example.gov.za' => 'example.gov.za',
+			'http://example.law.za' => 'example.law.za',
+			'http://example.school.za' => 'example.school.za',
+			'http://example.me.uk' => 'example.me.uk',
+			'http://example.tm.fr' => 'example.tm.fr',
+			'http://example.asso.fr' => 'example.asso.fr',
+			'http://example.com.fr' => 'example.com.fr',
+			'http://example.telememo.au' => 'example.telememo.au',
+			'http://example.cg.yu' => 'example.cg.yu',
+			'http://example.msk.ru' => 'example.msk.ru',
+			'http://example.irkutsks.ru' => 'example.irkutsks.ru',
+			'http://example.com.ru' => 'example.com.ru',
+			'http://example.sa.au' => 'example.sa.au',
+			'http://example.act.au' => 'example.act.au',
+			'http://example.net.uk' => 'example.net.uk',
+			'http://example.police.uk' => 'example.police.uk',
+			'http://example.plc.uk' => 'example.plc.uk',
+			'http://example.co.uk' => 'example.co.uk',
+			'http://example.gov.uk' => 'example.gov.uk',
+			'http://example.mod.uk' => 'example.mod.uk',
 
 			// Strip subdomains in 2nd tier TLD
 			'http://demo.example.ac.za' => 'example.ac.za',
-			'http://demo.example.gov.za'=> 'example.gov.za',
-			'http://demo.example.law.za'=> 'example.law.za',
-			'http://demo.example.school.za'=> 'example.school.za',
-			'http://demo.example.me.uk'=> 'example.me.uk',
-			'http://demo.example.tm.fr'=> 'example.tm.fr',
-			'http://demo.example.asso.fr'=> 'example.asso.fr',
-			'http://demo.example.com.fr'=> 'example.com.fr',
-			'http://demo.example.telememo.au'=> 'example.telememo.au',
-			'http://demo.example.cg.yu'=> 'example.cg.yu',
-			'http://demo.example.msk.ru'=> 'example.msk.ru',
-			'http://demo.example.irkutsks.ru'=> 'example.irkutsks.ru',
-			'http://demo.example.com.ru'=> 'example.com.ru',
-			'http://demo.example.sa.au'=> 'example.sa.au',
-			'http://demo.example.act.au'=> 'example.act.au',
-			'http://demo.example.net.uk'=> 'example.net.uk',
-			'http://demo.example.police.uk'=> 'example.police.uk',
-			'http://demo.example.plc.uk'=> 'example.plc.uk',
-			'http://demo.example.co.uk'=> 'example.co.uk',
-			'http://demo.example.gov.uk'=> 'example.gov.uk',
-			'http://demo.example.mod.uk'=> 'example.mod.uk',
+			'http://demo.example.gov.za' => 'example.gov.za',
+			'http://demo.example.law.za' => 'example.law.za',
+			'http://demo.example.school.za' => 'example.school.za',
+			'http://demo.example.me.uk' => 'example.me.uk',
+			'http://demo.example.tm.fr' => 'example.tm.fr',
+			'http://demo.example.asso.fr' => 'example.asso.fr',
+			'http://demo.example.com.fr' => 'example.com.fr',
+			'http://demo.example.telememo.au' => 'example.telememo.au',
+			'http://demo.example.cg.yu' => 'example.cg.yu',
+			'http://demo.example.msk.ru' => 'example.msk.ru',
+			'http://demo.example.irkutsks.ru' => 'example.irkutsks.ru',
+			'http://demo.example.com.ru' => 'example.com.ru',
+			'http://demo.example.sa.au' => 'example.sa.au',
+			'http://demo.example.act.au' => 'example.act.au',
+			'http://demo.example.net.uk' => 'example.net.uk',
+			'http://demo.example.police.uk' => 'example.police.uk',
+			'http://demo.example.plc.uk' => 'example.plc.uk',
+			'http://demo.example.co.uk' => 'example.co.uk',
+			'http://demo.example.gov.uk' => 'example.gov.uk',
+			'http://demo.example.mod.uk' => 'example.mod.uk',
 		);
 
         foreach ( $urls as $original => $expected ) {
@@ -412,7 +414,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group api
 	 */
-	function test_gravityview_format_link_WHEN_FILTER_ROOTONLY_FALSE() {
+	public function test_gravityview_format_link_WHEN_FILTER_ROOTONLY_FALSE() {
 
 		// SET FILTER TO FALSE
 		add_filter( 'gravityview_anchor_text_rootonly', '__return_false' );
@@ -443,7 +445,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 	 * @group api
 	 * @covers gravityview_format_link()
 	 */
-	function test_gravityview_format_link_WHEN_FILTER_NOSUBDOMAIN_FALSE() {
+	public function test_gravityview_format_link_WHEN_FILTER_NOSUBDOMAIN_FALSE() {
 
 		// SET FILTER TO FALSE
 		add_filter( 'gravityview_anchor_text_nosubdomain', '__return_false' );
@@ -490,7 +492,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 	/**
 	 * @group api
 	 */
-	function test_gravityview_format_link_WHEN_FILTER_NOQUERYSTRING_FALSE() {
+	public function test_gravityview_format_link_WHEN_FILTER_NOQUERYSTRING_FALSE() {
 
 		// SET FILTER TO FALSE
 		add_filter( 'gravityview_anchor_text_noquerystring', '__return_false' );
