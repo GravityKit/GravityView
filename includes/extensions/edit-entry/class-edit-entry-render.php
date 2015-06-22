@@ -29,6 +29,12 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private static $nonce_field = 'is_gv_edit_entry';
 
+	/**
+	 * @since 1.9
+	 * @var bool Whether to allow editing product fields
+	 */
+	private static $supports_product_fields = false;
+
     /**
      * Gravity Forms entry array
      *
@@ -1127,6 +1133,21 @@ class GravityView_Edit_Entry_Render {
         $field_type_blacklist = array(
             'page',
         );
+
+	    /**
+	     * Hide product fields from being editable. Default: false (set using self::$supports_product_fields)
+	     * @since 1.9
+	     */
+	    $hide_product_fields = apply_filters( 'gravityview/edit-entry/hide-product-fields', empty( $supports_product_fields ) );
+
+	    if( $hide_product_fields ) {
+		    $field_type_blacklist[] = 'option';
+		    $field_type_blacklist[] = 'quantity';
+            $field_type_blacklist[] = 'product';
+            $field_type_blacklist[] = 'total';
+            $field_type_blacklist[] = 'shipping';
+            $field_type_blacklist[] = 'calculation';
+	    }
 
         // First, remove blacklist
         foreach ( $fields as $key => $field ) {

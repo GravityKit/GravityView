@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+	- Product fields are now hidden by default, since they aren't editable. If you want to instead display the old message that "product fields aren't editable," you can show them using the new `gravityview/edit-entry/hide-product-fields` filter
 * Added: Define column widths for fields in each field's settings (for Table and DataTable layouts only)
 * Added: `{created_by}` Merge Tag that displays information from the creator of the entry.
 * Added: Edit Entry field setting to open link in new tab/window
