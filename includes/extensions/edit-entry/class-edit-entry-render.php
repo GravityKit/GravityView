@@ -31,6 +31,12 @@ class GravityView_Edit_Entry_Render {
 
 	/**
 	 * @since 1.9
+	 * @var bool Whether to allow save and continue functionality
+	 */
+	private static $supports_save_and_continue = false;
+
+	/**
+	 * @since 1.9
 	 * @var bool Whether to allow editing product fields
 	 */
 	private static $supports_product_fields = false;
@@ -659,7 +665,9 @@ class GravityView_Edit_Entry_Render {
         $form = $this->filter_conditional_logic( $form );
 
         // for now we don't support Save and Continue feature.
-        unset( $form['save'] );
+        if( ! self::$supports_save_and_continue ) {
+	        unset( $form['save'] );
+        }
 
         return $form;
     }
