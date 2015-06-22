@@ -737,8 +737,17 @@ class GravityView_Edit_Entry_Render {
         // if value is empty get the default value if defined
         $field_value = $field->get_value_default_if_empty( $field_value );
 
-        $return = $field->get_field_input( $this->form, $field_value, $this->entry );
+	    // Prevent any PHP warnings, like undefined index
+	    ob_start();
 
+	    $return = $field->get_field_input( $this->form, $field_value, $this->entry );
+
+	    // If there was output, it's an error
+	    $warnings = ob_get_clean();
+
+	    if( !empty( $warnings ) ) {
+		    do_action( 'gravityview_log_error', __METHOD__ . $warnings );
+	    }
 
         /**
          * Unset hack $_GET['page'] = 'gf_entries'
