@@ -700,11 +700,13 @@ class GravityView_Edit_Entry_Render {
             // only accept pre-populated values if the field doesn't have any choice selected.
             $allow_pre_populated = true;
 
-            foreach ( $field->inputs as $input ) {
+	        foreach ( $field->inputs as $input ) {
 
-                if ( ! empty( $this->entry[ strval( $input['id'] ) ] ) ) {
+	            $input_id = strval( $input['id'] );
+
+                if ( ! empty( $this->entry[ $input_id ] ) ) {
                     $allow_pre_populated = false;
-                    $field_value[ strval( $input['id'] ) ] =  'post_category' === $field->type ? GFCommon::format_post_category( $this->entry[ strval( $input['id'] ) ], true ) : $this->entry[ strval( $input['id'] ) ];
+                    $field_value[ $input_id ] =  'post_category' === $field->type ? GFCommon::format_post_category( $this->entry[ $input_id ], true ) : $this->entry[ $input_id ];
                 }
 
             }
