@@ -1334,7 +1334,7 @@ class GravityView_Edit_Entry_Render {
 	         * @since 1.9
 	         */
 	        if ( ! empty( $this->entry ) ) {
-		        $error .= ' ' . GravityView_API::entry_link_html( $this->entry, _x('Return to entry.', 'Link shown when invalid Edit Entry link is clicked', 'gravityview' ) );
+		        $error .= ' ' . gravityview_get_link( '#', _x('Go back.', 'Link shown when invalid Edit Entry link is clicked', 'gravityview' ), array( 'onclick' => "window.history.go(-1); return false;" ) );
 	        }
 
             echo GVCommon::generate_notice( wpautop( $error ), 'gv-error error');
