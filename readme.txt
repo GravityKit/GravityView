@@ -20,6 +20,10 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+* Added: Edit Entry now takes place in the Gravity Forms form layout, not in the previous layout. This means:
+	- Edit Entry now supports Conditional Fields!
+	- Edit Entry supports [Gravity Forms CSS Ready Classes](https://www.gravityhelp.com/css-ready-classes-for-gravity-forms/) - the layout you have configured for your form will be used for Edit Entry, too.
+	- If you customized the CSS of your Edit Entry layout, **you will need to update your stylesheet**. Sorry for the inconvenience!
 	- Product fields are now hidden by default, since they aren't editable. If you want to instead display the old message that "product fields aren't editable," you can show them using the new `gravityview/edit-entry/hide-product-fields` filter
 * Added: Define column widths for fields in each field's settings (for Table and DataTable layouts only)
 * Added: `{created_by}` Merge Tag that displays information from the creator of the entry.
