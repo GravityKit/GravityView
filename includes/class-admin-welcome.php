@@ -258,21 +258,41 @@ class GravityView_Welcome {
 				<div class="feature-section col two-col">
 
 					<div class="col-1">
-						<img src="<?php echo plugins_url( 'assets/images/screenshots/tabbed-settings.jpg', GRAVITYVIEW_FILE ); ?>" alt="gvlogic: conditional content display">
-						<h4 class="higher">Improved View Settings</h4>
-						<p>All View settings are now combined in a single View Settings metabox, separated with tabs. No more managing settings in multiple places!</p>
-						<p><a href="http://docs.gravityview.co/article/275-view-settings" class="button button-primary" rel="external" title="Learn how to use it">Learn More</a></p>
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/new-form.jpg', GRAVITYVIEW_FILE ); ?>" alt="New Edit Entry form">
+						<h4 class="higher">New Edit Entry Form</h4>
+						<p>Editing an Entry now takes place in the original Gravity Forms form. This has lots of great benefits (see the changelog below), including Conditional Logic and the ability to use existing form styling.</p>
 					</div>
 
 					<div class="col-2 last-feature">
-						<img src="<?php echo plugins_url( 'assets/images/screenshots/poll-widget.jpg', GRAVITYVIEW_FILE ); ?>" alt="Configuring the Other Entries field">
-						<h4 class="higher">GravityView Poll Widget</h4>
-						<p>Display your Poll Addon results at the top of your View. Requires <a href="http://www.gravityforms.com/add-ons/polls/">Gravity Forms Poll Addon</a>.</p>
+						<img src="<?php echo plugins_url( 'assets/images/screenshots/column-widths.jpg', GRAVITYVIEW_FILE ); ?>" alt="Column widths">
+						<h4 class="higher">Custom Column Widths</h4>
+						<p>You can now define your own widths for columns when using Table or DataTables View Types. Define widths for each field by editing the new "Percent Width" field setting.</p>
 					</div>
-
 				</div>
 
 				<hr />
+
+				<h3>1.9 on June 23</h3>
+
+				<ul>
+					<li>Added: Edit Entry now takes place in the Gravity Forms form layout, not in the previous layout. This means:
+
+						<ul>
+							<li>Edit Entry now supports Conditional Fields!</li>
+							<li>Edit Entry supports <a href="https://www.gravityhelp.com/css-ready-classes-for-gravity-forms/">Gravity Forms CSS Ready Classes</a> - the layout you have configured for your form will be used for Edit Entry, too.</li>
+							<li>If you customized the CSS of your Edit Entry layout, <strong>you will need to update your stylesheet</strong>. Sorry for the inconvenience!</li>
+							<li>If visiting an invalid Edit Entry link, you are now provided with a back link</li>
+							<li>Product fields are now hidden by default, since they aren't editable. If you want to instead display the old message that "product fields aren't editable," you can show them using the new <code>gravityview/edit-entry/hide-product-fields</code> filter</li>
+						</ul>
+					</li>
+					<li>Added: Define column widths for fields in each field's settings (for Table and DataTable View Types only)</li>
+					<li>Added: <code>{created_by}</code> Merge Tag that displays information from the creator of the entry (<a href="http://docs.gravityview.co/article/281-the-createdby-merge-tag">learn more</a>)</li>
+					<li>Added: Edit Entry field setting to open link in new tab/window</li>
+					<li>Added: CSS classes to the Update/Cancel/Delete buttons (<a href="http://docs.gravityview.co/article/63-css-guide#edit-entry">learn more</a>)</li>
+					<li>Fixed: Shortcodes not processing properly in DataTables Extension</li>
+					<li>Tweak: Changed support widget to a Live Chat customer support and feedback form widget</li>
+				</ul>
+
 
 				<h3>1.8.2 on June 10</h3>
 

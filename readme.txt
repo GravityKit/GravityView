@@ -20,18 +20,19 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.9 on June 23 =
 * Added: Edit Entry now takes place in the Gravity Forms form layout, not in the previous layout. This means:
 	- Edit Entry now supports Conditional Fields!
 	- Edit Entry supports [Gravity Forms CSS Ready Classes](https://www.gravityhelp.com/css-ready-classes-for-gravity-forms/) - the layout you have configured for your form will be used for Edit Entry, too.
 	- If you customized the CSS of your Edit Entry layout, **you will need to update your stylesheet**. Sorry for the inconvenience!
 	- If visiting an invalid Edit Entry link, you are now provided with a back link
 	- Product fields are now hidden by default, since they aren't editable. If you want to instead display the old message that "product fields aren't editable," you can show them using the new `gravityview/edit-entry/hide-product-fields` filter
-* Added: Define column widths for fields in each field's settings (for Table and DataTable layouts only)
-* Added: `{created_by}` Merge Tag that displays information from the creator of the entry.
+* Added: Define column widths for fields in each field's settings (for Table and DataTable View Types only)
+* Added: `{created_by}` Merge Tag that displays information from the creator of the entry ([learn more](http://docs.gravityview.co/article/281-the-createdby-merge-tag))
 * Added: Edit Entry field setting to open link in new tab/window
-* Added: CSS classes to the Update/Cancel/Delete buttons
+* Added: CSS classes to the Update/Cancel/Delete buttons ([learn more](http://docs.gravityview.co/article/63-css-guide#edit-entry))
 * Fixed: Shortcodes not processing properly in DataTables Extension
-* Added: Live Chat customer support and feedback form widget
+* Tweak: Changed support widget to a Live Chat customer support and feedback form widget
 
 = 1.8.3 on June 12 =
 * Fixed: Missing title and subtitle field zones on `list-single.php` template
