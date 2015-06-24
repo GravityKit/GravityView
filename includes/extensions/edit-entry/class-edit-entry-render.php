@@ -664,8 +664,6 @@ class GravityView_Edit_Entry_Render {
 
         $form = $this->filter_conditional_logic( $form );
 
-        $form = $this->filter_admin_only( $form );
-
         // for now we don't support Save and Continue feature.
         if( ! self::$supports_save_and_continue ) {
 	        unset( $form['save'] );
@@ -1118,6 +1116,9 @@ class GravityView_Edit_Entry_Render {
         // Hide fields depending on admin settings
         $fields = $this->filter_fields( $form['fields'], $edit_fields );
 
+	    // If Edit Entry fields are configured, remove adminOnly field settings. Otherwise, don't.
+	    $fields = $this->filter_admin_only_fields( $fields, $edit_fields, $form, $view_id );
+
         return $fields;
     }
 
@@ -1213,8 +1214,10 @@ class GravityView_Edit_Entry_Render {
             $return_field['gvCustomClass'] = gravityview_sanitize_html_class( $field_setting['custom_class'] );
         }
 
-        // @since 1.6
-        // Normalise page numbers - avoid conflicts with page validation
+        /**
+         * Normalize page numbers - avoid conflicts with page validation
+         * @since 1.6
+         */
         $return_field['pageNumber'] = 1;
 
         return $return_field;
@@ -1222,25 +1225,45 @@ class GravityView_Edit_Entry_Render {
     }
 
     /**
+     * Remove fields that shouldn't be visible based on the Gravity Forms adminOnly field property
      *
-     * Disable the adminOnly field property by default
+     * @since 1.9.1
      *
-     * @param $form
-     * @return mixed
+     * @param array|GF_Field[] $fields Gravity Forms form fields
+     * @param array|null $edit_fields Fields for the Edit Entry tab configured in the View Configuration
+     * @param array $form GF Form array
+     * @param int $view_id View ID
+     *
+     * @return array Possibly modified form array
      */
-    function filter_admin_only( $form ) {
+    function filter_admin_only_fields( $fields = array(), $edit_fields = null, $form = array(), $view_id = 0 ) {
 
-        if( apply_filters( 'gravityview/edit_entry/enable_admin_only', false, $form ) ) {
-            return $form;
+	    /**
+	     * If the Edit Entry tab is not configured, adminOnly fields will not be shown to non-administrators.
+	     * If the Edit Entry tab *is* configured, adminOnly fields will be shown to non-administrators, using the configured GV permissions
+	     *
+	     * @since 1.9.1
+	     *
+	     * @param boolean $use_gf_adminonly_setting True: Hide field if set to Admin Only in GF and the user is not an admin. False: show field based on GV permissions, ignoring GF permissions.
+	     * @param array $form GF Form array
+	     * @param int $view_id View ID
+	     */
+	    $use_gf_adminonly_setting = apply_filters( 'gravityview/edit_entry/use_gf_admin_only_setting', empty( $edit_fields ), $form, $view_id );
+
+        if( $use_gf_adminonly_setting ) {
+            return $fields;
         }
 
-        foreach( $form['fields'] as &$field ) {
-            /* @var GF_Field $field */
-            $field->adminOnly = null;
+	    foreach( $fields as &$field ) {
+	        // Support 1.8. Will be deprecated.
+	        if( is_object( $field ) ) {
+		        $field->adminOnly = false;
+	        } else {
+		        $field['adminOnly'] = false;
+	        }
         }
 
-        return $form;
-
+        return $fields;
     }
 
     // --- Conditional Logic
