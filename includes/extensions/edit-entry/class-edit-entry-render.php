@@ -1147,9 +1147,9 @@ class GravityView_Edit_Entry_Render {
 
 	    /**
 	     * Hide product fields from being editable. Default: false (set using self::$supports_product_fields)
-	     * @since 1.9
+	     * @since 1.9.1
 	     */
-	    $hide_product_fields = apply_filters( 'gravityview/edit-entry/hide-product-fields', empty( $supports_product_fields ) );
+	    $hide_product_fields = apply_filters( 'gravityview/edit_entry/hide-product-fields', empty( $supports_product_fields ) );
 
 	    if( $hide_product_fields ) {
 		    $field_type_blacklist[] = 'option';
