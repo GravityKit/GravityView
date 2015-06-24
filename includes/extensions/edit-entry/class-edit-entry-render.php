@@ -664,6 +664,8 @@ class GravityView_Edit_Entry_Render {
 
         $form = $this->filter_conditional_logic( $form );
 
+        $form = $this->filter_admin_only( $form );
+
         // for now we don't support Save and Continue feature.
         if( ! self::$supports_save_and_continue ) {
 	        unset( $form['save'] );
@@ -1216,6 +1218,28 @@ class GravityView_Edit_Entry_Render {
         $return_field['pageNumber'] = 1;
 
         return $return_field;
+
+    }
+
+    /**
+     *
+     * Disable the adminOnly field property by default
+     *
+     * @param $form
+     * @return mixed
+     */
+    function filter_admin_only( $form ) {
+
+        if( apply_filters( 'gravityview/edit_entry/enable_admin_only', false, $form ) ) {
+            return $form;
+        }
+
+        foreach( $form['fields'] as &$field ) {
+            /* @var GF_Field $field */
+            $field->adminOnly = null;
+        }
+
+        return $form;
 
     }
 

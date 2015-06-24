@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+* Fixed: Allow to edit Admin Only fields in the Edit Entry View
+
 = 1.9 on June 23 =
 * Added: Edit Entry now takes place in the Gravity Forms form layout, not in the previous layout. This means:
 	- Edit Entry now supports Conditional Fields!
