@@ -20,13 +20,18 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.9.1 on June 24 =
+* Fixed: Allow "Admin Only" fields to appear in Edit Entry form
+	- New behavior: If the Edit Entry tab isn't configured in GravityView (which means all fields will be shown by default), GravityView will hide "Admin Only" fields from being edited by non-administrators. If the Edit Entry tab is configured, then GravityView will use the field settings in the configuration, overriding Gravity Forms settings.
+* Tweak: Changed `gravityview/edit-entry/hide-product-fields` filter to `gravityview/edit_entry/hide-product-fields` for consistency
+
 = 1.9 on June 23 =
 * Added: Edit Entry now takes place in the Gravity Forms form layout, not in the previous layout. This means:
-	- Edit Entry now supports Conditional Fields!
+	- Edit Entry now supports Conditional Logic - as expected, fields will show and hide based on the form configuration
 	- Edit Entry supports [Gravity Forms CSS Ready Classes](https://www.gravityhelp.com/css-ready-classes-for-gravity-forms/) - the layout you have configured for your form will be used for Edit Entry, too.
 	- If you customized the CSS of your Edit Entry layout, **you will need to update your stylesheet**. Sorry for the inconvenience!
 	- If visiting an invalid Edit Entry link, you are now provided with a back link
-	- Product fields are now hidden by default, since they aren't editable. If you want to instead display the old message that "product fields aren't editable," you can show them using the new `gravityview/edit-entry/hide-product-fields` filter
+	- Product fields are now hidden by default, since they aren't editable. If you want to instead display the old message that "product fields aren't editable," you can show them using the new `gravityview/edit_entry/hide-product-fields` filter
 * Added: Define column widths for fields in each field's settings (for Table and DataTable View Types only)
 * Added: `{created_by}` Merge Tag that displays information from the creator of the entry ([learn more](http://docs.gravityview.co/article/281-the-createdby-merge-tag))
 * Added: Edit Entry field setting to open link in new tab/window

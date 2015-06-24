@@ -246,6 +246,7 @@ class GravityView_Welcome {
 	 * @return void
 	 */
 	public function changelog_screen() {
+
 	?>
 		<div class="wrap about-wrap">
 
@@ -272,13 +273,19 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>1.9.1 on June 24</h3>
+
+				<ul>
+					<li>Fixed: Allow "Admin Only" fields to appear in Edit Entry form</li>
+				</ul>
+
 				<h3>1.9 on June 23</h3>
 
 				<ul>
 					<li>Added: Edit Entry now takes place in the Gravity Forms form layout, not in the previous layout. This means:
 
 						<ul>
-							<li>Edit Entry now supports Conditional Fields!</li>
+							<li>Edit Entry now supports Conditional Logic - as expected, fields will show and hide based on the form configuration</li>
 							<li>Edit Entry supports <a href="https://www.gravityhelp.com/css-ready-classes-for-gravity-forms/">Gravity Forms CSS Ready Classes</a> - the layout you have configured for your form will be used for Edit Entry, too.</li>
 							<li>If you customized the CSS of your Edit Entry layout, <strong>you will need to update your stylesheet</strong>. Sorry for the inconvenience!</li>
 							<li>If visiting an invalid Edit Entry link, you are now provided with a back link</li>

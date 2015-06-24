@@ -739,6 +739,14 @@ hr {
 		.howto {
 			margin: 0 0 .25em;
 		}
+
+		/**
+		  * This fixes the horrible italic lowercase L issue
+		  * @see https://secure.helpscout.net/conversation/100064704/2718/
+		  */
+		code {
+			font-style: normal!important;
+		}
 	}
 
 	input[type="text"] {
