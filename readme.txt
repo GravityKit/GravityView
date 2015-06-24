@@ -20,11 +20,12 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-* Fixed: Allow to edit Admin Only fields in the Edit Entry View
+= 1.9.1 on June 24 =
+* Fixed: Allow "Admin Only" fields to appear in Edit Entry form
 
 = 1.9 on June 23 =
 * Added: Edit Entry now takes place in the Gravity Forms form layout, not in the previous layout. This means:
-	- Edit Entry now supports Conditional Fields!
+	- Edit Entry now supports Conditional Logic - as expected, fields will show and hide based on the form configuration
 	- Edit Entry supports [Gravity Forms CSS Ready Classes](https://www.gravityhelp.com/css-ready-classes-for-gravity-forms/) - the layout you have configured for your form will be used for Edit Entry, too.
 	- If you customized the CSS of your Edit Entry layout, **you will need to update your stylesheet**. Sorry for the inconvenience!
 	- If visiting an invalid Edit Entry link, you are now provided with a back link
