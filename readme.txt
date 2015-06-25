@@ -20,10 +20,13 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.10 on June 25 =
 * Update: Due to the new Edit Entry functionality, GravityView now requires Gravity Forms 1.9 or higher
 * Fixed: Editing Hidden fields restored
 * Fixed: Edit Entry and Delete Entry may not always show in embedded Views
-* Fixed: Search Bar "Clear" button Javascript warning
+* Fixed: Search Bar "Clear" button Javascript warning in Internet Explorer
+* Fixed: Edit Entry styling (now using 100% Gravity Forms styles)
+* Added: `[gv_edit_entry_link] and [gv_delete_entry_link]` shortcodes. [Read how to use them](http://docs.gravityview.co/article/287-edit-entry-and-delete-entry-shortcodes)
 
 = 1.9.1 on June 24 =
 * Fixed: Allow "Admin Only" fields to appear in Edit Entry form
