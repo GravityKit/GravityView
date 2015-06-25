@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+* Update: Due to the new Edit Entry functionality, GravityView now requires Gravity Forms 1.9 or higher
 * Fixed: Edit Entry and Delete Entry may not always show in embedded Views
 = 1.9.1 on June 24 =
 * Fixed: Allow "Admin Only" fields to appear in Edit Entry form
