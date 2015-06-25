@@ -213,9 +213,9 @@ class GravityView_Edit_Entry {
 
         } else {
 
-            $gravityview_view = GravityView_View::getInstance();
+	        $current_view = gravityview_get_current_view_data( $view_id );
 
-            $user_edit = $gravityview_view->getAtts('user_edit');
+	        $user_edit = isset( $current_view['atts']['user_edit'] ) ? $current_view['atts']['user_edit'] : false;
 
             $current_user = wp_get_current_user();
 

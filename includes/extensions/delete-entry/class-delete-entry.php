@@ -507,7 +507,9 @@ final class GravityView_Delete_Entry {
 		// Only checks user_delete view option if view is already set
 		if( $gravityview_view->getViewId() ) {
 
-			$user_delete = $gravityview_view->getAtts('user_delete');
+			$current_view = gravityview_get_current_view_data();
+
+			$user_delete = isset( $current_view['atts']['user_delete'] ) ? $current_view['atts']['user_delete'] : false;
 
 			if( empty( $user_delete ) ) {
 
