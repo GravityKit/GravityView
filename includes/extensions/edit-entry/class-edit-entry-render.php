@@ -1256,7 +1256,7 @@ class GravityView_Edit_Entry_Render {
 	     */
 	    $use_gf_adminonly_setting = apply_filters( 'gravityview/edit_entry/use_gf_admin_only_setting', empty( $edit_fields ), $form, $view_id );
 
-        if( $use_gf_adminonly_setting ) {
+	    if( $use_gf_adminonly_setting && false === GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) ) {
             return $fields;
         }
 
