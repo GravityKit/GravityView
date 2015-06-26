@@ -559,7 +559,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	public static function get_formatted_date( $value = '', $format = 'Y-m-d' ) {
 		$date = date_create( $value );
 		if ( empty( $date ) ) {
-			do_action( 'gravityview_log_debug', sprintf( '%s[get_formatted_date] Date format not valid: ', get_class( $this ) ), $value );
+			do_action( 'gravityview_log_debug', sprintf( '%s[get_formatted_date] Date format not valid: ', get_class( self::$instance ) ), $value );
 			return '';
 		}
 		return $date->format( $format );
