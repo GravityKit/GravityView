@@ -41,6 +41,7 @@ class GravityView_Edit_Entry {
 
 
         $this->load_components( 'render' );
+		$this->load_components( 'shortcode' );
 
         $this->add_hooks();
 
@@ -136,19 +137,39 @@ class GravityView_Edit_Entry {
      *
      * @param $entry array Gravity Forms entry object
      * @param $view_id int GravityView view id
+     * @param $post_id int GravityView Post ID where View may be embedded {@since 1.9.2}
+     * @param string|array $field_values Parameters to pass in to the Edit Entry form to prefill data. Uses the same format as Gravity Forms "Allow field to be populated dynamically" {@since 1.9.2} {@see https://www.gravityhelp.com/documentation/article/allow-field-to-be-populated-dynamically/ }
      * @return string
      */
-    static function get_edit_link( $entry, $view_id ) {
+    static function get_edit_link( $entry, $view_id, $post_id = null, $field_values = '' ) {
 
         $nonce_key = self::get_nonce_key( $view_id, $entry['form_id'], $entry['id']  );
 
-        $base = gv_entry_link( $entry );
+	    $base_id = empty( $post_id ) ? $view_id : $post_id;
+
+        $base = gv_entry_link( $entry, $base_id );
 
         $url = add_query_arg( array(
             'page' => 'gf_entries', // Needed for GFForms::get_page()
             'view' => 'entry', // Needed for GFForms::get_page()
             'edit' => wp_create_nonce( $nonce_key )
         ), $base );
+
+	    /**
+	     * Allow passing params to dynamically populate entry with values
+	     * @since 1.9.2
+	     */
+	    if( !empty( $field_values ) ) {
+
+		    if( is_array( $field_values ) ) {
+			    // If already an array, no parse_str() needed
+			    $params = $field_values;
+		    } else {
+			    parse_str( $field_values, $params );
+		    }
+
+		    $url = add_query_arg( $params, $url );
+	    }
 
         return $url;
     }
@@ -193,9 +214,10 @@ class GravityView_Edit_Entry {
      * Needs to be used combined with GravityView_Edit_Entry::user_can_edit_entry for maximum security!!
      *
      * @param  array $entry Gravity Forms entry array
+     * @param int $view_id ID of the view you want to check visibility against {@since 1.9.2}
      * @return bool
      */
-    public static function check_user_cap_edit_entry( $entry ) {
+    public static function check_user_cap_edit_entry( $entry, $view_id = 0 ) {
 
         // No permission by default
         $user_can_edit = false;
@@ -213,9 +235,9 @@ class GravityView_Edit_Entry {
 
         } else {
 
-            $gravityview_view = GravityView_View::getInstance();
+	        $current_view = gravityview_get_current_view_data( $view_id );
 
-            $user_edit = $gravityview_view->getAtts('user_edit');
+	        $user_edit = isset( $current_view['atts']['user_edit'] ) ? $current_view['atts']['user_edit'] : false;
 
             $current_user = wp_get_current_user();
 

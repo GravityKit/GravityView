@@ -30,10 +30,24 @@ final class GravityView_Delete_Entry {
 
 	function __construct() {
 
-		self::$instance = &$this;
-
 		self::$file = plugin_dir_path( __FILE__ );
 
+		$this->include_files();
+
+		$this->add_hooks();
+	}
+
+	/**
+	 * @since 1.9.2
+	 */
+	private function include_files() {
+		require_once( self::$file . 'class-delete-entry-shortcode.php' );
+	}
+
+	/**
+	 * @since 1.9.2
+	 */
+	private function add_hooks() {
 		add_action( 'wp', array( $this, 'process_delete' ), 10000 );
 
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field'), 10, 3 );
@@ -50,7 +64,6 @@ final class GravityView_Delete_Entry {
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
 
 		add_action( 'gravityview/edit-entry/publishing-action/after', array( $this, 'add_delete_button'), 10, 3 );
-
 	}
 
 	/**
@@ -62,7 +75,7 @@ final class GravityView_Delete_Entry {
 	static function getInstance() {
 
 		if( empty( self::$instance ) ) {
-			self::$instance = new GravityView_Delete_Entry;
+			self::$instance = new self;
 		}
 
 		return self::$instance;
@@ -220,11 +233,13 @@ final class GravityView_Delete_Entry {
 	 * @param  array      $entry Gravity Forms entry array
 	 * @return string|null             If directory link is valid, the URL to process the delete request. Otherwise, `NULL`.
 	 */
-	static function get_delete_link( $entry ) {
+	static function get_delete_link( $entry, $view_id = 0, $post_id = 0 ) {
 
 		self::getInstance()->set_entry( $entry );
 
-		$base = GravityView_API::directory_link( NULL, true );
+		$base_id = empty( $post_id ) ? $view_id : $post_id;
+
+		$base = GravityView_API::directory_link( $base_id, true );
 
 		if( empty( $base ) ) {
 			return NULL;
@@ -233,12 +248,13 @@ final class GravityView_Delete_Entry {
 		// Use the slug instead of the ID for consistent security
 		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
 
-        $view_id = gravityview_get_view_id();
+        $view_id = empty( $view_id ) ? gravityview_get_view_id() : $view_id;
 
 		$actionurl = add_query_arg( array(
 			'action'	=> 'delete',
 			'entry_id'		=> $entry_slug,
-            'view_id' => $view_id
+			'gvid' => $view_id,
+            'view_id' => $view_id,
 		), $base );
 
 		$url = wp_nonce_url( $actionurl, 'delete_'.$entry_slug, 'delete' );
@@ -279,7 +295,7 @@ final class GravityView_Delete_Entry {
 			'onclick' => self::get_confirm_dialog(),
 		);
 
-		echo gravityview_get_link( self::get_delete_link( $entry ), esc_attr__( 'Delete', 'gravityview' ), $attributes );
+		echo gravityview_get_link( self::get_delete_link( $entry, $view_id ), esc_attr__( 'Delete', 'gravityview' ), $attributes );
 
 	}
 
@@ -507,7 +523,9 @@ final class GravityView_Delete_Entry {
 		// Only checks user_delete view option if view is already set
 		if( $gravityview_view->getViewId() ) {
 
-			$user_delete = $gravityview_view->getAtts('user_delete');
+			$current_view = gravityview_get_current_view_data();
+
+			$user_delete = isset( $current_view['atts']['user_delete'] ) ? $current_view['atts']['user_delete'] : false;
 
 			if( empty( $user_delete ) ) {
 
@@ -567,5 +585,5 @@ final class GravityView_Delete_Entry {
 
 } // end class
 
-new GravityView_Delete_Entry;
+GravityView_Delete_Entry::getInstance();
 

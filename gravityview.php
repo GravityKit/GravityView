@@ -47,7 +47,7 @@ if ( !defined('GV_MIN_GF_VERSION') ) {
 	/**
 	 * GravityView requires at least this version of Gravity Forms to function properly.
 	 */
-	define( 'GV_MIN_GF_VERSION', '1.8.7' );
+	define( 'GV_MIN_GF_VERSION', '1.9' );
 }
 
 /** Load common & connector functions */
@@ -89,6 +89,33 @@ final class GravityView_Plugin {
 		return self::$theInstance;
 	}
 
+	/**
+	 * @since 1.9.2
+	 *
+	 * @param array $atts
+	 * @param null $content
+	 * @param string $shortcode
+	 *
+	 * @return null|string NULL returned if user can't manage options.
+	 */
+	public function _shortcode_gf_notice( $atts = array(), $content = null, $shortcode = 'gravityview' ) {
+
+		if( ! current_user_can('manage_options') ) {
+			return null;
+		}
+
+		$notices = GravityView_Admin::get_notices();
+
+		$message = '<div style="border:1px solid #ccc; padding: 15px;"><p><em>' . esc_html__( 'You are seeing this notice because you are an administrator. Other users of the site will see nothing.', 'gravityview') . '</em></p>';
+		foreach( (array)$notices as $notice ) {
+			$message .= wpautop( $notice['message'] );
+		}
+		$message .= '</div>';
+
+		return $message;
+
+	}
+
 	private function __construct() {
 
 		require_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
@@ -96,10 +123,10 @@ final class GravityView_Plugin {
 		// If Gravity Forms doesn't exist or is outdated, load the admin view class to
 		// show the notice, but not load any post types or process shortcodes.
 		// Without Gravity Forms, there is no GravityView. Beautiful, really.
-		if( !class_exists('GFForms') || false === version_compare(GFCommon::$version, GV_MIN_GF_VERSION, ">=") ) {
+		if( ! GravityView_Admin::check_gravityforms() ) {
 
 			// If the plugin's not loaded, might as well hide the shortcode for people.
-			add_shortcode( 'gravityview', '__return_null' );
+			add_shortcode( 'gravityview', array( $this, '_shortcode_gf_notice'), 10, 3 );
 
 			return;
 		}
