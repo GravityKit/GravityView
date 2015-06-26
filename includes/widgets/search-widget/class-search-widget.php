@@ -550,6 +550,33 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	}
 
 	/**
+	 * Get the Field Format form GravityForms
+	 *
+	 * @param GF_Field_Date $field The field object
+	 * @since 1.10
+	 *
+	 * @return string Format of the date in the database
+	 */
+	public static function get_date_field_format( GF_Field_Date $field ) {
+		$format = 'm/d/Y';
+		$datepicker = array(
+			'mdy' => 'm/d/Y',
+			'dmy' => 'd/m/Y',
+			'dmy_dash' => 'd-m-Y',
+			'dmy_dot' => 'm.d.Y',
+			'ymd_slash' => 'Y/m/d',
+			'ymd_dash' => 'Y-m-d',
+			'ymd_dot' => 'Y.m.d',
+		);
+
+		if ( ! empty( $field->dateFormat ) && isset( $datepicker[ $field->dateFormat ] ) ){
+			$format = $datepicker[ $field->dateFormat ];
+		}
+
+		return $format;
+	}
+
+	/**
 	 * Format a date value
 	 *
 	 * @param string $value Date value input
