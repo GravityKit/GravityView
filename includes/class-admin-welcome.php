@@ -273,6 +273,17 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>1.10 on June 25</h3>
+
+				<ul>
+					<li>Update: Due to the new Edit Entry functionality, GravityView now requires Gravity Forms 1.9 or higher</li>
+					<li>Fixed: Editing Hidden fields restored</li>
+					<li>Fixed: Edit Entry and Delete Entry may not always show in embedded Views</li>
+					<li>Fixed: Search Bar "Clear" button Javascript warning in Internet Explorer</li>
+					<li>Fixed: Edit Entry styling issues with input sizes. Edit Entry now uses 100% Gravity Forms styles.</li>
+					<li>Added: <code>[gv_edit_entry_link]</code> and <code>[gv_delete_entry_link]</code> shortcodes. <a href="http://docs.gravityview.co/article/287-edit-entry-and-delete-entry-shortcodes">Read how to use them</a></li>
+				</ul>
+
 				<h3>1.9.1 on June 24</h3>
 
 				<ul>
