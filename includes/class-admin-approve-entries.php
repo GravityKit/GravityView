@@ -208,7 +208,7 @@ class GravityView_Admin_ApproveEntries {
 					'search_operator' => isset( $_POST['o'][0] ) ? $_POST['o'][0] : 'contains',
 				);
 
-				$search_criteria = GravityView_frontend::get_search_criteria( $search );
+				$search_criteria = GravityView_frontend::get_search_criteria( $search, $form_id );
 
 				// Get all the entry IDs for the form
 				$entries = gravityview_get_entry_ids( $form_id, $search_criteria );
