@@ -233,13 +233,11 @@ final class GravityView_Delete_Entry {
 	 * @param  array      $entry Gravity Forms entry array
 	 * @return string|null             If directory link is valid, the URL to process the delete request. Otherwise, `NULL`.
 	 */
-	static function get_delete_link( $entry, $view_id = 0, $post_id = 0 ) {
+	static function get_delete_link( $entry, $view_id = 0, $post_id = null ) {
 
 		self::getInstance()->set_entry( $entry );
 
-		$base_id = empty( $post_id ) ? $view_id : $post_id;
-
-		$base = GravityView_API::directory_link( $base_id, true );
+        $base = GravityView_API::directory_link( $post_id, true );
 
 		if( empty( $base ) ) {
 			return NULL;
