@@ -145,9 +145,7 @@ class GravityView_Edit_Entry {
 
         $nonce_key = self::get_nonce_key( $view_id, $entry['form_id'], $entry['id']  );
 
-	    $base_id = empty( $post_id ) ? $view_id : $post_id;
-
-        $base = gv_entry_link( $entry, $base_id );
+        $base = gv_entry_link( $entry, $post_id );
 
         $url = add_query_arg( array(
             'page' => 'gf_entries', // Needed for GFForms::get_page()
