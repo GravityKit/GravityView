@@ -104,7 +104,7 @@ class GravityView_Delete_Entry_Shortcode {
 			return null;
 		}
 
-		$post_id = empty( $settings['post_id'] ) ? null : absint( $settings['post_id'] );
+		$post_id = empty( $settings['post_id'] ) ? $view_id : absint( $settings['post_id'] );
 
 		$form_id = gravityview_get_form_id( $view_id );
 
