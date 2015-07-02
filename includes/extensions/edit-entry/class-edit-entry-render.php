@@ -175,13 +175,11 @@ class GravityView_Edit_Entry_Render {
 
         // Multiple Views embedded, don't proceed if nonce fails
         if( $gv_data->has_multiple_views() && ! wp_verify_nonce( $_GET['edit'], self::$nonce_key ) ) {
-            $this->print_scripts();
             return;
         }
 
         // Sorry, you're not allowed here.
         if( false === $this->user_can_edit_entry( true ) ) {
-            $this->print_scripts();
             return;
         }
 
@@ -1166,7 +1164,7 @@ class GravityView_Edit_Entry_Render {
 	    }
 
         // First, remove blacklist
-        foreach ( $fields as $key => &$field ) {
+        foreach ( $fields as $key => $field ) {
             if( in_array( $field->type, $field_type_blacklist ) ) {
                 unset( $fields[ $key ] );
             }
@@ -1183,12 +1181,9 @@ class GravityView_Edit_Entry_Render {
 	        /** @var GF_Field $field */
 	        foreach ( $fields as $field ) {
 
-                if( intval( $configured_field['id'] ) === intval( $field->id ) ){
-
-	                if( $this->user_can_edit_field( $configured_field, false ) ) {
-                        $edit_fields[] = $this->merge_field_properties( $field, $configured_field );
-                    }
-
+                if( intval( $configured_field['id'] ) === intval( $field->id ) && $this->user_can_edit_field( $configured_field, false ) ) {
+                    $edit_fields[] = $this->merge_field_properties( $field, $configured_field );
+                    break;
                 }
 
             }
