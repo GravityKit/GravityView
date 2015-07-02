@@ -20,9 +20,10 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= =
+= 1.10.1 on July 2 =
 * Fixed: Edit Entry link and Delete Entry link in embedded Views go to default view url
 * Fixed: Duplicated fields on the Edit Entry view
+* Fixed: Warning on bulk edit
 
 = 1.10 on June 26 =
 * Update: Due to the new Edit Entry functionality, GravityView now requires Gravity Forms 1.9 or higher
