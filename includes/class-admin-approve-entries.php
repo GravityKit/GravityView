@@ -174,16 +174,16 @@ class GravityView_Admin_ApproveEntries {
 	 * @return void|boolean
 	 */
 	public function process_bulk_action() {
-		if( !class_exists( 'RGForms' ) ) {
+		if ( ! class_exists( 'RGForms' ) ) {
 			return;
 		}
 
-		if( RGForms::post('action') === 'bulk' ) {
+		if ( 'bulk' === RGForms::post( 'action' ) ) {
 
-			check_admin_referer('gforms_entry_list', 'gforms_entry_list');
+			check_admin_referer( 'gforms_entry_list', 'gforms_entry_list' );
 
 			// The action is formatted like: approve-16 or disapprove-16, where the first word is the name of the action and the second is the ID of the form. Bulk action 2 is the bottom bulk action select form.
-			$bulk_action = !empty( $_POST['bulk_action'] ) ? $_POST['bulk_action'] : $_POST['bulk_action2'];
+			$bulk_action = ! empty( $_POST['bulk_action'] ) ? $_POST['bulk_action'] : $_POST['bulk_action2'];
 
 			/**
 			 * The extra '-' is to make sure that there are at *least* two items in array.
@@ -193,13 +193,13 @@ class GravityView_Admin_ApproveEntries {
 
 			list( $approved_status, $form_id ) = explode( '-', $bulk_action );
 
-			if( empty( $form_id ) ) {
-				do_action('gravityview_log_error', '[process_bulk_action] Form ID is empty from parsing bulk action.', $bulk_action );
+			if ( empty( $form_id ) ) {
+				do_action( 'gravityview_log_error', '[process_bulk_action] Form ID is empty from parsing bulk action.', $bulk_action );
 				return false;
 			}
 
 			// All entries are set to be updated, not just the visible ones
-			if( !empty( $_POST['all_entries'] ) ) {
+			if ( ! empty( $_POST['all_entries'] ) ) {
 
 				// Convert the current entry search into GF-formatted search criteria
 				$search = array(
@@ -208,7 +208,7 @@ class GravityView_Admin_ApproveEntries {
 					'search_operator' => isset( $_POST['o'][0] ) ? $_POST['o'][0] : 'contains',
 				);
 
-				$search_criteria = GravityView_frontend::get_search_criteria( $search );
+				$search_criteria = GravityView_frontend::get_search_criteria( $search, $form_id );
 
 				// Get all the entry IDs for the form
 				$entries = gravityview_get_entry_ids( $form_id, $search_criteria );
@@ -219,22 +219,22 @@ class GravityView_Admin_ApproveEntries {
 
 			}
 
-			if( empty( $entries ) ) {
-				do_action('gravityview_log_error', '[process_bulk_action] Entries are empty');
+			if ( empty( $entries ) ) {
+				do_action( 'gravityview_log_error', '[process_bulk_action] Entries are empty' );
 				return false;
 			}
 
-			$entry_count = count( $entries ) > 1 ? sprintf(__("%d entries", 'gravityview' ), count( $entries ) ) : __( '1 entry', 'gravityview' );
+			$entry_count = count( $entries ) > 1 ? sprintf( __( '%d entries', 'gravityview' ), count( $entries ) ) : __( '1 entry', 'gravityview' );
 
-			switch( $approved_status ) {
+			switch ( $approved_status ) {
 				case 'approve':
 					self::update_bulk( $entries, 1, $form_id );
-					$this->bulk_update_message = sprintf( __( "%s approved.", 'gravityview' ), $entry_count );
+					$this->bulk_update_message = sprintf( __( '%s approved.', 'gravityview' ), $entry_count );
 					break;
 
 				case 'unapprove':
 					self::update_bulk( $entries, 0, $form_id );
-					$this->bulk_update_message = sprintf( __( "%s disapproved.", 'gravityview' ), $entry_count );
+					$this->bulk_update_message = sprintf( __( '%s disapproved.', 'gravityview' ), $entry_count );
 					break;
 			}
 		}
