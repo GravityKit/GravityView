@@ -59,7 +59,7 @@ if( !$this->getTotalEntries() ) {
 
 						// The first field in the title zone is the main
 						if ( $i == 0 ) {
-							$title_args['markup'] = '<h3 class="{{class}}">{{label}}{{value}}</h3>';
+							$title_args['markup'] = '<h3 id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</h3>';
 							echo gravityview_field_output( $title_args );
 							unset( $title_args['markup'] );
 						} else {
@@ -72,7 +72,7 @@ if( !$this->getTotalEntries() ) {
 				endif;
 
 				$this->renderZone('subtitle', array(
-					'markup' => '<h4 class="{{class}}">{{label}}{{value}}</h4>',
+					'markup' => '<h4 id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</h4>',
 					'wrapper_class' => 'gv-list-view-subtitle',
 				));
 			?>
@@ -115,7 +115,7 @@ if( !$this->getTotalEntries() ) {
 
 				$this->renderZone('content-attributes', array(
 					'wrapper_class' => 'gv-list-view-content-attributes',
-					'markup'     => '<p class="{{class}}">{{label}}{{value}}</p>'
+					'markup'     => '<p id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</p>'
 				));
 
 				/**

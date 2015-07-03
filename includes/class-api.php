@@ -160,6 +160,31 @@ class GravityView_API {
 		return esc_attr(implode(' ', $classes));
 	}
 
+	/**
+	 * Fetch Field HTML ID
+	 *
+	 * @access public
+	 * @static
+	 * @param mixed $field
+	 * @return string
+	 */
+	public static function field_html_id( $field, $form = null, $entry = null ) {
+		$gravityview_view = GravityView_View::getInstance();
+		$id = $field['id'];
+
+		if ( ! empty( $id ) ) {
+			if ( ! empty( $form ) && ! empty( $form['id'] ) ) {
+				$form_id = '-' . $form['id'];
+			} else {
+				$form_id = $gravityview_view->getFormId() ? '-' . $gravityview_view->getFormId() : '';
+			}
+
+			$id = 'gv-field' . $form_id . '-' . $field['id'];
+		}
+
+		return esc_attr( $id );
+	}
+
 
 	/**
 	 * Given an entry and a form field id, calculate the entry value for that field.
@@ -1171,7 +1196,7 @@ function gravityview_field_output( $passed_args ) {
 		'field' => null,
 		'form' => null,
 		'hide_empty' => true,
-		'markup' => '<div class="{{class}}">{{label}}{{value}}</div>',
+		'markup' => '<div id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</div>',
 		'label_markup' => '',
 		'wpautop' => false,
 		'zone_id' => null,
@@ -1220,23 +1245,26 @@ function gravityview_field_output( $passed_args ) {
 
 	// Grab the Class using `gv_class`
 	$context['class'] = gv_class( $args['field'], $args['form'], $entry );
-
-	// Default Label value
-	$context['label'] = gv_label( $args['field'], $entry );
+	$context['field_id'] = GravityView_API::field_html_id( $args['field'], $args['form'], $entry );
 
 	// Get field label if needed
 	if ( ! empty( $args['label_markup'] ) ) {
-		$context['label'] = str_replace( '{{label}}', '<span class="gv-field-label">' . $context['label'] . '</span>', $args['label_markup'] );
+		$context['label'] = str_replace( array( '{{label}}', '{{ label }}' ), '<span class="gv-field-label">{{ label_value }}</span>', $args['label_markup'] );
 	}
 
-	$html = $args['markup'];
+	if ( empty( $context['label'] ) ){
+		$context['label'] = '<span class="gv-field-label">{{ label_value }}</span>';
+	}
 
-	// Backwards Compatibility
-	$html = str_replace( '{{label}}', '<span class="gv-field-label">{{label}}</span>', $args['markup'] );
+	// Default Label value
+	$context['label_value'] = gv_label( $args['field'], $entry );
 
-	$html = apply_filters( 'gravityview/field_output/pre_html', $html, $args );
-	$otag = '{{';
-	$ctag = '}}';
+	// Allow Pre filtering of the HTML
+	$html = apply_filters( 'gravityview/field_output/pre_html', $args['markup'], $args );
+
+	// Setup Open and Close tags
+	$otag = apply_filters( 'gravityview/field_output/open_tag', '{{', $args );
+	$ctag = apply_filters( 'gravityview/field_output/close_tag', '}}', $args );
 
 	foreach ( $context as $tag => $value ) {
 		// If the tag doesn't exist just skip it

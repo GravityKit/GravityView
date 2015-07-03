@@ -22,7 +22,7 @@
 				<?php
 
 					$markup = '
-						<tr class="{{class}}">
+						<tr id="{{ field_id }}" class="{{class}}">
 							<th scope="row">{{label}}</th>
 							<td>{{value}}</td>
 						</tr>';
