@@ -1166,16 +1166,15 @@ function gravityview_get_map_link( $address ) {
  * @return string
  */
 function gravityview_field_output( $passed_args ) {
-
 	$defaults = array(
-		'entry' => NULL,
-		'field' => NULL,
-		'form' => NULL,
+		'entry' => null,
+		'field' => null,
+		'form' => null,
 		'hide_empty' => true,
 		'markup' => '<div class="{{class}}">{{label}}{{value}}</div>',
 		'label_markup' => '',
 		'wpautop' => false,
-		'zone_id' => NULL,
+		'zone_id' => null,
 	);
 
 	$args = wp_parse_args( $passed_args, $defaults );
@@ -1192,61 +1191,80 @@ function gravityview_field_output( $passed_args ) {
 	$args = apply_filters( 'gravityview/field_output/args', $args, $passed_args );
 
 	// Required fields.
-	if( empty( $args['field'] ) || empty( $args['form'] ) ) {
+	if ( empty( $args['field'] ) || empty( $args['form'] ) ) {
 		do_action( 'gravityview_log_error', '[gravityview_field_output] Field or form are empty.', $args );
 		return '';
 	}
 
 	$entry = empty( $args['entry'] ) ? array() : $args['entry'];
 
-	$value = gv_value( $entry, $args['field'] );
+	// Create the Context for replacing
+	$context = array();
+
+	$context['value'] = gv_value( $entry, $args['field'] );
 
 	// If the value is empty and we're hiding empty, return empty.
-	if( $value === '' && !empty( $args['hide_empty'] ) ) { return ''; }
+	if ( $context['value'] === '' && ! empty( $args['hide_empty'] ) ) {
+		return '';
+	}
 
-	if( $value !== '' && !empty( $args['wpautop'] ) ) {
-		$value = wpautop( $value );
+	if ( $context['value'] !== '' && ! empty( $args['wpautop'] ) ) {
+		$context['value'] = wpautop( $context['value'] );
 	}
 
 	// Get width setting, if exists
-	$width = GravityView_API::field_width( $args['field'] );
+	$context['width'] = GravityView_API::field_width( $args['field'] );
 
-	//If replacing with CSS inline formatting, let's do it.
-	$width_style = GravityView_API::field_width( $args['field'], 'width:'.$width.'%%;' );
+	// If replacing with CSS inline formatting, let's do it.
+	$context['width:style'] = GravityView_API::field_width( $args['field'], 'width:' . $context['width'] . '%;' );
 
-	$class = gv_class( $args['field'], $args['form'], $entry );
+	// Grab the Class using `gv_class`
+	$context['class'] = gv_class( $args['field'], $args['form'], $entry );
 
-	// get field label if needed
-	if( !empty( $args['label_markup'] ) || false !== strpos( $args['markup'], '{{label}}' ) ) {
-		$label = gv_label( $args['field'], $entry );
-	} else {
-		$label = '';
-	}
+	// Default Label value
+	$context['label'] = gv_label( $args['field'], $entry );
 
-	if( !empty( $label ) ) {
-		// If the label markup is overridden
-		if( !empty( $args['label_markup'] ) ) {
-			$label = str_replace( '{{label}}', '<span class="gv-field-label">' . $label . '</span>', $args['label_markup'] );
-		} else {
-			$args['markup'] =  str_replace( '{{label}}', '<span class="gv-field-label">{{label}}</span>', $args['markup'] );
-		}
+	// Get field label if needed
+	if ( ! empty( $args['label_markup'] ) ) {
+		$context['label'] = str_replace( '{{label}}', '<span class="gv-field-label">' . $context['label'] . '</span>', $args['label_markup'] );
 	}
 
 	$html = $args['markup'];
-	$html = str_replace( '{{width}}', $width, $html );
-	$html = str_replace( '{{width:style}}', $width_style, $html );
-	$html = str_replace( '{{class}}', $class, $html );
-	$html = str_replace( '{{label}}', $label, $html );
-	$html = str_replace( '{{value}}', $value, $html );
+
+	// Backwards Compatibility
+	$html = str_replace( '{{label}}', '<span class="gv-field-label">{{label}}</span>', $args['markup'] );
+
+	$html = apply_filters( 'gravityview/field_output/pre_html', $html, $args );
+	$otag = '{{';
+	$ctag = '}}';
+
+	foreach ( $context as $tag => $value ) {
+		// If the tag doesn't exist just skip it
+		if ( false === strpos( $html, $otag . $tag . $ctag ) && false === strpos( $html, $otag . ' ' . $tag . ' ' . $ctag ) ){
+			continue;
+		}
+
+		// Array to search
+		$search = array(
+			$otag . $tag . $ctag,
+			$otag . ' ' . $tag . ' ' . $ctag,
+		);
+
+		// Allow users to filter content on context
+		$value = apply_filters( 'gravityview/field_output/context/' . $tag, $value, $args );
+
+		// Finally do the replace
+		$html = str_replace( $search, $value, $html );
+	}
 
 	/**
 	 * Modify the output
 	 * @param string $html Existing HTML output
 	 * @param array $args Arguments passed to the function
+	 * @todo  remove `gravityview_field_output` on 1.12
 	 */
 	$html = apply_filters( 'gravityview_field_output', $html, $args );
-
-	unset( $value, $label, $class, $width, $width_style, $args, $passed_args, $entry );
+	$html = apply_filters( 'gravityview/field_output/html', $html, $args );
 
 	return $html;
 }
