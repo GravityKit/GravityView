@@ -200,6 +200,7 @@ class GravityView_Welcome {
 								<li><strong>DataTables</strong> display entries in a dynamic table with advanced sorting capabilities provided by the <a href="http://datatables.net">DataTables</a> script.</li>
 							</ul>
 						</li>
+                        <li>On the View Configuration metabox, click on the "+Add Field" button to add form fields to the active areas of your View. These are the fields that will be displayed in the frontend.</li>
 					</ol>
 				</div>
 
