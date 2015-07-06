@@ -22,6 +22,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 = =
 * Fixed: Removed User Registration add-on validation when updating an entry
+* Fixed: Conflicts with the Other Entries field when placing a search:
+    - The filter hook "gravityview/field/other_entries/args" was replaced by "gravityview/field/other_entries/criteria". If you are using this filter please contact the support before updating the plugin so we could help you with the transition.
 
 = 1.10.1 on July 2 =
 * Fixed: Edit Entry link and Delete Entry link in embedded Views go to default view url
