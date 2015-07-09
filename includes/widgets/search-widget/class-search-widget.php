@@ -396,7 +396,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				if ( ! empty( $filter[0]['operator'] ) && in_array( $filter[0]['operator'], array( '>', '<' ) ) ) {
 					$mode = 'all';
 				}
-			} else {
+			} elseif( !empty( $filter ) ) {
 				$search_criteria['field_filters'][] = $filter;
 			}
 		}
