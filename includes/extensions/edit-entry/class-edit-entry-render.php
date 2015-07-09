@@ -689,8 +689,8 @@ class GravityView_Edit_Entry_Render {
             $field = GFCommon::add_categories_as_choices( $field, $value );
         }
 
-        // We're dealing with multiple inputs (e.g. checkbox)
-        if( isset( $field->inputs ) && is_array( $field->inputs ) ) {
+        // We're dealing with multiple inputs (e.g. checkbox) but not time (as it doesn't store data in input IDs)
+        if( isset( $field->inputs ) && is_array( $field->inputs ) && 'time' !== $field->type ) {
 
             $field_value = array();
 

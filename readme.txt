@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 = =
 * Fixed: Removed User Registration add-on validation when updating an entry
+* Fixed: Editing time fields wasn't displaying saved value
 
 = 1.10.1 on July 2 =
 * Fixed: Edit Entry link and Delete Entry link in embedded Views go to default view url
