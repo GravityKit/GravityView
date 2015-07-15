@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = =
+* Added: Updates WordPress User profile when entry is updated when using GF User Registration Add-on
 * Fixed: Removed User Registration add-on validation when updating an entry
 * Fixed: Editing time fields wasn't displaying saved value
 * Fixed: Conflicts with the Date range search when search inputs are empty
