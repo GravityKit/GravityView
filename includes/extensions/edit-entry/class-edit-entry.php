@@ -43,6 +43,11 @@ class GravityView_Edit_Entry {
         $this->load_components( 'render' );
 		$this->load_components( 'shortcode' );
 
+        // If GF User Registration Add-on exists
+        if( class_exists( 'GFUser' ) ) {
+            $this->load_components( 'user-registration' );
+        }
+
         $this->add_hooks();
 
 		// Process hooks for addons that may or may not be present

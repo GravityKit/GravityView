@@ -689,8 +689,8 @@ class GravityView_Edit_Entry_Render {
             $field = GFCommon::add_categories_as_choices( $field, $value );
         }
 
-        // We're dealing with multiple inputs (e.g. checkbox)
-        if( isset( $field->inputs ) && is_array( $field->inputs ) ) {
+        // We're dealing with multiple inputs (e.g. checkbox) but not time or date (as it doesn't store data in input IDs)
+        if( isset( $field->inputs ) && is_array( $field->inputs ) && !in_array( $field->type, array( 'time', 'date' ) ) ) {
 
             $field_value = array();
 
@@ -735,6 +735,15 @@ class GravityView_Edit_Entry_Render {
 
         // if value is empty get the default value if defined
         $field_value = $field->get_value_default_if_empty( $field_value );
+
+        /**
+         * change the field value if needed
+         * @since 1.10.2
+         *
+         * @param mixed $field_value field value used to populate the input
+         * @param object $field Gravity Forms field object ( Class GF_Field )
+         */
+        $field_value = apply_filters( 'gravityview/edit_entry/field_value', $field_value, $field );
 
 	    // Prevent any PHP warnings, like undefined index
 	    ob_start();
