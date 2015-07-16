@@ -8,7 +8,7 @@
      *
      * since 1.11.1
      */
-    $back_link = apply_filters( 'gravityview/edit_entry/cancel_link', remove_query_arg( array( 'page', 'view', 'edit' ) ) );
+    $back_link = apply_filters( 'gravityview/edit_entry/cancel_link', remove_query_arg( array( 'page', 'view', 'edit' ) ), $this->form, $this->entry, $this->view_id );
 
 	/**
 	 * @since 1.5.1
