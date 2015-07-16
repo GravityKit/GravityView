@@ -163,12 +163,16 @@ class GravityView_API {
 	/**
 	 * Fetch Field HTML ID
 	 *
+	 * @since 1.11
+	 *
 	 * @access public
 	 * @static
-	 * @param mixed $field
-	 * @return string
+	 * @param array $field GravityView field array passed to gravityview_field_output()
+	 * @param array $form Gravity Forms form array, if set.
+	 * @param array $entry Gravity Forms entry array
+	 * @return string Sanitized unique HTML `id` attribute for the field
 	 */
-	public static function field_html_id( $field, $form = null, $entry = null ) {
+	public static function field_html_attr_id( $field, $form = array(), $entry = array() ) {
 		$gravityview_view = GravityView_View::getInstance();
 		$id = $field['id'];
 
@@ -1188,7 +1192,7 @@ function gravityview_get_map_link( $address ) {
  *
  * @since  1.1.5
  * @param  array $passed_args Associative array with field data. `field` and `form` are required.
- * @return string
+ * @return string Field output. If empty value and hide empty is true, return empty.
  */
 function gravityview_field_output( $passed_args ) {
 	$defaults = array(
@@ -1196,7 +1200,7 @@ function gravityview_field_output( $passed_args ) {
 		'field' => null,
 		'form' => null,
 		'hide_empty' => true,
-		'markup' => '<div id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</div>',
+		'markup' => '<div id="{{field_id}}" class="{{class}}">{{label}}{{value}}</div>',
 		'label_markup' => '',
 		'wpautop' => false,
 		'zone_id' => null,
@@ -1223,7 +1227,10 @@ function gravityview_field_output( $passed_args ) {
 
 	$entry = empty( $args['entry'] ) ? array() : $args['entry'];
 
-	// Create the Context for replacing
+	/**
+	 * Create the Context for replacing.
+	 * @since 1.11
+	 */
 	$context = array();
 
 	$context['value'] = gv_value( $entry, $args['field'] );
@@ -1245,7 +1252,7 @@ function gravityview_field_output( $passed_args ) {
 
 	// Grab the Class using `gv_class`
 	$context['class'] = gv_class( $args['field'], $args['form'], $entry );
-	$context['field_id'] = GravityView_API::field_html_id( $args['field'], $args['form'], $entry );
+	$context['field_id'] = GravityView_API::field_html_attr_id( $args['field'], $args['form'], $entry );
 
 	// Get field label if needed
 	if ( ! empty( $args['label_markup'] ) ) {
@@ -1259,23 +1266,43 @@ function gravityview_field_output( $passed_args ) {
 	// Default Label value
 	$context['label_value'] = gv_label( $args['field'], $entry );
 
-	// Allow Pre filtering of the HTML
+	/**
+	 * Allow Pre filtering of the HTML
+	 * @since 1.11
+	 * @param string $markup The HTML for the markup
+	 * @param array $args All args for the field output
+	 */
 	$html = apply_filters( 'gravityview/field_output/pre_html', $args['markup'], $args );
 
-	// Setup Open and Close tags
-	$otag = apply_filters( 'gravityview/field_output/open_tag', '{{', $args );
-	$ctag = apply_filters( 'gravityview/field_output/close_tag', '}}', $args );
+	/**
+	 * Modify the opening tags for the template content placeholders
+	 * @since 1.11
+	 * @param string $open_tag Open tag for template content placeholders. Default: `{{`
+	 */
+	$open_tag = apply_filters( 'gravityview/field_output/open_tag', '{{', $args );
 
+	/**
+	 * Modify the closing tags for the template content placeholders
+	 * @since 1.11
+	 * @param string $close_tag Close tag for template content placeholders. Default: `}}`
+	 */
+	$close_tag = apply_filters( 'gravityview/field_output/close_tag', '}}', $args );
+
+	/**
+	 * Loop through each of the tags to replace and replace both `{{tag}}` and `{{ tag }}` with the values
+	 * @since 1.11
+	 */
 	foreach ( $context as $tag => $value ) {
+
 		// If the tag doesn't exist just skip it
-		if ( false === strpos( $html, $otag . $tag . $ctag ) && false === strpos( $html, $otag . ' ' . $tag . ' ' . $ctag ) ){
+		if ( false === strpos( $html, $open_tag . $tag . $close_tag ) && false === strpos( $html, $open_tag . ' ' . $tag . ' ' . $close_tag ) ){
 			continue;
 		}
 
 		// Array to search
 		$search = array(
-			$otag . $tag . $ctag,
-			$otag . ' ' . $tag . ' ' . $ctag,
+			$open_tag . $tag . $close_tag,
+			$open_tag . ' ' . $tag . ' ' . $close_tag,
 		);
 
 		// Allow users to filter content on context
@@ -1289,7 +1316,7 @@ function gravityview_field_output( $passed_args ) {
 	 * Modify the output
 	 * @param string $html Existing HTML output
 	 * @param array $args Arguments passed to the function
-	 * @todo  remove `gravityview_field_output` on 1.12
+	 * @todo  Depricate `gravityview_field_output`
 	 */
 	$html = apply_filters( 'gravityview_field_output', $html, $args );
 	$html = apply_filters( 'gravityview/field_output/html', $html, $args );
