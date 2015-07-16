@@ -1321,6 +1321,9 @@ function gravityview_field_output( $passed_args ) {
 	$html = apply_filters( 'gravityview_field_output', $html, $args );
 	$html = apply_filters( 'gravityview/field_output/html', $html, $args );
 
+	// Just free up a tiny amount of memory
+	unset( $value, $args, $passed_args, $entry, $context, $search, $open_tag, $tag, $close_tag );
+
 	return $html;
 }
 
