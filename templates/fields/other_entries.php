@@ -45,6 +45,12 @@ $criteria['search_criteria']['status'] = apply_filters( 'gravityview_status', 'a
 
 /**
  * Modify the search parameters before the entries are fetched
+ *
+ * @since 1.11
+ *
+ * @param array $criteria Gravity Forms search criteria array, as used by GVCommon::get_entries()
+ * @param array $view_settings Associative array of settings with plugin defaults used if not set by the View
+ * @param int $form_id The Gravity Forms ID
  */
 $criteria = apply_filters('gravityview/field/other_entries/criteria', $criteria, $view_settings, $form_id );
 
@@ -70,9 +76,9 @@ $list->output();
 
 /**
  * @since 1.7.6
- * @deprecated since 1.10.2
+ * @deprecated since 1.11
  */
 $deprecated = apply_filters( 'gravityview/field/other_entries/args', array(), $field );
 if ( !empty( $deprecated ) ) {
-    _deprecated_function(  'The "gravityview/field/other_entries/args" filter', 'GravityView 1.10.2', 'gravityview/field/other_entries/criteria' );
+    _deprecated_function(  'The "gravityview/field/other_entries/args" filter', 'GravityView 1.11', 'gravityview/field/other_entries/criteria' );
 }

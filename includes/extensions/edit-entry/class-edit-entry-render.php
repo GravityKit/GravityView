@@ -738,7 +738,7 @@ class GravityView_Edit_Entry_Render {
 
         /**
          * change the field value if needed
-         * @since 1.10.2
+         * @since 1.11
          *
          * @param mixed $field_value field value used to populate the input
          * @param object $field Gravity Forms field object ( Class GF_Field )
