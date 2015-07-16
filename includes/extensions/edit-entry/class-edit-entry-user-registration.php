@@ -2,7 +2,7 @@
 /**
  * GravityView Edit Entry - Sync User Registration (when using the GF User Registration Add-on)
  *
- * @since 1.10.2
+ * @since 1.11
  * @package   GravityView
  * @license   GPL2+
  * @author    Katz Web Services, Inc.
@@ -29,14 +29,14 @@ class GravityView_Edit_Entry_User_Registration {
     }
 
 	/**
-	 * @since 1.10.2
+	 * @since 1.11
 	 */
 	public function load() {
 
 	    /**
 	     * If you want to update the user information when an entry is updated
 	     *
-	     * @since 1.10.2
+	     * @since 1.11
 	     * @param boolean $boolean Whether to trigger update on user registration (default: true)
 	     */
         if( apply_filters( 'gravityview/edit_entry/user_registration/trigger_update', true ) ) {
@@ -48,7 +48,7 @@ class GravityView_Edit_Entry_User_Registration {
      *
      * Update the WordPress user profile based on the GF User Registration create feed
      *
-     * @since 1.10.2
+     * @since 1.11
      *
      * @param array $form Gravity Forms form array
      * @param string $entry_id Gravity Forms entry ID
@@ -64,7 +64,7 @@ class GravityView_Edit_Entry_User_Registration {
 	    /**
 	     * Modify the entry details before updating the user
 	     *
-	     * @since 1.10.2
+	     * @since 1.11
 	     * @param array $entry GF entry
 	     * @param array $form GF form
 	     */
