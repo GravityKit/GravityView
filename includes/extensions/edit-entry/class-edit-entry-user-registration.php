@@ -7,7 +7,7 @@
  * @license   GPL2+
  * @author    Katz Web Services, Inc.
  * @link      http://gravityview.co
- * @copyright Copyright 2014, Katz Web Services, Inc.
+ * @copyright Copyright 2015, Katz Web Services, Inc.
  */
 
 if ( ! defined( 'WPINC' ) ) {
@@ -15,7 +15,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Add [gv_edit_entry_link] shortcode
+ * GravityView Edit Entry - Sync User Registration (when using the GF User Registration Add-on)
  */
 class GravityView_Edit_Entry_User_Registration {
 
@@ -28,7 +28,17 @@ class GravityView_Edit_Entry_User_Registration {
         $this->loader = $loader;
     }
 
-    function load() {
+	/**
+	 * @since 1.10.2
+	 */
+	public function load() {
+
+	    /**
+	     * If you want to update the user information when an entry is updated
+	     *
+	     * @since 1.10.2
+	     * @param boolean $boolean Whether to trigger update on user registration (default: true)
+	     */
         if( apply_filters( 'gravityview/edit_entry/user_registration/trigger_update', true ) ) {
             add_action( 'gravityview/edit_entry/after_update' , array( $this, 'update_user' ), 10, 2 );
         }
@@ -38,17 +48,26 @@ class GravityView_Edit_Entry_User_Registration {
      *
      * Update the WordPress user profile based on the GF User Registration create feed
      *
-     * @param $form array Gravity Forms form object
-     * @param $entry_id string Gravity Forms entry ID
+     * @since 1.10.2
+     *
+     * @param array $form Gravity Forms form array
+     * @param string $entry_id Gravity Forms entry ID
      */
-    function update_user( $form, $entry_id ) {
+    public function update_user( $form = array(), $entry_id = 0 ) {
 
-        if( !class_exists( 'GFAPI' ) || !class_exists( 'GFUser' ) ) {
+        if( !class_exists( 'GFAPI' ) || !class_exists( 'GFUser' ) || empty( $entry_id ) ) {
             return;
         }
 
         $entry = GFAPI::get_entry( $entry_id );
 
+	    /**
+	     * Modify the entry details before updating the user
+	     *
+	     * @since 1.10.2
+	     * @param array $entry GF entry
+	     * @param array $form GF form
+	     */
         $entry = apply_filters( 'gravityview/edit_entry/user_registration/entry', $entry, $form );
 
         // Trigger the User Registration update user method
