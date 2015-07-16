@@ -168,6 +168,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 		// Add granular overrides
 		add_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ), 10, 3 );
 
+
 		// widget logic
 		add_action( 'gravityview_before', array( $this, 'render_widget_hooks' ) );
 		add_action( 'gravityview_after', array( $this, 'render_widget_hooks' ) );

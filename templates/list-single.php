@@ -32,7 +32,7 @@
 			foreach ( $fields as $field ) {
 				$title_args['field'] = $field;
 				if ( 0 === $i ) {
-					$title_args['markup'] = '<h3 class="{{class}}">{{label}}{{value}}</h3>';
+					$title_args['markup'] = '<h3 id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</h3>';
 					echo gravityview_field_output( $title_args );
 				} else {
 					$title_args['wpautop'] = true;
@@ -44,7 +44,7 @@
 
 		$this->renderZone('subtitle', array(
 			'wrapper_class' => 'gv-list-view-subtitle',
-			'markup'     => '<h4 class="{{class}}">{{label}}{{value}}</h4>',
+			'markup'     => '<h4 id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</h4>',
 		));
 
 		?>
@@ -58,7 +58,7 @@
 
 				$this->renderZone('image', array(
 					'wrapper_class' => 'gv-list-view-content-image',
-					'markup'     => '<h4 class="{{class}}">{{label}}{{value}}</h4>',
+					'markup'     => '<h4 id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</h4>',
 				));
 
 				$this->renderZone('description', array(
@@ -69,7 +69,7 @@
 
 				$this->renderZone('content-attributes', array(
 					'wrapper_class' => 'gv-list-view-content-attributes',
-					'markup' => '<p class="{{class}}">{{label}}{{value}}</p>',
+					'markup' => '<p id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</p>',
 				));
 
 			?>

@@ -41,7 +41,7 @@
 					do_action('gravityview_table_cells_before', $this );
 
 					$this->renderZone( 'columns', array(
-						'markup' => '<td class="{{class}}">{{value}}</td>',
+						'markup' => '<td id="{{ field_id }}" class="{{class}}">{{value}}</td>',
 						'hide_empty' => false, // Always show <td>
 					));
 
