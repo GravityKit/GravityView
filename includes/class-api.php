@@ -130,17 +130,22 @@ class GravityView_API {
 
 		$classes = array();
 
-		if( !empty( $field['custom_class'] ) && !empty( $entry ) ) {
+		if( !empty( $field['custom_class'] ) ) {
 
-			// We want the merge tag to be formatted as a class. The merge tag may be
-			// replaced by a multiple-word value that should be output as a single class.
-			// "Office Manager" will be formatted as `.OfficeManager`, not `.Office` and `.Manager`
-			add_filter('gform_merge_tag_filter', 'sanitize_html_class');
+            $custom_class = $field['custom_class'];
 
-			$custom_class = self::replace_variables( $field['custom_class'], $form, $entry );
+            if( !empty( $entry ) ) {
 
-			// And then we want life to return to normal
-			remove_filter('gform_merge_tag_filter', 'sanitize_html_class');
+                // We want the merge tag to be formatted as a class. The merge tag may be
+                // replaced by a multiple-word value that should be output as a single class.
+                // "Office Manager" will be formatted as `.OfficeManager`, not `.Office` and `.Manager`
+                add_filter('gform_merge_tag_filter', 'sanitize_html_class');
+
+                $custom_class = self::replace_variables( $custom_class, $form, $entry);
+
+                // And then we want life to return to normal
+                remove_filter('gform_merge_tag_filter', 'sanitize_html_class');
+            }
 
 			// And now we want the spaces to be handled nicely.
 			$classes[] = gravityview_sanitize_html_class( $custom_class );
