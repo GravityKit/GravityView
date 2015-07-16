@@ -10,7 +10,7 @@ msgstr ""
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
 "PO-Revision-Date: 2015-06-26 18:11+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
-"Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/gravityview/language/hu_HU/)\n"
+"Language-Team: Hungarian (Hungary) (http://www.transifex.com/p/gravityview/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -198,7 +198,7 @@ msgid "Buy Now"
 msgstr "Vásárlás"
 
 #: includes/admin/metaboxes/views/select-template.php:35
-#: includes/widgets/search-widget/class-search-widget.php:112
+#: includes/widgets/search-widget/class-search-widget.php:114
 msgid "Select"
 msgstr "Kiválaszt"
 
@@ -222,8 +222,8 @@ msgstr "Több bejegyzés"
 #: includes/class-frontend-views.php:366
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:511
-#: includes/extensions/edit-entry/class-edit-entry-shortcode.php:185
+#: includes/extensions/edit-entry/class-edit-entry-render.php:509
+#: includes/extensions/edit-entry/class-edit-entry-shortcode.php:186
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
 msgstr "Bejegyzés szerkesztése"
@@ -490,7 +490,7 @@ msgid "Add all the available fields at once."
 msgstr "Minden elérhető mező hozzáadása"
 
 #: includes/class-admin-views.php:542
-#: includes/widgets/search-widget/class-search-widget.php:211
+#: includes/widgets/search-widget/class-search-widget.php:213
 msgid "Entry ID"
 msgstr "Bejegyzés AZ"
 
@@ -499,7 +499,7 @@ msgid "The unique ID of the entry."
 msgstr "A bejegyzés azonosítója"
 
 #: includes/class-admin-views.php:547
-#: includes/widgets/search-widget/class-search-widget.php:210
+#: includes/widgets/search-widget/class-search-widget.php:212
 msgid "Entry Date"
 msgstr "Bejegyzés dátuma"
 
@@ -672,23 +672,23 @@ msgstr "Köszönjük, hogy telepítetted a GravityView -t. Csodás megjelenést 
 msgid "List of Changes"
 msgstr "A változások listája"
 
-#: includes/class-admin-welcome.php:257
+#: includes/class-admin-welcome.php:258
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:539
+#: includes/class-admin-welcome.php:540
 msgid "GravityView is brought to you by:"
 msgstr "A GravityView -t elhozták neked:"
 
-#: includes/class-admin-welcome.php:571
+#: includes/class-admin-welcome.php:572
 msgid "Contributors"
 msgstr "Közreműködők:"
 
-#: includes/class-admin-welcome.php:592
+#: includes/class-admin-welcome.php:593
 msgid "Want to contribute?"
 msgstr "Szeretnél bekapcsolódni?"
 
-#: includes/class-admin-welcome.php:593
+#: includes/class-admin-welcome.php:594
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -813,19 +813,19 @@ msgid ""
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr "%sGravityView -nak szüksége van a Gravity Form telepítésére, hogy megfelelően fusson. %sGet Gravity Forms%s - kezdő ár 39$%s%s"
 
-#: includes/class-api.php:351
+#: includes/class-api.php:385
 msgid "This search returned no results."
 msgstr "A keresés nem hozott eredményt."
 
-#: includes/class-api.php:353
+#: includes/class-api.php:387
 msgid "No entries match your request."
 msgstr "Nincs egyező találat."
 
-#: includes/class-api.php:738
+#: includes/class-api.php:772
 msgid "&larr; Go back"
 msgstr "&larr; Menj vissza"
 
-#: includes/class-api.php:1134
+#: includes/class-api.php:1168
 msgid "Map It"
 msgstr "Térképen"
 
@@ -867,7 +867,7 @@ msgid "Payment Method"
 msgstr "Fizetési mód"
 
 #: includes/class-common.php:279
-#: includes/widgets/search-widget/class-search-widget.php:756
+#: includes/widgets/search-widget/class-search-widget.php:781
 msgid "Is Fulfilled"
 msgstr "Teljesült"
 
@@ -1077,7 +1077,7 @@ msgid "Define a default search value for the View"
 msgstr "Határozd meg az alapértelmezett keresési értéket a View számára."
 
 #: includes/class-data.php:628
-#: includes/widgets/search-widget/class-search-widget.php:139
+#: includes/widgets/search-widget/class-search-widget.php:141
 msgid "Search Field"
 msgstr "Keresési mező"
 
@@ -1557,35 +1557,35 @@ msgstr "Engedélyezi a következő felhasználóknak, hogy töröljék a bejegyz
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
 msgstr "Egy link a bejegyzés törléséhez. A bejegyzés törlés engedélyek tiszteletben tartása mellett."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:298
+#: includes/extensions/delete-entry/class-delete-entry.php:296
 msgid "Delete"
 msgstr "Törlés"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:375
+#: includes/extensions/delete-entry/class-delete-entry.php:373
 msgid "The entry does not exist."
 msgstr "A bejegyzés nem létezik."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:419
+#: includes/extensions/delete-entry/class-delete-entry.php:417
 msgid "Are you sure you want to delete this entry? This cannot be undone."
 msgstr "Biztos vagy benne, hogy törölni szeretnéd ezt a bejegyzést? Nem lehet visszacsinálni."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:446
+#: includes/extensions/delete-entry/class-delete-entry.php:444
 msgid "The link to delete this entry is not valid; it may have expired."
 msgstr "A bejegyzés törléséhez tartozó link helytelen; lehet, hogy lejárt."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:450
+#: includes/extensions/delete-entry/class-delete-entry.php:448
 msgid "You do not have permission to delete this entry."
 msgstr "Nincs engedélyed a bejegyzés törléséhez."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:454
+#: includes/extensions/delete-entry/class-delete-entry.php:452
 msgid "You cannot delete the entry; it is already in the trash."
 msgstr "Nem törölheted a bejegyzést; már a kukában van."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:572
+#: includes/extensions/delete-entry/class-delete-entry.php:570
 msgid "There was an error deleting the entry: %s"
 msgstr "Hiba történt a bejegyzés törlése során: %s"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:577
+#: includes/extensions/delete-entry/class-delete-entry.php:575
 msgid "The entry was successfully deleted."
 msgstr "A bejegyzés sikeresen törlésre került."
 
@@ -1616,35 +1616,35 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr "Tedd a mezőt szerkeszthetővé a következő számára:"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:522
+#: includes/extensions/edit-entry/class-edit-entry-render.php:520
 msgid "There was a problem with your submission."
 msgstr "Probléma merült fel a beküldéssel."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:522
+#: includes/extensions/edit-entry/class-edit-entry-render.php:520
 msgid "Errors have been highlighted below."
 msgstr "A hiba kiemelésre került lentebb."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:528
+#: includes/extensions/edit-entry/class-edit-entry-render.php:526
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "Bejegyzés frissítve. %sVisszatérés a bejegyzéshez%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:982
+#: includes/extensions/edit-entry/class-edit-entry-render.php:994
 msgid "Maximum number of files reached"
 msgstr "Az elért fájlok maximális száma"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1359
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1368
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "A bejegyzés szerkesztéséhez tartozó link helytelen; lehet, hogy lejárt."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1365
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1374
 msgid "You do not have permission to edit this entry."
 msgstr "Nincs engedélyed a bejegyzése szerkesztéséhez."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1369
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1378
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "Nem tudod a bejegyzést szerkeszteni; a kukában van."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1409
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1418
 msgid "You do not have permission to edit this field."
 msgstr "Nincs engedélyed a mező szerkesztésére."
 
@@ -2036,76 +2036,76 @@ msgstr ""
 msgid "Search Bar"
 msgstr "Keresősáv"
 
-#: includes/widgets/search-widget/class-search-widget.php:110
+#: includes/widgets/search-widget/class-search-widget.php:112
 msgid "Text"
 msgstr "Szöveg"
 
-#: includes/widgets/search-widget/class-search-widget.php:111
+#: includes/widgets/search-widget/class-search-widget.php:113
 msgid "Date"
 msgstr "Dátum"
 
-#: includes/widgets/search-widget/class-search-widget.php:113
+#: includes/widgets/search-widget/class-search-widget.php:115
 msgid "Select (multiple values)"
 msgstr "Kiválaszt (több értéket)"
 
-#: includes/widgets/search-widget/class-search-widget.php:114
+#: includes/widgets/search-widget/class-search-widget.php:116
 msgid "Radio"
 msgstr "Rádió"
 
-#: includes/widgets/search-widget/class-search-widget.php:115
-#: includes/widgets/search-widget/class-search-widget.php:116
+#: includes/widgets/search-widget/class-search-widget.php:117
+#: includes/widgets/search-widget/class-search-widget.php:118
 msgid "Checkbox"
 msgstr "Jelölőnégyzet"
 
-#: includes/widgets/search-widget/class-search-widget.php:117
+#: includes/widgets/search-widget/class-search-widget.php:119
 msgid "Links"
 msgstr "Linkek"
 
-#: includes/widgets/search-widget/class-search-widget.php:118
+#: includes/widgets/search-widget/class-search-widget.php:120
 msgid "Date range"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:137
+#: includes/widgets/search-widget/class-search-widget.php:139
 msgid "No search fields configured yet."
 msgstr "A keresési mező még nem lett beállítva."
 
-#: includes/widgets/search-widget/class-search-widget.php:138
+#: includes/widgets/search-widget/class-search-widget.php:140
 msgid "Add Search Field"
 msgstr "Keresési mező hozzáadása"
 
-#: includes/widgets/search-widget/class-search-widget.php:140
+#: includes/widgets/search-widget/class-search-widget.php:142
 msgid "Input Type"
 msgstr "Beviteli formátum"
 
-#: includes/widgets/search-widget/class-search-widget.php:209
+#: includes/widgets/search-widget/class-search-widget.php:211
 msgid "Search Everything"
 msgstr "Keresés mindenhol"
 
-#: includes/widgets/search-widget/class-search-widget.php:212
+#: includes/widgets/search-widget/class-search-widget.php:214
 msgid "Entry Creator"
 msgstr "Bejegyzés készítő"
 
-#: includes/widgets/search-widget/class-search-widget.php:612
+#: includes/widgets/search-widget/class-search-widget.php:639
 msgid "Search Entries:"
 msgstr "Keresés a bejegyzésekben:"
 
-#: includes/widgets/search-widget/class-search-widget.php:619
+#: includes/widgets/search-widget/class-search-widget.php:646
 msgid "Filter by date:"
 msgstr "Szűrés dátum alapján:"
 
-#: includes/widgets/search-widget/class-search-widget.php:630
+#: includes/widgets/search-widget/class-search-widget.php:657
 msgid "Entry ID:"
 msgstr "Bejegyzés azonosító:"
 
-#: includes/widgets/search-widget/class-search-widget.php:637
+#: includes/widgets/search-widget/class-search-widget.php:664
 msgid "Submitted by:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:888
+#: includes/widgets/search-widget/class-search-widget.php:913
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:926
+#: includes/widgets/search-widget/class-search-widget.php:951
 msgid "Show a different month"
 msgstr "Mutassa a különböző hónapokat"
 
@@ -2294,7 +2294,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr "Bejegyzés készítő"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1385
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1394
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
@@ -2306,27 +2306,27 @@ msgid ""
 "entries displayed in the View."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:921
+#: includes/widgets/search-widget/class-search-widget.php:946
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "Bezár"
 
-#: includes/widgets/search-widget/class-search-widget.php:922
+#: includes/widgets/search-widget/class-search-widget.php:947
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr "Előző"
 
-#: includes/widgets/search-widget/class-search-widget.php:923
+#: includes/widgets/search-widget/class-search-widget.php:948
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr "Következő"
 
-#: includes/widgets/search-widget/class-search-widget.php:924
+#: includes/widgets/search-widget/class-search-widget.php:949
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr "Ma"
 
-#: includes/widgets/search-widget/class-search-widget.php:925
+#: includes/widgets/search-widget/class-search-widget.php:950
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr "Hét"
