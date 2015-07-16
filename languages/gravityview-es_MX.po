@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # Jorge Pelaez <jorgepelaez@gmail.com>, 2014
-# Jorge Pelaez <jorgepelaez@gmail.com>, 2014
+# Jorge Pelaez <jorgepelaez@gmail.com>, 2014-2015
 # Luis Diaz Venero <luisdiazvenero@gmail.com>, 2014
 # Zachary Katz <zack@katz.co>, 2014
 msgid ""
@@ -10,9 +10,9 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-06-26 18:11+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
-"Language-Team: Spanish (Mexico) (http://www.transifex.com/projects/p/gravityview/language/es_MX/)\n"
+"PO-Revision-Date: 2015-06-26 21:45+0000\n"
+"Last-Translator: Jorge Pelaez <jorgepelaez@gmail.com>\n"
+"Language-Team: Spanish (Mexico) (http://www.transifex.com/p/gravityview/language/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid ""
 "You are seeing this notice because you are an administrator. Other users of "
 "the site will see nothing."
-msgstr ""
+msgstr "Estás viendo esta notificación porque eres administrador. Otros usuarios del sitio no la verán."
 
 #: gravityview.php:324
 msgid "Top"
@@ -72,11 +72,11 @@ msgstr "Hacer visible para:"
 
 #: includes/admin/class.render.settings.php:77
 msgid "Percent Width"
-msgstr ""
+msgstr "Porcentaje ancho."
 
 #: includes/admin/class.render.settings.php:78
 msgid "Leave blank for column width to be based on the field content."
-msgstr ""
+msgstr "Dejar en blanco para que el ancho de columna se base en el contenido del campo."
 
 #: includes/admin/class.render.settings.php:109
 msgid "Any Logged-In User"
@@ -200,7 +200,7 @@ msgid "Buy Now"
 msgstr "Comprar Ahora"
 
 #: includes/admin/metaboxes/views/select-template.php:35
-#: includes/widgets/search-widget/class-search-widget.php:112
+#: includes/widgets/search-widget/class-search-widget.php:114
 msgid "Select"
 msgstr "Seleccione"
 
@@ -224,8 +224,8 @@ msgstr "Entradas Múltiples"
 #: includes/class-frontend-views.php:366
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:511
-#: includes/extensions/edit-entry/class-edit-entry-shortcode.php:185
+#: includes/extensions/edit-entry/class-edit-entry-render.php:509
+#: includes/extensions/edit-entry/class-edit-entry-shortcode.php:186
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
 msgstr "Editar Entrada"
@@ -430,7 +430,7 @@ msgstr "Este campo se enlaza a la Entrada Simple"
 
 #: includes/class-admin-views.php:104
 msgid "No Title (View #%d)"
-msgstr ""
+msgstr "Sin Título (Vista #%d)"
 
 #: includes/class-admin-views.php:113
 msgid "Connected Views"
@@ -477,7 +477,7 @@ msgstr "Editar ajustes de este formulario"
 
 #: includes/class-admin-views.php:278
 msgid "Preview Form"
-msgstr ""
+msgstr "Previsualizar Forma"
 
 #: includes/class-admin-views.php:278
 msgid "Preview this form"
@@ -492,7 +492,7 @@ msgid "Add all the available fields at once."
 msgstr "Agregue todos los campos disponibles a la vez."
 
 #: includes/class-admin-views.php:542
-#: includes/widgets/search-widget/class-search-widget.php:211
+#: includes/widgets/search-widget/class-search-widget.php:213
 msgid "Entry ID"
 msgstr "ID de Entrada"
 
@@ -501,7 +501,7 @@ msgid "The unique ID of the entry."
 msgstr "El ID único de la entrada"
 
 #: includes/class-admin-views.php:547
-#: includes/widgets/search-widget/class-search-widget.php:210
+#: includes/widgets/search-widget/class-search-widget.php:212
 msgid "Entry Date"
 msgstr "Fecha de Entrada"
 
@@ -545,11 +545,11 @@ msgstr "Inserte texto personalizado o HTML"
 
 #: includes/class-admin-views.php:580
 msgid "Other Entries"
-msgstr ""
+msgstr "Otras Entradas"
 
 #: includes/class-admin-views.php:582
 msgid "Display other entries created by the entry creator."
-msgstr ""
+msgstr "Mostrar otras entradas creadas por el mismo autor."
 
 #: includes/class-admin-views.php:590
 msgid "Link to Entry"
@@ -573,37 +573,37 @@ msgstr "\"+ %s\" o arrastre %ss existentes aquí."
 
 #: includes/class-admin-views.php:820
 msgid "This View is configured using the %s View type, which is disabled."
-msgstr ""
+msgstr "Esta vista está configurada usando el tipo de Vista %s, que está deshabilitado."
 
 #: includes/class-admin-views.php:821
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
-msgstr ""
+msgstr "Los datos no se han perdido, re activa el plugin asociado y la configuración reaparecerá"
 
 #: includes/class-admin-views.php:882
 msgid "Ask GravityView Support"
-msgstr ""
+msgstr "Pregunta a soporte de GravityView"
 
 #: includes/class-admin-views.php:883 includes/class-admin-views.php:887
 msgid "GravityView Support"
-msgstr ""
+msgstr "Soporte GravityView"
 
 #: includes/class-admin-views.php:884
 msgid ""
 "If you have any questions, send us an email and we will get respond to you "
 "as soon as possible."
-msgstr ""
+msgstr "Si tiene preguntas, evíenos un email y le responderemos tan pronto como sea posible."
 
 #: includes/class-admin-views.php:885
 msgid "Your Name"
-msgstr ""
+msgstr "Su Nombre"
 
 #: includes/class-admin-views.php:886
 msgid ""
 "Question or comment? We are online and ready to answer! If you don't hear "
 "back from us, you can send your question to %s"
-msgstr ""
+msgstr "¿Preguntas o comenarios? Estamos en línea y listos para responder! Si no recibe noticias de nosotros, puede enviarnos sus preguntas a %s"
 
 #: includes/class-admin-views.php:952
 msgid "Enter View name here"
@@ -674,23 +674,23 @@ msgstr "Gracias por instalar GravityView. Muestra hermosamente sus entradas de G
 msgid "List of Changes"
 msgstr "Lista de cambios"
 
-#: includes/class-admin-welcome.php:257
+#: includes/class-admin-welcome.php:258
 msgid "What&rsquo;s New"
-msgstr ""
+msgstr "Qu&eacute; hay de nuevo"
 
-#: includes/class-admin-welcome.php:539
+#: includes/class-admin-welcome.php:540
 msgid "GravityView is brought to you by:"
 msgstr "GravityView es traído para Ud. por:"
 
-#: includes/class-admin-welcome.php:571
+#: includes/class-admin-welcome.php:572
 msgid "Contributors"
 msgstr "Colaboradores"
 
-#: includes/class-admin-welcome.php:592
+#: includes/class-admin-welcome.php:593
 msgid "Want to contribute?"
 msgstr "¿Desea colaborar?"
 
-#: includes/class-admin-welcome.php:593
+#: includes/class-admin-welcome.php:594
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -815,19 +815,19 @@ msgid ""
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr "%sGravityView requiere Gravity Forms instalado para funcionar correctamente. %sAdquiera Gravity Forms%s - desde $39%s%s"
 
-#: includes/class-api.php:351
+#: includes/class-api.php:385
 msgid "This search returned no results."
 msgstr "La búsqueda no devolvió resultados."
 
-#: includes/class-api.php:353
+#: includes/class-api.php:387
 msgid "No entries match your request."
 msgstr "No hay entradas que correspondan a su solicitud."
 
-#: includes/class-api.php:738
+#: includes/class-api.php:772
 msgid "&larr; Go back"
 msgstr "&larr; Regresar"
 
-#: includes/class-api.php:1134
+#: includes/class-api.php:1168
 msgid "Map It"
 msgstr "Localizarlo"
 
@@ -869,7 +869,7 @@ msgid "Payment Method"
 msgstr "Método de Pago"
 
 #: includes/class-common.php:279
-#: includes/widgets/search-widget/class-search-widget.php:756
+#: includes/widgets/search-widget/class-search-widget.php:781
 msgid "Is Fulfilled"
 msgstr "Está completa"
 
@@ -1079,7 +1079,7 @@ msgid "Define a default search value for the View"
 msgstr "Define un valor de búsqueda por defecto para la Vista"
 
 #: includes/class-data.php:628
-#: includes/widgets/search-widget/class-search-widget.php:139
+#: includes/widgets/search-widget/class-search-widget.php:141
 msgid "Search Field"
 msgstr "Campo de búsqueda"
 
@@ -1559,35 +1559,35 @@ msgstr "Permitir a los siguientes usuarios borrar la entrada:"
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
 msgstr "Un enlace para eliminar la entrada . Respeta los permisos de Borrar Entrada."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:298
+#: includes/extensions/delete-entry/class-delete-entry.php:296
 msgid "Delete"
 msgstr "Borrar"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:375
+#: includes/extensions/delete-entry/class-delete-entry.php:373
 msgid "The entry does not exist."
 msgstr "La entrada no existe."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:419
+#: includes/extensions/delete-entry/class-delete-entry.php:417
 msgid "Are you sure you want to delete this entry? This cannot be undone."
 msgstr "Está seguro de querer borrar esta entrada? Esto no puede deshacerse."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:446
+#: includes/extensions/delete-entry/class-delete-entry.php:444
 msgid "The link to delete this entry is not valid; it may have expired."
 msgstr "El enlace para borrar esta entrada no es válido; quizás expiró."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:450
+#: includes/extensions/delete-entry/class-delete-entry.php:448
 msgid "You do not have permission to delete this entry."
 msgstr "No tiene permiso para borrar esta entrada."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:454
+#: includes/extensions/delete-entry/class-delete-entry.php:452
 msgid "You cannot delete the entry; it is already in the trash."
 msgstr "No puede borrar esta entrada, ya está en la papelera."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:572
+#: includes/extensions/delete-entry/class-delete-entry.php:570
 msgid "There was an error deleting the entry: %s"
 msgstr "Hubo un error al borrar la entrada: %s"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:577
+#: includes/extensions/delete-entry/class-delete-entry.php:575
 msgid "The entry was successfully deleted."
 msgstr "La entrada fue borrada exitosamente."
 
@@ -1618,35 +1618,35 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr "Hacer campo editable para:"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:522
+#: includes/extensions/edit-entry/class-edit-entry-render.php:520
 msgid "There was a problem with your submission."
 msgstr "Hubo un problema en su envío."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:522
+#: includes/extensions/edit-entry/class-edit-entry-render.php:520
 msgid "Errors have been highlighted below."
 msgstr "Los errores han sido destacados abajo."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:528
+#: includes/extensions/edit-entry/class-edit-entry-render.php:526
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "Entrada Actualizada. %sRegresar a Entrada%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:982
+#: includes/extensions/edit-entry/class-edit-entry-render.php:994
 msgid "Maximum number of files reached"
 msgstr "Número máximo de archivos alcanzado"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1359
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1368
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "El enlace para editar esta entrada no es válido; puede que haya expirado."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1365
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1374
 msgid "You do not have permission to edit this entry."
 msgstr "No tiene permiso para editar esta entrada."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1369
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1378
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "No puede editar esta entrada; esta en la papelera."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1409
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1418
 msgid "You do not have permission to edit this field."
 msgstr "Usted no tiene permiso para editar este campo."
 
@@ -2038,76 +2038,76 @@ msgstr ""
 msgid "Search Bar"
 msgstr "Barra de Búsqueda"
 
-#: includes/widgets/search-widget/class-search-widget.php:110
+#: includes/widgets/search-widget/class-search-widget.php:112
 msgid "Text"
 msgstr "Texto"
 
-#: includes/widgets/search-widget/class-search-widget.php:111
+#: includes/widgets/search-widget/class-search-widget.php:113
 msgid "Date"
 msgstr "Fecha"
 
-#: includes/widgets/search-widget/class-search-widget.php:113
+#: includes/widgets/search-widget/class-search-widget.php:115
 msgid "Select (multiple values)"
 msgstr "Seleccionar (múltiples valores)"
 
-#: includes/widgets/search-widget/class-search-widget.php:114
+#: includes/widgets/search-widget/class-search-widget.php:116
 msgid "Radio"
 msgstr "Radio"
 
-#: includes/widgets/search-widget/class-search-widget.php:115
-#: includes/widgets/search-widget/class-search-widget.php:116
+#: includes/widgets/search-widget/class-search-widget.php:117
+#: includes/widgets/search-widget/class-search-widget.php:118
 msgid "Checkbox"
 msgstr "Casilla"
 
-#: includes/widgets/search-widget/class-search-widget.php:117
+#: includes/widgets/search-widget/class-search-widget.php:119
 msgid "Links"
 msgstr "Enlaces"
 
-#: includes/widgets/search-widget/class-search-widget.php:118
+#: includes/widgets/search-widget/class-search-widget.php:120
 msgid "Date range"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:137
+#: includes/widgets/search-widget/class-search-widget.php:139
 msgid "No search fields configured yet."
 msgstr "No hay campos de búsqueda configurados todavía."
 
-#: includes/widgets/search-widget/class-search-widget.php:138
+#: includes/widgets/search-widget/class-search-widget.php:140
 msgid "Add Search Field"
 msgstr "Agregar campo de búsqueda"
 
-#: includes/widgets/search-widget/class-search-widget.php:140
+#: includes/widgets/search-widget/class-search-widget.php:142
 msgid "Input Type"
 msgstr "Tipo de Entrada"
 
-#: includes/widgets/search-widget/class-search-widget.php:209
+#: includes/widgets/search-widget/class-search-widget.php:211
 msgid "Search Everything"
 msgstr "Buscar Todo"
 
-#: includes/widgets/search-widget/class-search-widget.php:212
+#: includes/widgets/search-widget/class-search-widget.php:214
 msgid "Entry Creator"
 msgstr "Autor Entrada"
 
-#: includes/widgets/search-widget/class-search-widget.php:612
+#: includes/widgets/search-widget/class-search-widget.php:639
 msgid "Search Entries:"
 msgstr "Buscar Entradas:"
 
-#: includes/widgets/search-widget/class-search-widget.php:619
+#: includes/widgets/search-widget/class-search-widget.php:646
 msgid "Filter by date:"
 msgstr "Filtrar por fecha:"
 
-#: includes/widgets/search-widget/class-search-widget.php:630
+#: includes/widgets/search-widget/class-search-widget.php:657
 msgid "Entry ID:"
 msgstr "ID Entrada:"
 
-#: includes/widgets/search-widget/class-search-widget.php:637
+#: includes/widgets/search-widget/class-search-widget.php:664
 msgid "Submitted by:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:888
+#: includes/widgets/search-widget/class-search-widget.php:913
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:926
+#: includes/widgets/search-widget/class-search-widget.php:951
 msgid "Show a different month"
 msgstr "Mostrar un mes diferente"
 
@@ -2296,7 +2296,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr "Autor Entrada"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1385
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1394
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
@@ -2308,27 +2308,27 @@ msgid ""
 "entries displayed in the View."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:921
+#: includes/widgets/search-widget/class-search-widget.php:946
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "Cerrar"
 
-#: includes/widgets/search-widget/class-search-widget.php:922
+#: includes/widgets/search-widget/class-search-widget.php:947
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr "Ant"
 
-#: includes/widgets/search-widget/class-search-widget.php:923
+#: includes/widgets/search-widget/class-search-widget.php:948
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr "Sig"
 
-#: includes/widgets/search-widget/class-search-widget.php:924
+#: includes/widgets/search-widget/class-search-widget.php:949
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr "Hoy"
 
-#: includes/widgets/search-widget/class-search-widget.php:925
+#: includes/widgets/search-widget/class-search-widget.php:950
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr "Semana"
