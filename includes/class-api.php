@@ -1200,7 +1200,7 @@ function gravityview_field_output( $passed_args ) {
 		'field' => null,
 		'form' => null,
 		'hide_empty' => true,
-		'markup' => '<div id="{{field_id}}" class="{{class}}">{{label}}{{value}}</div>',
+		'markup' => '<div id="{{ field_id }}" class="{{ class }}">{{label}}{{value}}</div>',
 		'label_markup' => '',
 		'wpautop' => false,
 		'zone_id' => null,
@@ -1305,7 +1305,12 @@ function gravityview_field_output( $passed_args ) {
 			$open_tag . ' ' . $tag . ' ' . $close_tag,
 		);
 
-		// Allow users to filter content on context
+		/**
+		 * Allow users to filter content on context
+		 * @since 1.11
+		 * @param string $value The content to be shown instead of the {{tag}} placeholder
+		 * @param array $args Arguments passed to the function
+		 */
 		$value = apply_filters( 'gravityview/field_output/context/' . $tag, $value, $args );
 
 		// Finally do the replace
