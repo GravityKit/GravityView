@@ -736,6 +736,15 @@ class GravityView_Edit_Entry_Render {
         // if value is empty get the default value if defined
         $field_value = $field->get_value_default_if_empty( $field_value );
 
+        /**
+         * change the field value if needed
+         * @since 1.10.2
+         *
+         * @param mixed $field_value field value used to populate the input
+         * @param object $field Gravity Forms field object ( Class GF_Field )
+         */
+        $field_value = apply_filters( 'gravityview/edit_entry/field_value', $field_value, $field );
+
 	    // Prevent any PHP warnings, like undefined index
 	    ob_start();
 
