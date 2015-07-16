@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # Jorge Pelaez <jorgepelaez@gmail.com>, 2014
-# Jorge Pelaez <jorgepelaez@gmail.com>, 2014
+# Jorge Pelaez <jorgepelaez@gmail.com>, 2014-2015
 # Luis Diaz Venero <luisdiazvenero@gmail.com>, 2014
 # Zachary Katz <zack@katz.co>, 2014
 msgid ""
@@ -10,9 +10,9 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-06-26 18:11+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
-"Language-Team: Spanish (Mexico) (http://www.transifex.com/projects/p/gravityview/language/es_MX/)\n"
+"PO-Revision-Date: 2015-06-26 21:45+0000\n"
+"Last-Translator: Jorge Pelaez <jorgepelaez@gmail.com>\n"
+"Language-Team: Spanish (Mexico) (http://www.transifex.com/p/gravityview/language/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid ""
 "You are seeing this notice because you are an administrator. Other users of "
 "the site will see nothing."
-msgstr ""
+msgstr "Estás viendo esta notificación porque eres administrador. Otros usuarios del sitio no la verán."
 
 #: gravityview.php:324
 msgid "Top"
@@ -72,11 +72,11 @@ msgstr "Hacer visible para:"
 
 #: includes/admin/class.render.settings.php:77
 msgid "Percent Width"
-msgstr ""
+msgstr "Porcentaje ancho."
 
 #: includes/admin/class.render.settings.php:78
 msgid "Leave blank for column width to be based on the field content."
-msgstr ""
+msgstr "Dejar en blanco para que el ancho de columna se base en el contenido del campo."
 
 #: includes/admin/class.render.settings.php:109
 msgid "Any Logged-In User"
@@ -430,7 +430,7 @@ msgstr "Este campo se enlaza a la Entrada Simple"
 
 #: includes/class-admin-views.php:104
 msgid "No Title (View #%d)"
-msgstr ""
+msgstr "Sin Título (Vista #%d)"
 
 #: includes/class-admin-views.php:113
 msgid "Connected Views"
@@ -477,7 +477,7 @@ msgstr "Editar ajustes de este formulario"
 
 #: includes/class-admin-views.php:278
 msgid "Preview Form"
-msgstr ""
+msgstr "Previsualizar Forma"
 
 #: includes/class-admin-views.php:278
 msgid "Preview this form"
@@ -545,11 +545,11 @@ msgstr "Inserte texto personalizado o HTML"
 
 #: includes/class-admin-views.php:580
 msgid "Other Entries"
-msgstr ""
+msgstr "Otras Entradas"
 
 #: includes/class-admin-views.php:582
 msgid "Display other entries created by the entry creator."
-msgstr ""
+msgstr "Mostrar otras entradas creadas por el mismo autor."
 
 #: includes/class-admin-views.php:590
 msgid "Link to Entry"
@@ -573,37 +573,37 @@ msgstr "\"+ %s\" o arrastre %ss existentes aquí."
 
 #: includes/class-admin-views.php:820
 msgid "This View is configured using the %s View type, which is disabled."
-msgstr ""
+msgstr "Esta vista está configurada usando el tipo de Vista %s, que está deshabilitado."
 
 #: includes/class-admin-views.php:821
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
-msgstr ""
+msgstr "Los datos no se han perdido, re activa el plugin asociado y la configuración reaparecerá"
 
 #: includes/class-admin-views.php:882
 msgid "Ask GravityView Support"
-msgstr ""
+msgstr "Pregunta a soporte de GravityView"
 
 #: includes/class-admin-views.php:883 includes/class-admin-views.php:887
 msgid "GravityView Support"
-msgstr ""
+msgstr "Soporte GravityView"
 
 #: includes/class-admin-views.php:884
 msgid ""
 "If you have any questions, send us an email and we will get respond to you "
 "as soon as possible."
-msgstr ""
+msgstr "Si tiene preguntas, evíenos un email y le responderemos tan pronto como sea posible."
 
 #: includes/class-admin-views.php:885
 msgid "Your Name"
-msgstr ""
+msgstr "Su Nombre"
 
 #: includes/class-admin-views.php:886
 msgid ""
 "Question or comment? We are online and ready to answer! If you don't hear "
 "back from us, you can send your question to %s"
-msgstr ""
+msgstr "¿Preguntas o comenarios? Estamos en línea y listos para responder! Si no recibe noticias de nosotros, puede enviarnos sus preguntas a %s"
 
 #: includes/class-admin-views.php:952
 msgid "Enter View name here"
@@ -676,7 +676,7 @@ msgstr "Lista de cambios"
 
 #: includes/class-admin-welcome.php:257
 msgid "What&rsquo;s New"
-msgstr ""
+msgstr "Qu&eacute; hay de nuevo"
 
 #: includes/class-admin-welcome.php:539
 msgid "GravityView is brought to you by:"

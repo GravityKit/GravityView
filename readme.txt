@@ -21,13 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = 1.11 on July 15 =
-* Added: Updates WordPress User profile when entry is updated when using GF User Registration Add-on
-* Fixed: Removed User Registration add-on validation when updating an entry
+* Added: GravityView now updates WordPress user profiles when an entry is updated while using the Gravity Forms User Registration Add-on
+* Fixed: Removed User Registration Add-on validation when updating an entry
 * Fixed: Field custom class not showing correctly on the table header
-* Fixed: Editing time fields wasn't displaying saved value
-* Fixed: Conflicts with the Date range search when search inputs are empty
+* Fixed: Editing Time fields wasn't displaying saved value
+* Fixed: Conflicts with the date range search when search inputs are empty
 * Fixed: Conflicts with the Other Entries field when placing a search:
-    - The filter hook `gravityview/field/other_entries/args` was replaced by "gravityview/field/other_entries/criteria". If you are using this filter, please [contact support](mailto:support@gravityview.co) before updating so we can help you transition
+    - Developer note: the filter hook `gravityview/field/other_entries/args` was replaced by "gravityview/field/other_entries/criteria". If you are using this filter, please [contact support](mailto:support@gravityview.co) before updating so we can help you transition
+* Updated: Turkish translation (thanks [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)!) and Mexican translation (thanks [@jorgepelaez](https://www.transifex.com/accounts/profile/jorgepelaez/)!)
 
 = 1.10.1 on July 2 =
 * Fixed: Edit Entry link and Delete Entry link in embedded Views go to default view url

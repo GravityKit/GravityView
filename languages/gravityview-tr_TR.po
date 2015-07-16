@@ -9,9 +9,9 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-06-26 18:11+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
-"Language-Team: Turkish (Turkey) (http://www.transifex.com/projects/p/gravityview/language/tr_TR/)\n"
+"PO-Revision-Date: 2015-07-03 08:07+0000\n"
+"Last-Translator: Süha Karalar <suhakaralar@gmail.com>\n"
+"Language-Team: Turkish (Turkey) (http://www.transifex.com/p/gravityview/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -30,7 +30,7 @@ msgstr ""
 msgid ""
 "You are seeing this notice because you are an administrator. Other users of "
 "the site will see nothing."
-msgstr ""
+msgstr "Bu mesajı yönetici olduğunuz için görüyorsunuz. Diğer kullanıcılar bu mesajı görmezler."
 
 #: gravityview.php:324
 msgid "Top"
@@ -71,11 +71,11 @@ msgstr "Şunlar için görünür:"
 
 #: includes/admin/class.render.settings.php:77
 msgid "Percent Width"
-msgstr ""
+msgstr "Genişlik Yüzdesi"
 
 #: includes/admin/class.render.settings.php:78
 msgid "Leave blank for column width to be based on the field content."
-msgstr ""
+msgstr "Alanın içeriğine göre otomatik genişlik verilmesini istiyorsanız bu alanı boş bırakın."
 
 #: includes/admin/class.render.settings.php:109
 msgid "Any Logged-In User"
@@ -429,7 +429,7 @@ msgstr "Bu alan Tekil Kayıt'a bağlanmıştır"
 
 #: includes/class-admin-views.php:104
 msgid "No Title (View #%d)"
-msgstr ""
+msgstr "Başlık Yok (Görünüm #%d)"
 
 #: includes/class-admin-views.php:113
 msgid "Connected Views"
@@ -582,27 +582,27 @@ msgstr "Veriler kaybolmadı; alakalı eklentiyi yeniden etkinleştirdiğinizde y
 
 #: includes/class-admin-views.php:882
 msgid "Ask GravityView Support"
-msgstr ""
+msgstr "GravityView Destek Ekibine Sor"
 
 #: includes/class-admin-views.php:883 includes/class-admin-views.php:887
 msgid "GravityView Support"
-msgstr ""
+msgstr "GravityView Destek"
 
 #: includes/class-admin-views.php:884
 msgid ""
 "If you have any questions, send us an email and we will get respond to you "
 "as soon as possible."
-msgstr ""
+msgstr "Sormak istediğiniz soruları bize eposta yoluyla ulaştırabilirsiniz, size en kısa zamanda dönüş yapılacaktır."
 
 #: includes/class-admin-views.php:885
 msgid "Your Name"
-msgstr ""
+msgstr "Adınız"
 
 #: includes/class-admin-views.php:886
 msgid ""
 "Question or comment? We are online and ready to answer! If you don't hear "
 "back from us, you can send your question to %s"
-msgstr ""
+msgstr "Soru yada Yorum? Cevaplamak için buradayız! Eğer bir cevap alamazsanız sorunuzu %s adresine gönderebilirsiniz."
 
 #: includes/class-admin-views.php:952
 msgid "Enter View name here"
@@ -877,39 +877,39 @@ msgstr "İşlem Türü"
 
 #: includes/class-common.php:301
 msgid "Quiz Score Total"
-msgstr ""
+msgstr "Quiz Puan Toplamı"
 
 #: includes/class-common.php:303
 msgid "Displays the number of correct Quiz answers the user submitted."
-msgstr ""
+msgstr "Kullanıcının doğru cevapladığı Quiz soru sayısını gösterir."
 
 #: includes/class-common.php:306
 msgid "Quiz Percentage Grade"
-msgstr ""
+msgstr "Quiz Yüzde Notu"
 
 #: includes/class-common.php:308
 msgid "Displays the percentage of correct Quiz answers the user submitted."
-msgstr ""
+msgstr "Kullanıcının doğru cevapladığı Quiz soru yüzdesini gösterir."
 
 #: includes/class-common.php:311
 msgid "Quiz Letter Grade"
-msgstr ""
+msgstr "Quiz Harf Notu"
 
 #: includes/class-common.php:313
 msgid ""
 "Displays the Grade the user achieved based on Letter Grading configured in "
 "the Quiz Settings."
-msgstr ""
+msgstr "Quiz Ayarlarında yapılan ayarlara göre kullanıcının Harf Notunu görüntüler. "
 
 #: includes/class-common.php:316
 msgid "Quiz Pass/Fail"
-msgstr ""
+msgstr "Quiz Geçti/Kaldı"
 
 #: includes/class-common.php:318
 msgid ""
 "Displays either Passed or Failed based on the Pass/Fail settings configured "
 "in the Quiz Settings."
-msgstr ""
+msgstr "Quiz Ayarlarında yapılan Geçti/Kaldı ayarlarına göre kullanıcının geçip kaldığını görüntüler. "
 
 #: includes/class-common.php:922 includes/class-data.php:566
 msgid "Default"
@@ -1159,19 +1159,19 @@ msgstr "%s eklentisi en az GravityView %s sürümü yada daha yenisini gerektirm
 
 #: includes/class-gravityview-merge-tags.php:78
 msgid "Entry Creator: Display Name"
-msgstr ""
+msgstr "Kayıt Sahibi: Görünen Ad"
 
 #: includes/class-gravityview-merge-tags.php:82
 msgid "Entry Creator: Email"
-msgstr ""
+msgstr "Kayıt Sahibi: Eposta"
 
 #: includes/class-gravityview-merge-tags.php:86
 msgid "Entry Creator: Username"
-msgstr ""
+msgstr "Kayıt Sahibi: Kullanıcı Adı"
 
 #: includes/class-gravityview-merge-tags.php:90
 msgid "Entry Creator: User ID"
-msgstr ""
+msgstr "Kayıt Sahibi: Kullanıcı NO"
 
 #: includes/class-gv-license-handler.php:71
 #: includes/class-gv-license-handler.php:341
@@ -1606,7 +1606,7 @@ msgstr "Eğer kaydı oluşturan kullanıcının bu kaydı düzenlemesini istemiy
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:159
 #: includes/fields/class.field.php:49
 msgid "Open link in a new tab or window?"
-msgstr ""
+msgstr "Bağlantı yeni sekmede mi yoksa pencerede mi açılsın?"
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:172
 msgid "Make field editable to:"
@@ -1790,13 +1790,13 @@ msgstr "Yüklenen dosyaları gömülü içerik yerine bağlantı olarak görünt
 
 #: includes/fields/gquiz_score.php:20
 msgid "Show Max Score?"
-msgstr ""
+msgstr "Tavan Puan Gösterilsin mi?"
 
 #: includes/fields/gquiz_score.php:21
 msgid ""
 "Display score as the a fraction: \"[score]/[max score]\". If unchecked, will"
 " display score."
-msgstr ""
+msgstr "Puanı kesir olarak göster: \"[puan]/[tavan puan]\". Seçili olmadığında puan görüntülenir."
 
 #: includes/fields/other-entries.php:29
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:349
@@ -1871,15 +1871,15 @@ msgstr "Gösterilecek kelie sayısını giriniz. Girdiğiniz kelime kadar yazı 
 
 #: includes/fields/textarea.php:28
 msgid "Convert text URLs to HTML links"
-msgstr ""
+msgstr "Yazı biçimindeki bağlantılar HTML bağlantıya çevirilsin."
 
 #: includes/fields/textarea.php:29
 msgid "Converts URI, www, FTP, and email addresses in HTML links"
-msgstr ""
+msgstr "Düz yazı biçimindeki URI, www, FTP ve eposta bağlantılarını tıklanabilir HTML bağlantılarına çevirir."
 
 #: includes/fields/website.php:25
 msgid "Define custom link text. Leave blank to display the URL"
-msgstr ""
+msgstr "Özel bağlantı yazısı tanımlayın. Bağlantı linkinin doğrudan görünmesini istiyorsanız boş bırakın."
 
 #: includes/fields/website.php:33
 msgid "Shorten Link Display"
@@ -1956,57 +1956,57 @@ msgstr "Bu sınıf bileşeni kapsayan seçici etiket olarak eklenecektir"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:24
 msgid "Displays the results of Poll Fields that exist in the form."
-msgstr ""
+msgstr "Formda yer alan anket alanlarının sonuçlarını görüntüler."
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:35
 msgid "Display Percentages"
-msgstr ""
+msgstr "Yüzdeleri Göster"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:38
 msgid ""
 "Display results percentages as part of results? Supported values are: true, "
 "false. Defaults to \"true\"."
-msgstr ""
+msgstr "Sonuçların bir parçası olarak yüzdeler görüntülensin mi? Desteklenen değerler: doğru, yanlış. Varsayılan değer \"doğru\"."
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:41
 msgid "Display Counts"
-msgstr ""
+msgstr "Sayımları Göster"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:44
 msgid ""
 "Display number of times each choice has been selected when displaying "
 "results? Supported values are: true, false. Defaults to \"true\"."
-msgstr ""
+msgstr "Sonuçları gösterirken her seçeneğin kaç defa seçildiği gösterilsin mi? Desteklenen değerler: doğru, yanlış. Varsayılan değer \"doğru\"."
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:48
 msgid "Style"
-msgstr ""
+msgstr "Biçem"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:49
 msgid ""
 "The Polls Add-On currently supports 4 built in styles: red, green, orange, "
 "blue. Defaults to \"green\"."
-msgstr ""
+msgstr "Anket eklentisi şimdilik 4 biçem desteklemektedir. kırmızı, yeşil, turuncu, mavi. Varsayılan renk \"yeşil\"dir."
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:52
 msgid "Green"
-msgstr ""
+msgstr "Yeşil"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:53
 msgid "Blue"
-msgstr ""
+msgstr "Mavi"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:54
 msgid "Red"
-msgstr ""
+msgstr "Kırmızı"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:55
 msgid "Orange"
-msgstr ""
+msgstr "Turuncu"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:60
 msgid "Poll Results"
-msgstr ""
+msgstr "Anket Sonuçları"
 
 #: includes/widgets/search-widget/class-search-widget.php:27
 msgid "Search form for searching entries."
@@ -2059,7 +2059,7 @@ msgstr "Bağlantılar"
 
 #: includes/widgets/search-widget/class-search-widget.php:118
 msgid "Date range"
-msgstr ""
+msgstr "Tarih aralığı"
 
 #: includes/widgets/search-widget/class-search-widget.php:137
 msgid "No search fields configured yet."
@@ -2095,7 +2095,7 @@ msgstr "Kayıt NO:"
 
 #: includes/widgets/search-widget/class-search-widget.php:637
 msgid "Submitted by:"
-msgstr ""
+msgstr "Gönderen:"
 
 #: includes/widgets/search-widget/class-search-widget.php:888
 msgid "Clear"
@@ -2197,11 +2197,11 @@ msgstr "Arama Alanları"
 
 #: templates/fields/gquiz_grade.php:24
 msgid "Letter"
-msgstr ""
+msgstr "Harf"
 
 #: templates/fields/gquiz_is_pass.php:27
 msgid "Pass/Fail"
-msgstr ""
+msgstr "Geçti/Kaldı"
 
 #: templates/fields/is_fulfilled.php:14
 msgid "Not Fulfilled"
@@ -2293,14 +2293,14 @@ msgstr "Kayıt Sahibi"
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1385
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
-msgstr ""
+msgstr "Geri dön."
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:26
 msgctxt "The string placeholders are for emphasis HTML"
 msgid ""
 "Note: this will display poll results for %sall form entries%s, not only the "
 "entries displayed in the View."
-msgstr ""
+msgstr "Not: buradaki anket sonuçları sadece Görünüm'de listelenen sonuçları değil, %stüm form kayıtlarını%s içermektedir."
 
 #: includes/widgets/search-widget/class-search-widget.php:921
 msgctxt "Close calendar"
@@ -2330,7 +2330,7 @@ msgstr "Hafta"
 #: templates/fields/gquiz_grade.php:25 templates/fields/gquiz_is_pass.php:28
 msgctxt "%s is the current Quiz field type (\"Letter\" or \"Pass/Fail\")"
 msgid "%s grading is disabled for this form. %sChange the setting%s"
-msgstr ""
+msgstr "%s not sistemi bu form için kapatılmıştır. %sAyarları Değiştirin%s"
 
 #: templates/fields/post_image.php:111
 msgctxt "Post Image field title heading"
