@@ -3,13 +3,13 @@
 # Translators:
 # Md Akter Hosen <tareqhi@gmail.com>, 2014-2015
 # Md Akter Hosen <tareqhi@gmail.com>, 2014
-# Zachary Katz <zack@katz.co>, 2014
+# Zachary Katz <zack@katz.co>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-06-26 18:11+0000\n"
+"PO-Revision-Date: 2015-07-20 21:07+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Bengali (http://www.transifex.com/p/gravityview/language/bn/)\n"
 "MIME-Version: 1.0\n"
@@ -304,7 +304,7 @@ msgstr "দৃশ্য ঢোকান"
 
 #: includes/class-admin-add-shortcode.php:130
 #: includes/class-admin-views.php:954
-#: includes/extensions/edit-entry/partials/form-buttons.php:14
+#: includes/extensions/edit-entry/partials/form-buttons.php:21
 msgid "Cancel"
 msgstr "বাতিল"
 
@@ -665,7 +665,7 @@ msgstr "গ্রাভিটি ভিউ-এ স্বাগতম %s"
 
 #: includes/class-admin-welcome.php:148
 msgid ""
-"Thank you for Installing GravityView. Beautifully display your Gravity Forms"
+"Thank you for installing GravityView. Beautifully display your Gravity Forms"
 " entries."
 msgstr "গ্রাভিটি ভিউ ইনস্টল করার জন্য ধন্যবাদ। আপনার এন্ট্রিগুলো সুন্দরভাবে দেখুন।"
 
@@ -677,19 +677,19 @@ msgstr "পরিবর্তনের লিস্ট"
 msgid "What&rsquo;s New"
 msgstr "নতুন &rsquo; কি"
 
-#: includes/class-admin-welcome.php:540
+#: includes/class-admin-welcome.php:569
 msgid "GravityView is brought to you by:"
 msgstr "গ্রাভিটি ভিউ আপনার জন্য নিয়ে এল:"
 
-#: includes/class-admin-welcome.php:572
+#: includes/class-admin-welcome.php:601
 msgid "Contributors"
 msgstr "সহযোগী যারা"
 
-#: includes/class-admin-welcome.php:593
+#: includes/class-admin-welcome.php:622
 msgid "Want to contribute?"
 msgstr "সহযোগীতা করতে চান?"
 
-#: includes/class-admin-welcome.php:594
+#: includes/class-admin-welcome.php:623
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -780,35 +780,35 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] "%s দৃশ্য আবর্জনার ঝুড়ি থেকে পুনরায় ফিরিয়ে আনা হয়েছে।"
 msgstr[1] "%s দৃশ্য আবর্জনার ঝুড়ি থেকে পুনরায় ফিরিয়ে আনা হয়েছে।"
 
-#: includes/class-admin.php:504
+#: includes/class-admin.php:510
 msgid "Dismiss"
 msgstr "বাতিল করুন"
 
-#: includes/class-admin.php:542
+#: includes/class-admin.php:548
 msgid "Potential Conflict"
 msgstr "সম্ভাব্য সংঘাত"
 
-#: includes/class-admin.php:543
+#: includes/class-admin.php:549
 msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
 "plugin."
 msgstr "গ্রাভিটিভিউ এবং গ্রাভিটি ফর্ম ডিরেক্টরি দুটোই সক্রিয়। এটা সমস্যা তৈরি করতে পারে। যদি আপনি এ সমস্যার সম্মুখিন হন, গ্রাভিটি ফর্ম ডিরেক্টনি প্লাগইন নিস্ক্রিয় করুন।"
 
-#: includes/class-admin.php:567
+#: includes/class-admin.php:573
 msgid ""
 "%sGravityView requires Gravity Forms Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr "%sগ্রাভিটিভিউ গ্রাভিটি ফর্মের %s অথবা %s দরকার হবে।\n\nআপনি %s ভার্সন ব্যবহার করছেন। দয়া করে গ্রাভিটি ফর্ম হালনাগাদ করুন। %sগ্রাভিটি ফর্ম কিনুন%s - মাত্র $39%s%s এ শুরু"
 
-#: includes/class-admin.php:580
+#: includes/class-admin.php:586
 msgid ""
 "%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
 "Forms%s to use the GravityView plugin."
 msgstr "%sগ্রাভিটি ভিউ চালাতে গ্রাভিটি ফর্ম সচল রাখতে হবে। গ্রাভিটি ভিউ প্লাগইন্স ব্যবহার করার জন্য %sগ্রাভিটি ফর্ম সচল করুন%s"
 
-#: includes/class-admin.php:589
+#: includes/class-admin.php:595
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
@@ -1154,11 +1154,11 @@ msgstr "সদৃশ হিসেবে কোন পোস্ট দেয়া �
 msgid "Copy creation failed, could not find original View with ID #%d"
 msgstr "অনুলিপি তৈরি ব্যর্থ হয়েছে, মূল দৃশ্য যার আইডি #%d পাওয়া যায়নি"
 
-#: includes/class-gravityview-extension.php:328
+#: includes/class-gravityview-extension.php:332
 msgid "Could not activate the %s Extension; GravityView is not active."
 msgstr "%s এক্সটেনশন সক্রিয় করা যায়নি; গ্রাভিটি ভিউ সক্রিয় নয়।"
 
-#: includes/class-gravityview-extension.php:338
+#: includes/class-gravityview-extension.php:342
 msgid "The %s Extension requires GravityView Version %s or newer."
 msgstr "%s এক্সটেনশন চালানোর জন্য গ্রাভিটি ভিউ ভার্সন %s অথবা নতুনতর প্রয়োজন।"
 
@@ -1649,7 +1649,7 @@ msgstr ""
 msgid "You do not have permission to edit this field."
 msgstr ""
 
-#: includes/extensions/edit-entry/partials/form-buttons.php:12
+#: includes/extensions/edit-entry/partials/form-buttons.php:19
 msgid "Update"
 msgstr ""
 

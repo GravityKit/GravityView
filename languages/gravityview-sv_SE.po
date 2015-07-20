@@ -2,12 +2,13 @@
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # Adam Rehal <adam.rehal@nineyards.se>, 2014-2015
+# Zachary Katz <zack@katz.co>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-06-26 18:11+0000\n"
+"PO-Revision-Date: 2015-07-20 21:10+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Swedish (http://www.transifex.com/p/gravityview/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -302,7 +303,7 @@ msgstr "Lägg in Vy"
 
 #: includes/class-admin-add-shortcode.php:130
 #: includes/class-admin-views.php:954
-#: includes/extensions/edit-entry/partials/form-buttons.php:14
+#: includes/extensions/edit-entry/partials/form-buttons.php:21
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -663,7 +664,7 @@ msgstr "Välkommen till GravityView %s"
 
 #: includes/class-admin-welcome.php:148
 msgid ""
-"Thank you for Installing GravityView. Beautifully display your Gravity Forms"
+"Thank you for installing GravityView. Beautifully display your Gravity Forms"
 " entries."
 msgstr "Tack för att du installerade GravityView. Visa dina Gravity Forms-inlägg på ett snyggt sätt."
 
@@ -675,19 +676,19 @@ msgstr "Lista över ändringar"
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:540
+#: includes/class-admin-welcome.php:569
 msgid "GravityView is brought to you by:"
 msgstr "GravityView untvecklas av:"
 
-#: includes/class-admin-welcome.php:572
+#: includes/class-admin-welcome.php:601
 msgid "Contributors"
 msgstr "Medhjälpare"
 
-#: includes/class-admin-welcome.php:593
+#: includes/class-admin-welcome.php:622
 msgid "Want to contribute?"
 msgstr "Vill du bidra?"
 
-#: includes/class-admin-welcome.php:594
+#: includes/class-admin-welcome.php:623
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -778,35 +779,35 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] "%s Vy återställdes från papperskorgen."
 msgstr[1] "%s Vyer återställdes från papperskorgen."
 
-#: includes/class-admin.php:504
+#: includes/class-admin.php:510
 msgid "Dismiss"
 msgstr "Avfärda"
 
-#: includes/class-admin.php:542
+#: includes/class-admin.php:548
 msgid "Potential Conflict"
 msgstr "Möjlig konflikt"
 
-#: includes/class-admin.php:543
+#: includes/class-admin.php:549
 msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
 "plugin."
 msgstr "Både GravityView och Gravity Forms Directory är aktiva. Detta kan orsaka problem. Om du stöter på några konstigheter så inaktivera Gravity Forms Directory,"
 
-#: includes/class-admin.php:567
+#: includes/class-admin.php:573
 msgid ""
 "%sGravityView requires Gravity Forms Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr ""
 
-#: includes/class-admin.php:580
+#: includes/class-admin.php:586
 msgid ""
 "%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
 "Forms%s to use the GravityView plugin."
 msgstr "%sGravityView kräver att Gravity Forms är aktiverat. %sAktivera Gravity Forms%s för att använda GravityView."
 
-#: includes/class-admin.php:589
+#: includes/class-admin.php:595
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
@@ -1152,11 +1153,11 @@ msgstr ""
 msgid "Copy creation failed, could not find original View with ID #%d"
 msgstr ""
 
-#: includes/class-gravityview-extension.php:328
+#: includes/class-gravityview-extension.php:332
 msgid "Could not activate the %s Extension; GravityView is not active."
 msgstr "Kunde inte aktivera tillägget %s; GravityView är inte aktivt."
 
-#: includes/class-gravityview-extension.php:338
+#: includes/class-gravityview-extension.php:342
 msgid "The %s Extension requires GravityView Version %s or newer."
 msgstr "Tillägget %s kräver GravityView version %s eller senare."
 
@@ -1647,7 +1648,7 @@ msgstr "Du kan inte redigera detta inlägg eftersom det ligger i papperskorgen."
 msgid "You do not have permission to edit this field."
 msgstr "Du har inte tillåtelse att redigera detta fält"
 
-#: includes/extensions/edit-entry/partials/form-buttons.php:12
+#: includes/extensions/edit-entry/partials/form-buttons.php:19
 msgid "Update"
 msgstr "Uppdatera"
 

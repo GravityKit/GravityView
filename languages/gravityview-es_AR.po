@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-06-26 18:11+0000\n"
+"PO-Revision-Date: 2015-07-20 21:04+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/p/gravityview/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
@@ -301,7 +301,7 @@ msgstr ""
 
 #: includes/class-admin-add-shortcode.php:130
 #: includes/class-admin-views.php:954
-#: includes/extensions/edit-entry/partials/form-buttons.php:14
+#: includes/extensions/edit-entry/partials/form-buttons.php:21
 msgid "Cancel"
 msgstr ""
 
@@ -662,7 +662,7 @@ msgstr ""
 
 #: includes/class-admin-welcome.php:148
 msgid ""
-"Thank you for Installing GravityView. Beautifully display your Gravity Forms"
+"Thank you for installing GravityView. Beautifully display your Gravity Forms"
 " entries."
 msgstr ""
 
@@ -674,19 +674,19 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:540
+#: includes/class-admin-welcome.php:569
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:572
+#: includes/class-admin-welcome.php:601
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:593
+#: includes/class-admin-welcome.php:622
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:594
+#: includes/class-admin-welcome.php:623
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -777,35 +777,35 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:504
+#: includes/class-admin.php:510
 msgid "Dismiss"
 msgstr ""
 
-#: includes/class-admin.php:542
+#: includes/class-admin.php:548
 msgid "Potential Conflict"
 msgstr ""
 
-#: includes/class-admin.php:543
+#: includes/class-admin.php:549
 msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
 "plugin."
 msgstr ""
 
-#: includes/class-admin.php:567
+#: includes/class-admin.php:573
 msgid ""
 "%sGravityView requires Gravity Forms Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr ""
 
-#: includes/class-admin.php:580
+#: includes/class-admin.php:586
 msgid ""
 "%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
 "Forms%s to use the GravityView plugin."
 msgstr ""
 
-#: includes/class-admin.php:589
+#: includes/class-admin.php:595
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
@@ -1151,11 +1151,11 @@ msgstr ""
 msgid "Copy creation failed, could not find original View with ID #%d"
 msgstr ""
 
-#: includes/class-gravityview-extension.php:328
+#: includes/class-gravityview-extension.php:332
 msgid "Could not activate the %s Extension; GravityView is not active."
 msgstr ""
 
-#: includes/class-gravityview-extension.php:338
+#: includes/class-gravityview-extension.php:342
 msgid "The %s Extension requires GravityView Version %s or newer."
 msgstr ""
 
@@ -1646,7 +1646,7 @@ msgstr ""
 msgid "You do not have permission to edit this field."
 msgstr ""
 
-#: includes/extensions/edit-entry/partials/form-buttons.php:12
+#: includes/extensions/edit-entry/partials/form-buttons.php:19
 msgid "Update"
 msgstr ""
 
