@@ -216,7 +216,7 @@ class GravityView_Admin {
 		}
 
 
-		$wp_required_scripts = array(
+		$wp_allowed_scripts = array(
 			'debug-bar-extender',
             'backcallsc',
             'common',
@@ -266,9 +266,12 @@ class GravityView_Admin {
 			'wpseo-admin-media',
 			'jquery-qtip',
 			'jquery-ui-autocomplete',
+
+			// Genesis theme framework
+		    'genesis_admin_js',
 		);
 
-		$this->remove_conflicts( $wp_scripts, $wp_required_scripts, 'scripts' );
+		$this->remove_conflicts( $wp_scripts, $wp_allowed_scripts, 'scripts' );
 	}
 
 	/**
@@ -299,7 +302,7 @@ class GravityView_Admin {
 			return;
 		}
 
-        $wp_required_styles = array(
+        $wp_allowed_styles = array(
         	'debug-bar-extender',
 	        'admin-bar',
 	        'debug-bar',
@@ -329,11 +332,14 @@ class GravityView_Admin {
 	        'metabox-classic',
 	        'metabox-fresh',
 
+	        // Genesis theme framework
+            'genesis_admin_css',
+
 	        // @todo qTip styles not loading for some reason!
 	        'jquery-qtip.js',
 	    );
 
-		$this->remove_conflicts( $wp_styles, $wp_required_styles, 'styles' );
+		$this->remove_conflicts( $wp_styles, $wp_allowed_styles, 'styles' );
 
 		// Allow settings, etc, to hook in after
 		do_action('gravityview_remove_conflicts_after');

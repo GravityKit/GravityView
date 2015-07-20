@@ -20,6 +20,11 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.11.1 =
+* Added: New filter hook to customise the cancel Edit Entry link: `gravityview/edit_entry/cancel_link`
+* Fixed: Extension translations
+* Fixed: Dropdown inputs with long field names could overflow field and widget settings
+* Modified: Allow Genesis Framework CSS and Javascript in "No-Conflict Mode"
 * Updated: Danish translation (thanks [@jaegerbo](https://www.transifex.com/accounts/profile/jaegerbo/)!) and German translation
 
 = 1.11 on July 15 =
