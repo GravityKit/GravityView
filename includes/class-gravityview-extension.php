@@ -12,7 +12,7 @@
  *
  * @since 1.1
  *
- * @version 1.0.7
+ * @version 1.0.8
  */
 abstract class GravityView_Extension {
 
@@ -155,10 +155,14 @@ abstract class GravityView_Extension {
 	 * @return void
 	 */
 	public function load_plugin_textdomain() {
-		if( empty( $this->_text_domain ) ) { return; }
+
+		if( empty( $this->_text_domain ) ) {
+			do_action( 'gravityview_log_debug', __METHOD__ . ': Extension translation cannot be loaded; the `_text_domain` variable is not defined', $this );
+			return;
+		}
 
 		// Set filter for plugin's languages directory
-		$lang_dir = dirname( plugin_basename( __FILE__ ) ) . '/languages/';
+		$lang_dir = dirname( plugin_basename( $this->_path ) ) . '/languages/';
 
 		// Traditional WordPress plugin locale filter
 		$locale = apply_filters( 'plugin_locale',  get_locale(), $this->_text_domain );
