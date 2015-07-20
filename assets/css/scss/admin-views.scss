@@ -734,6 +734,7 @@ hr {
 			font-weight: normal;
 			display: inline-block;
 			padding-right: .75em;
+			max-width: 100%; // Fix https://github.com/katzwebservices/GravityView-AZ-Filters/issues/14
 		}
 
 		.howto {
