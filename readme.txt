@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 = 1.11.1 =
 * Fixed: Extension translations
 * Fixed: Dropdown inputs with long field names could overflow field and widget settings
+* Modified: Allow Genesis Framework CSS and Javascript in "No-Conflict Mode"
 
 = 1.11 on July 15 =
 * Added: GravityView now updates WordPress user profiles when an entry is updated while using the Gravity Forms User Registration Add-on
