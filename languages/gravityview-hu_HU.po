@@ -3,12 +3,13 @@
 # Translators:
 # dbalage <balazs@magonc.org>, 2014-2015
 # Robert Tokar <ultimate.invito@gmail.com>, 2015
+# Zachary Katz <zack@katz.co>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-06-26 18:11+0000\n"
+"PO-Revision-Date: 2015-07-20 21:09+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/p/gravityview/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -303,7 +304,7 @@ msgstr "View beillesztése"
 
 #: includes/class-admin-add-shortcode.php:130
 #: includes/class-admin-views.php:954
-#: includes/extensions/edit-entry/partials/form-buttons.php:14
+#: includes/extensions/edit-entry/partials/form-buttons.php:21
 msgid "Cancel"
 msgstr "Mégse"
 
@@ -664,7 +665,7 @@ msgstr "Üdvözöl a GravityView %s"
 
 #: includes/class-admin-welcome.php:148
 msgid ""
-"Thank you for Installing GravityView. Beautifully display your Gravity Forms"
+"Thank you for installing GravityView. Beautifully display your Gravity Forms"
 " entries."
 msgstr "Köszönjük, hogy telepítetted a GravityView -t. Csodás megjelenést kölcsönöz Gravity űrlapjaidnak."
 
@@ -676,19 +677,19 @@ msgstr "A változások listája"
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:540
+#: includes/class-admin-welcome.php:569
 msgid "GravityView is brought to you by:"
 msgstr "A GravityView -t elhozták neked:"
 
-#: includes/class-admin-welcome.php:572
+#: includes/class-admin-welcome.php:601
 msgid "Contributors"
 msgstr "Közreműködők:"
 
-#: includes/class-admin-welcome.php:593
+#: includes/class-admin-welcome.php:622
 msgid "Want to contribute?"
 msgstr "Szeretnél bekapcsolódni?"
 
-#: includes/class-admin-welcome.php:594
+#: includes/class-admin-welcome.php:623
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -779,35 +780,35 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] "%s View helyre lett állítva."
 msgstr[1] "%s Views helyre lett állítva."
 
-#: includes/class-admin.php:504
+#: includes/class-admin.php:510
 msgid "Dismiss"
 msgstr "Elutasít"
 
-#: includes/class-admin.php:542
+#: includes/class-admin.php:548
 msgid "Potential Conflict"
 msgstr "Lehetséges összeférhetetlenség."
 
-#: includes/class-admin.php:543
+#: includes/class-admin.php:549
 msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
 "plugin."
 msgstr "A GravityView és a Gravity Forms könyvtár is aktív. Ez gondokat okozhat. Ha problémát tapasztalsz, kacsold ki a Gravity Forms Könyvtár bővítmény."
 
-#: includes/class-admin.php:567
+#: includes/class-admin.php:573
 msgid ""
 "%sGravityView requires Gravity Forms Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr ""
 
-#: includes/class-admin.php:580
+#: includes/class-admin.php:586
 msgid ""
 "%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
 "Forms%s to use the GravityView plugin."
 msgstr "%sGravityView -nak szüksége van aktív Gravity Forms -ra. %sGravity Forms aktiválása%s a GravityView bővítmény használatához."
 
-#: includes/class-admin.php:589
+#: includes/class-admin.php:595
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
@@ -1153,11 +1154,11 @@ msgstr ""
 msgid "Copy creation failed, could not find original View with ID #%d"
 msgstr ""
 
-#: includes/class-gravityview-extension.php:328
+#: includes/class-gravityview-extension.php:332
 msgid "Could not activate the %s Extension; GravityView is not active."
 msgstr "Nem lehet a bővítményt aktiválni a %s Bővítmény; GravityView nem aktív."
 
-#: includes/class-gravityview-extension.php:338
+#: includes/class-gravityview-extension.php:342
 msgid "The %s Extension requires GravityView Version %s or newer."
 msgstr "A %s bővítménynek szüksége van a GravitView verzió %s vagy újabbra."
 
@@ -1648,7 +1649,7 @@ msgstr "Nem tudod a bejegyzést szerkeszteni; a kukában van."
 msgid "You do not have permission to edit this field."
 msgstr "Nincs engedélyed a mező szerkesztésére."
 
-#: includes/extensions/edit-entry/partials/form-buttons.php:12
+#: includes/extensions/edit-entry/partials/form-buttons.php:19
 msgid "Update"
 msgstr "Frissít"
 

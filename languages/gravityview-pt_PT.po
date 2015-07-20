@@ -2,13 +2,13 @@
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # luistinygod <luis@gomo.pt>, 2014-2015
-# Zachary Katz <zack@katz.co>, 2014
+# Zachary Katz <zack@katz.co>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-06-26 18:11+0000\n"
+"PO-Revision-Date: 2015-07-20 21:10+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/p/gravityview/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
@@ -303,7 +303,7 @@ msgstr "Inserir Vista"
 
 #: includes/class-admin-add-shortcode.php:130
 #: includes/class-admin-views.php:954
-#: includes/extensions/edit-entry/partials/form-buttons.php:14
+#: includes/extensions/edit-entry/partials/form-buttons.php:21
 msgid "Cancel"
 msgstr "Anular"
 
@@ -664,7 +664,7 @@ msgstr "Bem-vindo ao GravityView %s"
 
 #: includes/class-admin-welcome.php:148
 msgid ""
-"Thank you for Installing GravityView. Beautifully display your Gravity Forms"
+"Thank you for installing GravityView. Beautifully display your Gravity Forms"
 " entries."
 msgstr "Obrigado por instalar o GravityView. Dê Vistas impecáveis às suas entradas do Gravity Forms."
 
@@ -676,19 +676,19 @@ msgstr "Lista de Alterações"
 msgid "What&rsquo;s New"
 msgstr "Novidades"
 
-#: includes/class-admin-welcome.php:540
+#: includes/class-admin-welcome.php:569
 msgid "GravityView is brought to you by:"
 msgstr "GravityView desenvolvido para si por:"
 
-#: includes/class-admin-welcome.php:572
+#: includes/class-admin-welcome.php:601
 msgid "Contributors"
 msgstr "Contributors"
 
-#: includes/class-admin-welcome.php:593
+#: includes/class-admin-welcome.php:622
 msgid "Want to contribute?"
 msgstr "Deseja contribuir?"
 
-#: includes/class-admin-welcome.php:594
+#: includes/class-admin-welcome.php:623
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -779,35 +779,35 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] "%s vista reposta a partir do Lixo"
 msgstr[1] "%s vista reposta a partir do Lixo"
 
-#: includes/class-admin.php:504
+#: includes/class-admin.php:510
 msgid "Dismiss"
 msgstr "Dispensar"
 
-#: includes/class-admin.php:542
+#: includes/class-admin.php:548
 msgid "Potential Conflict"
 msgstr "Conflicto"
 
-#: includes/class-admin.php:543
+#: includes/class-admin.php:549
 msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
 "plugin."
 msgstr "Os plugins GravityView e o Gravity Forms Directory estão os dois activos e podem existir interferências no funcionamento. Se verificar algum problema, sugerimos que desactive o plugin Gravity Forms Directory."
 
-#: includes/class-admin.php:567
+#: includes/class-admin.php:573
 msgid ""
 "%sGravityView requires Gravity Forms Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr ""
 
-#: includes/class-admin.php:580
+#: includes/class-admin.php:586
 msgid ""
 "%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
 "Forms%s to use the GravityView plugin."
 msgstr "%sO GravityView necessita do plugin Gravity Forms activo. %sActive-o%s para utilizar o plugin GravityView."
 
-#: includes/class-admin.php:589
+#: includes/class-admin.php:595
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
@@ -1153,11 +1153,11 @@ msgstr "Não foi indicado nenhum artigo para ser duplicado!"
 msgid "Copy creation failed, could not find original View with ID #%d"
 msgstr "Ocorreu um erro: não foi possível encontrar a Vista original com o ID #%d."
 
-#: includes/class-gravityview-extension.php:328
+#: includes/class-gravityview-extension.php:332
 msgid "Could not activate the %s Extension; GravityView is not active."
 msgstr "Não foi possível activar a extensão %s. O plugin GravityView não está activado."
 
-#: includes/class-gravityview-extension.php:338
+#: includes/class-gravityview-extension.php:342
 msgid "The %s Extension requires GravityView Version %s or newer."
 msgstr "A extensão %s necessita do GravityView com a versão %s ou superior."
 
@@ -1648,7 +1648,7 @@ msgstr "Não é possível editar esta entrada."
 msgid "You do not have permission to edit this field."
 msgstr "Não tem permissão para editar este campo."
 
-#: includes/extensions/edit-entry/partials/form-buttons.php:12
+#: includes/extensions/edit-entry/partials/form-buttons.php:19
 msgid "Update"
 msgstr "Actualizar"
 

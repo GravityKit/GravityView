@@ -145,7 +145,7 @@ class GravityView_Welcome {
 		?>
 
 		<h1><img class="alignleft" src="<?php echo plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ); ?>" width="100" height="132" /><?php printf( esc_html__( 'Welcome to GravityView %s', 'gravityview' ), $display_version ); ?></h1>
-		<div class="about-text"><?php esc_html_e( 'Thank you for Installing GravityView. Beautifully display your Gravity Forms entries.', 'gravityview' ); ?></div>
+		<div class="about-text"><?php esc_html_e( 'Thank you for installing GravityView. Beautifully display your Gravity Forms entries.', 'gravityview' ); ?></div>
 
 		<h2 class="nav-tab-wrapper clear">
 			<a class="nav-tab <?php echo $selected == 'gv-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-getting-started', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
@@ -273,6 +273,35 @@ class GravityView_Welcome {
 				</div>
 
 				<hr />
+
+				<h3>1.11.1 on July 20</h3>
+
+				<ul>
+					<li>Added: New filter hook to customise the cancel Edit Entry link: <code>gravityview/edit_entry/cancel_link</code></li>
+					<li>Fixed: Extension translations</li>
+					<li>Fixed: Dropdown inputs with long field names could overflow field and widget settings</li>
+					<li>Modified: Allow Genesis Framework CSS and Javascript in "No-Conflict Mode"</li>
+					<li>Updated: Danish translation (thanks <a href="https://www.transifex.com/accounts/profile/jaegerbo/">@jaegerbo</a>!) and German translation</li>
+				</ul>
+
+
+				<h3>1.11 on July 15</h3>
+
+				<ul>
+					<li>Added: GravityView now updates WordPress user profiles when an entry is updated while using the Gravity Forms User Registration Add-on</li>
+					<li>Fixed: Removed User Registration Add-on validation when updating an entry</li>
+					<li>Fixed: Field custom class not showing correctly on the table header</li>
+					<li>Fixed: Editing Time fields wasn't displaying saved value</li>
+					<li>Fixed: Conflicts with the date range search when search inputs are empty</li>
+					<li>Fixed: Conflicts with the Other Entries field when placing a search:
+
+						<ul>
+							<li>Developer note: the filter hook <code>gravityview/field/other_entries/args</code> was replaced by "gravityview/field/other_entries/criteria". If you are using this filter, please <a href="mailto:support@gravityview.co">contact support</a> before updating so we can help you transition</li>
+						</ul>
+					</li>
+					<li>Updated: Turkish translation (thanks <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a>!) and Mexican translation (thanks <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a>!)</li>
+				</ul>
+
 
 				<h3>1.10 on June 25</h3>
 

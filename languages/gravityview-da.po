@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-07-20 10:51+0000\n"
-"Last-Translator: Bo Jaeger <jaegerbo@gmail.com>\n"
+"PO-Revision-Date: 2015-07-20 21:04+0000\n"
+"Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Danish (http://www.transifex.com/p/gravityview/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -132,16 +132,16 @@ msgstr "Se Instillinger"
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:120
 #: includes/admin/metaboxes/views/view-configuration.php:5
 msgid "Single Entry"
-msgstr ""
+msgstr "Single Entry"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:128
 msgid "Filter &amp; Sort"
-msgstr ""
+msgstr "Filter &amp; Sorter"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:175
 #: includes/class-admin-views.php:314
 msgid "Data Source"
-msgstr ""
+msgstr "Data Kilde"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:347
 msgid "Layout Settings"
@@ -225,7 +225,7 @@ msgstr ""
 #: includes/extensions/edit-entry/class-edit-entry-shortcode.php:186
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
-msgstr "Rediger Entry"
+msgstr "Rediger Indlæg"
 
 #: includes/admin/metaboxes/views/view-configuration.php:13
 msgid "Above Entries Widgets"
@@ -237,11 +237,11 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:17
 msgid "Entries Fields"
-msgstr ""
+msgstr "Indlægs Felter"
 
 #: includes/admin/metaboxes/views/view-configuration.php:17
 msgid "These fields will be shown for each entry."
-msgstr ""
+msgstr "Disse felter vil blive vist for hvert enkelt indlæg"
 
 #: includes/admin/metaboxes/views/view-configuration.php:25
 msgid "Below Entries Widgets"
@@ -302,7 +302,7 @@ msgstr "Indsæt View"
 
 #: includes/class-admin-add-shortcode.php:130
 #: includes/class-admin-views.php:954
-#: includes/extensions/edit-entry/partials/form-buttons.php:14
+#: includes/extensions/edit-entry/partials/form-buttons.php:21
 msgid "Cancel"
 msgstr "Fortryd"
 
@@ -663,7 +663,7 @@ msgstr "Velkommen til"
 
 #: includes/class-admin-welcome.php:148
 msgid ""
-"Thank you for Installing GravityView. Beautifully display your Gravity Forms"
+"Thank you for installing GravityView. Beautifully display your Gravity Forms"
 " entries."
 msgstr ""
 
@@ -675,19 +675,19 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:540
+#: includes/class-admin-welcome.php:569
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:572
+#: includes/class-admin-welcome.php:601
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:593
+#: includes/class-admin-welcome.php:622
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:594
+#: includes/class-admin-welcome.php:623
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -778,35 +778,35 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:504
+#: includes/class-admin.php:510
 msgid "Dismiss"
 msgstr ""
 
-#: includes/class-admin.php:542
+#: includes/class-admin.php:548
 msgid "Potential Conflict"
 msgstr ""
 
-#: includes/class-admin.php:543
+#: includes/class-admin.php:549
 msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
 "plugin."
 msgstr ""
 
-#: includes/class-admin.php:567
+#: includes/class-admin.php:573
 msgid ""
 "%sGravityView requires Gravity Forms Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr ""
 
-#: includes/class-admin.php:580
+#: includes/class-admin.php:586
 msgid ""
 "%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
 "Forms%s to use the GravityView plugin."
 msgstr ""
 
-#: includes/class-admin.php:589
+#: includes/class-admin.php:595
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
@@ -1152,11 +1152,11 @@ msgstr ""
 msgid "Copy creation failed, could not find original View with ID #%d"
 msgstr ""
 
-#: includes/class-gravityview-extension.php:328
+#: includes/class-gravityview-extension.php:332
 msgid "Could not activate the %s Extension; GravityView is not active."
 msgstr "%s Extension kunne ikke aktiveres; GravityView er ikke aktiv."
 
-#: includes/class-gravityview-extension.php:338
+#: includes/class-gravityview-extension.php:342
 msgid "The %s Extension requires GravityView Version %s or newer."
 msgstr "Denne %s Extension kræver GravityView Version %s eller nyere."
 
@@ -1647,7 +1647,7 @@ msgstr ""
 msgid "You do not have permission to edit this field."
 msgstr ""
 
-#: includes/extensions/edit-entry/partials/form-buttons.php:12
+#: includes/extensions/edit-entry/partials/form-buttons.php:19
 msgid "Update"
 msgstr ""
 
