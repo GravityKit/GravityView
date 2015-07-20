@@ -14,7 +14,7 @@ wp_nonce_field( 'gravityview_select_template', 'gravityview_select_template_nonc
 $current_template = gravityview_get_template_id( $post->ID );
 
 // Fetch available style templates
-$templates = apply_filters( 'gravityview_register_directory_template', array() );
+$templates = gravityview_get_templates();
 
 // current input
 ?>

@@ -5,12 +5,16 @@
  * @since 1.8
  */
 
+global $post;
 
 // Use nonce for verification
 wp_nonce_field( 'gravityview_select_form', 'gravityview_select_form_nonce' );
 
 //current value
 $current_form = gravityview_get_form_id( $post->ID );
+
+//current value
+$current_template = gravityview_get_template_id( $post->ID );
 
 // check for available gravity forms
 $forms = gravityview_get_forms();
@@ -40,7 +44,7 @@ $forms = gravityview_get_forms();
 		</select>
 	<?php } ?>
 
-	&nbsp;<a class="button button-primary" <?php if( empty( $current_form ) ) { echo 'style="display:none;"'; } ?> id="gv_switch_view_button" href="#gv_switch_view" title="<?php esc_attr_e( 'Switch View', 'gravityview' ); ?>"><?php esc_html_e( 'Switch View Type', 'gravityview' ); ?></a>
+	&nbsp;<a class="button button-primary" <?php if( empty( $current_form ) ) { echo 'style="display:none;"'; } ?> id="gv_switch_view_button" href="#gv_switch_view" title="<?php esc_attr_e( 'Switch View', 'gravityview' ); ?>"><?php esc_html_e( 'Switch View Type', 'gravityview' ); ?></a> <small class="description" id="gv_current_template">(currently: <span><?php echo esc_html( $current_template ); ?></span>)</small>
 </p>
 
 <?php // confirm dialog box ?>

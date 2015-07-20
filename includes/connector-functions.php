@@ -228,6 +228,24 @@ function gravityview_get_template_settings( $post_id ) {
 }
 
 /**
+ * Fetch available style templates
+ *
+ * @since 1.11.1
+ *
+ * @return array Array of available templates
+ */
+function gravityview_get_templates() {
+
+	/**
+	 * Templates are added to the filter automatically when constructing a new GravityView_Template object
+	 * @see default-templates.php
+	 */
+	$templates = apply_filters( 'gravityview_register_directory_template', array() );
+
+	return $templates;
+}
+
+/**
  * Get the setting for a View
  *
  * If the setting isn't set by the View, it returns the plugin default.

@@ -276,6 +276,10 @@
 
 			if ( $templates.is( ':visible' ) ) {
 
+				$( '#gv_current_template' ).find( 'span' ).text( function() {
+					return viewConfiguration.wantedTemplate.attr( "data-templateid" );
+				} );
+
 				$( 'a[href=#gv_switch_view]' ).text( function () {
 					return $( this ).attr( 'data-text-backup' );
 				} );

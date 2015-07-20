@@ -47,6 +47,13 @@ abstract class GravityView_Extension {
 	protected $_author = 'Katz Web Services, Inc.';
 
 	/**
+	 * This cannot be defined here because the access levels conflict with different extensions, but it's required.
+	 *
+	 * @var string The path to the extension base directory
+	 */
+	// public $_path = NULL;
+
+	/**
 	 * @var array Admin notices to display
 	 */
 	static private $admin_notices = array();
