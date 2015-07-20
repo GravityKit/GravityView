@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.11.1 =
+* Fixed: Extension translations
+
 = 1.11 on July 15 =
 * Added: GravityView now updates WordPress user profiles when an entry is updated while using the Gravity Forms User Registration Add-on
 * Fixed: Removed User Registration Add-on validation when updating an entry
