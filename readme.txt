@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 = =
-* Added: New filter hook to customise the cancel Edit Entry link: "gravityview/edit_entry/cancel_link"
+* Added: New filter hook to customise the cancel Edit Entry link: `gravityview/edit_entry/cancel_link`
 
 = 1.11 on July 15 =
 * Added: GravityView now updates WordPress user profiles when an entry is updated while using the Gravity Forms User Registration Add-on
