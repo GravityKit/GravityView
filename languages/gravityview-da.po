@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-06-26 18:11+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2015-07-20 10:51+0000\n"
+"Last-Translator: Bo Jaeger <jaegerbo@gmail.com>\n"
 "Language-Team: Danish (http://www.transifex.com/p/gravityview/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -69,7 +69,7 @@ msgstr ""
 
 #: includes/admin/class.render.settings.php:77
 msgid "Percent Width"
-msgstr ""
+msgstr "Procent Bredde"
 
 #: includes/admin/class.render.settings.php:78
 msgid "Leave blank for column width to be based on the field content."
@@ -109,25 +109,25 @@ msgstr ""
 
 #: includes/admin/entry-list.php:66
 msgid "Edit this entry"
-msgstr ""
+msgstr "Rediger dette indlæg"
 
 #: includes/admin/entry-list.php:66
 msgid "Edit"
-msgstr ""
+msgstr "Rediger"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:68
 msgid "Choose a View Type"
-msgstr ""
+msgstr "Vælg en View Type"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:71
 msgid "View Configuration"
-msgstr ""
+msgstr "Se Konfiguration"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:76
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:112
 #: includes/class-admin-add-shortcode.php:112
 msgid "View Settings"
-msgstr ""
+msgstr "Se Instillinger"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:120
 #: includes/admin/metaboxes/views/view-configuration.php:5
@@ -145,31 +145,31 @@ msgstr ""
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:347
 msgid "Layout Settings"
-msgstr ""
+msgstr "Layout Indstillinger"
 
 #: includes/admin/metaboxes/views/data-source.php:19
 msgid "Where would you like the data to come from for this View?"
-msgstr ""
+msgstr "Hvorfra vil du have at data skal komme fra for dette View?"
 
 #: includes/admin/metaboxes/views/data-source.php:26
 msgid "Start Fresh"
-msgstr ""
+msgstr "Start Ny"
 
 #: includes/admin/metaboxes/views/data-source.php:29
 msgid "or use an existing form"
-msgstr ""
+msgstr "eller brug en eksisterende formular"
 
 #: includes/admin/metaboxes/views/data-source.php:36
 msgid "list of forms"
-msgstr ""
+msgstr "formular liste"
 
 #: includes/admin/metaboxes/views/data-source.php:43
 msgid "Switch View"
-msgstr ""
+msgstr "Skift View"
 
 #: includes/admin/metaboxes/views/data-source.php:43
 msgid "Switch View Type"
-msgstr ""
+msgstr "Skift View Type"
 
 #: includes/admin/metaboxes/views/data-source.php:47
 #: includes/admin/metaboxes/views/data-source.php:52
@@ -190,16 +190,16 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/data-source.php:58
 msgid "GravityView requires Javascript to be enabled."
-msgstr ""
+msgstr "GravityView kræver Javascript for at blive aktiveret."
 
 #: includes/admin/metaboxes/views/select-template.php:33
 msgid "Buy Now"
-msgstr ""
+msgstr "Køb Nu"
 
 #: includes/admin/metaboxes/views/select-template.php:35
 #: includes/widgets/search-widget/class-search-widget.php:114
 msgid "Select"
-msgstr ""
+msgstr "Vælg"
 
 #: includes/admin/metaboxes/views/select-template.php:37
 msgid "View a live demo of this preset"
@@ -225,7 +225,7 @@ msgstr ""
 #: includes/extensions/edit-entry/class-edit-entry-shortcode.php:186
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
-msgstr ""
+msgstr "Rediger Entry"
 
 #: includes/admin/metaboxes/views/view-configuration.php:13
 msgid "Above Entries Widgets"
@@ -253,7 +253,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:55
 msgid "These fields will be shown in Single Entry view."
-msgstr ""
+msgstr "Disse felter vil blive vist i Single Entry visning"
 
 #: includes/admin/metaboxes/views/view-configuration.php:76
 msgid "Fields shown when editing an entry."
@@ -265,15 +265,15 @@ msgstr ""
 
 #: includes/class-admin-add-shortcode.php:58
 msgid "Add a Gravity Forms View"
-msgstr ""
+msgstr "Tilføj et Gravity Forms View"
 
 #: includes/class-admin-add-shortcode.php:58
 msgid "Add View"
-msgstr ""
+msgstr "Tilføj View"
 
 #: includes/class-admin-add-shortcode.php:93
 msgid "Embed a View"
-msgstr ""
+msgstr "Indføj et View"
 
 #: includes/class-admin-add-shortcode.php:94
 msgid ""
@@ -284,27 +284,27 @@ msgstr ""
 #: includes/class-admin-add-shortcode.php:97
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:302
 msgid "Select a View"
-msgstr ""
+msgstr "Vælg et View"
 
 #: includes/class-admin-add-shortcode.php:100
 msgid "&mdash; Select a View to Insert &mdash;"
-msgstr ""
+msgstr "&mdash; Vælg et View for at indsætte &mdash;"
 
 #: includes/class-admin-add-shortcode.php:103
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:308
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:177
 msgid "(no title)"
-msgstr ""
+msgstr "(ingen titel)"
 
 #: includes/class-admin-add-shortcode.php:129
 msgid "Insert View"
-msgstr ""
+msgstr "Indsæt View"
 
 #: includes/class-admin-add-shortcode.php:130
 #: includes/class-admin-views.php:954
 #: includes/extensions/edit-entry/partials/form-buttons.php:14
 msgid "Cancel"
-msgstr ""
+msgstr "Fortryd"
 
 #: includes/class-admin-add-shortcode.php:176
 #: includes/class-admin-views.php:958
@@ -457,7 +457,7 @@ msgstr ""
 
 #: includes/class-admin-views.php:263
 msgid "Edit Form"
-msgstr ""
+msgstr "Rediger Formular"
 
 #: includes/class-admin-views.php:268
 msgid "Entries"
@@ -466,7 +466,7 @@ msgstr ""
 #: includes/class-admin-views.php:273 includes/class-settings.php:237
 #: includes/class-settings.php:263
 msgid "Settings"
-msgstr ""
+msgstr "Instillinger"
 
 #: includes/class-admin-views.php:273
 msgid "Edit settings for this form"
@@ -516,7 +516,7 @@ msgstr ""
 
 #: includes/class-admin-views.php:557
 msgid "User IP"
-msgstr ""
+msgstr "Bruger ID"
 
 #: includes/class-admin-views.php:559
 msgid "The IP Address of the user who created the entry."
@@ -524,7 +524,7 @@ msgstr ""
 
 #: includes/class-admin-views.php:562
 msgid "User"
-msgstr ""
+msgstr "Bruger"
 
 #: includes/class-admin-views.php:564
 msgid "Details of the logged-in user who created the entry (if any)."
@@ -594,7 +594,7 @@ msgstr ""
 
 #: includes/class-admin-views.php:885
 msgid "Your Name"
-msgstr ""
+msgstr "Dit Navn"
 
 #: includes/class-admin-views.php:886
 msgid ""
@@ -604,15 +604,15 @@ msgstr ""
 
 #: includes/class-admin-views.php:952
 msgid "Enter View name here"
-msgstr ""
+msgstr "Indsæt View navn her"
 
 #: includes/class-admin-views.php:953
 msgid "Close"
-msgstr ""
+msgstr "Luk"
 
 #: includes/class-admin-views.php:955
 msgid "Continue"
-msgstr ""
+msgstr "Fortsæt"
 
 #: includes/class-admin-views.php:956
 msgid "Ok"
@@ -659,7 +659,7 @@ msgstr ""
 
 #: includes/class-admin-welcome.php:147
 msgid "Welcome to GravityView %s"
-msgstr ""
+msgstr "Velkommen til"
 
 #: includes/class-admin-welcome.php:148
 msgid ""
@@ -699,7 +699,7 @@ msgstr ""
 
 #: includes/class-admin.php:158
 msgid "A new form was created for this View: \"%s\""
-msgstr ""
+msgstr "En ny formular er oprettet for dette View: \"%s\" "
 
 #: includes/class-admin.php:159
 msgid ""
@@ -716,7 +716,7 @@ msgstr ""
 
 #: includes/class-admin.php:173
 msgid "View deleted."
-msgstr ""
+msgstr "View slettet."
 
 #. translators: %s: date and time of the revision
 #: includes/class-admin.php:176
@@ -975,7 +975,7 @@ msgstr ""
 
 #: includes/class-data.php:528
 msgid "Hide View data until search is performed"
-msgstr ""
+msgstr "Skjul View data indtil søgning er udført"
 
 #: includes/class-data.php:531
 msgid ""
@@ -984,15 +984,15 @@ msgstr ""
 
 #: includes/class-data.php:536
 msgid "Hide empty fields"
-msgstr ""
+msgstr "Skjul tomme felter"
 
 #: includes/class-data.php:543
 msgid "Allow User Edit"
-msgstr ""
+msgstr "Tillad bruger redigering"
 
 #: includes/class-data.php:545
 msgid "Allow logged-in users to edit entries they created."
-msgstr ""
+msgstr "Tillad logged-in brugere at redigere egne indlæg"
 
 #: includes/class-data.php:547
 msgid ""
@@ -1006,7 +1006,7 @@ msgstr ""
 
 #: includes/class-data.php:554
 msgid "Allow logged-in users to delete entries they created."
-msgstr ""
+msgstr "Tillad logged-in brugere at slette egne indlæg"
 
 #: includes/class-data.php:556
 msgid ""
@@ -1069,7 +1069,7 @@ msgstr ""
 
 #: includes/class-data.php:620
 msgid "Search Value"
-msgstr ""
+msgstr "Søge Værdi"
 
 #: includes/class-data.php:621
 msgid "Define a default search value for the View"
@@ -1078,7 +1078,7 @@ msgstr ""
 #: includes/class-data.php:628
 #: includes/widgets/search-widget/class-search-widget.php:141
 msgid "Search Field"
-msgstr ""
+msgstr "Søge Felt"
 
 #: includes/class-data.php:629
 msgid ""
@@ -1107,7 +1107,7 @@ msgstr ""
 
 #: includes/class-debug-bar.php:91
 msgid "Warnings"
-msgstr ""
+msgstr "Advarsler"
 
 #: includes/class-debug-bar.php:100
 msgid "Logs"
@@ -1154,11 +1154,11 @@ msgstr ""
 
 #: includes/class-gravityview-extension.php:328
 msgid "Could not activate the %s Extension; GravityView is not active."
-msgstr ""
+msgstr "%s Extension kunne ikke aktiveres; GravityView er ikke aktiv."
 
 #: includes/class-gravityview-extension.php:338
 msgid "The %s Extension requires GravityView Version %s or newer."
-msgstr ""
+msgstr "Denne %s Extension kræver GravityView Version %s eller nyere."
 
 #: includes/class-gravityview-merge-tags.php:78
 msgid "Entry Creator: Display Name"
@@ -2017,7 +2017,7 @@ msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:44
 msgid "Search Layout"
-msgstr ""
+msgstr "Søge Layout"
 
 #: includes/widgets/search-widget/class-search-widget.php:47
 msgid "Horizontal"
@@ -2033,7 +2033,7 @@ msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:57
 msgid "Search Bar"
-msgstr ""
+msgstr "Søge Felt"
 
 #: includes/widgets/search-widget/class-search-widget.php:112
 msgid "Text"
@@ -2124,7 +2124,7 @@ msgstr ""
 
 #: includes/widgets/search-widget/templates/widget-search.php:41
 msgid "Search"
-msgstr ""
+msgstr "Søg"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:12
 msgid "GravityView Recent Entries"
@@ -2174,7 +2174,7 @@ msgstr ""
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:21
 msgid "GravityView Search"
-msgstr ""
+msgstr "GravityView Søgning"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:122
 msgid ""
@@ -2196,7 +2196,7 @@ msgstr ""
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:214
 msgid "Search Fields"
-msgstr ""
+msgstr "Søge Felter"
 
 #: templates/fields/gquiz_grade.php:24
 msgid "Letter"
@@ -2265,7 +2265,7 @@ msgstr ""
 #: includes/class-post-types.php:36
 msgctxt "Post Type Singular Name"
 msgid "View"
-msgstr ""
+msgstr "View"
 
 #: includes/class-post-types.php:37
 msgctxt "Menu name"
@@ -2275,7 +2275,7 @@ msgstr ""
 #: includes/class-post-types.php:40
 msgctxt "View Item"
 msgid "View"
-msgstr ""
+msgstr "View"
 
 #: includes/class-settings.php:563
 msgctxt "Setting: On or off"
@@ -2296,7 +2296,7 @@ msgstr ""
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1394
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
-msgstr ""
+msgstr "Gå tilbage."
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:26
 msgctxt "The string placeholders are for emphasis HTML"
@@ -2308,7 +2308,7 @@ msgstr ""
 #: includes/widgets/search-widget/class-search-widget.php:946
 msgctxt "Close calendar"
 msgid "Close"
-msgstr ""
+msgstr "Luk"
 
 #: includes/widgets/search-widget/class-search-widget.php:947
 msgctxt "Previous month in calendar"

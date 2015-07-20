@@ -3,12 +3,13 @@
 # Translators:
 # Basti <se-schwarz@gmx.de>, 2014
 # David Decker <deckerweb.mobil@gmail.com>, 2014
+# Toby Fiverr, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-06-26 18:11+0000\n"
+"PO-Revision-Date: 2015-07-20 16:28+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/p/gravityview/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +30,7 @@ msgstr ""
 msgid ""
 "You are seeing this notice because you are an administrator. Other users of "
 "the site will see nothing."
-msgstr ""
+msgstr "Sie sehen diese Meldung da Sie ein Administrator sind. Andere Nutzer dieser Seite werden nichts sehen."
 
 #: gravityview.php:324
 msgid "Top"
@@ -45,20 +46,20 @@ msgstr "Rechts"
 
 #: includes/admin/class.render.settings.php:42
 msgid "Show Label"
-msgstr "Bezeichnung anzeigen"
+msgstr "Beschriftung anzeigen"
 
 #: includes/admin/class.render.settings.php:47
 msgid "Custom Label:"
-msgstr "Abweichende Bezeichnung:"
+msgstr "Benutzerdefinierte Beschriftung:"
 
 #: includes/admin/class.render.settings.php:53
 #: includes/widgets/class-gravityview-widget.php:108
 msgid "Custom CSS Class:"
-msgstr "Abweichende CSS-Klasse:"
+msgstr "Benutzerdefiniert CSS Klasse:"
 
 #: includes/admin/class.render.settings.php:54
 msgid "This class will be added to the field container"
-msgstr "Diese Klasse wird dem Feldcontainer hinzugefügt"
+msgstr "Diese Klasse wird dem Feld Container hinzugefügt"
 
 #: includes/admin/class.render.settings.php:61
 msgid "Make visible only to logged-in users?"
@@ -70,11 +71,11 @@ msgstr "Sichtbar machen für:"
 
 #: includes/admin/class.render.settings.php:77
 msgid "Percent Width"
-msgstr ""
+msgstr "Prozent Breite"
 
 #: includes/admin/class.render.settings.php:78
 msgid "Leave blank for column width to be based on the field content."
-msgstr ""
+msgstr "Leer belassen sodass sich die Spaltenbreite an den Feldinhalt anpasst."
 
 #: includes/admin/class.render.settings.php:109
 msgid "Any Logged-In User"
@@ -404,15 +405,15 @@ msgstr "EIntrag im View anzeigen?"
 
 #: includes/class-admin-label.php:19
 msgid "Type: %s"
-msgstr ""
+msgstr "Typ: %s"
 
 #: includes/class-admin-label.php:23
 msgid "Field ID: %s"
-msgstr ""
+msgstr "Feld ID: %s"
 
 #: includes/class-admin-label.php:36
 msgid "Admin Label: %s"
-msgstr ""
+msgstr "Admin Beschriftung: %s"
 
 #: includes/class-admin-label.php:172
 msgid "Configure %s Settings"
@@ -428,7 +429,7 @@ msgstr "Dieses Feld verlinkt auf einen Einzeleintrag"
 
 #: includes/class-admin-views.php:104
 msgid "No Title (View #%d)"
-msgstr ""
+msgstr "Kein Titel (Ansicht #%d)"
 
 #: includes/class-admin-views.php:113
 msgid "Connected Views"
@@ -475,7 +476,7 @@ msgstr "Einstellungen für dieses Formular bearbeiten"
 
 #: includes/class-admin-views.php:278
 msgid "Preview Form"
-msgstr ""
+msgstr "Formular Vorschau"
 
 #: includes/class-admin-views.php:278
 msgid "Preview this form"
@@ -487,7 +488,7 @@ msgstr "+ Alle Felder hinzufügen"
 
 #: includes/class-admin-views.php:492
 msgid "Add all the available fields at once."
-msgstr ""
+msgstr "Alle verfügbaren Felder auf einmal hinzufügen"
 
 #: includes/class-admin-views.php:542
 #: includes/widgets/search-widget/class-search-widget.php:213
@@ -496,7 +497,7 @@ msgstr "Eintrags-ID"
 
 #: includes/class-admin-views.php:544
 msgid "The unique ID of the entry."
-msgstr ""
+msgstr "Die eindeutige ID des Eintrags."
 
 #: includes/class-admin-views.php:547
 #: includes/widgets/search-widget/class-search-widget.php:212
@@ -505,7 +506,7 @@ msgstr "Eintragsdatum"
 
 #: includes/class-admin-views.php:548
 msgid "The date the entry was created."
-msgstr ""
+msgstr "Das Datum an dem der Eintrag erstellt wurde."
 
 #: includes/class-admin-views.php:552
 msgid "Source URL"
@@ -521,7 +522,7 @@ msgstr "IP des Benutzers"
 
 #: includes/class-admin-views.php:559
 msgid "The IP Address of the user who created the entry."
-msgstr ""
+msgstr "Die IP Adresse des Benutzers der den Eintrag erstellt hat."
 
 #: includes/class-admin-views.php:562
 msgid "User"
@@ -529,25 +530,25 @@ msgstr "Benutzer"
 
 #: includes/class-admin-views.php:564
 msgid "Details of the logged-in user who created the entry (if any)."
-msgstr ""
+msgstr "Informationen des angemeldeten Benutzers der den Eintrag erstellt hat (falls zutreffend)."
 
 #: includes/class-admin-views.php:571 includes/fields/custom.php:22
 #: includes/widgets/class-gravityview-widget-custom-content.php:30
 #: includes/widgets/class-gravityview-widget-custom-content.php:45
 msgid "Custom Content"
-msgstr ""
+msgstr "Individuelles Kommentar"
 
 #: includes/class-admin-views.php:573
 msgid "Insert custom text or HTML."
-msgstr ""
+msgstr "Kundenspezifischen Text oder HTML einfügen."
 
 #: includes/class-admin-views.php:580
 msgid "Other Entries"
-msgstr ""
+msgstr "Andere Einträge"
 
 #: includes/class-admin-views.php:582
 msgid "Display other entries created by the entry creator."
-msgstr ""
+msgstr "Andere Einträge von diesem Autor."
 
 #: includes/class-admin-views.php:590
 msgid "Link to Entry"
@@ -555,7 +556,7 @@ msgstr "Link zum Eintrag"
 
 #: includes/class-admin-views.php:591
 msgid "A dedicated link to the single entry with customizable text."
-msgstr ""
+msgstr "Ein direkter Link zu einem Eintrag mit anpassbarem Text."
 
 #: includes/class-admin-views.php:667
 msgid "Add Widget"
@@ -571,37 +572,37 @@ msgstr "\"+ %s\" oder bestehende %s hierherzziehen."
 
 #: includes/class-admin-views.php:820
 msgid "This View is configured using the %s View type, which is disabled."
-msgstr ""
+msgstr "Diese Ansicht ist unter Verwendung der %s Ansichtsart konfiguriert, die deaktiviert ist."
 
 #: includes/class-admin-views.php:821
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
-msgstr ""
+msgstr "Die Daten sind nicht verloren; aktivieren Sie das Plug-In und die Konfiguration wird wieder erscheinen."
 
 #: includes/class-admin-views.php:882
 msgid "Ask GravityView Support"
-msgstr ""
+msgstr "GravityView Support Fragen"
 
 #: includes/class-admin-views.php:883 includes/class-admin-views.php:887
 msgid "GravityView Support"
-msgstr ""
+msgstr "GravityView Support"
 
 #: includes/class-admin-views.php:884
 msgid ""
 "If you have any questions, send us an email and we will get respond to you "
 "as soon as possible."
-msgstr ""
+msgstr "Sollten Sie Fragen haben, dann senden Sie uns eine E-Mail und wir werden Ihnen so schnell wie möglich antworten."
 
 #: includes/class-admin-views.php:885
 msgid "Your Name"
-msgstr ""
+msgstr "Ihr Name"
 
 #: includes/class-admin-views.php:886
 msgid ""
 "Question or comment? We are online and ready to answer! If you don't hear "
 "back from us, you can send your question to %s"
-msgstr ""
+msgstr "Frage oder Kommentar? Wir sind online und bereit Ihnen zu antworten! Wenn Sie keine Antwort von uns erhalten können Sie Ihre Frage an %s senden."
 
 #: includes/class-admin-views.php:952
 msgid "Enter View name here"
@@ -627,7 +628,7 @@ msgstr "Fehler beim Erstellen der Ansicht. Prüfen Sie die Einstellungen oder ko
 
 #: includes/class-admin-views.php:959
 msgid "There was an error loading dynamic content."
-msgstr ""
+msgstr "Es ist ein Fehler beim Laden des dynamischen Inhaltes aufgetreten."
 
 #: includes/class-admin-views.php:960
 msgid ""
