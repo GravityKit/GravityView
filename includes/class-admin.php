@@ -269,6 +269,17 @@ class GravityView_Admin {
 
 			// Genesis theme framework
 		    'genesis_admin_js',
+
+			// Avada
+			'jquery.biscuit',
+			'avada_upload',
+			'tipsy',
+			'jquery-ui-slider',
+			'smof',
+			'cookie',
+			'kd-multiple-featured-images',
+			'media-upload',
+			'jquery-ui-core',
 		);
 
 		$this->remove_conflicts( $wp_scripts, $wp_allowed_scripts, 'scripts' );
