@@ -274,6 +274,7 @@ class GravityView_Welcome {
 
 				<hr />
 
+					<li>Updated: French translation</li>
 				<h3>1.11.1 on July 20</h3>
 
 				<ul>
