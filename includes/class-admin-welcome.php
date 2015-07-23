@@ -274,7 +274,16 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>1.11.2 on July 22</h3>
+
+				<ul>
+					<li>Fixed: Bug when comparing empty values with <code>[gvlogic]</code></li>
+					<li>Fixed: Remove extra whitespace when comparing values using <code>[gvlogic]</code></li>
+					<li>Modified: Allow Avada theme Javascript in "No-Conflict Mode"</li>
 					<li>Updated: French translation</li>
+				</ul>
+
+
 				<h3>1.11.1 on July 20</h3>
 
 				<ul>
