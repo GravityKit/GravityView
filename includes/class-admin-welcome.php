@@ -274,6 +274,16 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>1.11.2 on July 22</h3>
+
+				<ul>
+					<li>Fixed: Bug when comparing empty values with <code>[gvlogic]</code></li>
+					<li>Fixed: Remove extra whitespace when comparing values using <code>[gvlogic]</code></li>
+					<li>Modified: Allow Avada theme Javascript in "No-Conflict Mode"</li>
+					<li>Updated: French translation</li>
+				</ul>
+
+
 				<h3>1.11.1 on July 20</h3>
 
 				<ul>
@@ -578,18 +588,11 @@ class GravityView_Welcome {
 					<p><a href="https://katz.co">View Zack&rsquo;s website</a></p>
 				</div>
 
-				<div>
+				<div class="last-feature">
 					<h2>Luis Godinho</h2>
 					<h4 style="font-weight:0; margin-top:0">Developer &amp; Support</h4>
 					<p><img style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/luis.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Luis is a WordPress developer passionate about WordPress. He is a co-founder and partner of GOMO, a digital agency located in Lisbon, Portugal.</p>
 					<p><a href="http://tinygod.pt">View Luis&rsquo;s website</a></p>
-				</div>
-
-				<div class="last-feature">
-					<h2>Gustavo Bordoni</h2>
-					<h4 style="font-weight:0; margin-top:0">Developer &amp; Support</h4>
-					<p><img style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/gustavo.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Gustavo is a WordPress developer and an active WordPress community member. He is a frequent WordCamp speaker and is based in Rio de Janeiro, Brazil.</p>
-					<p><a href="http://bordoni.me">View Gustavo&rsquo;s website</a></p>
 				</div>
 
 			</div>

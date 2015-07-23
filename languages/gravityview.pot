@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 1.11.1\n"
+"Project-Id-Version: GravityView 1.11.2\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
 "MIME-Version: 1.0\n"
@@ -675,19 +675,19 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:569
+#: includes/class-admin-welcome.php:578
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:601
+#: includes/class-admin-welcome.php:603
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:622
+#: includes/class-admin-welcome.php:624
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:623
+#: includes/class-admin-welcome.php:625
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -782,22 +782,22 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:510
+#: includes/class-admin.php:521
 msgid "Dismiss"
 msgstr ""
 
-#: includes/class-admin.php:548
+#: includes/class-admin.php:559
 msgid "Potential Conflict"
 msgstr ""
 
-#: includes/class-admin.php:549
+#: includes/class-admin.php:560
 msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
 "plugin."
 msgstr ""
 
-#: includes/class-admin.php:573
+#: includes/class-admin.php:584
 msgid ""
 "%sGravityView requires Gravity Forms Version %s or newer.%s \n"
 "\n"
@@ -805,13 +805,13 @@ msgid ""
 "license. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr ""
 
-#: includes/class-admin.php:586
+#: includes/class-admin.php:597
 msgid ""
 "%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
 "Forms%s to use the GravityView plugin."
 msgstr ""
 
-#: includes/class-admin.php:595
+#: includes/class-admin.php:606
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"

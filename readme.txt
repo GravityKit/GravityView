@@ -20,10 +20,11 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= 1.11.2 =
+= 1.11.2 on July 22 =
 * Fixed: Bug when comparing empty values with `[gvlogic]`
 * Fixed: Remove extra whitespace when comparing values using `[gvlogic]`
 * Modified: Allow Avada theme Javascript in "No-Conflict Mode"
+* Updated: French translation
 
 = 1.11.1 on July 20 =
 * Added: New filter hook to customise the cancel Edit Entry link: `gravityview/edit_entry/cancel_link`
