@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= =
+* Fixed: Conflicts with Advanced Filter extension when using the Recent Entries widget.
+
 = 1.11.2 on July 22 =
 * Fixed: Bug when comparing empty values with `[gvlogic]`
 * Fixed: Remove extra whitespace when comparing values using `[gvlogic]`

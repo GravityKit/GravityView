@@ -171,6 +171,9 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		// Get the settings for the View ID
 		$view_settings = gravityview_get_template_settings( $instance['view_id'] );
 
+        // Set the context view ID to avoid conflicts with the Advanced Filter extension.
+        $criteria['context_view_id'] = $instance['view_id'];
+
 		$instance['limit'] = isset( $instance['limit'] ) ? $instance['limit'] : 10;
 		$view_settings['id'] = $instance['view_id'];
 		$view_settings['page_size'] = $instance['limit'];
