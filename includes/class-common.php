@@ -426,7 +426,8 @@ class GVCommon {
 			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
 		} elseif ( 'delete' === RGForms::get( 'action' ) ) {
 			$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? $_GET['view_id'] : null;
-		} else {
+		} elseif( !isset( $criteria['context_view_id'] ) ) {
+            // Prevent overriding the Context View ID: Some widgets could set the context_view_id (e.g. Recent Entries widget)
 			$criteria['context_view_id'] = null;
 		}
 
@@ -660,7 +661,7 @@ class GVCommon {
 
 		// field_filters
 		if ( empty( $search_criteria['field_filters'] ) || ! is_array( $search_criteria['field_filters'] ) ) {
-			do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry approved! No field filters criteria found:', $criteria );
+			do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry approved! No field filters criteria found:', $search_criteria );
 			return $entry;
 		}
 
