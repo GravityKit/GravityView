@@ -1240,6 +1240,15 @@ class GravityView_frontend {
 	 * @return string Field Label
 	 */
 	public function add_columns_sort_links( $label = '', $field, $form ) {
+
+		/**
+		 * Not a table-based template; don't add sort icons
+		 * @since 1.11.3
+		 */
+		if( ! preg_match( '/table/ism', GravityView_View::getInstance()->getTemplatePartSlug() ) ) {
+			return $label;
+		}
+
 		if ( ! $this->is_field_sortable( $field['id'], $form ) ) {
 			return $label;
 		}

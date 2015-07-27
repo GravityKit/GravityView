@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+* Fixed: Sorting icons were being added to List template fields when embedded on the same page as Table templates
+
 = 1.11.2 on July 22 =
 * Fixed: Bug when comparing empty values with `[gvlogic]`
 * Fixed: Remove extra whitespace when comparing values using `[gvlogic]`
