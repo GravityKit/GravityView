@@ -44,6 +44,20 @@ function gravityview_is_single_entry() {
 	return GravityView_frontend::is_single_entry();
 }
 
+/**
+ * Check whether a variable is not an empty string
+ *
+ * @see /templates/fields/product.php Used to check whether the product array is empty or not
+ *
+ * @since 1.11.3
+ *
+ * @param mixed $mixed Variable to check
+ *
+ * @return bool true: $mixed is *not* an empty string; false: $mixed *is* an empty string
+ */
+function gravityview_is_not_empty_string( $mixed = '' ) {
+	return ( $mixed !== '' );
+}
 
 /**
  * Get `get_permalink()` without the home_url() prepended to it.
