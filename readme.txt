@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+* Fixed: Empty Product fields would show a string (", Qty: , Price:") instead of being empty. This prevented "Hide empty fields" from working
+
 = 1.11.2 on July 22 =
 * Fixed: Bug when comparing empty values with `[gvlogic]`
 * Fixed: Remove extra whitespace when comparing values using `[gvlogic]`
