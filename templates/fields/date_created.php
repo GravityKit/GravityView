@@ -16,7 +16,7 @@ extract( $gravityview_view->getCurrentField() );
  * @param boolean Use timezone-adjusted datetime? If true, adjusts date based on blog's timezone setting. If false, uses UTC setting.
  * @var string
  */
-$tz_value = apply_filters( 'gravityview_date_created_adjust_timezone', true ) ? get_date_from_gmt( $value ) : $value;
+$tz_value = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'display' ) ? get_date_from_gmt( $value ) : $value;
 
 if( !empty( $field_settings ) && !empty( $field_settings['date_display'] ) && !empty( $tz_value )) {
 

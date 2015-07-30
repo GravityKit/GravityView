@@ -353,8 +353,14 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$curr_end = esc_attr( rgget( 'gv_end' ) );
 
 		if ( ! empty( $curr_start ) && ! empty( $curr_end ) ) {
-			$search_criteria['start_date'] = $curr_start;
-			$search_criteria['end_date'] = $curr_end;
+            /**
+             * date_created is stored in UTC format. Convert search date into UTC
+             * (also used on templates/fields/date_created.php)
+             * @since 1.11.3
+             */
+            $adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'search' );
+			$search_criteria['start_date'] = $adjust_tz ? get_gmt_from_date( $curr_start ) : $curr_start;
+			$search_criteria['end_date'] = $adjust_tz ? get_gmt_from_date( $curr_end ) : $curr_end;
 		}
 
 		// search for a specific entry ID
