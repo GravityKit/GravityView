@@ -979,6 +979,13 @@ class GVCommon {
 			}
 		}
 
+        /**
+         * Filter the sortable fields
+         * @param array $fields Sub-set of GF form fields that are sortable
+         * @since 1.11.3
+         */
+        $fields = apply_filters( 'gravityview/common/sortable_fields', $fields, $formid );
+
 		return $fields;
 	}
 
