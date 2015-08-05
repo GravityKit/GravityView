@@ -166,8 +166,11 @@ abstract class GravityView_Extension {
 			return;
 		}
 
+		// Backward compat for Ratings & Reviews / Maps
+		$path = isset( $this->_path ) ? $this->_path : ( isset( $this->plugin_file ) ? $this->plugin_file : '' );
+
 		// Set filter for plugin's languages directory
-		$lang_dir = dirname( plugin_basename( $this->_path ) ) . '/languages/';
+		$lang_dir = dirname( plugin_basename( $path ) ) . '/languages/';
 
 		// Traditional WordPress plugin locale filter
 		$locale = apply_filters( 'plugin_locale',  get_locale(), $this->_text_domain );
