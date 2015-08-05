@@ -63,6 +63,7 @@ define( 'GV_MIN_WP_VERSION', '3.3' );
 define( 'GV_MIN_PHP_VERSION', '5.2.4' );
 
 /** Load common & connector functions */
+require_once( GRAVITYVIEW_DIR . 'includes/helper-functions.php' );
 require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
 require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
 require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-compatibility.php' );
@@ -168,7 +169,6 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
 		include_once( GRAVITYVIEW_DIR . 'includes/class-frontend-views.php' );
-		include_once( GRAVITYVIEW_DIR . 'includes/helper-functions.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-entry-list.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-merge-tags.php'); /** @since 1.8.4 */
 		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
