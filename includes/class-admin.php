@@ -433,7 +433,7 @@ class GravityView_Admin {
 	/**
 	 * Check if Gravity Forms plugin is active and show notice if not.
 	 *
-	 * @deprecated since 1.11.3
+	 * @deprecated since 1.12
 	 * @see GravityView_Compatibility::get_plugin_status()
 	 * @return boolean True: checks have been passed; GV is fine to run; False: checks have failed, don't continue loading
 	 */
@@ -444,7 +444,7 @@ class GravityView_Admin {
 	/**
 	 * Check if specified plugin is active, inactive or not installed
 	 *
-	 * @deprecated since 1.11.3
+	 * @deprecated since 1.12
 	 * @see GravityView_Compatibility::get_plugin_status()
 
 	 * @return boolean|string True: plugin is active; False: plugin file doesn't exist at path; 'inactive' it's inactive

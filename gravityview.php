@@ -14,7 +14,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.11.2
+ * Version:          	1.12
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravityview
@@ -52,7 +52,7 @@ if ( !defined('GV_MIN_GF_VERSION') ) {
 
 /**
  * GravityView requires at least this version of WordPress to function properly.
- * @since 1.11.3
+ * @since 1.12
  */
 define( 'GV_MIN_WP_VERSION', '3.3' );
 
@@ -85,7 +85,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.11.2';
+	const version = '1.12';
 
 	private static $instance;
 
@@ -119,7 +119,7 @@ final class GravityView_Plugin {
 	/**
 	 * Add hooks to set up the plugin
 	 *
-	 * @since 1.11.3
+	 * @since 1.12
 	 */
 	function add_hooks() {
 		// Load plugin text domain
@@ -135,7 +135,7 @@ final class GravityView_Plugin {
 	/**
 	 * Include global plugin files
 	 *
-	 * @since 1.11.3
+	 * @since 1.12
 	 */
 	function include_files() {
 
@@ -194,7 +194,7 @@ final class GravityView_Plugin {
 	 * @param mixed $network_wide
 	 * @return void
 	 */
-	public static function activate( $network_wide ) {
+	public static function activate( $network_wide = false ) {
 
 		// register post types
 		GravityView_Post_Types::init_post_types();

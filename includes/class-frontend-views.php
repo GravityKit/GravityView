@@ -1234,8 +1234,8 @@ class GravityView_frontend {
 	 *
 	 * @since 1.7
 	 *
-	 * @param $label Field label
-	 * @param $field Field settings
+	 * @param string $label Field label
+	 * @param array $field Field settings
 	 *
 	 * @return string Field Label
 	 */
@@ -1243,7 +1243,7 @@ class GravityView_frontend {
 
 		/**
 		 * Not a table-based template; don't add sort icons
-		 * @since 1.11.3
+		 * @since 1.12
 		 */
 		if( ! preg_match( '/table/ism', GravityView_View::getInstance()->getTemplatePartSlug() ) ) {
 			return $label;

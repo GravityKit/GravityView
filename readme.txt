@@ -20,14 +20,15 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.12 on August 5 =
 * Fixed: Conflicts with Advanced Filter extension when using the Recent Entries widget
 * Fixed: Sorting icons were being added to List template fields when embedded on the same page as Table templates
 * Fixed: Empty Product fields would show a string (", Qty: , Price:") instead of being empty. This prevented "Hide empty fields" from working
 * Fixed: When searching on the Entry Created date, the date used GMT, not blog timezone
 * Fixed: Issue accessing settings page on Multisite
-* Tweak: Extension class added ability to check for required minimum PHP versions
 * Fixed: Don't show View post types if GravityView isn't valid
 * Added: `gravityview/common/sortable_fields` filter to override which fields are sortable
+* Tweak: Extension class added ability to check for required minimum PHP versions
 * Tweak: Made the `GravityView_Plugin::$theInstance` private and renamed it to `GravityView_Plugin::$instance`. If you're a developer using this, please use `GravityView_Plugin::getInstance()` instead.
 
 = 1.11.2 on July 22 =

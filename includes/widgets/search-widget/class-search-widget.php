@@ -355,7 +355,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
         /**
          * date_created is stored in UTC format. Convert search date into UTC
          * (also used on templates/fields/date_created.php)
-         * @since 1.11.3
+         * @since 1.12
          */
         $adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'search' );
         $search_criteria['start_date'] = ( $adjust_tz && !empty( $curr_start ) ) ? get_gmt_from_date( $curr_start ) : $curr_start;
