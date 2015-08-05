@@ -40,6 +40,25 @@ module.exports = function(grunt) {
 			"assets/js/fe-views.js"
 		],
 
+		//
+		babel: {
+			options: {
+				sourceMap: true
+			},
+			dist: {
+				files: {
+					"includes/admin/metaboxes/components/admin-view-config.js": "includes/admin/metaboxes/components/admin-view-config.jsx"
+				}
+			}
+		},
+
+		concat: {
+			dist: {
+				src: ['assets/js/admin-views.js', 'includes/admin/metaboxes/components/admin-view-config.js'],
+				dest: 'assets/js/admin-views.js'
+			}
+		},
+
         imagemin: {
             dynamic: {
                 files: [{
@@ -49,7 +68,7 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: 'assets/images',
                     src: ['**/*.{png,jpg,gif}'],
-                    dest: 'assets/images',
+                    dest: 'assets/images'
                 }]
             }
         },
