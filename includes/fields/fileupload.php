@@ -60,7 +60,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			// If the site is HTTPS, use HTTPS
 			if(function_exists('set_url_scheme')) { $file_path = set_url_scheme($file_path); }
 
-			// This is from Gravity Forms
+			// This is from Gravity Forms's code
 			$file_path = esc_attr(str_replace(" ", "%20", $file_path));
 
 			// If the field is set to link to the single entry, link to it.
