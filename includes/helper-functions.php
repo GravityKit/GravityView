@@ -46,3 +46,19 @@ function gravityview_get_permalink_query_args( $id = 0 ) {
 
 	return $args;
 }
+/**
+ * Get an image of our intrepid explorer friend
+ * @return string HTML image tag with floaty's cute mug on it
+ */
+function gravityview_get_floaty() {
+
+	if( is_rtl() ) {
+		$style = 'margin:10px 10px 10px 0;';
+		$class = 'alignright';
+	} else {
+		$style = 'margin:10px 10px 10px 0;';
+		$class = 'alignleft';
+	}
+
+	return '<img src="'.plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="'.$class.'" height="87" width="66" alt="The GravityView Astronaut Says:" style="'.$style.'" />';
+}
