@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Sorting icons were being added to List template fields when embedded on the same page as Table templates
 * Fixed: Empty Product fields would show a string (", Qty: , Price:") instead of being empty. This prevented "Hide empty fields" from working
 * Fixed: When searching on the Entry Created date, the date used GMT, not blog timezone
+* Added: `gravityview/common/sortable_fields` filter to override which fields are sortable
 
 = 1.11.2 on July 22 =
 * Fixed: Bug when comparing empty values with `[gvlogic]`
