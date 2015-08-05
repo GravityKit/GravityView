@@ -98,6 +98,7 @@ final class GravityView_Plugin {
 	private function __construct() {
 
 		require_once( GRAVITYVIEW_DIR .'includes/class-gravityview-compatibility.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-notices.php' );
 
 		if( ! GravityView_Compatibility::is_valid() ) {
 			return;
