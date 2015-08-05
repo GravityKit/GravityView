@@ -982,6 +982,7 @@ class GVCommon {
         /**
          * Filter the sortable fields
          * @param array $fields Sub-set of GF form fields that are sortable
+         * @param int $formid The Gravity Forms form ID that the fields are from
          * @since 1.11.3
          */
         $fields = apply_filters( 'gravityview/common/sortable_fields', $fields, $formid );
