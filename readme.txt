@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Issue accessing settings page on Multisite
 * Tweak: Extension class added ability to check for required minimum PHP versions
 * Added: `gravityview/common/sortable_fields` filter to override which fields are sortable
+* Tweak: Made the `GravityView_Plugin::$theInstance` private and renamed it to `GravityView_Plugin::$instance`. If you're a developer using this, please use `GravityView_Plugin::getInstance()` instead.
 
 = 1.11.2 on July 22 =
 * Fixed: Bug when comparing empty values with `[gvlogic]`

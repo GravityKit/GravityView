@@ -79,7 +79,7 @@ final class GravityView_Plugin {
 
 	const version = '1.11.2';
 
-	public static $theInstance;
+	private static $instance;
 
 	/**
 	 * Singleton instance
@@ -88,11 +88,11 @@ final class GravityView_Plugin {
 	 */
 	public static function getInstance() {
 
-		if( empty( self::$theInstance ) ) {
-			self::$theInstance = new GravityView_Plugin;
+		if( empty( self::$instance ) ) {
+			self::$instance = new self;
 		}
 
-		return self::$theInstance;
+		return self::$instance;
 	}
 
 	private function __construct() {
