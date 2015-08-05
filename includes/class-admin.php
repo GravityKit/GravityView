@@ -80,13 +80,6 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 
-		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
-
-		// Load Field files automatically
-		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/*.php' ) as $gv_field_filename ) {
-			require_once( $gv_field_filename );
-		}
-
 		// Nice place to insert extensions' backend stuff
 		do_action('gravityview_include_backend_actions');
 	}
@@ -359,7 +352,7 @@ class GravityView_Admin {
 	/**
 	 * Remove any style or script non-registered in the no conflict mode
 	 * @todo  Move this to GravityView_Admin_Views
-	 * @param  object $wp_objects        Object of WP_Styles or WP_Scripts
+	 * @param  WP_Dependencies $wp_objects        Object of WP_Styles or WP_Scripts
 	 * @param  array $required_objects   List of registered script/style handles
 	 * @param  string $type              Either 'styles' or 'scripts'
 	 * @return void
@@ -567,78 +560,24 @@ class GravityView_Admin {
 	/**
 	 * Check if Gravity Forms plugin is active and show notice if not.
 	 *
-	 * @access public
+	 * @deprecated since 1.11.3
+	 * @see GravityView_Compatibility::get_plugin_status()
 	 * @return boolean True: checks have been passed; GV is fine to run; False: checks have failed, don't continue loading
 	 */
 	public static function check_gravityforms() {
-
-		// Bypass other checks: if the class exists
-		if( class_exists( 'GFCommon' ) ) {
-
-			// and the version's right, we're good.
-			if( true === version_compare( GFCommon::$version, GV_MIN_GF_VERSION, ">=" ) ) {
-				return true;
-			}
-
-			// Or the version's wrong
-			self::$admin_notices['gf_version'] = array( 'class' => 'error', 'message' => sprintf( __( "%sGravityView requires Gravity Forms Version %s or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', GV_MIN_GF_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
-
-			return false;
-		}
-
-		$gf_status = self::get_plugin_status( 'gravityforms/gravityforms.php' );
-
-		// If GFCommon doesn't exist, assume GF not active
-		$return = false;
-
-		switch( $gf_status ) {
-			case 'inactive':
-				$return = false;
-				self::$admin_notices['gf_inactive'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravityview' ), '<h3>', "</h3>\n\n".'<strong><a href="'. wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php') . '" class="button button-large">', '</a></strong>' ) );
-				break;
-			default:
-				/**
-				 * The plugin is activated and yet somehow GFCommon didn't get picked up...
-				 */
-				if( $gf_status === true ) {
-					$return = true;
-				} else {
-					self::$admin_notices['gf_installed'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $39%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
-				}
-				break;
-		}
-
-		return $return;
+		return GravityView_Compatibility::check_gravityforms();
 	}
 
 	/**
 	 * Check if specified plugin is active, inactive or not installed
 	 *
-	 * @access public
-	 * @static
-	 * @param string $location (default: '')
+	 * @deprecated since 1.11.3
+	 * @see GravityView_Compatibility::get_plugin_status()
+
 	 * @return boolean|string True: plugin is active; False: plugin file doesn't exist at path; 'inactive' it's inactive
 	 */
 	static function get_plugin_status( $location = '' ) {
-
-		if( ! function_exists('is_plugin_active') ) {
-			include_once( ABSPATH . '/wp-admin/includes/plugin.php' );
-		}
-
-		if( is_plugin_active( $location ) ) {
-			return true;
-		}
-
-		if(
-			!file_exists( trailingslashit( WP_PLUGIN_DIR ) . $location ) &&
-			!file_exists( trailingslashit( WPMU_PLUGIN_DIR ) . $location )
-		) {
-			return false;
-		}
-
-		if( is_plugin_inactive( $location ) ) {
-			return 'inactive';
-		}
+		return GravityView_Compatibility::get_plugin_status( $location );
 	}
 
 	static function is_admin_page($hook = '', $page = NULL) {

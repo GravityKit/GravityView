@@ -50,6 +50,12 @@ if ( !defined('GV_MIN_GF_VERSION') ) {
 	define( 'GV_MIN_GF_VERSION', '1.9' );
 }
 
+/**
+ * GravityView requires at least this version of WordPress to function properly.
+ * @since 1.11.3
+ */
+define( 'GV_MIN_WP_VERSION', '3.3' );
+
 /** Load common & connector functions */
 require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
 require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
@@ -89,50 +95,54 @@ final class GravityView_Plugin {
 		return self::$theInstance;
 	}
 
-	/**
-	 * @since 1.9.2
-	 *
-	 * @param array $atts
-	 * @param null $content
-	 * @param string $shortcode
-	 *
-	 * @return null|string NULL returned if user can't manage options.
-	 */
-	public function _shortcode_gf_notice( $atts = array(), $content = null, $shortcode = 'gravityview' ) {
-
-		if( ! current_user_can('manage_options') ) {
-			return null;
-		}
-
-		$notices = GravityView_Admin::get_notices();
-
-		$message = '<div style="border:1px solid #ccc; padding: 15px;"><p><em>' . esc_html__( 'You are seeing this notice because you are an administrator. Other users of the site will see nothing.', 'gravityview') . '</em></p>';
-		foreach( (array)$notices as $notice ) {
-			$message .= wpautop( $notice['message'] );
-		}
-		$message .= '</div>';
-
-		return $message;
-
-	}
-
 	private function __construct() {
 
-		require_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
+		require_once( GRAVITYVIEW_DIR .'includes/class-gravityview-compatibility.php' );
 
-		// If Gravity Forms doesn't exist or is outdated, load the admin view class to
-		// show the notice, but not load any post types or process shortcodes.
-		// Without Gravity Forms, there is no GravityView. Beautiful, really.
-		if( ! GravityView_Admin::check_gravityforms() ) {
-
-			// If the plugin's not loaded, might as well hide the shortcode for people.
-			add_shortcode( 'gravityview', array( $this, '_shortcode_gf_notice'), 10, 3 );
-
+		if( ! GravityView_Compatibility::is_valid() ) {
 			return;
 		}
 
+		$this->include_files();
+
+		$this->add_hooks();
+	}
+
+	/**
+	 * Add hooks to set up the plugin
+	 *
+	 * @since 1.11.3
+	 */
+	function add_hooks() {
+		// Load plugin text domain
+		add_action( 'init', array( $this, 'load_plugin_textdomain' ), 1 );
+
+		// Load frontend files
+		add_action( 'init', array( $this, 'frontend_actions' ), 20 );
+
+		// Load default templates
+		add_action( 'init', array( $this, 'register_default_templates' ), 11 );
+	}
+
+	/**
+	 * Include global plugin files
+	 *
+	 * @since 1.11.3
+	 */
+	function include_files() {
+
+		include_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
+
+		// Load fields
+		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
+
+		// Load all field files automatically
+		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/*.php' ) as $gv_field_filename ) {
+			include_once( $gv_field_filename );
+		}
+
 		// Load Extensions
- 		// @todo: Convert to a scan of the directory or a method where this all lives
+		// @todo: Convert to a scan of the directory or a method where this all lives
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/edit-entry/class-edit-entry.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/delete-entry/class-delete-entry.php' );
 
@@ -156,15 +166,6 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-merge-tags.php'); /** @since 1.8.4 */
 		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gvlogic-shortcode.php' );
-
-		// Load plugin text domain
-		add_action( 'init', array( $this, 'load_plugin_textdomain' ), 1 );
-
-		// Load frontend files
-		add_action( 'init', array( $this, 'frontend_actions' ), 20 );
-
-		// Load default templates
-		add_action( 'init', array( $this, 'register_default_templates' ), 11 );
 
 	}
 
