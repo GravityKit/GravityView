@@ -673,6 +673,11 @@ class GravityView_Welcome {
 
 		$upgrade = get_option( 'gv_version_upgraded_from' );
 
+		// Don't do anything if they've already seen the new version info
+		if( $upgrade === GravityView_Plugin::version ) {
+			return;
+		}
+
 		// Add "Upgraded From" Option
 		update_option( 'gv_version_upgraded_from', GravityView_Plugin::version );
 
