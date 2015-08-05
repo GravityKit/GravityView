@@ -358,8 +358,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
          * @since 1.11.3
          */
         $adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'search' );
-        $search_criteria['start_date'] = ( $adjust_tz && !empty( $curr_start ) ) ? get_gmt_from_date( $curr_start ) : '';
-        $search_criteria['end_date'] = ( $adjust_tz  && !empty( $curr_end ) ) ? get_gmt_from_date( $curr_end ) : '';
+        $search_criteria['start_date'] = ( $adjust_tz && !empty( $curr_start ) ) ? get_gmt_from_date( $curr_start ) : $curr_start;
+        $search_criteria['end_date'] = ( $adjust_tz  && !empty( $curr_end ) ) ? get_gmt_from_date( $curr_end ) : $curr_end;
 
 
 		// search for a specific entry ID
