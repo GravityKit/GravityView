@@ -50,6 +50,12 @@ if ( !defined('GV_MIN_GF_VERSION') ) {
 	define( 'GV_MIN_GF_VERSION', '1.9' );
 }
 
+/**
+ * GravityView requires at least this version of WordPress to function properly.
+ * @since 1.11.3
+ */
+define( 'GV_MIN_WP_VERSION', '3.3' );
+
 /** Load common & connector functions */
 require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
 require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
@@ -89,30 +95,14 @@ final class GravityView_Plugin {
 		return self::$theInstance;
 	}
 
-	/**
-	 * @since 1.9.2
-	 *
-	 * @param array $atts
-	 * @param null $content
-	 * @param string $shortcode
-	 *
-	 * @return null|string NULL returned if user can't manage options.
-	 */
-	public function _shortcode_gf_notice( $atts = array(), $content = null, $shortcode = 'gravityview' ) {
+	private function __construct() {
 
-		if( ! current_user_can('manage_options') ) {
-			return null;
+		require_once( GRAVITYVIEW_DIR .'includes/class-gravityview-compatibility.php' );
+
+		if( ! GravityView_Compatibility::is_valid() ) {
+			return;
 		}
 
-		$notices = GravityView_Admin::get_notices();
-
-		$message = '<div style="border:1px solid #ccc; padding: 15px;"><p><em>' . esc_html__( 'You are seeing this notice because you are an administrator. Other users of the site will see nothing.', 'gravityview') . '</em></p>';
-		foreach( (array)$notices as $notice ) {
-			$message .= wpautop( $notice['message'] );
-		}
-		$message .= '</div>';
-
-		return $message;
 
 	}
 

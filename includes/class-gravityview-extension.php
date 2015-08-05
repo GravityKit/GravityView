@@ -341,7 +341,7 @@ abstract class GravityView_Extension {
 
 			$message = sprintf( __('The %s Extension requires GravityView Version %s or newer.', 'gravityview' ), $this->_title, '<tt>'.$this->_min_gravityview_version.'</tt>' );
 
-			self::add_notice( $message );
+			self::$is_compatible = GravityView_Compatibility::is_valid();
 
 			do_action( 'gravityview_log_error', __METHOD__. ' ' . $message );
 
