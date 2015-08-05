@@ -15,7 +15,7 @@ class GravityView_Admin {
 	function add_hooks() {
 
 		// If Gravity Forms isn't active or compatibile, stop loading
-		if( false === self::check_gravityforms() ) {
+		if( false === GravityView_Compatibility::is_valid() ) {
 			return;
 		}
 

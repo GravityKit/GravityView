@@ -73,7 +73,7 @@ function gravityview_sanitize_html_class( $classes ) {
  */
 function gravityview_get_floaty() {
 
-	if( is_rtl() ) {
+	if( function_exists('is_rtl') && is_rtl() ) {
 		$style = 'margin:10px 10px 10px 0;';
 		$class = 'alignright';
 	} else {

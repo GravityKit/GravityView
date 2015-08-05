@@ -56,9 +56,16 @@ if ( !defined('GV_MIN_GF_VERSION') ) {
  */
 define( 'GV_MIN_WP_VERSION', '3.3' );
 
+/**
+ * GravityView requires at least this version of PHP to function properly.
+ * @since 1.12
+ */
+define( 'GV_MIN_PHP_VERSION', '5.2.4' );
+
 /** Load common & connector functions */
 require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
 require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
+require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-compatibility.php' );
 
 /** Register Post Types and Rewrite Rules */
 require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
@@ -97,7 +104,6 @@ final class GravityView_Plugin {
 
 	private function __construct() {
 
-		require_once( GRAVITYVIEW_DIR .'includes/class-gravityview-compatibility.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-notices.php' );
 
 		if( ! GravityView_Compatibility::is_valid() ) {
