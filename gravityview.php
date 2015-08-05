@@ -103,22 +103,34 @@ final class GravityView_Plugin {
 			return;
 		}
 
+		$this->include_files();
 
 	}
 
 	private function __construct() {
 
-		require_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
+	/**
+	 * Include global plugin files
+	 *
+	 * @since 1.11.3
+	 */
+	function include_files() {
 
 		// If Gravity Forms doesn't exist or is outdated, load the admin view class to
 		// show the notice, but not load any post types or process shortcodes.
 		// Without Gravity Forms, there is no GravityView. Beautiful, really.
 		if( ! GravityView_Admin::check_gravityforms() ) {
+		include_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
 
 			// If the plugin's not loaded, might as well hide the shortcode for people.
 			add_shortcode( 'gravityview', array( $this, '_shortcode_gf_notice'), 10, 3 );
+		// Load fields
+		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
 
 			return;
+		// Load all field files automatically
+		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/*.php' ) as $gv_field_filename ) {
+			include_once( $gv_field_filename );
 		}
 
 		// Load Extensions

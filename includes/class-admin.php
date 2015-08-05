@@ -80,13 +80,6 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 
-		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
-
-		// Load Field files automatically
-		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/*.php' ) as $gv_field_filename ) {
-			require_once( $gv_field_filename );
-		}
-
 		// Nice place to insert extensions' backend stuff
 		do_action('gravityview_include_backend_actions');
 	}
