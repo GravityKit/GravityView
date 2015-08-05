@@ -234,7 +234,7 @@ class GravityView_Settings extends GFAddOn {
 	 */
 	public function add_network_menu() {
 		if( GravityView_Plugin::is_network_activated() ) {
-			add_menu_page( __( 'Settings', 'gravityview' ), __( 'GravityView', 'gravityview' ), 'manage_options', "edit.php?post_type=gravityview&page={$this->_slug}_settings", array( $this, 'app_tab_page' ), 'none' );
+			add_menu_page( __( 'Settings', 'gravityview' ), __( 'GravityView', 'gravityview' ), $this->_capabilities_app_settings, "{$this->_slug}_settings", array( $this, 'app_tab_page' ), 'none' );
 		}
 	}
 
