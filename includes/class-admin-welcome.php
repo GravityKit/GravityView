@@ -274,6 +274,21 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>1.12 on August 5</h3>
+
+				<ul>
+					<li>Fixed: Conflicts with Advanced Filter extension when using the Recent Entries widget</li>
+					<li>Fixed: Sorting icons were being added to List template fields when embedded on the same page as Table templates</li>
+					<li>Fixed: Empty Product fields would show a string (", Qty: , Price:") instead of being empty. This prevented "Hide empty fields" from working</li>
+					<li>Fixed: When searching on the Entry Created date, the date used GMT, not blog timezone</li>
+					<li>Fixed: Issue accessing settings page on Multisite</li>
+					<li>Fixed: Don't show View post types if GravityView isn't valid</li>
+					<li>Fixed: Don't redirect to the List of Changes screen if you've already seen the screen for the current version</li>
+					<li>Added: <code>gravityview/common/sortable_fields</code> filter to override which fields are sortable</li>
+					<li>Tweak: Extension class added ability to check for required minimum PHP versions</li>
+					<li>Tweak: Made the <code>GravityView_Plugin::$theInstance</code> private and renamed it to <code>GravityView_Plugin::$instance</code>. If you're a developer using this, please use <code>GravityView_Plugin::getInstance()</code> instead.</li>
+				</ul>
+
 				<h3>1.11.2 on July 22</h3>
 
 				<ul>
