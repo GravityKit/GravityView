@@ -1,6 +1,6 @@
 <?php
 /**
- * Functions that don't require GravityView or Gravity Forms but are used in the plugin to extend PHP and WP functions
+ * Functions that don't require GravityView or Gravity Forms API access but are used in the plugin to extend PHP and WP functions
  * @since 1.12
  */
 
@@ -69,6 +69,7 @@ function gravityview_sanitize_html_class( $classes ) {
 
 /**
  * Get an image of our intrepid explorer friend
+ * @since 1.12
  * @return string HTML image tag with floaty's cute mug on it
  */
 function gravityview_get_floaty() {
