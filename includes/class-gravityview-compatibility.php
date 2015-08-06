@@ -240,30 +240,39 @@ class GravityView_Compatibility {
 
 		$gf_status = self::get_plugin_status( 'gravityforms/gravityforms.php' );
 
+		/**
+		 * The plugin is activated and yet somehow GFCommon didn't get picked up...
+		 * OR
+		 * It's the Network Admin and we just don't know whether the sites have GF activated themselves.
+		 */
+		if( true === $gf_status || is_network_admin() ) {
+			return true;
+		}
+
 		// If GFCommon doesn't exist, assume GF not active
 		$return = false;
 
 		switch( $gf_status ) {
 			case 'inactive':
+
+				// Required for multisite
 				if( ! function_exists('wp_create_nonce') ) {
 					require_once ABSPATH . WPINC . '/pluggable.php';
 				}
 
+				// Otherwise, throws an error on activation & deactivation "Use of undefined constant LOGGED_IN_COOKIE"
+				if( is_multisite() ) {
+					wp_cookie_constants();
+				}
+
 				$return = false;
 
-				$button = is_network_admin() ? '<strong><a href="#gravity-forms">' : '<strong><a href="'. wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php') . '" class="button button-large">';
+				$button = function_exists('is_network_admin') && is_network_admin() ? '<strong><a href="#gravity-forms">' : '<strong><a href="'. wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php') . '" class="button button-large">';
 
 				self::$notices['gf_inactive'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravityview' ), '<h3>', "</h3>\n\n". $button, '</a></strong>' ) );
 				break;
 			default:
-				/**
-				 * The plugin is activated and yet somehow GFCommon didn't get picked up...
-				 */
-				if( $gf_status === true ) {
-					$return = true;
-				} else {
-					self::$notices['gf_installed'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $39%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
-				}
+				self::$notices['gf_installed'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $39%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
 				break;
 		}
 
@@ -302,7 +311,11 @@ class GravityView_Compatibility {
 			include_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 		}
 
-		if( is_plugin_active( $location ) ) {
+		if( is_network_admin() && is_plugin_active_for_network( $location ) ) {
+			return true;
+		}
+
+		if( !is_network_admin() && is_plugin_active( $location ) ) {
 			return true;
 		}
 
@@ -313,9 +326,7 @@ class GravityView_Compatibility {
 			return false;
 		}
 
-		if( is_plugin_inactive( $location ) ) {
-			return 'inactive';
-		}
+		return 'inactive';
 	}
 
 }
