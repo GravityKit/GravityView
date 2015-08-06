@@ -709,28 +709,6 @@ function gv_container_class( $class = '' ) {
 	echo $class;
 }
 
-
-/**
- * sanitize_html_class doesn't handle spaces (multiple classes). We remedy that.
- * @uses sanitize_html_class
- * @param  string|array      $classes Text or arrray of classes to sanitize
- * @return string            Sanitized CSS string
- */
-function gravityview_sanitize_html_class( $classes ) {
-
-	if( is_string( $classes ) ) {
-		$classes = explode(' ', $classes );
-	}
-
-	// If someone passes something not string or array, we get outta here.
-	if( !is_array( $classes ) ) { return $classes; }
-
-	$classes = array_map( 'sanitize_html_class' , $classes );
-
-	return implode( ' ', $classes );
-
-}
-
 function gv_value( $entry, $field ) {
 
 	$value = GravityView_API::field_value( $entry, $field );

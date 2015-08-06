@@ -16,7 +16,7 @@ extract( $gravityview_view->getCurrentField() );
  * If not, Gravity Forms displays a useless string (", Qty: , Price:") instead of an empty value. This prevents
  * the "Hide empty fields" setting from working.
  *
- * @since 1.11.3
+ * @since 1.12
  */
 $value = is_array( $value ) ? array_filter( $value, 'gravityview_is_not_empty_string' ) : $value;
 

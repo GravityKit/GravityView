@@ -14,7 +14,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.11.2
+ * Version:          	1.12
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravityview
@@ -52,13 +52,21 @@ if ( !defined('GV_MIN_GF_VERSION') ) {
 
 /**
  * GravityView requires at least this version of WordPress to function properly.
- * @since 1.11.3
+ * @since 1.12
  */
 define( 'GV_MIN_WP_VERSION', '3.3' );
 
+/**
+ * GravityView requires at least this version of PHP to function properly.
+ * @since 1.12
+ */
+define( 'GV_MIN_PHP_VERSION', '5.2.4' );
+
 /** Load common & connector functions */
+require_once( GRAVITYVIEW_DIR . 'includes/helper-functions.php' );
 require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
 require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
+require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-compatibility.php' );
 
 /** Register Post Types and Rewrite Rules */
 require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
@@ -77,9 +85,9 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.11.2';
+	const version = '1.12';
 
-	public static $theInstance;
+	private static $instance;
 
 	/**
 	 * Singleton instance
@@ -88,16 +96,16 @@ final class GravityView_Plugin {
 	 */
 	public static function getInstance() {
 
-		if( empty( self::$theInstance ) ) {
-			self::$theInstance = new GravityView_Plugin;
+		if( empty( self::$instance ) ) {
+			self::$instance = new self;
 		}
 
-		return self::$theInstance;
+		return self::$instance;
 	}
 
 	private function __construct() {
 
-		require_once( GRAVITYVIEW_DIR .'includes/class-gravityview-compatibility.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-notices.php' );
 
 		if( ! GravityView_Compatibility::is_valid() ) {
 			return;
@@ -111,7 +119,7 @@ final class GravityView_Plugin {
 	/**
 	 * Add hooks to set up the plugin
 	 *
-	 * @since 1.11.3
+	 * @since 1.12
 	 */
 	function add_hooks() {
 		// Load plugin text domain
@@ -127,7 +135,7 @@ final class GravityView_Plugin {
 	/**
 	 * Include global plugin files
 	 *
-	 * @since 1.11.3
+	 * @since 1.12
 	 */
 	function include_files() {
 
@@ -161,7 +169,6 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
 		include_once( GRAVITYVIEW_DIR . 'includes/class-frontend-views.php' );
-		include_once( GRAVITYVIEW_DIR . 'includes/helper-functions.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-entry-list.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-merge-tags.php'); /** @since 1.8.4 */
 		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
@@ -187,7 +194,7 @@ final class GravityView_Plugin {
 	 * @param mixed $network_wide
 	 * @return void
 	 */
-	public static function activate( $network_wide ) {
+	public static function activate( $network_wide = false ) {
 
 		// register post types
 		GravityView_Post_Types::init_post_types();

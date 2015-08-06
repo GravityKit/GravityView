@@ -121,6 +121,46 @@
 
 		},
 
+		/**
+		 * Take a string that may be JSON or may be JSON
+		 *
+		 * @since 1.12
+		 * @param {string} string JSON text to attempt to parse
+		 * @returns {object} Either JSON-parsed object or object with a message key containing an error message
+		 */
+		parse_response_json: function( string ) {
+			var response_object;
+
+			// Parse valid JSON
+			try {
+
+				response_object = $.parseJSON( string );
+
+			} catch( exception ) {
+
+				// The JSON didn't parse most likely because PHP warnings.
+				// We attempt to strip out all content up to the expected JSON `{"`
+				var second_try = string.replace(/((.|\n)+?){"/gm, "{\"");
+
+				try {
+
+					response_object = $.parseJSON( second_try );
+
+				} catch( exception ) {
+
+					console.log( '*** \n*** \n*** Error-causing response:\n***\n***\n', string );
+
+					var error_message = 'JSON failed: another plugin caused a conflict with completing this request. Check your browser\'s Javascript console to view the invalid content.';
+
+					response_object = {
+						message: '<div id="gv-edd-status" class="gv-edd-message inline error"><p>' + error_message + '</p></div>'
+					};
+				}
+			}
+
+			return response_object;
+		},
+
 		post_data: function( theData ) {
 
 			$.post( ajaxurl, {
@@ -128,17 +168,17 @@
 				'data': theData
 			}, function ( response ) {
 
-				response = $.parseJSON( response );
+				var response_object = GV_EDD.parse_response_json( response );
 
-				GV_EDD.message = response.message;
+				GV_EDD.message = response_object.message;
 
 				if( theData.edd_action !== 'check_license' ) {
-					$( '#license_key_status' ).val( response.license );
-					$( '#license_key_response' ).val( JSON.stringify( response ) );
-					$( document ).trigger( 'gv-edd-' + response.license, response );
+					$( '#license_key_status' ).val( response_object.license );
+					$( '#license_key_response' ).val( JSON.stringify( response_object ) );
+					$( document ).trigger( 'gv-edd-' + response_object.license, response_object );
 				}
 
-				GV_EDD.update_status( response.message );
+				GV_EDD.update_status( response_object.message );
 
 				$( '#gform-settings')
 					.css('cursor', 'default')

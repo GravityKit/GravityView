@@ -16,9 +16,12 @@ class GravityView_Post_Types {
 	function __construct() {
 
 		// Load custom post types. It's a static method.
+		// Load even when invalid to allow for export
 		add_action( 'init', array( 'GravityView_Post_Types', 'init_post_types' ) );
-		add_action( 'init', array( 'GravityView_Post_Types', 'init_rewrite' ) );
 
+		if( GravityView_Compatibility::is_valid() ) {
+			add_action( 'init', array( 'GravityView_Post_Types', 'init_rewrite' ) );
+		}
 	}
 
 	/**
@@ -52,9 +55,9 @@ class GravityView_Post_Types {
 			'labels'              => $labels,
 			'supports'            => array( 'title', 'genesis-layouts'),
 			'hierarchical'        => false,
-			'public'              => true,
-			'show_ui'             => true,
-			'show_in_menu'        => true,
+			'public'              => GravityView_Compatibility::is_valid(),
+			'show_ui'             => GravityView_Compatibility::is_valid(),
+			'show_in_menu'        => GravityView_Compatibility::is_valid(),
 			'show_in_nav_menus'   => true,
 			'show_in_admin_bar'   => true,
 			'menu_position'       => 17,
@@ -67,7 +70,7 @@ class GravityView_Post_Types {
 			 */
 			'has_archive'         => apply_filters( 'gravityview_has_archive', false ),
 			'exclude_from_search' => true,
-			'publicly_queryable'  => true,
+			'publicly_queryable'  => GravityView_Compatibility::is_valid(),
 			'rewrite'             => array(
 				'slug' => apply_filters( 'gravityview_slug', 'view' )
 			),
