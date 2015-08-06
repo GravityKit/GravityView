@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Issue accessing settings page on Multisite
 * Fixed: Don't show View post types if GravityView isn't valid
 * Fixed: Don't redirect to the List of Changes screen if you've already seen the screen for the current version
+* Fixed: When checking license status, the plugin can now fix PHP warnings caused by other plugins that messed up the requests
 * Added: `gravityview/common/sortable_fields` filter to override which fields are sortable
 * Tweak: Extension class added ability to check for required minimum PHP versions
 * Tweak: Made the `GravityView_Plugin::$theInstance` private and renamed it to `GravityView_Plugin::$instance`. If you're a developer using this, please use `GravityView_Plugin::getInstance()` instead.
