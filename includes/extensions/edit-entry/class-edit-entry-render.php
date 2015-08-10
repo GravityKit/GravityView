@@ -300,7 +300,7 @@ class GravityView_Edit_Entry_Render {
      * @return mixed
      */
     public function modify_fileupload_settings( $plupload_init, $form_id, $instance ) {
-        if( !self::is_edit_entry() ) {
+        if( ! $this->is_edit_entry() ) {
             return $plupload_init;
         }
 
@@ -1314,7 +1314,7 @@ class GravityView_Edit_Entry_Render {
      */
     function manage_conditional_logic( $has_conditional_logic, $form ) {
 
-        if( ! self::is_edit_entry() ) {
+        if( ! $this->is_edit_entry() ) {
             return $has_conditional_logic;
         }
 
