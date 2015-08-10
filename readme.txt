@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+* Fixed: Extension class wasn't properly checking requirements
+
 = 1.12 on August 5 =
 * Fixed: Conflicts with Advanced Filter extension when using the Recent Entries widget
 * Fixed: Sorting icons were being added to List template fields when embedded on the same page as Table templates
