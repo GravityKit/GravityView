@@ -696,7 +696,7 @@ class GravityView_Edit_Entry_Render {
          * @param boolean
          * @param $field GF_Field object Gravity Forms field object
          *
-         * @since 1.12.1
+         * @since 1.13
          */
         $override_saved_value = apply_filters( 'gravityview/edit_entry/pre_populate/override', false, $field );
 
