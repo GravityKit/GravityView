@@ -20,6 +20,10 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+* Added: Number field settings
+	- Format number: Display numbers with thousands separators
+	- Decimals: Precision of the number of decimal places. Leave blank to use existing precision.
+
 = 1.12 on August 5 =
 * Fixed: Conflicts with Advanced Filter extension when using the Recent Entries widget
 * Fixed: Sorting icons were being added to List template fields when embedded on the same page as Table templates
