@@ -88,9 +88,6 @@ class GravityView_frontend {
 		add_action( 'wp', array( $this, 'parse_content'), 11 );
 		add_action( 'template_redirect', array( $this, 'set_entry_data'), 1 );
 
-		// Shortcode to render view (directory)
-		add_shortcode( 'gravityview', array( $this, 'shortcode' ) );
-
 		// Enqueue scripts and styles after GravityView_Template::register_styles()
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 20 );
 
@@ -381,26 +378,6 @@ class GravityView_frontend {
 		if ( is_admin() || ( $this->getSingleEntry() && ! $this->isGravityviewPostType() ) ) {
 			remove_action( 'admin_bar_menu', 'wp_admin_bar_edit_menu', 80 );
 		}
-	}
-
-	/**
-	 * Callback function for add_shortcode()
-	 *
-	 * @access public
-	 * @static
-	 * @param mixed $atts
-	 * @return null|string If admin, null. Otherwise, output of $this->render_view()
-	 */
-	public function shortcode( $atts, $content = null ) {
-
-		// Don't process when saving post.
-		if ( is_admin() ) {
-			return;
-		}
-
-		do_action( 'gravityview_log_debug', '[shortcode] $atts: ', $atts );
-
-		return $this->render_view( $atts );
 	}
 
 	/**
