@@ -18,8 +18,8 @@ class GravityView_Admin_Bar {
 	}
 
 	private function add_hooks() {
-		add_action( 'add_admin_bar_menus', array( $this, 'admin_bar_remove_links' ), 80 );
-		add_action( 'admin_bar_menu', array( $this, 'admin_bar_add_links' ), 85 );
+		add_action( 'add_admin_bar_menus', array( $this, 'remove_links' ), 80 );
+		add_action( 'admin_bar_menu', array( $this, 'add_links' ), 85 );
 	}
 
 	/**
@@ -27,7 +27,21 @@ class GravityView_Admin_Bar {
 	 *
 	 * @return void
 	 */
-	function admin_bar_add_links() {
+	function add_links() {
+		/** @var WP_Admin_Bar $wp_admin_bar */
+		global $wp_admin_bar;
+
+		$this->add_edit_entry_link();
+
+	}
+
+	/**
+	 * Add Edit Entry links when on a single entry
+	 *
+	 * @since 1.13
+	 * @return void
+	 */
+	function add_edit_entry_link() {
 		/** @var WP_Admin_Bar $wp_admin_bar */
 		global $wp_admin_bar;
 
@@ -49,7 +63,7 @@ class GravityView_Admin_Bar {
 	 * Remove "Edit Page" or "Edit View" links when on single entry pages
 	 * @return void
 	 */
-	function admin_bar_remove_links() {
+	function remove_links() {
 
 		// If we're on the single entry page, we don't want to cause confusion.
 		if ( is_admin() || ( $this->gravityview_view->getSingleEntry() && ! $this->gravityview_view->isGravityviewPostType() ) ) {
