@@ -834,6 +834,9 @@ class GravityView_frontend {
 
 		// Search Criteria
 		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ), $form_id );
+
+		$original_search_criteria = $search_criteria;
+
 		do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after hook gravityview_fe_search_criteria: ', $search_criteria );
 
 		// implicity search
@@ -849,12 +852,16 @@ class GravityView_frontend {
 			);
 		}
 
-		do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after implicity search: ', $search_criteria );
+		if( $search_criteria !== $original_search_criteria ) {
+			do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after implicity search: ', $search_criteria );
+		}
 
 		// Handle setting date range
 		$search_criteria = self::process_search_dates( $args, $search_criteria );
 
-		do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after date params: ', $search_criteria );
+		if( $search_criteria !== $original_search_criteria ) {
+			do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after date params: ', $search_criteria );
+		}
 
 		// remove not approved entries
 		$search_criteria = self::process_search_only_approved( $args, $search_criteria );

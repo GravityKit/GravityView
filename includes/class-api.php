@@ -282,7 +282,7 @@ class GravityView_API {
 
 		if( $field_exists ) {
 
-			do_action( 'gravityview_log_debug', sprintf('[field_value] Rendering %s Field', $field_type ), $field_exists );
+			do_action( 'gravityview_log_debug', sprintf('[field_value] Rendering %s', $field_exists ) );
 
 			ob_start();
 
