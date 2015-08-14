@@ -300,7 +300,7 @@ class GravityView_Edit_Entry_Render {
      * @return mixed
      */
     public function modify_fileupload_settings( $plupload_init, $form_id, $instance ) {
-        if( !self::is_edit_entry() ) {
+        if( ! $this->is_edit_entry() ) {
             return $plupload_init;
         }
 
@@ -689,28 +689,39 @@ class GravityView_Edit_Entry_Render {
             $field = GFCommon::add_categories_as_choices( $field, $value );
         }
 
+        /**
+         * Allow the pre-populated value to override saved value
+         * By default, pre-populate mechanism only kicks on empty fields
+         *
+         * @param boolean
+         * @param $field GF_Field object Gravity Forms field object
+         *
+         * @since 1.13
+         */
+        $override_saved_value = apply_filters( 'gravityview/edit_entry/pre_populate/override', false, $field );
+
         // We're dealing with multiple inputs (e.g. checkbox) but not time or date (as it doesn't store data in input IDs)
         if( isset( $field->inputs ) && is_array( $field->inputs ) && !in_array( $field->type, array( 'time', 'date' ) ) ) {
 
             $field_value = array();
 
             // only accept pre-populated values if the field doesn't have any choice selected.
-            $allow_pre_populated = true;
+            $allow_pre_populated = $field->allowsPrepopulate;
 
-	        foreach ( (array)$field->inputs as $input ) {
+            foreach ( (array)$field->inputs as $input ) {
 
-	            $input_id = strval( $input['id'] );
+                $input_id = strval( $input['id'] );
 
                 if ( ! empty( $this->entry[ $input_id ] ) ) {
-                    $allow_pre_populated = false;
                     $field_value[ $input_id ] =  'post_category' === $field->type ? GFCommon::format_post_category( $this->entry[ $input_id ], true ) : $this->entry[ $input_id ];
+                    $allow_pre_populated = false;
                 }
 
             }
 
-            if( $allow_pre_populated ) {
-                $field_value = $field->get_value_submission( array(), false );
-            }
+            $pre_value = $field->get_value_submission( array(), false );
+
+            $field_value = ! $allow_pre_populated && ! ( $override_saved_value && !empty( $pre_value ) ) ? $field_value : $pre_value;
 
         } else {
 
@@ -720,7 +731,8 @@ class GravityView_Edit_Entry_Render {
             $pre_value = $field->allowsPrepopulate ? GFFormsModel::get_parameter_value( $field->inputName, array(), $field ) : '';
 
             // saved field entry value (if empty, fallback to the pre-populated value, if exists)
-            $field_value = !empty( $this->entry[ $id ] ) ? $this->entry[ $id ] : $pre_value;
+            // or pre-populated value if not empty and set to override saved value
+            $field_value = !empty( $this->entry[ $id ] ) && ! ( $override_saved_value && !empty( $pre_value ) ) ? $this->entry[ $id ] : $pre_value;
 
             // in case field is post_category but inputType is select, multi-select or radio, convert value into array of category IDs.
             if ( 'post_category' === $field->type && !empty( $field_value ) ) {
@@ -1314,7 +1326,7 @@ class GravityView_Edit_Entry_Render {
      */
     function manage_conditional_logic( $has_conditional_logic, $form ) {
 
-        if( ! self::is_edit_entry() ) {
+        if( ! $this->is_edit_entry() ) {
             return $has_conditional_logic;
         }
 

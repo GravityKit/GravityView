@@ -475,8 +475,7 @@ class GVCommon {
 			}
 		}
 
-
-		if ( is_null( $return ) && class_exists( 'GFAPI' ) && ( is_numeric( $form_ids ) || is_array( $form_ids ) ) ) {
+		if ( class_exists( 'GFAPI' ) && ( is_numeric( $form_ids ) || is_array( $form_ids ) ) ) {
 
 			$entries = GFAPI::get_entries( $form_ids, $criteria['search_criteria'], $criteria['sorting'], $criteria['paging'], $total );
 

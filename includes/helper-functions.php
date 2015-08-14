@@ -84,39 +84,3 @@ function gravityview_get_floaty() {
 
 	return '<img src="'.plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="'.$class.'" height="87" width="66" alt="The GravityView Astronaut Says:" style="'.$style.'" />';
 }
-
-/**
- * Intelligently format a number
- *
- * If you don't define the number of decimal places, then it will use the existing number of decimal places. This is done
- * in a way that respects the localization of the site.
- *
- * If you do define decimals, it uses number_format_i18n()
- *
- * @see number_format_i18n()
- *
- * @since 1.13
- *
- * @param int|float|string|double $number A number to format
- * @param int|string $decimals Optional. Precision of the number of decimal places. Default '' (use existing number of decimals)
- *
- * @return string Converted number in string format.
- */
-function gravityview_number_format( $number, $decimals = '' ) {
-	global $wp_locale;
-
-	if( '' === $decimals ) {
-
-		$decimal_point = isset( $wp_locale ) ? $wp_locale->number_format['decimal_point'] : '.';
-
-		/**
-		 * Calculate the position of the decimal point in the number
-		 * @see http://stackoverflow.com/a/2430144/480856
-		 */
-		$decimals = strlen( substr( strrchr( $number, $decimal_point ), 1 ) );
-	}
-
-	$number = number_format_i18n( $number, (int)$decimals );
-
-	return $number;
-}
