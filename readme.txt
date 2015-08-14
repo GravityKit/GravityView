@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Edit Entry link not showing for non-admins when using the DataTables template
 * Added: Allow to override the entry saved value by the dynamic populated value on the Edit Entry view
 * Fixed: Cache wasn't being used for `get_entries()`
+* Fixed: Extension class wasn't properly checking requirements
 
 = 1.12 on August 5 =
 * Fixed: Conflicts with Advanced Filter extension when using the Recent Entries widget
