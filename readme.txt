@@ -25,7 +25,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 	- Format number: Display numbers with thousands separators
 	- Decimals: Precision of the number of decimal places. Leave blank to use existing precision.
 * Added: Allow to override the entry saved value by the dynamic populated value on the Edit Entry view
-* Added: `gravityview/merge_tags/do_replace_variables` filter to enable/disable replace_variables behavior.
+* Added: `gravityview/merge_tags/do_replace_variables` filter to enable/disable replace_variables behavior
+* Added: `gravityview/edit_entry/verify_nonce` filter to override nonce validation in Edit Entry
 * Fixed: Edit Entry link not showing for non-admins when using the DataTables template
 * Fixed: Cache wasn't being used for `get_entries()`
 * Fixed: Extension class wasn't properly checking requirements
