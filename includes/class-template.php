@@ -183,14 +183,14 @@ class GravityView_View extends Gamajo_Template_Loader {
 	}
 
 	/**
-	 * @param null $passed_post
+	 * @param $atts array Associative array to set the data of
 	 *
 	 * @return GravityView_View
 	 */
-	static function getInstance( $passed_post = NULL ) {
+	static function getInstance( $atts = array() ) {
 
 		if( empty( self::$instance ) ) {
-			self::$instance = new self( $passed_post );
+			self::$instance = new self( $atts );
 		}
 
 		return self::$instance;

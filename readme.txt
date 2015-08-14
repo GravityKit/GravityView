@@ -20,6 +20,14 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.13 =
+* Added: Number field settings
+	- Format number: Display numbers with thousands separators
+	- Decimals: Precision of the number of decimal places. Leave blank to use existing precision.
+* Fixed: Edit Entry link not showing for non-admins when using the DataTables template
+* Added: Allow to override the entry saved value by the dynamic populated value on the Edit Entry view
+* Fixed: Cache wasn't being used for `get_entries()`
+
 = 1.12 on August 5 =
 * Fixed: Conflicts with Advanced Filter extension when using the Recent Entries widget
 * Fixed: Sorting icons were being added to List template fields when embedded on the same page as Table templates
