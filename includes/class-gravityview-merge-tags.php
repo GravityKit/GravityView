@@ -39,9 +39,22 @@ class GravityView_Merge_Tags {
 	 * @param  array      $entry        GF Entry array
 	 * @return string                  Text with variables maybe replaced
 	 */
-	public static function replace_variables($text, $form, $entry ) {
+	public static function replace_variables( $text, $form, $entry ) {
 
-		if( strpos( $text, '{') === false ) {
+		/**
+		 * Turn off variable replacements.
+		 *
+		 * Useful where you want to process variables yourself. We do this in the Math Extension.
+		 *
+		 * @filter gravityview_do_replace_variables
+		 *
+		 * @since 1.13
+		 *
+		 * @param boolean True: yes, replace variables for this text; False: do not replace variables.
+		 */
+		$do_replace_variables = apply_filters( 'gravityview/merge_tags/do_replace_variables', true, $text, $form, $entry );
+
+		if( strpos( $text, '{') === false || ! $do_replace_variables ) {
 			return $text;
 		}
 
@@ -130,7 +143,7 @@ class GravityView_Merge_Tags {
 	 * Exactly like Gravity Forms' User Meta functionality, but instead shows information on the user who created the entry
 	 * instead of the currently logged-in user.
 	 *
-	 * @see http://docs.gravityview.co/article/281-the-createdby-merge-tag
+	 * @link http://docs.gravityview.co/article/281-the-createdby-merge-tag
 	 *
 	 * @since 1.8.4
 	 *
@@ -139,6 +152,8 @@ class GravityView_Merge_Tags {
 	 * @param array $entry Entry array
 	 * @param bool $url_encode Whether to URL-encode output
 	 * @param bool $esc_html Whether to apply `esc_html()` to output
+	 *
+	 * @return string Text, with user variables replaced, if they existed
 	 */
 	private function replace_user_variables_created_by( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
