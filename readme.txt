@@ -20,7 +20,11 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+
 = 1.13 =
+* Added: Number field settings
+	- Format number: Display numbers with thousands separators
+	- Decimals: Precision of the number of decimal places. Leave blank to use existing precision.
 * Fixed: Cache wasn't being used for `get_entries()`
 
 = 1.12 on August 5 =
