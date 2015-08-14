@@ -64,7 +64,7 @@ class GravityView_Cache {
 
 		add_action('gform_entry_created', array($this, 'entry_created'), 10, 2 );
 
-		add_action('gform_delete_lead', array($this, 'entry_deleted'), 10, 2 );
+		add_action('gform_delete_lead', array($this, 'entry_deleted'), 10 );
 	}
 
 	/**
@@ -78,9 +78,19 @@ class GravityView_Cache {
 	 */
 	public function entry_deleted( $lead_id ) {
 
-		$entry = GFAPI::get_entry( $lead_id, true );
+		$entry = GFAPI::get_entry( $lead_id );
 
-		do_action( 'gravityview_log_debug', 'GravityView_Cache[entry_updated] adding form '.$entry['form_id'].' to blacklist because entry #'.$lead_id.' was deleted' );
+		if ( is_wp_error( $entry ) ) {
+
+			/** @var WP_Error $entry */
+			do_action( 'gravityview_log_error', 'GravityView_Cache[entry_deleted] Could not retrieve entry '.$lead_id.' to delete it: '. $entry->get_error_message() );
+
+			return;
+		}
+
+		/** @var array $entry */
+
+		do_action( 'gravityview_log_debug', 'GravityView_Cache[entry_deleted] adding form '.$entry['form_id'].' to blacklist because entry #'.$lead_id.' was deleted' );
 
 		$this->blacklist_add( $entry['form_id'] );
 
