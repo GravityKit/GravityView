@@ -48,7 +48,7 @@ class GravityView_Merge_Tags {
 		 *
 		 * @filter gravityview_do_replace_variables
 		 *
-		 * @since 1.12.1
+		 * @since 1.13
 		 *
 		 * @param boolean True: yes, replace variables for this text; False: do not replace variables.
 		 */
