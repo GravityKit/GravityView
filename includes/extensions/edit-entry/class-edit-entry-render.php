@@ -501,11 +501,17 @@ class GravityView_Edit_Entry_Render {
 
         ?>
 
-        <div class="gv-edit-entry-wrapper">
+        <div class="gv-edit-entry-wrapper"><?php
 
-            <?php include_once( GravityView_Edit_Entry::$file .'/partials/inline-javascript.php'); ?>
+	        /**
+	         * Fixes weird wpautop() issue
+	         * @see https://github.com/katzwebservices/GravityView/issues/451
+	         */
+            $javascript = gravityview_ob_include( GravityView_Edit_Entry::$file .'/partials/inline-javascript.php' );
 
-            <h2 class="gv-edit-entry-title">
+	        echo gravityview_strip_whitespace( $javascript );
+
+        ?><h2 class="gv-edit-entry-title">
                 <span><?php echo esc_attr( apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravityview'), $this ) ); ?></span>
             </h2>
 
