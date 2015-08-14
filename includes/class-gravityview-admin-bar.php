@@ -33,6 +33,8 @@ class GravityView_Admin_Bar {
 
 		$this->add_edit_entry_link();
 
+		$this->add_edit_view_link();
+
 	}
 
 	/**
@@ -56,7 +58,35 @@ class GravityView_Admin_Bar {
 			) );
 
 		}
+	}
 
+	/**
+	 * Add Edit View link when in embedded View
+	 *
+	 * @since 1.13
+	 * @return void
+	 */
+	function add_edit_view_link() {
+		/** @var WP_Admin_Bar $wp_admin_bar */
+		global $wp_admin_bar;
+
+		if( GFCommon::current_user_can_any('edit_post') ) {
+
+			$view_data = GravityView_View_Data::getInstance();
+
+			$views = $view_data->get_views();
+
+			// If there is a View embed, shor Edit View link.
+			// todo: Support multiple View embeds with a drop-down menu
+			if ( ! $this->gravityview_view->isGravityviewPostType() && ! empty( $views ) && ! $view_data->has_multiple_views() ) {
+				$view = reset( $views );
+				$wp_admin_bar->add_menu( array(
+					'id'    => 'edit-view',
+					'title' => __( 'Edit View', 'gravityview' ),
+					'href'  => esc_url_raw( admin_url( sprintf( 'post.php?post=%d&action=edit', $view['id'] ) ) ),
+				) );
+			}
+		}
 	}
 
 	/**
