@@ -428,47 +428,6 @@ class GravityView_View extends Gamajo_Template_Loader {
 	}
 
 	/**
-	 * Get an array with pagination information
-	 *
-	 * @since 1.13
-	 * 
-	 * @return array {
-	 *  @type int $first The starting entry number (counter, not ID)
-	 *  @type int $last The last displayed entry number (counter, not ID)
-	 *  @type int $total The total number of entries
-	 * }
-	 */
-	public function getPaginationCounts() {
-
-		$paging = $this->getPaging();
-		$offset = $paging['offset'];
-		$page_size = $paging['page_size'];
-		$total = $this->getTotalEntries();
-
-		if ( empty( $total ) ) {
-			do_action( 'gravityview_log_debug', __METHOD__ . ': No entries. Returning empty array.' );
-
-			return array();
-		}
-
-		$first = empty( $offset ) ? 1 : $offset + 1;
-
-		// If the page size + starting entry is larger than total, the total is the max.
-		$last = ( $offset + $page_size > $total ) ? $total : $offset + $page_size;
-
-		/**
-		 * Modify the displayed pagination numbers
-		 *
-		 * @param array $counts Array with $first, $last, $total
-		 *
-		 * @var array array with $first, $last, $total numbers in that order.
-		 */
-		list( $first, $last, $total ) = apply_filters( 'gravityview_pagination_counts', array( $first, $last, $total ) );
-
-		return array( 'first' => (int) $first, 'last' => (int) $last, 'total' => (int) $total );
-	}
-
-	/**
 	 * @return array
 	 */
 	public function getSorting() {
