@@ -943,10 +943,8 @@ class GravityView_Admin_Views {
 
 			$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
-			self::enqueue_react( $script_debug );
-
 			//enqueue scripts
-			wp_enqueue_script( 'gravityview_views_scripts', plugins_url( 'assets/js/admin-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie', 'jquery-ui-datepicker', 'underscore' ), GravityView_Plugin::version );
+			wp_enqueue_script( 'gravityview_views_scripts', plugins_url( 'assets/js/admin-views-react' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie', 'jquery-ui-datepicker', 'underscore' ), GravityView_Plugin::version );
 
 			wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
 				'cookiepath' => COOKIEPATH,
@@ -970,10 +968,6 @@ class GravityView_Admin_Views {
 
 
 		} // End single page
-	}
-
-	static function enqueue_react( $script_debug ) {
-		wp_enqueue_script( 'gv-react', plugins_url( 'assets/js/react/react' . $script_debug . '.js', GRAVITYVIEW_FILE ), null, GravityView_Plugin::version );
 	}
 
 	static function enqueue_gravity_forms_scripts() {

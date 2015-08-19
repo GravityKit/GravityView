@@ -40,22 +40,27 @@ module.exports = function(grunt) {
 			"assets/js/fe-views.js"
 		],
 
-		//
-		babel: {
+		env: {
+			build: {
+				NODE_ENV: 'production'
+			}
+		}, // todo: add this when building the final production version
+
+		'browserify': {
 			options: {
-				sourceMap: true
+				debug: false,
+				transform: ['babelify']
 			},
-			dist: {
-				files: {
-					"includes/admin/metaboxes/components/admin-view-config.js": "includes/admin/metaboxes/components/admin-view-config.jsx"
-				}
+			production: {
+				src: 'includes/admin/metaboxes/components/*.jsx',
+				dest: 'includes/admin/metaboxes/components/admin-view-config.js'
 			}
 		},
 
 		concat: {
 			dist: {
 				src: ['assets/js/admin-views.js', 'includes/admin/metaboxes/components/admin-view-config.js'],
-				dest: 'assets/js/admin-views.js'
+				dest: 'assets/js/admin-views-react.js'
 			}
 		},
 
