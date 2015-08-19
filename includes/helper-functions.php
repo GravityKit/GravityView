@@ -68,39 +68,6 @@ function gravityview_sanitize_html_class( $classes ) {
 }
 
 /**
- * Replace multiple newlines, tabs, and spaces with a single space
- *
- * @since 1.13
- *
- * @param string $string String to strip whitespace from
- *
- * @return string Stripped string!
- */
-function gravityview_strip_whitespace( $string ) {
-	$string = normalize_whitespace( $string );
-	return preg_replace('/[\r\n\t ]+/', ' ', $string );
-}
-
-/**
- * Get the contents of a file using `include()` and `ob_start()`
- *
- * @since 1.13
- *
- * @param string $file_path Full path to a file
- *
- * @return string Included file contents
- */
-function gravityview_ob_include( $file_path ) {
-	if( ! file_exists( $file_path ) ) {
-		do_action( 'gravityview_log_error', __FUNCTION__ . ': File path does not exist. ', $file_path );
-		return '';
-	}
-	ob_start();
-	include( $file_path );
-	return ob_get_clean();
-}
-
-/**
  * Get an image of our intrepid explorer friend
  * @since 1.12
  * @return string HTML image tag with floaty's cute mug on it

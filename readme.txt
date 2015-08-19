@@ -20,7 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= 1.13 =
+
+= 1.13 on August 18 =
+* Fixed: Wildcard search broken for Gravity Forms 1.9.12+
 * Added: Number field settings
 	- Format number: Display numbers with thousands separators
 	- Decimals: Precision of the number of decimal places. Leave blank to use existing precision.

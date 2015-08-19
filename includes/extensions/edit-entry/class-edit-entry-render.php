@@ -501,17 +501,11 @@ class GravityView_Edit_Entry_Render {
 
         ?>
 
-        <div class="gv-edit-entry-wrapper"><?php
+        <div class="gv-edit-entry-wrapper">
 
-	        /**
-	         * Fixes weird wpautop() issue
-	         * @see https://github.com/katzwebservices/GravityView/issues/451
-	         */
-            $javascript = gravityview_ob_include( GravityView_Edit_Entry::$file .'/partials/inline-javascript.php' );
+            <?php include_once( GravityView_Edit_Entry::$file .'/partials/inline-javascript.php'); ?>
 
-	        echo gravityview_strip_whitespace( $javascript );
-
-        ?><h2 class="gv-edit-entry-title">
+            <h2 class="gv-edit-entry-title">
                 <span><?php echo esc_attr( apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravityview'), $this ) ); ?></span>
             </h2>
 
@@ -1474,28 +1468,14 @@ class GravityView_Edit_Entry_Render {
 
         // Verify form submitted for editing single
         if( $this->is_edit_entry_submission() ) {
-            $valid = wp_verify_nonce( $_POST[ self::$nonce_field ], self::$nonce_field );
+            return wp_verify_nonce( $_POST[ self::$nonce_field ], self::$nonce_field );
         }
 
         // Verify
-        else if( ! $this->is_edit_entry() ) {
-            $valid = false;
-        }
+        if( ! $this->is_edit_entry() ) { return false; }
 
-        else {
-            $valid = wp_verify_nonce( $_GET['edit'], self::$nonce_key );
-        }
+        return wp_verify_nonce( $_GET['edit'], self::$nonce_key );
 
-        /**
-         * Override nonce validation
-         * @since 1.13
-         *
-         * @param int|boolean $valid False if invalid; 1 or 2 when nonce was generated
-         * @param string $nonce_field Key used when validating submissions. Default: is_gv_edit_entry
-         */
-        $valid = apply_filters( 'gravityview/edit_entry/verify_nonce', $valid, self::$nonce_field );
-
-        return $valid;
     }
 
 
