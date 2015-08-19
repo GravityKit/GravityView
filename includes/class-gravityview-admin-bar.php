@@ -76,7 +76,7 @@ class GravityView_Admin_Bar {
 		/** @var WP_Admin_Bar $wp_admin_bar */
 		global $wp_admin_bar;
 
-		if( GFCommon::current_user_can_any('edit_post') ) {
+		if( GFCommon::current_user_can_any('edit_pages') ) {
 
 			$view_data = GravityView_View_Data::getInstance();
 
