@@ -1474,14 +1474,28 @@ class GravityView_Edit_Entry_Render {
 
         // Verify form submitted for editing single
         if( $this->is_edit_entry_submission() ) {
-            return wp_verify_nonce( $_POST[ self::$nonce_field ], self::$nonce_field );
+            $valid = wp_verify_nonce( $_POST[ self::$nonce_field ], self::$nonce_field );
         }
 
         // Verify
-        if( ! $this->is_edit_entry() ) { return false; }
+        else if( ! $this->is_edit_entry() ) {
+            $valid = false;
+        }
 
-        return wp_verify_nonce( $_GET['edit'], self::$nonce_key );
+        else {
+            $valid = wp_verify_nonce( $_GET['edit'], self::$nonce_key );
+        }
 
+        /**
+         * Override nonce validation
+         * @since 1.13
+         *
+         * @param int|boolean $valid False if invalid; 1 or 2 when nonce was generated
+         * @param string $nonce_field Key used when validating submissions. Default: is_gv_edit_entry
+         */
+        $valid = apply_filters( 'gravityview/edit_entry/verify_nonce', $valid, self::$nonce_field );
+
+        return $valid;
     }
 
 
