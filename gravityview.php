@@ -172,6 +172,7 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-entry-list.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-merge-tags.php'); /** @since 1.8.4 */
 		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gvlogic-shortcode.php' );
 
 	}
