@@ -88,6 +88,13 @@ class GravityView_Shortcode {
 				break;
 		}
 
+		/**
+		 * Filter the detail output
+		 * @since 1.13
+		 * @param string $return
+		 */
+		$return = add_filter( 'gravityview/shortcode/detail/' . $detail, $return );
+
 		return $return;
 	}
 }
