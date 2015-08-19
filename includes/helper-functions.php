@@ -92,7 +92,7 @@ function gravityview_strip_whitespace( $string ) {
  */
 function gravityview_ob_include( $file_path ) {
 	if( ! file_exists( $file_path ) ) {
-		do_action( 'gravityview_log_error', __FUNCTION__ ': File path does not exist. ', $file_path );
+		do_action( 'gravityview_log_error', __FUNCTION__ . ': File path does not exist. ', $file_path );
 		return '';
 	}
 	ob_start();
