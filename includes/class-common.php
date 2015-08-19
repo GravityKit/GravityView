@@ -392,7 +392,7 @@ class GVCommon {
 				}
 
 				// By default, we want searches to be wildcard for each field.
-				$filter['operator'] = empty( $filter['operator'] ) ? 'like' : $filter['operator'];
+				$filter['operator'] = empty( $filter['operator'] ) ? 'contains' : $filter['operator'];
 				$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter );
 			}
 		}

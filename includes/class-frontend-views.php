@@ -88,9 +88,6 @@ class GravityView_frontend {
 		add_action( 'wp', array( $this, 'parse_content'), 11 );
 		add_action( 'template_redirect', array( $this, 'set_entry_data'), 1 );
 
-		// Shortcode to render view (directory)
-		add_shortcode( 'gravityview', array( $this, 'shortcode' ) );
-
 		// Enqueue scripts and styles after GravityView_Template::register_styles()
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 20 );
 
@@ -101,6 +98,8 @@ class GravityView_frontend {
 		add_filter( 'the_content', array( $this, 'insert_view_in_content' ) );
 		add_filter( 'comments_open', array( $this, 'comments_open' ), 10, 2 );
 
+		add_action( 'add_admin_bar_menus', array( $this, 'admin_bar_remove_links' ), 80 );
+		add_action( 'admin_bar_menu', array( $this, 'admin_bar_add_links' ), 85 );
 	}
 
 	/**
@@ -347,25 +346,38 @@ class GravityView_frontend {
 		return false;
 	}
 
-
 	/**
-	 * Callback function for add_shortcode()
+	 * Add helpful GV links to the menu bar, like Edit Entry on single entry page.
 	 *
-	 * @access public
-	 * @static
-	 * @param mixed $atts
-	 * @return null|string If admin, null. Otherwise, output of $this->render_view()
+	 * @return void
 	 */
-	public function shortcode( $atts, $content = null ) {
+	function admin_bar_add_links() {
+		global $wp_admin_bar;
 
-		// Don't process when saving post.
-		if ( is_admin() ) {
-			return;
+		if ( GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) && $this->getSingleEntry() ) {
+
+			$entry = $this->getEntry();
+
+			$wp_admin_bar->add_menu( array(
+				'id' => 'edit-entry',
+				'title' => __( 'Edit Entry', 'gravityview' ),
+				'href' => esc_url_raw( admin_url( sprintf( 'admin.php?page=gf_entries&amp;screen_mode=edit&amp;view=entry&amp;id=%d&lid=%d', $entry['form_id'], $entry['id'] ) ) ),
+			) );
+
 		}
 
-		do_action( 'gravityview_log_debug', '[shortcode] $atts: ', $atts );
+	}
 
-		return $this->render_view( $atts );
+	/**
+	 * Remove "Edit Page" or "Edit View" links when on single entry pages
+	 * @return void
+	 */
+	function admin_bar_remove_links() {
+
+		// If we're on the single entry page, we don't want to cause confusion.
+		if ( is_admin() || ( $this->getSingleEntry() && ! $this->isGravityviewPostType() ) ) {
+			remove_action( 'admin_bar_menu', 'wp_admin_bar_edit_menu', 80 );
+		}
 	}
 
 	/**
