@@ -27,7 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 	- Format number: Display numbers with thousands separators
 	- Decimals: Precision of the number of decimal places. Leave blank to use existing precision.
 * Added: `detail` parameter to the `[gravityview]` shortcode. [Learn more](http://docs.gravityview.co/article/73-using-the-shortcode#detail-parameter)
-* Added: Allow to override the entry saved value by the dynamic populated value on the Edit Entry view
+* Added: Allow to override the entry saved value by the dynamic populated value on the Edit Entry view using the `gravityview/edit_entry/pre_populate/override` filter
 * Added: "Edit View" link in the Toolbar when on an embedded View screen
 * Added: `gravityview/merge_tags/do_replace_variables` filter to enable/disable replace_variables behavior
 * Added: `gravityview/edit_entry/verify_nonce` filter to override nonce validation in Edit Entry
