@@ -597,16 +597,21 @@ class GVCommon {
 
 		if( 'context' === $val1 ) {
 
+			$matching_contexts = array( $val2 );
+
+			// We allow for non-standard contexts.
 			switch( $val2 ) {
+				// Check for either single or edit
+				case 'singular':
+					$matching_contexts = array( 'single', 'edit' );
+					break;
 				// Use multiple as alias for directory for consistency
-				/** @noinspection PhpMissingBreakStatementInspection */
 				case 'multiple':
-					$val2 = 'directory';
-					// break intentionally left out
-				default:
-					$val1 = ( $val2 === gravityview_get_context() ) ? $val2 : false;
+					$matching_contexts = array( 'directory' );
 					break;
 			}
+
+			$val1 = in_array( gravityview_get_context(), $matching_contexts ) ? $val2 : false;
 		}
 
 		switch ( $operation ) {
