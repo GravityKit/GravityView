@@ -659,7 +659,7 @@ class GravityView_frontend {
 		$gravityview_view->setTotalEntries( $view_entries['count'] );
 
 		// If Edit
-		if ( apply_filters( 'gravityview_is_edit_entry', false ) ) {
+		if ( 'edit' === gravityview_get_context() ) {
 
 			do_action( 'gravityview_log_debug', '[render_view] Edit Entry ' );
 
