@@ -484,7 +484,7 @@ class GVCommon {
 				return false;
 			}
 
-			if ( ! empty( $criteria['cache'] ) ) {
+			if ( ! empty( $criteria['cache'] ) && isset( $Cache ) ) {
 
 				// Cache results
 				$Cache->set( $entries, 'entries' );
@@ -615,19 +615,19 @@ class GVCommon {
 				break;
 			case 'greater_than_or_is':
 			case 'greater_than_or_equals':
-				$is = GFFormsModel::matches_operation( $val1, $val2, 'is' );
-				$gt = GFFormsModel::matches_operation( $val1, $val2, 'greater_than' );
+				$is    = GFFormsModel::matches_operation( $val1, $val2, 'is' );
+				$gt    = GFFormsModel::matches_operation( $val1, $val2, 'greater_than' );
 				$value = ( $is || $gt );
 				break;
 			case 'less_than_or_is':
 			case 'less_than_or_equals':
-				$is = GFFormsModel::matches_operation( $val1, $val2, 'is' );
-				$gt = GFFormsModel::matches_operation( $val1, $val2, 'less_than' );
+				$is    = GFFormsModel::matches_operation( $val1, $val2, 'is' );
+				$gt    = GFFormsModel::matches_operation( $val1, $val2, 'less_than' );
 				$value = ( $is || $gt );
 				break;
 			case 'not_contains':
 				$contains = GFFormsModel::matches_operation( $val1, $val2, 'contains' );
-				$value = ! $contains;
+				$value    = ! $contains;
 				break;
 			default:
 				$value = GFFormsModel::matches_operation( $val1, $val2, $operation );

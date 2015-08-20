@@ -83,6 +83,7 @@ class GravityView_Edit_Entry_Render {
 
     function load() {
 
+        /** @define "GRAVITYVIEW_DIR" "../../../" */
         include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 
         // Stop Gravity Forms processing what is ours!
