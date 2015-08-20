@@ -390,8 +390,13 @@ class GravityView_frontend {
 		}
 
 		if ( ! empty( $view_meta['atts']['single_title'] ) ) {
+
+			$title = $view_meta['atts']['single_title'];
+
 			// We are allowing HTML in the fields, so no escaping the output
-			$title = GravityView_API::replace_variables( $view_meta['atts']['single_title'], $view_meta['form'], $entry );
+			$title = GravityView_API::replace_variables( $title, $view_meta['form'], $entry );
+
+			$title = do_shortcode( $title );
 		}
 
 		return $title;
