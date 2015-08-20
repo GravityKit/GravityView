@@ -484,7 +484,7 @@ class GVCommon {
 				return false;
 			}
 
-			if ( ! empty( $criteria['cache'] ) ) {
+			if ( ! empty( $criteria['cache'] ) && isset( $Cache ) ) {
 
 				// Cache results
 				$Cache->set( $entries, 'entries' );
@@ -579,6 +579,8 @@ class GVCommon {
 	 * 'equals', 'greater_than_or_is', 'greater_than_or_equals', 'less_than_or_is', 'less_than_or_equals',
 	 * and 'not_contains'
 	 *
+	 * @since 1.13 You can define context, which displays/hides based on what's being displayed (single, multiple, edit)
+	 *
 	 * @link http://docs.gravityview.co/article/252-gvlogic-shortcode
 	 * @uses GFFormsModel::matches_operation
 	 * @since 1.7.5
@@ -590,25 +592,47 @@ class GVCommon {
 	 * @return bool True: matches, false: not matches
 	 */
 	public static function matches_operation( $val1, $val2, $operation ) {
+
+		$value = false;
+
+		if( 'context' === $val1 ) {
+
+			$matching_contexts = array( $val2 );
+
+			// We allow for non-standard contexts.
+			switch( $val2 ) {
+				// Check for either single or edit
+				case 'singular':
+					$matching_contexts = array( 'single', 'edit' );
+					break;
+				// Use multiple as alias for directory for consistency
+				case 'multiple':
+					$matching_contexts = array( 'directory' );
+					break;
+			}
+
+			$val1 = in_array( gravityview_get_context(), $matching_contexts ) ? $val2 : false;
+		}
+
 		switch ( $operation ) {
 			case 'equals':
 				$value = GFFormsModel::matches_operation( $val1, $val2, 'is' );
 				break;
 			case 'greater_than_or_is':
 			case 'greater_than_or_equals':
-				$is = GFFormsModel::matches_operation( $val1, $val2, 'is' );
-				$gt = GFFormsModel::matches_operation( $val1, $val2, 'greater_than' );
+				$is    = GFFormsModel::matches_operation( $val1, $val2, 'is' );
+				$gt    = GFFormsModel::matches_operation( $val1, $val2, 'greater_than' );
 				$value = ( $is || $gt );
 				break;
 			case 'less_than_or_is':
 			case 'less_than_or_equals':
-				$is = GFFormsModel::matches_operation( $val1, $val2, 'is' );
-				$gt = GFFormsModel::matches_operation( $val1, $val2, 'less_than' );
+				$is    = GFFormsModel::matches_operation( $val1, $val2, 'is' );
+				$gt    = GFFormsModel::matches_operation( $val1, $val2, 'less_than' );
 				$value = ( $is || $gt );
 				break;
 			case 'not_contains':
 				$contains = GFFormsModel::matches_operation( $val1, $val2, 'contains' );
-				$value = ! $contains;
+				$value    = ! $contains;
 				break;
 			default:
 				$value = GFFormsModel::matches_operation( $val1, $val2, $operation );
