@@ -20,6 +20,27 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+
+= 1.13 on August 18 =
+* Fixed: Wildcard search broken for Gravity Forms 1.9.12+
+* Added: Number field settings
+	- Format number: Display numbers with thousands separators
+	- Decimals: Precision of the number of decimal places. Leave blank to use existing precision.
+* Added: `detail` parameter to the `[gravityview]` shortcode. [Learn more](http://docs.gravityview.co/article/73-using-the-shortcode#detail-parameter)
+* Added: Allow to override the entry saved value by the dynamic populated value on the Edit Entry view using the `gravityview/edit_entry/pre_populate/override` filter
+* Added: "Edit View" link in the Toolbar when on an embedded View screen
+* Added: `gravityview_is_hierarchical` filter to enable defining a Parent View
+* Added: `gravityview/merge_tags/do_replace_variables` filter to enable/disable replace_variables behavior
+* Added: `gravityview/edit_entry/verify_nonce` filter to override nonce validation in Edit Entry
+* Added: `gravityview_strip_whitespace()` function to strip new lines, tabs, and multiple spaces and replace with single spaces
+* Added: `gravityview_ob_include()` function to get the contents of a file using combination of `include()` and `ob_start()`
+* Fixed: Edit Entry link not showing for non-admins when using the DataTables template
+* Fixed: Cache wasn't being used for `get_entries()`
+* Fixed: Extension class wasn't properly checking requirements
+* Fixed: Issue with some themes adding paragraphs to Javascript tags in the Edit Entry screen
+* Fixed: Duplicated information in the debugging logs
+* Updated: German and Portuguese translations
+
 = 1.12 on August 5 =
 * Fixed: Conflicts with Advanced Filter extension when using the Recent Entries widget
 * Fixed: Sorting icons were being added to List template fields when embedded on the same page as Table templates

@@ -24,15 +24,15 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: gravityview.php:332
+#: gravityview.php:334
 msgid "Top"
 msgstr ""
 
-#: gravityview.php:333
+#: gravityview.php:335
 msgid "Left"
 msgstr ""
 
-#: gravityview.php:333
+#: gravityview.php:335
 msgid "Right"
 msgstr ""
 
@@ -212,10 +212,10 @@ msgid "Multiple Entries"
 msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:6
-#: includes/class-frontend-views.php:366
+#: includes/class-gravityview-admin-bar.php:62
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:509
+#: includes/extensions/edit-entry/class-edit-entry-render.php:515
 #: includes/extensions/edit-entry/class-edit-entry-shortcode.php:186
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
@@ -669,19 +669,19 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:594
+#: includes/class-admin-welcome.php:395
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:619
+#: includes/class-admin-welcome.php:420
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:640
+#: includes/class-admin-welcome.php:441
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:641
+#: includes/class-admin-welcome.php:442
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1069,22 +1069,26 @@ msgstr ""
 msgid "The text of the link that returns to the multiple entries view."
 msgstr ""
 
-#: includes/class-debug-bar.php:91
+#: includes/class-debug-bar.php:93
 msgid "Warnings"
 msgstr ""
 
-#: includes/class-debug-bar.php:100
+#: includes/class-debug-bar.php:102
 msgid "Logs"
 msgstr ""
 
-#: includes/class-frontend-views.php:491
+#: includes/class-frontend-views.php:431
 msgid ""
 "When using a Start Fresh template, you must save the View before a Preview "
 "is available."
 msgstr ""
 
-#: includes/class-frontend-views.php:684
+#: includes/class-frontend-views.php:624
 msgid "You have attempted to view an entry that is not visible or may not exist."
+msgstr ""
+
+#: includes/class-gravityview-admin-bar.php:91 includes/class-post-types.php:46
+msgid "Edit View"
 msgstr ""
 
 #: includes/class-gravityview-admin-duplicate-view.php:221
@@ -1184,19 +1188,19 @@ msgid ""
 "upgrade your server's PHP."
 msgstr ""
 
-#: includes/class-gravityview-merge-tags.php:78
+#: includes/class-gravityview-merge-tags.php:91
 msgid "Entry Creator: Display Name"
 msgstr ""
 
-#: includes/class-gravityview-merge-tags.php:82
+#: includes/class-gravityview-merge-tags.php:95
 msgid "Entry Creator: Email"
 msgstr ""
 
-#: includes/class-gravityview-merge-tags.php:86
+#: includes/class-gravityview-merge-tags.php:99
 msgid "Entry Creator: Username"
 msgstr ""
 
-#: includes/class-gravityview-merge-tags.php:90
+#: includes/class-gravityview-merge-tags.php:103
 msgid "Entry Creator: User ID"
 msgstr ""
 
@@ -1308,10 +1312,6 @@ msgstr ""
 
 #: includes/class-post-types.php:45
 msgid "New View"
-msgstr ""
-
-#: includes/class-post-types.php:46
-msgid "Edit View"
 msgstr ""
 
 #: includes/class-post-types.php:47
@@ -1640,35 +1640,35 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:520
+#: includes/extensions/edit-entry/class-edit-entry-render.php:526
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:520
+#: includes/extensions/edit-entry/class-edit-entry-render.php:526
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:526
+#: includes/extensions/edit-entry/class-edit-entry-render.php:532
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:994
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1012
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1368
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1386
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1374
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1392
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1378
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1396
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1418
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1436
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -1825,6 +1825,24 @@ msgid ""
 "will display score."
 msgstr ""
 
+#: includes/fields/number.php:16
+msgid "Format number?"
+msgstr ""
+
+#: includes/fields/number.php:17
+msgid "Display numbers with thousands separators."
+msgstr ""
+
+#: includes/fields/number.php:23
+msgid "Decimals"
+msgstr ""
+
+#: includes/fields/number.php:24
+msgid ""
+"Precision of the number of decimal places. Leave blank to use existing "
+"precision."
+msgstr ""
+
 #: includes/fields/other-entries.php:29
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:352
 msgid "Entry link text (required)"
@@ -1973,7 +1991,7 @@ msgstr ""
 msgid "Show Pagination Info"
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-pagination-info.php:69
+#: includes/widgets/class-gravityview-widget-pagination-info.php:55
 msgid "Displaying %1$s - %2$s of %3$s"
 msgstr ""
 
@@ -2263,17 +2281,17 @@ msgctxt "No user assigned to the entry"
 msgid "No User"
 msgstr ""
 
-#: includes/class-debug-bar.php:169
+#: includes/class-debug-bar.php:174
 msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr ""
 
-#: includes/class-frontend-views.php:1165
+#: includes/class-frontend-views.php:1112
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1166
+#: includes/class-frontend-views.php:1113
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""
@@ -2314,7 +2332,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1394
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1412
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
