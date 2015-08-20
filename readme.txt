@@ -34,12 +34,12 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Added: `gravityview/edit_entry/verify_nonce` filter to override nonce validation in Edit Entry
 * Added: `gravityview_strip_whitespace()` function to strip new lines, tabs, and multiple spaces and replace with single spaces
 * Added: `gravityview_ob_include()` function to get the contents of a file using combination of `include()` and `ob_start()`
-* Updated: Single Entry Title settings now support shortcodes, allowing for you to use `[gvlogic]` in the title!
 * Fixed: Edit Entry link not showing for non-admins when using the DataTables template
 * Fixed: Cache wasn't being used for `get_entries()`
 * Fixed: Extension class wasn't properly checking requirements
 * Fixed: Issue with some themes adding paragraphs to Javascript tags in the Edit Entry screen
 * Fixed: Duplicated information in the debugging logs
+* Updated: "Single Entry Title" and "Back Link Label" settings now support shortcodes, allowing for you to use [`[gvlogic]`](http://docs.gravityview.co/article/252-gvlogic-shortcode)
 * Updated: German and Portuguese translations
 
 = 1.12 on August 5 =

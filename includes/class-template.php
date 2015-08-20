@@ -486,7 +486,12 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 * @return string
 	 */
 	public function getBackLinkLabel() {
-		return $this->back_link_label;
+
+		$back_link_label = GravityView_API::replace_variables( $this->back_link_label, $this->getForm(), $this->getCurrentEntry() );
+
+		$back_link_label = do_shortcode( $back_link_label );
+
+		return $back_link_label;
 	}
 
 	/**
