@@ -4,13 +4,14 @@
 # Basti <se-schwarz@gmx.de>, 2014
 # David Decker <deckerweb.mobil@gmail.com>, 2014
 # Toby Fiverr, 2015
+# Toby Fiverr, 2015
 # Zachary Katz <zack@katz.co>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-08-06 18:54+0000\n"
+"PO-Revision-Date: 2015-08-20 20:42+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/katzwebservices/gravityview/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -27,15 +28,15 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 
-#: gravityview.php:332
+#: gravityview.php:334
 msgid "Top"
 msgstr "Oben"
 
-#: gravityview.php:333
+#: gravityview.php:335
 msgid "Left"
 msgstr "Links"
 
-#: gravityview.php:333
+#: gravityview.php:335
 msgid "Right"
 msgstr "Rechts"
 
@@ -215,10 +216,10 @@ msgid "Multiple Entries"
 msgstr "Mehrere Einträge"
 
 #: includes/admin/metaboxes/views/view-configuration.php:6
-#: includes/class-frontend-views.php:366
+#: includes/class-gravityview-admin-bar.php:62
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:509
+#: includes/extensions/edit-entry/class-edit-entry-render.php:523
 #: includes/extensions/edit-entry/class-edit-entry-shortcode.php:186
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
@@ -254,11 +255,11 @@ msgstr "Diese Felder werden in Einzeleintragsansicht angezeigt."
 
 #: includes/admin/metaboxes/views/view-configuration.php:76
 msgid "Fields shown when editing an entry."
-msgstr ""
+msgstr "Felder die während der Bearbeitung eines Eintrages angezeigt werden."
 
 #: includes/admin/metaboxes/views/view-configuration.php:76
 msgid "If not configured, all form fields will be displayed."
-msgstr ""
+msgstr "Alle Formfelder werden angezeigt wenn dies nicht konfiguriert ist."
 
 #: includes/class-admin-add-shortcode.php:58
 msgid "Add a Gravity Forms View"
@@ -289,7 +290,7 @@ msgstr "&mdash; Eine Ansicht zum Einfügen auswählen &mdash;"
 
 #: includes/class-admin-add-shortcode.php:103
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:311
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:177
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:187
 msgid "(no title)"
 msgstr "(kein Titel)"
 
@@ -509,7 +510,7 @@ msgstr "URL der Quelle"
 
 #: includes/class-admin-views.php:554
 msgid "The URL of the page where the form was submitted."
-msgstr ""
+msgstr "Die URL der Seite, von der das Formular gesendet wurde."
 
 #: includes/class-admin-views.php:557
 msgid "User IP"
@@ -670,25 +671,25 @@ msgstr "Liste von Änderungen"
 
 #: includes/class-admin-welcome.php:258
 msgid "What&rsquo;s New"
-msgstr ""
+msgstr "Was gibt&rsquo;s Neues"
 
-#: includes/class-admin-welcome.php:594
+#: includes/class-admin-welcome.php:395
 msgid "GravityView is brought to you by:"
 msgstr "GravityView wird herausgegeben von:"
 
-#: includes/class-admin-welcome.php:619
+#: includes/class-admin-welcome.php:420
 msgid "Contributors"
 msgstr "Beitragende Entwickler"
 
-#: includes/class-admin-welcome.php:640
+#: includes/class-admin-welcome.php:441
 msgid "Want to contribute?"
 msgstr "Wollen Sie mitwirken?"
 
-#: includes/class-admin-welcome.php:641
+#: includes/class-admin-welcome.php:442
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
-msgstr ""
+msgstr "Wenn Sie zum Code beitragen möchten, dann %skönnen Sie dies auf Github tun%s. Sollten Ihre Beiträge akzeptiert werden, dann wird Ihnen hier gedankt werden."
 
 #: includes/class-admin.php:86
 msgid "Support"
@@ -787,30 +788,30 @@ msgstr "Keine übereinstimmenden Einträge."
 msgid "&larr; Go back"
 msgstr "&larr; zurück"
 
-#: includes/class-api.php:1146
+#: includes/class-api.php:1157
 msgid "Map It"
-msgstr ""
+msgstr "Auf Karte anzeigen"
 
 #: includes/class-change-entry-creator.php:62
 #: includes/lib/EDD_SL_Plugin_Updater.php:327
 msgid "Error"
-msgstr ""
+msgstr "Fehler"
 
 #: includes/class-change-entry-creator.php:64
 msgid "Success"
-msgstr ""
+msgstr "Erfolgreich"
 
 #: includes/class-change-entry-creator.php:185
 msgid "Changed entry creator from %s to %s"
-msgstr ""
+msgstr "Ersteller des Eintrags von %s nach %s geändert"
 
 #: includes/class-change-entry-creator.php:205
 msgid "Change Entry Creator:"
-msgstr ""
+msgstr "Eintragsersteller ändern:"
 
 #: includes/class-common.php:251
 msgid "Post ID"
-msgstr ""
+msgstr "Beitrag ID"
 
 #: includes/class-common.php:259
 msgid "Payment Status"
@@ -843,82 +844,82 @@ msgstr "Transaktionsart"
 
 #: includes/class-common.php:301
 msgid "Quiz Score Total"
-msgstr ""
+msgstr "Quizergebnis"
 
 #: includes/class-common.php:303
 msgid "Displays the number of correct Quiz answers the user submitted."
-msgstr ""
+msgstr "Zeigt die Anzahl der richtigen Quiz Antworten die vom Nutzer gesendet wurden."
 
 #: includes/class-common.php:306
 msgid "Quiz Percentage Grade"
-msgstr ""
+msgstr "Quiz Prozentgrad"
 
 #: includes/class-common.php:308
 msgid "Displays the percentage of correct Quiz answers the user submitted."
-msgstr ""
+msgstr "Zeigt die Prozentzahl der richtigen Quiz Antworten die vom Nutzer gesendet wurden."
 
 #: includes/class-common.php:311
 msgid "Quiz Letter Grade"
-msgstr ""
+msgstr "Quiz Note"
 
 #: includes/class-common.php:313
 msgid ""
 "Displays the Grade the user achieved based on Letter Grading configured in "
 "the Quiz Settings."
-msgstr ""
+msgstr "Zeigt die Note, die der Nutzer erreicht hat, basierend auf die in den Quiz Einstellungen festgelegte Buchstaben-Einstufung."
 
 #: includes/class-common.php:316
 msgid "Quiz Pass/Fail"
-msgstr ""
+msgstr "Quiz Bestehen / Scheitern"
 
 #: includes/class-common.php:318
 msgid ""
 "Displays either Passed or Failed based on the Pass/Fail settings configured "
 "in the Quiz Settings."
-msgstr ""
+msgstr "Zeigt, basierend auf die Bestehen / Scheitern Einstellungen des Quiz, entweder Bestanden, oder Gescheitert an."
 
-#: includes/class-common.php:923 includes/class-data.php:566
+#: includes/class-common.php:947 includes/class-data.php:566
 msgid "Default"
 msgstr "Standard"
 
-#: includes/class-common.php:966 includes/class-data.php:567
+#: includes/class-common.php:990 includes/class-data.php:567
 msgid "Date Created"
 msgstr "Erstellungsdatum"
 
-#: includes/class-common.php:1059
+#: includes/class-common.php:1083
 msgid "Email hidden; Javascript is required."
 msgstr "E-Mail-Adresse verborgen; JavaScript ist erforderlich."
 
 #: includes/class-data.php:408
 msgid "The ID is required."
-msgstr ""
+msgstr "Die ID ist erfordert."
 
 #: includes/class-data.php:416
 msgid ""
 "You did not enter a number. The value entered should be a number, "
 "representing the ID of the post or page the View is embedded on."
-msgstr ""
+msgstr "Sie haben keine Zahl eingeben. Der eingegebene Wert sollte eine Zahl sein, die der ID des Beitrages, oder Seite auf der die Ansicht eingebunden ist entspricht."
 
 #: includes/class-data.php:419
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:339
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:205
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:215
 msgid "Learn more&hellip;"
-msgstr ""
+msgstr "Erfahren Sie mehr&hellip;"
 
 #: includes/class-data.php:427
 msgid "There is no post or page with that ID."
-msgstr ""
+msgstr "Es besteht kein Beitrag, oder eine Seite mit dieser ID."
 
 #: includes/class-data.php:437
 msgid ""
 "The Post ID entered is not valid. You may have entered a post or page that "
 "does not contain the selected View. Make sure the post contains the "
 "following shortcode: %s"
-msgstr ""
+msgstr "Die Beitrags-ID ist ungültig. Sie haben unter Umständen einen Beitrag, oder eine Seite eingegeben, die die ausgewählte Ansicht nicht enthält. Stellen Sie sicher, dass der Beitrag den folgenden Kurz Code enthält: %s"
 
 #: includes/class-data.php:445
 msgid "The ID is already a View."
-msgstr ""
+msgstr "Die ID ist bereits eine Ansicht."
 
 #: includes/class-data.php:497
 msgid "View ID"
@@ -938,12 +939,12 @@ msgstr "Nur genehmigte Einträge anzeigen"
 
 #: includes/class-data.php:528
 msgid "Hide View data until search is performed"
-msgstr ""
+msgstr "Ansicht Daten verbergen, bis eine Suche durchgeführt wird"
 
 #: includes/class-data.php:531
 msgid ""
 "When enabled it will only show any View entries after a search is performed."
-msgstr ""
+msgstr "Wenn aktiviert werden nur Ansicht Einträge bei einer durchgeführten Suche angezeigt."
 
 #: includes/class-data.php:536
 msgid "Hide empty fields"
@@ -961,22 +962,22 @@ msgstr "Es angemeldeten Benutzern erlauben, von ihnen erstellte Einträge zu bea
 msgid ""
 "Display \"Edit Entry\" fields to non-administrator users if they created the"
 " entry. Edit Entry fields will always be displayed to site administrators."
-msgstr ""
+msgstr "„Eintrag bearbeiten“ Felder für Nicht-Administrator anzeigen wenn diese den Eintrag erstellt haben. Eintrag bearbeiten Fehler werden immer für Administratoren angezeigt."
 
 #: includes/class-data.php:552
 msgid "Allow User Delete"
-msgstr ""
+msgstr "Dem Nutzer Löschen erlauben"
 
 #: includes/class-data.php:554
 msgid "Allow logged-in users to delete entries they created."
-msgstr ""
+msgstr "Angemeldeten Benutzern erlauben Beiträge, die sie erstellt haben, zu löschen."
 
 #: includes/class-data.php:556
 msgid ""
 "Display \"Delete Entry\" fields to non-administrator users if they created "
 "the entry. Delete Entry fields will always be displayed to site "
 "administrators."
-msgstr ""
+msgstr "„Eintrag löschen“ Felder für Nicht-Administrator anzeigen wenn diese den Eintrag erstellt haben. Eintrag bearbeiten Fehler werden immer für Administratoren angezeigt."
 
 #: includes/class-data.php:561
 msgid "Sort by field"
@@ -996,11 +997,11 @@ msgstr "absteigend"
 
 #: includes/class-data.php:584
 msgid "Enable sorting by column"
-msgstr ""
+msgstr "Sortierung nach Spalte aktivieren"
 
 #: includes/class-data.php:585
 msgid "Column Sorting"
-msgstr ""
+msgstr "Sortierung nach Spalte"
 
 #: includes/class-data.php:594
 msgid "Filter by Start Date"
@@ -1068,56 +1069,61 @@ msgstr "Beschriftung Zurück-Link"
 msgid "The text of the link that returns to the multiple entries view."
 msgstr "Der Linktext für die Rückkehr zur Mehreintragsansicht."
 
-#: includes/class-debug-bar.php:91
+#: includes/class-debug-bar.php:93
 msgid "Warnings"
 msgstr "Warnungen"
 
-#: includes/class-debug-bar.php:100
+#: includes/class-debug-bar.php:102
 msgid "Logs"
 msgstr "Protokolle"
 
-#: includes/class-frontend-views.php:491
+#: includes/class-frontend-views.php:436
 msgid ""
 "When using a Start Fresh template, you must save the View before a Preview "
 "is available."
-msgstr ""
+msgstr "Bei Nutzung einer Neustart Vorlage muss die Ansicht gespeichert werden, bevor die Vorschau verfügbar ist."
 
-#: includes/class-frontend-views.php:684
+#: includes/class-frontend-views.php:629
 msgid ""
 "You have attempted to view an entry that is not visible or may not exist."
-msgstr ""
+msgstr "Sie haben versucht einen Eintrag anzuzeigen der nicht sichtbar ist, oder nicht existiert."
+
+#: includes/class-gravityview-admin-bar.php:91
+#: includes/class-post-types.php:61
+msgid "Edit View"
+msgstr "View bearbeiten"
 
 #: includes/class-gravityview-admin-duplicate-view.php:221
 msgid "Clone"
-msgstr ""
+msgstr "Klonen"
 
 #: includes/class-gravityview-admin-duplicate-view.php:222
 msgid "Clone this View"
-msgstr ""
+msgstr "Diese Ansicht klonen"
 
 #: includes/class-gravityview-admin-duplicate-view.php:227
 msgid "New Draft"
-msgstr ""
+msgstr "Neuer Entwurf"
 
 #: includes/class-gravityview-admin-duplicate-view.php:227
 msgid "Clone View"
-msgstr ""
+msgstr "Ansicht klonen"
 
 #: includes/class-gravityview-admin-duplicate-view.php:228
 msgid "Copy as a new draft View"
-msgstr ""
+msgstr "Als neuen Ansicht Entwurf kopieren"
 
 #: includes/class-gravityview-admin-duplicate-view.php:296
 msgid "No post to duplicate has been supplied!"
-msgstr ""
+msgstr "Kein Beitrag zur Duplikation gewählt"
 
 #: includes/class-gravityview-admin-duplicate-view.php:319
 msgid "Copy creation failed, could not find original View with ID #%d"
-msgstr ""
+msgstr "Erstellung der Kopie fehlgeschlagen, originale Ansicht mit ID #%d konnte nicht gefunden werden"
 
 #: includes/class-gravityview-admin-notices.php:170
 msgid "Dismiss"
-msgstr ""
+msgstr "Verwerfen"
 
 #: includes/class-gravityview-compatibility.php:161
 msgid ""
@@ -1130,21 +1136,21 @@ msgid ""
 "%sGravityView requires PHP Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please ask your host to upgrade your server's PHP."
-msgstr ""
+msgstr "%sGravityView erfordert PHP Version %s oder neuer.%s\n\nSie verwenden Version %s. Bitten Sie Ihren Host um die PHP Version zu aktualisieren."
 
 #: includes/class-gravityview-compatibility.php:204
 msgid ""
 "%sGravityView requires WordPress %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please upgrade your WordPress installation."
-msgstr ""
+msgstr "%sGravityView erfordert WordPress %s oder neuer.%s\n\nSie verwenden Version %s. Bitte aktualisieren Sie Ihre WordPress Installation."
 
 #: includes/class-gravityview-compatibility.php:235
 msgid ""
 "%sGravityView requires Gravity Forms Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
-msgstr ""
+msgstr "%sGravityView erfordert Gravity Forms Version %s oder neuer.%s\n\nSie verwenden Version %s. Bitte aktualisieren Sie Gravity Forms oder kaufen eine Lizenz. %sGravity Forms erhalten%s – ab $39%s%s"
 
 #: includes/class-gravityview-compatibility.php:272
 msgid ""
@@ -1160,14 +1166,14 @@ msgstr "%sGravityView erfordert es, dass das Plugin Gravity Forms installiert is
 
 #: includes/class-gravityview-compatibility.php:292
 msgid "Potential Conflict"
-msgstr ""
+msgstr "Potentieller Konflikt"
 
 #: includes/class-gravityview-compatibility.php:293
 msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
 "plugin."
-msgstr ""
+msgstr "Sowohl GravityView und Gravity Forms Verzeichnis ist aktiv. Dies kann zu Problemen fuehren. Sollten Probleme auftreten deaktivieren Sie das Gravity Forms Verzeichnis Plug-In."
 
 #: includes/class-gravityview-extension.php:343
 msgid "Could not activate the %s Extension; GravityView is not active."
@@ -1181,159 +1187,155 @@ msgstr "Die %s Erweiterung benötigt GravityView Version %s oder höher."
 msgid ""
 "The %s Extension requires PHP Version %s or newer. Please ask your host to "
 "upgrade your server's PHP."
-msgstr ""
+msgstr "Die %s Erweiterung erfordert PHP Version %s oder neuer. Bitten Sie Ihren Host um die PHP Version des Servers zu aktualisieren."
 
-#: includes/class-gravityview-merge-tags.php:78
+#: includes/class-gravityview-merge-tags.php:91
 msgid "Entry Creator: Display Name"
-msgstr ""
+msgstr "Eintrag Ersteller: Anzeigename"
 
-#: includes/class-gravityview-merge-tags.php:82
+#: includes/class-gravityview-merge-tags.php:95
 msgid "Entry Creator: Email"
-msgstr ""
+msgstr "Eintrag Ersteller: E-Mail"
 
-#: includes/class-gravityview-merge-tags.php:86
+#: includes/class-gravityview-merge-tags.php:99
 msgid "Entry Creator: Username"
-msgstr ""
+msgstr "Eintrag Ersteller: Benutzername"
 
-#: includes/class-gravityview-merge-tags.php:90
+#: includes/class-gravityview-merge-tags.php:103
 msgid "Entry Creator: User ID"
-msgstr ""
+msgstr "Eintrag Ersteller: Benutzerkennung"
 
 #: includes/class-gv-license-handler.php:71
 #: includes/class-gv-license-handler.php:341
 msgid "Activate License"
-msgstr ""
+msgstr "Lizenz aktivieren"
 
 #: includes/class-gv-license-handler.php:72
 #: includes/class-gv-license-handler.php:86
 #: includes/class-gv-license-handler.php:340 includes/class-settings.php:532
 msgid "Verifying license&hellip;"
-msgstr ""
+msgstr "Überprüfe Lizenz&hellip;"
 
 #: includes/class-gv-license-handler.php:78
 #: includes/class-gv-license-handler.php:342
 msgid "Deactivate License"
-msgstr ""
+msgstr "Lizenz deaktivieren"
 
 #: includes/class-gv-license-handler.php:79
 msgid "Deactivating license&hellip;"
-msgstr ""
+msgstr "Deaktiviere Lizenz&hellip;"
 
 #: includes/class-gv-license-handler.php:85
 msgid "Check License"
-msgstr ""
+msgstr "Lizenz prüfen"
 
 #: includes/class-gv-license-handler.php:328
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: includes/class-gv-license-handler.php:329
 msgid "There was an error processing the request."
-msgstr ""
+msgstr "Es ist ein Fehler bei der Verarbeitung aufgetreten."
 
 #: includes/class-gv-license-handler.php:330
 msgid ""
 "Could not deactivate the license. The license key you attempted to "
 "deactivate may not be active or valid."
-msgstr ""
+msgstr " \nLizenz konnte nicht deaktiviert werden. Die zu deaktivierende Lizenz ist unter Umständen nicht aktiviert oder ungültig."
 
 #: includes/class-gv-license-handler.php:331
 msgid "The license key is valid, but it has not been activated for this site."
-msgstr ""
+msgstr "Der Lizenz Schlüssel ist gültig, ist jedoch für diese Seite noch nicht aktiviert."
 
 #: includes/class-gv-license-handler.php:332
 msgid "Invalid: this license has reached its activation limit."
-msgstr ""
+msgstr "Ungültig: Der Lizenz Schlüssel hat das Aktivierungslimit erreicht."
 
 #: includes/class-gv-license-handler.php:333
 msgid "The license has been deactivated."
-msgstr ""
+msgstr "Die Lizenz wurde deaktiviert."
 
 #: includes/class-gv-license-handler.php:334
 msgid "The license key is valid and active."
-msgstr ""
+msgstr "Der Lizenz Schlüssel ist gültig und aktiviert."
 
 #: includes/class-gv-license-handler.php:335
 msgid "The license key entered is invalid."
-msgstr ""
+msgstr "Der eingegeben Lizenz Schlüssel ist ungültig."
 
 #: includes/class-gv-license-handler.php:336
 msgid "The license key was not defined."
-msgstr ""
+msgstr "Der Lizenz Schlüssel wurde nicht definiert."
 
 #: includes/class-gv-license-handler.php:337
 msgid "This license key has been revoked."
-msgstr ""
+msgstr "Der Lizenz Schlüssel wurde widerrufen."
 
 #: includes/class-gv-license-handler.php:338
 msgid ""
 "This license key has expired. %sRenew your license on the GravityView "
 "website%s"
-msgstr ""
+msgstr "Der Lizenz Schlüssel ist abgelaufen. %sErneuern Sie die Lizenz auf der GravityView Internetseite%s"
 
 #: includes/class-gv-license-handler.php:343
 msgid "Verify License"
-msgstr ""
+msgstr "Lizenz überprüfen"
 
 #: includes/class-oembed.php:198
 msgid "This will look better when it is embedded."
-msgstr ""
+msgstr "Dies wird besser aussehen nachdem es eingebunden wurde."
 
 #: includes/class-oembed.php:199
 msgid ""
 "Styles don't get loaded when being previewed, so the content below will look"
 " strange. Don't be concerned!"
-msgstr ""
+msgstr "Stile werden in der Voransicht nicht geladen, der Inhalt wird aus diesem Grund etwas komisch aussehen. Keine Sorge!"
 
 #: includes/class-oembed.php:249
 msgid "Embed Entry %d"
-msgstr ""
+msgstr "Eintrag %d einbinden"
 
 #: includes/class-oembed.php:251
 msgid "This entry will be displayed as it is configured in View %d"
-msgstr ""
+msgstr "Dieser Eintrag wird anhand der Konfiguration in Ansicht %d angezeigt"
 
-#: includes/class-post-types.php:41
+#: includes/class-post-types.php:56
 msgid "Parent View:"
 msgstr "Haupt-View"
 
-#: includes/class-post-types.php:42
+#: includes/class-post-types.php:57
 msgid "All Views"
 msgstr "Alle Views"
 
-#: includes/class-post-types.php:44
+#: includes/class-post-types.php:59
 msgid "Add New View"
 msgstr "Neuen View hinzufügen"
 
-#: includes/class-post-types.php:45
+#: includes/class-post-types.php:60
 msgid "New View"
 msgstr "Neuer View"
 
-#: includes/class-post-types.php:46
-msgid "Edit View"
-msgstr "View bearbeiten"
-
-#: includes/class-post-types.php:47
+#: includes/class-post-types.php:62
 msgid "Update View"
 msgstr "View aktualisieren"
 
-#: includes/class-post-types.php:48
+#: includes/class-post-types.php:63
 msgid "Search Views"
 msgstr "View suchen"
 
-#: includes/class-post-types.php:50
+#: includes/class-post-types.php:65
 msgid "No Views found in Trash"
 msgstr "Keinen View im Papierkorb gefunden"
 
-#: includes/class-post-types.php:53
+#: includes/class-post-types.php:68
 msgid "view"
 msgstr "View"
 
-#: includes/class-post-types.php:54
+#: includes/class-post-types.php:69
 msgid "Create views based on a Gravity Forms form"
 msgstr "Einen View auf Basis eines Gravity Forms Formular erstellen"
 
-#: includes/class-post-types.php:125
+#: includes/class-post-types.php:140
 msgid ""
 "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n"
 "\n"
@@ -1348,41 +1350,41 @@ msgstr "GravityView Einstellungen"
 msgid ""
 "Your GravityView license %s. This means you&rsquo;re missing out on updates "
 "and support! %sActivate your license%s or %sget a license here%s."
-msgstr ""
+msgstr "Ihre GravityView Lizenz %s. Dies bedeutet, dass Sie wichtige Updates und Support verpassen! %sAktivieren Sie Ihre Lizenz%s oder %serhalten Sie hier eine Lizenz%s."
 
 #: includes/class-settings.php:180
 msgid "Inactive License"
-msgstr ""
+msgstr "Inaktive Lizenz"
 
 #: includes/class-settings.php:184
 msgid "Invalid License"
-msgstr ""
+msgstr "Ungültige Lizenz"
 
 #: includes/class-settings.php:185
 msgid "is invalid"
-msgstr ""
+msgstr "ist ungültig"
 
 #: includes/class-settings.php:188
 msgid "is inactive"
-msgstr ""
+msgstr "ist inaktiv"
 
 #: includes/class-settings.php:191
 msgid "has not been activated"
-msgstr ""
+msgstr "wurde noch nicht aktiviert"
 
 #: includes/class-settings.php:395 includes/class-settings.php:428
 msgid "Update Settings"
-msgstr ""
+msgstr "Aktualisierung Einstellungen"
 
 #: includes/class-settings.php:499
 msgid ""
 "The license key you entered has been saved, but not activated. Please "
 "activate the license."
-msgstr ""
+msgstr "Der eingegebene Lizenz Schlüssel wurde gespeichert, jedoch nicht aktiviert. Bitte aktivieren Sie die Lizenz."
 
 #: includes/class-settings.php:514
 msgid "Required"
-msgstr ""
+msgstr "Erfordert"
 
 #: includes/class-settings.php:529
 msgid "License Key"
@@ -1417,7 +1419,7 @@ msgstr "Einschalten, um Darstellungsprobleme im Theme und Funktionseinstellungen
 
 #: includes/class-settings.php:590
 msgid "You are running GravityView version %s"
-msgstr ""
+msgstr "Sie verwenden GravityView Version %s"
 
 #: includes/default-templates.php:30
 msgid "Table (default)"
@@ -1441,11 +1443,11 @@ msgstr "Jedes Feld wird als eine Spalte in der Tabelle dargestellt."
 
 #: includes/default-templates.php:81
 msgid "Edit Table"
-msgstr ""
+msgstr "Tabelle ändern"
 
 #: includes/default-templates.php:100
 msgid "Visible Edit Fields"
-msgstr ""
+msgstr "Sichtbare Änderungsfelder"
 
 #: includes/default-templates.php:126
 msgid "List (default)"
@@ -1565,31 +1567,31 @@ msgstr "Webseiten mittels Screenshots vorstellen."
 #: includes/extensions/delete-entry/class-delete-entry.php:167
 #: includes/extensions/delete-entry/fields/delete_link.php:14
 msgid "Delete Entry"
-msgstr ""
+msgstr "Eintrag löschen"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:120
 msgid "Delete Link Text"
-msgstr ""
+msgstr "Linktext löschen"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:128
 msgid "Allow the following users to delete the entry:"
-msgstr ""
+msgstr "Den folgenden Nutzern das Löschen des Eintrags erlauben:"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:153
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
-msgstr ""
+msgstr "Ein Link um den Eintrag zu löschen. Respektiert die Eintrag Löschen Berechtigungen."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:296
 msgid "Delete"
-msgstr ""
+msgstr "Löschen"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:373
 msgid "The entry does not exist."
-msgstr ""
+msgstr "Der Eintrag existiert nicht."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:417
 msgid "Are you sure you want to delete this entry? This cannot be undone."
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie diesen Beitrag löschen möchten? Dies kann nicht rückgängig gemacht werden."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:444
 msgid "The link to delete this entry is not valid; it may have expired."
@@ -1638,35 +1640,35 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:520
+#: includes/extensions/edit-entry/class-edit-entry-render.php:534
 msgid "There was a problem with your submission."
 msgstr "Mit Ihrem Eintrag gab es ein Problem."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:520
+#: includes/extensions/edit-entry/class-edit-entry-render.php:534
 msgid "Errors have been highlighted below."
 msgstr "Fehleder wurden unten hervorgehoben."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:526
+#: includes/extensions/edit-entry/class-edit-entry-render.php:540
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "Eintrag aktualisiert. %sZurück zum Eintrag%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:994
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1025
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1368
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1402
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "Der Link zum Bearbeiten des Eintrags ist ungültig; er könnte abgelaufen sein."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1374
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1408
 msgid "You do not have permission to edit this entry."
 msgstr "Sie haben keine Berechtigung, um diesen Eintrag bearbeiten zu können."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1378
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1412
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "Sie können diesen Eintrag nicht bearbeiten, da er sich im Papierkorb befindet."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1418
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1452
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -1824,6 +1826,24 @@ msgid ""
 " display score."
 msgstr ""
 
+#: includes/fields/number.php:16
+msgid "Format number?"
+msgstr ""
+
+#: includes/fields/number.php:17
+msgid "Display numbers with thousands separators."
+msgstr ""
+
+#: includes/fields/number.php:23
+msgid "Decimals"
+msgstr ""
+
+#: includes/fields/number.php:24
+msgid ""
+"Precision of the number of decimal places. Leave blank to use existing "
+"precision."
+msgstr ""
+
 #: includes/fields/other-entries.php:29
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:352
 msgid "Entry link text (required)"
@@ -1972,7 +1992,7 @@ msgstr ""
 msgid "Show Pagination Info"
 msgstr "Zeige Seitennummerierung"
 
-#: includes/widgets/class-gravityview-widget-pagination-info.php:69
+#: includes/widgets/class-gravityview-widget-pagination-info.php:55
 msgid "Displaying %1$s - %2$s of %3$s"
 msgstr "Einträge %1$s - %2$s von insgesamt %3$s"
 
@@ -2162,12 +2182,12 @@ msgid "Recent Entries"
 msgstr ""
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:268
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:154
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:164
 msgid "Title:"
 msgstr ""
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:297
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:164
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:174
 msgid "Please select a View to search."
 msgstr ""
 
@@ -2176,12 +2196,12 @@ msgid "&mdash; Select a View as Entries Source &mdash;"
 msgstr ""
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:335
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:201
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:211
 msgid "If Embedded, Page ID:"
 msgstr ""
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:338
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:204
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:214
 msgid ""
 "To have a search performed on an embedded View, enter the ID of the post or "
 "page where the View is embedded."
@@ -2199,25 +2219,25 @@ msgstr ""
 msgid "GravityView Search"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:122
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:132
 msgid ""
 "This widget is not configurable from this screen. Please configure it on the"
 " %sWidgets page%s."
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:172
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:182
 msgid "View:"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:174
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:184
 msgid "&mdash; Select a View &mdash;"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:213
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:223
 msgid "Searchable fields:"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:214
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:224
 msgid "Search Fields"
 msgstr ""
 
@@ -2265,37 +2285,37 @@ msgctxt "No user assigned to the entry"
 msgid "No User"
 msgstr ""
 
-#: includes/class-debug-bar.php:169
+#: includes/class-debug-bar.php:174
 msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Leer"
 
-#: includes/class-frontend-views.php:1165
+#: includes/class-frontend-views.php:1117
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1166
+#: includes/class-frontend-views.php:1118
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""
 
-#: includes/class-post-types.php:38
+#: includes/class-post-types.php:53
 msgctxt "Post Type General Name"
 msgid "Views"
 msgstr "Views"
 
-#: includes/class-post-types.php:39
+#: includes/class-post-types.php:54
 msgctxt "Post Type Singular Name"
 msgid "View"
 msgstr "View"
 
-#: includes/class-post-types.php:40
+#: includes/class-post-types.php:55
 msgctxt "Menu name"
 msgid "Views"
 msgstr "Ansichten"
 
-#: includes/class-post-types.php:43
+#: includes/class-post-types.php:58
 msgctxt "View Item"
 msgid "View"
 msgstr "Ansicht"
@@ -2316,7 +2336,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1394
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1428
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""

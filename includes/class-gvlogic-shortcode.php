@@ -262,6 +262,7 @@ class GVLogic_Shortcode {
 	 * Check for `[else]` tag inside the shortcode content. If exists, set the else_content variable.
 	 * If not, use the `else` attribute passed by the shortcode, if exists.
 	 *
+	 * @todo allow for chains of [else if="{another field:123}" is="example"] - requires registering [else] shortcode...
 	 * @return void
 	 */
 	function set_content_and_else_content() {

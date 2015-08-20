@@ -282,7 +282,7 @@ class GravityView_API {
 
 		if( $field_exists ) {
 
-			do_action( 'gravityview_log_debug', sprintf('[field_value] Rendering %s Field', $field_type ), $field_exists );
+			do_action( 'gravityview_log_debug', sprintf('[field_value] Rendering %s', $field_exists ) );
 
 			ob_start();
 
@@ -1088,10 +1088,21 @@ function gravityview_get_view_id() {
 
 /**
  * @global GravityView_View $gravityview_view
- * @return string View context "directory" or "single"
+ * @return string View context "directory", "single", or "edit"
  */
 function gravityview_get_context() {
-	return GravityView_View::getInstance()->getContext();
+
+	$context = '';
+
+	if( $edit = apply_filters( 'gravityview_is_edit_entry', false ) ) {
+		$context = 'edit';
+	} else if( class_exists( 'GravityView_frontend' ) && $single = GravityView_frontend::is_single_entry() ) {
+		$context = 'single';
+	} else if( class_exists( 'GravityView_View' ) ) {
+		$context = GravityView_View::getInstance()->getContext();
+	}
+
+	return $context;
 }
 
 

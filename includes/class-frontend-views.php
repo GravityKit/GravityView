@@ -88,9 +88,6 @@ class GravityView_frontend {
 		add_action( 'wp', array( $this, 'parse_content'), 11 );
 		add_action( 'template_redirect', array( $this, 'set_entry_data'), 1 );
 
-		// Shortcode to render view (directory)
-		add_shortcode( 'gravityview', array( $this, 'shortcode' ) );
-
 		// Enqueue scripts and styles after GravityView_Template::register_styles()
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 20 );
 
@@ -100,9 +97,6 @@ class GravityView_frontend {
 		add_filter( 'the_title', array( $this, 'single_entry_title' ), 1, 2 );
 		add_filter( 'the_content', array( $this, 'insert_view_in_content' ) );
 		add_filter( 'comments_open', array( $this, 'comments_open' ), 10, 2 );
-
-		add_action( 'add_admin_bar_menus', array( $this, 'admin_bar_remove_links' ), 80 );
-		add_action( 'admin_bar_menu', array( $this, 'admin_bar_add_links' ), 85 );
 	}
 
 	/**
@@ -350,60 +344,6 @@ class GravityView_frontend {
 	}
 
 	/**
-	 * Add helpful GV links to the menu bar, like Edit Entry on single entry page.
-	 *
-	 * @return void
-	 */
-	function admin_bar_add_links() {
-		global $wp_admin_bar;
-
-		if ( GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) && $this->getSingleEntry() ) {
-
-			$entry = $this->getEntry();
-
-			$wp_admin_bar->add_menu( array(
-				'id' => 'edit-entry',
-				'title' => __( 'Edit Entry', 'gravityview' ),
-				'href' => esc_url_raw( admin_url( sprintf( 'admin.php?page=gf_entries&amp;screen_mode=edit&amp;view=entry&amp;id=%d&lid=%d', $entry['form_id'], $entry['id'] ) ) ),
-			) );
-
-		}
-
-	}
-
-	/**
-	 * Remove "Edit Page" or "Edit View" links when on single entry pages
-	 * @return void
-	 */
-	function admin_bar_remove_links() {
-
-		// If we're on the single entry page, we don't want to cause confusion.
-		if ( is_admin() || ( $this->getSingleEntry() && ! $this->isGravityviewPostType() ) ) {
-			remove_action( 'admin_bar_menu', 'wp_admin_bar_edit_menu', 80 );
-		}
-	}
-
-	/**
-	 * Callback function for add_shortcode()
-	 *
-	 * @access public
-	 * @static
-	 * @param mixed $atts
-	 * @return null|string If admin, null. Otherwise, output of $this->render_view()
-	 */
-	public function shortcode( $atts, $content = null ) {
-
-		// Don't process when saving post.
-		if ( is_admin() ) {
-			return;
-		}
-
-		do_action( 'gravityview_log_debug', '[shortcode] $atts: ', $atts );
-
-		return $this->render_view( $atts );
-	}
-
-	/**
 	 * Filter the title for the single entry view
 	 *
 	 * @param  string $title   current title
@@ -450,8 +390,13 @@ class GravityView_frontend {
 		}
 
 		if ( ! empty( $view_meta['atts']['single_title'] ) ) {
+
+			$title = $view_meta['atts']['single_title'];
+
 			// We are allowing HTML in the fields, so no escaping the output
-			$title = GravityView_API::replace_variables( $view_meta['atts']['single_title'], $view_meta['form'], $entry );
+			$title = GravityView_API::replace_variables( $title, $view_meta['form'], $entry );
+
+			$title = do_shortcode( $title );
 		}
 
 		return $title;
@@ -719,7 +664,7 @@ class GravityView_frontend {
 		$gravityview_view->setTotalEntries( $view_entries['count'] );
 
 		// If Edit
-		if ( apply_filters( 'gravityview_is_edit_entry', false ) ) {
+		if ( 'edit' === gravityview_get_context() ) {
 
 			do_action( 'gravityview_log_debug', '[render_view] Edit Entry ' );
 
@@ -869,6 +814,9 @@ class GravityView_frontend {
 
 		// Search Criteria
 		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ), $form_id );
+
+		$original_search_criteria = $search_criteria;
+
 		do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after hook gravityview_fe_search_criteria: ', $search_criteria );
 
 		// implicity search
@@ -884,12 +832,16 @@ class GravityView_frontend {
 			);
 		}
 
-		do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after implicity search: ', $search_criteria );
+		if( $search_criteria !== $original_search_criteria ) {
+			do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after implicity search: ', $search_criteria );
+		}
 
 		// Handle setting date range
 		$search_criteria = self::process_search_dates( $args, $search_criteria );
 
-		do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after date params: ', $search_criteria );
+		if( $search_criteria !== $original_search_criteria ) {
+			do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after date params: ', $search_criteria );
+		}
 
 		// remove not approved entries
 		$search_criteria = self::process_search_only_approved( $args, $search_criteria );
