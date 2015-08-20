@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 == Changelog ==
 
 
-= 1.13 on August 18 =
+= 1.13 on August 20 =
 * Fixed: Wildcard search broken for Gravity Forms 1.9.12+
 * Fixed: Edit Entry validation messages not displaying for Gravity Forms 1.9.12+
 * Added: Number field settings
