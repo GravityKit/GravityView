@@ -38,6 +38,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Extension class wasn't properly checking requirements
 * Fixed: Issue with some themes adding paragraphs to Javascript tags in the Edit Entry screen
 * Fixed: Duplicated information in the debugging logs
+* Updated: German and Portuguese translations
 
 = 1.12 on August 5 =
 * Fixed: Conflicts with Advanced Filter extension when using the Recent Entries widget
