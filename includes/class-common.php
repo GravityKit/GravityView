@@ -579,6 +579,8 @@ class GVCommon {
 	 * 'equals', 'greater_than_or_is', 'greater_than_or_equals', 'less_than_or_is', 'less_than_or_equals',
 	 * and 'not_contains'
 	 *
+	 * @since 1.13 You can define context, which displays/hides based on what's being displayed (single, multiple, edit)
+	 *
 	 * @link http://docs.gravityview.co/article/252-gvlogic-shortcode
 	 * @uses GFFormsModel::matches_operation
 	 * @since 1.7.5
@@ -590,6 +592,23 @@ class GVCommon {
 	 * @return bool True: matches, false: not matches
 	 */
 	public static function matches_operation( $val1, $val2, $operation ) {
+
+		$value = false;
+
+		if( 'context' === $val1 ) {
+
+			switch( $val2 ) {
+				// Use multiple as alias for directory for consistency
+				/** @noinspection PhpMissingBreakStatementInspection */
+				case 'multiple':
+					$val2 = 'directory';
+					// break intentionally left out
+				default:
+					$val1 = ( $val2 === gravityview_get_context() ) ? $val2 : false;
+					break;
+			}
+		}
+
 		switch ( $operation ) {
 			case 'equals':
 				$value = GFFormsModel::matches_operation( $val1, $val2, 'is' );
