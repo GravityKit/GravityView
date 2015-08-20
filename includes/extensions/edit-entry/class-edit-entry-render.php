@@ -56,6 +56,13 @@ class GravityView_Edit_Entry_Render {
     var $form;
 
     /**
+     * Gravity Forms form array after the form validation process
+     * @since 1.13
+     * @var array
+     */
+    var $form_after_validation = null;
+
+    /**
      * Gravity Forms form id
      *
      * @var array
@@ -646,7 +653,12 @@ class GravityView_Edit_Entry_Render {
      */
     public function filter_modify_form_fields( $form, $ajax = false, $field_values = '' ) {
 
-        $form['fields'] = $this->get_configured_edit_fields( $form, $this->view_id );
+        // In case we have validated the form, use it to inject the validation results into the form render
+        if( isset( $this->form_after_validation ) ) {
+            $form = $this->form_after_validation;
+        } else {
+            $form['fields'] = $this->get_configured_edit_fields( $form, $this->view_id );
+        }
 
         $form = $this->filter_conditional_logic( $form );
 
@@ -1083,6 +1095,9 @@ class GravityView_Edit_Entry_Render {
         $validation_results['is_valid'] = $gv_valid;
 
         do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Validation results.', $validation_results );
+
+        // We'll need this result when rendering the form ( on GFFormDisplay::get_form )
+        $this->form_after_validation = $validation_results['form'];
 
         return $validation_results;
     }
