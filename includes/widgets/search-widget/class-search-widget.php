@@ -13,8 +13,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-if ( class_exists( 'GravityView_Widget' ) ):
-
 class GravityView_Widget_Search extends GravityView_Widget {
 
 	public static $file;
@@ -977,7 +975,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * It sets the $gravityview->datepicker_class parameter
 	 *
 	 * @todo Use own datepicker javascript instead of GF datepicker.js - that way, we can localize the settings and not require the changeMonth and changeYear pickers.
-	 * @filter gravityview_search_datepicker_class Modify the datepicker input class. See
 	 * @return void
 	 */
 	public function enqueue_datepicker() {
@@ -992,22 +989,23 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		wp_enqueue_style( 'jquery-ui-datepicker', $scheme.'ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
 
 		/**
+		 * @filter `gravityview_search_datepicker_class`
+		 * @parblock
 		 * Modify the CSS class for the datepicker, used by the CSS class is used by Gravity Forms' javascript to determine the format for the date picker.
 		 *
 		 * The `gv-datepicker` class is required by the GravityView datepicker javascript.
 		 *
 		 * Options are:
 		 *
-		 * - `mdy` mm/dd/yyyy
-		 * - `dmy` dd/mm/yyyy
-		 * - `dmy_dash` dd-mm-yyyy
-		 * - `dmy_dot` dd.mm.yyyy
-		 * - `ymp_slash` yyyy/mm/dd
-		 * - `ymd_dash` yyyy-mm-dd
-		 * - `ymp_dot` yyyy.mm.dd
-		 *
-		 * @param string Existing CSS class
-		 * @var string
+		 * - `mdy` (mm/dd/yyyy)
+		 * - `dmy` (dd/mm/yyyy)
+		 * - `dmy_dash` (dd-mm-yyyy)
+		 * - `dmy_dot` (dd.mm.yyyy)
+		 * - `ymp_slash` (yyyy/mm/dd)
+		 * - `ymd_dash` (yyyy-mm-dd)
+		 * - `ymp_dot` (yyyy.mm.dd)
+		 * @endparblock
+		 * @param string $css_class CSS class to use. Choose from options above
 		 */
 		$datepicker_class = apply_filters( 'gravityview_search_datepicker_class', 'gv-datepicker datepicker mdy' );
 
@@ -1019,5 +1017,3 @@ class GravityView_Widget_Search extends GravityView_Widget {
 } // end class
 
 new GravityView_Widget_Search;
-
-endif; // class exists

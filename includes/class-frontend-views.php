@@ -360,8 +360,14 @@ class GravityView_frontend {
 
 		$entry = $this->getEntry();
 
-		// to apply the filter to the menu title and the meta tag <title> - outside the loop
-		if ( ! apply_filters( 'gravityview/single/title/out_loop' , in_the_loop(), $entry ) ) {
+		/**
+		 * @filter `gravityview/single/title/out_loop` Apply the Single Entry Title filter outside the WordPress loop?
+		 * @param boolean $in_the_loop Whether to apply the filter to the menu title and the meta tag <title> - outside the loop
+		 * @param array $entry Current entry
+		 */
+		$apply_outside_loop = apply_filters( 'gravityview/single/title/out_loop' , in_the_loop(), $entry );
+
+		if ( ! $apply_outside_loop ) {
 			return $title;
 		}
 
@@ -460,8 +466,7 @@ class GravityView_frontend {
 		}
 
 		/**
-		 * Whether to set comments to open or closed.
-		 *
+		 * @filter `gravityview/comments_open` Whether to set comments to open or closed.
 		 * @since  1.5.4
 		 * @param  boolean $open Open or closed status
 		 * @param  int $post_id Post ID to set comment status for
@@ -570,6 +575,7 @@ class GravityView_frontend {
 
 			//fetch template and slug
 			$view_slug = apply_filters( 'gravityview_template_slug_'. $view_data['template_id'], 'table', 'directory' );
+
 			do_action( 'gravityview_log_debug', '[render_view] View template slug: ', $view_slug );
 
 			/**
