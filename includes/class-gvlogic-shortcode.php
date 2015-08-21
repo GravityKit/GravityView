@@ -226,7 +226,7 @@ class GVLogic_Shortcode {
 	 * @uses GVCommon::matches_operation
 	 *
 	 * @return boolean True: yep; false: nope
-	 */
+	fil */
 	function set_is_match() {
 		$this->is_match = GVCommon::matches_operation( $this->if, $this->comparison, $this->operation );
 	}
@@ -248,8 +248,9 @@ class GVLogic_Shortcode {
 		$output = do_shortcode( $output );
 
 		/**
+		 * @filter `gravityview/gvlogic/output` Modify the [gvlogic] output
 		 * @param string $output HTML/text output
-		 * @param GV_If_Shortcode This class
+		 * @param GV_If_Shortcode $this This class
 		 */
 		$output = apply_filters('gravityview/gvlogic/output', $output, $this );
 

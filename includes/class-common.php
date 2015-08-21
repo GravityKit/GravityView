@@ -81,7 +81,8 @@ class GVCommon {
 
 		/**
 		 * Modify the parameters sent to get all views.
-		 * @param  array $params description
+		 * @filter `gravityview/get_all_views/params` More text
+		 * @param[in,out]  array $params description
 		 */
 		$views_params = apply_filters( 'gravityview/get_all_views/params', $params );
 
@@ -431,7 +432,13 @@ class GVCommon {
 			$criteria['context_view_id'] = null;
 		}
 
-		// Apply final criteria filter (Used by the Advanced Filter extension)
+		/**
+		 * Apply final criteria filter (Used by the Advanced Filter extension)
+		 * @property filters
+		 * @param array $criteria Search criteria used by GravityView
+		 * @param array $form_ids Forms to search
+		 * @param int $view_id ID of the view being used to search
+		 */
 		$criteria = apply_filters( 'gravityview_search_criteria', $criteria, $form_ids, $criteria['context_view_id'] );
 
 		return $criteria;
@@ -1009,6 +1016,9 @@ class GVCommon {
 	 */
 	public static function is_field_numeric(  $form = null, $field = '' ) {
 
+		/**
+		 * @addtogroup filters
+		 */
 		$numeric_types = apply_filters( 'gravityview/common/numeric_types', array( 'number' ) );
 
 		if ( ! is_array( $form ) && ! is_array( $field ) ) {
@@ -1054,6 +1064,7 @@ class GVCommon {
 			 * Modify the message shown when Javascript is disabled
 			 *
 			 * @since 1.7
+			 * @addtogroup filters
 			 *
 			 * @param string $message Existing message
 			 * @param string $content Content to encrypt
@@ -1150,7 +1161,7 @@ class GVCommon {
 
 		/**
 		 * Modify the attributes that are allowed to be used in generating links
-		 *
+		 * @addtogroup filters
 		 * @param array $allowed_atts Array of attributes allowed
 		 */
 		$allowed_atts = apply_filters( 'gravityview/get_link/allowed_atts', $allowed_atts );
@@ -1220,8 +1231,12 @@ class GVCommon {
 
 		/**
 		 * There are issues with too many users where it breaks the select. We try to keep it at a reasonable number.
+		 * @group group_filters
+		 * @def def_filters
+		 * @ref ref_filters
+		 *
 		 * @link   text http://codex.wordpress.org/Function_Reference/get_users
-		 * @var  array Settings array
+		 * @param array $settings Settings array, with `number` key defining the # of users to display
 		 */
 		$get_users_settings = apply_filters( 'gravityview/get_users/'. $context, apply_filters( 'gravityview_change_entry_creator_user_parameters', array( 'number' => 750 ) ) );
 

@@ -351,7 +351,8 @@ class GravityView_View extends Gamajo_Template_Loader {
 	}
 
 	/**
-	 * @param array $fields
+	 * @param string $key The key to a specific field in the fields array
+	 * @param mixed $value The value to set for the field
 	 */
 	public function setField( $key, $value ) {
 		$this->fields[ $key ] = $value;

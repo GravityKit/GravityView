@@ -349,8 +349,8 @@ class GravityView_Render_Settings {
 		}
 
 		/**
-		 * @filter 'gravityview/setting/class/{field_type}'
-		 * @param string         field class name
+		 * @filter `gravityview/setting/class/{field_type}`
+		 * @param string $class_suffix  field class suffix; `GravityView_FieldType_{$class_suffix}`
 		 * @param array $field   field data
 		 */
 		$type_class = apply_filters( "gravityview/setting/class/{$field['type']}", 'GravityView_FieldType_' . $field['type'], $field );
@@ -358,8 +358,8 @@ class GravityView_Render_Settings {
 		if( !class_exists( $type_class ) ) {
 
 			/**
-			 * @filter 'gravityview/setting/class_file/{field_type}'
-			 * @param string         field class file path
+			 * @filter `gravityview/setting/class_file/{field_type}`
+			 * @param string  $field_type_include_path field class file path
 			 * @param array $field  field data
 			 */
 			$class_file = apply_filters( "gravityview/setting/class_file/{$field['type']}", GRAVITYVIEW_DIR . "includes/admin/field-types/type_{$field['type']}.php", $field );
