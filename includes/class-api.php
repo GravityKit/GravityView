@@ -1094,7 +1094,14 @@ function gravityview_get_context() {
 
 	$context = '';
 
-	if( $edit = apply_filters( 'gravityview_is_edit_entry', false ) ) {
+	/**
+	 * @filter `gravityview_is_edit_entry` Whether we're currently on the Edit Entry screen \n
+	 * The Edit Entry functionality overrides this value.
+	 * @param boolean $is_edit_entry
+	 */
+	$is_edit_entry = apply_filters( 'gravityview_is_edit_entry', false );
+
+	if( $is_edit_entry ) {
 		$context = 'edit';
 	} else if( class_exists( 'GravityView_frontend' ) && $single = GravityView_frontend::is_single_entry() ) {
 		$context = 'single';
@@ -1125,11 +1132,11 @@ function gravityview_get_context() {
  */
 function gravityview_get_files_array( $value, $gv_class = '' ) {
 
-	if( !class_exists( 'GravityView_Field ' ) ) {
+	if( !class_exists( 'GravityView_Field' ) ) {
 		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
 	}
 
-	if( !class_exists( 'GravityView_Field_FileUpload ' ) ) {
+	if( !class_exists( 'GravityView_Field_FileUpload' ) ) {
 		include_once( GRAVITYVIEW_DIR .'includes/fields/fileupload.php' );
 	}
 
@@ -1140,6 +1147,8 @@ function gravityview_get_files_array( $value, $gv_class = '' ) {
  * Generate a mapping link from an address
  *
  * The address should be plain text with new line (`\n`) or `<br />` line breaks separating sections
+ *
+ * @todo use GF's field get_export_value() instead
  *
  * @link https://gravityview.co/support/documentation/201608159 Read how to modify the link
  * @param  string $address Address
@@ -1324,6 +1333,7 @@ function gravityview_field_output( $passed_args ) {
 /**
  * Similar to the WordPress `selected()`, `checked()`, and `disabled()` functions, except it allows arrays to be passed as current value
  *
+ * @todo Move to helper-functions.php
  * @see selected() WordPress core function
  *
  * @param string $value One of the values to compare

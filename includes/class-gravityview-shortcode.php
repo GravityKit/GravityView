@@ -89,11 +89,11 @@ class GravityView_Shortcode {
 		}
 
 		/**
-		 * Filter the detail output
+		 * @filter `gravityview/shortcode/detail/{$detail}` Filter the detail output returned from `[gravityview detail="$detail"]`
 		 * @since 1.13
-		 * @param string $return
+		 * @param string $return Existing output
 		 */
-		$return = add_filter( 'gravityview/shortcode/detail/' . $detail, $return );
+		$return = apply_filters( 'gravityview/shortcode/detail/' . $detail, $return );
 
 		return $return;
 	}
