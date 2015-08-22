@@ -1,5 +1,7 @@
 <?php
 /**
+ * @file gravityview.php
+ *
  * The GravityView plugin
  *
  * Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
@@ -29,26 +31,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /** Constants */
-if( !defined('GRAVITYVIEW_FILE') ) {
-	/** @define "GRAVITYVIEW_FILE" "./gravityview.php" */
-	define( 'GRAVITYVIEW_FILE', __FILE__ );
-}
 
-if ( !defined('GRAVITYVIEW_URL') ) {
-	define( 'GRAVITYVIEW_URL', plugin_dir_url( __FILE__ ) );
-}
+/**
+ * Full path to the GravityView file
+ * @define "GRAVITYVIEW_FILE" "./gravityview.php"
+ */
+define( 'GRAVITYVIEW_FILE', __FILE__ );
 
-if ( !defined('GRAVITYVIEW_DIR') ) {
-	/** @define "GRAVITYVIEW_DIR" "./" */
-	define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
-}
+/**
+ * The URL to this file
+ */
+define( 'GRAVITYVIEW_URL', plugin_dir_url( __FILE__ ) );
 
-if ( !defined('GV_MIN_GF_VERSION') ) {
-	/**
-	 * GravityView requires at least this version of Gravity Forms to function properly.
-	 */
-	define( 'GV_MIN_GF_VERSION', '1.9' );
-}
+/**
+ * The absolute path to the plugin directory
+ * @define "GRAVITYVIEW_DIR" "./"
+ */
+define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
+
+/**
+ * GravityView requires at least this version of Gravity Forms to function properly.
+ */
+define( 'GV_MIN_GF_VERSION', '1.9' );
 
 /**
  * GravityView requires at least this version of WordPress to function properly.

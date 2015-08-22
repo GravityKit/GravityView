@@ -1,7 +1,6 @@
 <?php
 /**
- *
- *
+ * @file class-admin-approve-entries.php
  * @package   GravityView
  * @license   GPL2+
  * @author    Katz Web Services, Inc.

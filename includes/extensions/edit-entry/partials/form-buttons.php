@@ -4,7 +4,7 @@
     /**
      * @filter `gravityview/edit_entry/cancel_link` Modify the cancel button link URL
      * @since 1.11.1
-     * @param $back_link string
+     * @param string $back_link Existing URL of the Cancel link
      * @param array $form The Gravity Forms form
      * @param array $entry The Gravity Forms entry
      * @param int $view_id The current View ID

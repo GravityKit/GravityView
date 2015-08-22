@@ -605,7 +605,7 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Calculate the available fields
-	 * @param  string|array form_ID or form object
+	 * @param  string|array $form form_ID or form object
 	 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
 	 * @return array         fields
 	 */

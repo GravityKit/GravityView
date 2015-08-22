@@ -375,24 +375,25 @@ class GravityView_Admin {
 	 * @param [type] $registered [description]
 	 * @param [type] $scripts    [description]
 	 */
-	private function add_script_dependencies($registered, $scripts){
+	private function add_script_dependencies($registered, $scripts) {
 
-        //gets all dependent scripts linked to the $scripts array passed
-        do{
-            $dependents = array();
-            foreach($scripts as $script){
-                $deps = isset($registered[$script]) && is_array($registered[$script]->deps) ? $registered[$script]->deps : array();
-                foreach($deps as $dep){
-                    if(!in_array($dep, $scripts) && !in_array($dep, $dependents)){
-                        $dependents[] = $dep;
-                    }
-                }
-            }
-            $scripts = array_merge($scripts, $dependents);
-        }while(!empty($dependents));
+		//gets all dependent scripts linked to the $scripts array passed
+		do {
+			$dependents = array();
+			foreach ( $scripts as $script ) {
+				$deps = isset( $registered[ $script ] ) && is_array( $registered[ $script ]->deps ) ? $registered[ $script ]->deps : array();
+				foreach ( $deps as $dep ) {
+					if ( ! in_array( $dep, $scripts ) && ! in_array( $dep, $dependents ) ) {
+						$dependents[] = $dep;
+					}
+				}
+			}
+			$scripts = array_merge( $scripts, $dependents );
+		} while ( ! empty( $dependents ) );
 
-        return $scripts;
-    }
+		return $scripts;
+	}
+
 
 	/**
 	 * Get admin notices
