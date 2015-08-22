@@ -1106,8 +1106,6 @@ class GravityView_frontend {
 	/**
 	 * Register styles and scripts
 	 *
-	 * @filter  gravity_view_lightbox_script Modify the lightbox JS slug. Default: `thickbox`
-	 * @filter  gravity_view_lightbox_style Modify the thickbox CSS slug. Default: `thickbox`
 	 * @access public
 	 * @return void
 	 */
@@ -1132,7 +1130,17 @@ class GravityView_frontend {
 
 				// If the thickbox is enqueued, add dependencies
 				if ( ! empty( $data['atts']['lightbox'] ) ) {
+
+					/**
+					 * @filter `gravity_view_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
+					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
+					 */
 					$js_dependencies[] = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
+
+					/**
+					 * @filter `gravity_view_lightbox_style` Modify the lightbox CSS slug. Default: `thickbox`
+					 * @param string $script_slug If you want to use a different lightbox script, return the name of its CSS file here.
+					 */
 					$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
 				}
 
@@ -1145,8 +1153,9 @@ class GravityView_frontend {
 				wp_enqueue_script( 'gravityview-fe-view' );
 
 				/**
-				 * Modify the array passed to wp_localize_script
-				 * @var array Contains `datepicker` key, which passes settings to the JS file
+				 * @filter `gravityview_js_localization` Modify the array passed to wp_localize_script()
+				 * @param array $js_localization The data padded to the Javascript file
+				 * @param array $data View data array with View settings
 				 */
 				$js_localization = apply_filters( 'gravityview_js_localization', $js_localization, $data );
 

@@ -184,8 +184,6 @@
 
 		/**
 		 * Select the text of an input field on click
-		 * @filter default text
-		 * @action default text
 		 * @param  {[type]}    e     [description]
 		 * @return {[type]}          [description]
 		 */

@@ -547,9 +547,6 @@ class GravityView_Admin_ApproveEntries {
 	/**
 	 * Should the Approve/Reject Entry column be shown in the GF Entries page?
 	 *
-	 * @filter gravityview/approve_entries/hide-if-no-connections
-	 * @filter gravityview/approve_entries/show-column
-	 *
 	 * @since 1.7.2
 	 *
 	 * @param int $form_id The ID of the Gravity Forms form for which entries are being shown
@@ -561,7 +558,7 @@ class GravityView_Admin_ApproveEntries {
 		$show_approve_column = true;
 
 		/**
-		 * Return true to hide reject/approve if there are no connected Views
+		 * @filter `gravityview/approve_entries/hide-if-no-connections` Return true to hide reject/approve if there are no connected Views
 		 * @since 1.7.2
 		 * @param boolean $hide_if_no_connections
 		 */
@@ -577,7 +574,7 @@ class GravityView_Admin_ApproveEntries {
 		}
 
 		/**
-		 * Override whether the column is shown
+		 * @filter `gravityview/approve_entries/show-column` Override whether the column is shown
 		 * @param boolean $show_approve_column Whether the column will be shown
 		 * @param int $form_id The ID of the Gravity Forms form for which entries are being shown
 		 */

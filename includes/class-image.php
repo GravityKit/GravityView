@@ -159,8 +159,7 @@ class GravityView_Image {
 
 	/**
 	 * Return the HTML tag for the image
-	 *
-	 * @filter gravityview_image_html Filter output. Passes two args: the generated html and the GravityView_Image object
+	 * @return string HTML of the image
 	 */
 	public function html() {
 
@@ -178,6 +177,11 @@ class GravityView_Image {
 			$html = sprintf( '<img src="%s" %s />', esc_url_raw( $this->src ), $atts );
 		}
 
+		/**
+		 * @filter `gravityview_image_html` Filter the HTML image output
+		 * @param string $html the generated image html
+		 * @param GravityView_Image $this The current image object
+		 */
 		return apply_filters( 'gravityview_image_html', $html, $this );
 	}
 }

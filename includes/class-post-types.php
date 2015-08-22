@@ -117,10 +117,16 @@ class GravityView_Post_Types {
 	 * @access public
 	 * @static
 	 * @return string Default: "entry"
-	 * @filter gravityview_directory_endpoint Change the slug used for single entries
 	 */
 	public static function get_entry_var_name() {
-		return sanitize_title( apply_filters( 'gravityview_directory_endpoint', 'entry' ) );
+
+		/**
+		 * @filter `gravityview_directory_endpoint` Change the slug used for single entries
+		 * @param[in,out] string $endpoint Slug to use when accessing single entry. Default: `entry`
+		 */
+		$endpoint = apply_filters( 'gravityview_directory_endpoint', 'entry' )
+
+		return sanitize_title( $endpoint );
 	}
 
 	/**

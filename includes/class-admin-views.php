@@ -442,7 +442,6 @@ class GravityView_Admin_Views {
 	 * Render html for displaying available fields based on a Form ID
 	 * $blacklist_field_types - contains the field types which are not proper to be shown in a directory.
 	 *
-	 * @filter  gravityview_blacklist_field_types Modify the types of fields that shouldn't be shown in a View.
 	 * @access public
 	 * @param int $form_id Gravity Forms Form ID (default: '')
 	 * @param string $context (default: 'single')
@@ -450,6 +449,11 @@ class GravityView_Admin_Views {
 	 */
 	function render_available_fields( $form = '', $context = 'single' ) {
 
+		/**
+		 * @filter  `gravityview_blacklist_field_types` Modify the types of fields that shouldn't be shown in a View.
+		 * @param[in,out] array $blacklist_field_types Array of field types to block for this context.
+		 * @param[in] string $context View context ('single', 'directory', or 'edit')
+		 */
 		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array(), $context );
 
 		$fields = $this->get_available_fields( $form, $context );

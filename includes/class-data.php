@@ -489,8 +489,7 @@ class GravityView_View_Data {
 
 		/**
 		 * @filter `gravityview_default_args` Modify the default settings for new Views
-		 * @param array $default_args Array of default args.
-		 * @see GravityView_View_Data::get_default_args()
+		 * @param[in,out] array $default_args Array of default args.
 		 */
 		$default_settings = apply_filters( 'gravityview_default_args', array(
 			'id' => array(

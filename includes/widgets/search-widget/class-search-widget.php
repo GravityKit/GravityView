@@ -266,6 +266,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 
 		/**
+		 * @filter `gravityview/extension/search/input_type` Modify the search form input type based on field type
+		 * @param string $input_type Assign an input type according to the form field type
+		 * @param string $field_type Gravity Forms field type
 		 * @since 1.2
 		 */
 		$input_type = apply_filters( 'gravityview/extension/search/input_type', $input_type, $field_type );
@@ -351,9 +354,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$curr_end = esc_attr( rgget( 'gv_end' ) );
 
         /**
-         * date_created is stored in UTC format. Convert search date into UTC
-         * (also used on templates/fields/date_created.php)
+         * @filter `gravityview_date_created_adjust_timezone` Whether to adjust the timezone for entries. \n
+         * date_created is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php)
          * @since 1.12
+         * @param[out,in] boolean $adjust_tz Default: true
+         * @param[in] string $context Where the filter is being called from. `search` in this case.
          */
         $adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'search' );
         $search_criteria['start_date'] = ( $adjust_tz && !empty( $curr_start ) ) ? get_gmt_from_date( $curr_start ) : $curr_start;
@@ -405,11 +410,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 
 		/**
-		 * Set the Search Mode
-		 * - Match ALL filters
-		 * - Match ANY filter (default)
-		 *
+		 * @filter `gravityview/search/mode` Set the Search Mode (`all` or `any`)
 		 * @since 1.5.1
+		 * @param[out,in] string $mode Search mode (`any` vs `all`)
 		 */
 		$search_criteria['field_filters']['mode'] = apply_filters( 'gravityview/search/mode', $mode );
 
@@ -989,14 +992,10 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		wp_enqueue_style( 'jquery-ui-datepicker', $scheme.'ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
 
 		/**
-		 * @filter `gravityview_search_datepicker_class`
-		 * @parblock
-		 * Modify the CSS class for the datepicker, used by the CSS class is used by Gravity Forms' javascript to determine the format for the date picker.
-		 *
-		 * The `gv-datepicker` class is required by the GravityView datepicker javascript.
-		 *
+		 * @filter `gravityview_search_datepicker_class`\n
+		 * Modify the CSS class for the datepicker, used by the CSS class is used by Gravity Forms' javascript to determine the format for the date picker. The `gv-datepicker` class is required by the GravityView datepicker javascript.
+		 * @param string $css_class CSS class to use. Default: `gv-datepicker datepicker mdy` \n
 		 * Options are:
-		 *
 		 * - `mdy` (mm/dd/yyyy)
 		 * - `dmy` (dd/mm/yyyy)
 		 * - `dmy_dash` (dd-mm-yyyy)
@@ -1004,8 +1003,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		 * - `ymp_slash` (yyyy/mm/dd)
 		 * - `ymd_dash` (yyyy-mm-dd)
 		 * - `ymp_dot` (yyyy.mm.dd)
-		 * @endparblock
-		 * @param string $css_class CSS class to use. Choose from options above
 		 */
 		$datepicker_class = apply_filters( 'gravityview_search_datepicker_class', 'gv-datepicker datepicker mdy' );
 

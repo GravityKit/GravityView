@@ -42,15 +42,13 @@ class GravityView_Merge_Tags {
 	public static function replace_variables( $text, $form, $entry ) {
 
 		/**
-		 * Turn off variable replacements.
-		 *
+		 * @filter `gravityview_do_replace_variables` Turn off merge tag variable replacements.\n
 		 * Useful where you want to process variables yourself. We do this in the Math Extension.
-		 *
-		 * @filter gravityview_do_replace_variables
-		 *
 		 * @since 1.13
-		 *
-		 * @param boolean True: yes, replace variables for this text; False: do not replace variables.
+		 * @param[in,out] boolean $do_replace_variables True: yes, replace variables for this text; False: do not replace variables.
+		 * @param[in] string $text       Text to replace variables in
+		 * @param[in]  array      $form        GF Form array
+		 * @param[in]  array      $entry        GF Entry array
 		 */
 		$do_replace_variables = apply_filters( 'gravityview/merge_tags/do_replace_variables', true, $text, $form, $entry );
 

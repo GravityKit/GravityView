@@ -22,12 +22,6 @@ class GravityView_Render_Settings {
 	 * @param  string      $context     What context are we in? Example: `single` or `directory`
 	 * @param  string      $input_type  (textarea, list, select, etc.)
 	 * @return array       Array of field options with `label`, `value`, `type`, `default` keys
-	 *
-	 * @filter gravityview_template_{$field_type}_options Filter the field options by field type
-	 *     - gravityview_template_field_options
-	 *     - gravityview_template_widget_options
-	 *
-	 * @filter gravityview_template_{$input_type}_options Filter the field options by input type (textarea, list, select, etc.)
 	 */
 	public static function get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type ) {
 
@@ -83,10 +77,24 @@ class GravityView_Render_Settings {
 
 		}
 
-		// hook to inject template specific field/widget options
+		/**
+		 * @filter `gravityview_template_{$field_type}_options` Filter the field options by field type. Filter names: `gravityview_template_field_options` and `gravityview_template_widget_options`
+		 * @param[in,out] array    Array of field options with `label`, `value`, `type`, `default` keys
+		 * @param[in]  string      $template_id Table slug
+		 * @param[in]  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+		 * @param[in]  string      $context     What context are we in? Example: `single` or `directory`
+		 * @param[in]  string      $input_type  (textarea, list, select, etc.)
+		 */
 		$field_options = apply_filters( "gravityview_template_{$field_type}_options", $field_options, $template_id, $field_id, $context, $input_type );
 
-		// hook to inject template specific input type options (textarea, list, select, etc.)
+		/**
+		 * @filter `gravityview_template_{$input_type}_options` Filter the field options by input type (`$input_type` examples: `textarea`, `list`, `select`, etc.)
+		 * @param[in,out] array    Array of field options with `label`, `value`, `type`, `default` keys
+		 * @param[in]  string      $template_id Table slug
+		 * @param[in]  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+		 * @param[in]  string      $context     What context are we in? Example: `single` or `directory`
+		 * @param[in]  string      $input_type  (textarea, list, select, etc.)
+		 */
 		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type );
 
 		return $field_options;
@@ -251,9 +259,10 @@ class GravityView_Render_Settings {
 				$output = ob_get_clean();
 
 				/**
-				 * @filter 'gravityview/option/output/{option_type}'
-				 * @param string         field class name
-				 * @param array $option  option field data
+				 * @filter `gravityview/option/output/{option_type}` Modify the output for a GravityView setting.\n
+				 * `$option_type` is the type of setting (`radio`, `text`, etc.)
+				 * @param[in,out] string $output field class name
+				 * @param[in] array $option  option field data
 				 */
 				$output = apply_filters( "gravityview/option/output/{$option['type']}" , $output, $option );
 			}

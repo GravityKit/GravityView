@@ -336,6 +336,10 @@ final class GravityView_Plugin {
 			//array( '1-1' => array( 	array( 'areaid' => 'bottom', 'title' => __('Full Width Bottom', 'gravityview') , 'subtitle' => '' ) ) )
 		);
 
+		/**
+		 * @filter `gravityview_widget_active_areas` Array of zones available for widgets to be dropped into
+		 * @param array $default_areas Definition for default widget areas
+		 */
 		return apply_filters( 'gravityview_widget_active_areas', $default_areas );
 	}
 
