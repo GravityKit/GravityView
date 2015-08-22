@@ -250,7 +250,7 @@ class GVLogic_Shortcode {
 		/**
 		 * @filter `gravityview/gvlogic/output` Modify the [gvlogic] output
 		 * @param string $output HTML/text output
-		 * @param GV_If_Shortcode $this This class
+		 * @param GVLogic_Shortcode $this This class
 		 */
 		$output = apply_filters('gravityview/gvlogic/output', $output, $this );
 

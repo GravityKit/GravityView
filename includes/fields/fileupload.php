@@ -106,7 +106,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 						/**
 						 * @filter `gravityview_audio_settings` Modify the settings passed to the `wp_video_shortcode()` function
 						 * @since  1.2
-						 * @var array $audio_settings Array with `src` and `class` keys
+						 * @param array $audio_settings Array with `src` and `class` keys
 						 */
 						$audio_settings = apply_filters( 'gravityview_audio_settings', array(
 							'src' => $file_path,
