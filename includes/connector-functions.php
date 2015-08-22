@@ -256,9 +256,7 @@ function gravityview_get_sortable_fields( $formid, $current = '' ) {
  * @return string field type
  */
 function gravityview_get_field_type(  $form = null , $field_id = '' ) {
-
 	return GVCommon::get_field_type(  $form, $field_id );
-
 }
 
 
@@ -304,15 +302,4 @@ function the_gravityview( $view_id = '', $atts = array() ) {
  */
 function gravityview_is_single_entry() {
 	return GravityView_frontend::is_single_entry();
-}
-
-
-/**
- * Returns the GF Form field type for a certain field(id) of a form
- * @param  object $form     Gravity Forms form
- * @param  mixed $field_id Field ID or Field array
- * @return string field type
- */
-function gravityview_get_field_type(  $form = null , $field_id = '' ) {
-	return GVCommon::get_field_type(  $form, $field_id );
 }

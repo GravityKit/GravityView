@@ -124,7 +124,7 @@ class GravityView_Post_Types {
 		 * @filter `gravityview_directory_endpoint` Change the slug used for single entries
 		 * @param[in,out] string $endpoint Slug to use when accessing single entry. Default: `entry`
 		 */
-		$endpoint = apply_filters( 'gravityview_directory_endpoint', 'entry' )
+		$endpoint = apply_filters( 'gravityview_directory_endpoint', 'entry' );
 
 		return sanitize_title( $endpoint );
 	}
