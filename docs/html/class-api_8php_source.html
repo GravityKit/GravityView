@@ -1188,264 +1188,274 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l01093"></a><span class="lineno"><a class="line" href="class-api_8php.html#a1e24d5ed137a17f1b6694d7594eeacf5"> 1093</a></span>&#160;<span class="keyword">function</span> <a class="code" href="class-api_8php.html#a1e24d5ed137a17f1b6694d7594eeacf5">gravityview_get_context</a>() {</div>
 <div class="line"><a name="l01094"></a><span class="lineno"> 1094</span>&#160;</div>
 <div class="line"><a name="l01095"></a><span class="lineno"> 1095</span>&#160;    $context = <span class="stringliteral">&#39;&#39;</span>;</div>
-<div class="line"><a name="l01096"></a><span class="lineno"> 1096</span>&#160;</div>
-<div class="line"><a name="l01097"></a><span class="lineno"> 1097</span>&#160;    <span class="keywordflow">if</span>( $edit = apply_filters( <span class="stringliteral">&#39;gravityview_is_edit_entry&#39;</span>, <span class="keyword">false</span> ) ) {</div>
-<div class="line"><a name="l01098"></a><span class="lineno"> 1098</span>&#160;        $context = <span class="stringliteral">&#39;edit&#39;</span>;</div>
-<div class="line"><a name="l01099"></a><span class="lineno"> 1099</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span>( class_exists( <span class="stringliteral">&#39;GravityView_frontend&#39;</span> ) &amp;&amp; $single = <a class="code" href="class_gravity_view__frontend.html#a82bef2b1d87ccbf19928b71e43c43592">GravityView_frontend::is_single_entry</a>() ) {</div>
-<div class="line"><a name="l01100"></a><span class="lineno"> 1100</span>&#160;        $context = <span class="stringliteral">&#39;single&#39;</span>;</div>
-<div class="line"><a name="l01101"></a><span class="lineno"> 1101</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span>( class_exists( <span class="stringliteral">&#39;GravityView_View&#39;</span> ) ) {</div>
-<div class="line"><a name="l01102"></a><span class="lineno"> 1102</span>&#160;        $context = <a class="code" href="class_gravity_view___view.html#a76cf4523dbaebd58c27db806e01b73d9">GravityView_View::getInstance</a>()-&gt;getContext();</div>
-<div class="line"><a name="l01103"></a><span class="lineno"> 1103</span>&#160;    }</div>
-<div class="line"><a name="l01104"></a><span class="lineno"> 1104</span>&#160;</div>
-<div class="line"><a name="l01105"></a><span class="lineno"> 1105</span>&#160;    <span class="keywordflow">return</span> $context;</div>
-<div class="line"><a name="l01106"></a><span class="lineno"> 1106</span>&#160;}</div>
-<div class="line"><a name="l01107"></a><span class="lineno"> 1107</span>&#160;</div>
-<div class="line"><a name="l01108"></a><span class="lineno"> 1108</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01109"></a><span class="lineno"> 1109</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l01110"></a><span class="lineno"> 1110</span>&#160;<span class="comment"> * Return an array of files prepared for output. Wrapper for GravityView_Field_FileUpload::get_files_array()</span></div>
-<div class="line"><a name="l01111"></a><span class="lineno"> 1111</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l01112"></a><span class="lineno"> 1112</span>&#160;<span class="comment"> * Processes files by file type and generates unique output for each.</span></div>
-<div class="line"><a name="l01113"></a><span class="lineno"> 1113</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l01114"></a><span class="lineno"> 1114</span>&#160;<span class="comment"> * Returns array for each file, with the following keys:</span></div>
-<div class="line"><a name="l01115"></a><span class="lineno"> 1115</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l01116"></a><span class="lineno"> 1116</span>&#160;<span class="comment"> * `file_path` =&gt; The file path of the file, with a line break</span></div>
-<div class="line"><a name="l01117"></a><span class="lineno"> 1117</span>&#160;<span class="comment"> * `html` =&gt; The file output HTML formatted</span></div>
+<div class="line"><a name="l01096"></a><span class="lineno"> 1096</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01097"></a><span class="lineno"> 1097</span>&#160;<span class="comment">    /**</span></div>
+<div class="line"><a name="l01098"></a><span class="lineno"> 1098</span>&#160;<span class="comment">     * @filter `gravityview_is_edit_entry` Whether we&#39;re currently on the Edit Entry screen \n</span></div>
+<div class="line"><a name="l01099"></a><span class="lineno"> 1099</span>&#160;<span class="comment">     * The Edit Entry functionality overrides this value.</span></div>
+<div class="line"><a name="l01100"></a><span class="lineno"> 1100</span>&#160;<span class="comment">     * @param boolean $is_edit_entry</span></div>
+<div class="line"><a name="l01101"></a><span class="lineno"> 1101</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l01102"></a><span class="lineno"> 1102</span>&#160;    $is_edit_entry = apply_filters( <span class="stringliteral">&#39;gravityview_is_edit_entry&#39;</span>, <span class="keyword">false</span> );</div>
+<div class="line"><a name="l01103"></a><span class="lineno"> 1103</span>&#160;</div>
+<div class="line"><a name="l01104"></a><span class="lineno"> 1104</span>&#160;    <span class="keywordflow">if</span>( $is_edit_entry ) {</div>
+<div class="line"><a name="l01105"></a><span class="lineno"> 1105</span>&#160;        $context = <span class="stringliteral">&#39;edit&#39;</span>;</div>
+<div class="line"><a name="l01106"></a><span class="lineno"> 1106</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span>( class_exists( <span class="stringliteral">&#39;GravityView_frontend&#39;</span> ) &amp;&amp; $single = <a class="code" href="class_gravity_view__frontend.html#a82bef2b1d87ccbf19928b71e43c43592">GravityView_frontend::is_single_entry</a>() ) {</div>
+<div class="line"><a name="l01107"></a><span class="lineno"> 1107</span>&#160;        $context = <span class="stringliteral">&#39;single&#39;</span>;</div>
+<div class="line"><a name="l01108"></a><span class="lineno"> 1108</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span>( class_exists( <span class="stringliteral">&#39;GravityView_View&#39;</span> ) ) {</div>
+<div class="line"><a name="l01109"></a><span class="lineno"> 1109</span>&#160;        $context = <a class="code" href="class_gravity_view___view.html#a76cf4523dbaebd58c27db806e01b73d9">GravityView_View::getInstance</a>()-&gt;getContext();</div>
+<div class="line"><a name="l01110"></a><span class="lineno"> 1110</span>&#160;    }</div>
+<div class="line"><a name="l01111"></a><span class="lineno"> 1111</span>&#160;</div>
+<div class="line"><a name="l01112"></a><span class="lineno"> 1112</span>&#160;    <span class="keywordflow">return</span> $context;</div>
+<div class="line"><a name="l01113"></a><span class="lineno"> 1113</span>&#160;}</div>
+<div class="line"><a name="l01114"></a><span class="lineno"> 1114</span>&#160;</div>
+<div class="line"><a name="l01115"></a><span class="lineno"> 1115</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01116"></a><span class="lineno"> 1116</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l01117"></a><span class="lineno"> 1117</span>&#160;<span class="comment"> * Return an array of files prepared for output. Wrapper for GravityView_Field_FileUpload::get_files_array()</span></div>
 <div class="line"><a name="l01118"></a><span class="lineno"> 1118</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l01119"></a><span class="lineno"> 1119</span>&#160;<span class="comment"> * @see GravityView_Field_FileUpload::get_files_array()</span></div>
+<div class="line"><a name="l01119"></a><span class="lineno"> 1119</span>&#160;<span class="comment"> * Processes files by file type and generates unique output for each.</span></div>
 <div class="line"><a name="l01120"></a><span class="lineno"> 1120</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l01121"></a><span class="lineno"> 1121</span>&#160;<span class="comment"> * @since  1.2</span></div>
-<div class="line"><a name="l01122"></a><span class="lineno"> 1122</span>&#160;<span class="comment"> * @param  string $value    Field value passed by Gravity Forms. String of file URL, or serialized string of file URL array</span></div>
-<div class="line"><a name="l01123"></a><span class="lineno"> 1123</span>&#160;<span class="comment"> * @param  string $gv_class Field class to add to the output HTML</span></div>
-<div class="line"><a name="l01124"></a><span class="lineno"> 1124</span>&#160;<span class="comment"> * @return array           Array of file output, with `file_path` and `html` keys (see comments above)</span></div>
-<div class="line"><a name="l01125"></a><span class="lineno"> 1125</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l01126"></a><span class="lineno"><a class="line" href="class-api_8php.html#a8c5d61ca86e1065305fa15e4ca0eecf4"> 1126</a></span>&#160;<span class="keyword">function</span> <a class="code" href="class-api_8php.html#a8c5d61ca86e1065305fa15e4ca0eecf4">gravityview_get_files_array</a>( <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a>, $gv_class = <span class="stringliteral">&#39;&#39;</span> ) {</div>
-<div class="line"><a name="l01127"></a><span class="lineno"> 1127</span>&#160;</div>
-<div class="line"><a name="l01128"></a><span class="lineno"> 1128</span>&#160;    <span class="keywordflow">if</span>( !class_exists( <span class="stringliteral">&#39;GravityView_Field &#39;</span> ) ) {</div>
-<div class="line"><a name="l01129"></a><span class="lineno"> 1129</span>&#160;        include_once( <a class="code" href="gravityview_8php.html#a20e44631ea950946599dd5661090eb4d">GRAVITYVIEW_DIR</a> .<span class="stringliteral">&#39;includes/fields/class.field.php&#39;</span> );</div>
-<div class="line"><a name="l01130"></a><span class="lineno"> 1130</span>&#160;    }</div>
-<div class="line"><a name="l01131"></a><span class="lineno"> 1131</span>&#160;</div>
-<div class="line"><a name="l01132"></a><span class="lineno"> 1132</span>&#160;    <span class="keywordflow">if</span>( !class_exists( <span class="stringliteral">&#39;GravityView_Field_FileUpload &#39;</span> ) ) {</div>
-<div class="line"><a name="l01133"></a><span class="lineno"> 1133</span>&#160;        include_once( <a class="code" href="gravityview_8php.html#a20e44631ea950946599dd5661090eb4d">GRAVITYVIEW_DIR</a> .<span class="stringliteral">&#39;includes/fields/fileupload.php&#39;</span> );</div>
-<div class="line"><a name="l01134"></a><span class="lineno"> 1134</span>&#160;    }</div>
-<div class="line"><a name="l01135"></a><span class="lineno"> 1135</span>&#160;</div>
-<div class="line"><a name="l01136"></a><span class="lineno"> 1136</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="class_gravity_view___field___file_upload.html#ada186fd2cf53679a4936f454ed8c7b55">GravityView_Field_FileUpload::get_files_array</a>( <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a>, $gv_class );</div>
-<div class="line"><a name="l01137"></a><span class="lineno"> 1137</span>&#160;}</div>
-<div class="line"><a name="l01138"></a><span class="lineno"> 1138</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01139"></a><span class="lineno"> 1139</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l01140"></a><span class="lineno"> 1140</span>&#160;<span class="comment"> * Generate a mapping link from an address</span></div>
-<div class="line"><a name="l01141"></a><span class="lineno"> 1141</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l01142"></a><span class="lineno"> 1142</span>&#160;<span class="comment"> * The address should be plain text with new line (`\n`) or `&lt;br /&gt;` line breaks separating sections</span></div>
-<div class="line"><a name="l01143"></a><span class="lineno"> 1143</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l01144"></a><span class="lineno"> 1144</span>&#160;<span class="comment"> * @link https://gravityview.co/support/documentation/201608159 Read how to modify the link</span></div>
-<div class="line"><a name="l01145"></a><span class="lineno"> 1145</span>&#160;<span class="comment"> * @param  string $address Address</span></div>
-<div class="line"><a name="l01146"></a><span class="lineno"> 1146</span>&#160;<span class="comment"> * @return string          URL of link to map of address</span></div>
-<div class="line"><a name="l01147"></a><span class="lineno"> 1147</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l01148"></a><span class="lineno"><a class="line" href="class-api_8php.html#a1fcec5623ca596b31aac2a8e5bc570d2"> 1148</a></span>&#160;<span class="keyword">function</span> <a class="code" href="class-api_8php.html#a1fcec5623ca596b31aac2a8e5bc570d2">gravityview_get_map_link</a>( $address ) {</div>
-<div class="line"><a name="l01149"></a><span class="lineno"> 1149</span>&#160;</div>
-<div class="line"><a name="l01150"></a><span class="lineno"> 1150</span>&#160;    $address_qs = str_replace( array( <span class="stringliteral">&#39;&lt;br /&gt;&#39;</span>, <span class="stringliteral">&quot;\n&quot;</span> ), <span class="charliteral">&#39; &#39;</span>, $address ); <span class="comment">// Replace \n with spaces</span></div>
-<div class="line"><a name="l01151"></a><span class="lineno"> 1151</span>&#160;    $address_qs = urlencode( $address_qs );</div>
-<div class="line"><a name="l01152"></a><span class="lineno"> 1152</span>&#160;</div>
-<div class="line"><a name="l01153"></a><span class="lineno"> 1153</span>&#160;    <a class="code" href="post__image_8php.html#acf215f34a917d014776ce684a9ee8909">$url</a> = <span class="stringliteral">&quot;https://maps.google.com/maps?q={$address_qs}&quot;</span>;</div>
-<div class="line"><a name="l01154"></a><span class="lineno"> 1154</span>&#160;</div>
-<div class="line"><a name="l01155"></a><span class="lineno"> 1155</span>&#160;    <a class="code" href="delete__link_8php.html#aabe6700a6326424ba662664adce40fa4">$link_text</a> = esc_html__( <span class="stringliteral">&#39;Map It&#39;</span>, <span class="stringliteral">&#39;gravityview&#39;</span> );</div>
-<div class="line"><a name="l01156"></a><span class="lineno"> 1156</span>&#160;</div>
-<div class="line"><a name="l01157"></a><span class="lineno"> 1157</span>&#160;    $link = <a class="code" href="class-common_8php.html#a60d3b046f6a51f0b696dbd81dd766919">gravityview_get_link</a>( <a class="code" href="post__image_8php.html#acf215f34a917d014776ce684a9ee8909">$url</a>, <a class="code" href="delete__link_8php.html#aabe6700a6326424ba662664adce40fa4">$link_text</a>, <span class="stringliteral">&#39;class=map-it-link&#39;</span> );</div>
-<div class="line"><a name="l01158"></a><span class="lineno"> 1158</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01159"></a><span class="lineno"> 1159</span>&#160;<span class="comment">    /**</span></div>
-<div class="line"><a name="l01160"></a><span class="lineno"> 1160</span>&#160;<span class="comment">     * @filter `gravityview_map_link` Modify the map link generated. You can use a different mapping service, for example.</span></div>
-<div class="line"><a name="l01161"></a><span class="lineno"> 1161</span>&#160;<span class="comment">     * @param[in,out]  string $link Map link</span></div>
-<div class="line"><a name="l01162"></a><span class="lineno"> 1162</span>&#160;<span class="comment">     * @param[in] string $address Address to generate link for</span></div>
-<div class="line"><a name="l01163"></a><span class="lineno"> 1163</span>&#160;<span class="comment">     * @param[in] string $url URL generated by the function</span></div>
-<div class="line"><a name="l01164"></a><span class="lineno"> 1164</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l01165"></a><span class="lineno"> 1165</span>&#160;    $link = apply_filters( <span class="stringliteral">&#39;gravityview_map_link&#39;</span>, $link, $address, <a class="code" href="post__image_8php.html#acf215f34a917d014776ce684a9ee8909">$url</a> );</div>
-<div class="line"><a name="l01166"></a><span class="lineno"> 1166</span>&#160;</div>
-<div class="line"><a name="l01167"></a><span class="lineno"> 1167</span>&#160;    <span class="keywordflow">return</span> $link;</div>
-<div class="line"><a name="l01168"></a><span class="lineno"> 1168</span>&#160;}</div>
-<div class="line"><a name="l01169"></a><span class="lineno"> 1169</span>&#160;</div>
-<div class="line"><a name="l01170"></a><span class="lineno"> 1170</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01171"></a><span class="lineno"> 1171</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l01172"></a><span class="lineno"> 1172</span>&#160;<span class="comment"> * Output field based on a certain html markup</span></div>
-<div class="line"><a name="l01173"></a><span class="lineno"> 1173</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l01174"></a><span class="lineno"> 1174</span>&#160;<span class="comment"> *   markup - string to be used on a sprintf statement.</span></div>
-<div class="line"><a name="l01175"></a><span class="lineno"> 1175</span>&#160;<span class="comment"> *      Use:</span></div>
-<div class="line"><a name="l01176"></a><span class="lineno"> 1176</span>&#160;<span class="comment"> *         {{label}} - field label</span></div>
-<div class="line"><a name="l01177"></a><span class="lineno"> 1177</span>&#160;<span class="comment"> *         {{value}} - entry field value</span></div>
-<div class="line"><a name="l01178"></a><span class="lineno"> 1178</span>&#160;<span class="comment"> *         {{class}} - field class</span></div>
-<div class="line"><a name="l01179"></a><span class="lineno"> 1179</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l01180"></a><span class="lineno"> 1180</span>&#160;<span class="comment"> *   wpautop - true will filter the value using wpautop function</span></div>
-<div class="line"><a name="l01181"></a><span class="lineno"> 1181</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l01182"></a><span class="lineno"> 1182</span>&#160;<span class="comment"> * @since  1.1.5</span></div>
-<div class="line"><a name="l01183"></a><span class="lineno"> 1183</span>&#160;<span class="comment"> * @param  array $passed_args Associative array with field data. `field` and `form` are required.</span></div>
-<div class="line"><a name="l01184"></a><span class="lineno"> 1184</span>&#160;<span class="comment"> * @return string Field output. If empty value and hide empty is true, return empty.</span></div>
-<div class="line"><a name="l01185"></a><span class="lineno"> 1185</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l01186"></a><span class="lineno"><a class="line" href="class-api_8php.html#aaf8ecfcc074818e29f34e943af7170bf"> 1186</a></span>&#160;<span class="keyword">function</span> <a class="code" href="class-api_8php.html#aaf8ecfcc074818e29f34e943af7170bf">gravityview_field_output</a>( $passed_args ) {</div>
-<div class="line"><a name="l01187"></a><span class="lineno"> 1187</span>&#160;    $defaults = array(</div>
-<div class="line"><a name="l01188"></a><span class="lineno"> 1188</span>&#160;        <span class="stringliteral">&#39;entry&#39;</span> =&gt; null,</div>
-<div class="line"><a name="l01189"></a><span class="lineno"> 1189</span>&#160;        <span class="stringliteral">&#39;field&#39;</span> =&gt; null,</div>
-<div class="line"><a name="l01190"></a><span class="lineno"> 1190</span>&#160;        <span class="stringliteral">&#39;form&#39;</span> =&gt; null,</div>
-<div class="line"><a name="l01191"></a><span class="lineno"> 1191</span>&#160;        <span class="stringliteral">&#39;hide_empty&#39;</span> =&gt; <span class="keyword">true</span>,</div>
-<div class="line"><a name="l01192"></a><span class="lineno"> 1192</span>&#160;        <span class="stringliteral">&#39;markup&#39;</span> =&gt; <span class="stringliteral">&#39;&lt;div id=&quot;{{ field_id }}&quot; class=&quot;{{ class }}&quot;&gt;{{label}}{{value}}&lt;/div&gt;&#39;</span>,</div>
-<div class="line"><a name="l01193"></a><span class="lineno"> 1193</span>&#160;        <span class="stringliteral">&#39;label_markup&#39;</span> =&gt; <span class="stringliteral">&#39;&#39;</span>,</div>
-<div class="line"><a name="l01194"></a><span class="lineno"> 1194</span>&#160;        <span class="stringliteral">&#39;wpautop&#39;</span> =&gt; <span class="keyword">false</span>,</div>
-<div class="line"><a name="l01195"></a><span class="lineno"> 1195</span>&#160;        <span class="stringliteral">&#39;zone_id&#39;</span> =&gt; null,</div>
-<div class="line"><a name="l01196"></a><span class="lineno"> 1196</span>&#160;    );</div>
-<div class="line"><a name="l01197"></a><span class="lineno"> 1197</span>&#160;</div>
-<div class="line"><a name="l01198"></a><span class="lineno"> 1198</span>&#160;    $args = wp_parse_args( $passed_args, $defaults );</div>
-<div class="line"><a name="l01199"></a><span class="lineno"> 1199</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01200"></a><span class="lineno"> 1200</span>&#160;<span class="comment">    /**</span></div>
-<div class="line"><a name="l01201"></a><span class="lineno"> 1201</span>&#160;<span class="comment">     * @filter `gravityview/field_output/args` Modify the args before generation begins</span></div>
-<div class="line"><a name="l01202"></a><span class="lineno"> 1202</span>&#160;<span class="comment">     * @since 1.7</span></div>
-<div class="line"><a name="l01203"></a><span class="lineno"> 1203</span>&#160;<span class="comment">     * @param array $args Associative array; `field` and `form` is required.</span></div>
-<div class="line"><a name="l01204"></a><span class="lineno"> 1204</span>&#160;<span class="comment">     * @param array $passed_args Original associative array with field data. `field` and `form` are required.</span></div>
-<div class="line"><a name="l01205"></a><span class="lineno"> 1205</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l01206"></a><span class="lineno"> 1206</span>&#160;    $args = apply_filters( <span class="stringliteral">&#39;gravityview/field_output/args&#39;</span>, $args, $passed_args );</div>
-<div class="line"><a name="l01207"></a><span class="lineno"> 1207</span>&#160;</div>
-<div class="line"><a name="l01208"></a><span class="lineno"> 1208</span>&#160;    <span class="comment">// Required fields.</span></div>
-<div class="line"><a name="l01209"></a><span class="lineno"> 1209</span>&#160;    <span class="keywordflow">if</span> ( empty( $args[<span class="stringliteral">&#39;field&#39;</span>] ) || empty( $args[<span class="stringliteral">&#39;form&#39;</span>] ) ) {</div>
-<div class="line"><a name="l01210"></a><span class="lineno"> 1210</span>&#160;        do_action( <span class="stringliteral">&#39;gravityview_log_error&#39;</span>, <span class="stringliteral">&#39;[gravityview_field_output] Field or form are empty.&#39;</span>, $args );</div>
-<div class="line"><a name="l01211"></a><span class="lineno"> 1211</span>&#160;        <span class="keywordflow">return</span> <span class="stringliteral">&#39;&#39;</span>;</div>
-<div class="line"><a name="l01212"></a><span class="lineno"> 1212</span>&#160;    }</div>
-<div class="line"><a name="l01213"></a><span class="lineno"> 1213</span>&#160;</div>
-<div class="line"><a name="l01214"></a><span class="lineno"> 1214</span>&#160;    $entry = empty( $args[<span class="stringliteral">&#39;entry&#39;</span>] ) ? array() : $args[<span class="stringliteral">&#39;entry&#39;</span>];</div>
-<div class="line"><a name="l01215"></a><span class="lineno"> 1215</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01216"></a><span class="lineno"> 1216</span>&#160;<span class="comment">    /**</span></div>
-<div class="line"><a name="l01217"></a><span class="lineno"> 1217</span>&#160;<span class="comment">     * Create the Context for replacing.</span></div>
-<div class="line"><a name="l01218"></a><span class="lineno"> 1218</span>&#160;<span class="comment">     * @since 1.11</span></div>
-<div class="line"><a name="l01219"></a><span class="lineno"> 1219</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l01220"></a><span class="lineno"> 1220</span>&#160;    $context = array();</div>
-<div class="line"><a name="l01221"></a><span class="lineno"> 1221</span>&#160;</div>
-<div class="line"><a name="l01222"></a><span class="lineno"> 1222</span>&#160;    $context[<span class="stringliteral">&#39;value&#39;</span>] = <a class="code" href="class-api_8php.html#a996850d1aed2d0e88ab42f3a348913e9">gv_value</a>( $entry, $args[<span class="stringliteral">&#39;field&#39;</span>] );</div>
-<div class="line"><a name="l01223"></a><span class="lineno"> 1223</span>&#160;</div>
-<div class="line"><a name="l01224"></a><span class="lineno"> 1224</span>&#160;    <span class="comment">// If the value is empty and we&#39;re hiding empty, return empty.</span></div>
-<div class="line"><a name="l01225"></a><span class="lineno"> 1225</span>&#160;    <span class="keywordflow">if</span> ( $context[<span class="stringliteral">&#39;value&#39;</span>] === <span class="stringliteral">&#39;&#39;</span> &amp;&amp; ! empty( $args[<span class="stringliteral">&#39;hide_empty&#39;</span>] ) ) {</div>
-<div class="line"><a name="l01226"></a><span class="lineno"> 1226</span>&#160;        <span class="keywordflow">return</span> <span class="stringliteral">&#39;&#39;</span>;</div>
-<div class="line"><a name="l01227"></a><span class="lineno"> 1227</span>&#160;    }</div>
-<div class="line"><a name="l01228"></a><span class="lineno"> 1228</span>&#160;</div>
-<div class="line"><a name="l01229"></a><span class="lineno"> 1229</span>&#160;    <span class="keywordflow">if</span> ( $context[<span class="stringliteral">&#39;value&#39;</span>] !== <span class="stringliteral">&#39;&#39;</span> &amp;&amp; ! empty( $args[<span class="stringliteral">&#39;wpautop&#39;</span>] ) ) {</div>
-<div class="line"><a name="l01230"></a><span class="lineno"> 1230</span>&#160;        $context[<span class="stringliteral">&#39;value&#39;</span>] = wpautop( $context[<span class="stringliteral">&#39;value&#39;</span>] );</div>
-<div class="line"><a name="l01231"></a><span class="lineno"> 1231</span>&#160;    }</div>
+<div class="line"><a name="l01121"></a><span class="lineno"> 1121</span>&#160;<span class="comment"> * Returns array for each file, with the following keys:</span></div>
+<div class="line"><a name="l01122"></a><span class="lineno"> 1122</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l01123"></a><span class="lineno"> 1123</span>&#160;<span class="comment"> * `file_path` =&gt; The file path of the file, with a line break</span></div>
+<div class="line"><a name="l01124"></a><span class="lineno"> 1124</span>&#160;<span class="comment"> * `html` =&gt; The file output HTML formatted</span></div>
+<div class="line"><a name="l01125"></a><span class="lineno"> 1125</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l01126"></a><span class="lineno"> 1126</span>&#160;<span class="comment"> * @see GravityView_Field_FileUpload::get_files_array()</span></div>
+<div class="line"><a name="l01127"></a><span class="lineno"> 1127</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l01128"></a><span class="lineno"> 1128</span>&#160;<span class="comment"> * @since  1.2</span></div>
+<div class="line"><a name="l01129"></a><span class="lineno"> 1129</span>&#160;<span class="comment"> * @param  string $value    Field value passed by Gravity Forms. String of file URL, or serialized string of file URL array</span></div>
+<div class="line"><a name="l01130"></a><span class="lineno"> 1130</span>&#160;<span class="comment"> * @param  string $gv_class Field class to add to the output HTML</span></div>
+<div class="line"><a name="l01131"></a><span class="lineno"> 1131</span>&#160;<span class="comment"> * @return array           Array of file output, with `file_path` and `html` keys (see comments above)</span></div>
+<div class="line"><a name="l01132"></a><span class="lineno"> 1132</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l01133"></a><span class="lineno"><a class="line" href="class-api_8php.html#a8c5d61ca86e1065305fa15e4ca0eecf4"> 1133</a></span>&#160;<span class="keyword">function</span> <a class="code" href="class-api_8php.html#a8c5d61ca86e1065305fa15e4ca0eecf4">gravityview_get_files_array</a>( <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a>, $gv_class = <span class="stringliteral">&#39;&#39;</span> ) {</div>
+<div class="line"><a name="l01134"></a><span class="lineno"> 1134</span>&#160;</div>
+<div class="line"><a name="l01135"></a><span class="lineno"> 1135</span>&#160;    <span class="keywordflow">if</span>( !class_exists( <span class="stringliteral">&#39;GravityView_Field&#39;</span> ) ) {</div>
+<div class="line"><a name="l01136"></a><span class="lineno"> 1136</span>&#160;        include_once( <a class="code" href="gravityview_8php.html#a20e44631ea950946599dd5661090eb4d">GRAVITYVIEW_DIR</a> .<span class="stringliteral">&#39;includes/fields/class.field.php&#39;</span> );</div>
+<div class="line"><a name="l01137"></a><span class="lineno"> 1137</span>&#160;    }</div>
+<div class="line"><a name="l01138"></a><span class="lineno"> 1138</span>&#160;</div>
+<div class="line"><a name="l01139"></a><span class="lineno"> 1139</span>&#160;    <span class="keywordflow">if</span>( !class_exists( <span class="stringliteral">&#39;GravityView_Field_FileUpload&#39;</span> ) ) {</div>
+<div class="line"><a name="l01140"></a><span class="lineno"> 1140</span>&#160;        include_once( <a class="code" href="gravityview_8php.html#a20e44631ea950946599dd5661090eb4d">GRAVITYVIEW_DIR</a> .<span class="stringliteral">&#39;includes/fields/fileupload.php&#39;</span> );</div>
+<div class="line"><a name="l01141"></a><span class="lineno"> 1141</span>&#160;    }</div>
+<div class="line"><a name="l01142"></a><span class="lineno"> 1142</span>&#160;</div>
+<div class="line"><a name="l01143"></a><span class="lineno"> 1143</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="class_gravity_view___field___file_upload.html#ada186fd2cf53679a4936f454ed8c7b55">GravityView_Field_FileUpload::get_files_array</a>( <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a>, $gv_class );</div>
+<div class="line"><a name="l01144"></a><span class="lineno"> 1144</span>&#160;}</div>
+<div class="line"><a name="l01145"></a><span class="lineno"> 1145</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01146"></a><span class="lineno"> 1146</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l01147"></a><span class="lineno"> 1147</span>&#160;<span class="comment"> * Generate a mapping link from an address</span></div>
+<div class="line"><a name="l01148"></a><span class="lineno"> 1148</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l01149"></a><span class="lineno"> 1149</span>&#160;<span class="comment"> * The address should be plain text with new line (`\n`) or `&lt;br /&gt;` line breaks separating sections</span></div>
+<div class="line"><a name="l01150"></a><span class="lineno"> 1150</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l01151"></a><span class="lineno"> 1151</span>&#160;<span class="comment"> * @todo use GF&#39;s field get_export_value() instead</span></div>
+<div class="line"><a name="l01152"></a><span class="lineno"> 1152</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l01153"></a><span class="lineno"> 1153</span>&#160;<span class="comment"> * @link https://gravityview.co/support/documentation/201608159 Read how to modify the link</span></div>
+<div class="line"><a name="l01154"></a><span class="lineno"> 1154</span>&#160;<span class="comment"> * @param  string $address Address</span></div>
+<div class="line"><a name="l01155"></a><span class="lineno"> 1155</span>&#160;<span class="comment"> * @return string          URL of link to map of address</span></div>
+<div class="line"><a name="l01156"></a><span class="lineno"> 1156</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l01157"></a><span class="lineno"><a class="line" href="class-api_8php.html#a1fcec5623ca596b31aac2a8e5bc570d2"> 1157</a></span>&#160;<span class="keyword">function</span> <a class="code" href="class-api_8php.html#a1fcec5623ca596b31aac2a8e5bc570d2">gravityview_get_map_link</a>( $address ) {</div>
+<div class="line"><a name="l01158"></a><span class="lineno"> 1158</span>&#160;</div>
+<div class="line"><a name="l01159"></a><span class="lineno"> 1159</span>&#160;    $address_qs = str_replace( array( <span class="stringliteral">&#39;&lt;br /&gt;&#39;</span>, <span class="stringliteral">&quot;\n&quot;</span> ), <span class="charliteral">&#39; &#39;</span>, $address ); <span class="comment">// Replace \n with spaces</span></div>
+<div class="line"><a name="l01160"></a><span class="lineno"> 1160</span>&#160;    $address_qs = urlencode( $address_qs );</div>
+<div class="line"><a name="l01161"></a><span class="lineno"> 1161</span>&#160;</div>
+<div class="line"><a name="l01162"></a><span class="lineno"> 1162</span>&#160;    <a class="code" href="post__image_8php.html#acf215f34a917d014776ce684a9ee8909">$url</a> = <span class="stringliteral">&quot;https://maps.google.com/maps?q={$address_qs}&quot;</span>;</div>
+<div class="line"><a name="l01163"></a><span class="lineno"> 1163</span>&#160;</div>
+<div class="line"><a name="l01164"></a><span class="lineno"> 1164</span>&#160;    <a class="code" href="delete__link_8php.html#aabe6700a6326424ba662664adce40fa4">$link_text</a> = esc_html__( <span class="stringliteral">&#39;Map It&#39;</span>, <span class="stringliteral">&#39;gravityview&#39;</span> );</div>
+<div class="line"><a name="l01165"></a><span class="lineno"> 1165</span>&#160;</div>
+<div class="line"><a name="l01166"></a><span class="lineno"> 1166</span>&#160;    $link = <a class="code" href="class-common_8php.html#a60d3b046f6a51f0b696dbd81dd766919">gravityview_get_link</a>( <a class="code" href="post__image_8php.html#acf215f34a917d014776ce684a9ee8909">$url</a>, <a class="code" href="delete__link_8php.html#aabe6700a6326424ba662664adce40fa4">$link_text</a>, <span class="stringliteral">&#39;class=map-it-link&#39;</span> );</div>
+<div class="line"><a name="l01167"></a><span class="lineno"> 1167</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01168"></a><span class="lineno"> 1168</span>&#160;<span class="comment">    /**</span></div>
+<div class="line"><a name="l01169"></a><span class="lineno"> 1169</span>&#160;<span class="comment">     * @filter `gravityview_map_link` Modify the map link generated. You can use a different mapping service, for example.</span></div>
+<div class="line"><a name="l01170"></a><span class="lineno"> 1170</span>&#160;<span class="comment">     * @param[in,out]  string $link Map link</span></div>
+<div class="line"><a name="l01171"></a><span class="lineno"> 1171</span>&#160;<span class="comment">     * @param[in] string $address Address to generate link for</span></div>
+<div class="line"><a name="l01172"></a><span class="lineno"> 1172</span>&#160;<span class="comment">     * @param[in] string $url URL generated by the function</span></div>
+<div class="line"><a name="l01173"></a><span class="lineno"> 1173</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l01174"></a><span class="lineno"> 1174</span>&#160;    $link = apply_filters( <span class="stringliteral">&#39;gravityview_map_link&#39;</span>, $link, $address, <a class="code" href="post__image_8php.html#acf215f34a917d014776ce684a9ee8909">$url</a> );</div>
+<div class="line"><a name="l01175"></a><span class="lineno"> 1175</span>&#160;</div>
+<div class="line"><a name="l01176"></a><span class="lineno"> 1176</span>&#160;    <span class="keywordflow">return</span> $link;</div>
+<div class="line"><a name="l01177"></a><span class="lineno"> 1177</span>&#160;}</div>
+<div class="line"><a name="l01178"></a><span class="lineno"> 1178</span>&#160;</div>
+<div class="line"><a name="l01179"></a><span class="lineno"> 1179</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01180"></a><span class="lineno"> 1180</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l01181"></a><span class="lineno"> 1181</span>&#160;<span class="comment"> * Output field based on a certain html markup</span></div>
+<div class="line"><a name="l01182"></a><span class="lineno"> 1182</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l01183"></a><span class="lineno"> 1183</span>&#160;<span class="comment"> *   markup - string to be used on a sprintf statement.</span></div>
+<div class="line"><a name="l01184"></a><span class="lineno"> 1184</span>&#160;<span class="comment"> *      Use:</span></div>
+<div class="line"><a name="l01185"></a><span class="lineno"> 1185</span>&#160;<span class="comment"> *         {{label}} - field label</span></div>
+<div class="line"><a name="l01186"></a><span class="lineno"> 1186</span>&#160;<span class="comment"> *         {{value}} - entry field value</span></div>
+<div class="line"><a name="l01187"></a><span class="lineno"> 1187</span>&#160;<span class="comment"> *         {{class}} - field class</span></div>
+<div class="line"><a name="l01188"></a><span class="lineno"> 1188</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l01189"></a><span class="lineno"> 1189</span>&#160;<span class="comment"> *   wpautop - true will filter the value using wpautop function</span></div>
+<div class="line"><a name="l01190"></a><span class="lineno"> 1190</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l01191"></a><span class="lineno"> 1191</span>&#160;<span class="comment"> * @since  1.1.5</span></div>
+<div class="line"><a name="l01192"></a><span class="lineno"> 1192</span>&#160;<span class="comment"> * @param  array $passed_args Associative array with field data. `field` and `form` are required.</span></div>
+<div class="line"><a name="l01193"></a><span class="lineno"> 1193</span>&#160;<span class="comment"> * @return string Field output. If empty value and hide empty is true, return empty.</span></div>
+<div class="line"><a name="l01194"></a><span class="lineno"> 1194</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l01195"></a><span class="lineno"><a class="line" href="class-api_8php.html#aaf8ecfcc074818e29f34e943af7170bf"> 1195</a></span>&#160;<span class="keyword">function</span> <a class="code" href="class-api_8php.html#aaf8ecfcc074818e29f34e943af7170bf">gravityview_field_output</a>( $passed_args ) {</div>
+<div class="line"><a name="l01196"></a><span class="lineno"> 1196</span>&#160;    $defaults = array(</div>
+<div class="line"><a name="l01197"></a><span class="lineno"> 1197</span>&#160;        <span class="stringliteral">&#39;entry&#39;</span> =&gt; null,</div>
+<div class="line"><a name="l01198"></a><span class="lineno"> 1198</span>&#160;        <span class="stringliteral">&#39;field&#39;</span> =&gt; null,</div>
+<div class="line"><a name="l01199"></a><span class="lineno"> 1199</span>&#160;        <span class="stringliteral">&#39;form&#39;</span> =&gt; null,</div>
+<div class="line"><a name="l01200"></a><span class="lineno"> 1200</span>&#160;        <span class="stringliteral">&#39;hide_empty&#39;</span> =&gt; <span class="keyword">true</span>,</div>
+<div class="line"><a name="l01201"></a><span class="lineno"> 1201</span>&#160;        <span class="stringliteral">&#39;markup&#39;</span> =&gt; <span class="stringliteral">&#39;&lt;div id=&quot;{{ field_id }}&quot; class=&quot;{{ class }}&quot;&gt;{{label}}{{value}}&lt;/div&gt;&#39;</span>,</div>
+<div class="line"><a name="l01202"></a><span class="lineno"> 1202</span>&#160;        <span class="stringliteral">&#39;label_markup&#39;</span> =&gt; <span class="stringliteral">&#39;&#39;</span>,</div>
+<div class="line"><a name="l01203"></a><span class="lineno"> 1203</span>&#160;        <span class="stringliteral">&#39;wpautop&#39;</span> =&gt; <span class="keyword">false</span>,</div>
+<div class="line"><a name="l01204"></a><span class="lineno"> 1204</span>&#160;        <span class="stringliteral">&#39;zone_id&#39;</span> =&gt; null,</div>
+<div class="line"><a name="l01205"></a><span class="lineno"> 1205</span>&#160;    );</div>
+<div class="line"><a name="l01206"></a><span class="lineno"> 1206</span>&#160;</div>
+<div class="line"><a name="l01207"></a><span class="lineno"> 1207</span>&#160;    $args = wp_parse_args( $passed_args, $defaults );</div>
+<div class="line"><a name="l01208"></a><span class="lineno"> 1208</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01209"></a><span class="lineno"> 1209</span>&#160;<span class="comment">    /**</span></div>
+<div class="line"><a name="l01210"></a><span class="lineno"> 1210</span>&#160;<span class="comment">     * @filter `gravityview/field_output/args` Modify the args before generation begins</span></div>
+<div class="line"><a name="l01211"></a><span class="lineno"> 1211</span>&#160;<span class="comment">     * @since 1.7</span></div>
+<div class="line"><a name="l01212"></a><span class="lineno"> 1212</span>&#160;<span class="comment">     * @param array $args Associative array; `field` and `form` is required.</span></div>
+<div class="line"><a name="l01213"></a><span class="lineno"> 1213</span>&#160;<span class="comment">     * @param array $passed_args Original associative array with field data. `field` and `form` are required.</span></div>
+<div class="line"><a name="l01214"></a><span class="lineno"> 1214</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l01215"></a><span class="lineno"> 1215</span>&#160;    $args = apply_filters( <span class="stringliteral">&#39;gravityview/field_output/args&#39;</span>, $args, $passed_args );</div>
+<div class="line"><a name="l01216"></a><span class="lineno"> 1216</span>&#160;</div>
+<div class="line"><a name="l01217"></a><span class="lineno"> 1217</span>&#160;    <span class="comment">// Required fields.</span></div>
+<div class="line"><a name="l01218"></a><span class="lineno"> 1218</span>&#160;    <span class="keywordflow">if</span> ( empty( $args[<span class="stringliteral">&#39;field&#39;</span>] ) || empty( $args[<span class="stringliteral">&#39;form&#39;</span>] ) ) {</div>
+<div class="line"><a name="l01219"></a><span class="lineno"> 1219</span>&#160;        do_action( <span class="stringliteral">&#39;gravityview_log_error&#39;</span>, <span class="stringliteral">&#39;[gravityview_field_output] Field or form are empty.&#39;</span>, $args );</div>
+<div class="line"><a name="l01220"></a><span class="lineno"> 1220</span>&#160;        <span class="keywordflow">return</span> <span class="stringliteral">&#39;&#39;</span>;</div>
+<div class="line"><a name="l01221"></a><span class="lineno"> 1221</span>&#160;    }</div>
+<div class="line"><a name="l01222"></a><span class="lineno"> 1222</span>&#160;</div>
+<div class="line"><a name="l01223"></a><span class="lineno"> 1223</span>&#160;    $entry = empty( $args[<span class="stringliteral">&#39;entry&#39;</span>] ) ? array() : $args[<span class="stringliteral">&#39;entry&#39;</span>];</div>
+<div class="line"><a name="l01224"></a><span class="lineno"> 1224</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01225"></a><span class="lineno"> 1225</span>&#160;<span class="comment">    /**</span></div>
+<div class="line"><a name="l01226"></a><span class="lineno"> 1226</span>&#160;<span class="comment">     * Create the Context for replacing.</span></div>
+<div class="line"><a name="l01227"></a><span class="lineno"> 1227</span>&#160;<span class="comment">     * @since 1.11</span></div>
+<div class="line"><a name="l01228"></a><span class="lineno"> 1228</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l01229"></a><span class="lineno"> 1229</span>&#160;    $context = array();</div>
+<div class="line"><a name="l01230"></a><span class="lineno"> 1230</span>&#160;</div>
+<div class="line"><a name="l01231"></a><span class="lineno"> 1231</span>&#160;    $context[<span class="stringliteral">&#39;value&#39;</span>] = <a class="code" href="class-api_8php.html#a996850d1aed2d0e88ab42f3a348913e9">gv_value</a>( $entry, $args[<span class="stringliteral">&#39;field&#39;</span>] );</div>
 <div class="line"><a name="l01232"></a><span class="lineno"> 1232</span>&#160;</div>
-<div class="line"><a name="l01233"></a><span class="lineno"> 1233</span>&#160;    <span class="comment">// Get width setting, if exists</span></div>
-<div class="line"><a name="l01234"></a><span class="lineno"> 1234</span>&#160;    $context[<span class="stringliteral">&#39;width&#39;</span>] = <a class="code" href="class_gravity_view___a_p_i.html#a15073954314d509e2097cb0d49542e0a">GravityView_API::field_width</a>( $args[<span class="stringliteral">&#39;field&#39;</span>] );</div>
-<div class="line"><a name="l01235"></a><span class="lineno"> 1235</span>&#160;</div>
-<div class="line"><a name="l01236"></a><span class="lineno"> 1236</span>&#160;    <span class="comment">// If replacing with CSS inline formatting, let&#39;s do it.</span></div>
-<div class="line"><a name="l01237"></a><span class="lineno"> 1237</span>&#160;    $context[<span class="stringliteral">&#39;width:style&#39;</span>] = <a class="code" href="class_gravity_view___a_p_i.html#a15073954314d509e2097cb0d49542e0a">GravityView_API::field_width</a>( $args[<span class="stringliteral">&#39;field&#39;</span>], <span class="stringliteral">&#39;width:&#39;</span> . $context[<span class="stringliteral">&#39;width&#39;</span>] . <span class="stringliteral">&#39;%;&#39;</span> );</div>
-<div class="line"><a name="l01238"></a><span class="lineno"> 1238</span>&#160;</div>
-<div class="line"><a name="l01239"></a><span class="lineno"> 1239</span>&#160;    <span class="comment">// Grab the Class using `gv_class`</span></div>
-<div class="line"><a name="l01240"></a><span class="lineno"> 1240</span>&#160;    $context[<span class="stringliteral">&#39;class&#39;</span>] = <a class="code" href="class-api_8php.html#a43dc0e56f8632265c3f534e8785fafb7">gv_class</a>( $args[<span class="stringliteral">&#39;field&#39;</span>], $args[<span class="stringliteral">&#39;form&#39;</span>], $entry );</div>
-<div class="line"><a name="l01241"></a><span class="lineno"> 1241</span>&#160;    $context[<span class="stringliteral">&#39;field_id&#39;</span>] = <a class="code" href="class_gravity_view___a_p_i.html#a068422e13e185b337c8408480ccf07b0">GravityView_API::field_html_attr_id</a>( $args[<span class="stringliteral">&#39;field&#39;</span>], $args[<span class="stringliteral">&#39;form&#39;</span>], $entry );</div>
-<div class="line"><a name="l01242"></a><span class="lineno"> 1242</span>&#160;</div>
-<div class="line"><a name="l01243"></a><span class="lineno"> 1243</span>&#160;    <span class="comment">// Get field label if needed</span></div>
-<div class="line"><a name="l01244"></a><span class="lineno"> 1244</span>&#160;    <span class="keywordflow">if</span> ( ! empty( $args[<span class="stringliteral">&#39;label_markup&#39;</span>] ) ) {</div>
-<div class="line"><a name="l01245"></a><span class="lineno"> 1245</span>&#160;        $context[<span class="stringliteral">&#39;label&#39;</span>] = str_replace( array( <span class="stringliteral">&#39;{{label}}&#39;</span>, <span class="stringliteral">&#39;{{ label }}&#39;</span> ), <span class="stringliteral">&#39;&lt;span class=&quot;gv-field-label&quot;&gt;{{ label_value }}&lt;/span&gt;&#39;</span>, $args[<span class="stringliteral">&#39;label_markup&#39;</span>] );</div>
-<div class="line"><a name="l01246"></a><span class="lineno"> 1246</span>&#160;    }</div>
+<div class="line"><a name="l01233"></a><span class="lineno"> 1233</span>&#160;    <span class="comment">// If the value is empty and we&#39;re hiding empty, return empty.</span></div>
+<div class="line"><a name="l01234"></a><span class="lineno"> 1234</span>&#160;    <span class="keywordflow">if</span> ( $context[<span class="stringliteral">&#39;value&#39;</span>] === <span class="stringliteral">&#39;&#39;</span> &amp;&amp; ! empty( $args[<span class="stringliteral">&#39;hide_empty&#39;</span>] ) ) {</div>
+<div class="line"><a name="l01235"></a><span class="lineno"> 1235</span>&#160;        <span class="keywordflow">return</span> <span class="stringliteral">&#39;&#39;</span>;</div>
+<div class="line"><a name="l01236"></a><span class="lineno"> 1236</span>&#160;    }</div>
+<div class="line"><a name="l01237"></a><span class="lineno"> 1237</span>&#160;</div>
+<div class="line"><a name="l01238"></a><span class="lineno"> 1238</span>&#160;    <span class="keywordflow">if</span> ( $context[<span class="stringliteral">&#39;value&#39;</span>] !== <span class="stringliteral">&#39;&#39;</span> &amp;&amp; ! empty( $args[<span class="stringliteral">&#39;wpautop&#39;</span>] ) ) {</div>
+<div class="line"><a name="l01239"></a><span class="lineno"> 1239</span>&#160;        $context[<span class="stringliteral">&#39;value&#39;</span>] = wpautop( $context[<span class="stringliteral">&#39;value&#39;</span>] );</div>
+<div class="line"><a name="l01240"></a><span class="lineno"> 1240</span>&#160;    }</div>
+<div class="line"><a name="l01241"></a><span class="lineno"> 1241</span>&#160;</div>
+<div class="line"><a name="l01242"></a><span class="lineno"> 1242</span>&#160;    <span class="comment">// Get width setting, if exists</span></div>
+<div class="line"><a name="l01243"></a><span class="lineno"> 1243</span>&#160;    $context[<span class="stringliteral">&#39;width&#39;</span>] = <a class="code" href="class_gravity_view___a_p_i.html#a15073954314d509e2097cb0d49542e0a">GravityView_API::field_width</a>( $args[<span class="stringliteral">&#39;field&#39;</span>] );</div>
+<div class="line"><a name="l01244"></a><span class="lineno"> 1244</span>&#160;</div>
+<div class="line"><a name="l01245"></a><span class="lineno"> 1245</span>&#160;    <span class="comment">// If replacing with CSS inline formatting, let&#39;s do it.</span></div>
+<div class="line"><a name="l01246"></a><span class="lineno"> 1246</span>&#160;    $context[<span class="stringliteral">&#39;width:style&#39;</span>] = <a class="code" href="class_gravity_view___a_p_i.html#a15073954314d509e2097cb0d49542e0a">GravityView_API::field_width</a>( $args[<span class="stringliteral">&#39;field&#39;</span>], <span class="stringliteral">&#39;width:&#39;</span> . $context[<span class="stringliteral">&#39;width&#39;</span>] . <span class="stringliteral">&#39;%;&#39;</span> );</div>
 <div class="line"><a name="l01247"></a><span class="lineno"> 1247</span>&#160;</div>
-<div class="line"><a name="l01248"></a><span class="lineno"> 1248</span>&#160;    <span class="keywordflow">if</span> ( empty( $context[<span class="stringliteral">&#39;label&#39;</span>] ) ){</div>
-<div class="line"><a name="l01249"></a><span class="lineno"> 1249</span>&#160;        $context[<span class="stringliteral">&#39;label&#39;</span>] = <span class="stringliteral">&#39;&lt;span class=&quot;gv-field-label&quot;&gt;{{ label_value }}&lt;/span&gt;&#39;</span>;</div>
-<div class="line"><a name="l01250"></a><span class="lineno"> 1250</span>&#160;    }</div>
+<div class="line"><a name="l01248"></a><span class="lineno"> 1248</span>&#160;    <span class="comment">// Grab the Class using `gv_class`</span></div>
+<div class="line"><a name="l01249"></a><span class="lineno"> 1249</span>&#160;    $context[<span class="stringliteral">&#39;class&#39;</span>] = <a class="code" href="class-api_8php.html#a43dc0e56f8632265c3f534e8785fafb7">gv_class</a>( $args[<span class="stringliteral">&#39;field&#39;</span>], $args[<span class="stringliteral">&#39;form&#39;</span>], $entry );</div>
+<div class="line"><a name="l01250"></a><span class="lineno"> 1250</span>&#160;    $context[<span class="stringliteral">&#39;field_id&#39;</span>] = <a class="code" href="class_gravity_view___a_p_i.html#a068422e13e185b337c8408480ccf07b0">GravityView_API::field_html_attr_id</a>( $args[<span class="stringliteral">&#39;field&#39;</span>], $args[<span class="stringliteral">&#39;form&#39;</span>], $entry );</div>
 <div class="line"><a name="l01251"></a><span class="lineno"> 1251</span>&#160;</div>
-<div class="line"><a name="l01252"></a><span class="lineno"> 1252</span>&#160;    <span class="comment">// Default Label value</span></div>
-<div class="line"><a name="l01253"></a><span class="lineno"> 1253</span>&#160;    $context[<span class="stringliteral">&#39;label_value&#39;</span>] = <a class="code" href="class-api_8php.html#a103630d5e3fb2ca5f573fe0dd8bbaa9a">gv_label</a>( $args[<span class="stringliteral">&#39;field&#39;</span>], $entry );</div>
-<div class="line"><a name="l01254"></a><span class="lineno"> 1254</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01255"></a><span class="lineno"> 1255</span>&#160;<span class="comment">    /**</span></div>
-<div class="line"><a name="l01256"></a><span class="lineno"> 1256</span>&#160;<span class="comment">     * @filter `gravityview/field_output/pre_html` Allow Pre filtering of the HTML</span></div>
-<div class="line"><a name="l01257"></a><span class="lineno"> 1257</span>&#160;<span class="comment">     * @since 1.11</span></div>
-<div class="line"><a name="l01258"></a><span class="lineno"> 1258</span>&#160;<span class="comment">     * @param string $markup The HTML for the markup</span></div>
-<div class="line"><a name="l01259"></a><span class="lineno"> 1259</span>&#160;<span class="comment">     * @param array $args All args for the field output</span></div>
-<div class="line"><a name="l01260"></a><span class="lineno"> 1260</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l01261"></a><span class="lineno"> 1261</span>&#160;    <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a> = apply_filters( <span class="stringliteral">&#39;gravityview/field_output/pre_html&#39;</span>, $args[<span class="stringliteral">&#39;markup&#39;</span>], $args );</div>
-<div class="line"><a name="l01262"></a><span class="lineno"> 1262</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01263"></a><span class="lineno"> 1263</span>&#160;<span class="comment">    /**</span></div>
-<div class="line"><a name="l01264"></a><span class="lineno"> 1264</span>&#160;<span class="comment">     * @filter `gravityview/field_output/open_tag` Modify the opening tags for the template content placeholders</span></div>
-<div class="line"><a name="l01265"></a><span class="lineno"> 1265</span>&#160;<span class="comment">     * @since 1.11</span></div>
-<div class="line"><a name="l01266"></a><span class="lineno"> 1266</span>&#160;<span class="comment">     * @param string $open_tag Open tag for template content placeholders. Default: `{{`</span></div>
-<div class="line"><a name="l01267"></a><span class="lineno"> 1267</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l01268"></a><span class="lineno"> 1268</span>&#160;    $open_tag = apply_filters( <span class="stringliteral">&#39;gravityview/field_output/open_tag&#39;</span>, <span class="stringliteral">&#39;{{&#39;</span>, $args );</div>
-<div class="line"><a name="l01269"></a><span class="lineno"> 1269</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01270"></a><span class="lineno"> 1270</span>&#160;<span class="comment">    /**</span></div>
-<div class="line"><a name="l01271"></a><span class="lineno"> 1271</span>&#160;<span class="comment">     * @filter `gravityview/field_output/close_tag` Modify the closing tags for the template content placeholders</span></div>
-<div class="line"><a name="l01272"></a><span class="lineno"> 1272</span>&#160;<span class="comment">     * @since 1.11</span></div>
-<div class="line"><a name="l01273"></a><span class="lineno"> 1273</span>&#160;<span class="comment">     * @param string $close_tag Close tag for template content placeholders. Default: `}}`</span></div>
-<div class="line"><a name="l01274"></a><span class="lineno"> 1274</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l01275"></a><span class="lineno"> 1275</span>&#160;    $close_tag = apply_filters( <span class="stringliteral">&#39;gravityview/field_output/close_tag&#39;</span>, <span class="stringliteral">&#39;}}&#39;</span>, $args );</div>
-<div class="line"><a name="l01276"></a><span class="lineno"> 1276</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01277"></a><span class="lineno"> 1277</span>&#160;<span class="comment">    /**</span></div>
-<div class="line"><a name="l01278"></a><span class="lineno"> 1278</span>&#160;<span class="comment">     * Loop through each of the tags to replace and replace both `{{tag}}` and `{{ tag }}` with the values</span></div>
-<div class="line"><a name="l01279"></a><span class="lineno"> 1279</span>&#160;<span class="comment">     * @since 1.11</span></div>
-<div class="line"><a name="l01280"></a><span class="lineno"> 1280</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l01281"></a><span class="lineno"> 1281</span>&#160;    <span class="keywordflow">foreach</span> ( $context as $tag =&gt; <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a> ) {</div>
-<div class="line"><a name="l01282"></a><span class="lineno"> 1282</span>&#160;</div>
-<div class="line"><a name="l01283"></a><span class="lineno"> 1283</span>&#160;        <span class="comment">// If the tag doesn&#39;t exist just skip it</span></div>
-<div class="line"><a name="l01284"></a><span class="lineno"> 1284</span>&#160;        <span class="keywordflow">if</span> ( <span class="keyword">false</span> === strpos( <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a>, $open_tag . $tag . $close_tag ) &amp;&amp; <span class="keyword">false</span> === strpos( <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a>, $open_tag . <span class="charliteral">&#39; &#39;</span> . $tag . <span class="charliteral">&#39; &#39;</span> . $close_tag ) ){</div>
-<div class="line"><a name="l01285"></a><span class="lineno"> 1285</span>&#160;            <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l01286"></a><span class="lineno"> 1286</span>&#160;        }</div>
-<div class="line"><a name="l01287"></a><span class="lineno"> 1287</span>&#160;</div>
-<div class="line"><a name="l01288"></a><span class="lineno"> 1288</span>&#160;        <span class="comment">// Array to search</span></div>
-<div class="line"><a name="l01289"></a><span class="lineno"> 1289</span>&#160;        $search = array(</div>
-<div class="line"><a name="l01290"></a><span class="lineno"> 1290</span>&#160;            $open_tag . $tag . $close_tag,</div>
-<div class="line"><a name="l01291"></a><span class="lineno"> 1291</span>&#160;            $open_tag . <span class="charliteral">&#39; &#39;</span> . $tag . <span class="charliteral">&#39; &#39;</span> . $close_tag,</div>
-<div class="line"><a name="l01292"></a><span class="lineno"> 1292</span>&#160;        );</div>
-<div class="line"><a name="l01293"></a><span class="lineno"> 1293</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01294"></a><span class="lineno"> 1294</span>&#160;<span class="comment">        /**</span></div>
-<div class="line"><a name="l01295"></a><span class="lineno"> 1295</span>&#160;<span class="comment">         * `gravityview/field_output/context/{$tag}` Allow users to filter content on context</span></div>
-<div class="line"><a name="l01296"></a><span class="lineno"> 1296</span>&#160;<span class="comment">         * @since 1.11</span></div>
-<div class="line"><a name="l01297"></a><span class="lineno"> 1297</span>&#160;<span class="comment">         * @param string $value The content to be shown instead of the {{tag}} placeholder</span></div>
-<div class="line"><a name="l01298"></a><span class="lineno"> 1298</span>&#160;<span class="comment">         * @param array $args Arguments passed to the function</span></div>
-<div class="line"><a name="l01299"></a><span class="lineno"> 1299</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l01300"></a><span class="lineno"> 1300</span>&#160;        <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a> = apply_filters( <span class="stringliteral">&#39;gravityview/field_output/context/&#39;</span> . $tag, <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a>, $args );</div>
-<div class="line"><a name="l01301"></a><span class="lineno"> 1301</span>&#160;</div>
-<div class="line"><a name="l01302"></a><span class="lineno"> 1302</span>&#160;        <span class="comment">// Finally do the replace</span></div>
-<div class="line"><a name="l01303"></a><span class="lineno"> 1303</span>&#160;        <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a> = str_replace( $search, <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a>, <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a> );</div>
-<div class="line"><a name="l01304"></a><span class="lineno"> 1304</span>&#160;    }</div>
-<div class="line"><a name="l01305"></a><span class="lineno"> 1305</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01306"></a><span class="lineno"> 1306</span>&#160;<span class="comment">    /**</span></div>
-<div class="line"><a name="l01307"></a><span class="lineno"> 1307</span>&#160;<span class="comment">     * @todo  Depricate `gravityview_field_output`</span></div>
-<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l01309"></a><span class="lineno"> 1309</span>&#160;    <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a> = apply_filters( <span class="stringliteral">&#39;gravityview_field_output&#39;</span>, <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a>, $args );</div>
-<div class="line"><a name="l01310"></a><span class="lineno"> 1310</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01311"></a><span class="lineno"> 1311</span>&#160;<span class="comment">    /**</span></div>
-<div class="line"><a name="l01312"></a><span class="lineno"> 1312</span>&#160;<span class="comment">     * @filter `gravityview/field_output/html` Modify field HTML output</span></div>
-<div class="line"><a name="l01313"></a><span class="lineno"> 1313</span>&#160;<span class="comment">     * @param string $html Existing HTML output</span></div>
-<div class="line"><a name="l01314"></a><span class="lineno"> 1314</span>&#160;<span class="comment">     * @param array $args Arguments passed to the function</span></div>
-<div class="line"><a name="l01315"></a><span class="lineno"> 1315</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l01316"></a><span class="lineno"> 1316</span>&#160;    <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a> = apply_filters( <span class="stringliteral">&#39;gravityview/field_output/html&#39;</span>, <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a>, $args );</div>
-<div class="line"><a name="l01317"></a><span class="lineno"> 1317</span>&#160;</div>
-<div class="line"><a name="l01318"></a><span class="lineno"> 1318</span>&#160;    <span class="comment">// Just free up a tiny amount of memory</span></div>
-<div class="line"><a name="l01319"></a><span class="lineno"> 1319</span>&#160;    unset( <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a>, $args, $passed_args, $entry, $context, $search, $open_tag, $tag, $close_tag );</div>
-<div class="line"><a name="l01320"></a><span class="lineno"> 1320</span>&#160;</div>
-<div class="line"><a name="l01321"></a><span class="lineno"> 1321</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a>;</div>
-<div class="line"><a name="l01322"></a><span class="lineno"> 1322</span>&#160;}</div>
-<div class="line"><a name="l01323"></a><span class="lineno"> 1323</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l01324"></a><span class="lineno"> 1324</span>&#160;<span class="comment">/**</span></div>
-<div class="line"><a name="l01325"></a><span class="lineno"> 1325</span>&#160;<span class="comment"> * Similar to the WordPress `selected()`, `checked()`, and `disabled()` functions, except it allows arrays to be passed as current value</span></div>
-<div class="line"><a name="l01326"></a><span class="lineno"> 1326</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l01327"></a><span class="lineno"> 1327</span>&#160;<span class="comment"> * @see selected() WordPress core function</span></div>
-<div class="line"><a name="l01328"></a><span class="lineno"> 1328</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l01329"></a><span class="lineno"> 1329</span>&#160;<span class="comment"> * @param string $value One of the values to compare</span></div>
-<div class="line"><a name="l01330"></a><span class="lineno"> 1330</span>&#160;<span class="comment"> * @param mixed $current (true) The other value to compare if not just true</span></div>
-<div class="line"><a name="l01331"></a><span class="lineno"> 1331</span>&#160;<span class="comment"> * @param bool $echo Whether to echo or just return the string</span></div>
-<div class="line"><a name="l01332"></a><span class="lineno"> 1332</span>&#160;<span class="comment"> * @param string $type The type of checked|selected|disabled we are doing</span></div>
-<div class="line"><a name="l01333"></a><span class="lineno"> 1333</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l01334"></a><span class="lineno"> 1334</span>&#160;<span class="comment"> * @return string html attribute or empty string</span></div>
-<div class="line"><a name="l01335"></a><span class="lineno"> 1335</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l01336"></a><span class="lineno"><a class="line" href="class-api_8php.html#a3dce437306333d7376a0ba7e9db088c7"> 1336</a></span>&#160;<span class="keyword">function</span> <a class="code" href="class-api_8php.html#a3dce437306333d7376a0ba7e9db088c7">gv_selected</a>( <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a>, $current, $echo = <span class="keyword">true</span>, $type = <span class="stringliteral">&#39;selected&#39;</span> ) {</div>
-<div class="line"><a name="l01337"></a><span class="lineno"> 1337</span>&#160;</div>
-<div class="line"><a name="l01338"></a><span class="lineno"> 1338</span>&#160;    <a class="code" href="edit__link_8php.html#a73004ce9cd673c1bfafd1dc351134797">$output</a> = <span class="stringliteral">&#39;&#39;</span>;</div>
-<div class="line"><a name="l01339"></a><span class="lineno"> 1339</span>&#160;    <span class="keywordflow">if</span>( is_array( $current ) ) {</div>
-<div class="line"><a name="l01340"></a><span class="lineno"> 1340</span>&#160;        <span class="keywordflow">if</span>( in_array( <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a>, $current ) ) {</div>
-<div class="line"><a name="l01341"></a><span class="lineno"> 1341</span>&#160;            <a class="code" href="edit__link_8php.html#a73004ce9cd673c1bfafd1dc351134797">$output</a> = __checked_selected_helper( <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">false</span>, $type );</div>
-<div class="line"><a name="l01342"></a><span class="lineno"> 1342</span>&#160;        }</div>
-<div class="line"><a name="l01343"></a><span class="lineno"> 1343</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l01344"></a><span class="lineno"> 1344</span>&#160;        <a class="code" href="edit__link_8php.html#a73004ce9cd673c1bfafd1dc351134797">$output</a> = __checked_selected_helper( <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a>, $current, <span class="keyword">false</span>, $type );</div>
-<div class="line"><a name="l01345"></a><span class="lineno"> 1345</span>&#160;    }</div>
-<div class="line"><a name="l01346"></a><span class="lineno"> 1346</span>&#160;</div>
-<div class="line"><a name="l01347"></a><span class="lineno"> 1347</span>&#160;    <span class="keywordflow">if</span>( $echo ) {</div>
-<div class="line"><a name="l01348"></a><span class="lineno"> 1348</span>&#160;        echo <a class="code" href="edit__link_8php.html#a73004ce9cd673c1bfafd1dc351134797">$output</a>;</div>
-<div class="line"><a name="l01349"></a><span class="lineno"> 1349</span>&#160;    }</div>
-<div class="line"><a name="l01350"></a><span class="lineno"> 1350</span>&#160;</div>
-<div class="line"><a name="l01351"></a><span class="lineno"> 1351</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="edit__link_8php.html#a73004ce9cd673c1bfafd1dc351134797">$output</a>;</div>
-<div class="line"><a name="l01352"></a><span class="lineno"> 1352</span>&#160;}</div>
-<div class="line"><a name="l01353"></a><span class="lineno"> 1353</span>&#160;</div>
+<div class="line"><a name="l01252"></a><span class="lineno"> 1252</span>&#160;    <span class="comment">// Get field label if needed</span></div>
+<div class="line"><a name="l01253"></a><span class="lineno"> 1253</span>&#160;    <span class="keywordflow">if</span> ( ! empty( $args[<span class="stringliteral">&#39;label_markup&#39;</span>] ) ) {</div>
+<div class="line"><a name="l01254"></a><span class="lineno"> 1254</span>&#160;        $context[<span class="stringliteral">&#39;label&#39;</span>] = str_replace( array( <span class="stringliteral">&#39;{{label}}&#39;</span>, <span class="stringliteral">&#39;{{ label }}&#39;</span> ), <span class="stringliteral">&#39;&lt;span class=&quot;gv-field-label&quot;&gt;{{ label_value }}&lt;/span&gt;&#39;</span>, $args[<span class="stringliteral">&#39;label_markup&#39;</span>] );</div>
+<div class="line"><a name="l01255"></a><span class="lineno"> 1255</span>&#160;    }</div>
+<div class="line"><a name="l01256"></a><span class="lineno"> 1256</span>&#160;</div>
+<div class="line"><a name="l01257"></a><span class="lineno"> 1257</span>&#160;    <span class="keywordflow">if</span> ( empty( $context[<span class="stringliteral">&#39;label&#39;</span>] ) ){</div>
+<div class="line"><a name="l01258"></a><span class="lineno"> 1258</span>&#160;        $context[<span class="stringliteral">&#39;label&#39;</span>] = <span class="stringliteral">&#39;&lt;span class=&quot;gv-field-label&quot;&gt;{{ label_value }}&lt;/span&gt;&#39;</span>;</div>
+<div class="line"><a name="l01259"></a><span class="lineno"> 1259</span>&#160;    }</div>
+<div class="line"><a name="l01260"></a><span class="lineno"> 1260</span>&#160;</div>
+<div class="line"><a name="l01261"></a><span class="lineno"> 1261</span>&#160;    <span class="comment">// Default Label value</span></div>
+<div class="line"><a name="l01262"></a><span class="lineno"> 1262</span>&#160;    $context[<span class="stringliteral">&#39;label_value&#39;</span>] = <a class="code" href="class-api_8php.html#a103630d5e3fb2ca5f573fe0dd8bbaa9a">gv_label</a>( $args[<span class="stringliteral">&#39;field&#39;</span>], $entry );</div>
+<div class="line"><a name="l01263"></a><span class="lineno"> 1263</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01264"></a><span class="lineno"> 1264</span>&#160;<span class="comment">    /**</span></div>
+<div class="line"><a name="l01265"></a><span class="lineno"> 1265</span>&#160;<span class="comment">     * @filter `gravityview/field_output/pre_html` Allow Pre filtering of the HTML</span></div>
+<div class="line"><a name="l01266"></a><span class="lineno"> 1266</span>&#160;<span class="comment">     * @since 1.11</span></div>
+<div class="line"><a name="l01267"></a><span class="lineno"> 1267</span>&#160;<span class="comment">     * @param string $markup The HTML for the markup</span></div>
+<div class="line"><a name="l01268"></a><span class="lineno"> 1268</span>&#160;<span class="comment">     * @param array $args All args for the field output</span></div>
+<div class="line"><a name="l01269"></a><span class="lineno"> 1269</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l01270"></a><span class="lineno"> 1270</span>&#160;    <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a> = apply_filters( <span class="stringliteral">&#39;gravityview/field_output/pre_html&#39;</span>, $args[<span class="stringliteral">&#39;markup&#39;</span>], $args );</div>
+<div class="line"><a name="l01271"></a><span class="lineno"> 1271</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01272"></a><span class="lineno"> 1272</span>&#160;<span class="comment">    /**</span></div>
+<div class="line"><a name="l01273"></a><span class="lineno"> 1273</span>&#160;<span class="comment">     * @filter `gravityview/field_output/open_tag` Modify the opening tags for the template content placeholders</span></div>
+<div class="line"><a name="l01274"></a><span class="lineno"> 1274</span>&#160;<span class="comment">     * @since 1.11</span></div>
+<div class="line"><a name="l01275"></a><span class="lineno"> 1275</span>&#160;<span class="comment">     * @param string $open_tag Open tag for template content placeholders. Default: `{{`</span></div>
+<div class="line"><a name="l01276"></a><span class="lineno"> 1276</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l01277"></a><span class="lineno"> 1277</span>&#160;    $open_tag = apply_filters( <span class="stringliteral">&#39;gravityview/field_output/open_tag&#39;</span>, <span class="stringliteral">&#39;{{&#39;</span>, $args );</div>
+<div class="line"><a name="l01278"></a><span class="lineno"> 1278</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01279"></a><span class="lineno"> 1279</span>&#160;<span class="comment">    /**</span></div>
+<div class="line"><a name="l01280"></a><span class="lineno"> 1280</span>&#160;<span class="comment">     * @filter `gravityview/field_output/close_tag` Modify the closing tags for the template content placeholders</span></div>
+<div class="line"><a name="l01281"></a><span class="lineno"> 1281</span>&#160;<span class="comment">     * @since 1.11</span></div>
+<div class="line"><a name="l01282"></a><span class="lineno"> 1282</span>&#160;<span class="comment">     * @param string $close_tag Close tag for template content placeholders. Default: `}}`</span></div>
+<div class="line"><a name="l01283"></a><span class="lineno"> 1283</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l01284"></a><span class="lineno"> 1284</span>&#160;    $close_tag = apply_filters( <span class="stringliteral">&#39;gravityview/field_output/close_tag&#39;</span>, <span class="stringliteral">&#39;}}&#39;</span>, $args );</div>
+<div class="line"><a name="l01285"></a><span class="lineno"> 1285</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01286"></a><span class="lineno"> 1286</span>&#160;<span class="comment">    /**</span></div>
+<div class="line"><a name="l01287"></a><span class="lineno"> 1287</span>&#160;<span class="comment">     * Loop through each of the tags to replace and replace both `{{tag}}` and `{{ tag }}` with the values</span></div>
+<div class="line"><a name="l01288"></a><span class="lineno"> 1288</span>&#160;<span class="comment">     * @since 1.11</span></div>
+<div class="line"><a name="l01289"></a><span class="lineno"> 1289</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l01290"></a><span class="lineno"> 1290</span>&#160;    <span class="keywordflow">foreach</span> ( $context as $tag =&gt; <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a> ) {</div>
+<div class="line"><a name="l01291"></a><span class="lineno"> 1291</span>&#160;</div>
+<div class="line"><a name="l01292"></a><span class="lineno"> 1292</span>&#160;        <span class="comment">// If the tag doesn&#39;t exist just skip it</span></div>
+<div class="line"><a name="l01293"></a><span class="lineno"> 1293</span>&#160;        <span class="keywordflow">if</span> ( <span class="keyword">false</span> === strpos( <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a>, $open_tag . $tag . $close_tag ) &amp;&amp; <span class="keyword">false</span> === strpos( <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a>, $open_tag . <span class="charliteral">&#39; &#39;</span> . $tag . <span class="charliteral">&#39; &#39;</span> . $close_tag ) ){</div>
+<div class="line"><a name="l01294"></a><span class="lineno"> 1294</span>&#160;            <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l01295"></a><span class="lineno"> 1295</span>&#160;        }</div>
+<div class="line"><a name="l01296"></a><span class="lineno"> 1296</span>&#160;</div>
+<div class="line"><a name="l01297"></a><span class="lineno"> 1297</span>&#160;        <span class="comment">// Array to search</span></div>
+<div class="line"><a name="l01298"></a><span class="lineno"> 1298</span>&#160;        $search = array(</div>
+<div class="line"><a name="l01299"></a><span class="lineno"> 1299</span>&#160;            $open_tag . $tag . $close_tag,</div>
+<div class="line"><a name="l01300"></a><span class="lineno"> 1300</span>&#160;            $open_tag . <span class="charliteral">&#39; &#39;</span> . $tag . <span class="charliteral">&#39; &#39;</span> . $close_tag,</div>
+<div class="line"><a name="l01301"></a><span class="lineno"> 1301</span>&#160;        );</div>
+<div class="line"><a name="l01302"></a><span class="lineno"> 1302</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01303"></a><span class="lineno"> 1303</span>&#160;<span class="comment">        /**</span></div>
+<div class="line"><a name="l01304"></a><span class="lineno"> 1304</span>&#160;<span class="comment">         * `gravityview/field_output/context/{$tag}` Allow users to filter content on context</span></div>
+<div class="line"><a name="l01305"></a><span class="lineno"> 1305</span>&#160;<span class="comment">         * @since 1.11</span></div>
+<div class="line"><a name="l01306"></a><span class="lineno"> 1306</span>&#160;<span class="comment">         * @param string $value The content to be shown instead of the {{tag}} placeholder</span></div>
+<div class="line"><a name="l01307"></a><span class="lineno"> 1307</span>&#160;<span class="comment">         * @param array $args Arguments passed to the function</span></div>
+<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l01309"></a><span class="lineno"> 1309</span>&#160;        <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a> = apply_filters( <span class="stringliteral">&#39;gravityview/field_output/context/&#39;</span> . $tag, <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a>, $args );</div>
+<div class="line"><a name="l01310"></a><span class="lineno"> 1310</span>&#160;</div>
+<div class="line"><a name="l01311"></a><span class="lineno"> 1311</span>&#160;        <span class="comment">// Finally do the replace</span></div>
+<div class="line"><a name="l01312"></a><span class="lineno"> 1312</span>&#160;        <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a> = str_replace( $search, <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a>, <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a> );</div>
+<div class="line"><a name="l01313"></a><span class="lineno"> 1313</span>&#160;    }</div>
+<div class="line"><a name="l01314"></a><span class="lineno"> 1314</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01315"></a><span class="lineno"> 1315</span>&#160;<span class="comment">    /**</span></div>
+<div class="line"><a name="l01316"></a><span class="lineno"> 1316</span>&#160;<span class="comment">     * @todo  Depricate `gravityview_field_output`</span></div>
+<div class="line"><a name="l01317"></a><span class="lineno"> 1317</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l01318"></a><span class="lineno"> 1318</span>&#160;    <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a> = apply_filters( <span class="stringliteral">&#39;gravityview_field_output&#39;</span>, <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a>, $args );</div>
+<div class="line"><a name="l01319"></a><span class="lineno"> 1319</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01320"></a><span class="lineno"> 1320</span>&#160;<span class="comment">    /**</span></div>
+<div class="line"><a name="l01321"></a><span class="lineno"> 1321</span>&#160;<span class="comment">     * @filter `gravityview/field_output/html` Modify field HTML output</span></div>
+<div class="line"><a name="l01322"></a><span class="lineno"> 1322</span>&#160;<span class="comment">     * @param string $html Existing HTML output</span></div>
+<div class="line"><a name="l01323"></a><span class="lineno"> 1323</span>&#160;<span class="comment">     * @param array $args Arguments passed to the function</span></div>
+<div class="line"><a name="l01324"></a><span class="lineno"> 1324</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l01325"></a><span class="lineno"> 1325</span>&#160;    <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a> = apply_filters( <span class="stringliteral">&#39;gravityview/field_output/html&#39;</span>, <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a>, $args );</div>
+<div class="line"><a name="l01326"></a><span class="lineno"> 1326</span>&#160;</div>
+<div class="line"><a name="l01327"></a><span class="lineno"> 1327</span>&#160;    <span class="comment">// Just free up a tiny amount of memory</span></div>
+<div class="line"><a name="l01328"></a><span class="lineno"> 1328</span>&#160;    unset( <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a>, $args, $passed_args, $entry, $context, $search, $open_tag, $tag, $close_tag );</div>
+<div class="line"><a name="l01329"></a><span class="lineno"> 1329</span>&#160;</div>
+<div class="line"><a name="l01330"></a><span class="lineno"> 1330</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="demo_8php.html#a6f96e7fc92441776c9d1cd3386663b40">$html</a>;</div>
+<div class="line"><a name="l01331"></a><span class="lineno"> 1331</span>&#160;}</div>
+<div class="line"><a name="l01332"></a><span class="lineno"> 1332</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l01333"></a><span class="lineno"> 1333</span>&#160;<span class="comment">/**</span></div>
+<div class="line"><a name="l01334"></a><span class="lineno"> 1334</span>&#160;<span class="comment"> * Similar to the WordPress `selected()`, `checked()`, and `disabled()` functions, except it allows arrays to be passed as current value</span></div>
+<div class="line"><a name="l01335"></a><span class="lineno"> 1335</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l01336"></a><span class="lineno"> 1336</span>&#160;<span class="comment"> * @todo Move to helper-functions.php</span></div>
+<div class="line"><a name="l01337"></a><span class="lineno"> 1337</span>&#160;<span class="comment"> * @see selected() WordPress core function</span></div>
+<div class="line"><a name="l01338"></a><span class="lineno"> 1338</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l01339"></a><span class="lineno"> 1339</span>&#160;<span class="comment"> * @param string $value One of the values to compare</span></div>
+<div class="line"><a name="l01340"></a><span class="lineno"> 1340</span>&#160;<span class="comment"> * @param mixed $current (true) The other value to compare if not just true</span></div>
+<div class="line"><a name="l01341"></a><span class="lineno"> 1341</span>&#160;<span class="comment"> * @param bool $echo Whether to echo or just return the string</span></div>
+<div class="line"><a name="l01342"></a><span class="lineno"> 1342</span>&#160;<span class="comment"> * @param string $type The type of checked|selected|disabled we are doing</span></div>
+<div class="line"><a name="l01343"></a><span class="lineno"> 1343</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l01344"></a><span class="lineno"> 1344</span>&#160;<span class="comment"> * @return string html attribute or empty string</span></div>
+<div class="line"><a name="l01345"></a><span class="lineno"> 1345</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l01346"></a><span class="lineno"><a class="line" href="class-api_8php.html#a3dce437306333d7376a0ba7e9db088c7"> 1346</a></span>&#160;<span class="keyword">function</span> <a class="code" href="class-api_8php.html#a3dce437306333d7376a0ba7e9db088c7">gv_selected</a>( <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a>, $current, $echo = <span class="keyword">true</span>, $type = <span class="stringliteral">&#39;selected&#39;</span> ) {</div>
+<div class="line"><a name="l01347"></a><span class="lineno"> 1347</span>&#160;</div>
+<div class="line"><a name="l01348"></a><span class="lineno"> 1348</span>&#160;    <a class="code" href="edit__link_8php.html#a73004ce9cd673c1bfafd1dc351134797">$output</a> = <span class="stringliteral">&#39;&#39;</span>;</div>
+<div class="line"><a name="l01349"></a><span class="lineno"> 1349</span>&#160;    <span class="keywordflow">if</span>( is_array( $current ) ) {</div>
+<div class="line"><a name="l01350"></a><span class="lineno"> 1350</span>&#160;        <span class="keywordflow">if</span>( in_array( <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a>, $current ) ) {</div>
+<div class="line"><a name="l01351"></a><span class="lineno"> 1351</span>&#160;            <a class="code" href="edit__link_8php.html#a73004ce9cd673c1bfafd1dc351134797">$output</a> = __checked_selected_helper( <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">false</span>, $type );</div>
+<div class="line"><a name="l01352"></a><span class="lineno"> 1352</span>&#160;        }</div>
+<div class="line"><a name="l01353"></a><span class="lineno"> 1353</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l01354"></a><span class="lineno"> 1354</span>&#160;        <a class="code" href="edit__link_8php.html#a73004ce9cd673c1bfafd1dc351134797">$output</a> = __checked_selected_helper( <a class="code" href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a>, $current, <span class="keyword">false</span>, $type );</div>
+<div class="line"><a name="l01355"></a><span class="lineno"> 1355</span>&#160;    }</div>
+<div class="line"><a name="l01356"></a><span class="lineno"> 1356</span>&#160;</div>
+<div class="line"><a name="l01357"></a><span class="lineno"> 1357</span>&#160;    <span class="keywordflow">if</span>( $echo ) {</div>
+<div class="line"><a name="l01358"></a><span class="lineno"> 1358</span>&#160;        echo <a class="code" href="edit__link_8php.html#a73004ce9cd673c1bfafd1dc351134797">$output</a>;</div>
+<div class="line"><a name="l01359"></a><span class="lineno"> 1359</span>&#160;    }</div>
+<div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;</div>
+<div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="edit__link_8php.html#a73004ce9cd673c1bfafd1dc351134797">$output</a>;</div>
+<div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160;}</div>
+<div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160;</div>
 <div class="ttc" id="class-api_8php_html_a272d62e60761052f809ed9d8eef3f5d6"><div class="ttname"><a href="class-api_8php.html#a272d62e60761052f809ed9d8eef3f5d6">gravityview_get_view_id</a></div><div class="ttdeci">gravityview_get_view_id()</div><div class="ttdoc">Get the current View ID being rendered. </div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l01085">class-api.php:1085</a></div></div>
 <div class="ttc" id="gravityview_8php_html_a20e44631ea950946599dd5661090eb4d"><div class="ttname"><a href="gravityview_8php.html#a20e44631ea950946599dd5661090eb4d">GRAVITYVIEW_DIR</a></div><div class="ttdeci">const GRAVITYVIEW_DIR</div><div class="ttdoc">The absolute path to the plugin directory  "GRAVITYVIEW_DIR" "./". </div><div class="ttdef"><b>Definition:</b> <a href="gravityview_8php_source.html#l00050">gravityview.php:50</a></div></div>
 <div class="ttc" id="post__image_8php_html_acf215f34a917d014776ce684a9ee8909"><div class="ttname"><a href="post__image_8php.html#acf215f34a917d014776ce684a9ee8909">$url</a></div><div class="ttdeci">$url</div><div class="ttdef"><b>Definition:</b> <a href="post__image_8php_source.html#l00025">post_image.php:25</a></div></div>
@@ -1453,8 +1463,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="search-field-date__range_8php_html_a0c65dd34fabd83d988f4b165d68fd897"><div class="ttname"><a href="search-field-date__range_8php.html#a0c65dd34fabd83d988f4b165d68fd897">$value</a></div><div class="ttdeci">$value</div><div class="ttdef"><b>Definition:</b> <a href="search-field-date__range_8php_source.html#l00010">search-field-date_range.php:10</a></div></div>
 <div class="ttc" id="class_g_v_common_html_a5f35d41c9252949ce2462f9ea47f68f3"><div class="ttname"><a href="class_g_v_common.html#a5f35d41c9252949ce2462f9ea47f68f3">GVCommon\get_entry</a></div><div class="ttdeci">static get_entry($entry_slug, $force_allow_ids=false)</div><div class="ttdoc">Return a single entry object. </div><div class="ttdef"><b>Definition:</b> <a href="class-common_8php_source.html#l00529">class-common.php:529</a></div></div>
 <div class="ttc" id="class_gravity_view___a_p_i_html_acf131abd5aba2047a9653344a90f15ca"><div class="ttname"><a href="class_gravity_view___a_p_i.html#acf131abd5aba2047a9653344a90f15ca">GravityView_API\replace_variables</a></div><div class="ttdeci">static replace_variables($text, $form, $entry)</div><div class="ttdoc">Alias for GravityView_Merge_Tags::replace_variables() </div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l00104">class-api.php:104</a></div></div>
-<div class="ttc" id="class_gravity_view___post___types_html_a085ec8b051478372a819a6082c389e92"><div class="ttname"><a href="class_gravity_view___post___types.html#a085ec8b051478372a819a6082c389e92">GravityView_Post_Types\get_entry_var_name</a></div><div class="ttdeci">static get_entry_var_name()</div><div class="ttdoc">Return the query var / end point name for the entry. </div><div class="ttdef"><b>Definition:</b> <a href="class-post-types_8php_source.html#l00121">class-post-types.php:121</a></div></div>
-<div class="ttc" id="class-api_8php_html_aaf8ecfcc074818e29f34e943af7170bf"><div class="ttname"><a href="class-api_8php.html#aaf8ecfcc074818e29f34e943af7170bf">gravityview_field_output</a></div><div class="ttdeci">gravityview_field_output($passed_args)</div><div class="ttdoc">Output field based on a certain html markup. </div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l01186">class-api.php:1186</a></div></div>
+<div class="ttc" id="class_gravity_view___post___types_html_a085ec8b051478372a819a6082c389e92"><div class="ttname"><a href="class_gravity_view___post___types.html#a085ec8b051478372a819a6082c389e92">GravityView_Post_Types\get_entry_var_name</a></div><div class="ttdeci">static get_entry_var_name()</div><div class="ttdoc">Return the query var / end point name for the entry. </div><div class="ttdef"><b>Definition:</b> <a href="class-post-types_8php_source.html#l00125">class-post-types.php:125</a></div></div>
+<div class="ttc" id="class-api_8php_html_aaf8ecfcc074818e29f34e943af7170bf"><div class="ttname"><a href="class-api_8php.html#aaf8ecfcc074818e29f34e943af7170bf">gravityview_field_output</a></div><div class="ttdeci">gravityview_field_output($passed_args)</div><div class="ttdoc">Output field based on a certain html markup. </div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l01195">class-api.php:1195</a></div></div>
 <div class="ttc" id="class-api_8php_html_a63ec2a5b744a0d7e18fdd14228873256"><div class="ttname"><a href="class-api_8php.html#a63ec2a5b744a0d7e18fdd14228873256">gravityview_after</a></div><div class="ttdeci">gravityview_after()</div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l01071">class-api.php:1071</a></div></div>
 <div class="ttc" id="delete__link_8php_html_add47a7f886e74847997a4044e9903a0a"><div class="ttname"><a href="delete__link_8php.html#add47a7f886e74847997a4044e9903a0a">$gravityview_view</a></div><div class="ttdeci">$gravityview_view</div><div class="ttdef"><b>Definition:</b> <a href="delete__link_8php_source.html#l00003">delete_link.php:3</a></div></div>
 <div class="ttc" id="class-api_8php_html_a0568cffc3f6f030998655825918ded3b"><div class="ttname"><a href="class-api_8php.html#a0568cffc3f6f030998655825918ded3b">gv_directory_link</a></div><div class="ttdeci">gv_directory_link($post=NULL, $add_pagination=true)</div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l00734">class-api.php:734</a></div></div>
@@ -1483,11 +1493,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="class-api_8php_html_a563a6d2d705afea7adf0cdf99039570a"><div class="ttname"><a href="class-api_8php.html#a563a6d2d705afea7adf0cdf99039570a">gravityview_get_the_term_list</a></div><div class="ttdeci">gravityview_get_the_term_list($post_id, $link=true, $taxonomy= 'post_tag')</div><div class="ttdoc">Get the links for post_tags and post_category output based on post ID. </div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l00865">class-api.php:865</a></div></div>
 <div class="ttc" id="class_gravity_view___a_p_i_html_a258ab10c3ff0b3e14e8b7c4abde2b373"><div class="ttname"><a href="class_gravity_view___a_p_i.html#a258ab10c3ff0b3e14e8b7c4abde2b373">GravityView_API\get_custom_entry_slug</a></div><div class="ttdeci">static get_custom_entry_slug($id, $entry=array())</div><div class="ttdoc">Calculate an unique hash for an entry based on the entry ID. </div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l00517">class-api.php:517</a></div></div>
 <div class="ttc" id="class-api_8php_html_a5b93e2caa245a3df4723a23d9033a73e"><div class="ttname"><a href="class-api_8php.html#a5b93e2caa245a3df4723a23d9033a73e">gravityview_header</a></div><div class="ttdeci">gravityview_header()</div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l01055">class-api.php:1055</a></div></div>
-<div class="ttc" id="class-api_8php_html_a3dce437306333d7376a0ba7e9db088c7"><div class="ttname"><a href="class-api_8php.html#a3dce437306333d7376a0ba7e9db088c7">gv_selected</a></div><div class="ttdeci">gv_selected($value, $current, $echo=true, $type= 'selected')</div><div class="ttdoc">Similar to the WordPress selected(), checked(), and disabled() functions, except it allows arrays to ...</div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l01336">class-api.php:1336</a></div></div>
+<div class="ttc" id="class-api_8php_html_a3dce437306333d7376a0ba7e9db088c7"><div class="ttname"><a href="class-api_8php.html#a3dce437306333d7376a0ba7e9db088c7">gv_selected</a></div><div class="ttdeci">gv_selected($value, $current, $echo=true, $type= 'selected')</div><div class="ttdoc">Similar to the WordPress selected(), checked(), and disabled() functions, except it allows arrays to ...</div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l01346">class-api.php:1346</a></div></div>
 <div class="ttc" id="class-common_8php_html_a60d3b046f6a51f0b696dbd81dd766919"><div class="ttname"><a href="class-common_8php.html#a60d3b046f6a51f0b696dbd81dd766919">gravityview_get_link</a></div><div class="ttdeci">gravityview_get_link($href= '', $anchor_text= '', $atts=array())</div><div class="ttdoc">Generate an HTML anchor tag with a list of supported attributes. </div><div class="ttdef"><b>Definition:</b> <a href="class-common_8php_source.html#l01299">class-common.php:1299</a></div></div>
-<div class="ttc" id="class-api_8php_html_a8c5d61ca86e1065305fa15e4ca0eecf4"><div class="ttname"><a href="class-api_8php.html#a8c5d61ca86e1065305fa15e4ca0eecf4">gravityview_get_files_array</a></div><div class="ttdeci">gravityview_get_files_array($value, $gv_class= '')</div><div class="ttdoc">Return an array of files prepared for output. </div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l01126">class-api.php:1126</a></div></div>
+<div class="ttc" id="class-api_8php_html_a8c5d61ca86e1065305fa15e4ca0eecf4"><div class="ttname"><a href="class-api_8php.html#a8c5d61ca86e1065305fa15e4ca0eecf4">gravityview_get_files_array</a></div><div class="ttdeci">gravityview_get_files_array($value, $gv_class= '')</div><div class="ttdoc">Return an array of files prepared for output. </div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l01133">class-api.php:1133</a></div></div>
 <div class="ttc" id="class_gravity_view__frontend_html_a82bef2b1d87ccbf19928b71e43c43592"><div class="ttname"><a href="class_gravity_view__frontend.html#a82bef2b1d87ccbf19928b71e43c43592">GravityView_frontend\is_single_entry</a></div><div class="ttdeci">static is_single_entry()</div><div class="ttdoc">Verify if user requested a single entry view. </div><div class="ttdef"><b>Definition:</b> <a href="class-frontend-views_8php_source.html#l01084">class-frontend-views.php:1084</a></div></div>
-<div class="ttc" id="class-api_8php_html_a1fcec5623ca596b31aac2a8e5bc570d2"><div class="ttname"><a href="class-api_8php.html#a1fcec5623ca596b31aac2a8e5bc570d2">gravityview_get_map_link</a></div><div class="ttdeci">gravityview_get_map_link($address)</div><div class="ttdoc">Generate a mapping link from an address. </div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l01148">class-api.php:1148</a></div></div>
+<div class="ttc" id="class-api_8php_html_a1fcec5623ca596b31aac2a8e5bc570d2"><div class="ttname"><a href="class-api_8php.html#a1fcec5623ca596b31aac2a8e5bc570d2">gravityview_get_map_link</a></div><div class="ttdeci">gravityview_get_map_link($address)</div><div class="ttdoc">Generate a mapping link from an address. </div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l01157">class-api.php:1157</a></div></div>
 <div class="ttc" id="other__entries_8php_html_a61ce92a251f8ce1d28919fdfc3dd33a7"><div class="ttname"><a href="other__entries_8php.html#a61ce92a251f8ce1d28919fdfc3dd33a7">$form_id</a></div><div class="ttdeci">if(empty($created_by)) $form_id</div><div class="ttdef"><b>Definition:</b> <a href="other__entries_8php_source.html#l00020">other_entries.php:20</a></div></div>
 <div class="ttc" id="edit__link_8php_html_a73004ce9cd673c1bfafd1dc351134797"><div class="ttname"><a href="edit__link_8php.html#a73004ce9cd673c1bfafd1dc351134797">$output</a></div><div class="ttdeci">$output</div><div class="ttdef"><b>Definition:</b> <a href="edit__link_8php_source.html#l00018">edit_link.php:18</a></div></div>
 <div class="ttc" id="class_gravity_view___a_p_i_html_a62e2b0880db3367470d6349c7cb2fbd9"><div class="ttname"><a href="class_gravity_view___a_p_i.html#a62e2b0880db3367470d6349c7cb2fbd9">GravityView_API\no_results</a></div><div class="ttdeci">static no_results($wpautop=true)</div><div class="ttdoc">Get the "No Results" text depending on whether there were results. </div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l00384">class-api.php:384</a></div></div>

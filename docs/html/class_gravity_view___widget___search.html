@@ -375,9 +375,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Enqueue the datepicker script. </p>
 <p>It sets the $gravityview-&gt;datepicker_class parameter</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>Use own datepicker javascript instead of GF datepicker.js - that way, we can localize the settings and not require the changeMonth and changeYear pickers. <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>Use own datepicker javascript instead of GF datepicker.js - that way, we can localize the settings and not require the changeMonth and changeYear pickers. <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000075">Runs Filter:</a></b></dt><dd><code>gravityview_search_datepicker_class</code><br />
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000086">Runs Filter:</a></b></dt><dd><code>gravityview_search_datepicker_class</code><br />
 Modify the CSS class for the datepicker, used by the CSS class is used by Gravity Forms' javascript to determine the format for the date picker. The <code>gv-datepicker</code> class is required by the <a class="el" href="namespace_gravity_view.html" title="GPL2+ ">GravityView</a> datepicker javascript. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$css_class</td><td>CSS class to use. Default: <code>gv-datepicker datepicker mdy</code> <br />
@@ -424,7 +424,7 @@ Options are:<ul>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>array </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000073">Runs Filter:</a></b></dt><dd><code>gravityview_date_created_adjust_timezone</code> Whether to adjust the timezone for entries. <br />
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000084">Runs Filter:</a></b></dt><dd><code>gravityview_date_created_adjust_timezone</code> Whether to adjust the timezone for entries. <br />
 date_created is stored in UTC format. Convert search date into UTC (also used on <a class="el" href="date__created_8php.html">templates/fields/date_created.php</a>) <dl class="section since"><dt>Since</dt><dd>1.12 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -434,7 +434,7 @@ date_created is stored in UTC format. Convert search date into UTC (also used on
   </dd>
 </dl>
 </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000074">Runs Filter:</a></b></dt><dd><code>gravityview/search/mode</code> Set the Search Mode (<code>all</code> or <code>any</code>) <dl class="section since"><dt>Since</dt><dd>1.5.1 </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000085">Runs Filter:</a></b></dt><dd><code>gravityview/search/mode</code> Set the Search Mode (<code>all</code> or <code>any</code>) <dl class="section since"><dt>Since</dt><dd>1.5.1 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramtype">string</td><td class="paramname">$mode</td><td>Search mode (<code>any</code> vs <code>all</code>) </td></tr>
@@ -798,7 +798,7 @@ date_created is stored in UTC format. Convert search date into UTC (also used on
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>string GV field search input type ('multi', 'boolean', 'select', 'date', 'text') </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000072">Runs Filter:</a></b></dt><dd><code>gravityview/extension/search/input_type</code> Modify the search form input type based on field type <dl class="params"><dt>Parameters</dt><dd>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000083">Runs Filter:</a></b></dt><dd><code>gravityview/extension/search/input_type</code> Modify the search form input type based on field type <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$input_type</td><td>Assign an input type according to the form field type </td></tr>
     <tr><td class="paramtype">string</td><td class="paramname">$field_type</td><td>Gravity Forms field type </td></tr>

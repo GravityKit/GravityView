@@ -98,13 +98,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <dt><a class="anchor" id="_todo000003"></a>Global <a class="el" href="class_gravity_view___admin___approve_entries.html#a01efcb8f8db956d31ca3acac37097706">GravityView_Admin_ApproveEntries::set_defaults</a>  ()</dt>
 <dd>Convert to a partial include file  public <dl class="section return"><dt>Returns</dt><dd>void  </dd></dl>
 </dd>
-<dt><a class="anchor" id="_todo000006"></a>Global <a class="el" href="class_gravity_view___cache.html#a8d877b7260ddde6760073be796c22de5">GravityView_Cache::delete</a>  ($form_ids=NULL)</dt>
+<dt><a class="anchor" id="_todo000008"></a>Global <a class="el" href="class_gravity_view___cache.html#a8d877b7260ddde6760073be796c22de5">GravityView_Cache::delete</a>  ($form_ids=NULL)</dt>
 <dd><p class="startdd">Use REGEX to match forms when array of form IDs is passed, instead of using a simple LIKE </p>
 <p class="enddd">Rate limit deleting to prevent abuse </p>
 </dd>
-<dt><a class="anchor" id="_todo000012"></a>Global <a class="el" href="class_gravity_view___edit___entry___render.html#ac418a2852eaa586f66f4b1c89b7d98e1">GravityView_Edit_Entry_Render::user_can_edit_entry</a>  ($echo=false)</dt>
+<dt><a class="anchor" id="_todo000014"></a>Global <a class="el" href="class_gravity_view___edit___entry___render.html#ac418a2852eaa586f66f4b1c89b7d98e1">GravityView_Edit_Entry_Render::user_can_edit_entry</a>  ($echo=false)</dt>
 <dd>Move to <a class="el" href="class_g_v_common.html" title="If this file is called directly, abort. ">GVCommon</a> </dd>
-<dt><a class="anchor" id="_todo000013"></a>Global <a class="el" href="class_gravity_view___field___file_upload.html#ada186fd2cf53679a4936f454ed8c7b55">GravityView_Field_FileUpload::get_files_array</a>  ($value, $gv_class)</dt>
+<dt><a class="anchor" id="_todo000015"></a>Global <a class="el" href="class_gravity_view___field___file_upload.html#ada186fd2cf53679a4936f454ed8c7b55">GravityView_Field_FileUpload::get_files_array</a>  ($value, $gv_class)</dt>
 <dd>Support <code>playlist</code> shortcode for playlist of video/audio <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$value</td><td>Field value passed by Gravity Forms. String of file URL, or serialized string of file URL array </td></tr>
@@ -114,9 +114,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>array Array of file output, with <code>file_path</code> and <code>html</code> keys (see comments above)  </dd></dl>
 </dd>
-<dt><a class="anchor" id="_todo000005"></a>globalScope&gt; Global <a class="el" href="class-api_8php.html#aaf8ecfcc074818e29f34e943af7170bf">gravityview_field_output</a>  ($passed_args)</dt>
+<dt><a class="anchor" id="_todo000006"></a>globalScope&gt; Global <a class="el" href="class-api_8php.html#aaf8ecfcc074818e29f34e943af7170bf">gravityview_field_output</a>  ($passed_args)</dt>
 <dd>Depricate <code>gravityview_field_output</code>  </dd>
-<dt><a class="anchor" id="_todo000008"></a>Global <a class="el" href="class_gravity_view__frontend.html#a4621823ee38de36bced6a6dca680c7bd">GravityView_frontend::process_search_dates</a>  ($args, $search_criteria)</dt>
+<dt><a class="anchor" id="_todo000010"></a>Global <a class="el" href="class_gravity_view__frontend.html#a4621823ee38de36bced6a6dca680c7bd">GravityView_frontend::process_search_dates</a>  ($args, $search_criteria)</dt>
 <dd>Compress into one <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">array</td><td class="paramname">$args</td><td>View settings </td></tr>
@@ -126,27 +126,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>array Modified <code>$search_criteria</code> array  </dd></dl>
 </dd>
+<dt><a class="anchor" id="_todo000005"></a>globalScope&gt; Global <a class="el" href="class-api_8php.html#a1fcec5623ca596b31aac2a8e5bc570d2">gravityview_get_map_link</a>  ($address)</dt>
+<dd>use GF's field get_export_value() instead </dd>
 <dt><a class="anchor" id="_todo000002"></a>Global <a class="el" href="class_gravity_view___plugin.html#acc39c3cf876aeb2167b72e03c919c713">GravityView_Plugin::get_default_widget_areas</a>  ()</dt>
 <dd>Move somewhere logical <dl class="section return"><dt>Returns</dt><dd>array definition for default widget areas  </dd></dl>
 </dd>
 <dt><a class="anchor" id="_todo000001"></a>Global <a class="el" href="class_gravity_view___plugin.html#a0826d9ff26200be7e450aa618e273476">GravityView_Plugin::register_default_templates</a>  ()</dt>
 <dd>Move somehere logical <dl class="section return"><dt>Returns</dt><dd>void  </dd></dl>
 </dd>
-<dt><a class="anchor" id="_todo000010"></a>Global <a class="el" href="class_gravity_view___post___types.html#a11b55957fc8cc22977d2c83356f8204d">GravityView_Post_Types::no_views_text</a>  ()</dt>
+<dt><a class="anchor" id="_todo000012"></a>Global <a class="el" href="class_gravity_view___post___types.html#a11b55957fc8cc22977d2c83356f8204d">GravityView_Post_Types::no_views_text</a>  ()</dt>
 <dd>Move somewhere appropriate. <dl class="section return"><dt>Returns</dt><dd>string HTML message with no container tags.  </dd></dl>
 </dd>
-<dt><a class="anchor" id="_todo000015"></a>globalScope&gt; Global <a class="el" href="register-gravityview-widgets_8php.html#a6fccc4aee3d8edda9cdbd6db17cc8bc4">gravityview_register_gravityview_widgets</a>  ()</dt>
+<dt><a class="anchor" id="_todo000017"></a>globalScope&gt; Global <a class="el" href="register-gravityview-widgets_8php.html#a6fccc4aee3d8edda9cdbd6db17cc8bc4">gravityview_register_gravityview_widgets</a>  ()</dt>
 <dd>Move somehere logical <dl class="section return"><dt>Returns</dt><dd>void  </dd></dl>
 </dd>
-<dt><a class="anchor" id="_todo000014"></a>Global <a class="el" href="class_gravity_view___widget___poll.html#a095c5d389db211932136b53f25f39685">GravityView_Widget_Poll::__construct</a>  ()</dt>
+<dt><a class="anchor" id="_todo000016"></a>Global <a class="el" href="class_gravity_view___widget___poll.html#a095c5d389db211932136b53f25f39685">GravityView_Widget_Poll::__construct</a>  ()</dt>
 <dd>add support for specifying poll field to display (via AJAX in field settings) <dl class="section since"><dt>Since</dt><dd>1.8  </dd></dl>
 </dd>
-<dt><a class="anchor" id="_todo000016"></a>Global <a class="el" href="class_gravity_view___widget___search.html#af46bf2cf1627fe08d1b921dcc43ed6a7">GravityView_Widget_Search::enqueue_datepicker</a>  ()</dt>
+<dt><a class="anchor" id="_todo000018"></a>Global <a class="el" href="class_gravity_view___widget___search.html#af46bf2cf1627fe08d1b921dcc43ed6a7">GravityView_Widget_Search::enqueue_datepicker</a>  ()</dt>
 <dd>Use own datepicker javascript instead of GF datepicker.js - that way, we can localize the settings and not require the changeMonth and changeYear pickers. <dl class="section return"><dt>Returns</dt><dd>void  </dd></dl>
 </dd>
-<dt><a class="anchor" id="_todo000007"></a>Global <a class="el" href="class_g_v_common.html#aad99a99f86fabfa067ef5ca9988f48be">GVCommon::get_sortable_fields_array</a>  ($formid, $blacklist=array( 'list', 'textarea'))</dt>
+<dt><a class="anchor" id="_todo000007"></a>globalScope&gt; Global <a class="el" href="class-api_8php.html#a3dce437306333d7376a0ba7e9db088c7">gv_selected</a>  ($value, $current, $echo=true, $type= 'selected')</dt>
+<dd>Move to <a class="el" href="helper-functions_8php.html">helper-functions.php</a> <dl class="section see"><dt>See also</dt><dd>selected() WordPress core function </dd></dl>
+</dd>
+<dt><a class="anchor" id="_todo000009"></a>Global <a class="el" href="class_g_v_common.html#aad99a99f86fabfa067ef5ca9988f48be">GVCommon::get_sortable_fields_array</a>  ($formid, $blacklist=array( 'list', 'textarea'))</dt>
 <dd>Get all fields, check if sortable dynamically </dd>
-<dt><a class="anchor" id="_todo000009"></a>Global <a class="el" href="class_g_v_logic___shortcode.html#a4cd8ccf1f20e7ab4ec2ec2cdd5e5d6da">GVLogic_Shortcode::set_content_and_else_content</a>  ()</dt>
+<dt><a class="anchor" id="_todo000011"></a>Global <a class="el" href="class_g_v_logic___shortcode.html#a4cd8ccf1f20e7ab4ec2ec2cdd5e5d6da">GVLogic_Shortcode::set_content_and_else_content</a>  ()</dt>
 <dd>allow for chains of [else if="{another field:123}" is="example"] - requires registering [else] shortcode... <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 </dd>
 </dl>

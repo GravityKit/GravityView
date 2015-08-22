@@ -224,7 +224,7 @@ Data Fields</h2></td></tr>
 <li><code>html</code> =&gt; The file output HTML formatted</li>
 </ul>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>Support <code>playlist</code> shortcode for playlist of video/audio <dl class="params"><dt>Parameters</dt><dd>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>Support <code>playlist</code> shortcode for playlist of video/audio <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$value</td><td>Field value passed by Gravity Forms. String of file URL, or serialized string of file URL array </td></tr>
     <tr><td class="paramtype">string</td><td class="paramname">$gv_class</td><td>Field class to add to the output HTML </td></tr>
@@ -233,7 +233,7 @@ Data Fields</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>array Array of file output, with <code>file_path</code> and <code>html</code> keys (see comments above) </dd></dl>
 </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000065">Runs Filter:</a></b></dt><dd><code>gravityview_audio_settings</code> Modify the settings passed to the <code>wp_video_shortcode()</code> function <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000076">Runs Filter:</a></b></dt><dd><code>gravityview_audio_settings</code> Modify the settings passed to the <code>wp_video_shortcode()</code> function <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">array</td><td class="paramname">$audio_settings</td><td>Array with <code>src</code> and <code>class</code> keys </td></tr>
@@ -241,13 +241,13 @@ Data Fields</h2></td></tr>
   </dd>
 </dl>
 </dd></dl>
-<p>Generate the audio shortcode <a class="el" href=""><a href="https://developer.wordpress.org/reference/functions/wp_audio_shortcode/">https://developer.wordpress.org/reference/functions/wp_audio_shortcode/</a>  filters 66. Generate the video shortcode  <a href="http://codex.wordpress.org/Video_Shortcode">http://codex.wordpress.org/Video_Shortcode</a>  <a href="https://developer.wordpress.org/reference/functions/wp_video_shortcode/">https://developer.wordpress.org/reference/functions/wp_video_shortcode/</a>  filters 67. Modify the link text (defaults to the file name)  1.7  string $content The existing anchor content. Could be <code>&lt;img&gt;</code> tag, audio/video embed or the file name  array $field GravityView array of the current field being processed Modify the files array  1.7  array $output_arr Associative array of files {  string $file_path The path to the file as stored in Gravity Forms  string $content The generated output for the file }  array $field GravityView array of the current field being processed </a></p>
+<p>Generate the audio shortcode <a class="el" href=""><a href="https://developer.wordpress.org/reference/functions/wp_audio_shortcode/">https://developer.wordpress.org/reference/functions/wp_audio_shortcode/</a>  filters 77. Generate the video shortcode  <a href="http://codex.wordpress.org/Video_Shortcode">http://codex.wordpress.org/Video_Shortcode</a>  <a href="https://developer.wordpress.org/reference/functions/wp_video_shortcode/">https://developer.wordpress.org/reference/functions/wp_video_shortcode/</a>  filters 78. Modify the link text (defaults to the file name)  1.7  string $content The existing anchor content. Could be <code>&lt;img&gt;</code> tag, audio/video embed or the file name  array $field GravityView array of the current field being processed Modify the files array  1.7  array $output_arr Associative array of files {  string $file_path The path to the file as stored in Gravity Forms  string $content The generated output for the file }  array $field GravityView array of the current field being processed </a></p>
 
 <p>Definition at line <a class="el" href="includes_2fields_2fileupload_8php_source.html#l00046">46</a> of file <a class="el" href="includes_2fields_2fileupload_8php_source.html">includes/fields/fileupload.php</a>.</p>
 
 <p>References <a class="el" href="templates_2fields_2custom_8php_source.html#l00036">$content</a>, <a class="el" href="gquiz__grade_8php_source.html#l00011">$field</a>, <a class="el" href="templates_2fields_2custom_8php_source.html#l00026">$field_settings</a>, <a class="el" href="delete__link_8php_source.html#l00003">$gravityview_view</a>, <a class="el" href="post__image_8php_source.html#l00099">$image</a>, <a class="el" href="edit__link_8php_source.html#l00016">$link_atts</a>, <a class="el" href="search-field-date__range_8php_source.html#l00010">$value</a>, <a class="el" href="class-api_8php_source.html#l00622">GravityView_API\entry_link()</a>, <a class="el" href="class-template_8php_source.html#l00190">GravityView_View\getInstance()</a>, and <a class="el" href="class-api_8php_source.html#l01093">gravityview_get_context()</a>.</p>
 
-<p>Referenced by <a class="el" href="class-api_8php_source.html#l01126">gravityview_get_files_array()</a>.</p>
+<p>Referenced by <a class="el" href="class-api_8php_source.html#l01133">gravityview_get_files_array()</a>.</p>
 
 </div>
 </div>

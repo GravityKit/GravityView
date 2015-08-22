@@ -84,7 +84,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
-<dt><a class="anchor" id="_filters000062"></a>globalScope&gt; Global <a class="el" href="form-buttons_8php.html#a607f96b0c77b634aa2b973ac832e4514">$back_link</a>  </dt>
+<dt><a class="anchor" id="_filters000073"></a>globalScope&gt; Global <a class="el" href="form-buttons_8php.html#a607f96b0c77b634aa2b973ac832e4514">$back_link</a>  </dt>
 <dd><code>gravityview/edit_entry/cancel_link</code> Modify the cancel button link URL <dl class="section since"><dt>Since</dt><dd>1.11.1 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -104,11 +104,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000013"></a>Global <a class="el" href="class_gravity_view___admin.html#a1ce3d7eea1151cce26dbbb4f93f1bec1">GravityView_Admin::is_admin_page</a>  ($hook= '', $page=NULL)</dt>
+<dt><a class="anchor" id="_filters000014"></a>Global <a class="el" href="class_gravity_view___admin.html#a1ce3d7eea1151cce26dbbb4f93f1bec1">GravityView_Admin::is_admin_page</a>  ($hook= '', $page=NULL)</dt>
 <dd><code>gravityview_is_admin_page</code> Is the current admin page a GravityView-related page? <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramtype">string&#160;|&#160;bool</td><td class="paramname">$is_page</td><td>If false, no. If string, the name of the page (<code>single</code>, <code>settings</code>, or <code>views</code>) </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramtype">string</td><td class="paramname">$hook</td><td>The name of the page to check against. Is passed to the method.  </td></tr>
+  </table>
+  </dd>
+</dl>
+</dd>
+<dt><a class="anchor" id="_filters000013"></a>Global <a class="el" href="class_gravity_view___admin.html#aacdb3ff3b6cb04e545151773a6dfa897">GravityView_Admin::remove_conflicts</a>  (&amp;$wp_objects, $required_objects, $type= 'scripts')</dt>
+<dd><code>gravityview_noconflict_{$type}</code> Modify the list of no conflict scripts or styles<br />
+Filter is <code>gravityview_noconflict_scripts</code> or <code>gravityview_noconflict_styles</code> <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">array</td><td class="paramname">$required_objects</td><td></td></tr>
   </table>
   </dd>
 </dl>
@@ -156,7 +165,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000035"></a>Global <a class="el" href="class_gravity_view___a_p_i.html#a2c8526de0ea974f94dcfc8c34b41d7fa">GravityView_API::entry_create_custom_slug</a>  ($entry, $form)</dt>
+<dt><a class="anchor" id="_filters000037"></a>Global <a class="el" href="class_gravity_view___a_p_i.html#a2c8526de0ea974f94dcfc8c34b41d7fa">GravityView_API::entry_create_custom_slug</a>  ($entry, $form)</dt>
 <dd><code>gravityview_custom_entry_slug</code> On entry creation, check if we are using the custom entry slug feature and update the meta <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">boolean</td><td class="paramname">$custom</td><td>Should we process the custom entry slug?  </td></tr>
@@ -164,7 +173,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000031"></a>Global <a class="el" href="class_gravity_view___a_p_i.html#a691fcd7ec7551e0bbbbb11a7a0659e78">GravityView_API::entry_link_html</a>  ($entry=array(), $anchor_text= '', $passed_tag_atts=array(), $field_settings=array())</dt>
+<dt><a class="anchor" id="_filters000033"></a>Global <a class="el" href="class_gravity_view___a_p_i.html#a691fcd7ec7551e0bbbbb11a7a0659e78">GravityView_API::entry_link_html</a>  ($entry=array(), $anchor_text= '', $passed_tag_atts=array(), $field_settings=array())</dt>
 <dd><code>gravityview_field_entry_link</code> Modify the link HTML <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$link</td><td>HTML output of the link </td></tr>
@@ -175,7 +184,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000027"></a>Global <a class="el" href="class_gravity_view___a_p_i.html#a31ce4437658018ed17d216efb8d0a42f">GravityView_API::field_label</a>  ($field, $entry=array(), $force_show_label=false)</dt>
+<dt><a class="anchor" id="_filters000029"></a>Global <a class="el" href="class_gravity_view___a_p_i.html#a31ce4437658018ed17d216efb8d0a42f">GravityView_API::field_label</a>  ($field, $entry=array(), $force_show_label=false)</dt>
 <dd><code>gravityview_render_after_label</code> Append content to a field label <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramtype">string</td><td class="paramname">$appended_content</td><td>Content you can add after a label. Empty by default. </td></tr>
@@ -194,7 +203,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000029"></a>Global <a class="el" href="class_gravity_view___a_p_i.html#a8f4b11f5ff542810338af374dcdb2143">GravityView_API::field_value</a>  ($entry, $field_settings, $format= 'html')</dt>
+<dt><a class="anchor" id="_filters000031"></a>Global <a class="el" href="class_gravity_view___a_p_i.html#a8f4b11f5ff542810338af374dcdb2143">GravityView_API::field_value</a>  ($entry, $field_settings, $format= 'html')</dt>
 <dd><code>gravityview_field_entry_value_{$field_type}</code> Modify the field value output for a field type. Example: <code>gravityview_field_entry_value_number</code> <dl class="section since"><dt>Since</dt><dd>1.6 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -215,7 +224,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </dl>
 <dl class="section since"><dt>Since</dt><dd>1.6}  </dd></dl>
 </dd>
-<dt><a class="anchor" id="_filters000033"></a>Global <a class="el" href="class_gravity_view___a_p_i.html#a258ab10c3ff0b3e14e8b7c4abde2b373">GravityView_API::get_custom_entry_slug</a>  ($id, $entry=array())</dt>
+<dt><a class="anchor" id="_filters000035"></a>Global <a class="el" href="class_gravity_view___a_p_i.html#a258ab10c3ff0b3e14e8b7c4abde2b373">GravityView_API::get_custom_entry_slug</a>  ($id, $entry=array())</dt>
 <dd><code>gravityview_entry_slug</code> Modify the unique hash ID generated, if you want to improve usability or change the format. This will allow for custom URLs, such as <code>{entryid}-{first-name}</code> or even, if unique, <code>{first-name}-{last-name}</code> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$hash</td><td>Existing hash generated by <a class="el" href="namespace_gravity_view.html" title="GPL2+ ">GravityView</a> </td></tr>
@@ -225,7 +234,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000034"></a>Global <a class="el" href="class_gravity_view___a_p_i.html#a052997d9133f40b5c5eb9e20f4c56a46">GravityView_API::get_entry_slug</a>  ($id_or_string, $entry=array())</dt>
+<dt><a class="anchor" id="_filters000036"></a>Global <a class="el" href="class_gravity_view___a_p_i.html#a052997d9133f40b5c5eb9e20f4c56a46">GravityView_API::get_entry_slug</a>  ($id_or_string, $entry=array())</dt>
 <dd><code>gravityview_custom_entry_slug</code> Whether to enable and use custom entry slugs. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">boolean</td><td>True: Allow for slugs based on entry values. False: always use entry IDs (default)  </td></tr>
@@ -233,7 +242,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000032"></a>Global <a class="el" href="class_gravity_view___a_p_i.html#a62e2b0880db3367470d6349c7cb2fbd9">GravityView_API::no_results</a>  ($wpautop=true)</dt>
+<dt><a class="anchor" id="_filters000034"></a>Global <a class="el" href="class_gravity_view___a_p_i.html#a62e2b0880db3367470d6349c7cb2fbd9">GravityView_API::no_results</a>  ($wpautop=true)</dt>
 <dd><code>gravitview_no_entries_text</code> Modify the text displayed when there are no entries. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$output</td><td>The existing "No Entries" text </td></tr>
@@ -242,7 +251,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000015"></a>globalScope&gt; Global <a class="el" href="class-api_8php.html#af96c15d2ffde57dab13e49eb39dc7453">gravityview_back_link</a>  ()</dt>
+<dt><a class="anchor" id="_filters000016"></a>globalScope&gt; Global <a class="el" href="class-api_8php.html#af96c15d2ffde57dab13e49eb39dc7453">gravityview_back_link</a>  ()</dt>
 <dd><code>gravityview_go_back_label</code> Modify the back link text <dl class="section since"><dt>Since</dt><dd>1.0.9 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -251,7 +260,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000037"></a>Global <a class="el" href="class_gravity_view___cache.html#aebf00781c902bf279c47b5d81f25c882">GravityView_Cache::schedule_transient_cleanup</a>  ()</dt>
+<dt><a class="anchor" id="_filters000039"></a>Global <a class="el" href="class_gravity_view___cache.html#aebf00781c902bf279c47b5d81f25c882">GravityView_Cache::schedule_transient_cleanup</a>  ()</dt>
 <dd><code>gravityview_cleanup_transients</code> Override <a class="el" href="namespace_gravity_view.html" title="GPL2+ ">GravityView</a> cleanup of transients by setting this to false <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">boolean</td><td class="paramname">$cleanup</td><td>Whether to run the <a class="el" href="namespace_gravity_view.html" title="GPL2+ ">GravityView</a> auto-cleanup of transients. Default: <code>true</code>  </td></tr>
@@ -259,7 +268,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000036"></a>Global <a class="el" href="class_gravity_view___cache.html#ab89a257cd69b1cf295b922d649bfaab9">GravityView_Cache::set</a>  ($content, $filter_name= '')</dt>
+<dt><a class="anchor" id="_filters000038"></a>Global <a class="el" href="class_gravity_view___cache.html#ab89a257cd69b1cf295b922d649bfaab9">GravityView_Cache::set</a>  ($content, $filter_name= '')</dt>
 <dd><code>gravityview_cache_time_{$filter_name}</code> Modify the cache time for a type of cache <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">int</td><td class="paramname">$time_in_seconds</td><td>Default: <code>DAY_IN_SECONDS</code>  </td></tr>
@@ -267,7 +276,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000038"></a>Global <a class="el" href="class_gravity_view___cache.html#a9db8b64d6cf48f0b2d46439fefc9d566">GravityView_Cache::use_cache</a>  ()</dt>
+<dt><a class="anchor" id="_filters000040"></a>Global <a class="el" href="class_gravity_view___cache.html#a9db8b64d6cf48f0b2d46439fefc9d566">GravityView_Cache::use_cache</a>  ()</dt>
 <dd><code>gravityview_use_cache</code> Modify whether to use the cache or not <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramtype">boolean</td><td class="paramname">$use_cache</td><td>Previous setting </td></tr>
@@ -276,7 +285,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000060"></a>Global <a class="el" href="class_gravity_view___edit___entry___render.html#a5f50ee01d9b8a69ad4b8e4ef04e81c3f">GravityView_Edit_Entry_Render::edit_entry_form</a>  ()</dt>
+<dt><a class="anchor" id="_filters000071"></a>Global <a class="el" href="class_gravity_view___edit___entry___render.html#a5f50ee01d9b8a69ad4b8e4ef04e81c3f">GravityView_Edit_Entry_Render::edit_entry_form</a>  ()</dt>
 <dd><code>gravityview_edit_entry_title</code> Modify the edit entry title <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$edit_entry_title</td><td>Modify the "Edit Entry" title </td></tr>
@@ -296,7 +305,36 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </dl>
 <dl class="section since"><dt>Since</dt><dd>1.6  </dd></dl>
 </dd>
-<dt><a class="anchor" id="_filters000063"></a>Global <a class="el" href="class_gravity_view___field.html#aa13f320eb62a1f6a5ef39a451999d391">GravityView_Field::field_support_options</a>  ()</dt>
+<dt><a class="anchor" id="_filters000059"></a>Global <a class="el" href="class_gravity_view___entry___list.html#a9a144fb5a171ccb153c0f69b081fdc81">GravityView_Entry_List::get_item_output</a>  ($entry)</dt>
+<dd><code>gravityview/entry-list/after-link</code> Modify the content displayed after the entry link in an entry list <dl class="section since"><dt>Since</dt><dd>1.7.2 </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">string</td><td class="paramname">$item_output</td><td>The HTML output for the after_link content </td></tr>
+    <tr><td class="paramtype">array</td><td class="paramname">$entry</td><td>Gravity Forms entry array </td></tr>
+    <tr><td class="paramtype"><a class="el" href="class_gravity_view___entry___list.html" title="If this file is called directly, abort. ">GravityView_Entry_List</a></td><td class="paramname">$this</td><td>The current class instance </td></tr>
+  </table>
+  </dd>
+</dl>
+<code>gravityview/entry-list/item</code> Modify each item's output in an entry list <dl class="section since"><dt>Since</dt><dd>1.7.2 </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">string</td><td class="paramname">$item_output</td><td>The HTML output for the item </td></tr>
+    <tr><td class="paramtype">array</td><td class="paramname">$entry</td><td>Gravity Forms entry array </td></tr>
+    <tr><td class="paramtype"><a class="el" href="class_gravity_view___entry___list.html" title="If this file is called directly, abort. ">GravityView_Entry_List</a></td><td class="paramname">$this</td><td>The current class instance  </td></tr>
+  </table>
+  </dd>
+</dl>
+</dd>
+<dt><a class="anchor" id="_filters000058"></a>Global <a class="el" href="class_gravity_view___entry___list.html#aa6c3f8688f804de4f1af8a462fffb922">GravityView_Entry_List::get_output</a>  ()</dt>
+<dd><code>gravityview/widget/recent-entries/output</code> Modify the HTML of the Recent Entries widget output <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">string</td><td class="paramname">$output</td><td>HTML to be displayed </td></tr>
+    <tr><td class="paramtype"><a class="el" href="class_gravity_view___entry___list.html" title="If this file is called directly, abort. ">GravityView_Entry_List</a></td><td class="paramname">$this</td><td>The current class instance  </td></tr>
+  </table>
+  </dd>
+</dl>
+</dd>
+<dt><a class="anchor" id="_filters000074"></a>Global <a class="el" href="class_gravity_view___field.html#aa13f320eb62a1f6a5ef39a451999d391">GravityView_Field::field_support_options</a>  ()</dt>
 <dd><code>gravityview_date_format</code> Override the date format with a <a href="https://codex.wordpress.org/Formatting_Date_and_Time">PHP date format</a> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramtype">null&#160;|&#160;string</td><td class="paramname">$date_format</td><td>Date Format (default: null) </td></tr>
@@ -310,7 +348,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000065"></a>Global <a class="el" href="class_gravity_view___field___file_upload.html#ada186fd2cf53679a4936f454ed8c7b55">GravityView_Field_FileUpload::get_files_array</a>  ($value, $gv_class)</dt>
+<dt><a class="anchor" id="_filters000076"></a>Global <a class="el" href="class_gravity_view___field___file_upload.html#ada186fd2cf53679a4936f454ed8c7b55">GravityView_Field_FileUpload::get_files_array</a>  ($value, $gv_class)</dt>
 <dd><code>gravityview_audio_settings</code> Modify the settings passed to the <code>wp_video_shortcode()</code> function <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -335,7 +373,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="class_gravity_view___a_p_i.html">GravityView_API</a>:field_value() for info about <a class="el" href="templates_2fields_2website_8php.html#add47a7f886e74847997a4044e9903a0a">$gravityview_view</a>-&gt;field_data  </dd></dl>
 </dd>
-<dt><a class="anchor" id="_filters000022"></a>globalScope&gt; Global <a class="el" href="class-api_8php.html#aaf8ecfcc074818e29f34e943af7170bf">gravityview_field_output</a>  ($passed_args)</dt>
+<dt><a class="anchor" id="_filters000024"></a>globalScope&gt; Global <a class="el" href="class-api_8php.html#aaf8ecfcc074818e29f34e943af7170bf">gravityview_field_output</a>  ($passed_args)</dt>
 <dd><code>gravityview/field_output/args</code> Modify the args before generation begins <dl class="section since"><dt>Since</dt><dd>1.7 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -374,7 +412,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000016"></a>globalScope&gt; Global <a class="el" href="class-api_8php.html#a981dda16f0b8fe5605a6fed11307a364">gravityview_format_link</a>  ($value=null)</dt>
+<dt><a class="anchor" id="_filters000017"></a>globalScope&gt; Global <a class="el" href="class-api_8php.html#a981dda16f0b8fe5605a6fed11307a364">gravityview_format_link</a>  ($value=null)</dt>
 <dd><code>gravityview_anchor_text_striphttp</code> Strip scheme from the displayed URL? <dl class="section since"><dt>Since</dt><dd>1.5.1 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -418,7 +456,7 @@ If true: <code><a href="http://example.com/?query=example">http://example.com/?q
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000053"></a>Global <a class="el" href="class_gravity_view__frontend.html#aec008e24f542c5172d4fddb0db581c2b">GravityView_frontend::add_scripts_and_styles</a>  ()</dt>
+<dt><a class="anchor" id="_filters000055"></a>Global <a class="el" href="class_gravity_view__frontend.html#aec008e24f542c5172d4fddb0db581c2b">GravityView_frontend::add_scripts_and_styles</a>  ()</dt>
 <dd><code>gravity_view_lightbox_script</code> Override the lightbox script to enqueue. Default: <code>thickbox</code> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$script_slug</td><td>If you want to use a different lightbox script, return the name of it here. </td></tr>
@@ -439,7 +477,7 @@ If true: <code><a href="http://example.com/?query=example">http://example.com/?q
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000052"></a>Global <a class="el" href="class_gravity_view__frontend.html#af7bb9a4dc1d1f21e1d49286235397126">GravityView_frontend::comments_open</a>  ($open, $post_id)</dt>
+<dt><a class="anchor" id="_filters000054"></a>Global <a class="el" href="class_gravity_view__frontend.html#af7bb9a4dc1d1f21e1d49286235397126">GravityView_frontend::comments_open</a>  ($open, $post_id)</dt>
 <dd><code>gravityview/comments_open</code> Whether to set comments to open or closed. <dl class="section since"><dt>Since</dt><dd>1.5.4 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -449,7 +487,7 @@ If true: <code><a href="http://example.com/?query=example">http://example.com/?q
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000051"></a>Global <a class="el" href="class_gravity_view__frontend.html#a0ac7992053819b88ad484f1b22e3b6de">GravityView_frontend::single_entry_title</a>  ($title, $passed_post_id=null)</dt>
+<dt><a class="anchor" id="_filters000053"></a>Global <a class="el" href="class_gravity_view__frontend.html#a0ac7992053819b88ad484f1b22e3b6de">GravityView_frontend::single_entry_title</a>  ($title, $passed_post_id=null)</dt>
 <dd><code>gravityview/single/title/out_loop</code> Apply the Single Entry Title filter outside the WordPress loop? <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">boolean</td><td class="paramname">$in_the_loop</td><td>Whether to apply the filter to the menu title and the meta tag &lt;title&gt; - outside the loop </td></tr>
@@ -458,7 +496,16 @@ If true: <code><a href="http://example.com/?query=example">http://example.com/?q
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000021"></a>globalScope&gt; Global <a class="el" href="class-api_8php.html#a1fcec5623ca596b31aac2a8e5bc570d2">gravityview_get_map_link</a>  ($address)</dt>
+<dt><a class="anchor" id="_filters000022"></a>globalScope&gt; Global <a class="el" href="class-api_8php.html#a1e24d5ed137a17f1b6694d7594eeacf5">gravityview_get_context</a>  ()</dt>
+<dd><code>gravityview_is_edit_entry</code> Whether we're currently on the Edit Entry screen <br />
+The Edit Entry functionality overrides this value. <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">boolean</td><td class="paramname">$is_edit_entry</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+</dd>
+<dt><a class="anchor" id="_filters000023"></a>globalScope&gt; Global <a class="el" href="class-api_8php.html#a1fcec5623ca596b31aac2a8e5bc570d2">gravityview_get_map_link</a>  ($address)</dt>
 <dd><code>gravityview_map_link</code> Modify the map link generated. You can use a different mapping service, for example. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramtype">string</td><td class="paramname">$link</td><td>Map link </td></tr>
@@ -468,7 +515,7 @@ If true: <code><a href="http://example.com/?query=example">http://example.com/?q
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000058"></a>Global <a class="el" href="class_gravity_view___image.html#a8b267aa0adca2018097f6f6f4c804d46">GravityView_Image::html</a>  ()</dt>
+<dt><a class="anchor" id="_filters000066"></a>Global <a class="el" href="class_gravity_view___image.html#a8b267aa0adca2018097f6f6f4c804d46">GravityView_Image::html</a>  ()</dt>
 <dd><code>gravityview_image_html</code> Filter the HTML image output <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$html</td><td>the generated image html </td></tr>
@@ -477,7 +524,17 @@ If true: <code><a href="http://example.com/?query=example">http://example.com/?q
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000056"></a>Global <a class="el" href="class_gravity_view___merge___tags.html#acf131abd5aba2047a9653344a90f15ca">GravityView_Merge_Tags::replace_variables</a>  ($text, $form, $entry)</dt>
+<dt><a class="anchor" id="_filters000065"></a>Global <a class="el" href="class_gravity_view___image.html#ac10e7f8b8a6a105efa5a06a12ad9d909">GravityView_Image::set_image_size</a>  ($string=NULL, $width=NULL, $height=NULL)</dt>
+<dd><code>gravityview_image_sizes</code> Modify the image size presets used by <a class="el" href="class_gravity_view___image.html" title="Generic class for generating image tag. ">GravityView_Image</a> class <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">array</td><td class="paramname">$image_sizes</td><td>Array of image sizes with the key being the size slug, and the value being an array with <code>width</code> and <code>height</code> defined, in pixels  </td></tr>
+  </table>
+  </dd>
+</dl>
+</dd>
+<dt><a class="anchor" id="_filters000064"></a>Global <a class="el" href="class_gravity_view___image.html#afdc43b8b1ed060904f31a465b53e9273">GravityView_Image::validate_image_src</a>  ()</dt>
+<dd><code>gravityview_image_extensions</code> Extensions that <a class="el" href="namespace_gravity_view.html" title="GPL2+ ">GravityView</a> recognizes as valid images to be shown in an ` </dd>
+<dt><a class="anchor" id="_filters000061"></a>Global <a class="el" href="class_gravity_view___merge___tags.html#acf131abd5aba2047a9653344a90f15ca">GravityView_Merge_Tags::replace_variables</a>  ($text, $form, $entry)</dt>
 <dd><code>gravityview_do_replace_variables</code> Turn off merge tag variable replacements.<br />
 Useful where you want to process variables yourself. We do this in the Math Extension. <dl class="section since"><dt>Since</dt><dd>1.13 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -490,6 +547,14 @@ Useful where you want to process variables yourself. We do this in the Math Exte
   </dd>
 </dl>
 </dd>
+<dt><a class="anchor" id="_filters000067"></a>Global <a class="el" href="class_gravity_view__o_embed.html#af4c28d8e9253f6367a7fee42b8c9f2fe">GravityView_oEmbed::get_handler_regex</a>  ()</dt>
+<dd><code>gravityview_slug</code> Modify the url part for a View. <a href="http://docs.gravityview.co/article/62-changing-the-view-slug">Read the doc</a> <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">string</td><td class="paramname">$rewrite_slug</td><td>The slug shown in the URL  </td></tr>
+  </table>
+  </dd>
+</dl>
+</dd>
 <dt><a class="anchor" id="_filters000001"></a>Global <a class="el" href="class_gravity_view___plugin.html#acc39c3cf876aeb2167b72e03c919c713">GravityView_Plugin::get_default_widget_areas</a>  ()</dt>
 <dd><code>gravityview_widget_active_areas</code> Array of zones available for widgets to be dropped into <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -498,10 +563,18 @@ Useful where you want to process variables yourself. We do this in the Math Exte
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000059"></a>Global <a class="el" href="class_gravity_view___post___types.html#a085ec8b051478372a819a6082c389e92">GravityView_Post_Types::get_entry_var_name</a>  ()</dt>
+<dt><a class="anchor" id="_filters000070"></a>Global <a class="el" href="class_gravity_view___post___types.html#a085ec8b051478372a819a6082c389e92">GravityView_Post_Types::get_entry_var_name</a>  ()</dt>
 <dd><code>gravityview_directory_endpoint</code> Change the slug used for single entries <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramtype">string</td><td class="paramname">$endpoint</td><td>Slug to use when accessing single entry. Default: <code>entry</code>  </td></tr>
+  </table>
+  </dd>
+</dl>
+</dd>
+<dt><a class="anchor" id="_filters000069"></a>Global <a class="el" href="class_gravity_view___post___types.html#a8924d5c048882edf229de24a2c25a172">GravityView_Post_Types::init_post_types</a>  ()</dt>
+<dd><code>gravityview_slug</code> Modify the url part for a View. <a href="http://docs.gravityview.co/article/62-changing-the-view-slug">Read the doc</a> <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">string</td><td class="paramname">$slug</td><td>The slug shown in the URL  </td></tr>
   </table>
   </dd>
 </dl>
@@ -554,7 +627,16 @@ Useful where you want to process variables yourself. We do this in the Math Exte
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000050"></a>Global <a class="el" href="class_gravity_view___view___data.html#a94db0a35566ecbe9717ef6e8a887ca36">GravityView_View_Data::get_default_args</a>  ($with_details=false, $group=NULL)</dt>
+<dt><a class="anchor" id="_filters000062"></a>Global <a class="el" href="class_gravity_view___shortcode.html#a535fdfc52df9e7d5d62aa721912f1716">GravityView_Shortcode::get_view_detail</a>  ($detail= '')</dt>
+<dd><code>gravityview/shortcode/detail/{$detail}</code> Filter the detail output returned from <code>[gravityview detail="$detail"]</code> <dl class="section since"><dt>Since</dt><dd>1.13 </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">string</td><td class="paramname">$return</td><td>Existing output  </td></tr>
+  </table>
+  </dd>
+</dl>
+</dd>
+<dt><a class="anchor" id="_filters000052"></a>Global <a class="el" href="class_gravity_view___view___data.html#a94db0a35566ecbe9717ef6e8a887ca36">GravityView_View_Data::get_default_args</a>  ($with_details=false, $group=NULL)</dt>
 <dd><code>gravityview_default_args</code> Modify the default settings for new Views <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramtype">array</td><td class="paramname">$default_args</td><td>Array of default args.  </td></tr>
@@ -562,7 +644,7 @@ Useful where you want to process variables yourself. We do this in the Math Exte
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000070"></a>Global <a class="el" href="class_gravity_view___widget.html#abb251d18e0f479efb4e983a513985d72">GravityView_Widget::pre_render_frontend</a>  ()</dt>
+<dt><a class="anchor" id="_filters000081"></a>Global <a class="el" href="class_gravity_view___widget.html#abb251d18e0f479efb4e983a513985d72">GravityView_Widget::pre_render_frontend</a>  ()</dt>
 <dd><code>gravityview/widget/hide_until_searched</code> Modify whether to hide content until search <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">boolean</td><td class="paramname">$hide_until_searched</td><td>Hide until search? </td></tr>
@@ -571,7 +653,7 @@ Useful where you want to process variables yourself. We do this in the Math Exte
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000068"></a>Global <a class="el" href="class_gravity_view___widget___page___links.html#ae4679c947e1785826fa62c91a7f07c08">GravityView_Widget_Page_Links::render_frontend</a>  ($widget_args, $content= '', $context= '')</dt>
+<dt><a class="anchor" id="_filters000079"></a>Global <a class="el" href="class_gravity_view___widget___page___links.html#ae4679c947e1785826fa62c91a7f07c08">GravityView_Widget_Page_Links::render_frontend</a>  ($widget_args, $content= '', $context= '')</dt>
 <dd><code>gravityview_page_links_args</code> Filter the pagination options <dl class="section since"><dt>Since</dt><dd>1.1.4 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -580,7 +662,7 @@ Useful where you want to process variables yourself. We do this in the Math Exte
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000069"></a>Global <a class="el" href="class_gravity_view___widget___pagination___info.html#ae4679c947e1785826fa62c91a7f07c08">GravityView_Widget_Pagination_Info::render_frontend</a>  ($widget_args, $content= '', $context= '')</dt>
+<dt><a class="anchor" id="_filters000080"></a>Global <a class="el" href="class_gravity_view___widget___pagination___info.html#ae4679c947e1785826fa62c91a7f07c08">GravityView_Widget_Pagination_Info::render_frontend</a>  ($widget_args, $content= '', $context= '')</dt>
 <dd><code>gravityview_pagination_output</code> Modify the pagination widget output <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$output</td><td>HTML output </td></tr>
@@ -591,7 +673,7 @@ Useful where you want to process variables yourself. We do this in the Math Exte
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000071"></a>Global <a class="el" href="class_gravity_view___widget___poll.html#a3ba1936d24251298119035fe06ed81b2">GravityView_Widget_Poll::get_frontend_settings</a>  ($widget_settings)</dt>
+<dt><a class="anchor" id="_filters000082"></a>Global <a class="el" href="class_gravity_view___widget___poll.html#a3ba1936d24251298119035fe06ed81b2">GravityView_Widget_Poll::get_frontend_settings</a>  ($widget_settings)</dt>
 <dd><code>gravityview/widget/poll/settings</code> Modify display settings for the poll widget <dl class="section since"><dt>Since</dt><dd>1.8 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -600,7 +682,7 @@ Useful where you want to process variables yourself. We do this in the Math Exte
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000075"></a>Global <a class="el" href="class_gravity_view___widget___search.html#af46bf2cf1627fe08d1b921dcc43ed6a7">GravityView_Widget_Search::enqueue_datepicker</a>  ()</dt>
+<dt><a class="anchor" id="_filters000086"></a>Global <a class="el" href="class_gravity_view___widget___search.html#af46bf2cf1627fe08d1b921dcc43ed6a7">GravityView_Widget_Search::enqueue_datepicker</a>  ()</dt>
 <dd><code>gravityview_search_datepicker_class</code><br />
 Modify the CSS class for the datepicker, used by the CSS class is used by Gravity Forms' javascript to determine the format for the date picker. The <code>gv-datepicker</code> class is required by the <a class="el" href="namespace_gravity_view.html" title="GPL2+ ">GravityView</a> datepicker javascript. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -619,7 +701,7 @@ Options are:<ul>
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000073"></a>Global <a class="el" href="class_gravity_view___widget___search.html#a1ec207d541b43d01e014787d12133699">GravityView_Widget_Search::filter_entries</a>  ($search_criteria)</dt>
+<dt><a class="anchor" id="_filters000084"></a>Global <a class="el" href="class_gravity_view___widget___search.html#a1ec207d541b43d01e014787d12133699">GravityView_Widget_Search::filter_entries</a>  ($search_criteria)</dt>
 <dd><code>gravityview_date_created_adjust_timezone</code> Whether to adjust the timezone for entries. <br />
 date_created is stored in UTC format. Convert search date into UTC (also used on <a class="el" href="date__created_8php.html">templates/fields/date_created.php</a>) <dl class="section since"><dt>Since</dt><dd>1.12 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -637,7 +719,7 @@ date_created is stored in UTC format. Convert search date into UTC (also used on
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000072"></a>Global <a class="el" href="class_gravity_view___widget___search.html#a7bbfa8a035ec7800fa12f40e8042e8e6">GravityView_Widget_Search::get_search_input_types</a>  ($id= '', $field_type=null)</dt>
+<dt><a class="anchor" id="_filters000083"></a>Global <a class="el" href="class_gravity_view___widget___search.html#a7bbfa8a035ec7800fa12f40e8042e8e6">GravityView_Widget_Search::get_search_input_types</a>  ($id= '', $field_type=null)</dt>
 <dd><code>gravityview/extension/search/input_type</code> Modify the search form input type based on field type <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$input_type</td><td>Assign an input type according to the form field type </td></tr>
@@ -647,7 +729,7 @@ date_created is stored in UTC format. Convert search date into UTC (also used on
 </dl>
 <dl class="section since"><dt>Since</dt><dd>1.2  </dd></dl>
 </dd>
-<dt><a class="anchor" id="_filters000014"></a>globalScope&gt; Global <a class="el" href="class-api_8php.html#a996850d1aed2d0e88ab42f3a348913e9">gv_value</a>  ($entry, $field)</dt>
+<dt><a class="anchor" id="_filters000015"></a>globalScope&gt; Global <a class="el" href="class-api_8php.html#a996850d1aed2d0e88ab42f3a348913e9">gv_value</a>  ($entry, $field)</dt>
 <dd><code>gravityview_empty_value</code> What to display when a field is empty <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$value</td><td>(empty string)  </td></tr>
@@ -655,7 +737,7 @@ date_created is stored in UTC format. Convert search date into UTC (also used on
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000040"></a>Global <a class="el" href="class_g_v_common.html#a70867f0094a88b005c1f0a63e9aec174">GVCommon::calculate_get_entries_criteria</a>  ($passed_criteria=null, $form_ids=null)</dt>
+<dt><a class="anchor" id="_filters000042"></a>Global <a class="el" href="class_g_v_common.html#a70867f0094a88b005c1f0a63e9aec174">GVCommon::calculate_get_entries_criteria</a>  ($passed_criteria=null, $form_ids=null)</dt>
 <dd><code>gravityview_search_operator</code> Modify the search operator for the field (contains, is, isnot, etc) <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$operator</td><td>Existing search operator </td></tr>
@@ -672,7 +754,7 @@ date_created is stored in UTC format. Convert search date into UTC (also used on
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000039"></a>Global <a class="el" href="class_g_v_common.html#ab303b2d1c5031d9989aa13cf3cfeef63">GVCommon::get_all_views</a>  ()</dt>
+<dt><a class="anchor" id="_filters000041"></a>Global <a class="el" href="class_g_v_common.html#ab303b2d1c5031d9989aa13cf3cfeef63">GVCommon::get_all_views</a>  ()</dt>
 <dd><code>gravityview/get_all_views/params</code> Modify the parameters sent to get all views. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramtype">array</td><td class="paramname">$params</td><td>Array of parameters to pass to <code>get_posts()</code>  </td></tr>
@@ -680,7 +762,7 @@ date_created is stored in UTC format. Convert search date into UTC (also used on
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000042"></a>Global <a class="el" href="class_g_v_common.html#a0d6794d2b7d8732844ab3406a8e82b95">GVCommon::get_entries</a>  ($form_ids=null, $passed_criteria=null, &amp;$total=null)</dt>
+<dt><a class="anchor" id="_filters000044"></a>Global <a class="el" href="class_g_v_common.html#a0d6794d2b7d8732844ab3406a8e82b95">GVCommon::get_entries</a>  ($form_ids=null, $passed_criteria=null, &amp;$total=null)</dt>
 <dd><code>gravityview_entries</code> Modify the array of entries returned to <a class="el" href="namespace_gravity_view.html" title="GPL2+ ">GravityView</a> after it has been fetched from the cache or from <code>GFAPI::get_entries()</code>. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">array&#160;|&#160;null</td><td class="paramname">$entries</td><td>Array of entries as returned by the cache or by <code>GFAPI::get_entries()</code> </td></tr>
@@ -691,7 +773,7 @@ date_created is stored in UTC format. Convert search date into UTC (also used on
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000043"></a>Global <a class="el" href="class_g_v_common.html#a5f35d41c9252949ce2462f9ea47f68f3">GVCommon::get_entry</a>  ($entry_slug, $force_allow_ids=false)</dt>
+<dt><a class="anchor" id="_filters000045"></a>Global <a class="el" href="class_g_v_common.html#a5f35d41c9252949ce2462f9ea47f68f3">GVCommon::get_entry</a>  ($entry_slug, $force_allow_ids=false)</dt>
 <dd><code>gravityview_custom_entry_slug</code> Whether to enable and use custom entry slugs. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">boolean</td><td>True: Allow for slugs based on entry values. False: always use entry IDs (default) </td></tr>
@@ -709,7 +791,7 @@ date_created is stored in UTC format. Convert search date into UTC (also used on
 </li>
 </ul>
 </dd>
-<dt><a class="anchor" id="_filters000048"></a>Global <a class="el" href="class_g_v_common.html#a8af330d13e7375f324f2230d44d9ffba">GVCommon::get_link_html</a>  ($href= '', $anchor_text= '', $atts=array())</dt>
+<dt><a class="anchor" id="_filters000050"></a>Global <a class="el" href="class_g_v_common.html#a8af330d13e7375f324f2230d44d9ffba">GVCommon::get_link_html</a>  ($href= '', $anchor_text= '', $atts=array())</dt>
 <dd><code>gravityview/get_link/allowed_atts</code> Modify the attributes that are allowed to be used in generating links <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">array</td><td class="paramname">$allowed_atts</td><td>Array of attributes allowed  </td></tr>
@@ -717,7 +799,7 @@ date_created is stored in UTC format. Convert search date into UTC (also used on
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000045"></a>Global <a class="el" href="class_g_v_common.html#aad99a99f86fabfa067ef5ca9988f48be">GVCommon::get_sortable_fields_array</a>  ($formid, $blacklist=array( 'list', 'textarea'))</dt>
+<dt><a class="anchor" id="_filters000047"></a>Global <a class="el" href="class_g_v_common.html#aad99a99f86fabfa067ef5ca9988f48be">GVCommon::get_sortable_fields_array</a>  ($formid, $blacklist=array( 'list', 'textarea'))</dt>
 <dd><code>gravityview/common/sortable_fields</code> Filter the sortable fields <dl class="section since"><dt>Since</dt><dd>1.12 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -727,7 +809,7 @@ date_created is stored in UTC format. Convert search date into UTC (also used on
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000049"></a>Global <a class="el" href="class_g_v_common.html#ab6640907fc83fed31208de403f6a2ea1">GVCommon::get_users</a>  ($context= 'change_entry_creator')</dt>
+<dt><a class="anchor" id="_filters000051"></a>Global <a class="el" href="class_g_v_common.html#ab6640907fc83fed31208de403f6a2ea1">GVCommon::get_users</a>  ($context= 'change_entry_creator')</dt>
 <dd><code>gravityview/get_users/{$context}</code> There are issues with too many users using <a href="http://codex.wordpress.org/Function_Reference/get_users">get_users()</a> where it breaks the select. We try to keep it at a reasonable number. <br />
 <code>$context</code> is where are we using this information (e.g. change_entry_creator, search_widget ..) <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -736,7 +818,7 @@ date_created is stored in UTC format. Convert search date into UTC (also used on
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000046"></a>Global <a class="el" href="class_g_v_common.html#a7be292e2763a679e3e5077521e25835c">GVCommon::is_field_numeric</a>  ($form=null, $field= '')</dt>
+<dt><a class="anchor" id="_filters000048"></a>Global <a class="el" href="class_g_v_common.html#a7be292e2763a679e3e5077521e25835c">GVCommon::is_field_numeric</a>  ($form=null, $field= '')</dt>
 <dd><code>gravityview/common/numeric_types</code> What types of fields are numeric? <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">array</td><td class="paramname">$numeric_types</td><td>Fields that are numeric. Default: <code>[ number ]</code>  </td></tr>
@@ -744,7 +826,7 @@ date_created is stored in UTC format. Convert search date into UTC (also used on
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000047"></a>Global <a class="el" href="class_g_v_common.html#a5bd065dc4e2e3f98b2726e71ad1186c7">GVCommon::js_encrypt</a>  ($content, $message= '')</dt>
+<dt><a class="anchor" id="_filters000049"></a>Global <a class="el" href="class_g_v_common.html#a5bd065dc4e2e3f98b2726e71ad1186c7">GVCommon::js_encrypt</a>  ($content, $message= '')</dt>
 <dd><code>gravityview/phpenkoder/msg</code> Modify the message shown when Javascript is disabled and an encrypted email field is displayed <dl class="section since"><dt>Since</dt><dd>1.7 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -754,7 +836,7 @@ date_created is stored in UTC format. Convert search date into UTC (also used on
   </dd>
 </dl>
 </dd>
-<dt><a class="anchor" id="_filters000057"></a>Global <a class="el" href="class_g_v_logic___shortcode.html#aa6c3f8688f804de4f1af8a462fffb922">GVLogic_Shortcode::get_output</a>  ()</dt>
+<dt><a class="anchor" id="_filters000063"></a>Global <a class="el" href="class_g_v_logic___shortcode.html#aa6c3f8688f804de4f1af8a462fffb922">GVLogic_Shortcode::get_output</a>  ()</dt>
 <dd><code>gravityview/gvlogic/output</code> Modify the [gvlogic] output <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$output</td><td>HTML/text output </td></tr>

@@ -250,7 +250,7 @@ Functions</h2></td></tr>
 <p>Generate HTML for the back link from single entry view. </p>
 <dl class="section since"><dt>Since</dt><dd>1.0.1 </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>string|null If no GV post exists, null. Otherwise, HTML string of back link. </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000015">Runs Filter:</a></b></dt><dd><code>gravityview_go_back_label</code> Modify the back link text <dl class="section since"><dt>Since</dt><dd>1.0.9 </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000016">Runs Filter:</a></b></dt><dd><code>gravityview_go_back_label</code> Modify the back link text <dl class="section since"><dt>Since</dt><dd>1.0.9 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$label</td><td>Existing label text </td></tr>
@@ -357,7 +357,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>string Field output. If empty value and hide empty is true, return empty. </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000022">Runs Filter:</a></b></dt><dd><code>gravityview/field_output/args</code> Modify the args before generation begins <dl class="section since"><dt>Since</dt><dd>1.7 </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000024">Runs Filter:</a></b></dt><dd><code>gravityview/field_output/args</code> Modify the args before generation begins <dl class="section since"><dt>Since</dt><dd>1.7 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">array</td><td class="paramname">$args</td><td>Associative array; <code>field</code> and <code>form</code> is required. </td></tr>
@@ -367,7 +367,7 @@ Functions</h2></td></tr>
 </dl>
 </dd></dl>
 <p>Create the Context for replacing. </p><dl class="section since"><dt>Since</dt><dd>1.11</dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000023">Runs Filter:</a></b></dt><dd><code>gravityview/field_output/pre_html</code> Allow Pre filtering of the HTML <dl class="section since"><dt>Since</dt><dd>1.11 </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000025">Runs Filter:</a></b></dt><dd><code>gravityview/field_output/pre_html</code> Allow Pre filtering of the HTML <dl class="section since"><dt>Since</dt><dd>1.11 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$markup</td><td>The HTML for the markup </td></tr>
@@ -376,7 +376,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000024">Runs Filter:</a></b></dt><dd><code>gravityview/field_output/open_tag</code> Modify the opening tags for the template content placeholders <dl class="section since"><dt>Since</dt><dd>1.11 </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000026">Runs Filter:</a></b></dt><dd><code>gravityview/field_output/open_tag</code> Modify the opening tags for the template content placeholders <dl class="section since"><dt>Since</dt><dd>1.11 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$open_tag</td><td>Open tag for template content placeholders. Default: <code>{{</code> </td></tr>
@@ -384,7 +384,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000025">Runs Filter:</a></b></dt><dd><code>gravityview/field_output/close_tag</code> Modify the closing tags for the template content placeholders <dl class="section since"><dt>Since</dt><dd>1.11 </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000027">Runs Filter:</a></b></dt><dd><code>gravityview/field_output/close_tag</code> Modify the closing tags for the template content placeholders <dl class="section since"><dt>Since</dt><dd>1.11 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$close_tag</td><td>Close tag for template content placeholders. Default: <code>}}</code> </td></tr>
@@ -401,8 +401,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Depricate <code>gravityview_field_output</code> </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000026">Runs Filter:</a></b></dt><dd><code>gravityview/field_output/html</code> Modify field HTML output <dl class="params"><dt>Parameters</dt><dd>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>Depricate <code>gravityview_field_output</code> </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000028">Runs Filter:</a></b></dt><dd><code>gravityview/field_output/html</code> Modify field HTML output <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$html</td><td>Existing HTML output </td></tr>
     <tr><td class="paramtype">array</td><td class="paramname">$args</td><td>Arguments passed to the function </td></tr>
@@ -411,7 +411,7 @@ Functions</h2></td></tr>
 </dl>
 </dd></dl>
 
-<p>Definition at line <a class="el" href="class-api_8php_source.html#l01186">1186</a> of file <a class="el" href="class-api_8php_source.html">class-api.php</a>.</p>
+<p>Definition at line <a class="el" href="class-api_8php_source.html#l01195">1195</a> of file <a class="el" href="class-api_8php_source.html">class-api.php</a>.</p>
 
 <p>References <a class="el" href="demo_8php_source.html#l00007">$html</a>, <a class="el" href="search-field-date__range_8php_source.html#l00010">$value</a>, <a class="el" href="class-api_8php_source.html#l00190">GravityView_API\field_html_attr_id()</a>, <a class="el" href="class-api_8php_source.html#l00118">GravityView_API\field_width()</a>, <a class="el" href="class-api_8php_source.html#l00700">gv_class()</a>, <a class="el" href="class-api_8php_source.html#l00696">gv_label()</a>, and <a class="el" href="class-api_8php_source.html#l00719">gv_value()</a>.</p>
 
@@ -466,7 +466,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>string If parse_url doesn't find a 'host', returns original value. Otherwise, returns formatted link. </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000016">Runs Filter:</a></b></dt><dd><code>gravityview_anchor_text_striphttp</code> Strip scheme from the displayed URL? <dl class="section since"><dt>Since</dt><dd>1.5.1 </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000017">Runs Filter:</a></b></dt><dd><code>gravityview_anchor_text_striphttp</code> Strip scheme from the displayed URL? <dl class="section since"><dt>Since</dt><dd>1.5.1 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">boolean</td><td class="paramname">$enable</td><td>Whether to strip the scheme. Return false to show scheme. (default: true)<br />
@@ -475,7 +475,7 @@ If true: <code><a href="http://example.com">http://example.com</a> =&gt; example
   </dd>
 </dl>
 </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000017">Runs Filter:</a></b></dt><dd><code>gravityview_anchor_text_stripwww</code> Strip www from the domain? <dl class="section since"><dt>Since</dt><dd>1.5.1 </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000018">Runs Filter:</a></b></dt><dd><code>gravityview_anchor_text_stripwww</code> Strip www from the domain? <dl class="section since"><dt>Since</dt><dd>1.5.1 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">boolean</td><td class="paramname">$enable</td><td>Whether to strip www. Return false to show www. (default: true)<br />
@@ -484,7 +484,7 @@ If true: <code>www.example.com =&gt; example.com</code> </td></tr>
   </dd>
 </dl>
 </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000018">Runs Filter:</a></b></dt><dd><code>gravityview_anchor_text_nosubdomain</code> Strip subdomains from the domain? <dl class="section since"><dt>Since</dt><dd>1.5.1 </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000019">Runs Filter:</a></b></dt><dd><code>gravityview_anchor_text_nosubdomain</code> Strip subdomains from the domain? <dl class="section since"><dt>Since</dt><dd>1.5.1 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">boolean</td><td class="paramname">$enable</td><td>Whether to strip subdomains. Return false to show subdomains. (default: true)<br />
@@ -494,7 +494,7 @@ If false: <code><a href="http://demo.example.com">http://demo.example.com</a> =&
   </dd>
 </dl>
 </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000019">Runs Filter:</a></b></dt><dd><code>gravityview_anchor_text_rootonly</code> Display link path going only to the base directory, not a sub-directory or file? <dl class="section since"><dt>Since</dt><dd>1.5.1 </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000020">Runs Filter:</a></b></dt><dd><code>gravityview_anchor_text_rootonly</code> Display link path going only to the base directory, not a sub-directory or file? <dl class="section since"><dt>Since</dt><dd>1.5.1 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">boolean</td><td class="paramname">$enable</td><td>Whether to enable "root only". Return false to show full path. (default: true)<br />
@@ -504,7 +504,7 @@ If false: <code><a href="http://example.com/sub/directory/page.html">http://exam
   </dd>
 </dl>
 </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000020">Runs Filter:</a></b></dt><dd><code>gravityview_anchor_text_noquerystring</code> Strip the query string from the end of the URL? <dl class="section since"><dt>Since</dt><dd>1.5.1 </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000021">Runs Filter:</a></b></dt><dd><code>gravityview_anchor_text_noquerystring</code> Strip the query string from the end of the URL? <dl class="section since"><dt>Since</dt><dd>1.5.1 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">boolean</td><td class="paramname">$enable</td><td>Whether to enable "root only". Return false to show full path. (default: true)<br />
@@ -537,6 +537,14 @@ If true: <code><a href="http://example.com/?query=example">http://example.com/?q
 
 <p><a class="el" href="class_gravity_view___view.html" title="If this file is called directly, abort. ">GravityView_View</a> $gravityview_view </p>
 <dl class="section return"><dt>Returns</dt><dd>string View context "directory", "single", or "edit" </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000022">Runs Filter:</a></b></dt><dd><code>gravityview_is_edit_entry</code> Whether we're currently on the Edit Entry screen <br />
+The Edit Entry functionality overrides this value. <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">boolean</td><td class="paramname">$is_edit_entry</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+</dd></dl>
 
 <p>Definition at line <a class="el" href="class-api_8php_source.html#l01093">1093</a> of file <a class="el" href="class-api_8php_source.html">class-api.php</a>.</p>
 
@@ -684,7 +692,7 @@ If true: <code><a href="http://example.com/?query=example">http://example.com/?q
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>array Array of file output, with <code>file_path</code> and <code>html</code> keys (see comments above) </dd></dl>
 
-<p>Definition at line <a class="el" href="class-api_8php_source.html#l01126">1126</a> of file <a class="el" href="class-api_8php_source.html">class-api.php</a>.</p>
+<p>Definition at line <a class="el" href="class-api_8php_source.html#l01133">1133</a> of file <a class="el" href="class-api_8php_source.html">class-api.php</a>.</p>
 
 <p>References <a class="el" href="search-field-date__range_8php_source.html#l00010">$value</a>, <a class="el" href="includes_2fields_2fileupload_8php_source.html#l00046">GravityView_Field_FileUpload\get_files_array()</a>, and <a class="el" href="gravityview_8php_source.html#l00050">GRAVITYVIEW_DIR</a>.</p>
 
@@ -706,8 +714,9 @@ If true: <code><a href="http://example.com/?query=example">http://example.com/?q
 
 <p>Generate a mapping link from an address. </p>
 <p>The address should be plain text with new line (<code>\n</code>) or <code>&lt;br /&gt;</code> line breaks separating sections</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>use GF's field get_export_value() instead</dd></dl>
 <p><a class="el" href="">Read how to modify the link  string $address Address  string URL of link to map of address </a></p>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000021">Runs Filter:</a></b></dt><dd><code>gravityview_map_link</code> Modify the map link generated. You can use a different mapping service, for example. <dl class="params"><dt>Parameters</dt><dd>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000023">Runs Filter:</a></b></dt><dd><code>gravityview_map_link</code> Modify the map link generated. You can use a different mapping service, for example. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramtype">string</td><td class="paramname">$link</td><td>Map link </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramtype">string</td><td class="paramname">$address</td><td>Address to generate link for </td></tr>
@@ -717,7 +726,7 @@ If true: <code><a href="http://example.com/?query=example">http://example.com/?q
 </dl>
 </dd></dl>
 
-<p>Definition at line <a class="el" href="class-api_8php_source.html#l01148">1148</a> of file <a class="el" href="class-api_8php_source.html">class-api.php</a>.</p>
+<p>Definition at line <a class="el" href="class-api_8php_source.html#l01157">1157</a> of file <a class="el" href="class-api_8php_source.html">class-api.php</a>.</p>
 
 <p>References <a class="el" href="delete__link_8php_source.html#l00014">$link_text</a>, <a class="el" href="post__image_8php_source.html#l00025">$url</a>, and <a class="el" href="class-common_8php_source.html#l01299">gravityview_get_link()</a>.</p>
 
@@ -854,7 +863,7 @@ If true: <code><a href="http://example.com/?query=example">http://example.com/?q
 
 <p>References <a class="el" href="gquiz__grade_8php_source.html#l00011">$field</a>, and <a class="el" href="class-api_8php_source.html#l00138">GravityView_API\field_class()</a>.</p>
 
-<p>Referenced by <a class="el" href="class-api_8php_source.html#l01186">gravityview_field_output()</a>.</p>
+<p>Referenced by <a class="el" href="class-api_8php_source.html#l01195">gravityview_field_output()</a>.</p>
 
 </div>
 </div>
@@ -970,7 +979,7 @@ If true: <code><a href="http://example.com/?query=example">http://example.com/?q
 
 <p>References <a class="el" href="gquiz__grade_8php_source.html#l00011">$field</a>, and <a class="el" href="class-api_8php_source.html#l00028">GravityView_API\field_label()</a>.</p>
 
-<p>Referenced by <a class="el" href="class-api_8php_source.html#l01186">gravityview_field_output()</a>.</p>
+<p>Referenced by <a class="el" href="class-api_8php_source.html#l01195">gravityview_field_output()</a>.</p>
 
 </div>
 </div>
@@ -1033,7 +1042,8 @@ If true: <code><a href="http://example.com/?query=example">http://example.com/?q
 </div><div class="memdoc">
 
 <p>Similar to the WordPress <code>selected()</code>, <code>checked()</code>, and <code>disabled()</code> functions, except it allows arrays to be passed as current value. </p>
-<dl class="section see"><dt>See also</dt><dd>selected() WordPress core function</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>Move to <a class="el" href="helper-functions_8php.html">helper-functions.php</a> <dl class="section see"><dt>See also</dt><dd>selected() WordPress core function</dd></dl>
+</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$value</td><td>One of the values to compare </td></tr>
@@ -1045,7 +1055,7 @@ If true: <code><a href="http://example.com/?query=example">http://example.com/?q
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>string html attribute or empty string </dd></dl>
 
-<p>Definition at line <a class="el" href="class-api_8php_source.html#l01336">1336</a> of file <a class="el" href="class-api_8php_source.html">class-api.php</a>.</p>
+<p>Definition at line <a class="el" href="class-api_8php_source.html#l01346">1346</a> of file <a class="el" href="class-api_8php_source.html">class-api.php</a>.</p>
 
 <p>References <a class="el" href="edit__link_8php_source.html#l00018">$output</a>, and <a class="el" href="search-field-date__range_8php_source.html#l00010">$value</a>.</p>
 
@@ -1074,7 +1084,7 @@ If true: <code><a href="http://example.com/?query=example">http://example.com/?q
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000014">Runs Filter:</a></b></dt><dd><code>gravityview_empty_value</code> What to display when a field is empty <dl class="params"><dt>Parameters</dt><dd>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000015">Runs Filter:</a></b></dt><dd><code>gravityview_empty_value</code> What to display when a field is empty <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$value</td><td>(empty string) </td></tr>
   </table>
@@ -1086,7 +1096,7 @@ If true: <code><a href="http://example.com/?query=example">http://example.com/?q
 
 <p>References <a class="el" href="gquiz__grade_8php_source.html#l00011">$field</a>, <a class="el" href="search-field-date__range_8php_source.html#l00010">$value</a>, and <a class="el" href="class-api_8php_source.html#l00216">GravityView_API\field_value()</a>.</p>
 
-<p>Referenced by <a class="el" href="class-api_8php_source.html#l01186">gravityview_field_output()</a>.</p>
+<p>Referenced by <a class="el" href="class-api_8php_source.html#l01195">gravityview_field_output()</a>.</p>
 
 </div>
 </div>

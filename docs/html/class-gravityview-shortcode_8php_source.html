@@ -184,11 +184,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">        /**</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">         * Filter the detail output</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">         * @filter `gravityview/shortcode/detail/{$detail}` Filter the detail output returned from `[gravityview detail=&quot;$detail&quot;]`</span></div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">         * @since 1.13</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">         * @param string $return</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">         * @param string $return Existing output</span></div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        $return = add_filter( <span class="stringliteral">&#39;gravityview/shortcode/detail/&#39;</span> . $detail, $return );</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        $return = apply_filters( <span class="stringliteral">&#39;gravityview/shortcode/detail/&#39;</span> . $detail, $return );</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordflow">return</span> $return;</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    }</div>

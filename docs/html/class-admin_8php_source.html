@@ -439,158 +439,162 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="comment">     * @return void</span></div>
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="comment">     */</span></div>
 <div class="line"><a name="l00346"></a><span class="lineno"><a class="line" href="class_gravity_view___admin.html#aacdb3ff3b6cb04e545151773a6dfa897">  346</a></span>&#160;    <span class="keyword">private</span> <span class="keyword">function</span> <a class="code" href="class_gravity_view___admin.html#aacdb3ff3b6cb04e545151773a6dfa897">remove_conflicts</a>( &amp;$wp_objects, $required_objects, $type = <span class="stringliteral">&#39;scripts&#39;</span> ) {</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        <span class="comment">//allowing addons or other products to change the list of no conflict scripts or styles</span></div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        $required_objects = apply_filters( <span class="stringliteral">&quot;gravityview_noconflict_{$type}&quot;</span>, $required_objects );</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        <span class="comment">//reset queue</span></div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        $queue = array();</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        <span class="keywordflow">foreach</span>( $wp_objects-&gt;queue as $object ) {</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;            <span class="keywordflow">if</span>( in_array( $object, $required_objects ) || preg_match(<span class="stringliteral">&#39;/gravityview|gf_|gravityforms/ism&#39;</span>, $object ) ) {</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;                $queue[] = $object;</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;            }</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        }</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        $wp_objects-&gt;queue = $queue;</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        $required_objects = $this-&gt;<a class="code" href="class_gravity_view___admin.html#a56e014d216a0df23da54b2f943090262">add_script_dependencies</a>( $wp_objects-&gt;registered, $required_objects );</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        <span class="comment">//unregistering scripts</span></div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        $registered = array();</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        <span class="keywordflow">foreach</span>( $wp_objects-&gt;registered as $handle =&gt; $script_registration ){</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;            <span class="keywordflow">if</span>( in_array( $handle, $required_objects ) ){</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                $registered[ $handle ] = $script_registration;</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;            }</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        }</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        $wp_objects-&gt;registered = $registered;</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    }</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;<span class="comment">    /**</span></div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="comment">     * Add dependencies</span></div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;<span class="comment">     *</span></div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="comment">     * @param [type] $registered [description]</span></div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="comment">     * @param [type] $scripts    [description]</span></div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00378"></a><span class="lineno"><a class="line" href="class_gravity_view___admin.html#a56e014d216a0df23da54b2f943090262">  378</a></span>&#160;    <span class="keyword">private</span> <span class="keyword">function</span> <a class="code" href="class_gravity_view___admin.html#a56e014d216a0df23da54b2f943090262">add_script_dependencies</a>($registered, $scripts) {</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        <span class="comment">//gets all dependent scripts linked to the $scripts array passed</span></div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        <span class="keywordflow">do</span> {</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;            $dependents = array();</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;            <span class="keywordflow">foreach</span> ( $scripts as $script ) {</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;                $deps = isset( $registered[ $script ] ) &amp;&amp; is_array( $registered[ $script ]-&gt;deps ) ? $registered[ $script ]-&gt;deps : array();</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;                <span class="keywordflow">foreach</span> ( $deps as $dep ) {</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;                    <span class="keywordflow">if</span> ( ! in_array( $dep, $scripts ) &amp;&amp; ! in_array( $dep, $dependents ) ) {</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;                        $dependents[] = $dep;</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;                    }</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;                }</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;            }</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;            $scripts = array_merge( $scripts, $dependents );</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        } <span class="keywordflow">while</span> ( ! empty( $dependents ) );</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        <span class="keywordflow">return</span> $scripts;</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    }</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;<span class="comment">    /**</span></div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;<span class="comment">     * Get admin notices</span></div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;<span class="comment">     * @deprecated since 1.12</span></div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="comment">     * @return array</span></div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00403"></a><span class="lineno"><a class="line" href="class_gravity_view___admin.html#a25e2d366e34907a6669770e3c3d0253a">  403</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">function</span> <a class="code" href="class_gravity_view___admin.html#a25e2d366e34907a6669770e3c3d0253a">get_notices</a>() {</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="class_gravity_view___admin___notices.html#a25e2d366e34907a6669770e3c3d0253a">GravityView_Admin_Notices::get_notices</a>();</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;    }</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;<span class="comment">    /**</span></div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;<span class="comment">     * Add a notice to be displayed in the admin.</span></div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;<span class="comment">     * @deprecated since 1.12</span></div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;<span class="comment">     * @param array $notice Array with `class` and `message` keys. The message is not escaped.</span></div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00412"></a><span class="lineno"><a class="line" href="class_gravity_view___admin.html#a6d8d59a4cd41f04169160dcd231bdf19">  412</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">function</span> <a class="code" href="class_gravity_view___admin.html#a6d8d59a4cd41f04169160dcd231bdf19">add_notice</a>( $notice = array() ) {</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        <a class="code" href="class_gravity_view___admin___notices.html#a6d8d59a4cd41f04169160dcd231bdf19">GravityView_Admin_Notices::add_notice</a>( $notice );</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    }</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;<span class="comment">    /**</span></div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;<span class="comment">     * Check if Gravity Forms plugin is active and show notice if not.</span></div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;<span class="comment">     *</span></div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;<span class="comment">     * @deprecated since 1.12</span></div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;<span class="comment">     * @see GravityView_Compatibility::get_plugin_status()</span></div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;<span class="comment">     * @return boolean True: checks have been passed; GV is fine to run; False: checks have failed, don&#39;t continue loading</span></div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00423"></a><span class="lineno"><a class="line" href="class_gravity_view___admin.html#ae7e2d2e55f7eb759175530f5bafe0967">  423</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">function</span> <a class="code" href="class_gravity_view___admin.html#ae7e2d2e55f7eb759175530f5bafe0967">check_gravityforms</a>() {</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="class_gravity_view___compatibility.html#ae7e2d2e55f7eb759175530f5bafe0967">GravityView_Compatibility::check_gravityforms</a>();</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    }</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;<span class="comment">    /**</span></div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;<span class="comment">     * Check if specified plugin is active, inactive or not installed</span></div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;<span class="comment">     *</span></div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;<span class="comment">     * @deprecated since 1.12</span></div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;<span class="comment">     * @see GravityView_Compatibility::get_plugin_status()</span></div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;<span class="comment">     * @return boolean|string True: plugin is active; False: plugin file doesn&#39;t exist at path; &#39;inactive&#39; it&#39;s inactive</span></div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00435"></a><span class="lineno"><a class="line" href="class_gravity_view___admin.html#a3b9255f9ac7f2705f00255ed16d63ac6">  435</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">function</span> <a class="code" href="class_gravity_view___admin.html#a3b9255f9ac7f2705f00255ed16d63ac6">get_plugin_status</a>( $location = <span class="stringliteral">&#39;&#39;</span> ) {</div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="class_gravity_view___compatibility.html#a3b9255f9ac7f2705f00255ed16d63ac6">GravityView_Compatibility::get_plugin_status</a>( $location );</div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;    }</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;</div>
-<div class="line"><a name="l00439"></a><span class="lineno"><a class="line" href="class_gravity_view___admin.html#a1ce3d7eea1151cce26dbbb4f93f1bec1">  439</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">function</span> <a class="code" href="class_gravity_view___admin.html#a1ce3d7eea1151cce26dbbb4f93f1bec1">is_admin_page</a>($hook = <span class="stringliteral">&#39;&#39;</span>, $page = NULL) {</div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        global $current_screen, $plugin_page, $pagenow, <a class="code" href="select-template_8php.html#a77c8faa27a630e0cfbe0fa5507c1a538">$post</a>;</div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;</div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;        <span class="keywordflow">if</span>( !is_admin() ) { <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;</div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;        $is_page = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="comment">        /**</span></div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="comment">         * @filter `gravityview_noconflict_{$type}` Modify the list of no conflict scripts or styles\n</span></div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="comment">         * Filter is `gravityview_noconflict_scripts` or `gravityview_noconflict_styles`</span></div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="comment">         * @param array $required_objects</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        $required_objects = apply_filters( <span class="stringliteral">&quot;gravityview_noconflict_{$type}&quot;</span>, $required_objects );</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        <span class="comment">//reset queue</span></div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        $queue = array();</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        <span class="keywordflow">foreach</span>( $wp_objects-&gt;queue as $object ) {</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;            <span class="keywordflow">if</span>( in_array( $object, $required_objects ) || preg_match(<span class="stringliteral">&#39;/gravityview|gf_|gravityforms/ism&#39;</span>, $object ) ) {</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;                $queue[] = $object;</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;            }</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;        }</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        $wp_objects-&gt;queue = $queue;</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        $required_objects = $this-&gt;<a class="code" href="class_gravity_view___admin.html#a56e014d216a0df23da54b2f943090262">add_script_dependencies</a>( $wp_objects-&gt;registered, $required_objects );</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        <span class="comment">//unregistering scripts</span></div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        $registered = array();</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        <span class="keywordflow">foreach</span>( $wp_objects-&gt;registered as $handle =&gt; $script_registration ){</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;            <span class="keywordflow">if</span>( in_array( $handle, $required_objects ) ){</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;                $registered[ $handle ] = $script_registration;</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;            }</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        }</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        $wp_objects-&gt;registered = $registered;</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    }</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="comment">    /**</span></div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;<span class="comment">     * Add dependencies</span></div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;<span class="comment">     *</span></div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;<span class="comment">     * @param [type] $registered [description]</span></div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;<span class="comment">     * @param [type] $scripts    [description]</span></div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00382"></a><span class="lineno"><a class="line" href="class_gravity_view___admin.html#a56e014d216a0df23da54b2f943090262">  382</a></span>&#160;    <span class="keyword">private</span> <span class="keyword">function</span> <a class="code" href="class_gravity_view___admin.html#a56e014d216a0df23da54b2f943090262">add_script_dependencies</a>($registered, $scripts) {</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        <span class="comment">//gets all dependent scripts linked to the $scripts array passed</span></div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        <span class="keywordflow">do</span> {</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;            $dependents = array();</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;            <span class="keywordflow">foreach</span> ( $scripts as $script ) {</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;                $deps = isset( $registered[ $script ] ) &amp;&amp; is_array( $registered[ $script ]-&gt;deps ) ? $registered[ $script ]-&gt;deps : array();</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;                <span class="keywordflow">foreach</span> ( $deps as $dep ) {</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;                    <span class="keywordflow">if</span> ( ! in_array( $dep, $scripts ) &amp;&amp; ! in_array( $dep, $dependents ) ) {</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;                        $dependents[] = $dep;</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;                    }</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;                }</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;            }</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;            $scripts = array_merge( $scripts, $dependents );</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        } <span class="keywordflow">while</span> ( ! empty( $dependents ) );</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        <span class="keywordflow">return</span> $scripts;</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    }</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="comment">    /**</span></div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="comment">     * Get admin notices</span></div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;<span class="comment">     * @deprecated since 1.12</span></div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;<span class="comment">     * @return array</span></div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00407"></a><span class="lineno"><a class="line" href="class_gravity_view___admin.html#a25e2d366e34907a6669770e3c3d0253a">  407</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">function</span> <a class="code" href="class_gravity_view___admin.html#a25e2d366e34907a6669770e3c3d0253a">get_notices</a>() {</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="class_gravity_view___admin___notices.html#a25e2d366e34907a6669770e3c3d0253a">GravityView_Admin_Notices::get_notices</a>();</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    }</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;<span class="comment">    /**</span></div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;<span class="comment">     * Add a notice to be displayed in the admin.</span></div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;<span class="comment">     * @deprecated since 1.12</span></div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;<span class="comment">     * @param array $notice Array with `class` and `message` keys. The message is not escaped.</span></div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00416"></a><span class="lineno"><a class="line" href="class_gravity_view___admin.html#a6d8d59a4cd41f04169160dcd231bdf19">  416</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">function</span> <a class="code" href="class_gravity_view___admin.html#a6d8d59a4cd41f04169160dcd231bdf19">add_notice</a>( $notice = array() ) {</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        <a class="code" href="class_gravity_view___admin___notices.html#a6d8d59a4cd41f04169160dcd231bdf19">GravityView_Admin_Notices::add_notice</a>( $notice );</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;    }</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;<span class="comment">    /**</span></div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;<span class="comment">     * Check if Gravity Forms plugin is active and show notice if not.</span></div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;<span class="comment">     *</span></div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;<span class="comment">     * @deprecated since 1.12</span></div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;<span class="comment">     * @see GravityView_Compatibility::get_plugin_status()</span></div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;<span class="comment">     * @return boolean True: checks have been passed; GV is fine to run; False: checks have failed, don&#39;t continue loading</span></div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00427"></a><span class="lineno"><a class="line" href="class_gravity_view___admin.html#ae7e2d2e55f7eb759175530f5bafe0967">  427</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">function</span> <a class="code" href="class_gravity_view___admin.html#ae7e2d2e55f7eb759175530f5bafe0967">check_gravityforms</a>() {</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="class_gravity_view___compatibility.html#ae7e2d2e55f7eb759175530f5bafe0967">GravityView_Compatibility::check_gravityforms</a>();</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    }</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;<span class="comment">    /**</span></div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;<span class="comment">     * Check if specified plugin is active, inactive or not installed</span></div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;<span class="comment">     *</span></div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;<span class="comment">     * @deprecated since 1.12</span></div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;<span class="comment">     * @see GravityView_Compatibility::get_plugin_status()</span></div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;<span class="comment">     * @return boolean|string True: plugin is active; False: plugin file doesn&#39;t exist at path; &#39;inactive&#39; it&#39;s inactive</span></div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00439"></a><span class="lineno"><a class="line" href="class_gravity_view___admin.html#a3b9255f9ac7f2705f00255ed16d63ac6">  439</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">function</span> <a class="code" href="class_gravity_view___admin.html#a3b9255f9ac7f2705f00255ed16d63ac6">get_plugin_status</a>( $location = <span class="stringliteral">&#39;&#39;</span> ) {</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="class_gravity_view___compatibility.html#a3b9255f9ac7f2705f00255ed16d63ac6">GravityView_Compatibility::get_plugin_status</a>( $location );</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;    }</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;</div>
+<div class="line"><a name="l00443"></a><span class="lineno"><a class="line" href="class_gravity_view___admin.html#a1ce3d7eea1151cce26dbbb4f93f1bec1">  443</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">function</span> <a class="code" href="class_gravity_view___admin.html#a1ce3d7eea1151cce26dbbb4f93f1bec1">is_admin_page</a>($hook = <span class="stringliteral">&#39;&#39;</span>, $page = NULL) {</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;        global $current_screen, $plugin_page, $pagenow, <a class="code" href="select-template_8php.html#a77c8faa27a630e0cfbe0fa5507c1a538">$post</a>;</div>
 <div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;        $is_gv_screen = (!empty($current_screen) &amp;&amp; isset($current_screen-&gt;post_type) &amp;&amp; $current_screen-&gt;post_type === <span class="stringliteral">&#39;gravityview&#39;</span>);</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;        <span class="keywordflow">if</span>( !is_admin() ) { <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
 <div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;</div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;        $is_gv_post_type_get = (isset($_GET[<span class="stringliteral">&#39;post_type&#39;</span>]) &amp;&amp; $_GET[<span class="stringliteral">&#39;post_type&#39;</span>] === <span class="stringliteral">&#39;gravityview&#39;</span>);</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;        $is_page = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;</div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;        <span class="keywordflow">if</span>( empty( $post ) &amp;&amp; $pagenow === <span class="stringliteral">&#39;post.php&#39;</span> &amp;&amp; !empty( $_GET[<span class="stringliteral">&#39;post&#39;</span>] ) ) {</div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;            $gv_post = get_post( intval( $_GET[<span class="stringliteral">&#39;post&#39;</span>] ) );</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;            $is_gv_post_type = (!empty($gv_post) &amp;&amp; !empty($gv_post-&gt;post_type) &amp;&amp; $gv_post-&gt;post_type === <span class="stringliteral">&#39;gravityview&#39;</span>);</div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;            $is_gv_post_type = (!empty($post) &amp;&amp; !empty($post-&gt;post_type) &amp;&amp; $post-&gt;post_type === <span class="stringliteral">&#39;gravityview&#39;</span>);</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;        }</div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;        <span class="keywordflow">if</span>( $is_gv_screen || $is_gv_post_type || $is_gv_post_type || $is_gv_post_type_get ) {</div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;</div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;            <span class="comment">// $_GET `post_type` variable</span></div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;            <span class="keywordflow">if</span>(in_array($pagenow, array( <span class="stringliteral">&#39;post.php&#39;</span> , <span class="stringliteral">&#39;post-new.php&#39;</span> )) ) {</div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;                $is_page = <span class="stringliteral">&#39;single&#39;</span>;</div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;            } elseif ( $plugin_page === <span class="stringliteral">&#39;gravityview_settings&#39;</span> || ( !empty( $_GET[<span class="stringliteral">&#39;page&#39;</span>] ) &amp;&amp; $_GET[<span class="stringliteral">&#39;page&#39;</span>] === <span class="stringliteral">&#39;gravityview_settings&#39;</span> ) ) {</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;                $is_page = <span class="stringliteral">&#39;settings&#39;</span>;</div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;                $is_page = <span class="stringliteral">&#39;views&#39;</span>;</div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;            }</div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;        }</div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;<span class="comment">        /**</span></div>
-<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;<span class="comment">         * @filter `gravityview_is_admin_page` Is the current admin page a GravityView-related page?</span></div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;<span class="comment">         * @param[in,out] string|bool $is_page If false, no. If string, the name of the page (`single`, `settings`, or `views`)</span></div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;<span class="comment">         * @param[in] string $hook The name of the page to check against. Is passed to the method.</span></div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;        $is_page = apply_filters( <span class="stringliteral">&#39;gravityview_is_admin_page&#39;</span>, $is_page, $hook );</div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;</div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;        <span class="comment">// If the current page is the same as the compared page</span></div>
-<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;        <span class="keywordflow">if</span>(!empty($page)) {</div>
-<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;            <span class="keywordflow">return</span> $is_page === $page;</div>
-<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;        }</div>
-<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;</div>
-<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;        <span class="keywordflow">return</span> $is_page;</div>
-<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;    }</div>
-<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;</div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;}</div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;</div>
-<div class="line"><a name="l00486"></a><span class="lineno"><a class="line" href="class-admin_8php.html#a0a11619fe1e59a4be62063e627472591">  486</a></span>&#160;<span class="keyword">new</span> <a class="code" href="class-admin_8php.html#a0a11619fe1e59a4be62063e627472591">GravityView_Admin</a>;</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;        $is_gv_screen = (!empty($current_screen) &amp;&amp; isset($current_screen-&gt;post_type) &amp;&amp; $current_screen-&gt;post_type === <span class="stringliteral">&#39;gravityview&#39;</span>);</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;        $is_gv_post_type_get = (isset($_GET[<span class="stringliteral">&#39;post_type&#39;</span>]) &amp;&amp; $_GET[<span class="stringliteral">&#39;post_type&#39;</span>] === <span class="stringliteral">&#39;gravityview&#39;</span>);</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;        <span class="keywordflow">if</span>( empty( $post ) &amp;&amp; $pagenow === <span class="stringliteral">&#39;post.php&#39;</span> &amp;&amp; !empty( $_GET[<span class="stringliteral">&#39;post&#39;</span>] ) ) {</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;            $gv_post = get_post( intval( $_GET[<span class="stringliteral">&#39;post&#39;</span>] ) );</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;            $is_gv_post_type = (!empty($gv_post) &amp;&amp; !empty($gv_post-&gt;post_type) &amp;&amp; $gv_post-&gt;post_type === <span class="stringliteral">&#39;gravityview&#39;</span>);</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;            $is_gv_post_type = (!empty($post) &amp;&amp; !empty($post-&gt;post_type) &amp;&amp; $post-&gt;post_type === <span class="stringliteral">&#39;gravityview&#39;</span>);</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;        }</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;        <span class="keywordflow">if</span>( $is_gv_screen || $is_gv_post_type || $is_gv_post_type || $is_gv_post_type_get ) {</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;            <span class="comment">// $_GET `post_type` variable</span></div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;            <span class="keywordflow">if</span>(in_array($pagenow, array( <span class="stringliteral">&#39;post.php&#39;</span> , <span class="stringliteral">&#39;post-new.php&#39;</span> )) ) {</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;                $is_page = <span class="stringliteral">&#39;single&#39;</span>;</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;            } elseif ( $plugin_page === <span class="stringliteral">&#39;gravityview_settings&#39;</span> || ( !empty( $_GET[<span class="stringliteral">&#39;page&#39;</span>] ) &amp;&amp; $_GET[<span class="stringliteral">&#39;page&#39;</span>] === <span class="stringliteral">&#39;gravityview_settings&#39;</span> ) ) {</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;                $is_page = <span class="stringliteral">&#39;settings&#39;</span>;</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;                $is_page = <span class="stringliteral">&#39;views&#39;</span>;</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;            }</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;        }</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;<span class="comment">        /**</span></div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;<span class="comment">         * @filter `gravityview_is_admin_page` Is the current admin page a GravityView-related page?</span></div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;<span class="comment">         * @param[in,out] string|bool $is_page If false, no. If string, the name of the page (`single`, `settings`, or `views`)</span></div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;<span class="comment">         * @param[in] string $hook The name of the page to check against. Is passed to the method.</span></div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;        $is_page = apply_filters( <span class="stringliteral">&#39;gravityview_is_admin_page&#39;</span>, $is_page, $hook );</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;</div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;        <span class="comment">// If the current page is the same as the compared page</span></div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;        <span class="keywordflow">if</span>(!empty($page)) {</div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;            <span class="keywordflow">return</span> $is_page === $page;</div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;        }</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;        <span class="keywordflow">return</span> $is_page;</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;    }</div>
 <div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;</div>
-<div class="line"><a name="l00488"></a><span class="lineno"><a class="line" href="class-admin_8php.html#adc31bc06070597337d234523522cc42b">  488</a></span>&#160;<span class="keyword">function</span> <a class="code" href="class-admin_8php.html#adc31bc06070597337d234523522cc42b">gravityview_is_admin_page</a>($hook = <span class="stringliteral">&#39;&#39;</span>, $page = NULL) {</div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="class_gravity_view___admin.html#a1ce3d7eea1151cce26dbbb4f93f1bec1">GravityView_Admin::is_admin_page</a>( $hook, $page );</div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;}</div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;}</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;</div>
+<div class="line"><a name="l00490"></a><span class="lineno"><a class="line" href="class-admin_8php.html#a0a11619fe1e59a4be62063e627472591">  490</a></span>&#160;<span class="keyword">new</span> <a class="code" href="class-admin_8php.html#a0a11619fe1e59a4be62063e627472591">GravityView_Admin</a>;</div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;</div>
+<div class="line"><a name="l00492"></a><span class="lineno"><a class="line" href="class-admin_8php.html#adc31bc06070597337d234523522cc42b">  492</a></span>&#160;<span class="keyword">function</span> <a class="code" href="class-admin_8php.html#adc31bc06070597337d234523522cc42b">gravityview_is_admin_page</a>($hook = <span class="stringliteral">&#39;&#39;</span>, $page = NULL) {</div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="class_gravity_view___admin.html#a1ce3d7eea1151cce26dbbb4f93f1bec1">GravityView_Admin::is_admin_page</a>( $hook, $page );</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;}</div>
 <div class="ttc" id="gravityview_8php_html_a20e44631ea950946599dd5661090eb4d"><div class="ttname"><a href="gravityview_8php.html#a20e44631ea950946599dd5661090eb4d">GRAVITYVIEW_DIR</a></div><div class="ttdeci">const GRAVITYVIEW_DIR</div><div class="ttdoc">The absolute path to the plugin directory  "GRAVITYVIEW_DIR" "./". </div><div class="ttdef"><b>Definition:</b> <a href="gravityview_8php_source.html#l00050">gravityview.php:50</a></div></div>
 <div class="ttc" id="post__image_8php_html_aac6146b4cdec66c94263ddb55afd5946"><div class="ttname"><a href="post__image_8php.html#aac6146b4cdec66c94263ddb55afd5946">$image</a></div><div class="ttdeci">$image</div><div class="ttdef"><b>Definition:</b> <a href="post__image_8php_source.html#l00099">post_image.php:99</a></div></div>
 <div class="ttc" id="class_gravity_view___admin_html_a86eb87454b688f1de9a5e11a552af545"><div class="ttname"><a href="class_gravity_view___admin.html#a86eb87454b688f1de9a5e11a552af545">GravityView_Admin\plugin_action_links</a></div><div class="ttdeci">static plugin_action_links($links)</div><div class="ttdoc">Modify plugin action links at plugins screen. </div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00088">class-admin.php:88</a></div></div>
-<div class="ttc" id="class_gravity_view___admin_html_a25e2d366e34907a6669770e3c3d0253a"><div class="ttname"><a href="class_gravity_view___admin.html#a25e2d366e34907a6669770e3c3d0253a">GravityView_Admin\get_notices</a></div><div class="ttdeci">static get_notices()</div><div class="ttdoc">Get admin notices. </div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00403">class-admin.php:403</a></div></div>
+<div class="ttc" id="class_gravity_view___admin_html_a25e2d366e34907a6669770e3c3d0253a"><div class="ttname"><a href="class_gravity_view___admin.html#a25e2d366e34907a6669770e3c3d0253a">GravityView_Admin\get_notices</a></div><div class="ttdeci">static get_notices()</div><div class="ttdoc">Get admin notices. </div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00407">class-admin.php:407</a></div></div>
 <div class="ttc" id="class_gravity_view___admin_html_a84293b1e443b1eff49782b0f8ede2cdb"><div class="ttname"><a href="class_gravity_view___admin.html#a84293b1e443b1eff49782b0f8ede2cdb">GravityView_Admin\no_conflict_scripts</a></div><div class="ttdeci">no_conflict_scripts()</div><div class="ttdoc">Callback to eliminate any non-registered script. </div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00182">class-admin.php:182</a></div></div>
 <div class="ttc" id="class_gravity_view___admin_html"><div class="ttname"><a href="class_gravity_view___admin.html">GravityView_Admin</a></div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00003">class-admin.php:3</a></div></div>
-<div class="ttc" id="class-admin_8php_html_a0a11619fe1e59a4be62063e627472591"><div class="ttname"><a href="class-admin_8php.html#a0a11619fe1e59a4be62063e627472591">GravityView_Admin</a></div><div class="ttdeci">new GravityView_Admin</div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00486">class-admin.php:486</a></div></div>
-<div class="ttc" id="class_gravity_view___admin_html_ae7e2d2e55f7eb759175530f5bafe0967"><div class="ttname"><a href="class_gravity_view___admin.html#ae7e2d2e55f7eb759175530f5bafe0967">GravityView_Admin\check_gravityforms</a></div><div class="ttdeci">static check_gravityforms()</div><div class="ttdoc">Check if Gravity Forms plugin is active and show notice if not. </div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00423">class-admin.php:423</a></div></div>
+<div class="ttc" id="class-admin_8php_html_a0a11619fe1e59a4be62063e627472591"><div class="ttname"><a href="class-admin_8php.html#a0a11619fe1e59a4be62063e627472591">GravityView_Admin</a></div><div class="ttdeci">new GravityView_Admin</div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00490">class-admin.php:490</a></div></div>
+<div class="ttc" id="class_gravity_view___admin_html_ae7e2d2e55f7eb759175530f5bafe0967"><div class="ttname"><a href="class_gravity_view___admin.html#ae7e2d2e55f7eb759175530f5bafe0967">GravityView_Admin\check_gravityforms</a></div><div class="ttdeci">static check_gravityforms()</div><div class="ttdoc">Check if Gravity Forms plugin is active and show notice if not. </div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00427">class-admin.php:427</a></div></div>
 <div class="ttc" id="class_gravity_view___compatibility_html_aa8af3ab9e02ba9c77bad48f1e3e311cb"><div class="ttname"><a href="class_gravity_view___compatibility.html#aa8af3ab9e02ba9c77bad48f1e3e311cb">GravityView_Compatibility\is_valid</a></div><div class="ttdeci">static is_valid()</div><div class="ttdoc">Is everything compatible with this version of GravityView? </div><div class="ttdef"><b>Definition:</b> <a href="class-gravityview-compatibility_8php_source.html#l00089">class-gravityview-compatibility.php:89</a></div></div>
 <div class="ttc" id="gravityview_8php_html_aac65aafa1f7f9586c7c67ea81c3ba6e8"><div class="ttname"><a href="gravityview_8php.html#aac65aafa1f7f9586c7c67ea81c3ba6e8">GRAVITYVIEW_FILE</a></div><div class="ttdeci">const GRAVITYVIEW_FILE(!defined( 'ABSPATH'))</div><div class="ttdoc">If this file is called directly, abort. </div><div class="ttdef"><b>Definition:</b> <a href="gravityview_8php_source.html#l00039">gravityview.php:39</a></div></div>
 <div class="ttc" id="class_gravity_view___admin_html_a561424521381fd64539c5fb5e573d143"><div class="ttname"><a href="class_gravity_view___admin.html#a561424521381fd64539c5fb5e573d143">GravityView_Admin\add_hooks</a></div><div class="ttdeci">add_hooks()</div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00015">class-admin.php:15</a></div></div>
@@ -599,20 +603,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="class_gravity_view___admin_html_aacdb3ff3b6cb04e545151773a6dfa897"><div class="ttname"><a href="class_gravity_view___admin.html#aacdb3ff3b6cb04e545151773a6dfa897">GravityView_Admin\remove_conflicts</a></div><div class="ttdeci">remove_conflicts(&amp;$wp_objects, $required_objects, $type= 'scripts')</div><div class="ttdoc">Remove any style or script non-registered in the no conflict mode. </div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00346">class-admin.php:346</a></div></div>
 <div class="ttc" id="class_gravity_view___admin_html_a095c5d389db211932136b53f25f39685"><div class="ttname"><a href="class_gravity_view___admin.html#a095c5d389db211932136b53f25f39685">GravityView_Admin\__construct</a></div><div class="ttdeci">__construct()</div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00005">class-admin.php:5</a></div></div>
 <div class="ttc" id="class_gravity_view___compatibility_html_a3b9255f9ac7f2705f00255ed16d63ac6"><div class="ttname"><a href="class_gravity_view___compatibility.html#a3b9255f9ac7f2705f00255ed16d63ac6">GravityView_Compatibility\get_plugin_status</a></div><div class="ttdeci">static get_plugin_status($location= '')</div><div class="ttdoc">Check if specified plugin is active, inactive or not installed. </div><div class="ttdef"><b>Definition:</b> <a href="class-gravityview-compatibility_8php_source.html#l00308">class-gravityview-compatibility.php:308</a></div></div>
-<div class="ttc" id="class_gravity_view___admin_html_a3b9255f9ac7f2705f00255ed16d63ac6"><div class="ttname"><a href="class_gravity_view___admin.html#a3b9255f9ac7f2705f00255ed16d63ac6">GravityView_Admin\get_plugin_status</a></div><div class="ttdeci">static get_plugin_status($location= '')</div><div class="ttdoc">Check if specified plugin is active, inactive or not installed. </div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00435">class-admin.php:435</a></div></div>
-<div class="ttc" id="class-admin_8php_html_adc31bc06070597337d234523522cc42b"><div class="ttname"><a href="class-admin_8php.html#adc31bc06070597337d234523522cc42b">gravityview_is_admin_page</a></div><div class="ttdeci">gravityview_is_admin_page($hook= '', $page=NULL)</div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00488">class-admin.php:488</a></div></div>
+<div class="ttc" id="class_gravity_view___admin_html_a3b9255f9ac7f2705f00255ed16d63ac6"><div class="ttname"><a href="class_gravity_view___admin.html#a3b9255f9ac7f2705f00255ed16d63ac6">GravityView_Admin\get_plugin_status</a></div><div class="ttdeci">static get_plugin_status($location= '')</div><div class="ttdoc">Check if specified plugin is active, inactive or not installed. </div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00439">class-admin.php:439</a></div></div>
+<div class="ttc" id="class-admin_8php_html_adc31bc06070597337d234523522cc42b"><div class="ttname"><a href="class-admin_8php.html#adc31bc06070597337d234523522cc42b">gravityview_is_admin_page</a></div><div class="ttdeci">gravityview_is_admin_page($hook= '', $page=NULL)</div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00492">class-admin.php:492</a></div></div>
 <div class="ttc" id="connector-functions_8php_html_a6d8ec737f4ce0888e1bba99be334f68c"><div class="ttname"><a href="connector-functions_8php.html#a6d8ec737f4ce0888e1bba99be334f68c">gravityview_get_form</a></div><div class="ttdeci">gravityview_get_form($form_id)</div><div class="ttdoc">Returns the form object for a given Form ID. </div><div class="ttdef"><b>Definition:</b> <a href="connector-functions_8php_source.html#l00024">connector-functions.php:24</a></div></div>
 <div class="ttc" id="class_gravity_view___admin___notices_html_a6d8d59a4cd41f04169160dcd231bdf19"><div class="ttname"><a href="class_gravity_view___admin___notices.html#a6d8d59a4cd41f04169160dcd231bdf19">GravityView_Admin_Notices\add_notice</a></div><div class="ttdeci">static add_notice($notice=array())</div><div class="ttdoc">Add a notice to be displayed in the admin. </div><div class="ttdef"><b>Definition:</b> <a href="class-gravityview-admin-notices_8php_source.html#l00186">class-gravityview-admin-notices.php:186</a></div></div>
 <div class="ttc" id="helper-functions_8php_html_a19d96b14ac018d5d19f808b43f08ac1f"><div class="ttname"><a href="helper-functions_8php.html#a19d96b14ac018d5d19f808b43f08ac1f">gravityview_get_floaty</a></div><div class="ttdeci">gravityview_get_floaty()</div><div class="ttdoc">Get an image of our intrepid explorer friend. </div><div class="ttdef"><b>Definition:</b> <a href="helper-functions_8php_source.html#l00108">helper-functions.php:108</a></div></div>
 <div class="ttc" id="class_gravity_view___compatibility_html_ae7e2d2e55f7eb759175530f5bafe0967"><div class="ttname"><a href="class_gravity_view___compatibility.html#ae7e2d2e55f7eb759175530f5bafe0967">GravityView_Compatibility\check_gravityforms</a></div><div class="ttdeci">static check_gravityforms()</div><div class="ttdoc">Check if Gravity Forms plugin is active and show notice if not. </div><div class="ttdef"><b>Definition:</b> <a href="class-gravityview-compatibility_8php_source.html#l00222">class-gravityview-compatibility.php:222</a></div></div>
-<div class="ttc" id="class_gravity_view___admin_html_a6d8d59a4cd41f04169160dcd231bdf19"><div class="ttname"><a href="class_gravity_view___admin.html#a6d8d59a4cd41f04169160dcd231bdf19">GravityView_Admin\add_notice</a></div><div class="ttdeci">static add_notice($notice=array())</div><div class="ttdoc">Add a notice to be displayed in the admin. </div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00412">class-admin.php:412</a></div></div>
+<div class="ttc" id="class_gravity_view___admin_html_a6d8d59a4cd41f04169160dcd231bdf19"><div class="ttname"><a href="class_gravity_view___admin.html#a6d8d59a4cd41f04169160dcd231bdf19">GravityView_Admin\add_notice</a></div><div class="ttdeci">static add_notice($notice=array())</div><div class="ttdoc">Add a notice to be displayed in the admin. </div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00416">class-admin.php:416</a></div></div>
 <div class="ttc" id="class_gravity_view___admin_html_a606d2165aacb133ec13540bb287809ef"><div class="ttname"><a href="class_gravity_view___admin.html#a606d2165aacb133ec13540bb287809ef">GravityView_Admin\get_floaty</a></div><div class="ttdeci">static get_floaty()</div><div class="ttdoc">Get an image of our intrepid explorer friend. </div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00099">class-admin.php:99</a></div></div>
 <div class="ttc" id="select-template_8php_html_a77c8faa27a630e0cfbe0fa5507c1a538"><div class="ttname"><a href="select-template_8php.html#a77c8faa27a630e0cfbe0fa5507c1a538">$post</a></div><div class="ttdeci">global $post</div><div class="ttdef"><b>Definition:</b> <a href="select-template_8php_source.html#l00009">select-template.php:9</a></div></div>
 <div class="ttc" id="class_gravity_view___admin_html_a7d471bb348c9fa797d9f9fb9d8d0c85b"><div class="ttname"><a href="class_gravity_view___admin.html#a7d471bb348c9fa797d9f9fb9d8d0c85b">GravityView_Admin\no_conflict_styles</a></div><div class="ttdeci">no_conflict_styles()</div><div class="ttdoc">Callback to eliminate any non-registered style. </div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00269">class-admin.php:269</a></div></div>
 <div class="ttc" id="connector-functions_8php_html_a333c720c45a772b05bba7c6d0a1d1f28"><div class="ttname"><a href="connector-functions_8php.html#a333c720c45a772b05bba7c6d0a1d1f28">gravityview_get_form_id</a></div><div class="ttdeci">gravityview_get_form_id($view_id)</div><div class="ttdoc">Get the connected form ID from a View ID. </div><div class="ttdef"><b>Definition:</b> <a href="connector-functions_8php_source.html#l00174">connector-functions.php:174</a></div></div>
-<div class="ttc" id="class_gravity_view___admin_html_a56e014d216a0df23da54b2f943090262"><div class="ttname"><a href="class_gravity_view___admin.html#a56e014d216a0df23da54b2f943090262">GravityView_Admin\add_script_dependencies</a></div><div class="ttdeci">add_script_dependencies($registered, $scripts)</div><div class="ttdoc">Add dependencies. </div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00378">class-admin.php:378</a></div></div>
+<div class="ttc" id="class_gravity_view___admin_html_a56e014d216a0df23da54b2f943090262"><div class="ttname"><a href="class_gravity_view___admin.html#a56e014d216a0df23da54b2f943090262">GravityView_Admin\add_script_dependencies</a></div><div class="ttdeci">add_script_dependencies($registered, $scripts)</div><div class="ttdoc">Add dependencies. </div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00382">class-admin.php:382</a></div></div>
 <div class="ttc" id="class_gravity_view___admin___notices_html_a25e2d366e34907a6669770e3c3d0253a"><div class="ttname"><a href="class_gravity_view___admin___notices.html#a25e2d366e34907a6669770e3c3d0253a">GravityView_Admin_Notices\get_notices</a></div><div class="ttdeci">static get_notices()</div><div class="ttdoc">Get admin notices. </div><div class="ttdef"><b>Definition:</b> <a href="class-gravityview-admin-notices_8php_source.html#l00095">class-gravityview-admin-notices.php:95</a></div></div>
-<div class="ttc" id="class_gravity_view___admin_html_a1ce3d7eea1151cce26dbbb4f93f1bec1"><div class="ttname"><a href="class_gravity_view___admin.html#a1ce3d7eea1151cce26dbbb4f93f1bec1">GravityView_Admin\is_admin_page</a></div><div class="ttdeci">static is_admin_page($hook= '', $page=NULL)</div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00439">class-admin.php:439</a></div></div>
+<div class="ttc" id="class_gravity_view___admin_html_a1ce3d7eea1151cce26dbbb4f93f1bec1"><div class="ttname"><a href="class_gravity_view___admin.html#a1ce3d7eea1151cce26dbbb4f93f1bec1">GravityView_Admin\is_admin_page</a></div><div class="ttdeci">static is_admin_page($hook= '', $page=NULL)</div><div class="ttdef"><b>Definition:</b> <a href="class-admin_8php_source.html#l00443">class-admin.php:443</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

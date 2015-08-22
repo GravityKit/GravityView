@@ -286,7 +286,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        <a class="code" href="edit__link_8php.html#a73004ce9cd673c1bfafd1dc351134797">$output</a> .= <span class="stringliteral">&#39;&lt;/&#39;</span>. $this-&gt;wrapper_tag .<span class="charliteral">&#39;&gt;&#39;</span>;</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">        /**</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">         * Modify the HTML of the output</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">         * @filter `gravityview/widget/recent-entries/output` Modify the HTML of the Recent Entries widget output</span></div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">         * @param string $output HTML to be displayed</span></div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment">         * @param GravityView_Entry_List $this The current class instance</span></div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="comment">         */</span></div>
@@ -344,38 +344,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="keywordflow">if</span>( !empty( $this-&gt;after_link ) ) {</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="comment">            /**</span></div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="comment">             * Modify the item output HTML</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment">             *</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment">             * @since 1.7.2</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="comment">             *</span></div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="comment">             * @param string $item_output The HTML output for the after_link content</span></div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment">             * @param array $entry Gravity Forms entry array</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="comment">             * @param GravityView_Entry_List $this The current class instance</span></div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="comment">             */</span></div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            <a class="code" href="class_gravity_view___entry___list.html#a2a119c919018d07285b1b8ea443f1bd3">$after_link</a> = apply_filters( <span class="stringliteral">&#39;gravityview/entry-list/after-link&#39;</span>, <span class="stringliteral">&#39;&lt;div&gt;&#39;</span>.$this-&gt;after_link.<span class="stringliteral">&#39;&lt;/div&gt;&#39;</span>, $entry, $this );</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            $item_output .= <a class="code" href="class_gravity_view___entry___list.html#a2a119c919018d07285b1b8ea443f1bd3">$after_link</a>;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        }</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="comment">             * @filter `gravityview/entry-list/after-link` Modify the content displayed after the entry link in an entry list</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment">             * @since 1.7.2</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment">             * @param string $item_output The HTML output for the after_link content</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="comment">             * @param array $entry Gravity Forms entry array</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="comment">             * @param GravityView_Entry_List $this The current class instance</span></div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment">             */</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            <a class="code" href="class_gravity_view___entry___list.html#a2a119c919018d07285b1b8ea443f1bd3">$after_link</a> = apply_filters( <span class="stringliteral">&#39;gravityview/entry-list/after-link&#39;</span>, <span class="stringliteral">&#39;&lt;div&gt;&#39;</span>.$this-&gt;after_link.<span class="stringliteral">&#39;&lt;/div&gt;&#39;</span>, $entry, $this );</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            $item_output .= <a class="code" href="class_gravity_view___entry___list.html#a2a119c919018d07285b1b8ea443f1bd3">$after_link</a>;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        }</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        $item_output = <a class="code" href="class_gravity_view___a_p_i.html#acf131abd5aba2047a9653344a90f15ca">GravityView_API::replace_variables</a>( $item_output, $this-&gt;form, $entry );</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        $item_output = <a class="code" href="class_gravity_view___a_p_i.html#acf131abd5aba2047a9653344a90f15ca">GravityView_API::replace_variables</a>( $item_output, $this-&gt;form, $entry );</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        $item_output = <span class="charliteral">&#39;&lt;&#39;</span>. $this-&gt;item_tag .<span class="charliteral">&#39;&gt;&#39;</span>. $item_output .<span class="stringliteral">&#39;&lt;/&#39;</span>. $this-&gt;item_tag .<span class="charliteral">&#39;&gt;&#39;</span>;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="comment">        /**</span></div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="comment">         * Modify the item output HTML</span></div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="comment">         *</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="comment">         * @since 1.7.2</span></div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="comment">         *</span></div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="comment">         * @param string $item_output The HTML output for the item</span></div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="comment">         * @param array $entry Gravity Forms entry array</span></div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="comment">         * @param GravityView_Entry_List $this The current class instance</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        $item_output = apply_filters( <span class="stringliteral">&#39;gravityview/entry-list/item&#39;</span>, $item_output, $entry, $this );</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        <span class="keywordflow">return</span> $item_output;</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    }</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;}</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        $item_output = <span class="charliteral">&#39;&lt;&#39;</span>. $this-&gt;item_tag .<span class="charliteral">&#39;&gt;&#39;</span>. $item_output .<span class="stringliteral">&#39;&lt;/&#39;</span>. $this-&gt;item_tag .<span class="charliteral">&#39;&gt;&#39;</span>;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="comment">        /**</span></div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="comment">         * @filter `gravityview/entry-list/item` Modify each item&#39;s output in an entry list</span></div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="comment">         * @since 1.7.2</span></div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="comment">         * @param string $item_output The HTML output for the item</span></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="comment">         * @param array $entry Gravity Forms entry array</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="comment">         * @param GravityView_Entry_List $this The current class instance</span></div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        $item_output = apply_filters( <span class="stringliteral">&#39;gravityview/entry-list/item&#39;</span>, $item_output, $entry, $this );</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        <span class="keywordflow">return</span> $item_output;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    }</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;}</div>
 <div class="ttc" id="class_gravity_view___entry___list_html_a1b357cbf89ffeb2ce419c738571c57b2"><div class="ttname"><a href="class_gravity_view___entry___list.html#a1b357cbf89ffeb2ce419c738571c57b2">GravityView_Entry_List\$skip_current_entry</a></div><div class="ttdeci">$skip_current_entry</div><div class="ttdef"><b>Definition:</b> <a href="class-gravityview-entry-list_8php_source.html#l00051">class-gravityview-entry-list.php:51</a></div></div>
 <div class="ttc" id="class_gravity_view___a_p_i_html_acf131abd5aba2047a9653344a90f15ca"><div class="ttname"><a href="class_gravity_view___a_p_i.html#acf131abd5aba2047a9653344a90f15ca">GravityView_API\replace_variables</a></div><div class="ttdeci">static replace_variables($text, $form, $entry)</div><div class="ttdoc">Alias for GravityView_Merge_Tags::replace_variables() </div><div class="ttdef"><b>Definition:</b> <a href="class-api_8php_source.html#l00104">class-api.php:104</a></div></div>
 <div class="ttc" id="class_gravity_view___entry___list_html"><div class="ttname"><a href="class_gravity_view___entry___list.html">GravityView_Entry_List</a></div><div class="ttdoc">If this file is called directly, abort. </div><div class="ttdef"><b>Definition:</b> <a href="class-gravityview-entry-list_8php_source.html#l00013">class-gravityview-entry-list.php:13</a></div></div>

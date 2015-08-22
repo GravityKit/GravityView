@@ -299,7 +299,7 @@ Gabriel Sobrinho &lt;gabriel (dot) sobrinho (at) gmail (dot) com&gt; </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>array|mixed|void </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000040">Runs Filter:</a></b></dt><dd><code>gravityview_search_operator</code> Modify the search operator for the field (contains, is, isnot, etc) <dl class="params"><dt>Parameters</dt><dd>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000042">Runs Filter:</a></b></dt><dd><code>gravityview_search_operator</code> Modify the search operator for the field (contains, is, isnot, etc) <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$operator</td><td>Existing search operator </td></tr>
     <tr><td class="paramtype">array</td><td class="paramname">$filter</td><td>array with <code>key</code>, <code>value</code>, <code>operator</code>, <code>type</code> keys </td></tr>
@@ -308,7 +308,7 @@ Gabriel Sobrinho &lt;gabriel (dot) sobrinho (at) gmail (dot) com&gt; </dd></dl>
 </dl>
 </dd></dl>
 <p>Prepare date formats to be in Gravity Forms DB format; $passed_criteria may include date formats incompatible with Gravity Forms.</p>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000041">Runs Filter:</a></b></dt><dd><code>gravityview_search_criteria</code> Apply final criteria filter (Used by the Advanced Filter extension) <dl class="params"><dt>Parameters</dt><dd>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000043">Runs Filter:</a></b></dt><dd><code>gravityview_search_criteria</code> Apply final criteria filter (Used by the Advanced Filter extension) <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">array</td><td class="paramname">$criteria</td><td>Search criteria used by <a class="el" href="namespace_gravity_view.html" title="GPL2+ ">GravityView</a> </td></tr>
     <tr><td class="paramtype">array</td><td class="paramname">$form_ids</td><td>Forms to search </td></tr>
@@ -437,7 +437,7 @@ Gabriel Sobrinho &lt;gabriel (dot) sobrinho (at) gmail (dot) com&gt; </dd></dl>
 <p>Get all existing Views. </p>
 <dl class="section since"><dt>Since</dt><dd>1.5.4 </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>array Array of Views as <code>WP_Post</code>. Empty array if none found. </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000039">Runs Filter:</a></b></dt><dd><code>gravityview/get_all_views/params</code> Modify the parameters sent to get all views. <dl class="params"><dt>Parameters</dt><dd>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000041">Runs Filter:</a></b></dt><dd><code>gravityview/get_all_views/params</code> Modify the parameters sent to get all views. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramtype">array</td><td class="paramname">$params</td><td>Array of parameters to pass to <code>get_posts()</code> </td></tr>
   </table>
@@ -597,7 +597,7 @@ GFFormsModel::get_field_filters_where()  public </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>mixed False: Error fetching entries. Array: Multi-dimensional array of Gravity Forms entry arrays </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000042">Runs Filter:</a></b></dt><dd><code>gravityview_entries</code> Modify the array of entries returned to <a class="el" href="namespace_gravity_view.html" title="GPL2+ ">GravityView</a> after it has been fetched from the cache or from <code>GFAPI::get_entries()</code>. <dl class="params"><dt>Parameters</dt><dd>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000044">Runs Filter:</a></b></dt><dd><code>gravityview_entries</code> Modify the array of entries returned to <a class="el" href="namespace_gravity_view.html" title="GPL2+ ">GravityView</a> after it has been fetched from the cache or from <code>GFAPI::get_entries()</code>. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">array&#160;|&#160;null</td><td class="paramname">$entries</td><td>Array of entries as returned by the cache or by <code>GFAPI::get_entries()</code> </td></tr>
     <tr><td class="paramtype">array</td><td class="paramname">$criteria</td><td>The final search criteria used to generate the request to <code>GFAPI::get_entries()</code> </td></tr>
@@ -658,14 +658,14 @@ GFFormsModel::get_field_filters_where()  public </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>object or false </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000043">Runs Filter:</a></b></dt><dd><code>gravityview_custom_entry_slug</code> Whether to enable and use custom entry slugs. <dl class="params"><dt>Parameters</dt><dd>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000045">Runs Filter:</a></b></dt><dd><code>gravityview_custom_entry_slug</code> Whether to enable and use custom entry slugs. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">boolean</td><td>True: Allow for slugs based on entry values. False: always use entry IDs (default) </td></tr>
   </table>
   </dd>
 </dl>
 </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000044">Runs Filter:</a></b></dt><dd><code>gravityview_custom_entry_slug_allow_id</code> When using a custom slug, allow access to the entry using the original slug (the Entry ID).<ul>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000046">Runs Filter:</a></b></dt><dd><code>gravityview_custom_entry_slug_allow_id</code> When using a custom slug, allow access to the entry using the original slug (the Entry ID).<ul>
 <li>If disabled (default), only allow access to an entry using the custom slug value. (example: <code>/entry/custom-slug/</code> NOT <code>/entry/123/</code>)</li>
 <li>If enabled, you could access using the custom slug OR the entry id (example: <code>/entry/custom-slug/</code> OR <code>/entry/123/</code>) <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1225,7 +1225,7 @@ GFFormsModel::get_field_filters_where()  public </dd></dl>
 
 <p>Generate an HTML anchor tag with a list of supported attributes. </p>
 <p><a class="el" href="">Supported attributes defined here  1.6  string $href URL of the link.  string $anchor_text The text or HTML inside the anchor. This is not sanitized in the function.  array $atts Attributes to be added to the anchor tag  string HTML output of anchor link. If empty $href, returns NULL </a></p>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000048">Runs Filter:</a></b></dt><dd><code>gravityview/get_link/allowed_atts</code> Modify the attributes that are allowed to be used in generating links <dl class="params"><dt>Parameters</dt><dd>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000050">Runs Filter:</a></b></dt><dd><code>gravityview/get_link/allowed_atts</code> Modify the attributes that are allowed to be used in generating links <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">array</td><td class="paramname">$allowed_atts</td><td>Array of attributes allowed </td></tr>
   </table>
@@ -1385,9 +1385,9 @@ GFFormsModel::get_field_filters_where()  public </dd></dl>
   </dd>
 </dl>
 <dl class="section since"><dt>Since</dt><dd>TODO</dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>Get all fields, check if sortable dynamically</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>Get all fields, check if sortable dynamically</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>array </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000045">Runs Filter:</a></b></dt><dd><code>gravityview/common/sortable_fields</code> Filter the sortable fields <dl class="section since"><dt>Since</dt><dd>1.12 </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000047">Runs Filter:</a></b></dt><dd><code>gravityview/common/sortable_fields</code> Filter the sortable fields <dl class="section since"><dt>Since</dt><dd>1.12 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">array</td><td class="paramname">$fields</td><td>Sub-set of GF form fields that are sortable </td></tr>
@@ -1521,7 +1521,7 @@ GFFormsModel::get_field_filters_where()  public </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>array Array of WP_User objects. </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000049">Runs Filter:</a></b></dt><dd><code>gravityview/get_users/{$context}</code> There are issues with too many users using <a href="http://codex.wordpress.org/Function_Reference/get_users">get_users()</a> where it breaks the select. We try to keep it at a reasonable number. <br />
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000051">Runs Filter:</a></b></dt><dd><code>gravityview/get_users/{$context}</code> There are issues with too many users using <a href="http://codex.wordpress.org/Function_Reference/get_users">get_users()</a> where it breaks the select. We try to keep it at a reasonable number. <br />
 <code>$context</code> is where are we using this information (e.g. change_entry_creator, search_widget ..) <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">array</td><td class="paramname">$settings</td><td>Settings array, with <code>number</code> key defining the # of users to display </td></tr>
@@ -1712,7 +1712,7 @@ GFFormsModel::get_field_filters_where()  public </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>boolean </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000046">Runs Filter:</a></b></dt><dd><code>gravityview/common/numeric_types</code> What types of fields are numeric? <dl class="params"><dt>Parameters</dt><dd>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000048">Runs Filter:</a></b></dt><dd><code>gravityview/common/numeric_types</code> What types of fields are numeric? <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">array</td><td class="paramname">$numeric_types</td><td>Fields that are numeric. Default: <code>[ number ]</code> </td></tr>
   </table>
@@ -1770,7 +1770,7 @@ GFFormsModel::get_field_filters_where()  public </dd></dl>
   </dd>
 </dl>
 <p><a class="el" href="class_standalone_p_h_p_enkoder.html">StandalonePHPEnkoder</a> <a class="el" href="">1.7  string Content, encrypted </a></p>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000047">Runs Filter:</a></b></dt><dd><code>gravityview/phpenkoder/msg</code> Modify the message shown when Javascript is disabled and an encrypted email field is displayed <dl class="section since"><dt>Since</dt><dd>1.7 </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000049">Runs Filter:</a></b></dt><dd><code>gravityview/phpenkoder/msg</code> Modify the message shown when Javascript is disabled and an encrypted email field is displayed <dl class="section since"><dt>Since</dt><dd>1.7 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$message</td><td>Existing message </td></tr>

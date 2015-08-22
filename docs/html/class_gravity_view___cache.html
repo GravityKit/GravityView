@@ -312,7 +312,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Delete cached transients based on form IDs. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd><p class="startdd">Use REGEX to match forms when array of form IDs is passed, instead of using a simple LIKE </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd><p class="startdd">Use REGEX to match forms when array of form IDs is passed, instead of using a simple LIKE </p>
 <p class="enddd">Rate limit deleting to prevent abuse</p>
 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -568,7 +568,7 @@ Private Attributes</h2></td></tr>
 <p>Schedule expired transient cleanup twice a day. </p>
 <p>Can be overruled by the <code>gravityview_cleanup_transients</code> filter (returns boolean)</p>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000037">Runs Filter:</a></b></dt><dd><code>gravityview_cleanup_transients</code> Override <a class="el" href="namespace_gravity_view.html" title="GPL2+ ">GravityView</a> cleanup of transients by setting this to false <dl class="params"><dt>Parameters</dt><dd>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000039">Runs Filter:</a></b></dt><dd><code>gravityview_cleanup_transients</code> Override <a class="el" href="namespace_gravity_view.html" title="GPL2+ ">GravityView</a> cleanup of transients by setting this to false <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">boolean</td><td class="paramname">$cleanup</td><td>Whether to run the <a class="el" href="namespace_gravity_view.html" title="GPL2+ ">GravityView</a> auto-cleanup of transients. Default: <code>true</code> </td></tr>
   </table>
@@ -613,7 +613,7 @@ Private Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000036">Runs Filter:</a></b></dt><dd><code>gravityview_cache_time_{$filter_name}</code> Modify the cache time for a type of cache <dl class="params"><dt>Parameters</dt><dd>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000038">Runs Filter:</a></b></dt><dd><code>gravityview_cache_time_{$filter_name}</code> Modify the cache time for a type of cache <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">int</td><td class="paramname">$time_in_seconds</td><td>Default: <code>DAY_IN_SECONDS</code> </td></tr>
   </table>
@@ -674,7 +674,7 @@ Private Attributes</h2></td></tr>
 <p>Check whether to use cached results, if available. </p>
 <p>If the user can edit posts, they are able to override whether to cache results by adding <code>cache</code> or <code>nocache</code> to the URL requested.</p>
 <dl class="section return"><dt>Returns</dt><dd>boolean True: use cache; False: don't use cache </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000038">Runs Filter:</a></b></dt><dd><code>gravityview_use_cache</code> Modify whether to use the cache or not <dl class="params"><dt>Parameters</dt><dd>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000040">Runs Filter:</a></b></dt><dd><code>gravityview_use_cache</code> Modify whether to use the cache or not <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramtype">boolean</td><td class="paramname">$use_cache</td><td>Previous setting </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramtype"><a class="el" href="class_gravity_view___cache.html" title="Handle caching using transients for GravityView. ">GravityView_Cache</a></td><td class="paramname">$this</td><td>The <a class="el" href="class_gravity_view___cache.html" title="Handle caching using transients for GravityView. ">GravityView_Cache</a> object </td></tr>

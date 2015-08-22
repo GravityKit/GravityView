@@ -159,7 +159,7 @@ Data Fields</h2></td></tr>
 
 <p>Definition at line <a class="el" href="class-image_8php_source.html#l00052">52</a> of file <a class="el" href="class-image_8php_source.html">class-image.php</a>.</p>
 
-<p>References <a class="el" href="class-image_8php_source.html#l00102">set_image_size()</a>.</p>
+<p>References <a class="el" href="class-image_8php_source.html#l00106">set_image_size()</a>.</p>
 
 </div>
 </div>
@@ -182,7 +182,7 @@ Data Fields</h2></td></tr>
 
 <p>Definition at line <a class="el" href="class-image_8php_source.html#l00047">47</a> of file <a class="el" href="class-image_8php_source.html">class-image.php</a>.</p>
 
-<p>References <a class="el" href="class-image_8php_source.html#l00164">html()</a>.</p>
+<p>References <a class="el" href="class-image_8php_source.html#l00172">html()</a>.</p>
 
 </div>
 </div>
@@ -201,7 +201,7 @@ Data Fields</h2></td></tr>
 
 <p>Return the HTML tag for the image. </p>
 <dl class="section return"><dt>Returns</dt><dd>string HTML of the image </dd></dl>
-<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000058">Runs Filter:</a></b></dt><dd><code>gravityview_image_html</code> Filter the HTML image output <dl class="params"><dt>Parameters</dt><dd>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000066">Runs Filter:</a></b></dt><dd><code>gravityview_image_html</code> Filter the HTML image output <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramtype">string</td><td class="paramname">$html</td><td>the generated image html </td></tr>
     <tr><td class="paramtype"><a class="el" href="class_gravity_view___image.html" title="Generic class for generating image tag. ">GravityView_Image</a></td><td class="paramname">$this</td><td>The current image object </td></tr>
@@ -210,7 +210,7 @@ Data Fields</h2></td></tr>
 </dl>
 </dd></dl>
 
-<p>Definition at line <a class="el" href="class-image_8php_source.html#l00164">164</a> of file <a class="el" href="class-image_8php_source.html">class-image.php</a>.</p>
+<p>Definition at line <a class="el" href="class-image_8php_source.html#l00172">172</a> of file <a class="el" href="class-image_8php_source.html">class-image.php</a>.</p>
 
 <p>References <a class="el" href="demo_8php_source.html#l00007">$html</a>, and <a class="el" href="class-image_8php_source.html#l00086">validate_image_src()</a>.</p>
 
@@ -250,8 +250,15 @@ Data Fields</h2></td></tr>
 
 <p>Get default widths and heights for image size. </p>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000065">Runs Filter:</a></b></dt><dd><code>gravityview_image_sizes</code> Modify the image size presets used by <a class="el" href="class_gravity_view___image.html" title="Generic class for generating image tag. ">GravityView_Image</a> class <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">array</td><td class="paramname">$image_sizes</td><td>Array of image sizes with the key being the size slug, and the value being an array with <code>width</code> and <code>height</code> defined, in pixels </td></tr>
+  </table>
+  </dd>
+</dl>
+</dd></dl>
 
-<p>Definition at line <a class="el" href="class-image_8php_source.html#l00102">102</a> of file <a class="el" href="class-image_8php_source.html">class-image.php</a>.</p>
+<p>Definition at line <a class="el" href="class-image_8php_source.html#l00106">106</a> of file <a class="el" href="class-image_8php_source.html">class-image.php</a>.</p>
 
 <p>References <a class="el" href="class-image_8php_source.html#l00011">$height</a>, and <a class="el" href="class-image_8php_source.html#l00010">$width</a>.</p>
 
@@ -275,10 +282,12 @@ Data Fields</h2></td></tr>
 <p>Verify that the src URL matches image patterns. </p>
 <p>Yes, images can not have extensions, but this is a basic check. To disable this, set <code>validate_src</code> to false when instantiating the object.</p>
 <dl class="section return"><dt>Returns</dt><dd>boolean True: matches pattern; False: does not match pattern. </dd></dl>
+<dl class="filters"><dt><b><a class="el" href="filters.html#_filters000064">Runs Filter:</a></b></dt><dd><code>gravityview_image_extensions</code> Extensions that <a class="el" href="namespace_gravity_view.html" title="GPL2+ ">GravityView</a> recognizes as valid images to be shown in an `</dd></dl>
+<p><code>tag @param array $image_exts Default:</code>['jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico']`</p>
 
 <p>Definition at line <a class="el" href="class-image_8php_source.html#l00086">86</a> of file <a class="el" href="class-image_8php_source.html">class-image.php</a>.</p>
 
-<p>Referenced by <a class="el" href="class-image_8php_source.html#l00164">html()</a>.</p>
+<p>Referenced by <a class="el" href="class-image_8php_source.html#l00172">html()</a>.</p>
 
 </div>
 </div>
@@ -337,7 +346,7 @@ Data Fields</h2></td></tr>
 
 <p>Definition at line <a class="el" href="class-image_8php_source.html#l00011">11</a> of file <a class="el" href="class-image_8php_source.html">class-image.php</a>.</p>
 
-<p>Referenced by <a class="el" href="class-image_8php_source.html#l00102">set_image_size()</a>.</p>
+<p>Referenced by <a class="el" href="class-image_8php_source.html#l00106">set_image_size()</a>.</p>
 
 </div>
 </div>
@@ -423,7 +432,7 @@ Data Fields</h2></td></tr>
 
 <p>Definition at line <a class="el" href="class-image_8php_source.html#l00010">10</a> of file <a class="el" href="class-image_8php_source.html">class-image.php</a>.</p>
 
-<p>Referenced by <a class="el" href="class-image_8php_source.html#l00102">set_image_size()</a>.</p>
+<p>Referenced by <a class="el" href="class-image_8php_source.html#l00106">set_image_size()</a>.</p>
 
 </div>
 </div>
