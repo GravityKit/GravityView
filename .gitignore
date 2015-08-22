@@ -42,6 +42,7 @@ languages/gravityview-pt.po
 .idea/tasks.xml
 .idea/dictionaries
 .idea/deployment.xml
+.idea/watcherTasks.xml
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids
