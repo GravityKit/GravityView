@@ -311,8 +311,12 @@ final class GravityView_Plugin {
          */
         add_action( 'gform_entry_created', array( 'GravityView_API', 'entry_create_custom_slug' ), 10, 2 );
 
-		// Nice place to insert extensions' frontend stuff
-		do_action('gravityview_include_frontend_actions');
+		/**
+		 * @action `gravityview_include_frontend_actions` Triggered after all GravityView frontend files are loaded
+		 *
+		 * Nice place to insert extensions' frontend stuff
+		 */
+		do_action( 'gravityview_include_frontend_actions' );
 	}
 
 	/**
@@ -348,9 +352,15 @@ final class GravityView_Plugin {
     /**
      * Logs messages using Gravity Forms logging add-on
      * @param  string $message log message
+     * @param mixed $data Additional data to display
      * @return void
      */
     public static function log_debug( $message, $data = null ){
+	    /**
+	     * @action `gravityview_log_debug` Log a debug message that shows up in the Gravity Forms Logging Addon and also the Debug Bar plugin output
+	     * @param string $message Message to display
+	     * @param mixed $data Supporting data to print alongside it
+	     */
     	do_action( 'gravityview_log_debug', $message, $data );
     }
 
@@ -360,6 +370,11 @@ final class GravityView_Plugin {
      * @return void
      */
     public static function log_error( $message, $data = null ){
+	    /**
+	     * @action `gravityview_log_error` Log an error message that shows up in the Gravity Forms Logging Addon and also the Debug Bar plugin output
+	     * @param string $message Error message to display
+	     * @param mixed $data Supporting data to print alongside it
+	     */
     	do_action( 'gravityview_log_error', $message, $data );
     }
 

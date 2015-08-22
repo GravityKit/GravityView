@@ -69,7 +69,11 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 
-		// Nice place to insert extensions' backend stuff
+		/**
+		 * @action `gravityview_include_backend_actions` Triggered after all GravityView admin files are loaded
+		 *
+		 * Nice place to insert extensions' backend stuff
+		 */
 		do_action('gravityview_include_backend_actions');
 	}
 
@@ -325,7 +329,9 @@ class GravityView_Admin {
 
 		$this->remove_conflicts( $wp_styles, $wp_allowed_styles, 'styles' );
 
-		// Allow settings, etc, to hook in after
+		/**
+		 * @action `gravityview_remove_conflicts_after` Runs after no-conflict styles are removed. You can re-add styles here.
+		 */
 		do_action('gravityview_remove_conflicts_after');
 	}
 
@@ -386,30 +392,6 @@ class GravityView_Admin {
         }while(!empty($dependents));
 
         return $scripts;
-    }
-
-    /**
-     * Should the notice be shown in the admin (Has it been dismissed already)?
-     *
-     * If the passed notice array has a `dismiss` key, the notice is dismissable. If it's dismissable,
-     * we check against other notices that have already been dismissed.
-     *
-     * @see GravityView_Admin::dismiss_notice()
-     * @see GravityView_Admin::add_notice()
-     * @param  string $notice            Notice array, set using `add_notice()`.
-     * @return boolean                   True: show notice; False: hide notice
-     */
-    function _maybe_show_notice( $notice ) {
-
-	    // There are no dismissed notices.
-    	if( empty( self::$dismissed_notices ) ) {
-    		return true;
-    	}
-
-    	// Has the
-    	$is_dismissed = !empty( $notice['dismiss'] ) && in_array( $notice['dismiss'], self::$dismissed_notices );
-
-    	return $is_dismissed ? false : true;
     }
 
 	/**
@@ -483,6 +465,11 @@ class GravityView_Admin {
 			}
 		}
 
+		/**
+		 * @filter `gravityview_is_admin_page` Is the current admin page a GravityView-related page?
+		 * @param[in,out] string|bool $is_page If false, no. If string, the name of the page (`single`, `settings`, or `views`)
+		 * @param[in] string $hook The name of the page to check against. Is passed to the method.
+		 */
 		$is_page = apply_filters( 'gravityview_is_admin_page', $is_page, $hook );
 
 		// If the current page is the same as the compared page
