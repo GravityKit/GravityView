@@ -7,6 +7,14 @@
   box-shadow: none;
 }
 
+a.anchor {
+  position: absolute;
+  text-indent: -1em;
+  display: inline-block;
+  width: 1em;
+  outline: none;
+}
+
 #top {
   #projectlogo img {
     max-width: 300px;
@@ -71,7 +79,7 @@ dl.reflist {
     font-size: 1.1em;
     color: #555555;
 
-    & > code:first-child,
+    & > code:first-of-type,
     & dl + code {
 
       color: black;
