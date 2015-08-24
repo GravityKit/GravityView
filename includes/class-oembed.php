@@ -76,6 +76,10 @@ class GravityView_oEmbed {
 
 		$entry_var_name = GravityView_Post_Types::get_entry_var_name();
 
+		/**
+		 * @filter `gravityview_slug` Modify the url part for a View. [Read the doc](http://docs.gravityview.co/article/62-changing-the-view-slug)
+		 * @param string $rewrite_slug The slug shown in the URL
+		 */
 		$rewrite_slug = apply_filters( 'gravityview_slug', 'view' );
 
 		// Only support embeds for current site
@@ -144,7 +148,7 @@ class GravityView_oEmbed {
 	 * @since 1.6
 	 * @see GravityView_oEmbed::add_providers() for the regex
 	 *
-	 * @param array $matches The regex matches from the provided regex when calling {@link wp_embed_register_handler()}.
+	 * @param array $matches The regex matches from the provided regex when calling wp_embed_register_handler()
 	 * @param array $attr Embed attributes.
 	 * @param string $url The original URL that was matched by the regex.
 	 * @param array $rawattr The original unmodified attributes.
@@ -234,7 +238,7 @@ class GravityView_oEmbed {
 	/**
 	 * Display a nice placeholder in the admin for the entry
 	 *
-	 * @param array $matches The regex matches from the provided regex when calling {@link wp_embed_register_handler()}.
+	 * @param array $matches The regex matches from the provided regex when calling wp_embed_register_handler()
 	 * @param array $attr Embed attributes.
 	 * @param string $url The original URL that was matched by the regex.
 	 * @param array $rawattr The original unmodified attributes.
@@ -319,17 +323,15 @@ class GravityView_oEmbed {
 		$output = sprintf('<div class="gravityview-oembed gravityview-oembed-entry gravityview-oembed-entry-'.$this->entry_id.'">%s</div>', $entry_output );
 
 		/**
-		 * Filter the output of the oEmbed entry embed
-		 *
+		 * @filter `gravityview/oembed/entry` Filter the output of the oEmbed entry embed
 		 * @param string $output HTML of the embedded entry, with wrapper div
 		 * @param GravityView_oEmbed $object The current GravityView_oEmbed instance
-		 * @param array $atts Other passed parameters and info. {
-		 *      @type string $entry_output HTML of just the View output, without the wrapper
-		 *      @type array  $matches Capture group matches from the regex
-		 *      @type array $attr Embed attributes.
-		 *      @type string $url The original URL that was matched by the regex.
-		 *      @type array $rawattr The original unmodified attributes.
-		 * }
+		 * @param array $atts Other passed parameters and info. \n
+		 *  @var string $entry_output HTML of just the View output, without the wrapper \n
+		 *  @var array  $matches Capture group matches from the regex \n
+		 *  @var array $attr Embed attributes. \n
+		 *  @var string $url The original URL that was matched by the regex. \n
+		 *  @var array $rawattr The original unmodified attributes.
 		 */
 		$output = apply_filters('gravityview/oembed/entry', $output, $this, compact( $entry_output, $matches, $attr, $url, $rawattr ) );
 

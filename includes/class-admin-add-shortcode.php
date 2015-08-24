@@ -36,7 +36,7 @@ class GravityView_Admin_Add_Shortcode {
 	 * check if screen post editor and is not related with post type 'gravityview'
 	 *
 	 * @access public
-	 * @return void
+	 * @return bool
 	 */
 	function is_post_editor_screen() {
 		global $current_screen, $pagenow;

@@ -360,8 +360,14 @@ class GravityView_frontend {
 
 		$entry = $this->getEntry();
 
-		// to apply the filter to the menu title and the meta tag <title> - outside the loop
-		if ( ! apply_filters( 'gravityview/single/title/out_loop' , in_the_loop(), $entry ) ) {
+		/**
+		 * @filter `gravityview/single/title/out_loop` Apply the Single Entry Title filter outside the WordPress loop?
+		 * @param boolean $in_the_loop Whether to apply the filter to the menu title and the meta tag <title> - outside the loop
+		 * @param array $entry Current entry
+		 */
+		$apply_outside_loop = apply_filters( 'gravityview/single/title/out_loop' , in_the_loop(), $entry );
+
+		if ( ! $apply_outside_loop ) {
 			return $title;
 		}
 
@@ -460,8 +466,7 @@ class GravityView_frontend {
 		}
 
 		/**
-		 * Whether to set comments to open or closed.
-		 *
+		 * @filter `gravityview/comments_open` Whether to set comments to open or closed.
 		 * @since  1.5.4
 		 * @param  boolean $open Open or closed status
 		 * @param  int $post_id Post ID to set comment status for
@@ -570,6 +575,7 @@ class GravityView_frontend {
 
 			//fetch template and slug
 			$view_slug = apply_filters( 'gravityview_template_slug_'. $view_data['template_id'], 'table', 'directory' );
+
 			do_action( 'gravityview_log_debug', '[render_view] View template slug: ', $view_slug );
 
 			/**
@@ -1100,8 +1106,6 @@ class GravityView_frontend {
 	/**
 	 * Register styles and scripts
 	 *
-	 * @filter  gravity_view_lightbox_script Modify the lightbox JS slug. Default: `thickbox`
-	 * @filter  gravity_view_lightbox_style Modify the thickbox CSS slug. Default: `thickbox`
 	 * @access public
 	 * @return void
 	 */
@@ -1126,7 +1130,17 @@ class GravityView_frontend {
 
 				// If the thickbox is enqueued, add dependencies
 				if ( ! empty( $data['atts']['lightbox'] ) ) {
+
+					/**
+					 * @filter `gravity_view_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
+					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
+					 */
 					$js_dependencies[] = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
+
+					/**
+					 * @filter `gravity_view_lightbox_style` Modify the lightbox CSS slug. Default: `thickbox`
+					 * @param string $script_slug If you want to use a different lightbox script, return the name of its CSS file here.
+					 */
 					$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
 				}
 
@@ -1139,8 +1153,9 @@ class GravityView_frontend {
 				wp_enqueue_script( 'gravityview-fe-view' );
 
 				/**
-				 * Modify the array passed to wp_localize_script
-				 * @var array Contains `datepicker` key, which passes settings to the JS file
+				 * @filter `gravityview_js_localization` Modify the array passed to wp_localize_script()
+				 * @param array $js_localization The data padded to the Javascript file
+				 * @param array $data View data array with View settings
 				 */
 				$js_localization = apply_filters( 'gravityview_js_localization', $js_localization, $data );
 

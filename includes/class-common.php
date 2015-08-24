@@ -80,8 +80,8 @@ class GVCommon {
 		);
 
 		/**
-		 * Modify the parameters sent to get all views.
-		 * @param  array $params description
+		 * @filter `gravityview/get_all_views/params` Modify the parameters sent to get all views.
+		 * @param[in,out]  array $params Array of parameters to pass to `get_posts()`
 		 */
 		$views_params = apply_filters( 'gravityview/get_all_views/params', $params );
 
@@ -365,8 +365,6 @@ class GVCommon {
 	/**
 	 * Calculates the Search Criteria used on the self::get_entries / self::get_entry methods
 	 *
-	 * @hook gravityview_search_criteria used by the Advanced Filter Extension
-	 *
 	 * @since 1.7.4
 	 *
 	 * @param null $passed_criteria array Input Criteria (search_criteria, sorting, paging)
@@ -393,6 +391,12 @@ class GVCommon {
 
 				// By default, we want searches to be wildcard for each field.
 				$filter['operator'] = empty( $filter['operator'] ) ? 'contains' : $filter['operator'];
+
+				/**
+				 * @filter `gravityview_search_operator` Modify the search operator for the field (contains, is, isnot, etc)
+				 * @param string $operator Existing search operator
+				 * @param array $filter array with `key`, `value`, `operator`, `type` keys
+				 */
 				$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter );
 			}
 		}
@@ -431,7 +435,12 @@ class GVCommon {
 			$criteria['context_view_id'] = null;
 		}
 
-		// Apply final criteria filter (Used by the Advanced Filter extension)
+		/**
+		 * @filter `gravityview_search_criteria` Apply final criteria filter (Used by the Advanced Filter extension)
+		 * @param array $criteria Search criteria used by GravityView
+		 * @param array $form_ids Forms to search
+		 * @param int $view_id ID of the view being used to search
+		 */
 		$criteria = apply_filters( 'gravityview_search_criteria', $criteria, $form_ids, $criteria['context_view_id'] );
 
 		return $criteria;
@@ -495,13 +504,11 @@ class GVCommon {
 		}
 
 		/**
-		 * Modify the array of entries returned to GravityView after it has been fetched from the cache or from `GFAPI::get_entries()`.
-		 *
+		 * @filter `gravityview_entries` Modify the array of entries returned to GravityView after it has been fetched from the cache or from `GFAPI::get_entries()`.
 		 * @param  array|null $entries Array of entries as returned by the cache or by `GFAPI::get_entries()`
 		 * @param  array $criteria The final search criteria used to generate the request to `GFAPI::get_entries()`
 		 * @param array $passed_criteria The original search criteria passed to `GVCommon::get_entries()`
 		 * @param  int|null $total Optional. An output parameter containing the total number of entries. Pass a non-null value to generate
-		 * @var array
 		 */
 		$return = apply_filters( 'gravityview_entries', $return, $criteria, $passed_criteria, $total );
 
@@ -522,21 +529,18 @@ class GVCommon {
 	public static function get_entry( $entry_slug, $force_allow_ids = false ) {
 
 		if ( class_exists( 'GFAPI' ) && ! empty( $entry_slug ) ) {
+
 			/**
-			 * Enable custom entry slug functionality.
-			 *
-			 * @see  GravityView_API::get_entry_slug()
-			 * @var boolean
+			 * @filter `gravityview_custom_entry_slug` Whether to enable and use custom entry slugs.
+			 * @param boolean True: Allow for slugs based on entry values. False: always use entry IDs (default)
 			 */
 			$custom_slug = apply_filters( 'gravityview_custom_entry_slug', false );
 
 			/**
-			 * When using a custom slug, allow access to the entry using the original slug (the Entry ID).
-			 *
-			 * If disabled (default), only allow access to an entry using the custom slug value.  (example: `/entry/custom-slug/` NOT `/entry/123/`)
-			 * If enabled, you could access using the custom slug OR the entry id (example: `/entry/custom-slug/` OR `/entry/123/`)
-			 *
-			 * @var boolean
+			 * @filter `gravityview_custom_entry_slug_allow_id` When using a custom slug, allow access to the entry using the original slug (the Entry ID).
+			 * - If disabled (default), only allow access to an entry using the custom slug value.  (example: `/entry/custom-slug/` NOT `/entry/123/`)
+			 * - If enabled, you could access using the custom slug OR the entry id (example: `/entry/custom-slug/` OR `/entry/123/`)
+			 * @param boolean $custom_slug_id_access True: allow accessing the slug by ID; False: only use the slug passed to the method.
 			 */
 			$custom_slug_id_access = $force_allow_ids || apply_filters( 'gravityview_custom_entry_slug_allow_id', false );
 
@@ -581,7 +585,7 @@ class GVCommon {
 	 *
 	 * @since 1.13 You can define context, which displays/hides based on what's being displayed (single, multiple, edit)
 	 *
-	 * @link http://docs.gravityview.co/article/252-gvlogic-shortcode
+	 * @see http://docs.gravityview.co/article/252-gvlogic-shortcode
 	 * @uses GFFormsModel::matches_operation
 	 * @since 1.7.5
 	 *
@@ -799,7 +803,9 @@ class GVCommon {
 
 	/**
 	 * Placeholder until the recursive has_shortcode() patch is merged
-	 * @link https://core.trac.wordpress.org/ticket/26343#comment:10
+	 * @see https://core.trac.wordpress.org/ticket/26343#comment:10
+	 * @param string $content Content to check whether there's a shortcode
+	 * @param string $tag Current shortcode tag
 	 */
 	public static function has_shortcode_r( $content, $tag = 'gravityview' ) {
 		if ( false === strpos( $content, '[' ) ) {
@@ -1004,10 +1010,10 @@ class GVCommon {
 		}
 
         /**
-         * Filter the sortable fields
+         * @filter `gravityview/common/sortable_fields` Filter the sortable fields
+         * @since 1.12
          * @param array $fields Sub-set of GF form fields that are sortable
          * @param int $formid The Gravity Forms form ID that the fields are from
-         * @since 1.12
          */
         $fields = apply_filters( 'gravityview/common/sortable_fields', $fields, $formid );
 
@@ -1041,6 +1047,10 @@ class GVCommon {
 	 */
 	public static function is_field_numeric(  $form = null, $field = '' ) {
 
+		/**
+		 * @filter `gravityview/common/numeric_types` What types of fields are numeric?
+		 * @param array $numeric_types Fields that are numeric. Default: `[ number ]`
+		 */
 		$numeric_types = apply_filters( 'gravityview/common/numeric_types', array( 'number' ) );
 
 		if ( ! is_array( $form ) && ! is_array( $field ) ) {
@@ -1061,8 +1071,7 @@ class GVCommon {
 	 * @param string $content Content to encrypt
 	 * @param string $message Message shown if Javascript is disabled
 	 *
-	 * @uses StandalonePHPEnkoder
-	 * @link  https://github.com/jnicol/standalone-phpenkoder
+	 * @see  https://github.com/jnicol/standalone-phpenkoder StandalonePHPEnkoder on Github
 	 *
 	 * @since 1.7
 	 *
@@ -1083,13 +1092,10 @@ class GVCommon {
 			$message = empty( $message ) ? __( 'Email hidden; Javascript is required.', 'gravityview' ) : $message;
 
 			/**
-			 * Modify the message shown when Javascript is disabled
-			 *
+			 * @filter `gravityview/phpenkoder/msg` Modify the message shown when Javascript is disabled and an encrypted email field is displayed
 			 * @since 1.7
-			 *
 			 * @param string $message Existing message
 			 * @param string $content Content to encrypt
-			 *
 			 */
 			$enkoder->enkode_msg = apply_filters( 'gravityview/phpenkoder/msg', $message, $content );
 
@@ -1138,7 +1144,7 @@ class GVCommon {
 	/**
 	 * Generate an HTML anchor tag with a list of supported attributes
 	 *
-	 * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a Supported attributes defined here
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a Supported attributes defined here
 	 *
 	 * @since 1.6
 	 *
@@ -1181,8 +1187,7 @@ class GVCommon {
 		);
 
 		/**
-		 * Modify the attributes that are allowed to be used in generating links
-		 *
+		 * @filter `gravityview/get_link/allowed_atts` Modify the attributes that are allowed to be used in generating links
 		 * @param array $allowed_atts Array of attributes allowed
 		 */
 		$allowed_atts = apply_filters( 'gravityview/get_link/allowed_atts', $allowed_atts );
@@ -1251,9 +1256,9 @@ class GVCommon {
 	public static function get_users( $context = 'change_entry_creator' ) {
 
 		/**
-		 * There are issues with too many users where it breaks the select. We try to keep it at a reasonable number.
-		 * @link   text http://codex.wordpress.org/Function_Reference/get_users
-		 * @var  array Settings array
+		 * @filter `gravityview/get_users/{$context}` There are issues with too many users using [get_users()](http://codex.wordpress.org/Function_Reference/get_users) where it breaks the select. We try to keep it at a reasonable number. \n
+		 * `$context` is where are we using this information (e.g. change_entry_creator, search_widget ..)
+		 * @param array $settings Settings array, with `number` key defining the # of users to display
 		 */
 		$get_users_settings = apply_filters( 'gravityview/get_users/'. $context, apply_filters( 'gravityview_change_entry_creator_user_parameters', array( 'number' => 750 ) ) );
 
