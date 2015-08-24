@@ -149,7 +149,7 @@ function has_gravityview_shortcode( $post = NULL ) {
 
 /**
  * Placeholder until the recursive has_shortcode() patch is merged
- * @link https://core.trac.wordpress.org/ticket/26343#comment:10
+ * @see https://core.trac.wordpress.org/ticket/26343#comment:10
  */
 function gravityview_has_shortcode_r( $content, $tag = 'gravityview' ) {
 	return GVCommon::has_shortcode_r( $content, $tag );

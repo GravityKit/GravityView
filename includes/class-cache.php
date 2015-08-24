@@ -418,7 +418,7 @@ class GravityView_Cache {
 	 *
 	 * The code is copied from the Delete Expired Transients, with slight modifications to track # of results and to get the blog ID dynamically
 	 *
-	 * @link  https://wordpress.org/plugins/delete-expired-transients/ Plugin where the code was taken from
+	 * @see https://wordpress.org/plugins/delete-expired-transients/ Plugin where the code was taken from
 	 * @see  DelxtransCleaners::clearBlogExpired()
 	 * @return void
 	 */

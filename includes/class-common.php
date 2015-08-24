@@ -585,7 +585,7 @@ class GVCommon {
 	 *
 	 * @since 1.13 You can define context, which displays/hides based on what's being displayed (single, multiple, edit)
 	 *
-	 * @link http://docs.gravityview.co/article/252-gvlogic-shortcode
+	 * @see http://docs.gravityview.co/article/252-gvlogic-shortcode
 	 * @uses GFFormsModel::matches_operation
 	 * @since 1.7.5
 	 *
@@ -803,7 +803,7 @@ class GVCommon {
 
 	/**
 	 * Placeholder until the recursive has_shortcode() patch is merged
-	 * @link https://core.trac.wordpress.org/ticket/26343#comment:10
+	 * @see https://core.trac.wordpress.org/ticket/26343#comment:10
 	 */
 	public static function has_shortcode_r( $content, $tag = 'gravityview' ) {
 		if ( false === strpos( $content, '[' ) ) {
@@ -1070,7 +1070,7 @@ class GVCommon {
 	 * @param string $message Message shown if Javascript is disabled
 	 *
 	 * @uses StandalonePHPEnkoder
-	 * @link  https://github.com/jnicol/standalone-phpenkoder
+	 * @see  https://github.com/jnicol/standalone-phpenkoder StandalonePHPEnkoder on Github
 	 *
 	 * @since 1.7
 	 *
@@ -1143,7 +1143,7 @@ class GVCommon {
 	/**
 	 * Generate an HTML anchor tag with a list of supported attributes
 	 *
-	 * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a Supported attributes defined here
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a Supported attributes defined here
 	 *
 	 * @since 1.6
 	 *

@@ -115,8 +115,8 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 						/**
 						 * Generate the audio shortcode
-						 * @link http://codex.wordpress.org/Audio_Shortcode
-						 * @link https://developer.wordpress.org/reference/functions/wp_audio_shortcode/
+						 * @see http://codex.wordpress.org/Audio_Shortcode
+						 * @see https://developer.wordpress.org/reference/functions/wp_audio_shortcode/
 						 */
 						$content = wp_audio_shortcode( $audio_settings );
 
@@ -145,8 +145,8 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 						/**
 						 * Generate the video shortcode
-						 * @link http://codex.wordpress.org/Video_Shortcode
-						 * @link https://developer.wordpress.org/reference/functions/wp_video_shortcode/
+						 * @see http://codex.wordpress.org/Video_Shortcode
+						 * @see https://developer.wordpress.org/reference/functions/wp_video_shortcode/
 						 */
 						$content = wp_video_shortcode( $video_settings );
 

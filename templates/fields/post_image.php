@@ -102,9 +102,9 @@ $image = new GravityView_Image( $image_atts );
 /**
  * Modify the values used for the image meta.
  *
- * @link https://gravityview.co/support/documentation/201606759 Read more about the filter
  *
  * @var array
+ * @see https://gravityview.co/support/documentation/201606759 Read more about the filter
  */
 $image_meta = apply_filters('gravityview_post_image_meta', array(
 	'title' => array(
@@ -133,8 +133,8 @@ $wrappertag = GFFormsModel::is_html5_enabled() ? 'figure' : 'div';
 /**
  * Whether to show labels for the image meta.
  *
- * @link https://gravityview.co/support/documentation/201606759 Read more about the filter
  * @var boolean
+ * @see https://gravityview.co/support/documentation/201606759 Read more about the filter
  */
 $showlabels = apply_filters( 'gravityview_post_image_meta_show_labels', true );
 

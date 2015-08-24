@@ -141,7 +141,7 @@ class GravityView_Merge_Tags {
 	 * Exactly like Gravity Forms' User Meta functionality, but instead shows information on the user who created the entry
 	 * instead of the currently logged-in user.
 	 *
-	 * @link http://docs.gravityview.co/article/281-the-createdby-merge-tag
+	 * @see http://docs.gravityview.co/article/281-the-createdby-merge-tag Read how to use the `{created_by}` merge tag
 	 *
 	 * @since 1.8.4
 	 *

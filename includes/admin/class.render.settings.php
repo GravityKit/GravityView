@@ -128,7 +128,7 @@ class GravityView_Render_Settings {
 
 		/**
 		 * Modify the capabilities shown in the field dropdown
-		 * @link  https://gravityview.co/support/documentation/203266467
+		 * @see http://docs.gravityview.co/article/96-how-to-modify-capabilities-shown-in-the-field-only-visible-to-dropdown
 		 * @since  1.0.1
 		 */
 		$select_cap_choices = apply_filters('gravityview_field_visibility_caps', $select_cap_choices, $template_id, $field_id, $context, $input_type );

@@ -148,7 +148,7 @@ class GravityView_oEmbed {
 	 * @since 1.6
 	 * @see GravityView_oEmbed::add_providers() for the regex
 	 *
-	 * @param array $matches The regex matches from the provided regex when calling {@link wp_embed_register_handler()}.
+	 * @param array $matches The regex matches from the provided regex when calling wp_embed_register_handler()
 	 * @param array $attr Embed attributes.
 	 * @param string $url The original URL that was matched by the regex.
 	 * @param array $rawattr The original unmodified attributes.
@@ -238,7 +238,7 @@ class GravityView_oEmbed {
 	/**
 	 * Display a nice placeholder in the admin for the entry
 	 *
-	 * @param array $matches The regex matches from the provided regex when calling {@link wp_embed_register_handler()}.
+	 * @param array $matches The regex matches from the provided regex when calling wp_embed_register_handler()
 	 * @param array $attr Embed attributes.
 	 * @param string $url The original URL that was matched by the regex.
 	 * @param array $rawattr The original unmodified attributes.

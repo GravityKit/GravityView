@@ -940,10 +940,10 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		/**
 		 * Modify the datepicker settings
 		 *
-		 * @link http://api.jqueryui.com/datepicker/ Learn what settings are available
-		 * @link http://www.renegadetechconsulting.com/tutorials/jquery-datepicker-and-wordpress-i18n Thanks for the helpful information on $wp_locale
 		 * @param array $array Default settings
 		 * @var array
+		 * @see http://api.jqueryui.com/datepicker/ Learn what settings are available
+		 * @see http://www.renegadetechconsulting.com/tutorials/jquery-datepicker-and-wordpress-i18n Thanks for the helpful information on $wp_locale
 		 */
 		$datepicker_settings = apply_filters( 'gravityview_datepicker_settings', array(
 			'yearRange' => '-5:+5',
