@@ -1071,7 +1071,6 @@ class GVCommon {
 	 * @param string $content Content to encrypt
 	 * @param string $message Message shown if Javascript is disabled
 	 *
-	 * @uses StandalonePHPEnkoder
 	 * @see  https://github.com/jnicol/standalone-phpenkoder StandalonePHPEnkoder on Github
 	 *
 	 * @since 1.7
