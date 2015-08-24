@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+* Added: Filter to disable live chat widget (`gravityview/admin/display_live_chat`)
 
 = 1.13 on August 20 =
 * Fixed: Wildcard search broken for Gravity Forms 1.9.12+

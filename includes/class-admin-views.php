@@ -874,6 +874,17 @@ class GravityView_Admin_Views {
 	 */
 	static function enqueue_feedback_widget() {
 
+		/**
+		 * @filter `gravityview/admin/display_live_chat` Whether to display live chat support widget when operators are available
+		 * @since 1.13.1
+		 * @param boolean $display_live_chat Default: `true`
+		 */
+		$display_live_chat = apply_filters( 'gravityview/admin/display_live_chat', true );
+
+		if( ! $display_live_chat ) {
+			return;
+		}
+
 		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
 		$response = GravityView_Settings::getSetting( 'license_key_response' );
