@@ -87,7 +87,10 @@ class GravityView_Admin {
 	 */
 	public static function plugin_action_links( $links ) {
 
-		$action = array( '<a href="http://docs.gravityview.co">'. esc_html__( 'Support', 'gravityview' ) .'</a>' );
+		$action = array(
+			sprintf( '<a href="%s">%s</a>', admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ), esc_html__( 'Settings', 'gravityview' ) ),
+			'<a href="http://docs.gravityview.co">' . esc_html__( 'Support', 'gravityview' ) . '</a>'
+		);
 
 		return array_merge( $action, $links );
 	}
