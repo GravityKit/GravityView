@@ -1,7 +1,3 @@
-\file docs/index.md
-
-\mainpage GravityView Code Documentation
-
 \section intro Who this documentation is for
 
 This documentation is for _developers_, not for non-developers. If you don't intend to edit any code, then you should instead visit the [GravityView Support & Knowledgebase](http://docs.gravityview.co).
