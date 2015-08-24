@@ -804,6 +804,8 @@ class GVCommon {
 	/**
 	 * Placeholder until the recursive has_shortcode() patch is merged
 	 * @see https://core.trac.wordpress.org/ticket/26343#comment:10
+	 * @param string $content Content to check whether there's a shortcode
+	 * @param string $tag Current shortcode tag
 	 */
 	public static function has_shortcode_r( $content, $tag = 'gravityview' ) {
 		if ( false === strpos( $content, '[' ) ) {

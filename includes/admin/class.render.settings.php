@@ -127,9 +127,14 @@ class GravityView_Render_Settings {
 		}
 
 		/**
-		 * Modify the capabilities shown in the field dropdown
+		 * @filter `gravityview_field_visibility_caps` Modify the capabilities shown in the field dropdown
 		 * @see http://docs.gravityview.co/article/96-how-to-modify-capabilities-shown-in-the-field-only-visible-to-dropdown
 		 * @since  1.0.1
+		 * @param  array $select_cap_choices Associative rray of role slugs with labels ( `manage_options` => `Administrator` )
+		 * @param  string $template_id Optional. View slug
+		 * @param  string $field_id    Optional. GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+		 * @param  string $context     Optional. What context are we in? Example: `single` or `directory`
+		 * @param  string $input_type  Optional. (textarea, list, select, etc.)
 		 */
 		$select_cap_choices = apply_filters('gravityview_field_visibility_caps', $select_cap_choices, $template_id, $field_id, $context, $input_type );
 

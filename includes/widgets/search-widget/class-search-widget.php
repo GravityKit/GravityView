@@ -357,7 +357,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
          * @filter `gravityview_date_created_adjust_timezone` Whether to adjust the timezone for entries. \n
          * date_created is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php)
          * @since 1.12
-         * @param[out,in] boolean $adjust_tz Default: true
+         * @param[out,in] boolean $adjust_tz  Use timezone-adjusted datetime? If true, adjusts date based on blog's timezone setting. If false, uses UTC setting. Default: true
          * @param[in] string $context Where the filter is being called from. `search` in this case.
          */
         $adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'search' );
@@ -934,16 +934,23 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		return $js_dependencies;
 	}
 
-	public function add_datepicker_localization( $localizations = array(), $data = array() ) {
+	/**
+	 * Modify the array passed to wp_localize_script()
+	 *
+	 * @param array $js_localization The data padded to the Javascript file
+	 * @param array $view_data View data array with View settings
+	 *
+	 * @return array
+	 */
+	public function add_datepicker_localization( $localizations = array(), $view_data = array() ) {
 		global $wp_locale;
 
 		/**
-		 * Modify the datepicker settings
-		 *
-		 * @param array $array Default settings
-		 * @var array
+		 * @filter `gravityview_datepicker_settings` Modify the datepicker settings
 		 * @see http://api.jqueryui.com/datepicker/ Learn what settings are available
 		 * @see http://www.renegadetechconsulting.com/tutorials/jquery-datepicker-and-wordpress-i18n Thanks for the helpful information on $wp_locale
+		 * @param array $js_localization The data padded to the Javascript file
+		 * @param array $view_data View data array with View settings
 		 */
 		$datepicker_settings = apply_filters( 'gravityview_datepicker_settings', array(
 			'yearRange' => '-5:+5',
@@ -964,7 +971,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			'firstDay'          => get_option( 'start_of_week' ),
 			// is Right to left language? default is false
 			'isRTL'             => is_rtl(),
-		), $data );
+		), $view_data );
 
 		$localizations['datepicker'] = $datepicker_settings;
 
@@ -992,7 +999,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		wp_enqueue_style( 'jquery-ui-datepicker', $scheme.'ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
 
 		/**
-		 * @filter `gravityview_search_datepicker_class`\n
+		 * @filter `gravityview_search_datepicker_class`
 		 * Modify the CSS class for the datepicker, used by the CSS class is used by Gravity Forms' javascript to determine the format for the date picker. The `gv-datepicker` class is required by the GravityView datepicker javascript.
 		 * @param string $css_class CSS class to use. Default: `gv-datepicker datepicker mdy` \n
 		 * Options are:
