@@ -1554,8 +1554,8 @@ var DataSource = _react2['default'].createClass({
     displayName: 'DataSource',
 
     render: function render() {
-
-        var actionLinks = [{ href: "http://localhost:8888/wordpress/wp-admin/admin.php?page=gf_edit_forms&amp;id=288", label: "Edit Form", title: "Edit Form" }, { href: "http://localhost:8888/wordpress/wp-admin/admin.php?page=gf_entries&amp;id=288", label: "Entries", title: "Entries" }];
+        // todo: replace this by script localization
+        var actionLinks = [{ href: "", label: "Edit Form", title: "Edit Form" }, { href: "", label: "Entries", title: "Entries" }];
 
         return _react2['default'].createElement(
             _metaboxMetaboxJsx2['default'],
@@ -1611,7 +1611,7 @@ var Metabox = _react2['default'].createClass({
                 _react2['default'].createElement(
                     'div',
                     { className: 'row-actions' },
-                    actionLinks.join(' | ')
+                    actionLinks
                 )
             );
         }
