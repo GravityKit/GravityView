@@ -2,9 +2,6 @@
 
 class GravityView_Admin {
 
-	static private $admin_notices = array();
-	static private $dismissed_notices = array();
-
 	function __construct() {
 
 		if( !is_admin() ) { return; }
@@ -17,18 +14,10 @@ class GravityView_Admin {
 	 */
 	function add_hooks() {
 
-		add_action( 'network_admin_notices', array( $this, 'dismiss_notice' ), 50 );
-		add_action( 'admin_notices', array( $this, 'dismiss_notice' ), 50 );
-		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
-		add_action( 'network_admin_notices', array( $this, 'admin_notice' ), 100 );
-
 		// If Gravity Forms isn't active or compatibile, stop loading
-		if( false === self::check_gravityforms() ) {
+		if( false === GravityView_Compatibility::is_valid() ) {
 			return;
 		}
-
-		// Check if Gravity Forms Directory is running.
-		self::add_default_notices();
 
 		// Migrate Class
 		require_once( GRAVITYVIEW_DIR . 'includes/class-migrate.php' );
@@ -80,14 +69,11 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 
-		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
-
-		// Load Field files automatically
-		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/*.php' ) as $gv_field_filename ) {
-			require_once( $gv_field_filename );
-		}
-
-		// Nice place to insert extensions' backend stuff
+		/**
+		 * @action `gravityview_include_backend_actions` Triggered after all GravityView admin files are loaded
+		 *
+		 * Nice place to insert extensions' backend stuff
+		 */
 		do_action('gravityview_include_backend_actions');
 	}
 
@@ -101,7 +87,10 @@ class GravityView_Admin {
 	 */
 	public static function plugin_action_links( $links ) {
 
-		$action = array( '<a href="http://docs.gravityview.co">'. esc_html__( 'Support', 'gravityview' ) .'</a>' );
+		$action = array(
+			sprintf( '<a href="%s">%s</a>', admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ), esc_html__( 'Settings', 'gravityview' ) ),
+			'<a href="http://docs.gravityview.co">' . esc_html__( 'Support', 'gravityview' ) . '</a>'
+		);
 
 		return array_merge( $action, $links );
 	}
@@ -111,16 +100,7 @@ class GravityView_Admin {
 	 * @return string HTML image tag with floaty's cute mug on it
 	 */
 	public static function get_floaty() {
-
-		if( is_rtl() ) {
-			$style = 'margin:10px 10px 10px 0;';
-			$class = 'alignright';
-		} else {
-			$style = 'margin:10px 10px 10px 0;';
-			$class = 'alignleft';
-		}
-
-		return '<img src="'.plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="'.$class.'" height="87" width="66" alt="The GravityView Astronaut Says:" style="'.$style.'" />';
+		return gravityview_get_floaty();
 	}
 
 	/**
@@ -352,21 +332,27 @@ class GravityView_Admin {
 
 		$this->remove_conflicts( $wp_styles, $wp_allowed_styles, 'styles' );
 
-		// Allow settings, etc, to hook in after
+		/**
+		 * @action `gravityview_remove_conflicts_after` Runs after no-conflict styles are removed. You can re-add styles here.
+		 */
 		do_action('gravityview_remove_conflicts_after');
 	}
 
 	/**
 	 * Remove any style or script non-registered in the no conflict mode
 	 * @todo  Move this to GravityView_Admin_Views
-	 * @param  object $wp_objects        Object of WP_Styles or WP_Scripts
+	 * @param  WP_Dependencies $wp_objects        Object of WP_Styles or WP_Scripts
 	 * @param  array $required_objects   List of registered script/style handles
 	 * @param  string $type              Either 'styles' or 'scripts'
 	 * @return void
 	 */
 	private function remove_conflicts( &$wp_objects, $required_objects, $type = 'scripts' ) {
 
-        //allowing addons or other products to change the list of no conflict scripts or styles
+        /**
+         * @filter `gravityview_noconflict_{$type}` Modify the list of no conflict scripts or styles\n
+         * Filter is `gravityview_noconflict_scripts` or `gravityview_noconflict_styles`
+         * @param array $required_objects
+         */
         $required_objects = apply_filters( "gravityview_noconflict_{$type}", $required_objects );
 
         //reset queue
@@ -396,249 +382,65 @@ class GravityView_Admin {
 	 * @param [type] $registered [description]
 	 * @param [type] $scripts    [description]
 	 */
-	private function add_script_dependencies($registered, $scripts){
+	private function add_script_dependencies($registered, $scripts) {
 
-        //gets all dependent scripts linked to the $scripts array passed
-        do{
-            $dependents = array();
-            foreach($scripts as $script){
-                $deps = isset($registered[$script]) && is_array($registered[$script]->deps) ? $registered[$script]->deps : array();
-                foreach($deps as $dep){
-                    if(!in_array($dep, $scripts) && !in_array($dep, $dependents)){
-                        $dependents[] = $dep;
-                    }
-                }
-            }
-            $scripts = array_merge($scripts, $dependents);
-        }while(!empty($dependents));
+		//gets all dependent scripts linked to the $scripts array passed
+		do {
+			$dependents = array();
+			foreach ( $scripts as $script ) {
+				$deps = isset( $registered[ $script ] ) && is_array( $registered[ $script ]->deps ) ? $registered[ $script ]->deps : array();
+				foreach ( $deps as $dep ) {
+					if ( ! in_array( $dep, $scripts ) && ! in_array( $dep, $dependents ) ) {
+						$dependents[] = $dep;
+					}
+				}
+			}
+			$scripts = array_merge( $scripts, $dependents );
+		} while ( ! empty( $dependents ) );
 
-        return $scripts;
-    }
+		return $scripts;
+	}
 
-	/**
-	 * Dismiss a GravityView notice - stores the dismissed notices for 16 weeks
-	 * @return void
-	 */
-    function dismiss_notice() {
-
-    	// No dismiss sent
-    	if( empty( $_GET['gv-dismiss'] ) ) {
-    		return;
-    	}
-
-    	// Invalid nonce
-    	if( !wp_verify_nonce( $_GET['gv-dismiss'], 'dismiss' ) ) {
-    		return;
-    	}
-
-    	$notice_id = esc_attr( $_GET['notice'] );
-
-    	//don't display a message if use has dismissed the message for this version
-    	$dismissed_notices = (array)get_transient( 'gravityview_dismissed_notices' );
-
-    	$dismissed_notices[] = $notice_id;
-
-    	$dismissed_notices = array_unique( $dismissed_notices );
-
-    	// Remind users every 16 weeks
-    	set_transient( 'gravityview_dismissed_notices', $dismissed_notices, WEEK_IN_SECONDS * 16 );
-
-    }
-
-    /**
-     * Should the notice be shown in the admin (Has it been dismissed already)?
-     *
-     * If the passed notice array has a `dismiss` key, the notice is dismissable. If it's dismissable,
-     * we check against other notices that have already been dismissed.
-     *
-     * @see GravityView_Admin::dismiss_notice()
-     * @see GravityView_Admin::add_notice()
-     * @param  string $notice            Notice array, set using `add_notice()`.
-     * @return boolean                   True: show notice; False: hide notice
-     */
-    function _maybe_show_notice( $notice ) {
-
-	    // There are no dismissed notices.
-    	if( empty( self::$dismissed_notices ) ) {
-    		return true;
-    	}
-
-    	// Has the
-    	$is_dismissed = !empty( $notice['dismiss'] ) && in_array( $notice['dismiss'], self::$dismissed_notices );
-
-    	return $is_dismissed ? false : true;
-    }
 
 	/**
 	 * Get admin notices
+	 * @deprecated since 1.12
 	 * @return array
 	 */
 	public static function get_notices() {
-		return self::$admin_notices;
-	}
-
-	/**
-	 * Outputs the admin notices generated by the plugin
-	 *
-	 * @return void
-	 */
-	public function admin_notice() {
-
-		if( empty( self::$admin_notices ) ) {
-			return;
-		}
-
-		if( GravityView_Plugin::is_network_activated() && !is_main_site() ) {
-			return;
-		}
-
-		//don't display a message if use has dismissed the message for this version
-		self::$dismissed_notices = (array)get_transient( 'gravityview_dismissed_notices' );
-
-		foreach( self::$admin_notices as $notice ) {
-
-			if( false === $this->_maybe_show_notice( $notice ) ) {
-				continue;
-			}
-
-			echo '<div id="message" class="'. esc_attr( $notice['class'] ).'">';
-
-			// Too cute to leave out.
-			echo GravityView_Admin::get_floaty() ;
-
-			if( !empty( $notice['title'] ) ) {
-				echo '<h3>'.esc_html( $notice['title'] ) .'</h3>';
-			}
-
-			echo wpautop( $notice['message'] );
-
-			if( !empty( $notice['dismiss'] ) ) {
-
-				$dismiss = esc_attr($notice['dismiss']);
-
-				$url = esc_url( add_query_arg( array( 'gv-dismiss' => wp_create_nonce( 'dismiss' ), 'notice' => $dismiss ) ) );
-
-				echo wpautop( '<a href="'.$url.'" data-notice="'.$dismiss.'" class="button-small button button-secondary">'.esc_html__('Dismiss', 'gravityview' ).'</a>' );
-			}
-
-			echo '<div class="clear"></div>';
-			echo '</div>';
-
-		}
-
-		//reset the notices handler
-		self::$admin_notices = array();
+		return GravityView_Admin_Notices::get_notices();
 	}
 
 	/**
 	 * Add a notice to be displayed in the admin.
+	 * @deprecated since 1.12
 	 * @param array $notice Array with `class` and `message` keys. The message is not escaped.
 	 */
 	public static function add_notice( $notice = array() ) {
-
-		if( !isset( $notice['message'] ) ) {
-			do_action( 'gravityview_log_error', 'GravityView_Admin[add_notice] Notice not set', $notice );
-			return;
-		}
-
-		$notice['class'] = empty( $notice['class'] ) ? 'error' : $notice['class'];
-
-		self::$admin_notices[] = $notice;
-	}
-
-	/**
-	 * Check for potential conflicts and let users know about common issues.
-	 *
-	 * @return void
-	 */
-	public static function add_default_notices() {
-
-		if( class_exists( 'GFDirectory' ) ) {
-			self::$admin_notices['gf_directory'] = array(
-				'class' => 'error',
-				'title' => __('Potential Conflict', 'gravityview' ),
-				'message' => __( 'GravityView and Gravity Forms Directory are both active. This may cause problems. If you experience issues, disable the Gravity Forms Directory plugin.', 'gravityview' ),
-				'dismiss' => 'gf_directory',
-			);
-		}
-
+		GravityView_Admin_Notices::add_notice( $notice );
 	}
 
 	/**
 	 * Check if Gravity Forms plugin is active and show notice if not.
 	 *
-	 * @access public
+	 * @deprecated since 1.12
+	 * @see GravityView_Compatibility::get_plugin_status()
 	 * @return boolean True: checks have been passed; GV is fine to run; False: checks have failed, don't continue loading
 	 */
 	public static function check_gravityforms() {
-
-		// Bypass other checks: if the class exists
-		if( class_exists( 'GFCommon' ) ) {
-
-			// and the version's right, we're good.
-			if( true === version_compare( GFCommon::$version, GV_MIN_GF_VERSION, ">=" ) ) {
-				return true;
-			}
-
-			// Or the version's wrong
-			self::$admin_notices['gf_version'] = array( 'class' => 'error', 'message' => sprintf( __( "%sGravityView requires Gravity Forms Version %s or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', GV_MIN_GF_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
-
-			return false;
-		}
-
-		$gf_status = self::get_plugin_status( 'gravityforms/gravityforms.php' );
-
-		// If GFCommon doesn't exist, assume GF not active
-		$return = false;
-
-		switch( $gf_status ) {
-			case 'inactive':
-				$return = false;
-				self::$admin_notices['gf_inactive'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravityview' ), '<h3>', "</h3>\n\n".'<strong><a href="'. wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php') . '" class="button button-large">', '</a></strong>' ) );
-				break;
-			default:
-				/**
-				 * The plugin is activated and yet somehow GFCommon didn't get picked up...
-				 */
-				if( $gf_status === true ) {
-					$return = true;
-				} else {
-					self::$admin_notices['gf_installed'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $39%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
-				}
-				break;
-		}
-
-		return $return;
+		return GravityView_Compatibility::check_gravityforms();
 	}
 
 	/**
 	 * Check if specified plugin is active, inactive or not installed
 	 *
-	 * @access public
-	 * @static
-	 * @param string $location (default: '')
+	 * @deprecated since 1.12
+	 * @see GravityView_Compatibility::get_plugin_status()
+
 	 * @return boolean|string True: plugin is active; False: plugin file doesn't exist at path; 'inactive' it's inactive
 	 */
 	static function get_plugin_status( $location = '' ) {
-
-		if( ! function_exists('is_plugin_active') ) {
-			include_once( ABSPATH . '/wp-admin/includes/plugin.php' );
-		}
-
-		if( is_plugin_active( $location ) ) {
-			return true;
-		}
-
-		if(
-			!file_exists( trailingslashit( WP_PLUGIN_DIR ) . $location ) &&
-			!file_exists( trailingslashit( WPMU_PLUGIN_DIR ) . $location )
-		) {
-			return false;
-		}
-
-		if( is_plugin_inactive( $location ) ) {
-			return 'inactive';
-		}
+		return GravityView_Compatibility::get_plugin_status( $location );
 	}
 
 	static function is_admin_page($hook = '', $page = NULL) {
@@ -671,6 +473,11 @@ class GravityView_Admin {
 			}
 		}
 
+		/**
+		 * @filter `gravityview_is_admin_page` Is the current admin page a GravityView-related page?
+		 * @param[in,out] string|bool $is_page If false, no. If string, the name of the page (`single`, `settings`, or `views`)
+		 * @param[in] string $hook The name of the page to check against. Is passed to the method.
+		 */
 		$is_page = apply_filters( 'gravityview_is_admin_page', $is_page, $hook );
 
 		// If the current page is the same as the compared page

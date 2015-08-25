@@ -190,6 +190,10 @@ class GravityView_Admin_Views {
 			'value' => sprintf( __( 'Developers: The CSS classes will be sanitized using the %ssanitize_title_with_dashes()%s function.', 'gravityview'), '<code>', '</code>' )
 		);
 
+		/**
+		 * @filter `gravityview_tooltips` The tooltips GravityView adds to the Gravity Forms tooltip array
+		 * @param array $gv_tooltips Associative array with unique keys containing array of `title` and `value` keys, as expected by `gform_tooltips` filter
+		 */
 		$gv_tooltips = apply_filters( 'gravityview_tooltips', $gv_tooltips );
 
 		foreach ( $gv_tooltips as $key => $tooltip ) {
@@ -285,10 +289,8 @@ class GravityView_Admin_Views {
 		}
 
 		/**
-		 * Modify the links shown in the Connected Form links
-		 *
+		 * @filter `gravityview_connected_form_links` Modify the links shown in the Connected Form links
 		 * @since 1.6
-		 *
 		 * @param array $links Links to show
 		 * @param array $form Gravity Forms form array
 		 */
@@ -442,7 +444,6 @@ class GravityView_Admin_Views {
 	 * Render html for displaying available fields based on a Form ID
 	 * $blacklist_field_types - contains the field types which are not proper to be shown in a directory.
 	 *
-	 * @filter  gravityview_blacklist_field_types Modify the types of fields that shouldn't be shown in a View.
 	 * @access public
 	 * @param int $form_id Gravity Forms Form ID (default: '')
 	 * @param string $context (default: 'single')
@@ -450,6 +451,11 @@ class GravityView_Admin_Views {
 	 */
 	function render_available_fields( $form = '', $context = 'single' ) {
 
+		/**
+		 * @filter  `gravityview_blacklist_field_types` Modify the types of fields that shouldn't be shown in a View.
+		 * @param[in,out] array $blacklist_field_types Array of field types to block for this context.
+		 * @param[in] string $context View context ('single', 'directory', or 'edit')
+		 */
 		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array(), $context );
 
 		$fields = $this->get_available_fields( $form, $context );
@@ -486,6 +492,10 @@ class GravityView_Admin_Views {
 
 	function render_additional_fields( $form, $context ) {
 
+		/**
+		 * @filter `gravityview_additional_fields` non-standard Fields to show at the bottom of the field picker
+		 * @param array $additional_fields Associative array of field arrays, with `label_text`, `desc`, `field_id`, `label_type`, `input_type`, `field_options`, and `settings_html` keys
+		 */
 		$additional_fields = apply_filters( 'gravityview_additional_fields', array(
 			array(
 				'label_text' => __( '+ Add All Fields', 'gravityview' ),
@@ -596,12 +606,18 @@ class GravityView_Admin_Views {
 		} // if not zone directory or single
 
 
+		/**
+		 * @filter `gravityview_entry_default_fields` Modify the default fields for each zone and context
+		 * @param array $entry_default_fields Array of fields shown by default
+		 * @param  string|array $form form_ID or form object
+		 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
+		 */
         return apply_filters( 'gravityview_entry_default_fields', $entry_default_fields, $form, $zone);
 	}
 
 	/**
 	 * Calculate the available fields
-	 * @param  string|array form_ID or form object
+	 * @param  string|array $form form_ID or form object
 	 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
 	 * @return array         fields
 	 */
@@ -638,8 +654,7 @@ class GravityView_Admin_Views {
 	 */
 	function render_available_widgets() {
 
-		// get the list of registered widgets
-		$widgets = apply_filters( 'gravityview_register_directory_widgets', array() );
+		$widgets = $this->get_registered_widgets();
 
 		if( !empty( $widgets ) ) {
 
@@ -650,6 +665,21 @@ class GravityView_Admin_Views {
 			}
 		}
 
+	}
+
+	/**
+	 * Get the list of registered widgets. Each item is used to instantiate a GravityView_Admin_View_Widget object
+	 * @since 1.13.1
+	 * @return array
+	 */
+	function get_registered_widgets() {
+		/**
+		 * @filter `gravityview_register_directory_widgets` Get the list of registered widgets. Each item is used to instantiate a GravityView_Admin_View_Widget object
+		 * @param array $registered_widgets Empty array
+		 */
+		$registered_widgets = apply_filters( 'gravityview_register_directory_widgets', array() );
+
+		return $registered_widgets;
 	}
 
 	/**
@@ -683,8 +713,7 @@ class GravityView_Admin_Views {
 			if( 'field' === $type ) {
 				$available_items = $this->get_available_fields( $form, $zone );
 			} else {
-				// get the list of registered widgets
-				$available_items = apply_filters( 'gravityview_register_directory_widgets', array() );
+				$available_items = $this->get_registered_widgets();
 			}
 
 		}
@@ -844,6 +873,17 @@ class GravityView_Admin_Views {
 	 * Chatlio.com customer support widget
 	 */
 	static function enqueue_feedback_widget() {
+
+		/**
+		 * @filter `gravityview/admin/display_live_chat` Whether to display live chat support widget when operators are available
+		 * @since 1.13.1
+		 * @param boolean $display_live_chat Default: `true`
+		 */
+		$display_live_chat = apply_filters( 'gravityview/admin/display_live_chat', true );
+
+		if( ! $display_live_chat ) {
+			return;
+		}
 
 		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 

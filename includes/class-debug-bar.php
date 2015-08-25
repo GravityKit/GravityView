@@ -68,6 +68,7 @@ class GravityView_Debug_Bar extends Debug_Bar_Panel {
 				#debug-bar-gravityview .gravityview-debug-bar-title { font-weight: bold; font-size: 14px; line-height: 1.4; margin: 5px 0;  }
 				#debug-bar-gravityview .alignright { float: right!important; margin-left: 10px!important; }
 				#debug-bar-gravityview .ul-square, #debug-bar-gravityview .ul-square li { list-style: square; }
+				#querylist #debug-bar-gravityview ol { font-family: \"Helvetica Neue\",sans-serif!important; }
 				#debug-bar-gravityview hr { border:none;border-top:1px solid #ccc; margin-top:20px; }
 				#debug-bar-gravityview h3 { margin-top:20px; }
 				#debug-bar-gravityview pre {
@@ -77,46 +78,49 @@ class GravityView_Debug_Bar extends Debug_Bar_Panel {
 					overflow:auto;
 					max-height:300px;
 					margin-bottom: 10px;
+					font: 12px Monaco,\"Courier New\",Courier,Fixed!important;
 				}
 		</style>
 		<div id='debug-bar-gravityview'>";
 
-			$output .= '<img src="'.plugins_url('assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignright" alt="" width="100" height="132" />';
+		$output .= '<img src="'.plugins_url('assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="alignright" alt="" width="100" height="132" />';
 
 
-			$warnings = $this->get_warnings();
-			$notices = $this->get_notices();
+		$warnings = $this->get_warnings();
+		$notices = $this->get_notices();
 
-			if(count($warnings)) {
-				$output .= '<h3><span>'.__('Warnings', 'gravityview').'</span></h3>';
-				$output .= '<ul class="ul-square">';
-				foreach ( $warnings as $notice) {
-					if(empty($notice['message'])) { continue; }
-					$output .= '<li><a href="#'.sanitize_html_class( strip_tags($notice['message']) ).'">'.strip_tags($notice['message']).'</a></li>';
-				}
-				$output .= '</ul><hr />';
+		if(count($warnings)) {
+			$output .= '<h3><span>'.__('Warnings', 'gravityview').'</span></h3>';
+			$output .= '<ol>';
+			foreach ( $warnings as $key => $notice) {
+				if(empty($notice['message'])) { continue; }
+				$output .= '<li><a href="#'.sanitize_html_class( 'gv-warning-' . $key ).'">'.strip_tags($notice['message']).'</a></li>';
 			}
-			if(count($notices)) {
-				$output .= '<h3><span>'.__('Logs', 'gravityview').'</span></h3>';
-				$output .= '<ul class="ul-square">';
-				foreach ( $notices as $notice) {
-					if(empty($notice['message'])) { continue; }
-					$output .= '<li><a href="#'.sanitize_html_class( strip_tags($notice['message']) ).'">'.strip_tags($notice['message']).'</a></li>';
-				}
-				$output .= '</ul><hr />';
+			$output .= '</ol><hr />';
+		}
+		if(count($notices)) {
+			$output .= '<h3><span>'.__('Logs', 'gravityview').'</span></h3>';
+			$output .= '<ol>';
+			foreach ( $notices as $key => $notice) {
+				if(empty($notice['message'])) { continue; }
+				$output .= '<li><a href="#'.sanitize_html_class( 'gv-notice-' . $key ).'">'.strip_tags($notice['message']).'</a></li>';
 			}
+			$output .= '</ol><hr />';
+		}
 
-			if ( count( $warnings ) ) {
-				$output .= '<ul class="debug-bar-php-list">';
-				foreach ( $warnings as $notice) { $output .= $this->render_item($notice); }
-				$output .= '</ul>';
-			}
+		if ( count( $warnings ) ) {
+			$output .= '<h3>Warnings</h3>';
+			$output .= '<ol class="debug-bar-php-list">';
+			foreach ( $warnings as $key => $notice) { $output .= $this->render_item( $notice, 'gv-warning-'  . $key ); }
+			$output .= '</ol>';
+		}
 
-			if ( count( $notices ) ) {
-				$output .= '<ul class="debug-bar-php-list">';
-				foreach ( $notices as $notice) { $output .= $this->render_item($notice); }
-				$output .= '</ul>';
-			}
+		if ( count( $notices ) ) {
+			$output .= '<h3>Notices</h3>';
+			$output .= '<ol class="debug-bar-php-list">';
+			foreach ( $notices as $key => $notice) { $output .= $this->render_item( $notice, 'gv-notice-' . $key ); }
+			$output .= '</ol>';
+		}
 
 		$output .= "</div>";
 
@@ -147,14 +151,15 @@ class GravityView_Debug_Bar extends Debug_Bar_Panel {
 	/**
 	 * Render each log item
 	 * @param  array $notice `message`, `description`, `content`
+	 * @param  string $anchor The anchor ID for the item
 	 * @return string         HTML output
 	 */
-	function render_item($notice) {
+	function render_item( $notice, $anchor = '' ) {
 
 		$output = '';
 
 		if(!empty($notice['message'])) {
-			$output .= '<a id="'.sanitize_html_class( strip_tags($notice['message']) ).'"></a>';
+			$output .= '<a id="'.sanitize_html_class( $anchor ).'"></a>';
 			$output .= "<li class='debug-bar-php-notice'>";
 		}
 

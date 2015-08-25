@@ -12,7 +12,7 @@
  *
  * @since 1.1
  *
- * @version 1.0.8
+ * @version 1.1
  */
 abstract class GravityView_Extension {
 
@@ -35,6 +35,11 @@ abstract class GravityView_Extension {
 	 * @var string Minimum version of GravityView the Extension requires
 	 */
 	protected $_min_gravityview_version = '1.1.5';
+
+	/**
+	 * @var string Minimum version of GravityView the Extension requires
+	 */
+	protected $_min_php_version = '5.2.4';
 
 	/**
 	 * @var string The URL to fetch license info from. Do not change unless you know what you're doing.
@@ -161,8 +166,11 @@ abstract class GravityView_Extension {
 			return;
 		}
 
+		// Backward compat for Ratings & Reviews / Maps
+		$path = isset( $this->_path ) ? $this->_path : ( isset( $this->plugin_file ) ? $this->plugin_file : '' );
+
 		// Set filter for plugin's languages directory
-		$lang_dir = dirname( plugin_basename( $this->_path ) ) . '/languages/';
+		$lang_dir = dirname( plugin_basename( $path ) ) . '/languages/';
 
 		// Traditional WordPress plugin locale filter
 		$locale = apply_filters( 'plugin_locale',  get_locale(), $this->_text_domain );
@@ -318,6 +326,7 @@ abstract class GravityView_Extension {
 	 *
 	 * - Checks if GravityView and Gravity Forms exist
 	 * - Checks GravityView and Gravity Forms version numbers
+	 * - Checks PHP version numbers
 	 * - Sets self::$is_compatible to boolean value
 	 *
 	 * @uses GravityView_Admin::check_gravityforms()
@@ -327,27 +336,32 @@ abstract class GravityView_Extension {
 
 		self::$is_compatible = true;
 
+		$message = '';
+
 		if( !class_exists( 'GravityView_Plugin' ) ) {
 
 			$message = sprintf( __('Could not activate the %s Extension; GravityView is not active.', 'gravityview'), $this->_title );
-
-			self::add_notice( $message );
-
-			do_action( 'gravityview_log_error', __METHOD__. ' ' . $message );
-
-			self::$is_compatible = false;
 
 		} else if( false === version_compare(GravityView_Plugin::version, $this->_min_gravityview_version , ">=") ) {
 
 			$message = sprintf( __('The %s Extension requires GravityView Version %s or newer.', 'gravityview' ), $this->_title, '<tt>'.$this->_min_gravityview_version.'</tt>' );
 
+		} else if( isset( $this->_min_php_version ) && false === version_compare( phpversion(), $this->_min_php_version , ">=") ) {
+
+			$message = sprintf( __('The %s Extension requires PHP Version %s or newer. Please ask your host to upgrade your server\'s PHP.', 'gravityview' ), $this->_title, '<tt>'.$this->_min_php_version.'</tt>' );
+
+		} else {
+
+			self::$is_compatible = GravityView_Compatibility::is_valid();
+
+		}
+
+		if ( ! empty( $message ) ) {
+
 			self::add_notice( $message );
 
 			do_action( 'gravityview_log_error', __METHOD__. ' ' . $message );
 
-			self::$is_compatible = false;
-
-		} else if( !GravityView_Admin::check_gravityforms() ) {
 			self::$is_compatible = false;
 		}
 

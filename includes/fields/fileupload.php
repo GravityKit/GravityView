@@ -1,4 +1,8 @@
 <?php
+/**
+ * @package GravityView
+ */
+
 
 /**
  * Add custom options for date fields
@@ -29,16 +33,12 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 	/**
 	 * Return an array of files prepared for output.
 	 *
-	 * Processes files by file type and generates unique output for each.
-	 *
-	 * Returns array for each file, with the following keys:
-	 *
-	 * `file_path` => The file path of the file, with a line break
-	 * `html` => The file output HTML formatted
+	 * Processes files by file type and generates unique output for each. Returns array for each file, with the following keys:
+	 * - `file_path` => The file path of the file, with a line break
+	 * - `html` => The file output HTML formatted
 	 *
 	 * @since  1.2
 	 * @todo  Support `playlist` shortcode for playlist of video/audio
-	 * @usedby gravityview_get_files_array()
 	 * @param  string $value    Field value passed by Gravity Forms. String of file URL, or serialized string of file URL array
 	 * @param  string $gv_class Field class to add to the output HTML
 	 * @return array           Array of file output, with `file_path` and `html` keys (see comments above)
@@ -60,7 +60,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			// If the site is HTTPS, use HTTPS
 			if(function_exists('set_url_scheme')) { $file_path = set_url_scheme($file_path); }
 
-			// This is from Gravity Forms
+			// This is from Gravity Forms's code
 			$file_path = esc_attr(str_replace(" ", "%20", $file_path));
 
 			// If the field is set to link to the single entry, link to it.
@@ -104,10 +104,9 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 						$disable_wrapped_link = true;
 
 						/**
-						 * Modify the settings passed to the `wp_video_shortcode()` function
-						 *
+						 * @filter `gravityview_audio_settings` Modify the settings passed to the `wp_video_shortcode()` function
 						 * @since  1.2
-						 * @var array
+						 * @param array $audio_settings Array with `src` and `class` keys
 						 */
 						$audio_settings = apply_filters( 'gravityview_audio_settings', array(
 							'src' => $file_path,
@@ -116,8 +115,8 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 						/**
 						 * Generate the audio shortcode
-						 * @link http://codex.wordpress.org/Audio_Shortcode
-						 * @link https://developer.wordpress.org/reference/functions/wp_audio_shortcode/
+						 * @see http://codex.wordpress.org/Audio_Shortcode
+						 * @see https://developer.wordpress.org/reference/functions/wp_audio_shortcode/
 						 */
 						$content = wp_audio_shortcode( $audio_settings );
 
@@ -135,10 +134,9 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 						$disable_wrapped_link = true;
 
 						/**
-						 * Modify the settings passed to the `wp_video_shortcode()` function
-						 *
+						 * @filter `gravityview_video_settings` Modify the settings passed to the `wp_video_shortcode()` function
 						 * @since  1.2
-						 * @var array
+						 * @param array $video_settings Array with `src` and `class` keys
 						 */
 						$video_settings = apply_filters( 'gravityview_video_settings', array(
 							'src' => $file_path,
@@ -147,8 +145,8 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 						/**
 						 * Generate the video shortcode
-						 * @link http://codex.wordpress.org/Video_Shortcode
-						 * @link https://developer.wordpress.org/reference/functions/wp_video_shortcode/
+						 * @see http://codex.wordpress.org/Video_Shortcode
+						 * @see https://developer.wordpress.org/reference/functions/wp_video_shortcode/
 						 */
 						$content = wp_video_shortcode( $video_settings );
 
@@ -199,15 +197,11 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			}
 
 			/**
-			 * Filter to alter the default behaviour of wrapping images (or image names) with a link to the content object
-			 *
+			 * @filter `gravityview/fields/fileupload/disable_link` Filter to alter the default behaviour of wrapping images (or image names) with a link to the content object
 			 * @since 1.5.1
-			 *
 			 * @param bool $disable_wrapped_link whether to wrap the content with a link to the content object.
 			 * @param array $gravityview_view->field_data
-			 *
 			 * @see GravityView_API:field_value() for info about $gravityview_view->field_data
-			 *
 			 */
 			$disable_wrapped_link = apply_filters( 'gravityview/fields/fileupload/disable_link', $disable_wrapped_link, $gravityview_view->getCurrentField() );
 

@@ -13,72 +13,57 @@
 
 
 
-if( !function_exists('gravityview_get_form') ) {
-	/**
-	 * Returns the form object for a given Form ID.
-	 *
-	 * @access public
-	 * @param mixed $form_id
-	 * @return mixed False: no form ID specified or Gravity Forms isn't active. Array: Form returned from Gravity Forms
-	 */
-	function gravityview_get_form( $form_id ) {
-		return GVCommon::get_form( $form_id );
-	}
 
+/**
+ * Returns the form object for a given Form ID.
+ *
+ * @access public
+ * @param mixed $form_id
+ * @return mixed False: no form ID specified or Gravity Forms isn't active. Array: Form returned from Gravity Forms
+ */
+function gravityview_get_form( $form_id ) {
+	return GVCommon::get_form( $form_id );
 }
 
 
-if( !function_exists('gravityview_get_form_from_entry_id') ) {
-	/**
-	 * Get the form array for an entry based only on the entry ID
-	 * @param  int|string $entry_slug Entry slug
-	 * @return array           Gravity Forms form array
-	 */
-	function gravityview_get_form_from_entry_id( $entry_slug ) {
-		return GVCommon::get_form_from_entry_id( $entry_slug );
-	}
+/**
+ * Get the form array for an entry based only on the entry ID
+ * @param  int|string $entry_slug Entry slug
+ * @return array           Gravity Forms form array
+ */
+function gravityview_get_form_from_entry_id( $entry_slug ) {
+	return GVCommon::get_form_from_entry_id( $entry_slug );
 }
 
-
-if( !function_exists('gravityview_get_forms') ) {
-	/**
-	 * Returns the list of available forms
-	 *
-	 * @access public
-	 * @param mixed $form_id
-	 * @return array (id, title)
-	 */
-	function gravityview_get_forms() {
-		return GVCommon::get_forms();
-	}
-
+/**
+ * Returns the list of available forms
+ *
+ * @access public
+ * @param mixed $form_id
+ * @return array (id, title)
+ */
+function gravityview_get_forms() {
+	return GVCommon::get_forms();
 }
 
-
-
-if( !function_exists('gravityview_get_form_fields') ) {
-	/**
-	 * Return array of fields' id and label, for a given Form ID
-	 *
-	 * @access public
-	 * @param string|array $form_id (default: '') or $form object
-	 * @return array
-	 */
-	function gravityview_get_form_fields( $form = '', $add_default_properties = false, $include_parent_field = true ) {
-		return GVCommon::get_form_fields( $form, $add_default_properties, $include_parent_field );
-	}
+/**
+ * Return array of fields' id and label, for a given Form ID
+ *
+ * @access public
+ * @param string|array $form_id (default: '') or $form object
+ * @return array
+ */
+function gravityview_get_form_fields( $form = '', $add_default_properties = false, $include_parent_field = true ) {
+	return GVCommon::get_form_fields( $form, $add_default_properties, $include_parent_field );
 }
 
-
-if( !function_exists( 'gravityview_get_entry_meta' ) ) {
-	/**
-	 * get extra fields from entry meta
-	 * @param  string $form_id (default: '')
-	 * @return array
-	 */
-	function gravityview_get_entry_meta( $form_id, $only_default_column = true ) {
-		return GVCommon::get_entry_meta( $form_id, $only_default_column );
-	}
+/**
+ * get extra fields from entry meta
+ * @param  string $form_id (default: '')
+ * @return array
+ */
+function gravityview_get_entry_meta( $form_id, $only_default_column = true ) {
+	return GVCommon::get_entry_meta( $form_id, $only_default_column );
 }
 
 /**
@@ -94,102 +79,80 @@ function gravityview_get_entry_ids( $form_id, $search_criteria = array() ) {
 }
 
 
-if( !function_exists('gravityview_get_entries') ) {
-	/**
-	 * Retrieve entries given search, sort, paging criteria
-	 *
-	 * @see  GFAPI::get_entries()
-	 * @see GFFormsModel::get_field_filters_where()
-	 * @access public
-	 * @param int|array $form_ids The ID of the form or an array IDs of the Forms. Zero for all forms.
-	 * @param mixed $passed_criteria (default: null)
-	 * @param mixed &$total (default: null)
-	 * @return mixed False: Error fetching entries. Array: Multi-dimensional array of Gravity Forms entry arrays
-	 */
-	function gravityview_get_entries( $form_ids = null, $passed_criteria = null, &$total = null ) {
-		return GVCommon::get_entries( $form_ids, $passed_criteria, $total );
-	}
+/**
+ * Retrieve entries given search, sort, paging criteria
+ *
+ * @see  GFAPI::get_entries()
+ * @see GFFormsModel::get_field_filters_where()
+ * @access public
+ * @param int|array $form_ids The ID of the form or an array IDs of the Forms. Zero for all forms.
+ * @param mixed $passed_criteria (default: null)
+ * @param mixed &$total (default: null)
+ * @return mixed False: Error fetching entries. Array: Multi-dimensional array of Gravity Forms entry arrays
+ */
+function gravityview_get_entries( $form_ids = null, $passed_criteria = null, &$total = null ) {
+	return GVCommon::get_entries( $form_ids, $passed_criteria, $total );
+}
 
+/**
+ * Return a single entry object
+ *
+ * Since 1.4, supports custom entry slugs. The way that GravityView fetches an entry based on the custom slug is by searching `gravityview_unique_id` meta. The `$entry_slug` is fetched by getting the current query var set by `is_single_entry()`
+ *
+ * @access public
+ * @param mixed $entry_id
+ * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
+ * @return object or false
+ */
+function gravityview_get_entry( $entry_slug, $force_allow_ids = false ) {
+	return GVCommon::get_entry( $entry_slug, $force_allow_ids );
+}
+
+/**
+ * Retrieve the label of a given field id (for a specific form)
+ *
+ * @access public
+ * @param mixed $form
+ * @param mixed $field_id
+ * @return string
+ */
+function gravityview_get_field_label( $form, $field_id ) {
+	return GVCommon::get_field_label( $form, $field_id );
 }
 
 
-if( !function_exists('gravityview_get_entry') ) {
-
-	/**
-	 * Return a single entry object
-	 *
-	 * Since 1.4, supports custom entry slugs. The way that GravityView fetches an entry based on the custom slug is by searching `gravityview_unique_id` meta. The `$entry_slug` is fetched by getting the current query var set by `is_single_entry()`
-	 *
-	 * @access public
-	 * @param mixed $entry_id
-	 * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
-	 * @return object or false
-	 */
-	function gravityview_get_entry( $entry_slug, $force_allow_ids = false ) {
-		return GVCommon::get_entry( $entry_slug, $force_allow_ids );
-	}
-
+/**
+ * Returns the field details array of a specific form given the field id
+ *
+ * @access public
+ * @param mixed $form
+ * @param mixed $field_id
+ * @return array
+ */
+function gravityview_get_field( $form, $field_id ) {
+	return GVCommon::get_field( $form, $field_id );
 }
 
 
-
-if( !function_exists('gravityview_get_field_label') ) {
-	/**
-	 * Retrieve the label of a given field id (for a specific form)
-	 *
-	 * @access public
-	 * @param mixed $form
-	 * @param mixed $field_id
-	 * @return string
-	 */
-	function gravityview_get_field_label( $form, $field_id ) {
-		return GVCommon::get_field_label( $form, $field_id );
-	}
-
+/**
+ * Check whether the post is GravityView
+ *
+ * - Check post type. Is it `gravityview`?
+ * - Check shortcode
+ *
+ * @param  WP_Post      $post WordPress post object
+ * @return boolean           True: yep, GravityView; No: not!
+ */
+function has_gravityview_shortcode( $post = NULL ) {
+	return GVCommon::has_gravityview_shortcode( $post );
 }
 
-
-
-if( !function_exists('gravityview_get_field') ) {
-	/**
-	 * Returns the field details array of a specific form given the field id
-	 *
-	 * @access public
-	 * @param mixed $form
-	 * @param mixed $field_id
-	 * @return array
-	 */
-	function gravityview_get_field( $form, $field_id ) {
-		return GVCommon::get_field( $form, $field_id );
-	}
-
-}
-
-
-if( !function_exists('has_gravityview_shortcode') ) {
-
-	/**
-	 * Check whether the post is GravityView
-	 *
-	 * - Check post type. Is it `gravityview`?
-	 * - Check shortcode
-	 *
-	 * @param  WP_Post      $post WordPress post object
-	 * @return boolean           True: yep, GravityView; No: not!
-	 */
-	function has_gravityview_shortcode( $post = NULL ) {
-		return GVCommon::has_gravityview_shortcode( $post );
-	}
-}
-
-if( !function_exists( 'gravityview_has_shortcode_r') ) {
-	/**
-	 * Placeholder until the recursive has_shortcode() patch is merged
-	 * @link https://core.trac.wordpress.org/ticket/26343#comment:10
-	 */
-	function gravityview_has_shortcode_r( $content, $tag = 'gravityview' ) {
-		return GVCommon::has_shortcode_r( $content, $tag );
-	}
+/**
+ * Placeholder until the recursive has_shortcode() patch is merged
+ * @see https://core.trac.wordpress.org/ticket/26343#comment:10
+ */
+function gravityview_has_shortcode_r( $content, $tag = 'gravityview' ) {
+	return GVCommon::has_shortcode_r( $content, $tag );
 }
 
 /**
@@ -274,34 +237,69 @@ function gravityview_get_directory_fields( $post_id ) {
 	return GVCommon::get_directory_fields( $post_id );
 }
 
-if( !function_exists('gravityview_get_sortable_fields') ) {
-
-	/**
-	 * Render dropdown (select) with the list of sortable fields from a form ID
-	 *
-	 * @access public
-	 * @param  int $formid Form ID
-	 * @return string         html
-	 */
-	function gravityview_get_sortable_fields( $formid, $current = '' ) {
-		return GVCommon::get_sortable_fields( $formid, $current );
-	}
-
+/**
+ * Render dropdown (select) with the list of sortable fields from a form ID
+ *
+ * @access public
+ * @param  int $formid Form ID
+ * @return string         html
+ */
+function gravityview_get_sortable_fields( $formid, $current = '' ) {
+	return GVCommon::get_sortable_fields( $formid, $current );
 }
 
-if( !function_exists('gravityview_get_field_type') ) {
 
-	/**
-	 * Returns the GF Form field type for a certain field(id) of a form
-	 * @param  object $form     Gravity Forms form
-	 * @param  mixed $field_id Field ID or Field array
-	 * @return string field type
-	 */
-	function gravityview_get_field_type(  $form = null , $field_id = '' ) {
+/**
+ * Returns the GF Form field type for a certain field(id) of a form
+ * @param  object $form     Gravity Forms form
+ * @param  mixed $field_id Field ID or Field array
+ * @return string field type
+ */
+function gravityview_get_field_type(  $form = null , $field_id = '' ) {
+	return GVCommon::get_field_type(  $form, $field_id );
+}
 
-		return GVCommon::get_field_type(  $form, $field_id );
 
+/**
+ * Theme function to get a GravityView view
+ *
+ * @access public
+ * @param string $view_id (default: '')
+ * @param array $atts (default: array())
+ * @return string HTML of the output. Empty string if $view_id is empty.
+ */
+function get_gravityview( $view_id = '', $atts = array() ) {
+	if( !empty( $view_id ) ) {
+		$atts['id'] = $view_id;
+		$args = wp_parse_args( $atts, GravityView_View_Data::get_default_args() );
+		$GravityView_frontend = GravityView_frontend::getInstance();
+		$GravityView_frontend->setGvOutputData( GravityView_View_Data::getInstance( $view_id ) );
+		$GravityView_frontend->set_context_view_id( $view_id );
+		$GravityView_frontend->set_entry_data();
+		return $GravityView_frontend->render_view( $args );
 	}
+	return '';
+}
+
+/**
+ * Theme function to render a GravityView view
+ *
+ * @access public
+ * @param string $view_id (default: '')
+ * @param array $atts (default: array())
+ * @return void
+ */
+function the_gravityview( $view_id = '', $atts = array() ) {
+	echo get_gravityview( $view_id, $atts );
+}
 
 
+/**
+ * Theme function to identify if it is a Single Entry View
+ *
+ * @since  1.5.4
+ * @return bool|string False if not, single entry slug if true
+ */
+function gravityview_is_single_entry() {
+	return GravityView_frontend::is_single_entry();
 }

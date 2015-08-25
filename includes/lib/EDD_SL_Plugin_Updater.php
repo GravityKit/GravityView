@@ -127,7 +127,9 @@ class EDD_SL_Plugin_Updater {
 
 		$update_cache = get_site_transient( 'update_plugins' );
 
-		if ( ! is_object( $update_cache ) || empty( $update_cache->response ) || empty( $update_cache->response[ $this->name ] ) ) {
+		$update_cache = is_object( $update_cache ) ? $update_cache : new stdClass();
+
+		if ( empty( $update_cache->response ) || empty( $update_cache->response[ $this->name ] ) ) {
 
 			$cache_key    = md5( 'edd_plugin_' .sanitize_key( $this->name ) . '_version_info' );
 			$version_info = get_transient( $cache_key );
@@ -143,6 +145,7 @@ class EDD_SL_Plugin_Updater {
 			if( ! is_object( $version_info ) ) {
 				return;
 			}
+
 
 			if( version_compare( $this->version, $version_info->new_version, '<' ) ) {
 
