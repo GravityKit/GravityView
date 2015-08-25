@@ -1,9 +1,20 @@
 import React from 'react';
+import Metabox from './metabox/metabox.jsx';
 
-var HelloMessage = React.createClass({
+var DataSource = React.createClass({
     render: function () {
-        return <h1>Hello {this.props.message}!</h1>;
+        // todo: replace this by script localization
+        var actionLinks = [
+            { href: "", label:"Edit Form", title: "Edit Form" },
+            { href: "", label:"Entries", title: "Entries" }
+        ];
+
+        return(
+            <Metabox mTitle="Data Source" mTitleLinks={actionLinks}>
+                <div>this is the content</div>
+            </Metabox>
+        );
     }
 });
 
-export default HelloMessage;
+export default DataSource;

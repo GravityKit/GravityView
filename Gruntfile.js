@@ -40,20 +40,32 @@ module.exports = function(grunt) {
 			"assets/js/fe-views.js"
 		],
 
+		// used to generate a react build for the live environment
 		env: {
 			build: {
 				NODE_ENV: 'production'
 			}
-		}, // todo: add this when building the final production version
+		},
 
-		'browserify': {
-			options: {
-				debug: false,
-				transform: ['babelify']
+		browserify: {
+			dev: {
+				options: {
+					debug: true,
+					transform: ['babelify'],
+					extensions: ['*.jsx']
+				},
+				files: {
+					'includes/admin/metaboxes/components/admin-view-config.js': 'includes/admin/metaboxes/components/*.jsx'
+				}
 			},
-			production: {
-				src: 'includes/admin/metaboxes/components/*.jsx',
-				dest: 'includes/admin/metaboxes/components/admin-view-config.js'
+			build: {
+				options: {
+					debug: false,
+					transform: ['babelify']
+				},
+				files: {
+					'includes/admin/metaboxes/components/admin-view-config.js': 'includes/admin/metaboxes/components/*.jsx'
+				}
 			}
 		},
 
@@ -217,6 +229,10 @@ module.exports = function(grunt) {
 
 	// Still have to manually add this one...
 	grunt.loadNpmTasks('grunt-wp-i18n');
+
+	// React build workflow
+	grunt.registerTask( 'react-dev', [ 'browserify:dev', 'concat' ] );
+	grunt.registerTask( 'react-build', [ 'env:build', 'browserify:build', 'concat' ] );
 
 	// Regular CSS/JS/Image Compression stuff
 	grunt.registerTask( 'default', [ 'sass', 'uglify', 'imagemin', 'watch' ] );

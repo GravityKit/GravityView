@@ -1,10 +1,11 @@
 import React from 'react';
 
-import HelloMessage from './admin-view-data-source.jsx';
+import DataSource from './admin-view-data-source.jsx';
 
 
 function run() {
-    React.render(<HelloMessage message="World2" />, document.getElementById('gravityview_select_form') );
+    jQuery('#postbox-container-2').prepend( '<div id="gv-container-react"></div>' );
+    React.render(<DataSource />, document.getElementById('gv-container-react') );
 }
 
 if ( window.addEventListener ) {
