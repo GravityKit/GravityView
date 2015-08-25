@@ -35,7 +35,7 @@ class GravityView_Admin_Duplicate_View {
 		// Using our action hooks to copy meta fields
 		add_action( 'gv_duplicate_view', array( $this, 'copy_view_meta_info' ), 10, 2 );
 
-		add_filter( 'gravityview_connected_form_links', array( $this, 'connected_form_links' ), 10, 2 );
+		add_filter( 'gravityview/admin/form_links', array( $this, 'connected_form_links' ), 10, 2 );
 
 	}
 
@@ -53,9 +53,11 @@ class GravityView_Admin_Duplicate_View {
 		// We only want to add Clone links to the Edit View metabox
 		if( !$this->is_all_views_page() ) {
 
-			$duplicate_links = $this->make_duplicate_link_row( array(), $post );
-
-			$links[] = '<span>'.$duplicate_links['edit_as_new_draft'].'</span>';
+			$links[] = array(
+				'href' 	=> $this->get_clone_view_link( $post->ID ),
+				'label' => __( 'Clone View', 'gravityview' ),
+				'title' => __( 'Copy as a new draft View', 'gravityview' )
+			);
 
 		}
 

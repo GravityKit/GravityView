@@ -20,6 +20,10 @@ class GravityView_Ajax {
 		add_action( 'wp_ajax_gv_set_preset_form', array( $this, 'create_preset_form' ) );
 
 		add_action( 'wp_ajax_gv_sortable_fields_form', array( $this, 'get_sortable_fields' ) );
+
+		// new react stuff @todo: remove this comment.
+		add_action( 'wp_ajax_gv_get_form_links', array( $this, 'get_form_links' ) );
+
 	}
 
 	/** -------- AJAX ---------- */
@@ -376,6 +380,25 @@ class GravityView_Ajax {
 			'widgets' => $widgets
 		);
 	}
+
+	//
+
+	function get_form_links() {
+		//check nonce
+		$this->check_ajax_nonce();
+
+		// check param
+		$form_id = '';
+
+		// get links
+		$links = GravityView_Admin_Views::get_connected_form_links( $form_id );
+
+		//response
+	}
+
+
+
+
 }
 
 new GravityView_Ajax;
