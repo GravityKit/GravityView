@@ -381,8 +381,11 @@ class GravityView_Ajax {
 		);
 	}
 
-	//
 
+    /**
+     * Get the links relating to a view connected form, like Edit, Entries, Settings, Preview
+     * AJAX callback
+     */
 	function get_form_links() {
 		error_log( '$_POST:' . print_r( $_POST , true ) );
 		//check nonce
