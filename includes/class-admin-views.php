@@ -267,7 +267,11 @@ class GravityView_Admin_Views {
 		}
 
 		if( $include_form_link && GFCommon::current_user_can_any('gravityforms_edit_forms') ) {
-			$form_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;id=%d', $form_id ) );
+			// The $form is passed as the form ID
+			if( !is_array( $form ) ) {
+				$form = gravityview_get_form( $form );
+			}
+			$form_url = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;id=%d', $form['id'] ) );
 			$output .= '<strong class="gv-form-title">'.gravityview_get_link( $form_url, $form['title'], 'class=row-title' ).'</strong>';
 		}
 

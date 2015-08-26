@@ -387,7 +387,7 @@ class GravityView_Ajax {
      * AJAX callback
      */
 	function get_form_links() {
-		error_log( '$_POST:' . print_r( $_POST , true ) );
+
 		//check nonce
 		$this->check_ajax_nonce();
 
