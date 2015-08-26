@@ -22,6 +22,10 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 * Added: Filter to disable live chat widget (`gravityview/admin/display_live_chat`)
 
+* Updated Translations:
+	- Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
+	- Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
+
 = 1.13 on August 20 =
 * Fixed: Wildcard search broken for Gravity Forms 1.9.12+
 * Fixed: Edit Entry validation messages not displaying for Gravity Forms 1.9.12+

@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-08-20 20:42+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2015-08-25 12:30+0000\n"
+"Last-Translator: Süha Karalar <suhakaralar@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/katzwebservices/gravityview/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1129,14 +1129,14 @@ msgid ""
 "%sGravityView requires PHP Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please ask your host to upgrade your server's PHP."
-msgstr ""
+msgstr "GravityView Haritalar PHP %s ve üzeri sürümleri gerektirir.%s\n\nKullandığınız sürüm %s. Lütfen hosting firmanızla iletişime geçerek güncelleme talep ediniz."
 
 #: includes/class-gravityview-compatibility.php:204
 msgid ""
 "%sGravityView requires WordPress %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please upgrade your WordPress installation."
-msgstr ""
+msgstr "GravityView  Wordpress %s ve üzeri sürümleri gerektirir.%s\n\nKullandığınız sürüm %s. Lütfen WordPress sürümünüzü güncelleyin."
 
 #: includes/class-gravityview-compatibility.php:235
 msgid ""
@@ -1180,7 +1180,7 @@ msgstr "%s eklentisi en az GravityView %s sürümü yada daha yenisini gerektirm
 msgid ""
 "The %s Extension requires PHP Version %s or newer. Please ask your host to "
 "upgrade your server's PHP."
-msgstr ""
+msgstr "Bu eklenti PHP %s ve üzeri sürümleri gerektirir. Lütfen hosting firmanızla iletişime geçerek güncelleme talep ediniz."
 
 #: includes/class-gravityview-merge-tags.php:91
 msgid "Entry Creator: Display Name"
@@ -1821,21 +1821,21 @@ msgstr "Puanı kesir olarak göster: \"[puan]/[tavan puan]\". Seçili olmadığ�
 
 #: includes/fields/number.php:16
 msgid "Format number?"
-msgstr ""
+msgstr "Sayı Formatını Değiştir?"
 
 #: includes/fields/number.php:17
 msgid "Display numbers with thousands separators."
-msgstr ""
+msgstr "Sayıları binlik ayıracı kullanarak göster."
 
 #: includes/fields/number.php:23
 msgid "Decimals"
-msgstr ""
+msgstr "Ondalık"
 
 #: includes/fields/number.php:24
 msgid ""
 "Precision of the number of decimal places. Leave blank to use existing "
 "precision."
-msgstr ""
+msgstr "Ondalık kısımların basamak sayısını değiştirin. Mevcut ayarları kullanmak için burayı boş bırakın."
 
 #: includes/fields/other-entries.php:29
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:352

@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-08-20 20:42+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2015-08-26 11:51+0000\n"
+"Last-Translator: Md Akter Hosen <tareqhi@gmail.com>\n"
 "Language-Team: Bengali (http://www.transifex.com/katzwebservices/gravityview/language/bn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -65,11 +65,11 @@ msgstr "দৃশ্যমান করুন:"
 
 #: includes/admin/class.render.settings.php:77
 msgid "Percent Width"
-msgstr ""
+msgstr "শতাংশ প্রস্থ"
 
 #: includes/admin/class.render.settings.php:78
 msgid "Leave blank for column width to be based on the field content."
-msgstr ""
+msgstr "কলামের প্রস্থ ক্ষেত্রের বিষয়বস্তুর উপর ভিত্তি করে করা জন্য ফাঁকা ছেড়ে দিন."
 
 #: includes/admin/class.render.settings.php:109
 msgid "Any Logged-In User"
@@ -864,17 +864,17 @@ msgstr "কুইজের লেটার গ্রেড"
 msgid ""
 "Displays the Grade the user achieved based on Letter Grading configured in "
 "the Quiz Settings."
-msgstr ""
+msgstr "ব্যবহারকারী ক্যুইজ সেটিংস কনফিগার পত্র শূন্য উপর গ্রেড ভিত্তিক অর্জন প্রদর্শন"
 
 #: includes/class-common.php:316
 msgid "Quiz Pass/Fail"
-msgstr ""
+msgstr "ক্যুইজ পাস / ব্যর্থ"
 
 #: includes/class-common.php:318
 msgid ""
 "Displays either Passed or Failed based on the Pass/Fail settings configured "
 "in the Quiz Settings."
-msgstr ""
+msgstr "প্রদর্শন পাস বা ক্যুইজ সেটিংস কনফিগার পাস / ব্যর্থ সেটিংস উপর ভিত্তি করে ব্যর্থ হয়."
 
 #: includes/class-common.php:947 includes/class-data.php:566
 msgid "Default"
@@ -906,18 +906,18 @@ msgstr "আরো শিখুন &hellip;"
 
 #: includes/class-data.php:427
 msgid "There is no post or page with that ID."
-msgstr ""
+msgstr "যে আইডি দিয়ে কোন পোস্ট বা পৃষ্ঠা নেই."
 
 #: includes/class-data.php:437
 msgid ""
 "The Post ID entered is not valid. You may have entered a post or page that "
 "does not contain the selected View. Make sure the post contains the "
 "following shortcode: %s"
-msgstr ""
+msgstr "প্রবেশ পোস্ট আইডি বৈধ নয়. আপনি নির্বাচিত দেখুন থাকে না যে একটি পোস্টের অথবা পৃষ্ঠার প্রবেশ হতে পারে. পোস্টে নিম্নলিখিত সর্টকোড রয়েছে কিনা তা নিশ্চিত করুন:%s এর"
 
 #: includes/class-data.php:445
 msgid "The ID is already a View."
-msgstr ""
+msgstr "আইডি ইতিমধ্যে একটি দৃশ্য."
 
 #: includes/class-data.php:497
 msgid "View ID"
@@ -995,11 +995,11 @@ msgstr "গখক"
 
 #: includes/class-data.php:584
 msgid "Enable sorting by column"
-msgstr ""
+msgstr "কলাম দ্বারা বাছাই সক্রিয়"
 
 #: includes/class-data.php:585
 msgid "Column Sorting"
-msgstr ""
+msgstr "কলাম শ্রেণীবিভাজন"
 
 #: includes/class-data.php:594
 msgid "Filter by Start Date"
@@ -1079,7 +1079,7 @@ msgstr "লগ"
 msgid ""
 "When using a Start Fresh template, you must save the View before a Preview "
 "is available."
-msgstr ""
+msgstr "একটি স্টার্ট তাজা টেমপ্লেট ব্যবহার করার সময় একটি প্রাকদর্শন পাওয়া যায় আগে, আপনি দেখতে সংরক্ষণ করতে হবে."
 
 #: includes/class-frontend-views.php:629
 msgid ""
@@ -1127,21 +1127,21 @@ msgstr "বাতিল করুন"
 msgid ""
 "You are seeing this notice because you are an administrator. Other users of "
 "the site will see nothing."
-msgstr ""
+msgstr "আপনি যদি একজন প্রশাসক হওয়ার কারণে এই নোটিশ দেখতে পান. সাইটের অন্য ব্যবহারকারীদের কিছুই দেখতে হবে."
 
 #: includes/class-gravityview-compatibility.php:182
 msgid ""
 "%sGravityView requires PHP Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please ask your host to upgrade your server's PHP."
-msgstr ""
+msgstr "%s এর মাধ্যাকর্ষণ দেখুন পিএইচপি সংস্করণ% এর অথবা ঊর্ধ্বতন সংস্করণ প্রয়োজন.% এর\nআপনি সংস্করণ%s এর ব্যবহার করছেন. আপনার সার্ভার এর পিএইচপি আপগ্রেড করার জন্য আপনার হোস্ট জিজ্ঞাসা করুন."
 
 #: includes/class-gravityview-compatibility.php:204
 msgid ""
 "%sGravityView requires WordPress %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please upgrade your WordPress installation."
-msgstr ""
+msgstr "%s এর মাধ্যাকর্ষণ দেখুন ওয়ার্ডপ্রেস% এর অথবা ঊর্ধ্বতন সংস্করণ প্রয়োজন.%s এর\nআপনি সংস্করণ%s এর ব্যবহার করছেন. আপনার ওয়ার্ডপ্রেস ইনস্টলেশন আপগ্রেড করুন."
 
 #: includes/class-gravityview-compatibility.php:235
 msgid ""
@@ -1185,23 +1185,23 @@ msgstr "%s এক্সটেনশন চালানোর জন্য গ্
 msgid ""
 "The %s Extension requires PHP Version %s or newer. Please ask your host to "
 "upgrade your server's PHP."
-msgstr ""
+msgstr "%s এর এক্সটেনশন পিএইচপি সংস্করণ%s এর অথবা ঊর্ধ্বতন সংস্করণ প্রয়োজন. আপনার সার্ভার এর পিএইচপি আপগ্রেড করার জন্য আপনার হোস্ট জিজ্ঞাসা করুন."
 
 #: includes/class-gravityview-merge-tags.php:91
 msgid "Entry Creator: Display Name"
-msgstr ""
+msgstr "এণ্ট্রি ক্রিয়েটর: ডিসপ্লে নাম"
 
 #: includes/class-gravityview-merge-tags.php:95
 msgid "Entry Creator: Email"
-msgstr ""
+msgstr "এণ্ট্রি ক্রিয়েটর: ইমেইল"
 
 #: includes/class-gravityview-merge-tags.php:99
 msgid "Entry Creator: Username"
-msgstr ""
+msgstr "এণ্ট্রি ক্রিয়েটর: ইউজারনেম"
 
 #: includes/class-gravityview-merge-tags.php:103
 msgid "Entry Creator: User ID"
-msgstr ""
+msgstr "এণ্ট্রি ক্রিয়েটর: ইউজার আইডি"
 
 #: includes/class-gv-license-handler.php:71
 #: includes/class-gv-license-handler.php:341
@@ -1221,11 +1221,11 @@ msgstr "লাইসেন্স নিস্ক্রিয় করুন"
 
 #: includes/class-gv-license-handler.php:79
 msgid "Deactivating license&hellip;"
-msgstr ""
+msgstr "লাইসেন্স ও হিলিপ নিষ্ক্রিয়;"
 
 #: includes/class-gv-license-handler.php:85
 msgid "Check License"
-msgstr ""
+msgstr "লাইসেন্সটি চেক"
 
 #: includes/class-gv-license-handler.php:328
 msgid "Status"
@@ -1239,41 +1239,41 @@ msgstr "অনুরোধ প্রক্রিয়াকরণে সমস্�
 msgid ""
 "Could not deactivate the license. The license key you attempted to "
 "deactivate may not be active or valid."
-msgstr ""
+msgstr "লাইসেন্স সমূহ নিষ্ক্রিয় করবেন গেল. লাইসেন্স কী আপনি সক্রিয় অথবা বৈধ নাও হতে পারে নিষ্ক্রিয় করার চেষ্টা করে."
 
 #: includes/class-gv-license-handler.php:331
 msgid "The license key is valid, but it has not been activated for this site."
-msgstr ""
+msgstr "লাইসেন্স কী বৈধ, কিন্তু এটা এই সাইটের জন্য সক্রিয় করা হয় নি."
 
 #: includes/class-gv-license-handler.php:332
 msgid "Invalid: this license has reached its activation limit."
-msgstr ""
+msgstr "অকার্যকর: এই লাইসেন্স তার অ্যাক্টিভেশন সীমায় পৌঁছেছে."
 
 #: includes/class-gv-license-handler.php:333
 msgid "The license has been deactivated."
-msgstr ""
+msgstr "লাইসেন্স নিষ্ক্রিয় করা হয়েছে."
 
 #: includes/class-gv-license-handler.php:334
 msgid "The license key is valid and active."
-msgstr ""
+msgstr "লাইসেন্স কী বৈধ এবং সক্রিয়."
 
 #: includes/class-gv-license-handler.php:335
 msgid "The license key entered is invalid."
-msgstr ""
+msgstr "প্রবেশ লাইসেন্স কী অবৈধ."
 
 #: includes/class-gv-license-handler.php:336
 msgid "The license key was not defined."
-msgstr ""
+msgstr "লাইসেন্স কী সংজ্ঞায়িত করা হয়."
 
 #: includes/class-gv-license-handler.php:337
 msgid "This license key has been revoked."
-msgstr ""
+msgstr "এই লাইসেন্স কী প্রত্যাহার করা হয়েছে."
 
 #: includes/class-gv-license-handler.php:338
 msgid ""
 "This license key has expired. %sRenew your license on the GravityView "
 "website%s"
-msgstr ""
+msgstr "এই লাইসেন্স কী মেয়াদ শেষ হয়ে গেছে. % s এর% s মাধ্যাকর্ষণ দেখুন ওয়েবসাইটে আপনার লাইসেন্স পুনর্নবীকরণ"
 
 #: includes/class-gv-license-handler.php:343
 msgid "Verify License"
@@ -1565,90 +1565,90 @@ msgstr "স্ক্রিনশটসহ ওয়েবসাইটের ব�
 #: includes/extensions/delete-entry/class-delete-entry.php:167
 #: includes/extensions/delete-entry/fields/delete_link.php:14
 msgid "Delete Entry"
-msgstr ""
+msgstr "লেখা মুছে ফেলো"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:120
 msgid "Delete Link Text"
-msgstr ""
+msgstr "লিংক লেখা মুছে ফেলা"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:128
 msgid "Allow the following users to delete the entry:"
-msgstr ""
+msgstr "নিম্নলিখিত ব্যবহারকারীদের এন্ট্রি মুছে ফেলতে সক্ষম হবেন:"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:153
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
-msgstr ""
+msgstr "একটি লিঙ্ক এন্ট্রি মুছে ফেলতে. মুছে ফেলুন এণ্ট্রি অনুমতি সম্মান করে."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:296
 msgid "Delete"
-msgstr ""
+msgstr "মুছে"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:373
 msgid "The entry does not exist."
-msgstr ""
+msgstr "এন্ট্রি উপস্থিত না."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:417
 msgid "Are you sure you want to delete this entry? This cannot be undone."
-msgstr ""
+msgstr "আপনি এই এন্ট্রি মুছে ফেলতে চান আপনি কি নিশ্চিত? এটা অসমাপ্ত থাকতে পারে না."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:444
 msgid "The link to delete this entry is not valid; it may have expired."
-msgstr ""
+msgstr "এই এন্ট্রি মুছে লিঙ্কটি বৈধ নয়; এটা শেষ করে দিতে পারে."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:448
 msgid "You do not have permission to delete this entry."
-msgstr ""
+msgstr "আপনি এই এন্ট্রি মুছে ফেলতে অনুমতি নেই."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:452
 msgid "You cannot delete the entry; it is already in the trash."
-msgstr ""
+msgstr "আপনি এন্ট্রি মুছে ফেলতে পারবেন না; এটা ট্র্যাশ ইতিমধ্যে."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:570
 msgid "There was an error deleting the entry: %s"
-msgstr ""
+msgstr "এন্ট্রি মুছে ফেলার সময় একটি ত্রুটি হয়েছিল:%s এর"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:575
 msgid "The entry was successfully deleted."
-msgstr ""
+msgstr "এন্ট্রি সফলভাবে মোছা হয়েছে."
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:60
 msgid "A link to edit the entry. Visible based on View settings."
-msgstr ""
+msgstr "একটি লিঙ্ক এন্ট্রি সম্পাদনা করতে. প্রাপ্তিসাধ্য ইংলিশ দেখুন সেটিংস উপর ভিত্তি করে."
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:114
 msgid "Edit Link Text"
-msgstr ""
+msgstr "সম্পাদনা লিংক শিরোনাম"
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:133
 msgid "Limiting Edit Access"
-msgstr ""
+msgstr "সম্পাদনা অ্যাক্সেস সীমিত"
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:134
 msgid ""
 "Change this setting if you don't want the user who created the entry to be "
 "able to edit this field."
-msgstr ""
+msgstr "আপনি এই ক্ষেত্র সম্পাদন পাবে এন্ট্রি তৈরি যারা ইউজার না চান তাহলে এই ব্যবহারটি নির্ধারণ করতে."
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:159
 #: includes/fields/class.field.php:49
 msgid "Open link in a new tab or window?"
-msgstr ""
+msgstr "একটি নতুন ট্যাব বা উইন্ডোতে লিঙ্ক খুলুন?"
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:172
 msgid "Make field editable to:"
-msgstr ""
+msgstr "ক্ষেত্রের সম্পাদনযোগ্য করুন:"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:534
 msgid "There was a problem with your submission."
-msgstr ""
+msgstr "আপনার উপস্থাপনে একটু সমস্যা ছিল."
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:534
 msgid "Errors have been highlighted below."
-msgstr ""
+msgstr "ত্রুটিগুলি নীচে তুলে ধরা হয়েছে."
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:540
 msgid "Entry Updated. %sReturn to Entry%s"
-msgstr ""
+msgstr "প্রবেশ আপডেট. %s এর এন্ট্রি%s এর ফিরে"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1025
 msgid "Maximum number of files reached"
