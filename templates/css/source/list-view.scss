@@ -132,4 +132,8 @@ $color-description: #999;
 	border-top: 1px solid $color-border;
 	background-color: $color-footer;
 	padding: 1em;
+
+    &:empty {
+      display: none;
+    }
 }
