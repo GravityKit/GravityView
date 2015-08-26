@@ -184,8 +184,6 @@
 
 		/**
 		 * Select the text of an input field on click
-		 * @filter default text
-		 * @action default text
 		 * @param  {[type]}    e     [description]
 		 * @return {[type]}          [description]
 		 */
@@ -1553,13 +1551,47 @@ var _metaboxMetaboxJsx2 = _interopRequireDefault(_metaboxMetaboxJsx);
 var DataSource = _react2['default'].createClass({
     displayName: 'DataSource',
 
+    loadFormActionLinks: function loadFormActionLinks() {
+        jQuery.ajax({
+            type: 'POST',
+            url: ajaxurl,
+            dataType: 'json',
+            data: {
+                action: 'gv_get_form_links',
+                nonce: gvGlobals.nonce,
+                form: this.state.form,
+                view: gvViewSettings.view_id
+            },
+            async: true,
+            cache: false,
+            success: (function (response) {
+                console.log(response);
+                if (this.isMounted() && response.success) {
+                    this.setState({ formActionLinks: response.data });
+                }
+            }).bind(this),
+            error: (function (xhr, status, err) {
+                console.error(ajaxurl, status, err.toString());
+            }).bind(this)
+        });
+    },
+
+    getInitialState: function getInitialState() {
+        return {
+            form: gvViewSettings.form_id,
+            formActionLinks: []
+        };
+    },
+
+    componentDidMount: function componentDidMount() {
+        this.loadFormActionLinks();
+    },
+
     render: function render() {
-        // todo: replace this by script localization
-        var actionLinks = [{ href: "", label: "Edit Form", title: "Edit Form" }, { href: "", label: "Entries", title: "Entries" }];
 
         return _react2['default'].createElement(
             _metaboxMetaboxJsx2['default'],
-            { mTitle: 'Data Source', mTitleLinks: actionLinks },
+            { mTitle: 'Data Source', mTitleLinks: this.state.formActionLinks },
             _react2['default'].createElement(
                 'div',
                 null,
@@ -1592,7 +1624,7 @@ var Metabox = _react2['default'].createClass({
 
         var actionLinks = '';
 
-        if (this.props.mTitleLinks.length > 0) {
+        if (this.props.mTitleLinks.length) {
             actionLinks = this.props.mTitleLinks.map(function (action) {
                 return _react2['default'].createElement(
                     'span',

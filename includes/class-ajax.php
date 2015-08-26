@@ -384,16 +384,20 @@ class GravityView_Ajax {
 	//
 
 	function get_form_links() {
+		error_log( '$_POST:' . print_r( $_POST , true ) );
 		//check nonce
 		$this->check_ajax_nonce();
 
 		// check param
-		$form_id = '';
+		if( empty( $_POST['form'] ) || empty( $_POST['view'] ) ) {
+			wp_send_json_error();
+		}
 
 		// get links
-		$links = GravityView_Admin_Views::get_connected_form_links( $form_id );
+		$links = GravityView_Admin_Views::get_connected_form_links( $_POST['form'], $_POST['view'] );
 
-		//response
+		// success
+		wp_send_json_success( $links );
 	}
 
 

@@ -168,7 +168,7 @@ class GravityView_Admin_Metaboxes {
 		//current value
 		$current_form = gravityview_get_form_id( $post_id );
 
-		$links = GravityView_Admin_Views::get_connected_form_links_html( $current_form, false );
+		$links = GravityView_Admin_Views::get_connected_form_links_html( $current_form, $post_id, false );
 
 		if( !empty( $links ) ) {
 			$links = '<span class="alignright gv-form-links">'. $links .'</span>';

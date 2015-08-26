@@ -1,11 +1,12 @@
 import React from 'react';
 
 var Metabox = React.createClass({
+
     render: function () {
 
         var actionLinks = '';
 
-        if( this.props.mTitleLinks.length > 0 ) {
+        if( this.props.mTitleLinks.length ) {
             actionLinks = this.props.mTitleLinks.map( function ( action ) {
                 return (
                     <span><a href={action.href} title={action.title}>{action.label}</a></span>

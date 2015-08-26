@@ -235,24 +235,25 @@ class GravityView_Admin_Views {
 			echo __( 'The connected form can not be found; it may no longer exist.', 'gravityview' );
 		}
 
-		echo self::get_connected_form_links_html( $form );
+		echo self::get_connected_form_links_html( $form, $post_id );
 
 	}
 
 	/**
 	 * Get HTML links relating to a connected form, like Edit, Entries, Settings, Preview
 	 * @param  array|int $form_id Gravity Forms forms array, or the form ID
+	 * @param int $post_id WordPress post ID
 	 * @param  boolean $include_form_link Whether to include the bold name of the form in the output
 	 * @return string          HTML links
 	 */
-	static public function get_connected_form_links_html( $form, $include_form_link = true ) {
+	static public function get_connected_form_links_html( $form, $post_id, $include_form_link = true ) {
 
 		// Either the form is empty or the form ID is 0, not yet set.
 		if( empty( $form ) ) {
 			return '';
 		}
 
-		$links = self::get_connected_form_links( $form );
+		$links = self::get_connected_form_links( $form, $post_id );
 
 		if( empty( $links ) || ! is_array( $links ) ) {
 			return '';
@@ -288,7 +289,7 @@ class GravityView_Admin_Views {
 	 * @param  array|int $form_id Gravity Forms forms array, or the form ID
 	 * @return array links
 	 */
-	static public function get_connected_form_links( $form ) {
+	static public function get_connected_form_links( $form, $view_id = '' ) {
 
 		// Either the form is empty or the form ID is 0, not yet set.
 		if( empty( $form ) ) {
@@ -340,8 +341,9 @@ class GravityView_Admin_Views {
 		 * @since 1.14
 		 * @param array $links Links to show
 		 * @param array $form Gravity Forms form array
+		 * @param int $view_id WordPress view post ID
 		 */
-		$links = apply_filters( 'gravityview/admin/form_links', $links, $form );
+		$links = apply_filters( 'gravityview/admin/form_links', $links, $form, $view_id );
 
 		return $links;
 	}
@@ -1001,7 +1003,7 @@ class GravityView_Admin_Views {
 	 * @return void
 	 */
 	static function add_scripts_and_styles( $hook ) {
-		global $plugin_page, $pagenow;
+		global $plugin_page, $pagenow, $post;
 
 		$is_widgets_page = ( $pagenow === 'widgets.php' );
 
@@ -1032,7 +1034,7 @@ class GravityView_Admin_Views {
 			//enqueue scripts
 			wp_enqueue_script( 'gravityview_views_scripts', plugins_url( 'assets/js/admin-views-react' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie', 'jquery-ui-datepicker', 'underscore' ), GravityView_Plugin::version );
 
-			wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
+			wp_localize_script( 'gravityview_views_scripts', 'gvGlobals', array(
 				'cookiepath' => COOKIEPATH,
 				'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
 				'label_viewname' => __( 'Enter View name here', 'gravityview' ),
@@ -1047,11 +1049,15 @@ class GravityView_Admin_Views {
 				'remove_all_fields' => __( 'Would you like to remove all fields in this zone? (You are seeing this message because you were holding down the ALT key)', 'gravityview' ),
 			));
 
+			wp_localize_script( 'gravityview_views_scripts', 'gvViewSettings', array(
+				'view_id' => $post->ID,
+				'form_id' => gravityview_get_form_id( $post->ID )
+
+			));
+
 			wp_enqueue_style( 'gravityview_views_styles', plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
 
 			self::enqueue_gravity_forms_scripts();
-
-
 
 		} // End single page
 	}
