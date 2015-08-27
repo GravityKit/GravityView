@@ -392,7 +392,7 @@ final class GravityView_Delete_Entry {
 		 * @since 1.13.1
 		 * @param string $delete_mode Delete mode: `trash` or `delete`. Default: `delete`
 		 */
-		$delete_mode = apply_filters( 'gravityview/delete-entry/mode', 'trash' );
+		$delete_mode = apply_filters( 'gravityview/delete-entry/mode', 'delete' );
 
 		return ( 'trash' === $delete_mode ) ? 'trash' : 'delete';
 	}
