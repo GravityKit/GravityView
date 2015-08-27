@@ -29,6 +29,15 @@ module.exports = function(grunt) {
 		          dest: 'templates/css/',
 		          ext: '.css'
 		      }]
+			},
+			docs: {
+				files: [{
+					expand: true,
+					cwd: 'docs/',
+					src: ['*.scss'],
+					dest: 'docs/',
+					ext: '.css'
+				}]
 			}
 		},
 
@@ -94,6 +103,10 @@ module.exports = function(grunt) {
 			scss: {
 				files: ['assets/css/scss/*.scss'],
 				tasks: ['sass:dist']
+			},
+			docs: {
+				files: ['docs/*.scss'],
+				tasks: ['sass:docs']
 			}
 		},
 

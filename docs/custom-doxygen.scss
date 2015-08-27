@@ -1,0 +1,124 @@
+@mixin clear-background-and-border() {
+  // Fix well background
+  border: none;
+  background: none transparent;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+a.anchor {
+  position: absolute;
+  text-indent: -1em;
+  display: inline-block;
+  width: 1em;
+  outline: none;
+}
+
+#top {
+  #projectlogo img {
+    max-width: 300px;
+    margin: 10px;
+  }
+  #projectalign {
+    display: none;
+  }
+}
+
+.footer {
+  display: none;
+}
+
+// Make sure the search window is above the floated elements
+#MSearchResultsWindow {
+  z-index: 100;
+}
+
+.section.since {
+  dt, dd {
+    display: inline-block;
+    padding-right: .3em;
+  }  
+}
+
+dl.section dt {
+  @include clear-background-and-border();
+}
+
+dl.reflist {
+
+  & > dt {
+    @include clear-background-and-border();
+
+    visibility: collapse;
+    position: relative;
+    float: right;
+
+    a.el {
+      visibility: visible;
+      text-align: right;
+      float: right;
+      
+      &:before {
+        content: 'View code: ';
+      }
+    }
+    //display: none;
+  }
+
+  & > dd {
+    border-bottom: 1px solid #e1e1e1!important;
+    border-radius: 0;
+    margin: 10px 0;
+  }
+
+  dd {
+
+    @include clear-background-and-border();
+
+    font-size: 1.1em;
+    color: #555555;
+
+    & > code:first-of-type,
+    & dl + code {
+
+      color: black;
+      display: block;
+      font-size: 1.3em;
+      margin-bottom: .4em;
+    }
+
+    table.params {
+      width: 100%;
+
+      tr td {
+        background-color: #f7f7f7;
+        border: none;
+        padding: 5px;
+      }
+      tr:nth-child(odd) td {
+        background-color: white;
+      }
+
+      td.paramname,
+      td.paramtype,
+      td.paramdir {
+        white-space: nowrap;
+        width: 1%;
+        padding: 5px 1%;
+      }
+    }
+
+    dl.params {
+
+      border: 1px solid #f1f1f1;
+      background: #f7f7f7;
+      padding: 10px;
+
+      dt {
+        @include clear-background-and-border();
+      }
+    }
+
+  }
+}

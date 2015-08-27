@@ -500,7 +500,6 @@ class GravityView_Edit_Entry_Render {
     /**
      * Display the Edit Entry form
      *
-     * @filter gravityview_edit_entry_title Modfify the edit entry title
      * @return [type] [description]
      */
     public function edit_entry_form() {
@@ -520,7 +519,15 @@ class GravityView_Edit_Entry_Render {
             echo gravityview_strip_whitespace( $javascript );
 
             ?><h2 class="gv-edit-entry-title">
-                <span><?php echo esc_attr( apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravityview'), $this ) ); ?></span>
+                <span><?php
+
+                    /**
+                     * @filter `gravityview_edit_entry_title` Modify the edit entry title
+                     * @param string $edit_entry_title Modify the "Edit Entry" title
+                     * @param GravityView_Edit_Entry_Render $this This object
+                     */
+                    echo esc_attr( apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravityview'), $this ) );
+            ?></span>
             </h2>
 
             <?php
@@ -540,6 +547,7 @@ class GravityView_Edit_Entry_Render {
                     $entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. $back_link .'">', '</a>' );
 
                     /**
+                     * @filter `gravityview/edit_entry/success` Modify the edit entry success message (including the anchor link)
                      * @since 1.5.4
                      * @param string $entry_updated_message Existing message
                      * @param int $view_id View ID

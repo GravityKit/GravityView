@@ -29,6 +29,12 @@ class GravityView_Cache {
 	private $key = '';
 
 	/**
+	 * @since 1.13.1
+	 * @var array Columns in the database for leads
+	 */
+	private $lead_db_columns = array( 'id', 'form_id', 'post_id', 'date_created', 'is_starred', 'is_read', 'ip', 'source_url', 'user_agent', 'currency', 'payment_status', 'payment_date', 'payment_amount', 'transaction_id', 'is_fulfilled', 'created_by', 'transaction_type', 'status' );
+
+	/**
 	 *
 	 * @param array|int $form_ids Form ID or array of form IDs used in a request
 	 * @param array $args Extra request parameters used to generate the query. This is used to generate the unique transient key.
@@ -65,7 +71,14 @@ class GravityView_Cache {
 
 		add_action( 'gform_entry_created', array( $this, 'entry_created' ), 10, 2 );
 
-		add_action( 'gform_delete_lead', array( $this, 'entry_deleted' ), 10 );
+		/**
+		 * @see RGFormsModel::update_lead_property() Trigger when any entry property changes
+		 */
+		foreach( $this->lead_db_columns as $column ) {
+			add_action( 'gform_update_' . $column, array( $this, 'entry_status_changed' ), 10, 3 );
+		}
+
+		add_action( 'gform_delete_lead', array( $this, 'entry_status_changed' ), 10 );
 	}
 
 	/**
@@ -76,10 +89,12 @@ class GravityView_Cache {
 	 * @since  1.5.1
 	 *
 	 * @param  int $lead_id Entry ID
+	 * @param  string $property_value Previous value of the lead status passed by gform_update_status hook
+	 * @param  string $previous_value Previous value of the lead status passed by gform_update_status hook
 	 *
 	 * @return void
 	 */
-	public function entry_deleted( $lead_id ) {
+	public function entry_status_changed( $lead_id, $property_value = '', $previous_value = '' ) {
 
 		/** @var array $entry */
 		$entry = GFAPI::get_entry( $lead_id );
@@ -87,15 +102,14 @@ class GravityView_Cache {
 		if ( is_wp_error( $entry ) ) {
 
 			/** @var WP_Error $entry */
-			do_action( 'gravityview_log_error', 'GravityView_Cache[entry_deleted] Could not retrieve entry ' . $lead_id . ' to delete it: ' . $entry->get_error_message() );
+			do_action( 'gravityview_log_error', __METHOD__ . ' Could not retrieve entry ' . $lead_id . ' to delete it: ' . $entry->get_error_message() );
 
 			return;
 		}
 
-		do_action( 'gravityview_log_debug', 'GravityView_Cache[entry_deleted] adding form ' . $entry['form_id'] . ' to blacklist because entry #' . $lead_id . ' was deleted' );
-
+		do_action( 'gravityview_log_debug', __METHOD__ . ' adding form ' . $entry['form_id'] . ' to blacklist because entry #' . $lead_id . ' was deleted', array( 'value' => $property_value, 'previous' => $previous_value ) );
+		
 		$this->blacklist_add( $entry['form_id'] );
-
 	}
 
 	/**
@@ -325,10 +339,8 @@ class GravityView_Cache {
 		if ( ! empty( $content ) ) {
 
 			/**
-			 * Modify the cache time for a type of cache
-			 * Name format: `gravityview_cache_time_{$filter_name}`
-			 *
-			 * @var string
+			 * @filter `gravityview_cache_time_{$filter_name}` Modify the cache time for a type of cache
+			 * @param int $time_in_seconds Default: `DAY_IN_SECONDS`
 			 */
 			$cache_time = (int) apply_filters( 'gravityview_cache_time_' . $filter_name, DAY_IN_SECONDS );
 
@@ -401,9 +413,8 @@ class GravityView_Cache {
 	public function schedule_transient_cleanup() {
 
 		/**
-		 * Override GravityView cleanup of transients by setting this to false
-		 *
-		 * @var boolean
+		 * @filter `gravityview_cleanup_transients` Override GravityView cleanup of transients by setting this to false
+		 * @param boolean $cleanup Whether to run the GravityView auto-cleanup of transients. Default: `true`
 		 */
 		$cleanup = apply_filters( 'gravityview_cleanup_transients', true );
 
@@ -421,7 +432,7 @@ class GravityView_Cache {
 	 *
 	 * The code is copied from the Delete Expired Transients, with slight modifications to track # of results and to get the blog ID dynamically
 	 *
-	 * @link  https://wordpress.org/plugins/delete-expired-transients/ Plugin where the code was taken from
+	 * @see https://wordpress.org/plugins/delete-expired-transients/ Plugin where the code was taken from
 	 * @see  DelxtransCleaners::clearBlogExpired()
 	 * @return void
 	 */
@@ -504,12 +515,9 @@ class GravityView_Cache {
 		// Check the blacklist
 
 		/**
-		 * Modify whether to use the cache or not
-		 *
-		 * @param  boolean $use_cache Previous setting
-		 * @param  GravityView_Cache $this The GravityView_Cache object
-		 *
-		 * @var boolean
+		 * @filter `gravityview_use_cache` Modify whether to use the cache or not
+		 * @param[out,in]  boolean $use_cache Previous setting
+		 * @param[out] GravityView_Cache $this The GravityView_Cache object
 		 */
 		$use_cache = apply_filters( 'gravityview_use_cache', $use_cache, $this );
 

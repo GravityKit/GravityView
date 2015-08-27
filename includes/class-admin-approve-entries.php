@@ -1,7 +1,6 @@
 <?php
 /**
- *
- *
+ * @file class-admin-approve-entries.php
  * @package   GravityView
  * @license   GPL2+
  * @author    Katz Web Services, Inc.
@@ -364,10 +363,6 @@ class GravityView_Admin_ApproveEntries {
 	 * @param  int $entry_id ID of the Gravity Forms entry
 	 * @param  string $is_approved String whether entry is approved or not. `0` for not approved, `Approved` for approved.
 	 *
-	 * @action gravityview/approve_entries/updated Triggered when an entry approval is updated {@added 1.7.6.1}
-	 * @action gravityview/approve_entries/approved Triggered when an entry is approved {@added 1.7.6.1}
-	 * @action gravityview/approve_entries/disapproved Triggered when an entry is rejected {@added 1.7.6.1}
-	 *
 	 * @since 1.7.6.1 `after_update_entry_update_approved_meta` was previously to be named `update_approved_meta`
 	 *
 	 * @return void
@@ -380,25 +375,28 @@ class GravityView_Admin_ApproveEntries {
 			gform_update_meta( $entry_id, 'is_approved', $is_approved );
 
 			/**
+			 * @action `gravityview/approve_entries/updated` Triggered when an entry approval is updated
+			 * @since 1.7.6.1
 			 * @param  int $entry_id ID of the Gravity Forms entry
 			 * @param  string $is_approved String whether entry is approved or not. `0` for not approved, `Approved` for approved.
-			 * @since 1.7.6.1
 			 */
 			do_action( 'gravityview/approve_entries/updated', $entry_id, $is_approved );
 
 			if( empty( $is_approved ) ) {
 
 				/**
-				 * @param  int $entry_id ID of the Gravity Forms entry
+				 * @action `gravityview/approve_entries/disapproved` Triggered when an entry is rejected
 				 * @since 1.7.6.1
+				 * @param  int $entry_id ID of the Gravity Forms entry
 				 */
 				do_action( 'gravityview/approve_entries/disapproved', $entry_id );
 
 			} else {
 
 				/**
-				 * @param  int $entry_id ID of the Gravity Forms entry
+				 * @action `gravityview/approve_entries/approved` Triggered when an entry is approved
 				 * @since 1.7.6.1
+				 * @param  int $entry_id ID of the Gravity Forms entry
 				 */
 				do_action( 'gravityview/approve_entries/approved', $entry_id );
 
@@ -547,9 +545,6 @@ class GravityView_Admin_ApproveEntries {
 	/**
 	 * Should the Approve/Reject Entry column be shown in the GF Entries page?
 	 *
-	 * @filter gravityview/approve_entries/hide-if-no-connections
-	 * @filter gravityview/approve_entries/show-column
-	 *
 	 * @since 1.7.2
 	 *
 	 * @param int $form_id The ID of the Gravity Forms form for which entries are being shown
@@ -561,7 +556,7 @@ class GravityView_Admin_ApproveEntries {
 		$show_approve_column = true;
 
 		/**
-		 * Return true to hide reject/approve if there are no connected Views
+		 * @filter `gravityview/approve_entries/hide-if-no-connections` Return true to hide reject/approve if there are no connected Views
 		 * @since 1.7.2
 		 * @param boolean $hide_if_no_connections
 		 */
@@ -577,7 +572,7 @@ class GravityView_Admin_ApproveEntries {
 		}
 
 		/**
-		 * Override whether the column is shown
+		 * @filter `gravityview/approve_entries/show-column` Override whether the column is shown
 		 * @param boolean $show_approve_column Whether the column will be shown
 		 * @param int $form_id The ID of the Gravity Forms form for which entries are being shown
 		 */

@@ -22,7 +22,7 @@ final class GravityView_Logging {
 	/**
 	 * Add integration with the Debug Bar plugin. It's awesome.
 	 *
-	 * @link http://wordpress.org/plugins/debug-bar/
+	 * @see http://wordpress.org/plugins/debug-bar/
 	 */
 	function add_debug_bar( $panels ) {
 

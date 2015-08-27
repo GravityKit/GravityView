@@ -43,6 +43,8 @@ class GravityView_Widget_Pagination_Info extends GravityView_Widget {
 
 		$total = $first = $last = null;
 
+		$output = '';
+
 		if( ! empty( $pagination_counts ) ) {
 
 			$first = $pagination_counts['first'];
@@ -55,6 +57,13 @@ class GravityView_Widget_Pagination_Info extends GravityView_Widget {
 			$output = '<div class="gv-widget-pagination '.$class.'"><p>'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravityview' ), number_format_i18n( $first ), number_format_i18n( $last ), number_format_i18n( $total ) ) . '</p></div>';
 		}
 
+		/**
+		 * @filter `gravityview_pagination_output` Modify the pagination widget output
+		 * @param string $output HTML output
+		 * @param int $first First entry #
+		 * @param int $last Last entry #
+		 * @param int $total Total entries #
+		 */
 		echo apply_filters( 'gravityview_pagination_output', $output, $first, $last, $total );
 
 	}

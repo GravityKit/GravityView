@@ -253,7 +253,14 @@ class GravityView_Widget {
 			return false;
 		}
 
-		if( apply_filters( 'gravityview/widget/hide_until_searched', $gravityview_view->hide_until_searched, $this ) ) {
+		/**
+		 * @filter `gravityview/widget/hide_until_searched` Modify whether to hide content until search
+		 * @param boolean $hide_until_searched Hide until search?
+		 * @param GravityView_Widget $this Widget instance
+		 */
+		$hide_until_search = apply_filters( 'gravityview/widget/hide_until_searched', $gravityview_view->hide_until_searched, $this );
+
+		if( $hide_until_search ) {
 			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: Hide View data until search is performed', get_class($this)) );
 			return false;
 		}

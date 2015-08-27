@@ -69,7 +69,11 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 
-		// Nice place to insert extensions' backend stuff
+		/**
+		 * @action `gravityview_include_backend_actions` Triggered after all GravityView admin files are loaded
+		 *
+		 * Nice place to insert extensions' backend stuff
+		 */
 		do_action('gravityview_include_backend_actions');
 	}
 
@@ -83,7 +87,10 @@ class GravityView_Admin {
 	 */
 	public static function plugin_action_links( $links ) {
 
-		$action = array( '<a href="http://docs.gravityview.co">'. esc_html__( 'Support', 'gravityview' ) .'</a>' );
+		$action = array(
+			sprintf( '<a href="%s">%s</a>', admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ), esc_html__( 'Settings', 'gravityview' ) ),
+			'<a href="http://docs.gravityview.co">' . esc_html__( 'Support', 'gravityview' ) . '</a>'
+		);
 
 		return array_merge( $action, $links );
 	}
@@ -325,7 +332,9 @@ class GravityView_Admin {
 
 		$this->remove_conflicts( $wp_styles, $wp_allowed_styles, 'styles' );
 
-		// Allow settings, etc, to hook in after
+		/**
+		 * @action `gravityview_remove_conflicts_after` Runs after no-conflict styles are removed. You can re-add styles here.
+		 */
 		do_action('gravityview_remove_conflicts_after');
 	}
 
@@ -339,7 +348,11 @@ class GravityView_Admin {
 	 */
 	private function remove_conflicts( &$wp_objects, $required_objects, $type = 'scripts' ) {
 
-        //allowing addons or other products to change the list of no conflict scripts or styles
+        /**
+         * @filter `gravityview_noconflict_{$type}` Modify the list of no conflict scripts or styles\n
+         * Filter is `gravityview_noconflict_scripts` or `gravityview_noconflict_styles`
+         * @param array $required_objects
+         */
         $required_objects = apply_filters( "gravityview_noconflict_{$type}", $required_objects );
 
         //reset queue
@@ -369,48 +382,25 @@ class GravityView_Admin {
 	 * @param [type] $registered [description]
 	 * @param [type] $scripts    [description]
 	 */
-	private function add_script_dependencies($registered, $scripts){
+	private function add_script_dependencies($registered, $scripts) {
 
-        //gets all dependent scripts linked to the $scripts array passed
-        do{
-            $dependents = array();
-            foreach($scripts as $script){
-                $deps = isset($registered[$script]) && is_array($registered[$script]->deps) ? $registered[$script]->deps : array();
-                foreach($deps as $dep){
-                    if(!in_array($dep, $scripts) && !in_array($dep, $dependents)){
-                        $dependents[] = $dep;
-                    }
-                }
-            }
-            $scripts = array_merge($scripts, $dependents);
-        }while(!empty($dependents));
+		//gets all dependent scripts linked to the $scripts array passed
+		do {
+			$dependents = array();
+			foreach ( $scripts as $script ) {
+				$deps = isset( $registered[ $script ] ) && is_array( $registered[ $script ]->deps ) ? $registered[ $script ]->deps : array();
+				foreach ( $deps as $dep ) {
+					if ( ! in_array( $dep, $scripts ) && ! in_array( $dep, $dependents ) ) {
+						$dependents[] = $dep;
+					}
+				}
+			}
+			$scripts = array_merge( $scripts, $dependents );
+		} while ( ! empty( $dependents ) );
 
-        return $scripts;
-    }
+		return $scripts;
+	}
 
-    /**
-     * Should the notice be shown in the admin (Has it been dismissed already)?
-     *
-     * If the passed notice array has a `dismiss` key, the notice is dismissable. If it's dismissable,
-     * we check against other notices that have already been dismissed.
-     *
-     * @see GravityView_Admin::dismiss_notice()
-     * @see GravityView_Admin::add_notice()
-     * @param  string $notice            Notice array, set using `add_notice()`.
-     * @return boolean                   True: show notice; False: hide notice
-     */
-    function _maybe_show_notice( $notice ) {
-
-	    // There are no dismissed notices.
-    	if( empty( self::$dismissed_notices ) ) {
-    		return true;
-    	}
-
-    	// Has the
-    	$is_dismissed = !empty( $notice['dismiss'] ) && in_array( $notice['dismiss'], self::$dismissed_notices );
-
-    	return $is_dismissed ? false : true;
-    }
 
 	/**
 	 * Get admin notices
@@ -483,6 +473,11 @@ class GravityView_Admin {
 			}
 		}
 
+		/**
+		 * @filter `gravityview_is_admin_page` Is the current admin page a GravityView-related page?
+		 * @param[in,out] string|bool $is_page If false, no. If string, the name of the page (`single`, `settings`, or `views`)
+		 * @param[in] string $hook The name of the page to check against. Is passed to the method.
+		 */
 		$is_page = apply_filters( 'gravityview_is_admin_page', $is_page, $hook );
 
 		// If the current page is the same as the compared page
