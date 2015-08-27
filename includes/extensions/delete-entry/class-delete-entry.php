@@ -340,14 +340,9 @@ final class GravityView_Delete_Entry {
 
 				} else {
 
-					do_action('gravityview_log_debug', 'GravityView_Delete_Entry[process_delete] Starting delete entry: ', $entry );
-
 					// Delete the entry
-					$delete_response = GFAPI::delete_entry( $entry['id'] );
+					$delete_response = $this->delete_or_trash_entry( $entry['id'] );
 
-					do_action('gravityview_log_debug', 'GravityView_Delete_Entry[process_delete] Delete response: ', $delete_response );
-
-					// GFAPI::delete_entry() returns a WP_Error on error
 					if( is_wp_error( $delete_response ) ) {
 
 						$messages = array(
@@ -358,7 +353,7 @@ final class GravityView_Delete_Entry {
 					} else {
 
 						$messages = array(
-							'status' => 'success',
+							'status' => $delete_response,
 						);
 
 					}
@@ -367,7 +362,7 @@ final class GravityView_Delete_Entry {
 
 			} else {
 
-				do_action('gravityview_log_debug', 'GravityView_Delete_Entry[process_delete] Delete entry failed: there was no entry with the entry slug '.$entry_slug );
+				do_action('gravityview_log_debug', __METHOD__ . ' Delete entry failed: there was no entry with the entry slug '. $entry_slug );
 
 				$messages = array(
 					'message' => urlencode( __('The entry does not exist.', 'gravityview') ),
@@ -386,6 +381,63 @@ final class GravityView_Delete_Entry {
 
 	} // process_delete
 
+	/**
+	 * Delete mode: permanently delete, or move to trash?
+	 *
+	 * @return string `delete` or `trash`
+	 */
+	private function get_delete_mode() {
+
+		/**
+		 * @filter `gravityview/delete-entry/mode` Delete mode: permanently delete, or move to trash?
+		 * @since 1.13.1
+		 * @param string $delete_mode Delete mode: `trash` or `delete`. Default: `delete`
+		 */
+		$delete_mode = apply_filters( 'gravityview/delete-entry/mode', 'trash' );
+
+		return ( 'trash' === $delete_mode ) ? 'trash' : 'delete';
+	}
+
+	/**
+	 * @since 1.13.1
+	 * @see GFAPI::delete_entry()
+	 * @return WP_Error|boolean GFAPI::delete_entry() returns a WP_Error on error
+	 */
+	private function delete_or_trash_entry( $entry_id ) {
+
+		$mode = $this->get_delete_mode();
+
+		if( 'delete' === $mode ) {
+
+			do_action( 'gravityview_log_debug', __METHOD__ . ' Starting delete entry: ', $entry_id );
+
+			// Delete the entry
+			$delete_response = GFAPI::delete_entry( $entry_id );
+
+			if( ! is_wp_error( $delete_response ) ) {
+				$delete_response = 'deleted';
+			}
+
+			do_action( 'gravityview_log_debug', __METHOD__ . ' Delete response: ', $delete_response );
+
+		} else {
+
+			do_action( 'gravityview_log_debug', __METHOD__ . ' Starting trash entry: ', $entry_id );
+
+			$trashed = GFAPI::update_entry_property( $entry_id, 'status', 'trash' );
+			new GravityView_Cache;
+
+			if( ! $trashed ) {
+				$delete_response = new WP_Error( 'trash_entry_failed', __('Moving the entry to the trash failed.', 'gravityview' ) );
+			} else {
+				$delete_response = 'trashed';
+			}
+
+			do_action( 'gravityview_log_debug', __METHOD__ . ' Trashed? ', $delete_response );
+		}
+
+		return $delete_response;
+	}
 
 	/**
 	 * Is the current nonce valid for editing the entry?
@@ -449,7 +501,11 @@ final class GravityView_Delete_Entry {
 		}
 
 		if( $entry['status'] === 'trash' ) {
-			$error = __('You cannot delete the entry; it is already in the trash.', 'gravityview' );
+			if( 'trash' === $this->get_delete_mode() ) {
+				$error = __( 'The entry is already in the trash.', 'gravityview' );
+			} else {
+				$error = __( 'You cannot delete the entry; it is already in the trash.', 'gravityview' );
+			}
 		}
 
 		// No errors; everything's fine here!
@@ -569,6 +625,8 @@ final class GravityView_Delete_Entry {
 				$class = ' gv-error error';
 				$error_message = __('There was an error deleting the entry: %s', 'gravityview');
 				$message = sprintf( $error_message, $message );
+			case 'trashed':
+				$message = __('The entry was successfully moved to the trash.', 'gravityview');
 				break;
 
 			default:

@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 	- Changing entry owner
 	- Being marked as spam
 * Fixed: Delete entry URL not properly passing some parameters (only affecting pages with multiple `[gravityview]` shortcodes)
+* Added: `gravityview/delete-entry/mode` filter. When returning "trash", "Delete Entry" moves entries to the trash instead of permanently deleting them.
 * Updated Translations:
 	- Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
 	- Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
