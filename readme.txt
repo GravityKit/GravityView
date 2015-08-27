@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 	- Moving to/from the trash
 	- Changing entry owner
 	- Being marked as spam
+* Fixed: Delete entry URL not properly passing some parameters (only affecting pages with multiple `[gravityview]` shortcodes)
 * Updated Translations:
 	- Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
 	- Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
