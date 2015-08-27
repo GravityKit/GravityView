@@ -1589,31 +1589,43 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:373
+#: includes/extensions/delete-entry/class-delete-entry.php:367
 msgid "The entry does not exist."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:417
+#: includes/extensions/delete-entry/class-delete-entry.php:430
+msgid "Moving the entry to the trash failed."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:468
 msgid "Are you sure you want to delete this entry? This cannot be undone."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:444
+#: includes/extensions/delete-entry/class-delete-entry.php:495
 msgid "The link to delete this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:448
+#: includes/extensions/delete-entry/class-delete-entry.php:499
 msgid "You do not have permission to delete this entry."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:452
+#: includes/extensions/delete-entry/class-delete-entry.php:504
+msgid "The entry is already in the trash."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:506
 msgid "You cannot delete the entry; it is already in the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:571
+#: includes/extensions/delete-entry/class-delete-entry.php:626
 msgid "There was an error deleting the entry: %s"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:575
+#: includes/extensions/delete-entry/class-delete-entry.php:630
+msgid "The entry was successfully moved to the trash."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:633
 msgid "The entry was successfully deleted."
 msgstr ""
 
@@ -1995,7 +2007,7 @@ msgstr ""
 msgid "Show Pagination Info"
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-pagination-info.php:55
+#: includes/widgets/class-gravityview-widget-pagination-info.php:57
 msgid "Displaying %1$s - %2$s of %3$s"
 msgstr ""
 
