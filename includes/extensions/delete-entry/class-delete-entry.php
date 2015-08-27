@@ -447,7 +447,7 @@ final class GravityView_Delete_Entry {
 	public function verify_nonce() {
 
 		// No delete entry request was made
-		if( empty( $_GET['entry_id'] ) ) {
+		if( empty( $_GET['entry_id'] ) || empty( $_GET['delete'] ) ) {
 			return false;
 		}
 
