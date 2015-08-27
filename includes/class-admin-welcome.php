@@ -273,6 +273,36 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>1.13.1 on August 26</h3>
+
+				<ul>
+					<li>Fixed: Potential XSS security issue. <strong>Please update.</strong></li>
+					<li>Fixed: The cache was not being reset properly for entry changes, including:
+
+						<ul>
+							<li>Starring/unstarring</li>
+							<li>Moving to/from the trash</li>
+							<li>Changing entry owner</li>
+							<li>Being marked as spam</li>
+						</ul>
+					</li>
+					<li>Fixed: Delete entry URL not properly passing some parameters (only affecting pages with multiple <code>[gravityview]</code> shortcodes)</li>
+					<li>Added: <code>gravityview/delete-entry/mode</code> filter. When returning "trash", "Delete Entry" moves entries to the trash instead of permanently deleting them.</li>
+					<li>Added: <code>gravityview/admin/display_live_chat</code> filter to disable live chat widget</li>
+					<li>Added: <code>gravityview/delete-entry/message</code> filter to modify the "Entry Deleted" message content</li>
+					<li>Tweak: Improved license activation error handling by linking to relevant account functions</li>
+					<li>Tweak: Added settings link to plugin page actions</li>
+					<li>Tweak: Improved code documentation</li>
+					<li>Updated Translations:
+
+						<ul>
+							<li>Bengali translation by <a href="https://www.transifex.com/accounts/profile/tareqhi/">@tareqhi</a></li>
+							<li>Turkish translation by <a href="https://www.transifex.com/accounts/profile/suhakaralar/">@suhakaralar</a></li>
+						</ul>
+					</li>
+					<li>New: Released a new <a href="http://codex.gravityview.co">GravityView Codex</a> for developers</li>
+				</ul>
+
 				<h3>1.13 on August 18</h3>
 
 				<ul>
