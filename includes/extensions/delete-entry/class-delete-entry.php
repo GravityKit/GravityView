@@ -186,7 +186,7 @@ final class GravityView_Delete_Entry {
 	 * @param  string      $input_type  (textarea, list, select, etc.)
 	 * @return array                   Array of field options with `label`, `value`, `type`, `default` keys
 	 */
-	function modify_visibility_caps( $visibility_caps = array(), $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
+	public function modify_visibility_caps( $visibility_caps = array(), $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 
 		$caps = $visibility_caps;
 
@@ -219,7 +219,7 @@ final class GravityView_Delete_Entry {
 	 * @param  int $entry_id Entry ID
 	 * @return string           Key used to validate request
 	 */
-	static function get_nonce_key( $entry_id ) {
+	public static function get_nonce_key( $entry_id ) {
 		return sprintf( 'delete_%s', $entry_id );
 	}
 
@@ -233,7 +233,7 @@ final class GravityView_Delete_Entry {
 	 * @param  array      $entry Gravity Forms entry array
 	 * @return string|null             If directory link is valid, the URL to process the delete request. Otherwise, `NULL`.
 	 */
-	static function get_delete_link( $entry, $view_id = 0, $post_id = null ) {
+	public static function get_delete_link( $entry, $view_id = 0, $post_id = null ) {
 
 		self::getInstance()->set_entry( $entry );
 
@@ -277,7 +277,7 @@ final class GravityView_Delete_Entry {
 		}
 
 		/**
-		 * Show or hide the delete button in the Edit Entry screen
+		 * @filter `gravityview/delete-entry/show-delete-button` Should the Delete button be shown in the Edit Entry screen?
 		 * @param boolean $show_entry Default: true
 		 */
 		$show_delete_button = apply_filters( 'gravityview/delete-entry/show-delete-button', true );
@@ -307,7 +307,6 @@ final class GravityView_Delete_Entry {
 	 * 5. Redirect to the page using `wp_safe_redirect()`
 	 *
 	 * @since 1.5.1
-	 * @uses GFAPI::delete_entry()
 	 * @uses wp_safe_redirect()
 	 * @return void
 	 */
@@ -469,8 +468,8 @@ final class GravityView_Delete_Entry {
 		$confirm = __('Are you sure you want to delete this entry? This cannot be undone.', 'gravityview');
 
 		/**
-		 * Modify the confirmation text
-		 * @var string
+		 * @filter `gravityview/delete-entry/confirm-text` Modify the Delete Entry Javascript confirmation text
+		 * @param string $confirm Default: "Are you sure you want to delete this entry? This cannot be undone."
 		 */
 		$confirm = apply_filters( 'gravityview/delete-entry/confirm-text', $confirm );
 
@@ -610,32 +609,42 @@ final class GravityView_Delete_Entry {
 	 * @since 1.5.1
 	 * @return void
 	 */
-	function display_message() {
+	public function display_message() {
 
-		if( empty( $_GET['status'] ) ) {
+		if( empty( $_GET['status'] ) || ! self::verify_nonce() ) {
 			return;
 		}
 
-		$message = rgget('message');
-		$message = urldecode( stripslashes_deep( $message ) );
+		$status = esc_attr( $_GET['status'] );
+		$message_from_url = rgget('message');
+		$message_from_url = urldecode( stripslashes_deep( $message_from_url ) );
 		$class = '';
 
-		switch ( $_GET['status'] ) {
+		switch ( $status ) {
 			case 'error':
 				$class = ' gv-error error';
 				$error_message = __('There was an error deleting the entry: %s', 'gravityview');
-				$message = sprintf( $error_message, $message );
+				$message = sprintf( $error_message, $message_from_url );
+				break;
 			case 'trashed':
 				$message = __('The entry was successfully moved to the trash.', 'gravityview');
 				break;
-
 			default:
 				$message = __('The entry was successfully deleted.', 'gravityview');
 				break;
 		}
 
+		/**
+		 * @filter `gravityview/delete-entry/message` Modify the Delete Entry messages
+		 * @since 1.13.1
+		 * @param string $message Message to be displayed
+		 * @param string $status Message status (`error` or `success`)
+		 * @param string $message_from_url The original error message, if any, without the "There was an error deleting the entry:" prefix
+		 */
+		$message = apply_filters( 'gravityview/delete-entry/message', esc_attr( $message ), $status, $message_from_url );
+
 		// DISPLAY ERROR/SUCCESS MESSAGE
-		echo '<div class="gv-notice'.esc_attr( $class ) .'">'. $message .'</div>';
+		echo '<div class="gv-notice' . esc_attr( $class ) .'">'. $message .'</div>';
 	}
 
 

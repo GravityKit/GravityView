@@ -43,6 +43,8 @@ class GravityView_Widget_Pagination_Info extends GravityView_Widget {
 
 		$total = $first = $last = null;
 
+		$output = '';
+
 		if( ! empty( $pagination_counts ) ) {
 
 			$first = $pagination_counts['first'];
