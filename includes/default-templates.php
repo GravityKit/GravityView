@@ -267,7 +267,7 @@ abstract class GravityView_Template {
 	 * @return array Array of templates available for GV
 	 */
 	public function register_template( $templates ) {
-		$templates[ $this->template_id ] = $this->settings;
+		$templates[] = array_merge( array( 'id' => $this->template_id ), $this->settings );
 		return $templates;
 	}
 

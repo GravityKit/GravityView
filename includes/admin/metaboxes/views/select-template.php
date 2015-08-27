@@ -26,8 +26,8 @@ $templates = apply_filters( 'gravityview_register_directory_template', array() )
 
 <?php // list all the available templates (type= fresh or custom ) ?>
 <div class="gv-grid">
-	<?php foreach( $templates as $id => $template ) {
-		$selected = ( $id == $current_template ) ? ' gv-selected' : ''; ?>
+	<?php foreach( $templates as $template ) {
+		$selected = ( $template['id'] == $current_template ) ? ' gv-selected' : ''; ?>
 
 		<div class="gv-grid-col-1-3">
 			<div class="gv-view-types-module<?php echo $selected; ?>" data-filter="<?php echo esc_attr( $template['type'] ); ?>">
@@ -36,7 +36,7 @@ $templates = apply_filters( 'gravityview_register_directory_template', array() )
 						<?php if( !empty( $template['buy_source'] ) ) : ?>
 							<p><a href="<?php echo esc_url( $template['buy_source'] ); ?>" class="button-primary button-buy-now"><?php esc_html_e( 'Buy Now', 'gravityview'); ?></a></p>
 						<?php else: ?>
-							<p><a href="#gv_select_template" class="button button-large button-primary" data-templateid="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Select', 'gravityview'); ?></a></p>
+							<p><a href="#gv_select_template" class="button button-large button-primary" data-templateid="<?php echo esc_attr( $template['id'] ); ?>"><?php esc_html_e( 'Select', 'gravityview'); ?></a></p>
 							<?php if( !empty( $template['preview'] ) ) : ?>
 								<a href="<?php echo esc_url( $template['preview'] ); ?>" rel="external" class="gv-site-preview"><i class="dashicons dashicons-admin-links" title="<?php esc_html_e( 'View a live demo of this preset', 'gravityview'); ?>"></i></a>
 							<?php endif; ?>

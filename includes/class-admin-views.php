@@ -1038,6 +1038,7 @@ class GravityView_Admin_Views {
 			//enqueue scripts
 			wp_enqueue_script( 'gravityview_views_scripts', plugins_url( 'assets/js/admin-views-react' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie', 'jquery-ui-datepicker', 'underscore' ), GravityView_Plugin::version );
 
+			//@todo: move the labels to get_admin_l10n_labels()
 			wp_localize_script( 'gravityview_views_scripts', 'gvGlobals', array(
 				'cookiepath' => COOKIEPATH,
 				'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
@@ -1053,11 +1054,9 @@ class GravityView_Admin_Views {
 				'remove_all_fields' => __( 'Would you like to remove all fields in this zone? (You are seeing this message because you were holding down the ALT key)', 'gravityview' ),
 			));
 
-			wp_localize_script( 'gravityview_views_scripts', 'gvViewSettings', array(
-				'view_id' => $post->ID,
-				'form_id' => gravityview_get_form_id( $post->ID )
+			wp_localize_script( 'gravityview_views_scripts', 'gravityview_view_settings',  self::get_admin_view_settings( $post->ID ) );
 
-			));
+			wp_localize_script( 'gravityview_views_scripts', 'gravityview_i18n', self::get_admin_i18n_labels() );
 
 			wp_enqueue_style( 'gravityview_views_styles', plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
 
@@ -1065,6 +1064,53 @@ class GravityView_Admin_Views {
 
 		} // End single page
 	}
+
+	static function get_admin_view_settings( $post_id ) {
+
+		/**
+		 * @filter `gravityview_register_directory_template` Fetch available View templates
+		 * @param array $templates Templates to display on the Select Template metabox
+		 */
+		$templates = apply_filters( 'gravityview_register_directory_template', array() );
+
+		return array(
+			'view_id' => $post_id,
+			'form_id' => gravityview_get_form_id( $post_id ),
+			'forms' => GVCommon::get_forms(),
+			'templates' => $templates,
+			'template_id' => gravityview_get_template_id( $post_id ),
+		);
+	}
+
+	static function get_admin_i18n_labels() {
+		return array(
+			// Data Source metabox
+			'mb_ds_title' 			=> __( 'Data Source', 'gravityview' ),
+			'mb_ds_subtitle' 		=> __( 'Where would you like the data to come from for this View?', 'gravityview' ),
+			'mb_ds_start_button'	=> __( 'Start Fresh', 'gravityview' ),
+			'mb_ds_or_existing' 	=> __( 'or use an existing form', 'gravityview' ),
+			'mb_ds_list_forms'		=> __( 'list of forms', 'gravityview' ),
+			'mb_ds_switch_view' 	=> __( 'Switch View Type', 'gravityview' ),
+			'mb_ds_attention' 		=> __( 'Attention', 'gravityview' ),
+			'mb_ds_change_form' 	=> __( 'Changing the form will reset your field configuration. Changes will be permanent once you save the View.', 'gravityview' ),
+			'mb_ds_change_type'   	=> __( 'Changing the View Type will reset your field configuration. Changes will be permanent once you save the View.', 'gravityview' ),
+
+			// Select Template metabox
+			'mb_st_title'  			=> __( 'Choose a View Type', 'gravityview' ),
+			'mb_st_buy_button' 		=> __( 'Buy Now', 'gravityview'),
+			'mb_st_select_button'	=> __( 'Select', 'gravityview'),
+			'mb_st_preview'			=> __( 'View a live demo of this preset', 'gravityview'),
+
+
+
+			// View Configuration metabox
+			'mb_vc_title'  			=> __( 'View Configuration', 'gravityview' ),
+
+
+
+		);
+	}
+
 
 	static function enqueue_gravity_forms_scripts() {
 		GFForms::register_scripts();
