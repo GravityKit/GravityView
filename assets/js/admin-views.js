@@ -49,13 +49,13 @@
 				.on( 'click', '#publish, #save-post', vcfg.processFormSubmit )
 
 				// Hover overlay show/hide
-				.on( 'click', ".gv-view-types-hover", vcfg.selectTemplateHover )
+				//.on( 'click', ".gv-view-types-hover", vcfg.selectTemplateHover )
 
 				// Convert rel="external" to target="_blank" for accessibility
 				.on( 'click', 'a[rel*=external]', vcfg.openExternalLinks )
 
 				// close all tooltips if user clicks outside the tooltip
-				.on( 'click mouseup keyup', vcfg.closeTooltips )
+				//.on( 'click mouseup keyup', vcfg.closeTooltips )
 
 				// switch View (for existing forms)
 				.on( 'click', 'a[href="#gv_switch_view"]', vcfg.switchView )

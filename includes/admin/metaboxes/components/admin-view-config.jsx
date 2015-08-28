@@ -17,16 +17,14 @@ var ViewConfig = React.createClass({
     },
 
     handleTemplateChange: function(e) {
-        e.preventDefault();
-        console.log( e.target.getAttribute('data-templateid') );
-        this.setState({ template: e.target.getAttribute('data-templateid') });
+        this.setState({ template: jQuery( e.target ).find('a.button-select-template').attr('data-templateid') });
     },
 
     render: function() {
         return(
             <div>
                 <DataSource key={'ds'+this.state.form} form={this.state.form} onFormChange={this.handleFormChange} />
-                <SelectTemplate key={'st'+this.state.template} template={this.state.template} onTemplateChange={this.handleTemplateChange} />
+                <SelectTemplate key={'st'+this.state.template} template={this.state.template} onTemplateClick={this.handleTemplateChange} />
             </div>
         );
     }

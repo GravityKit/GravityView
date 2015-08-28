@@ -30,9 +30,7 @@ var ViewConfig = _react2['default'].createClass({
     },
 
     handleTemplateChange: function handleTemplateChange(e) {
-        e.preventDefault();
-        console.log(e.target.getAttribute('data-templateid'));
-        this.setState({ template: e.target.getAttribute('data-templateid') });
+        this.setState({ template: jQuery(e.target).find('a.button-select-template').attr('data-templateid') });
     },
 
     render: function render() {
@@ -40,7 +38,7 @@ var ViewConfig = _react2['default'].createClass({
             'div',
             null,
             _react2['default'].createElement(_adminViewDataSourceJsx2['default'], { key: 'ds' + this.state.form, form: this.state.form, onFormChange: this.handleFormChange }),
-            _react2['default'].createElement(_adminViewSelectTemplateJsx2['default'], { key: 'st' + this.state.template, template: this.state.template, onTemplateChange: this.handleTemplateChange })
+            _react2['default'].createElement(_adminViewSelectTemplateJsx2['default'], { key: 'st' + this.state.template, template: this.state.template, onTemplateClick: this.handleTemplateChange })
         );
     }
 
@@ -147,7 +145,7 @@ var DataSource = _react2['default'].createClass({
             var formSelectOptions = gravityview_view_settings.forms.map(function (form) {
                 return _react2['default'].createElement(
                     'option',
-                    { value: form.id },
+                    { key: form.id, value: form.id },
                     form.title
                 );
             });
@@ -168,7 +166,7 @@ var DataSource = _react2['default'].createClass({
 
         return _react2['default'].createElement(
             _partsMetaboxJsx2['default'],
-            { key: 'dataSource', mTitle: gravityview_i18n.mb_ds_title, mTitleLinks: this.state.formActionLinks },
+            { mTitle: gravityview_i18n.mb_ds_title, mTitleLinks: this.state.formActionLinks },
             _react2['default'].createElement(
                 'label',
                 null,
@@ -209,38 +207,51 @@ var _partsMetaboxJsx2 = _interopRequireDefault(_partsMetaboxJsx);
 var SelectTemplate = _react2['default'].createClass({
     displayName: 'SelectTemplate',
 
+    selectHandle: function selectHandle(e) {
+        console.log(e.target.getAttribute('data-templateid'));
+    },
+
     render: function render() {
 
-        var currentTemplate = this.props.template,
-            selectTemplateHandler = this.props.onTemplateChange;
+        var clickHandle = this.props.onTemplateClick,
+            currentTemplate = this.props.template;
 
-        var templatesList = gravityview_view_settings.templates.map(function (template) {
+        var templatesList = gravityview_view_settings.templates.map(function (template, i) {
 
             var classSelected = 'gv-view-types-module';
             classSelected += currentTemplate == template.id ? ' gv-selected' : '';
 
             var buyOrSelectLink = '',
-                previewLink = '';
+                previewLink = '',
+                linkClass = 'button-primary',
+                linkText = '';
+
             if (template.buy_source.length) {
+                linkClass += ' button-buy-now';
+                linkText = gravityview_i18n.mb_st_buy_button;
                 buyOrSelectLink = _react2['default'].createElement(
                     'p',
                     null,
                     _react2['default'].createElement(
                         'a',
-                        { href: template.buy_source, className: 'button-primary button-buy-now' },
-                        gravityview_i18n.mb_st_buy_button
+                        { href: template.buy_source, className: linkClass },
+                        linkText
                     )
                 );
             } else {
+                linkClass += ' button button-large button-select-template';
+                linkText = gravityview_i18n.mb_st_select_button;
+
                 buyOrSelectLink = _react2['default'].createElement(
                     'p',
                     null,
                     _react2['default'].createElement(
                         'a',
-                        { onClick: selectTemplateHandler, className: 'button button-large button-primary', 'data-templateid': template.id },
-                        gravityview_i18n.mb_st_select_button
+                        { 'data-templateid': template.id, className: linkClass },
+                        linkText
                     )
                 );
+
                 if (template.preview.length) {
                     previewLink = _react2['default'].createElement(
                         'a',
@@ -252,13 +263,13 @@ var SelectTemplate = _react2['default'].createClass({
 
             return _react2['default'].createElement(
                 'div',
-                { className: 'gv-grid-col-1-3' },
+                { key: template.id, className: 'gv-grid-col-1-3' },
                 _react2['default'].createElement(
                     'div',
                     { className: classSelected, 'data-filter': template.type },
                     _react2['default'].createElement(
                         'div',
-                        { className: 'gv-view-types-hover' },
+                        { className: 'gv-view-types-hover', onClick: clickHandle },
                         _react2['default'].createElement(
                             'div',
                             null,
@@ -287,7 +298,7 @@ var SelectTemplate = _react2['default'].createClass({
 
         return _react2['default'].createElement(
             _partsMetaboxJsx2['default'],
-            { key: 'selectTemplate', mTitle: gravityview_i18n.mb_st_title, mTitleLinks: false },
+            { mTitle: gravityview_i18n.mb_st_title, mTitleLinks: false },
             _react2['default'].createElement(
                 'div',
                 { className: 'gv-grid' },
@@ -321,10 +332,10 @@ var Metabox = _react2['default'].createClass({
         var actionLinks = '';
 
         if (this.props.mTitleLinks.length) {
-            actionLinks = this.props.mTitleLinks.map(function (action) {
+            actionLinks = this.props.mTitleLinks.map(function (action, i) {
                 return _react2['default'].createElement(
                     'span',
-                    null,
+                    { key: i },
                     _react2['default'].createElement(
                         'a',
                         { href: action.href, title: action.title },

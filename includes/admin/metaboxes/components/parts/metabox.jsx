@@ -7,9 +7,9 @@ var Metabox = React.createClass({
         var actionLinks = '';
 
         if( this.props.mTitleLinks.length ) {
-            actionLinks = this.props.mTitleLinks.map( function ( action ) {
+            actionLinks = this.props.mTitleLinks.map( function ( action, i ) {
                 return (
-                    <span><a href={action.href} title={action.title}>{action.label}</a></span>
+                    <span key={i}><a href={action.href} title={action.title}>{action.label}</a></span>
                 );
             });
 

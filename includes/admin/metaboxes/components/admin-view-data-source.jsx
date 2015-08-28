@@ -68,7 +68,7 @@ var DataSource = React.createClass({
         if( gravityview_view_settings.forms.length > 0 ) {
             var formSelectOptions = gravityview_view_settings.forms.map( function ( form ) {
                 return (
-                    <option value={form.id}>{form.title}</option>
+                    <option key={form.id} value={form.id}>{form.title}</option>
                 );
             });
 
@@ -81,7 +81,7 @@ var DataSource = React.createClass({
         }
 
         return(
-            <Metabox key="dataSource" mTitle={gravityview_i18n.mb_ds_title} mTitleLinks={this.state.formActionLinks}>
+            <Metabox mTitle={gravityview_i18n.mb_ds_title} mTitleLinks={this.state.formActionLinks}>
                 <label>{gravityview_i18n.mb_ds_subtitle}</label>
                 <p>
                     {startFreshButton}
