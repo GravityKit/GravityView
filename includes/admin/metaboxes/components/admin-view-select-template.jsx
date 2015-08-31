@@ -4,11 +4,6 @@ import Metabox from './parts/metabox.jsx';
 
 var SelectTemplate = React.createClass({
 
-    selectHandle: function(e) {
-        console.log( e.target.getAttribute('data-templateid') );
-
-    },
-
     render: function () {
 
         var clickHandle = this.props.onTemplateClick,
@@ -32,11 +27,11 @@ var SelectTemplate = React.createClass({
                 );
 
             } else {
-                linkClass += ' button button-large button-select-template';
+                linkClass += ' button button-large';
                 linkText = gravityview_i18n.mb_st_select_button;
 
                 buyOrSelectLink = (
-                    <p><a data-templateid={template.id} className={linkClass}>{linkText}</a></p>
+                    <p><a className={linkClass}>{linkText}</a></p>
                 );
 
                 if ( template.preview.length ) {
@@ -48,7 +43,7 @@ var SelectTemplate = React.createClass({
 
             return (
                 <div key={template.id} className="gv-grid-col-1-3">
-                    <div className={classSelected} data-filter={template.type}>
+                    <div className={classSelected} data-filter={template.type} data-templateid={template.id}>
                         <div className="gv-view-types-hover" onClick={clickHandle} >
                             <div>
                                 {buyOrSelectLink}

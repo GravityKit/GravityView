@@ -17,7 +17,8 @@ var ViewConfig = React.createClass({
     },
 
     handleTemplateChange: function(e) {
-        this.setState({ template: jQuery( e.target ).find('a.button-select-template').attr('data-templateid') });
+        e.preventDefault();
+        this.setState({ template: jQuery( e.target ).parents('.gv-view-types-module').attr('data-templateid') });
     },
 
     render: function() {

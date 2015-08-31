@@ -30,7 +30,8 @@ var ViewConfig = _react2['default'].createClass({
     },
 
     handleTemplateChange: function handleTemplateChange(e) {
-        this.setState({ template: jQuery(e.target).find('a.button-select-template').attr('data-templateid') });
+        e.preventDefault();
+        this.setState({ template: jQuery(e.target).parents('.gv-view-types-module').attr('data-templateid') });
     },
 
     render: function render() {
@@ -207,10 +208,6 @@ var _partsMetaboxJsx2 = _interopRequireDefault(_partsMetaboxJsx);
 var SelectTemplate = _react2['default'].createClass({
     displayName: 'SelectTemplate',
 
-    selectHandle: function selectHandle(e) {
-        console.log(e.target.getAttribute('data-templateid'));
-    },
-
     render: function render() {
 
         var clickHandle = this.props.onTemplateClick,
@@ -239,7 +236,7 @@ var SelectTemplate = _react2['default'].createClass({
                     )
                 );
             } else {
-                linkClass += ' button button-large button-select-template';
+                linkClass += ' button button-large';
                 linkText = gravityview_i18n.mb_st_select_button;
 
                 buyOrSelectLink = _react2['default'].createElement(
@@ -247,7 +244,7 @@ var SelectTemplate = _react2['default'].createClass({
                     null,
                     _react2['default'].createElement(
                         'a',
-                        { 'data-templateid': template.id, className: linkClass },
+                        { className: linkClass },
                         linkText
                     )
                 );
@@ -266,7 +263,7 @@ var SelectTemplate = _react2['default'].createClass({
                 { key: template.id, className: 'gv-grid-col-1-3' },
                 _react2['default'].createElement(
                     'div',
-                    { className: classSelected, 'data-filter': template.type },
+                    { className: classSelected, 'data-filter': template.type, 'data-templateid': template.id },
                     _react2['default'].createElement(
                         'div',
                         { className: 'gv-view-types-hover', onClick: clickHandle },
