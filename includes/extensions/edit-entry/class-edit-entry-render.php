@@ -642,7 +642,7 @@ class GravityView_Edit_Entry_Render {
      */
     public function render_form_buttons() {
         ob_start();
-        include_once( GravityView_Edit_Entry::$file .'/partials/form-buttons.php');
+        include( GravityView_Edit_Entry::$file .'/partials/form-buttons.php');
         return ob_get_clean();
     }
 
