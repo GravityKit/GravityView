@@ -1255,12 +1255,18 @@ class GVCommon {
 	 */
 	public static function get_users( $context = 'change_entry_creator' ) {
 
+		$get_users_settings = array(
+			'number' => 750,
+			'orderby' => 'display_name',
+			'order' => 'ASC'
+		);
+
 		/**
 		 * @filter `gravityview/get_users/{$context}` There are issues with too many users using [get_users()](http://codex.wordpress.org/Function_Reference/get_users) where it breaks the select. We try to keep it at a reasonable number. \n
 		 * `$context` is where are we using this information (e.g. change_entry_creator, search_widget ..)
 		 * @param array $settings Settings array, with `number` key defining the # of users to display
 		 */
-		$get_users_settings = apply_filters( 'gravityview/get_users/'. $context, apply_filters( 'gravityview_change_entry_creator_user_parameters', array( 'number' => 750 ) ) );
+		$get_users_settings = apply_filters( 'gravityview/get_users/'. $context, apply_filters( 'gravityview_change_entry_creator_user_parameters', $get_users_settings ) );
 
 		return get_users( $get_users_settings );
 	}
