@@ -486,11 +486,26 @@ class GVCommon {
 
 		if ( is_null( $return ) && class_exists( 'GFAPI' ) && ( is_numeric( $form_ids ) || is_array( $form_ids ) ) ) {
 
-			$entries = GFAPI::get_entries( $form_ids, $criteria['search_criteria'], $criteria['sorting'], $criteria['paging'], $total );
+			/**
+			 * @filter `gravityview_pre_get_entries` Define entries to be used before GFAPI::get_entries() is called
+			 * @since 1.13.2
+			 * @param  null $return If you want to override GFAPI::get_entries() and define entries yourself, tap in here.
+			 * @param  array $criteria The final search criteria used to generate the request to `GFAPI::get_entries()`
+			 * @param array $passed_criteria The original search criteria passed to `GVCommon::get_entries()`
+			 * @param  int|null $total Optional. An output parameter containing the total number of entries. Pass a non-null value to generate
+			 */
+			$entries = apply_filters( 'gravityview_before_get_entries', null, $criteria, $passed_criteria, $total );
 
-			if ( is_wp_error( $entries ) ) {
-				do_action( 'gravityview_log_error', $entries->get_error_message(), $entries );
-				return false;
+			// No entries returned from gravityview_before_get_entries
+			if( is_null( $entries ) ) {
+
+				$entries = GFAPI::get_entries( $form_ids, $criteria['search_criteria'], $criteria['sorting'], $criteria['paging'], $total );
+
+				if ( is_wp_error( $entries ) ) {
+					do_action( 'gravityview_log_error', $entries->get_error_message(), $entries );
+
+					return false;
+				}
 			}
 
 			if ( ! empty( $criteria['cache'] ) && isset( $Cache ) ) {
