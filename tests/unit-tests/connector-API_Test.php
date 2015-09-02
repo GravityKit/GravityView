@@ -101,15 +101,12 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 	/**
 	 * @uses GravityView_API_Test::_override_no_entries_text_output()
 	 * @covers GravityView_API::no_results()
-	 * @todo  fix this test
 	 */
 	public function test_no_results() {
 
-		$this->markTestIncomplete('This test has issues.');
-
 		global $gravityview_view;
 
-		$gravityview_view = new StdClass();
+		$gravityview_view = GravityView_View::getInstance();
 
 		$gravityview_view->curr_start = false;
 		$gravityview_view->curr_end = false;
