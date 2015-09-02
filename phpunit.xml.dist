@@ -9,7 +9,7 @@
 	verbose="true"
 	>
 	<testsuites>
-		<testsuite name="WooCommerce Test Suite">
+		<testsuite name="GravityView Test Suite">
 			<directory suffix=".php">./tests/unit-tests</directory>
 		</testsuite>
 	</testsuites>

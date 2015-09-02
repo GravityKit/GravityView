@@ -40,9 +40,6 @@ class GV_Unit_Tests_Bootstrap {
 		// load the WP testing environment
 		require_once( $this->wp_tests_dir . '/includes/bootstrap.php' );
 
-		// set up Gravity Forms database
-		GFForms::setup( true );
-
 		// set up Gravity View
 		$this->install();
 
@@ -58,6 +55,9 @@ class GV_Unit_Tests_Bootstrap {
 	public function load() {
 		require_once $this->plugin_dir . '/tmp/gravityforms/gravityforms.php';
 		require_once $this->plugin_dir . '/gravityview.php';
+
+		// set up Gravity Forms database
+		GFForms::setup( true );
 	}
 
 	/**
