@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/katzwebservices/GravityView.svg?branch=develop)](https://travis-ci.org/katzwebservices/GravityView)
+
 <img src="https://gravityview.co/wp-content/themes/gravityview/images/GravityView-262x80@2x.png" width="262" height="80" alt="GravityView (Floaty loves you!)" />
 
 [GravityView](https://gravityview.co/?utm_source=github&utm_medium=readme&utm_campaign=readme) is a commercial plugin available from [https://gravityview.co](http://gravityview.co?utm_source=github&utm_medium=readme&utm_campaign=readme). The plugin is hosted here on a public Github repository in order to better faciliate community contributions from developers and users. If you have a suggestion, a bug report, or a patch for an issue, feel free to submit it here.
@@ -23,6 +25,8 @@ This will create a `gravityview.zip` file in the directory above the cloned Grav
 
 
 #### Run Unit Tests
+
+Current code coverage: [![Coverage Status](https://coveralls.io/repos/katzwebservices/GravityView/badge.svg?branch=develop&service=github)](https://coveralls.io/github/katzwebservices/GravityView?branch=develop)
 
 The plugin uses PHPUnit as part of development process. Installing the testing environment is best done using a flavor of Vagrant (try [Varying Vagrant Vagrants](https://github.com/Varying-Vagrant-Vagrants/VVV)).
 
