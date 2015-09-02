@@ -27,7 +27,7 @@ This will create a `gravityview.zip` file in the directory above the cloned Grav
 The plugin uses PHPUnit as part of development process. Installing the testing environment is best done using a flavor of Vagrant (try [Varying Vagrant Vagrants](https://github.com/Varying-Vagrant-Vagrants/VVV)).
 
 1. From your terminal SSH into your Vagrant box using the `vagrant ssh` command
-2. `cd` into the root of your Gravity View directory
+2. `cd` into the root of your GravityView directory (VVV users can use `cd /srv/www/wordpress-default/wp-content/plugins/gravityview/`)
 3. Run `bash tests/bin/install.sh gravityview_test root root localhost` where `root root` is substituted for your mysql username and password (VVV users can run the command as is).
 4. Upon success you can run `phpunit`
 
