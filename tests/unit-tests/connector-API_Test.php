@@ -174,6 +174,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 
 	public function test_directory_link( ) {
 
+	public function test_directory_link( ) {
 		$post_array = array(
 			'post_content' => 'asdasdsd',
 			'post_type' => 'post',
@@ -205,19 +206,15 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 
 		GravityView_frontend::getInstance()->parse_content();
 
-
-		$gravityview_view->view_id = $view_post_type_id;
-
+		$gravityview_view->setViewId( $view_post_type_id );
 
 		// Test post_id has been set
-		$gravityview_view->post_id = $post_id;
-
-		$this->markTestIncomplete('This test has issues.');
+		$gravityview_view->setPostId( $post_id );
 
 		/* TODO - fix this assertion */
-		//$this->assertEquals( site_url( '?p=' . $post_id . '&pagenum=2' ), GravityView_API::directory_link() );
+		$this->assertEquals( site_url( '?p=' . $post_id . '&pagenum=2' ), GravityView_API::directory_link() );
 
-		$gravityview_view->post_id = $post_id;
+		$gravityview_view->setPostId( $post_id );
 
 		//
 		// TESTING AJAX
