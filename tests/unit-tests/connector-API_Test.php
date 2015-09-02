@@ -3,30 +3,43 @@
 class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 
 	/**
+	 * @var int
+	 */
+	var $form_id = 0;
+
+	/**
+	 * @var array GF Form array
+	 */
+	var $form = array();
+
+	/**
+	 * @var int
+	 */
+	var $entry_id = 0;
+
+	/**
+	 * @var array GF Entry array
+	 */
+	var $entry = array();
+
+	var $is_set_up = false;
+
+	function setUp() {
+		$this->form = GV_Unit_Tests_Bootstrap::instance()->get_form();
+		$this->form_id = GV_Unit_Tests_Bootstrap::instance()->get_form_id();
+
+		$this->entry = GV_Unit_Tests_Bootstrap::instance()->get_entry();
+		$this->entry_id = GV_Unit_Tests_Bootstrap::instance()->get_entry_id();
+	}
+
+	/**
 	 * @covers GravityView_API::replace_variables()
 	 */
 	public function test_replace_variables() {
 
-		$entry = array(
-			'id' => 5384,
-			'form_id' => 123,
-			'ip' => '127.0.0.1',
-			'source_url' => 'http://example.com/wordpress/?gf_page=preview&id=16',
-			'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.78.2 (KHTML, like Gecko) Version/7.0.6 Safari/537.78.2',
-			'payment_status' => 'Processing',
-			'payment_date' => '2014-08-29 20:55:06',
-			'payment_amount' => '0.01',
-			'transaction_id' => 'asdfpaoj442gpoagfadf',
-			'created_by' => 1,
-			'post_id' => 18,
-			'status' => 'active',
-			'date_created' => '2014-08-29 18:25:39',
-		);
+		$entry = GV_Unit_Tests_Bootstrap::instance()->get_entry();
 
-		$form = array(
-			'id' => 123,
-			'title' => 'This is the form title',
-		);
+		$form = GV_Unit_Tests_Bootstrap::instance()->get_form();
 
 		// No match
 		$this->assertEquals( 'no bracket', GravityView_API::replace_variables( 'no bracket', $form, $entry ) );
@@ -63,38 +76,14 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 	 */
 	public function test_field_class() {
 
-		$entry = array(
-			'id' => 5384,
-			'form_id' => 123,
-			'ip' => '127.0.0.1',
-			'source_url' => 'http://example.com/wordpress/?gf_page=preview&id=16',
-			'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.78.2 (KHTML, like Gecko) Version/7.0.6 Safari/537.78.2',
-			'payment_status' => 'Processing',
-			'payment_date' => '2014-08-29 20:55:06',
-			'payment_amount' => '0.01',
-			'transaction_id' => 'asdfpaoj442gpoagfadf',
-			'created_by' => 1,
-			'post_id' => 18,
-			'status' => 'active',
-			'date_created' => '2014-08-29 18:25:39',
-		);
+		$entry = $this->entry;
 
-		$form = array(
-			'id' => 123,
-			'title' => 'This is the form title',
-		);
+		$form = $this->form;
 
-		$field = array(
-			'id' => '8',
-		);
+		$field = GFFormsModel::get_field( $form, '2');
 
 		$this->assertEquals( 'gv-field-123-8', GravityView_API::field_class( $field, $form, $entry ) );
 
-
-		$field = array(
-			'id' => '8',
-			'custom_class' => 'custom-class-{entry_id}',
-		);
 
 		// Test the replace_variables functionality
 		$this->assertEquals( 'custom-class-5384 gv-field-123-8', GravityView_API::field_class( $field, $form, $entry ) );
@@ -171,7 +160,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 		$view_post_type_id = wp_insert_post( $view_array );
 
 		// Set the form ID
-		update_post_meta( $view_post_type_id, '_gravityview_form_id', 123 );
+		update_post_meta( $view_post_type_id, '_gravityview_form_id', $this->form_id );
 
 		// Set the View settigns
 		update_post_meta( $view_post_type_id, '_gravityview_template_settings', GravityView_View_Data::get_default_args() );

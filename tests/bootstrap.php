@@ -19,6 +19,26 @@ class GV_Unit_Tests_Bootstrap {
 	public $plugin_dir;
 
 	/**
+	 * @var int
+	 */
+	private $form_id = 0;
+
+	/**
+	 * @var array GF Form array
+	 */
+	private $form = array();
+
+	/**
+	 * @var int
+	 */
+	private $entry_id = 0;
+
+	/**
+	 * @var array GF Entry array
+	 */
+	private $entry = array();
+
+	/**
 	 * Setup the unit testing environment
 	 *
 	 * @since 1.9
@@ -58,6 +78,90 @@ class GV_Unit_Tests_Bootstrap {
 
 		// set up Gravity Forms database
 		GFForms::setup( true );
+
+		$this->create_stubs();
+	}
+
+	/**
+	 * @return array
+	 */
+	public function get_form() {
+		return $this->form;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function get_entry() {
+		return $this->entry;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function get_entry_id() {
+		return $this->entry_id;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function get_form_id() {
+		return $this->form_id;
+	}
+
+	/**
+	 * Generate some placeholder values to test against
+	 */
+	private function create_stubs() {
+
+		$this->form_id = GFAPI::add_form( array(
+			'title' => 'This is the form title',
+			'fields' => array(
+				new GF_Field_Text(array(
+					'id' => 1,
+					'label' => 'Label for field one (text)',
+					'choices' => array(),
+					'inputs' => '',
+				)),
+				new GF_Field_Hidden(array(
+					'id' => 2,
+					'label' => 'Label for field two (hidden)',
+					'choices' => array(),
+					'inputs' => '',
+				)),
+				new GF_Field_Number(array(
+					'id' => 3,
+					'label' => 'Label for field three (number)',
+					'choices' => array(),
+					'inputs' => '',
+				))
+			),
+		));
+
+		$this->form = GFAPI::get_form( $this->form_id );
+
+		$entry_array = array(
+			'form_id' => $this->form_id,
+			'1' => 'Value for field one',
+			'2' => 'Value for field two',
+			'3' => '3.33333',
+			'ip' => '127.0.0.1',
+			'source_url' => 'http://example.com/wordpress/?gf_page=preview&id=16',
+			'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.78.2 (KHTML, like Gecko) Version/7.0.6 Safari/537.78.2',
+			'payment_status' => 'Processing',
+			'payment_date' => '2014-08-29 20:55:06',
+			'payment_amount' => '0.01',
+			'transaction_id' => 'asdfpaoj442gpoagfadf',
+			'created_by' => 1,
+			'status' => 'active',
+			'date_created' => '2014-08-29 18:25:39',
+		);
+
+		$this->entry_id = GFAPI::add_entry( $entry_array );
+
+		$this->entry = GFAPI::get_entry( $this->entry_id );
+
 	}
 
 	/**
