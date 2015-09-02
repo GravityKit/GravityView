@@ -45,7 +45,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'no bracket', GravityView_API::replace_variables( 'no bracket', $form, $entry ) );
 
 		// Include bracket with nomatch
-		$this->assertEquals( '5384 {nomatch}', GravityView_API::replace_variables( '{entry_id} {nomatch}', $form, $entry ) );
+		$this->assertEquals( $entry['id'] . ' {nomatch}', GravityView_API::replace_variables( '{entry_id} {nomatch}', $form, $entry ) );
 
 		// Match tag, empty value
 		$this->assertEquals( '', GravityView_API::replace_variables( '{user:example}', $form, $entry ) );
@@ -66,7 +66,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( get_option( 'admin_email' ), GravityView_API::replace_variables( '{admin_email}', $form, $entry ) );
 
 		$var_content = '<p>I expect <strong>Entry #{entry_id}</strong> will be in Form #{form_id}</p>';
-		$expected_content = '<p>I expect <strong>Entry #5384</strong> will be in Form #123</p>';
+		$expected_content = '<p>I expect <strong>Entry #'.$entry['id'].'</strong> will be in Form #'.$form['id'].'</p>';
 		$this->assertEquals( $expected_content, GravityView_API::replace_variables( $var_content, $form, $entry ) );
 
 	}
@@ -80,18 +80,21 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 
 		$form = $this->form;
 
-		$field = GFFormsModel::get_field( $form, '2');
+		$field_id = 2;
 
-		$this->assertEquals( 'gv-field-123-8', GravityView_API::field_class( $field, $form, $entry ) );
+		$field = GFFormsModel::get_field( $form, $field_id);
 
+		$this->assertEquals( 'gv-field-'.$form['id'].'-'.$field_id, GravityView_API::field_class( $field, $form, $entry ) );
+
+		$field['custom_class'] = 'custom-class-{entry_id}';
 
 		// Test the replace_variables functionality
-		$this->assertEquals( 'custom-class-5384 gv-field-123-8', GravityView_API::field_class( $field, $form, $entry ) );
+		$this->assertEquals( 'custom-class-'.$entry['id'].' gv-field-'.$form['id'].'-'.$field_id, GravityView_API::field_class( $field, $form, $entry ) );
 
 		$field['custom_class'] = 'testing,!@@($)*$ 12383';
 
 		// Test the replace_variables functionality
-		$this->assertEquals( 'testing 12383 gv-field-123-8', GravityView_API::field_class( $field, $form, $entry ) );
+		$this->assertEquals( 'testing 12383 gv-field-'.$form['id'].'-'.$field_id, GravityView_API::field_class( $field, $form, $entry ) );
 
 	}
 
