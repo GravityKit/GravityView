@@ -22,7 +22,4 @@
 			<directory suffix=".php">./tmp/</directory>
 		</blacklist>
 	</filter>
-	<logging>
-		<log type="coverage-html" target="./tmp/coverage" charset="UTF-8" />
-	</logging>
 </phpunit>
