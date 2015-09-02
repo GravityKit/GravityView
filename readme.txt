@@ -20,8 +20,6 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-* Added: Filter to disable live chat widget (`gravityview/admin/display_live_chat`)
-
 = 1.13.1 on August 26 =
 * Fixed: Potential XSS security issue. **Please update.**
 * Fixed: The cache was not being reset properly for entry changes, including:
