@@ -165,6 +165,9 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 		// Set the View settigns
 		update_post_meta( $view_post_type_id, '_gravityview_template_settings', GravityView_View_Data::get_default_args() );
 
+		// Set the template to be table
+		update_post_meta( $view_post_type_id, '_gravityview_directory_template', 'default_table' );
+
 		return $view_post_type_id;
 
 	}
