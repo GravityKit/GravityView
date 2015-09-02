@@ -86,3 +86,7 @@ body .ui-tooltip {
     border-color: #999 transparent;
     border-width: 10px 10px 0;
 }
+
+.gv-dialog .ui-dialog-titlebar-close:before {
+    content: '';
+}
