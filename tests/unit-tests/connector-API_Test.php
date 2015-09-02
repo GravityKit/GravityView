@@ -172,7 +172,48 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 
 	}
 
-	public function test_directory_link( ) {
+	/**
+	 * @internal Make sure this test is above the test_directory_link() test so that one doesn't pollute $post
+	 */
+	public function test_gravityview_get_current_views() {
+
+		$fe = GravityView_frontend::getInstance();
+
+		// Clear the data so that gravityview_get_current_views() runs parse_content()
+		$fe->gv_output_data = null;
+
+		$view_post_type_id = $this->_get_new_view_id();
+
+		global $post;
+
+		$post = get_post( $view_post_type_id );
+
+		$this->assertEquals( $view_post_type_id, $post->ID );
+
+		$current_views = gravityview_get_current_views();
+
+		// Check if the view post is set
+		$this->assertTrue( isset( $current_views[ $view_post_type_id ] ) );
+
+		// When the view is added, the key is set to the View ID and the `id` is also set to that
+		$this->assertEquals( $view_post_type_id, $current_views[ $view_post_type_id ]['id'] );
+
+		// Just one View
+		$this->assertEquals( 1, count( $current_views ) );
+
+		$second_view_post_type_id = $this->_get_new_view_id();
+
+		$fe->gv_output_data->add_view( $second_view_post_type_id );
+
+		$second_current_views = gravityview_get_current_views();
+
+		// Check to make sure add_view worked properly
+		$this->assertEquals( $second_view_post_type_id, $second_current_views[ $second_view_post_type_id ]['id'] );
+
+		// Now two Views
+		$this->assertEquals( 2, count( $second_current_views ) );
+
+	}
 
 	public function test_directory_link( ) {
 		$post_array = array(
@@ -227,46 +268,6 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 		$_POST['post_id'] = $post_id;
 		// No passed post_id; use $_POST when DOING_AJAX is set
 		$this->assertEquals( site_url( '?p=' . $post_id . '&pagenum=2' ), GravityView_API::directory_link() );
-
-	}
-
-	/* TODO Fix this test */
-	public function test_gravityview_get_current_views() {
-		global $post;
-
-		$this->markTestIncomplete('This test has issues.');
-
-		$fe = GravityView_frontend::getInstance();
-
-		// Clear the data so that gravityview_get_current_views() runs parse_content()
-		$fe->gv_output_data = null;
-
-		$view_post_type_id = $this->_get_new_view_id();
-		$post = get_post( $view_post_type_id );
-
-		$current_views = gravityview_get_current_views();
-
-		// Check if the view post is set
-		
-		$this->assertTrue( isset( $current_views[ $view_post_type_id ] ) );
-
-		// When the view is added, the key is set to the View ID and the `id` is also set to that
-		$this->assertEquals( $view_post_type_id, $current_views[ $view_post_type_id ]['id'] );
-
-		// Just one View
-		$this->assertEquals( 1, count( $current_views ) );
-
-		$second_view_post_type_id = $this->_get_new_view_id();
-
-		$fe->gv_output_data->add_view( $second_view_post_type_id );
-
-		$second_current_views = gravityview_get_current_views();
-
-		// Check to make sure add_view worked properly
-		$this->assertEquals( $second_view_post_type_id, $second_current_views[ $second_view_post_type_id ]['id'] );
-
-		// Now two Views
-		$this->assertEquals( 2, count( $second_current_views ) );
 
 	}
 
