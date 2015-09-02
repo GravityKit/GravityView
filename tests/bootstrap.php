@@ -77,7 +77,7 @@ class GV_Unit_Tests_Bootstrap {
 		require_once $this->plugin_dir . '/gravityview.php';
 
 		// set up Gravity Forms database
-		GFForms::setup( true );
+		@GFForms::setup( true );
 
 		$this->create_stubs();
 	}
