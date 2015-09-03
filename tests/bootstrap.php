@@ -62,9 +62,6 @@ class GV_Unit_Tests_Bootstrap {
 
 		// set up Gravity View
 		$this->install();
-
-		// clean up Gravity Forms database when finished
-		register_shutdown_function( array( $this, 'shutdown') );
 	}
 
 	/**
@@ -175,15 +172,6 @@ class GV_Unit_Tests_Bootstrap {
 	}
 
 	/**
-	 * Run clean up when PHP finishes executing
-	 *
-	 * @since 1.9
-	 */
-	public function shutdown() {
-		RGFormsModel::drop_tables();
-	}
-
-	/**
 	 * Get the single class instance
 	 *
 	 * @since 1.9
@@ -201,3 +189,11 @@ class GV_Unit_Tests_Bootstrap {
 
 GV_Unit_Tests_Bootstrap::instance();
 
+
+/* Clean up the GF Database when we're done */
+register_shutdown_function( 'gravityview_shutdown' );
+
+/* Shutdown function wasn't working when referenced via array( $this, 'shutdown' ) from the object */
+function gravityview_shutdown() {
+	RGFormsModel::drop_tables();
+}

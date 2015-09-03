@@ -25,6 +25,14 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 	var $is_set_up = false;
 
 	function setUp() {
+		parent::setUp();
+
+        /* Remove temporary tables which causes problems with GF */
+        remove_all_filters( 'query', 10 );
+
+        /* Ensure the database is correctly set up */
+        @GFForms::setup_database();
+
 		$this->form = GV_Unit_Tests_Bootstrap::instance()->get_form();
 		$this->form_id = GV_Unit_Tests_Bootstrap::instance()->get_form_id();
 
