@@ -62,9 +62,6 @@ class GV_Unit_Tests_Bootstrap {
 
 		// set up Gravity View
 		$this->install();
-
-		// clean up Gravity Forms database when finished
-		register_shutdown_function( array( $this, 'shutdown') );
 	}
 
 	/**
@@ -172,15 +169,6 @@ class GV_Unit_Tests_Bootstrap {
 	public function install() {
 		$GV = GravityView_Plugin::getInstance();
 		$GV->frontend_actions();
-	}
-
-	/**
-	 * Run clean up when PHP finishes executing
-	 *
-	 * @since 1.9
-	 */
-	public function shutdown() {
-		RGFormsModel::drop_tables();
 	}
 
 	/**
