@@ -204,6 +204,22 @@ function gravityview_get_template_setting( $post_id, $key ) {
 }
 
 /**
+ * Get all available preset templates
+ * @since 1.13.2
+ * @return array Templates
+ */
+function gravityview_get_registered_templates() {
+
+	/**
+	 * @filter `gravityview_register_directory_template` Fetch available View templates
+	 * @param array $templates Templates to show
+	 */
+	$templates = apply_filters( 'gravityview_register_directory_template', array() );
+
+	return $templates;
+}
+
+/**
  * Get the field configuration for the View
  *
  * array(
