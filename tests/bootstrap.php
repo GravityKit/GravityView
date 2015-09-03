@@ -195,5 +195,5 @@ register_shutdown_function( 'gravityview_shutdown' );
 
 /* Shutdown function wasn't working when referenced via array( $this, 'shutdown' ) from the object */
 function gravityview_shutdown() {
-	@RGFormsModel::drop_tables();
+	RGFormsModel::drop_tables();
 }
