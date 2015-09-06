@@ -477,6 +477,7 @@ class GravityView_Settings extends GFAddOn {
 			'license_key_status' => '',
 			'support-email' => get_bloginfo( 'admin_email' ),
 			'no-conflict-mode' => '0',
+			'delete-on-uninstall' => '0',
 		);
 
 		return $defaults;
@@ -569,6 +570,24 @@ class GravityView_Settings extends GFAddOn {
 					),
 				),
 				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ),
+			),
+			array(
+				'name'       => 'delete-on-uninstall',
+				'type'       => 'radio',
+				'label'      => __( 'Remove Data on Uninstall?', 'gravityview' ),
+				'default_value'    => $default_settings['delete-on-uninstall'],
+				'horizontal' => 1,
+				'choices'    => array(
+					array(
+						'label' => _x('On', 'Setting: On or off', 'gravityview'),
+						'value' => '1'
+					),
+					array(
+						'label' => _x('Off', 'Setting: On or off', 'gravityview'),
+						'value' => '0',
+					),
+				),
+				'description'   => __( 'Enable if you want GravityView to delete all of its data when the plugin is deleted.', 'gravityview' ),
 			),
 
 		) );

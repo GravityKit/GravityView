@@ -65,6 +65,21 @@ class GravityView_Roles {
 	}
 
 	/**
+	 * Remove roles
+	 *
+	 * @access public
+	 * @since 1.4.4
+	 * @return void
+	 */
+	public function remove_roles() {
+		global $wp_roles;
+		/*$gravityview_roles = array( '' );
+		foreach ( $gravityview_roles as $role ) {
+			remove_role( $role );
+		}*/
+	}
+
+	/**
 	 * Add new shop-specific capabilities
 	 *
 	 * @access public
