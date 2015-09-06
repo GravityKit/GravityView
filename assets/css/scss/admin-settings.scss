@@ -3,8 +3,9 @@
 /**
  * Modify the GFAddon App Settings page
  */
-.admin_page_gravityview_settings,
-.gravityview_page_gravityview_settings {
+.gravityview_page_gravityview_settings, // Network Admin
+.toplevel_page_gravityview_settings // Single site admin
+{
 
   .gform_tab_content > h3 {
     position: absolute;

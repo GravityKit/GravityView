@@ -1,7 +1,6 @@
 <?php
 /**
- *
- *
+ * @file class-admin-approve-entries.php
  * @package   GravityView
  * @license   GPL2+
  * @author    Katz Web Services, Inc.
@@ -171,29 +170,35 @@ class GravityView_Admin_ApproveEntries {
 	 *
 	 * @uses  GravityView_frontend::get_search_criteria() Convert the $_POST search request into a properly formatted request.
 	 * @access public
-	 * @return void
+	 * @return void|boolean
 	 */
 	public function process_bulk_action() {
-		if( !class_exists( 'RGForms' ) ) {
+		if ( ! class_exists( 'RGForms' ) ) {
 			return;
 		}
 
-		if( RGForms::post('action') === 'bulk' ) {
+		if ( 'bulk' === RGForms::post( 'action' ) ) {
 
-			check_admin_referer('gforms_entry_list', 'gforms_entry_list');
+			check_admin_referer( 'gforms_entry_list', 'gforms_entry_list' );
 
 			// The action is formatted like: approve-16 or disapprove-16, where the first word is the name of the action and the second is the ID of the form. Bulk action 2 is the bottom bulk action select form.
-			$bulk_action = !empty( $_POST['bulk_action'] ) ? $_POST['bulk_action'] : $_POST['bulk_action2'];
+			$bulk_action = ! empty( $_POST['bulk_action'] ) ? $_POST['bulk_action'] : $_POST['bulk_action2'];
+
+			/**
+			 * The extra '-' is to make sure that there are at *least* two items in array.
+			 * @see https://github.com/katzwebservices/GravityView/issues/370
+			 */
+			$bulk_action .= '-';
 
 			list( $approved_status, $form_id ) = explode( '-', $bulk_action );
 
-			if( empty( $form_id ) ) {
-				do_action('gravityview_log_error', '[process_bulk_action] Form ID is empty from parsing bulk action.', $bulk_action );
+			if ( empty( $form_id ) ) {
+				do_action( 'gravityview_log_error', '[process_bulk_action] Form ID is empty from parsing bulk action.', $bulk_action );
 				return false;
 			}
 
 			// All entries are set to be updated, not just the visible ones
-			if( !empty( $_POST['all_entries'] ) ) {
+			if ( ! empty( $_POST['all_entries'] ) ) {
 
 				// Convert the current entry search into GF-formatted search criteria
 				$search = array(
@@ -202,7 +207,7 @@ class GravityView_Admin_ApproveEntries {
 					'search_operator' => isset( $_POST['o'][0] ) ? $_POST['o'][0] : 'contains',
 				);
 
-				$search_criteria = GravityView_frontend::get_search_criteria( $search );
+				$search_criteria = GravityView_frontend::get_search_criteria( $search, $form_id );
 
 				// Get all the entry IDs for the form
 				$entries = gravityview_get_entry_ids( $form_id, $search_criteria );
@@ -213,22 +218,22 @@ class GravityView_Admin_ApproveEntries {
 
 			}
 
-			if( empty( $entries ) ) {
-				do_action('gravityview_log_error', '[process_bulk_action] Entries are empty');
+			if ( empty( $entries ) ) {
+				do_action( 'gravityview_log_error', '[process_bulk_action] Entries are empty' );
 				return false;
 			}
 
-			$entry_count = count( $entries ) > 1 ? sprintf(__("%d entries", 'gravityview' ), count( $entries ) ) : __( '1 entry', 'gravityview' );
+			$entry_count = count( $entries ) > 1 ? sprintf( __( '%d entries', 'gravityview' ), count( $entries ) ) : __( '1 entry', 'gravityview' );
 
-			switch( $approved_status ) {
+			switch ( $approved_status ) {
 				case 'approve':
 					self::update_bulk( $entries, 1, $form_id );
-					$this->bulk_update_message = sprintf( __( "%s approved.", 'gravityview' ), $entry_count );
+					$this->bulk_update_message = sprintf( __( '%s approved.', 'gravityview' ), $entry_count );
 					break;
 
 				case 'unapprove':
 					self::update_bulk( $entries, 0, $form_id );
-					$this->bulk_update_message = sprintf( __( "%s disapproved.", 'gravityview' ), $entry_count );
+					$this->bulk_update_message = sprintf( __( '%s disapproved.', 'gravityview' ), $entry_count );
 					break;
 			}
 		}
@@ -349,7 +354,7 @@ class GravityView_Admin_ApproveEntries {
 
 		$entry = GFAPI::get_entry( $entry_id );
 
-		self::update_approved_meta( $entry[ (string)$approvedcolumn ] );
+		self::update_approved_meta( $entry_id, $entry[ (string)$approvedcolumn ] );
 
 	}
 
@@ -357,10 +362,6 @@ class GravityView_Admin_ApproveEntries {
 	 * Update the `is_approved` entry meta value
 	 * @param  int $entry_id ID of the Gravity Forms entry
 	 * @param  string $is_approved String whether entry is approved or not. `0` for not approved, `Approved` for approved.
-	 *
-	 * @action gravityview/approve_entries/updated Triggered when an entry approval is updated {@added 1.7.6.1}
-	 * @action gravityview/approve_entries/approved Triggered when an entry is approved {@added 1.7.6.1}
-	 * @action gravityview/approve_entries/disapproved Triggered when an entry is rejected {@added 1.7.6.1}
 	 *
 	 * @since 1.7.6.1 `after_update_entry_update_approved_meta` was previously to be named `update_approved_meta`
 	 *
@@ -374,25 +375,28 @@ class GravityView_Admin_ApproveEntries {
 			gform_update_meta( $entry_id, 'is_approved', $is_approved );
 
 			/**
+			 * @action `gravityview/approve_entries/updated` Triggered when an entry approval is updated
+			 * @since 1.7.6.1
 			 * @param  int $entry_id ID of the Gravity Forms entry
 			 * @param  string $is_approved String whether entry is approved or not. `0` for not approved, `Approved` for approved.
-			 * @since 1.7.6.1
 			 */
 			do_action( 'gravityview/approve_entries/updated', $entry_id, $is_approved );
 
 			if( empty( $is_approved ) ) {
 
 				/**
-				 * @param  int $entry_id ID of the Gravity Forms entry
+				 * @action `gravityview/approve_entries/disapproved` Triggered when an entry is rejected
 				 * @since 1.7.6.1
+				 * @param  int $entry_id ID of the Gravity Forms entry
 				 */
 				do_action( 'gravityview/approve_entries/disapproved', $entry_id );
 
 			} else {
 
 				/**
-				 * @param  int $entry_id ID of the Gravity Forms entry
+				 * @action `gravityview/approve_entries/approved` Triggered when an entry is approved
 				 * @since 1.7.6.1
+				 * @param  int $entry_id ID of the Gravity Forms entry
 				 */
 				do_action( 'gravityview/approve_entries/approved', $entry_id );
 
@@ -541,9 +545,6 @@ class GravityView_Admin_ApproveEntries {
 	/**
 	 * Should the Approve/Reject Entry column be shown in the GF Entries page?
 	 *
-	 * @filter gravityview/approve_entries/hide-if-no-connections
-	 * @filter gravityview/approve_entries/show-column
-	 *
 	 * @since 1.7.2
 	 *
 	 * @param int $form_id The ID of the Gravity Forms form for which entries are being shown
@@ -555,7 +556,7 @@ class GravityView_Admin_ApproveEntries {
 		$show_approve_column = true;
 
 		/**
-		 * Return true to hide reject/approve if there are no connected Views
+		 * @filter `gravityview/approve_entries/hide-if-no-connections` Return true to hide reject/approve if there are no connected Views
 		 * @since 1.7.2
 		 * @param boolean $hide_if_no_connections
 		 */
@@ -571,7 +572,7 @@ class GravityView_Admin_ApproveEntries {
 		}
 
 		/**
-		 * Override whether the column is shown
+		 * @filter `gravityview/approve_entries/show-column` Override whether the column is shown
 		 * @param boolean $show_approve_column Whether the column will be shown
 		 * @param int $form_id The ID of the Gravity Forms form for which entries are being shown
 		 */

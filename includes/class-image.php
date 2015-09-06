@@ -49,8 +49,7 @@ class GravityView_Image {
 	}
 
 
-	function __construct($atts = array()) {
-		global $wp;
+	function __construct( $atts = array() ) {
 
 		$defaults = array(
 			'width' => $this->width,
@@ -64,13 +63,13 @@ class GravityView_Image {
 			'validate_src' => true
 		);
 
-		$atts = wp_parse_args($atts, $defaults);
+		$atts = wp_parse_args( $atts, $defaults );
 
-		foreach($atts as $key => $val) {
+		foreach( $atts as $key => $val ) {
 			$this->{$key} = $val;
 		}
 
-		$this->class = !empty($this->class) ? esc_attr(implode(' ', (array)$this->class)) : $this->class;
+		$this->class = !empty( $this->class ) ? esc_attr( implode( ' ', (array)$this->class ) ) : $this->class;
 
 		$this->set_image_size();
 
@@ -86,13 +85,17 @@ class GravityView_Image {
 	 */
 	function validate_image_src() {
 
-		if(!$this->validate_src) { return true; }
+		if ( !$this->validate_src ) { return true; }
 
-		$info = pathinfo($this->src);
+		$info = pathinfo( $this->src );
 
-		$image_exts = apply_filters('gravityview_image_extensions', array( 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico' ));
+		/**
+		 * @filter `gravityview_image_extensions` Extensions that GravityView recognizes as valid images to be shown in an `img` tag
+		 * @param array $image_exts Default: `['jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico']`
+		 */
+		$image_exts = apply_filters( 'gravityview_image_extensions', array( 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico' ));
 
-		return isset( $info['extension'] ) && in_array(strtolower( $info['extension'] ), $image_exts);
+		return isset( $info['extension'] ) && in_array( strtolower( $info['extension'] ), $image_exts);
 	}
 
 	/**
@@ -100,26 +103,30 @@ class GravityView_Image {
 	 *
 	 * @return void
 	 */
-	public function set_image_size($string = NULL, $width = NULL, $height = NULL) {
+	public function set_image_size( $string = NULL, $width = NULL, $height = NULL ) {
 
 
 		// If there is no width or height passed
-		if(empty($width) || empty($height)) {
+		if ( empty( $width ) || empty( $height ) ) {
 
 			// And there is no string size passed
 			// 		And we want to get the image size using PHP
-			if(empty($string) && !empty($this->getimagesize)) {
+			if ( empty( $string ) && !empty( $this->getimagesize ) ) {
 
-				$image_size = getimagesize($this->src);
+				$image_size = getimagesize( $this->src );
 
-				if(!empty($image_size)) {
-					list($width, $height) = $image_size;
+				if ( !empty( $image_size ) ) {
+					list( $width, $height ) = $image_size;
 				}
 
 			}
 			// Otherwise, we calculate based on the string size value
 			else {
 
+				/**
+				 * @filter `gravityview_image_sizes` Modify the image size presets used by GravityView_Image class
+				 * @param array $image_sizes Array of image sizes with the key being the size slug, and the value being an array with `width` and `height` defined, in pixels
+				 */
 				$image_sizes = apply_filters( 'gravityview_image_sizes', array(
 					'tiny' => array('width' => 40, 'height' => 30),
 					'small' => array('width' => 100, 'height' => 75),
@@ -127,7 +134,7 @@ class GravityView_Image {
 					'large' => array('width' => 448, 'height' => 336),
 				) );
 
-				switch($this->size) {
+				switch( $this->size ) {
 					case 'tiny':
 						extract($image_sizes['tiny']);
 						break;
@@ -146,8 +153,8 @@ class GravityView_Image {
 						break;
 					default:
 						// Verify that the passed sizes are integers.
-						$width = !empty($width) ? intval($width) : intval($this->width);
-						$height = !empty($height) ? intval($height) : intval($this->height);
+						$width = !empty( $width ) ? intval( $width ) : intval( $this->width );
+						$height = !empty( $height ) ? intval( $height ) : intval( $this->height );
 				}
 
 			}
@@ -160,25 +167,29 @@ class GravityView_Image {
 
 	/**
 	 * Return the HTML tag for the image
-	 *
-	 * @filter gravityview_image_html Filter output. Passes two args: the generated html and the GravityView_Image object
+	 * @return string HTML of the image
 	 */
 	public function html() {
 
-		if(!$this->validate_image_src()) {
+		if ( ! $this->validate_image_src() ) {
 			$html = '';
 		} else {
 			$atts = '';
-			foreach(array('width', 'height', 'alt', 'title', 'class') as $attr) {
+			foreach ( array( 'width', 'height', 'alt', 'title', 'class' ) as $attr ) {
 
-				if(empty($this->{$attr})) { continue; }
+				if ( empty( $this->{$attr} ) ) { continue; }
 
-				$atts .= sprintf('%s="%s"', $attr, esc_attr($this->{$attr}));
+				$atts .= sprintf( ' %s="%s"', $attr, esc_attr( $this->{$attr} ) );
 			}
 
-			$html = sprintf('<img src="%s" %s />', esc_url_raw( $this->src ), $atts);
+			$html = sprintf( '<img src="%s" %s />', esc_url_raw( $this->src ), $atts );
 		}
 
-		return apply_filters( 'gravityview_image_html', $html, $this);
+		/**
+		 * @filter `gravityview_image_html` Filter the HTML image output
+		 * @param string $html the generated image html
+		 * @param GravityView_Image $this The current image object
+		 */
+		return apply_filters( 'gravityview_image_html', $html, $this );
 	}
 }

@@ -39,35 +39,31 @@ class GravityView_Widget_Pagination_Info extends GravityView_Widget {
 			echo $widget_args['title'];
 		}
 
-		$offset = $gravityview_view->paging['offset'];
-		$page_size = $gravityview_view->paging['page_size'];
-		$total = $gravityview_view->total_entries;
+		$pagination_counts = $gravityview_view->getPaginationCounts();
 
-		if( empty( $total ) ) {
-			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: No entries.', get_class($this)) );
-			return;
-		}
+		$total = $first = $last = null;
 
-		// displaying info
-		if( $total == 0 ) {
-			$first = $last = 0;
-		} else {
-			$first = empty( $offset ) ? 1 : $offset + 1;
-			$last = $offset + $page_size > $total ? $total : $offset + $page_size;
+		$output = '';
+
+		if( ! empty( $pagination_counts ) ) {
+
+			$first = $pagination_counts['first'];
+			$last = $pagination_counts['last'];
+			$total = $pagination_counts['total'];
+
+			$class = !empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
+			$class = gravityview_sanitize_html_class( $class );
+
+			$output = '<div class="gv-widget-pagination '.$class.'"><p>'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravityview' ), number_format_i18n( $first ), number_format_i18n( $last ), number_format_i18n( $total ) ) . '</p></div>';
 		}
 
 		/**
-		 * Modify the displayed pagination numbers
-		 * @param array $counts Array with $first, $last, $total
-		 * @var array array with $first, $last, $total numbers in that order.
+		 * @filter `gravityview_pagination_output` Modify the pagination widget output
+		 * @param string $output HTML output
+		 * @param int $first First entry #
+		 * @param int $last Last entry #
+		 * @param int $total Total entries #
 		 */
-		list( $first, $last, $total ) = apply_filters( 'gravityview_pagination_counts', array( $first, $last, $total ) );
-
-		$class = !empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
-		$class = gravityview_sanitize_html_class( $class );
-
-		$output = '<div class="gv-widget-pagination '.$class.'"><p>'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravityview' ), $first , $last , $total ) . '</p></div>';
-
 		echo apply_filters( 'gravityview_pagination_output', $output, $first, $last, $total );
 
 	}

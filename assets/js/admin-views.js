@@ -9,6 +9,7 @@
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
+ *
  */
 
 
@@ -45,7 +46,7 @@
 				.on( 'click', 'a[href="#gv_start_fresh"]', vcfg.startFresh )
 
 				// when saving the View, try to create form before proceeding
-                .on( 'click', '#publish, #save-post', vcfg.processFormSubmit )
+				.on( 'click', '#publish, #save-post', vcfg.processFormSubmit )
 
 				// Hover overlay show/hide
 				.on( 'click', ".gv-view-types-hover", vcfg.selectTemplateHover )
@@ -183,8 +184,6 @@
 
 		/**
 		 * Select the text of an input field on click
-		 * @filter default text
-		 * @action default text
 		 * @param  {[type]}    e     [description]
 		 * @return {[type]}          [description]
 		 */
@@ -467,8 +466,6 @@
 
 				$label.text( $custom_label.val().trim() );
 
-			} else {
-
 				// If there's no custom title, then use the original
 				// @see GravityView_Admin_View_Item::getOutput()
 				$label.html( $label.attr( 'data-original-title' ) );
@@ -501,14 +498,34 @@
 				data.form_id = vcfg.gvSelectForm.val();
 			}
 
-			$.post( ajaxurl, data, function ( response ) {
-				if ( response !== 'false' && response !== '0' ) {
-					$( "#gravityview_sort_field" ).empty().append( response ).prop( 'disabled', null );
+			$.post(ajaxurl, data, function (response) {
+				if (response !== 'false' && response !== '0') {
+					$("#gravityview_sort_field").empty().append(response).prop('disabled', null);
 				}
-			} );
+			});
 
 		},
 
+		/**
+		 * Hide metaboxes related to view configuration.
+		 * @return {void}
+		 */
+		hideViewConfig: function () {
+			$( "#gravityview_view_config" ).slideUp( 150 );
+
+			$( document ).trigger( 'gv_admin_views_hideViewConfig' );
+		},
+
+		showViewConfig: function () {
+
+			$( '#gravityview_view_config' ).slideDown( 150 );
+
+			viewConfiguration.toggleDropMessage();
+			viewConfiguration.init_droppables();
+			viewConfiguration.init_tooltips();
+
+			$( document ).trigger( 'gv_admin_views_showViewConfig' );
+		},
 
 		switchView: function ( e ) {
 			e.preventDefault();
@@ -558,7 +575,6 @@
 				vcfg.showViewConfig();
 			}
 		},
-
 
 		selectTemplateContinue: function () {
 
@@ -699,27 +715,6 @@
 			} );
 
 
-		},
-
-		/**
-		 * Hide metaboxes related to view configuration.
-		 * @return {void}
-		 */
-		hideViewConfig: function () {
-			$( "#gravityview_view_config,#gravityview_sort_filter" ).slideUp( 150 );
-
-			$( document ).trigger( 'gv_admin_views_hideViewConfig' );
-		},
-
-		showViewConfig: function () {
-
-			$( "#gravityview_view_config, #gravityview_sort_filter" ).slideDown( 150 );
-
-			viewConfiguration.toggleDropMessage();
-			viewConfiguration.init_droppables();
-			viewConfiguration.init_tooltips();
-
-			$( document ).trigger( 'gv_admin_views_showViewConfig' );
 		},
 
 
@@ -1227,12 +1222,12 @@
 			 * Add slashes to date fields so stripslashes doesn't strip all of them
 			 * {@link http://phpjs.org/functions/addslashes/}
 			 */
-			$( '#post input[name*=date_display]' ).val( function () {
+			$( '#post' ).find( 'input[name*=date_display]' ).val(function() {
 				return $( this ).val().replace( /[\\"']/g, '\\$&' ).replace( /\u0000/g, '\\0' );
-			} );
+			});
 
 			// Get all the fields where the `name` attribute start with `fields`
-			var $fields = $( '#post :input[name^=fields]' );
+			var $fields = $( '#post' ).find( ':input[name^=fields]' );
 
 			// Serialize the data
 			var serialized_data = $fields.serialize();
@@ -1327,12 +1322,31 @@
 		templateId: null,
 
 		/**
+		 * Holds the tabbed Settings metabox container
+		 */
+		metaboxObj: null,
+
+		/**
 		 * Init method
 		 */
-		init: function () {
+		init: function() {
+
+			viewGeneralSettings.metaboxObj = $( '#gravityview_settings' );
+
+			// Init general settings tabs
+			viewGeneralSettings.initTabs();
 
 			// Conditional display general settings & trigger display settings if template changes
-			$( '#gravityview_directory_template' ).change( viewGeneralSettings.updateSettingsDisplay ).trigger( 'change' );
+			$('#gravityview_directory_template')
+				.change( viewGeneralSettings.updateSettingsDisplay )
+				.trigger('change');
+
+			$('body')
+				// Enable a setting tab (since 1.8)
+				.on('gravityview/settings/tab/enable', viewGeneralSettings.enableSettingTab )
+
+				// Disable a setting tab (since 1.8)
+				.on('gravityview/settings/tab/disable', viewGeneralSettings.disableSettingTab );
 
 		},
 
@@ -1366,10 +1380,92 @@
 				row.hide();
 			}
 
+		},
+
+		/**
+		 * Set up the settings metabox vertical tabs
+		 *
+		 * @since 1.8
+		 * @return {void}
+		 */
+		initTabs: function() {
+
+			viewGeneralSettings.metaboxObj
+				// What happens after tabs are generated
+				.on( 'tabscreate', viewGeneralSettings.tabsCreate )
+
+				// Force the sort metabox to be directly under the view configuration. Damn 3rd party metaboxes!
+				.insertAfter( $('#gravityview_view_config') )
+
+				// Make vertical tabs
+				.tabs()
+				.addClass( "ui-tabs-vertical ui-helper-clearfix" )
+				.find('li')
+				.removeClass( "ui-corner-top" );
+
+		},
+
+		/**
+		 * After creating the Tabs we need to do a few tweaks to make it look good
+		 *
+		 * @since 1.8
+		 *
+		 * @param {Object} event jQuery Event
+		 * @param {Object} ui jQuery UI Tab element, with: `ui.tab` and `ui.panel`
+		 *
+		 * @return {void}
+		 */
+		tabsCreate: function( event, ui ){
+			var $container = $( this ),
+				$inside = $container.children( '.inside' ),
+				$panels = $container.find( '.ui-tabs-panel' ),
+				$panel = ui.panel,
+				max = [];
+
+			$panels.each( function(){
+				max.push( $( this ).outerHeight( true ) );
+			} ).css( { 'min-height': _.max( max ) } );
+		},
+
+		/**
+		 * Enable a tab in the settings metabox
+		 *
+		 * Useful for when switching View types that support a type of setting (DataTables)
+		 *
+		 * @since 1.8
+		 *
+		 * @param {jQuery} e jQuery Event
+		 * @param {jQuery} tab DOM of tab to enable
+		 *
+		 * @return {void}
+		 */
+		enableSettingTab: function( e, tab ) {
+
+			viewGeneralSettings.metaboxObj
+				.tabs('enable', $( tab ).attr('id') );
+
+		},
+
+		/**
+		 * Disable a tab in the settings metabox
+		 *
+		 * Useful for when switching View types that may not support a type of setting (DataTables)
+		 *
+		 * @since 1.8
+		 *
+		 * @param {jQuery} e jQuery Event
+		 * @param {jQuery} tab DOM of tab to enable
+		 *
+		 * @return {void}
+		 */
+		disableSettingTab: function( e, tab ) {
+
+			viewGeneralSettings.metaboxObj
+				.tabs('disable', $( tab ).attr('id') );
+
 		}
 
 	};  // end viewGeneralSettings object
-
 
 	jQuery( document ).ready( function ( $ ) {
 
@@ -1406,14 +1502,6 @@
 				$.cookie( cookie_key, ui.newTab.index(), { path: gvGlobals.cookiepath } );
 			}
 		} );
-
-		// Make zebra table rows
-		$( '#gravityview_template_settings .form-table tr:even, #gravityview_sort_filter .form-table tr:even' ).addClass( 'alternate' );
-
-
-		// Force the sort metabox to be directly under the view configuration.
-		// Damn 3rd party metaboxes!
-		$( '#gravityview_sort_filter' ).insertAfter( $( '#gravityview_view_config' ) );
 
 	} );
 

@@ -187,7 +187,7 @@ class GVLogic_Shortcode {
 	public function shortcode( $atts = array(), $content = NULL, $shortcode_tag = '' ) {
 
 		// Don't process except on frontend
-		if ( is_admin() ) {
+		if ( GravityView_Plugin::is_admin() ) {
 			return null;
 		}
 
@@ -198,8 +198,8 @@ class GVLogic_Shortcode {
 		$this->parse_atts();
 
 		// We need an "if"
-		if( empty( $this->if ) ) {
-			do_action( 'gravityview_log_debug', __METHOD__.' $atts if is empty.', $this->atts );
+		if( false === $this->if ) {
+			do_action( 'gravityview_log_error', __METHOD__.' $atts->if is empty.', $this->atts );
 			return null;
 		}
 
@@ -207,7 +207,7 @@ class GVLogic_Shortcode {
 
 		// We need an operation and comparison value
 		if( ! $setup ) {
-			do_action( 'gravityview_log_debug', __METHOD__.' No valid operators were passed.', $this->atts );
+			do_action( 'gravityview_log_error', __METHOD__.' No valid operators were passed.', $this->atts );
 			return null;
 		}
 
@@ -248,16 +248,22 @@ class GVLogic_Shortcode {
 		$output = do_shortcode( $output );
 
 		/**
+		 * @filter `gravityview/gvlogic/output` Modify the [gvlogic] output
 		 * @param string $output HTML/text output
-		 * @param GV_If_Shortcode This class
+		 * @param GVLogic_Shortcode $this This class
 		 */
-		return apply_filters('gravityview/gvlogic/output', $output, $this );
+		$output = apply_filters('gravityview/gvlogic/output', $output, $this );
+
+		do_action( 'gravityview_log_debug', __METHOD__ .' Output: ', $output );
+
+		return $output;
 	}
 
 	/**
 	 * Check for `[else]` tag inside the shortcode content. If exists, set the else_content variable.
 	 * If not, use the `else` attribute passed by the shortcode, if exists.
 	 *
+	 * @todo allow for chains of [else if="{another field:123}" is="example"] - requires registering [else] shortcode...
 	 * @return void
 	 */
 	function set_content_and_else_content() {
@@ -278,23 +284,23 @@ class GVLogic_Shortcode {
 	function parse_atts() {
 
 		$supported = array(
-			'if' => '',
-			'else' => '',
+			'if' => false,
+			'else' => false,
 		);
 
 		$supported_args = $supported + $this->get_operators( true );
 
+		// Whittle down the attributes to only valid pairs
 		$this->atts = shortcode_atts( $supported_args, $this->passed_atts, $this->shortcode );
 
-		// remove empties
-		$this->atts = array_filter( $this->atts );
+		// Only keep the passed attributes after making sure that they're valid pairs
+		$this->atts = function_exists( 'array_intersect_key' ) ? array_intersect_key( $this->passed_atts, $this->atts ) : $this->atts;
 
-		if( isset( $this->atts['if'] ) ) {
-			$this->if = $this->atts['if'];
-			unset( $this->atts['if'] );
-		} else {
-			$this->if = false;
-		}
+		// Strip whitespace if it's not default false
+		$this->if = is_string( $this->atts['if'] ) ? trim( $this->atts['if'] ) : false;
+
+		// Make sure the "if" isn't processed in self::setup_operation_and_comparison()
+		unset( $this->atts['if'] );
 	}
 }
 

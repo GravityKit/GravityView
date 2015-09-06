@@ -44,7 +44,7 @@ jQuery(document).ready( function( $ ) {
 				return;
 			}
 
-			$( this ).attr( 'data-form-changed', 1 );
+			$( this ).attr( 'data-form-changed', '1' );
 
 			$( '.gv-search-clear', $( this ) ).text( gvGlobals.reset ).fadeIn( 100 );
 		},
@@ -61,9 +61,7 @@ jQuery(document).ready( function( $ ) {
 		clear_search: function ( e ) {
 
 			var $form = $( this ).parents( 'form' );
-			var changed = (
-			$form.attr( 'data-form-changed' ).length > 0
-			);
+			var changed = ( $form.attr( 'data-form-changed' ) === '1' );
 
 			// Handle an existing search
 			if ( $form.hasClass( 'gv-is-search' ) ) {
@@ -160,8 +158,7 @@ jQuery(document).ready( function( $ ) {
 			if ( $.cookie( 'gravityview_back_link_' + viewId ) !== null ) {
 				$( "#gravityview_back_link" ).attr( 'href', $.cookie( 'gravityview_back_link_' + viewId ) );
 			}
-		},
-
+		}
 
 	};
 

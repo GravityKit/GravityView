@@ -16,7 +16,7 @@ module.exports = function(grunt) {
 				files: [{
 		          expand: true,
 		          cwd: 'assets/css/scss',
-		          src: ['*.scss','!admin-merge-tags.scss','!admin-tooltips.scss'],
+		          src: ['*.scss','!admin-merge-tags.scss','!admin-tooltips.scss','!admin-metabox-panel.scss','!admin-metabox.scss'],
 		          dest: 'assets/css',
 		          ext: '.css'
 		      }]
@@ -29,6 +29,15 @@ module.exports = function(grunt) {
 		          dest: 'templates/css/',
 		          ext: '.css'
 		      }]
+			},
+			docs: {
+				files: [{
+					expand: true,
+					cwd: 'docs/',
+					src: ['*.scss'],
+					dest: 'docs/',
+					ext: '.css'
+				}]
 			}
 		},
 
@@ -55,7 +64,9 @@ module.exports = function(grunt) {
         },
 
 		uglify: {
-			options: { mangle: false },
+			options: {
+				mangle: false
+			},
 			main: {
 				files: [{
 		          expand: true,
@@ -92,6 +103,10 @@ module.exports = function(grunt) {
 			scss: {
 				files: ['assets/css/scss/*.scss'],
 				tasks: ['sass:dist']
+			},
+			docs: {
+				files: ['docs/*.scss'],
+				tasks: ['sass:docs']
 			}
 		},
 

@@ -1,0 +1,12 @@
+/.gitattributes export-ignore
+/.gitignore     export-ignore
+/.gitmodules    export-ignore
+/.idea          export-ignore
+/.tx            export-ignore
+/.editorconfig  export-ignore
+/Gruntfile.js   export-ignore
+/phpunit.xml    export-ignore
+/tests          export-ignore
+/readme.md      export-ignore
+/node_modules   export-ignore
+/docs           export-ignore

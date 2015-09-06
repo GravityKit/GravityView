@@ -16,6 +16,17 @@ class GravityView_Field_Website extends GravityView_Field {
 			return $field_options;
 		}
 
+		/**
+		 * @since 1.8
+		 */
+		$field_options['anchor_text'] = array(
+			'type' => 'text',
+			'label' => __( 'Link Text:', 'gravityview' ),
+			'desc' => __( 'Define custom link text. Leave blank to display the URL', 'gravityview' ),
+			'value' => '',
+			'merge_tags' => 'force',
+		);
+
 		$field_options['truncatelink'] = array(
 			'type' => 'checkbox',
 			'value' => true,

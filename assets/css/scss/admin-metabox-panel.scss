@@ -1,0 +1,118 @@
+/**
+ * Much of the code from WooCommerce
+ * @link https://github.com/woothemes/woocommerce/blob/master/assets/css/admin.scss
+ */
+
+@import "_mixins";
+
+#gravityview-metabox-content-container {
+
+  // Pre-JS loading
+  max-height: 442px;
+  overflow-y: auto;
+
+  // Once the JS has loaded
+  &.ui-tabs-panel {
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  background: white; // Allow .striped rows to show
+  float: left;
+  width: 80%;
+  border-left: 1px solid #eee;
+  @include borderbox();
+
+
+  #side-sortables & {
+    width: 100%;
+
+    th, td {
+      @include clearfix();
+      display: block;
+      padding: 10px 10px 3px;
+    }
+
+  }
+
+  .form-table {
+    margin-top: 0;
+    padding-top: 0;
+
+    caption {
+      text-align: left;
+      .rtl & {
+        text-align: right;
+      }
+
+      font-size: 14px;
+      padding: 8px 10px;
+      margin: 0;
+      line-height: 1.4;
+      font-weight: 600;
+    }
+
+    label {
+      .howto {
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .ui-tabs-panel {
+
+    @include clearfix();
+    @include borderbox();
+
+    // Overrides
+    padding: 0;
+    border: none;
+
+    #side-sortables & {
+      margin-top: 1px; // Move away a bit from the border radius
+      border-top: 2px solid #ccc;
+    }
+
+    p {
+      margin: 9px 0 9px;
+    }
+
+    p.form-field,
+    fieldset.form-field {
+      padding: 5px 20px 5px 162px !important; /** Padding for aligning labels left - 12px + 150 label width **/
+    }
+
+    .description {
+      padding: 0;
+      margin: 0 0 0 7px;
+      clear: none;
+      display: inline;
+    }
+
+    div + input {
+    	margin-top: 5px;
+    }
+
+    textarea,
+    input,
+    select {
+      margin: 0;
+
+      &[type="checkbox"]{
+      	margin-top: -4px;
+      }
+    }
+
+    textarea {
+      vertical-align: top;
+      height: 3.5em;
+      line-height: 1.5em;
+    }
+
+    input.button {
+      width: auto;
+      margin-left: 8px;
+    }
+
+  }
+}

@@ -12,6 +12,7 @@
 @import "admin-widgets-php";
 @import "admin-merge-tags";
 @import "admin-tooltips";
+@import "admin-metabox";
 
 // http://blog.teamtreehouse.com/a-better-clearfix-with-sass
 %clearfix {
@@ -303,8 +304,7 @@ $gv-overlay-index: 10000;
 /**
  * Sidebar Widget: View Settings
  */
-#gravityview_template_settings th,
-#gravityview_sort_filter th {
+#gravityview_settings th {
 	white-space: nowrap;
 	font-weight: normal;
 	max-width: 200px; // Default th width in forms.css
@@ -328,17 +328,17 @@ $gv-overlay-index: 10000;
   cursor: wait;
 }
 
+// Fix issue with theme conflicts where .gv-overlay gets in the way
+.ui-front {
+  z-index: $gv-overlay-index + 1;
+}
+
 /** View configuration tabs */
 .ui-tabs {
 	position: relative;
 	padding: .1em;
 	zoom: 1;
 	margin-top: 1em;
-
-	// Fix issue with theme conflicts where .gv-overlay gets in the way
-	.ui-front {
-		z-index: $gv-overlay-index + 1;
-	}
 
 	.ui-tabs-nav {
 		margin: 0;
@@ -691,8 +691,17 @@ hr {
 	width: 90%;
 	padding: 10px 0 !important;
 
+    /** @since 1.8 **/
+    .subtitle {
+      margin: 0 15px .8em;
+      padding: .5em 0 .8em;
+      border-bottom: 1px solid #eee;
+    }
+
 	&.gv-dialog-warning p {
 		font-size: 1.1em;
+        margin: 0 !important;
+        padding: 1.5em !important;
 	}
 
 	&.gv-dialog-warning .dashicons {
@@ -703,11 +712,6 @@ hr {
 		float: right;
 		text-align: right;
 		color: #ddd;
-	}
-
-	p {
-		margin: 0 !important;
-		padding: 1.5em !important;
 	}
 
 	// Each setting row ( Used to be ul and ul li )
@@ -730,10 +734,19 @@ hr {
 			font-weight: normal;
 			display: inline-block;
 			padding-right: .75em;
+			max-width: 100%; // Fix https://github.com/katzwebservices/GravityView-AZ-Filters/issues/14
 		}
 
 		.howto {
 			margin: 0 0 .25em;
+		}
+
+		/**
+		  * This fixes the horrible italic lowercase L issue
+		  * @see https://secure.helpscout.net/conversation/100064704/2718/
+		  */
+		code {
+			font-style: normal!important;
 		}
 	}
 

@@ -17,31 +17,53 @@ if( empty( $created_by ) ) {
 	return;
 }
 
-// Generate the search parameters
-$args = array(
-	'id'              => $gravityview_view->getViewId(),
-	'page_size'       => $gravityview_view->getCurrentFieldSetting('page_size'),
-	'search_field'    => 'created_by',
-	'search_value'    => $created_by,
-	'search_operator' => 'is',
+$form_id = $gravityview_view->getFormId();
+
+// Get the settings for the View ID
+$view_settings = gravityview_get_template_settings( $gravityview_view->getViewId() );
+
+$view_settings['page_size'] = $gravityview_view->getCurrentFieldSetting('page_size');
+
+// Prepare paging criteria
+$criteria['paging'] = array(
+    'offset' => 0,
+    'page_size' => $view_settings['page_size']
 );
 
-/**
- * @since 1.7.6
- */
-$args = apply_filters( 'gravityview/field/other_entries/args', $args, $field );
+// Prepare Search Criteria
+$criteria['search_criteria'] = array(
+    'field_filters' => array(
+        array(
+            'key' => 'created_by',
+            'value' => $created_by,
+            'operator' => 'is'
+        )
+    )
+);
+$criteria['search_criteria'] = GravityView_frontend::process_search_only_approved( $view_settings, $criteria['search_criteria'] );
+$criteria['search_criteria']['status'] = apply_filters( 'gravityview_status', 'active', $view_settings );
 
-// Get the entries for the search
-$entries = GravityView_frontend::get_view_entries( $args, $field['form']['id'] );
+/**
+ * Modify the search parameters before the entries are fetched
+ *
+ * @since 1.11
+ *
+ * @param array $criteria Gravity Forms search criteria array, as used by GVCommon::get_entries()
+ * @param array $view_settings Associative array of settings with plugin defaults used if not set by the View
+ * @param int $form_id The Gravity Forms ID
+ */
+$criteria = apply_filters('gravityview/field/other_entries/criteria', $criteria, $view_settings, $form_id );
+
+$entries = GVCommon::get_entries( $form_id, $criteria );
 
 // Don't show if no entries and the setting says so
-if( empty( $entries['entries'] ) && $gravityview_view->getCurrentFieldSetting('no_entries_hide') ) {
+if( empty( $entries ) && $gravityview_view->getCurrentFieldSetting('no_entries_hide') ) {
 	return;
 }
 
 // If there are search results, get the entry list object
 $list = new GravityView_Entry_List(
-	$entries['entries'],
+	$entries,
 	$gravityview_view->getPostId(),
 	$field['form'],
 	$gravityview_view->getCurrentFieldSetting('link_format'),
@@ -51,3 +73,12 @@ $list = new GravityView_Entry_List(
 
 // Generate and echo the output
 $list->output();
+
+/**
+ * @since 1.7.6
+ * @deprecated since 1.11
+ */
+$deprecated = apply_filters( 'gravityview/field/other_entries/args', array(), $field );
+if ( !empty( $deprecated ) ) {
+    _deprecated_function(  'The "gravityview/field/other_entries/args" filter', 'GravityView 1.11', 'gravityview/field/other_entries/criteria' );
+}
