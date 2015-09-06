@@ -42,6 +42,7 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @covers GravityView_API::replace_variables()
+	 * @covers GravityView_Merge_Tags::replace_variables()
 	 */
 	public function test_replace_variables() {
 
@@ -72,6 +73,16 @@ class GravityView_API_Test extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( date( 'm/d/Y' ), GravityView_API::replace_variables( '{date_mdy}', $form, $entry ) );
 
 		$this->assertEquals( get_option( 'admin_email' ), GravityView_API::replace_variables( '{admin_email}', $form, $entry ) );
+
+		$user = wp_set_current_user( $entry['created_by'] );
+
+		// Test new Roles merge tag
+		$this->assertEquals( implode( ', ', $user->roles ), GravityView_API::replace_variables( '{created_by:roles}', $form, $entry ) );
+
+		$user->add_role( 'editor' );
+
+		// Test new Roles merge tag again, with another role.
+		$this->assertEquals( implode( ', ', $user->roles ), GravityView_API::replace_variables( '{created_by:roles}', $form, $entry ) );
 
 		$var_content = '<p>I expect <strong>Entry #{entry_id}</strong> will be in Form #{form_id}</p>';
 		$expected_content = '<p>I expect <strong>Entry #'.$entry['id'].'</strong> will be in Form #'.$form['id'].'</p>';
