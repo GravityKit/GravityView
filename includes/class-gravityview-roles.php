@@ -105,12 +105,6 @@ class GravityView_Roles {
 				"delete_others_{$capability_type}s",
 				"edit_private_{$capability_type}s",
 				"edit_published_{$capability_type}s",
-
-				// Terms
-				"manage_{$capability_type}_terms",
-				"edit_{$capability_type}_terms",
-				"delete_{$capability_type}_terms",
-				"assign_{$capability_type}_terms",
 			);
 		}
 
