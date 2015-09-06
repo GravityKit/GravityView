@@ -20,26 +20,58 @@ var ViewConfig = _react2['default'].createClass({
 
     getInitialState: function getInitialState() {
         return {
-            form: gravityview_view_settings.form_id,
-            template: gravityview_view_settings.template_id
+            startFresh: false, // Start Fresh context
+            showTemplates: false, // Type of templates to show: 'preset' or 'custom'
+            form: gravityview_view_settings.form_id, // Holds the selected form ID
+            template: gravityview_view_settings.template_id // Holds the selected Template ID
         };
+    },
+
+    handleStartFresh: function handleStartFresh() {
+        this.setState({ startFresh: true });
+        this.setState({ showTemplates: 'preset' });
     },
 
     handleFormChange: function handleFormChange(e) {
         this.setState({ form: e.target.value });
+        this.setState({ showTemplates: 'custom' });
     },
 
     handleTemplateChange: function handleTemplateChange(e) {
         e.preventDefault();
         this.setState({ template: jQuery(e.target).parents('.gv-view-types-module').attr('data-templateid') });
+
+        if (!this.state.showTemplates) {
+            this.setState({ showTemplates: 'custom' });
+        } else {
+            this.setState({ showTemplates: false });
+        }
     },
 
     render: function render() {
+
+        var selectTemplateMetabox = null;
+        if (this.state.showTemplates) {
+
+            selectTemplateMetabox = _react2['default'].createElement(_adminViewSelectTemplateJsx2['default'], {
+                key: 'st' + this.state.template + this.state.showTemplates,
+                template: this.state.template,
+                startFresh: this.state.startFresh,
+                filter: this.state.showTemplates,
+                onTemplateClick: this.handleTemplateChange
+            });
+        }
+
         return _react2['default'].createElement(
             'div',
             null,
-            _react2['default'].createElement(_adminViewDataSourceJsx2['default'], { key: 'ds' + this.state.form, form: this.state.form, onFormChange: this.handleFormChange }),
-            _react2['default'].createElement(_adminViewSelectTemplateJsx2['default'], { key: 'st' + this.state.template, template: this.state.template, onTemplateClick: this.handleTemplateChange })
+            _react2['default'].createElement(_adminViewDataSourceJsx2['default'], {
+                key: 'ds' + this.state.form,
+                form: this.state.form,
+                onFormChange: this.handleFormChange,
+                onStartFresh: this.handleStartFresh
+            }),
+            selectTemplateMetabox
         );
     }
 
@@ -120,7 +152,7 @@ var DataSource = _react2['default'].createClass({
         if (this.props.form <= 0) {
             startFreshButton = _react2['default'].createElement(
                 'a',
-                { className: 'button button-primary', title: gravityview_i18n.mb_ds_start_button },
+                { onClick: this.props.onStartFresh, className: 'button button-primary', title: gravityview_i18n.mb_ds_start_button },
                 gravityview_i18n.mb_ds_start_button
             );
 
@@ -208,90 +240,94 @@ var _partsMetaboxJsx2 = _interopRequireDefault(_partsMetaboxJsx);
 var SelectTemplate = _react2['default'].createClass({
     displayName: 'SelectTemplate',
 
-    render: function render() {
+    filterTemplateType: function filterTemplateType(template, i) {
+        if (template.type === this.props.filter) {
+            return true;
+        }
+    },
 
-        var clickHandle = this.props.onTemplateClick,
-            currentTemplate = this.props.template;
+    renderTemplatesList: function renderTemplatesList(template, i) {
+        var classSelected = 'gv-view-types-module';
+        classSelected += this.props.template == template.id ? ' gv-selected' : '';
 
-        var templatesList = gravityview_view_settings.templates.map(function (template, i) {
+        var buyOrSelectLink = '',
+            previewLink = '',
+            linkClass = 'button-primary',
+            linkText = '';
 
-            var classSelected = 'gv-view-types-module';
-            classSelected += currentTemplate == template.id ? ' gv-selected' : '';
-
-            var buyOrSelectLink = '',
-                previewLink = '',
-                linkClass = 'button-primary',
-                linkText = '';
-
-            if (template.buy_source.length) {
-                linkClass += ' button-buy-now';
-                linkText = gravityview_i18n.mb_st_buy_button;
-                buyOrSelectLink = _react2['default'].createElement(
-                    'p',
-                    null,
-                    _react2['default'].createElement(
-                        'a',
-                        { href: template.buy_source, className: linkClass },
-                        linkText
-                    )
-                );
-            } else {
-                linkClass += ' button button-large';
-                linkText = gravityview_i18n.mb_st_select_button;
-
-                buyOrSelectLink = _react2['default'].createElement(
-                    'p',
-                    null,
-                    _react2['default'].createElement(
-                        'a',
-                        { className: linkClass },
-                        linkText
-                    )
-                );
-
-                if (template.preview.length) {
-                    previewLink = _react2['default'].createElement(
-                        'a',
-                        { href: template.preview, rel: 'external', className: 'gv-site-preview' },
-                        _react2['default'].createElement('i', { className: 'dashicons dashicons-admin-links', title: gravityview_i18n.mb_st_preview })
-                    );
-                }
-            }
-
-            return _react2['default'].createElement(
-                'div',
-                { key: template.id, className: 'gv-grid-col-1-3' },
+        if (template.buy_source.length) {
+            linkClass += ' button-buy-now';
+            linkText = gravityview_i18n.mb_st_buy_button;
+            buyOrSelectLink = _react2['default'].createElement(
+                'p',
+                null,
                 _react2['default'].createElement(
-                    'div',
-                    { className: classSelected, 'data-filter': template.type, 'data-templateid': template.id },
-                    _react2['default'].createElement(
-                        'div',
-                        { className: 'gv-view-types-hover', onClick: clickHandle },
-                        _react2['default'].createElement(
-                            'div',
-                            null,
-                            buyOrSelectLink,
-                            previewLink
-                        )
-                    ),
-                    _react2['default'].createElement(
-                        'div',
-                        { className: 'gv-view-types-normal' },
-                        _react2['default'].createElement('img', { src: template.logo, alt: template.label }),
-                        _react2['default'].createElement(
-                            'h5',
-                            null,
-                            template.label
-                        ),
-                        _react2['default'].createElement(
-                            'p',
-                            { className: 'description' },
-                            template.description
-                        )
-                    )
+                    'a',
+                    { href: template.buy_source, className: linkClass },
+                    linkText
                 )
             );
-        });
+        } else {
+            linkClass += ' button button-large';
+            linkText = gravityview_i18n.mb_st_select_button;
+
+            buyOrSelectLink = _react2['default'].createElement(
+                'p',
+                null,
+                _react2['default'].createElement(
+                    'a',
+                    { className: linkClass },
+                    linkText
+                )
+            );
+
+            if (template.preview.length) {
+                previewLink = _react2['default'].createElement(
+                    'a',
+                    { href: template.preview, rel: 'external', className: 'gv-site-preview' },
+                    _react2['default'].createElement('i', { className: 'dashicons dashicons-admin-links', title: gravityview_i18n.mb_st_preview })
+                );
+            }
+        }
+
+        return _react2['default'].createElement(
+            'div',
+            { key: template.id, className: 'gv-grid-col-1-3' },
+            _react2['default'].createElement(
+                'div',
+                { className: classSelected, 'data-filter': template.type, 'data-templateid': template.id },
+                _react2['default'].createElement(
+                    'div',
+                    { className: 'gv-view-types-hover', onClick: this.props.onTemplateClick },
+                    _react2['default'].createElement(
+                        'div',
+                        null,
+                        buyOrSelectLink,
+                        previewLink
+                    )
+                ),
+                _react2['default'].createElement(
+                    'div',
+                    { className: 'gv-view-types-normal' },
+                    _react2['default'].createElement('img', { src: template.logo, alt: template.label }),
+                    _react2['default'].createElement(
+                        'h5',
+                        null,
+                        template.label
+                    ),
+                    _react2['default'].createElement(
+                        'p',
+                        { className: 'description' },
+                        template.description
+                    )
+                )
+            )
+        );
+    },
+
+    render: function render() {
+
+        var templatesList = gravityview_view_settings.templates.filter(this.filterTemplateType, this).map(this.renderTemplatesList, this);
 
         return _react2['default'].createElement(
             _partsMetaboxJsx2['default'],

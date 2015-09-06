@@ -49,7 +49,7 @@ var DataSource = React.createClass({
 
         if ( this.props.form <= 0 ) {
             startFreshButton = (
-                <a className="button button-primary" title={gravityview_i18n.mb_ds_start_button}>{gravityview_i18n.mb_ds_start_button}</a>
+                <a onClick={this.props.onStartFresh} className="button button-primary" title={gravityview_i18n.mb_ds_start_button}>{gravityview_i18n.mb_ds_start_button}</a>
             );
 
             if( gravityview_view_settings.forms.length > 0 ) {
