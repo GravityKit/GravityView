@@ -31,11 +31,28 @@ defined( 'ABSPATH' ) || exit;
 class GravityView_Roles {
 
 	/**
+	 * @var GravityView_Roles|null
+	 */
+	static $instance = null;
+
+	/**
 	 * Get things going
 	 *
 	 * @since 1.4.4
 	 */
 	public function __construct() {}
+
+	/**
+	 * @return GravityView_Roles
+	 */
+	public static function get_instance() {
+
+		if( ! self::$instance ) {
+			self::$instance = new self;
+		}
+
+		return self::$instance;
+	}
 
 	/**
 	 * Add new shop roles with default WP caps
