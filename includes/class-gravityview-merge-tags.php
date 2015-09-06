@@ -171,7 +171,14 @@ class GravityView_Merge_Tags {
 			$full_tag = $match[0];
 			$property = $match[1];
 
-			$value = $entry_creator->get( $property );
+			switch( $property ) {
+				/** @since 1.13.2 */
+				case 'roles':
+					$value = implode( ', ', $entry_creator->roles );
+					break;
+				default:
+					$value = $entry_creator->get( $property );
+			}
 
 			$value = $url_encode ? urlencode( $value ) : $value;
 
