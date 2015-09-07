@@ -2,10 +2,6 @@
 /**
  * Roles and Capabilities
  *
- * TODO: https://github.com/easydigitaldownloads/Easy-Digital-Downloads/blob/master/uninstall.php#L67-L73
- * TODO: https://github.com/easydigitaldownloads/Easy-Digital-Downloads/blob/master/includes/install.php#L135-L138
- * TODO: https://github.com/easydigitaldownloads/Easy-Digital-Downloads/blob/master/includes/install.php#L205-L231
- *
  * @see         https://github.com/easydigitaldownloads/Easy-Digital-Downloads/blob/master/includes/class-edd-roles.php Easy Digital Downloads FTW
  * @package     GravityView
  * @license     GPL2+
@@ -23,10 +19,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * This class handles the role creation and assignment of capabilities for those roles.
  *
- * These roles let us have Shop Accountants, Shop Workers, etc, each of whom can do
- * certain things within the EDD store
- *
- * @since 1.4.4
+ * @since 1.14
  */
 class GravityView_Roles {
 
@@ -36,13 +29,7 @@ class GravityView_Roles {
 	static $instance = null;
 
 	/**
-	 * Get things going
-	 *
-	 * @since 1.4.4
-	 */
-	public function __construct() {}
-
-	/**
+	 * @since 1.14
 	 * @return GravityView_Roles
 	 */
 	public static function get_instance() {
@@ -55,122 +42,188 @@ class GravityView_Roles {
 	}
 
 	/**
-	 * Add new shop roles with default WP caps
+	 * Get things going
 	 *
-	 * @access public
-	 * @since 1.4.4
-	 * @return void
+	 * @since 1.14
 	 */
-	public function add_roles() {
+	public function __construct() {
+		$this->add_hooks();
 	}
 
 	/**
-	 * Remove roles
-	 *
-	 * @access public
-	 * @since 1.4.4
-	 * @return void
+	 * Call hooks
+	 * @since 1.14
 	 */
-	public function remove_roles() {
+	private function add_hooks() {
+		add_filter( 'members_get_capabilities', array( $this, 'members_get_capabilities' ) );
+	}
+
+	/**
+	 * Add GravityView capabilities to the Members plugin
+	 *
+	 * @since 1.14
+	 * @param array $caps Existing capabilities registered with Members
+	 * @return array Modified capabilities array
+	 */
+	public function members_get_capabilities( $caps ) {
+		return array_merge( $caps, $this->all_caps('all') );
+	}
+
+	/**
+	 * Retrieves the global WP_Roles instance and instantiates it if necessary.
+	 *
+	 * @see wp_roles() This method uses the exact same code as wp_roles(), here for backward compatibility
+	 *
+	 * @global WP_Roles $wp_roles WP_Roles global instance.
+	 *
+	 * @return WP_Roles WP_Roles global instance if not already instantiated.
+	 */
+	function wp_roles() {
 		global $wp_roles;
-		/*$gravityview_roles = array( '' );
-		foreach ( $gravityview_roles as $role ) {
-			remove_role( $role );
-		}*/
+
+		if ( ! isset( $wp_roles ) ) {
+			$wp_roles = new WP_Roles();
+		}
+		return $wp_roles;
 	}
 
 	/**
-	 * Add new shop-specific capabilities
+	 * Add capabilities to their respective roles
 	 *
-	 * @access public
-	 * @since  1.4.4
-	 * @global WP_Roles $wp_roles
+	 * @since 1.14
 	 * @return void
 	 */
 	public function add_caps() {
-		global $wp_roles;
 
-		if ( class_exists('WP_Roles') ) {
-			if ( ! isset( $wp_roles ) ) {
-				$wp_roles = new WP_Roles();
-			}
-		}
+		$wp_roles = $this->wp_roles();
 
 		if ( is_object( $wp_roles ) ) {
 
-			// Add the main post type capabilities
-			$capabilities = $this->get_core_caps();
-			foreach ( $capabilities as $cap_group ) {
-				foreach ( $cap_group as $cap ) {
-					$wp_roles->add_cap( 'administrator', $cap );
+			foreach( $wp_roles->get_names() as $role_slug => $role_label ) {
+
+				$capabilities = $this->all_caps( $role_slug );
+
+				foreach( $capabilities as $cap ) {
+					$wp_roles->add_cap( $role_slug, $cap );
 				}
 			}
-
 		}
 	}
 
 	/**
-	 * Gets the core post type capabilities
+	 * Get an array of GravityView capabilities
 	 *
-	 * @access public
-	 * @since  1.4.4
-	 * @return array $capabilities Core post type capabilities
+	 * @see get_post_type_capabilities()
+	 *
+	 * @since 1.14
+	 *
+	 * @param string $role If set, get the caps for a specific role. Pass 'all' to get all caps in a flat array. Default: ''
+	 *
+	 * @return array If $role is set, flat array of caps. Otherwise, a multi-dimensional array of roles and their caps with the following keys: 'administrator', 'editor', 'author', 'contributor', 'subscriber'
 	 */
-	public function get_core_caps() {
+	public function all_caps( $role = '' ) {
+
+		$administrator = array(
+			// Settings
+			'gravityview_view_settings',
+			'gravityview_edit_settings',
+		);
+
+		// Edit, publish, delete own and others' stuff
+		$editor = array(
+			'edit_others_gravityviews',
+			'read_private_gravityviews',
+			'delete_private_gravityviews',
+			'delete_others_gravityviews',
+			'edit_private_gravityviews',
+			'publish_gravityviews',
+			'delete_published_gravityviews',
+			'edit_published_gravityviews',
+
+			// GF caps
+			'gravityview_edit_others_entries',
+
+			// GF caps
+			'gravityview_view_others_entry_notes',
+			'gravityview_moderate_entries',
+			'gravityview_delete_others_entries',
+		);
+
+		// Edit, publish and delete own stuff
+		$author = array(
+
+			// GF caps
+			'gravityview_edit_entries',
+			'gravityview_view_entry_notes',
+			'gravityview_delete_entries',
+
+		);
+
+		// Edit and delete drafts but not publish
+		$contributor = array(
+			'edit_gravityview',
+			'edit_gravityviews',
+			'delete_gravityview',
+			'delete_gravityviews',
+		);
+
+		// Read only
+		$subscriber = array(
+			'read_gravityview',
+		);
+
 		$capabilities = array();
 
-		$capability_types = array( 'gravityview', 'gravityview_comment' );
-
-		foreach ( $capability_types as $capability_type ) {
-			$capabilities[ $capability_type ] = array(
-				// Post type
-				"edit_{$capability_type}",
-				"read_{$capability_type}",
-				"delete_{$capability_type}",
-				"edit_{$capability_type}s",
-				"edit_others_{$capability_type}s",
-				"publish_{$capability_type}s",
-				"read_private_{$capability_type}s",
-				"delete_{$capability_type}s",
-				"delete_private_{$capability_type}s",
-				"delete_published_{$capability_type}s",
-				"delete_others_{$capability_type}s",
-				"edit_private_{$capability_type}s",
-				"edit_published_{$capability_type}s",
-			);
+		switch( $role ) {
+			case 'subscriber':
+				$capabilities = $subscriber;
+				break;
+			case 'contributor':
+				$capabilities = array_merge( $contributor, $subscriber );
+				break;
+			case 'author':
+				$capabilities = array_merge( $author, $contributor, $subscriber );
+				break;
+			case 'editor':
+				$capabilities = array_merge( $editor, $author, $contributor, $subscriber );
+				break;
+			case 'administrator':
+			case 'all':
+				$capabilities = array_merge( $administrator, $editor, $author, $contributor, $subscriber );
+				break;
 		}
 
-		return $capabilities;
+		// If role is set, return empty array if not exists
+		if( $role ) {
+			return isset( $capabilities[ $role ] ) ? $capabilities[ $role ] : array();
+		}
+
+		// By default, return multi-dimensional array of all caps
+		return compact( 'administrator', 'editor', 'author', 'contributor', 'subscriber' );
 	}
 
 
 	/**
-	 * Remove core post type capabilities (called on uninstall)
+	 * Remove all GravityView caps from all roles
 	 *
-	 * @access public
-	 * @since 1.5.2
+	 * @since 1.14
 	 * @return void
 	 */
 	public function remove_caps() {
-		global $wp_roles;
 
-		if ( class_exists( 'WP_Roles' ) ) {
-			if ( ! isset( $wp_roles ) ) {
-				$wp_roles = new WP_Roles();
-			}
-		}
+		$wp_roles = $this->wp_roles();
 
 		if ( is_object( $wp_roles ) ) {
 
-			/** Remove the Main Post Type Capabilities */
-			$capabilities = $this->get_core_caps();
+			/** Remove all GravityView caps from all roles */
+			$capabilities = $this->all_caps('all');
 
-			foreach ( $capabilities as $cap_group ) {
-				foreach ( $cap_group as $cap ) {
-					$wp_roles->remove_cap( 'administrator', $cap );
+			// Loop through each role and remove GV caps
+			foreach( $wp_roles->get_names() as $role_slug => $role_name ) {
+				foreach ( $capabilities as $cap ) {
+					$wp_roles->remove_cap( $role_slug, $cap );
 				}
 			}
-
 		}
 	}
 }

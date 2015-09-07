@@ -97,14 +97,6 @@ class GravityView_Uninstall {
 	}
 
 	/**
-	 * Delete roles added by GravityView
-	 * @since 1.14
-	 */
-	private function delete_roles() {
-		GravityView_Roles::get_instance()->remove_roles();
-	}
-
-	/**
 	 * Delete capabilities added by GravityView
 	 * @since 1.14
 	 */

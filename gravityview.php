@@ -220,9 +220,7 @@ final class GravityView_Plugin {
 		// Clear settings transient
 		delete_transient( 'redux_edd_license_license_valid' );
 
-		$roles = GravityView_Roles::get_instance();
-		$roles->add_roles();
-		$roles->add_caps();
+		GravityView_Roles::get_instance()->add_caps();
 	}
 
 
