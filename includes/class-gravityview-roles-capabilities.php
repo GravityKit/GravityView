@@ -2,10 +2,9 @@
 /**
  * Roles and Capabilities
  *
- * @see         https://github.com/easydigitaldownloads/Easy-Digital-Downloads/blob/master/includes/class-edd-roles.php Easy Digital Downloads FTW
  * @package     GravityView
  * @license     GPL2+
- * @since       // TODO
+ * @since       1.14
  * @author      Katz Web Services, Inc.
  * @link        http://gravityview.co
  * @copyright   Copyright 2015, Katz Web Services, Inc.
@@ -21,16 +20,16 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.14
  */
-class GravityView_Roles {
+class GravityView_Roles_Capabilities {
 
 	/**
-	 * @var GravityView_Roles|null
+	 * @var GravityView_Roles_Capabilities|null
 	 */
 	static $instance = null;
 
 	/**
 	 * @since 1.14
-	 * @return GravityView_Roles
+	 * @return GravityView_Roles_Capabilities
 	 */
 	public static function get_instance() {
 
@@ -51,7 +50,7 @@ class GravityView_Roles {
 	}
 
 	/**
-	 * Call hooks
+	 * Add Members plugin hook
 	 * @since 1.14
 	 */
 	private function add_hooks() {

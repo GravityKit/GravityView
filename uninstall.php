@@ -101,7 +101,7 @@ class GravityView_Uninstall {
 	 * @since 1.14
 	 */
 	private function delete_capabilities() {
-		GravityView_Roles::get_instance()->remove_caps();
+		GravityView_Roles_Capabilities::get_instance()->remove_caps();
 	}
 
 	/**
