@@ -569,7 +569,7 @@ class GravityView_Settings extends GFAddOn {
 						'value' => '0',
 					),
 				),
-				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ),
+				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ) . ' ' . __('If your Edit View tabs are ugly, enable this setting.'),
 			),
 			array(
 				'name'       => 'delete-on-uninstall',
@@ -579,18 +579,21 @@ class GravityView_Settings extends GFAddOn {
 				'horizontal' => 1,
 				'choices'    => array(
 					array(
-						'label' => _x('On', 'Setting: On or off', 'gravityview'),
-						'value' => '1'
+						'label' => _x('Permanently Delete', 'Setting: what to do when uninstalling plugin', 'gravityview'),
+						'value' => 'delete',
+					    'tooltip' => sprintf( '<h6>%s</h6><p><span class="howto">%s</span></p><p>%s</p>', __('Delete all GravityView content and settings'), __('If you delete then re-install GravityView, it will be like installing GravityView for the first time.'), __('When GravityView is uninstalled and deleted, delete all Views, GravityView entry approvals, GravityView-generated entry notes (including approval and entry creator changes), and GravityView plugin settings. No Gravity Forms data will be touched.') ),
 					),
 					array(
-						'label' => _x('Off', 'Setting: On or off', 'gravityview'),
+						'label' => _x('Keep GravityView Data', 'Setting: what to do when uninstalling plugin', 'gravityview'),
 						'value' => '0',
+						'tooltip' => sprintf( '<h6>%s</h6><p>%s</p>', __('Keep GravityView content and settings'), __('If you delete then re-install the plugin, all Views, plugin settings, entry notes, and entry approvals will still be here.') ),
 					),
 				),
-				'description'   => __( 'Enable if you want GravityView to delete all of its data when the plugin is deleted.', 'gravityview' ),
+				'description'   => sprintf( __( 'Should GravityView content be removed from the site when the GravityView plugin is deleted?', 'gravityview' ), __('Permanently Delete', 'gravityview') ),
 			),
 
 		) );
+
 
 		/**
 		 * Redux backward compatibility
