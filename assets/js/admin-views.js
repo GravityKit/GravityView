@@ -246,6 +246,7 @@
 			vcfg.currentFormId = '';
 			vcfg.togglePreviewButton();
 			$( "#gravityview_view_config, #gravityview_select_template, #gravityview_sort_filter, .gv-form-links" ).hide();
+			viewGeneralSettings.metaboxObj.hide();
 
 		},
 
@@ -520,6 +521,7 @@
 
 			$( '#gravityview_view_config' ).slideDown( 150 );
 
+			viewGeneralSettings.metaboxObj.show();
 			viewConfiguration.toggleDropMessage();
 			viewConfiguration.init_droppables();
 			viewConfiguration.init_tooltips();
