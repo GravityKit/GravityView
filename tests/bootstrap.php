@@ -60,7 +60,9 @@ class GV_Unit_Tests_Bootstrap {
 		// load the WP testing environment
 		require_once( $this->wp_tests_dir . '/includes/bootstrap.php' );
 
-		// set up Gravity View
+		require_once $this->tests_dir . '/factory.php';
+
+		// set up GravityView
 		$this->install();
 	}
 
@@ -72,6 +74,9 @@ class GV_Unit_Tests_Bootstrap {
 	public function load() {
 		require_once $this->plugin_dir . '/tmp/gravityforms/gravityforms.php';
 		require_once $this->plugin_dir . '/gravityview.php';
+
+		/* Remove temporary tables which causes problems with GF */
+		remove_all_filters( 'query', 10 );
 
 		// set up Gravity Forms database
 		@GFForms::setup( true );

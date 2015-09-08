@@ -39,6 +39,8 @@ class GravityView_API_Test extends WP_UnitTestCase {
 		$this->entry = GV_Unit_Tests_Bootstrap::instance()->get_entry();
 		$this->entry_id = GV_Unit_Tests_Bootstrap::instance()->get_entry_id();
 
+		$this->factory = new GF_UnitTest_Factory( $this );
+
 	}
 
 	/**
