@@ -47,7 +47,6 @@ class GravityView_Uninstall {
 	private function fire_everything() {
 		$this->delete_options();
 		$this->delete_posts();
-		$this->delete_roles();
 		$this->delete_capabilities();
 		$this->delete_entry_meta();
 		$this->delete_entry_notes();
