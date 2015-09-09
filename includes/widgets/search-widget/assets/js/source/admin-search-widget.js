@@ -227,7 +227,9 @@
 				gvSearchWidget.populateRows( table, fields );
 			}
 
-			gvSearchWidget.widgetTarget.append( table );
+			gvSearchWidget.toggleSearchMode();
+
+			gvSearchWidget.widgetTarget.find('.gv-setting-container-search_fields').after( table );
 
 			//
 			gvSearchWidget.widgetTarget.find('table tbody').sortable({
