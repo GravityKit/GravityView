@@ -46,7 +46,8 @@ module.exports = function(grunt) {
 			"assets/js/admin-post-edit.js",
 			"assets/js/admin-widgets.js",
 			"assets/js/admin-entries-list.js",
-			"assets/js/fe-views.js"
+			"assets/js/fe-views.js",
+			"includes/widgets/search-widget/assets/js/source/admin-widgets.js"
 		],
 
         imagemin: {
@@ -79,12 +80,12 @@ module.exports = function(grunt) {
 			searchExt: {
 				files: [{
 		          expand: true,
-		          cwd: 'includes/extensions/search-widget/assets/js/source/',
+		          cwd: 'includes/widgets/search-widget/assets/js/source/',
 		          src: ['*.js','!*.min.js'],
-		          dest: 'includes/extensions/search-widget/assets/js/',
+		          dest: 'includes/widgets/search-widget/assets/js/',
 		          ext: '.min.js'
 		      }]
-			},
+			}
 		},
 
 		watch: {
@@ -93,7 +94,7 @@ module.exports = function(grunt) {
 				tasks: ['uglify:main','newer:jshint']
 			},
 			extension_js: {
-				files: ['includes/extensions/**/*.js','!includes/extensions/**/*.min.js'],
+				files: ['includes/widgets/**/*.js','!includes/widgets/**/*.min.js'],
 				tasks: ['uglify:searchExt']
 			},
 			templates: {
