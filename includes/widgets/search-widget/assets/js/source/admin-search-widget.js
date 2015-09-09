@@ -177,8 +177,10 @@
 
 				$(this).remove();
 
+				var table_row_count = $('tr.gv-search-field-row', table ).length;
+
 				//check if is there any
-				if( $('tr.gv-search-field-row', table ).length < 1 && $('tr.no-search-fields', table ).length < 1 ) {
+				if( table_row_count < 1 && $('tr.no-search-fields', table ).length < 1 ) {
 
 					gvSearchWidget.addEmptyMsg( table );
 
@@ -186,7 +188,7 @@
 
 				gvSearchWidget.updateAvailableFields();
 
-				gvSearchWidget.styleRow( table );
+				gvSearchWidget.styleRow( table, table_row_count );
 			});
 
 			return false;
@@ -276,7 +278,6 @@
 				gvSearchWidget.addRow( table, pos, values );
 				pos = table.find('tbody tr:last');
 			});
-
 		},
 
 		/**
@@ -353,15 +354,38 @@
 		},
 
 		/**
+		 * Show or hide the Search Mode settings based on whether there's a single search field. If there's only one, then "all" and "any" are the same.
+		 * @since 1.14
+		 * @return {void}
+		 */
+		toggleSearchMode: function() {
+
+			var table_row_count = $( 'tbody tr', gvSearchWidget.widgetTarget ).length;
+
+			var $search_mode_container = $( 'input[name*="search_mode"]', gvSearchWidget.widgetTarget ).parents('.gv-setting-container');
+
+			if( table_row_count > 1 ) {
+				$search_mode_container.show();
+			} else {
+				$search_mode_container.fadeOut('fast');
+			}
+		},
+
+		/**
 		 * Style the table rows - remove/add sorting icon, zebra stripe
 		 * @param  {object} table Table
+		 * @param  {int} table_row_count Number of rows in the table, if defined.
 		 * @return {[type]}       [description]
 		 */
-		styleRow: function( table ) {
+		styleRow: function( table, table_row_count ) {
+
+			table_row_count = table_row_count || $( 'tbody tr', gvSearchWidget.widgetTarget ).length;
 
 			var sort_icon = $( '.cell-sort .icon', gvSearchWidget.widgetTarget );
 
-			if( $( 'tbody tr', gvSearchWidget.widgetTarget ).length === 1 ) {
+			gvSearchWidget.toggleSearchMode();
+
+			if( table_row_count === 1 ) {
 				sort_icon.fadeOut('fast', function() {
 					$(this).parents('td').addClass('no-sort');
 				});
