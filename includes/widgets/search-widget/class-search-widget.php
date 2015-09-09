@@ -31,12 +31,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$default_values = array( 'header' => 0, 'footer' => 0 );
 
 		$settings = array(
-			'search_fields' => array(
-				'type' => 'hidden',
-				'label' => '',
-				'class' => 'gv-search-fields-value',
-				'value' => '[{"field":"search_all","input":"input_text"}]', // Default: Search Everything text box
-			),
 			'search_layout' => array(
 				'type' => 'radio',
 				'full_width' => true,
@@ -51,6 +45,24 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				'type' => 'checkbox',
 				'label' => __( 'Show Clear button', 'gravityview' ),
 				'value' => false,
+			),
+			'search_fields' => array(
+				'type' => 'hidden',
+				'label' => '',
+				'class' => 'gv-search-fields-value',
+				'value' => '[{"field":"search_all","input":"input_text"}]', // Default: Search Everything text box
+			),
+			'search_mode' => array(
+				'type' => 'radio',
+				'full_width' => true,
+				'label' => esc_html__( 'Search Mode', 'gravityview' ),
+				'desc' => __('Should search results match all search fields, or any?'),
+				'value' => 'any',
+				'class' => 'hide-if-js',
+				'options' => array(
+					'any' => esc_html__( 'Match Any Fields', 'gravityview' ),
+					'all' => esc_html__( 'Match All Fields', 'gravityview' ),
+				),
 			),
 		);
 		parent::__construct( esc_html__( 'Search Bar', 'gravityview' ), 'search_bar', $default_values, $settings );
