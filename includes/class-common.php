@@ -214,6 +214,24 @@ class GVCommon {
 					}
 				}
 
+				/** @since 1.14 */
+				if( 'list' === $field['type'] && !empty( $field['enableColumns'] ) ) {
+
+					foreach ( (array)$field['choices'] as $key => $input ) {
+
+						$input_id = sprintf( '%d.%d', $field['id'], $key ); // {field_id}.{column_key}
+
+						$fields[ $input_id ] = array(
+							'label'       => rgar( $input, 'text' ),
+							'customLabel' => '',
+							'parent'      => $field,
+							'type'        => rgar( $field, 'type' ),
+							'adminLabel'  => rgar( $field, 'adminLabel' ),
+							'adminOnly'   => rgar( $field, 'adminOnly' ),
+						);
+					}
+				}
+
 				/**
 				 * @since 1.8
 				 */

@@ -45,7 +45,7 @@ class GravityView_API {
 
 					$input = GFFormsModel::get_input( $field_object, $field['id'] );
 
-					// This is a complex field, with lables on a per-input basis
+					// This is a complex field, with labels on a per-input basis
 					if( $input ) {
 
 						// Does the input have a custom label on a per-input basis? Otherwise, default label.
