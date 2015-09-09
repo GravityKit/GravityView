@@ -385,8 +385,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 
 
-		// search mode is 'ANY' by default
-		$mode = 'any';
+		// Get search mode passed in URL
+		$mode = in_array( rgget( 'mode' ), array( 'any', 'all' ) ) ? esc_attr( rgget( 'mode' ) ) : 'any';
 
 		// get the other search filters
 		foreach ( $_GET as $key => $value ) {
@@ -699,6 +699,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$gravityview_view->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this, $widget_args );
 
 		$gravityview_view->search_layout = ! empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal';
+
+		/** @since 1.14 */
+		$gravityview_view->search_mode = ! empty( $widget_args['search_mode'] ) ? $widget_args['search_mode'] : 'any';
 
 		$custom_class = ! empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
 
