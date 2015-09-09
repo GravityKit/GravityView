@@ -35,6 +35,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				'type' => 'hidden',
 				'label' => '',
 				'class' => 'gv-search-fields-value',
+				'value' => '[{"field":"search_all","input":"input_text"}]', // Default: Search Everything text box
 			),
 			'search_layout' => array(
 				'type' => 'radio',
