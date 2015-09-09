@@ -632,6 +632,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * @return type
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
+		/** @var GravityView_View $gravityview_view */
 		$gravityview_view = GravityView_View::getInstance();
 
 		if ( empty( $gravityview_view ) ) {
@@ -702,9 +703,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		do_action( 'gravityview_log_debug', sprintf( '%s[render_frontend] Calculated Search Fields: ', get_class( $this ) ), $search_fields );
 
 		/**
-		 * Modify what fields are shown. The order of the fields in the $search_filters array controls the order as displayed in the search bar widget.
+		 * @filter `gravityview_widget_search_filters` Modify what fields are shown. The order of the fields in the $search_filters array controls the order as displayed in the search bar widget.
 		 * @param array $search_fields Array of search filters with `key`, `label`, `value`, `type` keys
-		 * @param $this Current widget object
+		 * @param GravityView_Widget_Search $this Current widget object
 		 * @param array $widget_args Args passed to this method. {@since 1.8}
 		 * @var array
 		 */
