@@ -72,7 +72,7 @@
 		/**
 		 * [Specific for Search WP Widget]
 		 * Calculate the widget target and reset the view fields and the DOM target to insert the settings table
-		 * @param  object e event
+		 * @param  {jQuery} obj event
 		 */
 		resetWidgetTarget: function( obj ) {
 			gvSearchWidget.widgetTarget = obj.closest('div.widget').find( 'div.'+ gvSearchWidget.wrapClass );
@@ -84,7 +84,7 @@
 		/**
 		 * [Specific for Search WP Widget]
 		 * Reset Widget target and removes the settings table
-		 * @param  object e event
+		 * @param  {jQuery} obj event
 		 */
 		resetWidgetData: function( obj ) {
 			gvSearchWidget.resetWidgetTarget( obj );
@@ -94,7 +94,7 @@
 		/**
 		 * [Specific for Search WP Widget]
 		 * Capture the widget slidedown and call to render the widget settings content
-		 * @param  object e event
+		 * @param  {jQuery} e event
 		 */
 		openWidget: function( e ) {
 			var target = $(e.target),
@@ -115,7 +115,8 @@
 		/**
 		 * [Specific for Search WP Widget]
 		 * Refreshes the Widget table settings after saving
-		 * @param  object e event
+		 * @param  {jQuery} e event
+		 * @param  {jQuery} widget jQuery widget DOM
 		 */
 		refreshWidget: function( e, widget ) {
 
@@ -130,7 +131,7 @@
 		/**
 		 * [Specific for View Search Widget]
 		 * Capture the widget dialog and call to render the widget settings content
-		 * @param  object e event
+		 * @param  {jQuery} e event
 		 */
 		openDialog: function( e ) {
 			e.preventDefault();
@@ -143,7 +144,7 @@
 
 		/**
 		 * Add a search field to the table
-		 * @param  object e event
+		 * @param  {jQuery} e event
 		 */
 		addField: function(e) {
 			e.preventDefault();
@@ -169,7 +170,7 @@
 
 		/**
 		 * Remove a search field to the table
-		 * @param  object e event
+		 * @param  {jQuery} e event
 		 */
 		removeField: function(e) {
 			e.preventDefault();
@@ -191,7 +192,7 @@
 
 				gvSearchWidget.updateAvailableFields();
 
-				gvSearchWidget.styleRow( table, table_row_count );
+				gvSearchWidget.styleRow( table );
 			});
 
 			return false;
@@ -200,7 +201,7 @@
 
 		/**
 		 * Render search fields table (includes a pre-loader animation)
-		 * @param  {jQuery DOM object} parent The dialog div object
+		 * @param  {jQuery} parent The dialog div object
 		 */
 		renderUI: function( parent ) {
 
@@ -218,8 +219,10 @@
 				return;
 			}
 
+			$gvloading = $('#gv-loading');
+
 			// Is this dialog already rendered before & not loading fields again
-			if( $('table', gvSearchWidget.widgetTarget ).length && $('#gv-loading').length < 1 ) {
+			if( $('table', gvSearchWidget.widgetTarget ).length && $gvloading.length < 1 ) {
 				return;
 			}
 
@@ -240,9 +243,8 @@
 				gvSearchWidget.widgetTarget.find('.gv-setting-container-search_fields').after( table );
 			}
 
-			gvSearchWidget.widgetTarget.find('.gv-setting-container-search_fields').after( table );
+			gvSearchWidget.toggleSearchMode();
 
-			//
 			gvSearchWidget.widgetTarget.find('table tbody').sortable({
 				start: function( event, ui ) {
 					$( ui.item ).removeClass( 'alt' );
@@ -251,12 +253,12 @@
 
 			gvSearchWidget.updateAvailableFields();
 
-			$('#gv-loading').remove();
+			$gvloading.remove();
 		},
 
 		/**
 		 * Add alt classes on table sort
-		 * @param  {jQuery event|DOM object} e_or_object
+		 * @param  {jQuery} e_or_object
 		 * @return {void}
 		 */
 		zebraStripe: function() {
@@ -316,8 +318,8 @@
 
 		/**
 		 * Add row to the table object
-		 * @param {jQuery DOM object} table  The table DOM object
-		 * @param {jQuery DOM object}  row   Table row object after which the new row will be added
+		 * @param {jQuery} table  The table DOM object
+		 * @param {jQuery}  row   Table row object after which the new row will be added
 		 * @param {object} curr  Configured values for the row ( field and input )
 		 */
 		addRow: function( table, row, curr ) {
@@ -371,7 +373,7 @@
 
 			var table_row_count = $( 'tbody tr', gvSearchWidget.widgetTarget ).length,
 				$search_mode = $( 'input[name*="search_mode"]', gvSearchWidget.widgetTarget ),
-				$search_mode_container = $search_mode.parents('.gv-setting-container'),
+				$search_mode_container = $search_mode.parentsUntil('div'),
 				has_date_range = ( $( 'option:selected[value="date_range"]', gvSearchWidget.widgetTarget ).length > 0 );
 
 			if( has_date_range ) {
@@ -393,23 +395,24 @@
 			} else {
 				$search_mode_container.fadeOut('fast');
 			}
+
+			delete( table_row_count, $search_mode, $search_mode_container, has_date_range );
 		},
 
 		/**
 		 * Style the table rows - remove/add sorting icon, zebra stripe
 		 * @param  {object} table Table
-		 * @param  {int} table_row_count Number of rows in the table, if defined.
 		 * @return {[type]}       [description]
 		 */
-		styleRow: function( table, table_row_count ) {
+		styleRow: function( table ) {
 
-			table_row_count = table_row_count || $( 'tbody tr', gvSearchWidget.widgetTarget ).length;
+			table_row_count = $( 'tbody tr', table ).length;
 
-			var sort_icon = $( '.cell-sort .icon', gvSearchWidget.widgetTarget );
+			var sort_icon = $( '.cell-sort .icon', table );
 
 			gvSearchWidget.toggleSearchMode();
 
-			if( table_row_count === 1 ) {
+			if( table_row_count <= 1 ) {
 				sort_icon.fadeOut('fast', function() {
 					$(this).parents('td').addClass('no-sort');
 				});
@@ -597,8 +600,6 @@
 
 		/**
 		 * Update widget config on dialog close
-		 * @param  {object} event
-		 * @param  {[type]} ui    [description]
 		 */
 		updateOnClose: function() {
 

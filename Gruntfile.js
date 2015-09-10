@@ -95,7 +95,7 @@ module.exports = function(grunt) {
 			},
 			extension_js: {
 				files: ['includes/widgets/**/*.js','!includes/widgets/**/*.min.js'],
-				tasks: ['uglify:searchExt']
+				tasks: ['uglify:searchExt','newer:jshint']
 			},
 			templates: {
 				files: ['templates/css/**/*.scss','!templates/css/**/*.css'],
