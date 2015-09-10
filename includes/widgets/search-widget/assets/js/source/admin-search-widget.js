@@ -604,6 +604,9 @@
 
 			var configs = [];
 
+			// Reset
+			$( 'input[name*="search_mode"]', gvSearchWidget.widgetTarget ).attr( 'disabled', null );
+
 			//loop throught table rows
 			gvSearchWidget.widgetTarget.find('table tr.gv-search-field-row').each( function() {
 				var row = {};
