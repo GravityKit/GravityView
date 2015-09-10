@@ -314,7 +314,7 @@
 		addRow: function( table, row, curr ) {
 
 			var rowString = $('<tr class="gv-search-field-row new-row hide-if-js" />')
-				.append('<td class="cell-sort"><span class="icon gv-icon-caret-up-down" /></td>')
+				.append('<td class="cell-sort"><span class="icon gv-icon-caret-up-down" style="display:none;" /></td>')
 				.append('<td class="cell-search-fields">'+ gvSearchWidget.getSelectFields() +'</td>')
 				.append('<td class="cell-input-types"><select class="gv-search-inputs" /></td>')
 				.append('<td class="cell-add-remove"><a href="#addSearchField" class="dashicons dashicons-plus-alt" /><a href="#removeSearchField" class="dashicons dashicons-dismiss" /></td>');
