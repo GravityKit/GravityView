@@ -232,7 +232,13 @@
 				gvSearchWidget.populateRows( table, fields );
 			}
 
-			gvSearchWidget.toggleSearchMode();
+			if( gvSearchWidget.widgetTarget.is('.gv-widget-search-fields') ) {
+				// WP Widget
+				gvSearchWidget.widgetTarget.append( table );
+			} else {
+				// GV widget
+				gvSearchWidget.widgetTarget.find('.gv-setting-container-search_fields').after( table );
+			}
 
 			gvSearchWidget.widgetTarget.find('.gv-setting-container-search_fields').after( table );
 
