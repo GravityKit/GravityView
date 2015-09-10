@@ -46,6 +46,9 @@
 				// [View, WP widget] hook to update row input types
 				.on( 'change', "." + wrapClass +" select.gv-search-fields", gvSearchWidget.updateRow )
 
+				// Change Search Mode when date_range is selected
+				.on( 'change', "." + wrapClass +" select.gv-search-inputs", gvSearchWidget.toggleSearchMode )
+
 				// [View, WP widget] add alt class to table when sorting
 				.on('sortcreate sortupdate sort', '.'+ wrapClass +' table', gvSearchWidget.zebraStripe )
 
@@ -360,9 +363,24 @@
 		 */
 		toggleSearchMode: function() {
 
-			var table_row_count = $( 'tbody tr', gvSearchWidget.widgetTarget ).length;
+			var table_row_count = $( 'tbody tr', gvSearchWidget.widgetTarget ).length,
+				$search_mode = $( 'input[name*="search_mode"]', gvSearchWidget.widgetTarget ),
+				$search_mode_container = $search_mode.parents('.gv-setting-container'),
+				has_date_range = ( $( 'option:selected[value="date_range"]', gvSearchWidget.widgetTarget ).length > 0 );
 
-			var $search_mode_container = $( 'input[name*="search_mode"]', gvSearchWidget.widgetTarget ).parents('.gv-setting-container');
+			if( has_date_range ) {
+				$search_mode.filter(':checked').not(':disabled').attr( 'data-original-value', function() {
+					return $( this ).attr( 'value' );
+				});
+				$search_mode.val( ['all'] );
+				$search_mode_container.find(':input' ).attr('disabled', 'disabled');
+			} else {
+				$search_mode_container.find(':input' ).attr('disabled', null );
+				$search_mode.filter('[data-original-value]' ).val( function() {
+					$( this ).attr( 'checked', 'checked' );
+					return [ $( this ).attr('value') ];
+				});
+			}
 
 			if( table_row_count > 1 ) {
 				$search_mode_container.show();
