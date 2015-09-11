@@ -974,6 +974,13 @@
 		 * @return {void}
 		 */
 		enable_publish: function () {
+
+			/**
+			 * Added in ~ WP 3.8
+			 * @see https://github.com/WordPress/WordPress/blob/master/wp-admin/js/post.js#L365-L367
+			 */
+			$( document ).trigger( 'autosave-enable-buttons.edit-post' );
+
 			// Restore saving after settings are generated
 			$( '#publishing-action #publish' ).prop( 'disabled', null ).removeClass( 'button-primary-disabled' );
 		},
@@ -983,6 +990,13 @@
 		 * @return {void}
 		 */
 		disable_publish: function () {
+
+			/**
+			 * Added in ~ WP 3.8
+			 * @see https://github.com/WordPress/WordPress/blob/master/wp-admin/js/post.js#L363-L364
+			 */
+			$( document ).trigger( 'autosave-disable-buttons.edit-post' );
+
 			$( '#publishing-action #publish' ).prop( 'disabled', 'disabled' ).addClass( 'button-primary-disabled' );
 		},
 
