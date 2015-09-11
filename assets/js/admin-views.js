@@ -22,6 +22,10 @@
 		// Checks if the execution is on a Start Fresh context
 		startFreshStatus: false,
 
+		/**
+		 * @since 1.14
+		 * @var int The width of the modal dialogs to use for field and widget settings
+		 */
 		dialogWidth: 650,
 
 		init: function () {
