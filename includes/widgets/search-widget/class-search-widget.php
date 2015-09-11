@@ -149,6 +149,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			'nonce' => wp_create_nonce( 'gravityview_ajaxsearchwidget' ),
 			'label_nofields' => esc_html__( 'No search fields configured yet.', 'gravityview' ),
 			'label_addfield' => esc_html__( 'Add Search Field', 'gravityview' ),
+			'label_label' => esc_html__( 'Label', 'gravityview' ),
 			'label_searchfield' => esc_html__( 'Search Field', 'gravityview' ),
 			'label_inputtype' => esc_html__( 'Input Type', 'gravityview' ),
 			'input_labels' => json_encode( $input_labels ),
@@ -219,11 +220,28 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		$output = '<select class="gv-search-fields">';
 
-		$output .= '<option value="search_all" ' . selected( 'search_all', $current, false ) . ' data-inputtypes="text">' . esc_html__( 'Search Everything', 'gravityview' ) . '</option>';
-		$output .= '<option value="entry_date" ' . selected( 'entry_date', $current, false ) . ' data-inputtypes="date">' . esc_html__( 'Entry Date', 'gravityview' ) . '</option>';
-		$output .= '<option value="entry_id" ' . selected( 'entry_id', $current, false ) . ' data-inputtypes="text">' . esc_html__( 'Entry ID', 'gravityview' ) . '</option>';
-		$output .= '<option value="created_by" ' . selected( 'created_by', $current, false ) . ' data-inputtypes="select">' . esc_html__( 'Entry Creator', 'gravityview' ) . '</option>';
+		$custom_fields = array(
+			'search_all' => array(
+				'text' => esc_html__( 'Search Everything', 'gravityview' ),
+				'type' => 'text',
+			),
+			'entry_date' => array(
+				'text' => esc_html__( 'Entry Date', 'gravityview' ),
+				'type' => 'date',
+			),
+			'entry_id' => array(
+				'text' => esc_html__( 'Entry ID', 'gravityview' ),
+				'type' => 'text',
+			),
+			'created_by' => array(
+				'text' => esc_html__( 'Entry Creator', 'gravityview' ),
+				'type' => 'select',
+			)
+		);
 
+		foreach( $custom_fields as $custom_field_key => $custom_field ) {
+			$output .= sprintf( '<option value="%s" %s data-inputtypes="%s" data-placeholder="%s">%s</option>', $custom_field_key, selected( $custom_field_key, $current, false ), $custom_field['type'], self::get_field_label( array('field' => $custom_field_key ) ), $custom_field['text'] );
+		}
 
 		if ( ! empty( $fields ) ) {
 
@@ -653,20 +671,26 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// prepare fields
 		foreach ( $search_fields as $k => $field ) {
 
+			$updated_field = $field;
+
+			if ( in_array( $field['input'], array( 'date', 'date_range' ) ) ) {
+				$has_date = true;
+			}
+
+			$updated_field = $this->get_search_filter_details( $updated_field );
+
 			switch ( $field['field'] ) {
 
 				case 'search_all':
-					$search_fields[ $k ]['label'] = __( 'Search Entries:', 'gravityview' );
-					$search_fields[ $k ]['key'] = 'search_all';
-					$search_fields[ $k ]['input'] = 'search_all';
-					$search_fields[ $k ]['value'] = esc_attr( stripslashes_deep( rgget( 'gv_search' ) ) );
+					$updated_field['key'] = 'search_all';
+					$updated_field['input'] = 'search_all';
+					$updated_field['value'] = esc_attr( stripslashes_deep( rgget( 'gv_search' ) ) );
 					break;
 
 				case 'entry_date':
-					$search_fields[ $k ]['label'] = __( 'Filter by date:', 'gravityview' );
-					$search_fields[ $k ]['key'] = 'entry_date';
-					$search_fields[ $k ]['input'] = 'entry_date';
-					$search_fields[ $k ]['value'] = array(
+					$updated_field['key'] = 'entry_date';
+					$updated_field['input'] = 'entry_date';
+					$updated_field['value'] = array(
 						'start' => esc_attr( stripslashes_deep( rgget( 'gv_start' ) ) ),
 						'end' => esc_attr( stripslashes_deep( rgget( 'gv_end' ) ) ),
 					);
@@ -674,30 +698,20 @@ class GravityView_Widget_Search extends GravityView_Widget {
 					break;
 
 				case 'entry_id':
-					$search_fields[ $k ]['label'] = __( 'Entry ID:', 'gravityview' );
-					$search_fields[ $k ]['key'] = 'entry_id';
-					$search_fields[ $k ]['input'] = 'entry_id';
-					$search_fields[ $k ]['value'] = esc_attr( stripslashes_deep( rgget( 'gv_id' ) ) );
+					$updated_field['key'] = 'entry_id';
+					$updated_field['input'] = 'entry_id';
+					$updated_field['value'] = esc_attr( stripslashes_deep( rgget( 'gv_id' ) ) );
 					break;
 
 				case 'created_by':
-					$search_fields[ $k ]['label'] = __( 'Submitted by:', 'gravityview' );
-					$search_fields[ $k ]['key'] = 'created_by';
-					$search_fields[ $k ]['name'] = 'gv_by';
-					$search_fields[ $k ]['input'] = $field['input'];
-					$search_fields[ $k ]['value'] = esc_attr( stripslashes_deep( rgget( 'gv_by' ) ) );
-					$search_fields[ $k ]['choices'] = self::get_created_by_choices();
+					$updated_field['key'] = 'created_by';
+					$updated_field['name'] = 'gv_by';
+					$updated_field['value'] = esc_attr( stripslashes_deep( rgget( 'gv_by' ) ) );
+					$updated_field['choices'] = self::get_created_by_choices();
 					break;
-
-
-				default:
-					if ( in_array( $field['input'], array( 'date', 'date_range' ) ) ) {
-						$has_date = true;
-					}
-					$search_fields[ $k ] = $this->get_search_filter_details( $field );
-					break;
-
 			}
+
+			$search_fields[ $k ] = $updated_field;
 		}
 
 		do_action( 'gravityview_log_debug', sprintf( '%s[render_frontend] Calculated Search Fields: ', get_class( $this ) ), $search_fields );
@@ -778,30 +792,51 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 	/**
 	 * Get the label for a search form field
-	 * @param  array $field      Field setting as sent by the GV configuration - has `field` and `input` (input type) keys
+	 * @param  array $field      Field setting as sent by the GV configuration - has `field`, `input` (input type), and `label` keys
 	 * @param  array $form_field Form field data, as fetched by `gravityview_get_field()`
 	 * @return string             Label for the search form
 	 */
-	private function get_field_label( $field, $form_field ) {
+	private static function get_field_label( $field, $form_field = array() ) {
 
-		$label = isset( $form_field['label'] ) ? $form_field['label'] : '';
+		$label = rgget( 'label', $field );
 
-		// If this is a field input, not a field
-		if ( strpos( $field['field'], '.' ) > 0 && ! empty( $form_field['inputs'] ) ) {
+		if( '' === $label ) {
 
-			// Get the label for the field in question, which returns an array
-			$items = wp_list_filter( $form_field['inputs'], array( 'id' => $field['field'] ) );
+			$label = isset( $form_field['label'] ) ? $form_field['label'] : '';
 
-			// Get the item with the `label` key
-			$values = wp_list_pluck( $items, 'label' );
+			switch( $field['field'] ) {
+				case 'search_all':
+					$label = __( 'Search Entries:', 'gravityview' );
+					break;
+				case 'entry_date':
+					$label = __( 'Filter by date:', 'gravityview' );
+					break;
+				case 'entry_id':
+					$label = __( 'Entry ID:', 'gravityview' );
+					break;
+				case 'created_by':
+					$label = __( 'Submitted by:', 'gravityview' );
+					break;
+				case 'is_fulfilled':
+					$label = __( 'Is Fulfilled', 'gravityview' );
+					break;
+				default:
+					// If this is a field input, not a field
+					if ( strpos( $field['field'], '.' ) > 0 && ! empty( $form_field['inputs'] ) ) {
 
-			// There will only one item in the array, but this is easier
-			foreach ( $values as $value ) {
-				$label = $value;
-				break;
+						// Get the label for the field in question, which returns an array
+						$items = wp_list_filter( $form_field['inputs'], array( 'id' => $field['field'] ) );
+
+						// Get the item with the `label` key
+						$values = wp_list_pluck( $items, 'label' );
+
+						// There will only one item in the array, but this is easier
+						foreach ( $values as $value ) {
+							$label = $value;
+							break;
+						}
+					}
 			}
-		} elseif ( 'is_fulfilled' === $field['field'] ) {
-			$label = __( 'Is Fulfilled', 'gravityview' );
 		}
 
 		/**
@@ -838,21 +873,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$filter = array(
 			'key' => $field['field'],
 			'name' => $name,
-			'label' => $this->get_field_label( $field, $form_field ),
+			'label' => self::get_field_label( $field, $form_field ),
 			'input' => $field['input'],
 			'value' => $value,
 			'type' => $form_field['type'],
 		);
-
-		// assign the correct label in case it is a boolean field
-		if ( 'checkbox' === $form_field['type'] && false !== strpos( $filter['key'], '.' ) && ! empty( $form_field['inputs'] ) ) {
-			foreach ( $form_field['inputs'] as $input ) {
-				if ( $input['id'] == $filter['key'] ) {
-					$filter['label'] = $input['label'];
-					break;
-				}
-			}
-		}
 
 		// collect choices
 		if ( 'post_category' === $form_field['type'] && ! empty( $form_field['displayAllCategories'] ) && empty( $form_field['choices'] ) ) {

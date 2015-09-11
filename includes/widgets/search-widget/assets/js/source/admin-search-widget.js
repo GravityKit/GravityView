@@ -19,7 +19,7 @@
 		wrapClass: null,
 
 		// holds the current widget settings DOM object
-		widgetTarget: null,
+		widgetTarget: $('.gv-dialog-options'),
 
 		selectFields : null,
 
@@ -32,6 +32,7 @@
 			var wp_widget_id = gvSearchWidget.wp_widget_id;
 
 			$('body')
+
 				// [View] hook on all the open settings buttons for search_bar widget
 				.on( 'dialogopen', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.openDialog )
 
@@ -259,6 +260,7 @@
 			$gvloading.remove();
 		},
 
+
 		/**
 		 * Add alt classes on table sort
 		 * @param  {jQuery} e_or_object
@@ -303,6 +305,7 @@
 							'<tr>' +
 								'<th class="cell-sort">&nbsp;</th>' +
 								'<th class="cell-search-fields">' + gvSearchVar.label_searchfield +'</th>' +
+			                    '<th class="cell-input-label">' + gvSearchVar.label_label +'</th>' +
 								'<th class="cell-input-types">' + gvSearchVar.label_inputtype +'</th>' +
 								'<th class="cell-add-remove">&nbsp;</th>' +
 							'</tr>' +
@@ -330,6 +333,7 @@
 			var rowString = $('<tr class="gv-search-field-row new-row hide-if-js" />')
 				.append('<td class="cell-sort"><span class="icon gv-icon-caret-up-down" style="display:none;" /></td>')
 				.append('<td class="cell-search-fields">'+ gvSearchWidget.getSelectFields() +'</td>')
+				.append('<td class="cell-input-label"><input type="text" class="widefat gv-search-labels" /></td>')
 				.append('<td class="cell-input-types"><select class="gv-search-inputs" /></td>')
 				.append('<td class="cell-add-remove"><a href="#addSearchField" class="dashicons dashicons-plus-alt" /><a href="#removeSearchField" class="dashicons dashicons-dismiss" /></td>');
 
@@ -348,8 +352,15 @@
 					$(this).find('select.gv-search-fields').val( curr.field );
 				}
 
+				// Set search label
+				if( curr !== null ) {
+					$(this).find('.cell-input-label input' ).val( curr.label );
+				}
+
 				// update the available input types
 				gvSearchWidget.updateSelectInput( $(this) );
+
+				gvSearchWidget.updatePlaceholder( $(this) );
 
 				// Set saved input type value
 				// !! Do not try to optimize this line. This needs to come after 'gvSearchWidget.updateSelectInput()'
@@ -365,6 +376,20 @@
 			});
 
 			gvSearchWidget.styleRow( table );
+		},
+
+		/**
+		 * Update the label text input placeholder value, so users know what the default label is
+		 * @since 1.14
+		 * @param $row
+		 */
+		updatePlaceholder: function( $row ) {
+
+			var $label_input = $row.find('.cell-input-label input');
+			var $placeholder_option = $row.find('select.gv-search-fields option').filter(':selected' );
+			var placeholder_text = $placeholder_option.attr('data-placeholder') ? $placeholder_option.attr('data-placeholder') : $placeholder_option.text();
+
+			$label_input.attr( 'placeholder', placeholder_text );
 		},
 
 		/**
@@ -399,7 +424,6 @@
 				$search_mode_container.fadeOut('fast');
 			}
 
-			delete( table_row_count, $search_mode, $search_mode_container, has_date_range );
 		},
 
 		/**
@@ -434,9 +458,10 @@
 		 * @return {[type]} [description]
 		 */
 		updateRow: function(e) {
-			var row = $(this).parents('tr');
-			gvSearchWidget.updateSelectInput( row );
+			var $row = $(this).parents('tr');
+			gvSearchWidget.updateSelectInput( $row );
 			gvSearchWidget.updateAvailableFields();
+			gvSearchWidget.updatePlaceholder( $row );
 		},
 
 		/**
@@ -603,8 +628,9 @@
 
 		/**
 		 * Update widget config on dialog close
+		 * @param {jQuery} e Event
 		 */
-		updateOnClose: function() {
+		updateOnClose: function( e ) {
 
 			var configs = [];
 
@@ -613,9 +639,11 @@
 
 			//loop throught table rows
 			gvSearchWidget.widgetTarget.find('table tr.gv-search-field-row').each( function() {
-				var row = {};
-				row.field = $(this).find('select.gv-search-fields').val();
-				row.input = $(this).find('select.gv-search-inputs').val();
+				var row = {
+					'field': $( this ).find( 'select.gv-search-fields' ).val(),
+					'input': $( this ).find( 'select.gv-search-inputs' ).val(),
+					'label': $( this ).find( 'input.gv-search-labels' ).val()
+				};
 				configs.push( row );
 			});
 
