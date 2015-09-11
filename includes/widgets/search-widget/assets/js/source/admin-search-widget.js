@@ -66,7 +66,10 @@
 
 			// Refresh widget searchable settings after saving or adding the widget
 			// Bind to document because WP triggers document, not body
-			$(document).on( 'widget-added widget-updated', gvSearchWidget.refreshWidget );
+			$(document)
+				.on( 'widget-added widget-updated', gvSearchWidget.refreshWidget )
+				// [View] If submitting a View by hitting enter inside a Widget, make sure it saves
+				.on( 'submit', 'form#post', gvSearchWidget.updateOnClose );
 		},
 
 		/**
