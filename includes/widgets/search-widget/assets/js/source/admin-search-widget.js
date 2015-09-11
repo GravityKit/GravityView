@@ -401,7 +401,7 @@
 
 			var table_row_count = $( 'tbody tr', gvSearchWidget.widgetTarget ).length,
 				$search_mode = $( 'input[name*="search_mode"]', gvSearchWidget.widgetTarget ),
-				$search_mode_container = $search_mode.parentsUntil('div'),
+				$search_mode_container = $search_mode.parents('.gv-setting-container'),
 				has_date_range = ( $( 'option:selected[value="date_range"]', gvSearchWidget.widgetTarget ).length > 0 );
 
 			if( has_date_range ) {
