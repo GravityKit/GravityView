@@ -362,7 +362,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 * @return int
 	 */
 	public function getViewId() {
-		return $this->view_id;
+		return absint( $this->view_id );
 	}
 
 	/**
