@@ -22,6 +22,8 @@
 		// Checks if the execution is on a Start Fresh context
 		startFreshStatus: false,
 
+		dialogWidth: 650,
+
 		init: function () {
 
 			// short tag
@@ -422,9 +424,9 @@
 				resizable: false,
 				width: function () {
 
-					// If the window is wider than 550px, use 550
-					if ( $( window ).width() > 550 ) {
-						return 550;
+					// If the window is wider than {vcfg.dialogWidth}px, use vcfg.dialogWidth
+					if ( $( window ).width() > vcfg.dialogWidth ) {
+						return vcfg.dialogWidth;
 					}
 
 					// Otherwise, return the window width, less 10px
@@ -645,13 +647,13 @@
 			parent.find( ".gv-template-preview" ).dialog( {
 				dialogClass: 'wp-dialog gv-dialog',
 				appendTo: $( "#gravityview_select_template" ),
-				width: 550,
+				width: viewConfiguration.dialogWidth,
 				open: function () {
 					$( '<div class="gv-overlay" />' ).prependTo( '#wpwrap' );
 				},
 				close: function () {
 					$( this ).dialog( "option", "appendTo", parent );
-					$( '#wpwrap > .gv-overlay' ).fadeOut( 'fast', function () {
+					$( '#wpwrap' ).find('> .gv-overlay' ).fadeOut( 'fast', function () {
 						$( this ).remove();
 					} );
 				},
