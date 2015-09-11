@@ -840,20 +840,20 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 
 		/**
-		 * Modify the label for a search field
-		 * @param string $label Existing label text
-		 * @param array $form_field Gravity Forms field array, as returned by `GFFormsModel::get_field()`
+		 * @filter `gravityview_search_field_label` Modify the label for a search field. Supports returning HTML
+		 * @param[in,out] string $label Existing label text, sanitized.
+		 * @param[in] array $form_field Gravity Forms field array, as returned by `GFFormsModel::get_field()`
 		 */
-		$label = apply_filters( 'gravityview_search_field_label', $label, $form_field );
+		$label = apply_filters( 'gravityview_search_field_label', esc_attr( $label ), $form_field );
 
-		return esc_attr( $label );
+		return $label;
 	}
 
 	/**
 	 * Prepare search fields to frontend render with other details (label, field type, searched values)
 	 *
-	 * @param type $field
-	 * @return type
+	 * @param array $field
+	 * @return array
 	 */
 	private function get_search_filter_details( $field ) {
 
