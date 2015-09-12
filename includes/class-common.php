@@ -557,9 +557,10 @@ class GVCommon {
 	 * @access public
 	 * @param mixed $entry_id
 	 * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
+	 * @param boolean $check_entry_display Check whether the entry is visible for the current View configuration. Default: true. {@since 1.14}
 	 * @return object or false
 	 */
-	public static function get_entry( $entry_slug, $force_allow_ids = false ) {
+	public static function get_entry( $entry_slug, $force_allow_ids = false, $check_entry_display = true ) {
 
 		if ( class_exists( 'GFAPI' ) && ! empty( $entry_slug ) ) {
 
@@ -601,8 +602,10 @@ class GVCommon {
 			// fetch the entry
 			$entry = GFAPI::get_entry( $entry_id );
 
-			// Is the entry allowed
-			$entry = self::check_entry_display( $entry );
+			if( $check_entry_display ) {
+				// Is the entry allowed
+				$entry = self::check_entry_display( $entry );
+			}
 
 			return $entry;
 
