@@ -742,8 +742,8 @@ class GVCommon {
 
 			$k = $filter['key'];
 
-			if ( 'created_by' === $k ) {
-				$field_value = $entry['created_by'];
+			if ( in_array( $k, array( 'created_by', 'payment_status' ) ) ) {
+				$field_value = $entry[ $k ];
 				$field = null;
 			} else {
 				$field = self::get_field( $form, $k );
