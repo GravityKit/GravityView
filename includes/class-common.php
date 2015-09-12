@@ -1287,16 +1287,20 @@ class GVCommon {
 	 * Get WordPress users with reasonable limits set
 	 *
 	 * @param string $context Where are we using this information (e.g. change_entry_creator, search_widget ..)
+	 * @param array $args Arguments to modify the user query. See get_users() {@since 1.14}
 	 * @return array Array of WP_User objects.
 	 */
-	public static function get_users( $context = 'change_entry_creator' ) {
+	public static function get_users( $context = 'change_entry_creator', $args = array() ) {
 
-		$get_users_settings = array(
+		$default_args = array(
 			'number' => 2000,
 			'orderby' => 'display_name',
 			'order' => 'ASC',
 			'fields' => array( 'ID', 'display_name', 'user_login', 'user_nicename' )
 		);
+
+		// Merge in the passed arg
+		$get_users_settings = wp_parse_args( $args, $default_args );
 
 		/**
 		 * @filter `gravityview/get_users/{$context}` There are issues with too many users using [get_users()](http://codex.wordpress.org/Function_Reference/get_users) where it breaks the select. We try to keep it at a reasonable number. \n
