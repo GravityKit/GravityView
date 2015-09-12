@@ -1284,7 +1284,7 @@ class GVCommon {
 	}
 
 	/**
-	 * Get WordPress users, by default limited to 750 users for performance reasons
+	 * Get WordPress users with reasonable limits set
 	 *
 	 * @param string $context Where are we using this information (e.g. change_entry_creator, search_widget ..)
 	 * @return array Array of WP_User objects.
@@ -1292,9 +1292,10 @@ class GVCommon {
 	public static function get_users( $context = 'change_entry_creator' ) {
 
 		$get_users_settings = array(
-			'number' => 750,
+			'number' => 2000,
 			'orderby' => 'display_name',
-			'order' => 'ASC'
+			'order' => 'ASC',
+			'fields' => array( 'ID', 'display_name', 'user_login', 'user_nicename' )
 		);
 
 		/**
