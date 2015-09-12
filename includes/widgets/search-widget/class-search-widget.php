@@ -907,7 +907,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		 * filter gravityview/get_users/search_widget
 		 * @see \GVCommon::get_users
 		 */
-		$users = GVCommon::get_users( 'search_widget' );
+		$users = GVCommon::get_users( 'search_widget', array( 'fields' => array( 'ID', 'display_name' ) ) );
 
 		$choices = array();
 		foreach ( $users as $user ) {
