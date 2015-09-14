@@ -103,7 +103,7 @@ function gravityview_get_entries( $form_ids = null, $passed_criteria = null, &$t
  * @param mixed $entry_id
  * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
  * @param boolean $check_entry_display Check whether the entry is visible for the current View configuration. Default: true {@since 1.14}
- * @return object or false
+ * @return array|boolean
  */
 function gravityview_get_entry( $entry_slug, $force_allow_ids = false, $check_entry_display = true ) {
 	return GVCommon::get_entry( $entry_slug, $force_allow_ids, $check_entry_display );
