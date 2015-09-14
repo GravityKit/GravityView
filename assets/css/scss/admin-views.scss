@@ -724,6 +724,11 @@ hr {
 		font-size: 1.1em;
 		clear: left;
 
+		// Hide search mode by default
+		&.gv-setting-container-search_mode {
+		  display: none;
+		}
+
 		&:last-child {
 			// border-bottom: none;
 			padding-bottom: .5em;
@@ -763,10 +768,11 @@ hr {
 
 }
 
-.gv-widget-search-fields, .gv-dialog-options {
+.gv-widget-search-fields, .postbox .gv-dialog-options {
 
 	table {
 		padding-bottom: 15px;
+	  	margin: .5em auto; // Give rows some breathing room around other settings
 
 		td, th {
 			text-align: left;

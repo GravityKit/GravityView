@@ -211,10 +211,10 @@ class GravityView_Render_Settings {
 			switch( $option['type'] ) {
 				// Hide hidden fields
 				case 'hidden':
-					$output .= '<div class="gv-setting-container screen-reader-text">'. $field_output . '</div>';
+					$output .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . ' screen-reader-text">'. $field_output . '</div>';
 					break;
 				default:
-					$output .= '<div class="gv-setting-container">'. $field_output .'</div>';
+					$output .= '<div class="gv-setting-container gv-setting-container-'. esc_attr( $key ) . '">'. $field_output .'</div>';
 			}
 		}
 
