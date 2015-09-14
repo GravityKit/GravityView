@@ -22,6 +22,12 @@
 		// Checks if the execution is on a Start Fresh context
 		startFreshStatus: false,
 
+		/**
+		 * @since 1.14
+		 * @var int The width of the modal dialogs to use for field and widget settings
+		 */
+		dialogWidth: 650,
+
 		init: function () {
 
 			// short tag
@@ -422,9 +428,9 @@
 				resizable: false,
 				width: function () {
 
-					// If the window is wider than 550px, use 550
-					if ( $( window ).width() > 550 ) {
-						return 550;
+					// If the window is wider than {vcfg.dialogWidth}px, use vcfg.dialogWidth
+					if ( $( window ).width() > vcfg.dialogWidth ) {
+						return vcfg.dialogWidth;
 					}
 
 					// Otherwise, return the window width, less 10px
@@ -645,13 +651,13 @@
 			parent.find( ".gv-template-preview" ).dialog( {
 				dialogClass: 'wp-dialog gv-dialog',
 				appendTo: $( "#gravityview_select_template" ),
-				width: 550,
+				width: viewConfiguration.dialogWidth,
 				open: function () {
 					$( '<div class="gv-overlay" />' ).prependTo( '#wpwrap' );
 				},
 				close: function () {
 					$( this ).dialog( "option", "appendTo", parent );
-					$( '#wpwrap > .gv-overlay' ).fadeOut( 'fast', function () {
+					$( '#wpwrap' ).find('> .gv-overlay' ).fadeOut( 'fast', function () {
 						$( this ).remove();
 					} );
 				},
@@ -974,6 +980,13 @@
 		 * @return {void}
 		 */
 		enable_publish: function () {
+
+			/**
+			 * Added in ~ WP 3.8
+			 * @see https://github.com/WordPress/WordPress/blob/master/wp-admin/js/post.js#L365-L367
+			 */
+			$( document ).trigger( 'autosave-enable-buttons.edit-post' );
+
 			// Restore saving after settings are generated
 			$( '#publishing-action #publish' ).prop( 'disabled', null ).removeClass( 'button-primary-disabled' );
 		},
@@ -983,6 +996,13 @@
 		 * @return {void}
 		 */
 		disable_publish: function () {
+
+			/**
+			 * Added in ~ WP 3.8
+			 * @see https://github.com/WordPress/WordPress/blob/master/wp-admin/js/post.js#L363-L364
+			 */
+			$( document ).trigger( 'autosave-disable-buttons.edit-post' );
+
 			$( '#publishing-action #publish' ).prop( 'disabled', 'disabled' ).addClass( 'button-primary-disabled' );
 		},
 
