@@ -20,6 +20,26 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
+= 1.14 (PRE RELEASE) =
+* Added: Show the value of a single column of a "Multiple Columns" List field
+* Added: Search Bar now supports custom label text
+* Fixed: Field containers were being rendered even when empty
+* Fixed: Widgets were not being displayed when using page builders and themes that pre-process shortcodes
+* Fixed: Don't show "Width %" setting when in Single Entry configuration
+* Fixed: Error in extension class that assumes GravityView is active
+* Fixed: Add check for `{all_fields_display_empty}` Gravity Forms merge tag
+* Fixed: Hide metabox until View Data Source is configured
+* Fixed: Search Bar "Link" input type wasn't highlighting properly based on the value of the filter
+* Added: Support for plugin banner images in the plugin changelog screen
+* Added: Display the roles of the entry creator by using `{created_by:roles}` Merge Tag
+* Tweak: Updated default Search Bar configuration to be a single input with "Search Everything"
+* Tweak: Sort user dropdown by display name instead of username
+* Tweak: Reduce size of AJAX responses
+* Tweak: Add "Template" column to the All Views list table - now you can better see what template is being used
+* Tweak: Remove redundant close icon for field and widget settings
+* Tweak: When adding notes via GravityView, set the note type to `gravityview` to allow for better searchability
+* Added: Automated code testing
+
 = 1.13.1 on August 26 =
 * Fixed: Potential XSS security issue. **Please update.**
 * Fixed: The cache was not being reset properly for entry changes, including:
