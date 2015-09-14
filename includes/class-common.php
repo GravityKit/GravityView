@@ -558,7 +558,7 @@ class GVCommon {
 	 * @param mixed $entry_id
 	 * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
 	 * @param boolean $check_entry_display Check whether the entry is visible for the current View configuration. Default: true. {@since 1.14}
-	 * @return object or false
+	 * @return array|boolean
 	 */
 	public static function get_entry( $entry_slug, $force_allow_ids = false, $check_entry_display = true ) {
 
@@ -607,7 +607,7 @@ class GVCommon {
 				$entry = self::check_entry_display( $entry );
 			}
 
-			return $entry;
+			return is_wp_error( $entry ) ? false : $entry;
 
 		}
 
