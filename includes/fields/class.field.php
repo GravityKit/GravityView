@@ -12,6 +12,18 @@ abstract class GravityView_Field {
 	 */
 	var $name;
 
+	/**
+	 * @var string The field ID being requested
+	 * @since 1.14
+	 */
+	protected $_field_id = '';
+
+	/**
+	 * @var string Field options to be rendered
+	 * @since 1.14
+	 */
+	protected $_field_options = array();
+
 	function __construct() {
 
 		// Modify the field options based on the name of the field type
@@ -104,6 +116,10 @@ abstract class GravityView_Field {
 	 * @return [type]                     [description]
 	 */
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+
+		$this->_field_options = $field_options;
+		$this->_field_id = $field_id;
+
 		return $field_options;
 	}
 

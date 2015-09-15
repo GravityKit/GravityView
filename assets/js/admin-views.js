@@ -904,6 +904,7 @@
 				field_label: newField.find( '.gv-field-label' ).attr( 'data-original-title' ),
 				field_type: addButton.attr( 'data-objecttype' ),
 				input_type: newField.attr( 'data-inputtype' ),
+				form_id: vcfg.currentFormId,
 				nonce: gvGlobals.nonce,
 			};
 
