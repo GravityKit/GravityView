@@ -93,7 +93,7 @@ class GravityView_Field_Time extends GravityView_Field {
 				break;
 			// Full time field
 			case 0:
-				return ( $time_format === '12' ) ? 'h:iA' : 'H:i';
+				return ( $time_format === '12' ) ? 'h:i A' : 'H:i';
 				break;
 		}
 	}
