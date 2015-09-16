@@ -32,6 +32,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Hide metabox until View Data Source is configured
 * Fixed: Search Bar "Link" input type wasn't highlighting properly based on the value of the filter
 * Fixed: Improved speed of getting users for Search Bar and GravityView Search Widgets with "Submitted by" fields, and in the Edit Entry screen (the Change Entry Creator dropdown)
+* Fixed: Conflict with other icon fonts in the Dashboard
 * Added: Support for plugin banner images in the plugin changelog screen
 * Added: Display the roles of the entry creator by using `{created_by:roles}` Merge Tag
 * Tweak: Updated default Search Bar configuration to be a single input with "Search Everything"
