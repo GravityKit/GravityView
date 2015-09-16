@@ -192,9 +192,9 @@ class GravityView_Roles_Capabilities {
 				break;
 		}
 
-		// If role is set, return empty array if not exists
+		// If role is set, return caps array
 		if( $role ) {
-			return isset( $capabilities[ $role ] ) ? $capabilities[ $role ] : array();
+			return $capabilities;
 		}
 
 		// By default, return multi-dimensional array of all caps
