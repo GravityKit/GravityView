@@ -257,21 +257,57 @@ class GravityView_Welcome {
 				<h2 class="subtitle" style="text-align: center;"><?php esc_html_e('What&rsquo;s New', 'gravityview' ); ?></h2>
 
 				<div class="feature-section col two-col">
-
 					<div class="col col-1">
-						<div class="media-container"><img src="<?php echo plugins_url( 'assets/images/screenshots/format-number.png', GRAVITYVIEW_FILE ); ?>" alt="Format number"></div>
-						<h4 class="higher">Number Field Formatting</h4>
-						<p>Now you can choose to use thousands separators (or not), and define decimal precision!</p>
+						<div class="media-container"><img src="<?php echo plugins_url( 'assets/images/screenshots/search-bar-label.png', GRAVITYVIEW_FILE ); ?>" alt="Search bar labels"></div>
+						<h4 class="higher">Custom Search Labels &amp; Search Mode</h4>
+						<p>You can now modify the search labels from the Search Bar configuration, and you can now choose whether you want your search to match <em>all</em> of the search field filters, or <em>any</em>.</p>
 					</div>
 
 					<div class="col col-2 last-feature">
-						<div class="media-container" style="min-height:143px;"><img src="<?php echo plugins_url( 'assets/images/screenshots/toolbar.png', GRAVITYVIEW_FILE ); ?>" alt="Toolbar link to Edit View"></div>
-						<h4 class="higher">Edit View in the Toolbar</h4>
-						<p>Editing a View from the front of your site used to take a bunch of clicks. Now a link to edit the embedded View is just a click away in the Toolbar.</p>
+						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/clock.png', GRAVITYVIEW_FILE ); ?>" alt="Clocks"></div>
+						<h4 class="higher">Sort by Time</h4>
+						<p>Now you can sort time fields! Why is that so exciting? Because Gravity Forms doesn't natively support sorting by time!</p>
+
+						<div class="media-container" style="margin-top: 2em; min-height:80px;"><img src="<?php echo plugins_url( 'assets/images/screenshots/single-list-column.png', GRAVITYVIEW_FILE ); ?>" alt="Insert single list column"></div>
+						<h4 class="higher">Display a single column from a Multiple-Column List field</h4>
+						<p>Why is sorting by time being featured? Because Gravity Forms doesn't natively support sorting by time, but you can with GravityView!</p>
 					</div>
 				</div>
 
 				<hr />
+
+				<h3>1.14 on September 16</h3>
+
+				<ul>
+					<li>Added: Search Bar now supports custom label text</li>
+					<li>Added: Show the value of a single column of a "Multiple Columns" List field</li>
+					<li>Added: Sorting by time now works. Why is this "Added" and not "Fixed"? Because Gravity Forms doesn't natively support sorting by time!</li>
+					<li>Added: Display the roles of the entry creator by using <code>{created_by:roles}</code> Merge Tag</li>
+					<li>Fixed: Field containers were being rendered even when empty</li>
+					<li>Fixed: Widgets were not being displayed when using page builders and themes that pre-process shortcodes</li>
+					<li>Fixed: Don't show "Width %" setting when in Single Entry configuration</li>
+					<li>Fixed: Error in extension class that assumes GravityView is active</li>
+					<li>Fixed: Add check for <code>{all_fields_display_empty}</code> Gravity Forms merge tag</li>
+					<li>Fixed: Hide metabox until View Data Source is configured</li>
+					<li>Fixed: Search Bar "Link" input type wasn't highlighting properly based on the value of the filter</li>
+					<li>Fixed: Improved speed of getting users for Search Bar and GravityView Search Widgets with "Submitted by" fields, and in the Edit Entry screen (the Change Entry Creator dropdown)</li>
+					<li>Fixed: Conflict with other icon fonts in the Dashboard</li>
+					<li>Fixed: Allow HTML in Source URL "Link Text" field setting</li>
+					<li>Fixed: Gravity Forms User Registration Addon conflicts
+						<ul>
+							<li>When editing an entry, an user's roles and display name were reset to the Addon's feed configuration settings</li>
+							<li>Users receive "Password Updated" emails in WordPress 4.3+, even if the password wasn't changed</li>
+						</ul>
+					</li>
+					<li>Tweak: Support for plugin banner images in the plugin changelog screen</li>
+					<li>Tweak: Updated default Search Bar configuration to be a single input with "Search Everything"</li>
+					<li>Tweak: Sort user dropdown by display name instead of username</li>
+					<li>Tweak: Reduce size of AJAX responses</li>
+					<li>Tweak: Add "Template" column to the All Views list table - now you can better see what template is being used</li>
+					<li>Tweak: Remove redundant close icon for field and widget settings</li>
+					<li>Tweak: When adding notes via GravityView, set the note type to <code>gravityview</code> to allow for better searchability</li>
+					<li>Added: Automated code testing</li>
+				</ul>
 
 				<h3>1.13.1 on August 26</h3>
 

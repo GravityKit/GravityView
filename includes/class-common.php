@@ -506,7 +506,7 @@ class GVCommon {
 
 			/**
 			 * @filter `gravityview_pre_get_entries` Define entries to be used before GFAPI::get_entries() is called
-			 * @since 1.13.2
+			 * @since 1.14
 			 * @param  null $return If you want to override GFAPI::get_entries() and define entries yourself, tap in here.
 			 * @param  array $criteria The final search criteria used to generate the request to `GFAPI::get_entries()`
 			 * @param array $passed_criteria The original search criteria passed to `GVCommon::get_entries()`
@@ -1085,9 +1085,9 @@ class GVCommon {
 
 		/**
 		 * @filter `gravityview/common/numeric_types` What types of fields are numeric?
-		 * @param array $numeric_types Fields that are numeric. Default: `[ number ]`
+		 * @param array $numeric_types Fields that are numeric. Default: `[ number, time ]`
 		 */
-		$numeric_types = apply_filters( 'gravityview/common/numeric_types', array( 'number' ) );
+		$numeric_types = apply_filters( 'gravityview/common/numeric_types', array( 'number', 'time' ) );
 
 		if ( ! is_array( $form ) && ! is_array( $field ) ) {
 			$form = self::get_form( $form );

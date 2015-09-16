@@ -56,7 +56,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				'type' => 'radio',
 				'full_width' => true,
 				'label' => esc_html__( 'Search Mode', 'gravityview' ),
-				'desc' => __('Should search results match all search fields, or any?'),
+				'desc' => __('Should search results match all search fields, or any?', 'gravityview'),
 				'value' => 'any',
 				'class' => 'hide-if-js',
 				'options' => array(

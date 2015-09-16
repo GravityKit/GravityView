@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-08-27 00:08+0000\n"
+"PO-Revision-Date: 2015-09-16 23:13+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/katzwebservices/gravityview/language/ro_RO/)\n"
 "MIME-Version: 1.0\n"
@@ -133,7 +133,7 @@ msgid "Filter &amp; Sort"
 msgstr ""
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:177
-#: includes/class-admin-views.php:316
+#: includes/class-admin-views.php:345
 msgid "Data Source"
 msgstr "Sursă de Date"
 
@@ -186,16 +186,16 @@ msgstr ""
 msgid "GravityView requires Javascript to be enabled."
 msgstr "GravityView necesită ca JavaScript să fie activată."
 
-#: includes/admin/metaboxes/views/select-template.php:37
+#: includes/admin/metaboxes/views/select-template.php:33
 msgid "Buy Now"
 msgstr "Cumpără acum"
 
-#: includes/admin/metaboxes/views/select-template.php:39
-#: includes/widgets/search-widget/class-search-widget.php:112
+#: includes/admin/metaboxes/views/select-template.php:35
+#: includes/widgets/search-widget/class-search-widget.php:125
 msgid "Select"
 msgstr "Selectare"
 
-#: includes/admin/metaboxes/views/select-template.php:41
+#: includes/admin/metaboxes/views/select-template.php:37
 msgid "View a live demo of this preset"
 msgstr ""
 
@@ -295,13 +295,13 @@ msgid "Insert View"
 msgstr "Inserează Vizualizare"
 
 #: includes/class-admin-add-shortcode.php:130
-#: includes/class-admin-views.php:994
+#: includes/class-admin-views.php:1025
 #: includes/extensions/edit-entry/partials/form-buttons.php:26
 msgid "Cancel"
 msgstr "Anulare"
 
 #: includes/class-admin-add-shortcode.php:176
-#: includes/class-admin-views.php:998
+#: includes/class-admin-views.php:1029
 msgid "Loading&hellip;"
 msgstr "Încărcare date&hellip;"
 
@@ -441,194 +441,198 @@ msgid ""
 "%ssanitize_title_with_dashes()%s function."
 msgstr ""
 
-#: includes/class-admin-views.php:226
+#: includes/class-admin-views.php:250
 msgid "Not connected."
 msgstr "Neconectat."
 
-#: includes/class-admin-views.php:235
+#: includes/class-admin-views.php:259
 msgid "The connected form can not be found; it may no longer exist."
 msgstr "Formularul conectat nu poate fi găsit; este posibil să nu mai existe."
 
-#: includes/class-admin-views.php:267
+#: includes/class-admin-views.php:296
 msgid "Edit Form"
 msgstr "Editare Formular"
 
-#: includes/class-admin-views.php:272
+#: includes/class-admin-views.php:301
 msgid "Entries"
 msgstr ""
 
-#: includes/class-admin-views.php:277 includes/class-admin.php:91
+#: includes/class-admin-views.php:306 includes/class-admin.php:91
 #: includes/class-settings.php:237 includes/class-settings.php:263
 msgid "Settings"
 msgstr "Configurări"
 
-#: includes/class-admin-views.php:277
+#: includes/class-admin-views.php:306
 msgid "Edit settings for this form"
 msgstr ""
 
-#: includes/class-admin-views.php:282
+#: includes/class-admin-views.php:311
 msgid "Preview Form"
 msgstr "Previzualizare Formular"
 
-#: includes/class-admin-views.php:282
+#: includes/class-admin-views.php:311
 msgid "Preview this form"
 msgstr ""
 
-#: includes/class-admin-views.php:501
+#: includes/class-admin-views.php:347
+msgid "Template"
+msgstr ""
+
+#: includes/class-admin-views.php:532
 msgid "+ Add All Fields"
 msgstr "+ Adaugă Toate Câmpurile"
 
-#: includes/class-admin-views.php:502
+#: includes/class-admin-views.php:533
 msgid "Add all the available fields at once."
 msgstr ""
 
-#: includes/class-admin-views.php:552
-#: includes/widgets/search-widget/class-search-widget.php:211
+#: includes/class-admin-views.php:583
+#: includes/widgets/search-widget/class-search-widget.php:233
 msgid "Entry ID"
 msgstr "ID Înregistrare"
 
-#: includes/class-admin-views.php:554
+#: includes/class-admin-views.php:585
 msgid "The unique ID of the entry."
 msgstr ""
 
-#: includes/class-admin-views.php:557
-#: includes/widgets/search-widget/class-search-widget.php:210
+#: includes/class-admin-views.php:588
+#: includes/widgets/search-widget/class-search-widget.php:229
 msgid "Entry Date"
 msgstr "Dată Înregistrare"
 
-#: includes/class-admin-views.php:558
+#: includes/class-admin-views.php:589
 msgid "The date the entry was created."
 msgstr ""
 
-#: includes/class-admin-views.php:562
+#: includes/class-admin-views.php:593
 msgid "Source URL"
 msgstr "URL Sursă"
 
-#: includes/class-admin-views.php:564
+#: includes/class-admin-views.php:595
 msgid "The URL of the page where the form was submitted."
 msgstr ""
 
-#: includes/class-admin-views.php:567
+#: includes/class-admin-views.php:598
 msgid "User IP"
 msgstr "IP Utilizator"
 
-#: includes/class-admin-views.php:569
+#: includes/class-admin-views.php:600
 msgid "The IP Address of the user who created the entry."
 msgstr ""
 
-#: includes/class-admin-views.php:572
+#: includes/class-admin-views.php:603
 msgid "User"
 msgstr "Utilizator"
 
-#: includes/class-admin-views.php:574
+#: includes/class-admin-views.php:605
 msgid "Details of the logged-in user who created the entry (if any)."
 msgstr ""
 
-#: includes/class-admin-views.php:581 includes/fields/custom.php:22
+#: includes/class-admin-views.php:612 includes/fields/custom.php:22
 #: includes/widgets/class-gravityview-widget-custom-content.php:30
 #: includes/widgets/class-gravityview-widget-custom-content.php:45
 msgid "Custom Content"
 msgstr ""
 
-#: includes/class-admin-views.php:583
+#: includes/class-admin-views.php:614
 msgid "Insert custom text or HTML."
 msgstr ""
 
-#: includes/class-admin-views.php:590
+#: includes/class-admin-views.php:621
 msgid "Other Entries"
 msgstr ""
 
-#: includes/class-admin-views.php:592
+#: includes/class-admin-views.php:623
 msgid "Display other entries created by the entry creator."
 msgstr ""
 
-#: includes/class-admin-views.php:600
+#: includes/class-admin-views.php:631
 msgid "Link to Entry"
 msgstr "Legătură către Înregistrare"
 
-#: includes/class-admin-views.php:601
+#: includes/class-admin-views.php:632
 msgid "A dedicated link to the single entry with customizable text."
 msgstr ""
 
-#: includes/class-admin-views.php:697
+#: includes/class-admin-views.php:728
 msgid "Add Widget"
 msgstr "Adăugă Widget"
 
-#: includes/class-admin-views.php:699
+#: includes/class-admin-views.php:730
 msgid "Add Field"
 msgstr "Adaugă Câmp"
 
-#: includes/class-admin-views.php:781
+#: includes/class-admin-views.php:812
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr "\"+ %s\" sau trage aici %ss existent."
 
-#: includes/class-admin-views.php:849
+#: includes/class-admin-views.php:880
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:850
+#: includes/class-admin-views.php:881
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:922
+#: includes/class-admin-views.php:953
 msgid "Ask GravityView Support"
 msgstr ""
 
-#: includes/class-admin-views.php:923 includes/class-admin-views.php:927
+#: includes/class-admin-views.php:954 includes/class-admin-views.php:958
 msgid "GravityView Support"
 msgstr ""
 
-#: includes/class-admin-views.php:924
+#: includes/class-admin-views.php:955
 msgid ""
 "If you have any questions, send us an email and we will get respond to you "
 "as soon as possible."
 msgstr ""
 
-#: includes/class-admin-views.php:925
+#: includes/class-admin-views.php:956
 msgid "Your Name"
 msgstr ""
 
-#: includes/class-admin-views.php:926
+#: includes/class-admin-views.php:957
 msgid ""
 "Question or comment? We are online and ready to answer! If you don't hear "
 "back from us, you can send your question to %s"
 msgstr ""
 
-#: includes/class-admin-views.php:992
+#: includes/class-admin-views.php:1023
 msgid "Enter View name here"
 msgstr "Introdu aici numele Vizualizarii"
 
-#: includes/class-admin-views.php:993
+#: includes/class-admin-views.php:1024
 msgid "Close"
 msgstr "Închide"
 
-#: includes/class-admin-views.php:995
+#: includes/class-admin-views.php:1026
 msgid "Continue"
 msgstr "Continuă"
 
-#: includes/class-admin-views.php:996
+#: includes/class-admin-views.php:1027
 msgid "Ok"
 msgstr "Ok"
 
-#: includes/class-admin-views.php:997
+#: includes/class-admin-views.php:1028
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr "Eroare la crearea Vizualizării pentru tine. Verifică configurările sau contactează asistența GravityView."
 
-#: includes/class-admin-views.php:999
+#: includes/class-admin-views.php:1030
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1000
+#: includes/class-admin-views.php:1031
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1001
+#: includes/class-admin-views.php:1032
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -669,19 +673,19 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:424
+#: includes/class-admin-welcome.php:490
 msgid "GravityView is brought to you by:"
 msgstr "Gravity Forms vă este adus de către:"
 
-#: includes/class-admin-welcome.php:449
+#: includes/class-admin-welcome.php:515
 msgid "Contributors"
 msgstr "Contribuitori:"
 
-#: includes/class-admin-welcome.php:470
+#: includes/class-admin-welcome.php:536
 msgid "Want to contribute?"
 msgstr "Dorești să contribui?"
 
-#: includes/class-admin-welcome.php:471
+#: includes/class-admin-welcome.php:537
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -794,7 +798,7 @@ msgid "Map It"
 msgstr ""
 
 #: includes/class-change-entry-creator.php:62
-#: includes/lib/EDD_SL_Plugin_Updater.php:327
+#: includes/lib/EDD_SL_Plugin_Updater.php:334
 msgid "Error"
 msgstr ""
 
@@ -810,84 +814,84 @@ msgstr ""
 msgid "Change Entry Creator:"
 msgstr ""
 
-#: includes/class-common.php:251
+#: includes/class-common.php:269
 msgid "Post ID"
 msgstr ""
 
-#: includes/class-common.php:259
+#: includes/class-common.php:277
 msgid "Payment Status"
 msgstr ""
 
-#: includes/class-common.php:264
+#: includes/class-common.php:282
 msgid "Payment Date"
 msgstr ""
 
-#: includes/class-common.php:269
+#: includes/class-common.php:287
 msgid "Payment Amount"
 msgstr ""
 
-#: includes/class-common.php:274
+#: includes/class-common.php:292
 msgid "Payment Method"
 msgstr ""
 
-#: includes/class-common.php:279
-#: includes/widgets/search-widget/class-search-widget.php:787
+#: includes/class-common.php:297
+#: includes/widgets/search-widget/class-search-widget.php:821
 msgid "Is Fulfilled"
 msgstr ""
 
-#: includes/class-common.php:284
+#: includes/class-common.php:302
 msgid "Transaction ID"
 msgstr ""
 
-#: includes/class-common.php:289
+#: includes/class-common.php:307
 msgid "Transaction Type"
 msgstr ""
 
-#: includes/class-common.php:301
+#: includes/class-common.php:319
 msgid "Quiz Score Total"
 msgstr ""
 
-#: includes/class-common.php:303
+#: includes/class-common.php:321
 msgid "Displays the number of correct Quiz answers the user submitted."
 msgstr ""
 
-#: includes/class-common.php:306
+#: includes/class-common.php:324
 msgid "Quiz Percentage Grade"
 msgstr ""
 
-#: includes/class-common.php:308
+#: includes/class-common.php:326
 msgid "Displays the percentage of correct Quiz answers the user submitted."
 msgstr ""
 
-#: includes/class-common.php:311
+#: includes/class-common.php:329
 msgid "Quiz Letter Grade"
 msgstr ""
 
-#: includes/class-common.php:313
+#: includes/class-common.php:331
 msgid ""
 "Displays the Grade the user achieved based on Letter Grading configured in "
 "the Quiz Settings."
 msgstr ""
 
-#: includes/class-common.php:316
+#: includes/class-common.php:334
 msgid "Quiz Pass/Fail"
 msgstr ""
 
-#: includes/class-common.php:318
+#: includes/class-common.php:336
 msgid ""
 "Displays either Passed or Failed based on the Pass/Fail settings configured "
 "in the Quiz Settings."
 msgstr ""
 
-#: includes/class-common.php:953 includes/class-data.php:565
+#: includes/class-common.php:989 includes/class-data.php:565
 msgid "Default"
 msgstr "Implicit"
 
-#: includes/class-common.php:996 includes/class-data.php:566
+#: includes/class-common.php:1032 includes/class-data.php:566
 msgid "Date Created"
 msgstr "Data creării"
 
-#: includes/class-common.php:1092
+#: includes/class-common.php:1128
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -1041,7 +1045,7 @@ msgid "Define a default search value for the View"
 msgstr ""
 
 #: includes/class-data.php:627
-#: includes/widgets/search-widget/class-search-widget.php:139
+#: includes/widgets/search-widget/class-search-widget.php:153
 msgid "Search Field"
 msgstr ""
 
@@ -1176,15 +1180,15 @@ msgid ""
 "plugin."
 msgstr ""
 
-#: includes/class-gravityview-extension.php:343
+#: includes/class-gravityview-extension.php:349
 msgid "Could not activate the %s Extension; GravityView is not active."
 msgstr "Nu se poate activa Extensia %s; GravityView nu este activat."
 
-#: includes/class-gravityview-extension.php:347
+#: includes/class-gravityview-extension.php:353
 msgid "The %s Extension requires GravityView Version %s or newer."
 msgstr "Extensia %s necesită Versiunea GravityView %s sau mai recentă."
 
-#: includes/class-gravityview-extension.php:351
+#: includes/class-gravityview-extension.php:357
 msgid ""
 "The %s Extension requires PHP Version %s or newer. Please ask your host to "
 "upgrade your server's PHP."
@@ -1650,7 +1654,7 @@ msgid ""
 msgstr ""
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:159
-#: includes/fields/class.field.php:53
+#: includes/fields/class.field.php:65
 msgid "Open link in a new tab or window?"
 msgstr ""
 
@@ -1712,37 +1716,37 @@ msgstr ""
 msgid "Display a \"Map It\" link below the address"
 msgstr ""
 
-#: includes/fields/class.field.php:25
+#: includes/fields/class.field.php:37
 msgid "Link to the post"
 msgstr ""
 
-#: includes/fields/class.field.php:26
+#: includes/fields/class.field.php:38
 msgid "Link to the post created by the entry."
 msgstr ""
 
-#: includes/fields/class.field.php:31
+#: includes/fields/class.field.php:43
 msgid "Link to the category or tag"
 msgstr ""
 
-#: includes/fields/class.field.php:32
+#: includes/fields/class.field.php:44
 msgid ""
 "Link to the current category or tag. \"Link to single entry\" must be "
 "unchecked."
 msgstr ""
 
-#: includes/fields/class.field.php:37
+#: includes/fields/class.field.php:49
 msgid "Use the live post data"
 msgstr ""
 
-#: includes/fields/class.field.php:38
+#: includes/fields/class.field.php:50
 msgid "Instead of using the entry data, instead use the current post data."
 msgstr ""
 
-#: includes/fields/class.field.php:43
+#: includes/fields/class.field.php:55
 msgid "Override Date Format"
 msgstr "Înlocuire Format Dată"
 
-#: includes/fields/class.field.php:44
+#: includes/fields/class.field.php:56
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
 msgstr "Definește cum se va afișa data (folosind %sthe formatul de dată PHP%s)"
 
@@ -1961,20 +1965,20 @@ msgstr ""
 msgid "Open link in the same window?"
 msgstr ""
 
-#: includes/lib/EDD_SL_Plugin_Updater.php:180
+#: includes/lib/EDD_SL_Plugin_Updater.php:179
 msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" "
 "class=\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
 msgstr ""
 
-#: includes/lib/EDD_SL_Plugin_Updater.php:187
+#: includes/lib/EDD_SL_Plugin_Updater.php:186
 msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" "
 "class=\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a "
 "href=\"%4$s\">update now</a>."
 msgstr ""
 
-#: includes/lib/EDD_SL_Plugin_Updater.php:327
+#: includes/lib/EDD_SL_Plugin_Updater.php:334
 msgid "You do not have permission to install plugin updates"
 msgstr ""
 
@@ -2076,96 +2080,116 @@ msgstr ""
 msgid "Search form for searching entries."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:42
+#: includes/widgets/search-widget/class-search-widget.php:37
 msgid "Search Layout"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:45
+#: includes/widgets/search-widget/class-search-widget.php:40
 msgid "Horizontal"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:46
+#: includes/widgets/search-widget/class-search-widget.php:41
 msgid "Vertical"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:51
+#: includes/widgets/search-widget/class-search-widget.php:46
 msgid "Show Clear button"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:55
+#: includes/widgets/search-widget/class-search-widget.php:58
+msgid "Search Mode"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:59
+msgid "Should search results match all search fields, or any?"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:63
+msgid "Match Any Fields"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:64
+msgid "Match All Fields"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:68
 msgid "Search Bar"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:110
+#: includes/widgets/search-widget/class-search-widget.php:123
 msgid "Text"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:111
+#: includes/widgets/search-widget/class-search-widget.php:124
 msgid "Date"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:113
+#: includes/widgets/search-widget/class-search-widget.php:126
 msgid "Select (multiple values)"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:114
+#: includes/widgets/search-widget/class-search-widget.php:127
 msgid "Radio"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:115
-#: includes/widgets/search-widget/class-search-widget.php:116
+#: includes/widgets/search-widget/class-search-widget.php:128
+#: includes/widgets/search-widget/class-search-widget.php:129
 msgid "Checkbox"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:117
+#: includes/widgets/search-widget/class-search-widget.php:130
 msgid "Links"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:118
+#: includes/widgets/search-widget/class-search-widget.php:131
 msgid "Date range"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:137
+#: includes/widgets/search-widget/class-search-widget.php:150
 msgid "No search fields configured yet."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:138
+#: includes/widgets/search-widget/class-search-widget.php:151
 msgid "Add Search Field"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:140
+#: includes/widgets/search-widget/class-search-widget.php:152
+msgid "Label"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:154
 msgid "Input Type"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:209
+#: includes/widgets/search-widget/class-search-widget.php:225
 msgid "Search Everything"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:212
+#: includes/widgets/search-widget/class-search-widget.php:237
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:645
+#: includes/widgets/search-widget/class-search-widget.php:809
 msgid "Search Entries:"
 msgstr "Caută Înregistrări:"
 
-#: includes/widgets/search-widget/class-search-widget.php:652
+#: includes/widgets/search-widget/class-search-widget.php:812
 msgid "Filter by date:"
 msgstr "Filtrare după dată:"
 
-#: includes/widgets/search-widget/class-search-widget.php:663
+#: includes/widgets/search-widget/class-search-widget.php:815
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:670
+#: includes/widgets/search-widget/class-search-widget.php:818
 msgid "Submitted by:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:919
+#: includes/widgets/search-widget/class-search-widget.php:961
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:964
+#: includes/widgets/search-widget/class-search-widget.php:1006
 msgid "Show a different month"
 msgstr ""
 
@@ -2179,11 +2203,11 @@ msgstr "Dată de început"
 msgid "End date"
 msgstr "Data de finalizare"
 
-#: includes/widgets/search-widget/templates/search-field-link.php:21
+#: includes/widgets/search-widget/templates/search-field-link.php:25
 msgid "Show only:"
 msgstr ""
 
-#: includes/widgets/search-widget/templates/widget-search.php:50
+#: includes/widgets/search-widget/templates/widget-search.php:51
 msgid "Search"
 msgstr "Caută"
 
@@ -2308,12 +2332,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr ""
 
-#: includes/class-frontend-views.php:1121
+#: includes/class-frontend-views.php:1136
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1122
+#: includes/class-frontend-views.php:1137
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""
@@ -2366,27 +2390,27 @@ msgid ""
 "entries displayed in the View."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:959
+#: includes/widgets/search-widget/class-search-widget.php:1001
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "Închide"
 
-#: includes/widgets/search-widget/class-search-widget.php:960
+#: includes/widgets/search-widget/class-search-widget.php:1002
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:961
+#: includes/widgets/search-widget/class-search-widget.php:1003
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:962
+#: includes/widgets/search-widget/class-search-widget.php:1004
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:963
+#: includes/widgets/search-widget/class-search-widget.php:1005
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
