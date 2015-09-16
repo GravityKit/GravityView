@@ -1058,13 +1058,11 @@ class GravityView_frontend {
 				// Sorting by full name, not first, last, etc.
 				if ( floatval( $sort_field_id ) === floor( $sort_field_id ) ) {
 					/**
-					 * Override how to sort when sorting full name.
-					 *
+					 * @filter `gravityview/sorting/full-name` Override how to sort when sorting full name.
 					 * @since 1.7.4
-					 *
-					 * @param string $name_part `first` or `last` (default: `first`)
-					 * @param string $sort_field_id Field used for sorting
-					 * @param int $form_id GF Form ID
+					 * @param[in,out] string $name_part Sort by `first` or `last` (default: `first`)
+					 * @param[in] string $sort_field_id Field used for sorting
+					 * @param[in] int $form_id GF Form ID
 					 */
 					$name_part = apply_filters( 'gravityview/sorting/full-name', 'first', $sort_field_id, $form_id );
 
@@ -1074,6 +1072,17 @@ class GravityView_frontend {
 						$sort_field_id .= '.3';
 					}
 				}
+				break;
+			case 'time':
+
+				/**
+				 * @filter `gravityview/sorting/time` Override how to sort when sorting time
+				 * @see GravityView_Field_Time
+				 * @since 1.14
+				 * @param[in,out] string $name_part Field used for sorting
+				 * @param[in] int $form_id GF Form ID
+				 */
+				$sort_field_id = apply_filters( 'gravityview/sorting/time', $sort_field_id, $form_id );
 				break;
 		}
 
