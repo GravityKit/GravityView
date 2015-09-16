@@ -311,7 +311,7 @@ class GravityView_Admin_ApproveEntries {
 			if( class_exists( 'RGFormsModel' ) ){
 				global $current_user;
       			get_currentuserinfo();
-				RGFormsModel::add_note( $entry_id, $current_user->ID, $current_user->display_name, $note );
+				RGFormsModel::add_note( $entry_id, $current_user->ID, $current_user->display_name, $note, 'gravityview' );
 			}
 
 			/**

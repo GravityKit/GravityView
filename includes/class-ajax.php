@@ -89,6 +89,8 @@ class GravityView_Ajax {
 		do_action( 'gravityview_render_directory_active_areas',  $_POST['template_id'], 'single', '', true );
 		$response['single'] = ob_get_clean();
 
+		$response = array_map( 'gravityview_strip_whitespace', $response );
+
 		exit( json_encode( $response ) );
 	}
 
@@ -137,6 +139,8 @@ class GravityView_Ajax {
 		ob_start();
 		do_action('gravityview_render_active_areas', $template_id, 'field', 'single', $template_areas_single, $presets['fields'] );
 		$response['single'] = ob_get_clean();
+
+		$response = array_map( 'gravityview_strip_whitespace', $response );
 
 		do_action( 'gravityview_log_debug', '[get_preset_fields_config] AJAX Response', $response );
 
@@ -233,6 +237,8 @@ class GravityView_Ajax {
 
 		$response = GravityView_Render_Settings::render_field_options( $post['field_type'], $post['template'], $post['field_id'], $post['field_label'], $post['area'], $input_type, '', '', $context  );
 
+		$response = gravityview_strip_whitespace( $response );
+
 		exit( $response );
 	}
 
@@ -261,6 +267,8 @@ class GravityView_Ajax {
 		}
 
 		$response = gravityview_get_sortable_fields( $form );
+
+		$response = gravityview_strip_whitespace( $response );
 
 		exit( $response );
 	}

@@ -68,7 +68,7 @@ class GravityView_Change_Entry_Creator {
 
     	do_action( 'gravityview_log_debug', 'GravityView_Change_Entry_Creator[assign_new_user_to_lead] - '.$note );
 
-    	RGFormsModel::add_note( $entry['id'], -1, 'GravityView', $note );
+    	RGFormsModel::add_note( $entry['id'], -1, 'GravityView', $note, 'gravityview' );
 
     }
 
@@ -182,7 +182,7 @@ class GravityView_Change_Entry_Creator {
                 $created_by_name = sprintf( $user_format, $created_by_user_data->display_name, $created_by_user_data->ID );
             }
 
-            RGFormsModel::add_note( $entry_id, $current_user->ID, $user_data->display_name, sprintf( __('Changed entry creator from %s to %s', 'gravityview'), $original_name, $created_by_name ) );
+            RGFormsModel::add_note( $entry_id, $current_user->ID, $user_data->display_name, sprintf( __('Changed entry creator from %s to %s', 'gravityview'), $original_name, $created_by_name ), 'gravityview' );
         }
 
     }

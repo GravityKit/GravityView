@@ -90,7 +90,7 @@ class GravityView_Image {
 		$info = pathinfo( $this->src );
 
 		/**
-		 * @filter `gravityview_image_extensions` Extensions that GravityView recognizes as valid images to be shown in an `<img>` tag
+		 * @filter `gravityview_image_extensions` Extensions that GravityView recognizes as valid images to be shown in an `img` tag
 		 * @param array $image_exts Default: `['jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico']`
 		 */
 		$image_exts = apply_filters( 'gravityview_image_extensions', array( 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico' ));

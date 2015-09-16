@@ -362,7 +362,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 * @return int
 	 */
 	public function getViewId() {
-		return $this->view_id;
+		return absint( $this->view_id );
 	}
 
 	/**
@@ -765,6 +765,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 	public function render_widget_hooks( $view_id ) {
 
 		if( empty( $view_id ) || 'single' == gravityview_get_context() ) {
+			do_action( 'gravityview_log_debug', __METHOD__ . ' - Not rendering widgets; single entry' );
 			return;
 		}
 
@@ -788,7 +789,10 @@ class GravityView_View extends Gamajo_Template_Loader {
 		}
 
 		// Prevent being called twice
-		if( did_action( $zone.'_'.$view_id.'_widgets' ) ) { return; }
+		if( did_action( $zone.'_'.$view_id.'_widgets' ) ) {
+			do_action( 'gravityview_log_debug', sprintf( '%s - Not rendering %s; already rendered', __METHOD__ , $zone.'_'.$view_id.'_widgets' ) );
+			return;
+		}
 
 		// TODO Convert to partials
 		?>
@@ -815,8 +819,14 @@ class GravityView_View extends Gamajo_Template_Loader {
 		</div>
 
 		<?php
-		// Prevent being called twice
-		do_action( $zone.'_'.$view_id.'_widgets' );
+
+		/**
+		 * Prevent widgets from being called twice.
+		 * Checking for loop_start prevents themes and plugins that pre-process shortcodes from triggering the action before displaying. Like, ahem, the Divi theme and WordPress SEO plugin
+		 */
+		if( did_action( 'loop_start' ) ) {
+			do_action( $zone.'_'.$view_id.'_widgets' );
+		}
 	}
 
 }

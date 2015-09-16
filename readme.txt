@@ -20,7 +20,24 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-* Added: Filter to disable live chat widget (`gravityview/admin/display_live_chat`)
+= 1.13.1 on August 26 =
+* Fixed: Potential XSS security issue. **Please update.**
+* Fixed: The cache was not being reset properly for entry changes, including:
+	- Starring/unstarring
+	- Moving to/from the trash
+	- Changing entry owner
+	- Being marked as spam
+* Fixed: Delete entry URL not properly passing some parameters (only affecting pages with multiple `[gravityview]` shortcodes)
+* Added: `gravityview/delete-entry/mode` filter. When returning "trash", "Delete Entry" moves entries to the trash instead of permanently deleting them.
+* Added: `gravityview/admin/display_live_chat` filter to disable live chat widget
+* Added: `gravityview/delete-entry/message` filter to modify the "Entry Deleted" message content
+* Tweak: Improved license activation error handling by linking to relevant account functions
+* Tweak: Added settings link to plugin page actions
+* Tweak: Improved code documentation
+* Updated Translations:
+	- Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/)
+	- Turkish translation by [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)
+* New: Released a new [GravityView Codex](http://codex.gravityview.co) for developers
 
 = 1.13 on August 20 =
 * Fixed: Wildcard search broken for Gravity Forms 1.9.12+

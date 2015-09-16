@@ -15,7 +15,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		);
 
 		$widget_display = array(
-			'width' => 400
+			'width' => 650
 		);
 
 		parent::__construct( 'gravityview_search', __( 'GravityView Search', 'gravityview' ), $widget_ops, $widget_display );

@@ -62,7 +62,7 @@ class GravityView_Merge_Tags {
 		if( empty( $matches ) ) {
 
 			// Check for form variables
-			if( !preg_match( '/\{(all_fields(:(.*?))?|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id|embed_url|date_mdy|date_dmy|embed_post:(.*?)|custom_field:(.*?)|user_agent|referer|gv:(.*?)|user:(.*?)|created_by:(.*?))\}/ism', $text ) ) {
+			if( !preg_match( '/\{(all_fields(:(.*?))?|all_fields_display_empty|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id|embed_url|date_mdy|date_dmy|embed_post:(.*?)|custom_field:(.*?)|user_agent|referer|gv:(.*?)|user:(.*?)|created_by:(.*?))\}/ism', $text ) ) {
 				return $text;
 			}
 		}
@@ -171,7 +171,14 @@ class GravityView_Merge_Tags {
 			$full_tag = $match[0];
 			$property = $match[1];
 
-			$value = $entry_creator->get( $property );
+			switch( $property ) {
+				/** @since 1.13.2 */
+				case 'roles':
+					$value = implode( ', ', $entry_creator->roles );
+					break;
+				default:
+					$value = $entry_creator->get( $property );
+			}
 
 			$value = $url_encode ? urlencode( $value ) : $value;
 

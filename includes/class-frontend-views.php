@@ -852,7 +852,10 @@ class GravityView_frontend {
 		// remove not approved entries
 		$search_criteria = self::process_search_only_approved( $args, $search_criteria );
 
-		// Only show active listings
+		/**
+		 * @filter `gravityview_status` Modify entry status requirements to be included in search results.
+		 * @param string $status Default: `active`. Accepts all Gravity Forms entry statuses, including `spam` and `trash`
+		 */
 		$search_criteria['status'] = apply_filters( 'gravityview_status', 'active', $args );
 
 		return $search_criteria;
