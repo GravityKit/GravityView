@@ -36,6 +36,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Allow HTML in Source URL "Link Text" field setting
 * Fixed: Gravity Forms User Registration Addon conflicts
 	- When editing an entry, an user's roles and display name were reset to the Addon's feed configuration settings
+	- Users receive "Password Updated" emails in WordPress 4.3+, even if the password wasn't changed
 * Added: Support for plugin banner images in the plugin changelog screen
 * Added: Display the roles of the entry creator by using `{created_by:roles}` Merge Tag
 * Tweak: Updated default Search Bar configuration to be a single input with "Search Everything"

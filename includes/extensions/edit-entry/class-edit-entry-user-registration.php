@@ -91,9 +91,15 @@ class GravityView_Edit_Entry_User_Registration {
 
         $this->_user_before_update = get_userdata( $entry['created_by'] );
 
+        // The priority is set to 3 so that default priority (10) will still override it
+        add_filter( 'send_password_change_email', '__return_false', 3 );
+        add_filter( 'send_email_change_email', '__return_false', 3 );
+
         // Trigger the User Registration update user method
         GFUser::update_user( $entry, $form, $config );
 
+        remove_filter( 'send_password_change_email', '__return_false', 3 );
+        remove_filter( 'send_email_change_email', '__return_false', 3 );
     }
 
     /**
