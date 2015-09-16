@@ -34,7 +34,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Improved speed of getting users for Search Bar and GravityView Search Widgets with "Submitted by" fields, and in the Edit Entry screen (the Change Entry Creator dropdown)
 * Fixed: Conflict with other icon fonts in the Dashboard
 * Fixed: Allow HTML in Source URL "Link Text" field setting
-* Fixed: When editing an entry, User roles were reset to the Gravity Forms User Registration Addon Feed setting (if enabled)
+* Fixed: Gravity Forms User Registration Addon conflicts
+	- When editing an entry, an user's roles and display name were reset to the Addon's feed configuration settings
 * Added: Support for plugin banner images in the plugin changelog screen
 * Added: Display the roles of the entry creator by using `{created_by:roles}` Merge Tag
 * Tweak: Updated default Search Bar configuration to be a single input with "Search Everything"

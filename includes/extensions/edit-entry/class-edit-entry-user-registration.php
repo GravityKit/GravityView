@@ -24,6 +24,11 @@ class GravityView_Edit_Entry_User_Registration {
 	 */
     protected $loader;
 
+    /**
+     * @var WP_User|null Temporary storage used by restore_user_details()
+     */
+    private $_user_before_update = null;
+
     function __construct( GravityView_Edit_Entry $loader ) {
         $this->loader = $loader;
     }
@@ -40,6 +45,8 @@ class GravityView_Edit_Entry_User_Registration {
 	     */
         if( apply_filters( 'gravityview/edit_entry/user_registration/trigger_update', true ) ) {
             add_action( 'gravityview/edit_entry/after_update' , array( $this, 'update_user' ), 10, 2 );
+
+            add_action( 'gform_user_updated', array( $this, 'restore_user_details' ), 10, 4 );
         }
     }
 
@@ -73,8 +80,6 @@ class GravityView_Edit_Entry_User_Registration {
          */
         $config = GFUser::get_active_config( $form, $entry );
 
-        $config = $this->maybe_prevent_user_role_reset( $config, $form, $entry );
-
         /**
          * @filter `gravityview/edit_entry/user_registration/config` Modify the User Registration Addon feed configuration
          * @since 1.14
@@ -84,41 +89,57 @@ class GravityView_Edit_Entry_User_Registration {
          */
         $config = apply_filters( 'gravityview/edit_entry/user_registration/config', $config, $form, $entry );
 
+        $this->_user_before_update = get_userdata( $entry['created_by'] );
+
         // Trigger the User Registration update user method
         GFUser::update_user( $entry, $form, $config );
 
     }
 
     /**
-     * Prevent GF User Registration Addon from resetting the user role to the feed default
+     * Restore the Display Name and roles of a user after being updated by Gravity Forms User Registration Addon
      *
-     * @since 1.14
-     *
-     * @param array $config Gravity Forms User Registration feed configuration for the form
-     * @param array $form Gravity Forms form array
-     * @param array $entry Gravity Forms entry being edited
-     *
-     * @return array Modified $config array, if $reset_role is enabled
+     * @see GFUser::update_user()
+     * @param int $user_id WP User ID that was updated by Gravity Forms User Registration Addon
+     * @param array $config Gravity Forms User Registration Addon form feed configuration
+     * @param array $entry The Gravity Forms entry that was just updated
+     * @return void
      */
-    private function maybe_prevent_user_role_reset( $config, $form, $entry ) {
+    public function restore_user_details( $user_id = 0, $config = array(), $entry = array() ) {
 
-        /**
-         * @filter `gravityview/edit_entry/user_registration/reset_role` Whether to reset the role to original role specified in the Gravity Forms User Registration Addon feed
-         * By default, Gravity Forms will reset the role to the role specified in the Feed configuration. We disable that by default.
-         * @since 1.14
-         * @param[in,out] boolean $reset_role Whether to reset the role. Default: `false`
-         * @param[in] array $config Gravity Forms User Registration feed configuration for the form
-         * @param[in] array $form Gravity Forms form array
-         * @param[in] array $entry Gravity Forms entry being edited
-         */
-        $reset_role = apply_filters( 'gravityview/edit_entry/user_registration/reset_role', false, $config, $form, $entry );
+        $user_after_update = get_userdata( $user_id );
 
-        // GF checks for a `role` setting in the feed meta. By unsetting that, we prevent them from updating the role.
-        if( false === $reset_role ) {
-            unset( $config['meta']['role'] );
+        $restored_user = $user_after_update;
+
+        // Restore previous display_name
+        $restored_user->display_name = $this->_user_before_update->display_name;
+
+        // Restore previous roles
+        $restored_user->roles = array();
+        foreach( $this->_user_before_update->roles as $role ) {
+            $restored_user->add_role( $role );
         }
 
-        return $config;
+        /**
+         * Modify the user data after updated by Gravity Forms User Registration but before restored by GravityView
+         * @since 1.14
+         * @param WP_User $restored_user The user with restored details about to be updated by wp_update_user()
+         * @param WP_User $user_before_update The user before being updated by Gravity Forms User Registration
+         * @param WP_User $user_after_update The user after being updated by Gravity Forms User Registration
+         * @param array   $entry The Gravity Forms entry that was just updated
+         */
+        $restored_user = apply_filters( 'gravityview/edit_entry/user_registration/restored_user', $restored_user, $this->_user_before_update, $user_after_update, $entry );
+
+        $updated = wp_update_user( $restored_user );
+
+        if( is_wp_error( $updated ) ) {
+            do_action('gravityview_log_error', __METHOD__ . sprintf( ' - There was an error updating user #%d details', $user_id ), $updated );
+        } else {
+            do_action('gravityview_log_debug', __METHOD__ . sprintf( ' - User #%d details restored', $user_id ) );
+        }
+
+        $this->_user_before_update = null;
+        unset( $updated, $restored_user, $user_after_update );
     }
 
 } //end class
