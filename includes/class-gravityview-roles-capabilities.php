@@ -226,3 +226,5 @@ class GravityView_Roles_Capabilities {
 		}
 	}
 }
+
+GravityView_Roles_Capabilities::get_instance();
