@@ -852,7 +852,10 @@ class GravityView_frontend {
 		// remove not approved entries
 		$search_criteria = self::process_search_only_approved( $args, $search_criteria );
 
-		// Only show active listings
+		/**
+		 * @filter `gravityview_status` Modify entry status requirements to be included in search results.
+		 * @param string $status Default: `active`. Accepts all Gravity Forms entry statuses, including `spam` and `trash`
+		 */
 		$search_criteria['status'] = apply_filters( 'gravityview_status', 'active', $args );
 
 		return $search_criteria;
@@ -1055,13 +1058,11 @@ class GravityView_frontend {
 				// Sorting by full name, not first, last, etc.
 				if ( floatval( $sort_field_id ) === floor( $sort_field_id ) ) {
 					/**
-					 * Override how to sort when sorting full name.
-					 *
+					 * @filter `gravityview/sorting/full-name` Override how to sort when sorting full name.
 					 * @since 1.7.4
-					 *
-					 * @param string $name_part `first` or `last` (default: `first`)
-					 * @param string $sort_field_id Field used for sorting
-					 * @param int $form_id GF Form ID
+					 * @param[in,out] string $name_part Sort by `first` or `last` (default: `first`)
+					 * @param[in] string $sort_field_id Field used for sorting
+					 * @param[in] int $form_id GF Form ID
 					 */
 					$name_part = apply_filters( 'gravityview/sorting/full-name', 'first', $sort_field_id, $form_id );
 
@@ -1071,6 +1072,20 @@ class GravityView_frontend {
 						$sort_field_id .= '.3';
 					}
 				}
+				break;
+			case 'list':
+				$sort_field_id = false;
+				break;
+			case 'time':
+
+				/**
+				 * @filter `gravityview/sorting/time` Override how to sort when sorting time
+				 * @see GravityView_Field_Time
+				 * @since 1.14
+				 * @param[in,out] string $name_part Field used for sorting
+				 * @param[in] int $form_id GF Form ID
+				 */
+				$sort_field_id = apply_filters( 'gravityview/sorting/time', $sort_field_id, $form_id );
 				break;
 		}
 
@@ -1254,7 +1269,7 @@ class GravityView_frontend {
 	 * Checks if field (column) is sortable
 	 *
 	 * @param string $field Field settings
-	 * @param $form Gravity Forms form object
+	 * @param array $form Gravity Forms form array
 	 *
 	 * @since 1.7
 	 *
@@ -1262,11 +1277,17 @@ class GravityView_frontend {
 	 */
 	public function is_field_sortable( $field_id = '', $form ) {
 
+		if( is_numeric( $field_id ) ) {
+			$field = GFFormsModel::get_field( $form, $field_id );
+			$field_id = $field->type;
+		}
+
 		$not_sortable = array(
 			'entry_link',
 			'edit_link',
 			'delete_link',
 			'custom',
+			'list',
 		);
 
 		/**

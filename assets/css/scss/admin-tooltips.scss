@@ -86,3 +86,11 @@ body .ui-tooltip {
     border-color: #999 transparent;
     border-width: 10px 10px 0;
 }
+
+/**
+ * Fix double close icons in jQuery UI dialog boxes
+ * @see https://github.com/katzwebservices/GravityView/issues/438
+ */
+.gv-dialog .ui-dialog-titlebar-close:before {
+    content: '';
+}

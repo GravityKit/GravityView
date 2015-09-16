@@ -51,7 +51,7 @@ class GravityView_Admin_Views {
 
 		add_filter( 'gform_toolbar_menu', array( 'GravityView_Admin_Views', 'gform_toolbar_menu' ), 10, 2 );
 
-		add_action( 'manage_gravityview_posts_custom_column', array( __CLASS__, 'add_connected_form_column_content'), 10, 2 );
+		add_action( 'manage_gravityview_posts_custom_column', array( $this, 'add_custom_column_content'), 10, 2 );
 
 	}
 
@@ -214,30 +214,59 @@ class GravityView_Admin_Views {
 	 *
 	 * @return void
 	 */
-	static public function add_connected_form_column_content( $column_name = NULL, $post_id )	{
+	public function add_custom_column_content( $column_name = NULL, $post_id )	{
 
-		if( !empty( $column_name ) && $column_name !== 'gv_connected_form' )  { return; }
+		$output = '';
 
-		$form_id = gravityview_get_form_id( $post_id );
+		switch ( $column_name ) {
+			case 'gv_template':
 
-		// All Views should have a connected form. If it doesn't, that's not right.
-		if( empty($form_id) ) {
-			do_action( 'gravityview_log_error', sprintf( '[add_connected_form_column_content] View ID %s does not have a connected GF form.', $post_id ) );
-			echo __( 'Not connected.', 'gravityview' );
-			return;
+				$template_id = gravityview_get_template_id( $post_id );
+
+				// All Views should have a connected form. If it doesn't, that's not right.
+				if ( empty( $template_id ) ) {
+					do_action( 'gravityview_log_error', sprintf( __METHOD__ . ' View ID %s does not have a connected template.', $post_id ) );
+					break;
+				}
+
+				$templates = gravityview_get_registered_templates();
+
+				$template = isset( $templates[ $template_id ] ) ? $templates[ $template_id ] : false;
+
+				// Generate backup if label doesn't exist: `example_name` => `Example Name`
+				$template_id_pretty = ucwords( implode( ' ', explode( '_', $template_id ) ) );
+
+				$output = $template ? $template['label'] : $template_id_pretty;
+
+				break;
+
+			case 'gv_connected_form':
+
+				$form_id = gravityview_get_form_id( $post_id );
+
+				// All Views should have a connected form. If it doesn't, that's not right.
+				if ( empty( $form_id ) ) {
+					do_action( 'gravityview_log_error', sprintf( '[add_data_source_column_content] View ID %s does not have a connected GF form.', $post_id ) );
+					$output = __( 'Not connected.', 'gravityview' );
+					break;
+				}
+
+				$form = gravityview_get_form( $form_id );
+
+				if ( ! $form ) {
+					do_action( 'gravityview_log_error', sprintf( '[add_data_source_column_content] Connected form not found: Form #%d', $form_id ) );
+
+					$output = __( 'The connected form can not be found; it may no longer exist.', 'gravityview' );
+				}
+
+				$output = self::get_connected_form_links( $form );
+
+				break;
 		}
 
-		$form = gravityview_get_form( $form_id );
-
-		if( !$form ) {
-			do_action( 'gravityview_log_error', sprintf( '[add_connected_form_column_content] Connected form not found: Form #%d', $form_id ) );
-
-			echo __( 'The connected form can not be found; it may no longer exist.', 'gravityview' );
-		}
-
-		echo self::get_connected_form_links( $form );
-
+		echo $output;
 	}
+
 
 	/**
 	 * Get HTML links relating to a connected form, like Edit, Entries, Settings, Preview
@@ -314,6 +343,8 @@ class GravityView_Admin_Views {
 		unset( $columns['date'] );
 
 		$columns['gv_connected_form'] = __('Data Source', 'gravityview');
+
+		$columns['gv_template'] = __('Template', 'gravityview');
 
 		// Add the date back in.
 		$columns['date'] = $date;

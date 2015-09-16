@@ -102,10 +102,11 @@ function gravityview_get_entries( $form_ids = null, $passed_criteria = null, &$t
  * @access public
  * @param mixed $entry_id
  * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
- * @return object or false
+ * @param boolean $check_entry_display Check whether the entry is visible for the current View configuration. Default: true {@since 1.14}
+ * @return array|boolean
  */
-function gravityview_get_entry( $entry_slug, $force_allow_ids = false ) {
-	return GVCommon::get_entry( $entry_slug, $force_allow_ids );
+function gravityview_get_entry( $entry_slug, $force_allow_ids = false, $check_entry_display = true ) {
+	return GVCommon::get_entry( $entry_slug, $force_allow_ids, $check_entry_display );
 }
 
 /**
@@ -201,6 +202,22 @@ function gravityview_get_template_settings( $post_id ) {
  */
 function gravityview_get_template_setting( $post_id, $key ) {
 	return GVCommon::get_template_setting( $post_id, $key );
+}
+
+/**
+ * Get all available preset templates
+ * @since 1.13.2
+ * @return array Templates
+ */
+function gravityview_get_registered_templates() {
+
+	/**
+	 * @filter `gravityview_register_directory_template` Fetch available View templates
+	 * @param array $templates Templates to show
+	 */
+	$templates = apply_filters( 'gravityview_register_directory_template', array() );
+
+	return $templates;
 }
 
 /**

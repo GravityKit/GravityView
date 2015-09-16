@@ -16,9 +16,9 @@ a.icon {
   text-decoration: none;
 }
 
-[data-icon]:before {
+[data-gv-icon]:before {
   font-family: "gravityview" !important;
-  content: attr(data-icon);
+  content: attr(data-gv-icon);
   font-style: normal !important;
   font-weight: normal !important;
   font-variant: normal !important;

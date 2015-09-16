@@ -1,16 +1,16 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.3
+Tested up to: 4.3.1
 Stable tag: trunk
 Contributors: katzwebservices, luistinygod
 License: GPL 3 or higher
 
-Beautifully display your Gravity Forms entries.
+Beautifully display and edit your Gravity Forms entries.
 
 == Description ==
 
-Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](https://gravityview.co).
+Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](https://gravityview.co).
 
 == Installation ==
 
@@ -19,6 +19,35 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 1.14 on September 16 =
+* Added: Search Bar now supports custom label text
+* Added: Show the value of a single column of a "Multiple Columns" List field
+* Added: Sorting by time now works. Why is this "Added" and not "Fixed"? Because Gravity Forms doesn't natively support sorting by time!
+* Added: Display the roles of the entry creator by using `{created_by:roles}` Merge Tag
+* Fixed: Field containers were being rendered even when empty
+* Fixed: Widgets were not being displayed when using page builders and themes that pre-process shortcodes
+* Fixed: Don't show "Width %" setting when in Single Entry configuration
+* Fixed: Error in extension class that assumes GravityView is active
+* Fixed: Add check for `{all_fields_display_empty}` Gravity Forms merge tag
+* Fixed: Hide metabox until View Data Source is configured
+* Fixed: Search Bar "Link" input type wasn't highlighting properly based on the value of the filter
+* Fixed: Improved speed of getting users for Search Bar and GravityView Search Widgets with "Submitted by" fields, and in the Edit Entry screen (the Change Entry Creator dropdown)
+* Fixed: Conflict with other icon fonts in the Dashboard
+* Fixed: Allow HTML in Source URL "Link Text" field setting
+* Fixed: Gravity Forms User Registration Addon conflicts
+	- When editing an entry, an user's roles and display name were reset to the Addon's feed configuration settings
+	- Users receive "Password Updated" emails in WordPress 4.3+, even if the password wasn't changed
+* Fixed: Prevent sorting by List fields, which aren't sortable due to their data storage method
+* Tweak: Support for plugin banner images in the plugin changelog screen
+* Tweak: Updated default Search Bar configuration to be a single input with "Search Everything"
+* Tweak: Sort user dropdown by display name instead of username
+* Tweak: Reduce size of AJAX responses
+* Tweak: Add "Template" column to the All Views list table - now you can better see what template is being used
+* Tweak: Remove redundant close icon for field and widget settings
+* Tweak: When adding notes via GravityView, set the note type to `gravityview` to allow for better searchability
+* Added: Automated code testing
+* Updated: Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/). Thank you!
 
 = 1.13.1 on August 26 =
 * Fixed: Potential XSS security issue. **Please update.**

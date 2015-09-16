@@ -47,6 +47,7 @@ $has_inputs = false;
 			GravityView_Widget_Search::the_clear_search_button();
 
 			?>
+			<input type="hidden" name="mode" value="<?php echo esc_attr( $gravityview_view->search_mode ); ?>" />
 			<input type="submit" class="button gv-search-button" id="gv_search_button_<?php echo $view_id; ?>" value="<?php esc_attr_e( 'Search', 'gravityview' ); ?>" />
 		</div>
 	<?php endif; ?>

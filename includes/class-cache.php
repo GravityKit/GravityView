@@ -67,6 +67,11 @@ class GravityView_Cache {
 		// Trigger this when you need to prevent any results from being cached with forms that have been modified
 		add_action( 'gravityview_clear_form_cache', array( $this, 'blacklist_add' ) );
 
+		/**
+		 * @since 1.14
+		 */
+		add_action( 'gravityview_clear_entry_cache', array( $this, 'entry_status_changed' ) );
+
 		add_action( 'gform_after_update_entry', array( $this, 'entry_updated' ), 10, 2 );
 
 		add_action( 'gform_entry_created', array( $this, 'entry_created' ), 10, 2 );

@@ -45,7 +45,7 @@ class GravityView_API {
 
 					$input = GFFormsModel::get_input( $field_object, $field['id'] );
 
-					// This is a complex field, with lables on a per-input basis
+					// This is a complex field, with labels on a per-input basis
 					if( $input ) {
 
 						// Does the input have a custom label on a per-input basis? Otherwise, default label.
@@ -1226,7 +1226,15 @@ function gravityview_field_output( $passed_args ) {
 	 * Create the Context for replacing.
 	 * @since 1.11
 	 */
-	$context = array();
+	$context = array(
+		'value' => '',
+		'width' => '',
+		'width:style' => '',
+		'label' => '',
+		'label_value' => '',
+		'class' => '',
+		'field_id' => '',
+	);
 
 	$context['value'] = gv_value( $entry, $args['field'] );
 
@@ -1254,12 +1262,12 @@ function gravityview_field_output( $passed_args ) {
 		$context['label'] = str_replace( array( '{{label}}', '{{ label }}' ), '<span class="gv-field-label">{{ label_value }}</span>', $args['label_markup'] );
 	}
 
-	if ( empty( $context['label'] ) ){
-		$context['label'] = '<span class="gv-field-label">{{ label_value }}</span>';
-	}
-
 	// Default Label value
 	$context['label_value'] = gv_label( $args['field'], $entry );
+
+	if ( empty( $context['label'] ) && ! empty( $context['label_value'] ) ){
+		$context['label'] = '<span class="gv-field-label">{{ label_value }}</span>';
+	}
 
 	/**
 	 * @filter `gravityview/field_output/pre_html` Allow Pre filtering of the HTML

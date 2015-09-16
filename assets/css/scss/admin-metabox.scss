@@ -11,6 +11,9 @@
 
   padding: 0;
 
+  // Hide until shown using JS
+  display: none;
+
   // For the Advanced Filter plugin, and any other field filters
   .gform-field-filter {
     clear: both;
