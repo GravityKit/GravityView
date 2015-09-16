@@ -1,5 +1,6 @@
 import React from 'react';
 import Metabox from './parts/metabox.jsx';
+import AlertDialog from './parts/alert-dialog.jsx';
 
 var DataSource = React.createClass({
 
@@ -27,16 +28,24 @@ var DataSource = React.createClass({
         });
     },
 
-
-
     getInitialState: function() {
         return {
-            formActionLinks: []
+            formActionLinks: [],
+            formNewSelectedValue: this.props.form
         };
     },
 
     componentDidMount: function() {
         this.loadFormActionLinks();
+    },
+
+    cancelDialogAction: function( e ) {
+        e.preventDefault();
+        this.setState({ formNewSelectedValue: this.props.form });
+    },
+
+    handleFormChange: function( e ) {
+        this.setState({ formNewSelectedValue: e.target.value });
     },
 
     render: function () {
@@ -46,6 +55,8 @@ var DataSource = React.createClass({
             formSelect = '',
             switchView = '';
 
+        // check if the alert message needs to be rendered
+        var showAlert = this.props.form != this.state.formNewSelectedValue;
 
         if ( this.props.form <= 0 ) {
             startFreshButton = (
@@ -61,10 +72,11 @@ var DataSource = React.createClass({
             }
         } else {
             switchView = (
-                <a className="button button-primary" title={gravityview_i18n.mb_ds_switch_view}>{gravityview_i18n.mb_ds_switch_view}</a>
+                <a className="button button-primary gv-button-left-margin" title={gravityview_i18n.mb_ds_switch_view} disabled={showAlert}>{gravityview_i18n.mb_ds_switch_view}</a>
             );
         }
 
+        // Form select dropdown
         if( gravityview_view_settings.forms.length > 0 ) {
             var formSelectOptions = gravityview_view_settings.forms.map( function ( form ) {
                 return (
@@ -73,7 +85,7 @@ var DataSource = React.createClass({
             });
 
             formSelect = (
-                <select value={this.props.form} name="" onChange={this.props.onFormChange}>
+                <select value={ showAlert? this.state.formNewSelectedValue : this.props.form } name="" onChange={this.handleFormChange} disabled={showAlert}>
                     <option value="">&mdash; {gravityview_i18n.mb_ds_list_forms} &mdash;</option>
                     {formSelectOptions}
                 </select>
@@ -89,6 +101,13 @@ var DataSource = React.createClass({
                     {formSelect}
                     {switchView}
                 </p>
+                <AlertDialog
+                    isOpen={showAlert}
+                    message={gravityview_i18n.mb_ds_change_form}
+                    cancelAction={this.cancelDialogAction}
+                    continueAction={this.props.onFormChange}
+                    changedValue={this.state.formNewSelectedValue}
+                />
             </Metabox>
         );
     }

@@ -1084,6 +1084,12 @@ class GravityView_Admin_Views {
 
 	static function get_admin_i18n_labels() {
 		return array(
+			// Generic buttons
+			'button_close' => __( 'Close', 'gravityview' ),
+			'button_cancel' => __( 'Cancel', 'gravityview' ),
+			'button_continue' => __( 'Continue', 'gravityview' ),
+			'button_ok' => __( 'Ok', 'gravityview' ),
+
 			// Data Source metabox
 			'mb_ds_title' 			=> __( 'Data Source', 'gravityview' ),
 			'mb_ds_subtitle' 		=> __( 'Where would you like the data to come from for this View?', 'gravityview' ),

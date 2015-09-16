@@ -20,7 +20,7 @@ var ViewConfig = React.createClass({
     },
 
     handleFormChange: function(e) {
-        this.setState({ form: e.target.value });
+        this.setState({ form: e.target.getAttribute('data-change-value') });
         this.setState({ showTemplates: 'custom' });
     },
 

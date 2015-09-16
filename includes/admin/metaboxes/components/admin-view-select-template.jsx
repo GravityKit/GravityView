@@ -66,6 +66,13 @@ var SelectTemplate = React.createClass({
 
         return(
             <Metabox mTitle={gravityview_i18n.mb_st_title} mTitleLinks={false}>
+                <AlertDialog
+                    isOpen={showAlert}
+                    message={gravityview_i18n.mb_ds_change_form}
+                    cancelAction={this.cancelDialogAction}
+                    continueAction={this.props.onFormChange}
+                    changedValue={this.state.formNewSelectedValue}
+                />
                 <div className="gv-grid">
                     {templatesList}
                 </div>
