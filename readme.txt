@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 = 1.14 (PRE RELEASE) =
 * Added: Show the value of a single column of a "Multiple Columns" List field
 * Added: Search Bar now supports custom label text
+* Added: Sorting by time now works. Why is this "Added" and not "Fixed"? Because Gravity Forms doesn't natively support sorting by time!
 * Fixed: Field containers were being rendered even when empty
 * Fixed: Widgets were not being displayed when using page builders and themes that pre-process shortcodes
 * Fixed: Don't show "Width %" setting when in Single Entry configuration
@@ -30,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Add check for `{all_fields_display_empty}` Gravity Forms merge tag
 * Fixed: Hide metabox until View Data Source is configured
 * Fixed: Search Bar "Link" input type wasn't highlighting properly based on the value of the filter
+* Fixed: Improved speed of getting users for Search Bar and GravityView Search Widgets with "Submitted by" fields, and in the Edit Entry screen (the Change Entry Creator dropdown)
 * Added: Support for plugin banner images in the plugin changelog screen
 * Added: Display the roles of the entry creator by using `{created_by:roles}` Merge Tag
 * Tweak: Updated default Search Bar configuration to be a single input with "Search Everything"
