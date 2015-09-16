@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-08-27 00:08+0000\n"
+"PO-Revision-Date: 2015-09-16 23:13+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Bengali (http://www.transifex.com/katzwebservices/gravityview/language/bn/)\n"
 "MIME-Version: 1.0\n"
@@ -135,7 +135,7 @@ msgid "Filter &amp; Sort"
 msgstr "ফিল্টার &amp; সর্ট"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:177
-#: includes/class-admin-views.php:316
+#: includes/class-admin-views.php:345
 msgid "Data Source"
 msgstr "তথ্যের উৎস"
 
@@ -188,16 +188,16 @@ msgstr "দৃশ্য পরিবর্তন করলে আপনার �
 msgid "GravityView requires Javascript to be enabled."
 msgstr "গ্রাভিটি ভিউ চালানোর জন্য জাভাস্ক্রীপ্ট সক্রিয় রাখতে হবে।"
 
-#: includes/admin/metaboxes/views/select-template.php:37
+#: includes/admin/metaboxes/views/select-template.php:33
 msgid "Buy Now"
 msgstr "কিনুন"
 
-#: includes/admin/metaboxes/views/select-template.php:39
-#: includes/widgets/search-widget/class-search-widget.php:112
+#: includes/admin/metaboxes/views/select-template.php:35
+#: includes/widgets/search-widget/class-search-widget.php:125
 msgid "Select"
 msgstr "বাছাই"
 
-#: includes/admin/metaboxes/views/select-template.php:41
+#: includes/admin/metaboxes/views/select-template.php:37
 msgid "View a live demo of this preset"
 msgstr "সরাসরি ডেমু দেখুন"
 
@@ -297,13 +297,13 @@ msgid "Insert View"
 msgstr "দৃশ্য ঢোকান"
 
 #: includes/class-admin-add-shortcode.php:130
-#: includes/class-admin-views.php:994
+#: includes/class-admin-views.php:1025
 #: includes/extensions/edit-entry/partials/form-buttons.php:26
 msgid "Cancel"
 msgstr "বাতিল"
 
 #: includes/class-admin-add-shortcode.php:176
-#: includes/class-admin-views.php:998
+#: includes/class-admin-views.php:1029
 msgid "Loading&hellip;"
 msgstr "লোড হচ্ছে&hellip;"
 
@@ -443,194 +443,198 @@ msgid ""
 "%ssanitize_title_with_dashes()%s function."
 msgstr "ডেভেলপার: সিএসএস ক্লাস %ssanitize_title_with_dashes()%s ফাঙ্কসন ব্যবহার করলে পরিস্কার হবে।"
 
-#: includes/class-admin-views.php:226
+#: includes/class-admin-views.php:250
 msgid "Not connected."
 msgstr "সংযোগ নাই"
 
-#: includes/class-admin-views.php:235
+#: includes/class-admin-views.php:259
 msgid "The connected form can not be found; it may no longer exist."
 msgstr "সংযোগকৃত ফর্মটি পাওয়া যায়নি। এটা সম্ভবত আর নেই।"
 
-#: includes/class-admin-views.php:267
+#: includes/class-admin-views.php:296
 msgid "Edit Form"
 msgstr "ফর্ম সম্পাদন করুন"
 
-#: includes/class-admin-views.php:272
+#: includes/class-admin-views.php:301
 msgid "Entries"
 msgstr "এন্ট্রিসমূহ"
 
-#: includes/class-admin-views.php:277 includes/class-admin.php:91
+#: includes/class-admin-views.php:306 includes/class-admin.php:91
 #: includes/class-settings.php:237 includes/class-settings.php:263
 msgid "Settings"
 msgstr "বিন্যাস"
 
-#: includes/class-admin-views.php:277
+#: includes/class-admin-views.php:306
 msgid "Edit settings for this form"
 msgstr "এই ফর্মের সেটিংস সম্পাদন করুন"
 
-#: includes/class-admin-views.php:282
+#: includes/class-admin-views.php:311
 msgid "Preview Form"
 msgstr "ফরম দেখুন"
 
-#: includes/class-admin-views.php:282
+#: includes/class-admin-views.php:311
 msgid "Preview this form"
 msgstr "এই ফর্ম দেখুন"
 
-#: includes/class-admin-views.php:501
+#: includes/class-admin-views.php:347
+msgid "Template"
+msgstr ""
+
+#: includes/class-admin-views.php:532
 msgid "+ Add All Fields"
 msgstr "+ সকল ফিল্ড যোগ করুন"
 
-#: includes/class-admin-views.php:502
+#: includes/class-admin-views.php:533
 msgid "Add all the available fields at once."
 msgstr "প্রাপ্ত সকল ফিল্ডগুলো একসাথে যোগ করুন।"
 
-#: includes/class-admin-views.php:552
-#: includes/widgets/search-widget/class-search-widget.php:211
+#: includes/class-admin-views.php:583
+#: includes/widgets/search-widget/class-search-widget.php:233
 msgid "Entry ID"
 msgstr "এন্ট্রি আইডি"
 
-#: includes/class-admin-views.php:554
+#: includes/class-admin-views.php:585
 msgid "The unique ID of the entry."
 msgstr "এন্ট্রির মৌলিক আইডি।"
 
-#: includes/class-admin-views.php:557
-#: includes/widgets/search-widget/class-search-widget.php:210
+#: includes/class-admin-views.php:588
+#: includes/widgets/search-widget/class-search-widget.php:229
 msgid "Entry Date"
 msgstr "এন্ট্রি তারিখ"
 
-#: includes/class-admin-views.php:558
+#: includes/class-admin-views.php:589
 msgid "The date the entry was created."
 msgstr "এন্ট্রি তৈরির তারিখ"
 
-#: includes/class-admin-views.php:562
+#: includes/class-admin-views.php:593
 msgid "Source URL"
 msgstr "উৎস ইউআরএল"
 
-#: includes/class-admin-views.php:564
+#: includes/class-admin-views.php:595
 msgid "The URL of the page where the form was submitted."
 msgstr "ফর্ম সাবমিট করা পেজের ইআরএল।"
 
-#: includes/class-admin-views.php:567
+#: includes/class-admin-views.php:598
 msgid "User IP"
 msgstr "ব্যবহারকারীর আইপি"
 
-#: includes/class-admin-views.php:569
+#: includes/class-admin-views.php:600
 msgid "The IP Address of the user who created the entry."
 msgstr "এন্ট্রি তৈরিকারক ব্যবহারকারীর আইটি ঠিকানা।"
 
-#: includes/class-admin-views.php:572
+#: includes/class-admin-views.php:603
 msgid "User"
 msgstr "ব্যবহারকারী"
 
-#: includes/class-admin-views.php:574
+#: includes/class-admin-views.php:605
 msgid "Details of the logged-in user who created the entry (if any)."
 msgstr "এন্ট্রি তৈরিকারক লগ-ইনকৃত ব্যবহারকারীর বিস্তারিত(যদি থাকে)।"
 
-#: includes/class-admin-views.php:581 includes/fields/custom.php:22
+#: includes/class-admin-views.php:612 includes/fields/custom.php:22
 #: includes/widgets/class-gravityview-widget-custom-content.php:30
 #: includes/widgets/class-gravityview-widget-custom-content.php:45
 msgid "Custom Content"
 msgstr "বিষয়বস্তু"
 
-#: includes/class-admin-views.php:583
+#: includes/class-admin-views.php:614
 msgid "Insert custom text or HTML."
 msgstr "বাক্য অথবা এইচটিএমএল যুক্ত করুন।"
 
-#: includes/class-admin-views.php:590
+#: includes/class-admin-views.php:621
 msgid "Other Entries"
 msgstr "অন্যান্য এন্ট্রিসমূহ"
 
-#: includes/class-admin-views.php:592
+#: includes/class-admin-views.php:623
 msgid "Display other entries created by the entry creator."
 msgstr "এন্ট্রি প্রস্তুতকারক কর্তৃক অন্যান্য এন্ট্রগুলো দেখান।"
 
-#: includes/class-admin-views.php:600
+#: includes/class-admin-views.php:631
 msgid "Link to Entry"
 msgstr "এন্ট্রির সাথে সংযোগ"
 
-#: includes/class-admin-views.php:601
+#: includes/class-admin-views.php:632
 msgid "A dedicated link to the single entry with customizable text."
 msgstr "একক এন্ট্রির একটি উৎসর্গীকৃত লিংক কাস্টমাইজড বাক্য সহ।"
 
-#: includes/class-admin-views.php:697
+#: includes/class-admin-views.php:728
 msgid "Add Widget"
 msgstr "উইজেড যোগ করুন"
 
-#: includes/class-admin-views.php:699
+#: includes/class-admin-views.php:730
 msgid "Add Field"
 msgstr "ফিল্ড যোগ করুন"
 
-#: includes/class-admin-views.php:781
+#: includes/class-admin-views.php:812
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr "\"+ %s\" অথবা এখানে পুরাতনগুলো টেনে আনুন %ss"
 
-#: includes/class-admin-views.php:849
+#: includes/class-admin-views.php:880
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr "এই দৃশ্যটি %s দৃশ্য ব্যবহার করে কনফিগার করা হয়েছে, যেটি নিস্ক্রিয় রয়েছে।"
 
-#: includes/class-admin-views.php:850
+#: includes/class-admin-views.php:881
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
 msgstr "তথ্য হারিয়ে যায়নি। সংশ্লিষ্ঠ প্লাগইন্সটি সক্রিয় করুন এবং কনফিগারেশন পুনরায় দেখাবে।"
 
-#: includes/class-admin-views.php:922
+#: includes/class-admin-views.php:953
 msgid "Ask GravityView Support"
-msgstr ""
+msgstr "গ্রাভিটি ভিউ দেখুন সমর্থন জিজ্ঞাসা"
 
-#: includes/class-admin-views.php:923 includes/class-admin-views.php:927
+#: includes/class-admin-views.php:954 includes/class-admin-views.php:958
 msgid "GravityView Support"
-msgstr ""
+msgstr "গ্রাভিটি ভিউ দেখুন সাপোর্ট"
 
-#: includes/class-admin-views.php:924
+#: includes/class-admin-views.php:955
 msgid ""
 "If you have any questions, send us an email and we will get respond to you "
 "as soon as possible."
-msgstr ""
+msgstr "যদি আপনার কোন প্রশ্ন থাকে, তাহলে, আমাদের একটি ইমেল পাঠাতে এবং আমরা যত তাড়াতাড়ি সম্ভব আপনি সাড়া পাবেন."
 
-#: includes/class-admin-views.php:925
+#: includes/class-admin-views.php:956
 msgid "Your Name"
-msgstr ""
+msgstr "আপনার নাম"
 
-#: includes/class-admin-views.php:926
+#: includes/class-admin-views.php:957
 msgid ""
 "Question or comment? We are online and ready to answer! If you don't hear "
 "back from us, you can send your question to %s"
-msgstr ""
+msgstr "প্রশ্ন বা মন্তব্য? আমরা অনলাইন এবং উত্তর করার জন্য প্রস্তুত হয়! আপনি ফিরে আমাদের কাছ থেকে শুনতে না থাকে, তাহলে আপনি আপনার প্রশ্ন পাঠাতে পারেন% s এর"
 
-#: includes/class-admin-views.php:992
+#: includes/class-admin-views.php:1023
 msgid "Enter View name here"
 msgstr "দৃশ্যের নাম এখানে প্রবেশ করান"
 
-#: includes/class-admin-views.php:993
+#: includes/class-admin-views.php:1024
 msgid "Close"
 msgstr "বন্ধ"
 
-#: includes/class-admin-views.php:995
+#: includes/class-admin-views.php:1026
 msgid "Continue"
 msgstr "চলমান"
 
-#: includes/class-admin-views.php:996
+#: includes/class-admin-views.php:1027
 msgid "Ok"
 msgstr "ঠিক আছে"
 
-#: includes/class-admin-views.php:997
+#: includes/class-admin-views.php:1028
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr "দৃশ্য তৈরি করার সময় সমস্যা হয়েছে। সেটিংস দেখুন অথবা গ্রাভিটি ভিউ সাপোর্ট দেখুন"
 
-#: includes/class-admin-views.php:999
+#: includes/class-admin-views.php:1030
 msgid "There was an error loading dynamic content."
 msgstr "ডাইনামিক বিষয়বস্তু লোড হতে এখানে একটি সমস্য রয়েছে।"
 
-#: includes/class-admin-views.php:1000
+#: includes/class-admin-views.php:1031
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr "ফিল্ড যুক্ত করার সময় সমস্যা হচ্ছে। দয়া করে পুণরায় চেষ্ঠা করুন অথবা গ্রাভিটিভিউ সাপোর্ট এর সাথে যোগাযোগ করুন।"
 
-#: includes/class-admin-views.php:1001
+#: includes/class-admin-views.php:1032
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -671,19 +675,19 @@ msgstr "পরিবর্তনের লিস্ট"
 msgid "What&rsquo;s New"
 msgstr "নতুন &rsquo; কি"
 
-#: includes/class-admin-welcome.php:424
+#: includes/class-admin-welcome.php:490
 msgid "GravityView is brought to you by:"
 msgstr "গ্রাভিটি ভিউ আপনার জন্য নিয়ে এল:"
 
-#: includes/class-admin-welcome.php:449
+#: includes/class-admin-welcome.php:515
 msgid "Contributors"
 msgstr "সহযোগী যারা"
 
-#: includes/class-admin-welcome.php:470
+#: includes/class-admin-welcome.php:536
 msgid "Want to contribute?"
 msgstr "সহযোগীতা করতে চান?"
 
-#: includes/class-admin-welcome.php:471
+#: includes/class-admin-welcome.php:537
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -791,7 +795,7 @@ msgid "Map It"
 msgstr "মানচিত্রে এটি"
 
 #: includes/class-change-entry-creator.php:62
-#: includes/lib/EDD_SL_Plugin_Updater.php:327
+#: includes/lib/EDD_SL_Plugin_Updater.php:334
 msgid "Error"
 msgstr "ভুল"
 
@@ -807,84 +811,84 @@ msgstr "এন্ট্রি তৈরিকারক %s হতে %s পরি
 msgid "Change Entry Creator:"
 msgstr "এন্ট্রি তৈরিকারক পরিবর্তন করুন:"
 
-#: includes/class-common.php:251
+#: includes/class-common.php:269
 msgid "Post ID"
 msgstr "পোস্ট আইডি"
 
-#: includes/class-common.php:259
+#: includes/class-common.php:277
 msgid "Payment Status"
 msgstr "পেমেন্টের অবস্থা"
 
-#: includes/class-common.php:264
+#: includes/class-common.php:282
 msgid "Payment Date"
 msgstr "পেমেন্টের তারিখ"
 
-#: includes/class-common.php:269
+#: includes/class-common.php:287
 msgid "Payment Amount"
 msgstr "পেমেন্টের পরিমাণ"
 
-#: includes/class-common.php:274
+#: includes/class-common.php:292
 msgid "Payment Method"
 msgstr "পেমেন্টের প্রক্রিয়া"
 
-#: includes/class-common.php:279
-#: includes/widgets/search-widget/class-search-widget.php:787
+#: includes/class-common.php:297
+#: includes/widgets/search-widget/class-search-widget.php:821
 msgid "Is Fulfilled"
 msgstr "সম্পন্ন"
 
-#: includes/class-common.php:284
+#: includes/class-common.php:302
 msgid "Transaction ID"
 msgstr "লেনদেনের আইডি"
 
-#: includes/class-common.php:289
+#: includes/class-common.php:307
 msgid "Transaction Type"
 msgstr "লেনদেনের প্রকার"
 
-#: includes/class-common.php:301
+#: includes/class-common.php:319
 msgid "Quiz Score Total"
 msgstr "মোট কুইজের স্কোর"
 
-#: includes/class-common.php:303
+#: includes/class-common.php:321
 msgid "Displays the number of correct Quiz answers the user submitted."
 msgstr "ব্যবহারকারী কর্তৃক প্রদত্ত কুইজের সঠিক উত্তরের সংখ্যা দেখান"
 
-#: includes/class-common.php:306
+#: includes/class-common.php:324
 msgid "Quiz Percentage Grade"
 msgstr "কুইজের শতাংশের গ্রেড"
 
-#: includes/class-common.php:308
+#: includes/class-common.php:326
 msgid "Displays the percentage of correct Quiz answers the user submitted."
 msgstr "ব্যবহারকারী কর্তৃক প্রদত্ত কুইজের সঠিক উত্তরের শতাংশ দেখান"
 
-#: includes/class-common.php:311
+#: includes/class-common.php:329
 msgid "Quiz Letter Grade"
 msgstr "কুইজের লেটার গ্রেড"
 
-#: includes/class-common.php:313
+#: includes/class-common.php:331
 msgid ""
 "Displays the Grade the user achieved based on Letter Grading configured in "
 "the Quiz Settings."
 msgstr "ব্যবহারকারী ক্যুইজ সেটিংস কনফিগার পত্র শূন্য উপর গ্রেড ভিত্তিক অর্জন প্রদর্শন"
 
-#: includes/class-common.php:316
+#: includes/class-common.php:334
 msgid "Quiz Pass/Fail"
 msgstr "ক্যুইজ পাস / ব্যর্থ"
 
-#: includes/class-common.php:318
+#: includes/class-common.php:336
 msgid ""
 "Displays either Passed or Failed based on the Pass/Fail settings configured "
 "in the Quiz Settings."
 msgstr "প্রদর্শন পাস বা ক্যুইজ সেটিংস কনফিগার পাস / ব্যর্থ সেটিংস উপর ভিত্তি করে ব্যর্থ হয়."
 
-#: includes/class-common.php:953 includes/class-data.php:565
+#: includes/class-common.php:989 includes/class-data.php:565
 msgid "Default"
 msgstr "ডিফল্ট"
 
-#: includes/class-common.php:996 includes/class-data.php:566
+#: includes/class-common.php:1032 includes/class-data.php:566
 msgid "Date Created"
 msgstr "নির্মাণের তারিখ"
 
-#: includes/class-common.php:1092
+#: includes/class-common.php:1128
 msgid "Email hidden; Javascript is required."
 msgstr "ইমেইল লুকানো; জাভাস্ক্রীপ্ট দরকার।"
 
@@ -1038,7 +1042,7 @@ msgid "Define a default search value for the View"
 msgstr "দৃশ্যের জন্য একটি অনুসন্ধান ভ্যালু নির্ধারণ করুন"
 
 #: includes/class-data.php:627
-#: includes/widgets/search-widget/class-search-widget.php:139
+#: includes/widgets/search-widget/class-search-widget.php:153
 msgid "Search Field"
 msgstr "অনুসন্ধান ফিল্ড"
 
@@ -1173,15 +1177,15 @@ msgid ""
 "plugin."
 msgstr "গ্রাভিটিভিউ এবং গ্রাভিটি ফর্ম ডিরেক্টরি দুটোই সক্রিয়। এটা সমস্যা তৈরি করতে পারে। যদি আপনি এ সমস্যার সম্মুখিন হন, গ্রাভিটি ফর্ম ডিরেক্টনি প্লাগইন নিস্ক্রিয় করুন।"
 
-#: includes/class-gravityview-extension.php:343
+#: includes/class-gravityview-extension.php:349
 msgid "Could not activate the %s Extension; GravityView is not active."
 msgstr "%s এক্সটেনশন সক্রিয় করা যায়নি; গ্রাভিটি ভিউ সক্রিয় নয়।"
 
-#: includes/class-gravityview-extension.php:347
+#: includes/class-gravityview-extension.php:353
 msgid "The %s Extension requires GravityView Version %s or newer."
 msgstr "%s এক্সটেনশন চালানোর জন্য গ্রাভিটি ভিউ ভার্সন %s অথবা নতুনতর প্রয়োজন।"
 
-#: includes/class-gravityview-extension.php:351
+#: includes/class-gravityview-extension.php:357
 msgid ""
 "The %s Extension requires PHP Version %s or newer. Please ask your host to "
 "upgrade your server's PHP."
@@ -1252,7 +1256,7 @@ msgstr "অকার্যকর: এই লাইসেন্স তার অ�
 #: includes/class-gv-license-handler.php:351
 msgid ""
 "You can manage license activations %son your GravityView account page%s."
-msgstr ""
+msgstr "আপনি%s ছেলে আপনার গ্রাভিটি ভিউ অ্যাকাউন্ট পাতা% এর লাইসেন্স সক্রিয়করণব্যবস্থা পরিচালনা করতে পারেন."
 
 #: includes/class-gv-license-handler.php:352
 msgid "The license has been deactivated."
@@ -1278,7 +1282,7 @@ msgstr "এই লাইসেন্স কী প্রত্যাহার �
 msgid ""
 "This license key has expired. %sRenew your license on the GravityView "
 "website%s to receive updates and support."
-msgstr ""
+msgstr "এই লাইসেন্স কী মেয়াদ শেষ হয়ে গেছে. % এর আপডেট এবং সমর্থন পেতে গ্রাভিটি ভিউ দেখুন ওয়েবসাইটে%s এর উপর আপনার লাইসেন্স পুনর্নবীকরণ।"
 
 #: includes/class-gv-license-handler.php:362
 msgid "Verify License"
@@ -1377,17 +1381,17 @@ msgstr "সক্রিয় করা হয়নি"
 
 #: includes/class-settings.php:395 includes/class-settings.php:428
 msgid "Update Settings"
-msgstr ""
+msgstr "আপডেট সেটিং"
 
 #: includes/class-settings.php:499
 msgid ""
 "The license key you entered has been saved, but not activated. Please "
 "activate the license."
-msgstr ""
+msgstr "আপনি প্রবেশ লাইসেন্স কী সংরক্ষিত, কিন্তু সক্রিয় না করা হয়েছে. লাইসেন্স সক্রিয় করুন।"
 
 #: includes/class-settings.php:514
 msgid "Required"
-msgstr ""
+msgstr "প্রয়োজনীয়"
 
 #: includes/class-settings.php:529
 msgid "License Key"
@@ -1422,7 +1426,7 @@ msgstr "অন্যান্য প্লাগিন ও থিম সহ দ�
 
 #: includes/class-settings.php:590
 msgid "You are running GravityView version %s"
-msgstr ""
+msgstr "আপনি ‍%s এর গ্রাভিটি ভিউ দেখুন সংস্করণ দৌড়াচ্ছে"
 
 #: includes/default-templates.php:30
 msgid "Table (default)"
@@ -1594,7 +1598,7 @@ msgstr "এন্ট্রি উপস্থিত না."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:430
 msgid "Moving the entry to the trash failed."
-msgstr ""
+msgstr "আবর্জনার বাক্স এন্ট্রি মুভিং ব্যর্থ।"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:468
 msgid "Are you sure you want to delete this entry? This cannot be undone."
@@ -1610,7 +1614,7 @@ msgstr "আপনি এই এন্ট্রি মুছে ফেলতে �
 
 #: includes/extensions/delete-entry/class-delete-entry.php:504
 msgid "The entry is already in the trash."
-msgstr ""
+msgstr "এন্ট্রি ট্র্যাশ ইতিমধ্যে."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:506
 msgid "You cannot delete the entry; it is already in the trash."
@@ -1622,7 +1626,7 @@ msgstr "এন্ট্রি মুছে ফেলার সময় এক�
 
 #: includes/extensions/delete-entry/class-delete-entry.php:630
 msgid "The entry was successfully moved to the trash."
-msgstr ""
+msgstr "এন্ট্রি সফলভাবে ট্র্যাশ থেকে সরিয়ে নেওয়া হয়েছে."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:633
 msgid "The entry was successfully deleted."
@@ -1647,7 +1651,7 @@ msgid ""
 msgstr "আপনি এই ক্ষেত্র সম্পাদন পাবে এন্ট্রি তৈরি যারা ইউজার না চান তাহলে এই ব্যবহারটি নির্ধারণ করতে."
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:159
-#: includes/fields/class.field.php:53
+#: includes/fields/class.field.php:65
 msgid "Open link in a new tab or window?"
 msgstr "একটি নতুন ট্যাব বা উইন্ডোতে লিঙ্ক খুলুন?"
 
@@ -1669,77 +1673,77 @@ msgstr "প্রবেশ আপডেট. %s এর এন্ট্রি%s �
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1033
 msgid "Maximum number of files reached"
-msgstr ""
+msgstr "ফাইল সর্বোচ্চ সংখ্যায় পৌঁছেছে"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1410
 msgid "The link to edit this entry is not valid; it may have expired."
-msgstr ""
+msgstr "এই এন্ট্রি সম্পাদনা লিঙ্কটি বৈধ নয়; এটা শেষ করে দিতে পারে."
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1416
 msgid "You do not have permission to edit this entry."
-msgstr ""
+msgstr "আপনি এই এন্ট্রি সম্পাদনা করার অনুমতি নেই."
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1420
 msgid "You cannot edit the entry; it is in the trash."
-msgstr ""
+msgstr "আপনি এন্ট্রি সম্পাদনা করতে পারবেন না; এটা ট্র্যাশে রয়েছে."
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1460
 msgid "You do not have permission to edit this field."
-msgstr ""
+msgstr "যদি আপনি এই ক্ষেত্রটি সম্পাদন করতে অনুমতি নেই."
 
 #: includes/extensions/edit-entry/partials/form-buttons.php:24
 msgid "Update"
-msgstr ""
+msgstr "আপডেট"
 
 #: includes/extensions/edit-entry/partials/inline-javascript.php:4
 msgid ""
 "Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to "
 "delete"
-msgstr ""
+msgstr "আপনি স্থায়ীভাবে এই ফাইলটি মুছে দিতে চান? বন্ধ করতে 'বাতিল'. মুছে 'ঠিক আছে'"
 
 #: includes/extensions/edit-entry/partials/inline-javascript.php:14
 msgid "Ajax error while deleting field."
-msgstr ""
+msgstr "এজাক্স ত্রুটি ক্ষেত্র মুছে ফেলার সময়."
 
 #: includes/fields/address.php:25
 msgid "Show Map Link:"
-msgstr ""
+msgstr "মানচিত্র লিঙ্ক দেখাতে:"
 
 #: includes/fields/address.php:26
 msgid "Display a \"Map It\" link below the address"
-msgstr ""
+msgstr "ঠিকানার নীচে একটি \"মানচিত্র এটা\" লিংক প্রদর্শন করা হবে"
 
-#: includes/fields/class.field.php:25
+#: includes/fields/class.field.php:37
 msgid "Link to the post"
-msgstr ""
+msgstr "পোস্টে লিঙ্ক"
 
-#: includes/fields/class.field.php:26
+#: includes/fields/class.field.php:38
 msgid "Link to the post created by the entry."
-msgstr ""
+msgstr "এন্ট্রি করে নির্মিত পোস্টে লিঙ্ক।"
 
-#: includes/fields/class.field.php:31
+#: includes/fields/class.field.php:43
 msgid "Link to the category or tag"
-msgstr ""
+msgstr "বিভাগ বা ট্যাগ থেকে লিংক"
 
-#: includes/fields/class.field.php:32
+#: includes/fields/class.field.php:44
 msgid ""
 "Link to the current category or tag. \"Link to single entry\" must be "
 "unchecked."
-msgstr ""
+msgstr "বর্তমান শ্রেণী বা ট্যাগ সাথে যোগসূত্র. \"একক এন্ট্রি সাথে যোগসূত্র\" অবারিত হতে হবে।"
 
-#: includes/fields/class.field.php:37
+#: includes/fields/class.field.php:49
 msgid "Use the live post data"
-msgstr ""
+msgstr "লাইভ পোস্ট তথ্য ব্যবহার"
 
-#: includes/fields/class.field.php:38
+#: includes/fields/class.field.php:50
 msgid "Instead of using the entry data, instead use the current post data."
-msgstr ""
+msgstr "পরিবর্তে এন্ট্রি তথ্য ব্যবহার করে, এর পরিবর্তে বর্তমান পোস্ট তথ্য ব্যবহার।"
 
-#: includes/fields/class.field.php:43
+#: includes/fields/class.field.php:55
 msgid "Override Date Format"
 msgstr "তারিখ ফরম্যাট পুনঃস্থাপন করুন"
 
-#: includes/fields/class.field.php:44
+#: includes/fields/class.field.php:56
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
 msgstr "তারিখ কিভাবে দেখাবে তা দেখান (%sপিএইচপি তারিখ ফরম্যাট%s)"
 
@@ -1767,57 +1771,57 @@ msgstr "ব্যবহারকারীর আইডি # (উদাহরণ:
 msgid ""
 "Enter text or HTML. Also supports shortcodes. You can show or hide data "
 "using the %s shortcode (%slearn more%s)."
-msgstr ""
+msgstr "টেক্সট বা এইচটিএমএল লিখুন. এছাড়াও স্বল্প সঙ্কেত সমর্থন. আপনি প্রদর্শন বা% এর সর্টকোড (% স্লোর্ন আরো% গুলি) ব্যবহার করে তথ্য লুকিয়ে রাখতে পারেন."
 
 #: includes/fields/custom.php:31
 #: includes/widgets/class-gravityview-widget-custom-content.php:39
 msgid "Automatically add paragraphs to content"
-msgstr ""
+msgstr "স্বয়ংক্রিয়ভাবে কন্টেন্ট অনুচ্ছেদ যোগ"
 
 #: includes/fields/custom.php:32
 #: includes/widgets/class-gravityview-widget-custom-content.php:40
 msgid ""
 "Wrap each block of text in an HTML paragraph tag (recommended for text)."
-msgstr ""
+msgstr "একটি এইচটিএমএল অনুচ্ছেদের ট্যাগে লেখার প্রতিটি ব্লক মোড়ানো (টেক্সট জন্য প্রস্তাবিত)।"
 
 #: includes/fields/email.php:23
 msgid "Link the Email Address"
-msgstr ""
+msgstr "ইমেইল ঠিকানা লিঙ্ক"
 
 #: includes/fields/email.php:24
 msgid "Clicking the link will generate a new email."
-msgstr ""
+msgstr "লিঙ্কে ক্লিক করে একটি নতুন ইমেইল জেনারেট হবে।"
 
 #: includes/fields/email.php:28
 msgid "Email Subject"
-msgstr ""
+msgstr "ইমেইল বিষয়"
 
 #: includes/fields/email.php:30
 msgid "Set the default email subject line."
-msgstr ""
+msgstr "ডিফল্ট ইমেইল বিষয় লাইন সেট।"
 
 #: includes/fields/email.php:35
 msgid "Email Body"
-msgstr ""
+msgstr "ই-মেইল বডি"
 
 #: includes/fields/email.php:37
 msgid "Set the default email content."
-msgstr ""
+msgstr "ডিফল্ট ইমেইল কন্টেন্ট সেট।"
 
 #: includes/fields/email.php:44
 msgid "Encrypt Email Address"
-msgstr ""
+msgstr "এনক্রিপ্ট ইমেল ঠিকানা"
 
 #: includes/fields/email.php:45
 msgid ""
 "Make it harder for spammers to get email addresses from your entries. Email "
 "addresses will not be visible with Javascript disabled."
-msgstr ""
+msgstr "এটা কঠিন স্প্যামাররা আপনার এন্ট্রি থেকে ইমেল ঠিকানা পেতে পারেন না. জাভাস্ক্রিপ্ট নিষ্ক্রিয় সঙ্গে ইমেল ঠিকানাগুলি দৃশ্যমান হবে না।"
 
 #: includes/fields/entry-link.php:22 includes/fields/source-url.php:29
 #: includes/fields/website.php:24
 msgid "Link Text:"
-msgstr ""
+msgstr "টেক্সট লিঙ্ক:"
 
 #: includes/fields/entry-link.php:24 templates/fields/entry_link.php:16
 msgid "View Details"
@@ -1825,167 +1829,167 @@ msgstr "বিস্তারিত দেখান"
 
 #: includes/fields/fileupload.php:24
 msgid "Display as a Link:"
-msgstr ""
+msgstr "একটি লিঙ্ক হিসাবে প্রদর্শন:"
 
 #: includes/fields/fileupload.php:25
 msgid "Display the uploaded files as links, rather than embedded content."
-msgstr ""
+msgstr "লিঙ্ক, বরং এমবেডেড বিষয়বস্তু আপলোড করা ফাইল প্রদর্শন করা হবে।"
 
 #: includes/fields/gquiz_score.php:20
 msgid "Show Max Score?"
-msgstr ""
+msgstr "সর্বোচ্চ স্কোর দেখাতে?"
 
 #: includes/fields/gquiz_score.php:21
 msgid ""
 "Display score as the a fraction: \"[score]/[max score]\". If unchecked, will"
 " display score."
-msgstr ""
+msgstr "একটি ভগ্নাংশ হিসেবে প্রদর্শন স্কোর: \"[স্কোর] / [সর্বোচ্চ স্কোর]\". অবারিত, স্কোর প্রদর্শন করা হবে।"
 
 #: includes/fields/number.php:16
 msgid "Format number?"
-msgstr ""
+msgstr "বিন্যাস সংখ্যা?"
 
 #: includes/fields/number.php:17
 msgid "Display numbers with thousands separators."
-msgstr ""
+msgstr "সহস্র বিভাজক সঙ্গে প্রদর্শন সংখ্যা।"
 
 #: includes/fields/number.php:23
 msgid "Decimals"
-msgstr ""
+msgstr "দশমিক"
 
 #: includes/fields/number.php:24
 msgid ""
 "Precision of the number of decimal places. Leave blank to use existing "
 "precision."
-msgstr ""
+msgstr "দশমিক স্থান সংখ্যা যথার্থ. বিদ্যমান স্পষ্টতা ব্যবহার ফাঁকা ছেড়ে দিন।"
 
 #: includes/fields/other-entries.php:29
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:365
 msgid "Entry link text (required)"
-msgstr ""
+msgstr "এণ্ট্রি টেক্সট লিঙ্ক (আবশ্যক)"
 
 #: includes/fields/other-entries.php:30
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:271
 msgid "Entry #{entry_id}"
-msgstr ""
+msgstr "এণ্ট্রি # {এন্ট্রিি_আইডি}"
 
 #: includes/fields/other-entries.php:36
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:372
 msgid "Text or HTML to display after the link (optional)"
-msgstr ""
+msgstr "টেক্সট বা এইচটিএমএল লিঙ্ক পরে প্রদর্শন (ঐচ্ছিক)"
 
 #: includes/fields/other-entries.php:37
 msgid "This content will be displayed below each entry link."
-msgstr ""
+msgstr "এই কন্টেন্ট প্রতিটি এন্ট্রি নীচে লিংক প্রদর্শন করা হবে।"
 
 #: includes/fields/other-entries.php:45
 msgid "Entries to Display"
-msgstr ""
+msgstr "এন্ট্রি প্রদর্শন করতে"
 
 #: includes/fields/other-entries.php:46
 msgid "What is the maximum number of entries that should be shown?"
-msgstr ""
+msgstr "দেখানো হবে যে সর্বাধিক সংখ্যক এন্ট্রি কি?"
 
 #: includes/fields/other-entries.php:53
 msgid "Hide if no entries"
-msgstr ""
+msgstr "কোন এন্ট্রি হলে আড়াল"
 
 #: includes/fields/other-entries.php:54
 msgid "Don't display this field if the entry creator has no other entries"
-msgstr ""
+msgstr "এন্ট্রি স্রষ্টার অন্য কোন এন্ট্রি আছে, এই ফিল্ড প্রদর্শন না"
 
 #: includes/fields/other-entries.php:60
 msgid "No Entries Text"
-msgstr ""
+msgstr "কোন এন্ট্রি টেক্সটের"
 
 #: includes/fields/other-entries.php:61
 msgid ""
 "The text that is shown if the entry creator has no other entries (and \"Hide"
 " if no entries\" is disabled)."
-msgstr ""
+msgstr "এন্ট্রি স্রষ্টার অন্য কোন এন্ট্রি আছে যদি দেখানো হয় যে টেক্সট (নিষ্ক্রিয় করা হয় এবং \"কোন এন্ট্রি হলে আড়াল\")।"
 
 #: includes/fields/other-entries.php:62
 msgid "This user has no other entries."
-msgstr ""
+msgstr "এই ব্যবহারকারীর কোন অন্যান্য এন্ট্রি আছে।"
 
 #: includes/fields/source-url.php:22
 msgid "Link to URL:"
-msgstr ""
+msgstr "ইউআরএল- এ লিঙ্ক:"
 
 #: includes/fields/source-url.php:23
 msgid "Display as a link to the Source URL"
-msgstr ""
+msgstr "উত্স ইউআরএল- এ একটি লিঙ্ক হিসাবে প্রদর্শন"
 
 #: includes/fields/source-url.php:30
 msgid "Customize the link text. If empty, the link text will be the the URL."
-msgstr ""
+msgstr "টেক্সট লিঙ্ক কাস্টমাইজ করুন. খালি হলে, টেক্সট লিঙ্ক ইউআরএল টি হবে।"
 
 #: includes/fields/textarea.php:20
 msgid "Maximum words shown"
-msgstr ""
+msgstr "দেখানো সর্বাধিক শব্দের"
 
 #: includes/fields/textarea.php:21
 msgid ""
 "Enter the number of words to be shown. If specified it truncates the text. "
 "Leave it blank if you want to show the full text."
-msgstr ""
+msgstr "শব্দের সংখ্যা লিখুন দেখানো হবে. নির্দিষ্ট তাহলে এটি টেক্সট ছাঁটিয়া. আপনি সম্পূর্ণ লেখা প্রদর্শন করতে চান তাহলে এটি ফাঁকা ছেড়ে দিন."
 
 #: includes/fields/textarea.php:28
 msgid "Convert text URLs to HTML links"
-msgstr ""
+msgstr "এইচটিএমএল লিঙ্ক টেক্সট ইউআরএল গুলি রূপান্তর"
 
 #: includes/fields/textarea.php:29
 msgid "Converts URI, www, FTP, and email addresses in HTML links"
-msgstr ""
+msgstr "এইচটিএমএল লিঙ্ক এ কোনো ইউআরএল, www, এফটিপি, এবং ইমেল ঠিকানা রূপান্তর"
 
 #: includes/fields/website.php:25
 msgid "Define custom link text. Leave blank to display the URL"
-msgstr ""
+msgstr "কাস্টম লিঙ্ক টেক্সট সংজ্ঞায়িত. প্রদর্শন ইউআরএল ফাঁকা"
 
 #: includes/fields/website.php:33
 msgid "Shorten Link Display"
-msgstr ""
+msgstr "লিংক প্রদর্শন করা কমান"
 
 #: includes/fields/website.php:34
 msgid "Only show the domain for a URL instead of the whole link."
-msgstr ""
+msgstr "শুধু একটি ইউআরএল পরিবর্তে পুরো লিঙ্কের জন্য ডোমেইন প্রদর্শন."
 
 #: includes/fields/website.php:35
 msgid "Don&rsquo;t show the full URL, only show the domain."
-msgstr ""
+msgstr "ডন এবং রেসকিউ; টি সম্পূর্ণ ইউআরএল প্রদর্শন, শুধুমাত্র ডোমেইন প্রদর্শন"
 
 #: includes/fields/website.php:41
 msgid "Open link in the same window?"
-msgstr ""
+msgstr "একই উইন্ডোতে লিঙ্ক খুলুন?"
 
-#: includes/lib/EDD_SL_Plugin_Updater.php:180
+#: includes/lib/EDD_SL_Plugin_Updater.php:179
 msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" "
 "class=\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
 msgstr "একটি নতুন ভার্সন %1$s প্রাপ্ত হয়েছেন। <a target=\"_blank\" class=\"thickbox\" href=\"%2$s\"> ভার্সনের বিস্তারিত দেখুন %3$s </a>।"
 
-#: includes/lib/EDD_SL_Plugin_Updater.php:187
+#: includes/lib/EDD_SL_Plugin_Updater.php:186
 msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" "
 "class=\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a "
 "href=\"%4$s\">update now</a>."
 msgstr "একটি নতুন ভার্সন %1$s প্রাপ্ত হয়েছেন। <a target=\"_blank\" class=\"thickbox\" href=\"%2$s\"> ভার্সনের বিস্তারিত দেখুন %3$s </a> অথবা <a href=\"%4$s\">আপডেট করুন</a>।"
 
-#: includes/lib/EDD_SL_Plugin_Updater.php:327
+#: includes/lib/EDD_SL_Plugin_Updater.php:334
 msgid "You do not have permission to install plugin updates"
 msgstr "প্লাগইন আপডেট করার অনুমতি আপনার নেই"
 
 #: includes/widgets/class-gravityview-widget-custom-content.php:20
 msgid "Insert custom text or HTML as a widget"
-msgstr ""
+msgstr "একটি উইজেট হিসেবে কাস্টম টেক্সট বা এইচটিএমএল সন্নিবেশ"
 
 #: includes/widgets/class-gravityview-widget-custom-content.php:31
 msgid "Enter text or HTML. Also supports shortcodes."
-msgstr ""
+msgstr "টেক্সট বা এইচটিএমএল লিখুন. এছাড়াও স্বল্প সঙ্কেত সমর্থন।"
 
 #: includes/widgets/class-gravityview-widget-page-links.php:14
 msgid "Links to multiple pages of results."
-msgstr ""
+msgstr "ফলাফল একাধিক পেজ লিংক।"
 
 #: includes/widgets/class-gravityview-widget-page-links.php:19
 msgid "Show each page number"
@@ -1997,11 +2001,11 @@ msgstr "সামারীর বদলে প্রতি পৃষ্ঠার
 
 #: includes/widgets/class-gravityview-widget-page-links.php:23
 msgid "Page Links"
-msgstr ""
+msgstr "পেইজ লিংক"
 
 #: includes/widgets/class-gravityview-widget-pagination-info.php:19
 msgid "Summary of the number of visible entries out of the total results."
-msgstr ""
+msgstr "মোট ফলাফল খুঁজে তাদের এক্সেস এন্ট্রি সংখ্যা সংক্ষিপ্তসার।"
 
 #: includes/widgets/class-gravityview-widget-pagination-info.php:28
 msgid "Show Pagination Info"
@@ -2013,41 +2017,41 @@ msgstr "দেখানো হচ্ছে %1$s - %2$s of %3$s"
 
 #: includes/widgets/class-gravityview-widget.php:109
 msgid "This class will be added to the widget container"
-msgstr ""
+msgstr "এই শ্রেণীর উইজেট ধারক যোগ করা হবে"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:24
 msgid "Displays the results of Poll Fields that exist in the form."
-msgstr ""
+msgstr "আকারে বিদ্যমান সেই নির্বাচনের ক্ষেত্র ফলাফল প্রদর্শন করে।"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:35
 msgid "Display Percentages"
-msgstr ""
+msgstr "প্রদর্শন শতকরা"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:38
 msgid ""
 "Display results percentages as part of results? Supported values are: true, "
 "false. Defaults to \"true\"."
-msgstr ""
+msgstr "প্রদর্শন ফলাফল শতাংশে ফলাফল অংশ হিসাবে? সমর্থিত মান হল: সত্য, মিথ্যা. \"সত্য\" এর সাথে ডিফল্ট।"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:41
 msgid "Display Counts"
-msgstr ""
+msgstr "প্রদর্শন গণনা"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:44
 msgid ""
 "Display number of times each choice has been selected when displaying "
 "results? Supported values are: true, false. Defaults to \"true\"."
-msgstr ""
+msgstr "ফলাফল প্রদর্শনের সময় সময়ের প্রদর্শন সংখ্যা প্রতিটি পছন্দ নির্বাচন করা হয়েছে? সমর্থিত মান হল: সত্য, মিথ্যা. \"সত্য\" এর সাথে ডিফল্ট।"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:48
 msgid "Style"
-msgstr ""
+msgstr "স্টাইল"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:49
 msgid ""
 "The Polls Add-On currently supports 4 built in styles: red, green, orange, "
 "blue. Defaults to \"green\"."
-msgstr ""
+msgstr "পোল অ্যাড অন বর্তমানে শৈলী সালে নির্মিত 4 সমর্থন: লাল, সবুজ, কমলা, নীল. \"সবুজ\" ডিফল্ট।"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:52
 msgid "Green"
@@ -2071,100 +2075,120 @@ msgstr "ভোটের ফলাফল "
 
 #: includes/widgets/search-widget/class-search-widget.php:25
 msgid "Search form for searching entries."
-msgstr ""
+msgstr "দাখিলা অনুসন্ধানের জন্য অনুসন্ধান ফর্ম।"
 
-#: includes/widgets/search-widget/class-search-widget.php:42
+#: includes/widgets/search-widget/class-search-widget.php:37
 msgid "Search Layout"
 msgstr "লেআউট অনুসন্ধান "
 
-#: includes/widgets/search-widget/class-search-widget.php:45
+#: includes/widgets/search-widget/class-search-widget.php:40
 msgid "Horizontal"
 msgstr "আড়াআড়ি "
 
-#: includes/widgets/search-widget/class-search-widget.php:46
+#: includes/widgets/search-widget/class-search-widget.php:41
 msgid "Vertical"
 msgstr "উলম্ব"
 
-#: includes/widgets/search-widget/class-search-widget.php:51
+#: includes/widgets/search-widget/class-search-widget.php:46
 msgid "Show Clear button"
 msgstr "ক্লিয়ার বাটন দেখান"
 
-#: includes/widgets/search-widget/class-search-widget.php:55
+#: includes/widgets/search-widget/class-search-widget.php:58
+msgid "Search Mode"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:59
+msgid "Should search results match all search fields, or any?"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:63
+msgid "Match Any Fields"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:64
+msgid "Match All Fields"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:68
 msgid "Search Bar"
 msgstr "অনুসন্ধান বার"
 
-#: includes/widgets/search-widget/class-search-widget.php:110
+#: includes/widgets/search-widget/class-search-widget.php:123
 msgid "Text"
 msgstr "টেক্সট "
 
-#: includes/widgets/search-widget/class-search-widget.php:111
+#: includes/widgets/search-widget/class-search-widget.php:124
 msgid "Date"
 msgstr "তারিখ "
 
-#: includes/widgets/search-widget/class-search-widget.php:113
+#: includes/widgets/search-widget/class-search-widget.php:126
 msgid "Select (multiple values)"
-msgstr ""
+msgstr "(একাধিক মান) নির্বাচন"
 
-#: includes/widgets/search-widget/class-search-widget.php:114
+#: includes/widgets/search-widget/class-search-widget.php:127
 msgid "Radio"
-msgstr ""
+msgstr "রেডিও"
 
-#: includes/widgets/search-widget/class-search-widget.php:115
-#: includes/widgets/search-widget/class-search-widget.php:116
+#: includes/widgets/search-widget/class-search-widget.php:128
+#: includes/widgets/search-widget/class-search-widget.php:129
 msgid "Checkbox"
-msgstr ""
+msgstr "চেকবক্স"
 
-#: includes/widgets/search-widget/class-search-widget.php:117
+#: includes/widgets/search-widget/class-search-widget.php:130
 msgid "Links"
-msgstr ""
+msgstr "লিংক"
 
-#: includes/widgets/search-widget/class-search-widget.php:118
+#: includes/widgets/search-widget/class-search-widget.php:131
 msgid "Date range"
-msgstr ""
+msgstr "তারিখের পরিসীমা"
 
-#: includes/widgets/search-widget/class-search-widget.php:137
+#: includes/widgets/search-widget/class-search-widget.php:150
 msgid "No search fields configured yet."
-msgstr ""
+msgstr "কোন সার্চ ক্ষেত্র এখনো কনফিগার।"
 
-#: includes/widgets/search-widget/class-search-widget.php:138
+#: includes/widgets/search-widget/class-search-widget.php:151
 msgid "Add Search Field"
+msgstr "ফিল্ড অনুসন্ধান করো"
+
+#: includes/widgets/search-widget/class-search-widget.php:152
+msgid "Label"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:140
+#: includes/widgets/search-widget/class-search-widget.php:154
 msgid "Input Type"
-msgstr ""
+msgstr "ইনপুট ধরন"
 
-#: includes/widgets/search-widget/class-search-widget.php:209
+#: includes/widgets/search-widget/class-search-widget.php:225
 msgid "Search Everything"
-msgstr ""
+msgstr "সবকিছু অনুসন্ধান"
 
-#: includes/widgets/search-widget/class-search-widget.php:212
+#: includes/widgets/search-widget/class-search-widget.php:237
 msgid "Entry Creator"
-msgstr ""
+msgstr "এণ্ট্রি ক্রিয়েটর"
 
-#: includes/widgets/search-widget/class-search-widget.php:645
+#: includes/widgets/search-widget/class-search-widget.php:809
 msgid "Search Entries:"
 msgstr "এন্ট্রি খুঁজুনঃ"
 
-#: includes/widgets/search-widget/class-search-widget.php:652
+#: includes/widgets/search-widget/class-search-widget.php:812
 msgid "Filter by date:"
 msgstr "তারিখ অনুসারে ছাঁকনিঃ"
 
-#: includes/widgets/search-widget/class-search-widget.php:663
+#: includes/widgets/search-widget/class-search-widget.php:815
 msgid "Entry ID:"
-msgstr ""
+msgstr "এণ্ট্রি আইডি:"
 
-#: includes/widgets/search-widget/class-search-widget.php:670
+#: includes/widgets/search-widget/class-search-widget.php:818
 msgid "Submitted by:"
-msgstr ""
+msgstr "জমাদানকারী:"
 
-#: includes/widgets/search-widget/class-search-widget.php:919
+#: includes/widgets/search-widget/class-search-widget.php:961
 msgid "Clear"
 msgstr "পরিস্কার"
 
-#: includes/widgets/search-widget/class-search-widget.php:964
+#: includes/widgets/search-widget/class-search-widget.php:1006
 msgid "Show a different month"
-msgstr ""
+msgstr "একটি ভিন্ন মাসের দেখাও"
 
 #: includes/widgets/search-widget/templates/search-field-date_range.php:19
 #: includes/widgets/search-widget/templates/search-field-entry_date.php:18
@@ -2176,101 +2200,101 @@ msgstr "শুরুর তারিখ"
 msgid "End date"
 msgstr "শেষের তারিখ"
 
-#: includes/widgets/search-widget/templates/search-field-link.php:21
+#: includes/widgets/search-widget/templates/search-field-link.php:25
 msgid "Show only:"
-msgstr ""
+msgstr "প্রদর্শন শুধুমাত্র:"
 
-#: includes/widgets/search-widget/templates/widget-search.php:50
+#: includes/widgets/search-widget/templates/widget-search.php:51
 msgid "Search"
 msgstr "অনুসন্ধান করুন"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:15
 msgid "GravityView Recent Entries"
-msgstr ""
+msgstr "গ্রাভিটি ভিউ দেখুন সাম্প্রতিক দাখিলা"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:18
 msgid "Display the most recent entries for a View"
-msgstr ""
+msgstr "একটি দৃশ্যের জন্য সবচেয়ে সাম্প্রতিকতম এন্ট্রি প্রদর্শন"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:267
 msgid "Recent Entries"
-msgstr ""
+msgstr "সাম্প্রতিক দাখিলা"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:281
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:164
 msgid "Title:"
-msgstr ""
+msgstr "শিরোনাম:"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:310
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:174
 msgid "Please select a View to search."
-msgstr ""
+msgstr "আপনাকে একটি স্থাপিত নির্বাচন করুন।"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:320
 msgid "&mdash; Select a View as Entries Source &mdash;"
-msgstr ""
+msgstr "এবং মাদশ; দাখিলা উত্স এবং মাদশ; হিসাবে একটি দৃশ্য নির্বাচন;"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:348
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:211
 msgid "If Embedded, Page ID:"
-msgstr ""
+msgstr "ছবি যদি, পৃষ্ঠা আইডি:"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:351
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:214
 msgid ""
 "To have a search performed on an embedded View, enter the ID of the post or "
 "page where the View is embedded."
-msgstr ""
+msgstr "একটি এমবেডেড দেখুন উপর সঞ্চালিত একটি অনুসন্ধান আছে, দেখুন এমবেড করা হয় যেখানে পোস্ট বা পৃষ্ঠার আইডি লিখুন।"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:358
 msgid "Number of entries to show:"
-msgstr ""
+msgstr "এন্ট্রি সংখ্যা প্রদর্শন:"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:14
 msgid "A search form for a specific GravityView."
-msgstr ""
+msgstr "একটি নির্দিষ্ট গ্রাভিটি ভিউ দেখুন জন্য একটি অনুসন্ধান ফর্ম।"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:21
 msgid "GravityView Search"
-msgstr ""
+msgstr "গ্রাভিটি ভিউ দেখুন অনুসন্ধান"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:132
 msgid ""
 "This widget is not configurable from this screen. Please configure it on the"
 " %sWidgets page%s."
-msgstr ""
+msgstr "এই উইজেট এই পর্দা থেকে কনফিগার করা যাবে না. %s এর উইজেট পাতা%s এর উপর এটি কনফিগার করুন."
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:182
 msgid "View:"
-msgstr ""
+msgstr "দেখুন:"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:184
 msgid "&mdash; Select a View &mdash;"
-msgstr ""
+msgstr "&মাদাশ; একটি দেখতে পারেন &মাদাশনির্বাচন;"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:223
 msgid "Searchable fields:"
-msgstr ""
+msgstr "সর্চেবেল ক্ষেত্র:"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:224
 msgid "Search Fields"
-msgstr ""
+msgstr "অনুসন্ধান ক্ষেত্র"
 
 #: templates/fields/gquiz_grade.php:24
 msgid "Letter"
-msgstr ""
+msgstr "চিঠি"
 
 #: templates/fields/gquiz_is_pass.php:27
 msgid "Pass/Fail"
-msgstr ""
+msgstr "পাস / ব্যর্থ"
 
 #: templates/fields/is_fulfilled.php:14
 msgid "Not Fulfilled"
-msgstr ""
+msgstr "পূর্ণ না"
 
 #: templates/fields/is_fulfilled.php:16
 msgid "Fulfilled"
-msgstr ""
+msgstr "পূর্ণ"
 
 #: includes/class-admin-label.php:187
 msgctxt "Label in field picker for empty label"
@@ -2305,12 +2329,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "খালি"
 
-#: includes/class-frontend-views.php:1121
+#: includes/class-frontend-views.php:1136
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "পরিস্কার"
 
-#: includes/class-frontend-views.php:1122
+#: includes/class-frontend-views.php:1137
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "রিসেট"
@@ -2338,72 +2362,72 @@ msgstr "দৃশ্য"
 #: includes/class-settings.php:563
 msgctxt "Setting: On or off"
 msgid "On"
-msgstr ""
+msgstr "উপর"
 
 #: includes/class-settings.php:567
 msgctxt "Setting: On or off"
 msgid "Off"
-msgstr ""
+msgstr "বন্ধ"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:199
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:89
 msgctxt "User capability"
 msgid "Entry Creator"
-msgstr ""
+msgstr "এণ্ট্রি ক্রিয়েটর"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1436
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
-msgstr ""
+msgstr "ফিরে যাও।"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:26
 msgctxt "The string placeholders are for emphasis HTML"
 msgid ""
 "Note: this will display poll results for %sall form entries%s, not only the "
 "entries displayed in the View."
-msgstr ""
+msgstr "উল্লেখ্য: এই% সেল ফর্ম এন্ট্রি% এর, দৃশ্য প্রদর্শন না শুধুমাত্র এন্ট্রি জন্য পোলের ফলাফল প্রদর্শন করা হবে।"
 
-#: includes/widgets/search-widget/class-search-widget.php:959
+#: includes/widgets/search-widget/class-search-widget.php:1001
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "বন্ধ"
 
-#: includes/widgets/search-widget/class-search-widget.php:960
+#: includes/widgets/search-widget/class-search-widget.php:1002
 msgctxt "Previous month in calendar"
 msgid "Prev"
-msgstr ""
+msgstr "পূর্ববর্তী"
 
-#: includes/widgets/search-widget/class-search-widget.php:961
+#: includes/widgets/search-widget/class-search-widget.php:1003
 msgctxt "Next month in calendar"
 msgid "Next"
-msgstr ""
+msgstr "পরবর্তী"
 
-#: includes/widgets/search-widget/class-search-widget.php:962
+#: includes/widgets/search-widget/class-search-widget.php:1004
 msgctxt "Today in calendar"
 msgid "Today"
-msgstr ""
+msgstr "আজ"
 
-#: includes/widgets/search-widget/class-search-widget.php:963
+#: includes/widgets/search-widget/class-search-widget.php:1005
 msgctxt "Week in calendar"
 msgid "Week"
-msgstr ""
+msgstr "সপ্তাহ"
 
 #: templates/fields/gquiz_grade.php:25 templates/fields/gquiz_is_pass.php:28
 msgctxt "%s is the current Quiz field type (\"Letter\" or \"Pass/Fail\")"
 msgid "%s grading is disabled for this form. %sChange the setting%s"
-msgstr ""
+msgstr "%s এর শূন্য এই ফর্মটির জন্য নিষ্ক্রিয় করা হয়েছে. %s এর সেটিং পরিবর্তন%s এর"
 
 #: templates/fields/post_image.php:109
 msgctxt "Post Image field title heading"
 msgid "Title:"
-msgstr ""
+msgstr "শিরোনাম:"
 
 #: templates/fields/post_image.php:115
 msgctxt "Post Image field caption heading"
 msgid "Caption:"
-msgstr ""
+msgstr "ক্যাপশন:"
 
 #: templates/fields/post_image.php:121
 msgctxt "Post Image field description heading"
 msgid "Description:"
-msgstr ""
+msgstr "বর্ণনা:"

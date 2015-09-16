@@ -47,6 +47,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Tweak: Remove redundant close icon for field and widget settings
 * Tweak: When adding notes via GravityView, set the note type to `gravityview` to allow for better searchability
 * Added: Automated code testing
+* Updated: Bengali translation by [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/). Thank you!
 
 = 1.13.1 on August 26 =
 * Fixed: Potential XSS security issue. **Please update.**
