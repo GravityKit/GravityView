@@ -1,16 +1,16 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.3
+Tested up to: 4.3.1
 Stable tag: trunk
 Contributors: katzwebservices, luistinygod
 License: GPL 3 or higher
 
-Beautifully display your Gravity Forms entries.
+Beautifully display and edit your Gravity Forms entries.
 
 == Description ==
 
-Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](https://gravityview.co).
+Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](https://gravityview.co).
 
 == Installation ==
 
@@ -20,10 +20,11 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 
 == Changelog ==
 
-= 1.14 (PRE RELEASE) =
-* Added: Show the value of a single column of a "Multiple Columns" List field
+= 1.14 on September 16 =
 * Added: Search Bar now supports custom label text
+* Added: Show the value of a single column of a "Multiple Columns" List field
 * Added: Sorting by time now works. Why is this "Added" and not "Fixed"? Because Gravity Forms doesn't natively support sorting by time!
+* Added: Display the roles of the entry creator by using `{created_by:roles}` Merge Tag
 * Fixed: Field containers were being rendered even when empty
 * Fixed: Widgets were not being displayed when using page builders and themes that pre-process shortcodes
 * Fixed: Don't show "Width %" setting when in Single Entry configuration
@@ -37,8 +38,8 @@ Beautifully display your Gravity Forms entries. Learn more on [GravityView.co](h
 * Fixed: Gravity Forms User Registration Addon conflicts
 	- When editing an entry, an user's roles and display name were reset to the Addon's feed configuration settings
 	- Users receive "Password Updated" emails in WordPress 4.3+, even if the password wasn't changed
-* Added: Support for plugin banner images in the plugin changelog screen
-* Added: Display the roles of the entry creator by using `{created_by:roles}` Merge Tag
+* Fixed: Prevent sorting by List fields, which aren't sortable due to their data storage method
+* Tweak: Support for plugin banner images in the plugin changelog screen
 * Tweak: Updated default Search Bar configuration to be a single input with "Search Everything"
 * Tweak: Sort user dropdown by display name instead of username
 * Tweak: Reduce size of AJAX responses

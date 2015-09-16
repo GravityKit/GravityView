@@ -1073,6 +1073,9 @@ class GravityView_frontend {
 					}
 				}
 				break;
+			case 'list':
+				$sort_field_id = false;
+				break;
 			case 'time':
 
 				/**
@@ -1266,7 +1269,7 @@ class GravityView_frontend {
 	 * Checks if field (column) is sortable
 	 *
 	 * @param string $field Field settings
-	 * @param $form Gravity Forms form object
+	 * @param array $form Gravity Forms form array
 	 *
 	 * @since 1.7
 	 *
@@ -1274,11 +1277,17 @@ class GravityView_frontend {
 	 */
 	public function is_field_sortable( $field_id = '', $form ) {
 
+		if( is_numeric( $field_id ) ) {
+			$field = GFFormsModel::get_field( $form, $field_id );
+			$field_id = $field->type;
+		}
+
 		$not_sortable = array(
 			'entry_link',
 			'edit_link',
 			'delete_link',
 			'custom',
+			'list',
 		);
 
 		/**
