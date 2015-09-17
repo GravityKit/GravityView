@@ -109,13 +109,17 @@ class GravityView_Edit_Entry_User_Registration {
      * @param int $user_id WP User ID that was updated by Gravity Forms User Registration Addon
      * @param array $config Gravity Forms User Registration Addon form feed configuration
      * @param array $entry The Gravity Forms entry that was just updated
+     * @param string $password User password
      * @return void
      */
-    public function restore_user_details( $user_id = 0, $config = array(), $entry = array() ) {
+    public function restore_user_details( $user_id = 0, $config = array(), $entry = array(), $password = '' ) {
 
         $user_after_update = get_userdata( $user_id );
 
         $restored_user = $user_after_update;
+
+        // Restore the password
+        $restored_user->user_pass = $password;
 
         // Restore previous display_name
         $restored_user->display_name = $this->_user_before_update->display_name;

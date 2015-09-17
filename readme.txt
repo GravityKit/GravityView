@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.14.2 on September 17 =
+* Fixed: Issue affecting Gravity Forms User Registration Addon. Passwords were being reset when editing an entry.
+
 = 1.14.1 on September 16 =
 * Fixed: Error with older versions of Maps Premium View
 
