@@ -22,6 +22,12 @@
 		// Checks if the execution is on a Start Fresh context
 		startFreshStatus: false,
 
+		/**
+		 * @since 1.14
+		 * @var int The width of the modal dialogs to use for field and widget settings
+		 */
+		dialogWidth: 650,
+
 		init: function () {
 
 			// short tag
@@ -246,6 +252,7 @@
 			vcfg.currentFormId = '';
 			vcfg.togglePreviewButton();
 			$( "#gravityview_view_config, #gravityview_select_template, #gravityview_sort_filter, .gv-form-links" ).hide();
+			viewGeneralSettings.metaboxObj.hide();
 
 		},
 
@@ -421,9 +428,9 @@
 				resizable: false,
 				width: function () {
 
-					// If the window is wider than 550px, use 550
-					if ( $( window ).width() > 550 ) {
-						return 550;
+					// If the window is wider than {vcfg.dialogWidth}px, use vcfg.dialogWidth
+					if ( $( window ).width() > vcfg.dialogWidth ) {
+						return vcfg.dialogWidth;
 					}
 
 					// Otherwise, return the window width, less 10px
@@ -520,6 +527,7 @@
 
 			$( '#gravityview_view_config' ).slideDown( 150 );
 
+			viewGeneralSettings.metaboxObj.show();
 			viewConfiguration.toggleDropMessage();
 			viewConfiguration.init_droppables();
 			viewConfiguration.init_tooltips();
@@ -643,13 +651,13 @@
 			parent.find( ".gv-template-preview" ).dialog( {
 				dialogClass: 'wp-dialog gv-dialog',
 				appendTo: $( "#gravityview_select_template" ),
-				width: 550,
+				width: viewConfiguration.dialogWidth,
 				open: function () {
 					$( '<div class="gv-overlay" />' ).prependTo( '#wpwrap' );
 				},
 				close: function () {
 					$( this ).dialog( "option", "appendTo", parent );
-					$( '#wpwrap > .gv-overlay' ).fadeOut( 'fast', function () {
+					$( '#wpwrap' ).find('> .gv-overlay' ).fadeOut( 'fast', function () {
 						$( this ).remove();
 					} );
 				},
@@ -896,6 +904,7 @@
 				field_label: newField.find( '.gv-field-label' ).attr( 'data-original-title' ),
 				field_type: addButton.attr( 'data-objecttype' ),
 				input_type: newField.attr( 'data-inputtype' ),
+				form_id: vcfg.currentFormId,
 				nonce: gvGlobals.nonce,
 			};
 
@@ -972,6 +981,13 @@
 		 * @return {void}
 		 */
 		enable_publish: function () {
+
+			/**
+			 * Added in ~ WP 3.8
+			 * @see https://github.com/WordPress/WordPress/blob/master/wp-admin/js/post.js#L365-L367
+			 */
+			$( document ).trigger( 'autosave-enable-buttons.edit-post' );
+
 			// Restore saving after settings are generated
 			$( '#publishing-action #publish' ).prop( 'disabled', null ).removeClass( 'button-primary-disabled' );
 		},
@@ -981,6 +997,13 @@
 		 * @return {void}
 		 */
 		disable_publish: function () {
+
+			/**
+			 * Added in ~ WP 3.8
+			 * @see https://github.com/WordPress/WordPress/blob/master/wp-admin/js/post.js#L363-L364
+			 */
+			$( document ).trigger( 'autosave-disable-buttons.edit-post' );
+
 			$( '#publishing-action #publish' ).prop( 'disabled', 'disabled' ).addClass( 'button-primary-disabled' );
 		},
 
@@ -1548,13 +1571,18 @@ var ViewConfig = _react2['default'].createClass({
 
     handleTemplateChange: function handleTemplateChange(e) {
         e.preventDefault();
-        this.setState({ template: jQuery(e.target).parents('.gv-view-types-module').attr('data-templateid') });
+        this.setState({ template: e.target.getAttribute('data-change-value') });
 
         if (!this.state.showTemplates) {
             this.setState({ showTemplates: 'custom' });
         } else {
             this.setState({ showTemplates: false });
         }
+    },
+
+    handleSwitchTemplate: function handleSwitchTemplate(e) {
+        e.preventDefault();
+        this.setState({ showTemplates: 'custom' });
     },
 
     render: function render() {
@@ -1578,7 +1606,8 @@ var ViewConfig = _react2['default'].createClass({
                 key: 'ds' + this.state.form,
                 form: this.state.form,
                 onFormChange: this.handleFormChange,
-                onStartFresh: this.handleStartFresh
+                onStartFresh: this.handleStartFresh,
+                onSwitchViewType: this.handleSwitchTemplate
             }),
             selectTemplateMetabox
         );
@@ -1695,7 +1724,7 @@ var DataSource = _react2['default'].createClass({
         } else {
             switchView = _react2['default'].createElement(
                 'a',
-                { className: 'button button-primary gv-button-left-margin', title: gravityview_i18n.mb_ds_switch_view, disabled: showAlert },
+                { onClick: this.props.onSwitchViewType, className: 'button button-primary gv-button-left-margin', title: gravityview_i18n.mb_ds_switch_view, disabled: showAlert },
                 gravityview_i18n.mb_ds_switch_view
             );
         }
@@ -1740,7 +1769,13 @@ var DataSource = _react2['default'].createClass({
                 formSelect,
                 switchView
             ),
-            _react2['default'].createElement(_partsAlertDialogJsx2['default'], { isOpen: showAlert, message: gravityview_i18n.mb_ds_change_form, cancelAction: this.cancelDialogAction, continueAction: this.props.onFormChange, changedValue: this.state.formNewSelectedValue })
+            _react2['default'].createElement(_partsAlertDialogJsx2['default'], {
+                isOpen: showAlert,
+                message: gravityview_i18n.mb_ds_change_form,
+                cancelAction: this.cancelDialogAction,
+                continueAction: this.props.onFormChange,
+                changedValue: this.state.formNewSelectedValue
+            })
         );
     }
 });
@@ -1765,8 +1800,27 @@ var _partsMetaboxJsx = require('./parts/metabox.jsx');
 
 var _partsMetaboxJsx2 = _interopRequireDefault(_partsMetaboxJsx);
 
+var _partsAlertDialogJsx = require('./parts/alert-dialog.jsx');
+
+var _partsAlertDialogJsx2 = _interopRequireDefault(_partsAlertDialogJsx);
+
 var SelectTemplate = _react2['default'].createClass({
     displayName: 'SelectTemplate',
+
+    getInitialState: function getInitialState() {
+        return {
+            templateNewSelectedValue: this.props.template
+        };
+    },
+
+    cancelDialogAction: function cancelDialogAction(e) {
+        e.preventDefault();
+        this.setState({ templateNewSelectedValue: this.props.template });
+    },
+
+    handleTemplateChange: function handleTemplateChange(e) {
+        this.setState({ templateNewSelectedValue: jQuery(e.target).parents('.gv-view-types-module').attr('data-templateid') });
+    },
 
     filterTemplateType: function filterTemplateType(template, i) {
         if (template.type === this.props.filter) {
@@ -1775,8 +1829,10 @@ var SelectTemplate = _react2['default'].createClass({
     },
 
     renderTemplatesList: function renderTemplatesList(template, i) {
-        var classSelected = 'gv-view-types-module';
-        classSelected += this.props.template == template.id ? ' gv-selected' : '';
+        var classSelected = 'gv-view-types-module',
+            currentTemplate = this.props.template != this.state.templateNewSelectedValue ? this.state.templateNewSelectedValue : this.props.template;
+
+        classSelected += currentTemplate == template.id ? ' gv-selected' : '';
 
         var buyOrSelectLink = '',
             previewLink = '',
@@ -1826,7 +1882,7 @@ var SelectTemplate = _react2['default'].createClass({
                 { className: classSelected, 'data-filter': template.type, 'data-templateid': template.id },
                 _react2['default'].createElement(
                     'div',
-                    { className: 'gv-view-types-hover', onClick: this.props.onTemplateClick },
+                    { className: 'gv-view-types-hover', onClick: this.handleTemplateChange },
                     _react2['default'].createElement(
                         'div',
                         null,
@@ -1855,11 +1911,21 @@ var SelectTemplate = _react2['default'].createClass({
 
     render: function render() {
 
+        // check if the alert message needs to be rendered
+        var showAlert = this.props.template != this.state.templateNewSelectedValue;
+
         var templatesList = gravityview_view_settings.templates.filter(this.filterTemplateType, this).map(this.renderTemplatesList, this);
 
         return _react2['default'].createElement(
             _partsMetaboxJsx2['default'],
             { mTitle: gravityview_i18n.mb_st_title, mTitleLinks: false },
+            _react2['default'].createElement(_partsAlertDialogJsx2['default'], {
+                isOpen: showAlert,
+                message: gravityview_i18n.mb_ds_change_type,
+                cancelAction: this.cancelDialogAction,
+                continueAction: this.props.onTemplateClick,
+                changedValue: this.state.templateNewSelectedValue
+            }),
             _react2['default'].createElement(
                 'div',
                 { className: 'gv-grid' },
@@ -1872,7 +1938,7 @@ var SelectTemplate = _react2['default'].createClass({
 exports['default'] = SelectTemplate;
 module.exports = exports['default'];
 
-},{"./parts/metabox.jsx":5,"react":161}],4:[function(require,module,exports){
+},{"./parts/alert-dialog.jsx":4,"./parts/metabox.jsx":5,"react":161}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

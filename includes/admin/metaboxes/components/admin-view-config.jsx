@@ -26,7 +26,7 @@ var ViewConfig = React.createClass({
 
     handleTemplateChange: function(e) {
         e.preventDefault();
-        this.setState({ template: jQuery( e.target ).parents('.gv-view-types-module').attr('data-templateid') });
+        this.setState({ template: e.target.getAttribute('data-change-value') });
 
         if( !this.state.showTemplates ) {
             this.setState({ showTemplates: 'custom' });
@@ -34,6 +34,11 @@ var ViewConfig = React.createClass({
             this.setState({ showTemplates: false });
         }
 
+    },
+
+    handleSwitchTemplate: function(e) {
+        e.preventDefault();
+        this.setState({ showTemplates: 'custom' });
     },
 
     render: function() {
@@ -59,6 +64,7 @@ var ViewConfig = React.createClass({
                     form={this.state.form}
                     onFormChange={this.handleFormChange}
                     onStartFresh={this.handleStartFresh}
+                    onSwitchViewType={this.handleSwitchTemplate}
                 />
                 {selectTemplateMetabox}
             </div>

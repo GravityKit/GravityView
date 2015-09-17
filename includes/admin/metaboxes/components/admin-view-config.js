@@ -39,13 +39,18 @@ var ViewConfig = _react2['default'].createClass({
 
     handleTemplateChange: function handleTemplateChange(e) {
         e.preventDefault();
-        this.setState({ template: jQuery(e.target).parents('.gv-view-types-module').attr('data-templateid') });
+        this.setState({ template: e.target.getAttribute('data-change-value') });
 
         if (!this.state.showTemplates) {
             this.setState({ showTemplates: 'custom' });
         } else {
             this.setState({ showTemplates: false });
         }
+    },
+
+    handleSwitchTemplate: function handleSwitchTemplate(e) {
+        e.preventDefault();
+        this.setState({ showTemplates: 'custom' });
     },
 
     render: function render() {
@@ -69,7 +74,8 @@ var ViewConfig = _react2['default'].createClass({
                 key: 'ds' + this.state.form,
                 form: this.state.form,
                 onFormChange: this.handleFormChange,
-                onStartFresh: this.handleStartFresh
+                onStartFresh: this.handleStartFresh,
+                onSwitchViewType: this.handleSwitchTemplate
             }),
             selectTemplateMetabox
         );
@@ -186,7 +192,7 @@ var DataSource = _react2['default'].createClass({
         } else {
             switchView = _react2['default'].createElement(
                 'a',
-                { className: 'button button-primary gv-button-left-margin', title: gravityview_i18n.mb_ds_switch_view, disabled: showAlert },
+                { onClick: this.props.onSwitchViewType, className: 'button button-primary gv-button-left-margin', title: gravityview_i18n.mb_ds_switch_view, disabled: showAlert },
                 gravityview_i18n.mb_ds_switch_view
             );
         }
@@ -231,7 +237,13 @@ var DataSource = _react2['default'].createClass({
                 formSelect,
                 switchView
             ),
-            _react2['default'].createElement(_partsAlertDialogJsx2['default'], { isOpen: showAlert, message: gravityview_i18n.mb_ds_change_form, cancelAction: this.cancelDialogAction, continueAction: this.props.onFormChange, changedValue: this.state.formNewSelectedValue })
+            _react2['default'].createElement(_partsAlertDialogJsx2['default'], {
+                isOpen: showAlert,
+                message: gravityview_i18n.mb_ds_change_form,
+                cancelAction: this.cancelDialogAction,
+                continueAction: this.props.onFormChange,
+                changedValue: this.state.formNewSelectedValue
+            })
         );
     }
 });
@@ -256,8 +268,27 @@ var _partsMetaboxJsx = require('./parts/metabox.jsx');
 
 var _partsMetaboxJsx2 = _interopRequireDefault(_partsMetaboxJsx);
 
+var _partsAlertDialogJsx = require('./parts/alert-dialog.jsx');
+
+var _partsAlertDialogJsx2 = _interopRequireDefault(_partsAlertDialogJsx);
+
 var SelectTemplate = _react2['default'].createClass({
     displayName: 'SelectTemplate',
+
+    getInitialState: function getInitialState() {
+        return {
+            templateNewSelectedValue: this.props.template
+        };
+    },
+
+    cancelDialogAction: function cancelDialogAction(e) {
+        e.preventDefault();
+        this.setState({ templateNewSelectedValue: this.props.template });
+    },
+
+    handleTemplateChange: function handleTemplateChange(e) {
+        this.setState({ templateNewSelectedValue: jQuery(e.target).parents('.gv-view-types-module').attr('data-templateid') });
+    },
 
     filterTemplateType: function filterTemplateType(template, i) {
         if (template.type === this.props.filter) {
@@ -266,8 +297,10 @@ var SelectTemplate = _react2['default'].createClass({
     },
 
     renderTemplatesList: function renderTemplatesList(template, i) {
-        var classSelected = 'gv-view-types-module';
-        classSelected += this.props.template == template.id ? ' gv-selected' : '';
+        var classSelected = 'gv-view-types-module',
+            currentTemplate = this.props.template != this.state.templateNewSelectedValue ? this.state.templateNewSelectedValue : this.props.template;
+
+        classSelected += currentTemplate == template.id ? ' gv-selected' : '';
 
         var buyOrSelectLink = '',
             previewLink = '',
@@ -317,7 +350,7 @@ var SelectTemplate = _react2['default'].createClass({
                 { className: classSelected, 'data-filter': template.type, 'data-templateid': template.id },
                 _react2['default'].createElement(
                     'div',
-                    { className: 'gv-view-types-hover', onClick: this.props.onTemplateClick },
+                    { className: 'gv-view-types-hover', onClick: this.handleTemplateChange },
                     _react2['default'].createElement(
                         'div',
                         null,
@@ -346,11 +379,21 @@ var SelectTemplate = _react2['default'].createClass({
 
     render: function render() {
 
+        // check if the alert message needs to be rendered
+        var showAlert = this.props.template != this.state.templateNewSelectedValue;
+
         var templatesList = gravityview_view_settings.templates.filter(this.filterTemplateType, this).map(this.renderTemplatesList, this);
 
         return _react2['default'].createElement(
             _partsMetaboxJsx2['default'],
             { mTitle: gravityview_i18n.mb_st_title, mTitleLinks: false },
+            _react2['default'].createElement(_partsAlertDialogJsx2['default'], {
+                isOpen: showAlert,
+                message: gravityview_i18n.mb_ds_change_type,
+                cancelAction: this.cancelDialogAction,
+                continueAction: this.props.onTemplateClick,
+                changedValue: this.state.templateNewSelectedValue
+            }),
             _react2['default'].createElement(
                 'div',
                 { className: 'gv-grid' },
@@ -363,7 +406,7 @@ var SelectTemplate = _react2['default'].createClass({
 exports['default'] = SelectTemplate;
 module.exports = exports['default'];
 
-},{"./parts/metabox.jsx":5,"react":161}],4:[function(require,module,exports){
+},{"./parts/alert-dialog.jsx":4,"./parts/metabox.jsx":5,"react":161}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

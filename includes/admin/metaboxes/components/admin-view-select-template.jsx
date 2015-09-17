@@ -1,8 +1,24 @@
 import React from 'react';
 import Metabox from './parts/metabox.jsx';
+import AlertDialog from './parts/alert-dialog.jsx';
 
 
 var SelectTemplate = React.createClass({
+
+    getInitialState: function() {
+        return {
+            templateNewSelectedValue: this.props.template
+        };
+    },
+
+    cancelDialogAction: function( e ) {
+        e.preventDefault();
+        this.setState({ templateNewSelectedValue: this.props.template });
+    },
+
+    handleTemplateChange: function( e ) {
+        this.setState({ templateNewSelectedValue: jQuery( e.target ).parents('.gv-view-types-module').attr('data-templateid') });
+    },
 
     filterTemplateType: function( template, i ) {
         if( template.type === this.props.filter ) {
@@ -11,8 +27,10 @@ var SelectTemplate = React.createClass({
     },
 
     renderTemplatesList: function( template, i ) {
-        var classSelected = 'gv-view-types-module';
-        classSelected += this.props.template == template.id ? ' gv-selected' : '';
+        var classSelected = 'gv-view-types-module',
+            currentTemplate = this.props.template != this.state.templateNewSelectedValue ? this.state.templateNewSelectedValue : this.props.template;
+
+        classSelected += currentTemplate == template.id ? ' gv-selected' : '';
 
         var buyOrSelectLink = '',
             previewLink = '',
@@ -44,7 +62,7 @@ var SelectTemplate = React.createClass({
         return (
             <div key={template.id} className="gv-grid-col-1-3">
                 <div className={classSelected} data-filter={template.type} data-templateid={template.id}>
-                    <div className="gv-view-types-hover" onClick={this.props.onTemplateClick} >
+                    <div className="gv-view-types-hover" onClick={this.handleTemplateChange} >
                         <div>
                             {buyOrSelectLink}
                             {previewLink}
@@ -62,16 +80,19 @@ var SelectTemplate = React.createClass({
 
     render: function () {
 
+        // check if the alert message needs to be rendered
+        var showAlert = this.props.template != this.state.templateNewSelectedValue;
+
         var templatesList = gravityview_view_settings.templates.filter( this.filterTemplateType, this ).map( this.renderTemplatesList, this );
 
         return(
             <Metabox mTitle={gravityview_i18n.mb_st_title} mTitleLinks={false}>
                 <AlertDialog
                     isOpen={showAlert}
-                    message={gravityview_i18n.mb_ds_change_form}
+                    message={gravityview_i18n.mb_ds_change_type}
                     cancelAction={this.cancelDialogAction}
-                    continueAction={this.props.onFormChange}
-                    changedValue={this.state.formNewSelectedValue}
+                    continueAction={this.props.onTemplateClick}
+                    changedValue={this.state.templateNewSelectedValue}
                 />
                 <div className="gv-grid">
                     {templatesList}

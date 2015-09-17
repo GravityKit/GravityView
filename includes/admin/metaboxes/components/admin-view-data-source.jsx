@@ -72,7 +72,7 @@ var DataSource = React.createClass({
             }
         } else {
             switchView = (
-                <a className="button button-primary gv-button-left-margin" title={gravityview_i18n.mb_ds_switch_view} disabled={showAlert}>{gravityview_i18n.mb_ds_switch_view}</a>
+                <a onClick={this.props.onSwitchViewType} className="button button-primary gv-button-left-margin" title={gravityview_i18n.mb_ds_switch_view} disabled={showAlert}>{gravityview_i18n.mb_ds_switch_view}</a>
             );
         }
 
