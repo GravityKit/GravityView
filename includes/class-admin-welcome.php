@@ -276,6 +276,11 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>1.14.1 on September 16</h3>
+				<ul>
+					<li>Fixed: Error with older versions of Maps Premium View</li>
+				</ul>
+
 				<h3>1.14 on September 16</h3>
 
 				<ul>

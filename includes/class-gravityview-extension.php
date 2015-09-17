@@ -12,7 +12,7 @@
  *
  * @since 1.1
  *
- * @version 1.1
+ * @version 1.1.1
  */
 abstract class GravityView_Extension {
 
@@ -20,12 +20,6 @@ abstract class GravityView_Extension {
 	 * @var string Name of the plugin in gravityview.co
 	 */
 	protected $_title = NULL;
-
-	/**
-	 * @since 1.1
-	 * @var string Path to the base plugin file, normally `__FILE__`
-	 */
-	protected $_path = NULL;
 
 	/**
 	 * @var string Version number of the plugin
