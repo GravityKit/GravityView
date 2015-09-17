@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.14.1 on September 16 =
+* Fixed: Error with older versions of Maps Premium View
+
 = 1.14 on September 16 =
 * Added: Search Bar now supports custom label text
 * Added: Show the value of a single column of a "Multiple Columns" List field
