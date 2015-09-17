@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 1.14-beta\n"
+"Project-Id-Version: GravityView 1.14\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
 "MIME-Version: 1.0\n"
