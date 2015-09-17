@@ -2,6 +2,7 @@ import React from 'react';
 
 import DataSource from './admin-view-data-source.jsx';
 import SelectTemplate from './admin-view-select-template.jsx';
+import ViewConfiguration from './admin-view-configuration.jsx';
 
 var ViewConfig = React.createClass({
 
@@ -67,6 +68,7 @@ var ViewConfig = React.createClass({
                     onSwitchViewType={this.handleSwitchTemplate}
                 />
                 {selectTemplateMetabox}
+                <ViewConfiguration />
             </div>
         );
     }

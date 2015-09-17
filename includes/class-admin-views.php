@@ -1142,12 +1142,14 @@ class GravityView_Admin_Views {
 
 			// View Configuration metabox
 			'mb_vc_title'  			=> __( 'View Configuration', 'gravityview' ),
+			'mb_vc_tab_multiple' 	=>  __( 'Multiple Entries', 'gravityview' ),
+			'mb_vc_tab_single' 	=>  __( 'Single Entry', 'gravityview' ),
+			'mb_vc_tab_edit' 	=>  __( 'Edit Entry', 'gravityview' ),
 
 
 
 		);
 	}
-
 
 	static function enqueue_gravity_forms_scripts() {
 		GFForms::register_scripts();

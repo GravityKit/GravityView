@@ -898,11 +898,54 @@ hr {
 	}
 }
 
-// after react admin
+/**
+ *  After react admin
+ */
+
 .gv-alert-message {
 	background: #f0f0f0;
 }
 
 .button.gv-button-left-margin {
   	margin-left: .6em;
+}
+
+// React Tabs (View Configuration)
+
+.gv-tab-wrapper {
+
+  margin-top: 1.5em;
+  padding-left: .5em;
+  border-bottom: 1px solid #ccc;
+
+  // The tab anchor link
+  .nav-tab {
+	margin-right: 0.5em;
+	padding: .5em 1em;
+	font-size: 14px;
+	cursor: pointer;
+
+	&:link, &:visited, &:hover, &:active, &:focus {
+	  outline: none;
+	  -webkit-box-shadow: none;
+	}
+
+	.dashicons {
+	  color: #aaa;
+	  font-size: 18px;
+	}
+
+	&:hover,
+	&.nav-tab-active {
+	  background-color: #fff;
+	  border-bottom: 1px solid #fff;
+
+	  .dashicons {
+		color: #666;
+	  }
+
+	}
+
+  }
+
 }
