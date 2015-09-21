@@ -117,7 +117,7 @@ class GravityView_Edit_Entry_User_Registration {
 
         $restored_user = $user_after_update;
 
-        // Restore previous display_name
+	    // Restore previous display_name
         $restored_user->display_name = $this->_user_before_update->display_name;
 
         // Restore previous roles
@@ -125,6 +125,9 @@ class GravityView_Edit_Entry_User_Registration {
         foreach( $this->_user_before_update->roles as $role ) {
             $restored_user->add_role( $role );
         }
+
+	    // Don't have WP update the password.
+	    unset( $restored_user->data->user_pass );
 
         /**
          * Modify the user data after updated by Gravity Forms User Registration but before restored by GravityView
