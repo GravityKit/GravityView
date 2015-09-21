@@ -7,8 +7,11 @@ var Tabs = React.createClass({
         return(
             <Tab
                 key={tab.id}
+                id={tab.id}
                 changeTab={this.props.changeTab}
                 label={tab.label}
+                tabClass="nav-tab"
+                activeClass="nav-tab-active"
                 iconClass={tab.icon}
                 isCurrent={(this.props.currentTab === tab.id)}
             />

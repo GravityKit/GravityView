@@ -2,19 +2,27 @@ import React from 'react';
 
 var Tab = React.createClass({
 
-    handleClick: function() {
+    handleClick: function(e) {
+        e.preventDefault();
         this.props.changeTab( this.props.id );
     },
 
-    render: function () {
-        var iconClass = 'dashicons dashicons-' + this.props.iconClass;
+    renderIcon: function() {
+        if( !this.props.iconClass ) { return null; }
+        return(
+            <i className={'dashicons dashicons-' + this.props.iconClass}></i>
+        );
+    },
 
-        var tabClass = 'nav-tab';
-        tabClass += this.props.isCurrent ? ' nav-tab-active' : '';
+    render: function () {
+
+
+        var tabClass = this.props.tabClass;
+        tabClass += this.props.isCurrent ? ' '+ this.props.activeClass : '';
 
         return(
             <a onClick={this.handleClick} className={tabClass}>
-                <i className={iconClass}></i>
+                {this.renderIcon()}
                 {this.props.label}
             </a>
         );

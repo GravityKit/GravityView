@@ -1143,8 +1143,18 @@ class GravityView_Admin_Views {
 			// View Configuration metabox
 			'mb_vc_title'  			=> __( 'View Configuration', 'gravityview' ),
 			'mb_vc_tab_multiple' 	=>  __( 'Multiple Entries', 'gravityview' ),
-			'mb_vc_tab_single' 	=>  __( 'Single Entry', 'gravityview' ),
-			'mb_vc_tab_edit' 	=>  __( 'Edit Entry', 'gravityview' ),
+			'mb_vc_tab_single' 		=>  __( 'Single Entry', 'gravityview' ),
+			'mb_vc_tab_edit' 		=>  __( 'Edit Entry', 'gravityview' ),
+
+
+			// Add field modal
+			'mo_close_modal' 		=> __( 'Close modal window', 'gravityview' ),
+			'mo_fields_title' 		=> __( 'Insert fields', 'gravityview' ),
+			'mo_tab_all'			=> __( 'All Fields', 'gravityview' ),
+			'mo_tab_form'			=> __( 'Form Fields', 'gravityview' ),
+			'mo_tab_entry'			=> __( 'Entry Fields', 'gravityview' ),
+			'mo_tab_custom'			=> __( 'GravityView Custom Fields', 'gravityview' ),
+
 
 
 
