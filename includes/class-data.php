@@ -75,8 +75,12 @@ class GravityView_View_Data {
 						$ids[] = $post->ID;
 
 					} else{
+						// Parse the Post Content
 						$id = $this->parse_post_content( $post->post_content );
+						$ids = array_merge( $ids, (array)$id );
 
+						// Parse the Post Meta
+						$id = $this->parse_post_meta( $post->ID );
 						$ids = array_merge( $ids, (array)$id );
 					}
 
@@ -93,8 +97,6 @@ class GravityView_View_Data {
 					$id = $this->get_id_from_atts( $passed_post );
 					$ids[] = intval( $id );
 				}
-
-
 			}
 		}
 
@@ -379,6 +381,40 @@ class GravityView_View_Data {
 		// If it's just one ID, return that.
 		// Otherwise, return array of IDs
 		return ( sizeof( $ids ) === 1 ) ? $ids[0] : $ids;
+
+	}
+
+	/**
+	 * Parse specific custom fields (Post Meta) to determine if there is a GV shortcode to allow for enqueing necessary files in the head.
+	 * @since 1.14.4
+	 * @uses \GravityView_View_Data::parse_post_content
+	 * @param $post_id WP_Post ID
+	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
+	 */
+	function parse_post_meta( $post_id ) {
+
+		$meta_keys = (array)apply_filters( 'gravityview/data/parse/meta_keys', '', $post_id );
+
+		if( empty( $meta_keys ) ) {
+			return NULL;
+		}
+
+		do_action( 'gravityview_log_debug', 'GravityView_View_Data[parse_post_meta] Search for GravityView shortcodes on the following custom fields keys:', $meta_keys );
+
+		$meta_content = '';
+
+		foreach( $meta_keys as $key ) {
+			$meta_content .=  get_post_meta( $post_id, $key , true ) . ' ';
+		}
+
+		if( empty( $meta_content ) ) {
+			do_action('gravityview_log_error', sprintf( 'GravityView_View_Data[parse_post_meta] Returning; Empty custom fields for Post #%s (Custom fields keys:)', $post_id ), $meta_keys );
+			return NULL;
+		}
+
+		do_action( 'gravityview_log_debug', 'GravityView_View_Data[parse_post_meta] Combined content retrieved from custom fields:', $meta_content );
+
+		return $this->parse_post_content( $meta_content );
 
 	}
 
