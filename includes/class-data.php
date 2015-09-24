@@ -393,7 +393,7 @@ class GravityView_View_Data {
 	 */
 	function parse_post_meta( $post_id ) {
 
-		$meta_keys = (array)apply_filters( 'gravityview/data/parse/meta_keys', '', $post_id );
+		$meta_keys = (array)apply_filters( 'gravityview/data/parse/meta_keys', array(), $post_id );
 
 		if( empty( $meta_keys ) ) {
 			return NULL;
