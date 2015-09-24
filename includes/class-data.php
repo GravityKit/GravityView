@@ -388,7 +388,7 @@ class GravityView_View_Data {
 	 * Parse specific custom fields (Post Meta) to determine if there is a GV shortcode to allow for enqueing necessary files in the head.
 	 * @since 1.14.4
 	 * @uses \GravityView_View_Data::parse_post_content
-	 * @param $post_id WP_Post ID
+	 * @param $post_id int WP_Post ID
 	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
 	 */
 	function parse_post_meta( $post_id ) {
