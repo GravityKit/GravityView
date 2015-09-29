@@ -84,8 +84,8 @@ install_db() {
 # Create xdebug log, if not correctly installed by Vagrant
 # See https://github.com/Varying-Vagrant-Vagrants/VVV/issues/621
 fix_vagrant_permissions() {
-	sudo touch /tmp/xdebug-remote.log;
-	sudo chmod 666 /tmp/xdebug-remote.log;
+	touch /tmp/xdebug-remote.log;
+	chmod 666 /tmp/xdebug-remote.log;
 }
 
 install_wp
