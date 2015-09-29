@@ -57,6 +57,13 @@ class GV_Unit_Tests_Bootstrap {
 		// load GV
 		tests_add_filter( 'muplugins_loaded', array( $this, 'load' ) );
 
+		tests_add_filter( 'gravityview_log_error', array( $this, 'test_print_log'), 10, 3 );
+
+		// Log debug if passed to `phpunit` like: `phpunit --debug --verbose`
+		if( in_array( '--debug', (array)$_SERVER['argv'], true ) && in_array( '--verbose', (array)$_SERVER['argv'], true ) ) {
+			tests_add_filter( 'gravityview_log_debug', array( $this, 'test_print_log' ), 10, 3 );
+		}
+
 		// load the WP testing environment
 		require_once( $this->wp_tests_dir . '/includes/bootstrap.php' );
 
@@ -64,6 +71,15 @@ class GV_Unit_Tests_Bootstrap {
 
 		// set up GravityView
 		$this->install();
+	}
+
+	public function test_print_log(  $message = '', $data = null  ) {
+		$error = array(
+			'message' => $message,
+			'data' => $data,
+			'backtrace' => function_exists('wp_debug_backtrace_summary') ? wp_debug_backtrace_summary( null, 3 ) : '',
+		);
+		fwrite(STDERR, print_r( $error, true ) );
 	}
 
 	/**
