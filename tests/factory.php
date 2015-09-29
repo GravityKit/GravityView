@@ -28,6 +28,7 @@ class GF_UnitTest_Factory extends WP_UnitTest_Factory {
 		$this->user = new GV_UnitTest_Factory_For_User( $this );
 
 		$this->entry = new GF_UnitTest_Factory_For_Entry( $this );
+
 		$this->form = new GF_UnitTest_Factory_For_Form( $this );
 
 		$this->view = new GV_UnitTest_Factory_For_View( $this );
@@ -129,8 +130,13 @@ class GV_UnitTest_Factory_For_User extends WP_UnitTest_Factory_For_User {
 
 class GF_UnitTest_Factory_For_Entry extends WP_UnitTest_Factory_For_Thing {
 
+	/**
+	 * @param GF_UnitTest_Factory $factory
+	 */
 	function __construct( $factory = null ) {
+
 		parent::__construct( $factory );
+
 		$this->default_generation_definitions = array(
 			'1' => 'Value for field one',
 			'2' => 'Value for field two',
@@ -169,8 +175,13 @@ class GF_UnitTest_Factory_For_Entry extends WP_UnitTest_Factory_For_Thing {
 
 class GF_UnitTest_Factory_For_Form extends WP_UnitTest_Factory_For_Thing {
 
+	/**
+	 * @param GF_UnitTest_Factory $factory
+	 */
 	function __construct( $factory = null ) {
+
 		parent::__construct( $factory );
+
 		$this->default_generation_definitions = array(
 			'title' => new WP_UnitTest_Generator_Sequence( 'Form Title %s' ),
 			'fields' => array(
