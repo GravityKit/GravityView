@@ -172,7 +172,7 @@ class GF_UnitTest_Factory_For_Form extends WP_UnitTest_Factory_For_Thing {
 	function __construct( $factory = null ) {
 		parent::__construct( $factory );
 		$this->default_generation_definitions = array(
-			'title' => 'This is the form title',
+			'title' => new WP_UnitTest_Generator_Sequence( 'Form Title %s' ),
 			'fields' => array(
 				new GF_Field_Text(array(
 					'id' => 1,
