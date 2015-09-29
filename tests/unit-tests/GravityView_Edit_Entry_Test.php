@@ -124,7 +124,7 @@ class GravityView_Edit_Entry_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_id = 0 )
+	 * @covers GravityView_Edit_Entry::check_user_cap_edit_entry()
 	 */
 	public function test_check_user_cap_edit_entry() {
 
