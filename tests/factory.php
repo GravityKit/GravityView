@@ -13,6 +13,11 @@ class GF_UnitTest_Factory extends WP_UnitTest_Factory {
 	public $entry;
 
 	/**
+	 * @var GV_UnitTest_Factory_For_View
+	 */
+	public $view;
+
+	/**
 	 * @var GV_UnitTest_Factory_For_User
 	 */
 	public $user;
@@ -25,6 +30,53 @@ class GF_UnitTest_Factory extends WP_UnitTest_Factory {
 		$this->entry = new GF_UnitTest_Factory_For_Entry( $this );
 		$this->form = new GF_UnitTest_Factory_For_Form( $this );
 
+		$this->view = new GV_UnitTest_Factory_For_View( $this );
+
+	}
+}
+
+class GV_UnitTest_Factory_For_View extends WP_UnitTest_Factory_For_Post {
+
+	/**
+	 * @param GF_UnitTest_Factory $factory
+	 */
+	function __construct( $factory = null ) {
+
+		parent::__construct( $factory );
+
+		$form = $factory->form->create_and_get();
+
+		$this->default_generation_definitions = array(
+			'post_status' => 'publish',
+			'post_title' => new WP_UnitTest_Generator_Sequence( 'GravityView title %s' ),
+			'post_content' => '',
+			'post_excerpt' => '',
+			'post_type' => 'gravityview',
+			'form_id' => $form['id'],
+			'settings' => GravityView_View_Data::get_default_args(),
+		);
+	}
+
+	function create_object( $args ) {
+		$insert_post_response = parent::create_object( $args );
+
+		if( $insert_post_response && !is_wp_error( $insert_post_response ) ) {
+
+			$view_meta = array(
+				'_gravityview_form_id' => $args['form_id'],
+				'_gravityview_template_settings' => $args['settings'],
+				'_gravityview_directory_template' => 'preset_business_data',
+				'_gravityview_directory_widgets' => 'a:0:{}',
+				'_gravityview_directory_fields' => 'a:1:{s:23:"directory_table-columns";a:3:{s:13:"535d63d1488b0";a:9:{s:2:"id";s:1:"4";s:5:"label";s:13:"Business Name";s:10:"show_label";s:1:"1";s:12:"custom_label";s:0:"";s:12:"custom_class";s:0:"";s:12:"show_as_link";s:1:"0";s:13:"search_filter";s:1:"0";s:13:"only_loggedin";s:1:"0";s:17:"only_loggedin_cap";s:4:"read";}s:13:"535d63d379a3c";a:9:{s:2:"id";s:2:"12";s:5:"label";s:20:"Business Description";s:10:"show_label";s:1:"1";s:12:"custom_label";s:0:"";s:12:"custom_class";s:0:"";s:12:"show_as_link";s:1:"0";s:13:"search_filter";s:1:"0";s:13:"only_loggedin";s:1:"0";s:17:"only_loggedin_cap";s:4:"read";}s:13:"535d63dc735a6";a:9:{s:2:"id";s:1:"2";s:5:"label";s:7:"Address";s:10:"show_label";s:1:"1";s:12:"custom_label";s:0:"";s:12:"custom_class";s:0:"";s:12:"show_as_link";s:1:"0";s:13:"search_filter";s:1:"0";s:13:"only_loggedin";s:1:"0";s:17:"only_loggedin_cap";s:4:"read";}}}',
+			);
+
+			foreach ( $view_meta as $meta_key => $meta_value ) {
+				$meta_value = maybe_unserialize( $meta_value );
+				update_post_meta( $insert_post_response, $meta_key, $meta_value );
+			}
+		}
+
+		return $insert_post_response;
 	}
 
 }
