@@ -12,12 +12,66 @@ class GF_UnitTest_Factory extends WP_UnitTest_Factory {
 	 */
 	public $entry;
 
+	/**
+	 * @var GV_UnitTest_Factory_For_User
+	 */
+	public $user;
+
 	function __construct() {
 		parent::__construct();
+
+		$this->user = new GV_UnitTest_Factory_For_User( $this );
 
 		$this->entry = new GF_UnitTest_Factory_For_Entry( $this );
 		$this->form = new GF_UnitTest_Factory_For_Form( $this );
 
+	}
+
+}
+
+class GV_UnitTest_Factory_For_User extends WP_UnitTest_Factory_For_User {
+
+	function create( $args = array(), $generation_definitions = array() ) {
+		$user = false;
+		if( ! empty( $args['user_login'] ) ) {
+			$user = get_user_by( 'login', $args['user_login'] );
+		} else if( ! empty( $args['id'] ) ) {
+			$user = get_user_by( 'id', $args['id'] );
+		}
+
+		return $user ? $user->ID : parent::create( $args, $generation_definitions );
+	}
+
+	/**
+	 * Create the user, then set the current user to the created user.
+	 *
+	 * @param array $args
+	 * @param null $generation_definitions
+	 *
+	 * @return bool|WP_User
+	 */
+	function create_and_set( $args = array(), $generation_definitions = null ) {
+
+		$user_id = $this->create( $args, $generation_definitions );
+
+		if( ! $user_id || is_wp_error( $user_id ) ) {
+			return false;
+		}
+
+		return $this->set( $user_id );
+	}
+
+	/**
+	 * Alias for wp_set_current_user()
+	 *
+	 * @see wp_set_current_user()
+	 *
+	 * @param $user_id
+	 *
+	 * @return WP_User
+	 */
+	function set( $user_id ) {
+		return wp_set_current_user( $user_id );
 	}
 }
 
