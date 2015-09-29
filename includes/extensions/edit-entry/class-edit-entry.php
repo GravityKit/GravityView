@@ -31,8 +31,6 @@ class GravityView_Edit_Entry {
 
 	function __construct() {
 
-		self::$instance = &$this;
-
 		self::$file = plugin_dir_path( __FILE__ );
 
         if( is_admin() ) {
@@ -280,5 +278,5 @@ class GravityView_Edit_Entry {
 } // end class
 
 //add_action( 'plugins_loaded', array('GravityView_Edit_Entry', 'getInstance'), 6 );
-new GravityView_Edit_Entry;
+GravityView_Edit_Entry::getInstance();
 
