@@ -94,6 +94,7 @@ class GravityView_Post_Types {
 				'slug' => apply_filters( 'gravityview_slug', 'view' )
 			),
 			'capability_type'     => 'page',
+			'map_meta_cap'        => true,
 		);
 
 		register_post_type( 'gravityview', $args );
