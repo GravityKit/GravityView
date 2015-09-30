@@ -15,6 +15,12 @@ class GV_License_Handler {
 	
 	const version = GravityView_Plugin::version;
 
+	/**
+	 * Post ID on gravityview.co
+	 * @since 1.14.4
+	 */
+	const item_id = 17;
+
 	private $EDD_SL_Plugin_Updater;
 
 	/**
@@ -145,6 +151,7 @@ class GV_License_Handler {
 			'version'   => self::version,
 			'license'   => $license_key,
 			'item_name' => self::name,
+			'item_id'   => self::item_id,
 			'author'    => self::author,
 			'url'       => home_url(),
 		);

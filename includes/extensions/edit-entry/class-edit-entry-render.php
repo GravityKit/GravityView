@@ -269,8 +269,7 @@ class GravityView_Edit_Entry_Render {
             $this->after_update();
 
             /**
-             * Perform an action after the entry has been updated using Edit Entry
-             *
+             * @action `gravityview/edit_entry/after_update` Perform an action after the entry has been updated using Edit Entry
              * @param array $form Gravity Forms form array
              * @param string $entry_id Numeric ID of the entry that was updated
              */
@@ -526,7 +525,9 @@ class GravityView_Edit_Entry_Render {
                      * @param string $edit_entry_title Modify the "Edit Entry" title
                      * @param GravityView_Edit_Entry_Render $this This object
                      */
-                    echo esc_attr( apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravityview'), $this ) );
+                    $edit_entry_title = apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravityview'), $this );
+
+                    echo esc_attr( $edit_entry_title );
             ?></span>
             </h2>
 
