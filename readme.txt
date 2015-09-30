@@ -20,6 +20,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.14.4-beta on September 30 =
+* Fixed: Only process "Update" Gravity Forms User Registration Addon feeds
+* Fixed: PHP Warnings
+
 = 1.14.2 & 1.14.3 on September 17 =
 * Fixed: Issue affecting Gravity Forms User Registration Addon. Passwords were being reset when an user edited their own entry.
 
