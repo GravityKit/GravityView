@@ -19,7 +19,7 @@
 		wrapClass: null,
 
 		// holds the current widget settings DOM object
-		widgetTarget: $('.gv-dialog-options'),
+		widgetTarget: null,
 
 		selectFields : null,
 
@@ -32,7 +32,6 @@
 			var wp_widget_id = gvSearchWidget.wp_widget_id;
 
 			$('body')
-
 				// [View] hook on all the open settings buttons for search_bar widget
 				.on( 'dialogopen', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.openDialog )
 
@@ -46,9 +45,6 @@
 
 				// [View, WP widget] hook to update row input types
 				.on( 'change', "." + wrapClass +" select.gv-search-fields", gvSearchWidget.updateRow )
-
-				// Change Search Mode when date_range is selected
-				.on( 'change', "." + wrapClass +" select.gv-search-inputs", gvSearchWidget.toggleSearchMode )
 
 				// [View, WP widget] add alt class to table when sorting
 				.on('sortcreate sortupdate sort', '.'+ wrapClass +' table', gvSearchWidget.zebraStripe )
@@ -67,16 +63,13 @@
 
 			// Refresh widget searchable settings after saving or adding the widget
 			// Bind to document because WP triggers document, not body
-			$(document)
-				.on( 'widget-added widget-updated', gvSearchWidget.refreshWidget )
-				// [View] If submitting a View by hitting enter inside a Widget, make sure it saves
-				.on( 'submit', 'form#post', gvSearchWidget.updateOnClose );
+			$(document).on( 'widget-added widget-updated', gvSearchWidget.refreshWidget );
 		},
 
 		/**
 		 * [Specific for Search WP Widget]
 		 * Calculate the widget target and reset the view fields and the DOM target to insert the settings table
-		 * @param  {jQuery} obj event
+		 * @param  object e event
 		 */
 		resetWidgetTarget: function( obj ) {
 			gvSearchWidget.widgetTarget = obj.closest('div.widget').find( 'div.'+ gvSearchWidget.wrapClass );
@@ -88,7 +81,7 @@
 		/**
 		 * [Specific for Search WP Widget]
 		 * Reset Widget target and removes the settings table
-		 * @param  {jQuery} obj event
+		 * @param  object e event
 		 */
 		resetWidgetData: function( obj ) {
 			gvSearchWidget.resetWidgetTarget( obj );
@@ -98,7 +91,7 @@
 		/**
 		 * [Specific for Search WP Widget]
 		 * Capture the widget slidedown and call to render the widget settings content
-		 * @param  {jQuery} e event
+		 * @param  object e event
 		 */
 		openWidget: function( e ) {
 			var target = $(e.target),
@@ -119,8 +112,7 @@
 		/**
 		 * [Specific for Search WP Widget]
 		 * Refreshes the Widget table settings after saving
-		 * @param  {jQuery} e event
-		 * @param  {jQuery} widget jQuery widget DOM
+		 * @param  object e event
 		 */
 		refreshWidget: function( e, widget ) {
 
@@ -135,7 +127,7 @@
 		/**
 		 * [Specific for View Search Widget]
 		 * Capture the widget dialog and call to render the widget settings content
-		 * @param  {jQuery} e event
+		 * @param  object e event
 		 */
 		openDialog: function( e ) {
 			e.preventDefault();
@@ -148,7 +140,7 @@
 
 		/**
 		 * Add a search field to the table
-		 * @param  {jQuery} e event
+		 * @param  object e event
 		 */
 		addField: function(e) {
 			e.preventDefault();
@@ -174,7 +166,7 @@
 
 		/**
 		 * Remove a search field to the table
-		 * @param  {jQuery} e event
+		 * @param  object e event
 		 */
 		removeField: function(e) {
 			e.preventDefault();
@@ -185,10 +177,8 @@
 
 				$(this).remove();
 
-				var table_row_count = $('tr.gv-search-field-row', table ).length;
-
 				//check if is there any
-				if( table_row_count < 1 && $('tr.no-search-fields', table ).length < 1 ) {
+				if( $('tr.gv-search-field-row', table ).length < 1 && $('tr.no-search-fields', table ).length < 1 ) {
 
 					gvSearchWidget.addEmptyMsg( table );
 
@@ -205,7 +195,7 @@
 
 		/**
 		 * Render search fields table (includes a pre-loader animation)
-		 * @param  {jQuery} parent The dialog div object
+		 * @param  {jQuery DOM object} parent The dialog div object
 		 */
 		renderUI: function( parent ) {
 
@@ -223,10 +213,8 @@
 				return;
 			}
 
-			$gvloading = $('#gv-loading');
-
 			// Is this dialog already rendered before & not loading fields again
-			if( $('table', gvSearchWidget.widgetTarget ).length && $gvloading.length < 1 ) {
+			if( $('table', gvSearchWidget.widgetTarget ).length && $('#gv-loading').length < 1 ) {
 				return;
 			}
 
@@ -239,16 +227,9 @@
 				gvSearchWidget.populateRows( table, fields );
 			}
 
-			if( gvSearchWidget.widgetTarget.is('.gv-widget-search-fields') ) {
-				// WP Widget
-				gvSearchWidget.widgetTarget.append( table );
-			} else {
-				// GV widget
-				gvSearchWidget.widgetTarget.find('.gv-setting-container-search_fields').after( table );
-			}
+			gvSearchWidget.widgetTarget.append( table );
 
-			gvSearchWidget.toggleSearchMode();
-
+			//
 			gvSearchWidget.widgetTarget.find('table tbody').sortable({
 				start: function( event, ui ) {
 					$( ui.item ).removeClass( 'alt' );
@@ -257,13 +238,12 @@
 
 			gvSearchWidget.updateAvailableFields();
 
-			$gvloading.remove();
+			$('#gv-loading').remove();
 		},
-
 
 		/**
 		 * Add alt classes on table sort
-		 * @param  {jQuery} e_or_object
+		 * @param  {jQuery event|DOM object} e_or_object
 		 * @return {void}
 		 */
 		zebraStripe: function() {
@@ -294,6 +274,7 @@
 				gvSearchWidget.addRow( table, pos, values );
 				pos = table.find('tbody tr:last');
 			});
+
 		},
 
 		/**
@@ -305,7 +286,6 @@
 							'<tr>' +
 								'<th class="cell-sort">&nbsp;</th>' +
 								'<th class="cell-search-fields">' + gvSearchVar.label_searchfield +'</th>' +
-			                    '<th class="cell-input-label">' + gvSearchVar.label_label +'</th>' +
 								'<th class="cell-input-types">' + gvSearchVar.label_inputtype +'</th>' +
 								'<th class="cell-add-remove">&nbsp;</th>' +
 							'</tr>' +
@@ -324,16 +304,15 @@
 
 		/**
 		 * Add row to the table object
-		 * @param {jQuery} table  The table DOM object
-		 * @param {jQuery}  row   Table row object after which the new row will be added
+		 * @param {jQuery DOM object} table  The table DOM object
+		 * @param {jQuery DOM object}  row   Table row object after which the new row will be added
 		 * @param {object} curr  Configured values for the row ( field and input )
 		 */
 		addRow: function( table, row, curr ) {
 
 			var rowString = $('<tr class="gv-search-field-row new-row hide-if-js" />')
-				.append('<td class="cell-sort"><span class="icon gv-icon-caret-up-down" style="display:none;" /></td>')
+				.append('<td class="cell-sort"><span class="icon gv-icon-caret-up-down" /></td>')
 				.append('<td class="cell-search-fields">'+ gvSearchWidget.getSelectFields() +'</td>')
-				.append('<td class="cell-input-label"><input type="text" class="widefat gv-search-labels" /></td>')
 				.append('<td class="cell-input-types"><select class="gv-search-inputs" /></td>')
 				.append('<td class="cell-add-remove"><a href="#addSearchField" class="dashicons dashicons-plus-alt" /><a href="#removeSearchField" class="dashicons dashicons-dismiss" /></td>');
 
@@ -352,15 +331,8 @@
 					$(this).find('select.gv-search-fields').val( curr.field );
 				}
 
-				// Set search label
-				if( curr !== null ) {
-					$(this).find('.cell-input-label input' ).val( curr.label );
-				}
-
 				// update the available input types
 				gvSearchWidget.updateSelectInput( $(this) );
-
-				gvSearchWidget.updatePlaceholder( $(this) );
 
 				// Set saved input type value
 				// !! Do not try to optimize this line. This needs to come after 'gvSearchWidget.updateSelectInput()'
@@ -379,67 +351,15 @@
 		},
 
 		/**
-		 * Update the label text input placeholder value, so users know what the default label is
-		 * @since 1.14
-		 * @param $row
-		 */
-		updatePlaceholder: function( $row ) {
-
-			var $label_input = $row.find('.cell-input-label input');
-			var $placeholder_option = $row.find('select.gv-search-fields option').filter(':selected' );
-			var placeholder_text = $placeholder_option.attr('data-placeholder') ? $placeholder_option.attr('data-placeholder') : $placeholder_option.text();
-
-			$label_input.attr( 'placeholder', placeholder_text );
-		},
-
-		/**
-		 * Show or hide the Search Mode settings based on whether there's a single search field. If there's only one, then "all" and "any" are the same.
-		 * @since 1.14
-		 * @return {void}
-		 */
-		toggleSearchMode: function() {
-
-			var table_row_count = $( 'tbody tr', gvSearchWidget.widgetTarget ).length,
-				$search_mode = $( 'input[name*="search_mode"]', gvSearchWidget.widgetTarget ),
-				$search_mode_container = $search_mode.parents('.gv-setting-container'),
-				has_date_range = ( $( 'option:selected[value="date_range"]', gvSearchWidget.widgetTarget ).length > 0 );
-
-			if( has_date_range ) {
-				$search_mode.filter(':checked').not(':disabled').attr( 'data-original-value', function() {
-					return $( this ).attr( 'value' );
-				});
-				$search_mode.val( ['all'] );
-				$search_mode_container.find(':input' ).attr('disabled', 'disabled');
-			} else {
-				$search_mode_container.find(':input' ).attr('disabled', null );
-				$search_mode.filter('[data-original-value]' ).val( function() {
-					$( this ).attr( 'checked', 'checked' );
-					return [ $( this ).attr('value') ];
-				});
-			}
-
-			if( table_row_count > 1 ) {
-				$search_mode_container.show();
-			} else {
-				$search_mode_container.fadeOut('fast');
-			}
-
-		},
-
-		/**
 		 * Style the table rows - remove/add sorting icon, zebra stripe
 		 * @param  {object} table Table
 		 * @return {[type]}       [description]
 		 */
 		styleRow: function( table ) {
 
-			table_row_count = $( 'tbody tr', table ).length;
+			var sort_icon = $( '.cell-sort .icon', gvSearchWidget.widgetTarget );
 
-			var sort_icon = $( '.cell-sort .icon', table );
-
-			gvSearchWidget.toggleSearchMode();
-
-			if( table_row_count <= 1 ) {
+			if( $( 'tbody tr', gvSearchWidget.widgetTarget ).length === 1 ) {
 				sort_icon.fadeOut('fast', function() {
 					$(this).parents('td').addClass('no-sort');
 				});
@@ -458,10 +378,9 @@
 		 * @return {[type]} [description]
 		 */
 		updateRow: function(e) {
-			var $row = $(this).parents('tr');
-			gvSearchWidget.updateSelectInput( $row );
+			var row = $(this).parents('tr');
+			gvSearchWidget.updateSelectInput( row );
 			gvSearchWidget.updateAvailableFields();
-			gvSearchWidget.updatePlaceholder( $row );
 		},
 
 		/**
@@ -628,22 +547,18 @@
 
 		/**
 		 * Update widget config on dialog close
-		 * @param {jQuery} e Event
+		 * @param  {object} event
+		 * @param  {[type]} ui    [description]
 		 */
-		updateOnClose: function( e ) {
+		updateOnClose: function() {
 
 			var configs = [];
 
-			// Reset
-			$( 'input[name*="search_mode"]', gvSearchWidget.widgetTarget ).attr( 'disabled', null );
-
 			//loop throught table rows
 			gvSearchWidget.widgetTarget.find('table tr.gv-search-field-row').each( function() {
-				var row = {
-					'field': $( this ).find( 'select.gv-search-fields' ).val(),
-					'input': $( this ).find( 'select.gv-search-inputs' ).val(),
-					'label': $( this ).find( 'input.gv-search-labels' ).val()
-				};
+				var row = {};
+				row.field = $(this).find('select.gv-search-fields').val();
+				row.input = $(this).find('select.gv-search-inputs').val();
 				configs.push( row );
 			});
 

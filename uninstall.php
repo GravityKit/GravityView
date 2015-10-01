@@ -5,7 +5,7 @@
  * @package   GravityView
  * @author    Zack Katz <zack@katzwebservices.com>
  * @license   ToBeDefined
- * @link      http://gravityview.co
+ * @link      http://www.katzwebservices.com
  * @copyright Copyright 2013, Katz Web Services, Inc.
  */
 

@@ -248,9 +248,8 @@ class GVLogic_Shortcode {
 		$output = do_shortcode( $output );
 
 		/**
-		 * @filter `gravityview/gvlogic/output` Modify the [gvlogic] output
 		 * @param string $output HTML/text output
-		 * @param GVLogic_Shortcode $this This class
+		 * @param GV_If_Shortcode This class
 		 */
 		$output = apply_filters('gravityview/gvlogic/output', $output, $this );
 
@@ -263,7 +262,6 @@ class GVLogic_Shortcode {
 	 * Check for `[else]` tag inside the shortcode content. If exists, set the else_content variable.
 	 * If not, use the `else` attribute passed by the shortcode, if exists.
 	 *
-	 * @todo allow for chains of [else if="{another field:123}" is="example"] - requires registering [else] shortcode...
 	 * @return void
 	 */
 	function set_content_and_else_content() {

@@ -31,6 +31,8 @@ class GravityView_Edit_Entry {
 
 	function __construct() {
 
+		self::$instance = &$this;
+
 		self::$file = plugin_dir_path( __FILE__ );
 
         if( is_admin() ) {
@@ -236,14 +238,9 @@ class GravityView_Edit_Entry {
 
         } else {
 
-            // get user_edit setting
-            if( empty( $view_id ) || $view_id == GravityView_View::getInstance()->getViewId() ) {
-                // if View ID not specified or is the current view
-                $user_edit = GravityView_View::getInstance()->getAtts('user_edit');
-            } else {
-                // in case is specified and not the current view
-                $user_edit = GVCommon::get_template_setting( $view_id, 'user_edit' );
-            }
+	        $current_view = gravityview_get_current_view_data( $view_id );
+
+	        $user_edit = isset( $current_view['atts']['user_edit'] ) ? $current_view['atts']['user_edit'] : false;
 
             $current_user = wp_get_current_user();
 
@@ -278,5 +275,5 @@ class GravityView_Edit_Entry {
 } // end class
 
 //add_action( 'plugins_loaded', array('GravityView_Edit_Entry', 'getInstance'), 6 );
-GravityView_Edit_Entry::getInstance();
+new GravityView_Edit_Entry;
 

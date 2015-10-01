@@ -191,7 +191,7 @@ class GravityView_Entry_List {
 		$output .= '</'. $this->wrapper_tag .'>';
 
 		/**
-		 * @filter `gravityview/widget/recent-entries/output` Modify the HTML of the Recent Entries widget output
+		 * Modify the HTML of the output
 		 * @param string $output HTML to be displayed
 		 * @param GravityView_Entry_List $this The current class instance
 		 */
@@ -249,8 +249,10 @@ class GravityView_Entry_List {
 		if( !empty( $this->after_link ) ) {
 
 			/**
-			 * @filter `gravityview/entry-list/after-link` Modify the content displayed after the entry link in an entry list
+			 * Modify the item output HTML
+			 *
 			 * @since 1.7.2
+			 *
 			 * @param string $item_output The HTML output for the after_link content
 			 * @param array $entry Gravity Forms entry array
 			 * @param GravityView_Entry_List $this The current class instance
@@ -265,8 +267,10 @@ class GravityView_Entry_List {
 		$item_output = '<'. $this->item_tag .'>'. $item_output .'</'. $this->item_tag .'>';
 
 		/**
-		 * @filter `gravityview/entry-list/item` Modify each item's output in an entry list
+		 * Modify the item output HTML
+		 *
 		 * @since 1.7.2
+		 *
 		 * @param string $item_output The HTML output for the item
 		 * @param array $entry Gravity Forms entry array
 		 * @param GravityView_Entry_List $this The current class instance

@@ -126,6 +126,8 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 	/**
 	 * Get the display settings for the Poll widget
 	 *
+	 * @filter gravityview/widget/poll/settings Modify display settings
+	 *
 	 * @param array $widget_settings Settings for the Poll widget
 	 *
 	 * @return array Final poll widget settings
@@ -142,9 +144,9 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 		$settings = wp_parse_args( $widget_settings, $default_settings );
 
 		/**
-		 * @filter `gravityview/widget/poll/settings` Modify display settings for the poll widget
+		 * Modify the widget settings
 		 * @since 1.8
-		 * @param array $settings Settings with `field`, `style`, `percentages` and `counts` keys
+		 * @param array $settings
 		 */
 		$settings = apply_filters( 'gravityview/widget/poll/settings', $settings );
 

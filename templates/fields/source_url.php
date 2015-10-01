@@ -21,11 +21,11 @@ if( !empty( $field_settings['link_to_source'] ) ) {
 	} else {
 
 		// Otherwise, it's just the URL
-		$link_text = esc_html( $value );
+		$link_text = $value;
 
 	}
 
-	$output = gravityview_get_link( $value, $link_text );
+	$output = gravityview_get_link( $value, esc_html( $link_text ) );
 
 } else {
 

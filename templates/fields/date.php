@@ -35,11 +35,8 @@ if( !empty( $field_settings ) && !empty( $field_settings['date_display'] ) && !e
 
 } else {
 
-	/**
-	 * @filter `gravityview_date_format` Whether to override the Gravity Forms date format with a PHP date format
-	 * @see https://codex.wordpress.org/Formatting_Date_and_Time
-	 * @param null|string Date Format (default: $field->dateFormat)
-	 */
+	// Otherwise, use Gravity Forms, where you can only choose from
+	// yyyy-mm-dd, mm-dd-yyyy, and dd-mm-yyyy
 	$format = apply_filters( 'gravityview_date_format', rgar($field, "dateFormat") );
 	$output = GFCommon::date_display( $value, $format );
 

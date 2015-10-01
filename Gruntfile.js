@@ -29,15 +29,6 @@ module.exports = function(grunt) {
 		          dest: 'templates/css/',
 		          ext: '.css'
 		      }]
-			},
-			docs: {
-				files: [{
-					expand: true,
-					cwd: 'docs/',
-					src: ['*.scss'],
-					dest: 'docs/',
-					ext: '.css'
-				}]
 			}
 		},
 
@@ -46,8 +37,7 @@ module.exports = function(grunt) {
 			"assets/js/admin-post-edit.js",
 			"assets/js/admin-widgets.js",
 			"assets/js/admin-entries-list.js",
-			"assets/js/fe-views.js",
-			"includes/widgets/search-widget/assets/js/source/admin-widgets.js"
+			"assets/js/fe-views.js"
 		],
 
         imagemin: {
@@ -80,12 +70,12 @@ module.exports = function(grunt) {
 			searchExt: {
 				files: [{
 		          expand: true,
-		          cwd: 'includes/widgets/search-widget/assets/js/source/',
+		          cwd: 'includes/extensions/search-widget/assets/js/source/',
 		          src: ['*.js','!*.min.js'],
-		          dest: 'includes/widgets/search-widget/assets/js/',
+		          dest: 'includes/extensions/search-widget/assets/js/',
 		          ext: '.min.js'
 		      }]
-			}
+			},
 		},
 
 		watch: {
@@ -94,8 +84,8 @@ module.exports = function(grunt) {
 				tasks: ['uglify:main','newer:jshint']
 			},
 			extension_js: {
-				files: ['includes/widgets/**/*.js','!includes/widgets/**/*.min.js'],
-				tasks: ['uglify:searchExt','newer:jshint']
+				files: ['includes/extensions/**/*.js','!includes/extensions/**/*.min.js'],
+				tasks: ['uglify:searchExt']
 			},
 			templates: {
 				files: ['templates/css/**/*.scss','!templates/css/**/*.css'],
@@ -104,10 +94,6 @@ module.exports = function(grunt) {
 			scss: {
 				files: ['assets/css/scss/*.scss'],
 				tasks: ['sass:dist']
-			},
-			docs: {
-				files: ['docs/*.scss'],
-				tasks: ['sass:docs']
 			}
 		},
 
@@ -148,7 +134,7 @@ module.exports = function(grunt) {
 					type: 'wp-plugin',
 					domainPath: '/languages',
 					updateTimestamp: false,
-					exclude: ['node_modules/.*', 'assets/.*', 'tmp/.*', 'vendor/.*', 'includes/lib/xml-parsers/.*', 'includes/lib/jquery-cookie/.*', 'includes/lib/standalone-phpenkoder/.*' ],
+					exclude: ['node_modules/.*', 'assets/.*', 'vendor/.*', 'includes/lib/xml-parsers/.*', 'includes/lib/jquery-cookie/.*', 'includes/lib/standalone-phpenkoder/.*' ],
 					potHeaders: {
 						poedit: true,
 						'x-poedit-keywordslist': true
@@ -187,7 +173,7 @@ module.exports = function(grunt) {
 		addtextdomain: {
 			options: {
 				textdomain: 'gravityview',    // Project text domain.
-				updateDomains: [ 'gravityview', 'gravity-view', 'gravityforms', 'edd_sl', 'edd' ]  // List of text domains to replace.
+				updateDomains: [ 'gravityview', 'gravityforms', 'edd_sl', 'edd' ]  // List of text domains to replace.
 			},
 			target: {
 				files: {
@@ -196,7 +182,6 @@ module.exports = function(grunt) {
 						'**/*.php',
 						'!node_modules/**',
 						'!tests/**',
-						'!tmp/**',
 						'!includes/lib/xml-parsers/**',
 						'!includes/lib/jquery-cookie/**',
 						'!includes/lib/standalone-phpenkoder/**'

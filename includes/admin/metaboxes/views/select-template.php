@@ -1,6 +1,5 @@
 <?php
 /**
- * @file select-template.php
  * @package GravityView
  * @subpackage Gravityview/admin/metaboxes/partials
  * @global WP_Post $post
@@ -14,7 +13,8 @@ wp_nonce_field( 'gravityview_select_template', 'gravityview_select_template_nonc
 //current value
 $current_template = gravityview_get_template_id( $post->ID );
 
-$templates = gravityview_get_registered_templates();
+// Fetch available style templates
+$templates = apply_filters( 'gravityview_register_directory_template', array() );
 
 // current input
 ?>

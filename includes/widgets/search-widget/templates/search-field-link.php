@@ -18,18 +18,8 @@ if ( empty( $search_field['choices'] ) ) {
 	return;
 }
 
-/**
- * @filter `gravityview/extension/search/links_sep` Change the label for the "Link" search bar input type
- * @param string $links_label Default: `Show only:`
- */
 $links_label = apply_filters( 'gravityview/extension/search/links_label', __( 'Show only:', 'gravityview' ) );
-
-/**
- * @filter `gravityview/extension/search/links_sep` Change what separates search bar "Link" input type links
- * @param string $links_sep Default: `&nbsp;|&nbsp;` Used to connect multiple links
- */
 $links_sep = apply_filters( 'gravityview/extension/search/links_sep', '&nbsp;|&nbsp;' );
-
 ?>
 
 <div class="gv-search-box">
@@ -38,16 +28,13 @@ $links_sep = apply_filters( 'gravityview/extension/search/links_sep', '&nbsp;|&n
 		<?php echo esc_html( $links_label ); ?>
 
         <?php
-
-        $search_value = rgget( $search_field['name'] );
-
-        foreach ( $search_field['choices'] as $k => $choice ) {
+        foreach ( $search_field['choices'] as $k => $choice ) :
 
             if ( 0 != $k ) {
                 echo esc_html( $links_sep );
             }
 
-            $active = ( '' !== $search_value && in_array( $search_value, array( $choice['text'], $choice['value'] ) ) ) ? ' class="active"' : false;
+            $active = ( ! empty( $_GET[ $search_field['name'] ] ) && $_GET[ $search_field['name'] ] === $choice['text'] ) ? ' class="active"' : false;
 
             if ( $active ) {
                 $link = remove_query_arg( array( 'pagenum', $search_field['name'] ), $base_url );
@@ -58,6 +45,6 @@ $links_sep = apply_filters( 'gravityview/extension/search/links_sep', '&nbsp;|&n
 
 			<a href="<?php echo esc_url_raw( $link ); ?>" <?php echo $active; ?>><?php echo esc_html( $choice['text'] ); ?></a>
 
-		<?php } ?>
+		<?php endforeach; ?>
 	</p>
 </div>

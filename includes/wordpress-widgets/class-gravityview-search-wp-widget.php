@@ -15,7 +15,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		);
 
 		$widget_display = array(
-			'width' => 650
+			'width' => 400
 		);
 
 		parent::__construct( 'gravityview_search', __( 'GravityView Search', 'gravityview' ), $widget_ops, $widget_display );
@@ -67,19 +67,9 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		$instance['form_id'] = GVCommon::get_meta_form_id( $instance['view_id'] );
 		$instance['form'] = GVCommon::get_form( $instance['form_id'] );
 
-		// We don't want to overwrite existing context, etc.
-		$previous_view = GravityView_View::getInstance();
-
-		/** @hack */
-		new GravityView_View( $instance );
+		$gravityview_view = new GravityView_View( $instance );
 
 		GravityView_Widget_Search::getInstance()->render_frontend( $instance );
-
-		/**
-		 * Restore previous View context
-		 * @hack
-		 */
-		new GravityView_View( $previous_view );
 
 		echo $args['after_widget'];
 	}

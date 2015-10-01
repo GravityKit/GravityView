@@ -22,7 +22,7 @@ final class GravityView_Logging {
 	/**
 	 * Add integration with the Debug Bar plugin. It's awesome.
 	 *
-	 * @see http://wordpress.org/plugins/debug-bar/
+	 * @link http://wordpress.org/plugins/debug-bar/
 	 */
 	function add_debug_bar( $panels ) {
 
@@ -75,15 +75,10 @@ final class GravityView_Logging {
 
 		$function = self::get_print_function();
 
-		$notice = array(
+		self::$notices[] = array(
 			'message' => $function( $message, true ),
-			'data' => $data,
-			'backtrace' => function_exists('wp_debug_backtrace_summary') ? wp_debug_backtrace_summary( null, 3 ) : '',
+			'data' => $data
 		);
-
-		if( !in_array( $notice, self::$notices ) ) {
-			self::$notices[] = $notice;
-		}
 
 		if ( class_exists("GFLogging") ) {
 			GFLogging::include_logger();
@@ -95,15 +90,7 @@ final class GravityView_Logging {
 
 		$function = self::get_print_function();
 
-		$error = array(
-			'message' => $message,
-			'data' => $data,
-			'backtrace' => function_exists('wp_debug_backtrace_summary') ? wp_debug_backtrace_summary( null, 3 ) : '',
-		);
-
-		if( !in_array( $error, self::$errors ) ) {
-			self::$errors[] = $error;
-		}
+		self::$errors[] = array( 'message' => $message, 'data' => $data );
 
 		if ( class_exists("GFLogging") ) {
 		    GFLogging::include_logger();

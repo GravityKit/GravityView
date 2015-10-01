@@ -39,20 +39,9 @@ class GravityView_Merge_Tags {
 	 * @param  array      $entry        GF Entry array
 	 * @return string                  Text with variables maybe replaced
 	 */
-	public static function replace_variables( $text, $form, $entry ) {
+	public static function replace_variables($text, $form, $entry ) {
 
-		/**
-		 * @filter `gravityview_do_replace_variables` Turn off merge tag variable replacements.\n
-		 * Useful where you want to process variables yourself. We do this in the Math Extension.
-		 * @since 1.13
-		 * @param[in,out] boolean $do_replace_variables True: yes, replace variables for this text; False: do not replace variables.
-		 * @param[in] string $text       Text to replace variables in
-		 * @param[in]  array      $form        GF Form array
-		 * @param[in]  array      $entry        GF Entry array
-		 */
-		$do_replace_variables = apply_filters( 'gravityview/merge_tags/do_replace_variables', true, $text, $form, $entry );
-
-		if( strpos( $text, '{') === false || ! $do_replace_variables ) {
+		if( strpos( $text, '{') === false ) {
 			return $text;
 		}
 
@@ -62,7 +51,7 @@ class GravityView_Merge_Tags {
 		if( empty( $matches ) ) {
 
 			// Check for form variables
-			if( !preg_match( '/\{(all_fields(:(.*?))?|all_fields_display_empty|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id|embed_url|date_mdy|date_dmy|embed_post:(.*?)|custom_field:(.*?)|user_agent|referer|gv:(.*?)|user:(.*?)|created_by:(.*?))\}/ism', $text ) ) {
+			if( !preg_match( '/\{(all_fields(:(.*?))?|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id|embed_url|date_mdy|date_dmy|embed_post:(.*?)|custom_field:(.*?)|user_agent|referer|gv:(.*?)|user:(.*?)|created_by:(.*?))\}/ism', $text ) ) {
 				return $text;
 			}
 		}
@@ -141,7 +130,7 @@ class GravityView_Merge_Tags {
 	 * Exactly like Gravity Forms' User Meta functionality, but instead shows information on the user who created the entry
 	 * instead of the currently logged-in user.
 	 *
-	 * @see http://docs.gravityview.co/article/281-the-createdby-merge-tag Read how to use the `{created_by}` merge tag
+	 * @see http://docs.gravityview.co/article/281-the-createdby-merge-tag
 	 *
 	 * @since 1.8.4
 	 *
@@ -150,8 +139,6 @@ class GravityView_Merge_Tags {
 	 * @param array $entry Entry array
 	 * @param bool $url_encode Whether to URL-encode output
 	 * @param bool $esc_html Whether to apply `esc_html()` to output
-	 *
-	 * @return string Text, with user variables replaced, if they existed
 	 */
 	private function replace_user_variables_created_by( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
@@ -171,14 +158,7 @@ class GravityView_Merge_Tags {
 			$full_tag = $match[0];
 			$property = $match[1];
 
-			switch( $property ) {
-				/** @since 1.13.2 */
-				case 'roles':
-					$value = implode( ', ', $entry_creator->roles );
-					break;
-				default:
-					$value = $entry_creator->get( $property );
-			}
+			$value = $entry_creator->get( $property );
 
 			$value = $url_encode ? urlencode( $value ) : $value;
 

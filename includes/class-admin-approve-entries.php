@@ -308,10 +308,11 @@ class GravityView_Admin_ApproveEntries {
 		// add note to entry
 		if( $result === true ) {
 			$note = empty( $approved ) ? __( 'Disapproved the Entry for GravityView', 'gravityview' ) : __( 'Approved the Entry for GravityView', 'gravityview' );
-			if( class_exists( 'RGFormsModel' ) ){
+
+			if( class_exists( 'GravityView_Entry_Notes' ) ){
 				global $current_user;
       			get_currentuserinfo();
-				RGFormsModel::add_note( $entry_id, $current_user->ID, $current_user->display_name, $note, 'gravityview' );
+				GravityView_Entry_Notes::add_note( $entry_id, $current_user->ID, $current_user->display_name, $note );
 			}
 
 			/**
@@ -360,10 +361,11 @@ class GravityView_Admin_ApproveEntries {
 
 	/**
 	 * Update the `is_approved` entry meta value
-	 * @param  int $entry_id ID of the Gravity Forms entry
-	 * @param  string $is_approved String whether entry is approved or not. `0` for not approved, `Approved` for approved.
 	 *
 	 * @since 1.7.6.1 `after_update_entry_update_approved_meta` was previously to be named `update_approved_meta`
+	 *
+	 * @param  int $entry_id ID of the Gravity Forms entry
+	 * @param  string $is_approved String whether entry is approved or not. `0` for not approved, `Approved` for approved.
 	 *
 	 * @return void
 	 */
