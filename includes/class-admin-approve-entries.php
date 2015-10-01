@@ -309,10 +309,11 @@ class GravityView_Admin_ApproveEntries {
 		// add note to entry
 		if( $result === true ) {
 			$note = empty( $approved ) ? __( 'Disapproved the Entry for GravityView', 'gravityview' ) : __( 'Approved the Entry for GravityView', 'gravityview' );
-			if( class_exists( 'RGFormsModel' ) ){
+
+			if( class_exists( 'GravityView_Entry_Notes' ) ){
 				global $current_user;
       			get_currentuserinfo();
-				RGFormsModel::add_note( $entry_id, $current_user->ID, $current_user->display_name, $note );
+				GravityView_Entry_Notes::add_note( $entry_id, $current_user->ID, $current_user->display_name, $note );
 			}
 
 			/**

@@ -149,6 +149,9 @@ final class GravityView_Plugin {
 			include_once( $gv_field_filename );
 		}
 
+		// Load notes
+		include_once( GRAVITYVIEW_DIR .'includes/class-gravityview-entry-notes.php' );
+
 		// Load Extensions
 		// @todo: Convert to a scan of the directory or a method where this all lives
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/edit-entry/class-edit-entry.php' );
