@@ -361,8 +361,6 @@ abstract class GravityView_Extension {
 			self::add_notice( $message );
 
 			do_action( 'gravityview_log_error', __METHOD__. ' ' . $message );
-
-			self::$is_compatible = false;
 		}
 
 		return self::$is_compatible;

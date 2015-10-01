@@ -136,7 +136,7 @@ class GravityView_Admin_Metaboxes {
 		);
 
 		/**
-		 * @filter `gravityview/metaboxes/default` Modify the default settings metabox tabs
+		 * Modify the default settings metabox tabs
 		 * @param array $metaboxes
 		 * @since 1.8
 		 */
@@ -209,6 +209,9 @@ class GravityView_Admin_Metaboxes {
 	/**
 	 * Generate the script tags necessary for the Gravity Forms Merge Tag picker to work.
 	 *
+	 * Creates
+	 * @filter default text
+	 * @action default text
 	 * @param  mixed      $curr_form Form ID
 	 * @return null|string     Merge tags html; NULL if $curr_form isn't defined.
 	 */

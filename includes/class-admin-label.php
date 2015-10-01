@@ -135,9 +135,8 @@ class GravityView_Admin_View_Item {
 		$field_info_items = $this->additional_info();
 
 		/**
-		 * @filter `gravityview_admin_label_item_info` Tap in to modify the field information displayed next to an item
-		 * @param array $field_info_items Additional information to display in a field
-		 * @param GravityView_Admin_View_Field $this Field shown in the admin
+		 * Tap in to modify the field information displayed next to an item
+		 * @var array
 		 */
 		$field_info_items = apply_filters( 'gravityview_admin_label_item_info', $field_info_items, $this );
 

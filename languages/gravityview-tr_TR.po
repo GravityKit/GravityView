@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-08-20 20:42+0000\n"
+"PO-Revision-Date: 2015-08-06 18:54+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/katzwebservices/gravityview/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -26,15 +26,15 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 
-#: gravityview.php:334
+#: gravityview.php:332
 msgid "Top"
 msgstr "Üst"
 
-#: gravityview.php:335
+#: gravityview.php:333
 msgid "Left"
 msgstr "Sol"
 
-#: gravityview.php:335
+#: gravityview.php:333
 msgid "Right"
 msgstr "Sağ"
 
@@ -214,10 +214,10 @@ msgid "Multiple Entries"
 msgstr "Çoklu Kayıt"
 
 #: includes/admin/metaboxes/views/view-configuration.php:6
-#: includes/class-gravityview-admin-bar.php:62
+#: includes/class-frontend-views.php:366
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:523
+#: includes/extensions/edit-entry/class-edit-entry-render.php:509
 #: includes/extensions/edit-entry/class-edit-entry-shortcode.php:186
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
@@ -288,7 +288,7 @@ msgstr "&mdash; Eklemek için bir Görünüm seçin &mdash;"
 
 #: includes/class-admin-add-shortcode.php:103
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:311
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:187
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:177
 msgid "(no title)"
 msgstr "(başlıksız)"
 
@@ -671,19 +671,19 @@ msgstr "Değişiklik Listesi"
 msgid "What&rsquo;s New"
 msgstr "Yenilikler"
 
-#: includes/class-admin-welcome.php:395
+#: includes/class-admin-welcome.php:594
 msgid "GravityView is brought to you by:"
 msgstr "GravityView'i çıkaranlar:"
 
-#: includes/class-admin-welcome.php:420
+#: includes/class-admin-welcome.php:619
 msgid "Contributors"
 msgstr "Katkıda Bulunanlar"
 
-#: includes/class-admin-welcome.php:441
+#: includes/class-admin-welcome.php:640
 msgid "Want to contribute?"
 msgstr "Katkıda bulunmak istermisiniz?"
 
-#: includes/class-admin-welcome.php:442
+#: includes/class-admin-welcome.php:641
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -781,7 +781,7 @@ msgstr "Talebinize uyan kayıt bulunamadı."
 msgid "&larr; Go back"
 msgstr "&larr; Geri dön"
 
-#: includes/class-api.php:1157
+#: includes/class-api.php:1146
 msgid "Map It"
 msgstr "Haritada Göster"
 
@@ -871,15 +871,15 @@ msgid ""
 "in the Quiz Settings."
 msgstr "Quiz Ayarlarında yapılan Geçti/Kaldı ayarlarına göre kullanıcının geçip kaldığını görüntüler. "
 
-#: includes/class-common.php:947 includes/class-data.php:566
+#: includes/class-common.php:923 includes/class-data.php:566
 msgid "Default"
 msgstr "Varsayılan"
 
-#: includes/class-common.php:990 includes/class-data.php:567
+#: includes/class-common.php:966 includes/class-data.php:567
 msgid "Date Created"
 msgstr "Oluşturulma Tarihi"
 
-#: includes/class-common.php:1083
+#: includes/class-common.php:1059
 msgid "Email hidden; Javascript is required."
 msgstr "Eposta gizlenmiş; Javascript etkin olmalı."
 
@@ -895,7 +895,7 @@ msgstr "Bir sayı girmediniz. Girdiğiniz değer gömülü Görünümü içinde 
 
 #: includes/class-data.php:419
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:339
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:215
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:205
 msgid "Learn more&hellip;"
 msgstr "Daha fazlası için&hellip;"
 
@@ -1062,29 +1062,24 @@ msgstr "Geri Dönüş Bağlantısı Etiketi"
 msgid "The text of the link that returns to the multiple entries view."
 msgstr "Çoklu kayıt görünümüne dönüş yapan bağlantının yazısı."
 
-#: includes/class-debug-bar.php:93
+#: includes/class-debug-bar.php:91
 msgid "Warnings"
 msgstr "Uyarılar"
 
-#: includes/class-debug-bar.php:102
+#: includes/class-debug-bar.php:100
 msgid "Logs"
 msgstr "Kütükler"
 
-#: includes/class-frontend-views.php:436
+#: includes/class-frontend-views.php:491
 msgid ""
 "When using a Start Fresh template, you must save the View before a Preview "
 "is available."
 msgstr "Yeni bir taslak kullanırken önizleme yapabilmek için Görünümü kaydetmelisiniz."
 
-#: includes/class-frontend-views.php:629
+#: includes/class-frontend-views.php:684
 msgid ""
 "You have attempted to view an entry that is not visible or may not exist."
 msgstr "Görünür olmayan yada var olmayan bir kaydı görüntülemek istediniz."
-
-#: includes/class-gravityview-admin-bar.php:91
-#: includes/class-post-types.php:61
-msgid "Edit View"
-msgstr "Görünüm'ü Düzenle"
 
 #: includes/class-gravityview-admin-duplicate-view.php:221
 msgid "Clone"
@@ -1182,19 +1177,19 @@ msgid ""
 "upgrade your server's PHP."
 msgstr ""
 
-#: includes/class-gravityview-merge-tags.php:91
+#: includes/class-gravityview-merge-tags.php:78
 msgid "Entry Creator: Display Name"
 msgstr "Kayıt Sahibi: Görünen Ad"
 
-#: includes/class-gravityview-merge-tags.php:95
+#: includes/class-gravityview-merge-tags.php:82
 msgid "Entry Creator: Email"
 msgstr "Kayıt Sahibi: Eposta"
 
-#: includes/class-gravityview-merge-tags.php:99
+#: includes/class-gravityview-merge-tags.php:86
 msgid "Entry Creator: Username"
 msgstr "Kayıt Sahibi: Kullanıcı Adı"
 
-#: includes/class-gravityview-merge-tags.php:103
+#: includes/class-gravityview-merge-tags.php:90
 msgid "Entry Creator: User ID"
 msgstr "Kayıt Sahibi: Kullanıcı NO"
 
@@ -1292,43 +1287,47 @@ msgstr "Gömülü Kayıt %d"
 msgid "This entry will be displayed as it is configured in View %d"
 msgstr "BU kayıt %d Görünümünde ayarlandığı şekilde görüntülenecektir."
 
-#: includes/class-post-types.php:56
+#: includes/class-post-types.php:41
 msgid "Parent View:"
 msgstr "Ebeveyn Görünüm:"
 
-#: includes/class-post-types.php:57
+#: includes/class-post-types.php:42
 msgid "All Views"
 msgstr "Tüm Görünümler"
 
-#: includes/class-post-types.php:59
+#: includes/class-post-types.php:44
 msgid "Add New View"
 msgstr "Yeni Görünüm Ekle"
 
-#: includes/class-post-types.php:60
+#: includes/class-post-types.php:45
 msgid "New View"
 msgstr "Yeni Görünüm"
 
-#: includes/class-post-types.php:62
+#: includes/class-post-types.php:46
+msgid "Edit View"
+msgstr "Görünüm'ü Düzenle"
+
+#: includes/class-post-types.php:47
 msgid "Update View"
 msgstr "Görünüm'ü Güncelle"
 
-#: includes/class-post-types.php:63
+#: includes/class-post-types.php:48
 msgid "Search Views"
 msgstr "Görünümlerde Ara"
 
-#: includes/class-post-types.php:65
+#: includes/class-post-types.php:50
 msgid "No Views found in Trash"
 msgstr "Çöp Kutusunda Görünüm Bulunamadı"
 
-#: includes/class-post-types.php:68
+#: includes/class-post-types.php:53
 msgid "view"
 msgstr "görünüm"
 
-#: includes/class-post-types.php:69
+#: includes/class-post-types.php:54
 msgid "Create views based on a Gravity Forms form"
 msgstr "Gravity Forms temelli yeni Görünümler oluştur"
 
-#: includes/class-post-types.php:140
+#: includes/class-post-types.php:125
 msgid ""
 "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n"
 "\n"
@@ -1633,35 +1632,35 @@ msgstr "Bağlantı yeni sekmede mi yoksa pencerede mi açılsın?"
 msgid "Make field editable to:"
 msgstr "Alanı şunlar için düzenlenebilir yap:"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:534
+#: includes/extensions/edit-entry/class-edit-entry-render.php:520
 msgid "There was a problem with your submission."
 msgstr "Gönderinizle ilgili bir sorun oluştu."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:534
+#: includes/extensions/edit-entry/class-edit-entry-render.php:520
 msgid "Errors have been highlighted below."
 msgstr "Hatalar aşağıda belirtilmiştir."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:540
+#: includes/extensions/edit-entry/class-edit-entry-render.php:526
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "Kayıt güncellendi. %sKayda Dön%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1025
+#: includes/extensions/edit-entry/class-edit-entry-render.php:994
 msgid "Maximum number of files reached"
 msgstr "Azami dosya erişim sayısı"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1402
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1368
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "Bu kaydı düzenleyecek bağlantı geçerli değil, zamanaşımına uğramış olabilir."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1408
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1374
 msgid "You do not have permission to edit this entry."
 msgstr "Bu kaydı düzenleme yetkiniz yok."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1412
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1378
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "Bu kaydı düzenleyemezsiniz; çünnkü çöp kutusunda."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1452
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1418
 msgid "You do not have permission to edit this field."
 msgstr "Bu alanı düzenleme yetkiniz yok."
 
@@ -1819,24 +1818,6 @@ msgid ""
 " display score."
 msgstr "Puanı kesir olarak göster: \"[puan]/[tavan puan]\". Seçili olmadığında puan görüntülenir."
 
-#: includes/fields/number.php:16
-msgid "Format number?"
-msgstr ""
-
-#: includes/fields/number.php:17
-msgid "Display numbers with thousands separators."
-msgstr ""
-
-#: includes/fields/number.php:23
-msgid "Decimals"
-msgstr ""
-
-#: includes/fields/number.php:24
-msgid ""
-"Precision of the number of decimal places. Leave blank to use existing "
-"precision."
-msgstr ""
-
 #: includes/fields/other-entries.php:29
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:352
 msgid "Entry link text (required)"
@@ -1985,7 +1966,7 @@ msgstr "Toplam sonuçlar arasında görünür kayıt sayısının özeti. "
 msgid "Show Pagination Info"
 msgstr "Sayfalama Bilgisini Göster"
 
-#: includes/widgets/class-gravityview-widget-pagination-info.php:55
+#: includes/widgets/class-gravityview-widget-pagination-info.php:69
 msgid "Displaying %1$s - %2$s of %3$s"
 msgstr "%3$s taneden %1$s - %2$s arası kayıt görüntüleniyor"
 
@@ -2175,12 +2156,12 @@ msgid "Recent Entries"
 msgstr "En Son Kayıtlar"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:268
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:164
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:154
 msgid "Title:"
 msgstr "Başlık:"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:297
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:174
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:164
 msgid "Please select a View to search."
 msgstr "Arama yapmak için lütfen Görünüm seçiniz."
 
@@ -2189,12 +2170,12 @@ msgid "&mdash; Select a View as Entries Source &mdash;"
 msgstr "&mdash; Kayıt Kaynağı olacak Görünümü seçiniz &mdash;"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:335
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:211
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:201
 msgid "If Embedded, Page ID:"
 msgstr "Eğer Gömülüyse, Sayfa NO:"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:338
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:214
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:204
 msgid ""
 "To have a search performed on an embedded View, enter the ID of the post or "
 "page where the View is embedded."
@@ -2212,25 +2193,25 @@ msgstr "Belirli bir Görünüme özel arama formu."
 msgid "GravityView Search"
 msgstr "GravityView Arama"
 
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:132
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:122
 msgid ""
 "This widget is not configurable from this screen. Please configure it on the"
 " %sWidgets page%s."
 msgstr "Bileşeni bu ekrandan ayarlayamazsınız. Lütfen %sEklentiler sayfasına%s gidiniz."
 
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:182
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:172
 msgid "View:"
 msgstr "Görünüm:"
 
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:184
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:174
 msgid "&mdash; Select a View &mdash;"
 msgstr "&mdash; Görünüm Seçin &mdash;"
 
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:223
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:213
 msgid "Searchable fields:"
 msgstr "Aranabilir alanlar:"
 
-#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:224
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:214
 msgid "Search Fields"
 msgstr "Arama Alanları"
 
@@ -2278,37 +2259,37 @@ msgctxt "No user assigned to the entry"
 msgid "No User"
 msgstr "Kullanıcı Yok"
 
-#: includes/class-debug-bar.php:174
+#: includes/class-debug-bar.php:169
 msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Boş"
 
-#: includes/class-frontend-views.php:1117
+#: includes/class-frontend-views.php:1165
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "Temizle"
 
-#: includes/class-frontend-views.php:1118
+#: includes/class-frontend-views.php:1166
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "Sıfırla"
 
-#: includes/class-post-types.php:53
+#: includes/class-post-types.php:38
 msgctxt "Post Type General Name"
 msgid "Views"
 msgstr "Görünümler"
 
-#: includes/class-post-types.php:54
+#: includes/class-post-types.php:39
 msgctxt "Post Type Singular Name"
 msgid "View"
 msgstr "Görünüm"
 
-#: includes/class-post-types.php:55
+#: includes/class-post-types.php:40
 msgctxt "Menu name"
 msgid "Views"
 msgstr "Görünümler"
 
-#: includes/class-post-types.php:58
+#: includes/class-post-types.php:43
 msgctxt "View Item"
 msgid "View"
 msgstr "Görünüm"
@@ -2329,7 +2310,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr "Kayıt Sahibi"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1428
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1394
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr "Geri dön."

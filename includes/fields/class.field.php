@@ -42,11 +42,7 @@ abstract class GravityView_Field {
 				'type' => 'text',
 				'label' => __( 'Override Date Format', 'gravityview' ),
 				'desc' => sprintf( __( 'Define how the date is displayed (using %sthe PHP date format%s)', 'gravityview'), '<a href="https://codex.wordpress.org/Formatting_Date_and_Time">', '</a>' ),
-				/**
-				 * @filter `gravityview_date_format` Override the date format with a [PHP date format](https://codex.wordpress.org/Formatting_Date_and_Time)
-				 * @param[in,out] null|string $date_format Date Format (default: null)
-				 */
-				'value' => apply_filters( 'gravityview_date_format', null )
+				'value' => apply_filters( 'gravityview_date_format', NULL )
 			),
 			'new_window' => array(
 				'type' => 'checkbox',
@@ -55,10 +51,6 @@ abstract class GravityView_Field {
 			),
 		);
 
-		/**
-		 * @filter `gravityview_field_support_options` Modify the settings that a field supports
-		 * @param array $options Options multidimensional array with each key being the input name, with each array setting having `type`, `label`, `desc` and `value` (default values) keys
-		 */
 		return apply_filters( 'gravityview_field_support_options', $options );
 	}
 
@@ -78,7 +70,7 @@ abstract class GravityView_Field {
 	 *
 	 * Here's an example:
 	 *
-	 * <pre>
+	 * <code>
 	 * $field_options['name_display'] = array(
 	 * 	'type' => 'select',
 	 * 	'label' => __( 'User Format', 'gravityview' ),
@@ -94,8 +86,10 @@ abstract class GravityView_Field {
 	 *		),
 	 * 	 'value' => 'display_name'
 	 * );
-	 * </pre>
+	 * </code>
 	 *
+	 * @filter default text
+	 * @action default text
 	 * @param  [type]      $field_options [description]
 	 * @param  [type]      $template_id   [description]
 	 * @param  [type]      $field_id      [description]
