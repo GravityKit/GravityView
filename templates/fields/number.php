@@ -11,12 +11,12 @@
 $gravityview_view = GravityView_View::getInstance();
 
 /**
- * @var double|int $value
- * @var double|int $display_value
+ * @var double|int|string $value
+ * @var double|int|string $display_value
  */
 extract( $gravityview_view->getCurrentField() );
 
-if( !empty( $field_settings['number_format'] ) ) {
+if( $value !== '' && !empty( $field_settings['number_format'] ) ) {
 	$decimals = ( isset( $field_settings['decimals'] ) && $field_settings['decimals'] !== '' ) ? $field_settings['decimals'] : '';
 	echo gravityview_number_format( $value, $decimals );
 } else {
