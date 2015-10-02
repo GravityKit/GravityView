@@ -16,7 +16,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.14.1
+ * Version:          	1.14.4-beta
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravityview
@@ -71,6 +71,7 @@ require_once( GRAVITYVIEW_DIR . 'includes/helper-functions.php' );
 require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
 require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
 require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-compatibility.php' );
+require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-roles-capabilities.php' );
 
 /** Register Post Types and Rewrite Rules */
 require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
@@ -89,7 +90,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.14.1';
+	const version = '1.14.4-beta';
 
 	private static $instance;
 
@@ -152,6 +153,9 @@ final class GravityView_Plugin {
 		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/*.php' ) as $gv_field_filename ) {
 			include_once( $gv_field_filename );
 		}
+
+		// Load notes
+		include_once( GRAVITYVIEW_DIR .'includes/class-gravityview-entry-notes.php' );
 
 		// Load Extensions
 		// @todo: Convert to a scan of the directory or a method where this all lives
@@ -218,6 +222,8 @@ final class GravityView_Plugin {
 
 		// Clear settings transient
 		delete_transient( 'redux_edd_license_license_valid' );
+
+		GravityView_Roles_Capabilities::get_instance()->add_caps();
 	}
 
 

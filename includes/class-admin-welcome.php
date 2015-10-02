@@ -276,6 +276,11 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>1.14.2 &amp; 1.14.3 on September 17</h3>
+				<ul>
+					<li>Fixed: Issue affecting Gravity Forms User Registration Addon. Passwords were being reset when an user edited their own entry.</li>
+				</ul>
+
 				<h3>1.14.1 on September 16</h3>
 				<ul>
 					<li>Fixed: Error with older versions of Maps Premium View</li>

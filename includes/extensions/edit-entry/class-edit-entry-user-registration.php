@@ -46,7 +46,10 @@ class GravityView_Edit_Entry_User_Registration {
         if( apply_filters( 'gravityview/edit_entry/user_registration/trigger_update', true ) ) {
             add_action( 'gravityview/edit_entry/after_update' , array( $this, 'update_user' ), 10, 2 );
 
-            add_action( 'gform_user_updated', array( $this, 'restore_user_details' ), 10, 4 );
+            /**
+             * TODO: Should be removed once Gravity Forms allows for defining "Preserve current Display Name" option
+             */
+            add_action( 'gform_user_updated', array( $this, 'restore_display_name' ), 10, 4 );
         }
     }
 
@@ -89,17 +92,23 @@ class GravityView_Edit_Entry_User_Registration {
          */
         $config = apply_filters( 'gravityview/edit_entry/user_registration/config', $config, $form, $entry );
 
-        $this->_user_before_update = get_userdata( $entry['created_by'] );
+        $is_update_feed = ( $config && rgars( $config, 'meta/feed_type') === 'update' );
 
-        // The priority is set to 3 so that default priority (10) will still override it
-        add_filter( 'send_password_change_email', '__return_false', 3 );
-        add_filter( 'send_email_change_email', '__return_false', 3 );
+        // Only update if it's an update feed (not a create feed)
+        if( $is_update_feed ) {
 
-        // Trigger the User Registration update user method
-        GFUser::update_user( $entry, $form, $config );
+            $this->_user_before_update = get_userdata( $entry['created_by'] );
 
-        remove_filter( 'send_password_change_email', '__return_false', 3 );
-        remove_filter( 'send_email_change_email', '__return_false', 3 );
+            // The priority is set to 3 so that default priority (10) will still override it
+            add_filter( 'send_password_change_email', '__return_false', 3 );
+            add_filter( 'send_email_change_email', '__return_false', 3 );
+
+            // Trigger the User Registration update user method
+            GFUser::update_user( $entry, $form, $config );
+
+            remove_filter( 'send_password_change_email', '__return_false', 3 );
+            remove_filter( 'send_email_change_email', '__return_false', 3 );
+        }
     }
 
     /**
@@ -109,22 +118,38 @@ class GravityView_Edit_Entry_User_Registration {
      * @param int $user_id WP User ID that was updated by Gravity Forms User Registration Addon
      * @param array $config Gravity Forms User Registration Addon form feed configuration
      * @param array $entry The Gravity Forms entry that was just updated
+     * @param string $password User password
      * @return void
      */
-    public function restore_user_details( $user_id = 0, $config = array(), $entry = array() ) {
+    public function restore_display_name( $user_id = 0, $config = array(), $entry = array(), $password = '' ) {
+
+        /**
+         * @filter `gravityview/edit_entry/restore_display_name` Whether display names should be restored to before updating an entry.
+         * Otherwise, display names will be reset to the format specified in Gravity Forms User Registration "Update" feed
+         * @since 1.14.4
+         * @param boolean $restore_display_name Restore Display Name? Default: true
+         */
+        $restore_display_name = apply_filters( 'gravityview/edit_entry/restore_display_name', true );
+
+        $is_update_feed = ( $config && rgars( $config, 'meta/feed_type') === 'update' );
+
+        /**
+         * Don't restore display name: either disabled, or not an Update feed (it's a Create feed)
+         * @since 1.14.4
+         */
+        if( ! $restore_display_name || ! $is_update_feed ) {
+            return;
+        }
 
         $user_after_update = get_userdata( $user_id );
 
         $restored_user = $user_after_update;
 
-        // Restore previous display_name
+	    // Restore previous display_name
         $restored_user->display_name = $this->_user_before_update->display_name;
 
-        // Restore previous roles
-        $restored_user->roles = array();
-        foreach( $this->_user_before_update->roles as $role ) {
-            $restored_user->add_role( $role );
-        }
+	    // Don't have WP update the password.
+	    unset( $restored_user->data->user_pass, $restored_user->user_pass );
 
         /**
          * Modify the user data after updated by Gravity Forms User Registration but before restored by GravityView
@@ -145,6 +170,7 @@ class GravityView_Edit_Entry_User_Registration {
         }
 
         $this->_user_before_update = null;
+
         unset( $updated, $restored_user, $user_after_update );
     }
 
