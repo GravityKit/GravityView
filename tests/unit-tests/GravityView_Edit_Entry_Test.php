@@ -1,6 +1,6 @@
 <?php
 
-class GravityView_Edit_Entry_Test extends WP_UnitTestCase {
+class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 	/**
 	 * @var int
@@ -13,11 +13,6 @@ class GravityView_Edit_Entry_Test extends WP_UnitTestCase {
 	var $form = array();
 
 	/**
-	 * @var GF_UnitTest_Factory
-	 */
-	var $factory;
-
-	/**
 	 * @var int
 	 */
 	var $entry_id = 0;
@@ -28,18 +23,6 @@ class GravityView_Edit_Entry_Test extends WP_UnitTestCase {
 	var $entry = array();
 
 	var $is_set_up = false;
-
-	function setUp() {
-		parent::setUp();
-
-		/* Remove temporary tables which causes problems with GF */
-		remove_all_filters( 'query', 10 );
-
-		/* Ensure the database is correctly set up */
-		@GFForms::setup_database();
-
-		$this->factory = new GF_UnitTest_Factory( $this );
-	}
 
 	/**
 	 * @covers GravityView_Edit_Entry::getInstance()

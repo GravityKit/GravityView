@@ -59,6 +59,9 @@ class GV_UnitTest_Factory_For_View extends WP_UnitTest_Factory_For_Post {
 	}
 
 	function create_object( $args ) {
+
+		$args = wp_parse_args( $args, $this->default_generation_definitions );
+
 		$insert_post_response = parent::create_object( $args );
 
 		if( $insert_post_response && !is_wp_error( $insert_post_response ) ) {
@@ -155,6 +158,7 @@ class GF_UnitTest_Factory_For_Entry extends WP_UnitTest_Factory_For_Thing {
 	}
 
 	function create_object( $args ) {
+		$args = wp_parse_args( $args, $this->default_generation_definitions );
 		return GFAPI::add_entry( $args );
 	}
 

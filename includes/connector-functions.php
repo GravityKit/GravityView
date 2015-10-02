@@ -320,3 +320,31 @@ function the_gravityview( $view_id = '', $atts = array() ) {
 function gravityview_is_single_entry() {
 	return GravityView_frontend::is_single_entry();
 }
+
+/**
+ * Determine whether a View has a single checkbox or single radio input
+ * @see GravityView_frontend::add_scripts_and_styles()
+ * @since 1.15
+ * @param array $form Gravity Forms form
+ * @param array $view_fields GravityView fields array
+ */
+function gravityview_view_has_single_checkbox_or_radio( $form, $view_fields ) {
+
+	if( $form_fields = GFFormsModel::get_fields_by_type( $form, array( 'checkbox', 'radio' ) ) ) {
+
+		/** @var GF_Field_Radio|GF_Field_Checkbox $form_field */
+		foreach( $form_fields as $form_field ) {
+			$field_id = $form_field->id;
+			foreach( $view_fields as $zone ) {
+				foreach( $zone as $field ) {
+					// If it's an input, not the parent and the parent ID matches a checkbox or radio
+					if( ( strpos( $field['id'], '.' ) > 0 ) && floor( $field['id'] ) === floor( $field_id ) ) {
+						return true;
+					}
+				}
+			}
+		}
+	}
+
+	return false;
+}
