@@ -162,7 +162,7 @@ class GravityView_Merge_Tags {
 
 			$value = $url_encode ? urlencode( $value ) : $value;
 
-			$esc_html = $esc_html ? esc_html( $value ) : $value;
+			$value = $esc_html ? esc_html( $value ) : $value;
 
 			$text = str_replace( $full_tag, $value, $text );
 		}
