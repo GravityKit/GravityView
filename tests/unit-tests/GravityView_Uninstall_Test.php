@@ -1,6 +1,10 @@
 <?php
 
-class GravityView_Uninstall_Test extends PHPUnit_Framework_TestCase {
+/**
+ * @since 1.15
+ * Class GravityView_Uninstall_Test
+ */
+class GravityView_Uninstall_Test extends GV_UnitTestCase {
 
 	/**
 	 * @var int

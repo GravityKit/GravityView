@@ -3,13 +3,7 @@
 /**
  * @since 1.15
  */
-class GravityView_Merge_Tags_Test extends PHPUnit_Framework_TestCase {
-
-	function setUp() {
-		parent::setUp();
-
-		GravityView_Plugin::getInstance();
-	}
+class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 
 	/**
 	 * @since 1.15

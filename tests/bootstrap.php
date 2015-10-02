@@ -67,6 +67,8 @@ class GV_Unit_Tests_Bootstrap {
 		// load the WP testing environment
 		require_once( $this->wp_tests_dir . '/includes/bootstrap.php' );
 
+		require_once $this->tests_dir . '/GV_UnitTestCase.php';
+
 		require_once $this->tests_dir . '/factory.php';
 
 		// set up GravityView

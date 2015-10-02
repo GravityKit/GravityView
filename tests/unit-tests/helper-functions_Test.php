@@ -1,6 +1,6 @@
 <?php
 
-class GravityView_Helper_Functions_Test extends PHPUnit_Framework_TestCase {
+class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 
 	/**
 	 * @group helperfunctions
