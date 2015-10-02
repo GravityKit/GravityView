@@ -901,18 +901,26 @@ class GravityView_Admin_Views {
 	}
 
 	/**
-	 * Chatlio.com customer support widget
+	 * HelpScout customer support widget
 	 */
 	static function enqueue_feedback_widget() {
 
 		/**
 		 * @filter `gravityview/admin/display_live_chat` Whether to display live chat support widget when operators are available
 		 * @since 1.13.1
+		 * @deprecated 1.15
 		 * @param boolean $display_live_chat Default: `true`
 		 */
 		$display_live_chat = apply_filters( 'gravityview/admin/display_live_chat', true );
 
-		if( ! $display_live_chat ) {
+		/**
+		 * @filter `gravityview/admin/display_beacon` Whether to display support widget
+		 * @since 1.15
+		 * @param boolean $display_beacon Default: `true`
+		 */
+		$display_beacon = apply_filters( 'gravityview/admin/display_beacon', true );
+
+		if( ! $display_live_chat || ! $display_beacon ) {
 			return;
 		}
 
@@ -943,25 +951,42 @@ class GravityView_Admin_Views {
 			case 100:
 				$package = 'Galactic';
 				break;
-			default:
 			case 3:
 				$package = 'Interstellar';
 				break;
+			default:
+				$package = sprintf( '%d-Site License', $response['license_limit'] );
 		}
 
-		$chat_settings = array(
-			'onlineTitle' => __('Ask GravityView Support', 'gravityview'),
-			'offlineTitle' => __('GravityView Support', 'gravityview'),
-			'offlineGreeting' => __('If you have any questions, send us an email and we will get respond to you as soon as possible.', 'gravityview'),
-			'offlineNamePlaceholder' => __('Your Name', 'gravityview'),
-			"autoResponseMessage" => sprintf( __('Question or comment? We are online and ready to answer! If you don\'t hear back from us, you can send your question to %s', 'gravityview'), '<a href="mailto:support@gravityview.co">support@gravityview.co</a>' ),
-			"agentLabel" => __('GravityView Support', 'gravityview'),
-			'css' => plugins_url( 'assets/css/feedback.css', GRAVITYVIEW_FILE ),
+		$translation = array(
+			'agentLabel' => __('GravityView Support', 'gravityview'),
+			'searchLabel' => __('Ask GravityView Support', 'gravityview'),
+			'searchErrorLabel' => __('Your search timed out. Please double-check your internet connection and try again.', 'gravityview' ),
+			'noResultsLabel' => _x('No results found for', 'a support form search has returned empty for the following word', 'gravityview' ),
+			'contactLabel' => __('Send a Message', 'gravityview' ),
+			'attachFileLabel' => __('Attach a screenshot or file', 'gravityview' ),
+			'attachFileError' => __('The maximum file size is 10 MB', 'gravityview' ),
+			'nameLabel' => __('Your Name', 'gravityview' ),
+			'nameError' => __('Please enter your name', 'gravityview' ),
+			'emailLabel' => __('Email address', 'gravityview' ),
+			'emailError' => __('Please enter a valid email address', 'gravityview' ),
+			'subjectLabel' => __('Subject', 'gravityview' ),
+			'subjectError' => _x('Please enter a subject', 'Error shown when submitting support request and there is no subject provided', 'gravityview' ),
+			'messageLabel' => __('How can we help you?', 'gravityview' ),
+			'messageError' => _x('Please enter a message', 'Error shown when submitting support request and there is no message provided', 'gravityview' ),
+			'contactSuccessLabel' => __('Message sent!', 'gravityview' ),
+			'contactSuccessDescription' => __('Thanks for reaching out! Someone from the GravityView team will get back to you soon.', 'gravityview' ),
+			#'topicLabel' => __('Select a topic', 'gravityview' ), // Not implemented
+			#'topicError' => __('Please select a topic from the list', 'gravityview' ), // Not implemented
 		);
 
-		wp_enqueue_script( 'gravityview-feedback-widget', plugins_url('assets/js/feedback'.$script_debug.'.js', GRAVITYVIEW_FILE), array('jquery'), GravityView_Plugin::version, true);
+		wp_enqueue_script( 'gravityview-feedback-widget', plugins_url('assets/js/feedback'.$script_debug.'.js', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version, true );
 
-		wp_localize_script( 'gravityview-feedback-widget', 'gvFeedback', array(
+		wp_localize_script( 'gravityview-feedback-widget', 'gvBeaconTranslation', $translation );
+
+		wp_localize_script( 'gravityview-feedback-widget', 'gvBeacon', array(
+			'email' => GravityView_Settings::getSetting( 'support-email' ),
+			'name' => $response['customer_name'],
 			'Valid License?' => ucwords( $response['license'] ),
 			'License Key' => $response['license_key'],
 			'License Level' => $package,
@@ -970,11 +995,12 @@ class GravityView_Admin_Views {
 			'License Limit' => $response['license_limit'],
 			'Site Count' => $response['site_count'],
 			'License Expires' => $response['expires'],
-            'License Activations Left' => $response['activations_left'],
+            'Activations Left' => $response['activations_left'],
 			'Payment ID' => $response['payment_id'],
 			'Payment Name' => $response['customer_name'],
 		    'Payment Email' => $response['customer_email'],
-			'chat_settings' => json_encode( $chat_settings ),
+			'WordPress Version' => get_bloginfo('version', 'display'),
+			'PHP Version' => phpversion(),
 		));
 	}
 
