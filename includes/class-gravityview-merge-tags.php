@@ -39,7 +39,7 @@ class GravityView_Merge_Tags {
 	 * @param  array      $entry        GF Entry array
 	 * @return string                  Text with variables maybe replaced
 	 */
-	public static function replace_variables($text, $form, $entry ) {
+	public static function replace_variables($text, $form = array(), $entry = array() ) {
 
 		if( strpos( $text, '{') === false ) {
 			return $text;
@@ -51,7 +51,7 @@ class GravityView_Merge_Tags {
 		if( empty( $matches ) ) {
 
 			// Check for form variables
-			if( !preg_match( '/\{(all_fields(:(.*?))?|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id|embed_url|date_mdy|date_dmy|embed_post:(.*?)|custom_field:(.*?)|user_agent|referer|gv:(.*?)|user:(.*?)|created_by:(.*?))\}/ism', $text ) ) {
+			if( !preg_match( '/\{(all_fields(:(.*?))?|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id|embed_url|date_mdy|date_dmy|embed_post:(.*?)|custom_field:(.*?)|user_agent|referer|gv:(.*?)|get:(.*?)|user:(.*?)|created_by:(.*?))\}/ism', $text ) ) {
 				return $text;
 			}
 		}
@@ -120,8 +120,90 @@ class GravityView_Merge_Tags {
 			return $text;
 		}
 
+		$text = $this->replace_get_variables( $text, $form, $entry, $url_encode );
+
 		// Process the merge vars here
 		$text = $this->replace_user_variables_created_by( $text, $form, $entry, $url_encode, $esc_html );
+
+
+		return $text;
+	}
+
+	/**
+	 * Allow passing variables via URL to be displayed in Merge Tags
+	 *
+	 * Works with `[gvlogic]`:
+	 *     [gvlogic if="{get:example}" is="false"]
+	 *          ?example=false
+	 *	   [else]
+	 *	        ?example wasn't "false". It's {get:example}!
+	 *     [/gvlogic]
+	 *
+	 * Supports passing arrays:
+	 *     URL: `example[]=Example+One&example[]=Example+(with+comma)%2C+Two`
+	 *     Merge Tag: `{get:example}`
+	 *     Output: `Example One, Example (with comma), Two`
+	 *
+	 * @since 1.15
+	 * @param string $text Text to replace
+	 * @param array $form Gravity Forms form array
+	 * @param array $entry Entry array
+	 * @param bool $url_encode Whether to URL-encode output
+	 */
+	private function replace_get_variables( $text, $form = array(), $entry = array(), $url_encode = false ) {
+
+		// Is there is {created_by:[xyz]} merge tag?
+		preg_match_all( "/\{get:(.*?)\}/", $text, $matches, PREG_SET_ORDER );
+
+		// If there are no matches OR the Entry `created_by` isn't set or is 0 (no user)
+		if( empty( $matches ) ) {
+			return $text;
+		}
+
+		foreach ( $matches as $match ) {
+
+			$full_tag = $match[0];
+			$property = $match[1];
+
+			$value = stripslashes_deep( rgget( $property ) );
+
+			/**
+			 * @filter `gravityview/merge_tags/get/glue/` Modify the glue used to convert an array of `{get}` values from an array to string
+			 * @since 1.15
+			 * @param[in,out] string $glue String used to `implode()` $_GET values Default: ', '
+			 * @param[in] string $property The current name of the $_GET parameter being combined
+			 */
+			$glue = apply_filters( 'gravityview/merge_tags/get/glue/', ', ', $property );
+
+			$value = is_array( $value ) ? implode( $glue, $value ) : $value;
+
+			$value = $url_encode ? urlencode( $value ) : $value;
+
+			/**
+			 * @filter `gravityview/merge_tags/get/esc_html/{url parameter name}` Disable esc_html() from running on `{get}` merge tag
+			 * By default, all values passed through URLs will be escaped for security reasons. If for some reason you want to
+			 * pass HTML in the URL, for example, you will need to return false on this filter. It is strongly recommended that you do
+			 * not disable this filter.
+			 * @since 1.15
+			 * @param bool $esc_html Whether to esc_html() the value. Default: `true`
+			 */
+			$esc_html = apply_filters('gravityview/merge_tags/get/esc_html/' . $property, true );
+
+			$value = $esc_html ? esc_html( $value ) : $value;
+
+			/**
+			 * @filter `gravityview/merge_tags/get/esc_html/{url parameter name}` Modify the value of the `{get}` replacement before being used
+			 * @param string $value Text to replace
+			 * @param string $text Text to replace
+			 * @param array $form Gravity Forms form array
+			 * @param array $entry Entry array
+			 */
+			$value = apply_filters('gravityview/merge_tags/get/value/' . $property, $value, $text, $form, $entry );
+
+			$text = str_replace( $full_tag, $value, $text );
+		}
+
+		unset( $value, $glue, $matches );
 
 		return $text;
 	}
@@ -162,7 +244,7 @@ class GravityView_Merge_Tags {
 
 			$value = $url_encode ? urlencode( $value ) : $value;
 
-			$esc_html = $esc_html ? esc_html( $value ) : $value;
+			$value = $esc_html ? esc_html( $value ) : $value;
 
 			$text = str_replace( $full_tag, $value, $text );
 		}
