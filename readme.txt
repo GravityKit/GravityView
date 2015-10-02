@@ -20,9 +20,19 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.14.4-beta on September 30 =
+= 1.15 =
+* Added: `{get}` Merge Tag that allows passing data via URL to be safely displayed in Merge Tags. [Learn how this works](#TODO).
+	- Example: When adding `?first-name=Floaty` to a URL, the Custom Content `My name is {get:first-name}` would be replaced with `My name is Floaty`
+* Added: Option to delete GravityView data when the plugin is uninstalled, then deleted. [Learn more](#TODO).
+* Added: New support "Beacon" to easily search documentation and ask support questions
+* Fixed: `number_format()` PHP warning on blank Number fields
+* Fixed: `{created_by}` merge tags weren't being escaped using `esc_html()`
+* Fixed: Checkmark icons weren't always available when displaying checkbox input field
+* Fixed: When "Shorten Link Display" was enabled for Website fields, "Link Text" wasn't respected
 * Fixed: Only process "Update" Gravity Forms User Registration Addon feeds
 * Fixed: PHP Warnings
+* Tweak: Entry notes are now created using `GravityView_Entry_Notes` class
+* Tweak: Improved automated code testing
 
 = 1.14.2 & 1.14.3 on September 17 =
 * Fixed: Issue affecting Gravity Forms User Registration Addon. Passwords were being reset when an user edited their own entry.
