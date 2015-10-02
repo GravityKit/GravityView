@@ -569,27 +569,27 @@ class GravityView_Settings extends GFAddOn {
 						'value' => '0',
 					),
 				),
-				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ) . ' ' . __('If your Edit View tabs are ugly, enable this setting.'),
+				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ) . ' ' . __('If your Edit View tabs are ugly, enable this setting.', 'gravityview'),
 			),
 			array(
 				'name'       => 'delete-on-uninstall',
 				'type'       => 'radio',
-				'label'      => __( 'Remove Data on Uninstall?', 'gravityview' ),
+				'label'      => __( 'Remove Data on Delete?', 'gravityview' ),
 				'default_value'    => $default_settings['delete-on-uninstall'],
 				'horizontal' => 1,
 				'choices'    => array(
 					array(
-						'label' => _x('Permanently Delete', 'Setting: what to do when uninstalling plugin', 'gravityview'),
-						'value' => 'delete',
-					    'tooltip' => sprintf( '<h6>%s</h6><p><span class="howto">%s</span></p><p>%s</p>', __('Delete all GravityView content and settings'), __('If you delete then re-install GravityView, it will be like installing GravityView for the first time.'), __('When GravityView is uninstalled and deleted, delete all Views, GravityView entry approvals, GravityView-generated entry notes (including approval and entry creator changes), and GravityView plugin settings. No Gravity Forms data will be touched.') ),
+						'label' => _x( 'Keep GravityView Data', 'Setting: what to do when uninstalling plugin', 'gravityview' ),
+						'value' => '0',
+						'tooltip' => sprintf( '<h6>%s</h6><p>%s</p>', __( 'Keep GravityView content and settings', 'gravityview' ), __( 'If you delete then re-install the plugin, all GravityView data will be kept. Views, settings, etc. will be untouched.', 'gravityview' ) ),
 					),
 					array(
-						'label' => _x('Keep GravityView Data', 'Setting: what to do when uninstalling plugin', 'gravityview'),
-						'value' => '0',
-						'tooltip' => sprintf( '<h6>%s</h6><p>%s</p>', __('Keep GravityView content and settings'), __('If you delete then re-install the plugin, all Views, plugin settings, entry notes, and entry approvals will still be here.') ),
+						'label' => _x( 'Permanently Delete', 'Setting: what to do when uninstalling plugin', 'gravityview' ),
+						'value' => 'delete',
+					    'tooltip' => sprintf( '<h6>%s</h6><p><span class="howto">%s</span></p><p>%s</p>', __( 'Delete all GravityView content and settings', 'gravityview' ), __( 'If you delete then re-install GravityView, it will be like installing GravityView for the first time.', 'gravityview' ), __( 'When GravityView is uninstalled and deleted, delete all Views, GravityView entry approvals, GravityView-generated entry notes (including approval and entry creator changes), and GravityView plugin settings. No Gravity Forms data will be touched.', 'gravityview' ) ),
 					),
 				),
-				'description'   => sprintf( __( 'Should GravityView content be removed from the site when the GravityView plugin is deleted?', 'gravityview' ), __('Permanently Delete', 'gravityview') ),
+				'description'   => sprintf( __( 'Should GravityView content and entry approval status be removed from the site when the GravityView plugin is deleted?', 'gravityview' ), __( 'Permanently Delete', 'gravityview' ) ),
 			),
 
 		) );
