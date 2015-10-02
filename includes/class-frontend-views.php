@@ -1159,6 +1159,15 @@ class GravityView_frontend {
 					$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
 				}
 
+				/**
+				 * If the form has checkbox fields, enqueue dashicons
+				 * @see https://github.com/katzwebservices/GravityView/issues/536
+				 * @since 1.15
+				 */
+				if( gravityview_view_has_single_checkbox_or_radio( $data['form'], $data['fields'] ) ) {
+					$css_dependencies[] = 'dashicons';
+				}
+
 				wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'includes/lib/jquery-cookie/jquery_cookie.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GravityView_Plugin::version, true );
 
 				$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
