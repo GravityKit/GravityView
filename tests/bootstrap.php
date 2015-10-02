@@ -1,22 +1,199 @@
 <?php
+/**
+ * GravityView Unit Tests Bootstrap
+ *
+ * @since 1.9
+ */
+class GV_Unit_Tests_Bootstrap {
 
-ob_start();
+	/** @var \GV_Unit_Tests_Bootstrap instance */
+	protected static $instance = null;
 
-//change this to your path
-$path = '/Users/zackkatz/Sites/wordpress-develop/tests/phpunit/includes/bootstrap.php';
+	/** @var string directory where wordpress-tests-lib is installed */
+	public $wp_tests_dir;
 
-if (file_exists($path)) {
-    $GLOBALS['wp_tests_options'] = array(
-        'active_plugins' => array(
-        	'gravityforms/gravityforms.php',
-        	'gravityview/gravityview.php'
-        )
-    );
+	/** @var string testing directory */
+	public $tests_dir;
 
-    require_once $path;
-} else {
-    exit("Couldn't find wordpress-tests/bootstrap.php\n");
+	/** @var string plugin directory */
+	public $plugin_dir;
+
+	/**
+	 * @var int
+	 */
+	private $form_id = 0;
+
+	/**
+	 * @var array GF Form array
+	 */
+	private $form = array();
+
+	/**
+	 * @var int
+	 */
+	private $entry_id = 0;
+
+	/**
+	 * @var array GF Entry array
+	 */
+	private $entry = array();
+
+	/**
+	 * Setup the unit testing environment
+	 *
+	 * @since 1.9
+	 */
+	public function __construct() {
+		ini_set( 'display_errors', 'on' );
+		error_reporting( E_ALL );
+
+		$this->tests_dir    = dirname( __FILE__ );
+		$this->plugin_dir   = dirname( $this->tests_dir );
+		$this->wp_tests_dir = getenv( 'WP_TESTS_DIR' ) ? getenv( 'WP_TESTS_DIR' ) : $this->plugin_dir . '/tmp/wordpress-tests-lib';
+
+		// load test function so tests_add_filter() is available
+		require_once $this->wp_tests_dir . '/includes/functions.php';
+
+		// load GV
+		tests_add_filter( 'muplugins_loaded', array( $this, 'load' ) );
+
+		// load the WP testing environment
+		require_once( $this->wp_tests_dir . '/includes/bootstrap.php' );
+
+		// set up Gravity View
+		$this->install();
+	}
+
+	/**
+	 * Load GravityView
+	 *
+	 * @since 1.9
+	 */
+	public function load() {
+		require_once $this->plugin_dir . '/tmp/gravityforms/gravityforms.php';
+		require_once $this->plugin_dir . '/gravityview.php';
+
+		// set up Gravity Forms database
+		@GFForms::setup( true );
+
+		$this->create_stubs();
+	}
+
+	/**
+	 * @return array
+	 */
+	public function get_form() {
+		return $this->form;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function get_entry() {
+		return $this->entry;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function get_entry_id() {
+		return $this->entry_id;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function get_form_id() {
+		return $this->form_id;
+	}
+
+	/**
+	 * Generate some placeholder values to test against
+	 */
+	private function create_stubs() {
+
+		$this->form_id = GFAPI::add_form( array(
+			'title' => 'This is the form title',
+			'fields' => array(
+				new GF_Field_Text(array(
+					'id' => 1,
+					'label' => 'Label for field one (text)',
+					'choices' => array(),
+					'inputs' => '',
+				)),
+				new GF_Field_Hidden(array(
+					'id' => 2,
+					'label' => 'Label for field two (hidden)',
+					'choices' => array(),
+					'inputs' => '',
+				)),
+				new GF_Field_Number(array(
+					'id' => 3,
+					'label' => 'Label for field three (number)',
+					'choices' => array(),
+					'inputs' => '',
+				))
+			),
+		));
+
+		$this->form = GFAPI::get_form( $this->form_id );
+
+		$entry_array = array(
+			'form_id' => $this->form_id,
+			'1' => 'Value for field one',
+			'2' => 'Value for field two',
+			'3' => '3.33333',
+			'ip' => '127.0.0.1',
+			'source_url' => 'http://example.com/wordpress/?gf_page=preview&id=16',
+			'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.78.2 (KHTML, like Gecko) Version/7.0.6 Safari/537.78.2',
+			'payment_status' => 'Processing',
+			'payment_date' => '2014-08-29 20:55:06',
+			'payment_amount' => '0.01',
+			'transaction_id' => 'asdfpaoj442gpoagfadf',
+			'created_by' => 1,
+			'status' => 'active',
+			'date_created' => '2014-08-29 18:25:39',
+		);
+
+		$this->entry_id = GFAPI::add_entry( $entry_array );
+
+		$this->entry = GFAPI::get_entry( $this->entry_id );
+
+	}
+
+	/**
+	 * Setup all Gravity View's files
+	 *
+	 * @since 1.9
+	 */
+	public function install() {
+		$GV = GravityView_Plugin::getInstance();
+		$GV->frontend_actions();
+	}
+
+	/**
+	 * Get the single class instance
+	 *
+	 * @since 1.9
+	 * @return GV_Unit_Tests_Bootstrap
+	 */
+	public static function instance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
 }
 
-require_once dirname( __FILE__ ) . '/../gravityview.php';
-require_once dirname( __FILE__ ) . '/../../gravityforms/gravityforms.php';
+GV_Unit_Tests_Bootstrap::instance();
+
+
+/* Clean up the GF Database when we're done */
+register_shutdown_function( 'gravityview_shutdown' );
+
+/* Shutdown function wasn't working when referenced via array( $this, 'shutdown' ) from the object */
+function gravityview_shutdown() {
+	RGFormsModel::drop_tables();
+}
