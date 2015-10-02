@@ -14,7 +14,7 @@ class GravityView_Merge_Tags_Test extends PHPUnit_Framework_TestCase {
 	/**
 	 * @since 1.15
 	 * @group merge_tags
-	 * @covers gravityview_has_shortcode_r()
+	 * @covers GravityView_Merge_Tags::replace_variables()
 	 */
 	function test_replace_variables() {
 
