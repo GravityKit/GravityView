@@ -908,11 +908,19 @@ class GravityView_Admin_Views {
 		/**
 		 * @filter `gravityview/admin/display_live_chat` Whether to display live chat support widget when operators are available
 		 * @since 1.13.1
+		 * @deprecated 1.15
 		 * @param boolean $display_live_chat Default: `true`
 		 */
 		$display_live_chat = apply_filters( 'gravityview/admin/display_live_chat', true );
 
-		if( ! $display_live_chat ) {
+		/**
+		 * @filter `gravityview/admin/display_beacon` Whether to display support widget
+		 * @since 1.15
+		 * @param boolean $display_beacon Default: `true`
+		 */
+		$display_beacon = apply_filters( 'gravityview/admin/display_beacon', true );
+
+		if( ! $display_live_chat || ! $display_beacon ) {
 			return;
 		}
 
