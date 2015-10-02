@@ -78,10 +78,18 @@ install_db() {
 	fi
 
 	# create database
-	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
+	mysqladmin CREATE $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA;
+}
+
+# Create xdebug log, if not correctly installed by Vagrant
+# See https://github.com/Varying-Vagrant-Vagrants/VVV/issues/621
+fix_vagrant_permissions() {
+	touch /tmp/xdebug-remote.log;
+	chmod 666 /tmp/xdebug-remote.log;
 }
 
 install_wp
 install_depencency
 install_test_suite
 install_db
+fix_vagrant_permissions

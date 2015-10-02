@@ -71,6 +71,7 @@ require_once( GRAVITYVIEW_DIR . 'includes/helper-functions.php' );
 require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
 require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
 require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-compatibility.php' );
+require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-roles-capabilities.php' );
 
 /** Register Post Types and Rewrite Rules */
 require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
@@ -221,6 +222,8 @@ final class GravityView_Plugin {
 
 		// Clear settings transient
 		delete_transient( 'redux_edd_license_license_valid' );
+
+		GravityView_Roles_Capabilities::get_instance()->add_caps();
 	}
 
 
