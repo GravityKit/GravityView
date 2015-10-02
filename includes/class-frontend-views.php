@@ -1131,12 +1131,6 @@ class GravityView_frontend {
 
 			$views = $this->getGvOutputData()->get_views();
 
-			$js_localization = array(
-				'cookiepath' => COOKIEPATH,
-				'clear' => _x( 'Clear', 'Clear all data from the form', 'gravityview' ),
-				'reset' => _x( 'Reset', 'Reset the search form to the state that existed on page load', 'gravityview' ),
-			);
-
 			foreach ( $views as $view_id => $data ) {
 
 				// By default, no thickbox
@@ -1176,13 +1170,6 @@ class GravityView_frontend {
 
 				wp_enqueue_script( 'gravityview-fe-view' );
 
-				/**
-				 * @filter `gravityview_js_localization` Modify the array passed to wp_localize_script()
-				 * @param array $js_localization The data padded to the Javascript file
-				 * @param array $data View data array with View settings
-				 */
-				$js_localization = apply_filters( 'gravityview_js_localization', $js_localization, $data );
-
 				if ( ! empty( $data['atts']['sort_columns'] ) ) {
 					wp_enqueue_style( 'gravityview_font', plugins_url( 'assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
 				}
@@ -1194,6 +1181,20 @@ class GravityView_frontend {
 			}
 
 			if ( 'wp_print_footer_scripts' === current_filter() ) {
+
+				$js_localization = array(
+					'cookiepath' => COOKIEPATH,
+					'clear' => _x( 'Clear', 'Clear all data from the form', 'gravityview' ),
+					'reset' => _x( 'Reset', 'Reset the search form to the state that existed on page load', 'gravityview' ),
+				);
+
+				/**
+				 * @filter `gravityview_js_localization` Modify the array passed to wp_localize_script()
+				 * @param array $js_localization The data padded to the Javascript file
+				 * @param array $data View data array with View settings
+				 */
+				$js_localization = apply_filters( 'gravityview_js_localization', $js_localization, $data );
+
 				wp_localize_script( 'gravityview-fe-view', 'gvGlobals', $js_localization );
 			}
 		}
