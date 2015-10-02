@@ -2,7 +2,7 @@
 
 /**
  * Class GravityView_Entry_Notes
- * @since TODO
+ * @since 1.15
  */
 class GravityView_Entry_Notes {
 
@@ -14,7 +14,7 @@ class GravityView_Entry_Notes {
 	}
 
 	/**
-	 * @since TODO
+	 * @since 1.15
 	 */
 	private function add_hooks() {
 		add_filter( 'gform_notes_avatar', array( 'GravityView_Entry_Notes', 'filter_avatar' ), 10, 2 );
@@ -24,7 +24,7 @@ class GravityView_Entry_Notes {
 	/**
 	 * Alias for GFFormsModel::add_note() with default note_type of 'gravityview'
 	 * @see GFFormsModel::add_note()
-	 * @since TODO
+	 * @since 1.15
 	 * @param int $lead_id ID of the Entry
 	 * @param int $user_id ID of the user creating the note
 	 * @param string $user_name User name of the user creating the note
@@ -72,7 +72,7 @@ class GravityView_Entry_Notes {
 
 		/**
 		 * @filter `gravityview/entry_notes/get_notes` Modify the notes array for an entry
-		 * @since TODO
+		 * @since 1.15
 		 * @param stdClass[] $notes Integer-keyed array of note objects
 		 * @param int $entry_id Entry to get notes for
 		 */
@@ -84,7 +84,7 @@ class GravityView_Entry_Notes {
 	/**
 	 * Use the GravityView avatar for notes created by GravityView
 	 * Note: The function is static so that it's easier to remove the filter: `remove_filter( 'gform_notes_avatar', array( 'GravityView_Entry_Notes', 'filter_avatar' ) );`
-	 * @since TODO
+	 * @since 1.15
 	 * @param string $avatar Avatar image, if available. 48px x 48px by default.
 	 * @param object $note Note object with id, user_id, date_created, value, note_type, user_name, user_email vars
 	 * @return string Possibly-modified avatar
