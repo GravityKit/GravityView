@@ -43,6 +43,7 @@ class GravityView_Uninstall {
 	 * Delete GravityView Views, settings, roles, caps, etc.
 	 * @see https://youtu.be/FXy_DO6IZOA?t=35s
 	 * @since 1.14
+	 * @return void
 	 */
 	private function fire_everything() {
 		$this->delete_options();
