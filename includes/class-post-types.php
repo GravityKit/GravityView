@@ -33,6 +33,21 @@ class GravityView_Post_Types {
 	 */
 	public static function init_post_types() {
 
+		/**
+		 * Make GravityView Views hierarchical by returning TRUE
+		 *
+		 * This will allow for Views to be nested with Parents and also allows for menu order to be set in the Page Attributes metabox
+		 *
+		 * @since 1.13
+		 */
+		$is_hierarchical = (bool)apply_filters( 'gravityview_is_hierarchical', false );
+
+		$supports = array( 'title', 'genesis-layouts', 'revisions' );
+
+		if( $is_hierarchical ) {
+			$supports[] = 'page-attributes';
+		}
+
 		//Register Custom Post Type - gravityview
 		$labels = array(
 			'name'                => _x( 'Views', 'Post Type General Name', 'gravityview' ),
@@ -53,8 +68,8 @@ class GravityView_Post_Types {
 			'label'               => __( 'view', 'gravityview' ),
 			'description'         => __( 'Create views based on a Gravity Forms form', 'gravityview' ),
 			'labels'              => $labels,
-			'supports'            => array( 'title', 'genesis-layouts'),
-			'hierarchical'        => false,
+			'supports'            => $supports,
+			'hierarchical'        => $is_hierarchical,
 			'public'              => GravityView_Compatibility::is_valid(),
 			'show_ui'             => GravityView_Compatibility::is_valid(),
 			'show_in_menu'        => GravityView_Compatibility::is_valid(),
@@ -72,6 +87,10 @@ class GravityView_Post_Types {
 			'exclude_from_search' => true,
 			'publicly_queryable'  => GravityView_Compatibility::is_valid(),
 			'rewrite'             => array(
+				/**
+				 * @filter `gravityview_slug` Modify the url part for a View. [Read the doc](http://docs.gravityview.co/article/62-changing-the-view-slug)
+				 * @param string $slug The slug shown in the URL
+				 */
 				'slug' => apply_filters( 'gravityview_slug', 'view' )
 			),
 			'capability_type'     => 'page',
@@ -102,10 +121,16 @@ class GravityView_Post_Types {
 	 * @access public
 	 * @static
 	 * @return string Default: "entry"
-	 * @filter gravityview_directory_endpoint Change the slug used for single entries
 	 */
 	public static function get_entry_var_name() {
-		return sanitize_title( apply_filters( 'gravityview_directory_endpoint', 'entry' ) );
+
+		/**
+		 * @filter `gravityview_directory_endpoint` Change the slug used for single entries
+		 * @param[in,out] string $endpoint Slug to use when accessing single entry. Default: `entry`
+		 */
+		$endpoint = apply_filters( 'gravityview_directory_endpoint', 'entry' );
+
+		return sanitize_title( $endpoint );
 	}
 
 	/**

@@ -88,9 +88,6 @@ class GravityView_frontend {
 		add_action( 'wp', array( $this, 'parse_content'), 11 );
 		add_action( 'template_redirect', array( $this, 'set_entry_data'), 1 );
 
-		// Shortcode to render view (directory)
-		add_shortcode( 'gravityview', array( $this, 'shortcode' ) );
-
 		// Enqueue scripts and styles after GravityView_Template::register_styles()
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 20 );
 
@@ -100,9 +97,6 @@ class GravityView_frontend {
 		add_filter( 'the_title', array( $this, 'single_entry_title' ), 1, 2 );
 		add_filter( 'the_content', array( $this, 'insert_view_in_content' ) );
 		add_filter( 'comments_open', array( $this, 'comments_open' ), 10, 2 );
-
-		add_action( 'add_admin_bar_menus', array( $this, 'admin_bar_remove_links' ), 80 );
-		add_action( 'admin_bar_menu', array( $this, 'admin_bar_add_links' ), 85 );
 	}
 
 	/**
@@ -350,60 +344,6 @@ class GravityView_frontend {
 	}
 
 	/**
-	 * Add helpful GV links to the menu bar, like Edit Entry on single entry page.
-	 *
-	 * @return void
-	 */
-	function admin_bar_add_links() {
-		global $wp_admin_bar;
-
-		if ( GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) && $this->getSingleEntry() ) {
-
-			$entry = $this->getEntry();
-
-			$wp_admin_bar->add_menu( array(
-				'id' => 'edit-entry',
-				'title' => __( 'Edit Entry', 'gravityview' ),
-				'href' => esc_url_raw( admin_url( sprintf( 'admin.php?page=gf_entries&amp;screen_mode=edit&amp;view=entry&amp;id=%d&lid=%d', $entry['form_id'], $entry['id'] ) ) ),
-			) );
-
-		}
-
-	}
-
-	/**
-	 * Remove "Edit Page" or "Edit View" links when on single entry pages
-	 * @return void
-	 */
-	function admin_bar_remove_links() {
-
-		// If we're on the single entry page, we don't want to cause confusion.
-		if ( is_admin() || ( $this->getSingleEntry() && ! $this->isGravityviewPostType() ) ) {
-			remove_action( 'admin_bar_menu', 'wp_admin_bar_edit_menu', 80 );
-		}
-	}
-
-	/**
-	 * Callback function for add_shortcode()
-	 *
-	 * @access public
-	 * @static
-	 * @param mixed $atts
-	 * @return null|string If admin, null. Otherwise, output of $this->render_view()
-	 */
-	public function shortcode( $atts, $content = null ) {
-
-		// Don't process when saving post.
-		if ( is_admin() ) {
-			return;
-		}
-
-		do_action( 'gravityview_log_debug', '[shortcode] $atts: ', $atts );
-
-		return $this->render_view( $atts );
-	}
-
-	/**
 	 * Filter the title for the single entry view
 	 *
 	 * @param  string $title   current title
@@ -420,8 +360,14 @@ class GravityView_frontend {
 
 		$entry = $this->getEntry();
 
-		// to apply the filter to the menu title and the meta tag <title> - outside the loop
-		if ( ! apply_filters( 'gravityview/single/title/out_loop' , in_the_loop(), $entry ) ) {
+		/**
+		 * @filter `gravityview/single/title/out_loop` Apply the Single Entry Title filter outside the WordPress loop?
+		 * @param boolean $in_the_loop Whether to apply the filter to the menu title and the meta tag <title> - outside the loop
+		 * @param array $entry Current entry
+		 */
+		$apply_outside_loop = apply_filters( 'gravityview/single/title/out_loop' , in_the_loop(), $entry );
+
+		if ( ! $apply_outside_loop ) {
 			return $title;
 		}
 
@@ -450,8 +396,13 @@ class GravityView_frontend {
 		}
 
 		if ( ! empty( $view_meta['atts']['single_title'] ) ) {
+
+			$title = $view_meta['atts']['single_title'];
+
 			// We are allowing HTML in the fields, so no escaping the output
-			$title = GravityView_API::replace_variables( $view_meta['atts']['single_title'], $view_meta['form'], $entry );
+			$title = GravityView_API::replace_variables( $title, $view_meta['form'], $entry );
+
+			$title = do_shortcode( $title );
 		}
 
 		return $title;
@@ -515,8 +466,7 @@ class GravityView_frontend {
 		}
 
 		/**
-		 * Whether to set comments to open or closed.
-		 *
+		 * @filter `gravityview/comments_open` Whether to set comments to open or closed.
 		 * @since  1.5.4
 		 * @param  boolean $open Open or closed status
 		 * @param  int $post_id Post ID to set comment status for
@@ -625,6 +575,7 @@ class GravityView_frontend {
 
 			//fetch template and slug
 			$view_slug = apply_filters( 'gravityview_template_slug_'. $view_data['template_id'], 'table', 'directory' );
+
 			do_action( 'gravityview_log_debug', '[render_view] View template slug: ', $view_slug );
 
 			/**
@@ -719,7 +670,7 @@ class GravityView_frontend {
 		$gravityview_view->setTotalEntries( $view_entries['count'] );
 
 		// If Edit
-		if ( apply_filters( 'gravityview_is_edit_entry', false ) ) {
+		if ( 'edit' === gravityview_get_context() ) {
 
 			do_action( 'gravityview_log_debug', '[render_view] Edit Entry ' );
 
@@ -869,6 +820,9 @@ class GravityView_frontend {
 
 		// Search Criteria
 		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ), $form_id );
+
+		$original_search_criteria = $search_criteria;
+
 		do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after hook gravityview_fe_search_criteria: ', $search_criteria );
 
 		// implicity search
@@ -884,17 +838,24 @@ class GravityView_frontend {
 			);
 		}
 
-		do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after implicity search: ', $search_criteria );
+		if( $search_criteria !== $original_search_criteria ) {
+			do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after implicity search: ', $search_criteria );
+		}
 
 		// Handle setting date range
 		$search_criteria = self::process_search_dates( $args, $search_criteria );
 
-		do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after date params: ', $search_criteria );
+		if( $search_criteria !== $original_search_criteria ) {
+			do_action( 'gravityview_log_debug', '[get_search_criteria] Search Criteria after date params: ', $search_criteria );
+		}
 
 		// remove not approved entries
 		$search_criteria = self::process_search_only_approved( $args, $search_criteria );
 
-		// Only show active listings
+		/**
+		 * @filter `gravityview_status` Modify entry status requirements to be included in search results.
+		 * @param string $status Default: `active`. Accepts all Gravity Forms entry statuses, including `spam` and `trash`
+		 */
 		$search_criteria['status'] = apply_filters( 'gravityview_status', 'active', $args );
 
 		return $search_criteria;
@@ -1097,13 +1058,11 @@ class GravityView_frontend {
 				// Sorting by full name, not first, last, etc.
 				if ( floatval( $sort_field_id ) === floor( $sort_field_id ) ) {
 					/**
-					 * Override how to sort when sorting full name.
-					 *
+					 * @filter `gravityview/sorting/full-name` Override how to sort when sorting full name.
 					 * @since 1.7.4
-					 *
-					 * @param string $name_part `first` or `last` (default: `first`)
-					 * @param string $sort_field_id Field used for sorting
-					 * @param int $form_id GF Form ID
+					 * @param[in,out] string $name_part Sort by `first` or `last` (default: `first`)
+					 * @param[in] string $sort_field_id Field used for sorting
+					 * @param[in] int $form_id GF Form ID
 					 */
 					$name_part = apply_filters( 'gravityview/sorting/full-name', 'first', $sort_field_id, $form_id );
 
@@ -1113,6 +1072,20 @@ class GravityView_frontend {
 						$sort_field_id .= '.3';
 					}
 				}
+				break;
+			case 'list':
+				$sort_field_id = false;
+				break;
+			case 'time':
+
+				/**
+				 * @filter `gravityview/sorting/time` Override how to sort when sorting time
+				 * @see GravityView_Field_Time
+				 * @since 1.14
+				 * @param[in,out] string $name_part Field used for sorting
+				 * @param[in] int $form_id GF Form ID
+				 */
+				$sort_field_id = apply_filters( 'gravityview/sorting/time', $sort_field_id, $form_id );
 				break;
 		}
 
@@ -1148,8 +1121,6 @@ class GravityView_frontend {
 	/**
 	 * Register styles and scripts
 	 *
-	 * @filter  gravity_view_lightbox_script Modify the lightbox JS slug. Default: `thickbox`
-	 * @filter  gravity_view_lightbox_style Modify the thickbox CSS slug. Default: `thickbox`
 	 * @access public
 	 * @return void
 	 */
@@ -1174,7 +1145,17 @@ class GravityView_frontend {
 
 				// If the thickbox is enqueued, add dependencies
 				if ( ! empty( $data['atts']['lightbox'] ) ) {
+
+					/**
+					 * @filter `gravity_view_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
+					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
+					 */
 					$js_dependencies[] = apply_filters( 'gravity_view_lightbox_script', 'thickbox' );
+
+					/**
+					 * @filter `gravity_view_lightbox_style` Modify the lightbox CSS slug. Default: `thickbox`
+					 * @param string $script_slug If you want to use a different lightbox script, return the name of its CSS file here.
+					 */
 					$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
 				}
 
@@ -1187,8 +1168,9 @@ class GravityView_frontend {
 				wp_enqueue_script( 'gravityview-fe-view' );
 
 				/**
-				 * Modify the array passed to wp_localize_script
-				 * @var array Contains `datepicker` key, which passes settings to the JS file
+				 * @filter `gravityview_js_localization` Modify the array passed to wp_localize_script()
+				 * @param array $js_localization The data padded to the Javascript file
+				 * @param array $data View data array with View settings
 				 */
 				$js_localization = apply_filters( 'gravityview_js_localization', $js_localization, $data );
 
@@ -1287,7 +1269,7 @@ class GravityView_frontend {
 	 * Checks if field (column) is sortable
 	 *
 	 * @param string $field Field settings
-	 * @param $form Gravity Forms form object
+	 * @param array $form Gravity Forms form array
 	 *
 	 * @since 1.7
 	 *
@@ -1295,11 +1277,17 @@ class GravityView_frontend {
 	 */
 	public function is_field_sortable( $field_id = '', $form ) {
 
+		if( is_numeric( $field_id ) ) {
+			$field = GFFormsModel::get_field( $form, $field_id );
+			$field_id = $field->type;
+		}
+
 		$not_sortable = array(
 			'entry_link',
 			'edit_link',
 			'delete_link',
 			'custom',
+			'list',
 		);
 
 		/**

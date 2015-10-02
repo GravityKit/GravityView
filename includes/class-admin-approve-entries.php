@@ -361,11 +361,10 @@ class GravityView_Admin_ApproveEntries {
 
 	/**
 	 * Update the `is_approved` entry meta value
-	 *
-	 * @since 1.7.6.1 `after_update_entry_update_approved_meta` was previously to be named `update_approved_meta`
-	 *
 	 * @param  int $entry_id ID of the Gravity Forms entry
 	 * @param  string $is_approved String whether entry is approved or not. `0` for not approved, `Approved` for approved.
+	 *
+	 * @since 1.7.6.1 `after_update_entry_update_approved_meta` was previously to be named `update_approved_meta`
 	 *
 	 * @return void
 	 */

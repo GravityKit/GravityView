@@ -12,12 +12,12 @@
  *
  * @since 1.1
  *
- * @version 1.1
+ * @version 1.1.1
  */
 abstract class GravityView_Extension {
 
 	/**
-	 * @var string Name of the plugin in GravityView.co
+	 * @var string Name of the plugin in gravityview.co
 	 */
 	protected $_title = NULL;
 
@@ -25,6 +25,12 @@ abstract class GravityView_Extension {
 	 * @var string Version number of the plugin
 	 */
 	protected $_version = NULL;
+
+	/**
+	 * @var int The ID of the download on gravityview.co
+	 * @since 1.1
+	 */
+	protected $_item_id = NULL;
 
 	/**
 	 * @var string Translation textdomain
@@ -91,14 +97,7 @@ abstract class GravityView_Extension {
 	 *
 	 * @see https://gist.github.com/zackkatz/6cc381bcf54849f2ed41 For example of adding a metabox
 	 *
-	 * @return array {
-	 *      @type string $id Metabox HTML ID, without `gravityview_` prefix
-	 *      @type string $title Name of the metabox. Shown in the tab.
-	 *      @type string $file The file name of a file stored in the /gravityview/includes/admin/metaboxes/views/ directory to render the metabox output, or the full path to a file. If defined, `callback` is not used.
-	 *      @type string $icon_class_name Icon class used in vertical tabs. Supports non-dashicon. If dashicons, no need for `dashicons ` prefix
-	 *      @type string $callback Function to render the metabox, if $file is not defined.
-	 *      @type null $callback_args Arguments passed to the callback
-	 * }
+	 * @return array Array of metabox
 	 */
 	protected function tab_settings() {
 		// When overriding, return array with expected keys
@@ -220,7 +219,7 @@ abstract class GravityView_Extension {
 	public function settings() {
 
 		// If doing ajax, get outta here
-		if( false === GravityView_Plugin::is_admin() )  {
+		if( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) )  {
 			return;
 		}
 
@@ -239,6 +238,7 @@ abstract class GravityView_Extension {
 			array(
             	'version'	=> $this->_version, // current version number
             	'license'	=> $license['license'],
+	            'item_id'   => $this->_item_id, // The ID of the download on _remote_update_url
             	'item_name' => $this->_title,  // name of this plugin
             	'author' 	=> strip_tags( $this->_author )  // author of this plugin
           	)
@@ -361,6 +361,8 @@ abstract class GravityView_Extension {
 			self::add_notice( $message );
 
 			do_action( 'gravityview_log_error', __METHOD__. ' ' . $message );
+
+			self::$is_compatible = false;
 		}
 
 		return self::$is_compatible;

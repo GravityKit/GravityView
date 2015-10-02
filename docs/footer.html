@@ -1,0 +1,16 @@
+<!-- start footer part -->
+<hr class="footer"/>
+<script type="text/javascript">
+    jQuery( document ).ready( function( $ ) {
+        $( 'a.anchor[id^=_filters],a.anchor[id^=_actions]' ).each( function() {
+            $( this )
+                .text('#')
+                .attr( 'href', function() {
+                    return '#' + $( this ).attr( 'id' );
+                }).prependTo( $( this ).parent('dt' ).next('dd') );
+        });
+    });
+</script>
+</body>
+</html>
+

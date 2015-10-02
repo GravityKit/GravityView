@@ -2,16 +2,21 @@
 	<?php
 
     /**
-     * Customise the cancel button link
-     *
-     * @param $back_link string
-     *
-     * since 1.11.1
+     * @filter `gravityview/edit_entry/cancel_link` Modify the cancel button link URL
+     * @since 1.11.1
+     * @param string $back_link Existing URL of the Cancel link
+     * @param array $form The Gravity Forms form
+     * @param array $entry The Gravity Forms entry
+     * @param int $view_id The current View ID
      */
     $back_link = apply_filters( 'gravityview/edit_entry/cancel_link', remove_query_arg( array( 'page', 'view', 'edit' ) ), $this->form, $this->entry, $this->view_id );
 
 	/**
+	 * @action `gravityview/edit-entry/publishing-action/before` Triggered before the submit buttons in the Edit Entry screen, inside the `<div id="publishing-action">` container.
 	 * @since 1.5.1
+	 * @param array $form The Gravity Forms form
+	 * @param array $entry The Gravity Forms entry
+	 * @param int $view_id The current View ID
 	 */
 	do_action( 'gravityview/edit-entry/publishing-action/before', $this->form, $this->entry, $this->view_id );
 
@@ -22,7 +27,11 @@
 	<?php
 
 	/**
+	 * @action `gravityview/edit-entry/publishing-action/after` Triggered after the submit buttons in the Edit Entry screen, inside the `<div id="publishing-action">` container.
 	 * @since 1.5.1
+	 * @param array $form The Gravity Forms form
+	 * @param array $entry The Gravity Forms entry
+	 * @param int $view_id The current View ID
 	 */
 	do_action( 'gravityview/edit-entry/publishing-action/after', $this->form, $this->entry, $this->view_id );
 

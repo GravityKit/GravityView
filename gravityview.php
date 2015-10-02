@@ -1,5 +1,7 @@
 <?php
 /**
+ * @file gravityview.php
+ *
  * The GravityView plugin
  *
  * Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
@@ -14,7 +16,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.12
+ * Version:          	1.14.4-beta
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravityview
@@ -29,26 +31,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /** Constants */
-if( !defined('GRAVITYVIEW_FILE') ) {
-	/** @define "GRAVITYVIEW_FILE" "./gravityview.php" */
-	define( 'GRAVITYVIEW_FILE', __FILE__ );
-}
 
-if ( !defined('GRAVITYVIEW_URL') ) {
-	define( 'GRAVITYVIEW_URL', plugin_dir_url( __FILE__ ) );
-}
+/**
+ * Full path to the GravityView file
+ * @define "GRAVITYVIEW_FILE" "./gravityview.php"
+ */
+define( 'GRAVITYVIEW_FILE', __FILE__ );
 
-if ( !defined('GRAVITYVIEW_DIR') ) {
-	/** @define "GRAVITYVIEW_DIR" "./" */
-	define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
-}
+/**
+ * The URL to this file
+ */
+define( 'GRAVITYVIEW_URL', plugin_dir_url( __FILE__ ) );
 
-if ( !defined('GV_MIN_GF_VERSION') ) {
-	/**
-	 * GravityView requires at least this version of Gravity Forms to function properly.
-	 */
-	define( 'GV_MIN_GF_VERSION', '1.9' );
-}
+/**
+ * The absolute path to the plugin directory
+ * @define "GRAVITYVIEW_DIR" "./"
+ */
+define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
+
+/**
+ * GravityView requires at least this version of Gravity Forms to function properly.
+ */
+define( 'GV_MIN_GF_VERSION', '1.9' );
 
 /**
  * GravityView requires at least this version of WordPress to function properly.
@@ -85,7 +89,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.12';
+	const version = '1.14.4-beta';
 
 	private static $instance;
 
@@ -172,9 +176,11 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
 		include_once( GRAVITYVIEW_DIR . 'includes/class-frontend-views.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-bar.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-entry-list.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-merge-tags.php'); /** @since 1.8.4 */
 		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gvlogic-shortcode.php' );
 
 	}
@@ -312,8 +318,12 @@ final class GravityView_Plugin {
          */
         add_action( 'gform_entry_created', array( 'GravityView_API', 'entry_create_custom_slug' ), 10, 2 );
 
-		// Nice place to insert extensions' frontend stuff
-		do_action('gravityview_include_frontend_actions');
+		/**
+		 * @action `gravityview_include_frontend_actions` Triggered after all GravityView frontend files are loaded
+		 *
+		 * Nice place to insert extensions' frontend stuff
+		 */
+		do_action( 'gravityview_include_frontend_actions' );
 	}
 
 	/**
@@ -337,6 +347,10 @@ final class GravityView_Plugin {
 			//array( '1-1' => array( 	array( 'areaid' => 'bottom', 'title' => __('Full Width Bottom', 'gravityview') , 'subtitle' => '' ) ) )
 		);
 
+		/**
+		 * @filter `gravityview_widget_active_areas` Array of zones available for widgets to be dropped into
+		 * @param array $default_areas Definition for default widget areas
+		 */
 		return apply_filters( 'gravityview_widget_active_areas', $default_areas );
 	}
 
@@ -345,9 +359,15 @@ final class GravityView_Plugin {
     /**
      * Logs messages using Gravity Forms logging add-on
      * @param  string $message log message
+     * @param mixed $data Additional data to display
      * @return void
      */
     public static function log_debug( $message, $data = null ){
+	    /**
+	     * @action `gravityview_log_debug` Log a debug message that shows up in the Gravity Forms Logging Addon and also the Debug Bar plugin output
+	     * @param string $message Message to display
+	     * @param mixed $data Supporting data to print alongside it
+	     */
     	do_action( 'gravityview_log_debug', $message, $data );
     }
 
@@ -357,6 +377,11 @@ final class GravityView_Plugin {
      * @return void
      */
     public static function log_error( $message, $data = null ){
+	    /**
+	     * @action `gravityview_log_error` Log an error message that shows up in the Gravity Forms Logging Addon and also the Debug Bar plugin output
+	     * @param string $message Error message to display
+	     * @param mixed $data Supporting data to print alongside it
+	     */
     	do_action( 'gravityview_log_error', $message, $data );
     }
 

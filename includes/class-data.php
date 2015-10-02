@@ -145,7 +145,7 @@ class GravityView_View_Data {
 	 * Determines if a post, identified by the specified ID, exist
 	 * within the WordPress database.
 	 *
-	 * @link http://tommcfarlin.com/wordpress-post-exists-by-id/
+	 * @see http://tommcfarlin.com/wordpress-post-exists-by-id/ Fastest check available
 	 * @param    int    $id    The ID of the post to check
 	 * @return   bool          True if the post exists; otherwise, false.
 	 * @since    1.0.0
@@ -474,24 +474,23 @@ class GravityView_View_Data {
 	 *
 	 * @param boolean $with_details True: Return array with full default settings information, including description, name, etc. False: Return an array with only key => value pairs.
 	 * @param string $group Only fetch
-	 * @access public
-	 * @static
-	 * @return array {
-	 *      Associative array of default settings for a View
 	 *
-	 *      @type string $label Setting label shown in admin
-	 *      @type string $type Gravity Forms field type
-	 *      @type string $group The field group the setting is associated with. Default: "default"
-	 *      @type mixed  $value The default value for the setting
-	 *      @type string $tooltip Tooltip displayed for the setting
-	 *      @type boolean $show_in_shortcode Whether to show the setting in the shortcode configuration modal
-	 *      @type array  $options Array of values to use when generating select, multiselect, radio, or checkboxes fields
-	 *      @type boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
-	 * }
-	 * @filter gravityview_default_args Modify the default settings for new Views
+	 * @return array $args Associative array of default settings for a View
+	 *      @param[out] string $label Setting label shown in admin
+	 *      @param[out] string $type Gravity Forms field type
+	 *      @param[out] string $group The field group the setting is associated with. Default: "default"
+	 *      @param[out] mixed  $value The default value for the setting
+	 *      @param[out] string $tooltip Tooltip displayed for the setting
+	 *      @param[out] boolean $show_in_shortcode Whether to show the setting in the shortcode configuration modal
+	 *      @param[out] array  $options Array of values to use when generating select, multiselect, radio, or checkboxes fields
+	 *      @param[out] boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
 	 */
 	public static function get_default_args( $with_details = false, $group = NULL ) {
 
+		/**
+		 * @filter `gravityview_default_args` Modify the default settings for new Views
+		 * @param[in,out] array $default_args Array of default args.
+		 */
 		$default_settings = apply_filters( 'gravityview_default_args', array(
 			'id' => array(
 				'label' => __('View ID', 'gravityview'),
