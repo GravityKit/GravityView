@@ -132,9 +132,6 @@ final class GravityView_Plugin {
 
 		// Load frontend files
 		add_action( 'init', array( $this, 'frontend_actions' ), 20 );
-
-		// Load default templates
-		add_action( 'init', array( $this, 'register_default_templates' ), 11 );
 	}
 
 	/**
@@ -183,6 +180,7 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gvlogic-shortcode.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/presets/register-default-templates.php' );
 
 	}
 
@@ -327,15 +325,6 @@ final class GravityView_Plugin {
 		 * Nice place to insert extensions' frontend stuff
 		 */
 		do_action( 'gravityview_include_frontend_actions' );
-	}
-
-	/**
-	 * Registers the default templates
-	 * @todo Move somehere logical
-	 * @return void
-	 */
-	function register_default_templates() {
-		include_once( GRAVITYVIEW_DIR .'includes/default-templates.php' );
 	}
 
 	/**
