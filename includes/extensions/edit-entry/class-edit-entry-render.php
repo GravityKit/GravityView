@@ -790,7 +790,7 @@ class GravityView_Edit_Entry_Render {
 	    $warnings = ob_get_clean();
 
 	    if( !empty( $warnings ) ) {
-		    do_action( 'gravityview_log_error', __METHOD__ . $warnings );
+		    do_action( 'gravityview_log_error', __METHOD__ . $warnings, $field_value );
 	    }
 
         /**
