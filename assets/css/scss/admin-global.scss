@@ -21,6 +21,15 @@
 	@extend .gv-icon-astronaut-head:before;
 }
 
+// Members plugin group!
+.members-tab-title .gv-icon-astronaut-head {
+  font-size: 20px;
+  height:15px;
+  margin-right: 3px;
+  line-height: 20px;
+  display: inline-block;
+}
+
 // Fix Make theme overriding button width
 .wp-editor-tools #add_gravityview {
 	width: auto;

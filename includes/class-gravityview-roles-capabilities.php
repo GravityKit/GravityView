@@ -55,6 +55,26 @@ class GravityView_Roles_Capabilities {
 	 */
 	private function add_hooks() {
 		add_filter( 'members_get_capabilities', array( $this, 'members_get_capabilities' ) );
+		add_action( 'members_register_cap_groups', array( $this, 'members_register_cap_group' ), 20 );
+	}
+
+	/**
+	 * Add GravityView group to Members 1.x plugin management screen
+	 * @see members_register_cap_group()
+	 * @since 1.15
+	 * @return void
+	 */
+	function members_register_cap_group() {
+		if ( function_exists( 'members_register_cap_group' ) ) {
+			$args = array(
+				'label'       => __( 'GravityView' ),
+				'icon'        => 'gv-icon-astronaut-head',
+				'caps'        => $this->all_caps( 'all' ),
+				'merge_added' => true,
+				'diff_added'  => false,
+			);
+			members_register_cap_group( 'gravityview', $args );
+		}
 	}
 
 	/**
