@@ -164,7 +164,7 @@ class GravityView_Ajax {
 		$form = $this->import_form( $preset_form_xml_path );
 
 		// get the form ID
-		if( $form === false ) {
+		if( false === $form ) {
 			// send error to user
 			do_action( 'gravityview_log_error', '[create_preset_form] Error importing form for template id: ' . (int) $_POST['template_id'] );
 
@@ -277,19 +277,28 @@ class GravityView_Ajax {
 	static function pre_get_form_fields( $template_id = '') {
 
 		if( empty( $template_id ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ' - Template ID not set.' );
 			return false;
 		} else {
 			$form_file = apply_filters( 'gravityview_template_formxml', '', $template_id );
 			if( !file_exists( $form_file )  ) {
-				do_action( 'gravityview_log_error', '[pre_get_available_fields] Importing Form Fields for preset ['. $template_id .']. File not found. file: ' . $form_file );
+				do_action( 'gravityview_log_error', __METHOD__ . ' - Importing Form Fields for preset ['. $template_id .']. File not found. file: ' . $form_file );
 				return false;
 			}
 		}
 
 		// Load xml parser (from GravityForms)
-		$xml_parser = trailingslashit( WP_PLUGIN_DIR ) . 'gravityforms/xml.php';
+		if( class_exists( 'GFCommon' ) ) {
+			$xml_parser = GFCommon::get_base_path() . '/xml.php';
+		} else {
+			$xml_parser = trailingslashit( WP_PLUGIN_DIR ) . 'gravityforms/xml.php';
+		}
+
 		if( file_exists( $xml_parser ) ) {
 			require_once( $xml_parser );
+		} else {
+			do_action( 'gravityview_log_debug', __METHOD__ . ' - Gravity Forms XML Parser not found.', $xml_parser );
+			return false;
 		}
 
 		// load file
