@@ -49,3 +49,5 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 
 	}
 }
+
+new GravityView_Default_Template_Table;
