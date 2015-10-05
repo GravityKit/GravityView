@@ -197,22 +197,23 @@ class GravityView_Ajax {
 	}
 
 	/**
-	 * Import Gravity Form XML
-	 * @param  string $xml_path Path to form xml file
-	 * @return int | bool       Imported form ID or false
+	 * Import Gravity Form XML or JSON
+	 *
+	 * @param  string $xml_or_json_path Path to form XML or JSON file
+	 * @return int|bool       Imported form ID or false
 	 */
-	function import_form( $xml_path = '' ) {
+	function import_form( $xml_or_json_path = '' ) {
 
-		do_action( 'gravityview_log_debug', '[import_form] Import Preset Form. (File)', $xml_path );
+		do_action( 'gravityview_log_debug', '[import_form] Import Preset Form. (File)', $xml_or_json_path );
 
-		if( empty( $xml_path ) || !class_exists('GFExport') || !file_exists( $xml_path ) ) {
-			do_action( 'gravityview_log_error', '[import_form] Class GFExport or file not found. file: ' , $xml_path );
+		if( empty( $xml_or_json_path ) || !class_exists('GFExport') || !file_exists( $xml_or_json_path ) ) {
+			do_action( 'gravityview_log_error', '[import_form] Class GFExport or file not found. file: ', $xml_or_json_path );
 			return false;
 		}
 
 		// import form
 		$forms = '';
-		$count = GFExport::import_file( $xml_path, $forms );
+		$count = GFExport::import_file( $xml_or_json_path, $forms );
 
 		do_action( 'gravityview_log_debug', '[import_form] Importing form (Result)', $count );
 		do_action( 'gravityview_log_debug', '[import_form] Importing form (Form) ', $forms );
@@ -243,16 +244,16 @@ class GravityView_Ajax {
 		}
 
 		// Fix apostrophes added by JSON response
-		$post = array_map( 'stripslashes_deep', $_POST );
+		$_post = array_map( 'stripslashes_deep', $_POST );
 
 		// Sanitize
-		$post = array_map( 'esc_attr', $post );
+		$_post = array_map( 'esc_attr', $_post );
 
 		// The GF type of field: `product`, `name`, `creditcard`, `id`, `text`
-		$input_type = isset($post['input_type']) ? esc_attr( $post['input_type'] ) : NULL;
-		$context = isset($post['context']) ? esc_attr( $post['context'] ) : NULL;
+		$input_type = isset($_post['input_type']) ? esc_attr( $_post['input_type'] ) : NULL;
+		$context = isset($_post['context']) ? esc_attr( $_post['context'] ) : NULL;
 
-		$response = GravityView_Render_Settings::render_field_options( $post['field_type'], $post['template'], $post['field_id'], $post['field_label'], $post['area'], $input_type, '', '', $context  );
+		$response = GravityView_Render_Settings::render_field_options( $_post['field_type'], $_post['template'], $_post['field_id'], $_post['field_label'], $_post['area'], $input_type, '', '', $context  );
 
 		$response = gravityview_strip_whitespace( $response );
 
@@ -277,7 +278,9 @@ class GravityView_Ajax {
 
 			$form = (int) $_POST['form_id'];
 
-		} elseif( !empty( $_POST['template_id'] ) ) {
+		}
+		// get form from preset
+		elseif( !empty( $_POST['template_id'] ) ) {
 
 			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
 
