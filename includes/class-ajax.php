@@ -22,6 +22,27 @@ class GravityView_Ajax {
 		add_action( 'wp_ajax_gv_sortable_fields_form', array( $this, 'get_sortable_fields' ) );
 	}
 
+	/**
+	 * Handle exiting the script (for unit testing)
+	 *
+	 * @since 1.15
+	 * @param bool|false $mixed
+	 *
+	 * @return bool
+	 */
+	private function _exit( $mixed = NULL ) {
+
+		/**
+		 * Don't exit if we're running test suite.
+		 * @since 1.15
+		 */
+		if( defined( 'DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) {
+			return $mixed;
+		}
+
+		exit( $mixed );
+	}
+
 	/** -------- AJAX ---------- */
 
 	/**
@@ -30,7 +51,7 @@ class GravityView_Ajax {
 	 */
 	function check_ajax_nonce() {
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxviews' ) ) {
-			exit( false );
+			$this->_exit( false );
 		}
 	}
 
@@ -51,15 +72,15 @@ class GravityView_Ajax {
 		// If Form was changed, JS sends form ID, if start fresh, JS sends template_id
 		if( !empty( $_POST['form_id'] ) ) {
 			do_action( 'gravityview_render_available_fields', (int) $_POST['form_id'], $context );
-			exit();
+			$this->_exit();
 		} elseif( !empty( $_POST['template_id'] ) ) {
 			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
 			do_action( 'gravityview_render_available_fields', $form, $context );
-			exit();
+			$this->_exit();
 		}
 
 		//if everything fails..
-		exit( false );
+		$this->_exit( false );
 	}
 
 
@@ -74,7 +95,7 @@ class GravityView_Ajax {
 		$this->check_ajax_nonce();
 
 		if( empty( $_POST['template_id'] ) ) {
-			exit( false );
+			$this->_exit( false );
 		}
 
 		ob_start();
@@ -87,7 +108,7 @@ class GravityView_Ajax {
 
 		$response = array_map( 'gravityview_strip_whitespace', $response );
 
-		exit( json_encode( $response ) );
+		$this->_exit( json_encode( $response ) );
 	}
 
 	/**
@@ -99,7 +120,7 @@ class GravityView_Ajax {
 		$this->check_ajax_nonce();
 
 		if( empty( $_POST['template_id'] ) ) {
-			exit( false );
+			$this->_exit( false );
 		}
 
 		// get the fields xml config file for this specific preset
@@ -140,7 +161,7 @@ class GravityView_Ajax {
 
 		do_action( 'gravityview_log_debug', '[get_preset_fields_config] AJAX Response', $response );
 
-		exit( json_encode( $response ) );
+		$this->_exit( json_encode( $response ) );
 	}
 
 	/**
@@ -154,7 +175,7 @@ class GravityView_Ajax {
 
 		if( empty( $_POST['template_id'] ) ) {
 			do_action( 'gravityview_log_error', '[create_preset_form] Cannot create preset form; the template_id is empty.' );
-			exit( false );
+			$this->_exit( false );
 		}
 
 		// get the xml for this specific template_id
@@ -168,10 +189,10 @@ class GravityView_Ajax {
 			// send error to user
 			do_action( 'gravityview_log_error', '[create_preset_form] Error importing form for template id: ' . (int) $_POST['template_id'] );
 
-			exit( false );
+			$this->_exit( false );
 		}
 
-		exit( '<option value="'.esc_attr( $form['id'] ).'" selected="selected">'.esc_html( $form['title'] ).'</option>' );
+		$this->_exit( '<option value="'.esc_attr( $form['id'] ).'" selected="selected">'.esc_html( $form['title'] ).'</option>' );
 
 	}
 
@@ -218,7 +239,7 @@ class GravityView_Ajax {
 
 		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) ) {
 			do_action( 'gravityview_log_error', '[get_field_options] Required fields were not set in the $_POST request. ' );
-			exit( false );
+			$this->_exit( false );
 		}
 
 		// Fix apostrophes added by JSON response
@@ -235,7 +256,7 @@ class GravityView_Ajax {
 
 		$response = gravityview_strip_whitespace( $response );
 
-		exit( $response );
+		$this->_exit( $response );
 	}
 
 	/**
@@ -266,7 +287,7 @@ class GravityView_Ajax {
 
 		$response = gravityview_strip_whitespace( $response );
 
-		exit( $response );
+		$this->_exit( $response );
 	}
 
 	/**
