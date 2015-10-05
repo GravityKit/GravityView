@@ -156,8 +156,6 @@ abstract class GravityView_Template {
 	/**
 	 * Assign template specific field options
 	 *
-	 * @access protected
-	 *
 	 * @param array $options (default: array())
 	 * @param string $template (default: '')
 	 * @param string $field_id key for the field
