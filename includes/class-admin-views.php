@@ -342,7 +342,18 @@ class GravityView_Admin_Views {
 		$date = $columns['date'];
 		unset( $columns['date'] );
 
-		$columns['gv_connected_form'] = __('Data Source', 'gravityview');
+		$data_source_required_caps = array(
+			'gravityforms_edit_forms',
+			'gravityforms_view_entries',
+			'gravityforms_edit_settings',
+			'gravityview_view_settings',
+			'gravityforms_create_form',
+			'gravityforms_preview_forms',
+		);
+
+		if( GVCommon::has_cap( $data_source_required_caps ) ) {
+			$columns['gv_connected_form'] = __( 'Data Source', 'gravityview' );
+		}
 
 		$columns['gv_template'] = __('Template', 'gravityview');
 

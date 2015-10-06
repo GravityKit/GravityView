@@ -33,6 +33,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Error with List field  `Call to undefined method GF_Field::get_input_type()`
 * Fixed: BuddyPress/bbPress `bbp_setup_current_user()` warning
 * Fixed: PHP Warnings
+* Tweak: Don't show Data Source column in Views screen to users who don't have permissions to see any of the data anyway
 * Tweak: Entry notes are now created using `GravityView_Entry_Notes` class
 * Tweak: Improved automated code testing
 
