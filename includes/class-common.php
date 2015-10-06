@@ -42,6 +42,22 @@ class GVCommon {
 	}
 
 	/**
+	 * Alias of GravityView_Roles_Capabilities::has_cap()
+	 *
+	 * @since 1.15
+	 *
+	 * @see GravityView_Roles_Capabilities::has_cap()
+	 *
+	 * @param string|array $caps Single capability or array of capabilities
+	 * @param int $object_id (optional) Parameter can be used to check for capabilities against a specific object, such as a post or user
+	 *
+	 * @return bool True: user has at least one passed capability; False: user does not have any defined capabilities
+	 */
+	public static function has_cap( $caps = '', $object_id = NULL ) {
+		return GravityView_Roles_Capabilities::has_cap( $caps, $object_id );
+	}
+
+	/**
 	 * Return a Gravity Forms field array, whether using GF 1.9 or not
 	 *
 	 * @since 1.7
