@@ -30,7 +30,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Checkmark icons weren't always available when displaying checkbox input field
 * Fixed: When "Shorten Link Display" was enabled for Website fields, "Link Text" wasn't respected
 * Fixed: Only process "Update" Gravity Forms User Registration Addon feeds
-* Fixed: Error with List field*  `Call to undefined method GF_Field::get_input_type()`
+* Fixed: Error with List field  `Call to undefined method GF_Field::get_input_type()`
+* Fixed: BuddyPress/bbPress `bbp_setup_current_user()` warning
 * Fixed: PHP Warnings
 * Tweak: Entry notes are now created using `GravityView_Entry_Notes` class
 * Tweak: Improved automated code testing

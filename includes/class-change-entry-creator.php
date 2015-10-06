@@ -23,7 +23,11 @@ class GravityView_Change_Entry_Creator {
 		    return;
 	    }
 
-    	add_action('plugins_loaded', array( $this, 'load'), 100 );
+        /**
+         * Use `init` to fix bbPress warning
+         * @see https://bbpress.trac.wordpress.org/ticket/2309
+         */
+    	add_action('init', array( $this, 'load'), 100 );
 
     	add_action('plugins_loaded', array( $this, 'prevent_conflicts') );
 
