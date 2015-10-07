@@ -52,7 +52,8 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 				'methods'         => WP_REST_Server::CREATABLE,
 				'callback'        => array( $this, 'create_item' ),
 				'permission_callback' => array( $this, 'create_item_permissions_check' ),
-				'args'            => array( $this, 'create_item_args' )
+				'args'            => $this->create_item_args()
+
 			),
 		) );
 		register_rest_route( $namespace, '/' . $base . '/(?P<id>[\d]+)', array(
@@ -70,7 +71,7 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 				'methods'         => WP_REST_Server::EDITABLE,
 				'callback'        => array( $this, 'update_item' ),
 				'permission_callback' => array( $this, 'update_item_permissions_check' ),
-				'args'              => array( $this, 'update_item_args' ),
+				'args'              => $this->update_item_args(),
 			),
 			array(
 				'methods'  => WP_REST_Server::DELETABLE,
@@ -102,7 +103,7 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 				'methods'         => WP_REST_Server::CREATABLE,
 				'callback'        => array( $this, 'create_sub_item' ),
 				'permission_callback' => array( $this, 'create_item_permissions_check' ),
-				'args'     => array( $this, 'create_sub_item_args' )
+				'args'     => $this->create_sub_item_args()
 			),
 		) );
 		register_rest_route( $namespace, '/' . $base . '/(?P<id>[\d]+)/' . $sub_type . '/(?P<id>[\d]+)' , array(
@@ -120,7 +121,7 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 				'methods'         => WP_REST_Server::EDITABLE,
 				'callback'        => array( $this, 'update_sub_item' ),
 				'permission_callback' => array( $this, 'update_item_permissions_check' ),
-				'args'     => array( $this, 'update_sub_item_args' )
+				'args'     => $this->update_sub_item_args()
 			),
 			array(
 				'methods'  => WP_REST_Server::DELETABLE,
@@ -398,7 +399,7 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 	 * @param $method
 	 * @return array
 	 */
-	public function __call( $method ) {
+	public function __call( $method, $args ) {
 		if( in_array( $method, array(
 			'create_item_args',
 			'update_item_args',

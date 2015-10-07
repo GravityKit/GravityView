@@ -70,7 +70,7 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 	 */
 	public function get_item( $request ) {
 
-
+		$id =
 		$item = array(); //@todo GravityView internal
 
 		//return a response or error based on some conditional
