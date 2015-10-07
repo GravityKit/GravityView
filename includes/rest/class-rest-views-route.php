@@ -69,8 +69,9 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_item( $request ) {
+		$url = $request->get_url_params();
+		$view_id = $url[ 'id' ];
 
-		$id =
 		$item = array(); //@todo GravityView internal
 
 		//return a response or error based on some conditional
@@ -94,6 +95,9 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_sub_items( $request ) {
+
+		$url = $request->get_url_params();
+		$view_id = $url[ 'id' ];
 
 		$page = $request->get_param( 'page' );
 		$items = array(); //@todo GravityView internal
@@ -123,6 +127,9 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 	 */
 	public function get_sub_item( $request ) {
 
+		$url = $request->get_url_params();
+		$view_id = $url[ 'id' ];
+		$entry_id = $url[ 's_id' ];
 
 		$item = array(); //@todo GravityView internal
 
