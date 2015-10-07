@@ -11,6 +11,7 @@
  */
 
 @import "font";
+@import "admin-members-plugin";
 
 /* add gravityview menu icon */
 #toplevel_page_gravityview_settings .wp-menu-image:before,
@@ -19,15 +20,6 @@
 #available-widgets [class*=gravityview_search] .widget-title:before{
 	@extend [class^="gv-icon-"]:before;
 	@extend .gv-icon-astronaut-head:before;
-}
-
-// Members plugin group!
-.members-tab-title .gv-icon-astronaut-head {
-  font-size: 20px;
-  height:15px;
-  margin-right: 3px;
-  line-height: 20px;
-  display: inline-block;
 }
 
 // Fix Make theme overriding button width
