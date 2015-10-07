@@ -135,6 +135,9 @@ final class GravityView_Plugin {
 
 		// Load default templates
 		add_action( 'init', array( $this, 'register_default_templates' ), 11 );
+
+		//boot REST API
+		add_action( 'rest_api_init', array( $this, 'boot_rest' ) );
 	}
 
 	/**
@@ -387,6 +390,25 @@ final class GravityView_Plugin {
 	     */
     	do_action( 'gravityview_log_error', $message, $data );
     }
+
+	/**
+	 * Boot REST API
+	 *
+	 * @uses "rest_api_init"
+	 * @since 1.14.4
+	 */
+	public function boot_rest() {
+
+		include GRAVITYVIEW_DIR . 'includes/rest/class-rest-util.php';
+		include GRAVITYVIEW_DIR . 'includes/rest/class-rest-route.php';
+		include GRAVITYVIEW_DIR . 'includes/rest/class-rest-views-route.php';
+		include GRAVITYVIEW_DIR . 'includes/rest/class-rest-entries-route.php';
+		$views = new GravityView_REST_Views_Route();
+		$views->register_routes();
+		$entries = new GravityView_REST_Entries_Route();
+		$entries->register_routes();
+
+	}
 
 } // end class GravityView_Plugin
 
