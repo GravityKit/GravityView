@@ -66,7 +66,8 @@ class GravityView_REST_Entries_Route extends GravityView_REST_Route {
 	 * @return WP_Error|WP_REST_Request
 	 */
 	public function update_item( $request ) {
-		$entry_id = $request->get_url_params();
+		$url = $request->get_url_params();
+		$entry_id = $url[ 'id' ];
 
 		$params = $request->get_params();
 		//fix for https://github.com/WP-API/WP-API/issues/1621
@@ -95,7 +96,9 @@ class GravityView_REST_Entries_Route extends GravityView_REST_Route {
 	 * @return WP_Error|WP_REST_Request
 	 */
 	public function update_sub_item( $request ) {
-		$field_id = $request->get_url_params();
+		$url = $request->get_url_params();
+		$entry_id = $url[ 'id' ];
+		$field_id = $url[ 's_id' ];
 
 		$params = $request->get_params();
 		//fix for https://github.com/WP-API/WP-API/issues/1621

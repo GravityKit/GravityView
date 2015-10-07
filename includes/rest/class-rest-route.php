@@ -362,7 +362,7 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 
 
 	/**
-	 * Generic response for routes not yet implimented
+	 * Generic response for routes not yet implemented
 	 *
 	 * @since 1.14.4
 	 * @return WP_REST_Response
