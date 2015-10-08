@@ -39,7 +39,7 @@ class GravityView_REST_Test extends WP_UnitTestCase {
 	 * @covers GravityView_REST_Util::get_namespace()
 	 */
 	public function test_namespace() {
-		$this->assertEquals( 'gravity-view/v1', GravityView_REST_Util::get_namespace() );
+		$this->assertEquals( 'gravityview/v1', GravityView_REST_Util::get_namespace() );
 	}
 
 	/**

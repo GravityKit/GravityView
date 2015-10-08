@@ -21,7 +21,7 @@ class GravityView_REST_Util {
 	 * @return string
 	 */
 	public static function get_namespace() {
-		return 'gravity-view/v1';
+		return 'gravityview/v1';
 
 	}
 
