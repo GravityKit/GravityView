@@ -158,19 +158,7 @@
       }
     }
 
-    .gaddon-section {
-      padding-top: 0;
-      & > h4 {
-        color: #777;
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 22px;
-      }
-    }
-
-    table:last-child > tr:first-child,
-    table:last-child > tr:last-child {
-
+    tr:last-child {
       td, th {
         padding-bottom: 10px!important;
       }
@@ -183,7 +171,7 @@
     }
 
     td {
-      width: 60%;
+      width: 70%;
 
       div {
         padding-left: 10px;
@@ -192,7 +180,7 @@
 
     th {
       font-weight: bold;
-      display: block;
+      display: block
     }
 
     span.description {

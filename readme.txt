@@ -36,9 +36,6 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Tweak: Don't show Data Source column in Views screen to users who don't have permissions to see any of the data anyway
 * Tweak: Entry notes are now created using `GravityView_Entry_Notes` class
 * Tweak: Improved automated code testing
-* Tweak: Added `gravityview/support_port/display` filter to enable/disable displaying Support Port
-* Tweak: Added `gravityview/support_port/show_profile_setting` filter to disable adding the Support Port setting on User Profile pages
-* Tweak: Removed `gravityview/admin/display_live_chat` filter
 
 = 1.14.2 & 1.14.3 on September 17 =
 * Fixed: Issue affecting Gravity Forms User Registration Addon. Passwords were being reset when an user edited their own entry.
