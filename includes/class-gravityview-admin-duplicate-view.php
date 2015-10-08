@@ -24,6 +24,15 @@ class GravityView_Admin_Duplicate_View {
 			return;
 		}
 
+		$this->add_hooks();
+	}
+
+	/**
+	 * Add actions & filters
+	 * @since 1.15
+	 * @return void
+	 */
+	private function add_hooks() {
 		add_filter( 'post_row_actions', array( $this, 'make_duplicate_link_row' ), 10, 2 );
 
 		/**
@@ -36,7 +45,6 @@ class GravityView_Admin_Duplicate_View {
 		add_action( 'gv_duplicate_view', array( $this, 'copy_view_meta_info' ), 10, 2 );
 
 		add_filter( 'gravityview_connected_form_links', array( $this, 'connected_form_links' ), 10, 2 );
-
 	}
 
 	/**
@@ -68,7 +76,7 @@ class GravityView_Admin_Duplicate_View {
 	 *
 	 * @return bool
 	 */
-	function is_all_views_page() {
+	private function is_all_views_page() {
 		global $pagenow;
 
 		return $pagenow === 'edit.php';
@@ -79,13 +87,9 @@ class GravityView_Admin_Duplicate_View {
 	 *
 	 * @since 1.6
 	 */
-	function current_user_can_copy( $post ) {
+	private function current_user_can_copy( $post ) {
 
-		if( is_object( $post ) ) {
-			$id = $post->ID;
-		} else {
-			$id = $post;
-		}
+		$id = is_object( $post ) ? $post->ID : $post;
 
 		// Can't edit this current View
 		return GVCommon::has_cap( 'copy_gravityviews', $id );
@@ -99,7 +103,7 @@ class GravityView_Admin_Duplicate_View {
 	 * @param string $status The post status
 	 * @since 1.6
 	 */
-	function create_duplicate( $post, $status = '' ) {
+	private function create_duplicate( $post, $status = '' ) {
 
 		// We only want to clone Views
 		if ( $post->post_type !== 'gravityview' ) {
@@ -195,7 +199,7 @@ class GravityView_Admin_Duplicate_View {
 	 *
 	 * @return void
 	 */
-	function copy_view_meta_info( $new_id, $post ) {
+	public function copy_view_meta_info( $new_id, $post ) {
 
 		$post_meta_keys = get_post_custom_keys( $post->ID );
 
@@ -221,8 +225,7 @@ class GravityView_Admin_Duplicate_View {
 	 *
 	 * @since 1.6
 	 */
-	function make_duplicate_link_row( $actions, $post ) {
-		global $pagenow;
+	public function make_duplicate_link_row( $actions, $post ) {
 
 		// Only process on GravityView Views
 		if( get_post_type( $post ) !== 'gravityview' ) {
@@ -241,7 +244,7 @@ class GravityView_Admin_Duplicate_View {
 			$clone_draft_text = $this->is_all_views_page() ? __( 'New Draft', 'gravityview' ) : __( 'Clone View', 'gravityview' );
 			$clone_draft_title = __( 'Copy as a new draft View', 'gravityview' );
 
-			$actions['edit_as_new_draft'] = gravityview_get_link( $clone_draft_link, $clone_draft_text, 'title='.$clone_draft_title );
+			$actions['edit_as_new_draft'] = gravityview_get_link( $clone_draft_link, esc_html( $clone_draft_text ), 'title='.$clone_draft_title );
 		}
 
 		return $actions;
@@ -257,27 +260,26 @@ class GravityView_Admin_Duplicate_View {
 	 * @param string $draft Optional, default to true
 	 * @return string
 	 */
-	function get_clone_view_link( $id = 0, $context = 'display', $draft = true ) {
+	private function get_clone_view_link( $id = 0, $context = 'display', $draft = true ) {
 
 		// Make sure they have permission
 		if ( false === $this->current_user_can_copy( $id ) ) {
-			return;
+			return '';
 		}
 
 		// Verify the View exists
 		if ( !$view = get_post( $id ) ) {
-			return;
+			return '';
 		}
 
 		$action_name = $draft ? "duplicate_view_as_draft" : "duplicate_view";
 
+		$action = '?action=' . $action_name . '&post=' . $view->ID;
+
 		if ( 'display' == $context ) {
-			$action = '?action=' . $action_name . '&amp;post=' . $view->ID;
-		} else {
-			$action = '?action='.$action_name.'&post='.$view->ID;
+			$action = esc_html( $action );
 		}
 
-		//
 		$post_type_object = get_post_type_object( $view->post_type );
 
 		/** If there's no gravityview post type for some reason, abort! */
@@ -306,7 +308,7 @@ class GravityView_Admin_Duplicate_View {
 	 * @since 1.6
 	 * @return void
 	 */
-	function save_as_new_view_draft() {
+	public function save_as_new_view_draft() {
 		$this->save_as_new_view( 'draft' );
 	}
 
@@ -318,7 +320,7 @@ class GravityView_Admin_Duplicate_View {
 	 * @param string $status The status to set for the new View
 	 * @return void
 	 */
-	function save_as_new_view( $status = '' ) {
+	public function save_as_new_view( $status = '' ) {
 
 		if ( ! ( isset( $_GET['post'] ) || isset( $_POST['post'] ) ) ) {
 			wp_die( __( 'No post to duplicate has been supplied!', 'gravityview' ) );
