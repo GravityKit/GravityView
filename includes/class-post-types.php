@@ -34,11 +34,10 @@ class GravityView_Post_Types {
 	public static function init_post_types() {
 
 		/**
-		 * Make GravityView Views hierarchical by returning TRUE
-		 *
+		 * @filter `gravityview_is_hierarchical` Make GravityView Views hierarchical by returning TRUE
 		 * This will allow for Views to be nested with Parents and also allows for menu order to be set in the Page Attributes metabox
-		 *
 		 * @since 1.13
+		 * @param boolean $is_hierarchical Default: false
 		 */
 		$is_hierarchical = (bool)apply_filters( 'gravityview_is_hierarchical', false );
 
@@ -79,9 +78,9 @@ class GravityView_Post_Types {
 			'menu_icon'           => '',
 			'can_export'          => true,
 			/**
-			 * Enable Custom Post Type archive
+			 * @filter `gravityview_has_archive` Enable Custom Post Type archive?
 			 * @since 1.7.3
-			 * @param boolean False: don't have frontend archive; True: yes, have archive
+			 * @param boolean False: don't have frontend archive; True: yes, have archive. Default: false
 			 */
 			'has_archive'         => apply_filters( 'gravityview_has_archive', false ),
 			'exclude_from_search' => true,

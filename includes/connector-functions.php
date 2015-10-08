@@ -259,6 +259,7 @@ function gravityview_get_directory_fields( $post_id ) {
  *
  * @access public
  * @param  int $formid Form ID
+ * @param string $current Field ID of field used to sort
  * @return string         html
  */
 function gravityview_get_sortable_fields( $formid, $current = '' ) {

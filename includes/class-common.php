@@ -1197,12 +1197,14 @@ class GVCommon {
 	 * Generate an HTML anchor tag with a list of supported attributes
 	 *
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a Supported attributes defined here
+	 * @uses esc_url_raw() to sanitize $href
+	 * @uses esc_attr() to sanitize $atts
 	 *
 	 * @since 1.6
 	 *
-	 * @param string $href URL of the link.
+	 * @param string $href URL of the link. Sanitized using `esc_url_raw()`
 	 * @param string $anchor_text The text or HTML inside the anchor. This is not sanitized in the function.
-	 * @param array $atts Attributes to be added to the anchor tag
+	 * @param array $atts Attributes to be added to the anchor tag. They are sanitized using `esc_attr()`
 	 *
 	 * @return string HTML output of anchor link. If empty $href, returns NULL
 	 */

@@ -289,7 +289,7 @@ class GravityView_View_Data {
 
 
 	/**
-	 * Check wether a certain field should not be presented based on its own properties.
+	 * Check whether a certain field should not be presented based on its own properties.
 	 *
 	 * @access public
 	 * @param array $properties

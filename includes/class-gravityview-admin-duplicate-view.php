@@ -95,6 +95,8 @@ class GravityView_Admin_Duplicate_View {
 	/**
 	 * Create a duplicate from a View $post
 	 *
+	 * @param WP_Post $post
+	 * @param string $status The post status
 	 * @since 1.6
 	 */
 	function create_duplicate( $post, $status = '' ) {
@@ -107,8 +109,8 @@ class GravityView_Admin_Duplicate_View {
 		$new_view_author = wp_get_current_user();
 
 		/**
-		 * The default status for a new View. Return empty for the new View to inherit existing View status
-		 *
+		 * @filter `gravityview/duplicate-view/status` Modify the default status for a new View. Return empty for the new View to inherit existing View status
+		 * @since 1.6
 		 * @param string|null If string, the status to set for the new View. If empty, use existing View status.
 		 * @param WP_Post $post View being cloned
 		 */
@@ -130,9 +132,9 @@ class GravityView_Admin_Duplicate_View {
 		);
 
 		/**
-		 * When copying the View, should the date also be copied?
-		 *
-		 * @param boolean
+		 * @filter `gravityview/duplicate-view/copy-date` When copying a View, should the date also be copied?
+		 * @since 1.6
+		 * @param boolean $copy_date Whether the copy the date from the existing View. Default: `false`
 		 * @param WP_Post $post View being cloned
 		 */
 		$copy_date = apply_filters('gravityview/duplicate-view/copy-date', false, $post );
@@ -143,8 +145,8 @@ class GravityView_Admin_Duplicate_View {
 		}
 
 		/**
-		 * Modify View configuration before creating the duplicated View.
-		 *
+		 * @filter `gravityview/duplicate-view/new-view` Modify View configuration before creating the duplicated View.
+		 * @since 1.6
 		 * @param array $new_view Array of settings to be passed to wp_insert_post()
 		 * @param WP_Post $post View being cloned
 		 */
@@ -167,6 +169,13 @@ class GravityView_Admin_Duplicate_View {
 			wp_update_post( $new_view_name_array );
 		}
 
+		/**
+		 * @action `gv_duplicate_view` After the View is duplicated, perform an action
+		 * @since 1.6
+		 * @see GravityView_Admin_Duplicate_View::copy_view_meta_info
+		 * @param int $new_view_id The ID of the newly created View
+		 * @param WP_Post The View that was just cloned
+		 */
 		do_action( 'gv_duplicate_view', $new_view_id, $post );
 
 		delete_post_meta( $new_view_id, '_dp_original' );
@@ -180,6 +189,11 @@ class GravityView_Admin_Duplicate_View {
 	 * Copy the meta information of a post to another View
 	 *
 	 * @since 1.6
+	 *
+	 * @param int $new_view_id The ID of the newly created View
+	 * @param WP_Post $post The View that was just cloned
+	 *
+	 * @return void
 	 */
 	function copy_view_meta_info( $new_id, $post ) {
 
@@ -266,11 +280,22 @@ class GravityView_Admin_Duplicate_View {
 		//
 		$post_type_object = get_post_type_object( $view->post_type );
 
+		/** If there's no gravityview post type for some reason, abort! */
 		if ( !$post_type_object ) {
-			return;
+			do_action( 'gravityview_log_error', __METHOD__ . ' No gravityview post type exists when trying to clone the View.', $view );
+			return '';
 		}
 
-		return apply_filters( 'gravityview/duplicate-view/get_clone_view_link', admin_url( "admin.php". $action ), $view->ID, $context );
+		/**
+		 * @filter `gravityview/duplicate-view/get_clone_view_link` Modify the Clone View URL that is generated
+		 * @since 1.6
+		 * @param string $clone_view_link Link with `admin_url("admin.php")`, plus the action query string
+		 * @param int $view_id View ID
+		 * @param string $context How to display the link. If "display", the URL is run through esc_html(). Default: `display`
+		 */
+		$clone_view_link = apply_filters( 'gravityview/duplicate-view/get_clone_view_link', admin_url( "admin.php". $action ), $view->ID, $context );
+
+		return $clone_view_link;
 	}
 
 
@@ -279,6 +304,7 @@ class GravityView_Admin_Duplicate_View {
 	 * then redirects to the edit post screen
 	 *
 	 * @since 1.6
+	 * @return void
 	 */
 	function save_as_new_view_draft() {
 		$this->save_as_new_view( 'draft' );
@@ -289,6 +315,8 @@ class GravityView_Admin_Duplicate_View {
 	 * then redirects to the post list
 	 *
 	 * @since 1.6
+	 * @param string $status The status to set for the new View
+	 * @return void
 	 */
 	function save_as_new_view( $status = '' ) {
 
