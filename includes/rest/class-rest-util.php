@@ -14,11 +14,23 @@
 
 class GravityView_REST_Util {
 
+	/**
+	 * Get namespace for GravityView REST API endpoints
+	 *
+	 * @since 1.14.4
+	 * @return string
+	 */
 	public static function get_namespace() {
 		return 'gravity-view/v1';
 
 	}
 
+	/**
+	 * Get root URL for GravityView REST API
+	 *
+	 * @since 1.14.4
+	 * @return string
+	 */
 	public static function get_url() {
 		return rest_url( self::get_namespace() );
 
