@@ -477,6 +477,7 @@ class GravityView_Settings extends GFAddOn {
 			'license_key_status' => '',
 			'support-email' => get_bloginfo( 'admin_email' ),
 			'no-conflict-mode' => '0',
+			'support_port' => '1',
 			'delete-on-uninstall' => '0',
 		);
 
@@ -553,6 +554,28 @@ class GravityView_Settings extends GFAddOn {
 				'description' => __( 'In order to provide responses to your support requests, please provide your email address.', 'gravityview' ),
 				'class'    => 'code regular-text',
 			),
+			/**
+			 * @since 1.15 Added Support Port support
+			 */
+			array(
+				'name'         => 'support_port',
+				'type'       => 'radio',
+				'label'      => __( 'Show Support Port?', 'gravityview' ),
+				'default_value'    => $default_settings['support_port'],
+				'horizontal' => 1,
+				'choices'    => array(
+					array(
+						'label' => _x('Show', 'Setting: Show or Hide', 'gravityview'),
+						'value' => '1',
+					),
+					array(
+						'label' => _x('Hide', 'Setting: Show or Hide', 'gravityview'),
+						'value' => '0',
+					),
+				),
+				'tooltip' => '<p><img src="' . esc_url_raw( plugins_url('assets/images/screenshots/beacon.png', GRAVITYVIEW_FILE ) ) . '" alt="' . esc_attr__( 'The Support Port looks like this.', 'gravityview' ) . '" class="alignright" style="max-width:40px; margin:.5em;" />' . esc_html__('The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support.', 'gravityview') . '</p>',
+				'description'   => __( 'Show the Support Port on GravityView pages?', 'gravityview' ),
+			),
 			array(
 				'name'         => 'no-conflict-mode',
 				'type'       => 'radio',
@@ -622,13 +645,15 @@ class GravityView_Settings extends GFAddOn {
 
 
         /**
+         * @filter `gravityview/settings/extension/sections` Modify the GravityView settings page
          * Extensions can tap in here to insert their own section and settings.
-         *
+         * <code>
          *   $sections[] = array(
          *      'title' => __( 'GravityView My Extension Settings', 'gravityview' ),
          *      'fields' => $settings,
          *   );
-         *
+         * </code>
+         * @param array $extension_settings Empty array, ready for extension settings!
          */
         $extension_sections = apply_filters( 'gravityview/settings/extension/sections', array() );
 

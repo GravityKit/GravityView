@@ -152,6 +152,8 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 				$this->assertNotEmpty( get_transient( $transient ) );
 			}
 		}
+		
+		$this->assertEmpty( get_site_transient( 'gravityview_support_related_plugins' ) );
 	}
 
 	/**
@@ -249,6 +251,8 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 		set_transient( 'gravityview_edd-activate_valid', 1 );
 		set_transient( 'gravityview_edd-deactivate_valid', 1 );
 		set_transient( 'gravityview_dismissed_notices', 1 );
+
+		set_site_transient( 'gravityview_support_related_plugins', 1 );
 	}
 
 }
