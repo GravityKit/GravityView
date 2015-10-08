@@ -920,110 +920,6 @@ class GravityView_Admin_Views {
 	}
 
 	/**
-	 * HelpScout customer support widget
-	 */
-	static function enqueue_feedback_widget() {
-
-		/**
-		 * @filter `gravityview/admin/display_live_chat` Whether to display live chat support widget when operators are available
-		 * @since 1.13.1
-		 * @deprecated 1.15
-		 * @param boolean $display_live_chat Default: `true`
-		 */
-		$display_live_chat = apply_filters( 'gravityview/admin/display_live_chat', true );
-
-		/**
-		 * @filter `gravityview/admin/display_beacon` Whether to display support widget
-		 * @since 1.15
-		 * @param boolean $display_beacon Default: `true`
-		 */
-		$display_beacon = apply_filters( 'gravityview/admin/display_beacon', true );
-
-		if( ! $display_live_chat || ! $display_beacon ) {
-			return;
-		}
-
-		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
-
-		$response = GravityView_Settings::getSetting( 'license_key_response' );
-
-		$response = wp_parse_args( $response, array(
-			'license' => '',
-			'message' => '',
-			'license_key' => '',
-			'license_limit' => '',
-			'expires' => '',
-			'activations_left' => '',
-			'site_count' => '',
-			'payment_id' => '',
-			'customer_name' => '',
-			'customer_email' => '',
-		) );
-
-		// This is just HTML we don't need.
-		unset( $response['message'] );
-
-		switch( intval( $response['license_limit'] ) ) {
-			case 1:
-				$package = 'Sol';
-				break;
-			case 100:
-				$package = 'Galactic';
-				break;
-			case 3:
-				$package = 'Interstellar';
-				break;
-			default:
-				$package = sprintf( '%d-Site License', $response['license_limit'] );
-		}
-
-		$translation = array(
-			'agentLabel' => __('GravityView Support', 'gravityview'),
-			'searchLabel' => __('Ask GravityView Support', 'gravityview'),
-			'searchErrorLabel' => __('Your search timed out. Please double-check your internet connection and try again.', 'gravityview' ),
-			'noResultsLabel' => _x('No results found for', 'a support form search has returned empty for the following word', 'gravityview' ),
-			'contactLabel' => __('Send a Message', 'gravityview' ),
-			'attachFileLabel' => __('Attach a screenshot or file', 'gravityview' ),
-			'attachFileError' => __('The maximum file size is 10 MB', 'gravityview' ),
-			'nameLabel' => __('Your Name', 'gravityview' ),
-			'nameError' => __('Please enter your name', 'gravityview' ),
-			'emailLabel' => __('Email address', 'gravityview' ),
-			'emailError' => __('Please enter a valid email address', 'gravityview' ),
-			'subjectLabel' => __('Subject', 'gravityview' ),
-			'subjectError' => _x('Please enter a subject', 'Error shown when submitting support request and there is no subject provided', 'gravityview' ),
-			'messageLabel' => __('How can we help you?', 'gravityview' ),
-			'messageError' => _x('Please enter a message', 'Error shown when submitting support request and there is no message provided', 'gravityview' ),
-			'contactSuccessLabel' => __('Message sent!', 'gravityview' ),
-			'contactSuccessDescription' => __('Thanks for reaching out! Someone from the GravityView team will get back to you soon.', 'gravityview' ),
-			#'topicLabel' => __('Select a topic', 'gravityview' ), // Not implemented
-			#'topicError' => __('Please select a topic from the list', 'gravityview' ), // Not implemented
-		);
-
-		wp_enqueue_script( 'gravityview-feedback-widget', plugins_url('assets/js/feedback'.$script_debug.'.js', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version, true );
-
-		wp_localize_script( 'gravityview-feedback-widget', 'gvBeaconTranslation', $translation );
-
-		wp_localize_script( 'gravityview-feedback-widget', 'gvBeacon', array(
-			'email' => GravityView_Settings::getSetting( 'support-email' ),
-			'name' => $response['customer_name'],
-			'Valid License?' => ucwords( $response['license'] ),
-			'License Key' => $response['license_key'],
-			'License Level' => $package,
-			'Site Admin Email' => get_bloginfo( 'admin_email' ),
-			'Support Email' => GravityView_Settings::getSetting( 'support-email' ),
-			'License Limit' => $response['license_limit'],
-			'Site Count' => $response['site_count'],
-			'License Expires' => $response['expires'],
-            'Activations Left' => $response['activations_left'],
-			'Payment ID' => $response['payment_id'],
-			'Payment Name' => $response['customer_name'],
-		    'Payment Email' => $response['customer_email'],
-			'WordPress Version' => get_bloginfo('version', 'display'),
-			'PHP Version' => phpversion(),
-		));
-	}
-
-	/**
 	 * Enqueue scripts and styles at Views editor
 	 *
 	 * @access public
@@ -1042,14 +938,6 @@ class GravityView_Admin_Views {
 
 		// Don't process any scripts below here if it's not a GravityView page.
 		if( !gravityview_is_admin_page($hook) && !$is_widgets_page ) { return; }
-
-
-		if( !$is_widgets_page ) {
-
-			// Add the Chatlio widget on all GV pages
-			self::enqueue_feedback_widget();
-
-		}
 
 		// Only enqueue the following on single pages
 		if( gravityview_is_admin_page($hook, 'single') || $is_widgets_page ) {
@@ -1108,7 +996,7 @@ class GravityView_Admin_Views {
 		$filter = current_filter();
 
 		if( preg_match('/script/ism', $filter ) ) {
-			$allow_scripts = array( 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-feedback-widget', 'gravityview-jquery-cookie', 'gravityview_views_datepicker',
+			$allow_scripts = array( 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-support', 'gravityview-jquery-cookie', 'gravityview_views_datepicker',
 			'sack', 'gform_gravityforms', 'gform_forms', 'gform_form_admin', 'jquery-ui-autocomplete' );
 			$registered = array_merge( $registered, $allow_scripts );
 		} elseif( preg_match('/style/ism', $filter ) ) {

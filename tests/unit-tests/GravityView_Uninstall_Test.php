@@ -152,7 +152,7 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 				$this->assertNotEmpty( get_transient( $transient ) );
 			}
 		}
-
+		
 		$this->assertEmpty( get_site_transient( 'gravityview_support_related_plugins' ) );
 	}
 
