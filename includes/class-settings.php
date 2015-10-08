@@ -645,13 +645,15 @@ class GravityView_Settings extends GFAddOn {
 
 
         /**
+         * @filter `gravityview/settings/extension/sections` Modify the GravityView settings page
          * Extensions can tap in here to insert their own section and settings.
-         *
+         * <code>
          *   $sections[] = array(
          *      'title' => __( 'GravityView My Extension Settings', 'gravityview' ),
          *      'fields' => $settings,
          *   );
-         *
+         * </code>
+         * @param array $extension_settings Empty array, ready for extension settings!
          */
         $extension_sections = apply_filters( 'gravityview/settings/extension/sections', array() );
 

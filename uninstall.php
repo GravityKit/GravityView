@@ -137,6 +137,8 @@ class GravityView_Uninstall {
 		delete_transient( 'gravityview_edd-activate_valid' );
 		delete_transient( 'gravityview_edd-deactivate_valid' );
 		delete_transient( 'gravityview_dismissed_notices' );
+
+		delete_site_option( 'gravityview_support_related_plugins' );
 	}
 }
 

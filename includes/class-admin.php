@@ -4,20 +4,22 @@ class GravityView_Admin {
 
 	function __construct() {
 
-		if( !is_admin() ) { return; }
-
-		$this->add_hooks();
-	}
-
-	/**
-	 * @since 1.7.5
-	 */
-	function add_hooks() {
+		if( ! is_admin() ) { return; }
 
 		// If Gravity Forms isn't active or compatibile, stop loading
 		if( false === GravityView_Compatibility::is_valid() ) {
 			return;
 		}
+
+		$this->include_required_files();
+		$this->add_hooks();
+	}
+
+	/**
+	 * @since 1.15
+	 * @return void
+	 */
+	private function include_required_files() {
 
 		// Migrate Class
 		require_once( GRAVITYVIEW_DIR . 'includes/class-migrate.php' );
@@ -36,6 +38,13 @@ class GravityView_Admin {
 
 		/** @since 1.6 */
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-duplicate-view.php' );
+	}
+
+	/**
+	 * @since 1.7.5
+	 * @return void
+	 */
+	private function add_hooks() {
 
 		// Filter Admin messages
 		add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
