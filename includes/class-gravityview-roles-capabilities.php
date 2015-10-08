@@ -223,7 +223,6 @@ class GravityView_Roles_Capabilities {
 
 			// GF caps
 			'gravityview_edit_others_entries',
-			'gravityview_view_others_entry_notes',
 			'gravityview_moderate_entries',
 			'gravityview_delete_others_entries',
 			'gravityview_view_others_entry_notes',
@@ -245,7 +244,7 @@ class GravityView_Roles_Capabilities {
 			'edit_gravityviews', // Affects if you're able to see the Views menu in the Admin
 			'delete_gravityview',
 			'delete_gravityviews',
-
+			
 			'gravityview_support_port', // Display GravityView Help beacon
 		);
 
