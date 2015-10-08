@@ -158,11 +158,10 @@ class GravityView_Roles_Capabilities {
 			'publish_gravityviews',
 			'delete_published_gravityviews',
 			'edit_published_gravityviews',
+			'gravityview_contact_support',
 
 			// GF caps
 			'gravityview_edit_others_entries',
-
-			// GF caps
 			'gravityview_view_others_entry_notes',
 			'gravityview_moderate_entries',
 			'gravityview_delete_others_entries',
@@ -184,6 +183,8 @@ class GravityView_Roles_Capabilities {
 			'edit_gravityviews',
 			'delete_gravityview',
 			'delete_gravityviews',
+
+			'gravityview_support_port', // Display GravityView Help beacon
 		);
 
 		// Read only

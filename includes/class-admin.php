@@ -31,6 +31,9 @@ class GravityView_Admin {
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/entry-list.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-change-entry-creator.php' );
 
+		/** @since 1.15 **/
+		require_once( GRAVITYVIEW_DIR . 'includes/admin/class-gravityview-support-port.php' );
+
 		/** @since 1.6 */
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-duplicate-view.php' );
 
