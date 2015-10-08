@@ -26,7 +26,7 @@ install_wp() {
 	fi
 
 	curl -L https://github.com/WordPress/WordPress/archive/${ARCHIVE_NAME}.tar.gz --output /tmp/wordpress.tar.gz --silent
-	tar --strip-components=1 --verbose -xmf /tmp/wordpress.tar.gz -C $WP_CORE_DIR
+	tar --strip-components=1 -zxmf /tmp/wordpress.tar.gz -C $WP_CORE_DIR
 
 	wget -nv -O $WP_CORE_DIR/wp-content/db.php https://raw.github.com/markoheijnen/wp-mysqli/master/db.php
 }
