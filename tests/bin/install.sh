@@ -21,6 +21,8 @@ install_wp() {
 
 	if [ $WP_VERSION == 'latest' ]; then
 		local ARCHIVE_NAME='latest'
+	elif [ $WP_VERSION == 'nightly' ]; then
+     	local ARCHIVE_NAME='nightly-builds/wordpress-latest'
 	else
 		local ARCHIVE_NAME="wordpress-$WP_VERSION"
 	fi
