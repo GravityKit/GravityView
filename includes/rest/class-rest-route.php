@@ -45,6 +45,10 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 					'page' => array(
 						'default' => 1,
 						'sanitize_callback' => 'absint'
+					),
+					'limit' => array(
+						'default' => 10,
+						'sanitize_callback' => 'absint'
 					)
 				)
 			),
@@ -93,9 +97,15 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 				'callback'        => array( $this, 'get_sub_items' ),
 				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 				'args'            => array(
-					'page' => array(
-						'default' => 1,
-						'sanitize_callback' => 'absint'
+					'args'            => array(
+						'page' => array(
+							'default' => 1,
+							'sanitize_callback' => 'absint'
+						),
+						'limit' => array(
+							'default' => 10,
+							'sanitize_callback' => 'absint'
+						)
 					)
 				)
 			),

@@ -43,6 +43,7 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 	public function get_items( $request ) {
 
 		$page = $request->get_param( 'page' );
+		$limit = $request->get_param( 'limit' );
 		$items = array(); //@todo GravityView internal
 
 		if( empty( $items ) ) {
@@ -98,8 +99,9 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 
 		$url = $request->get_url_params();
 		$view_id = $url[ 'id' ];
-
 		$page = $request->get_param( 'page' );
+		$limit = $request->get_param( 'limit' );
+
 		$items = array(); //@todo GravityView internal
 
 		if( empty( $items ) ) {
