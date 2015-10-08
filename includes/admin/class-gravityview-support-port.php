@@ -51,12 +51,12 @@ class GravityView_Support_Port {
 		}
 
 		/**
-		 * @filter `gravityview/support_port` Whether to display Support Port
+		 * @filter `gravityview/support_port/display` Whether to display Support Port
 		 * @since 1.15
 		 *
 		 * @param boolean $display_beacon Default: `true`
 		 */
-		$display_support_port = apply_filters( 'gravityview/support_port', self::show_for_user() );
+		$display_support_port = apply_filters( 'gravityview/support_port/display', self::show_for_user() );
 
 		if ( empty( $display_support_port ) ) {
 			do_action( 'gravityview_log_debug', __METHOD__ . ' - Not showing Support Port' );
