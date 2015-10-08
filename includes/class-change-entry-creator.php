@@ -114,7 +114,7 @@ class GravityView_Change_Entry_Creator {
         }
 
         // Can the user edit entries?
-        if( !GFCommon::current_user_can_any("gravityforms_edit_entries") ) {
+        if( ! GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_entries' ) ) ) {
             return;
         }
 

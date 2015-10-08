@@ -298,7 +298,7 @@ class GravityView_View_Data {
 	private function hide_field_check_conditions( $properties ) {
 
 		// logged-in visibility
-		if( ! empty( $properties['only_loggedin'] ) && ! current_user_can( $properties['only_loggedin_cap'] ) ) {
+		if( ! empty( $properties['only_loggedin'] ) && ! GVCommon::has_cap( $properties['only_loggedin_cap'] ) ) {
 			return true;
 		}
 

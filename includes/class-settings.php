@@ -100,7 +100,7 @@ class GravityView_Settings extends GFAddOn {
 			return false;
 		}
 
-		return parent::current_user_can_any( $caps );
+		return GVCommon::has_cap( $caps );
 	}
 
 	/**

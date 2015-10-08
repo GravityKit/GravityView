@@ -23,7 +23,7 @@ if( 'passfail' === $grading_type_enabled ) {
 	// By default, the field value is "1" for Pass and "0" for Fail. We want the text.
 	echo GFCommon::replace_variables( '{quiz_passfail}', $gravityview_view->getForm(), $gravityview_view->getCurrentEntry() );
 
-} elseif( GFCommon::current_user_can_any( 'manage_options' ) ) {
+} elseif( GVCommon::has_cap( 'manage_options' ) ) {
 	$grade_type = __( 'Pass/Fail', 'gravityview' );
 	printf( esc_html_x( '%s grading is disabled for this form. %sChange the setting%s', '%s is the current Quiz field type ("Letter" or "Pass/Fail")', 'gravityview' ), $grade_type, '<a href="'. admin_url('admin.php?page=gf_edit_forms&amp;view=settings&amp;subview=gravityformsquiz&amp;id='.$gravityview_view->getFormId() ) . '">', '</a>' );
 }

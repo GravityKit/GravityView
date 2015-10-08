@@ -88,7 +88,7 @@ class GravityView_Admin_Duplicate_View {
 		}
 
 		// Can't edit this current View
-		return current_user_can( 'edit_posts', $id );
+		return GVCommon::has_cap( 'copy_gravityviews', $id );
 
 	}
 
@@ -298,6 +298,11 @@ class GravityView_Admin_Duplicate_View {
 
 		// Get the original post
 		$id   = ( isset( $_GET['post'] ) ? $_GET['post'] : $_POST['post'] );
+
+		if( ! $this->current_user_can_copy( $id ) ) {
+			wp_die( __( 'You don\'t have permission to copy this View.', 'gravityview' ) );
+		}
+
 		$post = get_post( $id );
 
 		// Copy the post and insert it

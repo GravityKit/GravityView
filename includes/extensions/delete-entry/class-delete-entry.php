@@ -529,15 +529,18 @@ final class GravityView_Delete_Entry {
 	public static function check_user_cap_delete_entry( $entry, $field = array() ) {
 		$gravityview_view = GravityView_View::getInstance();
 
-		// Or if they can delete any entries (as defined in Gravity Forms), we're good.
-		if( GFCommon::current_user_can_any( 'gravityforms_delete_entries' ) ) {
+		$current_user = wp_get_current_user();
 
-			do_action('gravityview_log_debug', 'GravityView_Delete_Entry[check_user_cap_delete_entry] Current user has `gravityforms_delete_entries` capability.' );
+		$entry_id = isset( $entry['id'] ) ? $entry['id'] : NULL;
+
+		// Or if they can delete any entries (as defined in Gravity Forms), we're good.
+		if( GVCommon::has_cap( array( 'gravityforms_delete_entries', 'gravityview_delete_others_entries' ), $entry_id ) ) {
+
+			do_action('gravityview_log_debug', 'GravityView_Delete_Entry[check_user_cap_delete_entry] Current user has `gravityforms_delete_entries` or `gravityview_delete_others_entries` capability.' );
 
 			return true;
 		}
 
-		$current_user = wp_get_current_user();
 
 		// If field options are passed, check if current user can view the link
 		if( !empty( $field ) ) {
@@ -550,7 +553,7 @@ final class GravityView_Delete_Entry {
 				return false;
 			}
 
-			if( GFCommon::current_user_can_any( $field['allow_edit_cap'] ) ) {
+			if( GVCommon::has_cap( $field['allow_edit_cap'] ) ) {
 
 				// Do not return true if cap is read, as we need to check if the current user created the entry
 				if( $field['allow_edit_cap'] !== 'read' ) {
