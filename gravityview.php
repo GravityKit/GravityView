@@ -399,14 +399,16 @@ final class GravityView_Plugin {
 	 */
 	public function boot_rest() {
 
-		include GRAVITYVIEW_DIR . 'includes/rest/class-rest-util.php';
-		include GRAVITYVIEW_DIR . 'includes/rest/class-rest-route.php';
-		include GRAVITYVIEW_DIR . 'includes/rest/class-rest-views-route.php';
-		include GRAVITYVIEW_DIR . 'includes/rest/class-rest-entries-route.php';
+		include_once( GRAVITYVIEW_DIR . 'includes/rest/class-rest-util.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/rest/class-rest-route.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/rest/class-rest-views-route.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/rest/class-rest-entries-route.php' );
 		$views = new GravityView_REST_Views_Route();
 		$views->register_routes();
 		$entries = new GravityView_REST_Entries_Route();
 		$entries->register_routes();
+
+
 
 	}
 
