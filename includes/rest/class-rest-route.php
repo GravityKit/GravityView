@@ -116,7 +116,7 @@ abstract class GravityView_REST_Route extends WP_REST_Controller {
 				'args'     => $this->create_sub_item_args()
 			),
 		) );
-		register_rest_route( $namespace, '/' . $base . '/(?P<id>[\d]+)/' . $sub_type . '/(?P<s_id>[\d]+)' , array(
+		register_rest_route( $namespace, sprintf( '/%s/(?P<id>[\d]+)/%s/(?P<s_id>[\w-]+)', $base, $sub_type ) , array(
 			array(
 				'methods'         => WP_REST_Server::READABLE,
 				'callback'        => array( $this, 'get_sub_item' ),
