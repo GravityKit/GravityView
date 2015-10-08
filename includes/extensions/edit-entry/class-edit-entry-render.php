@@ -351,7 +351,7 @@ class GravityView_Edit_Entry_Render {
         $post_id = $this->entry['post_id'];
 
         // Security check
-        if( false === current_user_can( 'edit_post', $post_id ) ) {
+        if( false === GVCommon::has_cap( 'edit_post', $post_id ) ) {
             do_action( 'gravityview_log_error', 'The current user does not have the ability to edit Post #'.$post_id );
             return;
         }
@@ -1304,7 +1304,12 @@ class GravityView_Edit_Entry_Render {
 	     */
 	    $use_gf_adminonly_setting = apply_filters( 'gravityview/edit_entry/use_gf_admin_only_setting', empty( $edit_fields ), $form, $view_id );
 
-	    if( $use_gf_adminonly_setting && false === GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) ) {
+	    if(
+            $use_gf_adminonly_setting
+            && false === GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_others_entries' ), $this->entry['id'] )
+            && false === GVCommon::has_cap( 'gravityview_edit_form_entries', $form['id'] )
+            && false === GVCommon::has_cap( 'gravityview_edit_entries', $this->entry['id'] )
+        ) {
             return $fields;
         }
 
@@ -1492,7 +1497,7 @@ class GravityView_Edit_Entry_Render {
     private function check_user_cap_edit_field( $field ) {
 
         // If they can edit any entries (as defined in Gravity Forms), we're good.
-        if( GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) ) {
+        if( GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_others_entries' ) ) ) {
             return true;
         }
 
@@ -1500,7 +1505,7 @@ class GravityView_Edit_Entry_Render {
 
         // If the field has custom editing capaibilities set, check those
         if( $field_cap ) {
-            return GFCommon::current_user_can_any( $field['allow_edit_cap'] );
+            return GVCommon::has_cap( $field['allow_edit_cap'] );
         }
 
         return false;

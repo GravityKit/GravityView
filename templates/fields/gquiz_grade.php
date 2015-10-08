@@ -20,7 +20,7 @@ $grading_type_enabled = !empty( $field['form']['gravityformsquiz']['grading'] ) 
 
 if( 'letter' === $grading_type_enabled ) {
 	echo $field['value'];
-} elseif( GFCommon::current_user_can_any( 'manage_options' ) ) {
+} elseif( GVCommon::has_cap( 'manage_options' ) ) {
 	$grade_type = __( 'Letter', 'gravityview' );
 	printf( esc_html_x( '%s grading is disabled for this form. %sChange the setting%s', '%s is the current Quiz field type ("Letter" or "Pass/Fail")', 'gravityview' ), $grade_type, '<a href="'. admin_url('admin.php?page=gf_edit_forms&amp;view=settings&amp;subview=gravityformsquiz&amp;id='.$gravityview_view->getFormId() ) . '">', '</a>' );
 }

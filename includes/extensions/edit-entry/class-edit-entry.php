@@ -224,7 +224,7 @@ class GravityView_Edit_Entry {
         $user_can_edit = false;
 
         // Or if they can edit any entries (as defined in Gravity Forms), we're good.
-        if( GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) ) {
+        if( GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_entries' ) ) ) {
 
             $user_can_edit = true;
 

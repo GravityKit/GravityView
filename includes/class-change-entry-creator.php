@@ -16,8 +16,9 @@ class GravityView_Change_Entry_Creator {
     	if( !is_admin() ) { return; }
 
 	    /**
+         * @filter `gravityview_disable_change_entry_creator` Disable the Change Entry Creator functionality
 	     * @since 1.7.4
-	     * @param boolean $disable Disable the Change Entry Creator functionality
+	     * @param boolean $disable Disable the Change Entry Creator functionality. Default: false.
 	     */
 	    if( apply_filters('gravityview_disable_change_entry_creator', false ) ) {
 		    return;
@@ -114,7 +115,7 @@ class GravityView_Change_Entry_Creator {
         }
 
         // Can the user edit entries?
-        if( !GFCommon::current_user_can_any("gravityforms_edit_entries") ) {
+        if( ! GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_entries' ) ) ) {
             return;
         }
 
