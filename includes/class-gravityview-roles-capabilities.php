@@ -108,7 +108,7 @@ class GravityView_Roles_Capabilities {
 				 */
 				list( $meta_cap, $user_id, $view_id ) = array_pad( $args, 3, null );
 
-				$allcaps[ $cap ] = ! empty( $allcaps[ $meta_cap ] );
+				$allcaps[ $caps[0] ] = ! empty( $allcaps[ $meta_cap ] );
 			}
 
 		}
