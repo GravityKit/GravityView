@@ -138,13 +138,15 @@ class GravityView_Roles_Capabilities {
 	 */
 	function members_register_cap_group() {
 		if ( function_exists( 'members_register_cap_group' ) ) {
+
 			$args = array(
 				'label'         => __( 'GravityView' ),
 				'icon'          => 'gv-icon-astronaut-head',
-				'caps_to_check' => self::all_caps(),
+				'caps'          => self::all_caps(),
 				'merge_added'   => true,
 				'diff_added'    => false,
 			);
+
 			members_register_cap_group( 'gravityview', $args );
 		}
 	}
