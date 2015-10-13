@@ -53,6 +53,55 @@ class GravityView_Admin_Views {
 
 		add_action( 'manage_gravityview_posts_custom_column', array( $this, 'add_custom_column_content'), 10, 2 );
 
+		add_action( 'restrict_manage_posts', array( $this, 'add_view_dropdown' ) );
+
+		add_action( 'pre_get_posts', array( $this, 'filter_pre_get_posts_by_gravityview_form_id' ) );
+
+	}
+
+	/**
+	 * @since 1.15
+	 * @param WP_Query $query
+	 */
+	public function filter_pre_get_posts_by_gravityview_form_id( &$query ) {
+		global $pagenow;
+
+		if ( !is_admin() ) {
+			return;
+		}
+
+		if( 'edit.php' !== $pagenow || ! rgget( 'gravityview_form_id' ) || ! isset( $query->query_vars[ 'post_type' ] ) ) {
+			return;
+		}
+
+		if ( $query->query_vars[ 'post_type' ] == 'gravityview' ) {
+			$query->set( 'meta_query', array(
+				array(
+					'key' => '_gravityview_form_id',
+					'value' => rgget( 'gravityview_form_id' ),
+				)
+			) );
+		}
+	}
+
+	function add_view_dropdown() {
+		$current_screen = get_current_screen();
+
+		if( 'gravityview' !== $current_screen->post_type ) {
+			return;
+		}
+
+		$forms = gravityview_get_forms();
+		$current_form = rgget( 'gravityview_form_id' );
+		// If there are no forms to select, show no forms.
+		if( !empty( $forms ) ) { ?>
+			<select name="gravityview_form_id" id="gravityview_form_id">
+				<option value="" <?php selected( '', $current_form, true ); ?>><?php esc_html_e( 'All forms', 'gravityview' ); ?></option>
+				<?php foreach( $forms as $form ) { ?>
+					<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current_form, true ); ?>><?php echo esc_html( $form['title'] ); ?></option>
+				<?php } ?>
+			</select>
+		<?php }
 	}
 
 
@@ -101,8 +150,6 @@ class GravityView_Admin_Views {
 			$sub_menu_items[] = array(
 				'label' => esc_attr( $label ),
 				'url' => admin_url( 'post.php?action=edit&post='.$view->ID ),
-				'title' => sprintf( __( 'Edit View #%d', 'gravityview' ), $view->ID ),
-				'capabilities'   => array( 'edit_gravityviews' ),
 			);
 		}
 
