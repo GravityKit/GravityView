@@ -100,6 +100,10 @@ class GravityView_Settings extends GFAddOn {
 			return false;
 		}
 
+		if( empty( $caps ) ) {
+			$caps = array( 'gravityview_full_access' );
+		}
+
 		return GVCommon::has_cap( $caps );
 	}
 
