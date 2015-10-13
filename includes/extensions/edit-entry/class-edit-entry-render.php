@@ -1302,12 +1302,7 @@ class GravityView_Edit_Entry_Render {
 	     */
 	    $use_gf_adminonly_setting = apply_filters( 'gravityview/edit_entry/use_gf_admin_only_setting', empty( $edit_fields ), $form, $view_id );
 
-	    if(
-            $use_gf_adminonly_setting
-            && false === GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_others_entries' ), $this->entry['id'] )
-            && false === GVCommon::has_cap( 'gravityview_edit_form_entries', $form['id'] )
-            && false === GVCommon::has_cap( 'gravityview_edit_entries', $this->entry['id'] )
-        ) {
+	    if( $use_gf_adminonly_setting && false === GVCommon::has_cap( 'gravityforms_edit_entries', $this->entry['id'] ) ) {
             return $fields;
         }
 
