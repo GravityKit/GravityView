@@ -60,8 +60,9 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->assertNotEmpty( $view, 'There was an error creating the View' );
 
+		$post_title = new WP_UnitTest_Generator_Sequence( __METHOD__ . ' %s' );
 		$post_id = $this->factory->post->create(array(
-			'post_title' => ( new WP_UnitTest_Generator_Sequence( __METHOD__ . ' %s' ) )->next(),
+			'post_title' => $post_title->next(),
 			'post_content' => sprintf( '[gravityview id="%d"]', $view->ID ),
 		));
 
