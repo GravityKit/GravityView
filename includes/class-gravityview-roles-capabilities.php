@@ -274,6 +274,7 @@ class GravityView_Roles_Capabilities {
 		$author_caps = array(
 			// GF caps_to_check
 			'gravityview_edit_entries',
+			'gravityview_edit_entry',
 			'gravityview_edit_form_entries', // This is similar to `gravityview_edit_entries`, but checks against a Form ID $object_id
 			'gravityview_view_entry_notes',
 			'gravityview_delete_entries',
@@ -284,7 +285,7 @@ class GravityView_Roles_Capabilities {
 		$contributor_caps = array(
 			'edit_gravityviews', // Affects if you're able to see the Views menu in the Admin
 			'delete_gravityviews',
-			'gravityview_support_port', // Display GravityView Help beacon
+			'gravityview_support_port', // Display GravityView Support Port
 		);
 
 		// Read only
