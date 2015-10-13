@@ -509,12 +509,12 @@ class GravityView_Edit_Entry_Render {
 
         <div class="gv-edit-entry-wrapper"><?php
 
+            $javascript = gravityview_ob_include( GravityView_Edit_Entry::$file .'/partials/inline-javascript.php', $this );
+
             /**
              * Fixes weird wpautop() issue
              * @see https://github.com/katzwebservices/GravityView/issues/451
              */
-            $javascript = gravityview_ob_include( GravityView_Edit_Entry::$file .'/partials/inline-javascript.php' );
-
             echo gravityview_strip_whitespace( $javascript );
 
             ?><h2 class="gv-edit-entry-title">
@@ -642,9 +642,7 @@ class GravityView_Edit_Entry_Render {
      * @return string
      */
     public function render_form_buttons() {
-        ob_start();
-        include( GravityView_Edit_Entry::$file .'/partials/form-buttons.php');
-        return ob_get_clean();
+        return gravityview_ob_include( GravityView_Edit_Entry::$file .'/partials/form-buttons.php', $this );
     }
 
 

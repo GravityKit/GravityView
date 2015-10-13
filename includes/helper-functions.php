@@ -90,12 +90,13 @@ function gravityview_strip_whitespace( $string ) {
  * Get the contents of a file using `include()` and `ob_start()`
  *
  * @since 1.13
+ * @since 1.15 Added $object param
  *
  * @param string $file_path Full path to a file
- *
+ * @param mixed $object Pass pseudo-global to the included file
  * @return string Included file contents
  */
-function gravityview_ob_include( $file_path ) {
+function gravityview_ob_include( $file_path, $object = NULL ) {
 	if( ! file_exists( $file_path ) ) {
 		do_action( 'gravityview_log_error', __FUNCTION__ . ': File path does not exist. ', $file_path );
 		return '';
