@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Ability to filter View by form in the Admin. [Learn more](#TODO).
 * Added: Option to delete GravityView data when the plugin is uninstalled, then deleted. [Learn more](#TODO).
 * Added: New support "Beacon" to easily search documentation and ask support questions
+* Added: Clear search button to the Search Widget (WP widget)
 * Fixed: `number_format()` PHP warning on blank Number fields
 * Fixed: `{created_by}` merge tags weren't being escaped using `esc_html()`
 * Fixed: Checkmark icons weren't always available when displaying checkbox input field
