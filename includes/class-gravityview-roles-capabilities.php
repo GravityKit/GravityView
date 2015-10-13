@@ -94,22 +94,6 @@ class GravityView_Roles_Capabilities {
 			unset( $all_gravityview_caps );
 		}
 
-		if( ! empty( $caps[0] ) ) {
-
-			/**
-			 * WordPress doesn't add "read_{post_type}" capabilities by default, so we check our permissions here.
-			 * So: are we asking whether a user can read (see) a View?
-			 */
-			if ( 'read_gravityview' === $args[0] ) {
-				/**
-				 * @var string $meta_cap The specific capability requested, in this case "read_gravityview"
-				 * @var int $user_id User ID to check cap for
-				 * @var int $view_id Post ID to check capability against, if provided
-				 */
-				list( $meta_cap, $user_id, $view_id ) = array_pad( $args, 3, null );
-
-				$allcaps[ $caps[0] ] = ! empty( $allcaps[ $meta_cap ] );
-			}
 
 		}
 
@@ -241,9 +225,7 @@ class GravityView_Roles_Capabilities {
 
 		// Edit and delete drafts but not publish
 		$contributor = array(
-			'edit_gravityview',
 			'edit_gravityviews', // Affects if you're able to see the Views menu in the Admin
-			'delete_gravityview',
 			'delete_gravityviews',
 
 			'gravityview_support_port', // Display GravityView Help beacon
@@ -251,7 +233,6 @@ class GravityView_Roles_Capabilities {
 
 		// Read only
 		$subscriber = array(
-			'read_gravityview',
 		);
 
 		$capabilities = array();
