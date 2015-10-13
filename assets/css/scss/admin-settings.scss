@@ -147,11 +147,10 @@
     clear: both;
 
     tr {
-      border-top:1px solid #E7E7E7
+      border-top:1px solid #E7E7E7;
     }
 
-    tr:first-child,
-    tr:last-child {
+    tr:first-child {
       border-top: none;
       td, th {
         padding-top: 10px!important;
