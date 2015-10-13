@@ -92,7 +92,7 @@ class GravityView_Admin_Views {
 		$sub_menu_items = array();
 		foreach ( (array)$connected_views as $view ) {
 
-			if( ! GVCommon::has_cap( array( 'edit_gravityviews',  'edit_gravityview' ), $view->ID ) ) {
+			if( ! GVCommon::has_cap( 'edit_gravityview', $view->ID ) ) {
 				continue;
 			}
 
@@ -392,7 +392,7 @@ class GravityView_Admin_Views {
 		}
 
 		// validate user can edit and save View
-		if ( ! GVCommon::has_cap( array( 'edit_post', 'edit_gravityviews', 'edit_gravityview' ), $post_id ) ) {
+		if ( ! GVCommon::has_cap( 'edit_gravityview', $post_id ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . ' - Current user does not have the capability to edit View #' . $post_id, wp_get_current_user() );
 			return;
 		}
@@ -408,6 +408,11 @@ class GravityView_Admin_Views {
 			// save form id
 			$statii['form_id'] = update_post_meta( $post_id, '_gravityview_form_id', $form_id );
 
+		}
+
+		if( false === GVCommon::has_cap( 'gravityforms_create_form' ) && empty( $statii['form_id'] ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ' - Current user does not have the capability to create a new Form.', wp_get_current_user() );
+			return;
 		}
 
 		// Was this a start fresh?

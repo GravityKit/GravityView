@@ -223,8 +223,12 @@ class GravityView_Edit_Entry {
         // No permission by default
         $user_can_edit = false;
 
-        // Or if they can edit any entries (as defined in Gravity Forms), we're good.
-        if( GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_entries' ) ) ) {
+        // If they can edit any entries (as defined in Gravity Forms)
+        // Or if they can edit other people's entries
+        // Then we're good.
+        if( GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_others_entries' ), $entry['id'] ) ) {
+
+            do_action('gravityview_log_debug', __METHOD__ . ' - User has ability to edit all entries.');
 
             $user_can_edit = true;
 

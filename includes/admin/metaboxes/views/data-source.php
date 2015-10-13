@@ -21,7 +21,7 @@ $forms = gravityview_get_forms();
 <p>
 	<?php
 
-	if ( empty( $current_form ) ) {
+	if ( empty( $current_form ) && GVCommon::has_cap( 'gravityforms_create_form' ) ) {
 		?>
 		<a class="button button-primary" href="#gv_start_fresh" title="<?php esc_attr_e( 'Start Fresh', 'gravityview' ); ?>"><?php esc_html_e( 'Start Fresh', 'gravityview' ); ?></a>
 

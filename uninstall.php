@@ -34,7 +34,7 @@ class GravityView_Uninstall {
 		 */
 		$delete = GravityView_Settings::get_instance()->get_app_setting('delete-on-uninstall');
 
-		if( 'delete' === $delete ) {
+		if( GVCommon::has_cap( 'gravityview_uninstall' ) && 'delete' === $delete ) {
 			$this->fire_everything();
 		}
 	}
