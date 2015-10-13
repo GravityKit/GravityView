@@ -247,6 +247,7 @@ class GravityView_Roles_Capabilities {
 			'gravityview_view_settings',
 			'gravityview_edit_settings',
 			'gravityview_uninstall', // Ability to trigger the Uninstall @todo
+			'gravityview_contact_support', // Whether able to send a message to support via the Support Port
 		);
 
 		// Edit, publish, delete own and others' stuff
@@ -259,7 +260,6 @@ class GravityView_Roles_Capabilities {
 			'publish_gravityviews',
 			'delete_published_gravityviews',
 			'edit_published_gravityviews',
-			'gravityview_contact_support',
 			'copy_gravityviews', // For duplicate/clone View functionality
 
 			// GF caps_to_check
