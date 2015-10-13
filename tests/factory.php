@@ -50,25 +50,41 @@ class GV_UnitTest_Factory_For_View extends WP_UnitTest_Factory_For_Post {
 		$this->default_generation_definitions = array(
 			'post_status' => 'publish',
 			'post_title' => new WP_UnitTest_Generator_Sequence( 'GravityView title %s' ),
-			'post_content' => '',
-			'post_excerpt' => '',
+			'post_content' => new WP_UnitTest_Generator_Sequence( 'Post content %s' ),
+			'post_excerpt' => new WP_UnitTest_Generator_Sequence( 'Post excerpt %s' ),
+			'post_author' => '',
 			'post_type' => 'gravityview',
 			'form_id' => $form['id'],
-			'settings' => GravityView_View_Data::get_default_args(),
 		);
 	}
 
+	/**
+	 * Alias for parent method
+	 * Only purpose is to add return values for IDE
+	 * @return array|null|WP_Post
+	 */
+	function create_and_get( $args = array(), $generation_definitions = null ) {
+		return parent::create_and_get( $args, $generation_definitions );
+	}
+
+	/**
+	 * @param $args
+	 *
+	 * @return int|WP_Error
+	 */
 	function create_object( $args ) {
 
-		$args = wp_parse_args( $args, $this->default_generation_definitions );
+		$form_id = $args['form_id'];
+		$settings = isset( $args['settings'] ) ? $args['settings'] : GravityView_View_Data::get_default_args();
+		$fields = isset( $args['fields'] ) ? $args['fields'] : array();
 
 		$insert_post_response = parent::create_object( $args );
 
-		if( $insert_post_response && !is_wp_error( $insert_post_response ) ) {
+		if( $insert_post_response && ! is_wp_error( $insert_post_response ) ) {
 
 			$view_meta = array(
-				'_gravityview_form_id' => $args['form_id'],
-				'_gravityview_template_settings' => $args['settings'],
+				'_gravityview_form_id' => $form_id,
+				'_gravityview_template_settings' => $settings,
 				'_gravityview_directory_template' => 'preset_business_data',
 				'_gravityview_directory_widgets' => 'a:0:{}',
 				'_gravityview_directory_fields' => 'a:1:{s:23:"directory_table-columns";a:3:{s:13:"535d63d1488b0";a:9:{s:2:"id";s:1:"4";s:5:"label";s:13:"Business Name";s:10:"show_label";s:1:"1";s:12:"custom_label";s:0:"";s:12:"custom_class";s:0:"";s:12:"show_as_link";s:1:"0";s:13:"search_filter";s:1:"0";s:13:"only_loggedin";s:1:"0";s:17:"only_loggedin_cap";s:4:"read";}s:13:"535d63d379a3c";a:9:{s:2:"id";s:2:"12";s:5:"label";s:20:"Business Description";s:10:"show_label";s:1:"1";s:12:"custom_label";s:0:"";s:12:"custom_class";s:0:"";s:12:"show_as_link";s:1:"0";s:13:"search_filter";s:1:"0";s:13:"only_loggedin";s:1:"0";s:17:"only_loggedin_cap";s:4:"read";}s:13:"535d63dc735a6";a:9:{s:2:"id";s:1:"2";s:5:"label";s:7:"Address";s:10:"show_label";s:1:"1";s:12:"custom_label";s:0:"";s:12:"custom_class";s:0:"";s:12:"show_as_link";s:1:"0";s:13:"search_filter";s:1:"0";s:13:"only_loggedin";s:1:"0";s:17:"only_loggedin_cap";s:4:"read";}}}',
@@ -92,10 +108,46 @@ class GV_UnitTest_Factory_For_User extends WP_UnitTest_Factory_For_User {
 		if( ! empty( $args['user_login'] ) ) {
 			$user = get_user_by( 'login', $args['user_login'] );
 		} else if( ! empty( $args['id'] ) ) {
-			$user = get_user_by( 'id', $args['id'] );
+			$user = $this->get_object_by_id( $args['id'] );
 		}
 
-		return $user ? $user->ID : parent::create( $args, $generation_definitions );
+		if( ! $user ) {
+			$user_id = parent::create( $args, $generation_definitions );
+			$user = $this->get_object_by_id( $user_id );
+		}
+
+		$this->_add_gravityview_caps( $user );
+
+		return $user->ID;
+	}
+
+	function create_object( $args ) {
+		return wp_insert_user( $args );
+	}
+
+	/**
+	 * Add GravityView user caps based on role
+	 * @since 1.15
+	 * @param WP_User $user
+	 */
+	function _add_gravityview_caps( WP_User $user ) {
+		foreach( $user->roles as $role ) {
+			$capabilities = GravityView_Roles_Capabilities::all_caps( $role );
+
+			foreach ( $capabilities as $cap ) {
+				$user->add_cap( $cap, true );
+			}
+		}
+	}
+
+	/**
+	 * @param array $args
+	 * @param null $generation_definitions
+	 *
+	 * @return WP_User
+	 */
+	function create_and_get( $args = array(), $generation_definitions = null ) {
+		return parent::create_and_get( $args, $generation_definitions );
 	}
 
 	/**
@@ -127,7 +179,10 @@ class GV_UnitTest_Factory_For_User extends WP_UnitTest_Factory_For_User {
 	 * @return WP_User
 	 */
 	function set( $user_id ) {
-		return wp_set_current_user( $user_id );
+		$user = wp_set_current_user( $user_id );
+
+		$this->_add_gravityview_caps( $user );
+		return $user;
 	}
 }
 

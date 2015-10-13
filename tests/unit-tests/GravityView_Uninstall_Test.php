@@ -2,13 +2,13 @@
 
 /**
  * @since 1.15
+ * @group uninstall
  * Class GravityView_Uninstall_Test
  */
 class GravityView_Uninstall_Test extends GV_UnitTestCase {
 
 	/**
 	 * @since 1.15
-	 * @group uninstall
 	 * @covers GravityView_Uninstall::fire_everything()
 	 */
 	function test_fire_everything() {
@@ -19,9 +19,9 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 
 		$all_forms = GFAPI::get_forms();
 
-		$views = $this->factory->view->create_many( $create_count, array(), array( 'form_id' => $form['id'] ) );
+		$views = $this->factory->view->create_many( $create_count, array( 'form_id' => $form['id'] ) );
 
-		$entry_ids = $this->factory->entry->create_many( $create_count, array(), array( 'form_id' => $form['id'] ) );
+		$entry_ids = $this->factory->entry->create_many( $create_count, array( 'form_id' => $form['id'] ) );
 
 		$connected = gravityview_get_connected_views( $form['id'] );
 
@@ -33,6 +33,16 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 		$this->assertEquals( $create_count, count( array_filter( $entry_ids ) ) );
 
 		$this->_set_up_expected_options();
+
+	### DO NOT DELETE WHEN THE USER DOESN'T HAVE THE CAPABILITY
+
+		$user = $this->factory->user->create_and_set(array(
+			'user_login'  => 'administrator',
+			'user_pass'   => 'administrator',
+			'role'        => 'administrator',
+		));
+
+		$this->assertTrue( GVCommon::has_cap( 'gravityview_uninstall' ) );
 
 	### DO NOT DELETE WHEN IT IS NOT SET OR SET TO FALSE
 

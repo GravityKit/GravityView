@@ -7,6 +7,9 @@ class GV_UnitTestCase extends WP_UnitTestCase {
 	 */
 	var $factory;
 
+	/**
+	 * @inheritDoc
+	 */
 	function setUp() {
 		parent::setUp();
 
@@ -17,6 +20,15 @@ class GV_UnitTestCase extends WP_UnitTestCase {
 		@GFForms::setup_database();
 
 		$this->factory = new GF_UnitTest_Factory( $this );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	function tearDown() {
+		/** @see https://core.trac.wordpress.org/ticket/29712 */
+		wp_set_current_user( 0 );
+		parent::tearDown();
 	}
 
 }

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @group editentry
+ */
 class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 	/**
@@ -55,8 +58,10 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			),
 		));
 
+		$this->assertNotEmpty( $view, 'There was an error creating the View' );
+
 		$post_id = $this->factory->post->create(array(
-			'post_title' => new WP_UnitTest_Generator_Sequence( __METHOD__ . ' %s' ),
+			'post_title' => ( new WP_UnitTest_Generator_Sequence( __METHOD__ . ' %s' ) )->next(),
 			'post_content' => sprintf( '[gravityview id="%d"]', $view->ID ),
 		));
 
@@ -69,6 +74,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		###
 		$edit_link_no_post = GravityView_Edit_Entry::get_edit_link( $entry, $view->ID );
 
+		// A link to the raw
 		$this->assertEquals( '?page=gf_entries&view=entry&edit='.$nonce, $edit_link_no_post );
 
 		$args = array(
@@ -80,7 +86,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			'edit' => $nonce,
 		);
 
-		// The test thinks we have multiple Views. Correct that.
+		// When running all tests, this test thinks we have multiple Views. Correct that.
 		GravityView_View::getInstance()->setViewId( $view->ID );
 
 		###
@@ -89,7 +95,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$edit_link_with_post = GravityView_Edit_Entry::get_edit_link( $entry, $view->ID, $post_id );
 
 		$this->assertEquals( add_query_arg( $args, 'http://example.org/' ), $edit_link_with_post );
-
 	}
 
 	/**
@@ -107,6 +112,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @group capabilities
 	 * @covers GravityView_Edit_Entry::check_user_cap_edit_entry()
 	 */
 	public function test_check_user_cap_edit_entry() {
@@ -127,20 +133,19 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			),
 		));
 
-		$author_id = $this->factory->user->create( array(
+		$author = $this->factory->user->create_and_get( array(
 			'user_login' => 'author',
 			'role' => 'author'
 		) );
 
-		$subscriber_id = $this->factory->user->create( array(
-			'user_login' => 'subscriber',
-			'role' => 'subscriber'
-		) );
+		$author_id = $author->ID;
 
-		$contributor_id = $this->factory->user->create( array(
+		$contributor = $this->factory->user->create_and_get( array(
 			'user_login' => 'contributor',
 			'role' => 'contributor'
 		) );
+
+		$contributor_id = $contributor->ID;
 
 		$editor_id = $this->factory->user->create( array(
 			'user_login' => 'editor',
@@ -149,14 +154,25 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'created_by' => $editor_id
+			'created_by' => $contributor_id
 		) );
+
+
+		$subscriber_id = $this->factory->user->create( array(
+			'user_login' => 'subscriber',
+			'role' => 'subscriber'
+		) );
+
+		#####
+		##### Test Caps & Permissions always being able to edit
+		#####
+		$this->_add_and_remove_caps_test( $entry, $view_user_edit_enabled );
 
 		#####
 		##### Test Entry with "Created By"
 		#####
 
-		$this->factory->user->set( $editor_id );
+		$this->factory->user->set( $contributor_id );
 
 		// User Edit Enabled
 		$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ) );
@@ -166,11 +182,9 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		/** @var WP_User $admin */
 		$admin = $this->factory->user->create_and_get( array(
-			'user_login' => 'admin',
+			'user_login' => 'administrator',
 			'role' => 'administrator'
 		) );
-
-		$admin->add_cap('gravityforms_edit_entries');
 
 		$admin_id = $admin->ID;
 
@@ -186,13 +200,14 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		// Admin always can edit
 		$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_disabled->ID ) );
 
+
 		#####
 		##### Test Entry _without_ "Created By"
 		#####
 
 		$entry_without_created_by = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'created_by' => $editor_id
+			'created_by' => $contributor_id
 		) );
 
 		unset( $entry_without_created_by['created_by'] );
@@ -202,7 +217,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		// Admin always can edit, even without "created_by"
 		$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view_user_edit_disabled->ID ) );
 
-		$this->factory->user->set( $editor_id );
+		$this->factory->user->set( $contributor_id );
 
 		$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view->ID ) );
 
@@ -251,6 +266,42 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		remove_filter( 'gravityview/edit_entry/user_can_edit_entry', '__return_false' );
 
+	}
+
+	/**
+	 * Test Caps & Permissions always being able to edit
+	 *
+	 * @param $entry
+	 * @param $view_user_edit_enabled
+	 */
+	public function _add_and_remove_caps_test( $entry, $view_user_edit_enabled ) {
+
+		$user = $this->factory->user->create_and_set( array( 'role' => 'zero' ) );
+
+		$current_user = wp_get_current_user();
+
+		$this->assertEquals( $user->ID, $current_user->ID );
+
+		$full_access = array(
+			'gravityview_full_access',
+			'gform_full_access',
+			'gravityview_edit_others_entries',
+		);
+
+		foreach( $full_access as $cap ) {
+
+			$user->remove_all_caps();
+
+			// Can't edit now
+			$this->assertFalse( current_user_can( $cap ), $cap );
+			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ), $cap );
+
+			$user->add_cap( $cap );
+
+			// Can edit now
+			$this->assertTrue( current_user_can( $cap ), $cap );
+			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ), $cap );
+		}
 	}
 
 	/**
