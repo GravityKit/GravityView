@@ -50,11 +50,12 @@ class GVCommon {
 	 *
 	 * @param string|array $caps Single capability or array of capabilities
 	 * @param int $object_id (optional) Parameter can be used to check for capabilities against a specific object, such as a post or user
+	 * @param int|null $user_id (optional) Check the capabilities for a user who is not necessarily the currently logged-in user
 	 *
 	 * @return bool True: user has at least one passed capability; False: user does not have any defined capabilities
 	 */
-	public static function has_cap( $caps = '', $object_id = NULL ) {
-		return GravityView_Roles_Capabilities::has_cap( $caps, $object_id );
+	public static function has_cap( $caps = '', $object_id = null, $user_id = null ) {
+		return GravityView_Roles_Capabilities::has_cap( $caps, $object_id, $user_id );
 	}
 
 	/**
