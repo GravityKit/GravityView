@@ -326,7 +326,7 @@ class GravityView_Roles_Capabilities {
 		}
 
 		// Add full access caps for GV & GF
-		$caps_to_check = self::maybe_add_full_access_caps( (array)$caps_to_check );
+		$caps_to_check = self::maybe_add_full_access_caps( $caps_to_check );
 
 		foreach ( $caps_to_check as $cap ) {
 			if( ! is_null( $object_id ) ) {
@@ -351,6 +351,8 @@ class GravityView_Roles_Capabilities {
 	 * @return array
 	 */
 	public static function maybe_add_full_access_caps( $caps_to_check = array() ) {
+
+		$caps_to_check = (array)$caps_to_check;
 
 		$all_gravityview_caps = self::all_caps();
 
