@@ -147,16 +147,13 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 	 */
 	public function test_has_cap_user_id_parameter() {
 
-		$nothing_man_caps = array();
-		add_role( 'nothing_man', "Living in a Nowhere Land", $nothing_man_caps );
-
 		// Create a user with no capabilities
-		$nothing_man = $this->factory->user->create_and_set( array(
-			'user_login' => 'nothing_man',
-			'role' => 'nothing_man',
+		$zero = $this->factory->user->create_and_set( array(
+			'user_login' => 'zero',
+			'role' => 'zero',
 		) );
 
-		$this->assertEquals( $nothing_man, wp_get_current_user() );
+		$this->assertEquals( $zero, wp_get_current_user() );
 
 		foreach( $default_roles as $role ) {
 
@@ -171,10 +168,10 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 				$this->assertTrue( GravityView_Roles_Capabilities::has_cap( $cap, NULL, $user_id ), "Checking {$role} for {$cap} capability with user #{$user_id}" );
 			}
 
-			$this->assertEquals( $nothing_man, wp_get_current_user() );
+			$this->assertEquals( $zero, wp_get_current_user() );
 		}
 
-		$this->assertEquals( $nothing_man, wp_get_current_user() );
+		$this->assertEquals( $zero, wp_get_current_user() );
 	}
 
 	/**
@@ -185,26 +182,22 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 	 */
 	public function test_has_cap_gravityview_full_access() {
 
-		$nothing_man_caps = array();
-		add_role( 'nothing_man', "Living in a Nowhere Land", $nothing_man_caps );
-
 		// Create a user with no capabilities
-		$nothing_man = $this->factory->user->create_and_set( array(
-			'user_login' => 'nothing_man',
-			'role' => 'nothing_man',
+		$zero = $this->factory->user->create_and_set( array(
+			'user_login' => 'zero',
+			'role' => 'zero',
 		) );
 
 		$role_caps = GravityView_Roles_Capabilities::all_caps( 'all' );
 
-		// Nothing Man can't access anything by default
+		// Zero can't access anything by default
 		foreach( $role_caps as $cap ) {
 			$this->assertFalse( GravityView_Roles_Capabilities::has_cap( $cap ) );
 		}
 
-		// Then Nothing Man becomes Something
-		$nothing_man->add_cap( 'gravityview_full_access' );
+		$zero->add_cap( 'gravityview_full_access' );
 
-		// And now Nothing Man can do anything
+		// With GV full access, $zero is a $hero
 		foreach( $role_caps as $cap ) {
 			$this->assertTrue( GravityView_Roles_Capabilities::has_cap( $cap ) );
 		}
