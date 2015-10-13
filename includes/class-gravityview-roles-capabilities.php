@@ -50,7 +50,6 @@ class GravityView_Roles_Capabilities {
 	}
 
 	/**
-	 * Add Members plugin hook
 	 * @since 1.15
 	 */
 	private function add_hooks() {
@@ -101,12 +100,20 @@ class GravityView_Roles_Capabilities {
 	}
 
 	/**
+	 * If a user has been assigned custom capabilities for Gravity Forms, but they haven't been assigned similar abilities
+	 * in GravityView yet, we give temporary access to the permissions, until they're set.
 	 *
-	 * @param $usercaps
+	 * This is for custom roles that GravityView_Roles_Capabilities::add_caps() doesn't modify. If you have a
+	 * custom role with the ability to edit any Gravity Forms entries (`gravityforms_edit_entries`), you would
+	 * expect GravityView to match that capability, until the role has been updated with GravityView caps.
 	 *
-	 * @return mixed
+	 * @since 1.15
+	 *
+	 * @param array $usercaps User's allcaps array
+	 *
+	 * @return array
 	 */
-	function add_gravity_forms_usercaps_to_gravityview_caps( $usercaps ) {
+	private function add_gravity_forms_usercaps_to_gravityview_caps( $usercaps ) {
 
 		$gf_to_gv_caps = array(
 			'gravityforms_edit_entries'     => 'gravityview_edit_others_entries',
@@ -132,11 +139,11 @@ class GravityView_Roles_Capabilities {
 	function members_register_cap_group() {
 		if ( function_exists( 'members_register_cap_group' ) ) {
 			$args = array(
-				'label'       => __( 'GravityView' ),
-				'icon'        => 'gv-icon-astronaut-head',
-				'caps_to_check'        => self::all_caps(),
-				'merge_added' => true,
-				'diff_added'  => false,
+				'label'         => __( 'GravityView' ),
+				'icon'          => 'gv-icon-astronaut-head',
+				'caps_to_check' => self::all_caps(),
+				'merge_added'   => true,
+				'diff_added'    => false,
 			);
 			members_register_cap_group( 'gravityview', $args );
 		}
@@ -171,6 +178,7 @@ class GravityView_Roles_Capabilities {
 		if ( ! isset( $wp_roles ) ) {
 			$wp_roles = new WP_Roles();
 		}
+
 		return $wp_roles;
 	}
 
@@ -344,6 +352,8 @@ class GravityView_Roles_Capabilities {
 	}
 
 	/**
+	 * Add Gravity Forms and GravityView's "full access" caps when any other caps are checked against.
+	 *
 	 * @since 1.15
 
 	 * @param array $caps_to_check

@@ -1,13 +1,13 @@
 <?php
 
 /**
+ * @group merge_tags
  * @since 1.15
  */
 class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 
 	/**
 	 * @since 1.15
-	 * @group merge_tags
 	 * @covers GravityView_Merge_Tags::replace_variables()
 	 */
 	function test_replace_variables() {

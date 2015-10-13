@@ -17,7 +17,7 @@ class GV_License_Handler {
 
 	/**
 	 * Post ID on gravityview.co
-	 * @since 1.14.4
+	 * @since 1.15
 	 */
 	const item_id = 17;
 
