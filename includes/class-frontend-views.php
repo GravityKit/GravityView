@@ -20,7 +20,7 @@ class GravityView_frontend {
 	 * @since 1.7.4.1
 	 * @var array
 	 */
-	private static $search_parameters = array( 'gv_search', 'gv_start', 'gv_end', 'gv_id', 'filter_*' );
+	private static $search_parameters = array( 'gv_search', 'gv_start', 'gv_end', 'gv_id', 'gv_by', 'filter_*' );
 
 	/**
 	 * Is the currently viewed post a `gravityview` post type?
