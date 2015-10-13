@@ -175,7 +175,8 @@ class GravityView_Roles_Capabilities {
 	}
 
 	/**
-	 * Add capabilities to their respective roles
+	 * Add capabilities to their respective roles if they don't already exist
+	 * This could be simpler, but the goal is speed.
 	 *
 	 * @since 1.15
 	 * @return void
@@ -186,14 +187,33 @@ class GravityView_Roles_Capabilities {
 
 		if ( is_object( $wp_roles ) ) {
 
-			foreach( $wp_roles->get_names() as $role_slug => $role_label ) {
+			$_use_db_backup = $wp_roles->use_db;
+
+			/**
+			 * When $use_db is true, add_cap() performs update_option() every time.
+			 * We disable updating the database here, then re-enable it below.
+			 */
+			$wp_roles->use_db = false;
 
 			$capabilities = self::all_caps( false, false );
 
-				foreach( $capabilities as $cap ) {
+			foreach ( $capabilities as $role_slug => $role_caps ) {
+				foreach ( $role_caps as $cap ) {
 					$wp_roles->add_cap( $role_slug, $cap );
 				}
 			}
+
+			/**
+			 * Update the option, as it does in add_cap when $use_db is true
+			 *
+			 * @see WP_Roles::add_cap() Original code
+			 */
+			update_option( $wp_roles->role_key, $wp_roles->roles );
+
+			/**
+			 * Restore previous $use_db setting
+			 */
+			$wp_roles->use_db = $_use_db_backup;
 		}
 	}
 
