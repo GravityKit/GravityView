@@ -108,29 +108,19 @@ class GravityView_Roles_Capabilities {
 	 */
 	function add_gravity_forms_usercaps_to_gravityview_caps( $usercaps ) {
 
-		$gfcaps_to_gvcaps = $this->map_gravity_forms_caps();;
-		foreach( $gfcaps_to_gvcaps as $gf_cap => $gv_cap ) {
-			if( isset( $usercaps[ $gf_cap ] ) && !isset( $usercaps[ $gv_cap ]) ) {
+		$gf_to_gv_caps = array(
+			'gravityforms_edit_entries'     => 'gravityview_edit_others_entries',
+			'gravityforms_delete_entries'   => 'gravityview_delete_others_entries',
+			'gravityforms_edit_entry_notes' => 'gravityview_edit_others_entry_notes',
+		);
+
+		foreach ( $gf_to_gv_caps as $gf_cap => $gv_cap ) {
+			if ( isset( $usercaps[ $gf_cap ] ) && ! isset( $usercaps[ $gv_cap ] ) ) {
 				$usercaps[ $gv_cap ] = $usercaps[ $gf_cap ];
 			}
 		}
 
 		return $usercaps;
-	}
-
-	/**
-	 * If a user has been assigned custom capabilities for Gravity Forms, but they haven't been assigned similar abilities
-	 * in GravityView yet, we give temporary access to the permissions, until they're set.
-	 *
-	 * @return array
-	 */
-	function map_gravity_forms_caps() {
-
-		return array(
-			'gravityforms_edit_entries' => 'gravityview_edit_others_entries',
-			'gravityforms_delete_entries' => 'gravityview_delete_others_entries',
-			'gravityforms_edit_entry_notes' => 'gravityview_edit_others_entry_notes',
-		);
 	}
 
 	/**
