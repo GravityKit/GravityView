@@ -194,6 +194,14 @@
       display: block;
     }
 
+    /**
+     * On smaller screens, the radio inputs were displaying on different lines than the labels.
+     * This keeps the <span>s and the <input>s together.
+     */
+    label {
+      display: inline-block;
+    }
+
     span.description {
       display: block;
       font-style: normal;
