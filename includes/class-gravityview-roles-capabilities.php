@@ -198,7 +198,7 @@ class GravityView_Roles_Capabilities {
 
 			foreach( $wp_roles->get_names() as $role_slug => $role_label ) {
 
-				$capabilities = self::all_caps( $role_slug );
+			$capabilities = self::all_caps( false, false );
 
 				foreach( $capabilities as $cap ) {
 					$wp_roles->add_cap( $role_slug, $cap );
@@ -214,14 +214,15 @@ class GravityView_Roles_Capabilities {
 	 *
 	 * @since 1.15
 	 *
-	 * @param string $role If set, get the caps_to_check for a specific role. Pass 'all' to get all caps_to_check in a flat array. Default: `all`
+	 * @param string $single_role If set, get the caps_to_check for a specific role. Pass 'all' to get all caps_to_check in a flat array. Default: `all`
+	 * @param boolean $flat_array True: return all caps in a one-dimensional array. False: a multi-dimensional array with `$single_role` as keys and the caps as the values
 	 *
 	 * @return array If $role is set, flat array of caps_to_check. Otherwise, a multi-dimensional array of roles and their caps_to_check with the following keys: 'administrator', 'editor', 'author', 'contributor', 'subscriber'
 	 */
-	public static function all_caps( $role = 'all' ) {
+	public static function all_caps( $single_role = false, $flat_array = true ) {
 
 		// Change settings
-		$administrator = array(
+		$administrator_caps = array(
 			'gravityview_full_access', // Grant access to all caps_to_check
 			'gravityview_view_settings',
 			'gravityview_edit_settings',
@@ -229,7 +230,7 @@ class GravityView_Roles_Capabilities {
 		);
 
 		// Edit, publish, delete own and others' stuff
-		$editor = array(
+		$editor_caps = array(
 			'edit_others_gravityviews',
 			'read_private_gravityviews',
 			'delete_private_gravityviews',
@@ -250,7 +251,7 @@ class GravityView_Roles_Capabilities {
 		);
 
 		// Edit, publish and delete own stuff
-		$author = array(
+		$author_caps = array(
 			// GF caps_to_check
 			'gravityview_edit_entries',
 			'gravityview_edit_form_entries', // This is similar to `gravityview_edit_entries`, but checks against a Form ID $object_id
@@ -260,46 +261,33 @@ class GravityView_Roles_Capabilities {
 		);
 
 		// Edit and delete drafts but not publish
-		$contributor = array(
+		$contributor_caps = array(
 			'edit_gravityviews', // Affects if you're able to see the Views menu in the Admin
 			'delete_gravityviews',
 			'gravityview_support_port', // Display GravityView Help beacon
 		);
 
 		// Read only
-		$subscriber = array(
+		$subscriber_caps = array(
 			'gravityview_view_entries',
 			'gravityview_view_others_entries',
 		);
 
-		$capabilities = array();
-
-		switch( $role ) {
-			case 'subscriber':
-				$capabilities = $subscriber;
-				break;
-			case 'contributor':
-				$capabilities = array_merge( $contributor, $subscriber );
-				break;
-			case 'author':
-				$capabilities = array_merge( $author, $contributor, $subscriber );
-				break;
-			case 'editor':
-				$capabilities = array_merge( $editor, $author, $contributor, $subscriber );
-				break;
-			case 'administrator':
-			case 'all':
-				$capabilities = array_merge( $administrator, $editor, $author, $contributor, $subscriber );
-				break;
-		}
+		$subscriber = $subscriber_caps;
+		$contributor = array_merge( $contributor_caps, $subscriber_caps );
+		$author = array_merge( $author_caps, $contributor_caps, $subscriber_caps );
+		$editor = array_merge( $editor_caps, $author_caps, $contributor_caps, $subscriber_caps );
+		$administrator = array_merge( $administrator_caps, $editor_caps, $author_caps, $contributor_caps, $subscriber_caps );
+		$all = $administrator;
 
 		// If role is set, return caps_to_check for just that role.
-		if( $role ) {
-			return $capabilities;
+		if( $single_role ) {
+			$caps = isset( ${$single_role} ) ? ${$single_role} : false;
+			return $flat_array ? $caps : array( $single_role => $caps );
 		}
 
-		// By default, return multi-dimensional array of all caps_to_check
-		return compact( 'administrator', 'editor', 'author', 'contributor', 'subscriber' );
+		// Otherwise, return multi-dimensional array of all caps_to_check
+		return $flat_array ? $all : compact( 'administrator', 'editor', 'author', 'contributor', 'subscriber' );
 	}
 
 	/**

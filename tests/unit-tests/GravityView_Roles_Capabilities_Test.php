@@ -51,17 +51,17 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 	 */
 	public function test_all_caps() {
 
-		$all_roles_array = GravityView_Roles_Capabilities::all_caps( false );
+		$all_roles_array = GravityView_Roles_Capabilities::all_caps( false, false );
 
 		foreach( array( 'all', 'administrator', 'editor', 'author', 'contributor', 'subscriber' ) as $role ) {
 			${"$role"} = GravityView_Roles_Capabilities::all_caps( $role );
 		}
 
 		$this->assertEquals( $subscriber, $all_roles_array['subscriber'] );
-		$this->assertEquals( $contributor, array_merge( $all_roles_array['contributor'], $all_roles_array['subscriber'] ) );
-		$this->assertEquals( $author, array_merge( $all_roles_array['author'], $all_roles_array['contributor'], $all_roles_array['subscriber'] ) );
-		$this->assertEquals( $editor, array_merge( $all_roles_array['editor'], $all_roles_array['author'], $all_roles_array['contributor'], $all_roles_array['subscriber'] ) );
-		$this->assertEquals( $administrator, array_merge( $all_roles_array['administrator'], $all_roles_array['editor'], $all_roles_array['author'], $all_roles_array['contributor'], $all_roles_array['subscriber'] ) );
+		$this->assertEquals( $contributor, $all_roles_array['contributor'] );
+		$this->assertEquals( $author, $all_roles_array['author'] );
+		$this->assertEquals( $editor, $all_roles_array['editor'] );
+		$this->assertEquals( $administrator, $all_roles_array['administrator'] );
 		$this->assertEquals( $administrator, $all );
 	}
 
