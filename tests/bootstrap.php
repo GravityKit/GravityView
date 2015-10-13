@@ -140,6 +140,8 @@ class GV_Unit_Tests_Bootstrap {
 	 */
 	private function create_stubs() {
 
+		add_role( 'zero', "No Capabilities", array() );
+
 		$this->form_id = GFAPI::add_form( array(
 			'title' => 'This is the form title',
 			'fields' => array(
