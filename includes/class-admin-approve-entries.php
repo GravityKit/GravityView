@@ -251,11 +251,15 @@ class GravityView_Admin_ApproveEntries {
 	 * @param array|boolean $entries If array, array of entry IDs that are to be updated. If true: update all entries.
 	 * @param int $approved Approved status. If `0`: unapproved, if not empty, `Approved`
 	 * @param int $form_id The Gravity Forms Form ID
-	 * @return void
+	 * @return boolean|void
 	 */
 	private static function update_bulk( $entries, $approved, $form_id ) {
 
-		if( empty($entries) || ( $entries !== true && !is_array($entries) ) ) { return false; }
+		if( empty($entries) || ( $entries !== true && !is_array($entries) ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ' Entries were empty or malformed.', $entries );
+			return false;
+		}
+
 		if( ! GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . ' User does not have the `gravityview_moderate_entries` capability.' );
 			return false;
@@ -288,7 +292,8 @@ class GravityView_Admin_ApproveEntries {
 	public static function update_approved( $entry_id = 0, $approved = 0, $form_id = 0, $approvedcolumn = 0) {
 
 		if( !class_exists( 'GFAPI' ) ) {
-			return;
+			do_action( 'gravityview_log_error', __METHOD__ . 'GFAPI does not exist' );
+			return false;
 		}
 
 		if( empty( $approvedcolumn ) ) {
@@ -423,14 +428,14 @@ class GravityView_Admin_ApproveEntries {
 
 		if( empty( $_POST['entry_id'] ) || empty( $_POST['form_id'] ) ) {
 
-			do_action( 'gravityview_log_error', 'GravityView_Admin_ApproveEntries[ajax_update_approved] entry_id or form_id are empty.', $_POST );
+			do_action( 'gravityview_log_error', __METHOD__ . ' entry_id or form_id are empty.', $_POST );
 
 			$result = false;
 		}
 
 		else if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxgfentries' ) ) {
 
-			do_action( 'gravityview_log_error', 'GravityView_Admin_ApproveEntries[ajax_update_approved] Security check failed.', $_POST );
+			do_action( 'gravityview_log_error', __METHOD__ . ' Security check failed.', $_POST );
 
 			$result = false;
 		}

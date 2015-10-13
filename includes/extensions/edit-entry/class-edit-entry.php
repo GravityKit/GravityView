@@ -18,6 +18,9 @@ if ( ! defined( 'WPINC' ) ) {
 
 class GravityView_Edit_Entry {
 
+    /**
+     * @var string
+     */
 	static $file;
 
 	static $instance;
@@ -31,7 +34,7 @@ class GravityView_Edit_Entry {
 
 	function __construct() {
 
-		self::$file = plugin_dir_path( __FILE__ );
+        self::$file = plugin_dir_path( __FILE__ );
 
         if( is_admin() ) {
             $this->load_components( 'admin' );

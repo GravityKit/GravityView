@@ -60,6 +60,7 @@ class GravityView_Roles_Capabilities {
 		add_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 10, 3 );
 	}
 
+
 	/**
 	 * Add support for `gravityview_full_access` capability, and
 	 *
@@ -67,9 +68,10 @@ class GravityView_Roles_Capabilities {
 	 *
 	 * @since 1.15
 	 *
-	 * @param $allcaps
-	 * @param $caps
-	 * @param $args
+	 * @param array   $allcaps An array of all the user's capabilities.
+	 * @param array   $caps    Actual capabilities for meta capability.
+	 * @param array   $args    Optional parameters passed to has_cap(), typically object ID.
+	 * @param WP_User|null $user    The user object, in WordPress 3.7.0 or higher
 	 *
 	 * @return mixed
 	 */
