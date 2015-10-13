@@ -71,17 +71,17 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 	public function test_maybe_add_full_access_caps() {
 
 		// Add GV global
-		$gv_cap = ['gravityview_edit_settings'];
+		$gv_cap = array('gravityview_edit_settings');
 		$merged_gv = GravityView_Roles_Capabilities::maybe_add_full_access_caps( $gv_cap );
 		$this->assertEquals( array( 'gravityview_edit_settings', 'gravityview_full_access' ), $merged_gv );
 
 		// Add GF global
-		$gf_cap = ['gravityforms_edit_entries'];
+		$gf_cap = array('gravityforms_edit_entries');
 		$merged_gf = GravityView_Roles_Capabilities::maybe_add_full_access_caps( $gf_cap );
 		$this->assertEquals( array( 'gravityforms_edit_entries', 'gform_full_access' ), $merged_gf );
 
 		// Don't dupe
-		$gv_full_cap = ['gform_full_access'];
+		$gv_full_cap = array('gform_full_access');
 		$merged_gv_full = GravityView_Roles_Capabilities::maybe_add_full_access_caps( $gv_full_cap );
 		$this->assertEquals( $gv_full_cap, $merged_gv_full );
 	}
