@@ -1,5 +1,7 @@
 <?php
 
+defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
+
 /**
  * @group entry_link_shortcode
  * @since 1.15

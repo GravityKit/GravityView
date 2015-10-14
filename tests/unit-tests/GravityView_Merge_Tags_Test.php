@@ -1,5 +1,7 @@
 <?php
 
+defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
+
 /**
  * @group merge_tags
  * @since 1.15

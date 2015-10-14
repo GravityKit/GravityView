@@ -1,10 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zackkatz
- * Date: 10/10/15
- * Time: 5:05 PM
- */
+
+defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
 
 /**
  * @group roles

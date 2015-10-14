@@ -1,5 +1,7 @@
 <?php
 
+defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
+
 /**
  * @since 1.15
  * @group uninstall

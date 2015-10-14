@@ -1,5 +1,7 @@
 <?php
 
+defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
+
 class GravityView_Ajax_Test extends GV_UnitTestCase {
 
 	/**
