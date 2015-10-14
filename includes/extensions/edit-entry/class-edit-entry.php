@@ -42,7 +42,6 @@ class GravityView_Edit_Entry {
 
 
         $this->load_components( 'render' );
-		$this->load_components( 'shortcode' );
 
         // If GF User Registration Add-on exists
         if( class_exists( 'GFUser' ) ) {
@@ -268,8 +267,13 @@ class GravityView_Edit_Entry {
                 do_action('gravityview_log_debug', sprintf( 'GravityView_Edit_Entry[check_user_cap_edit_entry] User %s created the entry.', $current_user->ID ) );
 
                 $user_can_edit = true;
+
+            } else if( ! is_user_logged_in() ) {
+
+                do_action( 'gravityview_log_debug', __METHOD__ . ' No user defined; edit entry requires logged in user' );
             }
 
+            return $user_can_edit;
         }
 
         /**
