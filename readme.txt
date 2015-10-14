@@ -28,14 +28,15 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 	- Only add the Approve Entries column if user has the `gravityview_moderate_entries` capability (defaults to Editor role or higher)
 * Added: `[gv_entry_link]` shortcode to link directly to an entry. [Learn more](#TODO).
 	- Existing `[gv_delete_entry_link]` and `[gv_edit_entry_link]` shortcodes will continue to work
-* Added: Ability to filter View by form in the Admin. [Learn more](#TODO).
-* Added: Option to delete GravityView data when the plugin is uninstalled, then deleted. [Learn more](#TODO).
+* Added: Ability to filter View by form in the Admin. [Learn more](http://docs.gravityview.co/article/313-the-views-list-on-the-dashboard).
+* Added: Option to delete GravityView data when the plugin is uninstalled, then deleted. [Learn more](http://docs.gravityview.co/article/312-how-to-delete-the-gravityview-data-when-the-plugin-is-uninstalled).
 * Added: New support "Beacon" to easily search documentation and ask support questions
+* Added: Clear search button to the Search Widget (WP widget)
 * Fixed: `number_format()` PHP warning on blank Number fields
 * Fixed: `{created_by}` merge tags weren't being escaped using `esc_html()`
 * Fixed: Checkmark icons weren't always available when displaying checkbox input field
 * Fixed: When "Shorten Link Display" was enabled for Website fields, "Link Text" wasn't respected
-* Fixed: Only process "Update" Gravity Forms User Registration Addon feeds
+* Fixed: Only process "Create" Gravity Forms User Registration Addon feeds, by default the user role and the user display name format persist.
 * Fixed: Error with List field  `Call to undefined method GF_Field::get_input_type()`
 * Fixed: BuddyPress/bbPress `bbp_setup_current_user()` warning
 * Fixed: PHP Warnings
