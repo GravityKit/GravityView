@@ -273,7 +273,6 @@ class GravityView_Edit_Entry {
                 do_action( 'gravityview_log_debug', __METHOD__ . ' No user defined; edit entry requires logged in user' );
             }
 
-            return $user_can_edit;
         }
 
         /**
