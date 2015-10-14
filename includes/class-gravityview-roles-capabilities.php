@@ -285,6 +285,7 @@ class GravityView_Roles_Capabilities {
 		$contributor_caps = array(
 			'edit_gravityviews', // Affects if you're able to see the Views menu in the Admin
 			'delete_gravityviews',
+			'gravityview_getting_started', // Getting Started page access
 			'gravityview_support_port', // Display GravityView Support Port
 		);
 

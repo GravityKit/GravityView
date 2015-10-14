@@ -26,7 +26,7 @@ class GravityView_Welcome {
 	/**
 	 * @var string The capability users should have to view the page
 	 */
-	public $minimum_capability = 'manage_options';
+	public $minimum_capability = 'gravityview_getting_started';
 
 	/**
 	 * Get things started
@@ -499,7 +499,7 @@ class GravityView_Welcome {
 
 			<p class="about-description"><?php _e( 'GravityView is brought to you by:', 'gravityview' ); ?></p>
 
-			<div class="feature-section col three-col">
+			<div class="feature-section col two-col">
 
 				<div class="col">
 					<h2>Zack Katz</h2>
