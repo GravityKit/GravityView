@@ -270,7 +270,7 @@ class GravityView_Roles_Capabilities {
 			'gravityview_delete_others_entries',
 		);
 
-		// Edit, publish and delete own stuff
+		// Edit, delete own stuff
 		$author_caps = array(
 			// GF caps_to_check
 			'gravityview_edit_entries',

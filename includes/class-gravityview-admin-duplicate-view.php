@@ -56,14 +56,15 @@ class GravityView_Admin_Duplicate_View {
 	 * @return array If it's the All Views page, return unedited. Otherwise, add a link to create cloned draft of View
 	 */
 	function connected_form_links( $links = array(), $form = array() ) {
+		/** @global WP_Post $post */
 		global $post;
 
 		// We only want to add Clone links to the Edit View metabox
 		if( !$this->is_all_views_page() ) {
 
-			$duplicate_links = $this->make_duplicate_link_row( array(), $post );
-
-			$links[] = '<span>'.$duplicate_links['edit_as_new_draft'].'</span>';
+			if( $duplicate_links = $this->make_duplicate_link_row( array(), $post ) ) {
+				$links[] = '<span>' . $duplicate_links['edit_as_new_draft'] . '</span>';
+			}
 
 		}
 
@@ -224,15 +225,13 @@ class GravityView_Admin_Duplicate_View {
 	 * Add the link to action list for post_row_actions
 	 *
 	 * @since 1.6
+	 * @param array $actions Row action links. Defaults are 'Edit', 'Quick Edit', 'Restore, 'Trash', 'Delete Permanently', 'Preview', and 'View'
+	 * @param WP_Post $post
 	 */
 	public function make_duplicate_link_row( $actions, $post ) {
 
 		// Only process on GravityView Views
-		if( get_post_type( $post ) !== 'gravityview' ) {
-			return $actions;
-		}
-
-		if ( $this->current_user_can_copy( $post ) ) {
+		if ( get_post_type( $post ) === 'gravityview' && $this->current_user_can_copy( $post ) ) {
 
 			$clone_link = $this->get_clone_view_link( $post->ID, 'display', false );
 			$clone_text = __( 'Clone', 'gravityview' );
