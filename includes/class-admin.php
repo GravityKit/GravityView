@@ -473,6 +473,8 @@ class GravityView_Admin {
 
 		$is_gv_post_type_get = (isset($_GET['post_type']) && $_GET['post_type'] === 'gravityview');
 
+		$is_gv_settings_get = isset( $_GET['page'] ) && $_GET['page'] === 'gravityview_settings';
+
 		if( empty( $post ) && $pagenow === 'post.php' && !empty( $_GET['post'] ) ) {
 			$gv_post = get_post( intval( $_GET['post'] ) );
 			$is_gv_post_type = (!empty($gv_post) && !empty($gv_post->post_type) && $gv_post->post_type === 'gravityview');
@@ -480,12 +482,12 @@ class GravityView_Admin {
 			$is_gv_post_type = (!empty($post) && !empty($post->post_type) && $post->post_type === 'gravityview');
 		}
 
-		if( $is_gv_screen || $is_gv_post_type || $is_gv_post_type || $is_gv_post_type_get ) {
+		if( $is_gv_screen || $is_gv_post_type || $is_gv_post_type || $is_gv_post_type_get || $is_gv_settings_get ) {
 
 			// $_GET `post_type` variable
 			if(in_array($pagenow, array( 'post.php' , 'post-new.php' )) ) {
 				$is_page = 'single';
-			} elseif ( $plugin_page === 'gravityview_settings' || ( !empty( $_GET['page'] ) && $_GET['page'] === 'gravityview_settings' ) ) {
+			} else if ( in_array( $plugin_page, array( 'gravityview_settings', 'gravityview_page_gravityview_settings' ) ) || ( !empty( $_GET['page'] ) && $_GET['page'] === 'gravityview_settings' ) ) {
 				$is_page = 'settings';
 			} else {
 				$is_page = 'views';
