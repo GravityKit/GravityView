@@ -118,8 +118,6 @@ class GravityView_Settings extends GFAddOn {
 
 		$this->_load_license_handler();
 
-		$this->_capabilities_app_settings = apply_filters( 'gravityview_settings_capability' , 'manage_options' );
-
 		$this->license_key_notice();
 
 		add_filter( 'gform_addon_app_settings_menu_gravityview', array( $this, 'modify_app_settings_menu_title' ) );
