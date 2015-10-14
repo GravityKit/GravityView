@@ -14,6 +14,19 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 		$this->object = new GravityView_Entry_Link_Shortcode;
 	}
 
+	/**
+	 * @covers GravityView_Entry_Link_Shortcode::__construct
+	 * @covers GravityView_Entry_Link_Shortcode::add_hooks
+	 */
+	public function test_add_hooks() {
+		$this->assertTrue( shortcode_exists('gv_entry_link') );
+		$this->assertTrue( shortcode_exists('gv_edit_entry_link') );
+		$this->assertTrue( shortcode_exists('gv_delete_entry_link') );
+	}
+
+	/**
+	 * @covers GravityView_Entry_Link_Shortcode::shortcode
+	 */
 	public function test_shortcode() {
 
 		$form = $this->factory->form->create_and_get();
@@ -54,6 +67,9 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 		$this->_test_delete( $view, $entry, $atts );
 	}
 
+	/**
+	 * @covers GravityView_Entry_Link_Shortcode::read_shortcode
+	 */
 	function _test_read( $view, $entry, $atts ) {
 
 		$link = $this->object->read_shortcode( $atts );
@@ -65,6 +81,9 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'http://example.org/?p=4&entry=2', $link_return_url, 'no action, url only' );
 	}
 
+	/**
+	 * @covers GravityView_Entry_Link_Shortcode::delete_shortcode
+	 */
 	function _test_delete( $view, $entry, $atts ) {
 
 		// NO CAPS
@@ -90,6 +109,9 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 		$this->assertEquals( $delete_entry_delete_link, $delete_link_return_url, 'delete link URL only' );
 	}
 
+	/**
+	 * @covers GravityView_Entry_Link_Shortcode::edit_shortcode
+	 */
 	function _test_edit( $view, $entry, $atts ) {
 
 		$nonce_key = GravityView_Edit_Entry::get_nonce_key( $view->ID, $entry['form_id'], $entry['id']  );
