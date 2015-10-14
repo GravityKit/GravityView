@@ -93,19 +93,25 @@ class GravityView_Admin {
 	/**
 	 * Modify plugin action links at plugins screen
 	 *
+	 * @since 1.15 Added check for `gravityview_view_settings` and `gravityview_support_port` capabilities
 	 * @access public
 	 * @static
-	 * @param mixed $links
-	 * @return array Action links with Support included
+	 * @param array $links Array of action links under GravityView on the plugin page
+	 * @return array Action links with Settings and Support included, if the user has the appropriate caps
 	 */
 	public static function plugin_action_links( $links ) {
 
-		$action = array(
-			sprintf( '<a href="%s">%s</a>', admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ), esc_html__( 'Settings', 'gravityview' ) ),
-			'<a href="http://docs.gravityview.co">' . esc_html__( 'Support', 'gravityview' ) . '</a>'
-		);
+		$actions = array();
 
-		return array_merge( $action, $links );
+		if( GVCommon::has_cap( 'gravityview_view_settings' ) ) {
+			$actions[] = sprintf( '<a href="%s">%s</a>', admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ), esc_html__( 'Settings', 'gravityview' ) );
+		}
+
+		if( GVCommon::has_cap( 'gravityview_support_port' ) ) {
+			$actions[] = '<a href="http://docs.gravityview.co">' . esc_html__( 'Support', 'gravityview' ) . '</a>';
+		}
+
+		return array_merge( $actions, $links );
 	}
 
 	/**
