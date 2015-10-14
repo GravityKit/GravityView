@@ -33,7 +33,17 @@ class GravityView_Settings extends GFAddOn {
 	/**
 	 * @var string|array A string or an array of capabilities or roles that can uninstall the plugin
 	 */
-	protected $_capabilities_uninstall = 'gravityview_gfaddon_uninstall';
+	protected $_capabilities_uninstall = 'gravityview_uninstall';
+
+	/**
+	 * @var string|array A string or an array of capabilities or roles that have access to the settings page
+	 */
+	protected $_capabilities_app_settings = 'gravityview_view_settings';
+
+	/**
+	 * @var string|array A string or an array of capabilities or roles that have access to the settings page
+	 */
+	protected $_capabilities_app_menu = 'gravityview_view_settings';
 
 	/**
 	 * @var string The hook suffix for the app menu
@@ -93,7 +103,7 @@ class GravityView_Settings extends GFAddOn {
 	public function current_user_can_any( $caps ) {
 
 		/**
-		 * Don't show uninstall tab
+		 * Prevent Gravity Forms from showing the uninstall tab on the settings page
 		 * @hack
 		 */
 		if( $caps === $this->_capabilities_uninstall ) {
@@ -487,6 +497,26 @@ class GravityView_Settings extends GFAddOn {
 	}
 
 	/**
+	 * Check for the `gravityview_edit_settings` capability before saving plugin settings.
+	 * Gravity Forms says you're able to edit if you're able to view settings. GravityView allows two different permissions.
+	 *
+	 * @since 1.15
+	 * @return void
+	 */
+	public function maybe_save_app_settings() {
+
+		if ( $this->is_save_postback() ) {
+			if ( ! GVCommon::has_cap( 'gravityview_edit_settings' ) ) {
+				$_POST = array(); // If you don't reset the $_POST array, it *looks* like the settings were changed, but they weren't
+				GFCommon::add_error_message( __( 'You don\'t have the ability to edit plugin settings.', 'gravityview' ) );
+				return;
+			}
+		}
+
+		parent::maybe_save_app_settings();
+	}
+
+	/**
 	 * When the settings are saved, make sure the license key matches the previously activated key
 	 *
 	 * @return array settings from parent::get_posted_settings(), with `license_key_response` and `license_key_status` potentially unset
@@ -525,6 +555,8 @@ class GravityView_Settings extends GFAddOn {
 	public function app_settings_fields() {
 
 		$default_settings = $this->get_default_settings();
+
+		$disabled_attribute = GVCommon::has_cap( 'gravityview_edit_settings' ) ? false : 'disabled';
 
 		$fields = apply_filters( 'gravityview_settings_fields', array(
 			array(
@@ -587,7 +619,7 @@ class GravityView_Settings extends GFAddOn {
 				'choices'    => array(
 					array(
 						'label' => _x('On', 'Setting: On or off', 'gravityview'),
-						'value' => '1'
+						'value' => '1',
 					),
 					array(
 						'label' => _x('Off', 'Setting: On or off', 'gravityview'),
@@ -620,6 +652,7 @@ class GravityView_Settings extends GFAddOn {
 		) );
 
 
+
 		/**
 		 * Redux backward compatibility
 		 * @since 1.7.4
@@ -629,6 +662,10 @@ class GravityView_Settings extends GFAddOn {
 			$field['label']         = isset( $field['label'] ) ? $field['label'] : rgget('title', $field );
 			$field['default_value'] = isset( $field['default_value'] ) ? $field['default_value'] : rgget('default', $field );
 			$field['description']   = isset( $field['description'] ) ? $field['description'] : rgget('subtitle', $field );
+
+			if( $disabled_attribute ) {
+				$field['disabled']  = $disabled_attribute;
+			}
 		}
 
 
@@ -644,6 +681,10 @@ class GravityView_Settings extends GFAddOn {
             'class' => 'button button-primary button-hero',
             'type'     => 'save',
         );
+
+		if( $disabled_attribute ) {
+			$button['disabled'] = $disabled_attribute;
+		}
 
 
         /**
@@ -661,6 +702,15 @@ class GravityView_Settings extends GFAddOn {
 
 		// If there are extensions, add a section for them
 		if ( ! empty( $extension_sections ) ) {
+
+			if( $disabled_attribute ) {
+				foreach ( $extension_sections as &$section ) {
+					foreach ( $section['fields'] as &$field ) {
+						$field['disabled'] = $disabled_attribute;
+					}
+				}
+			}
+
             $k = count( $extension_sections ) - 1 ;
             $extension_sections[ $k ]['fields'][] = $button;
 			$sections = array_merge( $sections, $extension_sections );
