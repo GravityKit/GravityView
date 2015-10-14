@@ -222,6 +222,7 @@ class GravityView_Support_Port {
 	/**
 	 * Check whether to show Support for a user
 	 *
+	 * If the user doesn't have the `gravityview_support_port` capability, returns false.
 	 * If there is no preference set for the user, use the global plugin setting.
 	 *
 	 * @since 1.15
@@ -231,6 +232,10 @@ class GravityView_Support_Port {
 	 * @return bool Whether to show GravityView support
 	 */
 	static public function show_for_user( $user = 0 ) {
+
+		if ( ! GVCommon::has_cap( 'gravityview_support_port' ) ) {
+			return false;
+		}
 
 		$pref = get_user_option( self::user_pref_name, $user );
 
