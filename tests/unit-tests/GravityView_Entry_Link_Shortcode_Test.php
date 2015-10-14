@@ -1,7 +1,8 @@
 <?php
 
 /**
- * @group editentryshortcode
+ * @group entry_link_shortcode
+ * @since 1.15
  */
 class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 
@@ -79,7 +80,10 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 
 		$atts['return'] = 'html';
 		$delete_link = $this->object->delete_shortcode( $atts );
+		$atts['action'] = 'delete';
+		$delete_link_backward_compat = $this->object->read_shortcode( $atts );
 		$this->assertEquals( '<a onclick="return window.confirm(&#039;Are you sure you want to delete this entry? This cannot be undone.&#039;);" href="'. esc_url_raw( $delete_entry_delete_link ) .'">Delete Entry</a>', $delete_link, 'delete link' );
+		$this->assertEquals( $delete_link, $delete_link_backward_compat );
 
 		$atts['return'] = 'url';
 		$delete_link_return_url = $this->object->delete_shortcode( $atts );
