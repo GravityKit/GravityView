@@ -26,6 +26,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: GravityView Capabilities
 	- Fixed: Users without the ability to create Gravity Forms forms are able to create a new form via "Start Fresh"
 	- Only add the Approve Entries column if user has the `gravityview_moderate_entries` capability (defaults to Editor role or higher)
+* Added: `[gv_entry_link]` shortcode to link directly to an entry. [Learn more](#TODO).
+	- Existing `[gv_delete_entry_link]` and `[gv_edit_entry_link]` shortcodes will continue to work
 * Added: Ability to filter View by form in the Admin. [Learn more](http://docs.gravityview.co/article/313-the-views-list-on-the-dashboard).
 * Added: Option to delete GravityView data when the plugin is uninstalled, then deleted. [Learn more](http://docs.gravityview.co/article/312-how-to-delete-the-gravityview-data-when-the-plugin-is-uninstalled).
 * Added: New support "Beacon" to easily search documentation and ask support questions
