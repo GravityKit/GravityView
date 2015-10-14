@@ -484,7 +484,7 @@ class GravityView_API {
 		}
 
 		// Deal with returning to proper pagination for embedded views
-		if( $add_query_args ) {
+		if( $link && $add_query_args ) {
 
 			$args = array();
 
