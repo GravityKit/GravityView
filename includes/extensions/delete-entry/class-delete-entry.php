@@ -249,8 +249,6 @@ final class GravityView_Delete_Entry {
 
 		$url = wp_nonce_url( $actionurl, 'delete_'.$entry_slug, 'delete' );
 
-		var_dump( $url );
-
 		return $url;
 	}
 
