@@ -26,10 +26,13 @@
 
 		self.maybeDisplayMessages();
 
-		self.addBulkAction();
+		// Only add Bulk Actions if user has the capability
+		if( gvGlobals.add_bulk_action * 1 ) {
+			self.addBulkAction();
+		}
 
 		// Only support approve/reject if the column is visible
-		if( 1 === parseInt( gvGlobals.show_column, 10 ) ) {
+		if( gvGlobals.show_column * 1 ) {
 
 			self.addApprovedColumn();
 

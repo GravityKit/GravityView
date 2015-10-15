@@ -222,7 +222,7 @@ class GVLogic_Shortcode {
 	}
 
 	/**
-	 * Does the if and the comparson match?
+	 * Does the if and the comparison match?
 	 * @uses GVCommon::matches_operation
 	 *
 	 * @return boolean True: yep; false: nope

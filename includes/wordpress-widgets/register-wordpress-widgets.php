@@ -20,6 +20,7 @@
  */
 function gravityview_register_widgets() {
 
+	/** @define "GRAVITYVIEW_DIR" "../../" */
 	require_once( GRAVITYVIEW_DIR . 'includes/wordpress-widgets/class-gravityview-recent-entries-widget.php' );
 
 	register_widget( 'GravityView_Recent_Entries_Widget' );

@@ -147,18 +147,29 @@
     clear: both;
 
     tr {
-      border-top:1px solid #E7E7E7
+      border-top:1px solid #E7E7E7;
     }
 
-    tr:first-child,
-    tr:last-child {
+    tr:first-child {
       border-top: none;
       td, th {
         padding-top: 10px!important;
       }
     }
 
-    tr:last-child {
+    .gaddon-section {
+      padding-top: 0;
+      & > h4 {
+        color: #777;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 22px;
+      }
+    }
+
+    table:last-child > tr:first-child,
+    table:last-child > tr:last-child {
+
       td, th {
         padding-bottom: 10px!important;
       }
@@ -171,7 +182,7 @@
     }
 
     td {
-      width: 70%;
+      width: 60%;
 
       div {
         padding-left: 10px;
@@ -180,7 +191,15 @@
 
     th {
       font-weight: bold;
-      display: block
+      display: block;
+    }
+
+    /**
+     * On smaller screens, the radio inputs were displaying on different lines than the labels.
+     * This keeps the <span>s and the <input>s together.
+     */
+    label {
+      display: inline-block;
     }
 
     span.description {

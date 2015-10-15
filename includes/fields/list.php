@@ -81,7 +81,7 @@ class GravityView_Field_List extends GravityView_Field {
 		$field_object = RGFormsModel::get_field( $form, $field['id'] );
 
 		// Not a list field
-		if( ( ! $field_object || 'list' !== $field_object->get_input_type() ) ) {
+		if( ! $field_object || 'list' !== $field_object->type ) {
 			return $label;
 		}
 

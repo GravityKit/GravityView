@@ -251,11 +251,19 @@ class GravityView_Admin_ApproveEntries {
 	 * @param array|boolean $entries If array, array of entry IDs that are to be updated. If true: update all entries.
 	 * @param int $approved Approved status. If `0`: unapproved, if not empty, `Approved`
 	 * @param int $form_id The Gravity Forms Form ID
-	 * @return void
+	 * @return boolean|void
 	 */
 	private static function update_bulk( $entries, $approved, $form_id ) {
 
-		if( empty($entries) || ( $entries !== true && !is_array($entries) ) ) { return false; }
+		if( empty($entries) || ( $entries !== true && !is_array($entries) ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ' Entries were empty or malformed.', $entries );
+			return false;
+		}
+
+		if( ! GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ' User does not have the `gravityview_moderate_entries` capability.' );
+			return false;
+		}
 
 		$approved = empty( $approved ) ? 0 : 'Approved';
 
@@ -284,7 +292,8 @@ class GravityView_Admin_ApproveEntries {
 	public static function update_approved( $entry_id = 0, $approved = 0, $form_id = 0, $approvedcolumn = 0) {
 
 		if( !class_exists( 'GFAPI' ) ) {
-			return;
+			do_action( 'gravityview_log_error', __METHOD__ . 'GFAPI does not exist' );
+			return false;
 		}
 
 		if( empty( $approvedcolumn ) ) {
@@ -308,10 +317,11 @@ class GravityView_Admin_ApproveEntries {
 		// add note to entry
 		if( $result === true ) {
 			$note = empty( $approved ) ? __( 'Disapproved the Entry for GravityView', 'gravityview' ) : __( 'Approved the Entry for GravityView', 'gravityview' );
-			if( class_exists( 'RGFormsModel' ) ){
+
+			if( class_exists( 'GravityView_Entry_Notes' ) ){
 				global $current_user;
       			get_currentuserinfo();
-				RGFormsModel::add_note( $entry_id, $current_user->ID, $current_user->display_name, $note, 'gravityview' );
+				GravityView_Entry_Notes::add_note( $entry_id, $current_user->ID, $current_user->display_name, $note );
 			}
 
 			/**
@@ -418,19 +428,36 @@ class GravityView_Admin_ApproveEntries {
 
 		if( empty( $_POST['entry_id'] ) || empty( $_POST['form_id'] ) ) {
 
-			do_action( 'gravityview_log_error', 'GravityView_Admin_ApproveEntries[ajax_update_approved] entry_id or form_id are empty.', $_POST );
+			do_action( 'gravityview_log_error', __METHOD__ . ' entry_id or form_id are empty.', $_POST );
 
-			exit( false );
+			$result = false;
 		}
 
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxgfentries' ) ) {
+		else if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxgfentries' ) ) {
 
-			do_action( 'gravityview_log_error', 'GravityView_Admin_ApproveEntries[ajax_update_approved] Security check failed.', $_POST );
+			do_action( 'gravityview_log_error', __METHOD__ . ' Security check failed.', $_POST );
 
-			exit( false );
+			$result = false;
 		}
 
-		$result = self::update_approved( $_POST['entry_id'], $_POST['approved'], $_POST['form_id'] );
+		else if( ! GVCommon::has_cap( 'gravityview_moderate_entries', $_POST['entry_id'] ) ) {
+
+			do_action( 'gravityview_log_error', __METHOD__ . ' User does not have the `gravityview_moderate_entries` capability.' );
+
+			$result = false;
+		}
+
+		else {
+
+			$result = self::update_approved( $_POST['entry_id'], $_POST['approved'], $_POST['form_id'] );
+
+			if( is_wp_error( $result ) ) {
+				/** @var WP_Error $result */
+				do_action( 'gravityview_log_error', __METHOD__ .' Error updating approval: ' . $result->get_error_message() );
+				$result = false;
+			}
+
+		}
 
 		exit( $result );
 	}
@@ -480,6 +507,11 @@ class GravityView_Admin_ApproveEntries {
 
 
 	static public function add_entry_approved_hidden_input(  $form_id, $field_id, $value, $entry, $query_string ) {
+
+		if( ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry['id'] ) ) {
+			return;
+		}
+
 		if( empty( $entry['id'] ) ) {
 			return;
 		}
@@ -528,7 +560,8 @@ class GravityView_Admin_ApproveEntries {
 			wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array(
 				'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries'),
 				'form_id' => $form_id,
-				'show_column' => $this->show_approve_entry_column( $form_id ),
+				'show_column' => (int)$this->show_approve_entry_column( $form_id ),
+				'add_bulk_action' => (int)GVCommon::has_cap( 'gravityview_moderate_entries' ),
 				'label_approve' => __( 'Approve', 'gravityview' ) ,
 				'label_disapprove' => __( 'Disapprove', 'gravityview' ),
 				'bulk_message' => $this->bulk_update_message,
@@ -553,7 +586,7 @@ class GravityView_Admin_ApproveEntries {
 	 */
 	private function show_approve_entry_column( $form_id ) {
 
-		$show_approve_column = true;
+		$show_approve_column = GVCommon::has_cap( 'gravityview_moderate_entries' );
 
 		/**
 		 * @filter `gravityview/approve_entries/hide-if-no-connections` Return true to hide reject/approve if there are no connected Views
