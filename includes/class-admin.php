@@ -25,7 +25,7 @@ class GravityView_Admin {
 		require_once( GRAVITYVIEW_DIR . 'includes/class-migrate.php' );
 
 		// Don't load tooltips if on Gravity Forms, otherwise it overrides translations
-		if( !GFForms::is_gravity_page() ) {
+		if( class_exists( 'GFCommon' ) && class_exists( 'GFForms' ) && !GFForms::is_gravity_page() ) {
 			require_once( GFCommon::get_base_path() . '/tooltips.php' );
 		}
 

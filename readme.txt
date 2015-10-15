@@ -42,6 +42,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: BuddyPress/bbPress `bbp_setup_current_user()` warning
 * Fixed: `gravityview_is_admin_page()` wasn't recognizing the Settings page as a GravityView admin page
 * Fixed: PHP Warnings
+* Fixed: WordPress Multisite fatal error when Gravity Forms not Network Activated
 * Tweak: Don't show Data Source column in Views screen to users who don't have permissions to see any of the data anyway
 * Tweak: Entry notes are now created using `GravityView_Entry_Notes` class
 * Tweak: Improved automated code testing
