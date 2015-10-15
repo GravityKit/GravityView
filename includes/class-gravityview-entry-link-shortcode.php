@@ -283,7 +283,7 @@ class GravityView_Entry_Link_Shortcode {
 	 */
 	private function get_entry( $entry_id = 0 ) {
 
-		$backup_entry = GravityView_frontend::getInstance()->getSingleEntry() ? GravityView_frontend::getInstance()->getSingleEntry() : GravityView_View::getInstance()->getCurrentEntry();
+		$backup_entry = GravityView_frontend::getInstance()->getSingleEntry() ? GravityView_frontend::getInstance()->getEntry() : GravityView_View::getInstance()->getCurrentEntry();
 
 		if ( empty( $entry_id ) ) {
 			if ( ! $backup_entry ) {
