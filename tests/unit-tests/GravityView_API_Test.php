@@ -1,6 +1,11 @@
 <?php
 
-class GravityView_API_Test extends WP_UnitTestCase {
+defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
+
+/**
+ * @group gvapi
+ */
+class GravityView_API_Test extends GV_UnitTestCase {
 
 	/**
 	 * @var int
@@ -25,21 +30,14 @@ class GravityView_API_Test extends WP_UnitTestCase {
 	var $is_set_up = false;
 
 	function setUp() {
+
 		parent::setUp();
-
-        /* Remove temporary tables which causes problems with GF */
-        remove_all_filters( 'query', 10 );
-
-        /* Ensure the database is correctly set up */
-        @GFForms::setup_database();
 
 		$this->form = GV_Unit_Tests_Bootstrap::instance()->get_form();
 		$this->form_id = GV_Unit_Tests_Bootstrap::instance()->get_form_id();
 
 		$this->entry = GV_Unit_Tests_Bootstrap::instance()->get_entry();
 		$this->entry_id = GV_Unit_Tests_Bootstrap::instance()->get_entry_id();
-
-		$this->factory = new GF_UnitTest_Factory( $this );
 
 	}
 

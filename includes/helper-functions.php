@@ -70,6 +70,11 @@ function gravityview_sanitize_html_class( $classes ) {
 /**
  * Replace multiple newlines, tabs, and spaces with a single space
  *
+ * First, runs normalize_whitespace() on a string. This replaces multiple lines with a single line, and tabs with spaces.
+ * We then strip any tabs or newlines and replace *those* with a single space.
+ *
+ * @see normalize_whitespace()
+ * @see GravityView_Helper_Functions_Test::test_gravityview_strip_whitespace
  * @since 1.13
  *
  * @param string $string String to strip whitespace from
@@ -85,12 +90,13 @@ function gravityview_strip_whitespace( $string ) {
  * Get the contents of a file using `include()` and `ob_start()`
  *
  * @since 1.13
+ * @since 1.15 Added $object param
  *
  * @param string $file_path Full path to a file
- *
+ * @param mixed $object Pass pseudo-global to the included file
  * @return string Included file contents
  */
-function gravityview_ob_include( $file_path ) {
+function gravityview_ob_include( $file_path, $object = NULL ) {
 	if( ! file_exists( $file_path ) ) {
 		do_action( 'gravityview_log_error', __FUNCTION__ . ': File path does not exist. ', $file_path );
 		return '';

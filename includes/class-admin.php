@@ -4,26 +4,28 @@ class GravityView_Admin {
 
 	function __construct() {
 
-		if( !is_admin() ) { return; }
-
-		$this->add_hooks();
-	}
-
-	/**
-	 * @since 1.7.5
-	 */
-	function add_hooks() {
+		if( ! is_admin() ) { return; }
 
 		// If Gravity Forms isn't active or compatibile, stop loading
 		if( false === GravityView_Compatibility::is_valid() ) {
 			return;
 		}
 
+		$this->include_required_files();
+		$this->add_hooks();
+	}
+
+	/**
+	 * @since 1.15
+	 * @return void
+	 */
+	private function include_required_files() {
+
 		// Migrate Class
 		require_once( GRAVITYVIEW_DIR . 'includes/class-migrate.php' );
 
 		// Don't load tooltips if on Gravity Forms, otherwise it overrides translations
-		if( !GFForms::is_gravity_page() ) {
+		if( class_exists( 'GFCommon' ) && class_exists( 'GFForms' ) && !GFForms::is_gravity_page() ) {
 			require_once( GFCommon::get_base_path() . '/tooltips.php' );
 		}
 
@@ -31,8 +33,18 @@ class GravityView_Admin {
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/entry-list.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-change-entry-creator.php' );
 
+		/** @since 1.15 **/
+		require_once( GRAVITYVIEW_DIR . 'includes/admin/class-gravityview-support-port.php' );
+
 		/** @since 1.6 */
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-duplicate-view.php' );
+	}
+
+	/**
+	 * @since 1.7.5
+	 * @return void
+	 */
+	private function add_hooks() {
 
 		// Filter Admin messages
 		add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
@@ -81,19 +93,25 @@ class GravityView_Admin {
 	/**
 	 * Modify plugin action links at plugins screen
 	 *
+	 * @since 1.15 Added check for `gravityview_view_settings` and `gravityview_support_port` capabilities
 	 * @access public
 	 * @static
-	 * @param mixed $links
-	 * @return array Action links with Support included
+	 * @param array $links Array of action links under GravityView on the plugin page
+	 * @return array Action links with Settings and Support included, if the user has the appropriate caps
 	 */
 	public static function plugin_action_links( $links ) {
 
-		$action = array(
-			sprintf( '<a href="%s">%s</a>', admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ), esc_html__( 'Settings', 'gravityview' ) ),
-			'<a href="http://docs.gravityview.co">' . esc_html__( 'Support', 'gravityview' ) . '</a>'
-		);
+		$actions = array();
 
-		return array_merge( $action, $links );
+		if( GVCommon::has_cap( 'gravityview_view_settings' ) ) {
+			$actions[] = sprintf( '<a href="%s">%s</a>', admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ), esc_html__( 'Settings', 'gravityview' ) );
+		}
+
+		if( GVCommon::has_cap( 'gravityview_support_port' ) ) {
+			$actions[] = '<a href="http://docs.gravityview.co">' . esc_html__( 'Support', 'gravityview' ) . '</a>';
+		}
+
+		return array_merge( $actions, $links );
 	}
 
 	/**
@@ -455,6 +473,8 @@ class GravityView_Admin {
 
 		$is_gv_post_type_get = (isset($_GET['post_type']) && $_GET['post_type'] === 'gravityview');
 
+		$is_gv_settings_get = isset( $_GET['page'] ) && $_GET['page'] === 'gravityview_settings';
+
 		if( empty( $post ) && $pagenow === 'post.php' && !empty( $_GET['post'] ) ) {
 			$gv_post = get_post( intval( $_GET['post'] ) );
 			$is_gv_post_type = (!empty($gv_post) && !empty($gv_post->post_type) && $gv_post->post_type === 'gravityview');
@@ -462,12 +482,12 @@ class GravityView_Admin {
 			$is_gv_post_type = (!empty($post) && !empty($post->post_type) && $post->post_type === 'gravityview');
 		}
 
-		if( $is_gv_screen || $is_gv_post_type || $is_gv_post_type || $is_gv_post_type_get ) {
+		if( $is_gv_screen || $is_gv_post_type || $is_gv_post_type || $is_gv_post_type_get || $is_gv_settings_get ) {
 
 			// $_GET `post_type` variable
 			if(in_array($pagenow, array( 'post.php' , 'post-new.php' )) ) {
 				$is_page = 'single';
-			} elseif ( $plugin_page === 'gravityview_settings' || ( !empty( $_GET['page'] ) && $_GET['page'] === 'gravityview_settings' ) ) {
+			} else if ( in_array( $plugin_page, array( 'gravityview_settings', 'gravityview_page_gravityview_settings' ) ) || ( !empty( $_GET['page'] ) && $_GET['page'] === 'gravityview_settings' ) ) {
 				$is_page = 'settings';
 			} else {
 				$is_page = 'views';

@@ -67,6 +67,8 @@ class GV_Unit_Tests_Bootstrap {
 		// load the WP testing environment
 		require_once( $this->wp_tests_dir . '/includes/bootstrap.php' );
 
+		require_once $this->tests_dir . '/GV_UnitTestCase.php';
+
 		require_once $this->tests_dir . '/factory.php';
 
 		// set up GravityView
@@ -89,6 +91,11 @@ class GV_Unit_Tests_Bootstrap {
 	 */
 	public function load() {
 		require_once $this->plugin_dir . '/tmp/gravityforms/gravityforms.php';
+
+		if( ! defined( 'REST_API_VERSION' ) ) {
+			require_once $this->plugin_dir . '/tmp/api-core/rest-api.php';
+		}
+
 		require_once $this->plugin_dir . '/gravityview.php';
 
 		/* Remove temporary tables which causes problems with GF */
@@ -132,6 +139,8 @@ class GV_Unit_Tests_Bootstrap {
 	 * Generate some placeholder values to test against
 	 */
 	private function create_stubs() {
+
+		add_role( 'zero', "No Capabilities", array() );
 
 		$this->form_id = GFAPI::add_form( array(
 			'title' => 'This is the form title',

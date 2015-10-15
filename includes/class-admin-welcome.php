@@ -26,7 +26,7 @@ class GravityView_Welcome {
 	/**
 	 * @var string The capability users should have to view the page
 	 */
-	public $minimum_capability = 'manage_options';
+	public $minimum_capability = 'gravityview_getting_started';
 
 	/**
 	 * Get things started
@@ -256,25 +256,74 @@ class GravityView_Welcome {
 
 				<h2 class="subtitle" style="text-align: center;"><?php esc_html_e('What&rsquo;s New', 'gravityview' ); ?></h2>
 
-				<div class="feature-section col two-col">
+				<div class="feature-section col two-col" style="margin-top:0">
 					<div class="col col-1">
-						<div class="media-container"><img src="<?php echo plugins_url( 'assets/images/screenshots/search-bar-label.png', GRAVITYVIEW_FILE ); ?>" alt="Search bar labels"></div>
-						<h4 class="higher">Custom Search Labels &amp; Search Mode</h4>
-						<p>You can now modify the search labels from the Search Bar configuration, and you can now choose whether you want your search to match <em>all</em> of the search field filters, or <em>any</em>.</p>
+						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/caps.png', GRAVITYVIEW_FILE ); ?>" alt="Icons representing capabilities"></div>
+						<h4 class="higher">Capability Management</h4>
+						<p>Manage what users and roles have access to GravityView functionality. <a href="http://docs.gravityview.co/article/311-gravityview-capabilities">See what capabilities are available</a>.</p>
+
+						<div class="media-container" style="margin-top: 2em; min-height:80px;"><img src="<?php echo plugins_url( 'assets/images/screenshots/get.png', GRAVITYVIEW_FILE ); ?>" alt=""></div>
+						<h4 class="higher">The <code>{get}</code> Merge Tag</h4>
+						<p>Pass data using URLs and create even more powerful integrations with GravityView. <a href="http://docs.gravityview.co/article/314-the-get-merge-tag">Learn how to use <code>{get}</code></a>.</p>
 					</div>
 
 					<div class="col col-2 last-feature">
-						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/clock.png', GRAVITYVIEW_FILE ); ?>" alt="Clocks"></div>
-						<h4 class="higher">Sort by Time</h4>
-						<p>Now you can sort time fields! Why is that so exciting? Because Gravity Forms doesn't natively support sorting by time!</p>
-
-						<div class="media-container" style="margin-top: 2em; min-height:80px;"><img src="<?php echo plugins_url( 'assets/images/screenshots/single-list-column.png', GRAVITYVIEW_FILE ); ?>" alt="Insert single list column"></div>
-						<h4 class="higher">Display a single column from a Multiple-Column List field</h4>
-						<p>Why is sorting by time being featured? Because Gravity Forms doesn't natively support sorting by time, but you can with GravityView!</p>
+						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/support-port.png', GRAVITYVIEW_FILE ); ?>" alt="The Support Port"></div>
+						<h4 class="higher">Support Port</h4>
+						<p>Users can easily search GravityView help docs. Administrators can use it to contact support. Just click the <img src="<?php echo plugins_url( 'assets/images/screenshots/beacon.png', GRAVITYVIEW_FILE ); ?>" width="16" alt="The Support Port icon looks like a question mark"> icon on GravityView screens to activate.</p>
 					</div>
 				</div>
 
 				<hr />
+
+				<h3>1.15 on October 15</h3>
+
+				<ul>
+					<li>Added: <code>{get}</code> Merge Tag that allows passing data via URL to be safely displayed in Merge Tags. <a href="http://docs.gravityview.co/article/314-the-get-merge-tag">Learn how this works</a>.
+
+						<ul>
+							<li>Example: When adding <code>?first-name=Floaty</code> to a URL, the Custom Content <code>My name is {get:first-name}</code> would be replaced with <code>My name is Floaty</code></li>
+						</ul>
+					</li>
+					<li>Added: GravityView Capabilities: restrict access to GravityView functionality to certain users and roles. <a href="http://docs.gravityview.co/article/311-gravityview-capabilities">Learn more</a>.
+
+						<ul>
+							<li>Fixed: Users without the ability to create Gravity Forms forms are able to create a new form via "Start Fresh"</li>
+							<li>Only add the Approve Entries column if user has the <code>gravityview_moderate_entries</code> capability (defaults to Editor role or higher)</li>
+							<li>Fixed: Contributors now have access to the GravityView "Getting Started" screen</li>
+						</ul>
+					</li>
+					<li>Added: <code>[gv_entry_link]</code> shortcode to link directly to an entry. <a href="http://docs.gravityview.co/article/287-edit-entry-and-delete-entry-shortcodes">Learn more</a>.
+
+						<ul>
+							<li>Existing <code>[gv_delete_entry_link]</code> and <code>[gv_edit_entry_link]</code> shortcodes will continue to work</li>
+						</ul>
+					</li>
+					<li>Added: Ability to filter View by form in the Admin. <a href="http://docs.gravityview.co/article/313-the-views-list-on-the-dashboard">Learn more</a>.</li>
+					<li>Added: Option to delete GravityView data when the plugin is uninstalled, then deleted. <a href="http://docs.gravityview.co/article/312-how-to-delete-the-gravityview-data-when-the-plugin-is-uninstalled">Learn more</a>.</li>
+					<li>Added: New support "Beacon" to easily search documentation and ask support questions</li>
+					<li>Added: Clear search button to the Search Widget (WP widget)</li>
+					<li>Fixed: <code>number_format()</code> PHP warning on blank Number fields</li>
+					<li>Fixed: <code>{created_by}</code> merge tags weren't being escaped using <code>esc_html()</code></li>
+					<li>Fixed: Checkmark icons weren't always available when displaying checkbox input field</li>
+					<li>Fixed: When "Shorten Link Display" was enabled for Website fields, "Link Text" wasn't respected</li>
+					<li>Fixed: Only process "Create" Gravity Forms User Registration Addon feeds, by default the user role and the user display name format persist</li>
+					<li>Fixed: Error with List field  <code>Call to undefined method GF_Field::get_input_type()</code></li>
+					<li>Fixed: BuddyPress/bbPress <code>bbp_setup_current_user()</code> warning</li>
+					<li>Fixed: <code>gravityview_is_admin_page()</code> wasn't recognizing the Settings page as a GravityView admin page</li>
+					<li>Fixed: Custom Content Widgets didn't replace Merge Tags</li>
+					<li>Fixed: PHP Warnings</li>
+					<li>Fixed: WordPress Multisite fatal error when Gravity Forms not Network Activated</li>
+					<li>Tweak: Don't show Data Source column in Views screen to users who don't have permissions to see any of the data anyway</li>
+					<li>Tweak: Entry notes are now created using <code>GravityView_Entry_Notes</code> class</li>
+					<li>Tweak: Improved automated code testing</li>
+					<li>Tweak: Added <code>gravityview/support_port/display</code> filter to enable/disable displaying Support Port</li>
+					<li>Tweak: Added <code>gravityview/support_port/show_profile_setting</code> filter to disable adding the Support Port setting on User Profile pages</li>
+					<li>Tweak: Removed <code>gravityview/admin/display_live_chat</code> filter</li>
+					<li>Tweak: Removed <code>gravityview_settings_capability</code> filter</li>
+					<li>Tweak: Escape form name in dropdowns</li>
+				</ul>
+
 
 				<h3>1.14.2 &amp; 1.14.3 on September 17</h3>
 				<ul>
@@ -499,7 +548,7 @@ class GravityView_Welcome {
 
 			<p class="about-description"><?php _e( 'GravityView is brought to you by:', 'gravityview' ); ?></p>
 
-			<div class="feature-section col three-col">
+			<div class="feature-section col two-col">
 
 				<div class="col">
 					<h2>Zack Katz</h2>

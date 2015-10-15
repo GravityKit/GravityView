@@ -152,7 +152,7 @@ class GravityView_Compatibility {
 	 */
 	public function _shortcode_gf_notice( $atts = array(), $content = null, $shortcode = 'gravityview' ) {
 
-		if( ! current_user_can('manage_options') ) {
+		if( ! GVCommon::has_cap('manage_options') ) {
 			return null;
 		}
 
