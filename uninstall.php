@@ -20,23 +20,37 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
  */
 class GravityView_Uninstall {
 
+	private $settings_name = 'gravityformsaddon_gravityview_app_settings';
+
 	public function __construct() {
 
 		/** @define "$file_path" "./" */
 		$file_path = plugin_dir_path( __FILE__ );
 
-		include_once  $file_path . 'includes/class-settings.php';
-		include_once $file_path . 'includes/class-gravityview-roles.php';
+		include_once $file_path . 'includes/class-gravityview-roles-capabilities.php';
 
 		/**
 		 * Only delete content and settings if "Delete on Uninstall?" setting is "Permanently Delete"
-		 * @var string|null $delete NULL if not configured (previous versions); "0" if false, "delete" if delete
 		 */
-		$delete = GravityView_Settings::get_instance()->get_app_setting('delete-on-uninstall');
+		$delete = $this->get_delete_setting();
 
-		if( GVCommon::has_cap( 'gravityview_uninstall' ) && 'delete' === $delete ) {
+		if( GravityView_Roles_Capabilities::has_cap( 'gravityview_uninstall' ) && 'delete' === $delete ) {
 			$this->fire_everything();
 		}
+	}
+
+	/**
+	 * Get the GravityView setting for whether to delete all View settings on uninstall
+	 *
+	 * @since 1.15
+	 *
+	 * @return string|null Returns NULL if not configured (pre-1.15 settings); "0" if false, "delete" if delete
+	 */
+	private function get_delete_setting() {
+
+		$settings = get_option( $this->settings_name, array() );
+
+		return isset( $settings[ 'delete-on-uninstall' ] ) ? $settings[ 'delete-on-uninstall' ] : null;
 	}
 
 	/**
