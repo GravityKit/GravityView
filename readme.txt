@@ -20,19 +20,19 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.15 =
+= 1.15 on October 15 =
 * Added: `{get}` Merge Tag that allows passing data via URL to be safely displayed in Merge Tags. [Learn how this works](http://docs.gravityview.co/article/314-the-get-merge-tag).
 	- Example: When adding `?first-name=Floaty` to a URL, the Custom Content `My name is {get:first-name}` would be replaced with `My name is Floaty`
-* Added: GravityView Capabilities
+* Added: GravityView Capabilities: restrict access to GravityView functionality to certain users and roles. [Learn more](http://docs.gravityview.co/article/311-gravityview-capabilities).
 	- Fixed: Users without the ability to create Gravity Forms forms are able to create a new form via "Start Fresh"
 	- Only add the Approve Entries column if user has the `gravityview_moderate_entries` capability (defaults to Editor role or higher)
+	- Fixed: Contributors now have access to the GravityView "Getting Started" screen
 * Added: `[gv_entry_link]` shortcode to link directly to an entry. [Learn more](http://docs.gravityview.co/article/287-edit-entry-and-delete-entry-shortcodes).
 	- Existing `[gv_delete_entry_link]` and `[gv_edit_entry_link]` shortcodes will continue to work
 * Added: Ability to filter View by form in the Admin. [Learn more](http://docs.gravityview.co/article/313-the-views-list-on-the-dashboard).
 * Added: Option to delete GravityView data when the plugin is uninstalled, then deleted. [Learn more](http://docs.gravityview.co/article/312-how-to-delete-the-gravityview-data-when-the-plugin-is-uninstalled).
 * Added: New support "Beacon" to easily search documentation and ask support questions
 * Added: Clear search button to the Search Widget (WP widget)
-* Fixed: Contributors now have access to the GravityView "Getting Started" screen
 * Fixed: `number_format()` PHP warning on blank Number fields
 * Fixed: `{created_by}` merge tags weren't being escaped using `esc_html()`
 * Fixed: Checkmark icons weren't always available when displaying checkbox input field
