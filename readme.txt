@@ -41,6 +41,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Error with List field  `Call to undefined method GF_Field::get_input_type()`
 * Fixed: BuddyPress/bbPress `bbp_setup_current_user()` warning
 * Fixed: `gravityview_is_admin_page()` wasn't recognizing the Settings page as a GravityView admin page
+* Fixed: Custom Content Widgets didn't replace Merge Tags
 * Fixed: PHP Warnings
 * Fixed: WordPress Multisite fatal error when Gravity Forms not Network Activated
 * Tweak: Don't show Data Source column in Views screen to users who don't have permissions to see any of the data anyway
