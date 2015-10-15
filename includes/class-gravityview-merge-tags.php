@@ -21,7 +21,7 @@ class GravityView_Merge_Tags {
 
 		add_filter( 'gform_custom_merge_tags', array( $this, '_gform_custom_merge_tags' ), 10, 4 );
 
-		add_filter( 'gform_replace_merge_tags', array( $this, '_gform_replace_merge_tags' ), 10, 7 );
+		add_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', '_gform_replace_merge_tags' ), 10, 7 );
 
 	}
 
@@ -65,6 +65,10 @@ class GravityView_Merge_Tags {
 			if( !preg_match( '/\{(all_fields(:(.*?))?|all_fields_display_empty|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id|embed_url|date_mdy|date_dmy|embed_post:(.*?)|custom_field:(.*?)|user_agent|referer|gv:(.*?)|get:(.*?)|user:(.*?)|created_by:(.*?))\}/ism', $text ) ) {
 				return $text;
 			}
+		}
+
+		if ( empty( $form ) || empty( $entry ) ) {
+			return self::_gform_replace_merge_tags( $text );
 		}
 
 		return GFCommon::replace_variables( $text, $form, $entry, false, false, false, "html");
@@ -120,7 +124,7 @@ class GravityView_Merge_Tags {
 	 *
 	 * @return mixed
 	 */
-	public function _gform_replace_merge_tags(  $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+	public static function _gform_replace_merge_tags(  $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
 		/**
 		 * This prevents the gform_replace_merge_tags filter from being called twice, as defined in:
@@ -131,10 +135,10 @@ class GravityView_Merge_Tags {
 			return $text;
 		}
 
-		$text = $this->replace_get_variables( $text, $form, $entry, $url_encode );
+		$text = self::replace_get_variables( $text, $form, $entry, $url_encode );
 
 		// Process the merge vars here
-		$text = $this->replace_user_variables_created_by( $text, $form, $entry, $url_encode, $esc_html );
+		$text = self::replace_user_variables_created_by( $text, $form, $entry, $url_encode, $esc_html );
 
 
 		return $text;
@@ -161,10 +165,10 @@ class GravityView_Merge_Tags {
 	 * @param array $entry Entry array
 	 * @param bool $url_encode Whether to URL-encode output
 	 */
-	private function replace_get_variables( $text, $form = array(), $entry = array(), $url_encode = false ) {
+	private static function replace_get_variables( $text, $form = array(), $entry = array(), $url_encode = false ) {
 
-		// Is there is {created_by:[xyz]} merge tag?
-		preg_match_all( "/\{get:(.*?)\}/", $text, $matches, PREG_SET_ORDER );
+		// Is there is {get:[xyz]} merge tag?
+		preg_match_all( "/{get:(.*?)}/ism", $text, $matches, PREG_SET_ORDER );
 
 		// If there are no matches OR the Entry `created_by` isn't set or is 0 (no user)
 		if( empty( $matches ) ) {
@@ -204,10 +208,10 @@ class GravityView_Merge_Tags {
 
 			/**
 			 * @filter `gravityview/merge_tags/get/esc_html/{url parameter name}` Modify the value of the `{get}` replacement before being used
-			 * @param string $value Text to replace
-			 * @param string $text Text to replace
-			 * @param array $form Gravity Forms form array
-			 * @param array $entry Entry array
+			 * @param[in,out] string $value Value that will replace `{get}`
+			 * @param[in] string $text Text that contains `{get}` (before replacement)
+			 * @param[in] array $form Gravity Forms form array
+			 * @param[in] array $entry Entry array
 			 */
 			$value = apply_filters('gravityview/merge_tags/get/value/' . $property, $value, $text, $form, $entry );
 
@@ -235,7 +239,7 @@ class GravityView_Merge_Tags {
 	 *
 	 * @return string Text, with user variables replaced, if they existed
 	 */
-	private function replace_user_variables_created_by( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+	private static function replace_user_variables_created_by( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
 		// Is there is {created_by:[xyz]} merge tag?
 		preg_match_all( "/\{created_by:(.*?)\}/", $text, $matches, PREG_SET_ORDER );
