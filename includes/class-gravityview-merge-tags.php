@@ -67,10 +67,6 @@ class GravityView_Merge_Tags {
 			}
 		}
 
-		if ( empty( $form ) || empty( $entry ) ) {
-			return self::_gform_replace_merge_tags( $text );
-		}
-
 		return GFCommon::replace_variables( $text, $form, $entry, false, false, false, "html");
 	}
 
