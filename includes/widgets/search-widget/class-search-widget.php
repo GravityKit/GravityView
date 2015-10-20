@@ -768,7 +768,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$search_class = apply_filters( 'gravityview_search_class', $search_class );
 
 		// Is there an active search being performed? Used by fe-views.js
-		$search_class .= GravityView_frontend::getInstance()->is_search ? ' gv-is-search' : '';
+		$search_class .= GravityView_frontend::getInstance()->isSearch() ? ' gv-is-search' : '';
 
 		return gravityview_sanitize_html_class( $search_class );
 	}

@@ -16,14 +16,19 @@ class GravityView_Change_Entry_Creator {
     	if( !is_admin() ) { return; }
 
 	    /**
+         * @filter `gravityview_disable_change_entry_creator` Disable the Change Entry Creator functionality
 	     * @since 1.7.4
-	     * @param boolean $disable Disable the Change Entry Creator functionality
+	     * @param boolean $disable Disable the Change Entry Creator functionality. Default: false.
 	     */
 	    if( apply_filters('gravityview_disable_change_entry_creator', false ) ) {
 		    return;
 	    }
 
-    	add_action('plugins_loaded', array( $this, 'load'), 100 );
+        /**
+         * Use `init` to fix bbPress warning
+         * @see https://bbpress.trac.wordpress.org/ticket/2309
+         */
+    	add_action('init', array( $this, 'load'), 100 );
 
     	add_action('plugins_loaded', array( $this, 'prevent_conflicts') );
 
@@ -68,7 +73,7 @@ class GravityView_Change_Entry_Creator {
 
     	do_action( 'gravityview_log_debug', 'GravityView_Change_Entry_Creator[assign_new_user_to_lead] - '.$note );
 
-    	RGFormsModel::add_note( $entry['id'], -1, 'GravityView', $note, 'gravityview' );
+        GravityView_Entry_Notes::add_note( $entry['id'], -1, 'GravityView', $note, 'gravityview' );
 
     }
 
@@ -110,7 +115,7 @@ class GravityView_Change_Entry_Creator {
         }
 
         // Can the user edit entries?
-        if( !GFCommon::current_user_can_any("gravityforms_edit_entries") ) {
+        if( ! GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_entries' ) ) ) {
             return;
         }
 
@@ -182,7 +187,7 @@ class GravityView_Change_Entry_Creator {
                 $created_by_name = sprintf( $user_format, $created_by_user_data->display_name, $created_by_user_data->ID );
             }
 
-            RGFormsModel::add_note( $entry_id, $current_user->ID, $user_data->display_name, sprintf( __('Changed entry creator from %s to %s', 'gravityview'), $original_name, $created_by_name ), 'gravityview' );
+            GravityView_Entry_Notes::add_note( $entry_id, $current_user->ID, $user_data->display_name, sprintf( __('Changed entry creator from %s to %s', 'gravityview'), $original_name, $created_by_name ), 'note' );
         }
 
     }

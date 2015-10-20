@@ -9,7 +9,7 @@ DB_NAME=$1
 DB_USER=$2
 DB_PASS=$3
 DB_HOST=${4-localhost}
-WP_VERSION=${5-latest}
+WP_VERSION=${5-nightly}
 
 WP_TESTS_DIR="${PWD}/tmp/wordpress-tests-lib"
 WP_CORE_DIR="${PWD}/tmp/wordpress/"
@@ -19,23 +19,30 @@ set -ex
 install_wp() {
 	mkdir -p $WP_CORE_DIR
 
-	if [ $WP_VERSION == 'latest' ]; then
-		local ARCHIVE_NAME='latest'
+	if [ $WP_VERSION == 'nightly' ]; then
+		local ARCHIVE_NAME="master"
 	else
-		local ARCHIVE_NAME="wordpress-$WP_VERSION"
+		local ARCHIVE_NAME="$WP_VERSION"
 	fi
 
-	wget -nv -O /tmp/wordpress.tar.gz https://wordpress.org/${ARCHIVE_NAME}.tar.gz
+	curl -L https://github.com/WordPress/WordPress/archive/${ARCHIVE_NAME}.tar.gz --output /tmp/wordpress.tar.gz --silent
 	tar --strip-components=1 -zxmf /tmp/wordpress.tar.gz -C $WP_CORE_DIR
 
 	wget -nv -O $WP_CORE_DIR/wp-content/db.php https://raw.github.com/markoheijnen/wp-mysqli/master/db.php
 }
 
-install_depencency(){
+install_gravity_forms(){
 	curl -L https://github.com/gravityforms/gravityforms/archive/develop.tar.gz --output /tmp/gravityforms.tar.gz --silent
 
 	mkdir -p $PWD/tmp/gravityforms
 	tar --strip-components=1 -zxf /tmp/gravityforms.tar.gz -C $PWD/tmp/gravityforms
+}
+
+install_rest_api() {
+	curl -L https://github.com/WP-API/api-core/archive/develop.tar.gz --output /tmp/api-core.tar.gz --silent
+
+	mkdir -p $PWD/tmp/api-core
+	tar --strip-components=1 -zxf /tmp/api-core.tar.gz -C $PWD/tmp/api-core
 }
 
 install_test_suite() {
@@ -78,10 +85,11 @@ install_db() {
 	fi
 
 	# create database
-	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
+	mysqladmin CREATE $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA;
 }
 
 install_wp
-install_depencency
+install_gravity_forms
+install_rest_api
 install_test_suite
 install_db

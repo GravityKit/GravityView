@@ -1,5 +1,7 @@
 <?php
 
+defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
+
 class GravityView_Connector_Functions_Test extends PHPUnit_Framework_TestCase {
 
 	/**

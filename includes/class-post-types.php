@@ -34,11 +34,10 @@ class GravityView_Post_Types {
 	public static function init_post_types() {
 
 		/**
-		 * Make GravityView Views hierarchical by returning TRUE
-		 *
+		 * @filter `gravityview_is_hierarchical` Make GravityView Views hierarchical by returning TRUE
 		 * This will allow for Views to be nested with Parents and also allows for menu order to be set in the Page Attributes metabox
-		 *
 		 * @since 1.13
+		 * @param boolean $is_hierarchical Default: false
 		 */
 		$is_hierarchical = (bool)apply_filters( 'gravityview_is_hierarchical', false );
 
@@ -79,9 +78,9 @@ class GravityView_Post_Types {
 			'menu_icon'           => '',
 			'can_export'          => true,
 			/**
-			 * Enable Custom Post Type archive
+			 * @filter `gravityview_has_archive` Enable Custom Post Type archive?
 			 * @since 1.7.3
-			 * @param boolean False: don't have frontend archive; True: yes, have archive
+			 * @param boolean False: don't have frontend archive; True: yes, have archive. Default: false
 			 */
 			'has_archive'         => apply_filters( 'gravityview_has_archive', false ),
 			'exclude_from_search' => true,
@@ -93,7 +92,8 @@ class GravityView_Post_Types {
 				 */
 				'slug' => apply_filters( 'gravityview_slug', 'view' )
 			),
-			'capability_type'     => 'page',
+			'capability_type'     => 'gravityview',
+			'map_meta_cap'        => true,
 		);
 
 		register_post_type( 'gravityview', $args );
@@ -147,9 +147,13 @@ class GravityView_Post_Types {
 		// Floaty the astronaut
 		$image = GravityView_Admin::get_floaty();
 
-		$not_found =  sprintf( esc_attr__("%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n\nIf you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page.", 'gravityview' ), '<h3>', '<a href="'.admin_url('post-new.php?post_type=gravityview').'">', '</a>', '</h3>', '<a href="'.admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ).'">', '</a>' );
+		if( GVCommon::has_cap( 'edit_gravityviews' ) ) {
+			$output = sprintf( esc_attr__( "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n\nIf you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page.", 'gravityview' ), '<h3>', '<a href="' . admin_url( 'post-new.php?post_type=gravityview' ) . '">', '</a>', '</h3>', '<a href="' . admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) . '">', '</a>' );
+		} else {
+			$output = esc_attr__( 'There are no active Views', 'gravityview' );
+		}
 
-		return $image.wpautop( $not_found );
+		return $image . wpautop( $output );
 	}
 
 

@@ -70,6 +70,11 @@ function gravityview_sanitize_html_class( $classes ) {
 /**
  * Replace multiple newlines, tabs, and spaces with a single space
  *
+ * First, runs normalize_whitespace() on a string. This replaces multiple lines with a single line, and tabs with spaces.
+ * We then strip any tabs or newlines and replace *those* with a single space.
+ *
+ * @see normalize_whitespace()
+ * @see GravityView_Helper_Functions_Test::test_gravityview_strip_whitespace
  * @since 1.13
  *
  * @param string $string String to strip whitespace from
@@ -85,12 +90,13 @@ function gravityview_strip_whitespace( $string ) {
  * Get the contents of a file using `include()` and `ob_start()`
  *
  * @since 1.13
+ * @since 1.15 Added $object param
  *
  * @param string $file_path Full path to a file
- *
+ * @param mixed $object Pass pseudo-global to the included file
  * @return string Included file contents
  */
-function gravityview_ob_include( $file_path ) {
+function gravityview_ob_include( $file_path, $object = NULL ) {
 	if( ! file_exists( $file_path ) ) {
 		do_action( 'gravityview_log_error', __FUNCTION__ . ': File path does not exist. ', $file_path );
 		return '';
@@ -152,4 +158,124 @@ function gravityview_number_format( $number, $decimals = '' ) {
 	$number = number_format_i18n( $number, (int)$decimals );
 
 	return $number;
+}
+
+
+/**
+ * Convert a whole link into a shorter link for display
+ *
+ * @since 1.1
+ *
+ * @param  string $value Existing URL
+ * @return string        If parse_url doesn't find a 'host', returns original value. Otherwise, returns formatted link.
+ */
+function gravityview_format_link( $value = null ) {
+
+
+	$parts = parse_url( $value );
+
+	// No domain? Strange...show the original text.
+	if( empty( $parts['host'] ) ) {
+		return $value;
+	}
+
+	// Start with empty value for the return URL
+	$return = '';
+
+	/**
+	 * @filter `gravityview_anchor_text_striphttp` Strip scheme from the displayed URL?
+	 * @since 1.5.1
+	 * @param boolean $enable Whether to strip the scheme. Return false to show scheme. (default: true)\n
+	 * If true: `http://example.com => example.com`
+	 */
+	if( false === apply_filters('gravityview_anchor_text_striphttp', true) ) {
+
+		if( isset( $parts['scheme'] ) ) {
+			$return .= $parts['scheme'];
+		}
+
+	}
+
+	// The domain, which may contain a subdomain
+	$domain = $parts['host'];
+
+	/**
+	 * @filter `gravityview_anchor_text_stripwww` Strip www from the domain?
+	 * @since 1.5.1
+	 * @param boolean $enable Whether to strip www. Return false to show www. (default: true)\n
+	 * If true: `www.example.com => example.com`
+	 */
+	$strip_www = apply_filters('gravityview_anchor_text_stripwww', true );
+
+	if( $strip_www ) {
+		$domain = str_replace('www.', '', $domain );
+	}
+
+	/**
+	 * @filter `gravityview_anchor_text_nosubdomain` Strip subdomains from the domain?
+	 * @since 1.5.1
+	 * @param boolean $enable Whether to strip subdomains. Return false to show subdomains. (default: true)\n
+	 * If true: `http://demo.example.com => example.com` \n
+	 * If false: `http://demo.example.com => demo.example.com`
+	 */
+	$strip_subdomains = apply_filters('gravityview_anchor_text_nosubdomain', true);
+
+	if( $strip_subdomains ) {
+
+		$domain = _gravityview_strip_subdomain( $parts['host'] );
+
+	}
+
+	// Add the domain
+	$return .= $domain;
+
+	/**
+	 * @filter `gravityview_anchor_text_rootonly` Display link path going only to the base directory, not a sub-directory or file?
+	 * @since 1.5.1
+	 * @param boolean $enable Whether to enable "root only". Return false to show full path. (default: true)\n
+	 * If true: `http://example.com/sub/directory/page.html => example.com`  \n
+	 * If false: `http://example.com/sub/directory/page.html => example.com/sub/directory/page.html`
+	 */
+	$root_only = apply_filters('gravityview_anchor_text_rootonly', true);
+
+	if( empty( $root_only ) ) {
+
+		if( isset( $parts['path'] ) ) {
+			$return .= $parts['path'];
+		}
+	}
+
+	/**
+	 * @filter `gravityview_anchor_text_noquerystring` Strip the query string from the end of the URL?
+	 * @since 1.5.1
+	 * @param boolean $enable Whether to enable "root only". Return false to show full path. (default: true)\n
+	 * If true: `http://example.com/?query=example => example.com`
+	 */
+	$strip_query_string = apply_filters('gravityview_anchor_text_noquerystring', true );
+
+	if( empty( $strip_query_string ) ) {
+
+		if( isset( $parts['query'] ) ) {
+			$return .= '?'.$parts['query'];
+		}
+
+	}
+
+	return $return;
+}
+
+/**
+ * Do a _very_ basic match for second-level TLD domains, like `.co.uk`
+ *
+ * Ideally, we'd use https://github.com/jeremykendall/php-domain-parser to check for this, but it's too much work for such a basic functionality. Maybe if it's needed more in the future. So instead, we use [Basic matching regex](http://stackoverflow.com/a/12372310).
+ * @param  string $domain Domain to check if it's a TLD or subdomain
+ * @return string         Extracted domain if it has a subdomain
+ */
+function _gravityview_strip_subdomain( $string_maybe_has_subdomain ) {
+
+	if( preg_match("/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.(?:com\.|co\.|net\.|org\.|firm\.|me\.|school\.|law\.|gov\.|mod\.|msk\.|irkutsks\.|sa\.|act\.|police\.|plc\.|ac\.|tm\.|asso\.|biz\.|pro\.|cg\.|telememo\.)?[a-z\.]{2,6})$/i", $string_maybe_has_subdomain, $matches ) ) {
+		return $matches['domain'];
+	} else {
+		return $string_maybe_has_subdomain;
+	}
 }

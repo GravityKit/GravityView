@@ -74,9 +74,14 @@ class GravityView_Widget_Custom_Content extends GravityView_Widget {
 			$widget_args['content'] = wpautop( $widget_args['content'] );
 		}
 
+		$content = $widget_args['content'];
+
+		$content = GravityView_Merge_Tags::replace_variables( $content );
+
 		// Enqueue scripts needed for Gravity Form display, if form shortcode exists.
 		// Also runs `do_shortcode()`
-		$content = GFCommon::gform_do_shortcode( $widget_args['content'] );
+		$content = GFCommon::gform_do_shortcode( $content );
+
 
 		// Add custom class
 		$class = !empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
