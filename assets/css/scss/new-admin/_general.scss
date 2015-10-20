@@ -1,0 +1,187 @@
+// ================================================
+// General Styles
+// ================================================
+
+// Type
+// ------------------------------------------------
+
+body {
+	color: $color-text !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: $color-text !important;
+	font-weight: 600;
+	margin: 0;
+	padding: 0;
+}
+
+h3 {
+	font-size: 16px;
+	margin-bottom: 1em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	small {
+		display: block;
+		font-weight: 400;
+		color: $color-small-text;
+		margin-top: .15em;
+	}
+}
+
+.gv-screen-reader-text {
+	clip: rect(1px, 1px, 1px, 1px);
+	position: absolute !important;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+}
+
+.gv-screen-reader-text:focus {
+	background-color: #f1f1f1;
+	border-radius: 3px;
+	box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+	clip: auto !important;
+	color: #21759b;
+	display: block;
+	font-size: 14px;
+	font-size: 0.875rem;
+	font-weight: bold;
+	height: auto;
+	left: 5px;
+	line-height: normal;
+	padding: 15px 23px 14px;
+	text-decoration: none;
+	top: 5px;
+	width: auto;
+	z-index: 100000;
+}
+
+// Links
+// ------------------------------------------------
+
+a {
+	color: $color-dark-blue !important;
+	&:hover {
+		color: $color-light-blue !important;
+	}
+}
+
+// Icons
+// ------------------------------------------------
+
+@font-face {
+	font-family: "GravityView";
+	src: url("../fonts/gravityview.eot");
+	src: url("../fonts/gravityview.eot?#iefix") format("embedded-opentype"),
+		 url("../fonts/gravityview.woff") format("woff"),
+		 url("../fonts/gravityview.ttf") format("truetype"),
+		 url("../fonts/gravityview.svg#gravityview") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+
+[data-icon]::before {
+	font-family: "GravityView" !important;
+	content: attr(data-icon);
+	font-style: normal !important;
+	font-weight: normal !important;
+	font-variant: normal !important;
+	text-transform: none !important;
+	speak: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+[class^="gv-icon-"]:before,
+[class*=" gv-icon-"]:before {
+	font-family: "GravityView" !important;
+	font-style: normal !important;
+	font-weight: normal !important;
+	font-variant: normal !important;
+	text-transform: none !important;
+	speak: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	position: relative;
+	vertical-align: middle;
+}
+
+.gv-icon-arrow-down:before {
+	content: "\e000";
+}
+
+.gv-icon-arrow-left:before {
+	content: "\e001";
+}
+
+.gv-icon-arrow-right:before {
+	content: "\e002";
+}
+
+.gv-icon-arrow-up:before {
+	content: "\e003";
+}
+
+.gv-icon-burger:before {
+	content: "\e004";
+}
+
+.gv-icon-close:before {
+	content: "\e005";
+}
+
+.gv-icon-close-circle:before {
+	content: "\e006";
+}
+
+.gv-icon-floaty:before {
+	content: "\e007";
+}
+
+.gv-icon-floaty-helmet:before {
+	content: "\e008";
+}
+
+.gv-icon-gear:before {
+	content: "\e009";
+}
+
+.gv-icon-minus:before {
+	content: "\e00a";
+}
+
+.gv-icon-minus-circle:before {
+	content: "\e00b";
+}
+
+.gv-icon-panel:before {
+	content: "\e00c";
+}
+
+.gv-icon-plus:before {
+	content: "\e00d";
+}
+
+.gv-icon-plus-circle:before {
+	content: "\e00e";
+}
+
+.gv-icon-sort:before {
+	content: "\e00f";
+}
+
+.gv-icon-sort-down:before {
+	content: "\e010";
+}
+
+.gv-icon-sort-up:before {
+	content: "\e011";
+}
+
+.gv-icon-datatables:before {
+	content: "\e012";
+}

@@ -1,0 +1,58 @@
+// ================================================
+// Setup Views
+// ================================================
+
+.gv-view__setup-steps {
+	padding-top: 3em;
+	padding-bottom: 2em;
+	border-bottom: 1px solid $color-tab-border;
+	@include clearfix;
+	
+	&:first-of-type {
+		padding-top: 1em;
+	}
+	
+	&:last-of-type {
+		border-bottom: none;
+		padding-bottom: 1em;
+	}
+	
+}
+
+.gv-view__setup-steps h3 {
+	float: left;
+}
+
+.gv-view__setup-steps .gv-view__setup-step-number {
+	float: left;
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	background-color: $color-light-blue;
+	border-radius: 50%;
+	text-align: center;
+	vertical-align: middle;
+	margin-right: 1em;
+	font-weight: 600;
+	font-size: 20px;
+	line-height: 40px;
+	color: $color-white;
+}
+
+.gv-view__setup-steps .gv-button {
+	float: right;
+	width: 20%;
+	max-width: 180px;
+}
+
+.gv-view__setup-steps.gv-view__setup-steps-disabled {
+	
+	h3, small {
+		color: $color-grey !important;
+	}
+	
+	.gv-view__setup-step-number {
+		background-color: $color-grey;
+	}
+	
+}

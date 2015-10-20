@@ -1,0 +1,52 @@
+// ================================================
+// Variables
+// ================================================
+
+// Colours
+// ------------------------------------------------
+
+// $color-tab-border: #E5E5E5;
+// $color-white: #FFF;
+// $color-text: #555;
+// $color-small-text: #999;
+// $color-grey: #CCC;
+// $color-light-grey: #F7F7F7;
+// $color-light-blue: #00A0D2;
+// $color-dark-blue: #0073AA;
+
+$color-tab-border: #E2E9ED;
+$color-white: #FFF;
+$color-text: #2D3435;
+$color-small-text: #809599;
+$color-grey: #C5CCD0;
+$color-light-grey: #F0F2F2;
+$color-light-blue: #13BFD6;
+$color-middle-blue: darken($color-light-blue, 3);
+$color-dark-blue: #008496;
+
+// Breakpoints
+// ------------------------------------------------
+
+/* Auto-folding of the admin menu */
+// @media only screen and (max-width: 960px) {
+// }
+// @media screen and ( max-width: 782px ) {
+// }
+// @media screen and (max-width: 600px) {
+// }
+
+
+$mobile-portrait: 320px;
+$mobile-landscape: 480px;
+$small-tablet: 600px;
+$tablet-portrait: 768px;
+$tablet-landscape: 1024px;
+$desktop: 1280px;
+$widescreen: 1400px;
+
+// Other
+// ------------------------------------------------
+
+$border-radius: 3px;
+$box-shadow: rgba(0,0,0,.09);
+$box-shadow-inset: rgba(255,255,255,.5);

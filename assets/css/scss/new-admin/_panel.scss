@@ -1,0 +1,229 @@
+// ================================================
+// Slide Panel
+// ================================================
+
+.gv-panel {
+	position: fixed;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 100%;
+	background: $color-white;
+	border-left: 1px solid $color-tab-border;
+	z-index: 9;
+	transform: translateX(100%);
+	transition-property: transform;
+	transition-duration: 0.3s;
+	transition-delay: 0.2s;
+	
+	@include respond($tablet-landscape) {
+		width: 302px;
+		transform: translateX(302px);
+	}
+	
+}
+
+.gv-panel__is-visible {
+	transform: translateX(0);
+	transition-delay: 0s;
+}
+
+.gv-panel a {
+	text-decoration: none;
+	&:focus {
+		box-shadow: none;
+	}
+}
+
+.gv-panel__header {
+	position: absolute;
+	top: 32px;
+	width: 100%;
+	padding: 1.5em 1em;
+	background: $color-white;
+	border-bottom: 1px solid $color-tab-border;
+	@include clearfix;
+}
+
+.gv-panel__header h3 {
+	float: left;
+	margin: 0;
+	padding: 0;
+	text-transform: uppercase;
+	font-size: 14px;
+	color: $color-small-text !important;
+}
+
+.gv-panel__close {
+	float: right;
+	color: $color-small-text !important;
+}
+
+.gv-panel__go-back {
+	position: relative;
+	top: .15em;
+	float: left;
+	//vertical-align: middle;
+	margin-right: .75em;
+}
+
+.gv-panel__content {
+	padding-top: 5.75em;
+	padding-bottom: 5.75em;
+	height: 100%;
+	overflow-y: scroll;
+}
+
+.gv-panel__list {
+	@include clearfix;
+	
+	li {
+		margin: 0;
+		border-bottom: 1px solid $color-tab-border;
+	}
+	
+}
+
+.gv-panel__search {
+	margin: 0;
+	padding: 1em;
+	border-top: 1px solid red;
+}
+
+#gv-panel__search-field,
+#gv-panel__search-button {
+	margin: 0;
+	padding: 0;
+	border: none !important;
+	outline: none !important;
+	box-shadow: none !important;
+	background: none !important;
+	text-shadow: none !important;
+}
+
+#gv-panel__search-field {
+	font-size: 13px;
+	color: $color-small-text;
+	width: calc(100% - 32px);
+}
+
+#gv-panel__search-button {
+	float: right;
+	width: 32px;
+	text-align: right;
+	color: $color-small-text;
+	cursor: pointer;
+	
+	&[data-icon]::before {
+		position: relative;
+		top: .2em;
+	}
+}
+
+.gv-panel__category a {
+	display: block;
+	padding: 1em;
+	color: $color-text !important;
+	
+	&:hover {
+		background-color: $color-light-grey;
+		color: $color-text !important;
+	}
+	
+	&:after {
+		font-family: "GravityView" !important;
+		font-style: normal !important;
+		font-weight: normal !important;
+		font-variant: normal !important;
+		text-transform: none !important;
+		speak: none;
+		line-height: 1;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		position: relative;
+		vertical-align: middle;
+		content: "\e002";
+		margin-top: .25em;
+		float: right;
+		color: $color-small-text;
+	}
+
+}
+
+.gv-panel__list-fields {
+	
+	[type="checkbox"]:not(:checked),
+	[type="checkbox"]:checked,
+	[type="radio"]:not(:checked),
+	[type="radio"]:checked {
+		position: absolute;
+		left: -9999px;
+	}
+	
+	[type="checkbox"] + label,
+	[type="radio"] + label {
+		display: block;
+		padding: 1em 1em 1em calc(1em - 4px);
+		cursor: pointer;
+		border-left: 4px solid transparent;
+		
+		&:hover {
+			background-color: $color-light-grey;
+		}
+	}
+	
+	[type="checkbox"]:checked + label,
+	[type="radio"]:checked + label {
+		border-left: 4px solid $color-light-blue;
+		color: $color-light-blue;
+		font-weight: 600;
+		
+		&:hover {
+			background-color: transparent;
+		}
+	}
+	
+}
+
+.gv-panel__view-type-list {
+	border-bottom: none !important;
+	padding: 1em;
+	
+	a {
+		display: block;
+		margin-bottom: 1em;
+	}
+	
+	a img {
+		display: block;
+		width: 100%;
+		height: auto;
+		border: none;
+		margin: 0;
+		padding: 0;
+	}
+	
+	a:active img,
+	a.gv-panel__view-type-selected img {
+		outline: 4px solid $color-light-blue;
+		outline-offset: -4px;
+	}
+}
+
+.gv-panel__footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	padding: 1em;
+	background: $color-white;
+	border-top: 1px solid $color-tab-border;
+	@include clearfix;
+	
+	.gv-panel__cancel {
+		float: left;
+	}
+	.gv-panel__submit {
+		float: right;
+	}
+	
+}

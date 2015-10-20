@@ -431,7 +431,7 @@ class GravityView_Admin_Views {
 
 		/**
 		 * @filter `gravityview/admin/form_links` Modify the links shown in the Connected Form links
-		 * @since 1.14
+		 * @since 2.0
 		 * @param array $links Links to show
 		 * @param array $form Gravity Forms form array
 		 * @param int $view_id WordPress view post ID
@@ -1078,6 +1078,8 @@ class GravityView_Admin_Views {
 			wp_localize_script( 'gravityview_views_scripts', 'gravityview_i18n', self::get_admin_i18n_labels() );
 
 			wp_enqueue_style( 'gravityview_views_styles', plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
+
+			wp_enqueue_style( 'gravityview-new-admin', plugins_url( 'assets/css/admin-views-new.css', GRAVITYVIEW_FILE ), array( 'dashicons' ), GravityView_Plugin::version );
 
 			self::enqueue_gravity_forms_scripts();
 

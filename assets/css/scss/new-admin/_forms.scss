@@ -1,0 +1,145 @@
+// ================================================
+// Forms
+// ================================================
+
+// Placeholder
+// ------------------------------------------------
+
+::-webkit-input-placeholder {
+	color: $color-small-text;
+}
+
+:-moz-placeholder {
+	color: $color-small-text;  
+}
+
+::-moz-placeholder {
+	color: $color-small-text;  
+}
+
+:-ms-input-placeholder {  
+	color: $color-small-text;  
+}
+
+// Buttons
+// ------------------------------------------------
+
+.gv-button {
+	display: inline-block;
+	background: $color-light-grey;
+	border: 1px solid $color-grey;
+	box-shadow: 0px 1px 0px 0px $box-shadow, inset 0px 1px 0px 0px $box-shadow-inset;
+	border-radius: $border-radius;
+	font-family: inherit;
+	font-size: inherit;
+	color: $color-text;
+	text-shadow: 1px 1px 0px $box-shadow-inset;
+	padding: .45em 1em;
+	margin: 0;
+	cursor: pointer;
+	outline: none;
+	text-decoration: none;
+	
+	&:hover {
+		border-color: $color-small-text;
+		z-index: 2;
+	}
+	
+	&:active {
+		color: $color-white;
+		background: $color-light-blue;
+		border-color: $color-dark-blue;
+		text-shadow: 1px 1px 0px $box-shadow;
+		box-shadow: 0px 1px 0px 0px $box-shadow, inset 2px 2px 3px 0px $box-shadow;
+		z-index: 2;
+	}
+}
+
+.gv-button[data-icon]::before {
+	position: relative;
+	top: .15em;
+}
+
+.gv-button span {
+	margin-left: .35em;
+}
+
+.gv-button__secondary {
+	color: $color-white !important;
+	background: $color-light-blue;
+	border-color: $color-dark-blue;
+	text-shadow: 1px 1px 0px $box-shadow;
+	
+	&:hover {
+		color: $color-white !important;
+		background: $color-middle-blue;
+		border-color: $color-dark-blue;
+		z-index: 2;
+	}
+	
+	&:active {
+		background: $color-light-blue;
+		z-index: 2;
+	}
+}
+
+.gv-button__group {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	
+	> .gv-button {
+		margin: 0;
+		padding: .25em .75em;
+		position: relative;
+		float: left;
+		
+		&:first-child:not(:last-child) {
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+		
+		&:first-child {
+			margin-left: 0;
+		}
+		
+		&:not(:first-child):not(:last-child) {
+			border-radius: 0;
+			margin-left: -1px;
+		}
+		
+		&:last-child:not(:first-child) {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+			margin-left: -1px;
+		}
+		
+	}
+}
+
+// Row Controls
+// ------------------------------------------------
+
+.gv-row-controls {
+	position: absolute;
+	text-align: center;
+	bottom: -.9em;
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	
+	.gv-button {
+		color: $color-small-text;
+		&:hover {
+			color: $color-text;
+		}
+		&:active {
+			color: $color-white;
+		}
+	}
+}
+
+// Generic Forms
+// ------------------------------------------------
+

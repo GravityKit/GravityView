@@ -1,0 +1,44 @@
+// ================================================
+// Tabs
+// ================================================
+
+.gv-tabs__group {
+	border-bottom: 1px solid $color-tab-border;
+	@include clearfix;
+}
+
+.gv-tabs {
+	display: inline-block;
+	float: left;
+	margin-left: .5em;
+	padding: .75em 1.25em;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.gv-tabs__active {
+	background: $color-white;
+	border-width: 1px;
+	border-style: solid;
+	border-color: $color-tab-border $color-tab-border $color-white $color-tab-border;
+	margin-bottom: -1px;
+	color: $color-text !important;
+	&:hover {
+		color: $color-text;
+	}
+}
+
+.gv-tabs__container {
+	padding: 2em;
+	background: $color-white;
+	border-width: 1px;
+	border-style: solid;
+	border-color: transparent $color-tab-border $color-tab-border $color-tab-border;
+}
+
+// View Config Settings (Inside Tabs)
+// ------------------------------------------------
+
+.gv-view__config-settings {
+	float: right;
+}

@@ -1,0 +1,36 @@
+// ================================================
+// Utilities, Functions & Mixins
+// ================================================
+
+// Functions
+// ------------------------------------------------
+
+@mixin respond($breakpoint) {
+	@media screen and (min-width: $breakpoint) {
+		@content;
+	}
+}
+
+@mixin hidpi {
+	@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5) {
+		@content;
+	}
+}
+
+// Mixins
+// ------------------------------------------------
+
+@mixin clearfix {
+	&:before,
+	&:after {
+		content: "";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
+
+.gv-clear {
+	@include clearfix;
+}
