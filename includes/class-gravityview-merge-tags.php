@@ -165,7 +165,7 @@ class GravityView_Merge_Tags {
 	 * @param array $entry Entry array
 	 * @param bool $url_encode Whether to URL-encode output
 	 */
-	private static function replace_get_variables( $text, $form = array(), $entry = array(), $url_encode = false ) {
+	public static function replace_get_variables( $text, $form = array(), $entry = array(), $url_encode = false ) {
 
 		// Is there is {get:[xyz]} merge tag?
 		preg_match_all( "/{get:(.*?)}/ism", $text, $matches, PREG_SET_ORDER );
