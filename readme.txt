@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 == Changelog ==
 
 = 1.15.1 =
+* New: Use `{get}` Merge Tags as `[gravityview]` attributes
 * Fixed: Update the required Gravity Forms version to 1.9.9.10
 * Fixed: Section fields should not be affected by "Hide empty fields" View setting
 * Tweak: Allow overriding `gravityview_sanitize_html_class()` function

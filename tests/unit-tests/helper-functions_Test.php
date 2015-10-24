@@ -2,10 +2,46 @@
 
 defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
 
+/**
+ * @group helperfunctions
+ */
 class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 
 	/**
-	 * @group helperfunctions
+	 * @since 1.15.1
+	 * @covers ::gv_empty()
+	 */
+	public function test_gv_empty() {
+
+		$this->assertTrue( gv_empty( array() ) );
+		$this->assertTrue( gv_empty( false ) );
+		$this->assertTrue( gv_empty( null ) );
+		$this->assertTrue( gv_empty( new stdClass() ) );
+		$this->assertTrue( gv_empty( '' ) );
+		$this->assertTrue( gv_empty( $not_defined ) );
+
+		// Test $zero_is_empty
+		$this->assertTrue( gv_empty( 0 ) );
+		$this->assertTrue( gv_empty( '0' ) );
+		$this->assertTrue( gv_empty( floatval( 0 ) ) );
+		$this->assertFalse( gv_empty( '0.0' ) );
+
+		$this->assertFalse( gv_empty( 0, false ) );
+		$this->assertFalse( gv_empty( '0', false ) );
+		$this->assertFalse( gv_empty( floatval( 0 ), false ) );
+		$this->assertFalse( gv_empty( '0.0', false ) );
+
+		// Test $allow_string_booleans
+		$this->assertTrue( gv_empty( 'false' ) );
+		$this->assertTrue( gv_empty( 'no' ) );
+		$this->assertFalse( gv_empty( 'false', true, false ) );
+		$this->assertFalse( gv_empty( 'no', true, false ) );
+		$this->assertFalse( gv_empty( 'true', true, false ) );
+		$this->assertFalse( gv_empty( 'yes', true, false ) );
+
+	}
+
+	/**
 	 * @covers ::gravityview_strip_whitespace()
 	 */
 	public function test_gravityview_strip_whitespace() {
@@ -29,7 +65,6 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @group helperfunctions
 	 * @covers ::gravityview_is_not_empty_string
 	 */
 	public function test_gravityview_is_not_empty_string() {
@@ -57,7 +92,6 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	 * We only test gravityview_number_format() without a decimal defined; otherwise it's an alias for number_format_i18n()
 	 *
 	 * @see number_format_i18n()
-	 * @group helperfunctions
 	 * @covers ::gravityview_number_format()
 	 */
 	public function test_gravityview_number_format() {
@@ -77,7 +111,6 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @group helperfunctions
 	 * @covers ::gravityview_sanitize_html_class()
 	 */
 	public function test_gravityview_sanitize_html_class() {
@@ -113,7 +146,6 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @group helperfunctions
 	 * @covers ::gravityview_format_link()
 	 * @covers :: _gravityview_strip_subdomain()
 	 */
@@ -209,7 +241,6 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @group helperfunctions
 	 * @covers ::gravityview_format_link()
 	 */
 	public function test_gravityview_format_link_WHEN_FILTER_ROOTONLY_FALSE() {
@@ -240,7 +271,6 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @group helperfunctions
 	 * @covers ::gravityview_format_link()
 	 */
 	public function test_gravityview_format_link_WHEN_FILTER_NOSUBDOMAIN_FALSE() {
@@ -288,7 +318,6 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @group helperfunctions
 	 * @covers ::gravityview_format_link()
 	 */
 	public function test_gravityview_format_link_WHEN_FILTER_NOQUERYSTRING_FALSE() {
