@@ -202,9 +202,7 @@ class GravityView_Support_Port {
 				return 'There was an error fetching related plugins.';
 			}
 		}
-
-		var_dump( $extensions );
-
+		
 		return implode( '<br />', $extensions );
 	}
 
