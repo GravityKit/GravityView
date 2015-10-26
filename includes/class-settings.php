@@ -205,7 +205,7 @@ class GravityView_Settings extends GFAddOn {
 		}
 		$message = sprintf( $message, $status, '<a href="'.admin_url( 'edit.php?post_type=gravityview&amp;page=gravityview_settings' ).'">', '</a>', '<a href="https://gravityview.co/pricing/">', '</a>' );
 		if( !empty( $status ) ) {
-			GravityView_Admin::add_notice( array(
+			GravityView_Admin_Notices::add_notice( array(
 				'message' => $message,
 				'class'	=> 'updated',
 				'title' => $title,
