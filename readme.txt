@@ -34,6 +34,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 	* Allow dismissing all notices
 	* Clear dismissed notices when activating the plugin
 	* Fixed showing notice to enter license key
+* Tweak: Added previously-supported `{created_by:roles}` Merge Tag to available tags dropdown
 * Tweak: Allow overriding `gravityview_sanitize_html_class()` function
 * Tweak: Make `GravityView_Merge_Tags::replace_get_variables()` method public
 * Tweak: Rename `GravityView_Merge_Tags::_gform_replace_merge_tags()` method `GravityView_Merge_Tags::replace_gv_merge_tags()` for clarity

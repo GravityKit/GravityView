@@ -107,7 +107,11 @@ class GravityView_Merge_Tags {
 			array(
 				'label' => __('Entry Creator: User ID', 'gravityview'),
 				'tag' => '{created_by:ID}'
-			)
+			),
+			array(
+				'label' => __('Entry Creator: Roles', 'gravityview'),
+				'tag' => '{created_by:roles}'
+			),
 		);
 
 		//return the form object from the php hook
