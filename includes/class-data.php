@@ -77,11 +77,15 @@ class GravityView_View_Data {
 					} else{
 						// Parse the Post Content
 						$id = $this->parse_post_content( $post->post_content );
-						$ids = array_merge( $ids, (array)$id );
+						if( $id ) {
+							$ids = array_merge( $ids, (array) $id );
+						}
 
 						// Parse the Post Meta
 						$id = $this->parse_post_meta( $post->ID );
-						$ids = array_merge( $ids, (array)$id );
+						if( $id ) {
+							$ids = array_merge( $ids, (array) $id );
+						}
 					}
 
 				}
@@ -91,7 +95,9 @@ class GravityView_View_Data {
 				if ( is_string( $passed_post ) ) {
 
 					$id = $this->parse_post_content( $passed_post );
-					$ids = array_merge( $ids, (array)$id );
+					if( $id ) {
+						$ids = array_merge( $ids, (array) $id );
+					}
 
 				} else {
 					$id = $this->get_id_from_atts( $passed_post );
