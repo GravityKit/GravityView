@@ -391,7 +391,7 @@ class GravityView_View_Data {
 	 * @param $post_id int WP_Post ID
 	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
 	 */
-	function parse_post_meta( $post_id ) {
+	private function parse_post_meta( $post_id ) {
 
 		$meta_keys = (array)apply_filters( 'gravityview/data/parse/meta_keys', array(), $post_id );
 
