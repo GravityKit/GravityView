@@ -21,7 +21,8 @@ class GravityView_Merge_Tags {
 
 		add_filter( 'gform_custom_merge_tags', array( $this, '_gform_custom_merge_tags' ), 10, 4 );
 
-		add_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', '_gform_replace_merge_tags' ), 10, 7 );
+		/** @see GFCommon::replace_variables_prepopulate **/
+		add_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', 'replace_gv_merge_tags' ), 10, 7 );
 
 	}
 
@@ -126,7 +127,6 @@ class GravityView_Merge_Tags {
 	 *
 	 * @return mixed
 	 */
-	public static function _gform_replace_merge_tags(  $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
 		/**
 		 * This prevents the gform_replace_merge_tags filter from being called twice, as defined in:
@@ -136,6 +136,7 @@ class GravityView_Merge_Tags {
 		if( false === $form ) {
 			return $text;
 		}
+	public static function replace_gv_merge_tags(  $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
 		$text = self::replace_get_variables( $text, $form, $entry, $url_encode );
 
