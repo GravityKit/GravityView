@@ -20,7 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.15.1 =
+= 1.15.1 on October 27 =
 * New: Use `{get}` Merge Tags as `[gravityview]` attributes
 * Fixed: Edit Entry and Delete Entry links weren't working in DataTables
 * Fixed: Some Gravity Forms Merge Tags weren't working, like `{embed_post:post_title}`

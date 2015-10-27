@@ -276,6 +276,39 @@ class GravityView_Welcome {
 
 				<hr />
 
+				<h3>1.15.1 on October 27</h3>
+
+				<ul>
+					<li>New: Use <code>{get}</code> Merge Tags as <code>[gravityview]</code> attributes</li>
+					<li>Fixed: Edit Entry and Delete Entry links weren't working in DataTables</li>
+					<li>Fixed: Some Gravity Forms Merge Tags weren't working, like <code>{embed_post:post_title}</code></li>
+					<li>Fixed: Display Checkbox and Radio field labels in the Search Bar
+
+						<ul>
+							<li>New: If you prefer how the searches looked before the labels were visible, you can set the "Label" for the search field to a blank space. That will hide the label.</li>
+							<li>Removed extra whitespace from search field <code>&lt;label&gt;</code>s</li>
+						</ul>
+					</li>
+					<li>Fixed: Update the required Gravity Forms version to 1.9.9.10</li>
+					<li>Fixed: Section fields should not be affected by "Hide empty fields" View setting</li>
+					<li>Fixed: Add ability to check post custom fields for <code>[gravityview]</code> shortcode. This fixes issues with some themes and page builder plugins.</li>
+					<li>Fixed: Return type wasn't boolean for <code>has_gravityview_shortcode()</code> function</li>
+					<li>Tweak: Improve notifications logic
+
+						<ul>
+							<li>Only show notices to users with appropriate capabilities</li>
+							<li>Allow dismissing all notices</li>
+							<li>Clear dismissed notices when activating the plugin</li>
+							<li>Fixed showing notice to enter license key</li>
+						</ul>
+					</li>
+					<li>Tweak: Added previously-supported <code>{created_by:roles}</code> Merge Tag to available tags dropdown</li>
+					<li>Tweak: Allow overriding <code>gravityview_sanitize_html_class()</code> function</li>
+					<li>Tweak: Make <code>GravityView_Merge_Tags::replace_get_variables()</code> method public</li>
+					<li>Tweak: Rename <code>GravityView_Merge_Tags::_gform_replace_merge_tags()</code> method <code>GravityView_Merge_Tags::replace_gv_merge_tags()</code> for clarity</li>
+				</ul>
+
+
 				<h3>1.15 on October 15</h3>
 
 				<ul>
