@@ -33,13 +33,16 @@ class GravityView_Merge_Tags {
 	 * We check for the basics first, which is more efficient.
 	 *
 	 * @since 1.8.4 - Moved to GravityView_Merge_Tags
+	 * @since 1.15.1 - Add support for $url_encode and $esc_html arguments
 	 *
 	 * @param  string      $text       Text to replace variables in
 	 * @param  array      $form        GF Form array
 	 * @param  array      $entry        GF Entry array
+	 * @param  bool       $url_encode   Pass return value through `url_encode()`
+	 * @param  bool       $esc_html     Pass return value through `esc_html()`
 	 * @return string                  Text with variables maybe replaced
 	 */
-	public static function replace_variables($text, $form = array(), $entry = array() ) {
+	public static function replace_variables($text, $form = array(), $entry = array(), $url_encode = false, $esc_html = true ) {
 
 		/**
 		 * @filter `gravityview_do_replace_variables` Turn off merge tag variable replacements.\n
