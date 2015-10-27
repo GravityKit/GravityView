@@ -181,6 +181,7 @@ class GravityView_Compatibility {
 				'class' => 'error',
 				'message' => sprintf( __( "%sGravityView requires PHP Version %s or newer.%s \n\nYou're using Version %s. Please ask your host to upgrade your server's PHP.", 'gravityview' ), '<h3>', GV_MIN_PHP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.phpversion().'</span>' ),
 				'cap' => 'manage_options',
+				'dismiss' => 'php_version',
 			);
 
 			return false;
@@ -204,6 +205,7 @@ class GravityView_Compatibility {
 				'class' => 'error',
 				'message' => sprintf( __( "%sGravityView requires WordPress %s or newer.%s \n\nYou're using Version %s. Please upgrade your WordPress installation.", 'gravityview' ), '<h3>', GV_MIN_WP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.$wp_version.'</span>' ),
 			    'cap' => 'update_core',
+				'dismiss' => 'wp_version',
 			);
 
 			return false;
@@ -236,6 +238,7 @@ class GravityView_Compatibility {
 				'class' => 'error',
 				'message' => sprintf( __( "%sGravityView requires Gravity Forms Version %s or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', GV_MIN_GF_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
 				'cap' => 'update_plugins',
+				'dismiss' => 'gf_version',
 			);
 
 			return false;
@@ -276,6 +279,7 @@ class GravityView_Compatibility {
 					'class' => 'error',
 					'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravityview' ), '<h3>', "</h3>\n\n". $button, '</a></strong>' ),
 					'cap' => 'activate_plugins',
+					'dismiss' => 'gf_inactive',
 				);
 
 				break;
@@ -284,6 +288,7 @@ class GravityView_Compatibility {
 					'class' => 'error',
 					'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $39%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
 					'cap' => 'install_plugins',
+					'dismiss' => 'gf_installed',
 				);
 				break;
 		}
