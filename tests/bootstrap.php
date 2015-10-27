@@ -115,31 +115,31 @@ class GV_Unit_Tests_Bootstrap {
 			define( 'REST_API_VERSION', '2.0' );
 
 			/** Compatibility shims for PHP functions */
-			include_once( $this->plugin_dir . '/wp-includes/compat.php' );
+			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/compat.php' );
 
 			/** WP_HTTP_Response class */
 			require_once( $this->plugin_dir . '/tmp/api-core/wp-includes/class-wp-http-response.php' );
 
 			/** Main API functions */
-			include_once( $this->plugin_dir . '/wp-includes/functions.php' );
+			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/functions.php' );
 
 			/** WP_REST_Server class */
-			include_once( $this->plugin_dir . '/wp-includes/rest-api/class-wp-rest-server.php' );
+			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/rest-api/class-wp-rest-server.php' );
 
 			/** WP_HTTP_Response class */
-			include_once( $this->plugin_dir . '/wp-includes/class-wp-http-response.php' );
+			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/class-wp-http-response.php' );
 
 			/** WP_REST_Response class */
-			include_once( $this->plugin_dir . '/wp-includes/rest-api/class-wp-rest-response.php' );
+			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/rest-api/class-wp-rest-response.php' );
 
 			/** WP_REST_Request class */
-			require_once( $this->plugin_dir . '/wp-includes/rest-api/class-wp-rest-request.php' );
+			require_once( $this->plugin_dir . '/tmp/api-core/wp-includes/rest-api/class-wp-rest-request.php' );
 
 			/** REST functions */
-			include_once( $this->plugin_dir . '/wp-includes/rest-api/rest-functions.php' );
+			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/rest-api/rest-functions.php' );
 
 			/** REST filters */
-			include_once( $this->plugin_dir . '/wp-includes/filters.php' );
+			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/filters.php' );
 
 			/**
 			 * Determines if the rewrite rules should be flushed.
