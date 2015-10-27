@@ -92,10 +92,6 @@ class GV_Unit_Tests_Bootstrap {
 	public function load() {
 		require_once $this->plugin_dir . '/tmp/gravityforms/gravityforms.php';
 
-		if( ! defined( 'REST_API_VERSION' ) ) {
-			require_once $this->plugin_dir . '/tmp/api-core/rest-api.php';
-		}
-
 		require_once $this->plugin_dir . '/gravityview.php';
 
 		/* Remove temporary tables which causes problems with GF */
