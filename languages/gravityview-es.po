@@ -8,12 +8,12 @@ msgstr ""
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
 "PO-Revision-Date: 2015-10-27 22:56+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
-"Language-Team: Lithuanian (Lithuania) (http://www.transifex.com/katzwebservices/gravityview/language/lt_LT/)\n"
+"Language-Team: Spanish (http://www.transifex.com/katzwebservices/gravityview/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: lt_LT\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: grunt-wp-i18n 0.5.3\n"
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-Bookmarks: \n"
@@ -794,35 +794,30 @@ msgid "%s View updated."
 msgid_plural "%s Views updated."
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: includes/class-admin.php:191
 msgid "%s View not updated, somebody is editing it."
 msgid_plural "%s Views not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: includes/class-admin.php:192
 msgid "%s View permanently deleted."
 msgid_plural "%s Views permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: includes/class-admin.php:193
 msgid "%s View moved to the Trash."
 msgid_plural "%s Views moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: includes/class-admin.php:194
 msgid "%s View restored from the Trash."
 msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: includes/class-api.php:394
 msgid "This search returned no results."
