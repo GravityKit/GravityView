@@ -56,6 +56,8 @@ class GravityView_Merge_Tags {
 			return $text;
 		}
 
+		$text = self::_gform_replace_merge_tags( $text, $form, $entry );
+
 		// Check for fields - if they exist, we let Gravity Forms handle it.
 		preg_match_all('/{[^{]*?:(\d+(\.\d+)?)(:(.*?))?}/mi', $text, $matches, PREG_SET_ORDER);
 
@@ -67,9 +69,6 @@ class GravityView_Merge_Tags {
 			}
 		}
 
-		if ( empty( $form ) || empty( $entry ) ) {
-			return self::_gform_replace_merge_tags( $text );
-		}
 
 		return GFCommon::replace_variables( $text, $form, $entry, false, false, false, "html");
 	}
@@ -139,7 +138,6 @@ class GravityView_Merge_Tags {
 
 		// Process the merge vars here
 		$text = self::replace_user_variables_created_by( $text, $form, $entry, $url_encode, $esc_html );
-
 
 		return $text;
 	}
