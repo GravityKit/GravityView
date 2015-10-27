@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Update the required Gravity Forms version to 1.9.9.10
 * Fixed: Section fields should not be affected by "Hide empty fields" View setting
 * Fixed: Add ability to check post custom fields for `[gravityview]` shortcode. This fixes issues with some themes and page builder plugins.
+* Fixed: Return type wasn't boolean for `has_gravityview_shortcode()` function
 * Tweak: Improve notifications logic
 	* Only show notices to users with appropriate capabilities
 	* Allow dismissing all notices
