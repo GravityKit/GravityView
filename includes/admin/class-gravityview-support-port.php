@@ -53,7 +53,6 @@ class GravityView_Support_Port {
 		/**
 		 * @filter `gravityview/support_port/display` Whether to display Support Port
 		 * @since 1.15
-		 *
 		 * @param boolean $display_beacon Default: `true`
 		 */
 		$display_support_port = apply_filters( 'gravityview/support_port/display', self::show_for_user() );
@@ -179,12 +178,12 @@ class GravityView_Support_Port {
 			return 'Running < WP 3.0';
 		}
 
-		$extensions = (array)get_site_transient( self::related_plugins_key );
+		$extensions = get_site_transient( self::related_plugins_key );
 
 		if ( empty( $extensions ) ) {
 
 			$active_plugins = wp_get_active_and_valid_plugins();
-
+			$extensions = array();
 			foreach ( $active_plugins as $active_plugin ) {
 
 				// Match gravityview, gravity-forms, gravityforms, gravitate
@@ -203,7 +202,7 @@ class GravityView_Support_Port {
 				return 'There was an error fetching related plugins.';
 			}
 		}
-
+		
 		return implode( '<br />', $extensions );
 	}
 

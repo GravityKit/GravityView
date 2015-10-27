@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-10-15 14:29+0000\n"
+"PO-Revision-Date: 2015-10-27 22:56+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Finnish (http://www.transifex.com/katzwebservices/gravityview/language/fi/)\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: grunt-wp-i18n 0.5.1\n"
+"X-Generator: grunt-wp-i18n 0.5.3\n"
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-Bookmarks: \n"
 "X-Poedit-Country: United States\n"
@@ -25,84 +25,84 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 
-#: gravityview.php:338
+#: gravityview.php:336
 msgid "Top"
 msgstr "Alkuun"
 
-#: gravityview.php:339
+#: gravityview.php:337
 msgid "Left"
 msgstr "Vasen"
 
-#: gravityview.php:339
+#: gravityview.php:337
 msgid "Right"
 msgstr "Oikea"
 
-#: includes/admin/class-gravityview-support-port.php:84
+#: includes/admin/class-gravityview-support-port.php:83
 msgid "GravityView Support"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:85
+#: includes/admin/class-gravityview-support-port.php:84
 msgid "Search GravityView Docs"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:86
+#: includes/admin/class-gravityview-support-port.php:85
 msgid ""
 "Your search timed out. Please double-check your internet connection and try "
 "again."
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:88
+#: includes/admin/class-gravityview-support-port.php:87
 msgid "Contact Support"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:89
+#: includes/admin/class-gravityview-support-port.php:88
 msgid "Attach a screenshot or file"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:90
+#: includes/admin/class-gravityview-support-port.php:89
 msgid "The maximum file size is 10 MB"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:91
+#: includes/admin/class-gravityview-support-port.php:90
 msgid "Your Name"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:92
+#: includes/admin/class-gravityview-support-port.php:91
 msgid "Please enter your name"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:93
+#: includes/admin/class-gravityview-support-port.php:92
 msgid "Email address"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:94
+#: includes/admin/class-gravityview-support-port.php:93
 msgid "Please enter a valid email address"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:95
+#: includes/admin/class-gravityview-support-port.php:94
 msgid "Subject"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:97
+#: includes/admin/class-gravityview-support-port.php:96
 msgid "How can we help you?"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:99
+#: includes/admin/class-gravityview-support-port.php:98
 msgid "Message sent!"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:100
+#: includes/admin/class-gravityview-support-port.php:99
 msgid ""
 "Thanks for reaching out! Someone from the GravityView team will get back to "
 "you soon."
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:294
-#: includes/admin/class-gravityview-support-port.php:297
+#: includes/admin/class-gravityview-support-port.php:293
+#: includes/admin/class-gravityview-support-port.php:296
 msgid "GravityView Support Port"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:301
+#: includes/admin/class-gravityview-support-port.php:300
 msgid "Show GravityView Support Port when on a GravityView-related page"
 msgstr ""
 
@@ -531,7 +531,7 @@ msgid "Entries"
 msgstr ""
 
 #: includes/class-admin-views.php:363 includes/class-admin.php:107
-#: includes/class-settings.php:249 includes/class-settings.php:275
+#: includes/class-settings.php:254 includes/class-settings.php:280
 msgid "Settings"
 msgstr "Asetukset"
 
@@ -718,19 +718,19 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:549
+#: includes/class-admin-welcome.php:582
 msgid "GravityView is brought to you by:"
 msgstr "Gravityformin on tehnyt sinulle:"
 
-#: includes/class-admin-welcome.php:574
+#: includes/class-admin-welcome.php:607
 msgid "Contributors"
 msgstr "Avustajat"
 
-#: includes/class-admin-welcome.php:595
+#: includes/class-admin-welcome.php:628
 msgid "Want to contribute?"
 msgstr "Haluatko avustaa?"
 
-#: includes/class-admin-welcome.php:596
+#: includes/class-admin-welcome.php:629
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -923,11 +923,11 @@ msgid ""
 "in the Quiz Settings."
 msgstr ""
 
-#: includes/class-common.php:1006 includes/class-data.php:565
+#: includes/class-common.php:1006 includes/class-data.php:611
 msgid "Default"
 msgstr "Oletus"
 
-#: includes/class-common.php:1049 includes/class-data.php:566
+#: includes/class-common.php:1049 includes/class-data.php:612
 msgid "Date Created"
 msgstr "Luontipäivä"
 
@@ -935,182 +935,182 @@ msgstr "Luontipäivä"
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
-#: includes/class-data.php:408
+#: includes/class-data.php:454
 msgid "The ID is required."
 msgstr ""
 
-#: includes/class-data.php:416
+#: includes/class-data.php:462
 msgid ""
 "You did not enter a number. The value entered should be a number, "
 "representing the ID of the post or page the View is embedded on."
 msgstr ""
 
-#: includes/class-data.php:419
+#: includes/class-data.php:465
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:352
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:219
 msgid "Learn more&hellip;"
 msgstr ""
 
-#: includes/class-data.php:427
+#: includes/class-data.php:473
 msgid "There is no post or page with that ID."
 msgstr ""
 
-#: includes/class-data.php:437
+#: includes/class-data.php:483
 msgid ""
 "The Post ID entered is not valid. You may have entered a post or page that "
 "does not contain the selected View. Make sure the post contains the "
 "following shortcode: %s"
 msgstr ""
 
-#: includes/class-data.php:445
+#: includes/class-data.php:491
 msgid "The ID is already a View."
 msgstr ""
 
-#: includes/class-data.php:496
+#: includes/class-data.php:542
 msgid "View ID"
 msgstr ""
 
-#: includes/class-data.php:504
+#: includes/class-data.php:550
 msgid "Number of entries per page"
 msgstr ""
 
-#: includes/class-data.php:512
+#: includes/class-data.php:558
 msgid "Enable lightbox for images"
 msgstr "Aseta Lightbox määritys kuville"
 
-#: includes/class-data.php:520
+#: includes/class-data.php:566
 msgid "Show only approved entries"
 msgstr "Näytä vain hyväksytyt merkinnät"
 
-#: includes/class-data.php:527
+#: includes/class-data.php:573
 msgid "Hide View data until search is performed"
 msgstr ""
 
-#: includes/class-data.php:530
+#: includes/class-data.php:576
 msgid ""
 "When enabled it will only show any View entries after a search is performed."
 msgstr ""
 
-#: includes/class-data.php:535
+#: includes/class-data.php:581
 msgid "Hide empty fields"
 msgstr "Piilota tyhjät kentät"
 
-#: includes/class-data.php:542
+#: includes/class-data.php:588
 msgid "Allow User Edit"
 msgstr ""
 
-#: includes/class-data.php:544
+#: includes/class-data.php:590
 msgid "Allow logged-in users to edit entries they created."
 msgstr ""
 
-#: includes/class-data.php:546
+#: includes/class-data.php:592
 msgid ""
 "Display \"Edit Entry\" fields to non-administrator users if they created the"
 " entry. Edit Entry fields will always be displayed to site administrators."
 msgstr ""
 
-#: includes/class-data.php:551
+#: includes/class-data.php:597
 msgid "Allow User Delete"
 msgstr ""
 
-#: includes/class-data.php:553
+#: includes/class-data.php:599
 msgid "Allow logged-in users to delete entries they created."
 msgstr ""
 
-#: includes/class-data.php:555
+#: includes/class-data.php:601
 msgid ""
 "Display \"Delete Entry\" fields to non-administrator users if they created "
 "the entry. Delete Entry fields will always be displayed to site "
 "administrators."
 msgstr ""
 
-#: includes/class-data.php:560
+#: includes/class-data.php:606
 msgid "Sort by field"
 msgstr "Järjestä kentän mukaan"
 
-#: includes/class-data.php:571
+#: includes/class-data.php:617
 msgid "Sort direction"
 msgstr "Järjestyssuunta"
 
-#: includes/class-data.php:576
+#: includes/class-data.php:622
 msgid "ASC"
 msgstr "Nouseva"
 
-#: includes/class-data.php:577
+#: includes/class-data.php:623
 msgid "DESC"
 msgstr "Laskeva"
 
-#: includes/class-data.php:583
+#: includes/class-data.php:629
 msgid "Enable sorting by column"
 msgstr ""
 
-#: includes/class-data.php:584
+#: includes/class-data.php:630
 msgid "Column Sorting"
 msgstr ""
 
-#: includes/class-data.php:593
+#: includes/class-data.php:639
 msgid "Filter by Start Date"
 msgstr "Suodata aloituspäivän mukaan"
 
-#: includes/class-data.php:595
+#: includes/class-data.php:641
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
 msgstr "Näytä merkinnät jotka luotu tämän päivämäärän jälkeen. Tukee suhteellisia päiviä, kuten \"-1 viikko\" tai \"-1 kuukausi\"."
 
-#: includes/class-data.php:602
+#: includes/class-data.php:648
 msgid "Filter by End Date"
 msgstr "Suodata lopetuspäivän mukaan"
 
-#: includes/class-data.php:604
+#: includes/class-data.php:650
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
 msgstr "Näytä merkinnät jotka luotu ennen tätä päivämäärä. Tukee suhteellisia päiviä, kuten \"nyt\" tai \"-3 päivää\"."
 
-#: includes/class-data.php:611
+#: includes/class-data.php:657
 msgid "CSS Class"
 msgstr ""
 
-#: includes/class-data.php:612
+#: includes/class-data.php:658
 msgid "CSS class to add to the wrapping HTML container."
 msgstr ""
 
-#: includes/class-data.php:619
+#: includes/class-data.php:665
 msgid "Search Value"
 msgstr ""
 
-#: includes/class-data.php:620
+#: includes/class-data.php:666
 msgid "Define a default search value for the View"
 msgstr ""
 
-#: includes/class-data.php:627
+#: includes/class-data.php:673
 #: includes/widgets/search-widget/class-search-widget.php:153
 msgid "Search Field"
 msgstr ""
 
-#: includes/class-data.php:628
+#: includes/class-data.php:674
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
 msgstr ""
 
-#: includes/class-data.php:635
+#: includes/class-data.php:681
 msgid "Single Entry Title"
 msgstr "Yksittäisen merkinnän otsikko"
 
-#: includes/class-data.php:637
+#: includes/class-data.php:683
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and Single"
 " Entry views."
 msgstr "Katsoaksesi yhtä merkintää vaihda sivun otsikko tähän asetukseen. Muutoin otsikko ei vaihdu monen näkymän ja yksittäisen näkymän osalta."
 
-#: includes/class-data.php:644
+#: includes/class-data.php:690
 msgid "Back Link Label"
 msgstr "Takaisin linkin otsikko"
 
-#: includes/class-data.php:646
+#: includes/class-data.php:692
 msgid "The text of the link that returns to the multiple entries view."
 msgstr "Linkin tekstit joka näytetään monen merkinnän näkymässä."
 
@@ -1170,7 +1170,7 @@ msgstr ""
 msgid "Copy creation failed, could not find original View with ID #%d"
 msgstr ""
 
-#: includes/class-gravityview-admin-notices.php:170
+#: includes/class-gravityview-admin-notices.php:201
 msgid "Dismiss"
 msgstr ""
 
@@ -1187,37 +1187,37 @@ msgid ""
 "You're using Version %s. Please ask your host to upgrade your server's PHP."
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:204
+#: includes/class-gravityview-compatibility.php:206
 msgid ""
 "%sGravityView requires WordPress %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please upgrade your WordPress installation."
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:235
+#: includes/class-gravityview-compatibility.php:239
 msgid ""
 "%sGravityView requires Gravity Forms Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:272
+#: includes/class-gravityview-compatibility.php:280
 msgid ""
 "%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
 "Forms%s to use the GravityView plugin."
 msgstr "%sGravityView vaatii Gravity Forms aktivoimiseksi. %sAktivoi Gravity Forms%s käyttääksesi GravityView lisäosaa."
 
-#: includes/class-gravityview-compatibility.php:275
+#: includes/class-gravityview-compatibility.php:289
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr "%sGravityView vaatii Gravity Formsin asennuksen toimiakseen kunnolla. %sHanki Gravity Forms%s - alkaen $39%s%s"
 
-#: includes/class-gravityview-compatibility.php:292
+#: includes/class-gravityview-compatibility.php:309
 msgid "Potential Conflict"
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:293
+#: includes/class-gravityview-compatibility.php:310
 msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
@@ -1237,34 +1237,38 @@ msgstr ""
 msgid "View Details"
 msgstr "Näytä yksityiskohdat"
 
-#: includes/class-gravityview-extension.php:343
+#: includes/class-gravityview-extension.php:351
 msgid "Could not activate the %s Extension; GravityView is not active."
 msgstr "Ei voitu aktivoida %s laajennusta; GravityView ei ole aktiivinen."
 
-#: includes/class-gravityview-extension.php:347
+#: includes/class-gravityview-extension.php:355
 msgid "The %s Extension requires GravityView Version %s or newer."
 msgstr "Tämä %s laajennus vaatii GravityView version %s tai uudemman."
 
-#: includes/class-gravityview-extension.php:351
+#: includes/class-gravityview-extension.php:359
 msgid ""
 "The %s Extension requires PHP Version %s or newer. Please ask your host to "
 "upgrade your server's PHP."
 msgstr ""
 
-#: includes/class-gravityview-merge-tags.php:93
+#: includes/class-gravityview-merge-tags.php:100
 msgid "Entry Creator: Display Name"
 msgstr ""
 
-#: includes/class-gravityview-merge-tags.php:97
+#: includes/class-gravityview-merge-tags.php:104
 msgid "Entry Creator: Email"
 msgstr ""
 
-#: includes/class-gravityview-merge-tags.php:101
+#: includes/class-gravityview-merge-tags.php:108
 msgid "Entry Creator: Username"
 msgstr ""
 
-#: includes/class-gravityview-merge-tags.php:105
+#: includes/class-gravityview-merge-tags.php:112
 msgid "Entry Creator: User ID"
+msgstr ""
+
+#: includes/class-gravityview-merge-tags.php:116
+msgid "Entry Creator: Roles"
 msgstr ""
 
 #: includes/class-gv-license-handler.php:78
@@ -1274,7 +1278,7 @@ msgstr ""
 
 #: includes/class-gv-license-handler.php:79
 #: includes/class-gv-license-handler.php:93
-#: includes/class-gv-license-handler.php:384 includes/class-settings.php:568
+#: includes/class-gv-license-handler.php:384 includes/class-settings.php:573
 msgid "Verifying license&hellip;"
 msgstr ""
 
@@ -1344,7 +1348,7 @@ msgid ""
 "website%s to receive updates and support."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:382 includes/class-settings.php:511
+#: includes/class-gv-license-handler.php:382 includes/class-settings.php:516
 msgid "You don't have the ability to edit plugin settings."
 msgstr ""
 
@@ -1443,102 +1447,102 @@ msgstr ""
 msgid "is inactive"
 msgstr ""
 
-#: includes/class-settings.php:203
+#: includes/class-settings.php:207
 msgid "has not been activated"
 msgstr ""
 
-#: includes/class-settings.php:407 includes/class-settings.php:440
+#: includes/class-settings.php:412 includes/class-settings.php:445
 msgid "Update Settings"
 msgstr ""
 
-#: includes/class-settings.php:533
+#: includes/class-settings.php:538
 msgid ""
 "The license key you entered has been saved, but not activated. Please "
 "activate the license."
 msgstr ""
 
-#: includes/class-settings.php:548
+#: includes/class-settings.php:553
 msgid "Required"
 msgstr ""
 
-#: includes/class-settings.php:565
+#: includes/class-settings.php:570
 msgid "License Key"
 msgstr "Lisenssiavain"
 
-#: includes/class-settings.php:566
+#: includes/class-settings.php:571
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
 msgstr ""
 
-#: includes/class-settings.php:587
+#: includes/class-settings.php:592
 msgid "Support Email"
 msgstr "Tuen sähköposti"
 
-#: includes/class-settings.php:588
+#: includes/class-settings.php:593
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
 msgstr "Tukipyynnön vastausten ja palautteen osalta anna sähköpostiosoitteesi."
 
-#: includes/class-settings.php:597
+#: includes/class-settings.php:602
 msgid "Show Support Port?"
 msgstr ""
 
-#: includes/class-settings.php:610
+#: includes/class-settings.php:615
 msgid "The Support Port looks like this."
 msgstr ""
 
-#: includes/class-settings.php:610
+#: includes/class-settings.php:615
 msgid ""
 "The Support Port provides quick access to how-to articles and tutorials. For"
 " administrators, it also makes it easy to contact support."
 msgstr ""
 
-#: includes/class-settings.php:611
+#: includes/class-settings.php:616
 msgid "Show the Support Port on GravityView pages?"
 msgstr ""
 
-#: includes/class-settings.php:616
+#: includes/class-settings.php:621
 msgid "No-Conflict Mode"
 msgstr "Ei-konflikti tila"
 
-#: includes/class-settings.php:629
+#: includes/class-settings.php:634
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
 msgstr "Asenna ON asentoon estääksesi lisäskriptien ja tyylien ajamisen GravityView ylläpitosivuilta välttääksesi ei-yhteensopivuuksia muiden lisäosien ja teemojen osalta."
 
-#: includes/class-settings.php:629
+#: includes/class-settings.php:634
 msgid "If your Edit View tabs are ugly, enable this setting."
 msgstr ""
 
-#: includes/class-settings.php:634
+#: includes/class-settings.php:639
 msgid "Remove Data on Delete?"
 msgstr ""
 
-#: includes/class-settings.php:641
+#: includes/class-settings.php:646
 msgid "Keep GravityView content and settings"
 msgstr ""
 
-#: includes/class-settings.php:641
+#: includes/class-settings.php:646
 msgid ""
 "If you delete then re-install the plugin, all GravityView data will be kept."
 " Views, settings, etc. will be untouched."
 msgstr ""
 
-#: includes/class-settings.php:646
+#: includes/class-settings.php:651
 msgid "Delete all GravityView content and settings"
 msgstr ""
 
-#: includes/class-settings.php:646
+#: includes/class-settings.php:651
 msgid ""
 "If you delete then re-install GravityView, it will be like installing "
 "GravityView for the first time."
 msgstr ""
 
-#: includes/class-settings.php:646
+#: includes/class-settings.php:651
 msgid ""
 "When GravityView is uninstalled and deleted, delete all Views, GravityView "
 "entry approvals, GravityView-generated entry notes (including approval and "
@@ -1546,17 +1550,17 @@ msgid ""
 "data will be touched."
 msgstr ""
 
-#: includes/class-settings.php:649
+#: includes/class-settings.php:654
 msgid ""
 "Should GravityView content and entry approval status be removed from the "
 "site when the GravityView plugin is deleted?"
 msgstr ""
 
-#: includes/class-settings.php:649
+#: includes/class-settings.php:654
 msgid "Permanently Delete"
 msgstr ""
 
-#: includes/class-settings.php:674
+#: includes/class-settings.php:679
 msgid "You are running GravityView version %s"
 msgstr ""
 
@@ -2317,13 +2321,13 @@ msgstr ""
 msgid "Show a different month"
 msgstr ""
 
-#: includes/widgets/search-widget/templates/search-field-date_range.php:19
-#: includes/widgets/search-widget/templates/search-field-entry_date.php:18
+#: includes/widgets/search-widget/templates/search-field-date_range.php:21
+#: includes/widgets/search-widget/templates/search-field-entry_date.php:20
 msgid "Start date"
 msgstr "Aloituspäivä"
 
-#: includes/widgets/search-widget/templates/search-field-date_range.php:20
-#: includes/widgets/search-widget/templates/search-field-entry_date.php:19
+#: includes/widgets/search-widget/templates/search-field-date_range.php:22
+#: includes/widgets/search-widget/templates/search-field-entry_date.php:21
 msgid "End date"
 msgstr "Lopetuspäivä"
 
@@ -2423,18 +2427,18 @@ msgstr ""
 msgid "Fulfilled"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:87
+#: includes/admin/class-gravityview-support-port.php:86
 msgctxt "a support form search has returned empty for the following word"
 msgid "No results found for"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:96
+#: includes/admin/class-gravityview-support-port.php:95
 msgctxt ""
 "Error shown when submitting support request and there is no subject provided"
 msgid "Please enter a subject"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:98
+#: includes/admin/class-gravityview-support-port.php:97
 msgctxt ""
 "Error shown when submitting support request and there is no message provided"
 msgid "Please enter a message"
@@ -2508,32 +2512,32 @@ msgctxt "View Item"
 msgid "View"
 msgstr "Näkymä"
 
-#: includes/class-settings.php:602
+#: includes/class-settings.php:607
 msgctxt "Setting: Show or Hide"
 msgid "Show"
 msgstr ""
 
-#: includes/class-settings.php:606
+#: includes/class-settings.php:611
 msgctxt "Setting: Show or Hide"
 msgid "Hide"
 msgstr ""
 
-#: includes/class-settings.php:621
+#: includes/class-settings.php:626
 msgctxt "Setting: On or off"
 msgid "On"
 msgstr ""
 
-#: includes/class-settings.php:625
+#: includes/class-settings.php:630
 msgctxt "Setting: On or off"
 msgid "Off"
 msgstr ""
 
-#: includes/class-settings.php:639
+#: includes/class-settings.php:644
 msgctxt "Setting: what to do when uninstalling plugin"
 msgid "Keep GravityView Data"
 msgstr ""
 
-#: includes/class-settings.php:644
+#: includes/class-settings.php:649
 msgctxt "Setting: what to do when uninstalling plugin"
 msgid "Permanently Delete"
 msgstr ""

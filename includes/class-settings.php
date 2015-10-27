@@ -199,13 +199,18 @@ class GravityView_Settings extends GFAddOn {
 			case 'deactivated':
 				$status = __('is inactive', 'gravityview');
 				break;
+			/** @noinspection PhpMissingBreakStatementInspection */
+			case '':
+				$license_status = 'site_inactive';
+				// break intentionally left blank
 			case 'site_inactive':
 				$status = __('has not been activated', 'gravityview');
 				break;
 		}
-		$message = sprintf( $message, $status, '<a href="'.admin_url( 'edit.php?post_type=gravityview&amp;page=gravityview_settings' ).'">', '</a>', '<a href="https://gravityview.co/pricing/">', '</a>' );
+		$url = 'https://gravityview.co/pricing/?utm_source=admin_notice&utm_medium=admin&utm_content='.$license_status.'&utm_campaign=Admin%20Notice';
+		$message = sprintf( $message, $status, "\n\n".'<a href="'.admin_url( 'edit.php?post_type=gravityview&amp;page=gravityview_settings' ).'" class="button button-primary">', '</a>', '<a href="'.esc_url( $url ).'" class="button button-secondary">', '</a>' );
 		if( !empty( $status ) ) {
-			GravityView_Admin::add_notice( array(
+			GravityView_Admin_Notices::add_notice( array(
 				'message' => $message,
 				'class'	=> 'updated',
 				'title' => $title,

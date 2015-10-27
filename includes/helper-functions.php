@@ -47,24 +47,32 @@ function gravityview_get_permalink_query_args( $id = 0 ) {
 	return $args;
 }
 
-/**
- * sanitize_html_class doesn't handle spaces (multiple classes). We remedy that.
- * @uses sanitize_html_class
- * @param  string|array      $classes Text or arrray of classes to sanitize
- * @return string            Sanitized CSS string
- */
-function gravityview_sanitize_html_class( $classes ) {
+if( ! function_exists( 'gravityview_sanitize_html_class' ) ) {
 
-	if( is_string( $classes ) ) {
-		$classes = explode(' ', $classes );
+	/**
+	 * sanitize_html_class doesn't handle spaces (multiple classes). We remedy that.
+	 *
+	 * @uses sanitize_html_class
+	 *
+	 * @param  string|array $classes Text or array of classes to sanitize
+	 *
+	 * @return string            Sanitized CSS string
+	 */
+	function gravityview_sanitize_html_class( $classes ) {
+
+		if ( is_string( $classes ) ) {
+			$classes = explode( ' ', $classes );
+		}
+
+		// If someone passes something not string or array, we get outta here.
+		if ( ! is_array( $classes ) ) {
+			return $classes;
+		}
+
+		$classes = array_map( 'sanitize_html_class', $classes );
+
+		return implode( ' ', $classes );
 	}
-
-	// If someone passes something not string or array, we get outta here.
-	if( !is_array( $classes ) ) { return $classes; }
-
-	$classes = array_map( 'sanitize_html_class' , $classes );
-
-	return implode( ' ', $classes );
 }
 
 /**
@@ -278,4 +286,50 @@ function _gravityview_strip_subdomain( $string_maybe_has_subdomain ) {
 	} else {
 		return $string_maybe_has_subdomain;
 	}
+}
+
+/**
+ * Is the value empty?
+ *
+ * Allows you to pass a function instead of just a variable, like the empty() function insists upon (until PHP 5.5)
+ *
+ * Checks whether `false`, `null`, empty string, empty array, object with no vars defined
+ *
+ * @since 1.15.1
+ * @param  mixed  $value Check whether this is empty
+ * @param boolean $zero_is_empty Should the number zero be treated as an empty value?
+ * @param boolean $allow_string_booleans Whether to check if 'yes', 'true' => `true` and 'no', 'false' => `false`
+ * @return boolean        True: empty; false: not empty
+ */
+function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true ) {
+
+	if(
+		! isset( $value ) // If it's not set, it's empty!
+		|| false === $value
+		|| null === $value
+	    || '' === $value // Empty string
+		|| array() === $value // Empty array
+		|| ( is_object( $value ) && ! get_object_vars( $value ) ) // Empty object
+	) {
+		return true;
+	}
+
+	if( is_string( $value ) && $allow_string_booleans ) {
+
+		$value = trim( $value );
+		$value = strtolower( $value );
+
+		if ( in_array( $value, array( 'yes', 'true' ), true ) ) {
+			$value = true;
+		} else if( in_array( $value, array( 'no', 'false' ), true ) ) {
+			$value = false;
+		}
+	}
+
+	// If zero isn't empty, then if $value is a number and it's empty, it's zero. Thus, return false.
+	if( ! $zero_is_empty && is_numeric( $value ) && empty( $value ) ) {
+		return false;
+	}
+
+	return empty( $value );
 }

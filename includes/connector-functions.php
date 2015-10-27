@@ -16,7 +16,7 @@
 
 /**
  * Returns the form object for a given Form ID.
- *
+ * @see GVCommon::get_form()
  * @access public
  * @param mixed $form_id
  * @return mixed False: no form ID specified or Gravity Forms isn't active. Array: Form returned from Gravity Forms
@@ -28,6 +28,7 @@ function gravityview_get_form( $form_id ) {
 
 /**
  * Get the form array for an entry based only on the entry ID
+ * @see GVCommon::get_form_from_entry_id
  * @param  int|string $entry_slug Entry slug
  * @return array           Gravity Forms form array
  */
@@ -38,6 +39,7 @@ function gravityview_get_form_from_entry_id( $entry_slug ) {
 /**
  * Returns the list of available forms
  *
+ * @see GVCommon::get_forms()
  * @access public
  * @param mixed $form_id
  * @return array (id, title)
@@ -49,6 +51,7 @@ function gravityview_get_forms() {
 /**
  * Return array of fields' id and label, for a given Form ID
  *
+ * @see GVCommon::get_form_fields()
  * @access public
  * @param string|array $form_id (default: '') or $form object
  * @return array

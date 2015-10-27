@@ -20,6 +20,27 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.15.1 on October 27 =
+* New: Use `{get}` Merge Tags as `[gravityview]` attributes
+* Fixed: Edit Entry and Delete Entry links weren't working in DataTables
+* Fixed: Some Gravity Forms Merge Tags weren't working, like `{embed_post:post_title}`
+* Fixed: Display Checkbox and Radio field labels in the Search Bar
+	* New: If you prefer how the searches looked before the labels were visible, you can set the "Label" for the search field to a blank space. That will hide the label.
+	* Removed extra whitespace from search field `<label>`s
+* Fixed: Update the required Gravity Forms version to 1.9.9.10
+* Fixed: Section fields should not be affected by "Hide empty fields" View setting
+* Fixed: Add ability to check post custom fields for `[gravityview]` shortcode. This fixes issues with some themes and page builder plugins.
+* Fixed: Return type wasn't boolean for `has_gravityview_shortcode()` function
+* Tweak: Improve notifications logic
+	* Only show notices to users with appropriate capabilities
+	* Allow dismissing all notices
+	* Clear dismissed notices when activating the plugin
+	* Fixed showing notice to enter license key
+* Tweak: Added previously-supported `{created_by:roles}` Merge Tag to available tags dropdown
+* Tweak: Allow overriding `gravityview_sanitize_html_class()` function
+* Tweak: Make `GravityView_Merge_Tags::replace_get_variables()` method public
+* Tweak: Rename `GravityView_Merge_Tags::_gform_replace_merge_tags()` method `GravityView_Merge_Tags::replace_gv_merge_tags()` for clarity
+
 = 1.15 on October 15 =
 * Added: `{get}` Merge Tag that allows passing data via URL to be safely displayed in Merge Tags. [Learn how this works](http://docs.gravityview.co/article/314-the-get-merge-tag).
 	- Example: When adding `?first-name=Floaty` to a URL, the Custom Content `My name is {get:first-name}` would be replaced with `My name is Floaty`
