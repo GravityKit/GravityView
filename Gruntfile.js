@@ -16,7 +16,7 @@ module.exports = function(grunt) {
 				files: [{
 		          expand: true,
 		          cwd: 'assets/css/scss',
-		          src: ['*.scss','!admin-merge-tags.scss','!admin-tooltips.scss','!admin-metabox-panel.scss','!admin-metabox.scss'],
+		          src: ['*.scss','!admin-merge-tags.scss','!admin-tooltips.scss','!admin-metabox-panel.scss','!admin-metabox.scss','!admin-members-plugin.scss'],
 		          dest: 'assets/css',
 		          ext: '.css'
 		      }]
@@ -137,7 +137,7 @@ module.exports = function(grunt) {
 			transifex: 'tx pull -a',
 
 			// Create a ZIP file
-			zip: 'python /usr/bin/git-archive-all ../gravityview.zip'
+			zip: 'git-archive-all ../gravityview.zip'
 		},
 
 		// Build translations without POEdit
@@ -148,7 +148,7 @@ module.exports = function(grunt) {
 					type: 'wp-plugin',
 					domainPath: '/languages',
 					updateTimestamp: false,
-					exclude: ['node_modules/.*', 'assets/.*', 'vendor/.*', 'includes/lib/xml-parsers/.*', 'includes/lib/jquery-cookie/.*', 'includes/lib/standalone-phpenkoder/.*' ],
+					exclude: ['node_modules/.*', 'assets/.*', 'tmp/.*', 'vendor/.*', 'includes/lib/xml-parsers/.*', 'includes/lib/jquery-cookie/.*', 'includes/lib/standalone-phpenkoder/.*' ],
 					potHeaders: {
 						poedit: true,
 						'x-poedit-keywordslist': true
@@ -187,7 +187,7 @@ module.exports = function(grunt) {
 		addtextdomain: {
 			options: {
 				textdomain: 'gravityview',    // Project text domain.
-				updateDomains: [ 'gravityview', 'gravityforms', 'edd_sl', 'edd' ]  // List of text domains to replace.
+				updateDomains: [ 'gravityview', 'gravity-view', 'gravityforms', 'edd_sl', 'edd' ]  // List of text domains to replace.
 			},
 			target: {
 				files: {
@@ -196,6 +196,7 @@ module.exports = function(grunt) {
 						'**/*.php',
 						'!node_modules/**',
 						'!tests/**',
+						'!tmp/**',
 						'!includes/lib/xml-parsers/**',
 						'!includes/lib/jquery-cookie/**',
 						'!includes/lib/standalone-phpenkoder/**'

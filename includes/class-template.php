@@ -411,7 +411,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 * @param int $total_entries
 	 */
 	public function setTotalEntries( $total_entries ) {
-		$this->total_entries = $total_entries;
+		$this->total_entries = intval( $total_entries );
 	}
 
 	/**

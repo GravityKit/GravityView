@@ -101,6 +101,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			'view_id' => 0,
 			'post_id' => '',
 			'search_fields' => '',
+			'search_clear' => 0
 		);
 
 		$new_instance = wp_parse_args( (array) $new_instance, $defaults );
@@ -109,6 +110,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		$instance['view_id'] = absint( $new_instance['view_id'] );
 		$instance['search_fields'] = $new_instance['search_fields'];
 		$instance['post_id'] = $new_instance['post_id'];
+		$instance['search_clear'] = $new_instance['search_clear'];
 
 		$is_valid_embed_id = GravityView_View_Data::is_valid_embed_id( $new_instance['post_id'], $instance['view_id'] );
 
@@ -140,7 +142,8 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			'title' => '',
 			'view_id' => 0,
 			'post_id' => '',
-			'search_fields' => ''
+			'search_fields' => '',
+			'search_clear' => 0
 		);
 
 		$instance = wp_parse_args( (array) $instance, $defaults );
@@ -149,6 +152,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		$view_id  = $instance['view_id'];
 		$post_id  = $instance['post_id'];
 		$search_fields = $instance['search_fields'];
+		$search_clear = $instance['search_clear'];
 
 		$views = GVCommon::get_all_views();
 
@@ -214,6 +218,12 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 				esc_html_e('To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded.', 'gravityview' );
 				echo ' '.gravityview_get_link('http://docs.gravityview.co/article/222-the-search-widget', __('Learn more&hellip;', 'gravityview' ), 'target=_blank' );
 				?></span>
+		</p>
+
+		<p>
+			<label for="<?php echo $this->get_field_id('search_clear'); ?>"><?php esc_html_e( 'Show Clear button', 'gravityview' ); ?>:</label>
+			<input name="<?php echo $this->get_field_name('search_clear'); ?>" type="hidden" value="0">
+			<input id="<?php echo $this->get_field_id('search_clear'); ?>" name="<?php echo $this->get_field_name('search_clear'); ?>" type="checkbox" class="checkbox" value="1" <?php checked( $search_clear, 1, true ); ?>>
 		</p>
 
 		<hr />

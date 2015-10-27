@@ -1,4 +1,9 @@
- <script type="text/javascript">
+<?php
+/**
+ * @file inline-javascript.php
+ * @global GravityView_Edit_Entry_Render $object
+ */
+?><script type="text/javascript">
 
 	function DeleteFile(leadId, fieldId, deleteButton){
 		if(confirm('<?php echo esc_js( __("Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to delete", 'gravityview') ); ?>')){

@@ -24,11 +24,13 @@ final class GravityView_Logging {
 	 *
 	 * @see http://wordpress.org/plugins/debug-bar/
 	 */
-	function add_debug_bar( $panels ) {
+	public function add_debug_bar( $panels ) {
 
-		if(!class_exists('Debug_Bar_Panel')) { return; }
+		if ( ! class_exists( 'Debug_Bar_Panel' ) ) {
+			return;
+		}
 
-		if(!class_exists('GravityView_Debug_Bar')) {
+		if ( ! class_exists( 'GravityView_Debug_Bar' ) ) {
 			include_once( GRAVITYVIEW_DIR . 'includes/class-debug-bar.php' );
 		}
 
@@ -46,11 +48,19 @@ final class GravityView_Logging {
 	    return $supported_plugins;
 	}
 
-	static function get_notices() {
+	/**
+	 * @static
+	 * @return array Array of notices (with `message`, `data`, and `backtrace` keys), if any
+	 */
+	public static function get_notices() {
 		return self::$notices;
 	}
 
-	static function get_errors() {
+	/**
+	 * @static
+	 * @return array Array of errors (with `message`, `data`, and `backtrace` keys), if any
+	 */
+	public static function get_errors() {
 		return self::$errors;
 	}
 

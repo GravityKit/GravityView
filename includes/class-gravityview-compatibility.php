@@ -86,7 +86,7 @@ class GravityView_Compatibility {
 	 * Is everything compatible with this version of GravityView?
 	 * @return bool
 	 */
-	static function is_valid() {
+	public static function is_valid() {
 		return ( self::is_valid_gravity_forms() && self::is_valid_wordpress() && self::is_valid_php() );
 	}
 
@@ -94,7 +94,7 @@ class GravityView_Compatibility {
 	 * Is the version of WordPress compatible?
 	 * @since 1.12
 	 */
-	static function is_valid_wordpress() {
+	private static function is_valid_wordpress() {
 		return self::$valid_wordpress;
 	}
 
@@ -102,7 +102,7 @@ class GravityView_Compatibility {
 	 * @since 1.12
 	 * @return bool
 	 */
-	static function is_valid_gravity_forms() {
+	private static function is_valid_gravity_forms() {
 		return self::$valid_gravity_forms;
 	}
 
@@ -110,7 +110,7 @@ class GravityView_Compatibility {
 	 * @since 1.12
 	 * @return bool
 	 */
-	static function is_valid_php() {
+	private static function is_valid_php() {
 		return self::$valid_php;
 	}
 
@@ -118,7 +118,7 @@ class GravityView_Compatibility {
 	 * @since 1.12
 	 * @return bool
 	 */
-	function add_fallback_shortcode() {
+	private function add_fallback_shortcode() {
 
 		// If Gravity Forms doesn't exist or is outdated, load the admin view class to
 		// show the notice, but not load any post types or process shortcodes.
@@ -126,7 +126,7 @@ class GravityView_Compatibility {
 		if( ! self::is_valid() ) {
 
 			// If the plugin's not loaded, might as well hide the shortcode for people.
-			add_shortcode( 'gravityview', array( $this, '_shortcode_gf_notice'), 10, 3 );
+			add_shortcode( 'gravityview', array( $this, '_shortcode_gf_notice') );
 
 		}
 	}
@@ -148,11 +148,11 @@ class GravityView_Compatibility {
 	 * @param null $content
 	 * @param string $shortcode
 	 *
-	 * @return null|string NULL returned if user can't manage options. Notice shown with a warning that GF isn't supported.
+	 * @return null|string NULL returned if user can't activate plugins. Notice shown with a warning that GF isn't supported.
 	 */
 	public function _shortcode_gf_notice( $atts = array(), $content = null, $shortcode = 'gravityview' ) {
 
-		if( ! current_user_can('manage_options') ) {
+		if( ! GVCommon::has_cap( 'activate_plugins' ) ) {
 			return null;
 		}
 
@@ -179,7 +179,9 @@ class GravityView_Compatibility {
 
 			self::$notices['php_version'] = array(
 				'class' => 'error',
-				'message' => sprintf( __( "%sGravityView requires PHP Version %s or newer.%s \n\nYou're using Version %s. Please ask your host to upgrade your server's PHP.", 'gravityview' ), '<h3>', GV_MIN_PHP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.phpversion().'</span>' )
+				'message' => sprintf( __( "%sGravityView requires PHP Version %s or newer.%s \n\nYou're using Version %s. Please ask your host to upgrade your server's PHP.", 'gravityview' ), '<h3>', GV_MIN_PHP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.phpversion().'</span>' ),
+				'cap' => 'manage_options',
+				'dismiss' => 'php_version',
 			);
 
 			return false;
@@ -201,7 +203,9 @@ class GravityView_Compatibility {
 
 			self::$notices['wp_version'] = array(
 				'class' => 'error',
-				'message' => sprintf( __( "%sGravityView requires WordPress %s or newer.%s \n\nYou're using Version %s. Please upgrade your WordPress installation.", 'gravityview' ), '<h3>', GV_MIN_WP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.$wp_version.'</span>' )
+				'message' => sprintf( __( "%sGravityView requires WordPress %s or newer.%s \n\nYou're using Version %s. Please upgrade your WordPress installation.", 'gravityview' ), '<h3>', GV_MIN_WP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.$wp_version.'</span>' ),
+			    'cap' => 'update_core',
+				'dismiss' => 'wp_version',
 			);
 
 			return false;
@@ -232,7 +236,9 @@ class GravityView_Compatibility {
 			// Or the version's wrong
 			self::$notices['gf_version'] = array(
 				'class' => 'error',
-				'message' => sprintf( __( "%sGravityView requires Gravity Forms Version %s or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', GV_MIN_GF_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>')
+				'message' => sprintf( __( "%sGravityView requires Gravity Forms Version %s or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', GV_MIN_GF_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
+				'cap' => 'update_plugins',
+				'dismiss' => 'gf_version',
 			);
 
 			return false;
@@ -269,10 +275,21 @@ class GravityView_Compatibility {
 
 				$button = function_exists('is_network_admin') && is_network_admin() ? '<strong><a href="#gravity-forms">' : '<strong><a href="'. wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php') . '" class="button button-large">';
 
-				self::$notices['gf_inactive'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravityview' ), '<h3>', "</h3>\n\n". $button, '</a></strong>' ) );
+				self::$notices['gf_inactive'] = array(
+					'class' => 'error',
+					'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravityview' ), '<h3>', "</h3>\n\n". $button, '</a></strong>' ),
+					'cap' => 'activate_plugins',
+					'dismiss' => 'gf_inactive',
+				);
+
 				break;
 			default:
-				self::$notices['gf_installed'] = array( 'class' => 'error', 'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $39%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>') );
+				self::$notices['gf_installed'] = array(
+					'class' => 'error',
+					'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $39%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
+					'cap' => 'install_plugins',
+					'dismiss' => 'gf_installed',
+				);
 				break;
 		}
 
@@ -292,6 +309,7 @@ class GravityView_Compatibility {
 				'title' => __('Potential Conflict', 'gravityview' ),
 				'message' => __( 'GravityView and Gravity Forms Directory are both active. This may cause problems. If you experience issues, disable the Gravity Forms Directory plugin.', 'gravityview' ),
 				'dismiss' => 'gf_directory',
+				'cap' => 'activate_plugins',
 			);
 		}
 

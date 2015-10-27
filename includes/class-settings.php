@@ -33,7 +33,17 @@ class GravityView_Settings extends GFAddOn {
 	/**
 	 * @var string|array A string or an array of capabilities or roles that can uninstall the plugin
 	 */
-	protected $_capabilities_uninstall = 'gravityview_gfaddon_uninstall';
+	protected $_capabilities_uninstall = 'gravityview_uninstall';
+
+	/**
+	 * @var string|array A string or an array of capabilities or roles that have access to the settings page
+	 */
+	protected $_capabilities_app_settings = 'gravityview_view_settings';
+
+	/**
+	 * @var string|array A string or an array of capabilities or roles that have access to the settings page
+	 */
+	protected $_capabilities_app_menu = 'gravityview_view_settings';
 
 	/**
 	 * @var string The hook suffix for the app menu
@@ -93,14 +103,18 @@ class GravityView_Settings extends GFAddOn {
 	public function current_user_can_any( $caps ) {
 
 		/**
-		 * Don't show uninstall tab
+		 * Prevent Gravity Forms from showing the uninstall tab on the settings page
 		 * @hack
 		 */
 		if( $caps === $this->_capabilities_uninstall ) {
 			return false;
 		}
 
-		return parent::current_user_can_any( $caps );
+		if( empty( $caps ) ) {
+			$caps = array( 'gravityview_full_access' );
+		}
+
+		return GVCommon::has_cap( $caps );
 	}
 
 	/**
@@ -113,8 +127,6 @@ class GravityView_Settings extends GFAddOn {
 	function init_admin() {
 
 		$this->_load_license_handler();
-
-		$this->_capabilities_app_settings = apply_filters( 'gravityview_settings_capability' , 'manage_options' );
 
 		$this->license_key_notice();
 
@@ -187,13 +199,18 @@ class GravityView_Settings extends GFAddOn {
 			case 'deactivated':
 				$status = __('is inactive', 'gravityview');
 				break;
+			/** @noinspection PhpMissingBreakStatementInspection */
+			case '':
+				$license_status = 'site_inactive';
+				// break intentionally left blank
 			case 'site_inactive':
 				$status = __('has not been activated', 'gravityview');
 				break;
 		}
-		$message = sprintf( $message, $status, '<a href="'.admin_url( 'edit.php?post_type=gravityview&amp;page=gravityview_settings' ).'">', '</a>', '<a href="https://gravityview.co/pricing/">', '</a>' );
+		$url = 'https://gravityview.co/pricing/?utm_source=admin_notice&utm_medium=admin&utm_content='.$license_status.'&utm_campaign=Admin%20Notice';
+		$message = sprintf( $message, $status, "\n\n".'<a href="'.admin_url( 'edit.php?post_type=gravityview&amp;page=gravityview_settings' ).'" class="button button-primary">', '</a>', '<a href="'.esc_url( $url ).'" class="button button-secondary">', '</a>' );
 		if( !empty( $status ) ) {
-			GravityView_Admin::add_notice( array(
+			GravityView_Admin_Notices::add_notice( array(
 				'message' => $message,
 				'class'	=> 'updated',
 				'title' => $title,
@@ -477,9 +494,31 @@ class GravityView_Settings extends GFAddOn {
 			'license_key_status' => '',
 			'support-email' => get_bloginfo( 'admin_email' ),
 			'no-conflict-mode' => '0',
+			'support_port' => '1',
+			'delete-on-uninstall' => '0',
 		);
 
 		return $defaults;
+	}
+
+	/**
+	 * Check for the `gravityview_edit_settings` capability before saving plugin settings.
+	 * Gravity Forms says you're able to edit if you're able to view settings. GravityView allows two different permissions.
+	 *
+	 * @since 1.15
+	 * @return void
+	 */
+	public function maybe_save_app_settings() {
+
+		if ( $this->is_save_postback() ) {
+			if ( ! GVCommon::has_cap( 'gravityview_edit_settings' ) ) {
+				$_POST = array(); // If you don't reset the $_POST array, it *looks* like the settings were changed, but they weren't
+				GFCommon::add_error_message( __( 'You don\'t have the ability to edit plugin settings.', 'gravityview' ) );
+				return;
+			}
+		}
+
+		parent::maybe_save_app_settings();
 	}
 
 	/**
@@ -522,6 +561,8 @@ class GravityView_Settings extends GFAddOn {
 
 		$default_settings = $this->get_default_settings();
 
+		$disabled_attribute = GVCommon::has_cap( 'gravityview_edit_settings' ) ? false : 'disabled';
+
 		$fields = apply_filters( 'gravityview_settings_fields', array(
 			array(
 				'name'                => 'license_key',
@@ -552,6 +593,28 @@ class GravityView_Settings extends GFAddOn {
 				'description' => __( 'In order to provide responses to your support requests, please provide your email address.', 'gravityview' ),
 				'class'    => 'code regular-text',
 			),
+			/**
+			 * @since 1.15 Added Support Port support
+			 */
+			array(
+				'name'         => 'support_port',
+				'type'       => 'radio',
+				'label'      => __( 'Show Support Port?', 'gravityview' ),
+				'default_value'    => $default_settings['support_port'],
+				'horizontal' => 1,
+				'choices'    => array(
+					array(
+						'label' => _x('Show', 'Setting: Show or Hide', 'gravityview'),
+						'value' => '1',
+					),
+					array(
+						'label' => _x('Hide', 'Setting: Show or Hide', 'gravityview'),
+						'value' => '0',
+					),
+				),
+				'tooltip' => '<p><img src="' . esc_url_raw( plugins_url('assets/images/screenshots/beacon.png', GRAVITYVIEW_FILE ) ) . '" alt="' . esc_attr__( 'The Support Port looks like this.', 'gravityview' ) . '" class="alignright" style="max-width:40px; margin:.5em;" />' . esc_html__('The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support.', 'gravityview') . '</p>',
+				'description'   => __( 'Show the Support Port on GravityView pages?', 'gravityview' ),
+			),
 			array(
 				'name'         => 'no-conflict-mode',
 				'type'       => 'radio',
@@ -561,17 +624,39 @@ class GravityView_Settings extends GFAddOn {
 				'choices'    => array(
 					array(
 						'label' => _x('On', 'Setting: On or off', 'gravityview'),
-						'value' => '1'
+						'value' => '1',
 					),
 					array(
 						'label' => _x('Off', 'Setting: On or off', 'gravityview'),
 						'value' => '0',
 					),
 				),
-				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ),
+				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ) . ' ' . __('If your Edit View tabs are ugly, enable this setting.', 'gravityview'),
+			),
+			array(
+				'name'       => 'delete-on-uninstall',
+				'type'       => 'radio',
+				'label'      => __( 'Remove Data on Delete?', 'gravityview' ),
+				'default_value'    => $default_settings['delete-on-uninstall'],
+				'horizontal' => 1,
+				'choices'    => array(
+					array(
+						'label' => _x( 'Keep GravityView Data', 'Setting: what to do when uninstalling plugin', 'gravityview' ),
+						'value' => '0',
+						'tooltip' => sprintf( '<h6>%s</h6><p>%s</p>', __( 'Keep GravityView content and settings', 'gravityview' ), __( 'If you delete then re-install the plugin, all GravityView data will be kept. Views, settings, etc. will be untouched.', 'gravityview' ) ),
+					),
+					array(
+						'label' => _x( 'Permanently Delete', 'Setting: what to do when uninstalling plugin', 'gravityview' ),
+						'value' => 'delete',
+					    'tooltip' => sprintf( '<h6>%s</h6><p><span class="howto">%s</span></p><p>%s</p>', __( 'Delete all GravityView content and settings', 'gravityview' ), __( 'If you delete then re-install GravityView, it will be like installing GravityView for the first time.', 'gravityview' ), __( 'When GravityView is uninstalled and deleted, delete all Views, GravityView entry approvals, GravityView-generated entry notes (including approval and entry creator changes), and GravityView plugin settings. No Gravity Forms data will be touched.', 'gravityview' ) ),
+					),
+				),
+				'description'   => sprintf( __( 'Should GravityView content and entry approval status be removed from the site when the GravityView plugin is deleted?', 'gravityview' ), __( 'Permanently Delete', 'gravityview' ) ),
 			),
 
 		) );
+
+
 
 		/**
 		 * Redux backward compatibility
@@ -582,6 +667,10 @@ class GravityView_Settings extends GFAddOn {
 			$field['label']         = isset( $field['label'] ) ? $field['label'] : rgget('title', $field );
 			$field['default_value'] = isset( $field['default_value'] ) ? $field['default_value'] : rgget('default', $field );
 			$field['description']   = isset( $field['description'] ) ? $field['description'] : rgget('subtitle', $field );
+
+			if( $disabled_attribute ) {
+				$field['disabled']  = $disabled_attribute;
+			}
 		}
 
 
@@ -598,20 +687,35 @@ class GravityView_Settings extends GFAddOn {
             'type'     => 'save',
         );
 
+		if( $disabled_attribute ) {
+			$button['disabled'] = $disabled_attribute;
+		}
+
 
         /**
+         * @filter `gravityview/settings/extension/sections` Modify the GravityView settings page
          * Extensions can tap in here to insert their own section and settings.
-         *
+         * <code>
          *   $sections[] = array(
          *      'title' => __( 'GravityView My Extension Settings', 'gravityview' ),
          *      'fields' => $settings,
          *   );
-         *
+         * </code>
+         * @param array $extension_settings Empty array, ready for extension settings!
          */
         $extension_sections = apply_filters( 'gravityview/settings/extension/sections', array() );
 
 		// If there are extensions, add a section for them
 		if ( ! empty( $extension_sections ) ) {
+
+			if( $disabled_attribute ) {
+				foreach ( $extension_sections as &$section ) {
+					foreach ( $section['fields'] as &$field ) {
+						$field['disabled'] = $disabled_attribute;
+					}
+				}
+			}
+
             $k = count( $extension_sections ) - 1 ;
             $extension_sections[ $k ]['fields'][] = $button;
 			$sections = array_merge( $sections, $extension_sections );

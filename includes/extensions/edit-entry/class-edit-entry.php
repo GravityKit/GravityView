@@ -18,6 +18,9 @@ if ( ! defined( 'WPINC' ) ) {
 
 class GravityView_Edit_Entry {
 
+    /**
+     * @var string
+     */
 	static $file;
 
 	static $instance;
@@ -31,9 +34,7 @@ class GravityView_Edit_Entry {
 
 	function __construct() {
 
-		self::$instance = &$this;
-
-		self::$file = plugin_dir_path( __FILE__ );
+        self::$file = plugin_dir_path( __FILE__ );
 
         if( is_admin() ) {
             $this->load_components( 'admin' );
@@ -41,7 +42,6 @@ class GravityView_Edit_Entry {
 
 
         $this->load_components( 'render' );
-		$this->load_components( 'shortcode' );
 
         // If GF User Registration Add-on exists
         if( class_exists( 'GFUser' ) ) {
@@ -65,7 +65,7 @@ class GravityView_Edit_Entry {
     }
 
 
-    function load_components( $component ) {
+    private function load_components( $component ) {
 
         $dir = trailingslashit( self::$file );
 
@@ -111,7 +111,7 @@ class GravityView_Edit_Entry {
      * Include this extension templates path
      * @param array $file_paths List of template paths ordered
      */
-    function add_template_path( $file_paths ) {
+    public function add_template_path( $file_paths ) {
 
         // Index 100 is the default GravityView template path.
         $file_paths[ 110 ] = self::$file;
@@ -128,7 +128,7 @@ class GravityView_Edit_Entry {
      * @param $entry_id int Gravity Forms entry id
      * @return string
      */
-    static function get_nonce_key( $view_id, $form_id, $entry_id ) {
+    public static function get_nonce_key( $view_id, $form_id, $entry_id ) {
         return sprintf( 'edit_%d_%d_%d', $view_id, $form_id, $entry_id );
     }
 
@@ -146,7 +146,7 @@ class GravityView_Edit_Entry {
      * @param string|array $field_values Parameters to pass in to the Edit Entry form to prefill data. Uses the same format as Gravity Forms "Allow field to be populated dynamically" {@since 1.9.2} {@see https://www.gravityhelp.com/documentation/article/allow-field-to-be-populated-dynamically/ }
      * @return string
      */
-    static function get_edit_link( $entry, $view_id, $post_id = null, $field_values = '' ) {
+    public static function get_edit_link( $entry, $view_id, $post_id = null, $field_values = '' ) {
 
         $nonce_key = self::get_nonce_key( $view_id, $entry['form_id'], $entry['id']  );
 
@@ -225,8 +225,12 @@ class GravityView_Edit_Entry {
         // No permission by default
         $user_can_edit = false;
 
-        // Or if they can edit any entries (as defined in Gravity Forms), we're good.
-        if( GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) ) {
+        // If they can edit any entries (as defined in Gravity Forms)
+        // Or if they can edit other people's entries
+        // Then we're good.
+        if( GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_others_entries' ), $entry['id'] ) ) {
+
+            do_action('gravityview_log_debug', __METHOD__ . ' - User has ability to edit all entries.');
 
             $user_can_edit = true;
 
@@ -263,14 +267,22 @@ class GravityView_Edit_Entry {
                 do_action('gravityview_log_debug', sprintf( 'GravityView_Edit_Entry[check_user_cap_edit_entry] User %s created the entry.', $current_user->ID ) );
 
                 $user_can_edit = true;
+
+            } else if( ! is_user_logged_in() ) {
+
+                do_action( 'gravityview_log_debug', __METHOD__ . ' No user defined; edit entry requires logged in user' );
             }
 
         }
 
         /**
-         * @param boolean $user_can_edit Can the current user edit the current entry? (Default: false)
+         * @filter `gravityview/edit_entry/user_can_edit_entry` Modify whether user can edit an entry.
+         * @since 1.15 Added `$entry` and `$view_id` parameters
+         * @param[in,out] boolean $user_can_edit Can the current user edit the current entry? (Default: false)
+         * @param[in] array $entry Gravity Forms entry array {@since 1.15}
+         * @param[in] int $view_id ID of the view you want to check visibility against {@since 1.15}
          */
-        $user_can_edit = apply_filters( 'gravityview/edit_entry/user_can_edit_entry', $user_can_edit );
+        $user_can_edit = apply_filters( 'gravityview/edit_entry/user_can_edit_entry', $user_can_edit, $entry, $view_id );
 
         return (bool)$user_can_edit;
     }
@@ -280,5 +292,5 @@ class GravityView_Edit_Entry {
 } // end class
 
 //add_action( 'plugins_loaded', array('GravityView_Edit_Entry', 'getInstance'), 6 );
-new GravityView_Edit_Entry;
+GravityView_Edit_Entry::getInstance();
 
