@@ -22,6 +22,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 1.15.1 =
 * New: Use `{get}` Merge Tags as `[gravityview]` attributes
+* Fixed: Edit Entry and Delete Entry links weren't working in DataTables
+* Fixed: Display Checkbox and Radio field labels in the Search Bar
+	* New: If you prefer how the searches looked before the labels were visible, you can set the "Label" for the search field to a blank space. That will hide the label.
+	* Removed extra whitespace from search field `<label>`s
 * Fixed: Update the required Gravity Forms version to 1.9.9.10
 * Fixed: Section fields should not be affected by "Hide empty fields" View setting
 * Tweak: Allow overriding `gravityview_sanitize_html_class()` function
