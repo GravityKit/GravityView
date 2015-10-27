@@ -62,18 +62,16 @@ class GravityView_View_Data {
 				$passed_post = get_post( $passed_post );
 			}
 
-			// Convert WP_Posts into array
+			// Convert WP_Posts into WP_Posts[] array
 			if( $passed_post instanceof WP_Post ) {
-				$passed_post = array( $passed_post);
+				$passed_post = array( $passed_post );
 			}
 
 			if( is_array( $passed_post ) ) {
 
 				foreach ( $passed_post as &$post) {
 					if( ( get_post_type( $post ) === 'gravityview' ) ) {
-
 						$ids[] = $post->ID;
-
 					} else{
 						// Parse the Post Content
 						$id = $this->parse_post_content( $post->post_content );
@@ -341,7 +339,7 @@ class GravityView_View_Data {
 	 * @uses shortcode_parse_atts() Parse each GV shortcode
 	 * @uses  gravityview_get_template_settings() Get the settings for the View ID
 	 * @param  string $content $post->post_content content
-	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
+	 * @return int|null|array If a single View is found, the ID of the View. If there are multiple views in the content, array of IDs parsed. If not found, NULL
 	 */
 	function parse_post_content( $content ) {
 
@@ -391,14 +389,20 @@ class GravityView_View_Data {
 	}
 
 	/**
-	 * Parse specific custom fields (Post Meta) to determine if there is a GV shortcode to allow for enqueing necessary files in the head.
-	 * @since 1.14.4
+	 * Parse specific custom fields (Post Meta) to determine if there is a GV shortcode to allow for enqueuing necessary files in the head.
+	 * @since 1.15.1
 	 * @uses \GravityView_View_Data::parse_post_content
-	 * @param $post_id int WP_Post ID
-	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
+	 * @param int $post_id WP_Post ID
+	 * @return int|null|array If a single View is found, the ID of the View. If there are multiple views in the content, array of IDs parsed. If not found, or meta not parsed, NULL
 	 */
 	private function parse_post_meta( $post_id ) {
 
+		/**
+		 * @filter `gravityview/data/parse/meta_keys` Define meta keys to parse to check for GravityView shortcode content
+		 * This is useful when using themes that store content that may contain shortcodes in custom post meta
+		 * @param[in,out] array $meta_keys Array of key values to check. If empty, do not check. Default: empty array
+		 * @param[in] int $post_id ID of the post being checked
+		 */
 		$meta_keys = (array)apply_filters( 'gravityview/data/parse/meta_keys', array(), $post_id );
 
 		if( empty( $meta_keys ) ) {
@@ -410,7 +414,7 @@ class GravityView_View_Data {
 		$meta_content = '';
 
 		foreach( $meta_keys as $key ) {
-			$meta_content .=  get_post_meta( $post_id, $key , true ) . ' ';
+			$meta_content .= get_post_meta( $post_id, $key , true ) . ' ';
 		}
 
 		if( empty( $meta_content ) ) {
