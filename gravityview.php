@@ -43,10 +43,8 @@ define( 'GRAVITYVIEW_FILE', __FILE__ );
  */
 define( 'GRAVITYVIEW_URL', plugin_dir_url( __FILE__ ) );
 
-/**
- * The absolute path to the plugin directory
- * @define "GRAVITYVIEW_DIR" "./"
- */
+
+/** @define "GRAVITYVIEW_DIR" "./" The absolute path to the plugin directory */
 define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
 
 /**
@@ -72,6 +70,7 @@ require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
 require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
 require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-compatibility.php' );
 require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-roles-capabilities.php' );
+require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-notices.php' );
 
 /** Register Post Types and Rewrite Rules */
 require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
@@ -110,7 +109,6 @@ final class GravityView_Plugin {
 
 	private function __construct() {
 
-		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-notices.php' );
 
 		if( ! GravityView_Compatibility::is_valid() ) {
 			return;

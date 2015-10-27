@@ -54,7 +54,7 @@ if( ! function_exists( 'gravityview_sanitize_html_class' ) ) {
 	 *
 	 * @uses sanitize_html_class
 	 *
-	 * @param  string|array $classes Text or arrray of classes to sanitize
+	 * @param  string|array $classes Text or array of classes to sanitize
 	 *
 	 * @return string            Sanitized CSS string
 	 */

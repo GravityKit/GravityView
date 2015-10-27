@@ -28,6 +28,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 	* Removed extra whitespace from search field `<label>`s
 * Fixed: Update the required Gravity Forms version to 1.9.9.10
 * Fixed: Section fields should not be affected by "Hide empty fields" View setting
+* Tweak: Improve notifications logic
+	* Only show notices to users with appropriate capabilities
+	* Allow dismissing all notices
+	* Clear dismissed notices when activating the plugin
+	* Fixed showing notice to enter license key
 * Tweak: Allow overriding `gravityview_sanitize_html_class()` function
 * Tweak: Make `GravityView_Merge_Tags::replace_get_variables()` method public
 
