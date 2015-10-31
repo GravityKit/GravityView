@@ -12,7 +12,7 @@
  *
  * @since 1.1
  *
- * @version 1.1.1
+ * @version 1.1.2 Fixed `/lib/` include path for EDDSL
  */
 abstract class GravityView_Extension {
 
@@ -224,7 +224,15 @@ abstract class GravityView_Extension {
 		}
 
 		if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-			include_once plugin_dir_path( __FILE__ ) . 'lib/EDD_SL_Plugin_Updater.php';
+
+			$file_path = plugin_dir_path( __FILE__ ) . 'lib/EDD_SL_Plugin_Updater.php';
+
+			// This file may be in the lib/ directory already
+			if( ! file_exists( $file_path ) ) {
+				$file_path = plugin_dir_path( __FILE__ ) . '/EDD_SL_Plugin_Updater.php';
+			}
+
+			include_once $file_path;
 		}
 
 		$license = $this->get_license();

@@ -849,7 +849,7 @@ class GVCommon {
 			return true;
 		}
 
-		return self::has_shortcode_r( $post->post_content, 'gravityview' );
+		return self::has_shortcode_r( $post->post_content, 'gravityview' ) ? true : false;
 
 	}
 

@@ -92,9 +92,7 @@ class GV_Unit_Tests_Bootstrap {
 	public function load() {
 		require_once $this->plugin_dir . '/tmp/gravityforms/gravityforms.php';
 
-		if( ! defined( 'REST_API_VERSION' ) ) {
-			require_once $this->plugin_dir . '/tmp/api-core/rest-api.php';
-		}
+		$this->load_rest_api();
 
 		require_once $this->plugin_dir . '/gravityview.php';
 
@@ -105,6 +103,112 @@ class GV_Unit_Tests_Bootstrap {
 		@GFForms::setup( true );
 
 		$this->create_stubs();
+	}
+
+	/**
+	 * Fetch the REST API files
+	 */
+	private function load_rest_api() {
+
+		if( ! defined( 'REST_API_VERSION' ) ) {
+
+			define( 'REST_API_VERSION', '2.0' );
+
+			/** Compatibility shims for PHP functions */
+			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/compat.php' );
+
+			/** WP_HTTP_Response class */
+			require_once( $this->plugin_dir . '/tmp/api-core/wp-includes/class-wp-http-response.php' );
+
+			/** Main API functions */
+			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/functions.php' );
+
+			/** WP_REST_Server class */
+			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/rest-api/class-wp-rest-server.php' );
+
+			/** WP_HTTP_Response class */
+			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/class-wp-http-response.php' );
+
+			/** WP_REST_Response class */
+			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/rest-api/class-wp-rest-response.php' );
+
+			/** WP_REST_Request class */
+			require_once( $this->plugin_dir . '/tmp/api-core/wp-includes/rest-api/class-wp-rest-request.php' );
+
+			/** REST functions */
+			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/rest-api/rest-functions.php' );
+
+			/** REST filters */
+			include_once( $this->plugin_dir . '/tmp/api-core/wp-includes/filters.php' );
+
+			/**
+			 * Determines if the rewrite rules should be flushed.
+			 *
+			 * @since 4.4.0
+			 */
+			function rest_api_maybe_flush_rewrites() {
+				$version = get_option( 'rest_api_plugin_version', null );
+
+				if ( empty( $version ) || REST_API_VERSION !== $version ) {
+					flush_rewrite_rules();
+					update_option( 'rest_api_plugin_version', REST_API_VERSION );
+				}
+			}
+
+			add_action( 'init', 'rest_api_maybe_flush_rewrites', 999 );
+
+			/**
+			 * Registers routes and flush the rewrite rules on activation.
+			 *
+			 * @since 4.4.0
+			 *
+			 * @param bool $network_wide ?
+			 */
+			function rest_api_activation( $network_wide ) {
+				if ( function_exists( 'is_multisite' ) && is_multisite() && $network_wide ) {
+					$mu_blogs = wp_get_sites();
+
+					foreach ( $mu_blogs as $mu_blog ) {
+						switch_to_blog( $mu_blog['blog_id'] );
+
+						rest_api_register_rewrites();
+						update_option( 'rest_api_plugin_version', null );
+					}
+
+					restore_current_blog();
+				} else {
+					rest_api_register_rewrites();
+					update_option( 'rest_api_plugin_version', null );
+				}
+			}
+
+			register_activation_hook( __FILE__, 'rest_api_activation' );
+
+			/**
+			 * Flushes the rewrite rules on deactivation.
+			 *
+			 * @since 4.4.0
+			 *
+			 * @param bool $network_wide ?
+			 */
+			function rest_api_deactivation( $network_wide ) {
+				if ( function_exists( 'is_multisite' ) && is_multisite() && $network_wide ) {
+
+					$mu_blogs = wp_get_sites();
+
+					foreach ( $mu_blogs as $mu_blog ) {
+						switch_to_blog( $mu_blog['blog_id'] );
+						delete_option( 'rest_api_plugin_version' );
+					}
+
+					restore_current_blog();
+				} else {
+					delete_option( 'rest_api_plugin_version' );
+				}
+			}
+
+			register_deactivation_hook( __FILE__, 'rest_api_deactivation' );
+		}
 	}
 
 	/**
