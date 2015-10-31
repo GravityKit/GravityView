@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Tweak: Show available plugin updates, even when license is expired
+
 = 1.15.1 =
 * New: Use `{get}` Merge Tags as `[gravityview]` attributes
 * Fixed: Update the required Gravity Forms version to 1.9.9.10
