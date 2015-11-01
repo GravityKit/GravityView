@@ -214,15 +214,9 @@ class GravityView_Admin {
 			return;
 		}
 
-
 		$wp_allowed_scripts = array(
-			'debug-bar-extender',
             'common',
             'admin-bar',
-            'debug-bar',
-            'debug-bar-codemirror',
-            'debug-bar-console',
-            'puc-debug-bar-js',
             'autosave',
             'post',
 			'inline-edit-post',
@@ -235,11 +229,7 @@ class GravityView_Admin {
             'thickbox',
 			'wp-color-picker',
 
-            'gform_tooltip_init',
-            'gform_field_filter',
-            'gform_forms',
-
-		    // Settings
+            // Settings
 			'gv-admin-edd-license',
 
             // Common
@@ -258,26 +248,6 @@ class GravityView_Admin {
 			'jquery-ui-draggable',
 			'jquery-ui-droppable',
             'jquery-ui-accordion',
-
-			// WP SEO
-			'wp-seo-metabox',
-			'wpseo-admin-media',
-			'jquery-qtip',
-			'jquery-ui-autocomplete',
-
-			// Genesis theme framework
-		    'genesis_admin_js',
-
-			// Avada
-			'jquery.biscuit',
-			'avada_upload',
-			'tipsy',
-			'jquery-ui-slider',
-			'smof',
-			'cookie',
-			'kd-multiple-featured-images',
-			'media-upload',
-			'jquery-ui-core',
 		);
 
 		$this->remove_conflicts( $wp_scripts, $wp_allowed_scripts, 'scripts' );
@@ -312,13 +282,8 @@ class GravityView_Admin {
 		}
 
         $wp_allowed_styles = array(
-        	'debug-bar-extender',
 	        'admin-bar',
-	        'debug-bar',
-	        'debug-bar-codemirror',
-	        'debug-bar-console',
-	        'puc-debug-bar-style',
-	        'colors',
+        	'colors',
 	        'ie',
 	        'wp-auth-check',
 	        'media-views',
@@ -327,22 +292,8 @@ class GravityView_Admin {
 	        'wp-jquery-ui-dialog',
 	        'jquery-ui-sortable',
 
-	        // Gravity Forms
-	        'gform_tooltip',
-	        'gform_font_awesome',
-
             // Settings
 	        'gravityview_settings',
-
-	        // WP SEO
-	        'wp-seo-metabox',
-	        'wpseo-admin-media',
-	        'metabox-tabs',
-	        'metabox-classic',
-	        'metabox-fresh',
-
-	        // Genesis theme framework
-            'genesis_admin_css',
 
 	        // @todo qTip styles not loading for some reason!
 	        'jquery-qtip.js',
