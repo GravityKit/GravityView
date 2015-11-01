@@ -31,8 +31,28 @@ class GravityView_Entry_Notes {
 	 * @param string $note Note content.
 	 * @param string $note_type Type of note. Default: `gravityview`
 	 */
-	public static function add_note( $lead_id, $user_id, $user_name, $note, $note_type = 'gravityview' ) {
-		GFFormsModel::add_note( $lead_id, $user_id, $user_name, $note, $note_type );
+	public static function add_note( $lead_id, $user_id, $user_name, $note = '', $note_type = 'gravityview' ) {
+
+		$default_note = array(
+			'lead_id' => 0,
+			'user_id' => 0,
+			'user_name' => '',
+			'note' => '',
+			'note_type' => 'gravityview',
+		);
+
+		/**
+		 * @filter `gravityview/entry_notes/add_note` Modify note values before added using GFFormsModel::add_note()
+		 * @see GFFormsModel::add_note
+		 * @since 1.15.2
+		 * @param array $note Array with `lead_id`, `user_id`, `user_name`, `note`, and `note_type` key value pairs
+		 */
+		$note = apply_filters( 'gravityview/entry_notes/add_note', compact( 'lead_id', 'user_id', 'user_name', 'note', 'note_type' ) );
+
+		// Make sure the keys are all set
+		$note = wp_parse_args( $note, $default_note );
+
+		GFFormsModel::add_note( intval( $note['lead_id'] ), intval( $note['user_id'] ), esc_attr( $note['user_name'] ), $note['note'], esc_attr( $note['note_type'] ) );
 	}
 
 	/**
