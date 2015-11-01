@@ -217,7 +217,6 @@ class GravityView_Admin {
 
 		$wp_allowed_scripts = array(
 			'debug-bar-extender',
-            'backcallsc',
             'common',
             'admin-bar',
             'debug-bar',
