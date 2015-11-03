@@ -1077,9 +1077,11 @@ class GravityView_Admin_Views {
 
 			wp_localize_script( 'gravityview_views_scripts', 'gravityview_i18n', self::get_admin_i18n_labels() );
 
+			wp_enqueue_style( 'gravityview-new-admin', plugins_url( 'assets/css/admin-views-new.css', GRAVITYVIEW_FILE ), array( 'dashicons' ), GravityView_Plugin::version );
+
+
 			wp_enqueue_style( 'gravityview_views_styles', plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
 
-			wp_enqueue_style( 'gravityview-new-admin', plugins_url( 'assets/css/admin-views-new.css', GRAVITYVIEW_FILE ), array( 'dashicons' ), GravityView_Plugin::version );
 
 			self::enqueue_gravity_forms_scripts();
 
@@ -1105,9 +1107,43 @@ class GravityView_Admin_Views {
 
 	static function get_admin_i18n_labels() {
 		return array(
+
+			// Tabs & button
+			'tab_multiple' 		=>  __( 'Multiple Entries', 'gravityview' ),
+			'tab_single' 		=>  __( 'Single Entry', 'gravityview' ),
+			'tab_edit' 			=>  __( 'Edit Entry', 'gravityview' ),
+			'tab_export'		=> __( 'Export', 'gravityview' ),
+			'button_settings'	=> __( 'Settings', 'gravityview' ),
+
+			// Add row buttons
+			'button_row_add'	=> __( 'Add Row', 'gravityview' ),
+			'button_row_remove'	=> __( 'Remove Row', 'gravityview' ),
+			'button_row_settings'	=> __( 'Row Settings', 'gravityview' ),
+
 			// Generic buttons
-			'button_close' => __( 'Close', 'gravityview' ),
-			'button_cancel' => __( 'Cancel', 'gravityview' ),
+			'button_close' 		=> __( 'Close', 'gravityview' ),
+			'button_cancel'		=> __( 'Cancel', 'gravityview' ),
+			'button_back'		=> __( 'Back', 'gravityview' ),
+
+
+			// Widgets Area
+			'widgets_title_above' 	=> __( 'Above Entries Widgets', 'gravityview' ),
+			'widgets_label_above' 	=> __( 'These widgets will be shown above entries.', 'gravityview' ),
+			'widgets_add' 			=> __( 'Add Widget', 'gravityview' ),
+			'widgets_title_below' 	=> __( 'Below Entries Widgets', 'gravityview' ),
+			'widgets_label_below' 	=> __( 'These widgets will be shown below entries.', 'gravityview' ),
+
+			// Fields Area
+			'fields_title_multiple' 	=> __( 'Entries Fields', 'gravityview' ),
+			'fields_label_multiple' 	=> __( 'These fields will be shown for each entry.', 'gravityview' ),
+			'fields_add' 			=> __( 'Add Field', 'gravityview' ),
+
+
+
+			// --- Below the old i18n tags --
+
+
+			// Generic buttons
 			'button_continue' => __( 'Continue', 'gravityview' ),
 			'button_ok' => __( 'Ok', 'gravityview' ),
 
@@ -1130,11 +1166,7 @@ class GravityView_Admin_Views {
 
 
 
-			// View Configuration metabox
-			'mb_vc_title'  			=> __( 'View Configuration', 'gravityview' ),
-			'mb_vc_tab_multiple' 	=>  __( 'Multiple Entries', 'gravityview' ),
-			'mb_vc_tab_single' 		=>  __( 'Single Entry', 'gravityview' ),
-			'mb_vc_tab_edit' 		=>  __( 'Edit Entry', 'gravityview' ),
+
 
 
 			// Add field modal
@@ -1179,7 +1211,7 @@ class GravityView_Admin_Views {
 			'sack', 'gform_gravityforms', 'gform_forms', 'gform_form_admin', 'jquery-ui-autocomplete' );
 			$registered = array_merge( $registered, $allow_scripts );
 		} elseif( preg_match('/style/ism', $filter ) ) {
-			$allow_styles = array( 'dashicons', 'wp-jquery-ui-dialog', 'gravityview_views_styles', 'gravityview_global', 'gravityview_views_datepicker' );
+			$allow_styles = array( 'dashicons', 'wp-jquery-ui-dialog', 'gravityview_views_styles', 'gravityview-new-admin', 'gravityview_global', 'gravityview_views_datepicker' );
 			$registered = array_merge( $registered, $allow_styles );
 		}
 

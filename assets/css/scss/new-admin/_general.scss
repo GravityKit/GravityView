@@ -5,28 +5,32 @@
 // Type
 // ------------------------------------------------
 
-body {
+.gv-config {
 	color: $color-text !important;
 }
 
-h1, h2, h3, h4, h5, h6 {
-	color: $color-text !important;
-	font-weight: 600;
-	margin: 0;
-	padding: 0;
+.gv-config {
+	h1, h2, h3, h4, h5, h6 {
+		color: $color-text !important;
+		font-weight: 600;
+		margin: 0;
+		padding: 0;
+	}
 }
 
-h3 {
+.gv-config h3 {
 	font-size: 16px;
 	margin-bottom: 1em;
 }
 
-h1, h2, h3, h4, h5, h6 {
-	small {
-		display: block;
-		font-weight: 400;
-		color: $color-small-text;
-		margin-top: .15em;
+.gv-config {
+	h1, h2, h3, h4, h5, h6 {
+		small {
+			display: block;
+			font-weight: 400;
+			color: $color-small-text;
+			margin-top: .15em;
+		}
 	}
 }
 
@@ -61,7 +65,8 @@ h1, h2, h3, h4, h5, h6 {
 // Links
 // ------------------------------------------------
 
-a {
+
+.gv-config a {
 	color: $color-dark-blue !important;
 	&:hover {
 		color: $color-light-blue !important;

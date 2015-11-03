@@ -10,7 +10,9 @@
  * @since 1.0.0
  */
 
-@import "font";
+@import 'new-admin/utils';
+@import 'new-admin/vars';
+@import 'new-admin/general';
 @import "admin-members-plugin";
 @import "beacon";
 
@@ -20,7 +22,7 @@
 #available-widgets [class*=gv_recent_entries] .widget-title:before,
 #available-widgets [class*=gravityview_search] .widget-title:before{
 	@extend [class^="gv-icon-"]:before;
-	@extend .gv-icon-astronaut-head:before;
+	@extend .gv-icon-floaty-helmet:before;
 }
 
 // Fix Make theme overriding button width

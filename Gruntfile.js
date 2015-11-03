@@ -65,7 +65,7 @@ module.exports = function(grunt) {
 					extensions: ['*.jsx']
 				},
 				files: {
-					'includes/admin/metaboxes/components/admin-view-config.js': 'includes/admin/metaboxes/components/*.jsx'
+					'assets/js/flux-admin-views/build.js': 'assets/js/flux-admin-views/admin-view.js'
 				}
 			},
 			build: {
@@ -74,14 +74,14 @@ module.exports = function(grunt) {
 					transform: ['babelify']
 				},
 				files: {
-					'includes/admin/metaboxes/components/admin-view-config.js': 'includes/admin/metaboxes/components/*.jsx'
+					'assets/js/flux-admin-views/build.js': 'assets/js/flux-admin-views/admin-view.js'
 				}
 			}
 		},
 
 		concat: {
 			dist: {
-				src: ['assets/js/admin-views.js', 'includes/admin/metaboxes/components/admin-view-config.js'],
+				src: ['assets/js/admin-views.js', 'assets/js/flux-admin-views/build.js'],
 				dest: 'assets/js/admin-views-react.js'
 			}
 		},

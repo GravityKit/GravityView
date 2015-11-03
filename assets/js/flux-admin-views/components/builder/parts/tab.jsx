@@ -1,4 +1,4 @@
-import React from 'react';
+var React = require('react');
 
 var Tab = React.createClass({
 
@@ -31,4 +31,4 @@ var Tab = React.createClass({
 
 });
 
-export default Tab;
+module.exports = Tab;
