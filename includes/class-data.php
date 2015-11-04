@@ -414,7 +414,11 @@ class GravityView_View_Data {
 		$meta_content = '';
 
 		foreach( $meta_keys as $key ) {
-			$meta_content .= get_post_meta( $post_id, $key , true ) . ' ';
+			$meta = get_post_meta( $post_id, $key , true );
+			if( ! is_string( $meta ) ) {
+				continue;
+			}
+			$meta_content .= $meta . ' ';
 		}
 
 		if( empty( $meta_content ) ) {

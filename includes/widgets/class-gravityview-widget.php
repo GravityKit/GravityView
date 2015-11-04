@@ -173,7 +173,7 @@ class GravityView_Widget {
 	function add_shortcode( $run_on_singular = true ) {
 		global $post;
 
-		if( is_admin() ) { return; }
+		if( GravityView_Plugin::is_admin() ) { return; }
 
 		if( empty( $this->shortcode_name ) ) { return; }
 

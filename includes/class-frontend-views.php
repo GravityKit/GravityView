@@ -1228,9 +1228,9 @@ class GravityView_frontend {
 				/**
 				 * @filter `gravityview_js_localization` Modify the array passed to wp_localize_script()
 				 * @param array $js_localization The data padded to the Javascript file
-				 * @param array $data View data array with View settings
+				 * @param array $views Array of View data arrays with View settings
 				 */
-				$js_localization = apply_filters( 'gravityview_js_localization', $js_localization, $data );
+				$js_localization = apply_filters( 'gravityview_js_localization', $js_localization, $views );
 
 				wp_localize_script( 'gravityview-fe-view', 'gvGlobals', $js_localization );
 			}
