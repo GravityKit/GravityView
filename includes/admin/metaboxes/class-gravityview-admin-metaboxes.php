@@ -30,9 +30,6 @@ class GravityView_Admin_Metaboxes {
 	 */
 	function initialize() {
 
-		// Make Yoast go down to the bottom please.
-		add_filter('wpseo_metabox_prio', array( $this, '__return_low') );
-
 		add_action( 'add_meta_boxes', array( $this, 'register_metaboxes' ));
 
 		// Fix annoying 3rd party metabox behavior
@@ -45,14 +42,6 @@ class GravityView_Admin_Metaboxes {
 		// information box
 		add_action( 'post_submitbox_misc_actions', array( $this, 'render_shortcode_hint' ) );
 
-	}
-
-	/**
-	 * Return 'low' as the status for metabox priority
-	 * @return string 'low'
-	 */
-	function __return_low() {
-		return 'low';
 	}
 
 	function register_metaboxes() {

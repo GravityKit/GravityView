@@ -95,7 +95,7 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	 * @since 1.15.2
 	 * @return void
 	 */
-	private function add_hooks() {
+	protected function add_hooks() {
 		if( $this->content_meta_keys ) {
 			add_filter( 'gravityview/data/parse/meta_keys', array( $this, 'merge_content_meta_keys' ), 10, 2 );
 		}
