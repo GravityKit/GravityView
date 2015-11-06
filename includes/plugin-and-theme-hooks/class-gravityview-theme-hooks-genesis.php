@@ -35,6 +35,15 @@ class GravityView_Theme_Hooks_Genesis extends GravityView_Plugin_and_Theme_Hooks
 	protected $style_handles = array(
 		'genesis_admin_css',
 	);
+
+	/**
+	 * @inheritDoc
+	 * @since 1.15.2
+	 */
+	protected $post_type_support = array(
+		'genesis-layouts',
+		'genesis-seo',
+	);
 }
 
 new GravityView_Theme_Hooks_Genesis;

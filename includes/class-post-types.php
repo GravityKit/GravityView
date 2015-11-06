@@ -41,7 +41,7 @@ class GravityView_Post_Types {
 		 */
 		$is_hierarchical = (bool)apply_filters( 'gravityview_is_hierarchical', false );
 
-		$supports = array( 'title', 'genesis-layouts', 'revisions' );
+		$supports = array( 'title', 'revisions' );
 
 		if( $is_hierarchical ) {
 			$supports[] = 'page-attributes';
