@@ -699,6 +699,15 @@ class GravityView_View_Data {
 				'show_in_shortcode' => false,
 				'full_width' => true,
 			),
+			'embed_only' => array(
+				'label'	=> __('Prevent Direct Access', 'gravityview'),
+				'group'	=> 'default',
+				'desc'	=> __('Only allow access to this View when embedded using the shortcode.', 'gravityview'),
+				'type'	=> 'checkbox',
+				'value'	=> '',
+				'show_in_shortcode' => false,
+				'full_width' => true,
+			),
 		));
 
 		// By default, we only want the key => value pairing, not the whole array.
