@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Tweak: Show available plugin updates, even when license is expired
 * Fixed: Select, multi-select, radio, checkbox, and post category field types should use exact match search
 * New: `gravityview/entry_notes/add_note` filter to modify GravityView note properties before being added
+* New: `gravityview_post_type_supports` filter to modify `gravityview` post type support values
 
 = 1.15.1 on October 27 =
 * New: Use `{get}` Merge Tags as `[gravityview]` attributes

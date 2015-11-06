@@ -47,6 +47,15 @@ class GravityView_Post_Types {
 			$supports[] = 'page-attributes';
 		}
 
+		/**
+		 * @filter  `gravityview_post_type_supports` Modify post type support values for `gravityview` post type
+		 * @see add_post_type_support()
+		 * @since 1.15.2
+		 * @param array $supports Array of features associated with a functional area of the edit screen. Default: 'title', 'revisions'. If $is_hierarchical, also 'page-attributes'
+		 * @param[in] boolean $is_hierarchical Do Views support parent/child relationships? See `gravityview_is_hierarchical` filter.
+		 */
+		$supports = apply_filters( 'gravityview_post_type_support', $supports, $is_hierarchical );
+
 		//Register Custom Post Type - gravityview
 		$labels = array(
 			'name'                => _x( 'Views', 'Post Type General Name', 'gravityview' ),

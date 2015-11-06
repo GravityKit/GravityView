@@ -64,6 +64,14 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	protected $style_handles = array();
 
 	/**
+	 * Define features in the admin editor used by the theme or plugin to be used when registering the GravityView post type
+	 * @see GravityView_Post_Types::init_post_types
+	 * @since 1.15.2
+	 * @type array
+	 */
+	protected $post_type_support = array();
+
+	/**
 	 * GravityView_Theme_Support constructor.
 	 * @return void
 	 */
@@ -107,6 +115,25 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 		if( $this->style_handles ) {
 			add_filter( 'gravityview_noconflict_styles', array( $this, 'merge_noconflict_styles' ) );
 		}
+
+		if( $this->post_type_support ) {
+			add_filter( 'gravityview_post_type_support', array( $this, 'merge_post_type_support' ), 10, 2 );
+		}
+	}
+
+	/**
+	 * Merge plugin or theme post type support definitions with existing support values
+	 *
+	 * @since 1.15.2
+	 *
+	 * @param array $supports Array of features associated with a functional area of the edit screen.
+	 * @param boolean $is_hierarchical Do Views support parent/child relationships? See `gravityview_is_hierarchical` filter.
+	 *
+	 * @return array Array of features associated with a functional area of the edit screen, merged with existing values
+	 */
+	public function merge_post_type_support( $supports = array(), $is_hierarchical = false ) {
+		$supports = array_merge( $this->post_type_support, $supports );
+		return $supports;
 	}
 
 	/**
