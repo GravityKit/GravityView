@@ -14,16 +14,19 @@
 
 /**
  * @inheritDoc
+ * @since 1.15.2
  */
 class GravityView_Theme_Hooks_Avia extends GravityView_Plugin_and_Theme_Hooks {
 
 	/**
 	 * @inheritDoc
+	 * @since 1.15.2
 	 */
 	protected $constant_name = 'AV_FRAMEWORK_VERSION';
 
 	/**
 	 * @inheritDoc
+	 * @since 1.15.2
 	 */
 	protected $meta_keys = array(
 		'_aviaLayoutBuilderCleanData'

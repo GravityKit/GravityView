@@ -14,16 +14,19 @@
 
 /**
  * @inheritDoc
+ * @since 1.15.2
  */
 class GravityView_Theme_Hooks_Avada extends GravityView_Plugin_and_Theme_Hooks {
 
 	/**
 	 * @inheritDoc
+	 * @since 1.15.2
 	 */
 	protected $function_name = 'avada_scripts';
 
 	/**
 	 * @inheritDoc
+	 * @since 1.15.2
 	 */
 	protected $content_meta_keys = array(
 		'sbg_selected_sidebar',
@@ -31,6 +34,7 @@ class GravityView_Theme_Hooks_Avada extends GravityView_Plugin_and_Theme_Hooks {
 
 	/**
 	 * @inheritDoc
+	 * @since 1.15.2
 	 */
 	protected $script_handles = array(
 		'jquery.biscuit',

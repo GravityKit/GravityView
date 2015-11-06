@@ -14,16 +14,19 @@
 
 /**
  * @inheritDoc
+ * @since 1.15.2
  */
 class GravityView_Theme_Hooks_GeneratePress extends GravityView_Plugin_and_Theme_Hooks {
 
 	/**
 	 * @inheritDoc
+	 * @since 1.15.2
 	 */
 	protected $constant_name = 'GENERATE_VERSION';
 
 	/**
 	 * @inheritDoc
+	 * @since 1.15.2
 	 */
 	protected $content_meta_keys = array(
 		'_generate-sidebar-layout-meta',
