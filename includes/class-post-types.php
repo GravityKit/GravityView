@@ -93,7 +93,15 @@ class GravityView_Post_Types {
 			 */
 			'has_archive'         => apply_filters( 'gravityview_has_archive', false ),
 			'exclude_from_search' => true,
-			'publicly_queryable'  => GravityView_Compatibility::is_valid(),
+
+			/**
+			 * @filter `gravityview_publicly_queryable` Should Views be visible using `?post_type=gravityview`?
+			 * @see https://codex.wordpress.org/Function_Reference/register_post_type#publicly_queryable
+			 * @since 1.15.2
+			 * @param boolean False: don't allow; True: yes, allow. Default: Whether the current user has `read_private_gravityviews` capability
+			 */
+			'publicly_queryable'  => ( GravityView_Compatibility::is_valid() && apply_filters( 'gravityview_publicly_queryable', GVCommon::has_cap( 'read_private_gravityviews' ) ) ),
+
 			'rewrite'             => array(
 				/**
 				 * @filter `gravityview_slug` Modify the url part for a View. [Read the doc](http://docs.gravityview.co/article/62-changing-the-view-slug)
