@@ -32,10 +32,32 @@ class GravityView_Admin_Metaboxes {
 
 		add_action( 'add_meta_boxes', array( $this, 'register_metaboxes' ));
 
+		add_action( 'add_meta_boxes_gravityview' , array( $this, 'update_priority' ) );
 
 		// information box
 		add_action( 'post_submitbox_misc_actions', array( $this, 'render_shortcode_hint' ) );
 
+	}
+
+	/**
+	 * GravityView wants to have the top (`normal`) metaboxes all to itself, so we move all plugin/theme metaboxes down to `advanced`
+	 * @since 1.15.2
+	 */
+	function update_priority() {
+		global $wp_meta_boxes;
+
+		if( ! empty( $wp_meta_boxes['gravityview'] ) ) {
+			foreach( array( 'high', 'core', 'low' ) as $position ) {
+				if( isset( $wp_meta_boxes['gravityview']['normal'][ $position ] ) ) {
+					foreach( $wp_meta_boxes['gravityview']['normal'][ $position ] as $key => $meta_box ) {
+						if( ! preg_match( '/^gravityview_/ism', $key ) ) {
+							$wp_meta_boxes['gravityview']['advanced'][ $position ][ $key ] = $meta_box;
+							unset( $wp_meta_boxes['gravityview']['normal'][ $position ][ $key ] );
+						}
+					}
+				}
+			}
+		}
 	}
 
 	function register_metaboxes() {
