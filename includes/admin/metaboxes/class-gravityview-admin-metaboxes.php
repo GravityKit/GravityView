@@ -302,7 +302,7 @@ class GravityView_Admin_Metaboxes {
 		$gv_page = gravityview_is_admin_page();
 
 		// New View or Edit View page
-		if($gv_page === 'single') {
+		if( 'single' === $gv_page ) {
 
 			// Prevent the SEO from being checked. Eesh.
 			add_filter( 'wpseo_use_page_analysis', '__return_false' );
@@ -311,7 +311,7 @@ class GravityView_Admin_Metaboxes {
 			remove_action( 'admin_menu', 'genesis_add_inpost_layout_box' );
 
 			// New View page
-			if($pagenow === 'post-new.php' ) {
+			if( $pagenow === 'post-new.php' ) {
 
 				// WooThemes
 				remove_meta_box( 'woothemes-settings', 'gravityview', 'normal' );

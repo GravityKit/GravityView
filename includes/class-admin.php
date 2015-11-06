@@ -412,10 +412,19 @@ class GravityView_Admin {
 		return GravityView_Compatibility::get_plugin_status( $location );
 	}
 
-	static function is_admin_page($hook = '', $page = NULL) {
+	/**
+	 * Is the current admin page a GravityView-related page?
+	 *
+	 * @todo Convert to use WP_Screen
+	 * @param string $hook
+	 * @param null|string $page Optional. String return value of page to compare against.
+	 *
+	 * @return bool|string|void If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
+	 */
+	static function is_admin_page( $hook = '', $page = NULL ) {
 		global $current_screen, $plugin_page, $pagenow, $post;
 
-		if( !is_admin() ) { return false; }
+		if( ! is_admin() ) { return false; }
 
 		$is_page = false;
 
@@ -452,7 +461,7 @@ class GravityView_Admin {
 		$is_page = apply_filters( 'gravityview_is_admin_page', $is_page, $hook );
 
 		// If the current page is the same as the compared page
-		if(!empty($page)) {
+		if( !empty( $page ) ) {
 			return $is_page === $page;
 		}
 
