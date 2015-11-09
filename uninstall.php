@@ -16,33 +16,48 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 /**
  * Delete GravityView content when GravityView is uninstalled, if the setting is set to "Delete on Uninstall"
- * @since 1.14
+ * @since 1.15
  */
 class GravityView_Uninstall {
+
+	private $settings_name = 'gravityformsaddon_gravityview_app_settings';
 
 	public function __construct() {
 
 		/** @define "$file_path" "./" */
 		$file_path = plugin_dir_path( __FILE__ );
 
-		include_once  $file_path . 'includes/class-settings.php';
-		include_once $file_path . 'includes/class-gravityview-roles.php';
+		include_once $file_path . 'includes/class-gravityview-roles-capabilities.php';
 
 		/**
 		 * Only delete content and settings if "Delete on Uninstall?" setting is "Permanently Delete"
-		 * @var string|null $delete NULL if not configured (previous versions); "0" if false, "delete" if delete
 		 */
-		$delete = GravityView_Settings::get_instance()->get_app_setting('delete-on-uninstall');
+		$delete = $this->get_delete_setting();
 
-		if( 'delete' === $delete ) {
+		if( GravityView_Roles_Capabilities::has_cap( 'gravityview_uninstall' ) && 'delete' === $delete ) {
 			$this->fire_everything();
 		}
 	}
 
 	/**
+	 * Get the GravityView setting for whether to delete all View settings on uninstall
+	 *
+	 * @since 1.15
+	 *
+	 * @return string|null Returns NULL if not configured (pre-1.15 settings); "0" if false, "delete" if delete
+	 */
+	private function get_delete_setting() {
+
+		$settings = get_option( $this->settings_name, array() );
+
+		return isset( $settings[ 'delete-on-uninstall' ] ) ? $settings[ 'delete-on-uninstall' ] : null;
+	}
+
+	/**
 	 * Delete GravityView Views, settings, roles, caps, etc.
 	 * @see https://youtu.be/FXy_DO6IZOA?t=35s
-	 * @since 1.14
+	 * @since 1.15
+	 * @return void
 	 */
 	private function fire_everything() {
 		$this->delete_options();
@@ -54,7 +69,8 @@ class GravityView_Uninstall {
 
 	/**
 	 * Delete GravityView "approved entry" meta
-	 * @since 1.14
+	 * @since 1.15
+	 * @return void
 	 */
 	private function delete_entry_meta() {
 		global $wpdb;
@@ -73,7 +89,8 @@ class GravityView_Uninstall {
 
 	/**
 	 * Delete all GravityView-generated entry notes
-	 * @since 1.14
+	 * @since 1.15
+	 * @return void
 	 */
 	private function delete_entry_notes() {
 		global $wpdb;
@@ -97,7 +114,8 @@ class GravityView_Uninstall {
 
 	/**
 	 * Delete capabilities added by GravityView
-	 * @since 1.14
+	 * @since 1.15
+	 * @return void
 	 */
 	private function delete_capabilities() {
 		GravityView_Roles_Capabilities::get_instance()->remove_caps();
@@ -105,7 +123,8 @@ class GravityView_Uninstall {
 
 	/**
 	 * Delete all the GravityView custom post type posts
-	 * @since 1.14
+	 * @since 1.15
+	 * @return void
 	 */
 	private function delete_posts() {
 
@@ -125,7 +144,8 @@ class GravityView_Uninstall {
 
 	/**
 	 * Delete GravityView options
-	 * @since 1.14
+	 * @since 1.15
+	 * @return void
 	 */
 	private function delete_options() {
 
@@ -136,6 +156,8 @@ class GravityView_Uninstall {
 		delete_transient( 'gravityview_edd-activate_valid' );
 		delete_transient( 'gravityview_edd-deactivate_valid' );
 		delete_transient( 'gravityview_dismissed_notices' );
+
+		delete_site_transient( 'gravityview_related_plugins' );
 	}
 }
 

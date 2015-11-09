@@ -1,0 +1,181 @@
+<?php
+/**
+ * Abstract class that makes it easy for plugins and themes to register no-conflict scripts and styles, as well as
+ * add post meta keys for GravityView to parse when checking for the existence of shortcodes in content.
+ *
+ * @file      abstract-gravityview-plugin-and-theme-hooks.php
+ * @package   GravityView
+ * @license   GPL2+
+ * @author    Katz Web Services, Inc.
+ * @link      http://gravityview.co
+ * @copyright Copyright 2015, Katz Web Services, Inc.
+ *
+ * @since 1.15.2
+ */
+
+/**
+ * Abstract class that makes it easy for plugins and themes to register no-conflict scripts and styles, as well as
+ * add post meta keys for GravityView to parse when checking for the existence of shortcodes in content.
+ *
+ * @since 1.15.2
+ */
+abstract class GravityView_Plugin_and_Theme_Hooks {
+
+	/**
+	 * @type string Optional. Class that should be exist in a plugin or theme. Used to check whether plugin is active.
+	 * @since 1.15.2
+	 */
+	protected $class_name = false;
+
+	/**
+	 * @type string Optional. Function that should be exist in a plugin or theme. Used to check whether plugin is active.
+	 * @since 1.15.2
+	 */
+	protected $function_name = false;
+
+	/**
+	 * @type string Optional. Constant that should be defined by plugin or theme. Used to check whether plugin is active.
+	 * @since 1.15.2
+	 */
+	protected $constant_name = false;
+
+	/**
+	 * Define the keys to be parsed by the `gravityview/data/parse/meta_keys` hook
+	 * @see GravityView_View_Data::parse_post_meta
+	 * @since 1.15.2
+	 * @type array
+	 */
+	protected $content_meta_keys = array();
+
+	/**
+	 * Define script handles used by the theme or plugin to be parsed by the `gravityview/data/parse/meta_keys` hook
+	 * @see GravityView_Admin::remove_conflicts
+	 * @since 1.15.2
+	 * @type array
+	 */
+	protected $script_handles = array();
+
+	/**
+	 * Define style handles used by the theme or plugin to be parsed by the `gravityview/data/parse/meta_keys` hook
+	 * @see GravityView_Admin::remove_conflicts
+	 * @since 1.15.2
+	 * @type array
+	 */
+	protected $style_handles = array();
+
+	/**
+	 * Define features in the admin editor used by the theme or plugin to be used when registering the GravityView post type
+	 * @see GravityView_Post_Types::init_post_types
+	 * @since 1.15.2
+	 * @type array
+	 */
+	protected $post_type_support = array();
+
+	/**
+	 * GravityView_Theme_Support constructor.
+	 * @return void
+	 */
+	public function __construct() {
+		$this->maybe_add_hooks();
+	}
+
+	/**
+	 * Check whether plugin or theme exists. If so, add hooks.
+	 * This is to reduce load time, since `apply_filters()` isn't free.
+	 * If the class name or function name or constant exists for a plugin or theme, add hooks
+	 * If the class/function/definition aren't speicifed add the hooks
+	 *
+	 * @since 1.15.2
+	 * @return void
+	 */
+	private function maybe_add_hooks() {
+		$class_exists = ! $this->class_name || ( $this->class_name && class_exists( $this->class_name ) );
+		$function_exists = ! $this->function_name || ( $this->function_name && function_exists( $this->function_name ) );
+		$constant_defined = ! $this->constant_name || ( $this->constant_name && defined( $this->constant_name ) );
+
+		if( $class_exists || $function_exists || $constant_defined ) {
+			$this->add_hooks();
+		}
+	}
+
+	/**
+	 * Add filters for meta key and script/style handles, if defined.
+	 * @since 1.15.2
+	 * @return void
+	 */
+	protected function add_hooks() {
+		if( $this->content_meta_keys ) {
+			add_filter( 'gravityview/data/parse/meta_keys', array( $this, 'merge_content_meta_keys' ), 10, 2 );
+		}
+
+		if( $this->script_handles ) {
+			add_filter( 'gravityview_noconflict_scripts', array( $this, 'merge_noconflict_scripts' ) );
+		}
+
+		if( $this->style_handles ) {
+			add_filter( 'gravityview_noconflict_styles', array( $this, 'merge_noconflict_styles' ) );
+		}
+
+		if( $this->post_type_support ) {
+			add_filter( 'gravityview_post_type_support', array( $this, 'merge_post_type_support' ), 10, 2 );
+		}
+	}
+
+	/**
+	 * Merge plugin or theme post type support definitions with existing support values
+	 *
+	 * @since 1.15.2
+	 *
+	 * @param array $supports Array of features associated with a functional area of the edit screen.
+	 * @param boolean $is_hierarchical Do Views support parent/child relationships? See `gravityview_is_hierarchical` filter.
+	 *
+	 * @return array Array of features associated with a functional area of the edit screen, merged with existing values
+	 */
+	public function merge_post_type_support( $supports = array(), $is_hierarchical = false ) {
+		$supports = array_merge( $this->post_type_support, $supports );
+		return $supports;
+	}
+
+	/**
+	 * Merge plugin or theme styles with existing no-conflict styles
+	 *
+	 * @since 1.15.2
+	 *
+	 * @param array $handles Array of style handles, as registered with WordPress
+	 *
+	 * @return array Handles, merged with existing styles
+	 */
+	public function merge_noconflict_styles( $handles ) {
+		$handles = array_merge( $this->style_handles, $handles );
+		return $handles;
+	}
+
+	/**
+	 * Merge plugin or theme scripts with existing no-conflict scripts
+	 *
+	 * @since 1.15.2
+	 *
+	 * @param array $handles Array of script handles, as registered with WordPress
+	 *
+	 * @return array Handles, merged with existing scripts
+	 */
+	public function merge_noconflict_scripts( $handles ) {
+		$handles = array_merge( $this->script_handles, $handles );
+		return $handles;
+	}
+
+	/**
+	 * Merge plugin or theme meta keys that store shortcode data with existing keys to check
+	 *
+	 * @since 1.15.2
+	 *
+	 * @param array $handles Array of meta keys to check for existence of shortcodes
+	 * @param int $post_id The ID being checked by GravityView
+	 *
+	 * @return array Meta key array, merged with existing meta keys
+	 */
+	public function merge_content_meta_keys( $meta_keys = array(), $post_id = 0 ) {
+		return array_merge( $this->content_meta_keys, $meta_keys );
+	}
+
+}

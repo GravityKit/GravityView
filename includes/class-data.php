@@ -62,22 +62,28 @@ class GravityView_View_Data {
 				$passed_post = get_post( $passed_post );
 			}
 
-			// Convert WP_Posts into array
+			// Convert WP_Posts into WP_Posts[] array
 			if( $passed_post instanceof WP_Post ) {
-				$passed_post = array( $passed_post);
+				$passed_post = array( $passed_post );
 			}
 
 			if( is_array( $passed_post ) ) {
 
 				foreach ( $passed_post as &$post) {
 					if( ( get_post_type( $post ) === 'gravityview' ) ) {
-
 						$ids[] = $post->ID;
-
 					} else{
+						// Parse the Post Content
 						$id = $this->parse_post_content( $post->post_content );
+						if( $id ) {
+							$ids = array_merge( $ids, (array) $id );
+						}
 
-						$ids = array_merge( $ids, (array)$id );
+						// Parse the Post Meta
+						$id = $this->parse_post_meta( $post->ID );
+						if( $id ) {
+							$ids = array_merge( $ids, (array) $id );
+						}
 					}
 
 				}
@@ -87,14 +93,14 @@ class GravityView_View_Data {
 				if ( is_string( $passed_post ) ) {
 
 					$id = $this->parse_post_content( $passed_post );
-					$ids = array_merge( $ids, (array)$id );
+					if( $id ) {
+						$ids = array_merge( $ids, (array) $id );
+					}
 
 				} else {
 					$id = $this->get_id_from_atts( $passed_post );
 					$ids[] = intval( $id );
 				}
-
-
 			}
 		}
 
@@ -289,7 +295,7 @@ class GravityView_View_Data {
 
 
 	/**
-	 * Check wether a certain field should not be presented based on its own properties.
+	 * Check whether a certain field should not be presented based on its own properties.
 	 *
 	 * @access public
 	 * @param array $properties
@@ -298,7 +304,7 @@ class GravityView_View_Data {
 	private function hide_field_check_conditions( $properties ) {
 
 		// logged-in visibility
-		if( ! empty( $properties['only_loggedin'] ) && ! current_user_can( $properties['only_loggedin_cap'] ) ) {
+		if( ! empty( $properties['only_loggedin'] ) && ! GVCommon::has_cap( $properties['only_loggedin_cap'] ) ) {
 			return true;
 		}
 
@@ -333,7 +339,7 @@ class GravityView_View_Data {
 	 * @uses shortcode_parse_atts() Parse each GV shortcode
 	 * @uses  gravityview_get_template_settings() Get the settings for the View ID
 	 * @param  string $content $post->post_content content
-	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
+	 * @return int|null|array If a single View is found, the ID of the View. If there are multiple views in the content, array of IDs parsed. If not found, NULL
 	 */
 	function parse_post_content( $content ) {
 
@@ -341,8 +347,8 @@ class GravityView_View_Data {
 		 * @hack This is so that the shortcode is registered for the oEmbed preview in the Admin
 		 * @since 1.6
 		 */
-		if( ! shortcode_exists('gravityview') ) {
-			add_shortcode( 'gravityview', array( GravityView_frontend::getInstance(), 'shortcode' ) );
+		if( ! shortcode_exists('gravityview') && class_exists( 'GravityView_Shortcode' ) ) {
+			new GravityView_Shortcode;
 		}
 
 		$shortcodes = gravityview_has_shortcode_r( $content, 'gravityview' );
@@ -379,6 +385,50 @@ class GravityView_View_Data {
 		// If it's just one ID, return that.
 		// Otherwise, return array of IDs
 		return ( sizeof( $ids ) === 1 ) ? $ids[0] : $ids;
+
+	}
+
+	/**
+	 * Parse specific custom fields (Post Meta) to determine if there is a GV shortcode to allow for enqueuing necessary files in the head.
+	 * @since 1.15.1
+	 * @uses \GravityView_View_Data::parse_post_content
+	 * @param int $post_id WP_Post ID
+	 * @return int|null|array If a single View is found, the ID of the View. If there are multiple views in the content, array of IDs parsed. If not found, or meta not parsed, NULL
+	 */
+	private function parse_post_meta( $post_id ) {
+
+		/**
+		 * @filter `gravityview/data/parse/meta_keys` Define meta keys to parse to check for GravityView shortcode content
+		 * This is useful when using themes that store content that may contain shortcodes in custom post meta
+		 * @param[in,out] array $meta_keys Array of key values to check. If empty, do not check. Default: empty array
+		 * @param[in] int $post_id ID of the post being checked
+		 */
+		$meta_keys = (array)apply_filters( 'gravityview/data/parse/meta_keys', array(), $post_id );
+
+		if( empty( $meta_keys ) ) {
+			return NULL;
+		}
+
+		do_action( 'gravityview_log_debug', 'GravityView_View_Data[parse_post_meta] Search for GravityView shortcodes on the following custom fields keys:', $meta_keys );
+
+		$meta_content = '';
+
+		foreach( $meta_keys as $key ) {
+			$meta = get_post_meta( $post_id, $key , true );
+			if( ! is_string( $meta ) ) {
+				continue;
+			}
+			$meta_content .= $meta . ' ';
+		}
+
+		if( empty( $meta_content ) ) {
+			do_action('gravityview_log_error', sprintf( 'GravityView_View_Data[parse_post_meta] Returning; Empty custom fields for Post #%s (Custom fields keys:)', $post_id ), $meta_keys );
+			return NULL;
+		}
+
+		do_action( 'gravityview_log_debug', 'GravityView_View_Data[parse_post_meta] Combined content retrieved from custom fields:', $meta_content );
+
+		return $this->parse_post_content( $meta_content );
 
 	}
 
@@ -645,6 +695,15 @@ class GravityView_View_Data {
 				'group'	=> 'default',
 				'desc'	=> __('The text of the link that returns to the multiple entries view.', 'gravityview'),
 				'type'	=> 'text',
+				'value'	=> '',
+				'show_in_shortcode' => false,
+				'full_width' => true,
+			),
+			'embed_only' => array(
+				'label'	=> __('Prevent Direct Access', 'gravityview'),
+				'group'	=> 'default',
+				'desc'	=> __('Only allow access to this View when embedded using the shortcode.', 'gravityview'),
+				'type'	=> 'checkbox',
 				'value'	=> '',
 				'show_in_shortcode' => false,
 				'full_width' => true,

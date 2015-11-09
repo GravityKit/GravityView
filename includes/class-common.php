@@ -42,6 +42,23 @@ class GVCommon {
 	}
 
 	/**
+	 * Alias of GravityView_Roles_Capabilities::has_cap()
+	 *
+	 * @since 1.15
+	 *
+	 * @see GravityView_Roles_Capabilities::has_cap()
+	 *
+	 * @param string|array $caps Single capability or array of capabilities
+	 * @param int $object_id (optional) Parameter can be used to check for capabilities against a specific object, such as a post or user
+	 * @param int|null $user_id (optional) Check the capabilities for a user who is not necessarily the currently logged-in user
+	 *
+	 * @return bool True: user has at least one passed capability; False: user does not have any defined capabilities
+	 */
+	public static function has_cap( $caps = '', $object_id = null, $user_id = null ) {
+		return GravityView_Roles_Capabilities::has_cap( $caps, $object_id, $user_id );
+	}
+
+	/**
 	 * Return a Gravity Forms field array, whether using GF 1.9 or not
 	 *
 	 * @since 1.7
@@ -834,7 +851,7 @@ class GVCommon {
 			return true;
 		}
 
-		return self::has_shortcode_r( $post->post_content, 'gravityview' );
+		return self::has_shortcode_r( $post->post_content, 'gravityview' ) ? true : false;
 
 	}
 
@@ -1183,12 +1200,14 @@ class GVCommon {
 	 * Generate an HTML anchor tag with a list of supported attributes
 	 *
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a Supported attributes defined here
+	 * @uses esc_url_raw() to sanitize $href
+	 * @uses esc_attr() to sanitize $atts
 	 *
 	 * @since 1.6
 	 *
-	 * @param string $href URL of the link.
+	 * @param string $href URL of the link. Sanitized using `esc_url_raw()`
 	 * @param string $anchor_text The text or HTML inside the anchor. This is not sanitized in the function.
-	 * @param array $atts Attributes to be added to the anchor tag
+	 * @param array $atts Attributes to be added to the anchor tag. They are sanitized using `esc_attr()`
 	 *
 	 * @return string HTML output of anchor link. If empty $href, returns NULL
 	 */

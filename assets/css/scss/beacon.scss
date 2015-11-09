@@ -1,0 +1,24 @@
+#hs-beacon {
+
+  iframe {
+
+    z-index: 9991!important; // Above #adminmenuwrap, which is 9990
+
+    // The Button iframe
+    &[data-reactid-hs=".0.0"] {
+      right: -5px!important;
+      bottom: -5px!important;
+
+      .rtl & {
+        right: auto!important;
+        left: -5px!important;
+      }
+    }
+    // End button iframe
+
+    // The Button content iframe
+    &[data-reactid-hs=".0.1"] {}
+    // End Button content iframe
+
+  }
+}

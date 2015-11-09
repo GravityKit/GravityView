@@ -34,19 +34,27 @@ class GravityView_Post_Types {
 	public static function init_post_types() {
 
 		/**
-		 * Make GravityView Views hierarchical by returning TRUE
-		 *
+		 * @filter `gravityview_is_hierarchical` Make GravityView Views hierarchical by returning TRUE
 		 * This will allow for Views to be nested with Parents and also allows for menu order to be set in the Page Attributes metabox
-		 *
 		 * @since 1.13
+		 * @param boolean $is_hierarchical Default: false
 		 */
 		$is_hierarchical = (bool)apply_filters( 'gravityview_is_hierarchical', false );
 
-		$supports = array( 'title', 'genesis-layouts', 'revisions' );
+		$supports = array( 'title', 'revisions' );
 
 		if( $is_hierarchical ) {
 			$supports[] = 'page-attributes';
 		}
+
+		/**
+		 * @filter  `gravityview_post_type_supports` Modify post type support values for `gravityview` post type
+		 * @see add_post_type_support()
+		 * @since 1.15.2
+		 * @param array $supports Array of features associated with a functional area of the edit screen. Default: 'title', 'revisions'. If $is_hierarchical, also 'page-attributes'
+		 * @param[in] boolean $is_hierarchical Do Views support parent/child relationships? See `gravityview_is_hierarchical` filter.
+		 */
+		$supports = apply_filters( 'gravityview_post_type_support', $supports, $is_hierarchical );
 
 		//Register Custom Post Type - gravityview
 		$labels = array(
@@ -79,13 +87,21 @@ class GravityView_Post_Types {
 			'menu_icon'           => '',
 			'can_export'          => true,
 			/**
-			 * Enable Custom Post Type archive
+			 * @filter `gravityview_has_archive` Enable Custom Post Type archive?
 			 * @since 1.7.3
-			 * @param boolean False: don't have frontend archive; True: yes, have archive
+			 * @param boolean False: don't have frontend archive; True: yes, have archive. Default: false
 			 */
 			'has_archive'         => apply_filters( 'gravityview_has_archive', false ),
 			'exclude_from_search' => true,
-			'publicly_queryable'  => GravityView_Compatibility::is_valid(),
+
+			/**
+			 * @filter `gravityview_publicly_queryable` Should Views be visible using `?post_type=gravityview`?
+			 * @see https://codex.wordpress.org/Function_Reference/register_post_type#publicly_queryable
+			 * @since 1.15.2
+			 * @param boolean False: don't allow; True: yes, allow. Default: Whether the current user has `read_private_gravityviews` capability
+			 */
+			'publicly_queryable'  => ( GravityView_Compatibility::is_valid() && apply_filters( 'gravityview_publicly_queryable', GVCommon::has_cap( 'read_private_gravityviews' ) ) ),
+
 			'rewrite'             => array(
 				/**
 				 * @filter `gravityview_slug` Modify the url part for a View. [Read the doc](http://docs.gravityview.co/article/62-changing-the-view-slug)
@@ -93,7 +109,7 @@ class GravityView_Post_Types {
 				 */
 				'slug' => apply_filters( 'gravityview_slug', 'view' )
 			),
-			'capability_type'     => 'page',
+			'capability_type'     => 'gravityview',
 			'map_meta_cap'        => true,
 		);
 
@@ -148,9 +164,13 @@ class GravityView_Post_Types {
 		// Floaty the astronaut
 		$image = GravityView_Admin::get_floaty();
 
-		$not_found =  sprintf( esc_attr__("%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n\nIf you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page.", 'gravityview' ), '<h3>', '<a href="'.admin_url('post-new.php?post_type=gravityview').'">', '</a>', '</h3>', '<a href="'.admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ).'">', '</a>' );
+		if( GVCommon::has_cap( 'edit_gravityviews' ) ) {
+			$output = sprintf( esc_attr__( "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n\nIf you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page.", 'gravityview' ), '<h3>', '<a href="' . admin_url( 'post-new.php?post_type=gravityview' ) . '">', '</a>', '</h3>', '<a href="' . admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) . '">', '</a>' );
+		} else {
+			$output = esc_attr__( 'There are no active Views', 'gravityview' );
+		}
 
-		return $image.wpautop( $not_found );
+		return $image . wpautop( $output );
 	}
 
 

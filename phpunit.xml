@@ -8,6 +8,9 @@
 	convertWarningsToExceptions="true"
 	verbose="true"
 	>
+	<php>
+		<const name="DOING_GRAVITYVIEW_TESTS" value="1" />
+	</php>
 	<testsuites>
 		<testsuite name="GravityView Test Suite">
 			<directory suffix=".php">./tests/unit-tests</directory>

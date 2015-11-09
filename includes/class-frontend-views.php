@@ -20,7 +20,7 @@ class GravityView_frontend {
 	 * @since 1.7.4.1
 	 * @var array
 	 */
-	private static $search_parameters = array( 'gv_search', 'gv_start', 'gv_end', 'gv_id', 'filter_*' );
+	private static $search_parameters = array( 'gv_search', 'gv_start', 'gv_end', 'gv_id', 'gv_by', 'filter_*' );
 
 	/**
 	 * Is the currently viewed post a `gravityview` post type?
@@ -554,6 +554,14 @@ class GravityView_frontend {
 			return null;
 		}
 
+		/**
+		 * Don't render View if user isn't allowed to see it
+		 * @since 1.15
+		 */
+		if( is_user_logged_in() && false === GVCommon::has_cap( 'read_gravityview', $view_id ) ) {
+			return null;
+		}
+
 		ob_start();
 
 		/**
@@ -878,7 +886,15 @@ class GravityView_frontend {
 	 *
 	 * @uses  gravityview_get_entries()
 	 * @access public
-	 * @param mixed $args
+	 * @param array $args\n
+	 *   - $id - View id
+	 *   - $page_size - Page
+	 *   - $sort_field - form field id to sort
+	 *   - $sort_direction - ASC / DESC
+	 *   - $start_date - Ymd
+	 *   - $end_date - Ymd
+	 *   - $class - assign a html class to the view
+	 *   - $offset (optional) - This is the start point in the current data set (0 index based).
 	 * @param int $form_id Gravity Forms Form ID
 	 * @return array Associative array with `count`, `entries`, and `paging` keys. `count` has the total entries count, `entries` is an array with Gravity Forms full entry data, `paging` is an array with `offset` and `page_size` keys
 	 */
@@ -925,13 +941,28 @@ class GravityView_frontend {
 		);
 
 		/**
-		 * Filter get entries criteria
-		 *
-		 * Passes and returns array with `search_criteria`, `sorting` and `paging` keys.
-		 *
-		 * @var array
+		 * @filter `gravityview_get_entries` Filter get entries criteria
+		 * @param array $parameters Array with `search_criteria`, `sorting` and `paging` keys.
+		 * @param array $args View configuration args. {
+		 *      @type int $id View id
+		 *      @type int $page_size Number of entries to show per page
+		 *      @type string $sort_field Form field id to sort
+		 *      @type string $sort_direction Sorting direction ('ASC' or 'DESC')
+		 *      @type string $start_date - Ymd
+		 *      @type string $end_date - Ymd
+		 *      @type string $class - assign a html class to the view
+		 *      @type string $offset (optional) - This is the start point in the current data set (0 index based).
+		 * }
+		 * @param int $form_id ID of Gravity Forms form
 		 */
-		$parameters = apply_filters( 'gravityview_get_entries', apply_filters( 'gravityview_get_entries_'.$args['id'], $parameters, $args, $form_id ), $args, $form_id );
+		$parameters = apply_filters( 'gravityview_get_entries', $parameters, $args, $form_id );
+
+		/**
+		 * @filter `gravityview_get_entries_{View ID}` Filter get entries criteria
+		 * @param array $parameters Array with `search_criteria`, `sorting` and `paging` keys.
+		 * @param array $args View configuration args.
+		 */
+		$parameters = apply_filters( 'gravityview_get_entries_'.$args['id'], $parameters, $args, $form_id );
 
 		do_action( 'gravityview_log_debug', '[get_view_entries] $parameters passed to gravityview_get_entries(): ', $parameters );
 
@@ -942,7 +973,7 @@ class GravityView_frontend {
 		do_action( 'gravityview_log_debug', sprintf( '[get_view_entries] Get Entries. Found: %s entries', $count ), $entries );
 
 		/**
-		 * Filter the entries output to the View
+		 * @filter `gravityview_view_entries` Filter the entries output to the View
 		 * @deprecated since 1.5.2
 		 * @param array $args View settings associative array
 		 * @var array
@@ -950,11 +981,9 @@ class GravityView_frontend {
 		$entries = apply_filters( 'gravityview_view_entries', $entries, $args );
 
 		/**
-		 * Filter the entries output to the View
-		 *
-		 * @param array  associative array containing count, entries & paging
+		 * @filter `gravityview/view/entries` Filter the entries output to the View
+		 * @param array $criteria associative array containing count, entries & paging
 		 * @param array $args View settings associative array
-		 *
 		 * @since 1.5.2
 		 */
 		return apply_filters( 'gravityview/view/entries', compact( 'count', 'entries', 'paging' ), $args );
@@ -1131,13 +1160,15 @@ class GravityView_frontend {
 
 			$views = $this->getGvOutputData()->get_views();
 
-			$js_localization = array(
-				'cookiepath' => COOKIEPATH,
-				'clear' => _x( 'Clear', 'Clear all data from the form', 'gravityview' ),
-				'reset' => _x( 'Reset', 'Reset the search form to the state that existed on page load', 'gravityview' ),
-			);
-
 			foreach ( $views as $view_id => $data ) {
+
+				/**
+				 * Don't enqueue the scripts or styles if it's not going to be displayed.
+				 * @since 1.15
+				 */
+				if( is_user_logged_in() && false === GVCommon::has_cap( 'read_gravityview', $view_id ) ) {
+					continue;
+				}
 
 				// By default, no thickbox
 				$js_dependencies = array( 'jquery', 'gravityview-jquery-cookie' );
@@ -1159,6 +1190,15 @@ class GravityView_frontend {
 					$css_dependencies[] = apply_filters( 'gravity_view_lightbox_style', 'thickbox' );
 				}
 
+				/**
+				 * If the form has checkbox fields, enqueue dashicons
+				 * @see https://github.com/katzwebservices/GravityView/issues/536
+				 * @since 1.15
+				 */
+				if( gravityview_view_has_single_checkbox_or_radio( $data['form'], $data['fields'] ) ) {
+					$css_dependencies[] = 'dashicons';
+				}
+
 				wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'includes/lib/jquery-cookie/jquery_cookie.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GravityView_Plugin::version, true );
 
 				$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
@@ -1166,13 +1206,6 @@ class GravityView_frontend {
 				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ) , GravityView_Plugin::version, true );
 
 				wp_enqueue_script( 'gravityview-fe-view' );
-
-				/**
-				 * @filter `gravityview_js_localization` Modify the array passed to wp_localize_script()
-				 * @param array $js_localization The data padded to the Javascript file
-				 * @param array $data View data array with View settings
-				 */
-				$js_localization = apply_filters( 'gravityview_js_localization', $js_localization, $data );
 
 				if ( ! empty( $data['atts']['sort_columns'] ) ) {
 					wp_enqueue_style( 'gravityview_font', plugins_url( 'assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
@@ -1185,6 +1218,20 @@ class GravityView_frontend {
 			}
 
 			if ( 'wp_print_footer_scripts' === current_filter() ) {
+
+				$js_localization = array(
+					'cookiepath' => COOKIEPATH,
+					'clear' => _x( 'Clear', 'Clear all data from the form', 'gravityview' ),
+					'reset' => _x( 'Reset', 'Reset the search form to the state that existed on page load', 'gravityview' ),
+				);
+
+				/**
+				 * @filter `gravityview_js_localization` Modify the array passed to wp_localize_script()
+				 * @param array $js_localization The data padded to the Javascript file
+				 * @param array $views Array of View data arrays with View settings
+				 */
+				$js_localization = apply_filters( 'gravityview_js_localization', $js_localization, $views );
+
 				wp_localize_script( 'gravityview-fe-view', 'gvGlobals', $js_localization );
 			}
 		}

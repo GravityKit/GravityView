@@ -20,9 +20,66 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.14.4-beta on September 30 =
-* Fixed: Only process "Update" Gravity Forms User Registration Addon feeds
+* Tweak: Show available plugin updates, even when license is expired
+* Fixed: Select, multi-select, radio, checkbox, and post category field types should use exact match search
+* Fixed: Date Range search field label not working
+* New: `gravityview/entry_notes/add_note` filter to modify GravityView note properties before being added
+* New: `gravityview_post_type_supports` filter to modify `gravityview` post type support values
+* New: `gravityview_publicly_queryable` filter to modify whether Views be accessible using `example.com/?post_type=gravityview`. Default: Whether the current user has `read_private_gravityviews` capability (Editor or Administrator by default)
+
+= 1.15.1 on October 27 =
+* New: Use `{get}` Merge Tags as `[gravityview]` attributes
+* Fixed: Edit Entry and Delete Entry links weren't working in DataTables
+* Fixed: Some Gravity Forms Merge Tags weren't working, like `{embed_post:post_title}`
+* Fixed: Display Checkbox and Radio field labels in the Search Bar
+	* New: If you prefer how the searches looked before the labels were visible, you can set the "Label" for the search field to a blank space. That will hide the label.
+	* Removed extra whitespace from search field `<label>`s
+* Fixed: Update the required Gravity Forms version to 1.9.9.10
+* Fixed: Section fields should not be affected by "Hide empty fields" View setting
+* Fixed: Add ability to check post custom fields for `[gravityview]` shortcode. This fixes issues with some themes and page builder plugins.
+* Fixed: Return type wasn't boolean for `has_gravityview_shortcode()` function
+* Tweak: Improve notifications logic
+	* Only show notices to users with appropriate capabilities
+	* Allow dismissing all notices
+	* Clear dismissed notices when activating the plugin
+	* Fixed showing notice to enter license key
+* Tweak: Added previously-supported `{created_by:roles}` Merge Tag to available tags dropdown
+* Tweak: Allow overriding `gravityview_sanitize_html_class()` function
+* Tweak: Make `GravityView_Merge_Tags::replace_get_variables()` method public
+* Tweak: Rename `GravityView_Merge_Tags::_gform_replace_merge_tags()` method `GravityView_Merge_Tags::replace_gv_merge_tags()` for clarity
+
+= 1.15 on October 15 =
+* Added: `{get}` Merge Tag that allows passing data via URL to be safely displayed in Merge Tags. [Learn how this works](http://docs.gravityview.co/article/314-the-get-merge-tag).
+	- Example: When adding `?first-name=Floaty` to a URL, the Custom Content `My name is {get:first-name}` would be replaced with `My name is Floaty`
+* Added: GravityView Capabilities: restrict access to GravityView functionality to certain users and roles. [Learn more](http://docs.gravityview.co/article/311-gravityview-capabilities).
+	- Fixed: Users without the ability to create Gravity Forms forms are able to create a new form via "Start Fresh"
+	- Only add the Approve Entries column if user has the `gravityview_moderate_entries` capability (defaults to Editor role or higher)
+	- Fixed: Contributors now have access to the GravityView "Getting Started" screen
+* Added: `[gv_entry_link]` shortcode to link directly to an entry. [Learn more](http://docs.gravityview.co/article/287-edit-entry-and-delete-entry-shortcodes).
+	- Existing `[gv_delete_entry_link]` and `[gv_edit_entry_link]` shortcodes will continue to work
+* Added: Ability to filter View by form in the Admin. [Learn more](http://docs.gravityview.co/article/313-the-views-list-on-the-dashboard).
+* Added: Option to delete GravityView data when the plugin is uninstalled, then deleted. [Learn more](http://docs.gravityview.co/article/312-how-to-delete-the-gravityview-data-when-the-plugin-is-uninstalled).
+* Added: New support "Beacon" to easily search documentation and ask support questions
+* Added: Clear search button to the Search Widget (WP widget)
+* Fixed: `number_format()` PHP warning on blank Number fields
+* Fixed: `{created_by}` merge tags weren't being escaped using `esc_html()`
+* Fixed: Checkmark icons weren't always available when displaying checkbox input field
+* Fixed: When "Shorten Link Display" was enabled for Website fields, "Link Text" wasn't respected
+* Fixed: Only process "Create" Gravity Forms User Registration Addon feeds, by default the user role and the user display name format persist
+* Fixed: Error with List field  `Call to undefined method GF_Field::get_input_type()`
+* Fixed: BuddyPress/bbPress `bbp_setup_current_user()` warning
+* Fixed: `gravityview_is_admin_page()` wasn't recognizing the Settings page as a GravityView admin page
+* Fixed: Custom Content Widgets didn't replace Merge Tags
 * Fixed: PHP Warnings
+* Fixed: WordPress Multisite fatal error when Gravity Forms not Network Activated
+* Tweak: Don't show Data Source column in Views screen to users who don't have permissions to see any of the data anyway
+* Tweak: Entry notes are now created using `GravityView_Entry_Notes` class
+* Tweak: Improved automated code testing
+* Tweak: Added `gravityview/support_port/display` filter to enable/disable displaying Support Port
+* Tweak: Added `gravityview/support_port/show_profile_setting` filter to disable adding the Support Port setting on User Profile pages
+* Tweak: Removed `gravityview/admin/display_live_chat` filter
+* Tweak: Removed `gravityview_settings_capability` filter
+* Tweak: Escape form name in dropdowns
 
 = 1.14.2 & 1.14.3 on September 17 =
 * Fixed: Issue affecting Gravity Forms User Registration Addon. Passwords were being reset when an user edited their own entry.

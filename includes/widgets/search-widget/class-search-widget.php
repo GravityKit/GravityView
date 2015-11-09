@@ -481,6 +481,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		switch ( $form_field['type'] ) {
 
+			case 'select':
+			case 'radio':
+				$filter['operator'] = 'is';
+				break;
+
 			case 'post_category':
 
 				if ( ! is_array( $value ) ) {
@@ -492,7 +497,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 				foreach ( $value as $val ) {
 					$cat = get_term( $val, 'category' );
-					$filter[] = array( 'key' => $field_id, 'value' => esc_attr( $cat->name ) . ':' . $val );
+					$filter[] = array(
+						'key' => $field_id,
+						'value' => esc_attr( $cat->name ) . ':' . $val,
+						'operator' => 'is',
+					);
 				}
 
 				break;
@@ -518,6 +527,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 					foreach ( $form_field['inputs'] as $k => $input ) {
 						if ( $input['id'] == $field_id ) {
 							$filter['value'] = $form_field['choices'][ $k ]['value'];
+							$filter['operator'] = 'is';
 							break;
 						}
 					}
@@ -527,7 +537,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 					$filter = array();
 
 					foreach ( $value as $val ) {
-						$filter[] = array( 'key' => $field_id, 'value' => $val );
+						$filter[] = array(
+								'key'   => $field_id,
+								'value' => $val,
+								'operator' => 'is',
+						);
 					}
 				}
 
@@ -768,7 +782,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$search_class = apply_filters( 'gravityview_search_class', $search_class );
 
 		// Is there an active search being performed? Used by fe-views.js
-		$search_class .= GravityView_frontend::getInstance()->is_search ? ' gv-is-search' : '';
+		$search_class .= GravityView_frontend::getInstance()->isSearch() ? ' gv-is-search' : '';
 
 		return gravityview_sanitize_html_class( $search_class );
 	}

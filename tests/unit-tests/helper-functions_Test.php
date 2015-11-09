@@ -1,9 +1,117 @@
 <?php
 
-class GravityView_Helper_Functions_Test extends PHPUnit_Framework_TestCase {
+defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
+
+/**
+ * @group helperfunctions
+ */
+class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 
 	/**
-	 * @group helperfunctions
+	 * @since 1.15.1
+	 * @covers ::gv_empty()
+	 */
+	public function test_gv_empty() {
+
+		$this->assertTrue( gv_empty( array() ) );
+		$this->assertTrue( gv_empty( false ) );
+		$this->assertTrue( gv_empty( null ) );
+		$this->assertTrue( gv_empty( new stdClass() ) );
+		$this->assertTrue( gv_empty( '' ) );
+		$this->assertTrue( gv_empty( $not_defined ) );
+
+		// Test $zero_is_empty
+		$this->assertTrue( gv_empty( 0 ) );
+		$this->assertTrue( gv_empty( '0' ) );
+		$this->assertTrue( gv_empty( floatval( 0 ) ) );
+		$this->assertFalse( gv_empty( '0.0' ) );
+
+		$this->assertFalse( gv_empty( 0, false ) );
+		$this->assertFalse( gv_empty( '0', false ) );
+		$this->assertFalse( gv_empty( floatval( 0 ), false ) );
+		$this->assertFalse( gv_empty( '0.0', false ) );
+
+		// Test $allow_string_booleans
+		$this->assertTrue( gv_empty( 'false' ) );
+		$this->assertTrue( gv_empty( 'no' ) );
+		$this->assertFalse( gv_empty( 'false', true, false ) );
+		$this->assertFalse( gv_empty( 'no', true, false ) );
+		$this->assertFalse( gv_empty( 'true', true, false ) );
+		$this->assertFalse( gv_empty( 'yes', true, false ) );
+
+	}
+
+	/**
+	 * @covers ::gravityview_strip_whitespace()
+	 */
+	public function test_gravityview_strip_whitespace() {
+
+		// Pure whitespace gets stripped
+		$this->assertEquals( '', gravityview_strip_whitespace( ' ' ) );
+		$this->assertEquals( '', gravityview_strip_whitespace( '  ' ) );
+		$this->assertEquals( '', gravityview_strip_whitespace( "\t" ) );
+		$this->assertEquals( '', gravityview_strip_whitespace( "\t\t" ) );
+		$this->assertEquals( '', gravityview_strip_whitespace( "\n" ) );
+		$this->assertEquals( '', gravityview_strip_whitespace( "\n\n" ) );
+		$this->assertEquals( '', gravityview_strip_whitespace( "\r" ) );
+		$this->assertEquals( '', gravityview_strip_whitespace( "\r\r" ) );
+		$this->assertEquals( '', gravityview_strip_whitespace( "\r\n\t " ) );
+
+		$this->assertEquals( 'Word', gravityview_strip_whitespace( "\nWord\n" ) );
+		$this->assertEquals( 'Word Word', gravityview_strip_whitespace( "Word\nWord\n" ) );
+		$this->assertEquals( 'Word Word Word', gravityview_strip_whitespace( "Word\nWord\nWord\n" ) );
+		$this->assertEquals( 'Word Word Word', gravityview_strip_whitespace( "Word  Word  Word  " ) );
+		$this->assertEquals( 'Word Word Word Word', gravityview_strip_whitespace( "Word\n\tWord\n\tWord\n\tWord" ) );
+	}
+
+	/**
+	 * @covers ::gravityview_is_not_empty_string
+	 */
+	public function test_gravityview_is_not_empty_string() {
+
+		$not_empty_strings = array(
+			array(),
+			true,
+			false,
+			null,
+			0,
+		    '0',
+			'asdsad',
+			' ',
+		);
+
+		foreach ( $not_empty_strings as $not_empty_string ) {
+			$this->assertTrue( gravityview_is_not_empty_string( $not_empty_string ) );
+		}
+
+		// The one true empty string
+		$this->assertFalse( gravityview_is_not_empty_string( '' ) );
+	}
+
+	/**
+	 * We only test gravityview_number_format() without a decimal defined; otherwise it's an alias for number_format_i18n()
+	 *
+	 * @see number_format_i18n()
+	 * @covers ::gravityview_number_format()
+	 */
+	public function test_gravityview_number_format() {
+
+		$numbers = array(
+			'0' => '1,000',
+			'1' => '1,000.0',
+			'2' => '1,000.00',
+			'7' => '1,000,000.0000000',
+			'17' => '1.00000000000000000',
+		);
+
+		foreach( $numbers as $expected_decimals => $number ) {
+			$this->assertEquals( number_format_i18n( $number, $expected_decimals ), gravityview_number_format( $number ) );
+		}
+
+	}
+
+	/**
+	 * @covers ::gravityview_sanitize_html_class()
 	 */
 	public function test_gravityview_sanitize_html_class() {
 
@@ -38,7 +146,8 @@ class GravityView_Helper_Functions_Test extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @group helperfunctions
+	 * @covers ::gravityview_format_link()
+	 * @covers :: _gravityview_strip_subdomain()
 	 */
 	public function test_gravityview_format_link_DEFAULT() {
 
@@ -132,7 +241,7 @@ class GravityView_Helper_Functions_Test extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @group helperfunctions
+	 * @covers ::gravityview_format_link()
 	 */
 	public function test_gravityview_format_link_WHEN_FILTER_ROOTONLY_FALSE() {
 
@@ -162,7 +271,7 @@ class GravityView_Helper_Functions_Test extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @group helperfunctions
+	 * @covers ::gravityview_format_link()
 	 */
 	public function test_gravityview_format_link_WHEN_FILTER_NOSUBDOMAIN_FALSE() {
 
@@ -209,7 +318,7 @@ class GravityView_Helper_Functions_Test extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @group helperfunctions
+	 * @covers ::gravityview_format_link()
 	 */
 	public function test_gravityview_format_link_WHEN_FILTER_NOQUERYSTRING_FALSE() {
 

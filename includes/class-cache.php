@@ -495,7 +495,7 @@ class GravityView_Cache {
 
 		$use_cache = true;
 
-		if ( current_user_can( 'edit_posts' ) ) {
+		if ( GVCommon::has_cap( 'edit_gravityviews' ) ) {
 
 			if ( isset( $_GET['cache'] ) || isset( $_GET['nocache'] ) ) {
 

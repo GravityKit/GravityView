@@ -16,7 +16,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.14.4-beta
+ * Version:          	1.15.1
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravityview
@@ -43,16 +43,14 @@ define( 'GRAVITYVIEW_FILE', __FILE__ );
  */
 define( 'GRAVITYVIEW_URL', plugin_dir_url( __FILE__ ) );
 
-/**
- * The absolute path to the plugin directory
- * @define "GRAVITYVIEW_DIR" "./"
- */
+
+/** @define "GRAVITYVIEW_DIR" "./" The absolute path to the plugin directory */
 define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
 
 /**
  * GravityView requires at least this version of Gravity Forms to function properly.
  */
-define( 'GV_MIN_GF_VERSION', '1.9' );
+define( 'GV_MIN_GF_VERSION', '1.9.9.10' );
 
 /**
  * GravityView requires at least this version of WordPress to function properly.
@@ -72,6 +70,7 @@ require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
 require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
 require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-compatibility.php' );
 require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-roles-capabilities.php' );
+require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-notices.php' );
 
 /** Register Post Types and Rewrite Rules */
 require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
@@ -90,7 +89,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.14.4-beta';
+	const version = '1.15.1';
 
 	private static $instance;
 
@@ -110,7 +109,6 @@ final class GravityView_Plugin {
 
 	private function __construct() {
 
-		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-notices.php' );
 
 		if( ! GravityView_Compatibility::is_valid() ) {
 			return;
@@ -138,6 +136,7 @@ final class GravityView_Plugin {
 
 		//boot REST API
 		add_action( 'rest_api_init', array( $this, 'boot_rest' ) );
+
 	}
 
 	/**
@@ -157,8 +156,8 @@ final class GravityView_Plugin {
 			include_once( $gv_field_filename );
 		}
 
-		// Load notes
 		include_once( GRAVITYVIEW_DIR .'includes/class-gravityview-entry-notes.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/load-plugin-and-theme-hooks.php' );
 
 		// Load Extensions
 		// @todo: Convert to a scan of the directory or a method where this all lives
@@ -185,7 +184,9 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-merge-tags.php'); /** @since 1.8.4 */
 		include_once( GRAVITYVIEW_DIR . 'includes/class-data.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-shortcode.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-entry-link-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gvlogic-shortcode.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/presets/register-default-templates.php' );
 
 	}
 
@@ -330,15 +331,6 @@ final class GravityView_Plugin {
 		 * Nice place to insert extensions' frontend stuff
 		 */
 		do_action( 'gravityview_include_frontend_actions' );
-	}
-
-	/**
-	 * Registers the default templates
-	 * @todo Move somehere logical
-	 * @return void
-	 */
-	function register_default_templates() {
-		include_once( GRAVITYVIEW_DIR .'includes/default-templates.php' );
 	}
 
 	/**
