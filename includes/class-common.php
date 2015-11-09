@@ -71,13 +71,15 @@ class GVCommon {
 	 * @since  1.5.4
 	 * @return array Array of Views as `WP_Post`. Empty array if none found.
 	 */
-	public static function get_all_views() {
+	public static function get_all_views( $args = array() ) {
 
-		$params = array(
+		$default_params = array(
 			'post_type' => 'gravityview',
 			'posts_per_page' => -1,
 			'post_status' => 'publish',
 		);
+
+		$params = wp_parse_args( $args, $default_params );
 
 		/**
 		 * @filter `gravityview/get_all_views/params` Modify the parameters sent to get all views.

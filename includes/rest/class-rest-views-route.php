@@ -44,7 +44,13 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 
 		$page = $request->get_param( 'page' );
 		$limit = $request->get_param( 'limit' );
-		$items = array(); //@todo GravityView internal
+		$offset = absint( $page * $limit );
+
+		// @todo GravityView internal
+		$items = GVCommon::get_all_views( array(
+			'numberposts' => $limit,
+			'offset' => $offset,
+		));
 
 		if( empty( $items ) ) {
 			return new WP_Error( 'gravityview-no-views', __( 'No views found.', 'gravityview' ) ); //@todo message
@@ -53,7 +59,6 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 		$data = array();
 		foreach( $items as $item ) {
 			$data[] = $this->prepare_item_for_response( $item, $request );
-
 		}
 
 		return new WP_REST_Response( $data, 200 );
@@ -70,7 +75,9 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_item( $request ) {
+
 		$url = $request->get_url_params();
+
 		$view_id = $url[ 'id' ];
 
 		$item = array(); //@todo GravityView internal
@@ -87,6 +94,34 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 	}
 
 	/**
+	 * Prepare the item for the REST response
+	 *
+	 *  @todo ZACK - Use this as genric prepare for response or remvoe from usage
+	 *
+	 * @since 1.14.4
+	 * @param mixed $item WordPress representation of the item.
+	 * @param WP_REST_Request $request Request object.
+	 * @return mixed
+	 */
+	public function prepare_view_for_response( $item, $request ) {
+		return array();
+	}
+
+	/**
+	 * Prepare the item for the REST response
+	 *
+	 *  @todo ZACK - Use this as genric prepare for response or remvoe from usage
+	 *
+	 * @since 1.14.4
+	 * @param mixed $item WordPress representation of the item.
+	 * @param WP_REST_Request $request Request object.
+	 * @return mixed
+	 */
+	public function prepare_entry_for_response( $item, $request ) {
+		return array();
+	}
+
+	/**
 	 * Get entries from a view
 	 *
 	 * Callback for /v1/views/{id}/entries/
@@ -98,11 +133,19 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 	public function get_sub_items( $request ) {
 
 		$url = $request->get_url_params();
-		$view_id = $url[ 'id' ];
+		$view_id = intval( $url[ 'id' ] );
 		$page = $request->get_param( 'page' );
 		$limit = $request->get_param( 'limit' );
+		$offset = intval( $page * $limit );
 
-		$items = array(); //@todo GravityView internal
+		$form_id = gravityview_get_form_id( $view_id );
+
+		$atts = array(
+			'page_size' => $page,
+			'offset' => $offset,
+		);
+
+		$items = GravityView_frontend::getInstance()->get_view_entries( $atts, $form_id );
 
 		if( empty( $items ) ) {
 			return new WP_Error( 'gravityview-no-views', __( 'No views found.', 'gravityview' ) ); //@todo message
@@ -111,7 +154,6 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 		$data = array();
 		foreach( $items as $item ) {
 			$data[] = $this->prepare_item_for_response( $item, $request );
-
 		}
 
 		return new WP_REST_Response( $data, 200 );
@@ -137,6 +179,7 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 
 		//return a response or error based on some conditional
 		if ( ! is_wp_error( $item ) ) {
+
 			$data = $this->prepare_item_for_response( $item, $request );
 
 			return new WP_REST_Response( $data, 200 );
