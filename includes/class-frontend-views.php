@@ -562,6 +562,25 @@ class GravityView_frontend {
 			return null;
 		}
 
+		if( $this->isGravityviewPostType() ) {
+
+			/**
+			 * @filter `gravityview_direct_access` Should Views be directly accessible, or only visible using the shortcode?
+			 * @see https://codex.wordpress.org/Function_Reference/register_post_type#public
+			 * @see GravityView_Post_Types::init_post_types
+			 * @since 1.15.2
+			 * @param[in,out] boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded via shortcode. Default: `true`
+			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
+			 */
+			$direct_access = apply_filters( 'gravityview_direct_access', true, $view_id );
+
+			$embed_only = ! empty( $atts['embed_only'] );
+
+			if( ! $direct_access || ( $embed_only && ! GVCommon::has_cap( 'read_private_gravityviews' ) ) ) {
+				return __( 'You are not allowed to view this content.', 'gravityview' );
+			}
+		}
+
 		ob_start();
 
 		/**
