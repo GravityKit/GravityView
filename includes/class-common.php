@@ -798,11 +798,11 @@ class GVCommon {
 	 * Retrieve the label of a given field id (for a specific form)
 	 *
 	 * @access public
-	 * @param mixed $form
-	 * @param mixed $field_id
+	 * @param array $form
+	 * @param string $field_id
 	 * @return string
 	 */
-	public static function get_field_label( $form, $field_id ) {
+	public static function get_field_label( $form = array(), $field_id = '' ) {
 
 		if ( empty( $form ) || empty( $field_id ) ) {
 			return '';
@@ -817,9 +817,13 @@ class GVCommon {
 	/**
 	 * Returns the field details array of a specific form given the field id
 	 *
+	 * Alias of GFFormsModel::get_field
+	 *
+	 * @uses GFFormsModel::get_field
+	 * @see GFFormsModel::get_field
 	 * @access public
-	 * @param mixed $form
-	 * @param mixed $field_id
+	 * @param array $form
+	 * @param string|int $field_id
 	 * @return array|null Array: Gravity Forms field array; NULL: Gravity Forms GFFormsModel does not exist
 	 */
 	public static function get_field( $form, $field_id ) {
@@ -909,12 +913,28 @@ class GVCommon {
 		return $views;
 	}
 
-	public static function get_meta_form_id( $post_id ) {
-		return get_post_meta( $post_id, '_gravityview_form_id', true );
+	/**
+	 * Get the Gravity Forms form ID connected to a View
+	 *
+	 * @param int $view_id The ID of the View to get the connected form of
+	 *
+	 * @return string ID of the connected Form, if exists. Empty string if not.
+	 */
+	public static function get_meta_form_id( $view_id ) {
+		return get_post_meta( $view_id, '_gravityview_form_id', true );
 	}
 
-	public static function get_meta_template_id( $post_id ) {
-		return get_post_meta( $post_id, '_gravityview_directory_template', true );
+	/**
+	 * Get the template ID (`list`, `table`, `datatables`, `map`) for a View
+	 *
+	 * @see GravityView_Template::template_id
+	 *
+	 * @param int $view_id The ID of the View to get the layout of
+	 *
+	 * @return string GravityView_Template::template_id value. Empty string if not.
+	 */
+	public static function get_meta_template_id( $view_id ) {
+		return get_post_meta( $view_id, '_gravityview_directory_template', true );
 	}
 
 
@@ -951,6 +971,7 @@ class GVCommon {
 	 * @return mixed|null          Setting value, or NULL if not set.
 	 */
 	public static function get_template_setting( $post_id, $key ) {
+
 		$settings = self::get_template_settings( $post_id );
 
 		if ( isset( $settings[ $key ] ) ) {
@@ -1102,6 +1123,7 @@ class GVCommon {
 
 		/**
 		 * @filter `gravityview/common/numeric_types` What types of fields are numeric?
+		 * @since 1.5.2
 		 * @param array $numeric_types Fields that are numeric. Default: `[ number, time ]`
 		 */
 		$numeric_types = apply_filters( 'gravityview/common/numeric_types', array( 'number', 'time' ) );
@@ -1341,7 +1363,7 @@ class GVCommon {
      * @return string
      */
     public static function generate_notice( $notice, $class = '' ) {
-        return '<div class="gv-notice '.esc_attr( $class ) .'">'. $notice .'</div>';
+        return '<div class="gv-notice '.gravityview_sanitize_html_class( $class ) .'">'. $notice .'</div>';
     }
 
 

@@ -128,9 +128,13 @@ function gravityview_get_field_label( $form, $field_id ) {
 /**
  * Returns the field details array of a specific form given the field id
  *
+ * Alias of Alias of GFFormsModel::get_field
+ *
+ * @uses GVCommon::get_field
+ * @see GFFormsModel::get_field
  * @access public
- * @param mixed $form
- * @param mixed $field_id
+ * @param array $form
+ * @param string|int $field_id
  * @return array
  */
 function gravityview_get_field( $form, $field_id ) {
@@ -179,6 +183,15 @@ function gravityview_get_form_id( $view_id ) {
 	return GVCommon::get_meta_form_id( $view_id );
 }
 
+/**
+ * Get the template ID (`list`, `table`, `datatables`, `map`) for a View
+ *
+ * @see GravityView_Template::template_id
+ *
+ * @param int $view_id The ID of the View to get the layout of
+ *
+ * @return string GravityView_Template::template_id value. Empty string if not.
+ */
 function gravityview_get_template_id( $post_id ) {
 	return GVCommon::get_meta_template_id( $post_id );
 }

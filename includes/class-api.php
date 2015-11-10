@@ -219,7 +219,7 @@ class GravityView_API {
 	 * @param integer $field
 	 * @return null|string
 	 */
-	public static function field_value( $entry, $field_settings, $format = 'html') {
+	public static function field_value( $entry, $field_settings, $format = 'html' ) {
 
 		if( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
 			return NULL;
@@ -1110,7 +1110,7 @@ function gravityview_field_output( $passed_args ) {
 	$entry = empty( $args['entry'] ) ? array() : $args['entry'];
 
 	/**
-	 * Create the Context for replacing.
+	 * Create the content variables for replacing.
 	 * @since 1.11
 	 */
 	$context = array(
