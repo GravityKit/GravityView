@@ -898,17 +898,28 @@ class GVCommon {
 
 	/**
 	 * Get the views for a particular form
+	 *
+	 * @since 1.15.2 Add $args array and limit posts_per_page to 500
+	 *
+	 * @uses get_posts()
+	 *
 	 * @param  int $form_id Gravity Forms form ID
-	 * @return array          Array with view details
+	 * @param  array $args Pass args sent to get_posts()
+	 *
+	 * @return array          Array with view details, as returned by get_posts()
 	 */
-	public static function get_connected_views( $form_id ) {
+	public static function get_connected_views( $form_id, $args = array() ) {
 
-		$views = get_posts(array(
+		$defaults = array(
 			'post_type' => 'gravityview',
-			'posts_per_page' => -1,
+			'posts_per_page' => 100,
 			'meta_key' => '_gravityview_form_id',
 			'meta_value' => (int)$form_id,
-		));
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		$views = get_posts( $args );
 
 		return $views;
 	}
