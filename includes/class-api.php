@@ -121,7 +121,13 @@ class GravityView_API {
 
 		if( !empty( $field['width'] ) ) {
 			$width = absint( $field['width'] );
-			$width = $width > 100 ? 100 : sprintf( $format, $width );
+
+			// If using percentages, limit to 100%
+			if( '%d%%' === $format && $width > 100 ) {
+				$width = 100;
+			}
+
+			$width = sprintf( $format, $width );
 		}
 
 		return $width;
