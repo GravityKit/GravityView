@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Tweak: Show available plugin updates, even when license is expired
 * Fixed: Select, multi-select, radio, checkbox, and post category field types should use exact match search
 * Fixed: Date Range search field label not working
+* Fixed: Make `gravityview/fields/fileupload/link_atts` filter available when not using lightbox with File Uploads field
 * New: `gravityview/entry_notes/add_note` filter to modify GravityView note properties before being added
 * New: `gravityview_post_type_supports` filter to modify `gravityview` post type support values
 * New: `gravityview_publicly_queryable` filter to modify whether Views be accessible using `example.com/?post_type=gravityview`. Default: Whether the current user has `read_private_gravityviews` capability (Editor or Administrator by default)
