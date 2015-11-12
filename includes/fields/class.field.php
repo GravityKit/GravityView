@@ -13,6 +13,27 @@ abstract class GravityView_Field {
 	var $name;
 
 	/**
+	 * @todo
+	 * @since 1.15.2
+	 * @type string The description of the field in the field picker
+	 */
+	var $description;
+
+	/**
+	 * @todo
+	 * @since 1.15.2
+	 * @type string The label of the field in the field picker
+	 */
+	var $label;
+
+	/**
+	 * @todo
+	 * @since 1.15.2
+	 * @type string The group belongs to this field in the field picker
+	 */
+	var $group;
+
+	/**
 	 * @var string The field ID being requested
 	 * @since 1.14
 	 */
@@ -28,6 +49,7 @@ abstract class GravityView_Field {
 
 		// Modify the field options based on the name of the field type
 		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 5 );
+
 	}
 
 	private function field_support_options() {
