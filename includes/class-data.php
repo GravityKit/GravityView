@@ -478,7 +478,7 @@ class GravityView_View_Data {
 	 * @return array $args Associative array of default settings for a View
 	 *      @param[out] string $label Setting label shown in admin
 	 *      @param[out] string $type Gravity Forms field type
-	 *      @param[out] string $group The field group the setting is associated with. Default: "default"
+	 *      @param[out] string $group The field group the setting is associated with. Default: "default", general = "View Settings", single = "Single Entry", ...
 	 *      @param[out] mixed  $value The default value for the setting
 	 *      @param[out] string $tooltip Tooltip displayed for the setting
 	 *      @param[out] boolean $show_in_shortcode Whether to show the setting in the shortcode configuration modal
@@ -504,14 +504,14 @@ class GravityView_View_Data {
 				'label' 	=> __('Number of entries per page', 'gravityview'),
 				'type' => 'number',
 				'class'	=> 'small-text',
-				'group'	=> 'default',
+				'group'	=> 'general',
 				'value' => 25,
 				'show_in_shortcode' => true,
 			),
 			'lightbox' => array(
 				'label' => __( 'Enable lightbox for images', 'gravityview' ),
 				'type' => 'checkbox',
-				'group'	=> 'default',
+				'group'	=> 'general',
 				'value' => 1,
 				'tooltip' => NULL,
 				'show_in_shortcode' => true,
@@ -519,28 +519,28 @@ class GravityView_View_Data {
 			'show_only_approved' => array(
 				'label' => __( 'Show only approved entries', 'gravityview' ),
 				'type' => 'checkbox',
-				'group'	=> 'default',
+				'group'	=> 'general',
 				'value' => 0,
 				'show_in_shortcode' => false,
 			),
 			'hide_until_searched' => array(
 				'label' => __( 'Hide View data until search is performed', 'gravityview' ),
 				'type' => 'checkbox',
-				'group'	=> 'default',
+				'group'	=> 'general',
 				'tooltip' => __( 'When enabled it will only show any View entries after a search is performed.', 'gravityview' ),
 				'value' => 0,
 				'show_in_shortcode' => false,
 			),
 			'hide_empty' => array(
 				'label' 	=> __( 'Hide empty fields', 'gravityview' ),
-				'group'	=> 'default',
+				'group'	=> 'general',
 				'type'	=> 'checkbox',
 				'value' => 1,
 				'show_in_shortcode' => false,
 			),
 			'user_edit' => array(
 				'label'	=> __( 'Allow User Edit', 'gravityview' ),
-				'group'	=> 'default',
+				'group'	=> 'general',
 				'desc'	=> __('Allow logged-in users to edit entries they created.', 'gravityview'),
 				'value'	=> 0,
 				'tooltip' => __('Display "Edit Entry" fields to non-administrator users if they created the entry. Edit Entry fields will always be displayed to site administrators.', 'gravityview'),
@@ -549,7 +549,7 @@ class GravityView_View_Data {
 			),
 			'user_delete' => array(
 				'label'	=> __( 'Allow User Delete', 'gravityview' ),
-				'group'	=> 'default',
+				'group'	=> 'general',
 				'desc'	=> __('Allow logged-in users to delete entries they created.', 'gravityview'),
 				'value'	=> 0,
 				'tooltip' => __('Display "Delete Entry" fields to non-administrator users if they created the entry. Delete Entry fields will always be displayed to site administrators.', 'gravityview'),
@@ -635,14 +635,14 @@ class GravityView_View_Data {
 				'label'	=> __('Single Entry Title', 'gravityview'),
 				'type'	=> 'text',
 				'desc'	=> __('When viewing a single entry, change the title of the page to this setting. Otherwise, the title will not change between the Multiple Entries and Single Entry views.', 'gravityview'),
-				'group'	=> 'default',
+				'group'	=> 'single',
 				'value'	=> '',
 				'show_in_shortcode' => false,
 				'full_width' => true,
 			),
 			'back_link_label' => array(
 				'label'	=> __('Back Link Label', 'gravityview'),
-				'group'	=> 'default',
+				'group'	=> 'single',
 				'desc'	=> __('The text of the link that returns to the multiple entries view.', 'gravityview'),
 				'type'	=> 'text',
 				'value'	=> '',

@@ -1102,7 +1102,65 @@ class GravityView_Admin_Views {
 			'forms' => GVCommon::get_forms(),
 			'templates' => $templates,
 			'template_id' => gravityview_get_template_id( $post_id ),
+			'settings_sections' => self::get_settings_sections(),
+			'settings_inputs' => self::get_settings_inputs(),
+			'settings_values' => GVCommon::get_template_settings( $post_id )
 		);
+	}
+
+	static function get_settings_sections() {
+
+		// todo: hook the extensions to add their settings section
+		// todo: decide if the filter and sort stay separated or together
+		return array(
+			array( 'id' => 'general' , 'title' => __( 'General Settings', 'gravityview') ),
+			array( 'id' => 'single' , 'title' => __( 'Single Entry', 'gravityview') ),
+			array( 'id' => 'sort' , 'title' => __( 'Sort', 'gravityview') ),
+			array( 'id' => 'filter' , 'title' => __( 'Filters', 'gravityview') ),
+		);
+	}
+
+	/**
+	 * Builds an array with the configurable View settings with details (type, default value, tooltip.. )
+	 *
+	 * @return array
+	 */
+	static function get_settings_inputs() {
+
+		$output = array();
+
+		$default_args = GravityView_View_Data::get_default_args( true );
+
+		if( empty( $default_args ) ) {
+			return $output;
+		}
+
+		foreach ( $default_args as $id => $setting ) {
+
+			if( empty( $setting['group'] ) || 'default' == $setting['group'] ) {
+				continue;
+			}
+
+			// for rendering on react we don't need this information
+			unset( $setting['show_in_shortcode'] );
+
+			if ( !empty( $setting['options'] ) ) {
+				$new_options = array();
+				foreach( $setting['options'] as $k => $v ) {
+					$new_options[] = array( 'value' => $k, 'label' => $v );
+				}
+				$setting['options'] = $new_options;
+				unset($new_options);
+			}
+
+			$setting['id'] = $id;
+
+			$output[ $setting['group'] ][] = $setting;
+
+		}
+
+		return $output;
+
 	}
 
 	static function get_admin_i18n_labels() {
@@ -1137,6 +1195,13 @@ class GravityView_Admin_Views {
 			'fields_title_multiple' 	=> __( 'Entries Fields', 'gravityview' ),
 			'fields_label_multiple' 	=> __( 'These fields will be shown for each entry.', 'gravityview' ),
 			'fields_add' 			=> __( 'Add Field', 'gravityview' ),
+
+
+			//Panel
+			'panel_settings_title' => __( 'View Settings', 'gravityview' ),
+
+
+
 
 
 

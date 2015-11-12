@@ -24,7 +24,7 @@ var ViewBuilder = React.createClass({
 
     handleOpenSettings: function(e) {
         e.preventDefault();
-        ViewActions.openPanel( ViewConstants.PANEL_SETTINGS );
+        ViewActions.openPanel( ViewConstants.PANEL_SETTINGS, false );
     },
 
 

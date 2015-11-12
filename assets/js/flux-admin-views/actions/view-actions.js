@@ -7,14 +7,46 @@ var ViewActions = {
 
     /**
      * Open a specific panel
-     * @param id string Panel ID
+     * @param id        string  Active Panel ID
+     * @param returnId  string  Return Panel ID
      */
-    openPanel: function( id ) {
+    openPanel: function( id, returnId ) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.PANEL_OPEN,
-            panelId: id
+            panelId: id,
+            returnId: returnId
         });
     },
+
+    /**
+     * Close All Panels
+     */
+    closePanel: function() {
+        ViewDispatcher.dispatch({
+            actionType: ViewConstants.PANEL_CLOSE
+        });
+    },
+
+    /** -- Settings Actions -- */
+
+    updateAllSettings: function( values ) {
+        ViewDispatcher.dispatch({
+            actionType: ViewConstants.UPDATE_ALL_SETTINGS,
+            settingsValues: values,
+        });
+    },
+
+    updateSetting: function( id, value ) {
+        ViewDispatcher.dispatch({
+            actionType: ViewConstants.UPDATE_SETTING,
+            key: id,
+            value: value
+        });
+    }
+
+
+
+
 
 };
 

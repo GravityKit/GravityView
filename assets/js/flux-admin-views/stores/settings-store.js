@@ -9,13 +9,14 @@ var CHANGE_EVENT = 'change';
 /**
  * Store about the panel status, content, and more
  */
-var PanelStore = assign( {}, EventEmitter.prototype, {
+var SettingsStore = assign( {}, EventEmitter.prototype, {
 
     /**
-     * Holds the current open panel ID
+     * Holds the View Settings inputs
      */
-    activePanel: '',
-    returnPanel: '',
+    inputs: null,
+
+    settings: null,
 
     emitChange: function() {
         this.emit( CHANGE_EVENT );
@@ -35,29 +36,19 @@ var PanelStore = assign( {}, EventEmitter.prototype, {
         this.removeListener( CHANGE_EVENT, callback );
     },
 
-    // Set Active Panel ID
-    setActivePanel: function( id ) {
-        this.activePanel = id;
+    saveSetting: function( id, value ) {
+        this.settings[ id ] = value;
+    },
+
+
+    saveAllSettings: function( values ) {
+        this.settings = values;
     },
 
     // Get the Active Panel ID
-    getActivePanel: function() {
-        return this.activePanel;
-    },
-
-    // Set Active Panel ID
-    setReturnPanel: function( id ) {
-        if( null === id || false === id ) { id = ''; }
-        this.returnPanel = id;
-    },
-
-    // Get the Active Panel ID
-    getReturnPanel: function() {
-        return this.returnPanel;
+    getAllSettings: function() {
+        return this.settings;
     }
-
-
-
 
 });
 
@@ -66,22 +57,20 @@ ViewDispatcher.register( function( action ) {
 
     switch( action.actionType ) {
 
-        case ViewConstants.PANEL_OPEN:
-            PanelStore.setActivePanel( action.panelId );
-            PanelStore.setReturnPanel( action.returnId );
-            PanelStore.emitChange();
+        case ViewConstants.UPDATE_ALL_SETTINGS:
+            SettingsStore.saveAllSettings( action.settingsValues );
+            SettingsStore.emitChange();
             break;
 
-        case ViewConstants.PANEL_CLOSE:
-            PanelStore.setActivePanel( '' );
-            PanelStore.setReturnPanel( '' );
-            PanelStore.emitChange();
+        case ViewConstants.UPDATE_SETTING:
+            SettingsStore.saveSetting( action.key, action.value );
+            SettingsStore.emitChange();
             break;
-
+        
     }
 
     return true; // Needed for Flux promise resolution
 
 });
 
-module.exports = PanelStore;
+module.exports = SettingsStore;
