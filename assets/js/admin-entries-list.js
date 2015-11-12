@@ -38,7 +38,7 @@
 
 			self.setInitialApprovedEntries();
 
-			$( '.toggleApproved' ).click( self.toggleApproved );
+			$( '.toggleApproved' ).on( 'click', self.toggleApproved );
 
 		}
 
@@ -81,7 +81,7 @@
 		/**
 		 * Add column for each entry
 		 */
-		$( 'td:has(img[src*="star"])' ).after( '<td class="gv-approve-column"><a href="#" class="toggleApproved" title="' + gvGlobals.approve_title + '"></a></td>' );
+		$( 'th.check-column[scope=row]:has(img[src*="star"]),td:has(img[src*="star"])' ).after( '<td class="gv-approve-column"><a href="#" class="toggleApproved" title="' + gvGlobals.approve_title + '"></a></td>' );
 
 	};
 
