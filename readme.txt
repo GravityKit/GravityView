@@ -26,7 +26,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Select, multi-select, radio, checkbox, and post category field types should use exact match search
 * Fixed: Date Range search field label not working
 * Fixed: Approval column not being added properly on the Form Entries screen for Gravity Forms 1.9.14.18+
+
+__Developer Notes:__
+
 * Fixed: Make `gravityview/fields/fileupload/link_atts` filter available when not using lightbox with File Uploads field
+* Renamed files:
+    - `includes/fields/class.field.php` => `includes/fields/class-gravityview-field.php`
+    - `includes/class-logging.php` => `includes/class-gravityview-logging.php`
+    - `includes/class-image.php` => `includes/class-gravityview-image.php`
 * New: `gravityview/entry_notes/add_note` filter to modify GravityView note properties before being added
 * New: `gravityview_post_type_supports` filter to modify `gravityview` post type support values
 * New: `gravityview_publicly_queryable` filter to modify whether Views be accessible using `example.com/?post_type=gravityview`. Default: Whether the current user has `read_private_gravityviews` capability (Editor or Administrator by default)
