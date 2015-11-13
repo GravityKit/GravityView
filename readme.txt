@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Tweak: Show available plugin updates, even when license is expired
 * Tweak: Improve spacing of the Approval column on the Entries screen
+* Tweak: Added support for new accessibility labels added in WordPress 4.4
 * Fixed: Select, multi-select, radio, checkbox, and post category field types should use exact match search
 * Fixed: Date Range search field label not working
 * Fixed: Approval column not being added properly on the Form Entries screen for Gravity Forms 1.9.14.18+

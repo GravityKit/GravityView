@@ -71,6 +71,9 @@ class GravityView_Post_Types {
 			'search_items'        => __( 'Search Views', 'gravityview' ),
 			'not_found'           => self::no_views_text(),
 			'not_found_in_trash'  => __( 'No Views found in Trash', 'gravityview' ),
+			'filter_items_list'     => __( 'Filter Views list', 'gravityview' ),
+			'items_list_navigation' => __( 'Views list navigation', 'gravityview' ),
+			'items_list'            => __( 'Views list', 'gravityview' ),
 		);
 		$args = array(
 			'label'               => __( 'view', 'gravityview' ),
