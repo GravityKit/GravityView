@@ -142,7 +142,7 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
 
 		// Load fields
-		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/fields/class-gravityview-field.php' );
 
 		// Load all field files automatically
 		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/*.php' ) as $gv_field_filename ) {
@@ -167,7 +167,7 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR . 'includes/class-oembed.php' );
 
 		// Add logging
-		include_once( GRAVITYVIEW_DIR . 'includes/class-logging.php');
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-logging.php' );
 
 		include_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
@@ -305,7 +305,7 @@ final class GravityView_Plugin {
 
 		if( self::is_admin() ) { return; }
 
-		include_once( GRAVITYVIEW_DIR .'includes/class-image.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-image.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-template.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-api.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );

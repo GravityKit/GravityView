@@ -11,8 +11,6 @@
  * @since 1.0.0
  */
 
-
-
 class GravityView_API {
 
 	/**
@@ -1018,9 +1016,10 @@ function gravityview_get_context() {
  * @return array           Array of file output, with `file_path` and `html` keys (see comments above)
  */
 function gravityview_get_files_array( $value, $gv_class = '' ) {
+	/** @define "GRAVITYVIEW_DIR" "../" */
 
 	if( !class_exists( 'GravityView_Field' ) ) {
-		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/class-gravityview-field.php' );
 	}
 
 	if( !class_exists( 'GravityView_Field_FileUpload' ) ) {
