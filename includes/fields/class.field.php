@@ -13,25 +13,71 @@ abstract class GravityView_Field {
 	var $name;
 
 	/**
-	 * @todo
+	 * @internal Not yet implemented
 	 * @since 1.15.2
 	 * @type string The description of the field in the field picker
 	 */
 	var $description;
 
 	/**
-	 * @todo
+	 * @internal Not yet implemented
 	 * @since 1.15.2
 	 * @type string The label of the field in the field picker
 	 */
 	var $label;
 
 	/**
-	 * @todo
+	 * @internal Not yet implemented
 	 * @since 1.15.2
 	 * @type string The group belongs to this field in the field picker
 	 */
 	var $group;
+
+	/**
+	 * @internal Not yet implemented
+	 * @type boolean Can the field be searched?
+	 * @since 1.15.2
+	 */
+	var $is_searchable;
+
+	/**
+	 * @internal Not yet implemented
+	 * @type array $search_operators The type of search operators available for this field
+	 * @since 1.15.2
+	 */
+	var $search_operators;
+
+	/**
+	 * @internal Not yet implemented
+	 * @type boolean Can the field be sorted in search?
+	 * @since 1.15.2
+	 */
+	var $is_sortable;
+
+	/**
+	 * @internal Not yet implemented
+	 * @type boolean Is field content number-based?
+	 * @since 1.15.2
+	 */
+	var $is_numeric;
+
+	/**
+	 * @internal Not yet implemented
+	 * @todo implement supports_context() method
+	 * The contexts in which a field is available. Some fields aren't editable, for example.
+	 * - `singular` is an alias for both `single` and `edit`
+	 * - `multiple` is an alias for `directory` (backward compatibility)
+	 * @type array
+	 * @since 1.15.2
+	 */
+	var $contexts = array( 'single', 'multiple', 'edit', 'export' );
+
+	/**
+	 * @internal Not yet implemented
+	 * @since 1.15.2
+	 * @type string The name of a corresponding Gravity Forms GF_Field class, if exists
+	 */
+	protected $_gf_field_class_name;
 
 	/**
 	 * @var string The field ID being requested
