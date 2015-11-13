@@ -39,7 +39,7 @@ $has_inputs = false;
 	 */
 	do_action( 'gravityview_search_widget_fields_after', $this );
 
-	if( $has_inputs ) : ?>
+	if( $has_inputs ) { ?>
 		<div class="gv-search-box gv-search-box-submit">
 			<?php
 
@@ -50,5 +50,5 @@ $has_inputs = false;
 			<input type="hidden" name="mode" value="<?php echo esc_attr( $gravityview_view->search_mode ); ?>" />
 			<input type="submit" class="button gv-search-button" id="gv_search_button_<?php echo $view_id; ?>" value="<?php esc_attr_e( 'Search', 'gravityview' ); ?>" />
 		</div>
-	<?php endif; ?>
+	<?php } ?>
 </form>
