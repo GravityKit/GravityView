@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: Support Port docs not working on HTTPS sites
 * Tweak: Show available plugin updates, even when license is expired
 * Tweak: Improve spacing of the Approval column on the Entries screen
 * Tweak: Added support for new accessibility labels added in WordPress 4.4
