@@ -309,7 +309,7 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-template.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-api.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
-		include_once( GRAVITYVIEW_DIR . 'includes/class-change-entry-creator.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-change-entry-creator.php' );
 
 
         /**

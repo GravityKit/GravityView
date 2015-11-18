@@ -35,6 +35,8 @@ __Developer Notes:__
     - `includes/fields/class.field.php` => `includes/fields/class-gravityview-field.php`
     - `includes/class-logging.php` => `includes/class-gravityview-logging.php`
     - `includes/class-image.php` => `includes/class-gravityview-image.php`
+    - `includes/class-migrate.php` => `includes/class-gravityview-migrate.php`
+    - `includes/class-change-entry-creator.php` => `includes/class-gravityview-change-entry-creator.php`
 * New: `gravityview/entry_notes/add_note` filter to modify GravityView note properties before being added
 * New: `gravityview_post_type_supports` filter to modify `gravityview` post type support values
 * New: `gravityview_publicly_queryable` filter to modify whether Views be accessible using `example.com/?post_type=gravityview`. Default: Whether the current user has `read_private_gravityviews` capability (Editor or Administrator by default)
