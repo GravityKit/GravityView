@@ -21,6 +21,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 == Changelog ==
 
 * Fixed: Support Port docs not working on HTTPS sites
+* Fixed: Custom Labels not being used as field label in the View Configuration screen
+    * Tweak: Custom Labels will be used as the field label, even when the "Show Label" checkbox isn't checked
 * Tweak: Show available plugin updates, even when license is expired
 * Tweak: Improve spacing of the Approval column on the Entries screen
 * Tweak: Added support for new accessibility labels added in WordPress 4.4
