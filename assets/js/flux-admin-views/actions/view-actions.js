@@ -1,5 +1,6 @@
 var ViewDispatcher = require('../dispatcher/view-dispatcher');
 var ViewConstants = require('../constants/view-constants');
+var ViewApi = require('../api/view-api.js');
 
 var ViewActions = {
 
@@ -29,12 +30,20 @@ var ViewActions = {
 
     /** -- Settings Actions -- */
 
-    updateAllSettings: function( values ) {
-        ViewDispatcher.dispatch({
-            actionType: ViewConstants.UPDATE_ALL_SETTINGS,
-            settingsValues: values,
-        });
+    // Load all the view settings values
+    fetchSettingsAllValues: function() {
+        ViewApi.getSettingsAllValues();
     },
+    fetchSettingsSections: function( forms, templates ) {
+        ViewApi.getSettingsSections( forms, templates );
+    },
+    fetchSettingsInputs: function( forms, templates ) {
+        ViewApi.getSettingsInputs( forms, templates );
+    },
+
+
+
+    // update functions (to update new values into store)
 
     updateSetting: function( id, value ) {
         ViewDispatcher.dispatch({
@@ -43,10 +52,6 @@ var ViewActions = {
             value: value
         });
     }
-
-
-
-
 
 };
 

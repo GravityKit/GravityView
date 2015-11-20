@@ -12,7 +12,9 @@ module.exports = keyMirror({
 
     // Settings
     UPDATE_SETTING: null,
-    UPDATE_ALL_SETTINGS: null,
+    UPDATE_SETTINGS_ALL: null,
+    UPDATE_SETTINGS_SECTIONS: null,
+    UPDATE_SETTINGS_INPUTS: null,
 
 
 });

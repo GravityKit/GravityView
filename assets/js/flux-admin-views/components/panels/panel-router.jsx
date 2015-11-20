@@ -16,7 +16,9 @@ var PanelRouter = React.createClass({
         return {
             currentPanel: PanelStore.getActivePanel(), // which panel id is open
             returnPanel: PanelStore.getReturnPanel(), // when the go back panel control links
-            settingsValues: SettingsStore.getAllSettings()
+            settingsValues: SettingsStore.getAllValues(),
+            settingsInputs: SettingsStore.getInputs(),
+            settingsSections: SettingsStore.getSections()
         };
     },
 
@@ -36,7 +38,9 @@ var PanelRouter = React.createClass({
         SettingsStore.addChangeListener( this.onStoreChange );
 
         // Trigger Flux to get the initial settings
-        ViewActions.updateAllSettings( gravityview_view_settings.settings_values );
+        ViewActions.fetchSettingsSections();
+        ViewActions.fetchSettingsInputs();
+        ViewActions.fetchSettingsAllValues();
     },
 
     componentWillUnmount: function() {
@@ -48,8 +52,8 @@ var PanelRouter = React.createClass({
 
         return (
            <div>
-               <SettingsMenuPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel}  />
-               <SettingsSubPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} settingsValues={this.state.settingsValues} />
+               <SettingsMenuPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} sections={this.state.settingsSections} />
+               <SettingsSubPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} settingsValues={this.state.settingsValues} sections={this.state.settingsSections} inputs={this.state.settingsInputs} />
                <ReactTooltip html={true} place="bottom" type="info" effect="float" />
            </div>
         );

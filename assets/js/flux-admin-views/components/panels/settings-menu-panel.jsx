@@ -10,13 +10,8 @@ var SettingsMenuPanel = React.createClass({
 
     propTypes: {
         returnPanel: React.PropTypes.string, // holds the panel ID when going back
-        currentPanel: React.PropTypes.string // the current active panel
-    },
-
-    getInitialState: function() {
-        return {
-            sections: gravityview_view_settings.settings_sections,  // holds the settings sections ( loaded via js wp_localize_script )
-        };
+        currentPanel: React.PropTypes.string, // the current active panel
+        sections: React.PropTypes.array // the menu sections
     },
 
     /**
@@ -35,7 +30,7 @@ var SettingsMenuPanel = React.createClass({
         return (
 
             <Panel isVisible={isPanelVisible} returnPanel={this.props.returnPanel} title={gravityview_i18n.panel_settings_title}>
-                <PanelContentMenu menuItems={this.state.sections} handleClick={this.handleSectionClick} />
+                <PanelContentMenu menuItems={this.props.sections} handleClick={this.handleSectionClick} />
             </Panel>
 
         );

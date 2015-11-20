@@ -16,6 +16,9 @@ var PanelContentMenu = React.createClass({
     },
 
     render: function() {
+        if( ! this.props.menuItems ) {
+            return null;
+        }
 
         var menuItems = this.props.menuItems.map( this.renderMenuItems, this );
 

@@ -16,7 +16,7 @@ var Tooltip = React.createClass({
         var title = '<h6>'+this.props.args.label+'</h6><p>'+text+'</p>';
 
         return (
-           <i data-tip={title} className='fa fa-question-circle'></i>
+           <i data-tip={title} className="fa fa-question-circle"></i>
         );
 
     }

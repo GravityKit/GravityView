@@ -18,23 +18,17 @@ var SettingsSubPanel = React.createClass({
     propTypes: {
         returnPanel: React.PropTypes.string, // holds the panel ID when going back
         currentPanel: React.PropTypes.string, // the current active panel
-        settingsValues: React.PropTypes.object // holds the settings values
-    },
-
-    getInitialState: function() {
-        return {
-            sections: this.getConvertedSections(),  // holds the settings sections ( loaded via js wp_localize_script )
-            inputs: gravityview_view_settings.settings_inputs, // holds the settings inputs ( loaded via js wp_localize_script )
-        };
+        settingsValues: React.PropTypes.object, // holds the settings values
+        sections: React.PropTypes.array, // holds the settings sections
+        inputs: React.PropTypes.object, // holds the settings inputs
     },
 
     /**
      * Converts the section array into an object
      * @returns object
      */
-    getConvertedSections: function() {
-        var newSections = {},
-            sections = gravityview_view_settings.settings_sections;
+    getConvertedSections: function( sections ) {
+        var newSections = {};
 
         for ( var i = 0, len = sections.length; i < len; i++) {
             newSections[ sections[i].id ] = sections[i];
@@ -57,8 +51,9 @@ var SettingsSubPanel = React.createClass({
      */
     renderTitle: function() {
         if ( this.isPanelVisible() ) {
+            var sections = this.getConvertedSections( this.props.sections );
             var sectionID = this.props.currentPanel.replace( 'settings_', '' );
-            return this.state.sections[ sectionID ].title;
+            return sections[ sectionID ].title;
         }
         return null;
     },
@@ -123,7 +118,7 @@ var SettingsSubPanel = React.createClass({
                 );
                 break;
         }
-
+        //todo: change class name (li)
         return(
             <div key={item.id} id={item.id}>
                 {inputField}
@@ -139,7 +134,7 @@ var SettingsSubPanel = React.createClass({
         }
 
         var sectionID = this.props.currentPanel.replace( 'settings_', '' );
-        var inputs = this.state.inputs[ sectionID ];
+        var inputs = this.props.inputs[ sectionID ];
 
         return inputs.map(  this.renderInputs, this );
     },
@@ -148,9 +143,7 @@ var SettingsSubPanel = React.createClass({
 
         return (
             <Panel isVisible={this.isPanelVisible()} returnPanel={this.props.returnPanel} title={this.renderTitle()}>
-
                 {this.renderPanelContent()}
-
             </Panel>
         );
     }
