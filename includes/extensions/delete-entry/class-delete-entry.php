@@ -445,8 +445,18 @@ final class GravityView_Delete_Entry {
 
 		$nonce_key = self::get_nonce_key( $_GET['entry_id'] );
 
-		return wp_verify_nonce( $_GET['delete'], $nonce_key );
+		$valid = wp_verify_nonce( $_GET['delete'], $nonce_key );
 
+		/**
+		 * @filter `gravityview/delete-entry/verify_nonce` Override Delete Entry nonce validation. Return true to declare nonce valid.
+		 * @since 1.15.2
+		 * @see wp_verify_nonce()
+		 * @param int|boolean $valid False if invalid; 1 or 2 when nonce was generated
+		 * @param string $nonce_key Name of nonce action used in wp_verify_nonce. $_GET['delete'] holds the nonce value itself. Default: `delete_{entry_id}`
+		 */
+		$valid = apply_filters( 'gravityview/delete-entry/verify_nonce', $valid, $nonce_key );
+
+		return $valid;
 	}
 
 	/**
