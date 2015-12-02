@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Cannot delete entry notes from Gravity Forms Entry screen
 * Fixed: Support Port docs not working on HTTPS sites
 * Fixed: When deleting an entry, only show "Entry Deleted" message for the deleted entry's View
+* Fixed: "Open link in a new tab or window?" setting for Paragraph Text fields
 * Fixed: Custom Labels not being used as field label in the View Configuration screen
     * Tweak: Custom Labels will be used as the field label, even when the "Show Label" checkbox isn't checked
 * Tweak: Show available plugin updates, even when license is expired

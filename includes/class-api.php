@@ -321,7 +321,9 @@ class GravityView_API {
 		 */
 		if( !empty( $field_settings['show_as_link'] ) ) {
 
-			$output = self::entry_link_html( $entry, $output, array(), $field_settings );
+			$link_atts = empty( $field_settings['new_window'] ) ? array() : array( 'target' => '_blank' );
+
+			$output = self::entry_link_html( $entry, $output, $link_atts, $field_settings );
 
 		}
 
