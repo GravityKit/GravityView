@@ -743,9 +743,10 @@ class GravityView_frontend {
 	 */
 	public static function process_search_dates( $args, $search_criteria = array() ) {
 
-		$return_search_criteria = $search_criteria;
+		$return_search_criteria = wp_parse_args( $search_criteria, array( 'start_date' => '', 'end_date' => '' ));
 
 		foreach ( array( 'start_date', 'end_date' ) as $key ) {
+
 
 			// Is the start date or end date set in the view or shortcode?
 			// If so, we want to make sure that the search doesn't go outside the bounds defined.
