@@ -4,35 +4,47 @@ class GravityView_Admin {
 
 	function __construct() {
 
-		if( !is_admin() ) { return; }
-
-		$this->add_hooks();
-	}
-
-	/**
-	 * @since 1.7.5
-	 */
-	function add_hooks() {
+		if( ! is_admin() ) { return; }
 
 		// If Gravity Forms isn't active or compatibile, stop loading
 		if( false === GravityView_Compatibility::is_valid() ) {
 			return;
 		}
 
+		$this->include_required_files();
+		$this->add_hooks();
+	}
+
+	/**
+	 * @since 1.15
+	 * @return void
+	 */
+	private function include_required_files() {
+
 		// Migrate Class
-		require_once( GRAVITYVIEW_DIR . 'includes/class-migrate.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-migrate.php' );
 
 		// Don't load tooltips if on Gravity Forms, otherwise it overrides translations
-		if( !GFForms::is_gravity_page() ) {
+		if( class_exists( 'GFCommon' ) && class_exists( 'GFForms' ) && !GFForms::is_gravity_page() ) {
 			require_once( GFCommon::get_base_path() . '/tooltips.php' );
 		}
 
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes/class-gravityview-admin-metaboxes.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/entry-list.php' );
-		require_once( GRAVITYVIEW_DIR . 'includes/class-change-entry-creator.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-change-entry-creator.php' );
+
+		/** @since 1.15 **/
+		require_once( GRAVITYVIEW_DIR . 'includes/admin/class-gravityview-support-port.php' );
 
 		/** @since 1.6 */
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-duplicate-view.php' );
+	}
+
+	/**
+	 * @since 1.7.5
+	 * @return void
+	 */
+	private function add_hooks() {
 
 		// Filter Admin messages
 		add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
@@ -70,23 +82,36 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 
-		// Nice place to insert extensions' backend stuff
+		/**
+		 * @action `gravityview_include_backend_actions` Triggered after all GravityView admin files are loaded
+		 *
+		 * Nice place to insert extensions' backend stuff
+		 */
 		do_action('gravityview_include_backend_actions');
 	}
 
 	/**
 	 * Modify plugin action links at plugins screen
 	 *
+	 * @since 1.15 Added check for `gravityview_view_settings` and `gravityview_support_port` capabilities
 	 * @access public
 	 * @static
-	 * @param mixed $links
-	 * @return array Action links with Support included
+	 * @param array $links Array of action links under GravityView on the plugin page
+	 * @return array Action links with Settings and Support included, if the user has the appropriate caps
 	 */
 	public static function plugin_action_links( $links ) {
 
-		$action = array( '<a href="http://docs.gravityview.co">'. esc_html__( 'Support', 'gravityview' ) .'</a>' );
+		$actions = array();
 
-		return array_merge( $action, $links );
+		if( GVCommon::has_cap( 'gravityview_view_settings' ) ) {
+			$actions[] = sprintf( '<a href="%s">%s</a>', admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ), esc_html__( 'Settings', 'gravityview' ) );
+		}
+
+		if( GVCommon::has_cap( 'gravityview_support_port' ) ) {
+			$actions[] = '<a href="http://docs.gravityview.co">' . esc_html__( 'Support', 'gravityview' ) . '</a>';
+		}
+
+		return array_merge( $actions, $links );
 	}
 
 	/**
@@ -189,16 +214,9 @@ class GravityView_Admin {
 			return;
 		}
 
-
 		$wp_allowed_scripts = array(
-			'debug-bar-extender',
-            'backcallsc',
             'common',
             'admin-bar',
-            'debug-bar',
-            'debug-bar-codemirror',
-            'debug-bar-console',
-            'puc-debug-bar-js',
             'autosave',
             'post',
 			'inline-edit-post',
@@ -211,11 +229,7 @@ class GravityView_Admin {
             'thickbox',
 			'wp-color-picker',
 
-            'gform_tooltip_init',
-            'gform_field_filter',
-            'gform_forms',
-
-		    // Settings
+            // Settings
 			'gv-admin-edd-license',
 
             // Common
@@ -234,26 +248,6 @@ class GravityView_Admin {
 			'jquery-ui-draggable',
 			'jquery-ui-droppable',
             'jquery-ui-accordion',
-
-			// WP SEO
-			'wp-seo-metabox',
-			'wpseo-admin-media',
-			'jquery-qtip',
-			'jquery-ui-autocomplete',
-
-			// Genesis theme framework
-		    'genesis_admin_js',
-
-			// Avada
-			'jquery.biscuit',
-			'avada_upload',
-			'tipsy',
-			'jquery-ui-slider',
-			'smof',
-			'cookie',
-			'kd-multiple-featured-images',
-			'media-upload',
-			'jquery-ui-core',
 		);
 
 		$this->remove_conflicts( $wp_scripts, $wp_allowed_scripts, 'scripts' );
@@ -288,13 +282,8 @@ class GravityView_Admin {
 		}
 
         $wp_allowed_styles = array(
-        	'debug-bar-extender',
 	        'admin-bar',
-	        'debug-bar',
-	        'debug-bar-codemirror',
-	        'debug-bar-console',
-	        'puc-debug-bar-style',
-	        'colors',
+        	'colors',
 	        'ie',
 	        'wp-auth-check',
 	        'media-views',
@@ -303,22 +292,8 @@ class GravityView_Admin {
 	        'wp-jquery-ui-dialog',
 	        'jquery-ui-sortable',
 
-	        // Gravity Forms
-	        'gform_tooltip',
-	        'gform_font_awesome',
-
             // Settings
 	        'gravityview_settings',
-
-	        // WP SEO
-	        'wp-seo-metabox',
-	        'wpseo-admin-media',
-	        'metabox-tabs',
-	        'metabox-classic',
-	        'metabox-fresh',
-
-	        // Genesis theme framework
-            'genesis_admin_css',
 
 	        // @todo qTip styles not loading for some reason!
 	        'jquery-qtip.js',
@@ -326,7 +301,9 @@ class GravityView_Admin {
 
 		$this->remove_conflicts( $wp_styles, $wp_allowed_styles, 'styles' );
 
-		// Allow settings, etc, to hook in after
+		/**
+		 * @action `gravityview_remove_conflicts_after` Runs after no-conflict styles are removed. You can re-add styles here.
+		 */
 		do_action('gravityview_remove_conflicts_after');
 	}
 
@@ -340,7 +317,11 @@ class GravityView_Admin {
 	 */
 	private function remove_conflicts( &$wp_objects, $required_objects, $type = 'scripts' ) {
 
-        //allowing addons or other products to change the list of no conflict scripts or styles
+        /**
+         * @filter `gravityview_noconflict_{$type}` Modify the list of no conflict scripts or styles\n
+         * Filter is `gravityview_noconflict_scripts` or `gravityview_noconflict_styles`
+         * @param array $required_objects
+         */
         $required_objects = apply_filters( "gravityview_noconflict_{$type}", $required_objects );
 
         //reset queue
@@ -370,48 +351,25 @@ class GravityView_Admin {
 	 * @param [type] $registered [description]
 	 * @param [type] $scripts    [description]
 	 */
-	private function add_script_dependencies($registered, $scripts){
+	private function add_script_dependencies($registered, $scripts) {
 
-        //gets all dependent scripts linked to the $scripts array passed
-        do{
-            $dependents = array();
-            foreach($scripts as $script){
-                $deps = isset($registered[$script]) && is_array($registered[$script]->deps) ? $registered[$script]->deps : array();
-                foreach($deps as $dep){
-                    if(!in_array($dep, $scripts) && !in_array($dep, $dependents)){
-                        $dependents[] = $dep;
-                    }
-                }
-            }
-            $scripts = array_merge($scripts, $dependents);
-        }while(!empty($dependents));
+		//gets all dependent scripts linked to the $scripts array passed
+		do {
+			$dependents = array();
+			foreach ( $scripts as $script ) {
+				$deps = isset( $registered[ $script ] ) && is_array( $registered[ $script ]->deps ) ? $registered[ $script ]->deps : array();
+				foreach ( $deps as $dep ) {
+					if ( ! in_array( $dep, $scripts ) && ! in_array( $dep, $dependents ) ) {
+						$dependents[] = $dep;
+					}
+				}
+			}
+			$scripts = array_merge( $scripts, $dependents );
+		} while ( ! empty( $dependents ) );
 
-        return $scripts;
-    }
+		return $scripts;
+	}
 
-    /**
-     * Should the notice be shown in the admin (Has it been dismissed already)?
-     *
-     * If the passed notice array has a `dismiss` key, the notice is dismissable. If it's dismissable,
-     * we check against other notices that have already been dismissed.
-     *
-     * @see GravityView_Admin::dismiss_notice()
-     * @see GravityView_Admin::add_notice()
-     * @param  string $notice            Notice array, set using `add_notice()`.
-     * @return boolean                   True: show notice; False: hide notice
-     */
-    function _maybe_show_notice( $notice ) {
-
-	    // There are no dismissed notices.
-    	if( empty( self::$dismissed_notices ) ) {
-    		return true;
-    	}
-
-    	// Has the
-    	$is_dismissed = !empty( $notice['dismiss'] ) && in_array( $notice['dismiss'], self::$dismissed_notices );
-
-    	return $is_dismissed ? false : true;
-    }
 
 	/**
 	 * Get admin notices
@@ -454,16 +412,27 @@ class GravityView_Admin {
 		return GravityView_Compatibility::get_plugin_status( $location );
 	}
 
-	static function is_admin_page($hook = '', $page = NULL) {
+	/**
+	 * Is the current admin page a GravityView-related page?
+	 *
+	 * @todo Convert to use WP_Screen
+	 * @param string $hook
+	 * @param null|string $page Optional. String return value of page to compare against.
+	 *
+	 * @return bool|string|void If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
+	 */
+	static function is_admin_page( $hook = '', $page = NULL ) {
 		global $current_screen, $plugin_page, $pagenow, $post;
 
-		if( !is_admin() ) { return false; }
+		if( ! is_admin() ) { return false; }
 
 		$is_page = false;
 
 		$is_gv_screen = (!empty($current_screen) && isset($current_screen->post_type) && $current_screen->post_type === 'gravityview');
 
 		$is_gv_post_type_get = (isset($_GET['post_type']) && $_GET['post_type'] === 'gravityview');
+
+		$is_gv_settings_get = isset( $_GET['page'] ) && $_GET['page'] === 'gravityview_settings';
 
 		if( empty( $post ) && $pagenow === 'post.php' && !empty( $_GET['post'] ) ) {
 			$gv_post = get_post( intval( $_GET['post'] ) );
@@ -472,22 +441,27 @@ class GravityView_Admin {
 			$is_gv_post_type = (!empty($post) && !empty($post->post_type) && $post->post_type === 'gravityview');
 		}
 
-		if( $is_gv_screen || $is_gv_post_type || $is_gv_post_type || $is_gv_post_type_get ) {
+		if( $is_gv_screen || $is_gv_post_type || $is_gv_post_type || $is_gv_post_type_get || $is_gv_settings_get ) {
 
 			// $_GET `post_type` variable
 			if(in_array($pagenow, array( 'post.php' , 'post-new.php' )) ) {
 				$is_page = 'single';
-			} elseif ( $plugin_page === 'gravityview_settings' || ( !empty( $_GET['page'] ) && $_GET['page'] === 'gravityview_settings' ) ) {
+			} else if ( in_array( $plugin_page, array( 'gravityview_settings', 'gravityview_page_gravityview_settings' ) ) || ( !empty( $_GET['page'] ) && $_GET['page'] === 'gravityview_settings' ) ) {
 				$is_page = 'settings';
 			} else {
 				$is_page = 'views';
 			}
 		}
 
+		/**
+		 * @filter `gravityview_is_admin_page` Is the current admin page a GravityView-related page?
+		 * @param[in,out] string|bool $is_page If false, no. If string, the name of the page (`single`, `settings`, or `views`)
+		 * @param[in] string $hook The name of the page to check against. Is passed to the method.
+		 */
 		$is_page = apply_filters( 'gravityview_is_admin_page', $is_page, $hook );
 
 		// If the current page is the same as the compared page
-		if(!empty($page)) {
+		if( !empty( $page ) ) {
 			return $is_page === $page;
 		}
 

@@ -1,0 +1,21 @@
+/**
+ * Styles for Members plugin 1.x
+ * @since 1.15
+ * @see https://wordpress.org/plugins/members/
+ */
+
+// Hide the Views CPT label, since we have our own.
+.members-tab-title a[href$="type-gravityview"] {
+  display:none!important;
+}
+
+// Add Floaty's head
+.members-tab-title .gv-icon-astronaut-head {
+  font-size: 20px;
+  width: 20px;
+  line-height: 20px;
+  // Our icon is narrower than dashicons; we add 3.25px to match expected position
+  margin-right: 3 + 3.25px;
+  display: block;
+  float:left;
+}

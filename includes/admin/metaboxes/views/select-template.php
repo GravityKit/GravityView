@@ -1,5 +1,6 @@
 <?php
 /**
+ * @file select-template.php
  * @package GravityView
  * @subpackage Gravityview/admin/metaboxes/partials
  * @global WP_Post $post
@@ -13,8 +14,7 @@ wp_nonce_field( 'gravityview_select_template', 'gravityview_select_template_nonc
 //current value
 $current_template = gravityview_get_template_id( $post->ID );
 
-// Fetch available style templates
-$templates = apply_filters( 'gravityview_register_directory_template', array() );
+$templates = gravityview_get_registered_templates();
 
 // current input
 ?>
@@ -29,14 +29,14 @@ $templates = apply_filters( 'gravityview_register_directory_template', array() )
 			<div class="gv-view-types-module<?php echo $selected; ?>" data-filter="<?php echo esc_attr( $template['type'] ); ?>">
 				<div class="gv-view-types-hover">
 					<div>
-						<?php if( !empty( $template['buy_source'] ) ) : ?>
+						<?php if( !empty( $template['buy_source'] ) ) { ?>
 							<p><a href="<?php echo esc_url( $template['buy_source'] ); ?>" class="button-primary button-buy-now"><?php esc_html_e( 'Buy Now', 'gravityview'); ?></a></p>
-						<?php else: ?>
+						<?php } else { ?>
 							<p><a href="#gv_select_template" class="button button-large button-primary" data-templateid="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Select', 'gravityview'); ?></a></p>
-							<?php if( !empty( $template['preview'] ) ) : ?>
+							<?php if( !empty( $template['preview'] ) ) { ?>
 								<a href="<?php echo esc_url( $template['preview'] ); ?>" rel="external" class="gv-site-preview"><i class="dashicons dashicons-admin-links" title="<?php esc_html_e( 'View a live demo of this preset', 'gravityview'); ?>"></i></a>
-							<?php endif; ?>
-						<?php endif; ?>
+							<?php } ?>
+						<?php } ?>
 					</div>
 				</div>
 				<div class="gv-view-types-normal">

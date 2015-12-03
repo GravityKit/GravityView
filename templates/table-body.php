@@ -32,11 +32,17 @@
 				$this->setCurrentEntry( $entry );
 
 				// Add `alt` class to alternate rows
-				$alt = empty( $alt ) ? 'alt' : false;
+				$alt = empty( $alt ) ? 'alt' : '';
 
+				/**
+				 * @filter `gravityview_entry_class` Modify the class applied to the entry row
+				 * @param string $alt Existing class. Default: if odd row, `alt`, otherwise empty string.
+				 * @param array $entry Current entry being displayed
+				 * @param GravityView_View $this Current GravityView_View object
+				 */
 				$class = apply_filters( 'gravityview_entry_class', $alt, $entry, $this );
 		?>
-				<tr<?php echo ' class="'.esc_attr($class).'"'; ?>>
+				<tr<?php echo ' class="'.esc_attr( $class ).'"'; ?>>
 		<?php
 					do_action('gravityview_table_cells_before', $this );
 

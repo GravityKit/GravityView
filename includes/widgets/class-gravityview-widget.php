@@ -95,9 +95,9 @@ class GravityView_Widget {
 		$settings = array();
 
 		/**
-		 * Enable custom class for widgets
-		 * @param boolean False by default. Return true if you want to enable.
-		 * @param GravityView_Widget Current instance of GravityView_Widget
+		 * @filter `gravityview/widget/enable_custom_class` Enable custom CSS class settings for widgets
+		 * @param boolean $enable_custom_class False by default. Return true if you want to enable.
+		 * @param GravityView_Widget $this Current instance of GravityView_Widget
 		 */
 		$enable_custom_class = apply_filters('gravityview/widget/enable_custom_class', false, $this );
 
@@ -137,10 +137,13 @@ class GravityView_Widget {
 	 * @return mixed|null      Value of the setting; NULL if not set
 	 */
 	public function get_setting( $key ) {
-		if( isset( $this->settings ) && is_array( $this->settings ) ) {
+		$setting = NULL;
 
-			return isset( $this->settings[ $key ] ) ? $this->settings[ $key ] : NULL;
+		if( isset( $this->settings ) && is_array( $this->settings ) ) {
+			$setting = isset( $this->settings[ $key ] ) ? $this->settings[ $key ] : NULL;
 		}
+
+		return $setting;
 	}
 
 	/**
@@ -173,7 +176,7 @@ class GravityView_Widget {
 	function add_shortcode( $run_on_singular = true ) {
 		global $post;
 
-		if( is_admin() ) { return; }
+		if( GravityView_Plugin::is_admin() ) { return; }
 
 		if( empty( $this->shortcode_name ) ) { return; }
 
@@ -253,7 +256,14 @@ class GravityView_Widget {
 			return false;
 		}
 
-		if( apply_filters( 'gravityview/widget/hide_until_searched', $gravityview_view->hide_until_searched, $this ) ) {
+		/**
+		 * @filter `gravityview/widget/hide_until_searched` Modify whether to hide content until search
+		 * @param boolean $hide_until_searched Hide until search?
+		 * @param GravityView_Widget $this Widget instance
+		 */
+		$hide_until_search = apply_filters( 'gravityview/widget/hide_until_searched', $gravityview_view->hide_until_searched, $this );
+
+		if( $hide_until_search ) {
 			do_action('gravityview_log_debug', sprintf( '%s[render_frontend]: Hide View data until search is performed', get_class($this)) );
 			return false;
 		}

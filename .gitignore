@@ -57,6 +57,10 @@ languages/gravityview-pt.po
 
 ## Plugin-specific files:
 
+# Unit tests
+/tmp
+/tests/bin/tmp
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
@@ -64,4 +68,7 @@ languages/gravityview-pt.po
 atlassian-ide-plugin.xml
 languages/gravityview-de.mo
 
+
 languages/gravityview-de.po
+
+docs/config.doxygen

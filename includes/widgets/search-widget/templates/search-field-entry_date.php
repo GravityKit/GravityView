@@ -13,7 +13,9 @@ $label = $gravityview_view->search_field['label'];
 ?>
 
 <div class="gv-search-box gv-search-date">
+	<?php if( ! gv_empty( $label, false ) ) { ?>
 	<label for="gv_start_date_<?php echo $view_id; ?>"><?php echo esc_html( $label ); ?></label>
+	<?php } ?>
 	<p>
 		<input name="gv_start" id="gv_start_date_<?php echo $view_id; ?>" type="text" class="<?php echo esc_html( $gravityview_view->datepicker_class ); ?>" placeholder="<?php esc_attr_e('Start date', 'gravityview' ); ?>" value="<?php echo $value['start']; ?>">
 		<input name="gv_end" id="gv_end_date_<?php echo $view_id; ?>" type="text" class="<?php echo esc_html( $gravityview_view->datepicker_class ); ?>" placeholder="<?php esc_attr_e('End date', 'gravityview' ); ?>" value="<?php echo $value['end']; ?>">

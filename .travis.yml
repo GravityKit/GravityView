@@ -1,0 +1,32 @@
+language: php
+
+sudo: false
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+
+env:
+  - WP_VERSION=nightly WP_MULTISITE=0
+  - WP_VERSION=4.3 WP_MULTISITE=0
+  - WP_VERSION=4.2 WP_MULTISITE=0
+  - WP_VERSION=4.1 WP_MULTISITE=0
+  - WP_VERSION=4.0 WP_MULTISITE=0
+
+matrix:
+  include:
+  - php: 5.3
+    env: WP_VERSION=nightly WP_MULTISITE=1
+
+before_script:
+  - bash tests/bin/install.sh gravityview_test root '' localhost $WP_VERSION
+  - bash tests/bin/travis.sh before
+
+script: phpunit -c phpunit.xml.dist
+
+after_script:
+  - bash tests/bin/travis.sh after
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover ./tmp/clover.xml

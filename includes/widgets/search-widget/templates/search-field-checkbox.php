@@ -17,7 +17,10 @@ if( empty( $search_field['choices'] ) ) {
 
 ?>
 <div class="gv-search-box">
-
+	<?php if( ! gv_empty( $search_field['label'], false ) ) { ?>
+	<label for=search-box-<?php echo esc_attr( $search_field['name'] ); ?>><?php echo esc_html( $search_field['label'] ); ?></label>
+	<?php } ?>
+	<p>
 	<?php foreach( $search_field['choices'] as $choice ) { ?>
 
 		<label for="search-box-<?php echo sanitize_html_class( $search_field['name'].$choice['value'].$choice['text'] ); ?>" class="gv-check-radio">
@@ -26,5 +29,5 @@ if( empty( $search_field['choices'] ) ) {
 		</label>
 
 	<?php } ?>
-
+	</p>
 </div>

@@ -56,6 +56,13 @@ class GravityView_Edit_Entry_Render {
     var $form;
 
     /**
+     * Gravity Forms form array after the form validation process
+     * @since 1.13
+     * @var array
+     */
+    var $form_after_validation = null;
+
+    /**
      * Gravity Forms form id
      *
      * @var array
@@ -83,6 +90,7 @@ class GravityView_Edit_Entry_Render {
 
     function load() {
 
+        /** @define "GRAVITYVIEW_DIR" "../../../" */
         include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 
         // Stop Gravity Forms processing what is ours!
@@ -261,8 +269,7 @@ class GravityView_Edit_Entry_Render {
             $this->after_update();
 
             /**
-             * Perform an action after the entry has been updated using Edit Entry
-             *
+             * @action `gravityview/edit_entry/after_update` Perform an action after the entry has been updated using Edit Entry
              * @param array $form Gravity Forms form array
              * @param string $entry_id Numeric ID of the entry that was updated
              */
@@ -300,7 +307,7 @@ class GravityView_Edit_Entry_Render {
      * @return mixed
      */
     public function modify_fileupload_settings( $plupload_init, $form_id, $instance ) {
-        if( !self::is_edit_entry() ) {
+        if( ! $this->is_edit_entry() ) {
             return $plupload_init;
         }
 
@@ -344,7 +351,7 @@ class GravityView_Edit_Entry_Render {
         $post_id = $this->entry['post_id'];
 
         // Security check
-        if( false === current_user_can( 'edit_post', $post_id ) ) {
+        if( false === GVCommon::has_cap( 'edit_post', $post_id ) ) {
             do_action( 'gravityview_log_error', 'The current user does not have the ability to edit Post #'.$post_id );
             return;
         }
@@ -492,7 +499,6 @@ class GravityView_Edit_Entry_Render {
     /**
      * Display the Edit Entry form
      *
-     * @filter gravityview_edit_entry_title Modfify the edit entry title
      * @return [type] [description]
      */
     public function edit_entry_form() {
@@ -501,12 +507,28 @@ class GravityView_Edit_Entry_Render {
 
         ?>
 
-        <div class="gv-edit-entry-wrapper">
+        <div class="gv-edit-entry-wrapper"><?php
 
-            <?php include_once( GravityView_Edit_Entry::$file .'/partials/inline-javascript.php'); ?>
+            $javascript = gravityview_ob_include( GravityView_Edit_Entry::$file .'/partials/inline-javascript.php', $this );
 
-            <h2 class="gv-edit-entry-title">
-                <span><?php echo esc_attr( apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravityview'), $this ) ); ?></span>
+            /**
+             * Fixes weird wpautop() issue
+             * @see https://github.com/katzwebservices/GravityView/issues/451
+             */
+            echo gravityview_strip_whitespace( $javascript );
+
+            ?><h2 class="gv-edit-entry-title">
+                <span><?php
+
+                    /**
+                     * @filter `gravityview_edit_entry_title` Modify the edit entry title
+                     * @param string $edit_entry_title Modify the "Edit Entry" title
+                     * @param GravityView_Edit_Entry_Render $this This object
+                     */
+                    $edit_entry_title = apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravityview'), $this );
+
+                    echo esc_attr( $edit_entry_title );
+            ?></span>
             </h2>
 
             <?php
@@ -526,6 +548,7 @@ class GravityView_Edit_Entry_Render {
                     $entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. $back_link .'">', '</a>' );
 
                     /**
+                     * @filter `gravityview/edit_entry/success` Modify the edit entry success message (including the anchor link)
                      * @since 1.5.4
                      * @param string $entry_updated_message Existing message
                      * @param int $view_id View ID
@@ -605,10 +628,10 @@ class GravityView_Edit_Entry_Render {
 
         $html = GFFormDisplay::get_form( $this->form['id'], false, false, true, $this->entry );
 
-	    remove_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields' ), 5000, 3 );
+	    remove_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields' ), 5000 );
         remove_filter( 'gform_submit_button', array( $this, 'render_form_buttons' ) );
         remove_filter( 'gform_disable_view_counter', '__return_true' );
-        remove_filter( 'gform_field_input', array( $this, 'modify_edit_field_input' ), 10, 5 );
+        remove_filter( 'gform_field_input', array( $this, 'modify_edit_field_input' ), 10 );
 
         echo $html;
     }
@@ -619,9 +642,7 @@ class GravityView_Edit_Entry_Render {
      * @return string
      */
     public function render_form_buttons() {
-        ob_start();
-        include_once( GravityView_Edit_Entry::$file .'/partials/form-buttons.php');
-        return ob_get_clean();
+        return gravityview_ob_include( GravityView_Edit_Entry::$file .'/partials/form-buttons.php', $this );
     }
 
 
@@ -640,7 +661,12 @@ class GravityView_Edit_Entry_Render {
      */
     public function filter_modify_form_fields( $form, $ajax = false, $field_values = '' ) {
 
-        $form['fields'] = $this->get_configured_edit_fields( $form, $this->view_id );
+        // In case we have validated the form, use it to inject the validation results into the form render
+        if( isset( $this->form_after_validation ) ) {
+            $form = $this->form_after_validation;
+        } else {
+            $form['fields'] = $this->get_configured_edit_fields( $form, $this->view_id );
+        }
 
         $form = $this->filter_conditional_logic( $form );
 
@@ -689,28 +715,36 @@ class GravityView_Edit_Entry_Render {
             $field = GFCommon::add_categories_as_choices( $field, $value );
         }
 
+        /**
+         * @filter `gravityview/edit_entry/pre_populate/override` Allow the pre-populated value to override saved value in Edit Entry form. By default, pre-populate mechanism only kicks on empty fields.
+         * @param boolean True: override saved values; False: don't override (default)
+         * @param $field GF_Field object Gravity Forms field object
+         * @since 1.13
+         */
+        $override_saved_value = apply_filters( 'gravityview/edit_entry/pre_populate/override', false, $field );
+
         // We're dealing with multiple inputs (e.g. checkbox) but not time or date (as it doesn't store data in input IDs)
         if( isset( $field->inputs ) && is_array( $field->inputs ) && !in_array( $field->type, array( 'time', 'date' ) ) ) {
 
             $field_value = array();
 
             // only accept pre-populated values if the field doesn't have any choice selected.
-            $allow_pre_populated = true;
+            $allow_pre_populated = $field->allowsPrepopulate;
 
 	        foreach ( (array)$field->inputs as $input ) {
 
 	            $input_id = strval( $input['id'] );
 
                 if ( ! empty( $this->entry[ $input_id ] ) ) {
-                    $allow_pre_populated = false;
                     $field_value[ $input_id ] =  'post_category' === $field->type ? GFCommon::format_post_category( $this->entry[ $input_id ], true ) : $this->entry[ $input_id ];
+                    $allow_pre_populated = false;
                 }
 
             }
 
-            if( $allow_pre_populated ) {
-                $field_value = $field->get_value_submission( array(), false );
-            }
+            $pre_value = $field->get_value_submission( array(), false );
+
+            $field_value = ! $allow_pre_populated && ! ( $override_saved_value && !empty( $pre_value ) ) ? $field_value : $pre_value;
 
         } else {
 
@@ -720,7 +754,8 @@ class GravityView_Edit_Entry_Render {
             $pre_value = $field->allowsPrepopulate ? GFFormsModel::get_parameter_value( $field->inputName, array(), $field ) : '';
 
             // saved field entry value (if empty, fallback to the pre-populated value, if exists)
-            $field_value = !empty( $this->entry[ $id ] ) ? $this->entry[ $id ] : $pre_value;
+            // or pre-populated value if not empty and set to override saved value
+            $field_value = !empty( $this->entry[ $id ] ) && ! ( $override_saved_value && !empty( $pre_value ) ) ? $this->entry[ $id ] : $pre_value;
 
             // in case field is post_category but inputType is select, multi-select or radio, convert value into array of category IDs.
             if ( 'post_category' === $field->type && !empty( $field_value ) ) {
@@ -737,9 +772,8 @@ class GravityView_Edit_Entry_Render {
         $field_value = $field->get_value_default_if_empty( $field_value );
 
         /**
-         * change the field value if needed
+         * @filter `gravityview/edit_entry/field_value` Change the value of an Edit Entry field, if needed
          * @since 1.11
-         *
          * @param mixed $field_value field value used to populate the input
          * @param object $field Gravity Forms field object ( Class GF_Field )
          */
@@ -754,7 +788,7 @@ class GravityView_Edit_Entry_Render {
 	    $warnings = ob_get_clean();
 
 	    if( !empty( $warnings ) ) {
-		    do_action( 'gravityview_log_error', __METHOD__ . $warnings );
+		    do_action( 'gravityview_log_error', __METHOD__ . $warnings, $field_value );
 	    }
 
         /**
@@ -1066,6 +1100,9 @@ class GravityView_Edit_Entry_Render {
 
         do_action('gravityview_log_debug', 'GravityView_Edit_Entry[custom_validation] Validation results.', $validation_results );
 
+        // We'll need this result when rendering the form ( on GFFormDisplay::get_form )
+        $this->form_after_validation = $validation_results['form'];
+
         return $validation_results;
     }
 
@@ -1163,10 +1200,11 @@ class GravityView_Edit_Entry_Render {
         );
 
 	    /**
-	     * Hide product fields from being editable. Default: false (set using self::$supports_product_fields)
+	     * @filter `gravityview/edit_entry/hide-product-fields` Hide product fields from being editable.
 	     * @since 1.9.1
+         * @param boolean $hide_product_fields Whether to hide product fields in the editor.  Default: false
 	     */
-	    $hide_product_fields = apply_filters( 'gravityview/edit_entry/hide-product-fields', empty( $supports_product_fields ) );
+	    $hide_product_fields = apply_filters( 'gravityview/edit_entry/hide-product-fields', empty( self::$supports_product_fields ) );
 
 	    if( $hide_product_fields ) {
 		    $field_type_blacklist[] = 'option';
@@ -1254,18 +1292,17 @@ class GravityView_Edit_Entry_Render {
     function filter_admin_only_fields( $fields = array(), $edit_fields = null, $form = array(), $view_id = 0 ) {
 
 	    /**
+         * @filter `gravityview/edit_entry/use_gf_admin_only_setting` When Edit tab isn't configured, should the Gravity Forms "Admin Only" field settings be used to control field display to non-admins? Default: true
 	     * If the Edit Entry tab is not configured, adminOnly fields will not be shown to non-administrators.
 	     * If the Edit Entry tab *is* configured, adminOnly fields will be shown to non-administrators, using the configured GV permissions
-	     *
 	     * @since 1.9.1
-	     *
 	     * @param boolean $use_gf_adminonly_setting True: Hide field if set to Admin Only in GF and the user is not an admin. False: show field based on GV permissions, ignoring GF permissions.
 	     * @param array $form GF Form array
 	     * @param int $view_id View ID
 	     */
 	    $use_gf_adminonly_setting = apply_filters( 'gravityview/edit_entry/use_gf_admin_only_setting', empty( $edit_fields ), $form, $view_id );
 
-	    if( $use_gf_adminonly_setting && false === GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) ) {
+	    if( $use_gf_adminonly_setting && false === GVCommon::has_cap( 'gravityforms_edit_entries', $this->entry['id'] ) ) {
             return $fields;
         }
 
@@ -1283,12 +1320,20 @@ class GravityView_Edit_Entry_Render {
      *
      * @since 1.9
      *
-     * @param $form
-     * @return mixed
+     * @param array $form Gravity Forms form
+     * @return array Modified form, if not using Conditional Logic
      */
     function filter_conditional_logic( $form ) {
 
-        if( apply_filters( 'gravityview/edit_entry/conditional_logic', true, $form ) ) {
+        /**
+         * @filter `gravityview/edit_entry/conditional_logic` Should the Edit Entry form use Gravity Forms conditional logic showing/hiding of fields?
+         * @since 1.9
+         * @param bool $use_conditional_logic True: Gravity Forms will show/hide fields just like in the original form; False: conditional logic will be disabled and fields will be shown based on configuration. Default: true
+         * @param array $form Gravity Forms form
+         */
+        $use_conditional_logic = apply_filters( 'gravityview/edit_entry/conditional_logic', true, $form );
+
+        if( $use_conditional_logic ) {
             return $form;
         }
 
@@ -1314,7 +1359,7 @@ class GravityView_Edit_Entry_Render {
      */
     function manage_conditional_logic( $has_conditional_logic, $form ) {
 
-        if( ! self::is_edit_entry() ) {
+        if( ! $this->is_edit_entry() ) {
             return $has_conditional_logic;
         }
 
@@ -1445,7 +1490,7 @@ class GravityView_Edit_Entry_Render {
     private function check_user_cap_edit_field( $field ) {
 
         // If they can edit any entries (as defined in Gravity Forms), we're good.
-        if( GFCommon::current_user_can_any( 'gravityforms_edit_entries' ) ) {
+        if( GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_others_entries' ) ) ) {
             return true;
         }
 
@@ -1453,7 +1498,7 @@ class GravityView_Edit_Entry_Render {
 
         // If the field has custom editing capaibilities set, check those
         if( $field_cap ) {
-            return GFCommon::current_user_can_any( $field['allow_edit_cap'] );
+            return GVCommon::has_cap( $field['allow_edit_cap'] );
         }
 
         return false;
@@ -1468,14 +1513,27 @@ class GravityView_Edit_Entry_Render {
 
         // Verify form submitted for editing single
         if( $this->is_edit_entry_submission() ) {
-            return wp_verify_nonce( $_POST[ self::$nonce_field ], self::$nonce_field );
+            $valid = wp_verify_nonce( $_POST[ self::$nonce_field ], self::$nonce_field );
         }
 
         // Verify
-        if( ! $this->is_edit_entry() ) { return false; }
+        else if( ! $this->is_edit_entry() ) {
+            $valid = false;
+        }
 
-        return wp_verify_nonce( $_GET['edit'], self::$nonce_key );
+        else {
+            $valid = wp_verify_nonce( $_GET['edit'], self::$nonce_key );
+        }
 
+        /**
+         * @filter `gravityview/edit_entry/verify_nonce` Override Edit Entry nonce validation. Return true to declare nonce valid.
+         * @since 1.13
+         * @param int|boolean $valid False if invalid; 1 or 2 when nonce was generated
+         * @param string $nonce_field Key used when validating submissions. Default: is_gv_edit_entry
+         */
+        $valid = apply_filters( 'gravityview/edit_entry/verify_nonce', $valid, self::$nonce_field );
+
+        return $valid;
     }
 
 

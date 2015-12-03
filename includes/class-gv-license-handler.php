@@ -15,6 +15,12 @@ class GV_License_Handler {
 	
 	const version = GravityView_Plugin::version;
 
+	/**
+	 * Post ID on gravityview.co
+	 * @since 1.15
+	 */
+	const item_id = 17;
+
 	private $EDD_SL_Plugin_Updater;
 
 	/**
@@ -65,6 +71,7 @@ class GV_License_Handler {
 			'license_box' => $this->get_license_message( $response )
 		));
 
+
 		$fields = array(
 			array(
 				'name'  => 'edd-activate',
@@ -90,15 +97,21 @@ class GV_License_Handler {
 			),
 		);
 
+
 		$class = 'button gv-edd-action';
 
 		$class .= ( !empty( $key ) && $status !== 'valid' ) ? '' : ' hide';
+
+		$disabled_attribute = GVCommon::has_cap( 'gravityview_edit_settings' ) ? false : 'disabled';
 
 		$submit = '<div class="gv-edd-button-wrapper">';
 		foreach ( $fields as $field ) {
 			$field['type'] = 'button';
 			$field['class'] = isset( $field['class'] ) ? $field['class'] . ' '. $class : $class;
 			$field['style'] = 'margin-left: 10px;';
+			if( $disabled_attribute ) {
+				$field['disabled'] = $disabled_attribute;
+			}
 			$submit .= $this->Addon->settings_submit( $field, $echo );
 		}
 		$submit .= '</div>';
@@ -145,6 +158,7 @@ class GV_License_Handler {
 			'version'   => self::version,
 			'license'   => $license_key,
 			'item_name' => self::name,
+			'item_id'   => self::item_id,
 			'author'    => self::author,
 			'url'       => home_url(),
 		);
@@ -209,9 +223,15 @@ class GV_License_Handler {
 			$message = '';
 		} else {
 
-			$class = ! empty( $license_data->error ) ? 'error' : $license_data->license;
+			if( ! empty( $license_data->error ) ) {
+				$class = 'error';
+				$string_key = $license_data->error;
+			} else {
+				$class = $license_data->license;
+				$string_key = $license_data->license;
+			}
 
-			$message = sprintf( '<p><strong>%s: %s</strong></p>', $this->strings('status'), $this->strings( $license_data->license ) );
+			$message = sprintf( '<p><strong>%s: %s</strong></p>', $this->strings('status'), $this->strings( $string_key, $license_data ) );
 		}
 
 		return $this->generate_license_box( $message, $class );
@@ -254,44 +274,54 @@ class GV_License_Handler {
 
 		$is_ajax = ( defined('DOING_AJAX') && DOING_AJAX );
 		$data = empty( $array ) ? $_POST['data'] : $array;
+		$has_cap = GVCommon::has_cap( 'gravityview_edit_settings' );
 
 		if ( $is_ajax && empty( $data['license'] ) ) {
 			die( - 1 );
 		}
 
-		$license = esc_attr( rgget( 'license', $data ) );
-		$license_data = $this->_license_get_remote_response( $data, $license );
+		// If the user isn't allowed to edit settings, show an error message
+		if( ! $has_cap ) {
+			$license_data = new stdClass();
+			$license_data->error = 'capability';
+			$license_data->message = $this->get_license_message( $license_data );
+			$json = json_encode( $license_data );
+		} else {
 
-		// Empty is returned when there's an error.
-		if ( empty( $license_data ) ) {
-			if ( $is_ajax ) {
-				exit( json_encode( array() ) );
-			} else { // Non-ajax call
-				return json_encode( array() );
-			}
-		}
+			$license      = esc_attr( rgget( 'license', $data ) );
+			$license_data = $this->_license_get_remote_response( $data, $license );
 
-		$license_data->message = $this->get_license_message( $license_data );
-
-		$json = json_encode( $license_data );
-
-		$update_license = ( !isset( $data['update'] ) || !empty( $data['update'] ) );
-
-		$is_check_action_button = ( 'check_license' === $data['edd_action'] && defined('DOING_AJAX') && DOING_AJAX );
-
-		// Failed is the response from trying to de-activate a license and it didn't work.
-		// This likely happened because people entered in a different key and clicked "Deactivate",
-		// meaning to deactivate the original key. We don't want to save this response, since it is
-		// most likely a mistake.
-		if ( $license_data->license !== 'failed' && !$is_check_action_button && $update_license ) {
-
-			if( !empty( $data['field_id'] ) ) {
-				set_transient( 'gravityview_' . esc_attr( $data['field_id'] ) . '_valid', $license_data, DAY_IN_SECONDS );
+			// Empty is returned when there's an error.
+			if ( empty( $license_data ) ) {
+				if ( $is_ajax ) {
+					exit( json_encode( array() ) );
+				} else { // Non-ajax call
+					return json_encode( array() );
+				}
 			}
 
-			$this->license_call_update_settings( $license_data, $data );
+			$license_data->message = $this->get_license_message( $license_data );
 
-		}
+			$json = json_encode( $license_data );
+
+			$update_license = ( ! isset( $data['update'] ) || ! empty( $data['update'] ) );
+
+			$is_check_action_button = ( 'check_license' === $data['edd_action'] && defined( 'DOING_AJAX' ) && DOING_AJAX );
+
+			// Failed is the response from trying to de-activate a license and it didn't work.
+			// This likely happened because people entered in a different key and clicked "Deactivate",
+			// meaning to deactivate the original key. We don't want to save this response, since it is
+			// most likely a mistake.
+			if ( $license_data->license !== 'failed' && ! $is_check_action_button && $update_license ) {
+
+				if ( ! empty( $data['field_id'] ) ) {
+					set_transient( 'gravityview_' . esc_attr( $data['field_id'] ) . '_valid', $license_data, DAY_IN_SECONDS );
+				}
+
+				$this->license_call_update_settings( $license_data, $data );
+
+			}
+		} // End $has_cap
 
 		if ( $is_ajax ) {
 			exit( $json );
@@ -318,24 +348,38 @@ class GV_License_Handler {
 	}
 
 	/**
+	 * URL to direct license renewal, or if license key is not set, then just the account page
+	 * @since 1.13.1
+	 * @param  object|null $license_data Object with license data
+	 * @return string Renewal or account URL
+	 */
+	private function get_license_renewal_url( $license_data ) {
+		$renew_license_url = ( ! empty( $license_data ) && !empty( $license_data->license_key ) ) ? sprintf( 'https://gravityview.co/checkout/?download_id=17&edd_license_key=%s&utm_source=admin_notice&utm_medium=admin&utm_content=expired&utm_campaign=Activation', $license_data->license_key ) : 'https://gravityview.co/account/';
+		return $renew_license_url;
+	}
+
+	/**
 	 * Override the text used in the Redux Framework EDD field extension
 	 * @param  array|null $status Status to get. If empty, get all strings.
+	 * @param  object|null $license_data Object with license data
 	 * @return array          Modified array of content
 	 */
-	public function strings( $status = NULL ) {
+	public function strings( $status = NULL, $license_data = null ) {
+
 
 		$strings = array(
 			'status' => esc_html__('Status', 'gravityview'),
 			'error' => esc_html__('There was an error processing the request.', 'gravityview'),
 			'failed'  => esc_html__('Could not deactivate the license. The license key you attempted to deactivate may not be active or valid.', 'gravityview'),
 			'site_inactive' => esc_html__('The license key is valid, but it has not been activated for this site.', 'gravityview'),
-			'no_activations_left' => esc_html__('Invalid: this license has reached its activation limit.', 'gravityview'),
+			'no_activations_left' => esc_html__('Invalid: this license has reached its activation limit.', 'gravityview') . ' ' . sprintf( esc_html__('You can manage license activations %son your GravityView account page%s.', 'gravityview'), '<a href="https://gravityview.co/account/#licenses">', '</a>' ),
 			'deactivated' => esc_html__('The license has been deactivated.', 'gravityview'),
 			'valid' => esc_html__('The license key is valid and active.', 'gravityview'),
 			'invalid' => esc_html__('The license key entered is invalid.', 'gravityview'),
 			'missing' => esc_html__('The license key was not defined.', 'gravityview'),
 			'revoked' => esc_html__('This license key has been revoked.', 'gravityview'),
-			'expired' => sprintf( esc_html__('This license key has expired. %sRenew your license on the GravityView website%s', 'gravityview'), '<a href="">', '</a>' ),
+			'expired' => sprintf( esc_html__('This license key has expired. %sRenew your license on the GravityView website%s to receive updates and support.', 'gravityview'), '<a href="'. esc_url( $this->get_license_renewal_url( $license_data ) ) .'">', '</a>' ),
+			'capability' => esc_html__( 'You don\'t have the ability to edit plugin settings.', 'gravityview' ),
 
 			'verifying_license' => esc_html__('Verifying license&hellip;', 'gravityview'),
 			'activate_license' => esc_html__('Activate License', 'gravityview'),

@@ -3,17 +3,21 @@
 // uncomment this line for testing
 //set_site_transient( 'update_plugins', null );
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Allows plugins to use their own update API.
  *
  * @author Pippin Williamson
- * @version 1.6
+ * @version 1.7-beta
  */
 class EDD_SL_Plugin_Updater {
 	private $api_url   = '';
 	private $api_data  = array();
 	private $name      = '';
 	private $slug      = '';
+	private $version   = '';
 
 	/**
 	 * Class constructor.
@@ -24,7 +28,6 @@ class EDD_SL_Plugin_Updater {
 	 * @param string  $_api_url     The URL pointing to the custom API endpoint.
 	 * @param string  $_plugin_file Path to the plugin file.
 	 * @param array   $_api_data    Optional data to send with API calls.
-	 * @return void
 	 */
 	function __construct( $_api_url, $_plugin_file, $_api_data = null ) {
 		$this->api_url  = trailingslashit( $_api_url );
@@ -36,6 +39,7 @@ class EDD_SL_Plugin_Updater {
 		// Set up hooks.
 		$this->init();
 		add_action( 'admin_init', array( $this, 'show_changelog' ) );
+
 	}
 
 	/**
@@ -46,10 +50,10 @@ class EDD_SL_Plugin_Updater {
 	 * @return void
 	 */
 	public function init() {
-
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ) );
 		add_filter( 'plugins_api', array( $this, 'plugins_api_filter' ), 10, 3 );
 
+		remove_action( 'after_plugin_row_' . $this->name, 'wp_plugin_update_row', 10, 2 );
 		add_action( 'after_plugin_row_' . $this->name, array( $this, 'show_update_notification' ), 10, 2 );
 	}
 
@@ -83,8 +87,6 @@ class EDD_SL_Plugin_Updater {
 			$version_info = $this->api_request( 'plugin_latest_version', array( 'slug' => $this->slug ) );
 
 			if ( false !== $version_info && is_object( $version_info ) && isset( $version_info->new_version ) ) {
-
-				$this->did_check = true;
 
 				if( version_compare( $this->version, $version_info->new_version, '<' ) ) {
 
@@ -145,7 +147,6 @@ class EDD_SL_Plugin_Updater {
 			if( ! is_object( $version_info ) ) {
 				return;
 			}
-
 
 			if( version_compare( $this->version, $version_info->new_version, '<' ) ) {
 
@@ -226,7 +227,7 @@ class EDD_SL_Plugin_Updater {
 			'slug'   => $this->slug,
 			'is_ssl' => is_ssl(),
 			'fields' => array(
-				'banners' => false, // These will be supported soon hopefully
+				'banners' => true,
 				'reviews' => false
 			)
 		);
@@ -265,7 +266,7 @@ class EDD_SL_Plugin_Updater {
 	 *
 	 * @param string  $_action The requested action.
 	 * @param array   $_data   Parameters for the API action.
-	 * @return false||object
+	 * @return false|object
 	 */
 	private function api_request( $_action, $_data ) {
 
@@ -273,11 +274,9 @@ class EDD_SL_Plugin_Updater {
 
 		$data = array_merge( $this->api_data, $_data );
 
-		if ( $data['slug'] != $this->slug )
+		if ( $data['slug'] != $this->slug ) {
 			return;
-
-		if ( empty( $data['license'] ) )
-			return;
+		}
 
 		if( $this->api_url == home_url() ) {
 			return false; // Don't allow a plugin to ping itself
@@ -285,7 +284,7 @@ class EDD_SL_Plugin_Updater {
 
 		$api_params = array(
 			'edd_action' => 'get_version',
-			'license'    => $data['license'],
+			'license'    => ! empty( $data['license'] ) ? $data['license'] : '',
 			'item_name'  => isset( $data['item_name'] ) ? $data['item_name'] : false,
 			'item_id'    => isset( $data['item_id'] ) ? $data['item_id'] : false,
 			'slug'       => $data['slug'],
@@ -299,8 +298,14 @@ class EDD_SL_Plugin_Updater {
 			$request = json_decode( wp_remote_retrieve_body( $request ) );
 		}
 
-		if ( $request && isset( $request->sections ) ) {
-			$request->sections = maybe_unserialize( $request->sections );
+		if ( $request ) {
+			if( isset( $request->sections ) ) {
+				$request->sections = maybe_unserialize( $request->sections );
+			}
+
+			if( isset( $request->banners ) ) {
+				$request->banners = (array)maybe_unserialize( $request->banners );
+			}
 		} else {
 			$request = false;
 		}

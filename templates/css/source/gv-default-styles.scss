@@ -154,7 +154,7 @@ body .gv-widget-page-links {
 
 .gv-no-results {
 	text-align: center;
-	vertical-align: center;
+	vertical-align: middle;
 	padding: .5em;
 }
 
@@ -187,7 +187,7 @@ a.gv-sort {
 		margin-bottom: .5em;
 
 		img {
-			max-width: auto;
+			max-width: none;
 		}
 	}
 }

@@ -22,6 +22,27 @@ class GravityView_Ajax {
 		add_action( 'wp_ajax_gv_sortable_fields_form', array( $this, 'get_sortable_fields' ) );
 	}
 
+	/**
+	 * Handle exiting the script (for unit testing)
+	 *
+	 * @since 1.15
+	 * @param bool|false $mixed
+	 *
+	 * @return bool
+	 */
+	private function _exit( $mixed = NULL ) {
+
+		/**
+		 * Don't exit if we're running test suite.
+		 * @since 1.15
+		 */
+		if( defined( 'DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) {
+			return $mixed;
+		}
+
+		exit( $mixed );
+	}
+
 	/** -------- AJAX ---------- */
 
 	/**
@@ -30,7 +51,7 @@ class GravityView_Ajax {
 	 */
 	function check_ajax_nonce() {
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxviews' ) ) {
-			exit( false );
+			$this->_exit( false );
 		}
 	}
 
@@ -51,15 +72,15 @@ class GravityView_Ajax {
 		// If Form was changed, JS sends form ID, if start fresh, JS sends template_id
 		if( !empty( $_POST['form_id'] ) ) {
 			do_action( 'gravityview_render_available_fields', (int) $_POST['form_id'], $context );
-			exit();
+			$this->_exit();
 		} elseif( !empty( $_POST['template_id'] ) ) {
 			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
 			do_action( 'gravityview_render_available_fields', $form, $context );
-			exit();
+			$this->_exit();
 		}
 
 		//if everything fails..
-		exit( false );
+		$this->_exit( false );
 	}
 
 
@@ -74,7 +95,7 @@ class GravityView_Ajax {
 		$this->check_ajax_nonce();
 
 		if( empty( $_POST['template_id'] ) ) {
-			exit( false );
+			$this->_exit( false );
 		}
 
 		ob_start();
@@ -85,7 +106,9 @@ class GravityView_Ajax {
 		do_action( 'gravityview_render_directory_active_areas',  $_POST['template_id'], 'single', '', true );
 		$response['single'] = ob_get_clean();
 
-		exit( json_encode( $response ) );
+		$response = array_map( 'gravityview_strip_whitespace', $response );
+
+		$this->_exit( json_encode( $response ) );
 	}
 
 	/**
@@ -97,7 +120,7 @@ class GravityView_Ajax {
 		$this->check_ajax_nonce();
 
 		if( empty( $_POST['template_id'] ) ) {
-			exit( false );
+			$this->_exit( false );
 		}
 
 		// get the fields xml config file for this specific preset
@@ -134,9 +157,11 @@ class GravityView_Ajax {
 		do_action('gravityview_render_active_areas', $template_id, 'field', 'single', $template_areas_single, $presets['fields'] );
 		$response['single'] = ob_get_clean();
 
+		$response = array_map( 'gravityview_strip_whitespace', $response );
+
 		do_action( 'gravityview_log_debug', '[get_preset_fields_config] AJAX Response', $response );
 
-		exit( json_encode( $response ) );
+		$this->_exit( json_encode( $response ) );
 	}
 
 	/**
@@ -150,7 +175,7 @@ class GravityView_Ajax {
 
 		if( empty( $_POST['template_id'] ) ) {
 			do_action( 'gravityview_log_error', '[create_preset_form] Cannot create preset form; the template_id is empty.' );
-			exit( false );
+			$this->_exit( false );
 		}
 
 		// get the xml for this specific template_id
@@ -160,34 +185,35 @@ class GravityView_Ajax {
 		$form = $this->import_form( $preset_form_xml_path );
 
 		// get the form ID
-		if( $form === false ) {
+		if( false === $form ) {
 			// send error to user
 			do_action( 'gravityview_log_error', '[create_preset_form] Error importing form for template id: ' . (int) $_POST['template_id'] );
 
-			exit( false );
+			$this->_exit( false );
 		}
 
-		exit( '<option value="'.esc_attr( $form['id'] ).'" selected="selected">'.esc_html( $form['title'] ).'</option>' );
+		$this->_exit( '<option value="'.esc_attr( $form['id'] ).'" selected="selected">'.esc_html( $form['title'] ).'</option>' );
 
 	}
 
 	/**
-	 * Import Gravity Form XML
-	 * @param  string $xml_path Path to form xml file
-	 * @return int | bool       Imported form ID or false
+	 * Import Gravity Form XML or JSON
+	 *
+	 * @param  string $xml_or_json_path Path to form XML or JSON file
+	 * @return int|bool       Imported form ID or false
 	 */
-	function import_form( $xml_path = '' ) {
+	function import_form( $xml_or_json_path = '' ) {
 
-		do_action( 'gravityview_log_debug', '[import_form] Import Preset Form. (File)', $xml_path );
+		do_action( 'gravityview_log_debug', '[import_form] Import Preset Form. (File)', $xml_or_json_path );
 
-		if( empty( $xml_path ) || !class_exists('GFExport') || !file_exists( $xml_path ) ) {
-			do_action( 'gravityview_log_error', '[import_form] Class GFExport or file not found. file: ' , $xml_path );
+		if( empty( $xml_or_json_path ) || !class_exists('GFExport') || !file_exists( $xml_or_json_path ) ) {
+			do_action( 'gravityview_log_error', '[import_form] Class GFExport or file not found. file: ', $xml_or_json_path );
 			return false;
 		}
 
 		// import form
 		$forms = '';
-		$count = GFExport::import_file( $xml_path, $forms );
+		$count = GFExport::import_file( $xml_or_json_path, $forms );
 
 		do_action( 'gravityview_log_debug', '[import_form] Importing form (Result)', $count );
 		do_action( 'gravityview_log_debug', '[import_form] Importing form (Form) ', $forms );
@@ -214,22 +240,24 @@ class GravityView_Ajax {
 
 		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) ) {
 			do_action( 'gravityview_log_error', '[get_field_options] Required fields were not set in the $_POST request. ' );
-			exit( false );
+			$this->_exit( false );
 		}
 
 		// Fix apostrophes added by JSON response
-		$post = array_map( 'stripslashes_deep', $_POST );
+		$_post = array_map( 'stripslashes_deep', $_POST );
 
 		// Sanitize
-		$post = array_map( 'esc_attr', $post );
+		$_post = array_map( 'esc_attr', $_post );
 
 		// The GF type of field: `product`, `name`, `creditcard`, `id`, `text`
-		$input_type = isset($post['input_type']) ? esc_attr( $post['input_type'] ) : NULL;
-		$context = isset($post['context']) ? esc_attr( $post['context'] ) : NULL;
+		$input_type = isset($_post['input_type']) ? esc_attr( $_post['input_type'] ) : NULL;
+		$context = isset($_post['context']) ? esc_attr( $_post['context'] ) : NULL;
 
-		$response = GravityView_Render_Settings::render_field_options( $post['field_type'], $post['template'], $post['field_id'], $post['field_label'], $post['area'], $input_type, '', '', $context  );
+		$response = GravityView_Render_Settings::render_field_options( $_post['field_type'], $_post['template'], $_post['field_id'], $_post['field_label'], $_post['area'], $input_type, '', '', $context  );
 
-		exit( $response );
+		$response = gravityview_strip_whitespace( $response );
+
+		$this->_exit( $response );
 	}
 
 	/**
@@ -250,7 +278,9 @@ class GravityView_Ajax {
 
 			$form = (int) $_POST['form_id'];
 
-		} elseif( !empty( $_POST['template_id'] ) ) {
+		}
+		// get form from preset
+		elseif( !empty( $_POST['template_id'] ) ) {
 
 			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
 
@@ -258,7 +288,9 @@ class GravityView_Ajax {
 
 		$response = gravityview_get_sortable_fields( $form );
 
-		exit( $response );
+		$response = gravityview_strip_whitespace( $response );
+
+		$this->_exit( $response );
 	}
 
 	/**
@@ -269,19 +301,28 @@ class GravityView_Ajax {
 	static function pre_get_form_fields( $template_id = '') {
 
 		if( empty( $template_id ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ' - Template ID not set.' );
 			return false;
 		} else {
 			$form_file = apply_filters( 'gravityview_template_formxml', '', $template_id );
 			if( !file_exists( $form_file )  ) {
-				do_action( 'gravityview_log_error', '[pre_get_available_fields] Importing Form Fields for preset ['. $template_id .']. File not found. file: ' . $form_file );
+				do_action( 'gravityview_log_error', __METHOD__ . ' - Importing Form Fields for preset ['. $template_id .']. File not found. file: ' . $form_file );
 				return false;
 			}
 		}
 
 		// Load xml parser (from GravityForms)
-		$xml_parser = trailingslashit( WP_PLUGIN_DIR ) . 'gravityforms/xml.php';
+		if( class_exists( 'GFCommon' ) ) {
+			$xml_parser = GFCommon::get_base_path() . '/xml.php';
+		} else {
+			$xml_parser = trailingslashit( WP_PLUGIN_DIR ) . 'gravityforms/xml.php';
+		}
+
 		if( file_exists( $xml_parser ) ) {
 			require_once( $xml_parser );
+		} else {
+			do_action( 'gravityview_log_debug', __METHOD__ . ' - Gravity Forms XML Parser not found.', $xml_parser );
+			return false;
 		}
 
 		// load file

@@ -26,16 +26,19 @@
 
 		self.maybeDisplayMessages();
 
-		self.addBulkAction();
+		// Only add Bulk Actions if user has the capability
+		if( gvGlobals.add_bulk_action * 1 ) {
+			self.addBulkAction();
+		}
 
 		// Only support approve/reject if the column is visible
-		if( 1 === parseInt( gvGlobals.show_column, 10 ) ) {
+		if( gvGlobals.show_column * 1 ) {
 
 			self.addApprovedColumn();
 
 			self.setInitialApprovedEntries();
 
-			$( '.toggleApproved' ).click( self.toggleApproved );
+			$( '.toggleApproved' ).on( 'click', self.toggleApproved );
 
 		}
 
@@ -78,7 +81,7 @@
 		/**
 		 * Add column for each entry
 		 */
-		$( 'td:has(img[src*="star"])' ).after( '<td class="gv-approve-column"><a href="#" class="toggleApproved" title="' + gvGlobals.approve_title + '"></a></td>' );
+		$( 'th.check-column[scope=row]:has(img[src*="star"]),td:has(img[src*="star"])' ).after( '<td class="gv-approve-column"><a href="#" class="toggleApproved" title="' + gvGlobals.approve_title + '"></a></td>' );
 
 	};
 
