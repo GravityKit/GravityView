@@ -743,7 +743,7 @@ class GravityView_frontend {
 	 */
 	public static function process_search_dates( $args, $search_criteria = array() ) {
 
-		$return_search_criteria = wp_parse_args( $search_criteria, array( 'start_date' => '', 'end_date' => '' ));
+		$return_search_criteria = $search_criteria;
 
 		foreach ( array( 'start_date', 'end_date' ) as $key ) {
 
