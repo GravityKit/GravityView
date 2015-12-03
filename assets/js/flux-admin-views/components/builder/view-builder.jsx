@@ -60,7 +60,7 @@ var ViewBuilder = React.createClass({
                     activeTab={this.state.activeTab}
                     handleOpenSettings={this.handleOpenSettings}
                 />
-                <TabsContainers tabList={tabs} activeTab={this.state.activeTab} />
+                <TabsContainers tabList={tabs} activeTab={this.state.activeTab} layoutData={this.state.layout} />
             </div>
         );
     }

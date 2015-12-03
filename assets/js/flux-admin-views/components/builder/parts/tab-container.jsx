@@ -7,9 +7,10 @@ var TabContainer = React.createClass({
     propTypes: {
         key: React.PropTypes.string,
         tabId:React.PropTypes.string,
-        activeTab: React.PropTypes.string // Active Tab
+        activeTab: React.PropTypes.string, // Active Tab
+        layoutData: React.PropTypes.object // just the context layout data
     },
-
+//todo: implement the layout over rows,  etc..
     render: function () {
 
         var displayContainer = { display: this.props.tabId === this.props.activeTab ? 'block': 'none' };
