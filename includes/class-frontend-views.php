@@ -798,9 +798,11 @@ class GravityView_frontend {
 			}
 		}
 
-		// The start date is AFTER the end date. This will result in no results, but let's not force the issue.
-		if ( strtotime( $return_search_criteria['start_date'] ) > strtotime( $return_search_criteria['end_date'] ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' Invalid search: the start date is after the end date.', $return_search_criteria );
+		if( isset( $return_search_criteria['start_date'] ) && isset( $return_search_criteria['end_date'] ) ) {
+			// The start date is AFTER the end date. This will result in no results, but let's not force the issue.
+			if ( strtotime( $return_search_criteria['start_date'] ) > strtotime( $return_search_criteria['end_date'] ) ) {
+				do_action( 'gravityview_log_error', __METHOD__ . ' Invalid search: the start date is after the end date.', $return_search_criteria );
+			}
 		}
 
 		return $return_search_criteria;
