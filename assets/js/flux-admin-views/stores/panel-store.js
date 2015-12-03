@@ -54,13 +54,13 @@ var PanelStore = assign( {}, EventEmitter.prototype, {
         return this.activePanel;
     },
 
-    // Set Active Panel ID
+    // Set Return active Panel ID
     setReturnPanel: function( id ) {
         if( null === id || false === id ) { id = ''; }
         this.returnPanel = id;
     },
 
-    // Get the Active Panel ID
+    // Get the Return Active Panel ID
     getReturnPanel: function() {
         return this.returnPanel;
     },
@@ -70,6 +70,7 @@ var PanelStore = assign( {}, EventEmitter.prototype, {
         this.extraArgs = args;
     },
 
+    // Get Extra Panel Arguments
     getExtraArgs: function() {
         return this.extraArgs;
     },
