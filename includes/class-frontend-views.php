@@ -735,12 +735,15 @@ class GravityView_frontend {
 	 * You can set the `start_date` or `end_date` to any value allowed by {@link http://www.php.net//manual/en/function.strtotime.php strtotime()},
 	 * including strings like "now" or "-1 year" or "-3 days".
 	 *
-	 * @todo  Compress into one
+	 * @see GFFormsModel::get_date_range_where
+	 *
 	 * @param  array      $args            View settings
 	 * @param  array      $search_criteria Search being performed, if any
 	 * @return array                       Modified `$search_criteria` array
 	 */
-	static function process_search_dates( $args, $search_criteria ) {
+	public static function process_search_dates( $args, $search_criteria = array() ) {
+
+		$return_search_criteria = $search_criteria;
 
 		foreach ( array( 'start_date', 'end_date' ) as $key ) {
 
@@ -753,30 +756,53 @@ class GravityView_frontend {
 
 				// The date was invalid
 				if ( empty( $date ) ) {
-					do_action( 'gravityview_log_error', '[process_search_dates] Invalid ' . $key . ' date format: ' . $args[ $key ] );
+					do_action( 'gravityview_log_error', __METHOD__ . ' Invalid ' . $key . ' date format: ' . $args[ $key ] );
 					continue;
 				}
 
-				if (
-					// If there is no search being performed
-					empty( $search_criteria[ $key ] ) ||
+				// The format that Gravity Forms expects for start_date and day-specific (not hour/second-specific) end_date
+				$datetime_format = 'Y-m-d H:i:s';
+				$search_is_outside_view_bounds = false;
 
-					// Or if there is a search being performed
-					( ! empty( $search_criteria[ $key ] )
-						// And the search is for entries before the start date defined by the settings
-						&& (
-							( 'start_date' === $key && strtotime( $search_criteria[ $key ] ) < $date ) ||
-							( 'end_date' === $key && strtotime( $search_criteria[ $key ] ) > $date )
-						)
-					)
-				) {
+				if( ! empty( $search_criteria[ $key ] ) ) {
+
+					$search_date = strtotime( $search_criteria[ $key ] );
+
+					// The search is for entries before the start date defined by the settings
+					switch ( $key ) {
+						case 'end_date':
+							/**
+							 * If the end date is formatted as 'Y-m-d', it should be formatted without hours and seconds
+							 * so that Gravity Forms can convert the day to 23:59:59 the previous day.
+							 *
+							 * If it's a relative date ("now" or "-1 day"), then it should use the precise date format
+							 *
+							 * @see GFFormsModel::get_date_range_where
+							 */
+							$datetime_format               = gravityview_is_valid_datetime( $args[ $key ] ) ? 'Y-m-d' : 'Y-m-d H:i:s';
+							$search_is_outside_view_bounds = ( $search_date > $date );
+							break;
+						case 'start_date':
+							$search_is_outside_view_bounds = ( $search_date < $date );
+							break;
+					}
+				}
+
+				// If there is no search being performed, or if there is a search being performed that's outside the bounds
+				if ( empty( $search_criteria[ $key ] ) || $search_is_outside_view_bounds ) {
+
 					// Then we override the search and re-set the start date
-					$search_criteria[ $key ] = date( 'Y-m-d H:i:s' , $date );
+					$return_search_criteria[ $key ] = date_i18n( $datetime_format , $date, true );
 				}
 			}
 		}
 
-		return $search_criteria;
+		// The start date is AFTER the end date. This will result in no results, but let's not force the issue.
+		if ( strtotime( $return_search_criteria['start_date'] ) > strtotime( $return_search_criteria['end_date'] ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ' Invalid search: the start date is after the end date.', $return_search_criteria );
+		}
+
+		return $return_search_criteria;
 	}
 
 
@@ -1048,6 +1074,7 @@ class GravityView_frontend {
 	 * Currently only modifies sorting ID when sorting by the full name. Sorts by first name.
 	 * Use the `gravityview/sorting/full-name` filter to override.
 	 *
+	 * @todo Filter from GravityView_Field
 	 * @since 1.7.4
 	 *
 	 * @param int|string $sort_field_id Field used for sorting (`id` or `1.2`)

@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 == Changelog ==
 
 * Fixed: Cannot delete entry notes from Gravity Forms Entry screen
+* Fixed: Date Range searches did not include the "End Date" day
 * Fixed: Support Port docs not working on HTTPS sites
 * Fixed: When deleting an entry, only show "Entry Deleted" message for the deleted entry's View
 * Fixed: "Open link in a new tab or window?" setting for Paragraph Text fields

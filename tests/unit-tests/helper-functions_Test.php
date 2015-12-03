@@ -42,6 +42,53 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::gravityview_is_valid_datetime
+	 * @since 1.15.2
+	 * @group datetime
+	 */
+	public function test_gravityview_is_valid_datetime() {
+
+		$falses = array(
+			'now',
+			'-1 week',
+			'gobbily gook',
+			'first monday of november 2005',
+			'first day of november 2005',
+			'2001-01-20 12:29:30',
+			'2001-01-40',
+		);
+
+		foreach( $falses as $false ) {
+			$this->assertFalse( gravityview_is_valid_datetime( $false ), $false );
+		}
+
+		// YYYY-MM-DD
+		$trues = array(
+			'2001-01-20',
+			'2051-11-20',
+		);
+
+		foreach( $trues as $true ) {
+			$this->assertTrue( gravityview_is_valid_datetime( $true ), $true );
+		}
+
+		$format_checks = array(
+			'01/30/2001',
+			'11/30/2051',
+		);
+
+		foreach( $format_checks as $format_check ) {
+
+			// Correct format
+			$this->assertTrue( gravityview_is_valid_datetime( $format_check, 'm/d/Y' ), $format_check );
+
+			// Wrong format
+			$this->assertFalse( gravityview_is_valid_datetime( $format_check, 'm-d-Y' ), $format_check );
+			$this->assertFalse( gravityview_is_valid_datetime( $format_check, 'Y-m-d' ), $format_check );
+		}
+	}
+
+	/**
 	 * @covers ::gravityview_strip_whitespace()
 	 */
 	public function test_gravityview_strip_whitespace() {
