@@ -281,14 +281,14 @@ class GravityView_Welcome {
 					<li>Fixed: Select, multi-select, radio, checkbox, and post category field types should use exact match search</li>
 					<li>Fixed: Cannot delete entry notes from Gravity Forms Entry screen</li>
 					<li>Fixed: Date Range search field label not working</li>
-					<li>Fixed: Date Range searches did not include the <q>End Date</q> day</li>
+					<li>Fixed: Date Range searches did not include the &quot;End Date&quot; day</li>
 					<li>Fixed: Support Port docs not working on HTTPS sites</li>
-					<li>Fixed: When deleting an entry, only show <q>Entry Deleted</q> message for the deleted entry&#39;s View</li>
-					<li>Fixed: <q>Open link in a new tab or window?</q> setting for Paragraph Text fields</li>
+					<li>Fixed: When deleting an entry, only show &quot;Entry Deleted&quot; message for the deleted entry&#39;s View</li>
+					<li>Fixed: &quot;Open link in a new tab or window?&quot; setting for Paragraph Text fields</li>
 					<li>Fixed: Custom Labels not being used as field label in the View Configuration screen
 
 						<ul>
-							<li>Tweak: Custom Labels will be used as the field label, even when the <q>Show Label</q> checkbox isn&#39;t checked</li>
+							<li>Tweak: Custom Labels will be used as the field label, even when the &quot;Show Label&quot; checkbox isn&#39;t checked</li>
 						</ul></li>
 					<li>Tweak: Show available plugin updates, even when license is expired</li>
 					<li>Tweak: Improve spacing of the Approval column on the Entries screen</li>
