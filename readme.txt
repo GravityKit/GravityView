@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.3.1
+Tested up to: 4.4
 Stable tag: trunk
 Contributors: katzwebservices, luistinygod
 License: GPL 3 or higher
@@ -20,8 +20,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-* Fixed: Select, multi-select, radio, checkbox, and post category field types should use exact match search
+= 1.15.2 on December 3 =
+
 * Fixed: Approval column not being added properly on the Form Entries screen for Gravity Forms 1.9.14.18+
+* Fixed: Select, multi-select, radio, checkbox, and post category field types should use exact match search
 * Fixed: Cannot delete entry notes from Gravity Forms Entry screen
 * Fixed: Date Range search field label not working
 * Fixed: Date Range searches did not include the "End Date" day
