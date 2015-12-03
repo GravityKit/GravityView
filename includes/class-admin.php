@@ -22,7 +22,7 @@ class GravityView_Admin {
 	private function include_required_files() {
 
 		// Migrate Class
-		require_once( GRAVITYVIEW_DIR . 'includes/class-migrate.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-migrate.php' );
 
 		// Don't load tooltips if on Gravity Forms, otherwise it overrides translations
 		if( class_exists( 'GFCommon' ) && class_exists( 'GFForms' ) && !GFForms::is_gravity_page() ) {
@@ -31,7 +31,7 @@ class GravityView_Admin {
 
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes/class-gravityview-admin-metaboxes.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/entry-list.php' );
-		require_once( GRAVITYVIEW_DIR . 'includes/class-change-entry-creator.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-change-entry-creator.php' );
 
 		/** @since 1.15 **/
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/class-gravityview-support-port.php' );
@@ -214,16 +214,9 @@ class GravityView_Admin {
 			return;
 		}
 
-
 		$wp_allowed_scripts = array(
-			'debug-bar-extender',
-            'backcallsc',
             'common',
             'admin-bar',
-            'debug-bar',
-            'debug-bar-codemirror',
-            'debug-bar-console',
-            'puc-debug-bar-js',
             'autosave',
             'post',
 			'inline-edit-post',
@@ -236,11 +229,7 @@ class GravityView_Admin {
             'thickbox',
 			'wp-color-picker',
 
-            'gform_tooltip_init',
-            'gform_field_filter',
-            'gform_forms',
-
-		    // Settings
+            // Settings
 			'gv-admin-edd-license',
 
             // Common
@@ -259,26 +248,6 @@ class GravityView_Admin {
 			'jquery-ui-draggable',
 			'jquery-ui-droppable',
             'jquery-ui-accordion',
-
-			// WP SEO
-			'wp-seo-metabox',
-			'wpseo-admin-media',
-			'jquery-qtip',
-			'jquery-ui-autocomplete',
-
-			// Genesis theme framework
-		    'genesis_admin_js',
-
-			// Avada
-			'jquery.biscuit',
-			'avada_upload',
-			'tipsy',
-			'jquery-ui-slider',
-			'smof',
-			'cookie',
-			'kd-multiple-featured-images',
-			'media-upload',
-			'jquery-ui-core',
 		);
 
 		$this->remove_conflicts( $wp_scripts, $wp_allowed_scripts, 'scripts' );
@@ -313,13 +282,8 @@ class GravityView_Admin {
 		}
 
         $wp_allowed_styles = array(
-        	'debug-bar-extender',
 	        'admin-bar',
-	        'debug-bar',
-	        'debug-bar-codemirror',
-	        'debug-bar-console',
-	        'puc-debug-bar-style',
-	        'colors',
+        	'colors',
 	        'ie',
 	        'wp-auth-check',
 	        'media-views',
@@ -328,22 +292,8 @@ class GravityView_Admin {
 	        'wp-jquery-ui-dialog',
 	        'jquery-ui-sortable',
 
-	        // Gravity Forms
-	        'gform_tooltip',
-	        'gform_font_awesome',
-
             // Settings
 	        'gravityview_settings',
-
-	        // WP SEO
-	        'wp-seo-metabox',
-	        'wpseo-admin-media',
-	        'metabox-tabs',
-	        'metabox-classic',
-	        'metabox-fresh',
-
-	        // Genesis theme framework
-            'genesis_admin_css',
 
 	        // @todo qTip styles not loading for some reason!
 	        'jquery-qtip.js',
@@ -462,10 +412,19 @@ class GravityView_Admin {
 		return GravityView_Compatibility::get_plugin_status( $location );
 	}
 
-	static function is_admin_page($hook = '', $page = NULL) {
+	/**
+	 * Is the current admin page a GravityView-related page?
+	 *
+	 * @todo Convert to use WP_Screen
+	 * @param string $hook
+	 * @param null|string $page Optional. String return value of page to compare against.
+	 *
+	 * @return bool|string|void If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
+	 */
+	static function is_admin_page( $hook = '', $page = NULL ) {
 		global $current_screen, $plugin_page, $pagenow, $post;
 
-		if( !is_admin() ) { return false; }
+		if( ! is_admin() ) { return false; }
 
 		$is_page = false;
 
@@ -502,7 +461,7 @@ class GravityView_Admin {
 		$is_page = apply_filters( 'gravityview_is_admin_page', $is_page, $hook );
 
 		// If the current page is the same as the compared page
-		if(!empty($page)) {
+		if( !empty( $page ) ) {
 			return $is_page === $page;
 		}
 

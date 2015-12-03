@@ -10,11 +10,10 @@ $view_id = $gravityview_view->getViewId();
 $value = $gravityview_view->search_field['value'];
 $label = $gravityview_view->search_field['label'];
 $name = $gravityview_view->search_field['name'];
-
 ?>
 
 <div class="gv-search-box gv-search-date">
-	<?php if( ! gv_empty( $search_field['label'], false ) ) { ?>
+	<?php if( ! gv_empty( $label, false ) ) { ?>
 	<label for="search-box-<?php echo esc_attr( $name ).'-start'; ?>"><?php echo esc_html( $label ); ?></label>
 	<?php } ?>
 	<p>

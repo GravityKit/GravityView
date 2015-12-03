@@ -354,7 +354,7 @@ class GV_License_Handler {
 	 * @return string Renewal or account URL
 	 */
 	private function get_license_renewal_url( $license_data ) {
-		$renew_license_url = ( ! empty( $license_data ) && !empty( $license_data->license_key ) ) ? sprintf( 'https://gravityview.co/checkout/?download_id=17&edd_license_key=%s', $license_data->license_key ) : 'https://gravityview.co/account/';
+		$renew_license_url = ( ! empty( $license_data ) && !empty( $license_data->license_key ) ) ? sprintf( 'https://gravityview.co/checkout/?download_id=17&edd_license_key=%s&utm_source=admin_notice&utm_medium=admin&utm_content=expired&utm_campaign=Activation', $license_data->license_key ) : 'https://gravityview.co/account/';
 		return $renew_license_url;
 	}
 

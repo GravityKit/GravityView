@@ -414,7 +414,11 @@ class GravityView_View_Data {
 		$meta_content = '';
 
 		foreach( $meta_keys as $key ) {
-			$meta_content .= get_post_meta( $post_id, $key , true ) . ' ';
+			$meta = get_post_meta( $post_id, $key , true );
+			if( ! is_string( $meta ) ) {
+				continue;
+			}
+			$meta_content .= $meta . ' ';
 		}
 
 		if( empty( $meta_content ) ) {
@@ -691,6 +695,15 @@ class GravityView_View_Data {
 				'group'	=> 'default',
 				'desc'	=> __('The text of the link that returns to the multiple entries view.', 'gravityview'),
 				'type'	=> 'text',
+				'value'	=> '',
+				'show_in_shortcode' => false,
+				'full_width' => true,
+			),
+			'embed_only' => array(
+				'label'	=> __('Prevent Direct Access', 'gravityview'),
+				'group'	=> 'default',
+				'desc'	=> __('Only allow access to this View when embedded using the shortcode.', 'gravityview'),
+				'type'	=> 'checkbox',
 				'value'	=> '',
 				'show_in_shortcode' => false,
 				'full_width' => true,

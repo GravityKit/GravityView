@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Allows plugins to use their own update API.
  *
  * @author Pippin Williamson
- * @version 1.7
+ * @version 1.7-beta
  */
 class EDD_SL_Plugin_Updater {
 	private $api_url   = '';
@@ -129,7 +129,9 @@ class EDD_SL_Plugin_Updater {
 
 		$update_cache = get_site_transient( 'update_plugins' );
 
-		if ( ! is_object( $update_cache ) || empty( $update_cache->response ) || empty( $update_cache->response[ $this->name ] ) ) {
+		$update_cache = is_object( $update_cache ) ? $update_cache : new stdClass();
+
+		if ( empty( $update_cache->response ) || empty( $update_cache->response[ $this->name ] ) ) {
 
 			$cache_key    = md5( 'edd_plugin_' .sanitize_key( $this->name ) . '_version_info' );
 			$version_info = get_transient( $cache_key );
@@ -276,17 +278,13 @@ class EDD_SL_Plugin_Updater {
 			return;
 		}
 
-		if ( empty( $data['license'] ) ) {
-			return;
-		}
-
 		if( $this->api_url == home_url() ) {
 			return false; // Don't allow a plugin to ping itself
 		}
 
 		$api_params = array(
 			'edd_action' => 'get_version',
-			'license'    => $data['license'],
+			'license'    => ! empty( $data['license'] ) ? $data['license'] : '',
 			'item_name'  => isset( $data['item_name'] ) ? $data['item_name'] : false,
 			'item_id'    => isset( $data['item_id'] ) ? $data['item_id'] : false,
 			'slug'       => $data['slug'],

@@ -177,7 +177,8 @@ class GravityView_Admin_ApproveEntries {
 			return;
 		}
 
-		if ( 'bulk' === RGForms::post( 'action' ) ) {
+		// gforms_update_note is sent when bulk editing entry notes. We don't want to process then.
+		if ( 'bulk' === RGForms::post( 'action' ) && empty( $_POST['gforms_update_note'] ) ) {
 
 			check_admin_referer( 'gforms_entry_list', 'gforms_entry_list' );
 

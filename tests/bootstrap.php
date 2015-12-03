@@ -107,6 +107,7 @@ class GV_Unit_Tests_Bootstrap {
 
 	/**
 	 * Fetch the REST API files
+	 * @since 1.15.1
 	 */
 	private function load_rest_api() {
 

@@ -13,7 +13,7 @@ $label = $gravityview_view->search_field['label'];
 ?>
 
 <div class="gv-search-box gv-search-date">
-	<?php if( ! gv_empty( $search_field['label'], false ) ) { ?>
+	<?php if( ! gv_empty( $label, false ) ) { ?>
 	<label for="gv_start_date_<?php echo $view_id; ?>"><?php echo esc_html( $label ); ?></label>
 	<?php } ?>
 	<p>

@@ -41,11 +41,20 @@ class GravityView_Post_Types {
 		 */
 		$is_hierarchical = (bool)apply_filters( 'gravityview_is_hierarchical', false );
 
-		$supports = array( 'title', 'genesis-layouts', 'revisions' );
+		$supports = array( 'title', 'revisions' );
 
 		if( $is_hierarchical ) {
 			$supports[] = 'page-attributes';
 		}
+
+		/**
+		 * @filter  `gravityview_post_type_supports` Modify post type support values for `gravityview` post type
+		 * @see add_post_type_support()
+		 * @since 1.15.2
+		 * @param array $supports Array of features associated with a functional area of the edit screen. Default: 'title', 'revisions'. If $is_hierarchical, also 'page-attributes'
+		 * @param[in] boolean $is_hierarchical Do Views support parent/child relationships? See `gravityview_is_hierarchical` filter.
+		 */
+		$supports = apply_filters( 'gravityview_post_type_support', $supports, $is_hierarchical );
 
 		//Register Custom Post Type - gravityview
 		$labels = array(
@@ -62,6 +71,9 @@ class GravityView_Post_Types {
 			'search_items'        => __( 'Search Views', 'gravityview' ),
 			'not_found'           => self::no_views_text(),
 			'not_found_in_trash'  => __( 'No Views found in Trash', 'gravityview' ),
+			'filter_items_list'     => __( 'Filter Views list', 'gravityview' ),
+			'items_list_navigation' => __( 'Views list navigation', 'gravityview' ),
+			'items_list'            => __( 'Views list', 'gravityview' ),
 		);
 		$args = array(
 			'label'               => __( 'view', 'gravityview' ),
@@ -69,7 +81,14 @@ class GravityView_Post_Types {
 			'labels'              => $labels,
 			'supports'            => $supports,
 			'hierarchical'        => $is_hierarchical,
-			'public'              => GravityView_Compatibility::is_valid(),
+			/**
+			 * @filter `gravityview_direct_access` Should Views be directly accessible, or only visible using the shortcode?
+			 * @see https://codex.wordpress.org/Function_Reference/register_post_type#public
+			 * @since 1.15.2
+			 * @param[in,out] boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded via shortcode. Default: `true`
+			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
+			 */
+			'public'              => apply_filters( 'gravityview_direct_access', GravityView_Compatibility::is_valid(), 0 ),
 			'show_ui'             => GravityView_Compatibility::is_valid(),
 			'show_in_menu'        => GravityView_Compatibility::is_valid(),
 			'show_in_nav_menus'   => true,
@@ -84,10 +103,10 @@ class GravityView_Post_Types {
 			 */
 			'has_archive'         => apply_filters( 'gravityview_has_archive', false ),
 			'exclude_from_search' => true,
-			'publicly_queryable'  => GravityView_Compatibility::is_valid(),
 			'rewrite'             => array(
 				/**
-				 * @filter `gravityview_slug` Modify the url part for a View. [Read the doc](http://docs.gravityview.co/article/62-changing-the-view-slug)
+				 * @filter `gravityview_slug` Modify the url part for a View.
+				 * @see http://docs.gravityview.co/article/62-changing-the-view-slug
 				 * @param string $slug The slug shown in the URL
 				 */
 				'slug' => apply_filters( 'gravityview_slug', 'view' )

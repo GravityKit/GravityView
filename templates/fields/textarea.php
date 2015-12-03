@@ -21,5 +21,9 @@ if( !empty( $field_settings['make_clickable'] ) ) {
     $value = make_clickable( $value );
 }
 
+if( ! empty( $field_settings['new_window'] ) ) {
+	$value = links_add_target( $value );
+}
+
 echo wpautop( $value );
 

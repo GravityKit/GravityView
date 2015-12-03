@@ -11,8 +11,6 @@
  * @since 1.0.0
  */
 
-
-
 class GravityView_API {
 
 	/**
@@ -121,7 +119,13 @@ class GravityView_API {
 
 		if( !empty( $field['width'] ) ) {
 			$width = absint( $field['width'] );
-			$width = $width > 100 ? 100 : sprintf( $format, $width );
+
+			// If using percentages, limit to 100%
+			if( '%d%%' === $format && $width > 100 ) {
+				$width = 100;
+			}
+
+			$width = sprintf( $format, $width );
 		}
 
 		return $width;
@@ -213,7 +217,7 @@ class GravityView_API {
 	 * @param integer $field
 	 * @return null|string
 	 */
-	public static function field_value( $entry, $field_settings, $format = 'html') {
+	public static function field_value( $entry, $field_settings, $format = 'html' ) {
 
 		if( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
 			return NULL;
@@ -317,7 +321,9 @@ class GravityView_API {
 		 */
 		if( !empty( $field_settings['show_as_link'] ) ) {
 
-			$output = self::entry_link_html( $entry, $output, array(), $field_settings );
+			$link_atts = empty( $field_settings['new_window'] ) ? array() : array( 'target' => '_blank' );
+
+			$output = self::entry_link_html( $entry, $output, $link_atts, $field_settings );
 
 		}
 
@@ -1012,9 +1018,10 @@ function gravityview_get_context() {
  * @return array           Array of file output, with `file_path` and `html` keys (see comments above)
  */
 function gravityview_get_files_array( $value, $gv_class = '' ) {
+	/** @define "GRAVITYVIEW_DIR" "../" */
 
 	if( !class_exists( 'GravityView_Field' ) ) {
-		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/class-gravityview-field.php' );
 	}
 
 	if( !class_exists( 'GravityView_Field_FileUpload' ) ) {
@@ -1104,7 +1111,7 @@ function gravityview_field_output( $passed_args ) {
 	$entry = empty( $args['entry'] ) ? array() : $args['entry'];
 
 	/**
-	 * Create the Context for replacing.
+	 * Create the content variables for replacing.
 	 * @since 1.11
 	 */
 	$context = array(

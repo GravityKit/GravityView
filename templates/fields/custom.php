@@ -20,8 +20,9 @@ if( !class_exists( 'GFFormDisplay' ) ) {
 $gravityview_view->setCurrentFieldSetting('show_as_link', false);
 
 /**
- * Allow for custom content behavior before merge tags replacement
+ * @filter `gravityview/fields/custom/content_before` Modify Custom Content field output before Merge Tag processing
  * @since 1.6.2
+ * @param string $content HTML content of field
  */
 $field_settings['content'] = apply_filters( 'gravityview/fields/custom/content_before', $field_settings['content'] );
 
@@ -43,7 +44,9 @@ if( !empty( $field_settings['wpautop'] ) ) {
 }
 
 /**
+ * @filter `gravityview/fields/custom/content_after` Modify Custom Content field output after Merge Tag variables get replaced, before shortcodes get processed
  * @since 1.6.2
+ * @param string $content HTML content of field
  */
 $content = apply_filters( 'gravityview/fields/custom/content_after', $content );
 

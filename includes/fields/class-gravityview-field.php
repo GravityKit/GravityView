@@ -13,6 +13,73 @@ abstract class GravityView_Field {
 	var $name;
 
 	/**
+	 * @internal Not yet implemented
+	 * @since 1.15.2
+	 * @type string The description of the field in the field picker
+	 */
+	var $description;
+
+	/**
+	 * @internal Not yet implemented
+	 * @since 1.15.2
+	 * @type string The label of the field in the field picker
+	 */
+	var $label;
+
+	/**
+	 * @internal Not yet implemented
+	 * @since 1.15.2
+	 * @type string The group belongs to this field in the field picker
+	 */
+	var $group;
+
+	/**
+	 * @internal Not yet implemented
+	 * @type boolean Can the field be searched?
+	 * @since 1.15.2
+	 */
+	var $is_searchable;
+
+	/**
+	 * @internal Not yet implemented
+	 * @type array $search_operators The type of search operators available for this field
+	 * @since 1.15.2
+	 */
+	var $search_operators;
+
+	/**
+	 * @internal Not yet implemented
+	 * @type boolean Can the field be sorted in search?
+	 * @since 1.15.2
+	 */
+	var $is_sortable;
+
+	/**
+	 * @internal Not yet implemented
+	 * @type boolean Is field content number-based?
+	 * @since 1.15.2
+	 */
+	var $is_numeric;
+
+	/**
+	 * @internal Not yet implemented
+	 * @todo implement supports_context() method
+	 * The contexts in which a field is available. Some fields aren't editable, for example.
+	 * - `singular` is an alias for both `single` and `edit`
+	 * - `multiple` is an alias for `directory` (backward compatibility)
+	 * @type array
+	 * @since 1.15.2
+	 */
+	var $contexts = array( 'single', 'multiple', 'edit', 'export' );
+
+	/**
+	 * @internal Not yet implemented
+	 * @since 1.15.2
+	 * @type string The name of a corresponding Gravity Forms GF_Field class, if exists
+	 */
+	protected $_gf_field_class_name;
+
+	/**
 	 * @var string The field ID being requested
 	 * @since 1.14
 	 */
@@ -28,6 +95,7 @@ abstract class GravityView_Field {
 
 		// Modify the field options based on the name of the field type
 		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 5 );
+
 	}
 
 	private function field_support_options() {

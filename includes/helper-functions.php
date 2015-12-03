@@ -333,3 +333,26 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 
 	return empty( $value );
 }
+
+/**
+ * Check whether a string is a expected date format
+ *
+ * @since 1.15.2
+ *
+ * @param string $datetime The date to check
+ * @param string $expected_format Check whether the date is formatted as expected. Default: Y-m-d
+ *
+ * @return bool True: it's a valid datetime, formatted as expected. False: it's not a date formatted as expected.
+ */
+function gravityview_is_valid_datetime( $datetime, $expected_format = 'Y-m-d' ) {
+
+	/**
+	 * @var bool|DateTime False if not a valid date, (like a relative date). DateTime if a date was created.
+	 */
+	$formatted_date = DateTime::createFromFormat( $expected_format, $datetime );
+
+	/**
+	 * @see http://stackoverflow.com/a/19271434/480856
+	 */
+	return ( $formatted_date && $formatted_date->format( $expected_format ) === $datetime );
+}

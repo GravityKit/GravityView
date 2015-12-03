@@ -30,17 +30,9 @@ class GravityView_Admin_Metaboxes {
 	 */
 	function initialize() {
 
-		// Make Yoast go down to the bottom please.
-		add_filter('wpseo_metabox_prio', array( $this, '__return_low') );
-
 		add_action( 'add_meta_boxes', array( $this, 'register_metaboxes' ));
 
-		// Fix annoying 3rd party metabox behavior
-		// Remove metaboxes. We need to run this twice for Genesis (9) and others (11). Default is 10.
-		add_action( 'admin_menu' , array( $this, 'remove_other_metaboxes' ), 9 );
-		add_action( 'admin_menu' , array( $this, 'remove_other_metaboxes' ), 11 );
-		// Add them back in
-		add_action( 'add_meta_boxes', array( $this, 'add_other_metaboxes' ), 20 );
+		add_action( 'add_meta_boxes_gravityview' , array( $this, 'update_priority' ) );
 
 		// information box
 		add_action( 'post_submitbox_misc_actions', array( $this, 'render_shortcode_hint' ) );
@@ -48,11 +40,24 @@ class GravityView_Admin_Metaboxes {
 	}
 
 	/**
-	 * Return 'low' as the status for metabox priority
-	 * @return string 'low'
+	 * GravityView wants to have the top (`normal`) metaboxes all to itself, so we move all plugin/theme metaboxes down to `advanced`
+	 * @since 1.15.2
 	 */
-	function __return_low() {
-		return 'low';
+	function update_priority() {
+		global $wp_meta_boxes;
+
+		if( ! empty( $wp_meta_boxes['gravityview'] ) ) {
+			foreach( array( 'high', 'core', 'low' ) as $position ) {
+				if( isset( $wp_meta_boxes['gravityview']['normal'][ $position ] ) ) {
+					foreach( $wp_meta_boxes['gravityview']['normal'][ $position ] as $key => $meta_box ) {
+						if( ! preg_match( '/^gravityview_/ism', $key ) ) {
+							$wp_meta_boxes['gravityview']['advanced'][ $position ][ $key ] = $meta_box;
+							unset( $wp_meta_boxes['gravityview']['normal'][ $position ][ $key ] );
+						}
+					}
+				}
+			}
+		}
 	}
 
 	function register_metaboxes() {
@@ -298,67 +303,6 @@ class GravityView_Admin_Metaboxes {
 		if( !gravityview_get_directory_fields( $post->ID ) ) { return; }
 
 		include self::$metaboxes_dir . 'views/shortcode-hint.php';
-	}
-
-	/**
-	 * Modify WooThemes metabox behavior
-	 *
-	 * Only show when the View has been configured.
-	 *
-	 * @return void
-	 */
-	function remove_other_metaboxes() {
-		global $pagenow;
-
-		$gv_page = gravityview_is_admin_page();
-
-		// New View or Edit View page
-		if($gv_page === 'single') {
-
-			// Prevent the SEO from being checked. Eesh.
-			add_filter( 'wpseo_use_page_analysis', '__return_false' );
-
-			// Genesis - adds the metaboxes too high. Added back in below.
-			remove_action( 'admin_menu', 'genesis_add_inpost_layout_box' );
-
-			// New View page
-			if($pagenow === 'post-new.php' ) {
-
-				// WooThemes
-				remove_meta_box( 'woothemes-settings', 'gravityview', 'normal' );
-
-				// WordPress SEO Plugin
-				add_filter( 'option_wpseo_titles', array( $this, 'hide_wordpress_seo_metabox' ) );
-			}
-
-		}
-
-	}
-
-	function add_other_metaboxes() {
-		global $pagenow;
-
-		if(!gravityview_is_admin_page()) { return; }
-
-		// Genesis
-		if(function_exists('genesis_inpost_layout_box') && $pagenow !== 'post-new.php') {
-			// Add back in Genesis meta box
-			add_meta_box( 'genesis_inpost_layout_box', __( 'Layout Settings', 'gravityview' ), 'genesis_inpost_layout_box', 'gravityview', 'advanced', 'default' );
-		}
-	}
-
-	/**
-	 * Modify the WordPress SEO plugin's metabox behavior
-	 *
-	 * Only show when the View has been configured.
-	 * @param  array       $options WP SEO options array
-	 * @return array               Modified
-	 */
-	function hide_wordpress_seo_metabox( $options = array() ) {
-
-		$options['hideeditbox-gravityview'] = true;
-
-		return $options;
 	}
 
 }

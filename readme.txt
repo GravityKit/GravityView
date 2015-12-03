@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.3.1
+Tested up to: 4.4
 Stable tag: trunk
 Contributors: katzwebservices, luistinygod
 License: GPL 3 or higher
@@ -19,6 +19,36 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 1.15.2 on December 3 =
+
+* Fixed: Approval column not being added properly on the Form Entries screen for Gravity Forms 1.9.14.18+
+* Fixed: Select, multi-select, radio, checkbox, and post category field types should use exact match search
+* Fixed: Cannot delete entry notes from Gravity Forms Entry screen
+* Fixed: Date Range search field label not working
+* Fixed: Date Range searches did not include the "End Date" day
+* Fixed: Support Port docs not working on HTTPS sites
+* Fixed: When deleting an entry, only show "Entry Deleted" message for the deleted entry's View
+* Fixed: "Open link in a new tab or window?" setting for Paragraph Text fields
+* Fixed: Custom Labels not being used as field label in the View Configuration screen
+    * Tweak: Custom Labels will be used as the field label, even when the "Show Label" checkbox isn't checked
+* Tweak: Show available plugin updates, even when license is expired
+* Tweak: Improve spacing of the Approval column on the Entries screen
+* Tweak: Added support for new accessibility labels added in WordPress 4.4
+
+__Developer Notes:__
+
+* Fixed: Make `gravityview/fields/fileupload/link_atts` filter available when not using lightbox with File Uploads field
+* Renamed files:
+    - `includes/fields/class.field.php` => `includes/fields/class-gravityview-field.php`
+    - `includes/class-logging.php` => `includes/class-gravityview-logging.php`
+    - `includes/class-image.php` => `includes/class-gravityview-image.php`
+    - `includes/class-migrate.php` => `includes/class-gravityview-migrate.php`
+    - `includes/class-change-entry-creator.php` => `includes/class-gravityview-change-entry-creator.php`
+* New: `gravityview/delete-entry/verify_nonce` Override Delete Entry nonce validation. Return true to declare nonce valid.
+* New: `gravityview/entry_notes/add_note` filter to modify GravityView note properties before being added
+* New: `gravityview_post_type_supports` filter to modify `gravityview` post type support values
+* New: `gravityview_publicly_queryable` filter to modify whether Views be accessible using `example.com/?post_type=gravityview`. Default: Whether the current user has `read_private_gravityviews` capability (Editor or Administrator by default)
 
 = 1.15.1 on October 27 =
 * New: Use `{get}` Merge Tags as `[gravityview]` attributes

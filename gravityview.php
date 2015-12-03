@@ -16,7 +16,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.15.1
+ * Version:          	1.15.2
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravityview
@@ -89,7 +89,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.15.1';
+	const version = '1.15.2';
 
 	private static $instance;
 
@@ -142,15 +142,15 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
 
 		// Load fields
-		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/fields/class-gravityview-field.php' );
 
 		// Load all field files automatically
 		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/*.php' ) as $gv_field_filename ) {
 			include_once( $gv_field_filename );
 		}
 
-		// Load notes
 		include_once( GRAVITYVIEW_DIR .'includes/class-gravityview-entry-notes.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/load-plugin-and-theme-hooks.php' );
 
 		// Load Extensions
 		// @todo: Convert to a scan of the directory or a method where this all lives
@@ -167,7 +167,7 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR . 'includes/class-oembed.php' );
 
 		// Add logging
-		include_once( GRAVITYVIEW_DIR . 'includes/class-logging.php');
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-logging.php' );
 
 		include_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
@@ -305,11 +305,11 @@ final class GravityView_Plugin {
 
 		if( self::is_admin() ) { return; }
 
-		include_once( GRAVITYVIEW_DIR .'includes/class-image.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-image.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-template.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-api.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-frontend-views.php' );
-		include_once( GRAVITYVIEW_DIR . 'includes/class-change-entry-creator.php' );
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-change-entry-creator.php' );
 
 
         /**
