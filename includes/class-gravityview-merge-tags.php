@@ -116,6 +116,10 @@ class GravityView_Merge_Tags {
 				'label' => __('Entry Creator: Roles', 'gravityview'),
 				'tag' => '{created_by:roles}'
 			),
+			array(
+				'label' => __('Date Created'),
+				'tag' => '{date_created}'
+			),
 		);
 
 		//return the form object from the php hook
@@ -152,6 +156,78 @@ class GravityView_Merge_Tags {
 
 		// Process the merge vars here
 		$text = self::replace_user_variables_created_by( $text, $form, $entry, $url_encode, $esc_html );
+
+		$text = self::replace_date_created( $text, $form, $entry, $url_encode, $esc_html );
+
+		return $text;
+	}
+
+	/**
+	 * Add {date_created} merge tag
+	 *
+	 * @todo support {date_created:relative}
+	 * @todo support {date_created:[php date format]}
+	 * @todo default: get_option('date_format');
+	 *
+	 * @since 1.15.2
+	 * @param string $text Text to replace
+	 * @param array $form Gravity Forms form array
+	 * @param array $entry Entry array
+	 * @param bool $url_encode Whether to URL-encode output
+	 */
+	public static function replace_date_created( $text, $form = array(), $entry = array(), $url_encode = false ) {
+
+		// Is there is {get:[xyz]} merge tag?
+		preg_match_all( "/{date_created:?(.*?)}/ism", $text, $matches, PREG_SET_ORDER );
+
+		// If there are no matches OR the Entry `created_by` isn't set or is 0 (no user)
+		if( empty( $matches ) ) {
+			return $text;
+		}
+
+		// TODO: FINISH METHOD
+		return $text;
+
+		$gmt_datetime = rgar( $entry, 'date_created' );
+
+
+		$date_created_timestamp = strtotime( $date_created );
+
+		$adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'merge_tag' );
+
+		/**
+		 * date_created is stored in UTC format. Fetch in the current blog's timezone if $adjust_tz is true
+		 */
+		$tz_value = $adjust_tz ? get_date_from_gmt( $value ) : $value;
+
+
+		$format = 'Y/m/d';
+		$human_time = false;
+
+		// Formatting was passed
+		if( isset( $matches[1] ) ) {
+			switch( $matches[1] ) {
+				case 'relative':
+					$human_time = true;
+					break;
+			}
+		}
+
+		//adjusting date to local configured Time Zone
+		$lead_gmt_time   = mysql2date( 'G', $gmt_datetime );
+		$lead_local_time = GFCommon::get_local_timestamp( $lead_gmt_time );
+
+		if ( empty( $date_format ) ) {
+			$date_format = get_option( 'date_format' );
+		}
+
+		#GFCommon::format_date( $date_created, $human_time,  )
+
+		if ( strpos( $text, $merge_tag ) === false || empty( $entry ) || empty( $form ) ) {
+			return $text;
+		}
+
+		return str_replace( $merge_tag, GFCommon::format_date( rgar( $entry, 'date_created' ), false, 'Y/m/d' ), $text );
 
 		return $text;
 	}
