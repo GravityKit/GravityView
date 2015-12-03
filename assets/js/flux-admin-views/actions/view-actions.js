@@ -10,12 +10,14 @@ var ViewActions = {
      * Open a specific panel
      * @param id        string  Active Panel ID
      * @param returnId  string  Return Panel ID
+     * @param args      object  Extra arguments to the panel (optional)
      */
-    openPanel: function( id, returnId ) {
+    openPanel: function( id, returnId, args = null ) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.PANEL_OPEN,
             panelId: id,
-            returnId: returnId
+            returnId: returnId,
+            extraArgs: args
         });
     },
 
@@ -41,17 +43,50 @@ var ViewActions = {
         ViewApi.getSettingsInputs( forms, templates );
     },
 
-
-
-    // update functions (to update new values into store)
-
+    /**
+     *
+     * @param id
+     * @param value
+     */
     updateSetting: function( id, value ) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.UPDATE_SETTING,
             key: id,
             value: value
         });
+    },
+
+    /** -- Layout Actions -- **/
+
+    // Tabs
+    /**
+     * Change Tab
+     * @param tabId string Tab id (directory, single, edit, export)
+     */
+    changeTab: function( tabId ) {
+        ViewDispatcher.dispatch({
+            actionType: ViewConstants.CHANGE_TAB,
+            tab: tabId,
+        });
+    },
+
+    /**
+     * Add a row of the type (columns structure) on the tab (context) at the row pointer.
+     * @param context   Directory, Single, Edit, Export
+     * @param pointer   Reference Row ID indicating where the new row should be inserted ( array index )
+     * @param colStruct      Column structure of the row
+     */
+    addRow: function( context, pointer, colStruct ) {
+        ViewDispatcher.dispatch({
+            actionType: ViewConstants.LAYOUT_ADD_ROW,
+            context: context,
+            pointer: pointer,
+            struct: colStruct
+        });
     }
+
+
+
 
 };
 

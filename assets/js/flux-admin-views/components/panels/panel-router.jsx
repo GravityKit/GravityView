@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactTooltip = require('react-tooltip');
 
+var AddRowPanel = require('./add-row-panel.jsx');
 var SettingsMenuPanel = require('./settings-menu-panel.jsx');
 var SettingsSubPanel = require('./settings-sub-panel.jsx');
 
@@ -8,14 +9,18 @@ var ViewConstants = require('../../constants/view-constants.js');
 var ViewActions = require('../../actions/view-actions.js');
 var PanelStore = require('../../stores/panel-store.js');
 var SettingsStore = require('../../stores/settings-store.js');
-
+var LayoutStore = require('../../stores/layout-store.js');
 
 var PanelRouter = React.createClass({
 
     getState: function() {
         return {
+            // generic for the panels
             currentPanel: PanelStore.getActivePanel(), // which panel id is open
             returnPanel: PanelStore.getReturnPanel(), // when the go back panel control links
+            extraPanelArgs: PanelStore.getExtraArgs(), // if panel has extra arguments (like information of the place to insert a row)
+
+            // Used on the Settings panel only
             settingsValues: SettingsStore.getAllValues(),
             settingsInputs: SettingsStore.getInputs(),
             settingsSections: SettingsStore.getSections()
@@ -36,6 +41,7 @@ var PanelRouter = React.createClass({
     componentDidMount: function() {
         PanelStore.addChangeListener( this.onStoreChange );
         SettingsStore.addChangeListener( this.onStoreChange );
+        LayoutStore.addChangeListener( this.onStoreChange );
 
         // Trigger Flux to get the initial settings
         ViewActions.fetchSettingsSections();
@@ -46,12 +52,14 @@ var PanelRouter = React.createClass({
     componentWillUnmount: function() {
         PanelStore.removeChangeListener( this.onStoreChange );
         SettingsStore.removeChangeListener( this.onStoreChange );
+        LayoutStore.removeChangeListener( this.onStoreChange );
     },
 
     render: function() {
 
         return (
            <div>
+               <AddRowPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} extraArgs={this.state.extraPanelArgs} />
                <SettingsMenuPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} sections={this.state.settingsSections} />
                <SettingsSubPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} settingsValues={this.state.settingsValues} sections={this.state.settingsSections} inputs={this.state.settingsInputs} />
                <ReactTooltip html={true} place="bottom" type="info" effect="float" />

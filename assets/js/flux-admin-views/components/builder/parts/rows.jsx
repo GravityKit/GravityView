@@ -3,10 +3,13 @@ var RowControls = require('./row-controls.jsx');
 
 var Rows = React.createClass({
 
+    propTypes: {
+        tabId: React.PropTypes.string,
+        type: React.PropTypes.string,
+        zone: React.PropTypes.string,
+        data: React.PropTypes.array,
 
-
-
-
+    },
 
     renderColumn: function( col , i ) {
         var areaClass = 'gv-grid__col-' + col;
@@ -19,13 +22,12 @@ var Rows = React.createClass({
         );
     },
 
-
     renderRow: function( row, i ) {
 
         var areas = row.columns.map( this.renderColumn, this );
 
         return (
-            <div key={i} className="gv-grid gv-grid__has-row-controls" >
+            <div key={i} className="gv-grid gv-grid__has-row-controls">
                 {areas}
                 <RowControls
                     rowId={row.id}

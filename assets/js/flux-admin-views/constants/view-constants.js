@@ -17,4 +17,10 @@ module.exports = keyMirror({
     UPDATE_SETTINGS_INPUTS: null,
 
 
+    // Layout
+    CHANGE_TAB: null,
+    LAYOUT_ADD_ROW: null,
+    LAYOUT_DEL_ROW: null,
+
+
 });

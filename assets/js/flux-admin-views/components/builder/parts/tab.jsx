@@ -2,6 +2,17 @@ var React = require('react');
 
 var Tab = React.createClass({
 
+    propTypes: {
+        key: React.PropTypes.string,
+        id: React.PropTypes.string,
+        label: React.PropTypes.string,
+        tabClass: React.PropTypes.string,
+        activeClass: React.PropTypes.string,
+        iconClass: React.PropTypes.string,
+        isCurrent: React.PropTypes.bool,
+        changeTab:React.PropTypes.func
+    },
+
     handleClick: function(e) {
         e.preventDefault();
         this.props.changeTab( this.props.id );
@@ -27,7 +38,6 @@ var Tab = React.createClass({
             </a>
         );
     }
-
 
 });
 

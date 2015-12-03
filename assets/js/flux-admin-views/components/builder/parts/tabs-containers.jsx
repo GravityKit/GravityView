@@ -3,16 +3,21 @@ var TabContainer = require('./tab-container.jsx');
 
 var TabsContainers = React.createClass({
 
+    propTypes: {
+        tabList: React.PropTypes.array, // list of tabs
+        activeTab: React.PropTypes.string // Active Tab
+    },
+
     renderContainers: function( tab, i ) {
         return(
             <TabContainer
                 key={tab.id}
-                id={tab.id}
-                isCurrent={(this.props.currentTab === tab.id)}
+                tabId={tab.id}
+                activeTab={this.props.activeTab}
+
                 />
         );
     },
-
 
     render: function () {
 

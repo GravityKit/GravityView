@@ -1198,8 +1198,8 @@ class GravityView_Admin_Views {
 
 
 			//Panel
-			'panel_settings_title' => __( 'View Settings', 'gravityview' ),
-
+			'panel_settings_title' 	=> __( 'View Settings', 'gravityview' ),
+			'panel_add_row_title' 	=> __( 'Add Row', 'gravityview' ),
 
 
 

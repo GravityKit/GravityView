@@ -15,7 +15,16 @@ var PanelStore = assign( {}, EventEmitter.prototype, {
      * Holds the current open panel ID
      */
     activePanel: '',
+
+    /**
+     * Holds the return opened panel ID
+     */
     returnPanel: '',
+
+    /**
+     * Holds extra panel arguments to allow context (e.g. knowing where should a row be inserted)
+     */
+    extraArgs: {},
 
     emitChange: function() {
         this.emit( CHANGE_EVENT );
@@ -54,10 +63,16 @@ var PanelStore = assign( {}, EventEmitter.prototype, {
     // Get the Active Panel ID
     getReturnPanel: function() {
         return this.returnPanel;
-    }
+    },
 
+    // Set Extra Panel Arguments
+    setExtraArgs: function( args ) {
+        this.extraArgs = args;
+    },
 
-
+    getExtraArgs: function() {
+        return this.extraArgs;
+    },
 
 });
 
@@ -69,6 +84,10 @@ ViewDispatcher.register( function( action ) {
         case ViewConstants.PANEL_OPEN:
             PanelStore.setActivePanel( action.panelId );
             PanelStore.setReturnPanel( action.returnId );
+            console.log( action.extraArgs);
+            if( null !== action.extraArgs ) {
+                PanelStore.setExtraArgs( action.extraArgs );
+            }
             PanelStore.emitChange();
             break;
 

@@ -3,6 +3,13 @@ var Tab = require('./tab.jsx');
 
 var Tabs = React.createClass({
 
+    propTypes: {
+        tabList: React.PropTypes.array,
+        changeTab:React.PropTypes.func,
+        activeTab: React.PropTypes.string, // Active Tab
+        handleOpenSettings: React.PropTypes.func
+    },
+
     renderTabs: function( tab, i ) {
         return(
             <Tab
@@ -13,7 +20,7 @@ var Tabs = React.createClass({
                 tabClass="gv-tabs"
                 activeClass="gv-tabs__active"
                 iconClass=""
-                isCurrent={(this.props.currentTab === tab.id)}
+                isCurrent={(this.props.activeTab === tab.id)}
             />
         );
     },
