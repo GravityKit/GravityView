@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: Custom merge tags not being replaced properly by GravityView
+
 = 1.15.2 on December 3 =
 
 * Fixed: Approval column not being added properly on the Form Entries screen for Gravity Forms 1.9.14.18+
