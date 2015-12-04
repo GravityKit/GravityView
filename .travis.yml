@@ -30,3 +30,6 @@ after_script:
   - bash tests/bin/travis.sh after
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover ./tmp/clover.xml
+
+after_success:
+  - coveralls
