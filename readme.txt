@@ -24,6 +24,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Tweak: Only show Add View button to users who are able to publish Views
 * Tweak: Reduce the number of database calls by fetching forms differently
 
+__Developer Notes:__
+
+* New: `gravityview_get_terms_choices()` function generates array of categories ready to be added to Gravity Forms $choices array
+
 = 1.15.2 on December 3 =
 
 * Fixed: Approval column not being added properly on the Form Entries screen for Gravity Forms 1.9.14.18+

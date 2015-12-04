@@ -895,7 +895,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		// collect choices
 		if ( 'post_category' === $form_field['type'] && ! empty( $form_field['displayAllCategories'] ) && empty( $form_field['choices'] ) ) {
-			$filter['choices'] = self::get_post_categories_choices();
+			$filter['choices'] = gravityview_get_terms_choices();
 		} elseif ( ! empty( $form_field['choices'] ) ) {
 			$filter['choices'] = $form_field['choices'];
 		}
@@ -929,32 +929,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				'value' => $user->ID,
 				'text' => $user->display_name,
 			);
-		}
-
-		return $choices;
-	}
-
-
-	private static function get_post_categories_choices() {
-		$args = array(
-			'type'                     => 'post',
-			'child_of'                 => 0,
-			'orderby'                  => 'name',
-			'order'                    => 'ASC',
-			'hide_empty'               => 0,
-			'hierarchical'             => 1,
-			'taxonomy'                 => 'category',
-		);
-		$categories = get_categories( $args );
-
-		if ( empty( $categories ) ) {
-			return array();
-		}
-
-		$choices = array();
-
-		foreach ( $categories as $category ) {
-			$choices[] = array( 'text' => $category->name, 'value' => $category->term_id );
 		}
 
 		return $choices;
