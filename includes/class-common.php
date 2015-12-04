@@ -30,12 +30,13 @@ class GVCommon {
 			return false;
 		}
 
-		if ( class_exists( 'GFAPI' ) ) {
-			return GFAPI::get_form( $form_id );
+		// Only get_form_meta is cached. ::facepalm::
+		if ( class_exists( 'RGFormsModel' ) ) {
+			return GFFormsModel::get_form_meta( $form_id );
 		}
 
-		if ( class_exists( 'RGFormsModel' ) ) {
-			return RGFormsModel::get_form( $form_id );
+		if ( class_exists( 'GFAPI' ) ) {
+			return GFAPI::get_form( $form_id );
 		}
 
 		return false;

@@ -1087,7 +1087,7 @@ class GravityView_frontend {
 	 */
 	private static function _override_sorting_id_by_field_type( $sort_field_id, $form_id ) {
 
-		$form = GFAPI::get_form( $form_id );
+		$form = gravityview_get_form( $form_id );
 
 		$sort_field = GFFormsModel::get_field( $form, $sort_field_id );
 

@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Fixed: Custom merge tags not being replaced properly by GravityView
 * Tweak: Only show Add View button to users who are able to publish Views
+* Tweak: Reduce the number of database calls by fetching forms differently
 
 = 1.15.2 on December 3 =
 
