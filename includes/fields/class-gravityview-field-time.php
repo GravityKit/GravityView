@@ -35,11 +35,15 @@ class GravityView_Field_Time extends GravityView_Field {
 	 */
 	private $_date_format = null;
 
+	var $label = 'Time';
 
 	/**
 	 * GravityView_Field_Time constructor.
 	 */
 	public function __construct() {
+
+		$this->label = esc_attr__( 'Time', 'gravityview' );
+
 		parent::__construct();
 
 		add_filter( 'gravityview/sorting/time', array( $this, 'modify_sort_id' ), 10, 2 );

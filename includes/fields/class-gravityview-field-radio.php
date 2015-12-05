@@ -8,6 +8,13 @@ class GravityView_Field_Radio extends GravityView_Field {
 
 	var $_gf_field_class_name = 'GF_Field_Radio';
 
+	var $label = 'Radio Buttons';
+
+	public function __construct() {
+		$this->label = esc_attr__( 'Radio Buttons', 'gravityview' );
+		parent::__construct();
+	}
+
 }
 
 new GravityView_Field_Radio;

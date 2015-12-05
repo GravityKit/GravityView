@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/GravityView.iml" filepath="$PROJECT_DIR$/.idea/GravityView.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/gravityview.iml" filepath="$PROJECT_DIR$/.idea/gravityview.iml" />
     </modules>
   </component>
 </project>

@@ -8,6 +8,12 @@ class GravityView_Field_Hidden extends GravityView_Field {
 
 	var $_gf_field_class_name = 'GF_Field_Hidden';
 
+	var $label = 'Hidden';
+
+	public function __construct() {
+		$this->label = esc_attr__( 'Hidden', 'gravityview' );
+		parent::__construct();
+	}
 }
 
 new GravityView_Field_Hidden;
