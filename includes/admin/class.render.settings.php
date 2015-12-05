@@ -286,10 +286,10 @@ class GravityView_Render_Settings {
 	 * Output a table row for view settings
 	 * @param  string $key              The key of the input
 	 * @param  array  $current_settings Associative array of current settings to use as input values, if set. If not set, the defaults are used.
-	 * @param  [type] $override_input   [description]
+	 * @param  string $override_input   [description]
 	 * @param  string $name             [description]
 	 * @param  string $id               [description]
-	 * @return [type]                   [description]
+	 * @return void                   [description]
 	 */
 	public static function render_setting_row( $key = '', $current_settings = array(), $override_input = null, $name = 'template_settings[%s]', $id = 'gravityview_se_%s' ) {
 
@@ -325,6 +325,8 @@ class GravityView_Render_Settings {
 				$setting['merge_tags'] = false;
 			}
 		}
+
+		$output = '';
 
 		// render the setting
 		$type_class = self::load_type_class( $setting );
@@ -464,7 +466,6 @@ class GravityView_Render_Settings {
 		}
 
 		$class .= !empty( $args['class'] ) ? 'widefat '.$args['class'] : 'widefat';
-		$type = !empty( $args['type'] ) ? $args['type'] : 'text';
 
 		return '<textarea name="'. esc_attr( $name ) .'" id="'. esc_attr( $id ) .'" class="'.esc_attr( $class ).'">'. esc_textarea( $current ) .'</textarea>';
 	}

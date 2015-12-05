@@ -134,6 +134,7 @@ class GravityView_Merge_Tags {
 		 * This prevents the gform_replace_merge_tags filter from being called twice, as defined in:
 		 * @see GFCommon::replace_variables()
 		 * @see GFCommon::replace_variables_prepopulate()
+		 * @todo Remove eventually: Gravity Forms fixed this issue in 1.9.14
 		 */
 		if( false === $form ) {
 			return $text;
