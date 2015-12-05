@@ -9,6 +9,8 @@ class GravityView_Field_Number extends GravityView_Field {
 
 	var $name = 'number';
 
+	var $search_operators = array( 'is', 'isnot', 'greater_than', 'less_than' );
+
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		$field_options['number_format'] = array(

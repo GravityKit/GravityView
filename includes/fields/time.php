@@ -7,6 +7,10 @@ class GravityView_Field_Time extends GravityView_Field {
 
 	var $name = 'time';
 
+	var $search_operators = array( 'is', 'isnot', 'greater_than', 'less_than' );
+
+	var $_gf_field_class_name = 'GF_Field_Time';
+
 	/**
 	 * @var string The part of the Gravity Forms query that's modified to enable sorting by time. `value` gets replaced.
 	 * @since 1.14

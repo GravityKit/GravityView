@@ -7,6 +7,10 @@ class GravityView_Field_Textarea extends GravityView_Field {
 
 	var $name = 'textarea';
 
+	var $search_operators = array( 'is', 'isnot', 'contains', 'starts_with', 'ends_with' );
+
+	var $_gf_field_class_name = 'GF_Field_Textarea';
+
 	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 
 		if( 'edit' === $context ) {

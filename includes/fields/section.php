@@ -7,6 +7,10 @@ class GravityView_Field_Section extends GravityView_Field {
 
 	var $name = 'section';
 
+	var $is_searchable = false;
+
+	var $_gf_field_class_name = 'GF_Field_Section';
+
 	function __construct() {
 		parent::__construct();
 

@@ -8,6 +8,8 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 	var $name = 'custom';
 
+	var $contexts = array( 'single', 'multiple' );
+
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		unset ( $field_options['search_filter'], $field_options['show_as_link'] );

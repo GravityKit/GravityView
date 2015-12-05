@@ -7,6 +7,8 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 
 	var $name = 'post_image';
 
+	var $_gf_field_class_name = 'GF_Field_Post_Image';
+
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		unset ( $field_options['search_filter'] );

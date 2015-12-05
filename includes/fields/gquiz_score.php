@@ -7,7 +7,6 @@ class GravityView_Field_Quiz_Score extends GravityView_Field {
 
 	var $name = 'quiz_score';
 
-
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		if( 'edit' === $context ) {

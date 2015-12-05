@@ -9,6 +9,8 @@ class GravityView_Field_List extends GravityView_Field {
 
 	var $name = 'list';
 
+	var $search_operators = array( 'contains' );
+
 	function __construct() {
 
 		parent::__construct();
