@@ -462,7 +462,7 @@ class GVCommon {
 
 
 		// When multiple views are embedded, OR single entry, calculate the context view id and send it to the advanced filter
-		if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() || GravityView_frontend::getInstance()->single_entry ) {
+		if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() || GravityView_frontend::getInstance()->getSingleEntry() ) {
 			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
 		} elseif ( 'delete' === RGForms::get( 'action' ) ) {
 			$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? $_GET['view_id'] : null;
@@ -1239,7 +1239,7 @@ class GVCommon {
 	 *
 	 * @param string $href URL of the link. Sanitized using `esc_url_raw()`
 	 * @param string $anchor_text The text or HTML inside the anchor. This is not sanitized in the function.
-	 * @param array $atts Attributes to be added to the anchor tag. They are sanitized using `esc_attr()`
+	 * @param array|string $atts Attributes to be added to the anchor tag. Parsed by `wp_parse_args()`, sanitized using `esc_attr()`
 	 *
 	 * @return string HTML output of anchor link. If empty $href, returns NULL
 	 */
@@ -1393,7 +1393,7 @@ class GVCommon {
  *
  * @param string $href URL of the link.
  * @param string $anchor_text The text or HTML inside the anchor. This is not sanitized in the function.
- * @param array $atts Attributes to be added to the anchor tag
+ * @param array|string $atts Attributes to be added to the anchor tag
  *
  * @return string HTML output of anchor link. If empty $href, returns NULL
  */

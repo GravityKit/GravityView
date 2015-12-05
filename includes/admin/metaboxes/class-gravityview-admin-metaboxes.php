@@ -8,6 +8,11 @@ class GravityView_Admin_Metaboxes {
 	static $metaboxes_dir;
 
 	/**
+	 * @var int The post ID of the current View
+	 */
+	var $post_id = 0;
+
+	/**
 	 *
 	 */
 	function __construct() {
@@ -190,10 +195,6 @@ class GravityView_Admin_Metaboxes {
 	 * @return void
 	 */
 	function render_data_source_metabox( $post ) {
-
-		if( !empty( $post->ID ) ) {
-			$this->post_id = $post->ID;
-		}
 
 		include self::$metaboxes_dir . 'views/data-source.php';
 
