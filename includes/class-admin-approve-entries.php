@@ -566,21 +566,26 @@ class GravityView_Admin_ApproveEntries {
 	 */
 	public function ajax_update_approved() {
 
-		if( empty( $_POST['entry_id'] ) || empty( $_POST['form_id'] ) ) {
+		$entry_id = esc_attr( $_POST['entry_id'] );
+		$form_id = esc_attr( $_POST['form_id'] );
+		$nonce = esc_attr( $_POST['nonce'] );
+		$approved_status = esc_attr( $_POST['approved'] );
+
+		if( empty( $entry_id ) || empty( $form_id ) ) {
 
 			do_action( 'gravityview_log_error', __METHOD__ . ' entry_id or form_id are empty.', $_POST );
 
 			$result = false;
 		}
 
-		else if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxgfentries' ) ) {
+		else if ( ! isset( $nonce ) || ! wp_verify_nonce( $nonce, 'gravityview_ajaxgfentries' ) ) {
 
 			do_action( 'gravityview_log_error', __METHOD__ . ' Security check failed.', $_POST );
 
 			$result = false;
 		}
 
-		else if( ! GVCommon::has_cap( 'gravityview_moderate_entries', $_POST['entry_id'] ) ) {
+		else if( ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry_id ) ) {
 
 			do_action( 'gravityview_log_error', __METHOD__ . ' User does not have the `gravityview_moderate_entries` capability.' );
 
@@ -589,12 +594,15 @@ class GravityView_Admin_ApproveEntries {
 
 		else {
 
-			$result = self::update_approved( $_POST['entry_id'], $_POST['approved'], $_POST['form_id'] );
+			$result = self::update_approved( $entry_id, $approved_status, $form_id );
 
 			if( is_wp_error( $result ) ) {
+
 				/** @var WP_Error $result */
 				do_action( 'gravityview_log_error', __METHOD__ .' Error updating approval: ' . $result->get_error_message() );
 				$result = false;
+			} else {
+				$result = json_encode( array( 'status' => $approved_status ) );
 			}
 
 		}

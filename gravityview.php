@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'GRAVITYVIEW_FILE', __FILE__ );
 
 /**
- * The URL to this file
+ * The URL to this file, with trailing slash
  */
 define( 'GRAVITYVIEW_URL', plugin_dir_url( __FILE__ ) );
 
