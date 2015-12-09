@@ -1387,8 +1387,11 @@ class GravityView_frontend {
 		);
 
 		/**
-		 * Modify what fields should never be sortable.
+		 * @filter `gravityview/sortable/field_blacklist` Modify what fields should never be sortable.
 		 * @since 1.7
+		 * @param array $not_sortable Array of field types that aren't sortable
+		 * @param string $field_id Field ID to check whether the field is sortable
+		 * @param array $form Gravity Forms form
 		 */
 		$not_sortable = apply_filters( 'gravityview/sortable/field_blacklist', $not_sortable, $field_id, $form );
 
