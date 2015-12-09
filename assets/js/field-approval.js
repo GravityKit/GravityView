@@ -42,8 +42,6 @@
 
 		self.update_approval( entry_id, form_id, set_approved, $( this ) );
 
-		console.log( self.response.status );
-
 		return false;
 	};
 
@@ -63,7 +61,6 @@
 		$.post( gvApproval.ajaxurl, data, function ( response ) {
 			if ( response ) {
 				self.response = $.parseJSON( response );
-				console.log( self.response );
 
 				if( '0' !== self.response.status ) {
 					$target.attr( 'data-approved-status', 'Approved' ).prop( 'title', gvApproval.unapprove_title ).text( gvApproval.text.label_disapprove ).addClass( 'entry_approved' );
