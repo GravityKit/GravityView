@@ -21,7 +21,7 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
      *  - directory, single, edit, export
      *
      */
-    layout: [],
+    layout: {},
 
     /**
      *
@@ -61,6 +61,14 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
     },
 
 
+    setLayout: function( layout ) {
+        this.layout = layout;
+    },
+
+    /**
+     *
+     * @returns {Array}
+     */
     getLayout: function() {
         return this.layout;
     },
@@ -76,11 +84,11 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
      */
     addRow: function( context, pointer, colStruct ) {
         console.log( 'context:'+context+' pointer:'+pointer+' struct:'+colStruct);
-        var rows = this.layout[ context ],
+        var rows = this.layout[ context ]['rows'],
             newRow = this.buildRowStructure( colStruct );
 
-        //rows.splice( pointer, 0, newRow );
-        this.layout[ context ] = rows;
+        rows.splice( pointer, 0, newRow );
+        this.layout[ context ]['rows'] = rows;
     },
 
     buildRowStructure: function( type ) {
@@ -111,6 +119,11 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
 ViewDispatcher.register( function( action ) {
 
     switch( action.actionType ) {
+
+        case ViewConstants.UPDATE_LAYOUT_ALL:
+            LayoutStore.setLayout( action.values );
+            LayoutStore.emitChange();
+            break;
 
         case ViewConstants.CHANGE_TAB:
             LayoutStore.changeTab( action.tab );

@@ -14,7 +14,6 @@ var RowControls = React.createClass({
     handleClick: function(e) {
         e.preventDefault();
         var action = e.target.getAttribute('data-action');
-        console.log( action );
         if( 'add' === action ) {
             var argsPanel = {
                 'context': this.props.tabId,

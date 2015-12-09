@@ -49,6 +49,29 @@ var ViewApi = {
 
     // *** View Fields *** //
 
+    getSavedLayout: function() {
+
+        var data = {
+            action: 'gv_get_saved_layout',
+            view: jQuery('#post_ID').val(),
+            nonce: gvGlobals.nonce
+        };
+
+        jQuery.ajax( {
+            type: 'POST',
+            url: ajaxurl,
+            data: data,
+            dataType: 'json',
+            async: true
+        } ).done( function ( response ) {
+            updateSettings( ViewConstants.UPDATE_LAYOUT_ALL, response.data );
+        } ).fail( function ( jqXHR ) {
+            console.log( jqXHR );
+        } ).always( function () {
+            //
+        } );
+    },
+
 
 };
 

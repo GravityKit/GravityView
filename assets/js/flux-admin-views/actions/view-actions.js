@@ -58,6 +58,11 @@ var ViewActions = {
 
     /** -- Layout Actions -- **/
 
+    //Load saved layout
+    fetchSavedLayout: function() {
+        ViewApi.getSavedLayout();
+    },
+
     // Tabs
     /**
      * Change Tab

@@ -28,6 +28,10 @@ var ViewBuilder = React.createClass({
 
     componentDidMount: function() {
         LayoutStore.addChangeListener( this.onStoreChange );
+
+        // fetch Layout saved value
+        ViewActions.fetchSavedLayout();
+
     },
 
     componentWillUnmount: function() {

@@ -1,6 +1,5 @@
 var React = require('react');
 var Rows = require('./rows.jsx');
-var FieldAreas = require('./field-areas.jsx');
 
 var TabContainer = React.createClass({
 
@@ -10,16 +9,17 @@ var TabContainer = React.createClass({
         activeTab: React.PropTypes.string, // Active Tab
         layoutData: React.PropTypes.object // just the context layout data
     },
-//todo: implement the layout over rows,  etc..
+
     render: function () {
 
-        var displayContainer = { display: this.props.tabId === this.props.activeTab ? 'block': 'none' };
+        //todo: refactor
+        if( ! this.props.layoutData  ) {
+            return null;
+        }
 
-        // test data
-        var rowsData = [
-            { 'id': 'abc', 'columns': ['1-1'], 'fields': '' },
-            { 'id': 'efg', 'columns': ['1-3', '2-3'], 'fields': '' }
-        ];
+        var fieldsRows = this.props.layoutData.rows || [];
+
+        var displayContainer = { display: this.props.tabId === this.props.activeTab ? 'block': 'none' };
 
         return(
             <div style={displayContainer}>
@@ -29,16 +29,20 @@ var TabContainer = React.createClass({
                     tabId={this.props.tabId}
                     type="widget"
                     zone="header"
-                    data={rowsData}
+                    data={null}
                     />
 
 
                 <h3>{gravityview_i18n.fields_title_multiple} <small>{gravityview_i18n.fields_label_multiple}</small></h3>
-                <FieldAreas tabId={this.props.tabId} />
+                <Rows
+                    tabId={this.props.tabId}
+                    type="field"
+                    data={fieldsRows}
+                />
 
 
                 <h3>{gravityview_i18n.widgets_title_below} <small>{gravityview_i18n.widgets_label_below}</small></h3>
-                <Rows tabId={this.props.tabId} type="widget" zone="footer" data={rowsData} />
+                <Rows tabId={this.props.tabId} type="widget" zone="footer" data={null} />
 
             </div>
         );

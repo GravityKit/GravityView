@@ -10,7 +10,8 @@ var TabsContainers = React.createClass({
     },
 
     renderContainers: function( tab, i ) {
-        var contextLayoutData = this.props.layoutData[ tab.id ];
+        var contextLayoutData = this.props.layoutData[ tab.id ] || {};
+
         return(
             <TabContainer
                 key={tab.id}
