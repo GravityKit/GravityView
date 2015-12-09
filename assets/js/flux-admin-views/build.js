@@ -310,14 +310,14 @@ var Rows = React.createClass({
 
     renderRow: function renderRow(row, i) {
 
-        var areas = row.columns.map(this.renderColumn, this);
+        var areas = row['columns'].map(this.renderColumn, this);
 
         return React.createElement(
             'div',
-            { key: i, className: 'gv-grid gv-grid__has-row-controls' },
+            { key: row.row_id, className: 'gv-grid gv-grid__has-row-controls' },
             areas,
             React.createElement(RowControls, {
-                rowId: i,
+                rowId: row.row_id,
                 tabId: this.props.tabId
             })
         );
@@ -325,9 +325,10 @@ var Rows = React.createClass({
 
     render: function render() {
 
-        if (!this.props.data || this.props.data.length === 0) {
+        if (!this.props.data) {
             return null;
         }
+
         var rows = this.props.data.map(this.renderRow, this);
 
         return React.createElement(
@@ -359,12 +360,7 @@ var TabContainer = React.createClass({
 
     render: function render() {
 
-        //todo: refactor
-        if (!this.props.layoutData) {
-            return null;
-        }
-
-        var fieldsRows = this.props.layoutData.rows || [];
+        var fieldsRows = this.props.layoutData['rows'] || [];
 
         var displayContainer = { display: this.props.tabId === this.props.activeTab ? 'block' : 'none' };
 
@@ -385,8 +381,8 @@ var TabContainer = React.createClass({
             React.createElement(Rows, {
                 tabId: this.props.tabId,
                 type: 'widget',
-                zone: 'header',
-                data: null
+                zone: 'header'
+
             }),
             React.createElement(
                 'h3',
@@ -415,7 +411,7 @@ var TabContainer = React.createClass({
                     gravityview_i18n.widgets_label_below
                 )
             ),
-            React.createElement(Rows, { tabId: this.props.tabId, type: 'widget', zone: 'footer', data: null })
+            React.createElement(Rows, { tabId: this.props.tabId, type: 'widget', zone: 'footer' })
         );
     }
 
@@ -1624,14 +1620,22 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
         var rows = this.layout[context]['rows'],
             newRow = this.buildRowStructure(colStruct);
 
-        rows.splice(pointer, 0, newRow);
+        var index = this.findIndex(rows, pointer);
+
+        rows.splice(index, 0, newRow);
         this.layout[context]['rows'] = rows;
     },
 
+    /**
+     * Build a new row object
+     * @param type
+     * @returns {{atts: {id: string, class: string, style: string}, columns: Array, row_id: *}}
+     */
     buildRowStructure: function buildRowStructure(type) {
         var row = {
             'atts': { 'id': '', 'class': '', 'style': '' },
-            'columns': []
+            'columns': [],
+            'row_id': this.uniqid()
         };
         var cols = type.split('-');
 
@@ -1644,6 +1648,45 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
         });
 
         return row;
+    },
+    /**
+     * Find the array index where the id == row_id property
+     * @param rows
+     * @param id
+     * @returns {number}
+     */
+    findIndex: function findIndex(rows, id) {
+        for (var i = 0; i < rows.length; i++) {
+            if (rows[i]['row_id'] === id) {
+                return i;
+            }
+        }
+        return 0;
+    },
+
+    /**
+     * Create a unique ID similar to PHP uniqid
+     * Thanks to https://gist.github.com/larchanka/7080820
+     * todo: move to common functions
+     * @param pr
+     * @param en
+     * @returns {*}
+     */
+    uniqid: function uniqid(pr, en) {
+        var pr = pr || '',
+            en = en || false,
+            result;
+
+        this.seed = function (s, w) {
+            s = parseInt(s, 10).toString(16);
+            return w < s.length ? s.slice(s.length - w) : w > s.length ? new Array(1 + (w - s.length)).join('0') + s : s;
+        };
+
+        result = pr + this.seed(parseInt(new Date().getTime() / 1000, 10), 8) + this.seed(Math.floor(Math.random() * 0x75bcd15) + 1, 5);
+
+        if (en) result += (Math.random() * 10).toFixed(8).toString();
+
+        return result;
     }
 
 });

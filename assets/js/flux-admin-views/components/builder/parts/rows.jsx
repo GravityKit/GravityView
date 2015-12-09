@@ -31,13 +31,13 @@ var Rows = React.createClass({
 
     renderRow: function( row, i ) {
 
-        var areas = row.columns.map( this.renderColumn, this );
+        var areas = row['columns'].map( this.renderColumn, this );
 
         return (
-            <div key={i} className="gv-grid gv-grid__has-row-controls">
+            <div key={row.row_id} className="gv-grid gv-grid__has-row-controls">
                 {areas}
                 <RowControls
-                    rowId={i}
+                    rowId={row.row_id}
                     tabId={this.props.tabId}
                 />
             </div>
@@ -48,9 +48,10 @@ var Rows = React.createClass({
 
     render: function() {
 
-        if( !this.props.data || this.props.data.length === 0 ) {
+        if ( !this.props.data ) {
             return null;
         }
+
         var rows = this.props.data.map( this.renderRow, this );
 
         return (

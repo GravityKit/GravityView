@@ -487,32 +487,31 @@ class GravityView_Ajax {
 			return $layout;
 		}
 
-		//$row_id = uniqid( '', false );
-		$row_id = 0;
+		$tab = '';
 
 		foreach( $old_fields as $area => $fields ) {
 
 			$indexs = explode( '_',  $area );
+			$i =  $indexs[0] != $tab ? 0 : $i;
 			$tab = $indexs[0]; // directory, single, edit, export
 			$col = $indexs[1]; // e.g.: list-title, table-columns..
 
-			$layout[ $tab ]['rows'][ $row_id ]['atts'] = array( 'id' => '', 'class' => '', 'style' => '' );
+			$layout[ $tab ]['rows'][ $i ]['atts'] = array( 'id' => '', 'class' => '', 'style' => '' );
+			$layout[ $tab ]['rows'][ $i ]['row_id'] = uniqid( '', false );
 
 			switch ( $col ) {
 				case 'list-image':
-					$col_index = 0;
-					$layout[ $tab ]['rows'][ $row_id ]['columns'][ $col_index ]['colspan'] = 4;
-					break;
-
 				case 'list-description':
-					$col_index = 1;
-					$layout[ $tab ]['rows'][ $row_id ]['columns'][ $col_index ]['colspan'] = 8;
+					$col_index = $col === 'list-image' ? 0 : 1;
+					$layout[ $tab ]['rows'][ $i ]['columns'][0]['colspan'] = 4;
+					$layout[ $tab ]['rows'][ $i ]['columns'][1]['colspan'] = 8;
 					break;
 
 				case 'list-footer-left':
 				case 'list-footer-right':
 					$col_index = $col === 'list-footer-left' ? 0 : 1;
-					$layout[ $tab ]['rows'][ $row_id ]['columns'][ $col_index ]['colspan'] = 6;
+					$layout[ $tab ]['rows'][ $i ]['columns'][0]['colspan'] = 6;
+					$layout[ $tab ]['rows'][ $i ]['columns'][1]['colspan'] = 6;
 					break;
 
 				case 'list-title':
@@ -521,18 +520,19 @@ class GravityView_Ajax {
 				case 'edit-fields':
 				default:
 					$col_index = 0;
-					$layout[ $tab ]['rows'][ $row_id ]['columns'][ $col_index ]['colspan'] = 12;
+					$layout[ $tab ]['rows'][ $i ]['columns'][ $col_index ]['colspan'] = 12;
 					break;
 
 			} // switch
 
-			$layout[ $tab ]['rows'][ $row_id ]['columns'][ $col_index ]['atts'] = array( 'id' => '', 'class' => '', 'style' => '' );
-			$layout[ $tab ]['rows'][ $row_id ]['columns'][ $col_index ]['fields'] = $this->get_converted_fields( $fields, $form );
+			$layout[ $tab ]['rows'][ $i ]['columns'][ $col_index ]['atts'] = array( 'id' => '', 'class' => '', 'style' => '' );
+			$layout[ $tab ]['rows'][ $i ]['columns'][ $col_index ]['fields'] = $this->get_converted_fields( $fields, $form );
 
 			if( ! in_array( $col, array( 'list-image', 'list-footer-left' ) ) ) {
-				//$row_id = uniqid( '', false );
-				$row_id++;
+				$i++;
 			}
+
+
 
 		}
 

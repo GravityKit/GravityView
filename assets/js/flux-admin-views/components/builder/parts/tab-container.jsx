@@ -12,12 +12,7 @@ var TabContainer = React.createClass({
 
     render: function () {
 
-        //todo: refactor
-        if( ! this.props.layoutData  ) {
-            return null;
-        }
-
-        var fieldsRows = this.props.layoutData.rows || [];
+        var fieldsRows = this.props.layoutData['rows'] || [];
 
         var displayContainer = { display: this.props.tabId === this.props.activeTab ? 'block': 'none' };
 
@@ -29,7 +24,7 @@ var TabContainer = React.createClass({
                     tabId={this.props.tabId}
                     type="widget"
                     zone="header"
-                    data={null}
+
                     />
 
 
@@ -42,7 +37,7 @@ var TabContainer = React.createClass({
 
 
                 <h3>{gravityview_i18n.widgets_title_below} <small>{gravityview_i18n.widgets_label_below}</small></h3>
-                <Rows tabId={this.props.tabId} type="widget" zone="footer" data={null} />
+                <Rows tabId={this.props.tabId} type="widget" zone="footer"  />
 
             </div>
         );
