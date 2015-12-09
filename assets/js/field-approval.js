@@ -44,12 +44,6 @@
 
 		console.log( self.response.status );
 
-		if( '0' !== self.response.status ) {
-			$( this ).attr( 'data-approved-status', 'Approved' ).prop( 'title', gvApproval.unapprove_title ).text( gvApproval.label_unapprove ).addClass( 'entry_approved' );
-		} else {
-			$( this ).attr( 'data-approved-status', '0' ).prop( 'title', gvApproval.approve_title ).text( gvApproval.label_approve ).removeClass( 'entry_approved' );
-		}
-
 		return false;
 	};
 
@@ -70,6 +64,12 @@
 			if ( response ) {
 				self.response = $.parseJSON( response );
 				console.log( self.response );
+
+				if( '0' !== self.response.status ) {
+					$target.attr( 'data-approved-status', 'Approved' ).prop( 'title', gvApproval.unapprove_title ).text( gvApproval.text.label_disapprove ).addClass( 'entry_approved' );
+				} else {
+					$target.attr( 'data-approved-status', '0' ).prop( 'title', gvApproval.approve_title ).text( gvApproval.text.label_approve ).removeClass( 'entry_approved' );
+				}
 
 				$target.removeClass( 'loading' );
 			}
