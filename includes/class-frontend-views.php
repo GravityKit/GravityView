@@ -1379,11 +1379,8 @@ class GravityView_frontend {
 		}
 
 		$not_sortable = array(
-			'entry_link',
 			'edit_link',
 			'delete_link',
-			'custom',
-			'list',
 		);
 
 		/**

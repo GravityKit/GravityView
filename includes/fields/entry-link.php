@@ -7,6 +7,18 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 
 	var $name = 'entry_link';
 
+	/**
+	 * @var bool
+	 * @since 1.15.3
+	 */
+	var $is_sortable = false;
+
+	/**
+	 * @var bool
+	 * @since 1.15.3
+	 */
+	var $is_searchable = false;
+
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		// Always a link!
