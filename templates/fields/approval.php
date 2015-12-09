@@ -7,19 +7,26 @@
  *
  */
 
-do_action( 'gravityview/fields/approval/load_scripts' );
+/**
+ * @action `gravityview/field/approval/load_scripts` Trigger loading the field approval javascript
+ * @see GravityView_Field_Approval::enqueue_and_localize_script
+ * @since TODO
+ */
+do_action( 'gravityview/field/approval/load_scripts' );
 
 $entry = GravityView_View::getInstance()->getCurrentEntry();
 
 $approved = gform_get_meta( $entry['id'], 'is_approved' );
 
+$strings = GravityView_Field_Approval::get_strings();
+
 if( ! empty( $approved ) ) {
-	$title = __( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravityview');
-	$anchor = __( 'Disapprove', 'gravityview' );
+	$anchor = $strings['label_disapprove'];
+	$title = $strings['unapprove_title'];
 	$class = 'entry_approved';
 } else {
-	$anchor = __( 'Approve', 'gravityview' );
-	$title = __( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravityview' );
+	$title = $strings['approve_title'];
+	$anchor = $strings['label_approve'];
 	$class = '';
 }
 

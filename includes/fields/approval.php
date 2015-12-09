@@ -7,7 +7,11 @@ class GravityView_Field_Approval extends GravityView_Field {
 
 	var $name = 'approval';
 
+	var $is_searchable = false;
+
 	var $group = 'gravityview';
+
+	var $contexts = array( 'single', 'multiple' );
 
 	public function __construct() {
 
@@ -19,27 +23,63 @@ class GravityView_Field_Approval extends GravityView_Field {
 
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'filter_gravityview_entry_default_field' ), 10, 3 );
 
-		add_action( 'gravityview/fields/approval/load_scripts', array( $this, 'scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_script' ) );
+
+		add_action( 'gravityview/field/approval/load_scripts', array( $this, 'enqueue_and_localize_script' ) );
 
 	}
 
-	function scripts() {
+	/**
+	 * Register the field approval script
+	 * @since TODO
+	 * @return void
+	 */
+	function register_script() {
+		wp_register_script( 'gravityview-field-approval', GRAVITYVIEW_URL . 'assets/js/field-approval.js', GravityView_Plugin::version, true );
+	}
 
-		if( wp_script_is( 'gravityview-field-approval' ) ) {
+	/**
+	 * Get the strings used in the field approval field
+	 * @since TODO
+	 * @return array
+	 */
+	static public function get_strings() {
+
+		/**
+		 * @filter `gravityview/field/approval/text` Modify the text values used in field approval
+		 * @param array $field_approval_text Array with `label_approve`, `label_disapprove`, `approve_title`, and `unapprove_title` keys.
+		 * @since TODO
+		 */
+		$field_approval_text = apply_filters( 'gravityview/field/approval/text', array(
+			'label_approve' => __( 'Approve', 'gravityview' ) ,
+			'label_disapprove' => __( 'Disapprove', 'gravityview' ),
+			'approve_title' => __( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravityview'),
+			'unapprove_title' => __( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravityview'),
+		) );
+
+		return $field_approval_text;
+	}
+
+	/**
+	 * Register the field approval script and output the localized text JS variables
+	 * @since TODO
+	 * @return void
+	 */
+	function enqueue_and_localize_script() {
+
+		// The script is already registered and enqueued
+		if( wp_script_is( 'gravityview-field-approval', 'enqueued' ) ) {
 			return;
 		}
 
-		wp_enqueue_script( 'gravityview-field-approval', GRAVITYVIEW_URL . 'assets/js/field-approval.js', GravityView_Plugin::version, true );
+		wp_enqueue_script( 'gravityview-field-approval' );
+
+		$field_approval_text = self::get_strings();
 
 		wp_localize_script( 'gravityview-field-approval', 'gvApproval', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries'),
-			'text' => array(
-				'label_approve' => __( 'Approve', 'gravityview' ) ,
-				'label_disapprove' => __( 'Disapprove', 'gravityview' ),
-				'approve_title' => __( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravityview'),
-				'unapprove_title' => __( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravityview'),
-			),
+			'text' => array_map( 'esc_js', $field_approval_text ),
 		));
 
 	}
