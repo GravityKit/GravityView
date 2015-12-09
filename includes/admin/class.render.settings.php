@@ -331,6 +331,7 @@ class GravityView_Render_Settings {
 		// render the setting
 		$type_class = self::load_type_class( $setting );
 		if( class_exists( $type_class ) ) {
+			/** @var GravityView_FieldType $render_type */
 			$render_type = new $type_class( $name, $setting, $curr_value );
 			ob_start();
 			$render_type->render_setting( $override_input );
@@ -416,8 +417,8 @@ class GravityView_Render_Settings {
 	 * Render the HTML for an input text to be used on the field & widgets options
 	 * @param  string $name    Unique name of the field. Exampe: `fields[directory_list-title][5374ff6ab128b][custom_label]`
 	 * @param  string $current [current value]
-	 * @param  string $desc   Option description
 	 * @param string $add_merge_tags Add merge tags to the input?
+	 * @param array $args Field settings, including `class` key for CSS class
 	 * @return string         [html tags]
 	 */
 	public static function render_text_option( $name = '', $id = '', $current = '', $add_merge_tags = NULL, $args = array() ) {
@@ -446,8 +447,8 @@ class GravityView_Render_Settings {
 	 * Render the HTML for an textarea input to be used on the field & widgets options
 	 * @param  string $name    Unique name of the field. Exampe: `fields[directory_list-title][5374ff6ab128b][custom_label]`
 	 * @param  string $current [current value]
-	 * @param  string $desc   Option description
-	 * @param string $add_merge_tags Add merge tags to the input?
+	 * @param string|boolean $add_merge_tags Add merge tags to the input?
+	 * @param array $args Field settings, including `class` key for CSS class
 	 * @return string         [html tags]
 	 */
 	public static function render_textarea_option( $name = '', $id = '', $current = '', $add_merge_tags = NULL, $args = array() ) {

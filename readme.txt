@@ -28,6 +28,10 @@ __Developer Notes:__
 
 * New: `gravityview_get_terms_choices()` function generates array of categories ready to be added to Gravity Forms $choices array
 
+__Developer Notes:__
+
+* Use the `$is_sortable` `GravityView_Field` variable to define whether a field is sortable. Override using the  `gravityview/sortable/field_blacklist` filter.
+
 = 1.15.2 on December 3 =
 
 * Fixed: Approval column not being added properly on the Form Entries screen for Gravity Forms 1.9.14.18+

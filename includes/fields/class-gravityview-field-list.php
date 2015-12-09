@@ -11,13 +11,23 @@ class GravityView_Field_List extends GravityView_Field {
 
 	var $search_operators = array( 'contains' );
 
-	var $label = 'List';
+	/**
+	 * @var bool
+	 * @since 1.15.3
+	 */
+	var $is_sortable = false;
+
+	/**
+	 * @var bool
+	 * @since 1.15.3
+	 */
+	var $is_searchable = false;
 
 	function __construct() {
 
 		$this->label = esc_attr__( 'List', 'gravityview' );
 
-			parent::__construct();
+		parent::__construct();
 
 		add_filter( 'gravityview/template/field_label', array( $this, '_filter_field_label' ), 10, 4 );
 	}

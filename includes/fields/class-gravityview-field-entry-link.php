@@ -7,9 +7,19 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 
 	var $name = 'entry_link';
 
-	var $label = 'Link to Entry';
-
 	var $contexts = array( 'multiple' );
+
+	/**
+	 * @var bool
+	 * @since 1.15.3
+	 */
+	var $is_sortable = false;
+
+	/**
+	 * @var bool
+	 * @since 1.15.3
+	 */
+	var $is_searchable = false;
 
 	public function __construct() {
 		$this->label = esc_attr__( 'Link to Entry', 'gravityview' );

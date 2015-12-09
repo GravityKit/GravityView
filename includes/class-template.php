@@ -667,7 +667,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		} else {
 
-			// Set $load to always falso so we handle it here.
+			// Set $load to always false so we handle it here.
 			$located = parent::locate_template( $template_names, false, $require_once );
 
 			if( is_string( $template_names ) ) {
