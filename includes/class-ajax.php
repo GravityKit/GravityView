@@ -21,9 +21,11 @@ class GravityView_Ajax {
 
 		add_action( 'wp_ajax_gv_sortable_fields_form', array( $this, 'get_sortable_fields' ) );
 
-		// new react stuff @todo: remove this comment.
+		// new react stuff @todo: deprecated!!
 		add_action( 'wp_ajax_gv_get_form_links', array( $this, 'get_form_links' ) );
 
+		// Load Layout configuration (new admin)
+		add_action( 'wp_ajax_gv_get_saved_layout', array( $this, 'get_saved_layout' ) );
 	}
 
 	/**
@@ -444,8 +446,118 @@ class GravityView_Ajax {
 		wp_send_json_success( $links );
 	}
 
+	/**
+	 * Load the saved View Layout (new structure)
+	 */
+	function get_saved_layout() {
+		//check nonce
+		$this->check_ajax_nonce();
 
+		// check param
+		if( empty( $_POST['view'] ) ) {
+			wp_send_json_error();
+		}
 
+		$layout = $this->convert_layout( $_POST['view'] );
+
+		// success
+		wp_send_json_success( $layout );
+	}
+
+	function convert_layout( $view_id ) {
+
+		$template_id = get_post_meta( $view_id, '_gravityview_directory_template', true );
+		//$widgets = get_post_meta( $view_id, '_gravityview_directory_widgets', true );
+		$old_fields = get_post_meta( $view_id, '_gravityview_directory_fields', true );
+		$form_id = get_post_meta( $view_id, '_gravityview_form_id', true  );
+		$form = GVCommon::get_form( $form_id );
+
+		$layout = array(
+				'directory' => '',
+				'single' 	=> '',
+				'edit' 		=> '',
+				'export' 	=> ''
+		);
+
+		foreach ( $layout as $k => $v ) {
+			$layout[ $k ]['type'] = $template_id;
+		}
+
+		if( empty( $old_fields ) ) {
+			return $layout;
+		}
+
+		//$row_id = uniqid( '', false );
+		$row_id = 0;
+
+		foreach( $old_fields as $area => $fields ) {
+
+			$indexs = explode( '_',  $area );
+			$tab = $indexs[0]; // directory, single, edit, export
+			$col = $indexs[1]; // e.g.: list-title, table-columns..
+
+			$layout[ $tab ]['rows'][ $row_id ]['atts'] = array( 'id' => '', 'class' => '', 'style' => '' );
+
+			switch ( $col ) {
+				case 'list-image':
+					$col_index = 0;
+					$layout[ $tab ]['rows'][ $row_id ]['columns'][ $col_index ]['colspan'] = 4;
+					break;
+
+				case 'list-description':
+					$col_index = 1;
+					$layout[ $tab ]['rows'][ $row_id ]['columns'][ $col_index ]['colspan'] = 8;
+					break;
+
+				case 'list-footer-left':
+				case 'list-footer-right':
+					$col_index = $col === 'list-footer-left' ? 0 : 1;
+					$layout[ $tab ]['rows'][ $row_id ]['columns'][ $col_index ]['colspan'] = 6;
+					break;
+
+				case 'list-title':
+				case 'list-subtitle':
+				case 'table-columns':
+				case 'edit-fields':
+				default:
+					$col_index = 0;
+					$layout[ $tab ]['rows'][ $row_id ]['columns'][ $col_index ]['colspan'] = 12;
+					break;
+
+			} // switch
+
+			$layout[ $tab ]['rows'][ $row_id ]['columns'][ $col_index ]['atts'] = array( 'id' => '', 'class' => '', 'style' => '' );
+			$layout[ $tab ]['rows'][ $row_id ]['columns'][ $col_index ]['fields'] = $this->get_converted_fields( $fields, $form );
+
+			if( ! in_array( $col, array( 'list-image', 'list-footer-left' ) ) ) {
+				//$row_id = uniqid( '', false );
+				$row_id++;
+			}
+
+		}
+
+		return $layout;
+
+	}
+
+	function get_converted_fields( $fields, $form ) {
+
+		$output = array();
+
+		if( empty( $fields ) ) {
+			return $output;
+		}
+
+		foreach( $fields as $k => $field ) {
+			$output[ $k ]['form_id'] = $form['id'];
+			$output[ $k ]['field_id'] = $field['id'];
+			$output[ $k ]['field_type'] = GVCommon::get_field_type( $form, $field['id'] );
+			unset( $field['id'] );
+			$output[ $k ]['gv_settings'] = $field;
+		}
+
+		return $output;
+	}
 
 }
 

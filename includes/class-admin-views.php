@@ -1202,11 +1202,7 @@ class GravityView_Admin_Views {
 			'panel_add_row_title' 	=> __( 'Add Row', 'gravityview' ),
 
 
-
-
-
 			// --- Below the old i18n tags --
-
 
 			// Generic buttons
 			'button_continue' => __( 'Continue', 'gravityview' ),
@@ -1229,11 +1225,6 @@ class GravityView_Admin_Views {
 			'mb_st_select_button'	=> __( 'Select', 'gravityview'),
 			'mb_st_preview'			=> __( 'View a live demo of this preset', 'gravityview'),
 
-
-
-
-
-
 			// Add field modal
 			'mo_close_modal' 		=> __( 'Close modal window', 'gravityview' ),
 			'mo_fields_title' 		=> __( 'Insert fields', 'gravityview' ),
@@ -1241,9 +1232,6 @@ class GravityView_Admin_Views {
 			'mo_tab_form'			=> __( 'Form Fields', 'gravityview' ),
 			'mo_tab_entry'			=> __( 'Entry Fields', 'gravityview' ),
 			'mo_tab_custom'			=> __( 'GravityView Custom Fields', 'gravityview' ),
-
-
-
 
 		);
 	}
