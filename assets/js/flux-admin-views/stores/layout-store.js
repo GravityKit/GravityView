@@ -1,5 +1,8 @@
 var ViewDispatcher = require('../dispatcher/view-dispatcher.js');
 var ViewConstants = require('../constants/view-constants.js');
+
+var ViewCommon = require('../api/view-common.js');
+
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
@@ -83,13 +86,27 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
      * @param colStruct string Column structure of the row
      */
     addRow: function( context, pointer, colStruct ) {
-        console.log( 'context:'+context+' pointer:'+pointer+' struct:'+colStruct);
+
         var rows = this.layout[ context ]['rows'],
             newRow = this.buildRowStructure( colStruct );
 
-        var index = this.findIndex( rows, pointer );
+        var index = ViewCommon.findRowIndex( rows, pointer );
 
         rows.splice( index, 0, newRow );
+        this.layout[ context ]['rows'] = rows;
+    },
+
+    /**
+     * Remove row off the layout structure
+     * @param context string Directory, Single, Edit, Export
+     * @param pointer string Reference Row ID indicating where the new row should be inserted ( array index )
+     */
+    removeRow: function( context, pointer ) {
+
+        var rows = this.layout[ context ]['rows'];
+        var index = ViewCommon.findRowIndex( rows, pointer );
+
+        rows.splice( index, 1 );
         this.layout[ context ]['rows'] = rows;
     },
 
@@ -102,7 +119,7 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
         var row = {
             'atts': { 'id': '', 'class': '', 'style': '' },
             'columns': [],
-            'row_id': this.uniqid()
+            'row_id': ViewCommon.uniqid()
         };
         var cols = type.split('-');
 
@@ -116,46 +133,14 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
 
         return row;
     },
-    /**
-     * Find the array index where the id == row_id property
-     * @param rows
-     * @param id
-     * @returns {number}
-     */
-    findIndex: function( rows, id ) {
-        for ( var i = 0; i < rows.length; i++ ) {
-            if ( rows[i]['row_id'] === id ) {
-                return i;
-            }
-        }
-        return 0;
+
+    updateRow: function( context, pointer, key, value ) {
+        var rows = this.layout[ context ]['rows'];
+        var index = ViewCommon.findRowIndex( rows, pointer );
+
+        this.layout[ context ]['rows'][ index ]['atts'][ key ] = value;
+
     },
-
-    /**
-     * Create a unique ID similar to PHP uniqid
-     * Thanks to https://gist.github.com/larchanka/7080820
-     * todo: move to common functions
-     * @param pr
-     * @param en
-     * @returns {*}
-     */
-    uniqid: function ( pr, en ) {
-        var pr = pr || '', en = en || false, result;
-
-        this.seed = function (s, w) {
-            s = parseInt(s, 10).toString(16);
-            return w < s.length ? s.slice(s.length - w) : (w > s.length) ? new Array(1 + (w - s.length)).join('0') + s : s;
-        };
-
-        result = pr + this.seed(parseInt(new Date().getTime() / 1000, 10), 8) + this.seed(Math.floor(Math.random() * 0x75bcd15) + 1, 5);
-
-        if (en) result += (Math.random() * 10).toFixed(8).toString();
-
-        return result;
-    },
-
-
-
 
 
 });
@@ -180,6 +165,15 @@ ViewDispatcher.register( function( action ) {
             LayoutStore.emitChange();
             break;
 
+        case ViewConstants.LAYOUT_DEL_ROW:
+            LayoutStore.removeRow( action.context, action.pointer );
+            LayoutStore.emitChange();
+            break;
+
+        case ViewConstants.LAYOUT_SET_ROW:
+            LayoutStore.updateRow( action.context, action.pointer, action.key, action.value );
+            LayoutStore.emitChange();
+            break;
 
     }
 

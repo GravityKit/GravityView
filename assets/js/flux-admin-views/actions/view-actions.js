@@ -88,6 +88,34 @@ var ViewActions = {
             pointer: pointer,
             struct: colStruct
         });
+    },
+
+    /**
+     * Remove row on the tab (context) at the row pointer (row id).
+     * @param args Object containing the tab id and the row id
+     */
+    removeRow: function( args ) {
+        ViewDispatcher.dispatch({
+            actionType: ViewConstants.LAYOUT_DEL_ROW,
+            context: args.context,
+            pointer: args.pointer
+        });
+    },
+
+    /**
+     *
+     * @param id Row Setting key
+     * @param value Row Setting value
+     * @param args Row pointer context
+     */
+    updateRowSetting: function( id, value, args ) {
+        ViewDispatcher.dispatch({
+            actionType: ViewConstants.LAYOUT_SET_ROW,
+            key: id,
+            value: value,
+            context: args.context,
+            pointer: args.pointer
+        });
     }
 
 

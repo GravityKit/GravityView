@@ -13,15 +13,19 @@ var RowControls = React.createClass({
 
     handleClick: function(e) {
         e.preventDefault();
-        var action = e.target.getAttribute('data-action');
-        if( 'add' === action ) {
-            var argsPanel = {
+        var action = e.target.getAttribute('data-action'),
+            rowArgs = {
                 'context': this.props.tabId,
                 'pointer': this.props.rowId
             };
-            ViewActions.openPanel( ViewConstants.PANEL_ADD_ROW, false, argsPanel );
-        }
 
+        if( 'add' === action ) {
+            ViewActions.openPanel( ViewConstants.PANEL_ROW_ADD, false, rowArgs );
+        } else if( 'remove' === action ) {
+            ViewActions.removeRow( rowArgs );
+        } else if( 'settings' === action ) {
+            ViewActions.openPanel( ViewConstants.PANEL_ROW_SETTINGS, false, rowArgs );
+        }
     },
 
     render: function() {

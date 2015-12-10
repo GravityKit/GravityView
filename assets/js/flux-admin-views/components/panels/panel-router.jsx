@@ -2,6 +2,7 @@ var React = require('react');
 var ReactTooltip = require('react-tooltip');
 
 var AddRowPanel = require('./add-row-panel.jsx');
+var ConfigureRowPanel = require('./configure-row-panel.jsx');
 var SettingsMenuPanel = require('./settings-menu-panel.jsx');
 var SettingsSubPanel = require('./settings-sub-panel.jsx');
 
@@ -23,7 +24,10 @@ var PanelRouter = React.createClass({
             // Used on the Settings panel only
             settingsValues: SettingsStore.getAllValues(),
             settingsInputs: SettingsStore.getInputs(),
-            settingsSections: SettingsStore.getSections()
+            settingsSections: SettingsStore.getSections(),
+
+            // Used on the Configure Row panel
+            layout: LayoutStore.getLayout()
         };
     },
 
@@ -60,6 +64,7 @@ var PanelRouter = React.createClass({
         return (
            <div>
                <AddRowPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} extraArgs={this.state.extraPanelArgs} />
+               <ConfigureRowPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} extraArgs={this.state.extraPanelArgs} layoutData={this.state.layout} />
                <SettingsMenuPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} sections={this.state.settingsSections} />
                <SettingsSubPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} settingsValues={this.state.settingsValues} sections={this.state.settingsSections} inputs={this.state.settingsInputs} />
                <ReactTooltip html={true} place="bottom" type="info" effect="float" />

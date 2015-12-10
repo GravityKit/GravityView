@@ -48,7 +48,7 @@ var AddRowPanel = React.createClass({
 
         var options = rowOptions.map( this.renderOptions, this );
 
-        var isPanelVisible = ( this.props.currentPanel === ViewConstants.PANEL_ADD_ROW ) || ( this.props.returnPanel === ViewConstants.PANEL_ADD_ROW );
+        var isPanelVisible = ( this.props.currentPanel === ViewConstants.PANEL_ROW_ADD ) || ( this.props.returnPanel === ViewConstants.PANEL_ROW_ADD );
 
         return (
 

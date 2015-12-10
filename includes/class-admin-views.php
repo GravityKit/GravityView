@@ -1198,8 +1198,9 @@ class GravityView_Admin_Views {
 
 
 			//Panel
-			'panel_settings_title' 	=> __( 'View Settings', 'gravityview' ),
-			'panel_add_row_title' 	=> __( 'Add Row', 'gravityview' ),
+			'panel_settings_title' 		=> __( 'View Settings', 'gravityview' ),
+			'panel_add_row_title' 		=> __( 'Add Row', 'gravityview' ),
+			'panel_config_row_title' 	=> __( 'Configure Row', 'gravityview' ),
 
 
 			// --- Below the old i18n tags --

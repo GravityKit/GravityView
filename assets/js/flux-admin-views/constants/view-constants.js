@@ -7,7 +7,8 @@ module.exports = keyMirror({
 
     // Panel IDs
     PANEL_SETTINGS: null,
-    PANEL_ADD_ROW: null,
+    PANEL_ROW_ADD: null,
+    PANEL_ROW_SETTINGS: null,
 
 
     // Settings
@@ -22,6 +23,7 @@ module.exports = keyMirror({
     CHANGE_TAB: null,
     LAYOUT_ADD_ROW: null,
     LAYOUT_DEL_ROW: null,
+    LAYOUT_SET_ROW: null,
 
 
 });
