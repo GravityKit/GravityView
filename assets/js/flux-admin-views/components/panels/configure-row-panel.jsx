@@ -52,8 +52,6 @@ var ConfigureRowPanel = React.createClass({
 
     },
 
-
-
     render: function() {
 
         var isPanelVisible = ( this.props.currentPanel === ViewConstants.PANEL_ROW_SETTINGS ) || ( this.props.returnPanel === ViewConstants.PANEL_ROW_SETTINGS );

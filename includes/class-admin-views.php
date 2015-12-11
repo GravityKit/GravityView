@@ -1194,7 +1194,9 @@ class GravityView_Admin_Views {
 			// Fields Area
 			'fields_title_multiple' 	=> __( 'Entries Fields', 'gravityview' ),
 			'fields_label_multiple' 	=> __( 'These fields will be shown for each entry.', 'gravityview' ),
-			'fields_add' 			=> __( 'Add Field', 'gravityview' ),
+			'fields_add' 				=> __( 'Add Field', 'gravityview' ),
+			'field_settings'			=> __( 'Field Settings', 'gravityview' ),
+			'field_remove'			=> __( 'Remove Field', 'gravityview' ),
 
 
 			//Panel

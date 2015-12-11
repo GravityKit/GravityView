@@ -103,7 +103,7 @@ var ViewActions = {
     },
 
     /**
-     *
+     * Update the settings of a row
      * @param id Row Setting key
      * @param value Row Setting value
      * @param args Row pointer context
@@ -116,8 +116,17 @@ var ViewActions = {
             context: args.context,
             pointer: args.pointer
         });
-    }
+    },
 
+    removeField: function( args ) {
+        ViewDispatcher.dispatch({
+            actionType: ViewConstants.LAYOUT_DEL_FIELD,
+            context: args.context,
+            row: args.row,
+            col: args.col,
+            field: args.field
+        });
+    }
 
 
 

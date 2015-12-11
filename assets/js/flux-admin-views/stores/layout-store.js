@@ -113,13 +113,13 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
     /**
      * Build a new row object
      * @param type
-     * @returns {{atts: {id: string, class: string, style: string}, columns: Array, row_id: *}}
+     * @returns {{atts: {id: string, class: string, style: string}, columns: Array, id: *}}
      */
     buildRowStructure: function( type ) {
         var row = {
             'atts': { 'id': '', 'class': '', 'style': '' },
             'columns': [],
-            'row_id': ViewCommon.uniqid()
+            'id': ViewCommon.uniqid()
         };
         var cols = type.split('-');
 
@@ -134,6 +134,13 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
         return row;
     },
 
+    /**
+     * Update a row setting
+     * @param context string Directory, Single, Edit, Export
+     * @param pointer string Row ID
+     * @param key string Setting key
+     * @param value string Setting value
+     */
     updateRow: function( context, pointer, key, value ) {
         var rows = this.layout[ context ]['rows'];
         var index = ViewCommon.findRowIndex( rows, pointer );
@@ -142,6 +149,21 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
 
     },
 
+    /**
+     * Remove Field from layout
+     * @param context
+     * @param row
+     * @param col
+     * @param field
+     */
+    removeField: function( context, row, col, field ) {
+        var rowI = ViewCommon.findRowIndex( this.layout[ context ]['rows'], row ),
+            fields = this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'],
+            fieldI = ViewCommon.findRowIndex( fields, field );
+
+        fields.splice( fieldI, 1 );
+        this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'] = fields;
+    }
 
 });
 
@@ -172,6 +194,11 @@ ViewDispatcher.register( function( action ) {
 
         case ViewConstants.LAYOUT_SET_ROW:
             LayoutStore.updateRow( action.context, action.pointer, action.key, action.value );
+            LayoutStore.emitChange();
+            break;
+
+        case ViewConstants.LAYOUT_DEL_FIELD:
+            LayoutStore.removeField( action.context, action.row, action.col, action.field );
             LayoutStore.emitChange();
             break;
 

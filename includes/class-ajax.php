@@ -497,7 +497,7 @@ class GravityView_Ajax {
 			$col = $indexs[1]; // e.g.: list-title, table-columns..
 
 			$layout[ $tab ]['rows'][ $i ]['atts'] = array( 'id' => '', 'class' => '', 'style' => '' );
-			$layout[ $tab ]['rows'][ $i ]['row_id'] = uniqid( '', false );
+			$layout[ $tab ]['rows'][ $i ]['id'] = uniqid( '', false );
 
 			switch ( $col ) {
 				case 'list-image':
@@ -547,13 +547,15 @@ class GravityView_Ajax {
 		if( empty( $fields ) ) {
 			return $output;
 		}
-
+		$i = 0;
 		foreach( $fields as $k => $field ) {
-			$output[ $k ]['form_id'] = $form['id'];
-			$output[ $k ]['field_id'] = $field['id'];
-			$output[ $k ]['field_type'] = GVCommon::get_field_type( $form, $field['id'] );
+			$output[ $i ]['id'] = $k;
+			$output[ $i ]['form_id'] = $form['id'];
+			$output[ $i ]['field_id'] = $field['id'];
+			$output[ $i ]['field_type'] = GVCommon::get_field_type( $form, $field['id'] );
 			unset( $field['id'] );
-			$output[ $k ]['gv_settings'] = $field;
+			$output[ $i ]['gv_settings'] = $field;
+			$i++;
 		}
 
 		return $output;

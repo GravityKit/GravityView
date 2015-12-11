@@ -1640,7 +1640,7 @@ var ViewActions = {
     },
 
     /**
-     *
+     * Update the settings of a row
      * @param id Row Setting key
      * @param value Row Setting value
      * @param args Row pointer context
@@ -1652,6 +1652,16 @@ var ViewActions = {
             value: value,
             context: args.context,
             pointer: args.pointer
+        });
+    },
+
+    removeField: function removeField(args) {
+        ViewDispatcher.dispatch({
+            actionType: ViewConstants.LAYOUT_DEL_FIELD,
+            context: args.context,
+            row: args.row,
+            col: args.col,
+            field: args.field
         });
     }
 
@@ -1774,7 +1784,7 @@ var ViewCommon = {
      */
     findRowIndex: function findRowIndex(rows, id) {
         for (var i = 0; i < rows.length; i++) {
-            if (rows[i]['row_id'] === id) {
+            if (rows[i]['id'] === id) {
                 return i;
             }
         }
@@ -1890,6 +1900,9 @@ module.exports = RowControls;
 var React = require('react');
 var RowControls = require('./row-controls.jsx');
 
+var ViewConstants = require('../../../constants/view-constants');
+var ViewActions = require('../../../actions/view-actions.js');
+
 var Rows = React.createClass({
     displayName: 'Rows',
 
@@ -1900,6 +1913,27 @@ var Rows = React.createClass({
         data: React.PropTypes.array
     },
 
+    handleFieldSettings: function handleFieldSettings(e) {
+        e.preventDefault();
+
+        /*var fieldArgs = { 'row' };
+         ViewActions.openPanel( ViewConstants.PANEL_ROW_SETTINGS, false, fieldArgs );
+        */
+    },
+
+    handleFieldRemove: function handleFieldRemove(e) {
+        e.preventDefault();
+
+        var fieldArgs = {
+            'context': this.props.tabId,
+            'row': jQuery(e.target).parents('div[data-row]').attr('data-row'),
+            'col': jQuery(e.target).parents('div[data-column]').attr('data-column'),
+            'field': jQuery(e.target).parents('.gv-view-field').attr('id')
+        };
+
+        ViewActions.removeField(fieldArgs);
+    },
+
     renderAddLabel: function renderAddLabel() {
         if (this.props.type === 'widget') {
             return gravityview_i18n.widgets_add;
@@ -1907,15 +1941,55 @@ var Rows = React.createClass({
         return gravityview_i18n.fields_add;
     },
 
+    renderFields: function renderFields(field, i) {
+
+        var label = field['gv_settings']['custom_label'] || field['gv_settings']['label'];
+
+        return React.createElement(
+            'div',
+            { key: field.id, className: 'gv-view-field', id: field.id },
+            React.createElement(
+                'a',
+                { onClick: this.handleFieldSettings, title: gravityview_i18n.field_settings, className: 'gv-view-field__settings', 'data-icon': '' },
+                React.createElement(
+                    'span',
+                    { className: 'gv-screen-reader-text' },
+                    gravityview_i18n.field_settings
+                )
+            ),
+            React.createElement(
+                'span',
+                { className: 'gv-view-field__description' },
+                label
+            ),
+            React.createElement(
+                'a',
+                { onClick: this.handleFieldRemove, title: gravityview_i18n.field_remove, className: 'gv-view-field__remove', 'data-icon': '' },
+                React.createElement(
+                    'span',
+                    { className: 'gv-screen-reader-text' },
+                    gravityview_i18n.field_remove
+                )
+            )
+        );
+    },
+
     renderColumn: function renderColumn(column, i) {
-        var areaClass = 'gv-grid__col-' + column.colspan;
+
+        var areaClass = 'gv-grid__col-' + column.colspan,
+            fields = null;
+
+        if (column.fields) {
+            fields = column.fields.map(this.renderFields, this);
+        }
 
         return React.createElement(
             'div',
             { key: i, className: areaClass },
             React.createElement(
                 'div',
-                { className: 'gv-grid__droppable-area' },
+                { className: 'gv-grid__droppable-area', 'data-column': i },
+                fields,
                 React.createElement(
                     'a',
                     { title: this.renderAddLabel() },
@@ -1932,10 +2006,10 @@ var Rows = React.createClass({
 
         return React.createElement(
             'div',
-            { key: row.row_id, className: 'gv-grid gv-grid__has-row-controls' },
+            { key: row.id, className: 'gv-grid gv-grid__has-row-controls', 'data-row': row.id },
             areas,
             React.createElement(RowControls, {
-                rowId: row.row_id,
+                rowId: row.id,
                 tabId: this.props.tabId
             })
         );
@@ -1960,7 +2034,7 @@ var Rows = React.createClass({
 
 module.exports = Rows;
 
-},{"./row-controls.jsx":5,"react":199}],7:[function(require,module,exports){
+},{"../../../actions/view-actions.js":1,"../../../constants/view-constants":28,"./row-controls.jsx":5,"react":199}],7:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -3226,7 +3300,9 @@ module.exports = keyMirror({
     CHANGE_TAB: null,
     LAYOUT_ADD_ROW: null,
     LAYOUT_DEL_ROW: null,
-    LAYOUT_SET_ROW: null
+    LAYOUT_SET_ROW: null,
+
+    LAYOUT_DEL_FIELD: null
 
 });
 
@@ -3350,13 +3426,13 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
     /**
      * Build a new row object
      * @param type
-     * @returns {{atts: {id: string, class: string, style: string}, columns: Array, row_id: *}}
+     * @returns {{atts: {id: string, class: string, style: string}, columns: Array, id: *}}
      */
     buildRowStructure: function buildRowStructure(type) {
         var row = {
             'atts': { 'id': '', 'class': '', 'style': '' },
             'columns': [],
-            'row_id': ViewCommon.uniqid()
+            'id': ViewCommon.uniqid()
         };
         var cols = type.split('-');
 
@@ -3371,11 +3447,34 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
         return row;
     },
 
+    /**
+     * Update a row setting
+     * @param context string Directory, Single, Edit, Export
+     * @param pointer string Row ID
+     * @param key string Setting key
+     * @param value string Setting value
+     */
     updateRow: function updateRow(context, pointer, key, value) {
         var rows = this.layout[context]['rows'];
         var index = ViewCommon.findRowIndex(rows, pointer);
 
         this.layout[context]['rows'][index]['atts'][key] = value;
+    },
+
+    /**
+     * Remove Field from layout
+     * @param context
+     * @param row
+     * @param col
+     * @param field
+     */
+    removeField: function removeField(context, row, col, field) {
+        var rowI = ViewCommon.findRowIndex(this.layout[context]['rows'], row),
+            fields = this.layout[context]['rows'][rowI]['columns'][col]['fields'],
+            fieldI = ViewCommon.findRowIndex(fields, field);
+
+        fields.splice(fieldI, 1);
+        this.layout[context]['rows'][rowI]['columns'][col]['fields'] = fields;
     }
 
 });
@@ -3406,6 +3505,11 @@ ViewDispatcher.register(function (action) {
 
         case ViewConstants.LAYOUT_SET_ROW:
             LayoutStore.updateRow(action.context, action.pointer, action.key, action.value);
+            LayoutStore.emitChange();
+            break;
+
+        case ViewConstants.LAYOUT_DEL_FIELD:
+            LayoutStore.removeField(action.context, action.row, action.col, action.field);
             LayoutStore.emitChange();
             break;
 

@@ -14,7 +14,7 @@ var ViewCommon = {
      */
     findRowIndex: function( rows, id ) {
         for ( var i = 0; i < rows.length; i++ ) {
-            if ( rows[i]['row_id'] === id ) {
+            if ( rows[i]['id'] === id ) {
                 return i;
             }
         }

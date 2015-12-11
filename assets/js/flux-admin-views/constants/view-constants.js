@@ -25,5 +25,7 @@ module.exports = keyMirror({
     LAYOUT_DEL_ROW: null,
     LAYOUT_SET_ROW: null,
 
+    LAYOUT_DEL_FIELD: null,
+
 
 });
