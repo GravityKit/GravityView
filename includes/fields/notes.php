@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Add custom options for date fields
+ * Add custom options for notes fields
  */
 class GravityView_Field_Notes extends GravityView_Field {
 
@@ -11,6 +11,39 @@ class GravityView_Field_Notes extends GravityView_Field {
 		add_action( 'wp', array( $this, 'trigger_update_notes'), 1000 );
 
 		parent::__construct();
+
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_script' ) );
+
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_and_localize_script' ) );
+
+	}
+
+	/**
+	 * Register the field notes scripts and styles
+	 * @since TODO
+	 * @return void
+	 */
+	function register_script() {
+		wp_register_script( 'gravityview-field-notes', GRAVITYVIEW_URL . 'assets/js/field-notes.js', array('jquery'), GravityView_Plugin::version, true);
+		wp_register_style( 'gravityview-field-notes-css', GRAVITYVIEW_URL . 'assets/css/field-notes.css', array(), GravityView_Plugin::version, 'all' );
+	}
+
+	/**
+	 * Register the field notes styles, scripts and output the localized text JS variables
+	 * @since TODO
+	 * @return void
+	 */
+	function enqueue_and_localize_script() {
+		// The script is already registered and enqueued
+		if( wp_script_is( 'gravityview-field-notes', 'enqueued' ) ) {
+			return;
+		}
+		wp_enqueue_script( 'gravityview-field-notes' );
+		wp_enqueue_style( 'gravityview-field-notes-css' );
+		wp_localize_script( 'gravityview-field-notes', 'gvNotes', array(
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries')
+		));
 	}
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
