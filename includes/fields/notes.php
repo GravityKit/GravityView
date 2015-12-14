@@ -16,6 +16,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_and_localize_script' ) );
 
+		add_action('wp_ajax_gv_trigger_update_notes', array( $this, 'trigger_update_notes'));
+
 	}
 
 	/**
@@ -42,7 +44,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		wp_enqueue_style( 'gravityview-field-notes-css' );
 		wp_localize_script( 'gravityview-field-notes', 'gvNotes', array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
-				'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries')
+				'nonce' => wp_create_nonce( 'gforms_update_note')
 		));
 	}
 
