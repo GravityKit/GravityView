@@ -14,7 +14,13 @@
  */
 do_action( 'gravityview/field/approval/load_scripts' );
 
+global $gravityview_view;
+
 $entry = GravityView_View::getInstance()->getCurrentEntry();
+
+if (empty($entry)){
+	$entry = $gravityview_view->_current_field['entry'];
+}
 
 $approved = gform_get_meta( $entry['id'], 'is_approved' );
 
