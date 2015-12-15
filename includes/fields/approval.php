@@ -27,6 +27,10 @@ class GravityView_Field_Approval extends GravityView_Field {
 
 		add_action( 'gravityview/field/approval/load_scripts', array( $this, 'enqueue_and_localize_script' ) );
 
+		add_filter( 'gravityview/common/sortable_fields', array( $this, 'add_approval_field_to_sort_list' ), 10, 2 );
+
+		add_filter('gravityview_search_criteria', array( $this, 'enable_sorting_by_approval' ), 10, 4 );
+
 	}
 
 	/**
@@ -104,6 +108,37 @@ class GravityView_Field_Approval extends GravityView_Field {
 
 		return $entry_default_fields;
 	}
+
+	/**
+	 * Set the search query to sort by the is_approved meta field.
+	 * @param $criteria
+	 * @param $form_ids
+	 * @param $view_id
+	 * @return mixed
+	 */
+	public function enable_sorting_by_approval( $criteria, $form_ids, $view_id ) {
+		// If the search is being sorted
+		if( ! empty( $criteria['sorting']['key'] ) ) {
+			// $criteria['sorting']['key'] = 'is_approved';
+		}
+		return $criteria;
+	}
+
+	/**
+	 * Add the Approval Field to the Sort Options Select Box
+	 * @param $fields
+	 * @param $formid
+	 * @return mixed
+	 */
+	public function add_approval_field_to_sort_list( $fields, $formid ){
+		$approval_field = array(
+				'label' => $this->label,
+				'type' => $this->name
+		);
+		$fields['approval'] = $approval_field;
+		return $fields;
+	}
+
 
 }
 
