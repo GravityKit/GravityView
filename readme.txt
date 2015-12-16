@@ -21,12 +21,17 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 == Changelog ==
 
 * Fixed: Custom merge tags not being replaced properly by GravityView
+* Fixed: Connected form links were not visible in the Data Source metabox
 * Tweak: Only show Add View button to users who are able to publish Views
 * Tweak: Reduce the number of database calls by fetching forms differently
 
 __Developer Notes:__
 
 * New: `gravityview_get_terms_choices()` function generates array of categories ready to be added to Gravity Forms $choices array
+
+__Developer Notes:__
+
+* Use the `$is_sortable` `GravityView_Field` variable to define whether a field is sortable. Override using the  `gravityview/sortable/field_blacklist` filter.
 
 = 1.15.2 on December 3 =
 

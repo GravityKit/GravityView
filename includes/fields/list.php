@@ -9,6 +9,18 @@ class GravityView_Field_List extends GravityView_Field {
 
 	var $name = 'list';
 
+	/**
+	 * @var bool
+	 * @since 1.15.3
+	 */
+	var $is_sortable = false;
+
+	/**
+	 * @var bool
+	 * @since 1.15.3
+	 */
+	var $is_searchable = false;
+
 	function __construct() {
 
 		parent::__construct();

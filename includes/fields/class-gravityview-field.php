@@ -47,11 +47,10 @@ abstract class GravityView_Field {
 	var $search_operators;
 
 	/**
-	 * @internal Not yet implemented
 	 * @type boolean Can the field be sorted in search?
 	 * @since 1.15.2
 	 */
-	var $is_sortable;
+	var $is_sortable = true;
 
 	/**
 	 * @internal Not yet implemented
@@ -115,6 +114,8 @@ abstract class GravityView_Field {
 		// Modify the field options based on the name of the field type
 		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 5 );
 
+		add_filter( 'gravityview/sortable/field_blacklist', array( $this, '_filter_sortable_fields' ), 1 );
+
 		if( ! empty( $this->entry_meta_key ) ) {
 			add_filter( 'gform_entry_meta', array( $this, 'add_entry_meta' ) );
 		}
@@ -150,6 +151,25 @@ abstract class GravityView_Field {
 		}
 
 		return $entry_meta;
+	}
+
+	/**
+	 * Use field settings to modify whether a field is sortable
+	 *
+	 * @see GravityView_frontend::is_field_sortable
+	 * @since TODO
+	 *
+	 * @param array $not_sortable Existing field types that aren't sortable
+	 *
+	 * @return array
+	 */
+	public function _filter_sortable_fields( $not_sortable ) {
+
+		if( ! $this->is_sortable ) {
+			$not_sortable[] = $this->name;
+		}
+
+		return $not_sortable;
 	}
 
 	private function field_support_options() {
