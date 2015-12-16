@@ -30,9 +30,14 @@
 		'dt_selector': '.gv-datatables',
 
 		/**
+		 * @var {string} The class added and removed based on whether entry is approved
+		 */
+		'approved_css_class': 'gv-approval-approved',
+
+		/**
 		 * @var {string} jQuery selector used to find approval target
 		 */
-		'selector': '.toggleApproved'
+		'selector': '.gv-approval-toggle'
 	};
 
 	$(function() {
@@ -110,13 +115,13 @@
 						.attr( 'data-approved-status', 'Approved' )
 						.prop( 'title', gvApproval.text.disapprove_title )
 						.text( gvApproval.text.label_disapprove )
-						.addClass( 'entry_approved' );
+						.addClass( self.approved_css_class );
 				} else {
 					$target
 						.attr( 'data-approved-status', '0' )
 						.prop( 'title', gvApproval.text.approve_title )
 						.text( gvApproval.text.label_approve )
-						.removeClass( 'entry_approved' );
+						.removeClass( self.approved_css_class );
 				}
 
 				$target.removeClass( 'loading' );
