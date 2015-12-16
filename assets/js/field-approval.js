@@ -32,7 +32,10 @@
 		/**
 		 * @var {string} The class added and removed based on whether entry is approved
 		 */
-		'approved_css_class': 'gv-approval-approved',
+		'css_classes': {
+			'approved': 'gv-approval-approved',
+			'loading': 'gv-approval-loading'
+		},
 
 		/**
 		 * @var {string} jQuery selector used to find approval target
@@ -86,7 +89,7 @@
 			console.log( 'toggle_approval', { 'target': e.target, 'is_approved': is_approved });
 		}
 
-		$( this ).addClass( 'loading' );
+		$( e.target ).addClass( self.css_classes.loading );
 
 		self.update_approval( entry_id, form_id, set_approved, $( e.target ) );
 
@@ -115,16 +118,16 @@
 						.attr( 'data-approved-status', 'Approved' )
 						.prop( 'title', gvApproval.text.disapprove_title )
 						.text( gvApproval.text.label_disapprove )
-						.addClass( self.approved_css_class );
+						.addClass( self.css_classes.approved );
 				} else {
 					$target
 						.attr( 'data-approved-status', '0' )
 						.prop( 'title', gvApproval.text.approve_title )
 						.text( gvApproval.text.label_approve )
-						.removeClass( self.approved_css_class );
+						.removeClass( self.css_classes.approved );
 				}
 
-				$target.removeClass( 'loading' );
+				$target.removeClass( self.css_classes.loading );
 			}
 			if( self.debug ) {
 				console.log( 'update_approval', { 'data': data, 'response': response });
