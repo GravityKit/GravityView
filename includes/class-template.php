@@ -550,10 +550,16 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		if( in_array( $this->getContext(), array( 'edit', 'single') ) ) {
 			$entries = $this->getEntries();
-			return $entries[0];
+			$entry = $entries[0];
+		} else {
+			$entry = $this->_current_entry;
 		}
 
-		return $this->_current_entry;
+		if ( empty( $entry ) && ! empty( $this->_current_field['entry'] ) ) {
+			$entry = $this->_current_field['entry'];
+		}
+
+		return $entry;
 	}
 
 	/**
