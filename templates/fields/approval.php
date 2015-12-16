@@ -23,18 +23,12 @@ if (empty($entry)){
 }
 
 $approved = gform_get_meta( $entry['id'], 'is_approved' );
+$is_approved = ! empty( $approved );
 
 $strings = GravityView_Field_Approval::get_strings();
-
-if( ! empty( $approved ) ) {
-	$anchor = $strings['label_disapprove'];
-	$title = $strings['unapprove_title'];
-	$class = 'entry_approved';
-} else {
-	$title = $strings['approve_title'];
-	$anchor = $strings['label_approve'];
-	$class = '';
-}
+$anchor = $is_approved ? $strings['label_disapprove'] : $strings['label_approve'];
+$title = $is_approved ? $strings['unapprove_title'] : $strings['approve_title'];
+$class = $is_approved ? 'gv-approval-approved' : '';
 
 ?>
-<a href="#" class="toggleApproved <?php echo $class; ?>" title="<?php echo $title; ?>" data-approved-status="<?php echo $approved; ?>" data-entry-id="<?php echo esc_attr( $entry['id'] ); ?>" data-form-id="<?php echo esc_attr( $entry['form_id'] ); ?>"><?php echo $anchor; ?></a>
+<a href="#" class="gv-approval-toggle <?php echo $class; ?>" title="<?php echo $title; ?>" data-approved-status="<?php echo $approved; ?>" data-entry-id="<?php echo esc_attr( $entry['id'] ); ?>" data-form-id="<?php echo esc_attr( $entry['form_id'] ); ?>"><?php echo $anchor; ?></a>
