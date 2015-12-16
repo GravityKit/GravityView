@@ -60,7 +60,8 @@ class GravityView_Field_Approval extends GravityView_Field {
 	 * @return void
 	 */
 	function register_script() {
-		wp_register_script( 'gravityview-field-approval', GRAVITYVIEW_URL . 'assets/js/field-approval.js', GravityView_Plugin::version, true );
+		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		wp_register_script( 'gravityview-field-approval', GRAVITYVIEW_URL . 'assets/js/field-approval'.$script_debug.'.js', GravityView_Plugin::version, true );
 	}
 
 	/**
