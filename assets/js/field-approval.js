@@ -17,31 +17,50 @@
 	"use strict";
 
 	var self = {
-		'response': { 'status': '' }
-	}, maybeDT;
+		'response': { 'status': '' },
+
+		/**
+		 * @var {boolean} True: print console logs; false: don't
+		 */
+		'debug': false,
+
+		/**
+		 * @var {string} jQuery selector used to find if datatables exist
+		 */
+		'dt_selector': '.gv-datatables',
+
+		/**
+		 * @var {string} jQuery selector used to find approval target
+		 */
+		'selector': '.toggleApproved'
+	};
 
 	$(function() {
-		maybeDT = $('.gv-datatables');
-		self.dtCheck( maybeDT );
+		self.setup_triggers();
 	});
 
 	/**
-	 * Check if the DataTables Extension is in use
-	 * @param maybeDT
+	 * Checks whether there's DataTables table. If so, uses different trigger.
+	 * @returns {void}
 	 */
-	self.dtCheck = function( maybeDT ){
+	self.setup_triggers = function(){
 
-		if (maybeDT.length !== 0){
-			$(maybeDT).on( 'draw.dt', function () {
-				$( '.toggleApproved' ).on( 'click', function( e ) {
-					self.toggle_approval(e);
-				});
-			});
+		var maybeDT = $( self.dt_selector );
+
+		if ( maybeDT.length > 0 ){
+			$( '.gv-datatables' ).on( 'draw.dt', self.add_toggle_approval_trigger );
 		} else {
-			$( '.toggleApproved' ).on( 'click', function( e ) {
-				self.toggle_approval(e);
-			});
+			self.add_toggle_approval_trigger();
 		}
+	};
+
+	/**
+	 * Bind a trigger to the selector element
+	 */
+	self.add_toggle_approval_trigger = function() {
+		$( self.selector ).on( 'click', function( e ) {
+			self.toggle_approval( e );
+		});
 	};
 
 	/**
@@ -58,7 +77,9 @@
 		var is_approved = $( e.target ).attr( 'data-approved-status').toString();
 		var set_approved = ( is_approved === '' || is_approved === '0' ) ? 'Approved' : '0';
 
-		console.log(is_approved);
+		if( self.debug ) {
+			console.log( 'toggle_approval', { 'target': e.target, 'is_approved': is_approved });
+		}
 
 		$( this ).addClass( 'loading' );
 
@@ -85,13 +106,23 @@
 				self.response = $.parseJSON( response );
 
 				if( '0' !== self.response.status ) {
-					$target.attr( 'data-approved-status', 'Approved' ).prop( 'title', gvApproval.text.disapprove_title ).text( gvApproval.text.label_disapprove ).addClass( 'entry_approved' );
+					$target
+						.attr( 'data-approved-status', 'Approved' )
+						.prop( 'title', gvApproval.text.disapprove_title )
+						.text( gvApproval.text.label_disapprove )
+						.addClass( 'entry_approved' );
 				} else {
-					$target.attr( 'data-approved-status', '0' )
-							.prop( 'title', gvApproval.text.approve_title ).text( gvApproval.text.label_approve ).removeClass( 'entry_approved' );
+					$target
+						.attr( 'data-approved-status', '0' )
+						.prop( 'title', gvApproval.text.approve_title )
+						.text( gvApproval.text.label_approve )
+						.removeClass( 'entry_approved' );
 				}
 
 				$target.removeClass( 'loading' );
+			}
+			if( self.debug ) {
+				console.log( 'update_approval', { 'data': data, 'response': response });
 			}
 		});
 
