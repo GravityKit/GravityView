@@ -7,7 +7,23 @@ class GravityView_Field_Approval extends GravityView_Field {
 
 	var $name = 'approval';
 
-	var $is_searchable = false;
+	var $is_searchable = true;
+
+	var $is_sortable = true;
+
+	var $is_numeric = false;
+
+	/**
+	 * @var string Approval status is stored in entry meta under this key
+	 * @since TODO
+	 */
+	var $entry_meta_key = 'is_approved';
+
+	/**
+	 * @var bool Don't add to the "columns to display" list; GravityView adds our own approval column
+	 * @since TODO
+	 */
+	var $entry_meta_is_default_column = false;
 
 	var $group = 'gravityview';
 
@@ -19,7 +35,16 @@ class GravityView_Field_Approval extends GravityView_Field {
 
 		$this->description =  esc_attr__( 'Approve entries from the View. Requires users have `gravityview_moderate_entries` capability or higher.', 'gravityview' );
 
+		$this->add_hooks();
+
 		parent::__construct();
+	}
+
+	/**
+	 * Add filters and actions for the field
+	 * @since TODO
+	 */
+	private function add_hooks() {
 
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'filter_gravityview_entry_default_field' ), 10, 3 );
 
@@ -28,8 +53,6 @@ class GravityView_Field_Approval extends GravityView_Field {
 		add_action( 'gravityview/field/approval/load_scripts', array( $this, 'enqueue_and_localize_script' ) );
 
 		add_filter( 'gravityview/common/sortable_fields', array( $this, 'add_approval_field_to_sort_list' ), 10, 2 );
-
-		add_filter('gravityview_search_criteria', array( $this, 'enable_sorting_by_approval' ), 10, 4 );
 
 	}
 
@@ -110,35 +133,23 @@ class GravityView_Field_Approval extends GravityView_Field {
 	}
 
 	/**
-	 * Set the search query to sort by the is_approved meta field.
-	 * @param $criteria
-	 * @param $form_ids
-	 * @param $view_id
-	 * @return mixed
-	 */
-	public function enable_sorting_by_approval( $criteria, $form_ids, $view_id ) {
-		// If the search is being sorted
-		if( ! empty( $criteria['sorting']['key'] ) ) {
-			// $criteria['sorting']['key'] = 'is_approved';
-		}
-		return $criteria;
-	}
-
-	/**
 	 * Add the Approval Field to the Sort Options Select Box
-	 * @param $fields
-	 * @param $formid
-	 * @return mixed
+	 *
+	 * @param array $fields Sub-set of GF form fields that are sortable
+	 * @param int $formid The Gravity Forms form ID that the fields are from
+	 * @return array Modified $fields array to include approval status in the sorting dropdown
 	 */
 	public function add_approval_field_to_sort_list( $fields, $formid ){
+
 		$approval_field = array(
-				'label' => $this->label,
-				'type' => $this->name
+			'label' => $this->label,
+			'type' => $this->name
 		);
-		$fields['approval'] = $approval_field;
+
+		$fields["{$this->entry_meta_key}"] = $approval_field;
+
 		return $fields;
 	}
-
 
 }
 
