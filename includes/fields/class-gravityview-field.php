@@ -20,7 +20,6 @@ abstract class GravityView_Field {
 	var $description;
 
 	/**
-	 * @internal Not yet implemented
 	 * @since 1.15.2
 	 * @type string The label of the field in the field picker
 	 */
@@ -62,6 +61,26 @@ abstract class GravityView_Field {
 	var $is_numeric;
 
 	/**
+	 * @var null|string The key used to search and sort entry meta in Gravity Forms. Used if the field stores data as custom entry meta.
+	 * @see https://www.gravityhelp.com/documentation/article/gform_entry_meta/
+	 * @since TODO
+	 */
+	var $entry_meta_key = null;
+
+	/**
+	 * @var string|array Optional. The callback function after entry meta is updated, only used if $entry_meta_key is set.
+	 * @see https://www.gravityhelp.com/documentation/article/gform_entry_meta/
+	 * @since TODO
+	 */
+	var $entry_meta_update_callback = null;
+
+	/**
+	 * @var bool Whether to show meta when set to true automatically adds the column to the entry list, without having to edit and add the column for display
+	 * @since TODO
+	 */
+	var $entry_meta_is_default_column = false;
+
+	/**
 	 * @internal Not yet implemented
 	 * @todo implement supports_context() method
 	 * The contexts in which a field is available. Some fields aren't editable, for example.
@@ -96,6 +115,41 @@ abstract class GravityView_Field {
 		// Modify the field options based on the name of the field type
 		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 5 );
 
+		if( ! empty( $this->entry_meta_key ) ) {
+			add_filter( 'gform_entry_meta', array( $this, 'add_entry_meta' ) );
+		}
+	}
+
+	/**
+	 * Add the custom entry meta key to make it searchable and sortable
+	 *
+	 * @see https://www.gravityhelp.com/documentation/article/gform_entry_meta/
+	 *
+	 * @param array $entry_meta Array of custom entry meta keys with associative arrays
+	 *
+	 * @return mixed
+	 */
+	function add_entry_meta( $entry_meta ) {
+
+		if( ! isset( $entry_meta["{$this->entry_meta_key}"] ) ) {
+
+			$added_meta = array(
+				'label'             => $this->label,
+				'is_numeric'        => $this->is_numeric,
+				'is_default_column' => $this->entry_meta_is_default_column,
+			);
+
+			if ( $this->entry_meta_update_callback && is_callable( $this->entry_meta_update_callback ) ) {
+				$added_meta['update_entry_meta_callback'] = $this->entry_meta_update_callback;
+			}
+
+			$entry_meta["{$this->entry_meta_key}"] = $added_meta;
+
+		} else {
+			do_action( 'gravityview_log_error', __METHOD__ . ' Entry meta already set: ' . $this->entry_meta_key, $entry_meta["{$this->entry_meta_key}"] );
+		}
+
+		return $entry_meta;
 	}
 
 	private function field_support_options() {
