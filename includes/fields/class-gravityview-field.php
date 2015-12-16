@@ -118,6 +118,7 @@ abstract class GravityView_Field {
 
 		if( ! empty( $this->entry_meta_key ) ) {
 			add_filter( 'gform_entry_meta', array( $this, 'add_entry_meta' ) );
+			add_filter( 'gravityview/common/sortable_fields', array( $this, 'add_sortable_field' ), 10, 2 );
 		}
 	}
 
@@ -151,6 +152,27 @@ abstract class GravityView_Field {
 		}
 
 		return $entry_meta;
+	}
+
+	/**
+	 * Add the field to the Filter & Sort available fields
+	 *
+	 * @since TODO
+	 *
+	 * @param array $fields Sub-set of GF form fields that are sortable
+	 *
+	 * @return array Modified $fields array to include approval status in the sorting dropdown
+	 */
+	public function add_sortable_field( $fields ){
+
+		$added_field = array(
+			'label' => $this->label,
+			'type' => $this->name
+		);
+
+		$fields["{$this->entry_meta_key}"] = $added_field;
+
+		return $fields;
 	}
 
 	/**

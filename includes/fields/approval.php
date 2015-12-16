@@ -52,8 +52,6 @@ class GravityView_Field_Approval extends GravityView_Field {
 
 		add_action( 'gravityview/field/approval/load_scripts', array( $this, 'enqueue_and_localize_script' ) );
 
-		add_filter( 'gravityview/common/sortable_fields', array( $this, 'add_approval_field_to_sort_list' ), 10, 2 );
-
 	}
 
 	/**
@@ -130,25 +128,6 @@ class GravityView_Field_Approval extends GravityView_Field {
 		}
 
 		return $entry_default_fields;
-	}
-
-	/**
-	 * Add the Approval Field to the Sort Options Select Box
-	 *
-	 * @param array $fields Sub-set of GF form fields that are sortable
-	 * @param int $formid The Gravity Forms form ID that the fields are from
-	 * @return array Modified $fields array to include approval status in the sorting dropdown
-	 */
-	public function add_approval_field_to_sort_list( $fields, $formid ){
-
-		$approval_field = array(
-			'label' => $this->label,
-			'type' => $this->name
-		);
-
-		$fields["{$this->entry_meta_key}"] = $approval_field;
-
-		return $fields;
 	}
 
 }
