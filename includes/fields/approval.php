@@ -2,6 +2,7 @@
 
 /**
  * Add custom options for address fields
+ * @since TODO
  */
 class GravityView_Field_Approval extends GravityView_Field {
 
@@ -43,25 +44,37 @@ class GravityView_Field_Approval extends GravityView_Field {
 	/**
 	 * Add filters and actions for the field
 	 * @since TODO
+	 * @return void
 	 */
 	private function add_hooks() {
 
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'filter_gravityview_entry_default_field' ), 10, 3 );
 
-		add_action( 'wp_enqueue_scripts', array( $this, 'register_script' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts_and_styles' ) );
 
 		add_action( 'gravityview/field/approval/load_scripts', array( $this, 'enqueue_and_localize_script' ) );
 
 	}
 
 	/**
-	 * Register the field approval script
+	 * Register the field approval script and style
 	 * @since TODO
 	 * @return void
 	 */
-	function register_script() {
+	function register_scripts_and_styles() {
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		wp_register_script( 'gravityview-field-approval', GRAVITYVIEW_URL . 'assets/js/field-approval'.$script_debug.'.js', array( 'jquery' ), GravityView_Plugin::version, true );
+
+		/**
+		 * @filter `gravityview/field/approval/css_url` URL to the Approval field CSS file.
+		 * @since TODO
+		 * @param string $style_path Override to use your own CSS file, or return empty string to disable loading.
+		 */
+		$style_path = apply_filters( 'gravityview/field/approval/css_url', GRAVITYVIEW_URL . 'assets/css/field-approval.css' );
+
+		if( ! empty( $style_path ) ) {
+			wp_register_style( 'gravityview-field-approval', $style_path, array( 'dashicons' ), GravityView_Plugin::version, 'screen' );
+		}
 	}
 
 	/**
@@ -91,12 +104,14 @@ class GravityView_Field_Approval extends GravityView_Field {
 	 * @since TODO
 	 * @return void
 	 */
-	function enqueue_and_localize_script() {
+	public function enqueue_and_localize_script() {
 
 		// The script is already registered and enqueued
 		if( wp_script_is( 'gravityview-field-approval', 'enqueued' ) ) {
 			return;
 		}
+
+		wp_enqueue_style( 'gravityview-field-approval' );
 
 		wp_enqueue_script( 'gravityview-field-approval' );
 
@@ -112,6 +127,7 @@ class GravityView_Field_Approval extends GravityView_Field {
 
 	/**
 	 * Add Fields to the field list
+	 *
 	 * @param array $entry_default_fields Array of fields shown by default
 	 * @param string|array $form form_ID or form object
 	 * @param string $context  Either 'single', 'directory', 'header', 'footer'

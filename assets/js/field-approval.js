@@ -117,14 +117,16 @@
 					$target
 						.attr( 'data-approved-status', 'Approved' )
 						.prop( 'title', gvApproval.text.disapprove_title )
-						.text( gvApproval.text.label_disapprove )
-						.addClass( self.css_classes.approved );
+						.addClass( self.css_classes.approved )
+						.find('span')
+							.text( gvApproval.text.label_disapprove );
 				} else {
 					$target
 						.attr( 'data-approved-status', '0' )
 						.prop( 'title', gvApproval.text.approve_title )
-						.text( gvApproval.text.label_approve )
-						.removeClass( self.css_classes.approved );
+						.removeClass( self.css_classes.approved )
+						.find('span')
+							.text( gvApproval.text.label_approve );
 				}
 
 				$target.removeClass( self.css_classes.loading );

@@ -1,0 +1,54 @@
+/**
+ * Styles for GravityView frontend Approve/Unapprove toggles
+ * @since TODO
+ */
+
+.gv-approval-toggle {
+
+  /**
+   * Change the icon size
+   */
+  $font-size: 24px;
+
+  color: #008000;
+
+  text-decoration: none;
+  border-bottom: none!important;
+
+  /**
+   * The label for the icons
+   */
+  span.screen-reader-text {
+    position: absolute;
+    margin: -1px;
+    padding: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    border: 0;
+  }
+  
+  &:before {
+    font-family: "dashicons";
+    display: inline-block;
+    cursor: pointer;
+    content: "\f147";
+    width: $font-size;
+    height: $font-size;
+    font-size: $font-size;
+  }
+
+  &.gv-approval-approved {
+    color: #981225;
+
+    &:before {
+      content: "\f158";
+    }
+  }
+
+  &.gv-approval-loading {
+    cursor: wait !important;
+  }
+
+}
