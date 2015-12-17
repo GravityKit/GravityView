@@ -26,6 +26,9 @@ class GravityView_Ajax {
 
 		// Load Layout configuration (new admin)
 		add_action( 'wp_ajax_gv_get_saved_layout', array( $this, 'get_saved_layout' ) );
+
+		// Load the fields list
+		add_action( 'wp_ajax_gv_get_fields_list', array( $this, 'get_available_fields_list' ) );
 	}
 
 	/**
@@ -560,6 +563,75 @@ class GravityView_Ajax {
 
 		return $output;
 	}
+
+	/**
+	 * Get available fields for a form and a context (directory, single, edit..)
+	 * @param string $form
+	 * @param string $context
+	 */
+	function get_available_fields_list() {
+
+		//check nonce
+		$this->check_ajax_nonce();
+
+		// check param
+		if( empty( $_POST['forms'] ) ) {
+			wp_send_json_error();
+		}
+
+		$forms =  $_POST['forms'];
+
+		$output = '';
+
+		/**
+		 * @filter  `gravityview_blacklist_field_types` Modify the types of fields that shouldn't be shown in a View.
+		 * @param[in,out] array $blacklist_field_types Array of field types to block for this context.
+		 * @param[in] string $context View context ('single', 'directory', or 'edit')
+		 */
+		foreach( array( 'directory', 'single', 'edit', 'export' ) as $context  ) {
+
+			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array(), $context );
+
+			$fields = GravityView_Admin_Views::get_instance()->get_available_fields( $forms[0], $context );
+
+			/**
+			 * Loop to create an object of fields grouped by section (form, entry, gravityview...)
+			 */
+			if( !empty( $fields ) ) {
+
+				foreach( $fields as $id => $details ) {
+
+					if( in_array( $details['type'], $blacklist_field_types ) ) {
+						continue;
+					}
+
+					// Edit mode only allows editing the parent fields, not single inputs.
+					if( $context === 'edit' && !empty( $details['parent'] ) ) {
+						continue;
+					}
+
+					if( empty( $details['group'] ) ) {
+						$details['group'] = 'form';
+					}
+
+					$details['id'] = $id;
+
+					$output[ $context ][ $details['group'] ][] = $details;
+
+				} // End foreach
+			}
+		}
+
+
+		error_log( '$output:' . print_r(  $output['directory'], true ) );
+
+		// success
+		wp_send_json_success( $output );
+
+		//todo: do we want to have the ADD ALL FIELDS field ?
+		//$this->render_additional_fields( $form, $context );
+	}
+
 
 }
 

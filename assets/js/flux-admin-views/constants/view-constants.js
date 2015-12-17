@@ -9,6 +9,8 @@ module.exports = keyMirror({
     PANEL_SETTINGS: null,
     PANEL_ROW_ADD: null,
     PANEL_ROW_SETTINGS: null,
+    PANEL_FIELD_ADD: null,
+    PANEL_FIELD_SETTINGS: null,
 
 
     // Settings
@@ -26,6 +28,11 @@ module.exports = keyMirror({
     LAYOUT_SET_ROW: null,
 
     LAYOUT_DEL_FIELD: null,
+    LAYOUT_ADD_FIELD: null,
+
+    UPDATE_FIELDS_SECTIONS: null,
+    UPDATE_FIELDS_LIST: null,
+
 
 
 });

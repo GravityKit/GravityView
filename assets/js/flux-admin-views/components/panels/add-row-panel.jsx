@@ -1,5 +1,5 @@
 var React = require('react');
-var Panel = require('./panel.jsx');
+var Panel = require('./panels/panel.jsx');
 
 var ViewConstants = require('../../constants/view-constants.js');
 var ViewActions = require('../../actions/view-actions.js');

@@ -1,5 +1,5 @@
 var React = require('react');
-var Panel = require('./panel.jsx');
+var Panel = require('./panels/panel.jsx');
 
 var InputNumber = require('./inputs/input-number.jsx');
 var InputCheckbox = require('./inputs/input-checkbox.jsx');
@@ -11,6 +11,7 @@ var InputTextarea = require('./inputs/input-textarea.jsx');
 
 var ViewConstants = require('../../constants/view-constants.js');
 var ViewActions = require('../../actions/view-actions.js');
+var ViewCommon = require('../../api/view-common.js');
 
 
 var SettingsSubPanel = React.createClass({
@@ -21,20 +22,6 @@ var SettingsSubPanel = React.createClass({
         settingsValues: React.PropTypes.object, // holds the settings values
         sections: React.PropTypes.array, // holds the settings sections
         inputs: React.PropTypes.object, // holds the settings inputs
-    },
-
-    /**
-     * Converts the section array into an object
-     * @returns object
-     */
-    getConvertedSections: function( sections ) {
-        var newSections = {};
-
-        for ( var i = 0, len = sections.length; i < len; i++) {
-            newSections[ sections[i].id ] = sections[i];
-        }
-
-        return newSections;
     },
 
     /**
@@ -51,9 +38,9 @@ var SettingsSubPanel = React.createClass({
      */
     renderTitle: function() {
         if ( this.isPanelVisible() ) {
-            var sections = this.getConvertedSections( this.props.sections );
+            var sections = ViewCommon.convertSections( this.props.sections );
             var sectionID = this.props.currentPanel.replace( 'settings_', '' );
-            return sections[ sectionID ].title;
+            return sections[ sectionID ].label;
         }
         return null;
     },

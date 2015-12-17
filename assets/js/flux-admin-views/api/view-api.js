@@ -72,6 +72,50 @@ var ViewApi = {
         } );
     },
 
+    /**
+     * Fetch Fields Sections from server
+     *
+     * @param forms
+     * @param templates
+     */
+    getFieldsSections: function( forms, templates ) {
+        updateSettings( ViewConstants.UPDATE_FIELDS_SECTIONS, gravityview_view_settings.fields_sections );
+    },
+
+    /**
+     * Fetch Fields List
+     *
+     * @param forms
+     * @param context
+     */
+    getFieldsList: function( forms, context ) {
+        console.log('getFieldsList');
+        var data = {
+            action: 'gv_get_fields_list',
+            forms: forms,
+            context: context,
+            nonce: gvGlobals.nonce
+        };
+
+        jQuery.ajax( {
+            type: 'POST',
+            url: ajaxurl,
+            data: data,
+            dataType: 'json',
+            async: true
+        } ).done( function ( response ) {
+            console.log(response.data);
+            updateSettings( ViewConstants.UPDATE_FIELDS_LIST, response.data );
+        } ).fail( function ( jqXHR ) {
+            console.log( jqXHR );
+        } ).always( function () {
+            //
+        } );
+
+    },
+
+
+
 
 };
 

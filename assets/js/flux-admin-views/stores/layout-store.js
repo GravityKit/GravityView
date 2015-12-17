@@ -27,6 +27,16 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
     layout: {},
 
     /**
+     * Holds the fields list sections
+     */
+    fieldsSections: null,
+
+    /**
+     * Holds the available list of fields (depending on the context
+     */
+    fieldsList: { 'directory': null, 'single': null, 'edit': null, 'export': null },
+
+    /**
      *
      */
     emitChange: function() {
@@ -76,6 +86,28 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
         return this.layout;
     },
 
+
+    setFieldsSections: function( sections ) {
+        console.log( 'setFieldsSections' );
+        console.log( sections );
+        this.fieldsSections = sections;
+    },
+
+    getFieldsSections: function() {
+        return this.fieldsSections;
+    },
+
+
+    setFieldsList: function( context, list ) {
+        this.fieldsList[ context ] = list;
+    },
+
+    getFieldsList: function( context ) {
+        if( null === context ) {
+            return this.fieldsList;
+        }
+        return this.fieldsList[ context ];
+    },
 
 
 
@@ -163,6 +195,13 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
 
         fields.splice( fieldI, 1 );
         this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'] = fields;
+    },
+
+
+
+    addField: function( context, row, col, field ) {
+        console.log('addField');
+        console.log(field);
     }
 
 });
@@ -201,6 +240,25 @@ ViewDispatcher.register( function( action ) {
             LayoutStore.removeField( action.context, action.row, action.col, action.field );
             LayoutStore.emitChange();
             break;
+
+        case ViewConstants.LAYOUT_ADD_FIELD:
+            LayoutStore.addField( action.context, action.row, action.col, action.field );
+            LayoutStore.emitChange();
+            break;
+
+
+
+        // Add field panel
+        case ViewConstants.UPDATE_FIELDS_SECTIONS:
+            LayoutStore.setFieldsSections( action.values );
+            LayoutStore.emitChange();
+            break;
+
+        case ViewConstants.UPDATE_FIELDS_LIST:
+            LayoutStore.setFieldsList( action.context, action.values );
+            LayoutStore.emitChange();
+            break;
+
 
     }
 

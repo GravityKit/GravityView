@@ -118,6 +118,16 @@ var ViewActions = {
         });
     },
 
+    addField: function( args ) {
+        ViewDispatcher.dispatch({
+            actionType: ViewConstants.LAYOUT_ADD_FIELD,
+            context: args.context,
+            row: args.row,
+            col: args.col,
+            field: args.field
+        });
+    },
+
     removeField: function( args ) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_DEL_FIELD,
@@ -126,7 +136,17 @@ var ViewActions = {
             col: args.col,
             field: args.field
         });
-    }
+    },
+
+    fetchFieldsSections: function( forms, templates ) {
+        ViewApi.getFieldsSections( forms, templates );
+    },
+
+    fetchFieldsList: function( forms, context ) {
+        ViewApi.getFieldsList( forms, context );
+    },
+
+
 
 
 

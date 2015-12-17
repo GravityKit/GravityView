@@ -6,6 +6,21 @@
 
 var ViewCommon = {
 
+
+    /**
+     * Converts the section array into an object
+     * @returns object
+     */
+    convertSections: function( sections ) {
+        var newSections = {};
+
+        for ( var i = 0, len = sections.length; i < len; i++) {
+            newSections[ sections[i].id ] = sections[i];
+        }
+
+        return newSections;
+    },
+
     /**
      * Find the array index where the id == row_id property
      * @param rows

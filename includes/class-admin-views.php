@@ -18,7 +18,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GravityView_Admin_Views {
 
-
+	/**
+	 * @var
+	 */
+	static $instance;
 
 	function __construct() {
 
@@ -58,6 +61,20 @@ class GravityView_Admin_Views {
 		add_action( 'pre_get_posts', array( $this, 'filter_pre_get_posts_by_gravityview_form_id' ) );
 
 	}
+
+	/**
+	 * Get the one true instantiated self
+	 * @return GravityView_Admin_Views
+	 */
+	public static function get_instance() {
+
+		if ( empty( self::$instance ) ) {
+			self::$instance = new self;
+		}
+
+		return self::$instance;
+	}
+
 
 	/**
 	 * @since 1.15
@@ -709,26 +726,31 @@ class GravityView_Admin_Views {
 					'label' => __('Entry ID', 'gravityview'),
 					'type' => 'id',
 					'desc'	=> __('The unique ID of the entry.', 'gravityview'),
+					'group' => 'entry',
 				),
 				'date_created' => array(
 					'label' => __('Entry Date', 'gravityview'),
 					'desc'	=> __('The date the entry was created.', 'gravityview'),
 					'type' => 'date_created',
+					'group' => 'entry',
 				),
 				'source_url' => array(
 					'label' => __('Source URL', 'gravityview'),
 					'type' => 'source_url',
 					'desc'	=> __('The URL of the page where the form was submitted.', 'gravityview'),
+					'group' => 'entry',
 				),
 				'ip' => array(
 					'label' => __('User IP', 'gravityview'),
 					'type' => 'ip',
 					'desc'	=> __('The IP Address of the user who created the entry.', 'gravityview'),
+					'group' => 'entry',
 				),
 				'created_by' => array(
 					'label' => __('User', 'gravityview'),
 					'type' => 'created_by',
 					'desc'	=> __('Details of the logged-in user who created the entry (if any).', 'gravityview'),
+					'group' => 'entry',
 				),
 
 				/**
@@ -738,6 +760,7 @@ class GravityView_Admin_Views {
 					'label'	=> __('Custom Content', 'gravityview'),
 					'type'	=> 'custom',
 					'desc'	=> __('Insert custom text or HTML.', 'gravityview'),
+					'group' => 'gravityview',
 				),
 
 				/**
@@ -746,7 +769,8 @@ class GravityView_Admin_Views {
 			    'other_entries' => array(
 				    'label'	=> __('Other Entries', 'gravityview'),
 				    'type'	=> 'other_entries',
-				    'desc'	=> __('Display other entries created by the entry creator.', 'gravityview'),
+					'desc'	=> __('Display other entries created by the entry creator.', 'gravityview'),
+					'group' => 'gravityview',
 			    ),
 	        );
 
@@ -757,6 +781,7 @@ class GravityView_Admin_Views {
 	        		'label' => __('Link to Entry', 'gravityview'),
 	        		'desc'	=> __('A dedicated link to the single entry with customizable text.', 'gravityview'),
 	        		'type' => 'entry_link',
+					'group' => 'gravityview',
 	        	);
 	        }
 
@@ -1104,19 +1129,28 @@ class GravityView_Admin_Views {
 			'template_id' => gravityview_get_template_id( $post_id ),
 			'settings_sections' => self::get_settings_sections(),
 			'settings_inputs' => self::get_settings_inputs(),
-			'settings_values' => GVCommon::get_template_settings( $post_id )
+			'settings_values' => GVCommon::get_template_settings( $post_id ),
+			'fields_sections' => self::get_fields_sections(),
 		);
 	}
 
 	static function get_settings_sections() {
-
 		// todo: hook the extensions to add their settings section
 		// todo: decide if the filter and sort stay separated or together
 		return array(
-			array( 'id' => 'general' , 'title' => __( 'General Settings', 'gravityview') ),
-			array( 'id' => 'single' , 'title' => __( 'Single Entry', 'gravityview') ),
-			array( 'id' => 'sort' , 'title' => __( 'Sort', 'gravityview') ),
-			array( 'id' => 'filter' , 'title' => __( 'Filters', 'gravityview') ),
+			array( 'id' => 'general' , 'label' => __( 'General Settings', 'gravityview') ),
+			array( 'id' => 'single' , 'label' => __( 'Single Entry', 'gravityview') ),
+			array( 'id' => 'sort' , 'label' => __( 'Sort', 'gravityview') ),
+			array( 'id' => 'filter' , 'label' => __( 'Filters', 'gravityview') ),
+		);
+	}
+
+	static function get_fields_sections() {
+		// todo: hook the extensions to add their fields section
+		return array(
+				array( 'id' => 'form' , 'label' => __( 'Form Fields', 'gravityview') ),
+				array( 'id' => 'entry' , 'label' => __( 'Entry Fields', 'gravityview') ),
+				array( 'id' => 'gravityview' , 'label' => __( 'GravityView Fields', 'gravityview') )
 		);
 	}
 
@@ -1183,6 +1217,9 @@ class GravityView_Admin_Views {
 			'button_cancel'		=> __( 'Cancel', 'gravityview' ),
 			'button_back'		=> __( 'Back', 'gravityview' ),
 
+			// Generic words
+			'search' 			=> __( 'Search', 'gravityview' ),
+
 
 			// Widgets Area
 			'widgets_title_above' 	=> __( 'Above Entries Widgets', 'gravityview' ),
@@ -1203,6 +1240,8 @@ class GravityView_Admin_Views {
 			'panel_settings_title' 		=> __( 'View Settings', 'gravityview' ),
 			'panel_add_row_title' 		=> __( 'Add Row', 'gravityview' ),
 			'panel_config_row_title' 	=> __( 'Configure Row', 'gravityview' ),
+			'panel_add_fields' 			=> __( 'Add Fields', 'gravityview' ),
+			'panel_search_fields' 		=> __( 'Search fields by name', 'gravityview' ),
 
 
 			// --- Below the old i18n tags --

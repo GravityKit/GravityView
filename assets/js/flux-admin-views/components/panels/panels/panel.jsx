@@ -1,5 +1,5 @@
 var React = require('react');
-var ViewActions = require('../../actions/view-actions.js');
+var ViewActions = require('../../../actions/view-actions.js');
 
 var Panel = React.createClass({
     propTypes: {
@@ -88,7 +88,6 @@ var Panel = React.createClass({
             </div>
         );
     }
-
 
 });
 

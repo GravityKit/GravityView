@@ -372,7 +372,7 @@ class GVCommon {
 
 		foreach ( $extra_fields as $key => $field ){
 			if ( ! empty( $only_default_column ) && ! empty( $field['is_default_column'] ) ) {
-				$fields[ $key ] = array( 'label' => $field['label'], 'type' => 'entry_meta' );
+				$fields[ $key ] = array( 'label' => $field['label'], 'type' => 'entry_meta', 'group' => 'entry' );
 			}
 		}
 

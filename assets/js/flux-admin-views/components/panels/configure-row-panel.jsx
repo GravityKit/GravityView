@@ -1,5 +1,5 @@
 var React = require('react');
-var Panel = require('./panel.jsx');
+var Panel = require('./panels/panel.jsx');
 
 var ViewCommon = require('../../api/view-common.js');
 

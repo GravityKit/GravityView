@@ -13,13 +13,29 @@ var Rows = React.createClass({
         data: React.PropTypes.array
     },
 
+    handleFieldAdd: function(e) {
+        e.preventDefault();
+
+        var areaArgs = {
+            'context': this.props.tabId,
+            'row': jQuery( e.target ).parents('div[data-row]').attr('data-row'),
+            'col': jQuery( e.target ).parents('div[data-column]').attr('data-column')
+        };
+
+        ViewActions.openPanel( ViewConstants.PANEL_FIELD_ADD, false, areaArgs );
+    },
+
     handleFieldSettings: function(e) {
         e.preventDefault();
 
-        /*var fieldArgs = { 'row' };
+        var fieldArgs = {
+            'context': this.props.tabId,
+            'row': jQuery( e.target ).parents('div[data-row]').attr('data-row'),
+            'col': jQuery( e.target ).parents('div[data-column]').attr('data-column'),
+            'field': jQuery( e.target ).parents('.gv-view-field').attr('id'),
+        };
 
-        ViewActions.openPanel( ViewConstants.PANEL_ROW_SETTINGS, false, fieldArgs );
-*/
+        ViewActions.openPanel( ViewConstants.PANEL_FIELD_SETTINGS, false, fieldArgs );
     },
 
     handleFieldRemove: function(e) {
@@ -68,7 +84,7 @@ var Rows = React.createClass({
             <div key={i} className={areaClass} >
                 <div className="gv-grid__droppable-area" data-column={i}>
                     {fields}
-                    <a title={this.renderAddLabel()}>+ {this.renderAddLabel()}</a>
+                    <a onClick={this.handleFieldAdd} title={this.renderAddLabel()}>+ {this.renderAddLabel()}</a>
                 </div>
             </div>
         );

@@ -1,6 +1,6 @@
 var React = require('react');
-var Panel = require('./panel.jsx');
-var PanelContentMenu = require('./panel-content-menu.jsx');
+var Panel = require('./panels/panel.jsx');
+var PanelContentMenu = require('./panels/panel-content-menu.jsx');
 
 var ViewConstants = require('../../constants/view-constants.js');
 var ViewActions = require('../../actions/view-actions.js');
@@ -30,7 +30,7 @@ var SettingsMenuPanel = React.createClass({
         return (
 
             <Panel isVisible={isPanelVisible} returnPanel={this.props.returnPanel} title={gravityview_i18n.panel_settings_title}>
-                <PanelContentMenu menuItems={this.props.sections} handleClick={this.handleSectionClick} />
+                <PanelContentMenu panelPrefix="settings" menuItems={this.props.sections} handleClick={this.handleSectionClick} />
             </Panel>
 
         );
