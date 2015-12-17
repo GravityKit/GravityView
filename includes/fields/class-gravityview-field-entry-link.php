@@ -7,6 +7,8 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 
 	var $name = 'entry_link';
 
+	var $contexts = array( 'multiple' );
+
 	/**
 	 * @var bool
 	 * @since 1.15.3
@@ -18,6 +20,12 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 	 * @since 1.15.3
 	 */
 	var $is_searchable = false;
+
+	public function __construct() {
+		$this->label = esc_attr__( 'Link to Entry', 'gravityview' );
+		$this->description = __('A dedicated link to the single entry with customizable text.', 'gravityview');
+		parent::__construct();
+	}
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 

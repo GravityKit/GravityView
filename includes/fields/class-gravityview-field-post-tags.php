@@ -7,6 +7,17 @@ class GravityView_Field_Post_Tags extends GravityView_Field {
 
 	var $name = 'post_tags';
 
+	var $search_operators = array( 'is', 'in', 'not in', 'isnot', 'contains');
+
+	var $_gf_field_class_name = 'GF_Field_Post_Tags';
+
+	var $label = 'Tags';
+
+	public function __construct() {
+		$this->label = __( 'Tags', 'gravityview' );
+		parent::__construct();
+	}
+
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		if( 'edit' === $context ) {
