@@ -25,4 +25,4 @@ $title = $is_approved ? $strings['unapprove_title'] : $strings['approve_title'];
 $class = $is_approved ? 'gv-approval-approved' : '';
 
 ?>
-<a href="#" class="gv-approval-toggle <?php echo $class; ?>" title="<?php echo $title; ?>" data-approved-status="<?php echo $approved; ?>" data-entry-id="<?php echo esc_attr( $entry['id'] ); ?>" data-form-id="<?php echo esc_attr( $entry['form_id'] ); ?>"><?php echo $anchor; ?></a>
+<a href="#" class="gv-approval-toggle <?php echo $class; ?>" title="<?php echo $title; ?>" data-approved-status="<?php echo $approved; ?>" data-entry-id="<?php echo esc_attr( $entry['id'] ); ?>" data-form-id="<?php echo esc_attr( $entry['form_id'] ); ?>"><span class="screen-reader-text"><?php echo $anchor; ?></span></a>
