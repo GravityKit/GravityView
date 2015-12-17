@@ -6,6 +6,13 @@ class GravityView_Field_Created_By extends GravityView_Field {
 
 	var $search_operators = array( 'is', 'isnot' );
 
+	var $group = 'meta';
+
+	public function __construct() {
+		$this->label = esc_attr__( 'Created By', 'gravityview' );
+		parent::__construct();
+	}
+
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		if( 'edit' === $context ) {

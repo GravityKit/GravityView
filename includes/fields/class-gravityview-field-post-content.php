@@ -11,12 +11,7 @@ class GravityView_Field_Post_Content extends GravityView_Field {
 
 	var $_gf_field_class_name = 'GF_Field_Post_Content';
 
-	var $label = 'Body';
-
-	public function __construct() {
-		$this->label = esc_attr__( 'Body', 'gravityview' );
-		parent::__construct();
-	}
+	var $group = 'post';
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 

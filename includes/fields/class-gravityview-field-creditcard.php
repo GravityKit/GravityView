@@ -8,6 +8,8 @@ class GravityView_Field_CreditCard extends GravityView_Field {
 
 	var $_gf_field_class_name = 'GF_Field_CreditCard';
 
+	var $group = 'pricing';
+
 }
 
 new GravityView_Field_CreditCard;

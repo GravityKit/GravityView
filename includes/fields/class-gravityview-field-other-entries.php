@@ -9,7 +9,9 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 
 	var $name = 'other_entries';
 
-	var $label = 'Other Entries';
+	var $is_searchable = false;
+
+	var $contexts = array( 'multiple', 'single' );
 
 	var $group = 'gravityview';
 

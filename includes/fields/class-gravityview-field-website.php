@@ -11,12 +11,7 @@ class GravityView_Field_Website extends GravityView_Field {
 
 	var $_gf_field_class_name = 'GF_Field_Website';
 
-	var $label = 'Website';
-
-	public function __construct() {
-		$this->label = esc_attr__( 'Website', 'gravityview' );
-		parent::__construct();
-	}
+	var $group = 'advanced';
 
 	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 

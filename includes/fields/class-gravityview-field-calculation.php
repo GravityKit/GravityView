@@ -6,6 +6,8 @@ class GravityView_Field_Calculation extends GravityView_Field {
 
 	var $is_searchable = false;
 
+	var $group = 'pricing';
+
 	var $_gf_field_class_name = 'GF_Field_Calculation';
 
 }

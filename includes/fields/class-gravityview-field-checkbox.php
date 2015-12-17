@@ -8,6 +8,8 @@ class GravityView_Field_Checkbox extends GravityView_Field {
 
 	var $_gf_field_class_name = 'GF_Field_Checkbox';
 
+	var $group = 'standard';
+
 }
 
 new GravityView_Field_Checkbox;

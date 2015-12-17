@@ -9,9 +9,9 @@ class GravityView_Field_Post_ID extends GravityView_Field {
 
 	var $name = 'post_id';
 
-	var $label = 'Post ID';
-
 	var $search_operators = array( 'is', 'isnot', 'greater_than', 'less_than' );
+
+	var $group = 'post';
 
 	/**
 	 * GravityView_Field_Post_ID constructor.

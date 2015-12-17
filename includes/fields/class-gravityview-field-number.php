@@ -11,12 +11,9 @@ class GravityView_Field_Number extends GravityView_Field {
 
 	var $search_operators = array( 'is', 'isnot', 'greater_than', 'less_than' );
 
-	var $label = 'Number';
+	var $_gf_field_class_name = 'GF_Field_Number';
 
-	public function __construct() {
-		$this->label = esc_attr__( 'Number', 'gravityview' );
-		parent::__construct();
-	}
+	var $group = 'standard';
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 

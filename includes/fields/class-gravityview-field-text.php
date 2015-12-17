@@ -8,12 +8,8 @@ class GravityView_Field_Text extends GravityView_Field {
 
 	var $search_operators = array( 'contains', 'is', 'isnot', 'starts_with', 'ends_with' );
 
-	var $label = 'Single Line Text';
+	var $group = 'standard';
 
-	public function __construct() {
-		$this->label = esc_attr__( 'Single Line Text', 'gravityview' );
-		parent::__construct();
-	}
 }
 
 new GravityView_Field_Text;

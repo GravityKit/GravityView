@@ -11,11 +11,9 @@ class GravityView_Field_Section extends GravityView_Field {
 
 	var $_gf_field_class_name = 'GF_Field_Section';
 
-	var $label = 'Section';
+	var $group = 'standard';
 
 	function __construct() {
-
-		$this->label = esc_attr__( 'Radio Buttons', 'gravityview' );
 
 		parent::__construct();
 

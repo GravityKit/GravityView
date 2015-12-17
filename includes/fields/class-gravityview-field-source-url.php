@@ -9,7 +9,7 @@ class GravityView_Field_Source_URL extends GravityView_Field {
 
 	var $search_operators = array( 'is', 'isnot', 'contains', 'starts_with', 'ends_with' );
 
-	var $label = 'Source URL';
+	var $group = 'meta';
 
 	public function __construct() {
 		$this->label = esc_attr__( 'Source URL', 'gravityview' );

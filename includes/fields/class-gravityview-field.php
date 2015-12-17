@@ -20,13 +20,13 @@ abstract class GravityView_Field {
 	var $description;
 
 	/**
-	 * @internal Not yet implemented
 	 * @since 1.15.2
 	 * @type string The label of the field in the field picker
 	 */
 	var $label;
 
 	/**
+	 * `standard`, `advanced`, `post`, `pricing`, `meta`, `gravityview`
 	 * @internal Not yet implemented
 	 * @since 1.15.2
 	 * @type string The group belongs to this field in the field picker
@@ -91,6 +91,15 @@ abstract class GravityView_Field {
 	protected $_field_options = array();
 
 	function __construct() {
+
+		/**
+		 * If this is a Gravity Forms field, use their labels. Spare our translation team!
+		 */
+		if( ! empty( $this->_gf_field_class_name ) && class_exists( $this->_gf_field_class_name ) ) {
+			/** @var GF_Field $GF_Field */
+			$GF_Field = new $this->_gf_field_class_name;
+			$this->label = $GF_Field->get_form_editor_field_title();
+		}
 
 		// Modify the field options based on the name of the field type
 		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 5 );

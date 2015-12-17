@@ -7,14 +7,13 @@ class GravityView_Field_HTML extends GravityView_Field {
 
 	var $name = 'html';
 
-	var $search_operators = array( 'contains', 'is', 'isnot', 'starts_with', 'ends_with' );
+	var $is_searchable = false;
 
-	var $label = 'HTML';
+	var $is_sortable = false;
 
-	public function __construct() {
-		$this->label = esc_attr__( 'HTML', 'gravityview' );
-		parent::__construct();
-	}
+	var $_gf_field_class_name = 'GF_Field_HTML';
+
+	var $group = 'standard';
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 

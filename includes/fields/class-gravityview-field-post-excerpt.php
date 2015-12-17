@@ -2,18 +2,14 @@
 
 class GravityView_Post_Excerpt extends GravityView_Field {
 
-	var $name = 'calculation';
+	var $name = 'post_excerpt';
 
 	var $is_searchable = false;
 
 	var $_gf_field_class_name = 'GF_Field_Post_Excerpt';
 
-	var $label = 'Excerpt';
+	var $group = 'post';
 
-	public function __construct() {
-		$this->label = esc_attr__( 'Excerpt', 'gravityview' );
-		parent::__construct();
-	}
 }
 
 new GravityView_Post_Excerpt;
