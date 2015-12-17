@@ -43,25 +43,97 @@
 	border: 1px dashed $color-tab-border;
 }
 
-.gv-grid__col-1-1 {
-	width: 100%;
-}
-
-.gv-grid__col-1-3 {
-	
+.gv-grid__col-1 {
 	@include respond($tablet-landscape) {
-		width: (1 / 3) * 100%;
+		width: (1 / 12) * 100%;
 	}
-
 }
 
-.gv-grid__col-2-3 {
-	
+.gv-grid__col-2 {
 	@include respond($tablet-landscape) {
-		width: (2 / 3) * 100%;
-	}	
-		
+		width: (2 / 12) * 100%;
+	}
 }
+
+.gv-grid__col-3 {
+	@include respond($tablet-landscape) {
+		width: (3 / 12) * 100%;
+	}
+}
+
+.gv-grid__col-4 {
+	@include respond($tablet-landscape) {
+		width: (4 / 12) * 100%;
+	}
+}
+
+.gv-grid__col-5 {
+	@include respond($tablet-landscape) {
+		width: (5 / 12) * 100%;
+	}
+}
+
+.gv-grid__col-6 {
+	@include respond($tablet-landscape) {
+		width: (6 / 12) * 100%;
+	}
+}
+
+.gv-grid__col-7 {
+	@include respond($tablet-landscape) {
+		width: (7 / 12) * 100%;
+	}
+}
+
+.gv-grid__col-8 {
+	@include respond($tablet-landscape) {
+		width: (8 / 12) * 100%;
+	}
+}
+
+.gv-grid__col-9 {
+	@include respond($tablet-landscape) {
+		width: (9 / 12) * 100%;
+	}
+}
+
+.gv-grid__col-10 {
+	@include respond($tablet-landscape) {
+		width: (10 / 12) * 100%;
+	}
+}
+
+.gv-grid__col-11 {
+	@include respond($tablet-landscape) {
+		width: (11 / 12) * 100%;
+	}
+}
+
+.gv-grid__col-12 {
+	@include respond($tablet-landscape) {
+		width: (12 / 12) * 100%;
+	}
+}
+
+// .gv-grid__col-1-1 {
+// 	width: 100%;
+// }
+// 
+// .gv-grid__col-1-3 {
+// 	
+// 	@include respond($tablet-landscape) {
+// 		width: (1 / 3) * 100%;
+// 	}
+// 
+// }
+// 
+// .gv-grid__col-2-3 {
+// 	
+// 	@include respond($tablet-landscape) {
+// 		width: (2 / 3) * 100%;
+// 	}	
+// 		
+// }
 
 .gv-grid a {
 	text-decoration: none;

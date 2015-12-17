@@ -12,7 +12,8 @@ var InputText = React.createClass({
 
     render: function() {
 
-        var labelClass = 'gv-label-'+this.props.args.type;
+        //var labelClass = 'gv-label-'+this.props.args.type;
+        var labelClass = '';
         var inputClass = this.props.args.class || 'widefat';
 
         var myValue = this.props.values[ this.props.args.id ];
@@ -20,9 +21,7 @@ var InputText = React.createClass({
         return (
             <div>
                 <label htmlFor={this.props.args.id} className={labelClass}>
-                    <span className="gv-label">
-                        {this.props.args.label}
-                    </span>
+                    {this.props.args.label}
                     <Tooltip args={this.props.args} />
                 </label>
                 <input onChange={this.props.handleChange} id={this.props.args.id} type="text" value={myValue} className={inputClass} />

@@ -30,14 +30,10 @@ var ConfigureRowPanel = React.createClass({
 
     renderFields: function( item, i ) {
         return(
-            <div key={item.id} id={item.id}>
-                <label htmlFor={item}>
-                    <span className="gv-label">
-                        {item}
-                    </span>
-                </label>
+            <fieldset key={item.id} id={item.id}>
+                <label htmlFor={item}>{item}</label>
                 <input onChange={this.handleChange} id={item} type="text" value={this.rowSettings[ item ]}  />
-            </div>
+            </fieldset>
         );
     },
 
@@ -63,7 +59,9 @@ var ConfigureRowPanel = React.createClass({
         return (
 
             <Panel isVisible={isPanelVisible} returnPanel={this.props.returnPanel} title={gravityview_i18n.panel_config_row_title}>
-                {this.renderSettings()}
+                <div className="gv-panel__forms">
+                    {this.renderSettings()}
+                </div>
             </Panel>
 
         );

@@ -68,13 +68,53 @@
 }
 
 .gv-panel__content {
-	padding-top: 5.75em;
+	padding-top: 6.85em;
 	padding-bottom: 5.75em;
 	height: 100%;
 	overflow-y: scroll;
 }
 
+.gv-panel__forms {
+	padding: 1em;
+	border-bottom: 1px solid $color-tab-border;
+	
+	fieldset {
+		margin-bottom: 1em;
+		&:last-of-type {
+			margin-bottom: 0;
+		}
+	}
+	
+	.gv-panel__checkboxes-group {
+		margin-bottom: .25em;
+		&:last-of-type {
+			margin-bottom: 0;
+		}
+	}
+	
+	label {
+		display: block;
+		margin-bottom: .25em;
+		font-weight: 600;
+	}
+	
+	input[type="checkbox"] + label {
+		display: inline-block;
+		color: $color-text;
+		margin-left: .1em;
+		font-weight: normal;
+	}
+	
+	input[type="text"],
+	select,
+	textarea {
+		width: 96%;
+	}
+}
+
 .gv-panel__list {
+	margin: 0;
+	padding: 0;
 	@include clearfix;
 	
 	li {
@@ -87,7 +127,7 @@
 .gv-panel__search {
 	margin: 0;
 	padding: 1em;
-	border-top: 1px solid red;
+	//border-top: 1px solid red;
 }
 
 #gv-panel__search-field,

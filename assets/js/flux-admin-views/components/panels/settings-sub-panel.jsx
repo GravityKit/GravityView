@@ -59,7 +59,8 @@ var SettingsSubPanel = React.createClass({
 
     renderInputs: function( item, i ) {
 
-        var inputField = null;
+        var inputField = null,
+            leftLabel = null;
 
         switch ( item.type ) {
 
@@ -70,6 +71,9 @@ var SettingsSubPanel = React.createClass({
                 break;
 
             case 'checkbox':
+                leftLabel = (
+                    <label>{item.left_label}</label>
+                );
                 inputField = (
                     <InputCheckbox args={item} values={this.props.settingsValues} handleChange={this.handleCheckChange} />
                 );
@@ -107,9 +111,10 @@ var SettingsSubPanel = React.createClass({
         }
         //todo: change class name (li)
         return(
-            <div key={item.id} id={item.id}>
+            <fieldset key={item.id} id={item.id}>
+                {leftLabel}
                 {inputField}
-            </div>
+            </fieldset>
         );
 
     },
@@ -130,7 +135,9 @@ var SettingsSubPanel = React.createClass({
 
         return (
             <Panel isVisible={this.isPanelVisible()} returnPanel={this.props.returnPanel} title={this.renderTitle()}>
-                {this.renderPanelContent()}
+                <div className="gv-panel__forms">
+                    {this.renderPanelContent()}
+                </div>
             </Panel>
         );
     }

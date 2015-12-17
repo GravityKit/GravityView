@@ -12,21 +12,21 @@ var InputCheckbox = React.createClass({
 
     render: function() {
 
-        var leftLabel = this.props.args.left_label || null ;
-
-        var labelClass = 'gv-label-'+this.props.args.type;
+        //var labelClass = 'gv-label-'+this.props.args.type;
+        var labelClass = '';
 
         var myValue =  this.props.values[ this.props.args.id ].toString();
 
         myValue = myValue === 'true' || myValue === '1';
 
         return (
-            <label htmlFor={this.props.args.id} className={labelClass}>
-                {leftLabel}
+            <div className="gv-panel__checkboxes-group">
                 <input onChange={this.props.handleChange} id={this.props.args.id} type="checkbox" checked={myValue} />
-                {this.props.args.label}
-                <Tooltip args={this.props.args} />
-            </label>
+                <label htmlFor={this.props.args.id} className={labelClass}>
+                    {this.props.args.label}
+                    <Tooltip args={this.props.args} />
+                </label>
+            </div>
         );
 
     }

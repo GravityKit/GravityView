@@ -4,7 +4,7 @@
 
 .gv-view-field {
 	margin-bottom: 1em;
-	background-color: $color-light-grey;
+	//background-color: $color-light-grey;
 	border-radius: $border-radius;
 	cursor: move;
 	@include clearfix;
@@ -13,6 +13,7 @@
 .gv-view-field__description {
 	padding: .5em 1em;
 	display: inline-block;
+	background-color: $color-light-grey;
 	width: calc(100% - 32px - 32px);
 	border-top: 1px solid $color-grey;
 	border-bottom: 1px solid $color-grey;

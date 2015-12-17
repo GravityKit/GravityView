@@ -2517,16 +2517,12 @@ var ConfigureRowPanel = React.createClass({
 
     renderFields: function renderFields(item, i) {
         return React.createElement(
-            'div',
+            'fieldset',
             { key: item.id, id: item.id },
             React.createElement(
                 'label',
                 { htmlFor: item },
-                React.createElement(
-                    'span',
-                    { className: 'gv-label' },
-                    item
-                )
+                item
             ),
             React.createElement('input', { onChange: this.handleChange, id: item, type: 'text', value: this.rowSettings[item] })
         );
@@ -2553,7 +2549,11 @@ var ConfigureRowPanel = React.createClass({
         return React.createElement(
             Panel,
             { isVisible: isPanelVisible, returnPanel: this.props.returnPanel, title: gravityview_i18n.panel_config_row_title },
-            this.renderSettings()
+            React.createElement(
+                'div',
+                { className: 'gv-panel__forms' },
+                this.renderSettings()
+            )
         );
     }
 
@@ -2578,21 +2578,23 @@ var InputCheckbox = React.createClass({
 
     render: function render() {
 
-        var leftLabel = this.props.args.left_label || null;
-
-        var labelClass = 'gv-label-' + this.props.args.type;
+        //var labelClass = 'gv-label-'+this.props.args.type;
+        var labelClass = '';
 
         var myValue = this.props.values[this.props.args.id].toString();
 
         myValue = myValue === 'true' || myValue === '1';
 
         return React.createElement(
-            'label',
-            { htmlFor: this.props.args.id, className: labelClass },
-            leftLabel,
+            'div',
+            { className: 'gv-panel__checkboxes-group' },
             React.createElement('input', { onChange: this.props.handleChange, id: this.props.args.id, type: 'checkbox', checked: myValue }),
-            this.props.args.label,
-            React.createElement(Tooltip, { args: this.props.args })
+            React.createElement(
+                'label',
+                { htmlFor: this.props.args.id, className: labelClass },
+                this.props.args.label,
+                React.createElement(Tooltip, { args: this.props.args })
+            )
         );
     }
 
@@ -2644,7 +2646,8 @@ var InputNumber = React.createClass({
 
     render: function render() {
 
-        var labelClass = 'gv-label-' + this.props.args.type;
+        //var labelClass = 'gv-label-'+this.props.args.type;
+        var labelClass = '';
         var inputClass = this.props.args['class'] || 'widefat';
 
         var myValue = this.props.values[this.props.args.id];
@@ -2655,11 +2658,7 @@ var InputNumber = React.createClass({
             React.createElement(
                 'label',
                 { htmlFor: this.props.args.id, className: labelClass },
-                React.createElement(
-                    'span',
-                    { className: 'gv-label' },
-                    this.props.args.label
-                ),
+                this.props.args.label,
                 React.createElement(Tooltip, { args: this.props.args })
             ),
             React.createElement('input', { onChange: this.props.handleChange, id: this.props.args.id, type: 'number', value: myValue, className: inputClass })
@@ -2698,7 +2697,8 @@ var InputSelect = React.createClass({
 
     render: function render() {
 
-        var labelClass = 'gv-label-' + this.props.args.type;
+        //var labelClass = 'gv-label-'+this.props.args.type;
+        var labelClass = '';
         var inputClass = this.props.args['class'] || 'widefat';
 
         var myValue = this.props.values[this.props.args.id];
@@ -2711,11 +2711,7 @@ var InputSelect = React.createClass({
             React.createElement(
                 'label',
                 { htmlFor: this.props.args.id, className: labelClass },
-                React.createElement(
-                    'span',
-                    { className: 'gv-label' },
-                    this.props.args.label
-                ),
+                this.props.args.label,
                 React.createElement(Tooltip, { args: this.props.args })
             ),
             React.createElement(
@@ -2747,7 +2743,8 @@ var InputText = React.createClass({
 
     render: function render() {
 
-        var labelClass = 'gv-label-' + this.props.args.type;
+        //var labelClass = 'gv-label-'+this.props.args.type;
+        var labelClass = '';
         var inputClass = this.props.args['class'] || 'widefat';
 
         var myValue = this.props.values[this.props.args.id];
@@ -2758,11 +2755,7 @@ var InputText = React.createClass({
             React.createElement(
                 'label',
                 { htmlFor: this.props.args.id, className: labelClass },
-                React.createElement(
-                    'span',
-                    { className: 'gv-label' },
-                    this.props.args.label
-                ),
+                this.props.args.label,
                 React.createElement(Tooltip, { args: this.props.args })
             ),
             React.createElement('input', { onChange: this.props.handleChange, id: this.props.args.id, type: 'text', value: myValue, className: inputClass })
@@ -2790,7 +2783,8 @@ var InputTextarea = React.createClass({
 
     render: function render() {
 
-        var labelClass = 'gv-label-' + this.props.args.type;
+        // var labelClass = 'gv-label-'+this.props.args.type;
+        var labelClass = '';
         var inputClass = this.props.args['class'] + ' widefat';
 
         var myValue = this.props.values[this.props.args.id];
@@ -2801,11 +2795,7 @@ var InputTextarea = React.createClass({
             React.createElement(
                 'label',
                 { htmlFor: this.props.args.id, className: labelClass },
-                React.createElement(
-                    'span',
-                    { className: 'gv-label' },
-                    this.props.args.label
-                ),
+                this.props.args.label,
                 React.createElement(Tooltip, { args: this.props.args })
             ),
             React.createElement('textarea', { onChange: this.props.handleChange, id: this.props.args.id, value: myValue, className: inputClass })
@@ -3381,7 +3371,8 @@ var SettingsSubPanel = React.createClass({
 
     renderInputs: function renderInputs(item, i) {
 
-        var inputField = null;
+        var inputField = null,
+            leftLabel = null;
 
         switch (item.type) {
 
@@ -3390,6 +3381,11 @@ var SettingsSubPanel = React.createClass({
                 break;
 
             case 'checkbox':
+                leftLabel = React.createElement(
+                    'label',
+                    null,
+                    item.left_label
+                );
                 inputField = React.createElement(InputCheckbox, { args: item, values: this.props.settingsValues, handleChange: this.handleCheckChange });
                 break;
 
@@ -3417,8 +3413,9 @@ var SettingsSubPanel = React.createClass({
         }
         //todo: change class name (li)
         return React.createElement(
-            'div',
+            'fieldset',
             { key: item.id, id: item.id },
+            leftLabel,
             inputField
         );
     },
@@ -3440,7 +3437,11 @@ var SettingsSubPanel = React.createClass({
         return React.createElement(
             Panel,
             { isVisible: this.isPanelVisible(), returnPanel: this.props.returnPanel, title: this.renderTitle() },
-            this.renderPanelContent()
+            React.createElement(
+                'div',
+                { className: 'gv-panel__forms' },
+                this.renderPanelContent()
+            )
         );
     }
 
