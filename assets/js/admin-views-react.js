@@ -1827,6 +1827,9 @@ var ViewApi = {
 
     getFieldSettings: function getFieldSettings(args) {
 
+	    /** TODO: Luis, is this the right way to access this information? */
+	    var templateId = jQuery( "#gravityview_directory_template" ).val();
+
         var data = {
             action: 'gv_get_field_settings',
             template: templateId,
