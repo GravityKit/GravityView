@@ -215,8 +215,8 @@
 
 			} else {
 				// if both form and template were selected, show View Layout config
-				if ( $( "#gravityview_directory_template" ).val().length > 0 ) {
-					$( "#gravityview_select_template" ).slideUp( 150 );
+				if ( jQuery( "#gravityview_directory_template" ).val().length > 0 ) {
+					jQuery( "#gravityview_select_template" ).slideUp( 150 );
 					vcfg.showViewConfig();
 				} else {
 					// else show the template picker
@@ -567,8 +567,8 @@
 			e.stopImmediatePropagation();
 
 			// get selected template
-			vcfg.wantedTemplate = $( this );
-			var currTemplateId = $( "#gravityview_directory_template" ).val();
+			vcfg.wantedTemplate = jQuery( this );
+			var currTemplateId = jQuery( "#gravityview_directory_template" ).val();
 			var selectedTemplateId = vcfg.wantedTemplate.attr( "data-templateid" );
 
 			// check if template is being changed
@@ -589,7 +589,7 @@
 			var vcfg = viewConfiguration, selectedTemplateId = vcfg.wantedTemplate.attr( "data-templateid" );
 
 			// update template name
-			$( "#gravityview_directory_template" ).val( selectedTemplateId ).change();
+			jQuery( "#gravityview_directory_template" ).val( selectedTemplateId ).change();
 
 			//add Selected class
 			var $parent = vcfg.wantedTemplate.parents( ".gv-view-types-module" );
@@ -891,9 +891,9 @@
 
 			var newField = clicked.clone().hide();
 			var areaId = clicked.parents( '.ui-tooltip' ).attr( 'id' );
-			var templateId = $( "#gravityview_directory_template" ).val();
+			var templateId = jQuery( "#gravityview_directory_template" ).val();
 			var tooltipId = clicked.parents( '.ui-tooltip' ).attr( 'id' );
-			var addButton = $( 'a.gv-add-field[data-tooltip-id="' + tooltipId + '"]' );
+			var addButton = jQuery( 'a.gv-add-field[data-tooltip-id="' + tooltipId + '"]' );
 
 			var data = {
 				action: 'gv_field_options',
@@ -1201,7 +1201,7 @@
 		 */
 		processFormSubmit: function ( e ) {
 			var vcfg = viewConfiguration;
-			var templateId = $( "#gravityview_directory_template" ).val();
+			var templateId = jQuery( "#gravityview_directory_template" ).val();
 
 			// Create the form if we're starting fresh.
 			// On success, this also sets the vcfg.startFreshStatus to false.
@@ -1354,17 +1354,17 @@
 		 */
 		init: function() {
 
-			viewGeneralSettings.metaboxObj = $( '#gravityview_settings' );
+			viewGeneralSettings.metaboxObj = jQuery( '#gravityview_settings' );
 
 			// Init general settings tabs
 			viewGeneralSettings.initTabs();
 
 			// Conditional display general settings & trigger display settings if template changes
-			$('#gravityview_directory_template')
+			jQuery('#gravityview_directory_template')
 				.change( viewGeneralSettings.updateSettingsDisplay )
 				.trigger('change');
 
-			$('body')
+			jQuery('body')
 				// Enable a setting tab (since 1.8)
 				.on('gravityview/settings/tab/enable', viewGeneralSettings.enableSettingTab )
 
