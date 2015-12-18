@@ -1829,6 +1829,7 @@ var ViewApi = {
 
 	    /** TODO: Luis, is this the right way to access this information? */
 	    var templateId = jQuery( "#gravityview_directory_template" ).val();
+	    var formId = jQuery( '#gravityview_form_id' ).val();
 
         var data = {
             action: 'gv_get_field_settings',
@@ -1837,7 +1838,7 @@ var ViewApi = {
             field_id: args.field_id,
             field_label: args.field_label,
             field_type: args.field_type,
-            form_id: '254',
+            form_id: formId, // TODO: Convert to actual form ID
             nonce: gvGlobals.nonce
         };
 
