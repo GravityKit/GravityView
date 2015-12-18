@@ -89,7 +89,7 @@ var ViewApi = {
      * @param context
      */
     getFieldsList: function( forms, context ) {
-        console.log('getFieldsList');
+
         var data = {
             action: 'gv_get_fields_list',
             forms: forms,
@@ -111,6 +111,38 @@ var ViewApi = {
         } ).always( function () {
             //
         } );
+
+    },
+
+    getFieldSettings: function( args ) {
+
+        var data = {
+            action: 'gv_get_field_settings',
+            template: templateId,
+            context: args.context,
+            field_id: args.field_id,
+            field_label: args.field_label,
+            field_type: args.field_type,
+            form_id: '254',
+            nonce: gvGlobals.nonce
+        };
+
+        jQuery.ajax( {
+            type: 'POST',
+            url: ajaxurl,
+            data: data,
+            dataType: 'json',
+            async: true
+        } ).done( function ( response ) {
+            console.log(response.data);
+            // todo: add pointer to layout
+            //updateSettings( ViewConstants.UPDATE_FIELD_SETTINGS, response.data );
+        } ).fail( function ( jqXHR ) {
+            console.log( jqXHR );
+        } ).always( function () {
+            //
+        } );
+
 
     },
 

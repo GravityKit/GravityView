@@ -124,12 +124,16 @@ var ViewActions = {
     },
 
     addField: function addField(args) {
+        // fetch the field settings ('gv_settings')
+        ViewApi.getFieldsSettings(args);
+
+        // add the field without 'gv_settings' while loading the settings
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_ADD_FIELD,
             context: args.context,
             row: args.row,
             col: args.col,
-            field: args.field
+            field: args.field // todo:
         });
     },
 
@@ -265,7 +269,7 @@ var ViewApi = {
      * @param context
      */
     getFieldsList: function getFieldsList(forms, context) {
-        console.log('getFieldsList');
+
         var data = {
             action: 'gv_get_fields_list',
             forms: forms,
@@ -282,6 +286,36 @@ var ViewApi = {
         }).done(function (response) {
             console.log(response.data);
             updateSettings(ViewConstants.UPDATE_FIELDS_LIST, response.data);
+        }).fail(function (jqXHR) {
+            console.log(jqXHR);
+        }).always(function () {
+            //
+        });
+    },
+
+    getFieldSettings: function getFieldSettings(args) {
+
+        var data = {
+            action: 'gv_get_field_settings',
+            template: templateId,
+            context: args.context,
+            field_id: args.field_id,
+            field_label: args.field_label,
+            field_type: args.field_type,
+            form_id: '254',
+            nonce: gvGlobals.nonce
+        };
+
+        jQuery.ajax({
+            type: 'POST',
+            url: ajaxurl,
+            data: data,
+            dataType: 'json',
+            async: true
+        }).done(function (response) {
+            console.log(response.data);
+            // todo: add pointer to layout
+            //updateSettings( ViewConstants.UPDATE_FIELD_SETTINGS, response.data );
         }).fail(function (jqXHR) {
             console.log(jqXHR);
         }).always(function () {
@@ -330,6 +364,20 @@ var ViewCommon = {
             }
         }
         return 0;
+    },
+
+    /**
+     * Return the object that match the id
+     * @param list array of objects
+     * @param id string
+     */
+    getItemDetailsById: function getItemDetailsById(list, id) {
+        for (var i = 0; i < list.length; i++) {
+            if (list[i]['id'] === id) {
+                return list[i];
+            }
+        }
+        return false;
     },
 
     /**
@@ -1483,6 +1531,15 @@ var AddFieldSubPanel = React.createClass({
         fields: React.PropTypes.object
     },
 
+    getCurrentSection: function getCurrentSection() {
+        return this.props.currentPanel.replace('fields_', '');
+    },
+
+    getActiveFieldsList: function getActiveFieldsList() {
+        var sectionId = this.getCurrentSection();
+        return this.props.fields[this.props.extraArgs['context']][sectionId];
+    },
+
     /**
      * Check if this panel is visible
      * @returns {boolean}
@@ -1498,8 +1555,8 @@ var AddFieldSubPanel = React.createClass({
     renderTitle: function renderTitle() {
         if (this.isPanelVisible()) {
             var sections = ViewCommon.convertSections(this.props.sections);
-            var sectionID = this.props.currentPanel.replace('fields_', '');
-            return sections[sectionID].label;
+            var sectionId = this.getCurrentSection();
+            return sections[sectionId].label;
         }
         return null;
     },
@@ -1507,12 +1564,17 @@ var AddFieldSubPanel = React.createClass({
     handleClick: function handleClick(e) {
         e.preventDefault();
         var field_id = e.target.getAttribute('data-next-panel').replace('fields_', '');
+        var fieldsList = this.getActiveFieldsList();
+        var fieldDetails = ViewCommon.getItemDetailsById(fieldsList, field_id);
 
         var fieldArgs = {
             'context': this.props.extraArgs['context'],
             'row': this.props.extraArgs['row'],
             'col': this.props.extraArgs['col'],
-            'field': field_id
+            'field_id': field_id,
+            'field_type': fieldDetails['type'],
+            'form_id': fieldDetails['form_id'],
+            'field_label': fieldDetails['label']
         };
         console.log(fieldArgs);
         ViewActions.addField(fieldArgs);
@@ -1521,12 +1583,8 @@ var AddFieldSubPanel = React.createClass({
     render: function render() {
 
         if (this.isPanelVisible()) {
-            console.log('AddFieldSubPanel');
-
-            var sectionID = this.props.currentPanel.replace('fields_', '');
-            console.log('section' + sectionID);
-            console.log('AddFieldSubPanel');
-            var fieldsList = this.props.fields[this.props.extraArgs['context']][sectionID];
+            var sectionID = this.getCurrentSection();
+            var fieldsList = this.getActiveFieldsList();
         }
 
         return React.createElement(

@@ -37,6 +37,20 @@ var ViewCommon = {
     },
 
     /**
+     * Return the object that match the id
+     * @param list array of objects
+     * @param id string
+     */
+    getItemDetailsById: function( list, id ) {
+        for ( var i = 0; i < list.length; i++ ) {
+            if ( list[i]['id'] === id ) {
+                return list[i];
+            }
+        }
+        return false;
+    },
+
+    /**
      * Create a unique ID similar to PHP uniqid
      * Thanks to https://gist.github.com/larchanka/7080820
      * @param pr

@@ -29,6 +29,9 @@ class GravityView_Ajax {
 
 		// Load the fields list
 		add_action( 'wp_ajax_gv_get_fields_list', array( $this, 'get_available_fields_list' ) );
+
+		// Load the field settings
+		add_action( 'gv_get_field_settings', array( $this, 'get_field_settings' ) );
 	}
 
 	/**
@@ -590,6 +593,7 @@ class GravityView_Ajax {
 		 */
 		foreach( array( 'directory', 'single', 'edit', 'export' ) as $context  ) {
 
+
 			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array(), $context );
 
 			$fields = GravityView_Admin_Views::get_instance()->get_available_fields( $forms[0], $context );
@@ -612,6 +616,7 @@ class GravityView_Ajax {
 
 					if( empty( $details['group'] ) ) {
 						$details['group'] = 'form';
+						$details['form_id'] = $forms[0];
 					}
 
 					$details['id'] = $id;
@@ -630,6 +635,38 @@ class GravityView_Ajax {
 
 		//todo: do we want to have the ADD ALL FIELDS field ?
 		//$this->render_additional_fields( $form, $context );
+	}
+
+	/**
+	 * Returns field options - called by ajax when dropping fields into active areas
+	 * AJAX callback
+	 *
+	 * @access public
+	 * @return void
+	 */
+	function get_field_settings() {
+		$this->check_ajax_nonce();
+
+		if( empty( $_POST['template'] )  || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) ) {
+			do_action( 'gravityview_log_error', '[get_field_settings] Required fields were not set in the $_POST request. ' );
+			$this->_exit( false );
+		}
+
+		// Fix apostrophes added by JSON response
+		$_post = array_map( 'stripslashes_deep', $_POST );
+
+		// Sanitize
+		$_post = array_map( 'esc_attr', $_post );
+
+		// The GF type of field: `product`, `name`, `creditcard`, `id`, `text`
+		$input_type = isset($_post['input_type']) ? esc_attr( $_post['input_type'] ) : NULL;
+		$context = isset($_post['context']) ? esc_attr( $_post['context'] ) : NULL;
+
+		$options = self::get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type );
+
+		// todo: logic to build the right array/js object
+
+		$this->_exit( $response );
 	}
 
 

@@ -16,6 +16,14 @@ var AddFieldSubPanel = React.createClass({
         fields: React.PropTypes.object
     },
 
+    getCurrentSection: function() {
+        return this.props.currentPanel.replace('fields_', '');
+    },
+
+    getActiveFieldsList: function() {
+        var sectionId = this.getCurrentSection();
+        return this.props.fields[ this.props.extraArgs['context'] ][ sectionId ];
+    },
 
     /**
      * Check if this panel is visible
@@ -32,8 +40,8 @@ var AddFieldSubPanel = React.createClass({
     renderTitle: function() {
         if ( this.isPanelVisible() ) {
             var sections = ViewCommon.convertSections( this.props.sections );
-            var sectionID = this.props.currentPanel.replace( 'fields_', '' );
-            return sections[ sectionID ].label;
+            var sectionId = this.getCurrentSection();
+            return sections[ sectionId ].label;
         }
         return null;
     },
@@ -41,12 +49,17 @@ var AddFieldSubPanel = React.createClass({
     handleClick: function( e ) {
         e.preventDefault();
         var field_id = e.target.getAttribute( 'data-next-panel' ).replace( 'fields_', '' );
+        var fieldsList = this.getActiveFieldsList();
+        var fieldDetails = ViewCommon.getItemDetailsById( fieldsList, field_id );
 
         var fieldArgs = {
             'context': this.props.extraArgs['context'],
             'row': this.props.extraArgs['row'],
             'col': this.props.extraArgs['col'],
-            'field': field_id,
+            'field_id': field_id,
+            'field_type': fieldDetails['type'],
+            'form_id': fieldDetails['form_id'],
+            'field_label': fieldDetails['label'],
         };
         console.log(fieldArgs);
         ViewActions.addField( fieldArgs );
@@ -55,13 +68,8 @@ var AddFieldSubPanel = React.createClass({
     render: function() {
 
         if ( this.isPanelVisible() ) {
-            console.log('AddFieldSubPanel');
-
-            var sectionID = this.props.currentPanel.replace('fields_', '');
-            console.log('section'+sectionID);
-            console.log('AddFieldSubPanel');
-            var fieldsList = this.props.fields[this.props.extraArgs['context']][ sectionID ];
-
+            var sectionID = this.getCurrentSection();
+            var fieldsList = this.getActiveFieldsList();
         }
 
         return (
