@@ -199,25 +199,25 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
 
 
     /**
-     * Add Field to Layout (without the complete gv_settings object
+     * Add Field to Layout (without the complete gv_settings object)
      * @param context
      * @param row
      * @param col
      * @param field
      */
     addField: function( context, row, col, field ) {
-        console.log('addField');
-        console.log(field);
-        var rowI = ViewCommon.findRowIndex( this.layout[ context ]['rows'], row ),
-            fields = this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'],
-            field = {
-                'field_id': , //todo:
-                'field_type': ,
-                'form_id': ,
-                'gv_settings': { 'label': '' },
-                id: ,
-            };
 
+        var rowI = ViewCommon.findRowIndex( this.layout[ context ]['rows'], row ),
+            fields = this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'];
+
+        // manipulate field object to the right format
+        field['gv_settings'] = { 'label': field['field_label'] };
+        delete field['field_label'];
+
+        // Add unique id to this field in layout
+        field.id = ViewCommon.uniqid();
+
+        // add the new field to layout
         fields.push( field );
 
         this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'] = fields;

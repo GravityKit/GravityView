@@ -125,7 +125,7 @@ var ViewActions = {
 
     addField: function addField(args) {
         // fetch the field settings ('gv_settings')
-        ViewApi.getFieldsSettings(args);
+        //ViewApi.getFieldsSettings( args );
 
         // add the field without 'gv_settings' while loading the settings
         ViewDispatcher.dispatch({
@@ -133,7 +133,7 @@ var ViewActions = {
             context: args.context,
             row: args.row,
             col: args.col,
-            field: args.field // todo:
+            field: args.field
         });
     },
 
@@ -1571,12 +1571,14 @@ var AddFieldSubPanel = React.createClass({
             'context': this.props.extraArgs['context'],
             'row': this.props.extraArgs['row'],
             'col': this.props.extraArgs['col'],
-            'field_id': field_id,
-            'field_type': fieldDetails['type'],
-            'form_id': fieldDetails['form_id'],
-            'field_label': fieldDetails['label']
+            'field': {
+                'field_id': field_id,
+                'field_type': fieldDetails['type'],
+                'form_id': fieldDetails['form_id'],
+                'field_label': fieldDetails['label']
+            }
         };
-        console.log(fieldArgs);
+
         ViewActions.addField(fieldArgs);
     },
 
@@ -2298,9 +2300,29 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
         this.layout[context]['rows'][rowI]['columns'][col]['fields'] = fields;
     },
 
+    /**
+     * Add Field to Layout (without the complete gv_settings object)
+     * @param context
+     * @param row
+     * @param col
+     * @param field
+     */
     addField: function addField(context, row, col, field) {
-        console.log('addField');
-        console.log(field);
+
+        var rowI = ViewCommon.findRowIndex(this.layout[context]['rows'], row),
+            fields = this.layout[context]['rows'][rowI]['columns'][col]['fields'];
+
+        // manipulate field object to the right format
+        field['gv_settings'] = { 'label': field['field_label'] };
+        delete field['field_label'];
+
+        // Add unique id to this field in layout
+        field.id = ViewCommon.uniqid();
+
+        // add the new field to layout
+        fields.push(field);
+
+        this.layout[context]['rows'][rowI]['columns'][col]['fields'] = fields;
     }
 
 });

@@ -619,7 +619,7 @@ class GravityView_Ajax {
 						$details['form_id'] = $forms[0];
 					}
 
-					$details['id'] = $id;
+					$details['id'] = (string)$id;
 
 					$output[ $context ][ $details['group'] ][] = $details;
 

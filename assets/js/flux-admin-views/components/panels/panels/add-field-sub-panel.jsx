@@ -56,12 +56,14 @@ var AddFieldSubPanel = React.createClass({
             'context': this.props.extraArgs['context'],
             'row': this.props.extraArgs['row'],
             'col': this.props.extraArgs['col'],
-            'field_id': field_id,
-            'field_type': fieldDetails['type'],
-            'form_id': fieldDetails['form_id'],
-            'field_label': fieldDetails['label'],
+            'field': {
+                'field_id': field_id,
+                'field_type': fieldDetails['type'],
+                'form_id': fieldDetails['form_id'],
+                'field_label': fieldDetails['label']
+            }
         };
-        console.log(fieldArgs);
+
         ViewActions.addField( fieldArgs );
     },
 

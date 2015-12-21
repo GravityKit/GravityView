@@ -120,7 +120,7 @@ var ViewActions = {
 
     addField: function( args ) {
         // fetch the field settings ('gv_settings')
-        ViewApi.getFieldsSettings( args );
+        //ViewApi.getFieldsSettings( args );
 
         // add the field without 'gv_settings' while loading the settings
         ViewDispatcher.dispatch({
@@ -128,7 +128,7 @@ var ViewActions = {
             context: args.context,
             row: args.row,
             col: args.col,
-            field: args.field // todo:
+            field: args.field
         });
     },
 
