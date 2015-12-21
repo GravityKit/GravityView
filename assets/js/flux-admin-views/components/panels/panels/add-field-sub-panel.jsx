@@ -70,7 +70,6 @@ var AddFieldSubPanel = React.createClass({
     render: function() {
 
         if ( this.isPanelVisible() ) {
-            var sectionID = this.getCurrentSection();
             var fieldsList = this.getActiveFieldsList();
         }
 

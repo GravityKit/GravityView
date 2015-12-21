@@ -118,11 +118,10 @@ var ViewApi = {
 
         var data = {
             action: 'gv_get_field_settings',
-            template: templateId,
+            //template: templateId,
             context: args.context,
-            field_id: args.field_id,
-            field_label: args.field_label,
-            field_type: args.field_type,
+            field_id: args.field['field_id'],
+            field_type: args.field['field_type'],
             form_id: '254',
             nonce: gvGlobals.nonce
         };
@@ -145,8 +144,6 @@ var ViewApi = {
 
 
     },
-
-
 
 
 };

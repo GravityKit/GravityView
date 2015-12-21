@@ -31,7 +31,7 @@ class GravityView_Ajax {
 		add_action( 'wp_ajax_gv_get_fields_list', array( $this, 'get_available_fields_list' ) );
 
 		// Load the field settings
-		add_action( 'gv_get_field_settings', array( $this, 'get_field_settings' ) );
+		add_action( 'wp_ajax_gv_get_field_settings', array( $this, 'get_field_settings' ) );
 	}
 
 	/**
@@ -627,9 +627,6 @@ class GravityView_Ajax {
 			}
 		}
 
-
-		error_log( '$output:' . print_r(  $output['directory'], true ) );
-
 		// success
 		wp_send_json_success( $output );
 
@@ -647,7 +644,9 @@ class GravityView_Ajax {
 	function get_field_settings() {
 		$this->check_ajax_nonce();
 
-		if( empty( $_POST['template'] )  || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) ) {
+
+		$output = '';
+		if( empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) ) {
 			do_action( 'gravityview_log_error', '[get_field_settings] Required fields were not set in the $_POST request. ' );
 			$this->_exit( false );
 		}
@@ -659,14 +658,29 @@ class GravityView_Ajax {
 		$_post = array_map( 'esc_attr', $_post );
 
 		// The GF type of field: `product`, `name`, `creditcard`, `id`, `text`
-		$input_type = isset($_post['input_type']) ? esc_attr( $_post['input_type'] ) : NULL;
-		$context = isset($_post['context']) ? esc_attr( $_post['context'] ) : NULL;
+		$input_type = isset( $_post['input_type'] ) ? esc_attr( $_post['input_type'] ) : NULL;
+		$context = isset( $_post['context'] ) ? esc_attr( $_post['context'] ) : NULL;
 
-		$options = self::get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type );
+		$options = GravityView_Render_Settings::get_default_field_options( 'field' , '', $_POST['field_id'] , $context , $input_type );
 
-		// todo: logic to build the right array/js object
+		foreach ( $options as $id => $option ) {
 
-		$this->_exit( $response );
+			$option['id'] = $id;
+
+			if( !empty( $option['options'] ) ) {
+				$new_options = array();
+				foreach( $option['options'] as $k => $v ) {
+					$new_options[] = array( 'id' => $k, 'label' => $v );
+				}
+				$option['options'] = $new_options;
+				unset( $new_options );
+			}
+
+			$output[] = $option;
+
+		}
+
+		wp_send_json_success( $output );
 	}
 
 
