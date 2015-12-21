@@ -1655,7 +1655,12 @@ var ViewActions = {
         });
     },
 
+    /**
+     * Trigger the Add Field to the Layout
+     * @param args Object Field arguments: Context, Row, Col, Field (id, field_id, field_type, form_id, field_label)
+     */
     addField: function addField(args) {
+
         // fetch the field settings ('gv_settings')
         ViewApi.getFieldSettings(args);
 
@@ -1825,15 +1830,19 @@ var ViewApi = {
         });
     },
 
+    /**
+     * Get the field settings array
+     * @param args object Pointer containing 'context', 'row', 'col' and 'field' (field_id, form_id, field_type, ..)
+     */
     getFieldSettings: function getFieldSettings(args) {
 
         var data = {
-            action: 'gv_get_field_settings',
+            action: 'gv_get_field_settings_values',
             //template: templateId,
             context: args.context,
             field_id: args.field['field_id'],
-            field_label: args.field['field_label'],
             field_type: args.field['field_type'],
+            field_label: args.field['field_label'],
             form_id: '254',
             nonce: gvGlobals.nonce
         };
@@ -1845,9 +1854,13 @@ var ViewApi = {
             dataType: 'json',
             async: true
         }).done(function (response) {
-            console.log(response.data);
-            // todo: add pointer to layout
-            //updateSettings( ViewConstants.UPDATE_FIELD_SETTINGS, response.data );
+
+            var values = {
+                pointer: args,
+                settings: response.data
+            };
+
+            updateSettings(ViewConstants.UPDATE_FIELD_SETTINGS, values);
         }).fail(function (jqXHR) {
             console.log(jqXHR);
         }).always(function () {
@@ -3104,6 +3117,7 @@ var AddFieldSubPanel = React.createClass({
             'row': this.props.extraArgs['row'],
             'col': this.props.extraArgs['col'],
             'field': {
+                'id': ViewCommon.uniqid(),
                 'field_id': field_id,
                 'field_type': fieldDetails['type'],
                 'form_id': fieldDetails['form_id'],
@@ -3625,7 +3639,8 @@ module.exports = keyMirror({
     LAYOUT_ADD_FIELD: null,
 
     UPDATE_FIELDS_SECTIONS: null,
-    UPDATE_FIELDS_LIST: null
+    UPDATE_FIELDS_LIST: null,
+    UPDATE_FIELD_SETTINGS: null
 
 });
 
@@ -3847,11 +3862,28 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
         field['gv_settings'] = { 'label': field['field_label'] };
         delete field['field_label'];
 
-        // Add unique id to this field in layout
-        field.id = ViewCommon.uniqid();
-
         // add the new field to layout
         fields.push(field);
+
+        this.layout[context]['rows'][rowI]['columns'][col]['fields'] = fields;
+    },
+
+    /**
+     * Add the field settings values to the layout (gv_settings object)
+     * @param context
+     * @param row
+     * @param col
+     * @param field object Field details (field_id, form_id, field_type, ...)
+     * @param settings
+     */
+    addFieldSettingsValues: function addFieldSettingsValues(context, row, col, field, settings) {
+        var rowI = ViewCommon.findRowIndex(this.layout[context]['rows'], row),
+            fields = this.layout[context]['rows'][rowI]['columns'][col]['fields'];
+
+        var index = ViewCommon.findRowIndex(fields, field['id']);
+
+        // replace the existent gv_settings object by the new one
+        fields[index]['gv_settings'] = settings;
 
         this.layout[context]['rows'][rowI]['columns'][col]['fields'] = fields;
     }
@@ -3894,6 +3926,15 @@ ViewDispatcher.register(function (action) {
 
         case ViewConstants.LAYOUT_ADD_FIELD:
             LayoutStore.addField(action.context, action.row, action.col, action.field);
+            LayoutStore.emitChange();
+            break;
+
+        case ViewConstants.UPDATE_FIELD_SETTINGS:
+
+            var args = action.values['pointer'],
+                settings = action.values['settings'];
+
+            LayoutStore.addFieldSettingsValues(args['context'], args['row'], args['col'], args['field'], settings);
             LayoutStore.emitChange();
             break;
 

@@ -114,14 +114,19 @@ var ViewApi = {
 
     },
 
+    /**
+     * Get the field settings array
+     * @param args object Pointer containing 'context', 'row', 'col' and 'field' (field_id, form_id, field_type, ..)
+     */
     getFieldSettings: function( args ) {
 
         var data = {
-            action: 'gv_get_field_settings',
+            action: 'gv_get_field_settings_values',
             //template: templateId,
             context: args.context,
             field_id: args.field['field_id'],
             field_type: args.field['field_type'],
+            field_label: args.field['field_label'],
             form_id: '254',
             nonce: gvGlobals.nonce
         };
@@ -133,9 +138,13 @@ var ViewApi = {
             dataType: 'json',
             async: true
         } ).done( function ( response ) {
-            console.log(response.data);
-            // todo: add pointer to layout
-            //updateSettings( ViewConstants.UPDATE_FIELD_SETTINGS, response.data );
+
+            var values = {
+                pointer: args,
+                settings: response.data
+            };
+
+            updateSettings( ViewConstants.UPDATE_FIELD_SETTINGS, values );
         } ).fail( function ( jqXHR ) {
             console.log( jqXHR );
         } ).always( function () {

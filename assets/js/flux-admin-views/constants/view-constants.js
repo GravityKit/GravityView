@@ -32,6 +32,7 @@ module.exports = keyMirror({
 
     UPDATE_FIELDS_SECTIONS: null,
     UPDATE_FIELDS_LIST: null,
+    UPDATE_FIELD_SETTINGS: null,
 
 
 

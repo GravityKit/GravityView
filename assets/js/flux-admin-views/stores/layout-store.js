@@ -214,13 +214,31 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
         field['gv_settings'] = { 'label': field['field_label'] };
         delete field['field_label'];
 
-        // Add unique id to this field in layout
-        field.id = ViewCommon.uniqid();
-
         // add the new field to layout
         fields.push( field );
 
         this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'] = fields;
+    },
+
+    /**
+     * Add the field settings values to the layout (gv_settings object)
+     * @param context
+     * @param row
+     * @param col
+     * @param field object Field details (field_id, form_id, field_type, ...)
+     * @param settings
+     */
+    addFieldSettingsValues: function( context, row, col, field, settings ) {
+        var rowI = ViewCommon.findRowIndex( this.layout[ context ]['rows'], row ),
+            fields = this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'];
+
+        var index = ViewCommon.findRowIndex( fields, field['id'] );
+
+        // replace the existent gv_settings object by the new one
+        fields[ index ]['gv_settings'] = settings;
+
+        this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'] = fields;
+
     }
 
 });
@@ -262,6 +280,15 @@ ViewDispatcher.register( function( action ) {
 
         case ViewConstants.LAYOUT_ADD_FIELD:
             LayoutStore.addField( action.context, action.row, action.col, action.field );
+            LayoutStore.emitChange();
+            break;
+
+        case ViewConstants.UPDATE_FIELD_SETTINGS:
+
+            var args = action.values['pointer'],
+                settings = action.values['settings'];
+
+            LayoutStore.addFieldSettingsValues( args['context'], args['row'], args['col'], args['field'], settings );
             LayoutStore.emitChange();
             break;
 

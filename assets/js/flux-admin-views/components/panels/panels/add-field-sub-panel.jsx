@@ -57,6 +57,7 @@ var AddFieldSubPanel = React.createClass({
             'row': this.props.extraArgs['row'],
             'col': this.props.extraArgs['col'],
             'field': {
+                'id': ViewCommon.uniqid(),
                 'field_id': field_id,
                 'field_type': fieldDetails['type'],
                 'form_id': fieldDetails['form_id'],
