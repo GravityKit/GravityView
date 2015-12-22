@@ -43,16 +43,31 @@ var DataSourcePanel = React.createClass({
     },
 
     handleCheckChange: function( e ) {
-        var id = e.target.getAttribute( 'id' ),
-            checked = e.target.checked;
-        ViewActions.updateSetting( id, checked );
+        var id = String( e.target.getAttribute( 'value' ) ),
+            checked = e.target.checked,
+            forms = this.props.forms;
+
+        forms = [ id ];
+
+        // when we decide to have multiple forms
+        /*if( checked ) {
+            forms.push( id );
+        } else {
+            var index = forms.indexOf( id );
+            forms.splice( index, 1 );
+        }*/
+
+        ViewActions.updateActiveForms( forms );
+        ViewActions.closePanel();
     },
 
     renderFormsList: function( item, i ) {
 
+        var checked = this.props.forms.indexOf( item.id ) > -1;
+
         return(
             <li key={'gv-form-'+item.id} className="gv-panel__list-fields">
-                <input id={'gv-form-'+item.id} type="checkbox" value={item.id} />
+                <input id={'gv-form-'+item.id} type="checkbox" value={item.id} onChange={this.handleCheckChange} checked={checked} />
                 <label htmlFor={'gv-form-'+item.id}>{item.title}</label>
             </li>
         );
@@ -72,9 +87,9 @@ var DataSourcePanel = React.createClass({
 
         return (
             <Panel isVisible={this.isPanelVisible()} returnPanel={this.props.returnPanel} title={this.renderTitle()}>
-                <div className="gv-panel__list">
+                <ul className="gv-panel__list">
                     {this.renderPanelContent()}
-                </div>
+                </ul>
             </Panel>
         );
     }

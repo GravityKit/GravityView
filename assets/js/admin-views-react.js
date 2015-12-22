@@ -1577,6 +1577,13 @@ var ViewActions = {
         ViewApi.getFormsList();
     },
 
+    updateActiveForms: function updateActiveForms(forms) {
+        ViewDispatcher.dispatch({
+            actionType: ViewConstants.UPDATE_FORMS_ACTIVE,
+            values: forms
+        });
+    },
+
     // Load all the view settings values
     fetchSettingsAllValues: function fetchSettingsAllValues() {
         ViewApi.getSettingsAllValues();
@@ -3252,17 +3259,32 @@ var DataSourcePanel = React.createClass({
     },
 
     handleCheckChange: function handleCheckChange(e) {
-        var id = e.target.getAttribute('id'),
-            checked = e.target.checked;
-        ViewActions.updateSetting(id, checked);
+        var id = String(e.target.getAttribute('value')),
+            checked = e.target.checked,
+            forms = this.props.forms;
+
+        forms = [id];
+
+        // when we decide to have multiple forms
+        /*if( checked ) {
+            forms.push( id );
+        } else {
+            var index = forms.indexOf( id );
+            forms.splice( index, 1 );
+        }*/
+
+        ViewActions.updateActiveForms(forms);
+        ViewActions.closePanel();
     },
 
     renderFormsList: function renderFormsList(item, i) {
 
+        var checked = this.props.forms.indexOf(item.id) > -1;
+
         return React.createElement(
             'li',
             { key: 'gv-form-' + item.id, className: 'gv-panel__list-fields' },
-            React.createElement('input', { id: 'gv-form-' + item.id, type: 'checkbox', value: item.id }),
+            React.createElement('input', { id: 'gv-form-' + item.id, type: 'checkbox', value: item.id, onChange: this.handleCheckChange, checked: checked }),
             React.createElement(
                 'label',
                 { htmlFor: 'gv-form-' + item.id },
@@ -3286,7 +3308,7 @@ var DataSourcePanel = React.createClass({
             Panel,
             { isVisible: this.isPanelVisible(), returnPanel: this.props.returnPanel, title: this.renderTitle() },
             React.createElement(
-                'div',
+                'ul',
                 { className: 'gv-panel__list' },
                 this.renderPanelContent()
             )

@@ -40,6 +40,13 @@ var ViewActions = {
         ViewApi.getFormsList();
     },
 
+    updateActiveForms: function( forms ) {
+        ViewDispatcher.dispatch({
+            actionType: ViewConstants.UPDATE_FORMS_ACTIVE,
+            values: forms
+        });
+    },
+
     // Load all the view settings values
     fetchSettingsAllValues: function() {
         ViewApi.getSettingsAllValues();

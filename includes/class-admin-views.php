@@ -1104,9 +1104,7 @@ class GravityView_Admin_Views {
 
 			wp_enqueue_style( 'gravityview-new-admin', plugins_url( 'assets/css/admin-views-new.css', GRAVITYVIEW_FILE ), array( 'dashicons' ), GravityView_Plugin::version );
 
-
 			wp_enqueue_style( 'gravityview_views_styles', plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ), array('dashicons', 'wp-jquery-ui-dialog' ), GravityView_Plugin::version );
-
 
 			self::enqueue_gravity_forms_scripts();
 
