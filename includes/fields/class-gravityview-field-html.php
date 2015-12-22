@@ -7,6 +7,14 @@ class GravityView_Field_HTML extends GravityView_Field {
 
 	var $name = 'html';
 
+	var $is_searchable = false;
+
+	var $is_sortable = false;
+
+	var $_gf_field_class_name = 'GF_Field_HTML';
+
+	var $group = 'standard';
+
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		unset ( $field_options['search_filter'], $field_options['show_as_link'] );

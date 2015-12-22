@@ -23,6 +23,29 @@ class GVCommon_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @group get_forms
+	 * @covers GVCommon::get_forms()
+	 * @covers gravityview_get_forms()
+	 */
+	function test_get_forms() {
+
+		$this->factory->form->create_many( 5 );
+
+		$forms = GFAPI::get_forms();
+
+		$gv_forms = GVCommon::get_forms();
+
+		// Make sure same # of forms are fetched
+		$this->assertEquals( sizeof( $forms ), sizeof( $gv_forms ) );
+
+		// The GVCommon method should return array with `id` and `title` fields
+		$last_form = array_pop( $forms );
+		$last_gv_form = array_pop( $gv_forms );
+
+		$this->assertEquals( array( 'title' => $last_form['title'], 'id' => $last_form['id'] ), $last_gv_form );
+	}
+
+	/**
 	 * @covers GVCommon::get_connected_views
 	 * @covers ::gravityview_get_connected_views()
 	 */

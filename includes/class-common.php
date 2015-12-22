@@ -162,18 +162,20 @@ class GVCommon {
 	 *
 	 * @access public
 	 * @param mixed $form_id
-	 * @return array (id, title)
+	 * @return array Empty array if GFAPI isn't available or no forms. Otherwise, associative array with id, title keys
 	 */
 	public static function get_forms() {
-		if ( class_exists( 'RGFormsModel' ) ) {
-			$gf_forms = RGFormsModel::get_forms( null, 'title' );
-			$forms = array();
+		$forms = array();
+		if ( class_exists( 'GFAPI' ) ) {
+			$gf_forms = GFAPI::get_forms();
 			foreach ( $gf_forms as $form ) {
-				$forms[] = array( 'id' => $form->id, 'title' => $form->title );
+				$forms[] = array(
+					'id' => $form['id'],
+					'title' => $form['title'],
+				);
 			}
-			return $forms;
 		}
-		return false;
+		return $forms;
 	}
 
 	/**

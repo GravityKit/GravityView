@@ -8,6 +8,8 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 	var $name = 'custom';
 
+	var $contexts = array( 'single', 'multiple', 'edit' );
+
 	/**
 	 * @var bool
 	 * @since 1.15.3
@@ -19,6 +21,13 @@ class GravityView_Field_Custom extends GravityView_Field {
 	 * @since 1.15.3
 	 */
 	var $is_searchable = false;
+
+	var $group = 'gravityview';
+
+	public function __construct() {
+		$this->label = esc_attr__( 'Custom Content', 'gravityview' );
+		parent::__construct();
+	}
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 

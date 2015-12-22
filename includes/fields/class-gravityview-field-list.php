@@ -9,6 +9,8 @@ class GravityView_Field_List extends GravityView_Field {
 
 	var $name = 'list';
 
+	var $search_operators = array( 'contains' );
+
 	/**
 	 * @var bool
 	 * @since 1.15.3
@@ -21,7 +23,13 @@ class GravityView_Field_List extends GravityView_Field {
 	 */
 	var $is_searchable = false;
 
+	var $_gf_field_class_name = 'GF_Field_List';
+
+	var $group = 'advanced';
+
 	function __construct() {
+
+		$this->label = esc_attr__( 'List', 'gravityview' );
 
 		parent::__construct();
 

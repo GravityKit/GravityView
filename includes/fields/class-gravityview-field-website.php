@@ -7,6 +7,12 @@ class GravityView_Field_Website extends GravityView_Field {
 
 	var $name = 'website';
 
+	var $search_operators = array( 'is', 'isnot', 'contains', 'starts_with', 'ends_with' );
+
+	var $_gf_field_class_name = 'GF_Field_Website';
+
+	var $group = 'advanced';
+
 	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 
 		// It makes no sense to use this as the link.

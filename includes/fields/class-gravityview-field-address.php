@@ -7,6 +7,10 @@ class GravityView_Field_Address extends GravityView_Field {
 
 	var $name = 'address';
 
+	var $group = 'advanced';
+
+	var $_gf_field_class_name = 'GF_Field_Address';
+
 	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 
 		// If this is NOT the full address field, return default options.

@@ -7,6 +7,10 @@ class GravityView_Field_Date extends GravityView_Field {
 
 	var $name = 'date';
 
+	var $_gf_field_class_name = 'GF_Field_Date';
+
+	var $group = 'advanced';
+
 	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 
 		if( 'edit' === $context ) {

@@ -7,6 +7,15 @@ class GravityView_Field_Source_URL extends GravityView_Field {
 
 	var $name = 'source_url';
 
+	var $search_operators = array( 'is', 'isnot', 'contains', 'starts_with', 'ends_with' );
+
+	var $group = 'meta';
+
+	public function __construct() {
+		$this->label = esc_attr__( 'Source URL', 'gravityview' );
+		parent::__construct();
+	}
+
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		// Don't link to entry; doesn't make sense.

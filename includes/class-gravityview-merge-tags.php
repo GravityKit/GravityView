@@ -66,8 +66,9 @@ class GravityView_Merge_Tags {
 		 *
 		 * @internal Reported to GF Support on 12/3
 		 */
-		$form['title'] = isset( $form['title'] ) ? $form['title'] : '';
-		$form['id']    = isset( $form['id'] ) ? $form['id'] : '';
+		$form['title']  = isset( $form['title'] ) ? $form['title'] : '';
+		$form['id']     = isset( $form['id'] ) ? $form['id'] : '';
+		$form['fields'] = isset( $form['fields'] ) ? $form['fields'] : array();
 
 		return GFCommon::replace_variables( $text, $form, $entry, $url_encode, $esc_html );
 	}
