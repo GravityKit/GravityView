@@ -32,7 +32,7 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
     fieldsSections: null,
 
     /**
-     * Holds the available list of fields (depending on the context
+     * Holds the available list of fields (depending on the context)
      */
     fieldsList: { 'directory': null, 'single': null, 'edit': null, 'export': null },
 

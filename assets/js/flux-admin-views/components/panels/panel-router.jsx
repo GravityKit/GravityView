@@ -8,6 +8,7 @@ var AddRowPanel = require('./add-row-panel.jsx');
 var ConfigureRowPanel = require('./configure-row-panel.jsx');
 var SettingsMenuPanel = require('./settings-menu-panel.jsx');
 var SettingsSubPanel = require('./settings-sub-panel.jsx');
+var DataSourcePanel = require('./panels/data-source-panel.jsx');
 
 var ViewConstants = require('../../constants/view-constants.js');
 var ViewActions = require('../../actions/view-actions.js');
@@ -32,6 +33,11 @@ var PanelRouter = React.createClass({
             // Used on the Configure Row panel
             layout: LayoutStore.getLayout(),
 
+            // Used on pick form panel
+            forms: SettingsStore.getActiveForms(),
+            formsList: SettingsStore.getFormsList(),
+
+            // Used on the Add Field panel
             fieldsSections: LayoutStore.getFieldsSections(),
             fieldsList: LayoutStore.getFieldsList(),
 
@@ -59,9 +65,14 @@ var PanelRouter = React.createClass({
         ViewActions.fetchSettingsInputs();
         ViewActions.fetchSettingsAllValues();
 
+
+        // get active forms and forms list
+        ViewActions.fetchActiveForms();
+        ViewActions.fetchFormsList();
+
         // todo: get the form and the context dynamic
         ViewActions.fetchFieldsSections();
-        ViewActions.fetchFieldsList( [254], 'directory' );
+        ViewActions.fetchFieldsList( [254] );
 
     },
 
@@ -84,6 +95,13 @@ var PanelRouter = React.createClass({
                <ConfigureRowPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} extraArgs={this.state.extraPanelArgs} layoutData={this.state.layout} />
                <SettingsMenuPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} sections={this.state.settingsSections} />
                <SettingsSubPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} settingsValues={this.state.settingsValues} sections={this.state.settingsSections} inputs={this.state.settingsInputs} />
+                <DataSourcePanel
+                    returnPanel={this.state.returnPanel}
+                    currentPanel={this.state.currentPanel}
+                    sections={this.state.settingsSections}
+                    forms={this.state.forms}
+                    formsList={this.state.formsList}
+                />
                <ReactTooltip html={true} place="bottom" type="info" effect="float" />
            </div>
         );

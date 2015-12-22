@@ -32,6 +32,14 @@ var ViewActions = {
 
     /** -- Settings Actions -- */
 
+    fetchActiveForms: function() {
+        ViewApi.getConfiguredActiveForms();
+    },
+
+    fetchFormsList: function() {
+        ViewApi.getFormsList();
+    },
+
     // Load all the view settings values
     fetchSettingsAllValues: function() {
         ViewApi.getSettingsAllValues();
@@ -152,9 +160,11 @@ var ViewActions = {
         ViewApi.getFieldsSections( forms, templates );
     },
 
-    fetchFieldsList: function( forms, context ) {
-        ViewApi.getFieldsList( forms, context );
+    fetchFieldsList: function( forms ) {
+        ViewApi.getFieldsList( forms );
     },
+
+
 
 
 

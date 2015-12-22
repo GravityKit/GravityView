@@ -1121,10 +1121,17 @@ class GravityView_Admin_Views {
 		 */
 		$templates = apply_filters( 'gravityview_register_directory_template', array() );
 
+		// get the list of forms active for this view
+		$forms = gravityview_get_form_id( $post_id );
+
+		if( !is_array( $forms ) && !empty( $forms ) ) {
+			$forms = array( $forms );
+		}
+
 		return array(
 			'view_id' => $post_id,
-			'form_id' => gravityview_get_form_id( $post_id ),
-			'forms' => GVCommon::get_forms(),
+			'forms' => $forms,
+			'forms_list' => GVCommon::get_forms(),
 			'templates' => $templates,
 			'template_id' => gravityview_get_template_id( $post_id ),
 			'settings_sections' => self::get_settings_sections(),
@@ -1138,6 +1145,7 @@ class GravityView_Admin_Views {
 		// todo: hook the extensions to add their settings section
 		// todo: decide if the filter and sort stay separated or together
 		return array(
+			array( 'id' => 'source' , 'label' => __( 'Data Source', 'gravityview') ),
 			array( 'id' => 'general' , 'label' => __( 'General Settings', 'gravityview') ),
 			array( 'id' => 'single' , 'label' => __( 'Single Entry', 'gravityview') ),
 			array( 'id' => 'sort' , 'label' => __( 'Sort', 'gravityview') ),

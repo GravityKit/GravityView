@@ -10,6 +10,7 @@ var CHANGE_EVENT = 'change';
  * Store about the View Settings, configuration sections, inputs and values
  */
 var SettingsStore = assign( {}, EventEmitter.prototype, {
+
     /**
      * Holds the View Settings Sections
      */
@@ -24,6 +25,22 @@ var SettingsStore = assign( {}, EventEmitter.prototype, {
      * Holds the view settings values
      */
     settings: null,
+
+    /**
+     * Holds the list of forms active for this view
+     */
+    forms: null,
+
+    /**
+     * Holds the list of available forms
+     */
+    formsList: null,
+
+    /**
+     * Holds the list of available templates (includes the presets)
+     */
+    templatesList: null,
+
 
     emitChange: function() {
         this.emit( CHANGE_EVENT );
@@ -43,37 +60,100 @@ var SettingsStore = assign( {}, EventEmitter.prototype, {
         this.removeListener( CHANGE_EVENT, callback );
     },
 
+    /** Handle settings */
+
+    /**
+     * Update one setting
+     * @param id
+     * @param value
+     */
     saveSetting: function( id, value ) {
         this.settings[ id ] = value;
     },
 
-
+    /**
+     * Update all settings
+     * @param values
+     */
     saveAllSettings: function( values ) {
         this.settings = values;
     },
 
+    /**
+     * Get the settings object
+     * @returns {null}
+     */
+    getAllValues: function() {
+        return this.settings;
+    },
+
+    /** Handle sections and inputs */
+
+    /**
+     * Save Sections array
+     * @param values
+     */
     saveSections: function( values ) {
         this.sections = values;
     },
 
-    saveInputs: function( values ) {
-        this.inputs = values;
-    },
-
-
-    // get functions
+    /**
+     * Get the list of sections
+     * @returns {null}
+     */
     getSections: function() {
         return this.sections;
     },
 
+    /**
+     * Save Settings Inputs
+     * @param values
+     */
+    saveInputs: function( values ) {
+        this.inputs = values;
+    },
+
+    /**
+     * Get Settings Inputs
+     * @returns {null}
+     */
     getInputs: function() {
         return this.inputs;
     },
 
-    getAllValues: function() {
-        return this.settings;
-    }
+    /** Handle Forms list */
 
+    /**
+     * Save the available forms list
+     * @param values
+     */
+    saveFormsList: function( values ) {
+        this.formsList = values;
+    },
+
+    /**
+     * Get the available forms list
+     * @returns {null}
+     */
+    getFormsList: function() {
+        return this.formsList;
+    },
+
+    /**
+     * Save/update the active forms assigned to this view
+     * @param values
+     */
+    saveActiveForms: function( values ) {
+        this.forms = values;
+    },
+
+    /**
+     * Get the active forms (assigned to the present view)
+     * @returns {null}
+     */
+    getActiveForms: function() {
+        return this.forms;
+    },
 
 
 
@@ -84,6 +164,16 @@ var SettingsStore = assign( {}, EventEmitter.prototype, {
 ViewDispatcher.register( function( action ) {
 
     switch( action.actionType ) {
+
+        case ViewConstants.UPDATE_FORMS_LIST:
+            SettingsStore.saveFormsList( action.values );
+            SettingsStore.emitChange();
+            break;
+
+        case ViewConstants.UPDATE_FORMS_ACTIVE:
+            SettingsStore.saveActiveForms( action.values );
+            SettingsStore.emitChange();
+            break;
 
         case ViewConstants.UPDATE_SETTINGS_SECTIONS:
             SettingsStore.saveSections( action.values );

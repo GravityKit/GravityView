@@ -29,7 +29,9 @@ var SettingsSubPanel = React.createClass({
      * @returns {boolean}
      */
     isPanelVisible: function() {
-        return this.props.currentPanel !== ViewConstants.PANEL_SETTINGS && this.props.returnPanel === ViewConstants.PANEL_SETTINGS;
+        return this.props.currentPanel !== ViewConstants.PANEL_SETTINGS &&
+            this.props.currentPanel !== 'settings_source' &&
+            this.props.returnPanel === ViewConstants.PANEL_SETTINGS;
     },
 
     /**
@@ -119,14 +121,14 @@ var SettingsSubPanel = React.createClass({
 
     },
 
-    renderPanelContent: function() {
+    renderSettingsContent: function() {
 
         if ( ! this.isPanelVisible() ) {
             return null;
         }
 
-        var sectionID = this.props.currentPanel.replace( 'settings_', '' );
-        var inputs = this.props.inputs[ sectionID ];
+        var sectionId = this.props.currentPanel.replace( 'settings_', '' );
+        var inputs = this.props.inputs[ sectionId ];
 
         return inputs.map(  this.renderInputs, this );
     },
@@ -136,7 +138,7 @@ var SettingsSubPanel = React.createClass({
         return (
             <Panel isVisible={this.isPanelVisible()} returnPanel={this.props.returnPanel} title={this.renderTitle()}>
                 <div className="gv-panel__forms">
-                    {this.renderPanelContent()}
+                    {this.renderSettingsContent()}
                 </div>
             </Panel>
         );

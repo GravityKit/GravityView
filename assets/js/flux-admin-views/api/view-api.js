@@ -19,6 +19,20 @@ var ViewApi = {
     // *** View Settings *** //
 
     /**
+     * Fetch the list of the available forms
+     */
+    getFormsList: function() {
+        updateSettings( ViewConstants.UPDATE_FORMS_LIST, gravityview_view_settings.forms_list );
+    },
+
+    /**
+     * Fetch the configured forms assigned to the view
+     */
+    getConfiguredActiveForms: function() {
+        updateSettings( ViewConstants.UPDATE_FORMS_ACTIVE, gravityview_view_settings.forms );
+    },
+
+    /**
      * Fetch Settings Sections from server
      *
      * @param forms
@@ -88,12 +102,11 @@ var ViewApi = {
      * @param forms
      * @param context
      */
-    getFieldsList: function( forms, context ) {
+    getFieldsList: function( forms ) {
 
         var data = {
             action: 'gv_get_fields_list',
             forms: forms,
-            context: context,
             nonce: gvGlobals.nonce
         };
 

@@ -18,6 +18,9 @@ module.exports = keyMirror({
     UPDATE_SETTINGS_ALL: null,
     UPDATE_SETTINGS_SECTIONS: null,
     UPDATE_SETTINGS_INPUTS: null,
+    UPDATE_FORMS_LIST: null,
+    UPDATE_TEMPLATES_LIST: null,
+    UPDATE_FORMS_ACTIVE: null,
 
 
     // Layout
