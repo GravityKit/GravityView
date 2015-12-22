@@ -42,7 +42,7 @@ function gravityview_get_form_from_entry_id( $entry_slug ) {
  * @see GVCommon::get_forms()
  * @access public
  * @param mixed $form_id
- * @return array (id, title)
+ * @return array Empty array if GFAPI isn't available or no forms. Otherwise, associative array with id, title keys
  */
 function gravityview_get_forms() {
 	return GVCommon::get_forms();
