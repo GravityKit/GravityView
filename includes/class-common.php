@@ -405,8 +405,8 @@ class GVCommon {
 	 *
 	 * @since 1.7.4
 	 *
-	 * @param null $passed_criteria array Input Criteria (search_criteria, sorting, paging)
-	 * @param null $form_ids array Gravity Forms form IDs
+	 * @param array $passed_criteria Input Criteria (search_criteria, sorting, paging)
+	 * @param array $form_ids Gravity Forms form IDs
 	 * @return array|mixed|void
 	 */
 	public static function calculate_get_entries_criteria( $passed_criteria = null, $form_ids = null ) {
