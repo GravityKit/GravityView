@@ -72,8 +72,16 @@ var PanelRouter = React.createClass({
 
         // todo: get the form and the context dynamic
         ViewActions.fetchFieldsSections();
-        ViewActions.fetchFieldsList( [254] );
 
+    },
+
+    shouldComponentUpdate: function( nextProps, nextState ) {
+
+        // If forms change, update the fields list
+        if( nextState.forms.length && nextState.forms !== this.state.forms ) {
+            ViewActions.fetchFieldsList( nextState.forms );
+        }
+        return true;
     },
 
     componentWillUnmount: function() {

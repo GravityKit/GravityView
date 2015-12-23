@@ -1829,10 +1829,9 @@ var ViewApi = {
     },
 
     /**
-     * Fetch Fields List
+     * Fetch Fields List for the active forms
      *
      * @param forms
-     * @param context
      */
     getFieldsList: function getFieldsList(forms) {
 
@@ -1849,7 +1848,6 @@ var ViewApi = {
             dataType: 'json',
             async: true
         }).done(function (response) {
-            console.log(response.data);
             updateSettings(ViewConstants.UPDATE_FIELDS_LIST, response.data);
         }).fail(function (jqXHR) {
             console.log(jqXHR);
@@ -1871,7 +1869,7 @@ var ViewApi = {
             field_id: args.field['field_id'],
             field_type: args.field['field_type'],
             field_label: args.field['field_label'],
-            form_id: '254',
+            form_id: args.field['form_id'], // todo: check ..
             nonce: gvGlobals.nonce
         };
 
@@ -3000,7 +2998,15 @@ var PanelRouter = React.createClass({
 
         // todo: get the form and the context dynamic
         ViewActions.fetchFieldsSections();
-        ViewActions.fetchFieldsList([254]);
+    },
+
+    shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
+
+        // If forms change, update the fields list
+        if (nextState.forms.length && nextState.forms !== this.state.forms) {
+            ViewActions.fetchFieldsList(nextState.forms);
+        }
+        return true;
     },
 
     componentWillUnmount: function componentWillUnmount() {
