@@ -6,7 +6,7 @@ var TabsContainers = React.createClass({
     propTypes: {
         tabList: React.PropTypes.array, // list of tabs
         activeTab: React.PropTypes.string,
-        layoutData: React.PropTypes.object // Active Tab
+        layoutData: React.PropTypes.object
     },
 
     renderContainers: function( tab, i ) {

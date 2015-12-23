@@ -1248,6 +1248,7 @@ class GravityView_Admin_Views {
 			'panel_config_row_title' 	=> __( 'Configure Row', 'gravityview' ),
 			'panel_add_fields' 			=> __( 'Add Fields', 'gravityview' ),
 			'panel_search_fields' 		=> __( 'Search fields by name', 'gravityview' ),
+			'panel_config_field_title'	=> __( 'Configure Field', 'gravityview' ),
 
 
 			// --- Below the old i18n tags --

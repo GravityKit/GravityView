@@ -111,7 +111,7 @@ var SettingsSubPanel = React.createClass({
                 );
                 break;
         }
-        //todo: change class name (li)
+
         return(
             <fieldset key={item.id} id={item.id}>
                 {leftLabel}

@@ -32,6 +32,9 @@ class GravityView_Ajax {
 
 		// Load the field settings
 		add_action( 'wp_ajax_gv_get_field_settings_values', array( $this, 'get_field_settings_values' ) );
+
+		// Load the field settings
+		add_action( 'wp_ajax_gv_get_field_settings', array( $this, 'get_field_settings' ) );
 	}
 
 	/**
@@ -684,7 +687,7 @@ class GravityView_Ajax {
 	function get_field_settings() {
 		$this->check_ajax_nonce();
 
-
+error_log( '$_POST:' . print_r($_POST  , true ) );
 		$output = '';
 		if( empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) ) {
 			do_action( 'gravityview_log_error', '[get_field_settings] Required fields were not set in the $_POST request. ' );
@@ -719,7 +722,7 @@ class GravityView_Ajax {
 			$output[] = $option;
 
 		}
-
+error_log( '$output:' . print_r( $output , true ) );
 		wp_send_json_success( $output );
 	}
 

@@ -10,7 +10,7 @@ var Rows = React.createClass({
         tabId: React.PropTypes.string, // active tab
         type: React.PropTypes.string, // widgets, fields
         zone: React.PropTypes.string, // for the widgets, 'header' or 'footer'
-        data: React.PropTypes.array
+        data: React.PropTypes.array // Layout Data, just the rows array
     },
 
     handleFieldAdd: function(e) {
@@ -28,14 +28,16 @@ var Rows = React.createClass({
     handleFieldSettings: function(e) {
         e.preventDefault();
 
+        var field = JSON.parse( jQuery( e.target ).parents('.gv-view-field').attr('data-field') );
+
         var fieldArgs = {
             'context': this.props.tabId,
             'row': jQuery( e.target ).parents('div[data-row]').attr('data-row'),
             'col': jQuery( e.target ).parents('div[data-column]').attr('data-column'),
-            'field': jQuery( e.target ).parents('.gv-view-field').attr('id'),
+            'field': field
         };
 
-        ViewActions.openPanel( ViewConstants.PANEL_FIELD_SETTINGS, false, fieldArgs );
+        ViewActions.editFieldSettings( fieldArgs );
     },
 
     handleFieldRemove: function(e) {
@@ -60,10 +62,11 @@ var Rows = React.createClass({
 
     renderFields: function( field, i ) {
 
-        var label = field['gv_settings']['custom_label'] || field['gv_settings']['label'];
+        var label = field['gv_settings']['custom_label'] || field['gv_settings']['label'],
+            dataField = JSON.stringify(field);
 
         return(
-            <div key={field.id} className="gv-view-field" id={field.id} >
+            <div key={field.id} className="gv-view-field" id={field.id} data-field={dataField}>
                 <a onClick={this.handleFieldSettings} title={gravityview_i18n.field_settings} className="gv-view-field__settings" data-icon="&#xe009;"><span className="gv-screen-reader-text">{gravityview_i18n.field_settings}</span></a>
                 <span className="gv-view-field__description">{label}</span>
                 <a onClick={this.handleFieldRemove} title={gravityview_i18n.field_remove} className="gv-view-field__remove" data-icon="&#xe006;"><span className="gv-screen-reader-text">{gravityview_i18n.field_remove}</span></a>

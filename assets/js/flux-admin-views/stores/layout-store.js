@@ -239,7 +239,7 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
 
         this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'] = fields;
 
-    }
+    },
 
 });
 
@@ -291,7 +291,6 @@ ViewDispatcher.register( function( action ) {
             LayoutStore.addFieldSettingsValues( args['context'], args['row'], args['col'], args['field'], settings );
             LayoutStore.emitChange();
             break;
-
 
 
         // Add field panel

@@ -92,26 +92,59 @@ var PanelRouter = React.createClass({
 
     render: function() {
 
-        // <ConfigureFieldPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} extraArgs={this.state.extraPanelArgs} layoutData={this.state.layout} />
-
-
         return (
-           <div>
-               <AddFieldPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} extraArgs={this.state.extraPanelArgs} sections={this.state.fieldsSections} fields={this.state.fieldsList} />
-               <AddFieldSubPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} extraArgs={this.state.extraPanelArgs} sections={this.state.fieldsSections} fields={this.state.fieldsList} />
-               <AddRowPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} extraArgs={this.state.extraPanelArgs} />
-               <ConfigureRowPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} extraArgs={this.state.extraPanelArgs} layoutData={this.state.layout} />
-               <SettingsMenuPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} sections={this.state.settingsSections} />
-               <SettingsSubPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} settingsValues={this.state.settingsValues} sections={this.state.settingsSections} inputs={this.state.settingsInputs} />
-                <DataSourcePanel
+            <div>
+                <AddFieldPanel
+                   returnPanel={this.state.returnPanel}
+                   currentPanel={this.state.currentPanel}
+                   extraArgs={this.state.extraPanelArgs}
+                   sections={this.state.fieldsSections}
+                   fields={this.state.fieldsList}
+                />
+                <AddFieldSubPanel
+                   returnPanel={this.state.returnPanel}
+                   currentPanel={this.state.currentPanel}
+                   extraArgs={this.state.extraPanelArgs}
+                   sections={this.state.fieldsSections}
+                   fields={this.state.fieldsList}
+                />
+                <ConfigureFieldPanel
                     returnPanel={this.state.returnPanel}
                     currentPanel={this.state.currentPanel}
-                    sections={this.state.settingsSections}
-                    forms={this.state.forms}
-                    formsList={this.state.formsList}
+                    extraArgs={this.state.extraPanelArgs}
                 />
-               <ReactTooltip html={true} place="bottom" type="info" effect="float" />
-           </div>
+                <AddRowPanel
+                   returnPanel={this.state.returnPanel}
+                   currentPanel={this.state.currentPanel}
+                   extraArgs={this.state.extraPanelArgs}
+                />
+                <ConfigureRowPanel
+                   returnPanel={this.state.returnPanel}
+                   currentPanel={this.state.currentPanel}
+                   extraArgs={this.state.extraPanelArgs}
+                   layoutData={this.state.layout}
+                />
+                <SettingsMenuPanel
+                   returnPanel={this.state.returnPanel}
+                   currentPanel={this.state.currentPanel}
+                   sections={this.state.settingsSections}
+                />
+                <SettingsSubPanel
+                   returnPanel={this.state.returnPanel}
+                   currentPanel={this.state.currentPanel}
+                   settingsValues={this.state.settingsValues}
+                   sections={this.state.settingsSections}
+                   inputs={this.state.settingsInputs}
+                />
+                <DataSourcePanel
+                   returnPanel={this.state.returnPanel}
+                   currentPanel={this.state.currentPanel}
+                   sections={this.state.settingsSections}
+                   forms={this.state.forms}
+                   formsList={this.state.formsList}
+                />
+                <ReactTooltip html={true} place="bottom" type="info" effect="float" />
+            </div>
         );
     }
 

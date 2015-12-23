@@ -23,16 +23,16 @@ var ConfigureRowPanel = React.createClass({
      * @param e
      */
     handleChange: function( e ) {
-        var id = e.target.getAttribute( 'id' ),
+        var id = e.target.getAttribute( 'data-id' ),
             value = e.target.value;
         ViewActions.updateRowSetting( id, value, this.props.extraArgs );
     },
 
     renderFields: function( item, i ) {
         return(
-            <fieldset key={item.id} id={item.id}>
-                <label htmlFor={item}>{item}</label>
-                <input onChange={this.handleChange} id={item} type="text" value={this.rowSettings[ item ]}  />
+            <fieldset key={item}>
+                <label htmlFor={'row-setting-'+item}>{item}</label>
+                <input onChange={this.handleChange} id={'row-setting-'+item} data-id={item} type="text" value={this.rowSettings[ item ]}  />
             </fieldset>
         );
     },

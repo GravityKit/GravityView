@@ -1,5 +1,6 @@
 var ViewConstants = require('../constants/view-constants.js');
-var ViewDispatcher = require('../dispatcher/view-dispatcher');
+var ViewDispatcher = require('../dispatcher/view-dispatcher.js');
+//var ViewActions = require('../actions/view-actions.js');
 
 /**
  * Helper function to dispatch
@@ -13,6 +14,16 @@ function updateSettings( action, values ) {
     });
 }
 
+
+//todo: it should be possible to call the ViewActions
+function apiOpenPanel( id, returnId, args = null ) {
+    ViewDispatcher.dispatch({
+        actionType: ViewConstants.PANEL_OPEN,
+        panelId: id,
+        returnId: returnId,
+        extraArgs: args
+    });
+}
 
 var ViewApi = {
 
@@ -129,7 +140,7 @@ var ViewApi = {
      * Get the field settings array
      * @param args object Pointer containing 'context', 'row', 'col' and 'field' (field_id, form_id, field_type, ..)
      */
-    getFieldSettings: function( args ) {
+    getFieldSettingsValues: function( args ) {
 
         var data = {
             action: 'gv_get_field_settings_values',
@@ -138,7 +149,44 @@ var ViewApi = {
             field_id: args.field['field_id'],
             field_type: args.field['field_type'],
             field_label: args.field['field_label'],
-            form_id: args.field['form_id'], // todo: check ..
+            form_id: args.field['form_id'],
+            nonce: gvGlobals.nonce
+        };
+
+        jQuery.ajax( {
+            type: 'POST',
+            url: ajaxurl,
+            data: data,
+            dataType: 'json',
+            async: true
+        } ).done( function ( response ) {
+
+            var values = {
+                pointer: args,
+                settings: response.data
+            };
+            updateSettings( ViewConstants.UPDATE_FIELD_SETTINGS, values );
+        } ).fail( function ( jqXHR ) {
+            console.log( jqXHR );
+        } ).always( function () {
+            //
+        } );
+
+    },
+
+    /**
+     * Fetch field settings, and open the field settings panel when loaded.
+     * @param args Object Field arguments ( context, row, col, field [id, field_id, form_id, field_type, gv_settings] )
+     */
+    getFieldSettings: function( args ) {
+
+        var data = {
+            action: 'gv_get_field_settings',
+            //template: templateId,
+            context: args.context,
+            field_id: args.field['field_id'],
+            field_type: args.field['field_type'],
+            form_id: args.field['form_id'],
             nonce: gvGlobals.nonce
         };
 
@@ -155,16 +203,13 @@ var ViewApi = {
                 settings: response.data
             };
 
-            updateSettings( ViewConstants.UPDATE_FIELD_SETTINGS, values );
+            apiOpenPanel( ViewConstants.PANEL_FIELD_SETTINGS, false, values );
         } ).fail( function ( jqXHR ) {
             console.log( jqXHR );
         } ).always( function () {
             //
         } );
-
-
-    },
-
+    }
 
 };
 

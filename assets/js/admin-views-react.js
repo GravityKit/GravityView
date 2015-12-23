@@ -1537,7 +1537,7 @@ var ViewDispatcher = require('../dispatcher/view-dispatcher');
 var ViewConstants = require('../constants/view-constants');
 var ViewApi = require('../api/view-api.js');
 
-var ViewActions = {
+module.exports = {
 
     /* -- Panel actions -- */
 
@@ -1670,14 +1670,24 @@ var ViewActions = {
         });
     },
 
+    /** Fields handling */
+
+    fetchFieldsSections: function fetchFieldsSections(forms, templates) {
+        ViewApi.getFieldsSections(forms, templates);
+    },
+
+    fetchFieldsList: function fetchFieldsList(forms) {
+        ViewApi.getFieldsList(forms);
+    },
+
     /**
      * Trigger the Add Field to the Layout
      * @param args Object Field arguments: Context, Row, Col, Field (id, field_id, field_type, form_id, field_label)
      */
     addField: function addField(args) {
 
-        // fetch the field settings ('gv_settings')
-        ViewApi.getFieldSettings(args);
+        // fetch the field settings values ('gv_settings')
+        ViewApi.getFieldSettingsValues(args);
 
         // add the field without 'gv_settings' while loading the settings
         ViewDispatcher.dispatch({
@@ -1699,17 +1709,28 @@ var ViewActions = {
         });
     },
 
-    fetchFieldsSections: function fetchFieldsSections(forms, templates) {
-        ViewApi.getFieldsSections(forms, templates);
+    /**
+     * Trigger the field settings edit process (fetch field settings, and open the field settings panel)
+     * @param args Object Field arguments ( context, row, col, field [id, field_id, form_id, field_type, gv_settings] )
+     */
+    editFieldSettings: function editFieldSettings(args) {
+        ViewApi.getFieldSettings(args);
     },
 
-    fetchFieldsList: function fetchFieldsList(forms) {
-        ViewApi.getFieldsList(forms);
+    updateFieldSetting: function updateFieldSetting(args, newSettings) {
+
+        var newValues = {
+            pointer: args,
+            settings: newSettings
+        };
+
+        ViewDispatcher.dispatch({
+            actionType: ViewConstants.UPDATE_FIELD_SETTINGS,
+            values: newValues
+        });
     }
 
 };
-
-module.exports = ViewActions;
 
 },{"../api/view-api.js":3,"../constants/view-constants":32,"../dispatcher/view-dispatcher":33}],2:[function(require,module,exports){
 'use strict';
@@ -1733,7 +1754,8 @@ if (window.addEventListener) {
 'use strict';
 
 var ViewConstants = require('../constants/view-constants.js');
-var ViewDispatcher = require('../dispatcher/view-dispatcher');
+var ViewDispatcher = require('../dispatcher/view-dispatcher.js');
+//var ViewActions = require('../actions/view-actions.js');
 
 /**
  * Helper function to dispatch
@@ -1744,6 +1766,18 @@ function updateSettings(action, values) {
     ViewDispatcher.dispatch({
         actionType: action,
         values: values
+    });
+}
+
+//todo: it should be possible to call the ViewActions
+function apiOpenPanel(id, returnId) {
+    var args = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+
+    ViewDispatcher.dispatch({
+        actionType: ViewConstants.PANEL_OPEN,
+        panelId: id,
+        returnId: returnId,
+        extraArgs: args
     });
 }
 
@@ -1860,7 +1894,7 @@ var ViewApi = {
      * Get the field settings array
      * @param args object Pointer containing 'context', 'row', 'col' and 'field' (field_id, form_id, field_type, ..)
      */
-    getFieldSettings: function getFieldSettings(args) {
+    getFieldSettingsValues: function getFieldSettingsValues(args) {
 
         var data = {
             action: 'gv_get_field_settings_values',
@@ -1869,7 +1903,43 @@ var ViewApi = {
             field_id: args.field['field_id'],
             field_type: args.field['field_type'],
             field_label: args.field['field_label'],
-            form_id: args.field['form_id'], // todo: check ..
+            form_id: args.field['form_id'],
+            nonce: gvGlobals.nonce
+        };
+
+        jQuery.ajax({
+            type: 'POST',
+            url: ajaxurl,
+            data: data,
+            dataType: 'json',
+            async: true
+        }).done(function (response) {
+
+            var values = {
+                pointer: args,
+                settings: response.data
+            };
+            updateSettings(ViewConstants.UPDATE_FIELD_SETTINGS, values);
+        }).fail(function (jqXHR) {
+            console.log(jqXHR);
+        }).always(function () {
+            //
+        });
+    },
+
+    /**
+     * Fetch field settings, and open the field settings panel when loaded.
+     * @param args Object Field arguments ( context, row, col, field [id, field_id, form_id, field_type, gv_settings] )
+     */
+    getFieldSettings: function getFieldSettings(args) {
+
+        var data = {
+            action: 'gv_get_field_settings',
+            //template: templateId,
+            context: args.context,
+            field_id: args.field['field_id'],
+            field_type: args.field['field_type'],
+            form_id: args.field['form_id'],
             nonce: gvGlobals.nonce
         };
 
@@ -1886,7 +1956,7 @@ var ViewApi = {
                 settings: response.data
             };
 
-            updateSettings(ViewConstants.UPDATE_FIELD_SETTINGS, values);
+            apiOpenPanel(ViewConstants.PANEL_FIELD_SETTINGS, false, values);
         }).fail(function (jqXHR) {
             console.log(jqXHR);
         }).always(function () {
@@ -1898,7 +1968,7 @@ var ViewApi = {
 
 module.exports = ViewApi;
 
-},{"../constants/view-constants.js":32,"../dispatcher/view-dispatcher":33}],4:[function(require,module,exports){
+},{"../constants/view-constants.js":32,"../dispatcher/view-dispatcher.js":33}],4:[function(require,module,exports){
 /**
  * List common helper functions
  * @type {{}}
@@ -2070,7 +2140,7 @@ var Rows = React.createClass({
         tabId: React.PropTypes.string, // active tab
         type: React.PropTypes.string, // widgets, fields
         zone: React.PropTypes.string, // for the widgets, 'header' or 'footer'
-        data: React.PropTypes.array
+        data: React.PropTypes.array // Layout Data, just the rows array
     },
 
     handleFieldAdd: function handleFieldAdd(e) {
@@ -2088,14 +2158,16 @@ var Rows = React.createClass({
     handleFieldSettings: function handleFieldSettings(e) {
         e.preventDefault();
 
+        var field = JSON.parse(jQuery(e.target).parents('.gv-view-field').attr('data-field'));
+
         var fieldArgs = {
             'context': this.props.tabId,
             'row': jQuery(e.target).parents('div[data-row]').attr('data-row'),
             'col': jQuery(e.target).parents('div[data-column]').attr('data-column'),
-            'field': jQuery(e.target).parents('.gv-view-field').attr('id')
+            'field': field
         };
 
-        ViewActions.openPanel(ViewConstants.PANEL_FIELD_SETTINGS, false, fieldArgs);
+        ViewActions.editFieldSettings(fieldArgs);
     },
 
     handleFieldRemove: function handleFieldRemove(e) {
@@ -2120,11 +2192,12 @@ var Rows = React.createClass({
 
     renderFields: function renderFields(field, i) {
 
-        var label = field['gv_settings']['custom_label'] || field['gv_settings']['label'];
+        var label = field['gv_settings']['custom_label'] || field['gv_settings']['label'],
+            dataField = JSON.stringify(field);
 
         return React.createElement(
             'div',
-            { key: field.id, className: 'gv-view-field', id: field.id },
+            { key: field.id, className: 'gv-view-field', id: field.id, 'data-field': dataField },
             React.createElement(
                 'a',
                 { onClick: this.handleFieldSettings, title: gravityview_i18n.field_settings, className: 'gv-view-field__settings', 'data-icon': '' },
@@ -2348,7 +2421,7 @@ var TabsContainers = React.createClass({
     propTypes: {
         tabList: React.PropTypes.array, // list of tabs
         activeTab: React.PropTypes.string,
-        layoutData: React.PropTypes.object // Active Tab
+        layoutData: React.PropTypes.object
     },
 
     renderContainers: function renderContainers(tab, i) {
@@ -2597,7 +2670,7 @@ var ConfigureRowPanel = React.createClass({
      * @param e
      */
     handleChange: function handleChange(e) {
-        var id = e.target.getAttribute('id'),
+        var id = e.target.getAttribute('data-id'),
             value = e.target.value;
         ViewActions.updateRowSetting(id, value, this.props.extraArgs);
     },
@@ -2605,13 +2678,13 @@ var ConfigureRowPanel = React.createClass({
     renderFields: function renderFields(item, i) {
         return React.createElement(
             'fieldset',
-            { key: item.id, id: item.id },
+            { key: item },
             React.createElement(
                 'label',
-                { htmlFor: item },
+                { htmlFor: 'row-setting-' + item },
                 item
             ),
-            React.createElement('input', { onChange: this.handleChange, id: item, type: 'text', value: this.rowSettings[item] })
+            React.createElement('input', { onChange: this.handleChange, id: 'row-setting-' + item, 'data-id': item, type: 'text', value: this.rowSettings[item] })
         );
     },
 
@@ -3017,17 +3090,51 @@ var PanelRouter = React.createClass({
 
     render: function render() {
 
-        // <ConfigureFieldPanel returnPanel={this.state.returnPanel} currentPanel={this.state.currentPanel} extraArgs={this.state.extraPanelArgs} layoutData={this.state.layout} />
-
         return React.createElement(
             'div',
             null,
-            React.createElement(AddFieldPanel, { returnPanel: this.state.returnPanel, currentPanel: this.state.currentPanel, extraArgs: this.state.extraPanelArgs, sections: this.state.fieldsSections, fields: this.state.fieldsList }),
-            React.createElement(AddFieldSubPanel, { returnPanel: this.state.returnPanel, currentPanel: this.state.currentPanel, extraArgs: this.state.extraPanelArgs, sections: this.state.fieldsSections, fields: this.state.fieldsList }),
-            React.createElement(AddRowPanel, { returnPanel: this.state.returnPanel, currentPanel: this.state.currentPanel, extraArgs: this.state.extraPanelArgs }),
-            React.createElement(ConfigureRowPanel, { returnPanel: this.state.returnPanel, currentPanel: this.state.currentPanel, extraArgs: this.state.extraPanelArgs, layoutData: this.state.layout }),
-            React.createElement(SettingsMenuPanel, { returnPanel: this.state.returnPanel, currentPanel: this.state.currentPanel, sections: this.state.settingsSections }),
-            React.createElement(SettingsSubPanel, { returnPanel: this.state.returnPanel, currentPanel: this.state.currentPanel, settingsValues: this.state.settingsValues, sections: this.state.settingsSections, inputs: this.state.settingsInputs }),
+            React.createElement(AddFieldPanel, {
+                returnPanel: this.state.returnPanel,
+                currentPanel: this.state.currentPanel,
+                extraArgs: this.state.extraPanelArgs,
+                sections: this.state.fieldsSections,
+                fields: this.state.fieldsList
+            }),
+            React.createElement(AddFieldSubPanel, {
+                returnPanel: this.state.returnPanel,
+                currentPanel: this.state.currentPanel,
+                extraArgs: this.state.extraPanelArgs,
+                sections: this.state.fieldsSections,
+                fields: this.state.fieldsList
+            }),
+            React.createElement(ConfigureFieldPanel, {
+                returnPanel: this.state.returnPanel,
+                currentPanel: this.state.currentPanel,
+                extraArgs: this.state.extraPanelArgs
+            }),
+            React.createElement(AddRowPanel, {
+                returnPanel: this.state.returnPanel,
+                currentPanel: this.state.currentPanel,
+                extraArgs: this.state.extraPanelArgs
+            }),
+            React.createElement(ConfigureRowPanel, {
+                returnPanel: this.state.returnPanel,
+                currentPanel: this.state.currentPanel,
+                extraArgs: this.state.extraPanelArgs,
+                layoutData: this.state.layout
+            }),
+            React.createElement(SettingsMenuPanel, {
+                returnPanel: this.state.returnPanel,
+                currentPanel: this.state.currentPanel,
+                sections: this.state.settingsSections
+            }),
+            React.createElement(SettingsSubPanel, {
+                returnPanel: this.state.returnPanel,
+                currentPanel: this.state.currentPanel,
+                settingsValues: this.state.settingsValues,
+                sections: this.state.settingsSections,
+                inputs: this.state.settingsInputs
+            }),
             React.createElement(DataSourcePanel, {
                 returnPanel: this.state.returnPanel,
                 currentPanel: this.state.currentPanel,
@@ -3214,9 +3321,136 @@ var AddFieldSubPanel = React.createClass({
 module.exports = AddFieldSubPanel;
 
 },{"../../../actions/view-actions.js":1,"../../../api/view-common.js":4,"../../../constants/view-constants.js":32,"./panel-content-menu.jsx":27,"./panel.jsx":28,"react":203}],25:[function(require,module,exports){
-"use strict";
+'use strict';
 
-},{}],26:[function(require,module,exports){
+var React = require('react');
+var Panel = require('./panel.jsx');
+
+var InputNumber = require('../inputs/input-number.jsx');
+var InputCheckbox = require('../inputs/input-checkbox.jsx');
+var InputText = require('../inputs/input-text.jsx');
+var InputSelect = require('../inputs/input-select.jsx');
+var InputHidden = require('../inputs/input-hidden.jsx');
+var InputRadio = require('../inputs/input-radio.jsx');
+var InputTextarea = require('../inputs/input-textarea.jsx');
+
+var ViewCommon = require('../../../api/view-common.js');
+
+var ViewConstants = require('../../../constants/view-constants.js');
+var ViewActions = require('../../../actions/view-actions.js');
+
+var ConfigureFieldPanel = React.createClass({
+    displayName: 'ConfigureFieldPanel',
+
+    propTypes: {
+        returnPanel: React.PropTypes.string, // holds the panel ID when going back
+        currentPanel: React.PropTypes.string, // the current active panel
+        extraArgs: React.PropTypes.object },
+
+    // A vector containing the "pointer" (context, row, col, field) and the "settings" inputs ( defined at ViewApi.getFieldSettings() )
+
+    /**
+     * Holds the current field settings values
+     */
+    settingsValues: null,
+
+    handleChange: function handleChange(e) {
+        var id = e.target.getAttribute('id');
+
+        this.settingsValues[id] = e.target.value;
+        ViewActions.updateFieldSetting(this.props.extraArgs['pointer'], this.settingsValues);
+    },
+
+    handleCheckChange: function handleCheckChange(e) {
+        var id = e.target.getAttribute('id');
+
+        this.settingsValues[id] = e.target.checked;
+        ViewActions.updateFieldSetting(this.props.extraArgs['pointer'], this.settingsValues);
+    },
+
+    renderInputs: function renderInputs(item, i) {
+
+        var inputField = null,
+            leftLabel = null;
+
+        switch (item.type) {
+
+            case 'number':
+                inputField = React.createElement(InputNumber, { args: item, values: this.settingsValues, handleChange: this.handleChange });
+                break;
+
+            case 'checkbox':
+                leftLabel = React.createElement(
+                    'label',
+                    null,
+                    item.left_label
+                );
+                inputField = React.createElement(InputCheckbox, { args: item, values: this.settingsValues, handleChange: this.handleCheckChange });
+                break;
+
+            case 'hidden':
+                inputField = React.createElement(InputHidden, { args: item, values: this.settingsValues });
+                break;
+            /*
+             case 'radio':
+             inputField = (
+             <InputRadio args={item} values={this.props.settingsValues} handleChange={this.handleChange} />
+             );
+             break;
+             */
+            case 'select':
+                inputField = React.createElement(InputSelect, { args: item, values: this.settingsValues, handleChange: this.handleChange });
+                break;
+
+            case 'text':
+                inputField = React.createElement(InputText, { args: item, values: this.settingsValues, handleChange: this.handleChange });
+                break;
+
+            case 'textarea':
+                inputField = React.createElement(InputTextarea, { args: item, values: this.settingsValues, handleChange: this.handleChange });
+                break;
+        }
+
+        return React.createElement(
+            'fieldset',
+            { key: item.id, id: item.id },
+            leftLabel,
+            inputField
+        );
+    },
+
+    renderSettings: function renderSettings() {
+        var inputs = this.props.extraArgs['settings'];
+        return inputs.map(this.renderInputs, this);
+    },
+
+    render: function render() {
+
+        var isPanelVisible = this.props.currentPanel === ViewConstants.PANEL_FIELD_SETTINGS;
+
+        if (!isPanelVisible) {
+            return null;
+        }
+
+        // Update the current field settings values
+        this.settingsValues = this.props.extraArgs['pointer']['field']['gv_settings'];
+
+        return React.createElement(
+            Panel,
+            { isVisible: isPanelVisible, returnPanel: this.props.returnPanel, title: gravityview_i18n.panel_config_field_title },
+            React.createElement(
+                'div',
+                { className: 'gv-panel__forms' },
+                this.renderSettings()
+            )
+        );
+    }
+
+});
+
+module.exports = ConfigureFieldPanel;
+
+},{"../../../actions/view-actions.js":1,"../../../api/view-common.js":4,"../../../constants/view-constants.js":32,"../inputs/input-checkbox.jsx":14,"../inputs/input-hidden.jsx":15,"../inputs/input-number.jsx":16,"../inputs/input-radio.jsx":17,"../inputs/input-select.jsx":18,"../inputs/input-text.jsx":19,"../inputs/input-textarea.jsx":20,"./panel.jsx":28,"react":203}],26:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -3644,7 +3878,7 @@ var SettingsSubPanel = React.createClass({
                 inputField = React.createElement(InputTextarea, { args: item, values: this.props.settingsValues, handleChange: this.handleChange });
                 break;
         }
-        //todo: change class name (li)
+
         return React.createElement(
             'fieldset',
             { key: item.id, id: item.id },
@@ -3803,9 +4037,8 @@ module.exports = keyMirror({
 
     UPDATE_FIELDS_SECTIONS: null,
     UPDATE_FIELDS_LIST: null,
-    UPDATE_FIELD_SETTINGS: null
-
-});
+    UPDATE_FIELD_SETTINGS: null });
+// update the gv_settings object when adding a new field or changing the field setting
 
 },{"keymirror":42}],33:[function(require,module,exports){
 'use strict';

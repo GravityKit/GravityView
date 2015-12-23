@@ -2,7 +2,7 @@ var ViewDispatcher = require('../dispatcher/view-dispatcher');
 var ViewConstants = require('../constants/view-constants');
 var ViewApi = require('../api/view-api.js');
 
-var ViewActions = {
+module.exports = {
 
     /* -- Panel actions -- */
 
@@ -134,14 +134,24 @@ var ViewActions = {
     },
 
 
+    /** Fields handling */
+
+    fetchFieldsSections: function( forms, templates ) {
+        ViewApi.getFieldsSections( forms, templates );
+    },
+
+    fetchFieldsList: function( forms ) {
+        ViewApi.getFieldsList( forms );
+    },
+
     /**
      * Trigger the Add Field to the Layout
      * @param args Object Field arguments: Context, Row, Col, Field (id, field_id, field_type, form_id, field_label)
      */
     addField: function( args ) {
 
-        // fetch the field settings ('gv_settings')
-        ViewApi.getFieldSettings( args );
+        // fetch the field settings values ('gv_settings')
+        ViewApi.getFieldSettingsValues( args );
 
         // add the field without 'gv_settings' while loading the settings
         ViewDispatcher.dispatch({
@@ -163,15 +173,27 @@ var ViewActions = {
         });
     },
 
-    fetchFieldsSections: function( forms, templates ) {
-        ViewApi.getFieldsSections( forms, templates );
+    /**
+     * Trigger the field settings edit process (fetch field settings, and open the field settings panel)
+     * @param args Object Field arguments ( context, row, col, field [id, field_id, form_id, field_type, gv_settings] )
+     */
+    editFieldSettings: function( args ) {
+        ViewApi.getFieldSettings( args );
     },
 
-    fetchFieldsList: function( forms ) {
-        ViewApi.getFieldsList( forms );
-    },
 
+    updateFieldSetting: function( args, newSettings ) {
 
+        var newValues = {
+            pointer: args,
+            settings: newSettings
+        };
+
+        ViewDispatcher.dispatch({
+            actionType: ViewConstants.UPDATE_FIELD_SETTINGS,
+            values: newValues
+        });
+    }
 
 
 
@@ -179,4 +201,3 @@ var ViewActions = {
 
 };
 
-module.exports = ViewActions;
