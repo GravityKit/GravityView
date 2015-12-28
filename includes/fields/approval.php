@@ -63,18 +63,28 @@ class GravityView_Field_Approval extends GravityView_Field {
 	 */
 	function register_scripts_and_styles() {
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
 		wp_register_script( 'gravityview-field-approval', GRAVITYVIEW_URL . 'assets/js/field-approval'.$script_debug.'.js', array( 'jquery' ), GravityView_Plugin::version, true );
+
+		/**
+		 * Override CSS file by placing in your theme's /gravityview/css/ sub-directory.
+		 */
+		$style_path = GravityView_View::getInstance()->locate_template( 'css/field-approval.css', false );
+
+		$style_url = plugins_url( 'css/field-approval.css', trailingslashit( dirname( $style_path ) )  );
 
 		/**
 		 * @filter `gravityview/field/approval/css_url` URL to the Approval field CSS file.
 		 * @since TODO
 		 * @param string $style_path Override to use your own CSS file, or return empty string to disable loading.
 		 */
-		$style_path = apply_filters( 'gravityview/field/approval/css_url', GRAVITYVIEW_URL . 'assets/css/field-approval.css' );
+		$style_path = apply_filters( 'gravityview/field/approval/css_url', $style_url );
 
 		if( ! empty( $style_path ) ) {
 			wp_register_style( 'gravityview-field-approval', $style_path, array( 'dashicons' ), GravityView_Plugin::version, 'screen' );
 		}
+
+		unset( $style_path, $style_url );
 	}
 
 	/**
