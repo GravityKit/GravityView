@@ -555,6 +555,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 			$entry = $this->_current_entry;
 		}
 
+		/** @since TODO Fixes DataTables empty entry issue */
 		if ( empty( $entry ) && ! empty( $this->_current_field['entry'] ) ) {
 			$entry = $this->_current_field['entry'];
 		}
