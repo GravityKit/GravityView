@@ -9,7 +9,7 @@ DB_NAME=$1
 DB_USER=$2
 DB_PASS=$3
 DB_HOST=${4-localhost}
-WP_VERSION=${5-nightly}
+WP_VERSION=${5-latest}
 
 WP_TESTS_DIR="${PWD}/tmp/wordpress-tests-lib"
 WP_CORE_DIR="${PWD}/tmp/wordpress/"
@@ -19,7 +19,7 @@ set -ex
 install_wp() {
 	mkdir -p $WP_CORE_DIR
 
-	if [ $WP_VERSION == 'nightly' ]; then
+	if [ $WP_VERSION == 'latest' ]; then
 		local ARCHIVE_NAME="master"
 	else
 		local ARCHIVE_NAME="$WP_VERSION"
