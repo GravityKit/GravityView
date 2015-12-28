@@ -67,6 +67,13 @@
 	 */
 	self.add_toggle_approval_trigger = function() {
 		$( self.selector ).on( 'click', function( e ) {
+			if( $( e.target ).hasClass( self.css_classes.loading ) ) {
+				e.preventDefault();
+				if( self.debug ) {
+					console.log( 'add_toggle_approval_trigger', 'Cannot toggle approval while approval is pending.' );
+				}
+				return false;
+			}
 			self.toggle_approval( e );
 		});
 	};
