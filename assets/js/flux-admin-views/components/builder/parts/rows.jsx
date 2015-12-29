@@ -1,5 +1,6 @@
 var React = require('react');
 var RowControls = require('./row-controls.jsx');
+var RowColumn = require('./row-column.jsx');
 
 var ViewConstants = require('../../../constants/view-constants');
 var ViewActions = require('../../../actions/view-actions.js');
@@ -53,47 +54,26 @@ var Rows = React.createClass({
         ViewActions.removeField( fieldArgs );
     },
 
-    renderAddLabel: function() {
-        if( this.props.type === 'widget' ) {
-            return gravityview_i18n.widgets_add;
-        }
-        return gravityview_i18n.fields_add;
-    },
-
-    renderFields: function( field, i ) {
-
-        var label = field['gv_settings']['custom_label'] || field['gv_settings']['label'],
-            dataField = JSON.stringify(field);
-
-        return(
-            <div key={field.id} className="gv-view-field" id={field.id} data-field={dataField}>
-                <a onClick={this.handleFieldSettings} title={gravityview_i18n.field_settings} className="gv-view-field__settings" data-icon="&#xe009;"><span className="gv-screen-reader-text">{gravityview_i18n.field_settings}</span></a>
-                <span className="gv-view-field__description">{label}</span>
-                <a onClick={this.handleFieldRemove} title={gravityview_i18n.field_remove} className="gv-view-field__remove" data-icon="&#xe006;"><span className="gv-screen-reader-text">{gravityview_i18n.field_remove}</span></a>
-            </div>
-        );
-    },
-
     renderColumn: function( column , i ) {
 
-        var areaClass = 'gv-grid__col-' + column.colspan,
-            fields = null;
-
-        if( column.fields ) {
-            fields = column.fields.map( this.renderFields, this );
-        }
-
         return(
-            <div key={i} className={areaClass} >
-                <div className="gv-grid__droppable-area" data-column={i}>
-                    {fields}
-                    <a onClick={this.handleFieldAdd} title={this.renderAddLabel()}>+ {this.renderAddLabel()}</a>
-                </div>
-            </div>
+            <RowColumn
+                key={i}
+                type={this.props.type}
+                data={column}
+                colId={i}
+                onClickAddItem={this.handleFieldAdd}
+                onClickItemSettings={this.handleFieldSettings}
+                onClickItemRemove={this.handleFieldRemove}
+            />
         );
     },
 
     renderRow: function( row, i ) {
+
+        if( row['columns'].length <= 0 ) {
+            return null;
+        }
 
         var areas = row['columns'].map( this.renderColumn, this );
 
@@ -112,7 +92,7 @@ var Rows = React.createClass({
 
     render: function() {
 
-        if ( !this.props.data ) {
+        if ( !this.props.data || this.props.data.length <= 0 ) {
             return null;
         }
 
