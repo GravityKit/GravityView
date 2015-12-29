@@ -29,6 +29,8 @@
     "keymirror": "^0.1.1",
     "react-dom": "^0.14.2",
     "react": "^0.14.2",
-    "react-tooltip": "^0.8.5"
+    "react-tooltip": "^0.8.5",
+    "react-dnd-html5-backend": "^2.0.2",
+    "react-dnd": "^2.0.2"
   }
 }
