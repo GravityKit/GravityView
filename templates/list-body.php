@@ -49,7 +49,7 @@ if( ! $this->getTotalEntries() ) {
 
 		?>
 
-		<?php if ( $this->getField('directory_list-title') || $this->getField('directory_list-subtitle') ): ?>
+		<?php if ( $this->getField('directory_list-title') || $this->getField('directory_list-subtitle') ) { ?>
 
 			<?php
 
@@ -106,7 +106,7 @@ if( ! $this->getTotalEntries() ) {
 
 			?>
 
-		<?php endif; ?>
+		<?php } ?>
 
 		<div class="gv-grid gv-list-view-content">
 

@@ -225,7 +225,7 @@ class GV_License_Handler {
 
 			if( ! empty( $license_data->error ) ) {
 				$class = 'error';
-				$string_key = $license_data->error;
+				$string_key = $license_data->license;
 			} else {
 				$class = $license_data->license;
 				$string_key = $license_data->license;

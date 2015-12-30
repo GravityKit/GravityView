@@ -10,60 +10,64 @@
  * @since 1.0.0
  */
 
-.gv-approve-column {
-	text-align: center !important;
+#lead_form {
+
+	.gv-approve-column {
+		width: 40px;
+		text-align: center;
+	}
+
+	// Center the star - looks better when we widen the approval column
+	th.check-column:nth-child(2) {
+		text-align: center;
+	}
+
+	// Floaty's got a kinda big head. Change 8px top/bottom to better balanced
+	thead th.gv-approve-column {
+		padding-top: 12px;
+		padding-bottom: 4px;
+	}
+
+	// Add Floaty's head
+	th.gv-approve-column a:before {
+		padding: 0;
+		margin: 0;
+		content: "a";
+		display: inline-block;
+		-webkit-font-smoothing: antialiased;
+		font: normal 22px/1 'gravityview';
+		vertical-align: top;
+		color: #555;
+	}
+
+	.toggleApproved {
+		padding: 0;
+		margin: 0;
+		display: inline-block;
+	}
+
+	.loading {
+		cursor: wait;
+	}
+
+	// X icon
+	.toggleApproved:before {
+		padding: 0;
+		margin: 0;
+		content: "\f158";
+		color: #940303;
+		display: inline-block;
+		-webkit-font-smoothing: antialiased;
+		font: normal 20px/1 'dashicons';
+		vertical-align: top;
+	}
+
+	// Tick mark icon
+	.toggleApproved.entry_approved:before {
+		content: "\f147";
+		color: #00ac15;
+		font-size: 26px;
+		text-indent: -4px;
+	}
+
 }
-
-.widefat tr th.gv-approve-column {
-	padding-top: 6px; /* Reduce the padding from 10 to 8 to account for the astronaut's head */
-}
-
-th.gv-approve-column a:before {
-	padding: 0;
-	margin:0;
-	content: "a";
-	display: inline-block;
-	-webkit-font-smoothing: antialiased;
-	font: normal 22px/1 'gravityview';
-	vertical-align: top;
-	color: #555;
-}
-
-
-.toggleApproved {
-	padding: 0;
-	margin:0;
-	display: inline-block;
-}
-
-.loading {
-	cursor: wait;
-}
-
-.toggleApproved:before {
-	padding: 0;
-	margin:0;
-	content: "\f158";
-	color: #940303;
-	display: inline-block;
-	-webkit-font-smoothing: antialiased;
-	font: normal 20px/1 'dashicons';
-	vertical-align: top;
-}
-
-.toggleApproved.entry_approved:before {
-	content: "\f147";
-	color: #00ac15;
-	font-size: 26px;
-	text-indent: -4px;
-}
-
-
-
-
-
-
-
-
-
-

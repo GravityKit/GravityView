@@ -458,11 +458,9 @@ class GravityView_View extends Gamajo_Template_Loader {
 		$last = ( $offset + $page_size > $total ) ? $total : $offset + $page_size;
 
 		/**
-		 * Modify the displayed pagination numbers
-		 *
-		 * @param array $counts Array with $first, $last, $total
-		 *
-		 * @var array array with $first, $last, $total numbers in that order.
+		 * @filter `gravityview_pagination_counts` Modify the displayed pagination numbers
+		 * @since 1.13
+		 * @param array $counts Array with $first, $last, $total numbers in that order
 		 */
 		list( $first, $last, $total ) = apply_filters( 'gravityview_pagination_counts', array( $first, $last, $total ) );
 
@@ -552,10 +550,17 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		if( in_array( $this->getContext(), array( 'edit', 'single') ) ) {
 			$entries = $this->getEntries();
-			return $entries[0];
+			$entry = $entries[0];
+		} else {
+			$entry = $this->_current_entry;
 		}
 
-		return $this->_current_entry;
+		/** @since TODO Fixes DataTables empty entry issue */
+		if ( empty( $entry ) && ! empty( $this->_current_field['entry'] ) ) {
+			$entry = $this->_current_field['entry'];
+		}
+
+		return $entry;
 	}
 
 	/**
@@ -669,7 +674,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		} else {
 
-			// Set $load to always falso so we handle it here.
+			// Set $load to always false so we handle it here.
 			$located = parent::locate_template( $template_names, false, $require_once );
 
 			if( is_string( $template_names ) ) {
@@ -709,8 +714,10 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 *
 	 * @see  Gamajo_Template_Loader::get_template_file_names() Where the filter is
 	 * @param array $templates Existing list of templates.
-	 * @param [type] $slug      [description]
-	 * @param [type] $name      [description]
+	 * @param string $slug      Name of the template base, example: `table`, `list`, `datatables`, `map`
+	 * @param string $name      Name of the template part, example: `body`, `footer`, `head`, `single`
+	 *
+	 * @return array $templates Modified template array, merged with existing $templates values
 	 */
 	function add_id_specific_templates( $templates, $slug, $name ) {
 

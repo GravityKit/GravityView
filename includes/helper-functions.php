@@ -333,3 +333,80 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 
 	return empty( $value );
 }
+
+/**
+ * Check whether a string is a expected date format
+ *
+ * @since 1.15.2
+ *
+ * @param string $datetime The date to check
+ * @param string $expected_format Check whether the date is formatted as expected. Default: Y-m-d
+ *
+ * @return bool True: it's a valid datetime, formatted as expected. False: it's not a date formatted as expected.
+ */
+function gravityview_is_valid_datetime( $datetime, $expected_format = 'Y-m-d' ) {
+
+	/**
+	 * @var bool|DateTime False if not a valid date, (like a relative date). DateTime if a date was created.
+	 */
+	$formatted_date = DateTime::createFromFormat( $expected_format, $datetime );
+
+	/**
+	 * @see http://stackoverflow.com/a/19271434/480856
+	 */
+	return ( $formatted_date && $formatted_date->format( $expected_format ) === $datetime );
+}
+
+/**
+ * Get categories formatted in a way used by GravityView and Gravity Forms input choices
+ *
+ * @since 1.15.3
+ *
+ * @see get_terms()
+ *
+ * @param array $args Arguments array as used by the get_terms() function. Filtered using `gravityview_get_terms_choices_args` filter. Defaults: { \n
+ *   @type string $taxonomy Used as first argument in get_terms(). Default: "category"
+ *   @type string $fields Default: 'id=>name' to only fetch term ID and Name \n
+ *   @type int $number  Limit the total number of terms to fetch. Default: 1000 \n
+ * }
+ *
+ * @return array Multidimensional array with `text` (Category Name) and `value` (Category ID) keys.
+ */
+function gravityview_get_terms_choices( $args = array() ) {
+
+	$defaults = array(
+		'type'         => 'post',
+		'child_of'     => 0,
+		'number'       => 1000, // Set a reasonable max limit
+		'orderby'      => 'name',
+		'order'        => 'ASC',
+		'hide_empty'   => 0,
+		'hierarchical' => 1,
+		'taxonomy'     => 'category',
+		'fields'       => 'id=>name',
+	);
+
+	$args = wp_parse_args( $args, $defaults );
+
+	/**
+	 * @filter `gravityview_get_terms_choices_args` Modify the arguments passed to `get_terms()`
+	 * @see get_terms()
+	 * @since 1.15.3
+	 */
+	$args = apply_filters( 'gravityview_get_terms_choices_args', $args );
+
+	$terms = get_terms( $args['taxonomy'], $args );
+
+	$choices = array();
+
+	if ( is_array( $terms ) ) {
+		foreach ( $terms as $term_id => $term_name ) {
+			$choices[] = array(
+				'text'  => $term_name,
+				'value' => $term_id
+			);
+		}
+	}
+
+	return $choices;
+}

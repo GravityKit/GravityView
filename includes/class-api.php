@@ -11,8 +11,6 @@
  * @since 1.0.0
  */
 
-
-
 class GravityView_API {
 
 	/**
@@ -110,7 +108,7 @@ class GravityView_API {
 	 *
 	 * @since 1.9
 	 *
-	 * @param array $field_setting Array of settings for the field
+	 * @param array $field Array of settings for the field
 	 * @param string $format Format for width. "%" (default) will return
 	 *
 	 * @return string|null If not empty, string in $format format. Otherwise, null.
@@ -121,7 +119,13 @@ class GravityView_API {
 
 		if( !empty( $field['width'] ) ) {
 			$width = absint( $field['width'] );
-			$width = $width > 100 ? 100 : sprintf( $format, $width );
+
+			// If using percentages, limit to 100%
+			if( '%d%%' === $format && $width > 100 ) {
+				$width = 100;
+			}
+
+			$width = sprintf( $format, $width );
 		}
 
 		return $width;
@@ -213,7 +217,7 @@ class GravityView_API {
 	 * @param integer $field
 	 * @return null|string
 	 */
-	public static function field_value( $entry, $field_settings, $format = 'html') {
+	public static function field_value( $entry, $field_settings, $format = 'html' ) {
 
 		if( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
 			return NULL;
@@ -275,7 +279,7 @@ class GravityView_API {
 
 		// Check whether the field exists in /includes/fields/{$field_type}.php
 		// This can be overridden by user template files.
-		$field_exists = $gravityview_view->locate_template("fields/{$field_type}.php");
+		$field_path = $gravityview_view->locate_template("fields/{$field_type}.php");
 
 		// Set the field data to be available in the templates
 		$gravityview_view->setCurrentField( array(
@@ -290,13 +294,13 @@ class GravityView_API {
 			'field_type' => $field_type, /** {@since 1.6} **/
 		));
 
-		if( $field_exists ) {
+		if( ! empty( $field_path ) ) {
 
-			do_action( 'gravityview_log_debug', sprintf('[field_value] Rendering %s', $field_exists ) );
+			do_action( 'gravityview_log_debug', sprintf('[field_value] Rendering %s', $field_path ) );
 
 			ob_start();
 
-			load_template( $field_exists, false );
+			load_template( $field_path, false );
 
 			$output = ob_get_clean();
 
@@ -317,7 +321,9 @@ class GravityView_API {
 		 */
 		if( !empty( $field_settings['show_as_link'] ) ) {
 
-			$output = self::entry_link_html( $entry, $output, array(), $field_settings );
+			$link_atts = empty( $field_settings['new_window'] ) ? array() : array( 'target' => '_blank' );
+
+			$output = self::entry_link_html( $entry, $output, $link_atts, $field_settings );
 
 		}
 
@@ -439,14 +445,14 @@ class GravityView_API {
 				} else {
 
 					// This is a GravityView post type
-					if( GravityView_frontend::getInstance()->is_gravityview_post_type ) {
+					if( GravityView_frontend::getInstance()->isGravityviewPostType() ) {
 
 						$post_id = isset( $gravityview_view ) ? $gravityview_view->getViewId() : $post->ID;
 
 					} else {
 
 						// This is an embedded GravityView; use the embedded post's ID as the base.
-						if( GravityView_frontend::getInstance()->post_has_shortcode && is_a( $post, 'WP_Post' ) ) {
+						if( GravityView_frontend::getInstance()->isPostHasShortcode() && is_a( $post, 'WP_Post' ) ) {
 
 							$post_id = $post->ID;
 
@@ -1012,9 +1018,10 @@ function gravityview_get_context() {
  * @return array           Array of file output, with `file_path` and `html` keys (see comments above)
  */
 function gravityview_get_files_array( $value, $gv_class = '' ) {
+	/** @define "GRAVITYVIEW_DIR" "../" */
 
 	if( !class_exists( 'GravityView_Field' ) ) {
-		include_once( GRAVITYVIEW_DIR .'includes/fields/class.field.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/fields/class-gravityview-field.php' );
 	}
 
 	if( !class_exists( 'GravityView_Field_FileUpload' ) ) {
@@ -1104,7 +1111,7 @@ function gravityview_field_output( $passed_args ) {
 	$entry = empty( $args['entry'] ) ? array() : $args['entry'];
 
 	/**
-	 * Create the Context for replacing.
+	 * Create the content variables for replacing.
 	 * @since 1.11
 	 */
 	$context = array(

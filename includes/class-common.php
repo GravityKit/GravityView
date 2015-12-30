@@ -30,12 +30,13 @@ class GVCommon {
 			return false;
 		}
 
-		if ( class_exists( 'GFAPI' ) ) {
-			return GFAPI::get_form( $form_id );
+		// Only get_form_meta is cached. ::facepalm::
+		if ( class_exists( 'RGFormsModel' ) ) {
+			return GFFormsModel::get_form_meta( $form_id );
 		}
 
-		if ( class_exists( 'RGFormsModel' ) ) {
-			return RGFormsModel::get_form( $form_id );
+		if ( class_exists( 'GFAPI' ) ) {
+			return GFAPI::get_form( $form_id );
 		}
 
 		return false;
@@ -163,18 +164,20 @@ class GVCommon {
 	 *
 	 * @access public
 	 * @param mixed $form_id
-	 * @return array (id, title)
+	 * @return array Empty array if GFAPI isn't available or no forms. Otherwise, associative array with id, title keys
 	 */
 	public static function get_forms() {
-		if ( class_exists( 'RGFormsModel' ) ) {
-			$gf_forms = RGFormsModel::get_forms( null, 'title' );
-			$forms = array();
+		$forms = array();
+		if ( class_exists( 'GFAPI' ) ) {
+			$gf_forms = GFAPI::get_forms();
 			foreach ( $gf_forms as $form ) {
-				$forms[] = array( 'id' => $form->id, 'title' => $form->title );
+				$forms[] = array(
+					'id' => $form['id'],
+					'title' => $form['title'],
+				);
 			}
-			return $forms;
 		}
-		return false;
+		return $forms;
 	}
 
 	/**
@@ -463,7 +466,7 @@ class GVCommon {
 
 
 		// When multiple views are embedded, OR single entry, calculate the context view id and send it to the advanced filter
-		if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() || GravityView_frontend::getInstance()->single_entry ) {
+		if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() || GravityView_frontend::getInstance()->getSingleEntry() ) {
 			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
 		} elseif ( 'delete' === RGForms::get( 'action' ) ) {
 			$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? $_GET['view_id'] : null;
@@ -800,11 +803,11 @@ class GVCommon {
 	 * Retrieve the label of a given field id (for a specific form)
 	 *
 	 * @access public
-	 * @param mixed $form
-	 * @param mixed $field_id
+	 * @param array $form
+	 * @param string $field_id
 	 * @return string
 	 */
-	public static function get_field_label( $form, $field_id ) {
+	public static function get_field_label( $form = array(), $field_id = '' ) {
 
 		if ( empty( $form ) || empty( $field_id ) ) {
 			return '';
@@ -819,9 +822,13 @@ class GVCommon {
 	/**
 	 * Returns the field details array of a specific form given the field id
 	 *
+	 * Alias of GFFormsModel::get_field
+	 *
+	 * @uses GFFormsModel::get_field
+	 * @see GFFormsModel::get_field
 	 * @access public
-	 * @param mixed $form
-	 * @param mixed $field_id
+	 * @param array $form
+	 * @param string|int $field_id
 	 * @return array|null Array: Gravity Forms field array; NULL: Gravity Forms GFFormsModel does not exist
 	 */
 	public static function get_field( $form, $field_id ) {
@@ -896,27 +903,54 @@ class GVCommon {
 
 	/**
 	 * Get the views for a particular form
+	 *
+	 * @since 1.15.2 Add $args array and limit posts_per_page to 500
+	 *
+	 * @uses get_posts()
+	 *
 	 * @param  int $form_id Gravity Forms form ID
-	 * @return array          Array with view details
+	 * @param  array $args Pass args sent to get_posts()
+	 *
+	 * @return array          Array with view details, as returned by get_posts()
 	 */
-	public static function get_connected_views( $form_id ) {
+	public static function get_connected_views( $form_id, $args = array() ) {
 
-		$views = get_posts(array(
+		$defaults = array(
 			'post_type' => 'gravityview',
-			'posts_per_page' => -1,
+			'posts_per_page' => 100,
 			'meta_key' => '_gravityview_form_id',
 			'meta_value' => (int)$form_id,
-		));
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		$views = get_posts( $args );
 
 		return $views;
 	}
 
-	public static function get_meta_form_id( $post_id ) {
-		return get_post_meta( $post_id, '_gravityview_form_id', true );
+	/**
+	 * Get the Gravity Forms form ID connected to a View
+	 *
+	 * @param int $view_id The ID of the View to get the connected form of
+	 *
+	 * @return string ID of the connected Form, if exists. Empty string if not.
+	 */
+	public static function get_meta_form_id( $view_id ) {
+		return get_post_meta( $view_id, '_gravityview_form_id', true );
 	}
 
-	public static function get_meta_template_id( $post_id ) {
-		return get_post_meta( $post_id, '_gravityview_directory_template', true );
+	/**
+	 * Get the template ID (`list`, `table`, `datatables`, `map`) for a View
+	 *
+	 * @see GravityView_Template::template_id
+	 *
+	 * @param int $view_id The ID of the View to get the layout of
+	 *
+	 * @return string GravityView_Template::template_id value. Empty string if not.
+	 */
+	public static function get_meta_template_id( $view_id ) {
+		return get_post_meta( $view_id, '_gravityview_directory_template', true );
 	}
 
 
@@ -953,6 +987,7 @@ class GVCommon {
 	 * @return mixed|null          Setting value, or NULL if not set.
 	 */
 	public static function get_template_setting( $post_id, $key ) {
+
 		$settings = self::get_template_settings( $post_id );
 
 		if ( isset( $settings[ $key ] ) ) {
@@ -1104,6 +1139,7 @@ class GVCommon {
 
 		/**
 		 * @filter `gravityview/common/numeric_types` What types of fields are numeric?
+		 * @since 1.5.2
 		 * @param array $numeric_types Fields that are numeric. Default: `[ number, time ]`
 		 */
 		$numeric_types = apply_filters( 'gravityview/common/numeric_types', array( 'number', 'time' ) );
@@ -1207,7 +1243,7 @@ class GVCommon {
 	 *
 	 * @param string $href URL of the link. Sanitized using `esc_url_raw()`
 	 * @param string $anchor_text The text or HTML inside the anchor. This is not sanitized in the function.
-	 * @param array $atts Attributes to be added to the anchor tag. They are sanitized using `esc_attr()`
+	 * @param array|string $atts Attributes to be added to the anchor tag. Parsed by `wp_parse_args()`, sanitized using `esc_attr()`
 	 *
 	 * @return string HTML output of anchor link. If empty $href, returns NULL
 	 */
@@ -1343,7 +1379,7 @@ class GVCommon {
      * @return string
      */
     public static function generate_notice( $notice, $class = '' ) {
-        return '<div class="gv-notice '.esc_attr( $class ) .'">'. $notice .'</div>';
+        return '<div class="gv-notice '.gravityview_sanitize_html_class( $class ) .'">'. $notice .'</div>';
     }
 
 
@@ -1361,7 +1397,7 @@ class GVCommon {
  *
  * @param string $href URL of the link.
  * @param string $anchor_text The text or HTML inside the anchor. This is not sanitized in the function.
- * @param array $atts Attributes to be added to the anchor tag
+ * @param array|string $atts Attributes to be added to the anchor tag
  *
  * @return string HTML output of anchor link. If empty $href, returns NULL
  */

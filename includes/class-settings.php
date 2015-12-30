@@ -179,8 +179,8 @@ class GravityView_Settings extends GFAddOn {
 	 */
 	function license_key_notice() {
 
-		// Show license notice on all GV pages, except for settings page
-		if( gravityview_is_admin_page( '', 'settings' ) ) {
+		// Only show on GravityView pages
+		if( ! gravityview_is_admin_page() ) {
 			return;
 		}
 
@@ -189,8 +189,16 @@ class GravityView_Settings extends GFAddOn {
 		$license_id = empty( $license_id ) ? 'license' : $license_id;
 
 		$message = esc_html__('Your GravityView license %s. This means you&rsquo;re missing out on updates and support! %sActivate your license%s or %sget a license here%s.', 'gravityview');
+
+		/**
+		 * I wanted to remove the period from after the buttons in the string,
+		 * but didn't want to mess up the translation strings for the translators.
+		 */
+		$message = mb_substr( $message, 0, mb_strlen( $message ) - 1 );
 		$title = __('Inactive License', 'gravityview');
 		$status = '';
+		$update_below = false;
+		$primary_button_link = admin_url( 'edit.php?post_type=gravityview&amp;page=gravityview_settings' );
 		switch ( $license_status ) {
 			case 'invalid':
 				$title = __('Invalid License', 'gravityview');
@@ -198,6 +206,7 @@ class GravityView_Settings extends GFAddOn {
 				break;
 			case 'deactivated':
 				$status = __('is inactive', 'gravityview');
+				$update_below = __('Activate your license key below.', 'gravityview');
 				break;
 			/** @noinspection PhpMissingBreakStatementInspection */
 			case '':
@@ -205,15 +214,24 @@ class GravityView_Settings extends GFAddOn {
 				// break intentionally left blank
 			case 'site_inactive':
 				$status = __('has not been activated', 'gravityview');
+				$update_below = __('Activate your license key below.', 'gravityview');
 				break;
 		}
 		$url = 'https://gravityview.co/pricing/?utm_source=admin_notice&utm_medium=admin&utm_content='.$license_status.'&utm_campaign=Admin%20Notice';
-		$message = sprintf( $message, $status, "\n\n".'<a href="'.admin_url( 'edit.php?post_type=gravityview&amp;page=gravityview_settings' ).'" class="button button-primary">', '</a>', '<a href="'.esc_url( $url ).'" class="button button-secondary">', '</a>' );
+
+		// Show a different notice on settings page for inactive licenses (hide the buttons)
+		if( $update_below && gravityview_is_admin_page( '', 'settings' ) ) {
+			$message = sprintf( $message, $status, '<div class="hidden">', '', '', '</div><a href="#" onclick="jQuery(\'#license_key\').focus(); return false;">' . $update_below . '</a>' );
+		} else {
+			$message = sprintf( $message, $status, "\n\n" . '<a href="' . $primary_button_link . '" class="button button-primary">', '</a>', '<a href="' . esc_url( $url ) . '" class="button button-secondary">', '</a>' );
+		}
+
 		if( !empty( $status ) ) {
 			GravityView_Admin_Notices::add_notice( array(
 				'message' => $message,
 				'class'	=> 'updated',
 				'title' => $title,
+				'cap' => 'gravityview_edit_settings',
 				'dismiss' => sha1( $license_status.'_'.$license_id ),
 			));
 		}
@@ -530,9 +548,13 @@ class GravityView_Settings extends GFAddOn {
 
 		$posted_settings = parent::get_posted_settings();
 
+		$local_key = rgar( $posted_settings, 'license_key' );
+		$response_key = rgars( $posted_settings, 'license_key_response/license_key' );
+
 		// If the posted key doesn't match the activated/deactivated key (set using the Activate License button, AJAX response),
 		// then we assume it's changed. If it's changed, unset the status and the previous response.
-		if( isset( $posted_settings['license_key'] ) && isset( $posted_settings['license_key_response']['license_key'] ) && $posted_settings['license_key'] !== $posted_settings['license_key_response']['license_key'] ) {
+		if( $local_key !== $response_key ) {
+
 			unset( $posted_settings['license_key_response'] );
 			unset( $posted_settings['license_key_status'] );
 			GFCommon::add_error_message( __('The license key you entered has been saved, but not activated. Please activate the license.', 'gravityview' ) );

@@ -11,7 +11,10 @@ HS.beacon.config({
 	topArticles: true,
 	icon: 'question',
 	zIndex: 9991,
-	translation: gvSupport.translation
+	translation: gvSupport.translation,
+	docs: {
+		baseUrl: gvSupport.protocol + '://gravityview.helpscoutdocs.com',
+	}
 });
 
 HS.beacon.ready(function() {

@@ -274,6 +274,46 @@ class GravityView_Welcome {
 					</div>
 				</div>
 
+				<h3>1.15.2 on December 3</h3>
+
+				<ul>
+					<li>Fixed: Approval column not being added properly on the Form Entries screen for Gravity Forms 1.9.14.18+</li>
+					<li>Fixed: Select, multi-select, radio, checkbox, and post category field types should use exact match search</li>
+					<li>Fixed: Cannot delete entry notes from Gravity Forms Entry screen</li>
+					<li>Fixed: Date Range search field label not working</li>
+					<li>Fixed: Date Range searches did not include the &quot;End Date&quot; day</li>
+					<li>Fixed: Support Port docs not working on HTTPS sites</li>
+					<li>Fixed: When deleting an entry, only show &quot;Entry Deleted&quot; message for the deleted entry&#39;s View</li>
+					<li>Fixed: &quot;Open link in a new tab or window?&quot; setting for Paragraph Text fields</li>
+					<li>Fixed: Custom Labels not being used as field label in the View Configuration screen
+
+						<ul>
+							<li>Tweak: Custom Labels will be used as the field label, even when the &quot;Show Label&quot; checkbox isn&#39;t checked</li>
+						</ul></li>
+					<li>Tweak: Show available plugin updates, even when license is expired</li>
+					<li>Tweak: Improve spacing of the Approval column on the Entries screen</li>
+					<li>Tweak: Added support for new accessibility labels added in WordPress 4.4</li>
+				</ul>
+
+				<p><strong>Developer Notes:</strong></p>
+
+				<ul>
+					<li>Fixed: Make <code>gravityview/fields/fileupload/link_atts</code> filter available when not using lightbox with File Uploads field</li>
+					<li>Renamed files:
+
+						<ul>
+							<li><code>includes/fields/class.field.php</code> =&gt; <code>includes/fields/class-gravityview-field.php</code></li>
+							<li><code>includes/class-logging.php</code> =&gt; <code>includes/class-gravityview-logging.php</code></li>
+							<li><code>includes/class-image.php</code> =&gt; <code>includes/class-gravityview-image.php</code></li>
+							<li><code>includes/class-migrate.php</code> =&gt; <code>includes/class-gravityview-migrate.php</code></li>
+							<li><code>includes/class-change-entry-creator.php</code> =&gt; <code>includes/class-gravityview-change-entry-creator.php</code></li>
+						</ul></li>
+					<li>New: <code>gravityview/delete-entry/verify_nonce</code> Override Delete Entry nonce validation. Return true to declare nonce valid.</li>
+					<li>New: <code>gravityview/entry_notes/add_note</code> filter to modify GravityView note properties before being added</li>
+					<li>New: <code>gravityview_post_type_supports</code> filter to modify <code>gravityview</code> post type support values</li>
+					<li>New: <code>gravityview_publicly_queryable</code> filter to modify whether Views be accessible using <code>example.com/?post_type=gravityview</code>. Default: Whether the current user has <code>read_private_gravityviews</code> capability (Editor or Administrator by default)</li>
+				</ul>
+
 				<hr />
 
 				<h3>1.15.1 on October 27</h3>

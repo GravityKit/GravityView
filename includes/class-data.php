@@ -166,7 +166,7 @@ class GravityView_View_Data {
 	 *
 	 * @param int|array $view_id View ID or array of View IDs
 	 * @param array|string $atts Combine other attributes (eg. from shortcode) with the view settings (optional)
-	 * @return type
+	 * @return array
 	 */
 	function add_view( $view_id, $atts = NULL ) {
 
