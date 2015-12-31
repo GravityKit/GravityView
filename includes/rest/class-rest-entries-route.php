@@ -41,10 +41,6 @@ class GravityView_REST_Entries_Route extends GravityView_REST_Route {
 	 */
 	public function create_item( $request ) {
 		$params = $request->get_params();
-		//fix for https://github.com/WP-API/WP-API/issues/1621
-		unset( $params[0] );
-		unset( $params[1] );
-
 		$item = $this->prepare_item_for_database( $request );
 		$saved_item_id = true; //@todo GravityView Internal
 
@@ -70,10 +66,6 @@ class GravityView_REST_Entries_Route extends GravityView_REST_Route {
 		$entry_id = $url[ 'id' ];
 
 		$params = $request->get_params();
-		//fix for https://github.com/WP-API/WP-API/issues/1621
-		unset( $params[0] );
-		unset( $params[1] );
-
 		$item = $this->prepare_item_for_database( $request );
 		$saved_item_id = true; //@todo GravityView Internal
 
@@ -101,10 +93,6 @@ class GravityView_REST_Entries_Route extends GravityView_REST_Route {
 		$field_id = $url[ 's_id' ];
 
 		$params = $request->get_params();
-		//fix for https://github.com/WP-API/WP-API/issues/1621
-		unset( $params[0] );
-		unset( $params[1] );
-
 		$item = $this->prepare_item_for_database( $request );
 		$saved_item_id = true; //@todo GravityView Internal
 
