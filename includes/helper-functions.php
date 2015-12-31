@@ -289,6 +289,21 @@ function _gravityview_strip_subdomain( $string_maybe_has_subdomain ) {
 }
 
 /**
+ * The inverse of gv_empty()
+ *
+ * @since TODO
+ *
+ * @param mixed  $value Check whether this is not empty
+ * @param bool $zero_is_empty Should the number zero be treated as an empty value? Default: `false`
+ * @param bool $allow_string_booleans Whether to check if 'yes', 'true' => `true` and 'no', 'false' => `false`. Default: `false`
+ *
+ * @return bool
+ */
+function gv_not_empty( $value, $zero_is_empty = false, $allow_string_booleans = false ) {
+	return ! gv_empty( $value, $zero_is_empty, $allow_string_booleans );
+}
+
+/**
  * Is the value empty?
  *
  * Allows you to pass a function instead of just a variable, like the empty() function insists upon (until PHP 5.5)

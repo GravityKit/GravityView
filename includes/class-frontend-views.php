@@ -918,6 +918,60 @@ class GravityView_frontend {
 	}
 
 
+	/**
+	 * Calculate the entry offset based on the page size and current page number
+	 *
+	 * @since TODO
+	 *
+	 * @param int $page_size Number of entries to show per page
+	 * @param int|null Current page #. If not set, use `$_GET['pagenum']`, if exists. Otherwise, use 1.
+	 *
+	 * @return int Number of entries to offset, based on page number and page size
+	 */
+	public static function calculate_offset( $page_size = 25, $current_page = null ) {
+
+		if( is_null( $current_page ) ) {
+			$current_page = empty( $_GET['pagenum'] ) ? 1 : $_GET['pagenum'];
+		}
+
+		$current_page = absint( $current_page );
+
+		$offset = ( $current_page - 1 ) * $page_size;
+
+		return $offset;
+	}
+
+	/**
+	 * Sanitize and fetch the page size for a View, if not set.
+	 *
+	 * Runs the `gravityview_default_page_size` filter.
+	 *
+	 * @since TODO
+	 *
+	 * @param int|null $page_size Number of entries to show per page, if set
+	 * @param int|null $view_id The ID of the View Post
+	 *
+	 * @return int Number of entries per page
+	 */
+	public static function calculate_page_size( $page_size = NULL, $view_id = NULL ) {
+
+		/**
+		 * @filter `gravityview_default_page_size` Modify the default page size used in GravityView
+		 * @param int $default_page_size Default number of entries shown per page. Use `-1` for all entries. Default: `25`
+		 * @param int $view_id ID of the current View, if set
+		 */
+		$default_page_size = apply_filters( 'gravityview_default_page_size', 25, $view_id );
+
+		$page_size = ! empty( $page_size ) ? $page_size : $default_page_size;
+
+		if ( -1 === $page_size ) {
+			$page_size = PHP_INT_MAX;
+		}
+
+		unset( $default_page_size );
+
+		return intval( $page_size );
+	}
 
 	/**
 	 * Core function to calculate View multi entries (directory) based on a set of arguments ($args):
@@ -929,8 +983,6 @@ class GravityView_frontend {
 	 *   $end_date - Ymd
 	 *   $class - assign a html class to the view
 	 *   $offset (optional) - This is the start point in the current data set (0 index based).
-	 *
-	 *
 	 *
 	 * @uses  gravityview_get_entries()
 	 * @access public
@@ -958,17 +1010,12 @@ class GravityView_frontend {
 		$search_criteria = self::get_search_criteria( $args, $form_id );
 
 		// Paging & offset
-		$page_size = ! empty( $args['page_size'] ) ? intval( $args['page_size'] ) : apply_filters( 'gravityview_default_page_size', 25 );
-
-		if ( -1 === $page_size ) {
-			$page_size = PHP_INT_MAX;
-		}
+		$page_size = self::calculate_page_size( rgar( $args, 'page_size' ), rgar( $args, 'id' ) );
 
 		if ( isset( $args['offset'] ) ) {
 			$offset = intval( $args['offset'] );
 		} else {
-			$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
-			$offset = ( $curr_page - 1 ) * $page_size;
+			$offset = self::calculate_offset( $page_size );
 		}
 
 		$paging = array(

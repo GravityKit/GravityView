@@ -131,9 +131,6 @@ final class GravityView_Plugin {
 		// Load frontend files
 		add_action( 'init', array( $this, 'frontend_actions' ), 20 );
 
-		// Load default templates
-		add_action( 'init', array( $this, 'register_default_templates' ), 11 );
-
 		//boot REST API
 		add_action( 'rest_api_init', array( $this, 'boot_rest' ) );
 
