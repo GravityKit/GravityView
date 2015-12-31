@@ -162,14 +162,16 @@ class GravityView_Merge_Tags {
 	/**
 	 * Add {date_created} merge tag
 	 *
-	 * TODO DOCS
-	 *
 	 * @since TODO
+	 *
+	 * @see http://docs.gravityview.co/article/281-the-createdby-merge-tag for usage information
 	 *
 	 * @param string $text Text to replace
 	 * @param array $form Gravity Forms form array
 	 * @param array $entry Entry array
 	 * @param bool $url_encode Whether to URL-encode output
+	 *
+	 * @return string Original text if {date_created} isn't found. Otherwise, replaced text.
 	 */
 	public static function replace_date_created( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
 
@@ -228,7 +230,7 @@ class GravityView_Merge_Tags {
 
 			$return = str_replace( $full_tag, $formatted_date, $return );
 		}
-
+		
 		return $return;
 	}
 

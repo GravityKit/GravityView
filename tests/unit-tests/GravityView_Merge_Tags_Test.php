@@ -57,11 +57,13 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		$tests = array(
 
 			'{date_created:raw}' => $date_created,
+			'{date_created:raw:timestamp}' => $date_created, // Order defined
 			'{date_created:raw:time}' => $date_created,
 			'{date_created:raw:human}' => $date_created,
 			'{date_created:raw:format:example}' => $date_created,
 
 			'{date_created:timestamp}' => $entry_local_time,
+			'{date_created:timestamp:raw}' => $entry_local_time, // Order defined
 			'{date_created:timestamp:time}' => $entry_local_time,
 			'{date_created:timestamp:human}' => $entry_local_time,
 			'{date_created:timestamp:format:example}' => $entry_local_time,
@@ -79,8 +81,10 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 			'{date_created:diff}' => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
 			'{date_created:diff:format:%s is so long ago}' => sprintf( '%s is so long ago', human_time_diff( $entry_gmt_time ) ),
 
-			// Relative should NOT process :time modifiers
+			// Relative should NOT process other modifiers
 			'{date_created:diff:time}' => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			'{date_created:diff:human}' => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			'{date_created:human:diff}' => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
 
 			'{date_created:format:mdy}' => GFCommon::format_date( $date_created, false, 'mdy', false ),
 			'{date_created:human:format:mdy }' => GFCommon::format_date( $date_created, true, 'mdy', false ),
