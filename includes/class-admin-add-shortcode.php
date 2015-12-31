@@ -51,6 +51,14 @@ class GravityView_Admin_Add_Shortcode {
 	 * @return void
 	 */
 	function add_shortcode_button() {
+
+		/**
+		 * @since 1.15.3
+		 */
+		if( ! GVCommon::has_cap( array( 'publish_gravityviews' ) ) ) {
+			return;
+		}
+
 		if( !$this->is_post_editor_screen() ) {
 			return;
 		}

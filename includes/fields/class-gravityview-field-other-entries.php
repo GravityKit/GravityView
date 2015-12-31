@@ -9,6 +9,18 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 
 	var $name = 'other_entries';
 
+	var $is_searchable = false;
+
+	var $contexts = array( 'multiple', 'single' );
+
+	var $group = 'gravityview';
+
+	public function __construct() {
+		$this->label = esc_attr__( 'Other Entries', 'gravityview' );
+		$this->description = __('Display other entries created by the entry creator.', 'gravityview');
+		parent::__construct();
+	}
+
 	/**
 	 * @inheritDoc
 	 * @since 1.7.2

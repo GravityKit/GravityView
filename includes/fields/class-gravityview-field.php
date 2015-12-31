@@ -20,13 +20,13 @@ abstract class GravityView_Field {
 	var $description;
 
 	/**
-	 * @internal Not yet implemented
 	 * @since 1.15.2
 	 * @type string The label of the field in the field picker
 	 */
 	var $label;
 
 	/**
+	 * `standard`, `advanced`, `post`, `pricing`, `meta`, `gravityview`
 	 * @internal Not yet implemented
 	 * @since 1.15.2
 	 * @type string The group belongs to this field in the field picker
@@ -48,11 +48,10 @@ abstract class GravityView_Field {
 	var $search_operators;
 
 	/**
-	 * @internal Not yet implemented
 	 * @type boolean Can the field be sorted in search?
 	 * @since 1.15.2
 	 */
-	var $is_sortable;
+	var $is_sortable = true;
 
 	/**
 	 * @internal Not yet implemented
@@ -93,9 +92,38 @@ abstract class GravityView_Field {
 
 	function __construct() {
 
+		/**
+		 * If this is a Gravity Forms field, use their labels. Spare our translation team!
+		 */
+		if( ! empty( $this->_gf_field_class_name ) && class_exists( $this->_gf_field_class_name ) ) {
+			/** @var GF_Field $GF_Field */
+			$GF_Field = new $this->_gf_field_class_name;
+			$this->label = $GF_Field->get_form_editor_field_title();
+		}
+
 		// Modify the field options based on the name of the field type
 		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 5 );
 
+		add_filter( 'gravityview/sortable/field_blacklist', array( $this, '_filter_sortable_fields' ), 1 );
+	}
+
+	/**
+	 * Use field settings to modify whether a field is sortable
+	 *
+	 * @see GravityView_frontend::is_field_sortable
+	 * @since 1.15.3
+	 *
+	 * @param array $not_sortable Existing field types that aren't sortable
+	 *
+	 * @return array
+	 */
+	public function _filter_sortable_fields( $not_sortable ) {
+
+		if( ! $this->is_sortable ) {
+			$not_sortable[] = $this->name;
+		}
+
+		return $not_sortable;
 	}
 
 	private function field_support_options() {

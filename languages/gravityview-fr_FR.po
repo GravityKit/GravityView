@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2015-10-27 22:56+0000\n"
+"PO-Revision-Date: 2015-12-03 07:33+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: French (France) (http://www.transifex.com/katzwebservices/gravityview/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -98,12 +98,12 @@ msgid ""
 "you soon."
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:293
-#: includes/admin/class-gravityview-support-port.php:296
+#: includes/admin/class-gravityview-support-port.php:294
+#: includes/admin/class-gravityview-support-port.php:297
 msgid "GravityView Support Port"
 msgstr ""
 
-#: includes/admin/class-gravityview-support-port.php:300
+#: includes/admin/class-gravityview-support-port.php:301
 msgid "Show GravityView Support Port when on a GravityView-related page"
 msgstr ""
 
@@ -180,37 +180,33 @@ msgstr "Modifier cette entrée"
 msgid "Edit"
 msgstr "Modifier"
 
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:70
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:75
 msgid "Choose a View Type"
 msgstr "Choisir un type de Vue"
 
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:73
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:78
 msgid "View Configuration"
 msgstr "Voir configuration"
 
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:78
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:114
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:83
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:119
 #: includes/class-admin-add-shortcode.php:112
 msgid "View Settings"
 msgstr "Voir les paramètres"
 
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:122
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:127
 #: includes/admin/metaboxes/views/view-configuration.php:5
 msgid "Single Entry"
 msgstr "Entrée unique"
 
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:130
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:135
 msgid "Filter &amp; Sort"
 msgstr "Filtrer &amp; Trier"
 
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:177
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:182
 #: includes/class-admin-views.php:412
 msgid "Data Source"
 msgstr "Source des données"
-
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:346
-msgid "Layout Settings"
-msgstr "Paramètres de disposition"
 
 #: includes/admin/metaboxes/views/data-source.php:19
 msgid "Where would you like the data to come from for this View?"
@@ -419,49 +415,49 @@ msgstr "Participer"
 msgid "Yes, display my entry on the website"
 msgstr "Oui, afficher mon entrée sur le site"
 
-#: includes/class-admin-approve-entries.php:226
+#: includes/class-admin-approve-entries.php:227
 msgid "%d entries"
 msgstr "%d entrées"
 
-#: includes/class-admin-approve-entries.php:226
+#: includes/class-admin-approve-entries.php:227
 msgid "1 entry"
 msgstr "1 entrée"
 
-#: includes/class-admin-approve-entries.php:231
+#: includes/class-admin-approve-entries.php:232
 msgid "%s approved."
 msgstr "%s approuvé."
 
-#: includes/class-admin-approve-entries.php:236
+#: includes/class-admin-approve-entries.php:237
 msgid "%s disapproved."
 msgstr "%s désapprouvé."
 
-#: includes/class-admin-approve-entries.php:319
+#: includes/class-admin-approve-entries.php:320
 #: tests/unit-tests/GravityView_Uninstall_Test.php:195 uninstall.php:100
 msgid "Disapproved the Entry for GravityView"
 msgstr "Désapprouver l'entrée pour GravityView"
 
-#: includes/class-admin-approve-entries.php:319
+#: includes/class-admin-approve-entries.php:320
 #: tests/unit-tests/GravityView_Uninstall_Test.php:196 uninstall.php:101
 msgid "Approved the Entry for GravityView"
 msgstr "Approuver l'entrée pour GravityView"
 
-#: includes/class-admin-approve-entries.php:565
+#: includes/class-admin-approve-entries.php:566
 msgid "Approve"
 msgstr "Approuver"
 
-#: includes/class-admin-approve-entries.php:566
+#: includes/class-admin-approve-entries.php:567
 msgid "Disapprove"
 msgstr "Désapprouver"
 
-#: includes/class-admin-approve-entries.php:568
+#: includes/class-admin-approve-entries.php:569
 msgid "Entry not approved for directory viewing. Click to approve this entry."
 msgstr "Entrée non approuvée pour l'affichage sur l'annuaire. Cliquer pour approuver cette entrée."
 
-#: includes/class-admin-approve-entries.php:569
+#: includes/class-admin-approve-entries.php:570
 msgid "Entry approved for directory viewing. Click to disapprove this entry."
 msgstr "Entrée approuvée pour l'affichage sur l'annuaire. Cliquer pour désapprouver cette entrée."
 
-#: includes/class-admin-approve-entries.php:570
+#: includes/class-admin-approve-entries.php:571
 msgid "Show entry in directory view?"
 msgstr "Afficher l'entrée dans la vue de l'annuaire ?"
 
@@ -719,19 +715,19 @@ msgstr "Liste des changements"
 msgid "What&rsquo;s New"
 msgstr "Quoi de neuf"
 
-#: includes/class-admin-welcome.php:582
+#: includes/class-admin-welcome.php:622
 msgid "GravityView is brought to you by:"
 msgstr "GravityView vous est proposé par:"
 
-#: includes/class-admin-welcome.php:607
+#: includes/class-admin-welcome.php:647
 msgid "Contributors"
 msgstr "Contributeurs"
 
-#: includes/class-admin-welcome.php:628
+#: includes/class-admin-welcome.php:668
 msgid "Want to contribute?"
 msgstr "Voulez-vous contribuer ?"
 
-#: includes/class-admin-welcome.php:629
+#: includes/class-admin-welcome.php:669
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -822,38 +818,21 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] "%s Vue restaurée depuis la Corbeille."
 msgstr[1] "%s Vues restaurées depuis la Corbeille."
 
-#: includes/class-api.php:394
+#: includes/class-api.php:400
 msgid "This search returned no results."
 msgstr "Cette recherche n'a trouvé aucun résultat."
 
-#: includes/class-api.php:396
+#: includes/class-api.php:402
 msgid "No entries match your request."
 msgstr "Aucune entrée ne correspond à votre recherche."
 
-#: includes/class-api.php:760
+#: includes/class-api.php:766
 msgid "&larr; Go back"
 msgstr "&larr; Retour en arrière"
 
-#: includes/class-api.php:1045
+#: includes/class-api.php:1052
 msgid "Map It"
 msgstr "Placer sur la carte"
-
-#: includes/class-change-entry-creator.php:67
-#: includes/lib/EDD_SL_Plugin_Updater.php:334
-msgid "Error"
-msgstr "Erreur"
-
-#: includes/class-change-entry-creator.php:69
-msgid "Success"
-msgstr "Succès"
-
-#: includes/class-change-entry-creator.php:190
-msgid "Changed entry creator from %s to %s"
-msgstr "Modifier le créateur de l'entrée de %s vers %s"
-
-#: includes/class-change-entry-creator.php:210
-msgid "Change Entry Creator:"
-msgstr "Modifier le créateur de l'entrée."
 
 #: includes/class-common.php:286
 msgid "Post ID"
@@ -876,7 +855,7 @@ msgid "Payment Method"
 msgstr "Méthode de paiement"
 
 #: includes/class-common.php:314
-#: includes/widgets/search-widget/class-search-widget.php:821
+#: includes/widgets/search-widget/class-search-widget.php:835
 msgid "Is Fulfilled"
 msgstr "Est remplie"
 
@@ -924,196 +903,204 @@ msgid ""
 "in the Quiz Settings."
 msgstr "Affiche la réussite ou l'échec en fonction des paramètres Réussi/Raté configurés dans les paramètres du questionnaire."
 
-#: includes/class-common.php:1006 includes/class-data.php:611
+#: includes/class-common.php:1038 includes/class-data.php:615
 msgid "Default"
 msgstr "Défaut"
 
-#: includes/class-common.php:1049 includes/class-data.php:612
+#: includes/class-common.php:1081 includes/class-data.php:616
 msgid "Date Created"
 msgstr "Date créée"
 
-#: includes/class-common.php:1145
+#: includes/class-common.php:1178
 msgid "Email hidden; Javascript is required."
 msgstr "Email caché; Javascript est requis."
 
-#: includes/class-data.php:454
+#: includes/class-data.php:458
 msgid "The ID is required."
 msgstr "L'ID est requis."
 
-#: includes/class-data.php:462
+#: includes/class-data.php:466
 msgid ""
 "You did not enter a number. The value entered should be a number, "
 "representing the ID of the post or page the View is embedded on."
 msgstr "Vous n'avez pas entré un nombre. La valeur entrée devait être un nombre représentant l'ID de la publication ou de la page sur laquelle View est intégré."
 
-#: includes/class-data.php:465
+#: includes/class-data.php:469
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:352
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:219
 msgid "Learn more&hellip;"
 msgstr "En apprendre plus&hellip;"
 
-#: includes/class-data.php:473
+#: includes/class-data.php:477
 msgid "There is no post or page with that ID."
 msgstr "Il n'y a pas de publication ou de page avec cette ID."
 
-#: includes/class-data.php:483
+#: includes/class-data.php:487
 msgid ""
 "The Post ID entered is not valid. You may have entered a post or page that "
 "does not contain the selected View. Make sure the post contains the "
 "following shortcode: %s"
 msgstr "L'ID de la publication entrée n'est pas valide. Vous avez peut être entré une publication ou une page qui ne contient pas la Vue sélectionnée. Assurez-vous que la publication contienne le shortcode suivant : %s"
 
-#: includes/class-data.php:491
+#: includes/class-data.php:495
 msgid "The ID is already a View."
 msgstr "L'ID est déjà une Vue."
 
-#: includes/class-data.php:542
+#: includes/class-data.php:546
 msgid "View ID"
 msgstr "Voir l'ID"
 
-#: includes/class-data.php:550
+#: includes/class-data.php:554
 msgid "Number of entries per page"
 msgstr "Nombre d'entrées par page"
 
-#: includes/class-data.php:558
+#: includes/class-data.php:562
 msgid "Enable lightbox for images"
 msgstr "Activer la lightbox pour les images"
 
-#: includes/class-data.php:566
+#: includes/class-data.php:570
 msgid "Show only approved entries"
 msgstr "Afficher seulement les entrées approuvées"
 
-#: includes/class-data.php:573
+#: includes/class-data.php:577
 msgid "Hide View data until search is performed"
 msgstr "Cacher les données Vue jusqu'à ce que la recherche soit effectuée"
 
-#: includes/class-data.php:576
+#: includes/class-data.php:580
 msgid ""
 "When enabled it will only show any View entries after a search is performed."
 msgstr "Quand il est activé, il montrera seulement les entrées Vue après que la recherche ait été effectuée."
 
-#: includes/class-data.php:581
+#: includes/class-data.php:585
 msgid "Hide empty fields"
 msgstr "Cacher les champs vides"
 
-#: includes/class-data.php:588
+#: includes/class-data.php:592
 msgid "Allow User Edit"
 msgstr "Autoriser la modification utilisateur"
 
-#: includes/class-data.php:590
+#: includes/class-data.php:594
 msgid "Allow logged-in users to edit entries they created."
 msgstr "Autoriser les utilisateurs connectés à modifier les entrées qu'ils ont créé."
 
-#: includes/class-data.php:592
+#: includes/class-data.php:596
 msgid ""
 "Display \"Edit Entry\" fields to non-administrator users if they created the"
 " entry. Edit Entry fields will always be displayed to site administrators."
 msgstr "Afficher les champs \"Modifier l'entrée\" aux utilisateurs non administrateurs s'ils ont créé eux-même l'entrée. La modification des champs d'entrées sera toujours affichée aux administrateurs du site."
 
-#: includes/class-data.php:597
+#: includes/class-data.php:601
 msgid "Allow User Delete"
 msgstr "Autoriser la suppression d'un utilisateur"
 
-#: includes/class-data.php:599
+#: includes/class-data.php:603
 msgid "Allow logged-in users to delete entries they created."
 msgstr "Autoriser les utilisateurs connectés à supprimer les entrées qu'ils ont créé."
 
-#: includes/class-data.php:601
+#: includes/class-data.php:605
 msgid ""
 "Display \"Delete Entry\" fields to non-administrator users if they created "
 "the entry. Delete Entry fields will always be displayed to site "
 "administrators."
 msgstr "Afficher les champs \"Supprimer l'entrée\" aux utilisateurs non administrateurs s'ils ont eux même créé l'entrée. Les champs de suppression d'entrées seront toujours affichés pour les administrateurs du site.  "
 
-#: includes/class-data.php:606
+#: includes/class-data.php:610
 msgid "Sort by field"
 msgstr "Trier par champ"
 
-#: includes/class-data.php:617
+#: includes/class-data.php:621
 msgid "Sort direction"
 msgstr "Trier la direction"
 
-#: includes/class-data.php:622
+#: includes/class-data.php:626
 msgid "ASC"
 msgstr "Asc"
 
-#: includes/class-data.php:623
+#: includes/class-data.php:627
 msgid "DESC"
 msgstr "Desc"
 
-#: includes/class-data.php:629
+#: includes/class-data.php:633
 msgid "Enable sorting by column"
 msgstr "Activer le tri par colonne"
 
-#: includes/class-data.php:630
+#: includes/class-data.php:634
 msgid "Column Sorting"
 msgstr "Tri des colonnes"
 
-#: includes/class-data.php:639
+#: includes/class-data.php:643
 msgid "Filter by Start Date"
 msgstr "Filtrer par Date de commencement"
 
-#: includes/class-data.php:641
+#: includes/class-data.php:645
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
 msgstr "Montrer les entrées soumises après cette date. Supporte les dates relatives telles que \"-1 semaine\" ou \"-1 mois\"."
 
-#: includes/class-data.php:648
+#: includes/class-data.php:652
 msgid "Filter by End Date"
 msgstr "Filtrer par Date de fin"
 
-#: includes/class-data.php:650
+#: includes/class-data.php:654
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
 msgstr "Montrer les entrées soumises avant cette date. Supporte les dates relatives telles que \"maintenant\" ou \"-3 jours\"."
 
-#: includes/class-data.php:657
+#: includes/class-data.php:661
 msgid "CSS Class"
 msgstr "Classe CSS"
 
-#: includes/class-data.php:658
+#: includes/class-data.php:662
 msgid "CSS class to add to the wrapping HTML container."
 msgstr "Classe CSS à ajouter au conteneur HTML. "
 
-#: includes/class-data.php:665
+#: includes/class-data.php:669
 msgid "Search Value"
 msgstr "Valeur de recherche"
 
-#: includes/class-data.php:666
+#: includes/class-data.php:670
 msgid "Define a default search value for the View"
 msgstr "Définir une valeur de recherche par défaut pour la Vue"
 
-#: includes/class-data.php:673
+#: includes/class-data.php:677
 #: includes/widgets/search-widget/class-search-widget.php:153
 msgid "Search Field"
 msgstr "Champ de recherche"
 
-#: includes/class-data.php:674
+#: includes/class-data.php:678
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
 msgstr "Si la valeur de recherche est configurée, vous pouvez définir un champ de recherche spécifique. Sinon, tous les champs seront cherchés."
 
-#: includes/class-data.php:681
+#: includes/class-data.php:685
 msgid "Single Entry Title"
 msgstr "Titre d'entrée unique"
 
-#: includes/class-data.php:683
+#: includes/class-data.php:687
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and Single"
 " Entry views."
 msgstr "Lorsque vous voyez une seule entrée, changez le titre de la page avec ce paramètre. Sinon, le titre ne changera pas entre les vues des entrées multiples et les vues des entrées simples. "
 
-#: includes/class-data.php:690
+#: includes/class-data.php:694
 msgid "Back Link Label"
 msgstr "Retour à l'étiquette du lien"
 
-#: includes/class-data.php:692
+#: includes/class-data.php:696
 msgid "The text of the link that returns to the multiple entries view."
 msgstr "Le texte du lien qui redirige vers la Vue des entrées multiples."
+
+#: includes/class-data.php:703
+msgid "Prevent Direct Access"
+msgstr ""
+
+#: includes/class-data.php:705
+msgid "Only allow access to this View when embedded using the shortcode."
+msgstr ""
 
 #: includes/class-debug-bar.php:93
 msgid "Warnings"
@@ -1129,13 +1116,17 @@ msgid ""
 "is available."
 msgstr "Quand vous utilisez un modèle Start Fresh, vous devez sauvegarder la Vue avant qu'une Prévisualisation soit disponible."
 
-#: includes/class-frontend-views.php:643
+#: includes/class-frontend-views.php:580
+msgid "You are not allowed to view this content."
+msgstr ""
+
+#: includes/class-frontend-views.php:662
 msgid ""
 "You have attempted to view an entry that is not visible or may not exist."
 msgstr "Vous avez essayé de voir une entrée qui n'est pas visible ou qui peut ne pas exister."
 
 #: includes/class-gravityview-admin-bar.php:95
-#: includes/class-post-types.php:60
+#: includes/class-post-types.php:69
 msgid "Edit View"
 msgstr "Modifier la Vue"
 
@@ -1174,6 +1165,23 @@ msgstr "La création de la copie a échoué, il est impossible de trouver la Vue
 #: includes/class-gravityview-admin-notices.php:201
 msgid "Dismiss"
 msgstr "Rejeter"
+
+#: includes/class-gravityview-change-entry-creator.php:67
+#: includes/lib/EDD_SL_Plugin_Updater.php:332
+msgid "Error"
+msgstr "Erreur"
+
+#: includes/class-gravityview-change-entry-creator.php:69
+msgid "Success"
+msgstr "Succès"
+
+#: includes/class-gravityview-change-entry-creator.php:190
+msgid "Changed entry creator from %s to %s"
+msgstr "Modifier le créateur de l'entrée de %s vers %s"
+
+#: includes/class-gravityview-change-entry-creator.php:210
+msgid "Change Entry Creator:"
+msgstr "Modifier le créateur de l'entrée."
 
 #: includes/class-gravityview-compatibility.php:161
 msgid ""
@@ -1375,50 +1383,62 @@ msgstr "Intégrer l'entrée %d"
 msgid "This entry will be displayed as it is configured in View %d"
 msgstr "Cette entrée sera affichée telle qu'elle est configurée dans View %d"
 
-#: includes/class-post-types.php:55
+#: includes/class-post-types.php:64
 msgid "Parent View:"
 msgstr "Vue parente :"
 
-#: includes/class-post-types.php:56
+#: includes/class-post-types.php:65
 msgid "All Views"
 msgstr "Toutes les vues"
 
-#: includes/class-post-types.php:58
+#: includes/class-post-types.php:67
 msgid "Add New View"
 msgstr "Ajouter une nouvelle Vue"
 
-#: includes/class-post-types.php:59
+#: includes/class-post-types.php:68
 msgid "New View"
 msgstr "Nouvelle Vue"
 
-#: includes/class-post-types.php:61
+#: includes/class-post-types.php:70
 msgid "Update View"
 msgstr "Actualiser la Vue"
 
-#: includes/class-post-types.php:62
+#: includes/class-post-types.php:71
 msgid "Search Views"
 msgstr "Rechercher les Vues"
 
-#: includes/class-post-types.php:64
+#: includes/class-post-types.php:73
 msgid "No Views found in Trash"
 msgstr "Aucune Vue trouvée dans la corbeille"
 
-#: includes/class-post-types.php:67
+#: includes/class-post-types.php:74
+msgid "Filter Views list"
+msgstr ""
+
+#: includes/class-post-types.php:75
+msgid "Views list navigation"
+msgstr ""
+
+#: includes/class-post-types.php:76
+msgid "Views list"
+msgstr ""
+
+#: includes/class-post-types.php:79
 msgid "view"
 msgstr "vue"
 
-#: includes/class-post-types.php:68
+#: includes/class-post-types.php:80
 msgid "Create views based on a Gravity Forms form"
 msgstr "Créer des Vues issues d'un formulaire Gravity Forms"
 
-#: includes/class-post-types.php:151
+#: includes/class-post-types.php:170
 msgid ""
 "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n"
 "\n"
 "If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
 msgstr "%sVous n'avez aucune vue active. Allons en créer une%s!%s\n\nSi vous vous sentez perdu et que vous avez besoin d'aide pour débuter, rendez-vous à la page d'accueil."
 
-#: includes/class-post-types.php:153
+#: includes/class-post-types.php:172
 msgid "There are no active Views"
 msgstr ""
 
@@ -1589,35 +1609,35 @@ msgstr "L'entrée n'existe pas."
 msgid "Moving the entry to the trash failed."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:460
+#: includes/extensions/delete-entry/class-delete-entry.php:470
 msgid "Are you sure you want to delete this entry? This cannot be undone."
 msgstr "Etes-vous sûr de vouloir supprimer cette entrée ? Il n'est pas possible de revenir en arrière."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:487
+#: includes/extensions/delete-entry/class-delete-entry.php:497
 msgid "The link to delete this entry is not valid; it may have expired."
 msgstr "Le lien pour supprimer cette entrée n'est pas valide; il se peut qu'il ait expiré."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:491
+#: includes/extensions/delete-entry/class-delete-entry.php:501
 msgid "You do not have permission to delete this entry."
 msgstr "Vous n'avez pas la permission de supprimer cette entrée."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:496
+#: includes/extensions/delete-entry/class-delete-entry.php:506
 msgid "The entry is already in the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:498
+#: includes/extensions/delete-entry/class-delete-entry.php:508
 msgid "You cannot delete the entry; it is already in the trash."
 msgstr "Vous ne pouvez pas supprimer cette entrée; elle est déjà dans la Corbeille."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:626
+#: includes/extensions/delete-entry/class-delete-entry.php:644
 msgid "There was an error deleting the entry: %s"
 msgstr "Une erreur s'est produite en supprimant l'entrée : %s"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:630
+#: includes/extensions/delete-entry/class-delete-entry.php:648
 msgid "The entry was successfully moved to the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:633
+#: includes/extensions/delete-entry/class-delete-entry.php:651
 msgid "The entry was successfully deleted."
 msgstr "L'entrée a été supprimée avec succès."
 
@@ -1640,7 +1660,7 @@ msgid ""
 msgstr "Changez ce paramètre si vous ne voulez pas que l'utilisateur qui a créé l'entrée puisse modifier ce champ."
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:159
-#: includes/fields/class.field.php:65
+#: includes/fields/class-gravityview-field.php:133
 msgid "Open link in a new tab or window?"
 msgstr "Ouvrir le lien dans un nouvel onglet ou une nouvelle fenêtre ?"
 
@@ -1702,37 +1722,37 @@ msgstr "Montrer le lien de la carte :"
 msgid "Display a \"Map It\" link below the address"
 msgstr "Affiche un lien \"placer sur la carte\" en dessous de l'adresse"
 
-#: includes/fields/class.field.php:37
+#: includes/fields/class-gravityview-field.php:105
 msgid "Link to the post"
 msgstr "Lien vers la publication"
 
-#: includes/fields/class.field.php:38
+#: includes/fields/class-gravityview-field.php:106
 msgid "Link to the post created by the entry."
 msgstr "Lien vers la publication créée par l'entrée."
 
-#: includes/fields/class.field.php:43
+#: includes/fields/class-gravityview-field.php:111
 msgid "Link to the category or tag"
 msgstr "Lien vers la catégorie ou le tag"
 
-#: includes/fields/class.field.php:44
+#: includes/fields/class-gravityview-field.php:112
 msgid ""
 "Link to the current category or tag. \"Link to single entry\" must be "
 "unchecked."
 msgstr "Lien vers la catégorie ou le tag actuel. \"Le lien vers une seule entrée\" doit être non coché."
 
-#: includes/fields/class.field.php:49
+#: includes/fields/class-gravityview-field.php:117
 msgid "Use the live post data"
 msgstr "Utiliser les données en direct de la publication"
 
-#: includes/fields/class.field.php:50
+#: includes/fields/class-gravityview-field.php:118
 msgid "Instead of using the entry data, instead use the current post data."
 msgstr "Au lieu d'utiliser les données de l'entrée, utiliser les données actuelles de la publication."
 
-#: includes/fields/class.field.php:55
+#: includes/fields/class-gravityview-field.php:123
 msgid "Override Date Format"
 msgstr "Écraser le format de date"
 
-#: includes/fields/class.field.php:56
+#: includes/fields/class-gravityview-field.php:124
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
 msgstr "Définissez la façon dont la date est affichée (en utilisant les %s formats de date PHP%s)"
 
@@ -1947,20 +1967,20 @@ msgstr "Ne pas montrer l'URL complète, seulement montrer le domaine."
 msgid "Open link in the same window?"
 msgstr "Ouvrir le lien dans la même fenêtre ?"
 
-#: includes/lib/EDD_SL_Plugin_Updater.php:179
+#: includes/lib/EDD_SL_Plugin_Updater.php:181
 msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" "
 "class=\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
 msgstr "Il existe une nouvelle version de %1$s disponible. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s\">Informations de la version %3$s de View</a>."
 
-#: includes/lib/EDD_SL_Plugin_Updater.php:186
+#: includes/lib/EDD_SL_Plugin_Updater.php:188
 msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" "
 "class=\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a "
 "href=\"%4$s\">update now</a>."
 msgstr "Il existe une nouvelle version de %1$s disponible. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s\">Voir les détails de la version %3$s</a> ou <a href=\"%4$s\"> faire une mise à jour maintenant</a>."
 
-#: includes/lib/EDD_SL_Plugin_Updater.php:334
+#: includes/lib/EDD_SL_Plugin_Updater.php:332
 msgid "You do not have permission to install plugin updates"
 msgstr "Vous n'avez pas la permission pour installer les mises à jour de plugin"
 
@@ -2298,36 +2318,36 @@ msgstr "Tout rechercher"
 msgid "Entry Creator"
 msgstr "Créateur d'entrée"
 
-#: includes/widgets/search-widget/class-search-widget.php:809
+#: includes/widgets/search-widget/class-search-widget.php:823
 msgid "Search Entries:"
 msgstr "Rechercher des entrées :"
 
-#: includes/widgets/search-widget/class-search-widget.php:812
+#: includes/widgets/search-widget/class-search-widget.php:826
 msgid "Filter by date:"
 msgstr "Filtrer par date :"
 
-#: includes/widgets/search-widget/class-search-widget.php:815
+#: includes/widgets/search-widget/class-search-widget.php:829
 msgid "Entry ID:"
 msgstr "ID de l'entrée :"
 
-#: includes/widgets/search-widget/class-search-widget.php:818
+#: includes/widgets/search-widget/class-search-widget.php:832
 msgid "Submitted by:"
 msgstr "Proposé par :"
 
-#: includes/widgets/search-widget/class-search-widget.php:961
+#: includes/widgets/search-widget/class-search-widget.php:975
 msgid "Clear"
 msgstr "Effacer"
 
-#: includes/widgets/search-widget/class-search-widget.php:1006
+#: includes/widgets/search-widget/class-search-widget.php:1020
 msgid "Show a different month"
 msgstr "Montrer un mois différent"
 
-#: includes/widgets/search-widget/templates/search-field-date_range.php:21
+#: includes/widgets/search-widget/templates/search-field-date_range.php:20
 #: includes/widgets/search-widget/templates/search-field-entry_date.php:20
 msgid "Start date"
 msgstr "Date de début"
 
-#: includes/widgets/search-widget/templates/search-field-date_range.php:22
+#: includes/widgets/search-widget/templates/search-field-date_range.php:21
 #: includes/widgets/search-widget/templates/search-field-entry_date.php:21
 msgid "End date"
 msgstr "Date de fin"
@@ -2455,60 +2475,60 @@ msgctxt "Column title that shows what template is being used for Views"
 msgid "Template"
 msgstr ""
 
-#: includes/class-change-entry-creator.php:72
-msgctxt ""
-"First parameter: Success or error of the action. Second: User ID number"
-msgid "%s: Assigned User ID #%d as the entry creator."
-msgstr "%s : ID utilisateur assigné #%d en tant que créateur de l'entrée."
-
-#: includes/class-change-entry-creator.php:176
-msgctxt ""
-"The name and the ID of users who initiated changes to entry ownership"
-msgid "%s (ID #%d)"
-msgstr "%s (ID #%d)"
-
-#: includes/class-change-entry-creator.php:178
-msgctxt ""
-"To show that the entry was unassigned from an actual user to no user."
-msgid "No User"
-msgstr "Aucun utilisateur"
-
-#: includes/class-change-entry-creator.php:213
-msgctxt "No user assigned to the entry"
-msgid "No User"
-msgstr "Aucun utilisateur"
-
 #: includes/class-debug-bar.php:174
 msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Vide"
 
-#: includes/class-frontend-views.php:1224
+#: includes/class-frontend-views.php:1273
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "Effacer"
 
-#: includes/class-frontend-views.php:1225
+#: includes/class-frontend-views.php:1274
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "Réinitialiser"
 
-#: includes/class-post-types.php:52
+#: includes/class-gravityview-change-entry-creator.php:72
+msgctxt ""
+"First parameter: Success or error of the action. Second: User ID number"
+msgid "%s: Assigned User ID #%d as the entry creator."
+msgstr "%s : ID utilisateur assigné #%d en tant que créateur de l'entrée."
+
+#: includes/class-gravityview-change-entry-creator.php:176
+msgctxt ""
+"The name and the ID of users who initiated changes to entry ownership"
+msgid "%s (ID #%d)"
+msgstr "%s (ID #%d)"
+
+#: includes/class-gravityview-change-entry-creator.php:178
+msgctxt ""
+"To show that the entry was unassigned from an actual user to no user."
+msgid "No User"
+msgstr "Aucun utilisateur"
+
+#: includes/class-gravityview-change-entry-creator.php:213
+msgctxt "No user assigned to the entry"
+msgid "No User"
+msgstr "Aucun utilisateur"
+
+#: includes/class-post-types.php:61
 msgctxt "Post Type General Name"
 msgid "Views"
 msgstr "Vues"
 
-#: includes/class-post-types.php:53
+#: includes/class-post-types.php:62
 msgctxt "Post Type Singular Name"
 msgid "View"
 msgstr "Vue"
 
-#: includes/class-post-types.php:54
+#: includes/class-post-types.php:63
 msgctxt "Menu name"
 msgid "Views"
 msgstr "Vues"
 
-#: includes/class-post-types.php:57
+#: includes/class-post-types.php:66
 msgctxt "View Item"
 msgid "View"
 msgstr "Vue"
@@ -2561,27 +2581,27 @@ msgid ""
 "entries displayed in the View."
 msgstr "Note : ceci affichera les résultats du sondage pour %stoutes les entrées du formulaire, pas seulement les entrées affichées dans la Vue."
 
-#: includes/widgets/search-widget/class-search-widget.php:1001
+#: includes/widgets/search-widget/class-search-widget.php:1015
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "Fermer"
 
-#: includes/widgets/search-widget/class-search-widget.php:1002
+#: includes/widgets/search-widget/class-search-widget.php:1016
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr "Précédement"
 
-#: includes/widgets/search-widget/class-search-widget.php:1003
+#: includes/widgets/search-widget/class-search-widget.php:1017
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr "Suivant"
 
-#: includes/widgets/search-widget/class-search-widget.php:1004
+#: includes/widgets/search-widget/class-search-widget.php:1018
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr "Aujourd'hui"
 
-#: includes/widgets/search-widget/class-search-widget.php:1005
+#: includes/widgets/search-widget/class-search-widget.php:1019
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr "Semaine"

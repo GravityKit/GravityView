@@ -94,10 +94,10 @@ class GravityView_Metabox_Tab {
 	 * @param string $file The file name of a file stored in the /gravityview/includes/admin/metaboxes/views/ directory to render the metabox output, or the full path to a file. If defined, `callback` is not used.
 	 * @param string $icon_class_name Icon class used in vertical tabs. Supports non-dashicon. If dashicons, no need for `dashicons ` prefix
 	 * @param string $callback Function to render the metabox, if $file is not defined.
-	 * @param null $callback_args Arguments passed to the callback
+	 * @param array $callback_args Arguments passed to the callback
 	 * @return void
 	 */
-	function __construct( $id, $title = '', $file = '', $icon_class_name = '', $callback = '', $callback_args = null  ) {
+	function __construct( $id, $title = '', $file = '', $icon_class_name = '', $callback = '', $callback_args = array()  ) {
 
 		$this->id = $this->prefix.$id;
 		$this->title = $title;

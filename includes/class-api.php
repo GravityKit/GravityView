@@ -108,7 +108,7 @@ class GravityView_API {
 	 *
 	 * @since 1.9
 	 *
-	 * @param array $field_setting Array of settings for the field
+	 * @param array $field Array of settings for the field
 	 * @param string $format Format for width. "%" (default) will return
 	 *
 	 * @return string|null If not empty, string in $format format. Otherwise, null.
@@ -279,7 +279,7 @@ class GravityView_API {
 
 		// Check whether the field exists in /includes/fields/{$field_type}.php
 		// This can be overridden by user template files.
-		$field_exists = $gravityview_view->locate_template("fields/{$field_type}.php");
+		$field_path = $gravityview_view->locate_template("fields/{$field_type}.php");
 
 		// Set the field data to be available in the templates
 		$gravityview_view->setCurrentField( array(
@@ -294,13 +294,13 @@ class GravityView_API {
 			'field_type' => $field_type, /** {@since 1.6} **/
 		));
 
-		if( $field_exists ) {
+		if( ! empty( $field_path ) ) {
 
-			do_action( 'gravityview_log_debug', sprintf('[field_value] Rendering %s', $field_exists ) );
+			do_action( 'gravityview_log_debug', sprintf('[field_value] Rendering %s', $field_path ) );
 
 			ob_start();
 
-			load_template( $field_exists, false );
+			load_template( $field_path, false );
 
 			$output = ob_get_clean();
 
@@ -445,14 +445,14 @@ class GravityView_API {
 				} else {
 
 					// This is a GravityView post type
-					if( GravityView_frontend::getInstance()->is_gravityview_post_type ) {
+					if( GravityView_frontend::getInstance()->isGravityviewPostType() ) {
 
 						$post_id = isset( $gravityview_view ) ? $gravityview_view->getViewId() : $post->ID;
 
 					} else {
 
 						// This is an embedded GravityView; use the embedded post's ID as the base.
-						if( GravityView_frontend::getInstance()->post_has_shortcode && is_a( $post, 'WP_Post' ) ) {
+						if( GravityView_frontend::getInstance()->isPostHasShortcode() && is_a( $post, 'WP_Post' ) ) {
 
 							$post_id = $post->ID;
 

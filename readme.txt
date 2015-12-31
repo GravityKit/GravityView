@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.3.1
+Tested up to: 4.4
 Stable tag: trunk
 Contributors: katzwebservices, luistinygod
 License: GPL 3 or higher
@@ -20,8 +20,28 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-* Fixed: Select, multi-select, radio, checkbox, and post category field types should use exact match search
+* Fixed: Custom merge tags not being replaced properly by GravityView
+* Fixed: Connected form links were not visible in the Data Source metabox
+* Tweak: Only show Add View button to users who are able to publish Views
+* Tweak: Reduce the number of database calls by fetching forms differently
+* Fixed: Inaccurate "Key missing" error shown when license key is invalid
+* Tweak: Only show license key notices to users who have capability to edit settings, and only on GravityView pages
+* Tweak: Improved load time of Views screen in the admin
+* Tweak: Make sure entry belongs to correct form before displaying
+
+__Developer Notes:__
+
+* New: `gravityview_get_terms_choices()` function generates array of categories ready to be added to Gravity Forms $choices array
+* Fixed: Fetching the current entry can improperly return an empty array when using `GravityView_View->getCurrentEntry()` in DataTables extension
+
+__Developer Notes:__
+
+* Use the `$is_sortable` `GravityView_Field` variable to define whether a field is sortable. Override using the  `gravityview/sortable/field_blacklist` filter.
+
+= 1.15.2 on December 3 =
+
 * Fixed: Approval column not being added properly on the Form Entries screen for Gravity Forms 1.9.14.18+
+* Fixed: Select, multi-select, radio, checkbox, and post category field types should use exact match search
 * Fixed: Cannot delete entry notes from Gravity Forms Entry screen
 * Fixed: Date Range search field label not working
 * Fixed: Date Range searches did not include the "End Date" day

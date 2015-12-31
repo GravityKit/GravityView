@@ -30,12 +30,13 @@ class GVCommon {
 			return false;
 		}
 
-		if ( class_exists( 'GFAPI' ) ) {
-			return GFAPI::get_form( $form_id );
+		// Only get_form_meta is cached. ::facepalm::
+		if ( class_exists( 'RGFormsModel' ) ) {
+			return GFFormsModel::get_form_meta( $form_id );
 		}
 
-		if ( class_exists( 'RGFormsModel' ) ) {
-			return RGFormsModel::get_form( $form_id );
+		if ( class_exists( 'GFAPI' ) ) {
+			return GFAPI::get_form( $form_id );
 		}
 
 		return false;
@@ -86,15 +87,21 @@ class GVCommon {
 	 * Get all existing Views
 	 *
 	 * @since  1.5.4
+	 * @since  TODO Added $args array
+	 *
+	 * @param array $args Pass custom array of args, formatted as if for `get_posts()`
+	 *
 	 * @return array Array of Views as `WP_Post`. Empty array if none found.
 	 */
-	public static function get_all_views() {
+	public static function get_all_views( $args = array() ) {
 
-		$params = array(
+		$default_params = array(
 			'post_type' => 'gravityview',
 			'posts_per_page' => -1,
 			'post_status' => 'publish',
 		);
+
+		$params = wp_parse_args( $args, $default_params );
 
 		/**
 		 * @filter `gravityview/get_all_views/params` Modify the parameters sent to get all views.
@@ -161,18 +168,20 @@ class GVCommon {
 	 *
 	 * @access public
 	 * @param mixed $form_id
-	 * @return array (id, title)
+	 * @return array Empty array if GFAPI isn't available or no forms. Otherwise, associative array with id, title keys
 	 */
 	public static function get_forms() {
-		if ( class_exists( 'RGFormsModel' ) ) {
-			$gf_forms = RGFormsModel::get_forms( null, 'title' );
-			$forms = array();
+		$forms = array();
+		if ( class_exists( 'GFAPI' ) ) {
+			$gf_forms = GFAPI::get_forms();
 			foreach ( $gf_forms as $form ) {
-				$forms[] = array( 'id' => $form->id, 'title' => $form->title );
+				$forms[] = array(
+					'id' => $form['id'],
+					'title' => $form['title'],
+				);
 			}
-			return $forms;
 		}
-		return false;
+		return $forms;
 	}
 
 	/**
@@ -461,7 +470,7 @@ class GVCommon {
 
 
 		// When multiple views are embedded, OR single entry, calculate the context view id and send it to the advanced filter
-		if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() || GravityView_frontend::getInstance()->single_entry ) {
+		if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() || GravityView_frontend::getInstance()->getSingleEntry() ) {
 			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
 		} elseif ( 'delete' === RGForms::get( 'action' ) ) {
 			$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? $_GET['view_id'] : null;
@@ -572,7 +581,7 @@ class GVCommon {
 	 * Since 1.4, supports custom entry slugs. The way that GravityView fetches an entry based on the custom slug is by searching `gravityview_unique_id` meta. The `$entry_slug` is fetched by getting the current query var set by `is_single_entry()`
 	 *
 	 * @access public
-	 * @param mixed $entry_id
+	 * @param string|int $entry_slug Either entry ID or entry slug string
 	 * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
 	 * @param boolean $check_entry_display Check whether the entry is visible for the current View configuration. Default: true. {@since 1.14}
 	 * @return array|boolean
@@ -705,6 +714,7 @@ class GVCommon {
 	 * @see GFFormsModel::is_value_match()
 	 *
 	 * @since 1.7.4
+	 * @todo Return WP_Error instead of boolean
 	 *
 	 * @param array $entry Gravity Forms Entry object
 	 * @return bool|array Returns 'false' if entry is not valid according to the view search filters (Adv Filter)
@@ -722,6 +732,16 @@ class GVCommon {
 		}
 
 		$criteria = self::calculate_get_entries_criteria();
+
+		// Make sure the current View is connected to the same form as the Entry
+		if( ! empty( $criteria['context_view_id'] ) ) {
+			$context_view_id = intval( $criteria['context_view_id'] );
+			$context_form_id = gravityview_get_form_id( $context_view_id );
+			if( intval( $context_form_id ) !== intval( $entry['form_id'] ) ) {
+				do_action( 'gravityview_log_debug', sprintf( '[apply_filters_to_entry] Entry form ID does not match current View connected form ID:', $entry['form_id'] ), $criteria['context_view_id'] );
+				return false;
+			}
+		}
 
 		if ( empty( $criteria['search_criteria'] ) || ! is_array( $criteria['search_criteria'] ) ) {
 			do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry approved! No search criteria found:', $criteria );
@@ -1238,7 +1258,7 @@ class GVCommon {
 	 *
 	 * @param string $href URL of the link. Sanitized using `esc_url_raw()`
 	 * @param string $anchor_text The text or HTML inside the anchor. This is not sanitized in the function.
-	 * @param array $atts Attributes to be added to the anchor tag. They are sanitized using `esc_attr()`
+	 * @param array|string $atts Attributes to be added to the anchor tag. Parsed by `wp_parse_args()`, sanitized using `esc_attr()`
 	 *
 	 * @return string HTML output of anchor link. If empty $href, returns NULL
 	 */
@@ -1392,7 +1412,7 @@ class GVCommon {
  *
  * @param string $href URL of the link.
  * @param string $anchor_text The text or HTML inside the anchor. This is not sanitized in the function.
- * @param array $atts Attributes to be added to the anchor tag
+ * @param array|string $atts Attributes to be added to the anchor tag
  *
  * @return string HTML output of anchor link. If empty $href, returns NULL
  */

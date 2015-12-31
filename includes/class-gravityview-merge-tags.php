@@ -27,12 +27,12 @@ class GravityView_Merge_Tags {
 	}
 
 	/**
-	 * Check for merge tags before passing to Gravity Forms to improve speed.
+	 * Alias for GFCommon::replace_variables()
 	 *
-	 * GF doesn't check for whether `{` exists before it starts diving in. They not only replace fields, they do `str_replace()` on things like ip address, which is a lot of work just to check if there's any hint of a replacement variable.
+	 * Before 1.15.3, it would check for merge tags before passing to Gravity Forms to improve speed.
 	 *
-	 * We check for the basics first, which is more efficient.
-	 *
+	 * @since 1.15.3 - Now that Gravity Forms added speed improvements in 1.9.15, it's more of an alias with a filter
+	 * to disable or enable replacements.
 	 * @since 1.8.4 - Moved to GravityView_Merge_Tags
 	 * @since 1.15.1 - Add support for $url_encode and $esc_html arguments
 	 *
@@ -49,6 +49,7 @@ class GravityView_Merge_Tags {
 		 * @filter `gravityview_do_replace_variables` Turn off merge tag variable replacements.\n
 		 * Useful where you want to process variables yourself. We do this in the Math Extension.
 		 * @since 1.13
+		 *
 		 * @param[in,out] boolean $do_replace_variables True: yes, replace variables for this text; False: do not replace variables.
 		 * @param[in] string $text       Text to replace variables in
 		 * @param[in]  array      $form        GF Form array
@@ -56,27 +57,18 @@ class GravityView_Merge_Tags {
 		 */
 		$do_replace_variables = apply_filters( 'gravityview/merge_tags/do_replace_variables', true, $text, $form, $entry );
 
-		if( strpos( $text, '{') === false || ! $do_replace_variables ) {
+		if ( strpos( $text, '{' ) === false || ! $do_replace_variables ) {
 			return $text;
 		}
 
 		/**
-		 * Replace GravityView merge tags before going to Gravity Forms
-		 * This allows us to replace our tags first.
-		 * @since 1.15
+		 * Make sure the required keys are set for GFCommon::replace_variables
+		 *
+		 * @internal Reported to GF Support on 12/3
 		 */
-		$text = self::replace_gv_merge_tags( $text, $form, $entry );
-
-		// Check for fields - if they exist, we let Gravity Forms handle it.
-		preg_match_all('/{[^{]*?:(\d+(\.\d+)?)(:(.*?))?}/mi', $text, $matches, PREG_SET_ORDER);
-
-		if( empty( $matches ) ) {
-
-			// Check for form variables
-			if( !preg_match( '/\{(all_fields(:(.*?))?|all_fields_display_empty|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id|embed_url|date_mdy|date_dmy|embed_post:(.*?)|custom_field:(.*?)|user_agent|referer|gv:(.*?)|get:(.*?)|user:(.*?)|created_by:(.*?))\}/ism', $text ) ) {
-				return $text;
-			}
-		}
+		$form['title']  = isset( $form['title'] ) ? $form['title'] : '';
+		$form['id']     = isset( $form['id'] ) ? $form['id'] : '';
+		$form['fields'] = isset( $form['fields'] ) ? $form['fields'] : array();
 
 		return GFCommon::replace_variables( $text, $form, $entry, $url_encode, $esc_html );
 	}
@@ -147,6 +139,7 @@ class GravityView_Merge_Tags {
 		 * This prevents the gform_replace_merge_tags filter from being called twice, as defined in:
 		 * @see GFCommon::replace_variables()
 		 * @see GFCommon::replace_variables_prepopulate()
+		 * @todo Remove eventually: Gravity Forms fixed this issue in 1.9.14
 		 */
 		if( false === $form ) {
 			return $text;

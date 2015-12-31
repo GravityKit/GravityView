@@ -550,10 +550,17 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		if( in_array( $this->getContext(), array( 'edit', 'single') ) ) {
 			$entries = $this->getEntries();
-			return $entries[0];
+			$entry = $entries[0];
+		} else {
+			$entry = $this->_current_entry;
 		}
 
-		return $this->_current_entry;
+		/** @since TODO Fixes DataTables empty entry issue */
+		if ( empty( $entry ) && ! empty( $this->_current_field['entry'] ) ) {
+			$entry = $this->_current_field['entry'];
+		}
+
+		return $entry;
 	}
 
 	/**
@@ -667,7 +674,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		} else {
 
-			// Set $load to always falso so we handle it here.
+			// Set $load to always false so we handle it here.
 			$located = parent::locate_template( $template_names, false, $require_once );
 
 			if( is_string( $template_names ) ) {

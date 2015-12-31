@@ -3,9 +3,15 @@
 /**
  * Add custom options for date fields
  */
-class GravityView_Field_Post_Tags extends GravityView_Field {
+class GravityView_Field_Post_Category extends GravityView_Field {
 
-	var $name = 'post_tags';
+	var $name = 'post_category';
+
+	var $search_operators = array( 'is', 'in', 'not in', 'isnot', 'contains');
+
+	var $_gf_field_class_name = 'GF_Field_Post_Category';
+
+	var $group = 'post';
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
@@ -21,4 +27,4 @@ class GravityView_Field_Post_Tags extends GravityView_Field {
 
 }
 
-new GravityView_Field_Post_Tags;
+new GravityView_Field_Post_Category;

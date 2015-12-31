@@ -7,7 +7,14 @@ class GravityView_Field_Section extends GravityView_Field {
 
 	var $name = 'section';
 
+	var $is_searchable = false;
+
+	var $_gf_field_class_name = 'GF_Field_Section';
+
+	var $group = 'standard';
+
 	function __construct() {
+
 		parent::__construct();
 
 		add_filter( 'gravityview_field_entry_value_section', array( $this, 'prevent_empty_field' ) );
