@@ -35,6 +35,41 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @group date_created
+	 */
+	function test_replace_date_created() {
+
+		$form = $this->factory->form->create_and_get();
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+
+		$date_created = rgar( $entry, 'date_created' );
+
+		/**
+		 * adjusting date to local configured Time Zone
+		 * @see GFCommon::format_date()
+		 */
+		$lead_gmt_time   = mysql2date( 'G', $date_created );
+		$lead_local_time = GFCommon::get_local_timestamp( $lead_gmt_time );
+
+		$tests = array(
+			'{date_created:raw}' => $date_created,
+			'{date_created:relative}' => GFCommon::format_date( $date_created, true, '', false ),
+			'{date_created:relative:format:mdy}' => GFCommon::format_date( $date_created, true, 'mdy', false ),
+			'{date_created:relative_with_time}' => GFCommon::format_date( $date_created, true, '', true ),
+			'{date_created:relative_with_time:format:d}' => GFCommon::format_date( $date_created, true, 'd', true ),
+			'{date_created:format:m/d/Y}' => date_i18n( 'm/d/Y', $lead_local_time, true ),
+		);
+
+		foreach ( $tests as $merge_tag => $expected ) {
+			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
+		}
+	}
+
+	/**
 	 * @since 1.15
 	 * @covers GravityView_Merge_Tags::replace_get_variables()
 	 * @covers GravityView_Merge_Tags::replace_variables()

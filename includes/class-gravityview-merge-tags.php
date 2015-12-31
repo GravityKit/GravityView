@@ -109,8 +109,12 @@ class GravityView_Merge_Tags {
 				'tag' => '{created_by:roles}'
 			),
 			array(
-				'label' => __('Date Created'),
+				'label' => __('Date Created', 'gravityview'),
 				'tag' => '{date_created}'
+			),
+			array(
+				'label' => __('Date Created (Relative Date)', 'gravityview'),
+				'tag' => '{date_created:relative}',
 			),
 		);
 
@@ -168,61 +172,96 @@ class GravityView_Merge_Tags {
 	 * @param array $entry Entry array
 	 * @param bool $url_encode Whether to URL-encode output
 	 */
-	public static function replace_date_created( $text, $form = array(), $entry = array(), $url_encode = false ) {
+	public static function replace_date_created( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
 
-		// Is there is {get:[xyz]} merge tag?
-		preg_match_all( "/{date_created:?(.*?)}/ism", $text, $matches, PREG_SET_ORDER );
+		// Is there is Date Created merge tag?
+		preg_match_all( "/{date_created:?(.*?)(?:\:(.*?)+)?}/ism", $text, $matches, PREG_SET_ORDER );
 
 		// If there are no matches OR the Entry `created_by` isn't set or is 0 (no user)
 		if( empty( $matches ) ) {
 			return $text;
 		}
 
-		// TODO: FINISH METHOD
-		return $text;
+		$return = $text;
 
-		$gmt_datetime = rgar( $entry, 'date_created' );
+		foreach( $matches as $match ) {
 
+			$full_tag = $match[0];
+			$property = $match[1];
 
-		$date_created_timestamp = strtotime( $date_created );
+			echo "matches
+		";
+			var_dump( $match );
 
-		$adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'merge_tag' );
+			$date_format    = get_option( 'date_format' );
+			$human_readable = false;
+			$include_time   = false;
 
-		/**
-		 * date_created is stored in UTC format. Fetch in the current blog's timezone if $adjust_tz is true
-		 */
-		$tz_value = $adjust_tz ? get_date_from_gmt( $value ) : $value;
+			// Formatting was passed
+			if ( isset( $match[1] ) ) {
 
+				$parameters = $match;
+				unset( $parameters[0] );
+				foreach ( $parameters as $match_key => $match_tag ) {
+					echo 'match_tag:
+					';
+					var_dump( $match_tag );
+					switch ( $match_tag ) {
+						case 'relative':
+							$human_readable = true;
+							break;
+						case 'relative_with_time':
+							$human_readable = true;
+							$include_time   = true;
+							break;
+						case 'raw':
+							$date_format = false;
+							break;
+						case 'format':
 
-		$format = 'Y/m/d';
-		$human_time = false;
+							// The date formatting should be after the format key
+							$format_key = $match_key + 1;
 
-		// Formatting was passed
-		if( isset( $matches[1] ) ) {
-			switch( $matches[1] ) {
-				case 'relative':
-					$human_time = true;
-					break;
+							echo 'parameters:
+							';
+							var_dump( $parameters );
+							// Format was also passed
+							if ( isset( $parameters[ $format_key ] ) ) {
+
+								switch ( $parameters[ $format_key ] ) {
+									case 'raw':
+										$date_format = false;
+										break;
+									default:
+										$date_format = $parameters[ $format_key ];
+										break;
+								}
+							}
+
+							break;
+					}
+				}
 			}
+
+			$date_created = rgar( $entry, 'date_created' );
+
+			//adjusting date to local configured Time Zone
+			$lead_gmt_time   = mysql2date( 'G', $date_created );
+			$lead_local_time = GFCommon::get_local_timestamp( $lead_gmt_time );
+
+			// Raw format
+			if( false === $date_format ) {
+				$formatted_date = $date_created;
+			} else if ( $human_readable ) {
+				$formatted_date = GFCommon::format_date( $date_created, $human_readable, $date_format, $include_time );
+			} else {
+				$formatted_date = date_i18n( $date_format, $lead_local_time, true );
+			}
+
+			$return = str_replace( $full_tag, $formatted_date, $return );
 		}
 
-		//adjusting date to local configured Time Zone
-		$lead_gmt_time   = mysql2date( 'G', $gmt_datetime );
-		$lead_local_time = GFCommon::get_local_timestamp( $lead_gmt_time );
-
-		if ( empty( $date_format ) ) {
-			$date_format = get_option( 'date_format' );
-		}
-
-		#GFCommon::format_date( $date_created, $human_time,  )
-
-		if ( strpos( $text, $merge_tag ) === false || empty( $entry ) || empty( $form ) ) {
-			return $text;
-		}
-
-		return str_replace( $merge_tag, GFCommon::format_date( rgar( $entry, 'date_created' ), false, 'Y/m/d' ), $text );
-
-		return $text;
+		return $return;
 	}
 
 	/**
