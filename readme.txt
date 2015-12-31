@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Inaccurate "Key missing" error shown when license key is invalid
 * Tweak: Only show license key notices to users who have capability to edit settings, and only on GravityView pages
 * Tweak: Improved load time of Views screen in the admin
+* Tweak: Make sure entry belongs to correct form before displaying
 
 __Developer Notes:__
 

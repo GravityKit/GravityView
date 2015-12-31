@@ -581,7 +581,7 @@ class GVCommon {
 	 * Since 1.4, supports custom entry slugs. The way that GravityView fetches an entry based on the custom slug is by searching `gravityview_unique_id` meta. The `$entry_slug` is fetched by getting the current query var set by `is_single_entry()`
 	 *
 	 * @access public
-	 * @param mixed $entry_id
+	 * @param string|int $entry_slug Either entry ID or entry slug string
 	 * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
 	 * @param boolean $check_entry_display Check whether the entry is visible for the current View configuration. Default: true. {@since 1.14}
 	 * @return array|boolean
@@ -714,6 +714,7 @@ class GVCommon {
 	 * @see GFFormsModel::is_value_match()
 	 *
 	 * @since 1.7.4
+	 * @todo Return WP_Error instead of boolean
 	 *
 	 * @param array $entry Gravity Forms Entry object
 	 * @return bool|array Returns 'false' if entry is not valid according to the view search filters (Adv Filter)
@@ -731,6 +732,16 @@ class GVCommon {
 		}
 
 		$criteria = self::calculate_get_entries_criteria();
+
+		// Make sure the current View is connected to the same form as the Entry
+		if( ! empty( $criteria['context_view_id'] ) ) {
+			$context_view_id = intval( $criteria['context_view_id'] );
+			$context_form_id = gravityview_get_form_id( $context_view_id );
+			if( intval( $context_form_id ) !== intval( $entry['form_id'] ) ) {
+				do_action( 'gravityview_log_debug', sprintf( '[apply_filters_to_entry] Entry form ID does not match current View connected form ID:', $entry['form_id'] ), $criteria['context_view_id'] );
+				return false;
+			}
+		}
 
 		if ( empty( $criteria['search_criteria'] ) || ! is_array( $criteria['search_criteria'] ) ) {
 			do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry approved! No search criteria found:', $criteria );
