@@ -162,11 +162,10 @@ class GravityView_Merge_Tags {
 	/**
 	 * Add {date_created} merge tag
 	 *
-	 * @todo support {date_created:relative}
-	 * @todo support {date_created:[php date format]}
-	 * @todo default: get_option('date_format');
+	 * TODO DOCS
 	 *
-	 * @since 1.15.2
+	 * @since TODO
+	 *
 	 * @param string $text Text to replace
 	 * @param array $form Gravity Forms form array
 	 * @param array $entry Entry array
@@ -175,90 +174,87 @@ class GravityView_Merge_Tags {
 	public static function replace_date_created( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
 
 		// Is there is Date Created merge tag?
-		preg_match_all( "/{date_created:?(.*?)(?:\:(.*?)+)?}/ism", $text, $matches, PREG_SET_ORDER );
+		preg_match_all( "/{date_created:?(.*?)(?:\s)?}/ism", $text, $matches, PREG_SET_ORDER );
 
 		// If there are no matches OR the Entry `created_by` isn't set or is 0 (no user)
-		if( empty( $matches ) ) {
+		if ( empty( $matches ) ) {
 			return $text;
 		}
 
 		$return = $text;
 
-		foreach( $matches as $match ) {
+		$date_created = rgar( $entry, 'date_created' );
+		$site_date_format  = get_option( 'date_format' );
 
-			$full_tag = $match[0];
-			$property = $match[1];
+		/**
+		 * Gravity Forms code to adjust date to locally-configured Time Zone
+		 * @see GFCommon::format_date()
+		 */
+		$entry_gmt_time   = mysql2date( 'G', $date_created );
+		$entry_local_timestamp = GFCommon::get_local_timestamp( $entry_gmt_time );
 
-			echo "matches
-		";
-			var_dump( $match );
+		foreach ( $matches as $match ) {
 
-			$date_format    = get_option( 'date_format' );
-			$human_readable = false;
-			$include_time   = false;
+			$full_tag          = $match[0];
+			$property          = $match[1];
 
-			// Formatting was passed
-			if ( isset( $match[1] ) ) {
+			// Expand all modifiers, skipping escaped colons. str_replace worked better than preg_split( "/(?<!\\):/" )
+			$exploded = explode( ':', str_replace( '\:', '|COLON|', $property ) );
 
-				$parameters = $match;
-				unset( $parameters[0] );
-				foreach ( $parameters as $match_key => $match_tag ) {
-					echo 'match_tag:
-					';
-					var_dump( $match_tag );
-					switch ( $match_tag ) {
-						case 'relative':
-							$human_readable = true;
-							break;
-						case 'relative_with_time':
-							$human_readable = true;
-							$include_time   = true;
-							break;
-						case 'raw':
-							$date_format = false;
-							break;
-						case 'format':
+			$is_human  = in_array( 'human', $exploded ); // {date_created:human}
+			$is_diff  = in_array( 'diff', $exploded ); // {date_created:diff}
+			$is_raw = in_array( 'raw', $exploded ); // {date_created:raw}
+			$is_timestamp = in_array( 'timestamp', $exploded ); // {date_created:timestamp}
 
-							// The date formatting should be after the format key
-							$format_key = $match_key + 1;
-
-							echo 'parameters:
-							';
-							var_dump( $parameters );
-							// Format was also passed
-							if ( isset( $parameters[ $format_key ] ) ) {
-
-								switch ( $parameters[ $format_key ] ) {
-									case 'raw':
-										$date_format = false;
-										break;
-									default:
-										$date_format = $parameters[ $format_key ];
-										break;
-								}
-							}
-
-							break;
-					}
-				}
-			}
-
-			$date_created = rgar( $entry, 'date_created' );
-
-			//adjusting date to local configured Time Zone
-			$lead_gmt_time   = mysql2date( 'G', $date_created );
-			$lead_local_time = GFCommon::get_local_timestamp( $lead_gmt_time );
-
-			// Raw format
-			if( false === $date_format ) {
+			// If {date_created:raw} was specified, don't modify the stored value
+			if ( $is_raw ) {
 				$formatted_date = $date_created;
-			} else if ( $human_readable ) {
-				$formatted_date = GFCommon::format_date( $date_created, $human_readable, $date_format, $include_time );
+			} elseif( $is_timestamp ) {
+				$formatted_date = $entry_local_timestamp;
+			} elseif ( $is_diff ) {
+
+				/* translators: %s is the time (seconds, hours, days, weeks, months, years) since entry was created */
+				$relative_format = self::get_format_from_modifiers( $exploded, esc_html__( '%s ago', 'gravityview' ) );
+
+				$formatted_date = sprintf( $relative_format, human_time_diff( $entry_gmt_time ) );
+
 			} else {
-				$formatted_date = date_i18n( $date_format, $lead_local_time, true );
+
+				$include_time = in_array( 'time', $exploded );  // {date_created:time}
+				$match_date_format = self::get_format_from_modifiers( $exploded, $site_date_format );
+
+				$formatted_date = GFCommon::format_date( $date_created, $is_human, $match_date_format, $include_time );
 			}
 
 			$return = str_replace( $full_tag, $formatted_date, $return );
+		}
+
+		return $return;
+	}
+
+	/**
+	 * If there is a `:format` modifier in a merge tag, grab the formatting
+	 *
+	 * The `:format` modifier should always have the format follow it; it's the next item in the array
+	 * In `foo:format:bar`, "bar" will be the returned format
+	 *
+	 * @since TODO
+	 *
+	 * @param array $exploded Array of modifiers with a possible `format` value
+	 * @param string $backup The backup value to use, if not found
+	 *
+	 * @return string If format is found, the passed format. Otherwise, the backup.
+	 */
+	private static function get_format_from_modifiers( $exploded, $backup = '' ) {
+
+		$return = $backup;
+
+		$format_key_index = array_search( 'format', $exploded );
+
+		// If there's a "format:[php date format string]" date format, grab it
+		if ( false !== $format_key_index && isset( $exploded[ $format_key_index + 1 ] ) ) {
+			// Return escaped colons placeholder
+			$return = str_replace( '|COLON|', ':', $exploded[ $format_key_index + 1 ] );
 		}
 
 		return $return;
