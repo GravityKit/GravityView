@@ -395,7 +395,7 @@ class GVCommon {
 	 * @see  GFEntryList::leads_page()
 	 * @param  int $form_id ID of the Gravity Forms form
 	 * @since  1.1.6
-	 * @return array          Array of entry IDs
+	 * @return array|void          Array of entry IDs. Void if Gravity Forms isn't active.
 	 */
 	public static function get_entry_ids( $form_id, $search_criteria = array() ) {
 
@@ -411,11 +411,11 @@ class GVCommon {
 	 *
 	 * @since 1.7.4
 	 *
-	 * @param null $passed_criteria array Input Criteria (search_criteria, sorting, paging)
-	 * @param null $form_ids array Gravity Forms form IDs
-	 * @return array|mixed|void
+	 * @param array $passed_criteria array Input Criteria (search_criteria, sorting, paging)
+	 * @param array $form_ids array Gravity Forms form IDs
+	 * @return array
 	 */
-	public static function calculate_get_entries_criteria( $passed_criteria = null, $form_ids = null ) {
+	public static function calculate_get_entries_criteria( $passed_criteria = array(), $form_ids = array() ) {
 
 		$search_criteria_defaults = array(
 			'search_criteria' => null,
@@ -487,7 +487,7 @@ class GVCommon {
 		 */
 		$criteria = apply_filters( 'gravityview_search_criteria', $criteria, $form_ids, $criteria['context_view_id'] );
 
-		return $criteria;
+		return (array)$criteria;
 
 	}
 
