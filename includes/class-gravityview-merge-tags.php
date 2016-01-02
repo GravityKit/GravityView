@@ -108,6 +108,14 @@ class GravityView_Merge_Tags {
 				'label' => __('Entry Creator: Roles', 'gravityview'),
 				'tag' => '{created_by:roles}'
 			),
+			array(
+				'label' => __('Date Created', 'gravityview'),
+				'tag' => '{date_created}'
+			),
+			array(
+				'label' => __('Date Created (Relative Date)', 'gravityview'),
+				'tag' => '{date_created:relative}',
+			),
 		);
 
 		//return the form object from the php hook
@@ -146,7 +154,112 @@ class GravityView_Merge_Tags {
 		// Process the merge vars here
 		$text = self::replace_user_variables_created_by( $text, $form, $entry, $url_encode, $esc_html );
 
+		$text = self::replace_date_created( $text, $form, $entry, $url_encode, $esc_html );
+
 		return $text;
+	}
+
+	/**
+	 * Add {date_created} merge tag
+	 *
+	 * @since TODO
+	 *
+	 * @see http://docs.gravityview.co/article/281-the-createdby-merge-tag for usage information
+	 *
+	 * @param string $text Text to replace
+	 * @param array $form Gravity Forms form array
+	 * @param array $entry Entry array
+	 * @param bool $url_encode Whether to URL-encode output
+	 *
+	 * @return string Original text if {date_created} isn't found. Otherwise, replaced text.
+	 */
+	public static function replace_date_created( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
+
+		// Is there is Date Created merge tag?
+		preg_match_all( "/{date_created:?(.*?)(?:\s)?}/ism", $text, $matches, PREG_SET_ORDER );
+
+		// If there are no matches OR the Entry `created_by` isn't set or is 0 (no user)
+		if ( empty( $matches ) ) {
+			return $text;
+		}
+
+		$return = $text;
+
+		$date_created = rgar( $entry, 'date_created' );
+		$site_date_format  = get_option( 'date_format' );
+
+		/**
+		 * Gravity Forms code to adjust date to locally-configured Time Zone
+		 * @see GFCommon::format_date()
+		 */
+		$entry_gmt_time   = mysql2date( 'G', $date_created );
+		$entry_local_timestamp = GFCommon::get_local_timestamp( $entry_gmt_time );
+
+		foreach ( $matches as $match ) {
+
+			$full_tag          = $match[0];
+			$property          = $match[1];
+
+			// Expand all modifiers, skipping escaped colons. str_replace worked better than preg_split( "/(?<!\\):/" )
+			$exploded = explode( ':', str_replace( '\:', '|COLON|', $property ) );
+
+			$is_human  = in_array( 'human', $exploded ); // {date_created:human}
+			$is_diff  = in_array( 'diff', $exploded ); // {date_created:diff}
+			$is_raw = in_array( 'raw', $exploded ); // {date_created:raw}
+			$is_timestamp = in_array( 'timestamp', $exploded ); // {date_created:timestamp}
+
+			// If {date_created:raw} was specified, don't modify the stored value
+			if ( $is_raw ) {
+				$formatted_date = $date_created;
+			} elseif( $is_timestamp ) {
+				$formatted_date = $entry_local_timestamp;
+			} elseif ( $is_diff ) {
+
+				/* translators: %s is the time (seconds, hours, days, weeks, months, years) since entry was created */
+				$relative_format = self::get_format_from_modifiers( $exploded, esc_html__( '%s ago', 'gravityview' ) );
+
+				$formatted_date = sprintf( $relative_format, human_time_diff( $entry_gmt_time ) );
+
+			} else {
+
+				$include_time = in_array( 'time', $exploded );  // {date_created:time}
+				$match_date_format = self::get_format_from_modifiers( $exploded, $site_date_format );
+
+				$formatted_date = GFCommon::format_date( $date_created, $is_human, $match_date_format, $include_time );
+			}
+
+			$return = str_replace( $full_tag, $formatted_date, $return );
+		}
+		
+		return $return;
+	}
+
+	/**
+	 * If there is a `:format` modifier in a merge tag, grab the formatting
+	 *
+	 * The `:format` modifier should always have the format follow it; it's the next item in the array
+	 * In `foo:format:bar`, "bar" will be the returned format
+	 *
+	 * @since TODO
+	 *
+	 * @param array $exploded Array of modifiers with a possible `format` value
+	 * @param string $backup The backup value to use, if not found
+	 *
+	 * @return string If format is found, the passed format. Otherwise, the backup.
+	 */
+	private static function get_format_from_modifiers( $exploded, $backup = '' ) {
+
+		$return = $backup;
+
+		$format_key_index = array_search( 'format', $exploded );
+
+		// If there's a "format:[php date format string]" date format, grab it
+		if ( false !== $format_key_index && isset( $exploded[ $format_key_index + 1 ] ) ) {
+			// Return escaped colons placeholder
+			$return = str_replace( '|COLON|', ':', $exploded[ $format_key_index + 1 ] );
+		}
+
+		return $return;
 	}
 
 	/**

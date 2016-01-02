@@ -35,6 +35,73 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @group date_created
+	 */
+	function test_replace_date_created() {
+
+		$form = $this->factory->form->create_and_get();
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		$date_created = rgar( $entry, 'date_created' );
+
+		/**
+		 * adjusting date to local configured Time Zone
+		 * @see GFCommon::format_date()
+		 */
+		$entry_gmt_time   = mysql2date( 'G', $date_created );
+		$entry_local_time = GFCommon::get_local_timestamp( $entry_gmt_time );
+
+		$tests = array(
+
+			'{date_created:raw}' => $date_created,
+			'{date_created:raw:timestamp}' => $date_created, // Order defined
+			'{date_created:raw:time}' => $date_created,
+			'{date_created:raw:human}' => $date_created,
+			'{date_created:raw:format:example}' => $date_created,
+
+			'{date_created:timestamp}' => $entry_local_time,
+			'{date_created:timestamp:raw}' => $entry_local_time, // Order defined
+			'{date_created:timestamp:time}' => $entry_local_time,
+			'{date_created:timestamp:human}' => $entry_local_time,
+			'{date_created:timestamp:format:example}' => $entry_local_time,
+
+			// Blog date format
+			'{date_created}' => GFCommon::format_date( $date_created, false, '', false ),
+
+			// Blog date format
+			'{date_created:human}' => GFCommon::format_date( $date_created, true, '', false ),
+
+			// Blog "date at time" format ("%s at %s")
+			'{date_created:time}' => GFCommon::format_date( $date_created, false, '', true ),
+
+			// 1 second ago
+			'{date_created:diff}' => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			'{date_created:diff:format:%s is so long ago}' => sprintf( '%s is so long ago', human_time_diff( $entry_gmt_time ) ),
+
+			// Relative should NOT process other modifiers
+			'{date_created:diff:time}' => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			'{date_created:diff:human}' => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			'{date_created:human:diff}' => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+
+			'{date_created:format:mdy}' => GFCommon::format_date( $date_created, false, 'mdy', false ),
+			'{date_created:human:format:mdy }' => GFCommon::format_date( $date_created, true, 'mdy', false ),
+
+			'{date_created:time:format:d}' => GFCommon::format_date( $date_created, false, 'd', true ),
+			'{date_created:human:time:format:mdy}' => GFCommon::format_date( $date_created, true, 'mdy', true ),
+
+			'{date_created:format:m/d/Y}' => date_i18n( 'm/d/Y', $entry_local_time, true ),
+			'{date_created:format:m/d/Y\ \w\i\t\h\ \t\i\m\e\ h\:i\:s}' => date_i18n( 'm/d/Y\ \w\i\t\h\ \t\i\m\e\ h:i:s', $entry_local_time, true ),
+		);
+
+		foreach ( $tests as $merge_tag => $expected ) {
+			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
+		}
+	}
+
+	/**
 	 * @since 1.15
 	 * @covers GravityView_Merge_Tags::replace_get_variables()
 	 * @covers GravityView_Merge_Tags::replace_variables()

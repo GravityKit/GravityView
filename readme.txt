@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Added: `{date_created}` Merge Tag displays the date an entry was created. [Read how to use it here](http://docs.gravityview.co/article/331-date-created-merge-tag).
 * Fixed: Custom merge tags not being replaced properly by GravityView
 * Fixed: Connected form links were not visible in the Data Source metabox
 * Tweak: Only show Add View button to users who are able to publish Views
