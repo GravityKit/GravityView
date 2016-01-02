@@ -32,9 +32,14 @@ module.exports = keyMirror({
 
     LAYOUT_DEL_FIELD: null,
     LAYOUT_ADD_FIELD: null,
+    LAYOUT_MOV_FIELD: null,
 
     UPDATE_FIELDS_SECTIONS: null,
     UPDATE_FIELDS_LIST: null,
     UPDATE_FIELD_SETTINGS: null, // update the gv_settings object when adding a new field or changing the field setting
+
+
+    // DnD
+    TYPE_FIELD: null,
 
 });

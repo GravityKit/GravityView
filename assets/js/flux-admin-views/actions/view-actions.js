@@ -173,6 +173,17 @@ module.exports = {
         });
     },
 
+    moveField: function( id, source, target ) {
+        console.log('drag'+id);
+        ViewDispatcher.dispatch({
+            actionType: ViewConstants.LAYOUT_MOV_FIELD,
+            itemId: id,
+            source: source,
+            target: target
+        });
+    },
+
+
     /**
      * Trigger the field settings edit process (fetch field settings, and open the field settings panel)
      * @param args Object Field arguments ( context, row, col, field [id, field_id, form_id, field_type, gv_settings] )
@@ -194,6 +205,8 @@ module.exports = {
             values: newValues
         });
     }
+
+
 
 
 

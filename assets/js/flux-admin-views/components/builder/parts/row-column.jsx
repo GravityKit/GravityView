@@ -1,17 +1,47 @@
 var React = require('react');
 var Field = require('./field.jsx');
+var ViewConstants = require('../../../constants/view-constants');
+var ViewActions = require('../../../actions/view-actions.js');
+
+var DropTarget = require('react-dnd').DropTarget;
+
+
+var columnTarget = {
+    drop: function ( props, monitor ) {
+        var pointer = { context: props.tabId, row: props.rowId, col: props.colId };
+        var item = monitor.getItem();
+        ViewActions.moveField( item.id, item.source, pointer );
+    }
+};
+
+function collect(connect, monitor) {
+    return {
+        connectDropTarget: connect.dropTarget(),
+        isOver: monitor.isOver()
+    };
+}
 
 var RowColumn = React.createClass({
 
     propTypes: {
         type: React.PropTypes.string, // type of item
         data: React.PropTypes.object, // Column object details
+        tabId: React.PropTypes.string, // tab id
+        rowId: React.PropTypes.string, // row id
         colId: React.PropTypes.number, // Column order on the row
-        onClickAddItem: React.PropTypes.func, // Add a field / widget on click
-        onClickItemSettings: React.PropTypes.func, // Callback to process field/widget Settings
-        onClickItemRemove: React.PropTypes.func // Callback to remove the field/widget from layout
     },
 
+    handleFieldAdd: function(e) {
+        e.preventDefault();
+
+        var areaArgs = {
+            'context': this.props.tabId,
+            'row': this.props.rowId,
+            'col': this.props.colId
+        };
+
+        ViewActions.openPanel( ViewConstants.PANEL_FIELD_ADD, false, areaArgs );
+    },
 
     renderAddLabel: function() {
         if( this.props.type === 'widget' ) {
@@ -25,14 +55,17 @@ var RowColumn = React.createClass({
         return(
             <Field
                 key={field.id}
+                tabId={this.props.tabId}
+                rowId={this.props.rowId}
+                colId={this.props.colId}
                 data={field}
-                onClickItemSettings={this.props.onClickItemSettings}
-                onClickItemRemove={this.props.onClickItemRemove}
             />
         );
     },
 
     render: function() {
+
+        var connectDropTarget = this.props.connectDropTarget;
 
         var areaClass = 'gv-grid__col-' + this.props.data.colspan,
             fields = null;
@@ -41,11 +74,11 @@ var RowColumn = React.createClass({
             fields = this.props.data.fields.map( this.renderField, this );
         }
 
-        return(
-            <div className={areaClass} >
-                <div className="gv-grid__droppable-area" data-column={this.props.colId}>
+        return connectDropTarget(
+            <div className={areaClass}>
+                <div className="gv-grid__droppable-area">
                     {fields}
-                    <a onClick={this.props.onClickAddItem} title={this.renderAddLabel()}>+ {this.renderAddLabel()}</a>
+                    <a onClick={this.handleFieldAdd} title={this.renderAddLabel()}>+ {this.renderAddLabel()}</a>
                 </div>
             </div>
         );
@@ -54,4 +87,4 @@ var RowColumn = React.createClass({
 
 });
 
-module.exports = RowColumn;
+module.exports = DropTarget( ViewConstants.TYPE_FIELD, columnTarget, collect )(RowColumn);

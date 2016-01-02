@@ -5,6 +5,9 @@ var ViewConstants = require('../../constants/view-constants.js');
 var ViewActions = require('../../actions/view-actions.js');
 var LayoutStore = require('../../stores/layout-store.js');
 
+// DnD
+var DragDropContext = require('react-dnd').DragDropContext;
+var HTML5Backend = require('react-dnd-html5-backend');
 
 var ViewBuilder = React.createClass({
 
@@ -72,4 +75,4 @@ var ViewBuilder = React.createClass({
 
 });
 
-module.exports = ViewBuilder;
+module.exports = DragDropContext(HTML5Backend)(ViewBuilder);
