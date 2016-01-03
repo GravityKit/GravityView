@@ -112,10 +112,6 @@ class GravityView_Merge_Tags {
 				'label' => __('Date Created', 'gravityview'),
 				'tag' => '{date_created}'
 			),
-			array(
-				'label' => __('Date Created (Relative Date)', 'gravityview'),
-				'tag' => '{date_created:relative}',
-			),
 		);
 
 		//return the form object from the php hook
