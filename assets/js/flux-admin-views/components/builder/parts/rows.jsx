@@ -19,7 +19,7 @@ var Rows = React.createClass({
             <Row
                 key={row.id}
                 tabId={this.props.tabId}
-                rowId={this.props.rowId}
+                rowId={row.id}
                 type={this.props.type}
                 data={row}
             />

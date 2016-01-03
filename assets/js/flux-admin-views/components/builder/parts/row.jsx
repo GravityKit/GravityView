@@ -21,7 +21,6 @@ var Row = React.createClass({
                 colId={i}
                 type={this.props.type}
                 data={column}
-
             />
         );
     },

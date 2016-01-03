@@ -10,7 +10,7 @@ var columnTarget = {
     drop: function ( props, monitor ) {
         var pointer = { context: props.tabId, row: props.rowId, col: props.colId };
         var item = monitor.getItem();
-        ViewActions.moveField( item.id, item.source, pointer );
+        ViewActions.moveField( item.data, item.source, pointer );
     }
 };
 

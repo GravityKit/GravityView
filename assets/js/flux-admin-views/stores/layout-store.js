@@ -88,8 +88,6 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
 
 
     setFieldsSections: function( sections ) {
-        console.log( 'setFieldsSections' );
-        console.log( sections );
         this.fieldsSections = sections;
     },
 
@@ -186,7 +184,7 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
      * @param context
      * @param row
      * @param col
-     * @param field
+     * @param field string Field id
      */
     removeField: function( context, row, col, field ) {
         var rowI = ViewCommon.findRowIndex( this.layout[ context ]['rows'], row ),
@@ -199,20 +197,16 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
 
 
     /**
-     * Add Field to Layout (without the complete gv_settings object)
+     * Add Field to Layout
      * @param context
      * @param row
      * @param col
-     * @param field
+     * @param field Object Field
      */
     addField: function( context, row, col, field ) {
 
         var rowI = ViewCommon.findRowIndex( this.layout[ context ]['rows'], row ),
             fields = this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'];
-
-        // manipulate field object to the right format
-        field['gv_settings'] = { 'label': field['field_label'] };
-        delete field['field_label'];
 
         // add the new field to layout
         fields.push( field );
@@ -279,7 +273,20 @@ ViewDispatcher.register( function( action ) {
             break;
 
         case ViewConstants.LAYOUT_ADD_FIELD:
+
+            // manipulate field object to the right format
+            action.field['gv_settings'] = { 'label': action.field['field_label'] };
+            delete action.field['field_label'];
+
             LayoutStore.addField( action.context, action.row, action.col, action.field );
+            LayoutStore.emitChange();
+            break;
+
+        case ViewConstants.LAYOUT_MOV_FIELD:
+            var source = action.source,
+                target = action.target;
+            LayoutStore.removeField( source.context, source.row, source.col, action.item['id'] );
+            LayoutStore.addField( target.context, target.row, target.col, action.item );
             LayoutStore.emitChange();
             break;
 
@@ -303,6 +310,7 @@ ViewDispatcher.register( function( action ) {
             LayoutStore.setFieldsList( action.context, action.values );
             LayoutStore.emitChange();
             break;
+
 
 
     }

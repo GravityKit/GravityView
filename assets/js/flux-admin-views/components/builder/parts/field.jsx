@@ -7,7 +7,7 @@ var fieldSource = {
     beginDrag: function ( props ) {
         // Return the data describing the dragged item
         var pointer = { context: props.tabId, row: props.rowId, col: props.colId };
-        var item = { id: props.data.id, source: pointer };
+        var item = { data: props.data, source: pointer };
         return item;
     },
 

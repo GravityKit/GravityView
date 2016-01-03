@@ -177,11 +177,10 @@ module.exports = {
         });
     },
 
-    moveField: function moveField(id, source, target) {
-        console.log('drag' + id);
+    moveField: function moveField(data, source, target) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_MOV_FIELD,
-            itemId: id,
+            item: data,
             source: source,
             target: target
         });
@@ -539,7 +538,7 @@ var fieldSource = {
     beginDrag: function beginDrag(props) {
         // Return the data describing the dragged item
         var pointer = { context: props.tabId, row: props.rowId, col: props.colId };
-        var item = { id: props.data.id, source: pointer };
+        var item = { data: props.data, source: pointer };
         return item;
     }
 
@@ -652,7 +651,7 @@ var columnTarget = {
     drop: function drop(props, monitor) {
         var pointer = { context: props.tabId, row: props.rowId, col: props.colId };
         var item = monitor.getItem();
-        ViewActions.moveField(item.id, item.source, pointer);
+        ViewActions.moveField(item.data, item.source, pointer);
     }
 };
 
@@ -837,7 +836,6 @@ var Row = React.createClass({
             colId: i,
             type: this.props.type,
             data: column
-
         });
     },
 
@@ -885,7 +883,7 @@ var Rows = React.createClass({
         return React.createElement(Row, {
             key: row.id,
             tabId: this.props.tabId,
-            rowId: this.props.rowId,
+            rowId: row.id,
             type: this.props.type,
             data: row
         });
@@ -2772,8 +2770,6 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
     },
 
     setFieldsSections: function setFieldsSections(sections) {
-        console.log('setFieldsSections');
-        console.log(sections);
         this.fieldsSections = sections;
     },
 
@@ -2866,7 +2862,7 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
      * @param context
      * @param row
      * @param col
-     * @param field
+     * @param field string Field id
      */
     removeField: function removeField(context, row, col, field) {
         var rowI = ViewCommon.findRowIndex(this.layout[context]['rows'], row),
@@ -2878,20 +2874,16 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
     },
 
     /**
-     * Add Field to Layout (without the complete gv_settings object)
+     * Add Field to Layout
      * @param context
      * @param row
      * @param col
-     * @param field
+     * @param field Object Field
      */
     addField: function addField(context, row, col, field) {
 
         var rowI = ViewCommon.findRowIndex(this.layout[context]['rows'], row),
             fields = this.layout[context]['rows'][rowI]['columns'][col]['fields'];
-
-        // manipulate field object to the right format
-        field['gv_settings'] = { 'label': field['field_label'] };
-        delete field['field_label'];
 
         // add the new field to layout
         fields.push(field);
@@ -2956,7 +2948,20 @@ ViewDispatcher.register(function (action) {
             break;
 
         case ViewConstants.LAYOUT_ADD_FIELD:
+
+            // manipulate field object to the right format
+            action.field['gv_settings'] = { 'label': action.field['field_label'] };
+            delete action.field['field_label'];
+
             LayoutStore.addField(action.context, action.row, action.col, action.field);
+            LayoutStore.emitChange();
+            break;
+
+        case ViewConstants.LAYOUT_MOV_FIELD:
+            var source = action.source,
+                target = action.target;
+            LayoutStore.removeField(source.context, source.row, source.col, action.item['id']);
+            LayoutStore.addField(target.context, target.row, target.col, action.item);
             LayoutStore.emitChange();
             break;
 

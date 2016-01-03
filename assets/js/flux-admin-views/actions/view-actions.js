@@ -173,11 +173,10 @@ module.exports = {
         });
     },
 
-    moveField: function( id, source, target ) {
-        console.log('drag'+id);
+    moveField: function( data, source, target ) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_MOV_FIELD,
-            itemId: id,
+            item: data,
             source: source,
             target: target
         });
