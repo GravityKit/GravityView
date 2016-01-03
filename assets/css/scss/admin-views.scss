@@ -856,6 +856,7 @@ hr {
 		text-align: center;
 		font-size: 16px;
 		line-height: 20px;
+		padding: 0 40px; // When there's error text, have it be narrow
 		display: block;
 
 		.spinner {

@@ -152,6 +152,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			'label_label' => esc_html__( 'Label', 'gravityview' ),
 			'label_searchfield' => esc_html__( 'Search Field', 'gravityview' ),
 			'label_inputtype' => esc_html__( 'Input Type', 'gravityview' ),
+			'label_ajaxerror' => esc_html__( 'There was an error loading searchable fields. Save the View or refresh the page to fix this issue.', 'gravityview' ),
 			'input_labels' => json_encode( $input_labels ),
 			'input_types' => json_encode( $input_types ),
 		) );
@@ -176,8 +177,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	public static function get_searchable_fields() {
 
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxsearchwidget' ) ) {
-			exit( 0 );
+			exit( '0' );
 		}
+
 		$form = '';
 
 		// Fetch the form for the current View

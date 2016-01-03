@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Tweak: Only show Add View button to users who are able to publish Views
 * Tweak: Reduce the number of database calls by fetching forms differently
 * Fixed: Inaccurate "Key missing" error shown when license key is invalid
+* Fixed: Search Bar could show "undefined" search fields when security key has expired. Now, a helpful message will appear.
 * Tweak: Only show license key notices to users who have capability to edit settings, and only on GravityView pages
 * Tweak: Improved load time of Views screen in the admin
 * Tweak: Make sure entry belongs to correct form before displaying
