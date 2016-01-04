@@ -30,11 +30,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Tweak: Only show license key notices to users who have capability to edit settings, and only on GravityView pages
 * Tweak: Improved load time of Views screen in the admin
 * Tweak: Make sure entry belongs to correct form before displaying
+* Tweak: Removed need for one database call per entry
 
 __Developer Notes:__
 
 * New: `gravityview_get_terms_choices()` function generates array of categories ready to be added to Gravity Forms $choices array
 * Fixed: Fetching the current entry can improperly return an empty array when using `GravityView_View->getCurrentEntry()` in DataTables extension
+* New: Added `add_filter( 'gform_is_encrypted_field', '__return_false' );` before fetching entries
 
 __Developer Notes:__
 
