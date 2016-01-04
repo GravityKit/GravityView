@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-creditcard.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 class GravityView_Field_CreditCard extends GravityView_Field {
 

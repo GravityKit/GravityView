@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-post-tags.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 /**
  * Add custom options for date fields

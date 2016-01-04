@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-post-excerpt.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 class GravityView_Post_Excerpt extends GravityView_Field {
 

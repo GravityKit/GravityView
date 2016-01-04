@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-post-image.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 /**
  * Add custom options for Post Image fields

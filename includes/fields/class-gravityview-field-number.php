@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file class-gravityview-field-number.php
+ * @package GravityView
+ * @subpackage includes\fields
+ * @since 1.13
+ */
 
 /**
  * Add custom options for number fields

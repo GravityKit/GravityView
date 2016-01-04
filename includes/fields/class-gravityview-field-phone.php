@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-phone.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 class GravityView_Field_Phone extends GravityView_Field {
 

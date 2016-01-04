@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file class-gravityview-field-payment-amount.php
+ * @package GravityView
+ * @subpackage includes\fields
+ * @since TODO
+ */
 
 class GravityView_Field_Payment_Amount extends GravityView_Field {
 

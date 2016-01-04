@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-checkbox.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 class GravityView_Field_Checkbox extends GravityView_Field {
 

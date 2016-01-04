@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-textarea.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 /**
  * Add custom options for textarea fields

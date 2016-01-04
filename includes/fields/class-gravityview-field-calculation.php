@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-calculation.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 class GravityView_Field_Calculation extends GravityView_Field {
 

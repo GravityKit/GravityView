@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-captcha.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 class GravityView_Field_Captcha extends GravityView_Field {
 

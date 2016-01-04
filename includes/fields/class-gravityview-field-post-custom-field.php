@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-post-custom-field.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 class GravityView_Field_Post_Custom_Field extends GravityView_Field {
 

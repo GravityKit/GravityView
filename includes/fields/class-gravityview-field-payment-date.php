@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file class-gravityview-field-payment-date.php
+ * @package GravityView
+ * @subpackage includes\fields
+ * @since TODO
+ */
 
 class GravityView_Field_Payment_Date extends GravityView_Field_Date_Created {
 

@@ -1,8 +1,10 @@
 <?php
-
 /**
- * Add custom options for date fields
+ * @file class-gravityview-field-post-content.php
+ * @package GravityView
+ * @subpackage includes\fields
  */
+
 class GravityView_Field_Post_Content extends GravityView_Field {
 
 	var $name = 'post_content';

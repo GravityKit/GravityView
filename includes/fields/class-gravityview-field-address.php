@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-address.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 /**
  * Add custom options for address fields
