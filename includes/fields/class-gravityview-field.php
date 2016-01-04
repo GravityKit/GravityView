@@ -125,18 +125,18 @@ abstract class GravityView_Field {
 	}
 
 	/**
-	 * Add {date_created} merge tag
+	 * Match the merge tag in replacement text for the field.  DO NOT OVERRIDE.
+	 *
+	 * @see replace_merge_tag Override replace_merge_tag() to handle any matches
 	 *
 	 * @since TODO
-	 *
-	 * @see http://docs.gravityview.co/article/281-the-createdby-merge-tag for usage information
 	 *
 	 * @param string $text Text to replace
 	 * @param array $form Gravity Forms form array
 	 * @param array $entry Entry array
 	 * @param bool $url_encode Whether to URL-encode output
 	 *
-	 * @return string Original text if {date_created} isn't found. Otherwise, replaced text.
+	 * @return string Original text if {_custom_merge_tag} isn't found. Otherwise, replaced text.
 	 */
 	public function _filter_gform_replace_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
 
@@ -183,7 +183,9 @@ abstract class GravityView_Field {
 	}
 
 	/**
-	 * Add custom merge tags to merge tag options
+	 * Add custom merge tags to merge tag options. DO NOT OVERRIDE.
+	 *
+	 * @internal Not to be overridden by fields
 	 *
 	 * @since 1.8.4
 	 *
@@ -206,12 +208,14 @@ abstract class GravityView_Field {
 	/**
 	 * Add custom Merge Tags to Merge Tag options, if custom Merge Tags exist
 	 *
+	 * Should be overridden if there's more than one Merge Tag to add or if the Merge Tag isn't {_custom_merge_tag}
+	 *
 	 * @since TODO
 	 *
 	 * @param array $form GF Form array
 	 * @param GF_Field[] $fields Array of fields in the form
 	 *
-	 * @return array Modified Merge Tags
+	 * @return array Merge tag array with `label` and `tag` keys based on class `label` and `_custom_merge_tag` variables
 	 */
 	protected function custom_merge_tags( $form = array(), $fields = array() ) {
 
