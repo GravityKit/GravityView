@@ -35,6 +35,7 @@ __Developer Notes:__
 
 * New: `gravityview_get_terms_choices()` function generates array of categories ready to be added to Gravity Forms $choices array
 * Fixed: Fetching the current entry can improperly return an empty array when using `GravityView_View->getCurrentEntry()` in DataTables extension
+* New: `GVCommon::has_product_field()` method to check whether a form has product fields
 
 __Developer Notes:__
 
