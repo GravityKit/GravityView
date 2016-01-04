@@ -57,13 +57,13 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		$tests = array(
 
 			'{date_created:raw}' => $date_created,
-			'{date_created:raw:timestamp}' => $date_created, // Order defined
+			'{date_created:raw:timestamp}' => $date_created, // Raw logic is first, it wins
 			'{date_created:raw:time}' => $date_created,
 			'{date_created:raw:human}' => $date_created,
 			'{date_created:raw:format:example}' => $date_created,
 
+			'{date_created:timestamp:raw}' => $date_created, // Raw logic is first, it wins
 			'{date_created:timestamp}' => $entry_local_time,
-			'{date_created:timestamp:raw}' => $entry_local_time, // Order defined
 			'{date_created:timestamp:time}' => $entry_local_time,
 			'{date_created:timestamp:human}' => $entry_local_time,
 			'{date_created:timestamp:format:example}' => $entry_local_time,
