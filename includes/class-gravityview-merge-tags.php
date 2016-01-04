@@ -19,8 +19,6 @@ class GravityView_Merge_Tags {
 	 */
 	private function add_hooks() {
 
-		add_filter( 'gform_custom_merge_tags', array( $this, '_gform_custom_merge_tags' ), 10, 4 );
-
 		/** @see GFCommon::replace_variables_prepopulate **/
 		add_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', 'replace_gv_merge_tags' ), 10, 7 );
 
@@ -74,51 +72,6 @@ class GravityView_Merge_Tags {
 	}
 
 	/**
-	 * Add custom merge tags to merge tag options
-	 *
-	 * @since 1.8.4
-	 *
-	 * @param array $existing_merge_tags
-	 * @param int $form_id GF Form ID
-	 * @param GF_Field[] $fields Array of fields in the form
-	 * @param string $element_id The ID of the input that Merge Tags are being used on
-	 *
-	 * @return array Modified merge tags
-	 */
-	public function _gform_custom_merge_tags( $existing_merge_tags = array(), $form_id, $fields = array(), $element_id = '' ) {
-
-		$created_by_merge_tags = array(
-			array(
-				'label' => __('Entry Creator: Display Name', 'gravityview'),
-				'tag' => '{created_by:display_name}'
-			),
-			array(
-				'label' => __('Entry Creator: Email', 'gravityview'),
-				'tag' => '{created_by:user_email}'
-			),
-			array(
-				'label' => __('Entry Creator: Username', 'gravityview'),
-				'tag' => '{created_by:user_login}'
-			),
-			array(
-				'label' => __('Entry Creator: User ID', 'gravityview'),
-				'tag' => '{created_by:ID}'
-			),
-			array(
-				'label' => __('Entry Creator: Roles', 'gravityview'),
-				'tag' => '{created_by:roles}'
-			),
-			array(
-				'label' => __('Date Created', 'gravityview'),
-				'tag' => '{date_created}'
-			),
-		);
-
-		//return the form object from the php hook
-		return array_merge( $existing_merge_tags, $created_by_merge_tags );
-	}
-
-	/**
 	 * Run GravityView filters when using GFCommon::replace_variables()
 	 *
 	 * Instead of adding multiple hooks, add all hooks into this one method to improve speed
@@ -147,41 +100,11 @@ class GravityView_Merge_Tags {
 
 		$text = self::replace_get_variables( $text, $form, $entry, $url_encode );
 
-		// Process the merge vars here
-		$text = self::replace_user_variables_created_by( $text, $form, $entry, $url_encode, $esc_html );
-
-		$text = self::replace_date_created( $text, $form, $entry, $url_encode, $esc_html );
-
 		return $text;
 	}
 
-	/**
-	 * Add {date_created} merge tag
-	 *
-	 * @since TODO
-	 *
-	 * @see http://docs.gravityview.co/article/281-the-createdby-merge-tag for usage information
-	 *
-	 * @param string $text Text to replace
-	 * @param array $form Gravity Forms form array
-	 * @param array $entry Entry array
-	 * @param bool $url_encode Whether to URL-encode output
-	 *
-	 * @return string Original text if {date_created} isn't found. Otherwise, replaced text.
-	 */
-	public static function replace_date_created( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
+	public static function format_date( $date_created, $full_tag, $property ) {
 
-		// Is there is Date Created merge tag?
-		preg_match_all( "/{date_created:?(.*?)(?:\s)?}/ism", $text, $matches, PREG_SET_ORDER );
-
-		// If there are no matches OR the Entry `created_by` isn't set or is 0 (no user)
-		if ( empty( $matches ) ) {
-			return $text;
-		}
-
-		$return = $text;
-
-		$date_created = rgar( $entry, 'date_created' );
 		$site_date_format  = get_option( 'date_format' );
 
 		/**
@@ -191,43 +114,35 @@ class GravityView_Merge_Tags {
 		$entry_gmt_time   = mysql2date( 'G', $date_created );
 		$entry_local_timestamp = GFCommon::get_local_timestamp( $entry_gmt_time );
 
-		foreach ( $matches as $match ) {
+		// Expand all modifiers, skipping escaped colons. str_replace worked better than preg_split( "/(?<!\\):/" )
+		$exploded = explode( ':', str_replace( '\:', '|COLON|', $property ) );
 
-			$full_tag          = $match[0];
-			$property          = $match[1];
+		$is_human  = in_array( 'human', $exploded ); // {date_created:human}
+		$is_diff  = in_array( 'diff', $exploded ); // {date_created:diff}
+		$is_raw = in_array( 'raw', $exploded ); // {date_created:raw}
+		$is_timestamp = in_array( 'timestamp', $exploded ); // {date_created:timestamp}
 
-			// Expand all modifiers, skipping escaped colons. str_replace worked better than preg_split( "/(?<!\\):/" )
-			$exploded = explode( ':', str_replace( '\:', '|COLON|', $property ) );
+		// If {date_created:raw} was specified, don't modify the stored value
+		if ( $is_raw ) {
+			$formatted_date = $date_created;
+		} elseif( $is_timestamp ) {
+			$formatted_date = $entry_local_timestamp;
+		} elseif ( $is_diff ) {
 
-			$is_human  = in_array( 'human', $exploded ); // {date_created:human}
-			$is_diff  = in_array( 'diff', $exploded ); // {date_created:diff}
-			$is_raw = in_array( 'raw', $exploded ); // {date_created:raw}
-			$is_timestamp = in_array( 'timestamp', $exploded ); // {date_created:timestamp}
+			/* translators: %s is the time (seconds, hours, days, weeks, months, years) since entry was created */
+			$relative_format = self::get_format_from_modifiers( $exploded, esc_html__( '%s ago', 'gravityview' ) );
 
-			// If {date_created:raw} was specified, don't modify the stored value
-			if ( $is_raw ) {
-				$formatted_date = $date_created;
-			} elseif( $is_timestamp ) {
-				$formatted_date = $entry_local_timestamp;
-			} elseif ( $is_diff ) {
+			$formatted_date = sprintf( $relative_format, human_time_diff( $entry_gmt_time ) );
 
-				/* translators: %s is the time (seconds, hours, days, weeks, months, years) since entry was created */
-				$relative_format = self::get_format_from_modifiers( $exploded, esc_html__( '%s ago', 'gravityview' ) );
+		} else {
 
-				$formatted_date = sprintf( $relative_format, human_time_diff( $entry_gmt_time ) );
+			$include_time = in_array( 'time', $exploded );  // {date_created:time}
+			$match_date_format = self::get_format_from_modifiers( $exploded, $site_date_format );
 
-			} else {
-
-				$include_time = in_array( 'time', $exploded );  // {date_created:time}
-				$match_date_format = self::get_format_from_modifiers( $exploded, $site_date_format );
-
-				$formatted_date = GFCommon::format_date( $date_created, $is_human, $match_date_format, $include_time );
-			}
-
-			$return = str_replace( $full_tag, $formatted_date, $return );
+			$formatted_date = GFCommon::format_date( $date_created, $is_human, $match_date_format, $include_time );
 		}
-		
-		return $return;
+
+		return $formatted_date;
 	}
 
 	/**
@@ -333,61 +248,6 @@ class GravityView_Merge_Tags {
 		}
 
 		unset( $value, $glue, $matches );
-
-		return $text;
-	}
-
-	/**
-	 * Exactly like Gravity Forms' User Meta functionality, but instead shows information on the user who created the entry
-	 * instead of the currently logged-in user.
-	 *
-	 * @see http://docs.gravityview.co/article/281-the-createdby-merge-tag Read how to use the `{created_by}` merge tag
-	 *
-	 * @since 1.8.4
-	 *
-	 * @param string $text Text to replace
-	 * @param array $form Gravity Forms form array
-	 * @param array $entry Entry array
-	 * @param bool $url_encode Whether to URL-encode output
-	 * @param bool $esc_html Whether to apply `esc_html()` to output
-	 *
-	 * @return string Text, with user variables replaced, if they existed
-	 */
-	private static function replace_user_variables_created_by( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
-
-		// Is there is {created_by:[xyz]} merge tag?
-		preg_match_all( "/\{created_by:(.*?)\}/", $text, $matches, PREG_SET_ORDER );
-
-		// If there are no matches OR the Entry `created_by` isn't set or is 0 (no user)
-		if( empty( $matches ) || empty( $entry['created_by'] ) ) {
-			return $text;
-		}
-
-		// Get the creator of the entry
-		$entry_creator = new WP_User( $entry['created_by'] );
-
-		foreach ( $matches as $match ) {
-
-			$full_tag = $match[0];
-			$property = $match[1];
-
-			switch( $property ) {
-				/** @since 1.13.2 */
-				case 'roles':
-					$value = implode( ', ', $entry_creator->roles );
-					break;
-				default:
-					$value = $entry_creator->get( $property );
-			}
-
-			$value = $url_encode ? urlencode( $value ) : $value;
-
-			$value = $esc_html ? esc_html( $value ) : $value;
-
-			$text = str_replace( $full_tag, $value, $text );
-		}
-
-		unset( $entry_creator );
 
 		return $text;
 	}

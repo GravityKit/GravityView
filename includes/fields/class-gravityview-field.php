@@ -90,6 +90,12 @@ abstract class GravityView_Field {
 	 */
 	protected $_field_options = array();
 
+	/**
+	 * @var bool|string Name of merge tag (without curly brackets), if the field has custom GravityView merge tags to add. Otherwise, false.
+	 * @since todo
+	 */
+	protected $_custom_merge_tag = false;
+
 	function __construct() {
 
 		/**
@@ -105,6 +111,114 @@ abstract class GravityView_Field {
 		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 5 );
 
 		add_filter( 'gravityview/sortable/field_blacklist', array( $this, '_filter_sortable_fields' ), 1 );
+
+		if( $this->_custom_merge_tag ) {
+			add_filter( 'gform_custom_merge_tags', array( $this, '_filter_gform_custom_merge_tags' ), 10, 4 );
+			add_filter( 'gform_replace_merge_tags', array( $this, '_filter_gform_replace_merge_tags' ), 10, 7 );
+		}
+
+	}
+
+	/**
+	 * Add {date_created} merge tag
+	 *
+	 * @since TODO
+	 *
+	 * @see http://docs.gravityview.co/article/281-the-createdby-merge-tag for usage information
+	 *
+	 * @param string $text Text to replace
+	 * @param array $form Gravity Forms form array
+	 * @param array $entry Entry array
+	 * @param bool $url_encode Whether to URL-encode output
+	 *
+	 * @return string Original text if {date_created} isn't found. Otherwise, replaced text.
+	 */
+	public function _filter_gform_replace_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
+
+
+		/**
+		 * This prevents the gform_replace_merge_tags filter from being called twice, as defined in:
+		 * @see GFCommon::replace_variables()
+		 * @see GFCommon::replace_variables_prepopulate()
+		 * @todo Remove eventually: Gravity Forms fixed this issue in 1.9.14
+		 */
+		if( false === $form ) {
+			return $text;
+		}
+
+		// Is there is field merge tag? Strip whitespace off the ned, too.
+		preg_match_all( '/{' . preg_quote( $this->_custom_merge_tag ) . ':?(.*?)(?:\s)?}/ism', $text, $matches, PREG_SET_ORDER );
+
+		// If there are no matches, return original text
+		if ( empty( $matches ) ) {
+			return $text;
+		}
+
+		return $this->replace_merge_tag( $matches, $text, $form, $entry, $url_encode, $esc_html );
+	}
+
+	/**
+	 * Run GravityView filters when using GFCommon::replace_variables()
+	 *
+	 * Instead of adding multiple hooks, add all hooks into this one method to improve speed
+	 *
+	 * @since 1.8.4
+	 *
+	 * @param array $matches Array of Merge Tag matches found in text by preg_match_all
+	 * @param string $text Text to replace
+	 * @param array|bool $form Gravity Forms form array. When called inside {@see GFCommon::replace_variables()} (now deprecated), `false`
+	 * @param array|bool $entry Entry array.  When called inside {@see GFCommon::replace_variables()} (now deprecated), `false`
+	 * @param bool $url_encode Whether to URL-encode output
+	 * @param bool $esc_html Whether to apply `esc_html()` to output
+	 *
+	 * @return mixed
+	 */
+	public function replace_merge_tag( $matches = array(), $text = '', $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+		return $text;
+	}
+
+	/**
+	 * Add custom merge tags to merge tag options
+	 *
+	 * @since 1.8.4
+	 *
+	 * @param array $existing_merge_tags
+	 * @param int $form_id GF Form ID
+	 * @param GF_Field[] $fields Array of fields in the form
+	 * @param string $element_id The ID of the input that Merge Tags are being used on
+	 *
+	 * @return array Modified merge tags
+	 */
+	public function _filter_gform_custom_merge_tags( $custom_merge_tags = array(), $form_id, $fields = array(), $element_id = '' ) {
+
+		$form = GVCommon::get_form( $form_id );
+
+		$field_merge_tags = $this->custom_merge_tags( $form, $fields );
+
+		return array_merge( $custom_merge_tags, $field_merge_tags );
+	}
+
+	/**
+	 * Add custom Merge Tags to Merge Tag options, if custom Merge Tags exist
+	 *
+	 * @since TODO
+	 *
+	 * @param array $form GF Form array
+	 * @param GF_Field[] $fields Array of fields in the form
+	 *
+	 * @return array Modified Merge Tags
+	 */
+	protected function custom_merge_tags( $form = array(), $fields = array() ) {
+
+		// Use variables to make it unnecessary for other fields to override
+		$merge_tags = array(
+			array(
+				'label' => $this->label,
+				'tag' => '{' . $this->_custom_merge_tag . '}',
+			),
+		);
+
+		return $merge_tags;
 	}
 
 	/**
