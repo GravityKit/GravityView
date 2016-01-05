@@ -2062,35 +2062,103 @@ module.exports = ViewCommon;
 'use strict';
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var ViewConstants = require('../../../constants/view-constants');
 var ViewActions = require('../../../actions/view-actions.js');
 var DragSource = require('react-dnd').DragSource;
+var DropTarget = require('react-dnd').DropTarget;
 
 var fieldSource = {
     beginDrag: function beginDrag(props) {
         // Return the data describing the dragged item
-        var pointer = { context: props.tabId, row: props.rowId, col: props.colId };
+        var pointer = { context: props.tabId, row: props.rowId, col: props.colId, index: props.order };
         var item = { data: props.data, source: pointer };
         return item;
+    },
+
+    isDragging: function isDragging(props, monitor) {
+        return props.data.id === monitor.getItem().data.id;
+    }
+
+    /*endDrag: function ( props, monitor, component ) {
+        if ( !monitor.didDrop() ) {
+            return;
+        }
+         // When dropped on a compatible target, do something
+        var item = monitor.getItem();
+        var dropResult = monitor.getDropResult();
+     }*/
+};
+
+var fieldTarget = {
+
+    drop: function drop(props, monitor) {
+        var pointer = { context: props.tabId, row: props.rowId, col: props.colId, index: props.order };
+        var item = monitor.getItem();
+        //ViewActions.moveField( item.data, item.source, pointer );
+    },
+
+    hover: function hover(props, monitor, component) {
+        var item = monitor.getItem(),
+            dragPointer = item.source;
+        var hoverPointer = { context: props.tabId, row: props.rowId, col: props.colId, index: props.order };
+
+        // Don't replace items with themselves
+        if (dragPointer === hoverPointer) {
+            return;
+        }
+        /*
+                // Determine rectangle on screen
+                const hoverBoundingRect = ReactDOM.findDOMNode( component ).getBoundingClientRect();
+        
+                // Get vertical middle
+                const hoverMiddleY = ( hoverBoundingRect.bottom - hoverBoundingRect.top ) / 2;
+        
+                // Determine mouse position
+                const clientOffset = monitor.getClientOffset();
+        
+                // Get pixels to the top
+                const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+        
+                // Only perform the move when the mouse has crossed half of the items height
+                // When dragging downwards, only move when the cursor is below 50%
+                // When dragging upwards, only move when the cursor is above 50%
+        
+                if( dragPointer.row === hoverPointer.row && dragPointer.col === hoverPointer.col ) {
+                    // Dragging downwards
+                    if ( dragPointer.index < hoverPointer.index && hoverClientY < hoverMiddleY) {
+                        return;
+                    }
+        
+                    // Dragging upwards
+                    if ( dragPointer.index > hoverPointer.index && hoverClientY > hoverMiddleY) {
+                        return;
+                    }
+                }*/
+
+        // Time to actually perform the action
+        ViewActions.moveField(item.data, dragPointer, hoverPointer);
+
+        // Note: we're mutating the monitor item here!
+        // Generally it's better to avoid mutations,
+        // but it's good here for the sake of performance
+        // to avoid expensive index searches.
+        monitor.getItem().source = hoverPointer;
     }
 
 };
 
-/*endDrag: function ( props, monitor, component ) {
-    if ( !monitor.didDrop() ) {
-        return;
-    }
-     // When dropped on a compatible target, do something
-    var item = monitor.getItem();
-    var dropResult = monitor.getDropResult();
- }*/
-function collect(connect, monitor) {
+function collectSource(connect, monitor) {
     return {
-        // Call this function inside render()
-        // to let React DnD handle the drag events:
         connectDragSource: connect.dragSource(),
-        // You can ask the monitor about the current drag state:
         isDragging: monitor.isDragging()
+    };
+}
+
+function collectTarget(connect, monitor) {
+    return {
+        connectDropTarget: connect.dropTarget(),
+        isOver: monitor.isOver()
     };
 }
 
@@ -2101,6 +2169,7 @@ var Field = React.createClass({
         tabId: React.PropTypes.string, // tab id
         rowId: React.PropTypes.string, // row id
         colId: React.PropTypes.number, // Column order on the row
+        order: React.PropTypes.number,
         data: React.PropTypes.object },
 
     // Field detail object
@@ -2132,13 +2201,17 @@ var Field = React.createClass({
 
     render: function render() {
 
-        var connectDragSource = this.props.connectDragSource;
+        var connectDragSource = this.props.connectDragSource,
+            connectDropTarget = this.props.connectDropTarget,
+            isDragging = this.props.isDragging;
+
+        var opacity = isDragging ? 0 : 1;
 
         var label = this.props.data['gv_settings']['custom_label'] || this.props.data['gv_settings']['label'];
 
-        return connectDragSource(React.createElement(
+        return connectDragSource(connectDropTarget(React.createElement(
             'div',
-            { className: 'gv-view-field' },
+            { className: 'gv-view-field', style: { opacity: opacity } },
             React.createElement(
                 'a',
                 { onClick: this.handleFieldSettings, title: gravityview_i18n.field_settings, className: 'gv-view-field__settings', 'data-icon': '' },
@@ -2162,14 +2235,14 @@ var Field = React.createClass({
                     gravityview_i18n.field_remove
                 )
             )
-        ));
+        )));
     }
 
 });
 
-module.exports = DragSource(ViewConstants.TYPE_FIELD, fieldSource, collect)(Field);
+module.exports = DragSource(ViewConstants.TYPE_FIELD, fieldSource, collectSource)(DropTarget(ViewConstants.TYPE_FIELD, fieldTarget, collectTarget)(Field));
 
-},{"../../../actions/view-actions.js":1,"../../../constants/view-constants":35,"react":338,"react-dnd":115}],6:[function(require,module,exports){
+},{"../../../actions/view-actions.js":1,"../../../constants/view-constants":35,"react":338,"react-dnd":115,"react-dom":179}],6:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -2181,7 +2254,12 @@ var DropTarget = require('react-dnd').DropTarget;
 
 var columnTarget = {
     drop: function drop(props, monitor) {
-        var pointer = { context: props.tabId, row: props.rowId, col: props.colId };
+
+        // if this target column has fields in it, handle drop on the field target.
+        if (props.data['fields'].length > 0) {
+            return;
+        }
+        var pointer = { context: props.tabId, row: props.rowId, col: props.colId, index: null };
         var item = monitor.getItem();
         ViewActions.moveField(item.data, item.source, pointer);
     }
@@ -2231,6 +2309,7 @@ var RowColumn = React.createClass({
             tabId: this.props.tabId,
             rowId: this.props.rowId,
             colId: this.props.colId,
+            order: i,
             data: field
         });
     },
@@ -3239,7 +3318,9 @@ var PanelRouter = React.createClass({
         if (nextState.forms.length && nextState.forms !== this.state.forms) {
             ViewActions.fetchFieldsList(nextState.forms);
         }
-        return true;
+
+        // if panels are close, don't update.
+        return !(this.state.currentPanel === null && nextState.currentPanel === null);
     },
 
     componentWillUnmount: function componentWillUnmount() {
@@ -3746,8 +3827,7 @@ var PanelContentMenu = React.createClass({
     },
 
     render: function render() {
-        console.log('panel content menu');
-        console.log(this.props.menuItems);
+
         if (!this.props.menuItems) {
             return null;
         }
@@ -4412,13 +4492,17 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
      * @param col
      * @param field Object Field
      */
-    addField: function addField(context, row, col, field) {
+    addField: function addField(context, row, col, index, field) {
 
         var rowI = ViewCommon.findRowIndex(this.layout[context]['rows'], row),
             fields = this.layout[context]['rows'][rowI]['columns'][col]['fields'];
 
         // add the new field to layout
-        fields.push(field);
+        if (null === index) {
+            fields.push(field);
+        } else {
+            fields.splice(index, 0, field);
+        }
 
         this.layout[context]['rows'][rowI]['columns'][col]['fields'] = fields;
     },
@@ -4485,7 +4569,7 @@ ViewDispatcher.register(function (action) {
             action.field['gv_settings'] = { 'label': action.field['field_label'] };
             delete action.field['field_label'];
 
-            LayoutStore.addField(action.context, action.row, action.col, action.field);
+            LayoutStore.addField(action.context, action.row, action.col, null, action.field);
             LayoutStore.emitChange();
             break;
 
@@ -4493,7 +4577,7 @@ ViewDispatcher.register(function (action) {
             var source = action.source,
                 target = action.target;
             LayoutStore.removeField(source.context, source.row, source.col, action.item['id']);
-            LayoutStore.addField(target.context, target.row, target.col, action.item);
+            LayoutStore.addField(target.context, target.row, target.col, target.index, action.item);
             LayoutStore.emitChange();
             break;
 

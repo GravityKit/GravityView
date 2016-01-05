@@ -203,13 +203,17 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
      * @param col
      * @param field Object Field
      */
-    addField: function( context, row, col, field ) {
+    addField: function( context, row, col, index, field ) {
 
         var rowI = ViewCommon.findRowIndex( this.layout[ context ]['rows'], row ),
             fields = this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'];
 
         // add the new field to layout
-        fields.push( field );
+        if( null === index ) {
+            fields.push( field );
+        } else {
+            fields.splice( index, 0, field );
+        }
 
         this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'] = fields;
     },
@@ -278,7 +282,7 @@ ViewDispatcher.register( function( action ) {
             action.field['gv_settings'] = { 'label': action.field['field_label'] };
             delete action.field['field_label'];
 
-            LayoutStore.addField( action.context, action.row, action.col, action.field );
+            LayoutStore.addField( action.context, action.row, action.col, null, action.field );
             LayoutStore.emitChange();
             break;
 
@@ -286,7 +290,7 @@ ViewDispatcher.register( function( action ) {
             var source = action.source,
                 target = action.target;
             LayoutStore.removeField( source.context, source.row, source.col, action.item['id'] );
-            LayoutStore.addField( target.context, target.row, target.col, action.item );
+            LayoutStore.addField( target.context, target.row, target.col, target.index, action.item );
             LayoutStore.emitChange();
             break;
 

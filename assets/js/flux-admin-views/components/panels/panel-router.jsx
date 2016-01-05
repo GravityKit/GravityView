@@ -81,7 +81,10 @@ var PanelRouter = React.createClass({
         if( nextState.forms.length && nextState.forms !== this.state.forms ) {
             ViewActions.fetchFieldsList( nextState.forms );
         }
-        return true;
+
+        // if panels are close, don't update.
+        return !( this.state.currentPanel === null && nextState.currentPanel === null );
+
     },
 
     componentWillUnmount: function() {

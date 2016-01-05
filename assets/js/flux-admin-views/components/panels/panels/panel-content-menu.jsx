@@ -17,8 +17,7 @@ var PanelContentMenu = React.createClass({
     },
 
     render: function() {
-        console.log('panel content menu');
-        console.log( this.props.menuItems );
+
         if( ! this.props.menuItems ) {
             return null;
         }

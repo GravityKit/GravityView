@@ -8,7 +8,12 @@ var DropTarget = require('react-dnd').DropTarget;
 
 var columnTarget = {
     drop: function ( props, monitor ) {
-        var pointer = { context: props.tabId, row: props.rowId, col: props.colId };
+
+        // if this target column has fields in it, handle drop on the field target.
+        if( props.data['fields'].length > 0 ) {
+            return;
+        }
+        var pointer = { context: props.tabId, row: props.rowId, col: props.colId, index: null };
         var item = monitor.getItem();
         ViewActions.moveField( item.data, item.source, pointer );
     }
@@ -58,6 +63,7 @@ var RowColumn = React.createClass({
                 tabId={this.props.tabId}
                 rowId={this.props.rowId}
                 colId={this.props.colId}
+                order={i}
                 data={field}
             />
         );
