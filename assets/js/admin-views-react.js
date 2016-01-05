@@ -2092,57 +2092,20 @@ var fieldSource = {
 
 var fieldTarget = {
 
-    drop: function drop(props, monitor) {
-        var pointer = { context: props.tabId, row: props.rowId, col: props.colId, index: props.order };
-        var item = monitor.getItem();
-        //ViewActions.moveField( item.data, item.source, pointer );
-    },
-
     hover: function hover(props, monitor, component) {
         var item = monitor.getItem(),
             dragPointer = item.source;
         var hoverPointer = { context: props.tabId, row: props.rowId, col: props.colId, index: props.order };
 
         // Don't replace items with themselves
-        if (dragPointer === hoverPointer) {
+        if (dragPointer === hoverPointer || item.data.id === props.data.id) {
             return;
         }
-        /*
-                // Determine rectangle on screen
-                const hoverBoundingRect = ReactDOM.findDOMNode( component ).getBoundingClientRect();
-        
-                // Get vertical middle
-                const hoverMiddleY = ( hoverBoundingRect.bottom - hoverBoundingRect.top ) / 2;
-        
-                // Determine mouse position
-                const clientOffset = monitor.getClientOffset();
-        
-                // Get pixels to the top
-                const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-        
-                // Only perform the move when the mouse has crossed half of the items height
-                // When dragging downwards, only move when the cursor is below 50%
-                // When dragging upwards, only move when the cursor is above 50%
-        
-                if( dragPointer.row === hoverPointer.row && dragPointer.col === hoverPointer.col ) {
-                    // Dragging downwards
-                    if ( dragPointer.index < hoverPointer.index && hoverClientY < hoverMiddleY) {
-                        return;
-                    }
-        
-                    // Dragging upwards
-                    if ( dragPointer.index > hoverPointer.index && hoverClientY > hoverMiddleY) {
-                        return;
-                    }
-                }*/
 
-        // Time to actually perform the action
+        // Time to actually perform the action (it will be opacity=0 until drag is over)
         ViewActions.moveField(item.data, dragPointer, hoverPointer);
 
         // Note: we're mutating the monitor item here!
-        // Generally it's better to avoid mutations,
-        // but it's good here for the sake of performance
-        // to avoid expensive index searches.
         monitor.getItem().source = hoverPointer;
     }
 
