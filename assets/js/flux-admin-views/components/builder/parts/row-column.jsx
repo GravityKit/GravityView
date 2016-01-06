@@ -5,18 +5,36 @@ var ViewActions = require('../../../actions/view-actions.js');
 
 var DropTarget = require('react-dnd').DropTarget;
 
-
 var columnTarget = {
     drop: function ( props, monitor ) {
+        const pointer = { context: props.tabId, row: props.rowId, col: props.colId, index: null };
+        const item = monitor.getItem();
+
+        // if field already belongs to this drop area, don't accept it on the drop.
+        if( item.source.row === pointer.row && item.source.col === pointer.col ) {
+            return;
+        }
+
+        ViewActions.moveField( item.data, item.source, pointer );
+    },
+
+    hover( props, monitor, component ) {
 
         // if this target column has fields in it, handle drop on the field target.
         if( props.data['fields'].length > 0 ) {
             return;
         }
-        var pointer = { context: props.tabId, row: props.rowId, col: props.colId, index: null };
-        var item = monitor.getItem();
-        ViewActions.moveField( item.data, item.source, pointer );
+
+        const item = monitor.getItem();
+        const targetPointer = { context: props.tabId, row: props.rowId, col: props.colId, index: 0 };
+
+        // Time to actually perform the action (it will be opacity=0 until drag is over)
+        ViewActions.moveField( item.data, item.source, targetPointer );
+
+        // Note: we're mutating the monitor item here!
+        monitor.getItem().source = targetPointer;
     }
+
 };
 
 function collect(connect, monitor) {

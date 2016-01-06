@@ -540,22 +540,24 @@ var fieldSource = {
     beginDrag: function beginDrag(props) {
         // Return the data describing the dragged item
         var pointer = { context: props.tabId, row: props.rowId, col: props.colId, index: props.order };
-        var item = { data: props.data, source: pointer };
-        return item;
+        return { data: props.data, source: pointer, original: pointer };
     },
 
     isDragging: function isDragging(props, monitor) {
         return props.data.id === monitor.getItem().data.id;
-    }
+    },
 
-    /*endDrag: function ( props, monitor, component ) {
-        if ( !monitor.didDrop() ) {
+    endDrag: function endDrag(props, monitor, component) {
+        // If dragged item was dropped outside a valid area, restore original position.
+        if (monitor.didDrop()) {
             return;
         }
-         // When dropped on a compatible target, do something
+
         var item = monitor.getItem();
-        var dropResult = monitor.getDropResult();
-     }*/
+
+        ViewActions.moveField(item.data, item.source, item.original);
+    }
+
 };
 
 var fieldTarget = {
@@ -685,15 +687,34 @@ var DropTarget = require('react-dnd').DropTarget;
 
 var columnTarget = {
     drop: function drop(props, monitor) {
+        var pointer = { context: props.tabId, row: props.rowId, col: props.colId, index: null };
+        var item = monitor.getItem();
+
+        // if field already belongs to this drop area, don't accept it on the drop.
+        if (item.source.row === pointer.row && item.source.col === pointer.col) {
+            return;
+        }
+
+        ViewActions.moveField(item.data, item.source, pointer);
+    },
+
+    hover: function hover(props, monitor, component) {
 
         // if this target column has fields in it, handle drop on the field target.
         if (props.data['fields'].length > 0) {
             return;
         }
-        var pointer = { context: props.tabId, row: props.rowId, col: props.colId, index: null };
+
         var item = monitor.getItem();
-        ViewActions.moveField(item.data, item.source, pointer);
+        var targetPointer = { context: props.tabId, row: props.rowId, col: props.colId, index: 0 };
+
+        // Time to actually perform the action (it will be opacity=0 until drag is over)
+        ViewActions.moveField(item.data, item.source, targetPointer);
+
+        // Note: we're mutating the monitor item here!
+        monitor.getItem().source = targetPointer;
     }
+
 };
 
 function collect(connect, monitor) {

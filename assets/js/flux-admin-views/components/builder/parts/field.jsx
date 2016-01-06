@@ -9,24 +9,24 @@ var fieldSource = {
     beginDrag: function ( props ) {
         // Return the data describing the dragged item
         var pointer = { context: props.tabId, row: props.rowId, col: props.colId, index: props.order };
-        var item = { data: props.data, source: pointer };
-        return item;
+        return { data: props.data, source: pointer, original: pointer };
     },
 
     isDragging: function( props, monitor ) {
         return props.data.id === monitor.getItem().data.id
-    }
+    },
 
-    /*endDrag: function ( props, monitor, component ) {
-        if ( !monitor.didDrop() ) {
+    endDrag: function( props, monitor, component ) {
+        // If dragged item was dropped outside a valid area, restore original position.
+        if ( monitor.didDrop() ) {
             return;
         }
 
-        // When dropped on a compatible target, do something
-        var item = monitor.getItem();
-        var dropResult = monitor.getDropResult();
+        const item = monitor.getItem();
 
-    }*/
+        ViewActions.moveField( item.data, item.source, item.original );
+    }
+
 };
 
 var fieldTarget = {
