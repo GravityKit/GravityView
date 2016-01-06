@@ -85,8 +85,8 @@ var RowColumn = React.createClass({
         var highlight = this.props.isOver ? { border: '1px dashed #00A0D2' } : {};
 
         return connectDropTarget(
-            <div className={areaClass} style={highlight}>
-                <div className="gv-grid__droppable-area">
+            <div className={areaClass}>
+                <div className="gv-grid__droppable-area" style={highlight}>
                     {fields}
                     <a onClick={this.handleFieldAdd} title={this.renderAddLabel()}>+ {this.renderAddLabel()}</a>
                 </div>

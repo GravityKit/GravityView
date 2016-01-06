@@ -2294,10 +2294,10 @@ var RowColumn = React.createClass({
 
         return connectDropTarget(React.createElement(
             'div',
-            { className: areaClass, style: highlight },
+            { className: areaClass },
             React.createElement(
                 'div',
-                { className: 'gv-grid__droppable-area' },
+                { className: 'gv-grid__droppable-area', style: highlight },
                 fields,
                 React.createElement(
                     'a',
