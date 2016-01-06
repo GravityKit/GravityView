@@ -2168,7 +2168,7 @@ var Field = React.createClass({
             connectDropTarget = this.props.connectDropTarget,
             isDragging = this.props.isDragging;
 
-        var opacity = isDragging ? 0 : 1;
+        var opacity = isDragging ? 0.2 : 1;
 
         var label = this.props.data['gv_settings']['custom_label'] || this.props.data['gv_settings']['label'];
 
@@ -2231,7 +2231,8 @@ var columnTarget = {
 function collect(connect, monitor) {
     return {
         connectDropTarget: connect.dropTarget(),
-        isOver: monitor.isOver()
+        isOver: monitor.isOver(),
+        isOverCurrent: monitor.isOver({ shallow: true })
     };
 }
 
@@ -2288,9 +2289,12 @@ var RowColumn = React.createClass({
             fields = this.props.data.fields.map(this.renderField, this);
         }
 
+        //todo: replace this by a css class
+        var highlight = this.props.isOver ? { border: '1px dashed #00A0D2' } : {};
+
         return connectDropTarget(React.createElement(
             'div',
-            { className: areaClass },
+            { className: areaClass, style: highlight },
             React.createElement(
                 'div',
                 { className: 'gv-grid__droppable-area' },

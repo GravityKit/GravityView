@@ -22,7 +22,8 @@ var columnTarget = {
 function collect(connect, monitor) {
     return {
         connectDropTarget: connect.dropTarget(),
-        isOver: monitor.isOver()
+        isOver: monitor.isOver(),
+        isOverCurrent: monitor.isOver({ shallow: true })
     };
 }
 
@@ -80,8 +81,11 @@ var RowColumn = React.createClass({
             fields = this.props.data.fields.map( this.renderField, this );
         }
 
+        //todo: replace this by a css class
+        var highlight = this.props.isOver ? { border: '1px dashed #00A0D2' } : {};
+
         return connectDropTarget(
-            <div className={areaClass}>
+            <div className={areaClass} style={highlight}>
                 <div className="gv-grid__droppable-area">
                     {fields}
                     <a onClick={this.handleFieldAdd} title={this.renderAddLabel()}>+ {this.renderAddLabel()}</a>
@@ -89,7 +93,6 @@ var RowColumn = React.createClass({
             </div>
         );
     }
-
 
 });
 

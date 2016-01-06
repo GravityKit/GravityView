@@ -108,7 +108,7 @@ var Field = React.createClass({
             connectDropTarget = this.props.connectDropTarget,
             isDragging = this.props.isDragging;
 
-        const opacity = isDragging ? 0 : 1;
+        const opacity = isDragging ? 0.2 : 1;
 
         var label = this.props.data['gv_settings']['custom_label'] || this.props.data['gv_settings']['label'];
 
