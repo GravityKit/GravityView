@@ -12,7 +12,7 @@ var InputSelect = React.createClass({
 
     renderOptions: function( item, i ) {
         return(
-            <option key={item.value} id={item.value} value={item.value}>
+            <option key={item.value} value={item.value}>
                 {item.label}
             </option>
         );

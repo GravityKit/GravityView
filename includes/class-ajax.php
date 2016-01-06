@@ -687,7 +687,7 @@ class GravityView_Ajax {
 	function get_field_settings() {
 		$this->check_ajax_nonce();
 
-error_log( '$_POST:' . print_r($_POST  , true ) );
+
 		$output = '';
 		if( empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) ) {
 			do_action( 'gravityview_log_error', '[get_field_settings] Required fields were not set in the $_POST request. ' );
@@ -713,7 +713,7 @@ error_log( '$_POST:' . print_r($_POST  , true ) );
 			if( !empty( $option['options'] ) ) {
 				$new_options = array();
 				foreach( $option['options'] as $k => $v ) {
-					$new_options[] = array( 'id' => $k, 'label' => $v );
+					$new_options[] = array( 'value' => $k, 'label' => $v );
 				}
 				$option['options'] = $new_options;
 				unset( $new_options );
@@ -722,7 +722,7 @@ error_log( '$_POST:' . print_r($_POST  , true ) );
 			$output[] = $option;
 
 		}
-error_log( '$output:' . print_r( $output , true ) );
+
 		wp_send_json_success( $output );
 	}
 

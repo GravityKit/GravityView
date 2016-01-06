@@ -31,7 +31,6 @@ var ConfigureFieldPanel = React.createClass({
 
     handleChange: function( e ) {
         var id = e.target.getAttribute( 'id' );
-
         this.settingsValues[ id ] = e.target.value;
         ViewActions.updateFieldSetting( this.props.extraArgs['pointer'], this.settingsValues );
     },
@@ -107,6 +106,9 @@ var ConfigureFieldPanel = React.createClass({
 
     renderSettings: function() {
         var inputs = this.props.extraArgs['settings'];
+
+
+
         return inputs.map( this.renderInputs, this );
     },
 

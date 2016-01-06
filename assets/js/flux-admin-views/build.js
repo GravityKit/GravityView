@@ -1545,7 +1545,7 @@ var InputSelect = React.createClass({
     renderOptions: function renderOptions(item, i) {
         return React.createElement(
             'option',
-            { key: item.value, id: item.value, value: item.value },
+            { key: item.value, value: item.value },
             item.label
         );
     },
@@ -2053,7 +2053,6 @@ var ConfigureFieldPanel = React.createClass({
 
     handleChange: function handleChange(e) {
         var id = e.target.getAttribute('id');
-
         this.settingsValues[id] = e.target.value;
         ViewActions.updateFieldSetting(this.props.extraArgs['pointer'], this.settingsValues);
     },
@@ -2118,6 +2117,7 @@ var ConfigureFieldPanel = React.createClass({
 
     renderSettings: function renderSettings() {
         var inputs = this.props.extraArgs['settings'];
+
         return inputs.map(this.renderInputs, this);
     },
 
