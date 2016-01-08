@@ -87,7 +87,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 			'{date_created:human:diff}' => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
 
 			'{date_created:format:mdy}' => GFCommon::format_date( $date_created, false, 'mdy', false ),
-			'{date_created:human:format:mdy }' => GFCommon::format_date( $date_created, true, 'mdy', false ),
+			'{date_created:human:format:m/d/Y }' => GFCommon::format_date( $date_created, true, 'm/d/Y', false ),
 
 			'{date_created:time:format:d}' => GFCommon::format_date( $date_created, false, 'd', true ),
 			'{date_created:human:time:format:mdy}' => GFCommon::format_date( $date_created, true, 'mdy', true ),
