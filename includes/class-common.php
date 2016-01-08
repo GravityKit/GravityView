@@ -132,7 +132,7 @@ class GVCommon {
 	/**
 	 * Check whether a form has product fields
 	 *
-	 * @since todo
+	 * @since 1.16
 	 *
 	 * @param array $form Gravity Forms form array
 	 *
@@ -530,6 +530,9 @@ class GVCommon {
 		// Return value
 		$return = null;
 
+		/** Reduce # of database calls */
+		add_filter( 'gform_is_encrypted_field', '__return_false' );
+
 		if ( ! empty( $criteria['cache'] ) ) {
 
 			$Cache = new GravityView_Cache( $form_ids, $criteria );
@@ -578,6 +581,9 @@ class GVCommon {
 
 			$return = $entries;
 		}
+
+		/** Remove filter added above */
+		remove_filter( 'gform_is_encrypted_field', '__return_false' );
 
 		/**
 		 * @filter `gravityview_entries` Modify the array of entries returned to GravityView after it has been fetched from the cache or from `GFAPI::get_entries()`.
