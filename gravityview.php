@@ -10,13 +10,13 @@
  * @license   GPL2+
  * @author    Katz Web Services, Inc.
  * @link      http://gravityview.co
- * @copyright Copyright 2014, Katz Web Services, Inc.
+ * @copyright Copyright 2016, Katz Web Services, Inc.
  *
  * @wordpress-plugin
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.15.2
+ * Version:          	1.16-beta
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravityview
@@ -89,7 +89,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.15.2';
+	const version = '1.16-beta';
 
 	private static $instance;
 
