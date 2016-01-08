@@ -142,10 +142,11 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
 
 		// Load fields
+		include_once( GRAVITYVIEW_DIR . 'includes/fields/class-gravityview-fields.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/fields/class-gravityview-field.php' );
 
 		// Load all field files automatically
-		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/*.php' ) as $gv_field_filename ) {
+		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/class-gravityview-field*.php' ) as $gv_field_filename ) {
 			include_once( $gv_field_filename );
 		}
 

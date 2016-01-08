@@ -59,7 +59,6 @@ abstract class GravityView_Field {
 	var $is_sortable = true;
 
 	/**
-	 * @internal Not yet implemented
 	 * @type boolean Is field content number-based?
 	 * @since 1.15.2
 	 */
@@ -122,6 +121,7 @@ abstract class GravityView_Field {
 			add_filter( 'gform_replace_merge_tags', array( $this, '_filter_gform_replace_merge_tags' ), 10, 7 );
 		}
 
+		GravityView_Fields::register( $this );
 	}
 
 	/**
