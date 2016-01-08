@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file class-gravityview-field-other-entries.php
+ * @package GravityView
+ * @subpackage includes\fields
+ * @since 1.7.2
+ */
 
 /**
  * A field that displays other entries by the entry_creator for the same View in a list format

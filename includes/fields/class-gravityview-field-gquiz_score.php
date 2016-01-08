@@ -1,8 +1,10 @@
 <?php
-
 /**
- * Add custom options for source_url fields
+ * @file class-gravityview-field-gquiz_score.php
+ * @package GravityView
+ * @subpackage includes\fields
  */
+
 class GravityView_Field_Quiz_Score extends GravityView_Field {
 
 	var $name = 'quiz_score';

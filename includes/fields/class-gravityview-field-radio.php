@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-radio.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 class GravityView_Field_Radio extends GravityView_Field {
 

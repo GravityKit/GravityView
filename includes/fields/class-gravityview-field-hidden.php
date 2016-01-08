@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-hidden.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 class GravityView_Field_Hidden extends GravityView_Field {
 

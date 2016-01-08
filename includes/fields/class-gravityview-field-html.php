@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-html.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 /**
  * Add custom options for HTML field

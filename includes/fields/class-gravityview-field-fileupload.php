@@ -1,12 +1,10 @@
 <?php
 /**
+ * @file class-gravityview-field-fileupload.php
  * @package GravityView
+ * @subpackage includes\fields
  */
 
-
-/**
- * Add custom options for date fields
- */
 class GravityView_Field_FileUpload extends GravityView_Field {
 
 	var $name = 'fileupload';

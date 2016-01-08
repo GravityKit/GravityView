@@ -35,6 +35,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers GravityView_Field_Date_Created::replace_merge_tag
 	 * @group date_created
 	 */
 	function test_replace_date_created() {
@@ -57,13 +58,13 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		$tests = array(
 
 			'{date_created:raw}' => $date_created,
-			'{date_created:raw:timestamp}' => $date_created, // Order defined
+			'{date_created:raw:timestamp}' => $date_created, // Raw logic is first, it wins
 			'{date_created:raw:time}' => $date_created,
 			'{date_created:raw:human}' => $date_created,
 			'{date_created:raw:format:example}' => $date_created,
 
+			'{date_created:timestamp:raw}' => $date_created, // Raw logic is first, it wins
 			'{date_created:timestamp}' => $entry_local_time,
-			'{date_created:timestamp:raw}' => $entry_local_time, // Order defined
 			'{date_created:timestamp:time}' => $entry_local_time,
 			'{date_created:timestamp:human}' => $entry_local_time,
 			'{date_created:timestamp:format:example}' => $entry_local_time,
@@ -87,7 +88,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 			'{date_created:human:diff}' => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
 
 			'{date_created:format:mdy}' => GFCommon::format_date( $date_created, false, 'mdy', false ),
-			'{date_created:human:format:mdy }' => GFCommon::format_date( $date_created, true, 'mdy', false ),
+			'{date_created:human:format:m/d/Y }' => GFCommon::format_date( $date_created, true, 'm/d/Y', false ),
 
 			'{date_created:time:format:d}' => GFCommon::format_date( $date_created, false, 'd', true ),
 			'{date_created:human:time:format:mdy}' => GFCommon::format_date( $date_created, true, 'mdy', true ),
@@ -99,6 +100,40 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		foreach ( $tests as $merge_tag => $expected ) {
 			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
 		}
+	}
+
+	/**
+	 * @covers GravityView_Field::replace_merge_tag
+	 * @covers GravityView_Field_Payment_Amount::replace_merge_tag
+	 * @covers GravityView_Field_Payment_Status::replace_merge_tag
+	 * @covers GravityView_Field_Payment_Method::replace_merge_tag
+	 * @since 1.16
+	 */
+	function test_replace_field_custom_merge_tags() {
+
+		$form = $this->factory->form->create_and_get();
+
+		$entry_array = array(
+			'form_id' => $form['id'],
+			'currency' => 'USD',
+			'payment_amount' => 200.39,
+			'payment_status' => 'Paid',
+			'payment_method' => 'Credit Card',
+		);
+
+		$entry = $this->factory->entry->create_and_get( $entry_array );
+
+		$tests = array(
+			'{payment_amount}' => GFCommon::to_money( $entry_array['payment_amount'], $entry['currency'] ),
+			'{payment_amount:raw}' => $entry_array['payment_amount'],
+			'{payment_status}' => $entry_array['payment_status'],
+			'{payment_method}' => $entry_array['payment_method'],
+		);
+
+		foreach ( $tests as $merge_tag => $expected ) {
+			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
+		}
+
 	}
 
 	/**

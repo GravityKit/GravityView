@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-entry-link.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 /**
  * Add custom options for entry_link fields

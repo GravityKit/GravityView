@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-password.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 class GravityView_Field_Password extends GravityView_Field {
 
