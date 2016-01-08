@@ -20,7 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.16 on January 7 =
+= 1.16 on January 8 =
 * Happy New Year! We have big things planned for GravityView in 2016, including a new View builder.
 * Added: Merge Tags
     * `{date_created}` Merge Tag displays the date an entry was created. [Read how to use it here](http://docs.gravityview.co/article/331-date-created-merge-tag).
@@ -42,6 +42,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 __Developer Notes:__
 
 * New: `gravityview_get_terms_choices()` function generates array of categories ready to be added to Gravity Forms $choices array
+* Tweak: Added `gv-container-{view id}` CSS class to `gv_container_class()` function output. This will be added to View container `<div>`s
 * Fixed: Fetching the current entry can improperly return an empty array when using `GravityView_View->getCurrentEntry()` in DataTables extension
 * New: `GVCommon::has_product_field()` method to check whether a form has product fields
 * New: Added `add_filter( 'gform_is_encrypted_field', '__return_false' );` before fetching entries

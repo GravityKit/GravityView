@@ -707,14 +707,28 @@ function gv_class( $field, $form = NULL, $entry = array() ) {
 	return GravityView_API::field_class( $field, $form, $entry  );
 }
 
+/**
+ * Generate a CSS class to be added to the wrapper <div> of a View
+ *
+ * @since 1.5.4
+ *
+ * @param string $class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`
+ *
+ * @return string CSS class, sanitized by gravityview_sanitize_html_class()
+ */
 function gv_container_class( $class = '' ) {
 
-	$default = ' gv-container';
+	$default = sprintf( 'gv-container gv-container-%d', GravityView_View::getInstance()->getViewId() );
 
 	if( GravityView_View::getInstance()->isHideUntilSearched() ) {
 		$default .= ' hidden';
 	}
 
+	/**
+	 * @filter `gravityview/render/container/class` Modify the CSS class to be added to the wrapper <div> of a View
+	 * @since 1.5.4
+	 * @param[in,out] string $class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`
+	 */
 	$class = apply_filters( 'gravityview/render/container/class', $class . $default );
 
 	$class = gravityview_sanitize_html_class( $class );
