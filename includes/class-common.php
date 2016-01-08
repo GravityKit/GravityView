@@ -130,6 +130,24 @@ class GVCommon {
 	}
 
 	/**
+	 * Check whether a form has product fields
+	 *
+	 * @since todo
+	 *
+	 * @param array $form Gravity Forms form array
+	 *
+	 * @return bool|GF_Field[]
+	 */
+	public static function has_product_field( $form = array() ) {
+
+		$product_fields = apply_filters( 'gform_product_field_types', array( 'option', 'quantity', 'product', 'total', 'shipping', 'calculation', 'price' ) );
+
+		$fields = GFAPI::get_fields_by_type( $form, $product_fields );
+
+		return empty( $fields ) ? false : $fields;
+	}
+
+	/**
 	 * Get the entry ID from the entry slug, which may or may not be the entry ID
 	 *
 	 * @since  1.5.2
