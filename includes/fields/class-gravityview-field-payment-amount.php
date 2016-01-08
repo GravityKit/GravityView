@@ -3,7 +3,7 @@
  * @file class-gravityview-field-payment-amount.php
  * @package GravityView
  * @subpackage includes\fields
- * @since TODO
+ * @since 1.16
  */
 
 class GravityView_Field_Payment_Amount extends GravityView_Field {
@@ -31,7 +31,7 @@ class GravityView_Field_Payment_Amount extends GravityView_Field {
 	/**
 	 * Add {payment_amount} merge tag
 	 *
-	 * @since TODO
+	 * @since 1.16
 	 **
 	 * @param array $matches Array of Merge Tag matches found in text by preg_match_all
 	 * @param string $text Text to replace
@@ -47,11 +47,12 @@ class GravityView_Field_Payment_Amount extends GravityView_Field {
 
 		foreach ( $matches as $match ) {
 
-			$full_tag          = $match[0];
+			$full_tag = $match[0];
+			$modifier = isset( $match[1] ) ? $match[1] : false;
 
 			$amount = rgar( $entry, 'payment_amount' );
 
-			$formatted_amount = GFCommon::to_money( $amount, rgar( $entry, 'currency' ) );
+			$formatted_amount = ( 'raw' === $modifier ) ? $amount : GFCommon::to_money( $amount, rgar( $entry, 'currency' ) );
 
 			$return = str_replace( $full_tag, $formatted_amount, $return );
 		}

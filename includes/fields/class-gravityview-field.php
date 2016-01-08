@@ -96,7 +96,7 @@ abstract class GravityView_Field {
 
 	/**
 	 * @var bool|string Name of merge tag (without curly brackets), if the field has custom GravityView merge tags to add. Otherwise, false.
-	 * @since todo
+	 * @since 1.16
 	 */
 	protected $_custom_merge_tag = false;
 
@@ -129,7 +129,7 @@ abstract class GravityView_Field {
 	 *
 	 * @see replace_merge_tag Override replace_merge_tag() to handle any matches
 	 *
-	 * @since TODO
+	 * @since 1.16
 	 *
 	 * @param string $text Text to replace
 	 * @param array $form Gravity Forms form array
@@ -139,7 +139,6 @@ abstract class GravityView_Field {
 	 * @return string Original text if {_custom_merge_tag} isn't found. Otherwise, replaced text.
 	 */
 	public function _filter_gform_replace_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
-
 
 		/**
 		 * This prevents the gform_replace_merge_tags filter from being called twice, as defined in:
@@ -179,6 +178,20 @@ abstract class GravityView_Field {
 	 * @return mixed
 	 */
 	public function replace_merge_tag( $matches = array(), $text = '', $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+
+		foreach( $matches as $match ) {
+
+			$full_tag = $match[0];
+
+			// Strip the Merge Tags
+			$tag = str_replace( array( '{', '}'), '', $full_tag );
+
+			// Replace the value from the entry, if exists
+			if( isset( $entry[ $tag ] ) ) {
+				$text = str_replace( $full_tag, $entry[ $tag ], $text );
+			}
+		}
+
 		return $text;
 	}
 
@@ -210,7 +223,7 @@ abstract class GravityView_Field {
 	 *
 	 * Should be overridden if there's more than one Merge Tag to add or if the Merge Tag isn't {_custom_merge_tag}
 	 *
-	 * @since TODO
+	 * @since 1.16
 	 *
 	 * @param array $form GF Form array
 	 * @param GF_Field[] $fields Array of fields in the form

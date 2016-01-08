@@ -22,7 +22,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 1.16 on January 7 =
 * Happy New Year! We have big things planned for GravityView in 2016, including a new View builder.
-* Added: `{date_created}` Merge Tag displays the date an entry was created. [Read how to use it here](http://docs.gravityview.co/article/331-date-created-merge-tag).
+* Added: Merge Tags
+    * `{date_created}` Merge Tag displays the date an entry was created. [Read how to use it here](http://docs.gravityview.co/article/331-date-created-merge-tag).
+    * `{payment_date}` displays Payment Date, formatted using [the same modifiers](http://docs.gravityview.co/article/331-date-created-merge-tag) as `{date_created}`
+    * `{payment_status}` displays Payment Status value
+    * `{payment_method}` displays Payment Method value
+    * `{payment_amount}` displays Payment Amount formatted as a currency. Use `{payment_amount:raw}` for the unformatted number.
 * Fixed: Custom merge tags not being replaced properly by GravityView
 * Fixed: Connected form links were not visible in the Data Source metabox
 * Tweak: Only show Add View button to users who are able to publish Views

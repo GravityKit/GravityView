@@ -23,7 +23,7 @@ class GravityView_Field_Created_By extends GravityView_Field {
 	/**
 	 * Add custom merge tags to merge tag options
 	 *
-	 * @since TODO
+	 * @since 1.16
 	 *
 	 * @param array $form GF Form array
 	 * @param GF_Field[] $fields Array of fields in the form
@@ -64,7 +64,7 @@ class GravityView_Field_Created_By extends GravityView_Field {
 	 *
 	 * @see http://docs.gravityview.co/article/281-the-createdby-merge-tag Read how to use the `{created_by}` merge tag
 	 *
-	 * @since TODO
+	 * @since 1.16
 	 *
 	 * @param array $matches Array of Merge Tag matches found in text by preg_match_all
 	 * @param string $text Text to replace

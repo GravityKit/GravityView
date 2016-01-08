@@ -40,7 +40,7 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 	/**
 	 * Add {date_created} merge tag
 	 *
-	 * @since TODO
+	 * @since 1.16
 	 *
 	 * @see http://docs.gravityview.co/article/281-the-createdby-merge-tag for usage information
 	 *

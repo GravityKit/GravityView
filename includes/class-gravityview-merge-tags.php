@@ -151,7 +151,7 @@ class GravityView_Merge_Tags {
 	 * The `:format` modifier should always have the format follow it; it's the next item in the array
 	 * In `foo:format:bar`, "bar" will be the returned format
 	 *
-	 * @since TODO
+	 * @since 1.16
 	 *
 	 * @param array $exploded Array of modifiers with a possible `format` value
 	 * @param string $backup The backup value to use, if not found

@@ -35,6 +35,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers GravityView_Field_Date_Created::replace_merge_tag
 	 * @group date_created
 	 */
 	function test_replace_date_created() {
@@ -99,6 +100,40 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		foreach ( $tests as $merge_tag => $expected ) {
 			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
 		}
+	}
+
+	/**
+	 * @covers GravityView_Field::replace_merge_tag
+	 * @covers GravityView_Field_Payment_Amount::replace_merge_tag
+	 * @covers GravityView_Field_Payment_Status::replace_merge_tag
+	 * @covers GravityView_Field_Payment_Method::replace_merge_tag
+	 * @since 1.16
+	 */
+	function test_replace_field_custom_merge_tags() {
+
+		$form = $this->factory->form->create_and_get();
+
+		$entry_array = array(
+			'form_id' => $form['id'],
+			'currency' => 'USD',
+			'payment_amount' => 200.39,
+			'payment_status' => 'Paid',
+			'payment_method' => 'Credit Card',
+		);
+
+		$entry = $this->factory->entry->create_and_get( $entry_array );
+
+		$tests = array(
+			'{payment_amount}' => GFCommon::to_money( $entry_array['payment_amount'], $entry['currency'] ),
+			'{payment_amount:raw}' => $entry_array['payment_amount'],
+			'{payment_status}' => $entry_array['payment_status'],
+			'{payment_method}' => $entry_array['payment_method'],
+		);
+
+		foreach ( $tests as $merge_tag => $expected ) {
+			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
+		}
+
 	}
 
 	/**
