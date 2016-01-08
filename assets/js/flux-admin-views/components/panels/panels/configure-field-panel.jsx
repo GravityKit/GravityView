@@ -9,8 +9,6 @@ var InputHidden = require('../inputs/input-hidden.jsx');
 var InputRadio = require('../inputs/input-radio.jsx');
 var InputTextarea = require('../inputs/input-textarea.jsx');
 
-var ViewCommon = require('../../../api/view-common.js');
-
 var ViewConstants = require('../../../constants/view-constants.js');
 var ViewActions = require('../../../actions/view-actions.js');
 
@@ -42,10 +40,24 @@ var ConfigureFieldPanel = React.createClass({
         ViewActions.updateFieldSetting( this.props.extraArgs['pointer'], this.settingsValues );
     },
 
+    shouldRenderInput: function ( item ) {
+
+        if( 'only_loggedin_cap' !== item.id ) {
+            return true;
+        }
+        // if 'only_loggedin' not checked
+        return !!Number( this.settingsValues['only_loggedin'] );
+
+    },
+
     renderInputs: function( item, i ) {
 
         var inputField = null,
             leftLabel = null;
+
+        if( !this.shouldRenderInput( item ) ) {
+            return;
+        }
 
         switch ( item.type ) {
 
@@ -106,8 +118,6 @@ var ConfigureFieldPanel = React.createClass({
 
     renderSettings: function() {
         var inputs = this.props.extraArgs['settings'];
-
-
 
         return inputs.map( this.renderInputs, this );
     },

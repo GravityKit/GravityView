@@ -2031,8 +2031,6 @@ var InputHidden = require('../inputs/input-hidden.jsx');
 var InputRadio = require('../inputs/input-radio.jsx');
 var InputTextarea = require('../inputs/input-textarea.jsx');
 
-var ViewCommon = require('../../../api/view-common.js');
-
 var ViewConstants = require('../../../constants/view-constants.js');
 var ViewActions = require('../../../actions/view-actions.js');
 
@@ -2064,10 +2062,23 @@ var ConfigureFieldPanel = React.createClass({
         ViewActions.updateFieldSetting(this.props.extraArgs['pointer'], this.settingsValues);
     },
 
+    shouldRenderInput: function shouldRenderInput(item) {
+
+        if ('only_loggedin_cap' !== item.id) {
+            return true;
+        }
+        // if 'only_loggedin' not checked
+        return !!Number(this.settingsValues['only_loggedin']);
+    },
+
     renderInputs: function renderInputs(item, i) {
 
         var inputField = null,
             leftLabel = null;
+
+        if (!this.shouldRenderInput(item)) {
+            return;
+        }
 
         switch (item.type) {
 
@@ -2147,7 +2158,7 @@ var ConfigureFieldPanel = React.createClass({
 
 module.exports = ConfigureFieldPanel;
 
-},{"../../../actions/view-actions.js":1,"../../../api/view-common.js":4,"../../../constants/view-constants.js":35,"../inputs/input-checkbox.jsx":17,"../inputs/input-hidden.jsx":18,"../inputs/input-number.jsx":19,"../inputs/input-radio.jsx":20,"../inputs/input-select.jsx":21,"../inputs/input-text.jsx":22,"../inputs/input-textarea.jsx":23,"./panel.jsx":31,"react":338}],29:[function(require,module,exports){
+},{"../../../actions/view-actions.js":1,"../../../constants/view-constants.js":35,"../inputs/input-checkbox.jsx":17,"../inputs/input-hidden.jsx":18,"../inputs/input-number.jsx":19,"../inputs/input-radio.jsx":20,"../inputs/input-select.jsx":21,"../inputs/input-text.jsx":22,"../inputs/input-textarea.jsx":23,"./panel.jsx":31,"react":338}],29:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
