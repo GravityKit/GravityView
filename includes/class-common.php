@@ -1169,6 +1169,17 @@ class GVCommon {
 	 */
 	public static function is_field_numeric(  $form = null, $field = '' ) {
 
+		if ( ! is_array( $form ) && ! is_array( $field ) ) {
+			$form = self::get_form( $form );
+		}
+
+		// If entry meta, it's a string. Otherwise, numeric
+		if( ! is_numeric( $field ) && is_string( $field ) ) {
+			$type = $field;
+		} else {
+			$type = self::get_field_type( $form, $field );
+		}
+
 		/**
 		 * @filter `gravityview/common/numeric_types` What types of fields are numeric?
 		 * @since 1.5.2
@@ -1176,14 +1187,16 @@ class GVCommon {
 		 */
 		$numeric_types = apply_filters( 'gravityview/common/numeric_types', array( 'number', 'time' ) );
 
-		if ( ! is_array( $form ) && ! is_array( $field ) ) {
-			$form = self::get_form( $form );
+		// Defer to GravityView_Field setting, if the field type is registered and `is_numeric` is true
+		if( $gv_field = GravityView_Fields::get( $type ) ) {
+			if( true === $gv_field->is_numeric ) {
+				$numeric_types[] = $gv_field->is_numeric;
+			}
 		}
 
-		$type = self::get_field_type( $form, $field );
+		$return = in_array( $type, $numeric_types );
 
-		return in_array( $type, $numeric_types );
-
+		return $return;
 	}
 
 	/**

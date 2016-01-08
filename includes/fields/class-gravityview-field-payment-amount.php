@@ -12,6 +12,8 @@ class GravityView_Field_Payment_Amount extends GravityView_Field {
 
 	var $is_searchable = true;
 
+	var $is_numeric = true;
+
 	var $search_operators = array( 'is', 'isnot', 'greater_than', 'less_than', 'contains' );
 
 	var $group = 'pricing';
@@ -19,7 +21,7 @@ class GravityView_Field_Payment_Amount extends GravityView_Field {
 	var $_custom_merge_tag = 'payment_amount';
 
 	/**
-	 * GravityView_Field_Date_Created constructor.
+	 * GravityView_Field_Payment_Amount constructor.
 	 */
 	public function __construct() {
 		$this->label = esc_attr__( 'Payment Amount', 'gravityview' );

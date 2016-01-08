@@ -19,6 +19,12 @@ class GravityView_Field_Time extends GravityView_Field {
 	var $group = 'advanced';
 
 	/**
+	 * @internal Do not define. This is overridden by the class using a filter.
+	 * @todo Fix using variable for time field
+	 */
+	var $is_numeric;
+
+	/**
 	 * @var string The part of the Gravity Forms query that's modified to enable sorting by time. `value` gets replaced.
 	 * @since 1.14
 	 */
