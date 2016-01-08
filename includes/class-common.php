@@ -132,7 +132,7 @@ class GVCommon {
 	/**
 	 * Check whether a form has product fields
 	 *
-	 * @since todo
+	 * @since 1.16
 	 *
 	 * @param array $form Gravity Forms form array
 	 *
