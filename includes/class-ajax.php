@@ -473,13 +473,15 @@ class GravityView_Ajax {
 		wp_send_json_success( $layout );
 	}
 
+	/**
+	 * Convert the old structure of View configuration data into new layout structure (react)
+	 * todo: move these functions to a migration class
+	 * @param $view_id
+	 * @return array
+	 */
 	function convert_layout( $view_id ) {
 
 		$template_id = get_post_meta( $view_id, '_gravityview_directory_template', true );
-		//$widgets = get_post_meta( $view_id, '_gravityview_directory_widgets', true );
-		$old_fields = get_post_meta( $view_id, '_gravityview_directory_fields', true );
-		$form_id = get_post_meta( $view_id, '_gravityview_form_id', true  );
-		$form = GVCommon::get_form( $form_id );
 
 		$layout = array(
 				'directory' => '',
@@ -488,12 +490,35 @@ class GravityView_Ajax {
 				'export' 	=> ''
 		);
 
+		// template
 		foreach ( $layout as $k => $v ) {
 			$layout[ $k ]['type'] = $template_id;
 		}
 
+		// fields
+		$this->layout_convert_fields( $layout, $view_id );
+
+		// widgets
+		$this->layout_convert_widgets( $layout, $view_id );
+
+		return $layout;
+
+	}
+
+	/**
+	 * Convert old view fields data structure into new admin layout structure (react)
+	 * todo: move these functions to a migration class
+	 * @param $layout array Complete View layout
+	 * @param $view_id int View ID
+	 */
+	function layout_convert_fields( &$layout, $view_id ) {
+
+		$old_fields = get_post_meta( $view_id, '_gravityview_directory_fields', true );
+		$form_id = get_post_meta( $view_id, '_gravityview_form_id', true  );
+		$form = GVCommon::get_form( $form_id );
+
 		if( empty( $old_fields ) ) {
-			return $layout;
+			return;
 		}
 
 		$tab = '';
@@ -541,14 +566,17 @@ class GravityView_Ajax {
 				$i++;
 			}
 
-
-
 		}
-
-		return $layout;
 
 	}
 
+	/**
+	 * Helper function to convert a list of fields (old format) to a new structure (react)
+	 * todo: move these functions to a migration class
+	 * @param $fields array List of fields details
+	 * @param $form array Gravity Forms Form object
+	 * @return array
+	 */
 	function get_converted_fields( $fields, $form ) {
 
 		$output = array();
@@ -569,6 +597,77 @@ class GravityView_Ajax {
 
 		return $output;
 	}
+
+	/**
+	 * Convert old view widgets data structure into new admin layout structure (react)
+	 * todo: move these functions to a migration class
+	 * @param $layout array Complete View layout
+	 * @param $view_id int View ID
+	 */
+	function layout_convert_widgets( &$layout, $view_id ) {
+		$old_widgets = get_post_meta( $view_id, '_gravityview_directory_widgets', true );
+
+		if( empty( $old_widgets ) ) {
+			return;
+		}
+
+		$place = '';
+
+		foreach ( $old_widgets as $area => $widgets ) {
+			$indexs = explode( '_',  $area );
+
+			$i =  $indexs[0] != $place ? 0 : $i; // Rows array index
+
+			$place = $indexs[0] === 'header' ? 'above' : 'below';
+
+			$layout['directory']['widgets'][ $place ]['rows'][ $i ]['atts'] = array( 'id' => '', 'class' => '', 'style' => '' );
+			$layout['directory']['widgets'][ $place ]['rows'][ $i ]['id'] = uniqid( '', false );
+
+			if( $indexs[1] === 'top' ) {
+				$layout['directory']['widgets'][ $place ]['rows'][ $i ]['columns'][0]['colspan'] = 12;
+			} else {
+				$layout['directory']['widgets'][ $place ]['rows'][ $i ]['columns'][0]['colspan'] = 6;
+				$layout['directory']['widgets'][ $place ]['rows'][ $i ]['columns'][1]['colspan'] = 6;
+			}
+			$col_index = $indexs[1] === 'right' ? 1 : 0;
+
+			$layout['directory']['widgets'][ $place ]['rows'][ $i ]['columns'][ $col_index ]['atts'] = array( 'id' => '', 'class' => '', 'style' => '' );
+			$layout['directory']['widgets'][ $place ]['rows'][ $i ]['columns'][ $col_index ]['fields'] = $this->get_converted_widgets( $widgets );
+
+			if( $indexs[1] !== 'left' ) {
+				$i++; // only change row if column is top or right
+			}
+
+		}
+
+
+	}
+
+	/**
+	 * Helper function to convert a list of widgets (old format) to a new structure (react)
+	 * todo: move these functions to a migration class
+	 * @param $widgets array List of widgets details
+	 * @return array
+	 */
+	function get_converted_widgets( $widgets ) {
+
+		$output = array();
+
+		if( empty( $widgets ) ) {
+			return $output;
+		}
+		$i = 0;
+		foreach( $widgets as $k => $widget ) {
+			$output[ $i ]['id'] = $k;
+			$output[ $i ]['widget'] = $widget['id'];
+			unset( $widget['id'] );
+			$output[ $i ]['gv_settings'] = $widget;
+			$i++;
+		}
+
+		return $output;
+	}
+
 
 	/**
 	 * Get available fields for a form and a context (directory, single, edit..)
