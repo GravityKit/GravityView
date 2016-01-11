@@ -41,5 +41,6 @@ module.exports = keyMirror({
 
     // DnD
     TYPE_FIELD: null,
+    TYPE_WIDGET: null,
 
 });

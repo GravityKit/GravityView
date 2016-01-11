@@ -11,10 +11,13 @@ var TabContainer = React.createClass({
     },
 
     render: function () {
+        const fieldsRows = this.props.layoutData['rows'] || [];
 
-        var fieldsRows = this.props.layoutData['rows'] || [];
+        var widgets = this.props.layoutData['widgets'] || {};
+        var widgetsAboveRows = widgets.hasOwnProperty('above') ? widgets['above']['rows'] : [],
+            widgetsBelowRows = widgets.hasOwnProperty('below') ? widgets['below']['rows'] : [];
 
-        var displayContainer = { display: this.props.tabId === this.props.activeTab ? 'block': 'none' };
+        const displayContainer = { display: this.props.tabId === this.props.activeTab ? 'block': 'none' };
 
         return(
             <div style={displayContainer}>
@@ -23,8 +26,8 @@ var TabContainer = React.createClass({
                 <Rows
                     tabId={this.props.tabId}
                     type="widget"
-                    zone="header"
-
+                    zone="above"
+                    data={widgetsAboveRows}
                     />
 
 
@@ -37,7 +40,12 @@ var TabContainer = React.createClass({
 
 
                 <h3>{gravityview_i18n.widgets_title_below} <small>{gravityview_i18n.widgets_label_below}</small></h3>
-                <Rows tabId={this.props.tabId} type="widget" zone="footer"  />
+                <Rows
+                    tabId={this.props.tabId}
+                    type="widget"
+                    zone="below"
+                    data={widgetsBelowRows}
+                />
 
             </div>
         );

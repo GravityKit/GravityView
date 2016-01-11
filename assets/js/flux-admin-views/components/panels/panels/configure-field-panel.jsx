@@ -19,7 +19,6 @@ var ConfigureFieldPanel = React.createClass({
         returnPanel: React.PropTypes.string, // holds the panel ID when going back
         currentPanel: React.PropTypes.string, // the current active panel
         extraArgs: React.PropTypes.object, // A vector containing the "pointer" (context, row, col, field) and the "settings" inputs ( defined at ViewApi.getFieldSettings() )
-
     },
 
     /**
