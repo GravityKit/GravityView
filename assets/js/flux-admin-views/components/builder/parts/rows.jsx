@@ -6,8 +6,8 @@ var Rows = React.createClass({
 
     propTypes: {
         tabId: React.PropTypes.string, // active tab
-        type: React.PropTypes.string, // widgets, fields
-        zone: React.PropTypes.string, // for the widgets, 'header' or 'footer'
+        type: React.PropTypes.string, // widget, field
+        zone: React.PropTypes.string, // for the widgets, 'above' or 'below'
         data: React.PropTypes.array // Layout Data, just the rows array
     },
 
