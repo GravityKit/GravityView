@@ -8,8 +8,8 @@ var DropTarget = require('react-dnd').DropTarget;
 var fieldSource = {
     beginDrag: function ( props ) {
         // Return the data describing the dragged item
-        var pointer = { context: props.tabId, row: props.rowId, col: props.colId, index: props.order };
-        return { data: props.data, source: pointer, original: pointer };
+        var vector = { context: props.tabId, zone: props.zone, row: props.rowId, col: props.colId, index: props.order };
+        return { type: props.type, data: props.data, source: vector, original: vector };
     },
 
     isDragging: function( props, monitor ) {
@@ -24,28 +24,38 @@ var fieldSource = {
 
         const item = monitor.getItem();
 
-        ViewActions.moveField( item.data, item.source, item.original );
+        ViewActions.moveField( item.type, item.data, item.source, item.original );
     }
 
 };
 
 var fieldTarget = {
 
+    canDrop: function ( props, monitor ) {
+        var item = monitor.getItem();
+        return props.type === item.type;
+    },
+
     hover( props, monitor, component ) {
+
+        if( !monitor.canDrop() ) {
+            return;
+        }
+
         const item = monitor.getItem(),
-            dragPointer = item.source;
-        const hoverPointer = { context: props.tabId, row: props.rowId, col: props.colId, index: props.order };
+            dragVector = item.source;
+        const hoverVector = { context: props.tabId, zone: props.zone, row: props.rowId, col: props.colId, index: props.order };
 
         // Don't replace items with themselves
-        if ( dragPointer === hoverPointer || item.data.id === props.data.id ) {
+        if ( dragVector === hoverVector || item.data.id === props.data.id ) {
             return;
         }
 
         // Time to actually perform the action (it will be opacity=0 until drag is over)
-        ViewActions.moveField( item.data, dragPointer, hoverPointer );
+        ViewActions.moveField( item.type, item.data, dragVector, hoverVector );
 
         // Note: we're mutating the monitor item here!
-        monitor.getItem().source = hoverPointer;
+        monitor.getItem().source = hoverVector;
     }
 
 };
@@ -68,7 +78,9 @@ function collectTarget( connect, monitor ) {
 var Field = React.createClass({
 
     propTypes: {
+        type: React.PropTypes.string, // type of item
         tabId: React.PropTypes.string, // tab id
+        zone: React.PropTypes.string, // for the widgets, 'above' or 'below'
         rowId: React.PropTypes.string, // row id
         colId: React.PropTypes.number, // Column order on the row
         order: React.PropTypes.number,
@@ -80,9 +92,12 @@ var Field = React.createClass({
         e.preventDefault();
 
         var fieldArgs = {
-            'context': this.props.tabId,
-            'row': this.props.rowId,
-            'col': this.props.colId,
+            'type': this.props.type,
+            'vector': {
+                'context': this.props.tabId,
+                'row': this.props.rowId,
+                'col': this.props.colId,
+            },
             'field': this.props.data
         };
 
@@ -93,9 +108,11 @@ var Field = React.createClass({
         e.preventDefault();
 
         var fieldArgs = {
-            'context': this.props.tabId,
-            'row': this.props.rowId,
-            'col': this.props.colId,
+            'vector': {
+                'context': this.props.tabId,
+                'row': this.props.rowId,
+                'col': this.props.colId,
+            },
             'field': this.props.data.id
         };
 

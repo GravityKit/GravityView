@@ -160,9 +160,7 @@ module.exports = {
         // add the field without 'gv_settings' while loading the settings
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_ADD_FIELD,
-            context: args.context,
-            row: args.row,
-            col: args.col,
+            target: args.vector,
             field: args.field
         });
     },
@@ -170,16 +168,22 @@ module.exports = {
     removeField: function removeField(args) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_DEL_FIELD,
-            context: args.context,
-            row: args.row,
-            col: args.col,
+            vector: args.vector,
             field: args.field
         });
     },
 
-    moveField: function moveField(data, source, target) {
+    /**
+     * Move a field or a widget between two droppable areas
+     * @param type string Type of item (widget, field)
+     * @param data object Item configuration details
+     * @param source object Source pointer in layout
+     * @param target object Target pointer in layout
+     */
+    moveField: function moveField(type, data, source, target) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_MOV_FIELD,
+            type: type,
             item: data,
             source: source,
             target: target
@@ -191,13 +195,15 @@ module.exports = {
      * @param args Object Field arguments ( context, row, col, field [id, field_id, form_id, field_type, gv_settings] )
      */
     editFieldSettings: function editFieldSettings(args) {
-        ViewApi.getFieldSettings(args);
+        ViewApi.getFieldSettingsInputs(args);
     },
 
     updateFieldSetting: function updateFieldSetting(args, newSettings) {
 
         var newValues = {
-            pointer: args,
+            type: args.type,
+            vector: args.vector,
+            field: args.field,
             settings: newSettings
         };
 
@@ -369,14 +375,14 @@ var ViewApi = {
 
     /**
      * Get the field settings array
-     * @param args object Pointer containing 'context', 'row', 'col' and 'field' (field_id, form_id, field_type, ..)
+     * @param args object 'vector' (containing 'context', 'row', 'col') and 'field' (field_id, form_id, field_type, ..)
      */
     getFieldSettingsValues: function getFieldSettingsValues(args) {
 
         var data = {
             action: 'gv_get_field_settings_values',
             //template: templateId,
-            context: args.context,
+            context: args.vector['context'],
             field_id: args.field['field_id'],
             field_type: args.field['field_type'],
             field_label: args.field['field_label'],
@@ -393,7 +399,8 @@ var ViewApi = {
         }).done(function (response) {
 
             var values = {
-                pointer: args,
+                vector: args.vector,
+                field: args.field,
                 settings: response.data
             };
             updateSettings(ViewConstants.UPDATE_FIELD_SETTINGS, values);
@@ -408,12 +415,12 @@ var ViewApi = {
      * Fetch field settings, and open the field settings panel when loaded.
      * @param args Object Field arguments ( context, row, col, field [id, field_id, form_id, field_type, gv_settings] )
      */
-    getFieldSettings: function getFieldSettings(args) {
+    getFieldSettingsInputs: function getFieldSettingsInputs(args) {
 
         var data = {
             action: 'gv_get_field_settings',
             //template: templateId,
-            context: args.context,
+            context: args.vector['context'],
             field_id: args.field['field_id'],
             field_type: args.field['field_type'],
             form_id: args.field['form_id'],
@@ -428,12 +435,12 @@ var ViewApi = {
             async: true
         }).done(function (response) {
 
-            var values = {
-                pointer: args,
-                settings: response.data
-            };
+            /**
+             * Object containing 'type', 'vector', 'field' and (now) 'inputs'
+             */
+            args.inputs = response.data;
 
-            apiOpenPanel(ViewConstants.PANEL_FIELD_SETTINGS, false, values);
+            apiOpenPanel(ViewConstants.PANEL_FIELD_SETTINGS, false, args);
         }).fail(function (jqXHR) {
             console.log(jqXHR);
         }).always(function () {
@@ -539,8 +546,8 @@ var DropTarget = require('react-dnd').DropTarget;
 var fieldSource = {
     beginDrag: function beginDrag(props) {
         // Return the data describing the dragged item
-        var pointer = { context: props.tabId, row: props.rowId, col: props.colId, index: props.order };
-        return { data: props.data, source: pointer, original: pointer };
+        var vector = { context: props.tabId, zone: props.zone, row: props.rowId, col: props.colId, index: props.order };
+        return { type: props.type, data: props.data, source: vector, original: vector };
     },
 
     isDragging: function isDragging(props, monitor) {
@@ -555,28 +562,38 @@ var fieldSource = {
 
         var item = monitor.getItem();
 
-        ViewActions.moveField(item.data, item.source, item.original);
+        ViewActions.moveField(item.type, item.data, item.source, item.original);
     }
 
 };
 
 var fieldTarget = {
 
+    canDrop: function canDrop(props, monitor) {
+        var item = monitor.getItem();
+        return props.type === item.type;
+    },
+
     hover: function hover(props, monitor, component) {
+
+        if (!monitor.canDrop()) {
+            return;
+        }
+
         var item = monitor.getItem(),
-            dragPointer = item.source;
-        var hoverPointer = { context: props.tabId, row: props.rowId, col: props.colId, index: props.order };
+            dragVector = item.source;
+        var hoverVector = { context: props.tabId, zone: props.zone, row: props.rowId, col: props.colId, index: props.order };
 
         // Don't replace items with themselves
-        if (dragPointer === hoverPointer || item.data.id === props.data.id) {
+        if (dragVector === hoverVector || item.data.id === props.data.id) {
             return;
         }
 
         // Time to actually perform the action (it will be opacity=0 until drag is over)
-        ViewActions.moveField(item.data, dragPointer, hoverPointer);
+        ViewActions.moveField(item.type, item.data, dragVector, hoverVector);
 
         // Note: we're mutating the monitor item here!
-        monitor.getItem().source = hoverPointer;
+        monitor.getItem().source = hoverVector;
     }
 
 };
@@ -599,7 +616,9 @@ var Field = React.createClass({
     displayName: 'Field',
 
     propTypes: {
+        type: React.PropTypes.string, // type of item
         tabId: React.PropTypes.string, // tab id
+        zone: React.PropTypes.string, // for the widgets, 'above' or 'below'
         rowId: React.PropTypes.string, // row id
         colId: React.PropTypes.number, // Column order on the row
         order: React.PropTypes.number,
@@ -610,9 +629,12 @@ var Field = React.createClass({
         e.preventDefault();
 
         var fieldArgs = {
-            'context': this.props.tabId,
-            'row': this.props.rowId,
-            'col': this.props.colId,
+            'type': this.props.type,
+            'vector': {
+                'context': this.props.tabId,
+                'row': this.props.rowId,
+                'col': this.props.colId
+            },
             'field': this.props.data
         };
 
@@ -623,9 +645,11 @@ var Field = React.createClass({
         e.preventDefault();
 
         var fieldArgs = {
-            'context': this.props.tabId,
-            'row': this.props.rowId,
-            'col': this.props.colId,
+            'vector': {
+                'context': this.props.tabId,
+                'row': this.props.rowId,
+                'col': this.props.colId
+            },
             'field': this.props.data.id
         };
 
@@ -686,19 +710,29 @@ var ViewActions = require('../../../actions/view-actions.js');
 var DropTarget = require('react-dnd').DropTarget;
 
 var columnTarget = {
+
+    canDrop: function canDrop(props, monitor) {
+        var item = monitor.getItem();
+        return props.type === item.type;
+    },
+
     drop: function drop(props, monitor) {
-        var pointer = { context: props.tabId, row: props.rowId, col: props.colId, index: null };
+        var vector = { context: props.tabId, zone: props.zone, row: props.rowId, col: props.colId, index: null };
         var item = monitor.getItem();
 
         // if field already belongs to this drop area, don't accept it on the drop.
-        if (item.source.row === pointer.row && item.source.col === pointer.col) {
+        if (item.source.row === vector.row && item.source.col === vector.col) {
             return;
         }
 
-        ViewActions.moveField(item.data, item.source, pointer);
+        ViewActions.moveField(item.type, item.data, item.source, vector);
     },
 
     hover: function hover(props, monitor, component) {
+
+        if (!monitor.canDrop()) {
+            return;
+        }
 
         // if this target column has fields in it, handle drop on the field target.
         if (props.data['fields'].length > 0) {
@@ -706,13 +740,13 @@ var columnTarget = {
         }
 
         var item = monitor.getItem();
-        var targetPointer = { context: props.tabId, row: props.rowId, col: props.colId, index: 0 };
+        var targetVector = { context: props.tabId, zone: props.zone, row: props.rowId, col: props.colId, index: 0 };
 
         // Time to actually perform the action (it will be opacity=0 until drag is over)
-        ViewActions.moveField(item.data, item.source, targetPointer);
+        ViewActions.moveField(item.type, item.data, item.source, targetVector);
 
         // Note: we're mutating the monitor item here!
-        monitor.getItem().source = targetPointer;
+        monitor.getItem().source = targetVector;
     }
 
 };
@@ -721,7 +755,8 @@ function collect(connect, monitor) {
     return {
         connectDropTarget: connect.dropTarget(),
         isOver: monitor.isOver(),
-        isOverCurrent: monitor.isOver({ shallow: true })
+        isOverCurrent: monitor.isOver({ shallow: true }),
+        canDrop: monitor.canDrop()
     };
 }
 
@@ -732,6 +767,7 @@ var RowColumn = React.createClass({
         type: React.PropTypes.string, // type of item
         data: React.PropTypes.object, // Column object details
         tabId: React.PropTypes.string, // tab id
+        zone: React.PropTypes.string, // for the widgets, 'above' or 'below'
         rowId: React.PropTypes.string, // row id
         colId: React.PropTypes.number },
 
@@ -759,7 +795,9 @@ var RowColumn = React.createClass({
 
         return React.createElement(Field, {
             key: field.id,
+            type: this.props.type,
             tabId: this.props.tabId,
+            zone: this.props.zone,
             rowId: this.props.rowId,
             colId: this.props.colId,
             order: i,
@@ -779,7 +817,7 @@ var RowColumn = React.createClass({
         }
 
         //todo: replace this by a css class
-        var highlight = this.props.isOver ? { border: '1px dashed #00A0D2' } : {};
+        var highlight = this.props.isOver && this.props.canDrop ? { border: '1px dashed #00A0D2' } : {};
 
         return connectDropTarget(React.createElement(
             'div',
@@ -888,17 +926,24 @@ var Row = React.createClass({
     displayName: 'Row',
 
     propTypes: {
+        type: React.PropTypes.string, // widget, field
         tabId: React.PropTypes.string, // active tab
         rowId: React.PropTypes.string, // row ID
-        type: React.PropTypes.string, // widgets, fields
+        zone: React.PropTypes.string, // for the widgets, 'above' or 'below'
         data: React.PropTypes.object // Layout Data, just the row array
     },
 
     renderColumn: function renderColumn(column, i) {
 
+        // todo: sanitize the layout structure before arriving here. Check the convert function.
+        if (!column.hasOwnProperty('fields')) {
+            column['fields'] = [];
+        }
+
         return React.createElement(RowColumn, {
             key: i,
             tabId: this.props.tabId,
+            zone: this.props.zone,
             rowId: this.props.rowId,
             colId: i,
             type: this.props.type,
@@ -940,15 +985,22 @@ var Rows = React.createClass({
 
     propTypes: {
         tabId: React.PropTypes.string, // active tab
-        type: React.PropTypes.string, // widgets, fields
-        zone: React.PropTypes.string, // for the widgets, 'header' or 'footer'
+        type: React.PropTypes.string, // widget, field
+        zone: React.PropTypes.string, // for the widgets, 'above' or 'below'
         data: React.PropTypes.array // Layout Data, just the rows array
+    },
+
+    getDefaultProps: function getDefaultProps() {
+        return {
+            zone: null
+        };
     },
 
     renderRow: function renderRow(row, i) {
 
         return React.createElement(Row, {
             key: row.id,
+            zone: this.props.zone,
             tabId: this.props.tabId,
             rowId: row.id,
             type: this.props.type,
@@ -992,8 +1044,11 @@ var TabContainer = React.createClass({
     },
 
     render: function render() {
-
         var fieldsRows = this.props.layoutData['rows'] || [];
+
+        var widgets = this.props.layoutData['widgets'] || {};
+        var widgetsAboveRows = widgets.hasOwnProperty('above') ? widgets['above']['rows'] : [],
+            widgetsBelowRows = widgets.hasOwnProperty('below') ? widgets['below']['rows'] : [];
 
         var displayContainer = { display: this.props.tabId === this.props.activeTab ? 'block' : 'none' };
 
@@ -1014,8 +1069,8 @@ var TabContainer = React.createClass({
             React.createElement(Rows, {
                 tabId: this.props.tabId,
                 type: 'widget',
-                zone: 'header'
-
+                zone: 'above',
+                data: widgetsAboveRows
             }),
             React.createElement(
                 'h3',
@@ -1044,7 +1099,12 @@ var TabContainer = React.createClass({
                     gravityview_i18n.widgets_label_below
                 )
             ),
-            React.createElement(Rows, { tabId: this.props.tabId, type: 'widget', zone: 'footer' })
+            React.createElement(Rows, {
+                tabId: this.props.tabId,
+                type: 'widget',
+                zone: 'below',
+                data: widgetsBelowRows
+            })
         );
     }
 
@@ -1968,9 +2028,11 @@ var AddFieldSubPanel = React.createClass({
         var fieldDetails = ViewCommon.getItemDetailsById(fieldsList, field_id);
 
         var fieldArgs = {
-            'context': this.props.extraArgs['context'],
-            'row': this.props.extraArgs['row'],
-            'col': this.props.extraArgs['col'],
+            'vector': {
+                'context': this.props.extraArgs['context'],
+                'row': this.props.extraArgs['row'],
+                'col': this.props.extraArgs['col']
+            },
             'field': {
                 'id': ViewCommon.uniqid(),
                 'field_id': field_id,
@@ -2042,8 +2104,7 @@ var ConfigureFieldPanel = React.createClass({
         currentPanel: React.PropTypes.string, // the current active panel
         extraArgs: React.PropTypes.object },
 
-    // A vector containing the "pointer" (context, row, col, field) and the "settings" inputs ( defined at ViewApi.getFieldSettings() )
-
+    // A vector containing the "vector" (context, row, col), the "field" and the "inputs" ( defined at ViewApi.getFieldSettings() )
     /**
      * Holds the current field settings values
      */
@@ -2052,14 +2113,14 @@ var ConfigureFieldPanel = React.createClass({
     handleChange: function handleChange(e) {
         var id = e.target.getAttribute('id');
         this.settingsValues[id] = e.target.value;
-        ViewActions.updateFieldSetting(this.props.extraArgs['pointer'], this.settingsValues);
+        ViewActions.updateFieldSetting(this.props.extraArgs, this.settingsValues);
     },
 
     handleCheckChange: function handleCheckChange(e) {
         var id = e.target.getAttribute('id');
 
         this.settingsValues[id] = e.target.checked;
-        ViewActions.updateFieldSetting(this.props.extraArgs['pointer'], this.settingsValues);
+        ViewActions.updateFieldSetting(this.props.extraArgs, this.settingsValues);
     },
 
     shouldRenderInput: function shouldRenderInput(item) {
@@ -2127,7 +2188,7 @@ var ConfigureFieldPanel = React.createClass({
     },
 
     renderSettings: function renderSettings() {
-        var inputs = this.props.extraArgs['settings'];
+        var inputs = this.props.extraArgs['inputs'];
 
         return inputs.map(this.renderInputs, this);
     },
@@ -2141,7 +2202,7 @@ var ConfigureFieldPanel = React.createClass({
         }
 
         // Update the current field settings values
-        this.settingsValues = this.props.extraArgs['pointer']['field']['gv_settings'];
+        this.settingsValues = this.props.extraArgs['field']['gv_settings'];
 
         return React.createElement(
             Panel,
@@ -2748,7 +2809,8 @@ module.exports = keyMirror({
     UPDATE_FIELD_SETTINGS: null, // update the gv_settings object when adding a new field or changing the field setting
 
     // DnD
-    TYPE_FIELD: null
+    TYPE_FIELD: null,
+    TYPE_WIDGET: null
 
 });
 
@@ -2867,6 +2929,29 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
         return this.fieldsList[context];
     },
 
+    /** Helpers */
+    /**
+     * Returns the array of rows for a specific vector on layout
+     * @param type string Item type: widget or field
+     * @param vector object Vector to a position in layout: { context, zone, row, col, index }
+     * @returns {*}
+     */
+    getRows: function getRows(type, vector) {
+        if ('field' === type) {
+            return this.layout[vector.context]['rows'];
+        } else if ('widget' === type) {
+            return this.layout[vector.context]['widgets'][vector.zone]['rows'];
+        }
+    },
+
+    setFields: function setFields(type, vector, fields) {
+        if ('field' === type) {
+            this.layout[vector.context]['rows'][vector.rowI]['columns'][vector.col]['fields'] = fields;
+        } else if ('widget' === type) {
+            this.layout[vector.context]['widgets'][vector.zone]['rows'][vector.rowI]['columns'][vector.col]['fields'] = fields;
+        }
+    },
+
     /**
      * Add row to the layout structure
      * @param context string Directory, Single, Edit, Export
@@ -2937,61 +3022,67 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
     },
 
     /**
-     * Remove Field from layout
-     * @param context
-     * @param row
-     * @param col
-     * @param field string Field id
+     * Remove Widget/Field from layout
+     * @param type string Item type: widget or field
+     * @param vector object Layout vector: {context, row, col, index} for fields or {context, zone, row, col, index} for widgets
+     * @param field_id string Field id
      */
-    removeField: function removeField(context, row, col, field) {
-        var rowI = ViewCommon.findRowIndex(this.layout[context]['rows'], row),
-            fields = this.layout[context]['rows'][rowI]['columns'][col]['fields'],
-            fieldI = ViewCommon.findRowIndex(fields, field);
+    removeField: function removeField(type, vector, field_id) {
+        var rowsList = this.getRows(type, vector);
+
+        vector.rowI = ViewCommon.findRowIndex(rowsList, vector.row);
+
+        var fields = rowsList[vector.rowI]['columns'][vector.col]['fields'],
+            fieldI = ViewCommon.findRowIndex(fields, field_id);
 
         fields.splice(fieldI, 1);
-        this.layout[context]['rows'][rowI]['columns'][col]['fields'] = fields;
+
+        this.setFields(type, vector, fields);
     },
 
     /**
-     * Add Field to Layout
-     * @param context
-     * @param row
-     * @param col
-     * @param field Object Field
+     * Add Widget/Field to Layout
+     * @param type string Item type: widget or field
+     * @param vector object Layout vector: {context, row, col, index} for fields or {context, zone, row, col, index} for widgets
+     * @param field Object Field details
      */
-    addField: function addField(context, row, col, index, field) {
+    addField: function addField(type, vector, field) {
+        var rowsList = this.getRows(type, vector);
 
-        var rowI = ViewCommon.findRowIndex(this.layout[context]['rows'], row),
-            fields = this.layout[context]['rows'][rowI]['columns'][col]['fields'];
+        vector.rowI = ViewCommon.findRowIndex(rowsList, vector.row);
+
+        var fields = rowsList[vector.rowI]['columns'][vector.col]['fields'];
 
         // add the new field to layout
-        if (null === index) {
+        if (null === vector.index) {
             fields.push(field);
         } else {
-            fields.splice(index, 0, field);
+            fields.splice(vector.index, 0, field);
         }
 
-        this.layout[context]['rows'][rowI]['columns'][col]['fields'] = fields;
+        this.setFields(type, vector, fields);
     },
 
     /**
      * Add the field settings values to the layout (gv_settings object)
-     * @param context
-     * @param row
-     * @param col
+     * @param type string Item type: widget or field
+     * @param vector
      * @param field object Field details (field_id, form_id, field_type, ...)
      * @param settings
      */
-    addFieldSettingsValues: function addFieldSettingsValues(context, row, col, field, settings) {
-        var rowI = ViewCommon.findRowIndex(this.layout[context]['rows'], row),
-            fields = this.layout[context]['rows'][rowI]['columns'][col]['fields'];
+    addFieldSettingsValues: function addFieldSettingsValues(type, vector, field, settings) {
+        var rowsList = this.getRows(type, vector);
+
+        vector.rowI = ViewCommon.findRowIndex(rowsList, vector.row);
+
+        var fields = rowsList[vector.rowI]['columns'][vector.col]['fields'];
 
         var index = ViewCommon.findRowIndex(fields, field['id']);
 
         // replace the existent gv_settings object by the new one
         fields[index]['gv_settings'] = settings;
 
-        this.layout[context]['rows'][rowI]['columns'][col]['fields'] = fields;
+        this.setFields(type, vector, fields);
     }
 
 });
@@ -3026,7 +3117,7 @@ ViewDispatcher.register(function (action) {
             break;
 
         case ViewConstants.LAYOUT_DEL_FIELD:
-            LayoutStore.removeField(action.context, action.row, action.col, action.field);
+            LayoutStore.removeField(action.vector, action.field);
             LayoutStore.emitChange();
             break;
 
@@ -3036,24 +3127,18 @@ ViewDispatcher.register(function (action) {
             action.field['gv_settings'] = { 'label': action.field['field_label'] };
             delete action.field['field_label'];
 
-            LayoutStore.addField(action.context, action.row, action.col, null, action.field);
+            LayoutStore.addField(action.type, action.target, action.field);
             LayoutStore.emitChange();
             break;
 
         case ViewConstants.LAYOUT_MOV_FIELD:
-            var source = action.source,
-                target = action.target;
-            LayoutStore.removeField(source.context, source.row, source.col, action.item['id']);
-            LayoutStore.addField(target.context, target.row, target.col, target.index, action.item);
+            LayoutStore.removeField(action.type, action.source, action.item['id']);
+            LayoutStore.addField(action.type, action.target, action.item);
             LayoutStore.emitChange();
             break;
 
         case ViewConstants.UPDATE_FIELD_SETTINGS:
-
-            var args = action.values['pointer'],
-                settings = action.values['settings'];
-
-            LayoutStore.addFieldSettingsValues(args['context'], args['row'], args['col'], args['field'], settings);
+            LayoutStore.addFieldSettingsValues(action.type, action.values['vector'], action.values['field'], action.values['settings']);
             LayoutStore.emitChange();
             break;
 

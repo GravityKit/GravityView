@@ -11,6 +11,11 @@ var Rows = React.createClass({
         data: React.PropTypes.array // Layout Data, just the rows array
     },
 
+    getDefaultProps: function() {
+        return {
+            zone: null
+        };
+    },
 
     renderRow: function( row, i ) {
 
@@ -18,6 +23,7 @@ var Rows = React.createClass({
 
             <Row
                 key={row.id}
+                zone={this.props.zone}
                 tabId={this.props.tabId}
                 rowId={row.id}
                 type={this.props.type}

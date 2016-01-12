@@ -107,6 +107,28 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
         return this.fieldsList[ context ];
     },
 
+    /** Helpers */
+    /**
+     * Returns the array of rows for a specific vector on layout
+     * @param type string Item type: widget or field
+     * @param vector object Vector to a position in layout: { context, zone, row, col, index }
+     * @returns {*}
+     */
+    getRows: function( type, vector ) {
+        if ( 'field' === type ) {
+            return this.layout[ vector.context ]['rows'];
+        } else if( 'widget' === type ) {
+            return this.layout[ vector.context ]['widgets'][ vector.zone ]['rows'];
+        }
+    },
+
+    setFields: function( type, vector, fields ) {
+        if ( 'field' === type ) {
+            this.layout[ vector.context ]['rows'][ vector.rowI ]['columns'][ vector.col ]['fields'] = fields;
+        } else if( 'widget' === type ) {
+            this.layout[ vector.context ]['widgets'][ vector.zone ]['rows'][ vector.rowI ]['columns'][ vector.col ]['fields'] = fields;
+        }
+    },
 
 
     /**
@@ -180,64 +202,71 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
     },
 
     /**
-     * Remove Field from layout
-     * @param context
-     * @param row
-     * @param col
-     * @param field string Field id
+     * Remove Widget/Field from layout
+     * @param type string Item type: widget or field
+     * @param vector object Layout vector: {context, row, col, index} for fields or {context, zone, row, col, index} for widgets
+     * @param field_id string Field id
      */
-    removeField: function( context, row, col, field ) {
-        var rowI = ViewCommon.findRowIndex( this.layout[ context ]['rows'], row ),
-            fields = this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'],
-            fieldI = ViewCommon.findRowIndex( fields, field );
+    removeField: function( type, vector, field_id ) {
+        var rowsList = this.getRows( type, vector );
+
+        vector.rowI = ViewCommon.findRowIndex( rowsList, vector.row );
+
+        var fields = rowsList[ vector.rowI ]['columns'][ vector.col ]['fields'],
+            fieldI = ViewCommon.findRowIndex( fields, field_id );
 
         fields.splice( fieldI, 1 );
-        this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'] = fields;
+
+        this.setFields( type, vector, fields );
     },
 
 
     /**
-     * Add Field to Layout
-     * @param context
-     * @param row
-     * @param col
-     * @param field Object Field
+     * Add Widget/Field to Layout
+     * @param type string Item type: widget or field
+     * @param vector object Layout vector: {context, row, col, index} for fields or {context, zone, row, col, index} for widgets
+     * @param field Object Field details
      */
-    addField: function( context, row, col, index, field ) {
+    addField: function( type, vector, field ) {
+        var rowsList = this.getRows( type, vector );
 
-        var rowI = ViewCommon.findRowIndex( this.layout[ context ]['rows'], row ),
-            fields = this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'];
+        vector.rowI = ViewCommon.findRowIndex( rowsList, vector.row );
+
+        var fields = rowsList[ vector.rowI ]['columns'][ vector.col ]['fields'];
 
         // add the new field to layout
-        if( null === index ) {
+        if( null === vector.index ) {
             fields.push( field );
         } else {
-            fields.splice( index, 0, field );
+            fields.splice( vector.index, 0, field );
         }
 
-        this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'] = fields;
+        this.setFields( type, vector, fields );
     },
 
     /**
      * Add the field settings values to the layout (gv_settings object)
-     * @param context
-     * @param row
-     * @param col
+     * @param type string Item type: widget or field
+     * @param vector
      * @param field object Field details (field_id, form_id, field_type, ...)
      * @param settings
      */
-    addFieldSettingsValues: function( context, row, col, field, settings ) {
-        var rowI = ViewCommon.findRowIndex( this.layout[ context ]['rows'], row ),
-            fields = this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'];
+    addFieldSettingsValues: function( type, vector, field, settings ) {
+        var rowsList = this.getRows( type, vector );
+
+        vector.rowI = ViewCommon.findRowIndex( rowsList, vector.row );
+
+        var fields = rowsList[ vector.rowI ]['columns'][ vector.col ]['fields'];
 
         var index = ViewCommon.findRowIndex( fields, field['id'] );
 
         // replace the existent gv_settings object by the new one
         fields[ index ]['gv_settings'] = settings;
 
-        this.layout[ context ]['rows'][ rowI ]['columns'][ col ]['fields'] = fields;
-
+        this.setFields( type, vector, fields );
     },
+
+
 
 });
 
@@ -272,7 +301,7 @@ ViewDispatcher.register( function( action ) {
             break;
 
         case ViewConstants.LAYOUT_DEL_FIELD:
-            LayoutStore.removeField( action.context, action.row, action.col, action.field );
+            LayoutStore.removeField( action.vector, action.field );
             LayoutStore.emitChange();
             break;
 
@@ -282,24 +311,23 @@ ViewDispatcher.register( function( action ) {
             action.field['gv_settings'] = { 'label': action.field['field_label'] };
             delete action.field['field_label'];
 
-            LayoutStore.addField( action.context, action.row, action.col, null, action.field );
+            LayoutStore.addField( action.type, action.target, action.field );
             LayoutStore.emitChange();
             break;
 
         case ViewConstants.LAYOUT_MOV_FIELD:
-            var source = action.source,
-                target = action.target;
-            LayoutStore.removeField( source.context, source.row, source.col, action.item['id'] );
-            LayoutStore.addField( target.context, target.row, target.col, target.index, action.item );
+            LayoutStore.removeField( action.type, action.source, action.item['id'] );
+            LayoutStore.addField( action.type, action.target, action.item );
             LayoutStore.emitChange();
             break;
 
         case ViewConstants.UPDATE_FIELD_SETTINGS:
-
-            var args = action.values['pointer'],
-                settings = action.values['settings'];
-
-            LayoutStore.addFieldSettingsValues( args['context'], args['row'], args['col'], args['field'], settings );
+            LayoutStore.addFieldSettingsValues(
+                action.type,
+                action.values['vector'],
+                action.values['field'],
+                action.values['settings']
+            );
             LayoutStore.emitChange();
             break;
 

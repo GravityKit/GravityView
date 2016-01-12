@@ -5,18 +5,25 @@ var RowColumn = require('./row-column.jsx');
 var Row = React.createClass({
 
     propTypes: {
+        type: React.PropTypes.string, // widget, field
         tabId: React.PropTypes.string, // active tab
         rowId: React.PropTypes.string, // row ID
-        type: React.PropTypes.string, // widgets, fields
+        zone: React.PropTypes.string, // for the widgets, 'above' or 'below'
         data: React.PropTypes.object // Layout Data, just the row array
     },
 
     renderColumn: function( column , i ) {
 
+        // todo: sanitize the layout structure before arriving here. Check the convert function.
+        if( !column.hasOwnProperty('fields') ) {
+            column['fields'] = [];
+        }
+
         return(
             <RowColumn
                 key={i}
                 tabId={this.props.tabId}
+                zone={this.props.zone}
                 rowId={this.props.rowId}
                 colId={i}
                 type={this.props.type}

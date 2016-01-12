@@ -18,7 +18,7 @@ var ConfigureFieldPanel = React.createClass({
     propTypes: {
         returnPanel: React.PropTypes.string, // holds the panel ID when going back
         currentPanel: React.PropTypes.string, // the current active panel
-        extraArgs: React.PropTypes.object, // A vector containing the "pointer" (context, row, col, field) and the "settings" inputs ( defined at ViewApi.getFieldSettings() )
+        extraArgs: React.PropTypes.object, // A vector containing the "vector" (context, row, col), the "field" and the "inputs" ( defined at ViewApi.getFieldSettings() )
     },
 
     /**
@@ -29,14 +29,14 @@ var ConfigureFieldPanel = React.createClass({
     handleChange: function( e ) {
         var id = e.target.getAttribute( 'id' );
         this.settingsValues[ id ] = e.target.value;
-        ViewActions.updateFieldSetting( this.props.extraArgs['pointer'], this.settingsValues );
+        ViewActions.updateFieldSetting( this.props.extraArgs, this.settingsValues );
     },
 
     handleCheckChange: function( e ) {
         var id = e.target.getAttribute( 'id' );
 
         this.settingsValues[ id ] = e.target.checked;
-        ViewActions.updateFieldSetting( this.props.extraArgs['pointer'], this.settingsValues );
+        ViewActions.updateFieldSetting( this.props.extraArgs, this.settingsValues );
     },
 
     shouldRenderInput: function ( item ) {
@@ -116,7 +116,7 @@ var ConfigureFieldPanel = React.createClass({
     },
 
     renderSettings: function() {
-        var inputs = this.props.extraArgs['settings'];
+        var inputs = this.props.extraArgs['inputs'];
 
         return inputs.map( this.renderInputs, this );
     },
@@ -130,7 +130,7 @@ var ConfigureFieldPanel = React.createClass({
         }
 
         // Update the current field settings values
-        this.settingsValues = this.props.extraArgs['pointer']['field']['gv_settings'];
+        this.settingsValues = this.props.extraArgs['field']['gv_settings'];
 
         return (
 

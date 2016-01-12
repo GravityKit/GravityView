@@ -6,19 +6,29 @@ var ViewActions = require('../../../actions/view-actions.js');
 var DropTarget = require('react-dnd').DropTarget;
 
 var columnTarget = {
+
+    canDrop: function ( props, monitor ) {
+        var item = monitor.getItem();
+        return props.type === item.type;
+    },
+
     drop: function ( props, monitor ) {
-        const pointer = { context: props.tabId, row: props.rowId, col: props.colId, index: null };
+        const vector = { context: props.tabId, zone: props.zone, row: props.rowId, col: props.colId, index: null };
         const item = monitor.getItem();
 
         // if field already belongs to this drop area, don't accept it on the drop.
-        if( item.source.row === pointer.row && item.source.col === pointer.col ) {
+        if( item.source.row === vector.row && item.source.col === vector.col ) {
             return;
         }
 
-        ViewActions.moveField( item.data, item.source, pointer );
+        ViewActions.moveField( item.type, item.data, item.source, vector );
     },
 
     hover( props, monitor, component ) {
+
+        if( !monitor.canDrop() ) {
+            return;
+        }
 
         // if this target column has fields in it, handle drop on the field target.
         if( props.data['fields'].length > 0 ) {
@@ -26,13 +36,13 @@ var columnTarget = {
         }
 
         const item = monitor.getItem();
-        const targetPointer = { context: props.tabId, row: props.rowId, col: props.colId, index: 0 };
+        const targetVector = { context: props.tabId, zone: props.zone, row: props.rowId, col: props.colId, index: 0 };
 
         // Time to actually perform the action (it will be opacity=0 until drag is over)
-        ViewActions.moveField( item.data, item.source, targetPointer );
+        ViewActions.moveField( item.type, item.data, item.source, targetVector );
 
         // Note: we're mutating the monitor item here!
-        monitor.getItem().source = targetPointer;
+        monitor.getItem().source = targetVector;
     }
 
 };
@@ -41,7 +51,8 @@ function collect(connect, monitor) {
     return {
         connectDropTarget: connect.dropTarget(),
         isOver: monitor.isOver(),
-        isOverCurrent: monitor.isOver({ shallow: true })
+        isOverCurrent: monitor.isOver({ shallow: true }),
+        canDrop: monitor.canDrop(),
     };
 }
 
@@ -51,6 +62,7 @@ var RowColumn = React.createClass({
         type: React.PropTypes.string, // type of item
         data: React.PropTypes.object, // Column object details
         tabId: React.PropTypes.string, // tab id
+        zone: React.PropTypes.string, // for the widgets, 'above' or 'below'
         rowId: React.PropTypes.string, // row id
         colId: React.PropTypes.number, // Column order on the row
     },
@@ -79,7 +91,9 @@ var RowColumn = React.createClass({
         return(
             <Field
                 key={field.id}
+                type={this.props.type}
                 tabId={this.props.tabId}
+                zone={this.props.zone}
                 rowId={this.props.rowId}
                 colId={this.props.colId}
                 order={i}
@@ -100,7 +114,7 @@ var RowColumn = React.createClass({
         }
 
         //todo: replace this by a css class
-        var highlight = this.props.isOver ? { border: '1px dashed #00A0D2' } : {};
+        var highlight = this.props.isOver && this.props.canDrop ? { border: '1px dashed #00A0D2' } : {};
 
         return connectDropTarget(
             <div className={areaClass}>

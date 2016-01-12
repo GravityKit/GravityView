@@ -138,14 +138,14 @@ var ViewApi = {
 
     /**
      * Get the field settings array
-     * @param args object Pointer containing 'context', 'row', 'col' and 'field' (field_id, form_id, field_type, ..)
+     * @param args object 'vector' (containing 'context', 'row', 'col') and 'field' (field_id, form_id, field_type, ..)
      */
     getFieldSettingsValues: function( args ) {
 
         var data = {
             action: 'gv_get_field_settings_values',
             //template: templateId,
-            context: args.context,
+            context: args.vector['context'],
             field_id: args.field['field_id'],
             field_type: args.field['field_type'],
             field_label: args.field['field_label'],
@@ -162,7 +162,8 @@ var ViewApi = {
         } ).done( function ( response ) {
 
             var values = {
-                pointer: args,
+                vector: args.vector,
+                field: args.field,
                 settings: response.data
             };
             updateSettings( ViewConstants.UPDATE_FIELD_SETTINGS, values );
@@ -178,12 +179,12 @@ var ViewApi = {
      * Fetch field settings, and open the field settings panel when loaded.
      * @param args Object Field arguments ( context, row, col, field [id, field_id, form_id, field_type, gv_settings] )
      */
-    getFieldSettings: function( args ) {
+    getFieldSettingsInputs: function( args ) {
 
         var data = {
             action: 'gv_get_field_settings',
             //template: templateId,
-            context: args.context,
+            context: args.vector['context'],
             field_id: args.field['field_id'],
             field_type: args.field['field_type'],
             form_id: args.field['form_id'],
@@ -198,12 +199,12 @@ var ViewApi = {
             async: true
         } ).done( function ( response ) {
 
-            var values = {
-                pointer: args,
-                settings: response.data
-            };
+            /**
+             * Object containing 'type', 'vector', 'field' and (now) 'inputs'
+             */
+            args.inputs = response.data;
 
-            apiOpenPanel( ViewConstants.PANEL_FIELD_SETTINGS, false, values );
+            apiOpenPanel( ViewConstants.PANEL_FIELD_SETTINGS, false, args );
         } ).fail( function ( jqXHR ) {
             console.log( jqXHR );
         } ).always( function () {

@@ -156,9 +156,7 @@ module.exports = {
         // add the field without 'gv_settings' while loading the settings
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_ADD_FIELD,
-            context: args.context,
-            row: args.row,
-            col: args.col,
+            target: args.vector,
             field: args.field
         });
     },
@@ -166,16 +164,22 @@ module.exports = {
     removeField: function( args ) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_DEL_FIELD,
-            context: args.context,
-            row: args.row,
-            col: args.col,
+            vector: args.vector,
             field: args.field
         });
     },
 
-    moveField: function( data, source, target ) {
+    /**
+     * Move a field or a widget between two droppable areas
+     * @param type string Type of item (widget, field)
+     * @param data object Item configuration details
+     * @param source object Source pointer in layout
+     * @param target object Target pointer in layout
+     */
+    moveField: function( type, data, source, target ) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_MOV_FIELD,
+            type: type,
             item: data,
             source: source,
             target: target
@@ -188,15 +192,17 @@ module.exports = {
      * @param args Object Field arguments ( context, row, col, field [id, field_id, form_id, field_type, gv_settings] )
      */
     editFieldSettings: function( args ) {
-        ViewApi.getFieldSettings( args );
+        ViewApi.getFieldSettingsInputs( args );
     },
 
 
     updateFieldSetting: function( args, newSettings ) {
 
         var newValues = {
-            pointer: args,
-            settings: newSettings
+            type: args.type,
+            vector: args.vector,
+            field: args.field,
+            settings:  newSettings
         };
 
         ViewDispatcher.dispatch({
