@@ -168,6 +168,7 @@ module.exports = {
     removeField: function removeField(args) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_DEL_FIELD,
+            type: args.type,
             vector: args.vector,
             field: args.field
         });
@@ -632,6 +633,7 @@ var Field = React.createClass({
             'type': this.props.type,
             'vector': {
                 'context': this.props.tabId,
+                'zone': this.props.zone,
                 'row': this.props.rowId,
                 'col': this.props.colId
             },
@@ -645,8 +647,10 @@ var Field = React.createClass({
         e.preventDefault();
 
         var fieldArgs = {
+            'type': this.props.type,
             'vector': {
                 'context': this.props.tabId,
+                'zone': this.props.zone,
                 'row': this.props.rowId,
                 'col': this.props.colId
             },
@@ -3125,7 +3129,7 @@ ViewDispatcher.register(function (action) {
             break;
 
         case ViewConstants.LAYOUT_DEL_FIELD:
-            LayoutStore.removeField(action.vector, action.field);
+            LayoutStore.removeField(action.type, action.vector, action.field);
             LayoutStore.emitChange();
             break;
 

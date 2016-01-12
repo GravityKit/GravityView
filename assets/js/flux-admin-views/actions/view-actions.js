@@ -164,6 +164,7 @@ module.exports = {
     removeField: function( args ) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_DEL_FIELD,
+            type: args.type,
             vector: args.vector,
             field: args.field
         });

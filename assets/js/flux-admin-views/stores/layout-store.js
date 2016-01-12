@@ -301,7 +301,7 @@ ViewDispatcher.register( function( action ) {
             break;
 
         case ViewConstants.LAYOUT_DEL_FIELD:
-            LayoutStore.removeField( action.vector, action.field );
+            LayoutStore.removeField( action.type, action.vector, action.field );
             LayoutStore.emitChange();
             break;
 

@@ -95,6 +95,7 @@ var Field = React.createClass({
             'type': this.props.type,
             'vector': {
                 'context': this.props.tabId,
+                'zone': this.props.zone,
                 'row': this.props.rowId,
                 'col': this.props.colId,
             },
@@ -108,8 +109,10 @@ var Field = React.createClass({
         e.preventDefault();
 
         var fieldArgs = {
+            'type': this.props.type,
             'vector': {
                 'context': this.props.tabId,
+                'zone': this.props.zone,
                 'row': this.props.rowId,
                 'col': this.props.colId,
             },
