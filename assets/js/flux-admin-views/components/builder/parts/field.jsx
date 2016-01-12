@@ -119,6 +119,14 @@ var Field = React.createClass({
         ViewActions.removeField( fieldArgs );
     },
 
+    renderSettingsLabel: function() {
+        return this.props.type === 'field' ? gravityview_i18n.field_settings : gravityview_i18n.widget_settings;
+    },
+
+    renderRemoveLabel: function() {
+        return this.props.type === 'field' ? gravityview_i18n.field_remove : gravityview_i18n.widget_remove;
+    },
+
     render: function() {
 
         var connectDragSource = this.props.connectDragSource,
@@ -131,9 +139,9 @@ var Field = React.createClass({
 
         return connectDragSource( connectDropTarget(
             <div className="gv-view-field" style={{opacity}}>
-                <a onClick={this.handleFieldSettings} title={gravityview_i18n.field_settings} className="gv-view-field__settings" data-icon="&#xe009;"><span className="gv-screen-reader-text">{gravityview_i18n.field_settings}</span></a>
+                <a onClick={this.handleFieldSettings} title={this.renderSettingsLabel()} className="gv-view-field__settings" data-icon="&#xe009;"><span className="gv-screen-reader-text">{this.renderSettingsLabel()}</span></a>
                 <span className="gv-view-field__description">{label}</span>
-                <a onClick={this.handleFieldRemove} title={gravityview_i18n.field_remove} className="gv-view-field__remove" data-icon="&#xe006;"><span className="gv-screen-reader-text">{gravityview_i18n.field_remove}</span></a>
+                <a onClick={this.handleFieldRemove} title={this.renderRemoveLabel()} className="gv-view-field__remove" data-icon="&#xe006;"><span className="gv-screen-reader-text">{this.renderRemoveLabel()}</span></a>
             </div>
         ));
     }

@@ -1233,13 +1233,15 @@ class GravityView_Admin_Views {
 			'widgets_add' 			=> __( 'Add Widget', 'gravityview' ),
 			'widgets_title_below' 	=> __( 'Below Entries Widgets', 'gravityview' ),
 			'widgets_label_below' 	=> __( 'These widgets will be shown below entries.', 'gravityview' ),
+			'widget_settings'		=> __( 'Widget Settings', 'gravityview' ),
+			'widget_remove'			=> __( 'Remove Widget', 'gravityview' ),
 
 			// Fields Area
 			'fields_title_multiple' 	=> __( 'Entries Fields', 'gravityview' ),
 			'fields_label_multiple' 	=> __( 'These fields will be shown for each entry.', 'gravityview' ),
 			'fields_add' 				=> __( 'Add Field', 'gravityview' ),
 			'field_settings'			=> __( 'Field Settings', 'gravityview' ),
-			'field_remove'			=> __( 'Remove Field', 'gravityview' ),
+			'field_remove'				=> __( 'Remove Field', 'gravityview' ),
 
 
 			//Panel
