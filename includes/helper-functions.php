@@ -47,6 +47,38 @@ function gravityview_get_permalink_query_args( $id = 0 ) {
 	return $args;
 }
 
+
+/**
+ * Similar to the WordPress `selected()`, `checked()`, and `disabled()` functions, except it allows arrays to be passed as current value
+ *
+ * @see selected() WordPress core function
+ *
+ * @param string $value One of the values to compare
+ * @param mixed $current (true) The other value to compare if not just true
+ * @param bool $echo Whether to echo or just return the string
+ * @param string $type The type of checked|selected|disabled we are doing
+ *
+ * @return string html attribute or empty string
+ */
+function gv_selected( $value, $current, $echo = true, $type = 'selected' ) {
+
+	$output = '';
+	if( is_array( $current ) ) {
+		if( in_array( $value, $current ) ) {
+			$output = __checked_selected_helper( true, true, false, $type );
+		}
+	} else {
+		$output = __checked_selected_helper( $value, $current, false, $type );
+	}
+
+	if( $echo ) {
+		echo $output;
+	}
+
+	return $output;
+}
+
+
 if( ! function_exists( 'gravityview_sanitize_html_class' ) ) {
 
 	/**

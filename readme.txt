@@ -47,6 +47,7 @@ __Developer Notes:__
 * New: `GVCommon::has_product_field()` method to check whether a form has product fields
 * New: Added `add_filter( 'gform_is_encrypted_field', '__return_false' );` before fetching entries
 * Use the `$is_sortable` `GravityView_Field` variable to define whether a field is sortable. Override using the  `gravityview/sortable/field_blacklist` filter.
+* Tweak: Moved `gv_selected()` to `helper-functions.php` from `class-api.php`
 
 = 1.15.2 on December 3 =
 
