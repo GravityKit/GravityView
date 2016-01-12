@@ -46,6 +46,7 @@ __Developer Notes:__
 * New: `gravityview_get_terms_choices()` function generates array of categories ready to be added to Gravity Forms $choices array
 * Tweak: Added `gv-container-{view id}` CSS class to `gv_container_class()` function output. This will be added to View container `<div>`s
 * Fixed: Don't output widget structural HTML if there are no configured widgets
+* Fixed: Empty HTML `<h4>` label container output in List layout, even when "Show Label" was unchecked
 * Fixed: Fetching the current entry can improperly return an empty array when using `GravityView_View->getCurrentEntry()` in DataTables extension
 * New: `GVCommon::has_product_field()` method to check whether a form has product fields
 * New: Added `add_filter( 'gform_is_encrypted_field', '__return_false' );` before fetching entries
