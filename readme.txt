@@ -22,12 +22,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 1.16 on January 8 =
 * Happy New Year! We have big things planned for GravityView in 2016, including a new View builder.
-* Added: Merge Tags
+* Added: Merge Tags. [See all GravityView Merge Tags](http://docs.gravityview.co/article/76-merge-tags)
     * `{date_created}` Merge Tag displays the date an entry was created. [Read how to use it here](http://docs.gravityview.co/article/331-date-created-merge-tag).
     * `{payment_date}` displays Payment Date, formatted using [the same modifiers](http://docs.gravityview.co/article/331-date-created-merge-tag) as `{date_created}`
-    * `{payment_status}` displays Payment Status value
-    * `{payment_method}` displays Payment Method value
-    * `{payment_amount}` displays Payment Amount formatted as a currency. Use `{payment_amount:raw}` for the unformatted number.
+    * `{payment_status}` The current payment status of the entry (ie "Processing", "Pending", "Active", "Expired", "Failed", "Cancelled", "Approved", "Reversed", "Refunded", "Voided")
+    * `{payment_method}` The way the entry was paid for (ie "Credit Card", "PayPal", etc.)
+    * `{payment_amount}` displays Payment Amount formatted as a currency. Use `{payment_amount:raw}` for the un-formatted number
+    * `{currency}` The currency with which the entry was submitted (ie "USD", "EUR")
+    * `{transaction_id}` the ID of the transaction returned by the payment gateway
 * Fixed: Custom merge tags not being replaced properly by GravityView
 * Fixed: Connected form links were not visible in the Data Source metabox
 * Tweak: Only show Add View button to users who are able to publish Views
