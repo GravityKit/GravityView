@@ -44,6 +44,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 __Developer Notes:__
 
 * New: `gravityview_get_terms_choices()` function generates array of categories ready to be added to Gravity Forms $choices array
+* Tweak: Set `max-width: 50%` for `div.gv-list-view-content-image`
 * Tweak: Added `gv-container-{view id}` CSS class to `gv_container_class()` function output. This will be added to View container `<div>`s
 * Fixed: Don't output widget structural HTML if there are no configured widgets
 * Fixed: Empty HTML `<h4>` label container output in List layout, even when "Show Label" was unchecked
