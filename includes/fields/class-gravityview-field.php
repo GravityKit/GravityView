@@ -189,6 +189,8 @@ abstract class GravityView_Field {
 			// Replace the value from the entry, if exists
 			if( isset( $entry[ $tag ] ) ) {
 				$text = str_replace( $full_tag, $entry[ $tag ], $text );
+			} else {
+				$text = '';
 			}
 		}
 
