@@ -37,6 +37,11 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
     fieldsList: { 'directory': null, 'single': null, 'edit': null, 'export': null },
 
     /**
+     * Holds the available list of widgets (depending on the context)
+     */
+    widgetsList: { 'directory': null, 'single': null, 'edit': null },
+
+    /**
      *
      */
     emitChange: function() {
@@ -96,8 +101,8 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
     },
 
 
-    setFieldsList: function( context, list ) {
-        this.fieldsList[ context ] = list;
+    setFieldsList: function( list ) {
+        this.fieldsList = list;
     },
 
     getFieldsList: function( context ) {
@@ -105,6 +110,17 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
             return this.fieldsList;
         }
         return this.fieldsList[ context ];
+    },
+
+    setWidgetsList: function( list ) {
+        this.widgetsList = list;
+    },
+
+    getWidgetsList: function( context ) {
+        if( null === context ) {
+            return this.widgetsList;
+        }
+        return this.widgetsList[ context ];
     },
 
     /** Helpers */
@@ -339,9 +355,16 @@ ViewDispatcher.register( function( action ) {
             break;
 
         case ViewConstants.UPDATE_FIELDS_LIST:
-            LayoutStore.setFieldsList( action.context, action.values );
+            LayoutStore.setFieldsList( action.values );
             LayoutStore.emitChange();
             break;
+
+        // Add widget panel
+        case ViewConstants.UPDATE_WIDGETS_LIST:
+            LayoutStore.setWidgetsList( action.values );
+            LayoutStore.emitChange();
+            break;
+
 
 
 

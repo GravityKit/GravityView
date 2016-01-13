@@ -11,6 +11,7 @@ module.exports = keyMirror({
     PANEL_ROW_SETTINGS: null,
     PANEL_FIELD_ADD: null,
     PANEL_FIELD_SETTINGS: null,
+    PANEL_WIDGET_ADD: null,
 
 
     // Settings
@@ -38,9 +39,9 @@ module.exports = keyMirror({
     UPDATE_FIELDS_LIST: null,
     UPDATE_FIELD_SETTINGS: null, // update the gv_settings object when adding a new field or changing the field setting
 
+    UPDATE_WIDGETS_LIST: null,
 
     // DnD
     TYPE_FIELD: null,
-    TYPE_WIDGET: null,
 
 });

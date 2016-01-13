@@ -144,6 +144,10 @@ module.exports = {
         ViewApi.getFieldsList( forms );
     },
 
+    fetchWidgetsList: function(  ) {
+        ViewApi.getWidgetsList(  );
+    },
+
     /**
      * Trigger the Add Field to the Layout
      * @param args Object Field arguments: Context, Row, Col, Field (id, field_id, field_type, form_id, field_label)

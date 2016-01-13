@@ -27,14 +27,17 @@ class GravityView_Ajax {
 		// Load Layout configuration (new admin)
 		add_action( 'wp_ajax_gv_get_saved_layout', array( $this, 'get_saved_layout' ) );
 
-		// Load the fields list
+		// Load the fields list (new admin)
 		add_action( 'wp_ajax_gv_get_fields_list', array( $this, 'get_available_fields_list' ) );
 
-		// Load the field settings
+		// Load the field settings (new admin)
 		add_action( 'wp_ajax_gv_get_field_settings_values', array( $this, 'get_field_settings_values' ) );
 
-		// Load the field settings
+		// Load the field settings (new admin)
 		add_action( 'wp_ajax_gv_get_field_settings', array( $this, 'get_field_settings' ) );
+
+		// Load the widgets list (new admin)
+		add_action( 'wp_ajax_gv_get_widgets_list', array( $this, 'get_available_widgets_list' ) );
 	}
 
 	/**
@@ -735,6 +738,52 @@ class GravityView_Ajax {
 		//todo: do we want to have the ADD ALL FIELDS field ?
 		//$this->render_additional_fields( $form, $context );
 	}
+
+
+	/**
+	 * Get available widgets for a form and a context ( directory, single, edit )
+	 */
+	function get_available_widgets_list() {
+
+		//check nonce
+		$this->check_ajax_nonce();
+
+		$output = '';
+
+		/**
+		 * @filter  `gravityview_blacklist_field_types` Modify the types of fields that shouldn't be shown in a View.
+		 * @param[in,out] array $blacklist_field_types Array of field types to block for this context.
+		 * @param[in] string $context View context ('single', 'directory', or 'edit')
+		 */
+		foreach( array( 'directory', 'single', 'edit', 'export' ) as $context  ) {
+
+			$reg_widgets = apply_filters( "gravityview_register_{$context}_widgets", array() );
+
+			/**
+			 * Loop to create an object of fields grouped by section (form, entry, gravityview...)
+			 */
+			if( !empty( $reg_widgets ) ) {
+
+				error_log( '$reg_widgets:' . print_r( $reg_widgets , true ) );
+
+				foreach( $reg_widgets as $id => $details ) {
+
+
+
+					//$output[ $context ][ ][] = $details;
+
+				} // End foreach
+			}
+		}
+
+		// success
+		wp_send_json_success( $output );
+
+	}
+
+
+
+
 
 
 	/**

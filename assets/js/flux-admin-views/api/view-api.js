@@ -136,6 +136,27 @@ var ViewApi = {
 
     },
 
+    getWidgetsList: function() {
+        var data = {
+            action: 'gv_get_widgets_list',
+            nonce: gvGlobals.nonce
+        };
+
+        jQuery.ajax( {
+            type: 'POST',
+            url: ajaxurl,
+            data: data,
+            dataType: 'json',
+            async: true
+        } ).done( function ( response ) {
+            updateSettings( ViewConstants.UPDATE_WIDGETS_LIST, response.data );
+        } ).fail( function ( jqXHR ) {
+            console.log( jqXHR );
+        } ).always( function () {
+            //
+        } );
+    },
+
     /**
      * Get the field settings array
      * @param args object 'vector' (containing 'context', 'row', 'col') and 'field' (field_id, form_id, field_type, ..)

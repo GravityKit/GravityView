@@ -53,6 +53,7 @@ var AddFieldSubPanel = React.createClass({
         var fieldDetails = ViewCommon.getItemDetailsById( fieldsList, field_id );
 
         var fieldArgs = {
+            'type': 'field',
             'vector': {
                 'context': this.props.extraArgs['context'],
                 'row': this.props.extraArgs['row'],

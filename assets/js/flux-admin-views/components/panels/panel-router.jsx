@@ -41,6 +41,8 @@ var PanelRouter = React.createClass({
             fieldsSections: LayoutStore.getFieldsSections(),
             fieldsList: LayoutStore.getFieldsList(),
 
+            // Used pm tje Add Widget panel
+            widgetsList: LayoutStore.getWidgetsList(),
         };
     },
 
@@ -72,6 +74,8 @@ var PanelRouter = React.createClass({
 
         // todo: get the form and the context dynamic
         ViewActions.fetchFieldsSections();
+
+        ViewActions.fetchWidgetsList();
 
     },
 
