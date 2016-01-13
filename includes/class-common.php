@@ -838,6 +838,72 @@ class GVCommon {
 
 
 	/**
+	 * Allow formatting date and time based on GravityView standards
+	 *
+	 * @since 1.16
+	 *
+	 * @see GVCommon_Test::test_format_date for examples
+	 *
+	 * @param string $date_string The date as stored by Gravity Forms (`Y-m-d h:i:s` GMT)
+	 * @param string|array $args Array or string of settings for output parsed by `wp_parse_args()`; Can use `raw=1` or `array('raw' => true)` \n
+	 * - `raw` Un-formatted date string in original `Y-m-d h:i:s` format
+	 * - `timestamp` Integer timestamp returned by GFCommon::get_local_timestamp()
+	 * - `diff` "%s ago" format, unless other `format` is defined
+	 * - `human` Set $is_human parameter to true for `GFCommon::format_date()`. Shows `diff` within 24 hours or date after. Format based on blog setting, unless `format` is defined.
+	 * - `time` Include time in the `GFCommon::format_date()` output
+	 * - `format` Define your own date format, or `diff` format
+	 *
+	 * @return int|null|string Formatted date based on the original date
+	 */
+	public static function format_date( $date_string = '', $args = array() ) {
+
+		$default_atts = array(
+			'raw' => false,
+			'timestamp' => false,
+			'diff' => false,
+			'human' => false,
+			'format' => '',
+			'time' => false,
+		);
+
+		$atts = wp_parse_args( $args, $default_atts );
+
+		/**
+		 * Gravity Forms code to adjust date to locally-configured Time Zone
+		 * @see GFCommon::format_date() for original code
+		 */
+		$date_gmt_time   = mysql2date( 'G', $date_string );
+		$date_local_timestamp = GFCommon::get_local_timestamp( $date_gmt_time );
+
+		$format  = rgar( $atts, 'format' );
+		$is_human  = ! empty( $atts['human'] );
+		$is_diff  = ! empty( $atts['diff'] );
+		$is_raw = ! empty( $atts['raw'] );
+		$is_timestamp = ! empty( $atts['timestamp'] );
+		$include_time = ! empty( $atts['time'] );
+
+		// If we're using time diff, we want to have a different default format
+		if( empty( $format ) ) {
+			$format = $is_diff ? esc_html__( '%s ago', 'gravityview' ) : get_option( 'date_format' );
+		}
+
+		// If raw was specified, don't modify the stored value
+		if ( $is_raw ) {
+			$formatted_date = $date_string;
+		} elseif( $is_timestamp ) {
+			$formatted_date = $date_local_timestamp;
+		} elseif ( $is_diff ) {
+			$formatted_date = sprintf( $format, human_time_diff( $date_gmt_time ) );
+		} else {
+			$formatted_date = GFCommon::format_date( $date_string, $is_human, $format, $include_time );
+		}
+
+		unset( $format, $is_diff, $is_human, $is_timestamp, $is_raw, $date_gmt_time, $date_local_timestamp, $default_atts );
+
+		return $formatted_date;
+	}
+
+	/**
 	 * Retrieve the label of a given field id (for a specific form)
 	 *
 	 * @access public

@@ -43,6 +43,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Notes:__
 
+* New: `GVCommon::format_date()` function formats entry and payment dates in more ways than `GFCommon::format_date`
 * New: `gravityview_get_terms_choices()` function generates array of categories ready to be added to Gravity Forms $choices array
 * Tweak: Set `max-width: 50%` for `div.gv-list-view-content-image`
 * Tweak: Added `gv-container-{view id}` CSS class to `gv_container_class()` function output. This will be added to View container `<div>`s

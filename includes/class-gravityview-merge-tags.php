@@ -103,44 +103,33 @@ class GravityView_Merge_Tags {
 		return $text;
 	}
 
-	public static function format_date( $date_created, $full_tag, $property ) {
-
-		$site_date_format  = get_option( 'date_format' );
-
-		/**
-		 * Gravity Forms code to adjust date to locally-configured Time Zone
-		 * @see GFCommon::format_date()
-		 */
-		$entry_gmt_time   = mysql2date( 'G', $date_created );
-		$entry_local_timestamp = GFCommon::get_local_timestamp( $entry_gmt_time );
+	/**
+	 * Format Merge Tags using GVCommon::format_date()
+	 *
+	 * @uses GVCommon::format_date()
+	 *
+	 * @see http://docs.gravityview.co/article/331-date-created-merge-tag for documentation
+	 *
+	 * @param string $date_created The Gravity Forms date created format
+	 * @param string $property Any modifiers for the merge tag (`human`, `format:m/d/Y`)
+	 *
+	 * @return int|string If timestamp requested, timestamp int. Otherwise, string output.
+	 */
+	public static function format_date( $date_created = '', $property = '' ) {
 
 		// Expand all modifiers, skipping escaped colons. str_replace worked better than preg_split( "/(?<!\\):/" )
 		$exploded = explode( ':', str_replace( '\:', '|COLON|', $property ) );
 
-		$is_human  = in_array( 'human', $exploded ); // {date_created:human}
-		$is_diff  = in_array( 'diff', $exploded ); // {date_created:diff}
-		$is_raw = in_array( 'raw', $exploded ); // {date_created:raw}
-		$is_timestamp = in_array( 'timestamp', $exploded ); // {date_created:timestamp}
+		$atts = array(
+			'format' => self::get_format_from_modifiers( $exploded, false ),
+		    'human' => in_array( 'human', $exploded ), // {date_created:human}
+			'diff' => in_array( 'diff', $exploded ), // {date_created:diff}
+			'raw' => in_array( 'raw', $exploded ), // {date_created:raw}
+			'timestamp' => in_array( 'timestamp', $exploded ), // {date_created:timestamp}
+			'time' => in_array( 'time', $exploded ),  // {date_created:time}
+		);
 
-		// If {date_created:raw} was specified, don't modify the stored value
-		if ( $is_raw ) {
-			$formatted_date = $date_created;
-		} elseif( $is_timestamp ) {
-			$formatted_date = $entry_local_timestamp;
-		} elseif ( $is_diff ) {
-
-			/* translators: %s is the time (seconds, hours, days, weeks, months, years) since entry was created */
-			$relative_format = self::get_format_from_modifiers( $exploded, esc_html__( '%s ago', 'gravityview' ) );
-
-			$formatted_date = sprintf( $relative_format, human_time_diff( $entry_gmt_time ) );
-
-		} else {
-
-			$include_time = in_array( 'time', $exploded );  // {date_created:time}
-			$match_date_format = self::get_format_from_modifiers( $exploded, $site_date_format );
-
-			$formatted_date = GFCommon::format_date( $date_created, $is_human, $match_date_format, $include_time );
-		}
+		$formatted_date = GVCommon::format_date( $date_created, $atts );
 
 		return $formatted_date;
 	}
