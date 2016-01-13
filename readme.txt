@@ -20,12 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-__ Developer Notes:__
-
-* Fixed: `gravityview/sortable/formfield_{form}_{field_id}` filter [detailed here](http://docs.gravityview.co/article/231-how-to-disable-the-sorting-control-on-one-table-column)
-* Fixed: `gravityview/sortable/field_blacklist` filter docBlock fixed
-
-= 1.16 on January 8 =
+= 1.16 on January 13 =
 * Happy New Year! We have big things planned for GravityView in 2016, including a new View builder.
 * Added: Merge Tags. [See all GravityView Merge Tags](http://docs.gravityview.co/article/76-merge-tags)
     * `{date_created}` Merge Tag displays the date an entry was created. [Read how to use it here](http://docs.gravityview.co/article/331-date-created-merge-tag).
@@ -58,6 +53,8 @@ __Developer Notes:__
 * New: Added `add_filter( 'gform_is_encrypted_field', '__return_false' );` before fetching entries
 * Use the `$is_sortable` `GravityView_Field` variable to define whether a field is sortable. Override using the  `gravityview/sortable/field_blacklist` filter.
 * Tweak: Moved `gv_selected()` to `helper-functions.php` from `class-api.php`
+* Fixed: `gravityview/sortable/formfield_{form}_{field_id}` filter [detailed here](http://docs.gravityview.co/article/231-how-to-disable-the-sorting-control-on-one-table-column)
+* Fixed: `gravityview/sortable/field_blacklist` filter docBlock fixed
 
 = 1.15.2 on December 3 =
 
