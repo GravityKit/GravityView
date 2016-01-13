@@ -1371,11 +1371,13 @@ class GravityView_frontend {
 	 *
 	 * @return bool True: Yes, field is sortable; False: not sortable
 	 */
-	public function is_field_sortable( $field_id = '', $form ) {
+	public function is_field_sortable( $field_id = '', $form = array() ) {
+
+		$field_type = $field_id;
 
 		if( is_numeric( $field_id ) ) {
 			$field = GFFormsModel::get_field( $form, $field_id );
-			$field_id = $field->type;
+			$field_type = $field->type;
 		}
 
 		$not_sortable = array(
@@ -1386,13 +1388,13 @@ class GravityView_frontend {
 		/**
 		 * @filter `gravityview/sortable/field_blacklist` Modify what fields should never be sortable.
 		 * @since 1.7
-		 * @param array $not_sortable Array of field types that aren't sortable
-		 * @param string $field_id Field ID to check whether the field is sortable
+		 * @param[in,out] array $not_sortable Array of field types that aren't sortable
+		 * @param string $field_type Field type to check whether the field is sortable
 		 * @param array $form Gravity Forms form
 		 */
-		$not_sortable = apply_filters( 'gravityview/sortable/field_blacklist', $not_sortable, $field_id, $form );
+		$not_sortable = apply_filters( 'gravityview/sortable/field_blacklist', $not_sortable, $field_type, $form );
 
-		if ( in_array( $field_id, $not_sortable ) ) {
+		if ( in_array( $field_type, $not_sortable ) ) {
 			return false;
 		}
 

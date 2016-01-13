@@ -20,6 +20,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+__ Developer Notes:__
+
+* Fixed: `gravityview/sortable/formfield_{form}_{field_id}` filter [detailed here](http://docs.gravityview.co/article/231-how-to-disable-the-sorting-control-on-one-table-column)
+* Fixed: `gravityview/sortable/field_blacklist` filter docBlock fixed
+
 = 1.16 on January 8 =
 * Happy New Year! We have big things planned for GravityView in 2016, including a new View builder.
 * Added: Merge Tags. [See all GravityView Merge Tags](http://docs.gravityview.co/article/76-merge-tags)
