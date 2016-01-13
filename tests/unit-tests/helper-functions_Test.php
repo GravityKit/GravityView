@@ -173,6 +173,9 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 			// Keep spaces
 			'example dash' => gravityview_sanitize_html_class( 'example dash' ),
 
+			// Strip whitespace string
+			'foo cocktail' => gravityview_sanitize_html_class( '   foo   cocktail   ' ),
+
 			// Implode with spaces
 			'example dash bar' => gravityview_sanitize_html_class( array( 'example', 'dash', 'bar' ) ),
 
@@ -181,6 +184,9 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 
 			// Don't strip numbers or caps
 			'Foo Bar0' => gravityview_sanitize_html_class( array( 'Foo', 'Bar0' ) ),
+
+			// Strip whitespace
+			'foo bar' => gravityview_sanitize_html_class( array( 'foo    ', '           bar       ' ) ),
 
 			// Strip not A-Z a-z 0-9 _ -
 			'Foo Bar2_-' => gravityview_sanitize_html_class( 'Foo Bar2!_-' ),

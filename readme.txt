@@ -48,6 +48,7 @@ __Developer Notes:__
 * Tweak: Added `gv-container-{view id}` CSS class to `gv_container_class()` function output. This will be added to View container `<div>`s
 * Fixed: `gv_container_class()` didn't return value
 * Added: Second parameter `$echo` (boolean) to `gv_container_class()`
+* Fixed: Strip extra whitespace in `gravityview_sanitize_html_class()`
 * Fixed: Don't output widget structural HTML if there are no configured widgets
 * Fixed: Empty HTML `<h4>` label container output in List layout, even when "Show Label" was unchecked
 * Fixed: Fetching the current entry can improperly return an empty array when using `GravityView_View->getCurrentEntry()` in DataTables extension
