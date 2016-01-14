@@ -25,6 +25,7 @@ class GravityView_Field_Payment_Method extends GravityView_Field {
 	 */
 	public function __construct() {
 		$this->label = esc_attr__( 'Payment Method', 'gravityview' );
+		$this->description = esc_html( 'The way the entry was paid for (ie "Credit Card", "PayPal", etc.)', 'gravityview' );
 		parent::__construct();
 	}
 }
