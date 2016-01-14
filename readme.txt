@@ -51,6 +51,7 @@ __Developer Notes:__
 * Tweak: Added `gv-container-{view id}` CSS class to `gv_container_class()` function output. This will be added to View container `<div>`s
 * Added: `gravityview_field_entry_value_{field_type}_pre_link` filter to modify field values before "Show As Link" setting is applied
 * Fixed: `gv_container_class()` didn't return value
+* Fixed: Don't add link to empty field value
 * Added: Second parameter `$echo` (boolean) to `gv_container_class()`
 * Fixed: Strip extra whitespace in `gravityview_sanitize_html_class()`
 * Fixed: Don't output widget structural HTML if there are no configured widgets

@@ -329,7 +329,7 @@ class GravityView_API {
 		 * Fields can override this by modifying the field data variable inside the field. See /templates/fields/post_image.php for an example.
 		 *
 		 */
-		if( !empty( $field_settings['show_as_link'] ) ) {
+		if( !empty( $field_settings['show_as_link'] ) && ! gv_empty( $output, false, false ) ) {
 
 			$link_atts = empty( $field_settings['new_window'] ) ? array() : array( 'target' => '_blank' );
 
