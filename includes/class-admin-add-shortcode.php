@@ -152,7 +152,6 @@ class GravityView_Admin_Add_Shortcode {
 	 * Enqueue scripts and styles
 	 *
 	 * @access public
-	 * @param mixed $hook
 	 * @return void
 	 */
 	function add_scripts_and_styles() {

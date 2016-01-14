@@ -291,7 +291,8 @@ class GravityView_API {
 			'display_value' => $display_value,
 			'format' => $format,
 			'entry' => $entry,
-			'field_type' => $field_type, /** {@since 1.6} **/
+			'field_type' => $field_type, /** {@since 1.6} */
+		    'field_path' => $field_path, /** {@since 1.16} */
 		));
 
 		if( ! empty( $field_path ) ) {
@@ -314,12 +315,22 @@ class GravityView_API {
 		$field_settings = $gravityview_view->getCurrentField('field_settings');
 
 		/**
+		 * @filter `gravityview_field_entry_value_{$field_type}_pre_link` Modify the field value output for a field type before Show As Link setting is applied. Example: `gravityview_field_entry_value_number_pre_link`
+		 * @since 1.16
+		 * @param string $output HTML value output
+		 * @param array  $entry The GF entry array
+		 * @param array  $field_settings Settings for the particular GV field
+		 * @param array  $field Field array, as fetched from GravityView_View::getCurrentField()
+		 */
+		$output = apply_filters( 'gravityview_field_entry_value_' . $field_type . '_pre_link', $output, $entry, $field_settings, $gravityview_view->getCurrentField() );
+
+		/**
 		 * Link to the single entry by wrapping the output in an anchor tag
 		 *
 		 * Fields can override this by modifying the field data variable inside the field. See /templates/fields/post_image.php for an example.
 		 *
 		 */
-		if( !empty( $field_settings['show_as_link'] ) ) {
+		if( !empty( $field_settings['show_as_link'] ) && ! gv_empty( $output, false, false ) ) {
 
 			$link_atts = empty( $field_settings['new_window'] ) ? array() : array( 'target' => '_blank' );
 
@@ -333,6 +344,7 @@ class GravityView_API {
 		 * @param string $output HTML value output
 		 * @param array  $entry The GF entry array
 		 * @param  array $field_settings Settings for the particular GV field
+		 * @param array $field Current field being displayed
 		 */
 		$output = apply_filters( 'gravityview_field_entry_value_'.$field_type, $output, $entry, $field_settings, $gravityview_view->getCurrentField() );
 
@@ -711,29 +723,41 @@ function gv_class( $field, $form = NULL, $entry = array() ) {
  * Generate a CSS class to be added to the wrapper <div> of a View
  *
  * @since 1.5.4
+ * @since 1.16 Added $echo param
  *
- * @param string $class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`
+ * @param string $passed_css_class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`
+ * @param boolean $echo Whether to echo the output. Default: true
  *
  * @return string CSS class, sanitized by gravityview_sanitize_html_class()
  */
-function gv_container_class( $class = '' ) {
+function gv_container_class( $passed_css_class = '', $echo = true ) {
 
-	$default = sprintf( 'gv-container gv-container-%d', GravityView_View::getInstance()->getViewId() );
+	$passed_css_class = trim( $passed_css_class );
+
+	$view_id = GravityView_View::getInstance()->getViewId();
+
+	$default_css_class = ! empty( $view_id ) ? sprintf( 'gv-container gv-container-%d', $view_id ) : 'gv-container';
 
 	if( GravityView_View::getInstance()->isHideUntilSearched() ) {
-		$default .= ' hidden';
+		$default_css_class .= ' hidden';
 	}
+
+	$css_class = trim( $passed_css_class . ' '. $default_css_class );
 
 	/**
 	 * @filter `gravityview/render/container/class` Modify the CSS class to be added to the wrapper <div> of a View
 	 * @since 1.5.4
-	 * @param[in,out] string $class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`
+	 * @param[in,out] string $css_class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`
 	 */
-	$class = apply_filters( 'gravityview/render/container/class', $class . $default );
+	$css_class = apply_filters( 'gravityview/render/container/class', $css_class );
 
-	$class = gravityview_sanitize_html_class( $class );
+	$css_class = gravityview_sanitize_html_class( $css_class );
 
-	echo $class;
+	if( $echo ) {
+		echo $css_class;
+	}
+
+	return $css_class;
 }
 
 function gv_value( $entry, $field ) {

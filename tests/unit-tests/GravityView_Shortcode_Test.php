@@ -21,7 +21,7 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		$view_id = $this->factory->view->create();
 		$value = do_shortcode( '[gravityview id="'.$view_id.'"]' );
 		$this->assertNotEmpty( $value );
-		$this->assertTrue( strpos( $value, '<div class="gv-grid">' ) > 0 );
+		$this->assertTrue( strpos( $value, 'gv-container' ) > 0 );
 	}
 
 	/**

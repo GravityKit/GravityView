@@ -42,6 +42,73 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::gv_container_class()
+	 */
+	public function test_gv_container_class() {
+
+
+	// Test no View ID and no hide formatting
+		GravityView_View::getInstance()->setViewId( 0 );
+		GravityView_View::getInstance()->setHideUntilSearched( false );
+
+		// Test $echo parameter TRUE
+		ob_start();
+			gv_container_class();
+		$output = ob_get_clean();
+
+		$this->assertEquals( 'gv-container', $output );
+
+		// Test $echo parameter FALSE
+		ob_start();
+		$returned_output = gv_container_class( '', false );
+		$output = ob_get_clean();
+		$this->assertEquals( '', $output, 'Echo was false; there should be no output' );
+		$this->assertEquals( 'gv-container', $returned_output );
+
+		// Prevent output
+		ob_start();
+
+		$classes = array(
+			'gv-container' => gv_container_class(),
+			'with-passed-class gv-container' => gv_container_class( 'with-passed-class' ),
+			'with-passed-class and-whitespace gv-container' => gv_container_class( '   with-passed-class and-whitespace   ' ),
+		);
+
+		foreach ( $classes as $expected => $formatted ) {
+			$this->assertEquals( $expected, $formatted, $expected );
+		}
+
+	// Test Hide Until Search formatting
+		GravityView_View::getInstance()->setHideUntilSearched( true );
+
+		$classes = array(
+			'gv-container hidden' => gv_container_class(),
+			'with-passed-class gv-container hidden' => gv_container_class( 'with-passed-class' ),
+			'with-passed-class and-whitespace gv-container hidden' => gv_container_class( '   with-passed-class and-whitespace   ' ),
+		);
+
+		foreach ( $classes as $expected => $formatted ) {
+			$this->assertEquals( $expected, $formatted, $expected );
+		}
+
+	// Test View ID formatting
+		GravityView_View::getInstance()->setViewId( 12 );
+
+		$classes = array(
+			'gv-container gv-container-12 hidden' => gv_container_class(),
+			'with-passed-class gv-container gv-container-12 hidden' => gv_container_class( 'with-passed-class' ),
+			'with-passed-class and-whitespace gv-container gv-container-12 hidden' => gv_container_class( '   with-passed-class and-whitespace   ' ),
+		);
+
+		foreach ( $classes as $expected => $formatted ) {
+			$this->assertEquals( $expected, $formatted, $expected );
+		}
+
+		// Prevent output
+		ob_end_clean();
+	}
+
+	/**
 	 * @covers GravityView_API::replace_variables()
 	 * @covers GravityView_Merge_Tags::replace_variables()
 	 */

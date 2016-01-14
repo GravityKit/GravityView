@@ -25,7 +25,35 @@ class GravityView_Field_Payment_Amount extends GravityView_Field {
 	 */
 	public function __construct() {
 		$this->label = esc_attr__( 'Payment Amount', 'gravityview' );
+
+		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', array( $this, 'get_content' ), 10, 4 );
+
 		parent::__construct();
+	}
+
+	/**
+	 * Filter the value of the field
+	 *
+	 * @todo Consider how to add to parent class
+	 *
+	 * @since 1.16
+	 *
+	 * @param string $output HTML value output
+	 * @param array  $entry The GF entry array
+	 * @param  array $field_settings Settings for the particular GV field
+	 * @param array $field Current field being displayed
+	 *
+	 * @return String values for this field based on the numeric values used by Gravity Forms
+	 */
+	public function get_content( $output = '', $entry = array(), $field_settings = array(), $field = array() ) {
+
+		/** Overridden by a template. */
+		if( ! empty( $field['field_path'] ) ) { return $output; }
+
+		$amount = rgar( $entry, 'payment_amount' );
+		$return = GFCommon::to_money( $amount, rgar( $entry, 'currency' ) );
+
+		return $return;
 	}
 
 	/**

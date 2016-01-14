@@ -30,7 +30,7 @@ final class GravityView_Fields {
 		if ( empty( $field->name ) ) {
 			throw new Exception( 'The name must be set' );
 		}
-		if ( isset( self::$_fields[ $field->name ] ) ) {
+		if ( isset( self::$_fields[ $field->name ] ) && ! defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
 			throw new Exception( 'Field type already registered: ' . $field->name );
 		}
 		self::$_fields[ $field->name ] = $field;
@@ -86,10 +86,27 @@ final class GravityView_Fields {
 	}
 
 	/**
+	 * Get all fields
+	 *
+	 * @since 1.16 Added $group parameter
+	 *
+	 * @param string $group Optional. If defined, fetch all fields in a group
+	 *
 	 * @return GravityView_Field[]
 	 */
-	public static function get_all() {
-		return self::$_fields;
+	public static function get_all( $group = '' ) {
+
+		if( '' !== $group ) {
+			$return_fields = self::$_fields;
+			foreach ( $return_fields as $key => $field ) {
+				if( $group !== $field->group ) {
+					unset( $return_fields[ $key ] );
+				}
+			}
+			return $return_fields;
+		} else {
+			return self::$_fields;
+		}
 	}
 
 }

@@ -284,7 +284,7 @@ class GravityView_Admin_ApproveEntries {
 	 *
 	 * @access public
 	 * @static
-	 * @param int $lead_id (default: 0)
+	 * @param int $entry_id (default: 0)
 	 * @param int $approved (default: 0)
 	 * @param int $form_id (default: 0)
 	 * @param int $approvedcolumn (default: 0)
