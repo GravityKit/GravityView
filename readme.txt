@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
     * `{payment_method}` The way the entry was paid for (ie "Credit Card", "PayPal", etc.)
     * `{payment_amount}` displays Payment Amount formatted as a currency. Use `{payment_amount:raw}` for the un-formatted number
     * `{currency}` The currency with which the entry was submitted (ie "USD", "EUR")
+    * `{is_fulfilled}` Whether the order has been fulfilled. Displays "Not Fulfilled" or "Fulfilled"
     * `{transaction_id}` the ID of the transaction returned by the payment gateway
 * Fixed: Custom merge tags not being replaced properly by GravityView
 * Fixed: Connected form links were not visible in the Data Source metabox
