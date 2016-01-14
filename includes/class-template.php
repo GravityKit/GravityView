@@ -550,10 +550,17 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		if( in_array( $this->getContext(), array( 'edit', 'single') ) ) {
 			$entries = $this->getEntries();
-			return $entries[0];
+			$entry = $entries[0];
+		} else {
+			$entry = $this->_current_entry;
 		}
 
-		return $this->_current_entry;
+		/** @since 1.16 Fixes DataTables empty entry issue */
+		if ( empty( $entry ) && ! empty( $this->_current_field['entry'] ) ) {
+			$entry = $this->_current_field['entry'];
+		}
+
+		return $entry;
 	}
 
 	/**
@@ -667,7 +674,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		} else {
 
-			// Set $load to always falso so we handle it here.
+			// Set $load to always false so we handle it here.
 			$located = parent::locate_template( $template_names, false, $require_once );
 
 			if( is_string( $template_names ) ) {
@@ -771,15 +778,11 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		$view_data = gravityview_get_current_view_data( $view_id );
 
-		// TODO: Move to sep. method, use an action instead
-		wp_enqueue_style( 'gravityview_default_style');
-
 		// get View widget configuration
-		$widgets = $view_data['widgets'];
-
-		$rows = GravityView_Plugin::get_default_widget_areas();
+		$widgets = (array)$view_data['widgets'];
 
 		switch( current_filter() ) {
+			default:
 			case 'gravityview_before':
 				$zone = 'header';
 				break;
@@ -788,11 +791,36 @@ class GravityView_View extends Gamajo_Template_Loader {
 				break;
 		}
 
+		/**
+		 * Filter widgets not in the current zone
+		 * @since 1.16
+		 */
+		foreach( $widgets as $key => $widget ) {
+			// The widget isn't in the current zone
+			if( false === strpos( $key, $zone ) ) {
+				unset( $widgets[ $key ] );
+			}
+		}
+
+		/**
+		 * Prevent output if no widgets to show.
+		 * @since 1.16
+		 */
+		if ( empty( $widgets ) ) {
+			do_action( 'gravityview_log_debug', sprintf( 'No widgets for View #%s', $view_id ) );
+			return;
+		}
+
 		// Prevent being called twice
 		if( did_action( $zone.'_'.$view_id.'_widgets' ) ) {
 			do_action( 'gravityview_log_debug', sprintf( '%s - Not rendering %s; already rendered', __METHOD__ , $zone.'_'.$view_id.'_widgets' ) );
 			return;
 		}
+
+		$rows = GravityView_Plugin::get_default_widget_areas();
+
+		// TODO: Move to sep. method, use an action instead
+		wp_enqueue_style( 'gravityview_default_style' );
 
 		// TODO Convert to partials
 		?>

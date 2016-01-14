@@ -108,7 +108,7 @@ class GravityView_API {
 	 *
 	 * @since 1.9
 	 *
-	 * @param array $field_setting Array of settings for the field
+	 * @param array $field Array of settings for the field
 	 * @param string $format Format for width. "%" (default) will return
 	 *
 	 * @return string|null If not empty, string in $format format. Otherwise, null.
@@ -279,7 +279,7 @@ class GravityView_API {
 
 		// Check whether the field exists in /includes/fields/{$field_type}.php
 		// This can be overridden by user template files.
-		$field_exists = $gravityview_view->locate_template("fields/{$field_type}.php");
+		$field_path = $gravityview_view->locate_template("fields/{$field_type}.php");
 
 		// Set the field data to be available in the templates
 		$gravityview_view->setCurrentField( array(
@@ -291,16 +291,17 @@ class GravityView_API {
 			'display_value' => $display_value,
 			'format' => $format,
 			'entry' => $entry,
-			'field_type' => $field_type, /** {@since 1.6} **/
+			'field_type' => $field_type, /** {@since 1.6} */
+		    'field_path' => $field_path, /** {@since 1.16} */
 		));
 
-		if( $field_exists ) {
+		if( ! empty( $field_path ) ) {
 
-			do_action( 'gravityview_log_debug', sprintf('[field_value] Rendering %s', $field_exists ) );
+			do_action( 'gravityview_log_debug', sprintf('[field_value] Rendering %s', $field_path ) );
 
 			ob_start();
 
-			load_template( $field_exists, false );
+			load_template( $field_path, false );
 
 			$output = ob_get_clean();
 
@@ -314,12 +315,22 @@ class GravityView_API {
 		$field_settings = $gravityview_view->getCurrentField('field_settings');
 
 		/**
+		 * @filter `gravityview_field_entry_value_{$field_type}_pre_link` Modify the field value output for a field type before Show As Link setting is applied. Example: `gravityview_field_entry_value_number_pre_link`
+		 * @since 1.16
+		 * @param string $output HTML value output
+		 * @param array  $entry The GF entry array
+		 * @param array  $field_settings Settings for the particular GV field
+		 * @param array  $field Field array, as fetched from GravityView_View::getCurrentField()
+		 */
+		$output = apply_filters( 'gravityview_field_entry_value_' . $field_type . '_pre_link', $output, $entry, $field_settings, $gravityview_view->getCurrentField() );
+
+		/**
 		 * Link to the single entry by wrapping the output in an anchor tag
 		 *
 		 * Fields can override this by modifying the field data variable inside the field. See /templates/fields/post_image.php for an example.
 		 *
 		 */
-		if( !empty( $field_settings['show_as_link'] ) ) {
+		if( !empty( $field_settings['show_as_link'] ) && ! gv_empty( $output, false, false ) ) {
 
 			$link_atts = empty( $field_settings['new_window'] ) ? array() : array( 'target' => '_blank' );
 
@@ -333,6 +344,7 @@ class GravityView_API {
 		 * @param string $output HTML value output
 		 * @param array  $entry The GF entry array
 		 * @param  array $field_settings Settings for the particular GV field
+		 * @param array $field Current field being displayed
 		 */
 		$output = apply_filters( 'gravityview_field_entry_value_'.$field_type, $output, $entry, $field_settings, $gravityview_view->getCurrentField() );
 
@@ -445,14 +457,14 @@ class GravityView_API {
 				} else {
 
 					// This is a GravityView post type
-					if( GravityView_frontend::getInstance()->is_gravityview_post_type ) {
+					if( GravityView_frontend::getInstance()->isGravityviewPostType() ) {
 
 						$post_id = isset( $gravityview_view ) ? $gravityview_view->getViewId() : $post->ID;
 
 					} else {
 
 						// This is an embedded GravityView; use the embedded post's ID as the base.
-						if( GravityView_frontend::getInstance()->post_has_shortcode && is_a( $post, 'WP_Post' ) ) {
+						if( GravityView_frontend::getInstance()->isPostHasShortcode() && is_a( $post, 'WP_Post' ) ) {
 
 							$post_id = $post->ID;
 
@@ -707,19 +719,45 @@ function gv_class( $field, $form = NULL, $entry = array() ) {
 	return GravityView_API::field_class( $field, $form, $entry  );
 }
 
-function gv_container_class( $class = '' ) {
+/**
+ * Generate a CSS class to be added to the wrapper <div> of a View
+ *
+ * @since 1.5.4
+ * @since 1.16 Added $echo param
+ *
+ * @param string $passed_css_class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`
+ * @param boolean $echo Whether to echo the output. Default: true
+ *
+ * @return string CSS class, sanitized by gravityview_sanitize_html_class()
+ */
+function gv_container_class( $passed_css_class = '', $echo = true ) {
 
-	$default = ' gv-container';
+	$passed_css_class = trim( $passed_css_class );
+
+	$view_id = GravityView_View::getInstance()->getViewId();
+
+	$default_css_class = ! empty( $view_id ) ? sprintf( 'gv-container gv-container-%d', $view_id ) : 'gv-container';
 
 	if( GravityView_View::getInstance()->isHideUntilSearched() ) {
-		$default .= ' hidden';
+		$default_css_class .= ' hidden';
 	}
 
-	$class = apply_filters( 'gravityview/render/container/class', $class . $default );
+	$css_class = trim( $passed_css_class . ' '. $default_css_class );
 
-	$class = gravityview_sanitize_html_class( $class );
+	/**
+	 * @filter `gravityview/render/container/class` Modify the CSS class to be added to the wrapper <div> of a View
+	 * @since 1.5.4
+	 * @param[in,out] string $css_class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`
+	 */
+	$css_class = apply_filters( 'gravityview/render/container/class', $css_class );
 
-	echo $class;
+	$css_class = gravityview_sanitize_html_class( $css_class );
+
+	if( $echo ) {
+		echo $css_class;
+	}
+
+	return $css_class;
 }
 
 function gv_value( $entry, $field ) {
@@ -1146,7 +1184,7 @@ function gravityview_field_output( $passed_args ) {
 	$context['field_id'] = GravityView_API::field_html_attr_id( $args['field'], $args['form'], $entry );
 
 	// Get field label if needed
-	if ( ! empty( $args['label_markup'] ) ) {
+	if ( ! empty( $args['label_markup'] ) && ! empty( $args['field']['show_label'] ) ) {
 		$context['label'] = str_replace( array( '{{label}}', '{{ label }}' ), '<span class="gv-field-label">{{ label_value }}</span>', $args['label_markup'] );
 	}
 
@@ -1225,35 +1263,3 @@ function gravityview_field_output( $passed_args ) {
 
 	return $html;
 }
-
-/**
- * Similar to the WordPress `selected()`, `checked()`, and `disabled()` functions, except it allows arrays to be passed as current value
- *
- * @todo Move to helper-functions.php
- * @see selected() WordPress core function
- *
- * @param string $value One of the values to compare
- * @param mixed $current (true) The other value to compare if not just true
- * @param bool $echo Whether to echo or just return the string
- * @param string $type The type of checked|selected|disabled we are doing
- *
- * @return string html attribute or empty string
- */
-function gv_selected( $value, $current, $echo = true, $type = 'selected' ) {
-
-	$output = '';
-	if( is_array( $current ) ) {
-		if( in_array( $value, $current ) ) {
-			$output = __checked_selected_helper( true, true, false, $type );
-		}
-	} else {
-		$output = __checked_selected_helper( $value, $current, false, $type );
-	}
-
-	if( $echo ) {
-		echo $output;
-	}
-
-	return $output;
-}
-

@@ -47,6 +47,38 @@ function gravityview_get_permalink_query_args( $id = 0 ) {
 	return $args;
 }
 
+
+/**
+ * Similar to the WordPress `selected()`, `checked()`, and `disabled()` functions, except it allows arrays to be passed as current value
+ *
+ * @see selected() WordPress core function
+ *
+ * @param string $value One of the values to compare
+ * @param mixed $current (true) The other value to compare if not just true
+ * @param bool $echo Whether to echo or just return the string
+ * @param string $type The type of checked|selected|disabled we are doing
+ *
+ * @return string html attribute or empty string
+ */
+function gv_selected( $value, $current, $echo = true, $type = 'selected' ) {
+
+	$output = '';
+	if( is_array( $current ) ) {
+		if( in_array( $value, $current ) ) {
+			$output = __checked_selected_helper( true, true, false, $type );
+		}
+	} else {
+		$output = __checked_selected_helper( $value, $current, false, $type );
+	}
+
+	if( $echo ) {
+		echo $output;
+	}
+
+	return $output;
+}
+
+
 if( ! function_exists( 'gravityview_sanitize_html_class' ) ) {
 
 	/**
@@ -69,7 +101,9 @@ if( ! function_exists( 'gravityview_sanitize_html_class' ) ) {
 			return $classes;
 		}
 
+		$classes = array_map( 'trim', $classes );
 		$classes = array_map( 'sanitize_html_class', $classes );
+		$classes = array_filter( $classes );
 
 		return implode( ' ', $classes );
 	}
@@ -355,4 +389,58 @@ function gravityview_is_valid_datetime( $datetime, $expected_format = 'Y-m-d' ) 
 	 * @see http://stackoverflow.com/a/19271434/480856
 	 */
 	return ( $formatted_date && $formatted_date->format( $expected_format ) === $datetime );
+}
+
+/**
+ * Get categories formatted in a way used by GravityView and Gravity Forms input choices
+ *
+ * @since 1.15.3
+ *
+ * @see get_terms()
+ *
+ * @param array $args Arguments array as used by the get_terms() function. Filtered using `gravityview_get_terms_choices_args` filter. Defaults: { \n
+ *   @type string $taxonomy Used as first argument in get_terms(). Default: "category"
+ *   @type string $fields Default: 'id=>name' to only fetch term ID and Name \n
+ *   @type int $number  Limit the total number of terms to fetch. Default: 1000 \n
+ * }
+ *
+ * @return array Multidimensional array with `text` (Category Name) and `value` (Category ID) keys.
+ */
+function gravityview_get_terms_choices( $args = array() ) {
+
+	$defaults = array(
+		'type'         => 'post',
+		'child_of'     => 0,
+		'number'       => 1000, // Set a reasonable max limit
+		'orderby'      => 'name',
+		'order'        => 'ASC',
+		'hide_empty'   => 0,
+		'hierarchical' => 1,
+		'taxonomy'     => 'category',
+		'fields'       => 'id=>name',
+	);
+
+	$args = wp_parse_args( $args, $defaults );
+
+	/**
+	 * @filter `gravityview_get_terms_choices_args` Modify the arguments passed to `get_terms()`
+	 * @see get_terms()
+	 * @since 1.15.3
+	 */
+	$args = apply_filters( 'gravityview_get_terms_choices_args', $args );
+
+	$terms = get_terms( $args['taxonomy'], $args );
+
+	$choices = array();
+
+	if ( is_array( $terms ) ) {
+		foreach ( $terms as $term_id => $term_name ) {
+			$choices[] = array(
+				'text'  => $term_name,
+				'value' => $term_id
+			);
+		}
+	}
+
+	return $choices;
 }

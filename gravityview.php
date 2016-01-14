@@ -10,13 +10,13 @@
  * @license   GPL2+
  * @author    Katz Web Services, Inc.
  * @link      http://gravityview.co
- * @copyright Copyright 2014, Katz Web Services, Inc.
+ * @copyright Copyright 2016, Katz Web Services, Inc.
  *
  * @wordpress-plugin
  * Plugin Name:       	GravityView
  * Plugin URI:        	http://gravityview.co
  * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.15.2
+ * Version:          	1.16
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	http://www.katzwebservices.com
  * Text Domain:       	gravityview
@@ -89,7 +89,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.15.2';
+	const version = '1.16';
 
 	private static $instance;
 
@@ -124,7 +124,7 @@ final class GravityView_Plugin {
 	 *
 	 * @since 1.12
 	 */
-	function add_hooks() {
+	private function add_hooks() {
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ), 1 );
 
@@ -137,15 +137,16 @@ final class GravityView_Plugin {
 	 *
 	 * @since 1.12
 	 */
-	function include_files() {
+	public function include_files() {
 
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
 
 		// Load fields
+		include_once( GRAVITYVIEW_DIR . 'includes/fields/class-gravityview-fields.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/fields/class-gravityview-field.php' );
 
 		// Load all field files automatically
-		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/*.php' ) as $gv_field_filename ) {
+		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/class-gravityview-field*.php' ) as $gv_field_filename ) {
 			include_once( $gv_field_filename );
 		}
 
@@ -198,10 +199,9 @@ final class GravityView_Plugin {
 	 *
 	 * @access public
 	 * @static
-	 * @param mixed $network_wide
 	 * @return void
 	 */
-	public static function activate( $network_wide = false ) {
+	public static function activate() {
 
 		// register post types
 		GravityView_Post_Types::init_post_types();
@@ -229,10 +229,9 @@ final class GravityView_Plugin {
 	 *
 	 * @access public
 	 * @static
-	 * @param mixed $network_wide
 	 * @return void
 	 */
-	public static function deactivate( $network_wide ) {
+	public static function deactivate() {
 
 		flush_rewrite_rules();
 
@@ -335,7 +334,6 @@ final class GravityView_Plugin {
 		$default_areas = array(
 			array( '1-1' => array( array( 'areaid' => 'top', 'title' => __('Top', 'gravityview' ) , 'subtitle' => '' ) ) ),
 			array( '1-2' => array( array( 'areaid' => 'left', 'title' => __('Left', 'gravityview') , 'subtitle' => '' ) ), '2-2' => array( array( 'areaid' => 'right', 'title' => __('Right', 'gravityview') , 'subtitle' => '' ) ) ),
-			//array( '1-1' => array( 	array( 'areaid' => 'bottom', 'title' => __('Full Width Bottom', 'gravityview') , 'subtitle' => '' ) ) )
 		);
 
 		/**

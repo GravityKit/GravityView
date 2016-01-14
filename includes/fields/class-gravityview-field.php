@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 /**
  * Modify field settings by extending this class.
@@ -10,56 +15,54 @@ abstract class GravityView_Field {
 	 * Example: `created_by`, `text`, `fileupload`, `address`, `entry_link`
 	 * @var string
 	 */
-	var $name;
+	public $name;
 
 	/**
 	 * @internal Not yet implemented
 	 * @since 1.15.2
 	 * @type string The description of the field in the field picker
 	 */
-	var $description;
+	public $description;
 
 	/**
-	 * @internal Not yet implemented
 	 * @since 1.15.2
 	 * @type string The label of the field in the field picker
 	 */
-	var $label;
+	public $label;
 
 	/**
+	 * `standard`, `advanced`, `post`, `pricing`, `meta`, `gravityview`
 	 * @internal Not yet implemented
 	 * @since 1.15.2
 	 * @type string The group belongs to this field in the field picker
 	 */
-	var $group;
+	public $group;
 
 	/**
 	 * @internal Not yet implemented
 	 * @type boolean Can the field be searched?
 	 * @since 1.15.2
 	 */
-	var $is_searchable;
+	public $is_searchable;
 
 	/**
 	 * @internal Not yet implemented
 	 * @type array $search_operators The type of search operators available for this field
 	 * @since 1.15.2
 	 */
-	var $search_operators;
+	public $search_operators;
 
 	/**
-	 * @internal Not yet implemented
 	 * @type boolean Can the field be sorted in search?
 	 * @since 1.15.2
 	 */
-	var $is_sortable;
+	public $is_sortable = true;
 
 	/**
-	 * @internal Not yet implemented
 	 * @type boolean Is field content number-based?
 	 * @since 1.15.2
 	 */
-	var $is_numeric;
+	public $is_numeric;
 
 	/**
 	 * @internal Not yet implemented
@@ -70,7 +73,7 @@ abstract class GravityView_Field {
 	 * @type array
 	 * @since 1.15.2
 	 */
-	var $contexts = array( 'single', 'multiple', 'edit', 'export' );
+	public $contexts = array( 'single', 'multiple', 'edit', 'export' );
 
 	/**
 	 * @internal Not yet implemented
@@ -91,11 +94,182 @@ abstract class GravityView_Field {
 	 */
 	protected $_field_options = array();
 
+	/**
+	 * @var bool|string Name of merge tag (without curly brackets), if the field has custom GravityView merge tags to add. Otherwise, false.
+	 * @since 1.16
+	 */
+	protected $_custom_merge_tag = false;
+
 	function __construct() {
+
+		/**
+		 * If this is a Gravity Forms field, use their labels. Spare our translation team!
+		 */
+		if( ! empty( $this->_gf_field_class_name ) && class_exists( $this->_gf_field_class_name ) && empty( $this->label ) ) {
+			/** @var GF_Field $GF_Field */
+			$GF_Field = new $this->_gf_field_class_name;
+			$this->label = $GF_Field->get_form_editor_field_title();
+			$this->label = ucwords( $this->label );
+		}
 
 		// Modify the field options based on the name of the field type
 		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 5 );
 
+		add_filter( 'gravityview/sortable/field_blacklist', array( $this, '_filter_sortable_fields' ), 1 );
+
+		if( $this->_custom_merge_tag ) {
+			add_filter( 'gform_custom_merge_tags', array( $this, '_filter_gform_custom_merge_tags' ), 10, 4 );
+			add_filter( 'gform_replace_merge_tags', array( $this, '_filter_gform_replace_merge_tags' ), 10, 7 );
+		}
+
+		GravityView_Fields::register( $this );
+	}
+
+	/**
+	 * Match the merge tag in replacement text for the field.  DO NOT OVERRIDE.
+	 *
+	 * @see replace_merge_tag Override replace_merge_tag() to handle any matches
+	 *
+	 * @since 1.16
+	 *
+	 * @param string $text Text to replace
+	 * @param array $form Gravity Forms form array
+	 * @param array $entry Entry array
+	 * @param bool $url_encode Whether to URL-encode output
+	 *
+	 * @return string Original text if {_custom_merge_tag} isn't found. Otherwise, replaced text.
+	 */
+	public function _filter_gform_replace_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
+
+		/**
+		 * This prevents the gform_replace_merge_tags filter from being called twice, as defined in:
+		 * @see GFCommon::replace_variables()
+		 * @see GFCommon::replace_variables_prepopulate()
+		 * @todo Remove eventually: Gravity Forms fixed this issue in 1.9.14
+		 */
+		if( false === $form ) {
+			return $text;
+		}
+
+		// Is there is field merge tag? Strip whitespace off the ned, too.
+		preg_match_all( '/{' . preg_quote( $this->_custom_merge_tag ) . ':?(.*?)(?:\s)?}/ism', $text, $matches, PREG_SET_ORDER );
+
+		// If there are no matches, return original text
+		if ( empty( $matches ) ) {
+			return $text;
+		}
+
+		return $this->replace_merge_tag( $matches, $text, $form, $entry, $url_encode, $esc_html );
+	}
+
+	/**
+	 * Run GravityView filters when using GFCommon::replace_variables()
+	 *
+	 * Instead of adding multiple hooks, add all hooks into this one method to improve speed
+	 *
+	 * @since 1.8.4
+	 *
+	 * @param array $matches Array of Merge Tag matches found in text by preg_match_all
+	 * @param string $text Text to replace
+	 * @param array|bool $form Gravity Forms form array. When called inside {@see GFCommon::replace_variables()} (now deprecated), `false`
+	 * @param array|bool $entry Entry array.  When called inside {@see GFCommon::replace_variables()} (now deprecated), `false`
+	 * @param bool $url_encode Whether to URL-encode output
+	 * @param bool $esc_html Whether to apply `esc_html()` to output
+	 *
+	 * @return mixed
+	 */
+	public function replace_merge_tag( $matches = array(), $text = '', $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+
+		foreach( $matches as $match ) {
+
+			$full_tag = $match[0];
+
+			// Strip the Merge Tags
+			$tag = str_replace( array( '{', '}'), '', $full_tag );
+
+			// Replace the value from the entry, if exists
+			if( isset( $entry[ $tag ] ) ) {
+
+				$value = $entry[ $tag ];
+
+				if( is_callable( array( $this, 'get_content') ) ) {
+					$value = $this->get_content( $value );
+				}
+
+				$text = str_replace( $full_tag, $value, $text );
+			}
+		}
+
+		unset( $value, $tag, $full_tag );
+
+		return $text;
+	}
+
+	/**
+	 * Add custom merge tags to merge tag options. DO NOT OVERRIDE.
+	 *
+	 * @internal Not to be overridden by fields
+	 *
+	 * @since 1.8.4
+	 *
+	 * @param array $existing_merge_tags
+	 * @param int $form_id GF Form ID
+	 * @param GF_Field[] $fields Array of fields in the form
+	 * @param string $element_id The ID of the input that Merge Tags are being used on
+	 *
+	 * @return array Modified merge tags
+	 */
+	public function _filter_gform_custom_merge_tags( $custom_merge_tags = array(), $form_id, $fields = array(), $element_id = '' ) {
+
+		$form = GVCommon::get_form( $form_id );
+
+		$field_merge_tags = $this->custom_merge_tags( $form, $fields );
+
+		return array_merge( $custom_merge_tags, $field_merge_tags );
+	}
+
+	/**
+	 * Add custom Merge Tags to Merge Tag options, if custom Merge Tags exist
+	 *
+	 * Should be overridden if there's more than one Merge Tag to add or if the Merge Tag isn't {_custom_merge_tag}
+	 *
+	 * @since 1.16
+	 *
+	 * @param array $form GF Form array
+	 * @param GF_Field[] $fields Array of fields in the form
+	 *
+	 * @return array Merge tag array with `label` and `tag` keys based on class `label` and `_custom_merge_tag` variables
+	 */
+	protected function custom_merge_tags( $form = array(), $fields = array() ) {
+
+		// Use variables to make it unnecessary for other fields to override
+		$merge_tags = array(
+			array(
+				'label' => $this->label,
+				'tag' => '{' . $this->_custom_merge_tag . '}',
+			),
+		);
+
+		return $merge_tags;
+	}
+
+	/**
+	 * Use field settings to modify whether a field is sortable
+	 *
+	 * @see GravityView_frontend::is_field_sortable
+	 * @since 1.15.3
+	 *
+	 * @param array $not_sortable Existing field types that aren't sortable
+	 *
+	 * @return array
+	 */
+	public function _filter_sortable_fields( $not_sortable ) {
+
+		if( ! $this->is_sortable ) {
+			$not_sortable[] = $this->name;
+		}
+
+		return $not_sortable;
 	}
 
 	private function field_support_options() {

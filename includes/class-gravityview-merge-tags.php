@@ -19,20 +19,18 @@ class GravityView_Merge_Tags {
 	 */
 	private function add_hooks() {
 
-		add_filter( 'gform_custom_merge_tags', array( $this, '_gform_custom_merge_tags' ), 10, 4 );
-
 		/** @see GFCommon::replace_variables_prepopulate **/
 		add_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', 'replace_gv_merge_tags' ), 10, 7 );
 
 	}
 
 	/**
-	 * Check for merge tags before passing to Gravity Forms to improve speed.
+	 * Alias for GFCommon::replace_variables()
 	 *
-	 * GF doesn't check for whether `{` exists before it starts diving in. They not only replace fields, they do `str_replace()` on things like ip address, which is a lot of work just to check if there's any hint of a replacement variable.
+	 * Before 1.15.3, it would check for merge tags before passing to Gravity Forms to improve speed.
 	 *
-	 * We check for the basics first, which is more efficient.
-	 *
+	 * @since 1.15.3 - Now that Gravity Forms added speed improvements in 1.9.15, it's more of an alias with a filter
+	 * to disable or enable replacements.
 	 * @since 1.8.4 - Moved to GravityView_Merge_Tags
 	 * @since 1.15.1 - Add support for $url_encode and $esc_html arguments
 	 *
@@ -49,6 +47,7 @@ class GravityView_Merge_Tags {
 		 * @filter `gravityview_do_replace_variables` Turn off merge tag variable replacements.\n
 		 * Useful where you want to process variables yourself. We do this in the Math Extension.
 		 * @since 1.13
+		 *
 		 * @param[in,out] boolean $do_replace_variables True: yes, replace variables for this text; False: do not replace variables.
 		 * @param[in] string $text       Text to replace variables in
 		 * @param[in]  array      $form        GF Form array
@@ -56,70 +55,20 @@ class GravityView_Merge_Tags {
 		 */
 		$do_replace_variables = apply_filters( 'gravityview/merge_tags/do_replace_variables', true, $text, $form, $entry );
 
-		if( strpos( $text, '{') === false || ! $do_replace_variables ) {
+		if ( strpos( $text, '{' ) === false || ! $do_replace_variables ) {
 			return $text;
 		}
 
 		/**
-		 * Replace GravityView merge tags before going to Gravity Forms
-		 * This allows us to replace our tags first.
-		 * @since 1.15
+		 * Make sure the required keys are set for GFCommon::replace_variables
+		 *
+		 * @internal Reported to GF Support on 12/3
 		 */
-		$text = self::replace_gv_merge_tags( $text, $form, $entry );
-
-		// Check for fields - if they exist, we let Gravity Forms handle it.
-		preg_match_all('/{[^{]*?:(\d+(\.\d+)?)(:(.*?))?}/mi', $text, $matches, PREG_SET_ORDER);
-
-		if( empty( $matches ) ) {
-
-			// Check for form variables
-			if( !preg_match( '/\{(all_fields(:(.*?))?|all_fields_display_empty|pricing_fields|form_title|entry_url|ip|post_id|admin_email|post_edit_url|form_id|entry_id|embed_url|date_mdy|date_dmy|embed_post:(.*?)|custom_field:(.*?)|user_agent|referer|gv:(.*?)|get:(.*?)|user:(.*?)|created_by:(.*?))\}/ism', $text ) ) {
-				return $text;
-			}
-		}
+		$form['title']  = isset( $form['title'] ) ? $form['title'] : '';
+		$form['id']     = isset( $form['id'] ) ? $form['id'] : '';
+		$form['fields'] = isset( $form['fields'] ) ? $form['fields'] : array();
 
 		return GFCommon::replace_variables( $text, $form, $entry, $url_encode, $esc_html );
-	}
-
-	/**
-	 * Add custom merge tags to merge tag options
-	 *
-	 * @since 1.8.4
-	 *
-	 * @param array $existing_merge_tags
-	 * @param int $form_id GF Form ID
-	 * @param GF_Field[] $fields Array of fields in the form
-	 * @param string $element_id The ID of the input that Merge Tags are being used on
-	 *
-	 * @return array Modified merge tags
-	 */
-	public function _gform_custom_merge_tags( $existing_merge_tags = array(), $form_id, $fields = array(), $element_id = '' ) {
-
-		$created_by_merge_tags = array(
-			array(
-				'label' => __('Entry Creator: Display Name', 'gravityview'),
-				'tag' => '{created_by:display_name}'
-			),
-			array(
-				'label' => __('Entry Creator: Email', 'gravityview'),
-				'tag' => '{created_by:user_email}'
-			),
-			array(
-				'label' => __('Entry Creator: Username', 'gravityview'),
-				'tag' => '{created_by:user_login}'
-			),
-			array(
-				'label' => __('Entry Creator: User ID', 'gravityview'),
-				'tag' => '{created_by:ID}'
-			),
-			array(
-				'label' => __('Entry Creator: Roles', 'gravityview'),
-				'tag' => '{created_by:roles}'
-			),
-		);
-
-		//return the form object from the php hook
-		return array_merge( $existing_merge_tags, $created_by_merge_tags );
 	}
 
 	/**
@@ -143,6 +92,7 @@ class GravityView_Merge_Tags {
 		 * This prevents the gform_replace_merge_tags filter from being called twice, as defined in:
 		 * @see GFCommon::replace_variables()
 		 * @see GFCommon::replace_variables_prepopulate()
+		 * @todo Remove eventually: Gravity Forms fixed this issue in 1.9.14
 		 */
 		if( false === $form ) {
 			return $text;
@@ -150,10 +100,66 @@ class GravityView_Merge_Tags {
 
 		$text = self::replace_get_variables( $text, $form, $entry, $url_encode );
 
-		// Process the merge vars here
-		$text = self::replace_user_variables_created_by( $text, $form, $entry, $url_encode, $esc_html );
-
 		return $text;
+	}
+
+	/**
+	 * Format Merge Tags using GVCommon::format_date()
+	 *
+	 * @uses GVCommon::format_date()
+	 *
+	 * @see http://docs.gravityview.co/article/331-date-created-merge-tag for documentation
+	 *
+	 * @param string $date_created The Gravity Forms date created format
+	 * @param string $property Any modifiers for the merge tag (`human`, `format:m/d/Y`)
+	 *
+	 * @return int|string If timestamp requested, timestamp int. Otherwise, string output.
+	 */
+	public static function format_date( $date_created = '', $property = '' ) {
+
+		// Expand all modifiers, skipping escaped colons. str_replace worked better than preg_split( "/(?<!\\):/" )
+		$exploded = explode( ':', str_replace( '\:', '|COLON|', $property ) );
+
+		$atts = array(
+			'format' => self::get_format_from_modifiers( $exploded, false ),
+		    'human' => in_array( 'human', $exploded ), // {date_created:human}
+			'diff' => in_array( 'diff', $exploded ), // {date_created:diff}
+			'raw' => in_array( 'raw', $exploded ), // {date_created:raw}
+			'timestamp' => in_array( 'timestamp', $exploded ), // {date_created:timestamp}
+			'time' => in_array( 'time', $exploded ),  // {date_created:time}
+		);
+
+		$formatted_date = GVCommon::format_date( $date_created, $atts );
+
+		return $formatted_date;
+	}
+
+	/**
+	 * If there is a `:format` modifier in a merge tag, grab the formatting
+	 *
+	 * The `:format` modifier should always have the format follow it; it's the next item in the array
+	 * In `foo:format:bar`, "bar" will be the returned format
+	 *
+	 * @since 1.16
+	 *
+	 * @param array $exploded Array of modifiers with a possible `format` value
+	 * @param string $backup The backup value to use, if not found
+	 *
+	 * @return string If format is found, the passed format. Otherwise, the backup.
+	 */
+	private static function get_format_from_modifiers( $exploded, $backup = '' ) {
+
+		$return = $backup;
+
+		$format_key_index = array_search( 'format', $exploded );
+
+		// If there's a "format:[php date format string]" date format, grab it
+		if ( false !== $format_key_index && isset( $exploded[ $format_key_index + 1 ] ) ) {
+			// Return escaped colons placeholder
+			$return = str_replace( '|COLON|', ':', $exploded[ $format_key_index + 1 ] );
+		}
+
+		return $return;
 	}
 
 	/**
@@ -231,61 +237,6 @@ class GravityView_Merge_Tags {
 		}
 
 		unset( $value, $glue, $matches );
-
-		return $text;
-	}
-
-	/**
-	 * Exactly like Gravity Forms' User Meta functionality, but instead shows information on the user who created the entry
-	 * instead of the currently logged-in user.
-	 *
-	 * @see http://docs.gravityview.co/article/281-the-createdby-merge-tag Read how to use the `{created_by}` merge tag
-	 *
-	 * @since 1.8.4
-	 *
-	 * @param string $text Text to replace
-	 * @param array $form Gravity Forms form array
-	 * @param array $entry Entry array
-	 * @param bool $url_encode Whether to URL-encode output
-	 * @param bool $esc_html Whether to apply `esc_html()` to output
-	 *
-	 * @return string Text, with user variables replaced, if they existed
-	 */
-	private static function replace_user_variables_created_by( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
-
-		// Is there is {created_by:[xyz]} merge tag?
-		preg_match_all( "/\{created_by:(.*?)\}/", $text, $matches, PREG_SET_ORDER );
-
-		// If there are no matches OR the Entry `created_by` isn't set or is 0 (no user)
-		if( empty( $matches ) || empty( $entry['created_by'] ) ) {
-			return $text;
-		}
-
-		// Get the creator of the entry
-		$entry_creator = new WP_User( $entry['created_by'] );
-
-		foreach ( $matches as $match ) {
-
-			$full_tag = $match[0];
-			$property = $match[1];
-
-			switch( $property ) {
-				/** @since 1.13.2 */
-				case 'roles':
-					$value = implode( ', ', $entry_creator->roles );
-					break;
-				default:
-					$value = $entry_creator->get( $property );
-			}
-
-			$value = $url_encode ? urlencode( $value ) : $value;
-
-			$value = $esc_html ? esc_html( $value ) : $value;
-
-			$text = str_replace( $full_tag, $value, $text );
-		}
-
-		unset( $entry_creator );
 
 		return $text;
 	}

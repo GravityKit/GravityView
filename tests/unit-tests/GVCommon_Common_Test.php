@@ -23,6 +23,104 @@ class GVCommon_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @since 1.16
+	 * @covers GravityView_Field_Date_Created::replace_merge_tag
+	 * @covers GVCommon::format_date
+	 * @group date_created
+	 */
+	function test_format_date() {
+
+		$form = $this->factory->form->create_and_get();
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+		) );
+
+		$date_created = rgar( $entry, 'date_created' );
+
+		/**
+		 * adjusting date to local configured Time Zone
+		 * @see GFCommon::format_date()
+		 */
+		$entry_gmt_time   = mysql2date( 'G', $date_created );
+		$entry_local_time = GFCommon::get_local_timestamp( $entry_gmt_time );
+
+		$tests = array(
+			GVCommon::format_date( $date_created, 'raw=1') => $date_created,
+			GVCommon::format_date( $date_created, array('raw' => true ) ) => $date_created,
+			GVCommon::format_date( $date_created, 'raw=1&timestamp=1') => $date_created,
+			GVCommon::format_date( $date_created, array('raw' => true, 'timestamp' => 1 ) ) => $date_created,
+			GVCommon::format_date( $date_created, 'raw=1&time=1') => $date_created,
+			GVCommon::format_date( $date_created, 'raw=1&human=1') => $date_created,
+			GVCommon::format_date( $date_created, 'raw=1&format=example') => $date_created,
+
+			GVCommon::format_date( $date_created, 'timestamp=1&raw=1') => $date_created, // Raw logic is first, it wins
+			GVCommon::format_date( $date_created, 'timestamp=1') => $entry_local_time,
+			GVCommon::format_date( $date_created, 'timestamp=1&time=1') => $entry_local_time,
+			GVCommon::format_date( $date_created, 'timestamp=1&human=1') => $entry_local_time,
+			GVCommon::format_date( $date_created, 'timestamp=1&format=example') => $entry_local_time,
+
+			// Blog date format
+			GVCommon::format_date( $date_created ) => GFCommon::format_date( $date_created, false, '', false ),
+
+			// Blog date format
+			GVCommon::format_date( $date_created, 'human=1' ) => GFCommon::format_date( $date_created, true, '', false ),
+			GVCommon::format_date( $date_created, array('human' => true) ) => GFCommon::format_date( $date_created, true, '', false ),
+
+			// Blog "date at time" format ("%s at %s")
+			GVCommon::format_date( $date_created, 'time=1' ) => GFCommon::format_date( $date_created, false, '', true ),
+			GVCommon::format_date( $date_created, array('time' => true) )=> GFCommon::format_date( $date_created, false, '', true ),
+
+			// 1 second ago
+			GVCommon::format_date( $date_created, 'diff=1' ) => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			GVCommon::format_date( $date_created, array('diff' => true ) ) => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			GVCommon::format_date( $date_created, 'diff=1&format=%s is so long ago' ) => sprintf( '%s is so long ago', human_time_diff( $entry_gmt_time ) ),
+			GVCommon::format_date( $date_created, array('diff' => 1, 'format' => '%s is so long ago' ) ) => sprintf( '%s is so long ago', human_time_diff( $entry_gmt_time ) ),
+
+			// Relative should NOT process other modifiers
+			GVCommon::format_date( $date_created, 'diff=1&time=1' ) => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			GVCommon::format_date( $date_created, 'diff=1&human=1' ) => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			GVCommon::format_date( $date_created, 'human=1&diff=1' ) => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+
+			GVCommon::format_date( $date_created, 'format=mdy' ) => GFCommon::format_date( $date_created, false, 'mdy', false ),
+			GVCommon::format_date( $date_created, 'human=1&format=m/d/Y' ) => GFCommon::format_date( $date_created, true, 'm/d/Y', false ),
+
+			GVCommon::format_date( $date_created, 'time=1&format=d' ) => GFCommon::format_date( $date_created, false, 'd', true ),
+			GVCommon::format_date( $date_created, 'human=1&time=1&format=mdy' ) => GFCommon::format_date( $date_created, true, 'mdy', true ),
+
+			GVCommon::format_date( $date_created, array('format' => 'm/d/Y' ) ) => date_i18n( 'm/d/Y', $entry_local_time, true ),
+			GVCommon::format_date( $date_created, array('format' => 'm/d/Y\ \w\i\t\h\ \t\i\m\e\ h\:i\:s' ) ) => date_i18n( 'm/d/Y\ \w\i\t\h\ \t\i\m\e\ h:i:s', $entry_local_time, true ),
+		);
+
+		foreach ( $tests as $formatted_date => $expected ) {
+			$this->assertEquals( $expected, $formatted_date );
+		}
+	}
+
+	/**
+	 * @group get_forms
+	 * @covers GVCommon::get_forms()
+	 * @covers gravityview_get_forms()
+	 */
+	function test_get_forms() {
+
+		$this->factory->form->create_many( 5 );
+
+		$forms = GFAPI::get_forms();
+
+		$gv_forms = GVCommon::get_forms();
+
+		// Make sure same # of forms are fetched
+		$this->assertEquals( sizeof( $forms ), sizeof( $gv_forms ) );
+
+		// The GVCommon method should return array with `id` and `title` fields
+		$last_form = array_pop( $forms );
+		$last_gv_form = array_pop( $gv_forms );
+
+		$this->assertEquals( array( 'title' => $last_form['title'], 'id' => $last_form['id'] ), $last_gv_form );
+	}
+
+	/**
 	 * @covers GVCommon::get_connected_views
 	 * @covers ::gravityview_get_connected_views()
 	 */

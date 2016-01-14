@@ -8,6 +8,11 @@ class GravityView_Admin_Metaboxes {
 	static $metaboxes_dir;
 
 	/**
+	 * @var int The post ID of the current View
+	 */
+	var $post_id = 0;
+
+	/**
 	 *
 	 */
 	function __construct() {
@@ -191,10 +196,6 @@ class GravityView_Admin_Metaboxes {
 	 */
 	function render_data_source_metabox( $post ) {
 
-		if( !empty( $post->ID ) ) {
-			$this->post_id = $post->ID;
-		}
-
 		include self::$metaboxes_dir . 'views/data-source.php';
 
 	}
@@ -214,7 +215,7 @@ class GravityView_Admin_Metaboxes {
 	/**
 	 * Generate the script tags necessary for the Gravity Forms Merge Tag picker to work.
 	 *
-	 * @param  mixed      $curr_form Form ID
+	 * @param  int      $curr_form Form ID
 	 * @return null|string     Merge tags html; NULL if $curr_form isn't defined.
 	 */
 	public static function render_merge_tags_scripts( $curr_form ) {
@@ -290,7 +291,6 @@ class GravityView_Admin_Metaboxes {
 	 * Render shortcode hint in the Publish metabox
 	 *
 	 * @access public
-	 * @param object $post
 	 * @return void
 	 */
 	function render_shortcode_hint() {
