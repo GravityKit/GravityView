@@ -291,7 +291,6 @@ class GravityView_Admin_Metaboxes {
 	 * Render shortcode hint in the Publish metabox
 	 *
 	 * @access public
-	 * @param object $post
 	 * @return void
 	 */
 	function render_shortcode_hint() {

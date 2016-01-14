@@ -113,6 +113,9 @@ class GravityView_View_Data {
 		return ( sizeof( $ids ) === 1 ) ? $ids[0] : $ids;
 	}
 
+	/**
+	 * @return GravityView_View_Data
+	 */
 	public static function getInstance( $passed_post = NULL ) {
 
 		if( empty( self::$instance ) ) {
