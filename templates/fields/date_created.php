@@ -10,9 +10,4 @@ $gravityview_view = GravityView_View::getInstance();
 
 extract( $gravityview_view->getCurrentField() );
 
-$properties = array();
-if( !empty( $field_settings ) && !empty( $field_settings['date_display'] ) && !empty( $value ) ) {
-	$properties['format'] = $field_settings['date_display'];
-}
-
-echo GVCommon::format_date( $value, $properties );
+echo GVCommon::format_date( $value, 'format=' . rgar( $field_settings, 'date_display' ) );
