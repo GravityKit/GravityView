@@ -274,6 +274,62 @@ class GravityView_Welcome {
 					</div>
 				</div>
 
+				<h3>1.16 on January 13</h3>
+
+				<ul>
+					<li>Happy New Year! We have big things planned for GravityView in 2016, including a new View builder.</li>
+					<li>Added: Merge Tags. <a href="http://docs.gravityview.co/article/76-merge-tags">See all GravityView Merge Tags</a>
+
+						<ul>
+							<li><code>{date_created}</code> Merge Tag displays the date an entry was created. <a href="http://docs.gravityview.co/article/331-date-created-merge-tag">Read how to use it here</a>.</li>
+							<li><code>{payment_date}</code> displays Payment Date, formatted using <a href="http://docs.gravityview.co/article/331-date-created-merge-tag">the same modifiers</a> as <code>{date_created}</code></li>
+							<li><code>{payment_status}</code> The current payment status of the entry (ie &quot;Processing&quot;, &quot;Pending&quot;, &quot;Active&quot;, &quot;Expired&quot;, &quot;Failed&quot;, &quot;Cancelled&quot;, &quot;Approved&quot;, &quot;Reversed&quot;, &quot;Refunded&quot;, &quot;Voided&quot;)</li>
+							<li><code>{payment_method}</code> The way the entry was paid for (ie &quot;Credit Card&quot;, &quot;PayPal&quot;, etc.)</li>
+							<li><code>{payment_amount}</code> displays Payment Amount formatted as a currency. Use <code>{payment_amount:raw}</code> for the un-formatted number</li>
+							<li><code>{currency}</code> The currency with which the entry was submitted (ie &quot;USD&quot;, &quot;EUR&quot;)</li>
+							<li><code>{is_fulfilled}</code> Whether the order has been fulfilled. Displays &quot;Not Fulfilled&quot; or &quot;Fulfilled&quot;</li>
+							<li><code>{transaction_id}</code> the ID of the transaction returned by the payment gateway</li>
+							<li><code>{transaction_type}</code> Indicates the transaction type of the entry/order. &quot;Single Payment&quot; or &quot;Subscription&quot;.</li>
+						</ul></li>
+					<li>Fixed: Custom merge tags not being replaced properly by GravityView</li>
+					<li>Fixed: Connected form links were not visible in the Data Source metabox</li>
+					<li>Tweak: Only show Add View button to users who are able to publish Views</li>
+					<li>Tweak: Reduce the number of database calls by fetching forms differently</li>
+					<li>Fixed: Inaccurate &quot;Key missing&quot; error shown when license key is invalid</li>
+					<li>Fixed: Search Bar could show &quot;undefined&quot; search fields when security key has expired. Now, a helpful message will appear.</li>
+					<li>Tweak: Only show license key notices to users who have capability to edit settings, and only on GravityView pages</li>
+					<li>Tweak: Improved load time of Views screen in the admin</li>
+					<li>Tweak: Make sure entry belongs to correct form before displaying</li>
+					<li>Tweak: Removed need for one database call per displayed entry</li>
+				</ul>
+
+				<h4>Developer Notes:</h4>
+
+				<ul>
+					<li>New: Added <code>get_content()</code> method to some <code>GravityView_Fields</code> subclasses. We plan on moving this to the parent class soon. This allows us to not use <code>/templates/fields/</code> files for every field type.</li>
+					<li>New: <code>GVCommon::format_date()</code> function formats entry and payment dates in more ways than <code>GFCommon::format_date</code></li>
+					<li>New: <code>gravityview_get_terms_choices()</code> function generates array of categories ready to be added to Gravity Forms $choices array</li>
+					<li>Tweak: Set <code>max-width: 50%</code> for <code>div.gv-list-view-content-image</code></li>
+					<li>Tweak: Added <code>gv-container-{view id}</code> CSS class to <code>gv_container_class()</code> function output. This will be added to View container <code>&lt;div&gt;</code>s</li>
+					<li>Added: <code>$group</code> parameter to <code>GravityView_Fields::get_all()</code> to get all fields in a specified group</li>
+					<li>Added: <code>gravityview_field_entry_value_{field_type}_pre_link</code> filter to modify field values before &quot;Show As Link&quot; setting is applied</li>
+					<li>Fixed: <code>gv_container_class()</code> didn&#39;t return value</li>
+					<li>Fixed: Don&#39;t add link to empty field value</li>
+					<li>Added: Second parameter <code>$echo</code> (boolean) to <code>gv_container_class()</code></li>
+					<li>Fixed: Strip extra whitespace in <code>gravityview_sanitize_html_class()</code></li>
+					<li>Fixed: Don&#39;t output widget structural HTML if there are no configured widgets</li>
+					<li>Fixed: Empty HTML <code>&lt;h4&gt;</code> label container output in List layout, even when &quot;Show Label&quot; was unchecked</li>
+					<li>Fixed: Fetching the current entry can improperly return an empty array when using <code>GravityView_View-&gt;getCurrentEntry()</code> in DataTables extension</li>
+					<li>New: <code>GVCommon::has_product_field()</code> method to check whether a form has product fields</li>
+					<li>New: Added <code>add_filter( &#39;gform_is_encrypted_field&#39;, &#39;__return_false&#39; );</code> before fetching entries</li>
+					<li>Use the <code>$is_sortable</code> <code>GravityView_Field</code> variable to define whether a field is sortable. Override using the  <code>gravityview/sortable/field_blacklist</code> filter.</li>
+					<li>Tweak: Moved <code>gv_selected()</code> to <code>helper-functions.php</code> from <code>class-api.php</code></li>
+					<li>Fixed: <code>gravityview/sortable/formfield_{form}_{field_id}</code> filter <a href="http://docs.gravityview.co/article/231-how-to-disable-the-sorting-control-on-one-table-column">detailed here</a></li>
+					<li>Fixed: <code>gravityview/sortable/field_blacklist</code> filter docBlock fixed</li>
+				</ul>
+
+				<hr />
+
 				<h3>1.15.2 on December 3</h3>
 
 				<ul>
@@ -314,7 +370,6 @@ class GravityView_Welcome {
 					<li>New: <code>gravityview_publicly_queryable</code> filter to modify whether Views be accessible using <code>example.com/?post_type=gravityview</code>. Default: Whether the current user has <code>read_private_gravityviews</code> capability (Editor or Administrator by default)</li>
 				</ul>
 
-				<hr />
 
 				<h3>1.15.1 on October 27</h3>
 

@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
     * `{currency}` The currency with which the entry was submitted (ie "USD", "EUR")
     * `{is_fulfilled}` Whether the order has been fulfilled. Displays "Not Fulfilled" or "Fulfilled"
     * `{transaction_id}` the ID of the transaction returned by the payment gateway
+    * `{transaction_type}` Indicates the transaction type of the entry/order. "Single Payment" or "Subscription".
 * Fixed: Custom merge tags not being replaced properly by GravityView
 * Fixed: Connected form links were not visible in the Data Source metabox
 * Tweak: Only show Add View button to users who are able to publish Views
@@ -40,7 +41,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Tweak: Only show license key notices to users who have capability to edit settings, and only on GravityView pages
 * Tweak: Improved load time of Views screen in the admin
 * Tweak: Make sure entry belongs to correct form before displaying
-* Tweak: Removed need for one database call per entry
+* Tweak: Removed need for one database call per displayed entry
 
 __Developer Notes:__
 
@@ -49,6 +50,7 @@ __Developer Notes:__
 * New: `gravityview_get_terms_choices()` function generates array of categories ready to be added to Gravity Forms $choices array
 * Tweak: Set `max-width: 50%` for `div.gv-list-view-content-image`
 * Tweak: Added `gv-container-{view id}` CSS class to `gv_container_class()` function output. This will be added to View container `<div>`s
+* Added: `$group` parameter to `GravityView_Fields::get_all()` to get all fields in a specified group
 * Added: `gravityview_field_entry_value_{field_type}_pre_link` filter to modify field values before "Show As Link" setting is applied
 * Fixed: `gv_container_class()` didn't return value
 * Fixed: Don't add link to empty field value

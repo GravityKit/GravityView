@@ -291,7 +291,8 @@ class GravityView_API {
 			'display_value' => $display_value,
 			'format' => $format,
 			'entry' => $entry,
-			'field_type' => $field_type, /** {@since 1.6} **/
+			'field_type' => $field_type, /** {@since 1.6} */
+		    'field_path' => $field_path, /** {@since 1.16} */
 		));
 
 		if( ! empty( $field_path ) ) {
@@ -343,6 +344,7 @@ class GravityView_API {
 		 * @param string $output HTML value output
 		 * @param array  $entry The GF entry array
 		 * @param  array $field_settings Settings for the particular GV field
+		 * @param array $field Current field being displayed
 		 */
 		$output = apply_filters( 'gravityview_field_entry_value_'.$field_type, $output, $entry, $field_settings, $gravityview_view->getCurrentField() );
 
