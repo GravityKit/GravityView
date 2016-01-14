@@ -152,8 +152,8 @@ class GravityView_View_Data {
 	 * within the WordPress database.
 	 *
 	 * @see http://tommcfarlin.com/wordpress-post-exists-by-id/ Fastest check available
-	 * @param    int    $id    The ID of the post to check
-	 * @return   bool          True if the post exists; otherwise, false.
+	 * @param    int    $view_id    The ID of the post to check
+	 * @return   bool   True if the post exists; otherwise, false.
 	 * @since    1.0.0
 	 */
 	function view_exists( $view_id ) {
@@ -299,7 +299,7 @@ class GravityView_View_Data {
 	 *
 	 * @access public
 	 * @param array $properties
-	 * @return void|boolean (field should be hidden) or false (field should be presented)
+	 * @return boolean True: (field should be hidden) or False: (field should be presented)
 	 */
 	private function hide_field_check_conditions( $properties ) {
 

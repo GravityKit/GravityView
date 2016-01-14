@@ -15,20 +15,20 @@ abstract class GravityView_Field {
 	 * Example: `created_by`, `text`, `fileupload`, `address`, `entry_link`
 	 * @var string
 	 */
-	var $name;
+	public $name;
 
 	/**
 	 * @internal Not yet implemented
 	 * @since 1.15.2
 	 * @type string The description of the field in the field picker
 	 */
-	var $description;
+	public $description;
 
 	/**
 	 * @since 1.15.2
 	 * @type string The label of the field in the field picker
 	 */
-	var $label;
+	public $label;
 
 	/**
 	 * `standard`, `advanced`, `post`, `pricing`, `meta`, `gravityview`
@@ -36,33 +36,33 @@ abstract class GravityView_Field {
 	 * @since 1.15.2
 	 * @type string The group belongs to this field in the field picker
 	 */
-	var $group;
+	public $group;
 
 	/**
 	 * @internal Not yet implemented
 	 * @type boolean Can the field be searched?
 	 * @since 1.15.2
 	 */
-	var $is_searchable;
+	public $is_searchable;
 
 	/**
 	 * @internal Not yet implemented
 	 * @type array $search_operators The type of search operators available for this field
 	 * @since 1.15.2
 	 */
-	var $search_operators;
+	public $search_operators;
 
 	/**
 	 * @type boolean Can the field be sorted in search?
 	 * @since 1.15.2
 	 */
-	var $is_sortable = true;
+	public $is_sortable = true;
 
 	/**
 	 * @type boolean Is field content number-based?
 	 * @since 1.15.2
 	 */
-	var $is_numeric;
+	public $is_numeric;
 
 	/**
 	 * @internal Not yet implemented
@@ -73,7 +73,7 @@ abstract class GravityView_Field {
 	 * @type array
 	 * @since 1.15.2
 	 */
-	var $contexts = array( 'single', 'multiple', 'edit', 'export' );
+	public $contexts = array( 'single', 'multiple', 'edit', 'export' );
 
 	/**
 	 * @internal Not yet implemented

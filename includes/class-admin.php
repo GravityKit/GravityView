@@ -472,6 +472,16 @@ class GravityView_Admin {
 
 new GravityView_Admin;
 
+/**
+ * Alias for GravityView_Admin::is_admin_page()
+ *
+ * @see GravityView_Admin::is_admin_page
+ *
+ * @param string $hook
+ * @param null|string $page Optional. String return value of page to compare against.
+ *
+ * @return bool|string|void If `false`, not a GravityView page. `true` if $page is passed and is the same as current page. Otherwise, the name of the page (`single`, `settings`, or `views`)
+ */
 function gravityview_is_admin_page($hook = '', $page = NULL) {
 	return GravityView_Admin::is_admin_page( $hook, $page );
 }

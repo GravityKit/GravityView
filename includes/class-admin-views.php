@@ -326,7 +326,7 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Get HTML links relating to a connected form, like Edit, Entries, Settings, Preview
-	 * @param  array|int $form_id Gravity Forms forms array, or the form ID
+	 * @param  array|int $form Gravity Forms forms array, or the form ID
 	 * @param  boolean $include_form_link Whether to include the bold name of the form in the output
 	 * @return string          HTML links
 	 */
@@ -547,11 +547,11 @@ class GravityView_Admin_Views {
 	 * $blacklist_field_types - contains the field types which are not proper to be shown in a directory.
 	 *
 	 * @access public
-	 * @param int $form_id Gravity Forms Form ID (default: '')
+	 * @param int $form Gravity Forms Form ID (default: '')
 	 * @param string $context (default: 'single')
 	 * @return void
 	 */
-	function render_available_fields( $form = '', $context = 'single' ) {
+	function render_available_fields( $form = 0, $context = 'single' ) {
 
 		/**
 		 * @filter  `gravityview_blacklist_field_types` Modify the types of fields that shouldn't be shown in a View.
@@ -592,7 +592,15 @@ class GravityView_Admin_Views {
 		$this->render_additional_fields( $form, $context );
 	}
 
-	function render_additional_fields( $form, $context ) {
+	/**
+	 * Render html for displaying additional fields based on a Form ID
+	 *
+	 * @access public
+	 * @param int $form Gravity Forms Form ID (default: '')
+	 * @param string $context (default: 'single')
+	 * @return void
+	 */
+	public function render_additional_fields( $form = 0, $context = 'single' ) {
 
 		/**
 		 * @filter `gravityview_additional_fields` non-standard Fields to show at the bottom of the field picker
@@ -786,6 +794,7 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Generic function to render rows and columns of active areas for widgets & fields
+	 * @param  string $template_id The current slug of the selected View template
 	 * @param  string $type   Either 'widget' or 'field'
 	 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
 	 * @param  array $rows    The layout structure: rows, columns and areas

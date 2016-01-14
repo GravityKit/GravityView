@@ -215,7 +215,7 @@ class GravityView_Admin_Metaboxes {
 	/**
 	 * Generate the script tags necessary for the Gravity Forms Merge Tag picker to work.
 	 *
-	 * @param  mixed      $curr_form Form ID
+	 * @param  int      $curr_form Form ID
 	 * @return null|string     Merge tags html; NULL if $curr_form isn't defined.
 	 */
 	public static function render_merge_tags_scripts( $curr_form ) {
