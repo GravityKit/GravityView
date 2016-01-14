@@ -105,10 +105,11 @@ abstract class GravityView_Field {
 		/**
 		 * If this is a Gravity Forms field, use their labels. Spare our translation team!
 		 */
-		if( ! empty( $this->_gf_field_class_name ) && class_exists( $this->_gf_field_class_name ) ) {
+		if( ! empty( $this->_gf_field_class_name ) && class_exists( $this->_gf_field_class_name ) && empty( $this->label ) ) {
 			/** @var GF_Field $GF_Field */
 			$GF_Field = new $this->_gf_field_class_name;
 			$this->label = $GF_Field->get_form_editor_field_title();
+			$this->label = ucwords( $this->label );
 		}
 
 		// Modify the field options based on the name of the field type
