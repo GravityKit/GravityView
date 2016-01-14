@@ -174,8 +174,7 @@ class GravityView_Debug_Bar extends Debug_Bar_Panel {
 			if( !is_null( $notice['data'] ) ) {
 				$output .= '<em>'._x('Empty', 'Debugging output data is empty.', 'gravityview' ).'</em>';
 			}
-		}
-		else {
+		} else {
 			$output .= sprintf( '<pre>%s</pre>', print_r($this->esc_html_recursive( $notice['data'] ), true) );
 		}
 

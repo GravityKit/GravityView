@@ -110,7 +110,7 @@ class GravityView_Admin_Views {
 	 * Start using GravityView_Render_Settings::render_setting_row
 	 */
 	public static function render_setting_row( $key = '', $current_settings = array(), $override_input = null, $name = 'template_settings[%s]', $id = 'gravityview_se_%s' ) {
-        _deprecated_function( 'GravityView_Admin_Views::render_setting_row', '1.1.7', 'GravityView_Render_Settings::render_setting_row' );
+		_deprecated_function( 'GravityView_Admin_Views::render_setting_row', '1.1.7', 'GravityView_Render_Settings::render_setting_row' );
 		GravityView_Render_Settings::render_setting_row( $key, $current_settings, $override_input, $name , $id );
 	}
 
@@ -696,22 +696,22 @@ class GravityView_Admin_Views {
 				/**
 				 * @since 1.7.2
 				 */
-			    'other_entries' => array(
-				    'label'	=> __('Other Entries', 'gravityview'),
-				    'type'	=> 'other_entries',
-				    'desc'	=> __('Display other entries created by the entry creator.', 'gravityview'),
-			    ),
-	        );
+				'other_entries' => array(
+					'label'	=> __('Other Entries', 'gravityview'),
+					'type'	=> 'other_entries',
+					'desc'	=> __('Display other entries created by the entry creator.', 'gravityview'),
+				),
+			);
 
 
 			if( 'single' !== $zone) {
 
-	        	$entry_default_fields['entry_link'] = array(
-	        		'label' => __('Link to Entry', 'gravityview'),
-	        		'desc'	=> __('A dedicated link to the single entry with customizable text.', 'gravityview'),
-	        		'type' => 'entry_link',
-	        	);
-	        }
+				$entry_default_fields['entry_link'] = array(
+					'label' => __('Link to Entry', 'gravityview'),
+					'desc'	=> __('A dedicated link to the single entry with customizable text.', 'gravityview'),
+					'type' => 'entry_link',
+				);
+			}
 
 		} // if not zone directory or single
 
@@ -722,7 +722,7 @@ class GravityView_Admin_Views {
 		 * @param  string|array $form form_ID or form object
 		 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
 		 */
-        return apply_filters( 'gravityview_entry_default_fields', $entry_default_fields, $form, $zone);
+		return apply_filters( 'gravityview_entry_default_fields', $entry_default_fields, $form, $zone);
 	}
 
 	/**
@@ -1044,8 +1044,9 @@ class GravityView_Admin_Views {
 		    'jquery-ui-autocomplete'
 		);
 
-		if ( wp_is_mobile() )
-		    $scripts[] = 'jquery-touch-punch';
+		if ( wp_is_mobile() ) {
+				    $scripts[] = 'jquery-touch-punch';
+		}
 
 		foreach ($scripts as $script) {
 			wp_enqueue_script( $script );
