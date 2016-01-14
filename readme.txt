@@ -47,6 +47,7 @@ __Developer Notes:__
 * New: `gravityview_get_terms_choices()` function generates array of categories ready to be added to Gravity Forms $choices array
 * Tweak: Set `max-width: 50%` for `div.gv-list-view-content-image`
 * Tweak: Added `gv-container-{view id}` CSS class to `gv_container_class()` function output. This will be added to View container `<div>`s
+* Added: `gravityview_field_entry_value_{field_type}_pre_link` filter to modify field values before "Show As Link" setting is applied
 * Fixed: `gv_container_class()` didn't return value
 * Added: Second parameter `$echo` (boolean) to `gv_container_class()`
 * Fixed: Strip extra whitespace in `gravityview_sanitize_html_class()`

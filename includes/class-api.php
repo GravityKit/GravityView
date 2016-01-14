@@ -314,6 +314,16 @@ class GravityView_API {
 		$field_settings = $gravityview_view->getCurrentField('field_settings');
 
 		/**
+		 * @filter `gravityview_field_entry_value_{$field_type}_pre_link` Modify the field value output for a field type before Show As Link setting is applied. Example: `gravityview_field_entry_value_number_pre_link`
+		 * @since 1.16
+		 * @param string $output HTML value output
+		 * @param array  $entry The GF entry array
+		 * @param array  $field_settings Settings for the particular GV field
+		 * @param array  $field Field array, as fetched from GravityView_View::getCurrentField()
+		 */
+		$output = apply_filters( 'gravityview_field_entry_value_' . $field_type . '_pre_link', $output, $entry, $field_settings, $gravityview_view->getCurrentField() );
+
+		/**
 		 * Link to the single entry by wrapping the output in an anchor tag
 		 *
 		 * Fields can override this by modifying the field data variable inside the field. See /templates/fields/post_image.php for an example.
