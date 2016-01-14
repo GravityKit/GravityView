@@ -1,6 +1,6 @@
 <img src="https://gravityview.co/wp-content/themes/gravityview/images/GravityView-262x80@2x.png" width="262" height="80" alt="GravityView (Floaty loves you!)" />
 
-[![Build Status](https://travis-ci.org/katzwebservices/GravityView.svg?branch=develop)](https://travis-ci.org/katzwebservices/GravityView) [![Coverage Status](https://coveralls.io/repos/katzwebservices/GravityView/badge.svg?branch=develop&service=github)](https://coveralls.io/github/katzwebservices/GravityView?branch=develop)
+[![Build Status](https://travis-ci.org/gravityview/GravityView.svg?branch=master)](https://travis-ci.org/gravityview/GravityView) [![Coverage Status](https://coveralls.io/repos/gravityview/GravityView/badge.svg?branch=master&service=github)](https://coveralls.io/github/gravityview/GravityView?branch=master)
 
 [GravityView](https://gravityview.co/?utm_source=github&utm_medium=readme&utm_campaign=readme) is a commercial plugin available from [https://gravityview.co](http://gravityview.co?utm_source=github&utm_medium=readme&utm_campaign=readme). The plugin is hosted here on a public Github repository in order to better faciliate community contributions from developers and users. If you have a suggestion, a bug report, or a patch for an issue, feel free to submit it here.
 
