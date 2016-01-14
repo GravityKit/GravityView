@@ -43,6 +43,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Notes:__
 
+* New: Added `get_content()` method to some `GravityView_Fields` subclasses. We plan on moving this to the parent class soon. This allows us to not use `/templates/fields/` files for every field type.
 * New: `GVCommon::format_date()` function formats entry and payment dates in more ways than `GFCommon::format_date`
 * New: `gravityview_get_terms_choices()` function generates array of categories ready to be added to Gravity Forms $choices array
 * Tweak: Set `max-width: 50%` for `div.gv-list-view-content-image`

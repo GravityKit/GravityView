@@ -188,9 +188,18 @@ abstract class GravityView_Field {
 
 			// Replace the value from the entry, if exists
 			if( isset( $entry[ $tag ] ) ) {
-				$text = str_replace( $full_tag, $entry[ $tag ], $text );
+
+				$value = $entry[ $tag ];
+
+				if( is_callable( array( $this, 'get_content') ) ) {
+					$value = $this->get_content( $value );
+				}
+
+				$text = str_replace( $full_tag, $value, $text );
 			}
 		}
+
+		unset( $value, $tag, $full_tag );
 
 		return $text;
 	}

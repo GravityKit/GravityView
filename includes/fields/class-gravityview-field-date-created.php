@@ -21,8 +21,12 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 	 * GravityView_Field_Date_Created constructor.
 	 */
 	public function __construct() {
+
 		$this->label = esc_attr__( 'Date Created', 'gravityview' );
 		$this->description = esc_attr__( 'The date the entry was created.', 'gravityview' );
+
+		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', array( $this, 'get_content' ), 10, 4 );
+
 		parent::__construct();
 	}
 
@@ -35,6 +39,28 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 		$this->add_field_support('date_display', $field_options );
 
 		return $field_options;
+	}
+
+	/**
+	 * Filter the value of the field
+	 *
+	 * @todo Consider how to add to parent class
+	 *
+	 * @since 1.16
+	 *
+	 * @param string $output HTML value output
+	 * @param array  $entry The GF entry array
+	 * @param array  $field_settings Settings for the particular GV field
+	 * @param array  $field Current field being displayed
+	 *
+	 * @return String values for this field based on the numeric values used by Gravity Forms
+	 */
+	public function get_content( $output = '', $entry = array(), $field_settings = array(), $field = array() ) {
+
+		/** Overridden by a template. */
+		if( ! empty( $field['field_path'] ) ) { return $output; }
+
+		return GVCommon::format_date( $field['value'], 'format='.rgar( $field_settings, 'date_display' ) );
 	}
 
 	/**

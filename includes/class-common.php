@@ -317,41 +317,18 @@ class GVCommon {
 
 		if ( $has_product_fields ) {
 
-			$fields['payment_status'] = array(
-				'label' => __( 'Payment Status', 'gravityview' ),
-				'type' => 'payment_status',
-			);
+			$payment_fields = GravityView_Fields::get_all( 'pricing' );
 
-			$fields['payment_date'] = array(
-				'label' => __( 'Payment Date', 'gravityview' ),
-				'type' => 'payment_date',
-			);
-
-			$fields['payment_amount'] = array(
-				'label' => __( 'Payment Amount', 'gravityview' ),
-				'type' => 'payment_amount',
-			);
-
-			$fields['payment_method'] = array(
-				'label' => __( 'Payment Method', 'gravityview' ),
-				'type' => 'payment_method',
-			);
-
-			$fields['is_fulfilled'] = array(
-				'label' => __( 'Is Fulfilled', 'gravityview' ),
-				'type' => 'is_fulfilled',
-			);
-
-			$fields['transaction_id'] = array(
-				'label' => __( 'Transaction ID', 'gravityview' ),
-				'type' => 'transaction_id',
-			);
-
-			$fields['transaction_type'] = array(
-				'label' => __( 'Transaction Type', 'gravityview' ),
-				'type' => 'transaction_type',
-			);
-
+			foreach ( $payment_fields as $payment_field ) {
+				if( isset( $fields["{$payment_field->name}"] ) ) {
+					continue;
+				}
+				$fields["{$payment_field->name}"] = array(
+					'label' => $payment_field->label,
+					'desc' => $payment_field->description,
+					'type' => $payment_field->name,
+				);
+			}
 		}
 
 		/**
