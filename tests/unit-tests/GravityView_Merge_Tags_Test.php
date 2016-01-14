@@ -127,12 +127,12 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		$entry = $this->factory->entry->create_and_get( $entry_array );
 
 		$tests = array(
-			'{payment_amount}' => GravityView_Fields::get('payment_amount')->get_content( $entry_array['transaction_type'], $entry_array ),
 			'{payment_amount:raw}' => $entry_array['payment_amount'],
 			'{payment_status}' => $entry_array['payment_status'],
 			'{payment_method}' => $entry_array['payment_method'],
+			'{transaction_id}' => $entry_array['transaction_id'],
+			'{payment_amount}' => GravityView_Fields::get('payment_amount')->get_content( $entry_array['transaction_type'], $entry_array ),
 			'{transaction_type}' => GravityView_Fields::get('transaction_type')->get_content( $entry_array['transaction_type'] ),
-			'{transaction_id}' => GravityView_Fields::get('transaction_id')->get_content( $entry_array['transaction_id'] ),
 			'{is_fulfilled}' => GravityView_Fields::get('is_fulfilled')->get_content( $entry_array['is_fulfilled'] ),
 		);
 

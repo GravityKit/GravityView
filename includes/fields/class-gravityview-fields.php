@@ -30,7 +30,7 @@ final class GravityView_Fields {
 		if ( empty( $field->name ) ) {
 			throw new Exception( 'The name must be set' );
 		}
-		if ( isset( self::$_fields[ $field->name ] ) ) {
+		if ( isset( self::$_fields[ $field->name ] ) && ! defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
 			throw new Exception( 'Field type already registered: ' . $field->name );
 		}
 		self::$_fields[ $field->name ] = $field;
