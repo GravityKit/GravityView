@@ -3213,10 +3213,10 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
         var fields = rowsList[vector.rowI]['columns'][vector.col]['fields'];
 
         // add the new field to layout
-        if (null === vector.index) {
-            fields.push(field);
-        } else {
+        if (vector.hasOwnProperty('index')) {
             fields.splice(vector.index, 0, field);
+        } else {
+            fields.push(field);
         }
 
         this.setFields(type, vector, fields);
