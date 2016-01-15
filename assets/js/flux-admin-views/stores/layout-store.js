@@ -39,7 +39,7 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
     /**
      * Holds the available list of widgets (depending on the context)
      */
-    widgetsList: { 'directory': null, 'single': null, 'edit': null },
+    widgetsList: [],
 
     /**
      *
@@ -102,28 +102,25 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
 
 
     setFieldsList: function( list ) {
+        console.log( 'setFieldsList' );
+        console.log( list );
         this.fieldsList = list;
     },
 
-    getFieldsList: function( context ) {
-        if( null === context ) {
-            return this.fieldsList;
-        }
-        return this.fieldsList[ context ];
+    getFieldsList: function() {
+        return this.fieldsList;
     },
 
     setWidgetsList: function( list ) {
         this.widgetsList = list;
     },
 
-    getWidgetsList: function( context ) {
-        if( null === context ) {
-            return this.widgetsList;
-        }
-        return this.widgetsList[ context ];
+    getWidgetsList: function() {
+        return this.widgetsList;
     },
 
     /** Helpers */
+
     /**
      * Returns the array of rows for a specific vector on layout
      * @param type string Item type: widget or field
@@ -289,6 +286,8 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
 
 ViewDispatcher.register( function( action ) {
 
+    console.log( action );
+
     switch( action.actionType ) {
 
         case ViewConstants.UPDATE_LAYOUT_ALL:
@@ -339,7 +338,7 @@ ViewDispatcher.register( function( action ) {
 
         case ViewConstants.UPDATE_FIELD_SETTINGS:
             LayoutStore.addFieldSettingsValues(
-                action.type,
+                action.values['type'],
                 action.values['vector'],
                 action.values['field'],
                 action.values['settings']

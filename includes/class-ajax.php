@@ -31,7 +31,7 @@ class GravityView_Ajax {
 		add_action( 'wp_ajax_gv_get_fields_list', array( $this, 'get_available_fields_list' ) );
 
 		// Load the field settings (new admin)
-		add_action( 'wp_ajax_gv_get_field_settings_values', array( $this, 'get_field_settings_values' ) );
+		add_action( 'wp_ajax_gv_get_item_settings_values', array( $this, 'get_item_settings_values' ) );
 
 		// Load the field settings (new admin)
 		add_action( 'wp_ajax_gv_get_field_settings', array( $this, 'get_field_settings' ) );
@@ -525,6 +525,7 @@ class GravityView_Ajax {
 		}
 
 		$tab = '';
+		$i = 0;
 
 		foreach( $old_fields as $area => $fields ) {
 
@@ -615,6 +616,7 @@ class GravityView_Ajax {
 		}
 
 		$place = '';
+		$i = 0;
 
 		foreach ( $old_widgets as $area => $widgets ) {
 			$indexs = explode( '_',  $area );
@@ -750,30 +752,29 @@ class GravityView_Ajax {
 
 		$output = '';
 
+		$reg_widgets = apply_filters( 'gravityview_register_directory_widgets', array() );
+
 		/**
-		 * @filter  `gravityview_blacklist_field_types` Modify the types of fields that shouldn't be shown in a View.
-		 * @param[in,out] array $blacklist_field_types Array of field types to block for this context.
-		 * @param[in] string $context View context ('single', 'directory', or 'edit')
+		 * Loop to create an object of fields grouped by section (form, entry, gravityview...)
 		 */
-		foreach( array( 'directory', 'single', 'edit', 'export' ) as $context  ) {
+		if( !empty( $reg_widgets ) ) {
 
-			$reg_widgets = apply_filters( "gravityview_register_{$context}_widgets", array() );
+			foreach( $reg_widgets as $id => $details ) {
 
-			/**
-			 * Loop to create an object of fields grouped by section (form, entry, gravityview...)
-			 */
-			if( !empty( $reg_widgets ) ) {
+				$details['id'] = $id;
 
-				error_log( '$reg_widgets:' . print_r( $reg_widgets , true ) );
+				// todo: this logic should be part of the widgets definition
+				if( 'custom_content' === $details['id'] ) {
+					$details['context'] = array( 'directory', 'single', 'edit', 'export' );
+				}
+				if( empty( $details['context'] ) ) {
+					$details['context'] = array( 'directory' );
+				}
+				// --
 
-				foreach( $reg_widgets as $id => $details ) {
+				$output[] = $details;
 
-
-
-					//$output[ $context ][ ][] = $details;
-
-				} // End foreach
-			}
+			} // End foreach
 		}
 
 		// success
@@ -782,41 +783,51 @@ class GravityView_Ajax {
 	}
 
 
-
-
-
-
 	/**
-	 * Returns field options values - called by ajax when dropping fields into active areas
+	 * Returns widget/field options default values (when adding a new widget to the layout)
 	 * AJAX callback
-	 *
 	 * @access public
 	 * @return void
 	 */
-	function get_field_settings_values() {
+	function get_item_settings_values() {
 		$this->check_ajax_nonce();
 
-
-
-		if( empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) || empty( $_POST['field_label'] ) ) {
-			do_action( 'gravityview_log_error', '[get_field_settings] Required fields were not set in the $_POST request. ' );
+		if( empty( $_POST['type'] ) || empty( $_POST['field'] ) ) {
+			do_action( 'gravityview_log_error', '[get_item_settings_values] Required fields were not set in the $_POST request. ' );
 			$this->_exit( false );
 		}
 
-		// Fix apostrophes added by JSON response
-		$_post = array_map( 'stripslashes_deep', $_POST );
+		$request = $_POST;
 
-		// Sanitize
-		$_post = array_map( 'esc_attr', $_post );
+		switch ( $request['type'] ) {
+			case 'field':
+				if( empty( $request['field']['field_id'] ) || empty( $request['field']['field_type'] ) || empty( $request['field']['field_label'] ) ) {
+					do_action( 'gravityview_log_error', '[get_field_settings_values] Required fields were not set in the $_POST request. ' );
+					$this->_exit( false );
+				}
+				$item_id = $request['field']['field_id'];
+				break;
+
+			case 'widget':
+				error_log( '$request:' . print_r( $request , true ) );
+				if( empty( $request['field']['widget'] ) || empty( $request['field']['field_label'] ) ) {
+					do_action( 'gravityview_log_error', '[get_field_settings_values] Required fields were not set in the $_POST request. ' );
+					$this->_exit( false );
+				}
+				$item_id = $request['field']['widget'];
+				break;
+		}
 
 		// The GF type of field: `product`, `name`, `creditcard`, `id`, `text`
-		$input_type = isset( $_post['input_type'] ) ? esc_attr( $_post['input_type'] ) : NULL;
-		$context = isset( $_post['context'] ) ? esc_attr( $_post['context'] ) : NULL;
+		$input_type = isset( $request['field']['field_type'] ) ? esc_attr( $request['field']['field_type'] ) : NULL;
 
-		$options = GravityView_Render_Settings::get_default_field_options( 'field' , '', $_POST['field_id'] , $context , $input_type );
+		$context = isset( $request['context'] ) ? esc_attr( $request['context'] ) : NULL;
+
+		//todo: do we need to send the template_id and/or the input_type
+		$options = GravityView_Render_Settings::get_default_field_options( $request['type'], '', $item_id , $context , $input_type );
 
 		// add the received field label
-		$output['label'] = $_POST['field_label'];
+		$output['label'] = $request['field']['field_label'];
 
 		foreach ( $options as $id => $option ) {
 			$output[ $id ] = isset( $option['value'] ) ? $option['value'] : null;
@@ -824,6 +835,7 @@ class GravityView_Ajax {
 
 		wp_send_json_success( $output );
 	}
+
 
 	/**
 	 * Returns field options - called by ajax when dropping fields into active areas

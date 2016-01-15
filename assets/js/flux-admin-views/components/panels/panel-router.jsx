@@ -3,6 +3,7 @@ var ReactTooltip = require('react-tooltip');
 
 var AddFieldPanel = require('./panels/add-field-panel.jsx');
 var AddFieldSubPanel = require('./panels/add-field-sub-panel.jsx');
+var AddWidgetPanel = require('./panels/add-widget-panel.jsx');
 var ConfigureFieldPanel = require('./panels/configure-field-panel.jsx');
 var AddRowPanel = require('./add-row-panel.jsx');
 var ConfigureRowPanel = require('./configure-row-panel.jsx');
@@ -80,9 +81,12 @@ var PanelRouter = React.createClass({
     },
 
     shouldComponentUpdate: function( nextProps, nextState ) {
-
+        console.log( 'should update?' );
+        console.log( this.state );
+        console.log( nextState );
         // If forms change, update the fields list
         if( nextState.forms.length && nextState.forms !== this.state.forms ) {
+            console.log('hey fetchFieldsList');
             ViewActions.fetchFieldsList( nextState.forms );
         }
 
@@ -101,19 +105,25 @@ var PanelRouter = React.createClass({
 
         return (
             <div>
+                <AddWidgetPanel
+                    returnPanel={this.state.returnPanel}
+                    currentPanel={this.state.currentPanel}
+                    extraArgs={this.state.extraPanelArgs}
+                    widgets={this.state.widgetsList}
+                />
                 <AddFieldPanel
-                   returnPanel={this.state.returnPanel}
-                   currentPanel={this.state.currentPanel}
-                   extraArgs={this.state.extraPanelArgs}
-                   sections={this.state.fieldsSections}
-                   fields={this.state.fieldsList}
+                    returnPanel={this.state.returnPanel}
+                    currentPanel={this.state.currentPanel}
+                    extraArgs={this.state.extraPanelArgs}
+                    sections={this.state.fieldsSections}
+                    fields={this.state.fieldsList}
                 />
                 <AddFieldSubPanel
-                   returnPanel={this.state.returnPanel}
-                   currentPanel={this.state.currentPanel}
-                   extraArgs={this.state.extraPanelArgs}
-                   sections={this.state.fieldsSections}
-                   fields={this.state.fieldsList}
+                    returnPanel={this.state.returnPanel}
+                    currentPanel={this.state.currentPanel}
+                    extraArgs={this.state.extraPanelArgs}
+                    sections={this.state.fieldsSections}
+                    fields={this.state.fieldsList}
                 />
                 <ConfigureFieldPanel
                     returnPanel={this.state.returnPanel}

@@ -67,16 +67,19 @@ var RowColumn = React.createClass({
         colId: React.PropTypes.number, // Column order on the row
     },
 
-    handleFieldAdd: function(e) {
+    handleItemAdd: function(e) {
         e.preventDefault();
 
         var areaArgs = {
             'context': this.props.tabId,
+            'zone': this.props.zone,
             'row': this.props.rowId,
             'col': this.props.colId
         };
 
-        ViewActions.openPanel( ViewConstants.PANEL_FIELD_ADD, false, areaArgs );
+        var panel = 'field' === this.props.type ? ViewConstants.PANEL_FIELD_ADD : ViewConstants.PANEL_WIDGET_ADD;
+
+        ViewActions.openPanel( panel, false, areaArgs );
     },
 
     renderAddLabel: function() {
@@ -120,7 +123,7 @@ var RowColumn = React.createClass({
             <div className={areaClass}>
                 <div className="gv-grid__droppable-area" style={highlight}>
                     {fields}
-                    <a onClick={this.handleFieldAdd} title={this.renderAddLabel()}>+ {this.renderAddLabel()}</a>
+                    <a onClick={this.handleItemAdd} title={this.renderAddLabel()}>+ {this.renderAddLabel()}</a>
                 </div>
             </div>
         );

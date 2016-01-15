@@ -113,7 +113,7 @@ var ViewApi = {
      * @param forms
      */
     getFieldsList: function( forms ) {
-
+console.log('getFieldsList');
         var data = {
             action: 'gv_get_fields_list',
             forms: forms,
@@ -158,19 +158,20 @@ var ViewApi = {
     },
 
     /**
-     * Get the field settings array
-     * @param args object 'vector' (containing 'context', 'row', 'col') and 'field' (field_id, form_id, field_type, ..)
+     * Get the widget/field item gv_settings array
+     * @param args object Item 'type', 'vector' (containing 'context', 'row', 'col') and 'field' (field_id, form_id, field_type, ..)
      */
-    getFieldSettingsValues: function( args ) {
+    getItemSettingsValues: function( args ) {
 
         var data = {
-            action: 'gv_get_field_settings_values',
-            //template: templateId,
+            action: 'gv_get_item_settings_values',
+            type: args.type,
             context: args.vector['context'],
-            field_id: args.field['field_id'],
+            field: args.field,
+            /*field_id: args.field['field_id'],
             field_type: args.field['field_type'],
             field_label: args.field['field_label'],
-            form_id: args.field['form_id'],
+            form_id: args.field['form_id'],*/
             nonce: gvGlobals.nonce
         };
 
@@ -181,8 +182,8 @@ var ViewApi = {
             dataType: 'json',
             async: true
         } ).done( function ( response ) {
-
             var values = {
+                type: args.type,
                 vector: args.vector,
                 field: args.field,
                 settings: response.data

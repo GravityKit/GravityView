@@ -144,8 +144,8 @@ module.exports = {
         ViewApi.getFieldsList( forms );
     },
 
-    fetchWidgetsList: function(  ) {
-        ViewApi.getWidgetsList(  );
+    fetchWidgetsList: function() {
+        ViewApi.getWidgetsList();
     },
 
     /**
@@ -155,11 +155,12 @@ module.exports = {
     addField: function( args ) {
 
         // fetch the field settings values ('gv_settings')
-        ViewApi.getFieldSettingsValues( args );
+        ViewApi.getItemSettingsValues( args );
 
         // add the field without 'gv_settings' while loading the settings
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_ADD_FIELD,
+            type: args.type,
             target: args.vector,
             field: args.field
         });

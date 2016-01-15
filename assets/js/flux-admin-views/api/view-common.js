@@ -72,6 +72,24 @@ var ViewCommon = {
         return result;
     },
 
+    getWidgetsListByContext: function( list, context ) {
+
+        if( ! list.length ) {
+            return list;
+        }
+        var newList = [];
+        for ( var i = 0; i < list.length; i++ ) {
+
+            var supported = list[i]['context'];
+
+            if ( supported.indexOf( context ) !== -1 ) {
+                newList.push( list[i] );
+            }
+        }
+
+        return newList;
+
+    }
 
 
 };

@@ -21,6 +21,8 @@ var AddFieldSubPanel = React.createClass({
     },
 
     getActiveFieldsList: function() {
+        console.log( this.props.extraArgs );
+        console.log( this.props.fields );
         var sectionId = this.getCurrentSection();
         return this.props.fields[ this.props.extraArgs['context'] ][ sectionId ];
     },
@@ -56,6 +58,7 @@ var AddFieldSubPanel = React.createClass({
             'type': 'field',
             'vector': {
                 'context': this.props.extraArgs['context'],
+                'zone': null,
                 'row': this.props.extraArgs['row'],
                 'col': this.props.extraArgs['col']
             },

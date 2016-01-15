@@ -23,7 +23,7 @@ var AddFieldPanel = React.createClass({
      */
     handleSectionClick: function(e) {
         e.preventDefault();
-        ViewActions.openPanel( e.target.getAttribute( 'data-next-panel' ), this.props.currentPanel );
+        ViewActions.openPanel( e.target.getAttribute( 'data-next-panel' ), this.props.currentPanel, this.props.extraArgs );
     },
 
     render: function() {
