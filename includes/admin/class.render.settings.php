@@ -65,7 +65,7 @@ class GravityView_Render_Settings {
 			);
 
 			// Match Table as well as DataTables
-			if( preg_match( '/table/ism', $template_id ) && 'single' !== $context ) {
+			if( preg_match( '/table/ism', $template_id ) && 'directory' === $context ) {
 				$field_options['width'] = array(
 					'type' => 'number',
 					'label' => __('Percent Width', 'gravityview'),
