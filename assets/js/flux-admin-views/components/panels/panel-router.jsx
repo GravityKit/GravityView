@@ -32,7 +32,7 @@ var PanelRouter = React.createClass({
             settingsSections: SettingsStore.getSections(),
 
             // Used on the Configure Row panel
-            layout: LayoutStore.getLayout(),
+            activeRowSettings: LayoutStore.getActiveRowSettings(),
 
             // Used on pick form panel
             forms: SettingsStore.getActiveForms(),
@@ -81,12 +81,9 @@ var PanelRouter = React.createClass({
     },
 
     shouldComponentUpdate: function( nextProps, nextState ) {
-        console.log( 'should update?' );
-        console.log( this.state );
-        console.log( nextState );
+
         // If forms change, update the fields list
         if( nextState.forms.length && nextState.forms !== this.state.forms ) {
-            console.log('hey fetchFieldsList');
             ViewActions.fetchFieldsList( nextState.forms );
         }
 
@@ -139,7 +136,7 @@ var PanelRouter = React.createClass({
                    returnPanel={this.state.returnPanel}
                    currentPanel={this.state.currentPanel}
                    extraArgs={this.state.extraPanelArgs}
-                   layoutData={this.state.layout}
+                   rowSettings={this.state.activeRowSettings}
                 />
                 <SettingsMenuPanel
                    returnPanel={this.state.returnPanel}

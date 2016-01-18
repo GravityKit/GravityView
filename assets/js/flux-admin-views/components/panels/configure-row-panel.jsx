@@ -12,11 +12,10 @@ var ConfigureRowPanel = React.createClass({
     propTypes: {
         returnPanel: React.PropTypes.string, // holds the panel ID when going back
         currentPanel: React.PropTypes.string, // the current active panel
-        extraArgs: React.PropTypes.object, // the layout pointer indicating to which row does this configuration belongs
-        layoutData: React.PropTypes.object,
+        extraArgs: React.PropTypes.object, // the layout vector containing {context, type, zone, row}
+        rowSettings: React.PropTypes.object, // contains the attributes of the Active Row
     },
 
-    rowSettings: null, // hold the row settings object
 
     /**
      * Handler for input on change
@@ -32,20 +31,14 @@ var ConfigureRowPanel = React.createClass({
         return(
             <fieldset key={item}>
                 <label htmlFor={'row-setting-'+item}>{item}</label>
-                <input onChange={this.handleChange} id={'row-setting-'+item} data-id={item} type="text" value={this.rowSettings[ item ]}  />
+                <input onChange={this.handleChange} id={'row-setting-'+item} data-id={item} type="text" value={this.props.rowSettings[ item ]}  />
             </fieldset>
         );
     },
 
     renderSettings: function() {
-        var context = this.props.extraArgs['context'],
-            rows = this.props.layoutData[ context ]['rows'],
-            index = ViewCommon.findRowIndex( rows, this.props.extraArgs['pointer'] );
 
-        this.rowSettings = this.props.layoutData[ context ]['rows'][ index ]['atts'];
-
-        return Object.keys( this.rowSettings ).map( this.renderFields, this );
-
+        return Object.keys( this.props.rowSettings ).map( this.renderFields, this );
     },
 
     render: function() {

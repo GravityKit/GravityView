@@ -27,6 +27,11 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
     layout: {},
 
     /**
+     * Holds the attributes object of the Row that is under configuration (Configure Row Panel)
+     */
+    activeRowSettings: {},
+
+    /**
      * Holds the fields list sections
      */
     fieldsSections: null,
@@ -91,6 +96,17 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
         return this.layout;
     },
 
+    getActiveRowSettings: function() {
+        return this.activeRowSettings;
+    },
+
+    setActiveRowSettings: function( vector ) {
+        var rows = this.getRows( vector.type, vector );
+        var index = ViewCommon.findRowIndex( rows, vector.row );
+
+        this.activeRowSettings = rows[ index ]['atts'];
+    },
+
 
     setFieldsSections: function( sections ) {
         this.fieldsSections = sections;
@@ -102,8 +118,6 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
 
 
     setFieldsList: function( list ) {
-        console.log( 'setFieldsList' );
-        console.log( list );
         this.fieldsList = list;
     },
 
@@ -223,6 +237,9 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
 
         // update layout
         this.setRows( vector.type, vector, rows );
+
+        // update active row settings
+        this.activeRowSettings = rows[ index ]['atts'];
     },
 
     /**
@@ -310,6 +327,20 @@ ViewDispatcher.register( function( action ) {
             LayoutStore.changeTab( action.tab );
             LayoutStore.emitChange();
             break;
+
+
+        // When Panel Open is triggered, prepare some Layout Data
+        case ViewConstants.PANEL_OPEN:
+
+            if ( ViewConstants.PANEL_ROW_SETTINGS !== action.panelId ) {
+                break;
+            }
+            // If Configure Row Panel is opened, set the Active Row Settings storage
+            LayoutStore.setActiveRowSettings( action.extraArgs );
+            LayoutStore.emitChange();
+            break;
+
+
 
         case ViewConstants.LAYOUT_ADD_ROW:
             LayoutStore.addRow( action.vector, action.struct );

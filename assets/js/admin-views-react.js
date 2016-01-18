@@ -3037,12 +3037,10 @@ var ConfigureRowPanel = React.createClass({
     propTypes: {
         returnPanel: React.PropTypes.string, // holds the panel ID when going back
         currentPanel: React.PropTypes.string, // the current active panel
-        extraArgs: React.PropTypes.object, // the layout pointer indicating to which row does this configuration belongs
-        layoutData: React.PropTypes.object
-    },
+        extraArgs: React.PropTypes.object, // the layout vector containing {context, type, zone, row}
+        rowSettings: React.PropTypes.object },
 
-    rowSettings: null, // hold the row settings object
-
+    // contains the attributes of the Active Row
     /**
      * Handler for input on change
      * @param e
@@ -3062,18 +3060,13 @@ var ConfigureRowPanel = React.createClass({
                 { htmlFor: 'row-setting-' + item },
                 item
             ),
-            React.createElement('input', { onChange: this.handleChange, id: 'row-setting-' + item, 'data-id': item, type: 'text', value: this.rowSettings[item] })
+            React.createElement('input', { onChange: this.handleChange, id: 'row-setting-' + item, 'data-id': item, type: 'text', value: this.props.rowSettings[item] })
         );
     },
 
     renderSettings: function renderSettings() {
-        var context = this.props.extraArgs['context'],
-            rows = this.props.layoutData[context]['rows'],
-            index = ViewCommon.findRowIndex(rows, this.props.extraArgs['pointer']);
 
-        this.rowSettings = this.props.layoutData[context]['rows'][index]['atts'];
-
-        return Object.keys(this.rowSettings).map(this.renderFields, this);
+        return Object.keys(this.props.rowSettings).map(this.renderFields, this);
     },
 
     render: function render() {
@@ -3410,7 +3403,7 @@ var PanelRouter = React.createClass({
             settingsSections: SettingsStore.getSections(),
 
             // Used on the Configure Row panel
-            layout: LayoutStore.getLayout(),
+            activeRowSettings: LayoutStore.getActiveRowSettings(),
 
             // Used on pick form panel
             forms: SettingsStore.getActiveForms(),
@@ -3457,12 +3450,9 @@ var PanelRouter = React.createClass({
     },
 
     shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
-        console.log('should update?');
-        console.log(this.state);
-        console.log(nextState);
+
         // If forms change, update the fields list
         if (nextState.forms.length && nextState.forms !== this.state.forms) {
-            console.log('hey fetchFieldsList');
             ViewActions.fetchFieldsList(nextState.forms);
         }
 
@@ -3515,7 +3505,7 @@ var PanelRouter = React.createClass({
                 returnPanel: this.state.returnPanel,
                 currentPanel: this.state.currentPanel,
                 extraArgs: this.state.extraPanelArgs,
-                layoutData: this.state.layout
+                rowSettings: this.state.activeRowSettings
             }),
             React.createElement(SettingsMenuPanel, {
                 returnPanel: this.state.returnPanel,
@@ -4561,6 +4551,11 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
     layout: {},
 
     /**
+     * Holds the attributes object of the Row that is under configuration (Configure Row Panel)
+     */
+    activeRowSettings: {},
+
+    /**
      * Holds the fields list sections
      */
     fieldsSections: null,
@@ -4624,6 +4619,17 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
         return this.layout;
     },
 
+    getActiveRowSettings: function getActiveRowSettings() {
+        return this.activeRowSettings;
+    },
+
+    setActiveRowSettings: function setActiveRowSettings(vector) {
+        var rows = this.getRows(vector.type, vector);
+        var index = ViewCommon.findRowIndex(rows, vector.row);
+
+        this.activeRowSettings = rows[index]['atts'];
+    },
+
     setFieldsSections: function setFieldsSections(sections) {
         this.fieldsSections = sections;
     },
@@ -4633,8 +4639,6 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
     },
 
     setFieldsList: function setFieldsList(list) {
-        console.log('setFieldsList');
-        console.log(list);
         this.fieldsList = list;
     },
 
@@ -4753,6 +4757,9 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
 
         // update layout
         this.setRows(vector.type, vector, rows);
+
+        // update active row settings
+        this.activeRowSettings = rows[index]['atts'];
     },
 
     /**
@@ -4834,6 +4841,17 @@ ViewDispatcher.register(function (action) {
 
         case ViewConstants.CHANGE_TAB:
             LayoutStore.changeTab(action.tab);
+            LayoutStore.emitChange();
+            break;
+
+        // When Panel Open is triggered, prepare some Layout Data
+        case ViewConstants.PANEL_OPEN:
+
+            if (ViewConstants.PANEL_ROW_SETTINGS !== action.panelId) {
+                break;
+            }
+            // If Configure Row Panel is opened, set the Active Row Settings storage
+            LayoutStore.setActiveRowSettings(action.extraArgs);
             LayoutStore.emitChange();
             break;
 
