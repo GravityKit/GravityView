@@ -76,11 +76,11 @@ abstract class GravityView_Field {
 	public $contexts = array( 'single', 'multiple', 'edit', 'export' );
 
 	/**
-	 * @internal Not yet implemented
 	 * @since 1.15.2
+	 * @since TODO Changed access to public (previously, protected)
 	 * @type string The name of a corresponding Gravity Forms GF_Field class, if exists
 	 */
-	protected $_gf_field_class_name;
+	public $_gf_field_class_name;
 
 	/**
 	 * @var string The field ID being requested
@@ -101,16 +101,6 @@ abstract class GravityView_Field {
 	protected $_custom_merge_tag = false;
 
 	function __construct() {
-
-		/**
-		 * If this is a Gravity Forms field, use their labels. Spare our translation team!
-		 */
-		if( ! empty( $this->_gf_field_class_name ) && class_exists( $this->_gf_field_class_name ) && empty( $this->label ) ) {
-			/** @var GF_Field $GF_Field */
-			$GF_Field = new $this->_gf_field_class_name;
-			$this->label = $GF_Field->get_form_editor_field_title();
-			$this->label = ucwords( $this->label );
-		}
 
 		// Modify the field options based on the name of the field type
 		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 5 );

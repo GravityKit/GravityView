@@ -12,7 +12,7 @@ class GravityView_Field_Quiz_Score extends GravityView_Field {
 	var $group = 'advanced';
 
 	public function __construct() {
-		$this->label = esc_attr__( 'Quiz Score', 'gravityview' );
+		$this->label = esc_html__( 'Quiz Score', 'gravityview' );
 		parent::__construct();
 	}
 

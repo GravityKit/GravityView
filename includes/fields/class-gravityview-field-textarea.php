@@ -18,6 +18,11 @@ class GravityView_Field_Textarea extends GravityView_Field {
 
 	var $group = 'standard';
 
+	public function __construct() {
+		$this->label = esc_html__( 'Paragraph Text', 'gravityview' );
+		parent::__construct();
+	}
+
 	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 
 		if( 'edit' === $context ) {

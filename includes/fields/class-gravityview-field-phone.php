@@ -15,6 +15,11 @@ class GravityView_Field_Phone extends GravityView_Field {
 
 	var $group = 'advanced';
 
+	public function __construct() {
+		$this->label = esc_html__( 'Phone', 'gravityview' );
+		parent::__construct();
+	}
+
 }
 
 new GravityView_Field_Phone;

@@ -21,10 +21,10 @@ class GravityView_Field_Currency extends GravityView_Field {
 	var $_custom_merge_tag = 'currency';
 
 	/**
-	 * GravityView_Field_Payment_Amount constructor.
+	 * GravityView_Field_Currency constructor.
 	 */
 	public function __construct() {
-		$this->label = esc_attr__( 'Currency', 'gravityview' );
+		$this->label = esc_html__( 'Currency', 'gravityview' );
 		parent::__construct();
 	}
 }

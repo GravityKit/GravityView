@@ -24,7 +24,7 @@ class GravityView_Field_Payment_Amount extends GravityView_Field {
 	 * GravityView_Field_Payment_Amount constructor.
 	 */
 	public function __construct() {
-		$this->label = esc_attr__( 'Payment Amount', 'gravityview' );
+		$this->label = esc_html__( 'Payment Amount', 'gravityview' );
 
 		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', array( $this, 'get_content' ), 10, 4 );
 

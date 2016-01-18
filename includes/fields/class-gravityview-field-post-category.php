@@ -15,6 +15,11 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 
 	var $group = 'post';
 
+	public function __construct() {
+		$this->label = esc_html__( 'Post Category', 'gravityview' );
+		parent::__construct();
+	}
+
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		if( 'edit' === $context ) {

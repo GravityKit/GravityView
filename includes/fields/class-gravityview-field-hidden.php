@@ -15,6 +15,11 @@ class GravityView_Field_Hidden extends GravityView_Field {
 
 	var $group = 'standard';
 
+	public function __construct() {
+		$this->label = esc_html__( 'Hidden', 'gravityview' );
+		parent::__construct();
+	}
+
 }
 
 new GravityView_Field_Hidden;

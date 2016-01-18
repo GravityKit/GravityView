@@ -18,6 +18,11 @@ class GravityView_Field_Post_Title extends GravityView_Field {
 
 	var $group = 'post';
 
+	public function __construct() {
+		$this->label = esc_html__( 'Post Title', 'gravityview' );
+		parent::__construct();
+	}
+
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		if( 'edit' === $context ) {

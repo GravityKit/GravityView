@@ -18,6 +18,11 @@ class GravityView_Field_Website extends GravityView_Field {
 
 	var $group = 'advanced';
 
+	public function __construct() {
+		$this->label = esc_html__( 'Website', 'gravityview' );
+		parent::__construct();
+	}
+
 	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 
 		// It makes no sense to use this as the link.
