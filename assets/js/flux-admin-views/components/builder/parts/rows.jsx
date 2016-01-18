@@ -1,6 +1,8 @@
 var React = require('react');
 var Row = require('./row.jsx');
 
+var ViewConstants = require('../../../constants/view-constants');
+var ViewActions = require('../../../actions/view-actions.js');
 
 var Rows = React.createClass({
 
@@ -34,11 +36,33 @@ var Rows = React.createClass({
 
     },
 
+    handleFirstRowAdd: function(e) {
+        e.preventDefault();
+        var args = {
+                'type': this.props.type,
+                'context': this.props.tabId,
+                'zone': this.props.zone,
+                'row': null
+            };
+
+        ViewActions.openPanel( ViewConstants.PANEL_ROW_ADD, false, args );
+    },
+
+    renderEmptyRows: function() {
+
+        return(
+            <div className="gv-grid__col-12">
+                <a onClick={this.handleFirstRowAdd} title={gravityview_i18n.button_row_add}>+ {gravityview_i18n.button_row_add}</a>
+            </div>
+        );
+
+    },
+
 
     render: function() {
 
         if ( !this.props.data || this.props.data.length <= 0 ) {
-            return null;
+            return this.renderEmptyRows();
         }
 
         var rows = this.props.data.map( this.renderRow, this );

@@ -1042,6 +1042,9 @@ module.exports = Row;
 var React = require('react');
 var Row = require('./row.jsx');
 
+var ViewConstants = require('../../../constants/view-constants');
+var ViewActions = require('../../../actions/view-actions.js');
+
 var Rows = React.createClass({
     displayName: 'Rows',
 
@@ -1070,10 +1073,36 @@ var Rows = React.createClass({
         });
     },
 
+    handleFirstRowAdd: function handleFirstRowAdd(e) {
+        e.preventDefault();
+        var args = {
+            'type': this.props.type,
+            'context': this.props.tabId,
+            'zone': this.props.zone,
+            'row': null
+        };
+
+        ViewActions.openPanel(ViewConstants.PANEL_ROW_ADD, false, args);
+    },
+
+    renderEmptyRows: function renderEmptyRows() {
+
+        return React.createElement(
+            'div',
+            { className: 'gv-grid__col-12' },
+            React.createElement(
+                'a',
+                { onClick: this.handleFirstRowAdd, title: gravityview_i18n.button_row_add },
+                '+ ',
+                gravityview_i18n.button_row_add
+            )
+        );
+    },
+
     render: function render() {
 
         if (!this.props.data || this.props.data.length <= 0) {
-            return null;
+            return this.renderEmptyRows();
         }
 
         var rows = this.props.data.map(this.renderRow, this);
@@ -1089,7 +1118,7 @@ var Rows = React.createClass({
 
 module.exports = Rows;
 
-},{"./row.jsx":8,"react":339}],10:[function(require,module,exports){
+},{"../../../actions/view-actions.js":1,"../../../constants/view-constants":36,"./row.jsx":8,"react":339}],10:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -3129,10 +3158,15 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
     addRow: function addRow(vector, colStruct) {
         var rows = this.getRows(vector.type, vector);
         var newRow = this.buildRowStructure(colStruct);
-        var index = ViewCommon.findRowIndex(rows, vector.row);
 
         // add row
-        rows.splice(index, 0, newRow);
+        if (vector.hasOwnProperty('row') && null !== vector.row) {
+            var index = ViewCommon.findRowIndex(rows, vector.row);
+            index++; // add the new row below
+            rows.splice(index, 0, newRow);
+        } else {
+            rows.push(newRow);
+        }
 
         // update layout
         this.setRows(vector.type, vector, rows);

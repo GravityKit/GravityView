@@ -160,10 +160,15 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
     addRow: function( vector, colStruct ) {
         var rows = this.getRows( vector.type, vector );
         var newRow = this.buildRowStructure( colStruct );
-        var index = ViewCommon.findRowIndex( rows, vector.row );
 
         // add row
-        rows.splice( index, 0, newRow );
+        if( vector.hasOwnProperty('row') && null !== vector.row ) {
+            var index = ViewCommon.findRowIndex( rows, vector.row );
+            index++; // add the new row below
+            rows.splice( index, 0, newRow );
+        } else {
+            rows.push( newRow );
+        }
 
         // update layout
         this.setRows( vector.type, vector, rows );
