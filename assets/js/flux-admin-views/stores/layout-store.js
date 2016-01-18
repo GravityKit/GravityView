@@ -143,36 +143,41 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
         }
     },
 
+    setRows: function( type, vector, rows ) {
+        if ( 'field' === type ) {
+            this.layout[ vector.context ]['rows'] = rows;
+        } else if( 'widget' === type ) {
+            this.layout[ vector.context ]['widgets'][ vector.zone ]['rows'] = rows;
+        }
+    },
+
 
     /**
      * Add row to the layout structure
-     * @param context string Directory, Single, Edit, Export
-     * @param pointer string Reference Row ID indicating where the new row should be inserted ( array index )
+     * @param vector object Layout vector: {context, type, zone, row}
      * @param colStruct string Column structure of the row
      */
-    addRow: function( context, pointer, colStruct ) {
+    addRow: function( vector, colStruct ) {
+        var rows = this.getRows( vector.type, vector );
+        var newRow = this.buildRowStructure( colStruct );
+        var index = ViewCommon.findRowIndex( rows, vector.row );
 
-        var rows = this.layout[ context ]['rows'],
-            newRow = this.buildRowStructure( colStruct );
-
-        var index = ViewCommon.findRowIndex( rows, pointer );
-
+        // add row
         rows.splice( index, 0, newRow );
-        this.layout[ context ]['rows'] = rows;
+
+        // update layout
+        this.setRows( vector.type, vector, rows );
     },
 
     /**
      * Remove row off the layout structure
-     * @param context string Directory, Single, Edit, Export
-     * @param pointer string Reference Row ID indicating where the new row should be inserted ( array index )
+     * @param vector Object Vector containing Context, Type, Zone, Row
      */
-    removeRow: function( context, pointer ) {
-
-        var rows = this.layout[ context ]['rows'];
-        var index = ViewCommon.findRowIndex( rows, pointer );
-
+    removeRow: function( vector ) {
+        var rows = this.getRows( vector.type, vector );
+        var index = ViewCommon.findRowIndex( rows, vector.row );
         rows.splice( index, 1 );
-        this.layout[ context ]['rows'] = rows;
+        this.setRows( vector.type, vector, rows );
     },
 
     /**
@@ -201,17 +206,18 @@ var LayoutStore = assign( {}, EventEmitter.prototype, {
 
     /**
      * Update a row setting
-     * @param context string Directory, Single, Edit, Export
-     * @param pointer string Row ID
+     * @param vector object (type, context, zone, row)
      * @param key string Setting key
      * @param value string Setting value
      */
-    updateRow: function( context, pointer, key, value ) {
-        var rows = this.layout[ context ]['rows'];
-        var index = ViewCommon.findRowIndex( rows, pointer );
+    updateRow: function( vector, key, value ) {
+        var rows = this.getRows( vector.type, vector );
+        var index = ViewCommon.findRowIndex( rows, vector.row );
 
-        this.layout[ context ]['rows'][ index ]['atts'][ key ] = value;
+        rows[ index ]['atts'][ key ] = value;
 
+        // update layout
+        this.setRows( vector.type, vector, rows );
     },
 
     /**
@@ -301,17 +307,17 @@ ViewDispatcher.register( function( action ) {
             break;
 
         case ViewConstants.LAYOUT_ADD_ROW:
-            LayoutStore.addRow( action.context, action.pointer, action.struct );
+            LayoutStore.addRow( action.vector, action.struct );
             LayoutStore.emitChange();
             break;
 
         case ViewConstants.LAYOUT_DEL_ROW:
-            LayoutStore.removeRow( action.context, action.pointer );
+            LayoutStore.removeRow( action.vector );
             LayoutStore.emitChange();
             break;
 
         case ViewConstants.LAYOUT_SET_ROW:
-            LayoutStore.updateRow( action.context, action.pointer, action.key, action.value );
+            LayoutStore.updateRow( action.vector, action.key, action.value );
             LayoutStore.emitChange();
             break;
 

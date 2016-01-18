@@ -92,15 +92,13 @@ module.exports = {
 
     /**
      * Add a row of the type (columns structure) on the tab (context) at the row pointer.
-     * @param context   Directory, Single, Edit, Export
-     * @param pointer   Reference Row ID indicating where the new row should be inserted ( array index )
+     * @param vector object Vector containing Context, Type, Zone and Row
      * @param colStruct      Column structure of the row
      */
-    addRow: function( context, pointer, colStruct ) {
+    addRow: function( vector, colStruct ) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_ADD_ROW,
-            context: context,
-            pointer: pointer,
+            vector: vector,
             struct: colStruct
         });
     },
@@ -112,8 +110,7 @@ module.exports = {
     removeRow: function( args ) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_DEL_ROW,
-            context: args.context,
-            pointer: args.pointer
+            vector: args
         });
     },
 
@@ -121,18 +118,16 @@ module.exports = {
      * Update the settings of a row
      * @param id Row Setting key
      * @param value Row Setting value
-     * @param args Row pointer context
+     * @param vector Object Vector (type, context, zone, row)
      */
-    updateRowSetting: function( id, value, args ) {
+    updateRowSetting: function( id, value, vector ) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_SET_ROW,
             key: id,
             value: value,
-            context: args.context,
-            pointer: args.pointer
+            vector: vector
         });
     },
-
 
     /** Fields handling */
 

@@ -10,7 +10,7 @@ var AddRowPanel = React.createClass({
     propTypes: {
         returnPanel: React.PropTypes.string, // holds the panel ID when going back
         currentPanel: React.PropTypes.string, // the current active panel
-        extraArgs: React.PropTypes.object, // the layout pointer indicating where we need to insert the row
+        extraArgs: React.PropTypes.object, // the layout vector (context, type, zone, row)
     },
 
     renderOptions: function( item, i ) {
@@ -28,7 +28,7 @@ var AddRowPanel = React.createClass({
     handleClick: function(e) {
         e.preventDefault();
         var struct = e.target.getAttribute( 'data-option' );
-        ViewActions.addRow( this.props.extraArgs['context'], this.props.extraArgs['pointer'], struct );
+        ViewActions.addRow( this.props.extraArgs, struct );
         ViewActions.closePanel();
     },
 

@@ -7,7 +7,9 @@ var RowControls = React.createClass({
 
 
     propTypes: {
+        type: React.PropTypes.string,
         rowId: React.PropTypes.string,
+        zone: React.PropTypes.string, // In case of widget area
         tabId: React.PropTypes.string // Tab where it is rendered
     },
 
@@ -15,8 +17,10 @@ var RowControls = React.createClass({
         e.preventDefault();
         var action = e.target.getAttribute('data-action'),
             rowArgs = {
+                'type': this.props.type,
                 'context': this.props.tabId,
-                'pointer': this.props.rowId
+                'zone': this.props.zone,
+                'row': this.props.rowId
             };
 
         if( 'add' === action ) {

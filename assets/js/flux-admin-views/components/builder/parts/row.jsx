@@ -44,7 +44,9 @@ var Row = React.createClass({
             <div className="gv-grid gv-grid__has-row-controls">
                 {areas}
                 <RowControls
+                    type={this.props.type}
                     tabId={this.props.tabId}
+                    zone={this.props.zone}
                     rowId={this.props.rowId}
                 />
             </div>

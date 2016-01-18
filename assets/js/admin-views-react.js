@@ -1629,15 +1629,13 @@ module.exports = {
 
     /**
      * Add a row of the type (columns structure) on the tab (context) at the row pointer.
-     * @param context   Directory, Single, Edit, Export
-     * @param pointer   Reference Row ID indicating where the new row should be inserted ( array index )
+     * @param vector object Vector containing Context, Type, Zone and Row
      * @param colStruct      Column structure of the row
      */
-    addRow: function addRow(context, pointer, colStruct) {
+    addRow: function addRow(vector, colStruct) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_ADD_ROW,
-            context: context,
-            pointer: pointer,
+            vector: vector,
             struct: colStruct
         });
     },
@@ -1649,8 +1647,7 @@ module.exports = {
     removeRow: function removeRow(args) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_DEL_ROW,
-            context: args.context,
-            pointer: args.pointer
+            vector: args
         });
     },
 
@@ -1658,15 +1655,14 @@ module.exports = {
      * Update the settings of a row
      * @param id Row Setting key
      * @param value Row Setting value
-     * @param args Row pointer context
+     * @param vector Object Vector (type, context, zone, row)
      */
-    updateRowSetting: function updateRowSetting(id, value, args) {
+    updateRowSetting: function updateRowSetting(id, value, vector) {
         ViewDispatcher.dispatch({
             actionType: ViewConstants.LAYOUT_SET_ROW,
             key: id,
             value: value,
-            context: args.context,
-            pointer: args.pointer
+            vector: vector
         });
     },
 
@@ -2443,7 +2439,9 @@ var RowControls = React.createClass({
     displayName: 'RowControls',
 
     propTypes: {
+        type: React.PropTypes.string,
         rowId: React.PropTypes.string,
+        zone: React.PropTypes.string, // In case of widget area
         tabId: React.PropTypes.string // Tab where it is rendered
     },
 
@@ -2451,8 +2449,10 @@ var RowControls = React.createClass({
         e.preventDefault();
         var action = e.target.getAttribute('data-action'),
             rowArgs = {
+            'type': this.props.type,
             'context': this.props.tabId,
-            'pointer': this.props.rowId
+            'zone': this.props.zone,
+            'row': this.props.rowId
         };
 
         if ('add' === action) {
@@ -2556,7 +2556,9 @@ var Row = React.createClass({
             { className: 'gv-grid gv-grid__has-row-controls' },
             areas,
             React.createElement(RowControls, {
+                type: this.props.type,
                 tabId: this.props.tabId,
+                zone: this.props.zone,
                 rowId: this.props.rowId
             })
         );
@@ -2942,7 +2944,7 @@ var AddRowPanel = React.createClass({
         currentPanel: React.PropTypes.string, // the current active panel
         extraArgs: React.PropTypes.object },
 
-    // the layout pointer indicating where we need to insert the row
+    // the layout vector (context, type, zone, row)
     renderOptions: function renderOptions(item, i) {
         return React.createElement(
             'li',
@@ -2962,7 +2964,7 @@ var AddRowPanel = React.createClass({
     handleClick: function handleClick(e) {
         e.preventDefault();
         var struct = e.target.getAttribute('data-option');
-        ViewActions.addRow(this.props.extraArgs['context'], this.props.extraArgs['pointer'], struct);
+        ViewActions.addRow(this.props.extraArgs, struct);
         ViewActions.closePanel();
     },
 
@@ -3707,7 +3709,7 @@ var AddWidgetPanel = React.createClass({
         returnPanel: React.PropTypes.string, // holds the panel ID when going back
         currentPanel: React.PropTypes.string, // the current active panel
         extraArgs: React.PropTypes.object, // the layout vector (context, zone, row, col)
-        c: React.PropTypes.array
+        widgets: React.PropTypes.array
     },
 
     handleClick: function handleClick(e) {
@@ -4643,35 +4645,40 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
         }
     },
 
+    setRows: function setRows(type, vector, rows) {
+        if ('field' === type) {
+            this.layout[vector.context]['rows'] = rows;
+        } else if ('widget' === type) {
+            this.layout[vector.context]['widgets'][vector.zone]['rows'] = rows;
+        }
+    },
+
     /**
      * Add row to the layout structure
-     * @param context string Directory, Single, Edit, Export
-     * @param pointer string Reference Row ID indicating where the new row should be inserted ( array index )
+     * @param vector object Layout vector: {context, type, zone, row}
      * @param colStruct string Column structure of the row
      */
-    addRow: function addRow(context, pointer, colStruct) {
+    addRow: function addRow(vector, colStruct) {
+        var rows = this.getRows(vector.type, vector);
+        var newRow = this.buildRowStructure(colStruct);
+        var index = ViewCommon.findRowIndex(rows, vector.row);
 
-        var rows = this.layout[context]['rows'],
-            newRow = this.buildRowStructure(colStruct);
-
-        var index = ViewCommon.findRowIndex(rows, pointer);
-
+        // add row
         rows.splice(index, 0, newRow);
-        this.layout[context]['rows'] = rows;
+
+        // update layout
+        this.setRows(vector.type, vector, rows);
     },
 
     /**
      * Remove row off the layout structure
-     * @param context string Directory, Single, Edit, Export
-     * @param pointer string Reference Row ID indicating where the new row should be inserted ( array index )
+     * @param vector Object Vector containing Context, Type, Zone, Row
      */
-    removeRow: function removeRow(context, pointer) {
-
-        var rows = this.layout[context]['rows'];
-        var index = ViewCommon.findRowIndex(rows, pointer);
-
+    removeRow: function removeRow(vector) {
+        var rows = this.getRows(vector.type, vector);
+        var index = ViewCommon.findRowIndex(rows, vector.row);
         rows.splice(index, 1);
-        this.layout[context]['rows'] = rows;
+        this.setRows(vector.type, vector, rows);
     },
 
     /**
@@ -4700,16 +4707,18 @@ var LayoutStore = assign({}, EventEmitter.prototype, {
 
     /**
      * Update a row setting
-     * @param context string Directory, Single, Edit, Export
-     * @param pointer string Row ID
+     * @param vector object (type, context, zone, row)
      * @param key string Setting key
      * @param value string Setting value
      */
-    updateRow: function updateRow(context, pointer, key, value) {
-        var rows = this.layout[context]['rows'];
-        var index = ViewCommon.findRowIndex(rows, pointer);
+    updateRow: function updateRow(vector, key, value) {
+        var rows = this.getRows(vector.type, vector);
+        var index = ViewCommon.findRowIndex(rows, vector.row);
 
-        this.layout[context]['rows'][index]['atts'][key] = value;
+        rows[index]['atts'][key] = value;
+
+        // update layout
+        this.setRows(vector.type, vector, rows);
     },
 
     /**
@@ -4795,17 +4804,17 @@ ViewDispatcher.register(function (action) {
             break;
 
         case ViewConstants.LAYOUT_ADD_ROW:
-            LayoutStore.addRow(action.context, action.pointer, action.struct);
+            LayoutStore.addRow(action.vector, action.struct);
             LayoutStore.emitChange();
             break;
 
         case ViewConstants.LAYOUT_DEL_ROW:
-            LayoutStore.removeRow(action.context, action.pointer);
+            LayoutStore.removeRow(action.vector);
             LayoutStore.emitChange();
             break;
 
         case ViewConstants.LAYOUT_SET_ROW:
-            LayoutStore.updateRow(action.context, action.pointer, action.key, action.value);
+            LayoutStore.updateRow(action.vector, action.key, action.value);
             LayoutStore.emitChange();
             break;
 

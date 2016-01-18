@@ -13,7 +13,7 @@ var AddWidgetPanel = React.createClass({
         returnPanel: React.PropTypes.string, // holds the panel ID when going back
         currentPanel: React.PropTypes.string, // the current active panel
         extraArgs: React.PropTypes.object, // the layout vector (context, zone, row, col)
-        c: React.PropTypes.array
+        widgets: React.PropTypes.array
     },
 
 
