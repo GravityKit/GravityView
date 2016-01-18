@@ -3,7 +3,9 @@ var Tabs = require('./parts/tabs.jsx');
 var TabsContainers = require('./parts/tabs-containers.jsx');
 var ViewConstants = require('../../constants/view-constants.js');
 var ViewActions = require('../../actions/view-actions.js');
+
 var LayoutStore = require('../../stores/layout-store.js');
+var PanelStore = require('../../stores/panel-store.js');
 
 // DnD
 var DragDropContext = require('react-dnd').DragDropContext;
@@ -14,7 +16,8 @@ var ViewBuilder = React.createClass({
     getState: function() {
         return {
             activeTab: LayoutStore.getActiveTab(), // which tab id is open
-            layout: LayoutStore.getLayout()
+            layout: LayoutStore.getLayout(),
+            currentPanel: PanelStore.getActivePanel(), // which panel id is open
         };
     },
 
@@ -31,6 +34,7 @@ var ViewBuilder = React.createClass({
 
     componentDidMount: function() {
         LayoutStore.addChangeListener( this.onStoreChange );
+        PanelStore.addChangeListener( this.onStoreChange );
 
         // fetch Layout saved value
         ViewActions.fetchSavedLayout();
@@ -39,6 +43,7 @@ var ViewBuilder = React.createClass({
 
     componentWillUnmount: function() {
         LayoutStore.removeChangeListener( this.onStoreChange );
+        PanelStore.removeChangeListener( this.onStoreChange );
     },
 
     handleChangeTab: function( tabId ) {
@@ -47,7 +52,12 @@ var ViewBuilder = React.createClass({
 
     handleOpenSettings: function( e ) {
         e.preventDefault();
-        ViewActions.openPanel( ViewConstants.PANEL_SETTINGS, false );
+        if( this.state.currentPanel === ViewConstants.PANEL_SETTINGS ) {
+            ViewActions.closePanel();
+        } else {
+            ViewActions.openPanel( ViewConstants.PANEL_SETTINGS, false );
+        }
+
     },
 
     render: function () {
@@ -66,6 +76,7 @@ var ViewBuilder = React.createClass({
                     changeTab={this.handleChangeTab}
                     activeTab={this.state.activeTab}
                     handleOpenSettings={this.handleOpenSettings}
+                    currentPanel={this.state.currentPanel}
                 />
                 <TabsContainers tabList={tabs} activeTab={this.state.activeTab} layoutData={this.state.layout} />
             </div>

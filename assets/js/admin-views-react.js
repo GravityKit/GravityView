@@ -2829,6 +2829,8 @@ module.exports = TabsContainers;
 var React = require('react');
 var Tab = require('./tab.jsx');
 
+var ViewConstants = require('../../../constants/view-constants.js');
+
 var Tabs = React.createClass({
     displayName: 'Tabs',
 
@@ -2836,7 +2838,8 @@ var Tabs = React.createClass({
         tabList: React.PropTypes.array,
         changeTab: React.PropTypes.func,
         activeTab: React.PropTypes.string, // Active Tab
-        handleOpenSettings: React.PropTypes.func
+        handleOpenSettings: React.PropTypes.func,
+        currentPanel: React.PropTypes.string
     },
 
     renderTabs: function renderTabs(tab, i) {
@@ -2852,6 +2855,29 @@ var Tabs = React.createClass({
         });
     },
 
+    renderSettingsButton: function renderSettingsButton() {
+
+        var buttonClass = 'gv-button gv-button__secondary';
+
+        if (ViewConstants.PANEL_SETTINGS === this.props.currentPanel) {
+            buttonClass += ' gv-panel__is-open';
+        }
+
+        return React.createElement(
+            'div',
+            { onClick: this.props.handleOpenSettings, className: 'gv-view__config-settings' },
+            React.createElement(
+                'a',
+                { className: buttonClass, title: gravityview_i18n.button_settings, 'data-icon': '' },
+                React.createElement(
+                    'span',
+                    null,
+                    gravityview_i18n.button_settings
+                )
+            )
+        );
+    },
+
     render: function render() {
 
         var tabsLinks = this.props.tabList.map(this.renderTabs, this);
@@ -2860,19 +2886,7 @@ var Tabs = React.createClass({
             'nav',
             { className: 'gv-tabs__group' },
             tabsLinks,
-            React.createElement(
-                'div',
-                { onClick: this.props.handleOpenSettings, className: 'gv-view__config-settings' },
-                React.createElement(
-                    'a',
-                    { className: 'gv-button gv-button__secondary gv-panel__open', title: gravityview_i18n.button_settings, 'data-icon': '' },
-                    React.createElement(
-                        'span',
-                        null,
-                        gravityview_i18n.button_settings
-                    )
-                )
-            )
+            this.renderSettingsButton()
         );
     }
 
@@ -2880,7 +2894,7 @@ var Tabs = React.createClass({
 
 module.exports = Tabs;
 
-},{"./tab.jsx":11,"react":339}],14:[function(require,module,exports){
+},{"../../../constants/view-constants.js":36,"./tab.jsx":11,"react":339}],14:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -2888,7 +2902,9 @@ var Tabs = require('./parts/tabs.jsx');
 var TabsContainers = require('./parts/tabs-containers.jsx');
 var ViewConstants = require('../../constants/view-constants.js');
 var ViewActions = require('../../actions/view-actions.js');
+
 var LayoutStore = require('../../stores/layout-store.js');
+var PanelStore = require('../../stores/panel-store.js');
 
 // DnD
 var DragDropContext = require('react-dnd').DragDropContext;
@@ -2900,10 +2916,11 @@ var ViewBuilder = React.createClass({
     getState: function getState() {
         return {
             activeTab: LayoutStore.getActiveTab(), // which tab id is open
-            layout: LayoutStore.getLayout()
-        };
+            layout: LayoutStore.getLayout(),
+            currentPanel: PanelStore.getActivePanel() };
     },
 
+    // which panel id is open
     getInitialState: function getInitialState() {
         return this.getState();
     },
@@ -2917,6 +2934,7 @@ var ViewBuilder = React.createClass({
 
     componentDidMount: function componentDidMount() {
         LayoutStore.addChangeListener(this.onStoreChange);
+        PanelStore.addChangeListener(this.onStoreChange);
 
         // fetch Layout saved value
         ViewActions.fetchSavedLayout();
@@ -2924,6 +2942,7 @@ var ViewBuilder = React.createClass({
 
     componentWillUnmount: function componentWillUnmount() {
         LayoutStore.removeChangeListener(this.onStoreChange);
+        PanelStore.removeChangeListener(this.onStoreChange);
     },
 
     handleChangeTab: function handleChangeTab(tabId) {
@@ -2932,7 +2951,11 @@ var ViewBuilder = React.createClass({
 
     handleOpenSettings: function handleOpenSettings(e) {
         e.preventDefault();
-        ViewActions.openPanel(ViewConstants.PANEL_SETTINGS, false);
+        if (this.state.currentPanel === ViewConstants.PANEL_SETTINGS) {
+            ViewActions.closePanel();
+        } else {
+            ViewActions.openPanel(ViewConstants.PANEL_SETTINGS, false);
+        }
     },
 
     render: function render() {
@@ -2946,7 +2969,8 @@ var ViewBuilder = React.createClass({
                 tabList: tabs,
                 changeTab: this.handleChangeTab,
                 activeTab: this.state.activeTab,
-                handleOpenSettings: this.handleOpenSettings
+                handleOpenSettings: this.handleOpenSettings,
+                currentPanel: this.state.currentPanel
             }),
             React.createElement(TabsContainers, { tabList: tabs, activeTab: this.state.activeTab, layoutData: this.state.layout })
         );
@@ -2956,7 +2980,7 @@ var ViewBuilder = React.createClass({
 
 module.exports = DragDropContext(HTML5Backend)(ViewBuilder);
 
-},{"../../actions/view-actions.js":1,"../../constants/view-constants.js":36,"../../stores/layout-store.js":38,"./parts/tabs-containers.jsx":12,"./parts/tabs.jsx":13,"react":339,"react-dnd":116,"react-dnd-html5-backend":56}],15:[function(require,module,exports){
+},{"../../actions/view-actions.js":1,"../../constants/view-constants.js":36,"../../stores/layout-store.js":38,"../../stores/panel-store.js":39,"./parts/tabs-containers.jsx":12,"./parts/tabs.jsx":13,"react":339,"react-dnd":116,"react-dnd-html5-backend":56}],15:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
