@@ -1,7 +1,5 @@
 filter:
     excluded_paths: [tests/*, .tx/*, languages/*, includes/lib/*, bin/*, assets/*, templates/* ]
-before_commands:
-    - 'composer install --dev --prefer-source'
 tools:
     external_code_coverage:
             timeout: 900 # wait for 15 minutes instead of 5
