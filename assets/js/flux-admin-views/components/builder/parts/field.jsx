@@ -146,7 +146,7 @@ var Field = React.createClass({
         fieldClass += this.props.activeItem === this.props.data.id ? ' gv-view-field__is-open' : '';
 
         return connectDragSource( connectDropTarget(
-            <div className={fieldClass} style={{opacity}}>
+            <div onDoubleClick={this.handleFieldSettings} className={fieldClass} style={{opacity}}>
                 <a onClick={this.handleFieldSettings} title={this.renderSettingsLabel()} className="gv-view-field__settings" data-icon="&#xe009;"><span className="gv-screen-reader-text">{this.renderSettingsLabel()}</span></a>
                 <span className="gv-view-field__description">{label}</span>
                 <a onClick={this.handleFieldRemove} title={this.renderRemoveLabel()} className="gv-view-field__remove" data-icon="&#xe006;"><span className="gv-screen-reader-text">{this.renderRemoveLabel()}</span></a>

@@ -2258,7 +2258,7 @@ var Field = React.createClass({
 
         return connectDragSource(connectDropTarget(React.createElement(
             'div',
-            { className: fieldClass, style: { opacity: opacity } },
+            { onDoubleClick: this.handleFieldSettings, className: fieldClass, style: { opacity: opacity } },
             React.createElement(
                 'a',
                 { onClick: this.handleFieldSettings, title: this.renderSettingsLabel(), className: 'gv-view-field__settings', 'data-icon': '' },
