@@ -65,6 +65,7 @@ var RowColumn = React.createClass({
         zone: React.PropTypes.string, // for the widgets, 'above' or 'below'
         rowId: React.PropTypes.string, // row id
         colId: React.PropTypes.number, // Column order on the row
+        activeItem: React.PropTypes.string
     },
 
     handleItemAdd: function(e) {
@@ -101,6 +102,7 @@ var RowColumn = React.createClass({
                 colId={this.props.colId}
                 order={i}
                 data={field}
+                activeItem={this.props.activeItem}
             />
         );
     },

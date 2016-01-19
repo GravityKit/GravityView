@@ -18,6 +18,7 @@ var ViewBuilder = React.createClass({
             activeTab: LayoutStore.getActiveTab(), // which tab id is open
             layout: LayoutStore.getLayout(),
             currentPanel: PanelStore.getActivePanel(), // which panel id is open
+            extraPanelArgs: PanelStore.getExtraArgs()
         };
     },
 
@@ -60,6 +61,19 @@ var ViewBuilder = React.createClass({
 
     },
 
+
+    /**
+     * Checks if any field or widget are being configured
+     * @returns {*} Null or the active Field ID (layout unique id)
+     */
+    calculateActiveItem: function() {
+        if ( this.state.currentPanel === ViewConstants.PANEL_FIELD_SETTINGS && this.state.extraPanelArgs.hasOwnProperty('field') ) {
+            return this.state.extraPanelArgs['field']['id'];
+        } else {
+            return null;
+        }
+    },
+
     render: function () {
         console.log( this.state.layout );
         var tabs = [
@@ -68,6 +82,8 @@ var ViewBuilder = React.createClass({
             { 'id': 'edit', 'label': gravityview_i18n.tab_edit },
             { 'id': 'export', 'label': gravityview_i18n.tab_export }
         ];
+
+
 
         return(
             <div className="gv-view__config">
@@ -78,7 +94,12 @@ var ViewBuilder = React.createClass({
                     handleOpenSettings={this.handleOpenSettings}
                     currentPanel={this.state.currentPanel}
                 />
-                <TabsContainers tabList={tabs} activeTab={this.state.activeTab} layoutData={this.state.layout} />
+                <TabsContainers
+                    tabList={tabs}
+                    activeTab={this.state.activeTab}
+                    layoutData={this.state.layout}
+                    activeItem={this.calculateActiveItem()}
+                />
             </div>
         );
     }

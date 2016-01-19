@@ -9,7 +9,8 @@ var Row = React.createClass({
         tabId: React.PropTypes.string, // active tab
         rowId: React.PropTypes.string, // row ID
         zone: React.PropTypes.string, // for the widgets, 'above' or 'below'
-        data: React.PropTypes.object // Layout Data, just the row array
+        data: React.PropTypes.object, // Layout Data, just the row array
+        activeItem: React.PropTypes.string
     },
 
     renderColumn: function( column , i ) {
@@ -28,6 +29,7 @@ var Row = React.createClass({
                 colId={i}
                 type={this.props.type}
                 data={column}
+                activeItem={this.props.activeItem}
             />
         );
     },

@@ -85,6 +85,7 @@ var Field = React.createClass({
         colId: React.PropTypes.number, // Column order on the row
         order: React.PropTypes.number,
         data: React.PropTypes.object, // Field detail object
+        activeItem: React.PropTypes.string
     },
 
 
@@ -140,8 +141,12 @@ var Field = React.createClass({
 
         var label = this.props.data['gv_settings']['custom_label'] || this.props.data['gv_settings']['label'];
 
+        // field class
+        var fieldClass = 'gv-view-field';
+        fieldClass += this.props.activeItem === this.props.data.id ? ' gv-view-field__is-open' : '';
+
         return connectDragSource( connectDropTarget(
-            <div className="gv-view-field" style={{opacity}}>
+            <div className={fieldClass} style={{opacity}}>
                 <a onClick={this.handleFieldSettings} title={this.renderSettingsLabel()} className="gv-view-field__settings" data-icon="&#xe009;"><span className="gv-screen-reader-text">{this.renderSettingsLabel()}</span></a>
                 <span className="gv-view-field__description">{label}</span>
                 <a onClick={this.handleFieldRemove} title={this.renderRemoveLabel()} className="gv-view-field__remove" data-icon="&#xe006;"><span className="gv-screen-reader-text">{this.renderRemoveLabel()}</span></a>

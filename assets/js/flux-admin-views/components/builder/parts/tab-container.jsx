@@ -7,7 +7,8 @@ var TabContainer = React.createClass({
         key: React.PropTypes.string,
         tabId:React.PropTypes.string,
         activeTab: React.PropTypes.string, // Active Tab
-        layoutData: React.PropTypes.object // just the context layout data
+        layoutData: React.PropTypes.object, // just the context layout data
+        activeItem: React.PropTypes.string
     },
 
     render: function () {
@@ -28,7 +29,8 @@ var TabContainer = React.createClass({
                     type="widget"
                     zone="above"
                     data={widgetsAboveRows}
-                    />
+                    activeItem={this.props.activeItem}
+                />
 
 
                 <h3>{gravityview_i18n.fields_title_multiple} <small>{gravityview_i18n.fields_label_multiple}</small></h3>
@@ -36,6 +38,7 @@ var TabContainer = React.createClass({
                     tabId={this.props.tabId}
                     type="field"
                     data={fieldsRows}
+                    activeItem={this.props.activeItem}
                 />
 
 
@@ -45,6 +48,7 @@ var TabContainer = React.createClass({
                     type="widget"
                     zone="below"
                     data={widgetsBelowRows}
+                    activeItem={this.props.activeItem}
                 />
 
             </div>

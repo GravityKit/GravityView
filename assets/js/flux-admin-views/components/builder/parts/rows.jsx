@@ -10,7 +10,8 @@ var Rows = React.createClass({
         tabId: React.PropTypes.string, // active tab
         type: React.PropTypes.string, // widget, field
         zone: React.PropTypes.string, // for the widgets, 'above' or 'below'
-        data: React.PropTypes.array // Layout Data, just the rows array
+        data: React.PropTypes.array, // Layout Data, just the rows array
+        activeItem: React.PropTypes.string
     },
 
     getDefaultProps: function() {
@@ -30,6 +31,7 @@ var Rows = React.createClass({
                 rowId={row.id}
                 type={this.props.type}
                 data={row}
+                activeItem={this.props.activeItem}
             />
 
         );

@@ -2196,9 +2196,10 @@ var Field = React.createClass({
         rowId: React.PropTypes.string, // row id
         colId: React.PropTypes.number, // Column order on the row
         order: React.PropTypes.number,
-        data: React.PropTypes.object },
+        data: React.PropTypes.object, // Field detail object
+        activeItem: React.PropTypes.string
+    },
 
-    // Field detail object
     handleFieldSettings: function handleFieldSettings(e) {
         e.preventDefault();
 
@@ -2251,9 +2252,13 @@ var Field = React.createClass({
 
         var label = this.props.data['gv_settings']['custom_label'] || this.props.data['gv_settings']['label'];
 
+        // field class
+        var fieldClass = 'gv-view-field';
+        fieldClass += this.props.activeItem === this.props.data.id ? ' gv-view-field__is-open' : '';
+
         return connectDragSource(connectDropTarget(React.createElement(
             'div',
-            { className: 'gv-view-field', style: { opacity: opacity } },
+            { className: fieldClass, style: { opacity: opacity } },
             React.createElement(
                 'a',
                 { onClick: this.handleFieldSettings, title: this.renderSettingsLabel(), className: 'gv-view-field__settings', 'data-icon': '' },
@@ -2354,9 +2359,10 @@ var RowColumn = React.createClass({
         tabId: React.PropTypes.string, // tab id
         zone: React.PropTypes.string, // for the widgets, 'above' or 'below'
         rowId: React.PropTypes.string, // row id
-        colId: React.PropTypes.number },
+        colId: React.PropTypes.number, // Column order on the row
+        activeItem: React.PropTypes.string
+    },
 
-    // Column order on the row
     handleItemAdd: function handleItemAdd(e) {
         e.preventDefault();
 
@@ -2389,7 +2395,8 @@ var RowColumn = React.createClass({
             rowId: this.props.rowId,
             colId: this.props.colId,
             order: i,
-            data: field
+            data: field,
+            activeItem: this.props.activeItem
         });
     },
 
@@ -2522,7 +2529,8 @@ var Row = React.createClass({
         tabId: React.PropTypes.string, // active tab
         rowId: React.PropTypes.string, // row ID
         zone: React.PropTypes.string, // for the widgets, 'above' or 'below'
-        data: React.PropTypes.object // Layout Data, just the row array
+        data: React.PropTypes.object, // Layout Data, just the row array
+        activeItem: React.PropTypes.string
     },
 
     renderColumn: function renderColumn(column, i) {
@@ -2539,7 +2547,8 @@ var Row = React.createClass({
             rowId: this.props.rowId,
             colId: i,
             type: this.props.type,
-            data: column
+            data: column,
+            activeItem: this.props.activeItem
         });
     },
 
@@ -2584,7 +2593,8 @@ var Rows = React.createClass({
         tabId: React.PropTypes.string, // active tab
         type: React.PropTypes.string, // widget, field
         zone: React.PropTypes.string, // for the widgets, 'above' or 'below'
-        data: React.PropTypes.array // Layout Data, just the rows array
+        data: React.PropTypes.array, // Layout Data, just the rows array
+        activeItem: React.PropTypes.string
     },
 
     getDefaultProps: function getDefaultProps() {
@@ -2601,7 +2611,8 @@ var Rows = React.createClass({
             tabId: this.props.tabId,
             rowId: row.id,
             type: this.props.type,
-            data: row
+            data: row,
+            activeItem: this.props.activeItem
         });
     },
 
@@ -2663,7 +2674,8 @@ var TabContainer = React.createClass({
         key: React.PropTypes.string,
         tabId: React.PropTypes.string,
         activeTab: React.PropTypes.string, // Active Tab
-        layoutData: React.PropTypes.object // just the context layout data
+        layoutData: React.PropTypes.object, // just the context layout data
+        activeItem: React.PropTypes.string
     },
 
     render: function render() {
@@ -2693,7 +2705,8 @@ var TabContainer = React.createClass({
                 tabId: this.props.tabId,
                 type: 'widget',
                 zone: 'above',
-                data: widgetsAboveRows
+                data: widgetsAboveRows,
+                activeItem: this.props.activeItem
             }),
             React.createElement(
                 'h3',
@@ -2709,7 +2722,8 @@ var TabContainer = React.createClass({
             React.createElement(Rows, {
                 tabId: this.props.tabId,
                 type: 'field',
-                data: fieldsRows
+                data: fieldsRows,
+                activeItem: this.props.activeItem
             }),
             React.createElement(
                 'h3',
@@ -2726,7 +2740,8 @@ var TabContainer = React.createClass({
                 tabId: this.props.tabId,
                 type: 'widget',
                 zone: 'below',
-                data: widgetsBelowRows
+                data: widgetsBelowRows,
+                activeItem: this.props.activeItem
             })
         );
     }
@@ -2795,7 +2810,8 @@ var TabsContainers = React.createClass({
     propTypes: {
         tabList: React.PropTypes.array, // list of tabs
         activeTab: React.PropTypes.string,
-        layoutData: React.PropTypes.object
+        layoutData: React.PropTypes.object,
+        activeItem: React.PropTypes.string
     },
 
     renderContainers: function renderContainers(tab, i) {
@@ -2805,7 +2821,8 @@ var TabsContainers = React.createClass({
             key: tab.id,
             tabId: tab.id,
             activeTab: this.props.activeTab,
-            layoutData: contextLayoutData
+            layoutData: contextLayoutData,
+            activeItem: this.props.activeItem
         });
     },
 
@@ -2917,10 +2934,11 @@ var ViewBuilder = React.createClass({
         return {
             activeTab: LayoutStore.getActiveTab(), // which tab id is open
             layout: LayoutStore.getLayout(),
-            currentPanel: PanelStore.getActivePanel() };
+            currentPanel: PanelStore.getActivePanel(), // which panel id is open
+            extraPanelArgs: PanelStore.getExtraArgs()
+        };
     },
 
-    // which panel id is open
     getInitialState: function getInitialState() {
         return this.getState();
     },
@@ -2958,6 +2976,18 @@ var ViewBuilder = React.createClass({
         }
     },
 
+    /**
+     * Checks if any field or widget are being configured
+     * @returns {*} Null or the active Field ID (layout unique id)
+     */
+    calculateActiveItem: function calculateActiveItem() {
+        if (this.state.currentPanel === ViewConstants.PANEL_FIELD_SETTINGS && this.state.extraPanelArgs.hasOwnProperty('field')) {
+            return this.state.extraPanelArgs['field']['id'];
+        } else {
+            return null;
+        }
+    },
+
     render: function render() {
         console.log(this.state.layout);
         var tabs = [{ 'id': 'directory', 'label': gravityview_i18n.tab_multiple }, { 'id': 'single', 'label': gravityview_i18n.tab_single }, { 'id': 'edit', 'label': gravityview_i18n.tab_edit }, { 'id': 'export', 'label': gravityview_i18n.tab_export }];
@@ -2972,7 +3002,12 @@ var ViewBuilder = React.createClass({
                 handleOpenSettings: this.handleOpenSettings,
                 currentPanel: this.state.currentPanel
             }),
-            React.createElement(TabsContainers, { tabList: tabs, activeTab: this.state.activeTab, layoutData: this.state.layout })
+            React.createElement(TabsContainers, {
+                tabList: tabs,
+                activeTab: this.state.activeTab,
+                layoutData: this.state.layout,
+                activeItem: this.calculateActiveItem()
+            })
         );
     }
 
