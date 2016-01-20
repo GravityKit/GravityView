@@ -56,6 +56,7 @@ class GravityView_Roles_Capabilities {
 		add_filter( 'members_get_capabilities', array( 'GravityView_Roles_Capabilities', 'merge_with_all_caps' ) );
 		add_action( 'members_register_cap_groups', array( $this, 'members_register_cap_group' ), 20 );
 		add_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 10, 4 );
+        add_action( 'admin_init', array( $this, 'add_caps') );
 	}
 
 

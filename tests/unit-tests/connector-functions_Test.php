@@ -2,10 +2,33 @@
 
 defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
 
-class GravityView_Connector_Functions_Test extends PHPUnit_Framework_TestCase {
+/**
+ * @group connectorfunctions
+ */
+class GravityView_Connector_Functions_Test extends GV_UnitTestCase {
+
+	/**
+	 * @covers GVCommon::has_gravityview_shortcode()
+	 * @covers ::has_gravityview_shortcode()
+	 */
+	function test_has_gravityview_shortcode() {
+
+		$this->assertFalse( has_gravityview_shortcode( '[gravityview]' ), 'The function should only accept WP_Post object' );
+
+		$no_shortcode = $this->factory->post->create_and_get();
+		$shortcode = $this->factory->post->create_and_get(array( 'post_content' => '[gravityview]' ));
+		$view = $this->factory->view->create_and_get();
+
+		$this->assertFalse( has_gravityview_shortcode( $no_shortcode ) );
+		$this->assertTrue( has_gravityview_shortcode( $shortcode ) );
+		$this->assertTrue( has_gravityview_shortcode( $view ) );
+	}
 
 	/**
 	 * @group shortcode
+	 * @see gravityview_has_shortcode_r
+	 * @covers GVCommon::has_shortcode_r
+	 * @covers ::gravityview_has_shortcode_r()
 	 */
 	function test_gravityview_has_shortcode_r() {
 

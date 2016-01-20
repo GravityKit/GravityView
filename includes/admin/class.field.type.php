@@ -66,6 +66,7 @@ abstract class GravityView_FieldType {
             'desc' => '',
             'value' => NULL,
             'label' => '',
+            'left_label' => NULL,
             'id' => NULL,
             'type'  => 'text',
             'options' => NULL,
@@ -111,7 +112,7 @@ abstract class GravityView_FieldType {
 	 * @return string
 	 */
 	function get_field_left_label() {
-		return isset( $this->field['left_label'] ) ? esc_html( trim( $this->field['left_label'] ) ) : NULL;
+		return ! empty( $this->field['left_label'] ) ? esc_html( trim( $this->field['left_label'] ) ) : NULL;
 	}
 
     /**
@@ -161,7 +162,7 @@ abstract class GravityView_FieldType {
      */
     function render_setting( $override_input = NULL ) {
 
-        if( !empty( $this->field['full_width'] ) ) : ?>
+        if( !empty( $this->field['full_width'] ) ) { ?>
             <th scope="row" colspan="2">
                 <div>
                     <label for="<?php echo $this->get_field_id(); ?>">
@@ -170,7 +171,7 @@ abstract class GravityView_FieldType {
                 </div>
                 <?php $this->render_input( $override_input ); ?>
             </th>
-        <?php else: ?>
+        <?php } else { ?>
             <th scope="row">
                 <label for="<?php echo $this->get_field_id(); ?>">
                     <?php echo $this->get_field_label() . $this->get_tooltip(); ?>
@@ -179,7 +180,7 @@ abstract class GravityView_FieldType {
             <td>
                 <?php $this->render_input( $override_input ); ?>
             </td>
-        <?php endif;
+        <?php }
 
     }
 

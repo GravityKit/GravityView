@@ -457,25 +457,28 @@
 
 		/**
 		 * Update the field display to show the custom label while editing
-		 * @param {jQuery DOM} dialog The dialog object
+		 * @param {jQuery} dialog The dialog object
 		 */
 		setCustomLabel: function ( dialog ) {
 
 			// Does the field have a custom label?
 			var $custom_label = $( '[name*=custom_label]', dialog );
 
-			var show_label = $( '[name*=show_label]', dialog ).is( ':checked' );
-
 			var $label = dialog.parents( '.gv-fields' ).find( '.gv-field-label' );
 
 			// If there's a custom title, use it for the label.
-			if ( $custom_label.length && $custom_label.val().trim().length && show_label ) {
+			if ( $custom_label.length ) {
 
-				$label.text( $custom_label.val().trim() );
+				var custom_label_text = $custom_label.val().trim();
 
-				// If there's no custom title, then use the original
-				// @see GravityView_Admin_View_Item::getOutput()
-				$label.html( $label.attr( 'data-original-title' ) );
+				// Make sure the custom label isn't empty
+				if( custom_label_text.length > 0 ) {
+					$label.html( custom_label_text );
+				} else {
+					// If there's no custom title, then use the original
+					// @see GravityView_Admin_View_Item::getOutput()
+					$label.html( $label.attr( 'data-original-title' ) );
+				}
 
 			}
 

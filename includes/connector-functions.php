@@ -16,7 +16,7 @@
 
 /**
  * Returns the form object for a given Form ID.
- *
+ * @see GVCommon::get_form()
  * @access public
  * @param mixed $form_id
  * @return mixed False: no form ID specified or Gravity Forms isn't active. Array: Form returned from Gravity Forms
@@ -28,6 +28,7 @@ function gravityview_get_form( $form_id ) {
 
 /**
  * Get the form array for an entry based only on the entry ID
+ * @see GVCommon::get_form_from_entry_id
  * @param  int|string $entry_slug Entry slug
  * @return array           Gravity Forms form array
  */
@@ -38,9 +39,10 @@ function gravityview_get_form_from_entry_id( $entry_slug ) {
 /**
  * Returns the list of available forms
  *
+ * @see GVCommon::get_forms()
  * @access public
  * @param mixed $form_id
- * @return array (id, title)
+ * @return array Empty array if GFAPI isn't available or no forms. Otherwise, associative array with id, title keys
  */
 function gravityview_get_forms() {
 	return GVCommon::get_forms();
@@ -49,6 +51,7 @@ function gravityview_get_forms() {
 /**
  * Return array of fields' id and label, for a given Form ID
  *
+ * @see GVCommon::get_form_fields()
  * @access public
  * @param string|array $form_id (default: '') or $form object
  * @return array
@@ -125,9 +128,13 @@ function gravityview_get_field_label( $form, $field_id ) {
 /**
  * Returns the field details array of a specific form given the field id
  *
+ * Alias of Alias of GFFormsModel::get_field
+ *
+ * @uses GVCommon::get_field
+ * @see GFFormsModel::get_field
  * @access public
- * @param mixed $form
- * @param mixed $field_id
+ * @param array $form
+ * @param string|int $field_id
  * @return array
  */
 function gravityview_get_field( $form, $field_id ) {
@@ -176,6 +183,15 @@ function gravityview_get_form_id( $view_id ) {
 	return GVCommon::get_meta_form_id( $view_id );
 }
 
+/**
+ * Get the template ID (`list`, `table`, `datatables`, `map`) for a View
+ *
+ * @see GravityView_Template::template_id
+ *
+ * @param int $view_id The ID of the View to get the layout of
+ *
+ * @return string GravityView_Template::template_id value. Empty string if not.
+ */
 function gravityview_get_template_id( $post_id ) {
 	return GVCommon::get_meta_template_id( $post_id );
 }

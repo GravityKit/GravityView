@@ -445,8 +445,18 @@ final class GravityView_Delete_Entry {
 
 		$nonce_key = self::get_nonce_key( $_GET['entry_id'] );
 
-		return wp_verify_nonce( $_GET['delete'], $nonce_key );
+		$valid = wp_verify_nonce( $_GET['delete'], $nonce_key );
 
+		/**
+		 * @filter `gravityview/delete-entry/verify_nonce` Override Delete Entry nonce validation. Return true to declare nonce valid.
+		 * @since 1.15.2
+		 * @see wp_verify_nonce()
+		 * @param int|boolean $valid False if invalid; 1 or 2 when nonce was generated
+		 * @param string $nonce_key Name of nonce action used in wp_verify_nonce. $_GET['delete'] holds the nonce value itself. Default: `delete_{entry_id}`
+		 */
+		$valid = apply_filters( 'gravityview/delete-entry/verify_nonce', $valid, $nonce_key );
+
+		return $valid;
 	}
 
 	/**
@@ -606,12 +616,20 @@ final class GravityView_Delete_Entry {
 	 * If success, there will be `status` URL parameters `status=>success`
 	 * If an error, there will be `status` and `message` URL parameters `status=>error&message=example`
 	 *
+	 * @since 1.15.2 Only show message when the URL parameter's View ID matches the current View ID
 	 * @since 1.5.1
+	 *
+	 * @param int $current_view_id The ID of the View being rendered
 	 * @return void
 	 */
-	public function display_message() {
+	public function display_message( $current_view_id = 0 ) {
 
 		if( empty( $_GET['status'] ) || ! self::verify_nonce() ) {
+			return;
+		}
+
+		// Entry wasn't deleted from current View
+		if( intval( $_GET['gvid'] ) !== intval( $current_view_id ) ) {
 			return;
 		}
 

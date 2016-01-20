@@ -3,6 +3,7 @@
  * @package GravityView
  * @subpackage Gravityview/admin/metaboxes/views
  * @since 1.8
+ * @global WP_Post $post
  */
 
 

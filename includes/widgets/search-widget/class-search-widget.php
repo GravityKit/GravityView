@@ -152,6 +152,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			'label_label' => esc_html__( 'Label', 'gravityview' ),
 			'label_searchfield' => esc_html__( 'Search Field', 'gravityview' ),
 			'label_inputtype' => esc_html__( 'Input Type', 'gravityview' ),
+			'label_ajaxerror' => esc_html__( 'There was an error loading searchable fields. Save the View or refresh the page to fix this issue.', 'gravityview' ),
 			'input_labels' => json_encode( $input_labels ),
 			'input_types' => json_encode( $input_types ),
 		) );
@@ -176,8 +177,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	public static function get_searchable_fields() {
 
 		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'gravityview_ajaxsearchwidget' ) ) {
-			exit( 0 );
+			exit( '0' );
 		}
+
 		$form = '';
 
 		// Fetch the form for the current View
@@ -481,6 +483,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		switch ( $form_field['type'] ) {
 
+			case 'select':
+			case 'radio':
+				$filter['operator'] = 'is';
+				break;
+
 			case 'post_category':
 
 				if ( ! is_array( $value ) ) {
@@ -492,7 +499,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 				foreach ( $value as $val ) {
 					$cat = get_term( $val, 'category' );
-					$filter[] = array( 'key' => $field_id, 'value' => esc_attr( $cat->name ) . ':' . $val );
+					$filter[] = array(
+						'key' => $field_id,
+						'value' => esc_attr( $cat->name ) . ':' . $val,
+						'operator' => 'is',
+					);
 				}
 
 				break;
@@ -518,6 +529,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 					foreach ( $form_field['inputs'] as $k => $input ) {
 						if ( $input['id'] == $field_id ) {
 							$filter['value'] = $form_field['choices'][ $k ]['value'];
+							$filter['operator'] = 'is';
 							break;
 						}
 					}
@@ -527,7 +539,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 					$filter = array();
 
 					foreach ( $value as $val ) {
-						$filter[] = array( 'key' => $field_id, 'value' => $val );
+						$filter[] = array(
+								'key'   => $field_id,
+								'value' => $val,
+								'operator' => 'is',
+						);
 					}
 				}
 
@@ -881,7 +897,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		// collect choices
 		if ( 'post_category' === $form_field['type'] && ! empty( $form_field['displayAllCategories'] ) && empty( $form_field['choices'] ) ) {
-			$filter['choices'] = self::get_post_categories_choices();
+			$filter['choices'] = gravityview_get_terms_choices();
 		} elseif ( ! empty( $form_field['choices'] ) ) {
 			$filter['choices'] = $form_field['choices'];
 		}
@@ -915,32 +931,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				'value' => $user->ID,
 				'text' => $user->display_name,
 			);
-		}
-
-		return $choices;
-	}
-
-
-	private static function get_post_categories_choices() {
-		$args = array(
-			'type'                     => 'post',
-			'child_of'                 => 0,
-			'orderby'                  => 'name',
-			'order'                    => 'ASC',
-			'hide_empty'               => 0,
-			'hierarchical'             => 1,
-			'taxonomy'                 => 'category',
-		);
-		$categories = get_categories( $args );
-
-		if ( empty( $categories ) ) {
-			return array();
-		}
-
-		$choices = array();
-
-		foreach ( $categories as $category ) {
-			$choices[] = array( 'text' => $category->name, 'value' => $category->term_id );
 		}
 
 		return $choices;

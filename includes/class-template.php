@@ -411,7 +411,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 * @param int $total_entries
 	 */
 	public function setTotalEntries( $total_entries ) {
-		$this->total_entries = $total_entries;
+		$this->total_entries = intval( $total_entries );
 	}
 
 	/**
@@ -458,11 +458,9 @@ class GravityView_View extends Gamajo_Template_Loader {
 		$last = ( $offset + $page_size > $total ) ? $total : $offset + $page_size;
 
 		/**
-		 * Modify the displayed pagination numbers
-		 *
-		 * @param array $counts Array with $first, $last, $total
-		 *
-		 * @var array array with $first, $last, $total numbers in that order.
+		 * @filter `gravityview_pagination_counts` Modify the displayed pagination numbers
+		 * @since 1.13
+		 * @param array $counts Array with $first, $last, $total numbers in that order
 		 */
 		list( $first, $last, $total ) = apply_filters( 'gravityview_pagination_counts', array( $first, $last, $total ) );
 
@@ -552,10 +550,17 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		if( in_array( $this->getContext(), array( 'edit', 'single') ) ) {
 			$entries = $this->getEntries();
-			return $entries[0];
+			$entry = $entries[0];
+		} else {
+			$entry = $this->_current_entry;
 		}
 
-		return $this->_current_entry;
+		/** @since 1.16 Fixes DataTables empty entry issue */
+		if ( empty( $entry ) && ! empty( $this->_current_field['entry'] ) ) {
+			$entry = $this->_current_field['entry'];
+		}
+
+		return $entry;
 	}
 
 	/**
@@ -669,7 +674,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		} else {
 
-			// Set $load to always falso so we handle it here.
+			// Set $load to always false so we handle it here.
 			$located = parent::locate_template( $template_names, false, $require_once );
 
 			if( is_string( $template_names ) ) {
@@ -709,8 +714,10 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 *
 	 * @see  Gamajo_Template_Loader::get_template_file_names() Where the filter is
 	 * @param array $templates Existing list of templates.
-	 * @param [type] $slug      [description]
-	 * @param [type] $name      [description]
+	 * @param string $slug      Name of the template base, example: `table`, `list`, `datatables`, `map`
+	 * @param string $name      Name of the template part, example: `body`, `footer`, `head`, `single`
+	 *
+	 * @return array $templates Modified template array, merged with existing $templates values
 	 */
 	function add_id_specific_templates( $templates, $slug, $name ) {
 
@@ -771,15 +778,11 @@ class GravityView_View extends Gamajo_Template_Loader {
 
 		$view_data = gravityview_get_current_view_data( $view_id );
 
-		// TODO: Move to sep. method, use an action instead
-		wp_enqueue_style( 'gravityview_default_style');
-
 		// get View widget configuration
-		$widgets = $view_data['widgets'];
-
-		$rows = GravityView_Plugin::get_default_widget_areas();
+		$widgets = (array)$view_data['widgets'];
 
 		switch( current_filter() ) {
+			default:
 			case 'gravityview_before':
 				$zone = 'header';
 				break;
@@ -788,11 +791,36 @@ class GravityView_View extends Gamajo_Template_Loader {
 				break;
 		}
 
+		/**
+		 * Filter widgets not in the current zone
+		 * @since 1.16
+		 */
+		foreach( $widgets as $key => $widget ) {
+			// The widget isn't in the current zone
+			if( false === strpos( $key, $zone ) ) {
+				unset( $widgets[ $key ] );
+			}
+		}
+
+		/**
+		 * Prevent output if no widgets to show.
+		 * @since 1.16
+		 */
+		if ( empty( $widgets ) ) {
+			do_action( 'gravityview_log_debug', sprintf( 'No widgets for View #%s', $view_id ) );
+			return;
+		}
+
 		// Prevent being called twice
 		if( did_action( $zone.'_'.$view_id.'_widgets' ) ) {
 			do_action( 'gravityview_log_debug', sprintf( '%s - Not rendering %s; already rendered', __METHOD__ , $zone.'_'.$view_id.'_widgets' ) );
 			return;
 		}
+
+		$rows = GravityView_Plugin::get_default_widget_areas();
+
+		// TODO: Move to sep. method, use an action instead
+		wp_enqueue_style( 'gravityview_default_style' );
 
 		// TODO Convert to partials
 		?>

@@ -216,17 +216,21 @@
 				return;
 			}
 
-			// get fields from server
-			if( gvSearchWidget.selectFields === null ) {
-				gvSearchWidget.widgetTarget.append( '<p id="gv-loading"><span class="spinner"></span>' + gvGlobals.loading_text + '</p>' );
-				gvSearchWidget.getSelectFields( parent );
-				return;
-			}
-
 			$gvloading = $('#gv-loading');
 
 			// Is this dialog already rendered before & not loading fields again
 			if( $('table', gvSearchWidget.widgetTarget ).length && $gvloading.length < 1 ) {
+				return;
+			}
+
+			if( $gvloading && $gvloading.attr('gv-error') ) {
+				return;
+			}
+
+			// get fields from server
+			if( gvSearchWidget.selectFields === null || 0 === $gvloading.length ) {
+				gvSearchWidget.widgetTarget.append( '<p id="gv-loading"><span class="spinner"></span>' + gvGlobals.loading_text + '</p>' );
+				gvSearchWidget.getSelectFields( parent );
 				return;
 			}
 
@@ -572,8 +576,11 @@
 						gvSearchWidget.selectFields = $(response);
 						gvSearchWidget.widgetTarget.data( 'gvSelectFields', response );
 						gvSearchWidget.renderUI( parent );
+					} else {
+						// The nonce is likely invalid. Hide search bar settings and show error.
+						$( parent ).find( '.gv-setting-container' ).hide();
+						$( '#gv-loading' ).text( gvSearchVar.label_ajaxerror ).attr( 'gv-error', 1 );
 					}
-
 				}
 			});
 		},

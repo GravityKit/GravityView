@@ -2,10 +2,93 @@
 
 defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
 
+/**
+ * @group helperfunctions
+ */
 class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 
 	/**
-	 * @group helperfunctions
+	 * @since 1.15.1
+	 * @covers ::gv_empty()
+	 */
+	public function test_gv_empty() {
+
+		$this->assertTrue( gv_empty( array() ) );
+		$this->assertTrue( gv_empty( false ) );
+		$this->assertTrue( gv_empty( null ) );
+		$this->assertTrue( gv_empty( new stdClass() ) );
+		$this->assertTrue( gv_empty( '' ) );
+		$this->assertTrue( gv_empty( $not_defined ) );
+
+		// Test $zero_is_empty
+		$this->assertTrue( gv_empty( 0 ) );
+		$this->assertTrue( gv_empty( '0' ) );
+		$this->assertTrue( gv_empty( floatval( 0 ) ) );
+		$this->assertFalse( gv_empty( '0.0' ) );
+
+		$this->assertFalse( gv_empty( 0, false ) );
+		$this->assertFalse( gv_empty( '0', false ) );
+		$this->assertFalse( gv_empty( floatval( 0 ), false ) );
+		$this->assertFalse( gv_empty( '0.0', false ) );
+
+		// Test $allow_string_booleans
+		$this->assertTrue( gv_empty( 'false' ) );
+		$this->assertTrue( gv_empty( 'no' ) );
+		$this->assertFalse( gv_empty( 'false', true, false ) );
+		$this->assertFalse( gv_empty( 'no', true, false ) );
+		$this->assertFalse( gv_empty( 'true', true, false ) );
+		$this->assertFalse( gv_empty( 'yes', true, false ) );
+
+	}
+
+	/**
+	 * @covers ::gravityview_is_valid_datetime
+	 * @since 1.15.2
+	 * @group datetime
+	 */
+	public function test_gravityview_is_valid_datetime() {
+
+		$falses = array(
+			'now',
+			'-1 week',
+			'gobbily gook',
+			'first monday of november 2005',
+			'first day of november 2005',
+			'2001-01-20 12:29:30',
+			'2001-01-40',
+		);
+
+		foreach( $falses as $false ) {
+			$this->assertFalse( gravityview_is_valid_datetime( $false ), $false );
+		}
+
+		// YYYY-MM-DD
+		$trues = array(
+			'2001-01-20',
+			'2051-11-20',
+		);
+
+		foreach( $trues as $true ) {
+			$this->assertTrue( gravityview_is_valid_datetime( $true ), $true );
+		}
+
+		$format_checks = array(
+			'01/30/2001',
+			'11/30/2051',
+		);
+
+		foreach( $format_checks as $format_check ) {
+
+			// Correct format
+			$this->assertTrue( gravityview_is_valid_datetime( $format_check, 'm/d/Y' ), $format_check );
+
+			// Wrong format
+			$this->assertFalse( gravityview_is_valid_datetime( $format_check, 'm-d-Y' ), $format_check );
+			$this->assertFalse( gravityview_is_valid_datetime( $format_check, 'Y-m-d' ), $format_check );
+		}
+	}
+
+	/**
 	 * @covers ::gravityview_strip_whitespace()
 	 */
 	public function test_gravityview_strip_whitespace() {
@@ -29,7 +112,6 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @group helperfunctions
 	 * @covers ::gravityview_is_not_empty_string
 	 */
 	public function test_gravityview_is_not_empty_string() {
@@ -57,7 +139,6 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	 * We only test gravityview_number_format() without a decimal defined; otherwise it's an alias for number_format_i18n()
 	 *
 	 * @see number_format_i18n()
-	 * @group helperfunctions
 	 * @covers ::gravityview_number_format()
 	 */
 	public function test_gravityview_number_format() {
@@ -77,7 +158,6 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @group helperfunctions
 	 * @covers ::gravityview_sanitize_html_class()
 	 */
 	public function test_gravityview_sanitize_html_class() {
@@ -93,6 +173,9 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 			// Keep spaces
 			'example dash' => gravityview_sanitize_html_class( 'example dash' ),
 
+			// Strip whitespace string
+			'foo cocktail' => gravityview_sanitize_html_class( '   foo   cocktail   ' ),
+
 			// Implode with spaces
 			'example dash bar' => gravityview_sanitize_html_class( array( 'example', 'dash', 'bar' ) ),
 
@@ -101,6 +184,9 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 
 			// Don't strip numbers or caps
 			'Foo Bar0' => gravityview_sanitize_html_class( array( 'Foo', 'Bar0' ) ),
+
+			// Strip whitespace
+			'foo bar' => gravityview_sanitize_html_class( array( 'foo    ', '           bar       ' ) ),
 
 			// Strip not A-Z a-z 0-9 _ -
 			'Foo Bar2_-' => gravityview_sanitize_html_class( 'Foo Bar2!_-' ),
@@ -113,7 +199,6 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @group helperfunctions
 	 * @covers ::gravityview_format_link()
 	 * @covers :: _gravityview_strip_subdomain()
 	 */
@@ -209,7 +294,6 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @group helperfunctions
 	 * @covers ::gravityview_format_link()
 	 */
 	public function test_gravityview_format_link_WHEN_FILTER_ROOTONLY_FALSE() {
@@ -240,7 +324,6 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @group helperfunctions
 	 * @covers ::gravityview_format_link()
 	 */
 	public function test_gravityview_format_link_WHEN_FILTER_NOSUBDOMAIN_FALSE() {
@@ -288,7 +371,6 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @group helperfunctions
 	 * @covers ::gravityview_format_link()
 	 */
 	public function test_gravityview_format_link_WHEN_FILTER_NOQUERYSTRING_FALSE() {

@@ -42,6 +42,73 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::gv_container_class()
+	 */
+	public function test_gv_container_class() {
+
+
+	// Test no View ID and no hide formatting
+		GravityView_View::getInstance()->setViewId( 0 );
+		GravityView_View::getInstance()->setHideUntilSearched( false );
+
+		// Test $echo parameter TRUE
+		ob_start();
+			gv_container_class();
+		$output = ob_get_clean();
+
+		$this->assertEquals( 'gv-container', $output );
+
+		// Test $echo parameter FALSE
+		ob_start();
+		$returned_output = gv_container_class( '', false );
+		$output = ob_get_clean();
+		$this->assertEquals( '', $output, 'Echo was false; there should be no output' );
+		$this->assertEquals( 'gv-container', $returned_output );
+
+		// Prevent output
+		ob_start();
+
+		$classes = array(
+			'gv-container' => gv_container_class(),
+			'with-passed-class gv-container' => gv_container_class( 'with-passed-class' ),
+			'with-passed-class and-whitespace gv-container' => gv_container_class( '   with-passed-class and-whitespace   ' ),
+		);
+
+		foreach ( $classes as $expected => $formatted ) {
+			$this->assertEquals( $expected, $formatted, $expected );
+		}
+
+	// Test Hide Until Search formatting
+		GravityView_View::getInstance()->setHideUntilSearched( true );
+
+		$classes = array(
+			'gv-container hidden' => gv_container_class(),
+			'with-passed-class gv-container hidden' => gv_container_class( 'with-passed-class' ),
+			'with-passed-class and-whitespace gv-container hidden' => gv_container_class( '   with-passed-class and-whitespace   ' ),
+		);
+
+		foreach ( $classes as $expected => $formatted ) {
+			$this->assertEquals( $expected, $formatted, $expected );
+		}
+
+	// Test View ID formatting
+		GravityView_View::getInstance()->setViewId( 12 );
+
+		$classes = array(
+			'gv-container gv-container-12 hidden' => gv_container_class(),
+			'with-passed-class gv-container gv-container-12 hidden' => gv_container_class( 'with-passed-class' ),
+			'with-passed-class and-whitespace gv-container gv-container-12 hidden' => gv_container_class( '   with-passed-class and-whitespace   ' ),
+		);
+
+		foreach ( $classes as $expected => $formatted ) {
+			$this->assertEquals( $expected, $formatted, $expected );
+		}
+
+		// Prevent output
+		ob_end_clean();
+	}
+
+	/**
 	 * @covers GravityView_API::replace_variables()
 	 * @covers GravityView_Merge_Tags::replace_variables()
 	 */
@@ -236,6 +303,125 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @group field_width
+	 * @covers GravityView_API::field_width()
+	 */
+	public function test_field_width() {
+
+		$field = array();
+
+		// Empty $field['width'] returns NULL
+		$width = GravityView_API::field_width( $field );
+		$this->assertNull( $width );
+
+		// Default: convert to %
+		$field['width'] = 10;
+		$width = GravityView_API::field_width( $field );
+		$this->assertEquals( '10%', $width );
+
+		// Limit to 100% when using default % formatting
+		$field['width'] = 200;
+		$width = GravityView_API::field_width( $field );
+		$this->assertEquals( '100%', $width );
+
+		// Check other formats
+		$format = '%dpx';
+		$field['width'] = 200;
+		$width = GravityView_API::field_width( $field, $format );
+		$this->assertEquals( '200px', $width );
+
+		$format = '%d';
+		$field['width'] = 500000;
+		$width = GravityView_API::field_width( $field, $format );
+		$this->assertEquals( '500000', $width );
+	}
+
+	public function test_gv_value() {
+
+	}
+
+	/**
+	 * @group fieldoutput
+	 * @see gravityview_field_output
+	 * @covers ::gravityview_field_output()
+	 */
+	public function test_gravityview_field_output() {
+
+		/**
+		 *
+		 * 'entry' => null,
+		 * 'field' => null,
+		 * 'form' => null,
+		 * 'hide_empty' => true,
+		 * 'markup' => '<div id="{{ field_id }}" class="{{ class }}">{{label}}{{value}}</div>',
+		 * 'label_markup' => '',
+		 * 'wpautop' => false,
+		 * 'zone_id' => null,
+		 */
+
+		$form = $this->factory->form->create_and_get();
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+		));
+
+		$markup = '<div id="{{ field_id }}" class="{{ class }}">{{label}}{{value}}</div>';
+		$markup_without_spaces = '<div id="{{field_id}}" class="{{class}}">{{label}}{{value}}</div>';
+		$markup_just_label = '{{label}}';
+		$markup_just_value = '{{value}}';
+
+		$args = array(
+			'entry' => $entry,
+			'form' => $form,
+			'hide_empty' => $this->atts['hide_empty'],
+		);
+
+		return;
+
+		foreach ( $entry as $field_id => $raw_field_value ) {
+
+			if( ! is_numeric( $field_id ) ) {
+				continue;
+			}
+
+			$field = gravityview_get_field( $form, $field_id );
+			$args['field'] = $field;
+
+			$value = gv_value( $entry, $args['field'] );
+
+			$args['markup'] = $markup;
+
+			$output = gravityview_field_output( $args );
+
+			//$this->assertEquals( , $output );
+
+			// Test hide empty
+		}
+
+		// Test gravityview/field_output/args filter
+
+		add_filter( 'gravityview/field_output/args', array( $this, '_filter_test_gravityview_field_output_args' ), 10, 2 );
+
+
+		remove_filter( 'gravityview/field_output/args', array( $this, '_filter_test_gravityview_field_output_args' ) );
+
+	}
+
+	/**
+	 * Prevent `wpautop()` from being applied to View Zones
+	 *
+	 * @param array $args Associative array; `field` and `form` is required.
+	 * @param array $passed_args Original associative array with field data. `field` and `form` are required.
+	 */
+	function _filter_test_gravityview_field_output_args( $args = array(), $passed_args = array() ) {
+
+		$args['wpautop'] = false;
+
+		return $args;
+	}
+
+	/**
+	 * @covers ::gv_directory_link()
 	 * @covers GravityView_API::directory_link()
 	 */
 	public function test_directory_link( ) {

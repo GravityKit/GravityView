@@ -55,6 +55,7 @@ class GV_UnitTest_Factory_For_View extends WP_UnitTest_Factory_For_Post {
 			'post_author' => '',
 			'post_type' => 'gravityview',
 			'form_id' => $form['id'],
+			'template_id' => 'preset_business_data',
 		);
 	}
 
@@ -74,9 +75,12 @@ class GV_UnitTest_Factory_For_View extends WP_UnitTest_Factory_For_Post {
 	 */
 	function create_object( $args ) {
 
+		$args = wp_parse_args( $args, $this->default_generation_definitions );
+
 		$form_id = $args['form_id'];
+		$template_id = isset( $args['template_id'] ) ? $args['template_id'] : 'preset_business_data';
 		$settings = isset( $args['settings'] ) ? $args['settings'] : GravityView_View_Data::get_default_args();
-		$fields = isset( $args['fields'] ) ? $args['fields'] : array();
+		$fields = isset( $args['fields'] ) ? serialize( $args['fields'] ) : 'a:1:{s:23:"directory_table-columns";a:3:{s:13:"535d63d1488b0";a:9:{s:2:"id";s:1:"4";s:5:"label";s:13:"Business Name";s:10:"show_label";s:1:"1";s:12:"custom_label";s:0:"";s:12:"custom_class";s:0:"";s:12:"show_as_link";s:1:"0";s:13:"search_filter";s:1:"0";s:13:"only_loggedin";s:1:"0";s:17:"only_loggedin_cap";s:4:"read";}s:13:"535d63d379a3c";a:9:{s:2:"id";s:2:"12";s:5:"label";s:20:"Business Description";s:10:"show_label";s:1:"1";s:12:"custom_label";s:0:"";s:12:"custom_class";s:0:"";s:12:"show_as_link";s:1:"0";s:13:"search_filter";s:1:"0";s:13:"only_loggedin";s:1:"0";s:17:"only_loggedin_cap";s:4:"read";}s:13:"535d63dc735a6";a:9:{s:2:"id";s:1:"2";s:5:"label";s:7:"Address";s:10:"show_label";s:1:"1";s:12:"custom_label";s:0:"";s:12:"custom_class";s:0:"";s:12:"show_as_link";s:1:"0";s:13:"search_filter";s:1:"0";s:13:"only_loggedin";s:1:"0";s:17:"only_loggedin_cap";s:4:"read";}}}';
 
 		$insert_post_response = parent::create_object( $args );
 
@@ -85,9 +89,9 @@ class GV_UnitTest_Factory_For_View extends WP_UnitTest_Factory_For_Post {
 			$view_meta = array(
 				'_gravityview_form_id' => $form_id,
 				'_gravityview_template_settings' => $settings,
-				'_gravityview_directory_template' => 'preset_business_data',
+				'_gravityview_directory_template' => $template_id,
 				'_gravityview_directory_widgets' => 'a:0:{}',
-				'_gravityview_directory_fields' => 'a:1:{s:23:"directory_table-columns";a:3:{s:13:"535d63d1488b0";a:9:{s:2:"id";s:1:"4";s:5:"label";s:13:"Business Name";s:10:"show_label";s:1:"1";s:12:"custom_label";s:0:"";s:12:"custom_class";s:0:"";s:12:"show_as_link";s:1:"0";s:13:"search_filter";s:1:"0";s:13:"only_loggedin";s:1:"0";s:17:"only_loggedin_cap";s:4:"read";}s:13:"535d63d379a3c";a:9:{s:2:"id";s:2:"12";s:5:"label";s:20:"Business Description";s:10:"show_label";s:1:"1";s:12:"custom_label";s:0:"";s:12:"custom_class";s:0:"";s:12:"show_as_link";s:1:"0";s:13:"search_filter";s:1:"0";s:13:"only_loggedin";s:1:"0";s:17:"only_loggedin_cap";s:4:"read";}s:13:"535d63dc735a6";a:9:{s:2:"id";s:1:"2";s:5:"label";s:7:"Address";s:10:"show_label";s:1:"1";s:12:"custom_label";s:0:"";s:12:"custom_class";s:0:"";s:12:"show_as_link";s:1:"0";s:13:"search_filter";s:1:"0";s:13:"only_loggedin";s:1:"0";s:17:"only_loggedin_cap";s:4:"read";}}}',
+				'_gravityview_directory_fields' => $fields,
 			);
 
 			foreach ( $view_meta as $meta_key => $meta_value ) {
@@ -186,6 +190,159 @@ class GV_UnitTest_Factory_For_User extends WP_UnitTest_Factory_For_User {
 	}
 }
 
+class GF_UnitTest_Generator_Number extends GF_UnitTest_Generator {
+
+	var $number_format = true;
+	var $decimals = 0;
+	var $low = -10000000000;
+	var $high = 10000000000;
+
+	/**
+	 * GF_UnitTest_Generator_Number constructor.
+	 *
+	 * @param bool $number_format
+	 * @param int $decimals
+	 * @param int $low
+	 * @param int $high
+	 */
+	public function __construct( $number_format = true, $decimals = false, $low = -10000000000, $high = 10000000000 ) {
+		$this->number_format = $number_format;
+
+		if( is_bool( $decimals )) {
+			$this->decimals = $decimals ? mt_rand( 0, 10 ) : '';
+		} else if ( is_int( $decimals ) ) {
+			$this->decimals = $decimals;
+		}
+
+		$this->low           = $low;
+		$this->high          = $high;
+	}
+
+	function next() {
+		$number = mt_rand( $this->low, $this->high );
+		$generated = gravityview_number_format( $number, $this->decimals  );
+		return $generated;
+	}
+}
+
+abstract class GF_UnitTest_Generator {
+
+	static private $instances = array();
+
+	public static function get_instance() {
+
+		$class_name = get_called_class();
+
+		if( ! isset( self::$instances[ $class_name ] ) ) {
+			$function_args = func_get_args();
+			self::$instances[ $class_name ] = new $class_name( $function_args );
+		}
+
+		return self::$instances[ $class_name ];
+	}
+
+	public static function get() {
+		$function_args = func_get_args();
+
+		/** @noinspection PhpUndefinedMethodInspection */
+		return self::get_instance( $function_args )->next();
+	}
+
+	function __toString() {
+		return $this->next();
+	}
+
+	abstract function next();
+
+}
+
+class GF_UnitTest_Generator_IP extends GF_UnitTest_Generator {
+
+	function next() {
+		return long2ip( mt_rand() );
+	}
+}
+
+abstract class GF_UnitTest_Generator_Array extends GF_UnitTest_Generator {
+
+	var $possible_items = array();
+
+	function next() {
+		$key = mt_rand( 0, count( $this->possible_items ) - 1 );
+		return $this->possible_items[ $key ];
+	}
+}
+
+class GF_UnitTest_Generator_Payment_Status extends GF_UnitTest_Generator_Array {
+	var $possible_items = array(
+		'Active',
+		'Paid',
+		'Processing',
+		'Failed',
+		'Cancelled',
+	);
+}
+
+class GF_UnitTest_Generator_Status extends GF_UnitTest_Generator_Array {
+	var $possible_items = array(
+
+		'active',
+		'active',
+		'active', // Weight the "active" value
+
+		'trash',
+		'spam',
+		'delete',
+	);
+}
+
+class GF_UnitTest_Generator_User_Agent extends GF_UnitTest_Generator_Array {
+
+	var $possible_items = array(
+			'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.85 Safari/537.36',
+			'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
+			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:34.0) Gecko/20100101 Firefox/34.0',
+			'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0',
+			'Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/5.0)',
+			'Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53 (compatible; bingbot/2.0; http://www.bing.com/bingbot.htm)',
+			'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; Media Center PC',
+			'Mozilla/5.0 (Windows NT 6.2; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0',
+			'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.112 Safari/535.1',
+			'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:30.0) Gecko/20100101 Firefox/30.0',
+			'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko',
+			'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko',
+			'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36',
+			'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.0; Trident/5.0; Trident/5.0)',
+			'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0',
+	);
+}
+
+class GF_UnitTest_Generator_Date extends GF_UnitTest_Generator {
+
+	var $format = 'Y-m-d H:i:s';
+
+	function __construct( $format = 'Y-m-d H:i:s' ) {
+		$this->format = $format;
+	}
+
+	function next() {
+		$hour = mt_rand( 0, 24 );
+		$minute = mt_rand( 0, 60 );
+		$second = mt_rand( 0, 60 );
+		$month = mt_rand( 1, 12 );
+		$day = mt_rand( 1, 28 );
+		$year = mt_rand( 2000, (int)date('Y') );
+		$time = mktime( $hour, $minute, $second, $month, $day, $year);
+		return date( $this->format, $time );
+	}
+}
+
+class GF_UnitTest_Generator_Date_Created extends GF_UnitTest_Generator_Date {
+
+	var $format = 'Y-m-d H:i:s';
+
+}
+
 class GF_UnitTest_Factory_For_Entry extends WP_UnitTest_Factory_For_Thing {
 
 	/**
@@ -199,16 +356,16 @@ class GF_UnitTest_Factory_For_Entry extends WP_UnitTest_Factory_For_Thing {
 			'1' => 'Value for field one',
 			'2' => 'Value for field two',
 			'3' => '3.33333',
-			'ip' => '127.0.0.1',
+			'ip' => GF_UnitTest_Generator_IP::get(),
 			'source_url' => 'http://example.com/wordpress/?gf_page=preview&id=16',
-			'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.78.2 (KHTML, like Gecko) Version/7.0.6 Safari/537.78.2',
-			'payment_status' => 'Processing',
+			'user_agent' => GF_UnitTest_Generator_User_Agent::get(),
+			'payment_status' => GF_UnitTest_Generator_Payment_Status::get(),
 			'payment_date' => '2014-08-29 20:55:06',
 			'payment_amount' => '0.01',
 			'transaction_id' => 'asdfpaoj442gpoagfadf',
 			'created_by' => 1,
-			'status' => 'active',
-			'date_created' => '2014-08-29 18:25:39',
+			'status' => GF_UnitTest_Generator_Status::get(),
+			'date_created' => GF_UnitTest_Generator_Date_Created::get(),
 		);
 	}
 
@@ -267,6 +424,7 @@ class GF_UnitTest_Factory_For_Form extends WP_UnitTest_Factory_For_Thing {
 	}
 
 	function create_object( $file, $parent = 0, $args = array() ) {
+		$args = wp_parse_args( $args, $this->default_generation_definitions );
 		return GFAPI::add_form( $args );
 	}
 
