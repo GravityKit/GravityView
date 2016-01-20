@@ -784,7 +784,7 @@ class GravityView_Ajax {
 
 
 	/**
-	 * Returns widget/field options default values (when adding a new widget to the layout)
+	 * Returns widget/field options default values (when adding a new widget or field to the layout)
 	 * AJAX callback
 	 * @access public
 	 * @return void
@@ -838,6 +838,44 @@ class GravityView_Ajax {
 
 
 	/**
+	 * This function will build a complete list of all the possible widget/fields options input types
+	 * Depends on:
+	 *  - form_id
+	 *  - template_id
+	 *
+	 * When user changes the form or the template, admin client will need to pull this list again
+	 *
+	 */
+	function get_item_options_input_types() {
+		$this->check_ajax_nonce();
+		error_log( '$_POST:' . print_r( $_POST , true ) );
+		$output = array();
+
+		if( empty( $_POST['form_id'] ) || empty( $_POST['template_id'] ) ) {
+			do_action( 'gravityview_log_error', '[get_item_options_input_types] Form ID or Template ID not present on $_POST request. ', $_POST );
+			$this->_exit( false );
+		}
+
+		// get the active form
+
+		// get the default settings
+
+		// run through all the form fields to  apply_filter to get all the special field inputs
+
+		// run through all the registered wigets to get the special inputs
+
+		// run through the active template to get the special inputs
+
+
+
+		wp_send_json_success( $output );
+	}
+
+
+	/**
+	 *
+	 * OLD AND SLOW (TO BE REMOVED)
+	 *
 	 * Returns field options - called by ajax when dropping fields into active areas
 	 * AJAX callback
 	 *
@@ -846,7 +884,6 @@ class GravityView_Ajax {
 	 */
 	function get_field_settings() {
 		$this->check_ajax_nonce();
-
 
 		$output = '';
 		if( empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) ) {

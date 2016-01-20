@@ -5064,6 +5064,8 @@ var PanelStore = assign({}, EventEmitter.prototype, {
 
 ViewDispatcher.register(function (action) {
 
+    console.log(action);
+
     switch (action.actionType) {
 
         case ViewConstants.PANEL_OPEN:

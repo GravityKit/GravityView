@@ -1203,6 +1203,7 @@ class GravityView_Admin_Views {
 
 	}
 
+
 	static function get_admin_i18n_labels() {
 		return array(
 
