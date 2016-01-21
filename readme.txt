@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.16.1 on January 21 =
+
 * Fixed: GravityView prevented Gravity Forms translations from loading
 * Fixed: Field Width setting was visible in Edit Entry
 * Fixed: Don't display embedded Gravity Forms forms when editing an entry in GravityView
