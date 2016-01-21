@@ -93,6 +93,10 @@ class GravityView_Edit_Entry_Render {
         /** @define "GRAVITYVIEW_DIR" "../../../" */
         include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 
+        // Don't display an embedded form when editing an entry
+        add_action( 'wp_head', array( $this, 'prevent_render_form' ) );
+        add_action( 'wp_footer', array( $this, 'prevent_render_form' ) );
+
         // Stop Gravity Forms processing what is ours!
         add_filter( 'wp', array( $this, 'prevent_maybe_process_form'), 8 );
 
@@ -111,7 +115,25 @@ class GravityView_Edit_Entry_Render {
 
     }
 
-
+    /**
+     * Don't show any forms embedded on a page when GravityView is in Edit Entry mode
+     *
+     * Adds a `__return_empty_string` filter on the Gravity Forms shortcode on the `wp_head` action
+     * And then removes it on the `wp_footer` action
+     *
+     * @since 1.16.1
+     *
+     * @return void
+     */
+    function prevent_render_form() {
+        if( $this->is_edit_entry() ) {
+            if( 'wp_head' === current_filter() ) {
+                add_filter( 'gform_shortcode_form', '__return_empty_string' );
+            } else {
+                remove_filter( 'gform_shortcode_form', '__return_empty_string' );
+            }
+        }
+    }
 
     /**
      * Because we're mimicking being a front-end Gravity Forms form while using a Gravity Forms

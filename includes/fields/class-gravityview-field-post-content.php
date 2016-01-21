@@ -15,6 +15,11 @@ class GravityView_Field_Post_Content extends GravityView_Field {
 
 	var $group = 'post';
 
+	public function __construct() {
+		$this->label = esc_html__( 'Post Content', 'gravityview' );
+		parent::__construct();
+	}
+
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		unset( $field_options['show_as_link'] );

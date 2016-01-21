@@ -25,8 +25,8 @@ class GravityView_Field_Payment_Date extends GravityView_Field_Date_Created {
 
 		parent::__construct();
 
-		$this->label = esc_attr__( 'Payment Date', 'gravityview' );
-		$this->description = esc_attr__( 'The date the payment was received.', 'gravityview' );
+		$this->label = esc_html__( 'Payment Date', 'gravityview' );
+		$this->description = esc_html__( 'The date the payment was received.', 'gravityview' );
 	}
 }
 

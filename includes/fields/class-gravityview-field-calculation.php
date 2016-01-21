@@ -20,6 +20,8 @@ class GravityView_Field_Calculation extends GravityView_Field {
 	 */
 	public function __construct() {
 
+		$this->label = esc_html__( 'Calculation', 'gravityview' );
+
 		add_filter( 'gravityview_blacklist_field_types', array( $this, 'blacklist_field_types' ), 10, 2 );
 
 		parent::__construct();

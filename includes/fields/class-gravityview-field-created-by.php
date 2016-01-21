@@ -16,7 +16,7 @@ class GravityView_Field_Created_By extends GravityView_Field {
 	var $_custom_merge_tag = 'created_by';
 
 	public function __construct() {
-		$this->label = esc_attr__( 'Created By', 'gravityview' );
+		$this->label = esc_html__( 'Created By', 'gravityview' );
 		parent::__construct();
 	}
 

@@ -15,6 +15,10 @@ class GravityView_Post_Excerpt extends GravityView_Field {
 
 	var $group = 'post';
 
+	public function __construct() {
+		$this->label = esc_html__( 'Post Excerpt', 'gravityview' );
+		parent::__construct();
+	}
 }
 
 new GravityView_Post_Excerpt;

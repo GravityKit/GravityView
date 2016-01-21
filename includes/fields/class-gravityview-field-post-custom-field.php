@@ -15,6 +15,11 @@ class GravityView_Field_Post_Custom_Field extends GravityView_Field {
 
 	var $group = 'post';
 
+	public function __construct() {
+		$this->label = esc_html__( 'Post Custom Field', 'gravityview' );
+		parent::__construct();
+	}
+
 }
 
 new GravityView_Field_Post_Custom_Field;

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2016-01-14 04:41+0000\n"
+"PO-Revision-Date: 2016-01-21 05:15+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Swedish (http://www.transifex.com/katzwebservices/gravityview/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -257,6 +257,7 @@ msgid "Buy Now"
 msgstr "Köp nu"
 
 #: includes/admin/metaboxes/views/select-template.php:35
+#: includes/fields/class-gravityview-field-select.php:19
 #: includes/widgets/search-widget/class-search-widget.php:125
 msgid "Select"
 msgstr "Välj"
@@ -282,7 +283,7 @@ msgstr "Flera inlägg"
 #: includes/class-gravityview-entry-link-shortcode.php:205
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:528
+#: includes/extensions/edit-entry/class-edit-entry-render.php:550
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
 msgstr "Redigera inlägg"
@@ -358,17 +359,17 @@ msgid "(no title)"
 msgstr "(ingen titel)"
 
 #: includes/class-admin-add-shortcode.php:138
-#: includes/class-admin-views.php:1010
+#: includes/class-admin-views.php:1019
 #: includes/extensions/edit-entry/partials/form-buttons.php:32
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: includes/class-admin-add-shortcode.php:184
-#: includes/class-admin-views.php:1014
+#: includes/class-admin-add-shortcode.php:183
+#: includes/class-admin-views.php:1023
 msgid "Loading&hellip;"
 msgstr "Laddar&hellip;"
 
-#: includes/class-admin-add-shortcode.php:185
+#: includes/class-admin-add-shortcode.php:184
 msgid "Please select a View"
 msgstr "Välj en Vy"
 
@@ -543,59 +544,59 @@ msgstr ""
 msgid "Preview this form"
 msgstr "Förhandsgranska detta formulär"
 
-#: includes/class-admin-views.php:603
+#: includes/class-admin-views.php:611
 msgid "+ Add All Fields"
 msgstr "+ Lägg till alla fält"
 
-#: includes/class-admin-views.php:604
+#: includes/class-admin-views.php:612
 msgid "Add all the available fields at once."
 msgstr "Lägg till allt tillgängliga fält på en gång."
 
-#: includes/class-admin-views.php:654
+#: includes/class-admin-views.php:662
 #: includes/widgets/search-widget/class-search-widget.php:235
 msgid "Entry ID"
 msgstr "Fält-ID"
 
-#: includes/class-admin-views.php:656
+#: includes/class-admin-views.php:664
 msgid "The unique ID of the entry."
 msgstr "Inläggets unika ID."
 
-#: includes/class-admin-views.php:659
+#: includes/class-admin-views.php:667
 #: includes/widgets/search-widget/class-search-widget.php:231
 msgid "Entry Date"
 msgstr "Inläggsdatum"
 
-#: includes/class-admin-views.php:660
+#: includes/class-admin-views.php:668
 #: includes/fields/class-gravityview-field-date-created.php:26
 msgid "The date the entry was created."
 msgstr "Datum inlägget skapades."
 
-#: includes/class-admin-views.php:664
+#: includes/class-admin-views.php:672
 #: includes/fields/class-gravityview-field-source-url.php:20
 msgid "Source URL"
 msgstr "Käll-URL"
 
-#: includes/class-admin-views.php:666
+#: includes/class-admin-views.php:674
 msgid "The URL of the page where the form was submitted."
 msgstr "URL:en till sidan där formuläret fylldes i."
 
-#: includes/class-admin-views.php:669
+#: includes/class-admin-views.php:677
 msgid "User IP"
 msgstr "Användar-IP"
 
-#: includes/class-admin-views.php:671
+#: includes/class-admin-views.php:679
 msgid "The IP Address of the user who created the entry."
 msgstr "Användarens IP-adress som skapade fältet."
 
-#: includes/class-admin-views.php:674
+#: includes/class-admin-views.php:682
 msgid "User"
 msgstr "Användare"
 
-#: includes/class-admin-views.php:676
+#: includes/class-admin-views.php:684
 msgid "Details of the logged-in user who created the entry (if any)."
 msgstr "Detaljer för den inloggade användare som skapade inlägget (om några finns)."
 
-#: includes/class-admin-views.php:683
+#: includes/class-admin-views.php:691
 #: includes/fields/class-gravityview-field-custom.php:33
 #: includes/fields/class-gravityview-field-custom.php:48
 #: includes/widgets/class-gravityview-widget-custom-content.php:30
@@ -603,85 +604,85 @@ msgstr "Detaljer för den inloggade användare som skapade inlägget (om några 
 msgid "Custom Content"
 msgstr "Eget innehåll"
 
-#: includes/class-admin-views.php:685
+#: includes/class-admin-views.php:693
 msgid "Insert custom text or HTML."
 msgstr "Lägg in text eller HTML."
 
-#: includes/class-admin-views.php:692
+#: includes/class-admin-views.php:700
 #: includes/fields/class-gravityview-field-other-entries.php:25
 msgid "Other Entries"
 msgstr ""
 
-#: includes/class-admin-views.php:694
+#: includes/class-admin-views.php:702
 #: includes/fields/class-gravityview-field-other-entries.php:26
 msgid "Display other entries created by the entry creator."
 msgstr ""
 
-#: includes/class-admin-views.php:702
+#: includes/class-admin-views.php:710
 #: includes/fields/class-gravityview-field-entry-link.php:32
 msgid "Link to Entry"
 msgstr "Länk till inlägg"
 
-#: includes/class-admin-views.php:703
+#: includes/class-admin-views.php:711
 #: includes/fields/class-gravityview-field-entry-link.php:33
 msgid "A dedicated link to the single entry with customizable text."
 msgstr "En länk till det enskilda inlägget med valbar text."
 
-#: includes/class-admin-views.php:799
+#: includes/class-admin-views.php:808
 msgid "Add Widget"
 msgstr "Lägg till Widget"
 
-#: includes/class-admin-views.php:801
+#: includes/class-admin-views.php:810
 msgid "Add Field"
 msgstr "Lägg till fält"
 
-#: includes/class-admin-views.php:883
+#: includes/class-admin-views.php:892
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr "\"+ %s\" eller dra existerande %s hit."
 
-#: includes/class-admin-views.php:951
+#: includes/class-admin-views.php:960
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:952
+#: includes/class-admin-views.php:961
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1008
+#: includes/class-admin-views.php:1017
 msgid "Enter View name here"
 msgstr "Namn på Vyn"
 
-#: includes/class-admin-views.php:1009
+#: includes/class-admin-views.php:1018
 msgid "Close"
 msgstr "Stäng"
 
-#: includes/class-admin-views.php:1011
+#: includes/class-admin-views.php:1020
 msgid "Continue"
 msgstr "Fortsätt"
 
-#: includes/class-admin-views.php:1012
+#: includes/class-admin-views.php:1021
 msgid "Ok"
 msgstr "Ok"
 
-#: includes/class-admin-views.php:1013
+#: includes/class-admin-views.php:1022
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr "Ett fel uppstod när Vyn skapades. Kolla instöllningarna eller kontakta GravityViews support."
 
-#: includes/class-admin-views.php:1015
+#: includes/class-admin-views.php:1024
 msgid "There was an error loading dynamic content."
 msgstr "Ett fel uppstod när dynamiskt innehåll skulle laddas."
 
-#: includes/class-admin-views.php:1016
+#: includes/class-admin-views.php:1025
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr "Ett fel uppstod när fältet skulle läggas till. Försök igen eller kontakta GravityViews support."
 
-#: includes/class-admin-views.php:1017
+#: includes/class-admin-views.php:1026
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -718,23 +719,19 @@ msgstr "Tack för att du installerade GravityView. Visa dina Gravity Forms-inlä
 msgid "List of Changes"
 msgstr "Lista över ändringar"
 
-#: includes/class-admin-welcome.php:257
-msgid "What&rsquo;s New"
-msgstr ""
-
-#: includes/class-admin-welcome.php:677
+#: includes/class-admin-welcome.php:481
 msgid "GravityView is brought to you by:"
 msgstr "GravityView untvecklas av:"
 
-#: includes/class-admin-welcome.php:702
+#: includes/class-admin-welcome.php:506
 msgid "Contributors"
 msgstr "Medhjälpare"
 
-#: includes/class-admin-welcome.php:723
+#: includes/class-admin-welcome.php:527
 msgid "Want to contribute?"
 msgstr "Vill du bidra?"
 
-#: includes/class-admin-welcome.php:724
+#: includes/class-admin-welcome.php:528
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -886,11 +883,11 @@ msgstr ""
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1124 includes/class-data.php:615
+#: includes/class-common.php:1124 includes/class-data.php:618
 msgid "Default"
 msgstr "Standard"
 
-#: includes/class-common.php:1167 includes/class-data.php:616
+#: includes/class-common.php:1167 includes/class-data.php:619
 #: includes/fields/class-gravityview-field-date-created.php:25
 msgid "Date Created"
 msgstr "Datum inlägget skapades"
@@ -899,198 +896,198 @@ msgstr "Datum inlägget skapades"
 msgid "Email hidden; Javascript is required."
 msgstr "E-post dold; Javascript krävs."
 
-#: includes/class-data.php:458
+#: includes/class-data.php:461
 msgid "The ID is required."
 msgstr ""
 
-#: includes/class-data.php:466
+#: includes/class-data.php:469
 msgid ""
 "You did not enter a number. The value entered should be a number, "
 "representing the ID of the post or page the View is embedded on."
 msgstr ""
 
-#: includes/class-data.php:469
+#: includes/class-data.php:472
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:352
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:219
 msgid "Learn more&hellip;"
 msgstr ""
 
-#: includes/class-data.php:477
+#: includes/class-data.php:480
 msgid "There is no post or page with that ID."
 msgstr ""
 
-#: includes/class-data.php:487
+#: includes/class-data.php:490
 msgid ""
 "The Post ID entered is not valid. You may have entered a post or page that "
 "does not contain the selected View. Make sure the post contains the "
 "following shortcode: %s"
 msgstr ""
 
-#: includes/class-data.php:495
+#: includes/class-data.php:498
 msgid "The ID is already a View."
 msgstr ""
 
-#: includes/class-data.php:546
+#: includes/class-data.php:549
 msgid "View ID"
 msgstr "Vy-ID"
 
-#: includes/class-data.php:554
+#: includes/class-data.php:557
 msgid "Number of entries per page"
 msgstr "Antal inlägg per sida"
 
-#: includes/class-data.php:562
+#: includes/class-data.php:565
 msgid "Enable lightbox for images"
 msgstr "Aktivera lightbox för bilder"
 
-#: includes/class-data.php:570
+#: includes/class-data.php:573
 msgid "Show only approved entries"
 msgstr "Visa endast godkända inlägg"
 
-#: includes/class-data.php:577
+#: includes/class-data.php:580
 msgid "Hide View data until search is performed"
 msgstr ""
 
-#: includes/class-data.php:580
+#: includes/class-data.php:583
 msgid ""
 "When enabled it will only show any View entries after a search is performed."
 msgstr ""
 
-#: includes/class-data.php:585
+#: includes/class-data.php:588
 msgid "Hide empty fields"
 msgstr "Dölj tomma fält"
 
-#: includes/class-data.php:592
+#: includes/class-data.php:595
 msgid "Allow User Edit"
 msgstr "Tillåt redigering"
 
-#: includes/class-data.php:594
+#: includes/class-data.php:597
 msgid "Allow logged-in users to edit entries they created."
 msgstr "Tillåt inloggade användare att redigera inlägg de skapat."
 
-#: includes/class-data.php:596
+#: includes/class-data.php:599
 msgid ""
 "Display \"Edit Entry\" fields to non-administrator users if they created the"
 " entry. Edit Entry fields will always be displayed to site administrators."
 msgstr "Visa \"Redigera inlägg\" för inläggets skapare även om hen inte är administratör. Visas alltid för administratörer."
 
-#: includes/class-data.php:601
+#: includes/class-data.php:604
 msgid "Allow User Delete"
 msgstr "Tillåt radering av användare"
 
-#: includes/class-data.php:603
+#: includes/class-data.php:606
 msgid "Allow logged-in users to delete entries they created."
 msgstr "Tillåt inloggade användare att redigera inlägg de skapat."
 
-#: includes/class-data.php:605
+#: includes/class-data.php:608
 msgid ""
 "Display \"Delete Entry\" fields to non-administrator users if they created "
 "the entry. Delete Entry fields will always be displayed to site "
 "administrators."
 msgstr "Visa \"Radera inlägg\" för inläggets skapare även om hen inte är administratör. Visas alltid för administratörer."
 
-#: includes/class-data.php:610
+#: includes/class-data.php:613
 msgid "Sort by field"
 msgstr "Sortera efter fält"
 
-#: includes/class-data.php:621
+#: includes/class-data.php:624
 msgid "Sort direction"
 msgstr "Sorteringsriktning"
 
-#: includes/class-data.php:626
+#: includes/class-data.php:629
 msgid "ASC"
 msgstr "Stigande"
 
-#: includes/class-data.php:627
+#: includes/class-data.php:630
 msgid "DESC"
 msgstr "Fallande"
 
-#: includes/class-data.php:633
+#: includes/class-data.php:636
 msgid "Enable sorting by column"
 msgstr ""
 
-#: includes/class-data.php:634
+#: includes/class-data.php:637
 msgid "Column Sorting"
 msgstr ""
 
-#: includes/class-data.php:643
+#: includes/class-data.php:646
 msgid "Filter by Start Date"
 msgstr "Filtrera på startdatum"
 
-#: includes/class-data.php:645
+#: includes/class-data.php:648
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
 msgstr "Visa inlägg gjorda efter detta datum. Stödjer relativa datum så som \"-1 vecka\" eller \"-1 månad\"."
 
-#: includes/class-data.php:652
+#: includes/class-data.php:655
 msgid "Filter by End Date"
 msgstr "Filtrera på inläggsdatum"
 
-#: includes/class-data.php:654
+#: includes/class-data.php:657
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
 msgstr "Visa inlägg gjorda före detta datum. Stödjer relativa datum så som \"nu\" eller \"-3 dagar\"."
 
-#: includes/class-data.php:661
+#: includes/class-data.php:664
 msgid "CSS Class"
 msgstr "CSS-klass"
 
-#: includes/class-data.php:662
+#: includes/class-data.php:665
 msgid "CSS class to add to the wrapping HTML container."
 msgstr "CSS-klass att lägga till på wrapperns container."
 
-#: includes/class-data.php:669
+#: includes/class-data.php:672
 msgid "Search Value"
 msgstr "Sök värde"
 
-#: includes/class-data.php:670
+#: includes/class-data.php:673
 msgid "Define a default search value for the View"
 msgstr "Definiera ett sökvärde för Vyn"
 
-#: includes/class-data.php:677
+#: includes/class-data.php:680
 #: includes/widgets/search-widget/class-search-widget.php:153
 msgid "Search Field"
 msgstr "Sökfält"
 
-#: includes/class-data.php:678
+#: includes/class-data.php:681
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
 msgstr "Om ett sökvärde är satt kan du definiera ett specifikt fält att söka i. Annars görs sökningen i alla fält."
 
-#: includes/class-data.php:685
+#: includes/class-data.php:688
 msgid "Single Entry Title"
 msgstr "Titel för enskilt inlägg"
 
-#: includes/class-data.php:687
+#: includes/class-data.php:690
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and Single"
 " Entry views."
 msgstr "Välj en titel på sidan när en enskild Vy visas. Om du inte gör något val kommer titeln att vara samma både för listan över inlägg och för det enskilda inlägget."
 
-#: includes/class-data.php:694
+#: includes/class-data.php:697
 msgid "Back Link Label"
 msgstr "Text för tillbakalänk"
 
-#: includes/class-data.php:696
+#: includes/class-data.php:699
 msgid "The text of the link that returns to the multiple entries view."
 msgstr "Text för länken som leder tillbaka till inläggslistan."
 
-#: includes/class-data.php:703
+#: includes/class-data.php:706
 msgid "Prevent Direct Access"
 msgstr ""
 
-#: includes/class-data.php:705
+#: includes/class-data.php:708
 msgid "Only allow access to this View when embedded using the shortcode."
 msgstr ""
 
-#: includes/class-debug-bar.php:93
+#: includes/class-debug-bar.php:94
 msgid "Warnings"
 msgstr "Varningar"
 
-#: includes/class-debug-bar.php:102
+#: includes/class-debug-bar.php:103
 msgid "Logs"
 msgstr "Loggar"
 
@@ -1629,7 +1626,7 @@ msgid ""
 msgstr "Ändra denna inställning om du inte vill att användaren som skapade inlägget skall kunna redigera detta fält."
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:159
-#: includes/fields/class-gravityview-field.php:306
+#: includes/fields/class-gravityview-field.php:300
 msgid "Open link in a new tab or window?"
 msgstr ""
 
@@ -1637,35 +1634,35 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr "Gör fältet redigerbart för:"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:542
+#: includes/extensions/edit-entry/class-edit-entry-render.php:564
 msgid "There was a problem with your submission."
 msgstr "Det uppstod ett problem med ditt inlägg."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:542
+#: includes/extensions/edit-entry/class-edit-entry-render.php:564
 msgid "Errors have been highlighted below."
 msgstr "Fel har markerats nedan."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:548
+#: includes/extensions/edit-entry/class-edit-entry-render.php:570
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "Inlägg uppdaterat. %sTillbaka till inlägg%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1028
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1050
 msgid "Maximum number of files reached"
 msgstr "Maxgränsen för filer har uppnåtts"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1413
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1435
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "Länken till detta inlägg är ogiltig; visningstiden kan ha löpt ut."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1419
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1441
 msgid "You do not have permission to edit this entry."
 msgstr "Du har inte tillåtelse att visa detta inlägg."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1423
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1445
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "Du kan inte redigera detta inlägg eftersom det ligger i papperskorgen."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1463
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1485
 msgid "You do not have permission to edit this field."
 msgstr "Du har inte tillåtelse att redigera detta fält"
 
@@ -1683,13 +1680,31 @@ msgstr "Vill du radera denna fil permanent? Klicka 'OK' för att bekräfta"
 msgid "Ajax error while deleting field."
 msgstr "Ajax-fel när fältet togs bort."
 
-#: includes/fields/class-gravityview-field-address.php:34
+#: includes/fields/class-gravityview-field-address.php:20
+msgid "Address"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-address.php:39
 msgid "Show Map Link:"
 msgstr "Visa kart-länk"
 
-#: includes/fields/class-gravityview-field-address.php:35
+#: includes/fields/class-gravityview-field-address.php:40
 msgid "Display a \"Map It\" link below the address"
 msgstr "Visa en \"Karta\"-länk under adressen"
+
+#: includes/fields/class-gravityview-field-calculation.php:23
+msgid "Calculation"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-captcha.php:19
+msgid "CAPTCHA"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-checkbox.php:19
+#: includes/widgets/search-widget/class-search-widget.php:128
+#: includes/widgets/search-widget/class-search-widget.php:129
+msgid "Checkbox"
+msgstr "Kryssruta"
 
 #: includes/fields/class-gravityview-field-created-by.php:19
 msgid "Created By"
@@ -1735,6 +1750,10 @@ msgstr "Användarnamn (Exempel: \"nostromo\")"
 msgid "User ID # (Example: 426)"
 msgstr "Användar-ID % (Exempel: 426)"
 
+#: includes/fields/class-gravityview-field-creditcard.php:19
+msgid "Credit Card"
+msgstr ""
+
 #: includes/fields/class-gravityview-field-currency.php:27
 msgid "Currency"
 msgstr ""
@@ -1756,35 +1775,44 @@ msgid ""
 "Wrap each block of text in an HTML paragraph tag (recommended for text)."
 msgstr "Lägg varje textblock inuti en paragraf-tagg (rekommenderat för text)."
 
-#: includes/fields/class-gravityview-field-email.php:34
+#: includes/fields/class-gravityview-field-date.php:20
+#: includes/widgets/search-widget/class-search-widget.php:124
+msgid "Date"
+msgstr "Datum"
+
+#: includes/fields/class-gravityview-field-email.php:22
+msgid "Email"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-email.php:39
 msgid "Link the Email Address"
 msgstr "Länk till epostadressen"
 
-#: includes/fields/class-gravityview-field-email.php:35
+#: includes/fields/class-gravityview-field-email.php:40
 msgid "Clicking the link will generate a new email."
 msgstr "Ett klick på länken skapar ett nytt epostmeddelande."
 
-#: includes/fields/class-gravityview-field-email.php:39
+#: includes/fields/class-gravityview-field-email.php:44
 msgid "Email Subject"
 msgstr "Ämne"
 
-#: includes/fields/class-gravityview-field-email.php:41
+#: includes/fields/class-gravityview-field-email.php:46
 msgid "Set the default email subject line."
 msgstr "Vält standardtext för ämnesraden."
 
-#: includes/fields/class-gravityview-field-email.php:46
+#: includes/fields/class-gravityview-field-email.php:51
 msgid "Email Body"
 msgstr "Text"
 
-#: includes/fields/class-gravityview-field-email.php:48
+#: includes/fields/class-gravityview-field-email.php:53
 msgid "Set the default email content."
 msgstr "Välj standardinnehåll för e-postmeddelandet."
 
-#: includes/fields/class-gravityview-field-email.php:55
+#: includes/fields/class-gravityview-field-email.php:60
 msgid "Encrypt Email Address"
 msgstr "Kryptera e-postadressen"
 
-#: includes/fields/class-gravityview-field-email.php:56
+#: includes/fields/class-gravityview-field-email.php:61
 msgid ""
 "Make it harder for spammers to get email addresses from your entries. Email "
 "addresses will not be visible with Javascript disabled."
@@ -1792,15 +1820,19 @@ msgstr "Gör det svårare för spammare att komma åt e-postadresserna. E-postad
 
 #: includes/fields/class-gravityview-field-entry-link.php:49
 #: includes/fields/class-gravityview-field-source-url.php:43
-#: includes/fields/class-gravityview-field-website.php:35
+#: includes/fields/class-gravityview-field-website.php:40
 msgid "Link Text:"
 msgstr "Textlänk:"
 
-#: includes/fields/class-gravityview-field-fileupload.php:26
+#: includes/fields/class-gravityview-field-fileupload.php:17
+msgid "File Upload"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-fileupload.php:31
 msgid "Display as a Link:"
 msgstr "Visa som länk:"
 
-#: includes/fields/class-gravityview-field-fileupload.php:27
+#: includes/fields/class-gravityview-field-fileupload.php:32
 msgid "Display the uploaded files as links, rather than embedded content."
 msgstr "Visa de uppladdade filerna som länkar istället för inbäddat innehåll."
 
@@ -1816,6 +1848,14 @@ msgstr ""
 msgid ""
 "Display score as the a fraction: \"[score]/[max score]\". If unchecked, will"
 " display score."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-hidden.php:19
+msgid "Hidden"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-html.php:24
+msgid "HTML"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-is-fulfilled.php:37
@@ -1835,19 +1875,31 @@ msgstr "Uppfyllt"
 msgid "List"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-number.php:28
+#: includes/fields/class-gravityview-field-multiselect.php:19
+msgid "Multi Select"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-name.php:17
+msgid "Name"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-number.php:25
+msgid "Number"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-number.php:33
 msgid "Format number?"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-number.php:29
+#: includes/fields/class-gravityview-field-number.php:34
 msgid "Display numbers with thousands separators."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-number.php:35
+#: includes/fields/class-gravityview-field-number.php:40
 msgid "Decimals"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-number.php:36
+#: includes/fields/class-gravityview-field-number.php:41
 msgid ""
 "Precision of the number of decimal places. Leave blank to use existing "
 "precision."
@@ -1902,6 +1954,14 @@ msgstr ""
 msgid "This user has no other entries."
 msgstr ""
 
+#: includes/fields/class-gravityview-field-page.php:19
+msgid "Page"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-password.php:19
+msgid "Password"
+msgstr ""
+
 #: includes/fields/class-gravityview-field-payment-amount.php:27
 msgid "Payment Amount"
 msgstr "Summa"
@@ -1918,6 +1978,10 @@ msgstr ""
 msgid "Payment Method"
 msgstr "Betalningsmetod"
 
+#: includes/fields/class-gravityview-field-payment-method.php:28
+msgid "The way the entry was paid for (ie \"Credit Card\", \"PayPal\", etc.)"
+msgstr ""
+
 #: includes/fields/class-gravityview-field-payment-status.php:25
 msgid "Payment Status"
 msgstr "Betalningsstatus"
@@ -1926,6 +1990,46 @@ msgstr "Betalningsstatus"
 msgid ""
 "The current payment status of the entry (ie \"Processing\", \"Failed\", "
 "\"Cancelled\", \"Approved\")."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-phone.php:19
+msgid "Phone"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-category.php:19
+msgid "Post Category"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-content.php:19
+msgid "Post Content"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-custom-field.php:19
+msgid "Post Custom Field"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-excerpt.php:19
+msgid "Post Excerpt"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-image.php:20
+msgid "Post Image"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-tags.php:22
+msgid "Post Tags"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-title.php:22
+msgid "Post Title"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-radio.php:19
+msgid "Radio Buttons"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-section.php:22
+msgid "Section"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-source-url.php:36
@@ -1940,22 +2044,34 @@ msgstr "Visa som en länk till källans URL"
 msgid "Customize the link text. If empty, the link text will be the the URL."
 msgstr "Redigera länktexten. Om fältet lämnas tomt blir URL:en länkad."
 
-#: includes/fields/class-gravityview-field-textarea.php:31
+#: includes/fields/class-gravityview-field-text.php:19
+msgid "Single Line Text"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-textarea.php:22
+msgid "Paragraph Text"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-textarea.php:36
 msgid "Maximum words shown"
 msgstr "Max antal ord att visa"
 
-#: includes/fields/class-gravityview-field-textarea.php:32
+#: includes/fields/class-gravityview-field-textarea.php:37
 msgid ""
 "Enter the number of words to be shown. If specified it truncates the text. "
 "Leave it blank if you want to show the full text."
 msgstr "Ange antal ord som skall visas innan texten klipps. Lämna tomt för att visa hela texten."
 
-#: includes/fields/class-gravityview-field-textarea.php:39
+#: includes/fields/class-gravityview-field-textarea.php:44
 msgid "Convert text URLs to HTML links"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-textarea.php:40
+#: includes/fields/class-gravityview-field-textarea.php:45
 msgid "Converts URI, www, FTP, and email addresses in HTML links"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-time.php:56
+msgid "Time"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-transaction-id.php:27
@@ -1978,57 +2094,61 @@ msgstr ""
 msgid "Subscription"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-website.php:36
+#: includes/fields/class-gravityview-field-website.php:22
+msgid "Website"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-website.php:41
 msgid "Define custom link text. Leave blank to display the URL"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-website.php:44
+#: includes/fields/class-gravityview-field-website.php:49
 msgid "Shorten Link Display"
 msgstr "Förkorta länken"
 
-#: includes/fields/class-gravityview-field-website.php:45
+#: includes/fields/class-gravityview-field-website.php:50
 msgid "Only show the domain for a URL instead of the whole link."
 msgstr "Visa endast URL:ens domän istället för hela länken."
 
-#: includes/fields/class-gravityview-field-website.php:46
+#: includes/fields/class-gravityview-field-website.php:51
 msgid "Don&rsquo;t show the full URL, only show the domain."
 msgstr "Visa inte hela URL:en utan endast domänen."
 
-#: includes/fields/class-gravityview-field-website.php:52
+#: includes/fields/class-gravityview-field-website.php:57
 msgid "Open link in the same window?"
 msgstr "Öppna länk i samma fönster?"
 
-#: includes/fields/class-gravityview-field.php:278
+#: includes/fields/class-gravityview-field.php:272
 msgid "Link to the post"
 msgstr "Länk till inlägget"
 
-#: includes/fields/class-gravityview-field.php:279
+#: includes/fields/class-gravityview-field.php:273
 msgid "Link to the post created by the entry."
 msgstr "Länk till posten där inlägget skapades."
 
-#: includes/fields/class-gravityview-field.php:284
+#: includes/fields/class-gravityview-field.php:278
 msgid "Link to the category or tag"
 msgstr "Länk till kategori eller tagg"
 
-#: includes/fields/class-gravityview-field.php:285
+#: includes/fields/class-gravityview-field.php:279
 msgid ""
 "Link to the current category or tag. \"Link to single entry\" must be "
 "unchecked."
 msgstr "Länk till nuvarande kategori eller tagg. \"Länk till enskilt inlägg\" får inte vara ikryssad."
 
-#: includes/fields/class-gravityview-field.php:290
+#: includes/fields/class-gravityview-field.php:284
 msgid "Use the live post data"
 msgstr "Använd livedata från inlägget"
 
-#: includes/fields/class-gravityview-field.php:291
+#: includes/fields/class-gravityview-field.php:285
 msgid "Instead of using the entry data, instead use the current post data."
 msgstr "Visa data från posten istället för inlägget."
 
-#: includes/fields/class-gravityview-field.php:296
+#: includes/fields/class-gravityview-field.php:290
 msgid "Override Date Format"
 msgstr "Åsidosätt datumformat"
 
-#: includes/fields/class-gravityview-field.php:297
+#: includes/fields/class-gravityview-field.php:291
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
 msgstr "Definiera hur datumet skall visas (använder %sPHP date format%s)"
 
@@ -2334,10 +2454,6 @@ msgstr "Sökfält"
 msgid "Text"
 msgstr "Text"
 
-#: includes/widgets/search-widget/class-search-widget.php:124
-msgid "Date"
-msgstr "Datum"
-
 #: includes/widgets/search-widget/class-search-widget.php:126
 msgid "Select (multiple values)"
 msgstr "Välj (flera värden)"
@@ -2345,11 +2461,6 @@ msgstr "Välj (flera värden)"
 #: includes/widgets/search-widget/class-search-widget.php:127
 msgid "Radio"
 msgstr "Alternativ"
-
-#: includes/widgets/search-widget/class-search-widget.php:128
-#: includes/widgets/search-widget/class-search-widget.php:129
-msgid "Checkbox"
-msgstr "Kryssruta"
 
 #: includes/widgets/search-widget/class-search-widget.php:130
 msgid "Links"
@@ -2538,7 +2649,7 @@ msgctxt "Column title that shows what template is being used for Views"
 msgid "Template"
 msgstr ""
 
-#: includes/class-debug-bar.php:174
+#: includes/class-debug-bar.php:175
 msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Tom"
@@ -2632,7 +2743,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr "Inläggets skapare"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1439
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1461
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""

@@ -29,8 +29,8 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 	var $group = 'gravityview';
 
 	public function __construct() {
-		$this->label = esc_attr__( 'Link to Entry', 'gravityview' );
-		$this->description = __('A dedicated link to the single entry with customizable text.', 'gravityview');
+		$this->label = esc_html__( 'Link to Entry', 'gravityview' );
+		$this->description = esc_html__('A dedicated link to the single entry with customizable text.', 'gravityview');
 		parent::__construct();
 	}
 

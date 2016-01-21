@@ -13,6 +13,11 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 	var $group = 'advanced';
 
+	public function __construct() {
+		$this->label = esc_html__( 'File Upload', 'gravityview' );
+		parent::__construct();
+	}
+
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		unset( $field_options['search_filter'] );

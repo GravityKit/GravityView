@@ -20,6 +20,17 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.16.1 on January 21 =
+
+* Fixed: GravityView prevented Gravity Forms translations from loading
+* Fixed: Field Width setting was visible in Edit Entry
+* Fixed: Don't display embedded Gravity Forms forms when editing an entry in GravityView
+
+**__Developer Notes:__**
+
+* Added: `gravityview_excerpt_more` filter. Modify the "Read more" link used when "Maximum Words" setting is enabled and the output is truncated.
+    * Removed: `excerpt_more` filter on `textarea.php` - many themes use permalink values to generate links.
+
 = 1.16 on January 14 =
 * Happy New Year! We have big things planned for GravityView in 2016, including a new View Builder. Stay tuned :-)
 * Added: Merge Tags. [See all GravityView Merge Tags](http://docs.gravityview.co/article/76-merge-tags)

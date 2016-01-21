@@ -53,6 +53,8 @@ class GravityView_Field_Time extends GravityView_Field {
 	 */
 	public function __construct() {
 
+		$this->label = esc_html__( 'Time', 'gravityview' );
+
 		parent::__construct();
 
 		add_filter( 'gravityview/sorting/time', array( $this, 'modify_sort_id' ), 10, 2 );

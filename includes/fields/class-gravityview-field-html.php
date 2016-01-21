@@ -20,6 +20,11 @@ class GravityView_Field_HTML extends GravityView_Field {
 
 	var $group = 'standard';
 
+	public function __construct() {
+		$this->label = esc_html__( 'HTML', 'gravityview' );
+		parent::__construct();
+	}
+
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		unset ( $field_options['search_filter'], $field_options['show_as_link'] );

@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2016-01-14 04:41+0000\n"
+"PO-Revision-Date: 2016-01-21 05:15+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: English (United States) (http://www.transifex.com/katzwebservices/gravityview/language/en_US/)\n"
 "MIME-Version: 1.0\n"
@@ -255,6 +255,7 @@ msgid "Buy Now"
 msgstr ""
 
 #: includes/admin/metaboxes/views/select-template.php:35
+#: includes/fields/class-gravityview-field-select.php:19
 #: includes/widgets/search-widget/class-search-widget.php:125
 msgid "Select"
 msgstr ""
@@ -280,7 +281,7 @@ msgstr ""
 #: includes/class-gravityview-entry-link-shortcode.php:205
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:528
+#: includes/extensions/edit-entry/class-edit-entry-render.php:550
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
 msgstr ""
@@ -356,17 +357,17 @@ msgid "(no title)"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:138
-#: includes/class-admin-views.php:1010
+#: includes/class-admin-views.php:1019
 #: includes/extensions/edit-entry/partials/form-buttons.php:32
 msgid "Cancel"
 msgstr ""
 
-#: includes/class-admin-add-shortcode.php:184
-#: includes/class-admin-views.php:1014
+#: includes/class-admin-add-shortcode.php:183
+#: includes/class-admin-views.php:1023
 msgid "Loading&hellip;"
 msgstr ""
 
-#: includes/class-admin-add-shortcode.php:185
+#: includes/class-admin-add-shortcode.php:184
 msgid "Please select a View"
 msgstr ""
 
@@ -541,59 +542,59 @@ msgstr ""
 msgid "Preview this form"
 msgstr ""
 
-#: includes/class-admin-views.php:603
+#: includes/class-admin-views.php:611
 msgid "+ Add All Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:604
+#: includes/class-admin-views.php:612
 msgid "Add all the available fields at once."
 msgstr ""
 
-#: includes/class-admin-views.php:654
+#: includes/class-admin-views.php:662
 #: includes/widgets/search-widget/class-search-widget.php:235
 msgid "Entry ID"
 msgstr ""
 
-#: includes/class-admin-views.php:656
+#: includes/class-admin-views.php:664
 msgid "The unique ID of the entry."
 msgstr ""
 
-#: includes/class-admin-views.php:659
+#: includes/class-admin-views.php:667
 #: includes/widgets/search-widget/class-search-widget.php:231
 msgid "Entry Date"
 msgstr ""
 
-#: includes/class-admin-views.php:660
+#: includes/class-admin-views.php:668
 #: includes/fields/class-gravityview-field-date-created.php:26
 msgid "The date the entry was created."
 msgstr ""
 
-#: includes/class-admin-views.php:664
+#: includes/class-admin-views.php:672
 #: includes/fields/class-gravityview-field-source-url.php:20
 msgid "Source URL"
 msgstr ""
 
-#: includes/class-admin-views.php:666
+#: includes/class-admin-views.php:674
 msgid "The URL of the page where the form was submitted."
 msgstr ""
 
-#: includes/class-admin-views.php:669
+#: includes/class-admin-views.php:677
 msgid "User IP"
 msgstr ""
 
-#: includes/class-admin-views.php:671
+#: includes/class-admin-views.php:679
 msgid "The IP Address of the user who created the entry."
 msgstr ""
 
-#: includes/class-admin-views.php:674
+#: includes/class-admin-views.php:682
 msgid "User"
 msgstr ""
 
-#: includes/class-admin-views.php:676
+#: includes/class-admin-views.php:684
 msgid "Details of the logged-in user who created the entry (if any)."
 msgstr ""
 
-#: includes/class-admin-views.php:683
+#: includes/class-admin-views.php:691
 #: includes/fields/class-gravityview-field-custom.php:33
 #: includes/fields/class-gravityview-field-custom.php:48
 #: includes/widgets/class-gravityview-widget-custom-content.php:30
@@ -601,85 +602,85 @@ msgstr ""
 msgid "Custom Content"
 msgstr ""
 
-#: includes/class-admin-views.php:685
+#: includes/class-admin-views.php:693
 msgid "Insert custom text or HTML."
 msgstr ""
 
-#: includes/class-admin-views.php:692
+#: includes/class-admin-views.php:700
 #: includes/fields/class-gravityview-field-other-entries.php:25
 msgid "Other Entries"
 msgstr ""
 
-#: includes/class-admin-views.php:694
+#: includes/class-admin-views.php:702
 #: includes/fields/class-gravityview-field-other-entries.php:26
 msgid "Display other entries created by the entry creator."
 msgstr ""
 
-#: includes/class-admin-views.php:702
+#: includes/class-admin-views.php:710
 #: includes/fields/class-gravityview-field-entry-link.php:32
 msgid "Link to Entry"
 msgstr ""
 
-#: includes/class-admin-views.php:703
+#: includes/class-admin-views.php:711
 #: includes/fields/class-gravityview-field-entry-link.php:33
 msgid "A dedicated link to the single entry with customizable text."
 msgstr ""
 
-#: includes/class-admin-views.php:799
+#: includes/class-admin-views.php:808
 msgid "Add Widget"
 msgstr ""
 
-#: includes/class-admin-views.php:801
+#: includes/class-admin-views.php:810
 msgid "Add Field"
 msgstr ""
 
-#: includes/class-admin-views.php:883
+#: includes/class-admin-views.php:892
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr ""
 
-#: includes/class-admin-views.php:951
+#: includes/class-admin-views.php:960
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:952
+#: includes/class-admin-views.php:961
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1008
+#: includes/class-admin-views.php:1017
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1009
+#: includes/class-admin-views.php:1018
 msgid "Close"
 msgstr ""
 
-#: includes/class-admin-views.php:1011
+#: includes/class-admin-views.php:1020
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:1012
+#: includes/class-admin-views.php:1021
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:1013
+#: includes/class-admin-views.php:1022
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1015
+#: includes/class-admin-views.php:1024
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1016
+#: includes/class-admin-views.php:1025
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1017
+#: includes/class-admin-views.php:1026
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -716,23 +717,19 @@ msgstr ""
 msgid "List of Changes"
 msgstr ""
 
-#: includes/class-admin-welcome.php:257
-msgid "What&rsquo;s New"
-msgstr ""
-
-#: includes/class-admin-welcome.php:677
+#: includes/class-admin-welcome.php:481
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:702
+#: includes/class-admin-welcome.php:506
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:723
+#: includes/class-admin-welcome.php:527
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:724
+#: includes/class-admin-welcome.php:528
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -884,11 +881,11 @@ msgstr ""
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1124 includes/class-data.php:615
+#: includes/class-common.php:1124 includes/class-data.php:618
 msgid "Default"
 msgstr ""
 
-#: includes/class-common.php:1167 includes/class-data.php:616
+#: includes/class-common.php:1167 includes/class-data.php:619
 #: includes/fields/class-gravityview-field-date-created.php:25
 msgid "Date Created"
 msgstr ""
@@ -897,198 +894,198 @@ msgstr ""
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
-#: includes/class-data.php:458
+#: includes/class-data.php:461
 msgid "The ID is required."
 msgstr ""
 
-#: includes/class-data.php:466
+#: includes/class-data.php:469
 msgid ""
 "You did not enter a number. The value entered should be a number, "
 "representing the ID of the post or page the View is embedded on."
 msgstr ""
 
-#: includes/class-data.php:469
+#: includes/class-data.php:472
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:352
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:219
 msgid "Learn more&hellip;"
 msgstr ""
 
-#: includes/class-data.php:477
+#: includes/class-data.php:480
 msgid "There is no post or page with that ID."
 msgstr ""
 
-#: includes/class-data.php:487
+#: includes/class-data.php:490
 msgid ""
 "The Post ID entered is not valid. You may have entered a post or page that "
 "does not contain the selected View. Make sure the post contains the "
 "following shortcode: %s"
 msgstr ""
 
-#: includes/class-data.php:495
+#: includes/class-data.php:498
 msgid "The ID is already a View."
 msgstr ""
 
-#: includes/class-data.php:546
+#: includes/class-data.php:549
 msgid "View ID"
 msgstr ""
 
-#: includes/class-data.php:554
+#: includes/class-data.php:557
 msgid "Number of entries per page"
 msgstr ""
 
-#: includes/class-data.php:562
+#: includes/class-data.php:565
 msgid "Enable lightbox for images"
 msgstr ""
 
-#: includes/class-data.php:570
+#: includes/class-data.php:573
 msgid "Show only approved entries"
 msgstr ""
 
-#: includes/class-data.php:577
+#: includes/class-data.php:580
 msgid "Hide View data until search is performed"
 msgstr ""
 
-#: includes/class-data.php:580
+#: includes/class-data.php:583
 msgid ""
 "When enabled it will only show any View entries after a search is performed."
 msgstr ""
 
-#: includes/class-data.php:585
+#: includes/class-data.php:588
 msgid "Hide empty fields"
 msgstr ""
 
-#: includes/class-data.php:592
+#: includes/class-data.php:595
 msgid "Allow User Edit"
 msgstr ""
 
-#: includes/class-data.php:594
+#: includes/class-data.php:597
 msgid "Allow logged-in users to edit entries they created."
 msgstr ""
 
-#: includes/class-data.php:596
+#: includes/class-data.php:599
 msgid ""
 "Display \"Edit Entry\" fields to non-administrator users if they created the"
 " entry. Edit Entry fields will always be displayed to site administrators."
 msgstr ""
 
-#: includes/class-data.php:601
+#: includes/class-data.php:604
 msgid "Allow User Delete"
 msgstr ""
 
-#: includes/class-data.php:603
+#: includes/class-data.php:606
 msgid "Allow logged-in users to delete entries they created."
 msgstr ""
 
-#: includes/class-data.php:605
+#: includes/class-data.php:608
 msgid ""
 "Display \"Delete Entry\" fields to non-administrator users if they created "
 "the entry. Delete Entry fields will always be displayed to site "
 "administrators."
 msgstr ""
 
-#: includes/class-data.php:610
+#: includes/class-data.php:613
 msgid "Sort by field"
 msgstr ""
 
-#: includes/class-data.php:621
+#: includes/class-data.php:624
 msgid "Sort direction"
 msgstr ""
 
-#: includes/class-data.php:626
+#: includes/class-data.php:629
 msgid "ASC"
 msgstr ""
 
-#: includes/class-data.php:627
+#: includes/class-data.php:630
 msgid "DESC"
 msgstr ""
 
-#: includes/class-data.php:633
+#: includes/class-data.php:636
 msgid "Enable sorting by column"
 msgstr ""
 
-#: includes/class-data.php:634
+#: includes/class-data.php:637
 msgid "Column Sorting"
 msgstr ""
 
-#: includes/class-data.php:643
+#: includes/class-data.php:646
 msgid "Filter by Start Date"
 msgstr ""
 
-#: includes/class-data.php:645
+#: includes/class-data.php:648
 msgid ""
 "Show entries submitted after this date. Supports relative dates, such as "
 "\"-1 week\" or \"-1 month\"."
 msgstr ""
 
-#: includes/class-data.php:652
+#: includes/class-data.php:655
 msgid "Filter by End Date"
 msgstr ""
 
-#: includes/class-data.php:654
+#: includes/class-data.php:657
 msgid ""
 "Show entries submitted before this date. Supports relative dates, such as "
 "\"now\" or \"-3 days\"."
 msgstr ""
 
-#: includes/class-data.php:661
+#: includes/class-data.php:664
 msgid "CSS Class"
 msgstr ""
 
-#: includes/class-data.php:662
+#: includes/class-data.php:665
 msgid "CSS class to add to the wrapping HTML container."
 msgstr ""
 
-#: includes/class-data.php:669
+#: includes/class-data.php:672
 msgid "Search Value"
 msgstr ""
 
-#: includes/class-data.php:670
+#: includes/class-data.php:673
 msgid "Define a default search value for the View"
 msgstr ""
 
-#: includes/class-data.php:677
+#: includes/class-data.php:680
 #: includes/widgets/search-widget/class-search-widget.php:153
 msgid "Search Field"
 msgstr ""
 
-#: includes/class-data.php:678
+#: includes/class-data.php:681
 msgid ""
 "If Search Value is set, you can define a specific field to search in. "
 "Otherwise, all fields will be searched."
 msgstr ""
 
-#: includes/class-data.php:685
+#: includes/class-data.php:688
 msgid "Single Entry Title"
 msgstr ""
 
-#: includes/class-data.php:687
+#: includes/class-data.php:690
 msgid ""
 "When viewing a single entry, change the title of the page to this setting. "
 "Otherwise, the title will not change between the Multiple Entries and Single"
 " Entry views."
 msgstr ""
 
-#: includes/class-data.php:694
+#: includes/class-data.php:697
 msgid "Back Link Label"
 msgstr ""
 
-#: includes/class-data.php:696
+#: includes/class-data.php:699
 msgid "The text of the link that returns to the multiple entries view."
 msgstr ""
 
-#: includes/class-data.php:703
+#: includes/class-data.php:706
 msgid "Prevent Direct Access"
 msgstr ""
 
-#: includes/class-data.php:705
+#: includes/class-data.php:708
 msgid "Only allow access to this View when embedded using the shortcode."
 msgstr ""
 
-#: includes/class-debug-bar.php:93
+#: includes/class-debug-bar.php:94
 msgid "Warnings"
 msgstr ""
 
-#: includes/class-debug-bar.php:102
+#: includes/class-debug-bar.php:103
 msgid "Logs"
 msgstr ""
 
@@ -1627,7 +1624,7 @@ msgid ""
 msgstr ""
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:159
-#: includes/fields/class-gravityview-field.php:306
+#: includes/fields/class-gravityview-field.php:300
 msgid "Open link in a new tab or window?"
 msgstr ""
 
@@ -1635,35 +1632,35 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:542
+#: includes/extensions/edit-entry/class-edit-entry-render.php:564
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:542
+#: includes/extensions/edit-entry/class-edit-entry-render.php:564
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:548
+#: includes/extensions/edit-entry/class-edit-entry-render.php:570
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1028
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1050
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1413
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1435
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1419
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1441
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1423
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1445
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1463
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1485
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -1681,12 +1678,30 @@ msgstr ""
 msgid "Ajax error while deleting field."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-address.php:34
+#: includes/fields/class-gravityview-field-address.php:20
+msgid "Address"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-address.php:39
 msgid "Show Map Link:"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-address.php:35
+#: includes/fields/class-gravityview-field-address.php:40
 msgid "Display a \"Map It\" link below the address"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-calculation.php:23
+msgid "Calculation"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-captcha.php:19
+msgid "CAPTCHA"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-checkbox.php:19
+#: includes/widgets/search-widget/class-search-widget.php:128
+#: includes/widgets/search-widget/class-search-widget.php:129
+msgid "Checkbox"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-created-by.php:19
@@ -1733,6 +1748,10 @@ msgstr ""
 msgid "User ID # (Example: 426)"
 msgstr ""
 
+#: includes/fields/class-gravityview-field-creditcard.php:19
+msgid "Credit Card"
+msgstr ""
+
 #: includes/fields/class-gravityview-field-currency.php:27
 msgid "Currency"
 msgstr ""
@@ -1754,35 +1773,44 @@ msgid ""
 "Wrap each block of text in an HTML paragraph tag (recommended for text)."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-email.php:34
-msgid "Link the Email Address"
+#: includes/fields/class-gravityview-field-date.php:20
+#: includes/widgets/search-widget/class-search-widget.php:124
+msgid "Date"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-email.php:35
-msgid "Clicking the link will generate a new email."
+#: includes/fields/class-gravityview-field-email.php:22
+msgid "Email"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-email.php:39
+msgid "Link the Email Address"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-email.php:40
+msgid "Clicking the link will generate a new email."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-email.php:44
 msgid "Email Subject"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-email.php:41
+#: includes/fields/class-gravityview-field-email.php:46
 msgid "Set the default email subject line."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-email.php:46
+#: includes/fields/class-gravityview-field-email.php:51
 msgid "Email Body"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-email.php:48
+#: includes/fields/class-gravityview-field-email.php:53
 msgid "Set the default email content."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-email.php:55
+#: includes/fields/class-gravityview-field-email.php:60
 msgid "Encrypt Email Address"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-email.php:56
+#: includes/fields/class-gravityview-field-email.php:61
 msgid ""
 "Make it harder for spammers to get email addresses from your entries. Email "
 "addresses will not be visible with Javascript disabled."
@@ -1790,15 +1818,19 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-entry-link.php:49
 #: includes/fields/class-gravityview-field-source-url.php:43
-#: includes/fields/class-gravityview-field-website.php:35
+#: includes/fields/class-gravityview-field-website.php:40
 msgid "Link Text:"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-fileupload.php:26
+#: includes/fields/class-gravityview-field-fileupload.php:17
+msgid "File Upload"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-fileupload.php:31
 msgid "Display as a Link:"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-fileupload.php:27
+#: includes/fields/class-gravityview-field-fileupload.php:32
 msgid "Display the uploaded files as links, rather than embedded content."
 msgstr ""
 
@@ -1814,6 +1846,14 @@ msgstr ""
 msgid ""
 "Display score as the a fraction: \"[score]/[max score]\". If unchecked, will"
 " display score."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-hidden.php:19
+msgid "Hidden"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-html.php:24
+msgid "HTML"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-is-fulfilled.php:37
@@ -1833,19 +1873,31 @@ msgstr ""
 msgid "List"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-number.php:28
+#: includes/fields/class-gravityview-field-multiselect.php:19
+msgid "Multi Select"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-name.php:17
+msgid "Name"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-number.php:25
+msgid "Number"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-number.php:33
 msgid "Format number?"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-number.php:29
+#: includes/fields/class-gravityview-field-number.php:34
 msgid "Display numbers with thousands separators."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-number.php:35
+#: includes/fields/class-gravityview-field-number.php:40
 msgid "Decimals"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-number.php:36
+#: includes/fields/class-gravityview-field-number.php:41
 msgid ""
 "Precision of the number of decimal places. Leave blank to use existing "
 "precision."
@@ -1900,6 +1952,14 @@ msgstr ""
 msgid "This user has no other entries."
 msgstr ""
 
+#: includes/fields/class-gravityview-field-page.php:19
+msgid "Page"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-password.php:19
+msgid "Password"
+msgstr ""
+
 #: includes/fields/class-gravityview-field-payment-amount.php:27
 msgid "Payment Amount"
 msgstr ""
@@ -1916,6 +1976,10 @@ msgstr ""
 msgid "Payment Method"
 msgstr ""
 
+#: includes/fields/class-gravityview-field-payment-method.php:28
+msgid "The way the entry was paid for (ie \"Credit Card\", \"PayPal\", etc.)"
+msgstr ""
+
 #: includes/fields/class-gravityview-field-payment-status.php:25
 msgid "Payment Status"
 msgstr ""
@@ -1924,6 +1988,46 @@ msgstr ""
 msgid ""
 "The current payment status of the entry (ie \"Processing\", \"Failed\", "
 "\"Cancelled\", \"Approved\")."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-phone.php:19
+msgid "Phone"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-category.php:19
+msgid "Post Category"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-content.php:19
+msgid "Post Content"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-custom-field.php:19
+msgid "Post Custom Field"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-excerpt.php:19
+msgid "Post Excerpt"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-image.php:20
+msgid "Post Image"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-tags.php:22
+msgid "Post Tags"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-post-title.php:22
+msgid "Post Title"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-radio.php:19
+msgid "Radio Buttons"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-section.php:22
+msgid "Section"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-source-url.php:36
@@ -1938,22 +2042,34 @@ msgstr ""
 msgid "Customize the link text. If empty, the link text will be the the URL."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-textarea.php:31
+#: includes/fields/class-gravityview-field-text.php:19
+msgid "Single Line Text"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-textarea.php:22
+msgid "Paragraph Text"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-textarea.php:36
 msgid "Maximum words shown"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-textarea.php:32
+#: includes/fields/class-gravityview-field-textarea.php:37
 msgid ""
 "Enter the number of words to be shown. If specified it truncates the text. "
 "Leave it blank if you want to show the full text."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-textarea.php:39
+#: includes/fields/class-gravityview-field-textarea.php:44
 msgid "Convert text URLs to HTML links"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-textarea.php:40
+#: includes/fields/class-gravityview-field-textarea.php:45
 msgid "Converts URI, www, FTP, and email addresses in HTML links"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-time.php:56
+msgid "Time"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-transaction-id.php:27
@@ -1976,57 +2092,61 @@ msgstr ""
 msgid "Subscription"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-website.php:36
+#: includes/fields/class-gravityview-field-website.php:22
+msgid "Website"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-website.php:41
 msgid "Define custom link text. Leave blank to display the URL"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-website.php:44
+#: includes/fields/class-gravityview-field-website.php:49
 msgid "Shorten Link Display"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-website.php:45
+#: includes/fields/class-gravityview-field-website.php:50
 msgid "Only show the domain for a URL instead of the whole link."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-website.php:46
+#: includes/fields/class-gravityview-field-website.php:51
 msgid "Don&rsquo;t show the full URL, only show the domain."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-website.php:52
+#: includes/fields/class-gravityview-field-website.php:57
 msgid "Open link in the same window?"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:278
+#: includes/fields/class-gravityview-field.php:272
 msgid "Link to the post"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:279
+#: includes/fields/class-gravityview-field.php:273
 msgid "Link to the post created by the entry."
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:284
+#: includes/fields/class-gravityview-field.php:278
 msgid "Link to the category or tag"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:285
+#: includes/fields/class-gravityview-field.php:279
 msgid ""
 "Link to the current category or tag. \"Link to single entry\" must be "
 "unchecked."
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:290
+#: includes/fields/class-gravityview-field.php:284
 msgid "Use the live post data"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:291
+#: includes/fields/class-gravityview-field.php:285
 msgid "Instead of using the entry data, instead use the current post data."
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:296
+#: includes/fields/class-gravityview-field.php:290
 msgid "Override Date Format"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:297
+#: includes/fields/class-gravityview-field.php:291
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
 msgstr ""
 
@@ -2332,21 +2452,12 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:124
-msgid "Date"
-msgstr ""
-
 #: includes/widgets/search-widget/class-search-widget.php:126
 msgid "Select (multiple values)"
 msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:127
 msgid "Radio"
-msgstr ""
-
-#: includes/widgets/search-widget/class-search-widget.php:128
-#: includes/widgets/search-widget/class-search-widget.php:129
-msgid "Checkbox"
 msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:130
@@ -2536,7 +2647,7 @@ msgctxt "Column title that shows what template is being used for Views"
 msgid "Template"
 msgstr ""
 
-#: includes/class-debug-bar.php:174
+#: includes/class-debug-bar.php:175
 msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr ""
@@ -2630,7 +2741,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1439
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1461
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""

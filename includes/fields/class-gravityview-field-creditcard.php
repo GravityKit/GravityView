@@ -15,6 +15,10 @@ class GravityView_Field_CreditCard extends GravityView_Field {
 
 	var $group = 'pricing';
 
+	public function __construct() {
+		$this->label = esc_html__( 'Credit Card', 'gravityview' );
+		parent::__construct();
+	}
 }
 
 new GravityView_Field_CreditCard;
