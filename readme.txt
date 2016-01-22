@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: Address fields displayed hidden inputs
+
 = 1.16.1 on January 21 =
 
 * Fixed: GravityView prevented Gravity Forms translations from loading
