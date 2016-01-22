@@ -20,6 +20,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.16.2 =
+
+* Fixed: When sorting recent entries disappeared from the view.
+
 = 1.16.1 on January 21 =
 
 * Fixed: GravityView prevented Gravity Forms translations from loading
