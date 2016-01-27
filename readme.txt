@@ -22,13 +22,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Fixed: Address fields displayed hidden inputs
 
+__Developer Notes:__
+
+* Added: `gravityview/widget/wrapper_css_class` filter to modify widget container `<div>` CSS class
+    - Added `gv-widgets-{zone}` class to wrapper (`{zone}` will be either `header` or `footer`)
+
 = 1.16.1 on January 21 =
 
 * Fixed: GravityView prevented Gravity Forms translations from loading
 * Fixed: Field Width setting was visible in Edit Entry
 * Fixed: Don't display embedded Gravity Forms forms when editing an entry in GravityView
 
-**__Developer Notes:__**
+__Developer Notes:__
 
 * Added: `gravityview_excerpt_more` filter. Modify the "Read more" link used when "Maximum Words" setting is enabled and the output is truncated.
     * Removed: `excerpt_more` filter on `textarea.php` - many themes use permalink values to generate links.
