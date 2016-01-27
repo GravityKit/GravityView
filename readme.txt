@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
     `search_all` (search everything text box), `link`, `date`, `checkbox` (list of checkboxes), `single_checkbox`, `text`, `radio`, `select`,
     `multiselect`, `date_range`, `entry_id`, `entry_date`
     - Added `gv-search-date-range` CSS class to containers that have date ranges
+    - Fixed: `<label>` `for` attribute was missing quotes
 
 = 1.16.1 on January 21 =
 
