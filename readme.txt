@@ -22,6 +22,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Fixed: Address fields displayed hidden inputs
 
+**__Developer Notes:__**
+
+* Major CSS changes for the Search Bar.
+    - Search inputs `<div>`s now have additional CSS classes based on the input type: `.gv-search-field-{input_type}` where `{input_type}` is:
+    `search_all` (search everything text box), `link`, `date`, `checkbox` (list of checkboxes), `single_checkbox`, `text`, `radio`, `select`,
+    `multiselect`, `date_range`, `entry_id`, `entry_date`
+    - Added `gv-search-date-range` CSS class to containers that have date ranges
+
 = 1.16.1 on January 21 =
 
 * Fixed: GravityView prevented Gravity Forms translations from loading
