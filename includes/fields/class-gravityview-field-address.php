@@ -19,6 +19,7 @@ class GravityView_Field_Address extends GravityView_Field {
 	public function __construct() {
 		$this->label = esc_html__( 'Address', 'gravityview' );
 		parent::__construct();
+		GravityView_Item_Settings::set_visibility_condition( 'show_map_link', 'field_type', 'is', $this->name );
 	}
 
 	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
@@ -44,6 +45,10 @@ class GravityView_Field_Address extends GravityView_Field {
 
 		return $add_options + $field_options;
 	}
+
+
+
+
 
 }
 

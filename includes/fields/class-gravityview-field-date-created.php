@@ -28,6 +28,8 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', array( $this, 'get_content' ), 10, 4 );
 
 		parent::__construct();
+
+		GravityView_Item_Settings::set_visibility_condition( 'date_display', 'field_type', 'is', $this->name );
 	}
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {

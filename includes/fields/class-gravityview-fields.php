@@ -109,4 +109,21 @@ final class GravityView_Fields {
 		}
 	}
 
+
+	public static function get_default_options( $field_name, $field_id, $template_id, $context ) {
+
+		$field = self::get( $field_name );
+
+		if( ! $field ) {
+			// $field_name is not registered.
+			return null;
+		}
+
+		return $field->get_options( $field_id, $template_id, $context );
+
+	}
+
+
+
+
 }

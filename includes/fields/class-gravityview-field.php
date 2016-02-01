@@ -106,7 +106,7 @@ abstract class GravityView_Field {
 	public function __construct() {
 
 		// Modify the field options based on the name of the field type
-		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 5 );
+		//add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 5 );
 
 		add_filter( 'gravityview/sortable/field_blacklist', array( $this, '_filter_sortable_fields' ), 1 );
 
@@ -117,6 +117,7 @@ abstract class GravityView_Field {
 
 		GravityView_Fields::register( $this );
 	}
+
 
 	/**
 	 * Match the merge tag in replacement text for the field.  DO NOT OVERRIDE.
@@ -350,12 +351,126 @@ abstract class GravityView_Field {
 	 * @param  string      $input_type    [description]
 	 * @return array                     [description]
 	 */
-	public function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+	public function field_options( $field_options, $template_id, $field_id, $context ) {
 
-		$this->_field_options = $field_options;
-		$this->_field_id = $field_id;
+		/*$this->_field_options = $field_options;
+		$this->_field_id = $field_id;*/
 
 		return $field_options;
+	}
+
+
+	public function get_options( $field_id, $template_id, $context ) {
+
+		// Default options - fields
+		$field_options = array(
+				'show_label' => array(
+						'type' => 'checkbox',
+						'label' => __( 'Show Label', 'gravityview' ),
+						'value' => true,
+				),
+				'custom_label' => array(
+						'type' => 'text',
+						'label' => __( 'Custom Label:', 'gravityview' ),
+						'value' => '',
+						'merge_tags' => true,
+				),
+				'custom_class' => array(
+						'type' => 'text',
+						'label' => __( 'Custom CSS Class:', 'gravityview' ),
+						'desc' => __( 'This class will be added to the field container', 'gravityview'),
+						'value' => '',
+						'merge_tags' => true,
+						'tooltip' => 'gv_css_merge_tags',
+				),
+				'only_loggedin' => array(
+						'type' => 'checkbox',
+						'label' => __( 'Make visible only to logged-in users?', 'gravityview' ),
+						'value' => ''
+				),
+				'only_loggedin_cap' => array(
+						'type' => 'select',
+						'label' => __( 'Make visible for:', 'gravityview' ),
+						'options' => self::get_cap_choices( $this->name, $field_id, $template_id, $context ),
+						'class' => 'widefat',
+						'value' => 'read',
+				),
+		);
+
+		// Match Table as well as DataTables
+		if( preg_match( '/table/ism', $template_id ) && 'directory' === $context ) {
+			$field_options['width'] = array(
+					'type' => 'number',
+					'label' => __('Percent Width', 'gravityview'),
+					'desc' => __( 'Leave blank for column width to be based on the field content.', 'gravityview'),
+					'class' => 'code widefat',
+					'value' => '',
+			);
+		}
+
+		/**
+		 * @filter `gravityview_template_{$field_type}_options` Filter the field options by field type. Filter names: `gravityview_template_field_options` and `gravityview_template_widget_options`
+		 * @param[in,out] array    Array of field options with `label`, `value`, `type`, `default` keys
+		 * @param[in]  string      $template_id Table slug
+		 * @param[in]  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+		 * @param[in]  string      $context     What context are we in? Example: `single` or `directory`
+		 * @param[in]  string      $input_type  (textarea, list, select, etc.)
+		 */
+		$field_options = apply_filters( 'gravityview_template_field_options', $field_options, $template_id, $field_id, $context, $this->name );
+
+		/**
+		 * @filter `gravityview_template_{$input_type}_options` Filter the field options by input type (`$input_type` examples: `textarea`, `list`, `select`, etc.)
+		 * @param[in,out] array    Array of field options with `label`, `value`, `type`, `default` keys
+		 * @param[in]  string      $template_id Table slug
+		 * @param[in]  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+		 * @param[in]  string      $context     What context are we in? Example: `single` or `directory`
+		 * @param[in]  string      $input_type  (textarea, list, select, etc.)
+		 */
+		$field_options = apply_filters( "gravityview_template_{$this->name}_options", $field_options, $template_id, $field_id, $context, $this->name );
+
+		return $this->field_options( $field_options, $template_id, $field_id, $context );
+
+	}
+
+	/**
+	 * Get capabilities options for GravityView
+	 *
+	 * Parameters are only to pass to the filter.
+	 *
+	 * @param  string $name  		Optional. (textarea, list, select, etc.)
+	 * @param  string $field_id    	Optional. GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+	 * @param  string $template_id 	Optional. Template slug
+	 * @param  string $context     	Optional. What context are we in? Example: `single` or `directory`
+	 * @return array Associative array, with the key being the capability and the value being the label shown.
+	 */
+	static public function get_cap_choices( $name = '', $field_id = '', $template_id = '', $context = '' ) {
+
+		$select_cap_choices = array(
+				'read' => __( 'Any Logged-In User', 'gravityview' ),
+				'publish_posts' => __( 'Author Or Higher', 'gravityview' ),
+				'gravityforms_view_entries' => __( 'Can View Gravity Forms Entries', 'gravityview' ),
+				'delete_others_posts' => __( 'Editor Or Higher', 'gravityview' ),
+				'gravityforms_edit_entries' => __( 'Can Edit Gravity Forms Entries', 'gravityview' ),
+				'manage_options' => __( 'Administrator', 'gravityview' ),
+		);
+
+		if( is_multisite() ) {
+			$select_cap_choices['manage_network'] = __('Multisite Super Admin', 'gravityview' );
+		}
+
+		/**
+		 * @filter `gravityview_field_visibility_caps` Modify the capabilities shown in the field dropdown
+		 * @see http://docs.gravityview.co/article/96-how-to-modify-capabilities-shown-in-the-field-only-visible-to-dropdown
+		 * @since  1.0.1
+		 * @param  array $select_cap_choices Associative rray of role slugs with labels ( `manage_options` => `Administrator` )
+		 * @param  string $template_id Optional. View slug
+		 * @param  string $field_id    Optional. GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+		 * @param  string $context     Optional. What context are we in? Example: `single` or `directory`
+		 * @param  string $input_type  Optional. (textarea, list, select, etc.)
+		 */
+		$select_cap_choices = apply_filters( 'gravityview_field_visibility_caps', $select_cap_choices, $template_id, $field_id, $context, $name );
+
+		return $select_cap_choices;
 	}
 
 }

@@ -18,6 +18,7 @@ class GravityView_Field_Created_By extends GravityView_Field {
 	public function __construct() {
 		$this->label = esc_html__( 'Created By', 'gravityview' );
 		parent::__construct();
+		GravityView_Item_Settings::set_visibility_condition( 'name_display', 'field_type', 'is', $this->name );
 	}
 
 	/**
