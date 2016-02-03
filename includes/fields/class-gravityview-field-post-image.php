@@ -19,6 +19,8 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 	public function __construct() {
 		$this->label = esc_html__( 'Post Image', 'gravityview' );
 		parent::__construct();
+		GravityView_Item_Settings::set_visibility_condition( 'link_to_post', 'field_type', 'is', $this->name );
+		GravityView_Item_Settings::set_visibility_condition( 'dynamic_data', 'field_type', 'is', $this->name );
 	}
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
