@@ -437,7 +437,15 @@ class GVCommon {
 				 */
 				$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter );
 			}
+
+			// don't send just the [mode] without any field filter.
+			if( count( $criteria['search_criteria']['field_filters'] ) === 1 && array_key_exists( 'mode' , $criteria['search_criteria']['field_filters'] ) ) {
+				unset( $criteria['search_criteria']['field_filters']['mode'] );
+			}
+
 		}
+
+
 
 		/**
 		 * Prepare date formats to be in Gravity Forms DB format;

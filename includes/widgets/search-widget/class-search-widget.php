@@ -389,9 +389,17 @@ class GravityView_Widget_Search extends GravityView_Widget {
          * @param[in] string $context Where the filter is being called from. `search` in this case.
          */
         $adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'search' );
-        $search_criteria['start_date'] = ( $adjust_tz && !empty( $curr_start ) ) ? get_gmt_from_date( $curr_start ) : $curr_start;
-        $search_criteria['end_date'] = ( $adjust_tz  && !empty( $curr_end ) ) ? get_gmt_from_date( $curr_end ) : $curr_end;
 
+
+		/**
+		 * Don't set $search_criteria['start_date'] if start_date is empty as it may lead to bad query results (GFAPI::get_entries)
+		 */
+		if( !empty( $curr_start ) ) {
+			$search_criteria['start_date'] = $adjust_tz ? get_gmt_from_date( $curr_start ) : $curr_start;
+		}
+		if( !empty( $curr_end ) ) {
+			$search_criteria['end_date'] = $adjust_tz ? get_gmt_from_date( $curr_end ) : $curr_end;
+		}
 
 		// search for a specific entry ID
 		if ( ! empty( $_GET[ 'gv_id' ] ) ) {
