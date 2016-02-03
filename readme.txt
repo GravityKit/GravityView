@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 == Changelog ==
 
 * Fixed: Address fields displayed hidden inputs
+* Fixed: Merge Tag dropdown list can be too wide when field names are long
 
 __Developer Notes:__
 
