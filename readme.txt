@@ -28,6 +28,7 @@ __Developer Notes:__
 
 * Added: `gravityview/widget/wrapper_css_class` filter to modify widget container `<div>` CSS class
     - Added `gv-widgets-{zone}` class to wrapper (`{zone}` will be either `header` or `footer`)
+* Fixed: Removed `icon` CSS class name from the table sorting icon links. Now just `gv-icon` instead of `icon gv-icon`.
 
 = 1.16.1 on January 21 =
 

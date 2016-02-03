@@ -1340,7 +1340,7 @@ class GravityView_frontend {
 
 		$sorting = GravityView_View::getInstance()->getSorting();
 
-		$class = 'gv-sort icon';
+		$class = 'gv-sort';
 
 		$sort_field_id = self::_override_sorting_id_by_field_type( $field['id'], $form['id'] );
 
