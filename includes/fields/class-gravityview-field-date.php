@@ -28,7 +28,7 @@ class GravityView_Field_Date extends GravityView_Field {
 			return $field_options;
 		}
 
-		$this->add_field_support('date_display', $field_options );
+		$this->add_field_support( 'date_display', $field_options );
 
 		return $field_options;
 	}

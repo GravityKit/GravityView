@@ -14,6 +14,7 @@ class GravityView_Field_Quiz_Score extends GravityView_Field {
 	public function __construct() {
 		$this->label = esc_html__( 'Quiz Score', 'gravityview' );
 		parent::__construct();
+		GravityView_Item_Settings::set_visibility_condition( 'quiz_use_max_score', 'field_type', 'is', $this->name );
 	}
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {

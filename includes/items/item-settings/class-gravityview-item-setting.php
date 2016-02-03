@@ -58,6 +58,12 @@ abstract class GravityView_Item_Setting {
     public $merge_tags = false;
 
     /**
+     * Show the `{all_fields}` and `{pricing_fields}` merge tags
+     * @var boolean
+     */
+    public $show_all_fields = false;
+
+    /**
      * The Gravity Forms tooltip slug for this item.
      * In the react admin this could be deprecated and if field has a description, we use it to generate a tooltip
      * @var string
@@ -87,7 +93,7 @@ abstract class GravityView_Item_Setting {
      *
      * @param $condition array The condition details
      */
-    protected function add_visibility_condition( $selector = '', $operator = '', $value = '' ) {
+    public function add_visibility_condition( $selector = '', $operator = '', $value = '' ) {
 
         if( ! self::is_valid_operator() || empty( $selector ) ) {
             return;

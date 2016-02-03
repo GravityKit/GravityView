@@ -110,6 +110,8 @@ final class GravityView_Item_Settings {
     }
 
     /**
+     * Set a visibility condition for a specific setting.
+     * If it doesn't exist try to load it.
      *
      * @param string $setting_name
      * @param string $selector
@@ -132,6 +134,18 @@ final class GravityView_Item_Settings {
         }
 
         $setting->add_visibility_condition( $selector, $operator, $value );
+
+    }
+
+    public static function set_property( $setting_name = '', $property, $value ) {
+
+        $setting = self::get( $setting_name );
+
+        if( ! $setting || ! property_exists( $setting, $property ) ) {
+            return;
+        }
+
+        $setting->{$property} = $value;
 
     }
 

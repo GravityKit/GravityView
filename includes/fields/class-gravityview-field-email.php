@@ -21,6 +21,11 @@ class GravityView_Field_Email extends GravityView_Field {
 	public function __construct() {
 		$this->label = esc_html__( 'Email', 'gravityview' );
 		parent::__construct();
+		GravityView_Item_Settings::set_visibility_condition( 'emailmailto', 'field_type', 'is', $this->name );
+		GravityView_Item_Settings::set_visibility_condition( 'emailsubject', 'field_type', 'is', $this->name );
+		GravityView_Item_Settings::set_visibility_condition( 'emailbody', 'field_type', 'is', $this->name );
+		GravityView_Item_Settings::set_visibility_condition( 'emailencrypt', 'field_type', 'is', $this->name );
+		GravityView_Item_Settings::set_visibility_condition( 'show_as_link', 'field_type', 'isnot', $this->name );
 	}
 
 	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {

@@ -57,6 +57,9 @@ class GravityView_Field_Time extends GravityView_Field {
 
 		parent::__construct();
 
+		GravityView_Item_Settings::set_visibility_condition( 'time_display', 'field_type', 'is', $this->name );
+		GravityView_Item_Settings::set_property( 'time_display', 'value', $this->_get_time_format() );
+
 		add_filter( 'gravityview/sorting/time', array( $this, 'modify_sort_id' ), 10, 2 );
 
 		add_filter('gravityview_search_criteria', array( $this, '_maybe_filter_gravity_forms_query' ), 10, 4 );

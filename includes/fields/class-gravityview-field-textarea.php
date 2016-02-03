@@ -21,6 +21,9 @@ class GravityView_Field_Textarea extends GravityView_Field {
 	public function __construct() {
 		$this->label = esc_html__( 'Paragraph Text', 'gravityview' );
 		parent::__construct();
+		GravityView_Item_Settings::set_visibility_condition( 'trim_words', 'field_type', 'is', $this->name );
+		GravityView_Item_Settings::set_visibility_condition( 'make_clickable', 'field_type', 'is', $this->name );
+
 	}
 
 	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {

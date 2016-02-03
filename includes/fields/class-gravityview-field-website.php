@@ -21,6 +21,11 @@ class GravityView_Field_Website extends GravityView_Field {
 	public function __construct() {
 		$this->label = esc_html__( 'Website', 'gravityview' );
 		parent::__construct();
+		GravityView_Item_Settings::set_visibility_condition( 'anchor_text', 'field_type', 'is', $this->name );
+		GravityView_Item_Settings::set_visibility_condition( 'truncatelink', 'field_type', 'is', $this->name );
+		GravityView_Item_Settings::set_visibility_condition( 'open_same_window', 'field_type', 'is', $this->name );
+		GravityView_Item_Settings::set_visibility_condition( 'show_as_link', 'field_type', 'isnot', $this->name );
+
 	}
 
 	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {

@@ -32,6 +32,8 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 		$this->label = esc_html__( 'Link to Entry', 'gravityview' );
 		$this->description = esc_html__('A dedicated link to the single entry with customizable text.', 'gravityview');
 		parent::__construct();
+		GravityView_Item_Settings::set_visibility_condition( 'entry_link_text', 'field_type', 'is', $this->name );
+		GravityView_Item_Settings::set_visibility_condition( 'show_as_link', 'field_type', 'isnot', $this->name );
 	}
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {

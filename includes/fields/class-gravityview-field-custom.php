@@ -32,6 +32,8 @@ class GravityView_Field_Custom extends GravityView_Field {
 	public function __construct() {
 		$this->label = esc_html__( 'Custom Content', 'gravityview' );
 		parent::__construct();
+		GravityView_Item_Settings::set_visibility_condition( 'content', 'field_type', 'is', $this->name );
+		GravityView_Item_Settings::set_visibility_condition( 'wpautop', 'field_type', 'is', $this->name );
 	}
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {

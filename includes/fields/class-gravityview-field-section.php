@@ -23,6 +23,8 @@ class GravityView_Field_Section extends GravityView_Field {
 
 		parent::__construct();
 
+		GravityView_Item_Settings::set_visibility_condition( 'show_as_link', 'field_type', 'isnot', $this->name );
+
 		add_filter( 'gravityview_field_entry_value_section', array( $this, 'prevent_empty_field' ) );
 	}
 
@@ -44,6 +46,7 @@ class GravityView_Field_Section extends GravityView_Field {
 		unset ( $field_options['search_filter'], $field_options['show_as_link'] );
 
 		// Set the default CSS class to gv-section, which applies a border and top/bottom margin
+		//todo: move this to the render of the field itself, if not specified use the default, if specified decide wether to keep the default class or not.
 		$field_options['custom_class']['value'] = 'gv-section';
 
 		return $field_options;

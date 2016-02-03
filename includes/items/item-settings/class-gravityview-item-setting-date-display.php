@@ -7,7 +7,7 @@
 
 class GravityView_Item_Setting_Date_Display extends GravityView_Item_Setting {
 
-    var $name = 'custom_class';
+    var $name = 'date_display';
 
     var $type = 'text';
 
