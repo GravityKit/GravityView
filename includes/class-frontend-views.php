@@ -657,9 +657,16 @@ class GravityView_frontend {
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.' );
 
 				/**
+				 * @filter `gravityview/render/entry/not_visible` Modify the message shown to users when the entry doesn't exist or they aren't allowed to view it.
+				 * @since 1.6
+				 * @param string $message Default: "You have attempted to view an entry that is not visible or may not exist."
+				 */
+				$message = apply_filters( 'gravityview/render/entry/not_visible', __( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview' ) );
+
+				/**
 				 * @since 1.6
 				 */
-				echo esc_attr( apply_filters( 'gravityview/render/entry/not_visible', __( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview' ) ) );
+				echo esc_attr( $message );
 
 				return null;
 			}

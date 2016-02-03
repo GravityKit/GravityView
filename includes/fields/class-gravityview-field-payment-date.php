@@ -23,6 +23,7 @@ class GravityView_Field_Payment_Date extends GravityView_Field_Date_Created {
 	 */
 	public function __construct() {
 
+		// Constructor before the variables because the class extends Date_Created
 		parent::__construct();
 
 		$this->label = esc_html__( 'Payment Date', 'gravityview' );
