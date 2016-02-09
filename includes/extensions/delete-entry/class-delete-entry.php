@@ -305,12 +305,15 @@ final class GravityView_Delete_Entry {
 	function process_delete() {
 
 		// If the form is submitted
-		if( RGForms::get("action") === "delete") {
+		if( 'delete' === RGForms::get("action") && isset( $_GET['entry_id'] ) ) {
 
-			$nonce_key = self::get_nonce_key( $_GET['entry_id'] );
+			// Make sure it's a GravityView request
+			$valid_nonce_key = wp_verify_nonce( $_GET['delete'], self::get_nonce_key( $_GET['entry_id'] ) );
 
-			// Make sure it's a valid request
-			check_admin_referer( $nonce_key, 'delete' );
+			if( ! $valid_nonce_key ) {
+				do_action('gravityview_log_debug', __METHOD__ . ' Delete entry not processed: nonce validation failed.' );
+				return;
+			}
 
 			// Get the entry slug
 			$entry_slug = esc_attr( $_GET['entry_id'] );
