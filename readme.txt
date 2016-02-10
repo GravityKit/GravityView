@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.4
+Tested up to: 4.4.2
 Stable tag: trunk
 Contributors: katzwebservices, luistinygod
 License: GPL 3 or higher
@@ -23,11 +23,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Address fields displayed hidden inputs
 * Fixed: Merge Tag dropdown list can be too wide when field names are long
 * Fixed: When sorting recent entries disappeared from the view.
+* Fixed: Zero values not appearing in Edit Entry
 
 __Developer Notes:__
 
 * Added: `gravityview/widget/wrapper_css_class` filter to modify widget container `<div>` CSS class
     - Added `gv-widgets-{zone}` class to wrapper (`{zone}` will be either `header` or `footer`)
+* Fixed: Conflict with some plugins when `?action=delete` is processed in the Admin ([#624](https://github.com/gravityview/GravityView/issues/624), reported by [dcavins](https://github.com/dcavins))
 * Fixed: Removed `icon` CSS class name from the table sorting icon links. Now just `gv-icon` instead of `icon gv-icon`.
 * Fixed: "Clear" search link now set to `display: inline-block` instead of `display: block`
 
