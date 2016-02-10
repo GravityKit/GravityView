@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.4
+Tested up to: 4.4.2
 Stable tag: trunk
 Contributors: katzwebservices, luistinygod
 License: GPL 3 or higher
@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Address fields displayed hidden inputs
 * Fixed: Merge Tag dropdown list can be too wide when field names are long
 * Fixed: When sorting recent entries disappeared from the view.
+* Fixed: Zero values not appearing in Edit Entry
 
 __Developer Notes:__
 
