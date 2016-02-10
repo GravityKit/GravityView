@@ -222,12 +222,42 @@ class GravityView_Edit_Entry_Render {
             return;
         }
 
+        $this->form_prepare_for_edit();
+
         $this->print_scripts();
 
         $this->process_save();
 
         $this->edit_entry_form();
 
+    }
+
+    /**
+     *
+     */
+    function form_prepare_for_edit() {
+
+        // Prevent entry limit from running when editing an entry, also
+        // prevent form scheduling from preventing editing
+        unset( $this->form['limitEntries'], $this->form['scheduleForm'] );
+
+        // Remove non editable fields and prepare the editable ones
+        foreach( $this->form['fields'] as $key => $field ) {
+
+            if( GravityView_Fields::is_editable( $field ) ) {
+                /**
+                 * @filter `gravityview/edit_entry/prepare_form_field/{$field->type}` Modify the field before used on the edit entry process
+                 * @param $field GF_Field object
+                 */
+                $this->form['fields'][ $key ] = apply_filters( "gravityview/edit_entry/prepare_form_field/{$field->type}", $field, $this->view_id );
+            } else {
+                unset( $this->form['fields'][ $key ] );
+            }
+
+        }
+
+        // Hide fields depending on Edit Entry configuration
+        $this->form['fields'] = $this->get_configured_edit_fields( $this->form, $this->view_id );
     }
 
 
@@ -240,7 +270,7 @@ class GravityView_Edit_Entry_Render {
 
         wp_register_script( 'gform_gravityforms', GFCommon::get_base_url().'/js/gravityforms.js', array( 'jquery', 'gform_json', 'gform_placeholder', 'sack', 'plupload-all', 'gravityview-fe-view' ) );
 
-        GFFormDisplay::enqueue_form_scripts($gravityview_view->getForm(), false);
+        GFFormDisplay::enqueue_form_scripts( $gravityview_view->getForm(), false);
 
         // Sack is required for images
         wp_print_scripts( array( 'sack', 'gform_gravityforms' ) );
@@ -1036,6 +1066,7 @@ class GravityView_Edit_Entry_Render {
     function validate() {
 
         // If using GF User Registration Add-on, remove the validation step, otherwise generates error when updating the entry
+        //todo: test this against new GF User Registration version 3.1
         if ( class_exists( 'GFUser' ) ) {
             remove_filter( 'gform_validation', array( 'GFUser', 'user_registration_validation' ) );
         }
@@ -1050,13 +1081,6 @@ class GravityView_Edit_Entry_Render {
         // Needed by the validate funtion
         $failed_validation_page = NULL;
         $field_values = RGForms::post( 'gform_field_values' );
-
-        // Prevent entry limit from running when editing an entry, also
-        // prevent form scheduling from preventing editing
-        unset( $this->form['limitEntries'], $this->form['scheduleForm'] );
-
-        // Hide fields depending on Edit Entry settings
-        $this->form['fields'] = $this->get_configured_edit_fields( $this->form, $this->view_id );
 
         $this->is_valid = GFFormDisplay::validate( $this->form, $field_values, 1, $failed_validation_page );
 
@@ -1236,9 +1260,6 @@ class GravityView_Edit_Entry_Render {
         // If edit tab not yet configured, show all fields
         $edit_fields = !empty( $properties['edit_edit-fields'] ) ? $properties['edit_edit-fields'] : NULL;
 
-	    // Show hidden fields as text fields
-	    $form = $this->fix_hidden_fields( $form );
-
         // Hide fields depending on admin settings
         $fields = $this->filter_fields( $form['fields'], $edit_fields );
 
@@ -1248,26 +1269,6 @@ class GravityView_Edit_Entry_Render {
         return $fields;
     }
 
-	/**
-	 * @since 1.9.2
-	 *
-	 * @param $fields
-	 *
-	 * @return mixed
-	 */
-	private function fix_hidden_fields( $form ) {
-
-		/** @var GF_Field $field */
-		foreach( $form['fields'] as $key => $field ) {
-			if( 'hidden' === $field->type ) {
-				$text_field = new GF_Field_Text( $field );
-				$text_field->type = 'text';
-				$form['fields'][ $key ] = $text_field;
-			}
-		}
-
-		return $form;
-	}
 
 
     /**
@@ -1289,10 +1290,6 @@ class GravityView_Edit_Entry_Render {
 
         $edit_fields = array();
 
-        $field_type_blacklist = array(
-            'page',
-        );
-
 	    /**
 	     * @filter `gravityview/edit_entry/hide-product-fields` Hide product fields from being editable.
 	     * @since 1.9.1
@@ -1306,7 +1303,7 @@ class GravityView_Edit_Entry_Render {
             $field_type_blacklist[] = 'product';
             $field_type_blacklist[] = 'total';
             $field_type_blacklist[] = 'shipping';
-            $field_type_blacklist[] = 'calculation'; //todo: this field type doesn't exist ?
+            $field_type_blacklist[] = 'calculation';
 	    }
 
         // First, remove blacklist or calculation fields

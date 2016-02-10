@@ -64,6 +64,12 @@ abstract class GravityView_Field {
 	public $is_numeric;
 
 	/**
+	 * @type boolean Can the field be edit?
+	 * @since 1.16.2
+	 */
+	public $is_editable = true;
+
+	/**
 	 * @internal Not yet implemented
 	 * @todo implement supports_context() method
 	 * The contexts in which a field is available. Some fields aren't editable, for example.
@@ -355,6 +361,10 @@ abstract class GravityView_Field {
 		$this->_field_id = $field_id;
 
 		return $field_options;
+	}
+
+	public function is_editable() {
+		return $this->is_editable;
 	}
 
 }

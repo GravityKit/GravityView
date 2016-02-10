@@ -129,4 +129,14 @@ final class GravityView_Fields {
 		}
 	}
 
+
+	/**
+	 * @param $field GF_Field object
+	 */
+	public static function is_editable( $field ) {
+		$gv_field = self::get( $field->type );
+		return $gv_field->is_editable();
+	}
+
+
 }

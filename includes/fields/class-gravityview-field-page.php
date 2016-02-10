@@ -15,6 +15,8 @@ class GravityView_Field_Page extends GravityView_Field {
 
 	var $group = 'standard';
 
+	var $is_editable = false;
+
 	public function __construct() {
 		$this->label = esc_html__( 'Page', 'gravityview' );
 		parent::__construct();
