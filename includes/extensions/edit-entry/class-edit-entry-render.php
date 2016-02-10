@@ -52,11 +52,18 @@ class GravityView_Edit_Entry_Render {
     var $entry;
 
     /**
-     * Gravity Forms form array
+     * Gravity Forms form array (GravityView change the content through this class lifecycle)
      *
      * @var array
      */
     var $form;
+
+    /**
+     * Gravity Forms form array (original form)
+     * @since 1.16.2
+     * @var array
+     */
+    var $fields_with_calculation = array();
 
     /**
      * Gravity Forms form array after the form validation process
@@ -68,7 +75,7 @@ class GravityView_Edit_Entry_Render {
     /**
      * Gravity Forms form id
      *
-     * @var array
+     * @var int
      */
     var $form_id;
 
@@ -159,7 +166,6 @@ class GravityView_Edit_Entry_Render {
 
         $entries = $gravityview_view->getEntries();
         $this->entry = $entries[0];
-
 
         $this->form = $gravityview_view->getForm();
         $this->form_id = $gravityview_view->getFormId();
@@ -326,6 +332,9 @@ class GravityView_Edit_Entry_Render {
      */
     private function form_prepare_for_save() {
         $form = $this->form;
+
+        // add the fields with calculation properties so they could be recalculated
+        $form['fields'] = array_merge( $form['fields'], $this->fields_with_calculation );
 
         foreach( $form['fields'] as &$field ) {
 
@@ -1029,7 +1038,7 @@ class GravityView_Edit_Entry_Render {
 
         $this->is_valid = GFFormDisplay::validate( $this->form, $field_values, 1, $failed_validation_page );
 
-        remove_filter( 'gform_validation_'.$this->form_id, array( $this, 'custom_validation' ), 10 );
+        remove_filter( 'gform_validation_'. $this->form_id, array( $this, 'custom_validation' ), 10 );
     }
 
 
@@ -1241,6 +1250,7 @@ class GravityView_Edit_Entry_Render {
 
     /**
      * Filter area fields based on specified conditions
+     *  - This filter removes the fields that have calculation configured
      *
      * @uses GravityView_Edit_Entry::user_can_edit_field() Check caps
      * @access private
@@ -1274,11 +1284,19 @@ class GravityView_Edit_Entry_Render {
             $field_type_blacklist[] = 'product';
             $field_type_blacklist[] = 'total';
             $field_type_blacklist[] = 'shipping';
-            $field_type_blacklist[] = 'calculation';
+            $field_type_blacklist[] = 'calculation'; //todo: this field type doesn't exist ?
 	    }
 
-        // First, remove blacklist
+        // First, remove blacklist or calculation fields
         foreach ( $fields as $key => $field ) {
+
+            // Remove the fields that have calculation properties and keep them to be used later
+            // @since 1.16.2
+            if( $field->has_calculation() ) {
+                $this->fields_with_calculation[] = $field;
+                unset( $fields[ $key ] );
+            }
+
             if( in_array( $field->type, $field_type_blacklist ) ) {
                 unset( $fields[ $key ] );
             }
