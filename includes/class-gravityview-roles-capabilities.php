@@ -284,7 +284,7 @@ class GravityView_Roles_Capabilities {
 
 		// Edit and delete drafts but not publish
 		$contributor_caps = array(
-			'edit_gravityviews', // Affects if you're able to see the Views menu in the Admin
+			'edit_gravityviews', // Affects if you're able to see the Views menu in the Admin, and also if you're able to override cache using ?nocache
 			'delete_gravityviews',
 			'gravityview_getting_started', // Getting Started page access
 			'gravityview_support_port', // Display GravityView Support Port

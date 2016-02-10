@@ -20,8 +20,27 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: Address fields displayed hidden inputs
+* Fixed: Merge Tag dropdown list can be too wide when field names are long
+* Fixed: When sorting recent entries disappeared from the view.
+
+__Developer Notes:__
+
+* Added: `gravityview/widget/wrapper_css_class` filter to modify widget container `<div>` CSS class
+    - Added `gv-widgets-{zone}` class to wrapper (`{zone}` will be either `header` or `footer`)
+* Fixed: Removed `icon` CSS class name from the table sorting icon links. Now just `gv-icon` instead of `icon gv-icon`.
+* Fixed: "Clear" search link now set to `display: inline-block` instead of `display: block`
+
+= 1.16.1 on January 21 =
+
 * Fixed: GravityView prevented Gravity Forms translations from loading
 * Fixed: Field Width setting was visible in Edit Entry
+* Fixed: Don't display embedded Gravity Forms forms when editing an entry in GravityView
+
+__Developer Notes:__
+
+* Added: `gravityview_excerpt_more` filter. Modify the "Read more" link used when "Maximum Words" setting is enabled and the output is truncated.
+    * Removed: `excerpt_more` filter on `textarea.php` - many themes use permalink values to generate links.
 
 = 1.16 on January 14 =
 * Happy New Year! We have big things planned for GravityView in 2016, including a new View Builder. Stay tuned :-)

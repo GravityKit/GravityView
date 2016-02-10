@@ -68,7 +68,7 @@ final class GravityView_Fields {
 	/**
 	 * @param string $field_name
 	 *
-	 * @return GravityView_Field
+	 * @return GravityView_Field|false
 	 */
 	public static function get_instance( $field_name ) {
 		return isset( self::$_fields[ $field_name ] ) ? self::$_fields[ $field_name ] : false;
@@ -79,7 +79,7 @@ final class GravityView_Fields {
 	 *
 	 * @param $field_name
 	 *
-	 * @return GravityView_Field
+	 * @return GravityView_Field|false
 	 */
 	public static function get( $field_name ) {
 		return self::get_instance( $field_name );

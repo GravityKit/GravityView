@@ -32,7 +32,6 @@ abstract class GravityView_Field {
 
 	/**
 	 * `standard`, `advanced`, `post`, `pricing`, `meta`, `gravityview`
-	 * @internal Not yet implemented
 	 * @since 1.15.2
 	 * @type string The group belongs to this field in the field picker
 	 */
@@ -100,7 +99,10 @@ abstract class GravityView_Field {
 	 */
 	protected $_custom_merge_tag = false;
 
-	function __construct() {
+	/**
+	 * GravityView_Field constructor.
+	 */
+	public function __construct() {
 
 		// Modify the field options based on the name of the field type
 		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 5 );
@@ -202,7 +204,7 @@ abstract class GravityView_Field {
 	 *
 	 * @since 1.8.4
 	 *
-	 * @param array $existing_merge_tags
+	 * @param array $custom_merge_tags
 	 * @param int $form_id GF Form ID
 	 * @param GF_Field[] $fields Array of fields in the form
 	 * @param string $element_id The ID of the input that Merge Tags are being used on
@@ -340,14 +342,14 @@ abstract class GravityView_Field {
 	 * );
 	 * </pre>
 	 *
-	 * @param  [type]      $field_options [description]
-	 * @param  [type]      $template_id   [description]
-	 * @param  [type]      $field_id      [description]
-	 * @param  [type]      $context       [description]
-	 * @param  [type]      $input_type    [description]
-	 * @return [type]                     [description]
+	 * @param  array      $field_options [description]
+	 * @param  string      $template_id   [description]
+	 * @param  string      $field_id      [description]
+	 * @param  string      $context       [description]
+	 * @param  string      $input_type    [description]
+	 * @return array                     [description]
 	 */
-	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 
 		$this->_field_options = $field_options;
 		$this->_field_id = $field_id;
