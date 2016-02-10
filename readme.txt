@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Merge Tag dropdown list can be too wide when field names are long
 * Fixed: When sorting recent entries disappeared from the view.
 * Fixed: Zero values not appearing in Edit Entry
+* Fixed: Re-calculate fields where calculation is enabled after entry is updated
 
 __Developer Notes:__
 
