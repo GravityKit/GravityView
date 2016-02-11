@@ -409,9 +409,6 @@ class GravityView_Edit_Entry_Render {
                 // Get the value of the field, including $_POSTed value
                 $value = RGFormsModel::get_field_value( $field );
 
-               # var_dump( $this->entry );
-              #  die();
-
                 switch( $field->type ) {
 
                     case 'post_title':
@@ -424,13 +421,8 @@ class GravityView_Edit_Entry_Render {
                         break;
                     case 'post_category':
 
-                        echo 'value';
-                        var_dump( $value );
                         $categories = is_array( $value ) ? array_values( $value ) : (array)$value;
                         $categories = array_filter( $categories );
-
-                        echo 'categories';
-                        var_dump( $categories );
 
                         wp_set_post_categories( $post_id, $categories, false );
 
@@ -459,7 +451,6 @@ class GravityView_Edit_Entry_Render {
                                 if( ! is_string( $value ) ) {
                                     $value = function_exists('wp_json_encode') ? wp_json_encode( $value ) : json_encode( $value );
                                 }
-                                var_dump( $value );
                             // break; left intentionally out
                             default:
                                 update_post_meta( $post_id, $custom_field_name, $value );
@@ -997,13 +988,7 @@ class GravityView_Edit_Entry_Render {
                     }
 
                     $this->entry[ $input_name ] = $value;
-                    echo 'pre-valudiat';
-                    var_dump( $value );
-                    echo 'updloated files';
-                    var_dump( GFFormsModel::$uploaded_files );
-                    echo '$prepared_value';
                     $prepared_value = GFFormsModel::get_prepared_input_value( $form, $field, $entry, $field->id );
-                    var_dump( $prepared_value );
                     $_POST[ $input_name ] = $value;
 
                     break;
