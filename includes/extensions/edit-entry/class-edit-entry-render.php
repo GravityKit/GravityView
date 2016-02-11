@@ -862,7 +862,7 @@ class GravityView_Edit_Entry_Render {
 
                 $input_id = strval( $input['id'] );
 
-                if ( ! gv_empty( $this->entry[ $input_id ], false ) ) {
+                if ( isset( $this->entry[ $input_id ] ) && ! gv_empty( $this->entry[ $input_id ], false ) ) {
                     $field_value[ $input_id ] =  'post_category' === $field->type ? GFCommon::format_post_category( $this->entry[ $input_id ], true ) : $this->entry[ $input_id ];
                     $allow_pre_populated = false;
                 }
