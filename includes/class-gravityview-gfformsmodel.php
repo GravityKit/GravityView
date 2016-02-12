@@ -9,12 +9,19 @@ class GravityView_GFFormsModel extends GFFormsModel {
 
     /**
      * Copied function from Gravity Forms plugin \GFFormsModel::copy_post_image since the method is private.
-     * @todo: Remove this as soon as the method becomes available
-     * @param $url
-     * @param $post_id
-     * @return array|bool
+     *
+     * @since 1.16.2
+     *
+     * @param string $url URL of the post image to update
+     * @param int $post_id ID of the post image to update
+     * @return array|bool Array with `file`, `url` and `type` keys. False: failed to copy file to final directory path.
      */
     public static function copy_post_image( $url, $post_id ) {
+        /**
+         * Original Gravity Forms code below:
+         * ==================================
+         */
+
         $time = current_time( 'mysql' );
 
         if ( $post = get_post( $post_id ) ) {
@@ -85,13 +92,23 @@ class GravityView_GFFormsModel extends GFFormsModel {
 
     /**
      * Copied function from Gravity Forms plugin \GFFormsModel::media_handle_upload since the method is private.
-     * @todo: Remove this as soon as the method becomes available
-     * @param $url
-     * @param $post_id
-     * @param array $post_data
-     * @return bool|int
+     *
+     * @see GFFormsModel::media_handle_upload
+     * @uses copy_post_image
+     * @uses wp_insert_attachment
+     * @uses wp_update_attachment_metadata
+     *
+     * @param string $url URL of the post image to update
+     * @param int $post_id ID of the post image to update
+     * @param array $post_data Array of data for the eventual attachment post type that is created using {@see wp_insert_attachment}. Supports `post_mime_type`, `guid`, `post_parent`, `post_title`, `post_content` keys.
+     * @return bool|int ID of attachment Post created. Returns false if file not created by copy_post_image
      */
     public static function media_handle_upload( $url, $post_id, $post_data = array() ) {
+
+        /**
+         * Original Gravity Forms code below:
+         * ==================================
+         */
 
         //WordPress Administration API required for the media_handle_upload() function
         require_once( ABSPATH . 'wp-admin/includes/image.php' );
