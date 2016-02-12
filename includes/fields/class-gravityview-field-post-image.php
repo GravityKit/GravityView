@@ -37,65 +37,101 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 		return $field_options;
 	}
 
-	public function get_field_input( $form, $value = '', $entry = null, GF_Field_Post_Image $field ) {
+	/**
+	 * Convert Gravity Forms `|:|`-separated image data into an array
+	 *
+	 * @since 1.16.2
+	 *
+	 * @param string $value The stored value of an image, impoded with `|:|` values
+	 *
+	 * @return array with `url`, `title`, `caption` and `description` values
+	 */
+	private function explode_value( $value ) {
 
-		$form_id         = $form['id'];
-		$id       = (int) $field->id;
-		$field_id = 'input_' . $form_id . "_$id";
-
-		$class        = esc_attr( $field->size );
-
-		//hiding meta fields for admin
-		$hidden_style      = "style='display:none;'";
-		$title_style       = ! $field->displayTitle  ? $hidden_style : '';
-		$caption_style     = ! $field->displayCaption  ? $hidden_style : '';
-		$description_style = ! $field->displayDescription  ? $hidden_style : '';
-		$file_label_style  =  ! ( $field->displayTitle || $field->displayCaption || $field->displayDescription ) ? $hidden_style : '';
-
-		$hidden_class = $preview = '';
-
-		// get image file name if exists
-		$ary = ! empty( $value ) ? explode( '|:|', $value ) : array();
-		$url = count( $ary ) > 0 ? $ary[0] : '';
-		$path = parse_url( $url, PHP_URL_PATH );
-		$path_frags = explode( '/', $path );
-		$img_name = end( $path_frags );
-
-		$title       = count( $ary ) > 1 ? $ary[1] : '';
-		$caption     = count( $ary ) > 2 ? $ary[2] : '';
-		$description = count( $ary ) > 3 ? $ary[3] : '';
-
-		if ( !empty( $img_name ) ) {
-			$hidden_class     = ' gform_hidden';
-			$file_label_style = $hidden_style;
-
-			// $current_file - We need to have a reference of whether same file is being updated, or user wants to remove the image.
-			// @see \GravityView_Edit_Entry_Render::maybe_update_post_fields
-			$current_file = sprintf( "<input name='input_%d' id='%s' type='hidden' value='%s' />", $id, $field_id, $url );
-
-			$preview          = "<span class='ginput_preview'><strong>" . esc_html( $img_name ) . "</strong> | <a href='javascript:;' onclick='gformDeleteUploadedFile( {$form_id}, {$id});'>" . __( 'delete', 'gravityview' ) . '</a>'.$current_file.'</span>';
+		// Already is an array
+		if ( is_array( $value ) ) {
+			return $value;
 		}
 
-		//in admin, render all meta fields to allow for immediate feedback, but hide the ones not selected
-		$file_label = ( $field->displayTitle || $field->displayCaption || $field->displayDescription ) ? "<label for='$field_id' class='ginput_post_image_file' $file_label_style>" . gf_apply_filters( array( 'gform_postimage_file', $form_id ), __( 'File', 'gravityview' ), $form_id ) . '</label>' : '';
+		list( $url, $title, $caption, $description ) = array_pad( explode( '|:|', $value ), 4, false );
 
-		$tabindex = $field->get_tabindex();
+		return array(
+			'url' => $url,
+			'title' => $title,
+			'caption' => $caption,
+			'description' => $description,
+		);
+	}
 
-		$upload = sprintf( "<span class='ginput_full'>{$preview}<input name='input_%d' id='%s' type='file' value='' class='%s' $tabindex />$file_label</span>", $id, $field_id,  esc_attr( $class . $hidden_class ) );
+	/**
+	 * Returns the field inner markup
+	 *
+	 * Overriding GF_Field_Post_Image is necessary because they don't check for existing post image values, because
+	 * GF only creates, not updates.
+	 *
+	 * @since 1.16.2
+	 *
+	 * @param array $form The Form Object currently being processed.
+	 * @param string|array $value The field value. From default/dynamic population, $_POST, or a resumed incomplete submission.
+	 * @param null|array $entry Null or the Entry Object currently being edited.
+	 * @param GF_Field_Post_Image $field
+	 *
+	 * @return string
+	 */
+	public function get_field_input( $form, $value = '', $entry = null, GF_Field_Post_Image $field ) {
 
-		$tabindex = $field->get_tabindex();
+		$id = (int) $field->id;
+		$form_id = $form['id'];
+		$input_name = "input_{$id}";
+		$field_id = sprintf( 'input_%d_%d', $form_id, $id );
+		$img_name = null;
 
-		$title_field = $field->displayTitle ? sprintf( "<span class='ginput_full ginput_post_image_title' $title_style><input type='text' name='input_%d.1' id='%s_1' value='%s' $tabindex /><label for='%s_1'>" . gf_apply_filters( array( 'gform_postimage_title', $form_id ), __( 'Title', 'gravityforms' ), $form_id ) . '</label></span>', $id, $field_id, $title,  $field_id ) : '';
+		// Convert |:| to associative array
+		$img_array = $this->explode_value( $value );
 
-		$tabindex = $field->get_tabindex();
+		if( ! empty( $img_array['url'] ) ) {
 
-		$caption_field = $field->displayCaption ? sprintf( "<span class='ginput_full ginput_post_image_caption' $caption_style><input type='text' name='input_%d.4' id='%s_4' value='%s' $tabindex /><label for='%s_4'>" . gf_apply_filters( array( 'gform_postimage_caption', $form_id ), __( 'Caption', 'gravityforms' ), $form_id ) . '</label></span>', $id, $field_id, $caption,  $field_id ) : '';
+			$img_name = basename( $img_array['url'] );
 
-		$tabindex = $field->get_tabindex();
+			/**
+			 * Set the $uploaded_files value so that the .ginput_preview renders, and the file upload is hidden
+			 * @see GF_Field_Post_Image::get_field_input See the `<span class='ginput_preview'>` code
+			 * @see GFFormsModel::get_temp_filename See the `rgget( $input_name, self::$uploaded_files[ $form_id ] );` code
+			 */
+			if( empty( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] ) ) {
+				GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] = $img_name;
+			}
+		}
 
-		$description_field = $field->displayDescription  ? sprintf( "<span class='ginput_full ginput_post_image_description' $description_style><input type='text' name='input_%d.7' id='%s_7' value='%s' $tabindex /><label for='%s_7'>" . gf_apply_filters( array( 'gform_postimage_description', $form_id ), __( 'Description', 'gravityforms' ), $form_id ) . '</label></span>', $id, $field_id, $description, $field_id ) : '';
+		// Tell Gravity Forms we're not in the Admin
+		add_filter( 'gform_is_entry_detail', '__return_false' );
+		add_filter( 'gform_is_form_editor', '__return_false' );
 
-		return "<div class='ginput_complex ginput_container ginput_container_post_image'>" . $upload . $title_field . $caption_field . $description_field . '</div>';
+		$input_value = array(
+			"{$id}.1" => rgar( $img_array, 'title' ),
+			"{$id}.4" => rgar( $img_array, 'caption' ),
+			"{$id}.7" => rgar( $img_array, 'description' ),
+		);
+
+		// Get the field HTML output
+		$gf_post_image_field_output = $field->get_field_input( $form, $input_value );
+
+		// Clean up our own filters
+		remove_filter( 'gform_is_entry_detail', '__return_false' );
+		remove_filter( 'gform_is_form_editor', '__return_false' );
+
+		/**
+		 * Insert a hidden field into the output that is used to store the image URL
+		 * @var string $current_file We need to have a reference of whether same file is being updated, or user wants to remove the image.
+		 * @see \GravityView_Edit_Entry_Render::maybe_update_post_fields
+		 * @hack
+		 */
+		if ( $img_name ) {
+			$current_file = sprintf( "<input name='%s' id='%s' type='hidden' value='%s' />", $input_name, $field_id, esc_url_raw( $img_array['url'] ) );
+			$gf_post_image_field_output = str_replace('<span class=\'ginput_preview\'>', '<span class=\'ginput_preview\'>'.$current_file, $gf_post_image_field_output );
+		}
+
+		return $gf_post_image_field_output;
 	}
 
 }
