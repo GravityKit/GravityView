@@ -19,7 +19,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
-
+* Added: Support for Post Image field on the Edit Entry view
 * Fixed: Address fields displayed hidden inputs
 * Fixed: Merge Tag dropdown list can be too wide when field names are long
 * Fixed: When sorting recent entries disappeared from the view.

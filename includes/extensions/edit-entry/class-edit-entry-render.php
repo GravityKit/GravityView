@@ -464,9 +464,11 @@ class GravityView_Edit_Entry_Render {
 
                         if ( !empty( $_FILES[ $input_name ]['name'] ) ) {
 
+                            // We have a new image
+
                             $value = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $this->entry['id'] );
 
-                            // is this field set as featured image ?
+                            // is this field set as featured image, if not, leave
                             if ( ! $field->postFeaturedImage ) {
                                 break;
                             }
@@ -484,7 +486,7 @@ class GravityView_Edit_Entry_Render {
                             );
 
                             //adding title only if it is not empty. It will default to the file name if it is not in the array
-                            if ( ! empty( $title ) ) {
+                            if ( ! empty( $img_title ) ) {
                                 $image_meta['post_title'] = $img_title;
                             }
 
@@ -496,15 +498,48 @@ class GravityView_Edit_Entry_Render {
                                 set_post_thumbnail( $post_id, $media_id );
                             }
 
-                        } else {
+                            break;
+
+                        } elseif ( !empty( $_POST[ $input_name ] ) && is_array( $value ) ) {
+
+                            // Same image although the image title, caption or description might have changed
+
                             $ary = ! empty( $this->entry[ $field_id ] ) ? explode( '|:|', $this->entry[ $field_id ] ) : array();
                             $img_url = rgar( $ary, 0 );
 
-                            $value = ! empty( $img_url ) ? $img_url . "|:|" . $value[ $field_id .'.1' ] . "|:|" . $value[ $field_id .'.4' ] . "|:|" . $value[ $field_id .'.7' ] : '';
+                            // is this really the same image or something went wrong ?
+                            if( $img_url === $_POST[ $input_name ] ) {
 
-                            //todo: if feature, update the post image details
+                                $img_title       = isset( $value[ $field_id .'.1' ] ) ? $value[ $field_id .'.1' ] : '';
+                                $img_caption     = isset( $value[ $field_id .'.4' ] ) ? $value[ $field_id .'.4' ] : '';
+                                $img_description = isset( $value[ $field_id .'.7' ] ) ? $value[ $field_id .'.7' ] : '';
+
+                                $value = ! empty( $img_url ) ? $img_url . "|:|" . $img_title . "|:|" . $img_caption . "|:|" . $img_description : '';
+
+                                if ( $field->postFeaturedImage ) {
+
+                                    $image_meta = array(
+                                        'ID' => get_post_thumbnail_id( $post_id ),
+                                        'post_title' => $img_title,
+                                        'post_excerpt' => $img_caption,
+                                        'post_content' => $img_description,
+                                    );
+
+                                    // update image title, caption or description
+                                    wp_update_post( $image_meta );
+                                }
+
+                                break;
+                            }
+
                         }
 
+                        // if we get here, image was removed or not set.
+
+                        $value = '';
+                        if ( $field->postFeaturedImage ) {
+                            delete_post_thumbnail( $post_id );
+                        }
 
                         break;
 
@@ -988,7 +1023,6 @@ class GravityView_Edit_Entry_Render {
                  * @hack
                  */
                 case 'fileupload':
-                case 'post_image':
 
                     // Set the previous value
                     $entry = $this->get_entry();
@@ -1035,10 +1069,10 @@ class GravityView_Edit_Entry_Render {
                     }
 
                     $this->entry[ $input_name ] = $value;
-                    $prepared_value = GFFormsModel::get_prepared_input_value( $form, $field, $entry, $field->id );
                     $_POST[ $input_name ] = $value;
 
                     break;
+
                 case 'number':
                     // Fix "undefined index" issue at line 1286 in form_display.php
                     if( !isset( $_POST['input_'.$field->id ] ) ) {

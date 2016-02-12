@@ -68,7 +68,12 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 		if ( !empty( $img_name ) ) {
 			$hidden_class     = ' gform_hidden';
 			$file_label_style = $hidden_style;
-			$preview          = "<span class='ginput_preview'><strong>" . esc_html( $img_name ) . "</strong> | <a href='javascript:;' onclick='gformDeleteUploadedFile( {$form_id}, {$id});'>" . __( 'delete', 'gravityview' ) . '</a></span>';
+
+			// $current_file - We need to have a reference of whether same file is being updated, or user wants to remove the image.
+			// @see \GravityView_Edit_Entry_Render::maybe_update_post_fields
+			$current_file = sprintf( "<input name='input_%d' id='%s' type='hidden' value='%s' />", $id, $field_id, $url );
+
+			$preview          = "<span class='ginput_preview'><strong>" . esc_html( $img_name ) . "</strong> | <a href='javascript:;' onclick='gformDeleteUploadedFile( {$form_id}, {$id});'>" . __( 'delete', 'gravityview' ) . '</a>'.$current_file.'</span>';
 		}
 
 		//in admin, render all meta fields to allow for immediate feedback, but hide the ones not selected
