@@ -757,7 +757,7 @@ class GravityView_Edit_Entry_Render {
 
 	            $input_id = strval( $input['id'] );
 
-                if ( ! gv_empty( $this->entry[ $input_id ], false ) ) {
+                if ( isset( $this->entry[ $input_id ] ) && ! gv_empty( $this->entry[ $input_id ], false, false ) ) {
                     $field_value[ $input_id ] =  'post_category' === $field->type ? GFCommon::format_post_category( $this->entry[ $input_id ], true ) : $this->entry[ $input_id ];
                     $allow_pre_populated = false;
                 }
@@ -766,7 +766,7 @@ class GravityView_Edit_Entry_Render {
 
             $pre_value = $field->get_value_submission( array(), false );
 
-            $field_value = ! $allow_pre_populated && ! ( $override_saved_value && !gv_empty( $pre_value, false ) ) ? $field_value : $pre_value;
+            $field_value = ! $allow_pre_populated && ! ( $override_saved_value && !gv_empty( $pre_value, false, false ) ) ? $field_value : $pre_value;
 
         } else {
 
@@ -777,10 +777,10 @@ class GravityView_Edit_Entry_Render {
 
             // saved field entry value (if empty, fallback to the pre-populated value, if exists)
             // or pre-populated value if not empty and set to override saved value
-            $field_value = !gv_empty( $this->entry[ $id ], false ) && ! ( $override_saved_value && !gv_empty( $pre_value, false ) ) ? $this->entry[ $id ] : $pre_value;
+            $field_value = !gv_empty( $this->entry[ $id ], false, false ) && ! ( $override_saved_value && !gv_empty( $pre_value, false, false ) ) ? $this->entry[ $id ] : $pre_value;
 
             // in case field is post_category but inputType is select, multi-select or radio, convert value into array of category IDs.
-            if ( 'post_category' === $field->type && !gv_empty( $field_value, false ) ) {
+            if ( 'post_category' === $field->type && !gv_empty( $field_value, false, false ) ) {
                 $categories = array();
                 foreach ( explode( ',', $field_value ) as $cat_string ) {
                     $categories[] = GFCommon::format_post_category( $cat_string, true );
