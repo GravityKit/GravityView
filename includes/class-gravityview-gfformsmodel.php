@@ -17,6 +17,17 @@ class GravityView_GFFormsModel extends GFFormsModel {
      * @return array|bool Array with `file`, `url` and `type` keys. False: failed to copy file to final directory path.
      */
     public static function copy_post_image( $url, $post_id ) {
+
+        $reflection = new ReflectionMethod( 'GFFormsModel', 'copy_post_image' );
+
+        /**
+         * If the method changes to public, use Gravity Forms' method
+         * @todo: If/when the method is public, remove the unneeded copied code.
+         */
+        if( $reflection->isPublic() ) {
+            return parent::copy_post_image( $url, $post_id );
+        }
+
         /**
          * Original Gravity Forms code below:
          * ==================================
@@ -104,6 +115,16 @@ class GravityView_GFFormsModel extends GFFormsModel {
      * @return bool|int ID of attachment Post created. Returns false if file not created by copy_post_image
      */
     public static function media_handle_upload( $url, $post_id, $post_data = array() ) {
+
+        $reflection = new ReflectionMethod( 'GFFormsModel', 'media_handle_upload' );
+
+        /**
+         * If the method changes to public, use Gravity Forms' method
+         * @todo: If/when the method is public, remove the unneeded copied code.
+         */
+        if( $reflection->isPublic() ) {
+            return parent::media_handle_upload( $url, $post_id, $post_data );
+        }
 
         /**
          * Original Gravity Forms code below:
