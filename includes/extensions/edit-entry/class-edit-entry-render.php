@@ -1373,7 +1373,7 @@ class GravityView_Edit_Entry_Render {
             $field_type_blacklist[] = 'product';
             $field_type_blacklist[] = 'total';
             $field_type_blacklist[] = 'shipping';
-            $field_type_blacklist[] = 'calculation'; //todo: this field type doesn't exist ?
+            $field_type_blacklist[] = 'calculation';
 	    }
 
         // First, remove blacklist or calculation fields
@@ -1381,7 +1381,7 @@ class GravityView_Edit_Entry_Render {
 
             // Remove the fields that have calculation properties and keep them to be used later
             // @since 1.16.2
-            if( $field->has_calculation() ) {
+            if( $field->has_calculation() || 'number' === $field->type ) {
                 $this->fields_with_calculation[] = $field;
                 unset( $fields[ $key ] );
             }

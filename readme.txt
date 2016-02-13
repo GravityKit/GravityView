@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: When sorting recent entries disappeared from the view.
 * Fixed: Zero values not appearing in Edit Entry
 * Fixed: Re-calculate fields where calculation is enabled after entry is updated
+* Fixed: Warning message when Number fields not included in custom Edit Entry configurations
 
 __Developer Notes:__
 
