@@ -34,6 +34,7 @@ __Developer Notes:__
 * Fixed: Conflict with some plugins when `?action=delete` is processed in the Admin ([#624](https://github.com/gravityview/GravityView/issues/624), reported by [dcavins](https://github.com/dcavins))
 * Fixed: Removed `icon` CSS class name from the table sorting icon links. Now just `gv-icon` instead of `icon gv-icon`.
 * Fixed: "Clear" search link now set to `display: inline-block` instead of `display: block`
+* Added: `gravityview/common/get_entry/check_entry_display` filter to disable validating whether to show entries or not against View filters
 
 = 1.16.1 on January 21 =
 

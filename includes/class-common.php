@@ -636,6 +636,14 @@ class GVCommon {
 			// fetch the entry
 			$entry = GFAPI::get_entry( $entry_id );
 
+			/**
+			 * @filter `gravityview/common/get_entry/check_entry_display` Override whether to check entry display rules against filters
+			 * @since 1.16.2
+			 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
+			 * @param array $entry Gravity Forms entry array
+			 */
+			$check_entry_display = apply_filters( 'gravityview/common/get_entry/check_entry_display', $check_entry_display, $entry );
+
 			if( $check_entry_display ) {
 				// Is the entry allowed
 				$entry = self::check_entry_display( $entry );
