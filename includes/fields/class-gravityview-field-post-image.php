@@ -133,7 +133,7 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 		 * @see \GravityView_Edit_Entry_Render::maybe_update_post_fields
 		 * @hack
 		 */
-		if ( $img_name ) {
+		if ( null !== $img_name ) {
 			$current_file = sprintf( "<input name='%s' id='%s' type='hidden' value='%s' />", $input_name, $field_id, esc_url_raw( $img_array['url'] ) );
 			$gf_post_image_field_output = str_replace('<span class=\'ginput_preview\'>', '<span class=\'ginput_preview\'>'.$current_file, $gf_post_image_field_output );
 		}
