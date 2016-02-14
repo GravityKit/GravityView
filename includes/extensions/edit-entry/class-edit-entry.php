@@ -191,7 +191,7 @@ class GravityView_Edit_Entry {
 		}
 
 		$add_fields = array(
-			'post_image',
+			//'post_image',
 			'product',
 			'quantity',
 			'shipping',
