@@ -29,7 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Notes:__
 
-* Added: `gravityview/widget/wrapper_css_class` filter to modify widget container `<div>` CSS class
+* Added: `gravityview/widgets/container_css_class` filter to modify widget container `<div>` CSS class
     - Added `gv-widgets-{zone}` class to wrapper (`{zone}` will be either `header` or `footer`)
 * Fixed: Conflict with some plugins when `?action=delete` is processed in the Admin ([#624](https://github.com/gravityview/GravityView/issues/624), reported by [dcavins](https://github.com/dcavins))
 * Fixed: Removed `icon` CSS class name from the table sorting icon links. Now just `gv-icon` instead of `icon gv-icon`.

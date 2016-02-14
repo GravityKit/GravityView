@@ -823,13 +823,13 @@ class GravityView_View extends Gamajo_Template_Loader {
 		wp_enqueue_style( 'gravityview_default_style' );
 
 		/**
-		 * @filter `gravityview/widget/wrapper_css_class` The CSS class applied to the widget container `<div>`.
+		 * @filter `gravityview/widgets/wrapper_css_class` The CSS class applied to the widget container `<div>`.
 		 * @since 1.16.2
 		 * @param string $css_class Default: `gv-grid gv-widgets-{zone}` where `{zone}` is replaced by the current `$zone` value
 		 * @param string $zone Current widget zone, either `header` or `footer`
 		 * @param array $widgets Array of widget configurations for the current zone, as set by `gravityview_get_current_view_data()['widgets']`
 		 */
-		$css_class = apply_filters('gravityview/widget/wrapper_css_class', 'gv-grid gv-widgets-' . $zone, $zone, $widgets );
+		$css_class = apply_filters('gravityview/widgets/wrapper_css_class', 'gv-grid gv-widgets-' . $zone, $zone, $widgets );
 
 		$css_class = gravityview_sanitize_html_class( $css_class );
 
