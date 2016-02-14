@@ -40,6 +40,8 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 	/**
 	 * Convert Gravity Forms `|:|`-separated image data into an array
 	 *
+	 * If passed something other than a string, returns the passed value.
+	 *
 	 * @since 1.16.2
 	 *
 	 * @param string $value The stored value of an image, impoded with `|:|` values
@@ -48,12 +50,17 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 	 */
 	private function explode_value( $value ) {
 
-		// Already is an array
-		if ( is_array( $value ) ) {
+		// Already is an array, perhaps?
+		if ( ! is_string( $value ) ) {
 			return $value;
 		}
 
-		list( $url, $title, $caption, $description ) = array_pad( explode( '|:|', $value ), 4, false );
+		$url = $title = $caption = $description = '';
+
+		// If there's a |:| match, process. Otherwise, empty array!
+		if( preg_match( '/\|\:\|/', $value ) ) {
+			list( $url, $title, $caption, $description ) = array_pad( explode( '|:|', $value ), 4, false );
+		}
 
 		return array(
 			'url' => $url,
