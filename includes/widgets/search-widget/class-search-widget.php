@@ -360,15 +360,15 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			return $search_criteria;
 		}
 
-		$_GET = stripslashes_deep( $_GET );
+		$get = stripslashes_deep( $_GET );
 
-		$_GET = array_map( 'urldecode', $_GET );
+		$get = array_map( 'urldecode', $get );
 
 		// add free search
-		if ( ! empty( $_GET['gv_search'] ) ) {
+		if ( ! empty( $get['gv_search'] ) ) {
 
 			// Search for a piece
-			$words = explode( ' ', stripslashes_deep( urldecode( $_GET['gv_search'] ) ) );
+			$words = explode( ' ', $get['gv_search'] );
 
 			$words = array_filter( $words );
 
@@ -406,19 +406,19 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 
 		// search for a specific entry ID
-		if ( ! empty( $_GET[ 'gv_id' ] ) ) {
+		if ( ! empty( $get[ 'gv_id' ] ) ) {
 			$search_criteria['field_filters'][] = array(
 				'key' => 'id',
-				'value' => absint( $_GET[ 'gv_id' ] ),
+				'value' => absint( $get[ 'gv_id' ] ),
 				'operator' => '=',
 			);
 		}
 
 		// search for a specific Created_by ID
-		if ( ! empty( $_GET[ 'gv_by' ] ) ) {
+		if ( ! empty( $get[ 'gv_by' ] ) ) {
 			$search_criteria['field_filters'][] = array(
 				'key' => 'created_by',
-				'value' => absint( $_GET['gv_by'] ),
+				'value' => absint( $get['gv_by'] ),
 				'operator' => '=',
 			);
 		}
@@ -428,7 +428,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$mode = in_array( rgget( 'mode' ), array( 'any', 'all' ) ) ? esc_attr( rgget( 'mode' ) ) : 'any';
 
 		// get the other search filters
-		foreach ( $_GET as $key => $value ) {
+		foreach ( $get as $key => $value ) {
 
 			if ( 0 !== strpos( $key, 'filter_' ) || empty( $value ) || ( is_array( $value ) && count( $value ) === 1 && empty( $value[0] ) ) ) {
 				continue;
@@ -457,6 +457,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$search_criteria['field_filters']['mode'] = apply_filters( 'gravityview/search/mode', $mode );
 
 		do_action( 'gravityview_log_debug', sprintf( '%s[filter_entries] Returned Search Criteria: ', get_class( $this ) ), $search_criteria );
+
+		unset( $get );
 
 		return $search_criteria;
 	}
