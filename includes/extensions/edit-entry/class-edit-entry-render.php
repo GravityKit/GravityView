@@ -1101,10 +1101,17 @@ class GravityView_Edit_Entry_Render {
      */
     function validate() {
 
-        // If using GF User Registration Add-on, remove the validation step, otherwise generates error when updating the entry
-        if ( class_exists( 'GFUser' ) ) {
+        /**
+         * If using GF User Registration Add-on, remove the validation step, otherwise generates error when updating the entry
+         * GF User Registration Add-on version > 3.x has a different class name
+         * @since 1.16.2
+         */
+        if ( class_exists( 'GF_User_Registration' ) ) {
+            remove_filter( 'gform_validation', array( GF_User_Registration::get_instance(), 'validate' ) );
+        } else  if ( class_exists( 'GFUser' ) ) {
             remove_filter( 'gform_validation', array( 'GFUser', 'user_registration_validation' ) );
         }
+
 
         /**
          * For some crazy reason, Gravity Forms doesn't validate Edit Entry form submissions.
