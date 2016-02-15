@@ -160,11 +160,13 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	}
 
 	/**
-	 * Add admin script to the whitelist
+	 * Add admin script to the no-conflict scripts whitelist
+	 * @param array $allowed Scripts allowed in no-conflict mode
+	 * @return array Scripts allowed in no-conflict mode, plus the search widget script
 	 */
-	public function register_no_conflict( $required ) {
-		$required[] = 'gravityview_searchwidget_admin';
-		return $required;
+	public function register_no_conflict( $allowed ) {
+		$allowed[] = 'gravityview_searchwidget_admin';
+		return $allowed;
 	}
 
 	/**
