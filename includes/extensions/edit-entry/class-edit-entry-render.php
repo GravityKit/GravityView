@@ -1472,6 +1472,11 @@ class GravityView_Edit_Entry_Render {
 	    $use_gf_adminonly_setting = apply_filters( 'gravityview/edit_entry/use_gf_admin_only_setting', empty( $edit_fields ), $form, $view_id );
 
 	    if( $use_gf_adminonly_setting && false === GVCommon::has_cap( 'gravityforms_edit_entries', $this->entry['id'] ) ) {
+            foreach( $fields as $k => $field ) {
+                if( $field->adminOnly ) {
+                    unset( $fields[ $k ] );
+                }
+            }
             return $fields;
         }
 

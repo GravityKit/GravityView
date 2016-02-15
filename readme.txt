@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 * Added: Support for Post Image field on the Edit Entry view
+* Fixed: Admin-only fields may get overwritten when fields aren't visible during entry edit by user (non-admin)
 * Fixed: Address fields displayed hidden inputs
 * Fixed: Merge Tag dropdown list can be too wide when field names are long
 * Fixed: When sorting recent entries disappeared from the view.
