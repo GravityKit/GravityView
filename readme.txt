@@ -28,6 +28,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Zero values not appearing in Edit Entry
 * Fixed: Re-calculate fields where calculation is enabled after entry is updated
 * Fixed: Warning message when Number fields not included in custom Edit Entry configurations
+* Translation updates:
+    - Bengali - thank you [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/) for 100% translation!
+    - Turkish by [@dbalage](https://www.transifex.com/accounts/profile/dbalage/)
+
 
 __Developer Notes:__
 
