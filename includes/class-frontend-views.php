@@ -896,7 +896,7 @@ class GravityView_frontend {
 
 			$search_criteria['field_filters'][] = array(
 				'key' => rgget( 'search_field', $args ), // The field ID to search
-				'value' => esc_attr( $args['search_value'] ), // The value to search
+				'value' => _wp_specialchars( $args['search_value'] ), // The value to search. Encode ampersands but not quotes.
 				'operator' => $operator,
 			);
 		}
