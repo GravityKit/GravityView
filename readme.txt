@@ -37,6 +37,7 @@ __Developer Notes:__
 * Fixed: Removed `icon` CSS class name from the table sorting icon links. Now just `gv-icon` instead of `icon gv-icon`.
 * Fixed: "Clear" search link now set to `display: inline-block` instead of `display: block`
 * Added: `gravityview/common/get_entry/check_entry_display` filter to disable validating whether to show entries or not against View filters
+* Fixed: `GravityView_API::replace_variables` no longer requires `$form` and `$entry` arguments
 
 = 1.16.1 on January 21 =
 
