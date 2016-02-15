@@ -360,6 +360,10 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			return $search_criteria;
 		}
 
+		$_GET = stripslashes_deep( $_GET );
+
+		$_GET = array_map( 'urldecode', $_GET );
+
 		// add free search
 		if ( ! empty( $_GET['gv_search'] ) ) {
 
@@ -481,7 +485,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// default filter array
 		$filter = array(
 			'key' => $field_id,
-			'value' => $value,
+			'value' => _wp_specialchars( $value ), // Gravity Forms encodes ampersands but not quotes
 		);
 
 		switch ( $form_field['type'] ) {
@@ -886,6 +890,10 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// get searched value from $_GET (string or array)
 		$value = rgget( $name );
 
+		$value = stripslashes_deep( $value );
+
+		$value = is_array( $value ) ? array_map( 'urldecode', $value ) : urldecode( $value );
+
 		// get form field details
 		$form_field = gravityview_get_field( $form, $field['field'] );
 
@@ -894,7 +902,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			'name' => $name,
 			'label' => self::get_field_label( $field, $form_field ),
 			'input' => $field['input'],
-			'value' => $value,
+			'value' => _wp_specialchars( $value ),
 			'type' => $form_field['type'],
 		);
 
