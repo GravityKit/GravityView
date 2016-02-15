@@ -44,7 +44,7 @@ class GravityView_Edit_Entry {
         $this->load_components( 'render' );
 
         // If GF User Registration Add-on exists
-        if( class_exists( 'GFUser' ) ) {
+        if( class_exists( 'GFUser' ) || class_exists( 'GF_User_Registration' ) ) {
             $this->load_components( 'user-registration' );
         }
 
