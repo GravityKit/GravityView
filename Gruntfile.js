@@ -25,7 +25,7 @@ module.exports = function(grunt) {
 				files: [{
 		          expand: true,
 		          cwd: 'templates/css/source/',
-		          src: ['*.scss','!search.scss','!edit.scss','!font.scss','!notice.scss','!oembed.scss','!responsive.scss'],
+		          src: ['*.scss','!search-flexbox.scss','!edit.scss','!font.scss','!notice.scss','!oembed.scss','!responsive.scss'],
 		          dest: 'templates/css/',
 		          ext: '.css'
 		      }]
