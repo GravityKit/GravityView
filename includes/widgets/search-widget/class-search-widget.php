@@ -662,10 +662,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 	/**
 	 * Renders the Search Widget
-	 * @param type $widget_args
-	 * @param type $content
-	 * @param type $context
-	 * @return type
+	 * @param array $widget_args
+	 * @param string $content
+	 * @param string $context
+	 *
+	 * @return void
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
 		/** @var GravityView_View $gravityview_view */
@@ -960,6 +961,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	/**
 	 * Require the datepicker script for the frontend GV script
 	 * @param array $js_dependencies Array of existing required scripts for the fe-views.js script
+	 * @return array Array required scripts, with `jquery-ui-datepicker` added
 	 */
 	public function add_datepicker_js_dependency( $js_dependencies ) {
 
