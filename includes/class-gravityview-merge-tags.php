@@ -63,6 +63,7 @@ class GravityView_Merge_Tags {
 		 * Make sure the required keys are set for GFCommon::replace_variables
 		 *
 		 * @internal Reported to GF Support on 12/3
+		 * @internal Fixed in Gravity Forms
 		 */
 		$form['title']  = isset( $form['title'] ) ? $form['title'] : '';
 		$form['id']     = isset( $form['id'] ) ? $form['id'] : '';
