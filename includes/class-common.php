@@ -437,7 +437,15 @@ class GVCommon {
 				 */
 				$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter );
 			}
+
+			// don't send just the [mode] without any field filter.
+			if( count( $criteria['search_criteria']['field_filters'] ) === 1 && array_key_exists( 'mode' , $criteria['search_criteria']['field_filters'] ) ) {
+				unset( $criteria['search_criteria']['field_filters']['mode'] );
+			}
+
 		}
+
+
 
 		/**
 		 * Prepare date formats to be in Gravity Forms DB format;
@@ -627,6 +635,14 @@ class GVCommon {
 
 			// fetch the entry
 			$entry = GFAPI::get_entry( $entry_id );
+
+			/**
+			 * @filter `gravityview/common/get_entry/check_entry_display` Override whether to check entry display rules against filters
+			 * @since 1.16.2
+			 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
+			 * @param array $entry Gravity Forms entry array
+			 */
+			$check_entry_display = apply_filters( 'gravityview/common/get_entry/check_entry_display', $check_entry_display, $entry );
 
 			if( $check_entry_display ) {
 				// Is the entry allowed

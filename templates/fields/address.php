@@ -14,6 +14,16 @@ extract( $gravityview_view->getCurrentField() );
 // If it's the full address
 if( floor( $field_id ) === floatval( $field_id ) ) {
 
+	/**
+	 * Make sure we're only showing enabled inputs.
+	 * @since 1.16.2
+	 */
+	foreach( $field->inputs as $input ) {
+		if( ! empty( $input['isHidden'] ) ) {
+			unset( $value["{$input['id']}"] );
+		}
+	}
+
 	// @todo Implement the `gform_disable_address_map_link` filter (boolean) added in GF 1.9 to enable/disable map link
 	// Use Gravity Forms' method to get the full address.
 	// Pass the `text` parameter so the map link isn't added like when passing `html`

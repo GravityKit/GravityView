@@ -32,7 +32,6 @@ abstract class GravityView_Field {
 
 	/**
 	 * `standard`, `advanced`, `post`, `pricing`, `meta`, `gravityview`
-	 * @internal Not yet implemented
 	 * @since 1.15.2
 	 * @type string The group belongs to this field in the field picker
 	 */

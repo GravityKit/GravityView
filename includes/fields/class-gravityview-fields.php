@@ -68,7 +68,7 @@ final class GravityView_Fields {
 	/**
 	 * @param string $field_name
 	 *
-	 * @return GravityView_Field
+	 * @return GravityView_Field|false
 	 */
 	public static function get_instance( $field_name ) {
 		return isset( self::$_fields[ $field_name ] ) ? self::$_fields[ $field_name ] : false;
@@ -79,10 +79,30 @@ final class GravityView_Fields {
 	 *
 	 * @param $field_name
 	 *
-	 * @return GravityView_Field
+	 * @return GravityView_Field|false
 	 */
 	public static function get( $field_name ) {
 		return self::get_instance( $field_name );
+	}
+
+	/**
+	 * Alias for get_instance()
+	 *
+	 * @param string|GF_Field $field_name Gravity Forms field class or the class name type
+	 *
+	 * @return GravityView_Field
+	 */
+	public static function get_associated_field( $gf_field ) {
+
+		$field_type = is_a( $gf_field, 'GF_Field' ) ? get_class( $gf_field ) : $gf_field;
+
+		foreach( self::$_fields as $field ) {
+			if( $field_type === $field->_gf_field_class_name ) {
+				return $field;
+			}
+		}
+
+		return false;
 	}
 
 	/**

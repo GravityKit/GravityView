@@ -99,7 +99,7 @@ class GravityView_API {
 	 * @param  array      $entry        GF Entry array
 	 * @return string                  Text with variables maybe replaced
 	 */
-	public static function replace_variables($text, $form, $entry ) {
+	public static function replace_variables( $text, $form = array(), $entry = array() ) {
 		return GravityView_Merge_Tags::replace_variables( $text, $form, $entry );
 	}
 

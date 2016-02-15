@@ -657,9 +657,16 @@ class GravityView_frontend {
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.' );
 
 				/**
+				 * @filter `gravityview/render/entry/not_visible` Modify the message shown to users when the entry doesn't exist or they aren't allowed to view it.
+				 * @since 1.6
+				 * @param string $message Default: "You have attempted to view an entry that is not visible or may not exist."
+				 */
+				$message = apply_filters( 'gravityview/render/entry/not_visible', __( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview' ) );
+
+				/**
 				 * @since 1.6
 				 */
-				echo esc_attr( apply_filters( 'gravityview/render/entry/not_visible', __( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview' ) ) );
+				echo esc_attr( $message );
 
 				return null;
 			}
@@ -889,7 +896,7 @@ class GravityView_frontend {
 
 			$search_criteria['field_filters'][] = array(
 				'key' => rgget( 'search_field', $args ), // The field ID to search
-				'value' => esc_attr( $args['search_value'] ), // The value to search
+				'value' => _wp_specialchars( $args['search_value'] ), // The value to search. Encode ampersands but not quotes.
 				'operator' => $operator,
 			);
 		}
@@ -1333,7 +1340,7 @@ class GravityView_frontend {
 
 		$sorting = GravityView_View::getInstance()->getSorting();
 
-		$class = 'gv-sort icon';
+		$class = 'gv-sort';
 
 		$sort_field_id = self::_override_sorting_id_by_field_type( $field['id'], $form['id'] );
 

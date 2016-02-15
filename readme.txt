@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.4
+Tested up to: 4.4.2
 Stable tag: trunk
 Contributors: katzwebservices, luistinygod
 License: GPL 3 or higher
@@ -20,13 +20,43 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.16.2 on February 15 =
+
+* Added: Support for Post Image field on the Edit Entry screen
+* Added: Now use any Merge Tags as `[gravityview]` parameters
+* Fixed: Support for User Registration Addon Version 3
+* Fixed: Support for rich text editor for Post Body fields
+* Fixed: Admin-only fields may get overwritten when fields aren't visible during entry edit by user (non-admin)
+* Fixed: Address fields displayed hidden inputs
+* Fixed: Merge Tag dropdown list can be too wide when field names are long
+* Fixed: When sorting, recent entries disappeared from results
+* Fixed: Searches that included apostrophes  or ampersands returned no results
+* Fixed: Zero values not set in fields while in Edit Entry
+* Fixed: Re-calculate fields where calculation is enabled after entry is updated
+* Fixed: Warning message when Number fields not included in custom Edit Entry configurations
+* Translation updates:
+    - Bengali - thank you [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/) for 100% translation!
+    - Turkish by [@dbalage](https://www.transifex.com/accounts/profile/dbalage/)
+
+
+__Developer Notes:__
+
+* Reminder: <strong>GravityView will soon require PHP 5.3</strong>
+* Added: `gravityview/widgets/container_css_class` filter to modify widget container `<div>` CSS class
+    - Added `gv-widgets-{zone}` class to wrapper (`{zone}` will be either `header` or `footer`)
+* Fixed: Conflict with some plugins when `?action=delete` is processed in the Admin ([#624](https://github.com/gravityview/GravityView/issues/624), reported by [dcavins](https://github.com/dcavins))
+* Fixed: Removed `icon` CSS class name from the table sorting icon links. Now just `gv-icon` instead of `icon gv-icon`.
+* Fixed: "Clear" search link now set to `display: inline-block` instead of `display: block`
+* Added: `gravityview/common/get_entry/check_entry_display` filter to disable validating whether to show entries or not against View filters
+* Fixed: `GravityView_API::replace_variables` no longer requires `$form` and `$entry` arguments
+
 = 1.16.1 on January 21 =
 
 * Fixed: GravityView prevented Gravity Forms translations from loading
 * Fixed: Field Width setting was visible in Edit Entry
 * Fixed: Don't display embedded Gravity Forms forms when editing an entry in GravityView
 
-**__Developer Notes:__**
+__Developer Notes:__
 
 * Added: `gravityview_excerpt_more` filter. Modify the "Read more" link used when "Maximum Words" setting is enabled and the output is truncated.
     * Removed: `excerpt_more` filter on `textarea.php` - many themes use permalink values to generate links.
