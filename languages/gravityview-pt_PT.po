@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2016-01-21 05:15+0000\n"
+"PO-Revision-Date: 2016-02-15 22:21+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/katzwebservices/gravityview/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
@@ -283,7 +283,7 @@ msgstr "Directório"
 #: includes/class-gravityview-entry-link-shortcode.php:205
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:550
+#: includes/extensions/edit-entry/class-edit-entry-render.php:644
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
 msgstr "Editar Entrada"
@@ -528,7 +528,8 @@ msgid "Entries"
 msgstr "Entradas"
 
 #: includes/class-admin-views.php:363 includes/class-admin.php:107
-#: includes/class-settings.php:272 includes/class-settings.php:298
+#: includes/class-gravityview-settings.php:272
+#: includes/class-gravityview-settings.php:298
 msgid "Settings"
 msgstr "Configurações"
 
@@ -719,19 +720,19 @@ msgstr "Obrigado por instalar o GravityView. Dê Vistas impecáveis às suas ent
 msgid "List of Changes"
 msgstr "Lista de Alterações"
 
-#: includes/class-admin-welcome.php:481
+#: includes/class-admin-welcome.php:535
 msgid "GravityView is brought to you by:"
 msgstr "GravityView desenvolvido para si por:"
 
-#: includes/class-admin-welcome.php:506
+#: includes/class-admin-welcome.php:560
 msgid "Contributors"
 msgstr "Contributors"
 
-#: includes/class-admin-welcome.php:527
+#: includes/class-admin-welcome.php:581
 msgid "Want to contribute?"
 msgstr "Deseja contribuir?"
 
-#: includes/class-admin-welcome.php:528
+#: includes/class-admin-welcome.php:582
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -879,20 +880,20 @@ msgid ""
 "in the Quiz Settings."
 msgstr "Mostra resultado Aprovado/Reprovado baseado na escala configurada no Quiz."
 
-#: includes/class-common.php:864
+#: includes/class-common.php:880
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1124 includes/class-data.php:618
+#: includes/class-common.php:1140 includes/class-data.php:618
 msgid "Default"
 msgstr "Default"
 
-#: includes/class-common.php:1167 includes/class-data.php:619
+#: includes/class-common.php:1183 includes/class-data.php:619
 #: includes/fields/class-gravityview-field-date-created.php:25
 msgid "Date Created"
 msgstr "Data de Criação"
 
-#: includes/class-common.php:1277
+#: includes/class-common.php:1293
 msgid "Email hidden; Javascript is required."
 msgstr "Email escondido; É necessário Javascript."
 
@@ -1101,7 +1102,7 @@ msgstr "Quando utilizar um template Start Fresh precisa de guardar a Vista para 
 msgid "You are not allowed to view this content."
 msgstr ""
 
-#: includes/class-frontend-views.php:662
+#: includes/class-frontend-views.php:664
 msgid ""
 "You have attempted to view an entry that is not visible or may not exist."
 msgstr "Tentou ver uma entrada que não existe ou não está visível."
@@ -1242,16 +1243,171 @@ msgid ""
 "upgrade your server's PHP."
 msgstr "A extensão %s necessita da versão %s ou mais recente do PHP. Por favor actualize a sua versão ou contacte o suporte do seu Alojamento do site para actualizarem a versão de PHP no servidor."
 
+#: includes/class-gravityview-settings.php:150
+msgid "GravityView Settings"
+msgstr "Configuração GravityView"
+
+#: includes/class-gravityview-settings.php:191
+msgid ""
+"Your GravityView license %s. This means you&rsquo;re missing out on updates "
+"and support! %sActivate your license%s or %sget a license here%s."
+msgstr "A sua licença GravityView %s. Isto significa que está a perder as actualizações e o acesso ao suporte. %sActive a sua licença%s ou %sadquira uma aqui%s."
+
+#: includes/class-gravityview-settings.php:198
+msgid "Inactive License"
+msgstr "Licença inactiva"
+
+#: includes/class-gravityview-settings.php:204
+msgid "Invalid License"
+msgstr "Licença inválida"
+
+#: includes/class-gravityview-settings.php:205
+msgid "is invalid"
+msgstr "está inválida"
+
+#: includes/class-gravityview-settings.php:208
+msgid "is inactive"
+msgstr "está inactiva"
+
+#: includes/class-gravityview-settings.php:209
+#: includes/class-gravityview-settings.php:217
+msgid "Activate your license key below."
+msgstr ""
+
+#: includes/class-gravityview-settings.php:216
+msgid "has not been activated"
+msgstr "ainda não foi activada"
+
+#: includes/class-gravityview-settings.php:430
+#: includes/class-gravityview-settings.php:463
+msgid "Update Settings"
+msgstr "Atualizar Configurações"
+
+#: includes/class-gravityview-settings.php:534
+#: includes/class-gv-license-handler.php:382
+msgid "You don't have the ability to edit plugin settings."
+msgstr ""
+
+#: includes/class-gravityview-settings.php:560
+msgid ""
+"The license key you entered has been saved, but not activated. Please "
+"activate the license."
+msgstr "A chave introduzida foi guardada com sucesso, mas não foi activada. Por favor active a sua licença."
+
+#: includes/class-gravityview-settings.php:575
+msgid "Required"
+msgstr "Obrigatório"
+
+#: includes/class-gravityview-settings.php:592
+msgid "License Key"
+msgstr "Chave da Licença"
+
+#: includes/class-gravityview-settings.php:593
+msgid ""
+"Enter the license key that was sent to you on purchase. This enables plugin "
+"updates &amp; support."
+msgstr "Insira a chave da Licença que lhe foi enviada durante a compra do plugin para activar os updates e o suporte."
+
+#: includes/class-gravityview-settings.php:595
+#: includes/class-gv-license-handler.php:79
+#: includes/class-gv-license-handler.php:93
+#: includes/class-gv-license-handler.php:384
+msgid "Verifying license&hellip;"
+msgstr "A verificar a licença&hellip;"
+
+#: includes/class-gravityview-settings.php:614
+msgid "Support Email"
+msgstr "Email de Suporte"
+
+#: includes/class-gravityview-settings.php:615
+msgid ""
+"In order to provide responses to your support requests, please provide your "
+"email address."
+msgstr "Para obter resposta aos seus pedidos de suporte, por favor forneça-nos o seu endereço de email."
+
+#: includes/class-gravityview-settings.php:624
+msgid "Show Support Port?"
+msgstr ""
+
+#: includes/class-gravityview-settings.php:637
+msgid "The Support Port looks like this."
+msgstr ""
+
+#: includes/class-gravityview-settings.php:637
+msgid ""
+"The Support Port provides quick access to how-to articles and tutorials. For"
+" administrators, it also makes it easy to contact support."
+msgstr ""
+
+#: includes/class-gravityview-settings.php:638
+msgid "Show the Support Port on GravityView pages?"
+msgstr ""
+
+#: includes/class-gravityview-settings.php:643
+msgid "No-Conflict Mode"
+msgstr "Modo Sem Conflictos"
+
+#: includes/class-gravityview-settings.php:656
+msgid ""
+"Set this to ON to prevent extraneous scripts and styles from being printed "
+"on GravityView admin pages, reducing conflicts with other plugins and "
+"themes."
+msgstr "Active este modo para prevenir que scripts e estilos de outros plugins não afectem as páginas de administração do GravityView."
+
+#: includes/class-gravityview-settings.php:656
+msgid "If your Edit View tabs are ugly, enable this setting."
+msgstr ""
+
+#: includes/class-gravityview-settings.php:661
+msgid "Remove Data on Delete?"
+msgstr ""
+
+#: includes/class-gravityview-settings.php:668
+msgid "Keep GravityView content and settings"
+msgstr ""
+
+#: includes/class-gravityview-settings.php:668
+msgid ""
+"If you delete then re-install the plugin, all GravityView data will be kept."
+" Views, settings, etc. will be untouched."
+msgstr ""
+
+#: includes/class-gravityview-settings.php:673
+msgid "Delete all GravityView content and settings"
+msgstr ""
+
+#: includes/class-gravityview-settings.php:673
+msgid ""
+"If you delete then re-install GravityView, it will be like installing "
+"GravityView for the first time."
+msgstr ""
+
+#: includes/class-gravityview-settings.php:673
+msgid ""
+"When GravityView is uninstalled and deleted, delete all Views, GravityView "
+"entry approvals, GravityView-generated entry notes (including approval and "
+"entry creator changes), and GravityView plugin settings. No Gravity Forms "
+"data will be touched."
+msgstr ""
+
+#: includes/class-gravityview-settings.php:676
+msgid ""
+"Should GravityView content and entry approval status be removed from the "
+"site when the GravityView plugin is deleted?"
+msgstr ""
+
+#: includes/class-gravityview-settings.php:676
+msgid "Permanently Delete"
+msgstr ""
+
+#: includes/class-gravityview-settings.php:701
+msgid "You are running GravityView version %s"
+msgstr "Está a utilizar a versão %s do GravityView"
+
 #: includes/class-gv-license-handler.php:78
 #: includes/class-gv-license-handler.php:385
 msgid "Activate License"
 msgstr "Activar a Licença"
-
-#: includes/class-gv-license-handler.php:79
-#: includes/class-gv-license-handler.php:93
-#: includes/class-gv-license-handler.php:384 includes/class-settings.php:595
-msgid "Verifying license&hellip;"
-msgstr "A verificar a licença&hellip;"
 
 #: includes/class-gv-license-handler.php:85
 #: includes/class-gv-license-handler.php:386
@@ -1317,10 +1473,6 @@ msgstr "A chave da licença foi revogada."
 msgid ""
 "This license key has expired. %sRenew your license on the GravityView "
 "website%s to receive updates and support."
-msgstr ""
-
-#: includes/class-gv-license-handler.php:382 includes/class-settings.php:534
-msgid "You don't have the ability to edit plugin settings."
 msgstr ""
 
 #: includes/class-gv-license-handler.php:387
@@ -1404,153 +1556,6 @@ msgstr "%sAinda não tem nenhuma Vista activa. %sCrie uma agora%s!%s\n\nSe sente
 msgid "There are no active Views"
 msgstr ""
 
-#: includes/class-settings.php:150
-msgid "GravityView Settings"
-msgstr "Configuração GravityView"
-
-#: includes/class-settings.php:191
-msgid ""
-"Your GravityView license %s. This means you&rsquo;re missing out on updates "
-"and support! %sActivate your license%s or %sget a license here%s."
-msgstr "A sua licença GravityView %s. Isto significa que está a perder as actualizações e o acesso ao suporte. %sActive a sua licença%s ou %sadquira uma aqui%s."
-
-#: includes/class-settings.php:198
-msgid "Inactive License"
-msgstr "Licença inactiva"
-
-#: includes/class-settings.php:204
-msgid "Invalid License"
-msgstr "Licença inválida"
-
-#: includes/class-settings.php:205
-msgid "is invalid"
-msgstr "está inválida"
-
-#: includes/class-settings.php:208
-msgid "is inactive"
-msgstr "está inactiva"
-
-#: includes/class-settings.php:209 includes/class-settings.php:217
-msgid "Activate your license key below."
-msgstr ""
-
-#: includes/class-settings.php:216
-msgid "has not been activated"
-msgstr "ainda não foi activada"
-
-#: includes/class-settings.php:430 includes/class-settings.php:463
-msgid "Update Settings"
-msgstr "Atualizar Configurações"
-
-#: includes/class-settings.php:560
-msgid ""
-"The license key you entered has been saved, but not activated. Please "
-"activate the license."
-msgstr "A chave introduzida foi guardada com sucesso, mas não foi activada. Por favor active a sua licença."
-
-#: includes/class-settings.php:575
-msgid "Required"
-msgstr "Obrigatório"
-
-#: includes/class-settings.php:592
-msgid "License Key"
-msgstr "Chave da Licença"
-
-#: includes/class-settings.php:593
-msgid ""
-"Enter the license key that was sent to you on purchase. This enables plugin "
-"updates &amp; support."
-msgstr "Insira a chave da Licença que lhe foi enviada durante a compra do plugin para activar os updates e o suporte."
-
-#: includes/class-settings.php:614
-msgid "Support Email"
-msgstr "Email de Suporte"
-
-#: includes/class-settings.php:615
-msgid ""
-"In order to provide responses to your support requests, please provide your "
-"email address."
-msgstr "Para obter resposta aos seus pedidos de suporte, por favor forneça-nos o seu endereço de email."
-
-#: includes/class-settings.php:624
-msgid "Show Support Port?"
-msgstr ""
-
-#: includes/class-settings.php:637
-msgid "The Support Port looks like this."
-msgstr ""
-
-#: includes/class-settings.php:637
-msgid ""
-"The Support Port provides quick access to how-to articles and tutorials. For"
-" administrators, it also makes it easy to contact support."
-msgstr ""
-
-#: includes/class-settings.php:638
-msgid "Show the Support Port on GravityView pages?"
-msgstr ""
-
-#: includes/class-settings.php:643
-msgid "No-Conflict Mode"
-msgstr "Modo Sem Conflictos"
-
-#: includes/class-settings.php:656
-msgid ""
-"Set this to ON to prevent extraneous scripts and styles from being printed "
-"on GravityView admin pages, reducing conflicts with other plugins and "
-"themes."
-msgstr "Active este modo para prevenir que scripts e estilos de outros plugins não afectem as páginas de administração do GravityView."
-
-#: includes/class-settings.php:656
-msgid "If your Edit View tabs are ugly, enable this setting."
-msgstr ""
-
-#: includes/class-settings.php:661
-msgid "Remove Data on Delete?"
-msgstr ""
-
-#: includes/class-settings.php:668
-msgid "Keep GravityView content and settings"
-msgstr ""
-
-#: includes/class-settings.php:668
-msgid ""
-"If you delete then re-install the plugin, all GravityView data will be kept."
-" Views, settings, etc. will be untouched."
-msgstr ""
-
-#: includes/class-settings.php:673
-msgid "Delete all GravityView content and settings"
-msgstr ""
-
-#: includes/class-settings.php:673
-msgid ""
-"If you delete then re-install GravityView, it will be like installing "
-"GravityView for the first time."
-msgstr ""
-
-#: includes/class-settings.php:673
-msgid ""
-"When GravityView is uninstalled and deleted, delete all Views, GravityView "
-"entry approvals, GravityView-generated entry notes (including approval and "
-"entry creator changes), and GravityView plugin settings. No Gravity Forms "
-"data will be touched."
-msgstr ""
-
-#: includes/class-settings.php:676
-msgid ""
-"Should GravityView content and entry approval status be removed from the "
-"site when the GravityView plugin is deleted?"
-msgstr ""
-
-#: includes/class-settings.php:676
-msgid "Permanently Delete"
-msgstr ""
-
-#: includes/class-settings.php:701
-msgid "You are running GravityView version %s"
-msgstr "Está a utilizar a versão %s do GravityView"
-
 #: includes/extensions/delete-entry/class-delete-entry.php:111
 msgid "Delete Link Text"
 msgstr "Texto do Link Apagar"
@@ -1567,43 +1572,43 @@ msgstr "Link para apagar entradas. "
 msgid "Delete"
 msgstr "Apagar"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:359
+#: includes/extensions/delete-entry/class-delete-entry.php:362
 msgid "The entry does not exist."
 msgstr "Esta entrada não existe."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:422
+#: includes/extensions/delete-entry/class-delete-entry.php:425
 msgid "Moving the entry to the trash failed."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:470
+#: includes/extensions/delete-entry/class-delete-entry.php:473
 msgid "Are you sure you want to delete this entry? This cannot be undone."
 msgstr "Tem a certeza que pretende apagar esta entrada? Não será possível recuperar os dados depois de apagados."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:497
+#: includes/extensions/delete-entry/class-delete-entry.php:500
 msgid "The link to delete this entry is not valid; it may have expired."
 msgstr "O link para apagar esta entrada não é válido. Pode ter expirado."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:501
+#: includes/extensions/delete-entry/class-delete-entry.php:504
 msgid "You do not have permission to delete this entry."
 msgstr "Não tem permissões para apagar esta entrada."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:506
+#: includes/extensions/delete-entry/class-delete-entry.php:509
 msgid "The entry is already in the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:508
+#: includes/extensions/delete-entry/class-delete-entry.php:511
 msgid "You cannot delete the entry; it is already in the trash."
 msgstr "Não pode apagar esta entrada. A entrada já foi removida."
 
-#: includes/extensions/delete-entry/class-delete-entry.php:644
+#: includes/extensions/delete-entry/class-delete-entry.php:647
 msgid "There was an error deleting the entry: %s"
 msgstr "Não foi possível apagar esta entrada: %s"
 
-#: includes/extensions/delete-entry/class-delete-entry.php:648
+#: includes/extensions/delete-entry/class-delete-entry.php:651
 msgid "The entry was successfully moved to the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:651
+#: includes/extensions/delete-entry/class-delete-entry.php:654
 msgid "The entry was successfully deleted."
 msgstr "A entrada foi apagada com sucesso."
 
@@ -1626,7 +1631,7 @@ msgid ""
 msgstr "Alterar este parâmetro se não quiser que o autor da entrada consiga editar este campo."
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:159
-#: includes/fields/class-gravityview-field.php:300
+#: includes/fields/class-gravityview-field.php:299
 msgid "Open link in a new tab or window?"
 msgstr "Abrir o link numa nova janela ou tab?"
 
@@ -1634,35 +1639,43 @@ msgstr "Abrir o link numa nova janela ou tab?"
 msgid "Make field editable to:"
 msgstr "Permitir edição do campo por:"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:564
+#: includes/extensions/edit-entry/class-edit-entry-render.php:691
 msgid "There was a problem with your submission."
 msgstr "Foi encontrado um erro."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:564
+#: includes/extensions/edit-entry/class-edit-entry-render.php:691
 msgid "Errors have been highlighted below."
 msgstr "Os erros estão assinalados em baixo."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:570
+#: includes/extensions/edit-entry/class-edit-entry-render.php:697
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "Entrada Actualizada. %sVoltar à Entrada%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1050
+#: includes/extensions/edit-entry/class-edit-entry-render.php:823
+msgid "You don&rsquo;t have permission to edit this post."
+msgstr "Não tem permissões para editar este artigo."
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:830
+msgid "This field is not editable; the post no longer exists."
+msgstr "Este campo não é editável. O artigo já não existe."
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1195
 msgid "Maximum number of files reached"
 msgstr "Atingiu o número máximo de ficheiros."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1435
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1593
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "O link para editar esta entrada não é válido. Pode ter expirado."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1441
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1599
 msgid "You do not have permission to edit this entry."
 msgstr "Não tem permissões para editar esta entrada."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1445
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1603
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "Não é possível editar esta entrada."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1485
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1643
 msgid "You do not have permission to edit this field."
 msgstr "Não tem permissão para editar este campo."
 
@@ -1859,7 +1872,7 @@ msgid "HTML"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-is-fulfilled.php:37
-#: includes/widgets/search-widget/class-search-widget.php:837
+#: includes/widgets/search-widget/class-search-widget.php:846
 msgid "Is Fulfilled"
 msgstr "Fornecido"
 
@@ -1966,11 +1979,11 @@ msgstr ""
 msgid "Payment Amount"
 msgstr "Valor Pago"
 
-#: includes/fields/class-gravityview-field-payment-date.php:28
+#: includes/fields/class-gravityview-field-payment-date.php:29
 msgid "Payment Date"
 msgstr "Data do Pagamento"
 
-#: includes/fields/class-gravityview-field-payment-date.php:29
+#: includes/fields/class-gravityview-field-payment-date.php:30
 msgid "The date the payment was received."
 msgstr ""
 
@@ -2118,37 +2131,37 @@ msgstr "Não mostrar o URL completo, apenas o domínio."
 msgid "Open link in the same window?"
 msgstr "Abrir o link na mesma janela?"
 
-#: includes/fields/class-gravityview-field.php:272
+#: includes/fields/class-gravityview-field.php:271
 msgid "Link to the post"
 msgstr "Link para o artigo"
 
-#: includes/fields/class-gravityview-field.php:273
+#: includes/fields/class-gravityview-field.php:272
 msgid "Link to the post created by the entry."
 msgstr "Link para o artigo criado pela entrada."
 
-#: includes/fields/class-gravityview-field.php:278
+#: includes/fields/class-gravityview-field.php:277
 msgid "Link to the category or tag"
 msgstr "Link para a categoria ou tag"
 
-#: includes/fields/class-gravityview-field.php:279
+#: includes/fields/class-gravityview-field.php:278
 msgid ""
 "Link to the current category or tag. \"Link to single entry\" must be "
 "unchecked."
 msgstr "Link para a categoria ou tag actual. A opção \"Link para entrada individual\" não deve estar escolhida."
 
-#: includes/fields/class-gravityview-field.php:284
+#: includes/fields/class-gravityview-field.php:283
 msgid "Use the live post data"
 msgstr "Utilizar os dados actualizados do artigo"
 
-#: includes/fields/class-gravityview-field.php:285
+#: includes/fields/class-gravityview-field.php:284
 msgid "Instead of using the entry data, instead use the current post data."
 msgstr "Utilizar os dados actualizados do artigo em vez dos dados da entrada."
 
-#: includes/fields/class-gravityview-field.php:290
+#: includes/fields/class-gravityview-field.php:289
 msgid "Override Date Format"
 msgstr "Personalizar o formato da data"
 
-#: includes/fields/class-gravityview-field.php:291
+#: includes/fields/class-gravityview-field.php:290
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
 msgstr "Definir como mostrar a data (utilizar %sformatos PHP%s)"
 
@@ -2500,27 +2513,27 @@ msgstr "Pesquisar Tudo"
 msgid "Entry Creator"
 msgstr "Autor da Entrada"
 
-#: includes/widgets/search-widget/class-search-widget.php:825
+#: includes/widgets/search-widget/class-search-widget.php:834
 msgid "Search Entries:"
 msgstr "Pesquisar Entradas"
 
-#: includes/widgets/search-widget/class-search-widget.php:828
+#: includes/widgets/search-widget/class-search-widget.php:837
 msgid "Filter by date:"
 msgstr "Filtrar por data:"
 
-#: includes/widgets/search-widget/class-search-widget.php:831
+#: includes/widgets/search-widget/class-search-widget.php:840
 msgid "Entry ID:"
 msgstr "Entrada ID:"
 
-#: includes/widgets/search-widget/class-search-widget.php:834
+#: includes/widgets/search-widget/class-search-widget.php:843
 msgid "Submitted by:"
 msgstr "Submetido por:"
 
-#: includes/widgets/search-widget/class-search-widget.php:951
+#: includes/widgets/search-widget/class-search-widget.php:964
 msgid "Clear"
 msgstr "Apagar"
 
-#: includes/widgets/search-widget/class-search-widget.php:996
+#: includes/widgets/search-widget/class-search-widget.php:1009
 msgid "Show a different month"
 msgstr "Mostrar outro mês"
 
@@ -2654,12 +2667,12 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr "Vazio"
 
-#: includes/class-frontend-views.php:1273
+#: includes/class-frontend-views.php:1280
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr "Apagar"
 
-#: includes/class-frontend-views.php:1274
+#: includes/class-frontend-views.php:1281
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr "Reset"
@@ -2687,6 +2700,36 @@ msgctxt "No user assigned to the entry"
 msgid "No User"
 msgstr "Nenhum Utilizador "
 
+#: includes/class-gravityview-settings.php:629
+msgctxt "Setting: Show or Hide"
+msgid "Show"
+msgstr ""
+
+#: includes/class-gravityview-settings.php:633
+msgctxt "Setting: Show or Hide"
+msgid "Hide"
+msgstr ""
+
+#: includes/class-gravityview-settings.php:648
+msgctxt "Setting: On or off"
+msgid "On"
+msgstr "Ligado"
+
+#: includes/class-gravityview-settings.php:652
+msgctxt "Setting: On or off"
+msgid "Off"
+msgstr "Desligado"
+
+#: includes/class-gravityview-settings.php:666
+msgctxt "Setting: what to do when uninstalling plugin"
+msgid "Keep GravityView Data"
+msgstr ""
+
+#: includes/class-gravityview-settings.php:671
+msgctxt "Setting: what to do when uninstalling plugin"
+msgid "Permanently Delete"
+msgstr ""
+
 #: includes/class-post-types.php:61
 msgctxt "Post Type General Name"
 msgid "Views"
@@ -2707,43 +2750,13 @@ msgctxt "View Item"
 msgid "View"
 msgstr "Vista"
 
-#: includes/class-settings.php:629
-msgctxt "Setting: Show or Hide"
-msgid "Show"
-msgstr ""
-
-#: includes/class-settings.php:633
-msgctxt "Setting: Show or Hide"
-msgid "Hide"
-msgstr ""
-
-#: includes/class-settings.php:648
-msgctxt "Setting: On or off"
-msgid "On"
-msgstr "Ligado"
-
-#: includes/class-settings.php:652
-msgctxt "Setting: On or off"
-msgid "Off"
-msgstr "Desligado"
-
-#: includes/class-settings.php:666
-msgctxt "Setting: what to do when uninstalling plugin"
-msgid "Keep GravityView Data"
-msgstr ""
-
-#: includes/class-settings.php:671
-msgctxt "Setting: what to do when uninstalling plugin"
-msgid "Permanently Delete"
-msgstr ""
-
 #: includes/extensions/delete-entry/class-delete-entry.php:190
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:89
 msgctxt "User capability"
 msgid "Entry Creator"
 msgstr "Autor da Entrada"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1461
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1619
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr "Voltar atrás."
@@ -2755,27 +2768,27 @@ msgid ""
 "entries displayed in the View."
 msgstr "Nota: Serão apresentados os resultados para %stodas as entradas do formulário%s, não apenas as apresentadas na vista."
 
-#: includes/widgets/search-widget/class-search-widget.php:991
+#: includes/widgets/search-widget/class-search-widget.php:1004
 msgctxt "Close calendar"
 msgid "Close"
 msgstr "Fechar"
 
-#: includes/widgets/search-widget/class-search-widget.php:992
+#: includes/widgets/search-widget/class-search-widget.php:1005
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr "Anterior"
 
-#: includes/widgets/search-widget/class-search-widget.php:993
+#: includes/widgets/search-widget/class-search-widget.php:1006
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr "Próximo"
 
-#: includes/widgets/search-widget/class-search-widget.php:994
+#: includes/widgets/search-widget/class-search-widget.php:1007
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr "Hoje"
 
-#: includes/widgets/search-widget/class-search-widget.php:995
+#: includes/widgets/search-widget/class-search-widget.php:1008
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr "Semana"

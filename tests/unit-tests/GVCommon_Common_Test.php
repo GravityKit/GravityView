@@ -100,7 +100,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 	/**
 	 * @group get_forms
 	 * @covers GVCommon::get_forms()
-	 * @covers gravityview_get_forms()
+	 * @covers ::gravityview_get_forms()
 	 */
 	function test_get_forms() {
 
