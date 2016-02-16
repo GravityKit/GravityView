@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 1.16.1\n"
+"Project-Id-Version: GravityView 1.16.3\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
 "MIME-Version: 1.0\n"
@@ -282,7 +282,7 @@ msgstr ""
 #: includes/class-gravityview-entry-link-shortcode.php:205
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:644
+#: includes/extensions/edit-entry/class-edit-entry-render.php:640
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
 msgstr ""
@@ -719,19 +719,19 @@ msgstr ""
 msgid "List of Changes"
 msgstr ""
 
-#: includes/class-admin-welcome.php:535
+#: includes/class-admin-welcome.php:545
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:560
+#: includes/class-admin-welcome.php:570
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:581
+#: includes/class-admin-welcome.php:591
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:582
+#: includes/class-admin-welcome.php:592
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -1285,106 +1285,106 @@ msgstr ""
 msgid "Update Settings"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:534
+#: includes/class-gravityview-settings.php:525
 #: includes/class-gv-license-handler.php:382
 msgid "You don't have the ability to edit plugin settings."
 msgstr ""
 
-#: includes/class-gravityview-settings.php:560
+#: includes/class-gravityview-settings.php:551
 msgid ""
 "The license key you entered has been saved, but not activated. Please "
 "activate the license."
 msgstr ""
 
-#: includes/class-gravityview-settings.php:575
+#: includes/class-gravityview-settings.php:566
 msgid "Required"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:592
+#: includes/class-gravityview-settings.php:583
 msgid "License Key"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:593
+#: includes/class-gravityview-settings.php:584
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
 msgstr ""
 
-#: includes/class-gravityview-settings.php:595
+#: includes/class-gravityview-settings.php:586
 #: includes/class-gv-license-handler.php:79
 #: includes/class-gv-license-handler.php:93
 #: includes/class-gv-license-handler.php:384
 msgid "Verifying license&hellip;"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:614
+#: includes/class-gravityview-settings.php:605
 msgid "Support Email"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:615
+#: includes/class-gravityview-settings.php:606
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
 msgstr ""
 
-#: includes/class-gravityview-settings.php:624
+#: includes/class-gravityview-settings.php:615
 msgid "Show Support Port?"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:637
+#: includes/class-gravityview-settings.php:628
 msgid "The Support Port looks like this."
 msgstr ""
 
-#: includes/class-gravityview-settings.php:637
+#: includes/class-gravityview-settings.php:628
 msgid ""
 "The Support Port provides quick access to how-to articles and tutorials. "
 "For administrators, it also makes it easy to contact support."
 msgstr ""
 
-#: includes/class-gravityview-settings.php:638
+#: includes/class-gravityview-settings.php:629
 msgid "Show the Support Port on GravityView pages?"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:643
+#: includes/class-gravityview-settings.php:634
 msgid "No-Conflict Mode"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:656
+#: includes/class-gravityview-settings.php:647
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
 msgstr ""
 
-#: includes/class-gravityview-settings.php:656
+#: includes/class-gravityview-settings.php:647
 msgid "If your Edit View tabs are ugly, enable this setting."
 msgstr ""
 
-#: includes/class-gravityview-settings.php:661
+#: includes/class-gravityview-settings.php:652
 msgid "Remove Data on Delete?"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:668
+#: includes/class-gravityview-settings.php:659
 msgid "Keep GravityView content and settings"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:668
+#: includes/class-gravityview-settings.php:659
 msgid ""
 "If you delete then re-install the plugin, all GravityView data will be "
 "kept. Views, settings, etc. will be untouched."
 msgstr ""
 
-#: includes/class-gravityview-settings.php:673
+#: includes/class-gravityview-settings.php:664
 msgid "Delete all GravityView content and settings"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:673
+#: includes/class-gravityview-settings.php:664
 msgid ""
 "If you delete then re-install GravityView, it will be like installing "
 "GravityView for the first time."
 msgstr ""
 
-#: includes/class-gravityview-settings.php:673
+#: includes/class-gravityview-settings.php:664
 msgid ""
 "When GravityView is uninstalled and deleted, delete all Views, GravityView "
 "entry approvals, GravityView-generated entry notes (including approval and "
@@ -1392,17 +1392,17 @@ msgid ""
 "data will be touched."
 msgstr ""
 
-#: includes/class-gravityview-settings.php:676
+#: includes/class-gravityview-settings.php:667
 msgid ""
 "Should GravityView content and entry approval status be removed from the "
 "site when the GravityView plugin is deleted?"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:676
+#: includes/class-gravityview-settings.php:667
 msgid "Permanently Delete"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:701
+#: includes/class-gravityview-settings.php:692
 msgid "You are running GravityView version %s"
 msgstr ""
 
@@ -1641,43 +1641,43 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:691
+#: includes/extensions/edit-entry/class-edit-entry-render.php:687
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:691
+#: includes/extensions/edit-entry/class-edit-entry-render.php:687
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:697
+#: includes/extensions/edit-entry/class-edit-entry-render.php:693
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:823
+#: includes/extensions/edit-entry/class-edit-entry-render.php:819
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:830
+#: includes/extensions/edit-entry/class-edit-entry-render.php:826
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1195
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1191
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1593
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1588
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1599
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1594
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1603
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1598
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1643
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1638
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -2696,32 +2696,32 @@ msgctxt "No user assigned to the entry"
 msgid "No User"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:629
+#: includes/class-gravityview-settings.php:620
 msgctxt "Setting: Show or Hide"
 msgid "Show"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:633
+#: includes/class-gravityview-settings.php:624
 msgctxt "Setting: Show or Hide"
 msgid "Hide"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:648
+#: includes/class-gravityview-settings.php:639
 msgctxt "Setting: On or off"
 msgid "On"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:652
+#: includes/class-gravityview-settings.php:643
 msgctxt "Setting: On or off"
 msgid "Off"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:666
+#: includes/class-gravityview-settings.php:657
 msgctxt "Setting: what to do when uninstalling plugin"
 msgid "Keep GravityView Data"
 msgstr ""
 
-#: includes/class-gravityview-settings.php:671
+#: includes/class-gravityview-settings.php:662
 msgctxt "Setting: what to do when uninstalling plugin"
 msgid "Permanently Delete"
 msgstr ""
@@ -2752,7 +2752,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1619
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1614
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""

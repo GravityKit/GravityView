@@ -272,6 +272,15 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;">What&rsquo;s New</h2>
 				</div>
 
+				<h3>1.16.2.1 on February 16</h3>
+
+				<ul>
+					<li>Fixed: Edit Entry calculation fields not being able to calculate values when the required fields weren't included in Edit Entry layout</li>
+					<li>Fixed: Prevent Section fields from being searchable</li>
+					<li>Fixed: Setting User Registration 3.0 "create" vs "update" feed type</li>
+				</ul>
+
+
 				<h3>1.16.2 on February 15</h3>
 
 				<ul>

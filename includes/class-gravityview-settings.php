@@ -478,16 +478,7 @@ class GravityView_Settings extends GFAddOn {
 	 */
 	public function single_setting_label( $field ) {
 
-		echo $field['label'];
-
-
-		if ( isset( $field['tooltip'] ) ) {
-			echo ' ' . gform_tooltip( $field['tooltip'], rgar( $field, 'tooltip_class' ), true );
-		}
-
-		if ( rgar( $field, 'required' ) ) {
-			echo ' ' . $this->get_required_indicator( $field );
-		}
+		parent::single_setting_label( $field );
 
 		// Added by GravityView
 		if ( isset( $field['description'] ) ) {

@@ -247,7 +247,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		if ( ! empty( $fields ) ) {
 
-			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'fileupload', 'post_image', 'post_id' ), null );
+			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'fileupload', 'post_image', 'post_id', 'section' ), null );
 
 			foreach ( $fields as $id => $field ) {
 
