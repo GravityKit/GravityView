@@ -52,19 +52,18 @@ class GravityView_Edit_Entry_Render {
     var $entry;
 
     /**
-     * Gravity Forms form array (GravityView change the content through this class lifecycle)
+     * Gravity Forms form array (GravityView modifies the content through this class lifecycle)
      *
      * @var array
      */
     var $form;
 
     /**
-     * Gravity Forms form array (it won't get changed during this class lifecycle
+     * Gravity Forms form array (it won't get changed during this class lifecycle)
      * @since 1.16.3
      * @var array
      */
     var $original_form;
-
 
     /**
      * Gravity Forms form array after the form validation process
@@ -86,7 +85,6 @@ class GravityView_Edit_Entry_Render {
      * @var int
      */
     var $view_id;
-
 
     /**
      * Updated entry is valid (GF Validation object)

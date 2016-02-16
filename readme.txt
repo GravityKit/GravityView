@@ -20,6 +20,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.16.3 on February 16 =
+
+* Fixed: Edit Entry calculation fields not being able to calculate values when the required fields weren't included in Edit Entry layout
+* Fixed: Prevent Section fields from being searchable
+* Fixed: Setting User Registration 3.0 "create" vs "update" feed type
+
 = 1.16.2 on February 15 =
 
 * Added: Support for Post Image field on the Edit Entry screen
