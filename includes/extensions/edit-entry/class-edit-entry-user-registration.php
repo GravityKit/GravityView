@@ -92,7 +92,6 @@ class GravityView_Edit_Entry_User_Registration {
             $config = GFUser::get_active_config( $form, $entry );
         }
 
-
         /**
          * @filter `gravityview/edit_entry/user_registration/preserve_role` Keep the current user role or override with the role defined in the Create feed
          * @since 1.15
@@ -123,7 +122,9 @@ class GravityView_Edit_Entry_User_Registration {
          */
         $config = apply_filters( 'gravityview/edit_entry/user_registration/config', $config, $form, $entry );
 
-        $is_create_feed = ( $config && rgars( $config, 'meta/feed_type') === 'create' );
+
+        $feed_pos = $gf_user_3 ? 'meta/feedType' : 'meta/feed_type';
+        $is_create_feed = ( $config && rgars( $config, $feed_pos ) === 'create' );
 
         // Only update if it's a create feed
         if( ! $is_create_feed ) {
