@@ -20,11 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.16.2.2 on February 16 =
-* This fixes some issues introduced by 1.16.2.1. Sorry for the inconvenience!
-* Fixed: Fields not shown on Edit Entry were reset
-* Fixed: Edit Entry calculation fields not being able to calculate values when the required fields weren't included in Edit Entry layout
-* Fixed: Edit Entry post fields could conflict with other fields during entry update
+= 1.16.2.2 on February 17 =
+
+* This fixes Edit Entry issues introduced by 1.16.2.1. If you are running 1.16.2.1, please update. Sorry for the inconvenience!
 
 = 1.16.2.1 on February 16 =
 
