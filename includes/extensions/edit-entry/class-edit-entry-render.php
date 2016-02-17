@@ -452,7 +452,10 @@ class GravityView_Edit_Entry_Render {
 
         $updated_post = $original_post = get_post( $post_id );
 
-        foreach ( $this->entry as $field_id => $value ) {
+        // get the most up to date entry values
+        $entry = GFAPI::get_entry( $this->entry['id'] );
+
+        foreach ( $entry as $field_id => $value ) {
 
             //todo: only run through the edit entry configured fields
 
@@ -488,11 +491,11 @@ class GravityView_Edit_Entry_Render {
                         if( isset( $value[ strval( $field_id ) ] ) ) {
                             foreach( $value as $input_id => $val ) {
                                 $input_name = 'input_' . str_replace( '.', '_', $input_id );
-                                $this->entry[ strval( $input_id ) ] = RGFormsModel::prepare_value( $form, $field, $val, $input_name, $this->entry['id'] );
+                                $entry[ strval( $input_id ) ] = RGFormsModel::prepare_value( $form, $field, $val, $input_name, $entry['id'], $entry );
                             }
                         } else {
                             $input_name = 'input_' . str_replace( '.', '_', $field_id );
-                            $this->entry[ strval( $field_id ) ] = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $this->entry['id'] );
+                            $entry[ strval( $field_id ) ] = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], $entry );
                         }
 
                         break;
@@ -524,7 +527,7 @@ class GravityView_Edit_Entry_Render {
 
                             // We have a new image
 
-                            $value = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $this->entry['id'] );
+                            $value = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'] );
 
                             // is this field set as featured image, if not, leave
                             if ( ! $field->postFeaturedImage ) {
@@ -562,7 +565,7 @@ class GravityView_Edit_Entry_Render {
 
                             // Same image although the image title, caption or description might have changed
 
-                            $ary = ! empty( $this->entry[ $field_id ] ) ? explode( '|:|', $this->entry[ $field_id ] ) : array();
+                            $ary = ! empty( $entry[ $field_id ] ) ? explode( '|:|', $entry[ $field_id ] ) : array();
                             $img_url = rgar( $ary, 0 );
 
                             // is this really the same image or something went wrong ?
@@ -604,13 +607,13 @@ class GravityView_Edit_Entry_Render {
                 }
 
                 //ignore fields that have not changed
-                if ( $value === rgget( (string) $field_id, $this->entry ) ) {
+                if ( $value === rgget( (string) $field_id, $entry ) ) {
                     continue;
                 }
 
                 // update entry
                 if( 'post_category' !== $field->type ) {
-                    $this->entry[ strval( $field_id ) ] = $value;
+                    $entry[ strval( $field_id ) ] = $value;
                 }
 
                 $update_entry = true;
@@ -621,7 +624,7 @@ class GravityView_Edit_Entry_Render {
 
         if( $update_entry ) {
 
-            $return_entry = GFAPI::update_entry( $this->entry );
+            $return_entry = GFAPI::update_entry( $entry );
 
             if( is_wp_error( $return_entry ) ) {
                 do_action( 'gravityview_log_error', 'Updating the entry post fields failed', $return_entry );
