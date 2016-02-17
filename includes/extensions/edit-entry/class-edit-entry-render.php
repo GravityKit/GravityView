@@ -60,7 +60,7 @@ class GravityView_Edit_Entry_Render {
 
     /**
      * Gravity Forms form array (it won't get changed during this class lifecycle)
-     * @since 1.16.3
+     * @since 1.16.2.1
      * @var array
      */
     var $original_form;
@@ -71,6 +71,18 @@ class GravityView_Edit_Entry_Render {
      * @var array
      */
     var $form_after_validation = null;
+
+    /**
+     * Hold an array of GF field objects that have calculation rules
+     * @var array
+     */
+    var $fields_with_calculation = array();
+
+    /**
+     * Hold an array of GF field objects with type 'total'
+     * @var array
+     */
+    var $total_fields = array();
 
     /**
      * Gravity Forms form id
@@ -279,7 +291,7 @@ class GravityView_Edit_Entry_Render {
             do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] Submission is valid.' );
 
             /**
-             * @hack This step is needed to unset the adminOnly from form fields
+             * @hack This step is needed to unset the adminOnly from form fields, to add the calculation fields
              */
             $form = $this->form_prepare_for_save();
 
@@ -294,6 +306,9 @@ class GravityView_Edit_Entry_Render {
             if( !empty( $this->entry['post_id'] ) ) {
                 $this->maybe_update_post_fields( $form );
             }
+
+            // Process calculation fields
+            $this->update_calculation_fields();
 
             // Perform actions normally performed after updating a lead
             $this->after_update();
@@ -352,7 +367,8 @@ class GravityView_Edit_Entry_Render {
      * @return array $form
      */
     private function form_prepare_for_save() {
-        $form = $this->original_form;
+
+        $form = $this->form;
 
         foreach( $form['fields'] as &$field ) {
 
@@ -366,6 +382,52 @@ class GravityView_Edit_Entry_Render {
         }
 
         return $form;
+    }
+
+    private function update_calculation_fields() {
+
+        $form = $this->original_form;
+        $update = false;
+
+        // get the most up to date entry values
+        $entry = GFAPI::get_entry( $this->entry['id'] );
+
+        if( !empty( $this->fields_with_calculation ) ) {
+            $update = true;
+            foreach ( $this->fields_with_calculation as $calc_field ) {
+                $inputs = $calc_field->get_entry_inputs();
+                if ( is_array( $inputs ) ) {
+                    foreach ( $inputs as $input ) {
+                        $input_name = 'input_' . str_replace( '.', '_', $input['id'] );
+                        $entry[ strval( $input['id'] ) ] = RGFormsModel::prepare_value( $form, $calc_field, '', $input_name, $entry['id'], $entry );
+                    }
+                } else {
+                    $input_name = 'input_' . str_replace( '.', '_', $calc_field->id);
+                    $entry[ strval( $calc_field->id ) ] = RGFormsModel::prepare_value( $form, $calc_field, '', $input_name, $entry['id'], $entry );
+                }
+            }
+
+        }
+
+        //saving total field as the last field of the form.
+        if ( ! empty( $this->total_fields ) ) {
+            $update = true;
+            foreach ( $this->total_fields as $total_field ) {
+                $input_name = 'input_' . str_replace( '.', '_', $total_field->id);
+                $entry[ strval( $total_field->id ) ] = RGFormsModel::prepare_value( $form, $total_field, '', $input_name, $entry['id'], $entry );
+            }
+        }
+
+        if( $update ) {
+
+            $return_entry = GFAPI::update_entry( $entry );
+
+            if( is_wp_error( $return_entry ) ) {
+                do_action( 'gravityview_log_error', 'Updating the entry calculation and total fields failed', $return_entry );
+            } else {
+                do_action( 'gravityview_log_debug', 'Updating the entry calculation and total fields succeeded' );
+            }
+        }
     }
 
 
@@ -390,7 +452,10 @@ class GravityView_Edit_Entry_Render {
 
         $updated_post = $original_post = get_post( $post_id );
 
-        foreach ( $this->entry as $field_id => $value ) {
+        // get the most up to date entry values
+        $entry = GFAPI::get_entry( $this->entry['id'] );
+
+        foreach ( $entry as $field_id => $value ) {
 
             //todo: only run through the edit entry configured fields
 
@@ -426,11 +491,11 @@ class GravityView_Edit_Entry_Render {
                         if( isset( $value[ strval( $field_id ) ] ) ) {
                             foreach( $value as $input_id => $val ) {
                                 $input_name = 'input_' . str_replace( '.', '_', $input_id );
-                                $this->entry[ strval( $input_id ) ] = RGFormsModel::prepare_value( $form, $field, $val, $input_name, $this->entry['id'] );
+                                $entry[ strval( $input_id ) ] = RGFormsModel::prepare_value( $form, $field, $val, $input_name, $entry['id'], $entry );
                             }
                         } else {
                             $input_name = 'input_' . str_replace( '.', '_', $field_id );
-                            $this->entry[ strval( $field_id ) ] = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $this->entry['id'] );
+                            $entry[ strval( $field_id ) ] = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], $entry );
                         }
 
                         break;
@@ -462,7 +527,7 @@ class GravityView_Edit_Entry_Render {
 
                             // We have a new image
 
-                            $value = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $this->entry['id'] );
+                            $value = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'] );
 
                             // is this field set as featured image, if not, leave
                             if ( ! $field->postFeaturedImage ) {
@@ -500,7 +565,7 @@ class GravityView_Edit_Entry_Render {
 
                             // Same image although the image title, caption or description might have changed
 
-                            $ary = ! empty( $this->entry[ $field_id ] ) ? explode( '|:|', $this->entry[ $field_id ] ) : array();
+                            $ary = ! empty( $entry[ $field_id ] ) ? explode( '|:|', $entry[ $field_id ] ) : array();
                             $img_url = rgar( $ary, 0 );
 
                             // is this really the same image or something went wrong ?
@@ -542,13 +607,13 @@ class GravityView_Edit_Entry_Render {
                 }
 
                 //ignore fields that have not changed
-                if ( $value === rgget( (string) $field_id, $this->entry ) ) {
+                if ( $value === rgget( (string) $field_id, $entry ) ) {
                     continue;
                 }
 
                 // update entry
                 if( 'post_category' !== $field->type ) {
-                    $this->entry[ strval( $field_id ) ] = $value;
+                    $entry[ strval( $field_id ) ] = $value;
                 }
 
                 $update_entry = true;
@@ -559,7 +624,7 @@ class GravityView_Edit_Entry_Render {
 
         if( $update_entry ) {
 
-            $return_entry = GFAPI::update_entry( $this->entry );
+            $return_entry = GFAPI::update_entry( $entry );
 
             if( is_wp_error( $return_entry ) ) {
                 do_action( 'gravityview_log_error', 'Updating the entry post fields failed', $return_entry );
@@ -1382,9 +1447,16 @@ class GravityView_Edit_Entry_Render {
         // First, remove blacklist or calculation fields
         foreach ( $fields as $key => $field ) {
 
-            // Remove the fields that have calculation properties
+            // Remove the fields that have calculation properties and keep them to be used later
             // @since 1.16.2
             if( $field->has_calculation() ) {
+                $this->fields_with_calculation[] = $field;
+                unset( $fields[ $key ] );
+            }
+
+            // process total field after all fields have been saved
+            if ( $field->type == 'total' ) {
+                $this->total_fields[] = $field;
                 unset( $fields[ $key ] );
             }
 
