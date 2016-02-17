@@ -59,18 +59,17 @@ class GravityView_Edit_Entry_Render {
     var $form;
 
     /**
-     * Gravity Forms form array (it won't get changed during this class lifecycle)
-     * @since 1.16.3
-     * @var array
-     */
-    var $original_form;
-
-    /**
      * Gravity Forms form array after the form validation process
      * @since 1.13
      * @var array
      */
     var $form_after_validation = null;
+
+    /**
+     * Hold an array of GF field objects that have calculation rules
+     * @var array
+     */
+    var $fields_with_calculation = array();
 
     /**
      * Gravity Forms form id
@@ -188,7 +187,7 @@ class GravityView_Edit_Entry_Render {
         $entries = $gravityview_view->getEntries();
         $this->entry = $entries[0];
 
-        $this->original_form = $this->form = $gravityview_view->getForm();
+        $this->form = $gravityview_view->getForm();
         $this->form_id = $gravityview_view->getFormId();
         $this->view_id = $gravityview_view->getViewId();
 
@@ -352,7 +351,10 @@ class GravityView_Edit_Entry_Render {
      * @return array $form
      */
     private function form_prepare_for_save() {
-        $form = $this->original_form;
+        $form = $this->form;
+
+        // add the fields with calculation properties so they could be recalculated
+        $form['fields'] = array_merge( $form['fields'], $this->fields_with_calculation );
 
         foreach( $form['fields'] as &$field ) {
 
@@ -1382,9 +1384,10 @@ class GravityView_Edit_Entry_Render {
         // First, remove blacklist or calculation fields
         foreach ( $fields as $key => $field ) {
 
-            // Remove the fields that have calculation properties
+            // Remove the fields that have calculation properties and keep them to be used later
             // @since 1.16.2
             if( $field->has_calculation() ) {
+                $this->fields_with_calculation[] = $field;
                 unset( $fields[ $key ] );
             }
 
