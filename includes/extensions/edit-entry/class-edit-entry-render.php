@@ -59,6 +59,13 @@ class GravityView_Edit_Entry_Render {
     var $form;
 
     /**
+     * Gravity Forms form array (it won't get changed during this class lifecycle)
+     * @since 1.16.2.1
+     * @var array
+     */
+    var $original_form;
+
+    /**
      * Gravity Forms form array after the form validation process
      * @since 1.13
      * @var array
@@ -70,6 +77,12 @@ class GravityView_Edit_Entry_Render {
      * @var array
      */
     var $fields_with_calculation = array();
+
+    /**
+     * Hold an array of GF field objects with type 'total'
+     * @var array
+     */
+    var $total_fields = array();
 
     /**
      * Gravity Forms form id
@@ -187,7 +200,7 @@ class GravityView_Edit_Entry_Render {
         $entries = $gravityview_view->getEntries();
         $this->entry = $entries[0];
 
-        $this->form = $gravityview_view->getForm();
+        $this->original_form = $this->form = $gravityview_view->getForm();
         $this->form_id = $gravityview_view->getFormId();
         $this->view_id = $gravityview_view->getViewId();
 
@@ -278,7 +291,7 @@ class GravityView_Edit_Entry_Render {
             do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] Submission is valid.' );
 
             /**
-             * @hack This step is needed to unset the adminOnly from form fields
+             * @hack This step is needed to unset the adminOnly from form fields, to add the calculation fields
              */
             $form = $this->form_prepare_for_save();
 
@@ -293,6 +306,9 @@ class GravityView_Edit_Entry_Render {
             if( !empty( $this->entry['post_id'] ) ) {
                 $this->maybe_update_post_fields( $form );
             }
+
+            // Process calculation fields
+            $this->update_calculation_fields();
 
             // Perform actions normally performed after updating a lead
             $this->after_update();
@@ -351,10 +367,8 @@ class GravityView_Edit_Entry_Render {
      * @return array $form
      */
     private function form_prepare_for_save() {
-        $form = $this->form;
 
-        // add the fields with calculation properties so they could be recalculated
-        $form['fields'] = array_merge( $form['fields'], $this->fields_with_calculation );
+        $form = $this->form;
 
         foreach( $form['fields'] as &$field ) {
 
@@ -368,6 +382,52 @@ class GravityView_Edit_Entry_Render {
         }
 
         return $form;
+    }
+
+    private function update_calculation_fields() {
+
+        $form = $this->original_form;
+        $update = false;
+
+        // get the most up to date entry values
+        $entry = GFAPI::get_entry( $this->entry['id'] );
+
+        if( !empty( $this->fields_with_calculation ) ) {
+            $update = true;
+            foreach ( $this->fields_with_calculation as $calc_field ) {
+                $inputs = $calc_field->get_entry_inputs();
+                if ( is_array( $inputs ) ) {
+                    foreach ( $inputs as $input ) {
+                        $input_name = 'input_' . str_replace( '.', '_', $input['id'] );
+                        $entry[ strval( $input['id'] ) ] = RGFormsModel::prepare_value( $form, $calc_field, '', $input_name, $entry['id'], $entry );
+                    }
+                } else {
+                    $input_name = 'input_' . str_replace( '.', '_', $calc_field->id);
+                    $entry[ strval( $calc_field->id ) ] = RGFormsModel::prepare_value( $form, $calc_field, '', $input_name, $entry['id'], $entry );
+                }
+            }
+
+        }
+
+        //saving total field as the last field of the form.
+        if ( ! empty( $this->total_fields ) ) {
+            $update = true;
+            foreach ( $this->total_fields as $total_field ) {
+                $input_name = 'input_' . str_replace( '.', '_', $total_field->id);
+                $entry[ strval( $total_field->id ) ] = RGFormsModel::prepare_value( $form, $total_field, '', $input_name, $entry['id'], $entry );
+            }
+        }
+
+        if( $update ) {
+
+            $return_entry = GFAPI::update_entry( $entry );
+
+            if( is_wp_error( $return_entry ) ) {
+                do_action( 'gravityview_log_error', 'Updating the entry calculation and total fields failed', $return_entry );
+            } else {
+                do_action( 'gravityview_log_debug', 'Updating the entry calculation and total fields succeeded' );
+            }
+        }
     }
 
 
@@ -1388,6 +1448,12 @@ class GravityView_Edit_Entry_Render {
             // @since 1.16.2
             if( $field->has_calculation() ) {
                 $this->fields_with_calculation[] = $field;
+                unset( $fields[ $key ] );
+            }
+
+            // process total field after all fields have been saved
+            if ( $field->type == 'total' ) {
+                $this->total_fields[] = $field;
                 unset( $fields[ $key ] );
             }
 
