@@ -368,6 +368,35 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 	return empty( $value );
 }
 
+
+/**
+ * Maps a function to all non-iterable elements of an array or an object.
+ *
+ * This is inspired by WP core function `map_deep()`. Here for legacy purposes (WordPress versions older than 4.4)
+ *
+ * @since 1.16.3
+ *
+ * @param mixed    $value    The array, object, or scalar.
+ * @param callable $callback The function to map onto $value.
+ * @return mixed The value with the callback applied to all non-arrays and non-objects inside it.
+ */
+function gv_map_deep( $value, $callback ) {
+	if ( is_array( $value ) ) {
+		foreach ( $value as $index => $item ) {
+			$value[ $index ] = gv_map_deep( $item, $callback );
+		}
+	} elseif ( is_object( $value ) ) {
+		$object_vars = get_object_vars( $value );
+		foreach ( $object_vars as $property_name => $property_value ) {
+			$value->$property_name = gv_map_deep( $property_value, $callback );
+		}
+	} else {
+		$value = call_user_func( $callback, $value );
+	}
+
+	return $value;
+}
+
 /**
  * Check whether a string is a expected date format
  *
