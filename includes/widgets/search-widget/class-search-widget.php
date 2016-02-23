@@ -441,7 +441,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				$search_criteria['field_filters'] = array_merge( $search_criteria['field_filters'], $filter );
 
 				// if date range type, set search mode to ALL
-				if ( ! empty( $filter[0]['operator'] ) && in_array( $filter[0]['operator'], array( '>', '<' ) ) ) {
+				if ( ! empty( $filter[0]['operator'] ) && in_array( $filter[0]['operator'], array( '>=', '<=', '>', '<' ) ) ) {
 					$mode = 'all';
 				}
 			} elseif( !empty( $filter ) ) {
@@ -593,7 +593,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 						if ( empty( $date ) ) {
 							continue;
 						}
-						$operator = 'start' === $k ? '>' : '<';
+						$operator = 'start' === $k ? '>=' : '<=';
 
 						$filter[] = array(
 							'key' => $field_id,
