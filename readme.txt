@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Date range search not working
 * Fixed: Display fields with calculation enabled on the Edit Entry view
 * Fixed: Large images in a gallery not resizing (when using [.gv-gallery](http://docs.gravityview.co/article/247-create-a-gallery))
+* Tweak: Start and end date in search are included in the results
 
 __Developer Notes:__
 
