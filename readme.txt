@@ -24,7 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Fixed: Date range search not working
 * Fixed: Display fields with calculation enabled on the Edit Entry view
-
+* Tweak: Start and end date in search are included in the results
 
 = 1.16.2.2 on February 17 =
 
