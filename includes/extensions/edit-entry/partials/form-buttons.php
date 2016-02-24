@@ -26,10 +26,26 @@
 	 */
 	do_action( 'gravityview/edit-entry/publishing-action/before', $object->form, $object->entry, $object->view_id );
 
-	?>
-	<input id="gform_submit_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-update" type="submit" tabindex="4" value="<?php esc_attr_e( 'Update', 'gravityview'); ?>" name="save" />
 
-	<a class="btn btn-sm button button-small gv-button-cancel" tabindex="5" href="<?php echo esc_url( $back_link ); ?>"><?php esc_attr_e( 'Cancel', 'gravityview' ); ?></a>
+	$labels = array(
+		'cancel' => __( 'Cancel', 'gravityview' ),
+		'submit' => __( 'Update', 'gravityview')
+	);
+
+	/**
+	 * @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
+	 * @since 1.16.3
+	 * @param array $labels Default button labels associative array
+	 * @param array $form The Gravity Forms form
+	 * @param array $entry The Gravity Forms entry
+	 * @param int $view_id The current View ID
+	 */
+	$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $object->form, $object->entry, $object->view_id );
+
+	?>
+	<input id="gform_submit_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-update" type="submit" tabindex="4" value="<?php echo esc_attr( $labels['submit'] ); ?>" name="save" />
+
+	<a class="btn btn-sm button button-small gv-button-cancel" tabindex="5" href="<?php echo esc_url( $back_link ); ?>"><?php echo esc_attr( $labels['cancel'] ); ?></a>
 	<?php
 
 	/**
