@@ -589,7 +589,7 @@ class GravityView_Admin_ApproveEntries {
 		$bulk_actions = array(
 			'GravityView' => array(
 				array(
-					'label' => __( 'Approve', 'gravityview' ) ,
+					'label' => __( 'Approve', 'gravityview' ),
 					'value' => sprintf( 'approve-%d', $form_id ),
 				),
 				array(
@@ -610,7 +610,7 @@ class GravityView_Admin_ApproveEntries {
 
 		// Sanitize the values, just to be sure.
 		foreach ( $bulk_actions as $key => $group ) {
-			foreach( $group as $i => $action ) {
+			foreach ( $group as $i => $action ) {
 				$bulk_actions[ $key ][ $i ]['label'] = esc_html( $bulk_actions[ $key ][ $i ]['label'] );
 				$bulk_actions[ $key ][ $i ]['value'] = esc_attr( $bulk_actions[ $key ][ $i ]['value'] );
 			}
