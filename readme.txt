@@ -20,6 +20,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+__Developer Notes:__
+
+* Added: `gravityview/approve_entries/bulk_actions` filter to modify items displayed in the Gravity Forms Entries "Bulk action" dropdown, in the "GravityView" `<optgroup>`
+
 = 1.16.2.2 on February 17 =
 
 * This fixes Edit Entry issues introduced by 1.16.2.1. If you are running 1.16.2.1, please update. Sorry for the inconvenience!
