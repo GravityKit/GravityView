@@ -595,6 +595,16 @@ class GravityView_Widget_Search extends GravityView_Widget {
 						}
 						$operator = 'start' === $k ? '>=' : '<=';
 
+						/**
+						 * @hack
+						 * @since 1.16.3
+						 * Safeguard until GF implements '<=' operator
+						 */
+						if( !GFFormsModel::is_valid_operator( $operator ) && $operator === '<=' ) {
+							$operator = '<';
+							$date = date( 'Y-m-d', strtotime( $date . ' +1 day' ) );
+						}
+
 						$filter[] = array(
 							'key' => $field_id,
 							'value' => self::get_formatted_date( $date, 'Y-m-d' ),
