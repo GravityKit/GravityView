@@ -186,6 +186,65 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @group entry_link
+	 * @covers GravityView_API::entry_link_html()
+	 */
+	public function test_entry_link_html() {
+
+		global $post;
+
+		$user = $this->factory->user->create_and_set( array( 'role' => 'administrator' ) );
+		$post = $this->factory->view->create_and_get();
+		$form = gravityview_get_form_id( $post->ID );
+		$entry = $this->factory->entry->create_and_get( array(
+			'created_by' => $user->ID,
+			'form_id' => $form['id'],
+		) );
+
+		GravityView_View::getInstance()->setPostId( $post->ID );
+
+		// Set the post for the base URL for the entry link
+		setup_postdata( $post );
+
+		$this->assertNull( GravityView_API::entry_link_html( array() ) );
+
+		$expected_url = site_url( sprintf('?gravityview=%s&amp;entry=%s', $post->post_name, $entry['id'] ) );
+
+		$this->assertEquals( sprintf( '<a href="%s">%s</a>', $expected_url, 'Link Text' ), GravityView_API::entry_link_html( $entry, 'Link Text' ) );
+
+		// Don't escape HTML
+		$this->assertEquals( sprintf( '<a href="%s">%s</a>', $expected_url, 'Ampersands & Quotes " \'' ), GravityView_API::entry_link_html( $entry, 'Ampersands & Quotes " \'' ) );
+
+		$this->assertEquals( sprintf( '<a href="%s" title="Expected Title">%s</a>', $expected_url, 'Link Text' ), GravityView_API::entry_link_html( $entry, 'Link Text', 'title=Expected Title' ) );
+
+		// Invalid attribute shouldn't be included
+		$this->assertEquals( sprintf( '<a href="%s">%s</a>', $expected_url, 'Link Text' ), GravityView_API::entry_link_html( $entry, 'Link Text', 'invalid=true' ) );
+
+
+	}
+
+	/**
+	 * @group entry_link
+	 * @covers GravityView_API::entry_link()
+	 */
+	public function test_entry_link() {
+
+		$user = $this->factory->user->create_and_set( array( 'role' => 'administrator' ) );
+		$post = $this->factory->view->create_and_get();
+		$form = gravityview_get_form_id( $post->ID );
+		$entry = $this->factory->entry->create_and_get( array(
+			'created_by' => $user->ID,
+			'form_id' => $form['id'],
+		) );
+
+		GravityView_View::getInstance()->setPostId( $post->ID );
+
+		$href = GravityView_API::entry_link( $entry, $post->ID );
+
+		$this->assertEquals( site_url('?gravityview='.$post->post_name.'&entry='.$entry['id'] ), $href );
+	}
+
+	/**
 	 * @uses GravityView_API_Test::_override_no_entries_text_output()
 	 * @covers GravityView_API::no_results()
 	 */
