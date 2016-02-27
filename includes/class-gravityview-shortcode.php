@@ -92,8 +92,8 @@ class GravityView_Shortcode {
 
 		foreach( $filtered_atts as $key => $passed_value ) {
 
-			// Allow using {get} merge tags in shortcode attributes
-			$passed_value = GravityView_Merge_Tags::replace_get_variables( $passed_value );
+			// Allow using GravityView merge tags in shortcode attributes, like {get} and {created_by}
+			$passed_value = GravityView_Merge_Tags::replace_variables( $passed_value );
 
 			switch( $defaults[ $key ]['type'] ) {
 

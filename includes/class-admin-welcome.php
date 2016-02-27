@@ -272,6 +272,70 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;">What&rsquo;s New</h2>
 				</div>
 
+				<h3>1.16.2.1 on February 16</h3>
+
+				<ul>
+					<li>Fixed: Edit Entry calculation fields not being able to calculate values when the required fields weren't included in Edit Entry layout</li>
+					<li>Fixed: Prevent Section fields from being searchable</li>
+					<li>Fixed: Setting User Registration 3.0 "create" vs "update" feed type</li>
+				</ul>
+
+
+				<h3>1.16.2 on February 15</h3>
+
+				<ul>
+					<li>Added: Support for Post Image field on the Edit Entry screen</li>
+					<li>Added: Now use any Merge Tags as <code>[gravityview]</code> parameters</li>
+					<li>Fixed: Support for User Registration Addon Version 3</li>
+					<li>Fixed: Support for rich text editor for Post Body fields</li>
+					<li>Fixed: Admin-only fields may get overwritten when fields aren't visible during entry edit by user (non-admin)</li>
+					<li>Fixed: Address fields displayed hidden inputs</li>
+					<li>Fixed: Merge Tag dropdown list can be too wide when field names are long</li>
+					<li>Fixed: When sorting, recent entries disappeared from results</li>
+					<li>Fixed: Searches that included apostrophes  or ampersands returned no results</li>
+					<li>Fixed: Zero values not set in fields while in Edit Entry</li>
+					<li>Fixed: Re-calculate fields where calculation is enabled after entry is updated</li>
+					<li>Fixed: Warning message when Number fields not included in custom Edit Entry configurations</li>
+				</ul>
+
+
+				<p><strong>Developer Notes:</strong></p>
+
+				<ul>
+					<li>Reminder: <strong>GravityView will soon require PHP 5.3</strong></li>
+					<li>Added: <code>gravityview/widgets/container_css_class</code> filter to modify widget container <code>&lt;div&gt;</code> CSS class
+
+						<ul>
+							<li>Added <code>gv-widgets-{zone}</code> class to wrapper (<code>{zone}</code> will be either <code>header</code> or <code>footer</code>)</li>
+						</ul>
+					</li>
+					<li>Fixed: Conflict with some plugins when <code>?action=delete</code> is processed in the Admin (<a href="https://github.com/gravityview/GravityView/issues/624">#624</a>, reported by <a href="https://github.com/dcavins">dcavins</a>)</li>
+					<li>Fixed: Removed <code>icon</code> CSS class name from the table sorting icon links. Now just <code>gv-icon</code> instead of <code>icon gv-icon</code>.</li>
+					<li>Fixed: "Clear" search link now set to <code>display: inline-block</code> instead of <code>display: block</code></li>
+					<li>Added: <code>gravityview/common/get_entry/check_entry_display</code> filter to disable validating whether to show entries or not against View filters</li>
+					<li>Fixed: <code>GravityView_API::replace_variables</code> no longer requires <code>$form</code> and <code>$entry</code> arguments</li>
+				</ul>
+
+				<h3>1.16.1 on January 21</h3>
+
+				<ul>
+					<li>Fixed: GravityView prevented Gravity Forms translations from loading</li>
+					<li>Fixed: Field Width setting was visible in Edit Entry</li>
+					<li>Fixed: Don't display embedded Gravity Forms forms when editing an entry in GravityView</li>
+				</ul>
+
+
+				<p><strong>Developer Notes:</strong></p>
+
+				<ul>
+					<li>Added: <code>gravityview_excerpt_more</code> filter. Modify the "Read more" link used when "Maximum Words" setting is enabled and the output is truncated.
+
+						<ul>
+							<li>Removed: <code>excerpt_more</code> filter on <code>textarea.php</code> - many themes use permalink values to generate links.</li>
+						</ul>
+					</li>
+				</ul>
+
 				<h3 id="toc_0">1.16 on January 14</h3>
 
 				<ul>

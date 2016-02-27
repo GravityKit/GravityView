@@ -66,6 +66,13 @@ class GravityView_Edit_Entry_User_Registration {
             return;
         }
 
+        // support for GF User Registration 3.x
+        $gf_user_3 =  class_exists('GF_User_Registration') ? true : false;
+
+        if( $gf_user_3 ) {
+            $gf_user_registration = GF_User_Registration::get_instance();
+        }
+
         $entry = GFAPI::get_entry( $entry_id );
 
 	    /**
@@ -79,7 +86,11 @@ class GravityView_Edit_Entry_User_Registration {
         /**
          * @since 1.14
          */
-        $config = GFUser::get_active_config( $form, $entry );
+        if( $gf_user_3 ) {
+            $config = $gf_user_registration->get_single_submission_feed( $entry, $form );
+        } else {
+            $config = GFUser::get_active_config( $form, $entry );
+        }
 
         /**
          * @filter `gravityview/edit_entry/user_registration/preserve_role` Keep the current user role or override with the role defined in the Create feed
@@ -111,7 +122,9 @@ class GravityView_Edit_Entry_User_Registration {
          */
         $config = apply_filters( 'gravityview/edit_entry/user_registration/config', $config, $form, $entry );
 
-        $is_create_feed = ( $config && rgars( $config, 'meta/feed_type') === 'create' );
+
+        $feed_pos = $gf_user_3 ? 'meta/feedType' : 'meta/feed_type';
+        $is_create_feed = ( $config && rgars( $config, $feed_pos ) === 'create' );
 
         // Only update if it's a create feed
         if( ! $is_create_feed ) {
@@ -123,7 +136,12 @@ class GravityView_Edit_Entry_User_Registration {
         add_filter( 'send_email_change_email', '__return_false', 3 );
 
         // Trigger the User Registration update user method
-        GFUser::update_user( $entry, $form, $config );
+        if( $gf_user_3 ) {
+            $gf_user_registration->update_user( $entry, $form, $config );
+        } else {
+            GFUser::update_user( $entry, $form, $config );
+        }
+
 
         remove_filter( 'send_password_change_email', '__return_false', 3 );
         remove_filter( 'send_email_change_email', '__return_false', 3 );

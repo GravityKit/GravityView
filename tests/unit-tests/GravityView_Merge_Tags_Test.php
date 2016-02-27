@@ -10,7 +10,6 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 
 	/**
 	 * @since 1.15.1
-	 * @covers GravityView_Merge_Tags::replace_user_variables_created_by()
 	 * @covers GravityView_Merge_Tags::replace_variables()
 	 * @covers GravityView_Merge_Tags::replace_gv_merge_tags()
 	 */

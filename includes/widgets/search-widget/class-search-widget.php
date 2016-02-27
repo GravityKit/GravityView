@@ -249,7 +249,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		if ( ! empty( $fields ) ) {
 
-			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'fileupload', 'post_image', 'post_id' ), null );
+			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'fileupload', 'post_image', 'post_id', 'section' ), null );
 
 			foreach ( $fields as $id => $field ) {
 
@@ -274,7 +274,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * @see admin-search-widget.js
 	 *
 	 * @param int $id Gravity Forms field ID
-	 * @param string $field_type Gravity Forms field type
+	 * @param string $field_type Gravity Forms field type (also the `name` parameter of GravityView_Field classes)
 	 *
 	 * @return string GV field search input type ('multi', 'boolean', 'select', 'date', 'text')
 	 */
@@ -282,29 +282,24 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		// @todo - This needs to be improved - many fields have . including products and addresses
 		if ( false !== strpos( (string) $id, '.' ) && in_array( $field_type, array( 'checkbox' ) ) || in_array( $id, array( 'is_fulfilled' ) ) ) {
-			// on/off checkbox
-			$input_type = 'boolean';
+			$input_type = 'boolean'; // on/off checkbox
 		} elseif ( in_array( $field_type, array( 'checkbox', 'post_category', 'multiselect' ) ) ) {
-			//multiselect
-			$input_type = 'multi';
-
+			$input_type = 'multi'; //multiselect
 		} elseif ( in_array( $field_type, array( 'select', 'radio' ) ) ) {
-			//single select
 			$input_type = 'select';
-
 		} elseif ( in_array( $field_type, array( 'date' ) ) || in_array( $id, array( 'payment_date' ) ) ) {
-			// date
 			$input_type = 'date';
+		} elseif ( in_array( $field_type, array( 'number' ) ) || in_array( $id, array( 'payment_amount' ) ) ) {
+			$input_type = 'number';
 		} else {
-			// input type = text
 			$input_type = 'text';
 		}
 
 		/**
 		 * @filter `gravityview/extension/search/input_type` Modify the search form input type based on field type
-		 * @param string $input_type Assign an input type according to the form field type
-		 * @param string $field_type Gravity Forms field type
 		 * @since 1.2
+		 * @param string $input_type Assign an input type according to the form field type. Defaults: `boolean`, `multi`, `select`, `date`, `text`
+		 * @param string $field_type Gravity Forms field type (also the `name` parameter of GravityView_Field classes)
 		 */
 		$input_type = apply_filters( 'gravityview/extension/search/input_type', $input_type, $field_type );
 
@@ -367,11 +362,15 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			return $search_criteria;
 		}
 
+		$get = stripslashes_deep( $_GET );
+
+		$get = array_map( 'urldecode', $get );
+
 		// add free search
-		if ( ! empty( $_GET['gv_search'] ) ) {
+		if ( ! empty( $get['gv_search'] ) ) {
 
 			// Search for a piece
-			$words = explode( ' ', stripslashes_deep( urldecode( $_GET['gv_search'] ) ) );
+			$words = explode( ' ', $get['gv_search'] );
 
 			$words = array_filter( $words );
 
@@ -396,24 +395,32 @@ class GravityView_Widget_Search extends GravityView_Widget {
          * @param[in] string $context Where the filter is being called from. `search` in this case.
          */
         $adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'search' );
-        $search_criteria['start_date'] = ( $adjust_tz && !empty( $curr_start ) ) ? get_gmt_from_date( $curr_start ) : $curr_start;
-        $search_criteria['end_date'] = ( $adjust_tz  && !empty( $curr_end ) ) ? get_gmt_from_date( $curr_end ) : $curr_end;
 
+
+		/**
+		 * Don't set $search_criteria['start_date'] if start_date is empty as it may lead to bad query results (GFAPI::get_entries)
+		 */
+		if( !empty( $curr_start ) ) {
+			$search_criteria['start_date'] = $adjust_tz ? get_gmt_from_date( $curr_start ) : $curr_start;
+		}
+		if( !empty( $curr_end ) ) {
+			$search_criteria['end_date'] = $adjust_tz ? get_gmt_from_date( $curr_end ) : $curr_end;
+		}
 
 		// search for a specific entry ID
-		if ( ! empty( $_GET[ 'gv_id' ] ) ) {
+		if ( ! empty( $get[ 'gv_id' ] ) ) {
 			$search_criteria['field_filters'][] = array(
 				'key' => 'id',
-				'value' => absint( $_GET[ 'gv_id' ] ),
+				'value' => absint( $get[ 'gv_id' ] ),
 				'operator' => '=',
 			);
 		}
 
 		// search for a specific Created_by ID
-		if ( ! empty( $_GET[ 'gv_by' ] ) ) {
+		if ( ! empty( $get[ 'gv_by' ] ) ) {
 			$search_criteria['field_filters'][] = array(
 				'key' => 'created_by',
-				'value' => absint( $_GET['gv_by'] ),
+				'value' => absint( $get['gv_by'] ),
 				'operator' => '=',
 			);
 		}
@@ -423,7 +430,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$mode = in_array( rgget( 'mode' ), array( 'any', 'all' ) ) ? esc_attr( rgget( 'mode' ) ) : 'any';
 
 		// get the other search filters
-		foreach ( $_GET as $key => $value ) {
+		foreach ( $get as $key => $value ) {
 
 			if ( 0 !== strpos( $key, 'filter_' ) || empty( $value ) || ( is_array( $value ) && count( $value ) === 1 && empty( $value[0] ) ) ) {
 				continue;
@@ -453,6 +460,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		do_action( 'gravityview_log_debug', sprintf( '%s[filter_entries] Returned Search Criteria: ', get_class( $this ) ), $search_criteria );
 
+		unset( $get );
+
 		return $search_criteria;
 	}
 
@@ -480,7 +489,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// default filter array
 		$filter = array(
 			'key' => $field_id,
-			'value' => $value,
+			'value' => _wp_specialchars( $value ), // Gravity Forms encodes ampersands but not quotes
 		);
 
 		switch ( $form_field['type'] ) {
@@ -886,6 +895,10 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// get searched value from $_GET (string or array)
 		$value = rgget( $name );
 
+		$value = stripslashes_deep( $value );
+
+		$value = is_array( $value ) ? array_map( 'urldecode', $value ) : urldecode( $value );
+
 		// get form field details
 		$form_field = gravityview_get_field( $form, $field['field'] );
 
@@ -894,7 +907,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			'name' => $name,
 			'label' => self::get_field_label( $field, $form_field ),
 			'input' => $field['input'],
-			'value' => $value,
+			'value' => _wp_specialchars( $value ),
 			'type' => $form_field['type'],
 		);
 
