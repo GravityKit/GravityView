@@ -1255,7 +1255,7 @@ class GravityView_frontend {
 					$css_dependencies[] = 'dashicons';
 				}
 
-				wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'includes/lib/jquery-cookie/jquery_cookie.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GravityView_Plugin::version, true );
+				wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GravityView_Plugin::version, true );
 
 				$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 

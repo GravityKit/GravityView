@@ -1042,7 +1042,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 */
 	public function register_scripts() {
 
-		wp_register_script( 'gv-flexibility', plugins_url( 'includes/lib/flexibility/dist/flexibility.js', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version, true );
+		wp_register_script( 'gv-flexibility', plugins_url( 'assets/lib/flexibility/dist/flexibility.js', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version, true );
 
 	}
 
