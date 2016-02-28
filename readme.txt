@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: Large images in a gallery not resizing (when using [.gv-gallery](http://docs.gravityview.co/article/247-create-a-gallery))
+
 __Developer Notes:__
 
 * Added: `gravityview/approve_entries/bulk_actions` filter to modify items displayed in the Gravity Forms Entries "Bulk action" dropdown, in the "GravityView" `<optgroup>`
