@@ -1166,7 +1166,7 @@ class GVCommon {
 	 * @param int $formid Gravity Forms form ID
 	 * @param array $blacklist Field types to exclude
 	 *
-	 * @since TODO
+	 * @since 1.8
 	 *
 	 * @todo Get all fields, check if sortable dynamically
 	 *

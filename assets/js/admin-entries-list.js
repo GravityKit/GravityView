@@ -63,7 +63,7 @@
 
 	/**
 	 * Add approve/reject options to bulk edit dropdown
-	 * @since TODO Converted to using gvGlobals.bulk_actions array, instead of hard-coding options
+	 * @since 1.16.3 Converted to using gvGlobals.bulk_actions array, instead of hard-coding options
 	 */
 	self.addBulkAction = function() {
 

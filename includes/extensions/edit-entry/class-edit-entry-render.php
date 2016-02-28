@@ -742,7 +742,7 @@ class GravityView_Edit_Entry_Render {
      *
      * @uses GVCommon::generate_notice
      *
-     * @since TODO
+     * @since 1.16.2.2
      *
      * @return void
      */
@@ -864,7 +864,7 @@ class GravityView_Edit_Entry_Render {
     /**
      * When displaying a field, check if it's a Post Field, and if so, make sure the post exists and current user has edit rights.
      *
-     * @since TODO
+     * @since 1.16.2.2
      *
      * @param string $field_content Always empty. Returning not-empty overrides the input.
      * @param GF_Field $field
