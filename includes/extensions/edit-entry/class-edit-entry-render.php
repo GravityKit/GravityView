@@ -370,13 +370,7 @@ class GravityView_Edit_Entry_Render {
 
         $form = $this->form;
 
-        foreach( $form['fields'] as $k => &$field ) {
-
-            // Remove the fields with calculation formulas before save to avoid conflicts with GF logic
-            // @since 1.16.3
-            if( $field->has_calculation() ) {
-                unset( $form['fields'][ $k ] );
-            }
+        foreach( $form['fields'] as &$field ) {
 
             $field->adminOnly = false;
 
@@ -1457,7 +1451,7 @@ class GravityView_Edit_Entry_Render {
             // @since 1.16.2
             if( $field->has_calculation() ) {
                 $this->fields_with_calculation[] = $field;
-                // don't remove the calculation fields on form render.
+                unset( $fields[ $key ] );
             }
 
             // process total field after all fields have been saved
