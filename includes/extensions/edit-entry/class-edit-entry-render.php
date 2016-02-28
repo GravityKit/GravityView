@@ -370,7 +370,13 @@ class GravityView_Edit_Entry_Render {
 
         $form = $this->form;
 
-        foreach( $form['fields'] as &$field ) {
+        foreach( $form['fields'] as $k => &$field ) {
+
+            // Remove the fields with calculation formulas before save to avoid conflicts with GF logic
+            // @since 1.16.3
+            if( $field->has_calculation() ) {
+                unset( $form['fields'][ $k ] );
+            }
 
             $field->adminOnly = false;
 
@@ -736,7 +742,7 @@ class GravityView_Edit_Entry_Render {
      *
      * @uses GVCommon::generate_notice
      *
-     * @since TODO
+     * @since 1.16.2.2
      *
      * @return void
      */
@@ -858,7 +864,7 @@ class GravityView_Edit_Entry_Render {
     /**
      * When displaying a field, check if it's a Post Field, and if so, make sure the post exists and current user has edit rights.
      *
-     * @since TODO
+     * @since 1.16.2.2
      *
      * @param string $field_content Always empty. Returning not-empty overrides the input.
      * @param GF_Field $field
@@ -1451,7 +1457,7 @@ class GravityView_Edit_Entry_Render {
             // @since 1.16.2
             if( $field->has_calculation() ) {
                 $this->fields_with_calculation[] = $field;
-                unset( $fields[ $key ] );
+                // don't remove the calculation fields on form render.
             }
 
             // process total field after all fields have been saved

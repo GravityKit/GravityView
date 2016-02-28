@@ -272,6 +272,30 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;">What&rsquo;s New</h2>
 				</div>
 
+				<h3>1.16.3 on February 28</h3>
+
+				<ul>
+					<li>Fixed: Date range search not working</li>
+					<li>Fixed: Display fields with calculation enabled on the Edit Entry view</li>
+					<li>Fixed: Large images in a gallery not resizing (when using <a href="http://docs.gravityview.co/article/247-create-a-gallery">.gv-gallery</a>)</li>
+					<li>Tweak: Start and end date in search are included in the results</li>
+				</ul>
+
+
+				<p><strong>Developer Notes:</strong></p>
+
+				<ul>
+					<li>Added: <code>gravityview/approve_entries/bulk_actions</code> filter to modify items displayed in the Gravity Forms Entries "Bulk action" dropdown, in the "GravityView" <code>&lt;optgroup&gt;</code></li>
+					<li>Added: <code>gravityview/edit_entry/button_labels</code> filter to modify the Edit Entry view buttons labels (defaults: <code>Cancel</code> and <code>Update</code>)</li>
+				</ul>
+
+
+				<h3>1.16.2.2 on February 17</h3>
+
+				<ul>
+					<li>This fixes Edit Entry issues introduced by 1.16.2.1. If you are running 1.16.2.1, please update. Sorry for the inconvenience!</li>
+				</ul>
+
 				<h3>1.16.2.1 on February 16</h3>
 
 				<ul>
