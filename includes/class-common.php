@@ -1411,18 +1411,13 @@ class GVCommon {
 
 		$final_atts['href'] = esc_url_raw( $href );
 
-		// Sort the attributes alphabetically, to help testing
-		ksort( $final_atts );
-
 		// For each attribute, generate the code
 		$output = '';
 		foreach ( $final_atts as $attr => $value ) {
 			$output .= sprintf( ' %s="%s"', $attr, esc_attr( $value ) );
 		}
 
-		if( '' !== $output ) {
-			$output = '<a' . $output . '>' . $anchor_text . '</a>';
-		}
+		$output = '<a'. $output .'>'. $anchor_text .'</a>';
 
 		return $output;
 	}

@@ -362,7 +362,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		$get = stripslashes_deep( $_GET );
 
-		$get = array_map( 'urldecode', $get );
+		$get = gv_map_deep( $get, 'urldecode' );
 
 		// add free search
 		if ( ! empty( $get['gv_search'] ) ) {
@@ -441,7 +441,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				$search_criteria['field_filters'] = array_merge( $search_criteria['field_filters'], $filter );
 
 				// if date range type, set search mode to ALL
-				if ( ! empty( $filter[0]['operator'] ) && in_array( $filter[0]['operator'], array( '>', '<' ) ) ) {
+				if ( ! empty( $filter[0]['operator'] ) && in_array( $filter[0]['operator'], array( '>=', '<=', '>', '<' ) ) ) {
 					$mode = 'all';
 				}
 			} elseif( !empty( $filter ) ) {
@@ -484,10 +484,12 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$form = $gravityview_view->getForm();
 		$form_field = gravityview_get_field( $form, $field_id );
 
+		$value = gv_map_deep( $value, '_wp_specialchars' ); // Gravity Forms encodes ampersands but not quotes
+
 		// default filter array
 		$filter = array(
 			'key' => $field_id,
-			'value' => _wp_specialchars( $value ), // Gravity Forms encodes ampersands but not quotes
+			'value' => $value,
 		);
 
 		switch ( $form_field['type'] ) {
@@ -591,7 +593,17 @@ class GravityView_Widget_Search extends GravityView_Widget {
 						if ( empty( $date ) ) {
 							continue;
 						}
-						$operator = 'start' === $k ? '>' : '<';
+						$operator = 'start' === $k ? '>=' : '<=';
+
+						/**
+						 * @hack
+						 * @since 1.16.3
+						 * Safeguard until GF implements '<=' operator
+						 */
+						if( !GFFormsModel::is_valid_operator( $operator ) && $operator === '<=' ) {
+							$operator = '<';
+							$date = date( 'Y-m-d', strtotime( $date . ' +1 day' ) );
+						}
 
 						$filter[] = array(
 							'key' => $field_id,
@@ -894,7 +906,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		$value = stripslashes_deep( $value );
 
-		$value = is_array( $value ) ? array_map( 'urldecode', $value ) : urldecode( $value );
+		$value = gv_map_deep( $value, 'urldecode' );
+
+		$value = gv_map_deep( $value, '_wp_specialchars' );
 
 		// get form field details
 		$form_field = gravityview_get_field( $form, $field['field'] );
@@ -904,7 +918,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			'name' => $name,
 			'label' => self::get_field_label( $field, $form_field ),
 			'input' => $field['input'],
-			'value' => _wp_specialchars( $value ),
+			'value' => $value,
 			'type' => $form_field['type'],
 		);
 

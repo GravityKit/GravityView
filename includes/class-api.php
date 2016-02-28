@@ -364,27 +364,21 @@ class GravityView_API {
 	 * Generate an anchor tag that links to an entry.
 	 *
 	 * @since 1.6
-	 * @see GVCommon::get_link_html()
 	 *
 	 * @param string $anchor_text The text or HTML inside the link
 	 * @param array $entry Gravity Forms entry array
-	 * @param array|string $passed_tag_atts Attributes to be added to the anchor tag, such as `title` or `rel`.
 	 * @param array $field_settings Array of field settings. Optional, but passed to the `gravityview_field_entry_link` filter
-	 *
-	 * @return string|null Returns HTML for an anchor link. Null if $entry isn't defined or is missing an ID.
 	 */
 	public static function entry_link_html( $entry = array(), $anchor_text = '', $passed_tag_atts = array(), $field_settings = array() ) {
 
 		if ( empty( $entry ) || ! is_array( $entry ) || ! isset( $entry['id'] ) ) {
+
 			do_action( 'gravityview_log_debug', 'GravityView_API[entry_link_tag] Entry not defined; returning null', $entry );
+
 			return NULL;
 		}
 
 		$href = self::entry_link( $entry );
-
-		if( '' === $href ) {
-			return NULL;
-		}
 
 		$link = gravityview_get_link( $href, $anchor_text, $passed_tag_atts );
 
