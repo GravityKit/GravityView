@@ -20,6 +20,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.16.4 =
+
+* Added: Use the hook `gravityview/search/method` to change the default search method from get to post (hiding the search filters from the view url)
+
 = 1.16.3 on February 28 =
 
 * Fixed: Date range search not working

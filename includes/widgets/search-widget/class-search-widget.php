@@ -20,6 +20,12 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 	private $search_filters = array();
 
+	/**
+	 * whether search method is GET or POST ( default: GET )
+	 * @var string
+	 */
+	private $search_method = 'get';
+
 	public function __construct() {
 
 		$this->widget_description = esc_html__( 'Search form for searching entries.', 'gravityview' );
@@ -83,6 +89,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// ajax - get the searchable fields
 		add_action( 'wp_ajax_gv_searchable_fields', array( 'GravityView_Widget_Search', 'get_searchable_fields' ) );
 
+		// calculate the search method (POST / GET)
+		$this->set_search_method();
+
 	}
 
 	/**
@@ -93,6 +102,33 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			self::$instance = new GravityView_Widget_Search;
 		}
 		return self::$instance;
+	}
+
+	/**
+	 * Sets the search method to GET (default) or POST
+	 * @since 1.16.4
+	 */
+	private function set_search_method() {
+		/**
+		 * @filter `gravityview/search/method` Modify the search form method (GET / POST)
+		 * @since 1.16.4
+		 * @param string $search_method Assign an input type according to the form field type. Defaults: `boolean`, `multi`, `select`, `date`, `text`
+		 * @param string $field_type Gravity Forms field type (also the `name` parameter of GravityView_Field classes)
+		 */
+		$method = apply_filters( 'gravityview/search/method', $this->search_method );
+
+		$method = strtolower( $method );
+
+		$this->search_method = in_array( $method, array( 'get', 'post' ) ) ? $method : 'get';
+	}
+
+	/**
+	 * Returns the search method
+	 * @since 1.16.4
+	 * @return string
+	 */
+	public function get_search_method() {
+		return $this->search_method;
 	}
 
 
@@ -354,13 +390,19 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 */
 	public function filter_entries( $search_criteria ) {
 
-		do_action( 'gravityview_log_debug', sprintf( '%s[filter_entries] Requested $_GET: ', get_class( $this ) ), $_GET );
+		if( 'post' === $this->search_method ) {
+			$get = $_POST;
+		} else {
+			$get = $_GET;
+		}
 
-		if ( empty( $_GET ) || ! is_array( $_GET ) ) {
+		do_action( 'gravityview_log_debug', sprintf( '%s[filter_entries] Requested $_%s: ', get_class( $this ), $this->search_method ), $get );
+
+		if ( empty( $get ) || ! is_array( $get ) ) {
 			return $search_criteria;
 		}
 
-		$get = stripslashes_deep( $_GET );
+		$get = stripslashes_deep( $get );
 
 		$get = gv_map_deep( $get, 'urldecode' );
 
@@ -382,8 +424,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 
 		//start date & end date
-		$curr_start = esc_attr( rgget( 'gv_start' ) );
-		$curr_end = esc_attr( rgget( 'gv_end' ) );
+		$curr_start = !empty( $get['gv_start'] ) ? $get['gv_start'] : '';
+		$curr_end = !empty( $get['gv_start'] ) ? $get['gv_end'] : '';
 
         /**
          * @filter `gravityview_date_created_adjust_timezone` Whether to adjust the timezone for entries. \n
@@ -425,7 +467,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 
 		// Get search mode passed in URL
-		$mode = in_array( rgget( 'mode' ), array( 'any', 'all' ) ) ? esc_attr( rgget( 'mode' ) ) : 'any';
+		$mode = isset( $get['mode'] ) && in_array( $get['mode'], array( 'any', 'all' ) ) ?  $get['mode'] : 'any';
 
 		// get the other search filters
 		foreach ( $get as $key => $value ) {
@@ -469,8 +511,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 * The type post_category, multiselect and checkbox support multi-select search - each value needs to be separated in an independent filter so we could apply the ANY search mode.
 	 *
 	 * Format searched values
-	 * @param  string $key   $_GET search key
-	 * @param  string $value $_GET search value
+	 * @param  string $key   $_GET/$_POST search key
+	 * @param  string $value $_GET/$_POST search value
 	 * @return array        1 or 2 deph levels
 	 */
 	public function prepare_field_filter( $key, $value ) {
@@ -721,15 +763,15 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				case 'search_all':
 					$updated_field['key'] = 'search_all';
 					$updated_field['input'] = 'search_all';
-					$updated_field['value'] = esc_attr( stripslashes_deep( rgget( 'gv_search' ) ) );
+					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_search' );
 					break;
 
 				case 'entry_date':
 					$updated_field['key'] = 'entry_date';
 					$updated_field['input'] = 'entry_date';
 					$updated_field['value'] = array(
-						'start' => esc_attr( stripslashes_deep( rgget( 'gv_start' ) ) ),
-						'end' => esc_attr( stripslashes_deep( rgget( 'gv_end' ) ) ),
+						'start' => $this->rgget_or_rgpost( 'gv_start' ),
+						'end' => $this->rgget_or_rgpost( 'gv_end' ),
 					);
 					$has_date = true;
 					break;
@@ -737,13 +779,13 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				case 'entry_id':
 					$updated_field['key'] = 'entry_id';
 					$updated_field['input'] = 'entry_id';
-					$updated_field['value'] = esc_attr( stripslashes_deep( rgget( 'gv_id' ) ) );
+					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_id' );
 					break;
 
 				case 'created_by':
 					$updated_field['key'] = 'created_by';
 					$updated_field['name'] = 'gv_by';
-					$updated_field['value'] = esc_attr( stripslashes_deep( rgget( 'gv_by' ) ) );
+					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_by' );
 					$updated_field['choices'] = self::get_created_by_choices();
 					break;
 			}
@@ -901,14 +943,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// for advanced field ids (eg, first name / last name )
 		$name = 'filter_' . str_replace( '.', '_', $field['field'] );
 
-		// get searched value from $_GET (string or array)
-		$value = rgget( $name );
-
-		$value = stripslashes_deep( $value );
-
-		$value = gv_map_deep( $value, 'urldecode' );
-
-		$value = gv_map_deep( $value, '_wp_specialchars' );
+		// get searched value from $_GET/$_POST (string or array)
+		$value = $this->rgget_or_rgpost( $name );
 
 		// get form field details
 		$form_field = gravityview_get_field( $form, $field['field'] );
@@ -980,6 +1016,22 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 	}
 
+	/**
+	 * Based on the search method, fetch the value for a specific key
+	 * @param $name
+	 * @return mixed|string
+	 */
+	private function rgget_or_rgpost( $name ) {
+		$value = 'get' === $this->search_method ? rgget( $name ) : rgpost( $name );
+
+		$value = stripslashes_deep( $value );
+
+		$value = gv_map_deep( $value, 'urldecode' );
+
+		$value = gv_map_deep( $value, '_wp_specialchars' );
+
+		return $value;
+	}
 
 
 	/**
