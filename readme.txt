@@ -31,6 +31,8 @@ __Developer Notes:__
 
 * Added: `gravityview/approve_entries/bulk_actions` filter to modify items displayed in the Gravity Forms Entries "Bulk action" dropdown, in the "GravityView" `<optgroup>`
 * Added: `gravityview/edit_entry/button_labels` filter to modify the Edit Entry view buttons labels (defaults: `Cancel` and `Update`)
+* Added: `gravityview/approve_entries/add-note` filter to modify whether to add a note when the entry has been approved or disapproved (default: `true`)
+* Fixed: Removed deprecated `get_currentuserinfo()` function usage
 
 = 1.16.2.2 on February 17 =
 
