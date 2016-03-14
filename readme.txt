@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Added `gv-widgets-no-results` and `gv-container-no-results` classes to the widget and View container `<div>`s. This will make it easier to hide empty View content and/or Widgets.
 = 1.16.3 on February 28 =
 
 * Fixed: Date range search not working

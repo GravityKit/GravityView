@@ -822,14 +822,20 @@ class GravityView_View extends Gamajo_Template_Loader {
 		// TODO: Move to sep. method, use an action instead
 		wp_enqueue_style( 'gravityview_default_style' );
 
+		$default_css_class = 'gv-grid gv-widgets-' . $zone;
+
+		if( 0 === GravityView_View::getInstance()->getTotalEntries() ) {
+			$default_css_class .= ' gv-widgets-no-results';
+		}
+
 		/**
 		 * @filter `gravityview/widgets/wrapper_css_class` The CSS class applied to the widget container `<div>`.
 		 * @since 1.16.2
-		 * @param string $css_class Default: `gv-grid gv-widgets-{zone}` where `{zone}` is replaced by the current `$zone` value
+		 * @param string $css_class Default: `gv-grid gv-widgets-{zone}` where `{zone}` is replaced by the current `$zone` value. If the View has no results, adds ` gv-widgets-no-results`
 		 * @param string $zone Current widget zone, either `header` or `footer`
 		 * @param array $widgets Array of widget configurations for the current zone, as set by `gravityview_get_current_view_data()['widgets']`
 		 */
-		$css_class = apply_filters('gravityview/widgets/wrapper_css_class', 'gv-grid gv-widgets-' . $zone, $zone, $widgets );
+		$css_class = apply_filters('gravityview/widgets/wrapper_css_class', $default_css_class, $zone, $widgets );
 
 		$css_class = gravityview_sanitize_html_class( $css_class );
 
