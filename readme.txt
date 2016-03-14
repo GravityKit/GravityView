@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: Don't show GravityView Approve Entry column in Gravity Forms Entries table if there are no entries
 * Added `gv-widgets-no-results` and `gv-container-no-results` classes to the widget and View container `<div>`s. This will make it easier to hide empty View content and/or Widgets.
 = 1.16.3 on February 28 =
 

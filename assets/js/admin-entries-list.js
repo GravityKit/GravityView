@@ -95,6 +95,12 @@
 	 */
 	self.addApprovedColumn = function() {
 
+
+		// Don't add column if there are no entries yet.
+		if( $( 'tbody tr', '#lead_form' ).length === 1 && $( 'tbody tr td', '#lead_form' ).length === 1 ) {
+			return;
+		}
+
 		/**
 		 * inject approve/disapprove buttons into the first column of table
 		 */
