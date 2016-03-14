@@ -1171,7 +1171,7 @@ class GVCommon {
 	 * @param int $formid Gravity Forms form ID
 	 * @param array $blacklist Field types to exclude
 	 *
-	 * @since TODO
+	 * @since 1.8
 	 *
 	 * @todo Get all fields, check if sortable dynamically
 	 *
@@ -1416,13 +1416,18 @@ class GVCommon {
 
 		$final_atts['href'] = esc_url_raw( $href );
 
+		// Sort the attributes alphabetically, to help testing
+		ksort( $final_atts );
+
 		// For each attribute, generate the code
 		$output = '';
 		foreach ( $final_atts as $attr => $value ) {
 			$output .= sprintf( ' %s="%s"', $attr, esc_attr( $value ) );
 		}
 
-		$output = '<a'. $output .'>'. $anchor_text .'</a>';
+		if( '' !== $output ) {
+			$output = '<a' . $output . '>' . $anchor_text . '</a>';
+		}
 
 		return $output;
 	}

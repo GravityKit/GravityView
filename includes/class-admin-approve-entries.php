@@ -578,7 +578,7 @@ class GravityView_Admin_ApproveEntries {
 	/**
 	 * Get an array of options to be added to the Gravity Forms "Bulk action" dropdown in a "GravityView" option group
 	 *
-	 * @since TODO
+	 * @since 1.16.3
 	 *
 	 * @param int $form_id  ID of the form currently being displayed
 	 *
@@ -589,7 +589,7 @@ class GravityView_Admin_ApproveEntries {
 		$bulk_actions = array(
 			'GravityView' => array(
 				array(
-					'label' => __( 'Approve', 'gravityview' ) ,
+					'label' => __( 'Approve', 'gravityview' ),
 					'value' => sprintf( 'approve-%d', $form_id ),
 				),
 				array(
@@ -602,7 +602,7 @@ class GravityView_Admin_ApproveEntries {
 		/**
 		 * @filter `gravityview/approve_entries/bulk_actions` Modify the GravityView "Bulk action" dropdown list. Return an empty array to hide.
 		 * @see https://gist.github.com/zackkatz/82785402c996b51b4dc9 for an example of how to use this filter
-		 * @since TODO
+		 * @since 1.16.3
 		 * @param array $bulk_actions Associative array of actions to be added to "Bulk action" dropdown inside GravityView `<optgroup>`. Parent array key is the `<optgroup>` label, then each child array must have `label` (displayed text) and `value` (input value) keys
 		 * @param int $form_id ID of the form currently being displayed
 		 */
@@ -610,7 +610,7 @@ class GravityView_Admin_ApproveEntries {
 
 		// Sanitize the values, just to be sure.
 		foreach ( $bulk_actions as $key => $group ) {
-			foreach( $group as $i => $action ) {
+			foreach ( $group as $i => $action ) {
 				$bulk_actions[ $key ][ $i ]['label'] = esc_html( $bulk_actions[ $key ][ $i ]['label'] );
 				$bulk_actions[ $key ][ $i ]['value'] = esc_attr( $bulk_actions[ $key ][ $i ]['value'] );
 			}
