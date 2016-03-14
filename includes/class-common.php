@@ -989,12 +989,9 @@ class GVCommon {
 					$shortcodes[] = $shortcode;
 
 				} else if ( isset( $shortcode[5] ) && $results = self::has_shortcode_r( $shortcode[5], $tag ) ) {
-					if( is_array( $results ) ) {
-						foreach( $results as $result ) {
-							$shortcodes[] = $result;
-						}
+					foreach( $results as $result ) {
+						$shortcodes[] = $result;
 					}
-
 				}
 			}
 
