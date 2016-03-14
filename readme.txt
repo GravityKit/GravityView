@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= =
+* Fixed: when using the gravityview shortcode inside some page builders shortcodes it could return wrong results
+
 = 1.16.3 on February 28 =
 
 * Fixed: Date range search not working

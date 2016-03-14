@@ -986,8 +986,13 @@ class GVCommon {
 					// Changed this to $shortcode instead of true so we get the parsed atts.
 					$shortcodes[] = $shortcode;
 
-				} else if ( isset( $shortcode[5] ) && $result = self::has_shortcode_r( $shortcode[5], $tag ) ) {
-					$shortcodes = $result;
+				} else if ( isset( $shortcode[5] ) && $results = self::has_shortcode_r( $shortcode[5], $tag ) ) {
+					if( is_array( $results ) ) {
+						foreach( $results as $result ) {
+							$shortcodes[] = $result;
+						}
+					}
+
 				}
 			}
 
