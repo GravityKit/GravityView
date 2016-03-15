@@ -584,12 +584,15 @@ class GravityView_View extends Gamajo_Template_Loader {
 	/**
 	 * Render an output zone, as configured in the Admin
 	 *
+	 * @since 1.16.4 Added $echo parameter
+	 *
 	 * @param string $zone The zone name, like 'footer-left'
 	 * @param array $atts
+	 * @param bool $echo Whether to print the output
 	 *
 	 * @return string|null
 	 */
-	public function renderZone( $zone = '', $atts = array() ) {
+	public function renderZone( $zone = '', $atts = array(), $echo = true ) {
 
 		if( empty( $zone ) ) {
 			do_action('gravityview_log_error', 'GravityView_View[renderZone] No zone defined.');
@@ -652,7 +655,9 @@ class GravityView_View extends Gamajo_Template_Loader {
 			$output .= '</div>';
 		}
 
-		echo $output;
+		if( $echo ) {
+			echo $output;
+		}
 
 		return $output;
 	}
