@@ -61,7 +61,7 @@ install_gravity_forms(){
 	    curl -L "$GRAVITY_FORMS_DL_PATH_OR_URL" --output "$PWD"/tmp/gravityforms.zip
 
 	    # -o will overwrite files. -q is quiet mode
-	    unzip -o -q "$PWD"/tmp/gravityforms.zip -d "$PWD"/tmp/gravityforms/
+	    unzip -o -q "$PWD"/tmp/gravityforms.zip -d "$PWD"/tmp/
 
     # Otherwise, if you have Gravity Forms installed locally, use that.
     else
