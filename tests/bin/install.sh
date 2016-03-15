@@ -22,14 +22,9 @@ GRAVITY_FORMS_DL_PATH_OR_URL="${6-$TRAVIS_GRAVITY_FORMS_DL_URL}"
 TESTS_PLUGINS_DIR="$(dirname "${PWD}")"
 
 # -e Exit immediately if a command exits with a non-zero status
-# -x Print each command that is executed with a plus prefix
-set -ex
+set -e
 
 print_gv_help() {
-
-    # Stop debugging
-    set +x
-
     echo "usage: $0 [db-name (default: root)] [db-user (default: root)] [db-pass (default: root)] [db-host (default: localhost)] [wp-version (default: latest)] [gravity-forms-zip-url]"
     echo "example using remote .zip: $0 gravityview_test root root localhost latest http://example.com/path/to/gravityview.zip"
     echo "example using local path: $0 gravityview_test root root localhost latest ../gravityforms/"
@@ -63,7 +58,7 @@ install_gravity_forms(){
     elif [[ $GRAVITY_FORMS_DL_PATH_OR_URL != '' ]]; then
 
         # Pull from remote
-	    curl -L "$PATH_TO_GF_ZIP" --output "$PWD"/tmp/gravityforms.zip
+	    curl -L "$GRAVITY_FORMS_DL_PATH_OR_URL" --output "$PWD"/tmp/gravityforms.zip
 
 	    # -o will overwrite files. -q is quiet mode
 	    unzip -o -q "$PWD"/tmp/gravityforms.zip -d "$PWD"/tmp/gravityforms/
