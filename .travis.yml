@@ -15,8 +15,6 @@ env:
   - WP_VERSION=4.2 WP_MULTISITE=0
   - WP_VERSION=4.1 WP_MULTISITE=0
   - WP_VERSION=4.0 WP_MULTISITE=0
-  global:
-  - secure: "iub9RO8IoAj8ETKwMDhQN+PMGq8kAXEIp+klXe885ZucDITvgNDDlEJcuDRP77ac5jcTPrCybl5eZQR8ciismiRuZLf/xlHAIkwPcnZnkYaFTdPRR+7jtzYSpZFwkaKWHyz/N1mHYaBCj7h68DmWXFOTSvBSIp8Fn4jyId2xs4s="
 
 matrix:
   include:
