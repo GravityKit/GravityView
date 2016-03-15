@@ -171,9 +171,9 @@ class GVCommon_Test extends GV_UnitTestCase {
 	function test_get_link_html() {
 
 		$this->assertEquals( '<a href="#">Basic</a>', GVCommon::get_link_html( '#', 'Basic' ) );
-		$this->assertEquals( '<a title="New Title" href="#">Basic</a>', GVCommon::get_link_html( '#', 'Basic', array( 'title' => 'New Title' ) ) );
-		$this->assertEquals( '<a title="New Title" href="#">Basic</a>', GVCommon::get_link_html( '#', 'Basic', array( 'title' => 'New Title' ) ) );
-		$this->assertEquals( '<a onclick="alert(&quot;Javascript!&quot;);" href="#">Basic</a>', GVCommon::get_link_html( '#', 'Basic', array( 'onclick' => 'alert("Javascript!");' ) ) );
+		$this->assertEquals( '<a href="#" title="New Title">Basic</a>', GVCommon::get_link_html( '#', 'Basic', array( 'title' => 'New Title' ) ) );
+		$this->assertEquals( '<a href="#" title="New Title">Basic</a>', GVCommon::get_link_html( '#', 'Basic', array( 'title' => 'New Title' ) ) );
+		$this->assertEquals( '<a href="#" onclick="alert(&quot;Javascript!&quot;);">Basic</a>', GVCommon::get_link_html( '#', 'Basic', array( 'onclick' => 'alert("Javascript!");' ) ) );
 
 		// Make sure running esc_url_raw
 		$href = '//?dangerous=alert("example");&quot;%20;';
