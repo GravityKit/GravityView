@@ -22,6 +22,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 	/**
 	 * whether search method is GET or POST ( default: GET )
+	 * @since 1.16.4
 	 * @var string
 	 */
 	private $search_method = 'get';
@@ -1018,8 +1019,12 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 	/**
 	 * Based on the search method, fetch the value for a specific key
-	 * @param $name
-	 * @return mixed|string
+	 * 
+	 * @since 1.16.4
+	 *
+	 * @param string $name Name of the request key to fetch the value for
+	 *
+	 * @return mixed|string Value of request at $name key. Empty string if empty.
 	 */
 	private function rgget_or_rgpost( $name ) {
 		$value = 'get' === $this->search_method ? rgget( $name ) : rgpost( $name );
