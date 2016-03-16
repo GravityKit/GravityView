@@ -15,6 +15,11 @@ if( gv_empty( $field['value'] ) ) {
 	return;
 }
 
+if( ! class_exists('GFQuiz') ) {
+	do_action('gravityview_log_error', __FILE__ . ': GFQuiz class does not exist.' );
+	return;
+}
+
 // Get the setting for show/hide explanation
 $show_answer = rgars( $field, 'field_settings/quiz_show_explanation' );
 
