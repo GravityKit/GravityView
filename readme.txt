@@ -22,7 +22,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 1.16.4 =
 
-* Added: Use the hook `gravityview/search/method` to change the default search method from get to post (hiding the search filters from the view url)
+* Fixed: `[gravityview]` shortcodes sometimes not rendering inside page builder shortcodes
+* Fixed: Don't show GravityView Approve Entry column in Gravity Forms Entries table if there are no entries
+* Added `gv-widgets-no-results` and `gv-container-no-results` classes to the widget and View container `<div>`s. This will make it easier to hide empty View content and/or Widgets.
+* Added: New action hooks when entry is deleted (`gravityview/delete-entry/deleted`) or trashed (`gravityview/delete-entry/trashed`).
+* Added: Use the hook `gravityview/search/method` to change the default search method from `GET` to `POST` (hiding the search filters from the View url)
 
 = 1.16.3 on February 28 =
 
@@ -35,6 +39,8 @@ __Developer Notes:__
 
 * Added: `gravityview/approve_entries/bulk_actions` filter to modify items displayed in the Gravity Forms Entries "Bulk action" dropdown, in the "GravityView" `<optgroup>`
 * Added: `gravityview/edit_entry/button_labels` filter to modify the Edit Entry view buttons labels (defaults: `Cancel` and `Update`)
+* Added: `gravityview/approve_entries/add-note` filter to modify whether to add a note when the entry has been approved or disapproved (default: `true`)
+* Fixed: Removed deprecated `get_currentuserinfo()` function usage
 
 = 1.16.2.2 on February 17 =
 

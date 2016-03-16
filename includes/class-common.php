@@ -347,6 +347,7 @@ class GVCommon {
 				'desc'  => __( 'Displays the percentage of correct Quiz answers the user submitted.', 'gravityview' ),
 			);
 			$fields['gquiz_grade']   = array(
+				/* translators: This is a field type used by the Gravity Forms Quiz Addon. "A" is 100-90, "B" is 89-80, "C" is 79-70, etc.  */
 				'label' => __( 'Quiz Letter Grade', 'gravityview' ),
 				'type'  => 'quiz_grade',
 				'desc'  => __( 'Displays the Grade the user achieved based on Letter Grading configured in the Quiz Settings.', 'gravityview' ),
@@ -877,6 +878,7 @@ class GVCommon {
 
 		// If we're using time diff, we want to have a different default format
 		if( empty( $format ) ) {
+			/* translators: %s: relative time from now, used for generic date comparisons. "1 day ago", or "20 seconds ago" */
 			$format = $is_diff ? esc_html__( '%s ago', 'gravityview' ) : get_option( 'date_format' );
 		}
 
@@ -986,8 +988,10 @@ class GVCommon {
 					// Changed this to $shortcode instead of true so we get the parsed atts.
 					$shortcodes[] = $shortcode;
 
-				} else if ( isset( $shortcode[5] ) && $result = self::has_shortcode_r( $shortcode[5], $tag ) ) {
-					$shortcodes = $result;
+				} else if ( isset( $shortcode[5] ) && $results = self::has_shortcode_r( $shortcode[5], $tag ) ) {
+					foreach( $results as $result ) {
+						$shortcodes[] = $result;
+					}
 				}
 			}
 
