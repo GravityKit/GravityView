@@ -9,7 +9,7 @@
 $field = GravityView_View::getInstance()->getCurrentField();
 
 // If there's no grade, don't continue
-if( empty( $field['value'] ) ) {
+if( gv_empty( $field['value'], false, false ) ) {
 	return;
 }
 
