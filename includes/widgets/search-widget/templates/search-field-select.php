@@ -26,7 +26,7 @@ $default_option = apply_filters('gravityview/extension/search/select_default', '
 ?>
 <div class="gv-search-box">
 	<?php if( ! gv_empty( $search_field['label'], false ) ) { ?>
-	<label for=search-box-<?php echo esc_attr( $search_field['name'] ); ?>><?php echo esc_html( $search_field['label'] ); ?></label>
+		<label for="search-box-<?php echo esc_attr( $search_field['name'] ); ?>"><?php echo esc_html( $search_field['label'] ); ?></label>
 	<?php } ?>
 	<p>
 		<select name="<?php echo esc_attr( $search_field['name'] ); ?>" id="search-box-<?php echo esc_attr( $search_field['name'] ); ?>">
