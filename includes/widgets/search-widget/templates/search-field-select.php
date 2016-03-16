@@ -30,10 +30,10 @@ $default_option = apply_filters('gravityview/extension/search/select_default', '
 	<?php } ?>
 	<p>
 		<select name="<?php echo esc_attr( $search_field['name'] ); ?>" id="search-box-<?php echo esc_attr( $search_field['name'] ); ?>">
-			<option value="" <?php selected( '', $search_field['value'], true ); ?>><?php echo esc_html( $default_option ); ?></option>
+			<option value="" <?php gv_selected( '', $search_field['value'], true ); ?>><?php echo esc_html( $default_option ); ?></option>
 			<?php
 			foreach( $search_field['choices'] as $choice ) : ?>
-				<option value="<?php echo esc_attr( $choice['value'] ); ?>" <?php selected( $choice['value'], $search_field['value'], true ); ?>><?php echo esc_html( $choice['text'] ); ?></option>
+				<option value="<?php echo esc_attr( $choice['value'] ); ?>" <?php gv_selected( $choice['value'], $search_field['value'], true ); ?>><?php echo esc_html( $choice['text'] ); ?></option>
 			<?php endforeach; ?>
 		</select>
 	</p>
