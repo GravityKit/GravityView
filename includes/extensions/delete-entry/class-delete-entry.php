@@ -410,6 +410,13 @@ final class GravityView_Delete_Entry {
 
 			if( ! is_wp_error( $delete_response ) ) {
 				$delete_response = 'deleted';
+
+				/**
+				 * @action `gravityview/delete-entry/deleted` Triggered when an entry is deleted
+				 * @since 1.16.4
+				 * @param  int $entry_id ID of the Gravity Forms entry
+				*/
+				do_action( 'gravityview/delete-entry/deleted', $entry_id );
 			}
 
 			do_action( 'gravityview_log_debug', __METHOD__ . ' Delete response: ', $delete_response );
@@ -424,6 +431,14 @@ final class GravityView_Delete_Entry {
 			if( ! $trashed ) {
 				$delete_response = new WP_Error( 'trash_entry_failed', __('Moving the entry to the trash failed.', 'gravityview' ) );
 			} else {
+
+				/**
+				 * @action `gravityview/delete-entry/trashed` Triggered when an entry is trashed
+				 * @since 1.16.4
+				 * @param  int $entry_id ID of the Gravity Forms entry
+				 */
+				do_action( 'gravityview/delete-entry/trashed', $entry_id );
+
 				$delete_response = 'trashed';
 			}
 
