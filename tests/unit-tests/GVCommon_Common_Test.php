@@ -171,9 +171,9 @@ class GVCommon_Test extends GV_UnitTestCase {
 	function test_get_link_html() {
 
 		$this->assertEquals( '<a href="#">Basic</a>', GVCommon::get_link_html( '#', 'Basic' ) );
-		$this->assertEquals( '<a title="New Title" href="#">Basic</a>', GVCommon::get_link_html( '#', 'Basic', array( 'title' => 'New Title' ) ) );
-		$this->assertEquals( '<a title="New Title" href="#">Basic</a>', GVCommon::get_link_html( '#', 'Basic', array( 'title' => 'New Title' ) ) );
-		$this->assertEquals( '<a onclick="alert(&quot;Javascript!&quot;);" href="#">Basic</a>', GVCommon::get_link_html( '#', 'Basic', array( 'onclick' => 'alert("Javascript!");' ) ) );
+		$this->assertEquals( '<a href="#" title="New Title">Basic</a>', GVCommon::get_link_html( '#', 'Basic', array( 'title' => 'New Title' ) ) );
+		$this->assertEquals( '<a href="#" title="New Title">Basic</a>', GVCommon::get_link_html( '#', 'Basic', array( 'title' => 'New Title' ) ) );
+		$this->assertEquals( '<a href="#" onclick="alert(&quot;Javascript!&quot;);">Basic</a>', GVCommon::get_link_html( '#', 'Basic', array( 'onclick' => 'alert("Javascript!");' ) ) );
 
 		// Make sure running esc_url_raw
 		$href = '//?dangerous=alert("example");&quot;%20;';
@@ -192,6 +192,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers GVCommon::has_shortcode_r
+	 * @group has_shortcode
 	 */
 	function test_has_shortcode_r() {
 
@@ -199,35 +200,38 @@ class GVCommon_Test extends GV_UnitTestCase {
 		add_shortcode( 'shortcode_two', '__return_empty_string' );
 
 		$shortcode_exists = array(
-			'[gravityview]',
-			'[shortcode_one][shortcode_two][gravityview][/shortcode_two][/shortcode_one]',
-			'[shortcode_one] [shortcode_two] [gravityview /] [/shortcode_two] [/shortcode_one]',
-			'[shortcode_one][gravityview][/shortcode_one]',
-			'[shortcode_one]
-
-			[shortcode_two]
-
-			[gravityview /]
-
-			[/shortcode_two]
-
-			[/shortcode_one]',
+			'[gravity_view]' => false,
+			'gravityview' => false,
+			'[gravityview' => false,
+			'[gravity view]' => false,
+			'[gravityview]' => array( '[gravityview]' ),
+			'[shortcode_one][shortcode_two][gravityview][/shortcode_two][/shortcode_one]' => array( '[gravityview]' ),
+			'[shortcode_one] [shortcode_two] [gravityview /] [/shortcode_two] [/shortcode_one]' => array( '[gravityview /]' ),
+			'[shortcode_one][gravityview] [gravityview id="12345" attributes="custom"][/shortcode_one]' => array( '[gravityview]', '[gravityview id="12345" attributes="custom"]' ),
+			'[shortcode_one][shortcode_two][gravityview /][/shortcode_two][/shortcode_one]' => array( '[gravityview /]' ),
+			'[embed_wrapper][embed_level_1][embed_level_2][gravityview id="3416"][/embed_level_2][/embed_level_1][embed_level_1][embed_level_2][gravityview id="3418"][/embed_level_2][/embed_level_1][/embed_wrapper]' => array( '[gravityview id="3416"]', '[gravityview id="3418"]' ),
 		);
 
-		foreach ( $shortcode_exists as $item ) {
-			$this->assertNotEmpty( GVCommon::has_shortcode_r( $item ) );
+		foreach ( $shortcode_exists as $test => $expected ) {
+
+			$result = GVCommon::has_shortcode_r( $test );
+
+			// Expected to be false
+			if ( false === $item ) {
+				$this->assertFalse( $result );
+			} else {
+
+				$this->assertEquals( sizeof( $expected ), sizeof( $result ), 'different # of results' );
+
+				foreach ( $expected as $key => $item ) {
+					// Compare expected value against full shortcode string
+					$this->assertTrue( isset( $result[ $key ] ) );
+					$this->assertTrue( isset( $result[ $key ][0] ) );
+					$this->assertEquals( $expected[ $key ], $result[ $key ][0] );
+				}
+			}
 		}
 
-		$should_be_false = array(
-			'[gravity_view]',
-			'gravityview',
-			'[gravityview',
-			'[gravity view]',
-		);
-
-		foreach ( $should_be_false as $item ) {
-			$this->assertFalse( GVCommon::has_shortcode_r( $item ) );
-		}
 	}
 
 }

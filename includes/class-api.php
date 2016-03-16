@@ -748,12 +748,16 @@ function gv_container_class( $passed_css_class = '', $echo = true ) {
 		$default_css_class .= ' hidden';
 	}
 
+	if( 0 === GravityView_View::getInstance()->getTotalEntries() ) {
+		$default_css_class .= ' gv-container-no-results';
+	}
+
 	$css_class = trim( $passed_css_class . ' '. $default_css_class );
 
 	/**
 	 * @filter `gravityview/render/container/class` Modify the CSS class to be added to the wrapper <div> of a View
 	 * @since 1.5.4
-	 * @param[in,out] string $css_class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`
+	 * @param[in,out] string $css_class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`. If the View has no results, adds `gv-container-no-results`
 	 */
 	$css_class = apply_filters( 'gravityview/render/container/class', $css_class );
 
