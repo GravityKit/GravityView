@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: New action hooks when entry is deleted (`gravityview/delete-entry/deleted`) or trashed (`gravityview/delete-entry/trashed`).
 * Added: Use the hook `gravityview/search/method` to change the default search method from `GET` to `POST` (hiding the search filters from the View url)
 * Added: `gravityview/extension/search/select_default` filter to modify default value for Drop Down and Multiselect Search Bar fields.
+* Added: `gravityview_get_input_id_from_id()` helper function to get the Input ID from a Field ID.
 
 = 1.16.3 on February 28 =
 

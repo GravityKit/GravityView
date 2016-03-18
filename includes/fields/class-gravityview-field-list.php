@@ -116,14 +116,12 @@ class GravityView_Field_List extends GravityView_Field {
 			return $label;
 		}
 
-		$field_id_array = explode( '.', $field['id'] );
+		$column_id = gravityview_get_input_id_from_id( $field['id'] );
 
 		// Parent field, not column field
-		if( ! isset( $field_id_array[1] ) ) {
+		if( empty( $column_id ) ) {
 			return $label;
 		}
-
-		$column_id = intval( $field_id_array[1] );
 
 		return self::get_column_label( $field_object, $column_id, $label );
 	}
