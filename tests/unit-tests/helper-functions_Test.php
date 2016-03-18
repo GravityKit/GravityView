@@ -225,7 +225,7 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers ::gravityview_format_link()
-	 * @covers :: _gravityview_strip_subdomain()
+	 * @covers ::_gravityview_strip_subdomain()
 	 */
 	public function test_gravityview_format_link_DEFAULT() {
 
