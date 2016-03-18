@@ -24,10 +24,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Fixed: `[gravityview]` shortcodes sometimes not rendering inside page builder shortcodes
 * Fixed: Don't show GravityView Approve Entry column in Gravity Forms Entries table if there are no entries
+* Fixed: Individual date inputs (Day/Month/Year) always would show full date.
+* Tweak: Updated `templates/fields/date.php` template to use new `GravityView_Field_Date::date_display()` method.
 * Added `gv-widgets-no-results` and `gv-container-no-results` classes to the widget and View container `<div>`s. This will make it easier to hide empty View content and/or Widgets.
 * Added: New action hooks when entry is deleted (`gravityview/delete-entry/deleted`) or trashed (`gravityview/delete-entry/trashed`).
 * Added: Use the hook `gravityview/search/method` to change the default search method from `GET` to `POST` (hiding the search filters from the View url)
 * Added: `gravityview/extension/search/select_default` filter to modify default value for Drop Down and Multiselect Search Bar fields.
+* Added: `gravityview_get_input_id_from_id()` helper function to get the Input ID from a Field ID.
 
 = 1.16.3 on February 28 =
 

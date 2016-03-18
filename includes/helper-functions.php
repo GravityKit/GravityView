@@ -428,6 +428,30 @@ function gravityview_is_valid_datetime( $datetime, $expected_format = 'Y-m-d' ) 
 }
 
 /**
+ * Very commonly needed: get the # of the input based on a full field ID.
+ *
+ * Example: 12.3 => field #12, input #3. Returns: 3
+ * Example: 7 => field #7, no input. Returns: 0
+ *
+ * @since 1.16.4
+ *
+ * @param string $field_id Full ID of field, with or without input ID, like "12.3" or "7".
+ *
+ * @return int If field ID has an input, returns that input number. Otherwise, returns 0.
+ */
+function gravityview_get_input_id_from_id( $field_id = '' ) {
+
+	if ( ! is_numeric( $field_id ) ) {
+		do_action( 'gravityview_log_error', __FUNCTION__ . ': $field_id not numeric', $field_id );
+		return false;
+	}
+
+	$exploded = explode( '.', "{$field_id}" );
+
+	return isset( $exploded[1] ) ? intval( $exploded[1] ) : 0;
+}
+
+/**
  * Get categories formatted in a way used by GravityView and Gravity Forms input choices
  *
  * @since 1.15.3
