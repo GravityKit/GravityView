@@ -214,7 +214,7 @@ class GravityView_API {
 	 *
 	 * @access public
 	 * @param array $entry
-	 * @param integer $field
+	 * @param array $field
 	 * @return null|string
 	 */
 	public static function field_value( $entry, $field_settings, $format = 'html' ) {
@@ -312,6 +312,7 @@ class GravityView_API {
 
 		}
 
+		// Get the field settings again so that the field template can override the settings
 		$field_settings = $gravityview_view->getCurrentField('field_settings');
 
 		/**
@@ -774,7 +775,7 @@ function gv_value( $entry, $field ) {
 
 	$value = GravityView_API::field_value( $entry, $field );
 
-	if( $value === '') {
+	if( $value === '' ) {
 		/**
 		 * @filter `gravityview_empty_value` What to display when a field is empty
 		 * @param string $value (empty string)

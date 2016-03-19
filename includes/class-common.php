@@ -928,7 +928,7 @@ class GVCommon {
 	 * @access public
 	 * @param array $form
 	 * @param string|int $field_id
-	 * @return array|null Array: Gravity Forms field array; NULL: Gravity Forms GFFormsModel does not exist
+	 * @return GF_Field|null Gravity Forms field object, or NULL: Gravity Forms GFFormsModel does not exist or field at $field_id doesn't exist.
 	 */
 	public static function get_field( $form, $field_id ) {
 		if ( class_exists( 'GFFormsModel' ) ){
