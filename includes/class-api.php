@@ -214,7 +214,7 @@ class GravityView_API {
 	 *
 	 * @access public
 	 * @param array $entry
-	 * @param integer $field
+	 * @param array $field
 	 * @return null|string
 	 */
 	public static function field_value( $entry, $field_settings, $format = 'html' ) {
@@ -225,56 +225,40 @@ class GravityView_API {
 
 		$gravityview_view = GravityView_View::getInstance();
 
-		if( class_exists( 'GFCache' ) ) {
-			/**
-			 * Gravity Forms' GFCache function was thrashing the database, causing double the amount of time for the field_value() method to run.
-			 *
-			 * The reason is that the cache was checking against a field value stored in a transient every time `GFFormsModel::get_lead_field_value()` is called.
-			 *
-			 * What we're doing here is telling the GFCache that it's already checked the transient and the value is false, forcing it to just use the non-cached data, which is actually faster.
-			 *
-			 * @hack
-			 * @since  1.3
-			 * @param  string $cache_key Field Value transient key used by Gravity Forms
-			 * @param mixed false Setting the value of the cache to false so that it's not used by Gravity Forms' GFFormsModel::get_lead_field_value() method
-			 * @param boolean false Tell Gravity Forms not to store this as a transient
-			 * @param  int 0 Time to store the value. 0 is maximum amount of time possible.
-			 */
-			GFCache::set( "GFFormsModel::get_lead_field_value_" . $entry["id"] . "_" . $field_settings["id"], false, false, 0 );
-		}
-
 		$field_id = $field_settings['id'];
-
 		$form = $gravityview_view->getForm();
-
 		$field = gravityview_get_field( $form, $field_id );
-
-		$field_type = RGFormsModel::get_input_type($field);
-
-		if( $field_type ) {
-			$field_type = $field['type'];
-			$value = RGFormsModel::get_lead_field_value($entry, $field);
-		} else {
-			// For non-integer field types (`id`, `date_created`, etc.)
-			$field_type = $field_id;
-			$field['type'] = $field_id;
-			$value = isset($entry[$field_type]) ? $entry[$field_type] : NULL;
-		}
 
 		// Prevent any PHP warnings that may be generated
 		ob_start();
 
-		$display_value = GFCommon::get_lead_field_display($field, $value, $entry["currency"], false, $format);
-
-		if( $errors = ob_get_clean() ) {
-			do_action( 'gravityview_log_error', 'GravityView_API[field_value] Errors when calling GFCommon::get_lead_field_display()', $errors );
+		if( $field && is_numeric( $field_id ) ) {
+			// Used as file name of field template in GV.
+			// Don't use RGFormsModel::get_input_type( $field ); we don't care if it's a radio input; we want to know it's a 'quiz' field
+			$field_type = $field->type;
+			$value = RGFormsModel::get_lead_field_value( $entry, $field );
+		} else {
+			$field = GravityView_Fields::get_associated_field( $field_id );
+			$field_type = $field_id; // Used as file name of field template in GV
 		}
 
-		$display_value = apply_filters("gform_entry_field_value", $display_value, $field, $entry, $form);
+		// If a Gravity Forms Field is found, get the field display
+		if( $field ) {
+			$display_value = GFCommon::get_lead_field_display( $field, $value, $entry["currency"], false, $format );
 
-		// prevent the use of merge_tags for non-admin fields
-		if( !empty( $field['adminOnly'] ) ) {
-			$display_value = self::replace_variables( $display_value, $form, $entry );
+			if ( $errors = ob_get_clean() ) {
+				do_action( 'gravityview_log_error', 'GravityView_API[field_value] Errors when calling GFCommon::get_lead_field_display()', $errors );
+			}
+
+			$display_value = apply_filters( "gform_entry_field_value", $display_value, $field, $entry, $form );
+
+			// prevent the use of merge_tags for non-admin fields
+			if( !empty( $field->adminOnly ) ) {
+				$display_value = self::replace_variables( $display_value, $form, $entry );
+			}
+		} else {
+			$value = $display_value = rgar( $entry, $field_id );
+			$display_value = $value;
 		}
 
 		// Check whether the field exists in /includes/fields/{$field_type}.php
@@ -312,6 +296,7 @@ class GravityView_API {
 
 		}
 
+		// Get the field settings again so that the field template can override the settings
 		$field_settings = $gravityview_view->getCurrentField('field_settings');
 
 		/**
@@ -774,7 +759,7 @@ function gv_value( $entry, $field ) {
 
 	$value = GravityView_API::field_value( $entry, $field );
 
-	if( $value === '') {
+	if( $value === '' ) {
 		/**
 		 * @filter `gravityview_empty_value` What to display when a field is empty
 		 * @param string $value (empty string)

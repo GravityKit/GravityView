@@ -56,6 +56,16 @@ class GravityView_API_Test extends GV_UnitTestCase {
 			gv_container_class();
 		$output = ob_get_clean();
 
+		$this->assertEquals( 'gv-container gv-container-no-results', $output );
+
+		GravityView_View::getInstance()->setEntries( array( array('id'), array('id') ) );
+		GravityView_View::getInstance()->setTotalEntries( 2 );
+		
+		// Test non-empty View
+		ob_start();
+		gv_container_class();
+		$output = ob_get_clean();
+
 		$this->assertEquals( 'gv-container', $output );
 
 		// Test $echo parameter FALSE
@@ -194,12 +204,14 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		global $post;
 
 		$user = $this->factory->user->create_and_set( array( 'role' => 'administrator' ) );
+		$form = $this->factory->form->create_and_get( array( 'form_id' => $form['id'] ) );
 		$post = $this->factory->view->create_and_get();
-		$form = gravityview_get_form_id( $post->ID );
 		$entry = $this->factory->entry->create_and_get( array(
 			'created_by' => $user->ID,
 			'form_id' => $form['id'],
 		) );
+
+		$this->assertFalse( is_wp_error( $entry ), 'There was an error creating the $entry object. Skipping test' . print_r( $entry, true ) );
 
 		GravityView_View::getInstance()->setPostId( $post->ID );
 
@@ -230,8 +242,8 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	public function test_entry_link() {
 
 		$user = $this->factory->user->create_and_set( array( 'role' => 'administrator' ) );
-		$post = $this->factory->view->create_and_get();
-		$form = gravityview_get_form_id( $post->ID );
+		$form = $this->factory->form->create_and_get();
+		$post = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 		$entry = $this->factory->entry->create_and_get( array(
 			'created_by' => $user->ID,
 			'form_id' => $form['id'],
@@ -319,6 +331,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @group get_current_views
 	 * @internal Make sure this test is above the test_directory_link() test so that one doesn't pollute $post
 	 */
 	public function test_gravityview_get_current_views() {
@@ -334,12 +347,12 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		$post = get_post( $view_post_type_id );
 
-		$this->assertEquals( $view_post_type_id, $post->ID );
+		$this->assertEquals( $view_post_type_id, $post->ID, 'The post was not properly created' );
 
 		$current_views = gravityview_get_current_views();
 
 		// Check if the view post is set
-		$this->assertTrue( isset( $current_views[ $view_post_type_id ] ) );
+		$this->assertTrue( isset( $current_views[ $view_post_type_id ] ), 'The $current_views array didnt have a value set at $post-ID key' );
 
 		// When the view is added, the key is set to the View ID and the `id` is also set to that
 		$this->assertEquals( $view_post_type_id, $current_views[ $view_post_type_id ]['id'] );

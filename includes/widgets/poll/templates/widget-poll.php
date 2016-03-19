@@ -13,4 +13,4 @@ $gravityview_view = GravityView_View::getInstance();
  */
 $merge_tag = $gravityview_view->poll_merge_tag;
 
-echo GFCommon::replace_variables( $merge_tag, $gravityview_view->getForm(), array() );
+echo GFCommon::replace_variables( $merge_tag, $gravityview_view->getForm(), array( 'id' => 0 ) );
