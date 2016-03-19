@@ -226,37 +226,39 @@ class GravityView_API {
 		$gravityview_view = GravityView_View::getInstance();
 
 		$field_id = $field_settings['id'];
-
 		$form = $gravityview_view->getForm();
-
 		$field = gravityview_get_field( $form, $field_id );
-
-		$field_type = RGFormsModel::get_input_type($field);
-
-		if( $field_type ) {
-			$field_type = $field['type'];
-			$value = RGFormsModel::get_lead_field_value($entry, $field);
-		} else {
-			// For non-integer field types (`id`, `date_created`, etc.)
-			$field_type = $field_id;
-			$field['type'] = $field_id;
-			$value = isset($entry[$field_type]) ? $entry[$field_type] : NULL;
-		}
 
 		// Prevent any PHP warnings that may be generated
 		ob_start();
 
-		$display_value = GFCommon::get_lead_field_display($field, $value, $entry["currency"], false, $format);
-
-		if( $errors = ob_get_clean() ) {
-			do_action( 'gravityview_log_error', 'GravityView_API[field_value] Errors when calling GFCommon::get_lead_field_display()', $errors );
+		if( $field && is_numeric( $field_id ) ) {
+			// Used as file name of field template in GV.
+			// Don't use RGFormsModel::get_input_type( $field ); we don't care if it's a radio input; we want to know it's a 'quiz' field
+			$field_type = $field->type;
+			$value = RGFormsModel::get_lead_field_value( $entry, $field );
+		} else {
+			$field = GravityView_Fields::get_associated_field( $field_id );
+			$field_type = $field_id; // Used as file name of field template in GV
 		}
 
-		$display_value = apply_filters("gform_entry_field_value", $display_value, $field, $entry, $form);
+		// If a Gravity Forms Field is found, get the field display
+		if( $field ) {
+			$display_value = GFCommon::get_lead_field_display( $field, $value, $entry["currency"], false, $format );
 
-		// prevent the use of merge_tags for non-admin fields
-		if( !empty( $field['adminOnly'] ) ) {
-			$display_value = self::replace_variables( $display_value, $form, $entry );
+			if ( $errors = ob_get_clean() ) {
+				do_action( 'gravityview_log_error', 'GravityView_API[field_value] Errors when calling GFCommon::get_lead_field_display()', $errors );
+			}
+
+			$display_value = apply_filters( "gform_entry_field_value", $display_value, $field, $entry, $form );
+
+			// prevent the use of merge_tags for non-admin fields
+			if( !empty( $field->adminOnly ) ) {
+				$display_value = self::replace_variables( $display_value, $form, $entry );
+			}
+		} else {
+			$value = $display_value = rgar( $entry, $field_id );
+			$display_value = $value;
 		}
 
 		// Check whether the field exists in /includes/fields/{$field_type}.php
