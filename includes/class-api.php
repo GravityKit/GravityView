@@ -225,24 +225,6 @@ class GravityView_API {
 
 		$gravityview_view = GravityView_View::getInstance();
 
-		if( class_exists( 'GFCache' ) ) {
-			/**
-			 * Gravity Forms' GFCache function was thrashing the database, causing double the amount of time for the field_value() method to run.
-			 *
-			 * The reason is that the cache was checking against a field value stored in a transient every time `GFFormsModel::get_lead_field_value()` is called.
-			 *
-			 * What we're doing here is telling the GFCache that it's already checked the transient and the value is false, forcing it to just use the non-cached data, which is actually faster.
-			 *
-			 * @hack
-			 * @since  1.3
-			 * @param  string $cache_key Field Value transient key used by Gravity Forms
-			 * @param mixed false Setting the value of the cache to false so that it's not used by Gravity Forms' GFFormsModel::get_lead_field_value() method
-			 * @param boolean false Tell Gravity Forms not to store this as a transient
-			 * @param  int 0 Time to store the value. 0 is maximum amount of time possible.
-			 */
-			GFCache::set( "GFFormsModel::get_lead_field_value_" . $entry["id"] . "_" . $field_settings["id"], false, false, 0 );
-		}
-
 		$field_id = $field_settings['id'];
 
 		$form = $gravityview_view->getForm();
