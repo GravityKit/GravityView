@@ -158,6 +158,31 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @since 1.16.4
+	 * @covers ::gravityview_get_input_id_from_id()
+	 */
+	public function test_gravityview_get_input_id_from_id() {
+		
+		$tests = array(
+			'1' => 0,
+			'1.0' => 0,
+			'1.10' => 10,
+			'12.2' => 2,
+			'12.02' => 2, // Shouldn't happen
+			'871.57' => 57,
+			'asdasdsd' => false, // non-numeric is false
+		);
+
+		foreach ( $tests as $field_id => $expected ) {
+			$formatted = gravityview_get_input_id_from_id( $field_id );
+			$this->assertEquals( $expected, $formatted );
+		}
+
+		$this->assertEquals( 0, gravityview_get_input_id_from_id( 38 ), 'integer value' );
+		$this->assertEquals( 12, gravityview_get_input_id_from_id( 38.12 ), 'float value' );
+	}
+
+	/**
 	 * @covers ::gravityview_sanitize_html_class()
 	 */
 	public function test_gravityview_sanitize_html_class() {
@@ -200,7 +225,7 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers ::gravityview_format_link()
-	 * @covers :: _gravityview_strip_subdomain()
+	 * @covers ::_gravityview_strip_subdomain()
 	 */
 	public function test_gravityview_format_link_DEFAULT() {
 

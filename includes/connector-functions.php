@@ -128,14 +128,14 @@ function gravityview_get_field_label( $form, $field_id ) {
 /**
  * Returns the field details array of a specific form given the field id
  *
- * Alias of Alias of GFFormsModel::get_field
+ * Alias of GFFormsModel::get_field
  *
  * @uses GVCommon::get_field
  * @see GFFormsModel::get_field
  * @access public
  * @param array $form
  * @param string|int $field_id
- * @return array
+ * @return GF_Field|null Returns NULL if field with ID $field_id doesn't exist.
  */
 function gravityview_get_field( $form, $field_id ) {
 	return GVCommon::get_field( $form, $field_id );

@@ -282,9 +282,7 @@ class GravityView_Field_Time extends GravityView_Field {
 	 */
 	static public function date_format( $time_format = '12', $field_id = 0 ) {
 
-		$field_id_array = explode( '.', $field_id );
-
-		$field_input_id = isset( $field_id_array[1] ) ? intval( $field_id_array[1] ) : 0;
+		$field_input_id = gravityview_get_input_id_from_id( $field_id );
 
 		$default = 'h:i A';
 
