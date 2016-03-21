@@ -34,6 +34,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: `gravityview/extension/search/select_default` filter to modify default value for Drop Down and Multiselect Search Bar fields.
 * Added: `gravityview_get_input_id_from_id()` helper function to get the Input ID from a Field ID.
 * Added: Option to set the search mode on the GravityView Search WordPress widget.
+* Updated: Turkish translation. Thanks, [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)!
 
 = 1.16.3 on February 28 =
 
