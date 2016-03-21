@@ -784,10 +784,6 @@ class GravityView_Edit_Entry_Render {
      *
      * @since 1.9
      *
-     * @param $form
-     * @param $lead
-     * @param $view_id
-     *
      * @return void
      */
     private function render_edit_form() {
@@ -804,11 +800,8 @@ class GravityView_Edit_Entry_Render {
         // We need to remove the fake $_GET['page'] arg to avoid rendering form as if in admin.
         unset( $_GET['page'] );
 
-        // TODO: Make sure validation isn't handled by GF
-        // TODO: Include CSS for file upload fields
         // TODO: Verify multiple-page forms
         // TODO: Product fields are not editable
-        // TODO: Check Updated and Error messages
 
         $html = GFFormDisplay::get_form( $this->form['id'], false, false, true, $this->entry );
 
@@ -983,6 +976,7 @@ class GravityView_Edit_Entry_Render {
 	    ob_start();
 
         if( $gv_field && is_callable( array( $gv_field, 'get_field_input' ) ) ) {
+            /** @var GF_Field $gv_field */
             $return = $gv_field->get_field_input( $this->form, $field_value, $this->entry, $field );
         } else {
 	        $return = $field->get_field_input( $this->form, $field_value, $this->entry );
