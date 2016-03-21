@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Don't show GravityView Approve Entry column in Gravity Forms Entries table if there are no entries
 * Fixed: Individual date inputs (Day/Month/Year) always would show full date.
 * Fixed: Survey field CSS styles weren't enqueued properly when viewing survey results
+* Fixed: Survey field values weren't displaying in Edit Entry. We hope you "likert" this update a lot ;-)
 * Tweak: Updated `templates/fields/date.php` template to use new `GravityView_Field_Date::date_display()` method.
 * Added `gv-widgets-no-results` and `gv-container-no-results` classes to the widget and View container `<div>`s. This will make it easier to hide empty View content and/or Widgets.
 * Added: New action hooks when entry is deleted (`gravityview/delete-entry/deleted`) or trashed (`gravityview/delete-entry/trashed`).
