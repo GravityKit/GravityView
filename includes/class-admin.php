@@ -167,20 +167,27 @@ class GravityView_Admin {
 
 		$messages['gravityview'] = array(
 			0  => '', // Unused. Messages start at index 1.
+			/* translators: %s and %s are HTML tags linking to the View on the website */
 			1  => sprintf(__( 'View updated. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
+			/* translators: %s and %s are HTML tags linking to the View on the website */
 			2  => sprintf(__( 'View updated. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 			3  => __( 'View deleted.', 'gravityview' ),
+			/* translators: %s and %s are HTML tags linking to the View on the website */
 			4  => sprintf(__( 'View updated. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 			/* translators: %s: date and time of the revision */
 			5  => isset( $_GET['revision'] ) ? sprintf( __( 'View restored to revision from %s', 'gravityview' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+			/* translators: %s and %s are HTML tags linking to the View on the website */
 			6  => sprintf(__( 'View published. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
+			/* translators: %s and %s are HTML tags linking to the View on the website */
 			7  => sprintf(__( 'View saved. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
 			8  => __( 'View submitted.', 'gravityview' ),
 			9  => sprintf(
+		        /* translators: Date and time the View is scheduled to be published */
 				__( 'View scheduled for: %1$s.', 'gravityview' ),
 				// translators: Publish box date format, see http://php.net/date
 				date_i18n( __( 'M j, Y @ G:i', 'gravityview' ), strtotime( ( isset( $post->post_date ) ? $post->post_date : NULL )  ) )
 			) . $new_form_text,
+			/* translators: %s and %s are HTML tags linking to the View on the website */
 			10  => sprintf(__( 'View draft updated. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 
 			/**

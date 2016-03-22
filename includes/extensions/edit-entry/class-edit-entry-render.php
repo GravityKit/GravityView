@@ -370,7 +370,13 @@ class GravityView_Edit_Entry_Render {
 
         $form = $this->form;
 
-        foreach( $form['fields'] as &$field ) {
+        foreach( $form['fields'] as $k => &$field ) {
+
+            // Remove the fields with calculation formulas before save to avoid conflicts with GF logic
+            // @since 1.16.3
+            if( $field->has_calculation() ) {
+                unset( $form['fields'][ $k ] );
+            }
 
             $field->adminOnly = false;
 
@@ -736,7 +742,7 @@ class GravityView_Edit_Entry_Render {
      *
      * @uses GVCommon::generate_notice
      *
-     * @since TODO
+     * @since 1.16.2.2
      *
      * @return void
      */
@@ -778,10 +784,6 @@ class GravityView_Edit_Entry_Render {
      *
      * @since 1.9
      *
-     * @param $form
-     * @param $lead
-     * @param $view_id
-     *
      * @return void
      */
     private function render_edit_form() {
@@ -793,17 +795,17 @@ class GravityView_Edit_Entry_Render {
         add_filter( 'gform_field_input', array( $this, 'verify_user_can_edit_post' ), 5, 5 );
         add_filter( 'gform_field_input', array( $this, 'modify_edit_field_input' ), 10, 5 );
 
+        add_filter( 'gform_field_value', array( $this, 'fix_survey_fields_value'), 10, 3 );
+
         // We need to remove the fake $_GET['page'] arg to avoid rendering form as if in admin.
         unset( $_GET['page'] );
 
-        // TODO: Make sure validation isn't handled by GF
-        // TODO: Include CSS for file upload fields
         // TODO: Verify multiple-page forms
         // TODO: Product fields are not editable
-        // TODO: Check Updated and Error messages
 
         $html = GFFormDisplay::get_form( $this->form['id'], false, false, true, $this->entry );
 
+        remove_filter( 'gform_field_value', array( $this, 'fix_survey_fields_value'), 10 );
 	    remove_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields' ), 5000 );
         remove_filter( 'gform_submit_button', array( $this, 'render_form_buttons' ) );
         remove_filter( 'gform_disable_view_counter', '__return_true' );
@@ -811,6 +813,27 @@ class GravityView_Edit_Entry_Render {
         remove_filter( 'gform_field_input', array( $this, 'modify_edit_field_input' ), 10 );
 
         echo $html;
+    }
+
+    /**
+     * Survey fields inject their output using `gform_field_input` filter, but in Edit Entry, the values were empty.
+     * We filter the values here because it was the easiest access point: tell the survey field the correct value, GF outputs it.
+     *
+     * @since 1.16.4
+     *
+     * @param string $value Existing value
+     * @param GF_Field $field
+     * @param string $name Field custom parameter name, normally blank.
+     *
+     * @return mixed
+     */
+    function fix_survey_fields_value( $value, $field, $name ) {
+
+        if( 'survey' === $field->type && '' === $value ) {
+            $value = $this->entry["{$field->id}"];
+        }
+
+        return $value;
     }
 
     /**
@@ -858,7 +881,7 @@ class GravityView_Edit_Entry_Render {
     /**
      * When displaying a field, check if it's a Post Field, and if so, make sure the post exists and current user has edit rights.
      *
-     * @since TODO
+     * @since 1.16.2.2
      *
      * @param string $field_content Always empty. Returning not-empty overrides the input.
      * @param GF_Field $field
@@ -953,6 +976,7 @@ class GravityView_Edit_Entry_Render {
 	    ob_start();
 
         if( $gv_field && is_callable( array( $gv_field, 'get_field_input' ) ) ) {
+            /** @var GF_Field $gv_field */
             $return = $gv_field->get_field_input( $this->form, $field_value, $this->entry, $field );
         } else {
 	        $return = $field->get_field_input( $this->form, $field_value, $this->entry );
@@ -1374,6 +1398,9 @@ class GravityView_Edit_Entry_Render {
 	    // Show hidden fields as text fields
 	    $form = $this->fix_hidden_fields( $form );
 
+        // Show hidden fields as text fields
+        $form = $this->fix_survey_fields( $form );
+
         // Hide fields depending on admin settings
         $fields = $this->filter_fields( $form['fields'], $edit_fields );
 
@@ -1381,6 +1408,25 @@ class GravityView_Edit_Entry_Render {
 	    $fields = $this->filter_admin_only_fields( $fields, $edit_fields, $form, $view_id );
 
         return $fields;
+    }
+
+    /**
+     * Make sure Survey fields accept pre-populating values; otherwise existing values won't be filled-in
+     *
+     * @since 1.16.4
+     *
+     * @param array $form
+     *
+     * @return array Form, with all fields set to `allowsPrepopulate => true`
+     */
+    private function fix_survey_fields( $form ) {
+
+        /** @var GF_Field $field */
+        foreach( $form['fields'] as &$field ) {
+            $field->allowsPrepopulate = true;
+        }
+
+        return $form;
     }
 
 	/**
@@ -1451,7 +1497,7 @@ class GravityView_Edit_Entry_Render {
             // @since 1.16.2
             if( $field->has_calculation() ) {
                 $this->fields_with_calculation[] = $field;
-                unset( $fields[ $key ] );
+                // don't remove the calculation fields on form render.
             }
 
             // process total field after all fields have been saved

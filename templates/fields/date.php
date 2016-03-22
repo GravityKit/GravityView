@@ -17,7 +17,8 @@ extract( $gravityview_view->getCurrentField() );
 if( $value === '1970-01-01' ) {
 
 	/**
-	 * Return false to show value. Use `__return_false` callback.
+	 * @filter `gravityview/fields/date/hide_epoch` Whether to hide `1970-01-01` dates; that is normally an erroneous date. Return false to show value. Use `__return_false` callback.
+	 * @param bool $hide_epoch True: hide values that are 1970-01-01. False: show the value.
 	 */
 	$hide_epoch = apply_filters( 'gravityview/fields/date/hide_epoch', true );
 
@@ -35,13 +36,7 @@ if( !empty( $field_settings ) && !empty( $field_settings['date_display'] ) && !e
 
 } else {
 
-	/**
-	 * @filter `gravityview_date_format` Whether to override the Gravity Forms date format with a PHP date format
-	 * @see https://codex.wordpress.org/Formatting_Date_and_Time
-	 * @param null|string Date Format (default: $field->dateFormat)
-	 */
-	$format = apply_filters( 'gravityview_date_format', rgar($field, "dateFormat") );
-	$output = GFCommon::date_display( $value, $format );
+	$output = GravityView_Field_Date::date_display( $value, rgar($field, "dateFormat"), $field_id );
 
 }
 

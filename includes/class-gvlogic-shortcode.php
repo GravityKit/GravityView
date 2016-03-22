@@ -162,7 +162,7 @@ class GVLogic_Shortcode {
 	 *
 	 * @return bool True: we've got an operation and comparison value; False: no, we don't
 	 */
-	function setup_operation_and_comparison() {
+	private function setup_operation_and_comparison() {
 
 		foreach( $this->atts as $key => $value ) {
 
@@ -199,7 +199,7 @@ class GVLogic_Shortcode {
 
 		// We need an "if"
 		if( false === $this->if ) {
-			do_action( 'gravityview_log_error', __METHOD__.' $atts->if is empty.', $this->atts );
+			do_action( 'gravityview_log_error', __METHOD__.' $atts->if is empty.', $this->passed_atts );
 			return null;
 		}
 
@@ -218,7 +218,9 @@ class GVLogic_Shortcode {
 		$this->set_is_match();
 
 		// Return the value!
-		return $this->get_output();
+		$output = $this->get_output();
+
+		return $output;
 	}
 
 	/**
@@ -227,7 +229,7 @@ class GVLogic_Shortcode {
 	 *
 	 * @return boolean True: yep; false: nope
 	 */
-	function set_is_match() {
+	private function set_is_match() {
 		$this->is_match = GVCommon::matches_operation( $this->if, $this->comparison, $this->operation );
 	}
 
@@ -236,7 +238,7 @@ class GVLogic_Shortcode {
 	 *
 	 * @return string HTML/Text output of the shortcode
 	 */
-	function get_output() {
+	private function get_output() {
 
 		if( $this->is_match ) {
 			$output = $this->content;
@@ -266,7 +268,7 @@ class GVLogic_Shortcode {
 	 * @todo allow for chains of [else if="{another field:123}" is="example"] - requires registering [else] shortcode...
 	 * @return void
 	 */
-	function set_content_and_else_content() {
+	private function set_content_and_else_content() {
 
 		$content = explode( '[else]', $this->passed_content );
 
@@ -281,7 +283,7 @@ class GVLogic_Shortcode {
 	 * Process the attributes passed to the shortcode. Make sure they're valid
 	 * @return void
 	 */
-	function parse_atts() {
+	private function parse_atts() {
 
 		$supported = array(
 			'if' => false,

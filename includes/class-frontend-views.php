@@ -315,13 +315,21 @@ class GravityView_frontend {
 			return false;
 		}
 
+		$search_method = GravityView_Widget_Search::getInstance()->get_search_method();
+
+		if( 'post' === $search_method ) {
+			$get = $_POST;
+		} else {
+			$get = $_GET;
+		}
+
 		// No $_GET parameters
-		if ( empty( $_GET ) || ! is_array( $_GET ) ) {
+		if ( empty( $get ) || ! is_array( $get ) ) {
 			return false;
 		}
 
 		// Remove empty values
-		$get = array_filter( $_GET );
+		$get = array_filter( $get );
 
 		// If the $_GET parameters are empty, it's no search.
 		if ( empty( $get ) ) {
