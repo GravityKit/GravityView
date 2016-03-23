@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.16.4.1 on March 23 =
+* Fixed: Major display issue caused by output buffering introduced in 1.16.4. Sorry!
+
 = 1.16.4 on March 21 =
 * Fixed: `[gravityview]` shortcodes sometimes not rendering inside page builder shortcodes
 * Fixed: Individual date inputs (Day, Month, Year) always would show full date.
