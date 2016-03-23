@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.16.4.1 on March 23 =
+* Fixed: Major display issue caused by output buffering introduced in 1.16.4. Sorry!
+
 = 1.16.4 on March 21 =
 * Fixed: `[gravityview]` shortcodes sometimes not rendering inside page builder shortcodes
 * Fixed: Individual date inputs (Day, Month, Year) always would show full date.
@@ -94,6 +97,16 @@ __Developer Notes:__
 * Fixed: "Clear" search link now set to `display: inline-block` instead of `display: block`
 * Added: `gravityview/common/get_entry/check_entry_display` filter to disable validating whether to show entries or not against View filters
 * Fixed: `GravityView_API::replace_variables` no longer requires `$form` and `$entry` arguments
+
+**__Developer Notes:__**
+
+* Major CSS changes for the Search Bar.
+    - Search inputs `<div>`s now have additional CSS classes based on the input type: `.gv-search-field-{input_type}` where `{input_type}` is:
+    `search_all` (search everything text box), `link`, `date`, `checkbox` (list of checkboxes), `single_checkbox`, `text`, `radio`, `select`,
+    `multiselect`, `date_range`, `entry_id`, `entry_date`
+    - Added `gv-search-date-range` CSS class to containers that have date ranges
+    - Moved `gv-search-box-links` CSS class from the `<p>` to the `<div>` container
+    - Fixed: `<label>` `for` attribute was missing quotes
 
 = 1.16.1 on January 21 =
 
