@@ -98,16 +98,6 @@ __Developer Notes:__
 * Added: `gravityview/common/get_entry/check_entry_display` filter to disable validating whether to show entries or not against View filters
 * Fixed: `GravityView_API::replace_variables` no longer requires `$form` and `$entry` arguments
 
-**__Developer Notes:__**
-
-* Major CSS changes for the Search Bar.
-    - Search inputs `<div>`s now have additional CSS classes based on the input type: `.gv-search-field-{input_type}` where `{input_type}` is:
-    `search_all` (search everything text box), `link`, `date`, `checkbox` (list of checkboxes), `single_checkbox`, `text`, `radio`, `select`,
-    `multiselect`, `date_range`, `entry_id`, `entry_date`
-    - Added `gv-search-date-range` CSS class to containers that have date ranges
-    - Moved `gv-search-box-links` CSS class from the `<p>` to the `<div>` container
-    - Fixed: `<label>` `for` attribute was missing quotes
-
 = 1.16.1 on January 21 =
 
 * Fixed: GravityView prevented Gravity Forms translations from loading
