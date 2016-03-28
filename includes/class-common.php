@@ -1502,9 +1502,10 @@ class GVCommon {
     }
 
 	/**
-	 * Inspired on \GFCommon::encode_shortcodes
-	 * @param $string
-	 * @return $string
+	 * Inspired on \GFCommon::encode_shortcodes, reverse the encoding by replacing the ascii characters by the shortcode brackets
+	 * @since 1.16.5
+	 * @param string $string Input string to decode
+	 * @return string $string Output string
 	 */
 	public static function decode_shortcodes( $string ) {
 		$replace = array( '[', ']' );
