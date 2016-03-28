@@ -1501,6 +1501,18 @@ class GVCommon {
         return '<div class="gv-notice '.gravityview_sanitize_html_class( $class ) .'">'. $notice .'</div>';
     }
 
+	/**
+	 * Inspired on \GFCommon::encode_shortcodes
+	 * @param $string
+	 * @return $string
+	 */
+	public static function decode_shortcodes( $string ) {
+		$replace = array( '[', ']' );
+		$find = array( '&#91;', '&#93;' );
+		$string = str_replace( $find, $replace, $string );
+		return $string;
+	}
+
 
 
 

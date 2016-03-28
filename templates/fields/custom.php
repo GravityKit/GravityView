@@ -36,12 +36,21 @@ if( empty( $field_settings['content'] ) ) {
 // Replace the variables
 $content = GravityView_API::replace_variables( $field_settings['content'], $form, $entry );
 
+/**
+ * @filter `gravityview/fields/custom/decode_shortcodes` Decode brackets in shortcodes
+ * @since 1.16.5
+ * @param boolean $decode If content contains merge tags then it triggers the decoding
+ * @param string $content HTML content of field
+ */
+if( apply_filters( 'gravityview/fields/custom/decode_shortcodes', $content != $field_settings['content'], $content ) ) {
+	$content = GVCommon::decode_shortcodes( $content );
+}
+
 // Add paragraphs?
 if( !empty( $field_settings['wpautop'] ) ) {
-
 	$content = wpautop( $content );
-
 }
+
 
 /**
  * @filter `gravityview/fields/custom/content_after` Modify Custom Content field output after Merge Tag variables get replaced, before shortcodes get processed
