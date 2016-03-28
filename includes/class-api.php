@@ -229,9 +229,6 @@ class GravityView_API {
 		$form = $gravityview_view->getForm();
 		$field = gravityview_get_field( $form, $field_id );
 
-		// Prevent any PHP warnings that may be generated
-		ob_start();
-
 		if( $field && is_numeric( $field_id ) ) {
 			// Used as file name of field template in GV.
 			// Don't use RGFormsModel::get_input_type( $field ); we don't care if it's a radio input; we want to know it's a 'quiz' field
@@ -244,6 +241,10 @@ class GravityView_API {
 
 		// If a Gravity Forms Field is found, get the field display
 		if( $field ) {
+
+			// Prevent any PHP warnings that may be generated
+			ob_start();
+
 			$display_value = GFCommon::get_lead_field_display( $field, $value, $entry["currency"], false, $format );
 
 			if ( $errors = ob_get_clean() ) {
