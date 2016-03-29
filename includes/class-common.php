@@ -1129,7 +1129,17 @@ class GVCommon {
 	 * @return array          Multi-array of fields with first level being the field zones. See code comment.
 	 */
 	public static function get_directory_fields( $post_id ) {
-		return get_post_meta( $post_id, '_gravityview_directory_fields', true );
+		$fields = get_post_meta( $post_id, '_gravityview_directory_fields', true );
+
+		/**
+		 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array
+		 * @since 1.6.5
+		 * @param $fields array Multi-array of fields with first level being the field zones
+		 * @param $post_id int Post ID
+		 */
+		$fields = apply_filters( 'gravityview/configuration/fields', $fields, $post_id );
+
+		return $fields;
 	}
 
 
