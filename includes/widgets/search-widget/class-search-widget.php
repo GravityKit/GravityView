@@ -176,6 +176,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$input_types = array(
 			'text' => array( 'input_text' ),
 			'address' => array( 'input_text' ),
+			'number' => array( 'input_text' ),
 			'date' => array( 'date', 'date_range' ),
 			'boolean' => array( 'single_checkbox' ),
 			'select' => array( 'select', 'radio', 'link' ),
