@@ -41,8 +41,10 @@ class GravityView_Plugin_Hooks_ACF extends GravityView_Plugin_and_Theme_Hooks {
 	 * @return void
 	 */
 	private function fix_posted_fields() {
-		if( is_admin() && 'editpost' === rgpost('action') && 'gravityview' === rgpost('post_type') ) {
-			$_POST['fields'] = _gravityview_process_posted_fields();
+		if( is_admin() && isset( $_POST['action'] ) && isset( $_POST['post_type'] ) ) {
+			if( 'editpost' === $_POST['action'] && 'gravityview' === $_POST['post_type'] ) {
+				$_POST['fields'] = _gravityview_process_posted_fields();
+			}
 		}
 	}
 }

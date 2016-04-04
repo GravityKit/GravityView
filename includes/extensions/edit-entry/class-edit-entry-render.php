@@ -176,9 +176,9 @@ class GravityView_Edit_Entry_Render {
      */
     public function is_edit_entry() {
 
-        $gf_page = ( 'entry' === RGForms::get( 'view' ) );
-
-        return ( $gf_page && isset( $_GET['edit'] ) || RGForms::post( 'action' ) === 'update' );
+        $gf_page = class_exists('rgpost') && ( 'entry' === rgget( 'view' ) && isset( $_GET['edit'] ) || rgpost( 'action' ) === 'update' );
+        
+        return $gf_page;
     }
 
 	/**

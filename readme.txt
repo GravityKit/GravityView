@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Notes__
 
+* Fixed: Potential fatal errors when activating GravityView if Gravity Forms isn't active
 * Updated: Gamajo Template Loader to Version 1.2
 
 = 1.16.4.1 on March 23 =
