@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.4.2
+Tested up to: 4.5
 Stable tag: trunk
 Contributors: katzwebservices, luistinygod
 License: GPL 3 or higher
@@ -20,13 +20,21 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-* Fixed: Search Bar inputs not displaying
+= 1.16.5 on April 6 =
+
+* Fixed: Search Bar inputs not displaying for Number fields
 * Fixed: Compatibility issue with [ACF](https://wordpress.org/plugins/advanced-custom-fields/) plugin when saving a View
+* Fixed (for real this time): Survey field values weren't displaying in Edit Entry
+* Tweak: Made it clearer when editing a View that GravityView is processing in the background
+* Added: Chinese translation (thanks, Edi Weigh!)
+* Updated: German translation (thanks, [@akwdigital](https://www.transifex.com/user/profile/akwdigital/)!)
 
 __Developer Notes__
 
+* Added: `gravityview/fields/custom/decode_shortcodes` filter to determine whether to process shortcodes inside Merge Tags in Custom Content fields. Off by default, for security reasons.
 * Fixed: Potential fatal errors when activating GravityView if Gravity Forms isn't active
 * Updated: Gamajo Template Loader to Version 1.2
+* Verified compatibility with WordPress 4.5
 
 = 1.16.4.1 on March 23 =
 * Fixed: Major display issue caused by output buffering introduced in 1.16.4. Sorry!
