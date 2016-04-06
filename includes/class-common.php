@@ -1129,7 +1129,17 @@ class GVCommon {
 	 * @return array          Multi-array of fields with first level being the field zones. See code comment.
 	 */
 	public static function get_directory_fields( $post_id ) {
-		return get_post_meta( $post_id, '_gravityview_directory_fields', true );
+		$fields = get_post_meta( $post_id, '_gravityview_directory_fields', true );
+
+		/**
+		 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array
+		 * @since 1.6.5
+		 * @param $fields array Multi-array of fields with first level being the field zones
+		 * @param $post_id int Post ID
+		 */
+		$fields = apply_filters( 'gravityview/configuration/fields', $fields, $post_id );
+
+		return $fields;
 	}
 
 
@@ -1500,6 +1510,20 @@ class GVCommon {
     public static function generate_notice( $notice, $class = '' ) {
         return '<div class="gv-notice '.gravityview_sanitize_html_class( $class ) .'">'. $notice .'</div>';
     }
+
+	/**
+	 * Inspired on \GFCommon::encode_shortcodes, reverse the encoding by replacing the ascii characters by the shortcode brackets
+	 * @since 1.16.5
+	 * @param string $string Input string to decode
+	 * @return string $string Output string
+	 */
+	public static function decode_shortcodes( $string ) {
+		$replace = array( '[', ']', '"' );
+		$find = array( '&#91;', '&#93;', '&quot;' );
+		$string = str_replace( $find, $replace, $string );
+
+		return $string;
+	}
 
 
 
