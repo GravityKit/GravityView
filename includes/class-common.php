@@ -1518,9 +1518,10 @@ class GVCommon {
 	 * @return string $string Output string
 	 */
 	public static function decode_shortcodes( $string ) {
-		$replace = array( '[', ']' );
-		$find = array( '&#91;', '&#93;' );
+		$replace = array( '[', ']', '"' );
+		$find = array( '&#91;', '&#93;', '&quot;' );
 		$string = str_replace( $find, $replace, $string );
+
 		return $string;
 	}
 
