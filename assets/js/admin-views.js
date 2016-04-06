@@ -36,6 +36,8 @@
 			//select form dropdown
 			vcfg.gvSelectForm = $( '#gravityview_form_id' );
 
+			vcfg.gvSwitchView = $('a[href="#gv_switch_view"]');
+
 			//current form selection
 			vcfg.currentFormId = vcfg.gvSelectForm.val();
 
@@ -281,7 +283,7 @@
 
 			if ( $templates.is( ':visible' ) ) {
 
-				$( 'a[href=#gv_switch_view]' ).text( function () {
+				viewConfiguration.gvSwitchView.text( function () {
 					return $( this ).attr( 'data-text-backup' );
 				} );
 
@@ -289,7 +291,7 @@
 
 			} else {
 
-				$( 'a[href=#gv_switch_view]' ).attr( 'data-text-backup', function () {
+				viewConfiguration.gvSwitchView.attr( 'data-text-backup', function () {
 					return $( this ).text();
 				} ).text( gvGlobals.label_cancel );
 
@@ -325,7 +327,8 @@
 
 			// Reset the selected form value
 			$( '#gravityview_form_id' ).val( '' );
-			$( 'a[href=#gv_switch_view]' ).hide();
+
+			vcfg.gvSwitchView.hide();
 
 			// show templates
 			vcfg.templateFilter( 'preset' );
@@ -370,7 +373,7 @@
 				vcfg.showViewTypeMetabox();
 				vcfg.getAvailableFields();
 				vcfg.getSortableFields();
-				$( 'a[href=#gv_switch_view]' ).fadeOut( 150 );
+				vcfg.gvSwitchView.fadeOut( 150 );
 			}
 		},
 
@@ -617,7 +620,7 @@
 				//change view configuration active areas
 				vcfg.updateActiveAreas( selectedTemplateId );
 
-				$( 'a[href=#gv_switch_view]' ).fadeIn( 150 );
+				vcfg.gvSwitchView.fadeIn( 150 );
 				vcfg.toggleViewTypeMetabox();
 
 			}
