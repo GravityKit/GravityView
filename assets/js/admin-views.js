@@ -599,7 +599,7 @@
 			$parent.parents( ".gv-grid" ).find( ".gv-view-types-module" ).removeClass( 'gv-selected' );
 			$parent.addClass( 'gv-selected' );
 
-			$( '#wpcontent,.gv-fields' ).addClass( 'gv-wait' );
+			vcfg.waiting('start');
 
 			// check for start fresh context
 			if ( vcfg.startFreshStatus ) {
@@ -695,8 +695,8 @@
 					$( '#directory-footer-widgets' ).html( content.footer );
 					$( '#directory-active-fields' ).append( content.directory );
 					$( '#single-active-fields' ).append( content.single );
-					$( '#wpcontent,.gv-fields' ).removeClass( 'gv-wait' );
 					vcfg.showViewConfig();
+					vcfg.waiting('stop');
 				}
 			} );
 
@@ -720,12 +720,28 @@
 					$( '#directory-footer-widgets' ).html( content.footer );
 					$( '#directory-active-fields' ).append( content.directory );
 					$( '#single-active-fields' ).append( content.single );
-					$( '#wpcontent,.gv-fields' ).removeClass( 'gv-wait' );
 					vcfg.showViewConfig();
+					vcfg.waiting('stop');
 				}
 			} );
 
 
+		},
+
+		/**
+		 * Toggle the "loading" indicator
+		 * @since TODO
+		 * @param {string} action "start" or "stop"
+		 */
+		waiting: function( action ) {
+
+			$containers = $( '#wpwrap,.gv-fields' );
+
+			if( 'start' === action ) {
+				$containers.addClass('gv-wait');
+			} else {
+				$containers.removeClass('gv-wait');
+			}
 		},
 
 
