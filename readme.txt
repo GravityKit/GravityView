@@ -20,6 +20,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: Search Bar inputs not displaying
+* Fixed: Compatibility issue with [ACF](https://wordpress.org/plugins/advanced-custom-fields/) plugin when saving a View
+
+__Developer Notes__
+
+* Updated: Gamajo Template Loader to Version 1.2
+
 = 1.16.4.1 on March 23 =
 * Fixed: Major display issue caused by output buffering introduced in 1.16.4. Sorry!
 

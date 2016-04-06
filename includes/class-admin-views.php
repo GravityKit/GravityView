@@ -496,30 +496,7 @@ class GravityView_Admin_Views {
 				$fields = $preset_fields;
 
 			} elseif( !empty( $_POST['fields'] ) ) {
-
-				if( !is_array( $_POST['fields'] ) ) {
-
-					// Fields are passed as a jQuery-serialized array, created in admin-views.js in the serializeForm method
-					// Not using parse_str due to max_input_vars limitation
-					$fields_holder = array();
-					GVCommon::gv_parse_str( $_POST['fields'], $fields_holder );
-
-					if( isset( $fields_holder['fields'] ) ) {
-
-						// When parsed, there's a m
-						$fields = $fields_holder['fields'];
-
-					} else {
-
-						do_action('gravityview_log_error', '[save_postdata] No `fields` key was found after parsing $fields string', $fields_holder );
-
-					}
-
-				} else {
-
-					$fields = $_POST['fields'];
-
-				}
+				$fields = _gravityview_process_posted_fields();
 			}
 
 			$statii['directory_fields'] = update_post_meta( $post_id, '_gravityview_directory_fields', $fields );
