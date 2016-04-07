@@ -272,6 +272,12 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;">What&rsquo;s New</h2>
 				</div>
 
+				<h3>1.16.5.1 on April 7</h3>
+
+				<ul>
+					<li>Fixed: Edit Entry links didn't work</li>
+				</ul>
+
 				<h3>1.16.5 on April 6</h3>
 
 				<ul>
