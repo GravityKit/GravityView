@@ -89,7 +89,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.16.5';
+	const version = '1.16.5.1';
 
 	private static $instance;
 

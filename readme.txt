@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.16.5.1 on April 6 =
+* Fixed: Load the edit entry view
+
 = 1.16.5 on April 6 =
 
 * Fixed: Search Bar inputs not displaying for Number fields
