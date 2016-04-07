@@ -272,6 +272,28 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;">What&rsquo;s New</h2>
 				</div>
 
+				<h3>1.16.5 on April 6</h3>
+
+				<ul>
+					<li>Fixed: Search Bar inputs not displaying for Number fields</li>
+					<li>Fixed: Compatibility issue with <a href="https://wordpress.org/plugins/advanced-custom-fields/">ACF</a> plugin when saving a View</li>
+					<li>Fixed (for real this time): Survey field values weren't displaying in Edit Entry</li>
+					<li>Tweak: Made it clearer when editing a View that GravityView is processing in the background</li>
+					<li>Added: Chinese translation (thanks, Edi Weigh!)</li>
+					<li>Updated: German translation (thanks, <a href="https://www.transifex.com/user/profile/akwdigital/">@akwdigital</a>!)</li>
+				</ul>
+
+
+				<p><strong>Developer Notes</strong></p>
+
+				<ul>
+					<li>Added: <code>gravityview/fields/custom/decode_shortcodes</code> filter to determine whether to process shortcodes inside Merge Tags in Custom Content fields. Off by default, for security reasons.</li>
+					<li>Fixed: Potential fatal errors when activating GravityView if Gravity Forms isn't active</li>
+					<li>Updated: Gamajo Template Loader to Version 1.2</li>
+					<li>Verified compatibility with WordPress 4.5</li>
+				</ul>
+
+
 				<h3>1.16.4.1 on March 23</h3>
 
 				<ul>
