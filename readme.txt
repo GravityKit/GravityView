@@ -22,6 +22,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Added: Option to make Phone numbers click-to-call
 
+= 1.16.5.1 on April 7 =
+
+* Fixed: Edit Entry links didn't work
+
 = 1.16.5 on April 6 =
 
 * Fixed: Search Bar inputs not displaying for Number fields
