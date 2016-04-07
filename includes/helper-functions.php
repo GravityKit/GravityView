@@ -504,3 +504,38 @@ function gravityview_get_terms_choices( $args = array() ) {
 
 	return $choices;
 }
+
+/**
+ * Maybe convert jQuery-serialized fields into array, otherwise return $_POST['fields'] array
+ *
+ * Fields are passed as a jQuery-serialized array, created in admin-views.js in the serializeForm method.
+ *
+ * @since TODO
+ *
+ * @uses GVCommon::gv_parse_str
+ *
+ * @return array Array of fields
+ */
+function _gravityview_process_posted_fields() {
+	$fields = array();
+
+	if( !empty( $_POST['fields'] ) ) {
+		if ( ! is_array( $_POST['fields'] ) ) {
+
+			// We are not using parse_str() due to max_input_vars limitation with large View configurations
+			$fields_holder = array();
+			GVCommon::gv_parse_str( $_POST['fields'], $fields_holder );
+
+			if ( isset( $fields_holder['fields'] ) ) {
+				$fields = $fields_holder['fields'];
+			} else {
+				do_action( 'gravityview_log_error', '[save_postdata] No `fields` key was found after parsing $fields string', $fields_holder );
+			}
+
+		} else {
+			$fields = $_POST['fields'];
+		}
+	}
+
+	return $fields;
+}

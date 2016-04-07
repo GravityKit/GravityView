@@ -176,9 +176,9 @@ class GravityView_Edit_Entry_Render {
      */
     public function is_edit_entry() {
 
-        $gf_page = ( 'entry' === RGForms::get( 'view' ) );
-
-        return ( $gf_page && isset( $_GET['edit'] ) || RGForms::post( 'action' ) === 'update' );
+        $gf_page = class_exists('rgpost') && ( 'entry' === rgget( 'view' ) && isset( $_GET['edit'] ) || rgpost( 'action' ) === 'update' );
+        
+        return $gf_page;
     }
 
 	/**
@@ -828,9 +828,30 @@ class GravityView_Edit_Entry_Render {
      * @return mixed
      */
     function fix_survey_fields_value( $value, $field, $name ) {
+        
+        if( 'survey' === $field->type && '' === $value && 'likert' === rgar( $field, 'inputType' ) ) {
 
-        if( 'survey' === $field->type && '' === $value ) {
-            $value = $this->entry["{$field->id}"];
+	        // We need to run through each survey row until we find a match for expected values
+	        foreach ( $this->entry as $field_id => $field_value ) {
+
+		        if ( floor( $field_id ) !== floor( $field->id ) ) {
+			        continue;
+		        }
+
+		        if( rgar( $field, 'gsurveyLikertEnableMultipleRows' ) ) {
+			        list( $row_val, $col_val ) = explode( ':', $field_value, 2 );
+
+		            // If the $name matches the $row_val, we are processing the correct row
+			        if( $row_val === $name ) {
+				        $value = $field_value;
+				        break;
+			        }
+		        } else {
+			        // When not processing multiple rows, the value is the $entry[ $field_id ] value.
+			        $value = $field_value;
+				    break;
+		        }
+			}
         }
 
         return $value;

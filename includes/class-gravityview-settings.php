@@ -1,5 +1,9 @@
 <?php
 
+if( ! class_exists('GFAddOn') ) {
+	return;
+}
+
 /**
  * GravityView Settings class (get/set/license validation) using the Gravity Forms App framework
  * @since 1.7.4 (Before, used the Redux Framework)

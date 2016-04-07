@@ -325,7 +325,8 @@ $gv-overlay-index: 10000;
 }
 
 /** Show spinner cursor while the View is being AJAX updated. **/
-.gv-wait {
+.gv-wait,
+.gv-wait a {
   cursor: wait;
 }
 

@@ -658,7 +658,15 @@ class GravityView_API {
 
 			$args = array();
 
-			$directory_link = trailingslashit( $directory_link ) . $query_arg_name . '/'. $entry_slug .'/';
+			/**
+			 * Make sure the $directory_link doesn't contain any query otherwise it will break when adding the entry slug.
+			 * @since 1.16.5
+			 */
+			$link_parts = explode( '?', $directory_link );
+
+			$query = !empty( $link_parts[1] ) ? '?'.$link_parts[1] : '';
+
+			$directory_link = trailingslashit( $link_parts[0] ) . $query_arg_name . '/'. $entry_slug .'/' . $query;
 
 		} else {
 
