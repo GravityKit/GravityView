@@ -18,11 +18,14 @@ if ( empty( $search_field['choices'] ) ) {
 	return;
 }
 
+$links_label = empty( $search_field['label'] ) ? __( 'Show only:', 'gravityview' ) : $search_field['label'];
+
 /**
  * @filter `gravityview/extension/search/links_sep` Change the label for the "Link" search bar input type
- * @param string $links_label Default: `Show only:`
+ * @since TODO Use search field label as default value, if set.
+ * @param string $links_label Default: `Show only:` if search field label is not set. Otherwise, search field label.
  */
-$links_label = apply_filters( 'gravityview/extension/search/links_label', __( 'Show only:', 'gravityview' ) );
+$links_label = apply_filters( 'gravityview/extension/search/links_label', $links_label );
 
 /**
  * @filter `gravityview/extension/search/links_sep` Change what separates search bar "Link" input type links
