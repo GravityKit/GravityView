@@ -17,14 +17,14 @@ class GravityView_Support_Port {
 	 */
 	const related_plugins_key = 'gravityview_related_plugins';
 
-	function __construct() {
+	public function __construct() {
 		$this->add_hooks();
 	}
 
 	/**
 	 * @since 1.15
 	 */
-	function add_hooks() {
+	private function add_hooks() {
 		add_action( 'personal_options', array( $this, 'user_field' ) );
 		add_action( 'personal_options_update', array( $this, 'update_user_meta_value' ) );
 		add_action( 'edit_user_profile_update', array( $this, 'update_user_meta_value' ) );
@@ -42,7 +42,7 @@ class GravityView_Support_Port {
 	 *
 	 * @return void
 	 */
-	static function maybe_enqueue_script( $hook ) {
+	public static function maybe_enqueue_script( $hook ) {
 		global $pagenow;
 
 		// Don't show if not GravityView page, or if we're on the Widgets page
@@ -97,8 +97,6 @@ class GravityView_Support_Port {
 			'messageError'              => _x( 'Please enter a message', 'Error shown when submitting support request and there is no message provided', 'gravityview' ),
 			'contactSuccessLabel'       => __( 'Message sent!', 'gravityview' ),
 			'contactSuccessDescription' => __( 'Thanks for reaching out! Someone from the GravityView team will get back to you soon.', 'gravityview' ),
-			#'topicLabel' => __('Select a topic', 'gravityview' ), // Not yet implemented
-			#'topicError' => __('Please select a topic from the list', 'gravityview' ), // Not yet implemented
 		);
 
 		$response = GravityView_Settings::getSetting( 'license_key_response' );
@@ -197,7 +195,7 @@ class GravityView_Support_Port {
 				$extensions[] = sprintf( '%s %s', $plugin_data['Name'], $plugin_data['Version'] );
 			}
 
-			if( $extensions ) {
+			if( ! empty( $extensions ) ) {
 				set_site_transient( self::related_plugins_key, $extensions, HOUR_IN_SECONDS );
 			} else {
 				return 'There was an error fetching related plugins.';
@@ -274,7 +272,7 @@ class GravityView_Support_Port {
 	 *
 	 * @return void
 	 */
-	function user_field( $user ) {
+	public function user_field( $user ) {
 
 		/**
 		 * @filter `gravityview/support_port/show_profile_setting` Should the "GravityView Support Port" setting be shown on user profiles?
@@ -291,10 +289,16 @@ class GravityView_Support_Port {
 			<table class="form-table">
 				<tbody>
 					<tr class="user-gravityview-support-button-wrap">
-						<th scope="row"><?php _e( 'GravityView Support Port', 'gravityview' ); ?></th>
+						<th scope="row"><?php
+							/* translators: "Support Port" can be translated as "Support Portal" or "Support Window" */
+							_e( 'GravityView Support Port', 'gravityview' );
+						?></th>
 						<td>
 							<fieldset>
-								<legend class="screen-reader-text"><span><?php _e( 'GravityView Support Port', 'gravityview' ) ?></span></legend>
+								<legend class="screen-reader-text"><span><?php
+										/* translators: "Support Port" can be translated as "Support Portal" or "Support Window" */
+										_e( 'GravityView Support Port', 'gravityview' );
+								?></span></legend>
 								<label>
 									<input name="<?php echo esc_attr( self::user_pref_name ); ?>" type="hidden" value="0"/>
 									<input name="<?php echo esc_attr( self::user_pref_name ); ?>" type="checkbox" value="1" <?php checked( self::show_for_user( $user->ID ) ); ?> />

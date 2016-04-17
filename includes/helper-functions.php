@@ -47,6 +47,38 @@ function gravityview_get_permalink_query_args( $id = 0 ) {
 	return $args;
 }
 
+
+/**
+ * Similar to the WordPress `selected()`, `checked()`, and `disabled()` functions, except it allows arrays to be passed as current value
+ *
+ * @see selected() WordPress core function
+ *
+ * @param string $value One of the values to compare
+ * @param mixed $current (true) The other value to compare if not just true
+ * @param bool $echo Whether to echo or just return the string
+ * @param string $type The type of checked|selected|disabled we are doing
+ *
+ * @return string html attribute or empty string
+ */
+function gv_selected( $value, $current, $echo = true, $type = 'selected' ) {
+
+	$output = '';
+	if( is_array( $current ) ) {
+		if( in_array( $value, $current ) ) {
+			$output = __checked_selected_helper( true, true, false, $type );
+		}
+	} else {
+		$output = __checked_selected_helper( $value, $current, false, $type );
+	}
+
+	if( $echo ) {
+		echo $output;
+	}
+
+	return $output;
+}
+
+
 if( ! function_exists( 'gravityview_sanitize_html_class' ) ) {
 
 	/**
@@ -69,7 +101,9 @@ if( ! function_exists( 'gravityview_sanitize_html_class' ) ) {
 			return $classes;
 		}
 
+		$classes = array_map( 'trim', $classes );
 		$classes = array_map( 'sanitize_html_class', $classes );
+		$classes = array_filter( $classes );
 
 		return implode( ' ', $classes );
 	}
@@ -334,6 +368,42 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 	return empty( $value );
 }
 
+
+/**
+ * Maps a function to all non-iterable elements of an array or an object.
+ *
+ * @see map_deep() This is an alias of the WP core function `map_deep()`, added in 4.4. Here for legacy purposes.
+ * @since 1.16.3
+ *
+ * @param mixed    $value    The array, object, or scalar.
+ * @param callable $callback The function to map onto $value.
+ *
+ * @return mixed The value with the callback applied to all non-arrays and non-objects inside it.
+ */
+function gv_map_deep( $value, $callback ) {
+
+	// Use the original function, if exists.
+	if( function_exists( 'map_deep') ) {
+		return map_deep( $value, $callback );
+	}
+
+	// Exact copy of map_deep() code below:
+	if ( is_array( $value ) ) {
+		foreach ( $value as $index => $item ) {
+			$value[ $index ] = gv_map_deep( $item, $callback );
+		}
+	} elseif ( is_object( $value ) ) {
+		$object_vars = get_object_vars( $value );
+		foreach ( $object_vars as $property_name => $property_value ) {
+			$value->$property_name = gv_map_deep( $property_value, $callback );
+		}
+	} else {
+		$value = call_user_func( $callback, $value );
+	}
+
+	return $value;
+}
+
 /**
  * Check whether a string is a expected date format
  *
@@ -355,4 +425,117 @@ function gravityview_is_valid_datetime( $datetime, $expected_format = 'Y-m-d' ) 
 	 * @see http://stackoverflow.com/a/19271434/480856
 	 */
 	return ( $formatted_date && $formatted_date->format( $expected_format ) === $datetime );
+}
+
+/**
+ * Very commonly needed: get the # of the input based on a full field ID.
+ *
+ * Example: 12.3 => field #12, input #3. Returns: 3
+ * Example: 7 => field #7, no input. Returns: 0
+ *
+ * @since 1.16.4
+ *
+ * @param string $field_id Full ID of field, with or without input ID, like "12.3" or "7".
+ *
+ * @return int If field ID has an input, returns that input number. Otherwise, returns 0.
+ */
+function gravityview_get_input_id_from_id( $field_id = '' ) {
+
+	if ( ! is_numeric( $field_id ) ) {
+		do_action( 'gravityview_log_error', __FUNCTION__ . ': $field_id not numeric', $field_id );
+		return false;
+	}
+
+	$exploded = explode( '.', "{$field_id}" );
+
+	return isset( $exploded[1] ) ? intval( $exploded[1] ) : 0;
+}
+
+/**
+ * Get categories formatted in a way used by GravityView and Gravity Forms input choices
+ *
+ * @since 1.15.3
+ *
+ * @see get_terms()
+ *
+ * @param array $args Arguments array as used by the get_terms() function. Filtered using `gravityview_get_terms_choices_args` filter. Defaults: { \n
+ *   @type string $taxonomy Used as first argument in get_terms(). Default: "category"
+ *   @type string $fields Default: 'id=>name' to only fetch term ID and Name \n
+ *   @type int $number  Limit the total number of terms to fetch. Default: 1000 \n
+ * }
+ *
+ * @return array Multidimensional array with `text` (Category Name) and `value` (Category ID) keys.
+ */
+function gravityview_get_terms_choices( $args = array() ) {
+
+	$defaults = array(
+		'type'         => 'post',
+		'child_of'     => 0,
+		'number'       => 1000, // Set a reasonable max limit
+		'orderby'      => 'name',
+		'order'        => 'ASC',
+		'hide_empty'   => 0,
+		'hierarchical' => 1,
+		'taxonomy'     => 'category',
+		'fields'       => 'id=>name',
+	);
+
+	$args = wp_parse_args( $args, $defaults );
+
+	/**
+	 * @filter `gravityview_get_terms_choices_args` Modify the arguments passed to `get_terms()`
+	 * @see get_terms()
+	 * @since 1.15.3
+	 */
+	$args = apply_filters( 'gravityview_get_terms_choices_args', $args );
+
+	$terms = get_terms( $args['taxonomy'], $args );
+
+	$choices = array();
+
+	if ( is_array( $terms ) ) {
+		foreach ( $terms as $term_id => $term_name ) {
+			$choices[] = array(
+				'text'  => $term_name,
+				'value' => $term_id
+			);
+		}
+	}
+
+	return $choices;
+}
+
+/**
+ * Maybe convert jQuery-serialized fields into array, otherwise return $_POST['fields'] array
+ *
+ * Fields are passed as a jQuery-serialized array, created in admin-views.js in the serializeForm method.
+ *
+ * @since TODO
+ *
+ * @uses GVCommon::gv_parse_str
+ *
+ * @return array Array of fields
+ */
+function _gravityview_process_posted_fields() {
+	$fields = array();
+
+	if( !empty( $_POST['fields'] ) ) {
+		if ( ! is_array( $_POST['fields'] ) ) {
+
+			// We are not using parse_str() due to max_input_vars limitation with large View configurations
+			$fields_holder = array();
+			GVCommon::gv_parse_str( $_POST['fields'], $fields_holder );
+
+			if ( isset( $fields_holder['fields'] ) ) {
+				$fields = $fields_holder['fields'];
+			} else {
+				do_action( 'gravityview_log_error', '[save_postdata] No `fields` key was found after parsing $fields string', $fields_holder );
+			}
+
+		} else {
+			$fields = $_POST['fields'];
+		}
+	}
+
+	return $fields;
 }

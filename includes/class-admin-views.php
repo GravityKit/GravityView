@@ -110,7 +110,7 @@ class GravityView_Admin_Views {
 	 * Start using GravityView_Render_Settings::render_setting_row
 	 */
 	public static function render_setting_row( $key = '', $current_settings = array(), $override_input = null, $name = 'template_settings[%s]', $id = 'gravityview_se_%s' ) {
-        _deprecated_function( 'GravityView_Admin_Views::render_setting_row', '1.1.7', 'GravityView_Render_Settings::render_setting_row' );
+		_deprecated_function( 'GravityView_Admin_Views::render_setting_row', '1.1.7', 'GravityView_Render_Settings::render_setting_row' );
 		GravityView_Render_Settings::render_setting_row( $key, $current_settings, $override_input, $name , $id );
 	}
 
@@ -326,7 +326,7 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Get HTML links relating to a connected form, like Edit, Entries, Settings, Preview
-	 * @param  array|int $form_id Gravity Forms forms array, or the form ID
+	 * @param  array|int $form Gravity Forms forms array, or the form ID
 	 * @param  boolean $include_form_link Whether to include the bold name of the form in the output
 	 * @return string          HTML links
 	 */
@@ -496,30 +496,7 @@ class GravityView_Admin_Views {
 				$fields = $preset_fields;
 
 			} elseif( !empty( $_POST['fields'] ) ) {
-
-				if( !is_array( $_POST['fields'] ) ) {
-
-					// Fields are passed as a jQuery-serialized array, created in admin-views.js in the serializeForm method
-					// Not using parse_str due to max_input_vars limitation
-					$fields_holder = array();
-					GVCommon::gv_parse_str( $_POST['fields'], $fields_holder );
-
-					if( isset( $fields_holder['fields'] ) ) {
-
-						// When parsed, there's a m
-						$fields = $fields_holder['fields'];
-
-					} else {
-
-						do_action('gravityview_log_error', '[save_postdata] No `fields` key was found after parsing $fields string', $fields_holder );
-
-					}
-
-				} else {
-
-					$fields = $_POST['fields'];
-
-				}
+				$fields = _gravityview_process_posted_fields();
 			}
 
 			$statii['directory_fields'] = update_post_meta( $post_id, '_gravityview_directory_fields', $fields );
@@ -547,11 +524,11 @@ class GravityView_Admin_Views {
 	 * $blacklist_field_types - contains the field types which are not proper to be shown in a directory.
 	 *
 	 * @access public
-	 * @param int $form_id Gravity Forms Form ID (default: '')
+	 * @param int $form Gravity Forms Form ID (default: '')
 	 * @param string $context (default: 'single')
 	 * @return void
 	 */
-	function render_available_fields( $form = '', $context = 'single' ) {
+	function render_available_fields( $form = 0, $context = 'single' ) {
 
 		/**
 		 * @filter  `gravityview_blacklist_field_types` Modify the types of fields that shouldn't be shown in a View.
@@ -592,7 +569,15 @@ class GravityView_Admin_Views {
 		$this->render_additional_fields( $form, $context );
 	}
 
-	function render_additional_fields( $form, $context ) {
+	/**
+	 * Render html for displaying additional fields based on a Form ID
+	 *
+	 * @access public
+	 * @param int $form Gravity Forms Form ID (default: '')
+	 * @param string $context (default: 'single')
+	 * @return void
+	 */
+	public function render_additional_fields( $form = 0, $context = 'single' ) {
 
 		/**
 		 * @filter `gravityview_additional_fields` non-standard Fields to show at the bottom of the field picker
@@ -688,6 +673,7 @@ class GravityView_Admin_Views {
 				/**
 				 * @since 1.7.2
 				 */
+<<<<<<< HEAD
 			    'other_entries' => array(
 				    'label'	=> __('Other Entries', 'gravityview'),
 				    'type'	=> 'other_entries',
@@ -702,16 +688,24 @@ class GravityView_Admin_Views {
 					'desc'	=> __('Entry notes (if any).', 'gravityview'),
 				),
 	        );
+=======
+				'other_entries' => array(
+					'label'	=> __('Other Entries', 'gravityview'),
+					'type'	=> 'other_entries',
+					'desc'	=> __('Display other entries created by the entry creator.', 'gravityview'),
+				),
+			);
+>>>>>>> develop
 
 
 			if( 'single' !== $zone) {
 
-	        	$entry_default_fields['entry_link'] = array(
-	        		'label' => __('Link to Entry', 'gravityview'),
-	        		'desc'	=> __('A dedicated link to the single entry with customizable text.', 'gravityview'),
-	        		'type' => 'entry_link',
-	        	);
-	        }
+				$entry_default_fields['entry_link'] = array(
+					'label' => __('Link to Entry', 'gravityview'),
+					'desc'	=> __('A dedicated link to the single entry with customizable text.', 'gravityview'),
+					'type' => 'entry_link',
+				);
+			}
 
 		} // if not zone directory or single
 
@@ -722,7 +716,7 @@ class GravityView_Admin_Views {
 		 * @param  string|array $form form_ID or form object
 		 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
 		 */
-        return apply_filters( 'gravityview_entry_default_fields', $entry_default_fields, $form, $zone);
+		return apply_filters( 'gravityview_entry_default_fields', $entry_default_fields, $form, $zone);
 	}
 
 	/**
@@ -794,6 +788,7 @@ class GravityView_Admin_Views {
 
 	/**
 	 * Generic function to render rows and columns of active areas for widgets & fields
+	 * @param  string $template_id The current slug of the selected View template
 	 * @param  string $type   Either 'widget' or 'field'
 	 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
 	 * @param  array $rows    The layout structure: rows, columns and areas
@@ -1043,8 +1038,9 @@ class GravityView_Admin_Views {
 		    'jquery-ui-autocomplete'
 		);
 
-		if ( wp_is_mobile() )
-		    $scripts[] = 'jquery-touch-punch';
+		if ( wp_is_mobile() ) {
+				    $scripts[] = 'jquery-touch-punch';
+		}
 
 		foreach ($scripts as $script) {
 			wp_enqueue_script( $script );

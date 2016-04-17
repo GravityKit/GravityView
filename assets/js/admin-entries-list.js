@@ -63,15 +63,43 @@
 
 	/**
 	 * Add approve/reject options to bulk edit dropdown
+	 * @since 1.16.3 Converted to using gvGlobals.bulk_actions array, instead of hard-coding options
 	 */
 	self.addBulkAction = function() {
-		$( "#bulk_action, #bulk_action2" ).append( '<optgroup label="GravityView"><option value="approve-' + gvGlobals.form_id + '">' + gvGlobals.label_approve + '</option><option value="unapprove-' + gvGlobals.form_id + '">' + gvGlobals.label_disapprove + '</option></optgroup>' );
+
+		// If there are no options, don't add the option group!
+		if( 0 === gvGlobals.bulk_actions.length ) { return; }
+
+		var $optgroups = [], $optgroup;
+
+		// Create an <optgroup>
+		$.each( gvGlobals.bulk_actions, function ( key ) {
+
+			$optgroup = $('<optgroup />', { 'label': key });
+
+			// Create and add each option to the <optgroup>
+			$.each( gvGlobals.bulk_actions[ key ], function ( i ) {
+				$optgroup.append( $('<option />', { 'value': gvGlobals.bulk_actions[ key ][ i ].value } ).html( gvGlobals.bulk_actions[ key ][ i ].label ) );
+			});
+
+			// Add <optgroup> to the list of groups
+			$optgroups.push( $optgroup );
+		});
+
+		// Then add the list to 'Bulk action' dropdowns
+		$( "#bulk_action, #bulk_action2" ).append( $optgroups );
 	};
 
 	/**
 	 * Add an Approved column and header in the entries table
 	 */
 	self.addApprovedColumn = function() {
+
+
+		// Don't add column if there are no entries yet.
+		if( $( 'tbody tr', '#lead_form' ).length === 1 && $( 'tbody tr td', '#lead_form' ).length === 1 ) {
+			return;
+		}
 
 		/**
 		 * inject approve/disapprove buttons into the first column of table

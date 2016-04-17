@@ -370,7 +370,14 @@ class GF_UnitTest_Factory_For_Entry extends WP_UnitTest_Factory_For_Thing {
 	}
 
 	function create_object( $args ) {
+
 		$args = wp_parse_args( $args, $this->default_generation_definitions );
+
+		if( !isset( $args['form_id'] ) ) {
+			$form = $this->factory->form->create();
+			$args['form_id'] = $form['id'];
+		}
+
 		return GFAPI::add_entry( $args );
 	}
 

@@ -15,9 +15,9 @@ $gravityview_view = GravityView_View::getInstance();
 
 extract( $gravityview_view->getCurrentField() );
 
-$field_id_array = explode( '.', $field_id );
+$column_id = gravityview_get_input_id_from_id( $field_id );
 
-if( $field->enableColumns && isset( $field_id_array[1] ) ) {
+if( $field->enableColumns && ! empty( $column_id ) ) {
 
 	/**
 	 * @filter `gravityview/fields/list/column-format` Format of single list column output of a List field with Multiple Columns enabled
@@ -26,7 +26,7 @@ if( $field->enableColumns && isset( $field_id_array[1] ) ) {
 	 */
 	$format = apply_filters( 'gravityview/fields/list/column-format', 'html' );
 
-	echo GravityView_Field_List::column_value( $field, $value, intval( $field_id_array[1] ), $format );
+	echo GravityView_Field_List::column_value( $field, $value, $column_id, $format );
 
 } else {
 	echo $display_value;

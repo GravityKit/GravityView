@@ -42,7 +42,7 @@ function gravityview_get_form_from_entry_id( $entry_slug ) {
  * @see GVCommon::get_forms()
  * @access public
  * @param mixed $form_id
- * @return array (id, title)
+ * @return array Empty array if GFAPI isn't available or no forms. Otherwise, associative array with id, title keys
  */
 function gravityview_get_forms() {
 	return GVCommon::get_forms();
@@ -128,14 +128,14 @@ function gravityview_get_field_label( $form, $field_id ) {
 /**
  * Returns the field details array of a specific form given the field id
  *
- * Alias of Alias of GFFormsModel::get_field
+ * Alias of GFFormsModel::get_field
  *
  * @uses GVCommon::get_field
  * @see GFFormsModel::get_field
  * @access public
  * @param array $form
  * @param string|int $field_id
- * @return array
+ * @return GF_Field|null Returns NULL if field with ID $field_id doesn't exist.
  */
 function gravityview_get_field( $form, $field_id ) {
 	return GVCommon::get_field( $form, $field_id );
@@ -353,6 +353,10 @@ function gravityview_view_has_single_checkbox_or_radio( $form, $view_fields ) {
 		foreach( $form_fields as $form_field ) {
 			$field_id = $form_field->id;
 			foreach( $view_fields as $zone ) {
+
+				// ACF compatibility; ACF-added fields aren't arrays
+				if ( ! is_array( $zone ) ) { continue; }
+
 				foreach( $zone as $field ) {
 					// If it's an input, not the parent and the parent ID matches a checkbox or radio
 					if( ( strpos( $field['id'], '.' ) > 0 ) && floor( $field['id'] ) === floor( $field_id ) ) {

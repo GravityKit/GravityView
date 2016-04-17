@@ -39,6 +39,17 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		}
 	}
 
+	private static function get_defaults() {
+		return array(
+			'title' => '',
+			'view_id' => 0,
+			'post_id' => '',
+			'search_fields' => '',
+			'search_clear' => 0,
+			'search_mode' => 'any'
+		);
+	}
+
 	public function widget( $args, $instance ) {
 
 		// Don't show unless a View ID has been set.
@@ -96,21 +107,14 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			return $instance;
 		}
 
-		$defaults = array(
-			'title' => '',
-			'view_id' => 0,
-			'post_id' => '',
-			'search_fields' => '',
-			'search_clear' => 0
-		);
-
-		$new_instance = wp_parse_args( (array) $new_instance, $defaults );
+		$new_instance = wp_parse_args( (array) $new_instance, self::get_defaults() );
 
 		$instance['title'] = strip_tags( $new_instance['title'] );
 		$instance['view_id'] = absint( $new_instance['view_id'] );
 		$instance['search_fields'] = $new_instance['search_fields'];
 		$instance['post_id'] = $new_instance['post_id'];
 		$instance['search_clear'] = $new_instance['search_clear'];
+		$instance['search_mode'] = $new_instance['search_mode'];
 
 		$is_valid_embed_id = GravityView_View_Data::is_valid_embed_id( $new_instance['post_id'], $instance['view_id'] );
 
@@ -138,21 +142,14 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			return;
 		}
 
-		$defaults = array(
-			'title' => '',
-			'view_id' => 0,
-			'post_id' => '',
-			'search_fields' => '',
-			'search_clear' => 0
-		);
-
-		$instance = wp_parse_args( (array) $instance, $defaults );
+		$instance = wp_parse_args( (array) $instance, self::get_defaults() );
 
 		$title    = $instance['title'];
 		$view_id  = $instance['view_id'];
 		$post_id  = $instance['post_id'];
 		$search_fields = $instance['search_fields'];
 		$search_clear = $instance['search_clear'];
+		$search_mode = $instance['search_mode'];
 
 		$views = GVCommon::get_all_views();
 
@@ -224,6 +221,19 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id('search_clear'); ?>"><?php esc_html_e( 'Show Clear button', 'gravityview' ); ?>:</label>
 			<input name="<?php echo $this->get_field_name('search_clear'); ?>" type="hidden" value="0">
 			<input id="<?php echo $this->get_field_id('search_clear'); ?>" name="<?php echo $this->get_field_name('search_clear'); ?>" type="checkbox" class="checkbox" value="1" <?php checked( $search_clear, 1, true ); ?>>
+		</p>
+
+		<p>
+			<label><?php esc_html_e( 'Search Mode', 'gravityview' ); ?>:</label>
+			<label for="<?php echo $this->get_field_id('search_mode'); ?>_any">
+				<input id="<?php echo $this->get_field_id('search_mode'); ?>_any" name="<?php echo $this->get_field_name('search_mode'); ?>" type="radio" class="radio" value="any" <?php checked( $search_mode, 'any', true ); ?>>
+				<?php esc_html_e( 'Match Any Fields', 'gravityview' ); ?>
+			</label>
+			<label for="<?php echo $this->get_field_id('search_mode'); ?>_all">
+				<input id="<?php echo $this->get_field_id('search_mode'); ?>_all" name="<?php echo $this->get_field_name('search_mode'); ?>" type="radio" class="radio" value="all" <?php checked( $search_mode, 'all', true ); ?>>
+				<?php esc_html_e( 'Match All Fields', 'gravityview' ); ?>
+			</label>
+			<span class="howto"><?php esc_html_e('Should search results match all search fields, or any?', 'gravityview' ); ?></span
 		</p>
 
 		<hr />

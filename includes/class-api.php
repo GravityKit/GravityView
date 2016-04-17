@@ -99,7 +99,7 @@ class GravityView_API {
 	 * @param  array      $entry        GF Entry array
 	 * @return string                  Text with variables maybe replaced
 	 */
-	public static function replace_variables($text, $form, $entry ) {
+	public static function replace_variables( $text, $form = array(), $entry = array() ) {
 		return GravityView_Merge_Tags::replace_variables( $text, $form, $entry );
 	}
 
@@ -108,7 +108,7 @@ class GravityView_API {
 	 *
 	 * @since 1.9
 	 *
-	 * @param array $field_setting Array of settings for the field
+	 * @param array $field Array of settings for the field
 	 * @param string $format Format for width. "%" (default) will return
 	 *
 	 * @return string|null If not empty, string in $format format. Otherwise, null.
@@ -214,7 +214,7 @@ class GravityView_API {
 	 *
 	 * @access public
 	 * @param array $entry
-	 * @param integer $field
+	 * @param array $field
 	 * @return null|string
 	 */
 	public static function field_value( $entry, $field_settings, $format = 'html' ) {
@@ -225,61 +225,46 @@ class GravityView_API {
 
 		$gravityview_view = GravityView_View::getInstance();
 
-		if( class_exists( 'GFCache' ) ) {
-			/**
-			 * Gravity Forms' GFCache function was thrashing the database, causing double the amount of time for the field_value() method to run.
-			 *
-			 * The reason is that the cache was checking against a field value stored in a transient every time `GFFormsModel::get_lead_field_value()` is called.
-			 *
-			 * What we're doing here is telling the GFCache that it's already checked the transient and the value is false, forcing it to just use the non-cached data, which is actually faster.
-			 *
-			 * @hack
-			 * @since  1.3
-			 * @param  string $cache_key Field Value transient key used by Gravity Forms
-			 * @param mixed false Setting the value of the cache to false so that it's not used by Gravity Forms' GFFormsModel::get_lead_field_value() method
-			 * @param boolean false Tell Gravity Forms not to store this as a transient
-			 * @param  int 0 Time to store the value. 0 is maximum amount of time possible.
-			 */
-			GFCache::set( "GFFormsModel::get_lead_field_value_" . $entry["id"] . "_" . $field_settings["id"], false, false, 0 );
-		}
-
 		$field_id = $field_settings['id'];
-
 		$form = $gravityview_view->getForm();
-
 		$field = gravityview_get_field( $form, $field_id );
 
-		$field_type = RGFormsModel::get_input_type($field);
-
-		if( $field_type ) {
-			$field_type = $field['type'];
-			$value = RGFormsModel::get_lead_field_value($entry, $field);
+		if( $field && is_numeric( $field_id ) ) {
+			// Used as file name of field template in GV.
+			// Don't use RGFormsModel::get_input_type( $field ); we don't care if it's a radio input; we want to know it's a 'quiz' field
+			$field_type = $field->type;
+			$value = RGFormsModel::get_lead_field_value( $entry, $field );
 		} else {
-			// For non-integer field types (`id`, `date_created`, etc.)
-			$field_type = $field_id;
-			$field['type'] = $field_id;
-			$value = isset($entry[$field_type]) ? $entry[$field_type] : NULL;
+			$field = GravityView_Fields::get_associated_field( $field_id );
+			$field_type = $field_id; // Used as file name of field template in GV
 		}
 
-		// Prevent any PHP warnings that may be generated
-		ob_start();
+		// If a Gravity Forms Field is found, get the field display
+		if( $field ) {
 
-		$display_value = GFCommon::get_lead_field_display($field, $value, $entry["currency"], false, $format);
+			// Prevent any PHP warnings that may be generated
+			ob_start();
 
-		if( $errors = ob_get_clean() ) {
-			do_action( 'gravityview_log_error', 'GravityView_API[field_value] Errors when calling GFCommon::get_lead_field_display()', $errors );
-		}
+			$display_value = GFCommon::get_lead_field_display( $field, $value, $entry["currency"], false, $format );
 
-		$display_value = apply_filters("gform_entry_field_value", $display_value, $field, $entry, $form);
+			if ( $errors = ob_get_clean() ) {
+				do_action( 'gravityview_log_error', 'GravityView_API[field_value] Errors when calling GFCommon::get_lead_field_display()', $errors );
+			}
 
-		// prevent the use of merge_tags for non-admin fields
-		if( !empty( $field['adminOnly'] ) ) {
-			$display_value = self::replace_variables( $display_value, $form, $entry );
+			$display_value = apply_filters( "gform_entry_field_value", $display_value, $field, $entry, $form );
+
+			// prevent the use of merge_tags for non-admin fields
+			if( !empty( $field->adminOnly ) ) {
+				$display_value = self::replace_variables( $display_value, $form, $entry );
+			}
+		} else {
+			$value = $display_value = rgar( $entry, $field_id );
+			$display_value = $value;
 		}
 
 		// Check whether the field exists in /includes/fields/{$field_type}.php
 		// This can be overridden by user template files.
-		$field_exists = $gravityview_view->locate_template("fields/{$field_type}.php");
+		$field_path = $gravityview_view->locate_template("fields/{$field_type}.php");
 
 		// Set the field data to be available in the templates
 		$gravityview_view->setCurrentField( array(
@@ -291,16 +276,17 @@ class GravityView_API {
 			'display_value' => $display_value,
 			'format' => $format,
 			'entry' => $entry,
-			'field_type' => $field_type, /** {@since 1.6} **/
+			'field_type' => $field_type, /** {@since 1.6} */
+		    'field_path' => $field_path, /** {@since 1.16} */
 		));
 
-		if( $field_exists ) {
+		if( ! empty( $field_path ) ) {
 
-			do_action( 'gravityview_log_debug', sprintf('[field_value] Rendering %s', $field_exists ) );
+			do_action( 'gravityview_log_debug', sprintf('[field_value] Rendering %s', $field_path ) );
 
 			ob_start();
 
-			load_template( $field_exists, false );
+			load_template( $field_path, false );
 
 			$output = ob_get_clean();
 
@@ -311,7 +297,18 @@ class GravityView_API {
 
 		}
 
+		// Get the field settings again so that the field template can override the settings
 		$field_settings = $gravityview_view->getCurrentField('field_settings');
+
+		/**
+		 * @filter `gravityview_field_entry_value_{$field_type}_pre_link` Modify the field value output for a field type before Show As Link setting is applied. Example: `gravityview_field_entry_value_number_pre_link`
+		 * @since 1.16
+		 * @param string $output HTML value output
+		 * @param array  $entry The GF entry array
+		 * @param array  $field_settings Settings for the particular GV field
+		 * @param array  $field Field array, as fetched from GravityView_View::getCurrentField()
+		 */
+		$output = apply_filters( 'gravityview_field_entry_value_' . $field_type . '_pre_link', $output, $entry, $field_settings, $gravityview_view->getCurrentField() );
 
 		/**
 		 * Link to the single entry by wrapping the output in an anchor tag
@@ -319,7 +316,7 @@ class GravityView_API {
 		 * Fields can override this by modifying the field data variable inside the field. See /templates/fields/post_image.php for an example.
 		 *
 		 */
-		if( !empty( $field_settings['show_as_link'] ) ) {
+		if( !empty( $field_settings['show_as_link'] ) && ! gv_empty( $output, false, false ) ) {
 
 			$link_atts = empty( $field_settings['new_window'] ) ? array() : array( 'target' => '_blank' );
 
@@ -333,6 +330,7 @@ class GravityView_API {
 		 * @param string $output HTML value output
 		 * @param array  $entry The GF entry array
 		 * @param  array $field_settings Settings for the particular GV field
+		 * @param array $field Current field being displayed
 		 */
 		$output = apply_filters( 'gravityview_field_entry_value_'.$field_type, $output, $entry, $field_settings, $gravityview_view->getCurrentField() );
 
@@ -352,21 +350,27 @@ class GravityView_API {
 	 * Generate an anchor tag that links to an entry.
 	 *
 	 * @since 1.6
+	 * @see GVCommon::get_link_html()
 	 *
 	 * @param string $anchor_text The text or HTML inside the link
 	 * @param array $entry Gravity Forms entry array
+	 * @param array|string $passed_tag_atts Attributes to be added to the anchor tag, such as `title` or `rel`.
 	 * @param array $field_settings Array of field settings. Optional, but passed to the `gravityview_field_entry_link` filter
+	 *
+	 * @return string|null Returns HTML for an anchor link. Null if $entry isn't defined or is missing an ID.
 	 */
 	public static function entry_link_html( $entry = array(), $anchor_text = '', $passed_tag_atts = array(), $field_settings = array() ) {
 
 		if ( empty( $entry ) || ! is_array( $entry ) || ! isset( $entry['id'] ) ) {
-
 			do_action( 'gravityview_log_debug', 'GravityView_API[entry_link_tag] Entry not defined; returning null', $entry );
-
 			return NULL;
 		}
 
 		$href = self::entry_link( $entry );
+
+		if( '' === $href ) {
+			return NULL;
+		}
 
 		$link = gravityview_get_link( $href, $anchor_text, $passed_tag_atts );
 
@@ -445,14 +449,14 @@ class GravityView_API {
 				} else {
 
 					// This is a GravityView post type
-					if( GravityView_frontend::getInstance()->is_gravityview_post_type ) {
+					if( GravityView_frontend::getInstance()->isGravityviewPostType() ) {
 
 						$post_id = isset( $gravityview_view ) ? $gravityview_view->getViewId() : $post->ID;
 
 					} else {
 
 						// This is an embedded GravityView; use the embedded post's ID as the base.
-						if( GravityView_frontend::getInstance()->post_has_shortcode && is_a( $post, 'WP_Post' ) ) {
+						if( GravityView_frontend::getInstance()->isPostHasShortcode() && is_a( $post, 'WP_Post' ) ) {
 
 							$post_id = $post->ID;
 
@@ -654,7 +658,15 @@ class GravityView_API {
 
 			$args = array();
 
-			$directory_link = trailingslashit( $directory_link ) . $query_arg_name . '/'. $entry_slug .'/';
+			/**
+			 * Make sure the $directory_link doesn't contain any query otherwise it will break when adding the entry slug.
+			 * @since 1.16.5
+			 */
+			$link_parts = explode( '?', $directory_link );
+
+			$query = !empty( $link_parts[1] ) ? '?'.$link_parts[1] : '';
+
+			$directory_link = trailingslashit( $link_parts[0] ) . $query_arg_name . '/'. $entry_slug .'/' . $query;
 
 		} else {
 
@@ -707,26 +719,56 @@ function gv_class( $field, $form = NULL, $entry = array() ) {
 	return GravityView_API::field_class( $field, $form, $entry  );
 }
 
-function gv_container_class( $class = '' ) {
+/**
+ * Generate a CSS class to be added to the wrapper <div> of a View
+ *
+ * @since 1.5.4
+ * @since 1.16 Added $echo param
+ *
+ * @param string $passed_css_class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`
+ * @param boolean $echo Whether to echo the output. Default: true
+ *
+ * @return string CSS class, sanitized by gravityview_sanitize_html_class()
+ */
+function gv_container_class( $passed_css_class = '', $echo = true ) {
 
-	$default = ' gv-container';
+	$passed_css_class = trim( $passed_css_class );
+
+	$view_id = GravityView_View::getInstance()->getViewId();
+
+	$default_css_class = ! empty( $view_id ) ? sprintf( 'gv-container gv-container-%d', $view_id ) : 'gv-container';
 
 	if( GravityView_View::getInstance()->isHideUntilSearched() ) {
-		$default .= ' hidden';
+		$default_css_class .= ' hidden';
 	}
 
-	$class = apply_filters( 'gravityview/render/container/class', $class . $default );
+	if( 0 === GravityView_View::getInstance()->getTotalEntries() ) {
+		$default_css_class .= ' gv-container-no-results';
+	}
 
-	$class = gravityview_sanitize_html_class( $class );
+	$css_class = trim( $passed_css_class . ' '. $default_css_class );
 
-	echo $class;
+	/**
+	 * @filter `gravityview/render/container/class` Modify the CSS class to be added to the wrapper <div> of a View
+	 * @since 1.5.4
+	 * @param[in,out] string $css_class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`. If the View has no results, adds `gv-container-no-results`
+	 */
+	$css_class = apply_filters( 'gravityview/render/container/class', $css_class );
+
+	$css_class = gravityview_sanitize_html_class( $css_class );
+
+	if( $echo ) {
+		echo $css_class;
+	}
+
+	return $css_class;
 }
 
 function gv_value( $entry, $field ) {
 
 	$value = GravityView_API::field_value( $entry, $field );
 
-	if( $value === '') {
+	if( $value === '' ) {
 		/**
 		 * @filter `gravityview_empty_value` What to display when a field is empty
 		 * @param string $value (empty string)
@@ -1146,7 +1188,7 @@ function gravityview_field_output( $passed_args ) {
 	$context['field_id'] = GravityView_API::field_html_attr_id( $args['field'], $args['form'], $entry );
 
 	// Get field label if needed
-	if ( ! empty( $args['label_markup'] ) ) {
+	if ( ! empty( $args['label_markup'] ) && ! empty( $args['field']['show_label'] ) ) {
 		$context['label'] = str_replace( array( '{{label}}', '{{ label }}' ), '<span class="gv-field-label">{{ label_value }}</span>', $args['label_markup'] );
 	}
 
@@ -1225,35 +1267,3 @@ function gravityview_field_output( $passed_args ) {
 
 	return $html;
 }
-
-/**
- * Similar to the WordPress `selected()`, `checked()`, and `disabled()` functions, except it allows arrays to be passed as current value
- *
- * @todo Move to helper-functions.php
- * @see selected() WordPress core function
- *
- * @param string $value One of the values to compare
- * @param mixed $current (true) The other value to compare if not just true
- * @param bool $echo Whether to echo or just return the string
- * @param string $type The type of checked|selected|disabled we are doing
- *
- * @return string html attribute or empty string
- */
-function gv_selected( $value, $current, $echo = true, $type = 'selected' ) {
-
-	$output = '';
-	if( is_array( $current ) ) {
-		if( in_array( $value, $current ) ) {
-			$output = __checked_selected_helper( true, true, false, $type );
-		}
-	} else {
-		$output = __checked_selected_helper( $value, $current, false, $type );
-	}
-
-	if( $echo ) {
-		echo $output;
-	}
-
-	return $output;
-}
-

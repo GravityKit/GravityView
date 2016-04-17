@@ -9,7 +9,8 @@ php:
   - 5.6
 
 env:
-  - WP_VERSION=nightly WP_MULTISITE=0
+  - WP_VERSION=latest WP_MULTISITE=0
+  - WP_VERSION=4.4 WP_MULTISITE=0
   - WP_VERSION=4.3 WP_MULTISITE=0
   - WP_VERSION=4.2 WP_MULTISITE=0
   - WP_VERSION=4.1 WP_MULTISITE=0
@@ -18,7 +19,7 @@ env:
 matrix:
   include:
   - php: 5.3
-    env: WP_VERSION=nightly WP_MULTISITE=1
+    env: WP_VERSION=latest WP_MULTISITE=1
 
 before_script:
   - bash tests/bin/install.sh gravityview_test root '' localhost $WP_VERSION
@@ -30,3 +31,6 @@ after_script:
   - bash tests/bin/travis.sh after
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover ./tmp/clover.xml
+
+after_success:
+  - coveralls

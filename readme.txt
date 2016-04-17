@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.4
+Tested up to: 4.5
 Stable tag: trunk
 Contributors: katzwebservices, luistinygod
 License: GPL 3 or higher
@@ -19,6 +19,167 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+* Added: Option to make Phone numbers click-to-call
+* Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used.
+
+= 1.16.5.1 on April 7 =
+
+* Fixed: Edit Entry links didn't work
+
+= 1.16.5 on April 6 =
+
+* Fixed: Search Bar inputs not displaying for Number fields
+* Fixed: Compatibility issue with [ACF](https://wordpress.org/plugins/advanced-custom-fields/) plugin when saving a View
+* Fixed (for real this time): Survey field values weren't displaying in Edit Entry
+* Tweak: Made it clearer when editing a View that GravityView is processing in the background
+* Added: Chinese translation (thanks, Edi Weigh!)
+* Updated: German translation (thanks, [@akwdigital](https://www.transifex.com/user/profile/akwdigital/)!)
+
+__Developer Notes__
+
+* Added: `gravityview/fields/custom/decode_shortcodes` filter to determine whether to process shortcodes inside Merge Tags in Custom Content fields. Off by default, for security reasons.
+* Fixed: Potential fatal errors when activating GravityView if Gravity Forms isn't active
+* Updated: Gamajo Template Loader to Version 1.2
+* Verified compatibility with WordPress 4.5
+
+= 1.16.4.1 on March 23 =
+* Fixed: Major display issue caused by output buffering introduced in 1.16.4. Sorry!
+
+= 1.16.4 on March 21 =
+* Fixed: `[gravityview]` shortcodes sometimes not rendering inside page builder shortcodes
+* Fixed: Individual date inputs (Day, Month, Year) always would show full date.
+* Fixed: Quiz and Poll fields weren't displaying properly
+* Fixed: Survey field CSS styles weren't enqueued properly when viewing survey results
+* Fixed: Survey field values weren't displaying in Edit Entry. We hope you "likert" this update a lot ;-)
+* Added: Option to set the search mode ("any" or "all") on the GravityView Search WordPress widget.
+* Added: Option to show/hide "Show Answer Explanation" for Gravity Forms Quiz Addon fields
+* Tweak: Don't show GravityView Approve Entry column in Gravity Forms Entries table if there are no entries
+* Updated: Turkish translation. Thanks, [@suhakaralar](https://www.transifex.com/accounts/profile/suhakaralar/)!
+* Tested and works with [Gravity Forms 2.0 Beta 1](https://www.gravityhelp.com/gravity-forms-v2-0-beta-1-released/)
+
+__Developer Notes:__
+
+* Tweak: Updated `templates/fields/date.php` template to use new `GravityView_Field_Date::date_display()` method.
+* Added `gv-widgets-no-results` and `gv-container-no-results` classes to the widget and View container `<div>`s. This will make it easier to hide empty View content and/or Widgets.
+* Added: New action hooks when entry is deleted (`gravityview/delete-entry/deleted`) or trashed (`gravityview/delete-entry/trashed`).
+* Added: Use the hook `gravityview/search/method` to change the default search method from `GET` to `POST` (hiding the search filters from the View url)
+* Added: `gravityview/extension/search/select_default` filter to modify default value for Drop Down and Multiselect Search Bar fields.
+* Added: `gravityview_get_input_id_from_id()` helper function to get the Input ID from a Field ID.
+
+= 1.16.3 on February 28 =
+
+* Fixed: Date range search not working
+* Fixed: Display fields with calculation enabled on the Edit Entry view
+* Fixed: Large images in a gallery not resizing (when using [.gv-gallery](http://docs.gravityview.co/article/247-create-a-gallery))
+* Tweak: Start and end date in search are included in the results
+
+__Developer Notes:__
+
+* Added: `gravityview/approve_entries/bulk_actions` filter to modify items displayed in the Gravity Forms Entries "Bulk action" dropdown, in the "GravityView" `<optgroup>`
+* Added: `gravityview/edit_entry/button_labels` filter to modify the Edit Entry view buttons labels (defaults: `Cancel` and `Update`)
+* Added: `gravityview/approve_entries/add-note` filter to modify whether to add a note when the entry has been approved or disapproved (default: `true`)
+* Fixed: Removed deprecated `get_currentuserinfo()` function usage
+
+= 1.16.2.2 on February 17 =
+
+* This fixes Edit Entry issues introduced by 1.16.2.1. If you are running 1.16.2.1, please update. Sorry for the inconvenience!
+
+= 1.16.2.1 on February 16 =
+
+* Fixed: Edit Entry calculation fields not being able to calculate values when the required fields weren't included in Edit Entry layout
+* Fixed: Prevent Section fields from being searchable
+* Fixed: Setting User Registration 3.0 "create" vs "update" feed type
+
+= 1.16.2 on February 15 =
+
+* Added: Support for Post Image field on the Edit Entry screen
+* Added: Now use any Merge Tags as `[gravityview]` parameters
+* Fixed: Support for User Registration Addon Version 3
+* Fixed: Support for rich text editor for Post Body fields
+* Fixed: Admin-only fields may get overwritten when fields aren't visible during entry edit by user (non-admin)
+* Fixed: Address fields displayed hidden inputs
+* Fixed: Merge Tag dropdown list can be too wide when field names are long
+* Fixed: When sorting, recent entries disappeared from results
+* Fixed: Searches that included apostrophes  or ampersands returned no results
+* Fixed: Zero values not set in fields while in Edit Entry
+* Fixed: Re-calculate fields where calculation is enabled after entry is updated
+* Fixed: Warning message when Number fields not included in custom Edit Entry configurations
+* Translation updates:
+    - Bengali - thank you [@tareqhi](https://www.transifex.com/accounts/profile/tareqhi/) for 100% translation!
+    - Turkish by [@dbalage](https://www.transifex.com/accounts/profile/dbalage/)
+
+
+__Developer Notes:__
+
+* Reminder: <strong>GravityView will soon require PHP 5.3</strong>
+* Added: `gravityview/widgets/container_css_class` filter to modify widget container `<div>` CSS class
+    - Added `gv-widgets-{zone}` class to wrapper (`{zone}` will be either `header` or `footer`)
+* Fixed: Conflict with some plugins when `?action=delete` is processed in the Admin ([#624](https://github.com/gravityview/GravityView/issues/624), reported by [dcavins](https://github.com/dcavins))
+* Fixed: Removed `icon` CSS class name from the table sorting icon links. Now just `gv-icon` instead of `icon gv-icon`.
+* Fixed: "Clear" search link now set to `display: inline-block` instead of `display: block`
+* Added: `gravityview/common/get_entry/check_entry_display` filter to disable validating whether to show entries or not against View filters
+* Fixed: `GravityView_API::replace_variables` no longer requires `$form` and `$entry` arguments
+
+= 1.16.1 on January 21 =
+
+* Fixed: GravityView prevented Gravity Forms translations from loading
+* Fixed: Field Width setting was visible in Edit Entry
+* Fixed: Don't display embedded Gravity Forms forms when editing an entry in GravityView
+
+__Developer Notes:__
+
+* Added: `gravityview_excerpt_more` filter. Modify the "Read more" link used when "Maximum Words" setting is enabled and the output is truncated.
+    * Removed: `excerpt_more` filter on `textarea.php` - many themes use permalink values to generate links.
+
+= 1.16 on January 14 =
+* Happy New Year! We have big things planned for GravityView in 2016, including a new View Builder. Stay tuned :-)
+* Added: Merge Tags. [See all GravityView Merge Tags](http://docs.gravityview.co/article/76-merge-tags)
+    * `{date_created}` The date an entry was created. [Read how to use it here](http://docs.gravityview.co/article/331-date-created-merge-tag).
+    * `{payment_date}` The date the payment was received. Formatted using [the same modifiers](http://docs.gravityview.co/article/331-date-created-merge-tag) as `{date_created}`
+    * `{payment_status}` The current payment status of the entry (ie "Processing", "Pending", "Active", "Expired", "Failed", "Cancelled", "Approved", "Reversed", "Refunded", "Voided")
+    * `{payment_method}` The way the entry was paid for (ie "Credit Card", "PayPal", etc.)
+    * `{payment_amount}` The payment amount, formatted as the currency (ie `$75.25`). Use `{payment_amount:raw}` for the un-formatted number (ie `75.25`)
+    * `{currency}` The currency with which the entry was submitted (ie "USD", "EUR")
+    * `{is_fulfilled}` Whether the order has been fulfilled. Displays "Not Fulfilled" or "Fulfilled"
+    * `{transaction_id}` the ID of the transaction returned by the payment gateway
+    * `{transaction_type}` Indicates the transaction type of the entry/order. "Single Payment" or "Subscription".
+* Fixed: Custom merge tags not being replaced properly by GravityView
+* Fixed: Connected form links were not visible in the Data Source metabox
+* Fixed: Inaccurate "Key missing" error shown when license key is invalid
+* Fixed: Search Bar could show "undefined" search fields when security key has expired. Now, a helpful message will appear.
+* Tweak: Only show Add View button to users who are able to publish Views
+* Tweak: Reduce the number of database calls by fetching forms differently
+* Tweak: Only show license key notices to users who have capability to edit settings, and only on GravityView pages
+* Tweak: Improved load time of Views screen in the admin
+* Tweak: Make sure entry belongs to correct form before displaying
+* Tweak: Removed need for one database call per displayed entry
+* Translations, thanks to:
+    - Brazilian Portuguese by [@marlosvinicius](https://www.transifex.com/accounts/profile/marlosvinicius.info/)
+    - Mexican Spanish by [@janolima](https://www.transifex.com/accounts/profile/janolima/)
+
+__Developer Notes:__
+
+* New: Added `get_content()` method to some `GravityView_Fields` subclasses. We plan on moving this to the parent class soon. This allows us to not use `/templates/fields/` files for every field type.
+* New: `GVCommon::format_date()` function formats entry and payment dates in more ways than `GFCommon::format_date`
+* New: `gravityview_get_terms_choices()` function generates array of categories ready to be added to Gravity Forms $choices array
+* New: `GVCommon::has_product_field()` method to check whether a form has product fields
+* New: Added `add_filter( 'gform_is_encrypted_field', '__return_false' );` before fetching entries
+* Added: `gv-container-{view id}` CSS class to `gv_container_class()` function output. This will be added to View container `<div>`s
+* Added: `$group` parameter to `GravityView_Fields::get_all()` to get all fields in a specified group
+* Added: `gravityview_field_entry_value_{field_type}_pre_link` filter to modify field values before "Show As Link" setting is applied
+* Added: Second parameter `$echo` (boolean) to `gv_container_class()`
+* Added: Use the `$is_sortable` `GravityView_Field` variable to define whether a field is sortable. Overrides using the  `gravityview/sortable/field_blacklist` filter.
+* Fixed: `gv_container_class()` didn't return value
+* Fixed: Don't add link to empty field value
+* Fixed: Strip extra whitespace in `gravityview_sanitize_html_class()`
+* Fixed: Don't output widget structural HTML if there are no configured widgets
+* Fixed: Empty HTML `<h4>` label container output in List layout, even when "Show Label" was unchecked
+* Fixed: Fetching the current entry can improperly return an empty array when using `GravityView_View->getCurrentEntry()` in DataTables extension
+* Fixed: `gravityview/sortable/formfield_{form}_{field_id}` filter [detailed here](http://docs.gravityview.co/article/231-how-to-disable-the-sorting-control-on-one-table-column)
+* Fixed: `gravityview/sortable/field_blacklist` filter docBlock fixed
+* Tweak: Set `max-width: 50%` for `div.gv-list-view-content-image`
+* Tweak: Moved `gv_selected()` to `helper-functions.php` from `class-api.php`
 
 = 1.15.2 on December 3 =
 

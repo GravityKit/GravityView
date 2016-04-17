@@ -16,7 +16,7 @@ class GravityView_Debug_Bar extends Debug_Bar_Panel {
 
 	/**
 	 * Only show if WP_DEBUG is running. Set the title of the panel.
-	 * @return [type] [description]
+	 * @return void
 	 */
 	function init() {
 
@@ -48,9 +48,10 @@ class GravityView_Debug_Bar extends Debug_Bar_Panel {
 
 	/**
 	 * Should the panel be shown? If there are notices or warnings, yes.
-	 * @return boolean true: show panel; false: hide panel
+	 * @param boolean $visible {@internal Leave here for compatibility with the Debug_Bar_Panel parent class}
+	 * @return void
 	 */
-	function set_visible( $visible = '' ) {
+	function set_visible( $visible = false ) {
 		$this->_visible = ( count( $this->get_notices() ) || count( $this->get_warnings() ) );
 	}
 
@@ -173,8 +174,7 @@ class GravityView_Debug_Bar extends Debug_Bar_Panel {
 			if( !is_null( $notice['data'] ) ) {
 				$output .= '<em>'._x('Empty', 'Debugging output data is empty.', 'gravityview' ).'</em>';
 			}
-		}
-		else {
+		} else {
 			$output .= sprintf( '<pre>%s</pre>', print_r($this->esc_html_recursive( $notice['data'] ), true) );
 		}
 

@@ -1,0 +1,11 @@
+{
+  "name": "gravityview/GravityView",
+  "type": "project",
+  "description": "The best way to display Gravity Forms entries on your website.",
+  "keywords": ["gravityview", "gravity view", "gravity forms directory", "gravity forms"],
+  "homepage": "https://gravityview.co/",
+  "license": "GPL-2.0+",
+  "require": {
+    "php": ">=5.2.4"
+  }
+}

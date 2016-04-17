@@ -284,7 +284,7 @@ class GravityView_Admin_ApproveEntries {
 	 *
 	 * @access public
 	 * @static
-	 * @param int $lead_id (default: 0)
+	 * @param int $entry_id (default: 0)
 	 * @param int $approved (default: 0)
 	 * @param int $form_id (default: 0)
 	 * @param int $approvedcolumn (default: 0)
@@ -317,11 +317,18 @@ class GravityView_Admin_ApproveEntries {
 
 		// add note to entry
 		if( $result === true ) {
+
 			$note = empty( $approved ) ? __( 'Disapproved the Entry for GravityView', 'gravityview' ) : __( 'Approved the Entry for GravityView', 'gravityview' );
 
-			if( class_exists( 'GravityView_Entry_Notes' ) ){
-				global $current_user;
-      			get_currentuserinfo();
+			/**
+			 * @filter `gravityview/approve_entries/add-note` Add a note when the entry has been approved or disapproved?
+			 * @since todo
+			 * @param bool $add_note True: Yep, add that note! False: Do not, under any circumstances, add that note!
+			 */
+			$add_note = apply_filters( 'gravityview/approve_entries/add-note', true );
+
+			if( $add_note && class_exists( 'GravityView_Entry_Notes' ) ) {
+				$current_user = wp_get_current_user();
 				GravityView_Entry_Notes::add_note( $entry_id, $current_user->ID, $current_user->display_name, $note );
 			}
 
@@ -563,8 +570,7 @@ class GravityView_Admin_ApproveEntries {
 				'form_id' => $form_id,
 				'show_column' => (int)$this->show_approve_entry_column( $form_id ),
 				'add_bulk_action' => (int)GVCommon::has_cap( 'gravityview_moderate_entries' ),
-				'label_approve' => __( 'Approve', 'gravityview' ) ,
-				'label_disapprove' => __( 'Disapprove', 'gravityview' ),
+				'bulk_actions' => $this->get_bulk_actions( $form_id ),
 				'bulk_message' => $this->bulk_update_message,
 				'approve_title' => __( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravityview'),
 				'unapprove_title' => __( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravityview'),
@@ -574,6 +580,50 @@ class GravityView_Admin_ApproveEntries {
 
 		}
 
+	}
+
+	/**
+	 * Get an array of options to be added to the Gravity Forms "Bulk action" dropdown in a "GravityView" option group
+	 *
+	 * @since 1.16.3
+	 *
+	 * @param int $form_id  ID of the form currently being displayed
+	 *
+	 * @return array Array of actions to be added to the GravityView option group
+	 */
+	private function get_bulk_actions( $form_id ) {
+
+		$bulk_actions = array(
+			'GravityView' => array(
+				array(
+					'label' => __( 'Approve', 'gravityview' ),
+					'value' => sprintf( 'approve-%d', $form_id ),
+				),
+				array(
+					'label' => __( 'Disapprove', 'gravityview' ),
+					'value' => sprintf( 'unapprove-%d', $form_id ),
+				),
+			),
+		);
+
+		/**
+		 * @filter `gravityview/approve_entries/bulk_actions` Modify the GravityView "Bulk action" dropdown list. Return an empty array to hide.
+		 * @see https://gist.github.com/zackkatz/82785402c996b51b4dc9 for an example of how to use this filter
+		 * @since 1.16.3
+		 * @param array $bulk_actions Associative array of actions to be added to "Bulk action" dropdown inside GravityView `<optgroup>`. Parent array key is the `<optgroup>` label, then each child array must have `label` (displayed text) and `value` (input value) keys
+		 * @param int $form_id ID of the form currently being displayed
+		 */
+		$bulk_actions = apply_filters( 'gravityview/approve_entries/bulk_actions', $bulk_actions, $form_id );
+
+		// Sanitize the values, just to be sure.
+		foreach ( $bulk_actions as $key => $group ) {
+			foreach ( $group as $i => $action ) {
+				$bulk_actions[ $key ][ $i ]['label'] = esc_html( $bulk_actions[ $key ][ $i ]['label'] );
+				$bulk_actions[ $key ][ $i ]['value'] = esc_attr( $bulk_actions[ $key ][ $i ]['value'] );
+			}
+		}
+
+		return $bulk_actions;
 	}
 
 	/**

@@ -315,13 +315,21 @@ class GravityView_frontend {
 			return false;
 		}
 
+		$search_method = GravityView_Widget_Search::getInstance()->get_search_method();
+
+		if( 'post' === $search_method ) {
+			$get = $_POST;
+		} else {
+			$get = $_GET;
+		}
+
 		// No $_GET parameters
-		if ( empty( $_GET ) || ! is_array( $_GET ) ) {
+		if ( empty( $get ) || ! is_array( $get ) ) {
 			return false;
 		}
 
 		// Remove empty values
-		$get = array_filter( $_GET );
+		$get = array_filter( $get );
 
 		// If the $_GET parameters are empty, it's no search.
 		if ( empty( $get ) ) {
@@ -657,9 +665,16 @@ class GravityView_frontend {
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.' );
 
 				/**
+				 * @filter `gravityview/render/entry/not_visible` Modify the message shown to users when the entry doesn't exist or they aren't allowed to view it.
+				 * @since 1.6
+				 * @param string $message Default: "You have attempted to view an entry that is not visible or may not exist."
+				 */
+				$message = apply_filters( 'gravityview/render/entry/not_visible', __( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview' ) );
+
+				/**
 				 * @since 1.6
 				 */
-				echo esc_attr( apply_filters( 'gravityview/render/entry/not_visible', __( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview' ) ) );
+				echo esc_attr( $message );
 
 				return null;
 			}
@@ -889,7 +904,7 @@ class GravityView_frontend {
 
 			$search_criteria['field_filters'][] = array(
 				'key' => rgget( 'search_field', $args ), // The field ID to search
-				'value' => esc_attr( $args['search_value'] ), // The value to search
+				'value' => _wp_specialchars( $args['search_value'] ), // The value to search. Encode ampersands but not quotes.
 				'operator' => $operator,
 			);
 		}
@@ -1087,7 +1102,7 @@ class GravityView_frontend {
 	 */
 	private static function _override_sorting_id_by_field_type( $sort_field_id, $form_id ) {
 
-		$form = GFAPI::get_form( $form_id );
+		$form = gravityview_get_form( $form_id );
 
 		$sort_field = GFFormsModel::get_field( $form, $sort_field_id );
 
@@ -1333,7 +1348,7 @@ class GravityView_frontend {
 
 		$sorting = GravityView_View::getInstance()->getSorting();
 
-		$class = 'gv-sort icon';
+		$class = 'gv-sort';
 
 		$sort_field_id = self::_override_sorting_id_by_field_type( $field['id'], $form['id'] );
 
@@ -1371,28 +1386,30 @@ class GravityView_frontend {
 	 *
 	 * @return bool True: Yes, field is sortable; False: not sortable
 	 */
-	public function is_field_sortable( $field_id = '', $form ) {
+	public function is_field_sortable( $field_id = '', $form = array() ) {
+
+		$field_type = $field_id;
 
 		if( is_numeric( $field_id ) ) {
 			$field = GFFormsModel::get_field( $form, $field_id );
-			$field_id = $field->type;
+			$field_type = $field->type;
 		}
 
 		$not_sortable = array(
-			'entry_link',
 			'edit_link',
 			'delete_link',
-			'custom',
-			'list',
 		);
 
 		/**
-		 * Modify what fields should never be sortable.
+		 * @filter `gravityview/sortable/field_blacklist` Modify what fields should never be sortable.
 		 * @since 1.7
+		 * @param[in,out] array $not_sortable Array of field types that aren't sortable
+		 * @param string $field_type Field type to check whether the field is sortable
+		 * @param array $form Gravity Forms form
 		 */
-		$not_sortable = apply_filters( 'gravityview/sortable/field_blacklist', $not_sortable, $field_id, $form );
+		$not_sortable = apply_filters( 'gravityview/sortable/field_blacklist', $not_sortable, $field_type, $form );
 
-		if ( in_array( $field_id, $not_sortable ) ) {
+		if ( in_array( $field_type, $not_sortable ) ) {
 			return false;
 		}
 

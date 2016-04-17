@@ -39,6 +39,7 @@ final class GravityView_Delete_Entry {
 	 * @since 1.9.2
 	 */
 	private function add_hooks() {
+
 		add_action( 'wp', array( $this, 'process_delete' ), 10000 );
 
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field'), 10, 3 );
@@ -305,12 +306,15 @@ final class GravityView_Delete_Entry {
 	function process_delete() {
 
 		// If the form is submitted
-		if( RGForms::get("action") === "delete") {
+		if( isset( $_GET['action'] ) && 'delete' === $_GET['action'] && isset( $_GET['entry_id'] ) ) {
 
-			$nonce_key = self::get_nonce_key( $_GET['entry_id'] );
+			// Make sure it's a GravityView request
+			$valid_nonce_key = wp_verify_nonce( $_GET['delete'], self::get_nonce_key( $_GET['entry_id'] ) );
 
-			// Make sure it's a valid request
-			check_admin_referer( $nonce_key, 'delete' );
+			if( ! $valid_nonce_key ) {
+				do_action('gravityview_log_debug', __METHOD__ . ' Delete entry not processed: nonce validation failed.' );
+				return;
+			}
 
 			// Get the entry slug
 			$entry_slug = esc_attr( $_GET['entry_id'] );
@@ -370,7 +374,7 @@ final class GravityView_Delete_Entry {
 
 		} // endif action is delete.
 
-	} // process_delete
+	}
 
 	/**
 	 * Delete mode: permanently delete, or move to trash?
@@ -407,6 +411,13 @@ final class GravityView_Delete_Entry {
 
 			if( ! is_wp_error( $delete_response ) ) {
 				$delete_response = 'deleted';
+
+				/**
+				 * @action `gravityview/delete-entry/deleted` Triggered when an entry is deleted
+				 * @since 1.16.4
+				 * @param  int $entry_id ID of the Gravity Forms entry
+				*/
+				do_action( 'gravityview/delete-entry/deleted', $entry_id );
 			}
 
 			do_action( 'gravityview_log_debug', __METHOD__ . ' Delete response: ', $delete_response );
@@ -421,6 +432,14 @@ final class GravityView_Delete_Entry {
 			if( ! $trashed ) {
 				$delete_response = new WP_Error( 'trash_entry_failed', __('Moving the entry to the trash failed.', 'gravityview' ) );
 			} else {
+
+				/**
+				 * @action `gravityview/delete-entry/trashed` Triggered when an entry is trashed
+				 * @since 1.16.4
+				 * @param  int $entry_id ID of the Gravity Forms entry
+				 */
+				do_action( 'gravityview/delete-entry/trashed', $entry_id );
+
 				$delete_response = 'trashed';
 			}
 

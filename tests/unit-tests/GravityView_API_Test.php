@@ -42,6 +42,83 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::gv_container_class()
+	 */
+	public function test_gv_container_class() {
+
+
+	// Test no View ID and no hide formatting
+		GravityView_View::getInstance()->setViewId( 0 );
+		GravityView_View::getInstance()->setHideUntilSearched( false );
+
+		// Test $echo parameter TRUE
+		ob_start();
+			gv_container_class();
+		$output = ob_get_clean();
+
+		$this->assertEquals( 'gv-container gv-container-no-results', $output );
+
+		GravityView_View::getInstance()->setEntries( array( array('id'), array('id') ) );
+		GravityView_View::getInstance()->setTotalEntries( 2 );
+		
+		// Test non-empty View
+		ob_start();
+		gv_container_class();
+		$output = ob_get_clean();
+
+		$this->assertEquals( 'gv-container', $output );
+
+		// Test $echo parameter FALSE
+		ob_start();
+		$returned_output = gv_container_class( '', false );
+		$output = ob_get_clean();
+		$this->assertEquals( '', $output, 'Echo was false; there should be no output' );
+		$this->assertEquals( 'gv-container', $returned_output );
+
+		// Prevent output
+		ob_start();
+
+		$classes = array(
+			'gv-container' => gv_container_class(),
+			'with-passed-class gv-container' => gv_container_class( 'with-passed-class' ),
+			'with-passed-class and-whitespace gv-container' => gv_container_class( '   with-passed-class and-whitespace   ' ),
+		);
+
+		foreach ( $classes as $expected => $formatted ) {
+			$this->assertEquals( $expected, $formatted, $expected );
+		}
+
+	// Test Hide Until Search formatting
+		GravityView_View::getInstance()->setHideUntilSearched( true );
+
+		$classes = array(
+			'gv-container hidden' => gv_container_class(),
+			'with-passed-class gv-container hidden' => gv_container_class( 'with-passed-class' ),
+			'with-passed-class and-whitespace gv-container hidden' => gv_container_class( '   with-passed-class and-whitespace   ' ),
+		);
+
+		foreach ( $classes as $expected => $formatted ) {
+			$this->assertEquals( $expected, $formatted, $expected );
+		}
+
+	// Test View ID formatting
+		GravityView_View::getInstance()->setViewId( 12 );
+
+		$classes = array(
+			'gv-container gv-container-12 hidden' => gv_container_class(),
+			'with-passed-class gv-container gv-container-12 hidden' => gv_container_class( 'with-passed-class' ),
+			'with-passed-class and-whitespace gv-container gv-container-12 hidden' => gv_container_class( '   with-passed-class and-whitespace   ' ),
+		);
+
+		foreach ( $classes as $expected => $formatted ) {
+			$this->assertEquals( $expected, $formatted, $expected );
+		}
+
+		// Prevent output
+		ob_end_clean();
+	}
+
+	/**
 	 * @covers GravityView_API::replace_variables()
 	 * @covers GravityView_Merge_Tags::replace_variables()
 	 */
@@ -119,6 +196,67 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @group entry_link
+	 * @covers GravityView_API::entry_link_html()
+	 */
+	public function test_entry_link_html() {
+
+		global $post;
+
+		$user = $this->factory->user->create_and_set( array( 'role' => 'administrator' ) );
+		$form = $this->factory->form->create_and_get( array( 'form_id' => $form['id'] ) );
+		$post = $this->factory->view->create_and_get();
+		$entry = $this->factory->entry->create_and_get( array(
+			'created_by' => $user->ID,
+			'form_id' => $form['id'],
+		) );
+
+		$this->assertFalse( is_wp_error( $entry ), 'There was an error creating the $entry object. Skipping test' . print_r( $entry, true ) );
+
+		GravityView_View::getInstance()->setPostId( $post->ID );
+
+		// Set the post for the base URL for the entry link
+		setup_postdata( $post );
+
+		$this->assertNull( GravityView_API::entry_link_html( array() ) );
+
+		$expected_url = site_url( sprintf('?gravityview=%s&amp;entry=%s', $post->post_name, $entry['id'] ) );
+
+		$this->assertEquals( sprintf( '<a href="%s">%s</a>', $expected_url, 'Link Text' ), GravityView_API::entry_link_html( $entry, 'Link Text' ) );
+
+		// Don't escape HTML
+		$this->assertEquals( sprintf( '<a href="%s">%s</a>', $expected_url, 'Ampersands & Quotes " \'' ), GravityView_API::entry_link_html( $entry, 'Ampersands & Quotes " \'' ) );
+
+		$this->assertEquals( sprintf( '<a href="%s" title="Expected Title">%s</a>', $expected_url, 'Link Text' ), GravityView_API::entry_link_html( $entry, 'Link Text', 'title=Expected Title' ) );
+
+		// Invalid attribute shouldn't be included
+		$this->assertEquals( sprintf( '<a href="%s">%s</a>', $expected_url, 'Link Text' ), GravityView_API::entry_link_html( $entry, 'Link Text', 'invalid=true' ) );
+
+
+	}
+
+	/**
+	 * @group entry_link
+	 * @covers GravityView_API::entry_link()
+	 */
+	public function test_entry_link() {
+
+		$user = $this->factory->user->create_and_set( array( 'role' => 'administrator' ) );
+		$form = $this->factory->form->create_and_get();
+		$post = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$entry = $this->factory->entry->create_and_get( array(
+			'created_by' => $user->ID,
+			'form_id' => $form['id'],
+		) );
+
+		GravityView_View::getInstance()->setPostId( $post->ID );
+
+		$href = GravityView_API::entry_link( $entry, $post->ID );
+
+		$this->assertEquals( site_url('?gravityview='.$post->post_name.'&entry='.$entry['id'] ), $href );
+	}
+
+	/**
 	 * @uses GravityView_API_Test::_override_no_entries_text_output()
 	 * @covers GravityView_API::no_results()
 	 */
@@ -193,6 +331,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @group get_current_views
 	 * @internal Make sure this test is above the test_directory_link() test so that one doesn't pollute $post
 	 */
 	public function test_gravityview_get_current_views() {
@@ -208,12 +347,12 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		$post = get_post( $view_post_type_id );
 
-		$this->assertEquals( $view_post_type_id, $post->ID );
+		$this->assertEquals( $view_post_type_id, $post->ID, 'The post was not properly created' );
 
 		$current_views = gravityview_get_current_views();
 
 		// Check if the view post is set
-		$this->assertTrue( isset( $current_views[ $view_post_type_id ] ) );
+		$this->assertTrue( isset( $current_views[ $view_post_type_id ] ), 'The $current_views array didnt have a value set at $post-ID key' );
 
 		// When the view is added, the key is set to the View ID and the `id` is also set to that
 		$this->assertEquals( $view_post_type_id, $current_views[ $view_post_type_id ]['id'] );

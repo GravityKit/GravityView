@@ -15,14 +15,22 @@ if( empty( $search_field['choices'] ) ) {
 	return;
 }
 
+/**
+ * @filter `gravityview/extension/search/select_default` Define the text for the default option in a select (multi or single dropdown)
+ * @since 1.16.4
+ * @param string $default_option Default: `&mdash;` (—)
+ * @param string $field_type Field type: "select" or "multiselect"
+ */
+$default_option = apply_filters('gravityview/extension/search/select_default', '&mdash;', 'multiselect' );
+
 ?>
 <div class="gv-search-box">
 	<?php if( ! gv_empty( $search_field['label'], false ) ) { ?>
-	<label for=search-box-<?php echo esc_attr( $search_field['name'] ); ?>><?php echo esc_html( $search_field['label'] ); ?></label>
+		<label for="search-box-<?php echo esc_attr( $search_field['name'] ); ?>"><?php echo esc_html( $search_field['label'] ); ?></label>
 	<?php } ?>
 	<p>
 		<select name="<?php echo esc_attr( $search_field['name'] ); ?>[]" id="search-box-<?php echo esc_attr( $search_field['name'] ); ?>" multiple>
-			<option value="" <?php gv_selected( '', $search_field['value'], true ); ?>>&mdash;</option>
+			<option value="" <?php gv_selected( '', $search_field['value'], true ); ?>><?php echo esc_html( $default_option ); ?></option>
 			<?php
 			foreach( $search_field['choices'] as $choice ) : ?>
 				<option value="<?php echo esc_attr( $choice['value'] ); ?>" <?php gv_selected( $choice['value'], $search_field['value'], true ); ?>><?php echo esc_html( $choice['text'] ); ?></option>
