@@ -21,6 +21,15 @@ module.exports = function(grunt) {
 		          ext: '.css'
 		      }]
 			},
+			extensions: {
+				files: [{
+					expand: true,
+					cwd: 'includes/extensions/entry-notes/assets/css/source',
+					src: ['*.scss'],
+					dest: 'includes/extensions/entry-notes/assets/css',
+					ext: '.css'
+				}]
+			},
 			templates: {
 				files: [{
 		          expand: true,
@@ -96,6 +105,10 @@ module.exports = function(grunt) {
 			extension_js: {
 				files: ['includes/widgets/**/*.js','!includes/widgets/**/*.min.js'],
 				tasks: ['uglify:searchExt','newer:jshint']
+			},
+			extension_scss: {
+				files: ['includes/extensions/**/*.scss'],
+				tasks: ['sass:extensions']
 			},
 			templates: {
 				files: ['templates/css/**/*.scss','!templates/css/**/*.css'],

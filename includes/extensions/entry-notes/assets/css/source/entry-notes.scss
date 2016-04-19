@@ -1,0 +1,96 @@
+.gv-entry-notes {
+
+  margin: 10px 0;
+
+  @import "add-note-form";
+  @import "entry-note";
+
+  table {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    table-layout: fixed;
+    border: 0;
+    border-spacing: 0;
+    width: 100%;
+    clear: both;
+    margin: 0;
+  }
+
+  /** Hide screen-reader content by default */
+  caption,
+  .screen-reader-text {
+    position: absolute;
+    margin: -1px;
+    padding: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    border: 0;
+  }
+
+  .gv-entry-notes-no-notes {
+    display: none;
+    td {
+      padding: 1em 0;
+    }
+  }
+
+  &.gv-no-notes {
+    .gv-entry-notes-no-notes {
+      display: table-row;
+    }
+    thead,
+    .gv-entry-notes-bulk-action {
+      display: none;
+    }
+  }
+
+  .check-column {
+    width: 1em;
+    padding: 9px 3px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .gv-entry-notes-bulk-action {
+    margin: 5px 0;
+    .button {
+      display: inline-block;
+      text-decoration: none;
+      font-size: 12px;
+      cursor: pointer;
+      vertical-align: middle;
+      width: auto !important;
+    }
+  }
+
+  tbody .check-column {
+    vertical-align: top;
+  }
+
+  tbody th, tbody td {
+    border: none;
+    border-collapse: collapse;
+    vertical-align: middle;
+  }
+
+  table.entry-detail-view {
+    margin-bottom: 16px
+  }
+
+  .gforms_note_success {
+    background-color: #ECFCDE;
+    border: 1px solid #A7C886;
+  }
+
+  .gv-entry-note-deleted,
+  .gforms_note_error {
+    background-color: #FFEBE8;
+    border: 1px solid #CC0000;
+  }
+
+  .gv-entry-note-email-subject-container {
+    display:none;
+  }
+}
