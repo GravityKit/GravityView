@@ -211,7 +211,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		// Get entry from URL
 		$user_data = get_userdata( $current_user->ID );
 		
-		$note_content = wp_unslash( trim( $data['new_note'] ) );
+		$note_content = wp_unslash( trim( $data['note-content'] ) );
 
 		if( empty( $note_content ) ) {
 			return new WP_Error( 'gv-add-note-empty', __( 'The note is empty.', 'gravityview' ) );
@@ -284,7 +284,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			$email_to      = $data['gv_entry_email_notes_to'];
 			$email_from    = $current_user->user_email;
 			$email_subject = stripslashes( $data['gentry_email_subject'] );
-			$body = stripslashes( $data['new_note'] );
+			$body = stripslashes( $data['note-content'] );
 
 			$headers = "From: \"$email_from\" <$email_from> \r\n";
 			GFCommon::log_debug( "GFEntryDetail::lead_detail_page(): Emailing notes - TO: $email_to SUBJECT: $email_subject BODY: $body HEADERS: $headers" );
