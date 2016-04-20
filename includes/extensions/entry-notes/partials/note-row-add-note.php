@@ -3,30 +3,10 @@
  * Display a note, without editing options
  *
  * @since 1.17
- *
- * @global object $note_emails Object (that used to be an array) with emails to display in the dropdown.
  */
+?>
 
-$note_emails = (array) $note_emails;
-
-/** @todo Cleanup and move to JS */
-if ( sizeof( $note_emails ) > 0 ) { ?>
-		<div>
-			<select name="gv_entry_email_notes_to" onchange="if(jQuery(this).val() != '')
-			{jQuery('.gv-entry-note-email-subject-container').css('display', 'inline');}
-			else{jQuery('.gv-entry-note-email-subject-container').css('display', 'none');}">
-				<option value=""><?php esc_html_e( 'Also email this note to', 'gravityview' ) ?></option>
-				<?php foreach ( $note_emails as $email ) { ?>
-					<option value="<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></option>
-				<?php } ?>
-			</select>
-
-            <span class='gv-entry-note-email-subject-container'>
-                <label for="gentry_email_subject"><?php esc_html_e( 'Subject:', 'gravityview' ) ?></label>
-                <input type="text" name="gentry_email_subject" id="gentry_email_subject" value="" style="width:35%"/>
-            </span>
-		</div>
-<?php } ?>
+{emails_dropdown}
 
 <textarea name="note-content" id="gv-entry-note-content"></textarea>
 

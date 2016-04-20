@@ -341,30 +341,68 @@ class GravityView_Field_Notes extends GravityView_Field {
 	}
 
 	/**
+	 * Get the Add Note form HTML
 	 *
-	 * @return string
+	 * @since 1.17
+	 *
+	 * @return string HTML of the Add Note form
 	 */
 	public static function get_add_note_part() {
+
+		ob_start();
+		GravityView_View::getInstance()->get_template_part( 'note', 'row-add-note' );
+		$add_note_html = ob_get_clean();
+
+		$add_note_html = str_replace( '{emails_dropdown}', self::get_emails_dropdown(), $add_note_html );
+
+		return $add_note_html;
+	}
+
+	/**
+	 * Generate a HTML dropdown of email values based on email fields from the current form
+	 *
+	 * @since 1.17
+	 *
+	 * @param array $note_emails
+	 *
+	 * @return string HTML output
+	 */
+	private static function get_emails_dropdown() {
+
 		$gravityview_view = GravityView_View::getInstance();
 		//getting email values
 		$email_fields = GFCommon::get_email_fields( $gravityview_view->getForm() );
 		$lead = $gravityview_view->getCurrentEntry();
-		$emails = array();
+		$note_emails = array();
 
 		foreach ( $email_fields as $email_field ) {
 			if ( ! empty( $lead[ $email_field->id ] ) ) {
-				$emails[] = $lead[ $email_field->id ];
+				$note_emails[] = $lead[ $email_field->id ];
 			}
 		}
 
 		ob_start();
 
-		// Set the template data to be accessible inside the template part.
-		// Stored in `$wp_query->query_vars`, then extracted by WP
-		GravityView_View::getInstance()->set_template_data( $emails, 'note_emails' );
-		
-		GravityView_View::getInstance()->get_template_part( 'note', 'row-add-note' );
+		/** @todo Cleanup and move to JS */
+		if ( ! empty( $note_emails ) ) { ?>
+			<div>
+				<select name="gv_entry_email_notes_to" onchange="if(jQuery(this).val() != '')
+			{jQuery('.gv-entry-note-email-subject-container').css('display', 'inline');}
+			else{jQuery('.gv-entry-note-email-subject-container').css('display', 'none');}">
+					<option value=""><?php esc_html_e( 'Also email this note to', 'gravityview' ) ?></option>
+					<?php foreach ( $note_emails as $email ) { ?>
+						<option value="<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></option>
+					<?php } ?>
+				</select>
 
+            <span class='gv-entry-note-email-subject-container'>
+                <label for="gentry_email_subject"><?php esc_html_e( 'Subject:', 'gravityview' ) ?></label>
+                <input type="text" name="gentry_email_subject" id="gentry_email_subject" value="" style="width:35%"/>
+            </span>
+			</div>
+		<?php }
+
+		// TODO: Add a filter
 		return ob_get_clean();
 	}
 
