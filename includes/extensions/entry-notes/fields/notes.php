@@ -24,7 +24,7 @@ wp_enqueue_script( 'gravityview-entry-notes', plugins_url( '/assets/js/entry-not
 if( ! wp_script_is( 'gravityview-entry-notes', 'done' ) ) {
 	wp_localize_script( 'gravityview-entry-notes', 'GVEntryNotes', array(
 		'text' => array(
-			'processing' => esc_html__( 'Processing&hellip;' )
+			'processing' => esc_html__( 'Processing&hellip;', 'gravityview' )
 		),
 	) );
 }
@@ -52,16 +52,16 @@ $entry_slug = gravityview_is_single_entry();
 			if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
 			?>
 			<div class="gv-entry-notes-bulk-action">
-				<label class="hidden" for="bulk_action"><?php esc_html_e( 'Bulk action', 'gravityforms' ) ?></label>
+				<label class="hidden" for="bulk_action"><?php esc_html_e( 'Bulk action', 'gravityview' ) ?></label>
 				<select name="bulk_action" id="bulk_action">
-					<option value=''><?php esc_html_e( 'Bulk action ', 'gravityforms' ) ?></option>
-					<option value='delete'><?php esc_html_e( 'Delete', 'gravityforms' ) ?></option>
+					<option value=''><?php esc_html_e( 'Bulk action ', 'gravityview' ) ?></option>
+					<option value='delete'><?php esc_html_e( 'Delete', 'gravityview' ) ?></option>
 				</select>
-				<button type="submit" class="button button-small"><?php esc_html_e( 'Apply', 'gravityforms' ); ?></button>
+				<button type="submit" class="button button-small"><?php esc_html_e( 'Apply', 'gravityview' ); ?></button>
 			</div>
 			<?php } ?>
 			<table class="widefat fixed entry-detail-notes">
-				<caption><?php esc_html_e('Notes for this entry'); ?></caption>
+				<caption><?php esc_html_e('Notes for this entry', 'gravityview'); ?></caption>
 				<?php
 				if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
 				?>

@@ -114,7 +114,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 				}
 			}
 		} else {
-			wp_send_json_error( array( 'error' => esc_html__( 'The request was invalid. Refresh the page and try again.' ) ) );
+			wp_send_json_error( array( 'error' => esc_html__( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) ) );
 		}
 	}
 
@@ -178,7 +178,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 				wp_send_json_success();
 			}
 		} elseif( $this->doing_ajax ) {
-			wp_send_json_error( array( 'error' => esc_html__( 'The request was invalid. Refresh the page and try again.' ) ) );
+			wp_send_json_error( array( 'error' => esc_html__( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) ) );
 		}
 	}
 
@@ -214,7 +214,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		$field_options['note_text_add_note'] = array(
 			'type' => 'text',
 			'label' => "Add Note button text",
-			'value' => __('Add Note'),
+			'value' => __('Add Note', 'gravityview'),
 		);
 
 		return $field_options;
@@ -232,7 +232,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 	function delete_notes( $notes = array() ) {
 
 		if ( ! GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
-			wp_die( esc_html__( "You don't have adequate permission to delete notes.", 'gravityforms' ) );
+			wp_die( esc_html__( "You don't have adequate permission to delete notes.", 'gravityview' ) );
 		}
 
 		RGFormsModel::delete_notes( $notes );
@@ -244,7 +244,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			'avatar'                 => apply_filters( 'gravityview/field/notes/avatar', get_avatar( $note->user_id, 48 ), $note ),
 			'user_name'              => $note->user_name,
 			'user_email'             => $note->user_email,
-			'added_on'               => esc_html__( 'added on {date_created_formatted}' ),
+			'added_on'               => esc_html__( 'added on {date_created_formatted}', 'gravityview' ),
 			'value'                  => nl2br( esc_html( $note->value ) ),
 			'date_created'           => $note->date_created,
 			'date_created_formatted' => GFCommon::format_date( $note->date_created, false ),
