@@ -1,3 +1,10 @@
+<?php
+/**
+ * Display a note row, with editing options
+ *
+ * @since 1.17
+ */
+?>
 <tr class="{row_class}">
 	<th class="check-column" scope="row">
 		<input type="checkbox" value="{note_id}" name="note[]" />

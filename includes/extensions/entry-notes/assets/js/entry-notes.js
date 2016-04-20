@@ -1,3 +1,17 @@
+/**
+ * Javascript for Entry Notes
+ *
+ * @package   GravityView
+ * @license   GPL2+
+ * @author    Katz Web Services, Inc.
+ * @link      https://gravityview.co
+ * @copyright Copyright 2015, Katz Web Services, Inc.
+ *
+ * @since 1.17
+ *
+ * globals jQuery, GVEntryNotes
+ */
+
 (function($){
 
 	/**

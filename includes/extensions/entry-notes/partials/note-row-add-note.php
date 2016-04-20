@@ -1,5 +1,11 @@
 <?php
-/** @global object $note_emails */
+/**
+ * Display a note, without editing options
+ *
+ * @since 1.17
+ *
+ * @global object $note_emails Object (that used to be an array) with emails to display in the dropdown.
+ */
 
 $note_emails = (array) $note_emails;
 
