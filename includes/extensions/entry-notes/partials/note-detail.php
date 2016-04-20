@@ -1,9 +1,8 @@
-<div>
-	<div class="gv-note-avatar">{avatar}</div>
-	<h6 class="gv-note-author">{user_name}</h6>
-	<p class="gv-note-meta">
-		<a href="mailto:{user_email}" class="gv-note-email">{user_email}</a>
-		<span class="gv-note-added-on">{added_on}</span>
-	</p>
+<div itemscope itemtype="http://schema.org/Comment">
+	<div class="gv-note-author-details" itemscope itemtype="http://schema.org/Person">
+		<div class="gv-note-avatar" itemprop="image">{avatar}</div>
+		<h6 class="gv-note-author" itemprop="name">{user_name}</h6>
+	</div>
+	<span class="gv-note-added-on" itemprop="dateCreated" datetime="{date_created}">{added_on}</span>
+	<div class="gv-note-content" itemprop="comment">{value}</div>
 </div>
-<div class="gv-detail-note-content">{value}</div>
