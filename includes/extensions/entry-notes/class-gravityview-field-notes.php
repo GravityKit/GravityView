@@ -340,6 +340,10 @@ class GravityView_Field_Notes extends GravityView_Field {
 		return $results ? $results[0] : false;
 	}
 
+	/**
+	 *
+	 * @return string
+	 */
 	public static function get_add_note_part() {
 		$gravityview_view = GravityView_View::getInstance();
 		//getting email values
@@ -354,8 +358,13 @@ class GravityView_Field_Notes extends GravityView_Field {
 		}
 
 		ob_start();
+
+		// Set the template data to be accessible inside the template part.
+		// Stored in `$wp_query->query_vars`, then extracted by WP
 		GravityView_View::getInstance()->set_template_data( $emails, 'note_emails' );
+		
 		GravityView_View::getInstance()->get_template_part( 'note', 'row-add-note' );
+
 		return ob_get_clean();
 	}
 

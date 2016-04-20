@@ -1,7 +1,9 @@
 <?php
+/** @global object $note_emails */
 
 $note_emails = (array) $note_emails;
 
+/** @todo Cleanup and move to JS */
 if ( sizeof( $note_emails ) > 0 ) { ?>
 		<div>
 			<select name="gv_entry_email_notes_to" onchange="if(jQuery(this).val() != '')
@@ -12,7 +14,6 @@ if ( sizeof( $note_emails ) > 0 ) { ?>
 					<option value="<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></option>
 				<?php } ?>
 			</select>
-
 
             <span class='gv-entry-note-email-subject-container'>
                 <label for="gentry_email_subject"><?php esc_html_e( 'Subject:', 'gravityforms' ) ?></label>
