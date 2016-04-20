@@ -30,11 +30,31 @@
 		init: function () {
 			// Allow for multiple on a page.
 			$('.gv-entry-notes').each( function () {
+
 				$( this ).find('input[type="checkbox"]').shiftSelectable();
 				$( this).find('.gv-notes-toggle').on('change', gv_entry_notes.toggle_all );
-				$('.gv-entry-note-add').on( 'submit', gv_entry_notes.add_note );
+
 				$('.gv-entry-notes-list').on( 'submit', gv_entry_notes.delete_notes );
+
+				$('.gv-entry-note-add')
+					.on( 'submit', gv_entry_notes.add_note )
+					.find( 'textarea')
+						.on( 'keydown', gv_entry_notes.command_enter );
+
 			});
+		},
+
+		/**
+		 * Allow Command+Enter to submit new notes. Yummy!
+		 *
+		 * @see https://davidwalsh.name/command-enter-submit-forms
+		 *
+		 * @param {jQueryEvent} e
+		 */
+		command_enter: function( e ) {
+			if(e.keyCode == 13 && e.metaKey) {
+				$('.gv-entry-note-add').submit();
+			}
 		},
 
 		toggle_all: function( e ) {
