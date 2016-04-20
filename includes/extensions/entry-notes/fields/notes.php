@@ -27,6 +27,7 @@ $entry_slug = gravityview_is_single_entry();
 	<form method="post" class="gv-entry-notes-list">
 		<?php wp_nonce_field( 'gv_delete_notes_' . $entry_slug, 'gv_delete_notes' ) ?>
 		<div class="inside">
+			<input type="hidden" name="action" value="gv_delete_notes" />
 			<input type="hidden" name="entry-slug" value="<?php echo esc_attr( $entry_slug ); ?>" />
 			<?php
 
@@ -82,6 +83,7 @@ $entry_slug = gravityview_is_single_entry();
 
 	<form method="post" class="gv-entry-note-add">
 		<div>
+			<input type="hidden" name="action" value="gv_add_note" />
 			<input type="hidden" name="entry-slug" value="<?php echo esc_attr( $entry_slug ); ?>" />
 			<?php
 			wp_nonce_field( 'gv_add_note_' . $entry_slug, 'gv_add_note' );

@@ -15,12 +15,19 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 */
 	static $path;
 
+	/**
+	 * @var bool Are we doing an AJAX request?
+	 */
+	private $doing_ajax = false;
+
 	var $name = 'notes';
 
 	function __construct() {
 
 		self::$path = plugin_dir_path( __FILE__ );
 		self::$file = __FILE__;
+
+		$this->doing_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
 
 		$this->add_hooks();
 
@@ -60,6 +67,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 				$added = $this->add_note( $entry, $data );
 
 				if( is_wp_error( $added ) ) {
+			if( $this->doing_ajax ) {
 					wp_send_json_error( array( 'message' => $added->get_error_message() ) );
 				} else {
 					$note = $this->get_note( $added );
@@ -78,7 +86,11 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		if( isset( $_POST['action'] ) && 'gv_delete_notes' === $_POST['action'] ) {
 
-			parse_str( wp_unslash( $_POST['data'] ), $data );
+			if ( $this->doing_ajax ) {
+				parse_str( wp_unslash( $_POST['data'] ), $data );
+			} else {
+				$data = $_POST;
+			}
 
 			$data = wp_parse_args( $data, array( 'gv_delete_notes' => '', 'entry-slug' => '' ) );
 
@@ -86,10 +98,12 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 			if( $valid ) {
 				$this->delete_notes( $data['note'] );
+			if( $this->doing_ajax ) {
 				wp_send_json_success();
 			} else {
 				wp_send_json_error( array( 'message' => new WP_Error('The request was invalid.' ) ) );
 			}
+		} elseif( $this->doing_ajax ) {
 		}
 
 	}
