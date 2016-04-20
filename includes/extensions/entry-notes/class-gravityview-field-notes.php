@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Add custom options for date fields
+ * Add Entry Notes
  */
 class GravityView_Field_Notes extends GravityView_Field {
 
@@ -36,38 +36,76 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 	private function add_hooks() {
 
+		// TODO: Allow embedding in Custom Content widgets/fields via shortcode
+		#add_shortcode( 'gv_entry_notes')
 
-		add_action( 'wp', array( $this, 'process_delete_notes'), 1000 );
-		add_action( 'wp_ajax_nopriv_gv_delete_notes', array( $this, 'process_delete_notes') );
-		add_action( 'wp_ajax_gv_delete_notes', array( $this, 'process_delete_notes') );
+		add_action( 'wp', array( $this, 'maybe_delete_notes'), 1000 );
+		add_action( 'wp_ajax_nopriv_gv_delete_notes', array( $this, 'maybe_delete_notes') );
+		add_action( 'wp_ajax_gv_delete_notes', array( $this, 'maybe_delete_notes') );
 
-		add_action( 'wp', array( $this, 'process_add_note'), 1000 );
-		add_action( 'wp_ajax_nopriv_gv_add_note', array( $this, 'process_add_note') );
-		add_action( 'wp_ajax_gv_add_note', array( $this, 'process_add_note') );
+		add_action( 'wp', array( $this, 'maybe_add_note'), 1000 );
+		add_action( 'wp_ajax_nopriv_gv_add_note', array( $this, 'maybe_add_note') );
+		add_action( 'wp_ajax_gv_add_note', array( $this, 'maybe_add_note') );
 
 		// add template path to check for field
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
 	}
 
-	function process_add_note() {
-
+	/**
+	 * Verify permissions, check if $_POST is set and as expected. If so, use process_add_note
+	 *
+	 * @since 1.17
+	 *
+	 * @see process_add_note
+	 *
+	 * @return void
+	 */
+	function maybe_add_note() {
 		if( ! GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
 			return;
 		}
 
 		if( isset( $_POST['action'] ) && 'gv_add_note' === $_POST['action'] ) {
 
-			parse_str( wp_unslash( $_POST['data'] ), $data );
-
-			$valid = wp_verify_nonce( $data['gv_add_note'], 'gv_add_note_' . $data['entry-slug'] );
-
-			if( $valid ) {
-				$entry = gravityview_get_entry( $data['entry-slug'], false );
-
-				$added = $this->add_note( $entry, $data );
-
-				if( is_wp_error( $added ) ) {
 			if( $this->doing_ajax ) {
+				parse_str( wp_unslash( $_POST['data'] ), $data );
+			} else {
+				$data = $_POST;
+			}
+
+			$this->process_add_note( (array) $data );
+		}
+	}
+
+	/**
+	 * Handle adding a note.
+	 *
+	 * Verify the request. If valid, add the note. If AJAX request, send response JSON.
+	 *
+	 * @since 1.17
+	 *
+	 * @var array $data {
+	 *  @type string $action "gv_add_note"
+	 *  @type string $entry-slug Entry slug or ID to add note to
+	 *  @type string $gv_add_note Nonce with action "gv_add_note_{entry slug}" and name "gv_add_note"
+	 *  @type string $_wp_http_referer Relative URL to submitting page ('/view/example/entry/123/')
+	 *  @type string $note-content Note content
+	 *  @type string $add_note Submit button value ('Add Note')
+	 * }
+	 *
+	 * @return void
+	 */
+	function process_add_note( $data ) {
+
+		$valid = wp_verify_nonce( $data['gv_add_note'], 'gv_add_note_' . $data['entry-slug'] );
+
+		if( $valid ) {
+			$entry = gravityview_get_entry( $data['entry-slug'], false );
+
+			$added = $this->add_note( $entry, $data );
+
+			if( $this->doing_ajax ) {
+				if ( is_wp_error( $added ) ) {
 					wp_send_json_error( array( 'message' => $added->get_error_message() ) );
 				} else {
 					$note = $this->get_note( $added );
@@ -75,17 +113,29 @@ class GravityView_Field_Notes extends GravityView_Field {
 					wp_send_json_success( array( 'html' => $html ) );
 				}
 			}
+		} else {
 			wp_send_json_error( array( 'error' => esc_html__( 'The request was invalid. Refresh the page and try again.' ) ) );
 		}
 	}
 
-	function process_delete_notes() {
+	/**
+	 * Possibly delete notes, if request is proper.
+	 *
+	 * Verify permissions. Check expected $_POST. Parse args, then send to process_delete_notes
+	 *
+  	 * @since 1.17
+	 *
+	 * @see process_delete_notes
+	 *
+	 * @return void
+	 */
+	function maybe_delete_notes() {
 
-		if( ! GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
+		if ( ! GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
 			return;
 		}
 
-		if( isset( $_POST['action'] ) && 'gv_delete_notes' === $_POST['action'] ) {
+		if ( isset( $_POST['action'] ) && 'gv_delete_notes' === $_POST['action'] ) {
 
 			if ( $this->doing_ajax ) {
 				parse_str( wp_unslash( $_POST['data'] ), $data );
@@ -93,26 +143,53 @@ class GravityView_Field_Notes extends GravityView_Field {
 				$data = $_POST;
 			}
 
-			$data = wp_parse_args( $data, array( 'gv_delete_notes' => '', 'entry-slug' => '' ) );
+			$required_args = array(
+				'gv_delete_notes' => '',
+				'entry-slug' => ''
+			);
 
-			$valid = wp_verify_nonce( $data['gv_delete_notes'], 'gv_delete_notes_' . $data['entry-slug'] );
+			$data = wp_parse_args( $data, $required_args );
 
-			if( $valid ) {
-				$this->delete_notes( $data['note'] );
+			$this->process_delete_notes( $data );
+		}
+	}
+
+	/**
+	 * Handle deleting notes
+	 *
+	 * @var array $data {
+	 *  @type string $action "gv_delete_notes"
+	 *  @type string $entry-slug Entry slug or ID to add note to
+	 *  @type string $gv_delete_notes Nonce with action "gv_delete_notes_{entry slug}" and name "gv_delete_notes"
+	 *  @type string $_wp_http_referer Relative URL to submitting page ('/view/example/entry/123/')
+	 *  @type string $bulk_action Value from action dropdown ("delete")
+	 *  @type int[]  $note  Array of Note IDs to be deleted
+	 * }
+	 *
+	 * @return void
+	 */
+	function process_delete_notes( $data ) {
+
+		$valid = wp_verify_nonce( $data['gv_delete_notes'], 'gv_delete_notes_' . $data['entry-slug'] );
+
+		if ( $valid ) {
+			$this->delete_notes( $data['note'] );
 			if( $this->doing_ajax ) {
 				wp_send_json_success();
-			} else {
-				wp_send_json_error( array( 'message' => new WP_Error('The request was invalid.' ) ) );
 			}
 		} elseif( $this->doing_ajax ) {
 			wp_send_json_error( array( 'error' => esc_html__( 'The request was invalid. Refresh the page and try again.' ) ) );
 		}
-
 	}
 
 	/**
 	 * Include this extension templates path
+	 *
+	 * @since 1.17
+	 *
 	 * @param array $file_paths List of template paths ordered
+	 *
+	 * @return array File paths with `./` and `./partials/` paths added
 	 */
 	public function add_template_path( $file_paths ) {
 
@@ -132,6 +209,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 			'value' => false,
 		);
 
+		// TODO: Add setting to just show Add form
+
 		$field_options['note_text_add_note'] = array(
 			'type' => 'text',
 			'label' => "Add Note button text",
@@ -142,6 +221,12 @@ class GravityView_Field_Notes extends GravityView_Field {
 	}
 
 	/**
+	 * Delete notes if user has permissisons.
+	 *
+	 * @uses RGFormsModel::delete_notes
+	 *
+	 * @since 1.17
+	 *
 	 * @param int[] $notes
 	 */
 	function delete_notes( $notes = array() ) {
@@ -156,10 +241,10 @@ class GravityView_Field_Notes extends GravityView_Field {
 	static public function display_note( $note, $is_editable = false ) {
 
 		$note_content = array(
-			'avatar'                 => apply_filters( 'gform_notes_avatar', get_avatar( $note->user_id, 48 ), $note ),
+			'avatar'                 => apply_filters( 'gravityview/field/notes/avatar', get_avatar( $note->user_id, 48 ), $note ),
 			'user_name'              => $note->user_name,
 			'user_email'             => $note->user_email,
-			'added_on'               => __( 'added on {date_created_formatted}' ),
+			'added_on'               => esc_html__( 'added on {date_created_formatted}' ),
 			'value'                  => nl2br( esc_html( $note->value ) ),
 			'date_created'           => $note->date_created,
 			'date_created_formatted' => GFCommon::format_date( $note->date_created, false ),
@@ -176,14 +261,13 @@ class GravityView_Field_Notes extends GravityView_Field {
 			$note_detail_html = str_replace( '{' . $tag . '}', $value, $note_detail_html );
 		}
 
-#if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
+		$note_row_template = 'row';
+		if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
+			$note_row_template = 'row-editable';
+		}
 
 		ob_start();
-		GravityView_View::getInstance()->get_template_part( 'note', 'row-editable' );
-		$note_row_editable = ob_get_clean();
-
-		ob_start();
-		GravityView_View::getInstance()->get_template_part( 'note', 'row' );
+		GravityView_View::getInstance()->get_template_part( 'note', $note_row_template );
 		$note_row = ob_get_clean();
 
 		$replacements = array(
@@ -193,18 +277,18 @@ class GravityView_Field_Notes extends GravityView_Field {
 		);
 
 		foreach ( $replacements as $tag => $replacement ) {
-			$note_row_editable = str_replace( $tag, $replacement, $note_row_editable );
 			$note_row = str_replace( $tag, $replacement, $note_row );
 		}
 
-		if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
-			return $note_row_editable;
-		} else {
-			return $note_row;
-		}
-
+		return $note_row;
 	}
 
+	/**
+	 * @param array $entry
+	 * @param array $data Note details array
+	 *
+	 * @return int|WP_Error
+	 */
 	function add_note( $entry, $data ) {
 		global $current_user, $wpdb;
 
@@ -233,6 +317,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 	/**
 	 * Get a single note by note ID
 	 *
+	 * @since 1.17
+	 *
 	 * @param int $note_id The ID of the note in the `rg_lead_notes` table
 	 *
 	 * @return object|bool False if not found; note object otherwise.
@@ -254,7 +340,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		return $results ? $results[0] : false;
 	}
 
-	public static function add_note_field() {
+	public static function get_add_note_part() {
 		$gravityview_view = GravityView_View::getInstance();
 		//getting email values
 		$email_fields = GFCommon::get_email_fields( $gravityview_view->getForm() );
