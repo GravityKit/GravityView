@@ -21,6 +21,14 @@ $has_notes_class = sizeof( $notes ) > 0 ? ' gv-has-notes' : ' gv-no-notes';
 wp_enqueue_style( 'gravityview-entry-notes', plugins_url( '/assets/css/entry-notes.css', GravityView_Field_Notes::$file ) );
 wp_enqueue_script( 'gravityview-entry-notes', plugins_url( '/assets/js/entry-notes.js', GravityView_Field_Notes::$file ) );
 
+if( ! wp_script_is( 'gravityview-entry-notes', 'done' ) ) {
+	wp_localize_script( 'gravityview-entry-notes', 'GVEntryNotes', array(
+		'text' => array(
+			'processing' => esc_html__( 'Processing&hellip;' )
+		),
+	) );
+}
+
 $entry_slug = gravityview_is_single_entry();
 ?>
 <div class="gv-entry-notes<?php echo $has_notes_class; ?>">
