@@ -72,17 +72,17 @@
 				return false;
 			}
 
-			$container = $( this ).parents('.gv-entry-notes');
-			$notes_form = $container.find('.gv-entry-notes-list');
-			$submit = $container.find('.gv-entry-notes-bulk-action input[type=submit]');
-
-			$checked = $( 'input[name="note[]"]:checked', $notes_form );
+			$checked = $( 'input[name="note[]"]:checked', $container );
 
 			// No checked inputs
 			if( 0 === $checked.length ) {
 				console.log('No notes were checked');
 				return false;
 			}
+
+			$container = $( this ).parents('.gv-entry-notes');
+			$notes_form = $container.find('.gv-entry-notes-list');
+			$submit = $container.find('.gv-entry-notes-bulk-action button[type=submit]');
 
 			$.ajax({
 				url: ajaxurl,
@@ -107,10 +107,15 @@
 						"height": "0",
 						"opacity": "0"
 					}, 'slow', function () {
+
 						$( this ).remove();
+
 						if( 0 === $( 'tr.gv-entry-note', $container ).length ) {
 							$container.removeClass('gv-has-notes').addClass('gv-no-notes');
 						}
+
+						// After a bulk action is performed, uncheck the "Check all" box
+						$container.find( '.gv-notes-toggle' ).prop( 'checked', null );
 					});
 
 				} else {
@@ -133,7 +138,6 @@
 				method: 'POST',
 				beforeSend: function (  ) {
 					$container.addClass( 'gv-processing-note' );
-					$notes_table = $notes_form.find( 'table.entry-detail-notes' );
 					$textarea.prop('disabled', 'disabled');
 					$submit.attr( 'data-value', $submit.html() ).prop('disabled', 'disabled').html( GVEntryNotes.text.processing );
 				},
@@ -151,7 +155,7 @@
 
 					$container.removeClass('gv-no-notes').addClass('gv-has-notes');
 
-					$( data.data.html ).hide().appendTo( $notes_table ).fadeIn();
+					$( data.data.html ).hide().appendTo( $notes_form.find( 'table' ) ).fadeIn();
 					$textarea.val( '' ); // Clear the existing note comment
 				} else {
 					alert( data.data.error );
