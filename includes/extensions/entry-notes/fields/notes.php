@@ -48,15 +48,7 @@ $entry_slug = gravityview_is_single_entry();
 					<option value=''><?php esc_html_e( 'Bulk action ', 'gravityforms' ) ?></option>
 					<option value='delete'><?php esc_html_e( 'Delete', 'gravityforms' ) ?></option>
 				</select>
-				<?php
-				$apply_button = '<input type="submit" class="button button-small" value="' . esc_attr__( 'Apply', 'gravityforms' ) . '" onclick="jQuery(\'#action\').val(\'bulk\');" style="width: 50px;" />';
-				/**
-				 * A filter to allow you to modify the note apply button
-				 *
-				 * @param string $apply_button The Apply Button HTML
-				 */
-				echo apply_filters( 'gform_notes_apply_button', $apply_button );
-				?>
+				<button type="submit" class="button button-small"><?php esc_html_e( 'Apply', 'gravityforms' ); ?></button>
 			</div>
 			<?php } ?>
 			<table class="widefat fixed entry-detail-notes">

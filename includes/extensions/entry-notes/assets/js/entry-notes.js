@@ -88,9 +88,9 @@
 				url: ajaxurl,
 				isLocal: true,
 				method: 'POST',
-				beforeSend: function (  ) {
+				beforeSend: function () {
 					$container.addClass( 'gv-processing-note' );
-					$submit.attr( 'data-value', $submit.val() ).val('Processing...').prop('disabled', 'disabled');
+					$submit.attr( 'data-value', $submit.html() ).prop('disabled', 'disabled').html( GVEntryNotes.text.processing );
 				},
 				data: {
 					action: 'gv_delete_notes',
@@ -98,10 +98,7 @@
 				}
 			}).done( function( data, textStatus, jqXHR ) {
 
-				// After a bulk action is performed, uncheck the "Check all" box
-				$( '.gv-entry-notes' ).find( '.gv-notes-toggle' ).prop( 'checked', null );
-
-				$submit.val( $submit.attr( 'data-value' ) ).prop('disabled', null );
+				$submit.prop('disabled', null ).html( $submit.attr( 'data-value' ) );
 				$container.removeClass( 'gv-processing-note' );
 
 				if ( true === data.success ) {
@@ -138,7 +135,7 @@
 					$container.addClass( 'gv-processing-note' );
 					$notes_table = $notes_form.find( 'table.entry-detail-notes' );
 					$textarea.prop('disabled', 'disabled');
-					$submit.attr( 'data-value', $submit.val() ).val('Processing...').prop('disabled', 'disabled');
+					$submit.attr( 'data-value', $submit.html() ).prop('disabled', 'disabled').html( GVEntryNotes.text.processing );
 				},
 				data: {
 					action: 'gv_add_note',
@@ -146,7 +143,7 @@
 				}
 			}).done( function( data, textStatus, jqXHR ) {
 
-				$submit.val( $submit.attr( 'data-value' ) ).prop('disabled', null );
+				$submit.prop('disabled', null ).html( $submit.attr( 'data-value' ) );
 				$textarea.prop('disabled', null );
 				$container.removeClass( 'gv-processing-note' );
 

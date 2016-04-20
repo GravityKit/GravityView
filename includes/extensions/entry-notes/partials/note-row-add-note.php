@@ -23,4 +23,4 @@ if ( sizeof( $note_emails ) > 0 ) { ?>
 
 <textarea name="new_note" id="gv-entry-note-content"></textarea>
 
-<input type="submit" name="add_note" value="<?php esc_attr_e( 'Add Note', 'gravityforms' ); ?>" class="button gv-add-note-submit" />
+<button type="submit" class="button gv-add-note-submit"><?php esc_attr_e( 'Add Note', 'gravityforms' ); ?></button>
