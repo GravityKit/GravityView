@@ -85,7 +85,7 @@
 			$submit = $container.find('.gv-entry-notes-bulk-action button[type=submit]');
 
 			$.ajax({
-				url: ajaxurl,
+				url: GVEntryNotes.ajaxurl,
 				isLocal: true,
 				method: 'POST',
 				beforeSend: function () {
@@ -133,7 +133,7 @@
 			$textarea = $( this ).find( '#gv-entry-note-content' );
 
 			$.ajax({
-				url: ajaxurl,
+				url: GVEntryNotes.ajaxurl,
 				isLocal: true,
 				method: 'POST',
 				beforeSend: function (  ) {

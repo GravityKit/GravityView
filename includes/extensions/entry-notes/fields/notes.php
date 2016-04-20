@@ -23,6 +23,7 @@ wp_enqueue_script( 'gravityview-entry-notes', plugins_url( '/assets/js/entry-not
 
 if( ! wp_script_is( 'gravityview-entry-notes', 'done' ) ) {
 	wp_localize_script( 'gravityview-entry-notes', 'GVEntryNotes', array(
+		'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		'text' => array(
 			'processing' => esc_html__( 'Processing&hellip;', 'gravityview' )
 		),
