@@ -75,6 +75,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 					wp_send_json_success( array( 'html' => $html ) );
 				}
 			}
+			wp_send_json_error( array( 'error' => esc_html__( 'The request was invalid. Refresh the page and try again.' ) ) );
 		}
 	}
 
@@ -104,6 +105,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 				wp_send_json_error( array( 'message' => new WP_Error('The request was invalid.' ) ) );
 			}
 		} elseif( $this->doing_ajax ) {
+			wp_send_json_error( array( 'error' => esc_html__( 'The request was invalid. Refresh the page and try again.' ) ) );
 		}
 
 	}

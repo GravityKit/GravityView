@@ -114,7 +114,7 @@
 					});
 
 				} else {
-					alert( data.data.message );
+					alert( data.data.error );
 				}
 			});
 		},
@@ -154,7 +154,7 @@
 					$( data.data.html ).hide().appendTo( $notes_table ).fadeIn();
 					$textarea.val( '' ); // Clear the existing note comment
 				} else {
-					alert( data.data.message );
+					alert( data.data.error );
 				}
 			});
 
