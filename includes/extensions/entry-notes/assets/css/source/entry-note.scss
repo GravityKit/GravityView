@@ -4,7 +4,13 @@
 
 // Container TD
 td.entry-detail-note {
-  padding: .5em 4px;
+  padding: 1em .5em 0 1em;
+  border: 1px solid #eee;
+  border-bottom: 0;
+}
+
+tr:last-child td.entry-detail-note {
+  border-bottom: 1px solid #eee;
 }
 
 .gv-note-avatar {
@@ -16,11 +22,18 @@ td.entry-detail-note {
 
 .gv-note-author {
   clear: none;
+  display: block;
   font-weight: bold;
-  font-size: 1.1em;
-  line-height: 1;
+  font-size: 1.1rem;
+  line-height: 1.1;
   margin: 0;
   padding: 0;
+}
+
+.gv-note-added-on {
+  display: block;
+  font-weight: normal;
+  font-size: .875rem;
 }
 
 .gv-note-email {
@@ -30,18 +43,11 @@ td.entry-detail-note {
   text-align: left;
 }
 
-.gv-note-added-on {
-  display: block;
-  font-size: .9em;
-}
-
-.gv-detail-note-content {
-  margin: 1.8em 1em 1.8em 0;
-  padding: 1.8em;
+.gv-note-content {
+  margin: 0;
+  padding: 1em 0 .875em 0;
   position: relative;
   line-height: 1.8em;
-  border-left: 4px solid #E6DB55;
-  background-color: #FFFBCC;
 
   p {
     line-height: 30px;

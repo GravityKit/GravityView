@@ -66,7 +66,7 @@ $entry_slug = gravityview_is_single_entry();
 				</thead>
 				<?php } ?>
 				<tbody id="the-comment-list" class="list:comment">
-					<tr class="gv-entry-notes-no-notes" style="display: none;"><td colspan="2"><?php
+					<tr class="gv-entry-notes-no-notes"><td colspan="2"><?php
 							// TODO: Filter
 							esc_html_e( 'There are no notes.', 'gravityview' );
 					?></td></tr>

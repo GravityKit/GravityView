@@ -14,6 +14,10 @@
     width: 100%;
     clear: both;
     margin: 0;
+
+    thead th {
+      border: none;
+    }
   }
 
   /** Hide screen-reader content by default */
