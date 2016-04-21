@@ -231,7 +231,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 */
 	function delete_notes( $notes = array() ) {
 
-		if ( ! GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
+		if ( ! GVCommon::has_cap( 'gravityforms_edit_entry_notes' ) ) {
 			wp_die( esc_html__( "You don't have adequate permission to delete notes.", 'gravityview' ) );
 		}
 
