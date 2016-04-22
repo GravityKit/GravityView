@@ -5,9 +5,16 @@
  * @since 1.17
  */
 ?>
+<form method="post" class="gv-entry-note-add">
+	<div>
+		<input type="hidden" name="action" value="gv_add_note" />
+		<input type="hidden" name="entry-slug" value="{entry_slug}" />
+		{nonce_field}
+		{emails_dropdown}
 
-{emails_dropdown}
+		<label for="gv-entry-note-content" class="screen-reader-text"><?php esc_html_e( 'Note Content', 'gravityview' ); ?></label>
+		<textarea name="note-content" id="gv-entry-note-content"></textarea>
 
-<textarea name="note-content" id="gv-entry-note-content"></textarea>
-
-<button type="submit" class="button gv-add-note-submit"><?php esc_attr_e( 'Add Note', 'gravityview' ); ?></button>
+		<button type="submit" class="button gv-add-note-submit"><?php esc_attr_e( 'Add Note', 'gravityview' ); ?></button>
+	</div>
+</form>

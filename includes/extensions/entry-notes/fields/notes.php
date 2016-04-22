@@ -90,16 +90,9 @@ $entry_slug = gravityview_is_single_entry();
 		</div>
 	</form>
 
-	<form method="post" class="gv-entry-note-add">
-		<div>
-			<input type="hidden" name="action" value="gv_add_note" />
-			<input type="hidden" name="entry-slug" value="<?php echo esc_attr( $entry_slug ); ?>" />
-			<?php
-			wp_nonce_field( 'gv_add_note_' . $entry_slug, 'gv_add_note' );
-			if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
-				echo GravityView_Field_Notes::get_add_note_part();
-			}
-			?>
-		</div>
-	</form>
+	<?php
+	if ( $is_editable && GVCommon::has_cap( 'gravityview_add_entry_notes' ) ) {
+		echo GravityView_Field_Notes::get_add_note_part();
+	}
+	?>
 </div>
