@@ -90,9 +90,6 @@ $entry_slug = gravityview_is_single_entry();
 		</div>
 	</form>
 
-	<?php
-	if ( $is_editable && GVCommon::has_cap( 'gravityview_add_entry_notes' ) ) {
-		echo GravityView_Field_Notes::get_add_note_part();
-	}
-	?>
+	<?php if( $is_editable ) { echo do_shortcode( '[gv_add_note]' ); } ?>
+
 </div>

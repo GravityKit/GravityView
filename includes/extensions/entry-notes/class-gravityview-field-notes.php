@@ -36,8 +36,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 	private function add_hooks() {
 
-		// TODO: Allow embedding in Custom Content widgets/fields via shortcode
-		#add_shortcode( 'gv_entry_notes')
+		add_shortcode( 'gv_add_note', array( 'GravityView_Field_Notes', 'get_add_note_part' ) );
 
 		add_action( 'wp', array( $this, 'maybe_delete_notes'), 1000 );
 		add_action( 'wp_ajax_nopriv_gv_delete_notes', array( $this, 'maybe_delete_notes') );
