@@ -108,9 +108,9 @@ class GravityView_Field_Notes extends GravityView_Field {
 				if ( is_wp_error( $added ) ) {
 					wp_send_json_error( array( 'message' => $added->get_error_message() ) );
 				} else {
-					$note = $this->get_note( $added );
 					$html = self::display_note( $note, true );
 					wp_send_json_success( array( 'html' => $html ) );
+					$note = GravityView_Entry_Notes::get_note( $added );
 				}
 			}
 		} else {
@@ -171,9 +171,9 @@ class GravityView_Field_Notes extends GravityView_Field {
 	function process_delete_notes( $data ) {
 
 		$valid = wp_verify_nonce( $data['gv_delete_notes'], 'gv_delete_notes_' . $data['entry-slug'] );
+			GravityView_Entry_Notes::delete_notes( $data['note'] );
 
 		if ( $valid ) {
-			$this->delete_notes( $data['note'] );
 			if( $this->doing_ajax ) {
 				wp_send_json_success();
 			}
@@ -292,52 +292,19 @@ class GravityView_Field_Notes extends GravityView_Field {
 	function add_note( $entry, $data ) {
 		global $current_user, $wpdb;
 
-		// Get entry from URL
 		$user_data = get_userdata( $current_user->ID );
-		
+
 		$note_content = wp_unslash( trim( $data['note-content'] ) );
 
 		if( empty( $note_content ) ) {
 			return new WP_Error( 'gv-add-note-empty', __( 'The note is empty.', 'gravityview' ) );
 		}
 
-		RGFormsModel::add_note( $entry['id'], $current_user->ID, $user_data->display_name, $note_content, 'gravityview/frontend' );
-
-		if( empty( $wpdb->last_error ) ) {
-			$return = $wpdb->insert_id;
-		} else {
-			$return = new WP_Error( 'gv-add-note', $wpdb->last_error );
-		}
+		$return = GravityView_Entry_Notes::add_note( $entry['id'], $current_user->ID, $user_data->display_name, $note_content, 'gravityview/frontend' );
 
 		$this->maybe_send_entry_notes( $entry, $data );
 
 		return $return;
-	}
-
-	/**
-	 * Get a single note by note ID
-	 *
-	 * @since 1.17
-	 *
-	 * @param int $note_id The ID of the note in the `rg_lead_notes` table
-	 *
-	 * @return object|bool False if not found; note object otherwise.
-	 */
-	private function get_note( $note_id ) {
-		global $wpdb;
-
-		$notes_table = GFFormsModel::get_lead_notes_table_name();
-
-		$results = $wpdb->get_results(
-			$wpdb->prepare(
-				" SELECT n.id, n.user_id, n.date_created, n.value, n.note_type, ifnull(u.display_name,n.user_name) as user_name, u.user_email
-	              FROM $notes_table n
-	              LEFT OUTER JOIN $wpdb->users u ON n.user_id = u.id
-	              WHERE n.id=%d", $note_id
-			)
-		);
-
-		return $results ? $results[0] : false;
 	}
 
 	/**
