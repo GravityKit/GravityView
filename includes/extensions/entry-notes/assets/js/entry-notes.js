@@ -170,6 +170,7 @@
 					$container.removeClass('gv-no-notes').addClass('gv-has-notes');
 
 					$( data.data.html ).hide().appendTo( $notes_form.find( 'table' ) ).fadeIn();
+					$( 'input[name="note[]"]', $container ).shiftSelectable(); // Refresh shift selectable
 					$textarea.val( '' ); // Clear the existing note comment
 				} else {
 					alert( data.data.error );
