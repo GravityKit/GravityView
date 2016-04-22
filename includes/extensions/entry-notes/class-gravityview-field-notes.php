@@ -108,9 +108,15 @@ class GravityView_Field_Notes extends GravityView_Field {
 				if ( is_wp_error( $added ) ) {
 					wp_send_json_error( array( 'error' => $added->get_error_message() ) );
 				} else {
-					$html = self::display_note( $note, true );
-					wp_send_json_success( array( 'html' => $html ) );
+
 					$note = GravityView_Entry_Notes::get_note( $added );
+
+					if( $note ) {
+						$html = self::display_note( $note, true );
+						wp_send_json_success( array( 'html' => $html ) );
+					} else {
+						wp_send_json_error( array( 'error' => esc_html__( 'There was an error adding the note.', 'gravityview' ) ) );
+					}
 				}
 			}
 		} else {
