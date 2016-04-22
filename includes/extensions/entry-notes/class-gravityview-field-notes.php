@@ -106,7 +106,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 			if( $this->doing_ajax ) {
 				if ( is_wp_error( $added ) ) {
-					wp_send_json_error( array( 'message' => $added->get_error_message() ) );
+					wp_send_json_error( array( 'error' => $added->get_error_message() ) );
 				} else {
 					$html = self::display_note( $note, true );
 					wp_send_json_success( array( 'html' => $html ) );
