@@ -141,10 +141,9 @@
 		add_note: function ( e ) {
 			e.preventDefault();
 
-			$container = $( this ).parents('.gv-entry-notes');
-			$notes_form = $container.find('.gv-entry-notes-list');
-			$submit = $container.find('.gv-add-note-submit');
-			$textarea = $( this ).find( '#gv-entry-note-content' );
+			var $container = $( e.target ).parent('.gv-entry-notes');
+			var $submit = $container.find('.gv-add-note-submit');
+			var $textarea = $container.find( 'textarea[name=note-content]' );
 
 			$.ajax({
 				url: GVEntryNotes.ajaxurl,
@@ -168,8 +167,7 @@
 				if ( true === data.success ) {
 
 					$container.removeClass('gv-no-notes').addClass('gv-has-notes');
-
-					$( data.data.html ).hide().appendTo( $notes_form.find( 'table' ) ).fadeIn();
+					$( data.data.html ).hide().appendTo( $( 'table tbody', $container ) ).fadeIn();
 					$( 'input[name="note[]"]', $container ).shiftSelectable(); // Refresh shift selectable
 					$textarea.val( '' ); // Clear the existing note comment
 				} else {
