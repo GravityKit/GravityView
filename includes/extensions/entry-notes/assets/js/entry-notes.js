@@ -155,7 +155,7 @@
 					$submit.attr( 'data-value', $submit.html() ).prop('disabled', 'disabled').html( GVEntryNotes.text.processing );
 				},
 				data: {
-					action: 'gv_add_note',
+					action: 'gv_note_add',
 					data: $( this ).serialize()
 				}
 			}).done( function( data, textStatus, jqXHR ) {
