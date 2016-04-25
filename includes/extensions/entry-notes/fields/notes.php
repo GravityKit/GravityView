@@ -16,7 +16,6 @@ extract( $gravityview_view->getCurrentField() );
 
 // TODO: Pass as global
 $notes = GravityView_Entry_Notes::get_notes( $entry['id'] );
-$has_notes_class = sizeof( $notes ) > 0 ? ' gv-has-notes' : ' gv-no-notes';
 
 $strings = GravityView_Field_Notes::strings();
 
@@ -34,7 +33,7 @@ if( ! wp_script_is( 'gravityview-entry-notes', 'done' ) ) {
 
 $entry_slug = gravityview_is_single_entry();
 ?>
-<div class="gv-entry-notes<?php echo $has_notes_class; ?>">
+<div class="gv-entry-notes<?php echo ( sizeof( $notes ) > 0 ? ' gv-has-notes' : ' gv-no-notes' ); ?>">
 	<form method="post" class="gv-entry-notes-list">
 		<?php wp_nonce_field( 'gv_delete_notes_' . $entry_slug, 'gv_delete_notes' ) ?>
 		<div class="inside">
