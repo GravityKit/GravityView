@@ -387,6 +387,12 @@ class GravityView_Admin_ApproveEntries {
 	 */
 	private static function update_approved_meta( $entry_id, $is_approved ) {
 
+		/**
+		 * Make sure that the "User Opt-in" and the Admin Approve/Reject entry set the same meta value
+		 * @since 1.16.6
+		 */
+		$is_approved = empty( $is_approved ) ? 0 : 'Approved';
+
 		// update entry meta
 		if( function_exists('gform_update_meta') ) {
 
