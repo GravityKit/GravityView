@@ -54,9 +54,9 @@ $entry_slug = gravityview_is_single_entry();
 			?>
 			<div class="gv-entry-notes-bulk-action">
 				<label class="hidden" for="bulk_action"><?php esc_html_e( 'Bulk action', 'gravityview' ) ?></label>
-				<select name="bulk_action" id="bulk_action">
 					<option value=''><?php esc_html_e( 'Bulk action ', 'gravityview' ) ?></option>
 					<option value='delete'><?php esc_html_e( 'Delete', 'gravityview' ) ?></option>
+				<select name="entry-notes-bulk-action" id="gv-entry-notes-bulk-action-<?php echo esc_attr( $entry_slug ); ?>">
 				</select>
 				<button type="submit" class="button button-small"><?php esc_html_e( 'Apply', 'gravityview' ); ?></button>
 			</div>

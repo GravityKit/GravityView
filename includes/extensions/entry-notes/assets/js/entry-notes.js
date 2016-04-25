@@ -81,7 +81,7 @@
 			e.preventDefault();
 
 			// Not Delete
-			if( '' === $('#bulk_action').val() ) {
+			if( '' === $( '.gv-entry-notes-bulk-action select', $container ).val() ) {
 				console.log('Delete was not selected');
 				return false;
 			}
