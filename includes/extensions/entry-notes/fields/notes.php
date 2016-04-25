@@ -81,16 +81,13 @@ $show_delete = ( $is_editable && GVCommon::has_cap( 'gravityview_delete_entry_no
 					</tr>
 				</thead>
 				<?php } ?>
-				<tbody id="the-comment-list" class="list:comment">
-					<tr class="gv-entry-notes-no-notes"><td colspan="2"><?php
-							// TODO: Filter
-							esc_html_e( 'There are no notes.', 'gravityview' );
-					?></td></tr>
-				<?php
-					foreach ( $notes as $note ) {
-						echo GravityView_Field_Notes::display_note( $note, $is_editable );
-					}
-				?>
+				<tbody>
+					<tr class="gv-entry-notes-no-notes"><td colspan="2"><?php echo $strings['no-notes']; ?></td></tr>
+					<?php
+						foreach ( $notes as $note ) {
+							echo GravityView_Field_Notes::display_note( $note, $is_editable );
+						}
+					?>
 				</tbody>
 			</table>
 		</div>
