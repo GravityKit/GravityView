@@ -18,6 +18,8 @@ extract( $gravityview_view->getCurrentField() );
 $notes = GravityView_Entry_Notes::get_notes( $entry['id'] );
 $has_notes_class = sizeof( $notes ) > 0 ? ' gv-has-notes' : ' gv-no-notes';
 
+$strings = GravityView_Field_Notes::strings();
+
 wp_enqueue_style( 'gravityview-entry-notes', plugins_url( '/assets/css/entry-notes.css', GravityView_Field_Notes::$file ) );
 wp_enqueue_script( 'gravityview-entry-notes', plugins_url( '/assets/js/entry-notes.js', GravityView_Field_Notes::$file ) );
 
@@ -25,7 +27,7 @@ if( ! wp_script_is( 'gravityview-entry-notes', 'done' ) ) {
 	wp_localize_script( 'gravityview-entry-notes', 'GVEntryNotes', array(
 		'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		'text' => array(
-			'processing' => esc_html__( 'Processing&hellip;', 'gravityview' )
+			'processing' => $strings['processing'],
 		),
 	) );
 }
@@ -53,25 +55,25 @@ $entry_slug = gravityview_is_single_entry();
 			if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
 			?>
 			<div class="gv-entry-notes-bulk-action">
-				<label class="hidden" for="bulk_action"><?php esc_html_e( 'Bulk action', 'gravityview' ) ?></label>
-					<option value=''><?php esc_html_e( 'Bulk action ', 'gravityview' ) ?></option>
-					<option value='delete'><?php esc_html_e( 'Delete', 'gravityview' ) ?></option>
+				<label class="screen-reader-text" for="gv-entry-notes-bulk-action-<?php echo esc_attr( $entry_slug ); ?>"><?php echo $strings['bulk-action']; ?></label>
 				<select name="entry-notes-bulk-action" id="gv-entry-notes-bulk-action-<?php echo esc_attr( $entry_slug ); ?>">
+					<option value=''><?php echo $strings['bulk-action']; ?></option>
+					<option value='delete'><?php echo $strings['delete']; ?></option>
 				</select>
-				<button type="submit" class="button button-small"><?php esc_html_e( 'Apply', 'gravityview' ); ?></button>
+				<button type="submit" class="button button-small"><?php echo $strings['bulk-action-button']; ?></button>
 			</div>
 			<?php } ?>
-			<table class="widefat fixed entry-detail-notes">
-				<caption><?php esc_html_e('Notes for this entry', 'gravityview'); ?></caption>
+			<table>
+				<caption><?php echo $strings['caption']; ?></caption>
 				<?php
 				if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
 				?>
 				<thead>
 					<tr>
 						<th scope="col" class="check-column">
-							<label><input type="checkbox" value="" class="gv-notes-toggle"><span class="screen-reader-text"><?php esc_html_e( 'Toggle all notes', 'gravityview' ); ?></span></label>
+							<label><input type="checkbox" value="" class="gv-notes-toggle"><span class="screen-reader-text"><?php echo $strings['toggle-notes']; ?></span></label>
 						</th>
-						<th scope="col" class="entry-detail-note" aria-label="<?php esc_html_e( 'Note Content', 'gravityview' ); ?>"></th>
+						<th scope="col" class="entry-detail-note" aria-label="<?php echo $strings['note-content-column']; ?>"></th>
 					</tr>
 				</thead>
 				<?php } ?>

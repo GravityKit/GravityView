@@ -235,12 +235,31 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 * @param int[] $notes
 	 */
 	function delete_notes( $notes = array() ) {
+	static public function strings() {
+
+		$strings = array(
+			'bulk-action' => __( 'Bulk action', 'gravityview' ),
+			'delete' => __( 'Delete', 'gravityview' ),
+			'bulk-action-button' => __( 'Apply', 'gravityview' ),
+			'caption' => __( 'Notes for this entry', 'gravityview' ),
+			'toggle-notes' => __( 'Toggle all notes', 'gravityview' ),
+			'note-content-column' => __( 'Note Content', 'gravityview' ),
+			'no-notes' => __( 'There are no notes.', 'gravityview' ),
+			'processing' => __( 'Processing&hellip;', 'gravityview' ),
+		);
 
 		if ( ! GVCommon::has_cap( 'gravityforms_edit_entry_notes' ) ) {
 			wp_die( esc_html__( "You don't have adequate permission to delete notes.", 'gravityview' ) );
 		}
+		/**
+		 * @filter `gravityview/field/notes/strings` Modify the text used in the Entry Notes field. Sanitized by `esc_html` after return.
+		 * @since 1.17
+		 * @param array $strings Text in key => value pairs
+		 */
+		$strings = gv_map_deep( apply_filters( 'gravityview/field/notes/strings', $strings ), 'esc_html' );
 
 		RGFormsModel::delete_notes( $notes );
+		return $strings;
 	}
 
 	static public function display_note( $note, $is_editable = false ) {
