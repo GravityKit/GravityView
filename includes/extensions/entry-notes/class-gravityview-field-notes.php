@@ -108,18 +108,23 @@ class GravityView_Field_Notes extends GravityView_Field {
 		$valid = wp_verify_nonce( $data['gv_note_add'], 'gv_note_add_' . $data['entry-slug'] );
 
 		if( $valid ) {
+
 			$entry = gravityview_get_entry( $data['entry-slug'], false );
 
 			$added = $this->add_note( $entry, $data );
 
-			if( $this->doing_ajax ) {
-				if ( is_wp_error( $added ) ) {
+			if ( is_wp_error( $added ) ) {
+				if( $this->doing_ajax ) {
 					wp_send_json_error( array( 'error' => $added->get_error_message() ) );
-				} else {
+				}
+			} else {
 
+				$this->maybe_send_entry_notes( $entry, $data );
+
+				if( $this->doing_ajax ) {
 					$note = GravityView_Entry_Notes::get_note( $added );
 
-					if( $note ) {
+					if ( $note ) {
 						$html = self::display_note( $note, true );
 						wp_send_json_success( array( 'html' => $html ) );
 					} else {
@@ -127,7 +132,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 					}
 				}
 			}
-		} else {
+
+		} elseif( $this->doing_ajax ) {
 			wp_send_json_error( array( 'error' => esc_html__( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) ) );
 		}
 	}
@@ -195,7 +201,14 @@ class GravityView_Field_Notes extends GravityView_Field {
 				wp_send_json_success();
 			}
 		} elseif( $this->doing_ajax ) {
-			wp_send_json_error( array( 'error' => esc_html__( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) ) );
+
+			if( ! $valid ) {
+				$error_message = esc_html__( 'The request was invalid. Refresh the page and try again.', 'gravityview' );
+			} else {
+				$error_message = esc_html__( 'You don\'t have adequate permission to delete notes.', 'gravityview' );
+			}
+
+			wp_send_json_error( array( 'error' => $error_message ) );
 		}
 	}
 
