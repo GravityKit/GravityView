@@ -96,6 +96,15 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 */
 	function process_add_note( $data ) {
 
+		if( empty( $data['entry-slug'] ) ) {
+
+			if( $this->doing_ajax ) {
+				wp_send_json_error( array( 'error' => __( 'The Entry ID was empty', 'gravityview' ) ) );
+			}
+
+			return;
+		}
+
 		$valid = wp_verify_nonce( $data['gv_note_add'], 'gv_note_add_' . $data['entry-slug'] );
 
 		if( $valid ) {
