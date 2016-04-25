@@ -8,6 +8,10 @@
 
 require_once( GFCommon::get_base_path() . '/entry_detail.php' );
 
+if( ! GVCommon::has_cap( 'gravityview_view_entry_notes' ) ) {
+	return;
+}
+
 $gravityview_view = GravityView_View::getInstance();
 
 $is_editable = $gravityview_view->getCurrentFieldSetting( 'notes_is_editable' );
@@ -32,6 +36,7 @@ if( ! wp_script_is( 'gravityview-entry-notes', 'done' ) ) {
 }
 
 $entry_slug = gravityview_is_single_entry();
+$show_delete = ( $is_editable && GVCommon::has_cap( 'gravityview_delete_entry_notes' ) );
 ?>
 <div class="gv-entry-notes<?php echo ( sizeof( $notes ) > 0 ? ' gv-has-notes' : ' gv-no-notes' ); ?>">
 	<form method="post" class="gv-entry-notes-list">
@@ -51,7 +56,7 @@ $entry_slug = gravityview_is_single_entry();
 					$emails[] = $entry[ $email_field->id ];
 				}
 			}
-			if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
+			if ( $show_delete ) {
 			?>
 			<div class="gv-entry-notes-bulk-action">
 				<label class="screen-reader-text" for="gv-entry-notes-bulk-action-<?php echo esc_attr( $entry_slug ); ?>"><?php echo $strings['bulk-action']; ?></label>
@@ -65,7 +70,7 @@ $entry_slug = gravityview_is_single_entry();
 			<table>
 				<caption><?php echo $strings['caption']; ?></caption>
 				<?php
-				if ( $is_editable && GFCommon::current_user_can_any( 'gravityforms_edit_entry_notes' ) ) {
+				if ( $show_delete ) {
 				?>
 				<thead>
 					<tr>

@@ -271,6 +271,7 @@ class GravityView_Roles_Capabilities {
 			'gravityview_add_entry_notes',
 			'gravityview_view_entry_notes',
 			'gravityview_delete_entry_notes',
+			'gravityview_email_entry_notes',
 		);
 
 		// Edit, delete own stuff

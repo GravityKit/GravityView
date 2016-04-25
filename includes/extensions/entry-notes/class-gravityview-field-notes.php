@@ -176,9 +176,12 @@ class GravityView_Field_Notes extends GravityView_Field {
 	function process_delete_notes( $data ) {
 
 		$valid = wp_verify_nonce( $data['gv_delete_notes'], 'gv_delete_notes_' . $data['entry-slug'] );
+		$has_cap = GVCommon::has_cap( 'gravityview_delete_entry_notes' );
+
+		if ( $valid && $has_cap ) {
+
 			GravityView_Entry_Notes::delete_notes( $data['note'] );
 
-		if ( $valid ) {
 			if( $this->doing_ajax ) {
 				wp_send_json_success();
 			}
@@ -340,6 +343,11 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 */
 	public static function get_add_note_part() {
 
+		if( ! GVCommon::has_cap( 'gravityview_add_entry_notes' ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ': User does not have permission to add entry notes ("gravityview_add_entry_notes").' );
+			return '';
+		}
+
 		ob_start();
 		GravityView_View::getInstance()->get_template_part( 'note', 'row-add-note' );
 		$add_note_html = ob_get_clean();
@@ -364,6 +372,11 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 * @return string HTML output
 	 */
 	private static function get_emails_dropdown() {
+
+		if( GVCommon::has_cap( 'gravityview_email_entry_notes' ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ': User does not have permission to email entry notes ("gravityview_email_entry_notes").' );
+			return '';
+		}
 
 		$gravityview_view = GravityView_View::getInstance();
 		//getting email values
@@ -403,6 +416,11 @@ class GravityView_Field_Notes extends GravityView_Field {
 	}
 
 	function maybe_send_entry_notes( $entry, $data ) {
+
+		if( ! GVCommon::has_cap('gravityview_email_entry_notes') ) {
+			return;
+		}
+
 		//emailing notes if configured
 		if ( rgpost( 'gv_entry_email_notes_to' ) ) {
 			$current_user = wp_get_current_user();
