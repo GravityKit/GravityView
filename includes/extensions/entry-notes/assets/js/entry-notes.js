@@ -144,6 +144,10 @@
 			var $submit = $container.find('.gv-add-note-submit');
 			var $textarea = $container.find( 'textarea[name=note-content]' );
 
+			if( '' === $textarea.val().trim() )  {
+				return;
+			}
+
 			$.ajax({
 				url: GVEntryNotes.ajaxurl,
 				isLocal: true,
