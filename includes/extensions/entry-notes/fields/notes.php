@@ -10,7 +10,7 @@ require_once( GFCommon::get_base_path() . '/entry_detail.php' );
 
 $gravityview_view = GravityView_View::getInstance();
 
-$is_editable = $gravityview_view->getCurrentFieldSetting( 'notes_is_editable', false );
+$is_editable = $gravityview_view->getCurrentFieldSetting( 'notes_is_editable' );
 
 extract( $gravityview_view->getCurrentField() );
 
