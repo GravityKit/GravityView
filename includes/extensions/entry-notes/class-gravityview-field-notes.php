@@ -352,9 +352,10 @@ class GravityView_Field_Notes extends GravityView_Field {
 		GravityView_View::getInstance()->get_template_part( 'note', 'row-add-note' );
 		$add_note_html = ob_get_clean();
 
-		$entry_slug = gravityview_is_single_entry();
-		$nonce_field = wp_nonce_field( 'gv_add_note_' . $entry_slug, 'gv_add_note', false );
-		$emails_dropdown = self::get_emails_dropdown();
+		$entry = GravityView_View::getInstance()->getCurrentEntry();
+		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
+		$nonce_field = wp_nonce_field( 'gv_note_add_' . $entry_slug, 'gv_note_add', false );
+		$emails_dropdown = self::get_emails_dropdown( $entry_slug );
 		$add_note_html = str_replace( '{entry_slug}', $entry_slug, $add_note_html );
 		$add_note_html = str_replace( '{nonce_field}', $nonce_field, $add_note_html );
 		$add_note_html = str_replace( '{emails_dropdown}', $emails_dropdown, $add_note_html );

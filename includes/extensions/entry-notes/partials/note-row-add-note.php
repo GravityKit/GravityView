@@ -12,8 +12,8 @@
 		{nonce_field}
 		{emails_dropdown}
 
-		<label for="gv-entry-note-content" class="screen-reader-text"><?php esc_html_e( 'Note Content', 'gravityview' ); ?></label>
-		<textarea name="note-content" id="gv-entry-note-content"></textarea>
+		<label for="gv-entry-note-content-{entry_slug}" class="screen-reader-text"><?php esc_html_e( 'Note Content', 'gravityview' ); ?></label>
+		<textarea name="note-content" id="gv-entry-note-content-{entry_slug}"></textarea>
 
 		<button type="submit" class="button gv-add-note-submit"><?php esc_attr_e( 'Add Note', 'gravityview' ); ?></button>
 	</div>

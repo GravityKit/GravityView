@@ -35,8 +35,10 @@ if( ! wp_script_is( 'gravityview-entry-notes', 'done' ) ) {
 	) );
 }
 
-$entry_slug = gravityview_is_single_entry();
+$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
+
 $show_delete = ( $is_editable && GVCommon::has_cap( 'gravityview_delete_entry_notes' ) );
+
 ?>
 <div class="gv-entry-notes<?php echo ( sizeof( $notes ) > 0 ? ' gv-has-notes' : ' gv-no-notes' ); ?>">
 	<form method="post" class="gv-entry-notes-list">
