@@ -31,7 +31,7 @@
 				var start = $boxes.index(this),
 					end = $boxes.index(lastChecked);
 				$boxes.slice(Math.min(start, end), Math.max(start, end) + 1)
-					.attr('checked', lastChecked.checked)
+					.prop('checked', lastChecked.checked)
 					.trigger('change');
 			}
 
@@ -104,7 +104,7 @@
 				method: 'POST',
 				beforeSend: function () {
 					$container.addClass( 'gv-processing-note' );
-					$submit.attr( 'data-value', $submit.html() ).prop('disabled', 'disabled').html( GVEntryNotes.text.processing );
+					$submit.data( 'value', $submit.html() ).prop( 'disabled', true ).html( GVEntryNotes.text.processing );
 				},
 				data: {
 					action: 'gv_delete_notes',
@@ -112,7 +112,7 @@
 				}
 			}).done( function( data, textStatus, jqXHR ) {
 
-				$submit.prop('disabled', null ).html( $submit.attr( 'data-value' ) );
+				$submit.prop('disabled', false ).html( $submit.data( 'value' ) );
 				$container.removeClass( 'gv-processing-note' );
 
 				if ( true === data.success ) {
@@ -152,7 +152,7 @@
 				beforeSend: function (  ) {
 					$container.addClass( 'gv-processing-note' );
 					$textarea.prop('disabled', 'disabled');
-					$submit.attr( 'data-value', $submit.html() ).prop('disabled', 'disabled').html( GVEntryNotes.text.processing );
+					$submit.data( 'value', $submit.html() ).prop( 'disabled', true ).html( GVEntryNotes.text.processing );
 				},
 				data: {
 					action: 'gv_note_add',
@@ -160,12 +160,11 @@
 				}
 			}).done( function( data, textStatus, jqXHR ) {
 
-				$submit.prop('disabled', null ).html( $submit.attr( 'data-value' ) );
-				$textarea.prop('disabled', null );
+				$submit.prop('disabled', false ).html( $submit.data( 'value' ) );
+				$textarea.prop('disabled', false );
 				$container.removeClass( 'gv-processing-note' );
 
 				if ( true === data.success ) {
-
 					$container.removeClass('gv-no-notes').addClass('gv-has-notes');
 					$( data.data.html ).hide().appendTo( $( 'table tbody', $container ) ).fadeIn();
 					$( 'input[name="note[]"]', $container ).shiftSelectable(); // Refresh shift selectable
