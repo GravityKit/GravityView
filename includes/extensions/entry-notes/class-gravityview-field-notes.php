@@ -36,15 +36,15 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 	private function add_hooks() {
 
-		add_shortcode( 'gv_add_note', array( 'GravityView_Field_Notes', 'get_add_note_part' ) );
+		add_shortcode( 'gv_note_add', array( 'GravityView_Field_Notes', 'get_add_note_part' ) );
 
 		add_action( 'wp', array( $this, 'maybe_delete_notes'), 1000 );
 		add_action( 'wp_ajax_nopriv_gv_delete_notes', array( $this, 'maybe_delete_notes') );
 		add_action( 'wp_ajax_gv_delete_notes', array( $this, 'maybe_delete_notes') );
 
 		add_action( 'wp', array( $this, 'maybe_add_note'), 1000 );
-		add_action( 'wp_ajax_nopriv_gv_add_note', array( $this, 'maybe_add_note') );
-		add_action( 'wp_ajax_gv_add_note', array( $this, 'maybe_add_note') );
+		add_action( 'wp_ajax_nopriv_gv_note_add', array( $this, 'maybe_add_note') );
+		add_action( 'wp_ajax_gv_note_add', array( $this, 'maybe_add_note') );
 
 		// add template path to check for field
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
@@ -64,7 +64,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			return;
 		}
 
-		if( isset( $_POST['action'] ) && 'gv_add_note' === $_POST['action'] ) {
+		if( isset( $_POST['action'] ) && 'gv_note_add' === $_POST['action'] ) {
 
 			if( $this->doing_ajax ) {
 				parse_str( wp_unslash( $_POST['data'] ), $data );
@@ -84,9 +84,9 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 * @since 1.17
 	 *
 	 * @var array $data {
-	 *  @type string $action "gv_add_note"
+	 *  @type string $action "gv_note_add"
 	 *  @type string $entry-slug Entry slug or ID to add note to
-	 *  @type string $gv_add_note Nonce with action "gv_add_note_{entry slug}" and name "gv_add_note"
+	 *  @type string $gv_note_add Nonce with action "gv_note_add_{entry slug}" and name "gv_note_add"
 	 *  @type string $_wp_http_referer Relative URL to submitting page ('/view/example/entry/123/')
 	 *  @type string $note-content Note content
 	 *  @type string $add_note Submit button value ('Add Note')
@@ -96,7 +96,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 */
 	function process_add_note( $data ) {
 
-		$valid = wp_verify_nonce( $data['gv_add_note'], 'gv_add_note_' . $data['entry-slug'] );
+		$valid = wp_verify_nonce( $data['gv_note_add'], 'gv_note_add_' . $data['entry-slug'] );
 
 		if( $valid ) {
 			$entry = gravityview_get_entry( $data['entry-slug'], false );

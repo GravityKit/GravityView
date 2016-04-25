@@ -92,6 +92,6 @@ $entry_slug = gravityview_is_single_entry();
 		</div>
 	</form>
 
-	<?php if( $is_editable ) { echo do_shortcode( '[gv_add_note]' ); } ?>
+	<?php if( $is_editable ) { echo do_shortcode( '[gv_note_add]' ); } ?>
 
 </div>

@@ -7,7 +7,7 @@
 ?>
 <form method="post" class="gv-entry-note-add">
 	<div>
-		<input type="hidden" name="action" value="gv_add_note" />
+		<input type="hidden" name="action" value="gv_note_add" />
 		<input type="hidden" name="entry-slug" value="{entry_slug}" />
 		{nonce_field}
 		{emails_dropdown}
