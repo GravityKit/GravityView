@@ -20,6 +20,34 @@ class GravityView_Field_Phone extends GravityView_Field {
 		parent::__construct();
 	}
 
+	/**
+	 * Add option to link phone number
+	 *
+	 * @since TODO
+	 *
+	 * @param array $field_options
+	 * @param string $template_id
+	 * @param string $field_id
+	 * @param string $context
+	 * @param string $input_type
+	 *
+	 * @return array
+	 */
+	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
+
+		if( 'edit' === $context ) {
+			return $field_options;
+		}
+
+		$field_options['link_phone'] = array(
+	        'type' => 'checkbox',
+	        'label' => __( 'Make Phone Number Clickable', 'gravityview' ),
+	        'desc' => __( 'Allow dialing a number by clicking it?', 'gravityview'),
+	        'value' => true,
+        );
+
+		return $field_options;
+	}
 }
 
 new GravityView_Field_Phone;

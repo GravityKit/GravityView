@@ -40,8 +40,12 @@ class GravityView_Admin_ApproveEntries {
 		// process ajax approve entry requests
 		add_action('wp_ajax_gv_update_approved', array( $this, 'ajax_update_approved'));
 
+		// when using the User opt-in field, check on entry submission
+		add_action( 'gform_after_submission', array( $this, 'after_submission' ), 10, 2 );
+
 		// in case entry is edited (on admin or frontend)
 		add_action( 'gform_after_update_entry', array( $this, 'after_update_entry_update_approved_meta' ), 10, 2);
+
 
 		add_filter( 'gravityview_tooltips', array( $this, 'tooltips' ) );
 
@@ -350,6 +354,21 @@ class GravityView_Admin_ApproveEntries {
 
 	}
 
+
+	/**
+	 * Update the is_approved meta whenever the entry is submitted (and it contains a User Opt-in field)
+	 *
+	 * @since 1.16.6
+	 *
+	 * @param $entry array Gravity Forms entry object
+	 * @param $form array Gravity Forms form object
+	 */
+	public function after_submission( $entry, $form ) {
+		$this->after_update_entry_update_approved_meta( $form , $entry['id'] );
+	}
+
+
+
 	/**
 	 * Update the is_approved meta whenever the entry is updated
 	 *
@@ -359,7 +378,7 @@ class GravityView_Admin_ApproveEntries {
 	 * @param  int $entry_id ID of the Gravity Forms entry
 	 * @return void
 	 */
-	public static function after_update_entry_update_approved_meta( $form, $entry_id = NULL ) {
+	public function after_update_entry_update_approved_meta( $form, $entry_id = NULL ) {
 
 		$approvedcolumn = self::get_approved_column( $form['id'] );
 
@@ -386,6 +405,12 @@ class GravityView_Admin_ApproveEntries {
 	 * @return void
 	 */
 	private static function update_approved_meta( $entry_id, $is_approved ) {
+
+		/**
+		 * Make sure that the "User Opt-in" and the Admin Approve/Reject entry set the same meta value
+		 * @since 1.16.6
+		 */
+		$is_approved = empty( $is_approved ) ? 0 : 'Approved';
 
 		// update entry meta
 		if( function_exists('gform_update_meta') ) {

@@ -20,7 +20,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Added: Option to make Phone numbers click-to-call
+* Fixed: When using the User Opt-in field together with the view setting "Show Only Approved Entries" the entries weren't showing.
+
 = 1.16.5.1 on April 7 =
+
 * Fixed: Edit Entry links didn't work
 
 = 1.16.5 on April 6 =
