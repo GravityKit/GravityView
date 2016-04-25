@@ -80,13 +80,14 @@
 		delete_notes: function ( e ) {
 			e.preventDefault();
 
+			var $container = $( e.target ).parent('.gv-entry-notes');
+			var $checked = $( 'input[name="note[]"]:checked', $container );
+
 			// Not Delete
 			if( '' === $( '.gv-entry-notes-bulk-action select', $container ).val() ) {
 				console.log('Delete was not selected');
 				return false;
 			}
-
-			$checked = $( 'input[name="note[]"]:checked', $container );
 
 			// No checked inputs
 			if( 0 === $checked.length ) {
@@ -94,9 +95,7 @@
 				return false;
 			}
 
-			$container = $( this ).parents('.gv-entry-notes');
-			$notes_form = $container.find('.gv-entry-notes-list');
-			$submit = $container.find('.gv-entry-notes-bulk-action button[type=submit]');
+			var $submit = $container.find('.gv-entry-notes-bulk-action button[type=submit]');
 
 			$.ajax({
 				url: GVEntryNotes.ajaxurl,
