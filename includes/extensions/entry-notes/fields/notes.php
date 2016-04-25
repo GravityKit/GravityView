@@ -46,16 +46,6 @@ $show_delete = ( $is_editable && GVCommon::has_cap( 'gravityview_delete_entry_no
 			<input type="hidden" name="entry-slug" value="<?php echo esc_attr( $entry_slug ); ?>" />
 			<?php
 
-			//getting email values
-			$email_fields = GFCommon::get_email_fields( $form );
-			$emails = array();
-			$subject = '';
-
-			foreach ( $email_fields as $email_field ) {
-				if ( ! empty( $entry[ $email_field->id ] ) ) {
-					$emails[] = $entry[ $email_field->id ];
-				}
-			}
 			if ( $show_delete ) {
 			?>
 			<div class="gv-entry-notes-bulk-action">
