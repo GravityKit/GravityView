@@ -1,8 +1,9 @@
+@import "add-note-form";
+
 .gv-entry-notes {
 
   margin: 10px 0;
 
-  @import "add-note-form";
   @import "entry-note";
 
   table {
