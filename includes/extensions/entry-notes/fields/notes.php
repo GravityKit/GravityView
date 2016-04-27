@@ -62,10 +62,9 @@ $show_delete = ( $is_editable && GVCommon::has_cap( 'gravityview_delete_entry_no
 				?>
 				<thead>
 					<tr>
-						<th scope="col" class="check-column">
-							<label><input type="checkbox" value="" class="gv-notes-toggle"><span class="screen-reader-text"><?php echo $strings['toggle-notes']; ?></span></label>
+						<th colspan="2">
+							<label><input type="checkbox" value="" class="gv-notes-toggle" title="<?php echo $strings['toggle-notes']; ?>"><span class="screen-reader-text"><?php echo $strings['toggle-notes']; ?></span></label>
 						</th>
-						<th scope="col" class="entry-detail-note" aria-label="<?php echo $strings['note-content-column']; ?>"></th>
 					</tr>
 				</thead>
 				<?php } ?>

@@ -9,12 +9,20 @@
   table {
     -webkit-box-shadow: none;
     box-shadow: none;
-    table-layout: fixed;
+    table-layout: auto; // Allow the checkbox column to be any size
     border: 0;
     border-spacing: 0;
     width: 100%;
     clear: both;
     margin: 0;
+
+    // Fix width set by .gv-table-view
+    td, th {
+      width: auto;
+      border: none;
+      border-collapse: collapse;
+      vertical-align: middle;
+    }
 
     thead th {
       border: none;
