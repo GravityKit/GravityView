@@ -1,3 +1,14 @@
+/**
+ * Add sticky positioning support, where supported.
+ * @see https://developer.mozilla.org/en-US/docs/Web/CSS/position
+ */
+@mixin sticky() {
+  position: -webkit-sticky;
+  position: -moz-sticky;
+  position: -ms-sticky;
+  position: -o-sticky;
+}
+
 @import "add-note-form";
 
 .gv-entry-notes {
@@ -49,47 +60,40 @@
     }
   }
 
+  thead {
+    @include sticky();
+    top: 10px;
+    vertical-align: middle;
+
+    // Add extra spacing for admin bar
+    .admin-bar & {
+      top: 50px;
+    }
+  }
+
   &.gv-no-notes {
     .gv-entry-notes-no-notes {
       display: table-row;
     }
-    thead,
-    .gv-entry-notes-delete {
+    thead {
       display: none;
     }
   }
 
-  .check-column {
-    width: 1em;
-    padding: 9px 3px;
-    text-align: center;
-    vertical-align: middle;
-  }
-
   .gv-entry-notes-delete {
     margin: 5px 0;
-    button {
-      display: inline-block;
-      text-decoration: none;
-      font-size: 12px;
-      cursor: pointer;
-      vertical-align: middle;
-      width: auto !important;
-    }
+    display: inline-block;
+    text-decoration: none;
+    font-size: 12px;
+    cursor: pointer;
+    vertical-align: middle;
+    width: auto !important;
   }
 
   tbody .check-column {
     vertical-align: top;
-  }
-
-  tbody th, tbody td {
-    border: none;
-    border-collapse: collapse;
-    vertical-align: middle;
-  }
-
-  table.entry-detail-view {
-    margin-bottom: 16px
+    width: 1em;
+    text-align: center;
   }
 
   .gforms_note_success {
