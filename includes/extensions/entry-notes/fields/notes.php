@@ -47,14 +47,6 @@ $show_delete = ( $is_editable && GVCommon::has_cap( 'gravityview_delete_entry_no
 		<div class="inside">
 			<input type="hidden" name="action" value="gv_delete_notes" />
 			<input type="hidden" name="entry-slug" value="<?php echo esc_attr( $entry_slug ); ?>" />
-			<?php
-
-			if ( $show_delete ) {
-			?>
-			<div class="gv-entry-notes-delete">
-				<button type="submit" class="button button-small"><?php echo $strings['delete']; ?></button>
-			</div>
-			<?php } ?>
 			<table>
 				<caption><?php echo $strings['caption']; ?></caption>
 				<?php
@@ -64,6 +56,7 @@ $show_delete = ( $is_editable && GVCommon::has_cap( 'gravityview_delete_entry_no
 					<tr>
 						<th colspan="2">
 							<label><input type="checkbox" value="" class="gv-notes-toggle" title="<?php echo $strings['toggle-notes']; ?>"><span class="screen-reader-text"><?php echo $strings['toggle-notes']; ?></span></label>
+							<button type="submit" class="button button-small gv-entry-notes-delete"><?php echo $strings['delete']; ?></button>
 						</th>
 					</tr>
 				</thead>

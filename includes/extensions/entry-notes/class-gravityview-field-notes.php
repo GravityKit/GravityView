@@ -267,7 +267,6 @@ class GravityView_Field_Notes extends GravityView_Field {
 			'delete-confirm' => __( 'Are you sure you want to delete the selected notes?', 'gravityview' ),
 			'caption' => __( 'Notes for this entry', 'gravityview' ),
 			'toggle-notes' => __( 'Toggle all notes', 'gravityview' ),
-			'note-content-column' => __( 'Note Content', 'gravityview' ),
 			'no-notes' => __( 'There are no notes.', 'gravityview' ),
 			'processing' => __( 'Processing&hellip;', 'gravityview' ),
 		);
