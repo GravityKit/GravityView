@@ -31,6 +31,7 @@ if( ! wp_script_is( 'gravityview-entry-notes', 'done' ) ) {
 		'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		'text' => array(
 			'processing' => $strings['processing'],
+			'delete_confirm' => $strings['delete-confirm'],
 		),
 	) );
 }
@@ -50,13 +51,8 @@ $show_delete = ( $is_editable && GVCommon::has_cap( 'gravityview_delete_entry_no
 
 			if ( $show_delete ) {
 			?>
-			<div class="gv-entry-notes-bulk-action">
-				<label class="screen-reader-text" for="gv-entry-notes-bulk-action-<?php echo esc_attr( $entry_slug ); ?>"><?php echo $strings['bulk-action']; ?></label>
-				<select name="entry-notes-bulk-action" id="gv-entry-notes-bulk-action-<?php echo esc_attr( $entry_slug ); ?>">
-					<option value=''><?php echo $strings['bulk-action']; ?></option>
-					<option value='delete'><?php echo $strings['delete']; ?></option>
-				</select>
-				<button type="submit" class="button button-small"><?php echo $strings['bulk-action-button']; ?></button>
+			<div class="gv-entry-notes-delete">
+				<button type="submit" class="button button-small"><?php echo $strings['delete']; ?></button>
 			</div>
 			<?php } ?>
 			<table>

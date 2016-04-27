@@ -45,7 +45,7 @@
       display: table-row;
     }
     thead,
-    .gv-entry-notes-bulk-action {
+    .gv-entry-notes-delete {
       display: none;
     }
   }
@@ -57,9 +57,9 @@
     vertical-align: middle;
   }
 
-  .gv-entry-notes-bulk-action {
+  .gv-entry-notes-delete {
     margin: 5px 0;
-    .button {
+    button {
       display: inline-block;
       text-decoration: none;
       font-size: 12px;
