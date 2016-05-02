@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 == Changelog ==
 
 * Added: Option to make Phone numbers click-to-call
+* Fixed: Showing just the first column of a list field was displaying all the field's columns
 
 = 1.16.5.1 on April 7 =
 
