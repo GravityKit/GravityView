@@ -43,14 +43,16 @@
 
 		init: function () {
 			// Allow for multiple on a page.
-			$('.gv-entry-notes').each( function () {
+			$('.gv-notes').each( function () {
 
-				$( this ).find('input[type="checkbox"]').shiftSelectable();
-				$( this).find('.gv-notes-toggle').on('change', gv_entry_notes.toggle_all );
 
-				$('.gv-entry-notes-list').on( 'submit', gv_entry_notes.delete_notes );
+				$('.gv-notes-toggle', $( this ) ).on('change', gv_entry_notes.toggle_all );
 
-				$('.gv-entry-note-add')
+				$('.gv-notes-list', $( this ) ).on( 'submit', gv_entry_notes.delete_notes );
+				
+				$('.gv-note-email-to', $( this ) ).on('change', gv_entry_notes.email_fields_toggle ).trigger('change');
+
+				$('.gv-note-add', $( this ) )
 					.on( 'submit', gv_entry_notes.add_note )
 					.find( 'textarea')
 						.on( 'keydown', gv_entry_notes.command_enter );
