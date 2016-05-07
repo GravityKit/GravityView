@@ -171,9 +171,9 @@ class GravityView_Image {
 	 */
 	public function html() {
 
-		if ( ! $this->validate_image_src() ) {
-			$html = '';
-		} else {
+		$html = '';
+
+		if ( $this->validate_image_src() && ! empty( $this->src ) ) {
 			$atts = '';
 			foreach ( array( 'width', 'height', 'alt', 'title', 'class' ) as $attr ) {
 
@@ -182,7 +182,7 @@ class GravityView_Image {
 				$atts .= sprintf( ' %s="%s"', $attr, esc_attr( $this->{$attr} ) );
 			}
 
-			$html = sprintf( '<img src="%s" %s />', esc_url_raw( $this->src ), $atts );
+			$html = sprintf( '<img src="%s"%s />', esc_url_raw( $this->src ), $atts );
 		}
 
 		/**
