@@ -24,6 +24,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
     * `list-single.php` and `list-body.php`: changed `#gv_list_{entry_id}` to `#gv_list_{entry slug}`. If using custom entry slugs, the ID attribute will change. Otherwise, no change.
     * `list-body.php`: Removed `id` attribute from entry title `<h3>`
 * Added: Option to make Phone numbers click-to-call
+* Fixed: When using the User Opt-in field together with the View setting "Show Only Approved Entries", entries weren't showing
+* Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used
 * Fixed: Showing the first column of a List field was displaying all the field's columns
 * Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used.
 * Fixed: An image with no `src` output a broken HTML `<img>` tag
