@@ -45,6 +45,7 @@
 			// Allow for multiple on a page.
 			$('.gv-notes').each( function () {
 
+				gv_entry_notes.setup_checkboxes( $( this ) );
 
 				$('.gv-notes-toggle', $( this ) ).on('change', gv_entry_notes.toggle_all );
 
@@ -61,6 +62,26 @@
 		},
 
 		/**
+		 * Add actions for the checkboxes
+		 *
+		 * @param $container .gv-notes container DOM
+		 */
+		setup_checkboxes: function( $container ) {
+
+			$( 'input[name="note[]"]', $container )
+				.on( 'change', gv_entry_notes.toggle_disable_delete ) // Disable delete button if no checked boxes
+				.shiftSelectable() // Enable shift-click
+				.filter(':first-child').trigger('change'); // Trigger disable delete on load
+		},
+
+		/**
+		 * Disable the delete button if there are no checked boxes
+		 */
+		toggle_disable_delete: function() {
+			$container = $( this ).parents('.gv-notes');
+			$checkboxes = $( 'input[name="note[]"]', $container );
+			$( '.gv-notes-delete', $container ).prop( 'disabled', ( 0 === $checkboxes.filter(':checked').length ) );
+		},
 		 * Allow Command+Enter to submit new notes. Yummy!
 		 *
 		 * @see https://davidwalsh.name/command-enter-submit-forms
@@ -130,6 +151,8 @@
 
 						// After a bulk action is performed, uncheck the "Check all" box
 						$container.find( '.gv-notes-toggle' ).prop( 'checked', null );
+
+						gv_entry_notes.setup_checkboxes( $container );
 					});
 
 				} else {
@@ -171,8 +194,8 @@
 				if ( true === data.success ) {
 					$container.removeClass('gv-no-notes').addClass('gv-has-notes');
 					$( data.data.html ).hide().appendTo( $( 'table tbody', $container ) ).fadeIn();
-					$( 'input[name="note[]"]', $container ).shiftSelectable(); // Refresh shift selectable
 					$textarea.val( '' ); // Clear the existing note comment
+					gv_entry_notes.setup_checkboxes( $container );
 				} else {
 					alert( data.data.error );
 				}
