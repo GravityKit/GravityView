@@ -437,7 +437,7 @@ function gravityview_is_valid_datetime( $datetime, $expected_format = 'Y-m-d' ) 
  *
  * @param string $field_id Full ID of field, with or without input ID, like "12.3" or "7".
  *
- * @return int If field ID has an input, returns that input number. Otherwise, returns 0.
+ * @return int If field ID has an input, returns that input number. Otherwise, returns false.
  */
 function gravityview_get_input_id_from_id( $field_id = '' ) {
 
@@ -448,7 +448,7 @@ function gravityview_get_input_id_from_id( $field_id = '' ) {
 
 	$exploded = explode( '.', "{$field_id}" );
 
-	return isset( $exploded[1] ) ? intval( $exploded[1] ) : 0;
+	return isset( $exploded[1] ) ? intval( $exploded[1] ) : false;
 }
 
 /**
