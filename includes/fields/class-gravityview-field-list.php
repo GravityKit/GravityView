@@ -119,7 +119,7 @@ class GravityView_Field_List extends GravityView_Field {
 		$column_id = gravityview_get_input_id_from_id( $field['id'] );
 
 		// Parent field, not column field
-		if( empty( $column_id ) ) {
+		if( false === $column_id ) {
 			return $label;
 		}
 
