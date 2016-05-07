@@ -332,11 +332,11 @@ class GravityView_Roles_Capabilities {
 	 */
 	public static function has_cap( $caps_to_check = '', $object_id = null, $user_id = null ) {
 
-		$has_cap = false;
-
-		if( empty( $caps_to_check ) ) {
-			return $has_cap;
+		if( ! is_user_logged_in() || empty( $caps_to_check ) ) {
+			return false;
 		}
+
+		$has_cap = false;
 
 		// Add full access caps for GV & GF
 		$caps_to_check = self::maybe_add_full_access_caps( $caps_to_check );
