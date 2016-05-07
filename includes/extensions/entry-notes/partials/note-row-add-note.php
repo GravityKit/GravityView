@@ -4,6 +4,9 @@
  *
  * @since 1.17
  */
+
+/**
+ * @action `gravityview/field/notes/scripts` Print scripts and styles required for the Notes field
 ?>
 <form method="post" class="gv-entry-note-add">
 	<div>
