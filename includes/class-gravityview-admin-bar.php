@@ -108,7 +108,7 @@ class GravityView_Admin_Bar {
 	function remove_links() {
 
 		// If we're on the single entry page, we don't want to cause confusion.
-		if ( is_admin() || ( $this->gravityview_view->getSingleEntry() && ! $this->gravityview_view->isGravityviewPostType() ) ) {
+		if ( $this->gravityview_view->getSingleEntry() && ! $this->gravityview_view->isGravityviewPostType() ) {
 			remove_action( 'admin_bar_menu', 'wp_admin_bar_edit_menu', 80 );
 		}
 	}
