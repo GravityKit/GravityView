@@ -89,7 +89,10 @@ class GravityView_Entry_Notes {
 	public static function delete_notes( $note_ids = array() ) {
 
 		if( !is_array( $note_ids ) ) {
-			do_action( 'gravityview_log_error', __METHOD__ . ' - Note IDs not an array', $note_ids );
+
+			do_action( 'gravityview_log_error', __METHOD__ . ' - Note IDs not an array. Not processing delete request.', $note_ids );
+
+			return;
 		}
 
 		GFFormsModel::delete_notes( $note_ids );
@@ -159,7 +162,7 @@ class GravityView_Entry_Notes {
 
 		return $avatar;
 	}
-
+	
 }
 
 new GravityView_Entry_Notes;
