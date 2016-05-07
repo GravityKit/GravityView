@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Added: Option to make Phone numbers click-to-call
 * Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used.
+* Added: `GVCommon::send_email()`, a public alias of `GFCommon::send_email()`
 
 = 1.16.5.1 on April 7 =
 
