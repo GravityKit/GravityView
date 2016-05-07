@@ -7,6 +7,11 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  */
 class GravityView_Image_Test extends GV_UnitTestCase {
 
+	/**
+	 * Get a GravityView_Image object with attributes set
+	 * 
+	 * @return GravityView_Image
+	 */
 	function get_loaded_image() {
 		
 		$Image = new GravityView_Image( array(
