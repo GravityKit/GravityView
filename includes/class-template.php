@@ -618,8 +618,9 @@ class GravityView_View extends Gamajo_Template_Loader {
 		// Backward compatibility
 		if( 'table' === $this->getTemplatePartSlug() ) {
 			/**
-			 * Modify the fields displayed in the table
-			 * @var array
+			 * @filter `gravityview_table_cells` Modify the fields displayed in a table
+			 * @param array $fields
+			 * @param GravityView_View $this
 			 */
 			$fields = apply_filters("gravityview_table_cells", $fields, $this );
 		}
@@ -754,7 +755,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 		$this->setTemplatePartSlug( $slug );
 
 		$this->setTemplatePartName( $name );
-
+		
 		$template_file = $this->get_template_part( $slug, $name, false );
 
 		do_action( 'gravityview_log_debug', '[render] Rendering Template File', $template_file );
