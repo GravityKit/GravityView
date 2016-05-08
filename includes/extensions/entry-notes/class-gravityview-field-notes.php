@@ -398,7 +398,16 @@ class GravityView_Field_Notes extends GravityView_Field {
 		return $strings;
 	}
 
-	static public function display_note( $note, $is_editable = false ) {
+	/**
+	 * Generate HTML output for a single note
+	 *
+	 * @param object $note Note object with id, user_id, date_created, value, note_type, user_name, user_email vars
+	 * @param bool $show_delete Whether to show the bulk delete inputs
+	 *
+	 * @return string HTML
+	 */
+	static public function display_note( $note, $show_delete = false ) {
+
 		if( ! is_object( $note ) ) {
 			return '';
 		}
@@ -433,10 +442,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			$note_detail_html = str_replace( '{' . $tag . '}', $value, $note_detail_html );
 		}
 
-		$note_row_template = 'row';
-		if ( $is_editable && GVCommon::has_cap( 'gravityview_delete_entry_notes' ) ) {
-			$note_row_template = 'row-editable';
-		}
+		$note_row_template = ( $show_delete && GVCommon::has_cap( 'gravityview_delete_entry_notes' ) ) ? 'row-editable' : 'row';
 
 		ob_start();
 		GravityView_View::getInstance()->get_template_part( 'note', $note_row_template );
@@ -464,7 +470,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 *
 	 * @return int|WP_Error
 	 */
-	function add_note( $entry, $data ) {
+	private function add_note( $entry, $data ) {
 		global $current_user, $wpdb;
 
 		$user_data = get_userdata( $current_user->ID );
@@ -482,6 +488,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 	/**
 	 * Get the Add Note form HTML
+	 *
+	 * @todo Allow passing entry_id as a shortcode parameter to set entry from shortcode
 	 *
 	 * @since 1.17
 	 *
