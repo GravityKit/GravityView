@@ -178,7 +178,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 				do_action( 'gravityview_log_error', __METHOD__ . ': Adding a note failed: the user does not have the "gravityview_add_entry_notes" capability.' );
 			} elseif ( $valid ) {
 
-				$entry = gravityview_get_entry( $data['entry-slug'], false );
+				$entry = gravityview_get_entry( $data['entry-slug'], true, false );
 
 				$added = $this->add_note( $entry, $data );
 

@@ -1,4 +1,12 @@
 <?php
+/**
+ * @package     GravityView
+ * @license     GPL2+
+ * @since       1.15
+ * @author      Katz Web Services, Inc.
+ * @link        http://gravityview.co
+ * @copyright   Copyright 2016, Katz Web Services, Inc.
+ */
 
 /**
  * Class GravityView_Entry_Notes
@@ -162,7 +170,7 @@ class GravityView_Entry_Notes {
 
 		return $avatar;
 	}
-	
+
 }
 
 new GravityView_Entry_Notes;

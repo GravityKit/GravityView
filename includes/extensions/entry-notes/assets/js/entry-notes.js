@@ -88,6 +88,8 @@
 		/**
 		 * Add actions for the checkboxes
 		 *
+		 * @since 1.17
+		 *
 		 * @param $container .gv-notes container DOM
 		 */
 		setup_checkboxes: function( $container ) {
@@ -100,6 +102,7 @@
 
 		/**
 		 * Disable the delete button if there are no checked boxes
+		 *
 		 * @since 1.17
 		 */
 		toggle_disable_delete: function() {
@@ -110,6 +113,7 @@
 
 		/**
 		 * Show or hide email fields based on the dropdown
+		 *
 		 * @since 1.17
 		 */
 		email_fields_toggle: function( e ) {
