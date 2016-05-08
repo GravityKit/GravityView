@@ -5,7 +5,7 @@
  * @license   GPL2+
  * @author    Katz Web Services, Inc.
  * @link      https://gravityview.co
- * @copyright Copyright 2015, Katz Web Services, Inc.
+ * @copyright Copyright 2016, Katz Web Services, Inc.
  *
  * @since 1.17
  *
@@ -15,7 +15,7 @@
 (function($){
 
 	/**
-	 * @see https://gist.github.com/DelvarWorld/3784055
+	 * Handle adding and deleting notes, showing related messages
 	 */
 	$.fn.shiftSelectable = function() {
 		var lastChecked,
@@ -39,7 +39,7 @@
 		});
 	};
 
-	var gv_entry_notes = {
+	var gv_notes = {
 
 		/**
 		 * The CSS selectors used in this object
@@ -89,20 +89,20 @@
 		 */
 		init: function () {
 			// Allow for multiple on a page.
-			$( gv_entry_notes.selectors.wrapper ).each( function () {
+			$( gv_notes.selectors.wrapper ).each( function () {
 
-				gv_entry_notes.setup_checkboxes( $( this ) );
+				gv_notes.setup_checkboxes( $( this ) );
 
-				$(gv_entry_notes.selectors.bulk_toggle, $( this ) ).on('change', gv_entry_notes.toggle_all );
+				$(gv_notes.selectors.bulk_toggle, $( this ) ).on('change', gv_notes.toggle_all );
 
-				$( gv_entry_notes.selectors.bulk_form, $( this ) ).on( 'submit', gv_entry_notes.delete_notes );
+				$( gv_notes.selectors.bulk_form, $( this ) ).on( 'submit', gv_notes.delete_notes );
 				
-				$( gv_entry_notes.selectors.email_select, $( this ) ).on('change', gv_entry_notes.email_fields_toggle ).trigger('change');
+				$( gv_notes.selectors.email_select, $( this ) ).on('change', gv_notes.email_fields_toggle ).trigger('change');
 
-				$( gv_entry_notes.selectors.add_note_form, $( this ) )
-					.on( 'submit', gv_entry_notes.add_note )
+				$( gv_notes.selectors.add_note_form, $( this ) )
+					.on( 'submit', gv_notes.add_note )
 					.find( 'textarea')
-						.on( 'keydown', gv_entry_notes.command_enter );
+						.on( 'keydown', gv_notes.command_enter );
 
 			});
 		},
@@ -114,8 +114,8 @@
 		 */
 		setup_checkboxes: function( $container ) {
 
-			$( gv_entry_notes.selectors.bulk_checkbox, $container )
-				.on( 'change', gv_entry_notes.toggle_disable_delete ) // Disable delete button if no checked boxes
+			$( gv_notes.selectors.bulk_checkbox, $container )
+				.on( 'change', gv_notes.toggle_disable_delete ) // Disable delete button if no checked boxes
 				.shiftSelectable() // Enable shift-click
 				.filter(':first-child').trigger('change'); // Trigger disable delete on load
 		},
@@ -125,9 +125,9 @@
 		 * @since 1.17
 		 */
 		toggle_disable_delete: function() {
-			$container = $( this ).parents( gv_entry_notes.selectors.wrapper );
-			$checkboxes = $( gv_entry_notes.selectors.bulk_checkbox, $container );
-			$( gv_entry_notes.selectors.bulk_submit, $container ).prop( 'disabled', ( 0 === $checkboxes.filter(':checked').length ) );
+			$container = $( this ).parents( gv_notes.selectors.wrapper );
+			$checkboxes = $( gv_notes.selectors.bulk_checkbox, $container );
+			$( gv_notes.selectors.bulk_submit, $container ).prop( 'disabled', ( 0 === $checkboxes.filter(':checked').length ) );
 		},
 
 		/**
@@ -137,11 +137,11 @@
 		email_fields_toggle: function( e ) {
 
 			var val = $( this ).val();
-			var $email_container = $( e.target ).parents( gv_entry_notes.selectors.wrapper ).find( gv_entry_notes.selectors.email_wrapper );
+			var $email_container = $( e.target ).parents( gv_notes.selectors.wrapper ).find( gv_notes.selectors.email_wrapper );
 
-			$( gv_entry_notes.selectors.email_to_wrapper , $email_container ).toggle( '' !== val );
+			$( gv_notes.selectors.email_to_wrapper , $email_container ).toggle( '' !== val );
 
-			$( gv_entry_notes.selectors.email_to_custom_wrapper, $email_container ).toggle( 'custom' === val );
+			$( gv_notes.selectors.email_to_custom_wrapper, $email_container ).toggle( 'custom' === val );
 		},
 
 		/**
@@ -167,8 +167,8 @@
 		 * @param e
 		 */
 		toggle_all: function( e ) {
-			$container = $( this ).parents( gv_entry_notes.selectors.wrapper );
-			$checkboxes = $( gv_entry_notes.selectors.bulk_checkbox, $container );
+			$container = $( this ).parents( gv_notes.selectors.wrapper );
+			$checkboxes = $( gv_notes.selectors.bulk_checkbox, $container );
 			$checkboxes.prop("checked", $( this ).prop('checked') ).trigger('change');
 		},
 
@@ -183,8 +183,8 @@
 		delete_notes: function ( e ) {
 			e.preventDefault();
 
-			var $container = $( e.target ).parent( gv_entry_notes.selectors.wrapper );
-			var $checked = $( gv_entry_notes.selectors.bulk_checkbox, $container ).filter(':checked');
+			var $container = $( e.target ).parent( gv_notes.selectors.wrapper );
+			var $checked = $( gv_notes.selectors.bulk_checkbox, $container ).filter(':checked');
 
 			// No checked inputs
 			if( 0 === $checked.length ) {
@@ -197,7 +197,7 @@
 				return false;
 			}
 
-			var $submit = $container.find( gv_entry_notes.selectors.bulk_submit );
+			var $submit = $container.find( gv_notes.selectors.bulk_submit );
 
 			$.ajax({
 				url: GVEntryNotes.ajaxurl,
@@ -233,13 +233,13 @@
 						}
 
 						// After a bulk action is performed, uncheck the "Check all" box
-						$container.find( gv_entry_notes.selectors.bulk_toggle ).prop( 'checked', false );
+						$container.find( gv_notes.selectors.bulk_toggle ).prop( 'checked', false );
 
-						gv_entry_notes.setup_checkboxes( $container );
+						gv_notes.setup_checkboxes( $container );
 					});
 
 				} else {
-					gv_entry_notes.show_message( $submit, data.data.error );
+					gv_notes.show_message( $submit, data.data.error );
 				}
 			});
 		},
@@ -283,12 +283,12 @@
 		add_note: function ( e ) {
 			e.preventDefault();
 
-			var $container = $( e.target ).parent( gv_entry_notes.selectors.wrapper );
-			var $submit = $container.find( gv_entry_notes.selectors.add_note_submit );
+			var $container = $( e.target ).parent( gv_notes.selectors.wrapper );
+			var $submit = $container.find( gv_notes.selectors.add_note_submit );
 			var $inputs = $container.find( ':input' ).not('[type=hidden]');
 
-			if( '' === $container.find( gv_entry_notes.selectors.add_note_content ).val().trim() )  {
-				gv_entry_notes.show_message( $submit, GVEntryNotes.text.error_empty_note );
+			if( '' === $container.find( gv_notes.selectors.add_note_content ).val().trim() )  {
+				gv_notes.show_message( $submit, GVEntryNotes.text.error_empty_note );
 				return;
 			}
 			
@@ -314,10 +314,10 @@
 				if ( true === data.success ) {
 					$container.removeClass('gv-no-notes').addClass('gv-has-notes');
 					$( data.data.html ).hide().appendTo( $( 'table tbody', $container ) ).fadeIn();
-					gv_entry_notes.setup_checkboxes( $container );
+					gv_notes.setup_checkboxes( $container );
 					$inputs.val( '' ).trigger('change'); // Clear the existing note comment, show/hide fields
 				} else {
-					gv_entry_notes.show_message( $submit, data.data.error );
+					gv_notes.show_message( $submit, data.data.error );
 				}
 			});
 
@@ -325,6 +325,6 @@
 		}
 	};
 
-	gv_entry_notes.init();
+	gv_notes.init();
 
 })(jQuery);
