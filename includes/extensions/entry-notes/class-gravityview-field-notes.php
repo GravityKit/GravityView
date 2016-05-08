@@ -1,4 +1,14 @@
 <?php
+/**
+ * Notes Field
+ *
+ * @package     GravityView
+ * @license     GPL2+
+ * @since       1.17
+ * @author      Katz Web Services, Inc.
+ * @link        https://gravityview.co
+ * @copyright   Copyright 2016, Katz Web Services, Inc.
+ */
 
 /**
  * Add Entry Notes
@@ -250,7 +260,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 			$required_args = array(
 				'gv_delete_notes' => '',
-				'entry-slug' => ''
+				'entry-slug' => '',
 			);
 
 			$data = wp_parse_args( $data, $required_args );
@@ -468,6 +478,10 @@ class GravityView_Field_Notes extends GravityView_Field {
 	}
 
 	/**
+	 * Add a note.
+	 *
+	 * @see GravityView_Entry_Notes::add_note This method is mostly a wrapper
+	 *
 	 * @param array $entry
 	 * @param array $data Note details array
 	 *
@@ -628,9 +642,15 @@ class GravityView_Field_Notes extends GravityView_Field {
 	}
 
 	/**
+	 * If note has an email to send, and the user has the right caps, send it
+	 *
+	 * @since 1.17
+	 *
 	 * @param false|object $note If note was created, object. Otherwise, false.
 	 * @param array $entry Entry data
 	 * @param array $data $_POST data
+	 *
+	 * @return void Tap in to Gravity Forms' `gform_after_email` action if you want a return result from sending the email.
 	 */
 	private function maybe_send_entry_notes( $note = false, $entry, $data ) {
 
