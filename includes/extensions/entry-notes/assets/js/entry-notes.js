@@ -194,7 +194,7 @@
 
 			var $container = $( e.target ).parent('.gv-entry-notes');
 			var $submit = $container.find('.gv-add-note-submit');
-			var $textarea = $container.find( 'textarea[name=note-content]' );
+			var $inputs = $container.find( ':input' ).not('[type=hidden]');
 
 			if( '' === $textarea.val().trim() )  {
 				gv_entry_notes.show_message( $submit, GVEntryNotes.text.error_empty_note );
@@ -207,8 +207,8 @@
 				method: 'POST',
 				beforeSend: function (  ) {
 					$container.addClass( 'gv-processing-note' );
-					$textarea.prop('disabled', 'disabled');
-					$submit.data( 'value', $submit.html() ).prop( 'disabled', true ).html( GVEntryNotes.text.processing );
+					$inputs.prop('disabled', 'disabled');
+					$submit.data( 'value', $submit.html() ).html( GVEntryNotes.text.processing );
 				},
 				data: {
 					action: 'gv_note_add',
@@ -216,15 +216,15 @@
 				}
 			}).done( function( data, textStatus, jqXHR ) {
 
-				$submit.prop('disabled', false ).html( $submit.data( 'value' ) );
-				$textarea.prop('disabled', false );
+				$submit.html( $submit.data( 'value' ) );
+				$inputs.prop('disabled', false );
 				$container.removeClass( 'gv-processing-note' );
 
 				if ( true === data.success ) {
 					$container.removeClass('gv-no-notes').addClass('gv-has-notes');
 					$( data.data.html ).hide().appendTo( $( 'table tbody', $container ) ).fadeIn();
-					$textarea.val( '' ); // Clear the existing note comment
 					gv_entry_notes.setup_checkboxes( $container );
+					$inputs.val( '' ).trigger('change'); // Clear the existing note comment, show/hide fields
 				} else {
 					gv_entry_notes.show_message( $submit, data.data.error );
 				}
