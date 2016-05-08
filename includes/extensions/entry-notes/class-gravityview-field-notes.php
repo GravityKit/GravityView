@@ -594,7 +594,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 					<option value="custom"><?php echo self::strings('other-email'); ?></option>
 					<?php } ?>
 				</select>
-				<fieldset>
+				<fieldset class="gv-note-to-container">
 					<?php if( $include_custom ) { ?>
 					<div class='gv-note-to-custom-container'>
 						<label for="gv-note-email-to-custom-<?php echo $entry_slug_esc; ?>"><?php echo $strings['email-label']; ?></label>
