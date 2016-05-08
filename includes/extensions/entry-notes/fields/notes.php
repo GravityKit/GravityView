@@ -21,10 +21,7 @@ require_once( GFCommon::get_base_path() . '/entry_detail.php' );
  */
 do_action( 'gravityview/field/notes/scripts' );
 
-
-extract( $gravityview_view->getCurrentField() );
-
-// TODO: Pass as global
+$entry = $gravityview_view->getCurrentEntry();
 $notes = GravityView_Entry_Notes::get_notes( $entry['id'] );
 $strings = GravityView_Field_Notes::strings();
 $entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
