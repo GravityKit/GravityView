@@ -17,28 +17,6 @@
 	/**
 	 * Handle adding and deleting notes, showing related messages
 	 */
-	$.fn.shiftSelectable = function() {
-		var lastChecked,
-			$boxes = this;
-
-		$boxes.click(function(evt) {
-			if(!lastChecked) {
-				lastChecked = this;
-				return;
-			}
-
-			if(evt.shiftKey) {
-				var start = $boxes.index(this),
-					end = $boxes.index(lastChecked);
-				$boxes.slice(Math.min(start, end), Math.max(start, end) + 1)
-					.prop('checked', lastChecked.checked)
-					.trigger('change');
-			}
-
-			lastChecked = this;
-		});
-	};
-
 	var gv_notes = {
 
 		/**
@@ -325,6 +303,36 @@
 		}
 	};
 
+	/**
+	 * Enable shift-select
+	 * @since 1.17
+	 * @see https://gist.github.com/DelvarWorld/3784055
+	 */
+	$.fn.shiftSelectable = function() {
+		var lastChecked,
+			$boxes = this;
+
+		$boxes.click(function(evt) {
+			if(!lastChecked) {
+				lastChecked = this;
+				return;
+			}
+
+			if(evt.shiftKey) {
+				var start = $boxes.index(this),
+					end = $boxes.index(lastChecked);
+				$boxes.slice(Math.min(start, end), Math.max(start, end) + 1)
+					.prop('checked', lastChecked.checked)
+					.trigger('change');
+			}
+
+			lastChecked = this;
+		});
+
+		return this;
+	};
+
+	// Initialize after shiftSelectable
 	gv_notes.init();
 
 })(jQuery);
