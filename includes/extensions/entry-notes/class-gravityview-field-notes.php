@@ -413,6 +413,15 @@ class GravityView_Field_Notes extends GravityView_Field {
 			'id'                     => intval( $note->id ),
 		);
 
+		/**
+		 * @filter `gravityview/field/notes/content` Modify the note content before rendering in the template
+		 * @since 1.17
+		 * @param array $note_content Array of note content that will be replaced in template files
+		 * @param object $note Note object with id, user_id, date_created, value, note_type, user_name, user_email vars
+		 * @param boolean $show_delete True: Notes are editable. False: no editing notes.
+		 */
+		$note_content = apply_filters( 'gravityview/field/notes/content', $note_content, $note, $show_delete );
+
 		ob_start();
 		GravityView_View::getInstance()->get_template_part( 'note', 'detail' );
 		$note_detail_html = ob_get_clean();
