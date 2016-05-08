@@ -413,7 +413,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			'date_created_formatted' => GFCommon::format_date( $note->date_created, false ),
 			'user_id'                => intval( $note->user_id ),
 			'note_type'              => $note->note_type,
-			'id'                     => intval( $note->id ),
+			'note_id'                => intval( $note->id ),
 		);
 
 		/**
@@ -443,7 +443,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		$note_row = ob_get_clean();
 
 		$replacements = array(
-			'{note_id}' => $note_content['id'],
+			'{note_id}' => $note_content['note_id'],
 			'{row_class}' => 'gv-note',
 			'{note_detail}' => $note_detail_html
 		);
