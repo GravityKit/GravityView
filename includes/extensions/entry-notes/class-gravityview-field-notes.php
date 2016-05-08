@@ -464,7 +464,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		}
 
 		ob_start();
-		GravityView_View::getInstance()->get_template_part( 'note', 'row-add-note' );
+		GravityView_View::getInstance()->get_template_part( 'note', 'add-note' );
 		$add_note_html = ob_get_clean();
 
 		$entry = GravityView_View::getInstance()->getCurrentEntry();
