@@ -408,7 +408,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			'user_name'              => $note->user_name,
 			'user_email'             => $note->user_email,
 			'added_on'               => esc_html__( 'added on {date_created_formatted}', 'gravityview' ),
-			'value'                  => nl2br( esc_html( $note->value ) ),
+			'value'                  => wpautop( esc_html( $note->value ) ),
 			'date_created'           => $note->date_created,
 			'date_created_formatted' => GFCommon::format_date( $note->date_created, false ),
 			'user_id'                => intval( $note->user_id ),
