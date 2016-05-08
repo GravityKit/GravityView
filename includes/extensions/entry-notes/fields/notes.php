@@ -26,26 +26,9 @@ extract( $gravityview_view->getCurrentField() );
 
 // TODO: Pass as global
 $notes = GravityView_Entry_Notes::get_notes( $entry['id'] );
-
 $strings = GravityView_Field_Notes::strings();
-
-wp_enqueue_style( 'gravityview-entry-notes', plugins_url( '/assets/css/entry-notes.css', GravityView_Field_Notes::$file ) );
-wp_enqueue_script( 'gravityview-entry-notes', plugins_url( '/assets/js/entry-notes.js', GravityView_Field_Notes::$file ) );
-
-if( ! wp_script_is( 'gravityview-entry-notes', 'done' ) ) {
-	wp_localize_script( 'gravityview-entry-notes', 'GVEntryNotes', array(
-		'ajaxurl' => admin_url( 'admin-ajax.php' ),
-		'text' => array(
-			'processing' => $strings['processing'],
-			'delete_confirm' => $strings['delete-confirm'],
-		),
-	) );
-}
-
 $entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
-
 $show_delete = ( $is_editable && GVCommon::has_cap( 'gravityview_delete_entry_notes' ) );
-
 ?>
 <div class="gv-notes <?php echo ( sizeof( $notes ) > 0 ? 'gv-has-notes' : 'gv-no-notes' ); ?>">
 	<form method="post" class="gv-notes-list">
