@@ -484,7 +484,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			return new WP_Error( 'gv-add-note-empty', __( 'The note is empty.', 'gravityview' ) );
 		}
 
-		$return = GravityView_Entry_Notes::add_note( $entry['id'], $current_user->ID, $user_data->display_name, $note_content, 'gravityview/frontend' );
+		$return = GravityView_Entry_Notes::add_note( $entry['id'], $user_data->ID, $user_data->display_name, $note_content, 'gravityview/field/notes' );
 
 		return $return;
 	}
