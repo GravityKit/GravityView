@@ -34,9 +34,10 @@ if( ! $this->getTotalEntries() ) {
 
 		$this->setCurrentEntry( $entry );
 
+		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
 	?>
 
-		<div id="gv_list_<?php echo $entry['id']; ?>" class="<?php echo esc_attr( apply_filters( 'gravityview_entry_class', 'gv-list-view', $entry, $this ) ); ?>">
+		<div id="gv_list_<?php echo esc_attr( $entry_slug ); ?>" class="<?php echo esc_attr( apply_filters( 'gravityview_entry_class', 'gv-list-view', $entry, $this ) ); ?>">
 
 		<?php
 
@@ -76,7 +77,7 @@ if( ! $this->getTotalEntries() ) {
 
 						// The first field in the title zone is the main
 						if ( $i == 0 ) {
-							$title_args['markup'] = '<h3 id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</h3>';
+							$title_args['markup'] = '<h3 class="{{class}}">{{label}}{{value}}</h3>';
 							echo gravityview_field_output( $title_args );
 							unset( $title_args['markup'] );
 						} else {
