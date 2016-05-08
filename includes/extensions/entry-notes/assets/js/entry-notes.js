@@ -156,9 +156,37 @@
 					});
 
 				} else {
-					alert( data.data.error );
+					gv_entry_notes.show_message( $submit, data.data.error );
 				}
 			});
+		},
+
+		/**
+		 * Display a message after performing an action.
+		 *
+		 * @since 1.17
+		 *
+		 * @param {jQuery} $insert_after DOM element to insert message after. Default: form button
+		 * @param {string} message Message to display. Supports HTML.
+		 * @returns {void}
+		 */
+		show_message: function ( $insert_after, message ) {
+			var css_class  = 'gv-note-message';
+			var message_class = 'gv-note-error';
+
+			// Create the message container, or if it exists, update it.
+			$message = $insert_after.next( '.' + css_class ).length ? $insert_after.next( '.' + css_class ) : $( '<div/>', { class: css_class } );
+
+			$message
+				.insertAfter( $insert_after )
+				.attr( 'class', css_class + ' ' + message_class )
+				.html( message )
+				.fadeIn( 'fast' )
+				.delay( 3000 )
+				.fadeOut( 'fast' )
+				.on( 'click', function ( ) {
+					$( this ).fadeOut( 'fast' );
+				});
 		},
 
 		add_note: function ( e ) {
@@ -169,6 +197,7 @@
 			var $textarea = $container.find( 'textarea[name=note-content]' );
 
 			if( '' === $textarea.val().trim() )  {
+				gv_entry_notes.show_message( $submit, GVEntryNotes.text.error_empty_note );
 				return;
 			}
 
@@ -197,7 +226,7 @@
 					$textarea.val( '' ); // Clear the existing note comment
 					gv_entry_notes.setup_checkboxes( $container );
 				} else {
-					alert( data.data.error );
+					gv_entry_notes.show_message( $submit, data.data.error );
 				}
 			});
 
