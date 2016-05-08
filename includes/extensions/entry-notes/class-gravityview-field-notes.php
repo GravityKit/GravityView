@@ -399,6 +399,9 @@ class GravityView_Field_Notes extends GravityView_Field {
 	}
 
 	static public function display_note( $note, $is_editable = false ) {
+		if( ! is_object( $note ) ) {
+			return '';
+		}
 
 		$note_content = array(
 			'avatar'                 => apply_filters( 'gravityview/field/notes/avatar', get_avatar( $note->user_id, 48 ), $note ),
