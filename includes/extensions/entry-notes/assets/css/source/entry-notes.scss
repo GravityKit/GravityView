@@ -11,7 +11,7 @@
 
 @import "add-note-form";
 
-.gv-entry-notes {
+.gv-notes {
 
   margin: 10px 0;
 
@@ -53,7 +53,7 @@
     border: 0;
   }
 
-  .gv-entry-notes-no-notes {
+  .gv-notes-no-notes {
     display: none;
     td {
       padding: 1em 0;
@@ -64,6 +64,7 @@
     @include sticky();
     top: 10px;
     vertical-align: middle;
+    z-index: 2; // Move above the table content, otherwise delete button click target isn't always available
 
     // Add extra spacing for admin bar
     .admin-bar & {
@@ -72,7 +73,7 @@
   }
 
   &.gv-no-notes {
-    .gv-entry-notes-no-notes {
+    .gv-notes-no-notes {
       display: table-row;
     }
     thead {
@@ -80,7 +81,7 @@
     }
   }
 
-  .gv-entry-notes-delete {
+  .gv-notes-delete {
     margin: 5px 0;
     display: inline-block;
     text-decoration: none;
@@ -96,18 +97,23 @@
     text-align: center;
   }
 
-  .gforms_note_success {
-    background-color: #ECFCDE;
-    border: 1px solid #A7C886;
+  .gv-note-message {
+    display: none;
+    padding: .5em 1em;
+    margin: 10px 0;
+    position: absolute;
+    border-radius: 3px;
   }
 
-  .gv-entry-note-deleted,
-  .gforms_note_error {
-    background-color: #FFEBE8;
-    border: 1px solid #CC0000;
+  .gv-note-success {
+    display: none!important; // Don't display success messages by default
   }
 
-  .gv-entry-note-email-subject-container {
-    display:none;
+  .gv-note-deleted,
+  .gv-note-error {
+    font-weight: normal; // When it's in <thead>, it can be bold by themes
+    background-color: rgb(255, 235, 232);
+    background-color: rgba(255, 235, 232, .9);
+    border: 1px solid #cc0000;
   }
 }

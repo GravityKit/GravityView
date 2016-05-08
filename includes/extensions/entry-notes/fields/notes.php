@@ -47,8 +47,8 @@ $entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
 $show_delete = ( $is_editable && GVCommon::has_cap( 'gravityview_delete_entry_notes' ) );
 
 ?>
-<div class="gv-entry-notes<?php echo ( sizeof( $notes ) > 0 ? ' gv-has-notes' : ' gv-no-notes' ); ?>">
-	<form method="post" class="gv-entry-notes-list">
+<div class="gv-notes <?php echo ( sizeof( $notes ) > 0 ? 'gv-has-notes' : 'gv-no-notes' ); ?>">
+	<form method="post" class="gv-notes-list">
 		<?php wp_nonce_field( 'gv_delete_notes_' . $entry_slug, 'gv_delete_notes' ) ?>
 		<div class="inside">
 			<input type="hidden" name="action" value="gv_delete_notes" />
@@ -62,13 +62,13 @@ $show_delete = ( $is_editable && GVCommon::has_cap( 'gravityview_delete_entry_no
 					<tr>
 						<th colspan="2">
 							<label><input type="checkbox" value="" class="gv-notes-toggle" title="<?php echo $strings['toggle-notes']; ?>"><span class="screen-reader-text"><?php echo $strings['toggle-notes']; ?></span></label>
-							<button type="submit" class="button button-small gv-entry-notes-delete"><?php echo $strings['delete']; ?></button>
+							<button type="submit" class="button button-small gv-notes-delete"><?php echo $strings['delete']; ?></button>
 						</th>
 					</tr>
 				</thead>
 				<?php } ?>
 				<tbody>
-					<tr class="gv-entry-notes-no-notes"><td colspan="2"><?php echo $strings['no-notes']; ?></td></tr>
+					<tr class="gv-notes-no-notes"><td colspan="2"><?php echo $strings['no-notes']; ?></td></tr>
 					<?php
 						foreach ( $notes as $note ) {
 							echo GravityView_Field_Notes::display_note( $note, $is_editable );

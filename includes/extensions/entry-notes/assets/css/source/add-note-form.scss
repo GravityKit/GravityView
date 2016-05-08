@@ -1,10 +1,10 @@
-.gv-entry-notes {
+.gv-notes {
 
   /**
    * Styles related to the Add Note form
    */
 
-  .gv-entry-note-add {
+  .gv-note-add {
 
     width: 100%;
     padding:10px 0;
@@ -23,8 +23,24 @@
   }
 
   /** Styles when the entry is being submitted. */
-  &.gv-processing-note .gv-entry-note-add {
+  &.gv-processing-note .gv-note-add {
     opacity: .8;
+  }
+
+  .gv-note-email-container fieldset
+  .gv-note-email-to-custom-container {
+    display:none;
+  }
+
+  .gv-note-email-container {
+    fieldset {
+      padding: 0;
+      margin: 0;
+      border: none;
+    }
+    div {
+      margin-bottom: 1em;
+    }
   }
 
 }
