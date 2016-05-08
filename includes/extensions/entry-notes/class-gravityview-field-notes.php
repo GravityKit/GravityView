@@ -196,7 +196,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 					$this->maybe_send_entry_notes( $note, $entry, $data );
 
 					if ( $note ) {
-						$success = self::display_note( $note, true );
+						$success = self::display_note( $note, ! empty( $data['show-delete'] ) );
 						do_action( 'gravityview_log_debug', __METHOD__ . ': The note was successfully created', compact('note', 'data') );
 					} else {
 						$error = self::strings('error-add-note');
