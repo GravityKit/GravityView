@@ -57,6 +57,7 @@ module.exports = function(grunt) {
 			"assets/js/admin-widgets.js",
 			"assets/js/admin-entries-list.js",
 			"assets/js/fe-views.js",
+			"includes/extensions/entry-notes/assets/js/entry-notes.js",
 			"includes/widgets/search-widget/assets/js/source/admin-widgets.js"
 		],
 
@@ -87,6 +88,15 @@ module.exports = function(grunt) {
 		          ext: '.min.js'
 		      }]
 			},
+			entryNotes: {
+				files: [{
+					expand: true,
+					cwd: 'includes/extensions/entry-notes/assets/js/',
+					dest: 'includes/extensions/entry-notes/assets/js/',
+					src: ['*.js','!*.min.js'],
+					ext: '.min.js'
+				}]
+			},
 			searchExt: {
 				files: [{
 		          expand: true,
@@ -102,6 +112,10 @@ module.exports = function(grunt) {
 			scripts: {
 				files: ['assets/js/*.js','!assets/js/*.min.js'],
 				tasks: ['uglify:main','newer:jshint']
+			},
+			notes_js: {
+				files: ['includes/extensions/entry-notes/assets/js/*.js','!includes/extensions/entry-notes/assets/js/*.min.js'],
+				tasks: ['uglify:entryNotes','newer:jshint']
 			},
 			extension_js: {
 				files: ['includes/widgets/**/*.js','!includes/widgets/**/*.min.js'],
