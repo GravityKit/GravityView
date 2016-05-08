@@ -129,10 +129,12 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		if( 'gv_note_add' === rgpost('action') ) {
 
+			$post = wp_unslash( $_POST );
+
 			if( $this->doing_ajax ) {
-				parse_str( wp_unslash( $_POST['data'] ), $data );
+				parse_str( $post['data'], $data );
 			} else {
-				$data = $_POST;
+				$data = $post;
 			}
 
 			$this->process_add_note( (array) $data );
@@ -239,10 +241,11 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		if ( isset( $_POST['action'] ) && 'gv_delete_notes' === $_POST['action'] ) {
 
+			$post = wp_unslash( $_POST );
 			if ( $this->doing_ajax ) {
-				parse_str( wp_unslash( $_POST['data'] ), $data );
+				parse_str( $post['data'], $data );
 			} else {
-				$data = $_POST;
+				$data = $post;
 			}
 
 			$required_args = array(
@@ -475,7 +478,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		$user_data = get_userdata( $current_user->ID );
 
-		$note_content = wp_unslash( trim( $data['gv-note-content'] ) );
+		$note_content = trim( $data['gv-note-content'] );
 
 		if( empty( $note_content ) ) {
 			return new WP_Error( 'gv-add-note-empty', __( 'The note is empty.', 'gravityview' ) );
