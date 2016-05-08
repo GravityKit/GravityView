@@ -16,8 +16,9 @@ do_action( 'gravityview/field/notes/scripts' );
 	<div>
 		<input type="hidden" name="action" value="gv_note_add" />
 		<input type="hidden" name="entry-slug" value="{entry_slug}" />
+		<input type="hidden" name="show-delete" value="{show_delete}" />
 		{nonce_field}
-		{emails_dropdown}
+		{email_fields}
 
 		<div class="gv-note-content-container">
 			<label for="gv-note-content-{entry_slug}" class="screen-reader-text"><?php echo GravityView_Field_Notes::strings('content-label'); ?></label>

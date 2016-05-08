@@ -6,13 +6,14 @@
  * @subpackage GravityView/templates/fields
  */
 
-require_once( GFCommon::get_base_path() . '/entry_detail.php' );
+$gravityview_view = GravityView_View::getInstance();
 
-if( ! GVCommon::has_cap( 'gravityview_view_entry_notes' ) ) {
+if(	! GVCommon::has_cap( array( 'gravityview_view_entry_notes', 'gravityview_add_entry_notes', 'gravityview_delete_entry_notes' ) ) && ! $gravityview_view->getCurrentFieldSetting( 'notes_view_loggedout' ) ) {
 	return;
 }
 
-$gravityview_view = GravityView_View::getInstance();
+require_once( GFCommon::get_base_path() . '/entry_detail.php' );
+
 /**
  * @action `gravityview/field/notes/scripts` Print scripts and styles required for the Notes field
  * @see GravityView_Field_Notes::enqueue_scripts
@@ -20,7 +21,6 @@ $gravityview_view = GravityView_View::getInstance();
  */
 do_action( 'gravityview/field/notes/scripts' );
 
-$is_editable = $gravityview_view->getCurrentFieldSetting( 'notes_is_editable' );
 
 extract( $gravityview_view->getCurrentField() );
 
@@ -28,11 +28,18 @@ extract( $gravityview_view->getCurrentField() );
 $notes = GravityView_Entry_Notes::get_notes( $entry['id'] );
 $strings = GravityView_Field_Notes::strings();
 $entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
-$show_delete = ( $is_editable && GVCommon::has_cap( 'gravityview_delete_entry_notes' ) );
+
+$show_add = $gravityview_view->getCurrentFieldSetting( 'notes_add' );
+$show_delete = ( $gravityview_view->getCurrentFieldSetting( 'notes_delete' ) && GVCommon::has_cap( 'gravityview_delete_entry_notes' ) );
+$show_notes = ( $gravityview_view->getCurrentFieldSetting( 'notes_view_loggedout' ) || ( $gravityview_view->getCurrentFieldSetting( 'notes_view' ) && GVCommon::has_cap( 'gravityview_view_entry_notes' ) ) );
+
 ?>
 <div class="gv-notes <?php echo ( sizeof( $notes ) > 0 ? 'gv-has-notes' : 'gv-no-notes' ); ?>">
+<?php
+	if( $show_notes ) {
+?>
 	<form method="post" class="gv-notes-list">
-		<?php wp_nonce_field( 'gv_delete_notes_' . $entry_slug, 'gv_delete_notes' ) ?>
+		<?php if ( $show_delete ) { wp_nonce_field( 'gv_delete_notes_' . $entry_slug, 'gv_delete_notes' ); } ?>
 		<div class="inside">
 			<input type="hidden" name="action" value="gv_delete_notes" />
 			<input type="hidden" name="entry-slug" value="<?php echo esc_attr( $entry_slug ); ?>" />
@@ -54,14 +61,18 @@ $show_delete = ( $is_editable && GVCommon::has_cap( 'gravityview_delete_entry_no
 					<tr class="gv-notes-no-notes"><td colspan="2"><?php echo $strings['no-notes']; ?></td></tr>
 					<?php
 						foreach ( $notes as $note ) {
-							echo GravityView_Field_Notes::display_note( $note, $is_editable );
+							echo GravityView_Field_Notes::display_note( $note, $show_delete );
 						}
 					?>
 				</tbody>
 			</table>
 		</div>
 	</form>
+<?php
+	} // End if can view notes
 
-	<?php if( $is_editable ) { echo do_shortcode( '[gv_note_add]' ); } ?>
-
+	if( $show_add ) {
+		echo do_shortcode( '[gv_note_add]' );
+	}
+?>
 </div>

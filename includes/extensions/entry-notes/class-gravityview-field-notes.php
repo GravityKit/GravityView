@@ -317,18 +317,35 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		unset( $field_options['show_as_link'] );
 
-		$field_options['notes_is_editable'] = array(
+		$field_options['notes_view'] = array(
 			'type' => 'checkbox',
-			'label' => __( 'Allow adding and deleting notes?', 'gravityview' ),
+			'label' => __( 'Display notes?', 'gravityview' ),
+			'value' => true,
+		);
+
+		$field_options['notes_view_loggedout'] = array(
+			'type' => 'checkbox',
+			'label' => __( 'Display notes to users who are not logged-in?', 'gravityview' ),
 			'value' => false,
 		);
 
-		// TODO: Add setting to just show Add form
+		$field_options['notes_add'] = array(
+			'type' => 'checkbox',
+			'label' => __( 'Allow adding notes?', 'gravityview' ),
+			'value' => true,
+		);
 
-		$field_options['note_text_add_note'] = array(
-			'type' => 'text',
-			'label' => "Add Note button text",
-			'value' => __('Add Note', 'gravityview'),
+		$field_options['notes_email'] = array(
+			'type' => 'checkbox',
+			'label' => __( 'Allow emailing notes?', 'gravityview' ),
+			'value' => true,
+		);
+
+		// TODO: make this only show when notes_view is true
+		$field_options['notes_delete'] = array(
+			'type' => 'checkbox',
+			'label' => __( 'Allow deleting notes?', 'gravityview' ),
+			'value' => false,
 		);
 
 		return $field_options;
@@ -469,11 +486,19 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		$entry = GravityView_View::getInstance()->getCurrentEntry();
 		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
+		$show_delete = GravityView_View::getInstance()->getCurrentFieldSetting( 'notes_delete' ) ? '1' : '0';
 		$nonce_field = wp_nonce_field( 'gv_note_add_' . $entry_slug, 'gv_note_add', false, false );
-		$emails_dropdown = self::get_emails_dropdown( $entry_slug );
+
+		// Only generate the dropdown if the field settings allow it
+		$email_fields = '';
+		if( GravityView_View::getInstance()->getCurrentFieldSetting( 'notes_email' ) ) {
+			$email_fields = self::get_note_email_fields( $entry_slug );
+		}
+
 		$add_note_html = str_replace( '{entry_slug}', $entry_slug, $add_note_html );
 		$add_note_html = str_replace( '{nonce_field}', $nonce_field, $add_note_html );
-		$add_note_html = str_replace( '{emails_dropdown}', $emails_dropdown, $add_note_html );
+		$add_note_html = str_replace( '{show_delete}', $show_delete, $add_note_html );
+		$add_note_html   = str_replace( '{email_fields}', $email_fields, $add_note_html );
 
 		return $add_note_html;
 	}
@@ -524,7 +549,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 *
 	 * @return string HTML output
 	 */
-	private static function get_emails_dropdown( $entry_slug = '' ) {
+	private static function get_note_email_fields( $entry_slug = '' ) {
 
 		if( ! GVCommon::has_cap( 'gravityview_email_entry_notes' ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . ': User does not have permission to email entry notes ("gravityview_email_entry_notes").' );
@@ -533,7 +558,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		$entry_slug_esc = esc_attr( $entry_slug );
 
-		$note_emails = self::get_note_emails_array( $entry_slug );
+		$note_emails = self::get_note_emails_array();
 
 		$strings = self::strings();
 
