@@ -363,6 +363,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 	static public function strings( $key = '' ) {
 
 		$strings = array(
+			'add-note' => __( 'Add Note', 'gravityview' ),
+			'content-label' => __( 'Note Content', 'gravityview' ),
 			'delete' => __( 'Delete', 'gravityview' ),
 			'delete-confirm' => __( 'Are you sure you want to delete the selected notes?', 'gravityview' ),
 			'caption' => __( 'Notes for this entry', 'gravityview' ),
@@ -572,7 +574,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		if ( ! empty( $note_emails ) || $include_custom ) { ?>
 			<div class="gv-note-email-container">
-				<label for="gv-note-email-to-<?php echo $entry_slug_esc; ?>"></label>
+				<label for="gv-note-email-to-<?php echo $entry_slug_esc; ?>" class="screen-reader-text"><?php echo $strings['also-email'];  ?></label>
 				<select class="gv-note-email-to" name="gv-note-to" id="gv-note-email-to-<?php echo $entry_slug_esc; ?>">
 					<option value=""><?php echo $strings['also-email'];  ?></option>
 					<?php foreach ( $note_emails as  $email ) {
@@ -587,7 +589,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 					<?php if( $include_custom ) { ?>
 					<div class='gv-note-to-custom-container'>
 						<label for="gv-note-email-to-custom-<?php echo $entry_slug_esc; ?>"><?php echo $strings['email-label']; ?></label>
-						<input type="text" name="gv-note-to-custom" placeholder="<?php echo $strings['example-placeholder']; ?>" id="gv-note-to-custom-<?php echo $entry_slug_esc; ?>" value="" />
+						<input type="text" name="gv-note-to-custom" placeholder="<?php echo $strings['email-placeholder']; ?>" id="gv-note-to-custom-<?php echo $entry_slug_esc; ?>" value="" />
 					</div>
 					<?php } ?>
 		            <div class='gv-note-subject-container'>
