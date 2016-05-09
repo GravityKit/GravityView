@@ -388,6 +388,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			'email-placeholder' => _x('you@example.com', 'Example email address used as a placeholder', 'gravityview'),
 			'subject-label' => __( 'Subject', 'gravityview' ),
 			'subject' => __( 'Email subject', 'gravityview' ),
+			'default-email-subject' => __( 'New entry note', 'gravityview' ),
 			'also-email' => __( 'Also email this note to', 'gravityview' ),
 			'error-add-note' => __( 'There was an error adding the note.', 'gravityview' ),
 			'error-invalid' => __( 'The request was invalid. Refresh the page and try again.', 'gravityview' ),
@@ -691,8 +692,11 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 			$bcc = false;
 			$reply_to = $from;
-			$subject = stripslashes_deep( $email_data['gv-note-subject'] );
-			$message = stripslashes_deep( $email_data['gv-note-content'] );
+			$subject = trim( $email_data['gv-note-subject'] );
+
+			// We use empty() here because GF uses empty to check against, too. `0` isn't a valid subject to GF
+			$subject = empty( $subject ) ? self::strings( 'default-email-subject' ) : $subject;
+			$message = $email_data['gv-note-content'];
 			$from_name     = $current_user->display_name;
 			$message_format = 'html';
 
