@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used
 * Fixed: Showing the first column of a List field was displaying all the field's columns
 * Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used.
+* Added: `GVCommon::send_email()`, a public alias of `GFCommon::send_email()`
 * Fixed: An image with no `src` output a broken HTML `<img>` tag
 * Fixed: Don't remove Edit Post/Page admin bar menu item
 

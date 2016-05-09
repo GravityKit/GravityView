@@ -758,6 +758,28 @@ hr {
 		}
 	}
 
+	// Currently only used in "checkboxes" field type
+	fieldset legend {
+		font-size: 1.1em;
+		padding-bottom: .2em;
+	}
+
+	// Grouped <ul> in "checkboxes" field type
+	.gv-setting-list {
+		@extend %clearfix;
+
+		li {
+			list-style: none;
+			display: block;
+			padding: .2em .2em .4em;
+
+			// Dependent settings
+			&.gv-sub-setting {
+				padding-left: 1.7em;
+			}
+		}
+	}
+
 	input[type="text"] {
 		display: block;
 		display: inline-block; // Inline-block for the merge tags dropdown

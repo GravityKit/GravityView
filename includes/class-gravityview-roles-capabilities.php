@@ -119,7 +119,8 @@ class GravityView_Roles_Capabilities {
 		$gf_to_gv_caps = array(
 			'gravityforms_edit_entries'     => 'gravityview_edit_others_entries',
 			'gravityforms_delete_entries'   => 'gravityview_delete_others_entries',
-			'gravityforms_edit_entry_notes' => 'gravityview_edit_others_entry_notes',
+			'gravityforms_view_entry_notes' => 'gravityview_view_entry_notes',
+			'gravityforms_edit_entry_notes' => 'gravityview_delete_entry_notes',
 		);
 
 		foreach ( $gf_to_gv_caps as $gf_cap => $gv_cap ) {
@@ -265,10 +266,12 @@ class GravityView_Roles_Capabilities {
 
 			// GF caps_to_check
 			'gravityview_edit_others_entries',
-			'gravityview_view_others_entry_notes',
-			'gravityview_edit_others_entry_notes',
 			'gravityview_moderate_entries', // Approve or reject entries from the Admin; show/hide approval column in Entries screen
 			'gravityview_delete_others_entries',
+			'gravityview_add_entry_notes',
+			'gravityview_view_entry_notes',
+			'gravityview_delete_entry_notes',
+			'gravityview_email_entry_notes',
 		);
 
 		// Edit, delete own stuff
@@ -277,7 +280,6 @@ class GravityView_Roles_Capabilities {
 			'gravityview_edit_entries',
 			'gravityview_edit_entry',
 			'gravityview_edit_form_entries', // This is similar to `gravityview_edit_entries`, but checks against a Form ID $object_id
-			'gravityview_view_entry_notes',
 			'gravityview_delete_entries',
 			'gravityview_delete_entry',
 		);
@@ -332,11 +334,11 @@ class GravityView_Roles_Capabilities {
 	 */
 	public static function has_cap( $caps_to_check = '', $object_id = null, $user_id = null ) {
 
-		$has_cap = false;
-
-		if( empty( $caps_to_check ) ) {
-			return $has_cap;
+		if( ! is_user_logged_in() || empty( $caps_to_check ) ) {
+			return false;
 		}
+
+		$has_cap = false;
 
 		// Add full access caps for GV & GF
 		$caps_to_check = self::maybe_add_full_access_caps( $caps_to_check );

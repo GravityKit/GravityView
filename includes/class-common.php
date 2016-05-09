@@ -1526,6 +1526,36 @@ class GVCommon {
 	}
 
 
+	/**
+	 * Send email using GFCommon::send_email()
+	 *
+	 * @since 1.17
+	 *
+	 * @see GFCommon::send_email This just makes the method public
+	 *
+	 * @param string $from               Sender address (required)
+	 * @param string $to                 Recipient address (required)
+	 * @param string $bcc                BCC recipients (required)
+	 * @param string $reply_to           Reply-to address (required)
+	 * @param string $subject            Subject line (required)
+	 * @param string $message            Message body (required)
+	 * @param string $from_name          Displayed name of the sender
+	 * @param string $message_format     If "html", sent text as `text/html`. Otherwise, `text/plain`. Default: "html".
+	 * @param string|array $attachments  Optional. Files to attach. {@see wp_mail()} for usage. Default: "".
+	 * @param array|false $entry         Gravity Forms entry array, related to the email. Default: false.
+	 * @param array|false $notification  Gravity Forms notification that triggered the email. {@see GFCommon::send_notification}. Default:false.
+	 */
+	public static function send_email( $from, $to, $bcc, $reply_to, $subject, $message, $from_name = '', $message_format = 'html', $attachments = '', $entry = false, $notification = false ) {
+
+		$SendEmail = new ReflectionMethod( 'GFCommon', 'send_email' );
+
+		// It was private; let's make it public
+		$SendEmail->setAccessible( true );
+
+		// Required: $from, $to, $bcc, $replyTo, $subject, $message
+		// Optional: $from_name, $message_format, $attachments, $lead, $notification
+		$SendEmail->invoke( new GFCommon, $from, $to, $bcc, $replyTo, $subject, $message, $from_name, $message_format, $attachments, $entry, $notification );
+	}
 
 
 } //end class
