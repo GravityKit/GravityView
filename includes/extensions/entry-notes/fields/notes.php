@@ -42,7 +42,7 @@ $container_class .= $show_notes ? ' gv-show-notes' : ' gv-hide-notes';
 ?>
 	<form method="post" class="gv-notes-list">
 		<?php if ( $show_delete ) { wp_nonce_field( 'gv_delete_notes_' . $entry_slug, 'gv_delete_notes' ); } ?>
-		<div class="inside">
+		<div>
 			<input type="hidden" name="action" value="gv_delete_notes" />
 			<input type="hidden" name="entry-slug" value="<?php echo esc_attr( $entry_slug ); ?>" />
 			<table>
