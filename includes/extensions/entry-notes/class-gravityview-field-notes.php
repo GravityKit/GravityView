@@ -335,7 +335,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			'notes' => array(
 				'type' => 'checkboxes',
 				'label' => __('Note Settings', 'gravityview'),
-				'desc' => __('Only users with specific capabilities will be able to view, add and delete notes. <a href="#">Read more</a>'),
+				'desc' => sprintf( _x('Only users with specific capabilities will be able to view, add and delete notes. %sRead more%s.', '%s is opening and closing HTML link', 'gravityview' ), '<a href="https://docs.gravityview.co/article/311-gravityview-capabilities">', '</a>' ),
 				'options' => array(
 					'view' => array(
 						'label' => __( 'Display notes?', 'gravityview' ),
