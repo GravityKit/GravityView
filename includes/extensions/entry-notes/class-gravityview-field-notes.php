@@ -425,7 +425,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		}
 
 		$note_content = array(
-			'avatar'                 => apply_filters( 'gravityview/field/notes/avatar', get_avatar( $note->user_id, 48 ), $note ),
+			'avatar'                 => get_avatar( $note->user_id, 48 ),
 			'user_name'              => $note->user_name,
 			'user_email'             => $note->user_email,
 			'added_on'               => esc_html__( 'added on {date_created_formatted}', 'gravityview' ),
