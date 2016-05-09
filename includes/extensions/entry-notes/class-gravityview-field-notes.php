@@ -519,24 +519,26 @@ class GravityView_Field_Notes extends GravityView_Field {
 			return '';
 		}
 
+		$gravityview_view = GravityView_View::getInstance();
+
 		ob_start();
-		GravityView_View::getInstance()->get_template_part( 'note', 'add-note' );
+		$gravityview_view->get_template_part( 'note', 'add-note' );
 		$add_note_html = ob_get_clean();
 
-		$entry = GravityView_View::getInstance()->getCurrentEntry();
+		$visibility_settings = $gravityview_view->getCurrentFieldSetting( 'notes' );
+		$entry = $gravityview_view->getCurrentEntry();
 		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
-		$show_delete = GravityView_View::getInstance()->getCurrentFieldSetting( 'notes_delete' ) ? '1' : '0';
 		$nonce_field = wp_nonce_field( 'gv_note_add_' . $entry_slug, 'gv_note_add', false, false );
 
 		// Only generate the dropdown if the field settings allow it
 		$email_fields = '';
-		if( GravityView_View::getInstance()->getCurrentFieldSetting( 'notes_email' ) ) {
+		if( ! empty( $visibility_settings['email'] ) ) {
 			$email_fields = self::get_note_email_fields( $entry_slug );
 		}
 
 		$add_note_html = str_replace( '{entry_slug}', $entry_slug, $add_note_html );
 		$add_note_html = str_replace( '{nonce_field}', $nonce_field, $add_note_html );
-		$add_note_html = str_replace( '{show_delete}', $show_delete, $add_note_html );
+		$add_note_html = str_replace( '{show_delete}', intval( $visibility_settings['delete'] ), $add_note_html );
 		$add_note_html   = str_replace( '{email_fields}', $email_fields, $add_note_html );
 
 		return $add_note_html;
