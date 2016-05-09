@@ -367,6 +367,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 *
 	 * Use `gravityview/field/notes/strings` filter to modify the strings
 	 *
+	 * @since 1.17
+	 *
 	 * @param string $key If set, return the string with the key of $key
 	 *
 	 * @return array|string Array of strings with keys and values. If $key is set, returns string. If missing $strings[ $key ], empty string.
@@ -413,6 +415,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 	/**
 	 * Generate HTML output for a single note
+	 *
+	 * @since 1.17
 	 *
 	 * @param object $note Note object with id, user_id, date_created, value, note_type, user_name, user_email vars
 	 * @param bool $show_delete Whether to show the bulk delete inputs
@@ -479,6 +483,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 	/**
 	 * Add a note.
+	 *
+	 * @since 1.17
 	 *
 	 * @see GravityView_Entry_Notes::add_note This method is mostly a wrapper
 	 *
@@ -605,6 +611,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		/**
 		 * @filter `gravityview/field/notes/custom-email` Whether to include a Custom Email option for users to define a custom email to mail notes to
+		 * @since 1.17
 		 * @param bool $include_custom Default: true
 		 */
 		$include_custom = apply_filters( 'gravityview/field/notes/custom-email', true );
@@ -679,7 +686,10 @@ class GravityView_Field_Notes extends GravityView_Field {
 			$from    = $current_user->user_email;
 			$to = $email_data['gv-note-to'];
 
-			// TODO: Check whether custom is allowed
+			/**
+			 * Documented in get_note_email_fields
+			 * @see get_note_email_fields
+			 */
 			$include_custom = apply_filters( 'gravityview/field/notes/custom-email', true );
 
 			if( 'custom' === $to && $include_custom ) {
