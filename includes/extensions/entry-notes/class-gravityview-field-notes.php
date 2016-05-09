@@ -109,7 +109,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 			$strings = self::strings();
 
-			wp_localize_script( 'gravityview-notes', 'GVEntryNotes', array(
+			wp_localize_script( 'gravityview-notes', 'GVNotes', array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'text' => array(
 					'processing' => $strings['processing'],

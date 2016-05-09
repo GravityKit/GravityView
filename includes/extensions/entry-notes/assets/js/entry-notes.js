@@ -9,7 +9,7 @@
  *
  * @since 1.17
  *
- * globals jQuery, GVEntryNotes
+ * globals jQuery, GVNotes
  */
 
 (function($){
@@ -174,7 +174,7 @@
 				return false;
 			}
 
-			if( ! window.confirm( GVEntryNotes.text.delete_confirm ) ) {
+			if( ! window.confirm( GVNotes.text.delete_confirm ) ) {
 				console.log('Just kidding. Please do not delete me!');
 				return false;
 			}
@@ -182,12 +182,12 @@
 			var $submit = $container.find( gv_notes.selectors.bulk_submit );
 
 			$.ajax({
-				url: GVEntryNotes.ajaxurl,
+				url: GVNotes.ajaxurl,
 				isLocal: true,
 				method: 'POST',
 				beforeSend: function () {
 					$container.addClass( 'gv-processing-note' );
-					$submit.data( 'value', $submit.html() ).prop( 'disabled', true ).html( GVEntryNotes.text.processing );
+					$submit.data( 'value', $submit.html() ).prop( 'disabled', true ).html( GVNotes.text.processing );
 				},
 				data: {
 					action: 'gv_delete_notes',
@@ -271,18 +271,18 @@
 			var $inputs = $container.find( ':input' ).not('[type=hidden]');
 
 			if( '' === $container.find( gv_notes.selectors.add_note_content ).val().trim() )  {
-				gv_notes.show_message( $submit, GVEntryNotes.text.error_empty_note );
+				gv_notes.show_message( $submit, GVNotes.text.error_empty_note );
 				return;
 			}
 			
 			$.ajax({
-				url: GVEntryNotes.ajaxurl,
+				url: GVNotes.ajaxurl,
 				isLocal: true,
 				method: 'POST',
 				beforeSend: function (  ) {
 					$container.addClass( 'gv-processing-note' );
 					$inputs.prop('disabled', 'disabled');
-					$submit.data( 'value', $submit.html() ).html( GVEntryNotes.text.processing );
+					$submit.data( 'value', $submit.html() ).html( GVNotes.text.processing );
 				},
 				data: {
 					action: 'gv_note_add',
