@@ -233,11 +233,12 @@
 		 *
 		 * @param {jQuery} $insert_after DOM element to insert message after. Default: form button
 		 * @param {string} message Message to display. Supports HTML.
+		 * @param {bool} is_error Is the message an error message? Default: true.
 		 * @returns {void}
 		 */
-		show_message: function ( $insert_after, message ) {
+		show_message: function ( $insert_after, message, is_error ) {
 			var css_class  = 'gv-note-message';
-			var message_class = 'gv-note-error';
+			var message_class = ( false === is_error ) ? 'gv-note-success' : 'gv-note-error';
 
 			// Create the message container, or if it exists, update it.
 			$message = $insert_after.next( '.' + css_class ).length ? $insert_after.next( '.' + css_class ) : $( '<div/>', { class: css_class } );
@@ -298,6 +299,7 @@
 					$( data.data.html ).hide().appendTo( $( 'table tbody', $container ) ).fadeIn();
 					gv_notes.setup_checkboxes( $container );
 					$inputs.val( '' ).trigger('change'); // Clear the existing note comment, show/hide fields
+					gv_notes.show_message( $submit, GVNotes.text.note_added, false );
 				} else {
 					gv_notes.show_message( $submit, data.data.error );
 				}

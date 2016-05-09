@@ -105,8 +105,15 @@
     border-radius: 3px;
   }
 
+  // Don't display success messages by default if the notes are being displayed
+  &.gv-show-notes .gv-note-success {
+    display: none!important;
+  }
+
   .gv-note-success {
-    display: none!important; // Don't display success messages by default
+    background-color: rgb(236, 252, 222);
+    background-color: rgba(236, 252, 222, .9);
+    border: 1px solid #a7c886;
   }
 
   .gv-note-deleted,

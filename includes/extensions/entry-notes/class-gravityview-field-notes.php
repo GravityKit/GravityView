@@ -114,6 +114,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 				'text' => array(
 					'processing' => $strings['processing'],
 					'delete_confirm' => $strings['delete-confirm'],
+					'note_added' => $strings['added-note'],
 					'error_invalid' => $strings['error-invalid'],
 					'error_empty_note' => $strings['error-empty-note'],
 				),
@@ -374,6 +375,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		$strings = array(
 			'add-note' => __( 'Add Note', 'gravityview' ),
+			'added-note' => __( 'Note added.', 'gravityview' ),
 			'content-label' => __( 'Note Content', 'gravityview' ),
 			'delete' => __( 'Delete', 'gravityview' ),
 			'delete-confirm' => __( 'Are you sure you want to delete the selected notes?', 'gravityview' ),
