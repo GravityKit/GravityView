@@ -124,10 +124,30 @@
 				.on( 'click', ".gv-field-controls a[href='#settings']", vcfg.openFieldSettings )
 
 				// Double-clicking a field/widget label opens settings
-				.on( 'dblclick', ".gv-fields", vcfg.openFieldSettings );
+				.on( 'dblclick', ".gv-fields", vcfg.openFieldSettings )
+
+				// Update checkbox visibility when having dependency checkboxes
+				.on( 'change', ".gv-setting-list", vcfg.toggleCheckboxes );
 
 			// End bind to $('body')
 
+		},
+
+		/**
+		 * Show/hide checkboxes that have visibility conditionals
+		 * @see GravityView_FieldType_checkboxes
+		 * @param  {jQueryEvent} e
+		 */
+		toggleCheckboxes: function (  e ) {
+
+			var $parent = $( this );
+			$conditionals = $( this ).find( '[data-requires]' );
+
+			$conditionals.each( function ()  {
+				var requires = $( this ).data( 'requires' );
+				var $checkbox = $parent.find(':checkbox[name$="['+requires+']"]');
+				$( this ).toggle( $checkbox.is(':checked') );
+			});
 		},
 
 		/**
@@ -1235,6 +1255,7 @@
 			// Toggle Source URL fields
 			vcfg.toggleVisibility( $( 'input:checkbox[name*=link_to_source]', $parent ), $( '[name*=source_link_text]', $parent ), first_run );
 
+			$( ".gv-setting-list", $parent ).trigger( 'change' );
 
 			$( 'input:checkbox', $parent ).attr( 'disabled', null );
 

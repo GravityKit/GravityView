@@ -26,12 +26,15 @@ $notes = GravityView_Entry_Notes::get_notes( $entry['id'] );
 $strings = GravityView_Field_Notes::strings();
 $entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
 
-$show_add = $gravityview_view->getCurrentFieldSetting( 'notes_add' );
-$show_delete = ( $gravityview_view->getCurrentFieldSetting( 'notes_delete' ) && GVCommon::has_cap( 'gravityview_delete_entry_notes' ) );
-$show_notes = ( $gravityview_view->getCurrentFieldSetting( 'notes_view_loggedout' ) || ( $gravityview_view->getCurrentFieldSetting( 'notes_view' ) && GVCommon::has_cap( 'gravityview_view_entry_notes' ) ) );
+$visibility_settings = $gravityview_view->getCurrentFieldSetting( 'notes' );
+$show_add = ! empty( $visibility_settings['add'] );
+$show_delete = ( ! empty( $visibility_settings['delete'] ) && GVCommon::has_cap( 'gravityview_delete_entry_notes' ) );
+$show_notes = ( ! empty( $visibility_settings['view_loggedout'] ) || ( ! empty( $visibility_settings['view'] ) && GVCommon::has_cap( 'gravityview_view_entry_notes' ) ) );
 
+$container_class = ( sizeof( $notes ) > 0 ? 'gv-has-notes' : 'gv-no-notes' );
+$container_class .= $show_notes ? ' gv-show-notes' : ' gv-hide-notes';
 ?>
-<div class="gv-notes <?php echo ( sizeof( $notes ) > 0 ? 'gv-has-notes' : 'gv-no-notes' ); ?>">
+<div class="gv-notes <?php echo $container_class; ?>">
 <?php
 	if( $show_notes ) {
 ?>

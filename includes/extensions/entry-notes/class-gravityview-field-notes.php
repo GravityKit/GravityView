@@ -330,38 +330,35 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		unset( $field_options['show_as_link'] );
 
-		$field_options['notes_view'] = array(
-			'type' => 'checkbox',
-			'label' => __( 'Display notes?', 'gravityview' ),
-			'value' => true,
+		$notes_options = array(
+			'notes' => array(
+				'type' => 'checkboxes',
+				'label' => __('Note Settings', 'gravityview'),
+				'desc' => __('Only users with specific capabilities will be able to view, add and delete notes. <a href="#">Read more</a>'),
+				'options' => array(
+					'view' => array(
+						'label' => __( 'Display notes?', 'gravityview' ),
+					),
+					'view_loggedout' => array(
+						'label' => __( 'Display notes to users who are not logged-in?', 'gravityview' ),
+						'requires' => 'view',
+					),
+					'add' => array(
+						'label' => __( 'Enable adding notes?', 'gravityview' ),
+					),
+					'email' => array(
+						'label' => __( 'Allow emailing notes?', 'gravityview' ),
+						'requires' => 'add',
+					),
+					'delete' => array(
+						'label' => __( 'Allow deleting notes?', 'gravityview' ),
+					),
+				),
+				'value' => array( 'view', 'add', 'email' ),
+			),
 		);
 
-		$field_options['notes_view_loggedout'] = array(
-			'type' => 'checkbox',
-			'label' => __( 'Display notes to users who are not logged-in?', 'gravityview' ),
-			'value' => false,
-		);
-
-		$field_options['notes_add'] = array(
-			'type' => 'checkbox',
-			'label' => __( 'Allow adding notes?', 'gravityview' ),
-			'value' => true,
-		);
-
-		$field_options['notes_email'] = array(
-			'type' => 'checkbox',
-			'label' => __( 'Allow emailing notes?', 'gravityview' ),
-			'value' => true,
-		);
-
-		// TODO: make this only show when notes_view is true
-		$field_options['notes_delete'] = array(
-			'type' => 'checkbox',
-			'label' => __( 'Allow deleting notes?', 'gravityview' ),
-			'value' => false,
-		);
-
-		return $field_options;
+		return $notes_options + $field_options;
 	}
 
 	/**
