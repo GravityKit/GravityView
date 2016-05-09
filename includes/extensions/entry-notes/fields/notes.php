@@ -8,7 +8,10 @@
 
 $gravityview_view = GravityView_View::getInstance();
 
-if(	! GVCommon::has_cap( array( 'gravityview_view_entry_notes', 'gravityview_add_entry_notes', 'gravityview_delete_entry_notes' ) ) && ! $gravityview_view->getCurrentFieldSetting( 'notes_view_loggedout' ) ) {
+$visibility_settings = $gravityview_view->getCurrentFieldSetting( 'notes' );
+$show_notes_logged_out = ( ! empty( $visibility_settings['view'] ) && ! empty( $visibility_settings['view_loggedout'] ) );
+
+if(	! GVCommon::has_cap( array( 'gravityview_view_entry_notes', 'gravityview_add_entry_notes', 'gravityview_delete_entry_notes' ) ) && ! $show_notes_logged_out ) {
 	return;
 }
 
@@ -26,10 +29,9 @@ $notes = GravityView_Entry_Notes::get_notes( $entry['id'] );
 $strings = GravityView_Field_Notes::strings();
 $entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
 
-$visibility_settings = $gravityview_view->getCurrentFieldSetting( 'notes' );
 $show_add = ! empty( $visibility_settings['add'] );
 $show_delete = ( ! empty( $visibility_settings['delete'] ) && GVCommon::has_cap( 'gravityview_delete_entry_notes' ) );
-$show_notes = ( ! empty( $visibility_settings['view_loggedout'] ) || ( ! empty( $visibility_settings['view'] ) && GVCommon::has_cap( 'gravityview_view_entry_notes' ) ) );
+$show_notes = $show_notes_logged_out || ( ! empty( $visibility_settings['view'] ) && GVCommon::has_cap( 'gravityview_view_entry_notes' ) );
 
 $container_class = ( sizeof( $notes ) > 0 ? 'gv-has-notes' : 'gv-no-notes' );
 $container_class .= $show_notes ? ' gv-show-notes' : ' gv-hide-notes';
