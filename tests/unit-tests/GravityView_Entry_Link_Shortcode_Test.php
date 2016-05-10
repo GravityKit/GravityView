@@ -108,7 +108,7 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 		$delete_link = $this->object->delete_shortcode( $atts );
 		$atts['action'] = 'delete';
 		$delete_link_backward_compat = $this->object->read_shortcode( $atts );
-		$this->assertEquals( '<a onclick="return window.confirm(&#039;Are you sure you want to delete this entry? This cannot be undone.&#039;);" href="'. esc_url_raw( $delete_entry_delete_link ) .'">Delete Entry</a>', $delete_link, 'delete link' );
+		$this->assertEquals( '<a href="'. esc_url_raw( $delete_entry_delete_link ) .'" onclick="return window.confirm(&#039;Are you sure you want to delete this entry? This cannot be undone.&#039;);">Delete Entry</a>', $delete_link, 'delete link' );
 		$this->assertEquals( $delete_link, $delete_link_backward_compat );
 
 		$atts['return'] = 'url';
@@ -141,12 +141,12 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 		$atts['return'] = 'html';
 		$atts['link_atts'] = 'target="_blank"&title="check me out!"';
 		$edit_link_link_atts = $this->object->edit_shortcode( $atts );
-		$this->assertEquals( '<a title="&quot;check me out!&quot;" target="&quot;_blank&quot;" href="http://example.org/?p='.$atts['post_id'].'&amp;entry='.$atts['entry_id'].esc_attr( $gvid ) .'&amp;page=gf_entries&amp;view=entry&amp;edit='.$nonce . '">Edit Entry</a>', $edit_link_link_atts, 'edit link, return html, with link_atts target="_blank"&title="check me out!"' );
+		$this->assertEquals( '<a href="http://example.org/?p='.$atts['post_id'].'&amp;entry='.$atts['entry_id'].esc_attr( $gvid ) .'&amp;page=gf_entries&amp;view=entry&amp;edit='.$nonce . '" target="&quot;_blank&quot;" title="&quot;check me out!&quot;">Edit Entry</a>', $edit_link_link_atts, 'edit link, return html, with link_atts target="_blank"&title="check me out!"' );
 
 		$atts['return'] = 'html';
 		$atts['link_atts'] = 'target=_blank&title=check me out!';
 		$edit_link_link_atts = $this->object->edit_shortcode( $atts );
-		$this->assertEquals( '<a title="check me out!" target="_blank" href="http://example.org/?p='.$atts['post_id'].'&amp;entry='.$atts['entry_id']. esc_attr( $gvid ) . '&amp;page=gf_entries&amp;view=entry&amp;edit='.$nonce . '">Edit Entry</a>', $edit_link_link_atts, 'edit link return html with link atts target=_blank&title=check me out!' );
+		$this->assertEquals( '<a href="http://example.org/?p='.$atts['post_id'].'&amp;entry='.$atts['entry_id']. esc_attr( $gvid ) . '&amp;page=gf_entries&amp;view=entry&amp;edit='.$nonce . '" target="_blank" title="check me out!">Edit Entry</a>', $edit_link_link_atts, 'edit link return html with link atts target=_blank&title=check me out!' );
 
 		$zero = $this->factory->user->create_and_set(array('role' => 'zero'));
 
