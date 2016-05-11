@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Option to make Phone numbers click-to-call
 * Fixed: Allow multiple Post Category fields in Edit Entry
 * Added: `gravityview/edit_entry/post_content/append_categories` filter to modify whether post categories should be added to or replaced?
+* Fixed: Updating Post Image fields in Edit Entry when the field is not set to "Featured Image" in Gravity Forms
 * Fixed: When using the User Opt-in field together with the View setting "Show Only Approved Entries", entries weren't showing
 * Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used
 * Fixed: Showing the first column of a List field was displaying all the field's columns

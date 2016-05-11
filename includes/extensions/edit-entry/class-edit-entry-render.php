@@ -479,13 +479,114 @@ class GravityView_Edit_Entry_Render {
     }
 
     /**
+     * Handle updating the Post Image field
+     *
+     * Sets a new Featured Image if configured in Gravity Forms; otherwise uploads/updates media
+     *
+     * @since 1.17
+     *
+     * @uses GFFormsModel::media_handle_upload
+     * @uses set_post_thumbnail
+     * 
+     * @param array $form GF Form array
+     * @param GF_Field $field GF Field
+     * @param string $field_id Numeric ID of the field
+     * @param string $value
+     * @param array $entry GF Entry currently being edited
+     * @param int $post_id ID of the Post being edited
+     *
+     * @return mixed|string
+     */
+    private function update_post_image( $form, $field, $field_id, $value, $entry, $post_id ) {
+
+        $input_name = 'input_' . $field_id;
+
+        if ( !empty( $_FILES[ $input_name ]['name'] ) ) {
+
+            // We have a new image
+
+            $value = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'] );
+
+            $ary = ! empty( $value ) ? explode( '|:|', $value ) : array();
+            $img_url = rgar( $ary, 0 );
+
+            $img_title       = count( $ary ) > 1 ? $ary[1] : '';
+            $img_caption     = count( $ary ) > 2 ? $ary[2] : '';
+            $img_description = count( $ary ) > 3 ? $ary[3] : '';
+
+            $image_meta = array(
+                'post_excerpt' => $img_caption,
+                'post_content' => $img_description,
+            );
+
+            //adding title only if it is not empty. It will default to the file name if it is not in the array
+            if ( ! empty( $img_title ) ) {
+                $image_meta['post_title'] = $img_title;
+            }
+
+            /**
+             * todo: As soon as \GFFormsModel::media_handle_upload becomes a public method, move this call to \GFFormsModel::media_handle_upload and remove the hack from this class.
+             * Note: the method became public in GF 1.9.17.7, but we don't require that version yet.
+             */
+            require_once GRAVITYVIEW_DIR . 'includes/class-gravityview-gfformsmodel.php';
+            $media_id = GravityView_GFFormsModel::media_handle_upload( $img_url, $post_id, $image_meta );
+
+            // is this field set as featured image?
+            if ( $media_id && $field->postFeaturedImage ) {
+                set_post_thumbnail( $post_id, $media_id );
+            }
+
+        } elseif ( !empty( $_POST[ $input_name ] ) && is_array( $value ) ) {
+
+            // Same image although the image title, caption or description might have changed
+
+            $ary = ! empty( $entry[ $field_id ] ) ? explode( '|:|', $entry[ $field_id ] ) : array();
+            $img_url = rgar( $ary, 0 );
+
+            // is this really the same image or something went wrong ?
+            if( $img_url === $_POST[ $input_name ] ) {
+
+                $img_title       = rgar( $value, $field_id .'.1' );
+                $img_caption     = rgar( $value, $field_id .'.4' );
+                $img_description = rgar( $value, $field_id .'.7' );
+
+                $value = ! empty( $img_url ) ? $img_url . "|:|" . $img_title . "|:|" . $img_caption . "|:|" . $img_description : '';
+
+                if ( $field->postFeaturedImage ) {
+
+                    $image_meta = array(
+                        'ID' => get_post_thumbnail_id( $post_id ),
+                        'post_title' => $img_title,
+                        'post_excerpt' => $img_caption,
+                        'post_content' => $img_description,
+                    );
+
+                    // update image title, caption or description
+                    wp_update_post( $image_meta );
+                }
+            }
+
+        } else {
+
+            // if we get here, image was removed or not set.
+            $value = '';
+
+            if ( $field->postFeaturedImage ) {
+                delete_post_thumbnail( $post_id );
+            }
+        }
+
+        return $value;
+    }
+
+    /**
      * Loop through the fields being edited and if they include Post fields, update the Entry's post object
      *
      * @param array $form Gravity Forms form
      *
      * @return void
      */
-    function maybe_update_post_fields( $form ) {
+    private function maybe_update_post_fields( $form ) {
 
         $post_id = $this->entry['post_id'];
 
@@ -550,88 +651,7 @@ class GravityView_Edit_Entry_Render {
                         break;
 
                     case 'post_image':
-
-                        $input_name = 'input_' . $field_id;
-
-                        if ( !empty( $_FILES[ $input_name ]['name'] ) ) {
-
-                            // We have a new image
-
-                            $value = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'] );
-
-                            // is this field set as featured image, if not, leave
-                            if ( ! $field->postFeaturedImage ) {
-                                break;
-                            }
-
-                            $ary = ! empty( $value ) ? explode( '|:|', $value ) : array();
-                            $img_url = rgar( $ary, 0 );
-
-                            $img_title       = count( $ary ) > 1 ? $ary[1] : '';
-                            $img_caption     = count( $ary ) > 2 ? $ary[2] : '';
-                            $img_description = count( $ary ) > 3 ? $ary[3] : '';
-
-                            $image_meta = array(
-                                'post_excerpt' => $img_caption,
-                                'post_content' => $img_description,
-                            );
-
-                            //adding title only if it is not empty. It will default to the file name if it is not in the array
-                            if ( ! empty( $img_title ) ) {
-                                $image_meta['post_title'] = $img_title;
-                            }
-
-                            //todo: As soon as \GFFormsModel::media_handle_upload becomes a public method, move this call to \GFFormsModel::media_handle_upload and remove the hack from this class.
-                            require_once GRAVITYVIEW_DIR . 'includes/class-gravityview-gfformsmodel.php';
-                            $media_id = GravityView_GFFormsModel::media_handle_upload( $img_url, $post_id, $image_meta );
-
-                            if ( $media_id ) {
-                                set_post_thumbnail( $post_id, $media_id );
-                            }
-
-                            break;
-
-                        } elseif ( !empty( $_POST[ $input_name ] ) && is_array( $value ) ) {
-
-                            // Same image although the image title, caption or description might have changed
-
-                            $ary = ! empty( $entry[ $field_id ] ) ? explode( '|:|', $entry[ $field_id ] ) : array();
-                            $img_url = rgar( $ary, 0 );
-
-                            // is this really the same image or something went wrong ?
-                            if( $img_url === $_POST[ $input_name ] ) {
-
-                                $img_title       = isset( $value[ $field_id .'.1' ] ) ? $value[ $field_id .'.1' ] : '';
-                                $img_caption     = isset( $value[ $field_id .'.4' ] ) ? $value[ $field_id .'.4' ] : '';
-                                $img_description = isset( $value[ $field_id .'.7' ] ) ? $value[ $field_id .'.7' ] : '';
-
-                                $value = ! empty( $img_url ) ? $img_url . "|:|" . $img_title . "|:|" . $img_caption . "|:|" . $img_description : '';
-
-                                if ( $field->postFeaturedImage ) {
-
-                                    $image_meta = array(
-                                        'ID' => get_post_thumbnail_id( $post_id ),
-                                        'post_title' => $img_title,
-                                        'post_excerpt' => $img_caption,
-                                        'post_content' => $img_description,
-                                    );
-
-                                    // update image title, caption or description
-                                    wp_update_post( $image_meta );
-                                }
-
-                                break;
-                            }
-
-                        }
-
-                        // if we get here, image was removed or not set.
-
-                        $value = '';
-                        if ( $field->postFeaturedImage ) {
-                            delete_post_thumbnail( $post_id );
-                        }
-
+                        $value = $this->update_post_image( $form, $field, $field_id, $value, $entry, $post_id );
                         break;
 
                 }
