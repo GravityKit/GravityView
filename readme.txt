@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Modified: When deleting/trashing entries with GravityView, posts created by GravityView will also be deleted or trashed.
 * Added: `gravityview/delete-entry/delete-connected-post` Filter to modify behavior when entry is deleted. Return false to prevent posts from being deleted or trashed when connected entries are deleted or trashed.
 * Modified: Added second parameter `$entry` to `gravityview/delete-entry/trashed` and `gravityview/delete-entry/deleted` actions
+* Fixed: Signature field not displaying existing signatures in Edit Entry
 * Fixed: Allow multiple Post Category fields in Edit Entry
 * Added: `gravityview/edit_entry/post_content/append_categories` filter to modify whether post categories should be added to or replaced?
 * Fixed: Updating Post Image fields in Edit Entry when the field is not set to "Featured Image" in Gravity Forms
