@@ -25,7 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
     * `list-body.php`: Removed `id` attribute from entry title `<h3>`
 * Added: Option to make Phone numbers click-to-call
 * Modified: When deleting/trashing entries with GravityView, posts created by GravityView will also be deleted or trashed.
-* Added: `gravityview/delete-entry/delete-connected-post` Filter to modify behavior when entry is deleted. Return false to prevent posts from being deleted or trashed when connected entries are deleted or trashed.
+* Added: `gravityview/delete-entry/delete-connected-post` Filter to modify behavior when entry is deleted. Return false to prevent posts from being deleted or trashed when connected entries are deleted or trashed. See `gravityview/delete-entry/mode` filter to modify the default behavior, which is "delete".
 * Modified: Added second parameter `$entry` to `gravityview/delete-entry/trashed` and `gravityview/delete-entry/deleted` actions
 * Fixed: Signature field not displaying existing signatures in Edit Entry
 * Fixed: Allow multiple Post Category fields in Edit Entry
