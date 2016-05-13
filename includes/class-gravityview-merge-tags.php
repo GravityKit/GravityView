@@ -40,7 +40,7 @@ class GravityView_Merge_Tags {
 	 * @param GF_Field $field The current field.
 	 * @param mixed $raw_value The raw value submitted for this field.
 	 *
-	 * @return mixed
+	 * @return string If no modifiers passed, $raw_value is not a string, or {all_fields} Merge Tag is used, original value. Otherwise, output from modifier methods.
 	 */
 	public static function process_modifiers( $value, $merge_tag, $modifier, $field, $raw_value ) {
 
@@ -51,8 +51,8 @@ class GravityView_Merge_Tags {
 
 		// matching regex => the value is the method to call to replace the value.
 		$gv_modifiers = array(
-			'maxwords:(\d+)' => 'modifier_maxwords',
-			'wpautop' => 'modifier_wpautop',
+			'maxwords:(\d+)' => 'modifier_maxwords', /** @see modifier_maxwords */
+			'wpautop' => 'modifier_wpautop', /** @see modifier_wpautop */
 		);
 		
 		$return = $value;
