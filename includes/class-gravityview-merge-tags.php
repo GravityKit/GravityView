@@ -62,7 +62,7 @@ class GravityView_Merge_Tags {
 			// Only match the regex if it's the first modifer; this allows us to enforce our own modifier structure
 			preg_match( '/^' . $gv_modifier .'/ism', $modifier, $matches );
 
-			if( $matches ) {
+			if( ! empty( $matches ) ) {
 				// The called method is passed the raw value and the full matches array
 				$return = self::$method( $raw_value, $matches );
 				break;
