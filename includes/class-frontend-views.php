@@ -567,6 +567,9 @@ class GravityView_frontend {
 		 * @since 1.15
 		 */
 		if( is_user_logged_in() && false === GVCommon::has_cap( 'read_gravityview', $view_id ) ) {
+
+			do_action( 'gravityview_log_debug', sprintf( '[render_view] Returning: View %d is not visible by current user.', $view_id ) );
+
 			return null;
 		}
 
@@ -655,6 +658,11 @@ class GravityView_frontend {
 			// user requested Single Entry View
 			do_action( 'gravityview_log_debug', '[render_view] Executing Single View' );
 
+
+			/**
+			 * @action `gravityview_render_entry_{View ID}` Before rendering a single entry for a specific View ID
+			 * @since 1.17
+			 */
 			do_action( 'gravityview_render_entry_'.$view_data['id'] );
 
 			$entry = $this->getEntry();

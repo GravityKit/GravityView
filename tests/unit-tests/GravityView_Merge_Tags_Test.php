@@ -34,6 +34,101 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @since 1.17
+	 * @covers GravityView_Merge_Tags::process_modifiers()
+	 */
+	function test_process_modifiers() {
+
+		$tests = array(
+			array(
+				'modifier' => 'maxwords:4',
+				'raw' => 'The Earth was small, light blue, and so touchingly alone, our home that must be defended like a holy relic.',
+				'expected' => 'The Earth was small,&hellip;',
+			),
+			// Test skipping {all_fields} merge tag
+			array(
+				'modifier' => 'maxwords:4',
+				'merge_tag' => 'all_fields',
+				'raw' => 'this should not be replaced; we are using all_fields merge tag.',
+				'expected' => 'this should not be replaced; we are using all_fields merge tag.',
+				'value' => 'this should not be replaced; we are using all_fields merge tag.',
+			),
+			// Test basic HTML
+			array(
+				'modifier' => 'maxwords:4',
+				'raw' => '<p><strong>The Earth was small, light blue</strong>, and so touchingly alone, our home that must be defended like a holy relic.</p>',
+				'expected' => '<p><strong>The Earth was small,&hellip;</strong></p>',
+			),
+			// Test HTML entities
+			array(
+				'modifier' => 'maxwords:5',
+				'raw' => 'The Earth was small &amp; light blue.',
+				'expected' => 'The Earth was small &amp;&hellip;',
+			),
+
+			// Test basic HTML with spacing
+			// In this code, the <p> tag is considered its own word.
+			array(
+				'modifier' => 'maxwords:11',
+				'raw' => '<p>
+	<strong>The Earth was 
+	small, light blue</strong>, and so touchingly <i>alone</i>, 
+		our home that must be defended like a holy relic.</p>',
+				'expected' => '<p> <strong>The Earth was small, light blue</strong>, and so touchingly <i>alone</i>,&hellip;</p>',
+			),
+
+			// Don't run maxwords on non-string
+			array(
+				'modifier' => 'maxwords',
+				'value' => 'this should not be replaced; raw value is an array.',
+				'expected' => 'this should not be replaced; raw value is an array.',
+				'raw' => array(),
+			),
+
+			// Test wpautop
+			array(
+				'modifier' => 'wpautop',
+				'raw' => 'The Earth was small &amp; light blue.',
+				'expected' => '<p>The Earth was small &amp; light blue.</p>',
+			),
+
+			// Test wpautop line breaks
+			array(
+				'modifier' => 'wpautop',
+				'raw' => 'The Earth was small 
+				&amp; light blue.',
+				'expected' => '<p>The Earth was small<br />
+				&amp; light blue.</p>',
+			),
+
+			// Don't run wpautop on {all_fields}
+			array(
+				'modifier' => 'wpautop',
+				'merge_tag' => 'all_fields',
+				'value' => 'this should not be replaced; we are using all_fields merge tag.',
+				'raw' => 'this should not be replaced; we are using all_fields merge tag.',
+				'expected' => 'this should not be replaced; we are using all_fields merge tag.',
+			),
+
+			// Don't run wpautop on non-string
+			array(
+				'modifier' => 'wpautop',
+				'value' => 'this should not be replaced; raw value is an array.',
+				'expected' => 'this should not be replaced; raw value is an array.',
+				'raw' => array(),
+			),
+		);
+
+		foreach ( $tests as $test ) {
+			$value = isset( $test['value'] ) ? $test['value'] : 'value should not be used';
+			$merge_tag = isset( $test['merge_tag'] ) ? $test['merge_tag'] : 'merge tag not used';
+			$value = GravityView_Merge_Tags::process_modifiers( $value, $merge_tag, $test['modifier'], 'field not used', $test['raw'] );
+			$this->assertEquals( $test['expected'], $value, print_r( $test, true ) );
+		}
+
+	}
+
+	/**
 	 * @covers GravityView_Field_Date_Created::replace_merge_tag
 	 * @group date_created
 	 */

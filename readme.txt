@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.4.2
+Tested up to: 4.5
 Stable tag: trunk
 Contributors: katzwebservices, luistinygod
 License: GPL 3 or higher
@@ -19,6 +19,45 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+* Template change: Changed
+    * `list-single.php` and `list-body.php`: changed `#gv_list_{entry_id}` to `#gv_list_{entry slug}`. If using custom entry slugs, the ID attribute will change. Otherwise, no change.
+    * `list-body.php`: Removed `id` attribute from entry title `<h3>`
+* Added: Option to make Phone numbers click-to-call
+* Modified: When deleting/trashing entries with GravityView, posts created by GravityView will also be deleted or trashed.
+* Added: `gravityview/delete-entry/delete-connected-post` Filter to modify behavior when entry is deleted. Return false to prevent posts from being deleted or trashed when connected entries are deleted or trashed. See `gravityview/delete-entry/mode` filter to modify the default behavior, which is "delete".
+* Modified: Added second parameter `$entry` to `gravityview/delete-entry/trashed` and `gravityview/delete-entry/deleted` actions
+* Fixed: Signature field not displaying existing signatures in Edit Entry
+* Fixed: Allow multiple Post Category fields in Edit Entry
+* Added: `gravityview/edit_entry/post_content/append_categories` filter to modify whether post categories should be added to or replaced?
+* Fixed: Updating Post Image fields in Edit Entry when the field is not set to "Featured Image" in Gravity Forms
+* Fixed: When using the User Opt-in field together with the View setting "Show Only Approved Entries", entries weren't showing
+* Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used
+* Fixed: Showing the first column of a List field was displaying all the field's columns
+* Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used.
+* Added: `GVCommon::send_email()`, a public alias of `GFCommon::send_email()`
+* Fixed: An image with no `src` output a broken HTML `<img>` tag
+* Fixed: Don't remove Edit Post/Page admin bar menu item
+
+= 1.16.5.1 on April 7 =
+
+* Fixed: Edit Entry links didn't work
+
+= 1.16.5 on April 6 =
+
+* Fixed: Search Bar inputs not displaying for Number fields
+* Fixed: Compatibility issue with [ACF](https://wordpress.org/plugins/advanced-custom-fields/) plugin when saving a View
+* Fixed (for real this time): Survey field values weren't displaying in Edit Entry
+* Tweak: Made it clearer when editing a View that GravityView is processing in the background
+* Added: Chinese translation (thanks, Edi Weigh!)
+* Updated: German translation (thanks, [@akwdigital](https://www.transifex.com/user/profile/akwdigital/)!)
+
+__Developer Notes__
+
+* Added: `gravityview/fields/custom/decode_shortcodes` filter to determine whether to process shortcodes inside Merge Tags in Custom Content fields. Off by default, for security reasons.
+* Fixed: Potential fatal errors when activating GravityView if Gravity Forms isn't active
+* Updated: Gamajo Template Loader to Version 1.2
+* Verified compatibility with WordPress 4.5
 
 = 1.16.4.1 on March 23 =
 * Fixed: Major display issue caused by output buffering introduced in 1.16.4. Sorry!

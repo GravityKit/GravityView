@@ -437,7 +437,7 @@ function gravityview_is_valid_datetime( $datetime, $expected_format = 'Y-m-d' ) 
  *
  * @param string $field_id Full ID of field, with or without input ID, like "12.3" or "7".
  *
- * @return int If field ID has an input, returns that input number. Otherwise, returns 0.
+ * @return int If field ID has an input, returns that input number. Otherwise, returns false.
  */
 function gravityview_get_input_id_from_id( $field_id = '' ) {
 
@@ -448,7 +448,7 @@ function gravityview_get_input_id_from_id( $field_id = '' ) {
 
 	$exploded = explode( '.', "{$field_id}" );
 
-	return isset( $exploded[1] ) ? intval( $exploded[1] ) : 0;
+	return isset( $exploded[1] ) ? intval( $exploded[1] ) : false;
 }
 
 /**
@@ -503,4 +503,39 @@ function gravityview_get_terms_choices( $args = array() ) {
 	}
 
 	return $choices;
+}
+
+/**
+ * Maybe convert jQuery-serialized fields into array, otherwise return $_POST['fields'] array
+ *
+ * Fields are passed as a jQuery-serialized array, created in admin-views.js in the serializeForm method.
+ *
+ * @since TODO
+ *
+ * @uses GVCommon::gv_parse_str
+ *
+ * @return array Array of fields
+ */
+function _gravityview_process_posted_fields() {
+	$fields = array();
+
+	if( !empty( $_POST['fields'] ) ) {
+		if ( ! is_array( $_POST['fields'] ) ) {
+
+			// We are not using parse_str() due to max_input_vars limitation with large View configurations
+			$fields_holder = array();
+			GVCommon::gv_parse_str( $_POST['fields'], $fields_holder );
+
+			if ( isset( $fields_holder['fields'] ) ) {
+				$fields = $fields_holder['fields'];
+			} else {
+				do_action( 'gravityview_log_error', '[save_postdata] No `fields` key was found after parsing $fields string', $fields_holder );
+			}
+
+		} else {
+			$fields = $_POST['fields'];
+		}
+	}
+
+	return $fields;
 }

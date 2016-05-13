@@ -353,6 +353,10 @@ function gravityview_view_has_single_checkbox_or_radio( $form, $view_fields ) {
 		foreach( $form_fields as $form_field ) {
 			$field_id = $form_field->id;
 			foreach( $view_fields as $zone ) {
+
+				// ACF compatibility; ACF-added fields aren't arrays
+				if ( ! is_array( $zone ) ) { continue; }
+
 				foreach( $zone as $field ) {
 					// If it's an input, not the parent and the parent ID matches a checkbox or radio
 					if( ( strpos( $field['id'], '.' ) > 0 ) && floor( $field['id'] ) === floor( $field_id ) ) {

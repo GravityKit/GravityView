@@ -1129,7 +1129,17 @@ class GVCommon {
 	 * @return array          Multi-array of fields with first level being the field zones. See code comment.
 	 */
 	public static function get_directory_fields( $post_id ) {
-		return get_post_meta( $post_id, '_gravityview_directory_fields', true );
+		$fields = get_post_meta( $post_id, '_gravityview_directory_fields', true );
+
+		/**
+		 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array
+		 * @since 1.6.5
+		 * @param $fields array Multi-array of fields with first level being the field zones
+		 * @param $post_id int Post ID
+		 */
+		$fields = apply_filters( 'gravityview/configuration/fields', $fields, $post_id );
+
+		return $fields;
 	}
 
 
@@ -1501,7 +1511,51 @@ class GVCommon {
         return '<div class="gv-notice '.gravityview_sanitize_html_class( $class ) .'">'. $notice .'</div>';
     }
 
+	/**
+	 * Inspired on \GFCommon::encode_shortcodes, reverse the encoding by replacing the ascii characters by the shortcode brackets
+	 * @since 1.16.5
+	 * @param string $string Input string to decode
+	 * @return string $string Output string
+	 */
+	public static function decode_shortcodes( $string ) {
+		$replace = array( '[', ']', '"' );
+		$find = array( '&#91;', '&#93;', '&quot;' );
+		$string = str_replace( $find, $replace, $string );
 
+		return $string;
+	}
+
+
+	/**
+	 * Send email using GFCommon::send_email()
+	 *
+	 * @since 1.17
+	 *
+	 * @see GFCommon::send_email This just makes the method public
+	 *
+	 * @param string $from               Sender address (required)
+	 * @param string $to                 Recipient address (required)
+	 * @param string $bcc                BCC recipients (required)
+	 * @param string $reply_to           Reply-to address (required)
+	 * @param string $subject            Subject line (required)
+	 * @param string $message            Message body (required)
+	 * @param string $from_name          Displayed name of the sender
+	 * @param string $message_format     If "html", sent text as `text/html`. Otherwise, `text/plain`. Default: "html".
+	 * @param string|array $attachments  Optional. Files to attach. {@see wp_mail()} for usage. Default: "".
+	 * @param array|false $entry         Gravity Forms entry array, related to the email. Default: false.
+	 * @param array|false $notification  Gravity Forms notification that triggered the email. {@see GFCommon::send_notification}. Default:false.
+	 */
+	public static function send_email( $from, $to, $bcc, $reply_to, $subject, $message, $from_name = '', $message_format = 'html', $attachments = '', $entry = false, $notification = false ) {
+
+		$SendEmail = new ReflectionMethod( 'GFCommon', 'send_email' );
+
+		// It was private; let's make it public
+		$SendEmail->setAccessible( true );
+
+		// Required: $from, $to, $bcc, $replyTo, $subject, $message
+		// Optional: $from_name, $message_format, $attachments, $lead, $notification
+		$SendEmail->invoke( new GFCommon, $from, $to, $bcc, $replyTo, $subject, $message, $from_name, $message_format, $attachments, $entry, $notification );
+	}
 
 
 } //end class
