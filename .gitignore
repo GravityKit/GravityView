@@ -74,3 +74,5 @@ languages/gravityview-de.po
 docs/config.doxygen
 
 .idea/modules.xml
+
+.idea/php.xml
