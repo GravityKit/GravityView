@@ -1,4 +1,8 @@
 
+// Give some default space
+.gv-field-label {
+	#{$padding-right}: .25em;
+}
 
 // LIST VIEWS ONLY
 .gv-list-container,

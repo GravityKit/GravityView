@@ -8,7 +8,7 @@
 	width: 100%;
 
 	.gv-search-box {
-		padding-right: .5em;
+		#{$padding-right}: .5em;
 
 		// Get vertical centering
 		display: table-cell;
@@ -35,8 +35,8 @@
 
 			input {
 				width: 48%;
-				float: left;
-				margin-right: 2%;
+				float: $left;
+				#{$margin-right}: 2%;
 			}
 		}
 
@@ -50,8 +50,8 @@
 			vertical-align: middle;
 
 		  	.gv-search-clear {
-			  	float: left;
-			  	margin-right: 5px;
+			  	float: $left;
+			  	#{$margin-right}: 5px;
 			}
 
 		}
