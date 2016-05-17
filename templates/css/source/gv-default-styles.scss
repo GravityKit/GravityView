@@ -10,6 +10,9 @@
  * @since 1.0.0
  */
 
+$rtl: false !default;
+@import "rtl";
+
 @import "search";
 @import "fields";
 @import "notice";
