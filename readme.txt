@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
     * `list-body.php`: Removed `id` attribute from entry title `<h3>`
 * Added: Option to make Phone numbers click-to-call
 * Added: RTL support in default and List template styles (Added: `gv-default-styles-rtl.css` and `list-view-rtl.css` stylesheets)
+* Added: GravityView parent menu to Toolbar; now you can edit the form connected to a View directly from the View
 * Modified: When deleting/trashing entries with GravityView, posts created by GravityView will also be deleted or trashed.
 * Added: `gravityview/delete-entry/delete-connected-post` Filter to modify behavior when entry is deleted. Return false to prevent posts from being deleted or trashed when connected entries are deleted or trashed. See `gravityview/delete-entry/mode` filter to modify the default behavior, which is "delete".
 * Modified: Added second parameter `$entry` to `gravityview/delete-entry/trashed` and `gravityview/delete-entry/deleted` actions
