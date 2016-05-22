@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Modified: Added second parameter `$entry` to `gravityview/delete-entry/trashed` and `gravityview/delete-entry/deleted` actions
 * Fixed: Signature field not displaying existing signatures in Edit Entry
 * Fixed: Allow multiple Post Category fields in Edit Entry
+* Fixed: PHP Warning for certain hosting `open_basedir` configurations
 * Added: `gravityview/edit_entry/post_content/append_categories` filter to modify whether post categories should be added to or replaced?
 * Fixed: Updating Post Image fields in Edit Entry when the field is not set to "Featured Image" in Gravity Forms
 * Fixed: When using the User Opt-in field together with the View setting "Show Only Approved Entries", entries weren't showing

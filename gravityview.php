@@ -268,7 +268,8 @@ final class GravityView_Plugin {
 	 */
 	public function load_plugin_textdomain() {
 
-		$loaded = load_plugin_textdomain( 'gravityview', false, '/languages/' );
+		$loaded = load_plugin_textdomain( 'gravityview', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		
 		if ( ! $loaded ) {
 			$loaded = load_muplugin_textdomain( 'gravityview', '/languages/' );
 		}
