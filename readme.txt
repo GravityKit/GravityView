@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: `gravityview/delete-entry/delete-connected-post` Filter to modify behavior when entry is deleted. Return false to prevent posts from being deleted or trashed when connected entries are deleted or trashed. See `gravityview/delete-entry/mode` filter to modify the default behavior, which is "delete".
 * Modified: Added second parameter `$entry` to `gravityview/delete-entry/trashed` and `gravityview/delete-entry/deleted` actions
 * Fixed: [Church Themes](https://churchthemes.com) theme compatibility
+* Fixed: Rank and Ratings Survey fields not displaying properly in Edit Entry
 * Fixed: Signature field not displaying existing signatures in Edit Entry
 * Fixed: Allow multiple Post Category fields in Edit Entry
 * Fixed: PHP Warning for certain hosting `open_basedir` configurations
