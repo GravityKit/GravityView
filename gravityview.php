@@ -219,7 +219,7 @@ final class GravityView_Plugin {
 		set_transient( '_gv_activation_redirect', true, 60 );
 
 		// Clear settings transient
-		delete_transient( 'redux_edd_license_license_valid' );
+		delete_transient( 'gravityview_edd-activate_valid' );
 
 		GravityView_Roles_Capabilities::get_instance()->add_caps();
 	}

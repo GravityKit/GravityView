@@ -21,6 +21,12 @@ class GV_License_Handler {
 	 */
 	const item_id = 17;
 
+	/**
+	 * Name of the transient used to store license status for GV
+	 * @since 1.17
+	 */
+	const status_transient_key = 'gravityview_edd-activate_valid';
+
 	private $EDD_SL_Plugin_Updater;
 
 	/**
@@ -51,6 +57,38 @@ class GV_License_Handler {
 
 	private function add_hooks() {
 		add_action( 'wp_ajax_gravityview_license', array( $this, 'license_call' ) );
+		add_action( 'admin_init', array( $this, 'refresh_license_status' ) );
+	}
+
+	/**
+	 * When the status transient expires (or is deleted on activation), re-check the status
+	 *
+	 * @since 1.17
+	 *
+	 * @return void
+	 */
+	public function refresh_license_status() {
+
+		// Only perform on GravityView pages
+		if( ! gravityview_is_admin_page() ) {
+			return;
+		}
+
+		// The transient is fresh; don't fetch.
+		if( $status = get_transient( self::status_transient_key ) ) {
+			return;
+		}
+
+		$data = array(
+			'edd_action' => 'check_license',
+			'license' => trim( $this->Addon->get_app_setting( 'license_key' ) ),
+			'update' => true,
+			'format' => 'object',
+		);
+
+		$license_call = GravityView_Settings::get_instance()->get_license_handler()->license_call( $data );
+
+		do_action( 'gravityview_log_debug', __METHOD__ . ': Refreshed the license.', $license_call );
 	}
 
 	function settings_edd_license_activation( $field, $echo ) {
@@ -198,7 +236,7 @@ class GV_License_Handler {
 		// Not JSON
 		if ( empty( $license_data ) ) {
 
-			delete_transient( 'gravityview_' . esc_attr( $data['field_id'] ) . '_valid' );
+			delete_transient( self::status_transient_key );
 
 			// Change status
 			return array();
@@ -221,22 +259,23 @@ class GV_License_Handler {
 	function get_license_message( $license_data ) {
 
 		if( empty( $license_data ) ) {
-			$class = 'hide';
 			$message = '';
 		} else {
 
 			if( ! empty( $license_data->error ) ) {
 				$class = 'error';
-				$string_key = $license_data->license;
+				$string_key = $license_data->error;
 			} else {
 				$class = $license_data->license;
 				$string_key = $license_data->license;
 			}
 
 			$message = sprintf( '<p><strong>%s: %s</strong></p>', $this->strings('status'), $this->strings( $string_key, $license_data ) );
+
+			$message = $this->generate_license_box( $message, $class );
 		}
 
-		return $this->generate_license_box( $message, $class );
+		return $message;
 	}
 
 	/**
@@ -317,11 +356,10 @@ class GV_License_Handler {
 			if ( $license_data->license !== 'failed' && ! $is_check_action_button && $update_license ) {
 
 				if ( ! empty( $data['field_id'] ) ) {
-					set_transient( 'gravityview_' . esc_attr( $data['field_id'] ) . '_valid', $license_data, DAY_IN_SECONDS );
+					set_transient( self::status_transient_key, $license_data, DAY_IN_SECONDS );
 				}
 
 				$this->license_call_update_settings( $license_data, $data );
-
 			}
 		} // End $has_cap
 
@@ -356,7 +394,8 @@ class GV_License_Handler {
 	 * @return string Renewal or account URL
 	 */
 	private function get_license_renewal_url( $license_data ) {
-		$renew_license_url = ( ! empty( $license_data ) && !empty( $license_data->license_key ) ) ? sprintf( 'https://gravityview.co/checkout/?download_id=17&edd_license_key=%s&utm_source=admin_notice&utm_medium=admin&utm_content=expired&utm_campaign=Activation', $license_data->license_key ) : 'https://gravityview.co/account/';
+		$license_data = is_array( $license_data ) ? (object)$license_data : $license_data;
+		$renew_license_url = ( ! empty( $license_data ) && !empty( $license_data->license_key ) ) ? sprintf( 'https://gravityview.co/checkout/?download_id=17&edd_license_key=%s&utm_source=admin_notice&utm_medium=admin&utm_content=expired&utm_campaign=Activation&force_login=1', $license_data->license_key ) : 'https://gravityview.co/account/';
 		return $renew_license_url;
 	}
 
@@ -374,11 +413,12 @@ class GV_License_Handler {
 			'error' => esc_html__('There was an error processing the request.', 'gravityview'),
 			'failed'  => esc_html__('Could not deactivate the license. The license key you attempted to deactivate may not be active or valid.', 'gravityview'),
 			'site_inactive' => esc_html__('The license key is valid, but it has not been activated for this site.', 'gravityview'),
+			'inactive' => esc_html__('The license key is valid, but it has not been activated for this site.', 'gravityview'),
 			'no_activations_left' => esc_html__('Invalid: this license has reached its activation limit.', 'gravityview') . ' ' . sprintf( esc_html__('You can manage license activations %son your GravityView account page%s.', 'gravityview'), '<a href="https://gravityview.co/account/#licenses">', '</a>' ),
 			'deactivated' => esc_html__('The license has been deactivated.', 'gravityview'),
 			'valid' => esc_html__('The license key is valid and active.', 'gravityview'),
 			'invalid' => esc_html__('The license key entered is invalid.', 'gravityview'),
-			'missing' => esc_html__('The license key was not defined.', 'gravityview'),
+			'missing' => esc_html__('Invalid license key.', 'gravityview'),
 			'revoked' => esc_html__('This license key has been revoked.', 'gravityview'),
 			'expired' => sprintf( esc_html__('This license key has expired. %sRenew your license on the GravityView website%s to receive updates and support.', 'gravityview'), '<a href="'. esc_url( $this->get_license_renewal_url( $license_data ) ) .'">', '</a>' ),
 			'capability' => esc_html__( 'You don\'t have the ability to edit plugin settings.', 'gravityview' ),
@@ -398,37 +438,6 @@ class GV_License_Handler {
 		}
 
 		return NULL;
-	}
-
-	public function validate_license_key( $value, $field ) {
-
-		// No license? No status.
-		if( empty( $value ) ) {
-			return NULL;
-		}
-
-		$response = $this->license_call(array(
-			'license' => $this->Addon->get_app_setting( 'license_key' ),
-			'edd_action' => 'check_license',
-			'field_id' => $field['name'],
-		));
-
-		$response = is_string( $response ) ? json_decode( $response, true ) : $response;
-
-		switch( $response['license'] ) {
-			case 'valid':
-				$return = true;
-				break;
-			case 'invalid':
-				$return = false;
-				//$this->Addon->set_field_error( $field, $response['message'] );
-				break;
-			default:
-				//$this->Addon->set_field_error( $field, $response['message'] );
-				$return = false;
-		}
-
-		return $return;
 	}
 
 }
