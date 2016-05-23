@@ -204,6 +204,12 @@ class GravityView_Settings extends GFAddOn {
 		$update_below = false;
 		$primary_button_link = admin_url( 'edit.php?post_type=gravityview&amp;page=gravityview_settings' );
 		switch ( $license_status ) {
+			/** @since 1.17 */
+			case 'expired':
+				$title = __('Expired License', 'gravityview');
+				$status = 'expired';
+				$message = $this->get_license_handler()->strings( 'expired', self::getSetting('license_key_response') );
+				break;
 			case 'invalid':
 				$title = __('Invalid License', 'gravityview');
 				$status = __('is invalid', 'gravityview');
@@ -216,6 +222,7 @@ class GravityView_Settings extends GFAddOn {
 			case '':
 				$license_status = 'site_inactive';
 				// break intentionally left blank
+			case 'inactive':
 			case 'site_inactive':
 				$status = __('has not been activated', 'gravityview');
 				$update_below = __('Activate your license key below.', 'gravityview');
