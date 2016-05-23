@@ -378,7 +378,7 @@ class GV_License_Handler {
 			'deactivated' => esc_html__('The license has been deactivated.', 'gravityview'),
 			'valid' => esc_html__('The license key is valid and active.', 'gravityview'),
 			'invalid' => esc_html__('The license key entered is invalid.', 'gravityview'),
-			'missing' => esc_html__('The license key was not defined.', 'gravityview'),
+			'missing' => esc_html__('Invalid license key.', 'gravityview'),
 			'revoked' => esc_html__('This license key has been revoked.', 'gravityview'),
 			'expired' => sprintf( esc_html__('This license key has expired. %sRenew your license on the GravityView website%s to receive updates and support.', 'gravityview'), '<a href="'. esc_url( $this->get_license_renewal_url( $license_data ) ) .'">', '</a>' ),
 			'capability' => esc_html__( 'You don\'t have the ability to edit plugin settings.', 'gravityview' ),
