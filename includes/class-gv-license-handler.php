@@ -55,7 +55,9 @@ class GV_License_Handler {
 
 	function settings_edd_license_activation( $field, $echo ) {
 
-		wp_enqueue_script( 'gv-admin-edd-license', GRAVITYVIEW_URL . 'assets/js/admin-edd-license.js', array( 'jquery' ) );
+		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+		wp_enqueue_script( 'gv-admin-edd-license', GRAVITYVIEW_URL . 'assets/js/admin-edd-license' . $script_debug . '.js', array( 'jquery' ) );
 
 		$status = trim( $this->Addon->get_app_setting( 'license_key_status' ) );
 		$key = trim( $this->Addon->get_app_setting( 'license_key' ) );
