@@ -155,7 +155,6 @@ class GravityView_Support_Port {
 
 		$localization_data = array(
 			'contactEnabled' => (int)current_user_can( 'gravityview_contact_support' ), // @todo use GVCommon::has_cap() after merge
-			'protocol' => ( is_ssl() ? 'https' : 'http' ),
 			'data' => $data,
 			'translation' => $translation,
 		);
