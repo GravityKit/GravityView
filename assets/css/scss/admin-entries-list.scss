@@ -68,6 +68,7 @@
 		color: #00ac15;
 		font-size: 26px;
 		text-indent: -4px;
+		.rtl & { text-align: right; text-indent: 4px; }
 	}
 
 }
