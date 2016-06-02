@@ -476,7 +476,7 @@ class GVCommon {
 		if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() || GravityView_frontend::getInstance()->getSingleEntry() ) {
 			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
 		} elseif ( 'delete' === RGForms::get( 'action' ) ) {
-			$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? $_GET['view_id'] : null;
+			$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? intval( $_GET['view_id'] ) : null;
 		} elseif( !isset( $criteria['context_view_id'] ) ) {
             // Prevent overriding the Context View ID: Some widgets could set the context_view_id (e.g. Recent Entries widget)
 			$criteria['context_view_id'] = null;
