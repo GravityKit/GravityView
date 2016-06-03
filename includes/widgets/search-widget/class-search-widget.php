@@ -842,8 +842,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 
 		/**
-		 * Modify the CSS class for the search form
-		 *
+		 * @filter `gravityview_search_class` Modify the CSS class for the search form
 		 * @param string $search_class The CSS class for the search form
 		 */
 		$search_class = apply_filters( 'gravityview_search_class', $search_class );
