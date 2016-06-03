@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Merge Tag modifiers - now set a maximum length of content, and automatically add paragraphs to Merge Tags. [Read how to use the new Merge Tag modifiers](https://docs.gravityview.co/article/350-merge-tag-modifiers).
     - `:maxwords:{number}` - Limit output to a set number of words
     - `:wpautop` - Automatically add line breaks and paragraphs to content
+    - `:timestamp` - Convert dates into timestamp values
 * Added: RTL ("right to left") language support in default and List template styles (Added: `gv-default-styles-rtl.css` and `list-view-rtl.css` stylesheets)
 * Added: Option to make Phone numbers click-to-call
 * Added: GravityView parent menu to Toolbar; now you can edit the form connected to a View directly from the View
