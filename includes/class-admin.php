@@ -131,13 +131,12 @@ class GravityView_Admin {
 	function post_updated_messages( $messages, $bulk_counts = NULL ) {
 		global $post;
 
-		$post_id = isset($_GET['post']) ? intval($_GET['post']) : ( is_object( $post ) && isset( $post->ID ) ? $post->ID : NULL );
+		$post_id = get_the_ID();
 
 		// By default, there will only be one item being modified.
 		// When in the `bulk_post_updated_messages` filter, there will be passed a number
 		// of modified items that will override this array.
 		$bulk_counts = is_null( $bulk_counts ) ? array( 'updated' => 1 , 'locked' => 1 , 'deleted' => 1 , 'trashed' => 1, 'untrashed' => 1 ) : $bulk_counts;
-
 
 		// If we're starting fresh, a new form was created.
 		// We should let the user know this is the case.
