@@ -120,8 +120,8 @@ function gravityview_get_entry( $entry_slug, $force_allow_ids = false, $check_en
  * @param mixed $field_id
  * @return string
  */
-function gravityview_get_field_label( $form, $field_id ) {
-	return GVCommon::get_field_label( $form, $field_id );
+function gravityview_get_field_label( $form, $field_id, $field_value = '' ) {
+	return GVCommon::get_field_label( $form, $field_id, $field_value );
 }
 
 

@@ -60,6 +60,7 @@ __Developer Notes__
 * Added: `gravityview/edit_entry/post_content/append_categories` filter to modify whether post categories should be added to or replaced?
 * Added: `GVCommon::send_email()`, a public alias of `GFCommon::send_email()`
 * Added: `GravityView_Field_Notes` class, with lots of filters to modify output
+* Added: `$field_value` parameter to `gravityview_get_field_label()` function and `GVCommon::get_field_label()` method
 * Modified: Added second parameter `$entry` to `gravityview/delete-entry/trashed` and `gravityview/delete-entry/deleted` actions
 * Fixed: An image with no `src` output a broken HTML `<img>` tag
 

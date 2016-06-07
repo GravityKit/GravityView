@@ -902,19 +902,28 @@ class GVCommon {
 	 * Retrieve the label of a given field id (for a specific form)
 	 *
 	 * @access public
-	 * @param array $form
-	 * @param string $field_id
+	 * @since 1.17 Added $field_value parameter
+	 *
+	 * @param array $form Gravity Forms form array
+	 * @param string $field_id ID of the field. If an input, full input ID (like `1.3`)
+	 * @param string|array $field_value Raw value of the field.
 	 * @return string
 	 */
-	public static function get_field_label( $form = array(), $field_id = '' ) {
+	public static function get_field_label( $form = array(), $field_id = '', $field_value = '' ) {
 
 		if ( empty( $form ) || empty( $field_id ) ) {
 			return '';
 		}
 
 		$field = self::get_field( $form, $field_id );
-		return isset( $field['label'] ) ?  $field['label'] : '';
 
+		$label = rgar( $field, 'label' );
+
+		if( floor( $field_id ) !== floatval( $field_id ) ) {
+			$label = GFFormsModel::get_choice_text( $field, $field_value, $field_id );
+		}
+
+		return $label;
 	}
 
 
