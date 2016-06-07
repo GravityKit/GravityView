@@ -757,6 +757,12 @@ hr {
 		code {
 			font-style: normal!important;
 		}
+
+		// Vertically stacked radios
+		&.gv-setting-container-choice_display .gv-label-radio {
+			display: block;
+			margin: .5em 0;
+		}
 	}
 
 	// Currently only used in "checkboxes" field type

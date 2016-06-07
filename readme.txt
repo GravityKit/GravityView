@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
     - `:maxwords:{number}` - Limit output to a set number of words
     - `:wpautop` - Automatically add line breaks and paragraphs to content
     - `:timestamp` - Convert dates into timestamp values
+* Added: Field setting to display the input value, label, or check mark, depending on field type. Currently supported: Checkbox, Radio, Drop Down fields.
 * Added: RTL ("right to left") language support in default and List template styles (Added: `gv-default-styles-rtl.css` and `list-view-rtl.css` stylesheets)
 * Added: Option to make Phone numbers click-to-call
 * Added: GravityView parent menu to Toolbar; now you can edit the form connected to a View directly from the View
