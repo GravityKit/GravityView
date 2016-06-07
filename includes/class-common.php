@@ -228,6 +228,7 @@ class GVCommon {
 
 		if ( $form ) {
 			foreach ( $form['fields'] as $field ) {
+
 				if ( $include_parent_field || empty( $field['inputs'] ) ) {
 					$fields[ $field['id'] ] = array(
 						'label' => rgar( $field, 'label' ),
@@ -1044,7 +1045,7 @@ class GVCommon {
 	 *
 	 * @param int $view_id The ID of the View to get the connected form of
 	 *
-	 * @return string ID of the connected Form, if exists. Empty string if not.
+	 * @return false|string ID of the connected Form, if exists. Empty string if not. False if not the View ID isn't valid.
 	 */
 	public static function get_meta_form_id( $view_id ) {
 		return get_post_meta( $view_id, '_gravityview_form_id', true );

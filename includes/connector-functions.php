@@ -175,9 +175,11 @@ function gravityview_get_connected_views( $form_id ) {
 /**
  * Get the connected form ID from a View ID
  *
+ * @see GVCommon::get_meta_form_id
+ *
  * @param int $view_id ID of the View you want the form of
  *
- * @return int
+ * @return false|string ID of the connected Form, if exists. Empty string if not. False if not the View ID isn't valid.
  */
 function gravityview_get_form_id( $view_id ) {
 	return GVCommon::get_meta_form_id( $view_id );
