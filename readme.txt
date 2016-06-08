@@ -58,6 +58,8 @@ __Developer Notes__
     * `list-body.php`: Removed `id` attribute from entry title `<h3>`
 * Added: `gravityview/delete-entry/delete-connected-post` Filter to modify behavior when entry is deleted. Return false to prevent posts from being deleted or trashed when connected entries are deleted or trashed. See `gravityview/delete-entry/mode` filter to modify the default behavior, which is "delete".
 * Added: `gravityview/edit_entry/post_content/append_categories` filter to modify whether post categories should be added to or replaced?
+* Added: `gravityview/common/get_form_fields` filter to modify fields used in the "Add Field" selector, View "Filters" dropdowns, and Search Bar
+* Added: `gravityview/search/searchable_fields` filter to modify fields used in the Search Bar field dropdown
 * Added: `GVCommon::send_email()`, a public alias of `GFCommon::send_email()`
 * Added: `GravityView_Field_Notes` class, with lots of filters to modify output
 * Added: `$field_value` parameter to `gravityview_get_field_label()` function and `GVCommon::get_field_label()` method

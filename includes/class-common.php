@@ -207,6 +207,8 @@ class GVCommon {
 	 *
 	 * @access public
 	 * @param string|array $form_id (default: '') or $form object
+	 * @param bool $add_default_properties
+	 * @param bool $include_parent_field
 	 * @return array
 	 */
 	public static function get_form_fields( $form = '', $add_default_properties = false, $include_parent_field = true ) {
@@ -218,8 +220,6 @@ class GVCommon {
 		$fields = array();
 		$has_product_fields = false;
 		$has_post_fields = false;
-		$has_quiz_fields = false;
-		$has_poll_fields = false;
 
 		// If GF_Field exists, we're using GF 1.9+, where add_default_properties has been deprecated.
 		if ( false === class_exists( 'GF_Field' ) && $add_default_properties ) {
@@ -259,37 +259,6 @@ class GVCommon {
 					}
 				}
 
-				/** @since 1.14 */
-				if( 'list' === $field['type'] && !empty( $field['enableColumns'] ) ) {
-
-					foreach ( (array)$field['choices'] as $key => $input ) {
-
-						$input_id = sprintf( '%d.%d', $field['id'], $key ); // {field_id}.{column_key}
-
-						$fields[ $input_id ] = array(
-							'label'       => rgar( $input, 'text' ),
-							'customLabel' => '',
-							'parent'      => $field,
-							'type'        => rgar( $field, 'type' ),
-							'adminLabel'  => rgar( $field, 'adminLabel' ),
-							'adminOnly'   => rgar( $field, 'adminOnly' ),
-						);
-					}
-				}
-
-				/**
-				 * @since 1.8
-				 */
-				if( 'quiz' === $field['type'] ) {
-					$has_quiz_fields = true;
-				}
-
-				/**
-				 * @since 1.8
-				 */
-				if( 'poll' === $field['type'] ) {
-					$has_poll_fields = true;
-				}
 
 				if( GFCommon::is_product_field( $field['type'] ) ){
 					$has_product_fields = true;
@@ -333,32 +302,13 @@ class GVCommon {
 		}
 
 		/**
-		 * @since 1.8
+		 * @filter `gravityview/common/get_form_fields` Modify the form fields shown in the Add Field field picker.
+		 * @since 1.17
+		 * @param array $fields Associative array of fields, with keys as field type, values an array with the following keys: (string) `label` (required), (string) `type` (required), `desc`, (string) `customLabel`, (GF_Field) `parent`, (string) `adminLabel`, (bool)`adminOnly`
+		 * @param array $form GF Form array
+		 * @param bool $include_parent_field Whether to include the parent field when getting a field with inputs
 		 */
-		if( $has_quiz_fields ) {
-
-			$fields['gquiz_score']   = array(
-				'label' => __( 'Quiz Score Total', 'gravityview' ),
-				'type'  => 'quiz_score',
-				'desc'  => __( 'Displays the number of correct Quiz answers the user submitted.', 'gravityview' ),
-			);
-			$fields['gquiz_percent'] = array(
-				'label' => __( 'Quiz Percentage Grade', 'gravityview' ),
-				'type'  => 'quiz_percent',
-				'desc'  => __( 'Displays the percentage of correct Quiz answers the user submitted.', 'gravityview' ),
-			);
-			$fields['gquiz_grade']   = array(
-				/* translators: This is a field type used by the Gravity Forms Quiz Addon. "A" is 100-90, "B" is 89-80, "C" is 79-70, etc.  */
-				'label' => __( 'Quiz Letter Grade', 'gravityview' ),
-				'type'  => 'quiz_grade',
-				'desc'  => __( 'Displays the Grade the user achieved based on Letter Grading configured in the Quiz Settings.', 'gravityview' ),
-			);
-			$fields['gquiz_is_pass'] = array(
-				'label' => __( 'Quiz Pass/Fail', 'gravityview' ),
-				'type'  => 'quiz_is_pass',
-				'desc'  => __( 'Displays either Passed or Failed based on the Pass/Fail settings configured in the Quiz Settings.', 'gravityview' ),
-			);
-		}
+		$fields = apply_filters( 'gravityview/common/get_form_fields', $fields, $form, $include_parent_field );
 
 		return $fields;
 
