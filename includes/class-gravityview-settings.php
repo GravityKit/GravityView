@@ -592,7 +592,7 @@ class GravityView_Settings extends GFAddOn {
 				'name'                => 'license_key',
 				'required'               => true,
 				'label'             => __( 'License Key', 'gravityview' ),
-				'description'          => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ),
+				'description'          => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ) . $this->get_license_handler()->license_details( $this->get_app_setting( 'license_key_response' ) ),
 				'type'              => 'edd_license',
 				'data-pending-text' => __('Verifying license&hellip;', 'gravityview'),
 				'default_value'           => $default_settings['license_key'],

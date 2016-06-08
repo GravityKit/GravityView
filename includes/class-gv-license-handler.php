@@ -200,6 +200,7 @@ class GV_License_Handler {
 			'item_name' => self::name,
 			'item_id'   => self::item_id,
 			'author'    => self::author,
+			'language'  => get_locale(),
 			'url'       => home_url(),
 		);
 
@@ -289,9 +290,119 @@ class GV_License_Handler {
 	 */
 	private function generate_license_box( $message, $class = '' ) {
 
-		$template = '<div id="gv-edd-status" class="gv-edd-message inline %s">%s</div>';
+		$template = '<div id="gv-edd-status" aria-live="polite" aria-busy="false" class="gv-edd-message inline %s">%s</div>';
 
 		$output = sprintf( $template, esc_attr( $class ), $message );
+
+		return $output;
+	}
+
+	/**
+	 * Allow pure HTML in settings fields
+	 *
+	 * @since 1.17
+	 *
+	 * @param array $response License response
+	 *
+	 * @return string `html` key of the $field
+	 */
+	public function license_details( $response = array() ) {
+
+		$response = (array) $response;
+
+		$return = '';
+		$return .= '<span class="gv-license-details" aria-live="polite" aria-busy="false">';
+		$return .= '<h3>' . esc_html__( 'License Details:', 'gravityview' ) . '</h3>';
+
+		if( in_array( rgar( $response, 'license' ), array( 'invalid', 'deactivated' ) ) ) {
+			$return .= $this->strings( $response['license'], $response );
+		} elseif( ! empty( $response['license_name'] ) ) {
+
+			$response_keys = array(
+				'license_name'   => '',
+				'license_limit'  => '',
+				'customer_name'  => '',
+				'customer_email' => '',
+				'site_count'     => '',
+				'expires'        => '',
+				'upgrades'       => ''
+			);
+
+			// Make sure all the keys are set
+			$response = wp_parse_args( $response, $response_keys );
+
+			$login_link = sprintf( '<a href="%s" class="howto" rel="external">%s</a>', esc_url( sprintf( 'https://gravityview.co/wp-login.php?username=%s', $response['customer_email'] ) ), esc_html__( 'Access your GravityView account', 'gravityview' ) );
+			$local_text = ( ! empty( $response['is_local'] ) ? '<span class="howto">' . __( 'This development site does not count toward license activation limits', 'gravityview' ) . '</span>' : '' );
+			$details = array(
+				'license'     => sprintf( esc_html__( 'License level: %s', 'gravityview' ), esc_html( $response['license_name'] ), esc_html( $response['license_limit'] ) ),
+				'licensed_to' => sprintf( esc_html_x( 'Licensed to: %1$s (%2$s)', '1: Customer name; 2: Customer email', 'gravityview' ), esc_html__( $response['customer_name'] ), esc_html__( $response['customer_email'] ) ) . $login_link,
+				'activations' => sprintf( esc_html__( 'Activations: %d of %s sites', 'gravityview' ), intval( $response['site_count'] ), esc_html( $response['license_limit'] ) ) . $local_text,
+				'expires'     => sprintf( esc_html__( 'Renew on: %s', 'gravityview' ), date_i18n( get_option( 'date_format' ), strtotime( $response['expires'] ) - DAY_IN_SECONDS ) ),
+				'upgrade'     => $this->get_upgrade_html( $response['upgrades'] ),
+			);
+
+			if ( ! empty( $response['error'] ) && 'expired' === $response['error'] ) {
+				unset( $details['upgrade'] );
+				$details['expires'] = '<div class="error inline"><p>' . $this->strings( 'expired', $response ) . '</p></div>';
+			}
+
+			$return .= '<ul><li>' . implode( '</li><li>', array_filter( $details ) ) . '</li></ul>';
+		}
+
+		$return .= '</span>';
+
+		return $return;
+	}
+
+	/**
+	 * Display possible upgrades for a license
+	 *
+	 * @since 1.17
+	 *
+	 * @param array $upgrades Array of upgrade paths, returned from the GV website
+	 *
+	 * @return string HTML list of upgrades available for the current license
+	 */
+	function get_upgrade_html( $upgrades ) {
+
+		$output = '';
+
+		if( ! empty( $upgrades ) ) {
+
+			$locale_parts = explode( '_', get_locale() );
+
+			$is_english = ( 'en' === $locale_parts[0] );
+
+			$output .= '<h4>' . esc_html__( 'Upgrades available:', 'gravityview' ) . '</h4>';
+
+			$output .= '<ul class="ul-disc">';
+
+			foreach ( $upgrades as $upgrade_id => $upgrade ) {
+
+				$upgrade = (object) $upgrade;
+
+				$anchor_text = sprintf( esc_html_x( 'Upgrade to %1$s for %2$s', '1: GravityView upgrade name, 2: Cost of upgrade', 'gravityview' ), esc_attr( $upgrade->name ), esc_attr( $upgrade->price ) );
+
+				if( $is_english && isset( $upgrade->description ) ) {
+					$message = esc_html( $upgrade->description );
+				} else {
+					switch( $upgrade->price_id ) {
+						// Interstellar
+						case 1:
+						default:
+							$message = esc_html__( 'Get access to Extensions', 'gravityview' );
+							break;
+						// Galactic
+						case 2:
+							$message = esc_html__( 'Get access to Entry Importer and other Premium plugins', 'gravityview' );
+							break;
+					}
+				}
+
+				$output .= sprintf( '<li><a href="%s">%s</a><span class="howto">%s</span></li>', esc_url( $upgrade->url ), $anchor_text, $message );
+			}
+			$output .= '</ul>';
+		}
 
 		return $output;
 	}
@@ -341,6 +452,7 @@ class GV_License_Handler {
 				}
 			}
 
+			$license_data->details = $this->license_details( $license_data );
 			$license_data->message = $this->get_license_message( $license_data );
 
 			$json = json_encode( $license_data );
@@ -400,7 +512,8 @@ class GV_License_Handler {
 	}
 
 	/**
-	 * Override the text used in the Redux Framework EDD field extension
+	 * Override the text used in the GravityView EDD license Javascript
+	 *
 	 * @param  array|null $status Status to get. If empty, get all strings.
 	 * @param  object|null $license_data Object with license data
 	 * @return array          Modified array of content
