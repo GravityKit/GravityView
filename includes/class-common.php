@@ -221,16 +221,11 @@ class GVCommon {
 		$has_product_fields = false;
 		$has_post_fields = false;
 
-		// If GF_Field exists, we're using GF 1.9+, where add_default_properties has been deprecated.
-		if ( false === class_exists( 'GF_Field' ) && $add_default_properties ) {
-			$form = RGFormsModel::add_default_properties( $form );
-		}
-
 		if ( $form ) {
 			foreach ( $form['fields'] as $field ) {
 
 				if ( $include_parent_field || empty( $field['inputs'] ) ) {
-					$fields[ $field['id'] ] = array(
+					$fields["{$field->id}"] = array(
 						'label' => rgar( $field, 'label' ),
 						'parent' => null,
 						'type' => rgar( $field, 'type' ),
@@ -239,16 +234,16 @@ class GVCommon {
 					);
 				}
 
-				if ( $add_default_properties && ! empty( $field['inputs'] ) ) {
-					foreach ( $field['inputs'] as $input ) {
+				if ( $add_default_properties && ! empty( $field->inputs ) ) {
+					foreach ( $field->inputs as $input ) {
                         /**
                          * @hack
                          * In case of email/email confirmation, the input for email has the same id as the parent field
                          */
-                        if( 'email' == rgar( $field, 'type' ) && false === strpos( $input['id'], '.' ) ) {
+						if( 'email' === $field->type && false === strpos( $input['id'], '.' ) ) {
                             continue;
                         }
-						$fields[ (string)$input['id'] ] = array(
+						$fields["{$input['id']}"] = array(
 							'label' => rgar( $input, 'label' ),
 							'customLabel' => rgar( $input, 'customLabel' ),
 							'parent' => $field,
@@ -260,16 +255,11 @@ class GVCommon {
 				}
 
 
-				if( GFCommon::is_product_field( $field['type'] ) ){
+				if( GFCommon::is_product_field( $field->type ) ){
 					$has_product_fields = true;
 				}
 
-				/**
-				 * @hack Version 1.9
-				 */
-				$field_for_is_post_field = class_exists( 'GF_Fields' ) ? (object) $field : (array) $field;
-
-				if ( GFCommon::is_post_field( $field_for_is_post_field ) ) {
+				if ( GFCommon::is_post_field( $field ) ) {
 					$has_post_fields = true;
 				}
 			}
