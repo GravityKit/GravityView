@@ -299,12 +299,17 @@ final class GravityView_Plugin {
 	/**
 	 * Function to launch frontend objects
 	 *
+	 * @since 1.17 Added $force param
+	 *
 	 * @access public
+	 *
+	 * @param bool $force Whether to force loading, even if GravityView_Plugin::is_admin() returns true
+	 *
 	 * @return void
 	 */
-	public function frontend_actions() {
+	public function frontend_actions( $force = false ) {
 
-		if( self::is_admin() ) { return; }
+		if( self::is_admin() && ! $force ) { return; }
 
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-image.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-template.php' );

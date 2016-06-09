@@ -63,6 +63,7 @@ __Developer Notes__
 * Added: `GVCommon::send_email()`, a public alias of `GFCommon::send_email()`
 * Added: `GravityView_Field_Notes` class, with lots of filters to modify output
 * Added: `$field_value` parameter to `gravityview_get_field_label()` function and `GVCommon::get_field_label()` method
+* Added: `$force` parameter to `GravityView_Plugin::frontend_actions()` to force including files
 * Modified: Added second parameter `$entry` to `gravityview/delete-entry/trashed` and `gravityview/delete-entry/deleted` actions
 * Fixed: An image with no `src` output a broken HTML `<img>` tag
 
