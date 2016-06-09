@@ -399,7 +399,7 @@ class GV_License_Handler {
 					}
 				}
 
-				$output .= sprintf( '<li><a href="%s">%s</a><span class="howto">%s</span></li>', esc_url( $upgrade->url ), $anchor_text, $message );
+				$output .= sprintf( '<li><a href="%s">%s</a><span class="howto">%s</span></li>', esc_url( add_query_arg( array( 'utm_source' => 'settings', 'utm_medium' => 'admin', 'utm_content' => 'license-details', 'utm_campaign' => 'Upgrades' ), $upgrade->url ) ), $anchor_text, $message );
 			}
 			$output .= '</ul>';
 		}
