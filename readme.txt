@@ -48,7 +48,6 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: When using the User Opt-in field together with the View setting "Show Only Approved Entries", entries weren't showing
 * Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used
 * Fixed: Showing the first column of a List field was displaying all the field's columns
-* Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used.
 * Fixed: Don't remove Edit Post/Page admin bar menu item
 * Fixed: Added support for Password fields. You shouldn't display them (in most cases!) but now you *can*.
 
