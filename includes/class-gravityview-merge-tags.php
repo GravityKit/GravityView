@@ -53,6 +53,7 @@ class GravityView_Merge_Tags {
 		$gv_modifiers = array(
 			'maxwords:(\d+)' => 'modifier_maxwords', /** @see modifier_maxwords */
 			'wpautop' => 'modifier_wpautop', /** @see modifier_wpautop */
+		    'timestamp' => 'modifier_timestamp', /** @see modifier_timestamp */
 		);
 		
 		$return = $value;
@@ -70,6 +71,30 @@ class GravityView_Merge_Tags {
 		}
 		
 		return $return;
+	}
+
+	/**
+	 * Convert Date field values to timestamp int
+	 *
+	 * @since 1.17
+	 *
+	 * @uses strtotime()
+	 *
+	 * @param string $raw_value Value to filter
+	 * @param array $matches Regex matches group
+	 *
+	 * @return int Timestamp value of date. `-1` if not a valid timestamp.
+	 */
+	private static function modifier_timestamp( $raw_value, $matches ) {
+
+		if( empty( $matches[0] ) ) {
+			return $raw_value;
+		}
+
+		$timestamp = strtotime( $raw_value );
+
+		// Can return false or -1, depending on PHP version.
+		return ( $timestamp && $timestamp > 0 ) ? $timestamp : -1;
 	}
 
 	/**

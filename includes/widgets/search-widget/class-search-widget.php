@@ -256,9 +256,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			return '';
 		}
 
-		// Get fields with sub-inputs and no parent
-		$fields = gravityview_get_form_fields( $form_id, true, true );
-
 		// start building output
 
 		$output = '<select class="gv-search-fields">';
@@ -285,6 +282,19 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		foreach( $custom_fields as $custom_field_key => $custom_field ) {
 			$output .= sprintf( '<option value="%s" %s data-inputtypes="%s" data-placeholder="%s">%s</option>', $custom_field_key, selected( $custom_field_key, $current, false ), $custom_field['type'], self::get_field_label( array('field' => $custom_field_key ) ), $custom_field['text'] );
 		}
+
+		// Get fields with sub-inputs and no parent
+		$fields = gravityview_get_form_fields( $form_id, true, true );
+
+		/**
+		 * @filter `gravityview/search/searchable_fields` Modify the fields that are displayed as searchable in the Search Bar dropdown\n
+		 * @since 1.17
+		 * @see gravityview_get_form_fields() Used to fetch the fields
+		 * @see GravityView_Widget_Search::get_search_input_types See this method to modify the type of input types allowed for a field
+		 * @param array $fields Array of searchable fields, as fetched by gravityview_get_form_fields()
+		 * @param  int $form_id
+		 */
+		$fields = apply_filters( 'gravityview/search/searchable_fields', $fields, $form_id );
 
 		if ( ! empty( $fields ) ) {
 
@@ -848,8 +858,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 
 		/**
-		 * Modify the CSS class for the search form
-		 *
+		 * @filter `gravityview_search_class` Modify the CSS class for the search form
 		 * @param string $search_class The CSS class for the search form
 		 */
 		$search_class = apply_filters( 'gravityview_search_class', $search_class );

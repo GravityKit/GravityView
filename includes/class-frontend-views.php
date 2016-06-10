@@ -1283,7 +1283,9 @@ class GravityView_frontend {
 					wp_enqueue_style( 'gravityview_font', plugins_url( 'assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
 				}
 
-				wp_enqueue_style( 'gravityview_default_style', plugins_url( 'templates/css/gv-default-styles.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
+				$rtl = is_rtl() ? '-rtl' : '';
+
+				wp_enqueue_style( 'gravityview_default_style', plugins_url( 'templates/css/gv-default-styles' . $rtl .'.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
 
 				self::add_style( $data['template_id'] );
 

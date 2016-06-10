@@ -117,6 +117,24 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 				'expected' => 'this should not be replaced; raw value is an array.',
 				'raw' => array(),
 			),
+
+			array(
+				'modifier' => 'timestamp',
+				'raw' => '02/03/2016', // February 3, 2016
+				'expected' => 1454457600,
+			),
+
+			array(
+				'modifier' => 'timestamp',
+				'raw' => '2016-02-03', // February 3, 2016
+				'expected' => 1454457600,
+			),
+
+			array(
+				'modifier' => 'timestamp',
+				'raw' => '03-02-2016', // February 3, 2016
+				'expected' => 1454457600,
+			),
 		);
 
 		foreach ( $tests as $test ) {

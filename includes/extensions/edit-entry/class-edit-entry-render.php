@@ -875,7 +875,7 @@ class GravityView_Edit_Entry_Render {
      */
     function fix_survey_fields_value( $value, $field, $name ) {
         
-        if( 'survey' === $field->type && '' === $value && 'likert' === rgar( $field, 'inputType' ) ) {
+        if( 'survey' === $field->type ) {
 
 	        // We need to run through each survey row until we find a match for expected values
 	        foreach ( $this->entry as $field_id => $field_value ) {

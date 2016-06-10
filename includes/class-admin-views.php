@@ -313,9 +313,9 @@ class GravityView_Admin_Views {
 					do_action( 'gravityview_log_error', sprintf( '[add_data_source_column_content] Connected form not found: Form #%d', $form_id ) );
 
 					$output = __( 'The connected form can not be found; it may no longer exist.', 'gravityview' );
+				} else {
+					$output = self::get_connected_form_links( $form );
 				}
-
-				$output = self::get_connected_form_links( $form );
 
 				break;
 		}

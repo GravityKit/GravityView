@@ -175,11 +175,11 @@ class GravityView_Admin_Duplicate_View {
 		}
 
 		/**
-		 * @action `gv_duplicate_view` After the View is duplicated, perform an action
+		 * @action `gv_duplicate_view` After a View is duplicated, perform an action
 		 * @since 1.6
 		 * @see GravityView_Admin_Duplicate_View::copy_view_meta_info
 		 * @param int $new_view_id The ID of the newly created View
-		 * @param WP_Post The View that was just cloned
+		 * @param WP_Post $post The View that was just cloned
 		 */
 		do_action( 'gv_duplicate_view', $new_view_id, $post );
 

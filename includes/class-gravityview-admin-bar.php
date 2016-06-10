@@ -37,9 +37,25 @@ class GravityView_Admin_Bar {
 		/** @var WP_Admin_Bar $wp_admin_bar */
 		global $wp_admin_bar;
 
-		$this->add_edit_entry_link();
+		if( is_admin() ) {
+			return;
+		}
 
-		$this->add_edit_view_link();
+		$view_data = GravityView_View_Data::getInstance()->get_views();
+
+		if( empty( $view_data ) ) {
+			return;
+		}
+
+		$wp_admin_bar->add_menu( array(
+			'id' => 'gravityview',
+			'title' => __( 'GravityView', 'gravityview' ),
+			'href' => '#',
+		) );
+
+		$this->add_edit_view_and_form_link();
+
+		$this->add_edit_entry_link();
 
 	}
 
@@ -61,7 +77,11 @@ class GravityView_Admin_Bar {
 
 			$wp_admin_bar->add_menu( array(
 				'id' => 'edit-entry',
+				'parent' => 'gravityview',
 				'title' => __( 'Edit Entry', 'gravityview' ),
+				'meta' => array(
+					'title' => sprintf( __( 'Edit Entry %s', 'gravityview' ), GravityView_API::get_entry_slug( $entry['id'], $entry ) ),
+				),
 				'href' => esc_url_raw( admin_url( sprintf( 'admin.php?page=gf_entries&amp;screen_mode=edit&amp;view=entry&amp;id=%d&lid=%d', $entry['form_id'], $entry['id'] ) ) ),
 			) );
 
@@ -74,27 +94,44 @@ class GravityView_Admin_Bar {
 	 * @since 1.13
 	 * @return void
 	 */
-	function add_edit_view_link() {
+	function add_edit_view_and_form_link() {
 		/** @var WP_Admin_Bar $wp_admin_bar */
 		global $wp_admin_bar;
 
-		if( GVCommon::has_cap('edit_gravityviews') ) {
+		if( GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview', 'gravityforms_edit_forms' ) ) ) {
 
 			$view_data = GravityView_View_Data::getInstance();
 
 			$views = $view_data->get_views();
 
-			// If there is a View embed, shor Edit View link.
-			// todo: Support multiple View embeds with a drop-down menu
-			if ( ! $this->gravityview_view->isGravityviewPostType() && ! empty( $views ) && ! $view_data->has_multiple_views() ) {
-				$view = reset( $views );
+			// If there is a View embed, show Edit View link.
+			if ( ! empty( $views ) ) {
+				foreach ( $views as $view ) {
 
-				if( GVCommon::has_cap( 'edit_gravityview', $view['id'] ) ) {
-					$wp_admin_bar->add_menu( array(
-						'id'    => 'edit-view',
-						'title' => __( 'Edit View', 'gravityview' ),
-						'href'  => esc_url_raw( admin_url( sprintf( 'post.php?post=%d&action=edit', $view['id'] ) ) ),
-					) );
+					if( GVCommon::has_cap( 'edit_gravityview', $view['id'] ) ) {
+						$wp_admin_bar->add_menu( array(
+							'id'    => 'edit-view-' . $view['id'],
+							'parent' => 'gravityview',
+							'title' => __( 'Edit View', 'gravityview' ),
+							'href'  => esc_url_raw( admin_url( sprintf( 'post.php?post=%d&action=edit', $view['id'] ) ) ),
+							'meta' => array(
+								'title' => sprintf( __( 'Edit View #%d', 'gravityview' ), $view['id'] ),
+							),
+						) );
+					}
+
+					if ( ! empty( $view['form_id'] ) && GVCommon::has_cap( array( 'gravityforms_edit_forms' ), $view['form_id'] ) ) {
+						$wp_admin_bar->add_menu( array(
+							'id'    => 'edit-form-' . $view['form_id'],
+							'parent' => 'gravityview',
+							'title' => __( 'Edit Form', 'gravityview' ),
+							'href' => esc_url_raw( admin_url( sprintf( 'admin.php?page=gf_edit_forms&id=%d', $view['form_id'] ) ) ),
+							'meta' => array(
+								'title' => sprintf( __( 'Edit Form #%d', 'gravityview' ), $view['form_id'] ),
+							),
+						) );
+
+					}
 				}
 			}
 		}

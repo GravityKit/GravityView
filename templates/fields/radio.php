@@ -10,11 +10,18 @@ $gravityview_view = GravityView_View::getInstance();
 
 extract( $gravityview_view->getCurrentField() );
 
+$display_type = isset( $field_settings['choice_display'] ) ? $field_settings['choice_display'] : 'value';
+
 $output = '';
 
 if( floatval( $field_id ) === floor( floatval( $field_id ) ) ) {
-	// For the complete field value
-	$output = $display_value;
+
+	if( 'value' === $display_type ) {
+		// For the complete field value
+		$output = $display_value;
+	} else {
+		$output = RGFormsModel::get_choice_text( $field, $display_value );
+	}
 } else {
 	// For part of the field value
 	$entry_keys = array_keys( $entry );

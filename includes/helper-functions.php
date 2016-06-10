@@ -383,6 +383,7 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 function gv_map_deep( $value, $callback ) {
 
 	// Use the original function, if exists.
+	// Requires WP 4.4+
 	if( function_exists( 'map_deep') ) {
 		return map_deep( $value, $callback );
 	}
