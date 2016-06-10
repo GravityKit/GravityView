@@ -256,77 +256,21 @@ class GravityView_Welcome {
 
 				<div class="feature-section col two-col" style="margin:0; padding: 0;">
 					<div class="col col-1">
-						<h4 class="higher">Entry Notes</h4>
-						<p>Add and display Notes to an entry from the frontend.</p>
+						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/pricing-merge-tags.jpg', GRAVITYVIEW_FILE ); ?>" alt="Pricing merge tags"></div>
+						<h4 class="higher">Pricing Merge Tags</h4>
+						<p>GravityView now offers better support for pricing Merge Tags to show details about orers. <a href="http://docs.gravityview.co/article/76-merge-tags">Read more about the Merge Tags</a>.</p>
 					</div>
 
 					<div class="col col-2 last-feature">
-						<h4 class="higher">Merge Tag Modifiers</h4>
-						<p>Now set a maximum length of content, and automatically add paragraphs to Merge Tags. This is great for customizing your Multiple Entry layouts.</p>
+						<div class="media-container" style="margin-top: 2em; min-height:80px;"><img src="<?php echo plugins_url( 'assets/images/screenshots/developing-future.jpg', GRAVITYVIEW_FILE ); ?>" alt="Developing the Future"></div>
+						<h4 class="higher">Laying the Groundwork</h4>
+						<p>We&rsquo;re working on a great new View Builder to make it easier than ever to configure View layouts. This release includes lots of behind-the-scenes&nbsp;changes.</p>
 					</div>
 				</div>
 
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;">What&rsquo;s New</h2>
 				</div>
-
-				<h3>1.17 beta 1 on May 23</h3>
-
-				<ul>
-					<li>Added: Entry Notes field
-
-						<ul>
-							<li>Add and delete Entry Notes from the frontend</li>
-							<li>Allows users to email Notes when they are added</li>
-							<li>Allow displaying Notes to logged-out users</li>
-							<li>Allow adding Notes only</li>
-							<li>New <a href="http://docs.gravityview.co/article/311-gravityview-capabilities">user capabilities</a> to limit access (<code>gravityview_add_entry_notes</code>, <code>gravityview_view_entry_notes</code>, <code>gravityview_delete_entry_notes</code>, <code>gravityview_email_entry_notes</code>)</li>
-						</ul>
-					</li>
-					<li>Added: Merge Tag modifiers - now set a maximum length of content, and automatically add paragraphs to Merge Tags. <a href="https://docs.gravityview.co/article/350-merge-tag-modifiers">Read how to use the new Merge Tag modifiers</a>.
-
-						<ul>
-							<li><code>:maxwords:{number}</code> - Limit output to a set number of words</li>
-							<li><code>:wpautop</code> - Automatically add line breaks and paragraphs to content</li>
-						</ul>
-					</li>
-					<li>Added: RTL ("right to left") language support in default and List template styles (Added: <code>gv-default-styles-rtl.css</code> and <code>list-view-rtl.css</code> stylesheets)</li>
-					<li>Added: Option to make Phone numbers click-to-call</li>
-					<li>Added: GravityView parent menu to Toolbar; now you can edit the form connected to a View directly from the View</li>
-					<li>Modified: When deleting/trashing entries with GravityView, posts created by GravityView will also be deleted or trashed.</li>
-					<li>Fixed: <a href="https://churchthemes.com">Church Themes</a> theme compatibility</li>
-					<li>Fixed: Inactive and expired licenses were being shown the wrong error message.</li>
-					<li>Fixed: Moving domains would prevent GravityView from updating</li>
-					<li>Fixed: Rank and Ratings Survey fields not displaying properly in Edit Entry</li>
-					<li>Fixed: Signature field not displaying existing signatures in Edit Entry</li>
-					<li>Fixed: Allow multiple Post Category fields in Edit Entry</li>
-					<li>Fixed: PHP Warning for certain hosting <code>open_basedir</code> configurations</li>
-					<li>Fixed: Updating Post Image fields in Edit Entry when the field is not set to "Featured Image" in Gravity Forms</li>
-					<li>Fixed: When using the User Opt-in field together with the View setting "Show Only Approved Entries", entries weren't showing</li>
-					<li>Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used</li>
-					<li>Fixed: Showing the first column of a List field was displaying all the field's columns</li>
-					<li>Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used.</li>
-					<li>Fixed: Don't remove Edit Post/Page admin bar menu item</li>
-				</ul>
-
-
-				<p><strong>Developer Notes</strong></p>
-
-				<ul>
-					<li>Templates changed:
-
-						<ul>
-							<li><code>list-single.php</code> and <code>list-body.php</code>: changed <code>#gv_list_{entry_id}</code> to <code>#gv_list_{entry slug}</code>. If using custom entry slugs, the ID attribute will change. Otherwise, no change.</li>
-							<li><code>list-body.php</code>: Removed <code>id</code> attribute from entry title <code>&lt;h3&gt;</code></li>
-						</ul>
-					</li>
-					<li>Added: <code>gravityview/delete-entry/delete-connected-post</code> Filter to modify behavior when entry is deleted. Return false to prevent posts from being deleted or trashed when connected entries are deleted or trashed. See <code>gravityview/delete-entry/mode</code> filter to modify the default behavior, which is "delete".</li>
-					<li>Added: <code>gravityview/edit_entry/post_content/append_categories</code> filter to modify whether post categories should be added to or replaced?</li>
-					<li>Added: <code>GVCommon::send_email()</code>, a public alias of <code>GFCommon::send_email()</code></li>
-					<li>Added: <code>GravityView_Field_Notes</code> class, with lots of filters to modify output</li>
-					<li>Modified: Added second parameter <code>$entry</code> to <code>gravityview/delete-entry/trashed</code> and <code>gravityview/delete-entry/deleted</code> actions</li>
-					<li>Fixed: An image with no <code>src</code> output a broken HTML <code>&lt;img&gt;</code> tag</li>
-				</ul>
 
 				<h3>1.16.5.1 on April 7</h3>
 
@@ -354,6 +298,7 @@ class GravityView_Welcome {
 					<li>Updated: Gamajo Template Loader to Version 1.2</li>
 					<li>Verified compatibility with WordPress 4.5</li>
 				</ul>
+
 
 				<h3>1.16.4.1 on March 23</h3>
 
@@ -660,7 +605,6 @@ class GravityView_Welcome {
 
 				<ul>
 					<li><a href="http://datatables.net/">DataTables</a> - amazing tool for table data display. Many thanks!</li>
-					<li><a href="https://github.com/10up/flexibility">Flexibility</a> - Adds support for CSS flexbox to Internet Explorer 8 &amp; 9</li>
 					<li><a href="https://github.com/GaryJones/Gamajo-Template-Loader">Gamajo Template Loader</a> - makes it easy to load template files with user overrides</li>
 					<li><a href="https://github.com/carhartl/jquery-cookie">jQuery Cookie plugin</a> - Access and store cookie values with jQuery</li>
 					<li><a href="http://katz.si/gf">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>

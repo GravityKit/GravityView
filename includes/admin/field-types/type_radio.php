@@ -12,7 +12,7 @@ class GravityView_FieldType_radio extends GravityView_FieldType {
 		</div>
 		<?php
 			echo $this->get_tooltip();
-			echo $this->get_field_desc() . ' ';
+			echo $this->get_field_desc().'&nbsp;';
 
 			$this->render_input();
 

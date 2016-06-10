@@ -417,7 +417,7 @@
 			} else {
 				$search_mode_container.find(':input' ).attr('disabled', null );
 				$search_mode.filter('[data-original-value]' ).val( function() {
-					$( this ).prop( 'checked', true );
+					$( this ).attr( 'checked', 'checked' );
 					return [ $( this ).attr('value') ];
 				});
 			}

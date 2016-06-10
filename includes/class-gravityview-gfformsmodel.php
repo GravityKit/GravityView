@@ -104,8 +104,6 @@ class GravityView_GFFormsModel extends GFFormsModel {
     /**
      * Copied function from Gravity Forms plugin \GFFormsModel::media_handle_upload since the method is private.
      *
-     * Note: The method became public in GF 1.9.17.7
-     *
      * @see GFFormsModel::media_handle_upload
      * @see GravityView_Edit_Entry_Render::maybe_update_post_fields
      * 

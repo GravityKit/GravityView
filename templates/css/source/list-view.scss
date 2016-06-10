@@ -3,12 +3,6 @@
 // http://katz.co/gravityview/
 // ================================================
 
-// @since 1.17 - This is overridden by list-view-rtl.scss
-$rtl: false !default;
-
-// @since 1.17
-@import "rtl";
-
 @import "responsive";
 
 // 1. Variables
@@ -70,7 +64,7 @@ $color-description: #999;
 	padding: .5em 1em;
 
 	h3 {
-		margin: 0 0 .5em 0;
+		margin: 0 0 0.5em 0;
 		padding: 0;
 	}
 
@@ -110,8 +104,7 @@ $color-description: #999;
   }
 
   .gv-list-view-content-image {
-    padding: 0 0 1em 0;
-    #{$padding-right}: 1em;
+    padding: 0 1em 1em 0;
     max-width: 50%;
 
     .gv-field-file-uploads li,
@@ -125,7 +118,7 @@ $color-description: #999;
 }
 
 .gv-list-single-container .gv-list-view-content-image {
-  float: $left;
+  float:left;
   img {
     max-height: 400px;
     max-width: 100%;
