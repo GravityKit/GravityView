@@ -130,31 +130,42 @@ class GravityView_Admin_Bar {
 
 			// If there is a View embed, show Edit View link.
 			if ( ! empty( $views ) ) {
+
+				$added_forms = array();
+				$added_views = array();
+
 				foreach ( $views as $view ) {
 
-					if( GVCommon::has_cap( 'edit_gravityview', $view['id'] ) ) {
+					$edit_view_title = __( 'Edit View', 'gravityview' );
+					$edit_form_title = __( 'Edit Form', 'gravityview' );
+
+					if( sizeof( $views ) > 1 ) {
+						$edit_view_title = sprintf( _x( 'Edit View #%d', 'Edit View with the ID of %d', 'gravityview' ), $view['id'] );
+						$edit_form_title = sprintf( __( 'Edit Form #%d', 'Edit Form with the ID of %d', 'gravityview' ), $view['form_id'] );
+					}
+
+					if( GVCommon::has_cap( 'edit_gravityview', $view['id'] ) && ! in_array( $view['id'], $added_views ) ) {
+
+						$added_views[] = $view['id'];
+
 						$wp_admin_bar->add_menu( array(
 							'id'    => 'edit-view-' . $view['id'],
 							'parent' => 'gravityview',
-							'title' => __( 'Edit View', 'gravityview' ),
+							'title' => $edit_view_title,
 							'href'  => esc_url_raw( admin_url( sprintf( 'post.php?post=%d&action=edit', $view['id'] ) ) ),
-							'meta' => array(
-								'title' => sprintf( __( 'Edit View #%d', 'gravityview' ), $view['id'] ),
-							),
 						) );
 					}
 
-					if ( ! empty( $view['form_id'] ) && GVCommon::has_cap( array( 'gravityforms_edit_forms' ), $view['form_id'] ) ) {
+					if ( ! empty( $view['form_id'] ) && GVCommon::has_cap( array( 'gravityforms_edit_forms' ), $view['form_id'] ) && ! in_array( $view['form_id'], $added_forms )  ) {
+
+						$added_forms[] = $view['form_id'];
+
 						$wp_admin_bar->add_menu( array(
 							'id'    => 'edit-form-' . $view['form_id'],
 							'parent' => 'gravityview',
-							'title' => __( 'Edit Form', 'gravityview' ),
+							'title' => $edit_form_title,
 							'href' => esc_url_raw( admin_url( sprintf( 'admin.php?page=gf_edit_forms&id=%d', $view['form_id'] ) ) ),
-							'meta' => array(
-								'title' => sprintf( __( 'Edit Form #%d', 'gravityview' ), $view['form_id'] ),
-							),
 						) );
-
 					}
 				}
 			}
