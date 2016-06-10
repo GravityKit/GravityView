@@ -270,7 +270,7 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;">What&rsquo;s New</h2>
 				</div>
 
-				<h3>1.17 beta 1 on May 23</h3>
+				<h3>1.17 beta 2 on June 9</h3>
 
 				<ul>
 					<li>Added: Entry Notes field
@@ -278,8 +278,7 @@ class GravityView_Welcome {
 						<ul>
 							<li>Add and delete Entry Notes from the frontend</li>
 							<li>Allows users to email Notes when they are added</li>
-							<li>Allow displaying Notes to logged-out users</li>
-							<li>Allow adding Notes only</li>
+							<li>Display notes to logged-out users</li>
 							<li>New <a href="http://docs.gravityview.co/article/311-gravityview-capabilities">user capabilities</a> to limit access (<code>gravityview_add_entry_notes</code>, <code>gravityview_view_entry_notes</code>, <code>gravityview_delete_entry_notes</code>, <code>gravityview_email_entry_notes</code>)</li>
 						</ul>
 					</li>
@@ -288,11 +287,15 @@ class GravityView_Welcome {
 						<ul>
 							<li><code>:maxwords:{number}</code> - Limit output to a set number of words</li>
 							<li><code>:wpautop</code> - Automatically add line breaks and paragraphs to content</li>
+							<li><code>:timestamp</code> - Convert dates into timestamp values</li>
 						</ul>
 					</li>
+					<li>Modified: Major changes to the Search Bar design</li>
+					<li>Added: Field setting to display the input value, label, or check mark, depending on field type. Currently supported: Checkbox, Radio, Drop Down fields.</li>
 					<li>Added: RTL ("right to left") language support in default and List template styles (Added: <code>gv-default-styles-rtl.css</code> and <code>list-view-rtl.css</code> stylesheets)</li>
 					<li>Added: Option to make Phone numbers click-to-call</li>
 					<li>Added: GravityView parent menu to Toolbar; now you can edit the form connected to a View directly from the View</li>
+					<li>Added: Support for <a href="https://gravityflow.io">Gravity Flow</a> "Workflow Step" and Workflow "Final Status" fields</li>
 					<li>Modified: When deleting/trashing entries with GravityView, posts created by GravityView will also be deleted or trashed.</li>
 					<li>Fixed: <a href="https://churchthemes.com">Church Themes</a> theme compatibility</li>
 					<li>Fixed: Inactive and expired licenses were being shown the wrong error message.</li>
@@ -305,8 +308,8 @@ class GravityView_Welcome {
 					<li>Fixed: When using the User Opt-in field together with the View setting "Show Only Approved Entries", entries weren't showing</li>
 					<li>Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used</li>
 					<li>Fixed: Showing the first column of a List field was displaying all the field's columns</li>
-					<li>Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used.</li>
 					<li>Fixed: Don't remove Edit Post/Page admin bar menu item</li>
+					<li>Fixed: Added support for Password fields. You shouldn't display them (in most cases!) but now you <em>can</em>.</li>
 				</ul>
 
 
@@ -320,10 +323,28 @@ class GravityView_Welcome {
 							<li><code>list-body.php</code>: Removed <code>id</code> attribute from entry title <code>&lt;h3&gt;</code></li>
 						</ul>
 					</li>
+					<li>Added: Override GravityView CSS files by copying them to a template's <code>/gravityview/css/</code> sub-directory</li>
+					<li>Added: <code>gravityview_css_url()</code> function to check for overriding CSS files in templates</li>
+					<li>Added: <code>gravityview_use_legacy_search_style</code> filter; return <code>true</code> to use previous Search Bar stylesheet</li>
+					<li>Major CSS changes for the Search Bar.
+
+						<ul>
+							<li>Search inputs <code>&lt;div&gt;</code>s now have additional CSS classes based on the input type: <code>.gv-search-field-{input_type}</code> where <code>{input_type}</code> is:
+								<code>search_all</code> (search everything text box), <code>link</code>, <code>date</code>, <code>checkbox</code> (list of checkboxes), <code>single_checkbox</code>, <code>text</code>, <code>radio</code>, <code>select</code>,
+								<code>multiselect</code>, <code>date_range</code>, <code>entry_id</code>, <code>entry_date</code></li>
+							<li>Added <code>gv-search-date-range</code> CSS class to containers that have date ranges</li>
+							<li>Moved <code>gv-search-box-links</code> CSS class from the <code>&lt;p&gt;</code> to the <code>&lt;div&gt;</code> container</li>
+							<li>Fixed: <code>&lt;label&gt;</code> <code>for</code> attribute was missing quotes</li>
+						</ul>
+					</li>
 					<li>Added: <code>gravityview/delete-entry/delete-connected-post</code> Filter to modify behavior when entry is deleted. Return false to prevent posts from being deleted or trashed when connected entries are deleted or trashed. See <code>gravityview/delete-entry/mode</code> filter to modify the default behavior, which is "delete".</li>
 					<li>Added: <code>gravityview/edit_entry/post_content/append_categories</code> filter to modify whether post categories should be added to or replaced?</li>
+					<li>Added: <code>gravityview/common/get_form_fields</code> filter to modify fields used in the "Add Field" selector, View "Filters" dropdowns, and Search Bar</li>
+					<li>Added: <code>gravityview/search/searchable_fields</code> filter to modify fields used in the Search Bar field dropdown</li>
 					<li>Added: <code>GVCommon::send_email()</code>, a public alias of <code>GFCommon::send_email()</code></li>
 					<li>Added: <code>GravityView_Field_Notes</code> class, with lots of filters to modify output</li>
+					<li>Added: <code>$field_value</code> parameter to <code>gravityview_get_field_label()</code> function and <code>GVCommon::get_field_label()</code> method</li>
+					<li>Added: <code>$force</code> parameter to <code>GravityView_Plugin::frontend_actions()</code> to force including files</li>
 					<li>Modified: Added second parameter <code>$entry</code> to <code>gravityview/delete-entry/trashed</code> and <code>gravityview/delete-entry/deleted</code> actions</li>
 					<li>Fixed: An image with no <code>src</code> output a broken HTML <code>&lt;img&gt;</code> tag</li>
 				</ul>
