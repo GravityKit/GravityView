@@ -1319,6 +1319,13 @@ class GravityView_frontend {
 	 */
 	private function enqueue_default_style( $css_dependencies = array() ) {
 
+		/**
+		 * @filter `gravityview_use_legacy_search_css` Should GravityView use the legacy Search Bar stylesheet (from before Version 1.17)?
+		 * @since 1.17
+		 * @param bool $use_legacy_search_style If true, loads `gv-legacy-search(-rtl).css`. If false, loads `gv-default-styles(-rtl).css`. `-rtl` is added on RTL websites. Default: `false`
+		 */
+		$use_legacy_search_style = apply_filters( 'gravityview_use_legacy_search_style', false );
+
 		$rtl = is_rtl() ? '-rtl' : '';
 
 		$css_file_base = $use_legacy_search_style ? 'gv-legacy-search' : 'gv-default-styles';
