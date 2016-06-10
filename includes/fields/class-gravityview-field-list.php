@@ -84,8 +84,14 @@ class GravityView_Field_List extends GravityView_Field {
 
 			// If there are columns, add them under the parent field
 			if( ! empty( $list_columns ) ) {
-				$index = array_search( $list_field->id, array_keys( $fields ) );
-				array_splice( $fields, ( $index + 1 ), 0, $list_columns );
+
+				$index = array_search( $list_field->id, array_keys( $fields ) ) + 1;
+
+				/**
+				 * Merge the $list_columns into the $fields array at $index
+				 * @see https://stackoverflow.com/a/1783125
+				 */
+				$fields = array_slice( $fields, 0, $index, true) + $list_columns + array_slice( $fields, $index, null, true);
 			}
 
 			unset( $list_columns, $index, $input_id );
