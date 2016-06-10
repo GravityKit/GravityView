@@ -1,0 +1,11 @@
+{
+  "name": "gravityview",
+  "dependencies": {
+    "flexibility": "*",
+    "jquery.cookie": "*"
+  },
+  "ignoredDependencies": [
+    "jquery"
+  ],
+  "private": true
+}

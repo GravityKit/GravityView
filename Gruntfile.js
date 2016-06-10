@@ -35,7 +35,7 @@ module.exports = function(grunt) {
 				files: [{
 		          expand: true,
 		          cwd: 'templates/css/source/',
-		          src: ['*.scss','!search.scss','!edit.scss','!font.scss','!notice.scss','!oembed.scss','!responsive.scss'],
+		          src: ['*.scss','!search-flexbox.scss','!edit.scss','!font.scss','!notice.scss','!oembed.scss','!responsive.scss'],
 		          dest: 'templates/css/',
 		          ext: '.css'
 		      }]
@@ -87,6 +87,16 @@ module.exports = function(grunt) {
 		          dest: 'assets/js',
 		          ext: '.min.js'
 		      }]
+			},
+			bower: {
+				files: [{
+					expand: true,
+					cwd: 'assets/lib',
+					extDot: 'last', // Process extension as the last dot (jquery.cookie.js)
+					src: ['**/*.js', '!**/build.js', '!**/dist/*.js', '!**/*.min.js'],
+					dest: 'assets/lib',
+					ext: '.min.js'
+				}]
 			},
 			entryNotes: {
 				files: [{
@@ -165,7 +175,9 @@ module.exports = function(grunt) {
 			transifex: 'tx pull -a',
 
 			// Create a ZIP file
-			zip: 'git-archive-all ../gravityview.zip'
+			zip: 'git-archive-all ../gravityview.zip',
+
+			bower: 'bower install'
 		},
 
 		// Build translations without POEdit
@@ -238,7 +250,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-wp-i18n');
 
 	// Regular CSS/JS/Image Compression stuff
-	grunt.registerTask( 'default', [ 'sass', 'uglify', 'imagemin', 'watch' ] );
+	grunt.registerTask( 'default', [ 'exec:bower', 'sass', 'uglify', 'imagemin', 'watch' ] );
 
 	// Translation stuff
 	grunt.registerTask( 'translate', [ 'exec:transifex', 'potomo', 'addtextdomain', 'makepot' ] );

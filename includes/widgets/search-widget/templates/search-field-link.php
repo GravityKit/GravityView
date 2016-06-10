@@ -35,9 +35,8 @@ $links_sep = apply_filters( 'gravityview/extension/search/links_sep', '&nbsp;|&n
 
 ?>
 
-<div class="gv-search-box">
-
-	<p class="gv-search-box-links">
+<div class="gv-search-box gv-search-field-link gv-search-box-links">
+	<p>
 		<?php echo esc_html( $links_label ); ?>
 
         <?php

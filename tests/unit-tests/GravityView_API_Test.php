@@ -47,13 +47,23 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	public function test_gv_container_class() {
 
 
-	// Test no View ID and no hide formatting
+		// Test no View ID and no hide formatting
 		GravityView_View::getInstance()->setViewId( 0 );
 		GravityView_View::getInstance()->setHideUntilSearched( false );
 
 		// Test $echo parameter TRUE
 		ob_start();
-			gv_container_class();
+		gv_container_class();
+		$output = ob_get_clean();
+
+		$this->assertEquals( 'gv-container gv-container-no-results', $output );
+
+		GravityView_View::getInstance()->setEntries( array( array('id'), array('id') ) );
+		GravityView_View::getInstance()->setTotalEntries( 2 );
+
+		// Test non-empty View
+		ob_start();
+		gv_container_class();
 		$output = ob_get_clean();
 
 		$this->assertEquals( 'gv-container gv-container-no-results', $output );
@@ -88,7 +98,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 			$this->assertEquals( $expected, $formatted, $expected );
 		}
 
-	// Test Hide Until Search formatting
+		// Test Hide Until Search formatting
 		GravityView_View::getInstance()->setHideUntilSearched( true );
 
 		$classes = array(
@@ -101,7 +111,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 			$this->assertEquals( $expected, $formatted, $expected );
 		}
 
-	// Test View ID formatting
+		// Test View ID formatting
 		GravityView_View::getInstance()->setViewId( 12 );
 
 		$classes = array(
@@ -271,13 +281,13 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$gravityview_view->curr_search = false;
 
 		// Not in search by default
-			$this->assertEquals( 'No entries match your request.', GravityView_API::no_results( false ) );
-			$this->assertEquals( '<p>No entries match your request.</p>'."\n", GravityView_API::no_results( true ) );
+		$this->assertEquals( 'No entries match your request.', GravityView_API::no_results( false ) );
+		$this->assertEquals( '<p>No entries match your request.</p>'."\n", GravityView_API::no_results( true ) );
 		// Pretend we're in search
 		$gravityview_view->curr_search = true;
 
-			$this->assertEquals( 'This search returned no results.', GravityView_API::no_results( false ) );
-			$this->assertEquals( '<p>This search returned no results.</p>'."\n", GravityView_API::no_results( true ) );
+		$this->assertEquals( 'This search returned no results.', GravityView_API::no_results( false ) );
+		$this->assertEquals( '<p>This search returned no results.</p>'."\n", GravityView_API::no_results( true ) );
 
 
 		// Add the filter that modifies output

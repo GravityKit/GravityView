@@ -57,6 +57,11 @@ languages/gravityview-pt.po
 
 ## Plugin-specific files:
 
+## Bower
+assets/lib/flexibility/*
+!assets/lib/flexibility/dist/*
+!assets/lib/flexibility/*.json
+
 # Unit tests
 /tmp
 /tests/bin/tmp

@@ -11,14 +11,6 @@
  */
 
 
-$rtl: false !default;
-@import "rtl";
-@import "search-flexbox";
-@import "fields";
-@import "notice";
-@import "edit";
-@import "oembed";
-@import "grid";
-@import "widgets";
-@import "images";
-@import "general";
+$rtl: true;
+
+@import "gv-legacy-search";

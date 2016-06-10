@@ -234,7 +234,7 @@ class GravityView_Settings extends GFAddOn {
 		if( $update_below && gravityview_is_admin_page( '', 'settings' ) ) {
 			$message = sprintf( $message, $status, '<div class="hidden">', '', '', '</div><a href="#" onclick="jQuery(\'#license_key\').focus(); return false;">' . $update_below . '</a>' );
 		} else {
-			$message = sprintf( $message, $status, "\n\n" . '<a href="' . $primary_button_link . '" class="button button-primary">', '</a>', '<a href="' . esc_url( $url ) . '" class="button button-secondary">', '</a>' );
+			$message = sprintf( $message, $status, "\n\n" . '<a href="' . esc_url( $primary_button_link ) . '" class="button button-primary">', '</a>', '<a href="' . esc_url( $url ) . '" class="button button-secondary">', '</a>' );
 		}
 
 		if( !empty( $status ) ) {
@@ -516,6 +516,7 @@ class GravityView_Settings extends GFAddOn {
 			'no-conflict-mode' => '0',
 			'support_port' => '1',
 			'delete-on-uninstall' => '0',
+			'flexbox_search' => '1',
 		);
 
 		return $defaults;

@@ -56,6 +56,9 @@ __Developer Notes__
 * Templates changed:
     * `list-single.php` and `list-body.php`: changed `#gv_list_{entry_id}` to `#gv_list_{entry slug}`. If using custom entry slugs, the ID attribute will change. Otherwise, no change.
     * `list-body.php`: Removed `id` attribute from entry title `<h3>`
+* Added: Override GravityView CSS files by copying them to a template's `/gravityview/css/` sub-directory
+* Added: `gravityview_css_url()` function to check for overriding CSS files in templates
+* Added: `gravityview_use_legacy_search_style` filter; return `true` to use previous Search Bar stylesheet
 * Added: `gravityview/delete-entry/delete-connected-post` Filter to modify behavior when entry is deleted. Return false to prevent posts from being deleted or trashed when connected entries are deleted or trashed. See `gravityview/delete-entry/mode` filter to modify the default behavior, which is "delete".
 * Added: `gravityview/edit_entry/post_content/append_categories` filter to modify whether post categories should be added to or replaced?
 * Added: `gravityview/common/get_form_fields` filter to modify fields used in the "Add Field" selector, View "Filters" dropdowns, and Search Bar
@@ -164,6 +167,16 @@ __Developer Notes:__
 * Fixed: "Clear" search link now set to `display: inline-block` instead of `display: block`
 * Added: `gravityview/common/get_entry/check_entry_display` filter to disable validating whether to show entries or not against View filters
 * Fixed: `GravityView_API::replace_variables` no longer requires `$form` and `$entry` arguments
+
+**__Developer Notes:__**
+
+* Major CSS changes for the Search Bar.
+    - Search inputs `<div>`s now have additional CSS classes based on the input type: `.gv-search-field-{input_type}` where `{input_type}` is:
+    `search_all` (search everything text box), `link`, `date`, `checkbox` (list of checkboxes), `single_checkbox`, `text`, `radio`, `select`,
+    `multiselect`, `date_range`, `entry_id`, `entry_date`
+    - Added `gv-search-date-range` CSS class to containers that have date ranges
+    - Moved `gv-search-box-links` CSS class from the `<p>` to the `<div>` container
+    - Fixed: `<label>` `for` attribute was missing quotes
 
 = 1.16.1 on January 21 =
 
