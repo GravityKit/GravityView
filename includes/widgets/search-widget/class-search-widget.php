@@ -246,7 +246,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 	/**
 	 * Generates html for the available Search Fields dropdown
-	 * @param  string $form_id
+	 * @param  int $form_id
 	 * @param  string $current (for future use)
 	 * @return string
 	 */

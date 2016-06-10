@@ -322,7 +322,9 @@ class GF_UnitTest_Generator_Date extends GF_UnitTest_Generator {
 	var $format = 'Y-m-d H:i:s';
 
 	function __construct( $format = 'Y-m-d H:i:s' ) {
-		$this->format = $format;
+		if( is_string( $format ) ) {
+			$this->format = $format;
+		}
 	}
 
 	function next() {
@@ -406,7 +408,7 @@ class GF_UnitTest_Factory_For_Form extends WP_UnitTest_Factory_For_Thing {
 		parent::__construct( $factory );
 
 		$this->default_generation_definitions = array(
-			'title' => new WP_UnitTest_Generator_Sequence( 'Form Title %s' ),
+			'title' => 'Form Title %s',
 			'fields' => array(
 				new GF_Field_Text(array(
 					'id' => 1,
@@ -430,8 +432,10 @@ class GF_UnitTest_Factory_For_Form extends WP_UnitTest_Factory_For_Thing {
 		);
 	}
 
-	function create_object( $file, $parent = 0, $args = array() ) {
+	function create_object( $args = array() ) {
 		$args = wp_parse_args( $args, $this->default_generation_definitions );
+		$title_sequence = new WP_UnitTest_Generator_Sequence( $args['title'] );
+		$args['title'] = $title_sequence->next();
 		return GFAPI::add_form( $args );
 	}
 
