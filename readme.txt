@@ -39,7 +39,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
     * Changed: Don't show Edit View in the Admin Bar; it's now under the GravityView parent menu
     * Fixed: Don't remove Edit Post/Page admin bar menu item
 * Added: Support for [Gravity Flow](https://gravityflow.io) "Workflow Step" and Workflow "Final Status" fields
-* Modified: When deleting/trashing entries with GravityView, posts created by GravityView will also be deleted or trashed.
+* Added: Support for Password fields. You probably shouldn't display them (in most cases!) but now you *can*
+* Modified: When deleting/trashing entries with GravityView, posts created by GravityView will also be deleted or trashed
 * Fixed: When inserting a GravityView shortcode using the "Add View" button, the form would flow over the window
 * Fixed: [Church Themes](https://churchthemes.com) theme compatibility
 * Fixed: Inactive and expired licenses were being shown the wrong error message.
@@ -52,8 +53,6 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: When using the User Opt-in field together with the View setting "Show Only Approved Entries", entries weren't showing
 * Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used
 * Fixed: Showing the first column of a List field was displaying all the field's columns
-* Fixed: Don't remove Edit Post/Page admin bar menu item
-* Fixed: Added support for Password fields. You shouldn't display them (in most cases!) but now you *can*.
 
 __Developer Notes__
 
