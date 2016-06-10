@@ -25,6 +25,7 @@ class GravityView_Admin_Bar {
 	private function add_hooks() {
 		add_action( 'add_admin_bar_menus', array( $this, 'remove_links' ), 80 );
 		add_action( 'admin_bar_menu', array( $this, 'add_links' ), 85 );
+		add_action( 'wp_after_admin_bar_render', array( $this, 'add_floaty_icon' ) );
 	}
 
 	/**
@@ -57,6 +58,29 @@ class GravityView_Admin_Bar {
 
 		$this->add_edit_entry_link();
 
+	}
+
+	/**
+	 * Add the Floaty icon to the toolbar without loading the whole icon font
+	 *
+	 * @since 1.17
+	 *
+	 * @return void
+	 */
+	public function add_floaty_icon() {
+		?>
+		<style>
+			#wp-admin-bar-gravityview > .ab-item:before {
+				content: '';
+				<?php // Base64-encode so that it works in Firefox as well, even though https://css-tricks.com/probably-dont-base64-svg/ ?>
+				background: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='20.4 27.05 20 21'%3E%3Cpath fill='none' d='M25.8 6.7c0 .7.1 1.3.4 1.9-.1-.3-.1-.6-.1-1 0-3.1 3.3-6.6 7.8-5.2-.9-.5-1.8-.8-2.9-.8-2.9-.1-5.2 2.2-5.2 5.1z'/%3E%3Cpath fill='%23F0F5FA' d='M36.23 33.77c-1.45-1.48-3.37-2.3-5.44-2.43V30.3c.6-.13 1.1-.7 1.1-1.44 0-.83-.7-1.5-1.5-1.5s-1.5.66-1.5 1.5c0 .7.43 1.3 1.1 1.48v1.03c-2.07.08-4 .92-5.47 2.37-1.57 1.5-2.43 3.57-2.43 5.75 0 .1 0 .3.04.6 0 .1.05.3.07.5.1.6.25 1.1.44 1.7l.2.5c.03.1.06.2.12.3l.2.4c.37.63.8 1.22 1.3 1.72 1.55 1.55 3.6 2.4 5.8 2.4h.1c2.15 0 4.2-.85 5.7-2.36.55-.53 1-1.1 1.36-1.7.1-.16.17-.3.23-.47l.14-.3.2-.5c.2-.57.33-1.15.42-1.74l.08-.5c.04-.2.04-.4.04-.6.02-2.16-.8-4.23-2.38-5.8zM29.2 29.2c0 .08 0 .16.03.28-.06-.17-.1-.34-.1-.53 0-.8.63-1.43 1.44-1.43.3 0 .58.1.8.25-1.25-.4-2.17.56-2.17 1.43zm1.26 2.8c3.6.04 6.6 2.58 7.3 5.98-.94-2.03-3.84-3.5-7.33-3.54-3.46 0-6.4 1.45-7.36 3.46.75-3.38 3.76-5.9 7.4-5.9zM29 43.66c-3.06-.42-5.35-2.18-5.35-4.27 0-2.4 3.04-4.4 6.78-4.3h1.03c-2.18 2.1-2.6 5.4-2.45 8.5zm8.32-1.18c-1.3 2.65-3.96 4.33-6.9 4.33-2.92 0-5.6-1.6-6.9-4.3-.3-.6-.45-1.2-.54-1.9.84 2.16 3.82 3.75 7.42 3.78 3.6 0 6.6-1.57 7.45-3.7-.1.68-.28 1.3-.53 1.88z' opacity='.6'/%3E%3C/svg%3E") 50% 50% no-repeat !important;
+				top: 2px;
+				width: 20px;
+				height: 20px;
+				display: inline-block;
+			}
+		</style>
+		<?php
 	}
 
 	/**
