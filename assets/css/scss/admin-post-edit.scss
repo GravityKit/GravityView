@@ -16,6 +16,11 @@
 	display: none;
 }
 
+// Add some space at bottom of lightbox in Firefox
+#select_gravityview_view_form {
+	margin-bottom: 25px;
+}
+
 #select_gravityview_view_form table {
 
 	margin-top: 20px;

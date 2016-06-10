@@ -38,6 +38,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: GravityView parent menu to Toolbar; now you can edit the form connected to a View directly from the View
 * Added: Support for [Gravity Flow](https://gravityflow.io) "Workflow Step" and Workflow "Final Status" fields
 * Modified: When deleting/trashing entries with GravityView, posts created by GravityView will also be deleted or trashed.
+* Fixed: When inserting a GravityView shortcode using the "Add View" button, the form would flow over the window
 * Fixed: [Church Themes](https://churchthemes.com) theme compatibility
 * Fixed: Inactive and expired licenses were being shown the wrong error message.
 * Fixed: Moving domains would prevent GravityView from updating
