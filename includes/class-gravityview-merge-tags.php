@@ -22,6 +22,136 @@ class GravityView_Merge_Tags {
 		/** @see GFCommon::replace_variables_prepopulate **/
 		add_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', 'replace_gv_merge_tags' ), 10, 7 );
 
+		// Process after 10 priority
+		add_filter( 'gform_merge_tag_filter', array( 'GravityView_Merge_Tags', 'process_modifiers' ), 20, 5 );
+
+	}
+
+	/**
+	 * Process custom GravityView modifiers for Merge Tags
+	 *
+	 * Is not processed on `{all_fields}` Merge Tag.
+	 *
+	 * @since 1.17
+	 *
+	 * @param string $value The current merge tag value to be filtered.
+	 * @param string $merge_tag If the merge tag being executed is an individual field merge tag (i.e. {Name:3}), this variable will contain the field's ID. If not, this variable will contain the name of the merge tag (i.e. all_fields).
+	 * @param string $modifier The string containing any modifiers for this merge tag. For example, "maxwords:10" would be the modifiers for the following merge tag: `{Text:2:maxwords:10}`.
+	 * @param GF_Field $field The current field.
+	 * @param mixed $raw_value The raw value submitted for this field.
+	 *
+	 * @return string If no modifiers passed, $raw_value is not a string, or {all_fields} Merge Tag is used, original value. Otherwise, output from modifier methods.
+	 */
+	public static function process_modifiers( $value, $merge_tag, $modifier, $field, $raw_value ) {
+
+		// No modifier was set or the raw value was empty
+		if( 'all_fields' === $merge_tag || '' === $modifier || ! is_string( $raw_value ) || '' === $raw_value ) {
+			return $value;
+		}
+
+		// matching regex => the value is the method to call to replace the value.
+		$gv_modifiers = array(
+			'maxwords:(\d+)' => 'modifier_maxwords', /** @see modifier_maxwords */
+			'wpautop' => 'modifier_wpautop', /** @see modifier_wpautop */
+		    'timestamp' => 'modifier_timestamp', /** @see modifier_timestamp */
+		);
+		
+		$return = $value;
+
+		foreach ( $gv_modifiers as $gv_modifier => $method ) {
+
+			// Only match the regex if it's the first modifer; this allows us to enforce our own modifier structure
+			preg_match( '/^' . $gv_modifier .'/ism', $modifier, $matches );
+
+			if( ! empty( $matches ) ) {
+				// The called method is passed the raw value and the full matches array
+				$return = self::$method( $raw_value, $matches );
+				break;
+			}
+		}
+		
+		return $return;
+	}
+
+	/**
+	 * Convert Date field values to timestamp int
+	 *
+	 * @since 1.17
+	 *
+	 * @uses strtotime()
+	 *
+	 * @param string $raw_value Value to filter
+	 * @param array $matches Regex matches group
+	 *
+	 * @return int Timestamp value of date. `-1` if not a valid timestamp.
+	 */
+	private static function modifier_timestamp( $raw_value, $matches ) {
+
+		if( empty( $matches[0] ) ) {
+			return $raw_value;
+		}
+
+		$timestamp = strtotime( $raw_value );
+
+		// Can return false or -1, depending on PHP version.
+		return ( $timestamp && $timestamp > 0 ) ? $timestamp : -1;
+	}
+
+	/**
+	 * Run the Merge Tag value through the wpautop function
+	 *
+	 * @since 1.17
+	 *
+	 * @uses wpautop
+	 *
+	 * @param string $raw_value Value to filter
+	 * @param array $matches Regex matches group
+	 *
+	 * @return string Modified value, if longer than the passed `maxwords` modifier
+	 */
+	private static function modifier_wpautop( $raw_value, $matches ) {
+
+		if( empty( $matches[0] ) || ! function_exists( 'wpautop' ) ) {
+			return $raw_value;
+		}
+
+		return trim( wpautop( $raw_value ) );
+	}
+
+	/**
+	 * Trim the Merge Tag's length in words.
+	 * 
+	 * Notes: 
+	 * - HTML tags are preserved
+	 * - HTML entities are encoded, but if they are separated by word breaks, they will be counted as words 
+	 *   Example: "one & two" will be counted as three words, but "one& two" will be counted as two words
+	 *
+	 * @since 1.17
+	 *
+	 * @param string $raw_value Value to filter
+	 * @param array $matches Regex matches group
+	 *
+	 * @return string Modified value, if longer than the passed `maxwords` modifier
+	 */
+	private static function modifier_maxwords( $raw_value, $matches ) {
+
+		if( ! is_string( $raw_value ) || empty( $matches[1] ) || ! function_exists( 'wp_trim_words' ) ) {
+			return $raw_value;
+		}
+
+		$max = intval( $matches[1] );
+
+		$more_placeholder = '[GVMORE]';
+
+		/**
+		 * Use htmlentities instead, so that entities are double-encoded, and decoding restores original values.
+		 * @see https://core.trac.wordpress.org/ticket/29533#comment:3
+		 */
+		$return = force_balance_tags( wp_specialchars_decode( wp_trim_words( htmlentities( $raw_value ), $max, $more_placeholder ) ) );
+
+		$return = str_replace( $more_placeholder, '&hellip;', $return );
+
+		return $return;
 	}
 
 	/**

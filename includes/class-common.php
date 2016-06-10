@@ -207,6 +207,8 @@ class GVCommon {
 	 *
 	 * @access public
 	 * @param string|array $form_id (default: '') or $form object
+	 * @param bool $add_default_properties
+	 * @param bool $include_parent_field
 	 * @return array
 	 */
 	public static function get_form_fields( $form = '', $add_default_properties = false, $include_parent_field = true ) {
@@ -218,18 +220,12 @@ class GVCommon {
 		$fields = array();
 		$has_product_fields = false;
 		$has_post_fields = false;
-		$has_quiz_fields = false;
-		$has_poll_fields = false;
-
-		// If GF_Field exists, we're using GF 1.9+, where add_default_properties has been deprecated.
-		if ( false === class_exists( 'GF_Field' ) && $add_default_properties ) {
-			$form = RGFormsModel::add_default_properties( $form );
-		}
 
 		if ( $form ) {
 			foreach ( $form['fields'] as $field ) {
+
 				if ( $include_parent_field || empty( $field['inputs'] ) ) {
-					$fields[ $field['id'] ] = array(
+					$fields["{$field->id}"] = array(
 						'label' => rgar( $field, 'label' ),
 						'parent' => null,
 						'type' => rgar( $field, 'type' ),
@@ -238,16 +234,16 @@ class GVCommon {
 					);
 				}
 
-				if ( $add_default_properties && ! empty( $field['inputs'] ) ) {
-					foreach ( $field['inputs'] as $input ) {
+				if ( $add_default_properties && ! empty( $field->inputs ) ) {
+					foreach ( $field->inputs as $input ) {
                         /**
                          * @hack
                          * In case of email/email confirmation, the input for email has the same id as the parent field
                          */
-                        if( 'email' == rgar( $field, 'type' ) && false === strpos( $input['id'], '.' ) ) {
+						if( 'email' === $field->type && false === strpos( $input['id'], '.' ) ) {
                             continue;
                         }
-						$fields[ (string)$input['id'] ] = array(
+						$fields["{$input['id']}"] = array(
 							'label' => rgar( $input, 'label' ),
 							'customLabel' => rgar( $input, 'customLabel' ),
 							'parent' => $field,
@@ -258,48 +254,12 @@ class GVCommon {
 					}
 				}
 
-				/** @since 1.14 */
-				if( 'list' === $field['type'] && !empty( $field['enableColumns'] ) ) {
 
-					foreach ( (array)$field['choices'] as $key => $input ) {
-
-						$input_id = sprintf( '%d.%d', $field['id'], $key ); // {field_id}.{column_key}
-
-						$fields[ $input_id ] = array(
-							'label'       => rgar( $input, 'text' ),
-							'customLabel' => '',
-							'parent'      => $field,
-							'type'        => rgar( $field, 'type' ),
-							'adminLabel'  => rgar( $field, 'adminLabel' ),
-							'adminOnly'   => rgar( $field, 'adminOnly' ),
-						);
-					}
-				}
-
-				/**
-				 * @since 1.8
-				 */
-				if( 'quiz' === $field['type'] ) {
-					$has_quiz_fields = true;
-				}
-
-				/**
-				 * @since 1.8
-				 */
-				if( 'poll' === $field['type'] ) {
-					$has_poll_fields = true;
-				}
-
-				if( GFCommon::is_product_field( $field['type'] ) ){
+				if( GFCommon::is_product_field( $field->type ) ){
 					$has_product_fields = true;
 				}
 
-				/**
-				 * @hack Version 1.9
-				 */
-				$field_for_is_post_field = class_exists( 'GF_Fields' ) ? (object) $field : (array) $field;
-
-				if ( GFCommon::is_post_field( $field_for_is_post_field ) ) {
+				if ( GFCommon::is_post_field( $field ) ) {
 					$has_post_fields = true;
 				}
 			}
@@ -332,32 +292,13 @@ class GVCommon {
 		}
 
 		/**
-		 * @since 1.8
+		 * @filter `gravityview/common/get_form_fields` Modify the form fields shown in the Add Field field picker.
+		 * @since 1.17
+		 * @param array $fields Associative array of fields, with keys as field type, values an array with the following keys: (string) `label` (required), (string) `type` (required), `desc`, (string) `customLabel`, (GF_Field) `parent`, (string) `adminLabel`, (bool)`adminOnly`
+		 * @param array $form GF Form array
+		 * @param bool $include_parent_field Whether to include the parent field when getting a field with inputs
 		 */
-		if( $has_quiz_fields ) {
-
-			$fields['gquiz_score']   = array(
-				'label' => __( 'Quiz Score Total', 'gravityview' ),
-				'type'  => 'quiz_score',
-				'desc'  => __( 'Displays the number of correct Quiz answers the user submitted.', 'gravityview' ),
-			);
-			$fields['gquiz_percent'] = array(
-				'label' => __( 'Quiz Percentage Grade', 'gravityview' ),
-				'type'  => 'quiz_percent',
-				'desc'  => __( 'Displays the percentage of correct Quiz answers the user submitted.', 'gravityview' ),
-			);
-			$fields['gquiz_grade']   = array(
-				/* translators: This is a field type used by the Gravity Forms Quiz Addon. "A" is 100-90, "B" is 89-80, "C" is 79-70, etc.  */
-				'label' => __( 'Quiz Letter Grade', 'gravityview' ),
-				'type'  => 'quiz_grade',
-				'desc'  => __( 'Displays the Grade the user achieved based on Letter Grading configured in the Quiz Settings.', 'gravityview' ),
-			);
-			$fields['gquiz_is_pass'] = array(
-				'label' => __( 'Quiz Pass/Fail', 'gravityview' ),
-				'type'  => 'quiz_is_pass',
-				'desc'  => __( 'Displays either Passed or Failed based on the Pass/Fail settings configured in the Quiz Settings.', 'gravityview' ),
-			);
-		}
+		$fields = apply_filters( 'gravityview/common/get_form_fields', $fields, $form, $include_parent_field );
 
 		return $fields;
 
@@ -476,7 +417,7 @@ class GVCommon {
 		if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() || GravityView_frontend::getInstance()->getSingleEntry() ) {
 			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
 		} elseif ( 'delete' === RGForms::get( 'action' ) ) {
-			$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? $_GET['view_id'] : null;
+			$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? intval( $_GET['view_id'] ) : null;
 		} elseif( !isset( $criteria['context_view_id'] ) ) {
             // Prevent overriding the Context View ID: Some widgets could set the context_view_id (e.g. Recent Entries widget)
 			$criteria['context_view_id'] = null;
@@ -902,19 +843,28 @@ class GVCommon {
 	 * Retrieve the label of a given field id (for a specific form)
 	 *
 	 * @access public
-	 * @param array $form
-	 * @param string $field_id
+	 * @since 1.17 Added $field_value parameter
+	 *
+	 * @param array $form Gravity Forms form array
+	 * @param string $field_id ID of the field. If an input, full input ID (like `1.3`)
+	 * @param string|array $field_value Raw value of the field.
 	 * @return string
 	 */
-	public static function get_field_label( $form = array(), $field_id = '' ) {
+	public static function get_field_label( $form = array(), $field_id = '', $field_value = '' ) {
 
 		if ( empty( $form ) || empty( $field_id ) ) {
 			return '';
 		}
 
 		$field = self::get_field( $form, $field_id );
-		return isset( $field['label'] ) ?  $field['label'] : '';
 
+		$label = rgar( $field, 'label' );
+
+		if( floor( $field_id ) !== floatval( $field_id ) ) {
+			$label = GFFormsModel::get_choice_text( $field, $field_value, $field_id );
+		}
+
+		return $label;
 	}
 
 
@@ -1035,7 +985,7 @@ class GVCommon {
 	 *
 	 * @param int $view_id The ID of the View to get the connected form of
 	 *
-	 * @return string ID of the connected Form, if exists. Empty string if not.
+	 * @return false|string ID of the connected Form, if exists. Empty string if not. False if not the View ID isn't valid.
 	 */
 	public static function get_meta_form_id( $view_id ) {
 		return get_post_meta( $view_id, '_gravityview_form_id', true );
@@ -1526,6 +1476,36 @@ class GVCommon {
 	}
 
 
+	/**
+	 * Send email using GFCommon::send_email()
+	 *
+	 * @since 1.17
+	 *
+	 * @see GFCommon::send_email This just makes the method public
+	 *
+	 * @param string $from               Sender address (required)
+	 * @param string $to                 Recipient address (required)
+	 * @param string $bcc                BCC recipients (required)
+	 * @param string $reply_to           Reply-to address (required)
+	 * @param string $subject            Subject line (required)
+	 * @param string $message            Message body (required)
+	 * @param string $from_name          Displayed name of the sender
+	 * @param string $message_format     If "html", sent text as `text/html`. Otherwise, `text/plain`. Default: "html".
+	 * @param string|array $attachments  Optional. Files to attach. {@see wp_mail()} for usage. Default: "".
+	 * @param array|false $entry         Gravity Forms entry array, related to the email. Default: false.
+	 * @param array|false $notification  Gravity Forms notification that triggered the email. {@see GFCommon::send_notification}. Default:false.
+	 */
+	public static function send_email( $from, $to, $bcc, $reply_to, $subject, $message, $from_name = '', $message_format = 'html', $attachments = '', $entry = false, $notification = false ) {
+
+		$SendEmail = new ReflectionMethod( 'GFCommon', 'send_email' );
+
+		// It was private; let's make it public
+		$SendEmail->setAccessible( true );
+
+		// Required: $from, $to, $bcc, $replyTo, $subject, $message
+		// Optional: $from_name, $message_format, $attachments, $lead, $notification
+		$SendEmail->invoke( new GFCommon, $from, $to, $bcc, $replyTo, $subject, $message, $from_name, $message_format, $attachments, $entry, $notification );
+	}
 
 
 } //end class

@@ -1,0 +1,126 @@
+/**
+ * Add sticky positioning support, where supported.
+ * @see https://developer.mozilla.org/en-US/docs/Web/CSS/position
+ */
+@mixin sticky() {
+  position: -webkit-sticky;
+  position: -moz-sticky;
+  position: -ms-sticky;
+  position: -o-sticky;
+}
+
+@import "add-note-form";
+
+.gv-notes {
+
+  margin: 10px 0;
+
+  @import "entry-note";
+
+  table {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    table-layout: auto; // Allow the checkbox column to be any size
+    border: 0;
+    border-spacing: 0;
+    width: 100%;
+    clear: both;
+    margin: 0;
+
+    // Fix width set by .gv-table-view
+    td, th {
+      width: auto;
+      border: none;
+      border-collapse: collapse;
+      vertical-align: middle;
+    }
+
+    thead th {
+      border: none;
+    }
+  }
+
+  /** Hide screen-reader content by default */
+  caption,
+  .screen-reader-text {
+    position: absolute;
+    margin: -1px;
+    padding: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    border: 0;
+  }
+
+  .gv-notes-no-notes {
+    display: none;
+    td {
+      padding: 1em 0;
+    }
+  }
+
+  thead {
+    @include sticky();
+    top: 10px;
+    vertical-align: middle;
+    z-index: 2; // Move above the table content, otherwise delete button click target isn't always available
+
+    // Add extra spacing for admin bar
+    .admin-bar & {
+      top: 50px;
+    }
+  }
+
+  &.gv-no-notes {
+    .gv-notes-no-notes {
+      display: table-row;
+    }
+    thead {
+      display: none;
+    }
+  }
+
+  .gv-notes-delete {
+    margin: 5px 0;
+    display: inline-block;
+    text-decoration: none;
+    font-size: 12px;
+    cursor: pointer;
+    vertical-align: middle;
+    width: auto !important;
+  }
+
+  tbody .check-column {
+    vertical-align: top;
+    width: 1em;
+    text-align: center;
+  }
+
+  .gv-note-message {
+    display: none;
+    padding: .5em 1em;
+    margin: 10px 0;
+    position: absolute;
+    border-radius: 3px;
+  }
+
+  // Don't display success messages by default if the notes are being displayed
+  &.gv-show-notes .gv-note-success {
+    display: none!important;
+  }
+
+  .gv-note-success {
+    background-color: rgb(236, 252, 222);
+    background-color: rgba(236, 252, 222, .9);
+    border: 1px solid #a7c886;
+  }
+
+  .gv-note-deleted,
+  .gv-note-error {
+    font-weight: normal; // When it's in <thead>, it can be bold by themes
+    background-color: rgb(255, 235, 232);
+    background-color: rgba(255, 235, 232, .9);
+    border: 1px solid #cc0000;
+  }
+}

@@ -18,6 +18,9 @@
 
 .all-merge-tags a.open-list {
 	text-indent: -999em;
+
+	.rtl & { text-align: right; text-indent: 999em; }
+
 	width: 16px;
 	height: 16px;
 	background: url(images/icon-drop-list.png);

@@ -38,6 +38,9 @@ class GravityView_Admin {
 
 		/** @since 1.6 */
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-duplicate-view.php' );
+
+		/** @since 1.17 */
+		require_once( GRAVITYVIEW_DIR . 'includes/admin/class-gravityview-admin-no-conflict.php' );
 	}
 
 	/**
@@ -53,15 +56,6 @@ class GravityView_Admin {
 		add_filter( 'plugin_action_links_'. plugin_basename( GRAVITYVIEW_FILE ) , array( $this, 'plugin_action_links' ) );
 
 		add_action( 'plugins_loaded', array( $this, 'backend_actions' ), 100 );
-
-		//Hooks for no-conflict functionality
-		add_action( 'wp_print_scripts', array( $this, 'no_conflict_scripts' ), 1000);
-		add_action( 'admin_print_footer_scripts', array( $this, 'no_conflict_scripts' ), 9);
-
-		add_action( 'wp_print_styles', array( $this, 'no_conflict_styles' ), 1000);
-		add_action( 'admin_print_styles', array( $this, 'no_conflict_styles' ), 11);
-		add_action( 'admin_print_footer_scripts', array( $this, 'no_conflict_styles' ), 1);
-		add_action( 'admin_footer', array( $this, 'no_conflict_styles' ), 1);
 
 	}
 
@@ -131,13 +125,12 @@ class GravityView_Admin {
 	function post_updated_messages( $messages, $bulk_counts = NULL ) {
 		global $post;
 
-		$post_id = isset($_GET['post']) ? intval($_GET['post']) : ( is_object( $post ) && isset( $post->ID ) ? $post->ID : NULL );
+		$post_id = get_the_ID();
 
 		// By default, there will only be one item being modified.
 		// When in the `bulk_post_updated_messages` filter, there will be passed a number
 		// of modified items that will override this array.
 		$bulk_counts = is_null( $bulk_counts ) ? array( 'updated' => 1 , 'locked' => 1 , 'deleted' => 1 , 'trashed' => 1, 'untrashed' => 1 ) : $bulk_counts;
-
 
 		// If we're starting fresh, a new form was created.
 		// We should let the user know this is the case.
@@ -202,179 +195,6 @@ class GravityView_Admin {
 		);
 
 		return $messages;
-	}
-
-	/**
-	 * Callback to eliminate any non-registered script
-	 * @return void
-	 */
-	function no_conflict_scripts() {
-		global $wp_scripts;
-
-		if( ! gravityview_is_admin_page() ) {
-			return;
-		}
-
-		$no_conflict_mode = GravityView_Settings::getSetting('no-conflict-mode');
-
-		if( empty( $no_conflict_mode ) ) {
-			return;
-		}
-
-		$wp_allowed_scripts = array(
-            'common',
-            'admin-bar',
-            'autosave',
-            'post',
-			'inline-edit-post',
-            'utils',
-            'svg-painter',
-            'wp-auth-check',
-            'heartbeat',
-			'media-editor',
-			'media-upload',
-            'thickbox',
-			'wp-color-picker',
-
-            // Settings
-			'gv-admin-edd-license',
-
-            // Common
-            'select2-js',
-            'qtip-js',
-
-            // jQuery
-			'jquery',
-            'jquery-ui-core',
-            'jquery-ui-sortable',
-            'jquery-ui-datepicker',
-            'jquery-ui-dialog',
-            'jquery-ui-slider',
-			'jquery-ui-dialog',
-			'jquery-ui-tabs',
-			'jquery-ui-draggable',
-			'jquery-ui-droppable',
-            'jquery-ui-accordion',
-		);
-
-		$this->remove_conflicts( $wp_scripts, $wp_allowed_scripts, 'scripts' );
-	}
-
-	/**
-	 * Callback to eliminate any non-registered style
-	 * @return void
-	 */
-	function no_conflict_styles() {
-		global $wp_styles;
-
-		if( ! gravityview_is_admin_page() ) {
-			return;
-		}
-
-		// Dequeue other jQuery styles even if no-conflict is off.
-		// Terrible-looking tabs help no one.
-		if( !empty( $wp_styles->registered ) )  {
-			foreach ($wp_styles->registered as $key => $style) {
-				if( preg_match( '/^(?:wp\-)?jquery/ism', $key ) ) {
-					wp_dequeue_style( $key );
-				}
-			}
-		}
-
-		$no_conflict_mode = GravityView_Settings::getSetting('no-conflict-mode');
-
-		// If no conflict is off, jQuery will suffice.
-		if( empty( $no_conflict_mode ) ) {
-			return;
-		}
-
-        $wp_allowed_styles = array(
-	        'admin-bar',
-        	'colors',
-	        'ie',
-	        'wp-auth-check',
-	        'media-views',
-			'thickbox',
-			'dashicons',
-	        'wp-jquery-ui-dialog',
-	        'jquery-ui-sortable',
-
-            // Settings
-	        'gravityview_settings',
-
-	        // @todo qTip styles not loading for some reason!
-	        'jquery-qtip.js',
-	    );
-
-		$this->remove_conflicts( $wp_styles, $wp_allowed_styles, 'styles' );
-
-		/**
-		 * @action `gravityview_remove_conflicts_after` Runs after no-conflict styles are removed. You can re-add styles here.
-		 */
-		do_action('gravityview_remove_conflicts_after');
-	}
-
-	/**
-	 * Remove any style or script non-registered in the no conflict mode
-	 * @todo  Move this to GravityView_Admin_Views
-	 * @param  WP_Dependencies $wp_objects        Object of WP_Styles or WP_Scripts
-	 * @param  string[] $required_objects   List of registered script/style handles
-	 * @param  string $type              Either 'styles' or 'scripts'
-	 * @return void
-	 */
-	private function remove_conflicts( &$wp_objects, $required_objects, $type = 'scripts' ) {
-
-        /**
-         * @filter `gravityview_noconflict_{$type}` Modify the list of no conflict scripts or styles\n
-         * Filter is `gravityview_noconflict_scripts` or `gravityview_noconflict_styles`
-         * @param array $required_objects
-         */
-        $required_objects = apply_filters( "gravityview_noconflict_{$type}", $required_objects );
-
-        //reset queue
-        $queue = array();
-        foreach( $wp_objects->queue as $object ) {
-	        if( in_array( $object, $required_objects ) || preg_match('/gravityview|gf_|gravityforms/ism', $object ) ) {
-                $queue[] = $object;
-            }
-        }
-        $wp_objects->queue = $queue;
-
-        $required_objects = $this->add_script_dependencies( $wp_objects->registered, $required_objects );
-
-        //unregistering scripts
-        $registered = array();
-        foreach( $wp_objects->registered as $handle => $script_registration ){
-            if( in_array( $handle, $required_objects ) ){
-                $registered[ $handle ] = $script_registration;
-            }
-        }
-        $wp_objects->registered = $registered;
-	}
-
-	/**
-	 * Add dependencies
-	 *
-	 * @param [type] $registered [description]
-	 * @param [type] $scripts    [description]
-	 */
-	private function add_script_dependencies($registered, $scripts) {
-
-		//gets all dependent scripts linked to the $scripts array passed
-		do {
-			$dependents = array();
-			foreach ( $scripts as $script ) {
-				$deps = isset( $registered[ $script ] ) && is_array( $registered[ $script ]->deps ) ? $registered[ $script ]->deps : array();
-				foreach ( $deps as $dep ) {
-					if ( ! in_array( $dep, $scripts ) && ! in_array( $dep, $dependents ) ) {
-						$dependents[] = $dep;
-					}
-				}
-			}
-			$scripts = array_merge( $scripts, $dependents );
-		} while ( ! empty( $dependents ) );
-
-		return $scripts;
 	}
 
 

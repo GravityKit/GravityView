@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2015-04-10 17:11-0700\n"
-"PO-Revision-Date: 2016-04-06 23:50+0000\n"
+"PO-Revision-Date: 2016-04-10 03:21+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/katzwebservices/gravityview/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -79,7 +79,7 @@ msgstr "请输入有效的电子邮件地址"
 
 #: includes/admin/class-gravityview-support-port.php:94
 msgid "Subject"
-msgstr "发行人"
+msgstr "主题"
 
 #: includes/admin/class-gravityview-support-port.php:96
 msgid "How can we help you?"
@@ -87,20 +87,20 @@ msgstr "我们怎样才能帮助你？"
 
 #: includes/admin/class-gravityview-support-port.php:98
 msgid "Message sent!"
-msgstr "发送消息！"
+msgstr "消息已发送！"
 
 #: includes/admin/class-gravityview-support-port.php:99
 msgid ""
 "Thanks for reaching out! Someone from the GravityView team will get back to "
 "you soon."
-msgstr "谢谢您伸出援手！FROSTNT 团队成员人将会尽快回复你。"
+msgstr "谢谢您的反馈！GravityView 团队成员人将会尽快回复你。"
 
 #. translators: "Support Port" can be translated as "Support Portal" or
 #. "Support Window"
 #: includes/admin/class-gravityview-support-port.php:294
 #: includes/admin/class-gravityview-support-port.php:300
 msgid "GravityView Support Port"
-msgstr "GravityView 支持端口"
+msgstr "GravityView帮助按钮"
 
 #: includes/admin/class-gravityview-support-port.php:305
 msgid "Show GravityView Support Port when on a GravityView-related page"
@@ -250,7 +250,7 @@ msgstr "改变视图的类型将重置您的字段配置。一旦您保存了视
 
 #: includes/admin/metaboxes/views/data-source.php:59
 msgid "GravityView requires Javascript to be enabled."
-msgstr "重力视图需要启用 JavaScript 。"
+msgstr "Gravity Forms需要启用 JavaScript 。"
 
 #: includes/admin/metaboxes/views/select-template.php:33
 msgid "Buy Now"
@@ -375,7 +375,7 @@ msgstr "请选择一个视图"
 
 #: includes/class-admin-approve-entries.php:65
 msgid "GravityView Fields"
-msgstr "重力视图字段"
+msgstr "Gravity Forms字段"
 
 #: includes/class-admin-approve-entries.php:66
 msgid ""
@@ -434,12 +434,12 @@ msgstr "%s 已拒绝。"
 #: includes/class-admin-approve-entries.php:321
 #: tests/unit-tests/GravityView_Uninstall_Test.php:195 uninstall.php:100
 msgid "Disapproved the Entry for GravityView"
-msgstr "有关重力视图的已拒绝条目"
+msgstr "Gravity Forms的已拒绝条目"
 
 #: includes/class-admin-approve-entries.php:321
 #: tests/unit-tests/GravityView_Uninstall_Test.php:196 uninstall.php:101
 msgid "Approved the Entry for GravityView"
-msgstr "有关重力视图的已批准条目"
+msgstr "Gravity Forms的已批准条目"
 
 #: includes/class-admin-approve-entries.php:575
 msgid "Entry not approved for directory viewing. Click to approve this entry."
@@ -691,7 +691,7 @@ msgstr "您想删除这个区域的所有字段吗？（您看到这个消息是
 
 #: includes/class-admin-welcome.php:56
 msgid "GravityView: Getting Started"
-msgstr "重力视图：开始使用"
+msgstr "GravityView：开始使用"
 
 #: includes/class-admin-welcome.php:57 includes/class-admin-welcome.php:152
 msgid "Getting Started"
@@ -708,13 +708,13 @@ msgstr "信誉"
 
 #: includes/class-admin-welcome.php:147
 msgid "Welcome to GravityView %s"
-msgstr "欢迎来到重力视图 %s"
+msgstr "欢迎来到GravityView %s"
 
 #: includes/class-admin-welcome.php:148
 msgid ""
 "Thank you for installing GravityView. Beautifully display your Gravity Forms"
 " entries."
-msgstr "感谢您安装重力视图。完美的显示您的重力表单条目。"
+msgstr "感谢您安装GravityView。完美的显示您的Gravity Forms条目。"
 
 #: includes/class-admin-welcome.php:155
 msgid "List of Changes"
@@ -1180,7 +1180,7 @@ msgid ""
 "%sGravityView requires PHP Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please ask your host to upgrade your server's PHP."
-msgstr "%s重力视图需要 PHP 版本为 %s 或更新的%s \n\n您正在使用的版本是 %s。请访问您的主机去更新您的服务器的 PHP。"
+msgstr "%sGravityView需要 PHP 版本为 %s 或更新的%s \n\n您正在使用的版本是 %s。请访问您的主机去更新您的服务器的 PHP。"
 
 #: includes/class-gravityview-compatibility.php:206
 msgid ""
@@ -1200,13 +1200,13 @@ msgstr "%sGravityView需要GravityForms版本为 %s 或更高%s \n\n您使用的
 msgid ""
 "%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
 "Forms%s to use the GravityView plugin."
-msgstr "%s重力视图需要重力表单是活跃的。%s激活重力表单%s 来使用重力视图插件。"
+msgstr "%sGravityView需要GravityView处于激活状态。%s激活GravityView%s 来使用GravityView插件。"
 
 #: includes/class-gravityview-compatibility.php:289
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
-msgstr "%s重力视图需要安装重力表单才能正常运行。%s获取重力表单%s - 起价 $39%s%s"
+msgstr "%sGravityView需要安装Gravity Forms才能正常运行。%s获取Gravity Forms%s - 最低 $39%s%s"
 
 #: includes/class-gravityview-compatibility.php:309
 msgid "Potential Conflict"
@@ -1217,7 +1217,7 @@ msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
 "plugin."
-msgstr "重力视图和重力表单目录都是活跃的。这可能会引起麻烦。如果您遇到问题，请禁用重力表单目录插件。"
+msgstr "GravityView和Gravity Forms目录都已启用。这可能会引起麻烦。如果您遇到问题，请禁用Gravity Forms目录插件。"
 
 #: includes/class-gravityview-entry-link-shortcode.php:208
 #: includes/extensions/delete-entry/class-delete-entry.php:114
@@ -1235,11 +1235,11 @@ msgstr "视图详情"
 
 #: includes/class-gravityview-extension.php:351
 msgid "Could not activate the %s Extension; GravityView is not active."
-msgstr "不能激活 %s 扩展；重力视图是不活跃的。"
+msgstr "无法激活 %s 插件；GravityView未启用。"
 
 #: includes/class-gravityview-extension.php:355
 msgid "The %s Extension requires GravityView Version %s or newer."
-msgstr "%s 扩展需要重力视图版本 %s 或更新的。"
+msgstr "%s 扩展需要GravityView版本为 %s 或更新的。"
 
 #: includes/class-gravityview-extension.php:359
 msgid ""
@@ -1249,13 +1249,13 @@ msgstr "%s 扩展需要PHP版本 %s 或更新的。请访问您的主机升级�
 
 #: includes/class-gravityview-settings.php:154
 msgid "GravityView Settings"
-msgstr "重力视图设置"
+msgstr "GravityView设置"
 
 #: includes/class-gravityview-settings.php:195
 msgid ""
 "Your GravityView license %s. This means you&rsquo;re missing out on updates "
 "and support! %sActivate your license%s or %sget a license here%s."
-msgstr "您的重力视图许可证 %s。这意味着您正在错过更新和支持！%s激活您的许可%s 或 %s在这里获取一个许可证%s。"
+msgstr "您的GravityView注册码 %s。这意味着您将得不到更新和技术支持！%s激活您的注册码%s 或 %s在这里获取一个注册码%s。"
 
 #: includes/class-gravityview-settings.php:202
 msgid "Inactive License"
@@ -1345,7 +1345,7 @@ msgstr "支持端口提供快速访问的文章和教程。对于管理员来说
 
 #: includes/class-gravityview-settings.php:633
 msgid "Show the Support Port on GravityView pages?"
-msgstr "在重力视图页面上显示帮助按钮？"
+msgstr "在GravityView页面上显示帮助按钮？"
 
 #: includes/class-gravityview-settings.php:638
 msgid "No-Conflict Mode"
@@ -1356,7 +1356,7 @@ msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
-msgstr "设置这个为开启来防止外部脚本，然后在重力视图管理页面上打印样式，减少与其他插件和主题的冲突。"
+msgstr "设为开启后，可以防止外部脚本在GravityView管理页面上生成样式，减少与其他插件和主题的冲突。"
 
 #: includes/class-gravityview-settings.php:651
 msgid "If your Edit View tabs are ugly, enable this setting."
@@ -1368,23 +1368,23 @@ msgstr "在删除时移除数据？"
 
 #: includes/class-gravityview-settings.php:663
 msgid "Keep GravityView content and settings"
-msgstr "保留重力视图内容和设置"
+msgstr "保留GravityView内容和设置"
 
 #: includes/class-gravityview-settings.php:663
 msgid ""
 "If you delete then re-install the plugin, all GravityView data will be kept."
 " Views, settings, etc. will be untouched."
-msgstr "如果您删除然后重新安装插件，所有的重力视图数据将被保存。视图，设置，等。将原封不动。"
+msgstr "如果您删除然后重新安装插件，所有的GravityView数据将被保存。视图，设置等将维持原状。"
 
 #: includes/class-gravityview-settings.php:668
 msgid "Delete all GravityView content and settings"
-msgstr "删除所有的重力视图内容和设置"
+msgstr "删除所有的GravityView内容和设置"
 
 #: includes/class-gravityview-settings.php:668
 msgid ""
 "If you delete then re-install GravityView, it will be like installing "
 "GravityView for the first time."
-msgstr "如果您删除，然后重新安装重力视图，它会像第一次安装重力视图一样。"
+msgstr "如果您删除，然后重新安装GravityView，它会像第一次安装一样。"
 
 #: includes/class-gravityview-settings.php:668
 msgid ""
@@ -1392,13 +1392,13 @@ msgid ""
 "entry approvals, GravityView-generated entry notes (including approval and "
 "entry creator changes), and GravityView plugin settings. No Gravity Forms "
 "data will be touched."
-msgstr "当重力视图被卸载和删除时，删除所有视图，重力视图条目审批，重力视图-生成条目备注（包含审批和条目创建者更改），以及重力视图插件设置。无重力表单数据将被接触到。"
+msgstr "当GravityView被卸载和删除时，删除所有视图，GravityView条目审批，GravityView-生成条目备注（包含审批和条目创建者更改），以及GravityView插件设置。请放心，将不会对Gravity Forms数据进行任何操作。"
 
 #: includes/class-gravityview-settings.php:671
 msgid ""
 "Should GravityView content and entry approval status be removed from the "
 "site when the GravityView plugin is deleted?"
-msgstr "当重力视图插件被删除后，重力视图内容和条目的批准状态应该从网站删除?"
+msgstr "当GravityView插件被删除后，重力视图内容和条目的批准状态应该从网站删除?"
 
 #: includes/class-gravityview-settings.php:671
 msgid "Permanently Delete"
@@ -1406,7 +1406,7 @@ msgstr "永久删除"
 
 #: includes/class-gravityview-settings.php:696
 msgid "You are running GravityView version %s"
-msgstr "您正在运行的重力视图版本 %s"
+msgstr "您正在运行的GravityView版本 %s"
 
 #: includes/class-gv-license-handler.php:78
 #: includes/class-gv-license-handler.php:385
@@ -1451,7 +1451,7 @@ msgstr "无效的：这个许可证已达到其激活限制。"
 #: includes/class-gv-license-handler.php:375
 msgid ""
 "You can manage license activations %son your GravityView account page%s."
-msgstr "你可以在 %s您的重力视图账户页面%s 上管理许可证激活。"
+msgstr "你可以在 %s您的GravityView账户页面%s 上管理许可证激活。"
 
 #: includes/class-gv-license-handler.php:376
 msgid "The license has been deactivated."
@@ -1547,7 +1547,7 @@ msgstr "查看"
 
 #: includes/class-post-types.php:80
 msgid "Create views based on a Gravity Forms form"
-msgstr "基于重力表单创建视图"
+msgstr "基于Gravity Forms表单创建视图"
 
 #: includes/class-post-types.php:170
 msgid ""
@@ -2067,7 +2067,7 @@ msgstr "链接到网址："
 
 #: includes/fields/class-gravityview-field-source-url.php:37
 msgid "Display as a link to the Source URL"
-msgstr "显示链接到原URL"
+msgstr "显示为一个连接到源地址的链接"
 
 #: includes/fields/class-gravityview-field-source-url.php:44
 msgid "Customize the link text. If empty, the link text will be the the URL."
@@ -2208,11 +2208,11 @@ msgstr "在一张表中显示业务信息。"
 
 #: includes/presets/business-listings/class-gravityview-preset-business-listings.php:24
 msgid "Business Listings"
-msgstr "商业列表"
+msgstr "业务列表"
 
 #: includes/presets/business-listings/class-gravityview-preset-business-listings.php:25
 msgid "Display business profiles."
-msgstr "显示商业资料。"
+msgstr "显示业务概况。"
 
 #: includes/presets/default-edit/class-gravityview-default-template-edit.php:26
 msgid "Edit Table"
@@ -2250,7 +2250,7 @@ msgstr "副标题"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:42
 msgid "Data placed here will be bold."
-msgstr "在这里的数据将被突出显示。"
+msgstr "数据放置在这里将是明显的。"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:48
 msgid "Image"
@@ -2258,7 +2258,7 @@ msgstr "图像"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:49
 msgid "Leave empty to remove."
-msgstr "留空将删除。"
+msgstr "留空便删除。"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:55
 msgid "Other Fields"
@@ -2270,11 +2270,11 @@ msgstr "下面的副标题，用于描述和其他数据的好地方。"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:64
 msgid "Footer Left"
-msgstr "左侧页脚"
+msgstr "页脚左边"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:71
 msgid "Footer Right"
-msgstr "右侧页脚"
+msgstr "页脚右边"
 
 #: includes/presets/default-table/class-gravityview-default-template-table.php:14
 msgid "Table (default)"
@@ -2350,7 +2350,7 @@ msgstr "作为一个小控件插入自定义文本或HTML"
 
 #: includes/widgets/class-gravityview-widget-custom-content.php:31
 msgid "Enter text or HTML. Also supports shortcodes."
-msgstr "输入文本或HTML，支持短码。"
+msgstr "输入文本或HTML。还支持短码。"
 
 #: includes/widgets/class-gravityview-widget-page-links.php:14
 msgid "Links to multiple pages of results."
@@ -2585,7 +2585,7 @@ msgstr "为视图显示最近的条目"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:267
 msgid "Recent Entries"
-msgstr "最近条目"
+msgstr "最近的记录"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:281
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:165
@@ -2615,15 +2615,15 @@ msgstr "在嵌入式视图上进行搜索，输入文章的 ID 或在页面上�
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:358
 msgid "Number of entries to show:"
-msgstr "条目显示数量："
+msgstr "显示条目数："
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:14
 msgid "A search form for a specific GravityView."
-msgstr "用于搜索指定GV的表单。"
+msgstr "一个特定的GravityView搜索表单。"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:21
 msgid "GravityView Search"
-msgstr "重力视图搜索"
+msgstr "GravityView搜索"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:138
 msgid ""
@@ -2743,7 +2743,7 @@ msgstr "关闭"
 #: includes/class-gravityview-settings.php:661
 msgctxt "Setting: what to do when uninstalling plugin"
 msgid "Keep GravityView Data"
-msgstr "保留重力视图的数据"
+msgstr "保留GravityView的数据"
 
 #: includes/class-gravityview-settings.php:666
 msgctxt "Setting: what to do when uninstalling plugin"
@@ -2806,7 +2806,7 @@ msgstr "下一个"
 #: includes/widgets/search-widget/class-search-widget.php:1079
 msgctxt "Today in calendar"
 msgid "Today"
-msgstr "今天"
+msgstr "今日"
 
 #: includes/widgets/search-widget/class-search-widget.php:1080
 msgctxt "Week in calendar"
@@ -2816,7 +2816,7 @@ msgstr "星期"
 #: templates/fields/gquiz_grade.php:25 templates/fields/gquiz_is_pass.php:28
 msgctxt "%s is the current Quiz field type (\"Letter\" or \"Pass/Fail\")"
 msgid "%s grading is disabled for this form. %sChange the setting%s"
-msgstr "%s 该表单的评分被禁用。 %s改变设置%s"
+msgstr "%s 这个表单的评分是禁用的。 %s改变设置%s"
 
 #: templates/fields/post_image.php:109
 msgctxt "Post Image field title heading"

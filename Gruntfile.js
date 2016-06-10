@@ -10,7 +10,8 @@ module.exports = function(grunt) {
 
 		sass: {
 			options: {
-				outputStyle: 'compressed'
+				style: 'compressed',
+				sourcemap: 'none'
 			},
 			dist: {
 				files: [{
@@ -21,11 +22,20 @@ module.exports = function(grunt) {
 		          ext: '.css'
 		      }]
 			},
+			extensions: {
+				files: [{
+					expand: true,
+					cwd: 'includes/extensions/entry-notes/assets/css/source',
+					src: ['*.scss'],
+					dest: 'includes/extensions/entry-notes/assets/css',
+					ext: '.css'
+				}]
+			},
 			templates: {
 				files: [{
 		          expand: true,
 		          cwd: 'templates/css/source/',
-		          src: ['*.scss','!search.scss','!edit.scss','!font.scss','!notice.scss','!oembed.scss','!responsive.scss'],
+		          src: ['*.scss','!search-flexbox.scss','!edit.scss','!font.scss','!notice.scss','!oembed.scss','!responsive.scss'],
 		          dest: 'templates/css/',
 		          ext: '.css'
 		      }]
@@ -47,6 +57,7 @@ module.exports = function(grunt) {
 			"assets/js/admin-widgets.js",
 			"assets/js/admin-entries-list.js",
 			"assets/js/fe-views.js",
+			"includes/extensions/entry-notes/assets/js/entry-notes.js",
 			"includes/widgets/search-widget/assets/js/source/admin-widgets.js"
 		],
 
@@ -77,6 +88,25 @@ module.exports = function(grunt) {
 		          ext: '.min.js'
 		      }]
 			},
+			bower: {
+				files: [{
+					expand: true,
+					cwd: 'assets/lib',
+					extDot: 'last', // Process extension as the last dot (jquery.cookie.js)
+					src: ['**/*.js', '!**/build.js', '!**/dist/*.js', '!**/*.min.js'],
+					dest: 'assets/lib',
+					ext: '.min.js'
+				}]
+			},
+			entryNotes: {
+				files: [{
+					expand: true,
+					cwd: 'includes/extensions/entry-notes/assets/js/',
+					dest: 'includes/extensions/entry-notes/assets/js/',
+					src: ['*.js','!*.min.js'],
+					ext: '.min.js'
+				}]
+			},
 			searchExt: {
 				files: [{
 		          expand: true,
@@ -93,9 +123,17 @@ module.exports = function(grunt) {
 				files: ['assets/js/*.js','!assets/js/*.min.js'],
 				tasks: ['uglify:main','newer:jshint']
 			},
+			notes_js: {
+				files: ['includes/extensions/entry-notes/assets/js/*.js','!includes/extensions/entry-notes/assets/js/*.min.js'],
+				tasks: ['uglify:entryNotes','newer:jshint']
+			},
 			extension_js: {
 				files: ['includes/widgets/**/*.js','!includes/widgets/**/*.min.js'],
 				tasks: ['uglify:searchExt','newer:jshint']
+			},
+			extension_scss: {
+				files: ['includes/extensions/**/*.scss'],
+				tasks: ['sass:extensions']
 			},
 			templates: {
 				files: ['templates/css/**/*.scss','!templates/css/**/*.css'],
@@ -137,7 +175,9 @@ module.exports = function(grunt) {
 			transifex: 'tx pull -a',
 
 			// Create a ZIP file
-			zip: 'git-archive-all ../gravityview.zip'
+			zip: 'git-archive-all ../gravityview.zip',
+
+			bower: 'bower install'
 		},
 
 		// Build translations without POEdit
@@ -210,7 +250,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-wp-i18n');
 
 	// Regular CSS/JS/Image Compression stuff
-	grunt.registerTask( 'default', [ 'sass', 'uglify', 'imagemin', 'watch' ] );
+	grunt.registerTask( 'default', [ 'exec:bower', 'sass', 'uglify', 'imagemin', 'watch' ] );
 
 	// Translation stuff
 	grunt.registerTask( 'translate', [ 'exec:transifex', 'potomo', 'addtextdomain', 'makepot' ] );

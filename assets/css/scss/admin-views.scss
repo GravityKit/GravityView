@@ -417,6 +417,7 @@ $gv-overlay-index: 10000;
 }
 
 .gv-dialog {
+	position: absolute;
 	z-index: $gv-overlay-index + 1;
 }
 
@@ -755,6 +756,34 @@ hr {
 		  */
 		code {
 			font-style: normal!important;
+		}
+
+		// Vertically stacked radios
+		&.gv-setting-container-choice_display .gv-label-radio {
+			display: block;
+			margin: .5em 0;
+		}
+	}
+
+	// Currently only used in "checkboxes" field type
+	fieldset legend {
+		font-size: 1.1em;
+		padding-bottom: .2em;
+	}
+
+	// Grouped <ul> in "checkboxes" field type
+	.gv-setting-list {
+		@extend %clearfix;
+
+		li {
+			list-style: none;
+			display: block;
+			padding: .2em .2em .4em;
+
+			// Dependent settings
+			&.gv-sub-setting {
+				padding-left: 1.7em;
+			}
 		}
 	}
 

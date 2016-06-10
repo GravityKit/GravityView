@@ -357,4 +357,44 @@ abstract class GravityView_Field {
 		return $field_options;
 	}
 
+	/**
+	 * Check whether the `enableChoiceValue` flag is set for a GF field
+	 *
+	 * Gets the current form ID, gets the field at that ID, then checks for the enableChoiceValue value.
+	 *
+	 * @access protected
+	 *
+	 * @uses GFAPI::get_form
+	 *
+	 * @since 1.17
+	 *
+	 * @return bool True: Enable Choice Value is active for field; False: not active, or form invalid, or form not found.
+	 */
+	protected function is_choice_value_enabled() {
+
+		// If "Add Field" button is processing, get the Form ID
+		$connected_form = rgpost( 'form_id' );
+
+		// Otherwise, get the Form ID from the Post page
+		if( empty( $connected_form ) ) {
+			$connected_form = gravityview_get_form_id( get_the_ID() );
+		}
+
+		if( empty( $connected_form ) ) {
+			do_action( 'gravityview_log_error', sprintf( '%s: Form not found for form ID "%s"', __METHOD__, $connected_form ) );
+			return false;
+		}
+
+		$form = GFAPI::get_form( $connected_form );
+
+		if ( ! $form ) {
+			do_action( 'gravityview_log_error', sprintf( '%s: Form not found for field ID of "%s", when checking for a form with ID of "%s"', __METHOD__, $this->_field_id, $connected_form ) );
+			return false;
+		}
+
+		$field = gravityview_get_field( $form, $this->_field_id );
+
+		return ! empty( $field->enableChoiceValue );
+	}
+
 }
