@@ -335,7 +335,7 @@ class GV_License_Handler {
 			$local_text = ( ! empty( $response['is_local'] ) ? '<span class="howto">' . __( 'This development site does not count toward license activation limits', 'gravityview' ) . '</span>' : '' );
 			$details = array(
 				'license'     => sprintf( esc_html__( 'License level: %s', 'gravityview' ), esc_html( $response['license_name'] ), esc_html( $response['license_limit'] ) ),
-				'licensed_to' => sprintf( esc_html_x( 'Licensed to: %1$s (%2$s)', '1: Customer name; 2: Customer email', 'gravityview' ), esc_html__( $response['customer_name'] ), esc_html__( $response['customer_email'] ) ) . $login_link,
+				'licensed_to' => sprintf( esc_html_x( 'Licensed to: %1$s (%2$s)', '1: Customer name; 2: Customer email', 'gravityview' ), esc_html__( $response['customer_name'], 'gravityview' ), esc_html__( $response['customer_email'], 'gravityview' ) ) . $login_link,
 				'activations' => sprintf( esc_html__( 'Activations: %d of %s sites', 'gravityview' ), intval( $response['site_count'] ), esc_html( $response['license_limit'] ) ) . $local_text,
 				'expires'     => sprintf( esc_html__( 'Renew on: %s', 'gravityview' ), date_i18n( get_option( 'date_format' ), strtotime( $response['expires'] ) - DAY_IN_SECONDS ) ),
 				'upgrade'     => $this->get_upgrade_html( $response['upgrades'] ),
