@@ -86,7 +86,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 * @return void
 	 */
 	public function register_scripts() {
-		wp_register_style( 'gravityview-notes', plugins_url( '/assets/css/entry-notes.css', GravityView_Field_Notes::$file ), array(), GravityView_Plugin::version );
+		$css_file = gravityview_css_url( 'entry-notes.css', GravityView_Field_Notes::$path . 'assets/css/' );
+		wp_register_style( 'gravityview-notes', $css_file, array(), GravityView_Plugin::version );
 		wp_register_script( 'gravityview-notes', plugins_url( '/assets/js/entry-notes.js', GravityView_Field_Notes::$file ), array( 'jquery' ), GravityView_Plugin::version, true );
 	}
 

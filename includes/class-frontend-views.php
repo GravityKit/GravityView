@@ -1283,12 +1283,9 @@ class GravityView_frontend {
 					wp_enqueue_style( 'gravityview_font', plugins_url( 'assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
 				}
 
-				$rtl = is_rtl() ? '-rtl' : '';
-
-				wp_enqueue_style( 'gravityview_default_style', plugins_url( 'templates/css/gv-default-styles' . $rtl .'.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
+				$this->enqueue_default_style( $css_dependencies );
 
 				self::add_style( $data['template_id'] );
-
 			}
 
 			if ( 'wp_print_footer_scripts' === current_filter() ) {
@@ -1309,6 +1306,26 @@ class GravityView_frontend {
 				wp_localize_script( 'gravityview-fe-view', 'gvGlobals', $js_localization );
 			}
 		}
+	}
+
+	/**
+	 * Handle enqueuing the `gravityview_default_style` stylesheet
+	 *
+	 * @since 1.17
+	 *
+	 * @param array $css_dependencies Dependencies for the `gravityview_default_style` stylesheet
+	 *
+	 * @return void
+	 */
+	private function enqueue_default_style( $css_dependencies = array() ) {
+
+		$rtl = is_rtl() ? '-rtl' : '';
+
+		$css_file_base = $use_legacy_search_style ? 'gv-legacy-search' : 'gv-default-styles';
+
+		$path = gravityview_css_url( $css_file_base . $rtl . '.css' );
+
+		wp_enqueue_style( 'gravityview_default_style', $path, $css_dependencies, GravityView_Plugin::version, 'all' );
 	}
 
 	/**

@@ -56,6 +56,8 @@ __Developer Notes__
 * Templates changed:
     * `list-single.php` and `list-body.php`: changed `#gv_list_{entry_id}` to `#gv_list_{entry slug}`. If using custom entry slugs, the ID attribute will change. Otherwise, no change.
     * `list-body.php`: Removed `id` attribute from entry title `<h3>`
+* Added: Override GravityView CSS files by copying them to a template's `/gravityview/css/` sub-directory
+* Added: `gravityview_css_url()` function to check for overriding CSS files in templates
 * Added: `gravityview/delete-entry/delete-connected-post` Filter to modify behavior when entry is deleted. Return false to prevent posts from being deleted or trashed when connected entries are deleted or trashed. See `gravityview/delete-entry/mode` filter to modify the default behavior, which is "delete".
 * Added: `gravityview/edit_entry/post_content/append_categories` filter to modify whether post categories should be added to or replaced?
 * Added: `gravityview/common/get_form_fields` filter to modify fields used in the "Add Field" selector, View "Filters" dropdowns, and Search Bar
