@@ -437,48 +437,6 @@ class GravityView_Edit_Entry_Render {
     }
 
     /**
-     * Update the post categories based on all post category fields
-     *
-     * @since 1.17
-     *
-     * @param WP_Post &$updated_post Post to be updated (passed by reference)
-     * @param array $form Form to check post fields
-     * @param array $entry
-     *
-     * @return mixed
-     */
-    private function set_post_categories( &$updated_post, $form, $entry ) {
-
-        $post_category_fields = GFAPI::get_fields_by_type( $form, 'post_category' );
-        
-        /**
-         * @filter `gravityview/edit_entry/post_content/append_categories` Should post categories be added to or replaced?
-         * @since 1.17
-         * @param bool $append If `true`, don't delete existing categories, just add on. If `false`, replace the categories with the submitted categories. Default: `false`
-         */
-        $append = apply_filters( 'gravityview/edit_entry/post_content/append_categories', false );
-
-        $updated_categories = array();
-
-        if( $append ) {
-            $updated_categories = wp_get_post_categories( $updated_post->ID );
-        }
-
-        if( $post_category_fields ) {
-
-            foreach ( $post_category_fields as $field ) {
-                // Get the value of the field, including $_POSTed value
-                $field_cats = RGFormsModel::get_field_value( $field );
-                $field_cats = is_array( $field_cats ) ? array_values( $field_cats ) : (array)$field_cats;
-                $field_cats = gv_map_deep( $field_cats, 'intval' );
-                $updated_categories = array_merge( $updated_categories, array_values( $field_cats ) );
-            }
-        }
-
-        $updated_post->post_category = $updated_categories;
-    }
-
-    /**
      * Handle updating the Post Image field
      *
      * Sets a new Featured Image if configured in Gravity Forms; otherwise uploads/updates media
@@ -683,8 +641,6 @@ class GravityView_Edit_Entry_Render {
             }
 
         }
-
-        $this->set_post_categories( $updated_post, $form, $entry );
 
         $return_post = wp_update_post( $updated_post, true );
 

@@ -48,6 +48,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Rank and Ratings Survey fields not displaying properly in Edit Entry
 * Fixed: Signature field not displaying existing signatures in Edit Entry
 * Fixed: Allow multiple Post Category fields in Edit Entry
+* Fixed: Post Category fields will now update to show the Post's current categories
 * Fixed: PHP Warning for certain hosting `open_basedir` configurations
 * Fixed: Updating Post Image fields in Edit Entry when the field is not set to "Featured Image" in Gravity Forms
 * Fixed: When using the User Opt-in field together with the View setting "Show Only Approved Entries", entries weren't showing
