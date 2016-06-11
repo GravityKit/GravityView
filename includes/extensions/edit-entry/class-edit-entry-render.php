@@ -1453,7 +1453,7 @@ class GravityView_Edit_Entry_Render {
      * Get the current entry and set it if it's not yet set.
      * @return array Gravity Forms entry array
      */
-    private function get_entry() {
+    public function get_entry() {
 
         if( empty( $this->entry ) ) {
             // Get the database value of the entry that's being edited
