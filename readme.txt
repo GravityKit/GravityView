@@ -69,6 +69,11 @@ __Developer Notes__
     - Added `gv-search-date-range` CSS class to containers that have date ranges
     - Moved `gv-search-box-links` CSS class from the `<p>` to the `<div>` container
     - Fixed: `<label>` `for` attribute was missing quotes
+* Added:
+    - `gravityview/edit_entry/form_fields` filter to modify the fields displayed in Edit Entry form
+    - `gravityview/edit_entry/field_value_{field_type}` filter to change the value of an Edit Entry field for a specific field type
+    - `gravityview/edit-entry/render/before` action, triggered before the Edit Entry form is rendered
+    - `gravityview/edit-entry/render/after` action, triggered after the Edit Entry form is rendered
 * Added: `gravityview/delete-entry/delete-connected-post` Filter to modify behavior when entry is deleted. Return false to prevent posts from being deleted or trashed when connected entries are deleted or trashed. See `gravityview/delete-entry/mode` filter to modify the default behavior, which is "delete".
 * Added: `gravityview/edit_entry/post_content/append_categories` filter to modify whether post categories should be added to or replaced?
 * Added: `gravityview/common/get_form_fields` filter to modify fields used in the "Add Field" selector, View "Filters" dropdowns, and Search Bar

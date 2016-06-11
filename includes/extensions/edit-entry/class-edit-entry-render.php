@@ -834,6 +834,13 @@ class GravityView_Edit_Entry_Render {
      */
     private function render_edit_form() {
 
+        /**
+         * @action `gravityview/edit-entry/render/before` Before rendering the Edit Entry form
+         * @since 1.17
+         * @param GravityView_Edit_Entry_Render $this
+         */
+        do_action( 'gravityview/edit-entry/render/before', $this );
+
         add_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields'), 5000, 3 );
         add_filter( 'gform_submit_button', array( $this, 'render_form_buttons') );
         add_filter( 'gform_disable_view_counter', '__return_true' );
@@ -859,6 +866,13 @@ class GravityView_Edit_Entry_Render {
         remove_filter( 'gform_field_input', array( $this, 'modify_edit_field_input' ), 10 );
 
         echo $html;
+
+        /**
+         * @action `gravityview/edit-entry/render/after` After rendering the Edit Entry form
+         * @since 1.17
+         * @param GravityView_Edit_Entry_Render $this
+         */
+        do_action( 'gravityview/edit-entry/render/after', $this );
     }
 
     /**
@@ -1038,6 +1052,14 @@ class GravityView_Edit_Entry_Render {
          * @param object $field Gravity Forms field object ( Class GF_Field )
          */
         $field_value = apply_filters( 'gravityview/edit_entry/field_value', $field_value, $field );
+
+        /**
+         * @filter `gravityview/edit_entry/field_value_{field_type}` Change the value of an Edit Entry field for a specific field type
+         * @since 1.17
+         * @param mixed $field_value field value used to populate the input
+         * @param GF_Field $field Gravity Forms field object
+         */
+        $field_value = apply_filters( 'gravityview/edit_entry/field_value_' . $field->type , $field_value, $field );
 
 	    // Prevent any PHP warnings, like undefined index
 	    ob_start();
@@ -1473,6 +1495,16 @@ class GravityView_Edit_Entry_Render {
 
 	    // If Edit Entry fields are configured, remove adminOnly field settings. Otherwise, don't.
 	    $fields = $this->filter_admin_only_fields( $fields, $edit_fields, $form, $view_id );
+
+        /**
+         * @filter `gravityview/edit_entry/form_fields` Modify the fields displayed in Edit Entry form
+         * @since 1.17
+         * @param GF_Field[] $fields Gravity Forms form fields
+         * @param array|null $edit_fields Fields for the Edit Entry tab configured in the View Configuration
+         * @param array $form GF Form array (`fields` key modified to have only fields configured to show in Edit Entry)
+         * @param int $view_id View ID
+         */
+        $fields = apply_filters( 'gravityview/edit_entry/form_fields', $fields, $edit_fields, $form, $view_id );
 
         return $fields;
     }
