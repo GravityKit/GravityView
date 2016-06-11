@@ -1440,9 +1440,6 @@ class GravityView_Edit_Entry_Render {
         // If edit tab not yet configured, show all fields
         $edit_fields = !empty( $properties['edit_edit-fields'] ) ? $properties['edit_edit-fields'] : NULL;
 
-	    // Show hidden fields as text fields
-	    $form = $this->fix_hidden_fields( $form );
-
         // Show hidden fields as text fields
         $form = $this->fix_survey_fields( $form );
 
@@ -1483,28 +1480,7 @@ class GravityView_Edit_Entry_Render {
 
         return $form;
     }
-
-	/**
-	 * @since 1.9.2
-	 *
-	 * @param $fields
-	 *
-	 * @return mixed
-	 */
-	private function fix_hidden_fields( $form ) {
-
-		/** @var GF_Field $field */
-		foreach( $form['fields'] as $key => $field ) {
-			if( 'hidden' === $field->type ) {
-				$text_field = new GF_Field_Text( $field );
-				$text_field->type = 'text';
-				$form['fields'][ $key ] = $text_field;
-			}
-		}
-
-		return $form;
-	}
-
+    
 
     /**
      * Filter area fields based on specified conditions
