@@ -75,6 +75,7 @@ __Developer Notes__
     - `gravityview/edit_entry/field_value_{field_type}` filter to change the value of an Edit Entry field for a specific field type
     - `gravityview/edit-entry/render/before` action, triggered before the Edit Entry form is rendered
     - `gravityview/edit-entry/render/after` action, triggered after the Edit Entry form is rendered
+* Fixed: "Rank" and "Ratings" Survey Field types not being displayed properly in Edit Entry
 * Added: `gravityview/delete-entry/delete-connected-post` Filter to modify behavior when entry is deleted. Return false to prevent posts from being deleted or trashed when connected entries are deleted or trashed. See `gravityview/delete-entry/mode` filter to modify the default behavior, which is "delete".
 * Added: `gravityview/edit_entry/post_content/append_categories` filter to modify whether post categories should be added to or replaced?
 * Added: `gravityview/common/get_form_fields` filter to modify fields used in the "Add Field" selector, View "Filters" dropdowns, and Search Bar
