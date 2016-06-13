@@ -27,7 +27,6 @@ $search_method = GravityView_Widget_Search::getInstance()->get_search_method();
 
 	foreach( $this->search_fields as $search_field ) {
 		$gravityview_view->search_field = $search_field;
-		echo "<pre>" . print_r( $gravityview_view->search_field, true) . "</pre>";
 		$this->render( 'search-field', $search_field['input'], false );
 
 		// show/hide the search button if there are input type fields

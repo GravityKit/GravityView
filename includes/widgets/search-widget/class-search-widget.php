@@ -774,6 +774,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 			$updated_field = $this->get_search_filter_details( $updated_field );
 
+
+			error_log("Field:Field = " . print_r($field['field'], true));
+
 			switch ( $field['field'] ) {
 
 				case 'search_all':
@@ -803,6 +806,16 @@ class GravityView_Widget_Search extends GravityView_Widget {
 					$updated_field['name'] = 'gv_by';
 					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_by' );
 					$updated_field['choices'] = self::get_created_by_choices();
+					break;
+
+				//Hard-coded for test purpose only.
+				//Unsure on approach given the need for this to potentially iterate on all custom field types.
+
+				case '67':
+					$updated_field['key'] = 'workflow_steps';
+					$updated_field['name'] = 'gf_steps';
+					$updated_field['value'] = $this->rgget_or_rgpost( 'gf_steps' );
+					$updated_field['choices'] = array( array( 'text' => 'A', 'value' => 'AValue') );
 					break;
 			}
 

@@ -125,10 +125,14 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 				endforeach;
 
 				$workflow_step_type = array(
+					"id"			=> "workflow_steps",
 					"label" 		=> "Workflow Step",
 					"type"			=> "select",
 					"choices"		=> $display_steps
 				);
+
+
+				error_log( print_r( $workflow_step_type, true) );
 
 				$fields[] = $workflow_step_type;
 
