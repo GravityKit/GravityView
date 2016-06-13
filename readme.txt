@@ -41,6 +41,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Support for [Gravity Flow](https://gravityflow.io) "Workflow Step" and Workflow "Final Status" fields
 * Added: Support for Password fields. You probably shouldn't display them (in most cases!) but now you *can*
 * Modified: When deleting/trashing entries with GravityView, posts created by GravityView will also be deleted or trashed
+* Fixed: Edit Entry didn't pre-populate List inputs if they were part of a Post Custom Field field type
 * Fixed: When inserting a GravityView shortcode using the "Add View" button, the form would flow over the window
 * Fixed: [Church Themes](https://churchthemes.com) theme compatibility
 * Fixed: Inactive and expired licenses were being shown the wrong error message.
