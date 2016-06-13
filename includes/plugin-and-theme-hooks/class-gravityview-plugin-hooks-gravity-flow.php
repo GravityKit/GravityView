@@ -126,7 +126,7 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 
 				$workflow_step_type = array(
 					"label" 		=> "Workflow Step",
-					"input"			=> "select",
+					"type"			=> "select",
 					"choices"		=> $display_steps
 				);
 
