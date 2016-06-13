@@ -22,7 +22,7 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 
 		add_action( 'gravityview/edit-entry/render/after', array( $this, 'remove_edit_entry_post_category_choices_filter' ) );
 
-		add_action( 'gravityview/edit-entry/render/after', array( $this, 'set_post_categories' ) );
+		add_action( 'gravityview/edit_entry/after_update', array( $this, 'set_post_categories' ), 10, 2 );
 
 		parent::__construct();
 	}
@@ -32,15 +32,14 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 	 *
 	 * @since 1.17
 	 *
-	 * @param int $post_id ID of post to be updated
-	 * @param array $form Form to check post fields
+	 * @param array $form Gravity Forms form array
+	 * @param int $entry_id Numeric ID of the entry that was updated
 	 *
 	 * @return array|false|WP_Error Array of term taxonomy IDs of affected categories. WP_Error or false on failure. false if there are no post category fields.
 	 */
-	public function set_post_categories( $object ) {
+	public function set_post_categories( $form = array(), $entry_id = 0 ) {
 
-		$form = $object->form;
-		$entry = rgobj( $object, 'entry' );
+		$entry = GFAPI::get_entry( $entry_id );
 		$post_id = rgar( $entry, 'post_id' );
 
 		if( empty( $post_id ) ) {
@@ -109,6 +108,7 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 	 * Always show the live Category values
 	 *
 	 * By default, Gravity Forms would show unchecked/default choices. We want to show the live Post categories
+	 *
 	 *
 	 * @param $choices
 	 * @param $field
