@@ -36,6 +36,8 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 		add_filter( 'gravityview_field_entry_value_workflow_final_status', array( $this, 'modify_entry_value_workflow_final_status' ), 10, 4 );
 
 		add_filter( 'gravityview_field_entry_value_workflow_step', array( $this, 'modify_entry_value_workflow_step' ), 10, 4 );
+
+		add_filter( 'gravityview/search/searchable_fields', array( $this, 'modify_search_fields_workflow_steps'), 10, 2 );
 	}
 
 	/**
@@ -94,6 +96,47 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Get the list of active Workflow Steps of the Workflow Step based on the `workflow_step` entry meta int value
+	 *
+	 * @uses Gravity_Flow_API::get_current_step
+	 *
+	 * @param array $fields Array of searchable fields
+	 * @param  int $form_id
+	 *
+	 * @since 1.17
+	 *
+	 * @return array Updated Array of searchable fields
+	 */
+	function modify_search_fields_workflow_steps( $fields, $form_id ) {
+
+		$GFlow = new Gravity_Flow_API( $form_id );
+		if( $GFlow ):
+			$workflow_steps = $GFlow->get_steps();
+
+			if( $workflow_steps ):
+
+				$display_steps = array();
+
+				foreach($workflow_steps as $step):
+					$display_steps[] = array( "text" => $step->get_name(), "value" => $step->get_id() );
+				endforeach;
+
+				$workflow_step_type = array(
+					"label" 		=> "Workflow Step",
+					"input"			=> "select",
+					"choices"		=> $display_steps
+				);
+
+				$fields[] = $workflow_step_type;
+
+			endif;
+
+		endif;
+
+		return $fields;
 	}
 
 }
