@@ -136,8 +136,8 @@
 		 * @param {jQueryEvent} e
 		 */
 		command_enter: function( e ) {
-			if(e.keyCode == 13 && e.metaKey) {
-				$('.gv-note-add').submit();
+			if( e.keyCode == 13 && e.metaKey ) {
+				$( e.currentTarget ).parents('form.gv-note-add').submit();
 			}
 		},
 
