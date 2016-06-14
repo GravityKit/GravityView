@@ -609,6 +609,7 @@ class GravityView_Edit_Entry_Render {
                         switch( $input_type ) {
                             case 'fileupload':
                             case 'list':
+                            case 'multiselect':
                                 if( ! is_string( $value ) ) {
                                     $value = function_exists('wp_json_encode') ? wp_json_encode( $value ) : json_encode( $value );
                                 }
