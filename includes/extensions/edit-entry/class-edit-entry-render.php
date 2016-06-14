@@ -604,19 +604,17 @@ class GravityView_Edit_Entry_Render {
                         }
 
                         $input_type = RGFormsModel::get_input_type( $field );
-                        $custom_field_name = $field->postCustomFieldName;
 
                         // Only certain custom field types are supported
                         switch( $input_type ) {
                             case 'fileupload':
-                            /** @noinspection PhpMissingBreakStatementInspection */
                             case 'list':
                                 if( ! is_string( $value ) ) {
                                     $value = function_exists('wp_json_encode') ? wp_json_encode( $value ) : json_encode( $value );
                                 }
                             // break; left intentionally out
                             default:
-                                update_post_meta( $post_id, $custom_field_name, $value );
+                                update_post_meta( $post_id, $field->postCustomFieldName, $value );
                         }
 
                         break;
