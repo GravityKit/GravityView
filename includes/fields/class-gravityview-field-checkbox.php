@@ -42,19 +42,31 @@ class GravityView_Field_Checkbox extends GravityView_Field {
 		if( floor( $field_id ) !== floatval( $field_id ) ) {
 
 			if( $this->is_choice_value_enabled() ) {
-				$field_options['choice_display'] = array(
-					'type'    => 'radio',
-					'value'   => 'value',
-					'class'   => 'vertical',
-					'label'   => __( 'What should be displayed:', 'gravityview' ),
-					'desc'    => __( 'This input has a label and a value. What should be displayed?', 'gravityview' ),
-					'choices' => array(
-						'tick' => __( 'A check mark, if the input is checked', 'gravityview' ),
-						'value' => __( 'Value of the input', 'gravityview' ),
-						'label' => __( 'Label of the input', 'gravityview' ),
-					),
+
+				$desc = esc_html__( 'This input has a label and a value. What should be displayed?', 'gravityview' );
+				$default = 'value';
+				$choices = array(
+					'tick' => __( 'A check mark, if the input is checked', 'gravityview' ),
+					'value' => __( 'Value of the input', 'gravityview' ),
+					'label' => __( 'Label of the input', 'gravityview' ),
+				);
+			} else {
+				$desc = '';
+				$default = 'tick';
+				$choices = array(
+					'tick' => __( 'A check mark, if the input is checked', 'gravityview' ),
+					'label' => __( 'Label of the input', 'gravityview' ),
 				);
 			}
+
+			$field_options['choice_display'] = array(
+				'type'    => 'radio',
+				'class'   => 'vertical',
+				'label'   => __( 'What should be displayed:', 'gravityview' ),
+				'value'   => $default,
+				'desc'    => $desc,
+				'choices' => $choices,
+			);
 		}
 
 		return $field_options;
