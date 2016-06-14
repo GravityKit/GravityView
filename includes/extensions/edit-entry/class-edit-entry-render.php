@@ -579,7 +579,19 @@ class GravityView_Edit_Entry_Render {
                 switch( $field->type ) {
 
                     case 'post_title':
+                        if( rgar( $form, 'postTitleTemplateEnabled' ) ) {
+                            $post_title               = $this->fill_post_template( $form['postTitleTemplate'], $form );
+                            $updated_post->post_title = $post_title;
+                            $updated_post->post_name  = $post_title;
+                        }
+                        break;
+
                     case 'post_content':
+                        if( rgar( $form, 'postContentTemplateEnabled' ) ) {
+                            $post_content               = $this->fill_post_template( $form['postContentTemplate'], $form, true );
+                            $updated_post->post_content = $post_content;
+                        }
+                        break;
                     case 'post_excerpt':
                         $updated_post->{$field->type} = $value;
                         break;
@@ -589,6 +601,9 @@ class GravityView_Edit_Entry_Render {
                     case 'post_category':
                         break;
                     case 'post_custom_field':
+                        if( ! empty( $field->customFieldTemplateEnabled ) ) {
+                            $value = $this->fill_post_template( $field->customFieldTemplate, $form, true );
+                        }
 
                         $input_type = RGFormsModel::get_input_type( $field );
                         $custom_field_name = $field->postCustomFieldName;
@@ -650,7 +665,39 @@ class GravityView_Edit_Entry_Render {
         } else {
             do_action( 'gravityview_log_debug', 'Updating the post content for post #'.$post_id.' succeeded', $updated_post );
         }
+    }
 
+    /**
+     * Convert a field content template into prepared output
+     *
+     * @uses GravityView_GFFormsModel::get_post_field_images()
+     *
+     * @since 1.17
+     *
+     * @param string $template The content template for the field
+     * @param array $form Gravity Forms form
+     * @param bool $do_shortcode Whether to process shortcode inside content. In GF, only run on Custom Field and Post Content fields
+     *
+     * @return mixed|string|void
+     */
+    function fill_post_template( $template, $form, $do_shortcode = false ) {
+
+        require_once GRAVITYVIEW_DIR . 'includes/class-gravityview-gfformsmodel.php';
+
+        $post_images = GravityView_GFFormsModel::get_post_field_images( $form, $this->entry );
+        
+        //replacing post image variables
+        $output = GFCommon::replace_variables_post_image( $template, $post_images, $this->entry );
+
+        //replacing all other variables
+        $output = GFCommon::replace_variables( $output, $form, $this->entry, false, false, false );
+
+        // replace conditional shortcodes
+        if( $do_shortcode ) {
+            $output = do_shortcode( $output );
+        }
+
+        return $output;
     }
 
 

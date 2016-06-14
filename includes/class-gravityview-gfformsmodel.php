@@ -8,43 +8,42 @@
 class GravityView_GFFormsModel extends GFFormsModel {
 
     /**
-     * Copied function from Gravity Forms plugin \GFFormsModel::copy_post_image since the method is private.
+     * Given information provided in an entry, get array of media IDs
      *
-     * @since 1.16.2
+     * This is necessary because GF doesn't expect to need to update post images, only to create them.
      *
-     * @param string $url URL of the post image to update
-     * @param int $post_id ID of the post image to update
-     * @return array|bool Array with `file`, `url` and `type` keys. False: failed to copy file to final directory path.
+     * @see GFFormsModel::create_post()
+     *
+     * @since 1.17
+     *
+     * @param array $form Gravity Forms form array
+     * @param array $entry Gravity Forms entry array
+     *
+     * @return array Array of "Field ID" => "Media IDs"
      */
-    public static function copy_post_image( $url, $post_id ) {
+    public static function get_post_field_images( $form, $entry ) {
 
-        $reflection = new ReflectionMethod( 'GFFormsModel', 'copy_post_image' );
+        $post_data = self::get_post_fields( $form, $entry );
 
-        /**
-         * If the method changes to public, use Gravity Forms' method
-         * @todo: If/when the method is public, remove the unneeded copied code.
-         */
-        if( $reflection->isPublic() ) {
-            return parent::copy_post_image( $url, $post_id );
-        }
+        $media = get_attached_media( 'image', $entry['post_id'] );
 
-        /**
-         * Original Gravity Forms code below:
-         * ==================================
-         */
+        $post_images = array();
 
-        $time = current_time( 'mysql' );
-
-        if ( $post = get_post( $post_id ) ) {
-            if ( substr( $post->post_date, 0, 4 ) > 0 ) {
-                $time = $post->post_date;
+        foreach ( $media as $media_item ) {
+            foreach( (array) $post_data['images'] as $post_data_item ) {
+                if(
+                    rgar( $post_data_item, 'title' ) === $media_item->post_title &&
+                    rgar( $post_data_item, 'description' ) === $media_item->post_content &&
+                    rgar( $post_data_item, 'caption' ) === $media_item->post_excerpt
+                ) {
+                    $post_images["{$post_data_item['field_id']}"] = $media_item->ID;
+                }
             }
         }
 
-        //making sure there is a valid upload folder
-        if ( ! ( ( $upload_dir = wp_upload_dir( $time ) ) && false === $upload_dir['error'] ) ) {
-            return false;
-        }
+        return $post_images;
+    }
+
     /**
      * Alias of GFFormsModel::get_post_fields(); just making it public
      *
