@@ -574,11 +574,15 @@ class GravityView_Edit_Entry_Render {
                 // Get the value of the field, including $_POSTed value
                 $value = RGFormsModel::get_field_value( $field );
 
+                // Use temporary entry variable, to make values available to fill_post_template() and update_post_image()
+                $entry_tmp = $this->entry;
+                $entry_tmp["{$field_id}"] = $value;
+
                 switch( $field->type ) {
 
                     case 'post_title':
                         if( rgar( $form, 'postTitleTemplateEnabled' ) ) {
-                            $post_title               = $this->fill_post_template( $form['postTitleTemplate'], $form );
+                            $post_title               = $this->fill_post_template( $form['postTitleTemplate'], $form, $entry_tmp );
                             $updated_post->post_title = $post_title;
                             $updated_post->post_name  = $post_title;
                         }
@@ -586,7 +590,7 @@ class GravityView_Edit_Entry_Render {
 
                     case 'post_content':
                         if( rgar( $form, 'postContentTemplateEnabled' ) ) {
-                            $post_content               = $this->fill_post_template( $form['postContentTemplate'], $form, true );
+                            $post_content               = $this->fill_post_template( $form['postContentTemplate'], $form, $entry_tmp, true );
                             $updated_post->post_content = $post_content;
                         }
                         break;
@@ -600,7 +604,7 @@ class GravityView_Edit_Entry_Render {
                         break;
                     case 'post_custom_field':
                         if( ! empty( $field->customFieldTemplateEnabled ) ) {
-                            $value = $this->fill_post_template( $field->customFieldTemplate, $form, true );
+                            $value = $this->fill_post_template( $field->customFieldTemplate, $form, $entry_tmp, true );
                         }
 
                         $input_type = RGFormsModel::get_input_type( $field );
@@ -636,6 +640,7 @@ class GravityView_Edit_Entry_Render {
 
                 $update_entry = true;
 
+                unset( $entry_tmp );
             }
 
         }
@@ -675,17 +680,17 @@ class GravityView_Edit_Entry_Render {
      *
      * @return mixed|string|void
      */
-    function fill_post_template( $template, $form, $do_shortcode = false ) {
+    function fill_post_template( $template, $form, $entry, $do_shortcode = false ) {
 
         require_once GRAVITYVIEW_DIR . 'includes/class-gravityview-gfformsmodel.php';
 
-        $post_images = GravityView_GFFormsModel::get_post_field_images( $form, $this->entry );
-        
+        $post_images = GravityView_GFFormsModel::get_post_field_images( $form, $entry );
+
         //replacing post image variables
-        $output = GFCommon::replace_variables_post_image( $template, $post_images, $this->entry );
+        $output = GFCommon::replace_variables_post_image( $template, $post_images, $entry );
 
         //replacing all other variables
-        $output = GFCommon::replace_variables( $output, $form, $this->entry, false, false, false );
+        $output = GFCommon::replace_variables( $output, $form, $entry, false, false, false );
 
         // replace conditional shortcodes
         if( $do_shortcode ) {
