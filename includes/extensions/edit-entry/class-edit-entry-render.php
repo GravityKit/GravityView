@@ -498,7 +498,10 @@ class GravityView_Edit_Entry_Render {
 
             // Same image although the image title, caption or description might have changed
 
-            $ary = ! empty( $entry[ $field_id ] ) ? explode( '|:|', $entry[ $field_id ] ) : array();
+            $ary = array();
+            if( ! empty( $entry[ $field_id ] ) ) {
+                $ary = is_array( $entry[ $field_id ] ) ? $entry[ $field_id ] : explode( '|:|', $entry[ $field_id ] );
+            }
             $img_url = rgar( $ary, 0 );
 
             // is this really the same image or something went wrong ?
