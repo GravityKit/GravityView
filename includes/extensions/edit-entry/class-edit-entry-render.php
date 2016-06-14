@@ -630,11 +630,6 @@ class GravityView_Edit_Entry_Render {
 
                 }
 
-                //ignore fields that have not changed
-                if ( $value === rgget( (string) $field_id, $this->entry ) ) {
-                    continue;
-                }
-
                 // update entry after
                 $this->entry["{$field_id}"] = $value;
 
