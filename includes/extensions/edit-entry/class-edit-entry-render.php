@@ -624,19 +624,19 @@ class GravityView_Edit_Entry_Render {
                         break;
 
                     case 'post_image':
-                        $value = $this->update_post_image( $form, $field, $field_id, $value, $entry, $post_id );
+                        $value = $this->update_post_image( $form, $field, $field_id, $value, $this->entry, $post_id );
                         break;
 
                 }
 
                 //ignore fields that have not changed
-                if ( $value === rgget( (string) $field_id, $entry ) ) {
+                if ( $value === rgget( (string) $field_id, $this->entry ) ) {
                     continue;
                 }
 
                 // update entry
                 if( 'post_category' !== $field->type ) {
-                    $entry[ strval( $field_id ) ] = $value;
+                    $this->entry["{$field_id}"] = $value;
                 }
 
                 $update_entry = true;
@@ -647,7 +647,7 @@ class GravityView_Edit_Entry_Render {
 
         if( $update_entry ) {
 
-            $return_entry = GFAPI::update_entry( $entry );
+            $return_entry = GFAPI::update_entry( $this->entry );
 
             if( is_wp_error( $return_entry ) ) {
                 do_action( 'gravityview_log_error', 'Updating the entry post fields failed', $return_entry );
