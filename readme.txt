@@ -40,20 +40,20 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
     * Fixed: Don't remove Edit Post/Page admin bar menu item
 * Added: Support for [Gravity Flow](https://gravityflow.io) "Workflow Step" and Workflow "Final Status" fields
 * Added: Support for Password fields. You probably shouldn't display them (in most cases!) but now you *can*
-* Added: Edit Entry now fully supports [Gravity Forms Content Templates](https://www.gravityhelp.com/documentation/article/create-content-template/)
-* Modified: When deleting/trashing entries with GravityView, posts created by GravityView will also be deleted or trashed
-* Fixed: Edit Entry didn't pre-populate List inputs if they were part of a Post Custom Field field type
+* Modified: When deleting/trashing entries with GravityView, the connected posts created by Gravity Forms will now also be deleted/trashed
+* Edit Entry improvements
+    * Added: Edit Entry now fully supports [Gravity Forms Content Templates](https://www.gravityhelp.com/documentation/article/create-content-template/)
+    * Fixed: Edit Entry didn't pre-populate List inputs if they were part of a Post Custom Field field type
+    * Fixed: Updating Post Image fields in Edit Entry when the field is not set to "Featured Image" in Gravity Forms
+    * Fixed: "Rank" and "Ratings" Survey Field types not being displayed properly in Edit Entry
+    * Fixed: Signature field not displaying existing signatures in Edit Entry
+    * Fixed: Post Category fields will now update to show the Post's current categories
+    * Fixed: Allow multiple Post Category fields in Edit Entry
     * Fixed: PHP warning caused when a form had "Anti-spam honeypot" enabled
 * Fixed: When inserting a GravityView shortcode using the "Add View" button, the form would flow over the window
 * Fixed: [Church Themes](https://churchthemes.com) theme compatibility
-* Fixed: Inactive and expired licenses were being shown the wrong error message.
+* Fixed: Inactive and expired licenses were being shown the wrong error message
 * Fixed: Moving domains would prevent GravityView from updating
-* Fixed: Rank and Ratings Survey fields not displaying properly in Edit Entry
-* Fixed: Signature field not displaying existing signatures in Edit Entry
-* Fixed: Allow multiple Post Category fields in Edit Entry
-* Fixed: Post Category fields will now update to show the Post's current categories
-* Fixed: PHP Warning for certain hosting `open_basedir` configurations
-* Fixed: Updating Post Image fields in Edit Entry when the field is not set to "Featured Image" in Gravity Forms
 * Fixed: When using the User Opt-in field together with the View setting "Show Only Approved Entries", entries weren't showing
 * Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used
 * Fixed: Showing the first column of a List field was displaying all the field's columns
@@ -78,7 +78,7 @@ __Developer Notes__
     - `gravityview/edit_entry/field_value_{field_type}` filter to change the value of an Edit Entry field for a specific field type
     - `gravityview/edit-entry/render/before` action, triggered before the Edit Entry form is rendered
     - `gravityview/edit-entry/render/after` action, triggered after the Edit Entry form is rendered
-* Fixed: "Rank" and "Ratings" Survey Field types not being displayed properly in Edit Entry
+* Fixed: PHP Warning for certain hosting `open_basedir` configurations
 * Added: `gravityview/delete-entry/delete-connected-post` Filter to modify behavior when entry is deleted. Return false to prevent posts from being deleted or trashed when connected entries are deleted or trashed. See `gravityview/delete-entry/mode` filter to modify the default behavior, which is "delete".
 * Added: `gravityview/edit_entry/post_content/append_categories` filter to modify whether post categories should be added to or replaced?
 * Added: `gravityview/common/get_form_fields` filter to modify fields used in the "Add Field" selector, View "Filters" dropdowns, and Search Bar
