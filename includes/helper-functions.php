@@ -199,7 +199,9 @@ function gravityview_ob_include( $file_path, $object = NULL ) {
  * @since 1.12
  * @return string HTML image tag with floaty's cute mug on it
  */
-function gravityview_get_floaty() {
+function gravityview_get_floaty( $height = 87 ) {
+
+	$width = $height * 0.7586206897;
 
 	if( function_exists('is_rtl') && is_rtl() ) {
 		$style = 'margin:10px 10px 10px 0;';
@@ -209,7 +211,7 @@ function gravityview_get_floaty() {
 		$class = 'alignleft';
 	}
 
-	return '<img src="'.plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="'.$class.'" height="87" width="66" alt="The GravityView Astronaut Says:" style="'.$style.'" />';
+	return '<img src="'.plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="'.$class.'" height="'.intval( $height ).'" width="'.round( $width, 2 ).'" alt="The GravityView Astronaut Says:" style="'.$style.'" />';
 }
 
 /**

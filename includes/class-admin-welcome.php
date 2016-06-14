@@ -142,9 +142,11 @@ class GravityView_Welcome {
 		list( $display_version ) = explode( '-', GravityView_Plugin::version );
 
 		$selected = !empty( $plugin_page ) ? $plugin_page : 'gv-getting-started';
+
+		echo gravityview_get_floaty( 132 );
 		?>
 
-		<h1><img class="alignleft" src="<?php echo plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ); ?>" width="100" height="132" /><?php printf( esc_html__( 'Welcome to GravityView %s', 'gravityview' ), $display_version ); ?></h1>
+		<h1><?php printf( esc_html__( 'Welcome to GravityView %s', 'gravityview' ), $display_version ); ?></h1>
 		<div class="about-text"><?php esc_html_e( 'Thank you for installing GravityView. Beautifully display your Gravity Forms entries.', 'gravityview' ); ?></div>
 
 		<h2 class="nav-tab-wrapper clear">
