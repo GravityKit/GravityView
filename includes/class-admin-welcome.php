@@ -270,7 +270,7 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;">What&rsquo;s New</h2>
 				</div>
 
-				<h3>1.17 beta 2 on June 9</h3>
+				<h3>1.17 on June 14</h3>
 
 				<ul>
 					<li>Added: Entry Notes field
@@ -294,22 +294,36 @@ class GravityView_Welcome {
 					<li>Added: Field setting to display the input value, label, or check mark, depending on field type. Currently supported: Checkbox, Radio, Drop Down fields.</li>
 					<li>Added: RTL ("right to left") language support in default and List template styles (Added: <code>gv-default-styles-rtl.css</code> and <code>list-view-rtl.css</code> stylesheets)</li>
 					<li>Added: Option to make Phone numbers click-to-call</li>
-					<li>Added: GravityView parent menu to Toolbar; now you can edit the form connected to a View directly from the View</li>
+					<li>Added: GravityView parent menu to Toolbar; now you can edit the form connected to a View directly from the View
+
+						<ul>
+							<li>Changed: Don't show Edit View in the Admin Bar; it's now under the GravityView parent menu</li>
+							<li>Fixed: Don't remove Edit Post/Page admin bar menu item</li>
+						</ul>
+					</li>
 					<li>Added: Support for <a href="https://gravityflow.io">Gravity Flow</a> "Workflow Step" and Workflow "Final Status" fields</li>
-					<li>Modified: When deleting/trashing entries with GravityView, posts created by GravityView will also be deleted or trashed.</li>
+					<li>Added: Support for Password fields. You probably shouldn't display them (in most cases!) but now you <em>can</em></li>
+					<li>Modified: When deleting/trashing entries with GravityView, the connected posts created by Gravity Forms will now also be deleted/trashed</li>
+					<li>Edit Entry improvements
+
+						<ul>
+							<li>Added: Edit Entry now fully supports <a href="https://www.gravityhelp.com/documentation/article/create-content-template/">Gravity Forms Content Templates</a></li>
+							<li>Fixed: Edit Entry didn't pre-populate List inputs if they were part of a Post Custom Field field type</li>
+							<li>Fixed: Updating Post Image fields in Edit Entry when the field is not set to "Featured Image" in Gravity Forms</li>
+							<li>Fixed: "Rank" and "Ratings" Survey Field types not being displayed properly in Edit Entry</li>
+							<li>Fixed: Signature field not displaying existing signatures in Edit Entry</li>
+							<li>Fixed: Post Category fields will now update to show the Post's current categories</li>
+							<li>Fixed: Allow multiple Post Category fields in Edit Entry</li>
+							<li>Fixed: PHP warning caused when a form had "Anti-spam honeypot" enabled</li>
+						</ul>
+					</li>
+					<li>Fixed: When inserting a GravityView shortcode using the "Add View" button, the form would flow over the window</li>
 					<li>Fixed: <a href="https://churchthemes.com">Church Themes</a> theme compatibility</li>
-					<li>Fixed: Inactive and expired licenses were being shown the wrong error message.</li>
+					<li>Fixed: Inactive and expired licenses were being shown the wrong error message</li>
 					<li>Fixed: Moving domains would prevent GravityView from updating</li>
-					<li>Fixed: Rank and Ratings Survey fields not displaying properly in Edit Entry</li>
-					<li>Fixed: Signature field not displaying existing signatures in Edit Entry</li>
-					<li>Fixed: Allow multiple Post Category fields in Edit Entry</li>
-					<li>Fixed: PHP Warning for certain hosting <code>open_basedir</code> configurations</li>
-					<li>Fixed: Updating Post Image fields in Edit Entry when the field is not set to "Featured Image" in Gravity Forms</li>
 					<li>Fixed: When using the User Opt-in field together with the View setting "Show Only Approved Entries", entries weren't showing</li>
 					<li>Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used</li>
 					<li>Fixed: Showing the first column of a List field was displaying all the field's columns</li>
-					<li>Fixed: Don't remove Edit Post/Page admin bar menu item</li>
-					<li>Fixed: Added support for Password fields. You shouldn't display them (in most cases!) but now you <em>can</em>.</li>
 				</ul>
 
 
@@ -337,6 +351,16 @@ class GravityView_Welcome {
 							<li>Fixed: <code>&lt;label&gt;</code> <code>for</code> attribute was missing quotes</li>
 						</ul>
 					</li>
+					<li>Added:
+
+						<ul>
+							<li><code>gravityview/edit_entry/form_fields</code> filter to modify the fields displayed in Edit Entry form</li>
+							<li><code>gravityview/edit_entry/field_value_{field_type}</code> filter to change the value of an Edit Entry field for a specific field type</li>
+							<li><code>gravityview/edit-entry/render/before</code> action, triggered before the Edit Entry form is rendered</li>
+							<li><code>gravityview/edit-entry/render/after</code> action, triggered after the Edit Entry form is rendered</li>
+						</ul>
+					</li>
+					<li>Fixed: PHP Warning for certain hosting <code>open_basedir</code> configurations</li>
 					<li>Added: <code>gravityview/delete-entry/delete-connected-post</code> Filter to modify behavior when entry is deleted. Return false to prevent posts from being deleted or trashed when connected entries are deleted or trashed. See <code>gravityview/delete-entry/mode</code> filter to modify the default behavior, which is "delete".</li>
 					<li>Added: <code>gravityview/edit_entry/post_content/append_categories</code> filter to modify whether post categories should be added to or replaced?</li>
 					<li>Added: <code>gravityview/common/get_form_fields</code> filter to modify fields used in the "Add Field" selector, View "Filters" dropdowns, and Search Bar</li>
