@@ -286,7 +286,7 @@ msgstr ""
 #: includes/class-gravityview-entry-link-shortcode.php:205
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:757
+#: includes/extensions/edit-entry/class-edit-entry-render.php:759
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
 msgstr ""
@@ -1676,43 +1676,43 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:804
+#: includes/extensions/edit-entry/class-edit-entry-render.php:806
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:804
+#: includes/extensions/edit-entry/class-edit-entry-render.php:806
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:810
+#: includes/extensions/edit-entry/class-edit-entry-render.php:812
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:974
+#: includes/extensions/edit-entry/class-edit-entry-render.php:990
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:981
+#: includes/extensions/edit-entry/class-edit-entry-render.php:997
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1347
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1371
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1773
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1783
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1779
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1789
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1783
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1793
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1823
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1833
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -2992,7 +2992,7 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1799
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1809
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
