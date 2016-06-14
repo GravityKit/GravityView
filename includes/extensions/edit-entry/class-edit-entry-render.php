@@ -650,7 +650,7 @@ class GravityView_Edit_Entry_Render {
             $return_entry = GFAPI::update_entry( $this->entry );
 
             if( is_wp_error( $return_entry ) ) {
-                do_action( 'gravityview_log_error', 'Updating the entry post fields failed', $return_entry );
+               do_action( 'gravityview_log_error', 'Updating the entry post fields failed', array( '$this->entry' => $this->entry, '$return_entry' => $return_entry ) );
             } else {
                 do_action( 'gravityview_log_debug', 'Updating the entry post fields for post #'.$post_id.' succeeded' );
             }
@@ -661,7 +661,7 @@ class GravityView_Edit_Entry_Render {
 
         if( is_wp_error( $return_post ) ) {
             $return_post->add_data( $updated_post, '$updated_post' );
-            do_action( 'gravityview_log_error', 'Updating the post content failed', $return_post );
+            do_action( 'gravityview_log_error', 'Updating the post content failed', compact( 'updated_post', 'return_post' ) );
         } else {
             do_action( 'gravityview_log_debug', 'Updating the post content for post #'.$post_id.' succeeded', $updated_post );
         }
