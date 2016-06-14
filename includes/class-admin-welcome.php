@@ -627,7 +627,7 @@ class GravityView_Welcome {
 			<div class="feature-section col two-col">
 
 				<div class="col">
-					<h2>Zack Katz</h2>
+					<h3>Zack Katz</h3>
 					<h4 style="font-weight:0; margin-top:0">Project Lead &amp; Developer</h4>
 					<p></p>
 					<p><img style="float:left; margin: 0 15px 10px 0;" src="<?php echo plugins_url( 'assets/images/zack.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Zack has been developing integrations with Gravity Forms since 2009. He is the President of Katz Web Services and lives with his wife (and cat) in Denver, Colorado.</p>
@@ -635,7 +635,6 @@ class GravityView_Welcome {
 				</div>
 
 				<div class="col last-feature">
-					<h2>Luis Godinho</h2>
 					<h3>Rafael Ehlers</h3>
 					<h4 style="font-weight:0; margin-top:0">Project Manager, Support Lead &amp; Customer Advocate</h4>
 					<p><img style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/rafael.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Rafael helps guide GravityView development priorities and keep us on track. He&rsquo;s the face of our customer support and helps customers get the most out of the product. Rafael hails from Porto Alegre, Brazil.</p>
@@ -643,6 +642,7 @@ class GravityView_Welcome {
 				</div>
 
 				<div class="col">
+					<h3>Luis Godinho</h3>
 					<h4 style="font-weight:0; margin-top:0">Developer &amp; Support</h4>
 					<p><img style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/luis.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Luis is a WordPress developer passionate about WordPress. He is a co-founder and partner of GOMO, a digital agency located in Lisbon, Portugal.</p>
 					<p><a href="http://tinygod.pt">View Luis&rsquo;s website</a></p>
