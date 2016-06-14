@@ -569,7 +569,7 @@ class GravityView_Edit_Entry_Render {
                 continue;
             }
 
-            if( GFCommon::is_post_field( $field ) ) {
+            if( GFCommon::is_post_field( $field ) && 'post_category' !== $field->type ) {
 
                 // Get the value of the field, including $_POSTed value
                 $value = RGFormsModel::get_field_value( $field );
@@ -631,10 +631,8 @@ class GravityView_Edit_Entry_Render {
                     continue;
                 }
 
-                // update entry
-                if( 'post_category' !== $field->type ) {
-                    $this->entry["{$field_id}"] = $value;
-                }
+                // update entry after
+                $this->entry["{$field_id}"] = $value;
 
                 $update_entry = true;
 
