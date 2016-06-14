@@ -591,7 +591,7 @@ class GravityView_Edit_Entry_Render {
                         }
                         break;
                     case 'post_excerpt':
-                        $updated_post->{$field->type} = $value;
+                        $updated_post->post_excerpt = $value;
                         break;
                     case 'post_tags':
                         wp_set_post_tags( $post_id, $value, false );
