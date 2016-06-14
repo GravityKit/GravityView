@@ -76,6 +76,35 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts') );
 		add_action( 'gravityview/field/notes/scripts', array( $this, 'enqueue_scripts' ) );
+		
+		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_entry_default_field' ), 10, 3 );
+	}
+
+
+	/**
+	 * Add Entry Notes to the Add Field picker in Edit View
+	 *
+	 * @see GravityView_Admin_Views::get_entry_default_fields()
+	 *
+	 * @since 1.17
+	 *
+	 * @param array $entry_default_fields Fields configured to show in the picker
+	 * @param array $form Gravity Forms form array
+	 * @param string $zone Current context: `directory`, `single`, `edit`
+	 *
+	 * @return array Fields array with notes added, if in Multiple Entries or Single Entry context
+	 */
+	public function add_entry_default_field( $entry_default_fields, $form, $zone ) {
+
+		if( in_array( $zone, array( 'directory', 'single' ) ) ) {
+			$entry_default_fields['notes'] = array(
+				'label' => __( 'Entry Notes', 'gravityview' ),
+				'type'  => 'notes',
+				'desc'  => __( 'Display, add, and delete notes for an entry.', 'gravityview' ),
+			);
+		}
+
+		return $entry_default_fields;
 	}
 
 	/**

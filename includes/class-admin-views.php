@@ -678,15 +678,6 @@ class GravityView_Admin_Views {
 				    'type'	=> 'other_entries',
 				    'desc'	=> __('Display other entries created by the entry creator.', 'gravityview'),
 			    ),
-
-				/**
-				 * @since 1.14
-				 */
-				'notes' => array(
-					'label' => __('Entry Notes', 'gravityview'),
-					'type' => 'notes',
-					'desc'	=> __('Entry notes (if any).', 'gravityview'),
-				),
 	        );
 
 			if( 'single' !== $zone) {
