@@ -581,18 +581,22 @@ class GravityView_Edit_Entry_Render {
                 switch( $field->type ) {
 
                     case 'post_title':
+                        $post_title = $value;
                         if( rgar( $form, 'postTitleTemplateEnabled' ) ) {
-                            $post_title               = $this->fill_post_template( $form['postTitleTemplate'], $form, $entry_tmp );
-                            $updated_post->post_title = $post_title;
-                            $updated_post->post_name  = $post_title;
+                            $post_title = $this->fill_post_template( $form['postTitleTemplate'], $form, $entry_tmp );
                         }
+                        $updated_post->post_title = $post_title;
+                        $updated_post->post_name  = $post_title;
+                        unset( $post_title );
                         break;
 
                     case 'post_content':
+                        $post_content = $value;
                         if( rgar( $form, 'postContentTemplateEnabled' ) ) {
-                            $post_content               = $this->fill_post_template( $form['postContentTemplate'], $form, $entry_tmp, true );
-                            $updated_post->post_content = $post_content;
+                            $post_content = $this->fill_post_template( $form['postContentTemplate'], $form, $entry_tmp, true );
                         }
+                        $updated_post->post_content = $post_content;
+                        unset( $post_content );
                         break;
                     case 'post_excerpt':
                         $updated_post->post_excerpt = $value;
