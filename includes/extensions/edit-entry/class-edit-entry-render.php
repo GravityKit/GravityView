@@ -1027,6 +1027,7 @@ class GravityView_Edit_Entry_Render {
             ( $this->is_edit_entry_submission() && !in_array( $field->type, array( 'fileupload', 'post_image' ) ) )
             && false === ( $gv_field && is_callable( array( $gv_field, 'get_field_input' ) ) )
             || ! empty( $field_content )
+            || in_array( $field->type, array( 'honeypot' ) )
             || GFCommon::is_product_field( $field->type ) // Prevent product fields from appearing editable
         ) {
 	        return $field_content;

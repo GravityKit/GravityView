@@ -43,6 +43,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Edit Entry now fully supports [Gravity Forms Content Templates](https://www.gravityhelp.com/documentation/article/create-content-template/)
 * Modified: When deleting/trashing entries with GravityView, posts created by GravityView will also be deleted or trashed
 * Fixed: Edit Entry didn't pre-populate List inputs if they were part of a Post Custom Field field type
+    * Fixed: PHP warning caused when a form had "Anti-spam honeypot" enabled
 * Fixed: When inserting a GravityView shortcode using the "Add View" button, the form would flow over the window
 * Fixed: [Church Themes](https://churchthemes.com) theme compatibility
 * Fixed: Inactive and expired licenses were being shown the wrong error message.
