@@ -356,7 +356,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 						'label' => __( 'Allow deleting notes?', 'gravityview' ),
 					),
 				),
-				'value' => array( 'view', 'add', 'email' ),
+				'value' => array( 'view' => 1, 'add' => 1, 'email' => 1 ),
 			),
 		);
 
