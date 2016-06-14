@@ -36,3 +36,13 @@ The plugin uses PHPUnit as part of development process. Installing the testing e
 4. Upon success you can run `phpunit`
 
 __If you want to generate a code coverage report__ you can run the following `phpunit --coverage-html "./tmp/coverage"` and then a report will be generated in the `/tmp/coverage/` subdirectory of the GravityView plugin.
+
+----------
+
+#### Thanks to:
+
+- [BrowserStack](https://www.browserstack.com) for automated browser testing
+- [Flexibility](https://github.com/10up/flexibility) - Adds support for CSS flexbox to Internet Explorer 8 &amp; 9
+- [Gamajo Template Loader](https://github.com/GaryJones/Gamajo-Template-Loader) - Makes it easy to load template files with user overrides
+- [jQuery Cookie plugin](https://github.com/carhartl/jquery-cookie) - Access and store cookie values with jQuery
+- [PHPEnkoder](https://github.com/jnicol/standalone-phpenkoder) script encodes the email addresses
