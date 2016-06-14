@@ -558,17 +558,12 @@ class GravityView_Edit_Entry_Render {
 
         $updated_post = $original_post = get_post( $post_id );
 
-        // get the most up to date entry values
-        $entry = GFAPI::get_entry( $this->entry['id'] );
-
-        foreach ( $entry as $field_id => $value ) {
-
-            //todo: only run through the edit entry configured fields
+        foreach ( $this->entry as $field_id => $value ) {
 
             $field = RGFormsModel::get_field( $form, $field_id );
 
-            if( class_exists('GF_Fields') ) {
-                $field = GF_Fields::create( $field );
+            if( ! $field ) {
+                continue;
             }
 
             if( GFCommon::is_post_field( $field ) ) {
