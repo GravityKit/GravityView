@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 1.17-beta.2\n"
+"Project-Id-Version: GravityView 1.17\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
 "MIME-Version: 1.0\n"
@@ -732,11 +732,11 @@ msgstr ""
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:706
+#: includes/class-admin-welcome.php:707
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:707
+#: includes/class-admin-welcome.php:708
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."

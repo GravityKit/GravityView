@@ -20,8 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.17 beta 2 on June 9 =
+= 1.17 on June 14 =
 
+* Fully compatible with Gravity Forms 2.0
 * Added: Entry Notes field
     - Add and delete Entry Notes from the frontend
     - Allows users to email Notes when they are added
