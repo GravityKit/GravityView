@@ -258,13 +258,15 @@ class GravityView_Welcome {
 
 				<div class="feature-section col two-col" style="margin:0; padding: 0;">
 					<div class="col col-1">
+						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/entry-notes.gif', GRAVITYVIEW_FILE ); ?>" alt="Entry Notes"></div>
 						<h4 class="higher">Entry Notes</h4>
 						<p>Add and display Notes to an entry from the frontend.</p>
 					</div>
 
 					<div class="col col-2 last-feature">
-						<h4 class="higher">Merge Tag Modifiers</h4>
-						<p>Now set a maximum length of content, and automatically add paragraphs to Merge Tags. This is great for customizing your Multiple Entry layouts.</p>
+						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/search-bar.png', GRAVITYVIEW_FILE ); ?>" alt="Search Bar"></div>
+						<h4 class="higher">Search Bar Styles</h4>
+						<p>Search Bar forms look better when there are multiple fields, and are now mobile-responsive.</p>
 					</div>
 				</div>
 
