@@ -17,7 +17,122 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 
 	public function __construct() {
 		$this->label = esc_html__( 'Post Category', 'gravityview' );
+
+		add_action( 'gravityview/edit-entry/render/before', array( $this, 'add_edit_entry_post_category_choices_filter' ) );
+
+		add_action( 'gravityview/edit-entry/render/after', array( $this, 'remove_edit_entry_post_category_choices_filter' ) );
+
+		add_action( 'gravityview/edit_entry/after_update', array( $this, 'set_post_categories' ), 10, 2 );
+
 		parent::__construct();
+	}
+
+	/**
+	 * Update the post categories based on all post category fields
+	 *
+	 * @since 1.17
+	 *
+	 * @param array $form Gravity Forms form array
+	 * @param int $entry_id Numeric ID of the entry that was updated
+	 *
+	 * @return array|false|WP_Error Array of term taxonomy IDs of affected categories. WP_Error or false on failure. false if there are no post category fields or connected post.
+	 */
+	public function set_post_categories( $form = array(), $entry_id = 0 ) {
+
+		$entry = GFAPI::get_entry( $entry_id );
+		$post_id = rgar( $entry, 'post_id' );
+
+		if( empty( $post_id ) ) {
+			return false;
+		}
+
+		$return = false;
+
+		$post_category_fields = GFAPI::get_fields_by_type( $form, 'post_category' );
+
+		if( $post_category_fields ) {
+
+			$updated_categories = array();
+
+			foreach ( $post_category_fields as $field ) {
+				// Get the value of the field, including $_POSTed value
+				$field_cats = RGFormsModel::get_field_value( $field );
+				$field_cats = is_array( $field_cats ) ? array_values( $field_cats ) : (array)$field_cats;
+				$field_cats = gv_map_deep( $field_cats, 'intval' );
+				$updated_categories = array_merge( $updated_categories, array_values( $field_cats ) );
+			}
+
+			// Remove `0` values from intval()
+			$updated_categories = array_filter( $updated_categories );
+
+			/**
+			 * @filter `gravityview/edit_entry/post_categories/append` Should post categories be added to or replaced?
+			 * @since 1.17
+			 * @param bool $append If `true`, don't delete existing categories, just add on. If `false`, replace the categories with the submitted categories. Default: `false`
+			 */
+			$append = apply_filters( 'gravityview/edit_entry/post_categories/append', false );
+
+			$return = wp_set_post_categories( $post_id, $updated_categories, $append );
+		}
+
+		return $return;
+	}
+
+	/**
+	 * Add filter to show live category choices in Edit Entry
+	 *
+	 * @see edit_entry_post_category_choices
+	 *
+	 * @since 1.17
+	 *
+	 * @return void
+	 */
+	function add_edit_entry_post_category_choices_filter() {
+		add_filter( 'gform_post_category_choices', array( $this, 'edit_entry_post_category_choices' ), 10, 3 );
+	}
+
+	/**
+	 * Remove filter to show live category choices in Edit Entry
+	 *
+	 * @see edit_entry_post_category_choices
+	 *
+	 * @since 1.17
+	 *
+	 * @return void
+	 */
+	function remove_edit_entry_post_category_choices_filter() {
+		remove_filter( 'gform_post_category_choices', array( $this, 'edit_entry_post_category_choices' ), 10 );
+	}
+
+	/**
+	 * Always show the live Category values
+	 *
+	 * By default, Gravity Forms would show unchecked/default choices. We want to show the live Post categories
+	 *
+	 * @since 1.17
+	 *
+	 * @param $choices
+	 * @param $field
+	 * @param $form_id
+	 *
+	 * @return mixed
+	 */
+	function edit_entry_post_category_choices( $choices, $field, $form_id  ) {
+
+		$entry = GravityView_Edit_Entry::getInstance()->instances['render']->get_entry();
+
+		// $entry['post_id'] should always be set, but we check to make sure.
+		if( $entry && isset( $entry['post_id'] ) && $post_id = $entry['post_id'] ) {
+
+			$post_categories = wp_get_post_categories( $post_id, array( 'fields' => 'ids' ) );
+
+			// Always use the live value
+			foreach ( $choices as &$choice ) {
+				$choice['isSelected'] = in_array( $choice['value'], array_values( $post_categories ) );
+			}
+		}
+
+		return $choices;
 	}
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {

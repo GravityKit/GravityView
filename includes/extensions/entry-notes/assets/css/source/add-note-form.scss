@@ -1,0 +1,46 @@
+.gv-notes {
+
+  /**
+   * Styles related to the Add Note form
+   */
+
+  .gv-note-add {
+
+    width: 100%;
+    padding:10px 0;
+
+    /** Styles when the entry is being submitted. */
+    opacity: 1;
+    transition: opacity .5s ease-in-out;
+    -moz-transition: opacity .5s ease-in-out;
+    -webkit-transition: opacity .5s ease-in-out;
+
+    textarea {
+      height: auto !important;
+      display: block;
+      margin-bottom: .5em;
+    }
+  }
+
+  /** Styles when the entry is being submitted. */
+  &.gv-processing-note .gv-note-add {
+    opacity: .8;
+  }
+
+  .gv-note-email-container fieldset
+  .gv-note-email-to-custom-container {
+    display:none;
+  }
+
+  .gv-note-email-container {
+    fieldset {
+      padding: 0;
+      margin: 0;
+      border: none;
+    }
+    div {
+      margin-bottom: 1em;
+    }
+  }
+
+}

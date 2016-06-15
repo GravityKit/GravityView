@@ -8,6 +8,73 @@
 class GravityView_GFFormsModel extends GFFormsModel {
 
     /**
+     * Given information provided in an entry, get array of media IDs
+     *
+     * This is necessary because GF doesn't expect to need to update post images, only to create them.
+     *
+     * @see GFFormsModel::create_post()
+     *
+     * @since 1.17
+     *
+     * @param array $form Gravity Forms form array
+     * @param array $entry Gravity Forms entry array
+     *
+     * @return array Array of "Field ID" => "Media IDs"
+     */
+    public static function get_post_field_images( $form, $entry ) {
+
+        $post_data = self::get_post_fields( $form, $entry );
+
+        $media = get_attached_media( 'image', $entry['post_id'] );
+
+        $post_images = array();
+
+        foreach ( $media as $media_item ) {
+            foreach( (array) $post_data['images'] as $post_data_item ) {
+                if(
+                    rgar( $post_data_item, 'title' ) === $media_item->post_title &&
+                    rgar( $post_data_item, 'description' ) === $media_item->post_content &&
+                    rgar( $post_data_item, 'caption' ) === $media_item->post_excerpt
+                ) {
+                    $post_images["{$post_data_item['field_id']}"] = $media_item->ID;
+                }
+            }
+        }
+
+        return $post_images;
+    }
+
+    /**
+     * Alias of GFFormsModel::get_post_fields(); just making it public
+     *
+     * @see GFFormsModel::get_post_fields()
+     *
+     * @since 1.17
+     *
+     * @param array $form Gravity Forms form array
+     * @param array $entry Gravity Forms entry array
+     *
+     * @return array
+     */
+    public static function get_post_fields( $form, $entry ) {
+
+        $reflection = new ReflectionMethod( 'GFFormsModel', 'get_post_fields' );
+
+        /**
+         * If the method changes to public, use Gravity Forms' method
+         * @todo: If/when the method is public, remove the unneeded copied code.
+         */
+        if( $reflection->isPublic() ) {
+            return parent::get_post_fields( $form, $entry );
+        }
+
+        // It was private; let's make it public
+        $reflection->setAccessible( true );
+
+        return $reflection->invoke( new GFFormsModel, $form, $entry );
+    }
+
+    /**
      * Copied function from Gravity Forms plugin \GFFormsModel::copy_post_image since the method is private.
      *
      * @since 1.16.2
@@ -28,85 +95,20 @@ class GravityView_GFFormsModel extends GFFormsModel {
             return parent::copy_post_image( $url, $post_id );
         }
 
-        /**
-         * Original Gravity Forms code below:
-         * ==================================
-         */
+        // It was private; let's make it public
+        $reflection->setAccessible( true );
 
-        $time = current_time( 'mysql' );
-
-        if ( $post = get_post( $post_id ) ) {
-            if ( substr( $post->post_date, 0, 4 ) > 0 ) {
-                $time = $post->post_date;
-            }
-        }
-
-        //making sure there is a valid upload folder
-        if ( ! ( ( $upload_dir = wp_upload_dir( $time ) ) && false === $upload_dir['error'] ) ) {
-            return false;
-        }
-
-        $form_id = get_post_meta( $post_id, '_gform-form-id', true );
-
-        /**
-         * Filter the media upload location.
-         *
-         * @param array $upload_dir The current upload directory’s path and url.
-         * @param int $form_id The ID of the form currently being processed.
-         * @param int $post_id The ID of the post created from the entry currently being processed.
-         */
-        $upload_dir = gf_apply_filters( 'gform_media_upload_path', $form_id, $upload_dir, $form_id, $post_id );
-
-        if ( ! file_exists( $upload_dir['path'] ) ) {
-            if ( ! wp_mkdir_p( $upload_dir['path'] ) ) {
-                return false;
-            }
-        }
-
-        $name     = basename( $url );
-        $filename = wp_unique_filename( $upload_dir['path'], $name );
-
-        // the destination path
-        $new_file = $upload_dir['path'] . "/$filename";
-
-        // the source path
-        $y                = substr( $time, 0, 4 );
-        $m                = substr( $time, 5, 2 );
-        $target_root      = RGFormsModel::get_upload_path( $form_id ) . "/$y/$m/";
-        $target_root_url  = RGFormsModel::get_upload_url( $form_id ) . "/$y/$m/";
-        $upload_root_info = array( 'path' => $target_root, 'url' => $target_root_url );
-        $upload_root_info = gf_apply_filters( 'gform_upload_path', $form_id, $upload_root_info, $form_id );
-        $path             = str_replace( $upload_root_info['url'], $upload_root_info['path'], $url );
-
-        // copy the file to the destination path
-        if ( ! copy( $path, $new_file ) ) {
-            return false;
-        }
-
-        // Set correct file permissions
-        $stat  = stat( dirname( $new_file ) );
-        $perms = $stat['mode'] & 0000666;
-        @ chmod( $new_file, $perms );
-
-        // Compute the URL
-        $url = $upload_dir['url'] . "/$filename";
-
-        if ( is_multisite() ) {
-            delete_transient( 'dirsize_cache' );
-        }
-
-        $type = wp_check_filetype( $new_file );
-
-        return array( 'file' => $new_file, 'url' => $url, 'type' => $type['type'] );
-
+        return $reflection->invoke( new GFFormsModel, $url, $post_id );
     }
 
     /**
      * Copied function from Gravity Forms plugin \GFFormsModel::media_handle_upload since the method is private.
      *
+     * Note: The method became public in GF 1.9.17.7
+     *
      * @see GFFormsModel::media_handle_upload
      * @see GravityView_Edit_Entry_Render::maybe_update_post_fields
-     * 
+     *
      * @uses copy_post_image
      * @uses wp_insert_attachment
      * @uses wp_update_attachment_metadata
@@ -128,60 +130,10 @@ class GravityView_GFFormsModel extends GFFormsModel {
             return parent::media_handle_upload( $url, $post_id, $post_data );
         }
 
-        /**
-         * Original Gravity Forms code below:
-         * ==================================
-         */
+        // It was private; let's make it public
+        $reflection->setAccessible( true );
 
-        //WordPress Administration API required for the media_handle_upload() function
-        require_once( ABSPATH . 'wp-admin/includes/image.php' );
-
-        $name = basename( $url );
-
-        $file = self::copy_post_image( $url, $post_id );
-
-        if ( ! $file ) {
-            return false;
-        }
-
-        $name_parts = pathinfo( $name );
-        $name       = trim( substr( $name, 0, - ( 1 + strlen( $name_parts['extension'] ) ) ) );
-
-        $url     = $file['url'];
-        $type    = $file['type'];
-        $file    = $file['file'];
-        $title   = $name;
-        $content = '';
-
-        // use image exif/iptc data for title and caption defaults if possible
-        if ( $image_meta = @wp_read_image_metadata( $file ) ) {
-            if ( trim( $image_meta['title'] ) && ! is_numeric( sanitize_title( $image_meta['title'] ) ) ) {
-                $title = $image_meta['title'];
-            }
-            if ( trim( $image_meta['caption'] ) ) {
-                $content = $image_meta['caption'];
-            }
-        }
-
-        // Construct the attachment array
-        $attachment = array_merge(
-            array(
-                'post_mime_type' => $type,
-                'guid'           => $url,
-                'post_parent'    => $post_id,
-                'post_title'     => $title,
-                'post_content'   => $content,
-            ), $post_data
-        );
-
-        // Save the data
-        $id = wp_insert_attachment( $attachment, $file, $post_id );
-        if ( ! is_wp_error( $id ) ) {
-            wp_update_attachment_metadata( $id, wp_generate_attachment_metadata( $id, $file ) );
-        }
-
-        return $id;
+        return $reflection->invoke( new GFFormsModel, $url, $post_id, $post_data );
     }
-
 
 }

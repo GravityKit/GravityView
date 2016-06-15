@@ -68,7 +68,7 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 	 *
 	 * @since 1.16
 	 *
-	 * @see http://docs.gravityview.co/article/281-the-createdby-merge-tag for usage information
+	 * @see http://docs.gravityview.co/article/331-date-created-merge-tag for usage information
 	 *
 	 * @param array $matches Array of Merge Tag matches found in text by preg_match_all
 	 * @param string $text Text to replace

@@ -153,6 +153,18 @@ jQuery( document ).ready( function( $ ) {
 		hide_if_js.fadeIn();
 	} );
 
+	/**
+	 * When showing Thickbox, the full width isn't triggered until closed and re-opened. This fixes that.
+	 * Thanks, GF shortcode-ui.js for guidance
+	 */
+	$( 'body' ).on( 'click', '#add_gravityview', function ( e ) {
+		e.preventDefault();
+
+		tb_show( $( this ).attr('title'), $( this ).attr('href'), '' );
+
+		$( '#TB_ajaxContent' ).css( 'padding-bottom', '8px' ); // Fix overflow in Firefox
+	});
+
 	// capture form submit -> add shortcode to editor
 	$( '#insert_gravityview_view' ).on( 'click', function ( e ) {
 		e.preventDefault();

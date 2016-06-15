@@ -3,196 +3,22 @@
  *
  * @package   GravityView
  * @author    Zack Katz <zack@katzwebservices.com>
- * @license   ToBeDefined
- * @link      http://www.katzwebservices.com
- * @copyright Copyright 2014, Katz Web Services, Inc.
+ * @license   GPL2
+ * @link      https://gravityview.co
+ * @copyright Copyright 2016, Katz Web Services, Inc.
  *
  * @since 1.0.0
  */
 
- @import "search";
- @import "fields";
- @import "edit";
- @import "notice";
- @import "oembed";
 
-/* Responsive
---------------------------------------- */
-
-@import "responsive";
-
-/* GV Grid
---------------------------------------- */
-
-.gv-grid {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-.gv-grid:before,
-.gv-grid:after {
-	content: " ";
-	display: table;
-}
-
-.gv-grid:after {
-	clear: both;
-}
-
-[class*='gv-grid-col-'] {
-  float: left;
-  padding-right: 1em;
-  min-height: 1px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-
-  @include respond($mobile-portrait) {
-    width: 100% !important;
-    float: none;
-  }
-
-  @include respond($mobile-landscape) {
-    width: 100% !important;
-    float: none;
-  }
-
-}
-
-.gv-grid-col-1-1 {
-  width: 100%;
-}
-
-.gv-grid-col-1-3 {
-	//width: 33.33%;
-    width: (1/3) * 100%;
-}
-
-.gv-grid-col-2-3 {
-  //width: 66.66%;
-  width: (2/3) * 100%;
-}
-
-.gv-grid-col-1-2 {
-  //width: 50%;
-  width: (1/2) * 100%;
-}
-
-.gv-grid-col-1-4 {
-	//width: 25%;
-    width: (1/4) * 100%;
-}
-
-.gv-grid-col-1-6 {
-  //width: 66.66%;
-  width: (1/6) * 100%;
-}
-
-.gv-grid-col-1-8 {
-	//width: 12.5%;
-    width: (1/8) * 100%;
-}
-
-
-.gv-right {
-	text-align: right;
-	display: block;
-	.gv-right > div {
-		float: right;
-	}
-}
-
-.gv-left {
-	text-align: left;
-	display: block;
-	.gv-right > div {
-		float: left;
-	}
-}
-
-@media screen and ( max-width: 480px ) {
-  [class*='gv-grid-col-'] {
-	width: 100%;
-  }
-  .gv-right, .gv-left, .gv-right > div, .gv-left > div {
-	float: none;
-	text-align: left;
-  }
-}
-
-// "body" is here to overrule some themes
-body .gv-widget-page-links {
-
-	ul, li {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-
-	li {
-		display: inline;
-		display: inline-block;
-	}
-
-	li .page-numbers {
-		display: inline-block;
-		padding: .4em .5em;
-	}
-}
-
-.gv-container {
-	img {
-		display: block;
-		margin: 0;
-		padding: 0;
-		max-width: 100%;
-		max-height: 100%;
-	}
-}
-
-
-.gv-no-results {
-	text-align: center;
-	vertical-align: middle;
-	padding: .5em;
-}
-
-// Fix over-zealous themes.
-#TB_window img {
-	max-height: 100%;
-	max-width: 100%;
-}
-
-// Give some default space
-.gv-field-label {
-	padding-right: .25em;
-}
-
-a.gv-sort {
-  text-decoration: none;
-  border-bottom: none;
-}
-
-
-// Screenshots Gallery
-.gv-gallery .gv-field-file-uploads {
-	margin: 0;
-	padding: 0;
-	li {
-		list-style: none;
-		display: inline-block;
-		max-width: 200px;
-		margin-right: 1em;
-		margin-bottom: .5em;
-
-		img {
-			max-width: 100%;
-		}
-	}
-}
-
-// Used to hide elements (e.g. Hide View data until search is performed)
-.hidden {
-  display: none;
-}
+$rtl: false !default;
+@import "rtl";
+@import "search-flexbox";
+@import "fields";
+@import "notice";
+@import "edit";
+@import "oembed";
+@import "grid";
+@import "widgets";
+@import "images";
+@import "general";

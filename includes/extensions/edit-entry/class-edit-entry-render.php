@@ -436,6 +436,109 @@ class GravityView_Edit_Entry_Render {
         }
     }
 
+    /**
+     * Handle updating the Post Image field
+     *
+     * Sets a new Featured Image if configured in Gravity Forms; otherwise uploads/updates media
+     *
+     * @since 1.17
+     *
+     * @uses GFFormsModel::media_handle_upload
+     * @uses set_post_thumbnail
+     * 
+     * @param array $form GF Form array
+     * @param GF_Field $field GF Field
+     * @param string $field_id Numeric ID of the field
+     * @param string $value
+     * @param array $entry GF Entry currently being edited
+     * @param int $post_id ID of the Post being edited
+     *
+     * @return mixed|string
+     */
+    private function update_post_image( $form, $field, $field_id, $value, $entry, $post_id ) {
+
+        $input_name = 'input_' . $field_id;
+
+        if ( !empty( $_FILES[ $input_name ]['name'] ) ) {
+
+            // We have a new image
+
+            $value = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'] );
+
+            $ary = ! empty( $value ) ? explode( '|:|', $value ) : array();
+            $img_url = rgar( $ary, 0 );
+
+            $img_title       = count( $ary ) > 1 ? $ary[1] : '';
+            $img_caption     = count( $ary ) > 2 ? $ary[2] : '';
+            $img_description = count( $ary ) > 3 ? $ary[3] : '';
+
+            $image_meta = array(
+                'post_excerpt' => $img_caption,
+                'post_content' => $img_description,
+            );
+
+            //adding title only if it is not empty. It will default to the file name if it is not in the array
+            if ( ! empty( $img_title ) ) {
+                $image_meta['post_title'] = $img_title;
+            }
+
+            /**
+             * todo: As soon as \GFFormsModel::media_handle_upload becomes a public method, move this call to \GFFormsModel::media_handle_upload and remove the hack from this class.
+             * Note: the method became public in GF 1.9.17.7, but we don't require that version yet.
+             */
+            require_once GRAVITYVIEW_DIR . 'includes/class-gravityview-gfformsmodel.php';
+            $media_id = GravityView_GFFormsModel::media_handle_upload( $img_url, $post_id, $image_meta );
+
+            // is this field set as featured image?
+            if ( $media_id && $field->postFeaturedImage ) {
+                set_post_thumbnail( $post_id, $media_id );
+            }
+
+        } elseif ( !empty( $_POST[ $input_name ] ) && is_array( $value ) ) {
+
+            // Same image although the image title, caption or description might have changed
+
+            $ary = array();
+            if( ! empty( $entry[ $field_id ] ) ) {
+                $ary = is_array( $entry[ $field_id ] ) ? $entry[ $field_id ] : explode( '|:|', $entry[ $field_id ] );
+            }
+            $img_url = rgar( $ary, 0 );
+
+            // is this really the same image or something went wrong ?
+            if( $img_url === $_POST[ $input_name ] ) {
+
+                $img_title       = rgar( $value, $field_id .'.1' );
+                $img_caption     = rgar( $value, $field_id .'.4' );
+                $img_description = rgar( $value, $field_id .'.7' );
+
+                $value = ! empty( $img_url ) ? $img_url . "|:|" . $img_title . "|:|" . $img_caption . "|:|" . $img_description : '';
+
+                if ( $field->postFeaturedImage ) {
+
+                    $image_meta = array(
+                        'ID' => get_post_thumbnail_id( $post_id ),
+                        'post_title' => $img_title,
+                        'post_excerpt' => $img_caption,
+                        'post_content' => $img_description,
+                    );
+
+                    // update image title, caption or description
+                    wp_update_post( $image_meta );
+                }
+            }
+
+        } else {
+
+            // if we get here, image was removed or not set.
+            $value = '';
+
+            if ( $field->postFeaturedImage ) {
+                delete_post_thumbnail( $post_id );
+            }
+        }
+
+        return $value;
+    }
 
     /**
      * Loop through the fields being edited and if they include Post fields, update the Entry's post object
@@ -444,7 +547,7 @@ class GravityView_Edit_Entry_Render {
      *
      * @return void
      */
-    function maybe_update_post_fields( $form ) {
+    private function maybe_update_post_fields( $form ) {
 
         $post_id = $this->entry['post_id'];
 
@@ -458,182 +561,95 @@ class GravityView_Edit_Entry_Render {
 
         $updated_post = $original_post = get_post( $post_id );
 
-        // get the most up to date entry values
-        $entry = GFAPI::get_entry( $this->entry['id'] );
-
-        foreach ( $entry as $field_id => $value ) {
-
-            //todo: only run through the edit entry configured fields
+        foreach ( $this->entry as $field_id => $value ) {
 
             $field = RGFormsModel::get_field( $form, $field_id );
 
-            if( class_exists('GF_Fields') ) {
-                $field = GF_Fields::create( $field );
+            if( ! $field ) {
+                continue;
             }
 
-            if( GFCommon::is_post_field( $field ) ) {
+            if( GFCommon::is_post_field( $field ) && 'post_category' !== $field->type ) {
 
                 // Get the value of the field, including $_POSTed value
                 $value = RGFormsModel::get_field_value( $field );
 
+                // Use temporary entry variable, to make values available to fill_post_template() and update_post_image()
+                $entry_tmp = $this->entry;
+                $entry_tmp["{$field_id}"] = $value;
+
                 switch( $field->type ) {
 
                     case 'post_title':
+                        $post_title = $value;
+                        if( rgar( $form, 'postTitleTemplateEnabled' ) ) {
+                            $post_title = $this->fill_post_template( $form['postTitleTemplate'], $form, $entry_tmp );
+                        }
+                        $updated_post->post_title = $post_title;
+                        $updated_post->post_name  = $post_title;
+                        unset( $post_title );
+                        break;
+
                     case 'post_content':
+                        $post_content = $value;
+                        if( rgar( $form, 'postContentTemplateEnabled' ) ) {
+                            $post_content = $this->fill_post_template( $form['postContentTemplate'], $form, $entry_tmp, true );
+                        }
+                        $updated_post->post_content = $post_content;
+                        unset( $post_content );
+                        break;
                     case 'post_excerpt':
-                        $updated_post->{$field->type} = $value;
+                        $updated_post->post_excerpt = $value;
                         break;
                     case 'post_tags':
                         wp_set_post_tags( $post_id, $value, false );
                         break;
                     case 'post_category':
-
-                        $categories = is_array( $value ) ? array_values( $value ) : (array)$value;
-                        $categories = array_filter( $categories );
-
-                        wp_set_post_categories( $post_id, $categories, false );
-
-                        // if post_category is type checkbox, then value is an array of inputs
-                        if( isset( $value[ strval( $field_id ) ] ) ) {
-                            foreach( $value as $input_id => $val ) {
-                                $input_name = 'input_' . str_replace( '.', '_', $input_id );
-                                $entry[ strval( $input_id ) ] = RGFormsModel::prepare_value( $form, $field, $val, $input_name, $entry['id'], $entry );
-                            }
-                        } else {
-                            $input_name = 'input_' . str_replace( '.', '_', $field_id );
-                            $entry[ strval( $field_id ) ] = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], $entry );
-                        }
-
                         break;
                     case 'post_custom_field':
+                        if( ! empty( $field->customFieldTemplateEnabled ) ) {
+                            $value = $this->fill_post_template( $field->customFieldTemplate, $form, $entry_tmp, true );
+                        }
 
                         $input_type = RGFormsModel::get_input_type( $field );
-                        $custom_field_name = $field->postCustomFieldName;
 
                         // Only certain custom field types are supported
                         switch( $input_type ) {
                             case 'fileupload':
-                            /** @noinspection PhpMissingBreakStatementInspection */
                             case 'list':
+                            case 'multiselect':
                                 if( ! is_string( $value ) ) {
                                     $value = function_exists('wp_json_encode') ? wp_json_encode( $value ) : json_encode( $value );
                                 }
                             // break; left intentionally out
                             default:
-                                update_post_meta( $post_id, $custom_field_name, $value );
+                                update_post_meta( $post_id, $field->postCustomFieldName, $value );
                         }
 
                         break;
 
                     case 'post_image':
-
-                        $input_name = 'input_' . $field_id;
-
-                        if ( !empty( $_FILES[ $input_name ]['name'] ) ) {
-
-                            // We have a new image
-
-                            $value = RGFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'] );
-
-                            // is this field set as featured image, if not, leave
-                            if ( ! $field->postFeaturedImage ) {
-                                break;
-                            }
-
-                            $ary = ! empty( $value ) ? explode( '|:|', $value ) : array();
-                            $img_url = rgar( $ary, 0 );
-
-                            $img_title       = count( $ary ) > 1 ? $ary[1] : '';
-                            $img_caption     = count( $ary ) > 2 ? $ary[2] : '';
-                            $img_description = count( $ary ) > 3 ? $ary[3] : '';
-
-                            $image_meta = array(
-                                'post_excerpt' => $img_caption,
-                                'post_content' => $img_description,
-                            );
-
-                            //adding title only if it is not empty. It will default to the file name if it is not in the array
-                            if ( ! empty( $img_title ) ) {
-                                $image_meta['post_title'] = $img_title;
-                            }
-
-                            //todo: As soon as \GFFormsModel::media_handle_upload becomes a public method, move this call to \GFFormsModel::media_handle_upload and remove the hack from this class.
-                            require_once GRAVITYVIEW_DIR . 'includes/class-gravityview-gfformsmodel.php';
-                            $media_id = GravityView_GFFormsModel::media_handle_upload( $img_url, $post_id, $image_meta );
-
-                            if ( $media_id ) {
-                                set_post_thumbnail( $post_id, $media_id );
-                            }
-
-                            break;
-
-                        } elseif ( !empty( $_POST[ $input_name ] ) && is_array( $value ) ) {
-
-                            // Same image although the image title, caption or description might have changed
-
-                            $ary = ! empty( $entry[ $field_id ] ) ? explode( '|:|', $entry[ $field_id ] ) : array();
-                            $img_url = rgar( $ary, 0 );
-
-                            // is this really the same image or something went wrong ?
-                            if( $img_url === $_POST[ $input_name ] ) {
-
-                                $img_title       = isset( $value[ $field_id .'.1' ] ) ? $value[ $field_id .'.1' ] : '';
-                                $img_caption     = isset( $value[ $field_id .'.4' ] ) ? $value[ $field_id .'.4' ] : '';
-                                $img_description = isset( $value[ $field_id .'.7' ] ) ? $value[ $field_id .'.7' ] : '';
-
-                                $value = ! empty( $img_url ) ? $img_url . "|:|" . $img_title . "|:|" . $img_caption . "|:|" . $img_description : '';
-
-                                if ( $field->postFeaturedImage ) {
-
-                                    $image_meta = array(
-                                        'ID' => get_post_thumbnail_id( $post_id ),
-                                        'post_title' => $img_title,
-                                        'post_excerpt' => $img_caption,
-                                        'post_content' => $img_description,
-                                    );
-
-                                    // update image title, caption or description
-                                    wp_update_post( $image_meta );
-                                }
-
-                                break;
-                            }
-
-                        }
-
-                        // if we get here, image was removed or not set.
-
-                        $value = '';
-                        if ( $field->postFeaturedImage ) {
-                            delete_post_thumbnail( $post_id );
-                        }
-
+                        $value = $this->update_post_image( $form, $field, $field_id, $value, $this->entry, $post_id );
                         break;
 
                 }
 
-                //ignore fields that have not changed
-                if ( $value === rgget( (string) $field_id, $entry ) ) {
-                    continue;
-                }
-
-                // update entry
-                if( 'post_category' !== $field->type ) {
-                    $entry[ strval( $field_id ) ] = $value;
-                }
+                // update entry after
+                $this->entry["{$field_id}"] = $value;
 
                 $update_entry = true;
 
+                unset( $entry_tmp );
             }
 
         }
 
         if( $update_entry ) {
 
-            $return_entry = GFAPI::update_entry( $entry );
+            $return_entry = GFAPI::update_entry( $this->entry );
 
             if( is_wp_error( $return_entry ) ) {
-                do_action( 'gravityview_log_error', 'Updating the entry post fields failed', $return_entry );
+               do_action( 'gravityview_log_error', 'Updating the entry post fields failed', array( '$this->entry' => $this->entry, '$return_entry' => $return_entry ) );
             } else {
                 do_action( 'gravityview_log_debug', 'Updating the entry post fields for post #'.$post_id.' succeeded' );
             }
@@ -644,11 +660,43 @@ class GravityView_Edit_Entry_Render {
 
         if( is_wp_error( $return_post ) ) {
             $return_post->add_data( $updated_post, '$updated_post' );
-            do_action( 'gravityview_log_error', 'Updating the post content failed', $return_post );
+            do_action( 'gravityview_log_error', 'Updating the post content failed', compact( 'updated_post', 'return_post' ) );
         } else {
             do_action( 'gravityview_log_debug', 'Updating the post content for post #'.$post_id.' succeeded', $updated_post );
         }
+    }
 
+    /**
+     * Convert a field content template into prepared output
+     *
+     * @uses GravityView_GFFormsModel::get_post_field_images()
+     *
+     * @since 1.17
+     *
+     * @param string $template The content template for the field
+     * @param array $form Gravity Forms form
+     * @param bool $do_shortcode Whether to process shortcode inside content. In GF, only run on Custom Field and Post Content fields
+     *
+     * @return mixed|string|void
+     */
+    function fill_post_template( $template, $form, $entry, $do_shortcode = false ) {
+
+        require_once GRAVITYVIEW_DIR . 'includes/class-gravityview-gfformsmodel.php';
+
+        $post_images = GravityView_GFFormsModel::get_post_field_images( $form, $entry );
+
+        //replacing post image variables
+        $output = GFCommon::replace_variables_post_image( $template, $post_images, $entry );
+
+        //replacing all other variables
+        $output = GFCommon::replace_variables( $output, $form, $entry, false, false, false );
+
+        // replace conditional shortcodes
+        if( $do_shortcode ) {
+            $output = do_shortcode( $output );
+        }
+
+        return $output;
     }
 
 
@@ -788,6 +836,13 @@ class GravityView_Edit_Entry_Render {
      */
     private function render_edit_form() {
 
+        /**
+         * @action `gravityview/edit-entry/render/before` Before rendering the Edit Entry form
+         * @since 1.17
+         * @param GravityView_Edit_Entry_Render $this
+         */
+        do_action( 'gravityview/edit-entry/render/before', $this );
+
         add_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields'), 5000, 3 );
         add_filter( 'gform_submit_button', array( $this, 'render_form_buttons') );
         add_filter( 'gform_disable_view_counter', '__return_true' );
@@ -813,6 +868,13 @@ class GravityView_Edit_Entry_Render {
         remove_filter( 'gform_field_input', array( $this, 'modify_edit_field_input' ), 10 );
 
         echo $html;
+
+        /**
+         * @action `gravityview/edit-entry/render/after` After rendering the Edit Entry form
+         * @since 1.17
+         * @param GravityView_Edit_Entry_Render $this
+         */
+        do_action( 'gravityview/edit-entry/render/after', $this );
     }
 
     /**
@@ -829,7 +891,7 @@ class GravityView_Edit_Entry_Render {
      */
     function fix_survey_fields_value( $value, $field, $name ) {
         
-        if( 'survey' === $field->type && '' === $value && 'likert' === rgar( $field, 'inputType' ) ) {
+        if( 'survey' === $field->type ) {
 
 	        // We need to run through each survey row until we find a match for expected values
 	        foreach ( $this->entry as $field_id => $field_value ) {
@@ -965,6 +1027,7 @@ class GravityView_Edit_Entry_Render {
             ( $this->is_edit_entry_submission() && !in_array( $field->type, array( 'fileupload', 'post_image' ) ) )
             && false === ( $gv_field && is_callable( array( $gv_field, 'get_field_input' ) ) )
             || ! empty( $field_content )
+            || in_array( $field->type, array( 'honeypot' ) )
             || GFCommon::is_product_field( $field->type ) // Prevent product fields from appearing editable
         ) {
 	        return $field_content;
@@ -992,6 +1055,14 @@ class GravityView_Edit_Entry_Render {
          * @param object $field Gravity Forms field object ( Class GF_Field )
          */
         $field_value = apply_filters( 'gravityview/edit_entry/field_value', $field_value, $field );
+
+        /**
+         * @filter `gravityview/edit_entry/field_value_{field_type}` Change the value of an Edit Entry field for a specific field type
+         * @since 1.17
+         * @param mixed $field_value field value used to populate the input
+         * @param GF_Field $field Gravity Forms field object
+         */
+        $field_value = apply_filters( 'gravityview/edit_entry/field_value_' . $field->type , $field_value, $field );
 
 	    // Prevent any PHP warnings, like undefined index
 	    ob_start();
@@ -1385,7 +1456,7 @@ class GravityView_Edit_Entry_Render {
      * Get the current entry and set it if it's not yet set.
      * @return array Gravity Forms entry array
      */
-    private function get_entry() {
+    public function get_entry() {
 
         if( empty( $this->entry ) ) {
             // Get the database value of the entry that's being edited
@@ -1416,9 +1487,6 @@ class GravityView_Edit_Entry_Render {
         // If edit tab not yet configured, show all fields
         $edit_fields = !empty( $properties['edit_edit-fields'] ) ? $properties['edit_edit-fields'] : NULL;
 
-	    // Show hidden fields as text fields
-	    $form = $this->fix_hidden_fields( $form );
-
         // Show hidden fields as text fields
         $form = $this->fix_survey_fields( $form );
 
@@ -1427,6 +1495,16 @@ class GravityView_Edit_Entry_Render {
 
 	    // If Edit Entry fields are configured, remove adminOnly field settings. Otherwise, don't.
 	    $fields = $this->filter_admin_only_fields( $fields, $edit_fields, $form, $view_id );
+
+        /**
+         * @filter `gravityview/edit_entry/form_fields` Modify the fields displayed in Edit Entry form
+         * @since 1.17
+         * @param GF_Field[] $fields Gravity Forms form fields
+         * @param array|null $edit_fields Fields for the Edit Entry tab configured in the View Configuration
+         * @param array $form GF Form array (`fields` key modified to have only fields configured to show in Edit Entry)
+         * @param int $view_id View ID
+         */
+        $fields = apply_filters( 'gravityview/edit_entry/form_fields', $fields, $edit_fields, $form, $view_id );
 
         return $fields;
     }
@@ -1449,28 +1527,7 @@ class GravityView_Edit_Entry_Render {
 
         return $form;
     }
-
-	/**
-	 * @since 1.9.2
-	 *
-	 * @param $fields
-	 *
-	 * @return mixed
-	 */
-	private function fix_hidden_fields( $form ) {
-
-		/** @var GF_Field $field */
-		foreach( $form['fields'] as $key => $field ) {
-			if( 'hidden' === $field->type ) {
-				$text_field = new GF_Field_Text( $field );
-				$text_field->type = 'text';
-				$form['fields'][ $key ] = $text_field;
-			}
-		}
-
-		return $form;
-	}
-
+    
 
     /**
      * Filter area fields based on specified conditions

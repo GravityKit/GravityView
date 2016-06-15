@@ -567,6 +567,9 @@ class GravityView_frontend {
 		 * @since 1.15
 		 */
 		if( is_user_logged_in() && false === GVCommon::has_cap( 'read_gravityview', $view_id ) ) {
+
+			do_action( 'gravityview_log_debug', sprintf( '[render_view] Returning: View %d is not visible by current user.', $view_id ) );
+
 			return null;
 		}
 
@@ -655,6 +658,11 @@ class GravityView_frontend {
 			// user requested Single Entry View
 			do_action( 'gravityview_log_debug', '[render_view] Executing Single View' );
 
+
+			/**
+			 * @action `gravityview_render_entry_{View ID}` Before rendering a single entry for a specific View ID
+			 * @since 1.17
+			 */
 			do_action( 'gravityview_render_entry_'.$view_data['id'] );
 
 			$entry = $this->getEntry();
@@ -1263,7 +1271,7 @@ class GravityView_frontend {
 					$css_dependencies[] = 'dashicons';
 				}
 
-				wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'includes/lib/jquery-cookie/jquery_cookie.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GravityView_Plugin::version, true );
+				wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GravityView_Plugin::version, true );
 
 				$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
@@ -1275,10 +1283,9 @@ class GravityView_frontend {
 					wp_enqueue_style( 'gravityview_font', plugins_url( 'assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
 				}
 
-				wp_enqueue_style( 'gravityview_default_style', plugins_url( 'templates/css/gv-default-styles.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
+				$this->enqueue_default_style( $css_dependencies );
 
 				self::add_style( $data['template_id'] );
-
 			}
 
 			if ( 'wp_print_footer_scripts' === current_filter() ) {
@@ -1299,6 +1306,33 @@ class GravityView_frontend {
 				wp_localize_script( 'gravityview-fe-view', 'gvGlobals', $js_localization );
 			}
 		}
+	}
+
+	/**
+	 * Handle enqueuing the `gravityview_default_style` stylesheet
+	 *
+	 * @since 1.17
+	 *
+	 * @param array $css_dependencies Dependencies for the `gravityview_default_style` stylesheet
+	 *
+	 * @return void
+	 */
+	private function enqueue_default_style( $css_dependencies = array() ) {
+
+		/**
+		 * @filter `gravityview_use_legacy_search_css` Should GravityView use the legacy Search Bar stylesheet (from before Version 1.17)?
+		 * @since 1.17
+		 * @param bool $use_legacy_search_style If true, loads `gv-legacy-search(-rtl).css`. If false, loads `gv-default-styles(-rtl).css`. `-rtl` is added on RTL websites. Default: `false`
+		 */
+		$use_legacy_search_style = apply_filters( 'gravityview_use_legacy_search_style', false );
+
+		$rtl = is_rtl() ? '-rtl' : '';
+
+		$css_file_base = $use_legacy_search_style ? 'gv-legacy-search' : 'gv-default-styles';
+
+		$path = gravityview_css_url( $css_file_base . $rtl . '.css' );
+
+		wp_enqueue_style( 'gravityview_default_style', $path, $css_dependencies, GravityView_Plugin::version, 'all' );
 	}
 
 	/**

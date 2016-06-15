@@ -191,6 +191,11 @@ class GVLogic_Shortcode {
 			return null;
 		}
 
+		if( empty( $atts ) ) {
+			do_action( 'gravityview_log_error', __METHOD__.' $atts are empty.', $atts );
+			return null;
+		}
+
 		$this->passed_atts = $atts;
 		$this->passed_content = $content;
 		$this->shortcode = $shortcode_tag;

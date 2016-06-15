@@ -8,13 +8,15 @@ class GravityView_Default_Template_List extends GravityView_Template {
 
 	function __construct( $id = 'default_list', $settings = array(), $field_options = array(), $areas = array() ) {
 
+		$rtl = is_rtl() ? '-rtl' : '';
+
 		$list_settings = array(
 			'slug'        => 'list',
 			'type'        => 'custom',
 			'label'       => __( 'List (default)', 'gravityview' ),
 			'description' => __( 'Display items in a listing view.', 'gravityview' ),
 			'logo'        => plugins_url( 'includes/presets/default-list/logo-default-list.png', GRAVITYVIEW_FILE ),
-			'css_source'  => plugins_url( 'templates/css/list-view.css', GRAVITYVIEW_FILE ),
+			'css_source'  => gravityview_css_url( 'list-view' . $rtl . '.css', GRAVITYVIEW_DIR . 'templates/css/' ),
 		);
 
 		$settings = wp_parse_args( $settings, $list_settings );

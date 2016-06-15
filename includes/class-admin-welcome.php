@@ -142,9 +142,11 @@ class GravityView_Welcome {
 		list( $display_version ) = explode( '-', GravityView_Plugin::version );
 
 		$selected = !empty( $plugin_page ) ? $plugin_page : 'gv-getting-started';
+
+		echo gravityview_get_floaty( 132 );
 		?>
 
-		<h1><img class="alignleft" src="<?php echo plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ); ?>" width="100" height="132" /><?php printf( esc_html__( 'Welcome to GravityView %s', 'gravityview' ), $display_version ); ?></h1>
+		<h1><?php printf( esc_html__( 'Welcome to GravityView %s', 'gravityview' ), $display_version ); ?></h1>
 		<div class="about-text"><?php esc_html_e( 'Thank you for installing GravityView. Beautifully display your Gravity Forms entries.', 'gravityview' ); ?></div>
 
 		<h2 class="nav-tab-wrapper clear">
@@ -256,21 +258,124 @@ class GravityView_Welcome {
 
 				<div class="feature-section col two-col" style="margin:0; padding: 0;">
 					<div class="col col-1">
-						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/pricing-merge-tags.jpg', GRAVITYVIEW_FILE ); ?>" alt="Pricing merge tags"></div>
-						<h4 class="higher">Pricing Merge Tags</h4>
-						<p>GravityView now offers better support for pricing Merge Tags to show details about orers. <a href="http://docs.gravityview.co/article/76-merge-tags">Read more about the Merge Tags</a>.</p>
+						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/entry-notes.gif', GRAVITYVIEW_FILE ); ?>" alt="Entry Notes"></div>
+						<h4 class="higher">Entry Notes</h4>
+						<p>Add and display Notes to an entry from the frontend.</p>
 					</div>
 
 					<div class="col col-2 last-feature">
-						<div class="media-container" style="margin-top: 2em; min-height:80px;"><img src="<?php echo plugins_url( 'assets/images/screenshots/developing-future.jpg', GRAVITYVIEW_FILE ); ?>" alt="Developing the Future"></div>
-						<h4 class="higher">Laying the Groundwork</h4>
-						<p>We&rsquo;re working on a great new View Builder to make it easier than ever to configure View layouts. This release includes lots of behind-the-scenes&nbsp;changes.</p>
+						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/search-bar.png', GRAVITYVIEW_FILE ); ?>" alt="Search Bar"></div>
+						<h4 class="higher">Search Bar Styles</h4>
+						<p>Search Bar forms look better when there are multiple fields, and are now mobile-responsive.</p>
 					</div>
 				</div>
 
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;">What&rsquo;s New</h2>
 				</div>
+
+				<h3>1.17 on June 14</h3>
+
+				<ul>
+					<li>Added: Entry Notes field
+
+						<ul>
+							<li>Add and delete Entry Notes from the frontend</li>
+							<li>Allows users to email Notes when they are added</li>
+							<li>Display notes to logged-out users</li>
+							<li>New <a href="http://docs.gravityview.co/article/311-gravityview-capabilities">user capabilities</a> to limit access (<code>gravityview_add_entry_notes</code>, <code>gravityview_view_entry_notes</code>, <code>gravityview_delete_entry_notes</code>, <code>gravityview_email_entry_notes</code>)</li>
+						</ul>
+					</li>
+					<li>Added: Merge Tag modifiers - now set a maximum length of content, and automatically add paragraphs to Merge Tags. <a href="https://docs.gravityview.co/article/350-merge-tag-modifiers">Read how to use the new Merge Tag modifiers</a>.
+
+						<ul>
+							<li><code>:maxwords:{number}</code> - Limit output to a set number of words</li>
+							<li><code>:wpautop</code> - Automatically add line breaks and paragraphs to content</li>
+							<li><code>:timestamp</code> - Convert dates into timestamp values</li>
+						</ul>
+					</li>
+					<li>Modified: Major changes to the Search Bar design</li>
+					<li>Added: Field setting to display the input value, label, or check mark, depending on field type. Currently supported: Checkbox, Radio, Drop Down fields.</li>
+					<li>Added: RTL ("right to left") language support in default and List template styles (Added: <code>gv-default-styles-rtl.css</code> and <code>list-view-rtl.css</code> stylesheets)</li>
+					<li>Added: Option to make Phone numbers click-to-call</li>
+					<li>Added: GravityView parent menu to Toolbar; now you can edit the form connected to a View directly from the View
+
+						<ul>
+							<li>Changed: Don't show Edit View in the Admin Bar; it's now under the GravityView parent menu</li>
+							<li>Fixed: Don't remove Edit Post/Page admin bar menu item</li>
+						</ul>
+					</li>
+					<li>Added: Support for <a href="https://gravityflow.io">Gravity Flow</a> "Workflow Step" and Workflow "Final Status" fields</li>
+					<li>Added: Support for Password fields. You probably shouldn't display them (in most cases!) but now you <em>can</em></li>
+					<li>Modified: When deleting/trashing entries with GravityView, the connected posts created by Gravity Forms will now also be deleted/trashed</li>
+					<li>Edit Entry improvements
+
+						<ul>
+							<li>Added: Edit Entry now fully supports <a href="https://www.gravityhelp.com/documentation/article/create-content-template/">Gravity Forms Content Templates</a></li>
+							<li>Fixed: Edit Entry didn't pre-populate List inputs if they were part of a Post Custom Field field type</li>
+							<li>Fixed: Updating Post Image fields in Edit Entry when the field is not set to "Featured Image" in Gravity Forms</li>
+							<li>Fixed: "Rank" and "Ratings" Survey Field types not being displayed properly in Edit Entry</li>
+							<li>Fixed: Signature field not displaying existing signatures in Edit Entry</li>
+							<li>Fixed: Post Category fields will now update to show the Post's current categories</li>
+							<li>Fixed: Allow multiple Post Category fields in Edit Entry</li>
+							<li>Fixed: PHP warning caused when a form had "Anti-spam honeypot" enabled</li>
+						</ul>
+					</li>
+					<li>Fixed: When inserting a GravityView shortcode using the "Add View" button, the form would flow over the window</li>
+					<li>Fixed: <a href="https://churchthemes.com">Church Themes</a> theme compatibility</li>
+					<li>Fixed: Inactive and expired licenses were being shown the wrong error message</li>
+					<li>Fixed: Moving domains would prevent GravityView from updating</li>
+					<li>Fixed: When using the User Opt-in field together with the View setting "Show Only Approved Entries", entries weren't showing</li>
+					<li>Fixed: If a label is set for Search Bar "Link" fields, use the label. Otherwise, "Show only:" will be used</li>
+					<li>Fixed: Showing the first column of a List field was displaying all the field's columns</li>
+				</ul>
+
+
+				<p><strong>Developer Notes</strong></p>
+
+				<ul>
+					<li>Templates changed:
+
+						<ul>
+							<li><code>list-single.php</code> and <code>list-body.php</code>: changed <code>#gv_list_{entry_id}</code> to <code>#gv_list_{entry slug}</code>. If using custom entry slugs, the ID attribute will change. Otherwise, no change.</li>
+							<li><code>list-body.php</code>: Removed <code>id</code> attribute from entry title <code>&lt;h3&gt;</code></li>
+						</ul>
+					</li>
+					<li>Added: Override GravityView CSS files by copying them to a template's <code>/gravityview/css/</code> sub-directory</li>
+					<li>Added: <code>gravityview_css_url()</code> function to check for overriding CSS files in templates</li>
+					<li>Added: <code>gravityview_use_legacy_search_style</code> filter; return <code>true</code> to use previous Search Bar stylesheet</li>
+					<li>Major CSS changes for the Search Bar.
+
+						<ul>
+							<li>Search inputs <code>&lt;div&gt;</code>s now have additional CSS classes based on the input type: <code>.gv-search-field-{input_type}</code> where <code>{input_type}</code> is:
+								<code>search_all</code> (search everything text box), <code>link</code>, <code>date</code>, <code>checkbox</code> (list of checkboxes), <code>single_checkbox</code>, <code>text</code>, <code>radio</code>, <code>select</code>,
+								<code>multiselect</code>, <code>date_range</code>, <code>entry_id</code>, <code>entry_date</code></li>
+							<li>Added <code>gv-search-date-range</code> CSS class to containers that have date ranges</li>
+							<li>Moved <code>gv-search-box-links</code> CSS class from the <code>&lt;p&gt;</code> to the <code>&lt;div&gt;</code> container</li>
+							<li>Fixed: <code>&lt;label&gt;</code> <code>for</code> attribute was missing quotes</li>
+						</ul>
+					</li>
+					<li>Added:
+
+						<ul>
+							<li><code>gravityview/edit_entry/form_fields</code> filter to modify the fields displayed in Edit Entry form</li>
+							<li><code>gravityview/edit_entry/field_value_{field_type}</code> filter to change the value of an Edit Entry field for a specific field type</li>
+							<li><code>gravityview/edit-entry/render/before</code> action, triggered before the Edit Entry form is rendered</li>
+							<li><code>gravityview/edit-entry/render/after</code> action, triggered after the Edit Entry form is rendered</li>
+						</ul>
+					</li>
+					<li>Fixed: PHP Warning for certain hosting <code>open_basedir</code> configurations</li>
+					<li>Added: <code>gravityview/delete-entry/delete-connected-post</code> Filter to modify behavior when entry is deleted. Return false to prevent posts from being deleted or trashed when connected entries are deleted or trashed. See <code>gravityview/delete-entry/mode</code> filter to modify the default behavior, which is "delete".</li>
+					<li>Added: <code>gravityview/edit_entry/post_content/append_categories</code> filter to modify whether post categories should be added to or replaced?</li>
+					<li>Added: <code>gravityview/common/get_form_fields</code> filter to modify fields used in the "Add Field" selector, View "Filters" dropdowns, and Search Bar</li>
+					<li>Added: <code>gravityview/search/searchable_fields</code> filter to modify fields used in the Search Bar field dropdown</li>
+					<li>Added: <code>GVCommon::send_email()</code>, a public alias of <code>GFCommon::send_email()</code></li>
+					<li>Added: <code>GravityView_Field_Notes</code> class, with lots of filters to modify output</li>
+					<li>Added: <code>$field_value</code> parameter to <code>gravityview_get_field_label()</code> function and <code>GVCommon::get_field_label()</code> method</li>
+					<li>Added: <code>$force</code> parameter to <code>GravityView_Plugin::frontend_actions()</code> to force including files</li>
+					<li>Modified: Added second parameter <code>$entry</code> to <code>gravityview/delete-entry/trashed</code> and <code>gravityview/delete-entry/deleted</code> actions</li>
+					<li>Fixed: An image with no <code>src</code> output a broken HTML <code>&lt;img&gt;</code> tag</li>
+				</ul>
 
 				<h3>1.16.5.1 on April 7</h3>
 
@@ -298,7 +403,6 @@ class GravityView_Welcome {
 					<li>Updated: Gamajo Template Loader to Version 1.2</li>
 					<li>Verified compatibility with WordPress 4.5</li>
 				</ul>
-
 
 				<h3>1.16.4.1 on March 23</h3>
 
@@ -551,7 +655,7 @@ class GravityView_Welcome {
 			<div class="feature-section col two-col">
 
 				<div class="col">
-					<h2>Zack Katz</h2>
+					<h3>Zack Katz</h3>
 					<h4 style="font-weight:0; margin-top:0">Project Lead &amp; Developer</h4>
 					<p></p>
 					<p><img style="float:left; margin: 0 15px 10px 0;" src="<?php echo plugins_url( 'assets/images/zack.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Zack has been developing integrations with Gravity Forms since 2009. He is the President of Katz Web Services and lives with his wife (and cat) in Denver, Colorado.</p>
@@ -559,12 +663,18 @@ class GravityView_Welcome {
 				</div>
 
 				<div class="col last-feature">
-					<h2>Luis Godinho</h2>
+					<h3>Rafael Ehlers</h3>
+					<h4 style="font-weight:0; margin-top:0">Project Manager, Support Lead &amp; Customer Advocate</h4>
+					<p><img style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/rafael.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Rafael helps guide GravityView development priorities and keep us on track. He&rsquo;s the face of our customer support and helps customers get the most out of the product. Rafael hails from Porto Alegre, Brazil.</p>
+					<p><a href="http://heropress.com/essays/journey-resilience/">View Rafael&rsquo;s WordPress Journey</a></p>
+				</div>
+
+				<div class="col">
+					<h3>Luis Godinho</h3>
 					<h4 style="font-weight:0; margin-top:0">Developer &amp; Support</h4>
 					<p><img style="margin: 0 15px 10px 0;"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/luis.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Luis is a WordPress developer passionate about WordPress. He is a co-founder and partner of GOMO, a digital agency located in Lisbon, Portugal.</p>
 					<p><a href="http://tinygod.pt">View Luis&rsquo;s website</a></p>
 				</div>
-
 			</div>
 
 			<hr class="clear" />
@@ -589,7 +699,9 @@ class GravityView_Welcome {
 						<li class="wp-person">Indonesian translation by <a href="https://www.transifex.com/accounts/profile/sariyanta/">@sariyanta</a></li>
 						<li class="wp-person">Norwegian translation by <a href="https://www.transifex.com/accounts/profile/aleksanderespegard/">@aleksanderespegard</a></li>
 						<li class="wp-person">Danish translation by <a href="https://www.transifex.com/accounts/profile/jaegerbo/">@jaegerbo</a></li>
-						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a> and <a href="https://github.com/dmlinn">@dmlinn</a></li>
+						<li class="wp-person">Chinese translation by Edi Weigh</li>
+						<li class="wp-person">Persian translation by <a href="https://www.transifex.com/user/profile/azadmojtaba/">@azadmojtaba</a></li>
+						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, and <a href="https://github.com/mgratch">@mgratch</a></li>
 					</ul>
 
 					<h4><?php esc_attr_e( 'Want to contribute?', 'gravityview' ); ?></h4>
@@ -605,13 +717,15 @@ class GravityView_Welcome {
 
 				<ul>
 					<li><a href="http://datatables.net/">DataTables</a> - amazing tool for table data display. Many thanks!</li>
+					<li><a href="https://github.com/10up/flexibility">Flexibility</a> - Adds support for CSS flexbox to Internet Explorer 8 &amp; 9</li>
 					<li><a href="https://github.com/GaryJones/Gamajo-Template-Loader">Gamajo Template Loader</a> - makes it easy to load template files with user overrides</li>
 					<li><a href="https://github.com/carhartl/jquery-cookie">jQuery Cookie plugin</a> - Access and store cookie values with jQuery</li>
-					<li><a href="http://katz.si/gf">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>
+					<li><a href="https://katz.si/gf">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>
 					<li>GravityView uses icons made by Freepik, Adam Whitcroft, Amit Jakhu, Zurb, Scott de Jonge, Yannick, Picol, Icomoon, TutsPlus, Dave Gandy, SimpleIcon from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a></li>
 					<li>GravityView uses free vector art by <a href="http://www.vecteezy.com">vecteezy.com</a></li>
 					<li><a href="https://github.com/jnicol/standalone-phpenkoder">PHPEnkoder</a> script encodes the email addresses.</li>
 					<li>The Duplicate View functionality is based on the excellent <a href="http://lopo.it/duplicate-post-plugin/">Duplicate Post plugin</a> by Enrico Battocchi</li>
+					<li>Browser testing by <a href="https://www.browserstack.com">BrowserStack</a></li>
 				</ul>
 
 			</div>

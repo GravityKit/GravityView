@@ -204,6 +204,12 @@ class GravityView_Settings extends GFAddOn {
 		$update_below = false;
 		$primary_button_link = admin_url( 'edit.php?post_type=gravityview&amp;page=gravityview_settings' );
 		switch ( $license_status ) {
+			/** @since 1.17 */
+			case 'expired':
+				$title = __('Expired License', 'gravityview');
+				$status = 'expired';
+				$message = $this->get_license_handler()->strings( 'expired', self::getSetting('license_key_response') );
+				break;
 			case 'invalid':
 				$title = __('Invalid License', 'gravityview');
 				$status = __('is invalid', 'gravityview');
@@ -216,6 +222,7 @@ class GravityView_Settings extends GFAddOn {
 			case '':
 				$license_status = 'site_inactive';
 				// break intentionally left blank
+			case 'inactive':
 			case 'site_inactive':
 				$status = __('has not been activated', 'gravityview');
 				$update_below = __('Activate your license key below.', 'gravityview');
@@ -227,7 +234,7 @@ class GravityView_Settings extends GFAddOn {
 		if( $update_below && gravityview_is_admin_page( '', 'settings' ) ) {
 			$message = sprintf( $message, $status, '<div class="hidden">', '', '', '</div><a href="#" onclick="jQuery(\'#license_key\').focus(); return false;">' . $update_below . '</a>' );
 		} else {
-			$message = sprintf( $message, $status, "\n\n" . '<a href="' . $primary_button_link . '" class="button button-primary">', '</a>', '<a href="' . esc_url( $url ) . '" class="button button-secondary">', '</a>' );
+			$message = sprintf( $message, $status, "\n\n" . '<a href="' . esc_url( $primary_button_link ) . '" class="button button-primary">', '</a>', '<a href="' . esc_url( $url ) . '" class="button button-secondary">', '</a>' );
 		}
 
 		if( !empty( $status ) ) {
@@ -509,6 +516,7 @@ class GravityView_Settings extends GFAddOn {
 			'no-conflict-mode' => '0',
 			'support_port' => '1',
 			'delete-on-uninstall' => '0',
+			'flexbox_search' => '1',
 		);
 
 		return $defaults;
@@ -585,7 +593,7 @@ class GravityView_Settings extends GFAddOn {
 				'name'                => 'license_key',
 				'required'               => true,
 				'label'             => __( 'License Key', 'gravityview' ),
-				'description'          => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ),
+				'description'          => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ) . $this->get_license_handler()->license_details( $this->get_app_setting( 'license_key_response' ) ),
 				'type'              => 'edd_license',
 				'data-pending-text' => __('Verifying license&hellip;', 'gravityview'),
 				'default_value'           => $default_settings['license_key'],

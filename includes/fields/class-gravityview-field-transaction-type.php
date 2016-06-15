@@ -56,7 +56,7 @@ class GravityView_Field_Transaction_Type extends GravityView_Field {
 	 *
 	 * @return String values for this field based on the numeric values used by Gravity Forms
 	 */
-	public function get_content( $output, $entry, $field_settings, $field ) {
+	public function get_content( $output, $entry = array(), $field_settings = array(), $field = array() ) {
 
 		/** Overridden by a template. */
 		if( ! empty( $field['field_path'] ) ) { return $output; }

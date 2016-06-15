@@ -4,6 +4,52 @@
  * @since 1.12
  */
 
+
+/**
+ * Get the URL for a CSS file
+ * 
+ * If there's a CSS file with the same name as a GravityView CSS file in the current theme directory, it will be used.
+ * Place the CSS file in a `/gravityview/css/` sub-directory. 
+ * 
+ * Example: /twentysixteen/gravityview/css/gv-default-styles.css
+ *
+ * Will use, in order:
+ * 1) [theme directory]/gravityview/css/
+ * 2) [gravityview plugin]/css/ (no check performed)
+ *
+ * @since 1.17
+ *
+ * @uses get_stylesheet_directory()
+ * @uses get_stylesheet_directory_uri()
+ *
+ * @param string $css_file Filename of the CSS file (like gv-default-styles.css)
+ * @param string $dir_path Absolute path to the directory where the CSS file is stored. If empty, uses default GravityView templates CSS folder.
+ *
+ * @return string URL path to the file.
+ */
+function gravityview_css_url( $css_file = '', $dir_path = '' ) {
+
+	// If there's an overriding CSS file in the current template folder, use it.
+	$template_css_path = trailingslashit( get_stylesheet_directory() ) . 'gravityview/css/' . $css_file;
+
+	if( file_exists( $template_css_path ) ) {
+		$path = trailingslashit( get_stylesheet_directory_uri() ) . 'gravityview/css/' . $css_file;
+		do_action( 'gravityview_log_debug', __FUNCTION__ . ': Stylesheet override ('. esc_attr( $css_file ) .')' );
+	} else {
+		// Default: use GravityView CSS file
+
+		// If no path is provided, assume default plugin templates CSS folder
+		if( '' === $dir_path ) {
+			$dir_path = GRAVITYVIEW_DIR . 'templates/css/';
+		}
+		
+		// plugins_url() expects a path to a file, not directory. We append a file to be stripped.
+		$path = plugins_url( $css_file, trailingslashit( $dir_path )  . 'stripped-by-plugin_basename.php' );
+	}
+
+	return $path;
+}
+
 /**
  * Check whether a variable is not an empty string
  *
@@ -153,7 +199,9 @@ function gravityview_ob_include( $file_path, $object = NULL ) {
  * @since 1.12
  * @return string HTML image tag with floaty's cute mug on it
  */
-function gravityview_get_floaty() {
+function gravityview_get_floaty( $height = 87 ) {
+
+	$width = $height * 0.7586206897;
 
 	if( function_exists('is_rtl') && is_rtl() ) {
 		$style = 'margin:10px 10px 10px 0;';
@@ -163,7 +211,7 @@ function gravityview_get_floaty() {
 		$class = 'alignleft';
 	}
 
-	return '<img src="'.plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="'.$class.'" height="87" width="66" alt="The GravityView Astronaut Says:" style="'.$style.'" />';
+	return '<img src="'.plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="'.$class.'" height="'.intval( $height ).'" width="'.round( $width, 2 ).'" alt="The GravityView Astronaut Says:" style="'.$style.'" />';
 }
 
 /**
@@ -383,6 +431,7 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 function gv_map_deep( $value, $callback ) {
 
 	// Use the original function, if exists.
+	// Requires WP 4.4+
 	if( function_exists( 'map_deep') ) {
 		return map_deep( $value, $callback );
 	}
@@ -437,7 +486,7 @@ function gravityview_is_valid_datetime( $datetime, $expected_format = 'Y-m-d' ) 
  *
  * @param string $field_id Full ID of field, with or without input ID, like "12.3" or "7".
  *
- * @return int If field ID has an input, returns that input number. Otherwise, returns 0.
+ * @return int If field ID has an input, returns that input number. Otherwise, returns false.
  */
 function gravityview_get_input_id_from_id( $field_id = '' ) {
 
@@ -448,7 +497,7 @@ function gravityview_get_input_id_from_id( $field_id = '' ) {
 
 	$exploded = explode( '.', "{$field_id}" );
 
-	return isset( $exploded[1] ) ? intval( $exploded[1] ) : 0;
+	return isset( $exploded[1] ) ? intval( $exploded[1] ) : false;
 }
 
 /**

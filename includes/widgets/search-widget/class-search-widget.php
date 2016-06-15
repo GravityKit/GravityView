@@ -85,6 +85,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		// admin - add scripts - run at 1100 to make sure GravityView_Admin_Views::add_scripts_and_styles() runs first at 999
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 1100 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts') );
 		add_filter( 'gravityview_noconflict_scripts', array( $this, 'register_no_conflict' ) );
 
 		// ajax - get the searchable fields
@@ -198,11 +199,13 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	}
 
 	/**
-	 * Add admin script to the whitelist
+	 * Add admin script to the no-conflict scripts whitelist
+	 * @param array $allowed Scripts allowed in no-conflict mode
+	 * @return array Scripts allowed in no-conflict mode, plus the search widget script
 	 */
-	public function register_no_conflict( $required ) {
-		$required[] = 'gravityview_searchwidget_admin';
-		return $required;
+	public function register_no_conflict( $allowed ) {
+		$allowed[] = 'gravityview_searchwidget_admin';
+		return $allowed;
 	}
 
 	/**
@@ -243,7 +246,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 	/**
 	 * Generates html for the available Search Fields dropdown
-	 * @param  string $form_id
+	 * @param  int $form_id
 	 * @param  string $current (for future use)
 	 * @return string
 	 */
@@ -252,9 +255,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		if ( is_null( $form_id ) ) {
 			return '';
 		}
-
-		// Get fields with sub-inputs and no parent
-		$fields = gravityview_get_form_fields( $form_id, true, true );
 
 		// start building output
 
@@ -282,6 +282,19 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		foreach( $custom_fields as $custom_field_key => $custom_field ) {
 			$output .= sprintf( '<option value="%s" %s data-inputtypes="%s" data-placeholder="%s">%s</option>', $custom_field_key, selected( $custom_field_key, $current, false ), $custom_field['type'], self::get_field_label( array('field' => $custom_field_key ) ), $custom_field['text'] );
 		}
+
+		// Get fields with sub-inputs and no parent
+		$fields = gravityview_get_form_fields( $form_id, true, true );
+
+		/**
+		 * @filter `gravityview/search/searchable_fields` Modify the fields that are displayed as searchable in the Search Bar dropdown\n
+		 * @since 1.17
+		 * @see gravityview_get_form_fields() Used to fetch the fields
+		 * @see GravityView_Widget_Search::get_search_input_types See this method to modify the type of input types allowed for a field
+		 * @param array $fields Array of searchable fields, as fetched by gravityview_get_form_fields()
+		 * @param  int $form_id
+		 */
+		$fields = apply_filters( 'gravityview/search/searchable_fields', $fields, $form_id );
 
 		if ( ! empty( $fields ) ) {
 
@@ -725,10 +738,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 	/**
 	 * Renders the Search Widget
-	 * @param type $widget_args
-	 * @param type $content
-	 * @param type $context
-	 * @return type
+	 * @param array $widget_args
+	 * @param string $content
+	 * @param string $context
+	 *
+	 * @return void
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
 		/** @var GravityView_View $gravityview_view */
@@ -822,6 +836,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			$this->enqueue_datepicker();
 		}
 
+		$this->maybe_enqueue_flexibility();
+
 		$gravityview_view->render( 'widget', 'search', false );
 	}
 
@@ -842,8 +858,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		}
 
 		/**
-		 * Modify the CSS class for the search form
-		 *
+		 * @filter `gravityview_search_class` Modify the CSS class for the search form
 		 * @param string $search_class The CSS class for the search form
 		 */
 		$search_class = apply_filters( 'gravityview_search_class', $search_class );
@@ -1043,6 +1058,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	/**
 	 * Require the datepicker script for the frontend GV script
 	 * @param array $js_dependencies Array of existing required scripts for the fe-views.js script
+	 * @return array Array required scripts, with `jquery-ui-datepicker` added
 	 */
 	public function add_datepicker_js_dependency( $js_dependencies ) {
 
@@ -1094,6 +1110,34 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		return $localizations;
 
+	}
+
+	/**
+	 * Register search widget scripts, including Flexibility
+	 *
+	 * @see https://github.com/10up/flexibility
+	 *
+	 * @since TODO
+	 *
+	 * @return void
+	 */
+	public function register_scripts() {
+
+		wp_register_script( 'gv-flexibility', plugins_url( 'assets/lib/flexibility/dist/flexibility.js', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version, true );
+
+	}
+
+	/**
+	 * If the current visitor is running IE 8 or 9, enqueue Flexibility
+	 *
+	 * @since TODO
+	 *
+	 * @return void
+	 */
+	private function maybe_enqueue_flexibility() {
+		if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && preg_match( '/MSIE [8-9]/', $_SERVER['HTTP_USER_AGENT'] ) ) {
+			wp_enqueue_script( 'gv-flexibility' );
+		}
 	}
 
 	/**

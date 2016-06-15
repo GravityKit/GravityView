@@ -313,9 +313,9 @@ class GravityView_Admin_Views {
 					do_action( 'gravityview_log_error', sprintf( '[add_data_source_column_content] Connected form not found: Form #%d', $form_id ) );
 
 					$output = __( 'The connected form can not be found; it may no longer exist.', 'gravityview' );
+				} else {
+					$output = self::get_connected_form_links( $form );
 				}
-
-				$output = self::get_connected_form_links( $form );
 
 				break;
 		}
@@ -673,13 +673,12 @@ class GravityView_Admin_Views {
 				/**
 				 * @since 1.7.2
 				 */
-				'other_entries' => array(
-					'label'	=> __('Other Entries', 'gravityview'),
-					'type'	=> 'other_entries',
-					'desc'	=> __('Display other entries created by the entry creator.', 'gravityview'),
-				),
-			);
-
+			    'other_entries' => array(
+				    'label'	=> __('Other Entries', 'gravityview'),
+				    'type'	=> 'other_entries',
+				    'desc'	=> __('Display other entries created by the entry creator.', 'gravityview'),
+			    ),
+	        );
 
 			if( 'single' !== $zone) {
 
@@ -972,7 +971,7 @@ class GravityView_Admin_Views {
 		// Add the GV font (with the Astronaut)
 		wp_enqueue_style( 'gravityview_global', plugins_url('assets/css/admin-global.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
 
-		wp_register_script( 'gravityview-jquery-cookie', plugins_url('includes/lib/jquery-cookie/jquery_cookie.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
+		wp_register_script( 'gravityview-jquery-cookie', plugins_url('assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version, true );
 
 		// Don't process any scripts below here if it's not a GravityView page.
 		if( !gravityview_is_admin_page($hook) && !$is_widgets_page ) { return; }

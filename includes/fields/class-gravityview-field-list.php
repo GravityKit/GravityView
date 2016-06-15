@@ -40,6 +40,64 @@ class GravityView_Field_List extends GravityView_Field {
 		parent::__construct();
 
 		add_filter( 'gravityview/template/field_label', array( $this, '_filter_field_label' ), 10, 4 );
+
+		add_filter( 'gravityview/common/get_form_fields', array( $this, 'add_form_fields' ), 10, 3 );
+	}
+
+	/**
+	 * If a form has list fields, add the columns to the field picker
+	 *
+	 * @since 1.17
+	 *
+	 * @param array $fields Associative array of fields, with keys as field type
+	 * @param array $form GF Form array
+	 * @param bool $include_parent_field Whether to include the parent field when getting a field with inputs
+	 *
+	 * @return array $fields with list field columns added, if exist. Unmodified if form has no list fields.
+	 */
+	function add_form_fields( $fields = array(), $form = array(), $include_parent_field = true ) {
+
+		$list_fields = GFAPI::get_fields_by_type( $form, 'list' );
+
+		// Add the list columns
+		foreach ( $list_fields as $list_field ) {
+
+			if( empty( $list_field->enableColumns ) ) {
+				continue;
+			}
+
+			$list_columns = array();
+
+			foreach ( (array)$list_field->choices as $key => $input ) {
+
+				$input_id = sprintf( '%d.%d', $list_field->id, $key ); // {field_id}.{column_key}
+
+				$list_columns[ $input_id ] = array(
+					'label'       => rgar( $input, 'text' ),
+					'customLabel' => '',
+					'parent'      => $list_field,
+					'type'        => rgar( $list_field, 'type' ),
+					'adminLabel'  => rgar( $list_field, 'adminLabel' ),
+					'adminOnly'   => rgar( $list_field, 'adminOnly' ),
+				);
+			}
+
+			// If there are columns, add them under the parent field
+			if( ! empty( $list_columns ) ) {
+
+				$index = array_search( $list_field->id, array_keys( $fields ) ) + 1;
+
+				/**
+				 * Merge the $list_columns into the $fields array at $index
+				 * @see https://stackoverflow.com/a/1783125
+				 */
+				$fields = array_slice( $fields, 0, $index, true) + $list_columns + array_slice( $fields, $index, null, true);
+			}
+
+			unset( $list_columns, $index, $input_id );
+		}
+
+		return $fields;
 	}
 
 	/**
@@ -119,7 +177,7 @@ class GravityView_Field_List extends GravityView_Field {
 		$column_id = gravityview_get_input_id_from_id( $field['id'] );
 
 		// Parent field, not column field
-		if( empty( $column_id ) ) {
+		if( false === $column_id ) {
 			return $label;
 		}
 
