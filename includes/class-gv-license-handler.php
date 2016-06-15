@@ -84,7 +84,7 @@ class GV_License_Handler {
 			'license' => trim( $this->Addon->get_app_setting( 'license_key' ) ),
 			'update' => true,
 			'format' => 'object',
-			'field_id' => 'refresh_license_status',
+			'field_id' => 'refresh_license_status', // Required to set the `status_transient_key` transient
 		);
 
 		$license_call = GravityView_Settings::get_instance()->get_license_handler()->license_call( $data );
