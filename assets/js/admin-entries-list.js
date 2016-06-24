@@ -87,14 +87,13 @@
 		});
 
 		// Then add the list to 'Bulk action' dropdowns
-		$( "#bulk_action, #bulk_action2" ).append( $optgroups );
+		$( "#bulk_action, #bulk_action2, #bulk-action-selector-top, #bulk-action-selector-bottom" ).append( $optgroups );
 	};
 
 	/**
 	 * Add an Approved column and header in the entries table
 	 */
 	self.addApprovedColumn = function() {
-
 
 		// Don't add column if there are no entries yet.
 		if( $( 'tbody tr', '#lead_form' ).length === 1 && $( 'tbody tr td', '#lead_form' ).length === 1 ) {
@@ -104,12 +103,12 @@
 		/**
 		 * inject approve/disapprove buttons into the first column of table
 		 */
-		$( 'thead th.check-column:eq(1), tfoot th.check-column:eq(1)' ).after( '<th scope="col" class="manage-column column-cb check-column gv-approve-column"><a href="' + gvGlobals.column_link + '" title="' + gvGlobals.column_title + '"></a></th>' );
+		$( 'thead th.check-column:eq(1), tfoot th.check-column:eq(1), thead .column-is_starred, tfoot .column-is_starred' ).after( '<th scope="col" class="manage-column column-cb gv-approve-column column-is_approved"><a href="' + gvGlobals.column_link + '" title="' + gvGlobals.column_title + '"></a></th>' );
 
 		/**
 		 * Add column for each entry
 		 */
-		$( 'th.check-column[scope=row]:has(img[src*="star"]),td:has(img[src*="star"])' ).after( '<td class="gv-approve-column"><a href="#" class="toggleApproved" title="' + gvGlobals.approve_title + '"></a></td>' );
+		$( 'th.check-column[scope=row]:has(img[src*="star"]),td:has(img[src*="star"]),tbody th.column-is_starred' ).after( '<th scope="row" class="column-is_approved gv-approve-column"><a href="#" class="toggleApproved" title="' + gvGlobals.approve_title + '"></a></th>' );
 
 	};
 

@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.17.1 on June 24 =
+* Fixed: Approve/Disapprove Entry column and Bulk Actions on Gravity Forms Entries page not visible
+
 = 1.17 on June 14 =
 
 * Fully compatible with Gravity Forms 2.0
