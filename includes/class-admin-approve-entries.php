@@ -130,9 +130,9 @@ class GravityView_Admin_ApproveEntries {
 	function set_defaults() {
 		?>
 		case 'gravityviewapproved_admin':
-			field.label = "<?php _e( 'Approved? (Admin-only)', 'gravityview' ); ?>";
+			field.label = "<?php echo esc_js( __( 'Approved? (Admin-only)', 'gravityview' ) ); ?>";
 
-			field.adminLabel = "<?php _e( 'Approved?', 'gravityview' ); ?>";
+			field.adminLabel = "<?php echo esc_js( __( 'Approved?', 'gravityview' ) ); ?>";
 			field.adminOnly = true;
 
 			field.choices = null;
@@ -152,9 +152,9 @@ class GravityView_Admin_ApproveEntries {
 
 			break;
 		case 'gravityviewapproved':
-			field.label = "<?php _e( 'Show Entry on Website', 'gravityview' ); ?>";
+			field.label = "<?php echo esc_js( __( 'Show Entry on Website', 'gravityview' ) ); ?>";
 
-			field.adminLabel = "<?php _e( 'Opt-In', 'gravityview' ); ?>";
+			field.adminLabel = "<?php echo esc_js( __( 'Opt-In', 'gravityview' ) ); ?>";
 			field.adminOnly = false;
 
 			field.choices = null;
@@ -162,7 +162,7 @@ class GravityView_Admin_ApproveEntries {
 
 			if( !field.choices ) {
 				field.choices = new Array(
-					new Choice("<?php _e( 'Yes, display my entry on the website', 'gravityview' ); ?>")
+					new Choice("<?php echo esc_js( __( 'Yes, display my entry on the website', 'gravityview' ) ); ?>")
 				);
 			}
 
