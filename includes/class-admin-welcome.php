@@ -277,11 +277,16 @@ class GravityView_Welcome {
 				<h3>1.17.1 on June 27</h3>
 
 				<ul>
-					<li>Added: Approved/Disapproved filters to Gravity Forms "Entries" page</li>
-					<li>Fixed: Bulk Approve/Disapprove for Gravity Forms 2.0</li>
-					<li>Fixed: Approve/Disapprove Entry column and Bulk Actions on Gravity Forms Entries page not visible</li>
+					<li>Fixed: Entry approval with Gravity Forms 2.0
+
+						<ul>
+							<li>Added: Approved/Disapproved filters to Gravity Forms "Entries" page</li>
+							<li>Fixed: Bulk Approve/Disapprove</li>
+							<li>Fixed: Approve column and Bulk Actions not visible on Gravity Forms Entries page</li>
+							<li>Tweak: Improved speed of approving/disapproving entries</li>
+						</ul>
+					</li>
 					<li>Fixed: "Reply To" reference fixed in <code>GVCommon::send_email()</code> function</li>
-					<li>Tweak: Improved speed of approving/disapproving entries</li>
 					<li>Added: Improved logging for creation of Custom Slug hash ids</li>
 					<li>Translations updated:
 

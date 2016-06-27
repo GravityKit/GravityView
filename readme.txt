@@ -21,11 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 == Changelog ==
 
 = 1.17.1 on June 27 =
-* Added: Approved/Disapproved filters to Gravity Forms "Entries" page
-* Fixed: Bulk Approve/Disapprove for Gravity Forms 2.0
-* Fixed: Approve/Disapprove Entry column and Bulk Actions on Gravity Forms Entries page not visible
+* Fixed: Entry approval with Gravity Forms 2.0
+    * Added: Approved/Disapproved filters to Gravity Forms "Entries" page
+    * Fixed: Bulk Approve/Disapprove
+    * Fixed: Approve column and Bulk Actions not visible on Gravity Forms Entries page
+    * Tweak: Improved speed of approving/disapproving entries
 * Fixed: "Reply To" reference fixed in `GVCommon::send_email()` function
-* Tweak: Improved speed of approving/disapproving entries
 * Added: Improved logging for creation of Custom Slug hash ids
 * Translations updated:
     - Updated Chinese translation by [@michaeledi](https://www.transifex.com/user/profile/michaeledi/)
