@@ -120,14 +120,14 @@ class GravityView_Admin_ApproveEntries {
 			'id'            => 'gv_approved',
 			'field_filters' => $field_filters_approved,
 			'count'         => $approved_count,
-			'label'         => esc_html_x( 'Approved', 'Entry List filter link', 'gravityview' ),
+			'label'         => esc_html__( 'Approved', 'gravityview' ),
 		);
 
 		$filter_links[] = array(
 			'id'            => 'gv_disapproved',
 			'field_filters' => $field_filters_disapproved,
 			'count'         => $disapproved_count,
-			'label'         => esc_html_x( 'Disapproved', 'Entry List filter link', 'gravityview' ),
+			'label'         => esc_html__( 'Disapproved', 'gravityview' ),
 		);
 
 		return $filter_links;
