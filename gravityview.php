@@ -1,24 +1,19 @@
 <?php
 /**
  * @file gravityview.php
- *
- * The GravityView plugin
- *
- * Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- *
  * @package   GravityView
  * @license   GPL2+
  * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
+ * @link      https://gravityview.co
  * @copyright Copyright 2016, Katz Web Services, Inc.
  *
  * @wordpress-plugin
  * Plugin Name:       	GravityView
- * Plugin URI:        	http://gravityview.co
- * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.17
+ * Plugin URI:        	https://gravityview.co
+ * Description:       	The best, easiest way to display Gravity Forms entries on your website.
+ * Version:          	1.17.1
  * Author:            	Katz Web Services, Inc.
- * Author URI:        	http://www.katzwebservices.com
+ * Author URI:        	https://www.katzwebservices.com
  * Text Domain:       	gravityview
  * License:           	GPLv2 or later
  * License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
@@ -29,6 +24,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
+
+
 
 /** Constants */
 
@@ -89,7 +86,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.17';
+	const version = '1.17.1';
 
 	private static $instance;
 

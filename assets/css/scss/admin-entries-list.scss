@@ -10,34 +10,34 @@
  * @since 1.0.0
  */
 
-#lead_form {
+#wpbody table {
 
 	.gv-approve-column {
 		width: 40px;
 		text-align: center;
+		vertical-align: top;
 	}
 
 	// Center the star - looks better when we widen the approval column
-	th.check-column:nth-child(2) {
+	th.check-column:nth-child(2),
+	tbody th.column-is_starred {
 		text-align: center;
 	}
 
 	// Floaty's got a kinda big head. Change 8px top/bottom to better balanced
 	thead th.gv-approve-column {
-		padding-top: 12px;
-		padding-bottom: 4px;
-	}
 
-	// Add Floaty's head
-	th.gv-approve-column a:before {
-		padding: 0;
-		margin: 0;
-		content: "a";
-		display: inline-block;
-		-webkit-font-smoothing: antialiased;
-		font: normal 22px/1 'gravityview';
-		vertical-align: top;
-		color: #555;
+		// Add Floaty's head
+		a:before {
+			padding: 0;
+			margin: 0;
+			content: "a";
+			display: inline-block;
+			-webkit-font-smoothing: antialiased;
+			font: normal 22px/1 'gravityview';
+			vertical-align: top;
+			color: #555;
+		}
 	}
 
 	.toggleApproved {

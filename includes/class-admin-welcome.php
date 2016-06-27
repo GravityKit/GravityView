@@ -274,6 +274,29 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;">What&rsquo;s New</h2>
 				</div>
 
+				<h3>1.17.1 on June 27</h3>
+
+				<ul>
+					<li>Fixed: Entry approval with Gravity Forms 2.0
+
+						<ul>
+							<li>Added: Approved/Disapproved filters to Gravity Forms "Entries" page</li>
+							<li>Fixed: Bulk Approve/Disapprove</li>
+							<li>Fixed: Approve column and Bulk Actions not visible on Gravity Forms Entries page</li>
+							<li>Tweak: Improved speed of approving/disapproving entries</li>
+						</ul>
+					</li>
+					<li>Fixed: "Reply To" reference fixed in <code>GVCommon::send_email()</code> function</li>
+					<li>Added: Improved logging for creation of Custom Slug hash ids</li>
+					<li>Translations updated:
+
+						<ul>
+							<li>Updated Chinese translation by <a href="https://www.transifex.com/user/profile/michaeledi/">@michaeledi</a></li>
+							<li>Updated Persian translation by <a href="https://www.transifex.com/user/profile/azadmojtaba/">@azadmojtaba</a></li>
+						</ul>
+					</li>
+				</ul>
+
 				<h3>1.17 on June 14</h3>
 
 				<ul>

@@ -1504,7 +1504,7 @@ class GVCommon {
 
 		// Required: $from, $to, $bcc, $replyTo, $subject, $message
 		// Optional: $from_name, $message_format, $attachments, $lead, $notification
-		$SendEmail->invoke( new GFCommon, $from, $to, $bcc, $replyTo, $subject, $message, $from_name, $message_format, $attachments, $entry, $notification );
+		$SendEmail->invoke( new GFCommon, $from, $to, $bcc, $reply_to, $subject, $message, $from_name, $message_format, $attachments, $entry, $notification );
 	}
 
 

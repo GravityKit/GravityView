@@ -62,9 +62,9 @@
 						hidebuttons = $('[data-edd_action=activate_license]' );
 						showbuttons = $('[data-edd_action=deactivate_license],[data-edd_action=check_license]' );
 						break;
+					default:
 					case 'deactivated':
 					case 'site_inactive':
-					default:
 						hidebuttons = $('[data-edd_action=deactivate_license]' );
 						showbuttons = $('[data-edd_action=activate_license],[data-edd_action=check_license]' );
 						break;
@@ -155,8 +155,8 @@
 
 					response_object = $.parseJSON( second_try );
 
-				} catch( exception ) {
-
+				} catch( e ) {
+					
 					console.log( '*** \n*** \n*** Error-causing response:\n***\n***\n', string );
 
 					var error_message = 'JSON failed: another plugin caused a conflict with completing this request. Check your browser\'s Javascript console to view the invalid content.';
@@ -220,7 +220,7 @@
 					GV_EDD.deactivate_button.removeClass( 'button-disabled' );
 					GV_EDD.activate_button.fadeIn(function() {
 						$(this).css( "display", "inline-block" );
-					})
+					});
 				} );
 
 		},

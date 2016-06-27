@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
-"PO-Revision-Date: 2016-06-14 22:56+0000\n"
-"Last-Translator: Mojtaba Azad <azadmojtaba@gmail.com>\n"
+"PO-Revision-Date: 2016-06-27 20:17+0000\n"
+"Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: Persian (Iran) (http://www.transifex.com/katzwebservices/gravityview/language/fa_IR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,15 +24,15 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 
-#: gravityview.php:342
+#: gravityview.php:339
 msgid "Top"
 msgstr "بالا"
 
-#: gravityview.php:343
+#: gravityview.php:340
 msgid "Left"
 msgstr "چپ"
 
-#: gravityview.php:343
+#: gravityview.php:340
 msgid "Right"
 msgstr "راست"
 
@@ -48,7 +48,7 @@ msgstr "جستجو در اسناد گرویتی‌ویو"
 msgid ""
 "Your search timed out. Please double-check your internet connection and try "
 "again."
-msgstr ""
+msgstr "زمان مجاز برای جستجوی شما به پایان رسید. لطفا ارتباط اینترنت خود را بررسی کنید."
 
 #: includes/admin/class-gravityview-support-port.php:87
 msgid "Contact Support"
@@ -71,7 +71,7 @@ msgid "Please enter your name"
 msgstr "لطفا نام خود را وارد کنید"
 
 #: includes/admin/class-gravityview-support-port.php:92
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:390
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:419
 msgid "Email address"
 msgstr "آدرس ایمیل"
 
@@ -80,7 +80,7 @@ msgid "Please enter a valid email address"
 msgstr "لطفا آدرس ایمیل خود را وارد کنید"
 
 #: includes/admin/class-gravityview-support-port.php:94
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:392
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:421
 msgid "Subject"
 msgstr "موضوع"
 
@@ -96,31 +96,31 @@ msgstr "پیام ارسال شد!"
 msgid ""
 "Thanks for reaching out! Someone from the GravityView team will get back to "
 "you soon."
-msgstr ""
+msgstr "سپاس از تماس‌تان! به زودی یک نفر از تیم گرویتی‌ویو با شما تماس می‌گیرد."
 
 #. translators: "Support Port" can be translated as "Support Portal" or
 #. "Support Window"
 #: includes/admin/class-gravityview-support-port.php:293
 #: includes/admin/class-gravityview-support-port.php:299
 msgid "GravityView Support Port"
-msgstr ""
+msgstr "سامانه پشتیبانی گرویتی‌ویو"
 
 #: includes/admin/class-gravityview-support-port.php:304
 msgid "Show GravityView Support Port when on a GravityView-related page"
-msgstr ""
+msgstr "نمایش دادن سامانه پشتیبانی گرویتی‌ویو در صفحات مرتبط با گرویتی‌ویو"
 
 #: includes/admin/class.render.settings.php:36
 msgid "Show Label"
-msgstr ""
+msgstr "نمایش لیبل"
 
 #: includes/admin/class.render.settings.php:41
 msgid "Custom Label:"
-msgstr ""
+msgstr "لیبل دلخواه:"
 
 #: includes/admin/class.render.settings.php:47
 #: includes/widgets/class-gravityview-widget.php:108
 msgid "Custom CSS Class:"
-msgstr ""
+msgstr "کلاس CSS دلخواه:"
 
 #: includes/admin/class.render.settings.php:48
 msgid "This class will be added to the field container"
@@ -128,11 +128,11 @@ msgstr ""
 
 #: includes/admin/class.render.settings.php:55
 msgid "Make visible only to logged-in users?"
-msgstr ""
+msgstr "فقط برای کاربرانی که وارد شده‌اند نمایش داده شود؟"
 
 #: includes/admin/class.render.settings.php:60
 msgid "Make visible for:"
-msgstr ""
+msgstr "قابل نمایش برای:"
 
 #: includes/admin/class.render.settings.php:71
 msgid "Percent Width"
@@ -140,7 +140,7 @@ msgstr ""
 
 #: includes/admin/class.render.settings.php:72
 msgid "Leave blank for column width to be based on the field content."
-msgstr ""
+msgstr "خالی قرار دهید تا عرض ستون بر اساس محتوای فیلد تعیین شود."
 
 #: includes/admin/class.render.settings.php:117
 msgid "Any Logged-In User"
@@ -152,7 +152,7 @@ msgstr ""
 
 #: includes/admin/class.render.settings.php:119
 msgid "Can View Gravity Forms Entries"
-msgstr ""
+msgstr "امکان دیدن ورودی‌های فرم گرویتی"
 
 #: includes/admin/class.render.settings.php:120
 msgid "Editor Or Higher"
@@ -160,7 +160,7 @@ msgstr ""
 
 #: includes/admin/class.render.settings.php:121
 msgid "Can Edit Gravity Forms Entries"
-msgstr ""
+msgstr "امکان ویرایش ورودی‌های فرم گرویتی"
 
 #: includes/admin/class.render.settings.php:122
 msgid "Administrator"
@@ -176,7 +176,7 @@ msgstr ""
 
 #: includes/admin/entry-list.php:66
 msgid "Edit this entry"
-msgstr ""
+msgstr "ویرایش این ورودی"
 
 #: includes/admin/entry-list.php:66
 msgid "Edit"
@@ -184,22 +184,22 @@ msgstr "ویرایش"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:80
 msgid "Choose a View Type"
-msgstr ""
+msgstr "یک نوع برای ویو انتخاب کنید"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:83
 msgid "View Configuration"
-msgstr ""
+msgstr "پیکربندی ویو"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:88
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:124
 #: includes/class-admin-add-shortcode.php:120
 msgid "View Settings"
-msgstr ""
+msgstr "تنظیمات ویو"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:132
 #: includes/admin/metaboxes/views/view-configuration.php:5
 msgid "Single Entry"
-msgstr ""
+msgstr "یک ورودی"
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:140
 msgid "Filter &amp; Sort"
@@ -208,7 +208,7 @@ msgstr ""
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:187
 #: includes/class-admin-views.php:412
 msgid "Data Source"
-msgstr ""
+msgstr "منبع داده"
 
 #: includes/admin/metaboxes/views/data-source.php:20
 msgid "Where would you like the data to come from for this View?"
@@ -237,7 +237,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/data-source.php:48
 #: includes/admin/metaboxes/views/data-source.php:53
 msgid "Attention"
-msgstr ""
+msgstr "توجه"
 
 #: includes/admin/metaboxes/views/data-source.php:49
 msgid ""
@@ -257,7 +257,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/select-template.php:33
 msgid "Buy Now"
-msgstr ""
+msgstr "همین حالا بخرید"
 
 #: includes/admin/metaboxes/views/select-template.php:35
 #: includes/fields/class-gravityview-field-select.php:19
@@ -279,53 +279,53 @@ msgstr "برای جاسازی کردن این ویو، این شورت‌کد ر
 
 #: includes/admin/metaboxes/views/view-configuration.php:4
 msgid "Multiple Entries"
-msgstr ""
+msgstr "چند ورودی"
 
 #: includes/admin/metaboxes/views/view-configuration.php:6
 #: includes/class-gravityview-admin-bar.php:105
 #: includes/class-gravityview-entry-link-shortcode.php:205
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:757
+#: includes/extensions/edit-entry/class-edit-entry-render.php:759
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
-msgstr ""
+msgstr "ویرایش ورودی"
 
 #: includes/admin/metaboxes/views/view-configuration.php:13
 msgid "Above Entries Widgets"
-msgstr ""
+msgstr "ویجت‌های بالای ورودی‌ها"
 
 #: includes/admin/metaboxes/views/view-configuration.php:13
 msgid "These widgets will be shown above entries."
-msgstr ""
+msgstr "این ویجت‌ها بالای ورودی‌ها نمایش داده خواهد شد."
 
 #: includes/admin/metaboxes/views/view-configuration.php:17
 msgid "Entries Fields"
-msgstr ""
+msgstr "فیلدهای ورودی‌ها"
 
 #: includes/admin/metaboxes/views/view-configuration.php:17
 msgid "These fields will be shown for each entry."
-msgstr ""
+msgstr "این فیلدها برای هر کدام از ورودی‌ها نمایش داده می‌شود."
 
 #: includes/admin/metaboxes/views/view-configuration.php:25
 msgid "Below Entries Widgets"
-msgstr ""
+msgstr "ویجت‌های پایین ورودی‌ها"
 
 #: includes/admin/metaboxes/views/view-configuration.php:25
 msgid "These widgets will be shown below entries."
-msgstr ""
+msgstr "این ویجت‌ها پایین ورودی‌ها نمایش داده می‌شود."
 
 #: includes/admin/metaboxes/views/view-configuration.php:55
 msgid "These fields will be shown in Single Entry view."
-msgstr ""
+msgstr "این فیلدها در ویوی یک ورودی تنها نمایش داده خواهد شد."
 
 #: includes/admin/metaboxes/views/view-configuration.php:76
 msgid "Fields shown when editing an entry."
-msgstr ""
+msgstr "فیلدهایی که در زمان ویرایش یک ورودی نمایش داده می‌شوند."
 
 #: includes/admin/metaboxes/views/view-configuration.php:76
 msgid "If not configured, all form fields will be displayed."
-msgstr ""
+msgstr "اگر پیکربنده نشود، تمام فیلدهای فرم نمایش داده خواهد شد."
 
 #: includes/class-admin-add-shortcode.php:66
 #: includes/class-admin-add-shortcode.php:137
@@ -349,7 +349,7 @@ msgstr ""
 #: includes/class-admin-add-shortcode.php:105
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:318
 msgid "Select a View"
-msgstr ""
+msgstr "یک ویو را انتخاب کنید"
 
 #: includes/class-admin-add-shortcode.php:108
 msgid "&mdash; Select a View to Insert &mdash;"
@@ -362,13 +362,13 @@ msgid "(no title)"
 msgstr "(بدون عنوان)"
 
 #: includes/class-admin-add-shortcode.php:138
-#: includes/class-admin-views.php:1004
+#: includes/class-admin-views.php:995
 #: includes/extensions/edit-entry/partials/form-buttons.php:31
 msgid "Cancel"
 msgstr "انصراف"
 
 #: includes/class-admin-add-shortcode.php:183
-#: includes/class-admin-views.php:1008
+#: includes/class-admin-views.php:999
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -376,101 +376,106 @@ msgstr ""
 msgid "Please select a View"
 msgstr "لطفا یک ویو را انتخاب کنید"
 
-#: includes/class-admin-approve-entries.php:69
-msgid "GravityView Fields"
+#: includes/class-admin-approve-entries.php:123
+#: includes/class-admin-approve-entries.php:208
+msgid "Approved"
+msgstr "تایید شده"
+
+#: includes/class-admin-approve-entries.php:130
+msgid "Disapproved"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:70
+#: includes/class-admin-approve-entries.php:146
+msgid "GravityView Fields"
+msgstr "فیلدهای گرویتی‌ویو"
+
+#: includes/class-admin-approve-entries.php:147
 msgid ""
 "Allow administrators to approve or reject entries and users to opt-in or "
 "opt-out of their entries being displayed."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:92
+#: includes/class-admin-approve-entries.php:169
 msgid "Approve/Reject"
 msgstr "تایید/رد"
 
-#: includes/class-admin-approve-entries.php:98
+#: includes/class-admin-approve-entries.php:175
 msgid "User Opt-In"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:122
+#: includes/class-admin-approve-entries.php:199
 msgid "Approved? (Admin-only)"
-msgstr ""
+msgstr "تایید شد؟ (فقط ادمین)"
 
-#: includes/class-admin-approve-entries.php:124
+#: includes/class-admin-approve-entries.php:201
 msgid "Approved?"
-msgstr ""
+msgstr "تایید شد؟"
 
-#: includes/class-admin-approve-entries.php:131
-msgid "Approved"
-msgstr "تایید شده"
-
-#: includes/class-admin-approve-entries.php:144
+#: includes/class-admin-approve-entries.php:221
 msgid "Show Entry on Website"
-msgstr ""
+msgstr "نمایش ورودی در وبسایت"
 
-#: includes/class-admin-approve-entries.php:146
+#: includes/class-admin-approve-entries.php:223
 msgid "Opt-In"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:154
+#: includes/class-admin-approve-entries.php:231
 msgid "Yes, display my entry on the website"
-msgstr ""
+msgstr "بله، ورودی من را در وبسایت نمایش دهید."
 
-#: includes/class-admin-approve-entries.php:231
+#: includes/class-admin-approve-entries.php:335
 msgid "%d entries"
-msgstr ""
+msgstr "%d ورودی"
 
-#: includes/class-admin-approve-entries.php:231
+#: includes/class-admin-approve-entries.php:335
 msgid "1 entry"
-msgstr ""
+msgstr "1 ورودی"
 
-#: includes/class-admin-approve-entries.php:236
+#: includes/class-admin-approve-entries.php:340
 msgid "%s approved."
-msgstr ""
+msgstr "%s تایید شد."
 
-#: includes/class-admin-approve-entries.php:241
+#: includes/class-admin-approve-entries.php:345
 msgid "%s disapproved."
-msgstr ""
+msgstr "%s تایید نشد."
 
-#: includes/class-admin-approve-entries.php:325
+#: includes/class-admin-approve-entries.php:429
 #: tests/unit-tests/GravityView_Uninstall_Test.php:195 uninstall.php:100
 msgid "Disapproved the Entry for GravityView"
-msgstr ""
+msgstr "ورودی برای گرویتی‌ویو تایید نشد"
 
-#: includes/class-admin-approve-entries.php:325
+#: includes/class-admin-approve-entries.php:429
 #: tests/unit-tests/GravityView_Uninstall_Test.php:196 uninstall.php:101
 msgid "Approved the Entry for GravityView"
-msgstr ""
+msgstr "ورودی برای گرویتی‌ویو تایید شد"
 
-#: includes/class-admin-approve-entries.php:600
+#: includes/class-admin-approve-entries.php:728
 msgid "Entry not approved for directory viewing. Click to approve this entry."
-msgstr ""
+msgstr "این ورودی جهت نمایش در دایرکتوری تایید نشده است. جهت تایید کلیک کنید."
 
-#: includes/class-admin-approve-entries.php:601
+#: includes/class-admin-approve-entries.php:729
 msgid "Entry approved for directory viewing. Click to disapprove this entry."
-msgstr ""
+msgstr "این ورودی جهت نمایش در دایرکتوری تایید شده است. جهت عدم تایید کلیک کنید."
 
-#: includes/class-admin-approve-entries.php:602
+#: includes/class-admin-approve-entries.php:730
 msgid "Show entry in directory view?"
-msgstr ""
+msgstr "ورودی در فهرست نمایش داده شود؟"
 
-#: includes/class-admin-approve-entries.php:624
+#: includes/class-admin-approve-entries.php:750
 msgid "Approve"
 msgstr "تایید"
 
-#: includes/class-admin-approve-entries.php:628
+#: includes/class-admin-approve-entries.php:754
 msgid "Disapprove"
 msgstr "عدم تایید"
 
 #: includes/class-admin-label.php:19
 msgid "Type: %s"
-msgstr ""
+msgstr "نوع: %s"
 
 #: includes/class-admin-label.php:23
 msgid "Field ID: %s"
-msgstr ""
+msgstr "شناسه فیلد: %s"
 
 #: includes/class-admin-label.php:36
 msgid "Admin Label: %s"
@@ -482,7 +487,7 @@ msgstr ""
 
 #: includes/class-admin-label.php:174
 msgid "Remove %s"
-msgstr ""
+msgstr "حذف %s"
 
 #: includes/class-admin-label.php:175
 msgid "This field links to the Single Entry"
@@ -516,11 +521,11 @@ msgstr ""
 
 #: includes/class-admin-views.php:306
 msgid "Not connected."
-msgstr ""
+msgstr "متصل نشده است."
 
 #: includes/class-admin-views.php:315
 msgid "The connected form can not be found; it may no longer exist."
-msgstr ""
+msgstr "فرم متصل شده پیدا نشد، شاید وجود ندارد."
 
 #: includes/class-admin-views.php:351
 #: includes/class-gravityview-admin-bar.php:140
@@ -529,7 +534,7 @@ msgstr "ویرایش فرم"
 
 #: includes/class-admin-views.php:358
 msgid "Entries"
-msgstr ""
+msgstr "ورودی‌ها"
 
 #: includes/class-admin-views.php:363 includes/class-admin.php:101
 #: includes/class-gravityview-settings.php:283
@@ -539,7 +544,7 @@ msgstr "تنظیمات"
 
 #: includes/class-admin-views.php:363
 msgid "Edit settings for this form"
-msgstr ""
+msgstr "ویرایش تنظیمات این فرم"
 
 #: includes/class-admin-views.php:368
 msgid "Preview Form"
@@ -551,7 +556,7 @@ msgstr "پیش‌نمایش این فرم"
 
 #: includes/class-admin-views.php:588
 msgid "+ Add All Fields"
-msgstr ""
+msgstr "+ افزودن تمام فیلدها"
 
 #: includes/class-admin-views.php:589
 msgid "Add all the available fields at once."
@@ -560,21 +565,21 @@ msgstr ""
 #: includes/class-admin-views.php:639
 #: includes/widgets/search-widget/class-search-widget.php:273
 msgid "Entry ID"
-msgstr ""
+msgstr "شناسه ورودی"
 
 #: includes/class-admin-views.php:641
 msgid "The unique ID of the entry."
-msgstr ""
+msgstr "شناسه یکتای ورودی"
 
 #: includes/class-admin-views.php:644
 #: includes/widgets/search-widget/class-search-widget.php:269
 msgid "Entry Date"
-msgstr ""
+msgstr "تاریخ ورودی"
 
 #: includes/class-admin-views.php:645
 #: includes/fields/class-gravityview-field-date-created.php:26
 msgid "The date the entry was created."
-msgstr ""
+msgstr "تاریخ ایجاد ورودی."
 
 #: includes/class-admin-views.php:649
 #: includes/fields/class-gravityview-field-source-url.php:20
@@ -591,7 +596,7 @@ msgstr "آدرس IP کاربر"
 
 #: includes/class-admin-views.php:656
 msgid "The IP Address of the user who created the entry."
-msgstr ""
+msgstr "آدرس IP کاربری که ورودی را ایجاد کرده است."
 
 #: includes/class-admin-views.php:659
 msgid "User"
@@ -616,86 +621,78 @@ msgstr ""
 #: includes/class-admin-views.php:677
 #: includes/fields/class-gravityview-field-other-entries.php:25
 msgid "Other Entries"
-msgstr ""
+msgstr "دیگر ورودی‌ها"
 
 #: includes/class-admin-views.php:679
 #: includes/fields/class-gravityview-field-other-entries.php:26
 msgid "Display other entries created by the entry creator."
-msgstr ""
+msgstr "نمایش ورودی‌های دیگر که توسط ایجاد کننده این ورودی ساخته شده است."
 
 #: includes/class-admin-views.php:686
-msgid "Entry Notes"
-msgstr ""
-
-#: includes/class-admin-views.php:688
-msgid "Entry notes (if any)."
-msgstr ""
-
-#: includes/class-admin-views.php:695
 #: includes/fields/class-gravityview-field-entry-link.php:32
 msgid "Link to Entry"
-msgstr ""
+msgstr "لینک به ورودی"
 
-#: includes/class-admin-views.php:696
+#: includes/class-admin-views.php:687
 #: includes/fields/class-gravityview-field-entry-link.php:33
 msgid "A dedicated link to the single entry with customizable text."
-msgstr ""
+msgstr "لینک اختصاصی به ورودی با متن قابل تغییر."
 
-#: includes/class-admin-views.php:793
+#: includes/class-admin-views.php:784
 msgid "Add Widget"
 msgstr "افزودن ویجت"
 
-#: includes/class-admin-views.php:795
+#: includes/class-admin-views.php:786
 msgid "Add Field"
 msgstr ""
 
-#: includes/class-admin-views.php:877
+#: includes/class-admin-views.php:868
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr ""
 
-#: includes/class-admin-views.php:945
+#: includes/class-admin-views.php:936
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:946
+#: includes/class-admin-views.php:937
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1002
+#: includes/class-admin-views.php:993
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1003
+#: includes/class-admin-views.php:994
 msgid "Close"
 msgstr "بستن"
 
-#: includes/class-admin-views.php:1005
+#: includes/class-admin-views.php:996
 msgid "Continue"
 msgstr "ادامه"
 
-#: includes/class-admin-views.php:1006
+#: includes/class-admin-views.php:997
 msgid "Ok"
-msgstr ""
+msgstr "تایید"
 
-#: includes/class-admin-views.php:1007
+#: includes/class-admin-views.php:998
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
-msgstr ""
+msgstr "هنگام ساختن ویو خطایی رخ داده است. تنظیمات را بررسی کنید یا با پشتیبانی گرویتی‌ویو تماس بگیرید."
 
-#: includes/class-admin-views.php:1009
+#: includes/class-admin-views.php:1000
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1010
+#: includes/class-admin-views.php:1001
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr ""
 
-#: includes/class-admin-views.php:1011
+#: includes/class-admin-views.php:1002
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -705,7 +702,7 @@ msgstr ""
 msgid "GravityView: Getting Started"
 msgstr ""
 
-#: includes/class-admin-welcome.php:57 includes/class-admin-welcome.php:152
+#: includes/class-admin-welcome.php:57 includes/class-admin-welcome.php:154
 msgid "Getting Started"
 msgstr ""
 
@@ -714,37 +711,37 @@ msgid "Changelog"
 msgstr "سابقه تغییرات"
 
 #: includes/class-admin-welcome.php:76 includes/class-admin-welcome.php:77
-#: includes/class-admin-welcome.php:158
+#: includes/class-admin-welcome.php:160
 msgid "Credits"
 msgstr ""
 
-#: includes/class-admin-welcome.php:147
+#: includes/class-admin-welcome.php:149
 msgid "Welcome to GravityView %s"
 msgstr "%s به گرویتی‌ویو خوش‌آمدید"
 
-#: includes/class-admin-welcome.php:148
+#: includes/class-admin-welcome.php:150
 msgid ""
 "Thank you for installing GravityView. Beautifully display your Gravity Forms"
 " entries."
 msgstr ""
 
-#: includes/class-admin-welcome.php:155
+#: includes/class-admin-welcome.php:157
 msgid "List of Changes"
 msgstr "فهرست تغییرات"
 
-#: includes/class-admin-welcome.php:625
+#: includes/class-admin-welcome.php:653
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:650
+#: includes/class-admin-welcome.php:684
 msgid "Contributors"
 msgstr "همکاری‌کنندگان"
 
-#: includes/class-admin-welcome.php:671
+#: includes/class-admin-welcome.php:707
 msgid "Want to contribute?"
 msgstr "تمایل به همکاری دارید؟"
 
-#: includes/class-admin-welcome.php:672
+#: includes/class-admin-welcome.php:708
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -774,7 +771,7 @@ msgstr ""
 
 #: includes/class-admin.php:167
 msgid "View deleted."
-msgstr ""
+msgstr "ویو حذف شد."
 
 #. translators: %s: date and time of the revision
 #: includes/class-admin.php:171
@@ -823,7 +820,7 @@ msgstr[0] ""
 #: includes/class-admin.php:192
 msgid "%s View permanently deleted."
 msgid_plural "%s Views permanently deleted."
-msgstr[0] ""
+msgstr[0] "%s ویو برای همیشه حذف شد."
 
 #: includes/class-admin.php:193
 msgid "%s View moved to the Trash."
@@ -843,11 +840,11 @@ msgstr ""
 msgid "No entries match your request."
 msgstr ""
 
-#: includes/class-api.php:808
+#: includes/class-api.php:810
 msgid "&larr; Go back"
 msgstr ""
 
-#: includes/class-api.php:1094
+#: includes/class-api.php:1096
 msgid "Map It"
 msgstr ""
 
@@ -912,15 +909,15 @@ msgstr ""
 
 #: includes/class-data.php:557
 msgid "Number of entries per page"
-msgstr ""
+msgstr "تعداد ورودی‌ها در هر صفحه"
 
 #: includes/class-data.php:565
 msgid "Enable lightbox for images"
-msgstr ""
+msgstr "فعال کردن لایت‌باکس برای تصاویر"
 
 #: includes/class-data.php:573
 msgid "Show only approved entries"
-msgstr ""
+msgstr "فقط ورودی‌های تایید شده را نمایش بده"
 
 #: includes/class-data.php:580
 msgid "Hide View data until search is performed"
@@ -933,7 +930,7 @@ msgstr ""
 
 #: includes/class-data.php:588
 msgid "Hide empty fields"
-msgstr ""
+msgstr "مخفی کردن فیلدهای خالی"
 
 #: includes/class-data.php:595
 msgid "Allow User Edit"
@@ -1037,7 +1034,7 @@ msgstr ""
 
 #: includes/class-data.php:688
 msgid "Single Entry Title"
-msgstr ""
+msgstr "عنوان ورودی"
 
 #: includes/class-data.php:690
 msgid ""
@@ -1083,11 +1080,11 @@ msgstr ""
 #: includes/class-frontend-views.php:680
 msgid ""
 "You have attempted to view an entry that is not visible or may not exist."
-msgstr ""
+msgstr "شما تلاش می‌کنید تا یک ورودی را ببینید که وجود ندارد یا مخفی است."
 
 #: includes/class-gravityview-admin-bar.php:107
 msgid "Edit Entry %s"
-msgstr ""
+msgstr "ویرایش ورودی %s"
 
 #: includes/class-gravityview-admin-bar.php:139
 #: includes/class-post-types.php:69
@@ -1145,11 +1142,11 @@ msgstr ""
 
 #: includes/class-gravityview-change-entry-creator.php:190
 msgid "Changed entry creator from %s to %s"
-msgstr ""
+msgstr "ایجاد کننده ورودی از %s به %s تغییر کرد"
 
 #: includes/class-gravityview-change-entry-creator.php:210
 msgid "Change Entry Creator:"
-msgstr ""
+msgstr "تغییر ایجاد کننده ورودی:"
 
 #: includes/class-gravityview-compatibility.php:161
 msgid ""
@@ -1207,7 +1204,7 @@ msgstr ""
 #: includes/extensions/delete-entry/class-delete-entry.php:162
 #: includes/extensions/delete-entry/fields/delete_link.php:14
 msgid "Delete Entry"
-msgstr ""
+msgstr "حدف ورودی"
 
 #: includes/class-gravityview-entry-link-shortcode.php:211
 #: includes/fields/class-gravityview-field-entry-link.php:51
@@ -1274,7 +1271,7 @@ msgid "Update Settings"
 msgstr ""
 
 #: includes/class-gravityview-settings.php:537
-#: includes/class-gv-license-handler.php:537
+#: includes/class-gv-license-handler.php:538
 msgid "You don't have the ability to edit plugin settings."
 msgstr ""
 
@@ -1299,39 +1296,39 @@ msgid ""
 msgstr ""
 
 #: includes/class-gravityview-settings.php:598
-#: includes/class-gv-license-handler.php:119
-#: includes/class-gv-license-handler.php:133
-#: includes/class-gv-license-handler.php:539
+#: includes/class-gv-license-handler.php:120
+#: includes/class-gv-license-handler.php:134
+#: includes/class-gv-license-handler.php:540
 msgid "Verifying license&hellip;"
 msgstr ""
 
 #: includes/class-gravityview-settings.php:617
 msgid "Support Email"
-msgstr ""
+msgstr "ایمیل پشتیبانی"
 
 #: includes/class-gravityview-settings.php:618
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
-msgstr ""
+msgstr "برای دریافت پاسخ به درخواست پشتیبانی شما، لطفا آدرس ایمیل خود را وارد کنید."
 
 #: includes/class-gravityview-settings.php:627
 msgid "Show Support Port?"
-msgstr ""
+msgstr "نمایش سامانه پشتیبانی؟"
 
 #: includes/class-gravityview-settings.php:640
 msgid "The Support Port looks like this."
-msgstr ""
+msgstr "سامانه پشتیبانی به این صورت نمایش داده می‌شود."
 
 #: includes/class-gravityview-settings.php:640
 msgid ""
 "The Support Port provides quick access to how-to articles and tutorials. For"
 " administrators, it also makes it easy to contact support."
-msgstr ""
+msgstr "سامانه پشتیبانی امکان دسترسی سریع به مستندات و آموزش‌ها را فراهم می‌کند. همچنین برای ادمین سیستم، تماس با پشتیبانی را آسان‌تر می‌کند."
 
 #: includes/class-gravityview-settings.php:641
 msgid "Show the Support Port on GravityView pages?"
-msgstr ""
+msgstr "نمایش دادن سامانه پشتیبانی در برگه‌های گرویتی‌ویو؟"
 
 #: includes/class-gravityview-settings.php:646
 msgid "No-Conflict Mode"
@@ -1350,7 +1347,7 @@ msgstr ""
 
 #: includes/class-gravityview-settings.php:664
 msgid "Remove Data on Delete?"
-msgstr ""
+msgstr "در هنگام حذف تمامی داده‌ها نیز حذف شود؟"
 
 #: includes/class-gravityview-settings.php:671
 msgid "Keep GravityView content and settings"
@@ -1360,11 +1357,11 @@ msgstr ""
 msgid ""
 "If you delete then re-install the plugin, all GravityView data will be kept."
 " Views, settings, etc. will be untouched."
-msgstr ""
+msgstr "در صورتیکه گرویتی‌ویو را حذف و دوباره نصب کنید، تمامی داده‌های گرویتی‌ویو شامل ویوها، تنظیمات و موارد دیگر دست‌نخورده باقی خواهد ماند."
 
 #: includes/class-gravityview-settings.php:676
 msgid "Delete all GravityView content and settings"
-msgstr ""
+msgstr "حذف تمام محتوا و تنظیمات گرویتی‌ویو"
 
 #: includes/class-gravityview-settings.php:676
 msgid ""
@@ -1388,121 +1385,121 @@ msgstr ""
 
 #: includes/class-gravityview-settings.php:679
 msgid "Permanently Delete"
-msgstr ""
+msgstr "حذف همیشگی"
 
 #: includes/class-gravityview-settings.php:704
 msgid "You are running GravityView version %s"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:118
-#: includes/class-gv-license-handler.php:540
+#: includes/class-gv-license-handler.php:119
+#: includes/class-gv-license-handler.php:541
 msgid "Activate License"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:125
-#: includes/class-gv-license-handler.php:541
+#: includes/class-gv-license-handler.php:126
+#: includes/class-gv-license-handler.php:542
 msgid "Deactivate License"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:126
+#: includes/class-gv-license-handler.php:127
 msgid "Deactivating license&hellip;"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:132
+#: includes/class-gv-license-handler.php:133
 msgid "Check License"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:315
+#: includes/class-gv-license-handler.php:316
 msgid "License Details:"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:334
+#: includes/class-gv-license-handler.php:335
 msgid "Access your GravityView account"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:335
+#: includes/class-gv-license-handler.php:336
 msgid "This development site does not count toward license activation limits"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:337
+#: includes/class-gv-license-handler.php:338
 msgid "License level: %s"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:339
+#: includes/class-gv-license-handler.php:340
 msgid "Activations: %d of %s sites"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:340
+#: includes/class-gv-license-handler.php:341
 msgid "Renew on: %s"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:376
+#: includes/class-gv-license-handler.php:377
 msgid "Upgrades available:"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:393
+#: includes/class-gv-license-handler.php:394
 msgid "Get access to Extensions"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:397
+#: includes/class-gv-license-handler.php:398
 msgid "Get access to Entry Importer and other Premium plugins"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:525
+#: includes/class-gv-license-handler.php:526
 msgid "Status"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:526
+#: includes/class-gv-license-handler.php:527
 msgid "There was an error processing the request."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:527
+#: includes/class-gv-license-handler.php:528
 msgid ""
 "Could not deactivate the license. The license key you attempted to "
 "deactivate may not be active or valid."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:528
 #: includes/class-gv-license-handler.php:529
+#: includes/class-gv-license-handler.php:530
 msgid "The license key is valid, but it has not been activated for this site."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:530
+#: includes/class-gv-license-handler.php:531
 msgid "Invalid: this license has reached its activation limit."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:530
+#: includes/class-gv-license-handler.php:531
 msgid ""
 "You can manage license activations %son your GravityView account page%s."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:531
+#: includes/class-gv-license-handler.php:532
 msgid "The license has been deactivated."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:532
+#: includes/class-gv-license-handler.php:533
 msgid "The license key is valid and active."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:533
+#: includes/class-gv-license-handler.php:534
 msgid "The license key entered is invalid."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:534
+#: includes/class-gv-license-handler.php:535
 msgid "Invalid license key."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:535
+#: includes/class-gv-license-handler.php:536
 msgid "This license key has been revoked."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:536
+#: includes/class-gv-license-handler.php:537
 msgid ""
 "This license key has expired. %sRenew your license on the GravityView "
 "website%s to receive updates and support."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:542
+#: includes/class-gv-license-handler.php:543
 msgid "Verify License"
 msgstr ""
 
@@ -1589,60 +1586,60 @@ msgstr ""
 
 #: includes/extensions/delete-entry/class-delete-entry.php:123
 msgid "Allow the following users to delete the entry:"
-msgstr ""
+msgstr "اجازه دادن به کاربران زیر برای حذف ورودی:"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:148
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
 msgstr ""
 
 #: includes/extensions/delete-entry/class-delete-entry.php:292
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:383
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:412
 msgid "Delete"
 msgstr ""
 
 #: includes/extensions/delete-entry/class-delete-entry.php:366
 msgid "The entry does not exist."
-msgstr ""
+msgstr "ورودی وجود ندارد."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:439
 msgid "Moving the entry to the trash failed."
-msgstr ""
+msgstr "انتقال ورودی به زباله‌دان با شکست مواجه شد."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:537
 msgid "Are you sure you want to delete this entry? This cannot be undone."
-msgstr ""
+msgstr "آیا از حذف این ورودی اطمینان دارید؟ این عمل بازگشت‌پذیر نیست."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:564
 msgid "The link to delete this entry is not valid; it may have expired."
-msgstr ""
+msgstr "لینک حذف این ورودی معتبر نیست. ممکن است لینک منقضی شده باشد."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:568
 msgid "You do not have permission to delete this entry."
-msgstr ""
+msgstr "شما دسترسی لازم برای حذف این ورودی را ندارید."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:573
 msgid "The entry is already in the trash."
-msgstr ""
+msgstr "در حال حاضر ورودی در زباله‌دان است."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:575
 msgid "You cannot delete the entry; it is already in the trash."
-msgstr ""
+msgstr "حذف ورودی ممکن نیست. ورودی در حال حاضر در زباله‌دان است."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:711
 msgid "There was an error deleting the entry: %s"
-msgstr ""
+msgstr "مشکلی در حذف کردن ورودی وجود دارد: %s"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:715
 msgid "The entry was successfully moved to the trash."
-msgstr ""
+msgstr "ورودی با موفقیت به زباله‌دان منتقل شد."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:718
 msgid "The entry was successfully deleted."
-msgstr ""
+msgstr "ورودی با موفقیت حذف شد."
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:60
 msgid "A link to edit the entry. Visible based on View settings."
-msgstr ""
+msgstr "لینکی برای ویرایش ورودی. نمایش آن به تنظیمات ویو بستگی دارد."
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:114
 msgid "Edit Link Text"
@@ -1656,7 +1653,7 @@ msgstr ""
 msgid ""
 "Change this setting if you don't want the user who created the entry to be "
 "able to edit this field."
-msgstr ""
+msgstr "در صورتیکه نمی‌خواهید کاربر ایجاد کننده این ورودی، توانایی ویرایش این فیلد را داشته باشد، این مورد را تغییر دهید."
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:159
 #: includes/fields/class-gravityview-field.php:299
@@ -1667,43 +1664,43 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:804
+#: includes/extensions/edit-entry/class-edit-entry-render.php:806
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:804
+#: includes/extensions/edit-entry/class-edit-entry-render.php:806
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:810
+#: includes/extensions/edit-entry/class-edit-entry-render.php:812
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:974
+#: includes/extensions/edit-entry/class-edit-entry-render.php:990
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:981
+#: includes/extensions/edit-entry/class-edit-entry-render.php:997
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1347
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1372
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1773
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1784
 msgid "The link to edit this entry is not valid; it may have expired."
-msgstr ""
+msgstr "لینک ویرایش این ورودی معتبر نیست. ممکن است لینک منقضی شده باشد."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1779
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1790
 msgid "You do not have permission to edit this entry."
-msgstr ""
+msgstr "شما دسترسی مجاز برای ویرایش این ورودی را ندارید."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1783
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1794
 msgid "You cannot edit the entry; it is in the trash."
-msgstr ""
+msgstr "امکان ویرایش این ورودی وجود ندارد. ورودی داخل زباله‌دان است."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1823
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1834
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -1715,105 +1712,113 @@ msgstr ""
 msgid ""
 "Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to "
 "delete"
-msgstr ""
+msgstr "آیا می‌خواهید این فایل برای همیشه حذف گردد؟ برای بازگشت «انصراف» و برای حذف «تایید» را بزنید"
 
 #: includes/extensions/edit-entry/partials/inline-javascript.php:19
 msgid "Ajax error while deleting field."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:338
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:101
+msgid "Entry Notes"
+msgstr "یادداشت‌های ورودی"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:103
+msgid "Display, add, and delete notes for an entry."
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:367
 msgid "Note Settings"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:342
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:371
 msgid "Display notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:345
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:374
 msgid "Display notes to users who are not logged-in?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:349
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:378
 msgid "Enable adding notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:352
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:381
 msgid "Allow emailing notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:356
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:385
 msgid "Allow deleting notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:380
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:409
 msgid "Add Note"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:381
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:410
 msgid "Note added."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:382
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:411
 msgid "Note Content"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:384
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:413
 msgid "Are you sure you want to delete the selected notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:385
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:414
 msgid "Notes for this entry"
-msgstr ""
+msgstr "یادداشت‌ها برای این ورودی"
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:386
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:415
 msgid "Toggle all notes"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:387
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:416
 msgid "There are no notes."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:388
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:417
 msgid "Processing&hellip;"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:389
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:418
 msgid "Other email address"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:393
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:422
 msgid "Email subject"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:394
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:423
 msgid "New entry note"
-msgstr ""
+msgstr "یادداشت ورودی جدید"
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:395
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:424
 msgid "Also email this note to"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:396
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:425
 msgid "There was an error adding the note."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:397
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:426
 msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:399
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:428
 msgid "You don't have the ability to delete notes."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:400
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:429
 msgid "You don't have the ability to add notes."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:437
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:466
 msgid "added on {date_created_formatted}"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:505
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:534
 msgid "The note is empty."
 msgstr ""
 
@@ -1843,32 +1848,34 @@ msgstr ""
 msgid "Checkbox"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-checkbox.php:49
-#: includes/fields/class-gravityview-field-radio.php:45
-#: includes/fields/class-gravityview-field-select.php:45
-msgid "What should be displayed:"
-msgstr ""
-
-#: includes/fields/class-gravityview-field-checkbox.php:50
+#: includes/fields/class-gravityview-field-checkbox.php:46
 #: includes/fields/class-gravityview-field-radio.php:46
 #: includes/fields/class-gravityview-field-select.php:46
 msgid "This input has a label and a value. What should be displayed?"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-checkbox.php:52
+#: includes/fields/class-gravityview-field-checkbox.php:49
+#: includes/fields/class-gravityview-field-checkbox.php:57
 msgid "A check mark, if the input is checked"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-checkbox.php:53
+#: includes/fields/class-gravityview-field-checkbox.php:50
 #: includes/fields/class-gravityview-field-radio.php:48
 #: includes/fields/class-gravityview-field-select.php:48
 msgid "Value of the input"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-checkbox.php:54
+#: includes/fields/class-gravityview-field-checkbox.php:51
+#: includes/fields/class-gravityview-field-checkbox.php:58
 #: includes/fields/class-gravityview-field-radio.php:49
 #: includes/fields/class-gravityview-field-select.php:49
 msgid "Label of the input"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-checkbox.php:65
+#: includes/fields/class-gravityview-field-radio.php:45
+#: includes/fields/class-gravityview-field-select.php:45
+msgid "What should be displayed:"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-created-by.php:19
@@ -1877,23 +1884,23 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-created-by.php:37
 msgid "Entry Creator: Display Name"
-msgstr ""
+msgstr "ایجاد کننده ورودی: نام نمایشی"
 
 #: includes/fields/class-gravityview-field-created-by.php:41
 msgid "Entry Creator: Email"
-msgstr ""
+msgstr "ایجاد کننده ورودی: ایمیل"
 
 #: includes/fields/class-gravityview-field-created-by.php:45
 msgid "Entry Creator: Username"
-msgstr ""
+msgstr "ایجاد کننده ورودی: نام کاربری"
 
 #: includes/fields/class-gravityview-field-created-by.php:49
 msgid "Entry Creator: User ID"
-msgstr ""
+msgstr "ایجاد کننده ورودی: شناسه کاربر"
 
 #: includes/fields/class-gravityview-field-created-by.php:53
 msgid "Entry Creator: Roles"
-msgstr ""
+msgstr "ایجاد کننده ورودی: نقش‌ها"
 
 #: includes/fields/class-gravityview-field-created-by.php:122
 msgid "User Format"
@@ -2073,7 +2080,7 @@ msgstr ""
 #: includes/fields/class-gravityview-field-other-entries.php:47
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:365
 msgid "Entry link text (required)"
-msgstr ""
+msgstr "متن لینک ورودی (اجباری)"
 
 #: includes/fields/class-gravityview-field-other-entries.php:48
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:271
@@ -2087,7 +2094,7 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-other-entries.php:55
 msgid "This content will be displayed below each entry link."
-msgstr ""
+msgstr "این محتوا پایین لینک هر ورودی نمایش داده خواهد شد."
 
 #: includes/fields/class-gravityview-field-other-entries.php:63
 msgid "Entries to Display"
@@ -2103,7 +2110,7 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-other-entries.php:72
 msgid "Don't display this field if the entry creator has no other entries"
-msgstr ""
+msgstr "اگر ایجاد کننده این ورودی، ورودی دیگری ندارد، این فیلد را نمایش نده"
 
 #: includes/fields/class-gravityview-field-other-entries.php:78
 msgid "No Entries Text"
@@ -2319,7 +2326,7 @@ msgstr ""
 msgid ""
 "Link to the current category or tag. \"Link to single entry\" must be "
 "unchecked."
-msgstr ""
+msgstr "لینک به دسته جاری یا تگ. «لینک به ورودی تنها» باید غیرفعال باشد."
 
 #: includes/fields/class-gravityview-field.php:283
 msgid "Use the live post data"
@@ -2436,7 +2443,7 @@ msgstr ""
 #: includes/presets/default-list/class-gravityview-default-template-list.php:27
 #: includes/presets/default-table/class-gravityview-default-template-table.php:29
 msgid "Link to single entry"
-msgstr ""
+msgstr "لینک به ورودی تنها"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:38
 msgid "Listing Title"
@@ -2588,7 +2595,7 @@ msgstr ""
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:35
 msgid "Display Percentages"
-msgstr ""
+msgstr "نمایش درصد"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:38
 msgid ""
@@ -2598,13 +2605,13 @@ msgstr ""
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:41
 msgid "Display Counts"
-msgstr ""
+msgstr "نمایش تعداد"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:44
 msgid ""
 "Display number of times each choice has been selected when displaying "
 "results? Supported values are: true, false. Defaults to \"true\"."
-msgstr ""
+msgstr "زمانیکه نتایج نمایش داده می‌شود، تعداد انتخاب شدن هر گزینه را نمایش داده شود؟ مقادیر قابل قبول: true، false. پیشفرض \"true\" است."
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:48
 msgid "Style"
@@ -2638,7 +2645,7 @@ msgstr "نتایج نظرسنجی"
 
 #: includes/widgets/search-widget/class-search-widget.php:32
 msgid "Search form for searching entries."
-msgstr ""
+msgstr "فرم جستجو برای جستجوی ورودی‌ها."
 
 #: includes/widgets/search-widget/class-search-widget.php:44
 msgid "Search Layout"
@@ -2699,11 +2706,11 @@ msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:169
 msgid "Date range"
-msgstr ""
+msgstr "بازه زمانی"
 
 #: includes/widgets/search-widget/class-search-widget.php:189
 msgid "No search fields configured yet."
-msgstr ""
+msgstr "هیچ فیلد جستجویی هنوز پیکربندی نشده است."
 
 #: includes/widgets/search-widget/class-search-widget.php:190
 msgid "Add Search Field"
@@ -2725,15 +2732,15 @@ msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:265
 msgid "Search Everything"
-msgstr ""
+msgstr "جستجوی همه چیز"
 
 #: includes/widgets/search-widget/class-search-widget.php:277
 msgid "Entry Creator"
-msgstr ""
+msgstr "ایجاد کننده ورودی"
 
 #: includes/widgets/search-widget/class-search-widget.php:905
 msgid "Search Entries:"
-msgstr ""
+msgstr "جستجوی ورودی‌ها:"
 
 #: includes/widgets/search-widget/class-search-widget.php:908
 msgid "Filter by date:"
@@ -2741,11 +2748,11 @@ msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:911
 msgid "Entry ID:"
-msgstr ""
+msgstr "شناسه ورودی:"
 
 #: includes/widgets/search-widget/class-search-widget.php:914
 msgid "Submitted by:"
-msgstr ""
+msgstr "ثبت شده توسط:"
 
 #: includes/widgets/search-widget/class-search-widget.php:1031
 msgid "Clear"
@@ -2775,15 +2782,15 @@ msgstr "جستجو"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:15
 msgid "GravityView Recent Entries"
-msgstr ""
+msgstr "ورودی‌های اخیر گرویتی‌ویو"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:18
 msgid "Display the most recent entries for a View"
-msgstr ""
+msgstr "نمایش ورودی‌های اخیر یک ویو"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:267
 msgid "Recent Entries"
-msgstr ""
+msgstr "ورودی‌های اخیر"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:281
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:165
@@ -2813,7 +2820,7 @@ msgstr ""
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:358
 msgid "Number of entries to show:"
-msgstr ""
+msgstr "تعداد ورودی‌ها جهت نمایش دادن:"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:14
 msgid "A search form for a specific GravityView."
@@ -2835,11 +2842,11 @@ msgstr ""
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:185
 msgid "&mdash; Select a View &mdash;"
-msgstr ""
+msgstr "&mdash; یک ویو را انتخاب کنید &mdash;"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:243
 msgid "Searchable fields:"
-msgstr ""
+msgstr "فیلدهای قابل جستجو:"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:244
 msgid "Search Fields"
@@ -2946,19 +2953,19 @@ msgstr "خاموش"
 #: includes/class-gravityview-settings.php:669
 msgctxt "Setting: what to do when uninstalling plugin"
 msgid "Keep GravityView Data"
-msgstr ""
+msgstr "داده‌های گرویتی‌ویو را نگه‌دار"
 
 #: includes/class-gravityview-settings.php:674
 msgctxt "Setting: what to do when uninstalling plugin"
 msgid "Permanently Delete"
-msgstr ""
+msgstr "حذف همیشگی"
 
-#: includes/class-gv-license-handler.php:338
+#: includes/class-gv-license-handler.php:339
 msgctxt "1: Customer name; 2: Customer email"
 msgid "Licensed to: %1$s (%2$s)"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:384
+#: includes/class-gv-license-handler.php:385
 msgctxt "1: GravityView upgrade name, 2: Cost of upgrade"
 msgid "Upgrade to %1$s for %2$s"
 msgstr ""
@@ -2987,29 +2994,29 @@ msgstr ""
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:89
 msgctxt "User capability"
 msgid "Entry Creator"
-msgstr ""
+msgstr "ایجاد کننده ورودی"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1799
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1810
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr "بازگشت."
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:339
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:368
 msgctxt "%s is opening and closing HTML link"
 msgid ""
 "Only users with specific capabilities will be able to view, add and delete "
 "notes. %sRead more%s."
-msgstr ""
+msgstr "فقط کاربران با توانایی‌های مخصوص امکان دیدن و افزودن و حذف کردن یادداشت‌ها را دارند. %sبیشتر%s."
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:391
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:420
 msgctxt "Example email address used as a placeholder"
 msgid "you@example.com"
-msgstr ""
+msgstr "you@example.com"
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:398
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:427
 msgctxt "Message to display when submitting a note without content."
 msgid "Note cannot be blank."
-msgstr ""
+msgstr "یادداشت نمی‌تواند خالی باشد."
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:26
 msgctxt "The string placeholders are for emphasis HTML"

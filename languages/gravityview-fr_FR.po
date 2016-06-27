@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
-"PO-Revision-Date: 2016-06-10 21:41+0000\n"
+"PO-Revision-Date: 2016-06-27 20:17+0000\n"
 "Last-Translator: Zachary Katz <zack@katz.co>\n"
 "Language-Team: French (France) (http://www.transifex.com/katzwebservices/gravityview/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -26,15 +26,15 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 
-#: gravityview.php:342
+#: gravityview.php:339
 msgid "Top"
 msgstr "Haut"
 
-#: gravityview.php:343
+#: gravityview.php:340
 msgid "Left"
 msgstr "Gauche"
 
-#: gravityview.php:343
+#: gravityview.php:340
 msgid "Right"
 msgstr "Droit"
 
@@ -73,7 +73,7 @@ msgid "Please enter your name"
 msgstr ""
 
 #: includes/admin/class-gravityview-support-port.php:92
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:390
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:419
 msgid "Email address"
 msgstr ""
 
@@ -82,7 +82,7 @@ msgid "Please enter a valid email address"
 msgstr ""
 
 #: includes/admin/class-gravityview-support-port.php:94
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:392
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:421
 msgid "Subject"
 msgstr ""
 
@@ -288,7 +288,7 @@ msgstr "Entrées multiples"
 #: includes/class-gravityview-entry-link-shortcode.php:205
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:116
-#: includes/extensions/edit-entry/class-edit-entry-render.php:757
+#: includes/extensions/edit-entry/class-edit-entry-render.php:759
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 msgid "Edit Entry"
 msgstr "Modifier l'entrée"
@@ -364,13 +364,13 @@ msgid "(no title)"
 msgstr "(pas de titre)"
 
 #: includes/class-admin-add-shortcode.php:138
-#: includes/class-admin-views.php:1004
+#: includes/class-admin-views.php:995
 #: includes/extensions/edit-entry/partials/form-buttons.php:31
 msgid "Cancel"
 msgstr "Annuler"
 
 #: includes/class-admin-add-shortcode.php:183
-#: includes/class-admin-views.php:1008
+#: includes/class-admin-views.php:999
 msgid "Loading&hellip;"
 msgstr "Chargement&hellip;"
 
@@ -378,91 +378,96 @@ msgstr "Chargement&hellip;"
 msgid "Please select a View"
 msgstr "Veuillez sélectionner une Vue"
 
-#: includes/class-admin-approve-entries.php:69
+#: includes/class-admin-approve-entries.php:123
+#: includes/class-admin-approve-entries.php:208
+msgid "Approved"
+msgstr "Approuvé"
+
+#: includes/class-admin-approve-entries.php:130
+msgid "Disapproved"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:146
 msgid "GravityView Fields"
 msgstr "Champs GravityView"
 
-#: includes/class-admin-approve-entries.php:70
+#: includes/class-admin-approve-entries.php:147
 msgid ""
 "Allow administrators to approve or reject entries and users to opt-in or "
 "opt-out of their entries being displayed."
 msgstr "Permet aux administrateurs d'approuver ou de rejeter les entrées et aux utilisateurs de participer ou de retirer leurs entrées affichées."
 
-#: includes/class-admin-approve-entries.php:92
+#: includes/class-admin-approve-entries.php:169
 msgid "Approve/Reject"
 msgstr "Approuver/Rejeter"
 
-#: includes/class-admin-approve-entries.php:98
+#: includes/class-admin-approve-entries.php:175
 msgid "User Opt-In"
 msgstr "Participation de l'utilisateur"
 
-#: includes/class-admin-approve-entries.php:122
+#: includes/class-admin-approve-entries.php:199
 msgid "Approved? (Admin-only)"
 msgstr "Approuvé ? (Administrateur seulement)"
 
-#: includes/class-admin-approve-entries.php:124
+#: includes/class-admin-approve-entries.php:201
 msgid "Approved?"
 msgstr "Approuvé ?"
 
-#: includes/class-admin-approve-entries.php:131
-msgid "Approved"
-msgstr "Approuvé"
-
-#: includes/class-admin-approve-entries.php:144
+#: includes/class-admin-approve-entries.php:221
 msgid "Show Entry on Website"
 msgstr "Montrer l'entrée sur le site"
 
-#: includes/class-admin-approve-entries.php:146
+#: includes/class-admin-approve-entries.php:223
 msgid "Opt-In"
 msgstr "Participer"
 
-#: includes/class-admin-approve-entries.php:154
+#: includes/class-admin-approve-entries.php:231
 msgid "Yes, display my entry on the website"
 msgstr "Oui, afficher mon entrée sur le site"
 
-#: includes/class-admin-approve-entries.php:231
+#: includes/class-admin-approve-entries.php:335
 msgid "%d entries"
 msgstr "%d entrées"
 
-#: includes/class-admin-approve-entries.php:231
+#: includes/class-admin-approve-entries.php:335
 msgid "1 entry"
 msgstr "1 entrée"
 
-#: includes/class-admin-approve-entries.php:236
+#: includes/class-admin-approve-entries.php:340
 msgid "%s approved."
 msgstr "%s approuvé."
 
-#: includes/class-admin-approve-entries.php:241
+#: includes/class-admin-approve-entries.php:345
 msgid "%s disapproved."
 msgstr "%s désapprouvé."
 
-#: includes/class-admin-approve-entries.php:325
+#: includes/class-admin-approve-entries.php:429
 #: tests/unit-tests/GravityView_Uninstall_Test.php:195 uninstall.php:100
 msgid "Disapproved the Entry for GravityView"
 msgstr "Désapprouver l'entrée pour GravityView"
 
-#: includes/class-admin-approve-entries.php:325
+#: includes/class-admin-approve-entries.php:429
 #: tests/unit-tests/GravityView_Uninstall_Test.php:196 uninstall.php:101
 msgid "Approved the Entry for GravityView"
 msgstr "Approuver l'entrée pour GravityView"
 
-#: includes/class-admin-approve-entries.php:600
+#: includes/class-admin-approve-entries.php:728
 msgid "Entry not approved for directory viewing. Click to approve this entry."
 msgstr "Entrée non approuvée pour l'affichage sur l'annuaire. Cliquer pour approuver cette entrée."
 
-#: includes/class-admin-approve-entries.php:601
+#: includes/class-admin-approve-entries.php:729
 msgid "Entry approved for directory viewing. Click to disapprove this entry."
 msgstr "Entrée approuvée pour l'affichage sur l'annuaire. Cliquer pour désapprouver cette entrée."
 
-#: includes/class-admin-approve-entries.php:602
+#: includes/class-admin-approve-entries.php:730
 msgid "Show entry in directory view?"
 msgstr "Afficher l'entrée dans la vue de l'annuaire ?"
 
-#: includes/class-admin-approve-entries.php:624
+#: includes/class-admin-approve-entries.php:750
 msgid "Approve"
 msgstr "Approuver"
 
-#: includes/class-admin-approve-entries.php:628
+#: includes/class-admin-approve-entries.php:754
 msgid "Disapprove"
 msgstr "Désapprouver"
 
@@ -626,78 +631,70 @@ msgid "Display other entries created by the entry creator."
 msgstr "Afficher les autres entrées créées par le créateur de l'entrée."
 
 #: includes/class-admin-views.php:686
-msgid "Entry Notes"
-msgstr ""
-
-#: includes/class-admin-views.php:688
-msgid "Entry notes (if any)."
-msgstr ""
-
-#: includes/class-admin-views.php:695
 #: includes/fields/class-gravityview-field-entry-link.php:32
 msgid "Link to Entry"
 msgstr "Lien vers l'entrée"
 
-#: includes/class-admin-views.php:696
+#: includes/class-admin-views.php:687
 #: includes/fields/class-gravityview-field-entry-link.php:33
 msgid "A dedicated link to the single entry with customizable text."
 msgstr "Un lien dédié à l'entrée unique avec un texte personnalisable."
 
-#: includes/class-admin-views.php:793
+#: includes/class-admin-views.php:784
 msgid "Add Widget"
 msgstr "Ajouter un Widget"
 
-#: includes/class-admin-views.php:795
+#: includes/class-admin-views.php:786
 msgid "Add Field"
 msgstr "Ajouter un Champ"
 
-#: includes/class-admin-views.php:877
+#: includes/class-admin-views.php:868
 msgid "\"+ %s\" or drag existing %ss here."
 msgstr "\"+ %s\" ou glisser ici le %ss existant."
 
-#: includes/class-admin-views.php:945
+#: includes/class-admin-views.php:936
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr "Cette Vue est configurée en utilisant le type de Vue %s qui est désactivée."
 
-#: includes/class-admin-views.php:946
+#: includes/class-admin-views.php:937
 msgid ""
 "The data is not lost; re-activate the associated plugin and the "
 "configuration will re-appear."
 msgstr "Les données ne sont pas perdues, réactivez le plugin associé et la configuration réapparaîtra."
 
-#: includes/class-admin-views.php:1002
+#: includes/class-admin-views.php:993
 msgid "Enter View name here"
 msgstr "Entrer ici le nom de la Vue"
 
-#: includes/class-admin-views.php:1003
+#: includes/class-admin-views.php:994
 msgid "Close"
 msgstr "Fermer"
 
-#: includes/class-admin-views.php:1005
+#: includes/class-admin-views.php:996
 msgid "Continue"
 msgstr "Continuer"
 
-#: includes/class-admin-views.php:1006
+#: includes/class-admin-views.php:997
 msgid "Ok"
 msgstr "OK"
 
-#: includes/class-admin-views.php:1007
+#: includes/class-admin-views.php:998
 msgid ""
 "Error while creating the View for you. Check the settings or contact "
 "GravityView support."
 msgstr "Erreur lors de la création de la Vue. Vérifiez les paramètres ou bien contactez l'assistance de GravityView."
 
-#: includes/class-admin-views.php:1009
+#: includes/class-admin-views.php:1000
 msgid "There was an error loading dynamic content."
 msgstr "Une erreur s'est produite lors du chargement du contenu dynamique."
 
-#: includes/class-admin-views.php:1010
+#: includes/class-admin-views.php:1001
 msgid ""
 "Error while adding the field. Please try again or contact GravityView "
 "support."
 msgstr "Erreur lors de l'ajout du champ. Veuillez réessayer ou contactez l'assistance de GravityView."
 
-#: includes/class-admin-views.php:1011
+#: includes/class-admin-views.php:1002
 msgid ""
 "Would you like to remove all fields in this zone? (You are seeing this "
 "message because you were holding down the ALT key)"
@@ -707,7 +704,7 @@ msgstr "Souhaitez-vous supprimer tous les champs dans cette zone ? (Vous voyez c
 msgid "GravityView: Getting Started"
 msgstr "GravityView : Commencer"
 
-#: includes/class-admin-welcome.php:57 includes/class-admin-welcome.php:152
+#: includes/class-admin-welcome.php:57 includes/class-admin-welcome.php:154
 msgid "Getting Started"
 msgstr "Bien commencer"
 
@@ -716,37 +713,37 @@ msgid "Changelog"
 msgstr "Journal des modifications"
 
 #: includes/class-admin-welcome.php:76 includes/class-admin-welcome.php:77
-#: includes/class-admin-welcome.php:158
+#: includes/class-admin-welcome.php:160
 msgid "Credits"
 msgstr "Crédits"
 
-#: includes/class-admin-welcome.php:147
+#: includes/class-admin-welcome.php:149
 msgid "Welcome to GravityView %s"
 msgstr "Bienvenue sur GravityView %s"
 
-#: includes/class-admin-welcome.php:148
+#: includes/class-admin-welcome.php:150
 msgid ""
 "Thank you for installing GravityView. Beautifully display your Gravity Forms"
 " entries."
 msgstr "Merci d'avoir installé GravityView. Afficher avec style vos entrées de GravityForms."
 
-#: includes/class-admin-welcome.php:155
+#: includes/class-admin-welcome.php:157
 msgid "List of Changes"
 msgstr "Liste des changements"
 
-#: includes/class-admin-welcome.php:625
+#: includes/class-admin-welcome.php:653
 msgid "GravityView is brought to you by:"
 msgstr "GravityView vous est proposé par:"
 
-#: includes/class-admin-welcome.php:650
+#: includes/class-admin-welcome.php:684
 msgid "Contributors"
 msgstr "Contributeurs"
 
-#: includes/class-admin-welcome.php:671
+#: includes/class-admin-welcome.php:707
 msgid "Want to contribute?"
 msgstr "Voulez-vous contribuer ?"
 
-#: includes/class-admin-welcome.php:672
+#: includes/class-admin-welcome.php:708
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -850,11 +847,11 @@ msgstr "Cette recherche n'a trouvé aucun résultat."
 msgid "No entries match your request."
 msgstr "Aucune entrée ne correspond à votre recherche."
 
-#: includes/class-api.php:808
+#: includes/class-api.php:810
 msgid "&larr; Go back"
 msgstr "&larr; Retour en arrière"
 
-#: includes/class-api.php:1094
+#: includes/class-api.php:1096
 msgid "Map It"
 msgstr "Placer sur la carte"
 
@@ -1281,7 +1278,7 @@ msgid "Update Settings"
 msgstr "Paramètres des mises à jour"
 
 #: includes/class-gravityview-settings.php:537
-#: includes/class-gv-license-handler.php:537
+#: includes/class-gv-license-handler.php:538
 msgid "You don't have the ability to edit plugin settings."
 msgstr ""
 
@@ -1306,9 +1303,9 @@ msgid ""
 msgstr "Entrez la clé de licence qui vous a été envoyé lors de votre achat. Elle permet les mises à jour des plugin et de l'assistance."
 
 #: includes/class-gravityview-settings.php:598
-#: includes/class-gv-license-handler.php:119
-#: includes/class-gv-license-handler.php:133
-#: includes/class-gv-license-handler.php:539
+#: includes/class-gv-license-handler.php:120
+#: includes/class-gv-license-handler.php:134
+#: includes/class-gv-license-handler.php:540
 msgid "Verifying license&hellip;"
 msgstr "Vérifier la licence&hellip;"
 
@@ -1401,115 +1398,115 @@ msgstr ""
 msgid "You are running GravityView version %s"
 msgstr "Vous avez la version %s de GravityView"
 
-#: includes/class-gv-license-handler.php:118
-#: includes/class-gv-license-handler.php:540
+#: includes/class-gv-license-handler.php:119
+#: includes/class-gv-license-handler.php:541
 msgid "Activate License"
 msgstr "Activer la licence"
 
-#: includes/class-gv-license-handler.php:125
-#: includes/class-gv-license-handler.php:541
+#: includes/class-gv-license-handler.php:126
+#: includes/class-gv-license-handler.php:542
 msgid "Deactivate License"
 msgstr "Désactiver la licence"
 
-#: includes/class-gv-license-handler.php:126
+#: includes/class-gv-license-handler.php:127
 msgid "Deactivating license&hellip;"
 msgstr "Désactiver la licence&hellip;"
 
-#: includes/class-gv-license-handler.php:132
+#: includes/class-gv-license-handler.php:133
 msgid "Check License"
 msgstr "Vérifier la licence"
 
-#: includes/class-gv-license-handler.php:315
+#: includes/class-gv-license-handler.php:316
 msgid "License Details:"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:334
+#: includes/class-gv-license-handler.php:335
 msgid "Access your GravityView account"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:335
+#: includes/class-gv-license-handler.php:336
 msgid "This development site does not count toward license activation limits"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:337
+#: includes/class-gv-license-handler.php:338
 msgid "License level: %s"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:339
+#: includes/class-gv-license-handler.php:340
 msgid "Activations: %d of %s sites"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:340
+#: includes/class-gv-license-handler.php:341
 msgid "Renew on: %s"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:376
+#: includes/class-gv-license-handler.php:377
 msgid "Upgrades available:"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:393
+#: includes/class-gv-license-handler.php:394
 msgid "Get access to Extensions"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:397
+#: includes/class-gv-license-handler.php:398
 msgid "Get access to Entry Importer and other Premium plugins"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:525
+#: includes/class-gv-license-handler.php:526
 msgid "Status"
 msgstr "Etat"
 
-#: includes/class-gv-license-handler.php:526
+#: includes/class-gv-license-handler.php:527
 msgid "There was an error processing the request."
 msgstr "Une erreur s'est produite lors du traitement de la requête."
 
-#: includes/class-gv-license-handler.php:527
+#: includes/class-gv-license-handler.php:528
 msgid ""
 "Could not deactivate the license. The license key you attempted to "
 "deactivate may not be active or valid."
 msgstr "Impossible de désactiver la licence. La clé de licence que vous avez tenté de désactiver peut ne pas être active ou valide."
 
-#: includes/class-gv-license-handler.php:528
 #: includes/class-gv-license-handler.php:529
+#: includes/class-gv-license-handler.php:530
 msgid "The license key is valid, but it has not been activated for this site."
 msgstr "La clé de licence est valide mais elle n'a pas été activée pour ce site."
 
-#: includes/class-gv-license-handler.php:530
+#: includes/class-gv-license-handler.php:531
 msgid "Invalid: this license has reached its activation limit."
 msgstr "Non valide : cette licence a atteint sa limite d'activation."
 
-#: includes/class-gv-license-handler.php:530
+#: includes/class-gv-license-handler.php:531
 msgid ""
 "You can manage license activations %son your GravityView account page%s."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:531
+#: includes/class-gv-license-handler.php:532
 msgid "The license has been deactivated."
 msgstr "La licence a été désactivée."
 
-#: includes/class-gv-license-handler.php:532
+#: includes/class-gv-license-handler.php:533
 msgid "The license key is valid and active."
 msgstr "La clé de licence est valide et active."
 
-#: includes/class-gv-license-handler.php:533
+#: includes/class-gv-license-handler.php:534
 msgid "The license key entered is invalid."
 msgstr "La clé de licence entrée n'est pas valide."
 
-#: includes/class-gv-license-handler.php:534
+#: includes/class-gv-license-handler.php:535
 msgid "Invalid license key."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:535
+#: includes/class-gv-license-handler.php:536
 msgid "This license key has been revoked."
 msgstr "La clé de licence a été révoquée."
 
-#: includes/class-gv-license-handler.php:536
+#: includes/class-gv-license-handler.php:537
 msgid ""
 "This license key has expired. %sRenew your license on the GravityView "
 "website%s to receive updates and support."
 msgstr ""
 
-#: includes/class-gv-license-handler.php:542
+#: includes/class-gv-license-handler.php:543
 msgid "Verify License"
 msgstr "Vérifier la licence"
 
@@ -1603,7 +1600,7 @@ msgid "A link to delete the entry. Respects the Delete Entry permissions."
 msgstr "Un lien pour supprimer l'entrée. Respecte les permissions pour la suppression d'entrées."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:292
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:383
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:412
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -1674,43 +1671,43 @@ msgstr "Ouvrir le lien dans un nouvel onglet ou une nouvelle fenêtre ?"
 msgid "Make field editable to:"
 msgstr "Rendre le champ modifiable pour :"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:804
+#: includes/extensions/edit-entry/class-edit-entry-render.php:806
 msgid "There was a problem with your submission."
 msgstr "Un problème s'est produit avec votre proposition."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:804
+#: includes/extensions/edit-entry/class-edit-entry-render.php:806
 msgid "Errors have been highlighted below."
 msgstr "Des erreurs on été surlignées ci-dessous."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:810
+#: includes/extensions/edit-entry/class-edit-entry-render.php:812
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "Entrée mise à jour. %sRetourner vers l'entrée%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:974
+#: includes/extensions/edit-entry/class-edit-entry-render.php:990
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:981
+#: includes/extensions/edit-entry/class-edit-entry-render.php:997
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1347
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1372
 msgid "Maximum number of files reached"
 msgstr "Le nombre maximal de fichiers a été atteint"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1773
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1784
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "Le lien pour modifier cette entrée n'est pas valide; il se peut qu'il ait déjà expiré."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1779
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1790
 msgid "You do not have permission to edit this entry."
 msgstr "Vous n'avez pas la permission pour modifier cette entrée."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1783
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1794
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "Vous ne pouvez pas modifier cette entrée; elle est dans la corbeille."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1823
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1834
 msgid "You do not have permission to edit this field."
 msgstr "Vous n'avez pas la permission pour modifier ce champ."
 
@@ -1728,99 +1725,107 @@ msgstr "Voulez-vous supprimer définitivement ce fichier ? \"Annuler\" pour arr�
 msgid "Ajax error while deleting field."
 msgstr "Erreur Ajax lors de la suppression du champ."
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:338
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:101
+msgid "Entry Notes"
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:103
+msgid "Display, add, and delete notes for an entry."
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:367
 msgid "Note Settings"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:342
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:371
 msgid "Display notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:345
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:374
 msgid "Display notes to users who are not logged-in?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:349
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:378
 msgid "Enable adding notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:352
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:381
 msgid "Allow emailing notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:356
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:385
 msgid "Allow deleting notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:380
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:409
 msgid "Add Note"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:381
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:410
 msgid "Note added."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:382
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:411
 msgid "Note Content"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:384
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:413
 msgid "Are you sure you want to delete the selected notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:385
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:414
 msgid "Notes for this entry"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:386
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:415
 msgid "Toggle all notes"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:387
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:416
 msgid "There are no notes."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:388
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:417
 msgid "Processing&hellip;"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:389
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:418
 msgid "Other email address"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:393
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:422
 msgid "Email subject"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:394
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:423
 msgid "New entry note"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:395
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:424
 msgid "Also email this note to"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:396
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:425
 msgid "There was an error adding the note."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:397
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:426
 msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:399
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:428
 msgid "You don't have the ability to delete notes."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:400
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:429
 msgid "You don't have the ability to add notes."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:437
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:466
 msgid "added on {date_created_formatted}"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:505
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:534
 msgid "The note is empty."
 msgstr ""
 
@@ -1850,32 +1855,34 @@ msgstr ""
 msgid "Checkbox"
 msgstr "Checkbox"
 
-#: includes/fields/class-gravityview-field-checkbox.php:49
-#: includes/fields/class-gravityview-field-radio.php:45
-#: includes/fields/class-gravityview-field-select.php:45
-msgid "What should be displayed:"
-msgstr ""
-
-#: includes/fields/class-gravityview-field-checkbox.php:50
+#: includes/fields/class-gravityview-field-checkbox.php:46
 #: includes/fields/class-gravityview-field-radio.php:46
 #: includes/fields/class-gravityview-field-select.php:46
 msgid "This input has a label and a value. What should be displayed?"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-checkbox.php:52
+#: includes/fields/class-gravityview-field-checkbox.php:49
+#: includes/fields/class-gravityview-field-checkbox.php:57
 msgid "A check mark, if the input is checked"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-checkbox.php:53
+#: includes/fields/class-gravityview-field-checkbox.php:50
 #: includes/fields/class-gravityview-field-radio.php:48
 #: includes/fields/class-gravityview-field-select.php:48
 msgid "Value of the input"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-checkbox.php:54
+#: includes/fields/class-gravityview-field-checkbox.php:51
+#: includes/fields/class-gravityview-field-checkbox.php:58
 #: includes/fields/class-gravityview-field-radio.php:49
 #: includes/fields/class-gravityview-field-select.php:49
 msgid "Label of the input"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-checkbox.php:65
+#: includes/fields/class-gravityview-field-radio.php:45
+#: includes/fields/class-gravityview-field-select.php:45
+msgid "What should be displayed:"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-created-by.php:19
@@ -2960,12 +2967,12 @@ msgctxt "Setting: what to do when uninstalling plugin"
 msgid "Permanently Delete"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:338
+#: includes/class-gv-license-handler.php:339
 msgctxt "1: Customer name; 2: Customer email"
 msgid "Licensed to: %1$s (%2$s)"
 msgstr ""
 
-#: includes/class-gv-license-handler.php:384
+#: includes/class-gv-license-handler.php:385
 msgctxt "1: GravityView upgrade name, 2: Cost of upgrade"
 msgid "Upgrade to %1$s for %2$s"
 msgstr ""
@@ -2996,24 +3003,24 @@ msgctxt "User capability"
 msgid "Entry Creator"
 msgstr "Créateur d'entrée"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1799
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1810
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr "Retourner en arrière."
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:339
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:368
 msgctxt "%s is opening and closing HTML link"
 msgid ""
 "Only users with specific capabilities will be able to view, add and delete "
 "notes. %sRead more%s."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:391
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:420
 msgctxt "Example email address used as a placeholder"
 msgid "you@example.com"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:398
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:427
 msgctxt "Message to display when submitting a note without content."
 msgid "Note cannot be blank."
 msgstr ""
