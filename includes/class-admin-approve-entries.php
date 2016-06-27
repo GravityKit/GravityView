@@ -65,6 +65,72 @@ class GravityView_Admin_ApproveEntries {
 		// bypass Gravity Forms no-conflict mode
 		add_filter( 'gform_noconflict_scripts', array( $this, 'register_gform_noconflict_script' ) );
 		add_filter( 'gform_noconflict_styles', array( $this, 'register_gform_noconflict_style' ) );
+
+		add_filter( 'gform_filter_links_entry_list', array( $this, 'filter_links_entry_list' ), 10, 3 );
+	}
+
+	/**
+	 * Add filter links to the Entries page
+	 *
+	 * Can be disabled by returning false on the `gravityview/approve_entries/show_filter_links_entry_list` filter
+	 *
+	 * @since 1.17.1
+	 *
+	 * @param array $filter_links Array of links to include in the subsubsub filter list. Includes `id`, `field_filters`, `count`, and `label` keys
+	 * @param array $form GF Form object of current form
+	 * @param bool $include_counts Whether to include counts in the output
+	 *
+	 * @return array Filter links, with GravityView approved/disapproved links added
+	 */
+	public function filter_links_entry_list( $filter_links = array(), $form = array(), $include_counts = true ) {
+
+		/**
+		 * @filter `gravityview/approve_entries/show_filter_links_entry_list` Disable filter links
+		 * @since 1.17.1
+		 * @param bool $show_filter_links True: show the "approved"/"disapproved" filter links. False: hide them.
+		 * @param array $form GF Form object of current form
+		 */
+		if( false === apply_filters( 'gravityview/approve_entries/show_filter_links_entry_list', true, $form ) ) {
+			return $filter_links;
+		}
+
+		$field_filters_approved = array(
+			array(
+				'key' => 'is_approved',
+				'value' => 'Approved'
+			),
+		);
+
+		$field_filters_disapproved = array(
+			array(
+				'key'      => 'is_approved',
+				'value'    => '0',
+			),
+		);
+
+		$approved_count = $disapproved_count = 0;
+
+		// Only count if necessary
+		if( $include_counts ) {
+			$approved_count = count( gravityview_get_entry_ids( $form['id'], array( 'status' => 'active', 'field_filters' => $field_filters_approved ) ) );
+			$disapproved_count = count( gravityview_get_entry_ids( $form['id'], array( 'status' => 'active', 'field_filters' => $field_filters_disapproved ) ) );
+		}
+
+		$filter_links[] = array(
+			'id'            => 'gv_approved',
+			'field_filters' => $field_filters_approved,
+			'count'         => $approved_count,
+			'label'         => esc_html_x( 'Approved', 'Entry List filter link', 'gravityview' ),
+		);
+
+		$filter_links[] = array(
+			'id'            => 'gv_disapproved',
+			'field_filters' => $field_filters_disapproved,
+			'count'         => $disapproved_count,
+			'label'         => esc_html_x( 'Disapproved', 'Entry List filter link', 'gravityview' ),
+		);
+
+		return $filter_links;
 	}
 
 	/**
