@@ -354,7 +354,7 @@ class GravityView_Admin_ApproveEntries {
 		/**
 		 * GFAPI::update_entry() doesn't trigger `gform_after_update_entry`, so we trigger updating the meta ourselves.
 		 */
-		self::update_approved_meta( $entry_id, $approved );
+		self::update_approved_meta( $entry_id, $approved, $form_id );
 
 		// add note to entry
 		if( $result === true ) {
@@ -428,20 +428,23 @@ class GravityView_Admin_ApproveEntries {
 
 		$entry = GFAPI::get_entry( $entry_id );
 
-		self::update_approved_meta( $entry_id, $entry[ (string)$approvedcolumn ] );
+		self::update_approved_meta( $entry_id, $entry[ (string)$approvedcolumn ], $form['id'] );
 
 	}
 
 	/**
 	 * Update the `is_approved` entry meta value
-	 * @param  int $entry_id ID of the Gravity Forms entry
-	 * @param  string $is_approved String whether entry is approved or not. `0` for not approved, `Approved` for approved.
 	 *
 	 * @since 1.7.6.1 `after_update_entry_update_approved_meta` was previously to be named `update_approved_meta`
+	 * @since 1.17.1 Added $form_id parameter
+	 *
+	 * @param  int $entry_id ID of the Gravity Forms entry
+	 * @param  string $is_approved String whether entry is approved or not. `0` for not approved, `Approved` for approved.
+	 * @param int $form_id ID of the form of the entry being updated. Improves query performance.
 	 *
 	 * @return void
 	 */
-	private static function update_approved_meta( $entry_id, $is_approved ) {
+	private static function update_approved_meta( $entry_id, $is_approved, $form_id = 0 ) {
 
 		/**
 		 * Make sure that the "User Opt-in" and the Admin Approve/Reject entry set the same meta value
@@ -452,7 +455,7 @@ class GravityView_Admin_ApproveEntries {
 		// update entry meta
 		if( function_exists('gform_update_meta') ) {
 
-			gform_update_meta( $entry_id, 'is_approved', $is_approved );
+			gform_update_meta( $entry_id, 'is_approved', $is_approved, $form_id );
 
 			/**
 			 * @action `gravityview/approve_entries/updated` Triggered when an entry approval is updated

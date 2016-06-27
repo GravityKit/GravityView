@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = 1.17.1 on June 24 =
 * Fixed: Approve/Disapprove Entry column and Bulk Actions on Gravity Forms Entries page not visible
 * Fixed: "Reply To" reference fixed in `GVCommon::send_email()` function
+* Tweak: Improved speed of approving/disapproving entries
 
 = 1.17 on June 14 =
 
