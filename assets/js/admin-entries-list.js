@@ -56,6 +56,7 @@
 
 	/**
 	 * Mark the entries that are approved as approved on load
+	 * See GravityView_Admin_ApproveEntries::add_entry_approved_hidden_input() for where input comes from
 	 */
 	self.setInitialApprovedEntries = function() {
 		$( 'tr:has(input.entry_approved)' ).find( 'a.toggleApproved' ).addClass( 'entry_approved' ).prop( 'title', gvGlobals.unapprove_title );

@@ -37,7 +37,8 @@ class GravityView_Admin_ApproveEntries {
 		add_action( 'gform_loaded', array( $this, 'process_bulk_action') );
 
 		// add hidden field with approve status
-		add_action( 'gform_entries_first_column', array( $this, 'add_entry_approved_hidden_input' ), 1, 5 );
+		add_action( 'gform_entries_first_column_actions', array( $this, 'add_entry_approved_hidden_input' ), 1, 5 );
+
 		// process ajax approve entry requests
 		add_action('wp_ajax_gv_update_approved', array( $this, 'ajax_update_approved'));
 
@@ -564,8 +565,19 @@ class GravityView_Admin_ApproveEntries {
 		return null;
 	}
 
-
-
+	/**
+	 * Add a hidden input that is used in the Javascript to show approved/disapproved entries checkbox
+	 *
+	 * See the /assets/js/admin-entries-list.js setInitialApprovedEntries method
+	 *
+	 * @param $form_id
+	 * @param $field_id
+	 * @param $value
+	 * @param $entry
+	 * @param $query_string
+	 *
+	 * @return void
+	 */
 	static public function add_entry_approved_hidden_input(  $form_id, $field_id, $value, $entry, $query_string ) {
 
 		if( ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry['id'] ) ) {
