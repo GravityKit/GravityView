@@ -17,6 +17,15 @@ class GravityView_Admin_ApproveEntries {
 	// hold notification messages
 	public $bulk_update_message = '';
 
+	/**
+	 * @var array Set the prefixes here instead of spread across the class
+	 * @since 1.17
+	 */
+	private $bulk_action_prefixes = array(
+		'approve' => 'gvapprove',
+		'unapprove' => 'gvunapprove',
+	);
+
 	function __construct() {
 
 		$this->add_hooks();
@@ -188,7 +197,7 @@ class GravityView_Admin_ApproveEntries {
 		}
 
 		// Check the $bulk_action value against GV actions, see if they're the same. I hate strpos().
-		if( ! empty( $bulk_action ) && preg_match( '/gv(un)?approve/ism', $bulk_action ) ) {
+		if( ! empty( $bulk_action ) && preg_match( '/^('. implode( '|', $this->bulk_action_prefixes ) .')/ism', $bulk_action ) ) {
 			$gv_bulk_action = $bulk_action;
 		}
 
@@ -259,12 +268,12 @@ class GravityView_Admin_ApproveEntries {
 			$entry_count = count( $entries ) > 1 ? sprintf( __( '%d entries', 'gravityview' ), count( $entries ) ) : __( '1 entry', 'gravityview' );
 
 			switch ( $approved_status ) {
-				case 'gvapprove':
+				case $this->bulk_action_prefixes['approve']:
 					self::update_bulk( $entries, 1, $form_id );
 					$this->bulk_update_message = sprintf( __( '%s approved.', 'gravityview' ), $entry_count );
 					break;
 
-				case 'gvunapprove':
+				case $this->bulk_action_prefixes['unapprove']:
 					self::update_bulk( $entries, 0, $form_id );
 					$this->bulk_update_message = sprintf( __( '%s disapproved.', 'gravityview' ), $entry_count );
 					break;
@@ -661,11 +670,11 @@ class GravityView_Admin_ApproveEntries {
 			'GravityView' => array(
 				array(
 					'label' => __( 'Approve', 'gravityview' ),
-					'value' => sprintf( 'gvapprove-%d', $form_id ),
+					'value' => sprintf( '%s-%d', $this->bulk_action_prefixes['approve'], $form_id ),
 				),
 				array(
 					'label' => __( 'Disapprove', 'gravityview' ),
-					'value' => sprintf( 'gvunapprove-%d', $form_id ),
+					'value' => sprintf( '%s-%d', $this->bulk_action_prefixes['unapprove'], $form_id ),
 				),
 			),
 		);

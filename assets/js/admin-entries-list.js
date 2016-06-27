@@ -198,8 +198,12 @@
 			if ( response ) {
 				// If there was a successful AJAX request, toggle the checkbox
 				$target.removeClass( 'loading' ).toggleClass( 'entry_approved', (
-				approved === 'Approved'
+					approved === 'Approved'
 				) );
+
+				// Update the entry filter count
+				window.UpdateCount("gv_approved_count", ( 0 === approved ) ? -1 : 1);
+				window.UpdateCount("gv_disapproved_count", ( 0 === approved ) ? 1 : -1);
 			}
 		} );
 
