@@ -582,9 +582,8 @@ class GravityView_API {
 			// This check allows users to change the hash structure using the
 			// gravityview_entry_hash filter and have the old hashes expire.
 			if( empty( $value ) || $value !== $hash ) {
-
-				gform_update_meta( $id_or_string, 'gravityview_unique_id', $hash );
-
+				do_action( 'gravityview_log_debug', __METHOD__ . ' - Setting hash for entry "'.$id_or_string.'": ' . $hash );
+				gform_update_meta( $id_or_string, 'gravityview_unique_id', $hash, rgar( $entry, 'form_id' ) );
 			}
 
 			$slug = $hash;
@@ -614,7 +613,10 @@ class GravityView_API {
 
             // Get the entry hash
             $hash = self::get_custom_entry_slug( $entry['id'], $entry );
-            gform_update_meta( $entry['id'], 'gravityview_unique_id', $hash );
+
+	        do_action( 'gravityview_log_debug', __METHOD__ . ' - Setting hash for entry "'.$entry['id'].'": ' . $hash );
+
+            gform_update_meta( $entry['id'], 'gravityview_unique_id', $hash, rgar( $entry, 'form_id' ) );
 
         }
     }
