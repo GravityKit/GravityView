@@ -639,14 +639,11 @@ class GravityView_Admin_ApproveEntries {
 		if( RGForms::get_page() === 'entry_list' ) {
 			$approvedcolumn = self::get_approved_column( $form_id );
 
-			wp_register_style( 'gravityview_entries_list', plugins_url('assets/css/admin-entries-list.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
-			wp_enqueue_style( 'gravityview_entries_list' );
 		$form_id = $this->get_form_id();
 
-			$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
+		wp_enqueue_style( 'gravityview_entries_list', plugins_url('assets/css/admin-entries-list.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
 
-			wp_register_script( 'gravityview_gf_entries_scripts', plugins_url('assets/js/admin-entries-list'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version );
-			wp_enqueue_script( 'gravityview_gf_entries_scripts' );
+		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
 			wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array(
 				'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries'),
@@ -660,6 +657,7 @@ class GravityView_Admin_ApproveEntries {
 				'column_title' => __( 'Show entry in directory view?', 'gravityview'),
 				'column_link' => esc_url( add_query_arg( array('sort' => $approvedcolumn) ) ),
 			) );
+		wp_enqueue_script( 'gravityview_gf_entries_scripts', plugins_url('assets/js/admin-entries-list'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version );
 
 		}
 
