@@ -212,8 +212,9 @@ class GravityView_Admin_ApproveEntries {
 	 * @return void|boolean
 	 */
 	public function process_bulk_action() {
-		if ( ! class_exists( 'RGForms' ) ) {
-			return;
+
+		if ( ! is_admin() || ! class_exists( 'GFForms' ) || empty( $_POST ) ) {
+			return false;
 		}
 
 		// The action is formatted like: gvapprove-16 or gvunapprove-16, where the first word is the name of the action and the second is the ID of the form.
