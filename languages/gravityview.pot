@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 1.17\n"
+"Project-Id-Version: GravityView 1.17.1\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
 "MIME-Version: 1.0\n"
@@ -24,15 +24,15 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: gravityview.php:342
+#: gravityview.php:339
 msgid "Top"
 msgstr ""
 
-#: gravityview.php:343
+#: gravityview.php:340
 msgid "Left"
 msgstr ""
 
-#: gravityview.php:343
+#: gravityview.php:340
 msgid "Right"
 msgstr ""
 
@@ -376,91 +376,96 @@ msgstr ""
 msgid "Please select a View"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:69
+#: includes/class-admin-approve-entries.php:123
+#: includes/class-admin-approve-entries.php:208
+msgid "Approved"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:130
+msgid "Disapproved"
+msgstr ""
+
+#: includes/class-admin-approve-entries.php:146
 msgid "GravityView Fields"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:70
+#: includes/class-admin-approve-entries.php:147
 msgid ""
 "Allow administrators to approve or reject entries and users to opt-in or "
 "opt-out of their entries being displayed."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:92
+#: includes/class-admin-approve-entries.php:169
 msgid "Approve/Reject"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:98
+#: includes/class-admin-approve-entries.php:175
 msgid "User Opt-In"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:122
+#: includes/class-admin-approve-entries.php:199
 msgid "Approved? (Admin-only)"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:124
+#: includes/class-admin-approve-entries.php:201
 msgid "Approved?"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:131
-msgid "Approved"
-msgstr ""
-
-#: includes/class-admin-approve-entries.php:144
+#: includes/class-admin-approve-entries.php:221
 msgid "Show Entry on Website"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:146
+#: includes/class-admin-approve-entries.php:223
 msgid "Opt-In"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:154
+#: includes/class-admin-approve-entries.php:231
 msgid "Yes, display my entry on the website"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:231
+#: includes/class-admin-approve-entries.php:335
 msgid "%d entries"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:231
+#: includes/class-admin-approve-entries.php:335
 msgid "1 entry"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:236
+#: includes/class-admin-approve-entries.php:340
 msgid "%s approved."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:241
+#: includes/class-admin-approve-entries.php:345
 msgid "%s disapproved."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:325
+#: includes/class-admin-approve-entries.php:429
 #: tests/unit-tests/GravityView_Uninstall_Test.php:195 uninstall.php:100
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:325
+#: includes/class-admin-approve-entries.php:429
 #: tests/unit-tests/GravityView_Uninstall_Test.php:196 uninstall.php:101
 msgid "Approved the Entry for GravityView"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:600
+#: includes/class-admin-approve-entries.php:728
 msgid "Entry not approved for directory viewing. Click to approve this entry."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:601
+#: includes/class-admin-approve-entries.php:729
 msgid "Entry approved for directory viewing. Click to disapprove this entry."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:602
+#: includes/class-admin-approve-entries.php:730
 msgid "Show entry in directory view?"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:624
+#: includes/class-admin-approve-entries.php:750
 msgid "Approve"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:628
+#: includes/class-admin-approve-entries.php:754
 msgid "Disapprove"
 msgstr ""
 
@@ -844,11 +849,11 @@ msgstr ""
 msgid "No entries match your request."
 msgstr ""
 
-#: includes/class-api.php:808
+#: includes/class-api.php:810
 msgid "&larr; Go back"
 msgstr ""
 
-#: includes/class-api.php:1094
+#: includes/class-api.php:1096
 msgid "Map It"
 msgstr ""
 

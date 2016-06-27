@@ -25,6 +25,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Approve/Disapprove Entry column and Bulk Actions on Gravity Forms Entries page not visible
 * Fixed: "Reply To" reference fixed in `GVCommon::send_email()` function
 * Tweak: Improved speed of approving/disapproving entries
+* Added: Improved logging for creation of Custom Slug hash ids
+* Translations updated:
+    - Updated Chinese translation by [@michaeledi](https://www.transifex.com/user/profile/michaeledi/)
+    - Updated Persian translation by [@azadmojtaba](https://www.transifex.com/user/profile/azadmojtaba/)
 
 = 1.17 on June 14 =
 
