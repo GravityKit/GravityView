@@ -627,7 +627,7 @@ class GravityView_Admin_ApproveEntries {
 
 	function add_scripts_and_styles( $hook ) {
 
-		if( !class_exists( 'RGForms' ) ) {
+		if( ! class_exists( 'RGForms' ) ) {
 
 			do_action( 'gravityview_log_error', 'GravityView_Admin_ApproveEntries[add_scripts_and_styles] RGForms does not exist.' );
 
@@ -636,8 +636,9 @@ class GravityView_Admin_ApproveEntries {
 
 		// enqueue styles & scripts gf_entries
 		// But only if we're on the main Entries page, not on reports pages
-		if( RGForms::get_page() === 'entry_list' ) {
-			$approvedcolumn = self::get_approved_column( $form_id );
+		if( GFForms::get_page() !== 'entry_list' ) {
+			return;
+		}
 
 		$form_id = $this->get_form_id();
 
@@ -645,21 +646,20 @@ class GravityView_Admin_ApproveEntries {
 
 		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
-			wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array(
-				'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries'),
-				'form_id' => $form_id,
-				'show_column' => (int)$this->show_approve_entry_column( $form_id ),
-				'add_bulk_action' => (int)GVCommon::has_cap( 'gravityview_moderate_entries' ),
-				'bulk_actions' => $this->get_bulk_actions( $form_id ),
-				'bulk_message' => $this->bulk_update_message,
-				'approve_title' => __( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravityview'),
-				'unapprove_title' => __( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravityview'),
-				'column_title' => __( 'Show entry in directory view?', 'gravityview'),
-				'column_link' => esc_url( add_query_arg( array('sort' => $approvedcolumn) ) ),
-			) );
 		wp_enqueue_script( 'gravityview_gf_entries_scripts', plugins_url('assets/js/admin-entries-list'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version );
 
-		}
+		wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array(
+			'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries'),
+			'form_id' => $form_id,
+			'show_column' => (int)$this->show_approve_entry_column( $form_id ),
+			'add_bulk_action' => (int)GVCommon::has_cap( 'gravityview_moderate_entries' ),
+			'bulk_actions' => $this->get_bulk_actions( $form_id ),
+			'bulk_message' => $this->bulk_update_message,
+			'approve_title' => __( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravityview'),
+			'unapprove_title' => __( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravityview'),
+			'column_title' => __( 'Show entry in directory view?', 'gravityview'),
+			'column_link' => esc_url( add_query_arg( array('sort' => self::get_approved_column( $form_id ) ) ) ),
+		) );
 
 	}
 
