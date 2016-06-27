@@ -34,7 +34,8 @@ class GravityView_Admin_ApproveEntries {
 		/** gf_entries page - entries table screen */
 
 		// capture bulk actions
-		add_action( 'init', array( $this, 'process_bulk_action') );
+		add_action( 'gform_loaded', array( $this, 'process_bulk_action') );
+
 		// add hidden field with approve status
 		add_action( 'gform_entries_first_column', array( $this, 'add_entry_approved_hidden_input' ), 1, 5 );
 		// process ajax approve entry requests
@@ -167,7 +168,31 @@ class GravityView_Admin_ApproveEntries {
 		<?php
 	}
 
+	/**
+	 * Get the Bulk Action submitted value if it is a GravityView Approve/Unapprove action
+	 *
+	 * @since 1.17.1
+	 *
+	 * @return string|false If the bulk action was GravityView Approve/Unapprove, return the full string (gvapprove-16, gvunapprove-16). Otherwise, return false.
+	 */
+	private function get_gv_bulk_action() {
 
+		$gv_bulk_action = false;
+
+		if( version_compare( GFForms::$version, '2.0', '>=' ) ) {
+			$bulk_action = ( '-1' !== rgpost('action') ) ? rgpost('action') : rgpost('action2');
+		} else {
+			// GF 1.9.x - Bulk action 2 is the bottom bulk action select form.
+			$bulk_action = rgpost('bulk_action') ? rgpost('bulk_action') : rgpost('bulk_action2');
+		}
+
+		// Check the $bulk_action value against GV actions, see if they're the same. I hate strpos().
+		if( ! empty( $bulk_action ) && preg_match( '/gv(un)?approve/ism', $bulk_action ) ) {
+			$gv_bulk_action = $bulk_action;
+		}
+
+		return $gv_bulk_action;
+	}
 
 	/**
 	 * Capture bulk actions - gf_entries table
@@ -181,13 +206,14 @@ class GravityView_Admin_ApproveEntries {
 			return;
 		}
 
+		// The action is formatted like: gvapprove-16 or gvunapprove-16, where the first word is the name of the action and the second is the ID of the form.
+		$bulk_action = $this->get_gv_bulk_action();
+		
+		// gforms_entry_list is the nonce that confirms we're on the right page
 		// gforms_update_note is sent when bulk editing entry notes. We don't want to process then.
-		if ( 'bulk' === RGForms::post( 'action' ) && empty( $_POST['gforms_update_note'] ) ) {
+		if ( $bulk_action && rgpost('gforms_entry_list') && empty( $_POST['gforms_update_note'] ) ) {
 
 			check_admin_referer( 'gforms_entry_list', 'gforms_entry_list' );
-
-			// The action is formatted like: approve-16 or disapprove-16, where the first word is the name of the action and the second is the ID of the form. Bulk action 2 is the bottom bulk action select form.
-			$bulk_action = ! empty( $_POST['bulk_action'] ) ? $_POST['bulk_action'] : $_POST['bulk_action2'];
 
 			/**
 			 * The extra '-' is to make sure that there are at *least* two items in array.
@@ -219,7 +245,8 @@ class GravityView_Admin_ApproveEntries {
 
 			} else {
 
-				$entries = $_POST['lead'];
+				// Changed from 'lead' to 'entry' in 2.0
+				$entries = isset( $_POST['lead'] ) ? $_POST['lead'] : $_POST['entry'];
 
 			}
 
@@ -231,12 +258,12 @@ class GravityView_Admin_ApproveEntries {
 			$entry_count = count( $entries ) > 1 ? sprintf( __( '%d entries', 'gravityview' ), count( $entries ) ) : __( '1 entry', 'gravityview' );
 
 			switch ( $approved_status ) {
-				case 'approve':
+				case 'gvapprove':
 					self::update_bulk( $entries, 1, $form_id );
 					$this->bulk_update_message = sprintf( __( '%s approved.', 'gravityview' ), $entry_count );
 					break;
 
-				case 'unapprove':
+				case 'gvunapprove':
 					self::update_bulk( $entries, 0, $form_id );
 					$this->bulk_update_message = sprintf( __( '%s disapproved.', 'gravityview' ), $entry_count );
 					break;
@@ -622,11 +649,11 @@ class GravityView_Admin_ApproveEntries {
 			'GravityView' => array(
 				array(
 					'label' => __( 'Approve', 'gravityview' ),
-					'value' => sprintf( 'approve-%d', $form_id ),
+					'value' => sprintf( 'gvapprove-%d', $form_id ),
 				),
 				array(
 					'label' => __( 'Disapprove', 'gravityview' ),
-					'value' => sprintf( 'unapprove-%d', $form_id ),
+					'value' => sprintf( 'gvunapprove-%d', $form_id ),
 				),
 			),
 		);
