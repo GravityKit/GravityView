@@ -11,7 +11,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:          	1.17
+ * Version:          	1.17.1
  * Author:            	Katz Web Services, Inc.
  * Author URI:        	https://www.katzwebservices.com
  * Text Domain:       	gravityview
@@ -86,7 +86,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.17';
+	const version = '1.17.1';
 
 	private static $instance;
 
