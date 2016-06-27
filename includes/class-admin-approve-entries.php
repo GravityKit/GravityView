@@ -602,7 +602,27 @@ class GravityView_Admin_ApproveEntries {
 		}
 	}
 
+	/**
+	 * Get the form ID of the form currently being displayed
+	 *
+	 * @since 1.17.1
+	 *
+	 * @return int ID of the current form being displayed
+	 */
+	private function get_form_id() {
 
+		$form_id = GFForms::get('id');
+
+		// If there are no forms identified, use the first form. That's how GF does it.
+		if( empty( $form_id ) && class_exists('RGFormsModel') ) {
+			$forms = gravityview_get_forms();
+			if( !empty( $forms ) ) {
+				$form_id = $forms[0]['id'];
+			}
+		}
+
+		return absint( $form_id );
+	}
 
 
 	function add_scripts_and_styles( $hook ) {
@@ -617,21 +637,11 @@ class GravityView_Admin_ApproveEntries {
 		// enqueue styles & scripts gf_entries
 		// But only if we're on the main Entries page, not on reports pages
 		if( RGForms::get_page() === 'entry_list' ) {
-
-			$form_id = RGForms::get('id');
-
-			// If there are no forms identified, use the first form. That's how GF does it.
-			if( empty( $form_id ) && class_exists('RGFormsModel') ) {
-				$forms = gravityview_get_forms();
-				if( !empty( $forms ) ) {
-					$form_id = $forms[0]['id'];
-				}
-			}
-
 			$approvedcolumn = self::get_approved_column( $form_id );
 
 			wp_register_style( 'gravityview_entries_list', plugins_url('assets/css/admin-entries-list.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
 			wp_enqueue_style( 'gravityview_entries_list' );
+		$form_id = $this->get_form_id();
 
 			$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
