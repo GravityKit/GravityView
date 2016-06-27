@@ -376,7 +376,7 @@ class GravityView_Admin_ApproveEntries {
 
 		$approved = empty( $approved ) ? 0 : 'Approved';
 
-		// calculate approved field id
+		// calculate approved field id once instead of looping through in the update_approved() method
 		$approved_column_id = self::get_approved_column( $form_id );
 
 		foreach( $entries as $entry_id ) {
@@ -430,7 +430,7 @@ class GravityView_Admin_ApproveEntries {
 
 			/**
 			 * @filter `gravityview/approve_entries/add-note` Add a note when the entry has been approved or disapproved?
-			 * @since todo
+			 * @since 1.16.3
 			 * @param bool $add_note True: Yep, add that note! False: Do not, under any circumstances, add that note!
 			 */
 			$add_note = apply_filters( 'gravityview/approve_entries/add-note', true );

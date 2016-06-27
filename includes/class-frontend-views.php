@@ -150,7 +150,7 @@ class GravityView_frontend {
 
 	/**
 	 * Sets the single entry ID and also the entry
-	 * @param bool|int $single_entry
+	 * @param bool|int|string $single_entry
 	 */
 	public function setSingleEntry( $single_entry ) {
 
@@ -167,7 +167,7 @@ class GravityView_frontend {
 
 	/**
 	 * Set the current entry
-	 * @param array|int $entry Entry array or entry ID
+	 * @param array|int $entry Entry array or entry slug or ID
 	 */
 	public function setEntry( $entry ) {
 

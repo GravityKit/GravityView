@@ -203,10 +203,10 @@ module.exports = function(grunt) {
 						var translation,
 							excluded_meta = [
 								'GravityView',
-								'Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.',
-								'http://gravityview.co',
+								'The best, easiest way to display Gravity Forms entries on your website.',
+								'https://gravityview.co',
 								'Katz Web Services, Inc.',
-								'http://www.katzwebservices.com'
+								'https://www.katzwebservices.com'
 							];
 
 						for ( translation in pot.translations[''] ) {
