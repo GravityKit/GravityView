@@ -18,7 +18,7 @@ extract( $gravityview_view->getCurrentField() );
 
 $value = esc_attr( $value );
 
-if( ! empty( $field_settings['link_phone'] ) ) {
+if( ! empty( $field_settings['link_phone'] ) && ! empty( $value ) ) {
 	echo "<a href='tel:{$value}'>$value</a>";
 } else {
 	echo $value;

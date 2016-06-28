@@ -20,6 +20,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.17.2 =
+
+* Fixed: "Hide empty fields" not working when "Make Phone Number Clickable" is checked for Phone fields
+
 = 1.17.1 on June 27 =
 * Fixed: Entry approval with Gravity Forms 2.0
     * Added: Approved/Disapproved filters to Gravity Forms "Entries" page
