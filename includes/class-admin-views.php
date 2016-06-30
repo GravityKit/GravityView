@@ -509,6 +509,7 @@ class GravityView_Admin_Views {
 
 		} // end save view configuration
 
+		do_action('gravityview_view_saved', $post_id, $statii );
 		do_action('gravityview_log_debug', '[save_postdata] Update Post Meta Statuses (also returns false if nothing changed)', array_map( 'intval', $statii ) );
 	}
 
