@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Support for embedding Views in Ultimate Member profile tabs
 * Fixed: Check plugin and theme existence before loading hooks
 * Fixed: "Hide empty fields" not working when "Make Phone Number Clickable" is checked for Phone fields
+* Fixed: Dutch (Netherlands) `nl_NL` translation file fixed
 
 = 1.17.1 on June 27 =
 * Fixed: Entry approval with Gravity Forms 2.0
