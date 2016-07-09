@@ -743,6 +743,7 @@ class GravityView_Welcome {
 					<li><a href="https://github.com/jnicol/standalone-phpenkoder">PHPEnkoder</a> script encodes the email addresses.</li>
 					<li>The Duplicate View functionality is based on the excellent <a href="http://lopo.it/duplicate-post-plugin/">Duplicate Post plugin</a> by Enrico Battocchi</li>
 					<li>Browser testing by <a href="https://www.browserstack.com">BrowserStack</a></li>
+					<li><a href="https://easydigitaldownloads.com/downloads/software-licensing/">Easy Digital Downloads</a> makes auto-upgrades possible</li>
 				</ul>
 
 			</div>
