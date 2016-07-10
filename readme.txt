@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Check plugin and theme existence before loading hooks
 * Fixed: "Hide empty fields" not working when "Make Phone Number Clickable" is checked for Phone fields
 * Fixed: Dutch (Netherlands) `nl_NL` translation file fixed
+* Fixed: Divi theme shortcode buttons and modal form added to Edit View screen
 
 = 1.17.1 on June 27 =
 * Fixed: Entry approval with Gravity Forms 2.0
