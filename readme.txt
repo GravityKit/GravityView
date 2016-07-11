@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Potential PHP warning when adding Password fields in Edit View
 * Fixed: Dutch (Netherlands) `nl_NL` translation file fixed
 * Fixed: Divi theme shortcode buttons and modal form added to Edit View screen
+* Tweak: Use system fonts instead of Open Sans in the admin
 
 = 1.17.1 on June 27 =
 * Fixed: Entry approval with Gravity Forms 2.0
