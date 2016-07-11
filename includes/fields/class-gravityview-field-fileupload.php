@@ -54,7 +54,13 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 		$gravityview_view = GravityView_View::getInstance();
 
-		extract( $gravityview_view->getCurrentField() );
+		$gv_field_array = $gravityview_view->getCurrentField();
+
+		/** @var GF_Field_FileUpload $field */
+		$field = rgar( $gv_field_array, 'field' );
+		$field_settings = rgar( $gv_field_array, 'field_settings' );
+		$entry = rgar( $gv_field_array, 'entry' );
+		$field_value = rgar( $gv_field_array, 'value' );
 
 		$output_arr = array();
 
