@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: File Upload fields potentially displaying PHP warnings
 * Fixed: Check plugin and theme existence before loading hooks
 * Fixed: "Hide empty fields" not working when "Make Phone Number Clickable" is checked for Phone fields
+* Fixed: Potential PHP warning when adding Password fields in Edit View
 * Fixed: Dutch (Netherlands) `nl_NL` translation file fixed
 * Fixed: Divi theme shortcode buttons and modal form added to Edit View screen
 

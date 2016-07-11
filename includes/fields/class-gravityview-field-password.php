@@ -83,12 +83,14 @@ class GravityView_Field_Password extends GravityView_Field {
 
 				// The Enter Password input
 				if( floor( $key ) === floatval( $key ) ) {
-					$field['label'] = $field['parent']->label;
-					$field['adminOnly'] = $field['parent']->adminOnly;
-					$field['adminLabel'] = $field['parent']->adminLabel;
 
-					// Don't show as a child input
-					unset( $field['parent'] );
+					if( ! empty( $field['parent'] ) ) {
+						$field['label']      = $field['parent']->label;
+						$field['adminOnly']  = $field['parent']->adminOnly;
+						$field['adminLabel'] = $field['parent']->adminLabel;
+						// Don't show as a child input
+						unset( $field['parent'] );
+					}
 
 					$fields[ $key ] = $field;
 				} else {
