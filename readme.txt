@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Fixed: "Start Fresh" fails when there are no pre-existing forms in Gravity Forms
 * Added: Support for embedding Views in Ultimate Member profile tabs
+* Fixed: File Upload fields potentially displaying PHP warnings
 * Fixed: Check plugin and theme existence before loading hooks
 * Fixed: "Hide empty fields" not working when "Make Phone Number Clickable" is checked for Phone fields
 * Fixed: Dutch (Netherlands) `nl_NL` translation file fixed

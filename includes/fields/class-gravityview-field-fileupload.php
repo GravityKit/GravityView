@@ -61,6 +61,17 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		// Get an array of file paths for the field.
 		$file_paths = rgar( $field , 'multipleFiles' ) ? json_decode( $value ) : array( $value );
 
+		// The $value JSON was probably truncated; let's check lead_detail_long.
+		if ( ! is_array( $file_paths ) ) {
+			$full_value = RGFormsModel::get_lead_field_value( $entry, $field );
+			$file_paths = json_decode( $full_value );
+		}
+
+		if ( ! is_array( $file_paths ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ': Field does not have a valid image array. JSON decode may have failed.', array( '$value' => $value, '$field_value' => $field_value ) );
+			return $output_arr;
+		}
+
 		// Process each file path
 		foreach( $file_paths as $file_path ) {
 
