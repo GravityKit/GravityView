@@ -759,18 +759,7 @@
 				nonce: gvGlobals.nonce
 			};
 
-			$.post( ajaxurl, data, function ( response ) {
-				if ( response ) {
-					var content = $.parseJSON( response );
-					$( '#directory-header-widgets' ).html( content.header );
-					$( '#directory-footer-widgets' ).html( content.footer );
-					$( '#directory-active-fields' ).append( content.directory );
-					$( '#single-active-fields' ).append( content.single );
-					vcfg.showViewConfig();
-					vcfg.waiting('stop');
-				}
-			} );
-
+			vcfg.updateViewConfig( data );
 		},
 
 		/**
@@ -787,6 +776,16 @@
 				nonce: gvGlobals.nonce
 			};
 
+			vcfg.updateViewConfig( data );
+		},
+
+		/**
+		 * POST to AJAX and insert the returned field HTML into zone DOM
+		 *
+		 * @since 1.17.2
+		 * @param {object} data `action`, `template_id` and `nonce` keys
+		 */
+		updateViewConfig: function ( data ) {
 			$.post( ajaxurl, data, function ( response ) {
 				if ( response ) {
 					var content = $.parseJSON( response );
@@ -798,8 +797,6 @@
 					vcfg.waiting('stop');
 				}
 			} );
-
-
 		},
 
 		/**
