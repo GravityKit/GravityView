@@ -881,6 +881,8 @@ class GravityView_Edit_Entry_Render {
      * Survey fields inject their output using `gform_field_input` filter, but in Edit Entry, the values were empty.
      * We filter the values here because it was the easiest access point: tell the survey field the correct value, GF outputs it.
      *
+     * @TODO: REMOVE; now added in class-gravityview-plugin-hooks-gravity-forms-survey.php
+     * 
      * @since 1.16.4
      *
      * @param string $value Existing value
