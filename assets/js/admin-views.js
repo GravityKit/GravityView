@@ -786,6 +786,8 @@
 		 * @param {object} data `action`, `template_id` and `nonce` keys
 		 */
 		updateViewConfig: function ( data ) {
+			var vcfg = viewConfiguration;
+			
 			$.post( ajaxurl, data, function ( response ) {
 				if ( response ) {
 					var content = $.parseJSON( response );
