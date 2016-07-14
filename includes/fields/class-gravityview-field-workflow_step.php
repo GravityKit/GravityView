@@ -10,7 +10,7 @@ class GravityView_Field_Workflow_Step extends GravityView_Field {
 
 	var $name = 'workflow_step';
 
-	var $group = 'advanced';
+	var $group = 'meta';
 
 	public function __construct() {
 		$this->label = esc_html__( 'Workflow Step', 'gravityview' );
