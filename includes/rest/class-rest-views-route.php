@@ -82,8 +82,9 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 		$item = get_post( $view_id );
 
 		//return a response or error based on some conditional
-		if ( ! is_wp_error( $item ) ) {
+		if ( $item && ! is_wp_error( $item ) ) {
 			$data = $this->prepare_view_for_response( $item, $request );
+
 			return new WP_REST_Response( $data, 200 );
 		}else{
 			return new WP_Error( 'code', sprintf( 'A View with ID #%d was not found.', $view_id ) ); //@todo message
