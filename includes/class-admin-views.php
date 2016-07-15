@@ -509,6 +509,14 @@ class GravityView_Admin_Views {
 
 		} // end save view configuration
 
+		/**
+		 * @action `gravityview_view_saved` After a View has been saved in the admin
+		 * @param int $post_id ID of the View that has been saved
+		 * @param array $statii Array of statuses of the post meta saving processes. If saving worked, each key should be mapped to a value of the post ID (`directory_widgets` => `124`). If failed (or didn't change), the value will be false.
+		 * @since 1.17.2
+		 */
+		do_action('gravityview_view_saved', $post_id, $statii );
+
 		do_action('gravityview_log_debug', '[save_postdata] Update Post Meta Statuses (also returns false if nothing changed)', array_map( 'intval', $statii ) );
 	}
 
