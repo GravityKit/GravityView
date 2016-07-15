@@ -52,7 +52,7 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 		));
 
 		if( empty( $items ) ) {
-			return new WP_Error( 'gravityview-no-views', __( 'No views found.', 'gravityview' ) ); //@todo message
+			return new WP_Error( 'gravityview-no-views', __( 'No Views found.', 'gravityview' ) ); //@todo message
 		}
 
 		$data = array();
@@ -86,7 +86,7 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 			$data = $this->prepare_view_for_response( $item, $request );
 			return new WP_REST_Response( $data, 200 );
 		}else{
-			return new WP_Error( 'code', __( 'Fail Message', 'gravityview' ) ); //@todo message
+			return new WP_Error( 'code', sprintf( 'A View with ID #%d was not found.', $view_id ) ); //@todo message
 		}
 
 	}
@@ -188,7 +188,7 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 
 			return new WP_REST_Response( $data, 200 );
 		}else{
-			return new WP_Error( 'code', __( 'Fail Message', 'gravityview' ) ); //@todo message
+			return new WP_Error( 'code', __('You have attempted to view an entry that is not visible or may not exist.', 'gravityview' ) ); //@todo message
 		}
 
 	}
