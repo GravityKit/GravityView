@@ -34,6 +34,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Notes:__
 
+* Added: `gravityview_view_saved` action, triggered after a View has been saved in the admin
 * Modified: Changed the Phone field template to use `gravityview_get_link()` to generate the anchor tag
 
 = 1.17.1 on June 27 =
