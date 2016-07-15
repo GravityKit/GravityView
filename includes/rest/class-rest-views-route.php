@@ -208,6 +208,8 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 
 		$view_id = $view_post->ID;
 
+		// TODO: Configure widget output to match spec
+		// https://docs.google.com/document/d/1n8nB96EK4zCMN9AE8FEzK5SiVG77Slfzkcj4JtSdZNE/edit#
 		$item = GravityView_View_Data::getInstance()->get_view( $view_id );
 
 		// Add all the WP_Post data
@@ -215,22 +217,9 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 
 		unset( $view_post['to_ping'], $view_post['ping_status'], $view_post['pinged'], $view_post['post_type'], $view_post['filter'], $view_post['post_category'], $view_post['tags_input'], $view_post['post_content'], $view_post['post_content_filtered'] );
 
-
 		$return = wp_parse_args( $item, $view_post );
 
-		/*$return['form_id'] = gravityview_get_form_id( $view_id );
-		$return['form'] = ! empty( $return['form_id'] ) ? gravityview_get_form( $return['form_id'] ) : array();
-		$return['template_id'] = gravityview_get_template_id( $view_id );
-		$return['fields'] = GravityView_View_Data::getInstance()->get_fields( $view_id );
-		$return['widgets'] = get_post_meta( $view_id, '_gravityview_directory_widgets', true );*/
-
 		$return['title'] = $return['post_title'];
-
-		// TODO: Configure layout
-
-		// TODO: Configure widget output to match spec
-		// https://docs.google.com/document/d/1n8nB96EK4zCMN9AE8FEzK5SiVG77Slfzkcj4JtSdZNE/edit#
-		$return['widgets']['above'] = rgars( $return, 'widgets/header_top' );
 
 		$return['settings'] = isset( $return['atts'] ) ? $return['atts'] : array();
 		unset( $return['atts'], $return['view_id'] );
