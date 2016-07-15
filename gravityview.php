@@ -1,24 +1,19 @@
 <?php
 /**
  * @file gravityview.php
- *
- * The GravityView plugin
- *
- * Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- *
  * @package   GravityView
  * @license   GPL2+
  * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
- * @copyright Copyright 2014, Katz Web Services, Inc.
+ * @link      https://gravityview.co
+ * @copyright Copyright 2016, Katz Web Services, Inc.
  *
  * @wordpress-plugin
  * Plugin Name:       	GravityView
- * Plugin URI:        	http://gravityview.co
- * Description:       	Create directories based on a Gravity Forms form, insert them using a shortcode, and modify how they output.
- * Version:          	1.15.2
+ * Plugin URI:        	https://gravityview.co
+ * Description:       	The best, easiest way to display Gravity Forms entries on your website.
+ * Version:          	1.17.1
  * Author:            	Katz Web Services, Inc.
- * Author URI:        	http://www.katzwebservices.com
+ * Author URI:        	https://www.katzwebservices.com
  * Text Domain:       	gravityview
  * License:           	GPLv2 or later
  * License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
@@ -29,6 +24,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
+
+
 
 /** Constants */
 
@@ -89,7 +86,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.15.2';
+	const version = '1.17.1';
 
 	private static $instance;
 
@@ -146,10 +143,11 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
 
 		// Load fields
+		include_once( GRAVITYVIEW_DIR . 'includes/fields/class-gravityview-fields.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/fields/class-gravityview-field.php' );
 
 		// Load all field files automatically
-		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/*.php' ) as $gv_field_filename ) {
+		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/class-gravityview-field*.php' ) as $gv_field_filename ) {
 			include_once( $gv_field_filename );
 		}
 
@@ -160,6 +158,7 @@ final class GravityView_Plugin {
 		// @todo: Convert to a scan of the directory or a method where this all lives
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/edit-entry/class-edit-entry.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/extensions/delete-entry/class-delete-entry.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/extensions/entry-notes/class-gravityview-field-notes.php' );
 
 		// Load WordPress Widgets
 		include_once( GRAVITYVIEW_DIR .'includes/wordpress-widgets/register-wordpress-widgets.php' );
@@ -174,7 +173,7 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-logging.php' );
 
 		include_once( GRAVITYVIEW_DIR . 'includes/class-ajax.php' );
-		include_once( GRAVITYVIEW_DIR . 'includes/class-settings.php');
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-settings.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-frontend-views.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-bar.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-entry-list.php' );
@@ -221,7 +220,7 @@ final class GravityView_Plugin {
 		set_transient( '_gv_activation_redirect', true, 60 );
 
 		// Clear settings transient
-		delete_transient( 'redux_edd_license_license_valid' );
+		delete_transient( 'gravityview_edd-activate_valid' );
 
 		GravityView_Roles_Capabilities::get_instance()->add_caps();
 	}
@@ -270,7 +269,8 @@ final class GravityView_Plugin {
 	 */
 	public function load_plugin_textdomain() {
 
-		$loaded = load_plugin_textdomain( 'gravityview', false, '/languages/' );
+		$loaded = load_plugin_textdomain( 'gravityview', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		
 		if ( ! $loaded ) {
 			$loaded = load_muplugin_textdomain( 'gravityview', '/languages/' );
 		}
@@ -300,12 +300,17 @@ final class GravityView_Plugin {
 	/**
 	 * Function to launch frontend objects
 	 *
+	 * @since 1.17 Added $force param
+	 *
 	 * @access public
+	 *
+	 * @param bool $force Whether to force loading, even if GravityView_Plugin::is_admin() returns true
+	 *
 	 * @return void
 	 */
-	public function frontend_actions() {
+	public function frontend_actions( $force = false ) {
 
-		if( self::is_admin() ) { return; }
+		if( self::is_admin() && ! $force ) { return; }
 
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-image.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-template.php' );

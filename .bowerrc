@@ -1,0 +1,8 @@
+{
+  "directory": "./assets/lib/",
+  "ignoredDependencies": [
+    "jquery"
+  ],
+  "analytics": false,
+  "timeout": 120000
+}

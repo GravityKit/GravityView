@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-post-title.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 /**
  * Add custom options for date fields
@@ -12,6 +17,11 @@ class GravityView_Field_Post_Title extends GravityView_Field {
 	var $_gf_field_class_name = 'GF_Field_Post_Title';
 
 	var $group = 'post';
+
+	public function __construct() {
+		$this->label = esc_html__( 'Post Title', 'gravityview' );
+		parent::__construct();
+	}
 
 	function field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
 

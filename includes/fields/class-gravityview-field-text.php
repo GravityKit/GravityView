@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-text.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 class GravityView_Field_Text extends GravityView_Field {
 
@@ -10,6 +15,10 @@ class GravityView_Field_Text extends GravityView_Field {
 
 	var $group = 'standard';
 
+	public function __construct() {
+		$this->label = esc_html__( 'Single Line Text', 'gravityview' );
+		parent::__construct();
+	}
 }
 
 new GravityView_Field_Text;

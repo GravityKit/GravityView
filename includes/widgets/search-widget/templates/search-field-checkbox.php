@@ -16,7 +16,7 @@ if( empty( $search_field['choices'] ) ) {
 }
 
 ?>
-<div class="gv-search-box">
+<div class="gv-search-box gv-search-field-checkbox">
 	<?php if( ! gv_empty( $search_field['label'], false ) ) { ?>
 	<label for=search-box-<?php echo esc_attr( $search_field['name'] ); ?>><?php echo esc_html( $search_field['label'] ); ?></label>
 	<?php } ?>

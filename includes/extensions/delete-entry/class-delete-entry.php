@@ -39,6 +39,7 @@ final class GravityView_Delete_Entry {
 	 * @since 1.9.2
 	 */
 	private function add_hooks() {
+
 		add_action( 'wp', array( $this, 'process_delete' ), 10000 );
 
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field'), 10, 3 );
@@ -55,6 +56,9 @@ final class GravityView_Delete_Entry {
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
 
 		add_action( 'gravityview/edit-entry/publishing-action/after', array( $this, 'add_delete_button'), 10, 3 );
+
+		add_action ( 'gravityview/delete-entry/deleted', array( $this, 'process_connected_posts' ), 10, 2 );
+		add_action ( 'gravityview/delete-entry/trashed', array( $this, 'process_connected_posts' ), 10, 2 );
 	}
 
 	/**
@@ -305,12 +309,15 @@ final class GravityView_Delete_Entry {
 	function process_delete() {
 
 		// If the form is submitted
-		if( RGForms::get("action") === "delete") {
+		if( isset( $_GET['action'] ) && 'delete' === $_GET['action'] && isset( $_GET['entry_id'] ) ) {
 
-			$nonce_key = self::get_nonce_key( $_GET['entry_id'] );
+			// Make sure it's a GravityView request
+			$valid_nonce_key = wp_verify_nonce( $_GET['delete'], self::get_nonce_key( $_GET['entry_id'] ) );
 
-			// Make sure it's a valid request
-			check_admin_referer( $nonce_key, 'delete' );
+			if( ! $valid_nonce_key ) {
+				do_action('gravityview_log_debug', __METHOD__ . ' Delete entry not processed: nonce validation failed.' );
+				return;
+			}
 
 			// Get the entry slug
 			$entry_slug = esc_attr( $_GET['entry_id'] );
@@ -332,7 +339,7 @@ final class GravityView_Delete_Entry {
 				} else {
 
 					// Delete the entry
-					$delete_response = $this->delete_or_trash_entry( $entry['id'] );
+					$delete_response = $this->delete_or_trash_entry( $entry );
 
 					if( is_wp_error( $delete_response ) ) {
 
@@ -370,7 +377,7 @@ final class GravityView_Delete_Entry {
 
 		} // endif action is delete.
 
-	} // process_delete
+	}
 
 	/**
 	 * Delete mode: permanently delete, or move to trash?
@@ -394,8 +401,10 @@ final class GravityView_Delete_Entry {
 	 * @see GFAPI::delete_entry()
 	 * @return WP_Error|boolean GFAPI::delete_entry() returns a WP_Error on error
 	 */
-	private function delete_or_trash_entry( $entry_id ) {
+	private function delete_or_trash_entry( $entry ) {
 
+		$entry_id = $entry['id'];
+		
 		$mode = $this->get_delete_mode();
 
 		if( 'delete' === $mode ) {
@@ -407,6 +416,14 @@ final class GravityView_Delete_Entry {
 
 			if( ! is_wp_error( $delete_response ) ) {
 				$delete_response = 'deleted';
+
+				/**
+				 * @action `gravityview/delete-entry/deleted` Triggered when an entry is deleted
+				 * @since 1.16.4
+				 * @param  int $entry_id ID of the Gravity Forms entry
+				 * @param  array $entry Deleted entry array
+				*/
+				do_action( 'gravityview/delete-entry/deleted', $entry_id, $entry );
 			}
 
 			do_action( 'gravityview_log_debug', __METHOD__ . ' Delete response: ', $delete_response );
@@ -421,6 +438,15 @@ final class GravityView_Delete_Entry {
 			if( ! $trashed ) {
 				$delete_response = new WP_Error( 'trash_entry_failed', __('Moving the entry to the trash failed.', 'gravityview' ) );
 			} else {
+
+				/**
+				 * @action `gravityview/delete-entry/trashed` Triggered when an entry is trashed
+				 * @since 1.16.4
+				 * @param  int $entry_id ID of the Gravity Forms entry
+				 * @param  array $entry Deleted entry array
+				 */
+				do_action( 'gravityview/delete-entry/trashed', $entry_id, $entry );
+
 				$delete_response = 'trashed';
 			}
 
@@ -428,6 +454,47 @@ final class GravityView_Delete_Entry {
 		}
 
 		return $delete_response;
+	}
+
+	/**
+	 * Delete or trash a post connected to an entry
+	 *
+	 * @since 1.17
+	 *
+	 * @param int $entry_id ID of entry being deleted/trashed
+	 * @param array $entry Array of the entry being deleted/trashed
+	 */
+	public function process_connected_posts( $entry_id = 0, $entry = array() ) {
+
+		// The entry had no connected post
+		if( empty( $entry['post_id'] ) ) {
+			return;
+		}
+
+		/**
+		 * @filter `gravityview/delete-entry/delete-connected-post` Should posts connected to an entry be deleted when the entry is deleted?
+		 * @since 1.17
+		 * @param boolean $delete_post If trashing an entry, trash the post. If deleting an entry, delete the post. Default: true
+		 */
+		$delete_post = apply_filters( 'gravityview/delete-entry/delete-connected-post', true );
+		
+		if( false === $delete_post ) {
+			return;
+		}
+
+		$action = current_action();
+
+		if( 'gravityview/delete-entry/deleted' === $action ) {
+			$result = wp_delete_post( $entry['post_id'], true );
+		} else {
+			$result = wp_trash_post( $entry['post_id'] );
+		}
+
+		if( false === $result ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ' (called by '.$action.'): Error processing the Post connected to the entry.', $entry );
+		} else {
+			do_action( 'gravityview_log_debug', __METHOD__ . ' (called by '.$action.'): Successfully processed Post connected to the entry.', $entry );
+		}
 	}
 
 	/**

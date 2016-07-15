@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-creditcard.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 class GravityView_Field_CreditCard extends GravityView_Field {
 
@@ -10,6 +15,10 @@ class GravityView_Field_CreditCard extends GravityView_Field {
 
 	var $group = 'pricing';
 
+	public function __construct() {
+		$this->label = esc_html__( 'Credit Card', 'gravityview' );
+		parent::__construct();
+	}
 }
 
 new GravityView_Field_CreditCard;

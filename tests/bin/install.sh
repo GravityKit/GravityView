@@ -1,20 +1,35 @@
 #!/usr/bin/env bash
 
-if [ $# -lt 3 ]; then
-	echo "usage: $0 <db-name> <db-user> <db-pass> [db-host] [wp-version]"
+if [ "$1" == 'help' ]; then
+    print_gv_help
 	exit 1
 fi
 
-DB_NAME=$1
-DB_USER=$2
-DB_PASS=$3
-DB_HOST=${4-localhost}
-WP_VERSION=${5-latest}
-
+DB_NAME="${1-gravityview_test}"
+DB_USER="${2-root}"
+DB_PASS="${3-root}"
+DB_HOST="${4-localhost}"
+WP_VERSION="${5-latest}"
+PATH_TO_GF_ZIP="${6}"
 WP_TESTS_DIR="${PWD}/tmp/wordpress-tests-lib"
+
 WP_CORE_DIR="${PWD}/tmp/wordpress/"
 
-set -ex
+# TRAVIS_GRAVITY_FORMS_DL_URL variable will be set in TravisCI
+GRAVITY_FORMS_DL_PATH_OR_URL="${6-$TRAVIS_GRAVITY_FORMS_DL_URL}"
+
+# Get current WordPress plugin directory
+TESTS_PLUGINS_DIR="$(dirname "${PWD}")"
+
+# -e Exit immediately if a command exits with a non-zero status
+set -e
+
+print_gv_help() {
+    echo "usage: $0 [db-name (default: root)] [db-user (default: root)] [db-pass (default: root)] [db-host (default: localhost)] [wp-version (default: latest)] [gravity-forms-zip-url]"
+    echo "example using remote .zip: $0 gravityview_test root root localhost latest http://example.com/path/to/gravityview.zip"
+    echo "example using local path: $0 gravityview_test root root localhost latest ../gravityforms/"
+    echo "If Gravity Forms is not installed locally, you must provide either a path to a local Gravity Forms directory, or a full URL that points to a .zip file of Gravity Forms. If it is, you can leave the argument blank."
+}
 
 install_wp() {
 	mkdir -p $WP_CORE_DIR
@@ -32,10 +47,31 @@ install_wp() {
 }
 
 install_gravity_forms(){
-	curl -L https://github.com/gravityforms/gravityforms/archive/develop.tar.gz --output /tmp/gravityforms.tar.gz --silent
+    mkdir -p $WP_CORE_DIR
 
-	mkdir -p $PWD/tmp/gravityforms
-	tar --strip-components=1 -zxf /tmp/gravityforms.tar.gz -C $PWD/tmp/gravityforms
+    # If you have passed a path, check if it exists. If it does, use that as the Gravity Forms location
+    if [[ $GRAVITY_FORMS_DL_PATH_OR_URL != '' && -d $GRAVITY_FORMS_DL_PATH_OR_URL ]]; then
+
+        rsync -ar --exclude=.git "$GRAVITY_FORMS_DL_PATH_OR_URL" "$PWD"/tmp/gravityforms/
+
+    # Otherwise,
+    elif [[ $GRAVITY_FORMS_DL_PATH_OR_URL != '' ]]; then
+
+        # Pull from remote
+	    curl -L "$GRAVITY_FORMS_DL_PATH_OR_URL" --output "$PWD"/tmp/gravityforms.zip
+
+	    # -o will overwrite files. -q is quiet mode
+	    unzip -o -q "$PWD"/tmp/gravityforms.zip -d "$PWD"/tmp/
+
+    # Otherwise, if you have Gravity Forms installed locally, use that.
+    else
+        if [[ -d "$TESTS_PLUGINS_DIR"/gravityforms ]]; then
+            rsync -ar --exclude=.git "$TESTS_PLUGINS_DIR"/gravityforms "$PWD"/tmp/
+        else
+            print_gv_help
+            exit 1
+        fi
+	fi
 }
 
 install_rest_api() {
@@ -88,8 +124,8 @@ install_db() {
 	mysqladmin CREATE $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA;
 }
 
-install_wp
 install_gravity_forms
+install_wp
 install_rest_api
 install_test_suite
 install_db

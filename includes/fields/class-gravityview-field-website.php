@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-website.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 /**
  * Add custom options for date fields
@@ -12,6 +17,11 @@ class GravityView_Field_Website extends GravityView_Field {
 	var $_gf_field_class_name = 'GF_Field_Website';
 
 	var $group = 'advanced';
+
+	public function __construct() {
+		$this->label = esc_html__( 'Website', 'gravityview' );
+		parent::__construct();
+	}
 
 	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 

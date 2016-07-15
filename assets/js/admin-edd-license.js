@@ -62,9 +62,9 @@
 						hidebuttons = $('[data-edd_action=activate_license]' );
 						showbuttons = $('[data-edd_action=deactivate_license],[data-edd_action=check_license]' );
 						break;
+					default:
 					case 'deactivated':
 					case 'site_inactive':
-					default:
 						hidebuttons = $('[data-edd_action=deactivate_license]' );
 						showbuttons = $('[data-edd_action=activate_license],[data-edd_action=check_license]' );
 						break;
@@ -86,17 +86,26 @@
 
 		/**
 		 * Show the HTML of the message
-		 * @param message HTML for new status
+		 * @param {string} selector jQuery selector to replace content with
+		 * @param {string} message HTML for new status
 		 */
-		update_status: function( message ) {
+		update_status: function( selector, message ) {
 			if( message !== '' ) {
-				$( '#gv-edd-status' ).replaceWith( message );
+				$( selector ).replaceWith( message ).fadeIn();
 			}
 		},
 
 		set_pending_message: function( message ) {
+
+			// Hide the license details
+			$('.gv-license-details')
+				.attr( 'aria-busy', 'true' )
+				.find('ul')
+					.animate( { opacity: 0.5 }, 1000 );
+
 			$( '#gv-edd-status' )
 				.addClass('pending')
+				.attr( 'aria-busy', 'true' )
 				.html( '<p>' + message + '</p>');
 		},
 
@@ -146,14 +155,14 @@
 
 					response_object = $.parseJSON( second_try );
 
-				} catch( exception ) {
-
+				} catch( e ) {
+					
 					console.log( '*** \n*** \n*** Error-causing response:\n***\n***\n', string );
 
 					var error_message = 'JSON failed: another plugin caused a conflict with completing this request. Check your browser\'s Javascript console to view the invalid content.';
 
 					response_object = {
-						message: '<div id="gv-edd-status" class="gv-edd-message inline error"><p>' + error_message + '</p></div>'
+						message: '<div id="gv-edd-status" aria-live="polite" class="gv-edd-message inline error"><p>' + error_message + '</p></div>'
 					};
 				}
 			}
@@ -178,7 +187,8 @@
 					$( document ).trigger( 'gv-edd-' + response_object.license, response_object );
 				}
 
-				GV_EDD.update_status( response_object.message );
+				GV_EDD.update_status( '#gv-edd-status', response_object.message );
+				GV_EDD.update_status( '.gv-license-details', response_object.details );
 
 				$( '#gform-settings')
 					.css('cursor', 'default')
@@ -210,7 +220,7 @@
 					GV_EDD.deactivate_button.removeClass( 'button-disabled' );
 					GV_EDD.activate_button.fadeIn(function() {
 						$(this).css( "display", "inline-block" );
-					})
+					});
 				} );
 
 		},

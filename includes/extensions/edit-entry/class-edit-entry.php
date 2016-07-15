@@ -44,9 +44,7 @@ class GravityView_Edit_Entry {
         $this->load_components( 'render' );
 
         // If GF User Registration Add-on exists
-        if( class_exists( 'GFUser' ) ) {
-            $this->load_components( 'user-registration' );
-        }
+        $this->load_components( 'user-registration' );
 
         $this->add_hooks();
 
@@ -191,7 +189,7 @@ class GravityView_Edit_Entry {
 		}
 
 		$add_fields = array(
-			'post_image',
+			//'post_image',
 			'product',
 			'quantity',
 			'shipping',
