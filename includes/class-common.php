@@ -1041,6 +1041,32 @@ class GVCommon {
 		return get_post_meta( $post_id, '_gravityview_directory_fields', true );
 	}
 
+	/**
+	 * Get the widget configuration for a View
+	 *
+	 * @param int $view_id View ID
+	 *
+	 * @return array Multi-array of widgets, with the slug of each widget "zone" being the key ("header_top"), and each widget having their own "id"
+	 */
+	public static function get_directory_widgets( $view_id ) {
+
+		$view_widgets = get_post_meta( $view_id, '_gravityview_directory_widgets', true );
+
+		$defaults = array(
+			'header_top' => array(),
+			'header_left' => array(),
+			'header_right' => array(),
+			'footer_left' => array(),
+			'footer_right' => array(),
+		);
+
+		$directory_widgets = wp_parse_args( $view_widgets, $defaults );
+
+		$directory_widgets = gv_map_deep( $directory_widgets, 'json_decode' );
+
+		return $directory_widgets;
+	}
+
 
 	/**
 	 * Render dropdown (select) with the list of sortable fields from a form ID

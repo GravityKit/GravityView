@@ -237,37 +237,31 @@ function gravityview_get_registered_templates() {
 }
 
 /**
- * Get the field configuration for the View
+ * Alias of GVCommon::get_directory_fields()
  *
- * array(
+ * @since TODO
  *
- * 	[other zones]
- *
- * 	'directory_list-title' => array(
- *
- *   	[other fields]
- *
- *  	'5372653f25d44' => array(
- *  		'id' => string '9' (length=1)
- *  		'label' => string 'Screenshots' (length=11)
- *			'show_label' => string '1' (length=1)
- *			'custom_label' => string '' (length=0)
- *			'custom_class' => string 'gv-gallery' (length=10)
- * 			'only_loggedin' => string '0' (length=1)
- *			'only_loggedin_cap' => string 'read' (length=4)
- *  	)
- *
- * 		[other fields]
- *  )
- *
- * 	[other zones]
- * )
- *
+ * @see GVCommon::get_directory_fields()
  * @param  int $post_id View ID
  * @return array          Multi-array of fields with first level being the field zones. See code comment.
  */
 function gravityview_get_directory_fields( $post_id ) {
 	return GVCommon::get_directory_fields( $post_id );
+}
+
+/**
+ * Alias of GVCommon::get_directory_widgets()
+ *
+ * @since TODO
+ *
+ * @see GVCommon::get_directory_widgets()
+ *
+ * @param int $view_id View ID
+ *
+ * @return array Multi-array of widgets, with the slug of each widget "zone" being the key
+ */
+function gravityview_get_directory_widgets( $view_id ) {
+	return GVCommon::get_directory_widgets( $view_id );
 }
 
 /**
