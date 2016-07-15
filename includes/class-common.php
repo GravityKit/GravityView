@@ -87,7 +87,7 @@ class GVCommon {
 	 * Get all existing Views
 	 *
 	 * @since  1.5.4
-	 * @return array Array of Views as `WP_Post`. Empty array if none found.
+	 * @return WP_Post[] Array of Views as `WP_Post`. Empty array if none found.
 	 */
 	public static function get_all_views( $args = array() ) {
 

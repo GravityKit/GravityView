@@ -389,13 +389,12 @@ final class GravityView_Plugin {
 		include_once( GRAVITYVIEW_DIR . 'includes/rest/class-rest-route.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/rest/class-rest-views-route.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/rest/class-rest-entries-route.php' );
+
 		$views = new GravityView_REST_Views_Route();
 		$views->register_routes();
+
 		$entries = new GravityView_REST_Entries_Route();
 		$entries->register_routes();
-
-
-
 	}
 
 } // end class GravityView_Plugin

@@ -197,10 +197,10 @@ class GravityView_REST_Views_Route extends GravityView_REST_Route {
 	/**
 	 * Prepare the item for the REST response
 	 *
-	 * @todo ZACK - Use this as genric prepare for response or remvoe from usage
+	 * @todo ZACK - Use this as generic prepare for response or remove from usage
 	 *
 	 * @since 1.14.4
-	 * @param mixed $item WordPress representation of the item.
+	 * @param WP_Post $view_post WordPress representation of the item.
 	 * @param WP_REST_Request $request Request object.
 	 * @return mixed
 	 */
