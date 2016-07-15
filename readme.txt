@@ -27,6 +27,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: "Hide empty fields" not working when "Make Phone Number Clickable" is checked for Phone fields
 * Fixed: Dutch (Netherlands) `nl_NL` translation file fixed
 
+__Developer Notes:__
+
+* Added: `gravityview_view_saved` action, triggered after a View has been saved in the admin
+
 = 1.17.1 on June 27 =
 * Fixed: Entry approval with Gravity Forms 2.0
     * Added: Approved/Disapproved filters to Gravity Forms "Entries" page
