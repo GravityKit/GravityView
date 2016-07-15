@@ -1,7 +1,7 @@
 <?php
 /**
  * @file class-gravityview-field-workflow_final_status.php
- * @since TODO
+ * @since 1.17.2
  * @package GravityView
  * @subpackage includes\fields
  */

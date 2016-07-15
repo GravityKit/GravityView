@@ -3,7 +3,7 @@ Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
 Tested up to: 4.5.2
 Stable tag: trunk
-Contributors: katzwebservices, luistinygod
+Contributors: The GravityView Team
 License: GPL 3 or higher
 
 Beautifully display and edit your Gravity Forms entries.

@@ -1117,7 +1117,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 *
 	 * @see https://github.com/10up/flexibility
 	 *
-	 * @since TODO
+	 * @since 1.17
 	 *
 	 * @return void
 	 */
@@ -1130,7 +1130,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	/**
 	 * If the current visitor is running IE 8 or 9, enqueue Flexibility
 	 *
-	 * @since TODO
+	 * @since 1.17
 	 *
 	 * @return void
 	 */

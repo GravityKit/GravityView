@@ -803,7 +803,7 @@
 
 		/**
 		 * Toggle the "loading" indicator
-		 * @since TODO
+		 * @since 1.16.5
 		 * @param {string} action "start" or "stop"
 		 */
 		waiting: function( action ) {
