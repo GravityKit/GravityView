@@ -32,6 +32,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Divi theme shortcode buttons and modal form added to Edit View screen
 * Tweak: Use system fonts instead of Open Sans in the admin
 
+__Developer Notes:__
+
+* Modified: Changed the Phone field template to use `gravityview_get_link()` to generate the anchor tag
+
 = 1.17.1 on June 27 =
 * Fixed: Entry approval with Gravity Forms 2.0
     * Added: Approved/Disapproved filters to Gravity Forms "Entries" page
