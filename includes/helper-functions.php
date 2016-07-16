@@ -431,6 +431,41 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 	return empty( $value );
 }
 
+/**
+ * If content is JSON, decode it. Otherwise, return the passed value
+ *
+ * @since TODO
+ *
+ * @see json_decode() for more information about the function parameters
+ *
+ * @param string $value The string that may be decoded
+ * @param bool $assoc [optional] When `true`, returned objects will be converted into associative arrays
+ * @param int $depth [optional] User specified recursion depth.
+ * @param int $options [optional] Bitmask of JSON decode options
+ *
+ * @return array|mixed|object|string If $value is JSON, returns the response from `json_decode()`. Otherwise, returns original value.
+ */
+function gv_maybe_json_decode( $value, $assoc = false, $depth = 512, $options = 0 ) {
+
+	if( ! is_string( $value ) ) {
+		return $value;
+	}
+
+	$decoded = json_decode( $value );
+
+	// There was a JSON error (PHP 5.3+)
+	if( function_exists('json_last_error') && JSON_ERROR_NONE !== json_last_error() ) {
+		return $value;
+	}
+
+	// It wasn't JSON (PHP < 5.3 fallback)
+	if( is_null( $decoded ) ) {
+		return $value;
+	}
+
+	return $decoded;
+}
+
 
 /**
  * Maps a function to all non-iterable elements of an array or an object.
