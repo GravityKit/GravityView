@@ -259,11 +259,12 @@ function gravityview_get_directory_fields( $post_id ) {
  * @see GVCommon::get_directory_widgets()
  *
  * @param int $view_id View ID
+ * @param bool $json_decode Whether to JSON-decode the widget values. Default: `false`
  *
  * @return array Multi-array of widgets, with the slug of each widget "zone" being the key
  */
-function gravityview_get_directory_widgets( $view_id ) {
-	return GVCommon::get_directory_widgets( $view_id );
+function gravityview_get_directory_widgets( $view_id, $json_decode = false ) {
+	return GVCommon::get_directory_widgets( $view_id, $json_decode );
 }
 
 /**
