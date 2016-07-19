@@ -513,7 +513,7 @@ class GravityView_Settings extends GFAddOn {
 			'license_key_response' => '',
 			'license_key_status' => '',
 			'support-email' => get_bloginfo( 'admin_email' ),
-			'no-conflict-mode' => '0',
+			'no-conflict-mode' => '1',
 			'support_port' => '1',
 			'delete-on-uninstall' => '0',
 			'flexbox_search' => '1',
