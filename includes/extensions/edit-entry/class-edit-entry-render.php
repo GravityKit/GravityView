@@ -300,7 +300,17 @@ class GravityView_Edit_Entry_Render {
              */
             unset( $_GET['page'] );
 
+            $date_created = $this->entry['date_created'];
+
+            /**
+             * @hack to force Gravity Forms to use $read_value_from_post in GFFormsModel::save_lead()
+             * @since 1.17.2
+             */
+            unset( $this->entry['date_created'] );
+
             GFFormsModel::save_lead( $form, $this->entry );
+
+            $this->entry['date_created'] = $date_created;
 
             // If there's a post associated with the entry, process post fields
             if( !empty( $this->entry['post_id'] ) ) {
