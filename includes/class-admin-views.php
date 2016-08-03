@@ -509,14 +509,6 @@ class GravityView_Admin_Views {
 
 		} // end save view configuration
 
-		/**
-		 * @action `gravityview_view_saved` After a View has been saved in the admin
-		 * @param int $post_id ID of the View that has been saved
-		 * @param array $statii Array of statuses of the post meta saving processes. If saving worked, each key should be mapped to a value of the post ID (`directory_widgets` => `124`). If failed (or didn't change), the value will be false.
-		 * @since 1.17.2
-		 */
-		do_action('gravityview_view_saved', $post_id, $statii );
-
 		do_action('gravityview_log_debug', '[save_postdata] Update Post Meta Statuses (also returns false if nothing changed)', array_map( 'intval', $statii ) );
 	}
 
@@ -992,6 +984,8 @@ class GravityView_Admin_Views {
 
 			$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
+			wp_enqueue_script( 'gravityview_onboarding', plugins_url( 'assets/js/admin-onboarding' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'gravityview_views_scripts' ), GravityView_Plugin::version );
+
 			//enqueue scripts
 			wp_enqueue_script( 'gravityview_views_scripts', plugins_url( 'assets/js/admin-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie', 'jquery-ui-datepicker', 'underscore' ), GravityView_Plugin::version );
 
@@ -1042,7 +1036,7 @@ class GravityView_Admin_Views {
 		$filter = current_filter();
 
 		if( preg_match('/script/ism', $filter ) ) {
-			$allow_scripts = array( 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-support', 'gravityview-jquery-cookie', 'gravityview_views_datepicker',
+			$allow_scripts = array( 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-support', 'gravityview-jquery-cookie', 'gravityview_views_datepicker', 'gravityview_onboarding',
 			'sack', 'gform_gravityforms', 'gform_forms', 'gform_form_admin', 'jquery-ui-autocomplete' );
 			$registered = array_merge( $registered, $allow_scripts );
 		} elseif( preg_match('/style/ism', $filter ) ) {
