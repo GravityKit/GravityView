@@ -419,7 +419,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		$get = stripslashes_deep( $get );
 
-		$get = gv_map_deep( $get, 'urldecode' );
+		$get = gv_map_deep( $get, 'rawurldecode' );
 
 		// add free search
 		if ( ! empty( $get['gv_search'] ) ) {
@@ -1045,7 +1045,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		$value = stripslashes_deep( $value );
 
-		$value = gv_map_deep( $value, 'urldecode' );
+		$value = gv_map_deep( $value, 'rawurldecode' );
 
 		$value = gv_map_deep( $value, '_wp_specialchars' );
 

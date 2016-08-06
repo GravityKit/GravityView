@@ -702,7 +702,7 @@ final class GravityView_Delete_Entry {
 
 		$status = esc_attr( $_GET['status'] );
 		$message_from_url = rgget('message');
-		$message_from_url = urldecode( stripslashes_deep( $message_from_url ) );
+		$message_from_url = rawurldecode( stripslashes_deep( $message_from_url ) );
 		$class = '';
 
 		switch ( $status ) {
