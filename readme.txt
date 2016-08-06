@@ -37,6 +37,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
     - The "Select" Search Bar input type would not show the active search if search term contained an `&`
 * Fixed: Multisite issue: when Users are logged-in but not added to any sites, they aren't able to see View content
 * Fixed: Never show GravityView Toolbar menu to users who aren't able to edit Views, Forms, or Entries
+* Fixed: Allow passing `post_id` in `[gravityview]` shortcode
 * Tweak: Use system fonts instead of Open Sans in the admin
 * Modified: The default setting for "No-Conflict Mode" is now "On". GravityView _should look good_ on your site!
 

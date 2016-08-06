@@ -711,6 +711,11 @@ class GravityView_View_Data {
 				'show_in_shortcode' => false,
 				'full_width' => true,
 			),
+			'post_id' => array(
+				'type' => 'number',
+				'value' => '',
+				'show_in_shortcode' => false,
+			),
 		));
 
 		// By default, we only want the key => value pairing, not the whole array.
