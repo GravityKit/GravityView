@@ -565,10 +565,11 @@ class GravityView_frontend {
 		/**
 		 * Don't render View if user isn't allowed to see it
 		 * @since 1.15
+		 * @since 1.17.2 Added check for if a user has no caps but is logged in (member of multisite, but not any site). Treat as if logged-out.
 		 */
-		if( is_user_logged_in() && false === GVCommon::has_cap( 'read_gravityview', $view_id ) ) {
+		if( is_user_logged_in() && ! ( empty( wp_get_current_user()->caps ) && empty( wp_get_current_user()->roles ) ) && false === GVCommon::has_cap( 'read_gravityview', $view_id ) ) {
 
-			do_action( 'gravityview_log_debug', sprintf( '[render_view] Returning: View %d is not visible by current user.', $view_id ) );
+			do_action( 'gravityview_log_debug', sprintf( '%s Returning: View %d is not visible by current user.', __METHOD__, $view_id ) );
 
 			return null;
 		}
