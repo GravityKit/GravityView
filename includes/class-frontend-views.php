@@ -897,7 +897,12 @@ class GravityView_frontend {
 	 */
 	public static function get_search_criteria( $args, $form_id ) {
 
-		// Search Criteria
+		/**
+		 * @filter `gravityview_fe_search_criteria` Modify the search criteria
+		 * @see GravityView_Widget_Search::filter_entries Adds the default search criteria
+		 * @param array $search_criteria Empty `field_filters` key
+		 * @param int $form_id ID of the Gravity Forms form that is being searched
+		 */
 		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ), $form_id );
 
 		$original_search_criteria = $search_criteria;
@@ -999,7 +1004,7 @@ class GravityView_frontend {
 			'page_size' => $page_size,
 		);
 
-		do_action( 'gravityview_log_debug', '[get_view_entries] Paging: ', $paging );
+		do_action( 'gravityview_log_debug', __METHOD__ . ': Paging: ', $paging );
 
 		// Sorting
 		$sorting = self::updateViewSorting( $args, $form_id );
@@ -1035,13 +1040,13 @@ class GravityView_frontend {
 		 */
 		$parameters = apply_filters( 'gravityview_get_entries_'.$args['id'], $parameters, $args, $form_id );
 
-		do_action( 'gravityview_log_debug', '[get_view_entries] $parameters passed to gravityview_get_entries(): ', $parameters );
+		do_action( 'gravityview_log_debug', __METHOD__ . ': $parameters passed to gravityview_get_entries(): ', $parameters );
 
 		//fetch entries
 		$count = 0;
 		$entries = gravityview_get_entries( $form_id, $parameters, $count );
 
-		do_action( 'gravityview_log_debug', sprintf( '[get_view_entries] Get Entries. Found: %s entries', $count ), $entries );
+		do_action( 'gravityview_log_debug', sprintf( '%s: Get Entries. Found: %s entries', __METHOD__, $count ), $entries );
 
 		/**
 		 * @filter `gravityview_view_entries` Filter the entries output to the View
