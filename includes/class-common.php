@@ -173,7 +173,14 @@ class GVCommon {
 			'page_size' => 1,
 		);
 
-		$results = GFAPI::get_entries( 0, $search_criteria, null, $paging );
+		/**
+		 * @filter `gravityview/common/get_entry_id_from_slug/form_id` The form ID used to get the custom entry ID. Change this to avoid collisions with data from other forms with the same values and the same field ID.
+		 * @since 1.17.2
+		 * @param int $form_id ID of the form to search. Default: `0` (searches all forms)
+		 */
+		$form_id = apply_filters( 'gravityview/common/get_entry_id_from_slug/form_id', 0 );
+
+		$results = GFAPI::get_entries( intval( $form_id ), $search_criteria, null, $paging );
 
 		$result = ( ! empty( $results ) && ! empty( $results[0]['id'] ) ) ? $results[0]['id'] : null;
 

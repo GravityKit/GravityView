@@ -42,6 +42,7 @@ __Developer Notes:__
 
 * Added: `gravityview_view_saved` action, triggered after a View has been saved in the admin
 * Modified: Changed the Phone field template to use `gravityview_get_link()` to generate the anchor tag
+* Added: `gravityview/common/get_entry_id_from_slug/form_id` filter to modify the form ID used to generate entry slugs, in order to avoid hash collisions with data from other forms
 
 = 1.17.1 on June 27 =
 * Fixed: Entry approval with Gravity Forms 2.0
