@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Dutch (Netherlands) `nl_NL` translation file fixed
 * Fixed: Divi theme shortcode buttons and modal form added to Edit View screen
 * Fixed: Possible for Approve Entries checkbox to use the wrong Form ID
+* Fixed: Searches that contained ampersands `&` were not working
 * Fixed: Search Bar "Select" input type would not show current search if search term contained an `&`
 * Tweak: Use system fonts instead of Open Sans in the admin
 * Modified: The default setting for "No-Conflict Mode" is now "On". GravityView _should look good_ on your site!

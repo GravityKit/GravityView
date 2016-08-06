@@ -540,9 +540,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// get form field array
 		$form = $gravityview_view->getForm();
 		$form_field = gravityview_get_field( $form, $field_id );
-
-		$value = gv_map_deep( $value, '_wp_specialchars' ); // Gravity Forms encodes ampersands but not quotes
-
+		
 		// default filter array
 		$filter = array(
 			'key' => $field_id,
