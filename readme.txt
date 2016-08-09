@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.5.2
+Tested up to: 4.5.3
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -40,6 +40,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Allow passing `post_id` in `[gravityview]` shortcode
 * Tweak: Use system fonts instead of Open Sans in the admin
 * Modified: The default setting for "No-Conflict Mode" is now "On". GravityView _should look good_ on your site!
+* Updated translations (thank you!)
+    - Turkish translation by Süha Karalar
+    - Chinese translation by Michael Edi
 
 __Developer Notes:__
 
