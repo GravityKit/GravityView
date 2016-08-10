@@ -559,7 +559,7 @@ function gravityview_get_terms_choices( $args = array() ) {
  *
  * Fields are passed as a jQuery-serialized array, created in admin-views.js in the serializeForm method.
  *
- * @since TODO
+ * @since 1.16.5
  *
  * @uses GVCommon::gv_parse_str
  *

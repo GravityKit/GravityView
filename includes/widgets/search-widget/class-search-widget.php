@@ -419,7 +419,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		$get = stripslashes_deep( $get );
 
-		$get = gv_map_deep( $get, 'urldecode' );
+		$get = gv_map_deep( $get, 'rawurldecode' );
 
 		// add free search
 		if ( ! empty( $get['gv_search'] ) ) {
@@ -540,9 +540,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// get form field array
 		$form = $gravityview_view->getForm();
 		$form_field = gravityview_get_field( $form, $field_id );
-
-		$value = gv_map_deep( $value, '_wp_specialchars' ); // Gravity Forms encodes ampersands but not quotes
-
+		
 		// default filter array
 		$filter = array(
 			'key' => $field_id,
@@ -1047,7 +1045,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		$value = stripslashes_deep( $value );
 
-		$value = gv_map_deep( $value, 'urldecode' );
+		$value = gv_map_deep( $value, 'rawurldecode' );
 
 		$value = gv_map_deep( $value, '_wp_specialchars' );
 
@@ -1117,7 +1115,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 *
 	 * @see https://github.com/10up/flexibility
 	 *
-	 * @since TODO
+	 * @since 1.17
 	 *
 	 * @return void
 	 */
@@ -1130,7 +1128,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	/**
 	 * If the current visitor is running IE 8 or 9, enqueue Flexibility
 	 *
-	 * @since TODO
+	 * @since 1.17
 	 *
 	 * @return void
 	 */

@@ -38,7 +38,7 @@ class GravityView_Admin_Bar {
 		/** @var WP_Admin_Bar $wp_admin_bar */
 		global $wp_admin_bar;
 
-		if( is_admin() ) {
+		if( is_admin() || ! GVCommon::has_cap( array( 'edit_gravityviews', 'gravityview_edit_entry', 'gravityforms_edit_forms' ) ) ) {
 			return;
 		}
 

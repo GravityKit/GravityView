@@ -344,7 +344,7 @@ class GravityView_View_Data {
 	 * @param  string $content $post->post_content content
 	 * @return int|null|array If a single View is found, the ID of the View. If there are multiple views in the content, array of IDs parsed. If not found, NULL
 	 */
-	function parse_post_content( $content ) {
+	public function parse_post_content( $content ) {
 
 		/**
 		 * @hack This is so that the shortcode is registered for the oEmbed preview in the Admin
@@ -710,6 +710,11 @@ class GravityView_View_Data {
 				'value'	=> '',
 				'show_in_shortcode' => false,
 				'full_width' => true,
+			),
+			'post_id' => array(
+				'type' => 'number',
+				'value' => '',
+				'show_in_shortcode' => false,
 			),
 		));
 

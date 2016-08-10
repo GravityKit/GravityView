@@ -509,6 +509,14 @@ class GravityView_Admin_Views {
 
 		} // end save view configuration
 
+		/**
+		 * @action `gravityview_view_saved` After a View has been saved in the admin
+		 * @param int $post_id ID of the View that has been saved
+		 * @param array $statii Array of statuses of the post meta saving processes. If saving worked, each key should be mapped to a value of the post ID (`directory_widgets` => `124`). If failed (or didn't change), the value will be false.
+		 * @since 1.17.2
+		 */
+		do_action('gravityview_view_saved', $post_id, $statii );
+
 		do_action('gravityview_log_debug', '[save_postdata] Update Post Meta Statuses (also returns false if nothing changed)', array_map( 'intval', $statii ) );
 	}
 
@@ -915,7 +923,7 @@ class GravityView_Admin_Views {
 	 * Render the Template Active Areas and configured active fields for a given template id and post id
 	 *
 	 * @access public
-	 * @param string $template_id (default: '')
+	 * @param string $template_id (default: '') Template ID, like `default_list`, `default_table`, `preset_business_data`, etc. {@see GravityView_Template::__construct()}
 	 * @param string $post_id (default: '')
 	 * @param string $context (default: 'single')
 	 * @return string HTML of the active areas
@@ -927,6 +935,13 @@ class GravityView_Admin_Views {
 			return;
 		}
 
+		/**
+		 * @filter `gravityview_template_active_areas` 
+		 * @see GravityView_Template::assign_active_areas()
+		 * @param array $template_areas Empty array, to be filled in by the template class
+		 * @param string $template_id Template ID, like `default_list`, `default_table`, `preset_business_data`, etc. {@see GravityView_Template::__construct()}
+		 * @param string $context Current View context: `directory`, `single`, or `edit` (default: 'single')
+		 */
 		$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $template_id, $context );
 
 		if( empty( $template_areas ) ) {

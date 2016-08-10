@@ -51,6 +51,13 @@ class GravityView_Edit_Entry_Render {
      */
     var $entry;
 
+	/**
+	 * Gravity Forms entry array (it won't get changed during this class lifecycle)
+	 * @since 1.17.2
+	 * @var array
+	 */
+	private static $original_entry = array();
+
     /**
      * Gravity Forms form array (GravityView modifies the content through this class lifecycle)
      *
@@ -63,7 +70,7 @@ class GravityView_Edit_Entry_Render {
      * @since 1.16.2.1
      * @var array
      */
-    var $original_form;
+    private static $original_form;
 
     /**
      * Gravity Forms form array after the form validation process
@@ -198,9 +205,11 @@ class GravityView_Edit_Entry_Render {
 
 
         $entries = $gravityview_view->getEntries();
-        $this->entry = $entries[0];
+	    self::$original_entry = $entries[0];
+	    $this->entry = $entries[0];
 
-        $this->original_form = $this->form = $gravityview_view->getForm();
+        self::$original_form = $gravityview_view->getForm();
+        $this->form = $gravityview_view->getForm();
         $this->form_id = $gravityview_view->getFormId();
         $this->view_id = $gravityview_view->getViewId();
 
@@ -392,7 +401,7 @@ class GravityView_Edit_Entry_Render {
 
     private function update_calculation_fields() {
 
-        $form = $this->original_form;
+        $form = self::$original_form;
         $update = false;
 
         // get the most up to date entry values
@@ -711,7 +720,7 @@ class GravityView_Edit_Entry_Render {
      */
     function after_update() {
 
-        do_action( 'gform_after_update_entry', $this->form, $this->entry['id'] );
+        do_action( 'gform_after_update_entry', $this->form, $this->entry['id'], self::$original_entry );
         do_action( "gform_after_update_entry_{$this->form['id']}", $this->form, $this->entry['id'] );
 
         // Re-define the entry now that we've updated it.
@@ -881,6 +890,8 @@ class GravityView_Edit_Entry_Render {
      * Survey fields inject their output using `gform_field_input` filter, but in Edit Entry, the values were empty.
      * We filter the values here because it was the easiest access point: tell the survey field the correct value, GF outputs it.
      *
+     * @TODO: REMOVE; now added in class-gravityview-plugin-hooks-gravity-forms-survey.php
+     * 
      * @since 1.16.4
      *
      * @param string $value Existing value

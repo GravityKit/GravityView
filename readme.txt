@@ -1,9 +1,9 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.5.2
+Tested up to: 4.5.3
 Stable tag: trunk
-Contributors: katzwebservices, luistinygod
+Contributors: The GravityView Team
 License: GPL 3 or higher
 
 Beautifully display and edit your Gravity Forms entries.
@@ -19,6 +19,36 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 1.17.2 on August 9, 2016 =
+
+* Fixed: "Start Fresh" fails when there are no pre-existing forms in Gravity Forms
+* Added: Support for embedding Views in Ultimate Member profile tabs
+* Fixed: File Upload fields potentially displaying PHP warnings
+* Fixed: Check plugin and theme existence before loading hooks
+* Fixed: "Hide empty fields" not working when "Make Phone Number Clickable" is checked for Phone fields
+* Fixed: Potential PHP warning when adding Password fields in Edit View
+* Fixed: Dutch (Netherlands) `nl_NL` translation file fixed
+* Fixed: Divi theme shortcode buttons and modal form added to Edit View screen
+* Fixed: Possible for Approve Entries checkbox to use the wrong Form ID
+* Fixed: Search issues with special characters
+    - Searches that contained ampersands `&` were not working
+    - Searches containing plus signs `+` were not working 
+    - The "Select" Search Bar input type would not show the active search if search term contained an `&`
+* Fixed: Multisite issue: when Users are logged-in but not added to any sites, they aren't able to see View content
+* Fixed: Never show GravityView Toolbar menu to users who aren't able to edit Views, Forms, or Entries
+* Fixed: Allow passing `post_id` in `[gravityview]` shortcode
+* Tweak: Use system fonts instead of Open Sans in the admin
+* Modified: The default setting for "No-Conflict Mode" is now "On". GravityView _should look good_ on your site!
+* Updated translations (thank you!)
+    - Turkish translation by Süha Karalar
+    - Chinese translation by Michael Edi
+
+__Developer Notes:__
+
+* Added: `gravityview_view_saved` action, triggered after a View has been saved in the admin
+* Modified: Changed the Phone field template to use `gravityview_get_link()` to generate the anchor tag
+* Added: `gravityview/common/get_entry_id_from_slug/form_id` filter to modify the form ID used to generate entry slugs, in order to avoid hash collisions with data from other forms
 
 = 1.17.1 on June 27 =
 * Fixed: Entry approval with Gravity Forms 2.0
