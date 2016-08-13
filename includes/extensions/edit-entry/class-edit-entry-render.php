@@ -183,7 +183,7 @@ class GravityView_Edit_Entry_Render {
      */
     public function is_edit_entry() {
 
-        $gf_page = function_exists('rgpost') && ( 'entry' === rgget( 'view' ) && isset( $_GET['edit'] ) || rgpost( 'action' ) === 'update' );
+        $gf_page = function_exists('rgpost') && ( 'entry' === rgget( 'view' ) && isset( $_GET['edit'] ) );
 
         return $gf_page;
     }
