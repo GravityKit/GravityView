@@ -1,74 +1,13 @@
 <?php
-
-class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
-
-	private $label_type = 'field';
-
-	protected function additional_info() {
-
-		$field_info = '';
-
-		$field_info_items = array();
-
-		// Fields with IDs, not like Source URL or Entry ID
-		if( is_numeric( $this->id ) ) {
-
-			$field_type_title = GFCommon::get_field_type_title( $this->item['input_type'] );
-
-			$field_info_items[] = array(
-				'value' => sprintf( __('Type: %s', 'gravityview'), $field_type_title )
-			);
-
-			$field_info_items[] = array(
-				'value' => sprintf( __('Field ID: %s', 'gravityview'), $this->id ),
-			);
-
-		}
-
-		if( !empty( $this->item['desc'] ) ) {
-			$field_info_items[] = array(
-				'value' => $this->item['desc']
-			);
-		}
-
-		if( !empty( $this->item['adminLabel'] ) ) {
-			$field_info_items[] = array(
-				'value' => sprintf( __('Admin Label: %s', 'gravityview' ), $this->item['adminLabel'] ),
-				'class'	=> 'gv-sublabel'
-			);
-		}
-
-		return $field_info_items;
-	}
-
-}
-
-class GravityView_Admin_View_Widget extends GravityView_Admin_View_Item {
-
-	private $label_type = 'widget';
-
-	protected function additional_info() {
-
-		$field_info = '';
-		$field_info_items = array();
-
-		if( !empty( $this->item['description'] ) ) {
-
-			$field_info_items[] = array(
-				'value' => $this->item['description']
-			);
-
-		}
-
-		return $field_info_items;
-	}
-
-}
+/**
+ * @file class-gravityview-admin-view-item.php
+ * @since 1.17.3
+ */
 
 /**
  * A field or widget in GravityView view configuration
  */
-class GravityView_Admin_View_Item {
+abstract class GravityView_Admin_View_Item {
 
 	protected $title;
 	protected $id;
@@ -77,7 +16,7 @@ class GravityView_Admin_View_Item {
 	private   $label_type;
 	protected $item;
 
-	function __construct( $title = '', $field_id, $item = array(), $settings = array() ) {
+	function __construct( $title = '', $item_id, $item = array(), $settings = array() ) {
 
 		// Backward compat
 		if( !empty( $item['type'] ) ) {
@@ -100,7 +39,7 @@ class GravityView_Admin_View_Item {
 
 		$this->title = $title;
 		$this->item = $item;
-		$this->id = $field_id;
+		$this->id = $item_id;
 		$this->settings = $settings;
 		$this->label_type = $item['label_type'];
 	}

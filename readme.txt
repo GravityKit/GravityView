@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Move `GravityView_Admin_View_Item`, `GravityView_Admin_View_Field`, and `GravityView_Admin_View_Widget` to their own files
+
 = 1.17.2 on August 9, 2016 =
 
 * Fixed: "Start Fresh" fails when there are no pre-existing forms in Gravity Forms
