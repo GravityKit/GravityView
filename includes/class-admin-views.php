@@ -1044,20 +1044,52 @@ class GravityView_Admin_Views {
 		}
 	}
 
+	/**
+	 * Add GravityView scripts and styles to Gravity Forms and GravityView No-Conflict modes
+	 *
+	 * @param array $registered Existing scripts or styles that have been registered (array of the handles)
+	 *
+	 * @return array
+	 */
 	function register_no_conflict( $registered ) {
+
+		$allowed_dependencies = array();
 
 		$filter = current_filter();
 
-		if( preg_match('/script/ism', $filter ) ) {
-			$allow_scripts = array( 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'gravityview_views_scripts', 'gravityview-support', 'gravityview-jquery-cookie', 'gravityview_views_datepicker',
-			'sack', 'gform_gravityforms', 'gform_forms', 'gform_form_admin', 'jquery-ui-autocomplete' );
-			$registered = array_merge( $registered, $allow_scripts );
-		} elseif( preg_match('/style/ism', $filter ) ) {
-			$allow_styles = array( 'dashicons', 'wp-jquery-ui-dialog', 'gravityview_views_styles', 'gravityview_global', 'gravityview_views_datepicker' );
-			$registered = array_merge( $registered, $allow_styles );
+		if ( preg_match( '/script/ism', $filter ) ) {
+
+			$allowed_dependencies = array(
+				'jquery-ui-core',
+				'jquery-ui-dialog',
+				'jquery-ui-tabs',
+				'jquery-ui-draggable',
+				'jquery-ui-droppable',
+				'jquery-ui-sortable',
+				'jquery-ui-tooltip',
+				'gravityview_views_scripts',
+				'gravityview-support',
+				'gravityview-jquery-cookie',
+				'gravityview_views_datepicker',
+				'sack',
+				'gform_gravityforms',
+				'gform_forms',
+				'gform_form_admin',
+				'jquery-ui-autocomplete'
+			);
+			
+		} elseif ( preg_match( '/style/ism', $filter ) ) {
+
+			$allowed_dependencies = array(
+				'dashicons',
+				'wp-jquery-ui-dialog',
+				'gravityview_views_styles',
+				'gravityview_global',
+				'gravityview_views_datepicker'
+			);
 		}
 
-		return $registered;
+		return array_merge( $registered, $allowed_dependencies );
 	}
 
 
