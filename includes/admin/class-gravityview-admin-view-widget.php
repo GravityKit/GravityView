@@ -6,7 +6,7 @@
 
 class GravityView_Admin_View_Widget extends GravityView_Admin_View_Item {
 
-	private $label_type = 'widget';
+	protected $label_type = 'widget';
 
 	protected function additional_info() {
 

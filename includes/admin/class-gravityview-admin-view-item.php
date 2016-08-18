@@ -13,7 +13,7 @@ abstract class GravityView_Admin_View_Item {
 	protected $id;
 	protected $subtitle;
 	protected $settings_html;
-	private   $label_type;
+	protected $label_type;
 	protected $item;
 
 	function __construct( $title = '', $item_id, $item = array(), $settings = array() ) {

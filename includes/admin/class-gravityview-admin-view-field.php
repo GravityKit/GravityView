@@ -6,7 +6,7 @@
 
 class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 
-	private $label_type = 'field';
+	protected $label_type = 'field';
 
 	protected function additional_info() {
 
