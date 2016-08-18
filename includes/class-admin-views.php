@@ -495,7 +495,7 @@ class GravityView_Admin_Views {
 
 				$fields = $preset_fields;
 
-			} elseif( !empty( $_POST['fields'] ) ) {
+			} elseif( !empty( $_POST['gv_fields'] ) ) {
 				$fields = _gravityview_process_posted_fields();
 			}
 

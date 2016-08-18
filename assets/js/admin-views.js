@@ -1366,7 +1366,7 @@
 
 			// Add a field to the form that contains all the data.
 			$post.append( $( '<input/>', {
-				'name': 'fields',
+				'name': 'gv_fields',
 				'value': serialized_data,
 				'type': 'hidden'
 			} ) );
