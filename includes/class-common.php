@@ -187,24 +187,20 @@ class GVCommon {
 		return $result;
 	}
 
-
 	/**
-	 * Returns the list of available forms
+	 * Alias of GFAPI::get_forms()
 	 *
-	 * @access public
-	 * @param mixed $form_id
-	 * @return array Empty array if GFAPI isn't available or no forms. Otherwise, associative array with id, title keys
+	 * @see GFAPI::get_forms()
+	 *
+	 * @param bool $active Status of forms. Default: `true`
+	 * @param bool $trash Include forms in trash? Default: `false`
+	 *
+	 * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
 	 */
-	public static function get_forms() {
+	public static function get_forms(  $active = true, $trash = false ) {
 		$forms = array();
 		if ( class_exists( 'GFAPI' ) ) {
-			$gf_forms = GFAPI::get_forms();
-			foreach ( $gf_forms as $form ) {
-				$forms[] = array(
-					'id' => $form['id'],
-					'title' => $form['title'],
-				);
-			}
+			$forms = GFAPI::get_forms( $active, $trash );
 		}
 		return $forms;
 	}

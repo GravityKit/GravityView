@@ -25,6 +25,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Move `GravityView_Admin_View_Item`, `GravityView_Admin_View_Field`, and `GravityView_Admin_View_Widget` to their own files
 * Added deprecation notices for methods that haven't been used since Version 1.2!
 
+__Developer Notes__
+
+* Updated `gravityview_get_forms()` function and `GVCommon::get_forms()` method to be compatible with `GFAPI::get_forms()`. Now accepts `$active` and `$trash` arguments, as well as returning all form data (not just `id` and `title` keys)
+
 = 1.17.2 on August 9, 2016 =
 
 * Fixed: "Start Fresh" fails when there are no pre-existing forms in Gravity Forms
