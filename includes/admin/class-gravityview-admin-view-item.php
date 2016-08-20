@@ -9,11 +9,29 @@
  */
 abstract class GravityView_Admin_View_Item {
 
+	/**
+	 * @var string Name of the item in the field or widget picker
+	 */
 	protected $title;
+
+	/**
+	 * @var string The field ID or the widget slug ( `2.3` or `custom_content`)
+	 */
 	protected $id;
+
+	/**
+	 * @var string Description of the item
+	 */
 	protected $subtitle;
-	protected $settings_html;
+
+	/**
+	 * @var string The type of item ("field" or "widget")
+	 */
 	protected $label_type;
+
+	/**
+	 * @var array Associative array of item details
+	 */
 	protected $item;
 
 	function __construct( $title = '', $item_id, $item = array(), $settings = array() ) {

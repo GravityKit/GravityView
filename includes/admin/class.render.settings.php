@@ -255,6 +255,7 @@ class GravityView_Render_Settings {
 
 			if( class_exists( $type_class ) ) {
 
+				/** @var GravityView_FieldType $render_type */
 				$render_type = new $type_class( $name, $option, $curr_value );
 
 				ob_start();

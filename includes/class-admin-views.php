@@ -932,7 +932,7 @@ class GravityView_Admin_Views {
 
 		if( empty( $template_id ) ) {
 			do_action( 'gravityview_log_debug', '[render_directory_active_areas] $template_id is empty' );
-			return;
+			return '';
 		}
 
 		/**
@@ -1036,7 +1036,7 @@ class GravityView_Admin_Views {
 		);
 
 		if ( wp_is_mobile() ) {
-				    $scripts[] = 'jquery-touch-punch';
+		    $scripts[] = 'jquery-touch-punch';
 		}
 
 		foreach ($scripts as $script) {
