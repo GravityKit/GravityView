@@ -1378,6 +1378,14 @@ class GVCommon {
 
 		$final_atts['href'] = esc_url_raw( $href );
 
+		/**
+		 * Fix potential security issue with target=_blank
+		 * @see https://dev.to/ben/the-targetblank-vulnerability-by-example
+		 */
+		if( '_blank' === rgar( $final_atts, 'target' ) ) {
+			$final_atts['rel'] = trim( rgar( $final_atts, 'rel', '' ) . ' noopener noreferrer' );
+		}
+
 		// Sort the attributes alphabetically, to help testing
 		ksort( $final_atts );
 
