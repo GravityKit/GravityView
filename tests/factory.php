@@ -138,7 +138,7 @@ class GV_UnitTest_Factory_For_User extends WP_UnitTest_Factory_For_User {
 		foreach( $user->roles as $role ) {
 			$capabilities = GravityView_Roles_Capabilities::all_caps( $role );
 
-			foreach ( $capabilities as $cap ) {
+			foreach ( (array) $capabilities as $cap ) {
 				$user->add_cap( $cap, true );
 			}
 		}
