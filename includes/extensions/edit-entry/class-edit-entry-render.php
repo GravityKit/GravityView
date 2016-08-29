@@ -183,9 +183,9 @@ class GravityView_Edit_Entry_Render {
      */
     public function is_edit_entry() {
 
-        $gf_page = function_exists('rgpost') && ( 'entry' === rgget( 'view' ) && isset( $_GET['edit'] ) || rgpost( 'action' ) === 'update' );
+        $is_edit_entry = GravityView_frontend::is_single_entry() && ! empty( $_GET['edit'] );
 
-        return $gf_page;
+        return ( $is_edit_entry || $this->is_edit_entry_submission() );
     }
 
 	/**
