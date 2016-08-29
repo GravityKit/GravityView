@@ -24,7 +24,7 @@ class GravityView_Field_Workflow_Final_Status extends GravityView_Field {
 
 		add_filter( 'gravityview_field_entry_value_workflow_final_status', array( $this, 'modify_entry_value_workflow_final_status' ), 10, 4 );
 	}
-	
+
 	/**
 	 * Convert the status key with the full status label. Uses custom labels, if set.
 	 *
@@ -50,6 +50,10 @@ class GravityView_Field_Workflow_Final_Status extends GravityView_Field {
 
 
 	/**
+	 * Populate the Final Status Search Bar field dropdown with all the statuses in Gravity Flow
+	 *
+	 * @since 1.17.3
+	 *
 	 * @param array $search_fields
 	 * @param GravityView_Widget_Search $widget
 	 * @param array $widget_args
