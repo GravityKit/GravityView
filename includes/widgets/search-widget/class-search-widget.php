@@ -925,12 +925,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				case 'entry_id':
 					$label = __( 'Entry ID:', 'gravityview' );
 					break;
-				case 'created_by':
-					$label = __( 'Submitted by:', 'gravityview' );
-					break;
-				case 'is_fulfilled':
-					$label = __( 'Is Fulfilled', 'gravityview' );
-					break;
 				default:
 					// If this is a field input, not a field
 					if ( strpos( $field['field'], '.' ) > 0 && ! empty( $form_field['inputs'] ) ) {

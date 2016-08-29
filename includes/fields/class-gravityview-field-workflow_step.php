@@ -14,6 +14,7 @@ class GravityView_Field_Workflow_Step extends GravityView_Field {
 
 	public function __construct() {
 		$this->label = esc_html__( 'Workflow Step', 'gravityview' );
+		$this->default_search_label = $this->label;
 		parent::__construct();
 	}
 

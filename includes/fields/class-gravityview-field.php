@@ -31,6 +31,11 @@ abstract class GravityView_Field {
 	public $label;
 
 	/**
+	 * @var string The default search label used by the search widget, if not set
+	 */
+	public $default_search_label;
+
+	/**
 	 * `standard`, `advanced`, `post`, `pricing`, `meta`, `gravityview`
 	 * @since 1.15.2
 	 * @type string The group belongs to this field in the field picker
@@ -114,7 +119,33 @@ abstract class GravityView_Field {
 			add_filter( 'gform_replace_merge_tags', array( $this, '_filter_gform_replace_merge_tags' ), 10, 7 );
 		}
 
+		if( 'meta' === $this->group || '' !== $this->default_search_label ) {
+			add_filter( 'gravityview_search_field_label', array( $this, 'set_default_search_label' ), 10, 3 );
+		}
+
 		GravityView_Fields::register( $this );
+	}
+
+	/**
+	 * Allow setting a default search label for search fields based on the field type
+	 *
+	 * Useful for entry meta "fields" that don't have Gravity Forms labels, like `created_by`
+	 *
+	 * @since 1.17.3
+	 *
+	 * @param string $label Existing label text, sanitized.
+	 * @param array $gf_field Gravity Forms field array, as returned by `GFFormsModel::get_field()`
+	 * @param array $field Field setting as sent by the GV configuration - has `field`, `input` (input type), and `label` keys
+	 *
+	 * @return string
+	 */
+	function set_default_search_label( $label = '', $gf_field = null, $field = array() ) {
+
+		if( $this->name === $field['field'] && '' === $label ) {
+			$label = esc_html( $this->default_search_label );
+		}
+
+		return $label;
 	}
 
 	/**
