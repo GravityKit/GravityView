@@ -19,9 +19,9 @@
 class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme_Hooks {
 
 	/**
-	 * @var string Check for the class name, since that's needed by this class.
+	 * @var string Check for the Gravity Flow constant
 	 */
-	protected $class_name = 'Gravity_Flow_API';
+	protected $constant_name = 'GRAVITY_FLOW_VERSION';
 
 
 	/**
