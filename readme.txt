@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Added: Search Bar support for Gravity Forms Survey fields: filter by survey responses
 * Added: Search Bar support for Gravity Flow: search entries by the current Step, Step Status, or Workflow Status
 * Tweak: In Edit View, holding down the option (or alt) key while switching forms allows you to change forms without resetting field configurations - this is useful if you want to switch between duplicate forms
 * Fixed: Tooltip title text of the field and widget "gear" icon

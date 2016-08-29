@@ -28,6 +28,28 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Survey extends GravityView_Plugin_a
 		add_filter( 'gravityview/edit_entry/form_fields', array( $this, 'fix_survey_fields' ), 10 );
 		add_action( 'gravityview/edit-entry/render/before', array( $this, 'add_render_hooks' ) );
 		add_action( 'gravityview/edit-entry/render/after', array( $this, 'remove_render_hooks' ) );
+
+		add_filter( 'gravityview/extension/search/input_type', array( $this, 'modify_search_bar_input_type' ), 10, 2 );
+
+	}
+
+	/**
+	 * Modify the search form input type for survey fields
+	 *
+	 * @since 1.17.3
+	 *
+	 * @param string $input_type Assign an input type according to the form field type. Defaults: `boolean`, `multi`, `select`, `date`, `text`
+	 * @param string $field_type Gravity Forms field type (also the `name` parameter of GravityView_Field classes)
+	 */
+	function modify_search_bar_input_type( $input_type = 'text', $field_type = '' ) {
+
+		$return = $input_type;
+
+		if( 'survey' === $field_type ) {
+			$return = 'select';
+		}
+
+		return $return;
 	}
 
 	/**
