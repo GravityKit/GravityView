@@ -410,7 +410,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		} else {
 			$get = $_GET;
 		}
-
+		
 		do_action( 'gravityview_log_debug', sprintf( '%s[filter_entries] Requested $_%s: ', get_class( $this ), $this->search_method ), $get );
 
 		if ( empty( $get ) || ! is_array( $get ) ) {
@@ -776,7 +776,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 			$updated_field = $this->get_search_filter_details( $updated_field );
 
-
 			error_log("Field:Field = " . print_r($field['field'], true));
 
 			switch ( $field['field'] ) {
@@ -808,16 +807,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 					$updated_field['name'] = 'gv_by';
 					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_by' );
 					$updated_field['choices'] = self::get_created_by_choices();
-					break;
-
-				//Hard-coded for test purpose only.
-				//Unsure on approach given the need for this to potentially iterate on all custom field types.
-
-				case '67':
-					$updated_field['key'] = 'workflow_steps';
-					$updated_field['name'] = 'gf_steps';
-					$updated_field['value'] = $this->rgget_or_rgpost( 'gf_steps' );
-					$updated_field['choices'] = array( array( 'text' => 'A', 'value' => 'AValue') );
 					break;
 			}
 
@@ -946,10 +935,12 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		/**
 		 * @filter `gravityview_search_field_label` Modify the label for a search field. Supports returning HTML
+		 * @since 1.17.3 Added $field parameter
 		 * @param[in,out] string $label Existing label text, sanitized.
 		 * @param[in] array $form_field Gravity Forms field array, as returned by `GFFormsModel::get_field()`
+		 * @param[in] array $field Field setting as sent by the GV configuration - has `field`, `input` (input type), and `label` keys
 		 */
-		$label = apply_filters( 'gravityview_search_field_label', esc_attr( $label ), $form_field );
+		$label = apply_filters( 'gravityview_search_field_label', esc_attr( $label ), $form_field, $field );
 
 		return $label;
 	}
