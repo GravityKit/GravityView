@@ -80,25 +80,28 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 
 		$workflow_steps = $GFlow->get_steps();
 
-		foreach ( $workflow_steps as $step ) {
+		if( $workflow_steps ) {
 
-			$step_id = sprintf( 'workflow_step_status_%d', $step->get_id() );
+			foreach ( $workflow_steps as $step ) {
 
-			$fields[ $step_id ] = array(
-				'label'   => sprintf( _x( 'Status: %s', 'Gravity Flow Workflow Step Status', 'gravityview' ), $step->get_name() ),
-				'type'    => 'select',
+				$step_id = sprintf( 'workflow_step_status_%d', $step->get_id() );
+
+				$fields[ $step_id ] = array(
+					'label' => sprintf( _x( 'Status: %s', 'Gravity Flow Workflow Step Status', 'gravityview' ), $step->get_name() ),
+					'type'  => 'select',
+				);
+			}
+
+			$fields['workflow_step'] = array(
+				'label' => esc_html__( 'Workflow Step', 'gravityview' ),
+				'type'  => 'select',
+			);
+
+			$fields['workflow_final_status'] = array(
+				'label' => esc_html__( 'Workflow Status', 'gravityview' ),
+				'type'  => 'select',
 			);
 		}
-
-		$fields['workflow_step'] = array(
-			'label' => esc_html__( 'Workflow Step', 'gravityview' ),
-			'type'  => 'select',
-		);
-
-		$fields['workflow_final_status'] = array(
-			'label' => esc_html__( 'Workflow Status', 'gravityview' ),
-			'type'  => 'select',
-		);
 
 		return $fields;
 	}
