@@ -534,8 +534,12 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		$gravityview_view = GravityView_View::getInstance();
 
+		$field_id = str_replace( 'filter_', '', $key );
+
 		// calculates field_id, removing 'filter_' and for '_' for advanced fields ( like name or checkbox )
-		$field_id = str_replace( '_', '.', str_replace( 'filter_', '', $key ) );
+		if ( is_numeric( $field_id ) ) {
+			$field_id = str_replace( '_', '.', $field_id );
+		}
 
 		// get form field array
 		$form = $gravityview_view->getForm();
