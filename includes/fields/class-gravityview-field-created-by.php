@@ -17,6 +17,7 @@ class GravityView_Field_Created_By extends GravityView_Field {
 
 	public function __construct() {
 		$this->label = esc_html__( 'Created By', 'gravityview' );
+		$this->default_search_label = __( 'Submitted by:', 'gravityview' );
 		parent::__construct();
 	}
 
