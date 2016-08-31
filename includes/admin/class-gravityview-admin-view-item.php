@@ -34,6 +34,11 @@ abstract class GravityView_Admin_View_Item {
 	 */
 	protected $item;
 
+	/**
+	 * @var array Existing settings for the item
+	 */
+	protected $settings;
+
 	function __construct( $title = '', $item_id, $item = array(), $settings = array() ) {
 
 		// Backward compat
