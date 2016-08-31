@@ -330,7 +330,7 @@ class GravityView_frontend {
 	 * @param  array  $wp Passed in the `wp` hook. Not used.
 	 * @return void
 	 */
-	function parse_content( $wp = array() ) {
+	public function parse_content( $wp = array() ) {
 		global $post;
 
 		// If in admin and NOT AJAX request, get outta here.
@@ -1138,7 +1138,7 @@ class GravityView_frontend {
 	 *
 	 * @since 1.7
 	 *
-	 * @param $args View settings. Required to have `sort_field` and `sort_direction` keys
+	 * @param array $args View settings. Required to have `sort_field` and `sort_direction` keys
 	 * @param int $form_id The ID of the form used to sort
 	 * @return array $sorting Array with `key`, `direction` and `is_numeric` keys
 	 */
