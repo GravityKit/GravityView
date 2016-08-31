@@ -272,7 +272,7 @@ class GravityView_Edit_Entry_Render {
      */
     function process_save() {
 
-        if( empty( $_POST ) ) {
+        if( empty( $_POST ) || ! isset( $_POST['lid'] ) ) {
             return;
         }
 

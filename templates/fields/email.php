@@ -30,6 +30,8 @@ if( !isset( $field_settings['emailmailto'] ) || !empty( $field_settings['emailma
 
 		$subject = GravityView_API::replace_variables( $field_settings['emailsubject'], $form, $entry );
 
+		$subject = wp_strip_all_tags( trim( do_shortcode( $subject ) ) );
+
 		$params[] = 'subject='.str_replace('+', '%20', urlencode( $subject ) );
 	}
 
@@ -37,6 +39,8 @@ if( !isset( $field_settings['emailmailto'] ) || !empty( $field_settings['emailma
 	if( !empty( $field_settings['emailbody'] ) ) {
 
 		$body = GravityView_API::replace_variables( $field_settings['emailbody'], $form, $entry );
+
+		$body = wp_strip_all_tags( trim( do_shortcode( $body ) ) );
 
 		$params[] = 'body='.str_replace('+', '%20', urlencode( $body ) );
 	}

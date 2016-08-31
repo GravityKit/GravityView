@@ -23,6 +23,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Search Bar support for Gravity Forms Survey fields: filter by survey responses
 * Added: Search Bar support for Gravity Flow: search entries by the current Step, Step Status, or Workflow Status
 * Tweak: In Edit View, holding down the option (or alt) key while switching forms allows you to change forms without resetting field configurations - this is useful if you want to switch between duplicate forms
+* Added: `[gvlogic]` now can be used in the Body and Subject settings for Email fields
+* Added: Support for embedding Views in the front page of a site; the [GravityView - Allow Front Page Views plugin](https://github.com/gravityview/gravityview-front-page-views) is no longer required
 * Fixed: Tooltip title text of the field and widget "gear" icon
 * Fixed: Restored correct Gravity Flow status and workflow values
 * Fixed: Conflict when editing an entry in Gravity Flow
@@ -36,6 +38,7 @@ __Developer Notes__
 * Modified: `rel="noopener noreferrer"` now added to all links generated using `gravityview_get_link()` with `target="_blank"`. This fixes a generic security issue (not specific to GravityView) when displaying links to submitted websites and "Open link in new window" is checked - [read more about it here](https://dev.to/ben/the-targetblank-vulnerability-by-example)
 * Modified: Don't convert underscores to periods if not numeric in `GravityView_Widget_Search::prepare_field_filter()` - this fixes searching entry meta
 * Modified: Added third `gravityview_search_field_label` parameter: `$field` - it's the field configuration array passed by the Search Bar
+* Modified: HTML tags are now stripped from Email field body and subject content
 
 = 1.17.2 on August 9, 2016 =
 
