@@ -274,6 +274,35 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;">What&rsquo;s New</h2>
 				</div>
 
+				<h3>1.17.3 on August 31, 2016</h3>
+
+				<ul>
+					<li>Added: Search Bar support for Gravity Forms Survey fields: filter by survey responses</li>
+					<li>Added: Search Bar support for Gravity Flow: search entries by the current Step, Step Status, or Workflow Status</li>
+					<li>Added: <code>[gvlogic]</code> and other shortcodes now can be used inside Email field settings content</li>
+					<li>Added: Support for embedding Views in the front page of a site; the <a href="https://github.com/gravityview/gravityview-front-page-views">GravityView - Allow Front Page Views plugin</a> is no longer required</li>
+					<li>Tweak: In Edit View, holding down the option (or alt) key while switching forms allows you to change forms without resetting field configurations - this is useful if you want to switch between duplicate forms</li>
+					<li>Fixed: Restored correct Gravity Flow status and workflow values</li>
+					<li>Fixed: Conflict when editing an entry in Gravity Flow</li>
+					<li>Fixed: Tooltip title text of the field and widget "gear" icon</li>
+					<li>Changed the plugin author from "Katz Web Services, Inc." to "GravityView" - it seemed like it was time!</li>
+				</ul>
+
+
+				<p><strong>Developer Notes</strong></p>
+
+				<ul>
+					<li>Modified: <code>gravityview_get_forms()</code> function and <code>GVCommon::get_forms()</code> method to be compatible with <code>GFAPI::get_forms()</code>. Now accepts <code>$active</code> and <code>$trash</code> arguments, as well as returning all form data (not just <code>id</code> and <code>title</code> keys)</li>
+					<li>Modified: <code>template/fields/post_image.php</code> file to use <code>gravityview_get_link()</code> to generate the anchor link</li>
+					<li>Modified: <code>rel="noopener noreferrer"</code> now added to all links generated using <code>gravityview_get_link()</code> with <code>target="_blank"</code>. This fixes a generic security issue (not specific to GravityView) when displaying links to submitted websites and "Open link in new window" is checked - <a href="https://dev.to/ben/the-targetblank-vulnerability-by-example">read more about it here</a></li>
+					<li>Modified: Don't convert underscores to periods if not numeric in <code>GravityView_Widget_Search::prepare_field_filter()</code> - this fixes searching entry meta</li>
+					<li>Modified: Added third <code>gravityview_search_field_label</code> parameter: <code>$field</code> - it's the field configuration array passed by the Search Bar</li>
+					<li>Modified: HTML tags are now stripped from Email field body and subject content</li>
+					<li>Modified: Moved <code>GravityView_Admin_View_Item</code>, <code>GravityView_Admin_View_Field</code>, and <code>GravityView_Admin_View_Widget</code> to their own files</li>
+					<li>Added: Deprecation notices for methods that haven't been used since Version 1.2!</li>
+				</ul>
+
+
 				<h3>1.17.2 on August 9, 2016</h3>
 
 				<ul>
