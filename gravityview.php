@@ -1,13 +1,5 @@
 <?php
 /**
- * @file gravityview.php
- * @package   GravityView
- * @license   GPL2+
- * @author    Katz Web Services, Inc.
- * @link      https://gravityview.co
- * @copyright Copyright 2016, Katz Web Services, Inc.
- *
- * @wordpress-plugin
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
