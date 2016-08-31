@@ -86,6 +86,7 @@ class GravityView_frontend {
 
 	private function initialize() {
 		add_action( 'wp', array( $this, 'parse_content'), 11 );
+		add_filter( 'parse_query', array( $this, 'parse_query_fix_frontpage' ), 10 );
 		add_action( 'template_redirect', array( $this, 'set_entry_data'), 1 );
 
 		// Enqueue scripts and styles after GravityView_Template::register_styles()
@@ -258,6 +259,70 @@ class GravityView_frontend {
 	 */
 	public function get_context_view_id() {
 		return $this->context_view_id;
+	}
+
+	/**
+	 * Allow GravityView entry endpoints on the front page of a site
+	 *
+	 * @link  https://core.trac.wordpress.org/ticket/23867 Fixes this core issue
+	 * @link https://wordpress.org/plugins/cpt-on-front-page/ Code is based on this
+	 *
+	 * @since 1.17.3
+	 *
+	 * @param WP_Query &$query (passed by reference)
+	 *
+	 * @return void
+	 */
+	public function parse_query_fix_frontpage( &$query ) {
+		global $wp_rewrite;
+
+		$is_front_page = ( $query->is_home || $query->is_page );
+		$show_on_front = ( 'page' === get_option('show_on_front') );
+		$front_page_id = get_option('page_on_front');
+
+		if (  $is_front_page && $show_on_front && $front_page_id ) {
+
+			// Force to be an array, potentially a query string ( entry=16 )
+			$_query = wp_parse_args( $query->query );
+
+			// pagename can be set and empty depending on matched rewrite rules. Ignore an empty pagename.
+			if ( isset( $_query['pagename'] ) && '' === $_query['pagename'] ) {
+				unset( $_query['pagename'] );
+			}
+
+			// this is where will break from core wordpress
+			$ignore = array( 'preview', 'page', 'paged', 'cpage' );
+			foreach ( $wp_rewrite->endpoints as $endpoint ) {
+				$ignore[] = $endpoint[1];
+			}
+
+			// Modify the query if:
+			// - We're on the "Page on front" page (which we are), and:
+			// - The query is empty OR
+			// - The query includes keys that are associated with registered endpoints. `entry`, for example.
+			if ( empty( $_query ) || ! array_diff( array_keys( $_query ), $ignore ) ) {
+
+				$qv =& $query->query_vars;
+
+				// Prevent redirect when on the single entry endpoint
+				if( self::is_single_entry() ) {
+					add_filter( 'redirect_canonical', '__return_false' );
+				}
+
+				$query->is_page = true;
+				$query->is_home = false;
+				$qv['page_id']  = $front_page_id;
+
+				// Correct <!--nextpage--> for page_on_front
+				if ( ! empty( $qv['paged'] ) ) {
+					$qv['page'] = $qv['paged'];
+					unset( $qv['paged'] );
+				}
+			}
+
+			// reset the is_singular flag after our updated code above
+			$query->is_singular = $query->is_single || $query->is_page || $query->is_attachment;
+		}
 	}
 
 	/**

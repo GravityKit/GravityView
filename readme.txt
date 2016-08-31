@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Tweak: In Edit View, holding down the option (or alt) key while switching forms allows you to change forms without resetting field configurations - this is useful if you want to switch between duplicate forms
 * Added: `[gvlogic]` now can be used in the Body and Subject settings for Email fields
+* Added: Support for embedding Views in the front page of a site; the [GravityView - Allow Front Page Views plugin](https://github.com/gravityview/gravityview-front-page-views) is no longer required
 * Fixed: Tooltip title text of the field and widget "gear" icon
 * Fixed: Restored correct Gravity Flow status and workflow values
 * Fixed: Conflict when editing an entry in Gravity Flow
