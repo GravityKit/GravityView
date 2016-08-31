@@ -4,8 +4,8 @@
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
  * Version:          	1.17.2
- * Author:            	Katz Web Services, Inc.
- * Author URI:        	https://www.katzwebservices.com
+ * Author:            	GravityView
+ * Author URI:        	https://gravityview.co
  * Text Domain:       	gravityview
  * License:           	GPLv2 or later
  * License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
