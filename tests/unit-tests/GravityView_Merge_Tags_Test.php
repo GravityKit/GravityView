@@ -301,9 +301,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gform_pre_replace_merge_tags' );
 		remove_all_filters( 'gform_merge_tag_filter' );
-
-		global $post;
-
+		
 		$form = $this->factory->form->create_and_get();
 		$post = $this->factory->post->create_and_get();
 		$entry = $this->factory->entry->create_and_get( array( 'post_id' => $post->ID, 'form_id' => $form['id'] ) );
@@ -315,16 +313,15 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 			'{entry_url}' => get_bloginfo( 'wpurl' ) . '/wp-admin/admin.php?page=gf_entries&view=entry&id=' . $form['id'] . '&lid=' . rgar( $entry, 'id' ),
 			'{admin_email}' => get_bloginfo( 'admin_email' ),
 			'{post_id}' => $post->ID,
-			'{embed_post:post_title}' => $post->post_title,
 		);
 
 		foreach( $tests as $merge_tag => $expected ) {
-			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ) );
-			$this->assertEquals( urlencode( $expected ), GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry, true ) );
+			$this->assertEquals( $expected, GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
+			$this->assertEquals( urlencode( $expected ), GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry, true ), $merge_tag );
 
 			remove_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', 'replace_gv_merge_tags' ), 10 );
-			$this->assertEquals( $expected, GFCommon::replace_variables( $merge_tag, $form, $entry ) );
-			$this->assertEquals( urlencode( $expected ), GFCommon::replace_variables( $merge_tag, $form, $entry, true ) );
+			$this->assertEquals( $expected, GFCommon::replace_variables( $merge_tag, $form, $entry ), $merge_tag );
+			$this->assertEquals( urlencode( $expected ), GFCommon::replace_variables( $merge_tag, $form, $entry, true ), $merge_tag );
 			add_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', 'replace_gv_merge_tags' ), 10, 7 );
 		}
 

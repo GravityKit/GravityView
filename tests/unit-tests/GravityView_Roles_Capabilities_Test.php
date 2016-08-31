@@ -9,6 +9,8 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  */
 class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 
+	var $default_roles = array( 'administrator', 'editor', 'author', 'contributor', 'subscriber' );
+
 	/**
 	 * @covers GravityView_Roles_Capabilities::get_instance
 	 */
@@ -88,9 +90,7 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 	 */
 	public function test_has_cap_cap_parameter() {
 
-		$default_roles = array( 'administrator', 'editor', 'author', 'contributor', 'subscriber' );
-
-		foreach( $default_roles as $role ) {
+		foreach( $this->default_roles as $role ) {
 
 			// Create a user with the default roles
 			$user = $this->factory->user->create_and_set( array( 'role' => $role )  );
@@ -151,7 +151,7 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( $zero, wp_get_current_user() );
 
-		foreach( $default_roles as $role ) {
+		foreach( $this->default_roles as $role ) {
 
 			$user_id = $this->factory->user->create( array(
 				'user_login' => $role,

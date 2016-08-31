@@ -214,7 +214,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		global $post;
 
 		$user = $this->factory->user->create_and_set( array( 'role' => 'administrator' ) );
-		$form = $this->factory->form->create_and_get( array( 'form_id' => $form['id'] ) );
+		$form = $this->factory->form->create_and_get();
 		$post = $this->factory->view->create_and_get();
 		$entry = $this->factory->entry->create_and_get( array(
 			'created_by' => $user->ID,
@@ -362,7 +362,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$current_views = gravityview_get_current_views();
 
 		// Check if the view post is set
-		$this->assertTrue( isset( $current_views[ $view_post_type_id ] ), 'The $current_views array didnt have a value set at $post-ID key' );
+		$this->assertTrue( isset( $current_views[ $view_post_type_id ] ), 'The $current_views array didn\'t have a value set at $post->ID key', $current_views );
 
 		// When the view is added, the key is set to the View ID and the `id` is also set to that
 		$this->assertEquals( $view_post_type_id, $current_views[ $view_post_type_id ]['id'] );
