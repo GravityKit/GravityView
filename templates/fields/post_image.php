@@ -27,7 +27,7 @@ $title = count($ary) > 1 ? $ary[1] : "";
 $caption = count($ary) > 2 ? $ary[2] : "";
 $description = count($ary) > 3 ? $ary[3] : "";
 
-$link_atts = '';
+$link_atts = array();
 
 /**
  * @since 1.5.4
@@ -73,18 +73,18 @@ else {
 
 	// Only show the lightbox if linking to the file itself
 	if( $gravityview_view->getAtts('lightbox') ) {
-		$link_atts .= "target='_blank' class='thickbox'";
+		$link_atts['target'] = '_blank';
+		$link_atts['class'] = 'thickbox';
 	}
 
 }
 
 
 // Set the attributes for the link
-$link_atts .= " href='{$href}'";
+$link_atts['href'] = $href;
 
 // Add the title as the link title, if exists. This will appear as caption in the lightbox.
-$link_atts .= ' title="'.esc_attr( $title ).'"';
-
+$link_atts['title'] = $title;
 
 
 ##
@@ -138,31 +138,31 @@ $showlabels = apply_filters( 'gravityview_post_image_meta_show_labels', true );
 // Wrapper tag
 $output = '<'.$wrappertag.' class="gv-image">';
 
-	// Image with link tag
-	$output .= "<a {$link_atts}>{$image}</a>";
+// Image with link tag
+$output .= gravityview_get_link( '', $image, $link_atts );
 
-	foreach ( (array)$image_meta as $key => $meta ) {
+foreach ( (array)$image_meta as $key => $meta ) {
 
-		if( !empty( $meta['value'] ) ) {
+	if( !empty( $meta['value'] ) ) {
 
-			$output .= '<div class="gv-image-'.esc_attr( $key ).'">';
+		$output .= '<div class="gv-image-'.esc_attr( $key ).'">';
 
-			// Display the label if the label's not empty
-			if( !empty( $showlabels ) && !empty( $meta['label'] ) ) {
-				$output .= '<'.esc_attr( $meta['tag_label'] ).' class="gv-image-label">';
-				$output .= esc_html( $meta['label'] );
-				$output .= '</'.esc_attr( $meta['tag_label'] ).'> ';
-			}
-
-			// Display the value
-			$output .= '<'.esc_attr( $meta['tag_value'] ).' class="gv-image-value">';
-			$output .= esc_html( $meta['value'] );
-			$output .= '</'.esc_attr( $meta['tag_value'] ).'>';
-
-			$output .= '</div>';
+		// Display the label if the label's not empty
+		if( !empty( $showlabels ) && !empty( $meta['label'] ) ) {
+			$output .= '<'.esc_attr( $meta['tag_label'] ).' class="gv-image-label">';
+			$output .= esc_html( $meta['label'] );
+			$output .= '</'.esc_attr( $meta['tag_label'] ).'> ';
 		}
 
+		// Display the value
+		$output .= '<'.esc_attr( $meta['tag_value'] ).' class="gv-image-value">';
+		$output .= esc_html( $meta['value'] );
+		$output .= '</'.esc_attr( $meta['tag_value'] ).'>';
+
+		$output .= '</div>';
 	}
+
+}
 
 $output .= '</'.$wrappertag.'>';
 

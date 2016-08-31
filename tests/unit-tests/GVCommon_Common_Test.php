@@ -117,7 +117,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$last_form = array_pop( $forms );
 		$last_gv_form = array_pop( $gv_forms );
 
-		$this->assertEquals( array( 'title' => $last_form['title'], 'id' => $last_form['id'] ), $last_gv_form );
+		$this->assertEquals( $last_form, $last_gv_form );
 	}
 
 	/**
@@ -218,7 +218,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			$result = GVCommon::has_shortcode_r( $test );
 
 			// Expected to be false
-			if ( false === $item ) {
+			if ( false === $expected ) {
 				$this->assertFalse( $result );
 			} else {
 

@@ -1,19 +1,11 @@
 <?php
 /**
- * @file gravityview.php
- * @package   GravityView
- * @license   GPL2+
- * @author    Katz Web Services, Inc.
- * @link      https://gravityview.co
- * @copyright Copyright 2016, Katz Web Services, Inc.
- *
- * @wordpress-plugin
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:          	1.17.2
- * Author:            	Katz Web Services, Inc.
- * Author URI:        	https://www.katzwebservices.com
+ * Version:          	1.17.3
+ * Author:            	GravityView
+ * Author URI:        	https://gravityview.co
  * Text Domain:       	gravityview
  * License:           	GPLv2 or later
  * License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
@@ -24,7 +16,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
-
 
 
 /** Constants */
@@ -86,7 +77,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.17.2';
+	const version = '1.17.3';
 
 	private static $instance;
 

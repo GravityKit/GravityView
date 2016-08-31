@@ -146,7 +146,7 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 		$atts['return'] = 'html';
 		$atts['link_atts'] = 'target=_blank&title=check me out!';
 		$edit_link_link_atts = $this->object->edit_shortcode( $atts );
-		$this->assertEquals( '<a href="http://example.org/?p='.$atts['post_id'].'&amp;entry='.$atts['entry_id']. esc_attr( $gvid ) . '&amp;page=gf_entries&amp;view=entry&amp;edit='.$nonce . '" target="_blank" title="check me out!">Edit Entry</a>', $edit_link_link_atts, 'edit link return html with link atts target=_blank&title=check me out!' );
+		$this->assertEquals( '<a href="http://example.org/?p='.$atts['post_id'].'&amp;entry='.$atts['entry_id']. esc_attr( $gvid ) . '&amp;page=gf_entries&amp;view=entry&amp;edit='.$nonce . '" rel="noopener noreferrer" target="_blank" title="check me out!">Edit Entry</a>', $edit_link_link_atts, 'edit link return html with link atts target=_blank&title=check me out!' );
 
 		$zero = $this->factory->user->create_and_set(array('role' => 'zero'));
 

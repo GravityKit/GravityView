@@ -36,16 +36,19 @@ function gravityview_get_form_from_entry_id( $entry_slug ) {
 	return GVCommon::get_form_from_entry_id( $entry_slug );
 }
 
+
 /**
- * Returns the list of available forms
+ * Alias of GFAPI::get_forms()
  *
- * @see GVCommon::get_forms()
- * @access public
- * @param mixed $form_id
- * @return array Empty array if GFAPI isn't available or no forms. Otherwise, associative array with id, title keys
+ * @see GFAPI::get_forms()
+ *
+ * @param bool $active Status of forms. Default: `true`
+ * @param bool $trash Include forms in trash? Default: `false`
+ *
+ * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
  */
-function gravityview_get_forms() {
-	return GVCommon::get_forms();
+function gravityview_get_forms( $active = true, $trash = false ) {
+	return GVCommon::get_forms( $active, $trash );
 }
 
 /**

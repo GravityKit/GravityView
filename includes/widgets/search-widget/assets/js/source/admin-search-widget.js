@@ -323,7 +323,7 @@
 		 * @param  {{jQuery DOM object}} table  The table DOM object
 		 */
 		addEmptyMsg: function( table ) {
-			$( table ).append('<tr class="no-search-fields"><td colspan="4">'+ gvSearchVar.label_nofields +'&nbsp; <a href="#addSearchField">'+ gvSearchVar.label_addfield +'</a></td></tr>');
+			$( table ).append('<tr class="no-search-fields"><td colspan="5">'+ gvSearchVar.label_nofields +'&nbsp; <a href="#addSearchField">'+ gvSearchVar.label_addfield +'</a></td></tr>');
 		},
 
 		/**
