@@ -35,11 +35,9 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 			'page_size' => rgar( $gravityview_view->paging, 'page_size' ),
 			'total' => $gravityview_view->total_entries,
 			'show_all' => !empty( $this->settings['show_all']['default'] ),
+			'current' => (int) rgar( $_GET, 'pagenum', 1 ),
 		), $widget_args, 'gravityview_widget_page_links' );
-
-		// displaying info
-		$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
-
+		
 		$page_link_args = array(
 			'base' => add_query_arg('pagenum','%#%', gv_directory_link() ),
 			'format' => '&pagenum=%#%',
@@ -50,7 +48,7 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 			'end_size' => 1,
 			'mid_size' => 2,
 			'total' => empty( $atts['page_size'] ) ? 0 : ceil( $atts['total'] / $atts['page_size'] ),
-			'current' => $curr_page,
+			'current' => $atts['current'],
 			'show_all' => !empty( $atts['show_all'] ), // to be available at backoffice
 		);
 
