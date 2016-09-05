@@ -31,10 +31,9 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 			return;
 		}
 
-		$page_size = $gravityview_view->paging['page_size'];
-		$total = $gravityview_view->total_entries;
-
 		$atts = shortcode_atts( array(
+			'page_size' => rgar( $gravityview_view->paging, 'page_size' ),
+			'total' => $gravityview_view->total_entries,
 			'show_all' => !empty( $this->settings['show_all']['default'] ),
 		), $widget_args, 'gravityview_widget_page_links' );
 
@@ -50,7 +49,7 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 			'type' => 'list',
 			'end_size' => 1,
 			'mid_size' => 2,
-			'total' => empty( $page_size ) ? 0 : ceil( $total / $page_size ),
+			'total' => empty( $atts['page_size'] ) ? 0 : ceil( $atts['total'] / $atts['page_size'] ),
 			'current' => $curr_page,
 			'show_all' => !empty( $atts['show_all'] ), // to be available at backoffice
 		);
