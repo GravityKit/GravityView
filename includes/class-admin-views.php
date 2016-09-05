@@ -505,7 +505,7 @@ class GravityView_Admin_Views {
 			if( empty( $_POST['widgets'] ) ) {
 				$_POST['widgets'] = array();
 			}
-			$statii['directory_widgets'] = update_post_meta( $post_id, '_gravityview_directory_widgets', $_POST['widgets'] );
+			$statii['directory_widgets'] = gravityview_set_directory_widgets( $post_id, $_POST['widgets'] );
 
 		} // end save view configuration
 
@@ -900,8 +900,7 @@ class GravityView_Admin_Views {
 
 		$widgets = array();
 		if( !empty( $post_id ) ) {
-			$widgets = get_post_meta( $post_id, '_gravityview_directory_widgets', true );
-
+			$widgets = gravityview_get_directory_widgets( $post_id );
 		}
 
 		ob_start();

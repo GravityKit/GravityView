@@ -163,7 +163,7 @@ class GravityView_Migrate {
 
 		foreach( $views as $view ) {
 
-			$widgets = get_post_meta( $view->ID, '_gravityview_directory_widgets', true );
+			$widgets = gravityview_get_directory_widgets( $view->ID );
 			$search_fields = null;
 
 			if( empty( $widgets ) || !is_array( $widgets ) ) { continue; }
@@ -206,7 +206,7 @@ class GravityView_Migrate {
 			}
 
 			// update widgets view
-			update_post_meta( $view->ID, '_gravityview_directory_widgets', $widgets );
+			gravityview_set_directory_widgets( $view->ID, $widgets );
 
 		} // foreach Views
 
@@ -225,7 +225,7 @@ class GravityView_Migrate {
 		$search_fields = array();
 
 		// check view fields' settings
-		$fields = get_post_meta( $view_id, '_gravityview_directory_fields', true );
+		$fields = gravityview_get_directory_fields( $view_id, false );
 
 		if( !empty( $fields ) && is_array( $fields ) ) {
 

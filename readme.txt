@@ -20,6 +20,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+__Developer Notes__
+
+* Added: `gravityview_get_directory_widgets()`, `gravityview_set_directory_widgets()` wrapper functions to get and set View widget configurations
+* Added: Second `$apply_filter` parameter to `GVCommon::get_directory_fields()` function to set whether or not to apply the `gravityview/configuration/fields` filter
+
 = 1.17.3 on August 31, 2016 =
 
 * Added: Search Bar support for Gravity Forms Survey fields: filter by survey responses
