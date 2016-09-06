@@ -965,6 +965,8 @@ class GravityView_Edit_Entry_Render {
 
         $form = $this->filter_conditional_logic( $form );
 
+        $form = $this->prefill_conditional_logic( $form );
+
         // for now we don't support Save and Continue feature.
         if( ! self::$supports_save_and_continue ) {
 	        unset( $form['save'] );
@@ -1698,6 +1700,68 @@ class GravityView_Edit_Entry_Render {
     }
 
     // --- Conditional Logic
+
+    /**
+     * Conditional logic isn't designed to work with forms that already have content. When switching input values,
+     * the dependent fields will be blank.
+     *
+     * Note: This is because GF populates a JavaScript variable with the input values. This is tough to filter at the input level;
+     * via the `gform_field_value` filter; it requires lots of legwork. Doing it at the form level is easier.
+     *
+     * @since 1.17.4
+     *
+     * @param array $form Gravity Forms array object
+     *
+     * @return array $form, modified to fix conditional
+     */
+    function prefill_conditional_logic( $form ) {
+
+        if( ! GFFormDisplay::has_conditional_logic( $form ) ) {
+            return $form;
+        }
+
+        // Have Conditional Logic pre-fill fields as if the data were default values
+        /** @var GF_Field $field */
+        foreach ( $form['fields'] as &$field ) {
+
+            if( 'checkbox' === $field->type ) {
+                foreach ( $field->get_entry_inputs() as $key => $input ) {
+                    $input_id = $input['id'];
+                    $choice = $field->choices[ $key ];
+                    $value = rgar( $this->entry, $input_id );
+                    $match = RGFormsModel::choice_value_match( $field, $choice, $value );
+                    if( $match ) {
+                        $field->choices[ $key ]['isSelected'] = true;
+                    }
+                }
+            } else {
+
+                // We need to run through each field to set the default values
+                foreach ( $this->entry as $field_id => $field_value ) {
+
+                    if( floatval( $field_id ) === floatval( $field->id ) ) {
+
+                        if( 'list' === $field->type ) {
+                            $list_rows = maybe_unserialize( $field_value );
+
+                            $list_field_value = array();
+                            foreach ( $list_rows as $row ) {
+                                foreach ( $row as $column ) {
+                                    $list_field_value[] = $column;
+                                }
+                            }
+
+                            $field->defaultValue = $list_field_value;
+                        } else {
+                            $field->defaultValue = $field_value;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $form;
+    }
 
     /**
      * Remove the conditional logic rules from the form button and the form fields, if needed.
