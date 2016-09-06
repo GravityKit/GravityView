@@ -225,11 +225,13 @@ class GravityView_Edit_Entry_Render {
 
         // Multiple Views embedded, don't proceed if nonce fails
         if( $gv_data->has_multiple_views() && ! wp_verify_nonce( $_GET['edit'], self::$nonce_key ) ) {
+            do_action('gravityview_log_error', __METHOD__ . ': Nonce validation failed for the Edit Entry request; returning' );
             return;
         }
 
         // Sorry, you're not allowed here.
         if( false === $this->user_can_edit_entry( true ) ) {
+            do_action('gravityview_log_error', __METHOD__ . ': User is not allowed to edit this entry; returning', $this->entry );
             return;
         }
 
@@ -280,7 +282,7 @@ class GravityView_Edit_Entry_Render {
             return;
         }
 
-        do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
+        do_action('gravityview_log_debug', __METHOD__ . ': $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
 
         $this->process_save_process_files( $this->form_id );
 
@@ -288,7 +290,7 @@ class GravityView_Edit_Entry_Render {
 
         if( $this->is_valid ) {
 
-            do_action('gravityview_log_debug', 'GravityView_Edit_Entry[process_save] Submission is valid.' );
+            do_action('gravityview_log_debug', __METHOD__ . ': Submission is valid.' );
 
             /**
              * @hack This step is needed to unset the adminOnly from form fields, to add the calculation fields
@@ -329,6 +331,9 @@ class GravityView_Edit_Entry_Render {
              * @param string $entry_id Numeric ID of the entry that was updated
              */
             do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'] );
+
+        } else {
+            do_action('gravityview_log_error', __METHOD__ . ': Submission is NOT valid.', $this->entry );
         }
 
     } // process_save
@@ -380,10 +385,13 @@ class GravityView_Edit_Entry_Render {
 
         $form = $this->form;
 
+	    /** @var GF_Field $field */
         foreach( $form['fields'] as $k => &$field ) {
 
-            // Remove the fields with calculation formulas before save to avoid conflicts with GF logic
-            // @since 1.16.3
+            /**
+             * Remove the fields with calculation formulas before save to avoid conflicts with GF logic
+             * @since 1.16.3
+             */
             if( $field->has_calculation() ) {
                 unset( $form['fields'][ $k ] );
             }
@@ -1811,6 +1819,7 @@ class GravityView_Edit_Entry_Render {
             return $has_conditional_logic;
         }
 
+	    /** @see GravityView_Edit_Entry_Render::filter_conditional_logic for filter documentation */
         return apply_filters( 'gravityview/edit_entry/conditional_logic', $has_conditional_logic, $form );
     }
 
