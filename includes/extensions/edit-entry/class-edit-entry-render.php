@@ -664,20 +664,11 @@ class GravityView_Edit_Entry_Render {
                             $value = $this->fill_post_template( $field->customFieldTemplate, $form, $entry_tmp, true );
                         }
 
-                        $input_type = RGFormsModel::get_input_type( $field );
+	                    if ( $this->is_field_json_encoded( $field ) && ! is_string( $value ) ) {
+		                    $value = function_exists('wp_json_encode') ? wp_json_encode( $value ) : json_encode( $value );
+	                    }
 
-                        // Only certain custom field types are supported
-                        switch( $input_type ) {
-                            case 'fileupload':
-                            case 'list':
-                            case 'multiselect':
-                                if( ! is_string( $value ) ) {
-                                    $value = function_exists('wp_json_encode') ? wp_json_encode( $value ) : json_encode( $value );
-                                }
-                            // break; left intentionally out
-                            default:
-                                update_post_meta( $post_id, $field->postCustomFieldName, $value );
-                        }
+                        update_post_meta( $post_id, $field->postCustomFieldName, $value );
 
                         break;
 
