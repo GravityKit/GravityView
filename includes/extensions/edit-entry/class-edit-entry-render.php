@@ -925,7 +925,11 @@ class GravityView_Edit_Entry_Render {
         // TODO: Verify multiple-page forms
         // TODO: Product fields are not editable
 
+        ob_start(); // Prevent PHP warnings possibly caused by prefilling list fields for conditional logic
+
         $html = GFFormDisplay::get_form( $this->form['id'], false, false, true, $this->entry );
+
+        ob_get_clean();
 
 	    remove_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields' ), 5000 );
         remove_filter( 'gform_submit_button', array( $this, 'render_form_buttons' ) );
