@@ -919,8 +919,6 @@ class GravityView_Edit_Entry_Render {
         add_filter( 'gform_field_input', array( $this, 'verify_user_can_edit_post' ), 5, 5 );
         add_filter( 'gform_field_input', array( $this, 'modify_edit_field_input' ), 10, 5 );
 
-        add_filter( 'gform_field_value', array( $this, 'fix_survey_fields_value'), 10, 3 );
-
         // We need to remove the fake $_GET['page'] arg to avoid rendering form as if in admin.
         unset( $_GET['page'] );
 
@@ -929,7 +927,6 @@ class GravityView_Edit_Entry_Render {
 
         $html = GFFormDisplay::get_form( $this->form['id'], false, false, true, $this->entry );
 
-        remove_filter( 'gform_field_value', array( $this, 'fix_survey_fields_value'), 10 );
 	    remove_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields' ), 5000 );
         remove_filter( 'gform_submit_button', array( $this, 'render_form_buttons' ) );
         remove_filter( 'gform_disable_view_counter', '__return_true' );
@@ -944,50 +941,6 @@ class GravityView_Edit_Entry_Render {
          * @param GravityView_Edit_Entry_Render $this
          */
         do_action( 'gravityview/edit-entry/render/after', $this );
-    }
-
-    /**
-     * Survey fields inject their output using `gform_field_input` filter, but in Edit Entry, the values were empty.
-     * We filter the values here because it was the easiest access point: tell the survey field the correct value, GF outputs it.
-     *
-     * @TODO: REMOVE; now added in class-gravityview-plugin-hooks-gravity-forms-survey.php
-     * 
-     * @since 1.16.4
-     *
-     * @param string $value Existing value
-     * @param GF_Field $field
-     * @param string $name Field custom parameter name, normally blank.
-     *
-     * @return mixed
-     */
-    function fix_survey_fields_value( $value, $field, $name ) {
-        
-        if( 'survey' === $field->type ) {
-
-	        // We need to run through each survey row until we find a match for expected values
-	        foreach ( $this->entry as $field_id => $field_value ) {
-
-		        if ( floor( $field_id ) !== floor( $field->id ) ) {
-			        continue;
-		        }
-
-		        if( rgar( $field, 'gsurveyLikertEnableMultipleRows' ) ) {
-			        list( $row_val, $col_val ) = explode( ':', $field_value, 2 );
-
-		            // If the $name matches the $row_val, we are processing the correct row
-			        if( $row_val === $name ) {
-				        $value = $field_value;
-				        break;
-			        }
-		        } else {
-			        // When not processing multiple rows, the value is the $entry[ $field_id ] value.
-			        $value = $field_value;
-				    break;
-		        }
-			}
-        }
-
-        return $value;
     }
 
     /**
