@@ -312,6 +312,9 @@ class GravityView_Edit_Entry_Render {
 
             GFFormsModel::save_lead( $form, $this->entry );
 
+	        // Delete the values for hidden inputs
+	        $this->unset_hidden_field_values();
+            
             $this->entry['date_created'] = $date_created;
 
             // If there's a post associated with the entry, process post fields
@@ -338,6 +341,38 @@ class GravityView_Edit_Entry_Render {
 
     } // process_save
 
+	/**
+	 * Delete the value of fields hidden by conditional logic when the entry is edited
+     *
+     * @uses GFFormsModel::update_lead_field_value()
+     *
+     * @since 1.17.4
+     *
+     * @return void
+	 */
+    private function unset_hidden_field_values() {
+	    global $wpdb;
+
+	    $lead_detail_table      = GFFormsModel::get_lead_details_table_name();
+	    $current_fields   = $wpdb->get_results( $wpdb->prepare( "SELECT id, field_number FROM $lead_detail_table WHERE lead_id=%d", $this->entry['id'] ) );
+
+	    foreach ( $this->entry as $input_id => $field_value ) {
+
+		    $field = RGFormsModel::get_field( $this->form, $input_id );
+
+		    // Reset fields that are hidden
+		    // Don't pass $entry as fourth parameter; force using $_POST values to calculate conditional logic
+		    if ( GFFormsModel::is_field_hidden( $this->form, $field, array(), NULL ) ) {
+
+		        // List fields are stored as empty arrays when empty
+			    $empty_value = $this->is_field_json_encoded( $field ) ? '[]' : '';
+
+			    $lead_detail_id = GFFormsModel::get_lead_detail_id( $current_fields, $input_id );
+
+			    GFFormsModel::update_lead_field_value( $this->form, $this->entry, $field, $lead_detail_id, $input_id, $empty_value );
+		    }
+	    }
+    }
 
     /**
      * Have GF handle file uploads
@@ -682,6 +717,31 @@ class GravityView_Edit_Entry_Render {
         } else {
             do_action( 'gravityview_log_debug', 'Updating the post content for post #'.$post_id.' succeeded', $updated_post );
         }
+    }
+
+	/**
+     * Is the field stored in a JSON-encoded manner?
+     *
+	 * @param GF_Field $field
+	 *
+	 * @return bool True: stored in DB json_encode()'d; False: not encoded
+	 */
+    private function is_field_json_encoded( $field ) {
+
+	    $json_encoded = false;
+
+        $input_type = RGFormsModel::get_input_type( $field );
+
+	    // Only certain custom field types are supported
+	    switch( $input_type ) {
+		    case 'fileupload':
+		    case 'list':
+		    case 'multiselect':
+			    $json_encoded = true;
+			    break;
+	    }
+
+	    return $json_encoded;
     }
 
     /**
