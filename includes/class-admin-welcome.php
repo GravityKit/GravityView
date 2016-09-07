@@ -274,7 +274,23 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;">What&rsquo;s New</h2>
 				</div>
 
-				<h3>1.17.3 on August 31, 2016</h3>
+                <h3>1.17.4 on September 7, 2016</h3>
+
+                <ul>
+                    <li>Added: Support for editing <a href="https://gravitywiz.com/documentation/gp-unique-id/">Gravity Perks Unique ID</a> fields</li>
+                    <li>Fixed: Issue searching and sorting fields with multiple inputs (like names)</li>
+                    <li>Fixed: Restore Gravity Forms Quiz Addon details in the field picker</li>
+                </ul>
+
+
+                <p><strong>Developer Notes</strong></p>
+
+                <ul>
+                    <li>Added: <code>gravityview_get_directory_widgets()</code>, <code>gravityview_set_directory_widgets()</code> wrapper functions to get and set View widget configurations</li>
+                    <li>Added: Second <code>$apply_filter</code> parameter to <code>GVCommon::get_directory_fields()</code> function to set whether or not to apply the <code>gravityview/configuration/fields</code> filter</li>
+                </ul>
+
+                <h3>1.17.3 on August 31, 2016</h3>
 
 				<ul>
 					<li>Added: Search Bar support for Gravity Forms Survey fields: filter by survey responses</li>
