@@ -1078,19 +1078,25 @@ class GVCommon {
 	 * 	[other zones]
 	 * )
 	 *
+	 * @since 1.17.4 Added $apply_filter parameter
+	 *
 	 * @param  int $post_id View ID
+	 * @param  bool $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
 	 * @return array          Multi-array of fields with first level being the field zones. See code comment.
 	 */
-	public static function get_directory_fields( $post_id ) {
+	public static function get_directory_fields( $post_id, $apply_filter = true ) {
 		$fields = get_post_meta( $post_id, '_gravityview_directory_fields', true );
 
-		/**
-		 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array
-		 * @since 1.6.5
-		 * @param $fields array Multi-array of fields with first level being the field zones
-		 * @param $post_id int Post ID
-		 */
-		$fields = apply_filters( 'gravityview/configuration/fields', $fields, $post_id );
+		if( $apply_filter ) {
+			/**
+			 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array
+			 * @since 1.6.5
+			 *
+			 * @param $fields array Multi-array of fields with first level being the field zones
+			 * @param $post_id int Post ID
+			 */
+			$fields = apply_filters( 'gravityview/configuration/fields', $fields, $post_id );
+		}
 
 		return $fields;
 	}

@@ -238,7 +238,7 @@ class GravityView_View_Data {
 			'template_id' => gravityview_get_template_id( $view_id ),
 			'atts' => $atts,
 			'fields' => $this->get_fields( $view_id ),
-			'widgets' => get_post_meta( $view_id, '_gravityview_directory_widgets', true ),
+			'widgets' => gravityview_get_directory_widgets( $view_id ),
 			'form' => gravityview_get_form( $form_id ),
 		);
 

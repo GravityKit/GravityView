@@ -537,7 +537,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$field_id = str_replace( 'filter_', '', $key );
 
 		// calculates field_id, removing 'filter_' and for '_' for advanced fields ( like name or checkbox )
-		if ( is_numeric( $field_id ) ) {
+		if ( preg_match('/^[0-9_]+$/ism', $field_id ) ) {
 			$field_id = str_replace( '_', '.', $field_id );
 		}
 
