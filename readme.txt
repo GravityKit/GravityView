@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.6
+Tested up to: 4.6.1
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -20,8 +20,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.17.4 on September 7, 2016 =
+
 * Added: Support for editing [Gravity Perks Unique ID](https://gravitywiz.com/documentation/gp-unique-id/) fields
+* Fixed: Issue searching and sorting fields with multiple inputs (like names)
 * Fixed: Restore Gravity Forms Quiz Addon details in the field picker
+
 __Developer Notes__
 
 * Added: `gravityview_get_directory_widgets()`, `gravityview_set_directory_widgets()` wrapper functions to get and set View widget configurations
