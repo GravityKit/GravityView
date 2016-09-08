@@ -381,8 +381,11 @@ class GravityView_Edit_Entry_Render {
 
         foreach( $form['fields'] as $k => &$field ) {
 
-            // Remove the fields with calculation formulas before save to avoid conflicts with GF logic
-            // @since 1.16.3
+            /**
+             * Remove the fields with calculation formulas before save to avoid conflicts with GF logic
+             * @since 1.16.3
+             * @var GF_Field $field
+             */
             if( $field->has_calculation() ) {
                 unset( $form['fields'][ $k ] );
             }
