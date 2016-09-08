@@ -858,6 +858,12 @@ class GravityView_Edit_Entry_Render {
                 ?>
             </form>
 
+            <script>
+                gform.addFilter('gform_reset_pre_conditional_logic_field_action', function ( reset, formId, targetId, defaultValues, isInit ) {
+                    return false;
+                });
+            </script>
+
         </div>
 
     <?php
