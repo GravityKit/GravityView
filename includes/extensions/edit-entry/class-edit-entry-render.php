@@ -1120,7 +1120,7 @@ class GravityView_Edit_Entry_Render {
 
         if( $gv_field && is_callable( array( $gv_field, 'get_field_input' ) ) ) {
             /** @var GF_Field $gv_field */
-            $return = $gv_field->get_field_input( $this->form, $field_value, $this->entry, $field );
+            $return = $gv_field->get_field_input( $this->form, $field_value, $this->entry );
         } else {
 	        $return = $field->get_field_input( $this->form, $field_value, $this->entry );
         }

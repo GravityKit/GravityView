@@ -29,7 +29,7 @@ class GravityView_Plugin_Hooks_Gravity_Perks extends GravityView_Plugin_and_Them
 	 *
 	 * @since 1.17
 	 */
-	function add_hooks() {
+	protected function add_hooks() {
 
 		parent::add_hooks();
 
@@ -47,7 +47,7 @@ class GravityView_Plugin_Hooks_Gravity_Perks extends GravityView_Plugin_and_Them
 	 *
 	 * @return GF_Field[] Array of fields, with any hidden fields replaced with text fields
 	 */
-	function edit_entry_fix_uid_fields( $fields ) {
+	public function edit_entry_fix_uid_fields( $fields ) {
 
 		/** @var GF_Field $field */
 		foreach( $fields as &$field ) {
