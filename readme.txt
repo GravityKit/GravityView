@@ -20,6 +20,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.17.5 =
+* Added: Shortcut to create a View for an existing form
+
 = 1.17.4 on September 7, 2016 =
 
 * Added: Support for editing [Gravity Perks Unique ID](https://gravitywiz.com/documentation/gp-unique-id/) fields
