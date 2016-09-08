@@ -410,7 +410,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		} else {
 			$get = $_GET;
 		}
-
+		
 		do_action( 'gravityview_log_debug', sprintf( '%s[filter_entries] Requested $_%s: ', get_class( $this ), $this->search_method ), $get );
 
 		if ( empty( $get ) || ! is_array( $get ) ) {
@@ -419,7 +419,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		$get = stripslashes_deep( $get );
 
-		$get = gv_map_deep( $get, 'urldecode' );
+		$get = gv_map_deep( $get, 'rawurldecode' );
 
 		// add free search
 		if ( ! empty( $get['gv_search'] ) ) {
@@ -534,15 +534,17 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		$gravityview_view = GravityView_View::getInstance();
 
+		$field_id = str_replace( 'filter_', '', $key );
+
 		// calculates field_id, removing 'filter_' and for '_' for advanced fields ( like name or checkbox )
-		$field_id = str_replace( '_', '.', str_replace( 'filter_', '', $key ) );
+		if ( preg_match('/^[0-9_]+$/ism', $field_id ) ) {
+			$field_id = str_replace( '_', '.', $field_id );
+		}
 
 		// get form field array
 		$form = $gravityview_view->getForm();
 		$form_field = gravityview_get_field( $form, $field_id );
-
-		$value = gv_map_deep( $value, '_wp_specialchars' ); // Gravity Forms encodes ampersands but not quotes
-
+		
 		// default filter array
 		$filter = array(
 			'key' => $field_id,
@@ -774,6 +776,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 			$updated_field = $this->get_search_filter_details( $updated_field );
 
+			error_log("Field:Field = " . print_r($field['field'], true));
+
 			switch ( $field['field'] ) {
 
 				case 'search_all':
@@ -910,12 +914,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 				case 'entry_id':
 					$label = __( 'Entry ID:', 'gravityview' );
 					break;
-				case 'created_by':
-					$label = __( 'Submitted by:', 'gravityview' );
-					break;
-				case 'is_fulfilled':
-					$label = __( 'Is Fulfilled', 'gravityview' );
-					break;
 				default:
 					// If this is a field input, not a field
 					if ( strpos( $field['field'], '.' ) > 0 && ! empty( $form_field['inputs'] ) ) {
@@ -937,10 +935,12 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		/**
 		 * @filter `gravityview_search_field_label` Modify the label for a search field. Supports returning HTML
+		 * @since 1.17.3 Added $field parameter
 		 * @param[in,out] string $label Existing label text, sanitized.
 		 * @param[in] array $form_field Gravity Forms field array, as returned by `GFFormsModel::get_field()`
+		 * @param[in] array $field Field setting as sent by the GV configuration - has `field`, `input` (input type), and `label` keys
 		 */
-		$label = apply_filters( 'gravityview_search_field_label', esc_attr( $label ), $form_field );
+		$label = apply_filters( 'gravityview_search_field_label', esc_attr( $label ), $form_field, $field );
 
 		return $label;
 	}
@@ -1047,7 +1047,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		$value = stripslashes_deep( $value );
 
-		$value = gv_map_deep( $value, 'urldecode' );
+		$value = gv_map_deep( $value, 'rawurldecode' );
 
 		$value = gv_map_deep( $value, '_wp_specialchars' );
 
@@ -1117,7 +1117,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 *
 	 * @see https://github.com/10up/flexibility
 	 *
-	 * @since TODO
+	 * @since 1.17
 	 *
 	 * @return void
 	 */
@@ -1130,7 +1130,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	/**
 	 * If the current visitor is running IE 8 or 9, enqueue Flexibility
 	 *
-	 * @since TODO
+	 * @since 1.17
 	 *
 	 * @return void
 	 */

@@ -559,7 +559,7 @@ function gravityview_get_terms_choices( $args = array() ) {
  *
  * Fields are passed as a jQuery-serialized array, created in admin-views.js in the serializeForm method.
  *
- * @since TODO
+ * @since 1.16.5
  *
  * @uses GVCommon::gv_parse_str
  *
@@ -568,12 +568,12 @@ function gravityview_get_terms_choices( $args = array() ) {
 function _gravityview_process_posted_fields() {
 	$fields = array();
 
-	if( !empty( $_POST['fields'] ) ) {
-		if ( ! is_array( $_POST['fields'] ) ) {
+	if( !empty( $_POST['gv_fields'] ) ) {
+		if ( ! is_array( $_POST['gv_fields'] ) ) {
 
 			// We are not using parse_str() due to max_input_vars limitation with large View configurations
 			$fields_holder = array();
-			GVCommon::gv_parse_str( $_POST['fields'], $fields_holder );
+			GVCommon::gv_parse_str( $_POST['gv_fields'], $fields_holder );
 
 			if ( isset( $fields_holder['fields'] ) ) {
 				$fields = $fields_holder['fields'];
@@ -582,7 +582,7 @@ function _gravityview_process_posted_fields() {
 			}
 
 		} else {
-			$fields = $_POST['fields'];
+			$fields = $_POST['gv_fields'];
 		}
 	}
 

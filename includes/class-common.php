@@ -173,31 +173,34 @@ class GVCommon {
 			'page_size' => 1,
 		);
 
-		$results = GFAPI::get_entries( 0, $search_criteria, null, $paging );
+		/**
+		 * @filter `gravityview/common/get_entry_id_from_slug/form_id` The form ID used to get the custom entry ID. Change this to avoid collisions with data from other forms with the same values and the same field ID.
+		 * @since 1.17.2
+		 * @param int $form_id ID of the form to search. Default: `0` (searches all forms)
+		 */
+		$form_id = apply_filters( 'gravityview/common/get_entry_id_from_slug/form_id', 0 );
+
+		$results = GFAPI::get_entries( intval( $form_id ), $search_criteria, null, $paging );
 
 		$result = ( ! empty( $results ) && ! empty( $results[0]['id'] ) ) ? $results[0]['id'] : null;
 
 		return $result;
 	}
 
-
 	/**
-	 * Returns the list of available forms
+	 * Alias of GFAPI::get_forms()
 	 *
-	 * @access public
-	 * @param mixed $form_id
-	 * @return array Empty array if GFAPI isn't available or no forms. Otherwise, associative array with id, title keys
+	 * @see GFAPI::get_forms()
+	 *
+	 * @param bool $active Status of forms. Default: `true`
+	 * @param bool $trash Include forms in trash? Default: `false`
+	 *
+	 * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
 	 */
-	public static function get_forms() {
+	public static function get_forms(  $active = true, $trash = false ) {
 		$forms = array();
 		if ( class_exists( 'GFAPI' ) ) {
-			$gf_forms = GFAPI::get_forms();
-			foreach ( $gf_forms as $form ) {
-				$forms[] = array(
-					'id' => $form['id'],
-					'title' => $form['title'],
-				);
-			}
+			$forms = GFAPI::get_forms( $active, $trash );
 		}
 		return $forms;
 	}
@@ -1075,19 +1078,25 @@ class GVCommon {
 	 * 	[other zones]
 	 * )
 	 *
+	 * @since 1.17.4 Added $apply_filter parameter
+	 *
 	 * @param  int $post_id View ID
+	 * @param  bool $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
 	 * @return array          Multi-array of fields with first level being the field zones. See code comment.
 	 */
-	public static function get_directory_fields( $post_id ) {
+	public static function get_directory_fields( $post_id, $apply_filter = true ) {
 		$fields = get_post_meta( $post_id, '_gravityview_directory_fields', true );
 
-		/**
-		 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array
-		 * @since 1.6.5
-		 * @param $fields array Multi-array of fields with first level being the field zones
-		 * @param $post_id int Post ID
-		 */
-		$fields = apply_filters( 'gravityview/configuration/fields', $fields, $post_id );
+		if( $apply_filter ) {
+			/**
+			 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array
+			 * @since 1.6.5
+			 *
+			 * @param $fields array Multi-array of fields with first level being the field zones
+			 * @param $post_id int Post ID
+			 */
+			$fields = apply_filters( 'gravityview/configuration/fields', $fields, $post_id );
+		}
 
 		return $fields;
 	}
@@ -1375,6 +1384,14 @@ class GVCommon {
 
 		$final_atts['href'] = esc_url_raw( $href );
 
+		/**
+		 * Fix potential security issue with target=_blank
+		 * @see https://dev.to/ben/the-targetblank-vulnerability-by-example
+		 */
+		if( '_blank' === rgar( $final_atts, 'target' ) ) {
+			$final_atts['rel'] = trim( rgar( $final_atts, 'rel', '' ) . ' noopener noreferrer' );
+		}
+
 		// Sort the attributes alphabetically, to help testing
 		ksort( $final_atts );
 
@@ -1407,10 +1424,11 @@ class GVCommon {
 	 */
 	public static function array_merge_recursive_distinct( array &$array1, array &$array2 ) {
 		$merged = $array1;
-
-		foreach ( $array2 as $key => &$value )  {
+		foreach ( $array2 as $key => $value ) {
 			if ( is_array( $value ) && isset( $merged[ $key ] ) && is_array( $merged[ $key ] ) ) {
 				$merged[ $key ] = self::array_merge_recursive_distinct( $merged[ $key ], $value );
+			} else if ( is_numeric( $key ) && isset( $merged[ $key ] ) ) {
+				$merged[] = $value;
 			} else {
 				$merged[ $key ] = $value;
 			}

@@ -36,16 +36,19 @@ function gravityview_get_form_from_entry_id( $entry_slug ) {
 	return GVCommon::get_form_from_entry_id( $entry_slug );
 }
 
+
 /**
- * Returns the list of available forms
+ * Alias of GFAPI::get_forms()
  *
- * @see GVCommon::get_forms()
- * @access public
- * @param mixed $form_id
- * @return array Empty array if GFAPI isn't available or no forms. Otherwise, associative array with id, title keys
+ * @see GFAPI::get_forms()
+ *
+ * @param bool $active Status of forms. Default: `true`
+ * @param bool $trash Include forms in trash? Default: `false`
+ *
+ * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
  */
-function gravityview_get_forms() {
-	return GVCommon::get_forms();
+function gravityview_get_forms( $active = true, $trash = false ) {
+	return GVCommon::get_forms( $active, $trash );
 }
 
 /**
@@ -265,11 +268,41 @@ function gravityview_get_registered_templates() {
  * 	[other zones]
  * )
  *
+ * @since 1.17.4 Added $apply_filter parameter
+ *
  * @param  int $post_id View ID
+ * @param  bool $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
  * @return array          Multi-array of fields with first level being the field zones. See code comment.
  */
-function gravityview_get_directory_fields( $post_id ) {
-	return GVCommon::get_directory_fields( $post_id );
+function gravityview_get_directory_fields( $post_id, $apply_filter = true ) {
+	return GVCommon::get_directory_fields( $post_id, $apply_filter );
+}
+
+/**
+ * Get the widgets, as configured for a View
+ *
+ * @since 1.17.4
+ *
+ * @param int $post_id
+ *
+ * @return array
+ */
+function gravityview_get_directory_widgets( $post_id ) {
+	return get_post_meta( $post_id, '_gravityview_directory_widgets', true );
+}
+
+/**
+ * Set the widgets, as configured for a View
+ *
+ * @since 1.17.4
+ *
+ * @param int $post_id
+ * @param array $widgets array of widgets
+ *
+ * @return int|bool
+ */
+function gravityview_set_directory_widgets( $post_id, $widgets = array() ) {
+	return update_post_meta( $post_id, '_gravityview_directory_widgets', $widgets );
 }
 
 /**

@@ -2,7 +2,7 @@
 /**
  * Display the phone field type
  *
- * @since TODO
+ * @since 1.17
  *
  * @package GravityView
  * @subpackage GravityView/templates/fields
@@ -19,7 +19,7 @@ extract( $gravityview_view->getCurrentField() );
 $value = esc_attr( $value );
 
 if( ! empty( $field_settings['link_phone'] ) && ! empty( $value ) ) {
-	echo "<a href='tel:{$value}'>$value</a>";
+	echo gravityview_get_link( 'tel:' . $value, $value );
 } else {
 	echo $value;
 }

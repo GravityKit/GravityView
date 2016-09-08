@@ -677,7 +677,7 @@ class GravityView_Admin_ApproveEntries {
 	 *
 	 * @since 1.17.1
 	 *
-	 * @return int ID of the current form being displayed
+	 * @return int ID of the current form being displayed. `0` is returned if no forms are found.
 	 */
 	private function get_form_id() {
 
@@ -685,13 +685,35 @@ class GravityView_Admin_ApproveEntries {
 
 		// If there are no forms identified, use the first form. That's how GF does it.
 		if( empty( $form_id ) && class_exists('RGFormsModel') ) {
-			$forms = gravityview_get_forms();
-			if( !empty( $forms ) ) {
-				$form_id = $forms[0]['id'];
-			}
+			$form_id = $this->get_first_form_id();
 		}
 
 		return absint( $form_id );
+	}
+
+	/**
+	 * Get the first form ID from Gravity Forms, sorted in the same order as in the All Forms page
+	 *
+	 * @see GFEntryList::all_entries_page() This method is based on the form-selecting code here
+	 *
+	 * @since 1.17.2
+	 *
+	 * @return int ID of the first form, sorted by title. `0` if no forms were found.
+	 */
+	private function get_first_form_id() {
+
+		$forms = RGFormsModel::get_forms( null, 'title' );
+
+		if( ! isset( $forms[0] ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ': No forms were found' );
+			return 0;
+		}
+
+		$first_form = $forms[0];
+
+		$form_id = is_object( $forms[0] ) ? $first_form->id : $first_form['id'];
+
+		return intval( $form_id );
 	}
 
 
@@ -711,6 +733,11 @@ class GravityView_Admin_ApproveEntries {
 		}
 
 		$form_id = $this->get_form_id();
+
+		// Things are broken; no forms were found
+		if( empty( $form_id ) ) {
+			return;
+		}
 
 		wp_enqueue_style( 'gravityview_entries_list', plugins_url('assets/css/admin-entries-list.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
 

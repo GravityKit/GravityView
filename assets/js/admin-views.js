@@ -57,6 +57,12 @@
 		startFreshStatus: false,
 
 		/**
+		 * @since 1.17.3
+		 * @type {bool} Whether the alt (modifier) key is currently being clicked
+		 */
+		altKey: false,
+
+		/**
 		 * @since 1.14
 		 * @type {int} The width of the modal dialogs to use for field and widget settings
 		 */
@@ -80,6 +86,9 @@
 
 			// Start bind to $('body')
 			$( 'body' )
+
+				// Track modifier keys being clicked
+				.on( 'keydown keyup', vcfg.altKeyListener )
 
 				// select form
 				.on( 'change', '#gravityview_form_id', vcfg.formChange )
@@ -131,6 +140,19 @@
 
 			// End bind to $('body')
 
+		},
+
+		/**
+		 * Listen for whether the altKey is being held down. If so, we modify some behavior.
+		 *
+		 * This is necessary here because clicking on <select> doesn't register the altKey properly
+		 *
+		 * @since 1.17.3
+		 *
+		 * @param {jQuery} e
+		 */
+		altKeyListener: function( e ) {
+			viewConfiguration.altKey = e.altKey;
 		},
 
 		/**
@@ -406,6 +428,11 @@
 		formChange: function ( e ) {
 			e.preventDefault();
 			var vcfg = viewConfiguration;
+
+			// Holding down on the alt key while switching forms allows you to change forms without resetting configurations
+			if( vcfg.altKey ) {
+				return;
+			}
 
 			vcfg.startFreshStatus = false;
 
@@ -803,7 +830,7 @@
 
 		/**
 		 * Toggle the "loading" indicator
-		 * @since TODO
+		 * @since 1.16.5
 		 * @param {string} action "start" or "stop"
 		 */
 		waiting: function( action ) {
@@ -1366,7 +1393,7 @@
 
 			// Add a field to the form that contains all the data.
 			$post.append( $( '<input/>', {
-				'name': 'fields',
+				'name': 'gv_fields',
 				'value': serialized_data,
 				'type': 'hidden'
 			} ) );

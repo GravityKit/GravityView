@@ -62,9 +62,9 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->assertNotEmpty( $view, 'There was an error creating the View' );
 
-		$post_title = new WP_UnitTest_Generator_Sequence( __METHOD__ . ' %s' );
+		$post_title_sequence = new WP_UnitTest_Generator_Sequence( __METHOD__ . ' %s' );
 		$post_id = $this->factory->post->create(array(
-			'post_title' => $post_title->next(),
+			'post_title' => $post_title_sequence->next(),
 			'post_content' => sprintf( '[gravityview id="%d"]', $view->ID ),
 		));
 
@@ -83,7 +83,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$args = array(
 			'p' => $post_id,
 			'entry' => $entry['id'],
-			'gvid' => $view->ID,
 			'page' => 'gf_entries',
 			'view' => 'entry',
 			'edit' => $nonce,
@@ -222,7 +221,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->factory->user->set( $contributor_id );
 
-		$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view->ID ) );
+		$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view_user_edit_enabled->ID ) );
 
 		#####
 		##### Test TRUE Filter
@@ -232,18 +231,18 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		// Should be true anyway
 		$this->factory->user->set( $admin_id );
-			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view->ID ) );
-			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view->ID ) );
+			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ) );
+			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view_user_edit_enabled->ID ) );
 
 		// Should be false, but we have filter set to true
 		$this->factory->user->set( $editor_id );
-			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view->ID ) );
-			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view->ID ) );
+			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view_user_edit_enabled->ID ) );
+			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ) );
 
 		// Should be false, but we have filter set to true
 		$this->factory->user->set( $contributor_id );
-			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view->ID ) );
-			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view->ID ) );
+			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ) );
+			$this->assertTrue( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view_user_edit_enabled->ID ) );
 
 		remove_filter( 'gravityview/edit_entry/user_can_edit_entry', '__return_true' );
 
@@ -256,16 +255,16 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 			// Should be true but the filter is set to false
 			$this->factory->user->set( $admin_id );
-			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view->ID ) );
-			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view->ID ) );
+			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ) );
+			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_without_created_by, $view_user_edit_enabled->ID ) );
 
 			// Should be true, but we have filter set to false
 			$this->factory->user->set( $editor_id );
-			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view->ID ) );
+			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ) );
 
 			// Should be false, and we have filter set to false
 			$this->factory->user->set( $contributor_id );
-			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view->ID ) );
+			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ) );
 
 		remove_filter( 'gravityview/edit_entry/user_can_edit_entry', '__return_false' );
 

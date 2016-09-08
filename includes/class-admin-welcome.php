@@ -274,6 +274,87 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;">What&rsquo;s New</h2>
 				</div>
 
+                <h3>1.17.4 on September 7, 2016</h3>
+
+                <ul>
+                    <li>Added: Support for editing <a href="https://gravitywiz.com/documentation/gp-unique-id/">Gravity Perks Unique ID</a> fields</li>
+                    <li>Fixed: Issue searching and sorting fields with multiple inputs (like names)</li>
+                    <li>Fixed: Restore Gravity Forms Quiz Addon details in the field picker</li>
+                </ul>
+
+
+                <p><strong>Developer Notes</strong></p>
+
+                <ul>
+                    <li>Added: <code>gravityview_get_directory_widgets()</code>, <code>gravityview_set_directory_widgets()</code> wrapper functions to get and set View widget configurations</li>
+                    <li>Added: Second <code>$apply_filter</code> parameter to <code>GVCommon::get_directory_fields()</code> function to set whether or not to apply the <code>gravityview/configuration/fields</code> filter</li>
+                </ul>
+
+                <h3>1.17.3 on August 31, 2016</h3>
+
+				<ul>
+					<li>Added: Search Bar support for Gravity Forms Survey fields: filter by survey responses</li>
+					<li>Added: Search Bar support for Gravity Flow: search entries by the current Step, Step Status, or Workflow Status</li>
+					<li>Added: <code>[gvlogic]</code> and other shortcodes now can be used inside Email field settings content</li>
+					<li>Added: Support for embedding Views in the front page of a site; the <a href="https://github.com/gravityview/gravityview-front-page-views">GravityView - Allow Front Page Views plugin</a> is no longer required</li>
+					<li>Tweak: In Edit View, holding down the option (or alt) key while switching forms allows you to change forms without resetting field configurations - this is useful if you want to switch between duplicate forms</li>
+					<li>Fixed: Restored correct Gravity Flow status and workflow values</li>
+					<li>Fixed: Conflict when editing an entry in Gravity Flow</li>
+					<li>Fixed: Tooltip title text of the field and widget "gear" icon</li>
+					<li>Changed the plugin author from "Katz Web Services, Inc." to "GravityView" - it seemed like it was time!</li>
+				</ul>
+
+
+				<p><strong>Developer Notes</strong></p>
+
+				<ul>
+					<li>Modified: <code>gravityview_get_forms()</code> function and <code>GVCommon::get_forms()</code> method to be compatible with <code>GFAPI::get_forms()</code>. Now accepts <code>$active</code> and <code>$trash</code> arguments, as well as returning all form data (not just <code>id</code> and <code>title</code> keys)</li>
+					<li>Modified: <code>template/fields/post_image.php</code> file to use <code>gravityview_get_link()</code> to generate the anchor link</li>
+					<li>Modified: <code>rel="noopener noreferrer"</code> now added to all links generated using <code>gravityview_get_link()</code> with <code>target="_blank"</code>. This fixes a generic security issue (not specific to GravityView) when displaying links to submitted websites and "Open link in new window" is checked - <a href="https://dev.to/ben/the-targetblank-vulnerability-by-example">read more about it here</a></li>
+					<li>Modified: Don't convert underscores to periods if not numeric in <code>GravityView_Widget_Search::prepare_field_filter()</code> - this fixes searching entry meta</li>
+					<li>Modified: Added third <code>gravityview_search_field_label</code> parameter: <code>$field</code> - it's the field configuration array passed by the Search Bar</li>
+					<li>Modified: HTML tags are now stripped from Email field body and subject content</li>
+					<li>Modified: Moved <code>GravityView_Admin_View_Item</code>, <code>GravityView_Admin_View_Field</code>, and <code>GravityView_Admin_View_Widget</code> to their own files</li>
+					<li>Added: Deprecation notices for methods that haven't been used since Version 1.2!</li>
+				</ul>
+
+
+				<h3>1.17.2 on August 9, 2016</h3>
+
+				<ul>
+					<li>Fixed: "Start Fresh" fails when there are no pre-existing forms in Gravity Forms</li>
+					<li>Added: Support for embedding Views in Ultimate Member profile tabs</li>
+					<li>Fixed: File Upload fields potentially displaying PHP warnings</li>
+					<li>Fixed: Check plugin and theme existence before loading hooks</li>
+					<li>Fixed: "Hide empty fields" not working when "Make Phone Number Clickable" is checked for Phone fields</li>
+					<li>Fixed: Potential PHP warning when adding Password fields in Edit View</li>
+					<li>Fixed: Dutch (Netherlands) <code>nl_NL</code> translation file fixed</li>
+					<li>Fixed: Divi theme shortcode buttons and modal form added to Edit View screen</li>
+					<li>Fixed: Possible for Approve Entries checkbox to use the wrong Form ID</li>
+					<li>Fixed: Search issues with special characters
+
+						<ul>
+							<li>Searches that contained ampersands <code>&amp;</code> were not working</li>
+							<li>Searches containing plus signs <code>+</code> were not working</li>
+							<li>The "Select" Search Bar input type would not show the active search if search term contained an <code>&amp;</code></li>
+						</ul>
+					</li>
+					<li>Fixed: Multisite issue: when Users are logged-in but not added to any sites, they aren't able to see View content</li>
+					<li>Fixed: Never show GravityView Toolbar menu to users who aren't able to edit Views, Forms, or Entries</li>
+					<li>Fixed: Allow passing <code>post_id</code> in <code>[gravityview]</code> shortcode</li>
+					<li>Tweak: Use system fonts instead of Open Sans in the admin</li>
+					<li>Modified: The default setting for "No-Conflict Mode" is now "On". GravityView <em>should look good</em> on your site!</li>
+				</ul>
+
+
+				<p><strong>Developer Notes:</strong></p>
+
+				<ul>
+					<li>Added: <code>gravityview_view_saved</code> action, triggered after a View has been saved in the admin</li>
+					<li>Modified: Changed the Phone field template to use <code>gravityview_get_link()</code> to generate the anchor tag</li>
+					<li>Added: <code>gravityview/common/get_entry_id_from_slug/form_id</code> filter to modify the form ID used to generate entry slugs, in order to avoid hash collisions with data from other forms</li>
+				</ul>
+
 				<h3>1.17.1 on June 27</h3>
 
 				<ul>

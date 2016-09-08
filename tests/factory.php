@@ -22,6 +22,11 @@ class GF_UnitTest_Factory extends WP_UnitTest_Factory {
 	 */
 	public $user;
 
+	/**
+	 * @var WP_UnitTest_Factory_For_Post
+	 */
+	public $post;
+
 	function __construct() {
 		parent::__construct();
 
@@ -33,6 +38,7 @@ class GF_UnitTest_Factory extends WP_UnitTest_Factory {
 
 		$this->view = new GV_UnitTest_Factory_For_View( $this );
 
+		$this->post = new WP_UnitTest_Factory_For_Post();
 	}
 }
 
@@ -107,7 +113,12 @@ class GV_UnitTest_Factory_For_View extends WP_UnitTest_Factory_For_Post {
 
 class GV_UnitTest_Factory_For_User extends WP_UnitTest_Factory_For_User {
 
-	function create( $args = array(), $generation_definitions = array() ) {
+	function create( $args = array(), $generation_definitions = null ) {
+
+		if ( is_null( $generation_definitions ) ) {
+			$generation_definitions = $this->default_generation_definitions;
+		}
+
 		$user = false;
 		if( ! empty( $args['user_login'] ) ) {
 			$user = get_user_by( 'login', $args['user_login'] );
@@ -138,7 +149,7 @@ class GV_UnitTest_Factory_For_User extends WP_UnitTest_Factory_For_User {
 		foreach( $user->roles as $role ) {
 			$capabilities = GravityView_Roles_Capabilities::all_caps( $role );
 
-			foreach ( $capabilities as $cap ) {
+			foreach ( (array) $capabilities as $cap ) {
 				$user->add_cap( $cap, true );
 			}
 		}

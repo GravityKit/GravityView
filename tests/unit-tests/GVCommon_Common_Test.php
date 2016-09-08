@@ -117,7 +117,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$last_form = array_pop( $forms );
 		$last_gv_form = array_pop( $gv_forms );
 
-		$this->assertEquals( array( 'title' => $last_form['title'], 'id' => $last_form['id'] ), $last_gv_form );
+		$this->assertEquals( $last_form, $last_gv_form );
 	}
 
 	/**
@@ -171,6 +171,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 	function test_get_link_html() {
 
 		$this->assertEquals( '<a href="#">Basic</a>', GVCommon::get_link_html( '#', 'Basic' ) );
+		$this->assertEquals( '<a href="tel:1-123-555-1212">1-123-555-1212</a>', GVCommon::get_link_html( 'tel:1-123-555-1212', '1-123-555-1212' ) );
 		$this->assertEquals( '<a href="#" title="New Title">Basic</a>', GVCommon::get_link_html( '#', 'Basic', array( 'title' => 'New Title' ) ) );
 		$this->assertEquals( '<a href="#" title="New Title">Basic</a>', GVCommon::get_link_html( '#', 'Basic', array( 'title' => 'New Title' ) ) );
 		$this->assertEquals( '<a href="#" onclick="alert(&quot;Javascript!&quot;);">Basic</a>', GVCommon::get_link_html( '#', 'Basic', array( 'onclick' => 'alert("Javascript!");' ) ) );
@@ -217,7 +218,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 			$result = GVCommon::has_shortcode_r( $test );
 
 			// Expected to be false
-			if ( false === $item ) {
+			if ( false === $expected ) {
 				$this->assertFalse( $result );
 			} else {
 
