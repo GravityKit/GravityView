@@ -379,6 +379,11 @@ class GravityView_Edit_Entry_Render {
 			    $lead_detail_id = GFFormsModel::get_lead_detail_id( $current_fields, $input_id );
 
 			    GFFormsModel::update_lead_field_value( $this->form, $this->entry, $field, $lead_detail_id, $input_id, $empty_value );
+
+			    // Prevent the $_POST values of hidden fields from being used as default values when rendering the form
+                // after submission
+			    $post_input_id = 'input_' . str_replace( '.', '_', $input_id );
+			    $_POST[ $post_input_id ] = '';
 		    }
 	    }
     }
