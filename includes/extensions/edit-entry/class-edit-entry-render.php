@@ -815,7 +815,7 @@ class GravityView_Edit_Entry_Render {
     /**
      * Display the Edit Entry form
      *
-     * @return [type] [description]
+     * @return void
      */
     public function edit_entry_form() {
 
@@ -1666,7 +1666,7 @@ class GravityView_Edit_Entry_Render {
     /**
      * Override GF Form field properties with the ones defined on the View
      * @param  GF_Field $field GF Form field object
-     * @param  array $setting  GV field options
+     * @param  array $field_setting  GV field options
      * @since  1.5
      * @return array|GF_Field
      */
