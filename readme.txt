@@ -60,6 +60,7 @@ __Developer Notes__
 = 1.17.2 on August 9, 2016 =
 
 * Fixed: "Start Fresh" fails when there are no pre-existing forms in Gravity Forms
+* Fixed: Edit Entry not saving values for fields that were initially hidden
 * Added: Support for embedding Views in Ultimate Member profile tabs
 * Fixed: File Upload fields potentially displaying PHP warnings
 * Fixed: Check plugin and theme existence before loading hooks
