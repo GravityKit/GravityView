@@ -239,7 +239,12 @@ class GVCommon {
 
 				if ( $add_default_properties && ! empty( $field->inputs ) ) {
 					foreach ( $field->inputs as $input ) {
-                        /**
+
+						if( ! empty( $input['isHidden'] ) ) {
+							continue;
+						}
+
+						/**
                          * @hack
                          * In case of email/email confirmation, the input for email has the same id as the parent field
                          */

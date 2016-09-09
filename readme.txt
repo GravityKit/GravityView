@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 1.17.5 =
 * Added: Shortcut to create a View for an existing form
+* Fixed: Don't show hidden visible inputs in the "Add Field" picker (for example, if the "Middle Name" input is hidden in the Name field, don't show it as an option)
 
 = 1.17.4 on September 7, 2016 =
 
