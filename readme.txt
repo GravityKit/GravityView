@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 == Changelog ==
 
 = 1.17.5 =
+* Now requires Gravity Forms 1.9.14 (previously, 1.9.9.10)
 * Added: Shortcut to create a View for an existing form
 * Fixed: Don't show hidden visible inputs in the "Add Field" picker (for example, if the "Middle Name" input is hidden in the Name field, don't show it as an option)
 
