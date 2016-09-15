@@ -189,8 +189,11 @@ class GravityView_Settings extends GFAddOn {
 		}
 
 		$license_status = self::getSetting('license_key_status');
-		$license_id = self::getSetting('license_key');
-		$license_id = empty( $license_id ) ? 'license' : $license_id;
+		$license_key = self::getSetting('license_key');
+		if( '' === $license_key ) {
+			$license_status = 'inactive';
+        }
+		$license_id = empty( $license_key ) ? 'license' : $license_key;
 
 		$message = esc_html__('Your GravityView license %s. This means you&rsquo;re missing out on updates and support! %sActivate your license%s or %sget a license here%s.', 'gravityview');
 
