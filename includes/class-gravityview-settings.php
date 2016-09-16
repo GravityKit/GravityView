@@ -106,19 +106,209 @@ class GravityView_Settings extends GFAddOn {
 	 */
 	public function current_user_can_any( $caps ) {
 
-		/**
-		 * Prevent Gravity Forms from showing the uninstall tab on the settings page
-		 * @hack
-		 */
-		if( $caps === $this->_capabilities_uninstall ) {
-			return false;
-		}
-
 		if( empty( $caps ) ) {
 			$caps = array( 'gravityview_full_access' );
 		}
 
 		return GVCommon::has_cap( $caps );
+	}
+
+	public function uninstall_warning_message() {
+
+		$heading = esc_html__( 'If you delete then re-install GravityView, it will be like installing GravityView for the first time.', 'gravityview' );
+		$message = esc_html__( 'Delete all Views, GravityView entry approval status, GravityView-generated entry notes (including approval and entry creator changes), and GravityView plugin settings.', 'gravityview' );
+
+		return sprintf( '<h4>%s</h4><p>%s</p>', $heading, $message );
+	}
+
+	public function uninstall() {
+
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-uninstall.php' );
+
+		$uninstaller = new GravityView_Uninstall();
+
+		$uninstaller->fire_everything();
+
+		/**
+         * Set the path so that Gravity Forms can de-activate GravityView
+         * @see GFAddOn::uninstall_addon
+         * @uses deactivate_plugins()
+         */
+		$this->_path = GRAVITYVIEW_FILE;
+
+		return true;
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function uninstall_form() {
+		ob_start();
+
+		$reasons = array(
+			sprintf('<label><input name="reason" type="radio" value="will-continue">%s</label>', esc_html__( 'I will continue using GravityView on this site', 'gravityview' ) ),
+			sprintf('<label><input name="reason" type="radio" value="no-longer-need">%s</label>', esc_html__( 'I no longer need the plugin', 'gravityview' ) ),
+			sprintf('<label><input name="reason" type="radio" value="too-expensive">%s</label>', esc_html__( 'Too expensive', 'gravityview' ) ),
+			sprintf('<label><input name="reason" type="radio" value="short-period">%s</label>', esc_html__( 'I only needed the plugin for a short period', 'gravityview' ) ),
+			sprintf('<label><input name="reason" type="radio" value="doesnt-work">%s</label>', esc_html__( 'The plugin doesn\'t work', 'gravityview' ) ),
+			sprintf('<label><input name="reason" type="radio" value="found-other" data-followup="%s">%s</label>', esc_attr__('What plugin you are using, and why?', 'gravityview'), esc_html__( 'I found a better plugin', 'gravityview' ) ),
+			sprintf('<label><input name="reason" type="radio" value="other"> %s</label>', esc_html__( 'I found a better plugin', 'gravityview' ) )
+		);
+
+		shuffle( $reasons );
+
+		$user = wp_get_current_user();
+		?>
+
+    <div class="gv-uninstall-form-wrapper" style="font-size: 110%; padding: 15px 0;">
+        <style>
+            #gv-reason-details {
+                min-height: 100px;
+            }
+        </style>
+        <script>
+            jQuery( document ).ready( function( $ ) {
+                var $form = $('#gv-uninstall-feedback');
+
+                $form.on( 'change', function( e ) {
+
+                    if( ! $( e.target ).is(':input') ) {
+                        return;
+                    }
+                    var followup = $( e.target ).attr( 'data-followup' );
+                    var $followup = $('.gv-followup');
+                    var $textarea = $followup.find('textarea');
+                    var $label = $followup.find('label');
+
+                    if( followup ) {
+                        $textarea.attr( 'placeholder', followup );
+                    } else {
+                        $textarea.attr( 'placeholder', $label.attr('data-default') );
+                    }
+
+                }).on( 'submit', function( e ) {
+                    $( this ).remove();
+                    $( '#gv-uninstall-thanks' ).fadeIn();
+
+                    $.post( $( this ).attr( 'action' ), $( this ).serialize() )
+                        .done( function( data ) {
+                            if( 'success' !== data.status ) {
+                                gv_feedback_append_error_message();
+                            }
+                        })
+                        .fail( function( data ) {
+                            console.log( data );
+                            gv_feedback_append_error_message();
+                        });
+
+                    return false;
+                });
+
+                function gv_feedback_append_error_message() {
+                    $('#gv-uninstall-thanks').append('<div class="notice error"><?php echo esc_js( __('There was an error sharing your feedback. Sorry! Please email us at support@gravityview.co', 'gravityview' ) ) ?></div>');
+                }
+            });
+        </script>
+
+        <form id="gv-uninstall-feedback" method="post" action="https://hooks.zapier.com/hooks/catch/28670/6haevn/">
+            <h2><?php esc_html_e( 'Why did you uninstall GravityView?', 'gravityview' ); ?></h2>
+            <ul>
+				<?php
+				foreach ( $reasons as $reason ) {
+					echo '<li>' . $reason . '</li>';
+				}
+				?>
+            </ul>
+            <div class="gv-followup widefat">
+                <p><strong><label for="gv-reason-details" data-default="<?php esc_attr_e( 'How can we improve GravityView?', 'gravityview' ); ?>"><?php esc_html_e( 'Comments', 'gravityview' ); ?></label></strong></p>
+                <textarea id="gv-reason-details" name="reason_details" placeholder="<?php esc_attr_e('Please share your thoughts about GravityView', 'gravityview'); ?>" class="large-text"></textarea>
+            </div>
+            <div>
+                <p><strong><?php esc_html_e('How likely are you to recommend GravityView?', 'gravityview' ); ?></strong></p>
+                <ul class="inline">
+					<?php
+					$i = 0;
+					while( $i < 11 ) {
+						echo '<li class="inline"><label style="border:1px solid #cccccc; padding: .5em .75em; margin: .1em;"><input name="likely_to_refer" id="likely_to_refer_'.$i.'" value="'.$i.'" type="radio"> '.$i.'</label></li>';
+						$i++;
+					}
+					?>
+                </ul>
+                <p class="description"><?php printf( esc_html_x( '%s ("Not at all likely") to %s ("Extremely likely")', 'A scale from 0 (bad) to 10 (good)', 'gravityview' ), '<label for="likely_to_refer_0"><code>0</code></label>', '<label for="likely_to_refer_10"><code>10</code></label>' ); ?></p>
+            </div>
+
+            <div style="margin-top:30px;">
+                <label><input type="checkbox" class="checkbox" name="follow_up_with_me" value="1" /> <?php esc_html_e('Please follow up with me about my feedback', 'gravityview'); ?></label>
+            </div>
+
+            <div class="submit">
+                <input type="hidden" name="siteurl" value="<?php echo esc_url( get_bloginfo( 'siteurl' ) ); ?>" />
+                <input type="hidden" name="email" value="<?php echo esc_attr( $user->user_email ); ?>" />
+                <input type="hidden" name="display_name" value="<?php echo esc_attr( $user->display_name ); ?>" />
+                <input type="submit" value="Send Us Your Feedback" class="button button-primary button-hero" />
+            </div>
+        </form>
+
+        <div id="gv-uninstall-thanks" class="notice notice-large notice-updated below-h2" style="display:none;">
+            <h3 class="notice-title"><?php esc_html_e( 'Thank you for using GravityView!', 'gravityview' ); ?></h3>
+            <p style="font-size: 1.2em"><?php echo gravityview_get_floaty(); ?>
+				<?php echo make_clickable( esc_html__('Your feedback will help us make GravityView better. If you have any questions or comments, email us: support@gravityview.co', 'gravityview' ) ); ?>
+            </p>
+            <div class="wp-clearfix"></div>
+        </div>
+    </div>
+		<?php
+		$form = ob_get_clean();
+
+		return $form;
+	}
+
+
+	public function app_settings_uninstall_tab() {
+
+		if ( $this->maybe_uninstall() ) {
+
+			parent::app_settings_uninstall_tab();
+
+			return;
+		}
+
+		if ( ! ( $this->current_user_can_any( $this->_capabilities_uninstall ) && ( ! function_exists( 'is_multisite' ) || ! is_multisite() || is_super_admin() ) ) ) {
+			return;
+		}
+
+		?>
+		<script type="text/javascript">
+			jQuery(document).on('click', 'a[rel="gv-uninstall-wrapper"]', function( e ) {
+				e.preventDefault();
+				jQuery( '#gv-uninstall-wrapper' ).slideToggle();
+			});
+		</script>
+
+		<a rel="gv-uninstall-wrapper" href="#gv-uninstall-wrapper" class="button button-large alignright button-danger">Uninstall GravityView</a>
+
+		<div id="gv-uninstall-wrapper">
+			<form action="" method="post">
+				<?php wp_nonce_field( 'uninstall', 'gf_addon_uninstall' ) ?>
+				<div class="delete-alert alert_red">
+
+					<h3>
+						<i class="fa fa-exclamation-triangle gf_invalid"></i> <?php esc_html_e( 'Delete all GravityView content and settings', 'gravityview' ); ?>
+					</h3>
+
+					<div class="gf_delete_notice">
+						<?php echo $this->uninstall_warning_message() ?>
+					</div>
+
+					<?php
+					$uninstall_button = '<input type="submit" name="uninstall" value="' . sprintf( esc_attr__( 'Uninstall %s', 'gravityforms' ), $this->get_short_title() ) . '" class="button button-hero" onclick="return confirm(\'' . esc_js( $this->uninstall_confirm_message() ) . '\');" onkeypress="return confirm(\'' . esc_js( $this->uninstall_confirm_message() ) . '\');"/>';
+					echo $uninstall_button;
+					?>
+
+				</div>
+			</form>
+		</div>
+	<?php
 	}
 
 	/**
@@ -326,8 +516,16 @@ class GravityView_Settings extends GFAddOn {
 	 * @return string
 	 */
 	public function app_settings_icon() {
-		return '<i></i>';
+		return '&nbsp;';
 	}
+
+	public function app_settings_tab() {
+	    parent::app_settings_tab();
+
+		if ( $this->maybe_uninstall() ) {
+            echo self::uninstall_form();
+		}
+    }
 
 	/**
 	 * Make protected public
@@ -473,10 +671,15 @@ class GravityView_Settings extends GFAddOn {
 		$field['name']  = 'gform-settings-save';
 		$field['class'] = isset( $field['class'] ) ? $field['class'] : 'button-primary gfbutton';
 
-		if ( ! rgar( $field, 'value' ) )
+		if ( ! rgar( $field, 'value' ) ) {
 			$field['value'] = __( 'Update Settings', 'gravityview' );
+		}
 
 		$output = $this->settings_submit( $field, false );
+
+		ob_start();
+		$this->app_settings_uninstall_tab();
+		$output .= ob_get_clean();
 
 		if( $echo ) {
 			echo $output;
@@ -484,6 +687,7 @@ class GravityView_Settings extends GFAddOn {
 
 		return $output;
 	}
+
 
 	/**
 	 * The same as the parent, except added support for field descriptions
@@ -518,7 +722,6 @@ class GravityView_Settings extends GFAddOn {
 			'support-email' => get_bloginfo( 'admin_email' ),
 			'no-conflict-mode' => '1',
 			'support_port' => '1',
-			'delete-on-uninstall' => '0',
 			'flexbox_search' => '1',
 		);
 
@@ -661,27 +864,6 @@ class GravityView_Settings extends GFAddOn {
 				),
 				'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ) . ' ' . __('If your Edit View tabs are ugly, enable this setting.', 'gravityview'),
 			),
-			array(
-				'name'       => 'delete-on-uninstall',
-				'type'       => 'radio',
-				'label'      => __( 'Remove Data on Delete?', 'gravityview' ),
-				'default_value'    => $default_settings['delete-on-uninstall'],
-				'horizontal' => 1,
-				'choices'    => array(
-					array(
-						'label' => _x( 'Keep GravityView Data', 'Setting: what to do when uninstalling plugin', 'gravityview' ),
-						'value' => '0',
-						'tooltip' => sprintf( '<h6>%s</h6><p>%s</p>', __( 'Keep GravityView content and settings', 'gravityview' ), __( 'If you delete then re-install the plugin, all GravityView data will be kept. Views, settings, etc. will be untouched.', 'gravityview' ) ),
-					),
-					array(
-						'label' => _x( 'Permanently Delete', 'Setting: what to do when uninstalling plugin', 'gravityview' ),
-						'value' => 'delete',
-					    'tooltip' => sprintf( '<h6>%s</h6><p><span class="howto">%s</span></p><p>%s</p>', __( 'Delete all GravityView content and settings', 'gravityview' ), __( 'If you delete then re-install GravityView, it will be like installing GravityView for the first time.', 'gravityview' ), __( 'When GravityView is uninstalled and deleted, delete all Views, GravityView entry approvals, GravityView-generated entry notes (including approval and entry creator changes), and GravityView plugin settings. No Gravity Forms data will be touched.', 'gravityview' ) ),
-					),
-				),
-				'description'   => sprintf( __( 'Should GravityView content and entry approval status be removed from the site when the GravityView plugin is deleted?', 'gravityview' ), __( 'Permanently Delete', 'gravityview' ) ),
-			),
-
 		) );
 
 
