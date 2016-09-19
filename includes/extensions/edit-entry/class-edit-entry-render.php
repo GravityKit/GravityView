@@ -326,16 +326,17 @@ class GravityView_Edit_Entry_Render {
             
             $this->entry['date_created'] = $date_created;
 
-            // If there's a post associated with the entry, process post fields
-            if( !empty( $this->entry['post_id'] ) ) {
-                $this->maybe_update_post_fields( $form );
-            }
-
             // Process calculation fields
             $this->update_calculation_fields();
 
             // Perform actions normally performed after updating a lead
             $this->after_update();
+
+	        /**
+             * Must be AFTER after_update()!
+             * @see https://github.com/gravityview/GravityView/issues/764
+             */
+            $this->maybe_update_post_fields( $form );
 
             /**
              * @action `gravityview/edit_entry/after_update` Perform an action after the entry has been updated using Edit Entry
@@ -616,6 +617,11 @@ class GravityView_Edit_Entry_Render {
      * @return void
      */
     private function maybe_update_post_fields( $form ) {
+
+        if( empty( $this->entry['post_id'] ) ) {
+	        do_action( 'gravityview_log_debug', __METHOD__ . ': This entry has no post fields. Continuing...' );
+            return;
+        }
 
         $post_id = $this->entry['post_id'];
 
