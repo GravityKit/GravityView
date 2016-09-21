@@ -30,6 +30,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Lightbox loading indicator displaying below the overlay
 * Fixed: Mask the Entry ID in the link to lightbox files
 
+__Developer Notes__
+
+* Modified: `list-single.php` template file: added `.gv-grid-col-1-3` CSS class to the `.gv-list-view-content-image` container
+
 = 1.17.4 on September 7, 2016 =
 
 * Added: Support for editing [Gravity Perks Unique ID](https://gravitywiz.com/documentation/gp-unique-id/) fields
