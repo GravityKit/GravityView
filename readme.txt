@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Fatal error when editing Post Content and Post Image fields
 * Fixed: Lightbox images not loading
 * Fixed: Lightbox loading indicator displaying below the overlay
+* Fixed: Mask the Entry ID in the link to lightbox files
 
 = 1.17.4 on September 7, 2016 =
 
