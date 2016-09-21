@@ -776,8 +776,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 			$updated_field = $this->get_search_filter_details( $updated_field );
 
-			error_log("Field:Field = " . print_r($field['field'], true));
-
 			switch ( $field['field'] ) {
 
 				case 'search_all':
