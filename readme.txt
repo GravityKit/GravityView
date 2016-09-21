@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Edit Entry not saving other field values when Post fields were in the Edit Entry form
 * Fixed: Don't show hidden visible inputs in the "Add Field" picker (for example, if the "Middle Name" input is hidden in the Name field, don't show it as an option)
 * Fixed: Fatal error when editing Post Content and Post Image fields
+* Fixed: Lightbox images not loading
 
 = 1.17.4 on September 7, 2016 =
 
