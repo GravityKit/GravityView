@@ -140,65 +140,107 @@ class GravityView_Settings extends GFAddOn {
 	}
 
 	/**
-	 * @return string
+     * Get an array of reasons why the plugin might be uninstalled
+     *
+     * @since 1.17.5
+     *
+	 * @return array Array of reasons with the label and followup questions for each uninstall reason
 	 */
-	public static function uninstall_form() {
-		ob_start();
+	private function get_uninstall_reasons() {
 
 		$reasons = array(
-			sprintf('<label><input name="reason" type="radio" value="will-continue">%s</label>', esc_html__( 'I will continue using GravityView on this site', 'gravityview' ) ),
-			sprintf('<label><input name="reason" type="radio" value="no-longer-need">%s</label>', esc_html__( 'I no longer need the plugin', 'gravityview' ) ),
-			sprintf('<label><input name="reason" type="radio" value="too-expensive">%s</label>', esc_html__( 'Too expensive', 'gravityview' ) ),
-			sprintf('<label><input name="reason" type="radio" value="short-period">%s</label>', esc_html__( 'I only needed the plugin for a short period', 'gravityview' ) ),
-			sprintf('<label><input name="reason" type="radio" value="doesnt-work">%s</label>', esc_html__( 'The plugin doesn\'t work', 'gravityview' ) ),
-			sprintf('<label><input name="reason" type="radio" value="found-other" data-followup="%s">%s</label>', esc_attr__('What plugin you are using, and why?', 'gravityview'), esc_html__( 'I found a better plugin', 'gravityview' ) ),
-			sprintf('<label><input name="reason" type="radio" value="other"> %s</label>', esc_html__( 'I found a better plugin', 'gravityview' ) )
+			'will-continue' => array(
+                'label' => esc_html__( 'I am going to continue using GravityView', 'gravityview' ),
+            ),
+			'no-longer-need' => array(
+                'label' => esc_html__( 'I no longer need GravityView', 'gravityview' ),
+            ),
+			'doesnt-work' => array(
+                'label' => esc_html__( 'The plugin doesn\'t work', 'gravityview' ),
+            ),
+			'found-other' => array(
+                'label' => esc_html__( 'I found a better plugin', 'gravityview' ),
+                'followup' => esc_attr__('What plugin you are using, and why?', 'gravityview'),
+            ),
+			'other' => array(
+                'label' => esc_html__( 'Other', 'gravityview' ),
+            ),
 		);
 
 		shuffle( $reasons );
 
+		return $reasons;
+    }
+
+	/**
+     * Display a feedback form when the plugin is uninstalled
+     *
+     * @since 1.17.5
+     *
+	 * @return string HTML of the uninstallation form
+	 */
+	public function uninstall_form() {
+		ob_start();
+
 		$user = wp_get_current_user();
 		?>
+    <style>
+        #gv-reason-details {
+            min-height: 100px;
+        }
+        .number-scale label {
+            border: 1px solid #cccccc;
+            padding: .5em .75em;
+            margin: .1em;
+        }
+        #gv-uninstall-thanks p {
+            font-size: 1.2em;
+        }
+        .scale-description ul {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .scale-description p.description {
+            margin-top: 0!important;
+            padding-top: 0!important;
+        }
+        .gv-form-field-wrapper {
+            margin-top: 30px;
+        }
+    </style>
 
     <div class="gv-uninstall-form-wrapper" style="font-size: 110%; padding: 15px 0;">
-        <style>
-            #gv-reason-details {
-                min-height: 100px;
-            }
-        </style>
         <script>
-            jQuery( document ).ready( function( $ ) {
-                var $form = $('#gv-uninstall-feedback');
-
-                $form.on( 'change', function( e ) {
+            jQuery(function( $ ) {
+                $('#gv-uninstall-feedback').on( 'change', function( e ) {
 
                     if( ! $( e.target ).is(':input') ) {
                         return;
                     }
-                    var followup = $( e.target ).attr( 'data-followup' );
-                    var $followup = $('.gv-followup');
-                    var $textarea = $followup.find('textarea');
-                    var $label = $followup.find('label');
-
-                    if( followup ) {
-                        $textarea.attr( 'placeholder', followup );
-                    } else {
-                        $textarea.attr( 'placeholder', $label.attr('data-default') );
+                    var $textarea = $('.gv-followup').find('textarea');
+                    var followup_text = $( e.target ).attr( 'data-followup' );
+                    if( ! followup_text ) {
+                        followup_text = $textarea.attr('data-default');
                     }
 
+                    $textarea.attr( 'placeholder', followup_text );
+
                 }).on( 'submit', function( e ) {
-                    $( this ).remove();
-                    $( '#gv-uninstall-thanks' ).fadeIn();
+                    e.preventDefault();
 
                     $.post( $( this ).attr( 'action' ), $( this ).serialize() )
                         .done( function( data ) {
                             if( 'success' !== data.status ) {
                                 gv_feedback_append_error_message();
+                            } else {
+                                $( '#gv-uninstall-thanks' ).fadeIn();
                             }
                         })
                         .fail( function( data ) {
-                            console.log( data );
                             gv_feedback_append_error_message();
+                        })
+                        .always( function() {
+                            $( e.target ).remove();
                         });
 
                     return false;
@@ -214,22 +256,23 @@ class GravityView_Settings extends GFAddOn {
             <h2><?php esc_html_e( 'Why did you uninstall GravityView?', 'gravityview' ); ?></h2>
             <ul>
 				<?php
+                $reasons = $this->get_uninstall_reasons();
 				foreach ( $reasons as $reason ) {
-					echo '<li>' . $reason . '</li>';
+					printf( '<li><label><input name="reason" type="radio" value="other" data-followup="%s"> %s</label></li>', rgar( $reason, 'followup' ), rgar( $reason, 'label' ) );
 				}
 				?>
             </ul>
             <div class="gv-followup widefat">
-                <p><strong><label for="gv-reason-details" data-default="<?php esc_attr_e( 'How can we improve GravityView?', 'gravityview' ); ?>"><?php esc_html_e( 'Comments', 'gravityview' ); ?></label></strong></p>
-                <textarea id="gv-reason-details" name="reason_details" placeholder="<?php esc_attr_e('Please share your thoughts about GravityView', 'gravityview'); ?>" class="large-text"></textarea>
+                <p><strong><label for="gv-reason-details"><?php esc_html_e( 'Comments', 'gravityview' ); ?></label></strong></p>
+                <textarea id="gv-reason-details" name="reason_details" data-default="<?php esc_attr_e('Please share your thoughts about GravityView', 'gravityview') ?>" placeholder="<?php esc_attr_e('Please share your thoughts about GravityView', 'gravityview'); ?>" class="large-text"></textarea>
             </div>
-            <div>
+            <div class="scale-description">
                 <p><strong><?php esc_html_e('How likely are you to recommend GravityView?', 'gravityview' ); ?></strong></p>
                 <ul class="inline">
 					<?php
 					$i = 0;
 					while( $i < 11 ) {
-						echo '<li class="inline"><label style="border:1px solid #cccccc; padding: .5em .75em; margin: .1em;"><input name="likely_to_refer" id="likely_to_refer_'.$i.'" value="'.$i.'" type="radio"> '.$i.'</label></li>';
+						echo '<li class="inline number-scale"><label><input name="likely_to_refer" id="likely_to_refer_'.$i.'" value="'.$i.'" type="radio"> '.$i.'</label></li>';
 						$i++;
 					}
 					?>
@@ -237,7 +280,7 @@ class GravityView_Settings extends GFAddOn {
                 <p class="description"><?php printf( esc_html_x( '%s ("Not at all likely") to %s ("Extremely likely")', 'A scale from 0 (bad) to 10 (good)', 'gravityview' ), '<label for="likely_to_refer_0"><code>0</code></label>', '<label for="likely_to_refer_10"><code>10</code></label>' ); ?></p>
             </div>
 
-            <div style="margin-top:30px;">
+            <div class="gv-form-field-wrapper">
                 <label><input type="checkbox" class="checkbox" name="follow_up_with_me" value="1" /> <?php esc_html_e('Please follow up with me about my feedback', 'gravityview'); ?></label>
             </div>
 
@@ -245,14 +288,14 @@ class GravityView_Settings extends GFAddOn {
                 <input type="hidden" name="siteurl" value="<?php echo esc_url( get_bloginfo( 'siteurl' ) ); ?>" />
                 <input type="hidden" name="email" value="<?php echo esc_attr( $user->user_email ); ?>" />
                 <input type="hidden" name="display_name" value="<?php echo esc_attr( $user->display_name ); ?>" />
-                <input type="submit" value="Send Us Your Feedback" class="button button-primary button-hero" />
+                <input type="submit" value="<?php esc_html_e( 'Send Us Your Feedback', 'gravityview' ); ?>" class="button button-primary button-hero" />
             </div>
         </form>
 
         <div id="gv-uninstall-thanks" class="notice notice-large notice-updated below-h2" style="display:none;">
             <h3 class="notice-title"><?php esc_html_e( 'Thank you for using GravityView!', 'gravityview' ); ?></h3>
-            <p style="font-size: 1.2em"><?php echo gravityview_get_floaty(); ?>
-				<?php echo make_clickable( esc_html__('Your feedback will help us make GravityView better. If you have any questions or comments, email us: support@gravityview.co', 'gravityview' ) ); ?>
+            <p><?php echo gravityview_get_floaty(); ?>
+				<?php echo make_clickable( esc_html__('Your feedback helps us improve GravityView. If you have any questions or comments, email us: support@gravityview.co', 'gravityview' ) ); ?>
             </p>
             <div class="wp-clearfix"></div>
         </div>
@@ -278,7 +321,7 @@ class GravityView_Settings extends GFAddOn {
 		}
 
 		?>
-		<script type="text/javascript">
+		<script>
 			jQuery(document).on('click', 'a[rel="gv-uninstall-wrapper"]', function( e ) {
 				e.preventDefault();
 				jQuery( '#gv-uninstall-wrapper' ).slideToggle();
@@ -301,8 +344,7 @@ class GravityView_Settings extends GFAddOn {
 					</div>
 
 					<?php
-					$uninstall_button = '<input type="submit" name="uninstall" value="' . sprintf( esc_attr__( 'Uninstall %s', 'gravityforms' ), $this->get_short_title() ) . '" class="button button-hero" onclick="return confirm(\'' . esc_js( $this->uninstall_confirm_message() ) . '\');" onkeypress="return confirm(\'' . esc_js( $this->uninstall_confirm_message() ) . '\');"/>';
-					echo $uninstall_button;
+					echo '<input type="submit" name="uninstall" value="' . sprintf( esc_attr__( 'Uninstall %s', 'gravityforms' ), $this->get_short_title() ) . '" class="button button-hero" onclick="return confirm(\'' . esc_js( $this->uninstall_confirm_message() ) . '\');" onkeypress="return confirm(\'' . esc_js( $this->uninstall_confirm_message() ) . '\');"/>';
 					?>
 
 				</div>
@@ -523,7 +565,7 @@ class GravityView_Settings extends GFAddOn {
 	    parent::app_settings_tab();
 
 		if ( $this->maybe_uninstall() ) {
-            echo self::uninstall_form();
+            echo $this->uninstall_form();
 		}
     }
 
