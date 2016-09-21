@@ -1,5 +1,14 @@
 /* Merge Tag AutoComplete ----------------------------------------------------*/
 
+// Make sure the
+.ui-front {
+	z-index: 9000000!important;
+}
+
+#gform_fields li #field_settings li {
+	overflow: visible;
+}
+
 .merge-tag-support {
 	max-width: 95%;
 }
@@ -62,7 +71,7 @@ ul#gf_merge_tag_list li:nth-child(even) {
 
 ul#gf_merge_tag_list li {
 	margin: 0;
-	line-height: 1.4em;
+	line-height: 1.4rem;
 	padding: 0 !important;
 	border-bottom: 1px dotted #ccc;
 }
@@ -90,13 +99,15 @@ ul#gf_merge_tag_list a:hover {
 	background-color: #EEE;
 }
 
-.mt-gform_notification_message {
-    float: right;
-    position: relative;
-    right: 10px;
-    top: 90px;
+.mt-gform_notification_message,
+.mt-form_confirmation_message {
+	float: right;
+	position: relative;
+	right: 10px;
+	top: 90px;
 }
 
-#wp-gform_notification_message-wrap {
-    margin-right: 12px;
+#wp-gform_notification_message-wrap,
+#wp-form_confirmation_message-wrap {
+	margin-right: 12px;
 }
