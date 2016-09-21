@@ -566,6 +566,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
 		$nonce_field = wp_nonce_field( 'gv_note_add_' . $entry_slug, 'gv_note_add', false, false );
 
+		$url = get_permalink();
+
 		// Only generate the dropdown if the field settings allow it
 		$email_fields = '';
 		if( ! empty( $visibility_settings['email'] ) ) {
@@ -575,7 +577,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 		$add_note_html = str_replace( '{entry_slug}', $entry_slug, $add_note_html );
 		$add_note_html = str_replace( '{nonce_field}', $nonce_field, $add_note_html );
 		$add_note_html = str_replace( '{show_delete}', intval( $visibility_settings['delete'] ), $add_note_html );
-		$add_note_html   = str_replace( '{email_fields}', $email_fields, $add_note_html );
+		$add_note_html = str_replace( '{email_fields}', $email_fields, $add_note_html );
+		$add_note_html = str_replace( '{url}', $url, $add_note_html );
 
 		return $add_note_html;
 	}
