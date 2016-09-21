@@ -229,6 +229,7 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 		if( ! defined('WP_UNINSTALL_PLUGIN') ) {
 			define( 'WP_UNINSTALL_PLUGIN', true );
 		}
+		// TODO: Update
 		if( ! class_exists('GravityView_Uninstall' ) ) {
 			require_once GV_Unit_Tests_Bootstrap::instance()->plugin_dir . '/uninstall.php';
 		} else {
@@ -243,12 +244,6 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 	function _set_up_gravityview_settings( $delete_on_uninstall ) {
 
 		$defaults = GravityView_Settings::get_instance()->get_app_settings();
-
-		if( NULL === $delete_on_uninstall ) {
-			unset( $defaults['delete-on-uninstall'] );
-		} else {
-			$defaults['delete-on-uninstall'] = $delete_on_uninstall;
-		}
 
 		update_option( 'gravityformsaddon_gravityview_app_settings', $defaults );
 
