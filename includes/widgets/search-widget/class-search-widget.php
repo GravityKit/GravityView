@@ -769,6 +769,29 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	}
 
 	/**
+	 * Check whether the configured search fields have a date field
+	 *
+	 * @since 1.17.5
+	 *
+	 * @param array $search_fields
+	 *
+	 * @return bool True: has a `date` or `date_range` field
+	 */
+	private function has_date_field( $search_fields ) {
+
+		$has_date = false;
+
+		foreach ( $search_fields as $k => $field ) {
+			if ( in_array( $field['input'], array( 'date', 'date_range', 'entry_date' ) ) ) {
+				$has_date = true;
+				break;
+			}
+		}
+
+		return $has_date;
+	}
+
+	/**
 	 * Renders the Search Widget
 	 * @param array $widget_args
 	 * @param string $content
@@ -793,16 +816,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			return;
 		}
 
-		$has_date = false;
 
 		// prepare fields
 		foreach ( $search_fields as $k => $field ) {
 
 			$updated_field = $field;
-
-			if ( in_array( $field['input'], array( 'date', 'date_range' ) ) ) {
-				$has_date = true;
-			}
 
 			$updated_field = $this->get_search_filter_details( $updated_field );
 
@@ -821,7 +839,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 						'start' => $this->rgget_or_rgpost( 'gv_start' ),
 						'end' => $this->rgget_or_rgpost( 'gv_end' ),
 					);
-					$has_date = true;
 					break;
 
 				case 'entry_id':
@@ -863,7 +880,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		$gravityview_view->search_clear = ! empty( $widget_args['search_clear'] ) ? $widget_args['search_clear'] : false;
 
-		if ( $has_date ) {
+		if ( $this->has_date_field( $search_fields ) ) {
 			// enqueue datepicker stuff only if needed!
 			$this->enqueue_datepicker();
 		}
