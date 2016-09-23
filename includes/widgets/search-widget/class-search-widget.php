@@ -133,6 +133,69 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		return $this->search_method;
 	}
 
+	/**
+	 * Get the input types available for different field types
+	 *
+	 * @since 1.17.5
+	 *
+	 * @return array [field type name] => (array|string) search bar input types
+	 */
+	public static function get_input_types_by_field_type() {
+		/**
+		 * Input Type groups
+		 * @see admin-search-widget.js (getSelectInput)
+		 * @var array
+		 */
+		$input_types = array(
+			'text' => array( 'input_text' ),
+			'address' => array( 'input_text' ),
+			'number' => array( 'input_text' ),
+			'date' => array( 'date', 'date_range' ),
+			'boolean' => array( 'single_checkbox' ),
+			'select' => array( 'select', 'radio', 'link' ),
+			'multi' => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
+		);
+
+		$input_types = apply_filters( 'gravityview/search/input_types', $input_types );
+
+		return $input_types;
+	}
+
+	/**
+	 * Get labels for different types of search bar inputs
+	 *
+	 * @since 1.17.5
+	 *
+	 * @return array [input type] => input type label
+	 */
+	public static function get_search_input_labels() {
+		/**
+		 * Input Type labels l10n
+		 * @see admin-search-widget.js (getSelectInput)
+		 * @var array
+		 */
+		$input_labels = array(
+			'input_text' => esc_html__( 'Text', 'gravityview' ),
+			'date' => esc_html__( 'Date', 'gravityview' ),
+			'select' => esc_html__( 'Select', 'gravityview' ),
+			'multiselect' => esc_html__( 'Select (multiple values)', 'gravityview' ),
+			'radio' => esc_html__( 'Radio', 'gravityview' ),
+			'checkbox' => esc_html__( 'Checkbox', 'gravityview' ),
+			'single_checkbox' => esc_html__( 'Checkbox', 'gravityview' ),
+			'link' => esc_html__( 'Links', 'gravityview' ),
+			'date_range' => esc_html__( 'Date range', 'gravityview' ),
+		);
+
+		$input_labels = apply_filters( 'gravityview/search/input_labels', $input_labels );
+
+		return $input_labels;
+	}
+
+	public static function get_search_input_label( $input_type ) {
+		$labels = self::get_search_input_labels();
+
+		return rgar( $labels, $input_type, false );
+	}
 
 	/**
 	 * Add script to Views edit screen (admin)
@@ -151,39 +214,6 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		wp_enqueue_script( 'gravityview_searchwidget_admin', plugins_url( 'assets/js'.$script_source.'/admin-search-widget'.$script_min.'.js', __FILE__ ), array( 'jquery', 'gravityview_views_scripts' ), GravityView_Plugin::version );
 
-
-		/**
-		 * Input Type labels l10n
-		 * @see admin-search-widget.js (getSelectInput)
-		 * @var array
-		 */
-		$input_labels = array(
-			'input_text' => esc_html__( 'Text', 'gravityview' ),
-			'date' => esc_html__( 'Date', 'gravityview' ),
-			'select' => esc_html__( 'Select', 'gravityview' ),
-			'multiselect' => esc_html__( 'Select (multiple values)', 'gravityview' ),
-			'radio' => esc_html__( 'Radio', 'gravityview' ),
-			'checkbox' => esc_html__( 'Checkbox', 'gravityview' ),
-			'single_checkbox' => esc_html__( 'Checkbox', 'gravityview' ),
-			'link' => esc_html__( 'Links', 'gravityview' ),
-			'date_range' => esc_html__( 'Date range', 'gravityview' ),
-		);
-
-		/**
-		 * Input Type groups
-		 * @see admin-search-widget.js (getSelectInput)
-		 * @var array
-		 */
-		$input_types = array(
-			'text' => array( 'input_text' ),
-			'address' => array( 'input_text' ),
-			'number' => array( 'input_text' ),
-			'date' => array( 'date', 'date_range' ),
-			'boolean' => array( 'single_checkbox' ),
-			'select' => array( 'select', 'radio', 'link' ),
-			'multi' => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
-		);
-
 		wp_localize_script( 'gravityview_searchwidget_admin', 'gvSearchVar', array(
 			'nonce' => wp_create_nonce( 'gravityview_ajaxsearchwidget' ),
 			'label_nofields' => esc_html__( 'No search fields configured yet.', 'gravityview' ),
@@ -192,8 +222,8 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			'label_searchfield' => esc_html__( 'Search Field', 'gravityview' ),
 			'label_inputtype' => esc_html__( 'Input Type', 'gravityview' ),
 			'label_ajaxerror' => esc_html__( 'There was an error loading searchable fields. Save the View or refresh the page to fix this issue.', 'gravityview' ),
-			'input_labels' => json_encode( $input_labels ),
-			'input_types' => json_encode( $input_types ),
+			'input_labels' => json_encode( self::get_search_input_labels() ),
+			'input_types' => json_encode( self::get_input_types_by_field_type() ),
 		) );
 
 	}
