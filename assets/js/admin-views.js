@@ -99,6 +99,9 @@
 				// when saving the View, try to create form before proceeding
 				.on( 'click', '#publish, #save-post', vcfg.processFormSubmit )
 
+				// when saving the View, try to create form before proceeding
+				.on( 'submit', '#post', vcfg.processFormSubmit )
+
 				// Hover overlay show/hide
 				.on( 'click', ".gv-view-types-hover", vcfg.selectTemplateHover )
 
@@ -1364,15 +1367,15 @@
 		 */
 		serializeForm: function ( e ) {
 
-			if ( $( e.target ).data( 'gv-valid' ) ) {
+			var $post = $('#post');
+
+			if ( $post.data( 'gv-valid' ) ) {
 				return true;
 			}
 
-			var $post = $('#post');
-
 			e.stopImmediatePropagation();
 
-			$( e.target ).data( 'gv-valid', false );
+			$post.data( 'gv-valid', false );
 
 			/**
 			 * Add slashes to date fields so stripslashes doesn't strip all of them
@@ -1402,7 +1405,7 @@
 			// make sure the "slow" browsers did append all the serialized data to the form
 			setTimeout( function () {
 
-				$( e.target ).data( 'gv-valid', true ).click();
+				$post.data( 'gv-valid', true ).submit();
 
 			}, 101 );
 
