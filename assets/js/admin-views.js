@@ -1431,6 +1431,7 @@
 		 */
 		createPresetForm: function ( e, templateId ) {
 			var vcfg = viewConfiguration;
+			var $post = $('#post');
 
 			e.stopPropagation();
 
@@ -1440,6 +1441,7 @@
 				template_id: templateId,
 				nonce: gvGlobals.nonce
 			};
+
 
 			$.ajax( {
 				type: "POST",
@@ -1457,11 +1459,11 @@
 						vcfg.gvSelectForm.find( "option:selected" ).removeAttr( "selected" ).end().append( response );
 
 						// Continue submitting the form, since we preventDefault() above
-						$( e.target ).click();
+						$post.submit();
 
 					} else {
 
-						$( "#post" ).before( '<div id="message" class="error below-h2"><p>' + gvGlobals.label_publisherror + '</p></div>' );
+						$post.before( '<div id="message" class="error below-h2"><p>' + gvGlobals.label_publisherror + '</p></div>' );
 
 					}
 
