@@ -226,9 +226,8 @@ class GVCommon {
 
 		if ( $form ) {
 			foreach ( $form['fields'] as $field ) {
-
 				if ( $include_parent_field || empty( $field['inputs'] ) ) {
-					$fields["{$field->id}"] = array(
+					$fields["{$field['id']}"] = array(
 						'label' => rgar( $field, 'label' ),
 						'parent' => null,
 						'type' => rgar( $field, 'type' ),
@@ -237,8 +236,8 @@ class GVCommon {
 					);
 				}
 
-				if ( $add_default_properties && ! empty( $field->inputs ) ) {
-					foreach ( $field->inputs as $input ) {
+				if ( $add_default_properties && ! empty( $field['inputs'] ) ) {
+					foreach ( $field['inputs'] as $input ) {
 
 						if( ! empty( $input['isHidden'] ) ) {
 							continue;
@@ -248,7 +247,7 @@ class GVCommon {
                          * @hack
                          * In case of email/email confirmation, the input for email has the same id as the parent field
                          */
-						if( 'email' === $field->type && false === strpos( $input['id'], '.' ) ) {
+						if( 'email' === $field['type'] && false === strpos( $input['id'], '.' ) ) {
                             continue;
                         }
 						$fields["{$input['id']}"] = array(
@@ -263,7 +262,7 @@ class GVCommon {
 				}
 
 
-				if( GFCommon::is_product_field( $field->type ) ){
+				if( GFCommon::is_product_field( $field['type'] ) ){
 					$has_product_fields = true;
 				}
 

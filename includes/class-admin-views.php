@@ -549,9 +549,12 @@ class GravityView_Admin_Views {
 	 * Render html for displaying available fields based on a Form ID
 	 * $blacklist_field_types - contains the field types which are not proper to be shown in a directory.
 	 *
+     * @see GravityView_Ajax::get_available_fields_html() Triggers `gravityview_render_available_fields` action
 	 * @access public
+     *
 	 * @param int $form Gravity Forms Form ID (default: '')
 	 * @param string $context (default: 'single')
+     *
 	 * @return void
 	 */
 	function render_available_fields( $form = 0, $context = 'single' ) {
