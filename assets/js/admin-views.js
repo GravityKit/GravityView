@@ -11,6 +11,7 @@
  * @since 1.0.0
  *
  * @typedef {{
+ *   passed_form_id: bool,
  *   label_cancel: string
  *   label_continue: string,
  *   loading_text: string,
@@ -143,6 +144,9 @@
 
 			// End bind to $('body')
 
+			if( gvGlobals.passed_form_id ) {
+				$( '#gravityview_form_id' ).trigger( 'change' );
+			}
 		},
 
 		/**
