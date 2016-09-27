@@ -1024,6 +1024,7 @@ class GravityView_Admin_Views {
 
 			wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
 				'cookiepath' => COOKIEPATH,
+                'passed_form_id' => (bool) rgget( 'form_id' ),
 				'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
 				'label_viewname' => __( 'Enter View name here', 'gravityview' ),
 				'label_close' => __( 'Close', 'gravityview' ),
