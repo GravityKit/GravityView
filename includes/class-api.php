@@ -802,6 +802,14 @@ function gravityview_back_link() {
 
 	$href = gv_directory_link();
 
+	/**
+	 * @filter `gravityview_go_back_url` Modify the back link URL
+	 * @since 1.17.5
+	 * @see gv_directory_link() Generated the original back link
+	 * @param string $href Existing label URL
+	 */
+	$href = apply_filters( 'gravityview_go_back_url', $href );
+
 	if( empty( $href ) ) { return NULL; }
 
 	// calculate link label
