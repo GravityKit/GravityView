@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Now requires Gravity Forms 1.9.14 (previously, 1.9.9.10)
 * Added: Shortcut to create a View for an existing form
 * Fixed: Edit Entry not saving other field values when Post fields were in the Edit Entry form
+* Fixed: When using "Start Fresh" View presets, form fields were not being added to the "Add Field" field picker
 * Fixed: Don't show hidden visible inputs in the "Add Field" picker (for example, if the "Middle Name" input is hidden in the Name field, don't show it as an option)
 * Fixed: Fatal error when editing Post Content and Post Image fields
 * Fixed: Lightbox images not loading
