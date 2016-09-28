@@ -1405,11 +1405,16 @@
 				'type': 'hidden'
 			} ) );
 
-
 			// make sure the "slow" browsers did append all the serialized data to the form
 			setTimeout( function () {
 
-				$post.data( 'gv-valid', true ).submit();
+				$post.data( 'gv-valid', true );
+
+				if ( 'click' === e.type ) {
+					$( e.target ).click();
+				} else {
+					$post.submit();
+				}
 
 			}, 101 );
 
@@ -1431,7 +1436,7 @@
 		 */
 		createPresetForm: function ( e, templateId ) {
 			var vcfg = viewConfiguration;
-			var $post = $('#post');
+			var $target = $( e.target );
 
 			e.stopPropagation();
 
@@ -1459,11 +1464,15 @@
 						vcfg.gvSelectForm.find( "option:selected" ).removeAttr( "selected" ).end().append( response );
 
 						// Continue submitting the form, since we preventDefault() above
-						$post.submit();
+						if ( 'click' === e.type ) {
+							$target.click();
+						} else {
+							$('#post').submit();
+						}
 
 					} else {
 
-						$post.before( '<div id="message" class="error below-h2"><p>' + gvGlobals.label_publisherror + '</p></div>' );
+						$target.before( '<div id="message" class="error below-h2"><p>' + gvGlobals.label_publisherror + '</p></div>' );
 
 					}
 
