@@ -292,9 +292,11 @@ class GravityView_frontend {
 
 			// this is where will break from core wordpress
 			$ignore = array( 'preview', 'page', 'paged', 'cpage' );
-			foreach ( $wp_rewrite->endpoints as $endpoint ) {
+			$endpoints = rgobj( $wp_rewrite, 'endpoints' );
+			foreach ( (array) $endpoints as $endpoint ) {
 				$ignore[] = $endpoint[1];
 			}
+			unset( $endpoints );
 
 			// Modify the query if:
 			// - We're on the "Page on front" page (which we are), and:

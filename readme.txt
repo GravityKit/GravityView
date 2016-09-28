@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Lightbox loading indicator displaying below the overlay
 * Fixed: Mask the Entry ID in the link to lightbox files
 * Tweak: When the global "Show Support Port" setting is "Hide", always hide; if set to "Show", respect each user's Support Port display preference
+* Fixed: PHP notice when WooCommerce Memberships is active
 
 __Developer Notes__
 
