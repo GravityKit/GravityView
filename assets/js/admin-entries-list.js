@@ -59,7 +59,30 @@
 	 * See GravityView_Admin_ApproveEntries::add_entry_approved_hidden_input() for where input comes from
 	 */
 	self.setInitialApprovedEntries = function() {
-		$( 'tr:has(input.entry_approved)' ).find( 'a.toggleApproved' ).addClass( 'entry_approved' ).prop( 'title', gvGlobals.unapprove_title );
+
+		$( 'tr:has(input.entry_approval)' ).each( function () {
+
+			var $input = $( 'input.entry_approval', $( this ) );
+			var css_class, title_attr;
+
+			switch ( $input.val() ) {
+				case gvGlobals.status_unapproved:
+					css_class = 'unapproved';
+					title_attr = gvGlobals.unapprove_title;
+					break;
+				case gvGlobals.status_approved:
+					css_class = 'approved';
+					title_attr = gvGlobals.disapprove_title;
+					break;
+				case gvGlobals.status_disapproved:
+				default:
+					css_class = 'disapproved';
+					title_attr = gvGlobals.approve_title;
+					break;
+			}
+
+			$( this ).find('a.toggleApproved').addClass( css_class ).prop( 'title', title_attr );
+		});
 	};
 
 	/**
@@ -103,7 +126,7 @@
 
 		var link = '<a href="' + gvGlobals.column_link + '" title="' + gvGlobals.column_title + '"></a>';
 
-		// No link? Show a span instead
+		// No link to sort by value? Show a span instead
 		if( 0 === gvGlobals.column_link.length ) {
 			link = '<span title="' + gvGlobals.column_title + '"></span>';
 		}
@@ -133,11 +156,11 @@
 
 		$( this ).addClass( 'loading' );
 
-		if ( $( this ).hasClass( 'entry_approved' ) ) {
+		if ( $( this ).hasClass( 'approved' ) ) {
 			$( this ).prop( 'title', gvGlobals.approve_title );
 			self.updateApproved( entryID, gvGlobals.status_disapproved, $( this ) );
 		} else {
-			$( this ).prop( 'title', gvGlobals.unapprove_title );
+			$( this ).prop( 'title', gvGlobals.disapprove_title );
 			self.updateApproved( entryID, gvGlobals.status_approved, $( this ) );
 		}
 
@@ -209,7 +232,7 @@
 				if( response.success ) {
 
 					// If there was a successful AJAX request, toggle the checkbox
-					$target.toggleClass( 'entry_approved', (
+					$target.removeClass('unapproved').toggleClass( 'approved', (
 						approved === gvGlobals.status_approved
 					) );
 

@@ -189,13 +189,17 @@ class GravityView_Entry_Approval {
 			return false;
 		}
 
-		$status = GravityView_Entry_Approval_Status::is_disapproved( $approved ) ? GravityView_Entry_Approval_Status::Disapproved : GravityView_Entry_Approval_Status::Approved;
+
+		if ( ! GravityView_Entry_Approval_Status::is_valid( $approved ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ' Invalid approval status', $approved );
+			return false;
+		}
 
 		// calculate approved field id once instead of looping through in the update_approved() method
 		$approved_column_id = self::get_approved_column( $form_id );
 
 		foreach( $entries as $entry_id ) {
-			self::update_approved( (int)$entry_id, $status, $form_id, $approved_column_id );
+			self::update_approved( (int)$entry_id, $approved, $form_id, $approved_column_id );
 		}
 	}
 
@@ -236,7 +240,17 @@ class GravityView_Entry_Approval {
 		// There's no validation for the meta
 		if( true === $result ) {
 
-			$note = empty( $approved ) ? __( 'Disapproved the Entry for GravityView', 'gravityview' ) : __( 'Approved the Entry for GravityView', 'gravityview' );
+			switch ( $approved ) {
+				case GravityView_Entry_Approval_Status::APPROVED:
+					$note = __( 'Approved the Entry for GravityView', 'gravityview' );
+					break;
+				case GravityView_Entry_Approval_Status::UNAPPROVED:
+					$note = __( 'Reset Entry approval for GravityView', 'gravityview' );
+					break;
+				case GravityView_Entry_Approval_Status::DISAPPROVED:
+					$note = __( 'Disapproved the Entry for GravityView', 'gravityview' );
+					break;
+			}
 
 			/**
 			 * @filter `gravityview/approve_entries/add-note` Add a note when the entry has been approved or disapproved?
@@ -322,46 +336,44 @@ class GravityView_Entry_Approval {
 			return;
 		}
 
-		/**
-		 * Make sure that the "User Opt-in" and the Admin Approve/Reject entry set the same meta value
-		 * @since 1.16.6
-		 */
-		$is_approved = GravityView_Entry_Approval_Status::is_approved( $status );
-
-		$approval_status = $is_approved ? GravityView_Entry_Approval_Status::Approved : GravityView_Entry_Approval_Status::Disapproved;
-
 		// update entry meta
 		if( function_exists('gform_update_meta') ) {
 
-			gform_update_meta( $entry_id, self::meta_key, $approval_status, $form_id );
+			if( GravityView_Entry_Approval_Status::is_unapproved( $status ) ) {
+				gform_delete_meta( $entry_id, self::meta_key );
+			} else {
+				gform_update_meta( $entry_id, self::meta_key, $status, $form_id );
+			}
 
 			/**
 			 * @action `gravityview/approve_entries/updated` Triggered when an entry approval is updated
 			 * @since 1.7.6.1
 			 * @param  int $entry_id ID of the Gravity Forms entry
-			 * @param  string|int $approval_status String whether entry is approved or not. `0` for not approved, `Approved` for approved.
+			 * @param  string|int $status String whether entry is approved or not. See GravityView_Entry_Approval_Status for valid statuses.
 			 */
-			do_action( 'gravityview/approve_entries/updated', $entry_id, $approval_status );
+			do_action( 'gravityview/approve_entries/updated', $entry_id, $status );
 
-			if( ! $is_approved ) {
-
-				/**
-				 * @action `gravityview/approve_entries/disapproved` Triggered when an entry is rejected
-				 * @since 1.7.6.1
-				 * @param  int $entry_id ID of the Gravity Forms entry
-				 */
-				do_action( 'gravityview/approve_entries/disapproved', $entry_id );
-
-			} else {
-
-				/**
-				 * @action `gravityview/approve_entries/approved` Triggered when an entry is approved
-				 * @since 1.7.6.1
-				 * @param  int $entry_id ID of the Gravity Forms entry
-				 */
-				do_action( 'gravityview/approve_entries/approved', $entry_id );
-
+			switch ( $status ) {
+				case GravityView_Entry_Approval_Status::APPROVED:
+					$action = 'approved';
+					break;
+				case GravityView_Entry_Approval_Status::UNAPPROVED:
+					$action = 'unapproved';
+					break;
+				case GravityView_Entry_Approval_Status::DISAPPROVED:
+				default:
+					$action = 'disapproved';
+					break;
 			}
+
+			/**
+			 * @action `gravityview/approve_entries/{$action}` Triggered when an entry approval is reset.
+			 * $action can be 'approved', 'unapproved', or 'disapproved'
+			 * @since 1.7.6.1
+			 * @since 1.18 Added "unapproved"
+			 * @param  int $entry_id ID of the Gravity Forms entry
+			 */
+			do_action( 'gravityview/approve_entries/' . $action , $entry_id );
 
 		} else {
 

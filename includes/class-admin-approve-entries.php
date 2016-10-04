@@ -23,6 +23,7 @@ class GravityView_Admin_ApproveEntries {
 	 */
 	private $bulk_action_prefixes = array(
 		'approve' => 'gvapprove',
+		'disapprove' => 'gvdisapprove',
 		'unapprove' => 'gvunapprove',
 	);
 
@@ -326,12 +327,15 @@ class GravityView_Admin_ApproveEntries {
 
 			switch ( $approved_status ) {
 				case $this->bulk_action_prefixes['approve']:
-					GravityView_Entry_Approval::update_bulk( $entries, 1, $form_id );
+					GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::APPROVED, $form_id );
 					$this->bulk_update_message = sprintf( __( '%s approved.', 'gravityview' ), $entry_count );
 					break;
-
 				case $this->bulk_action_prefixes['unapprove']:
-					GravityView_Entry_Approval::update_bulk( $entries, 0, $form_id );
+					GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::UNAPPROVED, $form_id );
+					$this->bulk_update_message = sprintf( __( '%s unapproved.', 'gravityview' ), $entry_count );
+					break;
+				case $this->bulk_action_prefixes['disapprove']:
+					GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::DISAPPROVED, $form_id );
 					$this->bulk_update_message = sprintf( __( '%s disapproved.', 'gravityview' ), $entry_count );
 					break;
 			}
@@ -392,8 +396,10 @@ class GravityView_Admin_ApproveEntries {
 			return;
 		}
 
-		if( gform_get_meta( $entry['id'], GravityView_Entry_Approval::meta_key ) ) {
-			echo '<input type="hidden" class="entry_approved" id="entry_approved_'. $entry['id'] .'" value="true" />';
+		$status_value = GravityView_Entry_Approval::get_entry_status( $entry, 'value' );
+
+		if( $status_value ) {
+			echo '<input type="hidden" class="entry_approval" id="entry_approved_'. $entry['id'] .'" value="' . esc_attr( $status_value ) . '" />';
 		}
 	}
 
@@ -477,10 +483,12 @@ class GravityView_Admin_ApproveEntries {
 			'add_bulk_action' => (int)GVCommon::has_cap( 'gravityview_moderate_entries' ),
 			'status_approved' => GravityView_Entry_Approval_Status::APPROVED,
 			'status_disapproved' => GravityView_Entry_Approval_Status::DISAPPROVED,
+			'status_unapproved' => GravityView_Entry_Approval_Status::UNAPPROVED,
 			'bulk_actions' => $this->get_bulk_actions( $form_id ),
 			'bulk_message' => $this->bulk_update_message,
-			'approve_title' => __( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravityview'),
-			'unapprove_title' => __( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravityview'),
+			'unapprove_title' => __( 'Entry not yet reviewed. Click to approve this entry.', 'gravityview'),
+            'approve_title' => __( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravityview'),
+			'disapprove_title' => __( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravityview'),
 			'column_title' => __( 'Show entry in directory view?', 'gravityview'),
 			'column_link' => esc_url( $this->get_sort_link( $form_id ) ),
 		) );
@@ -536,6 +544,10 @@ class GravityView_Admin_ApproveEntries {
 				),
 				array(
 					'label' => __( 'Disapprove', 'gravityview' ),
+					'value' => sprintf( '%s-%d', $this->bulk_action_prefixes['disapprove'], $form_id ),
+				),
+				array(
+					'label' => __( 'Reset Approval', 'gravityview' ),
 					'value' => sprintf( '%s-%d', $this->bulk_action_prefixes['unapprove'], $form_id ),
 				),
 			),

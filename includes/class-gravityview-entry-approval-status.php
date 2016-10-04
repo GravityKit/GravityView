@@ -23,6 +23,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class GravityView_Entry_Approval_Status {
 
 	/**
+	 * @var int Placeholder value for "Unapproved" status; in reality, it's not stored in the DB; the meta gets deleted.
+	 */
+	const UNAPPROVED = -1;
+
+	/**
 	 * @var int The value of the "Approved" status
 	 */
 	const APPROVED = 1;
@@ -46,6 +51,7 @@ final class GravityView_Entry_Approval_Status {
 		return array(
 			self::DISAPPROVED => esc_html__( 'Disapproved', 'gravityview' ),
 			self::APPROVED    => esc_html__( 'Approved', 'gravityview' ),
+			self::UNAPPROVED => esc_html__( 'Unapproved', 'gravityview' ),
 		);
 	}
 
@@ -72,7 +78,7 @@ final class GravityView_Entry_Approval_Status {
 
 		$new_value = $old_value;
 
-		switch ( $old_value ) {
+		switch ( (string) $old_value ) {
 
 			// Approved values
 			case 'Approved':
@@ -85,6 +91,10 @@ final class GravityView_Entry_Approval_Status {
 			case '2':
 				$new_value = self::DISAPPROVED;
 				break;
+
+			case '-1':
+			case false: // Meta value does not exist yet
+				$new_value = self::UNAPPROVED;
 				break;
 		}
 
@@ -127,6 +137,18 @@ final class GravityView_Entry_Approval_Status {
 		$status = self::maybe_convert_status( $status );
 
 		return ( self::DISAPPROVED === $status );
+	}
+
+	/**
+	 * @param mixed $status Value to check approval of
+	 *
+	 * @return bool True: passed $status matches unapproved value
+	 */
+	public static function is_unapproved( $status ) {
+
+		$status = self::maybe_convert_status( $status );
+
+		return ( self::UNAPPROVED === $status );
 	}
 
 	/**
