@@ -23,15 +23,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class GravityView_Entry_Approval_Status {
 
 	/**
-	 * @todo Convert to integer, convert meta value in GravityView_Migrate
-	 * @var string The value of the "Approved" status
+	 * @var int The value of the "Approved" status
 	 */
-	const Approved = 'Approved';
+	const APPROVED = 1;
 
 	/**
 	 * @var int The value of the "Disapproved" status
 	 */
-	const Disapproved = 0;
+	const DISAPPROVED = 2;
 
 	/**
 	 * GravityView_Entry_Approval_Status constructor.
@@ -45,8 +44,8 @@ final class GravityView_Entry_Approval_Status {
 	 */
 	private static function get_choices() {
 		return array(
-			self::Disapproved => esc_html__( 'Disapproved', 'gravityview' ),
-			self::Approved    => esc_html__( 'Approved', 'gravityview' ),
+			self::DISAPPROVED => esc_html__( 'Disapproved', 'gravityview' ),
+			self::APPROVED    => esc_html__( 'Approved', 'gravityview' ),
 		);
 	}
 
@@ -78,12 +77,14 @@ final class GravityView_Entry_Approval_Status {
 			// Approved values
 			case 'Approved':
 			case '1':
-				$new_value = self::Approved;
+				$new_value = self::APPROVED;
 				break;
 
 			//Disapproved values
 			case '0':
-				$new_value = self::Disapproved;
+			case '2':
+				$new_value = self::DISAPPROVED;
+				break;
 				break;
 		}
 
@@ -113,7 +114,7 @@ final class GravityView_Entry_Approval_Status {
 
 		$status = self::maybe_convert_status( $status );
 
-		return ( self::Approved === $status );
+		return ( self::APPROVED === $status );
 	}
 
 	/**
@@ -125,7 +126,7 @@ final class GravityView_Entry_Approval_Status {
 
 		$status = self::maybe_convert_status( $status );
 
-		return ( self::Disapproved === $status );
+		return ( self::DISAPPROVED === $status );
 	}
 
 	/**

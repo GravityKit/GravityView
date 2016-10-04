@@ -87,14 +87,14 @@ class GravityView_Admin_ApproveEntries {
 		$field_filters_approved = array(
 			array(
 				'key' => GravityView_Entry_Approval::meta_key,
-				'value' => GravityView_Entry_Approval_Status::Approved
+				'value' => GravityView_Entry_Approval_Status::APPROVED
 			),
 		);
 
 		$field_filters_disapproved = array(
 			array(
 				'key'      => GravityView_Entry_Approval::meta_key,
-				'value'    => GravityView_Entry_Approval_Status::Disapproved,
+				'value'    => GravityView_Entry_Approval_Status::DISAPPROVED,
 			),
 		);
 
@@ -110,14 +110,14 @@ class GravityView_Admin_ApproveEntries {
 			'id'            => 'gv_approved',
 			'field_filters' => $field_filters_approved,
 			'count'         => $approved_count,
-			'label'         => GravityView_Entry_Approval_Status::get_label( GravityView_Entry_Approval_Status::Approved ),
+			'label'         => GravityView_Entry_Approval_Status::get_label( GravityView_Entry_Approval_Status::APPROVED ),
 		);
 
 		$filter_links[] = array(
 			'id'            => 'gv_disapproved',
 			'field_filters' => $field_filters_disapproved,
 			'count'         => $disapproved_count,
-			'label'         => GravityView_Entry_Approval_Status::get_label( GravityView_Entry_Approval_Status::Disapproved ),
+			'label'         => GravityView_Entry_Approval_Status::get_label( GravityView_Entry_Approval_Status::DISAPPROVED ),
 		);
 
 		return $filter_links;
@@ -195,7 +195,7 @@ class GravityView_Admin_ApproveEntries {
 			field.inputs = null;
 
 			if( !field.choices ) {
-				field.choices = new Array( new Choice("<?php echo esc_js( GravityView_Entry_Approval_Status::get_label( GravityView_Entry_Approval_Status::Approved ) ); ?>") );
+				field.choices = new Array( new Choice("<?php echo esc_js( GravityView_Entry_Approval_Status::get_label( GravityView_Entry_Approval_Status::APPROVED ) ); ?>") );
 			}
 
 			field.inputs = new Array();
@@ -475,8 +475,8 @@ class GravityView_Admin_ApproveEntries {
 			'form_id' => $form_id,
 			'show_column' => (int)$this->show_approve_entry_column( $form_id ),
 			'add_bulk_action' => (int)GVCommon::has_cap( 'gravityview_moderate_entries' ),
-			'status_approved' => GravityView_Entry_Approval_Status::Approved,
-			'status_disapproved' => GravityView_Entry_Approval_Status::Disapproved,
+			'status_approved' => GravityView_Entry_Approval_Status::APPROVED,
+			'status_disapproved' => GravityView_Entry_Approval_Status::DISAPPROVED,
 			'bulk_actions' => $this->get_bulk_actions( $form_id ),
 			'bulk_message' => $this->bulk_update_message,
 			'approve_title' => __( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravityview'),
