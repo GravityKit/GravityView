@@ -910,7 +910,12 @@ class GravityView_frontend {
 	public static function process_search_only_approved( $args, $search_criteria ) {
 
 		if ( ! empty( $args['show_only_approved'] ) ) {
-			$search_criteria['field_filters'][] = array( 'key' => 'is_approved', 'value' => 'Approved' );
+
+			$search_criteria['field_filters'][] = array(
+				'key' => GravityView_Entry_Approval::meta_key,
+				'value' => GravityView_Entry_Approval_Status::Approved
+			);
+
 			$search_criteria['field_filters']['mode'] = 'all'; // force all the criterias to be met
 
 			do_action( 'gravityview_log_debug', '[process_search_only_approved] Search Criteria if show only approved: ', $search_criteria );
@@ -927,6 +932,9 @@ class GravityView_frontend {
 	 *   checking the entry approved field, returning true if show_only_approved = false.
 	 *
 	 * @since 1.7
+	 * @since 1.18 Converted check to use GravityView_Entry_Approval_Status::is_approved
+	 *
+	 * @uses GravityView_Entry_Approval_Status::is_approved
 	 *
 	 * @param array $entry  Entry object
 	 * @param array $args   View settings (optional)
@@ -940,13 +948,9 @@ class GravityView_frontend {
 			return true;
 		}
 
-		$is_approved = gform_get_meta( $entry['id'], 'is_approved' );
+		$is_approved = gform_get_meta( $entry['id'], GravityView_Entry_Approval::meta_key );
 
-		if ( $is_approved ) {
-			return true;
-		}
-
-		return false;
+		return GravityView_Entry_Approval_Status::is_approved( $is_approved );
 	}
 
 	/**
