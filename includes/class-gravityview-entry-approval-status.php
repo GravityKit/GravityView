@@ -23,11 +23,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class GravityView_Entry_Approval_Status {
 
 	/**
-	 * @var int Placeholder value for "Unapproved" status; in reality, it's not stored in the DB; the meta gets deleted.
-	 */
-	const UNAPPROVED = -1;
-
-	/**
 	 * @var int The value of the "Approved" status
 	 */
 	const APPROVED = 1;
@@ -36,6 +31,11 @@ final class GravityView_Entry_Approval_Status {
 	 * @var int The value of the "Disapproved" status
 	 */
 	const DISAPPROVED = 2;
+
+	/**
+	 * @var int Placeholder value for "Unapproved" status; in reality, it's not stored in the DB; the meta gets deleted.
+	 */
+	const UNAPPROVED = 3;
 
 	/**
 	 * GravityView_Entry_Approval_Status constructor.
@@ -92,7 +92,7 @@ final class GravityView_Entry_Approval_Status {
 				$new_value = self::DISAPPROVED;
 				break;
 
-			case '-1':
+			case '3':
 			case false: // Meta value does not exist yet
 				$new_value = self::UNAPPROVED;
 				break;
