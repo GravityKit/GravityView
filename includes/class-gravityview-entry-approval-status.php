@@ -74,7 +74,7 @@ final class GravityView_Entry_Approval_Status {
 	 *
 	 * @return int|string Current value, possibly converted from old value
 	 */
-	private static function maybe_convert_status( $old_value = '' ) {
+	public static function maybe_convert_status( $old_value = '' ) {
 
 		$new_value = $old_value;
 

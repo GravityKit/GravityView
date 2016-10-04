@@ -50,6 +50,30 @@ class GravityView_Entry_Approval {
 	}
 
 	/**
+	 * Get the approval status for an entry
+	 *
+	 * @since 1.18
+	 * @uses GVCommon::get_entry_id() Accepts entry slug or entry ID
+	 *
+	 * @param array|int|string $entry Entry array, entry slug, or entry ID
+	 * @param string $value_or_label "value" or "label" (default: "label")
+	 *
+	 * @return bool|string Return the label or value of entry approval
+	 */
+	public static function get_entry_status( $entry, $value_or_label = 'label' ) {
+
+		$entry_id = is_array( $entry ) ? $entry['id'] : GVCommon::get_entry_id( $entry );
+
+		$status = gform_get_meta( $entry_id, self::meta_key );
+
+		if( 'value' === $value_or_label ) {
+			return GravityView_Entry_Approval_Status::maybe_convert_status( $status );
+		}
+
+		return GravityView_Entry_Approval_Status::get_label( $value );
+	}
+
+	/**
 	 * Approve/Disapprove entries using the × or ✓ icons in the GF Entries screen
 	 *
 	 * @uses wp_send_json_error()
