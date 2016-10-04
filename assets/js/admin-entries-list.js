@@ -231,14 +231,17 @@
 
 				if( response.success ) {
 
+					var increment = $target.hasClass('unapproved') ? 0 : -1;
+
 					// If there was a successful AJAX request, toggle the checkbox
 					$target.removeClass('unapproved').toggleClass( 'approved', (
 						approved === gvGlobals.status_approved
 					) );
 
 					// Update the entry filter count
-					window.UpdateCount( "gv_approved_count", ( gvGlobals.status_approved.toString() === approved.toString() ) ? 1 : -1 );
-					window.UpdateCount( "gv_disapproved_count", ( gvGlobals.status_disapproved.toString() === approved.toString() ) ? 1 : -1 );
+					window.UpdateCount( "gv_approved_count", ( gvGlobals.status_approved.toString() === approved.toString() ) ? 1 : increment );
+					window.UpdateCount( "gv_disapproved_count", ( gvGlobals.status_disapproved.toString() === approved.toString() ) ? 1 : increment );
+					
 				} else {
 					alert( response.data[0].message );
 				}
