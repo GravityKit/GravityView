@@ -66,11 +66,13 @@ class GravityView_Entry_Approval {
 
 		$status = gform_get_meta( $entry_id, self::meta_key );
 
+		$status = GravityView_Entry_Approval_Status::maybe_convert_status( $status );
+
 		if( 'value' === $value_or_label ) {
-			return GravityView_Entry_Approval_Status::maybe_convert_status( $status );
+			return $status;
 		}
 
-		return GravityView_Entry_Approval_Status::get_label( $value );
+		return GravityView_Entry_Approval_Status::get_label( $status );
 	}
 
 	/**
