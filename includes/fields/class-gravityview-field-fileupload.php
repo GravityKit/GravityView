@@ -214,9 +214,10 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			} else {
 
+				$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
+
 				$link_atts = array(
-					'rel' => sprintf( "%s-%s", $gv_class, $entry['id'] ),
-					'target' => '_blank',
+					'rel' => sprintf( "%s-%s", $gv_class, $entry_slug ),
 					'class' => 'thickbox',
 				);
 

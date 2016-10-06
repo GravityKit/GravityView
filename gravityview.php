@@ -3,7 +3,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:          	1.17.4
+ * Version:          	1.18-beta
  * Author:            	GravityView
  * Author URI:        	https://gravityview.co
  * Text Domain:       	gravityview
@@ -38,13 +38,13 @@ define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
 /**
  * GravityView requires at least this version of Gravity Forms to function properly.
  */
-define( 'GV_MIN_GF_VERSION', '1.9.9.10' );
+define( 'GV_MIN_GF_VERSION', '1.9.14' );
 
 /**
  * GravityView requires at least this version of WordPress to function properly.
  * @since 1.12
  */
-define( 'GV_MIN_WP_VERSION', '3.3' );
+define( 'GV_MIN_WP_VERSION', '3.5.0' );
 
 /**
  * GravityView requires at least this version of PHP to function properly.
@@ -77,7 +77,7 @@ if( is_admin() ) {
  */
 final class GravityView_Plugin {
 
-	const version = '1.17.4';
+	const version = '1.18-beta';
 
 	private static $instance;
 
@@ -137,6 +137,9 @@ final class GravityView_Plugin {
 		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/class-gravityview-field*.php' ) as $gv_field_filename ) {
 			include_once( $gv_field_filename );
 		}
+
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-entry-approval-status.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/class-gravityview-entry-approval.php' );
 
 		include_once( GRAVITYVIEW_DIR .'includes/class-gravityview-entry-notes.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/load-plugin-and-theme-hooks.php' );

@@ -11,6 +11,7 @@
  * @since 1.0.0
  *
  * @typedef {{
+ *   passed_form_id: bool,
  *   label_cancel: string
  *   label_continue: string,
  *   loading_text: string,
@@ -99,6 +100,9 @@
 				// when saving the View, try to create form before proceeding
 				.on( 'click', '#publish, #save-post', vcfg.processFormSubmit )
 
+				// when saving the View, try to create form before proceeding
+				.on( 'submit', '#post', vcfg.processFormSubmit )
+
 				// Hover overlay show/hide
 				.on( 'click', ".gv-view-types-hover", vcfg.selectTemplateHover )
 
@@ -140,6 +144,9 @@
 
 			// End bind to $('body')
 
+			if( gvGlobals.passed_form_id ) {
+				$( '#gravityview_form_id' ).trigger( 'change' );
+			}
 		},
 
 		/**
@@ -1364,15 +1371,15 @@
 		 */
 		serializeForm: function ( e ) {
 
-			if ( $( e.target ).data( 'gv-valid' ) ) {
+			var $post = $('#post');
+
+			if ( $post.data( 'gv-valid' ) ) {
 				return true;
 			}
 
-			var $post = $('#post');
-
 			e.stopImmediatePropagation();
 
-			$( e.target ).data( 'gv-valid', false );
+			$post.data( 'gv-valid', false );
 
 			/**
 			 * Add slashes to date fields so stripslashes doesn't strip all of them
@@ -1398,11 +1405,16 @@
 				'type': 'hidden'
 			} ) );
 
-
 			// make sure the "slow" browsers did append all the serialized data to the form
 			setTimeout( function () {
 
-				$( e.target ).data( 'gv-valid', true ).click();
+				$post.data( 'gv-valid', true );
+
+				if ( 'click' === e.type ) {
+					$( e.target ).click();
+				} else {
+					$post.submit();
+				}
 
 			}, 101 );
 
@@ -1424,6 +1436,7 @@
 		 */
 		createPresetForm: function ( e, templateId ) {
 			var vcfg = viewConfiguration;
+			var $target = $( e.target );
 
 			e.stopPropagation();
 
@@ -1433,6 +1446,7 @@
 				template_id: templateId,
 				nonce: gvGlobals.nonce
 			};
+
 
 			$.ajax( {
 				type: "POST",
@@ -1450,11 +1464,15 @@
 						vcfg.gvSelectForm.find( "option:selected" ).removeAttr( "selected" ).end().append( response );
 
 						// Continue submitting the form, since we preventDefault() above
-						$( e.target ).click();
+						if ( 'click' === e.type ) {
+							$target.click();
+						} else {
+							$('#post').submit();
+						}
 
 					} else {
 
-						$( "#post" ).before( '<div id="message" class="error below-h2"><p>' + gvGlobals.label_publisherror + '</p></div>' );
+						$target.before( '<div id="message" class="error below-h2"><p>' + gvGlobals.label_publisherror + '</p></div>' );
 
 					}
 

@@ -135,6 +135,17 @@ class GravityView_Admin_Views {
 		$connected_views = gravityview_get_connected_views( $id );
 
 		if( empty( $connected_views ) ) {
+
+		    $menu_items['gravityview'] = array(
+				'label'          => esc_attr__( 'Create a View', 'gravityview' ),
+				'icon'           => '<i class="fa fa-lg gv-icon-astronaut-head gv-icon"></i>',
+				'title'          => esc_attr__( 'Create a View using this form as a data source', 'gravityview' ),
+				'url'            => admin_url( 'post-new.php?post_type=gravityview&form_id=' . $id ),
+				'menu_class'     => 'gv_connected_forms gf_form_toolbar_settings',
+				'priority'       => 0,
+				'capabilities'   => array( 'edit_gravityviews' ),
+			);
+
 			return $menu_items;
 		}
 
@@ -156,6 +167,14 @@ class GravityView_Admin_Views {
 		// If there were no items added, then let's create the parent menu
 		if( $sub_menu_items ) {
 
+		    $sub_menu_items[] = array(
+			    'label' => esc_attr__( 'Create a View', 'gravityview' ),
+                'link_class' => 'gv-create-view',
+			    'title' => esc_attr__( 'Create a View using this form as a data source', 'gravityview' ),
+			    'url'   => admin_url( 'post-new.php?post_type=gravityview&form_id=' . $id ),
+			    'capabilities'   => array( 'edit_gravityviews' ),
+            );
+
 			// Make sure Gravity Forms uses the submenu; if there's only one item, it uses a link instead of a dropdown
 			$sub_menu_items[] = array(
 				'url' => '#',
@@ -171,7 +190,6 @@ class GravityView_Admin_Views {
 				'url'            => '#',
 				'onclick'        => 'return false;',
 				'menu_class'     => 'gv_connected_forms gf_form_toolbar_settings',
-				'link_class'     => ( 1 === 1 ? '' : 'gf_toolbar_disabled' ),
 				'sub_menu_items' => $sub_menu_items,
 				'priority'       => 0,
 				'capabilities'   => array( 'edit_gravityviews' ),
@@ -531,9 +549,12 @@ class GravityView_Admin_Views {
 	 * Render html for displaying available fields based on a Form ID
 	 * $blacklist_field_types - contains the field types which are not proper to be shown in a directory.
 	 *
+     * @see GravityView_Ajax::get_available_fields_html() Triggers `gravityview_render_available_fields` action
 	 * @access public
+     *
 	 * @param int $form Gravity Forms Form ID (default: '')
 	 * @param string $context (default: 'single')
+     *
 	 * @return void
 	 */
 	function render_available_fields( $form = 0, $context = 'single' ) {
@@ -1003,6 +1024,7 @@ class GravityView_Admin_Views {
 
 			wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
 				'cookiepath' => COOKIEPATH,
+                'passed_form_id' => (bool) rgget( 'form_id' ),
 				'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
 				'label_viewname' => __( 'Enter View name here', 'gravityview' ),
 				'label_close' => __( 'Close', 'gravityview' ),

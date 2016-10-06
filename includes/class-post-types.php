@@ -69,7 +69,7 @@ class GravityView_Post_Types {
 			'edit_item'           => __( 'Edit View', 'gravityview' ),
 			'update_item'         => __( 'Update View', 'gravityview' ),
 			'search_items'        => __( 'Search Views', 'gravityview' ),
-			'not_found'           => self::no_views_text(),
+			'not_found'           => GravityView_Admin::no_views_text(),
 			'not_found_in_trash'  => __( 'No Views found in Trash', 'gravityview' ),
 			'filter_items_list'     => __( 'Filter Views list', 'gravityview' ),
 			'items_list_navigation' => __( 'Views list navigation', 'gravityview' ),
@@ -151,30 +151,6 @@ class GravityView_Post_Types {
 
 		return sanitize_title( $endpoint );
 	}
-
-	/**
-	 * Get text for no views found.
-	 * @todo Move somewhere appropriate.
-	 * @return string HTML message with no container tags.
-	 */
-	static function no_views_text() {
-
-		if( !class_exists( 'GravityView_Admin' ) ) {
-			require_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
-		}
-
-		// Floaty the astronaut
-		$image = GravityView_Admin::get_floaty();
-
-		if( GVCommon::has_cap( 'edit_gravityviews' ) ) {
-			$output = sprintf( esc_attr__( "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n\nIf you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page.", 'gravityview' ), '<h3>', '<a href="' . admin_url( 'post-new.php?post_type=gravityview' ) . '">', '</a>', '</h3>', '<a href="' . admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) . '">', '</a>' );
-		} else {
-			$output = esc_attr__( 'There are no active Views', 'gravityview' );
-		}
-
-		return $image . wpautop( $output );
-	}
-
 
 }
 
