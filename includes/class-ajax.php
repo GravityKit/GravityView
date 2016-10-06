@@ -75,6 +75,8 @@ class GravityView_Ajax {
 			$this->_exit();
 		} elseif( !empty( $_POST['template_id'] ) ) {
 			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
+
+			/** @see GravityView_Admin_Views::render_available_fields */
 			do_action( 'gravityview_render_available_fields', $form, $context );
 			$this->_exit();
 		}

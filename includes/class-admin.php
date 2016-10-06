@@ -60,6 +60,27 @@ class GravityView_Admin {
 	}
 
 	/**
+	 * Get text for no views found.
+	 *
+	 * @since 1.18 Moved to GravityView_Admin
+	 *
+	 * @return string HTML message with no container tags.
+	 */
+	public static function no_views_text() {
+
+		// Floaty the Astronaut says "oi"
+		$image = self::get_floaty();
+
+		if ( GVCommon::has_cap( 'edit_gravityviews' ) ) {
+			$output = sprintf( esc_attr__( "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n\nIf you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page.", 'gravityview' ), '<h3>', '<a href="' . admin_url( 'post-new.php?post_type=gravityview' ) . '">', '</a>', '</h3>', '<a href="' . admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) . '">', '</a>' );
+		} else {
+			$output = esc_attr__( 'There are no active Views', 'gravityview' );
+		}
+
+		return $image . wpautop( $output );
+	}
+
+	/**
 	 * Function to launch admin objects
 	 *
 	 * @access public
@@ -183,7 +204,7 @@ class GravityView_Admin {
 				date_i18n( __( 'M j, Y @ G:i', 'gravityview' ), strtotime( ( isset( $post->post_date ) ? $post->post_date : NULL )  ) )
 			) . $new_form_text,
 			/* translators: %s and %s are HTML tags linking to the View on the website */
-			10  => sprintf(__( 'View draft updated. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
+			10  => sprintf(__( 'View draft updated. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
 
 			/**
 			 * These apply to `bulk_post_updated_messages`

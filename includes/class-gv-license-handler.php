@@ -312,47 +312,49 @@ class GV_License_Handler {
 		$response = (array) $response;
 
 		$return = '';
-		$return .= '<span class="gv-license-details" aria-live="polite" aria-busy="false">';
-		$return .= '<h3>' . esc_html__( 'License Details:', 'gravityview' ) . '</h3>';
+		$wrapper = '<span class="gv-license-details" aria-live="polite" aria-busy="false">%s</span>';
 
-		if( in_array( rgar( $response, 'license' ), array( 'invalid', 'deactivated' ) ) ) {
-			$return .= $this->strings( $response['license'], $response );
-		} elseif( ! empty( $response['license_name'] ) ) {
+		if( ! empty( $response['license_key'] ) ) {
 
-			$response_keys = array(
-				'license_name'   => '',
-				'license_limit'  => '',
-				'customer_name'  => '',
-				'customer_email' => '',
-				'site_count'     => '',
-				'expires'        => '',
-				'upgrades'       => ''
-			);
+			$return .= '<h3>' . esc_html__( 'License Details:', 'gravityview' ) . '</h3>';
 
-			// Make sure all the keys are set
-			$response = wp_parse_args( $response, $response_keys );
+			if ( in_array( rgar( $response, 'license' ), array( 'invalid', 'deactivated' ) ) ) {
+				$return .= $this->strings( $response['license'], $response );
+			} elseif ( ! empty( $response['license_name'] ) ) {
 
-			$login_link = sprintf( '<a href="%s" class="howto" rel="external">%s</a>', esc_url( sprintf( 'https://gravityview.co/wp-login.php?username=%s', $response['customer_email'] ) ), esc_html__( 'Access your GravityView account', 'gravityview' ) );
-			$local_text = ( ! empty( $response['is_local'] ) ? '<span class="howto">' . __( 'This development site does not count toward license activation limits', 'gravityview' ) . '</span>' : '' );
-			$details = array(
-				'license'     => sprintf( esc_html__( 'License level: %s', 'gravityview' ), esc_html( $response['license_name'] ), esc_html( $response['license_limit'] ) ),
-				'licensed_to' => sprintf( esc_html_x( 'Licensed to: %1$s (%2$s)', '1: Customer name; 2: Customer email', 'gravityview' ), esc_html__( $response['customer_name'], 'gravityview' ), esc_html__( $response['customer_email'], 'gravityview' ) ) . $login_link,
-				'activations' => sprintf( esc_html__( 'Activations: %d of %s sites', 'gravityview' ), intval( $response['site_count'] ), esc_html( $response['license_limit'] ) ) . $local_text,
-				'expires'     => sprintf( esc_html__( 'Renew on: %s', 'gravityview' ), date_i18n( get_option( 'date_format' ), strtotime( $response['expires'] ) - DAY_IN_SECONDS ) ),
-				'upgrade'     => $this->get_upgrade_html( $response['upgrades'] ),
-			);
+				$response_keys = array(
+					'license_name'   => '',
+					'license_limit'  => '',
+					'customer_name'  => '',
+					'customer_email' => '',
+					'site_count'     => '',
+					'expires'        => '',
+					'upgrades'       => ''
+				);
 
-			if ( ! empty( $response['error'] ) && 'expired' === $response['error'] ) {
-				unset( $details['upgrade'] );
-				$details['expires'] = '<div class="error inline"><p>' . $this->strings( 'expired', $response ) . '</p></div>';
+				// Make sure all the keys are set
+				$response = wp_parse_args( $response, $response_keys );
+
+				$login_link = sprintf( '<a href="%s" class="howto" rel="external">%s</a>', esc_url( sprintf( 'https://gravityview.co/wp-login.php?username=%s', $response['customer_email'] ) ), esc_html__( 'Access your GravityView account', 'gravityview' ) );
+				$local_text = ( ! empty( $response['is_local'] ) ? '<span class="howto">' . __( 'This development site does not count toward license activation limits', 'gravityview' ) . '</span>' : '' );
+				$details    = array(
+					'license'     => sprintf( esc_html__( 'License level: %s', 'gravityview' ), esc_html( $response['license_name'] ), esc_html( $response['license_limit'] ) ),
+					'licensed_to' => sprintf( esc_html_x( 'Licensed to: %1$s (%2$s)', '1: Customer name; 2: Customer email', 'gravityview' ), esc_html__( $response['customer_name'], 'gravityview' ), esc_html__( $response['customer_email'], 'gravityview' ) ) . $login_link,
+					'activations' => sprintf( esc_html__( 'Activations: %d of %s sites', 'gravityview' ), intval( $response['site_count'] ), esc_html( $response['license_limit'] ) ) . $local_text,
+					'expires'     => sprintf( esc_html__( 'Renew on: %s', 'gravityview' ), date_i18n( get_option( 'date_format' ), strtotime( $response['expires'] ) - DAY_IN_SECONDS ) ),
+					'upgrade'     => $this->get_upgrade_html( $response['upgrades'] ),
+				);
+
+				if ( ! empty( $response['error'] ) && 'expired' === $response['error'] ) {
+					unset( $details['upgrade'] );
+					$details['expires'] = '<div class="error inline"><p>' . $this->strings( 'expired', $response ) . '</p></div>';
+				}
+
+				$return .= '<ul><li>' . implode( '</li><li>', array_filter( $details ) ) . '</li></ul>';
 			}
-
-			$return .= '<ul><li>' . implode( '</li><li>', array_filter( $details ) ) . '</li></ul>';
 		}
 
-		$return .= '</span>';
-
-		return $return;
+		return sprintf( $wrapper, $return );
 	}
 
 	/**

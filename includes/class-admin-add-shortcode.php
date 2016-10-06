@@ -89,7 +89,7 @@ class GravityView_Admin_Add_Shortcode {
 
 		// If there are no views set up yet, we get outta here.
 		if( empty( $views ) ) {
-			echo '<div id="select_gravityview_view"><div class="wrap">'. GravityView_Post_Types::no_views_text() .'</div></div>';
+			echo '<div id="select_gravityview_view"><div class="wrap">' . GravityView_Admin::no_views_text() . '</div></div>';
 			return;
 		}
 

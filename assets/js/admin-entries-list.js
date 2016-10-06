@@ -59,7 +59,30 @@
 	 * See GravityView_Admin_ApproveEntries::add_entry_approved_hidden_input() for where input comes from
 	 */
 	self.setInitialApprovedEntries = function() {
-		$( 'tr:has(input.entry_approved)' ).find( 'a.toggleApproved' ).addClass( 'entry_approved' ).prop( 'title', gvGlobals.unapprove_title );
+
+		$( 'tr:has(input.entry_approval)' ).each( function () {
+
+			var $input = $( 'input.entry_approval', $( this ) );
+			var css_class, title_attr;
+
+			switch ( $input.val() ) {
+				case gvGlobals.status_unapproved:
+					css_class = 'unapproved';
+					title_attr = gvGlobals.unapprove_title;
+					break;
+				case gvGlobals.status_approved:
+					css_class = 'approved';
+					title_attr = gvGlobals.disapprove_title;
+					break;
+				case gvGlobals.status_disapproved:
+				default:
+					css_class = 'disapproved';
+					title_attr = gvGlobals.approve_title;
+					break;
+			}
+
+			$( this ).find('a.toggleApproved').addClass( css_class ).prop( 'title', title_attr );
+		});
 	};
 
 	/**
@@ -101,10 +124,17 @@
 			return;
 		}
 
+		var link = '<a href="' + gvGlobals.column_link + '" title="' + gvGlobals.column_title + '"></a>';
+
+		// No link to sort by value? Show a span instead
+		if( 0 === gvGlobals.column_link.length ) {
+			link = '<span title="' + gvGlobals.column_title + '"></span>';
+		}
+
 		/**
 		 * inject approve/disapprove buttons into the first column of table
 		 */
-		$( 'thead th.check-column:eq(1), tfoot th.check-column:eq(1), thead .column-is_starred, tfoot .column-is_starred' ).after( '<th scope="col" class="manage-column column-cb gv-approve-column column-is_approved"><a href="' + gvGlobals.column_link + '" title="' + gvGlobals.column_title + '"></a></th>' );
+		$( 'thead th.check-column:eq(1), tfoot th.check-column:eq(1), thead .column-is_starred, tfoot .column-is_starred' ).after( '<th scope="col" class="manage-column column-cb gv-approve-column column-is_approved">' + link + '</th>' );
 
 		/**
 		 * Add column for each entry
@@ -126,12 +156,12 @@
 
 		$( this ).addClass( 'loading' );
 
-		if ( $( this ).hasClass( 'entry_approved' ) ) {
+		if ( $( this ).hasClass( 'approved' ) ) {
 			$( this ).prop( 'title', gvGlobals.approve_title );
-			self.updateApproved( entryID, 0, $( this ) );
+			self.updateApproved( entryID, gvGlobals.status_disapproved, $( this ) );
 		} else {
-			$( this ).prop( 'title', gvGlobals.unapprove_title );
-			self.updateApproved( entryID, 'Approved', $( this ) );
+			$( this ).prop( 'title', gvGlobals.disapprove_title );
+			self.updateApproved( entryID, gvGlobals.status_approved, $( this ) );
 		}
 
 		return false;
@@ -188,7 +218,7 @@
 
 		var data = {
 			action: 'gv_update_approved',
-			entry_id: entryID,
+			entry_slug: entryID,
 			form_id: gvGlobals.form_id,
 			approved: approved,
 			nonce: gvGlobals.nonce
@@ -196,14 +226,25 @@
 
 		$.post( ajaxurl, data, function ( response ) {
 			if ( response ) {
-				// If there was a successful AJAX request, toggle the checkbox
-				$target.removeClass( 'loading' ).toggleClass( 'entry_approved', (
-					approved === 'Approved'
-				) );
 
-				// Update the entry filter count
-				window.UpdateCount("gv_approved_count", ( 0 === approved ) ? -1 : 1);
-				window.UpdateCount("gv_disapproved_count", ( 0 === approved ) ? 1 : -1);
+				$target.removeClass( 'loading' );
+
+				if( response.success ) {
+
+					var increment = $target.hasClass('unapproved') ? 0 : -1;
+
+					// If there was a successful AJAX request, toggle the checkbox
+					$target.removeClass('unapproved').toggleClass( 'approved', (
+						approved === gvGlobals.status_approved
+					) );
+
+					// Update the entry filter count
+					window.UpdateCount( "gv_approved_count", ( gvGlobals.status_approved.toString() === approved.toString() ) ? 1 : increment );
+					window.UpdateCount( "gv_disapproved_count", ( gvGlobals.status_disapproved.toString() === approved.toString() ) ? 1 : increment );
+					
+				} else {
+					alert( response.data[0].message );
+				}
 			}
 		} );
 

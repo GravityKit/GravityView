@@ -38,6 +38,25 @@
 		display: inline-block;
 	}
 
+	.gv-create-view:before {
+		content: "\f132";
+		display: inline-block;
+		font-weight: normal;
+		font-size: 16px;
+		font-family: dashicons!important;
+		line-height: 16px!important;
+		top: 4px;
+		left: -3px;
+		speak: none;
+		margin: 0 auto;
+		padding: 0 !important;
+		position: relative;
+		text-align: center;
+		width: 16px;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
 	.hidden {
 		display: none!important;
 	}

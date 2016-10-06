@@ -24,6 +24,51 @@ class GravityView_Migrate {
 
 		$this->migrate_redux_settings();
 
+		$this->maybe_migrate_approved_meta();
+
+	}
+
+	/**
+	 * Convert approval meta values to enumerated values
+	 *
+	 * @since 1.18
+	 */
+	private function maybe_migrate_approved_meta() {
+
+		// check if search migration is already performed
+		$is_updated = get_option( 'gv_migrated_approved_meta' );
+
+		if ( $is_updated ) {
+			return;
+		}
+
+		$this->update_approved_meta();
+	}
+
+	/**
+	 * Convert "Approved" approval status to "1"
+	 *
+	 * @since 1.18
+	 *
+	 * @return void
+	 */
+	private function update_approved_meta() {
+		global $wpdb;
+
+		$table_name = GFFormsModel::get_lead_meta_table_name();
+
+		$sql = "UPDATE {$table_name} SET `meta_value` = %s WHERE `meta_key` = 'is_approved' AND `meta_value` = %s";
+
+		$approved_result = $wpdb->query( $wpdb->prepare( $sql, GravityView_Entry_Approval_Status::APPROVED, 'Approved' ) );
+
+		$disapproved_result = $wpdb->query( $wpdb->prepare( $sql, GravityView_Entry_Approval_Status::DISAPPROVED, '0' ) );
+
+		if( false === $approved_result || false === $disapproved_result ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ': There was an error processing the query.', $wpdb->last_error );
+		} else {
+			// All done: Meta values are migrated
+			update_option( 'gv_migrated_approved_meta', true );
+		}
 	}
 
 	/**

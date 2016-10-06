@@ -20,6 +20,28 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+<<<<<<< HEAD
+=======
+= 1.18 =
+* Updated minimum requirements: WordPress 3.5, Gravity Forms 1.9.14
+* Added: Shortcut to create a View for an existing form
+* Fixed: "New form created" message not shown when saving a draft using a View preset
+* Fixed: Edit Entry not saving other field values when Post fields were in the Edit Entry form
+* Fixed: When using "Start Fresh" View presets, form fields were not being added to the "Add Field" field picker
+* Fixed: Don't show hidden visible inputs in the "Add Field" picker (for example, if the "Middle Name" input is hidden in the Name field, don't show it as an option)
+* Fixed: Fatal error when editing Post Content and Post Image fields
+* Fixed: Lightbox images not loading
+* Fixed: Lightbox loading indicator displaying below the overlay
+* Fixed: Mask the Entry ID in the link to lightbox files
+* Tweak: When the global "Show Support Port" setting is "Hide", always hide; if set to "Show", respect each user's Support Port display preference
+* Fixed: PHP notice when WooCommerce Memberships is active
+
+__Developer Notes__
+
+* Added: `gravityview_go_back_url` filter to modify the link URL used for the single entry back-link in `gravityview_back_link()` function
+* Modified: `list-single.php` template file: added `.gv-grid-col-1-3` CSS class to the `.gv-list-view-content-image` container
+
+>>>>>>> develop
 = 1.17.4 on September 7, 2016 =
 
 * Added: Support for editing [Gravity Perks Unique ID](https://gravitywiz.com/documentation/gp-unique-id/) fields
@@ -57,6 +79,10 @@ __Developer Notes__
 = 1.17.2 on August 9, 2016 =
 
 * Fixed: "Start Fresh" fails when there are no pre-existing forms in Gravity Forms
+<<<<<<< HEAD
+=======
+* Fixed: Edit Entry not saving values for fields that were initially hidden
+>>>>>>> develop
 * Added: Support for embedding Views in Ultimate Member profile tabs
 * Fixed: File Upload fields potentially displaying PHP warnings
 * Fixed: Check plugin and theme existence before loading hooks

@@ -226,9 +226,8 @@ class GVCommon {
 
 		if ( $form ) {
 			foreach ( $form['fields'] as $field ) {
-
 				if ( $include_parent_field || empty( $field['inputs'] ) ) {
-					$fields["{$field->id}"] = array(
+					$fields["{$field['id']}"] = array(
 						'label' => rgar( $field, 'label' ),
 						'parent' => null,
 						'type' => rgar( $field, 'type' ),
@@ -237,13 +236,18 @@ class GVCommon {
 					);
 				}
 
-				if ( $add_default_properties && ! empty( $field->inputs ) ) {
-					foreach ( $field->inputs as $input ) {
-                        /**
+				if ( $add_default_properties && ! empty( $field['inputs'] ) ) {
+					foreach ( $field['inputs'] as $input ) {
+
+						if( ! empty( $input['isHidden'] ) ) {
+							continue;
+						}
+
+						/**
                          * @hack
                          * In case of email/email confirmation, the input for email has the same id as the parent field
                          */
-						if( 'email' === $field->type && false === strpos( $input['id'], '.' ) ) {
+						if( 'email' === $field['type'] && false === strpos( $input['id'], '.' ) ) {
                             continue;
                         }
 						$fields["{$input['id']}"] = array(
@@ -258,7 +262,7 @@ class GVCommon {
 				}
 
 
-				if( GFCommon::is_product_field( $field->type ) ){
+				if( GFCommon::is_product_field( $field['type'] ) ){
 					$has_product_fields = true;
 				}
 
@@ -529,6 +533,53 @@ class GVCommon {
 
 
 	/**
+	 * Get the entry ID from a string that may be the Entry ID or the Entry Slug
+	 *
+	 * @since TODO
+	 *
+	 * @param string $entry_id_or_slug The ID or slug of an entry.
+	 * @param bool $force_allow_ids Whether to force allowing getting the ID of an entry, even if custom slugs are enabled
+	 *
+	 * @return false|int|null Returns the ID of the entry found, if custom slugs is enabled. Returns original value if custom slugs is disabled. Returns false if not allowed to convert slug to ID. Returns NULL if entry not found for the passed slug.
+	 */
+	public static function get_entry_id( $entry_id_or_slug = '', $force_allow_ids = false ) {
+
+		$entry_id = false;
+
+		/**
+		 * @filter `gravityview_custom_entry_slug` Whether to enable and use custom entry slugs.
+		 * @param boolean True: Allow for slugs based on entry values. False: always use entry IDs (default)
+		 */
+		$custom_slug = apply_filters( 'gravityview_custom_entry_slug', false );
+
+		/**
+		 * @filter `gravityview_custom_entry_slug_allow_id` When using a custom slug, allow access to the entry using the original slug (the Entry ID).
+		 * - If disabled (default), only allow access to an entry using the custom slug value.  (example: `/entry/custom-slug/` NOT `/entry/123/`)
+		 * - If enabled, you could access using the custom slug OR the entry id (example: `/entry/custom-slug/` OR `/entry/123/`)
+		 * @param boolean $custom_slug_id_access True: allow accessing the slug by ID; False: only use the slug passed to the method.
+		 */
+		$custom_slug_id_access = $force_allow_ids || apply_filters( 'gravityview_custom_entry_slug_allow_id', false );
+
+		/**
+		 * If we're using custom entry slugs, we do a meta value search
+		 * instead of doing a straightup ID search.
+		 */
+		if ( $custom_slug ) {
+			// Search for IDs matching $entry_id_or_slug
+			$entry_id = self::get_entry_id_from_slug( $entry_id_or_slug );
+		}
+
+		// If custom slug is off, search using the entry ID
+		// ID allow ID access is on, also use entry ID as a backup
+		if ( false === $custom_slug || true === $custom_slug_id_access ) {
+			// Search for IDs matching $entry_slug
+			$entry_id = $entry_id_or_slug;
+		}
+
+		return $entry_id;
+	}
+
+	/**
 	 * Return a single entry object
 	 *
 	 * Since 1.4, supports custom entry slugs. The way that GravityView fetches an entry based on the custom slug is by searching `gravityview_unique_id` meta. The `$entry_slug` is fetched by getting the current query var set by `is_single_entry()`
@@ -543,36 +594,7 @@ class GVCommon {
 
 		if ( class_exists( 'GFAPI' ) && ! empty( $entry_slug ) ) {
 
-			/**
-			 * @filter `gravityview_custom_entry_slug` Whether to enable and use custom entry slugs.
-			 * @param boolean True: Allow for slugs based on entry values. False: always use entry IDs (default)
-			 */
-			$custom_slug = apply_filters( 'gravityview_custom_entry_slug', false );
-
-			/**
-			 * @filter `gravityview_custom_entry_slug_allow_id` When using a custom slug, allow access to the entry using the original slug (the Entry ID).
-			 * - If disabled (default), only allow access to an entry using the custom slug value.  (example: `/entry/custom-slug/` NOT `/entry/123/`)
-			 * - If enabled, you could access using the custom slug OR the entry id (example: `/entry/custom-slug/` OR `/entry/123/`)
-			 * @param boolean $custom_slug_id_access True: allow accessing the slug by ID; False: only use the slug passed to the method.
-			 */
-			$custom_slug_id_access = $force_allow_ids || apply_filters( 'gravityview_custom_entry_slug_allow_id', false );
-
-			/**
-			 * If we're using custom entry slugs, we do a meta value search
-			 * instead of doing a straightup ID search.
-			 */
-			if ( $custom_slug ) {
-
-				$entry_id = self::get_entry_id_from_slug( $entry_slug );
-
-			}
-
-			// If custom slug is off, search using the entry ID
-			// ID allow ID access is on, also use entry ID as a backup
-			if ( empty( $custom_slug ) || ! empty( $custom_slug_id_access ) ) {
-				// Search for IDs matching $entry_slug
-				$entry_id = $entry_slug;
-			}
+			$entry_id = self::get_entry_id( $entry_slug, $force_allow_ids );
 
 			if ( empty( $entry_id ) ) {
 				return false;

@@ -176,7 +176,21 @@ module.exports = function(grunt) {
 			transifex: 'tx pull -a',
 
 			// Create a ZIP file
-			zip: 'git-archive-all ../gravityview.zip',
+			zip: {
+				cmd: function( filename = 'gravityview' ) {
+
+					// First, create the full archive
+					var command = 'git-archive-all gravityview.zip &&';
+
+					command += 'unzip -o gravityview.zip &&';
+
+					command += 'zip -r ../' + filename + '.zip gravityview &&';
+
+					command += 'rm -rf gravityview/ && rm -f gravityview.zip';
+
+					return command;
+				}
+			},
 
 			bower: 'bower install'
 		},
