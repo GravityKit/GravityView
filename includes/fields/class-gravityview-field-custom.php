@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-custom.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 /**
  * Add custom options for Code field
@@ -25,7 +30,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 	var $group = 'gravityview';
 
 	public function __construct() {
-		$this->label = esc_attr__( 'Custom Content', 'gravityview' );
+		$this->label = esc_html__( 'Custom Content', 'gravityview' );
 		parent::__construct();
 	}
 

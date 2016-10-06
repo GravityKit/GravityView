@@ -63,7 +63,7 @@ class GravityView_Admin_Add_Shortcode {
 			return;
 		}
 		?>
-		<a href="#TB_inline?width=480&amp;inlineId=select_gravityview_view&amp;width=600&amp;height=800" class="thickbox button gform_media_link" id="add_gravityview" title="<?php esc_attr_e("Insert View", 'gravityview'); ?>"><span class="icon gv-icon-astronaut-head"></span><?php esc_html_e( 'Add View', 'gravityview' ); ?></a>
+		<a href="#TB_inline?width=600&amp;height=800&amp;inlineId=select_gravityview_view" class="thickbox hide-if-no-js button gform_media_link" id="add_gravityview" title="<?php esc_attr_e("Insert View", 'gravityview'); ?>"><span class="icon gv-icon-astronaut-head"></span><?php esc_html_e( 'Add View', 'gravityview' ); ?></a>
 		<?php
 
 	}
@@ -99,7 +99,7 @@ class GravityView_Admin_Add_Shortcode {
 				<div class="wrap">
 
 					<h2 class=""><?php esc_html_e( 'Embed a View', 'gravityview' ); ?></h2>
-					<p class="subtitle"><?php printf( esc_attr ( __( 'Use this form to embed a View into this %s. %sLearn more about using shortcodes.%s', 'gravityview') ), $post_type->labels->singular_name, '<a href="http://gravityview.co/support/documentation/202934188/" target="_blank">', '</a>' ); ?></p>
+					<p class="subtitle"><?php printf( esc_attr ( __( 'Use this form to embed a View into this %s. %sLearn more about using shortcodes.%s', 'gravityview') ), $post_type->labels->singular_name, '<a href="http://docs.gravityview.co/article/73-using-the-shortcode" target="_blank" rel="noopener noreferrer">', '</a>' ); ?></p>
 
 					<div>
 						<h3><label for="gravityview_id"><?php esc_html_e( 'Select a View', 'gravityview' ); ?></label></h3>
@@ -152,7 +152,6 @@ class GravityView_Admin_Add_Shortcode {
 	 * Enqueue scripts and styles
 	 *
 	 * @access public
-	 * @param mixed $hook
 	 * @return void
 	 */
 	function add_scripts_and_styles() {

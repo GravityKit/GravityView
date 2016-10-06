@@ -256,8 +256,8 @@ class GravityView_oEmbed {
 
 		return '
 		<div class="loading-placeholder" style="background-color:#e6f0f5;">
-			<h3 style="margin:0; padding:0; font-family: \'Open Sans\', sans-serif;">'.$image.$embed_heading.'</h3>
-			<p style="margin:0; padding:0; font-family: \'Open Sans\', sans-serif;">
+			<h3 style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Oxygen-Sans, Ubuntu, Cantarell, \'Helvetica Neue\', sans-serif;">'.$image.$embed_heading.'</h3>
+			<p style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Oxygen-Sans, Ubuntu, Cantarell, \'Helvetica Neue\', sans-serif;">
 				'.$embed_text.'
 			</p>
 			<br style="clear: both;">

@@ -22,6 +22,11 @@ class GF_UnitTest_Factory extends WP_UnitTest_Factory {
 	 */
 	public $user;
 
+	/**
+	 * @var WP_UnitTest_Factory_For_Post
+	 */
+	public $post;
+
 	function __construct() {
 		parent::__construct();
 
@@ -33,6 +38,7 @@ class GF_UnitTest_Factory extends WP_UnitTest_Factory {
 
 		$this->view = new GV_UnitTest_Factory_For_View( $this );
 
+		$this->post = new WP_UnitTest_Factory_For_Post();
 	}
 }
 
@@ -107,7 +113,12 @@ class GV_UnitTest_Factory_For_View extends WP_UnitTest_Factory_For_Post {
 
 class GV_UnitTest_Factory_For_User extends WP_UnitTest_Factory_For_User {
 
-	function create( $args = array(), $generation_definitions = array() ) {
+	function create( $args = array(), $generation_definitions = null ) {
+
+		if ( is_null( $generation_definitions ) ) {
+			$generation_definitions = $this->default_generation_definitions;
+		}
+
 		$user = false;
 		if( ! empty( $args['user_login'] ) ) {
 			$user = get_user_by( 'login', $args['user_login'] );
@@ -138,7 +149,7 @@ class GV_UnitTest_Factory_For_User extends WP_UnitTest_Factory_For_User {
 		foreach( $user->roles as $role ) {
 			$capabilities = GravityView_Roles_Capabilities::all_caps( $role );
 
-			foreach ( $capabilities as $cap ) {
+			foreach ( (array) $capabilities as $cap ) {
 				$user->add_cap( $cap, true );
 			}
 		}
@@ -322,7 +333,9 @@ class GF_UnitTest_Generator_Date extends GF_UnitTest_Generator {
 	var $format = 'Y-m-d H:i:s';
 
 	function __construct( $format = 'Y-m-d H:i:s' ) {
-		$this->format = $format;
+		if( is_string( $format ) ) {
+			$this->format = $format;
+		}
 	}
 
 	function next() {
@@ -370,7 +383,14 @@ class GF_UnitTest_Factory_For_Entry extends WP_UnitTest_Factory_For_Thing {
 	}
 
 	function create_object( $args ) {
+
 		$args = wp_parse_args( $args, $this->default_generation_definitions );
+
+		if( !isset( $args['form_id'] ) ) {
+			$form = $this->factory->form->create();
+			$args['form_id'] = $form['id'];
+		}
+
 		return GFAPI::add_entry( $args );
 	}
 
@@ -399,7 +419,7 @@ class GF_UnitTest_Factory_For_Form extends WP_UnitTest_Factory_For_Thing {
 		parent::__construct( $factory );
 
 		$this->default_generation_definitions = array(
-			'title' => new WP_UnitTest_Generator_Sequence( 'Form Title %s' ),
+			'title' => 'Form Title %s',
 			'fields' => array(
 				new GF_Field_Text(array(
 					'id' => 1,
@@ -423,8 +443,10 @@ class GF_UnitTest_Factory_For_Form extends WP_UnitTest_Factory_For_Thing {
 		);
 	}
 
-	function create_object( $file, $parent = 0, $args = array() ) {
+	function create_object( $args = array() ) {
 		$args = wp_parse_args( $args, $this->default_generation_definitions );
+		$title_sequence = new WP_UnitTest_Generator_Sequence( $args['title'] );
+		$args['title'] = $title_sequence->next();
 		return GFAPI::add_form( $args );
 	}
 

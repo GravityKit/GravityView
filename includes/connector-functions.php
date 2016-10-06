@@ -36,16 +36,19 @@ function gravityview_get_form_from_entry_id( $entry_slug ) {
 	return GVCommon::get_form_from_entry_id( $entry_slug );
 }
 
+
 /**
- * Returns the list of available forms
+ * Alias of GFAPI::get_forms()
  *
- * @see GVCommon::get_forms()
- * @access public
- * @param mixed $form_id
- * @return array Empty array if GFAPI isn't available or no forms. Otherwise, associative array with id, title keys
+ * @see GFAPI::get_forms()
+ *
+ * @param bool $active Status of forms. Default: `true`
+ * @param bool $trash Include forms in trash? Default: `false`
+ *
+ * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
  */
-function gravityview_get_forms() {
-	return GVCommon::get_forms();
+function gravityview_get_forms( $active = true, $trash = false ) {
+	return GVCommon::get_forms( $active, $trash );
 }
 
 /**
@@ -120,22 +123,22 @@ function gravityview_get_entry( $entry_slug, $force_allow_ids = false, $check_en
  * @param mixed $field_id
  * @return string
  */
-function gravityview_get_field_label( $form, $field_id ) {
-	return GVCommon::get_field_label( $form, $field_id );
+function gravityview_get_field_label( $form, $field_id, $field_value = '' ) {
+	return GVCommon::get_field_label( $form, $field_id, $field_value );
 }
 
 
 /**
  * Returns the field details array of a specific form given the field id
  *
- * Alias of Alias of GFFormsModel::get_field
+ * Alias of GFFormsModel::get_field
  *
  * @uses GVCommon::get_field
  * @see GFFormsModel::get_field
  * @access public
  * @param array $form
  * @param string|int $field_id
- * @return array
+ * @return GF_Field|null Returns NULL if field with ID $field_id doesn't exist.
  */
 function gravityview_get_field( $form, $field_id ) {
 	return GVCommon::get_field( $form, $field_id );
@@ -175,9 +178,11 @@ function gravityview_get_connected_views( $form_id ) {
 /**
  * Get the connected form ID from a View ID
  *
+ * @see GVCommon::get_meta_form_id
+ *
  * @param int $view_id ID of the View you want the form of
  *
- * @return int
+ * @return false|string ID of the connected Form, if exists. Empty string if not. False if not the View ID isn't valid.
  */
 function gravityview_get_form_id( $view_id ) {
 	return GVCommon::get_meta_form_id( $view_id );
@@ -263,11 +268,41 @@ function gravityview_get_registered_templates() {
  * 	[other zones]
  * )
  *
+ * @since 1.17.4 Added $apply_filter parameter
+ *
  * @param  int $post_id View ID
+ * @param  bool $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
  * @return array          Multi-array of fields with first level being the field zones. See code comment.
  */
-function gravityview_get_directory_fields( $post_id ) {
-	return GVCommon::get_directory_fields( $post_id );
+function gravityview_get_directory_fields( $post_id, $apply_filter = true ) {
+	return GVCommon::get_directory_fields( $post_id, $apply_filter );
+}
+
+/**
+ * Get the widgets, as configured for a View
+ *
+ * @since 1.17.4
+ *
+ * @param int $post_id
+ *
+ * @return array
+ */
+function gravityview_get_directory_widgets( $post_id ) {
+	return get_post_meta( $post_id, '_gravityview_directory_widgets', true );
+}
+
+/**
+ * Set the widgets, as configured for a View
+ *
+ * @since 1.17.4
+ *
+ * @param int $post_id
+ * @param array $widgets array of widgets
+ *
+ * @return int|bool
+ */
+function gravityview_set_directory_widgets( $post_id, $widgets = array() ) {
+	return update_post_meta( $post_id, '_gravityview_directory_widgets', $widgets );
 }
 
 /**
@@ -353,6 +388,10 @@ function gravityview_view_has_single_checkbox_or_radio( $form, $view_fields ) {
 		foreach( $form_fields as $form_field ) {
 			$field_id = $form_field->id;
 			foreach( $view_fields as $zone ) {
+
+				// ACF compatibility; ACF-added fields aren't arrays
+				if ( ! is_array( $zone ) ) { continue; }
+
 				foreach( $zone as $field ) {
 					// If it's an input, not the parent and the parent ID matches a checkbox or radio
 					if( ( strpos( $field['id'], '.' ) > 0 ) && floor( $field['id'] ) === floor( $field_id ) ) {

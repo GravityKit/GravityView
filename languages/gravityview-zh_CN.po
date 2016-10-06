@@ -1,0 +1,3089 @@
+# Copyright (C) 2016 GravityView
+# This file is distributed under the GPLv2 or later.
+# Translators:
+# michael edi <michaeledi@163.com>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: GravityView\n"
+"Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
+"POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
+"PO-Revision-Date: 2016-09-07 21:35+0000\n"
+"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"Language-Team: Chinese (China) (http://www.transifex.com/katzwebservices/gravityview/language/zh_CN/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: grunt-wp-i18n 0.5.4\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Textdomain-Support: yes\n"
+
+#: gravityview.php:330
+msgid "Top"
+msgstr "上"
+
+#: gravityview.php:331
+msgid "Left"
+msgstr "左"
+
+#: gravityview.php:331
+msgid "Right"
+msgstr "右"
+
+#: includes/admin/class-gravityview-admin-view-field.php:23
+msgid "Type: %s"
+msgstr "类型: %s"
+
+#: includes/admin/class-gravityview-admin-view-field.php:27
+msgid "Field ID: %s"
+msgstr "字段 ID: %s"
+
+#: includes/admin/class-gravityview-admin-view-field.php:40
+msgid "Admin Label: %s"
+msgstr "管理标签: %s"
+
+#: includes/admin/class-gravityview-admin-view-item.php:135
+msgid "Configure %s Settings"
+msgstr "配置设置"
+
+#: includes/admin/class-gravityview-admin-view-item.php:136
+msgid "Remove %s"
+msgstr "移除 %s"
+
+#: includes/admin/class-gravityview-admin-view-item.php:137
+msgid "This field links to the Single Entry"
+msgstr "这个字段链接到单个条目"
+
+#: includes/admin/class-gravityview-support-port.php:83
+msgid "GravityView Support"
+msgstr "GravityView 支持"
+
+#: includes/admin/class-gravityview-support-port.php:84
+msgid "Search GravityView Docs"
+msgstr "搜索 GravityView 文档"
+
+#: includes/admin/class-gravityview-support-port.php:85
+msgid ""
+"Your search timed out. Please double-check your internet connection and try "
+"again."
+msgstr "您的搜索超时。请仔细检查一下您的网络连接，然后再试一次。"
+
+#: includes/admin/class-gravityview-support-port.php:87
+msgid "Contact Support"
+msgstr "联络支持"
+
+#: includes/admin/class-gravityview-support-port.php:88
+msgid "Attach a screenshot or file"
+msgstr "附上一个截图或文件"
+
+#: includes/admin/class-gravityview-support-port.php:89
+msgid "The maximum file size is 10 MB"
+msgstr "最大文件大小为10 MB"
+
+#: includes/admin/class-gravityview-support-port.php:90
+msgid "Your Name"
+msgstr "你的名字"
+
+#: includes/admin/class-gravityview-support-port.php:91
+msgid "Please enter your name"
+msgstr "请输入你的名字"
+
+#: includes/admin/class-gravityview-support-port.php:92
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:419
+msgid "Email address"
+msgstr "电子邮箱地址"
+
+#: includes/admin/class-gravityview-support-port.php:93
+msgid "Please enter a valid email address"
+msgstr "请输入有效的电子邮件地址"
+
+#: includes/admin/class-gravityview-support-port.php:94
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:421
+msgid "Subject"
+msgstr "主题"
+
+#: includes/admin/class-gravityview-support-port.php:96
+msgid "How can we help you?"
+msgstr "我们怎样才能帮助你？"
+
+#: includes/admin/class-gravityview-support-port.php:98
+msgid "Message sent!"
+msgstr "消息已发送！"
+
+#: includes/admin/class-gravityview-support-port.php:99
+msgid ""
+"Thanks for reaching out! Someone from the GravityView team will get back to "
+"you soon."
+msgstr "谢谢您的反馈！GravityView 团队成员人将会尽快回复你。"
+
+#. translators: "Support Port" can be translated as "Support Portal" or
+#. "Support Window"
+#: includes/admin/class-gravityview-support-port.php:293
+#: includes/admin/class-gravityview-support-port.php:299
+msgid "GravityView Support Port"
+msgstr "GravityView帮助按钮"
+
+#: includes/admin/class-gravityview-support-port.php:304
+msgid "Show GravityView Support Port when on a GravityView-related page"
+msgstr "当在一个 GravityView 相关页面上时，显示 GravityView 支持端口。"
+
+#: includes/admin/class.render.settings.php:36
+msgid "Show Label"
+msgstr "显示标签"
+
+#: includes/admin/class.render.settings.php:41
+msgid "Custom Label:"
+msgstr "自定义标签 ︰"
+
+#: includes/admin/class.render.settings.php:47
+#: includes/widgets/class-gravityview-widget.php:108
+msgid "Custom CSS Class:"
+msgstr "自定义CSS类："
+
+#: includes/admin/class.render.settings.php:48
+msgid "This class will be added to the field container"
+msgstr "这个类将添加到该字段的容器中"
+
+#: includes/admin/class.render.settings.php:55
+msgid "Make visible only to logged-in users?"
+msgstr "仅限于已登录用户可见？"
+
+#: includes/admin/class.render.settings.php:60
+msgid "Make visible for:"
+msgstr "使可见："
+
+#: includes/admin/class.render.settings.php:71
+msgid "Percent Width"
+msgstr "宽度百分比"
+
+#: includes/admin/class.render.settings.php:72
+msgid "Leave blank for column width to be based on the field content."
+msgstr "若要列宽按照内容宽度，请留空。"
+
+#: includes/admin/class.render.settings.php:117
+msgid "Any Logged-In User"
+msgstr "任何已登录的用户"
+
+#: includes/admin/class.render.settings.php:118
+msgid "Author Or Higher"
+msgstr "作者或更高"
+
+#: includes/admin/class.render.settings.php:119
+msgid "Can View Gravity Forms Entries"
+msgstr "可以查看条目的用户"
+
+#: includes/admin/class.render.settings.php:120
+msgid "Editor Or Higher"
+msgstr "编辑或更高"
+
+#: includes/admin/class.render.settings.php:121
+msgid "Can Edit Gravity Forms Entries"
+msgstr "可以编辑条目的用户"
+
+#: includes/admin/class.render.settings.php:122
+msgid "Administrator"
+msgstr "管理员"
+
+#: includes/admin/class.render.settings.php:126
+msgid "Multisite Super Admin"
+msgstr "多站点超级管理员"
+
+#: includes/admin/class.render.settings.php:191
+msgid "Options: %s"
+msgstr "选项：%s"
+
+#: includes/admin/entry-list.php:66
+msgid "Edit this entry"
+msgstr "编辑这个条目"
+
+#: includes/admin/entry-list.php:66
+msgid "Edit"
+msgstr "编辑"
+
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:80
+msgid "Choose a View Type"
+msgstr "选择一个视图类型"
+
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:83
+msgid "View Configuration"
+msgstr "视图配置"
+
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:88
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:124
+#: includes/class-admin-add-shortcode.php:120
+msgid "View Settings"
+msgstr "视图设置"
+
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:132
+#: includes/admin/metaboxes/views/view-configuration.php:5
+msgid "Single Entry"
+msgstr "单个条目"
+
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:140
+msgid "Filter &amp; Sort"
+msgstr "过滤 &amp; 排序"
+
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:187
+#: includes/class-admin-views.php:412
+msgid "Data Source"
+msgstr "数据源"
+
+#: includes/admin/metaboxes/views/data-source.php:20
+msgid "Where would you like the data to come from for this View?"
+msgstr "这个视图的中你想要的数据从何而来？"
+
+#: includes/admin/metaboxes/views/data-source.php:27
+msgid "Start Fresh"
+msgstr "崭新的开始"
+
+#: includes/admin/metaboxes/views/data-source.php:30
+msgid "or use an existing form"
+msgstr "或使用现有的表单"
+
+#: includes/admin/metaboxes/views/data-source.php:37
+msgid "list of forms"
+msgstr "表单列表"
+
+#: includes/admin/metaboxes/views/data-source.php:46
+msgid "Switch View"
+msgstr "切换视图"
+
+#: includes/admin/metaboxes/views/data-source.php:46
+msgid "Switch View Type"
+msgstr "切换视图类型"
+
+#: includes/admin/metaboxes/views/data-source.php:50
+#: includes/admin/metaboxes/views/data-source.php:55
+msgid "Attention"
+msgstr "注意"
+
+#: includes/admin/metaboxes/views/data-source.php:51
+msgid ""
+"Changing the form will reset your field configuration. Changes will be "
+"permanent once you save the View."
+msgstr "更改表单将重置您的字段配置。一旦您保存了视图，更改将是永久性的。"
+
+#: includes/admin/metaboxes/views/data-source.php:56
+msgid ""
+"Changing the View Type will reset your field configuration. Changes will be "
+"permanent once you save the View."
+msgstr "改变视图的类型将重置您的字段配置。一旦您保存了视图，更改将是永久性的。"
+
+#: includes/admin/metaboxes/views/data-source.php:61
+msgid "GravityView requires Javascript to be enabled."
+msgstr "Gravity Forms需要启用 JavaScript 。"
+
+#: includes/admin/metaboxes/views/select-template.php:33
+msgid "Buy Now"
+msgstr "一次性购买"
+
+#: includes/admin/metaboxes/views/select-template.php:35
+#: includes/fields/class-gravityview-field-select.php:19
+#: includes/widgets/search-widget/class-search-widget.php:163
+msgid "Select"
+msgstr "选择"
+
+#: includes/admin/metaboxes/views/select-template.php:37
+msgid "View a live demo of this preset"
+msgstr "查看这个预设的一个现场演示"
+
+#: includes/admin/metaboxes/views/shortcode-hint.php:12
+msgid "Embed Shortcode"
+msgstr "嵌入简码"
+
+#: includes/admin/metaboxes/views/shortcode-hint.php:15
+msgid "Add this shortcode to a post or page to embed this view."
+msgstr "添加一个简码到一篇文章或页面去嵌入这个视图。"
+
+#: includes/admin/metaboxes/views/view-configuration.php:4
+msgid "Multiple Entries"
+msgstr "多个条目"
+
+#: includes/admin/metaboxes/views/view-configuration.php:6
+#: includes/class-gravityview-admin-bar.php:105
+#: includes/class-gravityview-entry-link-shortcode.php:205
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:58
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:116
+#: includes/extensions/edit-entry/class-edit-entry-render.php:768
+#: includes/extensions/edit-entry/fields/edit_link.php:14
+msgid "Edit Entry"
+msgstr "编辑条目"
+
+#: includes/admin/metaboxes/views/view-configuration.php:13
+msgid "Above Entries Widgets"
+msgstr "条目上方工具"
+
+#: includes/admin/metaboxes/views/view-configuration.php:13
+msgid "These widgets will be shown above entries."
+msgstr "这些小部件将在条目上方显示。"
+
+#: includes/admin/metaboxes/views/view-configuration.php:17
+msgid "Entries Fields"
+msgstr "条目字段"
+
+#: includes/admin/metaboxes/views/view-configuration.php:17
+msgid "These fields will be shown for each entry."
+msgstr "这些字段将为每个条目显示。"
+
+#: includes/admin/metaboxes/views/view-configuration.php:25
+msgid "Below Entries Widgets"
+msgstr "在本页下面的条目小部件"
+
+#: includes/admin/metaboxes/views/view-configuration.php:25
+msgid "These widgets will be shown below entries."
+msgstr "这些小部件将在下面的条目显示。"
+
+#: includes/admin/metaboxes/views/view-configuration.php:55
+msgid "These fields will be shown in Single Entry view."
+msgstr "这些字段将在单个条目视图中显示。"
+
+#: includes/admin/metaboxes/views/view-configuration.php:76
+msgid "Fields shown when editing an entry."
+msgstr "字段在编辑一个条目时显示。"
+
+#: includes/admin/metaboxes/views/view-configuration.php:76
+msgid "If not configured, all form fields will be displayed."
+msgstr "如果不配置，所有表单字段将显示出来。"
+
+#: includes/class-admin-add-shortcode.php:66
+#: includes/class-admin-add-shortcode.php:137
+msgid "Insert View"
+msgstr "插入视图"
+
+#: includes/class-admin-add-shortcode.php:66
+msgid "Add View"
+msgstr "添加视图"
+
+#: includes/class-admin-add-shortcode.php:101
+msgid "Embed a View"
+msgstr "嵌入一个视图"
+
+#: includes/class-admin-add-shortcode.php:102
+msgid ""
+"Use this form to embed a View into this %s. %sLearn more about using "
+"shortcodes.%s"
+msgstr "使用这个表单去嵌入到这个 %s 视图中。 %s了解更多关于使用简码。%s"
+
+#: includes/class-admin-add-shortcode.php:105
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:318
+msgid "Select a View"
+msgstr "选择一个视图："
+
+#: includes/class-admin-add-shortcode.php:108
+msgid "&mdash; Select a View to Insert &mdash;"
+msgstr "&mdash; 选择一个视图插入 &mdash;"
+
+#: includes/class-admin-add-shortcode.php:111
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:324
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:188
+msgid "(no title)"
+msgstr "(没有标题)"
+
+#: includes/class-admin-add-shortcode.php:138
+#: includes/class-admin-views.php:1009
+#: includes/extensions/edit-entry/partials/form-buttons.php:31
+msgid "Cancel"
+msgstr "取消"
+
+#: includes/class-admin-add-shortcode.php:183
+#: includes/class-admin-views.php:1013
+msgid "Loading&hellip;"
+msgstr "正在加载&hellip;"
+
+#: includes/class-admin-add-shortcode.php:184
+msgid "Please select a View"
+msgstr "请选择一个视图"
+
+#: includes/class-admin-approve-entries.php:123
+#: includes/class-admin-approve-entries.php:208
+msgid "Approved"
+msgstr "已审核"
+
+#: includes/class-admin-approve-entries.php:130
+msgid "Disapproved"
+msgstr "已拒绝"
+
+#: includes/class-admin-approve-entries.php:146
+msgid "GravityView Fields"
+msgstr "Gravity Forms字段"
+
+#: includes/class-admin-approve-entries.php:147
+msgid ""
+"Allow administrators to approve or reject entries and users to opt-in or "
+"opt-out of their entries being displayed."
+msgstr "允许管理员批准或拒绝条目，然后用户去选择或不选择他们的条目显示。"
+
+#: includes/class-admin-approve-entries.php:169
+msgid "Approve/Reject"
+msgstr "批准/拒绝"
+
+#: includes/class-admin-approve-entries.php:175
+msgid "User Opt-In"
+msgstr "用户选择"
+
+#: includes/class-admin-approve-entries.php:199
+msgid "Approved? (Admin-only)"
+msgstr "已批准？ (仅管理员)"
+
+#: includes/class-admin-approve-entries.php:201
+msgid "Approved?"
+msgstr "已批准?"
+
+#: includes/class-admin-approve-entries.php:221
+msgid "Show Entry on Website"
+msgstr "在网站上显示条目"
+
+#: includes/class-admin-approve-entries.php:223
+msgid "Opt-In"
+msgstr "选择的"
+
+#: includes/class-admin-approve-entries.php:231
+msgid "Yes, display my entry on the website"
+msgstr "是的，在网站上显示我的条目"
+
+#: includes/class-admin-approve-entries.php:335
+msgid "%d entries"
+msgstr "%d 个条目"
+
+#: includes/class-admin-approve-entries.php:335
+msgid "1 entry"
+msgstr "1 个条目"
+
+#: includes/class-admin-approve-entries.php:340
+msgid "%s approved."
+msgstr "%s 已批准。"
+
+#: includes/class-admin-approve-entries.php:345
+msgid "%s disapproved."
+msgstr "%s 已拒绝。"
+
+#: includes/class-admin-approve-entries.php:429
+#: tests/unit-tests/GravityView_Uninstall_Test.php:195 uninstall.php:100
+msgid "Disapproved the Entry for GravityView"
+msgstr "Gravity Forms的已拒绝条目"
+
+#: includes/class-admin-approve-entries.php:429
+#: tests/unit-tests/GravityView_Uninstall_Test.php:196 uninstall.php:101
+msgid "Approved the Entry for GravityView"
+msgstr "Gravity Forms的已批准条目"
+
+#: includes/class-admin-approve-entries.php:755
+msgid "Entry not approved for directory viewing. Click to approve this entry."
+msgstr "查看未经批准的条目的目录。单击以批准这个条目。"
+
+#: includes/class-admin-approve-entries.php:756
+msgid "Entry approved for directory viewing. Click to disapprove this entry."
+msgstr "查看已批准的条目的目录。单击以拒绝这个条目。"
+
+#: includes/class-admin-approve-entries.php:757
+msgid "Show entry in directory view?"
+msgstr "在视图目录中显示条目？"
+
+#: includes/class-admin-approve-entries.php:777
+msgid "Approve"
+msgstr "核准"
+
+#: includes/class-admin-approve-entries.php:781
+msgid "Disapprove"
+msgstr "已拒绝"
+
+#: includes/class-admin-views.php:99
+msgid "All forms"
+msgstr "所有表单"
+
+#: includes/class-admin-views.php:148
+msgid "No Title (View #%d)"
+msgstr "无标题（查看 #%d）"
+
+#: includes/class-admin-views.php:168
+msgid "Connected Views"
+msgstr "已连接视图"
+
+#: includes/class-admin-views.php:170
+msgid "GravityView Views using this form as a data source"
+msgstr "GV视图使用这个表单作为一个数据源"
+
+#: includes/class-admin-views.php:245
+msgid "CSS Merge Tags"
+msgstr "CSS 合并标签"
+
+#: includes/class-admin-views.php:246
+msgid ""
+"Developers: The CSS classes will be sanitized using the "
+"%ssanitize_title_with_dashes()%s function."
+msgstr "开发者：CSS 类将使用 %ssanitize_title_with_dashes()%s 函数净化。"
+
+#: includes/class-admin-views.php:306
+msgid "Not connected."
+msgstr "未连接。"
+
+#: includes/class-admin-views.php:315
+msgid "The connected form can not be found; it may no longer exist."
+msgstr "无法找到连接的表单，它可能已经不存在。"
+
+#: includes/class-admin-views.php:351
+#: includes/class-gravityview-admin-bar.php:140
+msgid "Edit Form"
+msgstr "编辑表单"
+
+#: includes/class-admin-views.php:358
+msgid "Entries"
+msgstr "条目"
+
+#: includes/class-admin-views.php:363 includes/class-admin.php:103
+#: includes/class-gravityview-settings.php:283
+#: includes/class-gravityview-settings.php:309
+msgid "Settings"
+msgstr "设置"
+
+#: includes/class-admin-views.php:363
+msgid "Edit settings for this form"
+msgstr "编辑这个表单的设置"
+
+#: includes/class-admin-views.php:368
+msgid "Preview Form"
+msgstr "预览表单"
+
+#: includes/class-admin-views.php:368
+msgid "Preview this form"
+msgstr "预览这个表单"
+
+#: includes/class-admin-views.php:596
+msgid "+ Add All Fields"
+msgstr "+ 添加所有字段"
+
+#: includes/class-admin-views.php:597
+msgid "Add all the available fields at once."
+msgstr "一次添加所有的可用字段。"
+
+#: includes/class-admin-views.php:647
+#: includes/widgets/search-widget/class-search-widget.php:273
+msgid "Entry ID"
+msgstr "条目 ID"
+
+#: includes/class-admin-views.php:649
+msgid "The unique ID of the entry."
+msgstr "输入条目的唯一 ID。"
+
+#: includes/class-admin-views.php:652
+#: includes/widgets/search-widget/class-search-widget.php:269
+msgid "Entry Date"
+msgstr "条目日期"
+
+#: includes/class-admin-views.php:653
+#: includes/fields/class-gravityview-field-date-created.php:27
+msgid "The date the entry was created."
+msgstr "条目创建的日期。"
+
+#: includes/class-admin-views.php:657
+#: includes/fields/class-gravityview-field-source-url.php:20
+msgid "Source URL"
+msgstr "来源网址"
+
+#: includes/class-admin-views.php:659
+msgid "The URL of the page where the form was submitted."
+msgstr "提交表单时的页面的 URL。"
+
+#: includes/class-admin-views.php:662
+msgid "User IP"
+msgstr "用户 IP"
+
+#: includes/class-admin-views.php:664
+msgid "The IP Address of the user who created the entry."
+msgstr "创建该条目的用户的IP地址。"
+
+#: includes/class-admin-views.php:667
+msgid "User"
+msgstr "用户"
+
+#: includes/class-admin-views.php:669
+msgid "Details of the logged-in user who created the entry (if any)."
+msgstr "已登录的用户创建的条目的详细信息（如果有任何）。"
+
+#: includes/class-admin-views.php:676
+#: includes/fields/class-gravityview-field-custom.php:33
+#: includes/fields/class-gravityview-field-custom.php:48
+#: includes/widgets/class-gravityview-widget-custom-content.php:30
+#: includes/widgets/class-gravityview-widget-custom-content.php:45
+msgid "Custom Content"
+msgstr "Custom Content（自定义内容）"
+
+#: includes/class-admin-views.php:678
+msgid "Insert custom text or HTML."
+msgstr "插入自定义文本或HTML。"
+
+#: includes/class-admin-views.php:685
+#: includes/fields/class-gravityview-field-other-entries.php:25
+msgid "Other Entries"
+msgstr "其他条目"
+
+#: includes/class-admin-views.php:687
+#: includes/fields/class-gravityview-field-other-entries.php:26
+msgid "Display other entries created by the entry creator."
+msgstr "按条目创建者显示其他已创建的条目。"
+
+#: includes/class-admin-views.php:694
+#: includes/fields/class-gravityview-field-entry-link.php:32
+msgid "Link to Entry"
+msgstr "连接到条目"
+
+#: includes/class-admin-views.php:695
+#: includes/fields/class-gravityview-field-entry-link.php:33
+msgid "A dedicated link to the single entry with customizable text."
+msgstr "一个专门链接到单个条目的自定义文本。"
+
+#: includes/class-admin-views.php:792
+msgid "Add Widget"
+msgstr "添加小工具"
+
+#: includes/class-admin-views.php:794
+msgid "Add Field"
+msgstr "添加字段"
+
+#: includes/class-admin-views.php:876
+msgid "\"+ %s\" or drag existing %ss here."
+msgstr "“+ %s” 或拖动现有的 %ss 到这里。"
+
+#: includes/class-admin-views.php:950
+msgid "This View is configured using the %s View type, which is disabled."
+msgstr "这个视图配置使用 %s 视图类型，这是禁用的。"
+
+#: includes/class-admin-views.php:951
+msgid ""
+"The data is not lost; re-activate the associated plugin and the "
+"configuration will re-appear."
+msgstr "数据并没有丢失，它将在重新启动插件和配置时重新出现。"
+
+#: includes/class-admin-views.php:1007
+msgid "Enter View name here"
+msgstr "在这里输入视图的名称"
+
+#: includes/class-admin-views.php:1008
+msgid "Close"
+msgstr "关闭"
+
+#: includes/class-admin-views.php:1010
+msgid "Continue"
+msgstr "继续"
+
+#: includes/class-admin-views.php:1011
+msgid "Ok"
+msgstr "确定"
+
+#: includes/class-admin-views.php:1012
+msgid ""
+"Error while creating the View for you. Check the settings or contact "
+"GravityView support."
+msgstr "创建视图时出错。检查设置或联系FROSTNT支持。"
+
+#: includes/class-admin-views.php:1014
+msgid "There was an error loading dynamic content."
+msgstr "加载动态内容时出错。"
+
+#: includes/class-admin-views.php:1015
+msgid ""
+"Error while adding the field. Please try again or contact GravityView "
+"support."
+msgstr "添加字段时出现错误。请稍后再试或联系技术支持。"
+
+#: includes/class-admin-views.php:1016
+msgid ""
+"Would you like to remove all fields in this zone? (You are seeing this "
+"message because you were holding down the ALT key)"
+msgstr "您想删除这个区域的所有字段吗？（您看到这个消息是因为您按住了Alt键）"
+
+#: includes/class-admin-welcome.php:56
+msgid "GravityView: Getting Started"
+msgstr "GravityView：开始使用"
+
+#: includes/class-admin-welcome.php:57 includes/class-admin-welcome.php:154
+msgid "Getting Started"
+msgstr "入门指南"
+
+#: includes/class-admin-welcome.php:66 includes/class-admin-welcome.php:67
+msgid "Changelog"
+msgstr "更新日志"
+
+#: includes/class-admin-welcome.php:76 includes/class-admin-welcome.php:77
+#: includes/class-admin-welcome.php:160
+msgid "Credits"
+msgstr "信誉"
+
+#: includes/class-admin-welcome.php:149
+msgid "Welcome to GravityView %s"
+msgstr "欢迎来到GravityView %s"
+
+#: includes/class-admin-welcome.php:150
+msgid ""
+"Thank you for installing GravityView. Beautifully display your Gravity Forms"
+" entries."
+msgstr "感谢您安装GravityView。完美的显示您的Gravity Forms条目。"
+
+#: includes/class-admin-welcome.php:157
+msgid "List of Changes"
+msgstr "更改列表"
+
+#: includes/class-admin-welcome.php:757
+msgid "GravityView is brought to you by:"
+msgstr "重力视图由以下团队呈现："
+
+#: includes/class-admin-welcome.php:781
+msgid "Contributors"
+msgstr "贡献者"
+
+#: includes/class-admin-welcome.php:805
+msgid "Want to contribute?"
+msgstr "想要贡献?"
+
+#: includes/class-admin-welcome.php:806
+msgid ""
+"If you want to contribute to the code, %syou can on Github%s. If your "
+"contributions are accepted, you will be thanked here."
+msgstr "如果您想来贡献代码，%s您可以到 Github 上%s。 如果接受您的贡献，您将在这里被表示感谢。"
+
+#: includes/class-admin.php:107
+msgid "Support"
+msgstr "支持"
+
+#: includes/class-admin.php:152
+msgid "A new form was created for this View: \"%s\""
+msgstr "版块已创建。<a href=\"%s\">查看版块</a>"
+
+#: includes/class-admin.php:153
+msgid ""
+"%sThere are no entries for the new form, so the View will also be empty.%s To start collecting entries, you can add submissions through %sthe preview form%s and also embed the form on a post or page using this code: %s\n"
+"\n"
+"\t\t\t\t\tYou can %sedit the form%s in Gravity Forms and the updated fields will be available here. Don&rsquo;t forget to %scustomize the form settings%s.\n"
+"\t\t\t\t\t"
+msgstr "%s新表单没有条目，因此视图也将为空。%s 开始收集条目，您可以通过 %s预览表单%s进行添加，也可以在文章或者页面中嵌入这段代码 ︰ %s\n\n\t\t\t\t\t你可以在Gravityforms中%s编辑表单 %s，而在这里将会显示被更新的字段。别忘了 %s自定义表单设置%s.\n\t\t\t\t\t"
+
+#. translators: %s and %s are HTML tags linking to the View on the website
+#: includes/class-admin.php:166 includes/class-admin.php:168
+#: includes/class-admin.php:171
+msgid "View updated. %sView on website.%s"
+msgstr "视图已更新。%s查看站点%s"
+
+#: includes/class-admin.php:169
+msgid "View deleted."
+msgstr "视图已删除。"
+
+#. translators: %s: date and time of the revision
+#: includes/class-admin.php:173
+msgid "View restored to revision from %s"
+msgstr "版块已从修订版本 %s 恢复"
+
+#. translators: %s and %s are HTML tags linking to the View on the website
+#: includes/class-admin.php:175
+msgid "View published. %sView on website.%s"
+msgstr "视图已发布。%s在站点上查看。%s"
+
+#. translators: %s and %s are HTML tags linking to the View on the website
+#: includes/class-admin.php:177
+msgid "View saved. %sView on website.%s"
+msgstr "视图已保存。%s在站点上查看。%s"
+
+#: includes/class-admin.php:178
+msgid "View submitted."
+msgstr "提交到"
+
+#. translators: Date and time the View is scheduled to be published
+#: includes/class-admin.php:181
+msgid "View scheduled for: %1$s."
+msgstr "显示：%s"
+
+#. translators: Publish box date format, see http:php.net/date
+#: includes/class-admin.php:183
+msgid "M j, Y @ G:i"
+msgstr "M j, Y @ G:i"
+
+#. translators: %s and %s are HTML tags linking to the View on the website
+#: includes/class-admin.php:186
+msgid "View draft updated. %sView on website.%s"
+msgstr "视图草稿已更新。%s在站点上查看。%s"
+
+#: includes/class-admin.php:192
+msgid "%s View updated."
+msgid_plural "%s Views updated."
+msgstr[0] "%s条视图已更新。"
+
+#: includes/class-admin.php:193
+msgid "%s View not updated, somebody is editing it."
+msgid_plural "%s Views not updated, somebody is editing them."
+msgstr[0] "%s 视图没有更新，有人在编辑它。"
+
+#: includes/class-admin.php:194
+msgid "%s View permanently deleted."
+msgid_plural "%s Views permanently deleted."
+msgstr[0] "%s 条视图已被永久删除。"
+
+#: includes/class-admin.php:195
+msgid "%s View moved to the Trash."
+msgid_plural "%s Views moved to the Trash."
+msgstr[0] "%s 条视图已被移到回收站。"
+
+#: includes/class-admin.php:196
+msgid "%s View restored from the Trash."
+msgid_plural "%s Views restored from the Trash."
+msgstr[0] "%s 条视图已从回收站中恢复。"
+
+#: includes/class-api.php:404
+msgid "This search returned no results."
+msgstr "没搜索到结果呢……"
+
+#: includes/class-api.php:406
+msgid "No entries match your request."
+msgstr "暂无内容哦……"
+
+#: includes/class-api.php:810
+msgid "&larr; Go back"
+msgstr "&larr; 返回"
+
+#: includes/class-api.php:1096
+msgid "Map It"
+msgstr "查看地图"
+
+#: includes/class-common.php:276
+#: includes/fields/class-gravityview-field-post-id.php:26
+msgid "Post ID"
+msgstr "文章 ID"
+
+#. translators: %s: relative time from now, used for generic date comparisons.
+#. "1 day ago", or "20 seconds ago"
+#: includes/class-common.php:826
+msgid "%s ago"
+msgstr "%s之前"
+
+#: includes/class-common.php:1113 includes/class-data.php:618
+msgid "Default"
+msgstr "默认"
+
+#: includes/class-common.php:1156 includes/class-data.php:619
+#: includes/fields/class-gravityview-field-date-created.php:25
+msgid "Date Created"
+msgstr "条目创建的日期。"
+
+#: includes/class-common.php:1266
+msgid "Email hidden; Javascript is required."
+msgstr "电子邮件已隐藏隐藏；需要Javascript。"
+
+#: includes/class-data.php:461
+msgid "The ID is required."
+msgstr "ID是必填项"
+
+#: includes/class-data.php:469
+msgid ""
+"You did not enter a number. The value entered should be a number, "
+"representing the ID of the post or page the View is embedded on."
+msgstr "您没有输入数字。请输入数字，它代表嵌入该视图的文章或页面的 ID。"
+
+#: includes/class-data.php:472
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:352
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:216
+msgid "Learn more&hellip;"
+msgstr "了解更多"
+
+#: includes/class-data.php:480
+msgid "There is no post or page with that ID."
+msgstr "没有此ID对应的文章或页面。"
+
+#: includes/class-data.php:490
+msgid ""
+"The Post ID entered is not valid. You may have entered a post or page that "
+"does not contain the selected View. Make sure the post contains the "
+"following shortcode: %s"
+msgstr "文章ID无效。您访问的文章或页面可能不包含选定的视图。请确认文章包含以下的短代码：%s"
+
+#: includes/class-data.php:498
+msgid "The ID is already a View."
+msgstr "视图的 ID 已存在。"
+
+#: includes/class-data.php:549
+msgid "View ID"
+msgstr "视图 ID"
+
+#: includes/class-data.php:557
+msgid "Number of entries per page"
+msgstr "每页的条目数"
+
+#: includes/class-data.php:565
+msgid "Enable lightbox for images"
+msgstr "启用灯箱图片"
+
+#: includes/class-data.php:573
+msgid "Show only approved entries"
+msgstr "仅显示已批准的条目"
+
+#: includes/class-data.php:580
+msgid "Hide View data until search is performed"
+msgstr "隐藏视图数据直到执行搜索"
+
+#: includes/class-data.php:583
+msgid ""
+"When enabled it will only show any View entries after a search is performed."
+msgstr "当启用时，只会在执行搜索后显示条目视图。"
+
+#: includes/class-data.php:588
+msgid "Hide empty fields"
+msgstr "隐藏空字段"
+
+#: includes/class-data.php:595
+msgid "Allow User Edit"
+msgstr "允许用户编辑"
+
+#: includes/class-data.php:597
+msgid "Allow logged-in users to edit entries they created."
+msgstr "允许登录的用户编辑他们创建的条目。"
+
+#: includes/class-data.php:599
+msgid ""
+"Display \"Edit Entry\" fields to non-administrator users if they created the"
+" entry. Edit Entry fields will always be displayed to site administrators."
+msgstr "如果他们已创建该条目，对非管理员用户显示“编辑条目”字段。编辑条目字段将始终为站点管理员显示。"
+
+#: includes/class-data.php:604
+msgid "Allow User Delete"
+msgstr "允许用户删除"
+
+#: includes/class-data.php:606
+msgid "Allow logged-in users to delete entries they created."
+msgstr "允许登录的用户删除他们创建的条目。"
+
+#: includes/class-data.php:608
+msgid ""
+"Display \"Delete Entry\" fields to non-administrator users if they created "
+"the entry. Delete Entry fields will always be displayed to site "
+"administrators."
+msgstr "如果他们已创建该条目，对非管理员用户显示“删除条目”字段。删除条目字段将始终为站点管理员显示。"
+
+#: includes/class-data.php:613
+msgid "Sort by field"
+msgstr "按字段排序"
+
+#: includes/class-data.php:624
+msgid "Sort direction"
+msgstr "排列顺序"
+
+#: includes/class-data.php:629
+msgid "ASC"
+msgstr "升序"
+
+#: includes/class-data.php:630
+msgid "DESC"
+msgstr "降序"
+
+#: includes/class-data.php:636
+msgid "Enable sorting by column"
+msgstr "启用按列排序"
+
+#: includes/class-data.php:637
+msgid "Column Sorting"
+msgstr "列排序"
+
+#: includes/class-data.php:646
+msgid "Filter by Start Date"
+msgstr "按开始日期过滤"
+
+#: includes/class-data.php:648
+msgid ""
+"Show entries submitted after this date. Supports relative dates, such as "
+"\"-1 week\" or \"-1 month\"."
+msgstr "显示这个日期后提交的条目。支持相关日期，例如：\"-1 week\" 或 \"-1 month”。"
+
+#: includes/class-data.php:655
+msgid "Filter by End Date"
+msgstr "按结束日期过滤"
+
+#: includes/class-data.php:657
+msgid ""
+"Show entries submitted before this date. Supports relative dates, such as "
+"\"now\" or \"-3 days\"."
+msgstr "显示在这个日期之前提交的条目。支持相关的日期，如  \"now\" 或 \"-3 days\"。"
+
+#: includes/class-data.php:664
+msgid "CSS Class"
+msgstr "CSS 类名"
+
+#: includes/class-data.php:665
+msgid "CSS class to add to the wrapping HTML container."
+msgstr "添加CSS类来包裹 HTML 容器。"
+
+#: includes/class-data.php:672
+msgid "Search Value"
+msgstr "搜索值"
+
+#: includes/class-data.php:673
+msgid "Define a default search value for the View"
+msgstr "定义视图的一个默认搜索值"
+
+#: includes/class-data.php:680
+#: includes/widgets/search-widget/class-search-widget.php:192
+msgid "Search Field"
+msgstr "搜索字段"
+
+#: includes/class-data.php:681
+msgid ""
+"If Search Value is set, you can define a specific field to search in. "
+"Otherwise, all fields will be searched."
+msgstr "如果搜索值被设置，您可以定义一个特定的字段来搜索。否则，所有字段都将被搜索。"
+
+#: includes/class-data.php:688
+msgid "Single Entry Title"
+msgstr "单个条目标题"
+
+#: includes/class-data.php:690
+msgid ""
+"When viewing a single entry, change the title of the page to this setting. "
+"Otherwise, the title will not change between the Multiple Entries and Single"
+" Entry views."
+msgstr "当查看单个条目时，改变这个设置页面的标题。否则，标题将在多个条目和单个条目视图之间不会改变。"
+
+#: includes/class-data.php:697
+msgid "Back Link Label"
+msgstr "返回链接标签"
+
+#: includes/class-data.php:699
+msgid "The text of the link that returns to the multiple entries view."
+msgstr "返回到多个条目视图的链接的文本。"
+
+#: includes/class-data.php:706
+msgid "Prevent Direct Access"
+msgstr "避免直接访问"
+
+#: includes/class-data.php:708
+msgid "Only allow access to this View when embedded using the shortcode."
+msgstr "只允许通过简码嵌入时访问这个视图。"
+
+#: includes/class-debug-bar.php:94
+msgid "Warnings"
+msgstr "警告"
+
+#: includes/class-debug-bar.php:103
+msgid "Logs"
+msgstr "日志"
+
+#: includes/class-frontend-views.php:515
+msgid ""
+"When using a Start Fresh template, you must save the View before a Preview "
+"is available."
+msgstr "当使用新建模板时，您必须先保存该视图，然后预览是可用的。"
+
+#: includes/class-frontend-views.php:657
+msgid "You are not allowed to view this content."
+msgstr "您无权查看该内容。"
+
+#: includes/class-frontend-views.php:746
+msgid ""
+"You have attempted to view an entry that is not visible or may not exist."
+msgstr "您查看的条目啊，并不存在或已被隐藏。"
+
+#: includes/class-gravityview-admin-bar.php:107
+msgid "Edit Entry %s"
+msgstr "编辑条目％s"
+
+#: includes/class-gravityview-admin-bar.php:139
+#: includes/class-post-types.php:69
+msgid "Edit View"
+msgstr "编辑视图"
+
+#: includes/class-gravityview-admin-bar.php:144
+msgid "Edit Form #%d"
+msgstr "编辑表单 #%d"
+
+#: includes/class-gravityview-admin-duplicate-view.php:237
+msgid "Clone"
+msgstr "复制"
+
+#: includes/class-gravityview-admin-duplicate-view.php:238
+msgid "Clone this View"
+msgstr "复制该视图"
+
+#: includes/class-gravityview-admin-duplicate-view.php:243
+msgid "New Draft"
+msgstr "新建草稿"
+
+#: includes/class-gravityview-admin-duplicate-view.php:243
+msgid "Clone View"
+msgstr "复制视图"
+
+#: includes/class-gravityview-admin-duplicate-view.php:244
+msgid "Copy as a new draft View"
+msgstr "复制为新的视图草稿"
+
+#: includes/class-gravityview-admin-duplicate-view.php:325
+msgid "No post to duplicate has been supplied!"
+msgstr "没有文章能被复制！"
+
+#: includes/class-gravityview-admin-duplicate-view.php:332
+msgid "You don't have permission to copy this View."
+msgstr "您没有复制这个视图的权限。"
+
+#: includes/class-gravityview-admin-duplicate-view.php:353
+msgid "Copy creation failed, could not find original View with ID #%d"
+msgstr "复制失败，无法找到ID #%d 的原始视图"
+
+#: includes/class-gravityview-admin-notices.php:201
+msgid "Dismiss"
+msgstr "关闭"
+
+#: includes/class-gravityview-change-entry-creator.php:67
+#: includes/lib/EDD_SL_Plugin_Updater.php:332
+msgid "Error"
+msgstr "错误"
+
+#: includes/class-gravityview-change-entry-creator.php:69
+msgid "Success"
+msgstr "成功"
+
+#: includes/class-gravityview-change-entry-creator.php:190
+msgid "Changed entry creator from %s to %s"
+msgstr "更改条目创建者从 %s 到 %s"
+
+#: includes/class-gravityview-change-entry-creator.php:210
+msgid "Change Entry Creator:"
+msgstr "更改条目创建者 ︰"
+
+#: includes/class-gravityview-compatibility.php:161
+msgid ""
+"You are seeing this notice because you are an administrator. Other users of "
+"the site will see nothing."
+msgstr "您是管理员，因此能看到这个通知。其他网站的用户将什么也看不见。"
+
+#: includes/class-gravityview-compatibility.php:182
+msgid ""
+"%sGravityView requires PHP Version %s or newer.%s \n"
+"\n"
+"You're using Version %s. Please ask your host to upgrade your server's PHP."
+msgstr "%sGravityView需要 PHP 版本为 %s 或更新的%s \n\n您正在使用的版本是 %s。请访问您的主机去更新您的服务器的 PHP。"
+
+#: includes/class-gravityview-compatibility.php:206
+msgid ""
+"%sGravityView requires WordPress %s or newer.%s \n"
+"\n"
+"You're using Version %s. Please upgrade your WordPress installation."
+msgstr "%sGravityView需要 Wordpress版本为 %s 或更新的%s \n\n您正在使用的版本是 %s。请升级您的 WordPress 版本。"
+
+#: includes/class-gravityview-compatibility.php:239
+msgid ""
+"%sGravityView requires Gravity Forms Version %s or newer.%s \n"
+"\n"
+"You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
+msgstr "%sGravityView需要GravityForms版本为 %s 或更高%s \n\n您使用的版本是 %s。请更新您的Gravityforms或购买一个许可证。%s获取Gravityforms%s - $39元起%s%s"
+
+#: includes/class-gravityview-compatibility.php:280
+msgid ""
+"%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
+"Forms%s to use the GravityView plugin."
+msgstr "%sGravityView需要GravityView处于激活状态。%s激活GravityView%s 来使用GravityView插件。"
+
+#: includes/class-gravityview-compatibility.php:289
+msgid ""
+"%sGravityView requires Gravity Forms to be installed in order to run "
+"properly. %sGet Gravity Forms%s - starting at $39%s%s"
+msgstr "%sGravityView需要安装Gravity Forms才能正常运行。%s获取Gravity Forms%s - 最低 $39%s%s"
+
+#: includes/class-gravityview-compatibility.php:309
+msgid "Potential Conflict"
+msgstr "潜在冲突"
+
+#: includes/class-gravityview-compatibility.php:310
+msgid ""
+"GravityView and Gravity Forms Directory are both active. This may cause "
+"problems. If you experience issues, disable the Gravity Forms Directory "
+"plugin."
+msgstr "GravityView和Gravity Forms目录都已启用。这可能会引起麻烦。如果您遇到问题，请禁用Gravity Forms目录插件。"
+
+#: includes/class-gravityview-entry-link-shortcode.php:208
+#: includes/extensions/delete-entry/class-delete-entry.php:117
+#: includes/extensions/delete-entry/class-delete-entry.php:146
+#: includes/extensions/delete-entry/class-delete-entry.php:162
+#: includes/extensions/delete-entry/fields/delete_link.php:14
+msgid "Delete Entry"
+msgstr "删除条目"
+
+#: includes/class-gravityview-entry-link-shortcode.php:211
+#: includes/fields/class-gravityview-field-entry-link.php:51
+#: templates/fields/entry_link.php:16
+msgid "View Details"
+msgstr "视图详情"
+
+#: includes/class-gravityview-extension.php:351
+msgid "Could not activate the %s Extension; GravityView is not active."
+msgstr "无法激活 %s 插件；GravityView未启用。"
+
+#: includes/class-gravityview-extension.php:355
+msgid "The %s Extension requires GravityView Version %s or newer."
+msgstr "%s 扩展需要GravityView版本为 %s 或更新的。"
+
+#: includes/class-gravityview-extension.php:359
+msgid ""
+"The %s Extension requires PHP Version %s or newer. Please ask your host to "
+"upgrade your server's PHP."
+msgstr "%s 扩展需要PHP版本 %s 或更新的。请访问您的主机升级服务器的 PHP。"
+
+#: includes/class-gravityview-settings.php:154
+msgid "GravityView Settings"
+msgstr "GravityView设置"
+
+#: includes/class-gravityview-settings.php:195
+msgid ""
+"Your GravityView license %s. This means you&rsquo;re missing out on updates "
+"and support! %sActivate your license%s or %sget a license here%s."
+msgstr "您的GravityView注册码 %s。这意味着您将得不到更新和技术支持！%s激活您的注册码%s 或 %s在这里获取一个注册码%s。"
+
+#: includes/class-gravityview-settings.php:202
+msgid "Inactive License"
+msgstr "非活跃的许可证"
+
+#: includes/class-gravityview-settings.php:209
+msgid "Expired License"
+msgstr "过期的许可证"
+
+#: includes/class-gravityview-settings.php:214
+msgid "Invalid License"
+msgstr "无效的许可证"
+
+#: includes/class-gravityview-settings.php:215
+msgid "is invalid"
+msgstr "无效"
+
+#: includes/class-gravityview-settings.php:218
+msgid "is inactive"
+msgstr "未启用"
+
+#: includes/class-gravityview-settings.php:219
+#: includes/class-gravityview-settings.php:228
+msgid "Activate your license key below."
+msgstr "激活您的许可证密钥下面。"
+
+#: includes/class-gravityview-settings.php:227
+msgid "has not been activated"
+msgstr "未激活"
+
+#: includes/class-gravityview-settings.php:441
+#: includes/class-gravityview-settings.php:474
+msgid "Update Settings"
+msgstr "更新设置"
+
+#: includes/class-gravityview-settings.php:537
+#: includes/class-gv-license-handler.php:538
+msgid "You don't have the ability to edit plugin settings."
+msgstr "您没有编辑插件设置的能力。"
+
+#: includes/class-gravityview-settings.php:563
+msgid ""
+"The license key you entered has been saved, but not activated. Please "
+"activate the license."
+msgstr "您输入的许可证密钥已保存，但未激活。请激活许可证。"
+
+#: includes/class-gravityview-settings.php:578
+msgid "Required"
+msgstr "必需"
+
+#: includes/class-gravityview-settings.php:595
+msgid "License Key"
+msgstr "许可证密钥"
+
+#: includes/class-gravityview-settings.php:596
+msgid ""
+"Enter the license key that was sent to you on purchase. This enables plugin "
+"updates &amp; support."
+msgstr "输入发送到您购买上的的许可证密钥。这个将开启插件自动更新 &amp; 支持。"
+
+#: includes/class-gravityview-settings.php:598
+#: includes/class-gv-license-handler.php:120
+#: includes/class-gv-license-handler.php:134
+#: includes/class-gv-license-handler.php:540
+msgid "Verifying license&hellip;"
+msgstr "验证许可证&hellip;"
+
+#: includes/class-gravityview-settings.php:617
+msgid "Support Email"
+msgstr "支持电子邮件"
+
+#: includes/class-gravityview-settings.php:618
+msgid ""
+"In order to provide responses to your support requests, please provide your "
+"email address."
+msgstr "为了提供对您的支持请求的响应，请提供您的电子邮件地址。"
+
+#: includes/class-gravityview-settings.php:627
+msgid "Show Support Port?"
+msgstr "显示帮助小工具？"
+
+#: includes/class-gravityview-settings.php:640
+msgid "The Support Port looks like this."
+msgstr "支持端口看起来像这样。"
+
+#: includes/class-gravityview-settings.php:640
+msgid ""
+"The Support Port provides quick access to how-to articles and tutorials. For"
+" administrators, it also makes it easy to contact support."
+msgstr "支持端口提供快速访问的文章和教程。对于管理员来说，它也很容易联系支持。"
+
+#: includes/class-gravityview-settings.php:641
+msgid "Show the Support Port on GravityView pages?"
+msgstr "在GravityView页面上显示帮助按钮？"
+
+#: includes/class-gravityview-settings.php:646
+msgid "No-Conflict Mode"
+msgstr "无冲突模式"
+
+#: includes/class-gravityview-settings.php:659
+msgid ""
+"Set this to ON to prevent extraneous scripts and styles from being printed "
+"on GravityView admin pages, reducing conflicts with other plugins and "
+"themes."
+msgstr "设为开启后，可以防止外部脚本在GravityView管理页面上生成样式，减少与其他插件和主题的冲突。"
+
+#: includes/class-gravityview-settings.php:659
+msgid "If your Edit View tabs are ugly, enable this setting."
+msgstr "如果您的编辑视图选项卡显示异常，启用此设置。"
+
+#: includes/class-gravityview-settings.php:664
+msgid "Remove Data on Delete?"
+msgstr "在删除时移除数据？"
+
+#: includes/class-gravityview-settings.php:671
+msgid "Keep GravityView content and settings"
+msgstr "保留GravityView内容和设置"
+
+#: includes/class-gravityview-settings.php:671
+msgid ""
+"If you delete then re-install the plugin, all GravityView data will be kept."
+" Views, settings, etc. will be untouched."
+msgstr "如果您删除然后重新安装插件，所有的GravityView数据将被保存。视图，设置等将维持原状。"
+
+#: includes/class-gravityview-settings.php:676
+msgid "Delete all GravityView content and settings"
+msgstr "删除所有的GravityView内容和设置"
+
+#: includes/class-gravityview-settings.php:676
+msgid ""
+"If you delete then re-install GravityView, it will be like installing "
+"GravityView for the first time."
+msgstr "如果您删除，然后重新安装GravityView，它会像第一次安装一样。"
+
+#: includes/class-gravityview-settings.php:676
+msgid ""
+"When GravityView is uninstalled and deleted, delete all Views, GravityView "
+"entry approvals, GravityView-generated entry notes (including approval and "
+"entry creator changes), and GravityView plugin settings. No Gravity Forms "
+"data will be touched."
+msgstr "当GravityView被卸载和删除时，删除所有视图，GravityView条目审批，GravityView-生成条目备注（包含审批和条目创建者更改），以及GravityView插件设置。请放心，将不会对Gravity Forms数据进行任何操作。"
+
+#: includes/class-gravityview-settings.php:679
+msgid ""
+"Should GravityView content and entry approval status be removed from the "
+"site when the GravityView plugin is deleted?"
+msgstr "当GravityView插件被删除后，重力视图内容和条目的批准状态应该从网站删除?"
+
+#: includes/class-gravityview-settings.php:679
+msgid "Permanently Delete"
+msgstr "永久删除"
+
+#: includes/class-gravityview-settings.php:704
+msgid "You are running GravityView version %s"
+msgstr "您正在运行的GravityView版本 %s"
+
+#: includes/class-gv-license-handler.php:119
+#: includes/class-gv-license-handler.php:541
+msgid "Activate License"
+msgstr "激活软件"
+
+#: includes/class-gv-license-handler.php:126
+#: includes/class-gv-license-handler.php:542
+msgid "Deactivate License"
+msgstr "无效的许可证"
+
+#: includes/class-gv-license-handler.php:127
+msgid "Deactivating license&hellip;"
+msgstr "正在停止许可证&hellip;"
+
+#: includes/class-gv-license-handler.php:133
+msgid "Check License"
+msgstr "检查许可证"
+
+#: includes/class-gv-license-handler.php:316
+msgid "License Details:"
+msgstr "许可证详情"
+
+#: includes/class-gv-license-handler.php:335
+msgid "Access your GravityView account"
+msgstr "访问您的GravityView帐户"
+
+#: includes/class-gv-license-handler.php:336
+msgid "This development site does not count toward license activation limits"
+msgstr "开发中的网站不计入激活站点数量"
+
+#: includes/class-gv-license-handler.php:338
+msgid "License level: %s"
+msgstr "许可证登记：%s"
+
+#: includes/class-gv-license-handler.php:340
+msgid "Activations: %d of %s sites"
+msgstr "激活：％s中的％d个网站"
+
+#: includes/class-gv-license-handler.php:341
+msgid "Renew on: %s"
+msgstr "续订网站：％s"
+
+#: includes/class-gv-license-handler.php:377
+msgid "Upgrades available:"
+msgstr "可用升级："
+
+#: includes/class-gv-license-handler.php:394
+msgid "Get access to Extensions"
+msgstr "获取扩展插件"
+
+#: includes/class-gv-license-handler.php:398
+msgid "Get access to Entry Importer and other Premium plugins"
+msgstr "获取条目导出器和其他高级插件"
+
+#: includes/class-gv-license-handler.php:526
+msgid "Status"
+msgstr "状态"
+
+#: includes/class-gv-license-handler.php:527
+msgid "There was an error processing the request."
+msgstr "处理请求时出错。"
+
+#: includes/class-gv-license-handler.php:528
+msgid ""
+"Could not deactivate the license. The license key you attempted to "
+"deactivate may not be active or valid."
+msgstr "无法停用许可证。你试图停用可能不活跃或有效的许可证密钥。"
+
+#: includes/class-gv-license-handler.php:529
+#: includes/class-gv-license-handler.php:530
+msgid "The license key is valid, but it has not been activated for this site."
+msgstr "许可证密钥是有效的，但它并没有被激活。"
+
+#: includes/class-gv-license-handler.php:531
+msgid "Invalid: this license has reached its activation limit."
+msgstr "无效的：这个许可证已达到其激活限制。"
+
+#: includes/class-gv-license-handler.php:531
+msgid ""
+"You can manage license activations %son your GravityView account page%s."
+msgstr "你可以在 %s您的GravityView账户页面%s 上管理许可证激活。"
+
+#: includes/class-gv-license-handler.php:532
+msgid "The license has been deactivated."
+msgstr "许可证已被停用。"
+
+#: includes/class-gv-license-handler.php:533
+msgid "The license key is valid and active."
+msgstr "许可证密钥有效，已激活。"
+
+#: includes/class-gv-license-handler.php:534
+msgid "The license key entered is invalid."
+msgstr "输入的许可证密钥是无效的。"
+
+#: includes/class-gv-license-handler.php:535
+msgid "Invalid license key."
+msgstr "无效的许可证。"
+
+#: includes/class-gv-license-handler.php:536
+msgid "This license key has been revoked."
+msgstr "这个许可证密钥已被撤销。"
+
+#: includes/class-gv-license-handler.php:537
+msgid ""
+"This license key has expired. %sRenew your license on the GravityView "
+"website%s to receive updates and support."
+msgstr "这个许可证密钥已过期。%s在 FROSTNT 网站更新您的许可证%s来获得更新和支持。"
+
+#: includes/class-gv-license-handler.php:543
+msgid "Verify License"
+msgstr "验证许可证"
+
+#: includes/class-oembed.php:202
+msgid "This will look better when it is embedded."
+msgstr "当它被嵌入时，显示效果更好。"
+
+#: includes/class-oembed.php:203
+msgid ""
+"Styles don't get loaded when being previewed, so the content below will look"
+" strange. Don't be concerned!"
+msgstr "预览时不加载样式，所以下面的内容会看起来很奇怪。别担心！"
+
+#: includes/class-oembed.php:253
+msgid "Embed Entry %d"
+msgstr "嵌入条目 %d"
+
+#: includes/class-oembed.php:255
+msgid "This entry will be displayed as it is configured in View %d"
+msgstr "这个条目将被作为它的配置显示在视图 %d 中"
+
+#: includes/class-post-types.php:64
+msgid "Parent View:"
+msgstr "父视图:"
+
+#: includes/class-post-types.php:65
+msgid "All Views"
+msgstr "所有视图"
+
+#: includes/class-post-types.php:67
+msgid "Add New View"
+msgstr "添加新的视图"
+
+#: includes/class-post-types.php:68
+msgid "New View"
+msgstr "新建视图"
+
+#: includes/class-post-types.php:70
+msgid "Update View"
+msgstr "更新视图"
+
+#: includes/class-post-types.php:71
+msgid "Search Views"
+msgstr "搜索预览"
+
+#: includes/class-post-types.php:73
+msgid "No Views found in Trash"
+msgstr "未在垃圾中找到任何视图"
+
+#: includes/class-post-types.php:74
+msgid "Filter Views list"
+msgstr "过滤视图列表"
+
+#: includes/class-post-types.php:75
+msgid "Views list navigation"
+msgstr "视图列表导航"
+
+#: includes/class-post-types.php:76
+msgid "Views list"
+msgstr "视图列表"
+
+#: includes/class-post-types.php:79
+msgid "view"
+msgstr "查看"
+
+#: includes/class-post-types.php:80
+msgid "Create views based on a Gravity Forms form"
+msgstr "基于Gravity Forms表单创建视图"
+
+#: includes/class-post-types.php:170
+msgid ""
+"%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n"
+"\n"
+"If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
+msgstr "%s你没有任何有效的视图。 让我们去 %s创建一个%s!%s\n\n如果你觉得自己不知所措，需要帮助，试试 %s开始使用%s 页面吧。"
+
+#: includes/class-post-types.php:172
+msgid "There are no active Views"
+msgstr "没有有效的视图"
+
+#: includes/extensions/delete-entry/class-delete-entry.php:115
+msgid "Delete Link Text"
+msgstr "删除链接文本"
+
+#: includes/extensions/delete-entry/class-delete-entry.php:123
+msgid "Allow the following users to delete the entry:"
+msgstr "允许以下的用户删除该条目："
+
+#: includes/extensions/delete-entry/class-delete-entry.php:148
+msgid "A link to delete the entry. Respects the Delete Entry permissions."
+msgstr "一个删除该条目的链接。关联删除条目的权限。"
+
+#: includes/extensions/delete-entry/class-delete-entry.php:292
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:412
+msgid "Delete"
+msgstr "删除"
+
+#: includes/extensions/delete-entry/class-delete-entry.php:366
+msgid "The entry does not exist."
+msgstr "条目不存在。"
+
+#: includes/extensions/delete-entry/class-delete-entry.php:439
+msgid "Moving the entry to the trash failed."
+msgstr "移动条目到垃圾桶失败。"
+
+#: includes/extensions/delete-entry/class-delete-entry.php:537
+msgid "Are you sure you want to delete this entry? This cannot be undone."
+msgstr "您确定要删除这个条目吗？这个无法撤消哦。"
+
+#: includes/extensions/delete-entry/class-delete-entry.php:564
+msgid "The link to delete this entry is not valid; it may have expired."
+msgstr "删除这个条目的链接是无效的；它可能已过期。"
+
+#: includes/extensions/delete-entry/class-delete-entry.php:568
+msgid "You do not have permission to delete this entry."
+msgstr "您没有权限删除这个条目。"
+
+#: includes/extensions/delete-entry/class-delete-entry.php:573
+msgid "The entry is already in the trash."
+msgstr "条目已经在垃圾桶中。"
+
+#: includes/extensions/delete-entry/class-delete-entry.php:575
+msgid "You cannot delete the entry; it is already in the trash."
+msgstr "您不能删除该条目；它已经在垃圾桶中。"
+
+#: includes/extensions/delete-entry/class-delete-entry.php:711
+msgid "There was an error deleting the entry: %s"
+msgstr "删除条目时发生一个错误：%s"
+
+#: includes/extensions/delete-entry/class-delete-entry.php:715
+msgid "The entry was successfully moved to the trash."
+msgstr "条目已成功移动到垃圾桶中。"
+
+#: includes/extensions/delete-entry/class-delete-entry.php:718
+msgid "The entry was successfully deleted."
+msgstr "条目已成功删除。"
+
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:60
+msgid "A link to edit the entry. Visible based on View settings."
+msgstr "一个编辑条目的链接。可见基于视图设置。"
+
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:114
+msgid "Edit Link Text"
+msgstr "编辑链接文本"
+
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:133
+msgid "Limiting Edit Access"
+msgstr "限制编辑访问"
+
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:134
+msgid ""
+"Change this setting if you don't want the user who created the entry to be "
+"able to edit this field."
+msgstr "如果您不希望创建该条目的用户编辑该字段，那么更改这个设置。"
+
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:159
+#: includes/fields/class-gravityview-field.php:330
+msgid "Open link in a new tab or window?"
+msgstr "在新的标签或窗口中打开链接？"
+
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:172
+msgid "Make field editable to:"
+msgstr "该字段可以被谁编辑："
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:815
+msgid "There was a problem with your submission."
+msgstr "您的提交发生了一个问题。"
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:815
+msgid "Errors have been highlighted below."
+msgstr "已在下面突出显示错误。"
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:821
+msgid "Entry Updated. %sReturn to Entry%s"
+msgstr "条目已更新。%s返回至条目%s"
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1001
+msgid "You don&rsquo;t have permission to edit this post."
+msgstr "您没有权限进行编辑这个职位。"
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1008
+msgid "This field is not editable; the post no longer exists."
+msgstr "此字段不可编辑;后不再存在。"
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1383
+msgid "Maximum number of files reached"
+msgstr "已达到最大文件数量"
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1796
+msgid "The link to edit this entry is not valid; it may have expired."
+msgstr "这个条目的编辑链接已失效，它可能已过期。"
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1802
+msgid "You do not have permission to edit this entry."
+msgstr "您无权编辑这个条目。"
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1806
+msgid "You cannot edit the entry; it is in the trash."
+msgstr "您不能编辑该条目，它在回收站中。"
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1846
+msgid "You do not have permission to edit this field."
+msgstr "您无权编辑该字段。"
+
+#: includes/extensions/edit-entry/partials/form-buttons.php:32
+msgid "Update"
+msgstr "更新"
+
+#: includes/extensions/edit-entry/partials/inline-javascript.php:9
+msgid ""
+"Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to "
+"delete"
+msgstr "你想永久删除此文件吗？’取消’ 停止。 ‘确认’ 删除"
+
+#: includes/extensions/edit-entry/partials/inline-javascript.php:19
+msgid "Ajax error while deleting field."
+msgstr "当删除字段时发生 Ajax 错误。"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:101
+msgid "Entry Notes"
+msgstr "条目备注"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:103
+msgid "Display, add, and delete notes for an entry."
+msgstr "显示、添加或删除条目的备注。"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:367
+msgid "Note Settings"
+msgstr "备注设置"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:371
+msgid "Display notes?"
+msgstr "显示备注吗？"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:374
+msgid "Display notes to users who are not logged-in?"
+msgstr "对未登录用户显示备注吗？"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:378
+msgid "Enable adding notes?"
+msgstr "启用添加备注选项？"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:381
+msgid "Allow emailing notes?"
+msgstr "允许通过邮件发送备注吗？"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:385
+msgid "Allow deleting notes?"
+msgstr "允许删除备注吗？"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:409
+msgid "Add Note"
+msgstr "添加备注"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:410
+msgid "Note added."
+msgstr "备注已添加"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:411
+msgid "Note Content"
+msgstr "备注内容"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:413
+msgid "Are you sure you want to delete the selected notes?"
+msgstr "确定要删除选定的备注吗？"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:414
+msgid "Notes for this entry"
+msgstr "此条目的备注"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:415
+msgid "Toggle all notes"
+msgstr "切换所有备注"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:416
+msgid "There are no notes."
+msgstr "目前没有备注"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:417
+msgid "Processing&hellip;"
+msgstr "处理中&hellip;"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:418
+msgid "Other email address"
+msgstr "其他邮件地址"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:422
+msgid "Email subject"
+msgstr "邮件主题"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:423
+msgid "New entry note"
+msgstr "新的条目备注"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:424
+msgid "Also email this note to"
+msgstr "也将此备注发送邮件给"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:425
+msgid "There was an error adding the note."
+msgstr "添加备注时出现错误。"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:426
+msgid "The request was invalid. Refresh the page and try again."
+msgstr "请求无效。刷新页面，然后再试一次。"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:428
+msgid "You don't have the ability to delete notes."
+msgstr "您没有删除备注的权限。"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:429
+msgid "You don't have the ability to add notes."
+msgstr "您没有添加备注的权限。"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:466
+msgid "added on {date_created_formatted}"
+msgstr "添加于 {date_created_formatted}"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:534
+msgid "The note is empty."
+msgstr "备注是空的。"
+
+#: includes/fields/class-gravityview-field-address.php:20
+msgid "Address"
+msgstr "地址"
+
+#: includes/fields/class-gravityview-field-address.php:39
+msgid "Show Map Link:"
+msgstr "显示地图链接："
+
+#: includes/fields/class-gravityview-field-address.php:40
+msgid "Display a \"Map It\" link below the address"
+msgstr "下面的地址显示一个“映射它”的链接"
+
+#: includes/fields/class-gravityview-field-calculation.php:23
+msgid "Calculation"
+msgstr "计算"
+
+#: includes/fields/class-gravityview-field-captcha.php:19
+msgid "CAPTCHA"
+msgstr "验证码"
+
+#: includes/fields/class-gravityview-field-checkbox.php:19
+#: includes/widgets/search-widget/class-search-widget.php:166
+#: includes/widgets/search-widget/class-search-widget.php:167
+msgid "Checkbox"
+msgstr "复选框"
+
+#: includes/fields/class-gravityview-field-checkbox.php:46
+#: includes/fields/class-gravityview-field-radio.php:46
+#: includes/fields/class-gravityview-field-select.php:46
+msgid "This input has a label and a value. What should be displayed?"
+msgstr "该输入具有一个标签和一个值。应该显示哪一个？"
+
+#: includes/fields/class-gravityview-field-checkbox.php:49
+#: includes/fields/class-gravityview-field-checkbox.php:57
+msgid "A check mark, if the input is checked"
+msgstr "复选标记，若输入被选中。"
+
+#: includes/fields/class-gravityview-field-checkbox.php:50
+#: includes/fields/class-gravityview-field-radio.php:48
+#: includes/fields/class-gravityview-field-select.php:48
+msgid "Value of the input"
+msgstr "输入的值"
+
+#: includes/fields/class-gravityview-field-checkbox.php:51
+#: includes/fields/class-gravityview-field-checkbox.php:58
+#: includes/fields/class-gravityview-field-radio.php:49
+#: includes/fields/class-gravityview-field-select.php:49
+msgid "Label of the input"
+msgstr "输入的标签"
+
+#: includes/fields/class-gravityview-field-checkbox.php:65
+#: includes/fields/class-gravityview-field-radio.php:45
+#: includes/fields/class-gravityview-field-select.php:45
+msgid "What should be displayed:"
+msgstr "应该显示什么"
+
+#: includes/fields/class-gravityview-field-created-by.php:19
+msgid "Created By"
+msgstr "创建者"
+
+#: includes/fields/class-gravityview-field-created-by.php:20
+msgid "Submitted by:"
+msgstr "提交者:"
+
+#: includes/fields/class-gravityview-field-created-by.php:38
+msgid "Entry Creator: Display Name"
+msgstr "条目创建者: 显示名称"
+
+#: includes/fields/class-gravityview-field-created-by.php:42
+msgid "Entry Creator: Email"
+msgstr "条目创建者: 电子邮件"
+
+#: includes/fields/class-gravityview-field-created-by.php:46
+msgid "Entry Creator: Username"
+msgstr "条目创建者: 用户名"
+
+#: includes/fields/class-gravityview-field-created-by.php:50
+msgid "Entry Creator: User ID"
+msgstr "条目创建者: 用户ID"
+
+#: includes/fields/class-gravityview-field-created-by.php:54
+msgid "Entry Creator: Roles"
+msgstr "条目创建者: 角色"
+
+#: includes/fields/class-gravityview-field-created-by.php:123
+msgid "User Format"
+msgstr "用户格式化"
+
+#: includes/fields/class-gravityview-field-created-by.php:124
+msgid "How should the User information be displayed?"
+msgstr "用户的信息应如何显示？"
+
+#: includes/fields/class-gravityview-field-created-by.php:126
+msgid "Display Name (Example: \"Ellen Ripley\")"
+msgstr "显示名称 (例如：“Ellen Ripley”)"
+
+#: includes/fields/class-gravityview-field-created-by.php:127
+msgid "Username (Example: \"nostromo\")"
+msgstr "用户名 (例如：“nostromo”)"
+
+#: includes/fields/class-gravityview-field-created-by.php:128
+msgid "User ID # (Example: 426)"
+msgstr "用户 ID # (例如：426)"
+
+#: includes/fields/class-gravityview-field-creditcard.php:19
+msgid "Credit Card"
+msgstr "信用卡"
+
+#: includes/fields/class-gravityview-field-currency.php:27
+msgid "Currency"
+msgstr "货币"
+
+#: includes/fields/class-gravityview-field-custom.php:49
+msgid ""
+"Enter text or HTML. Also supports shortcodes. You can show or hide data "
+"using the %s shortcode (%slearn more%s)."
+msgstr "输入文本或HTML。还支持短码。可以使用 %s 短码来显示或隐藏数据(%s了解更多%s)。"
+
+#: includes/fields/class-gravityview-field-custom.php:57
+#: includes/widgets/class-gravityview-widget-custom-content.php:39
+msgid "Automatically add paragraphs to content"
+msgstr "自动添加段落到内容"
+
+#: includes/fields/class-gravityview-field-custom.php:58
+#: includes/widgets/class-gravityview-widget-custom-content.php:40
+msgid ""
+"Wrap each block of text in an HTML paragraph tag (recommended for text)."
+msgstr "在一个 HTML 段落标签中包裹每个文本块（推荐文本）。"
+
+#: includes/fields/class-gravityview-field-date.php:20
+#: includes/widgets/search-widget/class-search-widget.php:162
+msgid "Date"
+msgstr "这两个主题中的所有答复将按照时间顺序合并。合并的答复的顺序是根据它们被张贴的时间和日期。如果目标主题是这一项之后创建的，它的发布日期将早于这一个更新到第二。"
+
+#: includes/fields/class-gravityview-field-email.php:22
+msgid "Email"
+msgstr "电子邮件"
+
+#: includes/fields/class-gravityview-field-email.php:39
+msgid "Link the Email Address"
+msgstr "链接电子邮件地址"
+
+#: includes/fields/class-gravityview-field-email.php:40
+msgid "Clicking the link will generate a new email."
+msgstr "点击链接将生成一个新的电子邮件。"
+
+#: includes/fields/class-gravityview-field-email.php:44
+msgid "Email Subject"
+msgstr "电子邮件主题"
+
+#: includes/fields/class-gravityview-field-email.php:46
+msgid "Set the default email subject line."
+msgstr "设置默认的电子邮件主题行。"
+
+#: includes/fields/class-gravityview-field-email.php:51
+msgid "Email Body"
+msgstr "电子邮件正文"
+
+#: includes/fields/class-gravityview-field-email.php:53
+msgid "Set the default email content."
+msgstr "设置默认的电子邮件内容。iuy"
+
+#: includes/fields/class-gravityview-field-email.php:60
+msgid "Encrypt Email Address"
+msgstr "加密电子邮件地址"
+
+#: includes/fields/class-gravityview-field-email.php:61
+msgid ""
+"Make it harder for spammers to get email addresses from your entries. Email "
+"addresses will not be visible with Javascript disabled."
+msgstr "使它让垃圾邮件发送者更难从您的条目中获取电子邮件地址。禁用 Javascript 后电子邮件地址将是不可见的。"
+
+#: includes/fields/class-gravityview-field-entry-link.php:49
+#: includes/fields/class-gravityview-field-source-url.php:43
+#: includes/fields/class-gravityview-field-website.php:40
+msgid "Link Text:"
+msgstr "链接文本："
+
+#: includes/fields/class-gravityview-field-fileupload.php:17
+msgid "File Upload"
+msgstr "文件上传"
+
+#: includes/fields/class-gravityview-field-fileupload.php:31
+msgid "Display as a Link:"
+msgstr "显示为一个链接："
+
+#: includes/fields/class-gravityview-field-fileupload.php:32
+msgid "Display the uploaded files as links, rather than embedded content."
+msgstr "将上传的文件显示为链接，而不是嵌入的内容。"
+
+#: includes/fields/class-gravityview-field-gquiz_score.php:15
+msgid "Quiz Score"
+msgstr "测验分数"
+
+#: includes/fields/class-gravityview-field-gquiz_score.php:28
+msgid "Show Max Score?"
+msgstr "显示最大分数？"
+
+#: includes/fields/class-gravityview-field-gquiz_score.php:29
+msgid ""
+"Display score as the a fraction: \"[score]/[max score]\". If unchecked, will"
+" display score."
+msgstr "将评分格式显示为：“[评分] / [最高分]”。如果不设置，将只显示得分。"
+
+#: includes/fields/class-gravityview-field-hidden.php:19
+msgid "Hidden"
+msgstr "隐藏"
+
+#: includes/fields/class-gravityview-field-html.php:24
+msgid "HTML"
+msgstr "HTML"
+
+#: includes/fields/class-gravityview-field-is-fulfilled.php:37
+msgid "Is Fulfilled"
+msgstr "已完成"
+
+#: includes/fields/class-gravityview-field-is-fulfilled.php:81
+msgid "Not Fulfilled"
+msgstr "未完成"
+
+#: includes/fields/class-gravityview-field-is-fulfilled.php:85
+msgid "Fulfilled"
+msgstr "完成"
+
+#: includes/fields/class-gravityview-field-list.php:38
+msgid "List"
+msgstr "列表"
+
+#: includes/fields/class-gravityview-field-multiselect.php:19
+msgid "Multi Select"
+msgstr "多选菜单"
+
+#: includes/fields/class-gravityview-field-name.php:17
+msgid "Name"
+msgstr "名称"
+
+#: includes/fields/class-gravityview-field-number.php:25
+msgid "Number"
+msgstr "数字"
+
+#: includes/fields/class-gravityview-field-number.php:33
+msgid "Format number?"
+msgstr "格式化数字？"
+
+#: includes/fields/class-gravityview-field-number.php:34
+msgid "Display numbers with thousands separators."
+msgstr "用千位分隔符显示数字。"
+
+#: includes/fields/class-gravityview-field-number.php:40
+msgid "Decimals"
+msgstr "小数"
+
+#: includes/fields/class-gravityview-field-number.php:41
+msgid ""
+"Precision of the number of decimal places. Leave blank to use existing "
+"precision."
+msgstr "小数位数的精度。留空则使用现有的精度。"
+
+#: includes/fields/class-gravityview-field-other-entries.php:47
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:365
+msgid "Entry link text (required)"
+msgstr "条目链接文本(必填)"
+
+#: includes/fields/class-gravityview-field-other-entries.php:48
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:271
+msgid "Entry #{entry_id}"
+msgstr "条目 #{entry_id}"
+
+#: includes/fields/class-gravityview-field-other-entries.php:54
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:372
+msgid "Text or HTML to display after the link (optional)"
+msgstr "在链接后面显示的文本或HTML(可选)"
+
+#: includes/fields/class-gravityview-field-other-entries.php:55
+msgid "This content will be displayed below each entry link."
+msgstr "这个内容将显示在每个表单链接的下面。"
+
+#: includes/fields/class-gravityview-field-other-entries.php:63
+msgid "Entries to Display"
+msgstr "要显示的条目"
+
+#: includes/fields/class-gravityview-field-other-entries.php:64
+msgid "What is the maximum number of entries that should be shown?"
+msgstr "条目显示的最大数量是？"
+
+#: includes/fields/class-gravityview-field-other-entries.php:71
+msgid "Hide if no entries"
+msgstr "如果没有条目则隐藏"
+
+#: includes/fields/class-gravityview-field-other-entries.php:72
+msgid "Don't display this field if the entry creator has no other entries"
+msgstr "如果输入创建者没有其他条目，则不显示该字段"
+
+#: includes/fields/class-gravityview-field-other-entries.php:78
+msgid "No Entries Text"
+msgstr "没有条目文本"
+
+#: includes/fields/class-gravityview-field-other-entries.php:79
+msgid ""
+"The text that is shown if the entry creator has no other entries (and \"Hide"
+" if no entries\" is disabled)."
+msgstr "显示的文本，如果条目的创建者没有其他的条目。"
+
+#: includes/fields/class-gravityview-field-other-entries.php:80
+msgid "This user has no other entries."
+msgstr "这个用户没有其他条目。"
+
+#: includes/fields/class-gravityview-field-page.php:19
+msgid "Page"
+msgstr "页面"
+
+#: includes/fields/class-gravityview-field-password.php:20
+msgid "Password"
+msgstr "密码"
+
+#: includes/fields/class-gravityview-field-payment-amount.php:27
+msgid "Payment Amount"
+msgstr "支付金额"
+
+#: includes/fields/class-gravityview-field-payment-date.php:29
+msgid "Payment Date"
+msgstr "付款日期"
+
+#: includes/fields/class-gravityview-field-payment-date.php:30
+msgid "The date the payment was received."
+msgstr "日期付款接收。"
+
+#: includes/fields/class-gravityview-field-payment-method.php:27
+msgid "Payment Method"
+msgstr "付款方式"
+
+#: includes/fields/class-gravityview-field-payment-method.php:28
+msgid "The way the entry was paid for (ie \"Credit Card\", \"PayPal\", etc.)"
+msgstr "该条目支付的方式（即“信用卡”，“贝宝”等）"
+
+#: includes/fields/class-gravityview-field-payment-status.php:25
+msgid "Payment Status"
+msgstr "支付状态"
+
+#: includes/fields/class-gravityview-field-payment-status.php:26
+msgid ""
+"The current payment status of the entry (ie \"Processing\", \"Failed\", "
+"\"Cancelled\", \"Approved\")."
+msgstr "条目的当前付款状态（即“处理”，“失败”，“取消”，“批准”）。"
+
+#: includes/fields/class-gravityview-field-phone.php:19
+msgid "Phone"
+msgstr "电话"
+
+#: includes/fields/class-gravityview-field-phone.php:44
+msgid "Make Phone Number Clickable"
+msgstr "启用点击拨号"
+
+#: includes/fields/class-gravityview-field-phone.php:45
+msgid "Allow dialing a number by clicking it?"
+msgstr "允许点击号码直接拨号？"
+
+#: includes/fields/class-gravityview-field-post-category.php:19
+msgid "Post Category"
+msgstr "文章类型"
+
+#: includes/fields/class-gravityview-field-post-content.php:19
+msgid "Post Content"
+msgstr "文章内容"
+
+#: includes/fields/class-gravityview-field-post-custom-field.php:19
+msgid "Post Custom Field"
+msgstr "发布在"
+
+#: includes/fields/class-gravityview-field-post-excerpt.php:19
+msgid "Post Excerpt"
+msgstr "文章摘要"
+
+#: includes/fields/class-gravityview-field-post-image.php:20
+msgid "Post Image"
+msgstr "文章图片"
+
+#: includes/fields/class-gravityview-field-post-tags.php:22
+msgid "Post Tags"
+msgstr "发布在"
+
+#: includes/fields/class-gravityview-field-post-title.php:22
+msgid "Post Title"
+msgstr "发表"
+
+#: includes/fields/class-gravityview-field-quiz.php:15
+msgid "Quiz"
+msgstr "测验"
+
+#: includes/fields/class-gravityview-field-quiz.php:28
+msgid "Show Answer Explanation?"
+msgstr "显示答案说明？"
+
+#: includes/fields/class-gravityview-field-quiz.php:29
+msgid "If the field has an answer explanation, show it?"
+msgstr "如果该字段有答案说明，是否显示？"
+
+#: includes/fields/class-gravityview-field-radio.php:19
+msgid "Radio Buttons"
+msgstr "单选按钮"
+
+#: includes/fields/class-gravityview-field-section.php:22
+msgid "Section"
+msgstr "区"
+
+#: includes/fields/class-gravityview-field-source-url.php:36
+msgid "Link to URL:"
+msgstr "链接到网址："
+
+#: includes/fields/class-gravityview-field-source-url.php:37
+msgid "Display as a link to the Source URL"
+msgstr "显示为一个连接到源地址的链接"
+
+#: includes/fields/class-gravityview-field-source-url.php:44
+msgid "Customize the link text. If empty, the link text will be the the URL."
+msgstr "自定义链接文本。如果留空，链接文本将是网址。"
+
+#: includes/fields/class-gravityview-field-text.php:19
+msgid "Single Line Text"
+msgstr "单行文本"
+
+#: includes/fields/class-gravityview-field-textarea.php:22
+msgid "Paragraph Text"
+msgstr "多段文本"
+
+#: includes/fields/class-gravityview-field-textarea.php:36
+msgid "Maximum words shown"
+msgstr "最大的文字显示"
+
+#: includes/fields/class-gravityview-field-textarea.php:37
+msgid ""
+"Enter the number of words to be shown. If specified it truncates the text. "
+"Leave it blank if you want to show the full text."
+msgstr "输入要显示的单词的数量。如果指定，它将截断文本。如果您想显示完整的文本，则留空。"
+
+#: includes/fields/class-gravityview-field-textarea.php:44
+msgid "Convert text URLs to HTML links"
+msgstr "转换文本 URL 到 HTML链接"
+
+#: includes/fields/class-gravityview-field-textarea.php:45
+msgid "Converts URI, www, FTP, and email addresses in HTML links"
+msgstr "在 HTML 链接中转换 URI，WWW，FTP 和电子邮件地址"
+
+#: includes/fields/class-gravityview-field-time.php:56
+msgid "Time"
+msgstr "时间"
+
+#: includes/fields/class-gravityview-field-transaction-id.php:27
+msgid "Transaction ID"
+msgstr "交易ID"
+
+#: includes/fields/class-gravityview-field-transaction-type.php:37
+msgid "Transaction Type"
+msgstr "交易类型"
+
+#: includes/fields/class-gravityview-field-transaction-type.php:38
+msgid "The type of the order: one-time payment or subscription"
+msgstr "该类型的顺序：一次性付款或订阅"
+
+#: includes/fields/class-gravityview-field-transaction-type.php:81
+msgid "One-Time Payment"
+msgstr "一次性付款"
+
+#: includes/fields/class-gravityview-field-transaction-type.php:85
+msgid "Subscription"
+msgstr "订阅"
+
+#: includes/fields/class-gravityview-field-uid.php:16
+msgid "Unique ID"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-website.php:22
+msgid "Website"
+msgstr "网址"
+
+#: includes/fields/class-gravityview-field-website.php:41
+msgid "Define custom link text. Leave blank to display the URL"
+msgstr "定义自定义链接文本。留空则显示网址"
+
+#: includes/fields/class-gravityview-field-website.php:49
+msgid "Shorten Link Display"
+msgstr "短链接显示"
+
+#: includes/fields/class-gravityview-field-website.php:50
+msgid "Only show the domain for a URL instead of the whole link."
+msgstr "对于一个网址仅显示域，而不是整个链接。"
+
+#: includes/fields/class-gravityview-field-website.php:51
+msgid "Don&rsquo;t show the full URL, only show the domain."
+msgstr "不要显示完整的网址，仅显示域。"
+
+#: includes/fields/class-gravityview-field-website.php:57
+msgid "Open link in the same window?"
+msgstr "在同一窗口中打开链接吗？"
+
+#: includes/fields/class-gravityview-field-workflow_final_status.php:16
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:101
+msgid "Workflow Status"
+msgstr "工作流状态"
+
+#: includes/fields/class-gravityview-field-workflow_step.php:16
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:96
+msgid "Workflow Step"
+msgstr "工作流步骤"
+
+#: includes/fields/class-gravityview-field-workflow_step.php:59
+msgid "Workflow Complete"
+msgstr "工作流程完成"
+
+#: includes/fields/class-gravityview-field.php:302
+msgid "Link to the post"
+msgstr "链接到文章"
+
+#: includes/fields/class-gravityview-field.php:303
+msgid "Link to the post created by the entry."
+msgstr "链接到所创建的条目。"
+
+#: includes/fields/class-gravityview-field.php:308
+msgid "Link to the category or tag"
+msgstr "链接到类别或标签"
+
+#: includes/fields/class-gravityview-field.php:309
+msgid ""
+"Link to the current category or tag. \"Link to single entry\" must be "
+"unchecked."
+msgstr "链接到当前的类别或标签。“链接到单个条目”必须不勾选。"
+
+#: includes/fields/class-gravityview-field.php:314
+msgid "Use the live post data"
+msgstr "使用实时发布的数据"
+
+#: includes/fields/class-gravityview-field.php:315
+msgid "Instead of using the entry data, instead use the current post data."
+msgstr "使用当前发布的数据，而不是使用条目数据。"
+
+#: includes/fields/class-gravityview-field.php:320
+msgid "Override Date Format"
+msgstr "重写日期格式"
+
+#: includes/fields/class-gravityview-field.php:321
+msgid "Define how the date is displayed (using %sthe PHP date format%s)"
+msgstr "定义如何显示日期(使用 %sPHP日期格式%s)"
+
+#: includes/lib/EDD_SL_Plugin_Updater.php:181
+msgid ""
+"There is a new version of %1$s available. <a target=\"_blank\" "
+"class=\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
+msgstr "有一个新的版本 %1$s可用。<a target=\"_blank\" class=\"thickbox\" href=\"%2$s\">查看版本 %3$s 的详细信息</a>。"
+
+#: includes/lib/EDD_SL_Plugin_Updater.php:188
+msgid ""
+"There is a new version of %1$s available. <a target=\"_blank\" "
+"class=\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a "
+"href=\"%4$s\">update now</a>."
+msgstr "有一个新的版本 %1$s可用。<a target=\"_blank\" class=\"thickbox\" href=\"%2$s\">查看版本 %3$s 详情</a>或<a href=\"%4$s\">现在更新</a>。"
+
+#: includes/lib/EDD_SL_Plugin_Updater.php:332
+msgid "You do not have permission to install plugin updates"
+msgstr "你没有权限安装插件的更新"
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:54
+msgid "Quiz Score Total"
+msgstr "测验总分"
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:56
+msgid "Displays the number of correct Quiz answers the user submitted."
+msgstr "显示用户提交的正确测验答案的数量。"
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:59
+msgid "Quiz Percentage Grade"
+msgstr "测验的百分比等级"
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:61
+msgid "Displays the percentage of correct Quiz answers the user submitted."
+msgstr "显示用户提交的正确问答的百分比。"
+
+#. translators: This is a field type used by the Gravity Forms Quiz Addon. "A"
+#. is 100-90, "B" is 89-80, "C" is 79-70, etc.
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:65
+msgid "Quiz Letter Grade"
+msgstr "百分比"
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:67
+msgid ""
+"Displays the Grade the user achieved based on Letter Grading configured in "
+"the Quiz Settings."
+msgstr "显示等级用户实现基于字母分级在测试设置中配置。"
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:70
+msgid "Quiz Pass/Fail"
+msgstr "总分"
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:72
+msgid ""
+"Displays either Passed or Failed based on the Pass/Fail settings configured "
+"in the Quiz Settings."
+msgstr "按照测验设置中配置的通过/失败条件显示是否通过。"
+
+#: includes/presets/business-data/class-gravityview-preset-business-data.php:24
+msgid "Business Data"
+msgstr "业务数据"
+
+#: includes/presets/business-data/class-gravityview-preset-business-data.php:25
+msgid "Display business information in a table."
+msgstr "在一张表中显示业务信息。"
+
+#: includes/presets/business-listings/class-gravityview-preset-business-listings.php:24
+msgid "Business Listings"
+msgstr "业务列表"
+
+#: includes/presets/business-listings/class-gravityview-preset-business-listings.php:25
+msgid "Display business profiles."
+msgstr "显示业务概况。"
+
+#: includes/presets/default-edit/class-gravityview-default-template-edit.php:26
+msgid "Edit Table"
+msgstr "编辑表格"
+
+#: includes/presets/default-edit/class-gravityview-default-template-edit.php:27
+#: includes/presets/default-table/class-gravityview-default-template-table.php:15
+msgid "Display items in a table view."
+msgstr "在一张表的视图中显示项目。"
+
+#: includes/presets/default-edit/class-gravityview-default-template-edit.php:45
+msgid "Visible Edit Fields"
+msgstr "可见的编辑字段"
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:16
+msgid "List (default)"
+msgstr "目录（默认）"
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:17
+msgid "Display items in a listing view."
+msgstr "在一个列表视图中显示项目。"
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:27
+#: includes/presets/default-table/class-gravityview-default-template-table.php:29
+msgid "Link to single entry"
+msgstr "链接到单个条目"
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:38
+msgid "Listing Title"
+msgstr "列表名称"
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:43
+msgid "Subheading"
+msgstr "副标题"
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:44
+msgid "Data placed here will be bold."
+msgstr "数据放置在这里将是明显的。"
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:50
+msgid "Image"
+msgstr "图像"
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:51
+msgid "Leave empty to remove."
+msgstr "留空便删除。"
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:57
+msgid "Other Fields"
+msgstr "其他字段"
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:58
+msgid "Below the subheading, a good place for description and other data."
+msgstr "下面的副标题，用于描述和其他数据的好地方。"
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:66
+msgid "Footer Left"
+msgstr "页脚左边"
+
+#: includes/presets/default-list/class-gravityview-default-template-list.php:73
+msgid "Footer Right"
+msgstr "页脚右边"
+
+#: includes/presets/default-table/class-gravityview-default-template-table.php:14
+msgid "Table (default)"
+msgstr "表（默认值）"
+
+#: includes/presets/default-table/class-gravityview-default-template-table.php:40
+msgid "Visible Table Columns"
+msgstr "可见表的列"
+
+#: includes/presets/default-table/class-gravityview-default-template-table.php:41
+msgid "Each field will be displayed as a column in the table."
+msgstr "每个字段将显示为表中的列。"
+
+#: includes/presets/event-listings/class-gravityview-preset-event-listings.php:24
+msgid "Event Listings"
+msgstr "活动列表URL"
+
+#: includes/presets/event-listings/class-gravityview-preset-event-listings.php:25
+msgid "Present a list of your events."
+msgstr "您目前的事件列表。"
+
+#: includes/presets/issue-tracker/class-gravityview-preset-issue-tracker.php:24
+msgid "Issue Tracker"
+msgstr "问题跟踪"
+
+#: includes/presets/issue-tracker/class-gravityview-preset-issue-tracker.php:25
+msgid "Manage issues and their statuses."
+msgstr "管理问题及其状态。"
+
+#: includes/presets/job-board/class-gravityview-preset-job-board.php:24
+msgid "Job Board"
+msgstr "工作板"
+
+#: includes/presets/job-board/class-gravityview-preset-job-board.php:25
+msgid "Post available jobs in a simple job board."
+msgstr "在一个简单的工作板上粘贴职位。"
+
+#: includes/presets/profiles/class-gravityview-preset-profiles.php:24
+msgid "People Profiles"
+msgstr "人物简介"
+
+#: includes/presets/profiles/class-gravityview-preset-profiles.php:25
+msgid "List people with individual profiles."
+msgstr "列出人物个人资料。"
+
+#: includes/presets/resume-board/class-gravityview-preset-resume-board.php:24
+msgid "Resume Board"
+msgstr "简历板"
+
+#: includes/presets/resume-board/class-gravityview-preset-resume-board.php:25
+msgid "Allow job-seekers to post their resumes."
+msgstr "允许求职者去张贴他们的简历。"
+
+#: includes/presets/staff-profiles/class-gravityview-preset-staff-profiles.php:24
+msgid "Staff Profiles"
+msgstr "员工简介"
+
+#: includes/presets/staff-profiles/class-gravityview-preset-staff-profiles.php:25
+msgid "List members of your team."
+msgstr "您的团队成员名单。"
+
+#: includes/presets/website-showcase/class-gravityview-preset-website-showcase.php:24
+msgid "Website Showcase"
+msgstr "网站展示"
+
+#: includes/presets/website-showcase/class-gravityview-preset-website-showcase.php:25
+msgid "Feature submitted websites with screenshots."
+msgstr "功能截图已提交到网站"
+
+#: includes/widgets/class-gravityview-widget-custom-content.php:20
+msgid "Insert custom text or HTML as a widget"
+msgstr "作为一个小控件插入自定义文本或HTML"
+
+#: includes/widgets/class-gravityview-widget-custom-content.php:31
+msgid "Enter text or HTML. Also supports shortcodes."
+msgstr "输入文本或HTML。还支持短码。"
+
+#: includes/widgets/class-gravityview-widget-page-links.php:14
+msgid "Links to multiple pages of results."
+msgstr "链接结果的多个页面。"
+
+#: includes/widgets/class-gravityview-widget-page-links.php:19
+msgid "Show each page number"
+msgstr "显示每个页码"
+
+#: includes/widgets/class-gravityview-widget-page-links.php:20
+msgid "Show every page number instead of summary (eg: 1 2 3 ... 8 »)"
+msgstr "显示每一个页号而不是摘要（例如：1 2 3 ... 8 »）"
+
+#: includes/widgets/class-gravityview-widget-page-links.php:23
+msgid "Page Links"
+msgstr "页面链接"
+
+#: includes/widgets/class-gravityview-widget-pagination-info.php:19
+msgid "Summary of the number of visible entries out of the total results."
+msgstr "可见的条目数量合计结果的总结"
+
+#: includes/widgets/class-gravityview-widget-pagination-info.php:28
+msgid "Show Pagination Info"
+msgstr "显示分页信息"
+
+#: includes/widgets/class-gravityview-widget-pagination-info.php:57
+msgid "Displaying %1$s - %2$s of %3$s"
+msgstr "显示 %1$s - %2$s/%3$s"
+
+#: includes/widgets/class-gravityview-widget.php:109
+msgid "This class will be added to the widget container"
+msgstr "这个类将添加到小部件的容器中"
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:24
+msgid "Displays the results of Poll Fields that exist in the form."
+msgstr "显示表单中存在的投票字段的结果。"
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:35
+msgid "Display Percentages"
+msgstr "显示百分比"
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:38
+msgid ""
+"Display results percentages as part of results? Supported values are: true, "
+"false. Defaults to \"true\"."
+msgstr "在结果中显示百分比吗？支持的值：true, false。默认为 \"true\"。"
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:41
+msgid "Display Counts"
+msgstr "显示计数"
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:44
+msgid ""
+"Display number of times each choice has been selected when displaying "
+"results? Supported values are: true, false. Defaults to \"true\"."
+msgstr "在显示结果时，显示每个选项已选择的次数吗？支持的值是：true，false。默认为\"true\"。"
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:48
+msgid "Style"
+msgstr "样式"
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:49
+msgid ""
+"The Polls Add-On currently supports 4 built in styles: red, green, orange, "
+"blue. Defaults to \"green\"."
+msgstr "投票扩展组件目前支持4种风格：红色，绿色，橙色，蓝色。默认为 \"绿色\"。"
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:52
+msgid "Green"
+msgstr "绿色"
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:53
+msgid "Blue"
+msgstr "蓝色"
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:54
+msgid "Red"
+msgstr "红色"
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:55
+msgid "Orange"
+msgstr "橙色"
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:60
+msgid "Poll Results"
+msgstr "投票结果"
+
+#: includes/widgets/search-widget/class-search-widget.php:32
+msgid "Search form for searching entries."
+msgstr "用于搜索条目的搜索表单。"
+
+#: includes/widgets/search-widget/class-search-widget.php:44
+msgid "Search Layout"
+msgstr "搜索布局"
+
+#: includes/widgets/search-widget/class-search-widget.php:47
+msgid "Horizontal"
+msgstr "水平"
+
+#: includes/widgets/search-widget/class-search-widget.php:48
+msgid "Vertical"
+msgstr "垂直"
+
+#: includes/widgets/search-widget/class-search-widget.php:53
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:221
+msgid "Show Clear button"
+msgstr "显示清除按钮"
+
+#: includes/widgets/search-widget/class-search-widget.php:65
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:227
+msgid "Search Mode"
+msgstr "搜索模式"
+
+#: includes/widgets/search-widget/class-search-widget.php:66
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:236
+msgid "Should search results match all search fields, or any?"
+msgstr "搜索结果可能匹配所有的搜索字段，或任何的？"
+
+#: includes/widgets/search-widget/class-search-widget.php:70
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:230
+msgid "Match Any Fields"
+msgstr "匹配任意字段"
+
+#: includes/widgets/search-widget/class-search-widget.php:71
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:234
+msgid "Match All Fields"
+msgstr "匹配所有字段"
+
+#: includes/widgets/search-widget/class-search-widget.php:75
+msgid "Search Bar"
+msgstr "搜索栏"
+
+#: includes/widgets/search-widget/class-search-widget.php:161
+msgid "Text"
+msgstr "文本"
+
+#: includes/widgets/search-widget/class-search-widget.php:164
+msgid "Select (multiple values)"
+msgstr "选择（多个值）"
+
+#: includes/widgets/search-widget/class-search-widget.php:165
+msgid "Radio"
+msgstr "单选按钮"
+
+#: includes/widgets/search-widget/class-search-widget.php:168
+msgid "Links"
+msgstr "链接"
+
+#: includes/widgets/search-widget/class-search-widget.php:169
+msgid "Date range"
+msgstr "日期范围"
+
+#: includes/widgets/search-widget/class-search-widget.php:189
+msgid "No search fields configured yet."
+msgstr "还未配置搜索字段。"
+
+#: includes/widgets/search-widget/class-search-widget.php:190
+msgid "Add Search Field"
+msgstr "添加搜索字段"
+
+#: includes/widgets/search-widget/class-search-widget.php:191
+msgid "Label"
+msgstr "标签"
+
+#: includes/widgets/search-widget/class-search-widget.php:193
+msgid "Input Type"
+msgstr "输入类型"
+
+#: includes/widgets/search-widget/class-search-widget.php:194
+msgid ""
+"There was an error loading searchable fields. Save the View or refresh the "
+"page to fix this issue."
+msgstr "有一个错误加载搜索领域。保存视图或刷新页面来解决这个问题。"
+
+#: includes/widgets/search-widget/class-search-widget.php:265
+msgid "Search Everything"
+msgstr "搜索一切"
+
+#: includes/widgets/search-widget/class-search-widget.php:277
+msgid "Entry Creator"
+msgstr "条目创建者"
+
+#: includes/widgets/search-widget/class-search-widget.php:909
+msgid "Search Entries:"
+msgstr "搜索条目："
+
+#: includes/widgets/search-widget/class-search-widget.php:912
+msgid "Filter by date:"
+msgstr "按日期过滤："
+
+#: includes/widgets/search-widget/class-search-widget.php:915
+msgid "Entry ID:"
+msgstr "条目 ID："
+
+#: includes/widgets/search-widget/class-search-widget.php:1031
+msgid "Clear"
+msgstr "清空"
+
+#: includes/widgets/search-widget/class-search-widget.php:1097
+msgid "Show a different month"
+msgstr "显示一个不同的月份"
+
+#: includes/widgets/search-widget/templates/search-field-date_range.php:20
+#: includes/widgets/search-widget/templates/search-field-entry_date.php:20
+msgid "Start date"
+msgstr "开始日期"
+
+#: includes/widgets/search-widget/templates/search-field-date_range.php:21
+#: includes/widgets/search-widget/templates/search-field-entry_date.php:21
+msgid "End date"
+msgstr "结束日期"
+
+#: includes/widgets/search-widget/templates/search-field-link.php:21
+msgid "Show only:"
+msgstr "仅显示："
+
+#: includes/widgets/search-widget/templates/widget-search.php:53
+msgid "Search"
+msgstr "搜索"
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:15
+msgid "GravityView Recent Entries"
+msgstr "GravityView最近的条目"
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:18
+msgid "Display the most recent entries for a View"
+msgstr "为视图显示最近的条目"
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:267
+msgid "Recent Entries"
+msgstr "最近的记录"
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:281
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:165
+msgid "Title:"
+msgstr "标题:"
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:310
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:175
+msgid "Please select a View to search."
+msgstr "请选择一个视图进行搜索。"
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:320
+msgid "&mdash; Select a View as Entries Source &mdash;"
+msgstr "&mdash; 选择一个视图作为条目的来源 &mdash;"
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:348
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:212
+msgid "If Embedded, Page ID:"
+msgstr "如果已嵌入，页面ID为："
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:351
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:215
+msgid ""
+"To have a search performed on an embedded View, enter the ID of the post or "
+"page where the View is embedded."
+msgstr "在嵌入式视图上进行搜索，输入文章的 ID 或在页面上嵌入视图。"
+
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:358
+msgid "Number of entries to show:"
+msgstr "显示条目数："
+
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:14
+msgid "A search form for a specific GravityView."
+msgstr "一个特定的GravityView搜索表单。"
+
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:21
+msgid "GravityView Search"
+msgstr "GravityView搜索"
+
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:138
+msgid ""
+"This widget is not configurable from this screen. Please configure it on the"
+" %sWidgets page%s."
+msgstr "这个屏幕的小部件是无法配置的。请在%s小部件页面%s上配置它。"
+
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:183
+msgid "View:"
+msgstr "视图："
+
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:185
+msgid "&mdash; Select a View &mdash;"
+msgstr "&mdash; 选择一个视图 &mdash;"
+
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:243
+msgid "Searchable fields:"
+msgstr "可搜索的字段:"
+
+#: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:244
+msgid "Search Fields"
+msgstr "搜索字段"
+
+#: templates/fields/gquiz_grade.php:24
+msgid "Letter"
+msgstr "字母"
+
+#: templates/fields/gquiz_is_pass.php:27
+msgid "Pass/Fail"
+msgstr "通过/失败"
+
+#: includes/admin/class-gravityview-admin-view-item.php:149
+msgctxt "Label in field picker for empty label"
+msgid "Field #%s (No Label)"
+msgstr "字段 #%s (无标签)"
+
+#: includes/admin/class-gravityview-support-port.php:86
+msgctxt "a support form search has returned empty for the following word"
+msgid "No results found for"
+msgstr "没有符合条件的结果。"
+
+#: includes/admin/class-gravityview-support-port.php:95
+msgctxt ""
+"Error shown when submitting support request and there is no subject provided"
+msgid "Please enter a subject"
+msgstr "请输入主题"
+
+#: includes/admin/class-gravityview-support-port.php:97
+msgctxt ""
+"Error shown when submitting support request and there is no message provided"
+msgid "Please enter a message"
+msgstr "请输入一条信息"
+
+#: includes/class-admin-views.php:415
+msgctxt "Column title that shows what template is being used for Views"
+msgid "Template"
+msgstr "模板"
+
+#: includes/class-debug-bar.php:175
+msgctxt "Debugging output data is empty."
+msgid "Empty"
+msgstr "空的"
+
+#: includes/class-frontend-views.php:1366
+msgctxt "Clear all data from the form"
+msgid "Clear"
+msgstr "清空"
+
+#: includes/class-frontend-views.php:1367
+msgctxt "Reset the search form to the state that existed on page load"
+msgid "Reset"
+msgstr "重置"
+
+#: includes/class-gravityview-admin-bar.php:143
+msgctxt "Edit View with the ID of %d"
+msgid "Edit View #%d"
+msgstr "编辑视图 #%d"
+
+#: includes/class-gravityview-change-entry-creator.php:72
+msgctxt ""
+"First parameter: Success or error of the action. Second: User ID number"
+msgid "%s: Assigned User ID #%d as the entry creator."
+msgstr "%s: 为条目的创建者分配用户 ID#%d。"
+
+#: includes/class-gravityview-change-entry-creator.php:176
+msgctxt ""
+"The name and the ID of users who initiated changes to entry ownership"
+msgid "%s (ID #%d)"
+msgstr "％S（ID＃％d）"
+
+#: includes/class-gravityview-change-entry-creator.php:178
+msgctxt ""
+"To show that the entry was unassigned from an actual user to no user."
+msgid "No User"
+msgstr "没有用户"
+
+#: includes/class-gravityview-change-entry-creator.php:213
+msgctxt "No user assigned to the entry"
+msgid "No User"
+msgstr "没有用户"
+
+#: includes/class-gravityview-settings.php:632
+msgctxt "Setting: Show or Hide"
+msgid "Show"
+msgstr "显示"
+
+#: includes/class-gravityview-settings.php:636
+msgctxt "Setting: Show or Hide"
+msgid "Hide"
+msgstr "隐藏"
+
+#: includes/class-gravityview-settings.php:651
+msgctxt "Setting: On or off"
+msgid "On"
+msgstr "开"
+
+#: includes/class-gravityview-settings.php:655
+msgctxt "Setting: On or off"
+msgid "Off"
+msgstr "关闭"
+
+#: includes/class-gravityview-settings.php:669
+msgctxt "Setting: what to do when uninstalling plugin"
+msgid "Keep GravityView Data"
+msgstr "保留GravityView的数据"
+
+#: includes/class-gravityview-settings.php:674
+msgctxt "Setting: what to do when uninstalling plugin"
+msgid "Permanently Delete"
+msgstr "永久删除"
+
+#: includes/class-gv-license-handler.php:339
+msgctxt "1: Customer name; 2: Customer email"
+msgid "Licensed to: %1$s (%2$s)"
+msgstr "授权给：%1$s (%2$s)"
+
+#: includes/class-gv-license-handler.php:385
+msgctxt "1: GravityView upgrade name, 2: Cost of upgrade"
+msgid "Upgrade to %1$s for %2$s"
+msgstr "升级到%1$s 为 %2$s"
+
+#: includes/class-post-types.php:61
+msgctxt "Post Type General Name"
+msgid "Views"
+msgstr "浏览量"
+
+#: includes/class-post-types.php:62
+msgctxt "Post Type Singular Name"
+msgid "View"
+msgstr "查看"
+
+#: includes/class-post-types.php:63
+msgctxt "Menu name"
+msgid "Views"
+msgstr "浏览量"
+
+#: includes/class-post-types.php:66
+msgctxt "View Item"
+msgid "View"
+msgstr "查看"
+
+#: includes/extensions/delete-entry/class-delete-entry.php:194
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:89
+msgctxt "User capability"
+msgid "Entry Creator"
+msgstr "条目创建者"
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1822
+msgctxt "Link shown when invalid Edit Entry link is clicked"
+msgid "Go back."
+msgstr "返回。"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:368
+msgctxt "%s is opening and closing HTML link"
+msgid ""
+"Only users with specific capabilities will be able to view, add and delete "
+"notes. %sRead more%s."
+msgstr "只有具有指定权限的用户才能够查看，添加和删除备注。 %s查看更多%s。"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:420
+msgctxt "Example email address used as a placeholder"
+msgid "you@example.com"
+msgstr "you@example.com"
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:427
+msgctxt "Message to display when submitting a note without content."
+msgid "Note cannot be blank."
+msgstr "备注不能为空。"
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:90
+msgctxt "Gravity Flow Workflow Step Status"
+msgid "Status: %s"
+msgstr ""
+
+#: includes/widgets/poll/class-gravityview-widget-poll.php:26
+msgctxt "The string placeholders are for emphasis HTML"
+msgid ""
+"Note: this will display poll results for %sall form entries%s, not only the "
+"entries displayed in the View."
+msgstr "注意：这将显示%s所有表单条目%s的投票结果，不仅限于视图中显示的条目。"
+
+#: includes/widgets/search-widget/class-search-widget.php:1092
+msgctxt "Close calendar"
+msgid "Close"
+msgstr "关闭"
+
+#: includes/widgets/search-widget/class-search-widget.php:1093
+msgctxt "Previous month in calendar"
+msgid "Prev"
+msgstr "上一步"
+
+#: includes/widgets/search-widget/class-search-widget.php:1094
+msgctxt "Next month in calendar"
+msgid "Next"
+msgstr "下一个"
+
+#: includes/widgets/search-widget/class-search-widget.php:1095
+msgctxt "Today in calendar"
+msgid "Today"
+msgstr "今日"
+
+#: includes/widgets/search-widget/class-search-widget.php:1096
+msgctxt "Week in calendar"
+msgid "Week"
+msgstr "星期"
+
+#: templates/fields/gquiz_grade.php:25 templates/fields/gquiz_is_pass.php:28
+msgctxt "%s is the current Quiz field type (\"Letter\" or \"Pass/Fail\")"
+msgid "%s grading is disabled for this form. %sChange the setting%s"
+msgstr "%s 这个表单的评分是禁用的。 %s改变设置%s"
+
+#: templates/fields/post_image.php:109
+msgctxt "Post Image field title heading"
+msgid "Title:"
+msgstr "标题:"
+
+#: templates/fields/post_image.php:115
+msgctxt "Post Image field caption heading"
+msgid "Caption:"
+msgstr "标题："
+
+#: templates/fields/post_image.php:121
+msgctxt "Post Image field description heading"
+msgid "Description:"
+msgstr "描述"

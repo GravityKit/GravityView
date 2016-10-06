@@ -13,8 +13,17 @@ $gravityview_view = GravityView_View::getInstance();
 extract( $gravityview_view->getCurrentField() );
 
 if( !empty( $field_settings['trim_words'] ) ) {
-	$excerpt_more = apply_filters( 'excerpt_more', ' ' . '[&hellip;]' );
-	$value = wp_trim_words( $value, $field_settings['trim_words'], $excerpt_more );
+
+	/**
+	 * @filter `gravityview_excerpt_more` Modify the "Read more" link used when "Maximum Words" setting is enabled and the output is truncated
+	 * @since 1.16.1
+	 * @param string $excerpt_more Default: ` ...`
+	 */
+	$excerpt_more = apply_filters( 'gravityview_excerpt_more', ' ' . '&hellip;' );
+
+	$entry_link = GravityView_API::entry_link_html( $entry, $excerpt_more, array(), $field_settings );
+	$value = wp_trim_words( $value, $field_settings['trim_words'], $entry_link );
+	unset( $entry_link, $excerpt_more );
 }
 
 if( !empty( $field_settings['make_clickable'] ) ) {

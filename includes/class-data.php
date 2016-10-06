@@ -113,6 +113,9 @@ class GravityView_View_Data {
 		return ( sizeof( $ids ) === 1 ) ? $ids[0] : $ids;
 	}
 
+	/**
+	 * @return GravityView_View_Data
+	 */
 	public static function getInstance( $passed_post = NULL ) {
 
 		if( empty( self::$instance ) ) {
@@ -152,8 +155,8 @@ class GravityView_View_Data {
 	 * within the WordPress database.
 	 *
 	 * @see http://tommcfarlin.com/wordpress-post-exists-by-id/ Fastest check available
-	 * @param    int    $id    The ID of the post to check
-	 * @return   bool          True if the post exists; otherwise, false.
+	 * @param    int    $view_id    The ID of the post to check
+	 * @return   bool   True if the post exists; otherwise, false.
 	 * @since    1.0.0
 	 */
 	function view_exists( $view_id ) {
@@ -235,7 +238,7 @@ class GravityView_View_Data {
 			'template_id' => gravityview_get_template_id( $view_id ),
 			'atts' => $atts,
 			'fields' => $this->get_fields( $view_id ),
-			'widgets' => get_post_meta( $view_id, '_gravityview_directory_widgets', true ),
+			'widgets' => gravityview_get_directory_widgets( $view_id ),
 			'form' => gravityview_get_form( $form_id ),
 		);
 
@@ -299,7 +302,7 @@ class GravityView_View_Data {
 	 *
 	 * @access public
 	 * @param array $properties
-	 * @return void|boolean (field should be hidden) or false (field should be presented)
+	 * @return boolean True: (field should be hidden) or False: (field should be presented)
 	 */
 	private function hide_field_check_conditions( $properties ) {
 
@@ -341,7 +344,7 @@ class GravityView_View_Data {
 	 * @param  string $content $post->post_content content
 	 * @return int|null|array If a single View is found, the ID of the View. If there are multiple views in the content, array of IDs parsed. If not found, NULL
 	 */
-	function parse_post_content( $content ) {
+	public function parse_post_content( $content ) {
 
 		/**
 		 * @hack This is so that the shortcode is registered for the oEmbed preview in the Admin
@@ -707,6 +710,11 @@ class GravityView_View_Data {
 				'value'	=> '',
 				'show_in_shortcode' => false,
 				'full_width' => true,
+			),
+			'post_id' => array(
+				'type' => 'number',
+				'value' => '',
+				'show_in_shortcode' => false,
 			),
 		));
 

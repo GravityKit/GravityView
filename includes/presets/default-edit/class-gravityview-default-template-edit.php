@@ -26,7 +26,7 @@ class GravityView_Default_Template_Edit extends GravityView_Template {
 			'label' =>  __( 'Edit Table', 'gravityview' ),
 			'description' => __('Display items in a table view.', 'gravityview'),
 			'logo' => plugins_url('includes/presets/default-table/logo-default-table.png', GRAVITYVIEW_FILE),
-			'css_source' => plugins_url('templates/css/table-view.css', GRAVITYVIEW_FILE),
+			'css_source' => gravityview_css_url( 'table-view.css', GRAVITYVIEW_DIR . 'templates/css/' ),
 		);
 
 		$settings = wp_parse_args( $settings, $edit_settings );

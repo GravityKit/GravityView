@@ -89,9 +89,9 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	 * @return void
 	 */
 	private function maybe_add_hooks() {
-		$class_exists = ! $this->class_name || ( $this->class_name && class_exists( $this->class_name ) );
-		$function_exists = ! $this->function_name || ( $this->function_name && function_exists( $this->function_name ) );
-		$constant_defined = ! $this->constant_name || ( $this->constant_name && defined( $this->constant_name ) );
+		$class_exists = $this->class_name && class_exists( $this->class_name );
+		$function_exists = $this->function_name && function_exists( $this->function_name );
+		$constant_defined = $this->constant_name && defined("{$this->constant_name}");
 
 		if( $class_exists || $function_exists || $constant_defined ) {
 			$this->add_hooks();

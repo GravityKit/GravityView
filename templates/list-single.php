@@ -14,9 +14,11 @@
 	<p class="gv-back-link"><?php echo gravityview_back_link(); ?></p>
 	<?php foreach ( $this->getEntries() as $entry ) {
 		$this->setCurrentEntry( $entry );
+
+		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
 	?>
 
-		<div id="gv_list_<?php echo $entry['id']; ?>" class="gv-list-view">
+		<div id="gv_list_<?php echo esc_attr( $entry_slug ); ?>" class="gv-list-view">
 	<?php
 
 	if ( $this->getFields( 'single_list-title' ) || $this->getFields( 'single_list-subtitle' ) ) { ?>

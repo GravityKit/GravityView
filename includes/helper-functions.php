@@ -4,6 +4,52 @@
  * @since 1.12
  */
 
+
+/**
+ * Get the URL for a CSS file
+ * 
+ * If there's a CSS file with the same name as a GravityView CSS file in the current theme directory, it will be used.
+ * Place the CSS file in a `/gravityview/css/` sub-directory. 
+ * 
+ * Example: /twentysixteen/gravityview/css/gv-default-styles.css
+ *
+ * Will use, in order:
+ * 1) [theme directory]/gravityview/css/
+ * 2) [gravityview plugin]/css/ (no check performed)
+ *
+ * @since 1.17
+ *
+ * @uses get_stylesheet_directory()
+ * @uses get_stylesheet_directory_uri()
+ *
+ * @param string $css_file Filename of the CSS file (like gv-default-styles.css)
+ * @param string $dir_path Absolute path to the directory where the CSS file is stored. If empty, uses default GravityView templates CSS folder.
+ *
+ * @return string URL path to the file.
+ */
+function gravityview_css_url( $css_file = '', $dir_path = '' ) {
+
+	// If there's an overriding CSS file in the current template folder, use it.
+	$template_css_path = trailingslashit( get_stylesheet_directory() ) . 'gravityview/css/' . $css_file;
+
+	if( file_exists( $template_css_path ) ) {
+		$path = trailingslashit( get_stylesheet_directory_uri() ) . 'gravityview/css/' . $css_file;
+		do_action( 'gravityview_log_debug', __FUNCTION__ . ': Stylesheet override ('. esc_attr( $css_file ) .')' );
+	} else {
+		// Default: use GravityView CSS file
+
+		// If no path is provided, assume default plugin templates CSS folder
+		if( '' === $dir_path ) {
+			$dir_path = GRAVITYVIEW_DIR . 'templates/css/';
+		}
+		
+		// plugins_url() expects a path to a file, not directory. We append a file to be stripped.
+		$path = plugins_url( $css_file, trailingslashit( $dir_path )  . 'stripped-by-plugin_basename.php' );
+	}
+
+	return $path;
+}
+
 /**
  * Check whether a variable is not an empty string
  *
@@ -47,6 +93,38 @@ function gravityview_get_permalink_query_args( $id = 0 ) {
 	return $args;
 }
 
+
+/**
+ * Similar to the WordPress `selected()`, `checked()`, and `disabled()` functions, except it allows arrays to be passed as current value
+ *
+ * @see selected() WordPress core function
+ *
+ * @param string $value One of the values to compare
+ * @param mixed $current (true) The other value to compare if not just true
+ * @param bool $echo Whether to echo or just return the string
+ * @param string $type The type of checked|selected|disabled we are doing
+ *
+ * @return string html attribute or empty string
+ */
+function gv_selected( $value, $current, $echo = true, $type = 'selected' ) {
+
+	$output = '';
+	if( is_array( $current ) ) {
+		if( in_array( $value, $current ) ) {
+			$output = __checked_selected_helper( true, true, false, $type );
+		}
+	} else {
+		$output = __checked_selected_helper( $value, $current, false, $type );
+	}
+
+	if( $echo ) {
+		echo $output;
+	}
+
+	return $output;
+}
+
+
 if( ! function_exists( 'gravityview_sanitize_html_class' ) ) {
 
 	/**
@@ -69,7 +147,9 @@ if( ! function_exists( 'gravityview_sanitize_html_class' ) ) {
 			return $classes;
 		}
 
+		$classes = array_map( 'trim', $classes );
 		$classes = array_map( 'sanitize_html_class', $classes );
+		$classes = array_filter( $classes );
 
 		return implode( ' ', $classes );
 	}
@@ -119,7 +199,9 @@ function gravityview_ob_include( $file_path, $object = NULL ) {
  * @since 1.12
  * @return string HTML image tag with floaty's cute mug on it
  */
-function gravityview_get_floaty() {
+function gravityview_get_floaty( $height = 87 ) {
+
+	$width = $height * 0.7586206897;
 
 	if( function_exists('is_rtl') && is_rtl() ) {
 		$style = 'margin:10px 10px 10px 0;';
@@ -129,7 +211,7 @@ function gravityview_get_floaty() {
 		$class = 'alignleft';
 	}
 
-	return '<img src="'.plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="'.$class.'" height="87" width="66" alt="The GravityView Astronaut Says:" style="'.$style.'" />';
+	return '<img src="'.plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ).'" class="'.$class.'" height="'.intval( $height ).'" width="'.round( $width, 2 ).'" alt="The GravityView Astronaut Says:" style="'.$style.'" />';
 }
 
 /**
@@ -334,6 +416,43 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 	return empty( $value );
 }
 
+
+/**
+ * Maps a function to all non-iterable elements of an array or an object.
+ *
+ * @see map_deep() This is an alias of the WP core function `map_deep()`, added in 4.4. Here for legacy purposes.
+ * @since 1.16.3
+ *
+ * @param mixed    $value    The array, object, or scalar.
+ * @param callable $callback The function to map onto $value.
+ *
+ * @return mixed The value with the callback applied to all non-arrays and non-objects inside it.
+ */
+function gv_map_deep( $value, $callback ) {
+
+	// Use the original function, if exists.
+	// Requires WP 4.4+
+	if( function_exists( 'map_deep') ) {
+		return map_deep( $value, $callback );
+	}
+
+	// Exact copy of map_deep() code below:
+	if ( is_array( $value ) ) {
+		foreach ( $value as $index => $item ) {
+			$value[ $index ] = gv_map_deep( $item, $callback );
+		}
+	} elseif ( is_object( $value ) ) {
+		$object_vars = get_object_vars( $value );
+		foreach ( $object_vars as $property_name => $property_value ) {
+			$value->$property_name = gv_map_deep( $property_value, $callback );
+		}
+	} else {
+		$value = call_user_func( $callback, $value );
+	}
+
+	return $value;
+}
+
 /**
  * Check whether a string is a expected date format
  *
@@ -355,6 +474,30 @@ function gravityview_is_valid_datetime( $datetime, $expected_format = 'Y-m-d' ) 
 	 * @see http://stackoverflow.com/a/19271434/480856
 	 */
 	return ( $formatted_date && $formatted_date->format( $expected_format ) === $datetime );
+}
+
+/**
+ * Very commonly needed: get the # of the input based on a full field ID.
+ *
+ * Example: 12.3 => field #12, input #3. Returns: 3
+ * Example: 7 => field #7, no input. Returns: 0
+ *
+ * @since 1.16.4
+ *
+ * @param string $field_id Full ID of field, with or without input ID, like "12.3" or "7".
+ *
+ * @return int If field ID has an input, returns that input number. Otherwise, returns false.
+ */
+function gravityview_get_input_id_from_id( $field_id = '' ) {
+
+	if ( ! is_numeric( $field_id ) ) {
+		do_action( 'gravityview_log_error', __FUNCTION__ . ': $field_id not numeric', $field_id );
+		return false;
+	}
+
+	$exploded = explode( '.', "{$field_id}" );
+
+	return isset( $exploded[1] ) ? intval( $exploded[1] ) : false;
 }
 
 /**
@@ -409,4 +552,39 @@ function gravityview_get_terms_choices( $args = array() ) {
 	}
 
 	return $choices;
+}
+
+/**
+ * Maybe convert jQuery-serialized fields into array, otherwise return $_POST['fields'] array
+ *
+ * Fields are passed as a jQuery-serialized array, created in admin-views.js in the serializeForm method.
+ *
+ * @since 1.16.5
+ *
+ * @uses GVCommon::gv_parse_str
+ *
+ * @return array Array of fields
+ */
+function _gravityview_process_posted_fields() {
+	$fields = array();
+
+	if( !empty( $_POST['gv_fields'] ) ) {
+		if ( ! is_array( $_POST['gv_fields'] ) ) {
+
+			// We are not using parse_str() due to max_input_vars limitation with large View configurations
+			$fields_holder = array();
+			GVCommon::gv_parse_str( $_POST['gv_fields'], $fields_holder );
+
+			if ( isset( $fields_holder['fields'] ) ) {
+				$fields = $fields_holder['fields'];
+			} else {
+				do_action( 'gravityview_log_error', '[save_postdata] No `fields` key was found after parsing $fields string', $fields_holder );
+			}
+
+		} else {
+			$fields = $_POST['gv_fields'];
+		}
+	}
+
+	return $fields;
 }

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-section.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 /**
  * Add custom options for HTML field
@@ -13,7 +18,8 @@ class GravityView_Field_Section extends GravityView_Field {
 
 	var $group = 'standard';
 
-	function __construct() {
+	public function __construct() {
+		$this->label = esc_html__( 'Section', 'gravityview' );
 
 		parent::__construct();
 

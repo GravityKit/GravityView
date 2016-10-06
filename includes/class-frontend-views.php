@@ -86,6 +86,7 @@ class GravityView_frontend {
 
 	private function initialize() {
 		add_action( 'wp', array( $this, 'parse_content'), 11 );
+		add_filter( 'parse_query', array( $this, 'parse_query_fix_frontpage' ), 10 );
 		add_action( 'template_redirect', array( $this, 'set_entry_data'), 1 );
 
 		// Enqueue scripts and styles after GravityView_Template::register_styles()
@@ -150,7 +151,7 @@ class GravityView_frontend {
 
 	/**
 	 * Sets the single entry ID and also the entry
-	 * @param bool|int $single_entry
+	 * @param bool|int|string $single_entry
 	 */
 	public function setSingleEntry( $single_entry ) {
 
@@ -167,7 +168,7 @@ class GravityView_frontend {
 
 	/**
 	 * Set the current entry
-	 * @param array|int $entry Entry array or entry ID
+	 * @param array|int $entry Entry array or entry slug or ID
 	 */
 	public function setEntry( $entry ) {
 
@@ -261,11 +262,75 @@ class GravityView_frontend {
 	}
 
 	/**
+	 * Allow GravityView entry endpoints on the front page of a site
+	 *
+	 * @link  https://core.trac.wordpress.org/ticket/23867 Fixes this core issue
+	 * @link https://wordpress.org/plugins/cpt-on-front-page/ Code is based on this
+	 *
+	 * @since 1.17.3
+	 *
+	 * @param WP_Query &$query (passed by reference)
+	 *
+	 * @return void
+	 */
+	public function parse_query_fix_frontpage( &$query ) {
+		global $wp_rewrite;
+
+		$is_front_page = ( $query->is_home || $query->is_page );
+		$show_on_front = ( 'page' === get_option('show_on_front') );
+		$front_page_id = get_option('page_on_front');
+
+		if (  $is_front_page && $show_on_front && $front_page_id ) {
+
+			// Force to be an array, potentially a query string ( entry=16 )
+			$_query = wp_parse_args( $query->query );
+
+			// pagename can be set and empty depending on matched rewrite rules. Ignore an empty pagename.
+			if ( isset( $_query['pagename'] ) && '' === $_query['pagename'] ) {
+				unset( $_query['pagename'] );
+			}
+
+			// this is where will break from core wordpress
+			$ignore = array( 'preview', 'page', 'paged', 'cpage' );
+			foreach ( $wp_rewrite->endpoints as $endpoint ) {
+				$ignore[] = $endpoint[1];
+			}
+
+			// Modify the query if:
+			// - We're on the "Page on front" page (which we are), and:
+			// - The query is empty OR
+			// - The query includes keys that are associated with registered endpoints. `entry`, for example.
+			if ( empty( $_query ) || ! array_diff( array_keys( $_query ), $ignore ) ) {
+
+				$qv =& $query->query_vars;
+
+				// Prevent redirect when on the single entry endpoint
+				if( self::is_single_entry() ) {
+					add_filter( 'redirect_canonical', '__return_false' );
+				}
+
+				$query->is_page = true;
+				$query->is_home = false;
+				$qv['page_id']  = $front_page_id;
+
+				// Correct <!--nextpage--> for page_on_front
+				if ( ! empty( $qv['paged'] ) ) {
+					$qv['page'] = $qv['paged'];
+					unset( $qv['paged'] );
+				}
+			}
+
+			// reset the is_singular flag after our updated code above
+			$query->is_singular = $query->is_single || $query->is_page || $query->is_attachment;
+		}
+	}
+
+	/**
 	 * Read the $post and process the View data inside
 	 * @param  array  $wp Passed in the `wp` hook. Not used.
 	 * @return void
 	 */
-	function parse_content( $wp = array() ) {
+	public function parse_content( $wp = array() ) {
 		global $post;
 
 		// If in admin and NOT AJAX request, get outta here.
@@ -315,13 +380,21 @@ class GravityView_frontend {
 			return false;
 		}
 
+		$search_method = GravityView_Widget_Search::getInstance()->get_search_method();
+
+		if( 'post' === $search_method ) {
+			$get = $_POST;
+		} else {
+			$get = $_GET;
+		}
+
 		// No $_GET parameters
-		if ( empty( $_GET ) || ! is_array( $_GET ) ) {
+		if ( empty( $get ) || ! is_array( $get ) ) {
 			return false;
 		}
 
 		// Remove empty values
-		$get = array_filter( $_GET );
+		$get = array_filter( $get );
 
 		// If the $_GET parameters are empty, it's no search.
 		if ( empty( $get ) ) {
@@ -557,8 +630,12 @@ class GravityView_frontend {
 		/**
 		 * Don't render View if user isn't allowed to see it
 		 * @since 1.15
+		 * @since 1.17.2 Added check for if a user has no caps but is logged in (member of multisite, but not any site). Treat as if logged-out.
 		 */
-		if( is_user_logged_in() && false === GVCommon::has_cap( 'read_gravityview', $view_id ) ) {
+		if( is_user_logged_in() && ! ( empty( wp_get_current_user()->caps ) && empty( wp_get_current_user()->roles ) ) && false === GVCommon::has_cap( 'read_gravityview', $view_id ) ) {
+
+			do_action( 'gravityview_log_debug', sprintf( '%s Returning: View %d is not visible by current user.', __METHOD__, $view_id ) );
+
 			return null;
 		}
 
@@ -647,6 +724,11 @@ class GravityView_frontend {
 			// user requested Single Entry View
 			do_action( 'gravityview_log_debug', '[render_view] Executing Single View' );
 
+
+			/**
+			 * @action `gravityview_render_entry_{View ID}` Before rendering a single entry for a specific View ID
+			 * @since 1.17
+			 */
 			do_action( 'gravityview_render_entry_'.$view_data['id'] );
 
 			$entry = $this->getEntry();
@@ -657,9 +739,16 @@ class GravityView_frontend {
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.' );
 
 				/**
+				 * @filter `gravityview/render/entry/not_visible` Modify the message shown to users when the entry doesn't exist or they aren't allowed to view it.
+				 * @since 1.6
+				 * @param string $message Default: "You have attempted to view an entry that is not visible or may not exist."
+				 */
+				$message = apply_filters( 'gravityview/render/entry/not_visible', __( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview' ) );
+
+				/**
 				 * @since 1.6
 				 */
-				echo esc_attr( apply_filters( 'gravityview/render/entry/not_visible', __( 'You have attempted to view an entry that is not visible or may not exist.', 'gravityview' ) ) );
+				echo esc_attr( $message );
 
 				return null;
 			}
@@ -874,7 +963,12 @@ class GravityView_frontend {
 	 */
 	public static function get_search_criteria( $args, $form_id ) {
 
-		// Search Criteria
+		/**
+		 * @filter `gravityview_fe_search_criteria` Modify the search criteria
+		 * @see GravityView_Widget_Search::filter_entries Adds the default search criteria
+		 * @param array $search_criteria Empty `field_filters` key
+		 * @param int $form_id ID of the Gravity Forms form that is being searched
+		 */
 		$search_criteria = apply_filters( 'gravityview_fe_search_criteria', array( 'field_filters' => array() ), $form_id );
 
 		$original_search_criteria = $search_criteria;
@@ -889,7 +983,7 @@ class GravityView_frontend {
 
 			$search_criteria['field_filters'][] = array(
 				'key' => rgget( 'search_field', $args ), // The field ID to search
-				'value' => esc_attr( $args['search_value'] ), // The value to search
+				'value' => _wp_specialchars( $args['search_value'] ), // The value to search. Encode ampersands but not quotes.
 				'operator' => $operator,
 			);
 		}
@@ -976,7 +1070,7 @@ class GravityView_frontend {
 			'page_size' => $page_size,
 		);
 
-		do_action( 'gravityview_log_debug', '[get_view_entries] Paging: ', $paging );
+		do_action( 'gravityview_log_debug', __METHOD__ . ': Paging: ', $paging );
 
 		// Sorting
 		$sorting = self::updateViewSorting( $args, $form_id );
@@ -1012,13 +1106,13 @@ class GravityView_frontend {
 		 */
 		$parameters = apply_filters( 'gravityview_get_entries_'.$args['id'], $parameters, $args, $form_id );
 
-		do_action( 'gravityview_log_debug', '[get_view_entries] $parameters passed to gravityview_get_entries(): ', $parameters );
+		do_action( 'gravityview_log_debug', __METHOD__ . ': $parameters passed to gravityview_get_entries(): ', $parameters );
 
 		//fetch entries
 		$count = 0;
 		$entries = gravityview_get_entries( $form_id, $parameters, $count );
 
-		do_action( 'gravityview_log_debug', sprintf( '[get_view_entries] Get Entries. Found: %s entries', $count ), $entries );
+		do_action( 'gravityview_log_debug', sprintf( '%s: Get Entries. Found: %s entries', __METHOD__, $count ), $entries );
 
 		/**
 		 * @filter `gravityview_view_entries` Filter the entries output to the View
@@ -1044,7 +1138,7 @@ class GravityView_frontend {
 	 *
 	 * @since 1.7
 	 *
-	 * @param $args View settings. Required to have `sort_field` and `sort_direction` keys
+	 * @param array $args View settings. Required to have `sort_field` and `sort_direction` keys
 	 * @param int $form_id The ID of the form used to sort
 	 * @return array $sorting Array with `key`, `direction` and `is_numeric` keys
 	 */
@@ -1248,7 +1342,7 @@ class GravityView_frontend {
 					$css_dependencies[] = 'dashicons';
 				}
 
-				wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'includes/lib/jquery-cookie/jquery_cookie.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GravityView_Plugin::version, true );
+				wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GravityView_Plugin::version, true );
 
 				$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
@@ -1260,10 +1354,9 @@ class GravityView_frontend {
 					wp_enqueue_style( 'gravityview_font', plugins_url( 'assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
 				}
 
-				wp_enqueue_style( 'gravityview_default_style', plugins_url( 'templates/css/gv-default-styles.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
+				$this->enqueue_default_style( $css_dependencies );
 
 				self::add_style( $data['template_id'] );
-
 			}
 
 			if ( 'wp_print_footer_scripts' === current_filter() ) {
@@ -1284,6 +1377,33 @@ class GravityView_frontend {
 				wp_localize_script( 'gravityview-fe-view', 'gvGlobals', $js_localization );
 			}
 		}
+	}
+
+	/**
+	 * Handle enqueuing the `gravityview_default_style` stylesheet
+	 *
+	 * @since 1.17
+	 *
+	 * @param array $css_dependencies Dependencies for the `gravityview_default_style` stylesheet
+	 *
+	 * @return void
+	 */
+	private function enqueue_default_style( $css_dependencies = array() ) {
+
+		/**
+		 * @filter `gravityview_use_legacy_search_css` Should GravityView use the legacy Search Bar stylesheet (from before Version 1.17)?
+		 * @since 1.17
+		 * @param bool $use_legacy_search_style If true, loads `gv-legacy-search(-rtl).css`. If false, loads `gv-default-styles(-rtl).css`. `-rtl` is added on RTL websites. Default: `false`
+		 */
+		$use_legacy_search_style = apply_filters( 'gravityview_use_legacy_search_style', false );
+
+		$rtl = is_rtl() ? '-rtl' : '';
+
+		$css_file_base = $use_legacy_search_style ? 'gv-legacy-search' : 'gv-default-styles';
+
+		$path = gravityview_css_url( $css_file_base . $rtl . '.css' );
+
+		wp_enqueue_style( 'gravityview_default_style', $path, $css_dependencies, GravityView_Plugin::version, 'all' );
 	}
 
 	/**
@@ -1333,7 +1453,7 @@ class GravityView_frontend {
 
 		$sorting = GravityView_View::getInstance()->getSorting();
 
-		$class = 'gv-sort icon';
+		$class = 'gv-sort';
 
 		$sort_field_id = self::_override_sorting_id_by_field_type( $field['id'], $form['id'] );
 
@@ -1371,11 +1491,13 @@ class GravityView_frontend {
 	 *
 	 * @return bool True: Yes, field is sortable; False: not sortable
 	 */
-	public function is_field_sortable( $field_id = '', $form ) {
+	public function is_field_sortable( $field_id = '', $form = array() ) {
+
+		$field_type = $field_id;
 
 		if( is_numeric( $field_id ) ) {
 			$field = GFFormsModel::get_field( $form, $field_id );
-			$field_id = $field->type;
+			$field_type = $field->type;
 		}
 
 		$not_sortable = array(
@@ -1386,13 +1508,13 @@ class GravityView_frontend {
 		/**
 		 * @filter `gravityview/sortable/field_blacklist` Modify what fields should never be sortable.
 		 * @since 1.7
-		 * @param array $not_sortable Array of field types that aren't sortable
-		 * @param string $field_id Field ID to check whether the field is sortable
+		 * @param[in,out] array $not_sortable Array of field types that aren't sortable
+		 * @param string $field_type Field type to check whether the field is sortable
 		 * @param array $form Gravity Forms form
 		 */
-		$not_sortable = apply_filters( 'gravityview/sortable/field_blacklist', $not_sortable, $field_id, $form );
+		$not_sortable = apply_filters( 'gravityview/sortable/field_blacklist', $not_sortable, $field_type, $form );
 
-		if ( in_array( $field_id, $not_sortable ) ) {
+		if ( in_array( $field_type, $not_sortable ) ) {
 			return false;
 		}
 

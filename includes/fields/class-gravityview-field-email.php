@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file class-gravityview-field-email.php
+ * @package GravityView
+ * @subpackage includes\fields
+ */
 
 /**
  * Add custom options for email fields
@@ -12,6 +17,11 @@ class GravityView_Field_Email extends GravityView_Field {
 	var $_gf_field_class_name = 'GF_Field_Email';
 
 	var $group = 'advanced';
+
+	public function __construct() {
+		$this->label = esc_html__( 'Email', 'gravityview' );
+		parent::__construct();
+	}
 
 	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 

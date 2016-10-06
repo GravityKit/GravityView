@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file class-gravityview-field-other-entries.php
+ * @package GravityView
+ * @subpackage includes\fields
+ * @since 1.7.2
+ */
 
 /**
  * A field that displays other entries by the entry_creator for the same View in a list format
@@ -16,8 +22,8 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 	var $group = 'gravityview';
 
 	public function __construct() {
-		$this->label = esc_attr__( 'Other Entries', 'gravityview' );
-		$this->description = __('Display other entries created by the entry creator.', 'gravityview');
+		$this->label = esc_html__( 'Other Entries', 'gravityview' );
+		$this->description = esc_html__('Display other entries created by the entry creator.', 'gravityview');
 		parent::__construct();
 	}
 

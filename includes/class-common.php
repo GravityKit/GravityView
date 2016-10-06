@@ -87,15 +87,21 @@ class GVCommon {
 	 * Get all existing Views
 	 *
 	 * @since  1.5.4
+	 * @since  TODO Added $args array
+	 *
+	 * @param array $args Pass custom array of args, formatted as if for `get_posts()`
+	 *
 	 * @return array Array of Views as `WP_Post`. Empty array if none found.
 	 */
-	public static function get_all_views() {
+	public static function get_all_views( $args = array() ) {
 
-		$params = array(
+		$default_params = array(
 			'post_type' => 'gravityview',
 			'posts_per_page' => -1,
 			'post_status' => 'publish',
 		);
+
+		$params = wp_parse_args( $args, $default_params );
 
 		/**
 		 * @filter `gravityview/get_all_views/params` Modify the parameters sent to get all views.
@@ -124,6 +130,24 @@ class GVCommon {
 	}
 
 	/**
+	 * Check whether a form has product fields
+	 *
+	 * @since 1.16
+	 *
+	 * @param array $form Gravity Forms form array
+	 *
+	 * @return bool|GF_Field[]
+	 */
+	public static function has_product_field( $form = array() ) {
+
+		$product_fields = apply_filters( 'gform_product_field_types', array( 'option', 'quantity', 'product', 'total', 'shipping', 'calculation', 'price' ) );
+
+		$fields = GFAPI::get_fields_by_type( $form, $product_fields );
+
+		return empty( $fields ) ? false : $fields;
+	}
+
+	/**
 	 * Get the entry ID from the entry slug, which may or may not be the entry ID
 	 *
 	 * @since  1.5.2
@@ -149,31 +173,34 @@ class GVCommon {
 			'page_size' => 1,
 		);
 
-		$results = GFAPI::get_entries( 0, $search_criteria, null, $paging );
+		/**
+		 * @filter `gravityview/common/get_entry_id_from_slug/form_id` The form ID used to get the custom entry ID. Change this to avoid collisions with data from other forms with the same values and the same field ID.
+		 * @since 1.17.2
+		 * @param int $form_id ID of the form to search. Default: `0` (searches all forms)
+		 */
+		$form_id = apply_filters( 'gravityview/common/get_entry_id_from_slug/form_id', 0 );
+
+		$results = GFAPI::get_entries( intval( $form_id ), $search_criteria, null, $paging );
 
 		$result = ( ! empty( $results ) && ! empty( $results[0]['id'] ) ) ? $results[0]['id'] : null;
 
 		return $result;
 	}
 
-
 	/**
-	 * Returns the list of available forms
+	 * Alias of GFAPI::get_forms()
 	 *
-	 * @access public
-	 * @param mixed $form_id
-	 * @return array Empty array if GFAPI isn't available or no forms. Otherwise, associative array with id, title keys
+	 * @see GFAPI::get_forms()
+	 *
+	 * @param bool $active Status of forms. Default: `true`
+	 * @param bool $trash Include forms in trash? Default: `false`
+	 *
+	 * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
 	 */
-	public static function get_forms() {
+	public static function get_forms(  $active = true, $trash = false ) {
 		$forms = array();
 		if ( class_exists( 'GFAPI' ) ) {
-			$gf_forms = GFAPI::get_forms();
-			foreach ( $gf_forms as $form ) {
-				$forms[] = array(
-					'id' => $form['id'],
-					'title' => $form['title'],
-				);
-			}
+			$forms = GFAPI::get_forms( $active, $trash );
 		}
 		return $forms;
 	}
@@ -183,6 +210,8 @@ class GVCommon {
 	 *
 	 * @access public
 	 * @param string|array $form_id (default: '') or $form object
+	 * @param bool $add_default_properties
+	 * @param bool $include_parent_field
 	 * @return array
 	 */
 	public static function get_form_fields( $form = '', $add_default_properties = false, $include_parent_field = true ) {
@@ -194,18 +223,12 @@ class GVCommon {
 		$fields = array();
 		$has_product_fields = false;
 		$has_post_fields = false;
-		$has_quiz_fields = false;
-		$has_poll_fields = false;
-
-		// If GF_Field exists, we're using GF 1.9+, where add_default_properties has been deprecated.
-		if ( false === class_exists( 'GF_Field' ) && $add_default_properties ) {
-			$form = RGFormsModel::add_default_properties( $form );
-		}
 
 		if ( $form ) {
 			foreach ( $form['fields'] as $field ) {
+
 				if ( $include_parent_field || empty( $field['inputs'] ) ) {
-					$fields[ $field['id'] ] = array(
+					$fields["{$field->id}"] = array(
 						'label' => rgar( $field, 'label' ),
 						'parent' => null,
 						'type' => rgar( $field, 'type' ),
@@ -214,16 +237,16 @@ class GVCommon {
 					);
 				}
 
-				if ( $add_default_properties && ! empty( $field['inputs'] ) ) {
-					foreach ( $field['inputs'] as $input ) {
+				if ( $add_default_properties && ! empty( $field->inputs ) ) {
+					foreach ( $field->inputs as $input ) {
                         /**
                          * @hack
                          * In case of email/email confirmation, the input for email has the same id as the parent field
                          */
-                        if( 'email' == rgar( $field, 'type' ) && false === strpos( $input['id'], '.' ) ) {
+						if( 'email' === $field->type && false === strpos( $input['id'], '.' ) ) {
                             continue;
                         }
-						$fields[ (string)$input['id'] ] = array(
+						$fields["{$input['id']}"] = array(
 							'label' => rgar( $input, 'label' ),
 							'customLabel' => rgar( $input, 'customLabel' ),
 							'parent' => $field,
@@ -234,48 +257,12 @@ class GVCommon {
 					}
 				}
 
-				/** @since 1.14 */
-				if( 'list' === $field['type'] && !empty( $field['enableColumns'] ) ) {
 
-					foreach ( (array)$field['choices'] as $key => $input ) {
-
-						$input_id = sprintf( '%d.%d', $field['id'], $key ); // {field_id}.{column_key}
-
-						$fields[ $input_id ] = array(
-							'label'       => rgar( $input, 'text' ),
-							'customLabel' => '',
-							'parent'      => $field,
-							'type'        => rgar( $field, 'type' ),
-							'adminLabel'  => rgar( $field, 'adminLabel' ),
-							'adminOnly'   => rgar( $field, 'adminOnly' ),
-						);
-					}
-				}
-
-				/**
-				 * @since 1.8
-				 */
-				if( 'quiz' === $field['type'] ) {
-					$has_quiz_fields = true;
-				}
-
-				/**
-				 * @since 1.8
-				 */
-				if( 'poll' === $field['type'] ) {
-					$has_poll_fields = true;
-				}
-
-				if( GFCommon::is_product_field( $field['type'] ) ){
+				if( GFCommon::is_product_field( $field->type ) ){
 					$has_product_fields = true;
 				}
 
-				/**
-				 * @hack Version 1.9
-				 */
-				$field_for_is_post_field = class_exists( 'GF_Fields' ) ? (object) $field : (array) $field;
-
-				if ( GFCommon::is_post_field( $field_for_is_post_field ) ) {
+				if ( GFCommon::is_post_field( $field ) ) {
 					$has_post_fields = true;
 				}
 			}
@@ -293,74 +280,32 @@ class GVCommon {
 
 		if ( $has_product_fields ) {
 
-			$fields['payment_status'] = array(
-				'label' => __( 'Payment Status', 'gravityview' ),
-				'type' => 'payment_status',
-			);
+			$payment_fields = GravityView_Fields::get_all( 'pricing' );
 
-			$fields['payment_date'] = array(
-				'label' => __( 'Payment Date', 'gravityview' ),
-				'type' => 'payment_date',
-			);
-
-			$fields['payment_amount'] = array(
-				'label' => __( 'Payment Amount', 'gravityview' ),
-				'type' => 'payment_amount',
-			);
-
-			$fields['payment_method'] = array(
-				'label' => __( 'Payment Method', 'gravityview' ),
-				'type' => 'payment_method',
-			);
-
-			$fields['is_fulfilled'] = array(
-				'label' => __( 'Is Fulfilled', 'gravityview' ),
-				'type' => 'is_fulfilled',
-			);
-
-			$fields['transaction_id'] = array(
-				'label' => __( 'Transaction ID', 'gravityview' ),
-				'type' => 'transaction_id',
-			);
-
-			$fields['transaction_type'] = array(
-				'label' => __( 'Transaction Type', 'gravityview' ),
-				'type' => 'transaction_type',
-			);
-
+			foreach ( $payment_fields as $payment_field ) {
+				if( isset( $fields["{$payment_field->name}"] ) ) {
+					continue;
+				}
+				$fields["{$payment_field->name}"] = array(
+					'label' => $payment_field->label,
+					'desc' => $payment_field->description,
+					'type' => $payment_field->name,
+				);
+			}
 		}
 
 		/**
-		 * @since 1.8
+		 * @filter `gravityview/common/get_form_fields` Modify the form fields shown in the Add Field field picker.
+		 * @since 1.17
+		 * @param array $fields Associative array of fields, with keys as field type, values an array with the following keys: (string) `label` (required), (string) `type` (required), `desc`, (string) `customLabel`, (GF_Field) `parent`, (string) `adminLabel`, (bool)`adminOnly`
+		 * @param array $form GF Form array
+		 * @param bool $include_parent_field Whether to include the parent field when getting a field with inputs
 		 */
-		if( $has_quiz_fields ) {
-
-			$fields['gquiz_score']   = array(
-				'label' => __( 'Quiz Score Total', 'gravityview' ),
-				'type'  => 'quiz_score',
-				'desc'  => __( 'Displays the number of correct Quiz answers the user submitted.', 'gravityview' ),
-			);
-			$fields['gquiz_percent'] = array(
-				'label' => __( 'Quiz Percentage Grade', 'gravityview' ),
-				'type'  => 'quiz_percent',
-				'desc'  => __( 'Displays the percentage of correct Quiz answers the user submitted.', 'gravityview' ),
-			);
-			$fields['gquiz_grade']   = array(
-				'label' => __( 'Quiz Letter Grade', 'gravityview' ),
-				'type'  => 'quiz_grade',
-				'desc'  => __( 'Displays the Grade the user achieved based on Letter Grading configured in the Quiz Settings.', 'gravityview' ),
-			);
-			$fields['gquiz_is_pass'] = array(
-				'label' => __( 'Quiz Pass/Fail', 'gravityview' ),
-				'type'  => 'quiz_is_pass',
-				'desc'  => __( 'Displays either Passed or Failed based on the Pass/Fail settings configured in the Quiz Settings.', 'gravityview' ),
-			);
-		}
+		$fields = apply_filters( 'gravityview/common/get_form_fields', $fields, $form, $include_parent_field );
 
 		return $fields;
 
 	}
-
 
 	/**
 	 * get extra fields from entry meta
@@ -389,7 +334,7 @@ class GVCommon {
 	 * @see  GFEntryList::leads_page()
 	 * @param  int $form_id ID of the Gravity Forms form
 	 * @since  1.1.6
-	 * @return array          Array of entry IDs
+	 * @return array|void          Array of entry IDs. Void if Gravity Forms isn't active.
 	 */
 	public static function get_entry_ids( $form_id, $search_criteria = array() ) {
 
@@ -405,11 +350,11 @@ class GVCommon {
 	 *
 	 * @since 1.7.4
 	 *
-	 * @param array $passed_criteria Input Criteria (search_criteria, sorting, paging)
-	 * @param array $form_ids Gravity Forms form IDs
-	 * @return array|mixed|void
+	 * @param array $passed_criteria array Input Criteria (search_criteria, sorting, paging)
+	 * @param array $form_ids array Gravity Forms form IDs
+	 * @return array
 	 */
-	public static function calculate_get_entries_criteria( $passed_criteria = null, $form_ids = null ) {
+	public static function calculate_get_entries_criteria( $passed_criteria = array(), $form_ids = array() ) {
 
 		$search_criteria_defaults = array(
 			'search_criteria' => null,
@@ -437,7 +382,15 @@ class GVCommon {
 				 */
 				$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter );
 			}
+
+			// don't send just the [mode] without any field filter.
+			if( count( $criteria['search_criteria']['field_filters'] ) === 1 && array_key_exists( 'mode' , $criteria['search_criteria']['field_filters'] ) ) {
+				unset( $criteria['search_criteria']['field_filters']['mode'] );
+			}
+
 		}
+
+
 
 		/**
 		 * Prepare date formats to be in Gravity Forms DB format;
@@ -467,7 +420,7 @@ class GVCommon {
 		if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() || GravityView_frontend::getInstance()->getSingleEntry() ) {
 			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
 		} elseif ( 'delete' === RGForms::get( 'action' ) ) {
-			$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? $_GET['view_id'] : null;
+			$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? intval( $_GET['view_id'] ) : null;
 		} elseif( !isset( $criteria['context_view_id'] ) ) {
             // Prevent overriding the Context View ID: Some widgets could set the context_view_id (e.g. Recent Entries widget)
 			$criteria['context_view_id'] = null;
@@ -481,7 +434,7 @@ class GVCommon {
 		 */
 		$criteria = apply_filters( 'gravityview_search_criteria', $criteria, $form_ids, $criteria['context_view_id'] );
 
-		return $criteria;
+		return (array)$criteria;
 
 	}
 
@@ -506,6 +459,9 @@ class GVCommon {
 
 		// Return value
 		$return = null;
+
+		/** Reduce # of database calls */
+		add_filter( 'gform_is_encrypted_field', '__return_false' );
 
 		if ( ! empty( $criteria['cache'] ) ) {
 
@@ -556,6 +512,9 @@ class GVCommon {
 			$return = $entries;
 		}
 
+		/** Remove filter added above */
+		remove_filter( 'gform_is_encrypted_field', '__return_false' );
+
 		/**
 		 * @filter `gravityview_entries` Modify the array of entries returned to GravityView after it has been fetched from the cache or from `GFAPI::get_entries()`.
 		 * @param  array|null $entries Array of entries as returned by the cache or by `GFAPI::get_entries()`
@@ -575,7 +534,7 @@ class GVCommon {
 	 * Since 1.4, supports custom entry slugs. The way that GravityView fetches an entry based on the custom slug is by searching `gravityview_unique_id` meta. The `$entry_slug` is fetched by getting the current query var set by `is_single_entry()`
 	 *
 	 * @access public
-	 * @param mixed $entry_id
+	 * @param string|int $entry_slug Either entry ID or entry slug string
 	 * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
 	 * @param boolean $check_entry_display Check whether the entry is visible for the current View configuration. Default: true. {@since 1.14}
 	 * @return array|boolean
@@ -621,6 +580,14 @@ class GVCommon {
 
 			// fetch the entry
 			$entry = GFAPI::get_entry( $entry_id );
+
+			/**
+			 * @filter `gravityview/common/get_entry/check_entry_display` Override whether to check entry display rules against filters
+			 * @since 1.16.2
+			 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
+			 * @param array $entry Gravity Forms entry array
+			 */
+			$check_entry_display = apply_filters( 'gravityview/common/get_entry/check_entry_display', $check_entry_display, $entry );
 
 			if( $check_entry_display ) {
 				// Is the entry allowed
@@ -708,6 +675,7 @@ class GVCommon {
 	 * @see GFFormsModel::is_value_match()
 	 *
 	 * @since 1.7.4
+	 * @todo Return WP_Error instead of boolean
 	 *
 	 * @param array $entry Gravity Forms Entry object
 	 * @return bool|array Returns 'false' if entry is not valid according to the view search filters (Adv Filter)
@@ -725,6 +693,16 @@ class GVCommon {
 		}
 
 		$criteria = self::calculate_get_entries_criteria();
+
+		// Make sure the current View is connected to the same form as the Entry
+		if( ! empty( $criteria['context_view_id'] ) ) {
+			$context_view_id = intval( $criteria['context_view_id'] );
+			$context_form_id = gravityview_get_form_id( $context_view_id );
+			if( intval( $context_form_id ) !== intval( $entry['form_id'] ) ) {
+				do_action( 'gravityview_log_debug', sprintf( '[apply_filters_to_entry] Entry form ID does not match current View connected form ID:', $entry['form_id'] ), $criteria['context_view_id'] );
+				return false;
+			}
+		}
 
 		if ( empty( $criteria['search_criteria'] ) || ! is_array( $criteria['search_criteria'] ) ) {
 			do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Entry approved! No search criteria found:', $criteria );
@@ -798,22 +776,98 @@ class GVCommon {
 
 
 	/**
+	 * Allow formatting date and time based on GravityView standards
+	 *
+	 * @since 1.16
+	 *
+	 * @see GVCommon_Test::test_format_date for examples
+	 *
+	 * @param string $date_string The date as stored by Gravity Forms (`Y-m-d h:i:s` GMT)
+	 * @param string|array $args Array or string of settings for output parsed by `wp_parse_args()`; Can use `raw=1` or `array('raw' => true)` \n
+	 * - `raw` Un-formatted date string in original `Y-m-d h:i:s` format
+	 * - `timestamp` Integer timestamp returned by GFCommon::get_local_timestamp()
+	 * - `diff` "%s ago" format, unless other `format` is defined
+	 * - `human` Set $is_human parameter to true for `GFCommon::format_date()`. Shows `diff` within 24 hours or date after. Format based on blog setting, unless `format` is defined.
+	 * - `time` Include time in the `GFCommon::format_date()` output
+	 * - `format` Define your own date format, or `diff` format
+	 *
+	 * @return int|null|string Formatted date based on the original date
+	 */
+	public static function format_date( $date_string = '', $args = array() ) {
+
+		$default_atts = array(
+			'raw' => false,
+			'timestamp' => false,
+			'diff' => false,
+			'human' => false,
+			'format' => '',
+			'time' => false,
+		);
+
+		$atts = wp_parse_args( $args, $default_atts );
+
+		/**
+		 * Gravity Forms code to adjust date to locally-configured Time Zone
+		 * @see GFCommon::format_date() for original code
+		 */
+		$date_gmt_time   = mysql2date( 'G', $date_string );
+		$date_local_timestamp = GFCommon::get_local_timestamp( $date_gmt_time );
+
+		$format  = rgar( $atts, 'format' );
+		$is_human  = ! empty( $atts['human'] );
+		$is_diff  = ! empty( $atts['diff'] );
+		$is_raw = ! empty( $atts['raw'] );
+		$is_timestamp = ! empty( $atts['timestamp'] );
+		$include_time = ! empty( $atts['time'] );
+
+		// If we're using time diff, we want to have a different default format
+		if( empty( $format ) ) {
+			/* translators: %s: relative time from now, used for generic date comparisons. "1 day ago", or "20 seconds ago" */
+			$format = $is_diff ? esc_html__( '%s ago', 'gravityview' ) : get_option( 'date_format' );
+		}
+
+		// If raw was specified, don't modify the stored value
+		if ( $is_raw ) {
+			$formatted_date = $date_string;
+		} elseif( $is_timestamp ) {
+			$formatted_date = $date_local_timestamp;
+		} elseif ( $is_diff ) {
+			$formatted_date = sprintf( $format, human_time_diff( $date_gmt_time ) );
+		} else {
+			$formatted_date = GFCommon::format_date( $date_string, $is_human, $format, $include_time );
+		}
+
+		unset( $format, $is_diff, $is_human, $is_timestamp, $is_raw, $date_gmt_time, $date_local_timestamp, $default_atts );
+
+		return $formatted_date;
+	}
+
+	/**
 	 * Retrieve the label of a given field id (for a specific form)
 	 *
 	 * @access public
-	 * @param array $form
-	 * @param string $field_id
+	 * @since 1.17 Added $field_value parameter
+	 *
+	 * @param array $form Gravity Forms form array
+	 * @param string $field_id ID of the field. If an input, full input ID (like `1.3`)
+	 * @param string|array $field_value Raw value of the field.
 	 * @return string
 	 */
-	public static function get_field_label( $form = array(), $field_id = '' ) {
+	public static function get_field_label( $form = array(), $field_id = '', $field_value = '' ) {
 
 		if ( empty( $form ) || empty( $field_id ) ) {
 			return '';
 		}
 
 		$field = self::get_field( $form, $field_id );
-		return isset( $field['label'] ) ?  $field['label'] : '';
 
+		$label = rgar( $field, 'label' );
+
+		if( floor( $field_id ) !== floatval( $field_id ) ) {
+			$label = GFFormsModel::get_choice_text( $field, $field_value, $field_id );
+		}
+
+		return $label;
 	}
 
 
@@ -827,7 +881,7 @@ class GVCommon {
 	 * @access public
 	 * @param array $form
 	 * @param string|int $field_id
-	 * @return array|null Array: Gravity Forms field array; NULL: Gravity Forms GFFormsModel does not exist
+	 * @return GF_Field|null Gravity Forms field object, or NULL: Gravity Forms GFFormsModel does not exist or field at $field_id doesn't exist.
 	 */
 	public static function get_field( $form, $field_id ) {
 		if ( class_exists( 'GFFormsModel' ) ){
@@ -887,8 +941,10 @@ class GVCommon {
 					// Changed this to $shortcode instead of true so we get the parsed atts.
 					$shortcodes[] = $shortcode;
 
-				} else if ( isset( $shortcode[5] ) && $result = self::has_shortcode_r( $shortcode[5], $tag ) ) {
-					$shortcodes = $result;
+				} else if ( isset( $shortcode[5] ) && $results = self::has_shortcode_r( $shortcode[5], $tag ) ) {
+					foreach( $results as $result ) {
+						$shortcodes[] = $result;
+					}
 				}
 			}
 
@@ -932,7 +988,7 @@ class GVCommon {
 	 *
 	 * @param int $view_id The ID of the View to get the connected form of
 	 *
-	 * @return string ID of the connected Form, if exists. Empty string if not.
+	 * @return false|string ID of the connected Form, if exists. Empty string if not. False if not the View ID isn't valid.
 	 */
 	public static function get_meta_form_id( $view_id ) {
 		return get_post_meta( $view_id, '_gravityview_form_id', true );
@@ -1022,11 +1078,27 @@ class GVCommon {
 	 * 	[other zones]
 	 * )
 	 *
+	 * @since 1.17.4 Added $apply_filter parameter
+	 *
 	 * @param  int $post_id View ID
+	 * @param  bool $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
 	 * @return array          Multi-array of fields with first level being the field zones. See code comment.
 	 */
-	public static function get_directory_fields( $post_id ) {
-		return get_post_meta( $post_id, '_gravityview_directory_fields', true );
+	public static function get_directory_fields( $post_id, $apply_filter = true ) {
+		$fields = get_post_meta( $post_id, '_gravityview_directory_fields', true );
+
+		if( $apply_filter ) {
+			/**
+			 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array
+			 * @since 1.6.5
+			 *
+			 * @param $fields array Multi-array of fields with first level being the field zones
+			 * @param $post_id int Post ID
+			 */
+			$fields = apply_filters( 'gravityview/configuration/fields', $fields, $post_id );
+		}
+
+		return $fields;
 	}
 
 
@@ -1067,7 +1139,7 @@ class GVCommon {
 	 * @param int $formid Gravity Forms form ID
 	 * @param array $blacklist Field types to exclude
 	 *
-	 * @since TODO
+	 * @since 1.8
 	 *
 	 * @todo Get all fields, check if sortable dynamically
 	 *
@@ -1135,6 +1207,17 @@ class GVCommon {
 	 */
 	public static function is_field_numeric(  $form = null, $field = '' ) {
 
+		if ( ! is_array( $form ) && ! is_array( $field ) ) {
+			$form = self::get_form( $form );
+		}
+
+		// If entry meta, it's a string. Otherwise, numeric
+		if( ! is_numeric( $field ) && is_string( $field ) ) {
+			$type = $field;
+		} else {
+			$type = self::get_field_type( $form, $field );
+		}
+
 		/**
 		 * @filter `gravityview/common/numeric_types` What types of fields are numeric?
 		 * @since 1.5.2
@@ -1142,14 +1225,16 @@ class GVCommon {
 		 */
 		$numeric_types = apply_filters( 'gravityview/common/numeric_types', array( 'number', 'time' ) );
 
-		if ( ! is_array( $form ) && ! is_array( $field ) ) {
-			$form = self::get_form( $form );
+		// Defer to GravityView_Field setting, if the field type is registered and `is_numeric` is true
+		if( $gv_field = GravityView_Fields::get( $type ) ) {
+			if( true === $gv_field->is_numeric ) {
+				$numeric_types[] = $gv_field->is_numeric;
+			}
 		}
 
-		$type = self::get_field_type( $form, $field );
+		$return = in_array( $type, $numeric_types );
 
-		return in_array( $type, $numeric_types );
-
+		return $return;
 	}
 
 	/**
@@ -1299,13 +1384,26 @@ class GVCommon {
 
 		$final_atts['href'] = esc_url_raw( $href );
 
+		/**
+		 * Fix potential security issue with target=_blank
+		 * @see https://dev.to/ben/the-targetblank-vulnerability-by-example
+		 */
+		if( '_blank' === rgar( $final_atts, 'target' ) ) {
+			$final_atts['rel'] = trim( rgar( $final_atts, 'rel', '' ) . ' noopener noreferrer' );
+		}
+
+		// Sort the attributes alphabetically, to help testing
+		ksort( $final_atts );
+
 		// For each attribute, generate the code
 		$output = '';
 		foreach ( $final_atts as $attr => $value ) {
 			$output .= sprintf( ' %s="%s"', $attr, esc_attr( $value ) );
 		}
 
-		$output = '<a'. $output .'>'. $anchor_text .'</a>';
+		if( '' !== $output ) {
+			$output = '<a' . $output . '>' . $anchor_text . '</a>';
+		}
 
 		return $output;
 	}
@@ -1326,10 +1424,11 @@ class GVCommon {
 	 */
 	public static function array_merge_recursive_distinct( array &$array1, array &$array2 ) {
 		$merged = $array1;
-
-		foreach ( $array2 as $key => &$value )  {
+		foreach ( $array2 as $key => $value ) {
 			if ( is_array( $value ) && isset( $merged[ $key ] ) && is_array( $merged[ $key ] ) ) {
 				$merged[ $key ] = self::array_merge_recursive_distinct( $merged[ $key ], $value );
+			} else if ( is_numeric( $key ) && isset( $merged[ $key ] ) ) {
+				$merged[] = $value;
 			} else {
 				$merged[ $key ] = $value;
 			}
@@ -1380,7 +1479,51 @@ class GVCommon {
         return '<div class="gv-notice '.gravityview_sanitize_html_class( $class ) .'">'. $notice .'</div>';
     }
 
+	/**
+	 * Inspired on \GFCommon::encode_shortcodes, reverse the encoding by replacing the ascii characters by the shortcode brackets
+	 * @since 1.16.5
+	 * @param string $string Input string to decode
+	 * @return string $string Output string
+	 */
+	public static function decode_shortcodes( $string ) {
+		$replace = array( '[', ']', '"' );
+		$find = array( '&#91;', '&#93;', '&quot;' );
+		$string = str_replace( $find, $replace, $string );
 
+		return $string;
+	}
+
+
+	/**
+	 * Send email using GFCommon::send_email()
+	 *
+	 * @since 1.17
+	 *
+	 * @see GFCommon::send_email This just makes the method public
+	 *
+	 * @param string $from               Sender address (required)
+	 * @param string $to                 Recipient address (required)
+	 * @param string $bcc                BCC recipients (required)
+	 * @param string $reply_to           Reply-to address (required)
+	 * @param string $subject            Subject line (required)
+	 * @param string $message            Message body (required)
+	 * @param string $from_name          Displayed name of the sender
+	 * @param string $message_format     If "html", sent text as `text/html`. Otherwise, `text/plain`. Default: "html".
+	 * @param string|array $attachments  Optional. Files to attach. {@see wp_mail()} for usage. Default: "".
+	 * @param array|false $entry         Gravity Forms entry array, related to the email. Default: false.
+	 * @param array|false $notification  Gravity Forms notification that triggered the email. {@see GFCommon::send_notification}. Default:false.
+	 */
+	public static function send_email( $from, $to, $bcc, $reply_to, $subject, $message, $from_name = '', $message_format = 'html', $attachments = '', $entry = false, $notification = false ) {
+
+		$SendEmail = new ReflectionMethod( 'GFCommon', 'send_email' );
+
+		// It was private; let's make it public
+		$SendEmail->setAccessible( true );
+
+		// Required: $from, $to, $bcc, $replyTo, $subject, $message
+		// Optional: $from_name, $message_format, $attachments, $lead, $notification
+		$SendEmail->invoke( new GFCommon, $from, $to, $bcc, $reply_to, $subject, $message, $from_name, $message_format, $attachments, $entry, $notification );
+	}
 
 
 } //end class
