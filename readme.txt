@@ -20,8 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.17.5 =
-* Now requires Gravity Forms 1.9.14 (previously, 1.9.9.10)
+= 1.18 =
+* Updated minimum requirements: WordPress 3.5, Gravity Forms 1.9.14
 * Added: Shortcut to create a View for an existing form
 * Fixed: "New form created" message not shown when saving a draft using a View preset
 * Fixed: Edit Entry not saving other field values when Post fields were in the Edit Entry form
