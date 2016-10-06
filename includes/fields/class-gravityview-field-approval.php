@@ -142,15 +142,15 @@ class GravityView_Field_Approval extends GravityView_Field {
 	 * @param string|array $form form_ID or form object
 	 * @param string $context  Either 'single', 'directory', 'header', 'footer'
 	 *
-	 * @return mixed
+	 * @return array
 	 */
 	public function filter_gravityview_entry_default_field( $entry_default_fields, $form, $context ) {
 
-		if( !isset( $entry_default_fields[ "{$this->name}" ] ) ) {
-			$entry_default_fields[ "{$this->name}" ] = array(
+		if ( ! isset( $entry_default_fields["{$this->name}"] ) ) {
+			$entry_default_fields["{$this->name}"] = array(
 				'label' => $this->label,
-				'desc'	=> $this->description,
-				'type' => $this->name,
+				'desc'  => $this->description,
+				'type'  => $this->name,
 			);
 		}
 
