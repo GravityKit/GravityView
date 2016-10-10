@@ -88,28 +88,6 @@ class GravityView_Field_Approval extends GravityView_Field {
 	}
 
 	/**
-	 * Get the strings used in the field approval field
-	 * @since TODO
-	 * @return array
-	 */
-	static public function get_strings() {
-
-		/**
-		 * @filter `gravityview/field/approval/text` Modify the text values used in field approval
-		 * @param array $field_approval_text Array with `label_approve`, `label_disapprove`, `approve_title`, and `unapprove_title` keys.
-		 * @since TODO
-		 */
-		$field_approval_text = apply_filters( 'gravityview/field/approval/text', array(
-			'label_approve' => __( 'Approve', 'gravityview' ) ,
-			'label_disapprove' => __( 'Disapprove', 'gravityview' ),
-			'approve_title' => __( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravityview'),
-			'unapprove_title' => __( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravityview'),
-		) );
-
-		return $field_approval_text;
-	}
-
-	/**
 	 * Register the field approval script and output the localized text JS variables
 	 * @since TODO
 	 * @return void
@@ -125,12 +103,10 @@ class GravityView_Field_Approval extends GravityView_Field {
 
 		wp_enqueue_script( 'gravityview-field-approval' );
 
-		$field_approval_text = self::get_strings();
-
 		wp_localize_script( 'gravityview-field-approval', 'gvApproval', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries'),
-			'text' => array_map( 'esc_js', $field_approval_text ),
+			'status' => GravityView_Entry_Approval_Status::get_all(),
 		));
 
 	}
@@ -157,6 +133,47 @@ class GravityView_Field_Approval extends GravityView_Field {
 		return $entry_default_fields;
 	}
 
+	/**
+	 * Get the anchor text for a link, based on the current status
+	 *
+	 * @since 1.18
+	 * @uses GravityView_Entry_Approval_Status::get_string()
+	 *
+	 * @param string $approved_status Status string or key
+	 *
+	 * @return false|string False if string doesn't exist, otherwise the "label" for the status
+	 */
+	public static function get_anchor_text( $approved_status = '' ) {
+		return GravityView_Entry_Approval_Status::get_string( $approved_status, 'label' );
+	}
+
+	/**
+	 * Get the title attribute for a link, based on the current status
+	 *
+	 * @since 1.18
+	 * @uses GravityView_Entry_Approval_Status::get_string()
+	 *
+	 * @param int|string $approved_status Status string or key
+	 *
+	 * @return false|string
+	 */
+	public static function get_title_attr( $approved_status ) {
+		return GravityView_Entry_Approval_Status::get_string( $approved_status, 'title' );
+	}
+
+	/**
+	 * Get the CSS class for a link, based on the current status
+	 *
+	 * @param int|string $approved_status Status string or key
+	 *
+	 * @return string CSS class, sanitized using esc_attr()
+	 */
+	public static function get_css_class( $approved_status ) {
+
+		$approved_key = GravityView_Entry_Approval_Status::get_key( $approved_status );
+
+		return esc_attr( "gv-approval-{$approved_key}" );
+	}
 }
 
 new GravityView_Field_Approval;
