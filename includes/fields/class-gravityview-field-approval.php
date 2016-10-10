@@ -4,9 +4,9 @@
  * Add custom options for address fields
  * @since 1.18
  */
-class GravityView_Field_Approval extends GravityView_Field {
+class GravityView_Field_Entry_Approval extends GravityView_Field {
 
-	var $name = 'approval';
+	var $name = 'entry_approval';
 
 	var $is_searchable = true;
 
@@ -178,4 +178,4 @@ class GravityView_Field_Approval extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Approval;
+new GravityView_Field_Entry_Approval;
