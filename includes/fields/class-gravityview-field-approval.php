@@ -105,7 +105,7 @@ class GravityView_Field_Approval extends GravityView_Field {
 
 		wp_localize_script( 'gravityview-field-approval', 'gvApproval', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
-			'nonce' => wp_create_nonce( 'gravityview_ajaxgfentries'),
+			'nonce' => wp_create_nonce('gravityview_entry_approval'),
 			'status' => GravityView_Entry_Approval_Status::get_all(),
 		));
 
