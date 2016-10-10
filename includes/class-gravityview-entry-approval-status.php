@@ -45,30 +45,64 @@ final class GravityView_Entry_Approval_Status {
 	/**
 	 * Match values to the labels
 	 *
+	 * @since 1.18
+	 *
 	 * @return array
 	 */
 	private static function get_choices() {
 		return array(
-			self::DISAPPROVED => esc_html__( 'Disapproved', 'gravityview' ),
-			self::APPROVED    => esc_html__( 'Approved', 'gravityview' ),
-			self::UNAPPROVED => esc_html__( 'Unapproved', 'gravityview' ),
+			'disapproved' => array(
+				'value'  => self::DISAPPROVED,
+				'label'  => esc_html__( 'Disapproved', 'gravityview' ),
+				'action' => __( 'Disapprove', 'gravityview' ),
+				'title'  => __( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravityview' ),
+			),
+			'approved'    => array(
+				'value'  => self::APPROVED,
+				'label'  => esc_html__( 'Approved', 'gravityview' ),
+				'action' => __( 'Approve', 'gravityview' ),
+				'title'  => __( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravityview' ),
+			),
+			'unapproved'  => array(
+				'value'  => self::UNAPPROVED,
+				'label'  => esc_html__( 'Unapproved', 'gravityview' ),
+				'action' => __( 'Reset Approval', 'gravityview' ),
+				'title'  => __( 'Entry not yet reviewed. Click to approve this entry.', 'gravityview' ),
+			),
 		);
+	}
+
+	/**
+	 * Return array of status options
+	 *
+	 * @see GravityView_Entry_Approval_Status::get_choices
+	 *
+	 * @return array Associative array of available statuses
+	 */
+	public static function get_all() {
+		return self::get_choices();
 	}
 
 	/**
 	 * Get the status values as an array
 	 *
+	 * @since 1.18
+	 *
 	 * @return array Array of values for approval status choices
 	 */
 	public static function get_values() {
 
-		$values = self::get_choices();
+		$choices = self::get_choices();
 
-		return array_keys( $values );
+		$values = wp_list_pluck( $choices, 'value' );
+
+		return $values;
 	}
 
 	/**
 	 * Convert previously-used values to the current values, for backward compatibility
+	 *
+	 * @since 1.18
 	 *
 	 * @param string $old_value The status
 	 *
@@ -104,6 +138,8 @@ final class GravityView_Entry_Approval_Status {
 	/**
 	 * Check whether the passed value is one of the defined values for entry approval
 	 *
+	 * @since 1.18
+	 *
 	 * @param mixed $value
 	 *
 	 * @return bool True: value is valid; false: value is not valid
@@ -118,6 +154,8 @@ final class GravityView_Entry_Approval_Status {
 	/**
 	 * @param mixed $status Value to check approval of
 	 *
+	 * @since 1.18
+	 *
 	 * @return bool True: passed $status matches approved value
 	 */
 	public static function is_approved( $status ) {
@@ -129,6 +167,8 @@ final class GravityView_Entry_Approval_Status {
 
 	/**
 	 * @param mixed $status Value to check approval of
+	 *
+	 * @since 1.18
 	 *
 	 * @return bool True: passed $status matches disapproved value
 	 */
@@ -142,6 +182,8 @@ final class GravityView_Entry_Approval_Status {
 	/**
 	 * @param mixed $status Value to check approval of
 	 *
+	 * @since 1.18
+	 *
 	 * @return bool True: passed $status matches unapproved value
 	 */
 	public static function is_unapproved( $status ) {
@@ -154,26 +196,103 @@ final class GravityView_Entry_Approval_Status {
 	/**
 	 * Get the labels for the status choices
 	 *
+	 * @since 1.18
+	 *
 	 * @return array Array of labels for the status choices ("Approved", "Disapproved")
 	 */
 	public static function get_labels() {
 
-		$values = self::get_choices();
+		$choices = self::get_choices();
 
-		return array_values( $values );
+		$labels = wp_list_pluck( $choices, 'label' );
+
+		return $labels;
+	}
+
+
+	/**
+	 * Pluck a certain field value from a status array
+	 *
+	 * Examples:
+	 *
+	 * <code>
+	 * self::choice_pluck( 'disapproved', 'value' ); // Returns `2`
+	 * self::choice_pluck( 'approved', 'label' ); // Returns `Approved`
+	 * </code>
+	 *
+	 * @since 1.18
+	 *
+	 * @param int|string $status Valid status value or key (1 or "approved")
+	 * @param string $attr_key Key name for the "value", "label", "action", "title". If "key", returns the matched key instead of value.
+	 *
+	 * @return false|string False if match isn't not found
+	 */
+	private static function choice_pluck( $status, $attr_key = '' ) {
+		$choices = self::get_choices();
+
+		foreach ( $choices as $key => $choice ) {
+
+			// Is the passed status value the same as the choice value or key?
+			if ( $status === $choice['value'] || $status === $key ) {
+
+				if( 'key' === $attr_key ) {
+					return $key;
+				} else {
+					return rgar( $choice, $attr_key, false );
+				}
+			}
+		}
+
+		return false;
 	}
 
 	/**
 	 * Get the label for a specific approval value
 	 *
-	 * @param string $value Valid approval value
+	 * @since 1.18
+	 *
+	 * @param int|string $value_or_key Valid status value or key (1 or "approved")
 	 *
 	 * @return string|false Label of value ("Approved"). If invalid value, return false.
 	 */
-	public static function get_label( $value ) {
+	public static function get_label( $value_or_key ) {
+		return self::choice_pluck( $value_or_key, 'label' );
+	}
 
-		$values = self::get_choices();
+	/**
+	 * Get the label for a specific approval value
+	 *
+	 * @since 1.18
+	 *
+	 * @param int|string $value_or_key Valid status value or key (1 or "approved")
+	 *
+	 * @return string|false Label of value ("Approved"). If invalid value, return false.
+	 */
+	public static function get_string( $value_or_key, $string_key = '' ) {
+		return self::choice_pluck( $value_or_key, $string_key );
+	}
 
-		return rgar( $values, $value, false );
+	/**
+	 * Get the label for a specific approval value
+	 *
+	 * @since 1.18
+	 *
+	 * @param int|string $value_or_key Valid status value or key (1 or "approved")
+	 *
+	 * @return string|false Label of value ("Approved"). If invalid value, return false.
+	 */
+	public static function get_title_attr( $value_or_key ) {
+		return self::choice_pluck( $value_or_key, 'title' );
+	}
+
+	/**
+	 * Get the status key for a value
+	 *
+	 * @param int $value Status value (1, 2, 3)
+	 *
+	 * @return string|false The status key at status $value, if exists. If not exists, false.
+	 */
+	public static function get_key( $value ) {
+		return self::choice_pluck( $value, 'key' );
 	}
 }

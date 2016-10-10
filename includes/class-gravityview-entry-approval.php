@@ -150,7 +150,11 @@ class GravityView_Entry_Approval {
 			wp_send_json_error( $result );
 		}
 
-		wp_send_json_success();
+		$current_status = self::get_entry_status( $entry_id, 'value' );
+
+		wp_send_json_success( array(
+			'status' => $current_status
+		) );
 	}
 
 	/**
@@ -201,32 +205,39 @@ class GravityView_Entry_Approval {
 	 * @param array|boolean $entries If array, array of entry IDs that are to be updated. If true: update all entries.
 	 * @param int $approved Approved status. If `0`: unapproved, if not empty, `Approved`
 	 * @param int $form_id The Gravity Forms Form ID
-	 * @return boolean|void
+	 * @return boolean|null True: successfully updated all entries. False: there was an error updating at least one entry. NULL: an error occurred (see log)
 	 */
 	public static function update_bulk( $entries = array(), $approved, $form_id ) {
 
 		if( empty($entries) || ( $entries !== true && !is_array($entries) ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . ' Entries were empty or malformed.', $entries );
-			return false;
+			return NULL;
 		}
 
 		if( ! GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . ' User does not have the `gravityview_moderate_entries` capability.' );
-			return false;
+			return NULL;
 		}
 
 
 		if ( ! GravityView_Entry_Approval_Status::is_valid( $approved ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . ' Invalid approval status', $approved );
-			return false;
+			return NULL;
 		}
 
 		// calculate approved field id once instead of looping through in the update_approved() method
 		$approved_column_id = self::get_approved_column( $form_id );
 
+		$success = true;
 		foreach( $entries as $entry_id ) {
-			self::update_approved( (int)$entry_id, $approved, $form_id, $approved_column_id );
+			$update_success = self::update_approved( (int)$entry_id, $approved, $form_id, $approved_column_id );
+
+			if( ! $update_success ) {
+				$success = false;
+			}
 		}
+
+		return $success;
 	}
 
 	/**
@@ -250,7 +261,7 @@ class GravityView_Entry_Approval {
 			return false;
 		}
 
-		if( ! GravityView_Entry_Approval_Status::is_valid( $approved ) ) {
+		if( '' === $approved || ! GravityView_Entry_Approval_Status::is_valid( $approved ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . ': Not a valid approval value.' );
 			return false;
 		}
@@ -362,6 +373,8 @@ class GravityView_Entry_Approval {
 			return;
 		}
 
+		$status = GravityView_Entry_Approval_Status::maybe_convert_status( $status );
+
 		// update entry meta
 		if( function_exists('gform_update_meta') ) {
 
@@ -379,18 +392,7 @@ class GravityView_Entry_Approval {
 			 */
 			do_action( 'gravityview/approve_entries/updated', $entry_id, $status );
 
-			switch ( $status ) {
-				case GravityView_Entry_Approval_Status::APPROVED:
-					$action = 'approved';
-					break;
-				case GravityView_Entry_Approval_Status::UNAPPROVED:
-					$action = 'unapproved';
-					break;
-				case GravityView_Entry_Approval_Status::DISAPPROVED:
-				default:
-					$action = 'disapproved';
-					break;
-			}
+			$action = GravityView_Entry_Approval_Status::get_key( $status );
 
 			/**
 			 * @action `gravityview/approve_entries/{$action}` Triggered when an entry approval is reset.

@@ -486,9 +486,9 @@ class GravityView_Admin_ApproveEntries {
 			'status_unapproved' => GravityView_Entry_Approval_Status::UNAPPROVED,
 			'bulk_actions' => $this->get_bulk_actions( $form_id ),
 			'bulk_message' => $this->bulk_update_message,
-			'unapprove_title' => __( 'Entry not yet reviewed. Click to approve this entry.', 'gravityview'),
-            'approve_title' => __( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravityview'),
-			'disapprove_title' => __( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravityview'),
+			'unapprove_title' => GravityView_Entry_Approval_Status::get_title_attr('unapproved'),
+            'approve_title' => GravityView_Entry_Approval_Status::get_title_attr('disapproved'),
+			'disapprove_title' => GravityView_Entry_Approval_Status::get_title_attr('approved'),
 			'column_title' => __( 'Show entry in directory view?', 'gravityview'),
 			'column_link' => esc_url( $this->get_sort_link( $form_id ) ),
 		) );
@@ -539,15 +539,15 @@ class GravityView_Admin_ApproveEntries {
 		$bulk_actions = array(
 			'GravityView' => array(
 				array(
-					'label' => __( 'Approve', 'gravityview' ),
+					'label' => GravityView_Entry_Approval_Status::get_string('approved', 'action'),
 					'value' => sprintf( '%s-%d', $this->bulk_action_prefixes['approve'], $form_id ),
 				),
 				array(
-					'label' => __( 'Disapprove', 'gravityview' ),
+					'label' => GravityView_Entry_Approval_Status::get_string('disapproved', 'action'),
 					'value' => sprintf( '%s-%d', $this->bulk_action_prefixes['disapprove'], $form_id ),
 				),
 				array(
-					'label' => __( 'Reset Approval', 'gravityview' ),
+					'label' => GravityView_Entry_Approval_Status::get_string('unapproved', 'action'),
 					'value' => sprintf( '%s-%d', $this->bulk_action_prefixes['unapprove'], $form_id ),
 				),
 			),
