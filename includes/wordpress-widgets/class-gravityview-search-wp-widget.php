@@ -156,7 +156,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		// If there are no views set up yet, we get outta here.
 		if( empty( $views ) ) { ?>
 			<div id="select_gravityview_view">
-				<div class="wrap"><?php echo GravityView_Post_Types::no_views_text(); ?></div>
+				<div class="wrap"><?php echo GravityView_Admin::no_views_text(); ?></div>
 			</div>
 			<?php return;
 		}
