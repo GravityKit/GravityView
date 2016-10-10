@@ -2,7 +2,7 @@
 
 /**
  * Add custom options for address fields
- * @since TODO
+ * @since 1.18
  */
 class GravityView_Field_Approval extends GravityView_Field {
 
@@ -43,7 +43,7 @@ class GravityView_Field_Approval extends GravityView_Field {
 
 	/**
 	 * Add filters and actions for the field
-	 * @since TODO
+	 * @since 1.18
 	 * @return void
 	 */
 	private function add_hooks() {
@@ -75,7 +75,7 @@ class GravityView_Field_Approval extends GravityView_Field {
 
 		/**
 		 * @filter `gravityview/field/approval/css_url` URL to the Approval field CSS file.
-		 * @since TODO
+		 * @since 1.18
 		 * @param string $style_path Override to use your own CSS file, or return empty string to disable loading.
 		 */
 		$style_path = apply_filters( 'gravityview/field/approval/css_url', $style_url );
@@ -89,7 +89,7 @@ class GravityView_Field_Approval extends GravityView_Field {
 
 	/**
 	 * Register the field approval script and output the localized text JS variables
-	 * @since TODO
+	 * @since 1.18
 	 * @return void
 	 */
 	public function enqueue_and_localize_script() {
@@ -113,6 +113,8 @@ class GravityView_Field_Approval extends GravityView_Field {
 
 	/**
 	 * Add Fields to the field list
+	 *
+	 * @since 1.18
 	 *
 	 * @param array $entry_default_fields Array of fields shown by default
 	 * @param string|array $form form_ID or form object

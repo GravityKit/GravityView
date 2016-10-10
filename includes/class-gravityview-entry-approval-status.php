@@ -45,6 +45,8 @@ final class GravityView_Entry_Approval_Status {
 	/**
 	 * Match values to the labels
 	 *
+	 * @since 1.18
+	 *
 	 * @return array
 	 */
 	private static function get_choices() {
@@ -84,6 +86,8 @@ final class GravityView_Entry_Approval_Status {
 	/**
 	 * Get the status values as an array
 	 *
+	 * @since 1.18
+	 *
 	 * @return array Array of values for approval status choices
 	 */
 	public static function get_values() {
@@ -97,6 +101,8 @@ final class GravityView_Entry_Approval_Status {
 
 	/**
 	 * Convert previously-used values to the current values, for backward compatibility
+	 *
+	 * @since 1.18
 	 *
 	 * @param string $old_value The status
 	 *
@@ -132,6 +138,8 @@ final class GravityView_Entry_Approval_Status {
 	/**
 	 * Check whether the passed value is one of the defined values for entry approval
 	 *
+	 * @since 1.18
+	 *
 	 * @param mixed $value
 	 *
 	 * @return bool True: value is valid; false: value is not valid
@@ -146,6 +154,8 @@ final class GravityView_Entry_Approval_Status {
 	/**
 	 * @param mixed $status Value to check approval of
 	 *
+	 * @since 1.18
+	 *
 	 * @return bool True: passed $status matches approved value
 	 */
 	public static function is_approved( $status ) {
@@ -157,6 +167,8 @@ final class GravityView_Entry_Approval_Status {
 
 	/**
 	 * @param mixed $status Value to check approval of
+	 *
+	 * @since 1.18
 	 *
 	 * @return bool True: passed $status matches disapproved value
 	 */
@@ -170,6 +182,8 @@ final class GravityView_Entry_Approval_Status {
 	/**
 	 * @param mixed $status Value to check approval of
 	 *
+	 * @since 1.18
+	 *
 	 * @return bool True: passed $status matches unapproved value
 	 */
 	public static function is_unapproved( $status ) {
@@ -181,6 +195,8 @@ final class GravityView_Entry_Approval_Status {
 
 	/**
 	 * Get the labels for the status choices
+	 *
+	 * @since 1.18
 	 *
 	 * @return array Array of labels for the status choices ("Approved", "Disapproved")
 	 */
@@ -233,7 +249,9 @@ final class GravityView_Entry_Approval_Status {
 	/**
 	 * Get the label for a specific approval value
 	 *
-	 * @param string $value Valid approval value
+	 * @since 1.18
+	 *
+	 * @param int|string $value_or_key Valid status value or key (1 or "approved")
 	 *
 	 * @return string|false Label of value ("Approved"). If invalid value, return false.
 	 */
