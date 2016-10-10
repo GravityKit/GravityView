@@ -74,7 +74,6 @@
 					css_class = 'approved';
 					title_attr = gvGlobals.disapprove_title;
 					break;
-				case gvGlobals.status_disapproved:
 				default:
 					css_class = 'disapproved';
 					title_attr = gvGlobals.approve_title;
