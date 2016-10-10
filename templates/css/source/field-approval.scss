@@ -85,11 +85,11 @@
   }
 
   &:hover::before {
-    background: darken( $background, 2% );
+    background: darken( $background, 2.5% );
   }
 
   &:active::before {
-    background: darken( $background, 6% );
+    background: darken( $background, 7% );
   }
 
 }
