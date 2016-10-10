@@ -1191,6 +1191,10 @@ class GravityView_frontend {
 
 		$sort_field = GFFormsModel::get_field( $form, $sort_field_id );
 
+		if( ! $sort_field ) {
+			return $sort_field_id;
+		}
+
 		switch ( $sort_field['type'] ) {
 
 			case 'address':
