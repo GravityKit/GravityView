@@ -34,6 +34,8 @@
 		 */
 		'css_classes': {
 			'approved': 'gv-approval-approved',
+			'unapproved': 'gv-approval-unapproved',
+			'disapproved': 'gv-approval-disapproved',
 			'loading': 'gv-approval-loading'
 		},
 
@@ -87,57 +89,97 @@
 	self.toggle_approval = function ( e ) {
 		e.preventDefault();
 
-		var entry_id = $( e.target ).attr('data-entry-id');
-		var form_id = $( e.target ).attr('data-form-id');
-		var is_approved = $( e.target ).attr( 'data-approved-status').toString();
-		var set_approved = ( is_approved === '' || is_approved === '0' ) ? 'Approved' : '0';
+		var $link = $( e.target ).is('span') ? $( e.target ).parent() : $( e.target );
+		var entry_slug = $link.attr('data-entry-slug');
+		var form_id = $link.attr('data-form-id');
+		var new_status = self.get_new_status( $link.attr( 'data-current-status') );
 
 		if( self.debug ) {
-			console.log( 'toggle_approval', { 'target': e.target, 'is_approved': is_approved });
+			console.log( 'toggle_approval', { 'target': e.target, 'current_approval_value': $link.attr( 'data-current-status'), 'new_status': new_status });
 		}
 
-		$( e.target ).addClass( self.css_classes.loading );
+		$link.addClass( self.css_classes.loading );
 
-		self.update_approval( entry_id, form_id, set_approved, $( e.target ) );
+		self.update_approval( entry_slug, form_id, new_status, $link );
 
 		return false;
 	};
 
 	/**
+	 * Get the new status value that should be used when clicking the link, based on current value
+	 *
+	 * @param {string|int} old_status Old status value
+	 *
+	 * @returns {int}
+	 */
+	self.get_new_status = function( old_status ) {
+		var new_status;
+
+		// The `+ ""` code converts the value to a string, without requiring `.toString()`
+		switch( old_status + "" ) {
+			case gvApproval.status.approved.value + "":
+				new_status = gvApproval.status.disapproved.value;
+				break;
+			default:
+				new_status = gvApproval.status.approved.value;
+				break;
+		}
+
+		return new_status;
+	};
+
+	/**
 	 * Update an entry status via AJAX
 	 */
-	self.update_approval = function ( entry_id, form_id, set_approved, $target ) {
+	self.update_approval = function ( entry_slug, form_id, set_approved, $target ) {
 
 		var data = {
 			action: 'gv_update_approved',
-			entry_id: entry_id,
+			entry_slug: entry_slug,
 			form_id: form_id,
 			approved: set_approved,
 			nonce: gvApproval.nonce
 		};
 
-		$.post( gvApproval.ajaxurl, data, function ( response ) {
-			if ( response ) {
-				self.response = $.parseJSON( response );
+		var previous_status = $target.attr( 'data-current-status');
+		var css_class, new_status;
 
-				if( '0' !== self.response.status ) {
-					$target
-						.attr( 'data-approved-status', 'Approved' )
-						.prop( 'title', gvApproval.text.disapprove_title )
-						.addClass( self.css_classes.approved )
-						.find('span')
-							.text( gvApproval.text.label_disapprove );
-				} else {
-					$target
-						.attr( 'data-approved-status', '0' )
-						.prop( 'title', gvApproval.text.approve_title )
-						.removeClass( self.css_classes.approved )
-						.find('span')
-							.text( gvApproval.text.label_approve );
+		$target.attr( 'aria-busy', true );
+
+		$.post( gvApproval.ajaxurl, data, function ( response ) {
+			if( response.success ) {
+
+				switch( response.data.status ) {
+					case gvApproval.status.approved.value:
+						new_status = gvApproval.status.approved;
+						css_class = self.css_classes.approved;
+						break;
+					case gvApproval.status.disapproved.value:
+						new_status = gvApproval.status.disapproved;
+						css_class = self.css_classes.disapproved;
+						break;
+					case gvApproval.status.unapproved.value:
+						new_status = gvApproval.status.unapproved;
+						css_class = self.css_classes.unapproved;
+						break;
 				}
 
-				$target.removeClass( self.css_classes.loading );
+				$target
+					.prop( 'title', new_status.title )
+					.attr( 'data-current-status', response.data.status )
+					.removeClass( self.css_classes.disapproved )
+					.removeClass( self.css_classes.approved )
+					.removeClass( self.css_classes.unapproved )
+					.addClass( css_class )
+					.find('span')
+						.text( new_status.label );
+
+			} else {
+				alert( response.data[0].message );
 			}
+
+			$target.attr( 'aria-busy', false ).removeClass( self.css_classes.loading );
+
 			if( self.debug ) {
 				console.log( 'update_approval', { 'data': data, 'response': response });
 			}
