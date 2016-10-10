@@ -58,6 +58,7 @@ abstract class GravityView_Admin_View_Item {
 			'adminLabel'    => NULL,
 			'adminOnly'     => NULL,
 			'subtitle'      => NULL,
+			'placeholder'   => NULL,
 		) );
 
 		$this->title      = $title;
