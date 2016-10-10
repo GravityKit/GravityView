@@ -32,13 +32,22 @@
     border: 0;
   }
 
-  &.gv-approval-approved {
+  &.gv-approval-disapproved {
 
     // Switch to red X
     color: #981225!important;
 
     &::before {
       content: "\f158";
+    }
+  }
+
+  // Switch to yellow circle
+  &.gv-approval-unapproved {
+    color: #ecaa00!important;
+
+    &::before {
+      content: "\f159";
     }
   }
 
