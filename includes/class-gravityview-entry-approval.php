@@ -150,7 +150,11 @@ class GravityView_Entry_Approval {
 			wp_send_json_error( $result );
 		}
 
-		wp_send_json_success();
+		$current_status = self::get_entry_status( $entry_id, 'value' );
+
+		wp_send_json_success( array(
+			'status' => $current_status
+		) );
 	}
 
 	/**
