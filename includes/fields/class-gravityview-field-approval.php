@@ -12,19 +12,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 	var $is_sortable = true;
 
-	var $is_numeric = false;
-
-	/**
-	 * @var string Approval status is stored in entry meta under this key
-	 * @since TODO
-	 */
-	var $entry_meta_key = 'is_approved';
-
-	/**
-	 * @var bool Don't add to the "columns to display" list; GravityView adds our own approval column
-	 * @since TODO
-	 */
-	var $entry_meta_is_default_column = false;
+	var $is_numeric = true;
 
 	var $group = 'gravityview';
 
@@ -54,6 +42,24 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 		add_action( 'gravityview/field/approval/load_scripts', array( $this, 'enqueue_and_localize_script' ) );
 
+		add_filter( 'gravityview_get_entries', array( $this, 'modify_search_parameters' ), 1000 );
+
+	}
+
+	/**
+	 * Modify search to use `is_approved` meta key to sort, instead of `entry_approval`
+	 *
+	 * @param array $parameters Search parameters used to generate GF search
+	 *
+	 * @return array Same parameters, but if sorting by `entry_approval`, changed to `is_approved`
+	 */
+	public function modify_search_parameters( $parameters ) {
+
+		if( $this->name === rgars( $parameters, 'sorting/key' ) ) {
+			$parameters['sorting']['key'] = 'is_approved';
+		}
+
+		return $parameters;
 	}
 
 	/**
