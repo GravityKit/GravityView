@@ -359,7 +359,7 @@ class GravityView_Entry_Approval {
 	 * @param int $form_id ID of the form of the entry being updated. Improves query performance.
 	 * @param string $approvedcolumn Gravity Forms Field ID
 	 *
-	 * @return true|WP_Error
+	 * @return true|WP_Error Returns true if there is no approval column or updating entry succeeded. WP_Error if status is invalid or entry doesn't exist.
 	 */
 	private static function update_approved_column( $entry_id = 0, $status = '0', $form_id = 0, $approvedcolumn = 0 ) {
 
@@ -377,6 +377,11 @@ class GravityView_Entry_Approval {
 
 		//get the entry
 		$entry = GFAPI::get_entry( $entry_id );
+
+		// Entry doesn't exist
+		if ( is_wp_error( $entry ) ) {
+			return $entry;
+		}
 
 		//update entry
 		$entry[ (string)$approvedcolumn ] = $status;
