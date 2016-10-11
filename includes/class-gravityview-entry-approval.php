@@ -283,6 +283,8 @@ class GravityView_Entry_Approval {
 			return false;
 		}
 
+		$form_id = intval( $form_id );
+
 		// Update the entry meta
 		self::update_approved_meta( $entry_id, $approved, $form_id );
 
