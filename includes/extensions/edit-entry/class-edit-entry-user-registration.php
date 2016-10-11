@@ -117,10 +117,6 @@ class GravityView_Edit_Entry_User_Registration {
 			return;
 	    }
 
-        // Only update if it's a create feed
-        if( ! $is_create_feed ) {
-            return;
-        }
 	    // If an Update feed, make sure the conditions are met.
 	    if( rgars( $config, 'meta/feedType' ) === 'update' ) {
 	    	if( ! $gf_user_registration->is_feed_condition_met( $config, $form, $entry ) ) {

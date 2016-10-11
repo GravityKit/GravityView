@@ -35,6 +35,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: PHP notice when WooCommerce Memberships is active
 * Tweak: Entry Note emails now have paragraphs automatically added to them
 * Added: Entry Note emails now have a message "This note was sent from {url}" to provide context for the note recipient
+* Fixed: Processing "Update User" feeds
 * Fixed: Don't process inactive User Registration feeds
 * Fixed: Don't process User Registration "Update User" feeds if the Update Conditions aren't met
 
