@@ -20,7 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.18 =
+= 1.18 on October 11, 2016 =
 * Updated minimum requirements: WordPress 3.5, Gravity Forms 1.9.14
 * Added: Shortcut to create a View for an existing form
 * Fixed: "New form created" message not shown when saving a draft using a View preset
@@ -35,14 +35,15 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: PHP notice when WooCommerce Memberships is active
 * Tweak: Entry Note emails now have paragraphs automatically added to them
 * Added: Entry Note emails now have a message "This note was sent from {url}" to provide context for the note recipient
-* Fixed: Processing "Update User" feeds
-* Fixed: Don't process inactive User Registration feeds
-* Fixed: Don't process User Registration "Update User" feeds if the Update Conditions aren't met
+* Gravity Forms User Registration Addon changes:
+    * Gravity Forms User Registration 2.0 is no longer supported
+    * Fixed Processing "Update User" feeds
+    * Fixed: Inactive User Registration feeds were being processed
+    * Fixed: User Registration "Update User" feeds were being processed, even if the Update Conditions weren't met
+    * Fixed: Unable to use `gravityview/edit_entry/user_registration/trigger_update` filter
 
 __Developer Notes__
 
-* Modified: Gravity Forms User Registration 2.0 is no longer supported
-* Fixed: Not able to override `gravityview/edit_entry/user_registration/trigger_update` filter inside theme functions.php file
 * Added: `gravityview_go_back_url` filter to modify the link URL used for the single entry back-link in `gravityview_back_link()` function
 * Added: `gravityview/field/notes/wpautop_email` filter to disable `wpautop()` on Entry Note emails
 * Modified: `note-add-note.php` template: added `current-url` hidden field
