@@ -283,29 +283,8 @@ class GravityView_Entry_Approval {
 		// There's no validation for the meta
 		if( true === $result ) {
 
-			switch ( $approved ) {
-				case GravityView_Entry_Approval_Status::APPROVED:
-					$note = __( 'Approved the Entry for GravityView', 'gravityview' );
-					break;
-				case GravityView_Entry_Approval_Status::UNAPPROVED:
-					$note = __( 'Reset Entry approval for GravityView', 'gravityview' );
-					break;
-				case GravityView_Entry_Approval_Status::DISAPPROVED:
-					$note = __( 'Disapproved the Entry for GravityView', 'gravityview' );
-					break;
-			}
-
-			/**
-			 * @filter `gravityview/approve_entries/add-note` Add a note when the entry has been approved or disapproved?
-			 * @since 1.16.3
-			 * @param bool $add_note True: Yep, add that note! False: Do not, under any circumstances, add that note!
-			 */
-			$add_note = apply_filters( 'gravityview/approve_entries/add-note', true );
-
-			if( $add_note && class_exists( 'GravityView_Entry_Notes' ) ) {
-				$current_user = wp_get_current_user();
-				GravityView_Entry_Notes::add_note( $entry_id, $current_user->ID, $current_user->display_name, $note );
-			}
+			// Add an entry note
+			self::add_approval_status_updated_note( $entry_id, $approved );
 
 			/**
 			 * Destroy the cache for this form
@@ -319,9 +298,51 @@ class GravityView_Entry_Approval {
 			do_action( 'gravityview_log_error', __METHOD__ . sprintf( ' - Entry approval not updated: %s', $result->get_error_message() ) );
 
 			$result = false;
+	/**
+	 * Add a note when an entry is approved
+	 *
+	 * @see GravityView_Entry_Approval::update_approved
+	 *
+	 * @since 1.18
+	 *
+	 * @param int $entry_id Gravity Forms entry ID
+	 * @param int $approved Approval status
+	 *
+	 * @return false|int|WP_Error Note ID if successful; WP_Error if error when adding note, FALSE if note not updated because of `gravityview/approve_entries/add-note` filter or `GravityView_Entry_Notes` class not existing
+	 */
+	private static function add_approval_status_updated_note( $entry_id, $approved = 0 ) {
+		$note = '';
+
+		switch ( $approved ) {
+			case GravityView_Entry_Approval_Status::APPROVED:
+				$note = __( 'Approved the Entry for GravityView', 'gravityview' );
+				break;
+			case GravityView_Entry_Approval_Status::UNAPPROVED:
+				$note = __( 'Reset Entry approval for GravityView', 'gravityview' );
+				break;
+			case GravityView_Entry_Approval_Status::DISAPPROVED:
+				$note = __( 'Disapproved the Entry for GravityView', 'gravityview' );
+				break;
 		}
 
 		return $result;
+		/**
+		 * @filter `gravityview/approve_entries/add-note` Add a note when the entry has been approved or disapproved?
+		 * @since 1.16.3
+		 * @param bool $add_note True: Yep, add that note! False: Do not, under any circumstances, add that note!
+		 */
+		$add_note = apply_filters( 'gravityview/approve_entries/add-note', true );
+
+		$note_id = false;
+
+		if( $add_note && class_exists( 'GravityView_Entry_Notes' ) ) {
+
+			$current_user = wp_get_current_user();
+
+			$note_id = GravityView_Entry_Notes::add_note( $entry_id, $current_user->ID, $current_user->display_name, $note );
+		}
+
+		return $note_id;
 	}
 
 	/**
