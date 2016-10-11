@@ -266,6 +266,12 @@ class GravityView_Entry_Approval {
 			return false;
 		}
 
+		$entry = GFAPI::get_entry( $entry_id );
+
+		if ( is_wp_error( $entry ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ': Entry does not exist' );
+			return false;
+		}
 		$result = self::update_approved_column( $entry_id, $approved, $form_id, $approvedcolumn );
 
 		/**
