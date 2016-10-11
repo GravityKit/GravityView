@@ -209,12 +209,12 @@ class GravityView_Entry_Approval {
 	 */
 	public static function update_bulk( $entries = array(), $approved, $form_id ) {
 
-		if( empty($entries) || ( $entries !== true && !is_array($entries) ) ) {
+		if ( empty( $entries ) || ( $entries !== true && ! is_array( $entries ) ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . ' Entries were empty or malformed.', $entries );
 			return NULL;
 		}
 
-		if( ! GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
+		if ( ! GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . ' User does not have the `gravityview_moderate_entries` capability.' );
 			return NULL;
 		}
@@ -229,10 +229,10 @@ class GravityView_Entry_Approval {
 		$approved_column_id = self::get_approved_column( $form_id );
 
 		$success = true;
-		foreach( $entries as $entry_id ) {
-			$update_success = self::update_approved( (int)$entry_id, $approved, $form_id, $approved_column_id );
+		foreach ( $entries as $entry_id ) {
+			$update_success = self::update_approved( (int) $entry_id, $approved, $form_id, $approved_column_id );
 
-			if( ! $update_success ) {
+			if ( ! $update_success ) {
 				$success = false;
 			}
 		}
@@ -386,7 +386,11 @@ class GravityView_Entry_Approval {
 		//update entry
 		$entry[ (string)$approvedcolumn ] = $status;
 
-		/** @var bool|WP_Error $result */
+		/**
+		 * Note: GFAPI::update_entry() doesn't trigger `gform_after_update_entry`, so we trigger updating the meta ourselves
+		 * @see GravityView_Entry_Approval::after_update_entry_update_approved_meta
+		 * @var true|WP_Error $result
+		 */
 		$result = GFAPI::update_entry( $entry );
 
 		return $result;
