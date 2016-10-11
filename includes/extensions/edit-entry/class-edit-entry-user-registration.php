@@ -121,6 +121,12 @@ class GravityView_Edit_Entry_User_Registration {
         if( ! $is_create_feed ) {
             return;
         }
+	    // If an Update feed, make sure the conditions are met.
+	    if( rgars( $config, 'meta/feedType' ) === 'update' ) {
+	    	if( ! $gf_user_registration->is_feed_condition_met( $config, $form, $entry ) ) {
+			    return;
+		    }
+	    }
 
         // The priority is set to 3 so that default priority (10) will still override it
         add_filter( 'send_password_change_email', '__return_false', 3 );
