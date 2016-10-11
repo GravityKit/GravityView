@@ -42,6 +42,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 __Developer Notes__
 
 * Modified: Gravity Forms User Registration 2.0 is no longer supported
+* Fixed: Not able to override `gravityview/edit_entry/user_registration/trigger_update` filter inside theme functions.php file
 * Added: `gravityview_go_back_url` filter to modify the link URL used for the single entry back-link in `gravityview_back_link()` function
 * Added: `gravityview/field/notes/wpautop_email` filter to disable `wpautop()` on Entry Note emails
 * Modified: `note-add-note.php` template: added `current-url` hidden field

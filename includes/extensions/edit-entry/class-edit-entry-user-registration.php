@@ -37,18 +37,28 @@ class GravityView_Edit_Entry_User_Registration {
 	 * @since 1.11
 	 */
 	public function load() {
+		add_action( 'wp', array( $this, 'add_hooks' ), 10 );
+    }
 
-        /**
+	/**
+	 * Add hooks to trigger updating the user
+	 *
+	 * @since 1.18
+	 */
+    public function add_hooks() {
+
+	    /**
 	     * @filter `gravityview/edit_entry/user_registration/trigger_update` Choose whether to update user information via User Registration add-on when an entry is updated?
 	     * @since 1.11
 	     * @param boolean $boolean Whether to trigger update on user registration (default: true)
 	     */
-        if( apply_filters( 'gravityview/edit_entry/user_registration/trigger_update', true ) ) {
-            add_action( 'gravityview/edit_entry/after_update' , array( $this, 'update_user' ), 10, 2 );
+	    if( apply_filters( 'gravityview/edit_entry/user_registration/trigger_update', true ) ) {
 
-            // last resort in case the current user display name don't match any of the defaults
-            add_action( 'gform_user_updated', array( $this, 'restore_display_name' ), 10, 4 );
-        }
+	    	add_action( 'gravityview/edit_entry/after_update' , array( $this, 'update_user' ), 10, 2 );
+
+		    // last resort in case the current user display name don't match any of the defaults
+		    add_action( 'gform_user_updated', array( $this, 'restore_display_name' ), 10, 4 );
+	    }
     }
 
     /**
