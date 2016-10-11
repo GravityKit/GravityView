@@ -62,7 +62,7 @@ class GravityView_Edit_Entry_User_Registration {
      */
     public function update_user( $form = array(), $entry_id = 0 ) {
 
-        if( !class_exists( 'GFAPI' ) || !class_exists( 'GFUser' ) || empty( $entry_id ) ) {
+        if( !class_exists( 'GFAPI' ) || ( ! class_exists( 'GFUser' ) && ! class_exists( 'GF_User_Registration' ) ) || empty( $entry_id ) ) {
             return;
         }
 
