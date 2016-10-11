@@ -121,6 +121,13 @@ class GravityView_Settings extends GFAddOn {
 		return sprintf( '<h4>%s</h4><p>%s</p>', $heading, $message );
 	}
 
+	/**
+     * Uninstall all traces of GravityView
+     *
+     * Note: method is public because parent method is public
+     *
+	 * @return bool
+	 */
 	public function uninstall() {
 
 		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-uninstall.php' );
