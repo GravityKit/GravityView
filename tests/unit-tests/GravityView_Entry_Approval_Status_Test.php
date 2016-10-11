@@ -43,6 +43,10 @@ class GravityView_Entry_Approval_Status_Test extends GV_UnitTestCase {
 		}
 	}
 
+	/**
+	 * @since 1.18
+	 * @covers GravityView_Entry_Approval_Status::is_valid()
+	 */
 	public function test_is_valid() {
 		$this->assertTrue( GravityView_Entry_Approval_Status::is_valid( GravityView_Entry_Approval_Status::APPROVED ) );
 		$this->assertTrue( GravityView_Entry_Approval_Status::is_valid( GravityView_Entry_Approval_Status::DISAPPROVED ) );
