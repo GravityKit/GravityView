@@ -261,7 +261,7 @@ class GravityView_Entry_Approval {
 			return false;
 		}
 
-		if( '' === $approved || ! GravityView_Entry_Approval_Status::is_valid( $approved ) ) {
+		if( ! GravityView_Entry_Approval_Status::is_valid( $approved ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . ': Not a valid approval value.' );
 			return false;
 		}

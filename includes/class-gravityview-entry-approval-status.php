@@ -156,7 +156,7 @@ final class GravityView_Entry_Approval_Status {
 	 */
 	public static function is_valid( $value = NULL ) {
 
-		if ( ! is_scalar( $value ) || is_null( $value ) ) {
+		if ( ! is_scalar( $value ) || is_null( $value ) || '' === $value ) {
 			return false;
 		}
 
