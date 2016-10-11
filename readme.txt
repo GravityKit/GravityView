@@ -33,11 +33,16 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Mask the Entry ID in the link to lightbox files
 * Tweak: When the global "Show Support Port" setting is "Hide", always hide; if set to "Show", respect each user's Support Port display preference
 * Fixed: PHP notice when WooCommerce Memberships is active
+* Tweak: Entry Note emails now have paragraphs automatically added to them
+* Added: Entry Note emails now have a message "This note was sent from {url}" to provide context for the note recipient
 
 __Developer Notes__
 
 * Added: `gravityview_go_back_url` filter to modify the link URL used for the single entry back-link in `gravityview_back_link()` function
+* Added: `gravityview/field/notes/wpautop_email` filter to disable `wpautop()` on Entry Note emails
+* Modified: `note-add-note.php` template: added `current-url` hidden field
 * Modified: `list-single.php` template file: added `.gv-grid-col-1-3` CSS class to the `.gv-list-view-content-image` container
+* Added: `$email_footer` to the `gravityview/field/notes/email_content` filter content
 
 = 1.17.4 on September 7, 2016 =
 
