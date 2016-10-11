@@ -112,6 +112,10 @@ class GravityView_Edit_Entry_User_Registration {
         $config = apply_filters( 'gravityview/edit_entry/user_registration/config', $config, $form, $entry );
 
 
+        // Make sure the feed is active
+	    if ( ! $config['is_active'] ) {
+			return;
+	    }
 
         // Only update if it's a create feed
         if( ! $is_create_feed ) {
