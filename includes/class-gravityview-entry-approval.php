@@ -266,17 +266,24 @@ class GravityView_Entry_Approval {
 			return false;
 		}
 
+		$approved = GravityView_Entry_Approval_Status::maybe_convert_status( $approved );
+
 		$entry = GFAPI::get_entry( $entry_id );
 
 		if ( is_wp_error( $entry ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . ': Entry does not exist' );
 			return false;
 		}
+
+		// If the form has an Approve/Reject field, update that value
 		$result = self::update_approved_column( $entry_id, $approved, $form_id, $approvedcolumn );
 
-		/**
-		 * GFAPI::update_entry() doesn't trigger `gform_after_update_entry`, so we trigger updating the meta ourselves.
-		 */
+		if( is_wp_error( $result ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . sprintf( ' - Entry approval not updated: %s', $result->get_error_message() ) );
+			return false;
+		}
+
+		// Update the entry meta
 		self::update_approved_meta( $entry_id, $approved, $form_id );
 
 		// add note to entry if approval field updating worked or there was no approved field
@@ -293,11 +300,11 @@ class GravityView_Entry_Approval {
 			 */
 			do_action( 'gravityview_clear_form_cache', $form_id );
 
-		} else if( is_wp_error( $result ) ) {
+		}
 
-			do_action( 'gravityview_log_error', __METHOD__ . sprintf( ' - Entry approval not updated: %s', $result->get_error_message() ) );
+		return $result;
+	}
 
-			$result = false;
 	/**
 	 * Add a note when an entry is approved
 	 *
@@ -325,7 +332,6 @@ class GravityView_Entry_Approval {
 				break;
 		}
 
-		return $result;
 		/**
 		 * @filter `gravityview/approve_entries/add-note` Add a note when the entry has been approved or disapproved?
 		 * @since 1.16.3
