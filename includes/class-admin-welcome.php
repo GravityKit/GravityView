@@ -176,14 +176,14 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 		</div>
 
-		<div class="wrap about-wrap">
+		<div class="wrap">
 
 			<div style="text-align:center; padding-top: 1em;">
 				<h2>Read more articles on using GravityView</h2>
 				<p><a class="button button-primary button-hero" href="http://docs.gravityview.co/category/24-category">Getting Started Articles</a></p>
 			</div>
 
-			<div class="changelog"><h2 class="about-headline-callout">Configuring a View</h2></div>
+			<div class="about-wrap"><h2 class="about-headline-callout">Configuring a View</h2></div>
 
 			<div class="feature-section col two-col" style="margin-top:1em;">
 
@@ -258,15 +258,15 @@ class GravityView_Welcome {
 
 				<div class="feature-section col two-col" style="margin:0; padding: 0;">
 					<div class="col col-1">
-						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/entry-notes.gif', GRAVITYVIEW_FILE ); ?>" alt="Entry Notes"></div>
-						<h4 class="higher">Entry Notes</h4>
-						<p>Add and display Notes to an entry from the frontend.</p>
+						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/frontend-approval.gif', GRAVITYVIEW_FILE ); ?>" alt="Entry Notes"></div>
+						<h4 class="higher">Coming Soon: Front-end Approval</h4>
+						<p>Moderate entries from a View. It&rsquo;s great. Coming in very early November.</p>
 					</div>
 
 					<div class="col col-2 last-feature">
-						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/search-bar.png', GRAVITYVIEW_FILE ); ?>" alt="Search Bar"></div>
-						<h4 class="higher">Search Bar Styles</h4>
-						<p>Search Bar forms look better when there are multiple fields, and are now mobile-responsive.</p>
+						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/yellow-circle.png', GRAVITYVIEW_FILE ); ?>" alt="Search Bar"></div>
+						<h4 class="higher">Unapproved Entries</h4>
+						<p>When an entry has not been approved or disapproved, it will now appear as a yellow circle.</p>
 					</div>
 				</div>
 
@@ -278,6 +278,7 @@ class GravityView_Welcome {
 
                 <ul>
                     <li>Updated minimum requirements: WordPress 3.5, Gravity Forms 1.9.14</li>
+                    <li>Modified: Entries that are unapproved (not approved or disapproved) are shown as yellow circles</li>
                     <li>Added: Shortcut to create a View for an existing form</li>
                     <li>Added: Entry Note emails now have a message &quot;This note was sent from {url}&quot; to provide context for the note recipient</li>
                     <li>Fixed: Edit Entry did not save other field values when Post fields were in the Edit Entry form</li>

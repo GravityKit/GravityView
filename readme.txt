@@ -21,34 +21,43 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 == Changelog ==
 
 = 1.18 on October 11, 2016 =
+
 * Updated minimum requirements: WordPress 3.5, Gravity Forms 1.9.14
+* Modified: Entries that are unapproved (not approved or disapproved) are shown as yellow circles
 * Added: Shortcut to create a View for an existing form
-* Fixed: "New form created" message not shown when saving a draft using a View preset
-* Fixed: Edit Entry not saving other field values when Post fields were in the Edit Entry form
+* Added: Entry Note emails now have a message "This note was sent from {url}" to provide context for the note recipient
+* Fixed: Edit Entry did not save other field values when Post fields were in the Edit Entry form
 * Fixed: When using "Start Fresh" View presets, form fields were not being added to the "Add Field" field picker
-* Fixed: Don't show hidden visible inputs in the "Add Field" picker (for example, if the "Middle Name" input is hidden in the Name field, don't show it as an option)
+* Fixed: Hidden visible inputs were showing in the "Add Field" picker (for example, the "Middle Name" input was hidden in the Name field, but showing as an option)
 * Fixed: Fatal error when editing Post Content and Post Image fields
 * Fixed: Lightbox images not loading
 * Fixed: Lightbox loading indicator displaying below the overlay
-* Fixed: Mask the Entry ID in the link to lightbox files
-* Tweak: When the global "Show Support Port" setting is "Hide", always hide; if set to "Show", respect each user's Support Port display preference
-* Fixed: PHP notice when WooCommerce Memberships is active
-* Tweak: Entry Note emails now have paragraphs automatically added to them
-* Added: Entry Note emails now have a message "This note was sent from {url}" to provide context for the note recipient
+* Fixed: "New form created" message was not shown when saving a draft using a "Start Fresh" View preset
 * Gravity Forms User Registration Addon changes:
     * Gravity Forms User Registration 2.0 is no longer supported
     * Fixed Processing "Update User" feeds
     * Fixed: Inactive User Registration feeds were being processed
     * Fixed: User Registration "Update User" feeds were being processed, even if the Update Conditions weren't met
     * Fixed: Unable to use `gravityview/edit_entry/user_registration/trigger_update` filter
+* Fixed: Prevent negative entry counts when approving and disapproving entries
+* Fixed: PHP notice when WooCommerce Memberships is active
+* Tweak: Entry Note emails now have paragraphs automatically added to them
+* Tweak: When the global "Show Support Port" setting is "Hide", always hide; if set to "Show", respect each user's Support Port display preference
+* Updated: Complete German translation—thank you [hubert123456](https://www.transifex.com/user/profile/hubert123456/)!
 
 __Developer Notes__
 
+* Migrated `is_approved` entry meta values; statuses are now managed by the `GravityView_Entry_Approval_Status` class
+    - "Approved" => `1`, use `GravityView_Entry_Approval_Status::APPROVED` constant
+    - "0" => `2`, use `GravityView_Entry_Approval_Status::DISAPPROVED` constant
+    - Use `$new_value = GravityView_Entry_Approval_Status::maybe_convert_status( $old_value )` to reliably translate meta values
+* Added: `GVCommon::get_entry_id()` method to get the entry ID from a slug or ID
 * Added: `gravityview_go_back_url` filter to modify the link URL used for the single entry back-link in `gravityview_back_link()` function
 * Added: `gravityview/field/notes/wpautop_email` filter to disable `wpautop()` on Entry Note emails
+* Added: `$email_footer` to the `gravityview/field/notes/email_content` filter content
 * Modified: `note-add-note.php` template: added `current-url` hidden field
 * Modified: `list-single.php` template file: added `.gv-grid-col-1-3` CSS class to the `.gv-list-view-content-image` container
-* Added: `$email_footer` to the `gravityview/field/notes/email_content` filter content
+* Fixed: Mask the Entry ID in the link to lightbox files
 
 = 1.17.4 on September 7, 2016 =
 
