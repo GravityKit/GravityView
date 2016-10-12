@@ -9,9 +9,18 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  */
 class GravityView_Uninstall_Test extends GV_UnitTestCase {
 
+	function setUp() {
+		parent::setUp();
+
+		require_once GV_Unit_Tests_Bootstrap::instance()->plugin_dir . '/includes/class-gravityview-settings.php';
+		require_once GV_Unit_Tests_Bootstrap::instance()->plugin_dir . '/includes/class-gravityview-uninstall.php';
+	}
+
 	/**
 	 * @since 1.15
 	 * @covers GravityView_Uninstall::fire_everything()
+	 * @covers GravityView_Settings::uninstall()
+	 * @covers GravityView_Settings::uninstall_addon()
 	 */
 	function test_fire_everything() {
 
@@ -23,7 +32,7 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 
 		$views = $this->factory->view->create_many( $create_count, array( 'form_id' => $form['id'] ) );
 
-		$entry_ids = $this->factory->entry->create_many( $create_count, array( 'form_id' => $form['id'] ) );
+		$entry_ids = $this->factory->entry->create_many( $create_count, array( 'form_id' => $form['id'], 'date_created' => '2013-11-28 11:00', '1' => 'Second Choice', '2.2' => 'Second Choice', '8' => '1', '13.6' => 'Spain' ) );
 
 		$connected = gravityview_get_connected_views( $form['id'] );
 
@@ -46,26 +55,13 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 
 		$this->assertTrue( GVCommon::has_cap( 'gravityview_uninstall' ) );
 
-	### DO NOT DELETE WHEN IT IS NOT SET OR SET TO FALSE
-
-		// TRY deleting when the settings aren't configured.
-		$this->_set_up_gravityview_settings( NULL );
-		$this->uninstall();
-		$this->_check_deleted_options( false );
-
-		// TRY deleting when the Delete setting is set to No
-		$this->_set_up_gravityview_settings( '0' );
-		$this->uninstall();
-		$this->_check_deleted_options( false );
-
-	### REALLY DELETE NOW
-
 		// Create the items
-		$this->_set_up_gravityview_settings( 'delete' );
+		$this->_set_up_gravityview_settings();
 		$this->_set_up_notes( $entry_ids );
 		$this->_set_up_entry_meta( $entry_ids, $form );
 
-		$this->uninstall();
+		// Trigger GF Addon uninstall, which also triggers uninstall() method
+		GravityView_Settings::get_instance()->uninstall_addon();
 
 		// No Forms should be deleted
 		$this->assertEquals( $all_forms, GFAPI::get_forms() );
@@ -145,9 +141,9 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 
 		foreach( $options as $option ) {
 			if( $should_be_empty ) {
-				$this->assertEmpty( get_option( $option ) );
+				$this->assertEmpty( get_option( $option ), $option . ' is not empty' );
 			} else {
-				$this->assertNotEmpty( get_option( $option ) );
+				$this->assertNotEmpty( get_option( $option ), $option  . ' is empty' );
 			}
 		}
 
@@ -159,16 +155,16 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 
 		foreach( $transients as $transient ) {
 			if( $should_be_empty ) {
-				$this->assertEmpty( get_transient( $transient ) );
+				$this->assertEmpty( get_transient( $transient ), $transient . ' is not empty' );
 			} else {
-				$this->assertNotEmpty( get_transient( $transient ) );
+				$this->assertNotEmpty( get_transient( $transient ), $transient . ' is empty' );
 			}
 		}
 
 		if( $should_be_empty ) {
-			$this->assertEmpty( get_site_transient( 'gravityview_related_plugins' ) );
+			$this->assertEmpty( get_site_transient( 'gravityview_related_plugins' ), 'gravityview_related_plugins is not empty' );
 		} else {
-			$this->assertNotEmpty( get_site_transient( 'gravityview_related_plugins' ) );
+			$this->assertNotEmpty( get_site_transient( 'gravityview_related_plugins' ), 'gravityview_related_plugins is empty' );
 		}
 	}
 
@@ -179,9 +175,9 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 	 */
 	function _set_up_entry_meta( $entry_ids, $form ) {
 
+		GravityView_Entry_Approval::update_bulk( $entry_ids, GravityView_Entry_Approval_Status::APPROVED, $form['id'] );
+
 		foreach( $entry_ids as $entry_id ) {
-			GravityView_Admin_ApproveEntries::update_approved( $entry_id, 1, $form['id'] );
-			$this->assertEquals( gform_get_meta( $entry_id, 'is_approved' ), 1 );
 			gform_add_meta( $entry_id, 'do_not_delete', 'DO NOT DELETE' );
 		}
 	}
@@ -222,39 +218,14 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * Get the script and process uninstall
-	 * @since 1.15
-	 */
-	function uninstall() {
-		if( ! defined('WP_UNINSTALL_PLUGIN') ) {
-			define( 'WP_UNINSTALL_PLUGIN', true );
-		}
-		if( ! class_exists('GravityView_Uninstall' ) ) {
-			require_once GV_Unit_Tests_Bootstrap::instance()->plugin_dir . '/uninstall.php';
-		} else {
-			new GravityView_Uninstall;
-		}
-	}
-
-	/**
 	 * Set delete to true
 	 * @since 1.15
 	 */
-	function _set_up_gravityview_settings( $delete_on_uninstall ) {
+	function _set_up_gravityview_settings() {
 
 		$defaults = GravityView_Settings::get_instance()->get_app_settings();
 
-		if( NULL === $delete_on_uninstall ) {
-			unset( $defaults['delete-on-uninstall'] );
-		} else {
-			$defaults['delete-on-uninstall'] = $delete_on_uninstall;
-		}
-
 		update_option( 'gravityformsaddon_gravityview_app_settings', $defaults );
-
-		if( NULL !== $delete_on_uninstall ) {
-			$this->assertEquals( $delete_on_uninstall, GravityView_Settings::get_instance()->get_app_setting( 'delete-on-uninstall' ) );
-		}
 	}
 
 	/**

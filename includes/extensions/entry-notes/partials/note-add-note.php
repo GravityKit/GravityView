@@ -17,6 +17,7 @@ do_action( 'gravityview/field/notes/scripts' );
 		<input type="hidden" name="action" value="gv_note_add" />
 		<input type="hidden" name="entry-slug" value="{entry_slug}" />
 		<input type="hidden" name="show-delete" value="{show_delete}" />
+        <input type="hidden" name="current-url" value="{url}" />
 		{nonce_field}
 		{email_fields}
 

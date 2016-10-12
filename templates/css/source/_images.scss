@@ -16,6 +16,10 @@
   max-width: 100%;
 }
 
+#TB_load {
+  z-index: 100050 + 1; // By default, it displays under #TB_overlay, at 100050
+}
+
 // Screenshots Gallery
 .gv-gallery .gv-field-file-uploads {
   margin: 0;

@@ -418,7 +418,13 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 * @return array
 	 */
 	public function getPaging() {
-		return $this->paging;
+
+	    $default_params = array(
+            'offset' => 0,
+            'page_size' => 20,
+        );
+
+		return wp_parse_args( $this->paging, $default_params );
 	}
 
 	/**
@@ -471,7 +477,14 @@ class GravityView_View extends Gamajo_Template_Loader {
 	 * @return array
 	 */
 	public function getSorting() {
-		return $this->sorting;
+
+		$defaults_params = array(
+            'sort_field' => 'date_created',
+            'sort_direction' => 'ASC',
+            'is_numeric' => false,
+        );
+
+		return wp_parse_args( $this->sorting, $defaults_params );
 	}
 
 	/**

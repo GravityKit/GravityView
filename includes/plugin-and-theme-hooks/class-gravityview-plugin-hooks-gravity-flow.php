@@ -74,7 +74,7 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 	 *
 	 * @return array Updated Array of searchable fields
 	 */
-	function modify_search_bar_fields_dropdown( $fields, $form_id ) {
+	public function modify_search_bar_fields_dropdown( $fields, $form_id ) {
 
 		$GFlow = new Gravity_Flow_API( $form_id );
 

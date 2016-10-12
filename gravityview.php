@@ -3,7 +3,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:          	1.17.4
+ * Version:          	1.18
  * Author:            	GravityView
  * Author URI:        	https://gravityview.co
  * Text Domain:       	gravityview
@@ -16,7 +16,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
-
 
 /** Constants */
 
@@ -38,13 +37,13 @@ define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
 /**
  * GravityView requires at least this version of Gravity Forms to function properly.
  */
-define( 'GV_MIN_GF_VERSION', '1.9.9.10' );
+define( 'GV_MIN_GF_VERSION', '1.9.14' );
 
 /**
  * GravityView requires at least this version of WordPress to function properly.
  * @since 1.12
  */
-define( 'GV_MIN_WP_VERSION', '3.3' );
+define( 'GV_MIN_WP_VERSION', '3.5.0' );
 
 /**
  * GravityView requires at least this version of PHP to function properly.
@@ -52,32 +51,17 @@ define( 'GV_MIN_WP_VERSION', '3.3' );
  */
 define( 'GV_MIN_PHP_VERSION', '5.2.4' );
 
-/** Load common & connector functions */
-require_once( GRAVITYVIEW_DIR . 'includes/helper-functions.php' );
-require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
-require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
-require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-compatibility.php' );
-require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-roles-capabilities.php' );
-require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-notices.php' );
-
-/** Register Post Types and Rewrite Rules */
-require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
-
-/** Add Cache Class */
-require_once( GRAVITYVIEW_DIR . 'includes/class-cache.php');
-
 /** Register hooks that are fired when the plugin is activated and deactivated. */
-if( is_admin() ) {
-	register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
-	register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
-}
+register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
+
+register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
 
 /**
  * GravityView_Plugin main class.
  */
 final class GravityView_Plugin {
 
-	const version = '1.17.4';
+	const version = '1.18';
 
 	private static $instance;
 
@@ -97,6 +81,7 @@ final class GravityView_Plugin {
 
 	private function __construct() {
 
+		self::require_files();
 
 		if( ! GravityView_Compatibility::is_valid() ) {
 			return;
@@ -105,6 +90,22 @@ final class GravityView_Plugin {
 		$this->include_files();
 
 		$this->add_hooks();
+	}
+
+	/**
+	 * Include files that are required by the plugin
+	 * @since 1.18
+	 */
+	private static function require_files() {
+		require_once( GRAVITYVIEW_DIR . 'includes/helper-functions.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
+		require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
+		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-compatibility.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-roles-capabilities.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-notices.php' );
+		require_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
+		require_once( GRAVITYVIEW_DIR . 'includes/class-cache.php');
 	}
 
 	/**
@@ -127,8 +128,6 @@ final class GravityView_Plugin {
 	 */
 	public function include_files() {
 
-		include_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
-
 		// Load fields
 		include_once( GRAVITYVIEW_DIR . 'includes/fields/class-gravityview-fields.php' );
 		include_once( GRAVITYVIEW_DIR . 'includes/fields/class-gravityview-field.php' );
@@ -137,6 +136,9 @@ final class GravityView_Plugin {
 		foreach ( glob( GRAVITYVIEW_DIR . 'includes/fields/class-gravityview-field*.php' ) as $gv_field_filename ) {
 			include_once( $gv_field_filename );
 		}
+
+		include_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-entry-approval-status.php' );
+		include_once( GRAVITYVIEW_DIR .'includes/class-gravityview-entry-approval.php' );
 
 		include_once( GRAVITYVIEW_DIR .'includes/class-gravityview-entry-notes.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/load-plugin-and-theme-hooks.php' );
@@ -192,6 +194,8 @@ final class GravityView_Plugin {
 	 */
 	public static function activate() {
 
+		self::require_files();
+
 		// register post types
 		GravityView_Post_Types::init_post_types();
 
@@ -221,9 +225,7 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public static function deactivate() {
-
 		flush_rewrite_rules();
-
 	}
 
 	/**

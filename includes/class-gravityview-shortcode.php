@@ -86,7 +86,7 @@ class GravityView_Shortcode {
 		$filtered_atts = shortcode_atts( $supported_atts, $passed_atts, 'gravityview' );
 
 		// Only keep the passed attributes after making sure that they're valid pairs
-		$filtered_atts = function_exists( 'array_intersect_key' ) ? array_intersect_key( $passed_atts, $filtered_atts ) : $filtered_atts;
+		$filtered_atts = function_exists( 'array_intersect_key' ) ? array_intersect_key( (array) $passed_atts, $filtered_atts ) : $filtered_atts;
 
 		$atts = array();
 
@@ -154,15 +154,15 @@ class GravityView_Shortcode {
 				break;
 			case 'first_entry':
 				$paging = $gravityview_view->getPaginationCounts();
-				$return = empty( $paging ) ? '' : number_format_i18n( $paging['first'] );
+				$return = empty( $paging ) ? '' : number_format_i18n( rgar( $paging, 'first', 0 ) );
 				break;
 			case 'last_entry':
 				$paging = $gravityview_view->getPaginationCounts();
-				$return = empty( $paging ) ? '' : number_format_i18n( $paging['last'] );
+				$return = empty( $paging ) ? '' : number_format_i18n( rgar( $paging, 'last', 0 ) );
 				break;
 			case 'page_size':
 				$paging = $gravityview_view->getPaging();
-				$return = number_format_i18n( $paging['page_size'] );
+				$return = number_format_i18n( rgar( $paging, 'page_size', 0 ) );
 				break;
 		}
 

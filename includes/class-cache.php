@@ -222,7 +222,7 @@ class GravityView_Cache {
 		) );
 
 		// Add the passed form IDs
-		$blacklist = array_merge( $blacklist, $form_ids );
+		$blacklist = array_merge( (array) $blacklist, $form_ids );
 
 		// Don't duplicate
 		$blacklist = array_unique( $blacklist );

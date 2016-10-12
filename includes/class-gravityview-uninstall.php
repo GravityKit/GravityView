@@ -9,49 +9,11 @@
  * @copyright Copyright 2015, Katz Web Services, Inc.
  */
 
-// If uninstall not called from WordPress, then exit
-if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-	exit;
-}
-
 /**
  * Delete GravityView content when GravityView is uninstalled, if the setting is set to "Delete on Uninstall"
  * @since 1.15
  */
 class GravityView_Uninstall {
-
-	private $settings_name = 'gravityformsaddon_gravityview_app_settings';
-
-	public function __construct() {
-
-		/** @define "$file_path" "./" */
-		$file_path = plugin_dir_path( __FILE__ );
-
-		include_once $file_path . 'includes/class-gravityview-roles-capabilities.php';
-
-		/**
-		 * Only delete content and settings if "Delete on Uninstall?" setting is "Permanently Delete"
-		 */
-		$delete = $this->get_delete_setting();
-
-		if( GravityView_Roles_Capabilities::has_cap( 'gravityview_uninstall' ) && 'delete' === $delete ) {
-			$this->fire_everything();
-		}
-	}
-
-	/**
-	 * Get the GravityView setting for whether to delete all View settings on uninstall
-	 *
-	 * @since 1.15
-	 *
-	 * @return string|null Returns NULL if not configured (pre-1.15 settings); "0" if false, "delete" if delete
-	 */
-	private function get_delete_setting() {
-
-		$settings = get_option( $this->settings_name, array() );
-
-		return isset( $settings[ 'delete-on-uninstall' ] ) ? $settings[ 'delete-on-uninstall' ] : null;
-	}
 
 	/**
 	 * Delete GravityView Views, settings, roles, caps, etc.
@@ -59,12 +21,14 @@ class GravityView_Uninstall {
 	 * @since 1.15
 	 * @return void
 	 */
-	private function fire_everything() {
-		$this->delete_options();
+	public function fire_everything() {
 		$this->delete_posts();
 		$this->delete_capabilities();
 		$this->delete_entry_meta();
 		$this->delete_entry_notes();
+
+		// Keep this as last to make sure the GravityView Cache blacklist option is deleted
+		$this->delete_options();
 	}
 
 	/**
@@ -148,17 +112,11 @@ class GravityView_Uninstall {
 	 * @return void
 	 */
 	private function delete_options() {
-
-		delete_option( 'gravityformsaddon_gravityview_app_settings' );
-		delete_option( 'gravityformsaddon_gravityview_version' );
 		delete_option( 'gravityview_cache_blacklist' );
-
+		delete_option( 'gv_version_upgraded_from' );
 		delete_transient( 'gravityview_edd-activate_valid' );
 		delete_transient( 'gravityview_edd-deactivate_valid' );
 		delete_transient( 'gravityview_dismissed_notices' );
-
 		delete_site_transient( 'gravityview_related_plugins' );
 	}
 }
-
-new GravityView_Uninstall;
