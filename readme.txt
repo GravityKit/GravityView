@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: Entry approval not working when using [custom entry slugs](http://docs.gravityview.co/article/57-customizing-urls)
+
 = 1.18 on October 11, 2016 =
 
 * Updated minimum requirements: WordPress 3.5, Gravity Forms 1.9.14
