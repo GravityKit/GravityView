@@ -274,7 +274,16 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
-                <h3>1.18 on October 11, 2016</h3>
+				<h3>1.18.1 on November 3, 2016</h3>
+
+				<ul>
+					<li>Updated: 100% Chinese translation—thank you <a href="https://www.transifex.com/user/profile/michaeledi/">Michael Edi</a>!</li>
+					<li>Fixed: Entry approval not working when using <a href="http://docs.gravityview.co/article/57-customizing-urls">custom entry slugs</a></li>
+					<li>Fixed: <code>Undefined index: is_active</code> warning is shown when editing entries with User Registration Addon active</li>
+					<li>Fixed: Strip extra whitespace in Entry Note field templates</li>
+				</ul>
+
+				<h3>1.18 on October 11, 2016</h3>
 
                 <ul>
                     <li>Updated minimum requirements: WordPress 3.5, Gravity Forms 1.9.14</li>
