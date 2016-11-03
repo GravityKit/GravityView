@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
-"PO-Revision-Date: 2016-10-12 04:33+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2016-10-13 04:06+0000\n"
+"Last-Translator: michael edi <michaeledi@163.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/katzwebservices/gravityview/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -452,7 +452,7 @@ msgstr "%s 已批准。"
 
 #: includes/class-admin-approve-entries.php:335
 msgid "%s unapproved."
-msgstr ""
+msgstr "%s 条未获批准。"
 
 #: includes/class-admin-approve-entries.php:339
 msgid "%s disapproved."
@@ -468,11 +468,11 @@ msgstr "所有表单"
 
 #: includes/class-admin-views.php:140 includes/class-admin-views.php:171
 msgid "Create a View"
-msgstr ""
+msgstr "创建视图"
 
 #: includes/class-admin-views.php:142 includes/class-admin-views.php:173
 msgid "Create a View using this form as a data source"
-msgstr ""
+msgstr "使用本表单数据创建视图"
 
 #: includes/class-admin-views.php:159
 msgid "No Title (View #%d)"
@@ -708,7 +708,7 @@ msgstr "更改列表"
 
 #: includes/class-admin-welcome.php:274
 msgid "What&rsquo;s New"
-msgstr ""
+msgstr "新鲜事"
 
 #: includes/class-admin-welcome.php:554
 msgid "GravityView is brought to you by:"
@@ -1216,15 +1216,15 @@ msgstr "查看已批准的条目的目录。单击以拒绝这个条目。"
 
 #: includes/class-gravityview-entry-approval-status.php:68
 msgid "Unapproved"
-msgstr ""
+msgstr "未批准"
 
 #: includes/class-gravityview-entry-approval-status.php:69
 msgid "Reset Approval"
-msgstr ""
+msgstr "重置审批"
 
 #: includes/class-gravityview-entry-approval-status.php:70
 msgid "Entry not yet reviewed. Click to approve this entry."
-msgstr ""
+msgstr "条目尚未审查。单击此处，批准此项。"
 
 #: includes/class-gravityview-entry-approval.php:109
 #: includes/class-gravityview-entry-approval.php:118
@@ -1246,7 +1246,7 @@ msgstr "Gravity Forms的已批准条目"
 
 #: includes/class-gravityview-entry-approval.php:330
 msgid "Reset Entry approval for GravityView"
-msgstr ""
+msgstr "重置GravityView条目审批"
 
 #: includes/class-gravityview-entry-approval.php:333
 #: includes/class-gravityview-uninstall.php:64
@@ -1293,71 +1293,71 @@ msgid ""
 "Delete all Views, GravityView entry approval status, GravityView-generated "
 "entry notes (including approval and entry creator changes), and GravityView "
 "plugin settings."
-msgstr ""
+msgstr "删除所有的视图、 GravityView的条目审批状态、 GravityView 生成的条目注释 （包括审批和条目创建者的更改） 和 GravityView 插件设置。"
 
 #: includes/class-gravityview-settings.php:160
 msgid "I am going to continue using GravityView"
-msgstr ""
+msgstr "我要继续使用 GravityView"
 
 #: includes/class-gravityview-settings.php:163
 msgid "I no longer need GravityView"
-msgstr ""
+msgstr "我不再需要 GravityView"
 
 #: includes/class-gravityview-settings.php:166
 msgid "The plugin doesn't work"
-msgstr ""
+msgstr "该插件不工作"
 
 #: includes/class-gravityview-settings.php:169
 msgid "I found a better plugin"
-msgstr ""
+msgstr "我发现了一个更好的插件"
 
 #: includes/class-gravityview-settings.php:170
 msgid "What plugin you are using, and why?"
-msgstr ""
+msgstr "您正在使用什么插件，为什么？"
 
 #: includes/class-gravityview-settings.php:173
 msgid "Other"
-msgstr ""
+msgstr "其他"
 
 #: includes/class-gravityview-settings.php:257
 msgid ""
 "There was an error sharing your feedback. Sorry! Please email us at "
 "support@gravityview.co"
-msgstr ""
+msgstr "发送您的反馈信息时出错。抱歉 ！请给我们发电子邮件，邮箱： support@gravityview.co"
 
 #: includes/class-gravityview-settings.php:263
 msgid "Why did you uninstall GravityView?"
-msgstr ""
+msgstr "你卸载 GravityView的原因是？"
 
 #: includes/class-gravityview-settings.php:273
 msgid "Comments"
-msgstr ""
+msgstr "评论"
 
 #: includes/class-gravityview-settings.php:274
 msgid "Please share your thoughts about GravityView"
-msgstr ""
+msgstr "请分享您关于GravityView的想法"
 
 #: includes/class-gravityview-settings.php:277
 msgid "How likely are you to recommend GravityView?"
-msgstr ""
+msgstr "您推荐 GravityView的可能性有多大？"
 
 #: includes/class-gravityview-settings.php:291
 msgid "Please follow up with me about my feedback"
-msgstr ""
+msgstr "请跟进我的反馈意见"
 
 #: includes/class-gravityview-settings.php:298
 msgid "Send Us Your Feedback"
-msgstr ""
+msgstr "向我们发送您的反馈"
 
 #: includes/class-gravityview-settings.php:303
 msgid "Thank you for using GravityView!"
-msgstr ""
+msgstr "感谢您使用 GravityView ！"
 
 #: includes/class-gravityview-settings.php:305
 msgid ""
 "Your feedback helps us improve GravityView. If you have any questions or "
 "comments, email us: support@gravityview.co"
-msgstr ""
+msgstr "您的反馈有助于我们改进 GravityView。如果您有任何问题或意见，请发送邮件至︰ support@gravityview.co"
 
 #: includes/class-gravityview-settings.php:346
 msgid "Delete all GravityView content and settings"
@@ -1365,7 +1365,7 @@ msgstr "删除所有的GravityView内容和设置"
 
 #: includes/class-gravityview-settings.php:354
 msgid "Uninstall %s"
-msgstr ""
+msgstr "卸载 %s"
 
 #: includes/class-gravityview-settings.php:393
 msgid "GravityView Settings"
@@ -1880,7 +1880,7 @@ msgstr "新的条目备注"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:424
 msgid "This note was sent from {url}"
-msgstr ""
+msgstr "此消息来自于:  {url}"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:425
 msgid "Also email this note to"
@@ -3026,7 +3026,7 @@ msgstr "没有用户"
 #: includes/class-gravityview-settings.php:287
 msgctxt "A scale from 0 (bad) to 10 (good)"
 msgid "%s (\"Not at all likely\") to %s (\"Extremely likely\")"
-msgstr ""
+msgstr "%s （\"绝不可能\"） 到 %s（\"极有可能\"）"
 
 #: includes/class-gravityview-settings.php:887
 msgctxt "Setting: Show or Hide"
@@ -3109,7 +3109,7 @@ msgstr "备注不能为空。"
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:90
 msgctxt "Gravity Flow Workflow Step Status"
 msgid "Status: %s"
-msgstr ""
+msgstr "状态: %s"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:26
 msgctxt "The string placeholders are for emphasis HTML"
