@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 * Fixed: Entry approval not working when using [custom entry slugs](http://docs.gravityview.co/article/57-customizing-urls)
 * Fixed: `Undefined index: is_active` warning is shown when editing entries with User Registration Addon active
+* Fixed: Strip extra whitespace in entry note templates
 
 = 1.18 on October 11, 2016 =
 
