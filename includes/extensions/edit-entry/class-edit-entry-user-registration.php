@@ -123,7 +123,7 @@ class GravityView_Edit_Entry_User_Registration {
 
 
         // Make sure the feed is active
-	    if ( ! $config['is_active'] ) {
+	    if ( ! rgar( $config, 'is_active', false ) ) {
 			return;
 	    }
 
