@@ -95,7 +95,7 @@ class GravityView_Entry_Approval {
 
 		$form_id = intval( rgpost('form_id') );
 
-		$entry_id = GVCommon::get_entry_id( rgpost('entry_slug') );
+		$entry_id = GVCommon::get_entry_id( rgpost('entry_slug'), true );
 
 		$approval_status = rgpost('approved');
 

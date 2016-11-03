@@ -20,6 +20,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.18.1 on November 3, 2016 =
+
+* Updated: 100% Chinese translation—thank you [Michael Edi](https://www.transifex.com/user/profile/michaeledi/)!
+* Fixed: Entry approval not working when using [custom entry slugs](http://docs.gravityview.co/article/57-customizing-urls)
+* Fixed: `Undefined index: is_active` warning is shown when editing entries with User Registration Addon active
+* Fixed: Strip extra whitespace in Entry Note field templates
+
 = 1.18 on October 11, 2016 =
 
 * Updated minimum requirements: WordPress 3.5, Gravity Forms 1.9.14

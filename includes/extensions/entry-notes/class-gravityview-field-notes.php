@@ -503,7 +503,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		);
 
 		// Strip extra whitespace in template
-		$output = normalize_whitespace( $note_row );
+		$output = gravityview_strip_whitespace( $note_row );
 
 		foreach ( $replacements as $tag => $replacement ) {
 			$output = str_replace( $tag, $replacement, $output );
@@ -561,6 +561,9 @@ class GravityView_Field_Notes extends GravityView_Field {
 		ob_start();
 		$gravityview_view->get_template_part( 'note', 'add-note' );
 		$add_note_html = ob_get_clean();
+
+		// Strip extra whitespace in template
+		$add_note_html = gravityview_strip_whitespace( $add_note_html );
 
 		$visibility_settings = $gravityview_view->getCurrentFieldSetting( 'notes' );
 		$entry = $gravityview_view->getCurrentEntry();
