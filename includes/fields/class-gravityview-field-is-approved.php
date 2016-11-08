@@ -38,6 +38,7 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 	public function __construct() {
 
 		$this->label = esc_html__( 'Approval Status', 'gravityview' );
+		$this->description = esc_html__( 'Display the entry\'s current approval status.', 'gravityview' );
 		$this->default_search_label = __( 'Approval:', 'gravityview' );
 
 		$this->add_hooks();
