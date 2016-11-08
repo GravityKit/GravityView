@@ -67,7 +67,7 @@
     content: "\f147";
     width: $font-size;
     height: $font-size;
-    border: 1px solid #ccc;
+    border: 1px solid darken( $background, 7% );
     padding: 4px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
