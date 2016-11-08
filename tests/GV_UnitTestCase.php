@@ -3,7 +3,7 @@
 class GV_UnitTestCase extends WP_UnitTestCase {
 
 	/**
-	 * @var GF_UnitTest_Factory
+	 * @var GV_UnitTest_Factory
 	 */
 	var $factory;
 
@@ -19,7 +19,7 @@ class GV_UnitTestCase extends WP_UnitTestCase {
 		/* Ensure the database is correctly set up */
 		@GFForms::setup_database();
 
-		$this->factory = new GF_UnitTest_Factory( $this );
+		$this->factory = new GV_UnitTest_Factory( $this );
 	}
 
 	/**

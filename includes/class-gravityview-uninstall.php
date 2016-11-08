@@ -22,11 +22,13 @@ class GravityView_Uninstall {
 	 * @return void
 	 */
 	public function fire_everything() {
-		$this->delete_options();
 		$this->delete_posts();
 		$this->delete_capabilities();
 		$this->delete_entry_meta();
 		$this->delete_entry_notes();
+
+		// Keep this as last to make sure the GravityView Cache blacklist option is deleted
+		$this->delete_options();
 	}
 
 	/**

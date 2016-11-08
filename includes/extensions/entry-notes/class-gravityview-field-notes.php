@@ -421,6 +421,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			'subject-label' => __( 'Subject', 'gravityview' ),
 			'subject' => __( 'Email subject', 'gravityview' ),
 			'default-email-subject' => __( 'New entry note', 'gravityview' ),
+            'email-footer' => __( 'This note was sent from {url}', 'gravityview' ),
 			'also-email' => __( 'Also email this note to', 'gravityview' ),
 			'error-add-note' => __( 'There was an error adding the note.', 'gravityview' ),
 			'error-invalid' => __( 'The request was invalid. Refresh the page and try again.', 'gravityview' ),
@@ -502,7 +503,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		);
 
 		// Strip extra whitespace in template
-		$output = normalize_whitespace( $note_row );
+		$output = gravityview_strip_whitespace( $note_row );
 
 		foreach ( $replacements as $tag => $replacement ) {
 			$output = str_replace( $tag, $replacement, $output );
@@ -561,6 +562,9 @@ class GravityView_Field_Notes extends GravityView_Field {
 		$gravityview_view->get_template_part( 'note', 'add-note' );
 		$add_note_html = ob_get_clean();
 
+		// Strip extra whitespace in template
+		$add_note_html = gravityview_strip_whitespace( $add_note_html );
+
 		$visibility_settings = $gravityview_view->getCurrentFieldSetting( 'notes' );
 		$entry = $gravityview_view->getCurrentEntry();
 		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
@@ -576,6 +580,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		$add_note_html = str_replace( '{nonce_field}', $nonce_field, $add_note_html );
 		$add_note_html = str_replace( '{show_delete}', intval( $visibility_settings['delete'] ), $add_note_html );
 		$add_note_html   = str_replace( '{email_fields}', $email_fields, $add_note_html );
+		$add_note_html = str_replace( '{url}', esc_url_raw( add_query_arg( array() ) ), $add_note_html );
 
 		return $add_note_html;
 	}
@@ -708,6 +713,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 				'gv-note-to-custom' => '',
 				'gv-note-subject' => '',
 				'gv-note-content' => '',
+                'current-url' => '',
 			);
 
 			$current_user  = wp_get_current_user();
@@ -739,6 +745,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			// We use empty() here because GF uses empty to check against, too. `0` isn't a valid subject to GF
 			$subject = empty( $subject ) ? self::strings( 'default-email-subject' ) : $subject;
 			$message = $email_data['gv-note-content'];
+			$email_footer = self::strings( 'email-footer' );
 			$from_name     = $current_user->display_name;
 			$message_format = 'html';
 
@@ -746,11 +753,27 @@ class GravityView_Field_Notes extends GravityView_Field {
 			 * @filter `gravityview/field/notes/email_content` Modify the values passed when sending a note email
 			 * @see GVCommon::send_email
 			 * @since 1.17
-			 * @param[in,out] array $email_settings Values being passed to the GVCommon::send_email() method: 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'entry'
+			 * @param[in,out] array $email_settings Values being passed to the GVCommon::send_email() method: 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'entry', 'email_footer'
 			 */
-			$email_content = apply_filters( 'gravityview/field/notes/email_content', compact( 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'entry' ) );
+			$email_content = apply_filters( 'gravityview/field/notes/email_content', compact( 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'entry', 'email_footer' ) );
 
 			extract( $email_content );
+
+			$is_html = ( 'html' === $message_format );
+
+			// Add the message footer
+			$message .= $this->get_email_footer( $email_footer, $is_html, $email_data );
+
+			/**
+             * @filter `gravityview/field/notes/wpautop_email` Should the message content have paragraphs added automatically, if using HTML message format
+			 * @since 1.18
+             * @param bool $wpautop_email True: Apply wpautop() to the email message if using; False: Leave as entered (Default: true)
+			 */
+			$wpautop_email = apply_filters( 'gravityview/field/notes/wpautop_email', true );
+
+			if ( $is_html && $wpautop_email ) {
+				$message = wpautop( $message );
+			}
 
 			GVCommon::send_email( $from, $to, $bcc, $reply_to, $subject, $message, $from_name, $message_format, '', $entry, false );
 
@@ -761,6 +784,38 @@ class GravityView_Field_Notes extends GravityView_Field {
 			 */
 			do_action( 'gform_post_send_entry_note', __METHOD__, $to, $from, $subject, $message, $form, $entry );
 		}
+	}
+
+	/**
+     * Get the footer for Entry Note emails
+     *
+     * `{url}` is replaced by the URL of the page where the note form was embedded
+     *
+     * @since 1.18
+     * @see GravityView_Field_Notes::strings The default value of $message_footer is set here, with the key 'email-footer'
+	 *
+	 * @param string $email_footer The message footer value
+	 * @param bool $is_html True: Email is being sent as HTML; False: sent as text
+	 *
+	 * @return string If email footer is not empty, return the message with placeholders replaced with dynamic values
+	 */
+	private function get_email_footer( $email_footer = '', $is_html = true, $email_data = array() ) {
+
+	    $output = '';
+
+		if( ! empty( $email_footer ) ) {
+		    $url = rgar( $email_data, 'current-url' );
+			$url = html_entity_decode( $url );
+			$url = site_url( $url );
+
+			$content = $is_html ? "<a href='{$url}'>{$url}</a>" : $url;
+
+			$email_footer = str_replace( '{url}', $content, $email_footer );
+
+			$output .= "\n\n$email_footer";
+		}
+
+		return $output;
 	}
 }
 

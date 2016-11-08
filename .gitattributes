@@ -1,12 +1,28 @@
-/.gitattributes export-ignore
-/.gitignore     export-ignore
-/.gitmodules    export-ignore
-/.idea          export-ignore
-/.tx            export-ignore
-/.editorconfig  export-ignore
-/Gruntfile.js   export-ignore
-/phpunit.xml    export-ignore
-/tests          export-ignore
-/readme.md      export-ignore
-/node_modules   export-ignore
-/docs           export-ignore
+# Items to ignore when downloading a zip
+
+# Files
+.gitattributes export-ignore
+.gitignore export-ignore
+.gitmodules export-ignore
+.editorconfig export-ignore
+Gruntfile.js export-ignore
+package.json export-ignore
+phpunit.xml export-ignore
+phpunit.xml.dist export-ignore
+readme.md export-ignore
+Rakefile export-ignore
+.scrutinizer.yml
+.travis.yml
+.bowerrc
+.coveralls.yml
+
+# Folders
+
+/.idea export-ignore
+/.tx export-ignore
+/node_modules export-ignore
+/docs export-ignore
+/docs/* export-ignore
+/tests export-ignore
+/tests/* export-ignore
+/tests/unit-tests/* export-ignore

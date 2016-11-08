@@ -112,6 +112,16 @@ final class GravityView_Entry_Approval_Status {
 
 		$new_value = $old_value;
 
+		// Meta value does not exist yet
+		if( false === $old_value ) {
+			return self::UNAPPROVED;
+		}
+
+		// Meta value does not exist yet
+		if( true === $old_value ) {
+			return self::APPROVED;
+		}
+
 		switch ( (string) $old_value ) {
 
 			// Approved values
@@ -126,8 +136,8 @@ final class GravityView_Entry_Approval_Status {
 				$new_value = self::DISAPPROVED;
 				break;
 
+			// Unapproved values
 			case '3':
-			case false: // Meta value does not exist yet
 				$new_value = self::UNAPPROVED;
 				break;
 		}
@@ -144,7 +154,11 @@ final class GravityView_Entry_Approval_Status {
 	 *
 	 * @return bool True: value is valid; false: value is not valid
 	 */
-	public static function is_valid( $value ) {
+	public static function is_valid( $value = NULL ) {
+
+		if ( ! is_scalar( $value ) || is_null( $value ) || '' === $value ) {
+			return false;
+		}
 
 		$value = self::maybe_convert_status( $value );
 

@@ -37,18 +37,28 @@ class GravityView_Edit_Entry_User_Registration {
 	 * @since 1.11
 	 */
 	public function load() {
+		add_action( 'wp', array( $this, 'add_hooks' ), 10 );
+    }
 
-        /**
+	/**
+	 * Add hooks to trigger updating the user
+	 *
+	 * @since 1.18
+	 */
+    public function add_hooks() {
+
+	    /**
 	     * @filter `gravityview/edit_entry/user_registration/trigger_update` Choose whether to update user information via User Registration add-on when an entry is updated?
 	     * @since 1.11
 	     * @param boolean $boolean Whether to trigger update on user registration (default: true)
 	     */
-        if( apply_filters( 'gravityview/edit_entry/user_registration/trigger_update', true ) ) {
-            add_action( 'gravityview/edit_entry/after_update' , array( $this, 'update_user' ), 10, 2 );
+	    if( apply_filters( 'gravityview/edit_entry/user_registration/trigger_update', true ) ) {
 
-            // last resort in case the current user display name don't match any of the defaults
-            add_action( 'gform_user_updated', array( $this, 'restore_display_name' ), 10, 4 );
-        }
+	    	add_action( 'gravityview/edit_entry/after_update' , array( $this, 'update_user' ), 10, 2 );
+
+		    // last resort in case the current user display name don't match any of the defaults
+		    add_action( 'gform_user_updated', array( $this, 'restore_display_name' ), 10, 4 );
+	    }
     }
 
     /**
@@ -62,16 +72,12 @@ class GravityView_Edit_Entry_User_Registration {
      */
     public function update_user( $form = array(), $entry_id = 0 ) {
 
-        if( !class_exists( 'GFAPI' ) || !class_exists( 'GFUser' ) || empty( $entry_id ) ) {
+        if( ! class_exists( 'GFAPI' ) || ! class_exists( 'GF_User_Registration' ) || empty( $entry_id ) ) {
             return;
         }
 
-        // support for GF User Registration 3.x
-        $gf_user_3 =  class_exists('GF_User_Registration') ? true : false;
-
-        if( $gf_user_3 ) {
-            $gf_user_registration = GF_User_Registration::get_instance();
-        }
+        /** @var GF_User_Registration $gf_user_registration */
+        $gf_user_registration = GF_User_Registration::get_instance();
 
         $entry = GFAPI::get_entry( $entry_id );
 
@@ -83,14 +89,7 @@ class GravityView_Edit_Entry_User_Registration {
 	     */
         $entry = apply_filters( 'gravityview/edit_entry/user_registration/entry', $entry, $form );
 
-        /**
-         * @since 1.14
-         */
-        if( $gf_user_3 ) {
-            $config = $gf_user_registration->get_single_submission_feed( $entry, $form );
-        } else {
-            $config = GFUser::get_active_config( $form, $entry );
-        }
+        $config = $gf_user_registration->get_single_submission_feed( $entry, $form );
 
         /**
          * @filter `gravityview/edit_entry/user_registration/preserve_role` Keep the current user role or override with the role defined in the Create feed
@@ -123,25 +122,24 @@ class GravityView_Edit_Entry_User_Registration {
         $config = apply_filters( 'gravityview/edit_entry/user_registration/config', $config, $form, $entry );
 
 
-        $feed_pos = $gf_user_3 ? 'meta/feedType' : 'meta/feed_type';
-        $is_create_feed = ( $config && rgars( $config, $feed_pos ) === 'create' );
+        // Make sure the feed is active
+	    if ( ! rgar( $config, 'is_active', false ) ) {
+			return;
+	    }
 
-        // Only update if it's a create feed
-        if( ! $is_create_feed ) {
-            return;
-        }
+	    // If an Update feed, make sure the conditions are met.
+	    if( rgars( $config, 'meta/feedType' ) === 'update' ) {
+	    	if( ! $gf_user_registration->is_feed_condition_met( $config, $form, $entry ) ) {
+			    return;
+		    }
+	    }
 
         // The priority is set to 3 so that default priority (10) will still override it
         add_filter( 'send_password_change_email', '__return_false', 3 );
         add_filter( 'send_email_change_email', '__return_false', 3 );
 
         // Trigger the User Registration update user method
-        if( $gf_user_3 ) {
-            $gf_user_registration->update_user( $entry, $form, $config );
-        } else {
-            GFUser::update_user( $entry, $form, $config );
-        }
-
+        $gf_user_registration->update_user( $entry, $form, $config );
 
         remove_filter( 'send_password_change_email', '__return_false', 3 );
         remove_filter( 'send_email_change_email', '__return_false', 3 );

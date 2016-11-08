@@ -329,9 +329,6 @@ class GravityView_Edit_Entry_Render {
             // Process calculation fields
             $this->update_calculation_fields();
 
-            // Process calculation fields
-            $this->update_calculation_fields();
-
             // Perform actions normally performed after updating a lead
             $this->after_update();
 
@@ -947,8 +944,6 @@ class GravityView_Edit_Entry_Render {
 
         add_filter( 'gform_field_input', array( $this, 'verify_user_can_edit_post' ), 5, 5 );
         add_filter( 'gform_field_input', array( $this, 'modify_edit_field_input' ), 10, 5 );
-
-        add_filter( 'gform_field_value', array( $this, 'fix_survey_fields_value'), 10, 3 );
 
         // We need to remove the fake $_GET['page'] arg to avoid rendering form as if in admin.
         unset( $_GET['page'] );

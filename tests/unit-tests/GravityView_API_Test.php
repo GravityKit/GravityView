@@ -58,15 +58,6 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( 'gv-container gv-container-no-results', $output );
 
-		GravityView_View::getInstance()->setEntries( array( array('id'), array('id') ) );
-		GravityView_View::getInstance()->setTotalEntries( 2 );
-
-		// Test non-empty View
-		ob_start();
-		gv_container_class();
-		$output = ob_get_clean();
-
-		$this->assertEquals( 'gv-container gv-container-no-results', $output );
 
 		GravityView_View::getInstance()->setEntries( array( array('id'), array('id') ) );
 		GravityView_View::getInstance()->setTotalEntries( 2 );

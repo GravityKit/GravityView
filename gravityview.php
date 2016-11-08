@@ -3,7 +3,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:          	1.18-beta
+ * Version:          	1.18.1
  * Author:            	GravityView
  * Author URI:        	https://gravityview.co
  * Text Domain:       	gravityview
@@ -16,7 +16,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
-
 
 /** Constants */
 
@@ -52,32 +51,17 @@ define( 'GV_MIN_WP_VERSION', '3.5.0' );
  */
 define( 'GV_MIN_PHP_VERSION', '5.2.4' );
 
-/** Load common & connector functions */
-require_once( GRAVITYVIEW_DIR . 'includes/helper-functions.php' );
-require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
-require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
-require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-compatibility.php' );
-require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-roles-capabilities.php' );
-require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-notices.php' );
-
-/** Register Post Types and Rewrite Rules */
-require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
-
-/** Add Cache Class */
-require_once( GRAVITYVIEW_DIR . 'includes/class-cache.php');
-
 /** Register hooks that are fired when the plugin is activated and deactivated. */
-if( is_admin() ) {
-	register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
-	register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
-}
+register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
+
+register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
 
 /**
  * GravityView_Plugin main class.
  */
 final class GravityView_Plugin {
 
-	const version = '1.18-beta';
+	const version = '1.18.1';
 
 	private static $instance;
 
@@ -97,6 +81,7 @@ final class GravityView_Plugin {
 
 	private function __construct() {
 
+		self::require_files();
 
 		if( ! GravityView_Compatibility::is_valid() ) {
 			return;
@@ -105,6 +90,22 @@ final class GravityView_Plugin {
 		$this->include_files();
 
 		$this->add_hooks();
+	}
+
+	/**
+	 * Include files that are required by the plugin
+	 * @since 1.18
+	 */
+	private static function require_files() {
+		require_once( GRAVITYVIEW_DIR . 'includes/helper-functions.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-common.php');
+		require_once( GRAVITYVIEW_DIR . 'includes/connector-functions.php');
+		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-compatibility.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-roles-capabilities.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-notices.php' );
+		require_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-post-types.php');
+		require_once( GRAVITYVIEW_DIR . 'includes/class-cache.php');
 	}
 
 	/**
@@ -126,8 +127,6 @@ final class GravityView_Plugin {
 	 * @since 1.12
 	 */
 	public function include_files() {
-
-		include_once( GRAVITYVIEW_DIR .'includes/class-admin.php' );
 
 		// Load fields
 		include_once( GRAVITYVIEW_DIR . 'includes/fields/class-gravityview-fields.php' );
@@ -195,6 +194,8 @@ final class GravityView_Plugin {
 	 */
 	public static function activate() {
 
+		self::require_files();
+
 		// register post types
 		GravityView_Post_Types::init_post_types();
 
@@ -224,9 +225,7 @@ final class GravityView_Plugin {
 	 * @return void
 	 */
 	public static function deactivate() {
-
 		flush_rewrite_rules();
-
 	}
 
 	/**

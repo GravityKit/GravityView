@@ -20,28 +20,52 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-<<<<<<< HEAD
-=======
-= 1.18 =
+= 1.18.1 on November 3, 2016 =
+
+* Updated: 100% Chinese translation—thank you [Michael Edi](https://www.transifex.com/user/profile/michaeledi/)!
+* Fixed: Entry approval not working when using [custom entry slugs](http://docs.gravityview.co/article/57-customizing-urls)
+* Fixed: `Undefined index: is_active` warning is shown when editing entries with User Registration Addon active
+* Fixed: Strip extra whitespace in Entry Note field templates
+
+= 1.18 on October 11, 2016 =
+
 * Updated minimum requirements: WordPress 3.5, Gravity Forms 1.9.14
+* Modified: Entries that are unapproved (not approved or disapproved) are shown as yellow circles
 * Added: Shortcut to create a View for an existing form
-* Fixed: "New form created" message not shown when saving a draft using a View preset
-* Fixed: Edit Entry not saving other field values when Post fields were in the Edit Entry form
+* Added: Entry Note emails now have a message "This note was sent from {url}" to provide context for the note recipient
+* Fixed: Edit Entry did not save other field values when Post fields were in the Edit Entry form
 * Fixed: When using "Start Fresh" View presets, form fields were not being added to the "Add Field" field picker
-* Fixed: Don't show hidden visible inputs in the "Add Field" picker (for example, if the "Middle Name" input is hidden in the Name field, don't show it as an option)
+* Fixed: Hidden visible inputs were showing in the "Add Field" picker (for example, the "Middle Name" input was hidden in the Name field, but showing as an option)
 * Fixed: Fatal error when editing Post Content and Post Image fields
 * Fixed: Lightbox images not loading
 * Fixed: Lightbox loading indicator displaying below the overlay
-* Fixed: Mask the Entry ID in the link to lightbox files
-* Tweak: When the global "Show Support Port" setting is "Hide", always hide; if set to "Show", respect each user's Support Port display preference
+* Fixed: "New form created" message was not shown when saving a draft using a "Start Fresh" View preset
+* Gravity Forms User Registration Addon changes:
+    * Gravity Forms User Registration 2.0 is no longer supported
+    * Fixed Processing "Update User" feeds
+    * Fixed: Inactive User Registration feeds were being processed
+    * Fixed: User Registration "Update User" feeds were being processed, even if the Update Conditions weren't met
+    * Fixed: Unable to use `gravityview/edit_entry/user_registration/trigger_update` filter
+* Fixed: Prevent negative entry counts when approving and disapproving entries
 * Fixed: PHP notice when WooCommerce Memberships is active
+* Tweak: Entry Note emails now have paragraphs automatically added to them
+* Tweak: When the global "Show Support Port" setting is "Hide", always hide; if set to "Show", respect each user's Support Port display preference
+* Updated: Complete German translation—thank you [hubert123456](https://www.transifex.com/user/profile/hubert123456/)!
 
 __Developer Notes__
 
+* Migrated `is_approved` entry meta values; statuses are now managed by the `GravityView_Entry_Approval_Status` class
+    - "Approved" => `1`, use `GravityView_Entry_Approval_Status::APPROVED` constant
+    - "0" => `2`, use `GravityView_Entry_Approval_Status::DISAPPROVED` constant
+    - Use `$new_value = GravityView_Entry_Approval_Status::maybe_convert_status( $old_value )` to reliably translate meta values
+* Added: `GVCommon::get_entry_id()` method to get the entry ID from a slug or ID
 * Added: `gravityview_go_back_url` filter to modify the link URL used for the single entry back-link in `gravityview_back_link()` function
+* Added: `gravityview/field/notes/wpautop_email` filter to disable `wpautop()` on Entry Note emails
+* Added: `$email_footer` to the `gravityview/field/notes/email_content` filter content
+* Modified: `note-add-note.php` template: added `current-url` hidden field
 * Modified: `list-single.php` template file: added `.gv-grid-col-1-3` CSS class to the `.gv-list-view-content-image` container
+* Fixed: Mask the Entry ID in the link to lightbox files
 
->>>>>>> develop
 = 1.17.4 on September 7, 2016 =
 
 * Added: Support for editing [Gravity Perks Unique ID](https://gravitywiz.com/documentation/gp-unique-id/) fields
@@ -79,10 +103,7 @@ __Developer Notes__
 = 1.17.2 on August 9, 2016 =
 
 * Fixed: "Start Fresh" fails when there are no pre-existing forms in Gravity Forms
-<<<<<<< HEAD
-=======
 * Fixed: Edit Entry not saving values for fields that were initially hidden
->>>>>>> develop
 * Added: Support for embedding Views in Ultimate Member profile tabs
 * Fixed: File Upload fields potentially displaying PHP warnings
 * Fixed: Check plugin and theme existence before loading hooks
@@ -862,7 +883,7 @@ __Developer Notes:__
 	- Make link bold when filter is active
 	- Clicking on an active filter removes the filter
 * Tweak: Fixed updates for Multisite installations
-* Modified: Now you can override which post a single entry links to. For example, if a shortcode is embedded on a home page and you want single entries to link to a page with an embedded View, not the View itself, you can pass the `post_id` parameter. This accepts the ID of the page where the View is embedded.
+* Modified: Now you can override which post a single entry links to. For example, if a shortcode is embedded on a home page and you want single entries to link to a page with an embedded View, not the View itself, you can pass the `post_id` parameter. This accepts the ID of the page where the View is embedded.
 * Modified: Added `$add_pagination` parameter to `GravityView_API::directory_link()`
 * Added: Indonesian translation (thanks, [@sariyanta](https://www.transifex.com/accounts/profile/sariyanta/))!
 * Updated: Swedish translation 100% translated - thanks, [@adamrehal](https://www.transifex.com/accounts/profile/adamrehal/)!
@@ -960,7 +981,7 @@ __Developer Notes:__
 * Added: Signature field improvements (when using the Gravity Forms Signature Add-on) - now shows full size
 * Fixed: Empty truncated URLs no longer get shown
 * Fixed: License Activation works when No-Conflict Mode is enabled
-* Fixed: When creating a new View, "View Type" box was visible when there were no existing Gravity Forms
+* Fixed: When creating a new View, "View Type" box was visible when there were no existing Gravity Forms
 * Fixed: Fields not always saving properly when adding lots of fields with the "Add All Fields" button
 * Fixed: Recognizing single entry when using WordPress "Default" Permalink setting
 * Fixed: Date Created field now respects the blog's timezone setting, instead of using UTC time
