@@ -67,22 +67,14 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 	public function filter_field_value( $output = '', $entry = array(), $field_settings = array(), $gv_field_output = array() ) {
 
 		$status = GravityView_Entry_Approval_Status::maybe_convert_status( $output );
-
-		$field_setting = '';
-		switch ( $status ) {
-			case GravityView_Entry_Approval_Status::APPROVED:
-				$field_setting = 'approved_label';
-				break;
-			case GravityView_Entry_Approval_Status::DISAPPROVED:
-				$field_setting = 'disapproved_label';
-				break;
-			case GravityView_Entry_Approval_Status::UNAPPROVED:
-				$field_setting = 'unapproved_label';
-				break;
-		}
-
 		$status_key = GravityView_Entry_Approval_Status::get_key( $status );
-		$value = rgar( $field_settings, $field_setting, GravityView_Entry_Approval_Status::get_label( $status ) );
+
+		// "approved_label", "unapproved_label", "disapproved_label" setting keys
+		$field_setting_key = sprintf( '%s_label', $status_key );
+
+		$default_label = GravityView_Entry_Approval_Status::get_label( $status );
+
+		$value = rgar( $field_settings, $field_setting_key, $default_label );
 
 		return sprintf( '<span class="gv-approval-%s">%s</span>', esc_attr( $status_key ), $value );
 	}
