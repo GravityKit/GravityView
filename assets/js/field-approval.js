@@ -141,7 +141,6 @@
 			nonce: gvApproval.nonce
 		};
 
-		var previous_status = $target.attr( 'data-current-status');
 		var css_class, new_status;
 
 		$target.attr( 'aria-busy', true );
