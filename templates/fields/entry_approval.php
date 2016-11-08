@@ -1,7 +1,7 @@
 <?php
 /**
  * Approval field output
- * 
+ *
  * This field will only render for users with the `gravityview_moderate_entries` capability.
  *
  * @package GravityView
