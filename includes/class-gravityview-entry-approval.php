@@ -62,7 +62,7 @@ class GravityView_Entry_Approval {
 	 */
 	public static function get_entry_status( $entry, $value_or_label = 'label' ) {
 
-		$entry_id = is_array( $entry ) ? $entry['id'] : GVCommon::get_entry_id( $entry );
+		$entry_id = is_array( $entry ) ? $entry['id'] : GVCommon::get_entry_id( $entry, true );
 
 		$status = gform_get_meta( $entry_id, self::meta_key );
 
