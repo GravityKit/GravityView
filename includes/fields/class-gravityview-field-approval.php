@@ -30,6 +30,30 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	}
 
 	/**
+	 * Remove unused settings for the approval field
+	 *
+	 * @since 1.19
+	 *
+	 * @param array $field_options
+	 * @param string $template_id
+	 * @param string $field_id
+	 * @param string $context
+	 * @param string $input_type
+	 *
+	 * @return array
+	 */
+	function field_options( $field_options, $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
+
+		unset( $field_options['only_loggedin'] );
+
+		unset( $field_options['new_window'] );
+
+		unset( $field_options['show_as_link'] );
+
+		return $field_options;
+	}
+
+	/**
 	 * Add filters and actions for the field
 	 * @since 1.18
 	 * @return void
