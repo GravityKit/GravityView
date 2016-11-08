@@ -174,7 +174,10 @@
 					.find('span')
 						.text( new_status.label );
 
-			} else {
+			} else if( '0' !== response ) {
+				if( self.debug ) {
+					console.error( 'AJAX Error', response );
+				}
 				alert( response.data[0].message );
 			}
 
