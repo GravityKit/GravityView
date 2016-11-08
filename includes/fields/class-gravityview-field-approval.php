@@ -68,6 +68,8 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 		add_action( 'gravityview/field/approval/load_scripts', array( $this, 'enqueue_and_localize_script' ) );
 
+		add_action( 'gravityview_datatables_scripts_styles',  array( $this, 'enqueue_and_localize_script' ) );
+
 		add_filter( 'gravityview_get_entries', array( $this, 'modify_search_parameters' ), 1000 );
 
 		add_filter( 'gravityview/field_output/html', array( $this, 'maybe_prevent_field_render' ), 10, 2 );
