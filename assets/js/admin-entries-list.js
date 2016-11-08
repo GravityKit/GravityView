@@ -220,7 +220,8 @@
 			entry_slug: entryID,
 			form_id: gvGlobals.form_id,
 			approved: approved,
-			nonce: gvGlobals.nonce
+			nonce: gvGlobals.nonce,
+			admin_nonce: gvGlobals.admin_nonce
 		};
 
 		$.post( ajaxurl, data, function ( response ) {

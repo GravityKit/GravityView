@@ -92,10 +92,14 @@ class GravityView_Entry_Approval {
 	 * @return void Prints result using wp_send_json_success() and wp_send_json_error()
 	 */
 	public function ajax_update_approved() {
-
+		
 		$form_id = intval( rgpost('form_id') );
 
-		$entry_id = GVCommon::get_entry_id( rgpost('entry_slug'), true );
+		// We always want requests from the admin to allow entry IDs, but not from the frontend
+		// There's another nonce sent when approving entries in the admin that we check
+		$force_entry_ids = rgpost( 'admin_nonce' ) && wp_verify_nonce( rgpost( 'admin_nonce' ), 'gravityview_admin_entry_approval' );
+		
+		$entry_id = GVCommon::get_entry_id( rgpost('entry_slug'), $force_entry_ids );
 
 		$approval_status = rgpost('approved');
 
