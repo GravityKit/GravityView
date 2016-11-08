@@ -67,7 +67,28 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 		add_action( 'gravityview/field/approval/load_scripts', array( $this, 'enqueue_and_localize_script' ) );
 
 		add_filter( 'gravityview_get_entries', array( $this, 'modify_search_parameters' ), 1000 );
+		
+		add_filter( 'gravityview/field_output/html', array( $this, 'maybe_prevent_field_render' ), 10, 2 );
+	}
 
+	/**
+	 * @filter `gravityview/template/field_label` Modify field label output
+	 * 
+	 * @since 1.19
+	 * 
+	 * @param string $html Existing HTML output
+	 * @param array $args Arguments passed to the function
+	 *
+	 * @return string Empty string if user doesn't have the `gravityview_moderate_entries` cap; field HTML otherwise
+	 */
+	public function maybe_prevent_field_render( $html, $args ) {
+
+		// If the field is `entry_approval` type but the user doesn't have the moderate entries cap, don't render.
+		if( $this->name === rgar( $args['field'], 'id' ) && ! GVCommon::has_cap('gravityview_moderate_entries') ) {
+			return '';
+		}
+		
+		return $html;
 	}
 
 	/**
