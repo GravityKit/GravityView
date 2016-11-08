@@ -2,7 +2,7 @@
 
 /**
  * Add custom options for address fields
- * @since 1.18
+ * @since 1.19
  */
 class GravityView_Field_Entry_Approval extends GravityView_Field {
 
@@ -55,7 +55,9 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 	/**
 	 * Add filters and actions for the field
-	 * @since 1.18
+	 *
+	 * @since 1.19
+	 *
 	 * @return void
 	 */
 	private function add_hooks() {
@@ -109,7 +111,9 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 	/**
 	 * Register the field approval script and style
-	 * @since TODO
+	 *
+	 * @since 1.19
+	 *
 	 * @return void
 	 */
 	function register_scripts_and_styles() {
@@ -126,13 +130,13 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 		/**
 		 * @filter `gravityview/field/approval/css_url` URL to the Approval field CSS file.
-		 * @since 1.18
-		 * @param string $style_path Override to use your own CSS file, or return empty string to disable loading.
+		 * @since 1.19
+		 * @param string $style_url Override to use your own CSS file, or return empty string to disable loading.
 		 */
-		$style_path = apply_filters( 'gravityview/field/approval/css_url', $style_url );
+		$style_url = apply_filters( 'gravityview/field/approval/css_url', $style_url );
 
-		if( ! empty( $style_path ) ) {
-			wp_register_style( 'gravityview-field-approval', $style_path, array( 'dashicons' ), GravityView_Plugin::version, 'screen' );
+		if( ! empty( $style_url ) ) {
+			wp_register_style( 'gravityview-field-approval', $style_url, array( 'dashicons' ), GravityView_Plugin::version, 'screen' );
 		}
 
 		unset( $style_path, $style_url );
@@ -140,7 +144,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 	/**
 	 * Register the field approval script and output the localized text JS variables
-	 * @since 1.18
+	 * @since 1.19
 	 * @return void
 	 */
 	public function enqueue_and_localize_script() {
@@ -165,7 +169,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	/**
 	 * Add Fields to the field list
 	 *
-	 * @since 1.18
+	 * @since 1.19
 	 *
 	 * @param array $entry_default_fields Array of fields shown by default
 	 * @param string|array $form form_ID or form object
@@ -189,7 +193,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	/**
 	 * Get the anchor text for a link, based on the current status
 	 *
-	 * @since 1.18
+	 * @since 1.19
 	 * @uses GravityView_Entry_Approval_Status::get_string()
 	 *
 	 * @param string $approved_status Status string or key
@@ -203,7 +207,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	/**
 	 * Get the title attribute for a link, based on the current status
 	 *
-	 * @since 1.18
+	 * @since 1.19
 	 * @uses GravityView_Entry_Approval_Status::get_string()
 	 *
 	 * @param int|string $approved_status Status string or key

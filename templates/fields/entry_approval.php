@@ -6,13 +6,13 @@
  *
  * @package GravityView
  * @subpackage GravityView/templates/fields
- * @since 1.18
+ * @since 1.19
  */
 
 /**
  * @action `gravityview/field/approval/load_scripts` Trigger loading the field approval javascript
  * @see GravityView_Field_Approval::enqueue_and_localize_script
- * @since 1.18
+ * @since 1.19
  */
 do_action( 'gravityview/field/approval/load_scripts' );
 
