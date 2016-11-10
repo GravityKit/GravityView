@@ -576,7 +576,7 @@ class GravityView_View_Data {
 				'value' => 0,
 				'show_in_shortcode' => true,
 			),
-			'admin_show_all_approved' => array(
+			'admin_show_all_statuses' => array(
 				'label' => __( 'Show all entries to administrators', 'gravityview' ),
 				'desc'	=> __('Administrators will be able to see entries with any approval status.', 'gravityview'),
 				'tooltip' => __('Logged-out visitors and non-administrators will only see approved entries, while administrators will see entries with all statuses. This makes it easier for administrators to moderate entries from a View.', 'gravityview'),
