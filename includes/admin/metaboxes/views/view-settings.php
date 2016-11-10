@@ -23,6 +23,8 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 
 	GravityView_Render_Settings::render_setting_row( 'show_only_approved', $current_settings );
 
+	GravityView_Render_Settings::render_setting_row( 'admin_show_all_approved', $current_settings );
+
 	/**
 	 * @since 1.5.4
 	 */

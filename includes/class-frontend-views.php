@@ -909,6 +909,11 @@ class GravityView_frontend {
 	 */
 	public static function process_search_only_approved( $args, $search_criteria ) {
 
+		if( ! empty( $args['admin_show_all_approved'] ) && GVCommon::has_cap('gravityview_moderate_entries') ) {
+			do_action( 'gravityview_log_debug', __METHOD__ . ': User can moderate entries; showing all approval statuses' );
+			return $search_criteria;
+		}
+
 		if ( ! empty( $args['show_only_approved'] ) ) {
 
 			$search_criteria['field_filters'][] = array(
