@@ -67,6 +67,12 @@ class GravityView_Admin {
 	 * @return string HTML message with no container tags.
 	 */
 	public static function no_views_text() {
+		
+		if ( isset( $_REQUEST['post_status'] ) && 'trash' === $_REQUEST['post_status'] ) {
+			return __( 'No Views found in Trash', 'gravityview' );
+		} elseif( ! empty( $_GET['s'] ) ) {
+			return __( 'No Views found.', 'gravityview' );
+		}
 
 		// Floaty the Astronaut says "oi"
 		$image = self::get_floaty();
