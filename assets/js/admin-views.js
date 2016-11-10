@@ -140,7 +140,7 @@
 				.on( 'dblclick', ".gv-fields", vcfg.openFieldSettings )
 
 				// Update checkbox visibility when having dependency checkboxes
-				.on( 'change', ".gv-setting-list", vcfg.toggleCheckboxes );
+				.on( 'change', ".gv-setting-list, #gravityview_settings", vcfg.toggleCheckboxes )
 
 				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings );
 
@@ -180,8 +180,8 @@
 		 */
 		toggleCheckboxes: function (  e ) {
 
-			var $parent = $( this );
-			$conditionals = $( this ).find( '[data-requires]' );
+			var $parent = $( e.currentTarget );
+			$conditionals = $parent.find( '[data-requires]' );
 
 			$conditionals.each( function ()  {
 				var requires = $( this ).data( 'requires' );
@@ -322,6 +322,8 @@
 			}
 
 			vcfg.togglePreviewButton();
+
+			vcfg.zebraStripeSettings();
 
 		},
 
