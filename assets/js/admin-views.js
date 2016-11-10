@@ -176,7 +176,7 @@
 		/**
 		 * Show/hide checkboxes that have visibility conditionals
 		 * @see GravityView_FieldType_checkboxes
-		 * @param  {jQueryEvent} e
+		 * @param  {jQuery} e
 		 */
 		toggleCheckboxes: function (  e ) {
 
