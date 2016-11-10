@@ -142,6 +142,8 @@
 				// Update checkbox visibility when having dependency checkboxes
 				.on( 'change', ".gv-setting-list", vcfg.toggleCheckboxes );
 
+				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings );
+
 			// End bind to $('body')
 
 			if( gvGlobals.passed_form_id ) {
@@ -160,6 +162,15 @@
 		 */
 		altKeyListener: function( e ) {
 			viewConfiguration.altKey = e.altKey;
+		},
+
+		/**
+		 * Update zebra striping when settings are changed
+		 * This prevents two gray rows next to each other.
+		 * @since 1.19
+		 */
+		zebraStripeSettings: function() {
+			$( '#gravityview_settings table').find('tr').removeClass('alternate').filter(':visible:even' ).addClass( 'alternate' );
 		},
 
 		/**
