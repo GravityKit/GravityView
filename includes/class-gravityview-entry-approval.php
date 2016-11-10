@@ -265,45 +265,39 @@ class GravityView_Entry_Approval {
 			return false;
 		}
 
-		if( '' === $approved || ! GravityView_Entry_Approval_Status::is_valid( $approved ) ) {
+		if( ! GravityView_Entry_Approval_Status::is_valid( $approved ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . ': Not a valid approval value.' );
 			return false;
 		}
 
+		$approved = GravityView_Entry_Approval_Status::maybe_convert_status( $approved );
+
+		$entry = GFAPI::get_entry( $entry_id );
+
+		if ( is_wp_error( $entry ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . ': Entry does not exist' );
+			return false;
+		}
+
+		// If the form has an Approve/Reject field, update that value
 		$result = self::update_approved_column( $entry_id, $approved, $form_id, $approvedcolumn );
 
-		/**
-		 * GFAPI::update_entry() doesn't trigger `gform_after_update_entry`, so we trigger updating the meta ourselves.
-		 */
+		if( is_wp_error( $result ) ) {
+			do_action( 'gravityview_log_error', __METHOD__ . sprintf( ' - Entry approval not updated: %s', $result->get_error_message() ) );
+			return false;
+		}
+
+		$form_id = intval( $form_id );
+
+		// Update the entry meta
 		self::update_approved_meta( $entry_id, $approved, $form_id );
 
 		// add note to entry if approval field updating worked or there was no approved field
 		// There's no validation for the meta
 		if( true === $result ) {
 
-			switch ( $approved ) {
-				case GravityView_Entry_Approval_Status::APPROVED:
-					$note = __( 'Approved the Entry for GravityView', 'gravityview' );
-					break;
-				case GravityView_Entry_Approval_Status::UNAPPROVED:
-					$note = __( 'Reset Entry approval for GravityView', 'gravityview' );
-					break;
-				case GravityView_Entry_Approval_Status::DISAPPROVED:
-					$note = __( 'Disapproved the Entry for GravityView', 'gravityview' );
-					break;
-			}
-
-			/**
-			 * @filter `gravityview/approve_entries/add-note` Add a note when the entry has been approved or disapproved?
-			 * @since 1.16.3
-			 * @param bool $add_note True: Yep, add that note! False: Do not, under any circumstances, add that note!
-			 */
-			$add_note = apply_filters( 'gravityview/approve_entries/add-note', true );
-
-			if( $add_note && class_exists( 'GravityView_Entry_Notes' ) ) {
-				$current_user = wp_get_current_user();
-				GravityView_Entry_Notes::add_note( $entry_id, $current_user->ID, $current_user->display_name, $note );
-			}
+			// Add an entry note
+			self::add_approval_status_updated_note( $entry_id, $approved );
 
 			/**
 			 * Destroy the cache for this form
@@ -312,14 +306,55 @@ class GravityView_Entry_Approval {
 			 */
 			do_action( 'gravityview_clear_form_cache', $form_id );
 
-		} else if( is_wp_error( $result ) ) {
-
-			do_action( 'gravityview_log_error', __METHOD__ . sprintf( ' - Entry approval not updated: %s', $result->get_error_message() ) );
-
-			$result = false;
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Add a note when an entry is approved
+	 *
+	 * @see GravityView_Entry_Approval::update_approved
+	 *
+	 * @since 1.18
+	 *
+	 * @param int $entry_id Gravity Forms entry ID
+	 * @param int $approved Approval status
+	 *
+	 * @return false|int|WP_Error Note ID if successful; WP_Error if error when adding note, FALSE if note not updated because of `gravityview/approve_entries/add-note` filter or `GravityView_Entry_Notes` class not existing
+	 */
+	private static function add_approval_status_updated_note( $entry_id, $approved = 0 ) {
+		$note = '';
+
+		switch ( $approved ) {
+			case GravityView_Entry_Approval_Status::APPROVED:
+				$note = __( 'Approved the Entry for GravityView', 'gravityview' );
+				break;
+			case GravityView_Entry_Approval_Status::UNAPPROVED:
+				$note = __( 'Reset Entry approval for GravityView', 'gravityview' );
+				break;
+			case GravityView_Entry_Approval_Status::DISAPPROVED:
+				$note = __( 'Disapproved the Entry for GravityView', 'gravityview' );
+				break;
+		}
+
+		/**
+		 * @filter `gravityview/approve_entries/add-note` Add a note when the entry has been approved or disapproved?
+		 * @since 1.16.3
+		 * @param bool $add_note True: Yep, add that note! False: Do not, under any circumstances, add that note!
+		 */
+		$add_note = apply_filters( 'gravityview/approve_entries/add-note', true );
+
+		$note_id = false;
+
+		if( $add_note && class_exists( 'GravityView_Entry_Notes' ) ) {
+
+			$current_user = wp_get_current_user();
+
+			$note_id = GravityView_Entry_Notes::add_note( $entry_id, $current_user->ID, $current_user->display_name, $note );
+		}
+
+		return $note_id;
 	}
 
 	/**
@@ -349,10 +384,19 @@ class GravityView_Entry_Approval {
 		//get the entry
 		$entry = GFAPI::get_entry( $entry_id );
 
+		// Entry doesn't exist
+		if ( is_wp_error( $entry ) ) {
+			return $entry;
+		}
+
 		//update entry
 		$entry[ (string)$approvedcolumn ] = $status;
 
-		/** @var bool|WP_Error $result */
+		/**
+		 * Note: GFAPI::update_entry() doesn't trigger `gform_after_update_entry`, so we trigger updating the meta ourselves
+		 * @see GravityView_Entry_Approval::after_update_entry_update_approved_meta
+		 * @var true|WP_Error $result
+		 */
 		$result = GFAPI::update_entry( $entry );
 
 		return $result;
