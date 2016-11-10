@@ -440,7 +440,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		} else {
 			$get = $_GET;
 		}
-		
+
 		do_action( 'gravityview_log_debug', sprintf( '%s[filter_entries] Requested $_%s: ', get_class( $this ), $this->search_method ), $get );
 
 		if ( empty( $get ) || ! is_array( $get ) ) {
@@ -472,14 +472,14 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		$curr_start = !empty( $get['gv_start'] ) ? $get['gv_start'] : '';
 		$curr_end = !empty( $get['gv_start'] ) ? $get['gv_end'] : '';
 
-        /**
-         * @filter `gravityview_date_created_adjust_timezone` Whether to adjust the timezone for entries. \n
-         * date_created is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php)
-         * @since 1.12
-         * @param[out,in] boolean $adjust_tz  Use timezone-adjusted datetime? If true, adjusts date based on blog's timezone setting. If false, uses UTC setting. Default: true
-         * @param[in] string $context Where the filter is being called from. `search` in this case.
-         */
-        $adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'search' );
+		/**
+		 * @filter `gravityview_date_created_adjust_timezone` Whether to adjust the timezone for entries. \n
+		 * date_created is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php)
+		 * @since 1.12
+		 * @param[out,in] boolean $adjust_tz  Use timezone-adjusted datetime? If true, adjusts date based on blog's timezone setting. If false, uses UTC setting. Default: true
+		 * @param[in] string $context Where the filter is being called from. `search` in this case.
+		 */
+		$adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', true, 'search' );
 
 
 		/**
@@ -574,7 +574,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		// get form field array
 		$form = $gravityview_view->getForm();
 		$form_field = gravityview_get_field( $form, $field_id );
-		
+
 		// default filter array
 		$filter = array(
 			'key' => $field_id,
@@ -640,9 +640,9 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 					foreach ( $value as $val ) {
 						$filter[] = array(
-								'key'   => $field_id,
-								'value' => $val,
-								'operator' => 'is',
+							'key'   => $field_id,
+							'value' => $val,
+							'operator' => 'is',
 						);
 					}
 				}
@@ -1080,7 +1080,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 	/**
 	 * Based on the search method, fetch the value for a specific key
-	 * 
+	 *
 	 * @since 1.16.4
 	 *
 	 * @param string $name Name of the request key to fetch the value for

@@ -74,7 +74,6 @@
 					css_class = 'approved';
 					title_attr = gvGlobals.disapprove_title;
 					break;
-				case gvGlobals.status_disapproved:
 				default:
 					css_class = 'disapproved';
 					title_attr = gvGlobals.approve_title;
@@ -221,7 +220,8 @@
 			entry_slug: entryID,
 			form_id: gvGlobals.form_id,
 			approved: approved,
-			nonce: gvGlobals.nonce
+			nonce: gvGlobals.nonce,
+			admin_nonce: gvGlobals.admin_nonce
 		};
 
 		$.post( ajaxurl, data, function ( response ) {

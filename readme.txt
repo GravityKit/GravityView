@@ -883,7 +883,7 @@ __Developer Notes:__
 	- Make link bold when filter is active
 	- Clicking on an active filter removes the filter
 * Tweak: Fixed updates for Multisite installations
-* Modified: Now you can override which post a single entry links to. For example, if a shortcode is embedded on a home page and you want single entries to link to a page with an embedded View, not the View itself, you can pass the `post_id` parameter. This accepts the ID of the page where the View is embedded.
+* Modified: Now you can override which post a single entry links to. For example, if a shortcode is embedded on a home page and you want single entries to link to a page with an embedded View, not the View itself, you can pass the `post_id` parameter. This accepts the ID of the page where the View is embedded.
 * Modified: Added `$add_pagination` parameter to `GravityView_API::directory_link()`
 * Added: Indonesian translation (thanks, [@sariyanta](https://www.transifex.com/accounts/profile/sariyanta/))!
 * Updated: Swedish translation 100% translated - thanks, [@adamrehal](https://www.transifex.com/accounts/profile/adamrehal/)!
@@ -981,7 +981,7 @@ __Developer Notes:__
 * Added: Signature field improvements (when using the Gravity Forms Signature Add-on) - now shows full size
 * Fixed: Empty truncated URLs no longer get shown
 * Fixed: License Activation works when No-Conflict Mode is enabled
-* Fixed: When creating a new View, "View Type" box was visible when there were no existing Gravity Forms
+* Fixed: When creating a new View, "View Type" box was visible when there were no existing Gravity Forms
 * Fixed: Fields not always saving properly when adding lots of fields with the "Add All Fields" button
 * Fixed: Recognizing single entry when using WordPress "Default" Permalink setting
 * Fixed: Date Created field now respects the blog's timezone setting, instead of using UTC time

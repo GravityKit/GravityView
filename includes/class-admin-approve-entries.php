@@ -478,6 +478,7 @@ class GravityView_Admin_ApproveEntries {
 
 		wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array(
 			'nonce' => wp_create_nonce( 'gravityview_entry_approval'),
+			'admin_nonce' => wp_create_nonce( 'gravityview_admin_entry_approval'),
 			'form_id' => $form_id,
 			'show_column' => (int)$this->show_approve_entry_column( $form_id ),
 			'add_bulk_action' => (int)GVCommon::has_cap( 'gravityview_moderate_entries' ),

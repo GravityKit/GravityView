@@ -62,7 +62,7 @@ class GravityView_Entry_Approval {
 	 */
 	public static function get_entry_status( $entry, $value_or_label = 'label' ) {
 
-		$entry_id = is_array( $entry ) ? $entry['id'] : GVCommon::get_entry_id( $entry );
+		$entry_id = is_array( $entry ) ? $entry['id'] : GVCommon::get_entry_id( $entry, true );
 
 		$status = gform_get_meta( $entry_id, self::meta_key );
 
@@ -92,10 +92,14 @@ class GravityView_Entry_Approval {
 	 * @return void Prints result using wp_send_json_success() and wp_send_json_error()
 	 */
 	public function ajax_update_approved() {
-
+		
 		$form_id = intval( rgpost('form_id') );
 
-		$entry_id = GVCommon::get_entry_id( rgpost('entry_slug'), true );
+		// We always want requests from the admin to allow entry IDs, but not from the frontend
+		// There's another nonce sent when approving entries in the admin that we check
+		$force_entry_ids = rgpost( 'admin_nonce' ) && wp_verify_nonce( rgpost( 'admin_nonce' ), 'gravityview_admin_entry_approval' );
+		
+		$entry_id = GVCommon::get_entry_id( rgpost('entry_slug'), $force_entry_ids );
 
 		$approval_status = rgpost('approved');
 
@@ -209,12 +213,12 @@ class GravityView_Entry_Approval {
 	 */
 	public static function update_bulk( $entries = array(), $approved, $form_id ) {
 
-		if ( empty( $entries ) || ( $entries !== true && ! is_array( $entries ) ) ) {
+		if( empty($entries) || ( $entries !== true && !is_array($entries) ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . ' Entries were empty or malformed.', $entries );
 			return NULL;
 		}
 
-		if ( ! GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
+		if( ! GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . ' User does not have the `gravityview_moderate_entries` capability.' );
 			return NULL;
 		}
@@ -229,10 +233,10 @@ class GravityView_Entry_Approval {
 		$approved_column_id = self::get_approved_column( $form_id );
 
 		$success = true;
-		foreach ( $entries as $entry_id ) {
-			$update_success = self::update_approved( (int) $entry_id, $approved, $form_id, $approved_column_id );
+		foreach( $entries as $entry_id ) {
+			$update_success = self::update_approved( (int)$entry_id, $approved, $form_id, $approved_column_id );
 
-			if ( ! $update_success ) {
+			if( ! $update_success ) {
 				$success = false;
 			}
 		}
@@ -361,7 +365,7 @@ class GravityView_Entry_Approval {
 	 * @param int $form_id ID of the form of the entry being updated. Improves query performance.
 	 * @param string $approvedcolumn Gravity Forms Field ID
 	 *
-	 * @return true|WP_Error Returns true if there is no approval column or updating entry succeeded. WP_Error if status is invalid or entry doesn't exist.
+	 * @return true|WP_Error
 	 */
 	private static function update_approved_column( $entry_id = 0, $status = '0', $form_id = 0, $approvedcolumn = 0 ) {
 

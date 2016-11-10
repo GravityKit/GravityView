@@ -45,7 +45,7 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 
 		$this->_set_up_expected_options();
 
-	### DO NOT DELETE WHEN THE USER DOESN'T HAVE THE CAPABILITY
+		### DO NOT DELETE WHEN THE USER DOESN'T HAVE THE CAPABILITY
 
 		$user = $this->factory->user->create_and_set(array(
 			'user_login'  => 'administrator',

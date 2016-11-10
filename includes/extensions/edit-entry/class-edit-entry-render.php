@@ -690,7 +690,6 @@ class GravityView_Edit_Entry_Render {
 	                    }
 
                         update_post_meta( $post_id, $field->postCustomFieldName, $value );
-
                         break;
 
                     case 'post_image':

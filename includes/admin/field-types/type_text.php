@@ -31,10 +31,10 @@ class GravityView_FieldType_text extends GravityView_FieldType {
         if( $show_mt && $this->field['merge_tags'] !== false || $this->field['merge_tags'] === 'force' ) {
             $class = 'merge-tag-support mt-position-right mt-hide_all_fields ';
         }
-        $class .= !empty( $this->field['class'] ) ? $this->field['class'] : 'widefat';
-
+        $class .= rgar( $this->field, 'class', 'widefat' );
+        $placeholder = rgar( $this->field, 'placeholder' );
 		?>
-		<input name="<?php echo esc_attr( $this->name ); ?>" id="<?php echo $this->get_field_id(); ?>" type="text" value="<?php echo esc_attr( $this->value ); ?>" class="<?php echo esc_attr( $class ); ?>">
+		<input name="<?php echo esc_attr( $this->name ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>" id="<?php echo $this->get_field_id(); ?>" type="text" value="<?php echo esc_attr( $this->value ); ?>" class="<?php echo esc_attr( $class ); ?>">
 		<?php
 	}
 
