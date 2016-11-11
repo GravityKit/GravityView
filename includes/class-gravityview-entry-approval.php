@@ -194,9 +194,7 @@ class GravityView_Entry_Approval {
 		}
 
 		$entry = GFAPI::get_entry( $entry_id );
-
-		$approved_value = $entry[ (string)$approved_column ];
-
+		
 		self::update_approved_meta( $entry_id, $entry[ (string)$approved_column ], $form['id'] );
 	}
 
