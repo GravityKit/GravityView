@@ -195,6 +195,8 @@ class GravityView_Entry_Approval {
 
 		$entry = GFAPI::get_entry( $entry_id );
 
+		$approved_value = $entry[ (string)$approved_column ];
+
 		self::update_approved_meta( $entry_id, $entry[ (string)$approved_column ], $form['id'] );
 	}
 
@@ -252,13 +254,13 @@ class GravityView_Entry_Approval {
 	 * @access public
 	 * @static
 	 * @param int $entry_id (default: 0)
-	 * @param int $approved (default: 0)
+	 * @param int $approved (default: 2)
 	 * @param int $form_id (default: 0)
 	 * @param int $approvedcolumn (default: 0)
 	 *
 	 * @return boolean True: It worked; False: it failed
 	 */
-	public static function update_approved( $entry_id = 0, $approved = 0, $form_id = 0, $approvedcolumn = 0 ) {
+	public static function update_approved( $entry_id = 0, $approved = 2, $form_id = 0, $approvedcolumn = 0 ) {
 
 		if( !class_exists( 'GFAPI' ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . 'GFAPI does not exist' );
@@ -389,6 +391,14 @@ class GravityView_Entry_Approval {
 			return $entry;
 		}
 
+		$status = GravityView_Entry_Approval_Status::maybe_convert_status( $status );
+
+		if( GravityView_Entry_Approval_Status::APPROVED === $status ) {
+			$status = 'Approved';
+		} else {
+			$status = '0';
+		}
+
 		//update entry
 		$entry[ (string)$approvedcolumn ] = $status;
 
@@ -398,7 +408,7 @@ class GravityView_Entry_Approval {
 		 * @var true|WP_Error $result
 		 */
 		$result = GFAPI::update_entry( $entry );
-
+		
 		return $result;
 	}
 

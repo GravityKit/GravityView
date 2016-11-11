@@ -133,6 +133,7 @@ final class GravityView_Entry_Approval_Status {
 			//Disapproved values
 			case '0':
 			case '2':
+			case '':
 				$new_value = self::DISAPPROVED;
 				break;
 
@@ -156,7 +157,7 @@ final class GravityView_Entry_Approval_Status {
 	 */
 	public static function is_valid( $value = NULL ) {
 
-		if ( ! is_scalar( $value ) || is_null( $value ) || '' === $value ) {
+		if ( ! is_scalar( $value ) || is_null( $value ) ) {
 			return false;
 		}
 
