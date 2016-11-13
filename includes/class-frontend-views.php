@@ -954,6 +954,12 @@ class GravityView_frontend {
 			return true;
 		}
 
+		/** @since 1.19 */
+		if( ! empty( $args['admin_show_all_statuses'] ) && GVCommon::has_cap('gravityview_moderate_entries') ) {
+			do_action( 'gravityview_log_debug', __METHOD__ . ': User can moderate entries, so entry is approved for viewing' );
+			return true;
+		}
+
 		$is_approved = gform_get_meta( $entry['id'], GravityView_Entry_Approval::meta_key );
 
 		return GravityView_Entry_Approval_Status::is_approved( $is_approved );
