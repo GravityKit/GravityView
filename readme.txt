@@ -30,6 +30,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Tweak: Show inactive forms in the Data Source form dropdown
 * Tweak: If a View is connected to a form that is in the trash or does not exist, an error message is now shown
 * Tweak: Don't show "Lost in space?" message when searching existing Views
+* Added: New Russian translation - thank you, [George Kovalev](https://www.transifex.com/user/profile/gkovaleff/)!
+    - Updated: Spanish translation (thanks [@matrixmercury](https://www.transifex.com/user/profile/matrixmercury/))
 
 __Developer Notes:__
 
