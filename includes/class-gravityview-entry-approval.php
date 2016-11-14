@@ -420,7 +420,9 @@ class GravityView_Entry_Approval {
 	/**
 	 * Get the value for the approved field checkbox
 	 *
-	 * When approving a field via the entry meta, we
+	 * When approving a field via the entry meta, use the correct value for the new approved column input
+	 *
+	 * @since 1.19
 	 *
 	 * @param array|int $form Form ID or form array
 	 * @param string $approved_column Approved column field ID

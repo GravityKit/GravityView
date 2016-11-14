@@ -207,26 +207,22 @@ class GravityView_Welcome {
 
 				<div class="last-feature">
 				<h2>Embed Views in Posts &amp; Pages</h2>
-					<p><img src="<?php echo plugins_url( 'assets/images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" class="gv-welcome-screenshots" height="35" width="97" />Views don&rsquo;t need to be embedded in a post or page, but you can if you want. Embed Views using the "Add View" button above your content editor.</p>
+					<p><img src="<?php echo plugins_url( 'assets/images/screenshots/add-view-button.png', GRAVITYVIEW_FILE ); ?>" class="gv-welcome-screenshots" />Views don&rsquo;t need to be embedded in a post or page, but you can if you want. Embed Views using the "Add View" button above your content editor.</p>
 				</div>
-
 			</div>
 
 			<div class="feature-section clear">
 				<h2>Configure Multiple Entry, Single Entry, and Edit Entry Layouts</h2>
-				<p><img src="<?php echo plugins_url( 'assets/images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" class="gv-welcome-screenshots" />You can configure what fields are displayed in <strong>Multiple Entry</strong>, <strong>Single Entry</strong>, and <strong>Edit Entry</strong> modes. These can be configured by clicking on the tabs in "View Configuration."</p>
+
+                <p><img src="<?php echo plugins_url( 'assets/images/screenshots/add-field.png', GRAVITYVIEW_FILE ); ?>" alt="Add a field dialog box" class="gv-welcome-screenshots" />
+                    You can configure what fields are displayed in <strong>Multiple Entry</strong>, <strong>Single Entry</strong>, and <strong>Edit Entry</strong> modes. These can be configured by clicking on the tabs in "View Configuration."
+                </p>
 
 				<ul class="ul-disc">
 					<li>Click "+ Add Field" to add a field to a zone</li>
-					<li>Fields can be dragged and dropped to be re-arranged. Hover over the field until you see a cursor with four arrows, then drag the field.</li>
-					<li>Click the <a href="#" style="text-decoration:none;"><i class="dashicons dashicons-admin-generic"></i></a> gear icon on each field to configure the <strong>Field Settings</strong>:
-					<ul class="ul-square">
-						<li><em>Custom Label</em>: Change how the label is shown on the website. Default: the name of the field</li>
-						<li><em>Custom CSS Class</em>: Add additional CSS classes to the field container</li>
-						<li><em>Use this field as a search filter</em>: Allow searching the text of a field, or narrowing visible results using the field.</li>
-						<li><em>Only visible to logged in users with role</em>: Make certain fields visible only to users who are logged in.</li>
-					</ul>
-					</li>
+                    <li>Click the name of the field you want to display</li>
+					<li>Once added, fields can be dragged and dropped to be re-arranged. Hover over the field until you see a cursor with four arrows, then drag the field.</li>
+					<li>Click the <a href="#" style="text-decoration:none;"><i class="dashicons dashicons-admin-generic"></i></a> gear icon on each field to configure the <strong>Field Settings</strong></li>
 				</ul>
 			</div>
 
@@ -258,15 +254,16 @@ class GravityView_Welcome {
 
 				<div class="feature-section col two-col" style="margin:0; padding: 0;">
 					<div class="col col-1">
-						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/frontend-approval.gif', GRAVITYVIEW_FILE ); ?>" alt="Entry Notes"></div>
-						<h4 class="higher">Coming Soon: Front-end Approval</h4>
-						<p>Moderate entries from a View. It&rsquo;s great. Coming in very early November.</p>
+						<div class="media-container" style="min-height:81px; border: none;"><img alt="Front-end entry approval" src="<?php echo plugins_url( 'assets/images/screenshots/frontend-approval.gif', GRAVITYVIEW_FILE ); ?>"></div>
+						<h4 class="higher">Front-end Entry Approval</h4>
+                        <p><strong>It&rsquo;s here!</strong>: you can now approve entries from the front of the site. It's easier than ever: just add the "Approve Entries" field to your View and get started.</p>
+                        <p><a href="https://docs.gravityview.co/article/390-entry-approval" class="button-primary button button-large">Learn how to set it up!</a></p>
 					</div>
 
 					<div class="col col-2 last-feature">
-						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/yellow-circle.png', GRAVITYVIEW_FILE ); ?>" alt="Search Bar"></div>
-						<h4 class="higher">Unapproved Entries</h4>
-						<p>When an entry has not been approved or disapproved, it will now appear as a yellow circle.</p>
+						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/show-all-entries-setting.png', GRAVITYVIEW_FILE ); ?>" alt="Show all entries to administrators setting"></div>
+						<h4 class="higher">Show All Entries to Administrators</h4>
+						<p>We added a setting to make front-end moderation easy. The new "Show all entries to administrators" setting allows administrators to see entries with any approval status, while everyone else will only see approved entries. It makes moderating entries easy.</p>
 					</div>
 				</div>
 
@@ -274,7 +271,31 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
-				<h3>1.18.1 on November 3, 2016</h3>
+                <h3>1.19 on November 14, 2016</h3>
+
+                <ul>
+                    <li>New: <strong>Front-end entry moderation</strong>! You can now approve and disapprove entries from the front of a View - <a href="https://docs.gravityview.co/article/390-entry-approval">learn how to use front-end entry approval</a>
+
+                        <ul>
+                            <li>Add entry moderation to your View with the new &quot;Approve Entries&quot; field</li>
+                            <li>Displaying the current approval status by using the new &quot;Approval Status&quot; field</li>
+                            <li>Views have a new &quot;Show all entries to administrators&quot; setting. This allows administrators to see entries with any approval status. <a href="http://docs.gravityview.co/article/390-entry-approval#clarify-step-16">Learn how to use this new setting</a></li>
+                        </ul></li>
+                    <li>Fixed: Approval values not updating properly when using the &quot;Approve/Reject&quot; and &quot;User Opt-In&quot; fields</li>
+                    <li>Tweak: Show inactive forms in the Data Source form dropdown</li>
+                    <li>Tweak: If a View is connected to a form that is in the trash or does not exist, an error message is now shown</li>
+                    <li>Tweak: Don&#39;t show &quot;Lost in space?&quot; message when searching existing Views</li>
+                </ul>
+
+                <p><strong>Developer Notes:</strong></p>
+
+                <ul>
+                    <li>Added: <code>field-approval.css</code> CSS file. <a href="http://docs.gravityview.co/article/388-front-end-approval-css">Learn how to override the design here</a>.</li>
+                    <li>Modified: Removed the bottom border on the &quot;No Results&quot; text (<code>.gv-no-results</code> CSS selector)</li>
+                    <li>Fixed: Deprecated <code>get_bloginfo()</code> usage</li>
+                </ul>
+
+                <h3>1.18.1 on November 3, 2016</h3>
 
 				<ul>
 					<li>Updated: 100% Chinese translation—thank you <a href="https://www.transifex.com/user/profile/michaeledi/">Michael Edi</a>!</li>

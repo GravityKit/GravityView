@@ -20,6 +20,23 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.19 on November 14, 2016 =
+
+* New: __Front-end entry moderation__! You can now approve and disapprove entries from the front of a View - [learn how to use front-end entry approval](https://docs.gravityview.co/article/390-entry-approval)
+    - Add entry moderation to your View with the new "Approve Entries" field
+    - Displaying the current approval status by using the new "Approval Status" field
+    - Views have a new "Show all entries to administrators" setting. This allows administrators to see entries with any approval status. [Learn how to use this new setting](http://docs.gravityview.co/article/390-entry-approval#clarify-step-16)
+* Fixed: Approval values not updating properly when using the "Approve/Reject" and "User Opt-In" fields
+* Tweak: Show inactive forms in the Data Source form dropdown
+* Tweak: If a View is connected to a form that is in the trash or does not exist, an error message is now shown
+* Tweak: Don't show "Lost in space?" message when searching existing Views
+
+__Developer Notes:__
+
+* Added: `field-approval.css` CSS file. [Learn how to override the design here](http://docs.gravityview.co/article/388-front-end-approval-css).
+* Modified: Removed the bottom border on the "No Results" text (`.gv-no-results` CSS selector)
+* Fixed: Deprecated `get_bloginfo()` usage
+
 = 1.18.1 on November 3, 2016 =
 
 * Updated: 100% Chinese translation—thank you [Michael Edi](https://www.transifex.com/user/profile/michaeledi/)!
