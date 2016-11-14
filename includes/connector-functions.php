@@ -42,7 +42,9 @@ function gravityview_get_form_from_entry_id( $entry_slug ) {
  *
  * @see GFAPI::get_forms()
  *
- * @param bool $active Status of forms. Default: `true`
+ * @since 1.19 Allow "any" $active status option
+ *
+ * @param bool|string $active Status of forms. Use `any` to get array of forms with any status. Default: `true`
  * @param bool $trash Include forms in trash? Default: `false`
  *
  * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms

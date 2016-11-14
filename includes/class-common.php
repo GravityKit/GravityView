@@ -192,7 +192,9 @@ class GVCommon {
 	 *
 	 * @see GFAPI::get_forms()
 	 *
-	 * @param bool $active Status of forms. Default: `true`
+	 * @since 1.19 Allow "any" $active status option
+	 *
+	 * @param bool|string $active Status of forms. Use `any` to get array of forms with any status. Default: `true`
 	 * @param bool $trash Include forms in trash? Default: `false`
 	 *
 	 * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
@@ -200,7 +202,13 @@ class GVCommon {
 	public static function get_forms(  $active = true, $trash = false ) {
 		$forms = array();
 		if ( class_exists( 'GFAPI' ) ) {
-			$forms = GFAPI::get_forms( $active, $trash );
+			if( 'any' === $active ) {
+				$active_forms = GFAPI::get_forms( true, $trash );
+				$inactive_forms = GFAPI::get_forms( false, $trash );
+				$forms = array_merge( array_filter( $active_forms ), array_filter( $inactive_forms ) );
+			} else {
+				$forms = GFAPI::get_forms( $active, $trash );
+			}
 		}
 		return $forms;
 	}
