@@ -399,14 +399,13 @@ class GravityView_Entry_Approval {
 
 		$status = GravityView_Entry_Approval_Status::maybe_convert_status( $status );
 
+		$new_value = '';
 		if( GravityView_Entry_Approval_Status::APPROVED === $status ) {
-			$status = 'Approved';
-		} else {
-			$status = '0';
+			$new_value = self::get_approved_column_input_label( $form_id, $approvedcolumn );
 		}
 
 		//update entry
-		$entry[ (string)$approvedcolumn ] = $status;
+		$entry["{$approvedcolumn}"] = $new_value;
 
 		/**
 		 * Note: GFAPI::update_entry() doesn't trigger `gform_after_update_entry`, so we trigger updating the meta ourselves
@@ -416,6 +415,34 @@ class GravityView_Entry_Approval {
 		$result = GFAPI::update_entry( $entry );
 		
 		return $result;
+	}
+
+	/**
+	 * Get the value for the approved field checkbox
+	 *
+	 * When approving a field via the entry meta, we
+	 *
+	 * @param array|int $form Form ID or form array
+	 * @param string $approved_column Approved column field ID
+	 *
+	 * @return string|null
+	 */
+	private static function get_approved_column_input_label( $form, $approved_column ) {
+
+		$field = gravityview_get_field( $form, $approved_column );
+
+		// If the user has enabled a different value than the label (for some reason), use it.
+		// This is highly unlikely
+		if ( is_array( $field->choices ) && ! empty( $field->choices ) ) {
+			return isset( $field->choices[0]['value'] ) ? $field->choices[0]['value'] : $field->choices[0]['text'];
+		}
+
+		// Otherwise, fall back on the inputs array
+		if ( is_array( $field->inputs ) && ! empty( $field->inputs ) ) {
+			return $field->inputs[0]['label'];
+		}
+
+		return null;
 	}
 
 	/**
