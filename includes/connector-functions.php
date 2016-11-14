@@ -135,10 +135,12 @@ function gravityview_get_field_label( $form, $field_id, $field_value = '' ) {
  *
  * Alias of GFFormsModel::get_field
  *
+ * @since 1.19 Allow passing form ID as well as form array
+ *
  * @uses GVCommon::get_field
  * @see GFFormsModel::get_field
  * @access public
- * @param array $form
+ * @param array|int $form Form array or ID
  * @param string|int $field_id
  * @return GF_Field|null Returns NULL if field with ID $field_id doesn't exist.
  */

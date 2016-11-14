@@ -906,14 +906,21 @@ class GVCommon {
 	 *
 	 * Alias of GFFormsModel::get_field
 	 *
+	 * @since 1.19 Allow passing form ID as well as form array
+	 *
 	 * @uses GFFormsModel::get_field
 	 * @see GFFormsModel::get_field
 	 * @access public
-	 * @param array $form
+	 * @param array|int $form Form array or ID
 	 * @param string|int $field_id
 	 * @return GF_Field|null Gravity Forms field object, or NULL: Gravity Forms GFFormsModel does not exist or field at $field_id doesn't exist.
 	 */
 	public static function get_field( $form, $field_id ) {
+
+		if ( is_numeric( $form ) ) {
+			$form = GFAPI::get_form( $form );
+		}
+
 		if ( class_exists( 'GFFormsModel' ) ){
 			return GFFormsModel::get_field( $form, $field_id );
 		} else {
