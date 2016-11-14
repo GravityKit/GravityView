@@ -194,8 +194,16 @@ class GravityView_Entry_Approval {
 		}
 
 		$entry = GFAPI::get_entry( $entry_id );
-		
-		self::update_approved_meta( $entry_id, $entry[ (string)$approved_column ], $form['id'] );
+
+		// If the checkbox is blank, it's disapproved, regardless of the label
+		if ( '' === rgar( $entry, $approved_column ) ) {
+			$value = GravityView_Entry_Approval_Status::DISAPPROVED;
+		} else {
+			// If the checkbox is not blank, it's approved
+			$value = GravityView_Entry_Approval_Status::APPROVED;
+		}
+
+		self::update_approved_meta( $entry_id, $value, $form['id'] );
 	}
 
 	/**
