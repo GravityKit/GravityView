@@ -292,7 +292,7 @@ class GravityView_Settings extends GFAddOn {
             </div>
 
             <div class="submit">
-                <input type="hidden" name="siteurl" value="<?php echo esc_url( get_bloginfo( 'siteurl' ) ); ?>" />
+                <input type="hidden" name="siteurl" value="<?php echo esc_url( get_bloginfo( 'url' ) ); ?>" />
                 <input type="hidden" name="email" value="<?php echo esc_attr( $user->user_email ); ?>" />
                 <input type="hidden" name="display_name" value="<?php echo esc_attr( $user->display_name ); ?>" />
                 <input type="submit" value="<?php esc_html_e( 'Send Us Your Feedback', 'gravityview' ); ?>" class="button button-primary button-hero" />

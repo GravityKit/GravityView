@@ -20,6 +20,25 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.19 on November 14, 2016 =
+
+* New: __Front-end entry moderation__! You can now approve and disapprove entries from the front of a View - [learn how to use front-end entry approval](https://docs.gravityview.co/article/390-entry-approval)
+    - Add entry moderation to your View with the new "Approve Entries" field
+    - Displaying the current approval status by using the new "Approval Status" field
+    - Views have a new "Show all entries to administrators" setting. This allows administrators to see entries with any approval status. [Learn how to use this new setting](http://docs.gravityview.co/article/390-entry-approval#clarify-step-16)
+* Fixed: Approval values not updating properly when using the "Approve/Reject" and "User Opt-In" fields
+* Tweak: Show inactive forms in the Data Source form dropdown
+* Tweak: If a View is connected to a form that is in the trash or does not exist, an error message is now shown
+* Tweak: Don't show "Lost in space?" message when searching existing Views
+* Added: New Russian translation - thank you, [George Kovalev](https://www.transifex.com/user/profile/gkovaleff/)!
+    - Updated: Spanish translation (thanks [@matrixmercury](https://www.transifex.com/user/profile/matrixmercury/))
+
+__Developer Notes:__
+
+* Added: `field-approval.css` CSS file. [Learn how to override the design here](http://docs.gravityview.co/article/388-front-end-approval-css).
+* Modified: Removed the bottom border on the "No Results" text (`.gv-no-results` CSS selector)
+* Fixed: Deprecated `get_bloginfo()` usage
+
 = 1.18.1 on November 3, 2016 =
 
 * Updated: 100% Chinese translation—thank you [Michael Edi](https://www.transifex.com/user/profile/michaeledi/)!
@@ -883,7 +902,7 @@ __Developer Notes:__
 	- Make link bold when filter is active
 	- Clicking on an active filter removes the filter
 * Tweak: Fixed updates for Multisite installations
-* Modified: Now you can override which post a single entry links to. For example, if a shortcode is embedded on a home page and you want single entries to link to a page with an embedded View, not the View itself, you can pass the `post_id` parameter. This accepts the ID of the page where the View is embedded.
+* Modified: Now you can override which post a single entry links to. For example, if a shortcode is embedded on a home page and you want single entries to link to a page with an embedded View, not the View itself, you can pass the `post_id` parameter. This accepts the ID of the page where the View is embedded.
 * Modified: Added `$add_pagination` parameter to `GravityView_API::directory_link()`
 * Added: Indonesian translation (thanks, [@sariyanta](https://www.transifex.com/accounts/profile/sariyanta/))!
 * Updated: Swedish translation 100% translated - thanks, [@adamrehal](https://www.transifex.com/accounts/profile/adamrehal/)!
@@ -981,7 +1000,7 @@ __Developer Notes:__
 * Added: Signature field improvements (when using the Gravity Forms Signature Add-on) - now shows full size
 * Fixed: Empty truncated URLs no longer get shown
 * Fixed: License Activation works when No-Conflict Mode is enabled
-* Fixed: When creating a new View, "View Type" box was visible when there were no existing Gravity Forms
+* Fixed: When creating a new View, "View Type" box was visible when there were no existing Gravity Forms
 * Fixed: Fields not always saving properly when adding lots of fields with the "Add All Fields" button
 * Fixed: Recognizing single entry when using WordPress "Default" Permalink setting
 * Fixed: Date Created field now respects the blog's timezone setting, instead of using UTC time

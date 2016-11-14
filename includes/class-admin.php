@@ -67,6 +67,12 @@ class GravityView_Admin {
 	 * @return string HTML message with no container tags.
 	 */
 	public static function no_views_text() {
+		
+		if ( isset( $_REQUEST['post_status'] ) && 'trash' === $_REQUEST['post_status'] ) {
+			return __( 'No Views found in Trash', 'gravityview' );
+		} elseif( ! empty( $_GET['s'] ) ) {
+			return __( 'No Views found.', 'gravityview' );
+		}
 
 		// Floaty the Astronaut says "oi"
 		$image = self::get_floaty();
@@ -78,6 +84,43 @@ class GravityView_Admin {
 		}
 
 		return $image . wpautop( $output );
+	}
+
+	/**
+	 * Display error HTML in Edit View when the form is in the trash or no longer exists in Gravity Forms
+	 *
+	 * @since 1.19
+	 *
+	 * @param int $form_id Gravity Forms
+	 *
+	 * @return void
+	 */
+	public static function connected_form_warning( $form_id = 0 ) {
+
+		if ( ! is_int( $form_id ) ) {
+			return;
+		}
+
+		$form_info = GFFormsModel::get_form( $form_id, true );
+
+		$error = '';
+		if ( $form_info->is_trash ) {
+			$error = esc_html__( 'The connected form is in the trash.', 'gravityview' );
+			$error .= ' ' . gravityview_get_link( admin_url( 'admin.php?page=gf_edit_forms&filter=trash' ), esc_html__( 'Restore the form from the trash', 'gravityview' ) );
+			$error .= ' ' . esc_html__( 'or select another form.', 'gravityview' );
+		} elseif ( empty( $form_info ) ) {
+			$error = esc_html__( 'The form connected to this View no longer exists.', 'gravityview' );
+			$error .= ' ' . esc_html__( 'Select another form as the data source for this View.', 'gravityview' );
+		}
+
+		if( $error ) {
+			?>
+			<div class="wp-dialog notice-warning inline error wp-clearfix">
+				<?php echo gravityview_get_floaty(); ?>
+				<h3><?php echo $error; ?></h3>
+			</div>
+			<?php
+		}
 	}
 
 	/**

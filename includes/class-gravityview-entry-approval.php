@@ -62,7 +62,7 @@ class GravityView_Entry_Approval {
 	 */
 	public static function get_entry_status( $entry, $value_or_label = 'label' ) {
 
-		$entry_id = is_array( $entry ) ? $entry['id'] : GVCommon::get_entry_id( $entry );
+		$entry_id = is_array( $entry ) ? $entry['id'] : GVCommon::get_entry_id( $entry, true );
 
 		$status = gform_get_meta( $entry_id, self::meta_key );
 
@@ -92,10 +92,14 @@ class GravityView_Entry_Approval {
 	 * @return void Prints result using wp_send_json_success() and wp_send_json_error()
 	 */
 	public function ajax_update_approved() {
-
+		
 		$form_id = intval( rgpost('form_id') );
 
-		$entry_id = GVCommon::get_entry_id( rgpost('entry_slug'), true );
+		// We always want requests from the admin to allow entry IDs, but not from the frontend
+		// There's another nonce sent when approving entries in the admin that we check
+		$force_entry_ids = rgpost( 'admin_nonce' ) && wp_verify_nonce( rgpost( 'admin_nonce' ), 'gravityview_admin_entry_approval' );
+		
+		$entry_id = GVCommon::get_entry_id( rgpost('entry_slug'), $force_entry_ids );
 
 		$approval_status = rgpost('approved');
 
@@ -191,7 +195,15 @@ class GravityView_Entry_Approval {
 
 		$entry = GFAPI::get_entry( $entry_id );
 
-		self::update_approved_meta( $entry_id, $entry[ (string)$approved_column ], $form['id'] );
+		// If the checkbox is blank, it's disapproved, regardless of the label
+		if ( '' === rgar( $entry, $approved_column ) ) {
+			$value = GravityView_Entry_Approval_Status::DISAPPROVED;
+		} else {
+			// If the checkbox is not blank, it's approved
+			$value = GravityView_Entry_Approval_Status::APPROVED;
+		}
+
+		self::update_approved_meta( $entry_id, $value, $form['id'] );
 	}
 
 	/**
@@ -209,12 +221,12 @@ class GravityView_Entry_Approval {
 	 */
 	public static function update_bulk( $entries = array(), $approved, $form_id ) {
 
-		if ( empty( $entries ) || ( $entries !== true && ! is_array( $entries ) ) ) {
+		if( empty($entries) || ( $entries !== true && !is_array($entries) ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . ' Entries were empty or malformed.', $entries );
 			return NULL;
 		}
 
-		if ( ! GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
+		if( ! GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . ' User does not have the `gravityview_moderate_entries` capability.' );
 			return NULL;
 		}
@@ -229,10 +241,10 @@ class GravityView_Entry_Approval {
 		$approved_column_id = self::get_approved_column( $form_id );
 
 		$success = true;
-		foreach ( $entries as $entry_id ) {
-			$update_success = self::update_approved( (int) $entry_id, $approved, $form_id, $approved_column_id );
+		foreach( $entries as $entry_id ) {
+			$update_success = self::update_approved( (int)$entry_id, $approved, $form_id, $approved_column_id );
 
-			if ( ! $update_success ) {
+			if( ! $update_success ) {
 				$success = false;
 			}
 		}
@@ -248,13 +260,13 @@ class GravityView_Entry_Approval {
 	 * @access public
 	 * @static
 	 * @param int $entry_id (default: 0)
-	 * @param int $approved (default: 0)
+	 * @param int $approved (default: 2)
 	 * @param int $form_id (default: 0)
 	 * @param int $approvedcolumn (default: 0)
 	 *
 	 * @return boolean True: It worked; False: it failed
 	 */
-	public static function update_approved( $entry_id = 0, $approved = 0, $form_id = 0, $approvedcolumn = 0 ) {
+	public static function update_approved( $entry_id = 0, $approved = 2, $form_id = 0, $approvedcolumn = 0 ) {
 
 		if( !class_exists( 'GFAPI' ) ) {
 			do_action( 'gravityview_log_error', __METHOD__ . 'GFAPI does not exist' );
@@ -361,7 +373,7 @@ class GravityView_Entry_Approval {
 	 * @param int $form_id ID of the form of the entry being updated. Improves query performance.
 	 * @param string $approvedcolumn Gravity Forms Field ID
 	 *
-	 * @return true|WP_Error Returns true if there is no approval column or updating entry succeeded. WP_Error if status is invalid or entry doesn't exist.
+	 * @return true|WP_Error
 	 */
 	private static function update_approved_column( $entry_id = 0, $status = '0', $form_id = 0, $approvedcolumn = 0 ) {
 
@@ -385,8 +397,15 @@ class GravityView_Entry_Approval {
 			return $entry;
 		}
 
+		$status = GravityView_Entry_Approval_Status::maybe_convert_status( $status );
+
+		$new_value = '';
+		if( GravityView_Entry_Approval_Status::APPROVED === $status ) {
+			$new_value = self::get_approved_column_input_label( $form_id, $approvedcolumn );
+		}
+
 		//update entry
-		$entry[ (string)$approvedcolumn ] = $status;
+		$entry["{$approvedcolumn}"] = $new_value;
 
 		/**
 		 * Note: GFAPI::update_entry() doesn't trigger `gform_after_update_entry`, so we trigger updating the meta ourselves
@@ -394,8 +413,38 @@ class GravityView_Entry_Approval {
 		 * @var true|WP_Error $result
 		 */
 		$result = GFAPI::update_entry( $entry );
-
+		
 		return $result;
+	}
+
+	/**
+	 * Get the value for the approved field checkbox
+	 *
+	 * When approving a field via the entry meta, use the correct value for the new approved column input
+	 *
+	 * @since 1.19
+	 *
+	 * @param array|int $form Form ID or form array
+	 * @param string $approved_column Approved column field ID
+	 *
+	 * @return string|null
+	 */
+	private static function get_approved_column_input_label( $form, $approved_column ) {
+
+		$field = gravityview_get_field( $form, $approved_column );
+
+		// If the user has enabled a different value than the label (for some reason), use it.
+		// This is highly unlikely
+		if ( is_array( $field->choices ) && ! empty( $field->choices ) ) {
+			return isset( $field->choices[0]['value'] ) ? $field->choices[0]['value'] : $field->choices[0]['text'];
+		}
+
+		// Otherwise, fall back on the inputs array
+		if ( is_array( $field->inputs ) && ! empty( $field->inputs ) ) {
+			return $field->inputs[0]['label'];
+		}
+
+		return null;
 	}
 
 	/**
@@ -472,27 +521,35 @@ class GravityView_Entry_Approval {
 			$form = GVCommon::get_form( $form );
 		}
 
+		$approved_column_id = null;
+
+		/**
+		 * @var string $key
+		 * @var GF_Field $field
+		 */
 		foreach( $form['fields'] as $key => $field ) {
 
-			$field = (array) $field;
+			$inputs = $field->get_entry_inputs();
 
-			if( !empty( $field['gravityview_approved'] ) ) {
-				if( !empty($field['inputs'][0]['id']) ) {
-					return $field['inputs'][0]['id'];
+			if( !empty( $field->gravityview_approved ) ) {
+				if ( ! empty( $inputs ) && !empty( $inputs[0]['id'] ) ) {
+					$approved_column_id = $inputs[0]['id'];
+					break;
 				}
 			}
 
 			// Note: This is just for backward compatibility from GF Directory plugin and old GV versions - when using i18n it may not work..
-			if( 'checkbox' == $field['type'] && isset( $field['inputs'] ) && is_array( $field['inputs'] ) ) {
-				foreach ( $field['inputs'] as $key2 => $input ) {
-					if ( strtolower( $input['label'] ) == 'approved' ) {
-						return $input['id'];
+			if( 'checkbox' === $field->type && ! empty( $inputs ) ) {
+				foreach ( $inputs as $input ) {
+					if ( 'approved' === strtolower( $input['label'] ) ) {
+						$approved_column_id = $input['id'];
+						break;
 					}
 				}
 			}
 		}
 
-		return null;
+		return $approved_column_id;
 	}
 
 }

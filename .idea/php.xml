@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PhpProjectServersManager">
+    <servers>
+      <server host="http://gravityview-core.dev" id="3f5b0a49-f08f-461e-90a1-0e20d1b33602" name="Pressmatic" port="9000" use_path_mappings="true">
+        <path_mappings>
+          <mapping local-root="$PROJECT_DIR$" remote-root="/app/public/wp-content/plugins/gravityview" />
+        </path_mappings>
+      </server>
+    </servers>
+  </component>
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings />
+    </phpunit_settings>
+  </component>
+</project>

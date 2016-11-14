@@ -67,6 +67,10 @@ $color-description: #999;
 .gv-list-view-title {
 	border-bottom: 1px solid $color-border;
 
+    .gv-no-results & {
+      border-bottom: none;
+    }
+
 	padding: .5em 1em;
 
 	h3 {

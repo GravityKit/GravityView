@@ -13,9 +13,11 @@ wp_nonce_field( 'gravityview_select_form', 'gravityview_select_form_nonce' );
 //current value
 $current_form = (int) rgar( (array) $_GET, 'form_id', gravityview_get_form_id( $post->ID ) );
 
-// check for available gravity forms
-$forms = gravityview_get_forms();
+// If form is in trash or not existing, show error
+GravityView_Admin::connected_form_warning( $current_form );
 
+// check for available gravity forms
+$forms = gravityview_get_forms('any');
 ?>
 <label for="gravityview_form_id" ><?php esc_html_e( 'Where would you like the data to come from for this View?', 'gravityview' ); ?></label>
 

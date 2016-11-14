@@ -24,21 +24,21 @@ class GravityView_FieldType_textarea extends GravityView_FieldType {
 			return;
 		}
 
-		$class = '';
+		$class = 'widefat ';
 
 		$show_mt = $this->show_merge_tags();
 
         if( $show_mt && $this->field['merge_tags'] !== false || $this->field['merge_tags'] === 'force' ) {
-            $class = ' merge-tag-support mt-position-right ';
+            $class .= ' merge-tag-support mt-position-right ';
 
             if( empty( $this->field['show_all_fields'] ) ) {
-            	$class .= ' mt-hide_all_fields';
+            	$class .= ' mt-hide_all_fields ';
             }
         }
-        $class .= !empty( $this->field['class'] ) ? 'widefat ' . $this->field['class'] : 'widefat';
-
+		$class .= rgar( $this->field, 'class' );
+		$placeholder = rgar( $this->field, 'placeholder' );
 		?>
-		<textarea name="<?php echo esc_attr( $this->name ); ?>" id="<?php echo $this->get_field_id(); ?>" class="<?php echo esc_attr( $class ); ?>" rows="5"><?php echo esc_textarea(  $this->value ); ?></textarea>
+		<textarea name="<?php echo esc_attr( $this->name ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>" id="<?php echo $this->get_field_id(); ?>" class="<?php echo gravityview_sanitize_html_class( $class ); ?>" rows="5"><?php echo esc_textarea(  $this->value ); ?></textarea>
        	<?php
 	}
 

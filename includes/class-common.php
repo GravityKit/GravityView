@@ -192,7 +192,9 @@ class GVCommon {
 	 *
 	 * @see GFAPI::get_forms()
 	 *
-	 * @param bool $active Status of forms. Default: `true`
+	 * @since 1.19 Allow "any" $active status option
+	 *
+	 * @param bool|string $active Status of forms. Use `any` to get array of forms with any status. Default: `true`
 	 * @param bool $trash Include forms in trash? Default: `false`
 	 *
 	 * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
@@ -200,7 +202,13 @@ class GVCommon {
 	public static function get_forms(  $active = true, $trash = false ) {
 		$forms = array();
 		if ( class_exists( 'GFAPI' ) ) {
-			$forms = GFAPI::get_forms( $active, $trash );
+			if( 'any' === $active ) {
+				$active_forms = GFAPI::get_forms( true, $trash );
+				$inactive_forms = GFAPI::get_forms( false, $trash );
+				$forms = array_merge( array_filter( $active_forms ), array_filter( $inactive_forms ) );
+			} else {
+				$forms = GFAPI::get_forms( $active, $trash );
+			}
 		}
 		return $forms;
 	}
@@ -898,14 +906,21 @@ class GVCommon {
 	 *
 	 * Alias of GFFormsModel::get_field
 	 *
+	 * @since 1.19 Allow passing form ID as well as form array
+	 *
 	 * @uses GFFormsModel::get_field
 	 * @see GFFormsModel::get_field
 	 * @access public
-	 * @param array $form
+	 * @param array|int $form Form array or ID
 	 * @param string|int $field_id
 	 * @return GF_Field|null Gravity Forms field object, or NULL: Gravity Forms GFFormsModel does not exist or field at $field_id doesn't exist.
 	 */
 	public static function get_field( $form, $field_id ) {
+
+		if ( is_numeric( $form ) ) {
+			$form = GFAPI::get_form( $form );
+		}
+
 		if ( class_exists( 'GFFormsModel' ) ){
 			return GFFormsModel::get_field( $form, $field_id );
 		} else {
