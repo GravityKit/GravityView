@@ -492,27 +492,35 @@ class GravityView_Entry_Approval {
 			$form = GVCommon::get_form( $form );
 		}
 
+		$approved_column_id = null;
+
+		/**
+		 * @var string $key
+		 * @var GF_Field $field
+		 */
 		foreach( $form['fields'] as $key => $field ) {
 
-			$field = (array) $field;
+			$inputs = $field->get_entry_inputs();
 
-			if( !empty( $field['gravityview_approved'] ) ) {
-				if( !empty($field['inputs'][0]['id']) ) {
-					return $field['inputs'][0]['id'];
+			if( !empty( $field->gravityview_approved ) ) {
+				if ( ! empty( $inputs ) && !empty( $inputs[0]['id'] ) ) {
+					$approved_column_id = $inputs[0]['id'];
+					break;
 				}
 			}
 
 			// Note: This is just for backward compatibility from GF Directory plugin and old GV versions - when using i18n it may not work..
-			if( 'checkbox' == $field['type'] && isset( $field['inputs'] ) && is_array( $field['inputs'] ) ) {
-				foreach ( $field['inputs'] as $key2 => $input ) {
-					if ( strtolower( $input['label'] ) == 'approved' ) {
-						return $input['id'];
+			if( 'checkbox' === $field->type && ! empty( $inputs ) ) {
+				foreach ( $inputs as $input ) {
+					if ( 'approved' === strtolower( $input['label'] ) ) {
+						$approved_column_id = $input['id'];
+						break;
 					}
 				}
 			}
 		}
 
-		return null;
+		return $approved_column_id;
 	}
 
 }
