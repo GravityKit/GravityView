@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.19.1 on November 15, 2016 =
+
 * Fixed: When creating a new View, the "form doesn't exist" warning would display
 
 = 1.19 on November 14, 2016 =
