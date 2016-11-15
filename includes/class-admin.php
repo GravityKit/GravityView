@@ -96,21 +96,22 @@ class GravityView_Admin {
 	 * @return void
 	 */
 	public static function connected_form_warning( $form_id = 0 ) {
+        global $pagenow;
 
-		if ( ! is_int( $form_id ) ) {
+		if ( ! is_int( $form_id ) || $pagenow === 'post-new.php' ) {
 			return;
 		}
 
 		$form_info = GFFormsModel::get_form( $form_id, true );
 
 		$error = '';
-		if ( $form_info->is_trash ) {
+		if ( empty( $form_info ) ) {
+			$error = esc_html__( 'The form connected to this View no longer exists.', 'gravityview' );
+			$error .= ' ' . esc_html__( 'Select another form as the data source for this View.', 'gravityview' );
+		} elseif ( $form_info->is_trash ) {
 			$error = esc_html__( 'The connected form is in the trash.', 'gravityview' );
 			$error .= ' ' . gravityview_get_link( admin_url( 'admin.php?page=gf_edit_forms&filter=trash' ), esc_html__( 'Restore the form from the trash', 'gravityview' ) );
 			$error .= ' ' . esc_html__( 'or select another form.', 'gravityview' );
-		} elseif ( empty( $form_info ) ) {
-			$error = esc_html__( 'The form connected to this View no longer exists.', 'gravityview' );
-			$error .= ' ' . esc_html__( 'Select another form as the data source for this View.', 'gravityview' );
 		}
 
 		if( $error ) {
