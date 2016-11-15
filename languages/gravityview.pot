@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 1.19\n"
+"Project-Id-Version: GravityView 1.19.1\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
 "MIME-Version: 1.0\n"
@@ -513,7 +513,7 @@ msgstr ""
 msgid "Entries"
 msgstr ""
 
-#: includes/class-admin-views.php:381 includes/class-admin.php:167
+#: includes/class-admin-views.php:381 includes/class-admin.php:168
 #: includes/class-gravityview-settings.php:525
 #: includes/class-gravityview-settings.php:551
 msgid "Settings"
@@ -710,19 +710,19 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:584
+#: includes/class-admin-welcome.php:590
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:608
+#: includes/class-admin-welcome.php:614
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:633
+#: includes/class-admin-welcome.php:639
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:634
+#: includes/class-admin-welcome.php:640
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -748,35 +748,35 @@ msgstr ""
 msgid "There are no active Views"
 msgstr ""
 
-#: includes/class-admin.php:108
-msgid "The connected form is in the trash."
-msgstr ""
-
 #: includes/class-admin.php:109
-msgid "Restore the form from the trash"
-msgstr ""
-
-#: includes/class-admin.php:110
-msgid "or select another form."
-msgstr ""
-
-#: includes/class-admin.php:112
 msgid "The form connected to this View no longer exists."
 msgstr ""
 
-#: includes/class-admin.php:113
+#: includes/class-admin.php:110
 msgid "Select another form as the data source for this View."
 msgstr ""
 
-#: includes/class-admin.php:171
+#: includes/class-admin.php:112
+msgid "The connected form is in the trash."
+msgstr ""
+
+#: includes/class-admin.php:113
+msgid "Restore the form from the trash"
+msgstr ""
+
+#: includes/class-admin.php:114
+msgid "or select another form."
+msgstr ""
+
+#: includes/class-admin.php:172
 msgid "Support"
 msgstr ""
 
-#: includes/class-admin.php:216
+#: includes/class-admin.php:217
 msgid "A new form was created for this View: \"%s\""
 msgstr ""
 
-#: includes/class-admin.php:217
+#: includes/class-admin.php:218
 msgid ""
 "%sThere are no entries for the new form, so the View will also be empty.%s "
 "To start collecting entries, you can add submissions through %sthe preview "
@@ -788,75 +788,75 @@ msgid ""
 "\t\t\t\t\t"
 msgstr ""
 
-#: includes/class-admin.php:230 includes/class-admin.php:232
-#: includes/class-admin.php:235
+#: includes/class-admin.php:231 includes/class-admin.php:233
+#: includes/class-admin.php:236
 #. translators: %s and %s are HTML tags linking to the View on the website
 msgid "View updated. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:233
+#: includes/class-admin.php:234
 msgid "View deleted."
 msgstr ""
 
-#: includes/class-admin.php:237
+#: includes/class-admin.php:238
 #. translators: %s: date and time of the revision
 msgid "View restored to revision from %s"
 msgstr ""
 
-#: includes/class-admin.php:239
+#: includes/class-admin.php:240
 #. translators: %s and %s are HTML tags linking to the View on the website
 msgid "View published. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:241
+#: includes/class-admin.php:242
 #. translators: %s and %s are HTML tags linking to the View on the website
 msgid "View saved. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:242
+#: includes/class-admin.php:243
 msgid "View submitted."
 msgstr ""
 
-#: includes/class-admin.php:245
+#: includes/class-admin.php:246
 #. translators: Date and time the View is scheduled to be published
 msgid "View scheduled for: %1$s."
 msgstr ""
 
-#: includes/class-admin.php:247
+#: includes/class-admin.php:248
 #. translators: Publish box date format, see http:php.net/date
 msgid "M j, Y @ G:i"
 msgstr ""
 
-#: includes/class-admin.php:250
+#: includes/class-admin.php:251
 #. translators: %s and %s are HTML tags linking to the View on the website
 msgid "View draft updated. %sView on website.%s"
 msgstr ""
 
-#: includes/class-admin.php:256
+#: includes/class-admin.php:257
 msgid "%s View updated."
 msgid_plural "%s Views updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:257
+#: includes/class-admin.php:258
 msgid "%s View not updated, somebody is editing it."
 msgid_plural "%s Views not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:258
+#: includes/class-admin.php:259
 msgid "%s View permanently deleted."
 msgid_plural "%s Views permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:259
+#: includes/class-admin.php:260
 msgid "%s View moved to the Trash."
 msgid_plural "%s Views moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin.php:260
+#: includes/class-admin.php:261
 msgid "%s View restored from the Trash."
 msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""

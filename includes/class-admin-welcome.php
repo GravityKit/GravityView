@@ -271,6 +271,12 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.19.1 on November 15, 2016</h3>
+
+                <ul>
+                    <li>Fixed: When creating a new View, the "form doesn't exist" warning would display</li>
+                </ul>
+
                 <h3>1.19 on November 14, 2016</h3>
 
                 <ul>
