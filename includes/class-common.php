@@ -779,6 +779,8 @@ class GVCommon {
 			} else {
 				$field = self::get_field( $form, $k );
 				$field_value  = GFFormsModel::get_lead_field_value( $entry, $field );
+				 // If it's a complex field, then fetch the input's value
+				$field_value = is_array( $field_value ) ? rgar( $field_value, $k ) : $field_value;
 			}
 
 			$operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';

@@ -20,6 +20,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.19.2 =
+
+* Fixed: Single entries not accessible when a View has filters based on Gravity Forms "Advanced" fields like Address and Name
+
 = 1.19.1 on November 15, 2016 =
 
 * Fixed: When creating a new View, the "form doesn't exist" warning would display
