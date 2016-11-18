@@ -43,12 +43,13 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 	 * If passed something other than a string, returns the passed value.
 	 *
 	 * @since 1.16.2
+	 * @since 1.19.2 Converted from private to static public method
 	 *
 	 * @param string $value The stored value of an image, impoded with `|:|` values
 	 *
 	 * @return array with `url`, `title`, `caption` and `description` values
 	 */
-	private function explode_value( $value ) {
+	static public function explode_value( $value ) {
 
 		// Already is an array, perhaps?
 		if ( ! is_string( $value ) ) {
@@ -94,7 +95,7 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 		$img_name = null;
 
 		// Convert |:| to associative array
-		$img_array = $this->explode_value( $value );
+		$img_array = self::explode_value( $value );
 
 		if( ! empty( $img_array['url'] ) ) {
 
