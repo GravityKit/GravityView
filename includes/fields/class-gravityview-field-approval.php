@@ -123,10 +123,14 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 		wp_register_script( 'gravityview-field-approval', GRAVITYVIEW_URL . 'assets/js/field-approval'.$script_debug.'.js', array( 'jquery' ), GravityView_Plugin::version, true );
 
-		/**
-		 * Override CSS file by placing in your theme's /gravityview/css/ sub-directory.
-		 */
-		$style_path = GravityView_View::getInstance()->locate_template( 'css/field-approval.css', false );
+		$style_path = GRAVITYVIEW_DIR . 'templates/css/field-approval.css';
+
+		if( class_exists( 'GravityView_View' ) ) {
+			/**
+			 * Override CSS file by placing in your theme's /gravityview/css/ sub-directory.
+			 */
+			$style_path = GravityView_View::getInstance()->locate_template( 'css/field-approval.css', false );
+		}
 
 		$style_url = plugins_url( 'css/field-approval.css', trailingslashit( dirname( $style_path ) )  );
 
