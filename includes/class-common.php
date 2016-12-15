@@ -1509,12 +1509,21 @@ class GVCommon {
     /**
      * Display updated/error notice
      *
+     * @since TODO Added $cap parameter
+     *
      * @param string $notice text/HTML of notice
      * @param string $class CSS class for notice (`updated` or `error`)
+     * @param string $cap [Optional] Define a capability required to show a notice. If not set, displays to all caps.
      *
      * @return string
      */
-    public static function generate_notice( $notice, $class = '' ) {
+    public static function generate_notice( $notice, $class = '', $cap = '' ) {
+
+    	// If $cap is defined, only show notice if user has capability
+    	if( $cap && ! GVCommon::has_cap( $cap ) ) {
+    		return '';
+	    }
+
         return '<div class="gv-notice '.gravityview_sanitize_html_class( $class ) .'">'. $notice .'</div>';
     }
 
