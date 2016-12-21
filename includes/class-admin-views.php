@@ -691,15 +691,6 @@ class GravityView_Admin_Views {
 				),
 
 				/**
-				 * @since  1.2
-				 */
-				'custom'	=> array(
-					'label'	=> __('Custom Content', 'gravityview'),
-					'type'	=> 'custom',
-					'desc'	=> __('Insert custom text or HTML.', 'gravityview'),
-				),
-
-				/**
 				 * @since 1.7.2
 				 */
 			    'other_entries' => array(
@@ -720,6 +711,14 @@ class GravityView_Admin_Views {
 
 		} // if not zone directory or single
 
+		/**
+		 * @since  1.2
+		 */
+		$entry_default_fields['custom']	= array(
+			'label'	=> __('Custom Content', 'gravityview'),
+			'type'	=> 'custom',
+			'desc'	=> __('Insert custom text or HTML.', 'gravityview'),
+		);
 
 		/**
 		 * @filter `gravityview_entry_default_fields` Modify the default fields for each zone and context
