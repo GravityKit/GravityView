@@ -329,6 +329,36 @@ class GravityView_View extends Gamajo_Template_Loader {
 	}
 
 	/**
+     * Get the fields for a specific context
+     *
+     * @since 1.19.2
+     *
+	 * @param string $context [Optional] "directory", "single", or "edit"
+	 *
+	 * @return array Array of GravityView field layout configurations
+	 */
+	public function getContextFields( $context = '' ) {
+
+	    if( '' === $context ) {
+	        $context = $this->getContext();
+        }
+
+		$fields = $this->getFields();
+
+        foreach ( (array) $fields as $key => $context_fields ) {
+
+            // Formatted as `{context}_{template id}-{zone name}`, so we want just the $context to match against
+            $matches = explode( '_', $key );
+
+            if( isset( $matches[0] ) && $matches[0] === $context ) {
+                return $context_fields;
+            }
+        }
+
+		return array();
+    }
+
+	/**
 	 * @param array $fields
 	 */
 	public function setFields( $fields ) {

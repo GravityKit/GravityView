@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Reminder: GravityView will soon require PHP 5.3. 97.6% of sites are already compatible.
 
 __Developer Notes:__
+* Added: `GravityView_View::getContextFields()` method allows fetching the fields configured for each View context (`directory`, `single`, `edit`)
 * Added: `$field_id` as fourth argument passed to `gravityview/extension/search/input_type` filter
 * Added: Added `$cap` and `$object_id` parameters to `GVCommon::generate_notice()` to be able to check caps before displaying a notice
 
