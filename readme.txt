@@ -23,6 +23,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = 1.19.2 =
 
 * Fixed: Single entries not accessible when a View has filters based on Gravity Forms "Advanced" fields like Address and Name
+* Added: Notice for future PHP requirements.
+* Reminder: GravityView will soon require PHP 5.3. 97.6% of sites are already compatible.
 
 = 1.19.1 on November 15, 2016 =
 
