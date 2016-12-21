@@ -74,6 +74,8 @@ class GravityView_Post_Types {
 			'filter_items_list'     => __( 'Filter Views list', 'gravityview' ),
 			'items_list_navigation' => __( 'Views list navigation', 'gravityview' ),
 			'items_list'            => __( 'Views list', 'gravityview' ),
+			'view_items'            => __( 'See Views', 'gravityview' ),
+			'attributes'            => __( 'View Attributes', 'gravityview' ),
 		);
 		$args = array(
 			'label'               => __( 'view', 'gravityview' ),
