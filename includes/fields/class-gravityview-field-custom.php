@@ -38,10 +38,6 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 		unset ( $field_options['search_filter'], $field_options['show_as_link'] );
 
-		if( 'edit' === $context ) {
-			return $field_options;
-		}
-
 		$new_fields = array(
 			'content' => array(
 				'type' => 'textarea',
@@ -59,6 +55,10 @@ class GravityView_Field_Custom extends GravityView_Field {
 				'value' => '',
 			),
 		);
+
+		if( 'edit' === $context ) {
+			unset( $field_options['custom_label'], $field_options['show_label'], $field_options['allow_edit_cap'], $new_fields['wpautop'] );
+		}
 
 		return $new_fields + $field_options;
 	}
