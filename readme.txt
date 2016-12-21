@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 = 1.19.2 =
 
 * Fixed: Single entries not accessible when a View has filters based on Gravity Forms "Advanced" fields like Address and Name
+* Added: There is now a warning when a View tab has not been configured. The question "Why aren't my entries showing up?" is often due to a lack of configuration.
 * Added: Notice for future PHP requirements.
 * Reminder: GravityView will soon require PHP 5.3. 97.6% of sites are already compatible.
 
