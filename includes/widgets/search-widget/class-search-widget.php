@@ -378,10 +378,12 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		/**
 		 * @filter `gravityview/extension/search/input_type` Modify the search form input type based on field type
 		 * @since 1.2
+		 * @since 1.19.2 Added $field_id parameter
 		 * @param string $input_type Assign an input type according to the form field type. Defaults: `boolean`, `multi`, `select`, `date`, `text`
 		 * @param string $field_type Gravity Forms field type (also the `name` parameter of GravityView_Field classes)
+		 * @param string|int|float $field_id ID of the field being processed
 		 */
-		$input_type = apply_filters( 'gravityview/extension/search/input_type', $input_type, $field_type );
+		$input_type = apply_filters( 'gravityview/extension/search/input_type', $input_type, $field_type, $field_id );
 
 		return $input_type;
 	}
