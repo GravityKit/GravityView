@@ -133,12 +133,12 @@ final class GravityView_Entry_Approval_Status {
 			//Disapproved values
 			case '0':
 			case '2':
-			case '':
 				$new_value = self::DISAPPROVED;
 				break;
 
 			// Unapproved values
 			case '3':
+			case '':
 				$new_value = self::UNAPPROVED;
 				break;
 		}
