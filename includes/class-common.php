@@ -1509,7 +1509,7 @@ class GVCommon {
     /**
      * Display updated/error notice
      *
-     * @since TODO Added $cap parameter
+     * @since 1.19.2 Added $cap and $object_id parameters
      *
      * @param string $notice text/HTML of notice
      * @param string $class CSS class for notice (`updated` or `error`)
@@ -1517,10 +1517,10 @@ class GVCommon {
      *
      * @return string
      */
-    public static function generate_notice( $notice, $class = '', $cap = '' ) {
+    public static function generate_notice( $notice, $class = '', $cap = '', $object_id = null ) {
 
     	// If $cap is defined, only show notice if user has capability
-    	if( $cap && ! GVCommon::has_cap( $cap ) ) {
+    	if( $cap && ! GVCommon::has_cap( $cap, $object_id ) ) {
     		return '';
 	    }
 

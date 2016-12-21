@@ -26,7 +26,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Notice for future PHP requirements.
 * Reminder: GravityView will soon require PHP 5.3. 97.6% of sites are already compatible.
 
+__Developer Notes:__
 * Added: `$field_id` as fourth argument passed to `gravityview/extension/search/input_type` filter
+* Added: Added `$cap` and `$object_id` parameters to `GVCommon::generate_notice()` to be able to check caps before displaying a notice
+
 = 1.19.1 on November 15, 2016 =
 
 * Fixed: When creating a new View, the "form doesn't exist" warning would display
