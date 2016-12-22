@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Notice for future PHP requirements.
 * Reminder: GravityView will soon require PHP 5.3. 97.6% of sites are already compatible.
 * Fixed: Conflict with another plugin that prevented the Field Settings from being reachable in the Edit View screen
+* Fixed: GravityView widgets repeating twice for some customers
 
 __Developer Notes:__
 * Added: `GravityView_View::getContextFields()` method allows fetching the fields configured for each View context (`directory`, `single`, `edit`)

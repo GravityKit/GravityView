@@ -918,7 +918,7 @@ class GravityView_View extends Gamajo_Template_Loader {
 		 * Prevent widgets from being called twice.
 		 * Checking for loop_start prevents themes and plugins that pre-process shortcodes from triggering the action before displaying. Like, ahem, the Divi theme and WordPress SEO plugin
 		 */
-		if( did_action( 'loop_start' ) ) {
+		if( did_action( 'wp_head' ) ) {
 			do_action( $zone.'_'.$view_id.'_widgets' );
 		}
 	}
