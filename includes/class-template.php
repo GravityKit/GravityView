@@ -669,6 +669,9 @@ class GravityView_View extends Gamajo_Template_Loader {
 		}
 
 		if( empty( $fields ) ) {
+
+			do_action('gravityview_log_error', 'GravityView_View[renderZone] Empty View configuration for this context.', $fields );
+
 			return NULL;
 		}
 
