@@ -271,6 +271,33 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.19.2 on December 21, 2016</h3>
+
+                <ul>
+                    <li>Added: Search Bar now supports displaying State and Country fields as Select, List, or Radio input types (before, only text fields)</li>
+                    <li>Fixed: Single entries not accessible when a View has filters based on Gravity Forms &quot;Advanced&quot; fields like Address and Name</li>
+                    <li>Added: There is now a warning when a View tab has not been configured. The question &quot;Why aren&#39;t my entries showing up?&quot; is often due to a lack of configuration.</li>
+                    <li>Added: Notice for future PHP requirements.
+                        <ul>
+                            <li>Reminder: GravityView will soon require PHP 5.3. 97.6% of sites are already compatible.</li>
+                        </ul>
+                    </li>
+                    <li>Fixed: Conflict with another plugin that prevented the Field Settings from being reachable in the Edit View screen</li>
+                    <li>Fixed: GravityView widgets repeating twice for some customers</li>
+                </ul>
+
+                <p><strong>Developer Notes:</strong></p>
+
+                <ul>
+                    <li>Added: <code>GravityView_View::getContextFields()</code> method allows fetching the fields configured for each View context (<code>directory</code>, <code>single</code>, <code>edit</code>)
+
+                        <ul>
+                            <li>Modified: <code>templates/list-body.php</code> and <code>templates/list-single.php</code> to add a check for context fields before rendering</li>
+                        </ul></li>
+                    <li>Added: <code>$field_id</code> as fourth argument passed to <code>gravityview/extension/search/input_type</code> filter</li>
+                    <li>Added: Added <code>$cap</code> and <code>$object_id</code> parameters to <code>GVCommon::generate_notice()</code> to be able to check caps before displaying a notice</li>
+                </ul>
+
                 <h3>1.19.1 on November 15, 2016</h3>
 
                 <ul>
