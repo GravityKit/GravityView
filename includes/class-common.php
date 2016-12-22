@@ -779,6 +779,8 @@ class GVCommon {
 			} else {
 				$field = self::get_field( $form, $k );
 				$field_value  = GFFormsModel::get_lead_field_value( $entry, $field );
+				 // If it's a complex field, then fetch the input's value
+				$field_value = is_array( $field_value ) ? rgar( $field_value, $k ) : $field_value;
 			}
 
 			$operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
@@ -1507,12 +1509,21 @@ class GVCommon {
     /**
      * Display updated/error notice
      *
+     * @since 1.19.2 Added $cap and $object_id parameters
+     *
      * @param string $notice text/HTML of notice
      * @param string $class CSS class for notice (`updated` or `error`)
+     * @param string $cap [Optional] Define a capability required to show a notice. If not set, displays to all caps.
      *
      * @return string
      */
-    public static function generate_notice( $notice, $class = '' ) {
+    public static function generate_notice( $notice, $class = '', $cap = '', $object_id = null ) {
+
+    	// If $cap is defined, only show notice if user has capability
+    	if( $cap && ! GVCommon::has_cap( $cap, $object_id ) ) {
+    		return '';
+	    }
+
         return '<div class="gv-notice '.gravityview_sanitize_html_class( $class ) .'">'. $notice .'</div>';
     }
 

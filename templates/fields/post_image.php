@@ -73,7 +73,6 @@ else {
 
 	// Only show the lightbox if linking to the file itself
 	if( $gravityview_view->getAtts('lightbox') ) {
-		$link_atts['target'] = '_blank';
 		$link_atts['class'] = 'thickbox';
 	}
 
@@ -139,7 +138,7 @@ $showlabels = apply_filters( 'gravityview_post_image_meta_show_labels', true );
 $output = '<'.$wrappertag.' class="gv-image">';
 
 // Image with link tag
-$output .= gravityview_get_link( '', $image, $link_atts );
+$output .= gravityview_get_link( $href, $image, $link_atts );
 
 foreach ( (array)$image_meta as $key => $meta ) {
 

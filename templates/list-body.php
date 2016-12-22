@@ -27,7 +27,7 @@ if( ! $this->getTotalEntries() ) {
 	</div>
 	<?php
 
-} else {
+} elseif( $this->getContextFields() ) {
 
 	// There are entries. Loop through them.
 	foreach ( $this->getEntries() as $entry ) {

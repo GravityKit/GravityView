@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.6.1
+Tested up to: 4.7
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -19,6 +19,23 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 1.19.2 on December 21, 2016 =
+
+* Added: Search Bar now supports displaying State and Country fields as Select, List, or Radio input types (before, only text fields)
+* Fixed: Single entries not accessible when a View has filters based on Gravity Forms "Advanced" fields like Address and Name
+* Added: There is now a warning when a View tab has not been configured. The question "Why aren't my entries showing up?" is often due to a lack of configuration.
+* Added: Notice for future PHP requirements.
+    * Reminder: GravityView will soon require PHP 5.3. 97.6% of sites are already compatible.
+* Fixed: Conflict with another plugin that prevented the Field Settings from being reachable in the Edit View screen
+* Fixed: GravityView widgets repeating twice for some customers
+
+__Developer Notes:__
+
+* Added: `GravityView_View::getContextFields()` method allows fetching the fields configured for each View context (`directory`, `single`, `edit`)
+    * Modified: `templates/list-body.php` and `templates/list-single.php` to add a check for context fields before rendering
+* Added: `$field_id` as fourth argument passed to `gravityview/extension/search/input_type` filter
+* Added: Added `$cap` and `$object_id` parameters to `GVCommon::generate_notice()` to be able to check caps before displaying a notice
 
 = 1.19.1 on November 15, 2016 =
 
@@ -1156,8 +1173,8 @@ __Developer Notes:__
 	* Scroller: dynamically load in new entries as you scroll - no need for pagination)
 	* TableTools: Export your entries to CSV and PDF
 	* FixedHeader: As you scroll a large DataTable result, the headers of the table stay at the top of the screen. Also, FixedColumns, which does the same for the main table column.
-* Added: Shortcodes for outputting Widgets such as pagination and search. Note: they only work on embedded views if the shortcode has already been processed. This is going to be improved. [Read the documentation](https://katzwebservices.zendesk.com/hc/en-us/articles/201103045)
-* Added: Search form fields now displayed horizontally by default. [That can be changed](https://katzwebservices.zendesk.com/hc/en-us/articles/201119765).
+* Added: Shortcodes for outputting Widgets such as pagination and search. Note: they only work on embedded views if the shortcode has already been processed. This is going to be improved.
+* Added: Search form fields now displayed horizontally by default.
 * Added: Easy links to "Edit Form", "Settings" and "Entries" for the Data Source Gravity Forms form in the All Views admin screen
 * Added: Integration with the [Debug Bar](http://wordpress.org/plugins/debug-bar/) plugin - very helpful for developers to see what's going on behind the scenes.
 * Fixed: Insert View embed code.
@@ -1241,7 +1258,7 @@ We're just getting started with what can be done with DataTables. We'll have muc
 	* Fixed: Default setting values working again
 	* Fixed: Field type settings now working
 * Added: `search_field` parameter to the shortcode. This allows you to specify a field ID where you want the search performed (The search itself is defined in `search_value`)
-* Added: [Using the Shortcode](https://katzwebservices.zendesk.com/hc/en-us/articles/202934188) help article
+* Added: [Using the Shortcode](http://docs.gravityview.co/article/73-using-the-shortcode) help article
 * Added: Data Source added to the Views page
 * Fixed: Field labels escaping issue (`It's an Example` was displaying as `It\'s an Example`)
 * Fixed: Settings "gear" not showing when adding a new field

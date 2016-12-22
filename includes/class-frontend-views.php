@@ -98,6 +98,8 @@ class GravityView_frontend {
 		add_filter( 'the_title', array( $this, 'single_entry_title' ), 1, 2 );
 		add_filter( 'the_content', array( $this, 'insert_view_in_content' ) );
 		add_filter( 'comments_open', array( $this, 'comments_open' ), 10, 2 );
+
+		add_action( 'gravityview_after', array( $this, 'context_not_configured_warning' ) );
 	}
 
 	/**
@@ -549,6 +551,49 @@ class GravityView_frontend {
 		$open = apply_filters( 'gravityview/comments_open', $open, $post_id );
 
 		return $open;
+	}
+
+	/**
+	 * Display a warning when a View has not been configured
+	 *
+	 * @since 1.19.2
+	 *
+	 * @param string $context The current context that has no configuration
+	 *
+	 * @return void
+	 */
+	public function context_not_configured_warning( $view_id = 0 ) {
+
+		$fields = GravityView_View::getInstance()->getContextFields();
+
+		if ( ! empty( $fields ) ) {
+			return;
+		}
+
+		$context = GravityView_View::getInstance()->getContext();
+
+		switch( $context ) {
+			case 'directory':
+				$tab = __( 'Multiple Entries', 'gravityview' );
+				break;
+			case 'edit':
+				$tab = __( 'Edit Entry', 'gravityview' );
+				break;
+			case 'single':
+			default:
+				$tab = __( 'Single Entry', 'gravityview' );
+				break;
+		}
+
+
+		$title = sprintf( esc_html_x('The %s layout has not been configured.', 'Displayed when a View is not configured. %s is replaced by the tab label', 'gravityview' ), $tab );
+		$edit_link = admin_url( sprintf( 'post.php?post=%d&action=edit#%s-view', $view_id, $context ) );
+		$action_text = sprintf( esc_html__('Add fields to %s', 'gravityview' ), $tab );
+		$message = esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
+
+		$output = sprintf( '<h3>%s <strong><a href="%s">%s</a></strong></h3><p>%s</p>', $title, esc_url( $edit_link ), $action_text, $message );
+
+		echo GVCommon::generate_notice( $output, 'gv-error error', 'edit_gravityview', $view_id );
 	}
 
 

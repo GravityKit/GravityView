@@ -3,7 +3,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:          	1.19.1
+ * Version:          	1.19.2
  * Author:            	GravityView
  * Author URI:        	https://gravityview.co
  * Text Domain:       	gravityview
@@ -51,6 +51,14 @@ define( 'GV_MIN_WP_VERSION', '3.5.0' );
  */
 define( 'GV_MIN_PHP_VERSION', '5.2.4' );
 
+/**
+ * GravityView will require this version of PHP soon. False if no future PHP version changes are planned.
+ * @since 1.19.2
+ * @var string|false
+ */
+define( 'GV_FUTURE_MIN_PHP_VERSION', '5.3' );
+
+
 /** Register hooks that are fired when the plugin is activated and deactivated. */
 register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
 
@@ -61,7 +69,7 @@ register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' 
  */
 final class GravityView_Plugin {
 
-	const version = '1.19.1';
+	const version = '1.19.2';
 
 	private static $instance;
 

@@ -1682,6 +1682,10 @@
 			activate_tab = 0;
 		}
 
+		if ( location.hash && $( location.hash ).length ) {
+			activate_tab = $( location.hash ).index() - 1;
+		}
+
 		// View Configuration - Tabs (persisten after refresh)
 		$( "#gv-view-configuration-tabs" ).tabs( {
 			active: activate_tab,

@@ -12,7 +12,9 @@
 
 <div class="gv-container gv-list-single-container gv-list-container">
 	<p class="gv-back-link"><?php echo gravityview_back_link(); ?></p>
-	<?php foreach ( $this->getEntries() as $entry ) {
+	<?php
+    if( $this->getContextFields() ) {
+    foreach ( $this->getEntries() as $entry ) {
 		$this->setCurrentEntry( $entry );
 
 		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
@@ -91,7 +93,7 @@
 
 	</div>
 
-	<?php } // End foreach $this->getEntries() ?>
+	<?php } } // End foreach $this->getEntries() and $this->getContextFields() ?>
 
 </div>
 

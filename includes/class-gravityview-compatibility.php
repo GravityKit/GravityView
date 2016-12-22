@@ -172,9 +172,12 @@ class GravityView_Compatibility {
 	 * Is the version of PHP compatible?
 	 *
 	 * @since 1.12
+	 * @since 1.19.2 Shows a notice if it's compatible with future PHP version requirements
+	 *
 	 * @return boolean
 	 */
 	public static function check_php() {
+
 		if( false === version_compare( phpversion(), GV_MIN_PHP_VERSION , '>=' ) ) {
 
 			self::$notices['php_version'] = array(
@@ -185,6 +188,20 @@ class GravityView_Compatibility {
 			);
 
 			return false;
+		}
+
+		if( false === version_compare( phpversion(), GV_FUTURE_MIN_PHP_VERSION , '>=' ) ) {
+
+			// Show the notice on every update. Yes, annoying, but not as annoying as a plugin breaking.
+			$key = sprintf('php_%s_%s', GV_FUTURE_MIN_PHP_VERSION, GravityView_Plugin::version );
+
+			self::$notices[ $key ] = array(
+				'class' => 'error',
+				'message' => sprintf( __( "%sGravityView will soon require PHP Version %s.%s \n\nYou're using Version %s. Please ask your host to upgrade your server's PHP.", 'gravityview' ), '<h3>', GV_FUTURE_MIN_PHP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.phpversion().'</span>' ),
+				'cap' => 'manage_options',
+				'dismiss' => $key,
+			);
+
 		}
 
 		return true;

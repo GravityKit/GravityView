@@ -63,8 +63,8 @@ class GravityView_Widget_Page_Links extends GravityView_Widget {
 
 		if( !empty( $page_links )) {
 			$class = !empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
-			$class = gravityview_sanitize_html_class( $class );
-			echo '<div class="gv-widget-page-links '.$class.'">'. $page_links .'</div>';
+			$class = gravityview_sanitize_html_class( 'gv-widget-page-links ' . $class );
+			echo '<div class="'.$class.'">'. $page_links .'</div>';
 		} else {
 			do_action( 'gravityview_log_debug', 'GravityView_Widget_Page_Links[render_frontend] No page links; paginate_links() returned empty response.' );
 		}

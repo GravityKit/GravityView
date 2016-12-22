@@ -350,25 +350,26 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 	/**
 	 * Assign an input type according to the form field type
+	 *
 	 * @see admin-search-widget.js
 	 *
-	 * @param int $id Gravity Forms field ID
+	 * @param string|int|float $field_id Gravity Forms field ID
 	 * @param string $field_type Gravity Forms field type (also the `name` parameter of GravityView_Field classes)
 	 *
 	 * @return string GV field search input type ('multi', 'boolean', 'select', 'date', 'text')
 	 */
-	public static function get_search_input_types( $id = '', $field_type = null ) {
+	public static function get_search_input_types( $field_id = '', $field_type = null ) {
 
 		// @todo - This needs to be improved - many fields have . including products and addresses
-		if ( false !== strpos( (string) $id, '.' ) && in_array( $field_type, array( 'checkbox' ) ) || in_array( $id, array( 'is_fulfilled' ) ) ) {
+		if ( false !== strpos( (string) $field_id, '.' ) && in_array( $field_type, array( 'checkbox' ) ) || in_array( $field_id, array( 'is_fulfilled' ) ) ) {
 			$input_type = 'boolean'; // on/off checkbox
 		} elseif ( in_array( $field_type, array( 'checkbox', 'post_category', 'multiselect' ) ) ) {
 			$input_type = 'multi'; //multiselect
 		} elseif ( in_array( $field_type, array( 'select', 'radio' ) ) ) {
 			$input_type = 'select';
-		} elseif ( in_array( $field_type, array( 'date' ) ) || in_array( $id, array( 'payment_date' ) ) ) {
+		} elseif ( in_array( $field_type, array( 'date' ) ) || in_array( $field_id, array( 'payment_date' ) ) ) {
 			$input_type = 'date';
-		} elseif ( in_array( $field_type, array( 'number' ) ) || in_array( $id, array( 'payment_amount' ) ) ) {
+		} elseif ( in_array( $field_type, array( 'number' ) ) || in_array( $field_id, array( 'payment_amount' ) ) ) {
 			$input_type = 'number';
 		} else {
 			$input_type = 'text';
@@ -377,10 +378,12 @@ class GravityView_Widget_Search extends GravityView_Widget {
 		/**
 		 * @filter `gravityview/extension/search/input_type` Modify the search form input type based on field type
 		 * @since 1.2
+		 * @since 1.19.2 Added $field_id parameter
 		 * @param string $input_type Assign an input type according to the form field type. Defaults: `boolean`, `multi`, `select`, `date`, `text`
 		 * @param string $field_type Gravity Forms field type (also the `name` parameter of GravityView_Field classes)
+		 * @param string|int|float $field_id ID of the field being processed
 		 */
-		$input_type = apply_filters( 'gravityview/extension/search/input_type', $input_type, $field_type );
+		$input_type = apply_filters( 'gravityview/extension/search/input_type', $input_type, $field_type, $field_id );
 
 		return $input_type;
 	}
