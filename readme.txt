@@ -30,7 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Notes:__
 * Added: `GravityView_View::getContextFields()` method allows fetching the fields configured for each View context (`directory`, `single`, `edit`)
-    * Modified: `templates/list-body.php` to add a check for fields before rendering empty boxes
+    * Modified: `templates/list-body.php` and `templates/list-single.php` to add a check for context fields before rendering
 * Added: `$field_id` as fourth argument passed to `gravityview/extension/search/input_type` filter
 * Added: Added `$cap` and `$object_id` parameters to `GVCommon::generate_notice()` to be able to check caps before displaying a notice
 
