@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.6.1
+Tested up to: 4.7
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -20,16 +20,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.19.2 =
+= 1.19.2 on December 21, 2016 =
 
+* Added: Search Bar now supports displaying State and Country fields as Select, List, or Radio input types (before, only text fields)
 * Fixed: Single entries not accessible when a View has filters based on Gravity Forms "Advanced" fields like Address and Name
 * Added: There is now a warning when a View tab has not been configured. The question "Why aren't my entries showing up?" is often due to a lack of configuration.
 * Added: Notice for future PHP requirements.
-* Reminder: GravityView will soon require PHP 5.3. 97.6% of sites are already compatible.
+    * Reminder: GravityView will soon require PHP 5.3. 97.6% of sites are already compatible.
 * Fixed: Conflict with another plugin that prevented the Field Settings from being reachable in the Edit View screen
 * Fixed: GravityView widgets repeating twice for some customers
 
 __Developer Notes:__
+
 * Added: `GravityView_View::getContextFields()` method allows fetching the fields configured for each View context (`directory`, `single`, `edit`)
     * Modified: `templates/list-body.php` and `templates/list-single.php` to add a check for context fields before rendering
 * Added: `$field_id` as fourth argument passed to `gravityview/extension/search/input_type` filter
