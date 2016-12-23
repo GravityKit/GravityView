@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: The `[gravityview]` shortcode would not be parsed properly due to HTML encoding when using certain page builders, including OptimizePress
+
 = 1.19.2 on December 21, 2016 =
 
 * Added: Search Bar now supports displaying State and Country fields as Select, List, or Radio input types (before, only text fields)
