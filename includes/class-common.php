@@ -768,6 +768,7 @@ class GVCommon {
 		foreach ( $filters as $filter ) {
 
 			if ( ! isset( $filter['key'] ) ) {
+				do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Filter key not set', $filter );
 				continue;
 			}
 
