@@ -122,7 +122,7 @@ class GVCommon {
 	 */
 	public static function get_form_from_entry_id( $entry_slug ) {
 
-		$entry = self::get_entry( $entry_slug, true );
+		$entry = self::get_entry( $entry_slug, true, false );
 
 		$form = self::get_form( $entry['form_id'] );
 
