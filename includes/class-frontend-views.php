@@ -785,6 +785,11 @@ class GravityView_frontend {
 
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.' );
 
+				// Only display warning once when multiple Views are embedded
+				if( $view_id !== (int) GravityView_frontend::get_context_view_id() ) {
+					return null;
+				}
+
 				/**
 				 * @filter `gravityview/render/entry/not_visible` Modify the message shown to users when the entry doesn't exist or they aren't allowed to view it.
 				 * @since 1.6

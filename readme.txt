@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: Only display "You have attempted to view an entry that is not visible or may not exist." warning once when multiple Views are embedded on a page
 * Fixed: The `[gravityview]` shortcode would not be parsed properly due to HTML encoding when using certain page builders, including OptimizePress
 
 = 1.19.2 on December 21, 2016 =
