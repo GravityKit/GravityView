@@ -185,7 +185,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	 */
 	public function filter_gravityview_entry_default_field( $entry_default_fields, $form, $context ) {
 
-		if ( ! isset( $entry_default_fields["{$this->name}"] ) ) {
+		if ( ! isset( $entry_default_fields["{$this->name}"] ) && 'edit' !== $context ) {
 			$entry_default_fields["{$this->name}"] = array(
 				'label' => $this->label,
 				'desc'  => $this->description,
