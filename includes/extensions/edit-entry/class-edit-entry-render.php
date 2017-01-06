@@ -1787,13 +1787,13 @@ class GravityView_Edit_Entry_Render {
                             $list_rows = maybe_unserialize( $field_value );
 
                             $list_field_value = array();
-                            foreach ( $list_rows as $row ) {
-                                foreach ( $row as $column ) {
+                            foreach ( (array) $list_rows as $row ) {
+                                foreach ( (array) $row as $column ) {
                                     $list_field_value[] = $column;
                                 }
                             }
 
-                            $field->defaultValue = $list_field_value;
+                            $field->defaultValue = serialize( $list_field_value );
                         } else {
                             $field->defaultValue = $field_value;
                         }

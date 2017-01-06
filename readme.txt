@@ -20,6 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: List field inputs not loading in Edit Entry when values were empty or the field was hidden initially because of Conditional Logic
 * Fixed: Only display "You have attempted to view an entry that is not visible or may not exist." warning once when multiple Views are embedded on a page
 * Fixed: The `[gravityview]` shortcode would not be parsed properly due to HTML encoding when using certain page builders, including OptimizePress
 
