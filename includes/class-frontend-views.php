@@ -512,6 +512,11 @@ class GravityView_frontend {
 			return $content;
 		}
 
+		// Only render in the loop. Fixes issues with the_content filter being applied in places like the sidebar
+		if( ! in_the_loop() ) {
+			return $content;
+		}
+
 		if ( $this->isGravityviewPostType() ) {
 
 			/** @since 1.7.4 */
