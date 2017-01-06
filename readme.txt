@@ -25,6 +25,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Only display "You have attempted to view an entry that is not visible or may not exist." warning once when multiple Views are embedded on a page
 * Fixed: The `[gravityview]` shortcode would not be parsed properly due to HTML encoding when using certain page builders, including OptimizePress
 
+__Developer Notes:__
+
+* `GVCommon::get_form_from_entry_id()` now correctly fetches forms with any status
+
 = 1.19.2 on December 21, 2016 =
 
 * Added: Search Bar now supports displaying State and Country fields as Select, List, or Radio input types (before, only text fields)
@@ -159,7 +163,7 @@ __Developer Notes__
 * Fixed: Possible for Approve Entries checkbox to use the wrong Form ID
 * Fixed: Search issues with special characters
     - Searches that contained ampersands `&` were not working
-    - Searches containing plus signs `+` were not working 
+    - Searches containing plus signs `+` were not working
     - The "Select" Search Bar input type would not show the active search if search term contained an `&`
 * Fixed: Multisite issue: when Users are logged-in but not added to any sites, they aren't able to see View content
 * Fixed: Never show GravityView Toolbar menu to users who aren't able to edit Views, Forms, or Entries
