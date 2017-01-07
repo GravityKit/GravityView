@@ -64,6 +64,7 @@ class GV_License_Handler {
 	private function add_hooks() {
 		add_action( 'wp_ajax_gravityview_license', array( $this, 'license_call' ) );
 		add_action( 'admin_init', array( $this, 'refresh_license_status' ) );
+		add_action( 'admin_init', array( $this, 'check_license' ) );
 		add_action( 'update_option_active_plugins', array( $this, 'flush_related_plugins_transient' ) );
 		add_action( 'update_option_active_sitewide_plugins', array( $this, 'flush_related_plugins_transient' ) );
 	}
@@ -79,6 +80,70 @@ class GV_License_Handler {
 			delete_site_transient( self::related_plugins_key );
 		}
 	}
+
+	/**
+	 * Check the GravityView license information
+	 *
+	 * @since 1.19.3
+	 *
+	 * @param bool $force Whether to force checking license, even if AJAX
+	 *
+	 * @return void
+	 */
+	public function check_license() {
+
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			return; // Don't fire when saving settings or AJAX
+		}
+
+		if ( ! apply_filters( 'gv_send_site_data', true ) ) {
+			return;
+		}
+
+		// Send checkins once per week
+		$last_checked = get_option( 'gv_last_checkin', false );
+
+		if ( is_numeric( $last_checked ) && $last_checked > strtotime( '-1 week', current_time( 'timestamp' ) ) ) {
+			return; // checked within a week
+		}
+
+		$status = get_transient( 'gv_license_check' );
+
+		// Run the license check a maximum of once per day, and not on GV website
+		if ( false === $status && site_url() !== self::url ) {
+
+			// Call the custom API.
+			$response = wp_remote_post( self::url, array(
+				'timeout'   => 15,
+			    'sslverify' => false,
+			    'body'      =>  array(
+				    'edd_action' => 'check_license',
+				    'license'    => trim( $this->Addon->get_app_setting( 'license_key' ) ),
+				    'item_name'  => self::name,
+				    'url'        => home_url(),
+				    'site_data'  => $this->get_site_data(),
+			    ),
+			));
+
+			// make sure the response came back okay
+			if ( is_wp_error( $response ) ) {
+
+				// Connection failed, try again in three hours
+				set_transient( 'gv_license_check', 1, 3 * HOUR_IN_SECONDS );
+
+				return;
+			}
+
+			set_transient( 'gv_license_check', 1, DAY_IN_SECONDS );
+
+			update_option( 'gv_last_checkin', current_time( 'timestamp' ) );
+		}
+	}
+
+	/**
+	 * When the status transient expires (or is deleted on activation), re-check the status
+	 *
+	 * @since 1.17
 	 *
 	 * @return void
 	 */
@@ -105,6 +170,66 @@ class GV_License_Handler {
 		$license_call = GravityView_Settings::get_instance()->get_license_handler()->license_call( $data );
 
 		do_action( 'gravityview_log_debug', __METHOD__ . ': Refreshed the license.', $license_call );
+	}
+
+	/**
+	 * Retrieves site data (plugin versions, integrations, etc) to be sent along with the license check.
+	 *
+	 * @since 1.9
+	 * @access public
+	 *
+	 * @return array
+	 */
+	public function get_site_data() {
+
+		$data = array();
+
+		$theme_data = wp_get_theme();
+		$theme      = $theme_data->Name . ' ' . $theme_data->Version;
+
+		$data['gv_version']  = GravityView_Plugin::version;
+		$data['php_version']  = phpversion();
+		$data['wp_version']   = get_bloginfo( 'version' );
+		$data['gf_version']  = GFForms::$version;
+		$data['server']       = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : '';
+		$data['multisite']    = is_multisite();
+		$data['theme']        = $theme;
+		$data['url']          = home_url();
+
+		// View Data
+		$gravityview_posts = get_posts('numberposts=-1&post_type=gravityview&post_status=publish&order=ASC');
+
+		if ( ! empty( $gravityview_posts ) ) {
+			$first = array_shift( $gravityview_posts );
+			$latest = array_pop( $gravityview_posts );
+			$data['view_count'] = count( $gravityview_posts );
+			$data['view_first'] = $first->post_date;
+			$data['view_latest'] = $latest->post_date;
+		}
+
+		// Form counts
+		if ( class_exists( 'GFFormsModel' ) ) {
+			$form_data = GFFormsModel::get_form_count();
+			$data['forms_total'] = rgar( $form_data, 'total', 0 );
+			$data['forms_active'] = rgar( $form_data, 'active', 0 );
+			$data['forms_inactive'] = rgar( $form_data, 'inactive', 0 );
+			$data['forms_trash'] = rgar( $form_data, 'inactive', 0 );
+		}
+
+		// Retrieve current plugin information
+		if( ! function_exists( 'get_plugins' ) ) {
+			include ABSPATH . '/wp-admin/includes/plugin.php';
+		}
+
+		$data['integrations']     = self::get_related_plugins_and_extensions();
+		$data['active_plugins']   = get_option( 'active_plugins', array() );
+		$data['inactive_plugins'] = array();
+		$data['locale']           = get_locale();
+
+		// Validate request on the GV server
+		$data['hash']             = 'gv_version.url.locale:' . sha1( $data['gv_version'] . $data['url'] . $data['locale'] );
+
+		return $data;
 	}
 
 	/**
