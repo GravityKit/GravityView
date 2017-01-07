@@ -271,6 +271,24 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.19.3 on January 6, 2017</h3>
+
+                <p>First update of 2017! We&#39;ve got great things planned for GravityView and our Extensions. As always, <a href="mailto:support@gravityview.co">contact us</a> with any questions or feedback. We don't bite!</p>
+
+                <ul>
+                    <li>Fixed: List field inputs not loading in Edit Entry when values were empty or the field was hidden initially because of Conditional Logic</li>
+                    <li>Fixed: Prevent Approve Entry and Delete Entry fields from being added to Edit Entry field configuration</li>
+                    <li>Fixed: Don&#39;t render Views outside &quot;the loop&quot;, prevents conflicts with other plugins that run <code>the_content</code> filter outside normal places</li>
+                    <li>Fixed: Only display &quot;You have attempted to view an entry that is not visible or may not exist.&quot; warning once when multiple Views are embedded on a page</li>
+                    <li>Fixed: The <code>[gravityview]</code> shortcode would not be parsed properly due to HTML encoding when using certain page builders, including OptimizePress</li>
+                </ul>
+
+                <p><strong>Developer Notes:</strong></p>
+
+                <ul>
+                    <li><code>GVCommon::get_form_from_entry_id()</code> now correctly fetches forms with any status</li>
+                </ul>
+
                 <h3>1.19.2 on December 21, 2016</h3>
 
                 <ul>

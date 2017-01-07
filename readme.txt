@@ -20,6 +20,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.19.3 on January 6, 2017 =
+
+First update of 2017! We've got great things planned for GravityView and our Extensions. As always, [contact us](mailto:support@gravityview.co) with any questions or feedback. We don't bite!
+
 * Fixed: List field inputs not loading in Edit Entry when values were empty or the field was hidden initially because of Conditional Logic
 * Fixed: Prevent Approve Entry and Delete Entry fields from being added to Edit Entry field configuration
 * Fixed: Don't render Views outside "the loop", prevents conflicts with other plugins that run `the_content` filter outside normal places
