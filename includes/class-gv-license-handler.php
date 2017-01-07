@@ -82,8 +82,7 @@ class GV_License_Handler {
 	 */
 	public function refresh_license_status() {
 
-		// Only perform on GravityView pages
-		if( ! gravityview_is_admin_page() ) {
+		if ( defined('DOING_AJAX') && DOING_AJAX ) {
 			return;
 		}
 
