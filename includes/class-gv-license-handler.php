@@ -27,6 +27,12 @@ class GV_License_Handler {
 	 */
 	const status_transient_key = 'gravityview_edd-activate_valid';
 
+	/**
+	 * @var string Key used to store active GravityView/Gravity Forms plugin data
+	 * @since 1.15
+	 */
+	const related_plugins_key = 'gravityview_related_plugins';
+
 	private $EDD_SL_Plugin_Updater;
 
 	/**
@@ -58,12 +64,19 @@ class GV_License_Handler {
 	private function add_hooks() {
 		add_action( 'wp_ajax_gravityview_license', array( $this, 'license_call' ) );
 		add_action( 'admin_init', array( $this, 'refresh_license_status' ) );
+		add_action( 'update_option_active_plugins', array( $this, 'flush_related_plugins_transient' ) );
+		add_action( 'update_option_active_sitewide_plugins', array( $this, 'flush_related_plugins_transient' ) );
 	}
 
 	/**
 	 * When the status transient expires (or is deleted on activation), re-check the status
 	 *
 	 * @since 1.17
+	public function flush_related_plugins_transient() {
+		if ( function_exists( 'delete_site_transient' ) ) {
+			delete_site_transient( self::related_plugins_key );
+		}
+	}
 	 *
 	 * @return void
 	 */

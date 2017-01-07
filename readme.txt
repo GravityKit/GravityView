@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 __Developer Notes:__
 
 * `GVCommon::get_form_from_entry_id()` now correctly fetches forms with any status
+* Moved `GravityView_Support_Port::get_related_plugins_and_extensions()` to `GV_License_Handler` class
 
 = 1.19.2 on December 21, 2016 =
 
