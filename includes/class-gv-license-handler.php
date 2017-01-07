@@ -69,9 +69,11 @@ class GV_License_Handler {
 	}
 
 	/**
-	 * When the status transient expires (or is deleted on activation), re-check the status
+	 * When a plugin is activated or deactivated, delete the cached extensions/plugins used by get_related_plugins_and_extensions()
 	 *
-	 * @since 1.17
+	 * @see get_related_plugins_and_extensions()
+	 * @since 1.15
+	 */
 	public function flush_related_plugins_transient() {
 		if ( function_exists( 'delete_site_transient' ) ) {
 			delete_site_transient( self::related_plugins_key );
@@ -103,6 +105,46 @@ class GV_License_Handler {
 		$license_call = GravityView_Settings::get_instance()->get_license_handler()->license_call( $data );
 
 		do_action( 'gravityview_log_debug', __METHOD__ . ': Refreshed the license.', $license_call );
+	}
+
+	/**
+	 * Get active GravityView Extensions and Gravity Forms Add-ons to help debug issues.
+	 *
+	 * @since 1.15
+	 * @return string List of active extensions related to GravityView or Gravity Forms, separated by HTML line breaks
+	 */
+	static public function get_related_plugins_and_extensions( $implode = '<br />' ) {
+
+		if ( ! function_exists( 'wp_get_active_and_valid_plugins' ) ) {
+			return 'Running < WP 3.0';
+		}
+
+		$extensions = get_site_transient( self::related_plugins_key );
+
+		if ( empty( $extensions ) ) {
+
+			$active_plugins = wp_get_active_and_valid_plugins();
+			$extensions = array();
+			foreach ( $active_plugins as $active_plugin ) {
+
+				// Match gravityview, gravity-forms, gravityforms, gravitate
+				if ( ! preg_match( '/(gravityview|gravity-?forms|gravitate)/ism', $active_plugin ) ) {
+					continue;
+				}
+
+				$plugin_data = get_plugin_data( $active_plugin );
+
+				$extensions[] = sprintf( '%s %s', $plugin_data['Name'], $plugin_data['Version'] );
+			}
+
+			if( ! empty( $extensions ) ) {
+				set_site_transient( self::related_plugins_key, $extensions, HOUR_IN_SECONDS );
+			} else {
+				return 'There was an error fetching related plugins.';
+			}
+		}
+
+		return $implode ? implode( $implode, $extensions ) : $extensions;
 	}
 
 	function settings_edd_license_activation( $field, $echo ) {
