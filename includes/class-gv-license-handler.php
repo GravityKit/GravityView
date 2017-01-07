@@ -97,6 +97,7 @@ class GV_License_Handler {
 			'license' => trim( $this->Addon->get_app_setting( 'license_key' ) ),
 			'update' => true,
 			'format' => 'object',
+			'all_caps' => true,
 			'field_id' => 'refresh_license_status', // Required to set the `status_transient_key` transient
 		);
 
@@ -449,7 +450,7 @@ class GV_License_Handler {
 		}
 
 		// If the user isn't allowed to edit settings, show an error message
-		if( ! $has_cap ) {
+		if( ! $has_cap && empty( $data['all_caps'] ) ) {
 			$license_data = new stdClass();
 			$license_data->error = 'capability';
 			$license_data->message = $this->get_license_message( $license_data );
