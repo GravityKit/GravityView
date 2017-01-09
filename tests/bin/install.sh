@@ -21,6 +21,7 @@ PATH_TO_GF_ZIP="${6}"
 WP_TESTS_DIR="${PWD}/tmp/wordpress-tests-lib"
 
 WP_CORE_DIR="${PWD}/tmp/wordpress/"
+GF_CORE_DIR="${PWD}/tmp/gravityforms/"
 
 # TRAVIS_GRAVITY_FORMS_DL_URL variable will be set in TravisCI
 GRAVITY_FORMS_DL_PATH_OR_URL="${6-$TRAVIS_GRAVITY_FORMS_DL_URL}"
@@ -47,7 +48,7 @@ install_wp() {
 }
 
 install_gravity_forms(){
-    mkdir -p $WP_CORE_DIR
+    mkdir -p "$GF_CORE_DIR"
 
     # If you have passed a path, check if it exists. If it does, use that as the Gravity Forms location
     if [[ $GRAVITY_FORMS_DL_PATH_OR_URL != '' && -d $GRAVITY_FORMS_DL_PATH_OR_URL ]]; then
@@ -119,6 +120,5 @@ install_db() {
 
 install_gravity_forms
 install_wp
-install_rest_api
 install_test_suite
 install_db
