@@ -32,7 +32,7 @@ TESTS_PLUGINS_DIR="$(dirname "${PWD}")"
 set -e
 
 install_wp() {
-	mkdir -p $WP_CORE_DIR
+	mkdir -p "$WP_CORE_DIR"
 
 	if [ $WP_VERSION == 'latest' ]; then
 		local ARCHIVE_NAME="master"
@@ -41,9 +41,9 @@ install_wp() {
 	fi
 
 	curl -L https://github.com/WordPress/WordPress/archive/${ARCHIVE_NAME}.tar.gz --output /tmp/wordpress.tar.gz --silent
-	tar --strip-components=1 -zxmf /tmp/wordpress.tar.gz -C $WP_CORE_DIR
+	tar --strip-components=1 --verbose -zxmf /tmp/wordpress.tar.gz -C "$WP_CORE_DIR"
 
-	wget -nv -O $WP_CORE_DIR/wp-content/db.php https://raw.github.com/markoheijnen/wp-mysqli/master/db.php
+	wget -nv -O "$WP_CORE_DIR"/wp-content/db.php https://raw.github.com/markoheijnen/wp-mysqli/master/db.php
 }
 
 install_gravity_forms(){
