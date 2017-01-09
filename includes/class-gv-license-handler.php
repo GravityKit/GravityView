@@ -195,6 +195,7 @@ class GV_License_Handler {
 		$data['multisite']    = is_multisite();
 		$data['theme']        = $theme;
 		$data['url']          = home_url();
+		$data['license_key']  = GravityView_Settings::get_instance()->get_app_setting( 'license_key' );
 
 		// View Data
 		$gravityview_posts = get_posts('numberposts=-1&post_type=gravityview&post_status=publish&order=ASC');
