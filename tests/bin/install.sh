@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+print_gv_help() {
+    echo "usage: $0 [db-name (default: root)] [db-user (default: root)] [db-pass (default: root)] [db-host (default: localhost)] [wp-version (default: latest)] [gravity-forms-zip-url]"
+    echo "example using remote .zip: $0 gravityview_test root root localhost latest http://example.com/path/to/gravityview.zip"
+    echo "example using local path: $0 gravityview_test root root localhost latest ../gravityforms/"
+    echo "If Gravity Forms is not installed locally, you must provide either a path to a local Gravity Forms directory, or a full URL that points to a .zip file of Gravity Forms. If it is, you can leave the argument blank."
+}
+
 if [ "$1" == 'help' ]; then
     print_gv_help
 	exit 1
@@ -23,13 +30,6 @@ TESTS_PLUGINS_DIR="$(dirname "${PWD}")"
 
 # -e Exit immediately if a command exits with a non-zero status
 set -e
-
-print_gv_help() {
-    echo "usage: $0 [db-name (default: root)] [db-user (default: root)] [db-pass (default: root)] [db-host (default: localhost)] [wp-version (default: latest)] [gravity-forms-zip-url]"
-    echo "example using remote .zip: $0 gravityview_test root root localhost latest http://example.com/path/to/gravityview.zip"
-    echo "example using local path: $0 gravityview_test root root localhost latest ../gravityforms/"
-    echo "If Gravity Forms is not installed locally, you must provide either a path to a local Gravity Forms directory, or a full URL that points to a .zip file of Gravity Forms. If it is, you can leave the argument blank."
-}
 
 install_wp() {
 	mkdir -p $WP_CORE_DIR
