@@ -74,13 +74,6 @@ install_gravity_forms(){
 	fi
 }
 
-install_rest_api() {
-	curl -L https://github.com/WP-API/api-core/archive/develop.tar.gz --output /tmp/api-core.tar.gz --silent
-
-	mkdir -p $PWD/tmp/api-core
-	tar --strip-components=1 -zxf /tmp/api-core.tar.gz -C $PWD/tmp/api-core
-}
-
 install_test_suite() {
 	# portable in-place argument for both GNU sed and Mac OSX sed
 	if [[ $(uname -s) == 'Darwin' ]]; then
