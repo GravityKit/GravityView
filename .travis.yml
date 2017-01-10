@@ -38,8 +38,8 @@ matrix:
       env: WP_VERSION=latest WP_MULTISITE=1
 
 install:
-  - curl -s http://getcomposer.org/installer | php
-  - php composer.phar install --dev --no-interaction
+  - curl -s https://getcomposer.org/installer | php
+  - php composer.phar install --no-interaction
 
 before_script:
   - bash tests/bin/install.sh gravityview_test root '' localhost $WP_VERSION
