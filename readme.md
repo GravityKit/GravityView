@@ -2,17 +2,17 @@
 
 [![Build Status](https://travis-ci.org/gravityview/GravityView.svg?branch=master)](https://travis-ci.org/gravityview/GravityView) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gravityview/GravityView/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/gravityview/GravityView/?branch=master) [![Coverage Status](https://coveralls.io/repos/gravityview/GravityView/badge.svg?branch=master&service=github)](https://coveralls.io/github/gravityview/GravityView?branch=master)
 
-[GravityView](https://gravityview.co/?utm_source=github&utm_medium=readme&utm_campaign=readme) is a commercial plugin available from [https://gravityview.co](http://gravityview.co?utm_source=github&utm_medium=readme&utm_campaign=readme). The plugin is hosted here on a public Github repository in order to better facilitate community contributions from developers and users. If you have a suggestion, a bug report, or a patch for an issue, feel free to submit it here.
+[GravityView](https://gravityview.co/?utm_source=github&utm_medium=readme&utm_campaign=readme) is a commercial plugin available from [https://gravityview.co](http://gravityview.co?utm_source=github&utm_medium=readme&utm_campaign=readme). The plugin is hosted here on a public GitHub repository in order to better facilitate community contributions from developers and users. If you have a suggestion, a bug report, or a patch for an issue, feel free to submit it here.
 
 If you are using the plugin on a live site, please purchase a valid license from the [website](https://gravityview.co/?utm_source=github&utm_medium=readme&utm_campaign=readme). We cannot provide support to anyone that does not hold a valid license key.
 
 ----------
 
-### Installing GravityView from Github
+### Installing GravityView from GitHub
 
 The plugin includes Git submodules that need to be included in the download for the plugin to be functional. In order to create a proper `.zip` file:
 
-1. Clone the GravityView repo on your computer using the Github app
+1. Clone the GravityView repo on your computer using the GitHub app
 2. [Install Homebrew](http://brew.sh)
 3. Run `brew install git-archive-all`
 3. Use the following command in the Terminal:
