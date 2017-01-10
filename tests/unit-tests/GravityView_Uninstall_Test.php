@@ -195,20 +195,23 @@ class GravityView_Uninstall_Test extends GV_UnitTestCase {
 
 			$added_notes = 0;
 
+			$to_be_deleted_title = new WP_UnitTest_Generator_Sequence( 'To be deleted %s' );
+			$not_deleted_title = new WP_UnitTest_Generator_Sequence( 'NOT DELETED %s' );
+
 			// Deleted because it's "gravityview" note type
-			GravityView_Entry_Notes::add_note( $entry_id, -1, ( new WP_UnitTest_Generator_Sequence( 'To be deleted %s' ) )->get_template_string(), 'NOTE!', 'gravityview' ); // TO BE DELETED
+			GravityView_Entry_Notes::add_note( $entry_id, -1, $to_be_deleted_title->next(), 'NOTE!', 'gravityview' ); // TO BE DELETED
 			$added_notes++;
 
 			// Deleted because it's the same value as $approved
-			GravityView_Entry_Notes::add_note( $entry_id, -1, ( new WP_UnitTest_Generator_Sequence( 'To be deleted %s' ) )->get_template_string(), $approved, 'note' );
+			GravityView_Entry_Notes::add_note( $entry_id, -1, $to_be_deleted_title->next(), $approved, 'note' );
 			$added_notes++;
 
 			// Deleted because it's the same value as $disapproved
-			GravityView_Entry_Notes::add_note( $entry_id, -1, ( new WP_UnitTest_Generator_Sequence( 'To be deleted %s' ) )->get_template_string(), $disapproved, 'note' );
+			GravityView_Entry_Notes::add_note( $entry_id, -1, $to_be_deleted_title->next(), $disapproved, 'note' );
 			$added_notes++;
 
 			// NOT DELETED
-			GravityView_Entry_Notes::add_note( $entry_id, -1, ( new WP_UnitTest_Generator_Sequence( 'NOT DELETED %s' ) )->get_template_string(), 'NOT DELETED', 'note' ); // NOT DELETED ("note" type)
+			GravityView_Entry_Notes::add_note( $entry_id, -1, $not_deleted_title->next(), 'NOT DELETED', 'note' ); // NOT DELETED ("note" type)
 			$added_notes++;
 
 			$notes = GravityView_Entry_Notes::get_notes( $entry_id );
