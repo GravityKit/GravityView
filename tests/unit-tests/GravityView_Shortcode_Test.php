@@ -165,15 +165,6 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 				)
 			),
 
-			'Binary numbers should not be stripped; we are using is_numeric()' => array(
-				'original' => array(
-					'search_field' => 0b10100111001
-				),
-				'expected' => array(
-					'search_field' => 1337
-				)
-			),
-
 			'Checkbox "0" string should be `0`' => array(
 				'original' => array(
 					'id' => 123,
