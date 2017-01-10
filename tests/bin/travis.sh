@@ -8,7 +8,7 @@ if [ $1 == 'before' ]; then
 
     curl -s https://getcomposer.org/installer | php
 
-    php composer.phar install --dev --no-interaction
+    php composer.phar install --no-interaction
 
     export PATH="$HOME/.composer/vendor/bin:$PATH"
 
@@ -17,10 +17,6 @@ if [ $1 == 'before' ]; then
     else
       composer global require "phpunit/phpunit=5.7.*"
     fi
-
-    composer global require wp-coding-standards/wpcs
-
-    phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
 
     # install php-coveralls to send coverage info
     composer require satooshi/php-coveralls --dev
