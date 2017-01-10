@@ -328,7 +328,9 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$fe->setEntry( false );
 		$fe->set_context_view_id( null );
 		$fe->setIsSearch( false );
-		$fe->setGvOutputData( null );
+
+		GravityView_View_Data::$instance = NULL;
+		$fe->setGvOutputData( GravityView_View_Data::getInstance() );
 
 		global $post;
 
