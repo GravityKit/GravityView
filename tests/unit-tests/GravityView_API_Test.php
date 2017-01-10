@@ -319,15 +319,11 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	 */
 	public function test_gravityview_get_current_views() {
 
-		$fe = GravityView_frontend::getInstance();
-
-		// Clear the data so that gravityview_get_current_views() runs parse_content()
-		$fe->gv_output_data = null;
-
-		$view_post_type_id = $this->_get_new_view_id();
+		$fe = new GravityView_frontend; // Don't use get_instance() so we start with fresh state
 
 		global $post;
 
+		$view_post_type_id = $this->_get_new_view_id();
 		$post = get_post( $view_post_type_id );
 
 		$this->assertEquals( $view_post_type_id, $post->ID, 'The post was not properly created' );
