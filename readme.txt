@@ -20,7 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.19.3 on January 6, 2017 =
+= 1.19.3 on January 9, 2017 =
 
 First update of 2017! We've got great things planned for GravityView and our Extensions. As always, [contact us](mailto:support@gravityview.co) with any questions or feedback. We don't bite!
 
@@ -30,6 +30,13 @@ First update of 2017! We've got great things planned for GravityView and our Ext
 * Fixed: Only display "You have attempted to view an entry that is not visible or may not exist." warning once when multiple Views are embedded on a page
 * Fixed: The `[gravityview]` shortcode would not be parsed properly due to HTML encoding when using certain page builders, including OptimizePress
 * Fixed: Potential errors when non-standard form fields are added to Edit Entry configurations ("Creating default object from empty value" and "Cannot use object of type stdClass as array")
+* Updated translations:
+    - 🇨🇳 Chinese *100% translated* (thank you, Michael Edi!)
+    - 🇫🇷 French *100% translated*
+    - 🇧🇷 Brazilian Portuguese *100% translated* (thanks, Rafael!)
+    - 🇳🇱 Dutch translation updated (thank you, Erik van Beek!)
+    - 🇸🇪 Swedish translation updated
+    - Updated Spanish (Spain + Mexican) and German (`de` + `de_DE`) with each other
 
 __Developer Notes:__
 
@@ -39,6 +46,7 @@ __Developer Notes:__
     - The 6th parameter now prevents database creation, and the 7th is the Gravity Forms source file
     - Script no longer breaks if there is a space in a directory name
     - `/tmp/` is no longer created in the GravityView directory; it's installed in the server's `/tmp/` directory
+* Fixed Travis CI integration
 
 = 1.19.2 on December 21, 2016 =
 
