@@ -47,7 +47,6 @@ before_script:
   - bash tests/bin/travis.sh before
 
 script:
-  - phpcs --standard=phpcs.ruleset.xml $(find . -name '*.php')
   - phpunit -c phpunit.xml.dist
 
 after_script:
