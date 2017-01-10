@@ -115,7 +115,9 @@ class GravityView_Field_Custom extends GravityView_Field {
 				$new_fields[] = new GF_Field_HTML( $field_data );
 
 			} else {
-				$new_fields[] = $fields[ $i ];
+				if( isset( $fields[ $i ] ) ) {
+					$new_fields[] =  $fields[ $i ];
+				}
 				$i++;
 			}
 
