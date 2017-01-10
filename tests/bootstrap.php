@@ -92,7 +92,8 @@ class GV_Unit_Tests_Bootstrap {
 	 * @since 1.9
 	 */
 	public function load() {
-		require_once $this->plugin_dir . '/tmp/gravityforms/gravityforms.php';
+
+		require_once '/tmp/gravityforms/gravityforms.php';
 
 		require_once $this->plugin_dir . '/gravityview.php';
 

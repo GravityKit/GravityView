@@ -32,7 +32,7 @@ The plugin uses PHPUnit as part of development process. Installing the testing e
 2. `cd` into the root of your GravityView directory (VVV users can use `cd /srv/www/wordpress-default/wp-content/plugins/gravityview/`)
 3. Run `bash tests/bin/install.sh gravityview_test root root localhost` where `root root` is substituted for your mysql username and password (VVV users can run the command as is).
     - If you are running locally and have Gravity Forms installed, the script will check for `/gravityforms/` directory in your plugins folder. If it exists, it will use that directory.
-    - If the script doesn't find a Gravity Forms directory, it will need the path to Gravity Forms directory or the URL of a .zip file passed as the 6th parameter. Example: `bash tests/bin/install.sh gravityview_test root root localhost latest http://example.com/path/to/gravityview.zip` or `bash tests/bin/install.sh gravityview_test root root localhost latest ../gravityview/`
+    - If the script doesn't find a Gravity Forms directory, it will need the path to Gravity Forms directory or the URL of a .zip file passed as the 7th parameter. Example: `bash tests/bin/install.sh gravityview_test root root localhost latest false http://example.com/path/to/gravityview.zip` or `bash tests/bin/install.sh gravityview_test root root localhost latest false ../gravityview/`
 4. Upon success you can run `phpunit`
 
 __If you want to generate a code coverage report__ you can run the following `phpunit --coverage-html "./tmp/coverage"` and then a report will be generated in the `/tmp/coverage/` subdirectory of the GravityView plugin.

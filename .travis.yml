@@ -2,35 +2,66 @@ language: php
 
 sudo: false
 
+notifications:
+  email:
+    on_success: never
+    on_failure: change
+
+branches:
+  only:
+    - master
+
 php:
+  - 5.2
   - 5.3
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
+  - 7.1
+  - hhvm
 
 env:
   - WP_VERSION=latest WP_MULTISITE=0
+  - WP_VERSION=4.6 WP_MULTISITE=0
+  - WP_VERSION=4.5 WP_MULTISITE=0
   - WP_VERSION=4.4 WP_MULTISITE=0
   - WP_VERSION=4.3 WP_MULTISITE=0
   - WP_VERSION=4.2 WP_MULTISITE=0
   - WP_VERSION=4.1 WP_MULTISITE=0
   - WP_VERSION=4.0 WP_MULTISITE=0
 
+
 matrix:
   include:
-  - php: 5.3
-    env: WP_VERSION=latest WP_MULTISITE=1
+    - php: 5.3
+      env: WP_VERSION=latest WP_MULTISITE=1
+
+install:
+  - curl -s http://getcomposer.org/installer | php
+  - php composer.phar install --dev --no-interaction
 
 before_script:
   - bash tests/bin/install.sh gravityview_test root '' localhost $WP_VERSION
   - bash tests/bin/travis.sh before
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - |
+    if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.0" ]]; then
+      composer global require "phpunit/phpunit=5.7.*"
+    else
+      composer global require "phpunit/phpunit=4.8.*"
+    fi
+  - |
+    composer global require wp-coding-standards/wpcs
+    phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
 
-script: phpunit -c phpunit.xml.dist
+script:
+  - phpcs --standard=phpcs.ruleset.xml $(find . -name '*.php')
+  - phpunit -c phpunit.xml.dist
 
 after_script:
-  - bash tests/bin/travis.sh after
   - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover ./tmp/clover.xml
+  - php ocular.phar code-coverage:upload --format=php-clover /tmp/clover.xml
 
 after_success:
-  - coveralls
+  - bash tests/bin/travis.sh after
