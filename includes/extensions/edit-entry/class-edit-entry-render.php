@@ -1543,9 +1543,6 @@ class GravityView_Edit_Entry_Render {
         // If edit tab not yet configured, show all fields
         $edit_fields = !empty( $properties['edit_edit-fields'] ) ? $properties['edit_edit-fields'] : NULL;
 
-        // Show hidden fields as text fields
-        $form = $this->fix_survey_fields( $form );
-
         // Hide fields depending on admin settings
         $fields = $this->filter_fields( $form['fields'], $edit_fields );
 
@@ -1565,25 +1562,6 @@ class GravityView_Edit_Entry_Render {
         return $fields;
     }
 
-    /**
-     * Make sure Survey fields accept pre-populating values; otherwise existing values won't be filled-in
-     *
-     * @since 1.16.4
-     *
-     * @param array $form
-     *
-     * @return array Form, with all fields set to `allowsPrepopulate => true`
-     */
-    private function fix_survey_fields( $form ) {
-
-        /** @var GF_Field $field */
-        foreach( $form['fields'] as &$field ) {
-            $field->allowsPrepopulate = true;
-        }
-
-        return $form;
-    }
-    
 
     /**
      * Filter area fields based on specified conditions
