@@ -11,11 +11,15 @@ class GV_UnitTest_Factory_For_View extends WP_UnitTest_Factory_For_Post {
 
 		$form = $factory->form->create_and_get();
 
+		$post_title = new WP_UnitTest_Generator_Sequence( 'GravityView title %s' );
+		$post_content = new WP_UnitTest_Generator_Sequence( 'Post content %s' );
+		$post_excerpt = new WP_UnitTest_Generator_Sequence( 'Post excerpt %s' );
+
 		$this->default_generation_definitions = array(
 			'post_status' => 'publish',
-			'post_title' => new WP_UnitTest_Generator_Sequence( 'GravityView title %s' ),
-			'post_content' => new WP_UnitTest_Generator_Sequence( 'Post content %s' ),
-			'post_excerpt' => new WP_UnitTest_Generator_Sequence( 'Post excerpt %s' ),
+			'post_title' => $post_title->next(),
+			'post_content' => $post_content->next(),
+			'post_excerpt' => $post_excerpt->next(),
 			'post_author' => '',
 			'post_type' => 'gravityview',
 			'form_id' => $form['id'],

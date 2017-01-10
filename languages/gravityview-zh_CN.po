@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
-"PO-Revision-Date: 2016-12-22 00:40+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2016-12-23 13:20+0000\n"
+"Last-Translator: michael edi <michaeledi@163.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/katzwebservices/gravityview/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -737,7 +737,7 @@ msgstr "未在垃圾中找到任何视图"
 
 #: includes/class-admin.php:74
 msgid "No Views found."
-msgstr ""
+msgstr "未找到视图。"
 
 #: includes/class-admin.php:81
 msgid ""
@@ -748,27 +748,27 @@ msgstr "%s你没有任何有效的视图。 让我们去 %s创建一个%s!%s\n\n
 
 #: includes/class-admin.php:83
 msgid "There are no active Views"
-msgstr "没有有效的视图"
+msgstr "没有已启用的视图"
 
 #: includes/class-admin.php:109
 msgid "The form connected to this View no longer exists."
-msgstr ""
+msgstr "连接到此视图的表单已经不存在。"
 
 #: includes/class-admin.php:110
 msgid "Select another form as the data source for this View."
-msgstr ""
+msgstr "选择另一个表单，作为该视图的数据源。"
 
 #: includes/class-admin.php:112
 msgid "The connected form is in the trash."
-msgstr ""
+msgstr "连接的表单在回收站里。"
 
 #: includes/class-admin.php:113
 msgid "Restore the form from the trash"
-msgstr ""
+msgstr "从回收站还原表单"
 
 #: includes/class-admin.php:114
 msgid "or select another form."
-msgstr ""
+msgstr "选择另一个表单。"
 
 #: includes/class-admin.php:172
 msgid "Support"
@@ -944,18 +944,18 @@ msgstr "仅显示已批准的条目"
 
 #: includes/class-data.php:580
 msgid "Show all entries to administrators"
-msgstr ""
+msgstr "向管理员显示所有条目"
 
 #: includes/class-data.php:581
 msgid "Administrators will be able to see entries with any approval status."
-msgstr ""
+msgstr "管理员将能够看到任何批准状态的条目。"
 
 #: includes/class-data.php:582
 msgid ""
 "Logged-out visitors and non-administrators will only see approved entries, "
 "while administrators will see entries with all statuses. This makes it "
 "easier for administrators to moderate entries from a View."
-msgstr ""
+msgstr "登出的游客和非管理员只能看到已批准的条目，而管理员将看到所有状态下的条目。这使得管理员更容易从视图中修改条目。"
 
 #: includes/class-data.php:590
 msgid "Hide View data until search is performed"
@@ -1113,11 +1113,11 @@ msgstr "当使用新建模板时，您必须先保存该视图，然后预览是
 
 #: includes/class-frontend-views.php:591
 msgid "Add fields to %s"
-msgstr ""
+msgstr "将字段添加到 ％s"
 
 #: includes/class-frontend-views.php:592
 msgid "You can only see this message because you are able to edit this View."
-msgstr ""
+msgstr "你只能看到这条消息，因为你可以编辑这个视图。"
 
 #: includes/class-frontend-views.php:704
 msgid "You are not allowed to view this content."
@@ -1130,7 +1130,7 @@ msgstr "您查看的条目啊，并不存在或已被隐藏。"
 
 #: includes/class-gravityview-admin-bar.php:107
 msgid "Edit Entry %s"
-msgstr "编辑条目％s"
+msgstr "编辑条目 ％s"
 
 #: includes/class-gravityview-admin-bar.php:139
 #: includes/class-post-types.php:69
@@ -1192,7 +1192,7 @@ msgstr "更改条目创建者从 %s 到 %s"
 
 #: includes/class-gravityview-change-entry-creator.php:210
 msgid "Change Entry Creator:"
-msgstr "更改条目创建者 ︰"
+msgstr "更改条目创建者︰"
 
 #: includes/class-gravityview-compatibility.php:161
 msgid ""
@@ -1212,7 +1212,7 @@ msgid ""
 "%sGravityView will soon require PHP Version %s.%s \n"
 "\n"
 "You're using Version %s. Please ask your host to upgrade your server's PHP."
-msgstr ""
+msgstr "%sGravityView需要 PHP 版本为 %s 或更新的%s \n\n您正在使用的版本是 %s。请访问您的主机去更新您的服务器的 PHP。"
 
 #: includes/class-gravityview-compatibility.php:223
 msgid ""
@@ -1719,11 +1719,11 @@ msgstr "视图列表"
 
 #: includes/class-post-types.php:77
 msgid "See Views"
-msgstr ""
+msgstr "查看视图"
 
 #: includes/class-post-types.php:78
 msgid "View Attributes"
-msgstr ""
+msgstr "视图属性"
 
 #: includes/class-post-types.php:81
 msgid "view"
@@ -1985,11 +1985,11 @@ msgstr "下面的地址显示一个“映射它”的链接"
 
 #: includes/fields/class-gravityview-field-approval.php:23
 msgid "Approve Entries"
-msgstr ""
+msgstr "批准的项目"
 
 #: includes/fields/class-gravityview-field-approval.php:25
 msgid "Approve and reject entries from the View."
-msgstr ""
+msgstr "从视图中批准或拒绝条目。"
 
 #: includes/fields/class-gravityview-field-calculation.php:23
 msgid "Calculation"
@@ -2194,40 +2194,40 @@ msgstr "HTML"
 #: includes/fields/class-gravityview-field-is-approved.php:40
 #: includes/fields/class-gravityview-field-is-approved.php:120
 msgid "Approval Status"
-msgstr ""
+msgstr "审批状态"
 
 #: includes/fields/class-gravityview-field-is-approved.php:41
 msgid "Display the entry's current approval status."
-msgstr ""
+msgstr "显示条目当前的审批状态。"
 
 #: includes/fields/class-gravityview-field-is-approved.php:42
 msgid "Approval:"
-msgstr ""
+msgstr "批准："
 
 #: includes/fields/class-gravityview-field-is-approved.php:173
 msgid "Approved Label"
-msgstr ""
+msgstr "已批准标签"
 
 #: includes/fields/class-gravityview-field-is-approved.php:174
 msgid "If the entry is approved, display this value"
-msgstr ""
+msgstr "如果该条目被批准，则显示该值"
 
 #: includes/fields/class-gravityview-field-is-approved.php:180
 msgid "Disapproved Label"
-msgstr ""
+msgstr "已拒绝标签"
 
 #: includes/fields/class-gravityview-field-is-approved.php:181
 msgid "If the entry is not approved, display this value"
-msgstr ""
+msgstr "如果条目没有被批准，则显示该值"
 
 #: includes/fields/class-gravityview-field-is-approved.php:187
 msgid "Unapproved Label"
-msgstr ""
+msgstr "待批准标签"
 
 #: includes/fields/class-gravityview-field-is-approved.php:188
 msgid ""
 "If the entry has not yet been approved or disapproved, display this value"
-msgstr ""
+msgstr "如果该项尚未被批准或被拒绝，显示该值"
 
 #: includes/fields/class-gravityview-field-is-fulfilled.php:37
 msgid "Is Fulfilled"
@@ -2420,11 +2420,11 @@ msgstr "单选按钮"
 
 #: includes/fields/class-gravityview-field-section.php:22
 msgid "Section"
-msgstr "区"
+msgstr "份区"
 
 #: includes/fields/class-gravityview-field-source-url.php:36
 msgid "Link to URL:"
-msgstr "链接到网址："
+msgstr "链接到URL："
 
 #: includes/fields/class-gravityview-field-source-url.php:37
 msgid "Display as a link to the Source URL"
@@ -3100,7 +3100,7 @@ msgstr "空的"
 msgctxt ""
 "Displayed when a View is not configured. %s is replaced by the tab label"
 msgid "The %s layout has not been configured."
-msgstr ""
+msgstr "％s 的布局尚未配置。"
 
 #: includes/class-frontend-views.php:1433
 msgctxt "Clear all data from the form"

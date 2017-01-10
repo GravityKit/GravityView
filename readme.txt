@@ -20,6 +20,34 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.19.3 on January 9, 2017 =
+
+First update of 2017! We've got great things planned for GravityView and our Extensions. As always, [contact us](mailto:support@gravityview.co) with any questions or feedback. We don't bite!
+
+* Fixed: List field inputs not loading in Edit Entry when values were empty or the field was hidden initially because of Conditional Logic
+* Fixed: Prevent Approve Entry and Delete Entry fields from being added to Edit Entry field configuration
+* Fixed: Don't render Views outside "the loop", prevents conflicts with other plugins that run `the_content` filter outside normal places
+* Fixed: Only display "You have attempted to view an entry that is not visible or may not exist." warning once when multiple Views are embedded on a page
+* Fixed: The `[gravityview]` shortcode would not be parsed properly due to HTML encoding when using certain page builders, including OptimizePress
+* Fixed: Potential errors when non-standard form fields are added to Edit Entry configurations ("Creating default object from empty value" and "Cannot use object of type stdClass as array")
+* Updated translations:
+    - 🇨🇳 Chinese *100% translated* (thank you, Michael Edi!)
+    - 🇫🇷 French *100% translated*
+    - 🇧🇷 Brazilian Portuguese *100% translated* (thanks, Rafael!)
+    - 🇳🇱 Dutch translation updated (thank you, Erik van Beek!)
+    - 🇸🇪 Swedish translation updated
+    - Updated Spanish (Spain + Mexican) and German (`de` + `de_DE`) with each other
+
+__Developer Notes:__
+
+* `GVCommon::get_form_from_entry_id()` now correctly fetches forms with any status
+* Moved `GravityView_Support_Port::get_related_plugins_and_extensions()` to `GV_License_Handler` class
+* Updated the `install.sh` bash script
+    - The 6th parameter now prevents database creation, and the 7th is the Gravity Forms source file
+    - Script no longer breaks if there is a space in a directory name
+    - `/tmp/` is no longer created in the GravityView directory; it's installed in the server's `/tmp/` directory
+* Fixed Travis CI integration
+
 = 1.19.2 on December 21, 2016 =
 
 * Added: Search Bar now supports displaying State and Country fields as Select, List, or Radio input types (before, only text fields)
@@ -154,7 +182,7 @@ __Developer Notes__
 * Fixed: Possible for Approve Entries checkbox to use the wrong Form ID
 * Fixed: Search issues with special characters
     - Searches that contained ampersands `&` were not working
-    - Searches containing plus signs `+` were not working 
+    - Searches containing plus signs `+` were not working
     - The "Select" Search Bar input type would not show the active search if search term contained an `&`
 * Fixed: Multisite issue: when Users are logged-in but not added to any sites, they aren't able to see View content
 * Fixed: Never show GravityView Toolbar menu to users who aren't able to edit Views, Forms, or Entries

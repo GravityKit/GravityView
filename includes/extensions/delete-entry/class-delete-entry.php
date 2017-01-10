@@ -138,15 +138,17 @@ final class GravityView_Delete_Entry {
 	 * @since 1.5.1
 	 * @param array $entry_default_fields Existing fields
 	 * @param  string|array $form form_ID or form object
-	 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
+	 * @param  string $zone   Either 'single', 'directory', 'edit', 'header', 'footer'
 	 */
 	function add_default_field( $entry_default_fields, $form = array(), $zone = '' ) {
 
-		$entry_default_fields['delete_link'] = array(
-			'label' => __('Delete Entry', 'gravityview'),
-			'type' => 'delete_link',
-			'desc'	=> __('A link to delete the entry. Respects the Delete Entry permissions.', 'gravityview'),
-		);
+		if( 'edit' !== $zone ) {
+			$entry_default_fields['delete_link'] = array(
+				'label' => __( 'Delete Entry', 'gravityview' ),
+				'type'  => 'delete_link',
+				'desc'  => __( 'A link to delete the entry. Respects the Delete Entry permissions.', 'gravityview' ),
+			);
+		}
 
 		return $entry_default_fields;
 	}

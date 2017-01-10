@@ -1,3 +1,2 @@
-src_dir: .
-coverage_clover: ./tmp/clover.xml
-json_path: ./tmp/coveralls-upload.json
+coverage_clover: /tmp/clover.xml
+json_path: /tmp/coveralls-upload.json

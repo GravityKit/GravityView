@@ -2,35 +2,48 @@ language: php
 
 sudo: false
 
+notifications:
+  email:
+    on_success: never
+    on_failure: change
+
+branches:
+  only:
+    - master
+
 php:
   - 5.3
   - 5.4
-  - 5.5
   - 5.6
+  - 7.0
+  - hhvm
 
 env:
   - WP_VERSION=latest WP_MULTISITE=0
-  - WP_VERSION=4.4 WP_MULTISITE=0
-  - WP_VERSION=4.3 WP_MULTISITE=0
-  - WP_VERSION=4.2 WP_MULTISITE=0
-  - WP_VERSION=4.1 WP_MULTISITE=0
   - WP_VERSION=4.0 WP_MULTISITE=0
 
 matrix:
   include:
-  - php: 5.3
-    env: WP_VERSION=latest WP_MULTISITE=1
+    - php: 5.3
+      env: WP_VERSION=latest WP_MULTISITE=1
+  exclude:
+      - php: hhvm
+        env: WP_VERSION=4.0 WP_MULTISITE=0
+
+install:
+  - curl -s https://getcomposer.org/installer | php
+  - php composer.phar install --no-interaction
 
 before_script:
   - bash tests/bin/install.sh gravityview_test root '' localhost $WP_VERSION
   - bash tests/bin/travis.sh before
 
-script: phpunit -c phpunit.xml.dist
+script:
+  - phpunit -c phpunit.xml.dist
 
 after_script:
-  - bash tests/bin/travis.sh after
   - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover ./tmp/clover.xml
+  - php ocular.phar code-coverage:upload --format=php-clover /tmp/clover.xml
 
 after_success:
-  - coveralls
+  - bash tests/bin/travis.sh after

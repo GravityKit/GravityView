@@ -512,6 +512,11 @@ class GravityView_frontend {
 			return $content;
 		}
 
+		// Only render in the loop. Fixes issues with the_content filter being applied in places like the sidebar
+		if( ! in_the_loop() ) {
+			return $content;
+		}
+
 		if ( $this->isGravityviewPostType() ) {
 
 			/** @since 1.7.4 */
@@ -784,6 +789,11 @@ class GravityView_frontend {
 			if ( empty( $entry ) || ! self::is_entry_approved( $entry, $atts ) ) {
 
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.' );
+
+				// Only display warning once when multiple Views are embedded
+				if( $view_id !== (int) GravityView_frontend::get_context_view_id() ) {
+					return null;
+				}
 
 				/**
 				 * @filter `gravityview/render/entry/not_visible` Modify the message shown to users when the entry doesn't exist or they aren't allowed to view it.

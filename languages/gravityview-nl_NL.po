@@ -1,7 +1,7 @@
 # Copyright (C) 2016 GravityView
 # This file is distributed under the GPLv2 or later.
 # Translators:
-# Erik van Beek <erik@aiwos.nl>, 2014-2015
+# Erik van Beek <erik@aiwos.nl>, 2014-2016
 # leooosterloo <leo@pronamic.nl>, 2014
 # Zachary Katz <zack@katz.co>, 2015
 msgid ""
@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
-"PO-Revision-Date: 2016-12-22 00:40+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2016-12-30 13:45+0000\n"
+"Last-Translator: Erik van Beek <erik@aiwos.nl>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/katzwebservices/gravityview/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,25 +68,25 @@ msgstr "GravityView Ondersteuning"
 
 #: includes/admin/class-gravityview-support-port.php:84
 msgid "Search GravityView Docs"
-msgstr ""
+msgstr "Doorzoek GravityView Docs"
 
 #: includes/admin/class-gravityview-support-port.php:85
 msgid ""
 "Your search timed out. Please double-check your internet connection and try "
 "again."
-msgstr ""
+msgstr "Uw zoekopdracht duurde te lang. Controleer uw internetverbinding en probeer het opnieuw. "
 
 #: includes/admin/class-gravityview-support-port.php:87
 msgid "Contact Support"
-msgstr ""
+msgstr "Neem contact op met Ondersteuning"
 
 #: includes/admin/class-gravityview-support-port.php:88
 msgid "Attach a screenshot or file"
-msgstr ""
+msgstr "Voeg een screenshot of bestand toe"
 
 #: includes/admin/class-gravityview-support-port.php:89
 msgid "The maximum file size is 10 MB"
-msgstr ""
+msgstr "De maximum bestandsgrootte is 10 MB"
 
 #: includes/admin/class-gravityview-support-port.php:90
 msgid "Your Name"
@@ -94,46 +94,46 @@ msgstr "Uw Naam"
 
 #: includes/admin/class-gravityview-support-port.php:91
 msgid "Please enter your name"
-msgstr ""
+msgstr "Type a.u.b. uw naam in"
 
 #: includes/admin/class-gravityview-support-port.php:92
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:419
 msgid "Email address"
-msgstr ""
+msgstr "E-mailadres"
 
 #: includes/admin/class-gravityview-support-port.php:93
 msgid "Please enter a valid email address"
-msgstr ""
+msgstr "Type a.u.b. een geldig e-mailadres in. "
 
 #: includes/admin/class-gravityview-support-port.php:94
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:421
 msgid "Subject"
-msgstr ""
+msgstr "Onderwerp"
 
 #: includes/admin/class-gravityview-support-port.php:96
 msgid "How can we help you?"
-msgstr ""
+msgstr "Hoe kunnen wij u helpen?"
 
 #: includes/admin/class-gravityview-support-port.php:98
 msgid "Message sent!"
-msgstr ""
+msgstr "Bericht verzonden!"
 
 #: includes/admin/class-gravityview-support-port.php:99
 msgid ""
 "Thanks for reaching out! Someone from the GravityView team will get back to "
 "you soon."
-msgstr ""
+msgstr "Dank u voor het opnemen van contact. Iemand van het GravityView team zal u snel te woord staan. "
 
 #. translators: "Support Port" can be translated as "Support Portal" or
 #. "Support Window"
 #: includes/admin/class-gravityview-support-port.php:310
 #: includes/admin/class-gravityview-support-port.php:316
 msgid "GravityView Support Port"
-msgstr ""
+msgstr "GravityView Ondersteuning Portaal"
 
 #: includes/admin/class-gravityview-support-port.php:321
 msgid "Show GravityView Support Port when on a GravityView-related page"
-msgstr ""
+msgstr "Toon GravityView Ondersteuning Portaal wanneer u op een GravityView gerelateerde pagina bent"
 
 #: includes/admin/class.render.settings.php:36
 msgid "Show Label"
@@ -457,7 +457,7 @@ msgstr "%s toegelaten."
 
 #: includes/class-admin-approve-entries.php:335
 msgid "%s unapproved."
-msgstr ""
+msgstr "%s geweigerd. "
 
 #: includes/class-admin-approve-entries.php:339
 msgid "%s disapproved."
@@ -469,15 +469,15 @@ msgstr "Toon inzending in directory weergave?"
 
 #: includes/class-admin-views.php:99
 msgid "All forms"
-msgstr ""
+msgstr "Alle formulieren"
 
 #: includes/class-admin-views.php:140 includes/class-admin-views.php:171
 msgid "Create a View"
-msgstr ""
+msgstr "Maak een Weergave"
 
 #: includes/class-admin-views.php:142 includes/class-admin-views.php:173
 msgid "Create a View using this form as a data source"
-msgstr ""
+msgstr "Maak een Weergave met dit formulier als gegevensbron"
 
 #: includes/class-admin-views.php:159
 msgid "No Title (View #%d)"
@@ -739,7 +739,7 @@ msgstr "Geen Weergaven gevonden in de Prullenbak"
 
 #: includes/class-admin.php:74
 msgid "No Views found."
-msgstr ""
+msgstr "Geen Weergaven gevonden."
 
 #: includes/class-admin.php:81
 msgid ""
@@ -750,27 +750,27 @@ msgstr "%sJe hebt geen actieve weergaven. Laten we starten, %smaak één%s!%s\n\
 
 #: includes/class-admin.php:83
 msgid "There are no active Views"
-msgstr ""
+msgstr "Er zijn geen actieve Weergaven"
 
 #: includes/class-admin.php:109
 msgid "The form connected to this View no longer exists."
-msgstr ""
+msgstr "Het formulier dat verbonden was met deze Weergave bestaat niet meer. "
 
 #: includes/class-admin.php:110
 msgid "Select another form as the data source for this View."
-msgstr ""
+msgstr "Selecteer een ander formulier als gegevensbron voor deze Weergave. "
 
 #: includes/class-admin.php:112
 msgid "The connected form is in the trash."
-msgstr ""
+msgstr "Het verbonden formulier is in de prullenbak. "
 
 #: includes/class-admin.php:113
 msgid "Restore the form from the trash"
-msgstr ""
+msgstr "Herstel het formulier van de prullenbak"
 
 #: includes/class-admin.php:114
 msgid "or select another form."
-msgstr ""
+msgstr "of selecteer een ander formulier."
 
 #: includes/class-admin.php:172
 msgid "Support"
@@ -887,7 +887,7 @@ msgstr "Bericht ID"
 #. "1 day ago", or "20 seconds ago"
 #: includes/class-common.php:858
 msgid "%s ago"
-msgstr ""
+msgstr "%s terug"
 
 #: includes/class-common.php:1152 includes/class-data.php:628
 msgid "Default"
@@ -951,18 +951,18 @@ msgstr "Alleen toegelaten inzendingen tonen"
 
 #: includes/class-data.php:580
 msgid "Show all entries to administrators"
-msgstr ""
+msgstr "Toon alle Inzendingen aan beheerders"
 
 #: includes/class-data.php:581
 msgid "Administrators will be able to see entries with any approval status."
-msgstr ""
+msgstr "Beheerders kunnen alle Inzendingen zien met elke toegelaten status. "
 
 #: includes/class-data.php:582
 msgid ""
 "Logged-out visitors and non-administrators will only see approved entries, "
 "while administrators will see entries with all statuses. This makes it "
 "easier for administrators to moderate entries from a View."
-msgstr ""
+msgstr "Uitgelogde bezoekers en niet-beheerders kunnen alleen toeglaten Inzendingen zien, terwijl beheerders Inzendingen met elke status kunnen zien. Dit maakt het makkelijker voor beheerders om Inzendignen te bewerken vanuit een Weergave. "
 
 #: includes/class-data.php:590
 msgid "Hide View data until search is performed"
@@ -1098,11 +1098,11 @@ msgstr "De tekst van de link die terugverwijst naar de meervoudige inzendingen w
 
 #: includes/class-data.php:716
 msgid "Prevent Direct Access"
-msgstr ""
+msgstr "Voorkom Directe Toegang"
 
 #: includes/class-data.php:718
 msgid "Only allow access to this View when embedded using the shortcode."
-msgstr ""
+msgstr "Geef alleen toegang tot de Weergave wanneer deze met embedded is met een shortcode op een pagina. "
 
 #: includes/class-debug-bar.php:94
 msgid "Warnings"
@@ -1120,15 +1120,15 @@ msgstr "Wanneer je een Start Fris template gebruikt, moet je de Weergave eerst o
 
 #: includes/class-frontend-views.php:591
 msgid "Add fields to %s"
-msgstr ""
+msgstr "Voeg velden toe %s"
 
 #: includes/class-frontend-views.php:592
 msgid "You can only see this message because you are able to edit this View."
-msgstr ""
+msgstr "U kunt dit bericht alleen zien omdat u rechten heeft de Weergave te bewerken. "
 
 #: includes/class-frontend-views.php:704
 msgid "You are not allowed to view this content."
-msgstr ""
+msgstr "U bent niet gemachtigd om deze inhoud te zien. "
 
 #: includes/class-frontend-views.php:793
 msgid ""
@@ -1137,7 +1137,7 @@ msgstr "Je probeert een inzending te bekijken die niet zichtbaar is of misschien
 
 #: includes/class-gravityview-admin-bar.php:107
 msgid "Edit Entry %s"
-msgstr ""
+msgstr "Bewerk Inzending %s"
 
 #: includes/class-gravityview-admin-bar.php:139
 #: includes/class-post-types.php:69
@@ -1146,7 +1146,7 @@ msgstr "Bewerk Weergave"
 
 #: includes/class-gravityview-admin-bar.php:144
 msgid "Edit Form #%d"
-msgstr ""
+msgstr "Bewerk Formulier #%d"
 
 #: includes/class-gravityview-admin-duplicate-view.php:237
 msgid "Clone"
@@ -1174,7 +1174,7 @@ msgstr "Geen bericht om te dupliceren is toegevoegd!"
 
 #: includes/class-gravityview-admin-duplicate-view.php:332
 msgid "You don't have permission to copy this View."
-msgstr ""
+msgstr "U heeft geen toestemming deze Weergave te kopiëren. "
 
 #: includes/class-gravityview-admin-duplicate-view.php:353
 msgid "Copy creation failed, could not find original View with ID #%d"
@@ -1260,7 +1260,7 @@ msgstr "GravityView en Gravity Forms Directory zijn beide actief. Dit kan proble
 
 #: includes/class-gravityview-entry-approval-status.php:56
 msgid "Disapproved"
-msgstr ""
+msgstr "Geweigerd"
 
 #: includes/class-gravityview-entry-approval-status.php:57
 msgid "Disapprove"
@@ -1284,22 +1284,22 @@ msgstr "Inzending is toegelaten voor directory weergave. Klik om deze inzending 
 
 #: includes/class-gravityview-entry-approval-status.php:68
 msgid "Unapproved"
-msgstr ""
+msgstr "Niet goedgekeurd"
 
 #: includes/class-gravityview-entry-approval-status.php:69
 msgid "Reset Approval"
-msgstr ""
+msgstr "Herstel Goedkeuring"
 
 #: includes/class-gravityview-entry-approval-status.php:70
 msgid "Entry not yet reviewed. Click to approve this entry."
-msgstr ""
+msgstr "Inzending is niet beoordeeld. Klik om de Inzending goed te keuren. "
 
 #: includes/class-gravityview-entry-approval.php:113
 #: includes/class-gravityview-entry-approval.php:122
 #: includes/class-gravityview-entry-approval.php:131
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:427
 msgid "The request was invalid. Refresh the page and try again."
-msgstr ""
+msgstr "Het verzoek was ongeldig. Ververs de pagina en probeer het opnieuw. "
 
 #: includes/class-gravityview-entry-approval.php:140
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1910
@@ -1314,7 +1314,7 @@ msgstr "De Inzending goedgekeurd voor GravityView"
 
 #: includes/class-gravityview-entry-approval.php:342
 msgid "Reset Entry approval for GravityView"
-msgstr ""
+msgstr "Herstel Inzending goedkeuring voor GravityView"
 
 #: includes/class-gravityview-entry-approval.php:345
 #: includes/class-gravityview-uninstall.php:64
@@ -1365,27 +1365,27 @@ msgstr ""
 
 #: includes/class-gravityview-settings.php:160
 msgid "I am going to continue using GravityView"
-msgstr ""
+msgstr "Ik ga door met het gebruiken van GravityView"
 
 #: includes/class-gravityview-settings.php:163
 msgid "I no longer need GravityView"
-msgstr ""
+msgstr "Ik heb GravityView niet langer nodig"
 
 #: includes/class-gravityview-settings.php:166
 msgid "The plugin doesn't work"
-msgstr ""
+msgstr "De Plugin werkt niet"
 
 #: includes/class-gravityview-settings.php:169
 msgid "I found a better plugin"
-msgstr ""
+msgstr "Ik heb een betere plugin gevonden"
 
 #: includes/class-gravityview-settings.php:170
 msgid "What plugin you are using, and why?"
-msgstr ""
+msgstr "Welke plugin gebruikt u en waarom?"
 
 #: includes/class-gravityview-settings.php:173
 msgid "Other"
-msgstr ""
+msgstr "Anders"
 
 #: includes/class-gravityview-settings.php:257
 msgid ""
@@ -1395,11 +1395,11 @@ msgstr ""
 
 #: includes/class-gravityview-settings.php:263
 msgid "Why did you uninstall GravityView?"
-msgstr ""
+msgstr "Waarom heeft u GravityView verwijderd? "
 
 #: includes/class-gravityview-settings.php:273
 msgid "Comments"
-msgstr ""
+msgstr "Reacties"
 
 #: includes/class-gravityview-settings.php:274
 msgid "Please share your thoughts about GravityView"
@@ -1415,7 +1415,7 @@ msgstr ""
 
 #: includes/class-gravityview-settings.php:298
 msgid "Send Us Your Feedback"
-msgstr ""
+msgstr "Stuur Ons Uw Feedback"
 
 #: includes/class-gravityview-settings.php:303
 msgid "Thank you for using GravityView!"
@@ -1451,7 +1451,7 @@ msgstr "Niet actieve Licentie"
 
 #: includes/class-gravityview-settings.php:451
 msgid "Expired License"
-msgstr ""
+msgstr "Verlopen Licentie"
 
 #: includes/class-gravityview-settings.php:456
 msgid "Invalid License"
@@ -1468,7 +1468,7 @@ msgstr "is niet actief"
 #: includes/class-gravityview-settings.php:461
 #: includes/class-gravityview-settings.php:470
 msgid "Activate your license key below."
-msgstr ""
+msgstr "Activeer uw licentie sleutel hieronder."
 
 #: includes/class-gravityview-settings.php:469
 msgid "has not been activated"
@@ -1523,7 +1523,7 @@ msgstr "Vul uw e-mailadres in om reactie te kunnen geven op jou supportvragen."
 
 #: includes/class-gravityview-settings.php:882
 msgid "Show Support Port?"
-msgstr ""
+msgstr "Toon Ondersteuning Portaal?"
 
 #: includes/class-gravityview-settings.php:895
 msgid "The Support Port looks like this."
@@ -1578,7 +1578,7 @@ msgstr "Controleer Licentie"
 
 #: includes/class-gv-license-handler.php:319
 msgid "License Details:"
-msgstr ""
+msgstr "Licentie Details: "
 
 #: includes/class-gv-license-handler.php:338
 msgid "Access your GravityView account"
@@ -1590,23 +1590,23 @@ msgstr ""
 
 #: includes/class-gv-license-handler.php:341
 msgid "License level: %s"
-msgstr ""
+msgstr "Licentie niveau: %s"
 
 #: includes/class-gv-license-handler.php:343
 msgid "Activations: %d of %s sites"
-msgstr ""
+msgstr "Activaties: %d op %s websites"
 
 #: includes/class-gv-license-handler.php:344
 msgid "Renew on: %s"
-msgstr ""
+msgstr "Hernieuw op: %s"
 
 #: includes/class-gv-license-handler.php:379
 msgid "Upgrades available:"
-msgstr ""
+msgstr "Upgrade beschikbaar:"
 
 #: includes/class-gv-license-handler.php:396
 msgid "Get access to Extensions"
-msgstr ""
+msgstr "Krijg toegang tot Uitbreidingen"
 
 #: includes/class-gv-license-handler.php:400
 msgid "Get access to Entry Importer and other Premium plugins"
@@ -1654,7 +1654,7 @@ msgstr "De licentie sleutel is ongeldig. "
 
 #: includes/class-gv-license-handler.php:537
 msgid "Invalid license key."
-msgstr ""
+msgstr "Ongeldige licentie. "
 
 #: includes/class-gv-license-handler.php:538
 msgid "This license key has been revoked."
@@ -1714,7 +1714,7 @@ msgstr "Doorzoek Weergaven"
 
 #: includes/class-post-types.php:74
 msgid "Filter Views list"
-msgstr ""
+msgstr "Filter Weergaven lijst"
 
 #: includes/class-post-types.php:75
 msgid "Views list navigation"
@@ -1722,15 +1722,15 @@ msgstr ""
 
 #: includes/class-post-types.php:76
 msgid "Views list"
-msgstr ""
+msgstr "Weergaven lijst"
 
 #: includes/class-post-types.php:77
 msgid "See Views"
-msgstr ""
+msgstr "Bekijk Weergaven"
 
 #: includes/class-post-types.php:78
 msgid "View Attributes"
-msgstr ""
+msgstr "Toon Eigenschappen"
 
 #: includes/class-post-types.php:81
 msgid "view"
@@ -1779,7 +1779,7 @@ msgstr "Je hebt geen toestemming om deze inzending te verwijderen. "
 
 #: includes/extensions/delete-entry/class-delete-entry.php:573
 msgid "The entry is already in the trash."
-msgstr ""
+msgstr "Deze Inzending is al in de prullenbak. "
 
 #: includes/extensions/delete-entry/class-delete-entry.php:575
 msgid "You cannot delete the entry; it is already in the trash."
@@ -1876,7 +1876,7 @@ msgstr "Ajax fout tijdens het verwijderen van het veld. "
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:101
 msgid "Entry Notes"
-msgstr ""
+msgstr "Inzending Notities"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:103
 msgid "Display, add, and delete notes for an entry."
@@ -1884,39 +1884,39 @@ msgstr ""
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:367
 msgid "Note Settings"
-msgstr ""
+msgstr "Notitie instellingen"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:371
 msgid "Display notes?"
-msgstr ""
+msgstr "Toon notities"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:374
 msgid "Display notes to users who are not logged-in?"
-msgstr ""
+msgstr "Toon notities aan niet ingelogde gebruikers?"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:378
 msgid "Enable adding notes?"
-msgstr ""
+msgstr "Sta toe dat notities toegevoegd kunnen worden?"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:381
 msgid "Allow emailing notes?"
-msgstr ""
+msgstr "Sta toe dat notities gemaild mogen worden?"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:385
 msgid "Allow deleting notes?"
-msgstr ""
+msgstr "Sta toe dat notities verwijderd mogen worden?"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:409
 msgid "Add Note"
-msgstr ""
+msgstr "Voeg Notitie toe"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:410
 msgid "Note added."
-msgstr ""
+msgstr "Notitie toegevoegd. "
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:411
 msgid "Note Content"
-msgstr ""
+msgstr "Notitie Inhoud"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:413
 msgid "Are you sure you want to delete the selected notes?"
@@ -1924,7 +1924,7 @@ msgstr ""
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:414
 msgid "Notes for this entry"
-msgstr ""
+msgstr "Notities voor deze inzending"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:415
 msgid "Toggle all notes"
@@ -1944,11 +1944,11 @@ msgstr ""
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:422
 msgid "Email subject"
-msgstr ""
+msgstr "E-mail onderwerp"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:423
 msgid "New entry note"
-msgstr ""
+msgstr "Nieuwe Inzending notitie"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:424
 msgid "This note was sent from {url}"
@@ -1956,7 +1956,7 @@ msgstr ""
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:425
 msgid "Also email this note to"
-msgstr ""
+msgstr "E-mail deze notitie naar "
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:426
 msgid "There was an error adding the note."
@@ -1976,11 +1976,11 @@ msgstr ""
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:535
 msgid "The note is empty."
-msgstr ""
+msgstr "De notitie is leeg. "
 
 #: includes/fields/class-gravityview-field-address.php:20
 msgid "Address"
-msgstr ""
+msgstr "Adres"
 
 #: includes/fields/class-gravityview-field-address.php:268
 msgid "Show Map Link:"
@@ -1992,7 +1992,7 @@ msgstr "Toont een 'Toon op kaart' link onder het adres."
 
 #: includes/fields/class-gravityview-field-approval.php:23
 msgid "Approve Entries"
-msgstr ""
+msgstr "Keur Inzendingen Goed"
 
 #: includes/fields/class-gravityview-field-approval.php:25
 msgid "Approve and reject entries from the View."
@@ -2000,7 +2000,7 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-calculation.php:23
 msgid "Calculation"
-msgstr ""
+msgstr "Berekening"
 
 #: includes/fields/class-gravityview-field-captcha.php:19
 msgid "CAPTCHA"
@@ -2027,14 +2027,14 @@ msgstr ""
 #: includes/fields/class-gravityview-field-radio.php:48
 #: includes/fields/class-gravityview-field-select.php:48
 msgid "Value of the input"
-msgstr ""
+msgstr "Waarde van de invoer"
 
 #: includes/fields/class-gravityview-field-checkbox.php:51
 #: includes/fields/class-gravityview-field-checkbox.php:58
 #: includes/fields/class-gravityview-field-radio.php:49
 #: includes/fields/class-gravityview-field-select.php:49
 msgid "Label of the input"
-msgstr ""
+msgstr "Label van de invoer"
 
 #: includes/fields/class-gravityview-field-checkbox.php:65
 #: includes/fields/class-gravityview-field-radio.php:45
@@ -2096,7 +2096,7 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-currency.php:27
 msgid "Currency"
-msgstr ""
+msgstr "Valuta"
 
 #: includes/fields/class-gravityview-field-custom.php:49
 msgid ""
@@ -2166,7 +2166,7 @@ msgstr "Link Tekst:"
 
 #: includes/fields/class-gravityview-field-fileupload.php:17
 msgid "File Upload"
-msgstr ""
+msgstr "Bestand Upload"
 
 #: includes/fields/class-gravityview-field-fileupload.php:31
 msgid "Display as a Link:"
@@ -2192,7 +2192,7 @@ msgstr "Toon score als een breuk: \"[score]/[max score]\". Als dit niet aangevin
 
 #: includes/fields/class-gravityview-field-hidden.php:19
 msgid "Hidden"
-msgstr ""
+msgstr "Verborgen"
 
 #: includes/fields/class-gravityview-field-html.php:24
 msgid "HTML"
@@ -2250,7 +2250,7 @@ msgstr "Voldaan"
 
 #: includes/fields/class-gravityview-field-list.php:38
 msgid "List"
-msgstr ""
+msgstr "Lijst"
 
 #: includes/fields/class-gravityview-field-multiselect.php:19
 msgid "Multi Select"
@@ -2262,7 +2262,7 @@ msgstr "Naam"
 
 #: includes/fields/class-gravityview-field-number.php:25
 msgid "Number"
-msgstr ""
+msgstr "Nummer"
 
 #: includes/fields/class-gravityview-field-number.php:33
 msgid "Format number?"
@@ -2274,7 +2274,7 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-number.php:40
 msgid "Decimals"
-msgstr ""
+msgstr "Decimalen"
 
 #: includes/fields/class-gravityview-field-number.php:41
 msgid ""
@@ -2333,11 +2333,11 @@ msgstr "Deze gebruiker heeft geen andere inzendingen. "
 
 #: includes/fields/class-gravityview-field-page.php:19
 msgid "Page"
-msgstr ""
+msgstr "Pagina"
 
 #: includes/fields/class-gravityview-field-password.php:20
 msgid "Password"
-msgstr ""
+msgstr "Wachtwoord"
 
 #: includes/fields/class-gravityview-field-payment-amount.php:27
 msgid "Payment Amount"
@@ -2371,15 +2371,15 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-phone.php:19
 msgid "Phone"
-msgstr ""
+msgstr "Telefoon"
 
 #: includes/fields/class-gravityview-field-phone.php:44
 msgid "Make Phone Number Clickable"
-msgstr ""
+msgstr "Maak Telefoonnummers Klikbaar"
 
 #: includes/fields/class-gravityview-field-phone.php:45
 msgid "Allow dialing a number by clicking it?"
-msgstr ""
+msgstr "Sta toe dat het nummer gebeld kan worden door erop te klikken?"
 
 #: includes/fields/class-gravityview-field-post-category.php:19
 msgid "Post Category"
@@ -2427,7 +2427,7 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-section.php:22
 msgid "Section"
-msgstr ""
+msgstr "Sectie"
 
 #: includes/fields/class-gravityview-field-source-url.php:36
 msgid "Link to URL:"
@@ -2443,11 +2443,11 @@ msgstr "Bewerk de link tekst. "
 
 #: includes/fields/class-gravityview-field-text.php:19
 msgid "Single Line Text"
-msgstr ""
+msgstr "Enkele Regel Tekst"
 
 #: includes/fields/class-gravityview-field-textarea.php:22
 msgid "Paragraph Text"
-msgstr ""
+msgstr "Paragraaf Tekst"
 
 #: includes/fields/class-gravityview-field-textarea.php:36
 msgid "Maximum words shown"
@@ -2469,7 +2469,7 @@ msgstr "Maak HTML links van URI, www, FTP, en e-mail adressen"
 
 #: includes/fields/class-gravityview-field-time.php:56
 msgid "Time"
-msgstr ""
+msgstr "Tijd"
 
 #: includes/fields/class-gravityview-field-transaction-id.php:27
 msgid "Transaction ID"
@@ -2485,11 +2485,11 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-transaction-type.php:81
 msgid "One-Time Payment"
-msgstr ""
+msgstr "Eenmalige Betaling"
 
 #: includes/fields/class-gravityview-field-transaction-type.php:85
 msgid "Subscription"
-msgstr ""
+msgstr "Abonnement"
 
 #: includes/fields/class-gravityview-field-website.php:22
 msgid "Website"
@@ -2527,7 +2527,7 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-workflow_step.php:59
 msgid "Workflow Complete"
-msgstr ""
+msgstr "Workflow Compleet"
 
 #: includes/fields/class-gravityview-field.php:380
 msgid "Link to the post"
@@ -2678,7 +2678,7 @@ msgstr "Afbeelding"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:51
 msgid "Leave empty to remove."
-msgstr ""
+msgstr "Laat leeg om te verwijderen."
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:57
 msgid "Other Fields"
@@ -2882,7 +2882,7 @@ msgstr "Toon Reset Knop"
 #: includes/widgets/search-widget/class-search-widget.php:65
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:227
 msgid "Search Mode"
-msgstr ""
+msgstr "Zoek Modus"
 
 #: includes/widgets/search-widget/class-search-widget.php:66
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:236
@@ -2933,7 +2933,7 @@ msgstr "Zoekveld Toevoegen"
 
 #: includes/widgets/search-widget/class-search-widget.php:221
 msgid "Label"
-msgstr ""
+msgstr "Label"
 
 #: includes/widgets/search-widget/class-search-widget.php:223
 msgid "Input Type"
@@ -3155,12 +3155,12 @@ msgstr ""
 #: includes/class-gravityview-settings.php:887
 msgctxt "Setting: Show or Hide"
 msgid "Show"
-msgstr ""
+msgstr "Toon"
 
 #: includes/class-gravityview-settings.php:891
 msgctxt "Setting: Show or Hide"
 msgid "Hide"
-msgstr ""
+msgstr "Verberg"
 
 #: includes/class-gravityview-settings.php:906
 msgctxt "Setting: On or off"
@@ -3223,17 +3223,17 @@ msgstr ""
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:420
 msgctxt "Example email address used as a placeholder"
 msgid "you@example.com"
-msgstr ""
+msgstr "jij@voorbeeld.nl"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:428
 msgctxt "Message to display when submitting a note without content."
 msgid "Note cannot be blank."
-msgstr ""
+msgstr "Notitie kan niet leeg zijn. "
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:90
 msgctxt "Gravity Flow Workflow Step Status"
 msgid "Status: %s"
-msgstr ""
+msgstr "Status: %s"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:26
 msgctxt "The string placeholders are for emphasis HTML"

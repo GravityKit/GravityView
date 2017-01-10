@@ -366,6 +366,8 @@ class GravityView_View_Data {
 
 		foreach ($shortcodes as $key => $shortcode) {
 
+			$shortcode[3] = htmlspecialchars_decode( $shortcode[3], ENT_QUOTES );
+
 			$args = shortcode_parse_atts( $shortcode[3] );
 
 			if( empty( $args['id'] ) ) {

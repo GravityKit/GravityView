@@ -304,7 +304,7 @@ class GVLogic_Shortcode {
 		$this->atts = function_exists( 'array_intersect_key' ) ? array_intersect_key( $this->passed_atts, $this->atts ) : $this->atts;
 
 		// Strip whitespace if it's not default false
-		$this->if = is_string( $this->atts['if'] ) ? trim( $this->atts['if'] ) : false;
+		$this->if = ( isset( $this->atts['if'] ) && is_string( $this->atts['if'] ) ) ? trim( $this->atts['if'] ) : false;
 
 		// Make sure the "if" isn't processed in self::setup_operation_and_comparison()
 		unset( $this->atts['if'] );

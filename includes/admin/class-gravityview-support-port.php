@@ -11,12 +11,6 @@ class GravityView_Support_Port {
 	 */
 	const user_pref_name = 'gravityview_support_port';
 
-	/**
-	 * @var string Key used to store active GravityView/Gravity Forms plugin data
-	 * @since 1.15
-	 */
-	const related_plugins_key = 'gravityview_related_plugins';
-
 	public function __construct() {
 		$this->add_hooks();
 	}
@@ -29,8 +23,6 @@ class GravityView_Support_Port {
 		add_action( 'personal_options_update', array( $this, 'update_user_meta_value' ) );
 		add_action( 'edit_user_profile_update', array( $this, 'update_user_meta_value' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'maybe_enqueue_script' ), 1000 );
-		add_action( 'update_option_active_plugins', array( $this, 'flush_related_plugins_transient' ) );
-		add_action( 'update_option_active_sitewide_plugins', array( $this, 'flush_related_plugins_transient' ) );
 	}
 
 	/**
@@ -150,7 +142,7 @@ class GravityView_Support_Port {
 			'PHP Version'           => phpversion(),
 			'GravityView Version'   => GravityView_Plugin::version,
 			'Gravity Forms Version' => GFForms::$version,
-			'Plugins & Extensions'  => self::get_related_plugins_and_extensions(),
+			'Plugins & Extensions'  => GV_License_Handler::get_related_plugins_and_extensions(),
 		);
 
 		$localization_data = array(
@@ -162,58 +154,6 @@ class GravityView_Support_Port {
 		wp_localize_script( 'gravityview-support', 'gvSupport', $localization_data );
 
 		unset( $localization_data, $data, $translation, $response, $package );
-	}
-
-	/**
-	 * Get active GravityView Extensions and Gravity Forms Add-ons to help debug issues.
-	 *
-	 * @since 1.15
-	 * @return string List of active extensions related to GravityView or Gravity Forms, separated by HTML line breaks
-	 */
-	static private function get_related_plugins_and_extensions() {
-
-		if ( ! function_exists( 'wp_get_active_and_valid_plugins' ) ) {
-			return 'Running < WP 3.0';
-		}
-
-		$extensions = get_site_transient( self::related_plugins_key );
-
-		if ( empty( $extensions ) ) {
-
-			$active_plugins = wp_get_active_and_valid_plugins();
-			$extensions = array();
-			foreach ( $active_plugins as $active_plugin ) {
-
-				// Match gravityview, gravity-forms, gravityforms, gravitate
-				if ( ! preg_match( '/(gravityview|gravity-?forms|gravitate)/ism', $active_plugin ) ) {
-					continue;
-				}
-
-				$plugin_data = get_plugin_data( $active_plugin );
-
-				$extensions[] = sprintf( '%s %s', $plugin_data['Name'], $plugin_data['Version'] );
-			}
-
-			if( ! empty( $extensions ) ) {
-				set_site_transient( self::related_plugins_key, $extensions, HOUR_IN_SECONDS );
-			} else {
-				return 'There was an error fetching related plugins.';
-			}
-		}
-		
-		return implode( '<br />', $extensions );
-	}
-
-	/**
-	 * When a plugin is activated or deactivated, delete the cached extensions/plugins used by get_related_plugins_and_extensions()
-	 *
-	 * @see get_related_plugins_and_extensions()
-	 * @since 1.15
-	 */
-	public function flush_related_plugins_transient() {
-		if ( function_exists( 'delete_site_transient' ) ) {
-			delete_site_transient( self::related_plugins_key );
-		}
 	}
 
 	/**

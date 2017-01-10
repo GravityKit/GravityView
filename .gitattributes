@@ -9,12 +9,13 @@ Gruntfile.js export-ignore
 package.json export-ignore
 phpunit.xml export-ignore
 phpunit.xml.dist export-ignore
+phpcs.ruleset.xml export-ignore
 readme.md export-ignore
 Rakefile export-ignore
-.scrutinizer.yml
-.travis.yml
-.bowerrc
-.coveralls.yml
+.scrutinizer.yml export-ignore
+.travis.yml export-ignore
+.bowerrc export-ignore
+.coveralls.yml export-ignore
 
 # Folders
 

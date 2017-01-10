@@ -271,6 +271,45 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.19.3 on January 9, 2017</h3>
+
+                <p>First update of 2017! We&#39;ve got great things planned for GravityView and our Extensions. As always, <a href="mailto:support@gravityview.co">contact us</a> with any questions or feedback. We don&#39;t bite!</p>
+
+                <ul>
+                    <li>Fixed: List field inputs not loading in Edit Entry when values were empty or the field was hidden initially because of Conditional Logic</li>
+                    <li>Fixed: Prevent Approve Entry and Delete Entry fields from being added to Edit Entry field configuration</li>
+                    <li>Fixed: Don&#39;t render Views outside &quot;the loop&quot;, prevents conflicts with other plugins that run <code>the_content</code> filter outside normal places</li>
+                    <li>Fixed: Only display &quot;You have attempted to view an entry that is not visible or may not exist.&quot; warning once when multiple Views are embedded on a page</li>
+                    <li>Fixed: The <code>[gravityview]</code> shortcode would not be parsed properly due to HTML encoding when using certain page builders, including OptimizePress</li>
+                    <li>Fixed: Potential errors when non-standard form fields are added to Edit Entry configurations (&quot;Creating default object from empty value&quot; and &quot;Cannot use object of type stdClass as array&quot;)</li>
+                    <li>Updated translations:
+
+                        <ul>
+                            <li>🇨🇳 Chinese <em>100% translated</em> (thank you, Michael Edi!)</li>
+                            <li>🇫🇷 French <em>100% translated</em></li>
+                            <li>🇧🇷 Brazilian Portuguese <em>100% translated</em> (thanks, Rafael!)</li>
+                            <li>🇳🇱 Dutch translation updated (thank you, Erik van Beek!)</li>
+                            <li>🇸🇪 Swedish translation updated</li>
+                            <li>Updated Spanish (Spain + Mexican) and German (<code>de</code> + <code>de_DE</code>) with each other</li>
+                        </ul></li>
+                </ul>
+
+                <p><strong>Developer Notes:</strong></p>
+
+                <ul>
+                    <li><code>GVCommon::get_form_from_entry_id()</code> now correctly fetches forms with any status</li>
+                    <li>Moved <code>GravityView_Support_Port::get_related_plugins_and_extensions()</code> to <code>GV_License_Handler</code> class</li>
+                    <li>Updated the <code>install.sh</code> bash script
+
+                        <ul>
+                            <li>The 6th parameter now prevents database creation, and the 7th is the Gravity Forms source file</li>
+                            <li>Script no longer breaks if there is a space in a directory name</li>
+                            <li><code>/tmp/</code> is no longer created in the GravityView directory; it&#39;s installed in the server&#39;s <code>/tmp/</code> directory</li>
+                        </ul></li>
+                    <li>Fixed Travis CI integration</li>
+                </ul>
+
+
                 <h3>1.19.2 on December 21, 2016</h3>
 
                 <ul>
@@ -649,7 +688,7 @@ class GravityView_Welcome {
 						<li class="wp-person">Hungarian translation by <a href="https://www.transifex.com/accounts/profile/dbalage/">@dbalage</a> and <a href="https://www.transifex.com/accounts/profile/Darqebus/">@Darqebus</a></li>
 						<li class="wp-person">Italian translation by <a href="https://www.transifex.com/accounts/profile/Lurtz/">@Lurtz</a> and <a href="https://www.transifex.com/accounts/profile/ClaraDiGennaro/">@ClaraDiGennaro</a></li>
 						<li class="wp-person">French translation by <a href="https://www.transifex.com/accounts/profile/franckt/">@franckt</a> and <a href="https://www.transifex.com/accounts/profile/Newbdev/">@Newbdev</a></li>
-						<li class="wp-person">Portuguese translation by <a href="https://www.transifex.com/accounts/profile/luistinygod/">@luistinygod</a> and <a href="https://www.transifex.com/accounts/profile/marlosvinicius.info/">@marlosvinicius</a></li>
+						<li class="wp-person">Portuguese translation by <a href="https://www.transifex.com/accounts/profile/luistinygod/">@luistinygod</a>, <a href="https://www.transifex.com/accounts/profile/marlosvinicius.info/">@marlosvinicius</a>, and <a href="https://www.transifex.com/user/profile/rafaehlers/">@rafaehlers</a></li>
 						<li class="wp-person">Romanian translation by <a href="https://www.transifex.com/accounts/profile/ArianServ/">@ArianServ</a></li>
 						<li class="wp-person">Finnish translation by <a href="https://www.transifex.com/accounts/profile/harjuja/">@harjuja</a></li>
 						<li class="wp-person">Spanish translation by <a href="https://www.transifex.com/accounts/profile/jorgepelaez/">@jorgepelaez</a>, <a href="https://www.transifex.com/accounts/profile/luisdiazvenero/">@luisdiazvenero</a>, <a href="https://www.transifex.com/accounts/profile/josemv/">@josemv</a>, <a href="https://www.transifex.com/accounts/profile/janolima/">@janolima</a> and <a href="https://www.transifex.com/accounts/profile/matrixmercury/">@matrixmercury</a></li>

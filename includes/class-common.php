@@ -23,7 +23,7 @@ class GVCommon {
 	 *
 	 * @access public
 	 * @param mixed $form_id
-	 * @return mixed False: no form ID specified or Gravity Forms isn't active. Array: Form returned from Gravity Forms
+	 * @return array|false Array: Form object returned from Gravity Forms; False: no form ID specified or Gravity Forms isn't active.
 	 */
 	public static function get_form( $form_id ) {
 		if ( empty( $form_id ) ) {
@@ -118,13 +118,17 @@ class GVCommon {
 	/**
 	 * Get the form array for an entry based only on the entry ID
 	 * @param  int|string $entry_slug Entry slug
-	 * @return array           Gravity Forms form array
+	 * @return array|false Array: Form object returned from Gravity Forms; False: form doesn't exist, or $entry didn't exist or $entry didn't specify form ID
 	 */
 	public static function get_form_from_entry_id( $entry_slug ) {
 
-		$entry = self::get_entry( $entry_slug, true );
+		$entry = self::get_entry( $entry_slug, true, false );
 
-		$form = self::get_form( $entry['form_id'] );
+		$form = false;
+
+		if( $entry ) {
+			$form = GFAPI::get_form( $entry['form_id'] );
+		}
 
 		return $form;
 	}
@@ -768,6 +772,7 @@ class GVCommon {
 		foreach ( $filters as $filter ) {
 
 			if ( ! isset( $filter['key'] ) ) {
+				do_action( 'gravityview_log_debug', '[apply_filters_to_entry] Filter key not set', $filter );
 				continue;
 			}
 

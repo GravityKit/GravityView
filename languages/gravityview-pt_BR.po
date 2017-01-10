@@ -2,14 +2,15 @@
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # Marlos Piccinelli <marlosvinicius.info@gmail.com>, 2015
+# Rafael de Menezes Ehlers, 2016
 # Rennan Motta Berbel <blackcomputer.info@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: GravityView\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
-"PO-Revision-Date: 2016-12-22 00:40+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>\n"
+"PO-Revision-Date: 2016-12-27 23:51+0000\n"
+"Last-Translator: Rafael de Menezes Ehlers\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/katzwebservices/gravityview/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -67,7 +68,7 @@ msgstr "Suporte do GravityView"
 
 #: includes/admin/class-gravityview-support-port.php:84
 msgid "Search GravityView Docs"
-msgstr "Procurar documentos do GravityView"
+msgstr "Procurar na ajuda do GravityView"
 
 #: includes/admin/class-gravityview-support-port.php:85
 msgid ""
@@ -456,7 +457,7 @@ msgstr "%s Aprovado"
 
 #: includes/class-admin-approve-entries.php:335
 msgid "%s unapproved."
-msgstr ""
+msgstr "%s não aprovado(s)."
 
 #: includes/class-admin-approve-entries.php:339
 msgid "%s disapproved."
@@ -472,11 +473,11 @@ msgstr "Todos os formulários"
 
 #: includes/class-admin-views.php:140 includes/class-admin-views.php:171
 msgid "Create a View"
-msgstr ""
+msgstr "Criar uma Visualização"
 
 #: includes/class-admin-views.php:142 includes/class-admin-views.php:173
 msgid "Create a View using this form as a data source"
-msgstr ""
+msgstr "Criar uma Visualização usando este formulário como fonte de dados"
 
 #: includes/class-admin-views.php:159
 msgid "No Title (View #%d)"
@@ -605,7 +606,7 @@ msgstr "Link para a entrada"
 #: includes/class-admin-views.php:707
 #: includes/fields/class-gravityview-field-entry-link.php:33
 msgid "A dedicated link to the single entry with customizable text."
-msgstr ""
+msgstr "Um link dedicado aos detalhes da entrada com texto customizável."
 
 #: includes/class-admin-views.php:718
 #: includes/fields/class-gravityview-field-custom.php:34
@@ -734,42 +735,42 @@ msgstr "Se você quiser contribuir para o código, %syou can on Github%s. Se sua
 
 #: includes/class-admin.php:72 includes/class-post-types.php:73
 msgid "No Views found in Trash"
-msgstr ""
+msgstr "Nenhuma Visualização na lixeira"
 
 #: includes/class-admin.php:74
 msgid "No Views found."
-msgstr ""
+msgstr "Nenhuma Visualização encontrada."
 
 #: includes/class-admin.php:81
 msgid ""
 "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n"
 "\n"
 "If you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page."
-msgstr ""
+msgstr "Você não possui nenhuma Visualização ativa. Vamos criar %scriar uma%s!%s\n\nSe você estiver se sentindo perdido, verifique a página %sComeçando%s."
 
 #: includes/class-admin.php:83
 msgid "There are no active Views"
-msgstr ""
+msgstr "Não há nenhuma Visualização ativa"
 
 #: includes/class-admin.php:109
 msgid "The form connected to this View no longer exists."
-msgstr ""
+msgstr "O formulário conectado a esta Visualização não existe mais."
 
 #: includes/class-admin.php:110
 msgid "Select another form as the data source for this View."
-msgstr ""
+msgstr "Selecione outro formulário para ser usado como fonte de dados para esta Visualização."
 
 #: includes/class-admin.php:112
 msgid "The connected form is in the trash."
-msgstr ""
+msgstr "O formulário conectado a esta Visualização está na lixeira."
 
 #: includes/class-admin.php:113
 msgid "Restore the form from the trash"
-msgstr ""
+msgstr "Restaurar o formulário da lixeira"
 
 #: includes/class-admin.php:114
 msgid "or select another form."
-msgstr ""
+msgstr "ou selecione outro formulário."
 
 #: includes/class-admin.php:172
 msgid "Support"
@@ -886,7 +887,7 @@ msgstr "Publicar ID"
 #. "1 day ago", or "20 seconds ago"
 #: includes/class-common.php:858
 msgid "%s ago"
-msgstr ""
+msgstr "%s atrás"
 
 #: includes/class-common.php:1152 includes/class-data.php:628
 msgid "Default"
@@ -950,18 +951,18 @@ msgstr "Mostrar somente as entradas aprovados"
 
 #: includes/class-data.php:580
 msgid "Show all entries to administrators"
-msgstr ""
+msgstr "Mostrar todas as entradas para os administradores"
 
 #: includes/class-data.php:581
 msgid "Administrators will be able to see entries with any approval status."
-msgstr ""
+msgstr "Administradores poderão ver todas as entradas com qualquer status de aprovação."
 
 #: includes/class-data.php:582
 msgid ""
 "Logged-out visitors and non-administrators will only see approved entries, "
 "while administrators will see entries with all statuses. This makes it "
 "easier for administrators to moderate entries from a View."
-msgstr ""
+msgstr "Visitantes não-logados e não-administradores somente verão entradas aprovadas, enquanto administradores verão entradas com qualquer status. Isto torna fácil a moderação de entradas para a Visualização."
 
 #: includes/class-data.php:590
 msgid "Hide View data until search is performed"
@@ -1055,7 +1056,7 @@ msgstr "CSS Classe"
 
 #: includes/class-data.php:675
 msgid "CSS class to add to the wrapping HTML container."
-msgstr ""
+msgstr "Classe CSS para adicionar ao container HTML."
 
 #: includes/class-data.php:682
 msgid "Search Value"
@@ -1089,7 +1090,7 @@ msgstr "Ao visualizar uma única entrada, altere o título da página para essa 
 
 #: includes/class-data.php:707
 msgid "Back Link Label"
-msgstr ""
+msgstr "Etiqueta para o link de retorno"
 
 #: includes/class-data.php:709
 msgid "The text of the link that returns to the multiple entries view."
@@ -1105,7 +1106,7 @@ msgstr "Apenas permitir o acesso a essa visão quando incorporado usando o short
 
 #: includes/class-debug-bar.php:94
 msgid "Warnings"
-msgstr ""
+msgstr "Avisos"
 
 #: includes/class-debug-bar.php:103
 msgid "Logs"
@@ -1119,11 +1120,11 @@ msgstr "Ao utilizar um modelo Fresh Start, você deve salvar a visualização an
 
 #: includes/class-frontend-views.php:591
 msgid "Add fields to %s"
-msgstr ""
+msgstr "Adicionar campo a %s"
 
 #: includes/class-frontend-views.php:592
 msgid "You can only see this message because you are able to edit this View."
-msgstr ""
+msgstr "Você só pode ver esta mensagem porque você esta habilitado a editar esta Visualização."
 
 #: includes/class-frontend-views.php:704
 msgid "You are not allowed to view this content."
@@ -1136,130 +1137,130 @@ msgstr "Você tentou ver uma entrada que não é visível ou pode não existir."
 
 #: includes/class-gravityview-admin-bar.php:107
 msgid "Edit Entry %s"
-msgstr ""
+msgstr "Editar entrada %s"
 
 #: includes/class-gravityview-admin-bar.php:139
 #: includes/class-post-types.php:69
 msgid "Edit View"
-msgstr ""
+msgstr "Editar Visualização"
 
 #: includes/class-gravityview-admin-bar.php:144
 msgid "Edit Form #%d"
-msgstr ""
+msgstr "Editar formulário #%d"
 
 #: includes/class-gravityview-admin-duplicate-view.php:237
 msgid "Clone"
-msgstr ""
+msgstr "Clonar"
 
 #: includes/class-gravityview-admin-duplicate-view.php:238
 msgid "Clone this View"
-msgstr ""
+msgstr "Clonar esta Visualização"
 
 #: includes/class-gravityview-admin-duplicate-view.php:243
 msgid "New Draft"
-msgstr ""
+msgstr "Novo rascunho"
 
 #: includes/class-gravityview-admin-duplicate-view.php:243
 msgid "Clone View"
-msgstr ""
+msgstr "Clonar Visualização"
 
 #: includes/class-gravityview-admin-duplicate-view.php:244
 msgid "Copy as a new draft View"
-msgstr ""
+msgstr "Copiar como Visualização em rascunho"
 
 #: includes/class-gravityview-admin-duplicate-view.php:325
 msgid "No post to duplicate has been supplied!"
-msgstr ""
+msgstr "Nenhum post a ser duplicado foi informado!"
 
 #: includes/class-gravityview-admin-duplicate-view.php:332
 msgid "You don't have permission to copy this View."
-msgstr ""
+msgstr "Você não possui permissão para copiar esta Visualização."
 
 #: includes/class-gravityview-admin-duplicate-view.php:353
 msgid "Copy creation failed, could not find original View with ID #%d"
-msgstr ""
+msgstr "A criação da cópia falhou, não foi possível encontrar a Visualização original com o ID #%d"
 
 #: includes/class-gravityview-admin-notices.php:204
 msgid "Dismiss"
-msgstr ""
+msgstr "Desfazer"
 
 #: includes/class-gravityview-change-entry-creator.php:67
 #: includes/lib/EDD_SL_Plugin_Updater.php:332
 msgid "Error"
-msgstr ""
+msgstr "Erro"
 
 #: includes/class-gravityview-change-entry-creator.php:69
 msgid "Success"
-msgstr ""
+msgstr "Sucesso"
 
 #: includes/class-gravityview-change-entry-creator.php:190
 msgid "Changed entry creator from %s to %s"
-msgstr ""
+msgstr "Modificado o criador da entrada de %s para o %s"
 
 #: includes/class-gravityview-change-entry-creator.php:210
 msgid "Change Entry Creator:"
-msgstr ""
+msgstr "Modificar o criador da entrada:"
 
 #: includes/class-gravityview-compatibility.php:161
 msgid ""
 "You are seeing this notice because you are an administrator. Other users of "
 "the site will see nothing."
-msgstr ""
+msgstr "Você está vendo este aviso pois você é um administrador. Outros usuários do site não verão nada."
 
 #: includes/class-gravityview-compatibility.php:185
 msgid ""
 "%sGravityView requires PHP Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please ask your host to upgrade your server's PHP."
-msgstr ""
+msgstr "%sO GravityView requer a versão do PHP %s ou mais nova.%s\n\nVocê está usando a versão %s. Peça ao seu host para fazer o upgrade da versão do seu PHP."
 
 #: includes/class-gravityview-compatibility.php:200
 msgid ""
 "%sGravityView will soon require PHP Version %s.%s \n"
 "\n"
 "You're using Version %s. Please ask your host to upgrade your server's PHP."
-msgstr ""
+msgstr "%sO GravityView em breve irá exigir a versão %s do PHP.%s\n\nVocê está usando a versão %s. Peça ao seu host para fazer o upgrade na sua versão do PHP."
 
 #: includes/class-gravityview-compatibility.php:223
 msgid ""
 "%sGravityView requires WordPress %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please upgrade your WordPress installation."
-msgstr ""
+msgstr "%sO GravityView requer a versão do WordPress %s ou mais nova.%s\n\nVocê está usando a versão %s. Faça o upgrade da versão do seu WordPress."
 
 #: includes/class-gravityview-compatibility.php:256
 msgid ""
 "%sGravityView requires Gravity Forms Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s"
-msgstr ""
+msgstr "%sO GravityView requer a versão do Gravity Forms %s ou mais nova.%s\n\nVocê está usando a versão %s. Faça o upgrade da versão do seu Gravity Forms ou compre uma licença. %sObter o Gravity Forms%s - a partir de U$39%s%s"
 
 #: includes/class-gravityview-compatibility.php:297
 msgid ""
 "%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
 "Forms%s to use the GravityView plugin."
-msgstr ""
+msgstr "%sO GravityView requer que o Gravity Forms esteja ativo. %sAtive o Gravity Forms%s para poder usar o plugin GravityView."
 
 #: includes/class-gravityview-compatibility.php:306
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
-msgstr ""
+msgstr "%sO GravityView requer que o Gravity Forms esteja instalado para poder rodar. %sObtenha o Gravity Forms%s a partir de U$39%s%s"
 
 #: includes/class-gravityview-compatibility.php:326
 msgid "Potential Conflict"
-msgstr ""
+msgstr "Conflito em potencial"
 
 #: includes/class-gravityview-compatibility.php:327
 msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
 "plugin."
-msgstr ""
+msgstr "Ambos GravityView e o Gravity Forms Directory estão ativos. Isto pode causar problemas. Se você notar algo de estranha, desabilite o plugin Gravity Forms Directory."
 
 #: includes/class-gravityview-entry-approval-status.php:56
 msgid "Disapproved"
-msgstr ""
+msgstr "Desaprovado"
 
 #: includes/class-gravityview-entry-approval-status.php:57
 msgid "Disapprove"
@@ -1283,27 +1284,27 @@ msgstr "Entrada aprovada para exibição em modo diretório. Clique para rejeita
 
 #: includes/class-gravityview-entry-approval-status.php:68
 msgid "Unapproved"
-msgstr ""
+msgstr "Não aprovado"
 
 #: includes/class-gravityview-entry-approval-status.php:69
 msgid "Reset Approval"
-msgstr ""
+msgstr "Resetar aprovação"
 
 #: includes/class-gravityview-entry-approval-status.php:70
 msgid "Entry not yet reviewed. Click to approve this entry."
-msgstr ""
+msgstr "Entrada não revisada. Clique para aprovar esta entrada."
 
 #: includes/class-gravityview-entry-approval.php:113
 #: includes/class-gravityview-entry-approval.php:122
 #: includes/class-gravityview-entry-approval.php:131
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:427
 msgid "The request was invalid. Refresh the page and try again."
-msgstr ""
+msgstr "A requisição foi inválida. Recarregue a página e tente novamente."
 
 #: includes/class-gravityview-entry-approval.php:140
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1910
 msgid "You do not have permission to edit this entry."
-msgstr ""
+msgstr "Você não tem permissão para editar esta entrada."
 
 #: includes/class-gravityview-entry-approval.php:339
 #: includes/class-gravityview-uninstall.php:65
@@ -1313,7 +1314,7 @@ msgstr "Entrada aprovada para GravityView"
 
 #: includes/class-gravityview-entry-approval.php:342
 msgid "Reset Entry approval for GravityView"
-msgstr ""
+msgstr "Resetar a aprovação da entrada para o GravityView"
 
 #: includes/class-gravityview-entry-approval.php:345
 #: includes/class-gravityview-uninstall.php:64
@@ -1327,913 +1328,913 @@ msgstr "Rejeitar entrada para Gravity View"
 #: includes/extensions/delete-entry/class-delete-entry.php:162
 #: includes/extensions/delete-entry/fields/delete_link.php:14
 msgid "Delete Entry"
-msgstr ""
+msgstr "Apagar entrada"
 
 #: includes/class-gravityview-entry-link-shortcode.php:211
 #: includes/fields/class-gravityview-field-entry-link.php:51
 #: templates/fields/entry_link.php:16
 msgid "View Details"
-msgstr ""
+msgstr "Ver detalhes"
 
 #: includes/class-gravityview-extension.php:351
 msgid "Could not activate the %s Extension; GravityView is not active."
-msgstr ""
+msgstr "Não foi possível ativar a extensão %s; O GravityView não está ativo."
 
 #: includes/class-gravityview-extension.php:355
 msgid "The %s Extension requires GravityView Version %s or newer."
-msgstr ""
+msgstr "A extensão %s requer a versão %s do GravityView ou uma mais nova."
 
 #: includes/class-gravityview-extension.php:359
 msgid ""
 "The %s Extension requires PHP Version %s or newer. Please ask your host to "
 "upgrade your server's PHP."
-msgstr ""
+msgstr "A extensão %s requer a versão %s do PHP ou uma mais nova. Peça ao seu host para fazer o upgrade no seu servidor."
 
 #: includes/class-gravityview-settings.php:118
 msgid ""
 "If you delete then re-install GravityView, it will be like installing "
 "GravityView for the first time."
-msgstr ""
+msgstr "Se você apagar e depois reinstalar o GravityView, será como se você tivesse instalado o GravityView pela primeira vez."
 
 #: includes/class-gravityview-settings.php:119
 msgid ""
 "Delete all Views, GravityView entry approval status, GravityView-generated "
 "entry notes (including approval and entry creator changes), and GravityView "
 "plugin settings."
-msgstr ""
+msgstr "Apaga todas as Visualizações, status de aprovações de entradas, notas em entradas geradas pelo GravityView (incluindo modificações de aprovação e mudanças de criador), e as configurações do plugin GravityView."
 
 #: includes/class-gravityview-settings.php:160
 msgid "I am going to continue using GravityView"
-msgstr ""
+msgstr "Eu irei continuar usando o GravityView"
 
 #: includes/class-gravityview-settings.php:163
 msgid "I no longer need GravityView"
-msgstr ""
+msgstr "Eu não mais preciso do GravityView"
 
 #: includes/class-gravityview-settings.php:166
 msgid "The plugin doesn't work"
-msgstr ""
+msgstr "O plugin não funciona"
 
 #: includes/class-gravityview-settings.php:169
 msgid "I found a better plugin"
-msgstr ""
+msgstr "Encontrei um plugin melhor"
 
 #: includes/class-gravityview-settings.php:170
 msgid "What plugin you are using, and why?"
-msgstr ""
+msgstr "Qual plugin você está usando e porquê?"
 
 #: includes/class-gravityview-settings.php:173
 msgid "Other"
-msgstr ""
+msgstr "Outro"
 
 #: includes/class-gravityview-settings.php:257
 msgid ""
 "There was an error sharing your feedback. Sorry! Please email us at "
 "support@gravityview.co"
-msgstr ""
+msgstr "Ocorreu um erro ao compartilhar o seu feedback. Perdoe-nos! Por favor, envie nos um email para support@gravityview.co"
 
 #: includes/class-gravityview-settings.php:263
 msgid "Why did you uninstall GravityView?"
-msgstr ""
+msgstr "Por quê você desinstalou o GravityView?"
 
 #: includes/class-gravityview-settings.php:273
 msgid "Comments"
-msgstr ""
+msgstr "Comentários"
 
 #: includes/class-gravityview-settings.php:274
 msgid "Please share your thoughts about GravityView"
-msgstr ""
+msgstr "Compartilhe sua opinião sobre o GravityView"
 
 #: includes/class-gravityview-settings.php:277
 msgid "How likely are you to recommend GravityView?"
-msgstr ""
+msgstr "Quão provável é de você recomendar o GravityView?"
 
 #: includes/class-gravityview-settings.php:291
 msgid "Please follow up with me about my feedback"
-msgstr ""
+msgstr "Entre em contato comigo sobre o meu feedback"
 
 #: includes/class-gravityview-settings.php:298
 msgid "Send Us Your Feedback"
-msgstr ""
+msgstr "Envie-nos seu feedback"
 
 #: includes/class-gravityview-settings.php:303
 msgid "Thank you for using GravityView!"
-msgstr ""
+msgstr "Obrigado por usar o GravityView!"
 
 #: includes/class-gravityview-settings.php:305
 msgid ""
 "Your feedback helps us improve GravityView. If you have any questions or "
 "comments, email us: support@gravityview.co"
-msgstr ""
+msgstr "O seu feedback nos ajuda a melhorar o GravityView. Se você tiver quaisquer dúvidas ou comentários, nos envie um email para support@gravityview.co"
 
 #: includes/class-gravityview-settings.php:346
 msgid "Delete all GravityView content and settings"
-msgstr ""
+msgstr "Apagar todas as configurações e conteúdo do GravityView"
 
 #: includes/class-gravityview-settings.php:354
 msgid "Uninstall %s"
-msgstr ""
+msgstr "Desinstalar %s"
 
 #: includes/class-gravityview-settings.php:393
 msgid "GravityView Settings"
-msgstr ""
+msgstr "Opções do GravityView"
 
 #: includes/class-gravityview-settings.php:437
 msgid ""
 "Your GravityView license %s. This means you&rsquo;re missing out on updates "
 "and support! %sActivate your license%s or %sget a license here%s."
-msgstr ""
+msgstr "A sua licença do GravityView %s. Isto significa que você está perdendo atualizações do plugin e suporte! %sAtive a sua licença%s ou %scompre uma aqui%s."
 
 #: includes/class-gravityview-settings.php:444
 msgid "Inactive License"
-msgstr ""
+msgstr "Licença inativa"
 
 #: includes/class-gravityview-settings.php:451
 msgid "Expired License"
-msgstr ""
+msgstr "Licença expirada"
 
 #: includes/class-gravityview-settings.php:456
 msgid "Invalid License"
-msgstr ""
+msgstr "Licença inválida"
 
 #: includes/class-gravityview-settings.php:457
 msgid "is invalid"
-msgstr ""
+msgstr "esta inválida"
 
 #: includes/class-gravityview-settings.php:460
 msgid "is inactive"
-msgstr ""
+msgstr "esta inativa"
 
 #: includes/class-gravityview-settings.php:461
 #: includes/class-gravityview-settings.php:470
 msgid "Activate your license key below."
-msgstr ""
+msgstr "Ative sua licença abaixo."
 
 #: includes/class-gravityview-settings.php:469
 msgid "has not been activated"
-msgstr ""
+msgstr "não foi ativada"
 
 #: includes/class-gravityview-settings.php:691
 #: includes/class-gravityview-settings.php:724
 msgid "Update Settings"
-msgstr ""
+msgstr "Atualizar opções"
 
 #: includes/class-gravityview-settings.php:792
 #: includes/class-gv-license-handler.php:540
 msgid "You don't have the ability to edit plugin settings."
-msgstr ""
+msgstr "Você não possui a habilidade de editar configurações do plugin."
 
 #: includes/class-gravityview-settings.php:818
 msgid ""
 "The license key you entered has been saved, but not activated. Please "
 "activate the license."
-msgstr ""
+msgstr "A licença que você inseriu foi salva, mas não ativada. Ative a sua licença."
 
 #: includes/class-gravityview-settings.php:833
 msgid "Required"
-msgstr ""
+msgstr "Obrigatório"
 
 #: includes/class-gravityview-settings.php:850
 msgid "License Key"
-msgstr ""
+msgstr "Chave de licença"
 
 #: includes/class-gravityview-settings.php:851
 msgid ""
 "Enter the license key that was sent to you on purchase. This enables plugin "
 "updates &amp; support."
-msgstr ""
+msgstr "Digite a chave de licença que lhe foi enviada durante a compra. Isto irá habilitar as atualizações e suporte."
 
 #: includes/class-gravityview-settings.php:853
 #: includes/class-gv-license-handler.php:120
 #: includes/class-gv-license-handler.php:134
 #: includes/class-gv-license-handler.php:542
 msgid "Verifying license&hellip;"
-msgstr ""
+msgstr "Verificando a licença"
 
 #: includes/class-gravityview-settings.php:872
 msgid "Support Email"
-msgstr ""
+msgstr "Email de suporte"
 
 #: includes/class-gravityview-settings.php:873
 msgid ""
 "In order to provide responses to your support requests, please provide your "
 "email address."
-msgstr ""
+msgstr "Para que possamos lhe responder, informe um endereço de email."
 
 #: includes/class-gravityview-settings.php:882
 msgid "Show Support Port?"
-msgstr ""
+msgstr "Mostrar o ícone de suporte?"
 
 #: includes/class-gravityview-settings.php:895
 msgid "The Support Port looks like this."
-msgstr ""
+msgstr "O ícone de suporte se parece com isto."
 
 #: includes/class-gravityview-settings.php:895
 msgid ""
 "The Support Port provides quick access to how-to articles and tutorials. For"
 " administrators, it also makes it easy to contact support."
-msgstr ""
+msgstr "O ícone de suporte provém um acesso rápido aos artigos e tutoriais. Para os administradores tornar fácil contatar o suporte."
 
 #: includes/class-gravityview-settings.php:896
 msgid "Show the Support Port on GravityView pages?"
-msgstr ""
+msgstr "Mostrar o ícone e suporte nas páginas do GravityView?"
 
 #: includes/class-gravityview-settings.php:901
 msgid "No-Conflict Mode"
-msgstr ""
+msgstr "Modo sem conflito"
 
 #: includes/class-gravityview-settings.php:914
 msgid ""
 "Set this to ON to prevent extraneous scripts and styles from being printed "
 "on GravityView admin pages, reducing conflicts with other plugins and "
 "themes."
-msgstr ""
+msgstr "Ligue esta opção para prevenir que scripts e estilos CSS de terceiros não sejam inseridos nas páginas de administração do GravityView, reduzindo assim conflitos com outros plugins e temas."
 
 #: includes/class-gravityview-settings.php:914
 msgid "If your Edit View tabs are ugly, enable this setting."
-msgstr ""
+msgstr "Se suas abas de edição da Visualização estão feias, habilite esta opção."
 
 #: includes/class-gravityview-settings.php:938
 msgid "You are running GravityView version %s"
-msgstr ""
+msgstr "Você está rodando a versão %s do GravityView"
 
 #: includes/class-gv-license-handler.php:119
 #: includes/class-gv-license-handler.php:543
 msgid "Activate License"
-msgstr ""
+msgstr "Ativar licença"
 
 #: includes/class-gv-license-handler.php:126
 #: includes/class-gv-license-handler.php:544
 msgid "Deactivate License"
-msgstr ""
+msgstr "Desativar licença"
 
 #: includes/class-gv-license-handler.php:127
 msgid "Deactivating license&hellip;"
-msgstr ""
+msgstr "Desativando licença"
 
 #: includes/class-gv-license-handler.php:133
 msgid "Check License"
-msgstr ""
+msgstr "Verificando licença"
 
 #: includes/class-gv-license-handler.php:319
 msgid "License Details:"
-msgstr ""
+msgstr "Detalhes da licença:"
 
 #: includes/class-gv-license-handler.php:338
 msgid "Access your GravityView account"
-msgstr ""
+msgstr "Acesse sua conta do GravityView"
 
 #: includes/class-gv-license-handler.php:339
 msgid "This development site does not count toward license activation limits"
-msgstr ""
+msgstr "Este site em desenvolvimento não conta para o limite de ativações"
 
 #: includes/class-gv-license-handler.php:341
 msgid "License level: %s"
-msgstr ""
+msgstr "Nível de licença: %s"
 
 #: includes/class-gv-license-handler.php:343
 msgid "Activations: %d of %s sites"
-msgstr ""
+msgstr "Ativados %s de %s sites"
 
 #: includes/class-gv-license-handler.php:344
 msgid "Renew on: %s"
-msgstr ""
+msgstr "Renovar em: %s"
 
 #: includes/class-gv-license-handler.php:379
 msgid "Upgrades available:"
-msgstr ""
+msgstr "Upgrades disponíveis:"
 
 #: includes/class-gv-license-handler.php:396
 msgid "Get access to Extensions"
-msgstr ""
+msgstr "Obtenha acesso as extensões"
 
 #: includes/class-gv-license-handler.php:400
 msgid "Get access to Entry Importer and other Premium plugins"
-msgstr ""
+msgstr "Obtenha acesso ao Importador de Entradas e outros plugins Premium"
 
 #: includes/class-gv-license-handler.php:528
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: includes/class-gv-license-handler.php:529
 msgid "There was an error processing the request."
-msgstr ""
+msgstr "Ocorreu um erro ao processar esta requisição."
 
 #: includes/class-gv-license-handler.php:530
 msgid ""
 "Could not deactivate the license. The license key you attempted to "
 "deactivate may not be active or valid."
-msgstr ""
+msgstr "Não foi possível desativar esta licença. A chave da licença ao qual você tentou desativar talvez não esteja ativo ou válido."
 
 #: includes/class-gv-license-handler.php:531
 #: includes/class-gv-license-handler.php:532
 msgid "The license key is valid, but it has not been activated for this site."
-msgstr ""
+msgstr "A chave de licença é válida, mas não foi ativada para este site."
 
 #: includes/class-gv-license-handler.php:533
 msgid "Invalid: this license has reached its activation limit."
-msgstr ""
+msgstr "Inválida: esta licença atingiu o limite de ativações."
 
 #: includes/class-gv-license-handler.php:533
 msgid ""
 "You can manage license activations %son your GravityView account page%s."
-msgstr ""
+msgstr "Você pode gerenciar as ativações da licença na sua %conta do GravityView%s."
 
 #: includes/class-gv-license-handler.php:534
 msgid "The license has been deactivated."
-msgstr ""
+msgstr "A licença foi desativada."
 
 #: includes/class-gv-license-handler.php:535
 msgid "The license key is valid and active."
-msgstr ""
+msgstr "A chave de licença está válida e ativa."
 
 #: includes/class-gv-license-handler.php:536
 msgid "The license key entered is invalid."
-msgstr ""
+msgstr "A chave de licença digitada é inválida."
 
 #: includes/class-gv-license-handler.php:537
 msgid "Invalid license key."
-msgstr ""
+msgstr "Chave de licença inválida."
 
 #: includes/class-gv-license-handler.php:538
 msgid "This license key has been revoked."
-msgstr ""
+msgstr "Esta chave de licença foi desativada."
 
 #: includes/class-gv-license-handler.php:539
 msgid ""
 "This license key has expired. %sRenew your license on the GravityView "
 "website%s to receive updates and support."
-msgstr ""
+msgstr "Esta chave de licença expirou. %Renove sua licença no site do GravityView%s para obter atualizações e suporte."
 
 #: includes/class-gv-license-handler.php:545
 msgid "Verify License"
-msgstr ""
+msgstr "Verificar licença"
 
 #: includes/class-oembed.php:202
 msgid "This will look better when it is embedded."
-msgstr ""
+msgstr "Isto irá funcionar melhor se você anexar a uma página."
 
 #: includes/class-oembed.php:203
 msgid ""
 "Styles don't get loaded when being previewed, so the content below will look"
 " strange. Don't be concerned!"
-msgstr ""
+msgstr "Os estilos não são carregados enquanto você estiver vendo um preview, por isto o conteúdo abaixo poderá parecer estranho. Não fique preocupado!"
 
 #: includes/class-oembed.php:253
 msgid "Embed Entry %d"
-msgstr ""
+msgstr "Entrada anexa %d"
 
 #: includes/class-oembed.php:255
 msgid "This entry will be displayed as it is configured in View %d"
-msgstr ""
+msgstr "Esta entrada será mostrada da forma configurada na Visualização %d"
 
 #: includes/class-post-types.php:64
 msgid "Parent View:"
-msgstr ""
+msgstr "Visualização mãe:"
 
 #: includes/class-post-types.php:65
 msgid "All Views"
-msgstr ""
+msgstr "Todas as Visualizações"
 
 #: includes/class-post-types.php:67
 msgid "Add New View"
-msgstr ""
+msgstr "Adicionar nova Visualização"
 
 #: includes/class-post-types.php:68
 msgid "New View"
-msgstr ""
+msgstr "Nova Visualização"
 
 #: includes/class-post-types.php:70
 msgid "Update View"
-msgstr ""
+msgstr "Atualizar Visualização"
 
 #: includes/class-post-types.php:71
 msgid "Search Views"
-msgstr ""
+msgstr "Procurar Visualizações"
 
 #: includes/class-post-types.php:74
 msgid "Filter Views list"
-msgstr ""
+msgstr "Filtrar a lista de Visualizações"
 
 #: includes/class-post-types.php:75
 msgid "Views list navigation"
-msgstr ""
+msgstr "Navegação em lista da Visualizações"
 
 #: includes/class-post-types.php:76
 msgid "Views list"
-msgstr ""
+msgstr "Lista de Visualizações"
 
 #: includes/class-post-types.php:77
 msgid "See Views"
-msgstr ""
+msgstr "Ver Visualizações"
 
 #: includes/class-post-types.php:78
 msgid "View Attributes"
-msgstr ""
+msgstr "Ver atributos"
 
 #: includes/class-post-types.php:81
 msgid "view"
-msgstr ""
+msgstr "visualizar"
 
 #: includes/class-post-types.php:82
 msgid "Create views based on a Gravity Forms form"
-msgstr ""
+msgstr "Criar Visualizações baseadas em um formulário do Gravity Forms"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:115
 msgid "Delete Link Text"
-msgstr ""
+msgstr "Apagar texto do link"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:123
 msgid "Allow the following users to delete the entry:"
-msgstr ""
+msgstr "Autorizar os seguintes usuários a apagar a entrada:"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:148
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
-msgstr ""
+msgstr "Um link para apagar a entrada. Respeita as permissões de apagar entradas."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:292
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:412
 msgid "Delete"
-msgstr ""
+msgstr "Apagar"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:366
 msgid "The entry does not exist."
-msgstr ""
+msgstr "A entrada não existe."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:439
 msgid "Moving the entry to the trash failed."
-msgstr ""
+msgstr "A movimentação da entrada para a lixeira falhou."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:537
 msgid "Are you sure you want to delete this entry? This cannot be undone."
-msgstr ""
+msgstr "Você tem certeza que quer apagar esta entrada? Isto não poderá ser desfeito."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:564
 msgid "The link to delete this entry is not valid; it may have expired."
-msgstr ""
+msgstr "O link para apagar esta entrada não é válido, ele pode ter expirado."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:568
 msgid "You do not have permission to delete this entry."
-msgstr ""
+msgstr "Você não possui permissão para apagar esta entrada."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:573
 msgid "The entry is already in the trash."
-msgstr ""
+msgstr "A entrada já está na lixeira."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:575
 msgid "You cannot delete the entry; it is already in the trash."
-msgstr ""
+msgstr "Você não pode apagar a entrada, ela já está na lixeira."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:711
 msgid "There was an error deleting the entry: %s"
-msgstr ""
+msgstr "Ocorreu um erro ao apagar a entrada: %s"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:715
 msgid "The entry was successfully moved to the trash."
-msgstr ""
+msgstr "A entrada foi movida com sucesso para a lixeira."
 
 #: includes/extensions/delete-entry/class-delete-entry.php:718
 msgid "The entry was successfully deleted."
-msgstr ""
+msgstr "A entrada foi apagada com sucesso."
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:60
 msgid "A link to edit the entry. Visible based on View settings."
-msgstr ""
+msgstr "Link para editar a entrada. Visível basedo nas opções da Visualização."
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:114
 msgid "Edit Link Text"
-msgstr ""
+msgstr "Texto do link para edição"
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:133
 msgid "Limiting Edit Access"
-msgstr ""
+msgstr "Limitar o acesso a edição"
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:134
 msgid ""
 "Change this setting if you don't want the user who created the entry to be "
 "able to edit this field."
-msgstr ""
+msgstr "Modifique esta opção se você não quer que o criador da entrada possa editar este campo."
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:159
 #: includes/fields/class-gravityview-field.php:408
 msgid "Open link in a new tab or window?"
-msgstr ""
+msgstr "Abrir o link em uma nova aba ou janela?"
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:172
 msgid "Make field editable to:"
-msgstr ""
+msgstr "Tornar o campo editável para:"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:901
 msgid "There was a problem with your submission."
-msgstr ""
+msgstr "Houve um problema com a sua submissão."
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:901
 msgid "Errors have been highlighted below."
-msgstr ""
+msgstr "Os erros foram realçados abaixo."
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:907
 msgid "Entry Updated. %sReturn to Entry%s"
-msgstr ""
+msgstr "Entrada alterada. %sRetornar a entrada%s"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1046
 msgid "You don&rsquo;t have permission to edit this post."
-msgstr ""
+msgstr "Você não possui permissão para editar este post."
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1053
 msgid "This field is not editable; the post no longer exists."
-msgstr ""
+msgstr "Este campo não é editável, o post não existe mais."
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1428
 msgid "Maximum number of files reached"
-msgstr ""
+msgstr "Número máximo de arquivos atingido"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1904
 msgid "The link to edit this entry is not valid; it may have expired."
-msgstr ""
+msgstr "O link para editar esta entrada não é válido. Ele pode ter expirado."
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1914
 msgid "You cannot edit the entry; it is in the trash."
-msgstr ""
+msgstr "Você não pode editar esta entrada. Ela está na lixeira."
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1954
 msgid "You do not have permission to edit this field."
-msgstr ""
+msgstr "Você não tem permissão para editar esta entrada."
 
 #: includes/extensions/edit-entry/partials/form-buttons.php:32
 msgid "Update"
-msgstr ""
+msgstr "Alterar"
 
 #: includes/extensions/edit-entry/partials/inline-javascript.php:9
 msgid ""
 "Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to "
 "delete"
-msgstr ""
+msgstr "Deseja apagar este arquivo permanentemente? 'Cancelar' para parar. 'OK' para apagar"
 
 #: includes/extensions/edit-entry/partials/inline-javascript.php:19
 msgid "Ajax error while deleting field."
-msgstr ""
+msgstr "Erro de ajax ao deletar campo."
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:101
 msgid "Entry Notes"
-msgstr ""
+msgstr "Notas de entrada"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:103
 msgid "Display, add, and delete notes for an entry."
-msgstr ""
+msgstr "Mostra, adiciona, e apaga notas de uma entrada."
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:367
 msgid "Note Settings"
-msgstr ""
+msgstr "Opções de notas"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:371
 msgid "Display notes?"
-msgstr ""
+msgstr "Mostrar notas?"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:374
 msgid "Display notes to users who are not logged-in?"
-msgstr ""
+msgstr "Mostrar notas para usuários não logados?"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:378
 msgid "Enable adding notes?"
-msgstr ""
+msgstr "Habilitar adição de notas?"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:381
 msgid "Allow emailing notes?"
-msgstr ""
+msgstr "Permitir enviar notas?"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:385
 msgid "Allow deleting notes?"
-msgstr ""
+msgstr "Permitir apagar notas?"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:409
 msgid "Add Note"
-msgstr ""
+msgstr "Adicionar nota"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:410
 msgid "Note added."
-msgstr ""
+msgstr "Nota adicionada."
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:411
 msgid "Note Content"
-msgstr ""
+msgstr "Conteúdo da nota"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:413
 msgid "Are you sure you want to delete the selected notes?"
-msgstr ""
+msgstr "Tem certeza que quer apagar as notas selecionadas?"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:414
 msgid "Notes for this entry"
-msgstr ""
+msgstr "Notas desta entrada"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:415
 msgid "Toggle all notes"
-msgstr ""
+msgstr "Seleciona todas as notas"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:416
 msgid "There are no notes."
-msgstr ""
+msgstr "Não há notas."
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:417
 msgid "Processing&hellip;"
-msgstr ""
+msgstr "Processando..."
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:418
 msgid "Other email address"
-msgstr ""
+msgstr "Outro endereço de email"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:422
 msgid "Email subject"
-msgstr ""
+msgstr "Assunto do email"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:423
 msgid "New entry note"
-msgstr ""
+msgstr "Nova nota na entrada"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:424
 msgid "This note was sent from {url}"
-msgstr ""
+msgstr "Esta nota foi enviada de {url}"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:425
 msgid "Also email this note to"
-msgstr ""
+msgstr "Envie também esta nota para"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:426
 msgid "There was an error adding the note."
-msgstr ""
+msgstr "Houve um erro ao adicionar a nota."
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:429
 msgid "You don't have the ability to delete notes."
-msgstr ""
+msgstr "Você não possui permissão para apagar notas."
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:430
 msgid "You don't have the ability to add notes."
-msgstr ""
+msgstr "Você não possui permissão para adicionar notas."
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:467
 msgid "added on {date_created_formatted}"
-msgstr ""
+msgstr "adicionada em {date_created_formatted}"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:535
 msgid "The note is empty."
-msgstr ""
+msgstr "A nota está vazia."
 
 #: includes/fields/class-gravityview-field-address.php:20
 msgid "Address"
-msgstr ""
+msgstr "Endereço"
 
 #: includes/fields/class-gravityview-field-address.php:268
 msgid "Show Map Link:"
-msgstr ""
+msgstr "Mostrar link do mapa:"
 
 #: includes/fields/class-gravityview-field-address.php:269
 msgid "Display a \"Map It\" link below the address"
-msgstr ""
+msgstr "Mostrar um link \"Mostrar no mapa\" abaixo do endereço"
 
 #: includes/fields/class-gravityview-field-approval.php:23
 msgid "Approve Entries"
-msgstr ""
+msgstr "Aprovar entradas"
 
 #: includes/fields/class-gravityview-field-approval.php:25
 msgid "Approve and reject entries from the View."
-msgstr ""
+msgstr "Aprovar e rejeitar entradas na Visualização."
 
 #: includes/fields/class-gravityview-field-calculation.php:23
 msgid "Calculation"
-msgstr ""
+msgstr "Cálculo"
 
 #: includes/fields/class-gravityview-field-captcha.php:19
 msgid "CAPTCHA"
-msgstr ""
+msgstr "CAPTCHA"
 
 #: includes/fields/class-gravityview-field-checkbox.php:19
 #: includes/widgets/search-widget/class-search-widget.php:183
 #: includes/widgets/search-widget/class-search-widget.php:184
 msgid "Checkbox"
-msgstr ""
+msgstr "Checkbox"
 
 #: includes/fields/class-gravityview-field-checkbox.php:46
 #: includes/fields/class-gravityview-field-radio.php:46
 #: includes/fields/class-gravityview-field-select.php:46
 msgid "This input has a label and a value. What should be displayed?"
-msgstr ""
+msgstr "Este campo possui uma etiqueta e um valor. O que você quer mostrar?"
 
 #: includes/fields/class-gravityview-field-checkbox.php:49
 #: includes/fields/class-gravityview-field-checkbox.php:57
 msgid "A check mark, if the input is checked"
-msgstr ""
+msgstr "Um símbolo de check, se o campo estiver selecionado"
 
 #: includes/fields/class-gravityview-field-checkbox.php:50
 #: includes/fields/class-gravityview-field-radio.php:48
 #: includes/fields/class-gravityview-field-select.php:48
 msgid "Value of the input"
-msgstr ""
+msgstr "Valor do campo"
 
 #: includes/fields/class-gravityview-field-checkbox.php:51
 #: includes/fields/class-gravityview-field-checkbox.php:58
 #: includes/fields/class-gravityview-field-radio.php:49
 #: includes/fields/class-gravityview-field-select.php:49
 msgid "Label of the input"
-msgstr ""
+msgstr "Etiqueta do campo"
 
 #: includes/fields/class-gravityview-field-checkbox.php:65
 #: includes/fields/class-gravityview-field-radio.php:45
 #: includes/fields/class-gravityview-field-select.php:45
 msgid "What should be displayed:"
-msgstr ""
+msgstr "O que deveria ser mostrado:"
 
 #: includes/fields/class-gravityview-field-created-by.php:19
 msgid "Created By"
-msgstr ""
+msgstr "Criado por"
 
 #: includes/fields/class-gravityview-field-created-by.php:20
 msgid "Submitted by:"
-msgstr ""
+msgstr "Submetido por:"
 
 #: includes/fields/class-gravityview-field-created-by.php:38
 msgid "Entry Creator: Display Name"
-msgstr ""
+msgstr "Criador da entrada: Nome"
 
 #: includes/fields/class-gravityview-field-created-by.php:42
 msgid "Entry Creator: Email"
-msgstr ""
+msgstr "Criador da entrada: Email"
 
 #: includes/fields/class-gravityview-field-created-by.php:46
 msgid "Entry Creator: Username"
-msgstr ""
+msgstr "Criador da entrada: Nome de usuário"
 
 #: includes/fields/class-gravityview-field-created-by.php:50
 msgid "Entry Creator: User ID"
-msgstr ""
+msgstr "Criador da entrada: ID do usuário"
 
 #: includes/fields/class-gravityview-field-created-by.php:54
 msgid "Entry Creator: Roles"
-msgstr ""
+msgstr "Criador da entrada: Função"
 
 #: includes/fields/class-gravityview-field-created-by.php:123
 msgid "User Format"
-msgstr ""
+msgstr "Formato do usuário"
 
 #: includes/fields/class-gravityview-field-created-by.php:124
 msgid "How should the User information be displayed?"
-msgstr ""
+msgstr "Como a informação do usuário deveria ser mostrada?"
 
 #: includes/fields/class-gravityview-field-created-by.php:126
 msgid "Display Name (Example: \"Ellen Ripley\")"
-msgstr ""
+msgstr "Nome (Exemplo: \"Ellen Ripley\")"
 
 #: includes/fields/class-gravityview-field-created-by.php:127
 msgid "Username (Example: \"nostromo\")"
-msgstr ""
+msgstr "Nome de usuário (Exemplo: \"nostromo\")"
 
 #: includes/fields/class-gravityview-field-created-by.php:128
 msgid "User ID # (Example: 426)"
-msgstr ""
+msgstr "ID do usuário (Exemplo: 426) "
 
 #: includes/fields/class-gravityview-field-creditcard.php:19
 msgid "Credit Card"
-msgstr ""
+msgstr "Cartão de Crédito"
 
 #: includes/fields/class-gravityview-field-currency.php:27
 msgid "Currency"
-msgstr ""
+msgstr "Moeda"
 
 #: includes/fields/class-gravityview-field-custom.php:49
 msgid ""
 "Enter text or HTML. Also supports shortcodes. You can show or hide data "
 "using the %s shortcode (%slearn more%s)."
-msgstr ""
+msgstr "Digite texto ou HTML. Também suporta shortcodes. Você pode mostrar ou ocultar dados usando %s shortcode (%ssaiba mais%s)."
 
 #: includes/fields/class-gravityview-field-custom.php:57
 #: includes/widgets/class-gravityview-widget-custom-content.php:39
 msgid "Automatically add paragraphs to content"
-msgstr ""
+msgstr "Adicionar automaticamente parágrados ao conteúdo"
 
 #: includes/fields/class-gravityview-field-custom.php:58
 #: includes/widgets/class-gravityview-widget-custom-content.php:40
 msgid ""
 "Wrap each block of text in an HTML paragraph tag (recommended for text)."
-msgstr ""
+msgstr "Encapsular cada bloco de texto em um tag HTML de parágrafo (recomendado para texto)."
 
 #: includes/fields/class-gravityview-field-date.php:20
 #: includes/widgets/search-widget/class-search-widget.php:179
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: includes/fields/class-gravityview-field-email.php:22
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: includes/fields/class-gravityview-field-email.php:39
 msgid "Link the Email Address"
-msgstr ""
+msgstr "Colocar link no endereço de email"
 
 #: includes/fields/class-gravityview-field-email.php:40
 msgid "Clicking the link will generate a new email."
-msgstr ""
+msgstr "Ao clicar no link irá gerar um novo email."
 
 #: includes/fields/class-gravityview-field-email.php:44
 msgid "Email Subject"
-msgstr ""
+msgstr "Assunto do email"
 
 #: includes/fields/class-gravityview-field-email.php:46
 msgid "Set the default email subject line."
-msgstr ""
+msgstr "Define o assunto padrão do email."
 
 #: includes/fields/class-gravityview-field-email.php:51
 msgid "Email Body"
-msgstr ""
+msgstr "Corpo do email"
 
 #: includes/fields/class-gravityview-field-email.php:53
 msgid "Set the default email content."
-msgstr ""
+msgstr "Define o conteúdo padrão do corpo do email."
 
 #: includes/fields/class-gravityview-field-email.php:60
 msgid "Encrypt Email Address"
-msgstr ""
+msgstr "Encriptar o endereço de email"
 
 #: includes/fields/class-gravityview-field-email.php:61
 msgid ""
 "Make it harder for spammers to get email addresses from your entries. Email "
 "addresses will not be visible with Javascript disabled."
-msgstr ""
+msgstr "Torna mais difícil para os spammers capturarem endereços de email nas suas entradas. Endereços de email não serão visíveis com o Javascript desligado."
 
 #: includes/fields/class-gravityview-field-entry-link.php:49
 #: includes/fields/class-gravityview-field-source-url.php:43
 #: includes/fields/class-gravityview-field-website.php:40
 msgid "Link Text:"
-msgstr ""
+msgstr "Texto do link:"
 
 #: includes/fields/class-gravityview-field-fileupload.php:17
 msgid "File Upload"
-msgstr ""
+msgstr "Upload de arquivo"
 
 #: includes/fields/class-gravityview-field-fileupload.php:31
 msgid "Display as a Link:"
-msgstr ""
+msgstr "Mostrar como um link:"
 
 #: includes/fields/class-gravityview-field-fileupload.php:32
 msgid "Display the uploaded files as links, rather than embedded content."
-msgstr ""
+msgstr "Mostrar os arquivos carregados como links ao invés de conteúdo anexo."
 
 #: includes/fields/class-gravityview-field-gquiz_score.php:15
 msgid "Quiz Score"
-msgstr ""
+msgstr "Resultado do Quiz"
 
 #: includes/fields/class-gravityview-field-gquiz_score.php:28
 msgid "Show Max Score?"
-msgstr ""
+msgstr "Mostrar nota máxima?"
 
 #: includes/fields/class-gravityview-field-gquiz_score.php:29
 msgid ""
 "Display score as the a fraction: \"[score]/[max score]\". If unchecked, will"
 " display score."
-msgstr ""
+msgstr "Mostrar a nota como uma fração: \"[nota]/[nota máxima]\". Se não selecionado, irá mostrar a nota."
 
 #: includes/fields/class-gravityview-field-hidden.php:19
 msgid "Hidden"
-msgstr ""
+msgstr "Oculto"
 
 #: includes/fields/class-gravityview-field-html.php:24
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: includes/fields/class-gravityview-field-is-approved.php:40
 #: includes/fields/class-gravityview-field-is-approved.php:120
 msgid "Approval Status"
-msgstr ""
+msgstr "Status de aprovação"
 
 #: includes/fields/class-gravityview-field-is-approved.php:41
 msgid "Display the entry's current approval status."
-msgstr ""
+msgstr "Mostra o status atual de aprovação da entrada."
 
 #: includes/fields/class-gravityview-field-is-approved.php:42
 msgid "Approval:"
-msgstr ""
+msgstr "Aprovação:"
 
 #: includes/fields/class-gravityview-field-is-approved.php:173
 msgid "Approved Label"
-msgstr ""
+msgstr "Etiqueta de aprovado"
 
 #: includes/fields/class-gravityview-field-is-approved.php:174
 msgid "If the entry is approved, display this value"
-msgstr ""
+msgstr "Se a entrada estiver aprovada, mostrar o valor"
 
 #: includes/fields/class-gravityview-field-is-approved.php:180
 msgid "Disapproved Label"
-msgstr ""
+msgstr "Etiqueta de desaprovada"
 
 #: includes/fields/class-gravityview-field-is-approved.php:181
 msgid "If the entry is not approved, display this value"
-msgstr ""
+msgstr "Se a entrada não estiver aprovada, mostrar o valor"
 
 #: includes/fields/class-gravityview-field-is-approved.php:187
 msgid "Unapproved Label"
-msgstr ""
+msgstr "Etiqueta de não aprovação"
 
 #: includes/fields/class-gravityview-field-is-approved.php:188
 msgid ""
 "If the entry has not yet been approved or disapproved, display this value"
-msgstr ""
+msgstr "Se a entrada ainda não foi aprovada ou desaprovada, mostrar o valor"
 
 #: includes/fields/class-gravityview-field-is-fulfilled.php:37
 msgid "Is Fulfilled"
@@ -2241,102 +2242,102 @@ msgstr "é cumprida"
 
 #: includes/fields/class-gravityview-field-is-fulfilled.php:81
 msgid "Not Fulfilled"
-msgstr ""
+msgstr "Não preenchido"
 
 #: includes/fields/class-gravityview-field-is-fulfilled.php:85
 msgid "Fulfilled"
-msgstr ""
+msgstr "Preenchido"
 
 #: includes/fields/class-gravityview-field-list.php:38
 msgid "List"
-msgstr ""
+msgstr "Lista"
 
 #: includes/fields/class-gravityview-field-multiselect.php:19
 msgid "Multi Select"
-msgstr ""
+msgstr "Multipla seleção"
 
 #: includes/fields/class-gravityview-field-name.php:17
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: includes/fields/class-gravityview-field-number.php:25
 msgid "Number"
-msgstr ""
+msgstr "Número"
 
 #: includes/fields/class-gravityview-field-number.php:33
 msgid "Format number?"
-msgstr ""
+msgstr "Formatar número?"
 
 #: includes/fields/class-gravityview-field-number.php:34
 msgid "Display numbers with thousands separators."
-msgstr ""
+msgstr "Mostrar números com separador de milhar."
 
 #: includes/fields/class-gravityview-field-number.php:40
 msgid "Decimals"
-msgstr ""
+msgstr "Decimais"
 
 #: includes/fields/class-gravityview-field-number.php:41
 msgid ""
 "Precision of the number of decimal places. Leave blank to use existing "
 "precision."
-msgstr ""
+msgstr "Precisão das casas decimais. Deixe em branco para usar a precisão atual."
 
 #: includes/fields/class-gravityview-field-other-entries.php:47
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:365
 msgid "Entry link text (required)"
-msgstr ""
+msgstr "Texto do link da entrada (requerido)"
 
 #: includes/fields/class-gravityview-field-other-entries.php:48
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:271
 msgid "Entry #{entry_id}"
-msgstr ""
+msgstr "Entrada #{entry_id}"
 
 #: includes/fields/class-gravityview-field-other-entries.php:54
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:372
 msgid "Text or HTML to display after the link (optional)"
-msgstr ""
+msgstr "Texto ou HTML para mostrar após o link (opcional)"
 
 #: includes/fields/class-gravityview-field-other-entries.php:55
 msgid "This content will be displayed below each entry link."
-msgstr ""
+msgstr "Este conteúdo será mostrado abaixo de cada link para a entrada."
 
 #: includes/fields/class-gravityview-field-other-entries.php:63
 msgid "Entries to Display"
-msgstr ""
+msgstr "Entradas a mostrar"
 
 #: includes/fields/class-gravityview-field-other-entries.php:64
 msgid "What is the maximum number of entries that should be shown?"
-msgstr ""
+msgstr "Qual o número máximo de entradas para mostrar?"
 
 #: includes/fields/class-gravityview-field-other-entries.php:71
 msgid "Hide if no entries"
-msgstr ""
+msgstr "Esconder se não houver entradas"
 
 #: includes/fields/class-gravityview-field-other-entries.php:72
 msgid "Don't display this field if the entry creator has no other entries"
-msgstr ""
+msgstr "Não mostrar este campo se o criador da entrada não possuir outras entradas"
 
 #: includes/fields/class-gravityview-field-other-entries.php:78
 msgid "No Entries Text"
-msgstr ""
+msgstr "Texto para nenhuma entrada"
 
 #: includes/fields/class-gravityview-field-other-entries.php:79
 msgid ""
 "The text that is shown if the entry creator has no other entries (and \"Hide"
 " if no entries\" is disabled)."
-msgstr ""
+msgstr "O texto que é mostrado se o criador da entrada não possuir outras entradas (e se a opção \"Esconder se não houver entradas\" estiver desligada)."
 
 #: includes/fields/class-gravityview-field-other-entries.php:80
 msgid "This user has no other entries."
-msgstr ""
+msgstr "Este usuário não possui outras entradas."
 
 #: includes/fields/class-gravityview-field-page.php:19
 msgid "Page"
-msgstr ""
+msgstr "Página"
 
 #: includes/fields/class-gravityview-field-password.php:20
 msgid "Password"
-msgstr ""
+msgstr "Senha"
 
 #: includes/fields/class-gravityview-field-payment-amount.php:27
 msgid "Payment Amount"
@@ -2348,7 +2349,7 @@ msgstr "Data de pagamento"
 
 #: includes/fields/class-gravityview-field-payment-date.php:30
 msgid "The date the payment was received."
-msgstr ""
+msgstr "A data em que o pagamento foi recebido."
 
 #: includes/fields/class-gravityview-field-payment-method.php:27
 msgid "Payment Method"
@@ -2356,7 +2357,7 @@ msgstr "Método de pagamento"
 
 #: includes/fields/class-gravityview-field-payment-method.php:28
 msgid "The way the entry was paid for (ie \"Credit Card\", \"PayPal\", etc.)"
-msgstr ""
+msgstr "A forma com que a entrada foi paga (ex \"Cartão de Crédito\", \"PayPal\", etc.)"
 
 #: includes/fields/class-gravityview-field-payment-status.php:25
 msgid "Payment Status"
@@ -2366,109 +2367,109 @@ msgstr "Status do pagamento"
 msgid ""
 "The current payment status of the entry (ie \"Processing\", \"Failed\", "
 "\"Cancelled\", \"Approved\")."
-msgstr ""
+msgstr "O status atual do pagamento da entrada (ex \"Processando\", \"Falhou\",\"Cancelado\",\"Aprovado\")."
 
 #: includes/fields/class-gravityview-field-phone.php:19
 msgid "Phone"
-msgstr ""
+msgstr "Fone"
 
 #: includes/fields/class-gravityview-field-phone.php:44
 msgid "Make Phone Number Clickable"
-msgstr ""
+msgstr "Tornar o número de telefone clicável"
 
 #: includes/fields/class-gravityview-field-phone.php:45
 msgid "Allow dialing a number by clicking it?"
-msgstr ""
+msgstr "Permitir discar o número ao clicar nele?"
 
 #: includes/fields/class-gravityview-field-post-category.php:19
 msgid "Post Category"
-msgstr ""
+msgstr "Categoria do post"
 
 #: includes/fields/class-gravityview-field-post-content.php:19
 msgid "Post Content"
-msgstr ""
+msgstr "Conteúdo do post"
 
 #: includes/fields/class-gravityview-field-post-custom-field.php:19
 msgid "Post Custom Field"
-msgstr ""
+msgstr "Campo customizável do post"
 
 #: includes/fields/class-gravityview-field-post-excerpt.php:19
 msgid "Post Excerpt"
-msgstr ""
+msgstr "Resumo do post"
 
 #: includes/fields/class-gravityview-field-post-image.php:20
 msgid "Post Image"
-msgstr ""
+msgstr "Imagem do post"
 
 #: includes/fields/class-gravityview-field-post-tags.php:22
 msgid "Post Tags"
-msgstr ""
+msgstr "Tags do post"
 
 #: includes/fields/class-gravityview-field-post-title.php:22
 msgid "Post Title"
-msgstr ""
+msgstr "Título do post"
 
 #: includes/fields/class-gravityview-field-quiz.php:15
 msgid "Quiz"
-msgstr ""
+msgstr "Quiz"
 
 #: includes/fields/class-gravityview-field-quiz.php:28
 msgid "Show Answer Explanation?"
-msgstr ""
+msgstr "Mostrar explicação da resposta?"
 
 #: includes/fields/class-gravityview-field-quiz.php:29
 msgid "If the field has an answer explanation, show it?"
-msgstr ""
+msgstr "Se o campo possuir uma explicação para a resposta, mostrá-la?"
 
 #: includes/fields/class-gravityview-field-radio.php:19
 msgid "Radio Buttons"
-msgstr ""
+msgstr "Botões de rádio"
 
 #: includes/fields/class-gravityview-field-section.php:22
 msgid "Section"
-msgstr ""
+msgstr "Seção"
 
 #: includes/fields/class-gravityview-field-source-url.php:36
 msgid "Link to URL:"
-msgstr ""
+msgstr "Link para a URL:"
 
 #: includes/fields/class-gravityview-field-source-url.php:37
 msgid "Display as a link to the Source URL"
-msgstr ""
+msgstr "Mostrar como um link para a URL da fonte"
 
 #: includes/fields/class-gravityview-field-source-url.php:44
 msgid "Customize the link text. If empty, the link text will be the the URL."
-msgstr ""
+msgstr "Customizar o texto do link. Se vazio, o texto do link será a URL."
 
 #: includes/fields/class-gravityview-field-text.php:19
 msgid "Single Line Text"
-msgstr ""
+msgstr "Texto de única linha"
 
 #: includes/fields/class-gravityview-field-textarea.php:22
 msgid "Paragraph Text"
-msgstr ""
+msgstr "Parágrafo de texto"
 
 #: includes/fields/class-gravityview-field-textarea.php:36
 msgid "Maximum words shown"
-msgstr ""
+msgstr "Número máximo de palavras exibidas"
 
 #: includes/fields/class-gravityview-field-textarea.php:37
 msgid ""
 "Enter the number of words to be shown. If specified it truncates the text. "
 "Leave it blank if you want to show the full text."
-msgstr ""
+msgstr "Digite o número de palavras a serem exibidas. Se especificado, ele cortará o texto. Deixe-o em branco se você quiser mostrar o texto completo."
 
 #: includes/fields/class-gravityview-field-textarea.php:44
 msgid "Convert text URLs to HTML links"
-msgstr ""
+msgstr "Converter URLs em texto em links HTML"
 
 #: includes/fields/class-gravityview-field-textarea.php:45
 msgid "Converts URI, www, FTP, and email addresses in HTML links"
-msgstr ""
+msgstr "Converte as URI, www, FTP e endereços de email em links HTML"
 
 #: includes/fields/class-gravityview-field-time.php:56
 msgid "Time"
-msgstr ""
+msgstr "Hora"
 
 #: includes/fields/class-gravityview-field-transaction-id.php:27
 msgid "Transaction ID"
@@ -2480,104 +2481,104 @@ msgstr "Tipo Transação"
 
 #: includes/fields/class-gravityview-field-transaction-type.php:38
 msgid "The type of the order: one-time payment or subscription"
-msgstr ""
+msgstr "O tipo de pedido: pagamento único ou assinatura"
 
 #: includes/fields/class-gravityview-field-transaction-type.php:81
 msgid "One-Time Payment"
-msgstr ""
+msgstr "Pagamento único"
 
 #: includes/fields/class-gravityview-field-transaction-type.php:85
 msgid "Subscription"
-msgstr ""
+msgstr "Assinatura"
 
 #: includes/fields/class-gravityview-field-website.php:22
 msgid "Website"
-msgstr ""
+msgstr "Website"
 
 #: includes/fields/class-gravityview-field-website.php:41
 msgid "Define custom link text. Leave blank to display the URL"
-msgstr ""
+msgstr "Definir o texto do link customizável. Deixe em branco para mostrar a URL"
 
 #: includes/fields/class-gravityview-field-website.php:49
 msgid "Shorten Link Display"
-msgstr ""
+msgstr "Encurtar a visualização do link"
 
 #: includes/fields/class-gravityview-field-website.php:50
 msgid "Only show the domain for a URL instead of the whole link."
-msgstr ""
+msgstr "Somente mostrar o domínio de uma URL ao invés do link completo."
 
 #: includes/fields/class-gravityview-field-website.php:51
 msgid "Don&rsquo;t show the full URL, only show the domain."
-msgstr ""
+msgstr "Não mostrar a URL completa, somente o domínio."
 
 #: includes/fields/class-gravityview-field-website.php:57
 msgid "Open link in the same window?"
-msgstr ""
+msgstr "Abrir o link na mesma janela?"
 
 #: includes/fields/class-gravityview-field-workflow_final_status.php:16
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:101
 msgid "Workflow Status"
-msgstr ""
+msgstr "Status do Workflow"
 
 #: includes/fields/class-gravityview-field-workflow_step.php:16
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:96
 msgid "Workflow Step"
-msgstr ""
+msgstr "Passo do Workflow"
 
 #: includes/fields/class-gravityview-field-workflow_step.php:59
 msgid "Workflow Complete"
-msgstr ""
+msgstr "Workflow completo"
 
 #: includes/fields/class-gravityview-field.php:380
 msgid "Link to the post"
-msgstr ""
+msgstr "Link para o post"
 
 #: includes/fields/class-gravityview-field.php:381
 msgid "Link to the post created by the entry."
-msgstr ""
+msgstr "Link para o post criador pela entrada."
 
 #: includes/fields/class-gravityview-field.php:386
 msgid "Link to the category or tag"
-msgstr ""
+msgstr "Link para a categoria ou tag"
 
 #: includes/fields/class-gravityview-field.php:387
 msgid ""
 "Link to the current category or tag. \"Link to single entry\" must be "
 "unchecked."
-msgstr ""
+msgstr "Link para a categoria ou tag atual. \"Link para entrada\" não pode estar selecionado."
 
 #: includes/fields/class-gravityview-field.php:392
 msgid "Use the live post data"
-msgstr ""
+msgstr "Usar os dados atuais do post"
 
 #: includes/fields/class-gravityview-field.php:393
 msgid "Instead of using the entry data, instead use the current post data."
-msgstr ""
+msgstr "Ao invés de usar os dados da entrada, usar do post atual."
 
 #: includes/fields/class-gravityview-field.php:398
 msgid "Override Date Format"
-msgstr ""
+msgstr "Ignorar o formato de data"
 
 #: includes/fields/class-gravityview-field.php:399
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
-msgstr ""
+msgstr "Define como a data é mostrada (usando %sos formatos de data do PHP%s)"
 
 #: includes/lib/EDD_SL_Plugin_Updater.php:181
 msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" "
 "class=\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
-msgstr ""
+msgstr "Há uma nova versão disponível do %1$s. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s\">Ver os detalhes da versão %3$s</a>."
 
 #: includes/lib/EDD_SL_Plugin_Updater.php:188
 msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" "
 "class=\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a "
 "href=\"%4$s\">update now</a>."
-msgstr ""
+msgstr "Há uma nova versão disponível do %1$s. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s\">Ver os detalhes da versão %3$s</a> ou <a href=\"%4$s\">faça o update agora</a>."
 
 #: includes/lib/EDD_SL_Plugin_Updater.php:332
 msgid "You do not have permission to install plugin updates"
-msgstr ""
+msgstr "Você não possui permissão para atualizar plugins"
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:54
 msgid "Quiz Score Total"
@@ -2619,627 +2620,627 @@ msgstr "Mostra se quer aprovar ou rejeitar com base nas configurações de aprov
 
 #: includes/presets/business-data/class-gravityview-preset-business-data.php:24
 msgid "Business Data"
-msgstr ""
+msgstr "Dados de negócio"
 
 #: includes/presets/business-data/class-gravityview-preset-business-data.php:25
 msgid "Display business information in a table."
-msgstr ""
+msgstr "Mostra informações de negócios em uma tabela."
 
 #: includes/presets/business-listings/class-gravityview-preset-business-listings.php:24
 msgid "Business Listings"
-msgstr ""
+msgstr "Registros de negócios"
 
 #: includes/presets/business-listings/class-gravityview-preset-business-listings.php:25
 msgid "Display business profiles."
-msgstr ""
+msgstr "Mostrar perfis de negócios."
 
 #: includes/presets/default-edit/class-gravityview-default-template-edit.php:26
 msgid "Edit Table"
-msgstr ""
+msgstr "Editar tabela"
 
 #: includes/presets/default-edit/class-gravityview-default-template-edit.php:27
 #: includes/presets/default-table/class-gravityview-default-template-table.php:15
 msgid "Display items in a table view."
-msgstr ""
+msgstr "Mostrar itens em uma visuação de tabela."
 
 #: includes/presets/default-edit/class-gravityview-default-template-edit.php:45
 msgid "Visible Edit Fields"
-msgstr ""
+msgstr "Campos editáveis visíveis"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:16
 msgid "List (default)"
-msgstr ""
+msgstr "Lista (padrão)"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:17
 msgid "Display items in a listing view."
-msgstr ""
+msgstr "Mostrar itens em uma visualização de listas."
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:27
 #: includes/presets/default-table/class-gravityview-default-template-table.php:29
 msgid "Link to single entry"
-msgstr ""
+msgstr "Link para a entrada"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:38
 msgid "Listing Title"
-msgstr ""
+msgstr "Título da listagem"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:43
 msgid "Subheading"
-msgstr ""
+msgstr "Sub cabeçalho"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:44
 msgid "Data placed here will be bold."
-msgstr ""
+msgstr "Dados colocados aqui estarão em negrito."
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:50
 msgid "Image"
-msgstr ""
+msgstr "Imagem"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:51
 msgid "Leave empty to remove."
-msgstr ""
+msgstr "Deixe vazio para remover."
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:57
 msgid "Other Fields"
-msgstr ""
+msgstr "Outros campos"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:58
 msgid "Below the subheading, a good place for description and other data."
-msgstr ""
+msgstr "Abaixo do sub cabeçalho, um bom local para a descrição e outros dados."
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:66
 msgid "Footer Left"
-msgstr ""
+msgstr "Rodapé esquerdo"
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:73
 msgid "Footer Right"
-msgstr ""
+msgstr "Rodapé direito"
 
 #: includes/presets/default-table/class-gravityview-default-template-table.php:14
 msgid "Table (default)"
-msgstr ""
+msgstr "Tabela (padrão)"
 
 #: includes/presets/default-table/class-gravityview-default-template-table.php:40
 msgid "Visible Table Columns"
-msgstr ""
+msgstr "Colunas visíveis da tabela"
 
 #: includes/presets/default-table/class-gravityview-default-template-table.php:41
 msgid "Each field will be displayed as a column in the table."
-msgstr ""
+msgstr "Cada campo será mostrado como uma coluna em uma tabela."
 
 #: includes/presets/event-listings/class-gravityview-preset-event-listings.php:24
 msgid "Event Listings"
-msgstr ""
+msgstr "Listagens de eventos"
 
 #: includes/presets/event-listings/class-gravityview-preset-event-listings.php:25
 msgid "Present a list of your events."
-msgstr ""
+msgstr "Mostre uma lista de seus eventos."
 
 #: includes/presets/issue-tracker/class-gravityview-preset-issue-tracker.php:24
 msgid "Issue Tracker"
-msgstr ""
+msgstr "Gerenciador de problemas"
 
 #: includes/presets/issue-tracker/class-gravityview-preset-issue-tracker.php:25
 msgid "Manage issues and their statuses."
-msgstr ""
+msgstr "Gerencia problemas e seus status."
 
 #: includes/presets/job-board/class-gravityview-preset-job-board.php:24
 msgid "Job Board"
-msgstr ""
+msgstr "Quadro de vagas"
 
 #: includes/presets/job-board/class-gravityview-preset-job-board.php:25
 msgid "Post available jobs in a simple job board."
-msgstr ""
+msgstr "Poste ofertas de emprego em um quadro de vagas simples."
 
 #: includes/presets/profiles/class-gravityview-preset-profiles.php:24
 msgid "People Profiles"
-msgstr ""
+msgstr "Perfis pessoais"
 
 #: includes/presets/profiles/class-gravityview-preset-profiles.php:25
 msgid "List people with individual profiles."
-msgstr ""
+msgstr "Liste pessoas em seus perfis individuais."
 
 #: includes/presets/resume-board/class-gravityview-preset-resume-board.php:24
 msgid "Resume Board"
-msgstr ""
+msgstr "Quadro de currículos"
 
 #: includes/presets/resume-board/class-gravityview-preset-resume-board.php:25
 msgid "Allow job-seekers to post their resumes."
-msgstr ""
+msgstr "Permita que pessoas em busca de empregos postem seus currículos."
 
 #: includes/presets/staff-profiles/class-gravityview-preset-staff-profiles.php:24
 msgid "Staff Profiles"
-msgstr ""
+msgstr "Perfis de funcionários"
 
 #: includes/presets/staff-profiles/class-gravityview-preset-staff-profiles.php:25
 msgid "List members of your team."
-msgstr ""
+msgstr "Liste os membros do seu time."
 
 #: includes/presets/website-showcase/class-gravityview-preset-website-showcase.php:24
 msgid "Website Showcase"
-msgstr ""
+msgstr "Demonstração de websites"
 
 #: includes/presets/website-showcase/class-gravityview-preset-website-showcase.php:25
 msgid "Feature submitted websites with screenshots."
-msgstr ""
+msgstr "Destaque websites enviados com miniaturas."
 
 #: includes/widgets/class-gravityview-widget-custom-content.php:20
 msgid "Insert custom text or HTML as a widget"
-msgstr ""
+msgstr "Insere texto customizado ou HTML como um widget"
 
 #: includes/widgets/class-gravityview-widget-custom-content.php:31
 msgid "Enter text or HTML. Also supports shortcodes."
-msgstr ""
+msgstr "Digite um texto ou HTML. Também suporta shortcodes."
 
 #: includes/widgets/class-gravityview-widget-page-links.php:14
 msgid "Links to multiple pages of results."
-msgstr ""
+msgstr "Links para múltiplas páginas de resultados."
 
 #: includes/widgets/class-gravityview-widget-page-links.php:19
 msgid "Show each page number"
-msgstr ""
+msgstr "Mostrar cada número de página"
 
 #: includes/widgets/class-gravityview-widget-page-links.php:20
 msgid "Show every page number instead of summary (eg: 1 2 3 ... 8 »)"
-msgstr ""
+msgstr "Mostrar cada número de página ao invés de um sumário (ex: 1 2 3 ... 8 »)"
 
 #: includes/widgets/class-gravityview-widget-page-links.php:23
 msgid "Page Links"
-msgstr ""
+msgstr "Links para páginas"
 
 #: includes/widgets/class-gravityview-widget-pagination-info.php:19
 msgid "Summary of the number of visible entries out of the total results."
-msgstr ""
+msgstr "Sumário do número de entradas visíveis do resultado total."
 
 #: includes/widgets/class-gravityview-widget-pagination-info.php:28
 msgid "Show Pagination Info"
-msgstr ""
+msgstr "Mostrar informação de páginação"
 
 #: includes/widgets/class-gravityview-widget-pagination-info.php:57
 msgid "Displaying %1$s - %2$s of %3$s"
-msgstr ""
+msgstr "Mostrando %1$s - %2$s de %3$s"
 
 #: includes/widgets/class-gravityview-widget.php:109
 msgid "This class will be added to the widget container"
-msgstr ""
+msgstr "Esta classe será adicionada ao widget contâiner"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:24
 msgid "Displays the results of Poll Fields that exist in the form."
-msgstr ""
+msgstr "Mostra os resultados dos campos de pesquisa (Poll) que existe no formulário."
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:35
 msgid "Display Percentages"
-msgstr ""
+msgstr "Mostrar percentuais"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:38
 msgid ""
 "Display results percentages as part of results? Supported values are: true, "
 "false. Defaults to \"true\"."
-msgstr ""
+msgstr "Mostrar percentuais como parte dos resultados? Os valores suportados são: verdadeiro ou falso. O padrão é \"verdadeiro\"."
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:41
 msgid "Display Counts"
-msgstr ""
+msgstr "Mostrar contagens"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:44
 msgid ""
 "Display number of times each choice has been selected when displaying "
 "results? Supported values are: true, false. Defaults to \"true\"."
-msgstr ""
+msgstr "Mostrar o número de vezes que cada opção foi selecionada quando mostrar os resultados? Os valores suportados são: verdadeiro ou falso. O padrão é \"verdadeiro\"."
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:48
 msgid "Style"
-msgstr ""
+msgstr "Estilo"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:49
 msgid ""
 "The Polls Add-On currently supports 4 built in styles: red, green, orange, "
 "blue. Defaults to \"green\"."
-msgstr ""
+msgstr "A extensão de pesquisas (Polls Add-On) atualmente suporta 4 tipos de estilos: vermelho, verde, laranja e azul. O padrão é \"verde\"."
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:52
 msgid "Green"
-msgstr ""
+msgstr "Verde"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:53
 msgid "Blue"
-msgstr ""
+msgstr "Azul"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:54
 msgid "Red"
-msgstr ""
+msgstr "Vermelho"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:55
 msgid "Orange"
-msgstr ""
+msgstr "Laranja"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:60
 msgid "Poll Results"
-msgstr ""
+msgstr "Resultados da pequisa"
 
 #: includes/widgets/search-widget/class-search-widget.php:32
 msgid "Search form for searching entries."
-msgstr ""
+msgstr "Utilize o formulário de pesquisa para buscar nas entradas."
 
 #: includes/widgets/search-widget/class-search-widget.php:44
 msgid "Search Layout"
-msgstr ""
+msgstr "Layout da pesquisa"
 
 #: includes/widgets/search-widget/class-search-widget.php:47
 msgid "Horizontal"
-msgstr ""
+msgstr "Horizontal"
 
 #: includes/widgets/search-widget/class-search-widget.php:48
 msgid "Vertical"
-msgstr ""
+msgstr "Vertical"
 
 #: includes/widgets/search-widget/class-search-widget.php:53
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:221
 msgid "Show Clear button"
-msgstr ""
+msgstr "Mostrar botão de limpar"
 
 #: includes/widgets/search-widget/class-search-widget.php:65
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:227
 msgid "Search Mode"
-msgstr ""
+msgstr "Modo de busca"
 
 #: includes/widgets/search-widget/class-search-widget.php:66
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:236
 msgid "Should search results match all search fields, or any?"
-msgstr ""
+msgstr "Utilizar todos os campos da pesquisa ou somente alguns para buscar nas entradas?"
 
 #: includes/widgets/search-widget/class-search-widget.php:70
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:230
 msgid "Match Any Fields"
-msgstr ""
+msgstr "Utilizar somente alguns campos"
 
 #: includes/widgets/search-widget/class-search-widget.php:71
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:234
 msgid "Match All Fields"
-msgstr ""
+msgstr "Utilizar todos os campos"
 
 #: includes/widgets/search-widget/class-search-widget.php:75
 msgid "Search Bar"
-msgstr ""
+msgstr "Barra de pesquisa"
 
 #: includes/widgets/search-widget/class-search-widget.php:178
 msgid "Text"
-msgstr ""
+msgstr "Texto"
 
 #: includes/widgets/search-widget/class-search-widget.php:181
 msgid "Select (multiple values)"
-msgstr ""
+msgstr "Caixa de seleção (múltiplos valores)"
 
 #: includes/widgets/search-widget/class-search-widget.php:182
 msgid "Radio"
-msgstr ""
+msgstr "Botões de rádio"
 
 #: includes/widgets/search-widget/class-search-widget.php:185
 msgid "Links"
-msgstr ""
+msgstr "Links"
 
 #: includes/widgets/search-widget/class-search-widget.php:186
 msgid "Date range"
-msgstr ""
+msgstr "Intervalo de datas"
 
 #: includes/widgets/search-widget/class-search-widget.php:219
 msgid "No search fields configured yet."
-msgstr ""
+msgstr "Nenhum campo de pesquisa configurado."
 
 #: includes/widgets/search-widget/class-search-widget.php:220
 msgid "Add Search Field"
-msgstr ""
+msgstr "Adicionar campo de pesquisa"
 
 #: includes/widgets/search-widget/class-search-widget.php:221
 msgid "Label"
-msgstr ""
+msgstr "Etiqueta"
 
 #: includes/widgets/search-widget/class-search-widget.php:223
 msgid "Input Type"
-msgstr ""
+msgstr "Tipo de entrada"
 
 #: includes/widgets/search-widget/class-search-widget.php:224
 msgid ""
 "There was an error loading searchable fields. Save the View or refresh the "
 "page to fix this issue."
-msgstr ""
+msgstr "Ocorreu um erro ao carregar os campos de pesquisa. Salve a Visualização ou atualize a página para corrigir este problema."
 
 #: includes/widgets/search-widget/class-search-widget.php:295
 msgid "Search Everything"
-msgstr ""
+msgstr "Buscar tudo"
 
 #: includes/widgets/search-widget/class-search-widget.php:307
 msgid "Entry Creator"
-msgstr ""
+msgstr "Criador da entrada"
 
 #: includes/widgets/search-widget/class-search-widget.php:957
 msgid "Search Entries:"
-msgstr ""
+msgstr "Buscar entradas:"
 
 #: includes/widgets/search-widget/class-search-widget.php:960
 msgid "Filter by date:"
-msgstr ""
+msgstr "Filtrar por data:"
 
 #: includes/widgets/search-widget/class-search-widget.php:963
 msgid "Entry ID:"
-msgstr ""
+msgstr "ID da entrada:"
 
 #: includes/widgets/search-widget/class-search-widget.php:1079
 msgid "Clear"
-msgstr ""
+msgstr "Limpar"
 
 #: includes/widgets/search-widget/class-search-widget.php:1145
 msgid "Show a different month"
-msgstr ""
+msgstr "Mostrar um mês diferente"
 
 #: includes/widgets/search-widget/templates/search-field-date_range.php:20
 #: includes/widgets/search-widget/templates/search-field-entry_date.php:20
 msgid "Start date"
-msgstr ""
+msgstr "Data inicial"
 
 #: includes/widgets/search-widget/templates/search-field-date_range.php:21
 #: includes/widgets/search-widget/templates/search-field-entry_date.php:21
 msgid "End date"
-msgstr ""
+msgstr "Data final"
 
 #: includes/widgets/search-widget/templates/search-field-link.php:21
 msgid "Show only:"
-msgstr ""
+msgstr "Mostrar somente:"
 
 #: includes/widgets/search-widget/templates/widget-search.php:53
 msgid "Search"
-msgstr ""
+msgstr "Buscar"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:15
 msgid "GravityView Recent Entries"
-msgstr ""
+msgstr "Entradas recentes do GravityView"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:18
 msgid "Display the most recent entries for a View"
-msgstr ""
+msgstr "Mostra as entradas recentes de uma Visualização"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:267
 msgid "Recent Entries"
-msgstr ""
+msgstr "Entradas recentes"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:281
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:165
 msgid "Title:"
-msgstr ""
+msgstr "Título:"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:310
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:175
 msgid "Please select a View to search."
-msgstr ""
+msgstr "Por favor selecione uma Visualização para pesquisar."
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:320
 msgid "&mdash; Select a View as Entries Source &mdash;"
-msgstr ""
+msgstr "&mdash; Selecione uma Visualização como fonte de entradas &mdash;"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:348
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:212
 msgid "If Embedded, Page ID:"
-msgstr ""
+msgstr "Se anexa, ID da página:"
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:351
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:215
 msgid ""
 "To have a search performed on an embedded View, enter the ID of the post or "
 "page where the View is embedded."
-msgstr ""
+msgstr "Para pesquisar em uma Visualização anexa, digite o ID do post ou da página onde a Visualização está anexada."
 
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:358
 msgid "Number of entries to show:"
-msgstr ""
+msgstr "Número de entradas a mostrar:"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:14
 msgid "A search form for a specific GravityView."
-msgstr ""
+msgstr "Um formulário de pesquisa para um GravityView específico."
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:21
 msgid "GravityView Search"
-msgstr ""
+msgstr "Busca do GravityView"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:138
 msgid ""
 "This widget is not configurable from this screen. Please configure it on the"
 " %sWidgets page%s."
-msgstr ""
+msgstr "Este widget não é configurável nesta tela. Configure-o na página de %sWidgets%s."
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:183
 msgid "View:"
-msgstr ""
+msgstr "Visualização:"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:185
 msgid "&mdash; Select a View &mdash;"
-msgstr ""
+msgstr "&mdash; Selecione uma Visualização &mdash;"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:243
 msgid "Searchable fields:"
-msgstr ""
+msgstr "Campos pesquisáveis:"
 
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:244
 msgid "Search Fields"
-msgstr ""
+msgstr "Campos de pesquisa"
 
 #: templates/fields/gquiz_grade.php:24
 msgid "Letter"
-msgstr ""
+msgstr "Carta"
 
 #: templates/fields/gquiz_is_pass.php:27
 msgid "Pass/Fail"
-msgstr ""
+msgstr "Passou/Falhou"
 
 #: includes/admin/class-gravityview-admin-view-item.php:150
 msgctxt "Label in field picker for empty label"
 msgid "Field #%s (No Label)"
-msgstr ""
+msgstr "Campo #%s (sem etiqueta)"
 
 #: includes/admin/class-gravityview-support-port.php:86
 msgctxt "a support form search has returned empty for the following word"
 msgid "No results found for"
-msgstr ""
+msgstr "Nenhum resultado encontrado para"
 
 #: includes/admin/class-gravityview-support-port.php:95
 msgctxt ""
 "Error shown when submitting support request and there is no subject provided"
 msgid "Please enter a subject"
-msgstr ""
+msgstr "Digite um assunto"
 
 #: includes/admin/class-gravityview-support-port.php:97
 msgctxt ""
 "Error shown when submitting support request and there is no message provided"
 msgid "Please enter a message"
-msgstr ""
+msgstr "Digite uma mensagem"
 
 #: includes/class-admin-views.php:433
 msgctxt "Column title that shows what template is being used for Views"
 msgid "Template"
-msgstr ""
+msgstr "Template"
 
 #: includes/class-debug-bar.php:175
 msgctxt "Debugging output data is empty."
 msgid "Empty"
-msgstr ""
+msgstr "Vazio"
 
 #: includes/class-frontend-views.php:589
 msgctxt ""
 "Displayed when a View is not configured. %s is replaced by the tab label"
 msgid "The %s layout has not been configured."
-msgstr ""
+msgstr "O layout %s não foi configurado."
 
 #: includes/class-frontend-views.php:1433
 msgctxt "Clear all data from the form"
 msgid "Clear"
-msgstr ""
+msgstr "Limpar"
 
 #: includes/class-frontend-views.php:1434
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
-msgstr ""
+msgstr "Resetar"
 
 #: includes/class-gravityview-admin-bar.php:143
 msgctxt "Edit View with the ID of %d"
 msgid "Edit View #%d"
-msgstr ""
+msgstr "Editar Visualização #%d"
 
 #: includes/class-gravityview-change-entry-creator.php:72
 msgctxt ""
 "First parameter: Success or error of the action. Second: User ID number"
 msgid "%s: Assigned User ID #%d as the entry creator."
-msgstr ""
+msgstr "%s: Designado o usuário com ID #%d como o criador da entrada."
 
 #: includes/class-gravityview-change-entry-creator.php:176
 msgctxt ""
 "The name and the ID of users who initiated changes to entry ownership"
 msgid "%s (ID #%d)"
-msgstr ""
+msgstr "%s (ID #%d)"
 
 #: includes/class-gravityview-change-entry-creator.php:178
 msgctxt ""
 "To show that the entry was unassigned from an actual user to no user."
 msgid "No User"
-msgstr ""
+msgstr "Nenhum usuário"
 
 #: includes/class-gravityview-change-entry-creator.php:213
 msgctxt "No user assigned to the entry"
 msgid "No User"
-msgstr ""
+msgstr "Nenhum usuário"
 
 #: includes/class-gravityview-settings.php:287
 msgctxt "A scale from 0 (bad) to 10 (good)"
 msgid "%s (\"Not at all likely\") to %s (\"Extremely likely\")"
-msgstr ""
+msgstr "%s (\"Não parecido com\") a %s (\"Extremamente parecido com\")"
 
 #: includes/class-gravityview-settings.php:887
 msgctxt "Setting: Show or Hide"
 msgid "Show"
-msgstr ""
+msgstr "Mostrar"
 
 #: includes/class-gravityview-settings.php:891
 msgctxt "Setting: Show or Hide"
 msgid "Hide"
-msgstr ""
+msgstr "Esconder"
 
 #: includes/class-gravityview-settings.php:906
 msgctxt "Setting: On or off"
 msgid "On"
-msgstr ""
+msgstr "Ligado"
 
 #: includes/class-gravityview-settings.php:910
 msgctxt "Setting: On or off"
 msgid "Off"
-msgstr ""
+msgstr "Desligado"
 
 #: includes/class-gv-license-handler.php:342
 msgctxt "1: Customer name; 2: Customer email"
 msgid "Licensed to: %1$s (%2$s)"
-msgstr ""
+msgstr "Licenciado para: %1$s (%2$s)"
 
 #: includes/class-gv-license-handler.php:387
 msgctxt "1: GravityView upgrade name, 2: Cost of upgrade"
 msgid "Upgrade to %1$s for %2$s"
-msgstr ""
+msgstr "Upgrade de %1$s para %2$s"
 
 #: includes/class-post-types.php:61
 msgctxt "Post Type General Name"
 msgid "Views"
-msgstr ""
+msgstr "Visualizações"
 
 #: includes/class-post-types.php:62
 msgctxt "Post Type Singular Name"
 msgid "View"
-msgstr ""
+msgstr "Visualização"
 
 #: includes/class-post-types.php:63
 msgctxt "Menu name"
 msgid "Views"
-msgstr ""
+msgstr "Visualizações"
 
 #: includes/class-post-types.php:66
 msgctxt "View Item"
 msgid "View"
-msgstr ""
+msgstr "Visualização"
 
 #: includes/extensions/delete-entry/class-delete-entry.php:194
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:89
 msgctxt "User capability"
 msgid "Entry Creator"
-msgstr ""
+msgstr "Criador da entrada"
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1930
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
-msgstr ""
+msgstr "Voltar"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:368
 msgctxt "%s is opening and closing HTML link"
 msgid ""
 "Only users with specific capabilities will be able to view, add and delete "
 "notes. %sRead more%s."
-msgstr ""
+msgstr "Somente usuários com capacidades específicas poderão visualizar, adicionar ou apagar notas. %sLeia mais%s."
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:420
 msgctxt "Example email address used as a placeholder"
 msgid "you@example.com"
-msgstr ""
+msgstr "voce@exemplo.com.br"
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:428
 msgctxt "Message to display when submitting a note without content."
 msgid "Note cannot be blank."
-msgstr ""
+msgstr "A nota não pode ser em branco."
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:90
 msgctxt "Gravity Flow Workflow Step Status"
 msgid "Status: %s"
-msgstr ""
+msgstr "Status: %s"
 
 #: includes/widgets/poll/class-gravityview-widget-poll.php:26
 msgctxt "The string placeholders are for emphasis HTML"
 msgid ""
 "Note: this will display poll results for %sall form entries%s, not only the "
 "entries displayed in the View."
-msgstr ""
+msgstr "Nota: isto irá mostrar os resultados da pesquisa para %stodas as entradas do formulário%s, não somente as amostra na Visualização."
 
 #: includes/widgets/search-widget/class-search-widget.php:1140
 msgctxt "Close calendar"
@@ -3249,39 +3250,39 @@ msgstr "Fechar"
 #: includes/widgets/search-widget/class-search-widget.php:1141
 msgctxt "Previous month in calendar"
 msgid "Prev"
-msgstr ""
+msgstr "Anterior"
 
 #: includes/widgets/search-widget/class-search-widget.php:1142
 msgctxt "Next month in calendar"
 msgid "Next"
-msgstr ""
+msgstr "Próxima"
 
 #: includes/widgets/search-widget/class-search-widget.php:1143
 msgctxt "Today in calendar"
 msgid "Today"
-msgstr ""
+msgstr "Hoje"
 
 #: includes/widgets/search-widget/class-search-widget.php:1144
 msgctxt "Week in calendar"
 msgid "Week"
-msgstr ""
+msgstr "Semana"
 
 #: templates/fields/gquiz_grade.php:25 templates/fields/gquiz_is_pass.php:28
 msgctxt "%s is the current Quiz field type (\"Letter\" or \"Pass/Fail\")"
 msgid "%s grading is disabled for this form. %sChange the setting%s"
-msgstr ""
+msgstr "%s graduação está desativado neste formulário. %sModificar as opções%s"
 
 #: templates/fields/post_image.php:108
 msgctxt "Post Image field title heading"
 msgid "Title:"
-msgstr ""
+msgstr "Título:"
 
 #: templates/fields/post_image.php:114
 msgctxt "Post Image field caption heading"
 msgid "Caption:"
-msgstr ""
+msgstr "Legenda:"
 
 #: templates/fields/post_image.php:120
 msgctxt "Post Image field description heading"
 msgid "Description:"
-msgstr ""
+msgstr "Descrição:"

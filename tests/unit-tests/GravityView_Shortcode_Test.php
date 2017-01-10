@@ -122,16 +122,16 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 			'Test {get} merge tag, valid value' => array(
 				'get' => array( 'view_id' => 123 ),
 				'original' => array(
-					'id' => '{get:view_id}',
+					'id' => '{get:view_id}'
 				),
 				'expected' => array(
-					'id' => 123,
+					'id' => 123
 				)
 			),
 			'Test {get} merge tag, invalid value (string, not numeric)' => array(
 				'get' => array( 'view_id' => 'asdasdsd' ),
 				'original' => array(
-					'id' => '{get:view_id}',
+					'id' => '{get:view_id}'
 				),
 				'expected' => array()
 			),
@@ -140,17 +140,17 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 				'original' => array(
 					'id' => 123,
 					'page_size' => 12,
-					'not_defined_attribute' => 1,
+					'not_defined_attribute' => 1
 				),
 				'expected' => array(
 					'id' => 123,
-					'page_size' => 12,
+					'page_size' => 12
 				)
 			),
 
 			'Number settings that are not numbers should be stripped' => array(
 				'original' => array(
-					'id' => 'asdasd',
+					'id' => 'asdasd'
 				),
 				'expected' => array(
 				)
@@ -158,84 +158,75 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 
 			'Number settings that numbers should not be stripped' => array(
 				'original' => array(
-					'search_field' => '123.10',
+					'search_field' => '123.10'
 				),
 				'expected' => array(
 					'search_field' => 123.10,
 				)
 			),
 
-			'Binary numbers should not be stripped; we are using is_numeric()' => array(
-				'original' => array(
-					'search_field' => 0b10100111001,
-				),
-				'expected' => array(
-					'search_field' => 1337,
-				)
-			),
-
 			'Checkbox "0" string should be `0`' => array(
 				'original' => array(
 					'id' => 123,
-					'lightbox' => '0',
+					'lightbox' => '0'
 				),
 				'expected' => array(
 					'id' => 123,
-					'lightbox' => 0,
+					'lightbox' => 0
 				)
 			),
 
 			'Checkbox "1" string should be `1`' => array(
 				'original' => array(
 					'id' => 123,
-					'lightbox' => '1',
+					'lightbox' => '1'
 				),
 				'expected' => array(
 					'id' => 123,
-					'lightbox' => 1,
+					'lightbox' => 1
 				)
 			),
 
 			'Checkbox non-numeric string should be based on gv_empty()' => array(
 				'original' => array(
 					'id' => 123,
-					'lightbox' => '',
+					'lightbox' => ''
 				),
 				'expected' => array(
 					'id' => 123,
-					'lightbox' => 0,
+					'lightbox' => 0
 				)
 			),
 
 			'Select option must exist' => array(
 				'original' => array(
 					'id' => 123,
-					'lightbox' => '0',
+					'lightbox' => '0'
 				),
 				'expected' => array(
 					'id' => 123,
-					'lightbox' => 0,
+					'lightbox' => 0
 				)
 			),
 
 			'Select options that exist should not be stripped' => array(
 				'original' => array(
 					'id' => 123,
-					'sort_direction' => 'ASC',
+					'sort_direction' => 'ASC'
 				),
 				'expected' => array(
 					'id' => 123,
-					'sort_direction' => 'ASC',
+					'sort_direction' => 'ASC'
 				)
 			),
 
 			'Select options that do not exist should be stripped' => array(
 				'original' => array(
 					'id' => 123,
-					'sort_direction' => 'asdsadasd',
+					'sort_direction' => 'asdsadasd'
 				),
 				'expected' => array(
-					'id' => 123,
+					'id' => 123
 				)
 			),
 
@@ -244,10 +235,10 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 					'danger' => '<script>alert()</script>'
 				),
 				'original' => array(
-					'search_value' => '{get:danger}',
+					'search_value' => '{get:danger}'
 				),
 				'expected' => array(
-					'search_value' => esc_html( '<script>alert()</script>' ),
+					'search_value' => esc_html( '<script>alert()</script>' )
 				)
 			),
 		);
