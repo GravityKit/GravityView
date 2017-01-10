@@ -319,7 +319,16 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	 */
 	public function test_gravityview_get_current_views() {
 
-		$fe = new GravityView_frontend; // Don't use get_instance() so we start with fresh state
+		$fe = GravityView_frontend::getInstance();
+
+		$fe->setIsGravityviewPostType( false );
+		$fe->setPostHasShortcode( false );
+		$fe->setPostId( null );
+		$fe->setSingleEntry( false );
+		$fe->setEntry( false );
+		$fe->set_context_view_id( null );
+		$fe->setIsSearch( false );
+		$fe->setGvOutputData( null );
 
 		global $post;
 
