@@ -563,11 +563,15 @@ class GravityView_frontend {
 	 *
 	 * @since 1.19.2
 	 *
-	 * @param string $context The current context that has no configuration
+	 * @param int $view_id The ID of the View currently being displayed
 	 *
 	 * @return void
 	 */
 	public function context_not_configured_warning( $view_id = 0 ) {
+
+		if ( ! class_exists( 'GravityView_View' ) ) {
+			return;
+		}
 
 		$fields = GravityView_View::getInstance()->getContextFields();
 

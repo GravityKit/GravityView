@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Fixed: Prevent PHP error when displaying GravityView using `get_gravityview()`
+
 = 1.19.3 on January 9, 2017 =
 
 First update of 2017! We've got great things planned for GravityView and our Extensions. As always, [contact us](mailto:support@gravityview.co) with any questions or feedback. We don't bite!
