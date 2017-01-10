@@ -83,7 +83,8 @@ class GV_Unit_Tests_Bootstrap {
 			'data' => $data,
 			'backtrace' => function_exists('wp_debug_backtrace_summary') ? wp_debug_backtrace_summary( null, 3 ) : '',
 		);
-		fwrite(STDERR, print_r( $error, true ) );
+		fwrite( STDERR, print_r( $error, true ) );
+		fflush( STDERR );
 	}
 
 	/**
