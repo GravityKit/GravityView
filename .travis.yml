@@ -18,7 +18,6 @@ php:
   - 5.5
   - 5.6
   - 7.0
-  - 7.1
   - hhvm
 
 env:
@@ -36,6 +35,9 @@ matrix:
   include:
     - php: 5.3
       env: WP_VERSION=latest WP_MULTISITE=1
+  exclude:
+      - php: hhvm
+        env: WP_VERSION=4.0 WP_MULTISITE=0
 
 install:
   - curl -s https://getcomposer.org/installer | php
