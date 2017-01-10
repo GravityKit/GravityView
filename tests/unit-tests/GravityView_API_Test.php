@@ -308,27 +308,9 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	}
 
 	public function _get_new_view_id() {
-
-		$view_array = array(
-			'post_content' => '',
-			'post_type' => 'gravityview',
-			'post_status' => 'publish',
-		);
-
-		// Add the View
-		$view_post_type_id = wp_insert_post( $view_array );
-
-		// Set the form ID
-		update_post_meta( $view_post_type_id, '_gravityview_form_id', $this->form_id );
-
-		// Set the View settigns
-		update_post_meta( $view_post_type_id, '_gravityview_template_settings', GravityView_View_Data::get_default_args() );
-
-		// Set the template to be table
-		update_post_meta( $view_post_type_id, '_gravityview_directory_template', 'default_table' );
-
-		return $view_post_type_id;
-
+		return $this->factory->view->create_object( array(
+			'form_id' => $this->form_id
+		) );
 	}
 
 	/**
@@ -353,7 +335,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$current_views = gravityview_get_current_views();
 
 		// Check if the view post is set
-		$this->assertTrue( isset( $current_views[ $view_post_type_id ] ), 'The $current_views array didn\'t have a value set at $post->ID key', $current_views );
+		$this->assertTrue( isset( $current_views[ $view_post_type_id ] ), 'The $current_views array didn\'t have a value set at $post->ID key of ' . $view_post_type_id );
 
 		// When the view is added, the key is set to the View ID and the `id` is also set to that
 		$this->assertEquals( $view_post_type_id, $current_views[ $view_post_type_id ]['id'] );
