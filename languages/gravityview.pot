@@ -222,7 +222,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:132
 #: includes/admin/metaboxes/views/view-configuration.php:5
-#: includes/class-frontend-views.php:589
+#: includes/class-frontend-views.php:593
 msgid "Single Entry"
 msgstr ""
 
@@ -303,12 +303,12 @@ msgid "Add this shortcode to a post or page to embed this view."
 msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:4
-#: includes/class-frontend-views.php:582
+#: includes/class-frontend-views.php:586
 msgid "Multiple Entries"
 msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:6
-#: includes/class-frontend-views.php:585
+#: includes/class-frontend-views.php:589
 #: includes/class-gravityview-admin-bar.php:105
 #: includes/class-gravityview-entry-link-shortcode.php:205
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:58
@@ -1121,19 +1121,19 @@ msgid ""
 "is available."
 msgstr ""
 
-#: includes/class-frontend-views.php:596
+#: includes/class-frontend-views.php:600
 msgid "Add fields to %s"
 msgstr ""
 
-#: includes/class-frontend-views.php:597
+#: includes/class-frontend-views.php:601
 msgid "You can only see this message because you are able to edit this View."
 msgstr ""
 
-#: includes/class-frontend-views.php:709
+#: includes/class-frontend-views.php:713
 msgid "You are not allowed to view this content."
 msgstr ""
 
-#: includes/class-frontend-views.php:803
+#: includes/class-frontend-views.php:807
 msgid "You have attempted to view an entry that is not visible or may not exist."
 msgstr ""
 
@@ -1187,7 +1187,7 @@ msgid "Dismiss"
 msgstr ""
 
 #: includes/class-gravityview-change-entry-creator.php:67
-#: includes/lib/EDD_SL_Plugin_Updater.php:332
+#: includes/lib/EDD_SL_Plugin_Updater.php:369
 msgid "Error"
 msgstr ""
 
@@ -2563,20 +2563,17 @@ msgstr ""
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
 msgstr ""
 
-#: includes/lib/EDD_SL_Plugin_Updater.php:181
-msgid ""
-"There is a new version of %1$s available. <a target=\"_blank\" "
-"class=\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
+#: includes/lib/EDD_SL_Plugin_Updater.php:201
+msgid "There is a new version of %1$s available. %2$sView version %3$s details%4$s."
 msgstr ""
 
-#: includes/lib/EDD_SL_Plugin_Updater.php:188
+#: includes/lib/EDD_SL_Plugin_Updater.php:209
 msgid ""
-"There is a new version of %1$s available. <a target=\"_blank\" "
-"class=\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a "
-"href=\"%4$s\">update now</a>."
+"There is a new version of %1$s available. %2$sView version %3$s details%4$s "
+"or %5$supdate now%6$s."
 msgstr ""
 
-#: includes/lib/EDD_SL_Plugin_Updater.php:332
+#: includes/lib/EDD_SL_Plugin_Updater.php:369
 msgid "You do not have permission to install plugin updates"
 msgstr ""
 
@@ -3101,17 +3098,17 @@ msgctxt "Debugging output data is empty."
 msgid "Empty"
 msgstr ""
 
-#: includes/class-frontend-views.php:594
+#: includes/class-frontend-views.php:598
 msgctxt "Displayed when a View is not configured. %s is replaced by the tab label"
 msgid "The %s layout has not been configured."
 msgstr ""
 
-#: includes/class-frontend-views.php:1443
+#: includes/class-frontend-views.php:1447
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1444
+#: includes/class-frontend-views.php:1448
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""

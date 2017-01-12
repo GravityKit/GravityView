@@ -21,6 +21,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 == Changelog ==
 
 * Fixed: Prevent PHP error when displaying GravityView using `get_gravityview()`
+* Updated translations:
+    - 🇩🇰 Danish *100% translated*
 
 = 1.19.3 on January 9, 2017 =
 
