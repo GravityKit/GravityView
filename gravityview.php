@@ -58,6 +58,12 @@ define( 'GV_MIN_PHP_VERSION', '5.2.4' );
  */
 define( 'GV_FUTURE_MIN_PHP_VERSION', '5.3' );
 
+/**
+ * GravityView will soon require at least this version of Gravity Forms to function properly.
+ * @since 1.19.4
+ */
+define( 'GV_FUTURE_MIN_GF_VERSION', '2.0.0-rc-1' );
+
 
 /** Register hooks that are fired when the plugin is activated and deactivated. */
 register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );

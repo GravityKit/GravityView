@@ -245,20 +245,26 @@ class GravityView_Compatibility {
 		// Bypass other checks: if the class exists
 		if( class_exists( 'GFCommon' ) ) {
 
-			// and the version's right, we're good.
-			if( true === version_compare( GFCommon::$version, GV_MIN_GF_VERSION, ">=" ) ) {
+			// Does the version meet future requirements?
+			if( true === version_compare( GFCommon::$version, GV_FUTURE_MIN_GF_VERSION, ">=" ) ) {
 				return true;
 			}
 
-			// Or the version's wrong
+			// Does it meet minimum requirements?
+			$meets_minimum = ( true === version_compare( GFCommon::$version, GV_MIN_GF_VERSION, ">=" ) );
+
+			$class = $meets_minimum ? 'notice-warning' : 'error';
+
+			// Show the notice even if the future version requirements aren't met
 			self::$notices['gf_version'] = array(
-				'class' => 'error',
-				'message' => sprintf( __( "%sGravityView requires Gravity Forms Version %s or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', GV_MIN_GF_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>', "\n\n".'<a href="http://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
+				'class' => $class,
+				'message' => sprintf( __( "%sGravityView requires Gravity Forms Version %s or newer.%s \n\nYou're using Version %s. Please update your Gravity Forms or purchase a license. %sGet Gravity Forms%s - starting at $39%s%s", 'gravityview' ), '<h3>', GV_FUTURE_MIN_GF_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>', "\n\n".'<a href="https://katz.si/gravityforms" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
 				'cap' => 'update_plugins',
-				'dismiss' => 'gf_version',
+				'dismiss' => 'gf_version_' . GV_FUTURE_MIN_GF_VERSION,
 			);
 
-			return false;
+			// Return false if the plugin is not compatible, true if meets minimum
+			return $meets_minimum;
 		}
 
 		$gf_status = self::get_plugin_status( 'gravityforms/gravityforms.php' );
