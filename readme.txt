@@ -25,6 +25,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Updated translations:
     - 🇩🇰 Danish *100% translated*
 
+__Developer Notes: __
+
+* Fixed: Issue fetching image sizes when using `GravityView_Image` class and fetching from a site with invalid SSL cert.
+
 = 1.19.3 on January 9, 2017 =
 
 First update of 2017! We've got great things planned for GravityView and our Extensions. As always, [contact us](mailto:support@gravityview.co) with any questions or feedback. We don't bite!
