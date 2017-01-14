@@ -417,7 +417,7 @@ class GravityView_API {
 	}
 
 	/**
-	 * Generate a link to the Directory view
+	 * Generate a URL to the Directory context
 	 *
 	 * Uses `wp_cache_get` and `wp_cache_get` (since 1.3) to speed up repeated requests to get permalink, which improves load time. Since we may be doing this hundreds of times per request, it adds up!
 	 *
@@ -509,6 +509,14 @@ class GravityView_API {
 
 			$link = add_query_arg( $args, $link );
 		}
+
+		/**
+		 * @filter `gravityview_directory_link` Modify the URL to the View "directory" context
+		 * @since 1.19.4
+		 * @param string $link URL to the View's "directory" context (Multiple Entries screen)
+		 * @param int $post_id ID of the post to link to. If the View is embedded, it is the post or page ID
+		 */
+		$link = apply_filters( 'gravityview_directory_link', $link, $post_id );
 
 		return $link;
 	}

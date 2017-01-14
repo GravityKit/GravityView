@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 __Developer Notes: __
 
 * Fixed: Issue fetching image sizes when using `GravityView_Image` class and fetching from a site with invalid SSL cert.
+* Added: `gravityview_directory_link` to modify the URL to the View directory context (in `GravityView_API::directory_link()`)
 
 = 1.19.3 on January 9, 2017 =
 
