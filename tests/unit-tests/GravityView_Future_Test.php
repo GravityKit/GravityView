@@ -81,5 +81,18 @@ class GVFuture_Test extends GV_UnitTestCase {
 		unset( $GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] );
 		unset( $GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] );
 		unset( $GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] );
+		unset( $GLOBALS['GRAVITYVIEW_TESTS_GF_INACTIVE_OVERRIDE'] );
+
+		/** Test deprecations and stubs in the old code. */
+		$this->assertTrue( GravityView_Compatibility::is_valid() );
+		$this->assertTrue( GravityView_Compatibility::check_php() );
+		$this->assertTrue( GravityView_Compatibility::check_wordpress() );
+		$this->assertTrue( GravityView_Compatibility::check_gravityforms() );
+
+		$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] = '5.2';
+		$this->assertFalse( GravityView_Compatibility::is_valid() );
+		$this->assertFalse( GravityView_Compatibility::check_php() );
+		$GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] = '3.0';
+		$this->assertFalse( GravityView_Compatibility::check_wordpress() );
 	}
 }
