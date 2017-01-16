@@ -144,10 +144,10 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 	public function test_gravityview_number_format() {
 
 		$numbers = array(
-			'0' => '1,000',
-			'1' => '1,000.0',
-			'2' => '1,000.00',
-			'7' => '1,000,000.0000000',
+			'0' => '1000',
+			'1' => '1000.0',
+			'2' => '1000.00',
+			'7' => '1000000.0000000',
 			'17' => '1.00000000000000000',
 		);
 
