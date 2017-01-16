@@ -30,9 +30,9 @@ final class Plugin {
 	private static $min_wp_version = '3.5.0';
 
 	/**
-	 * @var string Minimum GravityForms version.
+	 * @var string Minimum Gravity Forms version.
 	 *
-	 * GravityView requires at least this version of GravityForms to function properly.
+	 * GravityView requires at least this version of Gravity Forms to function properly.
 	 */
 	private static $min_gf_version = '1.9.14';
 
@@ -51,9 +51,9 @@ final class Plugin {
 	private static $future_min_php_version = false;
 
 	/**
-	 * @var string|bool Minimum future GravityForms version.
+	 * @var string|bool Minimum future Gravity Forms version.
 	 *
-	 * GravityView will require this version of GravityForms soon. False if no future GravityForms version changes are planned.
+	 * GravityView will require this version of Gravity Forms soon. False if no future Gravity Forms version changes are planned.
 	 */
 	private static $future_min_gf_version = false;
 
@@ -112,7 +112,7 @@ final class Plugin {
 	}
 
 	/**
-	 * Retrieve an absolute  path within the GravityForms plugin directory.
+	 * Retrieve an absolute  path within the Gravity Forms plugin directory.
 	 *
 	 * @api
 	 * @since future
@@ -125,7 +125,7 @@ final class Plugin {
 	}
 
 	/**
-	 * Retrieve a URL within the GravityForms plugin directory.
+	 * Retrieve a URL within the Gravity Forms plugin directory.
 	 *
 	 * @api
 	 * @since future
@@ -177,7 +177,7 @@ final class Plugin {
 	}
 
 	/**
-	 * Is this version of GravityView compatible with the current version of GravityForms?
+	 * Is this version of GravityView compatible with the current version of Gravity Forms?
 	 *
 	 * @api
 	 * @since future
@@ -217,16 +217,16 @@ final class Plugin {
 	}
 
 	/**
-	 * Retrieve the current GravityForms version.
+	 * Retrieve the current Gravity Forms version.
 	 *
 	 * Overridable with GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE during testing.
 	 *
-	 * @throws ErrorException If the GravityForms plugin is not active or installed (E_ERROR severity)
-	 * @return string The version of GravityForms.
+	 * @throws ErrorException If the Gravity Forms plugin is not active or installed (E_ERROR severity)
+	 * @return string The version of Gravity Forms.
 	 */
 	private function get_gravityforms_version() {
 		if ( !class_exists( '\GFCommon' ) || !empty( $GLOBALS['GRAVITYVIEW_TESTS_GF_INACTIVE_OVERRIDE'] ) )
-			throw new \ErrorException( __( 'GravityForms is inactive or not installed at all.', 'gravityview' ) );
+			throw new \ErrorException( __( 'Gravity Forms is inactive or not installed at all.', 'gravityview' ) );
 
 		return !empty( $GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] ) ?
 			$GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] : \GFCommon::$version;
