@@ -326,14 +326,13 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$fe->setPostId( null );
 		$fe->setIsSearch( false );
 
+		GravityView_View_Data::$instance = NULL;
+		$fe->setGvOutputData( NULL );
+
 		global $post;
 
 		$view_post_type_id = $this->_get_new_view_id();
 		$post = get_post( $view_post_type_id );
-
-		GravityView_View_Data::$instance = NULL;
-		$GV_View_Data = GravityView_View_Data::getInstance( $post->ID );
-		$fe->setGvOutputData( $GV_View_Data );
 
 		$this->assertEquals( $view_post_type_id, $post->ID, 'The post was not properly created' );
 
@@ -361,7 +360,6 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$this->assertEquals( 2, count( $second_current_views ) );
 
 		GravityView_View_Data::$instance = NULL;
-		$fe->setGvOutputData( NULL );
 	}
 
 	/**
