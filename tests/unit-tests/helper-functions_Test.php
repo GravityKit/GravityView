@@ -18,7 +18,7 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 		$this->assertTrue( gv_empty( null ) );
 		$this->assertTrue( gv_empty( new stdClass() ) );
 		$this->assertTrue( gv_empty( '' ) );
-		$this->assertTrue( gv_empty( $not_defined ) );
+		$this->assertTrue( gv_empty( @$not_defined ) );
 
 		// Test $zero_is_empty
 		$this->assertTrue( gv_empty( 0 ) );
