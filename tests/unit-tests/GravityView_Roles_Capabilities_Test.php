@@ -189,7 +189,6 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		// Zero can't access anything by default
 		foreach( $role_caps as $cap ) {
 			$this->assertFalse( GravityView_Roles_Capabilities::has_cap( $cap ) );
-			break;
 		}
 
 		$zero->add_cap( 'gravityview_full_access' );
@@ -198,7 +197,6 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		// With GV full access, $zero is a $hero
 		foreach( $role_caps as $cap ) {
 			$this->assertTrue( GravityView_Roles_Capabilities::has_cap( $cap ) );
-			break;
 		}
 	}
 
@@ -268,6 +266,7 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		$zero->remove_all_caps();
 
 		$zero->add_cap( 'gravityview_full_access' );
+		$zero->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
 
 		// With GV full access, $zero is a $hero
 		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'edit_gravityview', $admin_private_view_id ) );
