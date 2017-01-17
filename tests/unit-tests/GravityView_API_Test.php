@@ -327,8 +327,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$fe->setIsSearch( false );
 
 		GravityView_View_Data::$instance = NULL;
-		$GV_View_Data = GravityView_View_Data::getInstance();
-		$fe->setGvOutputData( $GV_View_Data );
+		$fe->setGvOutputData( NULL );
 
 		global $post;
 
@@ -360,6 +359,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		// Now two Views
 		$this->assertEquals( 2, count( $second_current_views ) );
 
+		GravityView_View_Data::$instance = NULL;
 	}
 
 	/**

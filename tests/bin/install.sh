@@ -94,6 +94,7 @@ install_test_suite() {
 		# set up testing suite
 		mkdir -p $WP_TESTS_DIR
 		svn co --quiet https://develop.svn.wordpress.org/${WP_TESTS_TAG}/tests/phpunit/includes/ $WP_TESTS_DIR/includes
+		mkdir $WP_TESTS_DIR/data
 	fi
 
 	if [ ! -f wp-tests-config.php ]; then
