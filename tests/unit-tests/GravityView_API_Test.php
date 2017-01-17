@@ -433,7 +433,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$args = array(
 			'entry' => $entry,
 			'form' => $form,
-			'hide_empty' => $this->atts['hide_empty'],
+			'hide_empty' => isset( $this->atts ) ? $this->atts['hide_empty'] : true,
 		);
 
 		return;
