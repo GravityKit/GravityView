@@ -14,6 +14,10 @@ class GravityView_Field_Address extends GravityView_Field {
 
 	var $group = 'advanced';
 
+	var $is_numeric = false;
+
+	var $is_searchable = true;
+
 	var $_gf_field_class_name = 'GF_Field_Address';
 
 	public function __construct() {
