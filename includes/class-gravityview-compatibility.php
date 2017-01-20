@@ -85,7 +85,7 @@ class GravityView_Compatibility {
 	/**
 	 * Is everything compatible with this version of GravityView?
 	 *
-	 * @deprecated
+	 * @deprecated 1.19.4
 	 * @see \GV\Plugin::is_compatible() accessible via gravityview()->plugin->is_compatible()
 	 *
 	 * @return bool
@@ -102,7 +102,7 @@ class GravityView_Compatibility {
 	 * Is the version of WordPress compatible?
 	 * @since 1.12
 	 *
-	 * @deprecated
+	 * @deprecated 1.19.4
 	 * @see \GV\Plugin::is_compatible_wordpress() accessible via gravityview()->plugin->is_compatible_wordpress()
 	 */
 	private static function is_valid_wordpress() {
@@ -116,7 +116,7 @@ class GravityView_Compatibility {
 	/**
 	 * @since 1.12
 	 *
-	 * @deprecated
+	 * @deprecated 1.19.4
 	 * @see \GV\Plugin::is_compatible_gravityforms() accessible via gravityview()->plugin->is_compatible_gravityforms()
 	 *
 	 * @return bool
@@ -132,7 +132,7 @@ class GravityView_Compatibility {
 	/**
 	 * @since 1.12
 	 *
-	 * @deprecated
+	 * @deprecated 1.19.4
 	 * @see \GV\Plugin::is_compatible_php() accessible via gravityview()->plugin->is_compatible_php()
 	 *
 	 * @return bool
