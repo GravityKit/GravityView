@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 1.19.3\n"
+"Project-Id-Version: GravityView 1.19.4\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2016-05-13 20:20:24+00:00\n"
 "MIME-Version: 1.0\n"
@@ -24,15 +24,19 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: gravityview.php:340
+#: future/includes/class-gv-plugin.php:229
+msgid "Gravity Forms is inactive or not installed."
+msgstr ""
+
+#: gravityview.php:350
 msgid "Top"
 msgstr ""
 
-#: gravityview.php:341
+#: gravityview.php:351
 msgid "Left"
 msgstr ""
 
-#: gravityview.php:341
+#: gravityview.php:351
 msgid "Right"
 msgstr ""
 
@@ -713,19 +717,19 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:656
+#: includes/class-admin-welcome.php:683
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:680
+#: includes/class-admin-welcome.php:707
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:705
+#: includes/class-admin-welcome.php:732
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:706
+#: includes/class-admin-welcome.php:733
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -873,11 +877,11 @@ msgstr ""
 msgid "No entries match your request."
 msgstr ""
 
-#: includes/class-api.php:818
+#: includes/class-api.php:826
 msgid "&larr; Go back"
 msgstr ""
 
-#: includes/class-api.php:1104
+#: includes/class-api.php:1112
 msgid "Map It"
 msgstr ""
 
@@ -1203,34 +1207,34 @@ msgstr ""
 msgid "Change Entry Creator:"
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:161
+#: includes/class-gravityview-compatibility.php:192
 msgid ""
 "You are seeing this notice because you are an administrator. Other users of "
 "the site will see nothing."
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:185
+#: includes/class-gravityview-compatibility.php:219
 msgid ""
 "%sGravityView requires PHP Version %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please ask your host to upgrade your server's PHP."
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:200
+#: includes/class-gravityview-compatibility.php:234
 msgid ""
 "%sGravityView will soon require PHP Version %s.%s \n"
 "\n"
 "You're using Version %s. Please ask your host to upgrade your server's PHP."
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:223
+#: includes/class-gravityview-compatibility.php:260
 msgid ""
 "%sGravityView requires WordPress %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please upgrade your WordPress installation."
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:256
+#: includes/class-gravityview-compatibility.php:302
 msgid ""
 "%sGravityView requires Gravity Forms Version %s or newer.%s \n"
 "\n"
@@ -1238,23 +1242,23 @@ msgid ""
 "license. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:297
+#: includes/class-gravityview-compatibility.php:344
 msgid ""
 "%sGravityView requires Gravity Forms to be active. %sActivate Gravity "
 "Forms%s to use the GravityView plugin."
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:306
+#: includes/class-gravityview-compatibility.php:353
 msgid ""
 "%sGravityView requires Gravity Forms to be installed in order to run "
 "properly. %sGet Gravity Forms%s - starting at $39%s%s"
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:326
+#: includes/class-gravityview-compatibility.php:373
 msgid "Potential Conflict"
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:327
+#: includes/class-gravityview-compatibility.php:374
 msgid ""
 "GravityView and Gravity Forms Directory are both active. This may cause "
 "problems. If you experience issues, disable the Gravity Forms Directory "
@@ -1980,15 +1984,15 @@ msgstr ""
 msgid "The note is empty."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-address.php:20
+#: includes/fields/class-gravityview-field-address.php:24
 msgid "Address"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-address.php:268
+#: includes/fields/class-gravityview-field-address.php:265
 msgid "Show Map Link:"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-address.php:269
+#: includes/fields/class-gravityview-field-address.php:266
 msgid "Display a \"Map It\" link below the address"
 msgstr ""
 
