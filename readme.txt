@@ -32,6 +32,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 __Developer Notes: __
 
+* New: We're starting the migration to a new wrapper API that will awesome. We will be rolling out new functionality and documentation over time. For now, we are just using it to load the plugin. [Very exciting time](https://i.imgur.com/xmkONOD.gif)!
 * Fixed: Issue fetching image sizes when using `GravityView_Image` class and fetching from a site with invalid SSL cert.
 * Added: `gravityview_directory_link` to modify the URL to the View directory context (in `GravityView_API::directory_link()`)
 
