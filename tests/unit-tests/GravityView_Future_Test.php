@@ -86,7 +86,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Test deprecations and stubs in the old code. */
 		$this->assertTrue( GravityView_Compatibility::is_valid() );
 		$this->assertTrue( GravityView_Compatibility::check_php() );
-		$this->assertTrue( GravityView_Compatibility::check_wordpress() );
+		$this->assertTrue( GravityView_Compatibility::check_wordpress(), 'Failed check for WP version ' . $GLOBALS['wp_version'] );
 		$this->assertTrue( GravityView_Compatibility::check_gravityforms() );
 
 		$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] = '5.2';
