@@ -27,7 +27,7 @@ final class Plugin {
 	 *
 	 * GravityView requires at least this version of WordPress to function properly.
 	 */
-	private static $min_wp_version = '3.5.0';
+	private static $min_wp_version = '4.0';
 
 	/**
 	 * @var string Minimum Gravity Forms version.
