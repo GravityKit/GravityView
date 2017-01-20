@@ -1128,34 +1128,10 @@ class GravityView_frontend {
 		 */
 		$search_criteria = self::get_search_criteria( $args, $form_id );
 
-		// Paging & offset
-		$page_size = ! empty( $args['page_size'] ) ? intval( $args['page_size'] ) : apply_filters( 'gravityview_default_page_size', 25 );
-
-		if ( -1 === $page_size ) {
-			$page_size = PHP_INT_MAX;
-		}
-
-		if ( isset( $args['offset'] ) ) {
-			$offset = intval( $args['offset'] );
-		} else {
-			$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
-			$offset = ( $curr_page - 1 ) * $page_size;
-		}
-
-		$paging = array(
-			'offset' => $offset,
-			'page_size' => $page_size,
-		);
-
-		do_action( 'gravityview_log_debug', __METHOD__ . ': Paging: ', $paging );
-
-		// Sorting
-		$sorting = self::updateViewSorting( $args, $form_id );
-
 		$parameters = array(
 			'search_criteria' => $search_criteria,
-			'sorting' => $sorting,
-			'paging' => $paging,
+			'sorting' => self::updateViewSorting( $args, $form_id ),
+			'paging' => self::get_search_criteria_paging( $args ),
 			'cache' => isset( $args['cache'] ) ? $args['cache'] : true,
 		);
 
@@ -1209,6 +1185,46 @@ class GravityView_frontend {
 
 	}
 
+	/**
+	 * Get the paging array for the View
+	 *
+	 * @since 1.19.5
+	 *
+	 * @param $args
+	 * @param int $form_id
+	 */
+	public static function get_search_criteria_paging( $args ) {
+
+		/**
+		 * @filter `gravityview_default_page_size` The default number of entries displayed in a View
+		 * @since 1.1.6
+		 * @param int $default_page_size Default: 25
+		 */
+		$default_page_size = apply_filters( 'gravityview_default_page_size', 25 );
+
+		// Paging & offset
+		$page_size = ! empty( $args['page_size'] ) ? intval( $args['page_size'] ) : $default_page_size;
+
+		if ( -1 === $page_size ) {
+			$page_size = PHP_INT_MAX;
+		}
+
+		if ( isset( $args['offset'] ) ) {
+			$offset = intval( $args['offset'] );
+		} else {
+			$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
+			$offset = ( $curr_page - 1 ) * $page_size;
+		}
+
+		$paging = array(
+			'offset' => $offset,
+			'page_size' => $page_size,
+		);
+
+		do_action( 'gravityview_log_debug', __METHOD__ . ': Paging: ', $paging );
+
+		return $paging;
+	}
 
 	/**
 	 * Updates the View sorting criteria
