@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.19.4 on January 19, 2017 =
+
 * **GravityView requirements will soon be updated**: Gravity Forms Version 2.0+, PHP 5.3+
 * Updated: GravityView now requires WordPress 4.0 or newer
 * Fixed: Search Bar search not working for states in the United States
