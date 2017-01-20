@@ -35,11 +35,14 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 	 * @since 1.19.2
 	 */
 	protected $style_handles = array(
+		'sitepress-style',
 		'wpml-select-2',
 		'wpml-tm-styles',
 		'wpml-tm-queue',
 		'wpml-dialog',
 		'wpml-tm-editor-css',
+		'otgs-dialogs',
+		'otgs-ico',
 	);
 
 	/**
