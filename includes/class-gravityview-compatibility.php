@@ -252,7 +252,7 @@ class GravityView_Compatibility {
 
 		if (
 			( function_exists( 'gravityview' ) && ! gravityview()->plugin->is_compatible_wordpress() )
-			|| ( version_compare( $wp_version, GV_MIN_WP_VERSION ) <= 0 )
+			|| ( false === version_compare( $wp_version, GV_MIN_WP_VERSION, '>=' ) )
 		) {
 
 			self::$notices['wp_version'] = array(
