@@ -20,6 +20,24 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.19.4 on January 19, 2017 =
+
+* **GravityView requirements will soon be updated**: Gravity Forms Version 2.0+, PHP 5.3+
+* Updated: GravityView now requires WordPress 4.0 or newer
+* Fixed: Search Bar search not working for states in the United States
+* Fixed: WPML conflict where Single Entry or Edit Entry screens are inaccessible
+* Fixed: Prevent PHP error when displaying GravityView using `get_gravityview()`
+* Updated translations:
+    - 🇩🇰 Danish *100% translated*
+    - 🇳🇴 Norwegian *100% translated*
+    - 🇸🇪 Swedish translation updated
+
+__Developer Notes: __
+
+* New: We're starting the migration to a new wrapper API that will awesome. We will be rolling out new functionality and documentation over time. For now, we are just using it to load the plugin. [Very exciting time](https://i.imgur.com/xmkONOD.gif)!
+* Fixed: Issue fetching image sizes when using `GravityView_Image` class and fetching from a site with invalid SSL cert.
+* Added: `gravityview_directory_link` to modify the URL to the View directory context (in `GravityView_API::directory_link()`)
+
 = 1.19.3 on January 9, 2017 =
 
 First update of 2017! We've got great things planned for GravityView and our Extensions. As always, [contact us](mailto:support@gravityview.co) with any questions or feedback. We don't bite!

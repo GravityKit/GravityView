@@ -14,6 +14,10 @@ class GravityView_Field_Address extends GravityView_Field {
 
 	var $group = 'advanced';
 
+	var $is_numeric = false;
+
+	var $is_searchable = true;
+
 	var $_gf_field_class_name = 'GF_Field_Address';
 
 	public function __construct() {
@@ -144,15 +148,8 @@ class GravityView_Field_Address extends GravityView_Field {
 		}
 
 		foreach ( $states as $key => $state ) {
-
-			if( 'us' === $address_type ) {
-				$value = GFCommon::get_us_state_code( $state );
-			} else {
-				$value = $state;
-			}
-
 			$state_choices[] = array(
-				'value' => $value,
+				'value' => $state,
 				'text' => $state,
 			);
 		}

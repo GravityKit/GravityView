@@ -47,7 +47,7 @@ abstract class GravityView_Field {
 	 * @type boolean Can the field be searched?
 	 * @since 1.15.2
 	 */
-	public $is_searchable;
+	public $is_searchable = true;
 
 	/**
 	 * @internal Not yet implemented

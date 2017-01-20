@@ -9,7 +9,7 @@ class GravityView_Field_Select extends GravityView_Field {
 
 	var $name = 'select';
 
-	var $is_searchable = false;
+	var $is_searchable = true;
 
 	var $_gf_field_class_name = 'GF_Field_Select';
 

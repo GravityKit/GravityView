@@ -271,6 +271,33 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+
+                <h3>1.19.4 on January 19, 2017</h3>
+
+                <ul>
+                    <li><strong>GravityView requirements will soon be updated</strong>: Gravity Forms Version 2.0+, PHP 5.3+</li>
+                    <li>Updated: GravityView now requires WordPress 4.0 or newer</li>
+                    <li>Fixed: Search Bar search not working for states in the United States</li>
+                    <li>Fixed: WPML conflict where Single Entry or Edit Entry screens are inaccessible</li>
+                    <li>Fixed: Prevent PHP error when displaying GravityView using <code>get_gravityview()</code></li>
+                    <li>Updated translations:
+
+                        <ul>
+                            <li>🇩🇰 Danish <em>100% translated</em></li>
+                            <li>🇳🇴 Norwegian <em>100% translated</em></li>
+                            <li>🇸🇪 Swedish translation updated</li>
+                        </ul></li>
+                </ul>
+
+                <p>__Developer Notes: __</p>
+
+                <ul>
+                    <li>New: We&#39;re starting the migration to a new wrapper API that will awesome. We will be rolling out new functionality and documentation over time. For now, we are just using it to load the plugin. <a href="https://i.imgur.com/xmkONOD.gif">Very exciting time</a>!</li>
+                    <li>Fixed: Issue fetching image sizes when using <code>GravityView_Image</code> class and fetching from a site with invalid SSL cert.</li>
+                    <li>Added: <code>gravityview_directory_link</code> to modify the URL to the View directory context (in <code>GravityView_API::directory_link()</code>)</li>
+                </ul>
+
+
                 <h3>1.19.3 on January 9, 2017</h3>
 
                 <p>First update of 2017! We&#39;ve got great things planned for GravityView and our Extensions. As always, <a href="mailto:support@gravityview.co">contact us</a> with any questions or feedback. We don&#39;t bite!</p>

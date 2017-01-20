@@ -9,7 +9,7 @@ class GravityView_Field_Hidden extends GravityView_Field {
 
 	var $name = 'hidden';
 
-	var $is_searchable = false;
+	var $is_searchable = true;
 
 	var $_gf_field_class_name = 'GF_Field_Hidden';
 

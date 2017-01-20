@@ -3,7 +3,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:          	1.19.3
+ * Version:          	1.19.4
  * Author:            	GravityView
  * Author URI:        	https://gravityview.co
  * Text Domain:       	gravityview
@@ -43,7 +43,7 @@ define( 'GV_MIN_GF_VERSION', '1.9.14' );
  * GravityView requires at least this version of WordPress to function properly.
  * @since 1.12
  */
-define( 'GV_MIN_WP_VERSION', '3.5.0' );
+define( 'GV_MIN_WP_VERSION', '4.0' );
 
 /**
  * GravityView requires at least this version of PHP to function properly.
@@ -58,6 +58,11 @@ define( 'GV_MIN_PHP_VERSION', '5.2.4' );
  */
 define( 'GV_FUTURE_MIN_PHP_VERSION', '5.3' );
 
+/**
+ * GravityView will soon require at least this version of Gravity Forms to function properly.
+ * @since 1.19.4
+ */
+define( 'GV_FUTURE_MIN_GF_VERSION', '2.0.0-rc-1' );
 
 /** Register hooks that are fired when the plugin is activated and deactivated. */
 register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
@@ -65,11 +70,16 @@ register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
 
 /**
+ * The future is here and now.
+ */
+require GRAVITYVIEW_DIR . '/future/gravityview.php';
+
+/**
  * GravityView_Plugin main class.
  */
 final class GravityView_Plugin {
 
-	const version = '1.19.3';
+	const version = '1.19.4';
 
 	private static $instance;
 

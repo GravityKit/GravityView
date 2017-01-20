@@ -192,6 +192,7 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		}
 
 		$zero->add_cap( 'gravityview_full_access' );
+		$zero->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
 
 		// With GV full access, $zero is a $hero
 		foreach( $role_caps as $cap ) {
@@ -235,6 +236,7 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 
 		$zero->add_cap( 'edit_gravityviews' );
 		$zero->add_cap( 'edit_published_gravityviews' );
+		$zero->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
 
 		// CAN edit own view
 		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'edit_gravityview', $zero_view_id ) );
@@ -243,6 +245,7 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'edit_gravityview', $admin_view_id ) );
 
 		$zero->add_cap( 'edit_others_gravityviews' );
+		$zero->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
 
 		// CAN edit others' View
 		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'edit_gravityview', $admin_view_id ) );
@@ -251,6 +254,7 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		$this->assertFalse( GravityView_Roles_Capabilities::has_cap( 'edit_gravityview', $admin_private_view_id ) );
 
 		$zero->add_cap( 'edit_private_gravityviews' );
+		$zero->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
 
 		// And now user can edit other's PRIVATE View
 		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'edit_gravityview', $admin_private_view_id ) );
@@ -262,6 +266,7 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		$zero->remove_all_caps();
 
 		$zero->add_cap( 'gravityview_full_access' );
+		$zero->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
 
 		// With GV full access, $zero is a $hero
 		$this->assertTrue( GravityView_Roles_Capabilities::has_cap( 'edit_gravityview', $admin_private_view_id ) );
