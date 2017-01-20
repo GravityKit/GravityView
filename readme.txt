@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 == Changelog ==
 
 * **GravityView will soon require Gravity Forms Version 2.0**
+* Fixed: Search Bar search not working for states in the United States
 * Fixed: WPML conflict where Single Entry or Edit Entry screens are inaccessible
 * Fixed: Prevent PHP error when displaying GravityView using `get_gravityview()`
 * Updated translations:

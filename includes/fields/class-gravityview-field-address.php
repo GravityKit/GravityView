@@ -144,15 +144,8 @@ class GravityView_Field_Address extends GravityView_Field {
 		}
 
 		foreach ( $states as $key => $state ) {
-
-			if( 'us' === $address_type ) {
-				$value = GFCommon::get_us_state_code( $state );
-			} else {
-				$value = $state;
-			}
-
 			$state_choices[] = array(
-				'value' => $value,
+				'value' => $state,
 				'text' => $state,
 			);
 		}
