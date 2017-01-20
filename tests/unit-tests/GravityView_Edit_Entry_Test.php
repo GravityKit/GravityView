@@ -299,6 +299,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			$this->assertFalse( GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view_user_edit_enabled->ID ), $cap );
 
 			$user->add_cap( $cap );
+			$user->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
 
 			// Can edit now
 			$this->assertTrue( current_user_can( $cap ), $cap );

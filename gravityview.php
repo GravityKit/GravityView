@@ -64,11 +64,15 @@ define( 'GV_FUTURE_MIN_PHP_VERSION', '5.3' );
  */
 define( 'GV_FUTURE_MIN_GF_VERSION', '2.0.0-rc-1' );
 
-
 /** Register hooks that are fired when the plugin is activated and deactivated. */
 register_activation_hook( __FILE__, array( 'GravityView_Plugin', 'activate' ) );
 
 register_deactivation_hook( __FILE__, array( 'GravityView_Plugin', 'deactivate' ) );
+
+/**
+ * The future is here and now.
+ */
+require GRAVITYVIEW_DIR . '/future/gravityview.php';
 
 /**
  * GravityView_Plugin main class.
