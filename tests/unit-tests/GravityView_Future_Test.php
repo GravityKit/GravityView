@@ -32,14 +32,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 */
 	function test_plugin_dir_and_url() {
 		$this->assertEquals( GRAVITYVIEW_DIR, gravityview()->plugin->dir() );
-		$this->assertStringEndsWith( '/GravityView/test/this.php', gravityview()->plugin->dir( 'test/this.php' ) );
-		$this->assertStringEndsWith( '/GravityView/and/this.php', gravityview()->plugin->dir( '/and/this.php' ) );
+		$this->assertStringEndsWith( '/gravityview/test/this.php', strtolower( gravityview()->plugin->dir( 'test/this.php' ) ) );
+		$this->assertStringEndsWith( '/gravityview/and/this.php', strtolower( gravityview()->plugin->dir( '/and/this.php' ) ) );
 
 		/** Due to how WP_PLUGIN_DIR is different in test mode, we are only able to check bits of the URL */
-		$this->assertStringStartsWith( 'http', gravityview()->plugin->url() );
-		$this->assertStringEndsWith( '/GravityView/', gravityview()->plugin->url() );
-		$this->assertStringEndsWith( '/GravityView/test/this.php', gravityview()->plugin->url( 'test/this.php' ) );
-		$this->assertStringEndsWith( '/GravityView/and/this.php', gravityview()->plugin->url( '/and/this.php' ) );
+		$this->assertStringStartsWith( 'http', strtolower( gravityview()->plugin->url() ) );
+		$this->assertStringEndsWith( '/gravityview/', strtolower( gravityview()->plugin->url() ) );
+		$this->assertStringEndsWith( '/gravityview/test/this.php', strtolower( gravityview()->plugin->url( 'test/this.php' ) ) );
+		$this->assertStringEndsWith( '/gravityview/and/this.php', strtolower( gravityview()->plugin->url( '/and/this.php' ) ) );
 	}
 
 	/**
