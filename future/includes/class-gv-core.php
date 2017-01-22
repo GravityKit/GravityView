@@ -56,6 +56,7 @@ final class Core {
 	 * @return void
 	 */
 	private function __construct() {
+		self::$__instance = $this;
 		$this->init();
 	}
 
@@ -68,7 +69,17 @@ final class Core {
 	 */
 	private function init() {
 		require_once dirname( __FILE__ ) . '/class-gv-plugin.php';
-		$this->plugin = \GV\Plugin::get();
+		$this->plugin = Plugin::get();
+
+		/**
+		 * Stop all further functionality from loading if the WordPress
+		 * plugin is incompatible with the current environment.
+		 *
+		 * @todo Output incompatibility notices.
+		 */
+		if ( ! $this->plugin->is_compatible() ) {
+			return;
+		}
 	}
 
 	private function __clone() { }

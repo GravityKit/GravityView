@@ -220,7 +220,10 @@ final class GravityView_Plugin {
 		// register rewrite rules
 		GravityView_Post_Types::init_rewrite();
 
-		flush_rewrite_rules();
+		/** Deprecate. Handled in \GV\Plugin::activate now. */
+		if ( ! function_exists( 'gravityview' ) ) {
+			flush_rewrite_rules();
+		}
 
 		// Update the current GV version
 		update_option( 'gv_version', self::version );
@@ -239,11 +242,13 @@ final class GravityView_Plugin {
 	 * Plugin deactivate function.
 	 *
 	 * @access public
-	 * @static
+	 * @deprecated
 	 * @return void
 	 */
 	public static function deactivate() {
-		flush_rewrite_rules();
+		if ( ! function_exists( 'gravityview' ) ) {
+			flush_rewrite_rules();
+		}
 	}
 
 	/**
