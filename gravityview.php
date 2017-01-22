@@ -214,11 +214,17 @@ final class GravityView_Plugin {
 
 		self::require_files();
 
-		// register post types
-		GravityView_Post_Types::init_post_types();
+		/** Deprecate in favor of \GV\View::register_post_type. */
+		if ( ! function_exists( 'gravityview' ) ) {
+			// register post types
+			GravityView_Post_Types::init_post_types();
+		}
 
-		// register rewrite rules
-		GravityView_Post_Types::init_rewrite();
+		/** Deprecate in favor of \GV\View::add_rewrite_endpoint. */
+		if ( ! function_exists( 'gravityview' ) ) {
+			// register rewrite rules
+			GravityView_Post_Types::init_rewrite();
+		}
 
 		/** Deprecate. Handled in \GV\Plugin::activate now. */
 		if ( ! function_exists( 'gravityview' ) ) {

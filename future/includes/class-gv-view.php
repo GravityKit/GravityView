@@ -1,47 +1,28 @@
 <?php
+namespace GV;
+
+/** If this file is called directly, abort. */
+if ( ! defined( 'GRAVITYVIEW_DIR' ) )
+	die();
+
 /**
- * GravityView Defining Post Types and Rewrite rules
+ * The default GravityView View class.
  *
- * @package   GravityView
- * @license   GPL2+
- * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
- * @copyright Copyright 2014, Katz Web Services, Inc.
- * @deprecated
- *
- * @since 1.0.9
+ * Houses all base View functionality.
  */
-
-class GravityView_Post_Types {
-
-	function __construct() {
-		/** Deprecated. Handled by \GV\Core from here on after. */
-		if ( function_exists( 'gravityview' ) ) {
-			return;
-		}
-
-		// Load custom post types. It's a static method.
-		// Load even when invalid to allow for export
-		add_action( 'init', array( 'GravityView_Post_Types', 'init_post_types' ) );
-
-		if( GravityView_Compatibility::is_valid() ) {
-			add_action( 'init', array( 'GravityView_Post_Types', 'init_rewrite' ) );
-		}
-	}
+class View {
 
 	/**
-	 * Init plugin components such as register own custom post types
+	 * Register the gravityview WordPress Custom Post Type.
 	 *
-	 * @access public
-	 * @deprecated
-	 * @see \GV\View::register_post_type
+	 * @internal
 	 * @return void
 	 */
-	public static function init_post_types() {
+	public static function register_post_type() {
 
-		if ( function_exists( 'gravityview' ) ) {
-			return \GV\View::register_post_type();
-		}
+		/** Register only once */
+		if ( post_type_exists( 'gravityview' ) )
+			return;
 
 		/**
 		 * @filter `gravityview_is_hierarchical` Make GravityView Views hierarchical by returning TRUE
@@ -53,7 +34,7 @@ class GravityView_Post_Types {
 
 		$supports = array( 'title', 'revisions' );
 
-		if( $is_hierarchical ) {
+		if ( $is_hierarchical ) {
 			$supports[] = 'page-attributes';
 		}
 
@@ -66,7 +47,7 @@ class GravityView_Post_Types {
 		 */
 		$supports = apply_filters( 'gravityview_post_type_support', $supports, $is_hierarchical );
 
-		//Register Custom Post Type - gravityview
+		/** Register Custom Post Type - gravityview */
 		$labels = array(
 			'name'                => _x( 'Views', 'Post Type General Name', 'gravityview' ),
 			'singular_name'       => _x( 'View', 'Post Type Singular Name', 'gravityview' ),
@@ -79,7 +60,7 @@ class GravityView_Post_Types {
 			'edit_item'           => __( 'Edit View', 'gravityview' ),
 			'update_item'         => __( 'Update View', 'gravityview' ),
 			'search_items'        => __( 'Search Views', 'gravityview' ),
-			'not_found'           => GravityView_Admin::no_views_text(),
+			'not_found'           => \GravityView_Admin::no_views_text(),
 			'not_found_in_trash'  => __( 'No Views found in Trash', 'gravityview' ),
 			'filter_items_list'     => __( 'Filter Views list', 'gravityview' ),
 			'items_list_navigation' => __( 'Views list navigation', 'gravityview' ),
@@ -100,9 +81,9 @@ class GravityView_Post_Types {
 			 * @param[in,out] boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded via shortcode. Default: `true`
 			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
 			 */
-			'public'              => apply_filters( 'gravityview_direct_access', GravityView_Compatibility::is_valid(), 0 ),
-			'show_ui'             => GravityView_Compatibility::is_valid(),
-			'show_in_menu'        => GravityView_Compatibility::is_valid(),
+			'public'              => apply_filters( 'gravityview_direct_access', gravityview()->plugin->is_compatible(), 0 ),
+			'show_ui'             => gravityview()->plugin->is_compatible(),
+			'show_in_menu'        => gravityview()->plugin->is_compatible(),
 			'show_in_nav_menus'   => true,
 			'show_in_admin_bar'   => true,
 			'menu_position'       => 17,
@@ -128,51 +109,5 @@ class GravityView_Post_Types {
 		);
 
 		register_post_type( 'gravityview', $args );
-
 	}
-
-	/**
-	 * Register rewrite rules to capture the single entry view
-	 *
-	 * @access public
-	 * @deprecated
-	 * @see \GV\Entry::add_rewrite_endpoint
-	 * @return void
-	 */
-	public static function init_rewrite() {
-
-		if ( function_exists( 'gravityview' ) ) {
-			return \GV\Entry::add_rewrite_endpoint();
-		}
-
-		$endpoint = self::get_entry_var_name();
-
-		//add_permastruct( "{$endpoint}", $endpoint.'/%'.$endpoint.'%/?', true);
-		add_rewrite_endpoint( "{$endpoint}", EP_ALL );
-	}
-
-	/**
-	 * Return the query var / end point name for the entry
-	 *
-	 * @access public
-	 * @deprecated
-	 * @see \GV\Entry::get_endpoint_name
-	 * @return string Default: "entry"
-	 */
-	public static function get_entry_var_name() {
-		if ( function_exists( 'gravityview' ) ) {
-			return \GV\Entry::get_endpoint_name();
-		}
-
-		/**
-		 * @filter `gravityview_directory_endpoint` Change the slug used for single entries
-		 * @param[in,out] string $endpoint Slug to use when accessing single entry. Default: `entry`
-		 */
-		$endpoint = apply_filters( 'gravityview_directory_endpoint', 'entry' );
-
-		return sanitize_title( $endpoint );
-	}
-
 }
-
-new GravityView_Post_Types;

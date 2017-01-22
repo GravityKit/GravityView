@@ -80,6 +80,14 @@ final class Core {
 		if ( ! $this->plugin->is_compatible() ) {
 			return;
 		}
+
+		/** Register the gravityview post type upon WordPress core init. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
+		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
+
+		/** Add rewrite endpoint for single-entry URLs. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
+		add_action( 'init', array( '\GV\Entry', 'add_rewrite_endpoint' ) );
 	}
 
 	private function __clone() { }
