@@ -660,7 +660,12 @@ class GravityView_API {
 			return '';
 		}
 
-		$query_arg_name = GravityView_Post_Types::get_entry_var_name();
+		if ( function_exists( 'gravityview' ) ) {
+			$query_arg_name = \GV\Entry::get_endpoint_name();
+		} else {
+			/** Deprecated. Use \GV\Entry::get_endpoint_name instead. */
+			$query_arg_name = GravityView_Post_Types::get_entry_var_name();
+		}
 
 		$entry_slug = self::get_entry_slug( $entry['id'], $entry );
 
