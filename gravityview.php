@@ -229,10 +229,10 @@ final class GravityView_Plugin {
 		/** Deprecate. Handled in \GV\Plugin::activate now. */
 		if ( ! function_exists( 'gravityview' ) ) {
 			flush_rewrite_rules();
-		}
 
-		// Update the current GV version
-		update_option( 'gv_version', self::version );
+			// Update the current GV version
+			update_option( 'gv_version', self::version );
+		}
 
 		// Add the transient to redirect to configuration page
 		set_transient( '_gv_activation_redirect', true, 60 );

@@ -108,7 +108,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNotEmpty( $entry_enpoint, 'Single Entry endpoint not registered.' );
 		\GV\Entry::add_rewrite_endpoint();
 		\GV\Entry::add_rewrite_endpoint();
-		GravityView_Post_Types::init_rewrite(); /** Deprecated */
+		GravityView_Post_Types::init_rewrite(); /** Deprecated, but an alias. */
 		$this->assertCount( 1, $entry_enpoint, 'Single Entry endpoint registered more than once.' );
 
 		/** Deprecated back-compatibility insurance. */
@@ -119,5 +119,16 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Make sure is_single_entry works without error, too. Uses \GV\Entry::get_endpoint_name */
 		$this->assertFalse( GravityView_frontend::is_single_entry() );
+	}
+
+	/**
+	 * @covers \GV\Plugin::activate()
+	 */
+	function test_plugin_activate() {
+		/** Trigger an activation. By default, during tests these are not triggered. */
+		GravityView_Plugin::activate();
+		gravityview()->plugin->activate(); /** Deprecated. */
+
+		$this->assertEquals( get_option( 'gv_version' ), GravityView_Plugin::version );
 	}
 }

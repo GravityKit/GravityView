@@ -108,6 +108,8 @@ final class Plugin {
 	 */
 	public function activate() {
 		flush_rewrite_rules();
+
+		update_option( 'gv_version', \GravityView_Plugin::version );
 	}
 
 	/**
