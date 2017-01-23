@@ -56,6 +56,7 @@ final class Core {
 	 * @return void
 	 */
 	private function __construct() {
+		self::$__instance = $this;
 		$this->init();
 	}
 
@@ -68,7 +69,25 @@ final class Core {
 	 */
 	private function init() {
 		require_once dirname( __FILE__ ) . '/class-gv-plugin.php';
-		$this->plugin = \GV\Plugin::get();
+		$this->plugin = Plugin::get();
+
+		/**
+		 * Stop all further functionality from loading if the WordPress
+		 * plugin is incompatible with the current environment.
+		 *
+		 * @todo Output incompatibility notices.
+		 */
+		if ( ! $this->plugin->is_compatible() ) {
+			return;
+		}
+
+		/** Register the gravityview post type upon WordPress core init. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
+		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
+
+		/** Add rewrite endpoint for single-entry URLs. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
+		add_action( 'init', array( '\GV\Entry', 'add_rewrite_endpoint' ) );
 	}
 
 	private function __clone() { }

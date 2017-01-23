@@ -86,7 +86,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Test deprecations and stubs in the old code. */
 		$this->assertTrue( GravityView_Compatibility::is_valid() );
 		$this->assertTrue( GravityView_Compatibility::check_php() );
-		$this->assertTrue( GravityView_Compatibility::check_wordpress(), 'Failed check for WP version ' . $GLOBALS['wp_version'] );
+		$this->assertTrue( GravityView_Compatibility::check_wordpress() );
 		$this->assertTrue( GravityView_Compatibility::check_gravityforms() );
 
 		$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] = '5.2';
@@ -94,5 +94,41 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertFalse( GravityView_Compatibility::check_php() );
 		$GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] = '3.0';
 		$this->assertFalse( GravityView_Compatibility::check_wordpress() );
+	}
+
+	/**
+	 * @covers \GV\Entry::add_rewrite_endpoint()
+	 * @covers \GV\Entry::get_endpoint_name()
+	 */
+	function test_entry_endpoint_rewrite_name() {
+		$entry_enpoint = array_filter( $GLOBALS['wp_rewrite']->endpoints, function( $endpoint ) {
+			return $endpoint === array( EP_ALL, 'entry', 'entry' );
+		} );
+
+		$this->assertNotEmpty( $entry_enpoint, 'Single Entry endpoint not registered.' );
+		\GV\Entry::add_rewrite_endpoint();
+		\GV\Entry::add_rewrite_endpoint();
+		GravityView_Post_Types::init_rewrite(); /** Deprecated, but an alias. */
+		$this->assertCount( 1, $entry_enpoint, 'Single Entry endpoint registered more than once.' );
+
+		/** Deprecated back-compatibility insurance. */
+		$this->assertEquals( \GV\Entry::get_endpoint_name(), GravityView_Post_Types::get_entry_var_name() );
+
+		/** Make sure oEmbed handler registration doesn't error out with \GV\Entry::get_endpoint_name, and works. */
+		$this->assertContains( 'gravityview_entry', array_keys( $GLOBALS['wp_embed']->handlers[20000] ), 'oEmbed handler was not registered properly.' );
+
+		/** Make sure is_single_entry works without error, too. Uses \GV\Entry::get_endpoint_name */
+		$this->assertFalse( GravityView_frontend::is_single_entry() );
+	}
+
+	/**
+	 * @covers \GV\Plugin::activate()
+	 */
+	function test_plugin_activate() {
+		/** Trigger an activation. By default, during tests these are not triggered. */
+		GravityView_Plugin::activate();
+		gravityview()->plugin->activate(); /** Deprecated. */
+
+		$this->assertEquals( get_option( 'gv_version' ), GravityView_Plugin::version );
 	}
 }

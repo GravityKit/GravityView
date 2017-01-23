@@ -88,6 +88,13 @@ final class Plugin {
 	 * @return void
 	 */
 	private function init() {
+		/**
+		 * Stop all further functionality from loading if the WordPress
+		 * plugin is incompatible with the current environment.
+		 */
+		if ( ! $this->is_compatible() )
+			return;
+
 		/** Register hooks that are fired when the plugin is activated and deactivated. */
 		register_activation_hook( $this->dir( 'gravityview.php' ), array( $this, 'activate' ) );
 		register_deactivation_hook( $this->dir( 'gravityview.php' ), array( $this, 'deactivate' ) );
@@ -100,6 +107,9 @@ final class Plugin {
 	 * @return void
 	 */
 	public function activate() {
+		flush_rewrite_rules();
+
+		update_option( 'gv_version', \GravityView_Plugin::version );
 	}
 
 	/**
@@ -109,6 +119,7 @@ final class Plugin {
 	 * @return void
 	 */
 	public function deactivate() {
+		flush_rewrite_rules();
 	}
 
 	/**

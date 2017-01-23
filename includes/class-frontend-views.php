@@ -700,7 +700,7 @@ class GravityView_frontend {
 			/**
 			 * @filter `gravityview_direct_access` Should Views be directly accessible, or only visible using the shortcode?
 			 * @see https://codex.wordpress.org/Function_Reference/register_post_type#public
-			 * @see GravityView_Post_Types::init_post_types
+			 * @see \GV\Entry::get_endpoint_name
 			 * @since 1.15.2
 			 * @param[in,out] boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded via shortcode. Default: `true`
 			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
@@ -1367,7 +1367,12 @@ class GravityView_frontend {
 	 */
 	public static function is_single_entry() {
 
-		$var_name = GravityView_Post_Types::get_entry_var_name();
+		if ( function_exists( 'gravityview' ) ) {
+			$var_name = \GV\Entry::get_endpoint_name();
+		} else {
+			/** Deprecated. Use \GV\Entry::get_endpoint_name instead. */
+			$var_name = GravityView_Post_Types::get_entry_var_name();
+		}
 
 		$single_entry = get_query_var( $var_name );
 

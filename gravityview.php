@@ -214,16 +214,25 @@ final class GravityView_Plugin {
 
 		self::require_files();
 
-		// register post types
-		GravityView_Post_Types::init_post_types();
+		/** Deprecate in favor of \GV\View::register_post_type. */
+		if ( ! function_exists( 'gravityview' ) ) {
+			// register post types
+			GravityView_Post_Types::init_post_types();
+		}
 
-		// register rewrite rules
-		GravityView_Post_Types::init_rewrite();
+		/** Deprecate in favor of \GV\View::add_rewrite_endpoint. */
+		if ( ! function_exists( 'gravityview' ) ) {
+			// register rewrite rules
+			GravityView_Post_Types::init_rewrite();
+		}
 
-		flush_rewrite_rules();
+		/** Deprecate. Handled in \GV\Plugin::activate now. */
+		if ( ! function_exists( 'gravityview' ) ) {
+			flush_rewrite_rules();
 
-		// Update the current GV version
-		update_option( 'gv_version', self::version );
+			// Update the current GV version
+			update_option( 'gv_version', self::version );
+		}
 
 		// Add the transient to redirect to configuration page
 		set_transient( '_gv_activation_redirect', true, 60 );
@@ -239,11 +248,13 @@ final class GravityView_Plugin {
 	 * Plugin deactivate function.
 	 *
 	 * @access public
-	 * @static
+	 * @deprecated
 	 * @return void
 	 */
 	public static function deactivate() {
-		flush_rewrite_rules();
+		if ( ! function_exists( 'gravityview' ) ) {
+			flush_rewrite_rules();
+		}
 	}
 
 	/**

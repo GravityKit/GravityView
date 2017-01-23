@@ -74,7 +74,12 @@ class GravityView_oEmbed {
 	 */
 	private function get_handler_regex() {
 
-		$entry_var_name = GravityView_Post_Types::get_entry_var_name();
+		if ( function_exists( 'gravityview' ) ) {
+			$entry_var_name = \GV\Entry::get_endpoint_name();
+		} else {
+			/** Deprecated. Use \GV\Entry::get_endpoint_name instead. */
+			$entry_var_name = GravityView_Post_Types::get_entry_var_name();
+		}
 
 		/**
 		 * @filter `gravityview_slug` Modify the url part for a View. [Read the doc](http://docs.gravityview.co/article/62-changing-the-view-slug)
