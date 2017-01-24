@@ -1128,10 +1128,12 @@ class GravityView_frontend {
 		 */
 		$search_criteria = self::get_search_criteria( $args, $form_id );
 
+		$paging = self::get_search_criteria_paging( $args );
+
 		$parameters = array(
 			'search_criteria' => $search_criteria,
 			'sorting' => self::updateViewSorting( $args, $form_id ),
-			'paging' => self::get_search_criteria_paging( $args ),
+			'paging' => $paging,
 			'cache' => isset( $args['cache'] ) ? $args['cache'] : true,
 		);
 
