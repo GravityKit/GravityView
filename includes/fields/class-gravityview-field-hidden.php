@@ -11,6 +11,8 @@ class GravityView_Field_Hidden extends GravityView_Field {
 
 	var $is_searchable = true;
 
+	var $search_operators = array( 'contains', 'is', 'isnot', 'starts_with', 'ends_with' );
+
 	var $_gf_field_class_name = 'GF_Field_Hidden';
 
 	var $group = 'standard';

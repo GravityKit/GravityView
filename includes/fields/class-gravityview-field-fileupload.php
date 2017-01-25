@@ -11,6 +11,10 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 	var $_gf_field_class_name = 'GF_Field_FileUpload';
 
+	var $is_searchable = true;
+
+	var $search_operators = array( 'contains' );
+
 	var $group = 'advanced';
 
 	public function __construct() {

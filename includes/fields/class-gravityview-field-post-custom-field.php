@@ -11,6 +11,10 @@ class GravityView_Field_Post_Custom_Field extends GravityView_Field {
 
 	var $is_searchable = true;
 
+	/** @var array Custom fields are text, but can be any format (including JSON) */
+	var $search_operators = array( 'contains', 'is', 'isnot' );
+
+	/** @see GF_Field_Post_Custom_Field */
 	var $_gf_field_class_name = 'GF_Field_Post_Custom_Field';
 
 	var $group = 'post';

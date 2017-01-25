@@ -18,6 +18,8 @@ class GravityView_Field_Address extends GravityView_Field {
 
 	var $is_searchable = true;
 
+	var $search_operators = array( 'is', 'isnot', 'contains' );
+
 	var $_gf_field_class_name = 'GF_Field_Address';
 
 	public function __construct() {

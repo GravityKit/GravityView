@@ -12,6 +12,8 @@ class GravityView_Field_Email extends GravityView_Field {
 
 	var $name = 'email';
 
+	var $is_searchable = true;
+
 	var $search_operators = array( 'is', 'isnot', 'contains', 'starts_with', 'ends_with' );
 
 	var $_gf_field_class_name = 'GF_Field_Email';

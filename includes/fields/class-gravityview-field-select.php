@@ -11,6 +11,12 @@ class GravityView_Field_Select extends GravityView_Field {
 
 	var $is_searchable = true;
 
+	/**
+	 * @see GFCommon::get_field_filter_settings
+	 * @var array
+	 */
+	var $search_operators = array( 'is', 'isnot', 'contains' );
+
 	var $_gf_field_class_name = 'GF_Field_Select';
 
 	var $group = 'standard';

@@ -9,6 +9,8 @@ class GravityView_Field_Created_By extends GravityView_Field {
 
 	var $name = 'created_by';
 
+	var $is_searchable = true;
+
 	var $search_operators = array( 'is', 'isnot' );
 
 	var $group = 'meta';

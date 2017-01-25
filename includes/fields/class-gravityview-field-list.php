@@ -15,6 +15,12 @@ class GravityView_Field_List extends GravityView_Field {
 
 	var $name = 'list';
 
+	/**
+	 * @var bool
+	 * @since 1.15.3
+	 */
+	var $is_searchable = true;
+
 	var $search_operators = array( 'contains' );
 
 	/**
@@ -23,12 +29,7 @@ class GravityView_Field_List extends GravityView_Field {
 	 */
 	var $is_sortable = false;
 
-	/**
-	 * @var bool
-	 * @since 1.15.3
-	 */
-	var $is_searchable = false;
-
+	/** @see GF_Field_List */
 	var $_gf_field_class_name = 'GF_Field_List';
 
 	var $group = 'advanced';

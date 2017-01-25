@@ -14,7 +14,7 @@ class GravityView_Field_Payment_Method extends GravityView_Field {
 
 	var $is_numeric = false;
 
-	var $search_operators = array( 'is', 'isnot' );
+	var $search_operators = array( 'is', 'isnot', 'contains' );
 
 	var $group = 'pricing';
 
