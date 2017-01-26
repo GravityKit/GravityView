@@ -131,4 +131,38 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( get_option( 'gv_version' ), GravityView_Plugin::version );
 	}
+
+	/**
+	 * @covers \GV\ViewList::append()
+	 */
+	function test_viewlist() {
+		$views = new \GV\ViewList();
+		$view = new \GV\View();
+
+		$views->append( $view );
+		$this->assertContains( $view, $views->all() );
+
+		/** Make sure we can only add \GV\View objects into the \GV\ViewList. */
+		$this->expectException( \InvalidArgumentException::class );
+		$views->append( new stdClass() );
+		$this->assertCount( 1, $views->count() );
+	}
+
+	/**
+	 * @covers \GV\Core::init()
+	 */
+	function test_core_init() {
+		/** Make sure the main \GV\ViewList is available. */
+		$this->assertSame( gravityview()->views, gravityview()->request->views );
+	}
+
+	/**
+	 * @covers \GV\DefaultRequest::is_admin()
+	 */
+	function test_default_request() {
+		$this->assertFalse( gravityview()->request->is_admin() );
+
+		set_current_screen( 'edit.php' );
+		$this->assertTrue( gravityview()->request->is_admin() );
+	}
 }

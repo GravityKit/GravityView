@@ -35,10 +35,14 @@ final class Core {
 	public $request;
 
 	/**
-	 * @var \GV\CoreSettings core GravityView settings
+	 * @var \GV\ViewList The views attached to the current request.
+	 *
+	 * @see \GV\Request::$views A shortcut alias.
+	 * @api
+	 * @since future
 	 */
-	public $settings;
-	
+	public $views;
+
 	/**
 	 * Get the global instance of \GV\Core.
 	 *
@@ -88,6 +92,17 @@ final class Core {
 		/** Add rewrite endpoint for single-entry URLs. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
 		add_action( 'init', array( '\GV\Entry', 'add_rewrite_endpoint' ) );
+
+		/** Generics. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-list.php' );
+
+		/** Get the ViewList ready. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-viewlist.php' );
+
+		/** Initialize the current request. For now we assume a default WordPress frontent context. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
+		$this->request = new DefaultRequest();
+		$this->views = &$this->request->views;
 	}
 
 	private function __clone() { }
