@@ -162,7 +162,70 @@ class GVFuture_Test extends GV_UnitTestCase {
 	function test_default_request() {
 		$this->assertFalse( gravityview()->request->is_admin() );
 
-		set_current_screen( 'edit.php' );
+		set_current_screen( 'dashboard' );
 		$this->assertTrue( gravityview()->request->is_admin() );
+		set_current_screen( 'front' );
+		return;
+
+		/** Now make sure old code stubs behave in the same way. */
+		$this->assertEquals( gravityview()->request->is_admin(), \GravityView_Plugin::is_admin() );
+		set_current_screen( 'front' );
+		$this->assertEquals( gravityview()->request->is_admin(), \GravityView_Plugin::is_admin() );
+
+		/** \GravityView_frontend::parse_content returns immediately if is_admin() */
+		$fe = \GravityView_frontend::getInstance();
+		$fe->setGvOutputData( 'sentinel' );
+		$fe->parse_content(); /** Will reset GvOutputData to an emty array. */
+		$this->assertNotEquals( 'sentinel', $fe->getGvOutputData() );
+		set_current_screen( 'dashboard' );
+		$fe = \GravityView_frontend::getInstance();
+		$fe->setGvOutputData( 'sentinel' );
+		$fe->parse_content(); /** Will not reset GvOutputData to an empty array. */
+		$this->assertEquals( 'sentinel', $fe->getGvOutputData() );
+
+		/** \GravityView_Entry_Link_Shortcode::shortcode short circuits with null if is_admin() */
+		set_current_screen( 'front' );
+		$entry_link_shortcode = new \GravityView_Entry_Link_Shortcode(); /** And with false if allowed to continue with bad data. */
+		$this->assertFalse( $entry_link_shortcode->read_shortcode( array( 'view_id' => 1, 'entry_id' => 1 ) ) );
+		set_current_screen( 'dashboard' );
+		$this->assertNull( $entry_link_shortcode->read_shortcode( array( 'view_id' => 1, 'entry_id' => 1 ) ) );
+
+		/** \GVLogic_Shortcode::shortcode short circuits as well. */
+		set_current_screen( 'front' );
+		$logic_shortocde = \GVLogic_Shortcode::get_instance();
+		$this->assertEquals( $logic_shortocde->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
+		set_current_screen( 'dashboard' );
+		$this->assertNull( $logic_shortocde->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
+
+
+		/** \GravityView_Widget::add_shortcode short circuits and adds no tags if is_admin() */
+		set_current_screen( 'front' );
+		$widget = new \GravityView_Widget( 'test', 1 );
+		$shortcode_tags = clone( $GLOBALS['shortcode_tags'] );
+		$GLOBALS['shortcode_tags'] = array();
+		$widget->add_shortcode();
+		$this->assertNotEmpty( $GLOBALS['shortcode_tags'] );
+		set_current_screen( 'dashboard' );
+		$GLOBALS['shortcode_tags'] = array();
+		$widget->add_shortcode();
+		$this->assertEmpty( $GLOBALS['shortcode_tags'] );
+		$GLOBALS['shortcode_tags'] = $shortcode_tags;
+
+		set_current_screen( 'front' );
+	}
+
+	/**
+	 * @covers \GV\DefaultRequest::is_admin()
+	 * @group ajax
+	 */
+	function test_default_request_ajax() {
+		if ( ! defined( 'DOING_AJAX' ) )
+			define( 'DOING_AJAX', true );
+
+		$this->assertFalse( gravityview()->request->is_admin() );
+		$this->assertEquals( gravityview()->request->is_admin(), \GravityView_Plugin::is_admin() );
+
+		set_current_screen( 'dashboard' );
+		$this->assertFalse( gravityview()->request->is_admin() );
 	}
 }

@@ -113,7 +113,10 @@ class GravityView_Entry_Link_Shortcode {
 	private function shortcode( $atts, $content = null, $context = 'gv_entry_link' ) {
 
 		// Don't process when saving post. Keep processing if it's admin-ajax.php
-		if ( ! class_exists( 'GravityView_Plugin' ) || GravityView_Plugin::is_admin() ) {
+		if ( function_exists( 'gravityview' ) && gravityview()->request->is_admin() ) {
+			return null;
+			/** Deprecated in favor of gravityview()->request->is_admin(). */
+		} else if ( ! class_exists( 'GravityView_Plugin' ) || GravityView_Plugin::is_admin() ) {
 			return null;
 		}
 
