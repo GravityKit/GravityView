@@ -16,6 +16,11 @@
 			<directory suffix=".php">./tests/unit-tests</directory>
 		</testsuite>
 	</testsuites>
+	<groups>
+		<exclude>
+			<group>ajax</group>
+		</exclude>
+	</groups>
 	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="false">
 			<directory suffix=".php">./</directory>
