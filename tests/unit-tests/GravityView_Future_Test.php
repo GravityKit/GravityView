@@ -143,7 +143,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( $view, $views->all() );
 
 		/** Make sure we can only add \GV\View objects into the \GV\ViewList. */
-		$this->expectException( \InvalidArgumentException::class );
+		$this->expectException( '\InvalidArgumentException' );
 		$views->append( new stdClass() );
 		$this->assertCount( 1, $views->count() );
 	}
