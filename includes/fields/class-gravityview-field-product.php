@@ -75,7 +75,7 @@ class GravityView_Field_Product extends GravityView_Field {
 	public function edit_entry_field_blacklist( $blacklist = array(), $entry = array() ) {
 
 		if ( $this->should_hide_product_fields( $entry ) ) {
-			$blacklist += GVCommon::get_product_field_types();
+			$blacklist = array_merge( $blacklist, GVCommon::get_product_field_types() );
 		}
 
 		return $blacklist;
