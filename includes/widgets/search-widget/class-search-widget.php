@@ -156,6 +156,11 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			'multi' => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
 		);
 
+		/**
+		 * @filter `gravityview/search/input_types` Change the types of search fields available to a field type
+		 * @see GravityView_Widget_Search::get_search_input_labels() for the available input types
+		 * @param array $input_types Associative array: key is field `name`, value is array of GravityView input types (note: use `input_text` for `text`)
+		 */
 		$input_types = apply_filters( 'gravityview/search/input_types', $input_types );
 
 		return $input_types;
@@ -186,6 +191,10 @@ class GravityView_Widget_Search extends GravityView_Widget {
 			'date_range' => esc_html__( 'Date range', 'gravityview' ),
 		);
 
+		/**
+		 * @filter `gravityview/search/input_types` Change the label of search field input types
+		 * @param array $input_types Associative array: key is input type name, value is label
+		 */
 		$input_labels = apply_filters( 'gravityview/search/input_labels', $input_labels );
 
 		return $input_labels;

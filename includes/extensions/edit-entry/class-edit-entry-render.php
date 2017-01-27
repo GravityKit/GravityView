@@ -484,9 +484,9 @@ class GravityView_Edit_Entry_Render {
             $return_entry = GFAPI::update_entry( $entry );
 
             if( is_wp_error( $return_entry ) ) {
-                do_action( 'gravityview_log_error', 'Updating the entry calculation and total fields failed', $return_entry );
+                do_action( 'gravityview_log_error', 'Updating the entry calculation fields failed', $return_entry );
             } else {
-                do_action( 'gravityview_log_debug', 'Updating the entry calculation and total fields succeeded' );
+                do_action( 'gravityview_log_debug', 'Updating the entry calculation fields succeeded' );
             }
         }
     }
@@ -1144,7 +1144,7 @@ class GravityView_Edit_Entry_Render {
      *
      * @param GF_Field $field
      *
-     * @return array|mixed|string|void
+     * @return array|mixed|string
      */
     private function get_field_value( $field ) {
 
@@ -1796,7 +1796,7 @@ class GravityView_Edit_Entry_Render {
      *
      * @param $has_conditional_logic
      * @param $form
-     * @return mixed|void
+     * @return mixed
      */
     public function manage_conditional_logic( $has_conditional_logic, $form ) {
 
