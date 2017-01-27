@@ -159,7 +159,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\DefaultRequest::is_admin()
 	 */
-	function test_default_request() {
+	function test_default_request_is_admin() {
 		$this->assertFalse( gravityview()->request->is_admin() );
 
 		set_current_screen( 'dashboard' );
@@ -215,7 +215,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\DefaultRequest::is_admin()
 	 * @group ajax
 	 */
-	function test_default_request_ajax() {
+	function test_default_request_is_admin_ajax() {
 		if ( ! defined( 'DOING_AJAX' ) )
 			define( 'DOING_AJAX', true );
 
