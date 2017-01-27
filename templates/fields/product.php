@@ -4,6 +4,9 @@
  *
  * @package GravityView
  * @subpackage GravityView/templates/fields
+ *
+ * @global string $display_value Existing value
+ * @global string|array $value
  */
 
 $gravityview_view = GravityView_View::getInstance();
@@ -22,5 +25,19 @@ $value = is_array( $value ) ? array_filter( $value, 'gravityview_is_not_empty_st
 
 // If so, then we have something worth showing
 if ( !empty( $value ) ) {
-	echo gravityview_get_field_value( $entry, $field_id, $display_value );
+
+	$input_id = gravityview_get_input_id_from_id( $field_id );
+
+	$output = gravityview_get_field_value( $entry, $field_id, $display_value );
+
+	switch ( $input_id ) {
+		case 2:
+			$output = GFCommon::to_money( $output, rgar( $entry, 'currency' ) );
+			break;
+		case 3:
+			$output = GFCommon::to_number( $output );
+			break;
+	}
+
+	echo $output;
 }
