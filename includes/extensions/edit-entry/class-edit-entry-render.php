@@ -1099,18 +1099,22 @@ class GravityView_Edit_Entry_Render {
         /**
          * @filter `gravityview/edit_entry/field_value` Change the value of an Edit Entry field, if needed
          * @since 1.11
+         * @since 1.20 Added third param
          * @param mixed $field_value field value used to populate the input
          * @param object $field Gravity Forms field object ( Class GF_Field )
+         * @param GravityView_Edit_Entry_Render $this Current object
          */
-        $field_value = apply_filters( 'gravityview/edit_entry/field_value', $field_value, $field );
+        $field_value = apply_filters( 'gravityview/edit_entry/field_value', $field_value, $field, $this );
 
         /**
          * @filter `gravityview/edit_entry/field_value_{field_type}` Change the value of an Edit Entry field for a specific field type
          * @since 1.17
+         * @since 1.20 Added third param
          * @param mixed $field_value field value used to populate the input
          * @param GF_Field $field Gravity Forms field object
+         * @param GravityView_Edit_Entry_Render $this Current object
          */
-        $field_value = apply_filters( 'gravityview/edit_entry/field_value_' . $field->type , $field_value, $field );
+        $field_value = apply_filters( 'gravityview/edit_entry/field_value_' . $field->type , $field_value, $field, $this );
 
 	    // Prevent any PHP warnings, like undefined index
 	    ob_start();

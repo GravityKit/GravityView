@@ -34,6 +34,7 @@ __Developer Notes:__
 * Updated: `fields/product.php` template file
 * Added: `GVCommon::get_product_field_types()` to fetch Gravity Forms product field types array
 * Added: `gravityview/edit_entry/field_blacklist` filter to modify what field types should not be shown in Edit Entry
+* Added: Third `GravityView_Edit_Entry_Render` parameter to `gravityview/edit_entry/field_value` and `gravityview/edit_entry/field_value_{field_type}` filters
 
 = 1.19.4 on January 19, 2017 =
 
