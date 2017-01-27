@@ -29,7 +29,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Coupon extends GravityView_Plugin_a
 	protected function add_hooks() {
 		parent::add_hooks();
 
-		add_filter( 'gravityview/edit_entry/field_blacklist', array( $this, 'edit_entry_field_blacklist' ) );
+		add_filter( 'gravityview/edit_entry/field_blacklist', array( $this, 'edit_entry_field_blacklist' ), 10, 2 );
 		add_filter( 'gravityview/edit_entry/field_value_coupon', array( $this, 'edit_entry_field_value' ), 10, 3 );
 	}
 
@@ -38,11 +38,20 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Coupon extends GravityView_Plugin_a
 	 *
 	 * @since 1.20
 	 *
+	 * @param array $entry Entry being edited in Edit Entry, if set
+	 *
 	 * @return bool True: Yes, show coupon fields in Edit Entry; False: no, don't show Coupon fields
 	 */
-	public function should_hide_coupon_fields() {
+	public function should_hide_coupon_fields( $entry = array() ) {
 
-		$hide_coupon_fields = apply_filters( 'gravityview/edit_entry/hide-coupon-fields', false );
+		$has_transaction_data = GVCommon::entry_has_transaction_data( $entry );
+
+		/**
+		 * @filter `gravityview/edit_entry/hide-coupon-fields` Should Coupon fields be hidden in Edit Entry?
+		 * @since 1.20
+		 * @param bool $has_transaction_data If true (the Entry has transaction data), hide the fields. Otherwise (false), show the Coupon field
+		 */
+		$hide_coupon_fields = apply_filters( 'gravityview/edit_entry/hide-coupon-fields', $has_transaction_data );
 
 		return (bool) $hide_coupon_fields;
 	}
@@ -53,12 +62,13 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Coupon extends GravityView_Plugin_a
 	 * @since 1.20
 	 *
 	 * @param array $blacklist Array of field types
+	 * @param array $entry Entry array of entry being edited in Edit Entry
 	 *
 	 * @return array Blacklist array, with coupon possibly added
 	 */
-	public function edit_entry_field_blacklist( $blacklist = array() ) {
+	public function edit_entry_field_blacklist( $blacklist = array(), $entry = array() ) {
 
-		if ( $this->should_hide_coupon_fields() ) {
+		if ( $this->should_hide_coupon_fields( $entry ) ) {
 			$blacklist[] = 'coupon';
 		}
 
