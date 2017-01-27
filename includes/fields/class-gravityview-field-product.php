@@ -25,7 +25,35 @@ class GravityView_Field_Product extends GravityView_Field {
 
 		add_filter( 'gravityview/edit_entry/field_blacklist', array( $this, 'edit_entry_field_blacklist' ), 10, 2 );
 
+		add_filter( 'gravityview/edit_entry/after_update', array( $this, 'clear_product_info_cache' ), 10, 3 );
+
 		parent::__construct();
+	}
+
+	/**
+	 * If the edited entry has a product field and the fields are shown, remove entry purchase cache
+	 *
+	 * @since 1.20
+	 *
+	 * @param array $form Gravity Forms array
+	 * @param int $entry_id Gravity Forms entry ID
+	 * @param GravityView_Edit_Entry_Render $Edit_Entry_Render
+	 *
+	 * @return void
+	 */
+	function clear_product_info_cache( $form = array(), $entry_id = 0, $Edit_Entry_Render = null ) {
+
+		if( $this->should_hide_product_fields( $Edit_Entry_Render->entry ) ) {
+			return;
+		}
+
+		// Clear the purchase details so we can re-calculate them
+		if ( GVCommon::has_product_field( $form ) ) {
+			gform_delete_meta( $entry_id, 'gform_product_info__' );
+			gform_delete_meta( $entry_id, 'gform_product_info_1_' );
+			gform_delete_meta( $entry_id, 'gform_product_info_1_1' );
+		}
+
 	}
 
 	/**
