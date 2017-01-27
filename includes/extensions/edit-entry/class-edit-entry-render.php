@@ -934,6 +934,9 @@ class GravityView_Edit_Entry_Render {
         // We need to remove the fake $_GET['page'] arg to avoid rendering form as if in admin.
         unset( $_GET['page'] );
 
+        // Prevent "Product Fields are not editable" message on submitted form
+	    unset( $_POST );
+
         // TODO: Verify multiple-page forms
 
         ob_start(); // Prevent PHP warnings possibly caused by prefilling list fields for conditional logic
