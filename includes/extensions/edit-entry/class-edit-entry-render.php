@@ -478,15 +478,6 @@ class GravityView_Edit_Entry_Render {
 
         }
 
-        //saving total field as the last field of the form.
-        if ( ! empty( $this->total_fields ) ) {
-            $update = true;
-            foreach ( $this->total_fields as $total_field ) {
-                $input_name = 'input_' . str_replace( '.', '_', $total_field->id);
-                $entry[ strval( $total_field->id ) ] = RGFormsModel::prepare_value( $form, $total_field, '', $input_name, $entry['id'], $entry );
-            }
-        }
-
         if( $update ) {
 
             $return_entry = GFAPI::update_entry( $entry );
