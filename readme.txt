@@ -27,7 +27,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 __Developer Notes:__
 
 * Updated: `fields/product.php` template file
-* Added `GVCommon::get_product_field_types()` to fetch Gravity Forms product field types array
+* Added: `GVCommon::entry_has_transaction_data()` to check whether entry array contains payment gateway transaction information
+* Added: `GVCommon::get_product_field_types()` to fetch Gravity Forms product field types array
 
 = 1.19.4 on January 19, 2017 =
 

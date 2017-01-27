@@ -169,6 +169,39 @@ class GVCommon {
 	}
 
 	/**
+	 * Check if an entry has transaction data
+	 *
+	 * Checks the following keys to see if they are set: 'payment_status', 'payment_date', 'transaction_id', 'payment_amount', 'payment_method'
+	 *
+	 * @since 1.20
+	 *
+	 * @param array $entry Gravity Forms entry array
+	 *
+	 * @return bool True: Entry has metadata suggesting it has communicated with a payment gateway; False: it does not have that data.
+	 */
+	public static function entry_has_transaction_data( $entry = array() ) {
+
+		if ( ! is_array( $entry ) ) {
+			return false;
+		}
+
+		$has_transaction_data = false;
+
+		$payment_meta = array( 'payment_status', 'payment_date', 'transaction_id', 'payment_amount', 'payment_method' );
+
+		foreach ( $payment_meta as $meta ) {
+
+			$has_transaction_data = rgar( $entry, $meta, false );
+
+			if( ! empty( $has_transaction_data ) ) {
+				break;
+			}
+		}
+
+		return $has_transaction_data;
+	}
+
+	/**
 	 * Get the entry ID from the entry slug, which may or may not be the entry ID
 	 *
 	 * @since  1.5.2

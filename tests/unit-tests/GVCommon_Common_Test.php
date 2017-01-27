@@ -192,6 +192,20 @@ class GVCommon_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @since 1.20
+	 * @covers GVCommon::entry_has_transaction_data()
+	 */
+	public function test_entry_has_transaction_data() {
+
+		$this->assertTrue( GVCommon::entry_has_transaction_data( array( 'transaction_id' => 1 ) ) );
+		$this->assertTrue( GVCommon::entry_has_transaction_data( array( 'transaction_id' => NULL, 'payment_status' => 'completed' ) ) );
+		$this->assertFalse( GVCommon::entry_has_transaction_data( array( 'transaction_id' => NULL, 'payment_status' => NULL ) ) );
+		$this->assertFalse( GVCommon::entry_has_transaction_data( array() ) );
+		$this->assertFalse( GVCommon::entry_has_transaction_data('') );
+
+	}
+
+	/**
 	 * Test basic filter functionality
 	 *
 	 * @since 1.20
