@@ -83,3 +83,6 @@ languages/gravityview-de.po
 # DoxyGen
 docs/config.doxygen
 docs/html
+
+# VIM
+*.swp
