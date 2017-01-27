@@ -1,11 +1,14 @@
 <?php
 /**
- * @file class-gravityview-field-payment-amount.php
+ * @file class-gravityview-field-product.php
  * @package GravityView
  * @subpackage includes\fields
- * @since 1.16
+ * @since 1.20
  */
 
+/**
+ * @since 1.20
+ */
 class GravityView_Field_Product extends GravityView_Field {
 
 	var $name = 'product';
@@ -21,6 +24,9 @@ class GravityView_Field_Product extends GravityView_Field {
 	/** @see GF_Field_Product */
 	var $_gf_field_class_name = 'GF_Field_Product';
 
+	/**
+	 * @since 1.20
+	 */
 	public function __construct() {
 
 		add_filter( 'gravityview/edit_entry/field_blacklist', array( $this, 'edit_entry_field_blacklist' ), 10, 2 );
@@ -59,6 +65,8 @@ class GravityView_Field_Product extends GravityView_Field {
 	/**
 	 * Maybe add Product fields to the Edit Entry blacklist
 	 *
+	 * @since 1.20
+	 *
 	 * @param array $blacklist Array of field types not to be shown in the Edit Entry form
 	 * @param array $entry Gravity Forms entry array
 	 *
@@ -75,6 +83,8 @@ class GravityView_Field_Product extends GravityView_Field {
 
 	/**
 	 * In Edit Entry, should Product fields be hidden? If entry has transaction data, they should be. Otherwise, no.
+	 *
+	 * @since 1.20
 	 *
 	 * @param array $entry Current Gravity Forms entry being edited
 	 *
