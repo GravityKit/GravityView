@@ -38,12 +38,6 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private static $supports_save_and_continue = false;
 
-	/**
-	 * @since 1.9
-	 * @var bool Whether to allow editing product fields
-	 */
-	private static $supports_product_fields = false;
-
     /**
      * Gravity Forms entry array
      *
@@ -949,7 +943,6 @@ class GravityView_Edit_Entry_Render {
         unset( $_GET['page'] );
 
         // TODO: Verify multiple-page forms
-        // TODO: Product fields are not editable
 
         ob_start(); // Prevent PHP warnings possibly caused by prefilling list fields for conditional logic
 
@@ -1084,7 +1077,6 @@ class GravityView_Edit_Entry_Render {
             && false === ( $gv_field && is_callable( array( $gv_field, 'get_field_input' ) ) )
             || ! empty( $field_content )
             || in_array( $field->type, array( 'honeypot' ) )
-            || GFCommon::is_product_field( $field->type ) // Prevent product fields from appearing editable
         ) {
 	        return $field_content;
         }
@@ -1582,25 +1574,7 @@ class GravityView_Edit_Entry_Render {
 
         $edit_fields = array();
 
-        $field_type_blacklist = array(
-            'page',
-        );
-
-	    /**
-	     * @filter `gravityview/edit_entry/hide-product-fields` Hide product fields from being editable.
-	     * @since 1.9.1
-         * @param boolean $hide_product_fields Whether to hide product fields in the editor.  Default: false
-	     */
-	    $hide_product_fields = apply_filters( 'gravityview/edit_entry/hide-product-fields', empty( self::$supports_product_fields ) );
-
-	    if( $hide_product_fields ) {
-		    $field_type_blacklist[] = 'option';
-		    $field_type_blacklist[] = 'quantity';
-            $field_type_blacklist[] = 'product';
-            $field_type_blacklist[] = 'total';
-            $field_type_blacklist[] = 'shipping';
-            $field_type_blacklist[] = 'calculation';
-	    }
+        $field_type_blacklist = $this->loader->get_field_blacklist( $this->entry );
 
         // First, remove blacklist or calculation fields
         foreach ( $fields as $key => $field ) {
