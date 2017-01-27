@@ -165,7 +165,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		set_current_screen( 'dashboard' );
 		$this->assertTrue( gravityview()->request->is_admin() );
 		set_current_screen( 'front' );
-		return;
 
 		/** Now make sure old code stubs behave in the same way. */
 		$this->assertEquals( gravityview()->request->is_admin(), \GravityView_Plugin::is_admin() );
@@ -174,6 +173,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** \GravityView_frontend::parse_content returns immediately if is_admin() */
 		$fe = \GravityView_frontend::getInstance();
+		$restore_GvOutputData = $fe->getGvOutputData(); /** Remember the global state... */
 		$fe->setGvOutputData( 'sentinel' );
 		$fe->parse_content(); /** Will reset GvOutputData to an emty array. */
 		$this->assertNotEquals( 'sentinel', $fe->getGvOutputData() );
@@ -182,6 +182,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$fe->setGvOutputData( 'sentinel' );
 		$fe->parse_content(); /** Will not reset GvOutputData to an empty array. */
 		$this->assertEquals( 'sentinel', $fe->getGvOutputData() );
+		$fe->setGvOutputData( $restore_GvOutputData );
 
 		/** \GravityView_Entry_Link_Shortcode::shortcode short circuits with null if is_admin() */
 		set_current_screen( 'front' );
@@ -197,19 +198,15 @@ class GVFuture_Test extends GV_UnitTestCase {
 		set_current_screen( 'dashboard' );
 		$this->assertNull( $logic_shortocde->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
 
-
 		/** \GravityView_Widget::add_shortcode short circuits and adds no tags if is_admin() */
 		set_current_screen( 'front' );
 		$widget = new \GravityView_Widget( 'test', 1 );
-		$shortcode_tags = clone( $GLOBALS['shortcode_tags'] );
-		$GLOBALS['shortcode_tags'] = array();
 		$widget->add_shortcode();
-		$this->assertNotEmpty( $GLOBALS['shortcode_tags'] );
+		$this->assertContains( 'gravityview_widget', array_keys( $GLOBALS['shortcode_tags'] ) );
+		unset( $GLOBALS['shortcode_tags']['gravityview_widget'] );
 		set_current_screen( 'dashboard' );
-		$GLOBALS['shortcode_tags'] = array();
 		$widget->add_shortcode();
-		$this->assertEmpty( $GLOBALS['shortcode_tags'] );
-		$GLOBALS['shortcode_tags'] = $shortcode_tags;
+		$this->assertNotContains( 'gravityview_widget', array_keys( $GLOBALS['shortcode_tags'] ) );
 
 		set_current_screen( 'front' );
 	}
