@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
     - Product fields are hidden if the entry contains external transaction data
     - Support for Coupon Addon
 * Fixed: Product field prices not always formatted as a currency
+* Fixed: WPML links to Single Entry not working if using directory or sub-domain URL formats
 
 __Developer Notes:__
 
