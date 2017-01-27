@@ -134,6 +134,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \GV\ViewList::append()
+	 * @expectedException \InvalidArgumentException
 	 */
 	function test_viewlist() {
 		$views = new \GV\ViewList();
@@ -143,8 +144,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( $view, $views->all() );
 
 		/** Make sure we can only add \GV\View objects into the \GV\ViewList. */
-		$this->expectException( '\InvalidArgumentException' );
-		$views->append( new stdClass() );
+		$views->append( new stdClass() ); /** Throws an \InvalidArgumentException */
 		$this->assertCount( 1, $views->count() );
 	}
 
