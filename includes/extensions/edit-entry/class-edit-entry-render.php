@@ -1582,9 +1582,8 @@ class GravityView_Edit_Entry_Render {
             }
 
             // process total field after all fields have been saved
-            if ( $field->type == 'total' ) {
+            if ( 'total' === $field->type ) {
                 $this->total_fields[] = $field;
-                unset( $fields[ $key ] );
             }
 
             if( in_array( $field->type, $field_type_blacklist ) ) {
