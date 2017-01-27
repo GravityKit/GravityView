@@ -192,6 +192,28 @@ class GVCommon_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * Test basic filter functionality
+	 *
+	 * @since 1.20
+	 * @covers GVCommon::get_product_field_types
+	 */
+	public function test_get_product_field_types() {
+
+		remove_all_filters( 'gform_product_field_types' );
+
+		$product_field_types = GVCommon::get_product_field_types();
+
+		$this->assertTrue( is_array( $product_field_types ) );
+		$this->assertArrayHasKey( 'product', $product_field_types );
+
+		add_filter( 'gform_product_field_types', '__return_empty_array' );
+
+		$empty_product_field_types = GVCommon::get_product_field_types();
+
+		$this->assertEquals( array(), $empty_product_field_types, 'The gform_product_field_types filter did not work' );
+	}
+
+	/**
 	 * @covers GVCommon::has_shortcode_r
 	 * @group has_shortcode
 	 */

@@ -137,6 +137,7 @@ class GVCommon {
 	 * Check whether a form has product fields
 	 *
 	 * @since 1.16
+	 * @since 1.20 Refactored the field types to get_product_field_types() method
 	 *
 	 * @param array $form Gravity Forms form array
 	 *
@@ -144,11 +145,27 @@ class GVCommon {
 	 */
 	public static function has_product_field( $form = array() ) {
 
-		$product_fields = apply_filters( 'gform_product_field_types', array( 'option', 'quantity', 'product', 'total', 'shipping', 'calculation', 'price' ) );
+		$product_fields = self::get_product_field_types();
 
 		$fields = GFAPI::get_fields_by_type( $form, $product_fields );
 
 		return empty( $fields ) ? false : $fields;
+	}
+
+	/**
+	 * Return array of product field types
+	 *
+	 * Modify the value using the `gform_product_field_types` filter
+	 *
+	 * @since 1.20
+	 *
+	 * @return array
+	 */
+	public static function get_product_field_types() {
+
+		$product_fields = apply_filters( 'gform_product_field_types', array( 'option', 'quantity', 'product', 'total', 'shipping', 'calculation', 'price', 'hiddenproduct', 'singleproduct', 'singleshipping' ) );
+
+		return $product_fields;
 	}
 
 	/**
