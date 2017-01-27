@@ -25,15 +25,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Added: Product Fields are now editable
     - Quantity,
     - Product fields are hidden if the entry contains external transaction data
+    - Support for Coupon Addon
 * Fixed: Product field prices not always formatted as a currency
 
 __Developer Notes:__
 
 * Modified: `gravityview/edit_entry/hide-product-fields` default will now be determined by whether entry has gateway transaction information
 * Added: `GVCommon::entry_has_transaction_data()` to check whether entry array contains payment gateway transaction information
+* Added: `gravityview/edit_entry/hide-coupon-fields` to modify whether to hide Coupon fields in Edit Entry (default: `false`)
 * Updated: `fields/product.php` template file
 * Added: `GVCommon::get_product_field_types()` to fetch Gravity Forms product field types array
 * Added: `gravityview/edit_entry/field_blacklist` filter to modify what field types should not be shown in Edit Entry
+* Added: `GravityView_Plugin_Hooks_Gravity_Forms_Coupon` class
 * Added: Third `GravityView_Edit_Entry_Render` parameter to `gravityview/edit_entry/field_value`, `gravityview/edit_entry/field_value_{field_type}` filters and `gravityview/edit_entry/after_update` action
 
 = 1.19.4 on January 19, 2017 =
