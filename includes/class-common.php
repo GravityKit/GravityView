@@ -198,7 +198,7 @@ class GVCommon {
 			}
 		}
 
-		return $has_transaction_data;
+		return (bool) $has_transaction_data;
 	}
 
 	/**

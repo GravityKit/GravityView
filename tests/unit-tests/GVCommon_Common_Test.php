@@ -218,7 +218,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$product_field_types = GVCommon::get_product_field_types();
 
 		$this->assertTrue( is_array( $product_field_types ) );
-		$this->assertArrayHasKey( 'product', $product_field_types );
+		$this->assertTrue( in_array( 'product', $product_field_types ) );
 
 		add_filter( 'gform_product_field_types', '__return_empty_array' );
 
