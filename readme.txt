@@ -22,12 +22,16 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = 1.20 =
 
+* Added: Product Fields are now editable
+    - Quantity,
+    - Product fields are hidden if the entry contains external transaction data
 * Fixed: Product field prices not always formatted as a currency
 
 __Developer Notes:__
 
-* Updated: `fields/product.php` template file
+* Modified: `gravityview/edit_entry/hide-product-fields` default will now be determined by whether entry has gateway transaction information
 * Added: `GVCommon::entry_has_transaction_data()` to check whether entry array contains payment gateway transaction information
+* Updated: `fields/product.php` template file
 * Added: `GVCommon::get_product_field_types()` to fetch Gravity Forms product field types array
 * Added: `gravityview/edit_entry/field_blacklist` filter to modify what field types should not be shown in Edit Entry
 
