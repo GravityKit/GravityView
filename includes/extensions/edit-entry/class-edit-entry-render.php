@@ -336,8 +336,9 @@ class GravityView_Edit_Entry_Render {
              * @action `gravityview/edit_entry/after_update` Perform an action after the entry has been updated using Edit Entry
              * @param array $form Gravity Forms form array
              * @param string $entry_id Numeric ID of the entry that was updated
+             * @param GravityView_Edit_Entry_Render $this This object
              */
-            do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'] );
+            do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'], $this );
 
         } else {
             do_action('gravityview_log_error', __METHOD__ . ': Submission is NOT valid.', $this->entry );
