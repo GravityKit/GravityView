@@ -134,18 +134,23 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \GV\ViewList::append()
-	 * @expectedException \InvalidArgumentException
 	 */
-	function test_viewlist() {
+	function test_viewlist_append() {
 		$views = new \GV\ViewList();
 		$view = new \GV\View();
 
 		$views->append( $view );
 		$this->assertContains( $view, $views->all() );
 
-		/** Make sure we can only add \GV\View objects into the \GV\ViewList. */
-		$views->append( new stdClass() ); /** Throws an \InvalidArgumentException */
-		$this->assertCount( 1, $views->count() );
+		$expectedException = null;
+		try {
+			/** Make sure we can only add \GV\View objects into the \GV\ViewList. */
+			$views->append( new stdClass() );
+		} catch ( \InvalidArgumentException $e ) {
+			$expectedException = $e;
+		}
+		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
+		$this->assertCount( 1, $views->all() );
 	}
 
 	/**
@@ -193,6 +198,40 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$expectedException = $e;
 		}
 		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
+	}
+
+	/**
+	 * @covers \GV\ViewList::from_post()
+	 * @covers \GV\ViewList::get()
+	 */
+	function test_viewlist_from_post() {
+		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
+		remove_shortcode( 'gravityview' ); /** Conflicts with existing shortcode right now. */
+		\GV\Shortcodes\gravityview::add();
+
+		$post = $this->factory->view->create_and_get();
+
+		$views = \GV\ViewList::from_post( $post );
+		$view = $views->get( $post->ID );
+		$this->assertEquals( $view->ID, $post->ID );
+		$this->assertNull( $views->get( -1 ) );
+
+		$another_post = $this->factory->view->create_and_get();
+
+		/** An shortcode-based post. */
+		$shortcodes = $this->factory->post->create_and_get( array(
+			'post_content' => sprintf( '[gravityview id="%d"][gravityview id="%d"]', $post->ID, $another_post->ID )
+		) );
+		$views = \GV\ViewList::from_post( $shortcodes );
+		$this->assertCount( 2, $views->all() );
+
+		$view = $views->get( $post->ID );
+		$this->assertEquals( $view->ID, $post->ID );
+
+		$view = $views->get( $another_post->ID );
+		$this->assertEquals( $view->ID, $another_post->ID );
+
+		$GLOBALS['shortcode_tags']['gravityview'] = $original_shortcode;
 	}
 
 	/**
