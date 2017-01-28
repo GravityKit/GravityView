@@ -149,6 +149,75 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\Shortcode::add()
+	 * @covers \GV\Shortcode::remove()
+	 */
+	function test_shortcode_add() {
+		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
+		remove_shortcode( 'gravityview' ); /** Conflicts with existing shortcode right now. */
+		$shortcode = \GV\Shortcodes\gravityview::add();
+		$this->assertInstanceOf( '\GV\Shortcodes\gravityview', $shortcode );
+		$this->assertEquals( $shortcode->name, 'gravityview' );
+		$this->assertSame( $shortcode, \GV\Shortcodes\gravityview::add() );
+
+		\GV\Shortcodes\gravityview::remove();
+		$this->assertFalse( shortcode_exists( 'gravityview' ) );
+
+		add_shortcode( 'gravityview', '__return_false' );
+
+		$expectedException = null;
+		try {
+			$shortcode = \GV\Shortcodes\gravityview::add();
+		} catch ( \ErrorException $e ) {
+			$expectedException = $e;
+		}
+		$this->assertInstanceOf( '\ErrorException', $expectedException );
+
+		$GLOBALS['shortcode_tags']['gravityview'] = $original_shortcode;
+	}
+
+	/**
+	 * @covers \GV\Shortcode::do()
+	 * @expectedException \BadMethodCallException
+	 */
+	function test_shortcode_do_not_implemented() {
+		\GV\Shortcode::do( array( 'id' => 1 ) );
+	}
+
+	/**
+	 * @covers \GV\Shortcode::parse()
+	 */
+	function test_shortcode_parse() {
+		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
+		remove_shortcode( 'gravityview' ); /** Conflicts with existing shortcode right now. */
+		\GV\Shortcodes\gravityview::add();
+
+		$shortcodes = \GV\Shortcode::parse( '[gravityview id="1" m="2"]test this[/gravityview]and also[gravityview id="2" one=3]and[noexist]', true );
+		$this->assertCount( 2, $shortcodes );
+
+		$this->assertInstanceOf( '\GV\Shortcodes\gravityview', $shortcodes[0] );
+		$this->assertEquals( $shortcodes[0]->name, 'gravityview' );
+		$this->assertEquals( $shortcodes[0]->atts, array( 'id' => '1', 'm' => '2' ) );
+		$this->assertEquals( $shortcodes[0]->content, 'test this' );
+
+		$this->assertInstanceOf( '\GV\Shortcodes\gravityview', $shortcodes[1] );
+		$this->assertEquals( $shortcodes[1]->name, 'gravityview' );
+		$this->assertEquals( $shortcodes[1]->atts, array( 'id' => '2', 'one' => 3 ) );
+		$this->assertEmpty( $shortcodes[1]->content );
+
+		add_shortcode( 'noexist', '__return_false' );
+
+		$shortcodes = \GV\Shortcode::parse( '[gravityview id="1" m="2"]test this[/gravityview]and also[gravityview id="2" one=3]and[noexist]' );
+		$this->assertCount( 3, $shortcodes );
+		$this->assertEquals( $shortcodes[2]->name, 'noexist' );
+		$this->assertEmpty( $shortcodes[2]->atts );
+		$this->assertEmpty( $shortcodes[2]->content );
+
+		remove_shortcode( 'noexist' );
+		$GLOBALS['shortcode_tags']['gravityview'] = $original_shortcode;
+	}
+
+	/**
 	 * @covers \GV\Core::init()
 	 */
 	function test_core_init() {
