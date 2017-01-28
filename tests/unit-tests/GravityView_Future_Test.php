@@ -221,7 +221,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Core::init()
 	 */
 	function test_core_init() {
-		/** Make sure the main \GV\ViewList is available. */
+		gravityview()->views = new \GV\ViewList();
+
+		/** Make sure the main \GV\ViewList is available in both places. */
 		$this->assertSame( gravityview()->views, gravityview()->request->views );
 	}
 
@@ -271,11 +273,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		set_current_screen( 'front' );
 		$widget = new \GravityView_Widget( 'test', 1 );
 		$widget->add_shortcode();
-		$this->assertContains( 'gravityview_widget', array_keys( $GLOBALS['shortcode_tags'] ) );
-		unset( $GLOBALS['shortcode_tags']['gravityview_widget'] );
+		$this->assertTrue( shortcode_exists( 'gravityview_widget' ) );
+		remove_shortcode( 'gravityview_widget' );
 		set_current_screen( 'dashboard' );
 		$widget->add_shortcode();
-		$this->assertNotContains( 'gravityview_widget', array_keys( $GLOBALS['shortcode_tags'] ) );
+		$this->assertFalse( shortcode_exists( 'gravityview_widget' ) );
 
 		set_current_screen( 'front' );
 	}
