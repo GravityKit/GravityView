@@ -13,6 +13,11 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) )
 class View {
 
 	/**
+	 * @var The backing \WP_Post instance.
+	 */
+	private $post;
+
+	/**
 	 * Register the gravityview WordPress Custom Post Type.
 	 *
 	 * @internal
@@ -109,5 +114,48 @@ class View {
 		);
 
 		register_post_type( 'gravityview', $args );
+	}
+
+
+	/**
+	 * Construct a \GV\View instance from a \WP_Post.
+	 *
+	 * @param \WP_Post $post The \WP_Post instance to wrap.
+	 * @throws \InvalidArgumentException if $post is not of 'gravityview' type.
+	 *
+	 * @api
+	 * @since future
+	 * @return \GV\View An instance around this \WP_Post.
+	 */
+	public static function from_post( \WP_Post $post ) {
+		if ( get_post_type( $post ) != 'gravityview' ) {
+			throw new \InvalidArgumentException( __( 'Only gravityview post types can be \GV\View instances.', 'gravityview' ) );
+		}
+
+		$view = new self();
+		$view->post = $post;
+
+		return $view;
+	}
+
+	/**
+	 * Construct a \GV\View instance from a post ID.
+	 *
+	 * @param int|string $post_id The post ID.
+	 * @throws \InvalidArgumentException if $post is not of 'gravityview' type.
+	 *
+	 * @api
+	 * @since future
+	 * @return \GV\View|null An instance around this \WP_Post or null if not found.
+	 */
+	public static function by_id( $post_id ) {
+		if ( ! $post = get_post( $post_id ) ) {
+			return null;
+		}
+		return self::from_post( $post );
+	}
+
+	public function __get( $key ) {
+		return $this->post->$key;
 	}
 }

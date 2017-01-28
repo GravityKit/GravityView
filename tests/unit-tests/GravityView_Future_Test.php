@@ -149,6 +149,53 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\View::from_post()
+	 */
+	function test_view_from_post() {
+		$post = $this->factory->view->create_and_get();
+		$view = \GV\View::from_post( $post );
+		$this->assertEquals( $view->ID, $post->ID );
+
+		/** A post of a different post type. */
+		$post = $this->factory->post->create_and_get();
+		$expectedException = null;
+		try {
+			$view = \GV\View::from_post( $post );
+		} catch ( \InvalidArgumentException $e ) {
+			$expectedException = $e;
+		}
+		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
+
+		/** Something completely dfferent. */
+		$expectedException = null;
+		try {
+			$view = \GV\View::from_post( null );
+		} catch ( \TypeError $e ) {
+			$expectedException = $e;
+		}
+		$this->assertInstanceOf( '\TypeError', $expectedException );
+	}
+
+	/**
+	 * @covers \GV\View::by_id()
+	 */
+	function test_view_by_id() {
+		$post = $this->factory->view->create_and_get();
+		$view = \GV\View::by_id( $post->ID );
+		$this->assertEquals( $view->ID, $post->ID );
+
+		/** A post of a different post type. */
+		$post = $this->factory->post->create_and_get();
+		$expectedException = null;
+		try {
+			$view = \GV\View::by_id( $post->ID );
+		} catch ( \InvalidArgumentException $e ) {
+			$expectedException = $e;
+		}
+		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
+	}
+
+	/**
 	 * @covers \GV\Shortcode::add()
 	 * @covers \GV\Shortcode::remove()
 	 */
