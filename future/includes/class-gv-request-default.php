@@ -18,20 +18,29 @@ final class DefaultRequest extends Request {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->views = new ViewList();
 		add_action( 'wp', array( $this, 'parse' ) );
 	}
 
 	/**
-	 * Parse the current WordPress context.
+	 * Parse the current WordPress context around the $post global.
 	 *
 	 * Called by the `wp` hook.
 	 *
 	 * @param \WP $wp The WordPress environment class. Unused.
 	 *
+	 * @internal
 	 * @return void
 	 */
 	public function parse( $wp = null ) {
+		/** Nothing to do in an administrative context. */
+		if ( $this->is_admin() ) {
+			return;
+		}
+
+		/** The post might either be a gravityview, or contain gravityview shortcodes. */
+		global $post;
+
+		$this->views = ViewList::from_post( $post );
 	}
 
 	/**

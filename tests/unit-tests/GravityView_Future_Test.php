@@ -382,4 +382,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		set_current_screen( 'dashboard' );
 		$this->assertFalse( gravityview()->request->is_admin() );
 	}
+
+	/**
+	 * @covers \GV\DefaultRequest::parse()
+	 */
+	function test_default_request_parse() {
+	}
 }
