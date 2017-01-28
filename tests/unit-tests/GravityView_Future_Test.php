@@ -263,11 +263,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers \GV\Shortcode::do()
+	 * @covers \GV\Shortcode::callback()
 	 * @expectedException \BadMethodCallException
 	 */
 	function test_shortcode_do_not_implemented() {
-		\GV\Shortcode::do( array( 'id' => 1 ) );
+		\GV\Shortcode::callback( array( 'id' => 1 ) );
 	}
 
 	/**
