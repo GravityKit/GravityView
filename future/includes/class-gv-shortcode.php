@@ -84,6 +84,7 @@ class Shortcode {
 	 * Parse a string of content and figure out which ones there are.
 	 *
 	 * Only registered shortcodes (via add_shortcode) will show up.
+	 * Returned order is not guaranteed.
 	 *
 	 * @param string $content Some post content to search through.
 	 *
@@ -124,7 +125,8 @@ class Shortcode {
 			$shortcode->atts = $shortcode_atts;
 			$shortcode->content = $shortcode_content;
 
-			$shortcodes []= $shortcode;
+			/** Merge inner shortcodes. */
+			$shortcodes = array_merge( $shortcodes, array( $shortcode ), self::parse( $shortcode_content ) );
 		}
 
 		return $shortcodes;

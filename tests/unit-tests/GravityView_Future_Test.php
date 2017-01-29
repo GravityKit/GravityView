@@ -302,6 +302,19 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEmpty( $shortcodes[2]->content );
 
 		remove_shortcode( 'noexist' );
+
+		/** Test shortcodes inside shortcode content. */
+		add_shortcode( 's1', '__return_false' );
+		add_shortcode( 's2', '__return_false' );
+		add_shortcode( 's3', '__return_false' );
+
+		$shortcodes = \GV\Shortcode::parse( '[s1][s2][s3][/s2][noexist][/s1]' );
+
+		$this->assertCount( 3, $shortcodes );
+		$this->assertEquals( $shortcodes[0]->name, 's1' );
+		$this->assertEquals( $shortcodes[1]->name, 's2' );
+		$this->assertEquals( $shortcodes[2]->name, 's3' );
+
 		$GLOBALS['shortcode_tags']['gravityview'] = $original_shortcode;
 	}
 
