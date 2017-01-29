@@ -171,14 +171,16 @@ class GVFuture_Test extends GV_UnitTestCase {
 		}
 		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
 
-		/** Something completely dfferent. */
-		$expectedException = null;
-		try {
-			$view = \GV\View::from_post( null );
-		} catch ( \TypeError $e ) {
-			$expectedException = $e;
+		/** Test raised \TypeError in PHP7 when post is not a \WP_Post */
+		if ( version_compare( phpversion(), '7.0.x' , '>=' ) ) {
+			$expectedException = null;
+			try {
+				$view = \GV\View::from_post( null );
+			} catch ( \TypeError $e ) {
+				$expectedException = $e;
+			}
+			$this->assertInstanceOf( '\TypeError', $expectedException );
 		}
-		$this->assertInstanceOf( '\TypeError', $expectedException );
 	}
 
 	/**
