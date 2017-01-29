@@ -56,7 +56,6 @@ class GravityView_View_Data {
 	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
 	 */
 	public function maybe_get_view_id( $passed_post ) {
-		
 		$ids = array();
 
 		if( ! empty( $passed_post ) ) {
@@ -508,7 +507,13 @@ class GravityView_View_Data {
 		}
 
 		if( ! $message ) {
-			$view_ids_in_post = GravityView_View_Data::getInstance()->maybe_get_view_id( $post_id );
+			if ( function_exists( 'gravityview' ) && $post = get_post( $post_id ) )  {
+				$views = GV\ViewList::from_post( $post );
+				$view_ids_in_post = array_map( function( $view ) { return $view->ID; }, $views->all() );
+			} else {
+				/** ::maybe_get_view_id deprecated. */
+				$view_ids_in_post = GravityView_View_Data::getInstance()->maybe_get_view_id( $post_id );
+			}
 
 			// The post or page specified does not contain the shortcode.
 			if ( false === in_array( $view_id, (array) $view_ids_in_post ) ) {
