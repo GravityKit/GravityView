@@ -67,7 +67,7 @@ class ViewList extends DefaultList {
 		} else {
 			/** Let's find us some [gravityview] shortcodes perhaps. */
 			foreach ( Shortcode::parse( $post->post_content ) as $shortcode ) {
-				if ( ! $shortcode instanceof Shortcodes\gravityview ) {
+				if ( $shortcode->name != 'gravityview' ) {
 					continue;
 				}
 

@@ -233,7 +233,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$view = $views->get( $another_post->ID );
 		$this->assertEquals( $view->ID, $another_post->ID );
 
-
 		/** Test post_meta-stored shortcodes. */
 		$with_shortcodes_in_meta = $this->factory->post->create_and_get();
 		update_post_meta( $with_shortcodes_in_meta->ID, 'meta_test', sprintf( '[gravityview id="%d"]', $post->ID ) );
@@ -433,5 +432,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\DefaultRequest::parse()
 	 */
 	function test_default_request_parse() {
+		// Make sure doesn't break without a global post
+		$request = new \GV\DefaultRequest();
+		$request->parse( null );
 	}
 }

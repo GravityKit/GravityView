@@ -40,7 +40,11 @@ final class DefaultRequest extends Request {
 		/** The post might either be a gravityview, or contain gravityview shortcodes. */
 		global $post;
 
-		$this->views = ViewList::from_post( $post );
+		if ( ! $post instanceof \WP_Post ) {
+			$this->views = new ViewList();
+		} else {
+			$this->views = ViewList::from_post( $post );
+		}
 	}
 
 	/**
