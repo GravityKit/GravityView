@@ -221,15 +221,46 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$another_post = $this->factory->view->create_and_get();
 
 		/** An shortcode-based post. */
-		$shortcodes = $this->factory->post->create_and_get( array(
+		$with_shortcodes = $this->factory->post->create_and_get( array(
 			'post_content' => sprintf( '[gravityview id="%d"][gravityview id="%d"]', $post->ID, $another_post->ID )
 		) );
-		$views = \GV\ViewList::from_post( $shortcodes );
+		$views = \GV\ViewList::from_post( $with_shortcodes );
 		$this->assertCount( 2, $views->all() );
 
 		$view = $views->get( $post->ID );
 		$this->assertEquals( $view->ID, $post->ID );
 
+		$view = $views->get( $another_post->ID );
+		$this->assertEquals( $view->ID, $another_post->ID );
+
+
+		/** Test post_meta-stored shortcodes. */
+		$with_shortcodes_in_meta = $this->factory->post->create_and_get();
+		update_post_meta( $with_shortcodes_in_meta->ID, 'meta_test', sprintf( '[gravityview id="%d"]', $post->ID ) );
+		update_post_meta( $with_shortcodes_in_meta->ID, 'another_meta_test', sprintf( '[gravityview id="%d"]', $another_post->ID ) );
+
+		$views = \GV\ViewList::from_post( $with_shortcodes_in_meta );
+		$this->assertEmpty( $views->all() );
+
+		$test = $this;
+
+		add_filter( 'gravityview/viewlist/from_post/meta_keys', function( $meta_keys, $post ) use ( $with_shortcodes_in_meta, $test ) {
+			$test->assertSame( $post, $with_shortcodes_in_meta );
+			return array( 'meta_test' );
+		}, 10, 2 );
+
+		$views = \GV\ViewList::from_post( $with_shortcodes_in_meta );
+		$this->assertCount( 1, $views->all() );
+		$view = $views->get( $post->ID );
+		$this->assertEquals( $view->ID, $post->ID );
+
+		add_filter( 'gravityview/data/parse/meta_keys', function( $meta_keys, $post_id ) use ( $with_shortcodes_in_meta, $test ) {
+			$test->assertEquals( $post_id, $with_shortcodes_in_meta->ID );
+			return array( 'another_meta_test' );
+		}, 10, 2 );
+
+		$views = \GV\ViewList::from_post( $with_shortcodes_in_meta );
+		$this->assertCount( 1, $views->all() );
 		$view = $views->get( $another_post->ID );
 		$this->assertEquals( $view->ID, $another_post->ID );
 

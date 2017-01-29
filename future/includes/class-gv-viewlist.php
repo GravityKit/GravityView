@@ -50,6 +50,7 @@ class ViewList extends DefaultList {
 	 *
 	 * The post can be a gravityview post, which is the simplest case.
 	 * The post can contain gravityview shortcodes as well.
+	 * The post meta can contain gravityview shortcodes.
 	 *
 	 * @param \WP_Post $post The \WP_Post object to look into.
 	 *
@@ -60,8 +61,8 @@ class ViewList extends DefaultList {
 	public static function from_post( \WP_Post $post ) {
 		$views = new self();
 
-		/** A straight up gravityview post. */
 		if ( get_post_type( $post ) == 'gravityview' ) {
+			/** A straight up gravityview post. */
 			$views->append( View::from_post( $post ) );
 		} else {
 			/** Let's find us some [gravityview] shortcodes perhaps. */
@@ -72,6 +73,38 @@ class ViewList extends DefaultList {
 
 				if ( is_numeric( $shortcode->atts['id'] ) ) {
 					$views->append( View::by_id( $shortcode->atts['id'] ) );
+				}
+			}
+
+			/**
+			 * @filter `gravityview/viewlist/from_post/meta_keys` Define meta keys to parse to check for GravityView shortcode content.
+			 *
+			 * This is useful when using themes that store content that may contain shortcodes in custom post meta.
+			 *
+			 * @since future
+			 *
+			 * @param[in,out] array $meta_keys Array of key values to check. If empty, do not check. Default: empty array
+			 * @param[in] \WP_Post $post The post that is being checked
+			 */
+			$meta_keys = apply_filters( 'gravityview/viewlist/from_post/meta_keys', array(), $post );
+
+			/**
+			 * @filter `gravityview/data/parse/meta_keys`
+			 * @deprecated
+			 * @see The `gravityview/viewlist/from_post/meta_keys` filter.
+			 */
+			$meta_keys = (array)apply_filters( 'gravityview/data/parse/meta_keys', $meta_keys, $post->ID );
+
+			/** What about inside post meta values? */
+			foreach ( $meta_keys as $meta_key ) {
+				foreach ( Shortcode::parse( $post->$meta_key ) as $shortcode ) {
+					if ( ! $shortcode instanceof Shortcodes\gravityview ) {
+						continue;
+					}
+
+					if ( is_numeric( $shortcode->atts['id'] ) ) {
+						$views->append( View::by_id( $shortcode->atts['id'] ) );
+					}
 				}
 			}
 		}
