@@ -205,6 +205,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\ViewList::from_post()
 	 * @covers \GV\ViewList::get()
+	 * @covers \GravityView_View_Data::maybe_get_view_id()
+	 * @covers \GravityView_oEmbed::set_vars()
 	 */
 	function test_viewlist_from_post() {
 		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
@@ -263,7 +265,32 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$view = $views->get( $another_post->ID );
 		$this->assertEquals( $view->ID, $another_post->ID );
 
+		remove_all_filters( 'gravityview/viewlist/from_post/meta_keys' );
+		remove_all_filters( 'gravityview/data/parse/meta_keys' );
+
+		/** Test regressions in GravityView_View_Data::maybe_get_view_id */
+		$data = GravityView_View_Data::getInstance();
+		$this->assertEquals( $data->maybe_get_view_id( $post ), $post->ID );
+		$this->assertEquals( $data->maybe_get_view_id( array( $post, $another_post ) ), array( $post->ID, $another_post->ID ) );
+		$this->assertEquals( $data->maybe_get_view_id( $with_shortcodes ), array( $post->ID, $another_post->ID ) );
+		add_filter( 'gravityview/data/parse/meta_keys', function( $meta_keys, $post_id ) {
+			return array( 'another_meta_test' );
+		}, 10, 2 );
+		$this->assertEquals( $data->maybe_get_view_id( $with_shortcodes_in_meta ), $another_post->ID );
+		remove_all_filters( 'gravityview/data/parse/meta_keys' );
+		$this->assertEquals( $data->maybe_get_view_id( sprintf( '[gravityview id="%d"]', $post->ID ) ), $post->ID );
+
+		$form = $this->factory->form->create_and_get();
+		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$post = $this->factory->post->create_and_get( array( 'post_content' => sprintf( '[gravityview id="%d"]', $view->ID ) ) );
+
+		$embed_content = sprintf( "\n%s\n", add_query_arg( 'entry', $entry['id'], get_permalink( $post->ID ) ) );
+		$this->assertContains( 'table class="gv-table-view-content"', $GLOBALS['wp_embed']->autoembed( $embed_content ) );
+
 		$GLOBALS['shortcode_tags']['gravityview'] = $original_shortcode;
+		GravityView_frontend::$instance = NULL;
+		GravityView_View_Data::$instance = NULL;
 	}
 
 	/**
