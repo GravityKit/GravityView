@@ -799,6 +799,7 @@ class GravityView_frontend {
 
 				// Only display warning once when multiple Views are embedded
 				if( $view_id !== (int) GravityView_frontend::get_context_view_id() ) {
+					ob_end_clean();
 					return null;
 				}
 
@@ -814,6 +815,7 @@ class GravityView_frontend {
 				 */
 				echo esc_attr( $message );
 
+				ob_end_clean();
 				return null;
 			}
 
@@ -821,6 +823,7 @@ class GravityView_frontend {
 			// important: do not remove this as it prevents fake attempts of displaying entries from other views/forms
 			if ( $this->getGvOutputData()->has_multiple_views() && $view_id != $this->get_context_view_id() ) {
 				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '. $view_id );
+				ob_end_clean();
 				return null;
 			}
 
