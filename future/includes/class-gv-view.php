@@ -107,7 +107,18 @@ class View {
 				 * @see http://docs.gravityview.co/article/62-changing-the-view-slug
 				 * @param string $slug The slug shown in the URL
 				 */
-				'slug' => apply_filters( 'gravityview_slug', 'view' )
+				'slug' => apply_filters( 'gravityview_slug', 'view' ),
+
+				/**
+				 * @filter `gravityview/post_type/with_front` Should the permalink structure
+				 *  be prepended with the front base.
+				 *  (example: if your permalink structure is /blog/, then your links will be: false->/view/, true->/blog/view/).
+				 *  Defaults to true.
+				 * @see https://codex.wordpress.org/Function_Reference/register_post_type
+				 * @since future
+				 * @param bool $with_front
+				 */
+				'with_front' => apply_filters( 'gravityview/post_type/with_front', true ),
 			),
 			'capability_type'     => 'gravityview',
 			'map_meta_cap'        => true,
