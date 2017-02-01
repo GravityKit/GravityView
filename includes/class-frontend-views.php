@@ -338,7 +338,10 @@ class GravityView_frontend {
 		global $post;
 
 		// If in admin and NOT AJAX request, get outta here.
-		if ( GravityView_Plugin::is_admin() )  {
+		if ( function_exists( 'gravityview' ) && gravityview()->request->is_admin() ) {
+			return;
+			/** Deprecated in favor of gravityview()->request->is_admin(). */
+		} else if ( GravityView_Plugin::is_admin() ) {
 			return;
 		}
 
@@ -796,6 +799,7 @@ class GravityView_frontend {
 
 				// Only display warning once when multiple Views are embedded
 				if( $view_id !== (int) GravityView_frontend::get_context_view_id() ) {
+					ob_end_clean();
 					return null;
 				}
 
@@ -811,6 +815,7 @@ class GravityView_frontend {
 				 */
 				echo esc_attr( $message );
 
+				ob_end_clean();
 				return null;
 			}
 
@@ -818,6 +823,7 @@ class GravityView_frontend {
 			// important: do not remove this as it prevents fake attempts of displaying entries from other views/forms
 			if ( $this->getGvOutputData()->has_multiple_views() && $view_id != $this->get_context_view_id() ) {
 				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '. $view_id );
+				ob_end_clean();
 				return null;
 			}
 

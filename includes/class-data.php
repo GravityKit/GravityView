@@ -50,10 +50,12 @@ class GravityView_View_Data {
 	 *
 	 * @param mixed $passed_post See method description
 	 *
+	 * @deprecated
+	 * @see \GV\View_Collection::from_post and \GV\Shortcode::parse
+	 *
 	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
 	 */
 	public function maybe_get_view_id( $passed_post ) {
-
 		$ids = array();
 
 		if( ! empty( $passed_post ) ) {
@@ -70,19 +72,27 @@ class GravityView_View_Data {
 			if( is_array( $passed_post ) ) {
 
 				foreach ( $passed_post as &$post) {
-					if( ( get_post_type( $post ) === 'gravityview' ) ) {
-						$ids[] = $post->ID;
-					} else{
-						// Parse the Post Content
-						$id = $this->parse_post_content( $post->post_content );
-						if( $id ) {
-							$ids = array_merge( $ids, (array) $id );
+					if ( function_exists( 'gravityview' ) && $post instanceof WP_Post ) {
+						$views = \GV\View_Collection::from_post( $post );
+						foreach ( $views->all() as $view ) {
+							$ids []= $view->ID;
 						}
+					} else {
+						/** Deprecated, see \GV\View_Collection::from_post */
+						if( ( get_post_type( $post ) === 'gravityview' ) ) {
+							$ids[] = $post->ID;
+						} else{
+							// Parse the Post Content
+							$id = $this->parse_post_content( $post->post_content );
+							if( $id ) {
+								$ids = array_merge( $ids, (array) $id );
+							}
 
-						// Parse the Post Meta
-						$id = $this->parse_post_meta( $post->ID );
-						if( $id ) {
-							$ids = array_merge( $ids, (array) $id );
+							// Parse the Post Meta
+							$id = $this->parse_post_meta( $post->ID );
+							if( $id ) {
+								$ids = array_merge( $ids, (array) $id );
+							}
 						}
 					}
 
@@ -92,9 +102,18 @@ class GravityView_View_Data {
 
 				if ( is_string( $passed_post ) ) {
 
-					$id = $this->parse_post_content( $passed_post );
-					if( $id ) {
-						$ids = array_merge( $ids, (array) $id );
+					if ( function_exists( 'gravityview' ) ) {
+						$shortcodes = \GV\Shortcode::parse( $passed_post );
+						foreach ( $shortcodes as $shortcode ) {
+							if ( $shortcode->name == 'gravityview' && !empty( $shortcode->atts['id'] ) )
+								$ids []= $shortcode->atts['id'];
+						}
+					} else {
+						/** Deprecated, use \GV\Shortcode::parse. */
+						$id = $this->parse_post_content( $passed_post );
+						if( $id ) {
+							$ids = array_merge( $ids, (array) $id );
+						}
 					}
 
 				} else {
@@ -314,6 +333,9 @@ class GravityView_View_Data {
 		return false;
 	}
 
+	/**
+	 * @deprecated Also dead code, was probably superceded by GravityView_View_Data::parse_post_content
+	 */
 	function get_id_from_atts( $atts ) {
 
 		$atts = is_array( $atts ) ? $atts : shortcode_parse_atts( $atts );
@@ -485,7 +507,13 @@ class GravityView_View_Data {
 		}
 
 		if( ! $message ) {
-			$view_ids_in_post = GravityView_View_Data::getInstance()->maybe_get_view_id( $post_id );
+			if ( function_exists( 'gravityview' ) && $post = get_post( $post_id ) )  {
+				$views = GV\View_Collection::from_post( $post );
+				$view_ids_in_post = array_map( function( $view ) { return $view->ID; }, $views->all() );
+			} else {
+				/** ::maybe_get_view_id deprecated. */
+				$view_ids_in_post = GravityView_View_Data::getInstance()->maybe_get_view_id( $post_id );
+			}
 
 			// The post or page specified does not contain the shortcode.
 			if ( false === in_array( $view_id, (array) $view_ids_in_post ) ) {

@@ -13,6 +13,11 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) )
 class View {
 
 	/**
+	 * @var The backing \WP_Post instance.
+	 */
+	private $post;
+
+	/**
 	 * Register the gravityview WordPress Custom Post Type.
 	 *
 	 * @internal
@@ -102,12 +107,66 @@ class View {
 				 * @see http://docs.gravityview.co/article/62-changing-the-view-slug
 				 * @param string $slug The slug shown in the URL
 				 */
-				'slug' => apply_filters( 'gravityview_slug', 'view' )
+				'slug' => apply_filters( 'gravityview_slug', 'view' ),
+
+				/**
+				 * @filter `gravityview/post_type/with_front` Should the permalink structure
+				 *  be prepended with the front base.
+				 *  (example: if your permalink structure is /blog/, then your links will be: false->/view/, true->/blog/view/).
+				 *  Defaults to true.
+				 * @see https://codex.wordpress.org/Function_Reference/register_post_type
+				 * @since future
+				 * @param bool $with_front
+				 */
+				'with_front' => apply_filters( 'gravityview/post_type/with_front', true ),
 			),
 			'capability_type'     => 'gravityview',
 			'map_meta_cap'        => true,
 		);
 
 		register_post_type( 'gravityview', $args );
+	}
+
+
+	/**
+	 * Construct a \GV\View instance from a \WP_Post.
+	 *
+	 * @param \WP_Post $post The \WP_Post instance to wrap.
+	 * @throws \InvalidArgumentException if $post is not of 'gravityview' type.
+	 *
+	 * @api
+	 * @since future
+	 * @return \GV\View An instance around this \WP_Post.
+	 */
+	public static function from_post( \WP_Post $post ) {
+		if ( get_post_type( $post ) != 'gravityview' ) {
+			throw new \InvalidArgumentException( 'Only gravityview post types can be \GV\View instances.' );
+		}
+
+		$view = new self();
+		$view->post = $post;
+
+		return $view;
+	}
+
+	/**
+	 * Construct a \GV\View instance from a post ID.
+	 *
+	 * @param int|string $post_id The post ID.
+	 * @throws \InvalidArgumentException if $post is not of 'gravityview' type.
+	 *
+	 * @api
+	 * @since future
+	 * @return \GV\View|null An instance around this \WP_Post or null if not found.
+	 */
+	public static function by_id( $post_id ) {
+		if ( ! $post = get_post( $post_id ) ) {
+			return null;
+		}
+		return self::from_post( $post );
+	}
+
+	public function __get( $key ) {
+		return $this->post->$key;
 	}
 }
