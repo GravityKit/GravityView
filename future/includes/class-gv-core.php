@@ -106,7 +106,7 @@ final class Core {
 
 		/** Initialize the current request. For now we assume a default WordPress frontent context. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
-		$this->request = new DefaultRequest();
+		$this->request = new Frontend_Request();
 		$this->views = &$this->request->views;
 	}
 

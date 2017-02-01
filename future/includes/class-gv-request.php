@@ -21,4 +21,4 @@ abstract class Request {
 }
 
 /** Load implementations. */
-require gravityview()->plugin->dir( 'future/includes/class-gv-request-default.php' );
+require gravityview()->plugin->dir( 'future/includes/class-gv-request-frontend.php' );

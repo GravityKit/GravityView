@@ -11,7 +11,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) )
  * Parses and transforms an end-request for a view to a View
  *  in a default frontend, WP_Query-based WordPress context.
  */
-final class DefaultRequest extends Request {
+final class Frontend_Request extends Request {
 	/**
 	 * Bootstrap.
 	 *

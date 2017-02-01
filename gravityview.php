@@ -307,7 +307,7 @@ final class GravityView_Plugin {
 	 * Check if is_admin(), and make sure not DOING_AJAX
 	 * @since 1.7.5
 	 * @deprecated
-	 * @see \GV\DefaultRequest::is_admin via gravityview()->request->is_admin()
+	 * @see \GV\Frontend_Request::is_admin via gravityview()->request->is_admin()
 	 * @return bool
 	 */
 	public static function is_admin() {

@@ -392,7 +392,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers \GV\DefaultRequest::is_admin()
+	 * @covers \GV\Frontend_Request::is_admin()
 	 */
 	function test_default_request_is_admin() {
 		$this->assertFalse( gravityview()->request->is_admin() );
@@ -447,7 +447,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers \GV\DefaultRequest::is_admin()
+	 * @covers \GV\Frontend_Request::is_admin()
 	 * @group ajax
 	 */
 	function test_default_request_is_admin_ajax() {
@@ -462,11 +462,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers \GV\DefaultRequest::parse()
+	 * @covers \GV\Frontend_Request::parse()
 	 */
 	function test_default_request_parse() {
 		// Make sure doesn't break without a global post
-		$request = new \GV\DefaultRequest();
+		$request = new \GV\Frontend_Request();
 		$request->parse( null );
 	}
 }
