@@ -12,7 +12,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) )
  */
 abstract class Request {
 	/**
-	 * @var \GV\ViewList The views attached to the current request.
+	 * @var \GV\View_Collection The views attached to the current request.
 	 *
 	 * @api
 	 * @since future

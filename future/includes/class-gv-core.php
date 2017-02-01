@@ -35,7 +35,7 @@ final class Core {
 	public $request;
 
 	/**
-	 * @var \GV\ViewList The views attached to the current request.
+	 * @var \GV\View_Collection The views attached to the current request.
 	 *
 	 * @see \GV\Request::$views A shortcut alias.
 	 * @api
@@ -94,15 +94,15 @@ final class Core {
 		add_action( 'init', array( '\GV\Entry', 'add_rewrite_endpoint' ) );
 
 		/** Generics */
-		require_once $this->plugin->dir( 'future/includes/class-gv-list.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode.php' );
 
 		/** Shortcodes */
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gravityview.php' );
 		// add_action( 'init', array( '\GV\Shortcodes\gravityview', 'add' ) ); // @todo uncomment when original is stubbed
 
-		/** Get the ViewList ready. */
-		require_once $this->plugin->dir( 'future/includes/class-gv-viewlist.php' );
+		/** Get the View_Collection ready. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-view.php' );
 
 		/** Initialize the current request. For now we assume a default WordPress frontent context. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );

@@ -51,7 +51,7 @@ class GravityView_View_Data {
 	 * @param mixed $passed_post See method description
 	 *
 	 * @deprecated
-	 * @see \GV\ViewList::from_post and \GV\Shortcode::parse
+	 * @see \GV\View_Collection::from_post and \GV\Shortcode::parse
 	 *
 	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
 	 */
@@ -73,12 +73,12 @@ class GravityView_View_Data {
 
 				foreach ( $passed_post as &$post) {
 					if ( function_exists( 'gravityview' ) && $post instanceof WP_Post ) {
-						$views = \GV\ViewList::from_post( $post );
+						$views = \GV\View_Collection::from_post( $post );
 						foreach ( $views->all() as $view ) {
 							$ids []= $view->ID;
 						}
 					} else {
-						/** Deprecated, see \GV\ViewList::from_post */
+						/** Deprecated, see \GV\View_Collection::from_post */
 						if( ( get_post_type( $post ) === 'gravityview' ) ) {
 							$ids[] = $post->ID;
 						} else{
@@ -508,7 +508,7 @@ class GravityView_View_Data {
 
 		if( ! $message ) {
 			if ( function_exists( 'gravityview' ) && $post = get_post( $post_id ) )  {
-				$views = GV\ViewList::from_post( $post );
+				$views = GV\View_Collection::from_post( $post );
 				$view_ids_in_post = array_map( function( $view ) { return $view->ID; }, $views->all() );
 			} else {
 				/** ::maybe_get_view_id deprecated. */

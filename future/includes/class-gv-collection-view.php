@@ -8,7 +8,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) )
 /**
  * A collection of \GV\View objects.
  */
-class ViewList extends DefaultList {
+class View_Collection extends Collection {
 	/**
 	 * Add a \GV\View to this collection.
 	 *
@@ -22,7 +22,7 @@ class ViewList extends DefaultList {
 	 */
 	public function append( $view ) {
 		if ( ! $view instanceof View ) {
-			throw new \InvalidArgumentException( 'ViewLists can only contain objects of type \GV\View.' );
+			throw new \InvalidArgumentException( 'View_Collections can only contain objects of type \GV\View.' );
 		}
 		parent::append( $view );
 	}
@@ -56,7 +56,7 @@ class ViewList extends DefaultList {
 	 *
 	 * @api
 	 * @since future
-	 * @return \GV\ViewList A \GV\ViewList instance contanining the views inside the supplied \WP_Post.
+	 * @return \GV\View_Collection A \GV\View_Collection instance contanining the views inside the supplied \WP_Post.
 	 */
 	public static function from_post( \WP_Post $post ) {
 		$views = new self();
@@ -77,7 +77,7 @@ class ViewList extends DefaultList {
 			}
 
 			/**
-			 * @filter `gravityview/viewlist/from_post/meta_keys` Define meta keys to parse to check for GravityView shortcode content.
+			 * @filter `gravityview/view_collection/from_post/meta_keys` Define meta keys to parse to check for GravityView shortcode content.
 			 *
 			 * This is useful when using themes that store content that may contain shortcodes in custom post meta.
 			 *
@@ -86,12 +86,12 @@ class ViewList extends DefaultList {
 			 * @param[in,out] array $meta_keys Array of key values to check. If empty, do not check. Default: empty array
 			 * @param[in] \WP_Post $post The post that is being checked
 			 */
-			$meta_keys = apply_filters( 'gravityview/viewlist/from_post/meta_keys', array(), $post );
+			$meta_keys = apply_filters( 'gravityview/view_collection/from_post/meta_keys', array(), $post );
 
 			/**
 			 * @filter `gravityview/data/parse/meta_keys`
 			 * @deprecated
-			 * @see The `gravityview/viewlist/from_post/meta_keys` filter.
+			 * @see The `gravityview/view_collection/from_post/meta_keys` filter.
 			 */
 			$meta_keys = (array)apply_filters( 'gravityview/data/parse/meta_keys', $meta_keys, $post->ID );
 

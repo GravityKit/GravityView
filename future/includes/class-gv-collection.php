@@ -6,16 +6,16 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) )
 	die();
 
 /**
- * A generic List base class.
+ * A generic Collection base class.
  */
-class DefaultList {
+class Collection {
 	/**
-	 * @var array Main storage for objects in this list.
+	 * @var array Main storage for objects in this collection.
 	 */
 	private $storage = array();
 
 	/**
-	 * Add an object to this list.
+	 * Add an object to this collection.
 	 *
 	 * @param mixed $value The object to be added.
 	 *
@@ -28,22 +28,22 @@ class DefaultList {
 	}
 
 	/**
-	 * Returns all the objects in this list as an an array.
+	 * Returns all the objects in this collection as an an array.
 	 *
 	 * @api
 	 * @since future
-	 * @return array The objects in this list.
+	 * @return array The objects in this collection.
 	 */
 	public function all() {
 		return $this->storage;
 	}
 
 	/**
-	 * Returns the count of the objects in this list.
+	 * Returns the count of the objects in this collection.
 	 *
 	 * @api
 	 * @since future
-	 * @return int The size of this list.
+	 * @return int The size of this collection.
 	 */
 	public function count() {
 		return count( $this->storage );

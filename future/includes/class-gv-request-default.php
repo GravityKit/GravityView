@@ -41,9 +41,9 @@ final class DefaultRequest extends Request {
 		global $post;
 
 		if ( ! $post instanceof \WP_Post ) {
-			$this->views = new ViewList();
+			$this->views = new View_Collection();
 		} else {
-			$this->views = ViewList::from_post( $post );
+			$this->views = View_Collection::from_post( $post );
 		}
 	}
 

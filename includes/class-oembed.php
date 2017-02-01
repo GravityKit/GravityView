@@ -229,7 +229,7 @@ class GravityView_oEmbed {
 			do_action('gravityview_log_debug', 'GravityView_oEmbed[render_handler] Embedding an entry inside a post or page', $matches );
 
 			if ( function_exists( 'gravityview' ) && $post = get_post( $post_id ) ) {
-				$views = \GV\ViewList::from_post( $post );
+				$views = \GV\View_Collection::from_post( $post );
 				$views = $views->all();
 				if ( ! empty( $views ) )
 					$this->view_id = $views[0]->ID;

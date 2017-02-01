@@ -133,10 +133,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers \GV\ViewList::append()
+	 * @covers \GV\View_Collection::append()
 	 */
-	function test_viewlist_append() {
-		$views = new \GV\ViewList();
+	function test_view_collection_append() {
+		$views = new \GV\View_Collection();
 		$view = new \GV\View();
 
 		$views->append( $view );
@@ -144,7 +144,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$expectedException = null;
 		try {
-			/** Make sure we can only add \GV\View objects into the \GV\ViewList. */
+			/** Make sure we can only add \GV\View objects into the \GV\View_Collection. */
 			$views->append( new stdClass() );
 		} catch ( \InvalidArgumentException $e ) {
 			$expectedException = $e;
@@ -203,20 +203,20 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers \GV\ViewList::from_post()
-	 * @covers \GV\ViewList::get()
+	 * @covers \GV\View_Collection::from_post()
+	 * @covers \GV\View_Collection::get()
 	 * @covers \GravityView_View_Data::maybe_get_view_id()
 	 * @covers \GravityView_View_Data::is_valid_embed_id()
 	 * @covers \GravityView_oEmbed::set_vars()
 	 */
-	function test_viewlist_from_post() {
+	function test_view_collection_from_post() {
 		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
 		remove_shortcode( 'gravityview' ); /** Conflicts with existing shortcode right now. */
 		\GV\Shortcodes\gravityview::add();
 
 		$post = $this->factory->view->create_and_get();
 
-		$views = \GV\ViewList::from_post( $post );
+		$views = \GV\View_Collection::from_post( $post );
 		$view = $views->get( $post->ID );
 		$this->assertEquals( $view->ID, $post->ID );
 		$this->assertNull( $views->get( -1 ) );
@@ -227,7 +227,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$with_shortcodes = $this->factory->post->create_and_get( array(
 			'post_content' => sprintf( '[gravityview id="%d"][gravityview id="%d"]', $post->ID, $another_post->ID )
 		) );
-		$views = \GV\ViewList::from_post( $with_shortcodes );
+		$views = \GV\View_Collection::from_post( $with_shortcodes );
 		$this->assertCount( 2, $views->all() );
 
 		$view = $views->get( $post->ID );
@@ -241,17 +241,17 @@ class GVFuture_Test extends GV_UnitTestCase {
 		update_post_meta( $with_shortcodes_in_meta->ID, 'meta_test', sprintf( '[gravityview id="%d"]', $post->ID ) );
 		update_post_meta( $with_shortcodes_in_meta->ID, 'another_meta_test', sprintf( '[gravityview id="%d"]', $another_post->ID ) );
 
-		$views = \GV\ViewList::from_post( $with_shortcodes_in_meta );
+		$views = \GV\View_Collection::from_post( $with_shortcodes_in_meta );
 		$this->assertEmpty( $views->all() );
 
 		$test = $this;
 
-		add_filter( 'gravityview/viewlist/from_post/meta_keys', function( $meta_keys, $post ) use ( $with_shortcodes_in_meta, $test ) {
+		add_filter( 'gravityview/view_collection/from_post/meta_keys', function( $meta_keys, $post ) use ( $with_shortcodes_in_meta, $test ) {
 			$test->assertSame( $post, $with_shortcodes_in_meta );
 			return array( 'meta_test' );
 		}, 10, 2 );
 
-		$views = \GV\ViewList::from_post( $with_shortcodes_in_meta );
+		$views = \GV\View_Collection::from_post( $with_shortcodes_in_meta );
 		$this->assertCount( 1, $views->all() );
 		$view = $views->get( $post->ID );
 		$this->assertEquals( $view->ID, $post->ID );
@@ -261,12 +261,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 			return array( 'another_meta_test' );
 		}, 10, 2 );
 
-		$views = \GV\ViewList::from_post( $with_shortcodes_in_meta );
+		$views = \GV\View_Collection::from_post( $with_shortcodes_in_meta );
 		$this->assertCount( 1, $views->all() );
 		$view = $views->get( $another_post->ID );
 		$this->assertEquals( $view->ID, $another_post->ID );
 
-		remove_all_filters( 'gravityview/viewlist/from_post/meta_keys' );
+		remove_all_filters( 'gravityview/view_collection/from_post/meta_keys' );
 		remove_all_filters( 'gravityview/data/parse/meta_keys' );
 
 		/** Test regressions in GravityView_View_Data::maybe_get_view_id */
@@ -385,9 +385,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Core::init()
 	 */
 	function test_core_init() {
-		gravityview()->views = new \GV\ViewList();
+		gravityview()->views = new \GV\View_Collection();
 
-		/** Make sure the main \GV\ViewList is available in both places. */
+		/** Make sure the main \GV\View_Collection is available in both places. */
 		$this->assertSame( gravityview()->views, gravityview()->request->views );
 	}
 
