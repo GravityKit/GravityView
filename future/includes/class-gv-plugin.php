@@ -237,7 +237,7 @@ final class Plugin {
 	 */
 	private function get_gravityforms_version() {
 		if ( !class_exists( '\GFCommon' ) || !empty( $GLOBALS['GRAVITYVIEW_TESTS_GF_INACTIVE_OVERRIDE'] ) )
-			throw new \ErrorException( __( 'Gravity Forms is inactive or not installed.', 'gravityview' ) );
+			throw new \ErrorException( 'Gravity Forms is inactive or not installed.' );
 
 		return !empty( $GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] ) ?
 			$GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] : \GFCommon::$version;

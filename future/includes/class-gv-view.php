@@ -140,7 +140,7 @@ class View {
 	 */
 	public static function from_post( \WP_Post $post ) {
 		if ( get_post_type( $post ) != 'gravityview' ) {
-			throw new \InvalidArgumentException( __( 'Only gravityview post types can be \GV\View instances.', 'gravityview' ) );
+			throw new \InvalidArgumentException( 'Only gravityview post types can be \GV\View instances.' );
 		}
 
 		$view = new self();

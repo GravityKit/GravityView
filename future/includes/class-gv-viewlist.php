@@ -22,7 +22,7 @@ class ViewList extends DefaultList {
 	 */
 	public function append( $view ) {
 		if ( ! $view instanceof View ) {
-			throw new \InvalidArgumentException( __( 'ViewLists can only contain objects of type \GV\View.', 'gravityview' ) );
+			throw new \InvalidArgumentException( 'ViewLists can only contain objects of type \GV\View.' );
 		}
 		parent::append( $view );
 	}

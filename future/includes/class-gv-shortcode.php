@@ -42,7 +42,7 @@ class Shortcode {
 	 * @return string The result of the shortcode logic.
 	 */
 	public static function callback( $atts, $content = null ) {
-		throw new \BadMethodCallException( __( 'Callback not implemented in base \GV\Shortcode class.', 'gravityview' ) );
+		throw new \BadMethodCallException( 'Callback not implemented in base \GV\Shortcode class.' );
 	}
 
 	/**
@@ -57,7 +57,7 @@ class Shortcode {
 		$shortcode = new static();
 		if ( shortcode_exists( $shortcode->name ) ) {
 			if ( empty( self::$shortcodes[$shortcode->name] ) ) {
-				throw new \ErrorException( sprintf( __( 'Shortcode [%s] has already been registered elsewhere.', 'gravityview' ), $shortcode->name ) );
+				throw new \ErrorException( sprintf( 'Shortcode [%s] has already been registered elsewhere.', $shortcode->name ) );
 			}
 		} else {
 			add_shortcode( $shortcode->name, array( get_class( $shortcode ), 'callback' ) );
