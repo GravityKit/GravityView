@@ -50,4 +50,4 @@ after_script:
   - php ocular.phar code-coverage:upload --format=php-clover /tmp/clover.xml
 
 after_success:
-  - bash tests/bin/travis.sh after
+  - travis_retry php vendor/bin/coveralls -v
