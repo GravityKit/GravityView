@@ -473,10 +473,10 @@ class GVCommon {
 					// Gravity Forms wants dates in the `Y-m-d H:i:s` format.
 					$criteria['search_criteria'][ $key ] = $date->format( 'Y-m-d H:i:s' );
 				} else {
+					do_action( 'gravityview_log_error', '[filter_get_entries_criteria] '.$key.' Date format not valid:', $criteria['search_criteria'][ $key ] );
+
 					// If it's an invalid date, unset it. Gravity Forms freaks out otherwise.
 					unset( $criteria['search_criteria'][ $key ] );
-
-					do_action( 'gravityview_log_error', '[filter_get_entries_criteria] '.$key.' Date format not valid:', $criteria['search_criteria'][ $key ] );
 				}
 			}
 		}
