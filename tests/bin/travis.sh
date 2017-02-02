@@ -26,5 +26,5 @@ elif [ $1 == 'after' ]; then
 	# no Xdebug and therefore no coverage in PHP 5.2
 	[ $TRAVIS_PHP_VERSION == '5.2' ] && exit;
 
-	travis_retry php vendor/bin/coveralls -v
+	php vendor/bin/coveralls -v
 fi
