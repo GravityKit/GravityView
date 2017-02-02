@@ -1128,6 +1128,67 @@ class GravityView_frontend {
 		do_action( 'gravityview_log_debug', '[get_view_entries] init' );
 		// start filters and sorting
 
+		$parameters = self::get_view_entries_parameters( $args, $form_id );
+
+		$count = 0; // Must be defined so that gravityview_get_entries can use by reference
+
+		//fetch entries
+		$entries = gravityview_get_entries( $form_id, $parameters, $count );
+
+		do_action( 'gravityview_log_debug', sprintf( '%s: Get Entries. Found: %s entries', __METHOD__, $count ), $entries );
+
+		/**
+		 * @filter `gravityview_view_entries` Filter the entries output to the View
+		 * @deprecated since 1.5.2
+		 * @param array $args View settings associative array
+		 * @var array
+		 */
+		$entries = apply_filters( 'gravityview_view_entries', $entries, $args );
+
+		$return = array(
+			'count' => $count,
+			'entries' => $entries,
+			'paging' => rgar( $parameters, 'paging' ),
+		);
+
+		/**
+		 * @filter `gravityview/view/entries` Filter the entries output to the View
+		 * @param array $criteria associative array containing count, entries & paging
+		 * @param array $args View settings associative array
+		 * @since 1.5.2
+		 */
+		return apply_filters( 'gravityview/view/entries', $return, $args );
+	}
+
+	/**
+	 * Get an array of search parameters formatted as Gravity Forms requires
+	 *
+	 * Results are filtered by `gravityview_get_entries` and `gravityview_get_entries_{View ID}` filters
+	 *
+	 * @uses GravityView_frontend::get_search_criteria
+	 * @uses GravityView_frontend::get_search_criteria_paging
+	 *
+	 * @since 1.20.1
+	 *
+	 * @see GravityView_View_Data::get_default_args For $args options
+	 *
+	 * @param array $args Array of View settings, as structured in GravityView_View_Data::get_default_args
+	 * @param int $form_id Gravity Forms form ID to search
+	 *
+	 * @return array With `search_criteria`, `sorting`, `paging`, `cache` keys
+	 */
+	public static function get_view_entries_parameters( $args = array(), $form_id = 0 ) {
+
+
+		if ( ! is_array( $args ) || ! is_numeric( $form_id ) ) {
+
+			do_action( 'gravityview_log_error', __METHOD__ . ': Passed args are not an array or the form ID is not numeric' );
+
+			return array();
+		}
+
+		$form_id = intval( $form_id );
+
 		/**
 		 * Process search parameters
 		 * @var array
@@ -1169,28 +1230,7 @@ class GravityView_frontend {
 
 		do_action( 'gravityview_log_debug', __METHOD__ . ': $parameters passed to gravityview_get_entries(): ', $parameters );
 
-		//fetch entries
-		$count = 0;
-		$entries = gravityview_get_entries( $form_id, $parameters, $count );
-
-		do_action( 'gravityview_log_debug', sprintf( '%s: Get Entries. Found: %s entries', __METHOD__, $count ), $entries );
-
-		/**
-		 * @filter `gravityview_view_entries` Filter the entries output to the View
-		 * @deprecated since 1.5.2
-		 * @param array $args View settings associative array
-		 * @var array
-		 */
-		$entries = apply_filters( 'gravityview_view_entries', $entries, $args );
-
-		/**
-		 * @filter `gravityview/view/entries` Filter the entries output to the View
-		 * @param array $criteria associative array containing count, entries & paging
-		 * @param array $args View settings associative array
-		 * @since 1.5.2
-		 */
-		return apply_filters( 'gravityview/view/entries', compact( 'count', 'entries', 'paging' ), $args );
-
+		return $parameters;
 	}
 
 	/**
