@@ -291,6 +291,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$expected_get_context_view_id['context_view_id'] = 123;
 		$this->assertEquals( $expected_get_context_view_id, GVCommon::calculate_get_entries_criteria() );
 		GravityView_frontend::getInstance()->setSingleEntry( false ); // Reset is single entry
+		GravityView_frontend::getInstance()->setGvOutputData( GravityView_View_Data::getInstance() );
 		GravityView_frontend::getInstance()->set_context_view_id( null );
 
 		// If `context_view_id` is passed, then use it.
@@ -312,14 +313,18 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$expected_get_context_view_id['context_view_id'] = 456;
 		$this->assertEquals( $expected_get_context_view_id, GVCommon::calculate_get_entries_criteria() );
 
-		// @todo Fix this pollution - has_multiple_views() state gets polluted
-		/*$views = $this->factory->view->create_many( 2 );
+		$views = $this->factory->view->create_many( 2 );
 		GravityView_frontend::getInstance()->setGvOutputData( GravityView_View_Data::getInstance() );
 		GravityView_frontend::getInstance()->getGvOutputData()->add_view( $views );
 		GravityView_frontend::getInstance()->set_context_view_id( 234 );
 		$expected_get_context_view_id['context_view_id'] = 234;
 		$this->assertEquals( $expected_get_context_view_id, GVCommon::calculate_get_entries_criteria() );
-		GravityView_frontend::getInstance()->set_context_view_id( null ); // Reset*/
+		GravityView_frontend::getInstance()->set_context_view_id( null );
+
+		/** Cleanup */
+		GravityView_frontend::$instance = null;
+		GravityView_View_Data::$instance = null;
+		unset( $_GET['action'] );
 	}
 
 	/**
