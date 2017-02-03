@@ -349,9 +349,12 @@ class GVCommon {
 			$payment_fields = GravityView_Fields::get_all( 'pricing' );
 
 			foreach ( $payment_fields as $payment_field ) {
-				if( isset( $fields["{$payment_field->name}"] ) ) {
+
+				// Either the field exists ($fields['shipping']) or the form explicitly contains a `shipping` field with numeric key
+				if( isset( $fields["{$payment_field->name}"] ) || GFCommon::get_fields_by_type( $form, $payment_field->name ) ) {
 					continue;
 				}
+
 				$fields["{$payment_field->name}"] = array(
 					'label' => $payment_field->label,
 					'desc' => $payment_field->description,
