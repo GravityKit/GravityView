@@ -133,19 +133,19 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers \GV\View_Collection::append()
+	 * @covers \GV\View_Collection::add()
 	 */
-	function test_view_collection_append() {
+	function test_view_collection_add() {
 		$views = new \GV\View_Collection();
 		$view = new \GV\View();
 
-		$views->append( $view );
+		$views->add( $view );
 		$this->assertContains( $view, $views->all() );
 
 		$expectedException = null;
 		try {
 			/** Make sure we can only add \GV\View objects into the \GV\View_Collection. */
-			$views->append( new stdClass() );
+			$views->add( new stdClass() );
 		} catch ( \InvalidArgumentException $e ) {
 			$expectedException = $e;
 		}

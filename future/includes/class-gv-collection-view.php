@@ -12,7 +12,7 @@ class View_Collection extends Collection {
 	/**
 	 * Add a \GV\View to this collection.
 	 *
-	 * @param \GV\View $view The view to append to the internal array.
+	 * @param \GV\View $view The view to add to the internal array.
 	 *
 	 * @throws \InvalidArgumentException if $view is not of type \GV\View.
 	 *
@@ -20,11 +20,11 @@ class View_Collection extends Collection {
 	 * @since future
 	 * @return void
 	 */
-	public function append( $view ) {
+	public function add( $view ) {
 		if ( ! $view instanceof View ) {
 			throw new \InvalidArgumentException( 'View_Collections can only contain objects of type \GV\View.' );
 		}
-		parent::append( $view );
+		parent::add( $view );
 	}
 
 	/**
@@ -63,7 +63,7 @@ class View_Collection extends Collection {
 
 		if ( get_post_type( $post ) == 'gravityview' ) {
 			/** A straight up gravityview post. */
-			$views->append( View::from_post( $post ) );
+			$views->add( View::from_post( $post ) );
 		} else {
 			/** Let's find us some [gravityview] shortcodes perhaps. */
 			foreach ( Shortcode::parse( $post->post_content ) as $shortcode ) {
@@ -73,7 +73,7 @@ class View_Collection extends Collection {
 
 				if ( is_numeric( $shortcode->atts['id'] ) ) {
 					try {
-						$views->append( View::by_id( $shortcode->atts['id'] ) );
+						$views->add( View::by_id( $shortcode->atts['id'] ) );
 					} catch ( \InvalidArgumentException $e ) {
 						// @todo log this error with the future logger
 					}
@@ -107,7 +107,7 @@ class View_Collection extends Collection {
 					}
 
 					if ( is_numeric( $shortcode->atts['id'] ) ) {
-						$views->append( View::by_id( $shortcode->atts['id'] ) );
+						$views->add( View::by_id( $shortcode->atts['id'] ) );
 					}
 				}
 			}

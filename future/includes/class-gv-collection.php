@@ -23,7 +23,7 @@ class Collection {
 	 * @since future
 	 * @return void
 	 */
-	public function append( $value ) {
+	public function add( $value ) {
 		$this->storage []= $value;
 	}
 
