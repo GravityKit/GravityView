@@ -218,16 +218,6 @@ abstract class GravityView_Field {
 	 */
 	public function _filter_gform_replace_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
 
-		/**
-		 * This prevents the gform_replace_merge_tags filter from being called twice, as defined in:
-		 * @see GFCommon::replace_variables()
-		 * @see GFCommon::replace_variables_prepopulate()
-		 * @todo Remove eventually: Gravity Forms fixed this issue in 1.9.14
-		 */
-		if( false === $form ) {
-			return $text;
-		}
-
 		// Is there is field merge tag? Strip whitespace off the ned, too.
 		preg_match_all( '/{' . preg_quote( $this->_custom_merge_tag ) . ':?(.*?)(?:\s)?}/ism', $text, $matches, PREG_SET_ORDER );
 
