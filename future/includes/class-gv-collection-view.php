@@ -72,7 +72,11 @@ class View_Collection extends Collection {
 				}
 
 				if ( is_numeric( $shortcode->atts['id'] ) ) {
-					$views->append( View::by_id( $shortcode->atts['id'] ) );
+					try {
+						$views->append( View::by_id( $shortcode->atts['id'] ) );
+					} catch ( \InvalidArgumentException $e ) {
+						// @todo log this error with the future logger
+					}
 				}
 			}
 

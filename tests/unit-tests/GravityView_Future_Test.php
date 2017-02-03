@@ -269,6 +269,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_all_filters( 'gravityview/view_collection/from_post/meta_keys' );
 		remove_all_filters( 'gravityview/data/parse/meta_keys' );
 
+		/** How about invalid view IDs? */
+		$with_bad_shortcodes = $this->factory->post->create_and_get( array(
+			'post_content' => sprintf( '[gravityview id="%d"][gravityview id="%d"]', -$post->ID, -$another_post->ID )
+		) );
+		$views = \GV\View_Collection::from_post( $with_bad_shortcodes );
+		$this->assertCount( 0, $views->all() );
+
 		/** Test regressions in GravityView_View_Data::maybe_get_view_id */
 		$data = GravityView_View_Data::getInstance();
 		$this->assertEquals( $data->maybe_get_view_id( $post ), $post->ID );
@@ -337,6 +344,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \GV\Shortcode::parse()
+	 * @covers \GravityView_View_Data::parse_post_content()
 	 */
 	function test_shortcode_parse() {
 		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
@@ -379,6 +387,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $shortcodes[2]->name, 's3' );
 
 		$GLOBALS['shortcode_tags']['gravityview'] = $original_shortcode;
+
+		/** Make sure \GravityView_View_Data::parse_post_content operates in a sane way. */
+		GravityView_View_Data::$instance = null; /** Reset just in case. */
+		$data = GravityView_View_Data::getInstance();
+		$this->assertEquals( -1, $data->parse_post_content( '[gravityview id="-1"]' ) );
+		$this->assertEquals( array( -1, -2 ), $data->parse_post_content( '[gravityview id="-1"][gravityview id="-2"]' ) );
+		/** The above calls have a side-effect on the data state; make sure it's still intact. */
+		$this->assertEquals( $data->get_views(), array() );
 	}
 
 	/**

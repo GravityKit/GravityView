@@ -364,9 +364,25 @@ class GravityView_View_Data {
 	 * @uses shortcode_parse_atts() Parse each GV shortcode
 	 * @uses  gravityview_get_template_settings() Get the settings for the View ID
 	 * @param  string $content $post->post_content content
+	 *
+	 * @deprecated
+	 * @see \GV\Shortcode::parse and \GV\View_Collection::append (via the `gravityview()->request->views` link)
+	 *
 	 * @return int|null|array If a single View is found, the ID of the View. If there are multiple views in the content, array of IDs parsed. If not found, NULL
 	 */
 	public function parse_post_content( $content ) {
+		if ( function_exists( 'gravityview' ) ) {
+			$ids = array();
+			foreach ( \GV\Shortcode::parse( $content ) as $shortcode ) {
+				if ( $shortcode->name == 'gravityview' && is_numeric( $shortcode->atts['id'] ) ) {
+					$this->add_view( $shortcode->atts['id'] );
+					$ids []= $shortcode->atts['id'];
+				}
+			}
+			if ( empty ( $ids ) )
+				return null;
+			return ( sizeof( $ids ) === 1 ) ? $ids[0] : $ids;
+		}
 
 		/**
 		 * @hack This is so that the shortcode is registered for the oEmbed preview in the Admin
