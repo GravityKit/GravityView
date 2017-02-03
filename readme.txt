@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: WPML links to Single Entry not working if using directory or sub-domain URL formats
 * Fixed: Product field prices not always formatted as a currency
 * Fixed: Product fields sometimes appeared twice in the Add Field field picker
+* Fixed: PHP warning when updating entries. Thanks for reporting, Werner!
 
 __Developer Notes:__
 
