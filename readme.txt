@@ -42,6 +42,7 @@ __Developer Notes:__
 * Added: `gravityview/edit_entry/field_blacklist` filter to modify what field types should not be shown in Edit Entry
 * Added: `GravityView_Plugin_Hooks_Gravity_Forms_Coupon` class
 * Added: Third `GravityView_Edit_Entry_Render` parameter to `gravityview/edit_entry/field_value`, `gravityview/edit_entry/field_value_{field_type}` filters and `gravityview/edit_entry/after_update` action
+* Modified: Only print errors when running the unit tests if the `--debug` setting is defined, like `phpunit --debug --verbose`
 
 = 1.19.4 on January 19, 2017 =
 

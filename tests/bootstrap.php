@@ -57,10 +57,9 @@ class GV_Unit_Tests_Bootstrap {
 		// load GV
 		tests_add_filter( 'muplugins_loaded', array( $this, 'load' ) );
 
-		tests_add_filter( 'gravityview_log_error', array( $this, 'test_print_log'), 10, 3 );
-
 		// Log debug if passed to `phpunit` like: `phpunit --debug --verbose`
 		if( in_array( '--debug', (array)$_SERVER['argv'], true ) && in_array( '--verbose', (array)$_SERVER['argv'], true ) ) {
+			tests_add_filter( 'gravityview_log_error', array( $this, 'test_print_log'), 10, 3 );
 			tests_add_filter( 'gravityview_log_debug', array( $this, 'test_print_log' ), 10, 3 );
 		}
 
