@@ -934,9 +934,6 @@ class GravityView_Edit_Entry_Render {
         // We need to remove the fake $_GET['page'] arg to avoid rendering form as if in admin.
         unset( $_GET['page'] );
 
-        // Prevent "Product Fields are not editable" message on submitted form
-	    unset( $_POST );
-
         // TODO: Verify multiple-page forms
 
         ob_start(); // Prevent PHP warnings possibly caused by prefilling list fields for conditional logic
@@ -1076,9 +1073,15 @@ class GravityView_Edit_Entry_Render {
 	        return $field_content;
         }
 
+        $_post_backup = isset( $_POST ) ? $_POST : array();
+
         // Turn on Admin-style display for file upload fields only
         if( 'fileupload' === $field->type ) {
+
             $_GET['page'] = 'gf_entries';
+
+	        // Prevent "Product Fields are not editable" message on submitted form
+            unset( $_POST );
         }
 
         // SET SOME FIELD DEFAULTS TO PREVENT ISSUES
@@ -1138,6 +1141,9 @@ class GravityView_Edit_Entry_Render {
          *  ( <li id="field_80_16" ... > )
          */
         unset( $_GET['page'] );
+
+        // Re-define $_POST
+        $_POST = $_post_backup;
 
         return $return;
     }
