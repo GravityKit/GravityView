@@ -35,6 +35,7 @@ __Developer Notes:__
 * Modified: `gravityview/edit_entry/hide-product-fields` default will now be determined by whether entry has gateway transaction information
 * Added: `GVCommon::entry_has_transaction_data()` to check whether entry array contains payment gateway transaction information
 * Added: `gravityview/edit_entry/hide-coupon-fields` to modify whether to hide Coupon fields in Edit Entry (default: `false`)
+* Added: `GravityView_frontend::get_view_entries_parameters()` method to get the final entry search parameters for a View without fetching the entries as well
 * Updated: `fields/product.php` template file
 * Added: `GVCommon::get_product_field_types()` to fetch Gravity Forms product field types array
 * Added: `gravityview/edit_entry/field_blacklist` filter to modify what field types should not be shown in Edit Entry
