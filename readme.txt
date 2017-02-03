@@ -20,12 +20,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.20 =
+= 1.20 on February 2, 2017 =
 
 * Added: Product Fields are now editable
     - Quantity,
     - Product fields are hidden if the entry contains external transaction data
     - Support for Coupon Addon
+* Fixed: Single Entry not accessible when filtering by a Checkbox field in the Advanced Filters Extension
 * Fixed: Product field prices not always formatted as a currency
 * Fixed: WPML links to Single Entry not working if using directory or sub-domain URL formats
 

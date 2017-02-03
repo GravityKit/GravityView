@@ -836,11 +836,12 @@ class GVCommon {
 			} else {
 				$field = self::get_field( $form, $k );
 				$field_value  = GFFormsModel::get_lead_field_value( $entry, $field );
-				 // If it's a complex field, then fetch the input's value
-				$field_value = is_array( $field_value ) ? rgar( $field_value, $k ) : $field_value;
+				 // If it's a complex field, then fetch the input's value, if exists at the current key. Otherwise, let GF handle it
+				$field_value = ( is_array( $field_value ) && isset( $field_value[ $k ] ) ) ? rgar( $field_value, $k ) : $field_value;
 			}
 
 			$operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
+
 			$is_value_match = GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field );
 
 			// verify if we are already free to go!
