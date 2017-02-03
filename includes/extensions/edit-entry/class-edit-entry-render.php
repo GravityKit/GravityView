@@ -1114,13 +1114,16 @@ class GravityView_Edit_Entry_Render {
 	    // Prevent any PHP warnings, like undefined index
 	    ob_start();
 
+	    $return = null;
+
         /** @var GravityView_Field $gv_field */
         if( $gv_field && is_callable( array( $gv_field, 'get_field_input' ) ) ) {
             $return = $gv_field->get_field_input( $this->form, $field_value, $this->entry, $field );
-        } else {
-	        $return = $field->get_field_input( $this->form, $field_value, $this->entry );
         }
 
+	    if ( empty( $return ) ) {
+	        $return = $field->get_field_input( $this->form, $field_value, $this->entry );
+	    }
 
 	    // If there was output, it's an error
 	    $warnings = ob_get_clean();
