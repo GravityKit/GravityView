@@ -148,6 +148,14 @@ abstract class GravityView_Field {
 			add_filter( 'gravityview_search_field_label', array( $this, 'set_default_search_label' ), 10, 3 );
 		}
 
+		/**
+		 * Auto-assign label from Gravity Forms label, if exists
+		 * @since 1.20
+		 */
+		if( empty( $this->label ) && ! empty( $this->_gf_field_class_name ) && class_exists( $this->_gf_field_class_name ) ) {
+			$this->label = ucfirst( GF_Fields::get( $this->name )->get_form_editor_field_title() );
+		}
+
 		GravityView_Fields::register( $this );
 	}
 
