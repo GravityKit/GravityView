@@ -757,6 +757,7 @@ class GVCommon {
 	 *
 	 * Checks if a certain entry is valid according to the View search filters (specially the Adv Filters)
 	 *
+	 * @uses GVCommon::calculate_get_entries_criteria();
 	 * @see GFFormsModel::is_value_match()
 	 *
 	 * @since 1.7.4

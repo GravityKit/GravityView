@@ -241,7 +241,9 @@ class GVCommon_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @since 1.20
 	 * @covers GVCommon::calculate_get_entries_criteria()
+	 * @covers GravityView_frontend::set_context_view_id()
 	 * @group calculate_get_entries_criteria
 	 */
 	function test_calculate_get_entries_criteria() {
@@ -257,8 +259,9 @@ class GVCommon_Test extends GV_UnitTestCase {
 		// When no View ID is set, everything should be null
 		$this->assertEquals( $default_values, \GVCommon::calculate_get_entries_criteria() );
 
+		$this->_calculate_get_entries_criteria_add_operator( $default_values );
 
-		$this->_calculate_get_entries_criteria_add_operator();
+		$this->_calculate_get_entries_criteria_dates( $default_values );
 
 		// Unset [field_filters][mode] if it's the only key that exists in [field_filters]
 		$_field_values_only_mode_expected = $_field_values_only_mode = $default_values;
@@ -267,52 +270,112 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$this->assertEquals( $_field_values_only_mode_expected, GVCommon::calculate_get_entries_criteria( $_field_values_only_mode ) );
 
 
+		// Test `gravityview_search_criteria` filter
+		add_filter( 'gravityview_search_criteria', '__return_empty_array' );
+		$this->assertEquals( array(), GVCommon::calculate_get_entries_criteria( $default_values ) );
+		remove_filter( 'gravityview_search_criteria', '__return_empty_array' );
+
+		// Run this test last due to state pollution
+		// @todo Fix the state pollution
+		$this->_calculate_get_entries_criteria_context_view_id( $default_values );
+	}
+
+	/**
+	 * @since 1.20
+	 */
+	private function _calculate_get_entries_criteria_context_view_id( $default_values ) {
+
+		$expected_get_context_view_id = $default_values;
+
+		// Test when is single entry
+		GravityView_frontend::getInstance()->setSingleEntry( 48 );
+		GravityView_frontend::getInstance()->set_context_view_id( 123 );
+		$expected_get_context_view_id['context_view_id'] = 123;
+		$this->assertEquals( $expected_get_context_view_id, GVCommon::calculate_get_entries_criteria() );
+		GravityView_frontend::getInstance()->setSingleEntry( false ); // Reset is single entry
+
+		// If `context_view_id` is passed, then use it.
+		unset( $_GET['view_id'] );
+		$criteria = array( 'context_view_id' => 345 );
+		$expected_get_context_view_id['context_view_id'] = 345;
+		$this->assertEquals( $expected_get_context_view_id, GVCommon::calculate_get_entries_criteria( $criteria ) );
+
+
+		// Test when action=delete is set but view ID isn't
+		$_GET['action'] = 'delete';
+		unset( $_GET['view_id'] );
+		$expected_get_context_view_id['context_view_id'] = NULL;
+		$this->assertEquals( $expected_get_context_view_id, GVCommon::calculate_get_entries_criteria() );
+
+		// Test when action=delete is set AND view ID is too
+		$_GET['action'] = 'delete';
+		$_GET['view_id'] = 456;
+		$expected_get_context_view_id['context_view_id'] = 456;
+		$this->assertEquals( $expected_get_context_view_id, GVCommon::calculate_get_entries_criteria() );
+
+		// Test GravityView_View_Data::getInstance()->has_multiple_views()
+		// TEST LAST - otherwise the has_multiple_views() state will be polluted
+		// @todo Fix this pollution
+		$views = $this->factory->view->create_many( 2 );
+		GravityView_frontend::getInstance()->setGvOutputData( GravityView_View_Data::getInstance() );
+		GravityView_frontend::getInstance()->getGvOutputData()->add_view( $views );
+		GravityView_frontend::getInstance()->set_context_view_id( 234 );
+		$expected_get_context_view_id['context_view_id'] = 234;
+		$this->assertEquals( $expected_get_context_view_id, GVCommon::calculate_get_entries_criteria() );
+		GravityView_frontend::getInstance()->set_context_view_id( null ); // Reset
+	}
+
+	/**
+	 * Subset to test date handling
+	 *
+	 * @since 1.20
+	 * @see test_calculate_get_entries_criteria
+	 *
+	 * @param array $default_values
+	 */
+	private function _calculate_get_entries_criteria_dates( $default_values ) {
 
 		// Invalid dates get unset
 		$_date_create_false = $_date_create_false_expected = $default_values;
 		$_date_create_false['search_criteria']['start_date'] = 'asdsadsd';
 		$_date_create_false['search_criteria']['end_date'] = 'asdsadsd';
 		$_date_create_false_expected['search_criteria'] = array();
-		$this->assertEquals( $_field_values_only_mode_expected, GVCommon::calculate_get_entries_criteria( $_date_create_false ) );
+		$this->assertEquals( $_date_create_false_expected, GVCommon::calculate_get_entries_criteria( $_date_create_false ) );
 
 
-		return;
+		// Used multiple times below
+		$timestamp = '2014-07-24';
+		$datetime = date_create( $timestamp );
+		$properly_formatted_date = $datetime->format( 'Y-m-d H:i:s' );
+		$improperly_formatted_date = $datetime->format( 'Y-m-d' );
 
 		// Format dates as GF wants them: Y-m-d H:i:s
-		$time = time();
 		$_date_create_improper = $_date_create_improper_expected = $default_values;
-		$improperly_formatted_date = date( 'Y-m-d', $time );
 		$_date_create_improper['search_criteria']['start_date'] = $improperly_formatted_date;
-
-		$correct_date = date_create( $time );
-		$properly_formatted_date = $correct_date->format( 'Y-m-d H:i:s' );
 		$_date_create_improper_expected['search_criteria']['start_date'] = $properly_formatted_date;
-		$this->assertEquals( $_date_create_improper_expected, GVCommon::calculate_get_entries_criteria( $_date_create_false ) );
-		#$date = date_create( $criteria['search_criteria'][ $key ] );
+		$this->assertEquals( $_date_create_improper_expected, GVCommon::calculate_get_entries_criteria( $_date_create_improper ) );
 
+		// Start time valid, end time not valid
+		$_date_create_end_invalid = $_date_create_end_invalid_expected = $default_values;
+		$_date_create_end_invalid['search_criteria']['start_date'] = $improperly_formatted_date;
+		$_date_create_end_invalid['search_criteria']['end_date'] = 'asdsadsd';
+		$_date_create_end_invalid_expected['search_criteria'] = array(
+			'start_date' => $properly_formatted_date,
+		);
 
-		// If single entry
-		// $criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
-		GravityView_frontend::getInstance()->setSingleEntry( '23183' );
-
-		// If multiple Views
-		// $criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
-		$views = $this->factory->view->create_many( 5 );
-		GravityView_frontend::getInstance()->setSingleEntry( false );
-		GravityView_frontend::getInstance()->getGvOutputData()->add_view( $views );
-
-		#$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
-
-		// If 'delete' === $_GET['action']:
-		// $criteria['context_view_id'] = isset( $_GET['view_id'] ) ? intval( $_GET['view_id'] ) : null;
-
-		// Otherwise, $criteria['context_view_id'] is null
-
-
-		// Test `gravityview_search_criteria` filter
+		$this->assertEquals( $_date_create_end_invalid_expected, GVCommon::calculate_get_entries_criteria( $_date_create_end_invalid ) );
 	}
 
-	private function _calculate_get_entries_criteria_add_operator() {
+	/**
+	 * Subset to test how operators are managed
+	 *
+	 * @since 1.20
+	 *
+	 * @see test_calculate_get_entries_criteria
+	 *
+	 * @param array $default_values
+	 */
+	private function _calculate_get_entries_criteria_add_operator( $default_values ) {
 
 		$search_criteria_without_operator = array(
 			'search_criteria' => array(
@@ -326,21 +389,16 @@ class GVCommon_Test extends GV_UnitTestCase {
 			),
 		);
 
-		$search_criteria_without_operator_expected = array(
-			'search_criteria' => array(
-				'field_filters' => array(
-					'mode' => 'all',
-					0 => array(
-						'key' => 'created_by',
-						'value' => 'example',
-						'operator' => 'contains',
-					)
-				),
+		$search_criteria_without_operator_expected = $default_values;
+		$search_criteria_without_operator_expected['search_criteria'] = array(
+			'field_filters' => array(
+				'mode' => 'all',
+				0 => array(
+					'key' => 'created_by',
+					'value' => 'example',
+					'operator' => 'contains',
+				)
 			),
-			'sorting' => null,
-			'paging' => null,
-			'cache' => true,
-			'context_view_id' => null,
 		);
 
 		$this->assertEquals( $search_criteria_without_operator_expected, GVCommon::calculate_get_entries_criteria( $search_criteria_without_operator ) );
@@ -351,21 +409,17 @@ class GVCommon_Test extends GV_UnitTestCase {
 			return 'is';
 		});
 
-		$search_criteria_without_operator_with_filter_expected = array(
-			'search_criteria' => array(
-				'field_filters' => array(
-					'mode' => 'all',
-					0 => array(
-						'key' => 'created_by',
-						'value' => 'example',
-						'operator' => 'is',
-					),
-				)
-			),
-			'sorting' => null,
-			'paging' => null,
-			'cache' => true,
-			'context_view_id' => null,
+		$search_criteria_without_operator_with_filter_expected = $default_values;
+
+		$search_criteria_without_operator_with_filter_expected['search_criteria'] = array(
+			'field_filters' => array(
+				'mode' => 'all',
+				0 => array(
+					'key' => 'created_by',
+					'value' => 'example',
+					'operator' => 'is',
+				),
+			)
 		);
 
 		$this->assertEquals( $search_criteria_without_operator_with_filter_expected, GVCommon::calculate_get_entries_criteria( $search_criteria_without_operator ) );
