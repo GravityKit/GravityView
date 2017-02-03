@@ -211,6 +211,7 @@ class GravityView_Edit_Entry {
 			'is_fulfilled',
 			'transaction_id',
 			'transaction_type',
+			'captcha',
 		);
 
 		/**

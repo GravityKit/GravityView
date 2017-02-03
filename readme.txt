@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Product field prices not always formatted as a currency
 * Fixed: Product fields sometimes appeared twice in the Add Field field picker
 * Fixed: PHP warning when updating entries. Thanks for reporting, Werner!
+* Modified: Don't show CAPTCHA fields in Edit Entry
 
 __Developer Notes:__
 

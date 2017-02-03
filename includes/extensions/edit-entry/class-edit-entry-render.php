@@ -1303,11 +1303,6 @@ class GravityView_Edit_Entry_Render {
                         $_POST['input_'.$field->id ] = NULL;
                     }
                     break;
-                case 'captcha':
-                    // Fix issue with recaptcha_check_answer() on line 1458 in form_display.php
-                    $_POST['recaptcha_challenge_field'] = NULL;
-                    $_POST['recaptcha_response_field'] = NULL;
-                    break;
             }
 
         }
