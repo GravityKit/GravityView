@@ -231,7 +231,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 
 		$form = $this->factory->form->create();
 
-		$entry = $this->factory->entry->create( $form );
+		$entry = $this->factory->entry->create( array( 'form_id' => $form['id'] ) );
 
 		GVCommon::check_entry_display( $entry );
 
