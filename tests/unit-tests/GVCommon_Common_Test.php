@@ -263,21 +263,19 @@ class GVCommon_Test extends GV_UnitTestCase {
 
 		$this->_calculate_get_entries_criteria_dates( $default_values );
 
+		$this->_calculate_get_entries_criteria_context_view_id( $default_values );
+
 		// Unset [field_filters][mode] if it's the only key that exists in [field_filters]
 		$_field_values_only_mode_expected = $_field_values_only_mode = $default_values;
 		$_field_values_only_mode['search_criteria']['field_filters'] = array( 'mode' => 'all' );
 		$_field_values_only_mode_expected['search_criteria']['field_filters'] = array();
 		$this->assertEquals( $_field_values_only_mode_expected, GVCommon::calculate_get_entries_criteria( $_field_values_only_mode ) );
 
-
 		// Test `gravityview_search_criteria` filter
 		add_filter( 'gravityview_search_criteria', '__return_empty_array' );
 		$this->assertEquals( array(), GVCommon::calculate_get_entries_criteria( $default_values ) );
 		remove_filter( 'gravityview_search_criteria', '__return_empty_array' );
 
-		// Run this test last due to state pollution
-		// @todo Fix the state pollution
-		$this->_calculate_get_entries_criteria_context_view_id( $default_values );
 	}
 
 	/**
@@ -293,6 +291,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$expected_get_context_view_id['context_view_id'] = 123;
 		$this->assertEquals( $expected_get_context_view_id, GVCommon::calculate_get_entries_criteria() );
 		GravityView_frontend::getInstance()->setSingleEntry( false ); // Reset is single entry
+		GravityView_frontend::getInstance()->set_context_view_id( null );
 
 		// If `context_view_id` is passed, then use it.
 		unset( $_GET['view_id'] );
@@ -313,16 +312,14 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$expected_get_context_view_id['context_view_id'] = 456;
 		$this->assertEquals( $expected_get_context_view_id, GVCommon::calculate_get_entries_criteria() );
 
-		// Test GravityView_View_Data::getInstance()->has_multiple_views()
-		// TEST LAST - otherwise the has_multiple_views() state will be polluted
-		// @todo Fix this pollution
-		$views = $this->factory->view->create_many( 2 );
+		// @todo Fix this pollution - has_multiple_views() state gets polluted
+		/*$views = $this->factory->view->create_many( 2 );
 		GravityView_frontend::getInstance()->setGvOutputData( GravityView_View_Data::getInstance() );
 		GravityView_frontend::getInstance()->getGvOutputData()->add_view( $views );
 		GravityView_frontend::getInstance()->set_context_view_id( 234 );
 		$expected_get_context_view_id['context_view_id'] = 234;
 		$this->assertEquals( $expected_get_context_view_id, GVCommon::calculate_get_entries_criteria() );
-		GravityView_frontend::getInstance()->set_context_view_id( null ); // Reset
+		GravityView_frontend::getInstance()->set_context_view_id( null ); // Reset*/
 	}
 
 	/**
