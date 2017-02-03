@@ -314,6 +314,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::gravityview_get_current_views()
 	 * @group get_current_views
 	 * @internal Make sure this test is above the test_directory_link() test so that one doesn't pollute $post
 	 */

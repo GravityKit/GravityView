@@ -1168,7 +1168,7 @@ class GravityView_frontend {
 	 * @uses GravityView_frontend::get_search_criteria
 	 * @uses GravityView_frontend::get_search_criteria_paging
 	 *
-	 * @since 1.20.1
+	 * @since 1.20
 	 *
 	 * @see GravityView_View_Data::get_default_args For $args options
 	 *

@@ -27,7 +27,7 @@ final class Core {
 	public $plugin;
 
 	/**
-	 * @var \GV\Request The current request.
+	 * @var \GV\Frontend_Request The current request.
 	 *
 	 * @api
 	 * @since future
