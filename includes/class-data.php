@@ -16,6 +16,11 @@ class GravityView_View_Data {
 	 * @param null $passed_post
 	 */
 	private function __construct( $passed_post = NULL ) {
+		if ( function_exists( 'gravityview' ) ) {
+			/** Reset the new frontend request views, since we now have duplicate state. */
+			gravityview()->request = new \GV\Frontend_Request();
+			gravityview()->views = &gravityview()->request->views; /** Manually link shotcut after reset. */
+		}
 
 		if( !empty( $passed_post ) ) {
 
@@ -29,9 +34,14 @@ class GravityView_View_Data {
 	}
 
 	/**
+	 * @deprecated
+	 * @see \GV\View_Collection::count via `gravityview()->request->views->count()` or `gravityview()->views->count()`
 	 * @return boolean
 	 */
 	public function has_multiple_views() {
+		if ( function_exists( 'gravityview' ) ) {
+			return gravityview()->views->count() > 1;
+		}
 
 		//multiple views
 		return count( $this->get_views() ) > 1 ? true : false;
@@ -144,11 +154,34 @@ class GravityView_View_Data {
 		return self::$instance;
 	}
 
+	/**
+	 * @deprecated
+	 * @see \GV\View_Collection::all() via `gravityview()->views` or `gravityview()->request->views`.
+	 *  Uses `_data` property for deprecated format.
+	 */
 	function get_views() {
+		if ( function_exists( 'gravityview' ) ) {
+			if ( ! gravityview()->views->count() )
+				return array();
+			return array_combine(
+				array_map( function ( $view ) { return $view->ID; }, gravityview()->views->all() ),
+				array_map( function ( $view ) { return $view->_data; }, gravityview()->views->all() )
+			);
+		}
 		return $this->views;
 	}
 
+	/**
+	 * @deprecated
+	 * @see \GV\View_Collection::get() via `gravityview()->views` or `gravityview()->request->views`.
+	 */
 	function get_view( $view_id, $atts = NULL ) {
+		if ( function_exists( 'gravityview' ) ) {
+			if ( ! $view = gravityview()->views->get( $view_id ) ) {
+				return false;
+			}
+			return $view->_data;
+		}
 
 		if( ! is_numeric( $view_id) ) {
 			do_action('gravityview_log_error', sprintf('GravityView_View_Data[get_view] $view_id passed is not numeric.', $view_id) );
@@ -188,9 +221,19 @@ class GravityView_View_Data {
 	 *
 	 * @param int|array $view_id View ID or array of View IDs
 	 * @param array|string $atts Combine other attributes (eg. from shortcode) with the view settings (optional)
-	 * @return array
+	 *
+	 * @deprecated
+	 * @see \GV\View_Collection::append with the request \GV\View_Collection available via `gravityview()->request->views`
+	 *  or the `gravityview()->views` shortcut.
+	 *
+	 * @return array|false All views if $view_id is array, a view data array if $view_id is an int, false on errors.
 	 */
 	function add_view( $view_id, $atts = NULL ) {
+
+		/** Deprecated. Do not edit. */
+		if ( function_exists( 'gravityview' ) ) {
+			return \GV\Mocks\GravityView_View_Data_add_view( $this, $view_id, $atts );
+		}
 
 		// Handle array of IDs
 		if( is_array( $view_id ) ) {
@@ -199,7 +242,7 @@ class GravityView_View_Data {
 				$this->add_view( $id, $atts );
 			}
 
-			return $this->views;
+			return $this->get_views();
 		}
 
 		// The view has been set already; returning stored view.

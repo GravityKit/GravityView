@@ -8,6 +8,7 @@ if ( version_compare( phpversion(), '5.3' , '<' ) )
 	return false;
 
 /** @define "GRAVITYVIEW_DIR" "../" Require core */
+require GRAVITYVIEW_DIR . 'future/_mocks.php';
 require GRAVITYVIEW_DIR . 'future/includes/class-gv-core.php';
 
 /**

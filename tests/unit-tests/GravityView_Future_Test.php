@@ -405,6 +405,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Make sure the main \GV\View_Collection is available in both places. */
 		$this->assertSame( gravityview()->views, gravityview()->request->views );
+		/** And isn't empty... */
+		$this->assertEmpty( gravityview()->views->all() );
 	}
 
 	/**
@@ -480,9 +482,99 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\Frontend_Request::parse()
 	 */
-	function test_default_request_parse() {
+	function test_frontend_request_parse() {
 		// Make sure doesn't break without a global post
 		$request = new \GV\Frontend_Request();
 		$request->parse( null );
+	}
+
+	/**
+	 * @covers \GravityView_View_Data::add_view()
+	 * @covers \GV\Mocks\GravityView_View_Data_add_view()
+	 *
+	 * @covers \GravityView_View_Data::get_views)
+	 * @covers \GravityView_View_Data::get_views()
+	 * @covers \GravityView_View_Data::has_multiple_views()
+	 */
+	function test_frontend_request_add_view() {
+		gravityview()->request = new \GV\Frontend_Request();
+		gravityview()->views = &gravityview()->request->views; /** Manually link after reset. */
+
+		\GravityView_View_Data::$instance = null; /** Reset internal state. */
+
+		/** Try to add a non-existing view. */
+		$data = \GravityView_View_Data::getInstance();
+		$view = $data->add_view( -1 );
+		$this->assertEmpty( gravityview()->views->all() );
+		$this->assertFalse( $view );
+
+		/** Add an existing view, not connected to a form. */
+		$_view = $this->factory->view->create_and_get( array( 'form_id' => 0 ) );
+		$view = $data->add_view( $_view->ID );
+		$this->assertEmpty( gravityview()->views->all() );
+		$this->assertFalse( $view );
+
+		/** A valid view. */
+		$_view = $this->factory->view->create_and_get();
+		$view = $data->add_view( $_view->ID );
+		$_view = gravityview()->request->views->get( $_view->ID );
+		$this->assertEquals( $view, $_view->_data );
+		$this->assertCount( 1, gravityview()->views->all() );
+
+		/** Add the same one. Nothing changed, right? */
+		$view = $data->add_view( $_view->ID, array( 'sort_direction' => 'RANDOM' ) );
+		$this->assertCount( 1, gravityview()->views->all() );
+		$this->assertEquals( $view, $_view->_data );
+
+		gravityview()->request = new \GV\Frontend_Request();
+		gravityview()->views = &gravityview()->request->views; /** Manually link after reset. */
+		$this->assertCount( 0, gravityview()->views->all() );
+
+		/** Some attributes. */
+		$view = $data->add_view( $_view->ID, array( 'sort_direction' => 'RANDOM' ) );
+		$_view = gravityview()->request->views->get( $_view->ID );
+		$this->assertCount( 1, gravityview()->views->all() );
+		$this->assertEquals( $view['atts']['sort_direction'], 'RANDOM' );
+		$this->assertEquals( $view, $_view->_data );
+
+		gravityview()->request = new \GV\Frontend_Request();
+		gravityview()->views = &gravityview()->request->views; /** Manually link after reset. */
+
+		/** Try to add an array of non-existing views. */
+		$views = $data->add_view( array( -1, -2, -3 ) );
+		$this->assertEmpty( gravityview()->views->all() );
+		$this->assertEmpty( $views );
+
+		/** Add 2 repeating ones among invalid ones. */
+		$_view = $this->factory->view->create_and_get();
+		$views = $data->add_view( array( -1, $_view->ID, -3, $_view->ID ) );
+		$this->assertCount( 1, gravityview()->views->all() );
+		$this->assertCount( 1, $views );
+		$this->assertFalse( $data->has_multiple_views() );
+
+		$_another_view = $this->factory->view->create_and_get();
+		$views = $data->add_view( array( -1, $_view->ID, -3, $_another_view->ID ) );
+		$this->assertCount( 2, gravityview()->views->all() );
+		$this->assertCount( 2, $views );
+		$this->assertTrue( $data->has_multiple_views() );
+		$_view = gravityview()->request->views->get( $_view->ID );
+		$_another_view = gravityview()->request->views->get( $_another_view->ID );
+		$this->assertEquals( $views, array( $_view->ID => $_view->_data, $_another_view->ID => $_another_view->_data ) );
+
+		/** Make sure \GravityView_View_Data::get_views == gravityview()->views->all()_data */
+		$this->assertEquals( $data->get_views(), array_combine(
+			array_map( function( $view ) { return $view->ID; }, gravityview()->views->all() ),
+			array_map( function( $view ) { return $view->_data; }, gravityview()->views->all() )
+		) );
+
+		/** Make sure \GravityView_View_Data::get_view == gravityview()->views->get()_data */
+		$this->assertEquals( $data->get_view( $_another_view->ID ), gravityview()->request->views->get( $_another_view->ID )->_data );
+		$this->assertFalse( $data->get_view( -1 ) );
+
+		/** Reset it all. */
+		gravityview()->request = new \GV\Frontend_Request();
+		gravityview()->views = &gravityview()->request->views; /** Manually link after reset. */
+		GravityView_View_Data::$instance = null;
+		GravityView_frontend::$instance = null;
 	}
 }

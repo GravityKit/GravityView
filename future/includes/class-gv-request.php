@@ -18,6 +18,11 @@ abstract class Request {
 	 * @since future
 	 */
 	public $views;
+
+	public function __construct() {
+		/** Initialize with an empty \GV\View_Collection */
+		$this->views = new \GV\View_Collection();
+	}
 }
 
 /** Load implementations. */
