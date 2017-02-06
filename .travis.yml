@@ -43,7 +43,7 @@ before_script:
   - bash tests/bin/travis.sh before
 
 script:
-  - phpunit -c phpunit.xml.dist
+  - vendor/bin/phpunit -c phpunit.xml.dist
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
