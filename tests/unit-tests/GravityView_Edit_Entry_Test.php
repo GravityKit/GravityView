@@ -455,4 +455,59 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$_GET = array(); $_POST = array();
 		wp_set_current_user( 0 );
 	}
+
+	public function test_edit_entry_registration() {
+		/** A clean slate, please. */
+		GravityView_Edit_Entry::$instance = null;
+
+		$loader = GravityView_Edit_Entry::getInstance();
+		$registration = $loader->instances['user-registration'];
+		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
+
+		/** Some fixtures... */
+		$subscriber = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'subscriber' )
+		);
+
+		$form = $this->factory->form->create_and_get();
+		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'], 'status' => 'publish', 'created_by' => $subscriber ) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		/** All good here! */
+		$registration->update_user( $form, $entry['id'] );
+
+		wp_delete_user( $subscriber );
+
+		/**
+			There was 1 error:
+
+			1) GravityView_Edit_Entry_Test::test_edit_entry_registration
+			Trying to get property of non-object
+
+			includes/extensions/edit-entry/class-edit-entry-user-registration.php:185
+			includes/extensions/edit-entry/class-edit-entry-user-registration.php:159
+			includes/extensions/edit-entry/class-edit-entry-user-registration.php:111
+			tests/unit-tests/GravityView_Edit_Entry_Test.php:485
+		 */
+		$registration->update_user( $form, $entry['id'] );
+
+		/** Cleanup. */
+		GravityView_Edit_Entry::$instance = null;
+	}
+}
+
+/** The GF_User_Registration mock if not exists. */
+if ( ! class_exists( 'GF_User_Registration' ) ) {
+	class GF_User_Registration {
+		public static function get_instance() {
+			return new self();
+		}
+
+		public function get_single_submission_feed( $entry, $form ) {
+			return array(
+			);
+		}
+	}
 }
