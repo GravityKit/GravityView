@@ -19,7 +19,6 @@ class GravityView_View_Data {
 		if ( function_exists( 'gravityview' ) ) {
 			/** Reset the new frontend request views, since we now have duplicate state. */
 			gravityview()->request = new \GV\Frontend_Request();
-			gravityview()->views = &gravityview()->request->views; /** Manually link shotcut after reset. */
 		}
 
 		if( !empty( $passed_post ) ) {

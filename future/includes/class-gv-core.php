@@ -35,15 +35,6 @@ final class Core {
 	public $request;
 
 	/**
-	 * @var \GV\View_Collection The views attached to the current request.
-	 *
-	 * @see \GV\Request::$views A shortcut alias.
-	 * @api
-	 * @since future
-	 */
-	public $views;
-
-	/**
 	 * Get the global instance of \GV\Core.
 	 *
 	 * @return \GV\Core The global instance of GravityView Core.
@@ -107,10 +98,23 @@ final class Core {
 		/** Initialize the current request. For now we assume a default WordPress frontent context. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
 		$this->request = new Frontend_Request();
-		$this->views = &$this->request->views;
 	}
 
 	private function __clone() { }
 
 	private function __wakeup() { }
+
+	public function __get( $key ) {
+		switch ( $key ) {
+			case 'views':
+				return $this->request->views;
+		}
+	}
+
+	public function __set( $key, $value ) {
+		switch ( $key ) {
+			case 'views':
+				throw new \RuntimeException( __CLASS__ . '::$views is an immutable reference to ' . __CLASS__ . '::$request::$views.' );
+		}
+	}
 }

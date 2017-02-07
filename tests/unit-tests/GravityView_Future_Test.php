@@ -399,13 +399,26 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \GV\Core::init()
+	 * @group init
 	 */
 	function test_core_init() {
-		gravityview()->views = new \GV\View_Collection();
+		gravityview()->request = new \GV\Frontend_Request();
 
 		/** Make sure the main \GV\View_Collection is available in both places. */
 		$this->assertSame( gravityview()->views, gravityview()->request->views );
 		/** And isn't empty... */
+		$this->assertEmpty( gravityview()->views->all() );
+
+		/** Can't mutate gravityview()->views */
+		$expectedException = null;
+		try {
+			/** Make sure we can only add \GV\View objects into the \GV\View_Collection. */
+			gravityview()->views = null;
+		} catch ( \RuntimeException $e ) {
+			$expectedException = $e;
+		}
+		$this->assertInstanceOf( '\RuntimeException', $expectedException );
+		$this->assertSame( gravityview()->views, gravityview()->request->views );
 		$this->assertEmpty( gravityview()->views->all() );
 	}
 
@@ -498,7 +511,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 */
 	function test_frontend_request_add_view() {
 		gravityview()->request = new \GV\Frontend_Request();
-		gravityview()->views = &gravityview()->request->views; /** Manually link after reset. */
 
 		\GravityView_View_Data::$instance = null; /** Reset internal state. */
 
@@ -527,7 +539,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $view, $_view->_data );
 
 		gravityview()->request = new \GV\Frontend_Request();
-		gravityview()->views = &gravityview()->request->views; /** Manually link after reset. */
 		$this->assertCount( 0, gravityview()->views->all() );
 
 		/** Some attributes. */
@@ -538,7 +549,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $view, $_view->_data );
 
 		gravityview()->request = new \GV\Frontend_Request();
-		gravityview()->views = &gravityview()->request->views; /** Manually link after reset. */
 
 		/** Try to add an array of non-existing views. */
 		$views = $data->add_view( array( -1, -2, -3 ) );
@@ -573,7 +583,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Reset it all. */
 		gravityview()->request = new \GV\Frontend_Request();
-		gravityview()->views = &gravityview()->request->views; /** Manually link after reset. */
 		GravityView_View_Data::$instance = null;
 		GravityView_frontend::$instance = null;
 	}
