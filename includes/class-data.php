@@ -476,11 +476,19 @@ class GravityView_View_Data {
 	/**
 	 * Parse specific custom fields (Post Meta) to determine if there is a GV shortcode to allow for enqueuing necessary files in the head.
 	 * @since 1.15.1
+	 *
+	 * @deprecated
+	 * @see \GV\View_Collection::from_post
+	 *
 	 * @uses \GravityView_View_Data::parse_post_content
 	 * @param int $post_id WP_Post ID
 	 * @return int|null|array If a single View is found, the ID of the View. If there are multiple views in the content, array of IDs parsed. If not found, or meta not parsed, NULL
 	 */
 	private function parse_post_meta( $post_id ) {
+		if ( function_exists( 'gravityview' ) ) {
+			/** Is private and no longer used in future mode. */
+			throw new RuntimeException( __CLASS__ . '::parse_post_meta is no more. Why was it called?' );
+		}
 
 		/**
 		 * @filter `gravityview/data/parse/meta_keys` Define meta keys to parse to check for GravityView shortcode content
