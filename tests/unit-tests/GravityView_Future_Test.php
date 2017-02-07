@@ -586,4 +586,67 @@ class GVFuture_Test extends GV_UnitTestCase {
 		GravityView_View_Data::$instance = null;
 		GravityView_frontend::$instance = null;
 	}
+
+	/**
+	 * @covers \GV\Settings::set()
+	 * @covers \GV\Settings::get()
+	 * @covers \GV\Settings::all()
+	 */
+	public function test_settings_base() {
+		$settings = new \GV\Settings();
+		$this->assertEmpty( $settings->all() );
+
+		$value = array( 'one' => 'three' );
+		$settings->set( 'test', $value );
+
+		$this->assertEquals( $settings->get( 'test' ), $value );
+		$this->assertNull( $settings->get( 'noexist' ) );
+
+		$default = 'This is a default value';
+		$this->assertEquals( $settings->get( 'no no no no', $default ), $default );
+
+		$this->assertCount( 1, $settings->all() );
+	}
+
+	/**
+	 * @covers \GV\View_Settings::defaults()
+	 * @covers \GravityView_View_Data::get_default_arg()
+	 */
+	public function test_view_settings() {
+		$view = new \GV\View();
+		$this->assertInstanceOf( '\GV\View_Settings', $view->settings );
+
+		$defaults = \GV\View_Settings::defaults();
+		$this->assertNotEmpty( $defaults );
+
+		/** Details. */
+		$detailed = \GV\View_Settings::defaults( true );
+		$this->assertEquals( wp_list_pluck( $detailed, 'value', 'id' ), array_values( $defaults ) );
+
+		/** Group. */
+		$group = \GV\View_Settings::defaults( true, 'sort' );
+		$this->assertEmpty( array_filter( $group, function( $setting ) { return !empty( $setting['group'] ) && $setting['group'] != 'sort'; } ) );
+
+		/** Test old filter. */
+		add_filter( 'gravityview_default_args', function( $defaults ) {
+			$defaults['test_sentinel'] = '123';
+			return $defaults;
+		} );
+
+		/** Test new filter. */
+		add_filter( 'gravityview/view/settings/defaults', function( $defaults ) {
+			$defaults['test_sentinel'] = array( 'value' => '456' );
+			return $defaults;
+		} );
+		$defaults = \GV\View_Settings::defaults();
+		$this->assertEquals( $defaults['test_sentinel'], '456' );
+
+		/** Regression. */
+		$this->assertEquals( \GravityView_View_Data::get_default_arg( 'test_sentinel' ), '456' );
+		$setting = \GravityView_View_Data::get_default_arg( 'test_sentinel', true );
+		$this->assertEquals( $setting['value'], '456' );
+
+		remove_all_filters( 'gravityview_default_args' );
+		remove_all_filters( 'gravityview/view/settings/defaults' );
+	}
 }

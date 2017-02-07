@@ -231,7 +231,7 @@ class GravityView_Admin_Views {
 		$gv_tooltips = array();
 
 		// Generate tooltips for View settings
-		$default_args = GravityView_View_Data::get_default_args( true );
+		$default_args = function_exists( 'gravityview' ) ? \GV\View_Settings::defaults( true ) : GravityView_View_Data::get_default_args( true );
 
 		foreach ( $default_args as $key => $arg ) {
 

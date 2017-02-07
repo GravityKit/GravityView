@@ -270,7 +270,7 @@ class GravityView_View_Data {
 		do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] Settings pulled in from View #%s', $view_id), $view_settings );
 
 		// Merge the view settings with the defaults
-		$view_defaults = wp_parse_args( $view_settings, self::get_default_args() );
+		$view_defaults = wp_parse_args( $view_settings, function_exists( 'gravityview' ) ? \GV\View_Settings::defaults() : self::get_default_args() );
 
 		do_action('gravityview_log_debug', 'GravityView_View_Data[add_view] View Defaults after merging View Settings with the default args.', $view_defaults );
 
@@ -383,7 +383,7 @@ class GravityView_View_Data {
 		$atts = is_array( $atts ) ? $atts : shortcode_parse_atts( $atts );
 
 		// Get the settings from the shortcode and merge them with defaults.
-		$atts = wp_parse_args( $atts, self::get_default_args() );
+		$atts = wp_parse_args( $atts, function_exists( 'gravityview' ) ? \GV\View_Settings::defaults() : self::get_default_args() );
 
 		$view_id = ! empty( $atts['view_id'] ) ? (int)$atts['view_id'] : NULL;
 
@@ -611,7 +611,7 @@ class GravityView_View_Data {
 	 */
 	public static function get_default_arg( $key, $with_details = false ) {
 
-		$args = self::get_default_args( $with_details );
+		$args = function_exists( 'gravityview' ) ? \GV\View_Settings::defaults( $with_details ) : self::get_default_args( $with_details );
 
 		if( !isset( $args[ $key ] ) ) { return NULL; }
 
@@ -633,12 +633,20 @@ class GravityView_View_Data {
 	 *      @param[out] boolean $show_in_shortcode Whether to show the setting in the shortcode configuration modal
 	 *      @param[out] array  $options Array of values to use when generating select, multiselect, radio, or checkboxes fields
 	 *      @param[out] boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
+	 *
+	 * @deprecated
+	 * @see \GV\View_Settings::defaults()
 	 */
 	public static function get_default_args( $with_details = false, $group = NULL ) {
+		if ( function_exists( 'gravityview' ) ) {
+			return \GV\View_Settings::defaults( $with_details, $group );
+		}
 
 		/**
 		 * @filter `gravityview_default_args` Modify the default settings for new Views
 		 * @param[in,out] array $default_args Array of default args.
+		 * @deprecated
+		 * @see filter `gravityview/view/settings/defaults`
 		 */
 		$default_settings = apply_filters( 'gravityview_default_args', array(
 			'id' => array(

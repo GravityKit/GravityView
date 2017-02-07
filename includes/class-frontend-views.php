@@ -1170,9 +1170,9 @@ class GravityView_frontend {
 	 *
 	 * @since 1.20
 	 *
-	 * @see GravityView_View_Data::get_default_args For $args options
+	 * @see \GV\View_Settings::defaults For $args options
 	 *
-	 * @param array $args Array of View settings, as structured in GravityView_View_Data::get_default_args
+	 * @param array $args Array of View settings, as structured in \GV\View_Settings::defaults
 	 * @param int $form_id Gravity Forms form ID to search
 	 *
 	 * @return array With `search_criteria`, `sorting`, `paging`, `cache` keys

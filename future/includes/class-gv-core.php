@@ -85,6 +85,7 @@ final class Core {
 		add_action( 'init', array( '\GV\Entry', 'add_rewrite_endpoint' ) );
 
 		/** Generics */
+		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-collection.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode.php' );
 
@@ -94,6 +95,9 @@ final class Core {
 
 		/** Get the View_Collection ready. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-collection-view.php' );
+
+		/** The View_Settings. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-settings-view.php' );
 
 		/** Initialize the current request. For now we assume a default WordPress frontent context. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );

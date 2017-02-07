@@ -18,6 +18,21 @@ class View {
 	private $post;
 
 	/**
+	 * @var The settings \GV\View_Settings instance.
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $settings;
+
+	/**
+	 * The constructor.
+	 */
+	public function __construct() {
+		$this->settings = new View_Settings();
+	}
+
+	/**
 	 * Register the gravityview WordPress Custom Post Type.
 	 *
 	 * @internal

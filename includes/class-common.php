@@ -1111,7 +1111,7 @@ class GVCommon {
 	/**
 	 * Get all the settings for a View
 	 *
-	 * @uses  GravityView_View_Data::get_default_args() Parses the settings with the plugin defaults as backups.
+	 * @uses  \GV\View_Settings::defaults() Parses the settings with the plugin defaults as backups.
 	 * @param  int $post_id View ID
 	 * @return array          Associative array of settings with plugin defaults used if not set by the View
 	 */
@@ -1121,7 +1121,7 @@ class GVCommon {
 
 		if ( class_exists( 'GravityView_View_Data' ) ) {
 
-			$defaults = GravityView_View_Data::get_default_args();
+			$defaults = function_exists( 'gravityview' ) ? \GV\View_Settings::defaults() : GravityView_View_Data::get_default_args();
 
 			return wp_parse_args( (array)$settings, $defaults );
 
