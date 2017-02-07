@@ -322,5 +322,137 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 	}
 
+	/**
+	 * All rendering stuff here for now to save time. Move to logical classes and methods later.
+	 *
+	 * @covers GravityView_Edit_Entry_Render::is_edit_entry()
+	 * @covers GravityView_Edit_Entry_Render::prevent_render_form()
+	 * @covers GravityView_Edit_Entry_Render::init()
+	 * @covers GravityView_Edit_Entry_Render::process_save()
+	 */
+	public function test_edit_entry_render() {
+		/** A clean slate, please. */
+		/** @todo: maybe invoke this on setup automatically for each test? */
+		GravityView_Edit_Entry::$instance = null;
+		GravityView_frontend::$instance = null;
+		GravityView_View_Data::$instance = null;
+		GravityView_View::$instance = null;
 
+		$loader = GravityView_Edit_Entry::getInstance();
+		$render = $loader->instances['render'];
+		$this->assertInstanceOf( 'GravityView_Edit_Entry_Render', $render );
+
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		/** GravityView_Edit_Entry_Render::is_edit_entry */
+		$this->assertFalse( $render->is_edit_entry() );
+		add_filter( 'gravityview/is_single_entry', '__return_true', 667 );
+		$_GET['edit'] = 'this is an edit';
+		$this->assertTrue( $render->is_edit_entry() );
+
+		/** GravityView_Edit_Entry_Render::prevent_render_form */
+		global $wp_current_filter;
+		$render->prevent_render_form();
+		$this->assertNotEmpty( do_shortcode( sprintf( '[gravityform id="%d"]', $form['id'] ) ) );
+
+		$wp_current_filter = array( 'wp_head' );
+		$render->prevent_render_form();
+		$this->assertEmpty( do_shortcode( sprintf( '[gravityform id="%d"]', $form['id'] ) ) );
+
+		$wp_current_filter = array( 'wp_footer' );
+		$render->prevent_render_form();
+		$this->assertNotEmpty( do_shortcode( sprintf( '[gravityform id="%d"]', $form['id'] ) ) );
+
+		/** Main rendering emulation. */
+		$form = $this->factory->form->create_and_get();
+		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'], 'status' => 'publish' ) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		GravityView_View_Data::$instance = null;
+		GravityView_View::$instance = null;
+		$data = GravityView_View_Data::getInstance( $view );
+		$template = GravityView_View::getInstance( array(
+			'form' => $form,
+			'form_id' => $form['id'],
+			'view_id' => $view->ID,
+			'entries' => array( $entry ),
+		) );
+		ob_start() && $render->init( $data );
+		$this->assertContains( 'do not have permission', ob_get_clean() );
+
+		/** Let's try again. */
+		$subscriber = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'subscriber' )
+		);
+		wp_set_current_user( $subscriber );
+		ob_start() && $render->init( $data );
+		$this->assertContains( 'do not have permission', ob_get_clean() );
+
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+		wp_set_current_user( $administrator );
+		ob_start() && $render->init( $data );
+		$this->assertContains( 'link to edit this entry is not valid', ob_get_clean() );
+
+		$_GET['edit'] = wp_create_nonce( $render::$nonce_key ); /** @todo: also test gravityview/edit_entry/verify_nonce */
+		ob_start() && $render->init( $data );
+		$this->assertContains( 'gv-edit-entry-wrapper', ob_get_clean() );
+
+		/** So this is the basic emulation of viewing the edit entry. Let's try something more complex: */
+
+		$_this = &$this;
+		$_this->disable_action_1 = false;;
+		add_action( 'gform_pre_render', function( $form, $ajax = false, $field_values = '' ) use ( $_this  ) {
+			if ( $_this->disable_action_1 ) /** Run only when inside this test. */ {
+				return $form;
+			}
+
+			/** @todo Add output form assertions here, like, are the needed fields hidden? ... */
+			$_this->assertTrue( false );
+
+			return $form;
+		}, 9999, 3 );
+		$_this->disable_action_1 = true;
+		ob_start() && $render->init( $data ); ob_get_clean();
+
+		/** Great, now how about some saving? The default form. Although we should be testing specific forms as well. */
+		$_POST = array();
+		$_POST['lid'] = $entry['id'];
+		$_POST['is_submit_' . $form['id']] = true;
+		foreach ( $form['fields'] as $field ) {
+			/** Emulate a $_POST */
+			foreach ( $field->inputs ? : array( array( 'id' => $field->id ) ) as $input ) {
+				if ( $field->type == 'time' ) { /** An old incompatibility in the time field. */
+					$_POST["input_{$field->id}"] = $entry[$field->id];
+				} else {
+					$_POST["input_{$field->id}"] = $entry[strval($input['id'])];
+				}
+			}
+		}
+		$_POST['input_1'] = "This has been changed";
+		ob_start() && $render->init( $data ); ob_get_clean();
+		$this->assertEquals( $_POST['input_1'], $render->entry[1] );
+
+		/**
+		 * This covers the basics of editing, I think.
+		 * A lot here is missing, many more edge cases should be covered!
+		 *
+		 * Here be dragons.
+		 */
+
+		/** Cleanup */
+		remove_filter( 'gravityview/is_single_entry', '__return_true', 667 );
+		/** @todo: maybe invoke this on teardown automatically for each test? */
+		GravityView_Edit_Entry::$instance = null;
+		GravityView_frontend::$instance = null;
+		GravityView_View_Data::$instance = null;
+		GravityView_View::$instance = null;
+		$_GET = array(); $_POST = array();
+		wp_set_current_user( 0 );
+	}
 }

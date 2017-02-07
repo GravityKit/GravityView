@@ -54,6 +54,9 @@ class GV_Unit_Tests_Bootstrap {
 		// load test function so tests_add_filter() is available
 		require_once $this->wp_tests_dir . '/includes/functions.php';
 
+		// In WordPress 4.0 this is not being set, so let's just set it to localhost
+		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+
 		// load GV
 		tests_add_filter( 'muplugins_loaded', array( $this, 'load' ) );
 

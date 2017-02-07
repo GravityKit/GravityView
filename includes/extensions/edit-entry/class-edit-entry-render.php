@@ -787,7 +787,7 @@ class GravityView_Edit_Entry_Render {
     private function after_update() {
 
         do_action( 'gform_after_update_entry', $this->form, $this->entry['id'], self::$original_entry );
-        do_action( "gform_after_update_entry_{$this->form['id']}", $this->form, $this->entry['id'] );
+        do_action( "gform_after_update_entry_{$this->form['id']}", $this->form, $this->entry['id'], self::$original_entry );
 
         // Re-define the entry now that we've updated it.
         $entry = RGFormsModel::get_lead( $this->entry['id'] );
@@ -934,9 +934,6 @@ class GravityView_Edit_Entry_Render {
         // We need to remove the fake $_GET['page'] arg to avoid rendering form as if in admin.
         unset( $_GET['page'] );
 
-        // Prevent "Product Fields are not editable" message on submitted form
-	    unset( $_POST );
-
         // TODO: Verify multiple-page forms
 
         ob_start(); // Prevent PHP warnings possibly caused by prefilling list fields for conditional logic
@@ -1076,9 +1073,15 @@ class GravityView_Edit_Entry_Render {
 	        return $field_content;
         }
 
+        $_post_backup = isset( $_POST ) ? $_POST : array();
+
         // Turn on Admin-style display for file upload fields only
         if( 'fileupload' === $field->type ) {
+
             $_GET['page'] = 'gf_entries';
+
+	        // Prevent "Product Fields are not editable" message on submitted form
+            unset( $_POST );
         }
 
         // SET SOME FIELD DEFAULTS TO PREVENT ISSUES
@@ -1114,13 +1117,16 @@ class GravityView_Edit_Entry_Render {
 	    // Prevent any PHP warnings, like undefined index
 	    ob_start();
 
+	    $return = null;
+
         /** @var GravityView_Field $gv_field */
         if( $gv_field && is_callable( array( $gv_field, 'get_field_input' ) ) ) {
             $return = $gv_field->get_field_input( $this->form, $field_value, $this->entry, $field );
-        } else {
-	        $return = $field->get_field_input( $this->form, $field_value, $this->entry );
         }
 
+	    if ( empty( $return ) ) {
+	        $return = $field->get_field_input( $this->form, $field_value, $this->entry );
+	    }
 
 	    // If there was output, it's an error
 	    $warnings = ob_get_clean();
@@ -1135,6 +1141,9 @@ class GravityView_Edit_Entry_Render {
          *  ( <li id="field_80_16" ... > )
          */
         unset( $_GET['page'] );
+
+        // Re-define $_POST
+        $_POST = $_post_backup;
 
         return $return;
     }
@@ -1302,11 +1311,6 @@ class GravityView_Edit_Entry_Render {
                     if( !isset( $_POST['input_'.$field->id ] ) ) {
                         $_POST['input_'.$field->id ] = NULL;
                     }
-                    break;
-                case 'captcha':
-                    // Fix issue with recaptcha_check_answer() on line 1458 in form_display.php
-                    $_POST['recaptcha_challenge_field'] = NULL;
-                    $_POST['recaptcha_response_field'] = NULL;
                     break;
             }
 

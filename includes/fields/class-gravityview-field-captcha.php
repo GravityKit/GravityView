@@ -11,7 +11,7 @@ class GravityView_Field_Captcha extends GravityView_Field {
 
 	var $is_searchable = false;
 
-	var $_gf_field_class_name = 'GF_Field_Captcha';
+	var $_gf_field_class_name = 'GF_Field_CAPTCHA';
 
 	var $group = 'advanced';
 

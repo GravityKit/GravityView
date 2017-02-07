@@ -30,6 +30,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: WPML links to Single Entry not working if using directory or sub-domain URL formats
 * Fixed: Product field prices not always formatted as a currency
 * Fixed: Product fields sometimes appeared twice in the Add Field field picker
+* Fixed: PHP warning when updating entries. Thanks for reporting, Werner!
+* Modified: Don't show CAPTCHA fields in Edit Entry
 
 __Developer Notes:__
 
@@ -43,6 +45,7 @@ __Developer Notes:__
 * Added: `GravityView_Plugin_Hooks_Gravity_Forms_Coupon` class
 * Added: Third `GravityView_Edit_Entry_Render` parameter to `gravityview/edit_entry/field_value`, `gravityview/edit_entry/field_value_{field_type}` filters and `gravityview/edit_entry/after_update` action
 * Modified: Only print errors when running the unit tests if the `--debug` setting is defined, like `phpunit --debug --verbose`
+* Modified: If overriding `get_field_input()` using `GravityView_Field`, returning empty value will now result in the default `GF_Field` input being used
 
 = 1.19.4 on January 19, 2017 =
 
