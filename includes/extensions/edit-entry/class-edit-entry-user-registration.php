@@ -89,38 +89,7 @@ class GravityView_Edit_Entry_User_Registration {
 	     */
         $entry = apply_filters( 'gravityview/edit_entry/user_registration/entry', $entry, $form );
 
-        $config = $gf_user_registration->get_single_submission_feed( $entry, $form );
-
-        /**
-         * @filter `gravityview/edit_entry/user_registration/preserve_role` Keep the current user role or override with the role defined in the Create feed
-         * @since 1.15
-         * @param[in,out] boolean $preserve_role Preserve current user role Default: true
-         * @param[in] array $config Gravity Forms User Registration feed configuration for the form
-         * @param[in] array $form Gravity Forms form array
-         * @param[in] array $entry Gravity Forms entry being edited
-         */
-        $preserve_role = apply_filters( 'gravityview/edit_entry/user_registration/preserve_role', true, $config, $form, $entry );
-
-        if( $preserve_role ) {
-            $config['meta']['role'] = 'gfur_preserve_role';
-        }
-
-        /**
-         * Make sure the current display name is not changed with the update user method.
-         * @since 1.15
-         */
-        $config['meta']['displayname'] = $this->match_current_display_name( $entry['created_by'] );
-
-
-        /**
-         * @filter `gravityview/edit_entry/user_registration/config` Modify the User Registration Addon feed configuration
-         * @since 1.14
-         * @param[in,out] array $config Gravity Forms User Registration feed configuration for the form
-         * @param[in] array $form Gravity Forms form array
-         * @param[in] array $entry Gravity Forms entry being edited
-         */
-        $config = apply_filters( 'gravityview/edit_entry/user_registration/config', $config, $form, $entry );
-
+	    $config = $this->get_feed_configuration( $entry, $form );
 
         // Make sure the feed is active
 	    if ( ! rgar( $config, 'is_active', false ) ) {
@@ -144,6 +113,59 @@ class GravityView_Edit_Entry_User_Registration {
         remove_filter( 'send_password_change_email', '__return_false', 3 );
         remove_filter( 'send_email_change_email', '__return_false', 3 );
 
+    }
+
+	/**
+	 * Get the User Registration feed configuration for the entry & form
+	 *
+	 * @uses GF_User_Registration::get_single_submission_feed
+	 * @uses GravityView_Edit_Entry_User_Registration::match_current_display_name
+	 *
+	 * @since 1.20
+	 *
+	 * @param $entry
+	 * @param $form
+	 *
+	 * @return array
+	 */
+    public function get_feed_configuration( $entry, $form ) {
+
+	    /** @var GF_User_Registration $gf_user_registration */
+	    $gf_user_registration = GF_User_Registration::get_instance();
+
+	    $config = $gf_user_registration->get_single_submission_feed( $entry, $form );
+
+	    /**
+	     * @filter `gravityview/edit_entry/user_registration/preserve_role` Keep the current user role or override with the role defined in the Create feed
+	     * @since 1.15
+	     * @param[in,out] boolean $preserve_role Preserve current user role Default: true
+	     * @param[in] array $config Gravity Forms User Registration feed configuration for the form
+	     * @param[in] array $form Gravity Forms form array
+	     * @param[in] array $entry Gravity Forms entry being edited
+	     */
+	    $preserve_role = apply_filters( 'gravityview/edit_entry/user_registration/preserve_role', true, $config, $form, $entry );
+
+	    if( $preserve_role ) {
+		    $config['meta']['role'] = 'gfur_preserve_role';
+	    }
+
+	    /**
+	     * Make sure the current display name is not changed with the update user method.
+	     * @since 1.15
+	     */
+	    $config['meta']['displayname'] = $this->match_current_display_name( $entry['created_by'] );
+
+
+	    /**
+	     * @filter `gravityview/edit_entry/user_registration/config` Modify the User Registration Addon feed configuration
+	     * @since 1.14
+	     * @param[in,out] array $config Gravity Forms User Registration feed configuration for the form
+	     * @param[in] array $form Gravity Forms form array
+	     * @param[in] array $entry Gravity Forms entry being edited
+	     */
+	    $config = apply_filters( 'gravityview/edit_entry/user_registration/config', $config, $form, $entry );
+
+	    return $config;
     }
 
     /**
