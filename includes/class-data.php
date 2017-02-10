@@ -207,11 +207,15 @@ class GravityView_View_Data {
 	 *
 	 * @see http://tommcfarlin.com/wordpress-post-exists-by-id/ Fastest check available
 	 * @param    int    $view_id    The ID of the post to check
+	 *
+	 * @deprecated
+	 * @see \GV\View::exists()
+	 *
 	 * @return   bool   True if the post exists; otherwise, false.
 	 * @since    1.0.0
 	 */
 	function view_exists( $view_id ) {
-		return is_string( get_post_status( $view_id ) );
+		return ( function_exists( 'gravityview' ) && \GV\View::exists( $view_id ) ) || is_string( get_post_status( $view_id ) );
 	}
 
 	/**

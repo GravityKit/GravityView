@@ -181,6 +181,19 @@ class View {
 		return self::from_post( $post );
 	}
 
+	/**
+	 * Determines if a view exists to begin with.
+	 *
+	 * @param int|\WP_Post|null $view_id The WordPress post ID, a \WP_Post object or null for global $post;
+	 *
+	 * @api
+	 * @since future
+	 * @return bool Whether the post exists or not.
+	 */
+	public static function exists( $view ) {
+		return get_post_type( $view ) == 'gravityview';
+	}
+
 	public function __get( $key ) {
 		return $this->post->$key;
 	}

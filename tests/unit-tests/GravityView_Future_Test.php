@@ -203,6 +203,23 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\View::exists()
+	 * @covers \GravityView_View_Data::view_exists()
+	 */
+	function test_view_exists() {
+		$data = GravityView_View_Data::getInstance();
+		$post = $this->factory->view->create_and_get();
+
+		$this->assertTrue( \GV\View::exists( $post->ID ) );
+		$this->assertTrue( $data->view_exists( $post->ID ) );
+
+		$this->assertFalse( \GV\View::exists( $post->ID + 100 ) );
+		$this->assertFalse( $data->view_exists( $post->ID + 100 ) );
+
+		GravityView_View_Data::$instance = null; /** Cleanup */
+	}
+
+	/**
 	 * @covers \GV\View_Collection::from_post()
 	 * @covers \GV\View_Collection::get()
 	 * @covers \GravityView_View_Data::maybe_get_view_id()
