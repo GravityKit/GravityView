@@ -220,6 +220,54 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\View::offsetExists()
+	 * @covers \GV\View::offsetSet()
+	 * @covers \GV\View::offsetUnset()
+	 * @covers \GV\View::offsetGet()
+	 */
+	function test_view_data_compat() {
+		\GravityView_View_Data::$instance = null; /** Reset internal state. */
+
+		$post = $this->factory->view->create_and_get();
+		$view = \GV\View::by_id( $post->ID );
+
+		/** Limited to the old keys. */
+		foreach ( array( 'id', 'view_id', 'form_id', 'template_id', 'atts', 'fields', 'widgets', 'form' ) as $key )
+			$this->assertTrue( isset( $view[$key] ) );
+		$this->assertFalse( isset( $view['and now, for something completely different...'] ) );
+
+		$this->assertEquals( $post->ID, $view['id'] );
+		$this->assertEquals( $post->ID, $view['view_id'] );
+
+		/** Immutable! */
+		$expectedException = null;
+		try {
+			$view['id'] = 9;
+		} catch ( \RuntimeException $e ) {
+			$expectedException = $e;
+		}
+		$this->assertInstanceOf( '\RuntimeException', $expectedException );
+		$this->assertEquals( $post->ID, $view['id'] );
+
+		$expectedException = null;
+		try {
+			unset( $view['id'] );
+		} catch ( \RuntimeException $e ) {
+			$expectedException = $e;
+		}
+		$this->assertInstanceOf( '\RuntimeException', $expectedException );
+		$this->assertEquals( $post->ID, $view['id'] );
+
+		/** Deprecation regressions. */
+		$data = \GravityView_View_Data::getInstance();
+		$data_view = $data->add_view( $view->ID );
+		$this->assertSame( $data_view['id'], $view['id'] );
+		$this->assertSame( $data_view['view_id'], $view['view_id'] );
+
+		\GravityView_View_Data::$instance = null; /** Reset internal state. */
+	}
+
+	/**
 	 * @covers \GV\View_Collection::from_post()
 	 * @covers \GV\View_Collection::get()
 	 * @covers \GravityView_View_Data::maybe_get_view_id()
@@ -547,13 +595,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$_view = $this->factory->view->create_and_get();
 		$view = $data->add_view( $_view->ID );
 		$_view = gravityview()->request->views->get( $_view->ID );
-		$this->assertEquals( $view, $_view->_data );
 		$this->assertCount( 1, gravityview()->views->all() );
 
 		/** Add the same one. Nothing changed, right? */
 		$view = $data->add_view( $_view->ID, array( 'sort_direction' => 'RANDOM' ) );
 		$this->assertCount( 1, gravityview()->views->all() );
-		$this->assertEquals( $view, $_view->_data );
 
 		gravityview()->request = new \GV\Frontend_Request();
 		$this->assertCount( 0, gravityview()->views->all() );
@@ -563,7 +609,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$_view = gravityview()->request->views->get( $_view->ID );
 		$this->assertCount( 1, gravityview()->views->all() );
 		$this->assertEquals( $view['atts']['sort_direction'], 'RANDOM' );
-		$this->assertEquals( $view, $_view->_data );
+		$this->assertEquals( $view['atts'], $_view['atts'] /** Will be deprecated! */ );
 
 		gravityview()->request = new \GV\Frontend_Request();
 
@@ -586,16 +632,16 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertTrue( $data->has_multiple_views() );
 		$_view = gravityview()->request->views->get( $_view->ID );
 		$_another_view = gravityview()->request->views->get( $_another_view->ID );
-		$this->assertEquals( $views, array( $_view->ID => $_view->_data, $_another_view->ID => $_another_view->_data ) );
+		$this->assertEquals( $views, array( $_view->ID => $_view, $_another_view->ID => $_another_view ) );
 
 		/** Make sure \GravityView_View_Data::get_views == gravityview()->views->all()_data */
 		$this->assertEquals( $data->get_views(), array_combine(
 			array_map( function( $view ) { return $view->ID; }, gravityview()->views->all() ),
-			array_map( function( $view ) { return $view->_data; }, gravityview()->views->all() )
+			gravityview()->views->all()
 		) );
 
-		/** Make sure \GravityView_View_Data::get_view == gravityview()->views->get()_data */
-		$this->assertEquals( $data->get_view( $_another_view->ID ), gravityview()->request->views->get( $_another_view->ID )->_data );
+		/** Make sure \GravityView_View_Data::get_view == gravityview()->views->get() */
+		$this->assertEquals( $data->get_view( $_another_view->ID ), gravityview()->request->views->get( $_another_view->ID ) );
 		$this->assertFalse( $data->get_view( -1 ) );
 
 		/** Reset it all. */

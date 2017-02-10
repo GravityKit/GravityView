@@ -22,14 +22,14 @@ function GravityView_View_Data_add_view( $_this, $view_id, $atts ) {
 
 		return array_combine(
 			array_map( function( $view ) { return $view->ID; }, gravityview()->request->views->all() ),
-			array_map( function( $view ) { return $view->_data; }, gravityview()->request->views->all() )
+			gravityview()->request->views->all()
 		);
 	}
 
 	/** View has been set already. */
 	if ( $view = gravityview()->request->views->get( $view_id ) ) {
 		do_action( 'gravityview_log_debug', sprintf( 'GravityView_View_Data[add_view] Returning; View #%s already exists.', $view_id ) );
-		return $view->_data;
+		return $view;
 	}
 
 	$view = \GV\View::by_id( $view_id );
@@ -56,9 +56,29 @@ function GravityView_View_Data_add_view( $_this, $view_id, $atts ) {
 
 	unset( $atts['id'], $view_defaults, $view_settings );
 
+	/**
+	 * @deprecated
+	 *
+	 * The data here has been moved to various keys in a \GV\View instance.
+	 * As a compatibilty layer we allow array access over any \GV\View instance with these keys.
+	 *
+	 * This data is immutable.
+	 *
+	 * @see \GV\View::offsetGet() for internal mappings.
+	 */
 	$view->_data = array(
-		'id' => $view->ID,
-		'view_id' => $view->ID,
+		/**
+		 * @deprecated
+		 * @see \GV\View::$ID
+		 */
+		// 'id' => $view->ID,
+
+		/**
+		 * @deprecated
+		 * @see \GV\View::$ID
+		 */
+		// 'view_id' => $view->ID,
+
 		'form_id' => $view->_gravityview_form_id,
 		'template_id' => gravityview_get_template_id( $view->ID ),
 		'atts' => $atts,
@@ -69,5 +89,5 @@ function GravityView_View_Data_add_view( $_this, $view_id, $atts ) {
 
 	gravityview()->request->views->add( $view );
 
-	return $view->_data;
+	return $view;
 }

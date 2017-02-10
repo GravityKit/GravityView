@@ -9,8 +9,11 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) )
  * The default GravityView View class.
  *
  * Houses all base View functionality.
+ *
+ * Can be accessed as an array for old compatibility's sake
+ *  in line with the elements inside the \GravityView_View_Data::$views array.
  */
-class View {
+class View implements \ArrayAccess {
 
 	/**
 	 * @var The backing \WP_Post instance.
@@ -192,6 +195,66 @@ class View {
 	 */
 	public static function exists( $view ) {
 		return get_post_type( $view ) == 'gravityview';
+	}
+
+	/**
+	 * ArrayAccess compatibility layer with GravityView_View_Data::$views
+	 *
+	 * @deprecated
+	 * @since future
+	 * @return bool Whether the offset exists or not, limited to GravityView_View_Data::$views element keys.
+	 */
+	public function offsetExists( $offset ) {
+		$data_keys = array( 'id', 'view_id', 'form_id', 'template_id', 'atts', 'fields', 'widgets', 'form' );
+		return in_array( $offset, $data_keys );
+	}
+
+	/**
+	 * ArrayAccess compatibility layer with GravityView_View_Data::$views
+	 *
+	 * Maps the old keys to the new data;
+	 *
+	 * @deprecated
+	 * @since future
+	 * @return mixed The value of the requested view data key limited to GravityView_View_Data::$views element keys.
+	 */
+	public function offsetGet( $offset ) {
+		if ( ! isset( $this[$offset] ) )
+			return null;
+
+		switch ( $offset ) {
+			case 'id':
+			case 'view_id':
+				return $this->ID;
+			default:
+				/** @todo move the rest out and get rid of _data completely! */
+				return $this->_data[$offset];
+		}
+	}
+
+	/**
+	 * ArrayAccess compatibility layer with GravityView_View_Data::$views
+	 *
+	 * @deprecated
+	 * @since future
+	 *
+	 * @throws \RuntimeException The old view data is now immutable.
+	 *
+	 * @return void
+	 */
+	public function offsetSet( $offset, $value ) {
+		throw new \RuntimeException( 'The old view data is no longer mutable. This is a \GV\View object should not be accessed as an array.' );
+	}
+
+	/**
+	 * ArrayAccess compatibility layer with GravityView_View_Data::$views
+	 *
+	 * @deprecated
+	 * @since future
+	 * @return void
+	 */
+	public function offsetUnset( $offset ) {
+		throw new \RuntimeException( 'The old view data is no longer mutable. This is a \GV\View object should not be accessed as an array.' );
 	}
 
 	public function __get( $key ) {

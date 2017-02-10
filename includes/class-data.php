@@ -164,7 +164,7 @@ class GravityView_View_Data {
 				return array();
 			return array_combine(
 				array_map( function ( $view ) { return $view->ID; }, gravityview()->views->all() ),
-				array_map( function ( $view ) { return $view->_data; }, gravityview()->views->all() )
+				gravityview()->views->all()
 			);
 		}
 		return $this->views;
@@ -179,7 +179,7 @@ class GravityView_View_Data {
 			if ( ! $view = gravityview()->views->get( $view_id ) ) {
 				return false;
 			}
-			return $view->_data;
+			return $view;
 		}
 
 		if( ! is_numeric( $view_id) ) {
