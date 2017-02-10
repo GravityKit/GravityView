@@ -72,8 +72,12 @@ class GravityView_Edit_Entry_User_Registration {
      */
     public function update_user( $form = array(), $entry_id = 0 ) {
 
-        if( ! class_exists( 'GFAPI' ) || ! class_exists( 'GF_User_Registration' ) || empty( $entry_id ) ) {
-            return;
+        if( ! class_exists( 'GFAPI' ) || ! class_exists( 'GF_User_Registration' ) ) {
+	        do_action( 'gravityview_log_error', __METHOD__ . ': GFAPI or User Registration class not found; not updating the user' );
+	        return;
+        } elseif( empty( $entry_id ) ) {
+        	do_action( 'gravityview_log_error', __METHOD__ . ': Entry ID is empty; not updating the user', $entry_id );
+	        return;
         }
 
         /** @var GF_User_Registration $gf_user_registration */
