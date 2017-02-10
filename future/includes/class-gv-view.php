@@ -200,6 +200,7 @@ class View implements \ArrayAccess {
 	/**
 	 * ArrayAccess compatibility layer with GravityView_View_Data::$views
 	 *
+	 * @internal
 	 * @deprecated
 	 * @since future
 	 * @return bool Whether the offset exists or not, limited to GravityView_View_Data::$views element keys.
@@ -214,11 +215,41 @@ class View implements \ArrayAccess {
 	 *
 	 * Maps the old keys to the new data;
 	 *
+	 * @internal
 	 * @deprecated
 	 * @since future
+	 *
+	 * @throws \RuntimeException during tests if called outside of whiteliested cases.
+	 *
 	 * @return mixed The value of the requested view data key limited to GravityView_View_Data::$views element keys.
 	 */
 	public function offsetGet( $offset ) {
+		
+		/**
+		 * Moving towards deprecation, let's ensure we never
+		 * trigger this from core and tests unless we really want to.
+		 */
+		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
+
+			if ( ! in_array( $offset, array( 'id', 'view_id' ) ) ) {
+				/**
+				 * Do not throw an exception for keys that we've yet to move around.
+				 * Add the other keys as they are moved out to ensure we're not using them in core.
+				 */
+
+			} else if ( ! empty( $GLOBALS['GRAVITYVIEW_TESTS_VIEW_ARRAY_ACCESS_OVERRIDE'] ) ) {
+				/**
+				 * Suppress exception if specifically testing for array acess.
+				 */
+
+			} else {
+				/**
+				 * No code should be coming into here unless we're specifically testing for deprecated array access.
+				 */
+				throw new \RuntimeException( 'This is a \GV\View object should not be accessed as an array.' );
+			}
+		}
+
 		if ( ! isset( $this[$offset] ) )
 			return null;
 
@@ -235,6 +266,7 @@ class View implements \ArrayAccess {
 	/**
 	 * ArrayAccess compatibility layer with GravityView_View_Data::$views
 	 *
+	 * @internal
 	 * @deprecated
 	 * @since future
 	 *
@@ -249,6 +281,7 @@ class View implements \ArrayAccess {
 	/**
 	 * ArrayAccess compatibility layer with GravityView_View_Data::$views
 	 *
+	 * @internal
 	 * @deprecated
 	 * @since future
 	 * @return void

@@ -227,6 +227,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 */
 	function test_view_data_compat() {
 		\GravityView_View_Data::$instance = null; /** Reset internal state. */
+		$GLOBALS['GRAVITYVIEW_TESTS_VIEW_ARRAY_ACCESS_OVERRIDE'] = 1; /** Suppress test array access test exceptions. */
 
 		$post = $this->factory->view->create_and_get();
 		$view = \GV\View::by_id( $post->ID );
@@ -264,6 +265,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertSame( $data_view['id'], $view['id'] );
 		$this->assertSame( $data_view['view_id'], $view['view_id'] );
 
+		unset( $GLOBALS['GRAVITYVIEW_TESTS_VIEW_ARRAY_ACCESS_OVERRIDE'] );
 		\GravityView_View_Data::$instance = null; /** Reset internal state. */
 	}
 
@@ -634,7 +636,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$_another_view = gravityview()->request->views->get( $_another_view->ID );
 		$this->assertEquals( $views, array( $_view->ID => $_view, $_another_view->ID => $_another_view ) );
 
-		/** Make sure \GravityView_View_Data::get_views == gravityview()->views->all()_data */
+		/** Make sure \GravityView_View_Data::get_views == gravityview()->views->all() */
 		$this->assertEquals( $data->get_views(), array_combine(
 			array_map( function( $view ) { return $view->ID; }, gravityview()->views->all() ),
 			gravityview()->views->all()
