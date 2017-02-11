@@ -54,4 +54,4 @@ after_script:
   - php ocular.phar code-coverage:upload --format=php-clover /tmp/clover.xml
 
 after_success:
-  - travis_retry php vendor/bin/coveralls -v
+  - travis_retry php vendor/bin/coveralls -v --exclude-no-stmt

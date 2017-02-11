@@ -24,13 +24,11 @@
 	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="false">
 			<directory suffix=".php">./</directory>
+			<exclude>
+				<directory>./tests/</directory>
+				<directory>./vendor/</directory>
+			</exclude>
 		</whitelist>
-		<blacklist>
-			<directory suffix=".php">./bin/</directory>
-			<directory suffix=".php">./language/</directory>
-			<directory suffix=".php">./templates/</directory>
-			<directory suffix=".php">./tests/</directory>
-		</blacklist>
 	</filter>
 	<logging>
 		<log type="coverage-clover" target="/tmp/clover.xml" charset="UTF-8" />
