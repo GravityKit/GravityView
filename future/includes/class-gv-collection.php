@@ -39,6 +39,17 @@ class Collection {
 	}
 
 	/**
+	 * Get the last added object.
+	 *
+	 * @api
+	 * @since future
+	 * @return mixed|null The last item in here, or null if there are none.
+	 */
+	public function last() {
+		return end( $this->storage );
+	}
+
+	/**
 	 * Returns the count of the objects in this collection.
 	 *
 	 * @api

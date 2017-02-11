@@ -161,6 +161,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$view = \GV\View::from_post( $post );
 		$this->assertEquals( $view->ID, $post->ID );
 
+		/** Check forms initialization. */
+		$this->assertCount( 1, $view->forms->all() );
+
 		/** A post of a different post type. */
 		$post = $this->factory->post->create_and_get();
 		$expectedException = null;
@@ -190,6 +193,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$post = $this->factory->view->create_and_get();
 		$view = \GV\View::by_id( $post->ID );
 		$this->assertEquals( $view->ID, $post->ID );
+
+		/** Check forms initialization. */
+		$this->assertCount( 1, $view->forms->all() );
 
 		/** A post of a different post type. */
 		$post = $this->factory->post->create_and_get();
@@ -374,6 +380,69 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\GF_Form::by_id()
+	 */
+	function test_form_gravityforms() {
+		$_form = $this->factory->form->create_and_get();
+		$_view = $this->factory->view->create_and_get( array( 'form_id' => $_form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $_form['id'] );
+		$this->assertInstanceOf( '\GV\Form', $form );
+		$this->assertInstanceOf( '\GV\GF_Form', $form );
+
+		$this->assertEquals( $form->ID, $_form['id'] );
+		$this->assertEquals( $form::$backend, 'gravityforms' );
+
+		/** Invalid ID. */
+		$this->assertNull( \GV\GF_Form::by_id( false ) );
+	}
+
+	/**
+	 * @covers \GV\Form_Collection::add()
+	 * @covers \GV\Form_Collection::get()
+	 * @covers \GV\Form_Collection::last()
+	 */
+	function test_form_collection() {
+		$forms = new \GV\Form_Collection();
+		$this->assertEmpty( $forms->all() );
+
+		$first_form = $this->factory->form->create_and_get();
+		$forms->add( \GV\GF_Form::by_id( $first_form['id'] ) );
+
+		$this->assertSame( $forms->get( $first_form['id'] ), $forms->last() );
+
+		for ( $i = 0; $i < 5; $i++ ) {
+			$_form = $this->factory->form->create_and_get();
+			$forms->add( \GV\GF_Form::by_id( $_form['id'] ) );
+		}
+		$this->assertCount( 6, $forms->all() );
+
+		foreach ( $forms->all() as $form ) {
+			$this->assertInstanceOf( '\GV\GF_Form', $form );
+		}
+
+		$last_form = $forms->get( $_form['id'] );
+		$this->assertEquals( $_form['id'], $last_form->ID );
+
+		$_first_form = $forms->get( $first_form['id'] );
+		$this->assertEquals( $first_form['id'], $_first_form->ID );
+
+		$this->assertNull( $forms->get( 'this was not added' ) );
+
+		$expectedException = null;
+		try {
+			/** Make sure we can only add \GV\View objects into the \GV\View_Collection. */
+			$forms->add( 'this is not a form' );
+		} catch ( \InvalidArgumentException $e ) {
+			$expectedException = $e;
+		}
+		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
+		$this->assertCount( 6, $forms->all() );
+
+		$this->assertSame( $forms->get( $last_form->ID ), $forms->last() );
+	}
+
+	/**
 	 * @covers \GV\Shortcode::add()
 	 * @covers \GV\Shortcode::remove()
 	 */
@@ -466,7 +535,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \GV\Core::init()
-	 * @group init
 	 */
 	function test_core_init() {
 		gravityview()->request = new \GV\Frontend_Request();

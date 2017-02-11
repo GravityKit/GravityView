@@ -84,19 +84,22 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
 		add_action( 'init', array( '\GV\Entry', 'add_rewrite_endpoint' ) );
 
-		/** Generics */
-		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );
-		require_once $this->plugin->dir( 'future/includes/class-gv-collection.php' );
-		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode.php' );
-
 		/** Shortcodes */
+		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gravityview.php' );
 		// add_action( 'init', array( '\GV\Shortcodes\gravityview', 'add' ) ); // @todo uncomment when original is stubbed
 
-		/** Get the View_Collection ready. */
-		require_once $this->plugin->dir( 'future/includes/class-gv-collection-view.php' );
+		/** Our Form generic and beloved form backend implementations. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-form.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-form-gravityforms.php' );
 
-		/** The View_Settings. */
+		/** Get the collections ready. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-view.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-form.php' );
+
+		/** The Settings. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-settings-view.php' );
 
 		/** Initialize the current request. For now we assume a default WordPress frontent context. */

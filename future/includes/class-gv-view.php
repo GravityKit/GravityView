@@ -29,10 +29,21 @@ class View implements \ArrayAccess {
 	public $settings;
 
 	/**
+	 * @var The \GV\Form_Collection instance.
+	 *
+	 * Contains all the forms that are sourced for entries in this view.
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $forms;
+
+	/**
 	 * The constructor.
 	 */
 	public function __construct() {
 		$this->settings = new View_Settings();
+		$this->forms = new Form_Collection();
 	}
 
 	/**
@@ -164,6 +175,17 @@ class View implements \ArrayAccess {
 		$view = new self();
 		$view->post = $post;
 
+		/** Get connected forms. */
+		$form = GF_Form::by_id( $view->_gravityview_form_id );
+		if ( $form ) {
+			$view->forms->add( $form );
+		} else {
+			/**
+			 * Form doesn't exist...
+			 * @todo Add logging all around such silent failure places.
+			 */
+		}
+
 		return $view;
 	}
 
@@ -257,6 +279,10 @@ class View implements \ArrayAccess {
 			case 'id':
 			case 'view_id':
 				return $this->ID;
+			case 'form':
+				return $this->form;
+			case 'form':
+				return $this->form->ID;
 			default:
 				/** @todo move the rest out and get rid of _data completely! */
 				return $this->_data[$offset];
