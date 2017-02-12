@@ -332,6 +332,8 @@ class View implements \ArrayAccess {
 		return array_merge(
 			array( 'id' => $this->ID ),
 			array( 'view_id' => $this->ID ),
+			array( 'form_id' => $this->forms->last()->ID ),
+			array( 'form' => gravityview_get_form( $this->forms->last()->ID ) ),
 			$this->_data
 		);
 	}

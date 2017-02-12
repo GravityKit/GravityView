@@ -343,7 +343,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$this->assertTrue( isset( $current_views[ $view_post_type_id ] ), 'The $current_views array didn\'t have a value set at $post->ID key of ' . $view_post_type_id );
 
 		// When the view is added, the key is set to the View ID and the `id` is also set to that
-		$this->assertEquals( $view_post_type_id, function_exists( 'gravityview' ) ? $current_views[ $view_post_type_id ]->ID : $current_views[ $view_post_type_id ]['view_id'] );
+		$this->assertEquals( $view_post_type_id, $current_views[ $view_post_type_id ]['id'] );
 
 		// Just one View
 		$this->assertEquals( 1, count( $current_views ) );
@@ -355,7 +355,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$second_current_views = gravityview_get_current_views();
 
 		// Check to make sure add_view worked properly
-		$this->assertEquals( $second_view_post_type_id, function_exists( 'gravityview' ) ? $second_current_views[ $second_view_post_type_id ]->ID : $second_current_views[ $second_view_post_type_id ]['view_id'] );
+		$this->assertEquals( $second_view_post_type_id, $second_current_views[ $second_view_post_type_id ]['view_id'] );
 
 		// Now two Views
 		$this->assertEquals( 2, count( $second_current_views ) );
