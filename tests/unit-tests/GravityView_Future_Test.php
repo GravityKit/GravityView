@@ -230,6 +230,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\View::offsetSet()
 	 * @covers \GV\View::offsetUnset()
 	 * @covers \GV\View::offsetGet()
+	 * @covers \GV\View::as_data()
 	 */
 	function test_view_data_compat() {
 		\GravityView_View_Data::$instance = null; /** Reset internal state. */
@@ -757,6 +758,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \GV\View_Settings::defaults()
+	 * @covers \GV\View_Settings::update()
+	 * @covers \GV\View_Settings::as_atts()
 	 * @covers \GravityView_View_Data::get_default_arg()
 	 */
 	public function test_view_settings() {
@@ -765,6 +768,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$defaults = \GV\View_Settings::defaults();
 		$this->assertNotEmpty( $defaults );
+
+		$settings = new \GV\View_Settings();
+		$settings->update( $defaults );
+		$this->assertEquals( $defaults, $settings->as_atts() );
 
 		/** Details. */
 		$detailed = \GV\View_Settings::defaults( true );
@@ -788,10 +795,20 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$defaults = \GV\View_Settings::defaults();
 		$this->assertEquals( $defaults['test_sentinel'], '456' );
 
+		/** Update */
+		$settings = new \GV\View_Settings();
+		$settings->update( $defaults );
+		$this->assertEquals( $settings->get( 'test_sentinel' ), '456' );
+		$settings->update( array( 'invalid_key' => 'whatever', 'test_sentinel' => '789' ) );
+		$this->assertEquals( $settings->get( 'test_sentinel' ), '789' );
+		$this->assertEquals( $settings->get( 'invalid_key', 'this should not exist' ), 'this should not exist' );
+
 		/** Regression. */
 		$this->assertEquals( \GravityView_View_Data::get_default_arg( 'test_sentinel' ), '456' );
 		$setting = \GravityView_View_Data::get_default_arg( 'test_sentinel', true );
 		$this->assertEquals( $setting['value'], '456' );
+		$atts = $settings->as_atts();
+		$this->assertEquals( $atts['test_sentinel'], '789' );
 
 		remove_all_filters( 'gravityview_default_args' );
 		remove_all_filters( 'gravityview/view/settings/defaults' );

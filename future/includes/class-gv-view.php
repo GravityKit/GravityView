@@ -334,6 +334,7 @@ class View implements \ArrayAccess {
 			array( 'view_id' => $this->ID ),
 			array( 'form_id' => $this->forms->last()->ID ),
 			array( 'form' => gravityview_get_form( $this->forms->last()->ID ) ),
+			array( 'atts' => $this->settings->as_atts() ),
 			$this->_data
 		);
 	}

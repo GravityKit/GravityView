@@ -249,4 +249,37 @@ class View_Settings extends Settings {
 			return $default_settings;
 		}
 	}
+
+	/**
+	 * Mass update values from the allowed ones.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @param array An array of settings to update.
+	 * @return void
+	 */
+	public function update( $settings ) {
+		$defaults = array_keys( self::defaults() );
+		foreach ( $settings as $key => $value ) {
+			if ( in_array( $key, $defaults ) )
+				$this->set( $key, $value );
+		}
+	}
+
+	/**
+	 * Turn to an $atts array as used around the old codebase.
+	 *
+	 * @internal
+	 * @deprecated
+	 *
+	 * @return array
+	 */
+	public function as_atts() {
+		$defaults = array_keys( self::defaults() );
+		$_this = &$this;
+		return array_combine( $defaults, array_map( function( $key ) use ( $_this ) {
+			return $_this->get( $key );
+		}, $defaults ) );
+	}
 }
