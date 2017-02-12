@@ -177,7 +177,8 @@ class GravityView_View_Data {
 	function get_view( $view_id, $atts = NULL ) {
 		if ( function_exists( 'gravityview' ) ) {
 			if ( ! $view = gravityview()->views->get( $view_id ) ) {
-				return false;
+				/** Emulate this weird side-effect below... */
+				return $this->add_view( $view_id, $atts );
 			}
 			return $view;
 		}

@@ -570,7 +570,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_View_Data::add_view()
 	 * @covers \GV\Mocks\GravityView_View_Data_add_view()
 	 *
-	 * @covers \GravityView_View_Data::get_views)
+	 * @covers \GravityView_View_Data::get_view()
 	 * @covers \GravityView_View_Data::get_views()
 	 * @covers \GravityView_View_Data::has_multiple_views()
 	 */
@@ -643,6 +643,15 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Make sure \GravityView_View_Data::get_view == gravityview()->views->get() */
 		$this->assertEquals( $data->get_view( $_another_view->ID ), gravityview()->request->views->get( $_another_view->ID ) );
 		$this->assertFalse( $data->get_view( -1 ) );
+
+		/** Get view has a side-effect :( it adds a view that it doesn't have... do we emulate this correctly? */
+		$this->assertNotEmpty( gravityview()->request->views->all() );
+		gravityview()->request = new \GV\Frontend_Request();
+		$this->assertEmpty( gravityview()->request->views->all() );
+		GravityView_View_Data::$instance = null;
+		$data = GravityView_View_Data::getInstance();
+		$this->assertEquals( $data->get_view( $_another_view->ID ), gravityview()->request->views->get( $_another_view->ID ) );
+		$this->assertNotNull( gravityview()->request->views->get( $_another_view->ID ) );
 
 		/** Reset it all. */
 		gravityview()->request = new \GV\Frontend_Request();
