@@ -186,6 +186,54 @@ class View implements \ArrayAccess {
 			 */
 		}
 
+		$view->settings->update( gravityview_get_template_settings( $view->ID ) );
+
+		/**
+		 * @deprecated
+		 *
+		 * The data here has been moved to various keys in a \GV\View instance.
+		 * As a compatibilty layer we allow array access over any \GV\View instance with these keys.
+		 *
+		 * This data is immutable (for now).
+		 *
+		 * @see \GV\View::offsetGet() for internal mappings.
+		 */
+		$view->_data = array(
+			/**
+			 * @deprecated
+			 * @see \GV\View::$ID
+			 */
+			// 'id' => $view->ID,
+
+			/**
+			 * @deprecated
+			 * @see \GV\View::$ID
+			 */
+			// 'view_id' => $view->ID,
+
+			/**
+			 * @deprecated
+			 * @see \GV\View::$forms::last()
+			 */
+			// 'form' => gravityview_get_form( $view->_gravityview_form_id ),
+
+			/**
+			 * @deprecated
+			 * @see \GV\View::$forms::last()::$ID
+			 */
+			// 'form_id' => $view->_gravityview_form_id,
+
+			/**
+			 * @deprecated
+			 * @see \GV\View::$settings
+			 */
+			// 'atts' => $view->settings->as_atts(),
+
+			'widgets' => gravityview_get_directory_widgets( $view->ID ),
+			'template_id' => gravityview_get_template_id( $view->ID ),
+			'fields' => \GravityView_View_Data::getInstance()->get_fields( $view->ID ),
+		);
+
 		return $view;
 	}
 

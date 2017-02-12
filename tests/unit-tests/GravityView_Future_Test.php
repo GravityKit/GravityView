@@ -378,8 +378,63 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertInstanceOf( '\WP_Error', GravityView_View_Data::is_valid_embed_id( $post->ID, $another_post->ID ) );
 
 		$GLOBALS['shortcode_tags']['gravityview'] = $original_shortcode;
-		GravityView_frontend::$instance = NULL;
-		GravityView_View_Data::$instance = NULL;
+		GravityView_frontend::$instance = null;
+		GravityView_View_Data::$instance = null;
+	}
+
+	/**
+	 * Test stubs that work with the old View Data.
+	 *
+	 * @covers GravityView_frontend::single_entry_title()
+	 * @group current
+	 */
+	function test_view_compat() {
+		GravityView_frontend::$instance = null;
+		GravityView_View_Data::$instance = null;
+		gravityview()->request = new \GV\Frontend_Request();
+
+		$form = $this->factory->form->create_and_get();
+		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$another_form = $this->factory->form->create_and_get();
+		$another_entry = $this->factory->entry->create_and_get( array( 'form_id' => $another_form['id'] ) );
+		$another_view = $this->factory->view->create_and_get( array( 'form_id' => $another_form['id'] ) );
+
+		$data = GravityView_View_Data::getInstance();
+		gravityview()->request->views->add( \GV\View::by_id( $view->ID ) );
+		$this->assertCount( 1, gravityview()->views->all() );
+
+		$fe = GravityView_frontend::getInstance();
+		$fe->setSingleEntry( $entry['id'] );
+		$fe->setEntry( $entry['id'] );
+		add_filter( 'gravityview/single/title/out_loop', '__return_true' );
+		$fe->setGvOutputData( $data );
+		$GLOBALS['post'] = $view;
+		$_GET['gvid'] = $view->ID;
+		$fe->set_context_view_id();
+
+		gravityview()->views->get( $view->ID )->settings->set( 'single_title', 'hello, world' );
+
+		$this->assertEquals( $fe->single_entry_title( 'sentinel', $view->ID ), 'hello, world' );
+
+		gravityview()->request->views->add( \GV\View::by_id( $another_view->ID ) );
+		$this->assertCount( 2, gravityview()->views->all() );
+
+		$fe->setSingleEntry( $another_entry['id'] );
+		$fe->setEntry( $another_entry['id'] );
+		$GLOBALS['post'] = $another_view;
+		$_GET['gvid'] = $another_view->ID;
+		$fe->set_context_view_id();
+
+		gravityview()->views->get( $another_view->ID )->settings->set( 'single_title', 'bye, world' );
+		$this->assertEquals( $fe->single_entry_title( 'sentinel', $another_view->ID ), 'bye, world' );
+
+		remove_all_filters( 'gravityview/single/title/out_loop' );
+		unset( $GLOBALS['post'] );
+		unset( $_GET['gvid'] );
+		GravityView_frontend::$instance = null;
+		GravityView_View_Data::$instance = null;
 	}
 
 	/**
@@ -685,7 +740,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$_view = gravityview()->request->views->get( $_view->ID );
 		$this->assertCount( 1, gravityview()->views->all() );
 		$this->assertEquals( $view['atts']['sort_direction'], 'RANDOM' );
-		$this->assertEquals( $view['atts'], $_view['atts'] /** Will be deprecated! */ );
+		$this->assertEquals( $view['atts'], $_view->settings->as_atts() );
 
 		gravityview()->request = new \GV\Frontend_Request();
 

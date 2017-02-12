@@ -325,6 +325,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 		GravityView_frontend::$instance = null;
 		GravityView_View_Data::$instance = null;
 		unset( $_GET['action'] );
+		unset( $_GET['view_id'] );
 	}
 
 	/**

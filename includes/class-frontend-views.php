@@ -465,25 +465,49 @@ class GravityView_frontend {
 		$context_view_id = $this->get_context_view_id();
 
 		if ( $this->getGvOutputData()->has_multiple_views() && ! empty( $context_view_id ) ) {
-			$view_meta = $this->getGvOutputData()->get_view( $context_view_id );
+			if ( function_exists( 'gravityview' ) ) {
+				$view = gravityview()->views->get( $context_view_id );
+			} else {
+				/** Deprecated. Use gravityview()->views->get() or gravityview()->request->get() */
+				$view_meta = $this->getGvOutputData()->get_view( $context_view_id );
+			}
 		} else {
-			foreach ( $this->getGvOutputData()->get_views() as $view_id => $view_data ) {
-				if ( intval( $view_data['form_id'] ) === intval( $entry['form_id'] ) ) {
-					$view_meta = $view_data;
-					break;
+			if ( function_exists( 'gravityview' ) ) {
+				foreach ( gravityview()->views->all() as $_view ) {
+					if ( intval( $_view->forms->last()->ID ) === intval( $entry['form_id'] ) ) {
+						$view = $_view;
+						break;
+					}
+				}
+			} else {
+				/** Deprecated. Use gravityview()->views->all() or gravityview()->request->all() */
+				foreach ( $this->getGvOutputData()->get_views() as $view_id => $view_data ) {
+					if ( intval( $view_data['form_id'] ) === intval( $entry['form_id'] ) ) {
+						$view_meta = $view_data;
+						break;
+					}
 				}
 			}
 		}
 
-		if ( ! empty( $view_meta['atts']['single_title'] ) ) {
+		if ( function_exists( 'gravityview' ) ) {
+			if ( $title = $view->settings->get( 'single_title' ) ) {
+				$title = GravityView_API::replace_variables( $title, $view->forms->last(), $entry );
+				$title = do_shortcode( $title );
+			}
+		} else {
+			/** Deprecated stuff in the future. See the branch above. */
+			if ( ! empty( $view_meta['atts']['single_title'] ) ) {
 
-			$title = $view_meta['atts']['single_title'];
+				$title = $view_meta['atts']['single_title'];
 
-			// We are allowing HTML in the fields, so no escaping the output
-			$title = GravityView_API::replace_variables( $title, $view_meta['form'], $entry );
+				// We are allowing HTML in the fields, so no escaping the output
+				$title = GravityView_API::replace_variables( $title, $view_meta['form'], $entry );
 
-			$title = do_shortcode( $title );
+				$title = do_shortcode( $title );
+			}
 		}
+
 
 		return $title;
 	}
