@@ -156,7 +156,6 @@ class GravityView_View_Data {
 	/**
 	 * @deprecated
 	 * @see \GV\View_Collection::all() via `gravityview()->views` or `gravityview()->request->views`.
-	 *  Uses `_data` property for deprecated format.
 	 */
 	function get_views() {
 		if ( function_exists( 'gravityview' ) ) {
@@ -164,7 +163,7 @@ class GravityView_View_Data {
 				return array();
 			return array_combine(
 				array_map( function ( $view ) { return $view->ID; }, gravityview()->views->all() ),
-				gravityview()->views->all()
+				array_map( function ( $view ) { return $view->as_data(); }, gravityview()->views->all() )
 			);
 		}
 		return $this->views;
@@ -180,7 +179,7 @@ class GravityView_View_Data {
 				/** Emulate this weird side-effect below... */
 				return $this->add_view( $view_id, $atts );
 			}
-			return $view;
+			return $view->as_data();
 		}
 
 		if( ! is_numeric( $view_id) ) {

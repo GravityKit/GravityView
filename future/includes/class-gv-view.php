@@ -257,6 +257,26 @@ class View implements \ArrayAccess {
 		throw new \RuntimeException( 'The old view data is no longer mutable. This is a \GV\View object should not be accessed as an array.' );
 	}
 
+	/**
+	 * Be compatible with the old data object.
+	 *
+	 * Some external code expects an array (doing things like foreach on this, or array_keys)
+	 *  so let's return an array in the old format for such cases. Do not use unless using
+	 *  for back-compatibility.
+	 *
+	 * @internal
+	 * @deprecated
+	 * @since future
+	 * @return array
+	 */
+	public function as_data() {
+		return array_merge(
+			array( 'id' => $this->ID ),
+			array( 'view_id' => $this->ID ),
+			$this->_data
+		);
+	}
+
 	public function __get( $key ) {
 		return $this->post->$key;
 	}
