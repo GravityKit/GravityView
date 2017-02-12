@@ -9,6 +9,8 @@ namespace GV\Mocks;
  * @see \GravityView_View_Data::add_view
  * @internal
  * @since future
+ *
+ * @return array|false The old array data, or false on error.
  */
 function GravityView_View_Data_add_view( $_this, $view_id, $atts ) {
 	/** Handle array of IDs. */
@@ -22,14 +24,14 @@ function GravityView_View_Data_add_view( $_this, $view_id, $atts ) {
 
 		return array_combine(
 			array_map( function( $view ) { return $view->ID; }, gravityview()->request->views->all() ),
-			gravityview()->request->views->all()
+			array_map( function( $view ) { return $view->as_data(); }, gravityview()->request->views->all() )
 		);
 	}
 
 	/** View has been set already. */
 	if ( $view = gravityview()->request->views->get( $view_id ) ) {
 		do_action( 'gravityview_log_debug', sprintf( 'GravityView_View_Data[add_view] Returning; View #%s already exists.', $view_id ) );
-		return $view;
+		return $view->as_data();
 	}
 
 	$view = \GV\View::by_id( $view_id );
@@ -99,5 +101,5 @@ function GravityView_View_Data_add_view( $_this, $view_id, $atts ) {
 
 	gravityview()->request->views->add( $view );
 
-	return $view;
+	return $view->as_data();
 }
