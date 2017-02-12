@@ -253,7 +253,7 @@ class View implements \ArrayAccess {
 		 */
 		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
 
-			if ( ! in_array( $offset, array( 'id', 'view_id' ) ) ) {
+			if ( ! in_array( $offset, array( 'id', 'view_id', 'form', 'form_id' ) ) ) {
 				/**
 				 * Do not throw an exception for keys that we've yet to move around.
 				 * Add the other keys as they are moved out to ensure we're not using them in core.
@@ -280,9 +280,9 @@ class View implements \ArrayAccess {
 			case 'view_id':
 				return $this->ID;
 			case 'form':
-				return $this->form;
-			case 'form':
-				return $this->form->ID;
+				return $this->forms->last();
+			case 'form_id':
+				return $this->forms->last()->ID;
 			default:
 				/** @todo move the rest out and get rid of _data completely! */
 				return $this->_data[$offset];

@@ -245,6 +245,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( $post->ID, $view['id'] );
 		$this->assertEquals( $post->ID, $view['view_id'] );
+		$this->assertEquals( $post->_gravityview_form_id, $view['form_id'] );
+		$this->assertSame( $view->forms->last(), $view['form'] );
 
 		/** Immutable! */
 		$expectedException = null;
@@ -392,6 +394,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( $form->ID, $_form['id'] );
 		$this->assertEquals( $form::$backend, 'gravityforms' );
+
+		/** Array access. */
+		$this->assertEquals( $form['id'], $_form['id'] );
 
 		/** Invalid ID. */
 		$this->assertNull( \GV\GF_Form::by_id( false ) );

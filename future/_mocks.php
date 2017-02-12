@@ -79,12 +79,22 @@ function GravityView_View_Data_add_view( $_this, $view_id, $atts ) {
 		 */
 		// 'view_id' => $view->ID,
 
-		'form_id' => $view->_gravityview_form_id,
+		/**
+		 * @deprecated
+		 * @see \GV\View::$forms::last()
+		 */
+		// 'form' => gravityview_get_form( $view->_gravityview_form_id ),
+
+		/**
+		 * @deprecated
+		 * @see \GV\View::$forms::last()::$ID
+		 */
+		// 'form_id' => $view->_gravityview_form_id,
+
 		'template_id' => gravityview_get_template_id( $view->ID ),
 		'atts' => $atts,
 		'fields' => $_this->get_fields( $view->ID ),
 		'widgets' => gravityview_get_directory_widgets( $view->ID ),
-		'form' => gravityview_get_form( $view->_gravityview_form_id ),
 	);
 
 	gravityview()->request->views->add( $view );
