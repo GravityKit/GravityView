@@ -560,8 +560,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		// Delete the ID from $user_data, which will throw a WP_Error in wp_update_user() (since ID isn't defined)
 		add_filter('gravityview/edit_entry/user_registration/restored_user', function( $user_data ) {
 
-			unset( $user_data->ID );
-			unset( $user_data->data->ID );
+			$user_data->ID = 0;
+			$user_data->data->ID = 0;
 
 			return $user_data;
 		});
