@@ -577,7 +577,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$_user_before_update_prop->setValue( $registration, $user_before_update );
 
 		// remove the user; should be WP_Error
-		self::delete_user( $user_id );
+		wp_delete_user( $user_id );
 
 		$should_be_false = $registration->restore_display_name( $user_id, $config, array(), '' );
 
@@ -676,7 +676,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		/** All good here! */
 		$registration->update_user( $form, $entry['id'] );
 
-		self::delete_user( $subscriber );
+		wp_delete_user( $subscriber );
 
 		/**
 		 * When updating an user that doesn't exist, make sure no errors are thrown
