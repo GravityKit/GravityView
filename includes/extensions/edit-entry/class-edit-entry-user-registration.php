@@ -194,15 +194,15 @@ class GravityView_Edit_Entry_User_Registration {
 
         $format = array_search( $user->display_name, $names, true );
 
-        // In case we can't find the current display name format, or it is the 'nickname' format (which Gravity Forms doesn't support)
-        //   trigger last resort method at the 'gform_user_updated' hook
-        if( false === $format || 'nickname' === $format ) {
+        /**
+         * In case we can't find the current display name format, trigger last resort method at the 'gform_user_updated' hook
+         * @see restore_display_name
+         */
+        if( false === $format ) {
             $this->_user_before_update = $user;
-            $format = 'nickname';
         }
 
         return $format;
-
     }
 
     /**
