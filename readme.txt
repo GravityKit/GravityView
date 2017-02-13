@@ -32,6 +32,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Product fields sometimes appeared twice in the Add Field field picker
 * Fixed: PHP warning when updating entries. Thanks for reporting, Werner!
 * Modified: Don't show CAPTCHA fields in Edit Entry
+* Fixed: "Trying to get property of non-object" bug when updating an entry connected to Gravity Forms User Registration
 
 __Developer Notes:__
 

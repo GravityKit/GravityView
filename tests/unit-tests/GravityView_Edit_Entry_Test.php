@@ -456,6 +456,59 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		wp_set_current_user( 0 );
 	}
 
+	/**
+	 * @since 1.20
+	 *
+	 * @covers GravityView_Edit_Entry_User_Registration::generate_display_names
+	 */
+	public function test_edit_entry_ur_generate_display_names() {
+
+		/** A clean slate, please */
+		GravityView_Edit_Entry::$instance = null;
+
+		$loader = GravityView_Edit_Entry::getInstance();
+
+		/** @var GravityView_Edit_Entry_User_Registration $registration */
+		$registration = $loader->instances['user-registration'];
+		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
+
+		$microtime = md5( microtime() );
+
+		$complete_subscriber = $this->factory->user->create_and_get( array(
+			'user_login' => $microtime,
+			'user_email' => $microtime . '@gravityview.tests',
+			'display_name' => 'Zeek LaBeek',
+			'nickname' => 'Zeekary',
+			'first_name' => 'Zeek',
+			'last_name' => 'LaBeek',
+			'role' => 'subscriber',
+		) );
+
+		$display_names = $registration->generate_display_names( $complete_subscriber );
+
+		$this->assertEquals( 'Zeek', $display_names['firstname'] );
+		$this->assertEquals( 'LaBeek', $display_names['lastname'] );
+		$this->assertEquals( 'Zeek LaBeek', $display_names['firstlast'] );
+		$this->assertEquals( 'LaBeek Zeek', $display_names['lastfirst'] );
+		$this->assertEquals( 'Zeekary', $display_names['nickname'] );
+		$this->assertEquals( $microtime, $display_names['username'] );
+
+
+		// When the first name and last name aren't available, they should not be set in the returned array
+		$incomplete_subscriber = clone $complete_subscriber;
+		$incomplete_subscriber->first_name = '';
+		$incomplete_subscriber->last_name = '';
+
+		$incomplete_display_names = $registration->generate_display_names( $complete_subscriber );
+
+		$this->assertFalse( isset( $incomplete_display_names['firstname'] ) );
+		$this->assertFalse( isset( $incomplete_display_names['lastname'] ) );
+		$this->assertFalse( isset( $incomplete_display_names['firstlast'] ) );
+		$this->assertFalse( isset( $incomplete_display_names['lastfirst'] ) );
+
+		/** Cleanup. */
+		GravityView_Edit_Entry::$instance = null;
+	}
 	public function test_edit_entry_registration() {
 		/** A clean slate, please. */
 		GravityView_Edit_Entry::$instance = null;

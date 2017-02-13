@@ -153,12 +153,13 @@ class GravityView_Edit_Entry_User_Registration {
 		    $config['meta']['role'] = 'gfur_preserve_role';
 	    }
 
+	    $displayname = $this->match_current_display_name( $entry['created_by'] );
+
 	    /**
 	     * Make sure the current display name is not changed with the update user method.
 	     * @since 1.15
 	     */
-	    $config['meta']['displayname'] = $this->match_current_display_name( $entry['created_by'] );
-
+	    $config['meta']['displayname'] = $displayname ? $displayname : $config['meta']['displayname'];
 
 	    /**
 	     * @filter `gravityview/edit_entry/user_registration/config` Modify the User Registration Addon feed configuration
@@ -176,13 +177,18 @@ class GravityView_Edit_Entry_User_Registration {
      * Calculate the user display name format
      *
      * @since 1.15
+     * @since 1.20 Returns false if user not found at $user_id
      *
      * @param int $user_id WP User ID
-     * @return string Display name format as used inside Gravity Forms User Registration
+     * @return false|string Display name format as used inside Gravity Forms User Registration. Returns false if user not found.
      */
     public function match_current_display_name( $user_id ) {
 
         $user = get_userdata( $user_id );
+
+        if( ! $user ) {
+        	return false;
+        }
 
         $names = $this->generate_display_names( $user );
 
