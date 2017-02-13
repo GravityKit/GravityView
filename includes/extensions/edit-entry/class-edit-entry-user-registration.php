@@ -239,7 +239,7 @@ class GravityView_Edit_Entry_User_Registration {
      * @param array $config Gravity Forms User Registration Addon form feed configuration
      * @param array $entry The Gravity Forms entry that was just updated
      * @param string $password User password
-     * @return void
+     * @return int|false|WP_Error|null True: User updated; False: $user_id not a valid User ID; WP_Error: User update error; Null: Method didn't process
      */
     public function restore_display_name( $user_id = 0, $config = array(), $entry = array(), $password = '' ) {
 
@@ -261,10 +261,16 @@ class GravityView_Edit_Entry_User_Registration {
          * @since 1.14.4
          */
         if( ! $restore_display_name || $is_update_feed || is_null( $this->_user_before_update ) ) {
-            return;
+            return null;
         }
 
         $user_after_update = get_userdata( $user_id );
+
+        // User not found
+	    if ( ! $user_after_update ) {
+	    	do_action('gravityview_log_error', __METHOD__ . sprintf( ' - User not found at $user_id #%d', $user_id ) );
+		    return false;
+	    }
 
         $restored_user = $user_after_update;
 
@@ -294,7 +300,9 @@ class GravityView_Edit_Entry_User_Registration {
 
         $this->_user_before_update = null;
 
-        unset( $updated, $restored_user, $user_after_update );
+        unset( $restored_user, $user_after_update );
+
+        return $updated;
     }
 
 } //end class
