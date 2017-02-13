@@ -27,6 +27,15 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * Resets the GravityView context, both old and new.
+	 */
+	private function _reset_context() {
+		\GravityView_View_Data::$instance = null;
+		\GravityView_frontend::$instance = null;
+		gravityview()->request = new \GV\Frontend_Request();
+	}
+
+	/**
 	 * @covers \GV\Plugin::dir()
 	 * @covers \GV\Plugin::url()
 	 */
@@ -222,7 +231,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertFalse( \GV\View::exists( $post->ID + 100 ) );
 		$this->assertFalse( $data->view_exists( $post->ID + 100 ) );
 
-		GravityView_View_Data::$instance = null; /** Cleanup */
+		$this->_reset_context();
 	}
 
 	/**
@@ -233,7 +242,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\View::as_data()
 	 */
 	function test_view_data_compat() {
-		\GravityView_View_Data::$instance = null; /** Reset internal state. */
+		$this->_reset_context();
 		$GLOBALS['GRAVITYVIEW_TESTS_VIEW_ARRAY_ACCESS_OVERRIDE'] = 1; /** Suppress test array access test exceptions. */
 
 		$post = $this->factory->view->create_and_get();
@@ -275,7 +284,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertSame( $data_view['view_id'], $view['view_id'] );
 
 		unset( $GLOBALS['GRAVITYVIEW_TESTS_VIEW_ARRAY_ACCESS_OVERRIDE'] );
-		\GravityView_View_Data::$instance = null; /** Reset internal state. */
+		$this->_reset_context();
 	}
 
 	/**
@@ -286,9 +295,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @group data
 	 */
 	function test_data_has_multiple_views() {
-		\GravityView_View_Data::$instance = null;
-		\GravityView_frontend::$instance = null;
-		gravityview()->request = new \GV\Frontend_Request();
+		$this->_reset_context();
 
 		$post = $this->factory->view->create_and_get();
 		$view = \GV\View::by_id( $post->ID );
@@ -322,10 +329,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			unset( $_GET['gvid'] );
 		}
 
-		/** @todo I think it's time to create a shared method for this. */
-		\GravityView_View_Data::$instance = null;
-		\GravityView_frontend::$instance = null;
-		gravityview()->request = new \GV\Frontend_Request();
+		$this->_reset_context();
 	}
 
 	/**
@@ -428,8 +432,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertInstanceOf( '\WP_Error', GravityView_View_Data::is_valid_embed_id( $post->ID, $another_post->ID ) );
 
 		$GLOBALS['shortcode_tags']['gravityview'] = $original_shortcode;
-		GravityView_frontend::$instance = null;
-		GravityView_View_Data::$instance = null;
+		$this->_reset_context();
 	}
 
 	/**
@@ -439,9 +442,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @group current
 	 */
 	function test_view_compat() {
-		GravityView_frontend::$instance = null;
-		GravityView_View_Data::$instance = null;
-		gravityview()->request = new \GV\Frontend_Request();
+		$this->_reset_context();
 
 		$form = $this->factory->form->create_and_get();
 		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
@@ -483,8 +484,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_all_filters( 'gravityview/single/title/out_loop' );
 		unset( $GLOBALS['post'] );
 		unset( $_GET['gvid'] );
-		GravityView_frontend::$instance = null;
-		GravityView_View_Data::$instance = null;
+		$this->_reset_context();
 	}
 
 	/**
@@ -594,6 +594,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_View_Data::parse_post_content()
 	 */
 	function test_shortcode_parse() {
+		$this->_reset_context();
+
 		$original_shortcode = $GLOBALS['shortcode_tags']['gravityview'];
 		remove_shortcode( 'gravityview' ); /** Conflicts with existing shortcode right now. */
 		\GV\Shortcodes\gravityview::add();
@@ -642,6 +644,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( array( -1, -2 ), $data->parse_post_content( '[gravityview id="-1"][gravityview id="-2"]' ) );
 		/** The above calls have a side-effect on the data state; make sure it's still intact. */
 		$this->assertEquals( $data->get_views(), array() );
+
+		$this->_reset_context();
 	}
 
 	/**
@@ -756,9 +760,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_View_Data::has_multiple_views()
 	 */
 	function test_frontend_request_add_view() {
-		gravityview()->request = new \GV\Frontend_Request();
-
-		\GravityView_View_Data::$instance = null; /** Reset internal state. */
+		$this->_reset_context();
 
 		/** Try to add a non-existing view. */
 		$data = \GravityView_View_Data::getInstance();
@@ -834,10 +836,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $data->get_view( $_another_view->ID ), gravityview()->request->views->get( $_another_view->ID )->as_data() );
 		$this->assertNotNull( gravityview()->request->views->get( $_another_view->ID ) );
 
-		/** Reset it all. */
-		gravityview()->request = new \GV\Frontend_Request();
-		GravityView_View_Data::$instance = null;
-		GravityView_frontend::$instance = null;
+		$this->_reset_context();
 	}
 
 	/**
