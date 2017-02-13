@@ -219,11 +219,13 @@ class GravityView_Edit_Entry_User_Registration {
         $public_display['nickname']  = $profileuser->nickname;
         $public_display['username']  = $profileuser->user_login;
 
-        if ( !empty($profileuser->first_name) )
-            $public_display['firstname'] = $profileuser->first_name;
+        if ( !empty($profileuser->first_name) ) {
+	        $public_display['firstname'] = $profileuser->first_name;
+        }
 
-        if ( !empty($profileuser->last_name) )
-            $public_display['lastname'] = $profileuser->last_name;
+        if ( !empty($profileuser->last_name) ) {
+	        $public_display['lastname'] = $profileuser->last_name;
+        }
 
         if ( !empty($profileuser->first_name) && !empty($profileuser->last_name) ) {
             $public_display['firstlast'] = $profileuser->first_name . ' ' . $profileuser->last_name;
