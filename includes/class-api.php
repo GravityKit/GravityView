@@ -712,8 +712,15 @@ class GravityView_API {
 		 * has the view id so that Advanced Filters can be applied correctly when rendering the single view
 		 * @see GravityView_frontend::get_context_view_id()
 		 */
-		if( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() ) {
-			$args['gvid'] = gravityview_get_view_id();
+		if ( function_exists( 'gravityview' ) ) {
+			if ( gravityview()->views->count() > 1 ) {
+				$args['gvid'] = gravityview_get_view_id();
+			}
+		} else {
+			/** Deprecated, do not use has_multiple_views(), please. */
+			if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() ) {
+				$args['gvid'] = gravityview_get_view_id();
+			}
 		}
 
 		return add_query_arg( $args, $directory_link );
