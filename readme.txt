@@ -32,6 +32,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: Product fields sometimes appeared twice in the Add Field field picker
 * Fixed: PHP warning when updating entries. Thanks for reporting, Werner!
 * Modified: Don't show CAPTCHA fields in Edit Entry
+* Fixed: "Trying to get property of non-object" bug when updating an entry connected to Gravity Forms User Registration
+* Updated: Minimum version of Gravity Forms User Registration updated to 3.2
 
 __Developer Notes:__
 
@@ -46,6 +48,7 @@ __Developer Notes:__
 * Added: Third `GravityView_Edit_Entry_Render` parameter to `gravityview/edit_entry/field_value`, `gravityview/edit_entry/field_value_{field_type}` filters and `gravityview/edit_entry/after_update` action
 * Modified: Only print errors when running the unit tests if the `--debug` setting is defined, like `phpunit --debug --verbose`
 * Modified: If overriding `get_field_input()` using `GravityView_Field`, returning empty value will now result in the default `GF_Field` input being used
+* Modified: GravityView_Edit_Entry_User_Registration::restore_display_name() now returns a value instead of void
 
 = 1.19.4 on January 19, 2017 =
 

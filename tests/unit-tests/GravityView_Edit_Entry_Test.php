@@ -455,4 +455,270 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$_GET = array(); $_POST = array();
 		wp_set_current_user( 0 );
 	}
+
+	/**
+	 * @since 1.20
+	 * @covers GravityView_Edit_Entry_User_Registration::restore_display_name()
+	 */
+	public function test_restore_display_name() {
+
+		/** A clean slate, please. */
+		GravityView_Edit_Entry::$instance = null;
+
+		$loader = GravityView_Edit_Entry::getInstance();
+
+		/** @var GravityView_Edit_Entry_User_Registration $registration */
+		$registration = $loader->instances['user-registration'];
+		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
+		$_user_before_update_prop = new ReflectionProperty( 'GravityView_Edit_Entry_User_Registration', '_user_before_update' );
+		$_user_before_update_prop->setAccessible( true ); // It was private; let's make it public
+
+
+		$microtime = md5( microtime() );
+
+		$user_before_update = $this->factory->user->create_and_get( array(
+			'user_login' => $microtime,
+			'user_email' => $microtime . '@gravityview.tests',
+			'display_name' => 'Zeek LaBeek',
+			'nickname' => 'Zeekary',
+			'first_name' => 'Zeek',
+			'last_name' => 'LaBeek',
+			'role' => 'subscriber',
+		) );
+
+		$user_id = $user_before_update->ID;
+
+	// Make the value of $_user_before_update non-null so it passes the test
+		$_user_before_update_prop->setValue( $registration, $user_before_update );
+
+
+		// Set it to anything other than "update" so that the logic passes
+		$config = array(
+			'meta' => array(
+				'feed_type' => 'create',
+			),
+		);
+
+	// Test that the filter works
+		add_filter( 'gravityview/edit_entry/restore_display_name', '__return_false' );
+
+		$should_be_null = $registration->restore_display_name( $user_id, $config, array(), '' );
+
+		$this->assertNull( $should_be_null, 'the `gravityview/edit_entry/restore_display_name` filter didn\'t work' );
+
+		remove_filter( 'gravityview/edit_entry/restore_display_name', '__return_false' );
+
+
+	// Set it to "update" so that the logic fails
+		$config = array(
+			'meta' => array(
+				'feed_type' => 'update',
+			),
+		);
+
+		$should_be_null = $registration->restore_display_name( $user_id, $config, array(), '' );
+
+		$this->assertNull( $should_be_null, '$config should have blocked processing; it was `update` feed type' );
+
+
+
+		// Now use "Create" to pass through initial logic check
+		$config = array(
+			'meta' => array(
+				'feed_type' => 'create',
+			),
+		);
+
+	// Change something that should be changed back
+		$this->factory->user->update_object( $user_id, array( 'display_name' => 'Changed During Update') );
+
+		$user_after_update = get_userdata( $user_id );
+
+		$this->assertEquals( 'Changed During Update', $user_after_update->display_name ); // Make sure the value changed properly
+
+		// The user should still be saved in $_user_before_update_prop
+		$this->assertEquals( $user_before_update, $_user_before_update_prop->getValue( $registration ) );
+
+		// Update the user
+		$should_be_int_user_id = $registration->restore_display_name( $user_id, $config, array(), '' );
+
+		$this->assertEquals( $user_id, $should_be_int_user_id );
+
+		// $_user_before_update_prop is reset at the end of the method
+		$this->assertEquals( NULL, $_user_before_update_prop->getValue( $registration ) );
+
+		$user_after_update = get_userdata( $user_id );
+
+		$this->assertEquals( $user_before_update->display_name, $user_after_update->display_name );
+
+
+
+	// Test gravityview/edit_entry/user_registration/restored_user filter
+		$_user_before_update_prop->setValue( $registration, $user_before_update );
+
+		// To check the filter and the WP_Error return at the same time,
+		// Delete the ID from $user_data, which will throw a WP_Error in wp_update_user() (since ID isn't defined)
+		add_filter('gravityview/edit_entry/user_registration/restored_user', function( $user_data ) {
+
+			$user_data->ID = 0;
+			$user_data->data->ID = 0;
+
+			return $user_data;
+		});
+
+		$should_be_wp_error = $registration->restore_display_name( $user_id, $config, array(), '' );
+
+		$this->assertWPError( $should_be_wp_error );
+
+		remove_all_filters('gravityview/edit_entry/user_registration/restored_user' );
+
+
+	// Test User not exists
+		$_user_before_update_prop->setValue( $registration, $user_before_update );
+
+		// remove the user; should be WP_Error
+		parent::delete_user( $user_id );
+
+		$this->assertFalse( get_userdata( $user_id ), 'The user was not successfully deleted.' );
+
+		$should_be_false = $registration->restore_display_name( $user_id, $config, array(), '' );
+
+		$this->assertFalse( $should_be_false );
+
+		/** Cleanup. */
+		GravityView_Edit_Entry::$instance = null;
+	}
+
+	/**
+	 * @since 1.20
+	 *
+	 * @covers GravityView_Edit_Entry_User_Registration::generate_display_names
+	 */
+	public function test_edit_entry_ur_generate_display_names() {
+
+		/** A clean slate, please */
+		GravityView_Edit_Entry::$instance = null;
+
+		$loader = GravityView_Edit_Entry::getInstance();
+
+		/** @var GravityView_Edit_Entry_User_Registration $registration */
+		$registration = $loader->instances['user-registration'];
+		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
+
+		$microtime = md5( microtime() );
+
+		$complete_subscriber = $this->factory->user->create_and_get( array(
+			'user_login' => $microtime,
+			'user_email' => $microtime . '@gravityview.tests',
+			'display_name' => 'Zeek LaBeek',
+			'nickname' => 'Zeekary',
+			'first_name' => 'Zeek',
+			'last_name' => 'LaBeek',
+			'role' => 'subscriber',
+		) );
+
+		$display_names = $registration->generate_display_names( $complete_subscriber );
+
+		$this->assertEquals( 'Zeek', $display_names['firstname'] );
+		$this->assertEquals( 'LaBeek', $display_names['lastname'] );
+		$this->assertEquals( 'Zeek LaBeek', $display_names['firstlast'] );
+		$this->assertEquals( 'LaBeek Zeek', $display_names['lastfirst'] );
+		$this->assertEquals( 'Zeekary', $display_names['nickname'] );
+		$this->assertEquals( $microtime, $display_names['username'] );
+
+
+		// When the first name and last name aren't available, they should not be set in the returned array
+		$incomplete_subscriber = clone $complete_subscriber;
+		$incomplete_subscriber->first_name = '';
+		$incomplete_subscriber->last_name = '';
+
+		$incomplete_display_names = $registration->generate_display_names( $complete_subscriber );
+
+		$this->assertFalse( isset( $incomplete_display_names['firstname'] ) );
+		$this->assertFalse( isset( $incomplete_display_names['lastname'] ) );
+		$this->assertFalse( isset( $incomplete_display_names['firstlast'] ) );
+		$this->assertFalse( isset( $incomplete_display_names['lastfirst'] ) );
+
+		/** Cleanup. */
+		GravityView_Edit_Entry::$instance = null;
+	}
+
+	/**
+	 * @since 1.20
+	 *
+	 * @covers GravityView_Edit_Entry_User_Registration::match_current_display_name()
+	 * @covers GravityView_Edit_Entry_User_Registration::update_user()
+	 */
+	public function test_edit_entry_registration() {
+
+		/** A clean slate, please. */
+		GravityView_Edit_Entry::$instance = null;
+
+		$loader = GravityView_Edit_Entry::getInstance();
+
+		/** @var GravityView_Edit_Entry_User_Registration $registration */
+		$registration = $loader->instances['user-registration'];
+		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
+
+		/** Some fixtures... */
+		$subscriber = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'display_name' => 'Zeek LaBeek',
+			'nickname' => 'Zeekary',
+			'first_name' => 'Zeek',
+			'last_name' => 'LaBeek',
+			'role' => 'subscriber' )
+		);
+
+		$form = $this->factory->form->create_and_get();
+		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'], 'status' => 'publish', 'created_by' => $subscriber ) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		/** All good here! */
+		$registration->update_user( $form, $entry['id'] );
+
+		parent::delete_user( $subscriber );
+
+		/**
+		 * When updating an user that doesn't exist, make sure no errors are thrown
+		 * @see GravityView_Edit_Entry_User_Registration::match_current_display_name
+		 */
+		$registration->update_user( $form, $entry['id'] );
+
+		/** Cleanup. */
+		GravityView_Edit_Entry::$instance = null;
+	}
+}
+
+/** The GF_User_Registration mock if not exists. */
+if ( ! class_exists( 'GF_User_Registration' ) ) {
+
+	if( file_exists( plugin_dir_path('gravityformsuserregistration/userregistration.php') ) ) {
+		include plugin_dir_path( 'gravityformsuserregistration/userregistration.php' );
+
+		GF_User_Registration_Bootstrap::load();
+	}
+
+	// Still doesn't exist!
+
+	if ( ! class_exists('GF_User_Registration') ) {
+
+		class GF_User_Registration {
+			public static function get_instance() {
+				return new self();
+			}
+
+			public function get_single_submission_feed( $entry, $form ) {
+				return array(
+					'meta' => array(
+						'displayname' => 'user_login',
+						// Default. `firstname`, `lastname`, `firstlast`, `lastfirst`, `nickname` are valid options
+						'role'        => 'gfur_preserve_role',
+						// Default value.
+					),
+				);
+			}
+		}
+	}
 }
