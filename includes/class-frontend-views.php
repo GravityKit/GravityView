@@ -479,6 +479,10 @@ class GravityView_frontend {
 						break;
 					}
 				}
+
+				/** No matching form sources were found, happens when requesting an entry from a different form . */
+				if ( ! isset( $view ) )
+					return $title;
 			} else {
 				/** Deprecated. Use gravityview()->views->all() or gravityview()->request->all() */
 				foreach ( $this->getGvOutputData()->get_views() as $view_id => $view_data ) {

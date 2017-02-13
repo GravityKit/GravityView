@@ -331,6 +331,8 @@ class View implements \ArrayAccess {
 				return $this->forms->last();
 			case 'form_id':
 				return $this->forms->last()->ID;
+			case 'atts':
+				return $this->as_atts();
 			default:
 				/** @todo move the rest out and get rid of _data completely! */
 				return $this->_data[$offset];

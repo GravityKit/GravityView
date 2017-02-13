@@ -18,7 +18,7 @@ final class Frontend_Request extends Request {
 	 * @return void
 	 */
 	public function __construct() {
-		add_action( 'wp', array( $this, 'parse' ) );
+		add_action( 'wp', array( $this, 'parse' ), 12 );
 		parent::__construct();
 	}
 
