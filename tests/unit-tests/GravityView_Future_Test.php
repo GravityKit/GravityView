@@ -279,6 +279,56 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * Stub \GravityView_View_Data::has_multiple_views() usage around the codebase.
+	 *
+	 * @covers \GravityView_frontend::set_context_view_id()
+	 *
+	 * @group data
+	 */
+	function test_data_has_multiple_views() {
+		\GravityView_View_Data::$instance = null;
+		\GravityView_frontend::$instance = null;
+		gravityview()->request = new \GV\Frontend_Request();
+
+		$post = $this->factory->view->create_and_get();
+		$view = \GV\View::by_id( $post->ID );
+
+		$another_post = $this->factory->view->create_and_get();
+		$another_view = \GV\View::by_id( $another_post->ID );
+
+		{ /** set_context_view_id */
+			$fe = \GravityView_frontend::getInstance();
+			$fe->setGvOutputData( \GravityView_View_Data::getInstance() );
+
+			$fe->set_context_view_id();
+			$this->assertNull( $fe->get_context_view_id() );
+
+			$fe->set_context_view_id( -5 );
+			$this->assertEquals( $fe->get_context_view_id(), -5 );
+
+			$_GET['gvid'] = -7;
+
+			$fe->set_context_view_id();
+			$this->assertNull( $fe->get_context_view_id() );
+
+			gravityview()->views->add( $view );
+			$fe->set_context_view_id();
+			$this->assertEquals( $fe->get_context_view_id(), $view->ID );
+
+			gravityview()->views->add( $view );
+			$fe->set_context_view_id();
+			$this->assertEquals( $fe->get_context_view_id(), -7 );
+
+			unset( $_GET['gvid'] );
+		}
+
+		/** @todo I think it's time to create a shared method for this. */
+		\GravityView_View_Data::$instance = null;
+		\GravityView_frontend::$instance = null;
+		gravityview()->request = new \GV\Frontend_Request();
+	}
+
+	/**
 	 * @covers \GV\View_Collection::from_post()
 	 * @covers \GV\View_Collection::get()
 	 * @covers \GravityView_View_Data::maybe_get_view_id()

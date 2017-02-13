@@ -231,23 +231,29 @@ class GravityView_frontend {
 	 * @param null $view_id
 	 */
 	public function set_context_view_id( $view_id = null ) {
+		$multiple_views = function_exists( 'gravityview' ) ? gravityview()->views->count() > 1 : ( $this->getGvOutputData() && $this->getGvOutputData()->has_multiple_views() );
 
 		if ( ! empty( $view_id ) ) {
 
 			$this->context_view_id = $view_id;
 
-		} elseif ( isset( $_GET['gvid'] ) && $this->getGvOutputData()->has_multiple_views() ) {
+		} elseif ( isset( $_GET['gvid'] ) && $multiple_views ) {
 			/**
 			 * used on a has_multiple_views context
 			 * @see GravityView_API::entry_link
-			 * @see GravityView_View_Data::getInstance()->has_multiple_views()
 			 */
 			$this->context_view_id = $_GET['gvid'];
 
-		} elseif ( ! $this->getGvOutputData()->has_multiple_views() )  {
-			$array_keys = array_keys( $this->getGvOutputData()->get_views() );
-			$this->context_view_id = array_pop( $array_keys );
-			unset( $array_keys );
+		} elseif ( ! $multiple_views ) {
+			if ( function_exists( 'gravityview' ) ) {
+				$view = gravityview()->views->last();
+				$this->context_view_id = $view ? $view->ID : null;
+			} else {
+				/** GravityView_View_Data::get_views is deprecated. */
+				$array_keys = array_keys( $this->getGvOutputData()->get_views() );
+				$this->context_view_id = array_pop( $array_keys );
+				unset( $array_keys );
+			}
 		}
 
 	}
