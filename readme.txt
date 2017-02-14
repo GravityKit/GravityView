@@ -33,6 +33,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 * Fixed: PHP warning when updating entries. Thanks for reporting, Werner!
 * Modified: Don't show CAPTCHA fields in Edit Entry
 * Fixed: "Trying to get property of non-object" bug when updating an entry connected to Gravity Forms User Registration
+* Fixed: Yoast SEO scripts and styles not loading properly on Edit View screen
 * Updated: Minimum version of Gravity Forms User Registration updated to 3.2
 
 __Developer Notes:__
