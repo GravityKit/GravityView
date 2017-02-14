@@ -43,6 +43,7 @@ __Developer Notes:__
 * Added: `gravityview/edit_entry/hide-coupon-fields` to modify whether to hide Coupon fields in Edit Entry (default: `false`)
 * Added: `GravityView_frontend::get_view_entries_parameters()` method to get the final entry search parameters for a View without fetching the entries as well
 * Updated: `fields/product.php` template file
+* Updated: Flexibility library for IE CSS flexbox support
 * Added: `GVCommon::get_product_field_types()` to fetch Gravity Forms product field types array
 * Added: `gravityview/edit_entry/field_blacklist` filter to modify what field types should not be shown in Edit Entry
 * Added: `GravityView_Plugin_Hooks_Gravity_Forms_Coupon` class
