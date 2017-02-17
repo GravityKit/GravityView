@@ -291,8 +291,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * Stub \GravityView_View_Data::has_multiple_views() usage around the codebase.
 	 *
 	 * @covers \GravityView_frontend::set_context_view_id()
-	 *
-	 * @group data
 	 */
 	function test_data_has_multiple_views() {
 		$this->_reset_context();
@@ -327,6 +325,67 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$this->assertEquals( $fe->get_context_view_id(), -7 );
 
 			unset( $_GET['gvid'] );
+		}
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * Stub \GravityView_View_Data::get_views() usage around the codebase.
+	 *
+	 * @covers \GravityView_Admin_Bar::add_links()
+	 * @covers \GravityView_Admin_Bar::add_edit_view_and_form_link()
+	 */
+	function test_data_get_views() {
+		$this->_reset_context();
+
+		$post = $this->factory->view->create_and_get();
+		$view = \GV\View::by_id( $post->ID );
+
+		$another_post = $this->factory->view->create_and_get();
+		$another_view = \GV\View::by_id( $another_post->ID );
+
+		{
+			global $wp_admin_bar;
+			$admin_bar = new \GravityView_Admin_Bar();
+
+			$wp_admin_bar = $this->getMockBuilder( 'stdClass' )->setMethods( array( 'add_menu' ) )->getMock();
+			$wp_admin_bar->expects( $this->exactly( 4 ) )->method( 'add_menu' )
+				->withConsecutive(
+					array( $this->callback( function ( $subject ) {
+						return $subject['id'] == 'gravityview'; /** The GravityView button. */
+					} ) ),
+					array( $this->callback( function ( $subject ) use ( $view ) {
+						return $subject['id'] == 'edit-view-' . $view->ID; /** Edit the first view. */
+					} ) ),
+					array( $this->callback( function ( $subject ) use ( $view ) {
+						return $subject['id'] == 'edit-form-' . $view->forms->last()->ID; /** Edit the form (shared by both views). */
+					} ) ),
+					array( $this->callback( function ( $subject ) use ( $another_view ) {
+						return $subject['id'] == 'edit-view-' . $another_view->ID; /** Edit the second view. */
+					} ) )
+				);
+
+			$administrator = $this->factory->user->create( array(
+				'user_login' => md5( microtime() ),
+				'user_email' => md5( microtime() ) . '@gravityview.tests',
+				'role' => 'administrator' )
+			);
+			wp_set_current_user( $administrator );
+
+			$this->assertNull( $admin_bar->add_links() ); /** Non-admin, so meh... */
+
+			/** Multiple entries... */
+			gravityview()->views->add( $view );
+			gravityview()->views->add( $another_view );
+
+			$user = get_user_by( 'ID', $administrator );
+			$user->add_cap( 'gravityview_full_access' );
+			$user->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
+
+			$admin_bar->add_links();
+
+			wp_set_current_user( 0 );
 		}
 
 		$this->_reset_context();
