@@ -968,6 +968,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\View_Settings::update()
 	 * @covers \GV\View_Settings::as_atts()
 	 * @covers \GravityView_View_Data::get_default_arg()
+	 * @covers \GravityView_View_Data::get_id_from_atts()
 	 */
 	public function test_view_settings() {
 		$view = new \GV\View();
@@ -1006,9 +1007,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$settings = new \GV\View_Settings();
 		$settings->update( $defaults );
 		$this->assertEquals( $settings->get( 'test_sentinel' ), '456' );
-		$settings->update( array( 'invalid_key' => 'whatever', 'test_sentinel' => '789' ) );
+		$settings->update( array( 'valid_key' => 'this exists', 'test_sentinel' => '789' ) );
 		$this->assertEquals( $settings->get( 'test_sentinel' ), '789' );
-		$this->assertEquals( $settings->get( 'invalid_key', 'this should not exist' ), 'this should not exist' );
+		$this->assertEquals( $settings->get( 'valid_key' ), 'this exists' );
 
 		/** Regression. */
 		$this->assertEquals( \GravityView_View_Data::get_default_arg( 'test_sentinel' ), '456' );
@@ -1019,5 +1020,17 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gravityview_default_args' );
 		remove_all_filters( 'gravityview/view/settings/defaults' );
+
+		/** Dead get_id_from_atts() test assumptions, no actual live code is present in our core... */
+		add_filter( 'gravityview/view/settings/defaults', function( $defaults ) {
+			$defaults['view_id'] = array( 'value' => '39' );
+			return $defaults;
+		} );
+		$this->assertEquals( 39, \GravityView_View_Data::getInstance()->get_id_from_atts( 'id="40"' ) );
+		remove_all_filters( 'gravityview/view/settings/defaults' );
+		$this->assertEquals( 40, \GravityView_View_Data::getInstance()->get_id_from_atts( 'id="40"' ) );
+		$this->assertEquals( 50, \GravityView_View_Data::getInstance()->get_id_from_atts( 'id="40" view_id="50"' ) );
+
+		$this->_reset_context();
 	}
 }

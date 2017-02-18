@@ -394,10 +394,24 @@ class GravityView_View_Data {
 	}
 
 	/**
-	 * @deprecated Also dead code, was probably superceded by GravityView_View_Data::parse_post_content
+	 * Retrieves view ID from an array.
+	 *
+	 * @param array $atts
+	 * @deprecated Dead code, was probably superceded by GravityView_View_Data::parse_post_content
+	 *
+	 * @return int|null A view ID cast to int, or null.
 	 */
 	function get_id_from_atts( $atts ) {
 
+		if ( function_exists( 'gravityview' ) ) {
+			$settings = new \GV\View_Settings();
+			$settings->update( \GV\View_Settings::defaults() );
+			$settings->update( shortcode_parse_atts( $atts ) );
+			$view_id = $settings->get( 'view_id' );
+			$view_id = empty( $view_id ) ? $settings->get( 'id' ) : $view_id;
+			return empty( $view_id ) ? null : $view_id;
+		}
+		
 		$atts = is_array( $atts ) ? $atts : shortcode_parse_atts( $atts );
 
 		// Get the settings from the shortcode and merge them with defaults.

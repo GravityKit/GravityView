@@ -260,10 +260,8 @@ class View_Settings extends Settings {
 	 * @return void
 	 */
 	public function update( $settings ) {
-		$defaults = array_keys( self::defaults() );
 		foreach ( $settings as $key => $value ) {
-			if ( in_array( $key, $defaults ) )
-				$this->set( $key, $value );
+			$this->set( $key, $value );
 		}
 	}
 
