@@ -12,11 +12,11 @@ namespace GV\Mocks;
  *
  * @return array|false The old array data, or false on error.
  */
-function GravityView_View_Data_add_view( $_this, $view_id, $atts ) {
+function GravityView_View_Data_add_view( $view_id, $atts ) {
 	/** Handle array of IDs. */
 	if ( is_array( $view_id ) ) {
 		foreach ( $view_id as $id ) {
-			call_user_func( __FUNCTION__, $_this, $id, $atts );
+			call_user_func( __FUNCTION__, $id, $atts );
 		}
 
 		if ( ! gravityview()->request->views->count() )

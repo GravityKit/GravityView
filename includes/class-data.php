@@ -25,7 +25,13 @@ class GravityView_View_Data {
 
 			$id_or_id_array = $this->maybe_get_view_id( $passed_post );
 
-			if( !empty( $id_or_id_array ) ) {
+			if ( function_exists( 'gravityview' ) ) {
+				foreach( is_array( $id_or_id_array ) ? $id_or_id_array : array( $id_or_id_array ) as $view_id ) {
+					if ( \GV\View::exists( $view_id ) ) {
+						gravityview()->views->add( \GV\View::by_id( $view_id ) );
+					}
+				}
+			} else if ( ! empty( $id_or_id_array ) ) {
 				$this->add_view( $id_or_id_array );
 			}
 		}
@@ -176,8 +182,16 @@ class GravityView_View_Data {
 	function get_view( $view_id, $atts = NULL ) {
 		if ( function_exists( 'gravityview' ) ) {
 			if ( ! $view = gravityview()->views->get( $view_id ) ) {
+				if ( ! \GV\View::exists( $view_id ) ) {
+					return false;
+				}
+
 				/** Emulate this weird side-effect below... */
-				return $this->add_view( $view_id, $atts );
+				$view = \GV\View::by_id( $view_id );
+				if ( $atts ) {
+					$view->settings->update( $atts );
+				}
+				gravityview()->views->add( $view );
 			}
 			return $view->as_data();
 		}
@@ -235,7 +249,7 @@ class GravityView_View_Data {
 
 		/** Deprecated. Do not edit. */
 		if ( function_exists( 'gravityview' ) ) {
-			return \GV\Mocks\GravityView_View_Data_add_view( $this, $view_id, $atts );
+			return \GV\Mocks\GravityView_View_Data_add_view( $view_id, $atts );
 		}
 
 		// Handle array of IDs
@@ -421,7 +435,14 @@ class GravityView_View_Data {
 			$ids = array();
 			foreach ( \GV\Shortcode::parse( $content ) as $shortcode ) {
 				if ( $shortcode->name == 'gravityview' && is_numeric( $shortcode->atts['id'] ) ) {
-					$this->add_view( $shortcode->atts['id'] );
+					if ( \GV\View::exists( $shortcode->atts['id'] ) ) {
+						gravityview()->views->add( \GV\View::by_id( $shortcode->atts['id'] ) );
+					}
+					/**
+					 * The original function outputs the ID even though it wasn't added by ::add_view()
+					 * Wether this is a bug or not remains a mystery. But we need to emulate this behavior
+					 * until better times.
+					 */
 					$ids []= $shortcode->atts['id'];
 				}
 			}
