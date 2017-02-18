@@ -1001,14 +1001,24 @@ function gravityview_get_current_view_data( $view_id = 0 ) {
 
 	$fe = GravityView_frontend::getInstance();
 
-	if( ! $fe->getGvOutputData() ) { return array(); }
-
 	// If not set, grab the current view ID
-	if( empty( $view_id ) ) {
+	if ( empty( $view_id ) ) {
 		$view_id = $fe->get_context_view_id();
 	}
 
-	return $fe->getGvOutputData()->get_view( $view_id );
+	if ( function_exists( 'gravityview' ) ) {
+		$view = gravityview()->views->get( $view_id );
+		if ( ! $view ) {
+			/** Emulate the weird behavior of \GravityView_View_Data::get_view adding a view which wasn't there to begin with. */
+			gravityview()->views->add( \GV\View::by_id( $view_id ) );
+			$view = gravityview()->views->get( $view_id );
+		}
+		return $view ? $view->as_data() : array();
+	} else {
+		if ( ! $fe->getGvOutputData() ) { return array(); }
+
+		return $fe->getGvOutputData()->get_view( $view_id );
+	}
 }
 
 // Templates' hooks
