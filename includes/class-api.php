@@ -979,6 +979,15 @@ function gravityview_get_current_views() {
 		return array();
 	}
 
+	if ( function_exists( 'gravityview' ) ) {
+		if ( ! gravityview()->views->count() )
+			return array();
+		return array_combine(
+			array_map( function ( $view ) { return $view->ID; }, gravityview()->views->all() ),
+			array_map( function ( $view ) { return $view->as_data(); }, gravityview()->views->all() )
+		);
+	}
+	/** \GravityView_View_Data::get_views is deprecated. */
 	return $fe->getGvOutputData()->get_views();
 }
 
