@@ -573,10 +573,11 @@ class GravityView_View_Data {
 	 *
 	 * @param string $post_id Post ID where the View is embedded
 	 * @param string $view_id View ID
+	 * @param string $empty_is_valid If either $post_id or $view_id is empty consider valid. Default: false.
 	 *
 	 * @return bool|WP_Error If valid, returns true. If invalid, returns WP_Error containing error message.
 	 */
-	public static function is_valid_embed_id( $post_id = '', $view_id = '', $empty_is_valid = true ) {
+	public static function is_valid_embed_id( $post_id = '', $view_id = '', $empty_is_valid = false ) {
 
 		$message = NULL;
 
@@ -629,10 +630,10 @@ class GravityView_View_Data {
 		if( ! $message ) {
 
 			// It's a View
-			if( 'gravityview' === get_post_type( $post_id ) ) {
+			if ( ( function_exists( 'gravityview' ) && \GV\View::exists( $post_id ) )
+				|| 'gravityview' === get_post_type( $post_id ) ) {
 				$message = esc_html__( 'The ID is already a View.', 'gravityview' );;
 			}
-
 		}
 
 		if( $message ) {
