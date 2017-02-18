@@ -562,8 +562,15 @@ class GravityView_frontend {
 			if ( is_preview() && ! gravityview_get_form_id( $this->post_id ) ) {
 				$content .= __( 'When using a Start Fresh template, you must save the View before a Preview is available.', 'gravityview' );
 			} else {
-				foreach ( $this->getGvOutputData()->get_views() as $view_id => $data ) {
-					$content .= $this->render_view( array( 'id' => $view_id ) );
+				if ( function_exists( 'gravityview' ) ) {
+					foreach ( gravityview()->views->all() as $view ) {
+						$content .= $this->render_view( array( 'id' => $view->ID ) );
+					}
+				} else {
+					/** The \GravityView_View_Data::get_views method is depreacted. */
+					foreach ( $this->getGvOutputData()->get_views() as $view_id => $data ) {
+						$content .= $this->render_view( array( 'id' => $view_id ) );
+					}
 				}
 			}
 		}
@@ -1488,9 +1495,19 @@ class GravityView_frontend {
 		// enqueue template specific styles
 		if ( $this->getGvOutputData() ) {
 
-			$views = $this->getGvOutputData()->get_views();
+			if ( function_exists( 'gravityview' ) ) {
+				$views = gravityview()->views->all();
+			} else {
+				/** \GravityView_View_Data::get_view is no more... */
+				$views = $this->getGvOutputData()->get_views();
+			}
 
 			foreach ( $views as $view_id => $data ) {
+				if ( function_exists( 'gravityview' ) ) {
+					$view = $data;
+					$view_id = $view->ID;
+					$data = $view->as_data();
+				}
 
 				/**
 				 * Don't enqueue the scripts or styles if it's not going to be displayed.
@@ -1504,8 +1521,15 @@ class GravityView_frontend {
 				$js_dependencies = array( 'jquery', 'gravityview-jquery-cookie' );
 				$css_dependencies = array();
 
+				if ( function_exists( 'gravityview' ) ) {
+					$lightbox = $view->settings->get( 'lightbox' );
+				} else {
+					/** View data attributes are now stored in \GV\View::$settings */
+					$lightbox = ! empty( $data['atts']['lightbox'] );
+				}
+
 				// If the thickbox is enqueued, add dependencies
-				if ( ! empty( $data['atts']['lightbox'] ) ) {
+				if ( $lightbox ) {
 
 					/**
 					 * @filter `gravity_view_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`

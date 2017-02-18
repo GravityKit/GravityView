@@ -335,6 +335,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 *
 	 * @covers \GravityView_Admin_Bar::add_links()
 	 * @covers \GravityView_Admin_Bar::add_edit_view_and_form_link()
+	 * @covers \GravityView_frontend::insert_view_in_content()
+	 * @covers \GravityView_frontend::add_scripts_and_styles()
 	 */
 	function test_data_get_views() {
 		$this->_reset_context();
@@ -386,6 +388,17 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$admin_bar->add_links();
 
 			wp_set_current_user( 0 );
+		}
+
+		{
+			$fe = \GravityView_frontend::getInstance();
+			global $wp_actions, $wp_query;
+			$wp_actions['loop_start'] = 1;
+			$wp_query->in_the_loop = true;
+			$fe->setIsGravityviewPostType( true );
+			$this->assertContains( '<table', $fe->insert_view_in_content( '' ) );
+
+			$fe->add_scripts_and_styles();
 		}
 
 		$this->_reset_context();
