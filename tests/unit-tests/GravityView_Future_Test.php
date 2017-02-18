@@ -382,7 +382,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			gravityview()->views->add( $view );
 			gravityview()->views->add( $another_view );
 
-			$user = get_user_by( 'ID', $administrator );
+			$user = wp_get_current_user();
 			$user->add_cap( 'gravityview_full_access' );
 			$user->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
 
