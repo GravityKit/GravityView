@@ -337,7 +337,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_Admin_Bar::add_edit_view_and_form_link()
 	 * @covers \GravityView_frontend::insert_view_in_content()
 	 * @covers \GravityView_frontend::add_scripts_and_styles()
-	 * @covers \GravityView_frontend::render()
+	 * @covers \GravityView_frontend::render_view()
 	 */
 	function test_data_get_views() {
 		$this->_reset_context();
