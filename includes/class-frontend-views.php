@@ -475,6 +475,11 @@ class GravityView_frontend {
 		if ( $multiple_views && ! empty( $context_view_id ) ) {
 			if ( function_exists( 'gravityview' ) ) {
 				$view = gravityview()->views->get( $context_view_id );
+				if ( ! $view ) {
+					/** Emulate the weird behavior of \GravityView_View_Data::get_view adding a view which wasn't there to begin with. */
+					gravityview()->views->add( \GV\View::by_id( $context_view_id ) );
+					$view = gravityview()->views->get( $context_view_id );
+				}
 			} else {
 				/** Deprecated. Use gravityview()->views->get() or gravityview()->request->get() */
 				$view_meta = $this->getGvOutputData()->get_view( $context_view_id );
@@ -700,20 +705,33 @@ class GravityView_frontend {
 
 		$view_id = $passed_args['id'];
 
-		$view_data = $this->getGvOutputData()->get_view( $view_id, $passed_args );
+		if ( function_exists( 'gravityview' ) ) {
+			$view = gravityview()->views->get( $view_id );
+			if ( ! $view ) {
+				/** Emulate the weird behavior of \GravityView_View_Data::get_view adding a view which wasn't there to begin with. */
+				gravityview()->views->add( \GV\View::by_id( $view_id ) );
+				$view = gravityview()->views->get( $view_id );
+			}
 
-		do_action( 'gravityview_log_debug', '[render_view] View Data: ', $view_data );
+			/** Update the view settings with the requested arguments. */
+			$view->settings->update( $passed_args );
+		} else {
+			/** \GravityView_View_Data::get_view is deprecated. */
+			$view_data = $this->getGvOutputData()->get_view( $view_id, $passed_args );
 
-		do_action( 'gravityview_log_debug', '[render_view] Init View. Arguments: ', $passed_args );
+			do_action( 'gravityview_log_debug', '[render_view] View Data: ', $view_data );
 
-		// The passed args were always winning, even if they were NULL.
-		// This prevents that. Filters NULL, FALSE, and empty strings.
-		$passed_args = array_filter( $passed_args, 'strlen' );
+			do_action( 'gravityview_log_debug', '[render_view] Init View. Arguments: ', $passed_args );
 
-		//Override shortcode args over View template settings
-		$atts = wp_parse_args( $passed_args, $view_data['atts'] );
+			// The passed args were always winning, even if they were NULL.
+			// This prevents that. Filters NULL, FALSE, and empty strings.
+			$passed_args = array_filter( $passed_args, 'strlen' );
 
-		do_action( 'gravityview_log_debug', '[render_view] Arguments after merging with View settings: ', $atts );
+			//Override shortcode args over View template settings
+			$atts = wp_parse_args( $passed_args, $view_data['atts'] );
+
+			do_action( 'gravityview_log_debug', '[render_view] Arguments after merging with View settings: ', $atts );
+		}
 
 		// It's password protected and you need to log in.
 		if ( post_password_required( $view_id ) ) {
@@ -753,7 +771,12 @@ class GravityView_frontend {
 			 */
 			$direct_access = apply_filters( 'gravityview_direct_access', true, $view_id );
 
-			$embed_only = ! empty( $atts['embed_only'] );
+			if ( function_exists( 'gravityview' ) ) {
+				$embed_only = $view->settings->get( 'embed_only' );
+			} else {
+				/** Deprecated. View attributes moved to \GV\View::$settings. */
+				$embed_only = ! empty( $atts['embed_only'] );
+			}
 
 			if( ! $direct_access || ( $embed_only && ! GVCommon::has_cap( 'read_private_gravityviews' ) ) ) {
 				return __( 'You are not allowed to view this content.', 'gravityview' );
@@ -768,9 +791,15 @@ class GravityView_frontend {
 		 */
 		global $gravityview_view;
 
-		$gravityview_view = new GravityView_View( $view_data );
-
-		$post_id = ! empty( $atts['post_id'] ) ? intval( $atts['post_id'] ) : $this->getPostId();
+		if ( function_exists( 'gravityview' ) ) {
+			$view_data = $view->as_data();
+			$gravityview_view = new GravityView_View( $view_data );
+			$post_id = intval( $view->settings->get( 'post_id' ) ? : $this->getPostId() );
+		} else {
+			/** These constructs are deprecated. Use the new gravityview() wrapper. */
+			$gravityview_view = new GravityView_View( $view_data );
+			$post_id = ! empty( $atts['post_id'] ) ? intval( $atts['post_id'] ) : $this->getPostId();
+		}
 
 		$gravityview_view->setPostId( $post_id );
 
@@ -789,24 +818,43 @@ class GravityView_frontend {
 			 */
 			$get_entries = apply_filters( 'gravityview_get_view_entries_'.$view_slug, true );
 
+			if ( function_exists( 'gravityview' ) ) {
+				$hide_until_searched = $view->settings->get( 'hide_until_searched' );
+			} else {
+				/** $atts is deprecated, use \GV\View:$settings */
+				$hide_until_searched = ! empty( $atts['hide_until_searched'] );
+			}
+
 			/**
 			 * Hide View data until search is performed
 			 * @since 1.5.4
 			 */
-			if ( ! empty( $atts['hide_until_searched'] ) && ! $this->isSearch() ) {
+			if ( $hide_until_searched && ! $this->isSearch() ) {
 				$gravityview_view->setHideUntilSearched( true );
 				$get_entries = false;
 			}
 
-
 			if ( $get_entries ) {
 
-				if ( ! empty( $atts['sort_columns'] ) ) {
+				if ( function_exists( 'gravityview' ) ) {
+					$sort_columns = $view->settings->get( 'sort_columns' );
+				} else {
+					/** $atts is deprecated, use \GV\View:$settings */
+					$sort_columns = ! empty( $atts['sort_columns'] );
+				}
+
+				if ( $sort_columns ) {
 					// add filter to enable column sorting
 					add_filter( 'gravityview/template/field_label', array( $this, 'add_columns_sort_links' ) , 100, 3 );
 				}
 
-				$view_entries = self::get_view_entries( $atts, $view_data['form_id'] );
+				if ( function_exists( 'gravityview' ) ) {
+					$view_entries = self::get_view_entries( $view->settings->as_atts(), $view->forms->last()->ID );
+				} else {
+					/** $atts is deprecated, use \GV\View:$settings */
+					/** $view_data is depreacted, use \GV\View properties */
+					$view_entries = self::get_view_entries( $atts, $view_data['form_id'] );
+				}
 
 				do_action( 'gravityview_log_debug', sprintf( '[render_view] Get Entries. Found %s entries total, showing %d entries', $view_entries['count'], sizeof( $view_entries['entries'] ) ) );
 
@@ -826,17 +874,21 @@ class GravityView_frontend {
 			// user requested Single Entry View
 			do_action( 'gravityview_log_debug', '[render_view] Executing Single View' );
 
-
 			/**
 			 * @action `gravityview_render_entry_{View ID}` Before rendering a single entry for a specific View ID
 			 * @since 1.17
 			 */
-			do_action( 'gravityview_render_entry_'.$view_data['id'] );
+			if ( function_exists( 'gravityview' ) ) {
+				do_action( 'gravityview_render_entry_' . $view->ID );
+			} else {
+				/** $view_data is depreacted, use \GV\View properties */
+				do_action( 'gravityview_render_entry_'.$view_data['id'] );
+			}
 
 			$entry = $this->getEntry();
 
 			// You are not permitted to view this entry.
-			if ( empty( $entry ) || ! self::is_entry_approved( $entry, $atts ) ) {
+			if ( empty( $entry ) || ! self::is_entry_approved( $entry, function_exists( 'gravityview' ) ? $view->settings->as_atts() : $atts ) ) {
 
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.' );
 
@@ -880,7 +932,11 @@ class GravityView_frontend {
 			$view_entries['entries'][] = $entry;
 			do_action( 'gravityview_log_debug', '[render_view] Get single entry: ', $view_entries['entries'] );
 
-			$back_link_label = isset( $atts['back_link_label'] ) ? $atts['back_link_label'] : null;
+			if ( function_exists( 'gravityview' ) ) {
+				$back_link_label = $view->settings->get( 'back_link_label', null );
+			} else {
+				$back_link_label = isset( $atts['back_link_label'] ) ? $atts['back_link_label'] : null;
+			}
 
 			// set back link label
 			$gravityview_view->setBackLinkLabel( $back_link_label );

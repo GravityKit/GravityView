@@ -337,6 +337,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_Admin_Bar::add_edit_view_and_form_link()
 	 * @covers \GravityView_frontend::insert_view_in_content()
 	 * @covers \GravityView_frontend::add_scripts_and_styles()
+	 * @covers \GravityView_frontend::render()
 	 */
 	function test_data_get_views() {
 		$this->_reset_context();
@@ -399,6 +400,36 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$this->assertContains( '<table', $fe->insert_view_in_content( '' ) );
 
 			$fe->add_scripts_and_styles();
+		}
+
+		{
+			/**
+			 * There are two views in there, but let's make sure a view that wasn't called for is still added.
+			 * This is a side-effect of the old \GravityView_View_Data::get_view() method.
+			 */
+			$and_another_post = $this->factory->view->create_and_get();
+			$and_another_view = \GV\View::by_id( $and_another_post->ID );
+			$and_another_entry = $this->factory->entry->create_and_get( array( 'form_id' => $and_another_view->forms->last()->ID ) );
+
+			$fe->setIsGravityviewPostType( true );
+			$this->assertContains( 'not allowed to view this content', $fe->render_view( array(
+				'id' => $and_another_view->ID,
+				'embed_only' => true, /** Check propagation of $passed_args */
+			) ) );
+
+			$this->assertContains( 'gv-container-' . $and_another_view->ID, $fe->render_view( array(
+				'id' => $and_another_view->ID,
+				'embed_only' => false, /** Check propagation of $passed_args */
+			) ) );
+
+			$fe->set_context_view_id( $and_another_view->ID );
+			$fe->setSingleEntry( $and_another_view->ID );
+			$fe->setEntry( $and_another_entry['id'] );
+
+			$this->assertContains( sprintf( 'data-viewid="%d"', $and_another_view->ID ), $fe->render_view( array(
+				'id' => $and_another_view->ID,
+				'debug' => true,
+			) ) );
 		}
 
 		$this->_reset_context();
