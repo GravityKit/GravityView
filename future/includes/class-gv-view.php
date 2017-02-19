@@ -194,6 +194,9 @@ class View implements \ArrayAccess {
 			 */
 		}
 
+		/** Get fields. */
+		$view->fields = Field_Collection::from_configuration( (array)$view->_gravityview_directory_fields );
+
 		$view->settings->update( gravityview_get_template_settings( $view->ID ) );
 
 		/**

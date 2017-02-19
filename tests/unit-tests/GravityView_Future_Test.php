@@ -1036,4 +1036,53 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	/**
+	 * @covers \GV\Field_Collection::add()
+	 * @covers \GV\Field_Collection::from_configuration()
+	 * @covers \GV\Field_Collection::get()
+	 * @covers \GV\Field_Collection::by_position()
+	 * @covers \GV\Field::as_configuration()
+	 * @covers \GV\Field::from_configuration()
+	 *
+	 * @group fields
+	 */
+	public function test_field_and_field_collection() {
+		$fields = new \GV\Field_Collection();
+		$field = new \GV\Field();
+
+		$fields->add( $field );
+		$this->assertContains( $field, $fields->all() );
+
+		$expectedException = null;
+		try {
+			/** Make sure we can only add \GV\Field objects into the \GV\Field_Collection. */
+			$fields->add( new stdClass() );
+		} catch ( \InvalidArgumentException $e ) {
+			$expectedException = $e;
+		}
+		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
+		$this->assertCount( 1, $fields->all() );
+
+		$this->assertEquals( array( 'id', 'label', 'show_label', 'custom_label', 'custom_class', 'only_loggedin', 'only_loggedin_cap' ),
+			array_keys( $field->as_configuration() ) );
+
+		$fields = \GV\Field_Collection::from_configuration( array(
+			'directory_list-title' => array(
+				'ffff0001' => array( 'id' => 1, 'label' => 'Hi there :)' ),
+				'ffff0002' => array( 'id' => 2, 'label' => 'Hi there, too :)' ),
+				'ffff0003' => array( 'id' => 5, 'only_loggedin_cap' => 'read' ),
+			),
+			'single_list-title' => array(
+				'ffff0004' => array( 'id' => 1, 'label' => 'Hi there :)', 'custom_class' => 'red' ),
+			),
+		) );
+		$this->assertCount( 4, $fields->all() );
+		$this->assertEquals( 'red', $fields->get( 'ffff0004' )->custom_class );
+		$this->assertEquals( 'read', $fields->get( 'ffff0003' )->cap );
+		$this->assertSame( $fields->by_position( 'directory_list-title' )->get( 'ffff0002' ), $fields->get( 'ffff0002' ) );
+		$this->assertCount( 0, $fields->by_position( 'nope' )->all() );
+		$this->assertCount( 1, $fields->by_position( 'single_list-title' )->all() );
+		$this->assertNull( $fields->by_position( 'nope' )->get( 'ffff0001' ) );
+	}
 }
