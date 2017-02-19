@@ -93,10 +93,14 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-form.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-form-gravityforms.php' );
 
+		/** Our Field generic. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-field.php' );
+
 		/** Get the collections ready. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-collection.php' );
-		require_once $this->plugin->dir( 'future/includes/class-gv-collection-view.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-field.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-collection-form.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-view.php' );
 
 		/** The Settings. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );

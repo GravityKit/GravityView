@@ -29,21 +29,31 @@ class View implements \ArrayAccess {
 	public $settings;
 
 	/**
-	 * @var The \GV\Form_Collection instance.
+	 * @var The \GV\Form for this view.
 	 *
-	 * Contains all the forms that are sourced for entries in this view.
+	 * Contains the form that is sourced for entries in this view.
 	 *
 	 * @api
 	 * @since future
 	 */
-	public $forms;
+	public $form;
+
+	/**
+	 * @var A \GV\Field_Collection instance.
+	 *
+	 * Contains all the fields that are attached to this view.
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $fields;
 
 	/**
 	 * The constructor.
 	 */
 	public function __construct() {
 		$this->settings = new View_Settings();
-		$this->forms = new Form_Collection();
+		$this->fields = new Field_Collection();
 	}
 
 	/**
@@ -175,11 +185,9 @@ class View implements \ArrayAccess {
 		$view = new self();
 		$view->post = $post;
 
-		/** Get connected forms. */
-		$form = GF_Form::by_id( $view->_gravityview_form_id );
-		if ( $form ) {
-			$view->forms->add( $form );
-		} else {
+		/** Get connected form. */
+		$view->form = GF_Form::by_id( $view->_gravityview_form_id );
+		if ( ! $view->form ) {
 			/**
 			 * Form doesn't exist...
 			 * @todo Add logging all around such silent failure places.
@@ -213,13 +221,13 @@ class View implements \ArrayAccess {
 
 			/**
 			 * @deprecated
-			 * @see \GV\View::$forms::last()
+			 * @see \GV\View::$form
 			 */
 			// 'form' => gravityview_get_form( $view->_gravityview_form_id ),
 
 			/**
 			 * @deprecated
-			 * @see \GV\View::$forms::last()::$ID
+			 * @see \GV\View::$form::$ID
 			 */
 			// 'form_id' => $view->_gravityview_form_id,
 
@@ -229,9 +237,9 @@ class View implements \ArrayAccess {
 			 */
 			// 'atts' => $view->settings->as_atts(),
 
+			'fields' => \GravityView_View_Data::getInstance()->get_fields( $view->ID ),
 			'widgets' => gravityview_get_directory_widgets( $view->ID ),
 			'template_id' => gravityview_get_template_id( $view->ID ),
-			'fields' => \GravityView_View_Data::getInstance()->get_fields( $view->ID ),
 		);
 
 		return $view;
@@ -328,9 +336,9 @@ class View implements \ArrayAccess {
 			case 'view_id':
 				return $this->ID;
 			case 'form':
-				return $this->forms->last();
+				return $this->form;
 			case 'form_id':
-				return $this->forms->last()->ID;
+				return $this->form->ID;
 			case 'atts':
 				return $this->as_atts();
 			default:
@@ -382,8 +390,8 @@ class View implements \ArrayAccess {
 		return array_merge(
 			array( 'id' => $this->ID ),
 			array( 'view_id' => $this->ID ),
-			array( 'form_id' => $this->forms->last()->ID ),
-			array( 'form' => gravityview_get_form( $this->forms->last()->ID ) ),
+			array( 'form_id' => $this->form->ID ),
+			array( 'form' => gravityview_get_form( $this->form->ID ) ),
 			array( 'atts' => $this->settings->as_atts() ),
 			$this->_data
 		);

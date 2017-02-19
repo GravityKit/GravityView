@@ -41,7 +41,7 @@ function GravityView_View_Data_add_view( $view_id, $atts ) {
 	}
 
 	/** Doesn't have a connected form. */
-	if ( ! $view->forms->count() ) {
+	if ( ! $view->form ) {
 		do_action( 'gravityview_log_debug', sprintf( 'GravityView_View_Data[add_view] Returning; Post ID #%s does not have a connected form.', $view_id ) );
 		return false;
 	}

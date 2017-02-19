@@ -487,7 +487,7 @@ class GravityView_frontend {
 		} else {
 			if ( function_exists( 'gravityview' ) ) {
 				foreach ( gravityview()->views->all() as $_view ) {
-					if ( intval( $_view->forms->last()->ID ) === intval( $entry['form_id'] ) ) {
+					if ( intval( $_view->form->ID ) === intval( $entry['form_id'] ) ) {
 						$view = $_view;
 						break;
 					}
@@ -509,7 +509,7 @@ class GravityView_frontend {
 
 		if ( function_exists( 'gravityview' ) ) {
 			if ( $title = $view->settings->get( 'single_title' ) ) {
-				$title = GravityView_API::replace_variables( $title, $view->forms->last(), $entry );
+				$title = GravityView_API::replace_variables( $title, $view->form, $entry );
 				$title = do_shortcode( $title );
 			}
 		} else {
@@ -849,7 +849,7 @@ class GravityView_frontend {
 				}
 
 				if ( function_exists( 'gravityview' ) ) {
-					$view_entries = self::get_view_entries( $view->settings->as_atts(), $view->forms->last()->ID );
+					$view_entries = self::get_view_entries( $view->settings->as_atts(), $view->form->ID );
 				} else {
 					/** $atts is deprecated, use \GV\View:$settings */
 					/** $view_data is depreacted, use \GV\View properties */

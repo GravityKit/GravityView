@@ -171,7 +171,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $view->ID, $post->ID );
 
 		/** Check forms initialization. */
-		$this->assertCount( 1, $view->forms->all() );
+		$this->assertNotNull( $view->form );
 
 		/** A post of a different post type. */
 		$post = $this->factory->post->create_and_get();
@@ -204,7 +204,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $view->ID, $post->ID );
 
 		/** Check forms initialization. */
-		$this->assertCount( 1, $view->forms->all() );
+		$this->assertNotNull( $view->form );
 
 		/** A post of a different post type. */
 		$post = $this->factory->post->create_and_get();
@@ -256,7 +256,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $post->ID, $view['id'] );
 		$this->assertEquals( $post->ID, $view['view_id'] );
 		$this->assertEquals( $post->_gravityview_form_id, $view['form_id'] );
-		$this->assertSame( $view->forms->last(), $view['form'] );
+		$this->assertSame( $view->form, $view['form'] );
 
 		/** Immutable! */
 		$expectedException = null;
@@ -362,7 +362,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 						return $subject['id'] == 'edit-view-' . $view->ID; /** Edit the first view. */
 					} ) ),
 					array( $this->callback( function ( $subject ) use ( $view ) {
-						return $subject['id'] == 'edit-form-' . $view->forms->last()->ID; /** Edit the form (shared by both views). */
+						return $subject['id'] == 'edit-form-' . $view->form->ID; /** Edit the form (shared by both views). */
 					} ) ),
 					array( $this->callback( function ( $subject ) use ( $another_view ) {
 						return $subject['id'] == 'edit-view-' . $another_view->ID; /** Edit the second view. */
@@ -409,7 +409,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			 */
 			$and_another_post = $this->factory->view->create_and_get();
 			$and_another_view = \GV\View::by_id( $and_another_post->ID );
-			$and_another_entry = $this->factory->entry->create_and_get( array( 'form_id' => $and_another_view->forms->last()->ID ) );
+			$and_another_entry = $this->factory->entry->create_and_get( array( 'form_id' => $and_another_view->form->ID ) );
 
 			$fe->setIsGravityviewPostType( true );
 			$this->assertContains( 'not allowed to view this content', $fe->render_view( array(
