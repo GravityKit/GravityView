@@ -65,6 +65,24 @@ class Field_Collection extends Collection {
 	}
 
 	/**
+	 * Get a copy of this \GV\Field_Collection filtered by visibility to current user context.
+	 *
+	 * @api
+	 * @since
+	 *
+	 * @return \GV\Field_Collection A filtered collection of \GV\Fields, filtered by visibility.
+	 */
+	public function by_visible() {
+		$fields = new self();
+
+		foreach ( $this->all() as $field ) {
+			if ( ! $field->cap || \GVCommon::has_cap( $field->cap ) )
+				$fields->add( $field );
+		}
+		return $fields;
+	}
+
+	/**
 	 * Parse a configuration array into a Field_Collection.
 	 *
 	 * @param array $configuration The configuration, structured like so:
@@ -78,13 +96,7 @@ class Field_Collection extends Collection {
 	 *   	[other fields]
 	 *
 	 *  	'5372653f25d44' => array(
-	 *  		'id' => string '9' (length=1)
-	 *  		'label' => string 'Screenshots' (length=11)
-	 *			'show_label' => string '1' (length=1)
-	 *			'custom_label' => string '' (length=0)
-	 *			'custom_class' => string 'gv-gallery' (length=10)
-	 * 			'only_loggedin' => string '0' (length=1)
-	 *			'only_loggedin_cap' => string 'read' (length=4)
+	 *			@see \GV\Field::as_configuration() for structure
 	 *  	)
 	 *
 	 * 		[other fields]
@@ -108,5 +120,21 @@ class Field_Collection extends Collection {
 			}
 		}
 		return $fields;
+	}
+
+	/**
+	 * Return a configuration array for this field collection.
+	 *
+	 * @return array See \GV\Field_Collection::from_configuration() for structure.
+	 */
+	public function as_configuration() {
+		$configuration = array();
+		foreach ( $this->all() as $field ) {
+			if ( empty( $configuration[ $field->position ] ) )
+				$configuration[ $field->position ] = array();
+
+			$configuration[ $field->position ][ $field->UID ] = $field->as_configuration();
+		}
+		return $configuration;
 	}
 }

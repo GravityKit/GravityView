@@ -240,7 +240,12 @@ class View implements \ArrayAccess {
 			 */
 			// 'atts' => $view->settings->as_atts(),
 
-			'fields' => \GravityView_View_Data::getInstance()->get_fields( $view->ID ),
+			/**
+			 * @deprecated
+			 * @see \GV\View::$fields
+			 */
+			// 'fields' => \GravityView_View_Data::getInstance()->get_fields( $view->ID ),
+
 			'widgets' => gravityview_get_directory_widgets( $view->ID ),
 			'template_id' => gravityview_get_template_id( $view->ID ),
 		);
@@ -396,6 +401,7 @@ class View implements \ArrayAccess {
 			array( 'form_id' => $this->form->ID ),
 			array( 'form' => gravityview_get_form( $this->form->ID ) ),
 			array( 'atts' => $this->settings->as_atts() ),
+			array( 'fields' => $this->fields->as_configuration() ),
 			$this->_data
 		);
 	}

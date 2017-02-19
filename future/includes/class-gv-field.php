@@ -74,6 +74,22 @@ class Field {
 	public $cap = '';
 
 	/**
+	 * @var bool Show as a link to entry.
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $show_as_link = false;
+
+	/**
+	 * @var bool Filter this field from searching.
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $search_filter = false;
+
+	/**
 	 * Return an array of the old format as used by callers of `GVCommon:get_directory_fields()` for example.
 	 *
 	 *  		'id' => string '9' (length=1)
@@ -83,6 +99,8 @@ class Field {
 	 *			'custom_class' => string 'gv-gallery' (length=10)
 	 * 			'only_loggedin' => string '0' (length=1)
 	 *			'only_loggedin_cap' => string 'read' (length=4)
+	 *			'search_filter' => string '0'
+	 *			'show_as_link' => string '0'
 	 *
 	 * @internal
 	 * @since future
@@ -98,6 +116,8 @@ class Field {
 			'custom_class' => $this->custom_class,
 			'only_loggedin' => $this->cap ? '1' : '0',
 			'only_loggedin_cap' => $this->cap,
+			'search_filter' => $this->search_filter ? '1' : '0',
+			'show_as_link' => $this->show_as_link ? '1' : '0',
 		);
 	}
 
@@ -117,6 +137,8 @@ class Field {
 		$this->show_label = $configuration['show_label'] == '1';
 		$this->custom_label = $configuration['custom_label'];
 		$this->custom_class = $configuration['custom_class'];
-		$this->cap = $configuration['only_loggedin_cap'];
+		$this->cap = $configuration['only_loggedin'] == '1' ? $configuration['only_loggedin_cap'] : '';
+		$this->search_filter = $configuration['search_filter'] == '1';
+		$this->show_as_link = $configuration['show_as_link'] == '1';
 	}
 }

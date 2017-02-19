@@ -333,12 +333,23 @@ class GravityView_View_Data {
 	 * @uses  gravityview_get_directory_fields() Fetch the configured fields for a View
 	 * @uses  GravityView_View_Data::filter_fields() Only show visible fields
 	 * @param  int $view_id View ID
-	 * @return array          Array of fields as passed by `gravityview_get_directory_fields()`
+	 *
+	 * @deprecated
+	 * @see \GV\View::$fields
+	 *
+	 * @return array|null Array of fields as passed by `gravityview_get_directory_fields()`
 	 */
 	function get_fields( $view_id ) {
-
 		$dir_fields = gravityview_get_directory_fields( $view_id );
 		do_action( 'gravityview_log_debug', '[render_view] Fields: ', $dir_fields );
+
+		if ( function_exists( 'gravityview' ) ) {
+			if ( ! \GV\View::exists( $view_id ) ) {
+				$view = \GV\View::by_id( $view_id );
+				return $view->fields->by_visible()->as_configuration();
+			}
+			return $dir_fields;
+		}
 
 		// remove fields according to visitor visibility permissions (if logged-in)
 		$dir_fields = $this->filter_fields( $dir_fields );
@@ -350,11 +361,16 @@ class GravityView_View_Data {
 	/**
 	 * Filter area fields based on specified conditions
 	 *
-	 * @access public
+	 * @deprecated
+	 *
 	 * @param array $dir_fields
 	 * @return array
 	 */
 	private function filter_fields( $dir_fields ) {
+
+		if ( function_exists( 'gravityview' ) ) {
+			throw new Exception( __METHOD__ . ' should not be called anymore. Why was it?' );
+		}
 
 		if( empty( $dir_fields ) || !is_array( $dir_fields ) ) {
 			return $dir_fields;
@@ -379,11 +395,16 @@ class GravityView_View_Data {
 	/**
 	 * Check whether a certain field should not be presented based on its own properties.
 	 *
-	 * @access public
+	 * @deprecated
+	 *
 	 * @param array $properties
 	 * @return boolean True: (field should be hidden) or False: (field should be presented)
 	 */
 	private function hide_field_check_conditions( $properties ) {
+
+		if ( function_exists( 'gravityview' ) ) {
+			throw new Exception( __METHOD__ . ' should not be called anymore. Why was it?' );
+		}
 
 		// logged-in visibility
 		if( ! empty( $properties['only_loggedin'] ) && ! GVCommon::has_cap( $properties['only_loggedin_cap'] ) ) {

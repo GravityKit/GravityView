@@ -1040,12 +1040,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\Field_Collection::add()
 	 * @covers \GV\Field_Collection::from_configuration()
+	 * @covers \GV\Field_Collection::as_configuration()
 	 * @covers \GV\Field_Collection::get()
 	 * @covers \GV\Field_Collection::by_position()
+	 * @covers \GV\Field_Collection::by_visible()
 	 * @covers \GV\Field::as_configuration()
 	 * @covers \GV\Field::from_configuration()
-	 *
-	 * @group fields
+	 * @covers gravityview_get_directory_fields()
+	 * @covers \GV\GravityView_View_Data::get_fields()
 	 */
 	public function test_field_and_field_collection() {
 		$fields = new \GV\Field_Collection();
@@ -1064,7 +1066,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
 		$this->assertCount( 1, $fields->all() );
 
-		$this->assertEquals( array( 'id', 'label', 'show_label', 'custom_label', 'custom_class', 'only_loggedin', 'only_loggedin_cap' ),
+		$this->assertEquals( array( 'id', 'label', 'show_label', 'custom_label', 'custom_class', 'only_loggedin', 'only_loggedin_cap', 'search_filter', 'show_as_link' ),
 			array_keys( $field->as_configuration() ) );
 
 		$fields = \GV\Field_Collection::from_configuration( array(
@@ -1079,10 +1081,51 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$this->assertCount( 4, $fields->all() );
 		$this->assertEquals( 'red', $fields->get( 'ffff0004' )->custom_class );
-		$this->assertEquals( 'read', $fields->get( 'ffff0003' )->cap );
+		$this->assertEquals( '', $fields->get( 'ffff0003' )->cap ); /** The loggedin wasn't set. */
 		$this->assertSame( $fields->by_position( 'directory_list-title' )->get( 'ffff0002' ), $fields->get( 'ffff0002' ) );
 		$this->assertCount( 0, $fields->by_position( 'nope' )->all() );
 		$this->assertCount( 1, $fields->by_position( 'single_list-title' )->all() );
 		$this->assertNull( $fields->by_position( 'nope' )->get( 'ffff0001' ) );
+
+		$this->assertEquals( array( 'directory_list-title', 'single_list-title' ), array_keys( $fields->as_configuration() ) );
+
+		/** Filter by permissions */
+		$user = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+		) );
+
+		$fields = \GV\Field_Collection::from_configuration( array(
+			'default' => array(
+				'000a' => array( 'only_loggedin' => '1', 'only_loggedin_cap' => 'manage_options' ),
+				'000b' => array( 'only_loggedin' => '1', 'only_loggedin_cap' => 'read' ),
+				'000c' => array( 'only_loggedin' => '0', 'only_loggedin_cap' => 'read' /** Only valid when only_loggedin is set */ ),
+			),
+		) );
+
+		$visible = $fields->by_visible();
+		$this->assertCount( 1, $visible->all() );
+		$this->assertNotNull( $visible->get( '000c' ) );
+
+		wp_set_current_user( $user );
+
+		$visible = $fields->by_visible();
+		$this->assertCount( 2, $visible->all() );
+		$this->assertNotNull( $visible->get( '000c' ) );
+		$this->assertNotNull( $visible->get( '000b' ) );
+
+		$user = wp_get_current_user();
+		$user->add_cap( 'manage_options' );
+		$user->get_role_caps(); // WordPress 4.2 and lower need this to refresh caps
+
+		$visible = $fields->by_visible();
+		$this->assertCount( 3, $visible->all() );
+
+		/** Back compatibility */
+		$post = $this->factory->view->create_and_get();
+		$view = \GV\View::from_post( $post );
+		$this->assertEquals( $view->fields->as_configuration(), gravityview_get_directory_fields( $view->ID ) );
+
+		wp_set_current_user( 0 );
 	}
 }
