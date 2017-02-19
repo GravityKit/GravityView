@@ -1534,7 +1534,15 @@ class GravityView_Edit_Entry_Render {
     private function get_configured_edit_fields( $form, $view_id ) {
 
         // Get all fields for form
-        $properties = GravityView_View_Data::getInstance()->get_fields( $view_id );
+		if ( function_exists( 'gravityview' ) ) {
+			if ( \GV\View::exists( $view_id ) ) {
+				$view = \GV\View::by_id( $view_id );
+				$properties = $view->fields->as_configuration();
+			}
+		} else {
+			/** GravityView_View_Data is deprecated. */
+			$properties = GravityView_View_Data::getInstance()->get_fields( $view_id );
+		}
 
         // If edit tab not yet configured, show all fields
         $edit_fields = !empty( $properties['edit_edit-fields'] ) ? $properties['edit_edit-fields'] : NULL;
