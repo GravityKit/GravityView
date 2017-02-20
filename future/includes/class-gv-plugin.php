@@ -2,8 +2,9 @@
 namespace GV;
 
 /** If this file is called directly, abort. */
-if ( ! defined( 'GRAVITYVIEW_DIR' ) )
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
+}
 
 /**
  * The GravityView WordPress plugin class.
@@ -68,8 +69,9 @@ final class Plugin {
 	 * @return \GV\Plugin The global instance of GravityView Plugin.
 	 */
 	public static function get() {
-		if ( ! self::$__instance instanceof self )
+		if ( ! self::$__instance instanceof self ) {
 			self::$__instance = new self;
+		}
 		return self::$__instance;
 	}
 
@@ -92,8 +94,9 @@ final class Plugin {
 		 * Stop all further functionality from loading if the WordPress
 		 * plugin is incompatible with the current environment.
 		 */
-		if ( ! $this->is_compatible() )
+		if ( ! $this->is_compatible() ) {
 			return;
+		}
 
 		/** Register hooks that are fired when the plugin is activated and deactivated. */
 		register_activation_hook( $this->dir( 'gravityview.php' ), array( $this, 'activate' ) );
@@ -236,8 +239,9 @@ final class Plugin {
 	 * @return string The version of Gravity Forms.
 	 */
 	private function get_gravityforms_version() {
-		if ( !class_exists( '\GFCommon' ) || !empty( $GLOBALS['GRAVITYVIEW_TESTS_GF_INACTIVE_OVERRIDE'] ) )
+		if ( !class_exists( '\GFCommon' ) || !empty( $GLOBALS['GRAVITYVIEW_TESTS_GF_INACTIVE_OVERRIDE'] ) ) {
 			throw new \ErrorException( 'Gravity Forms is inactive or not installed.' );
+		}
 
 		return !empty( $GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] ) ?
 			$GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] : \GFCommon::$version;

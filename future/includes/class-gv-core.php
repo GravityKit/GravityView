@@ -2,8 +2,9 @@
 namespace GV;
 
 /** If this file is called directly, abort. */
-if ( ! defined( 'GRAVITYVIEW_DIR' ) )
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
+}
 
 /**
  * The core GravityView API.
@@ -40,8 +41,9 @@ final class Core {
 	 * @return \GV\Core The global instance of GravityView Core.
 	 */
 	public static function get() {
-		if ( ! self::$__instance instanceof self )
+		if ( ! self::$__instance instanceof self ) {
 			self::$__instance = new self;
+		}
 		return self::$__instance;
 	}
 

@@ -980,8 +980,9 @@ function gravityview_get_current_views() {
 	}
 
 	if ( function_exists( 'gravityview' ) ) {
-		if ( ! gravityview()->views->count() )
+		if ( ! gravityview()->views->count() ) {
 			return array();
+		}
 		return array_combine(
 			array_map( function ( $view ) { return $view->ID; }, gravityview()->views->all() ),
 			array_map( function ( $view ) { return $view->as_data(); }, gravityview()->views->all() )

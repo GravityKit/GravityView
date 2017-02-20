@@ -2,8 +2,9 @@
 namespace GV;
 
 /** If this file is called directly, abort. */
-if ( ! defined( 'GRAVITYVIEW_DIR' ) )
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
+}
 
 /**
  * The base Entry class.
@@ -24,8 +25,9 @@ class Entry {
 		$endpoint = self::get_endpoint_name();
 
 		/** Let's make sure the endpoint array is not polluted. */
-		if ( in_array( array( EP_ALL, $endpoint, $endpoint ), $wp_rewrite->endpoints ) )
+		if ( in_array( array( EP_ALL, $endpoint, $endpoint ), $wp_rewrite->endpoints ) ) {
 			return;
+		}
 
 		add_rewrite_endpoint( $endpoint, EP_ALL );
 	}

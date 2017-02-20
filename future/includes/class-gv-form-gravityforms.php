@@ -2,8 +2,9 @@
 namespace GV;
 
 /** If this file is called directly, abort. */
-if ( ! defined( 'GRAVITYVIEW_DIR' ) )
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
+}
 
 /**
  * The Gravity Forms Form class implementation.
@@ -41,8 +42,9 @@ class GF_Form extends Form implements \ArrayAccess {
 	 */
 	public static function by_id( $form_id ) {
 		$form = \GFAPI::get_form( $form_id );
-		if ( !$form )
+		if ( !$form ) {
 			return null;
+		}
 
 		$self = new self();
 		$self->form = $form;

@@ -2,8 +2,9 @@
 namespace GV;
 
 /** If this file is called directly, abort. */
-if ( ! defined( 'GRAVITYVIEW_DIR' ) )
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
+}
 
 /**
  * A collection of \GV\View objects.
@@ -39,8 +40,9 @@ class View_Collection extends Collection {
 	 */
 	public function get( $view_id ) {
 		foreach ( $this->all() as $view ) {
-			if ( $view->ID == $view_id )
+			if ( $view->ID == $view_id ) {
 				return $view;
+			}
 		}
 		return null;
 	}

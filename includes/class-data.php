@@ -120,8 +120,9 @@ class GravityView_View_Data {
 					if ( function_exists( 'gravityview' ) ) {
 						$shortcodes = \GV\Shortcode::parse( $passed_post );
 						foreach ( $shortcodes as $shortcode ) {
-							if ( $shortcode->name == 'gravityview' && !empty( $shortcode->atts['id'] ) )
+							if ( $shortcode->name == 'gravityview' && !empty( $shortcode->atts['id'] ) ) {
 								$ids []= $shortcode->atts['id'];
+							}
 						}
 					} else {
 						/** Deprecated, use \GV\Shortcode::parse. */
@@ -165,8 +166,9 @@ class GravityView_View_Data {
 	 */
 	function get_views() {
 		if ( function_exists( 'gravityview' ) ) {
-			if ( ! gravityview()->views->count() )
+			if ( ! gravityview()->views->count() ) {
 				return array();
+			}
 			return array_combine(
 				array_map( function ( $view ) { return $view->ID; }, gravityview()->views->all() ),
 				array_map( function ( $view ) { return $view->as_data(); }, gravityview()->views->all() )
@@ -481,8 +483,9 @@ class GravityView_View_Data {
 					$ids []= $shortcode->atts['id'];
 				}
 			}
-			if ( empty ( $ids ) )
+			if ( empty ( $ids ) ) {
 				return null;
+			}
 			return ( sizeof( $ids ) === 1 ) ? $ids[0] : $ids;
 		}
 

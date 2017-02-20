@@ -2,8 +2,9 @@
 namespace GV;
 
 /** If this file is called directly, abort. */
-if ( ! defined( 'GRAVITYVIEW_DIR' ) )
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
+}
 
 /**
  * A collection of \GV\Form objects.
@@ -40,8 +41,9 @@ class Form_Collection extends Collection {
 	 */
 	public function get( $form_id, $backend = 'gravityforms' ) {
 		foreach ( $this->all() as $form ) {
-			if ( $form->ID == $form_id )
+			if ( $form->ID == $form_id ) {
 				return $form;
+			}
 		}
 		return null;
 	}

@@ -2,8 +2,9 @@
 namespace GV;
 
 /** If this file is called directly, abort. */
-if ( ! defined( 'GRAVITYVIEW_DIR' ) )
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
+}
 
 /**
  * The default GravityView View class.
@@ -65,8 +66,9 @@ class View implements \ArrayAccess {
 	public static function register_post_type() {
 
 		/** Register only once */
-		if ( post_type_exists( 'gravityview' ) )
+		if ( post_type_exists( 'gravityview' ) ) {
 			return;
+		}
 
 		/**
 		 * @filter `gravityview_is_hierarchical` Make GravityView Views hierarchical by returning TRUE
@@ -336,8 +338,9 @@ class View implements \ArrayAccess {
 			}
 		}
 
-		if ( ! isset( $this[$offset] ) )
+		if ( ! isset( $this[$offset] ) ) {
 			return null;
+		}
 
 		switch ( $offset ) {
 			case 'id':

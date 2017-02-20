@@ -1,7 +1,8 @@
 <?php
 /** If this file is called directly, abort. */
-if ( ! defined( 'GRAVITYVIEW_DIR' ) )
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
+}
 
 /** The future branch of GravityView requires PHP 5.3+ namespaces and SPL. */
 if ( version_compare( phpversion(), '5.3' , '<' ) ) {

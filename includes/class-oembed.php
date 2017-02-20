@@ -231,8 +231,9 @@ class GravityView_oEmbed {
 			if ( function_exists( 'gravityview' ) && $post = get_post( $post_id ) ) {
 				$views = \GV\View_Collection::from_post( $post );
 				$views = $views->all();
-				if ( ! empty( $views ) )
+				if ( ! empty( $views ) ) {
 					$this->view_id = $views[0]->ID;
+				}
 			} else {
 				/** Deprecated. */
 				$this->view_id = GravityView_View_Data::getInstance()->maybe_get_view_id( $post_id );

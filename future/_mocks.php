@@ -19,8 +19,9 @@ function GravityView_View_Data_add_view( $view_id, $atts ) {
 			call_user_func( __FUNCTION__, $id, $atts );
 		}
 
-		if ( ! gravityview()->request->views->count() )
+		if ( ! gravityview()->request->views->count() ) {
 			return array();
+		}
 
 		return array_combine(
 			array_map( function( $view ) { return $view->ID; }, gravityview()->request->views->all() ),

@@ -533,8 +533,9 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	 * @group ajax
 	 */
 	public function test_directory_link_ajax() {
-		if ( ! defined( 'DOING_AJAX' ) )
+		if ( ! defined( 'DOING_AJAX' ) ) {
 			define( 'DOING_AJAX', true );
+		}
 
 		$post_array = array(
 			'post_content' => 'asdasdsd',

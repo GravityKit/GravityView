@@ -838,8 +838,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @group ajax
 	 */
 	function test_default_request_is_admin_ajax() {
-		if ( ! defined( 'DOING_AJAX' ) )
+		if ( ! defined( 'DOING_AJAX' ) ) {
 			define( 'DOING_AJAX', true );
+		}
 
 		$this->assertFalse( gravityview()->request->is_admin() );
 		$this->assertEquals( gravityview()->request->is_admin(), \GravityView_Plugin::is_admin() );

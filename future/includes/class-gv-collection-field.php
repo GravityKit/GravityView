@@ -2,8 +2,9 @@
 namespace GV;
 
 /** If this file is called directly, abort. */
-if ( ! defined( 'GRAVITYVIEW_DIR' ) )
+if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
+}
 
 /**
  * A collection of \GV\Field objects.
@@ -39,8 +40,9 @@ class Field_Collection extends Collection {
 	 */
 	public function get( $field_uid ) {
 		foreach ( $this->all() as $field ) {
-			if ( $field->UID == $field_uid )
+			if ( $field->UID == $field_uid ) {
 				return $field;
+			}
 		}
 		return null;
 	}
@@ -58,8 +60,9 @@ class Field_Collection extends Collection {
 	public function by_position( $position ) {
 		$fields = new self();
 		foreach ( $this->all() as $field ) {
-			if ( $field->position == $position )
+			if ( $field->position == $position ) {
 				$fields->add( $field );
+			}
 		}
 		return $fields;
 	}
@@ -76,8 +79,9 @@ class Field_Collection extends Collection {
 		$fields = new self();
 
 		foreach ( $this->all() as $field ) {
-			if ( ! $field->cap || \GVCommon::has_cap( $field->cap ) )
+			if ( ! $field->cap || \GVCommon::has_cap( $field->cap ) ) {
 				$fields->add( $field );
+			}
 		}
 		return $fields;
 	}
@@ -130,8 +134,9 @@ class Field_Collection extends Collection {
 	public function as_configuration() {
 		$configuration = array();
 		foreach ( $this->all() as $field ) {
-			if ( empty( $configuration[ $field->position ] ) )
+			if ( empty( $configuration[ $field->position ] ) ) {
 				$configuration[ $field->position ] = array();
+			}
 
 			$configuration[ $field->position ][ $field->UID ] = $field->as_configuration();
 		}
