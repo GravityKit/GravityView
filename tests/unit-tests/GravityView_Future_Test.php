@@ -1047,6 +1047,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Field::as_configuration()
 	 * @covers \GV\Field::from_configuration()
 	 * @covers \GravityView_View_Data::get_fields()
+	 * @covers ::gravityview_get_directory_fields()
 	 */
 	public function test_field_and_field_collection() {
 		$fields = new \GV\Field_Collection();
