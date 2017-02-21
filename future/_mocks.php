@@ -77,6 +77,9 @@ add_filter( 'gravityview/configuration/fields', function( $fields ) {
 
 	foreach ( $fields as $position => &$_fields ) {
 		foreach ( $_fields as $uid => &$_field ) {
+			if ( ! isset( $_field['only_loggedin'] ) ) {
+				continue;
+			}
 			/** If we do not require login, we don't require a cap. */
 			$_field['only_loggedin'] != '1' && ( $_field['only_loggedin_cap'] = '' );
 		}
