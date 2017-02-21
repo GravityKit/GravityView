@@ -1075,14 +1075,8 @@ class GravityView_Edit_Entry_Render {
 
         $_post_backup = isset( $_POST ) ? $_POST : array();
 
-        // Turn on Admin-style display for file upload fields only
-        if( 'fileupload' === $field->type ) {
-
-            $_GET['page'] = 'gf_entries';
-
 	        // Prevent "Product Fields are not editable" message on submitted form
             unset( $_POST );
-        }
 
         // SET SOME FIELD DEFAULTS TO PREVENT ISSUES
         $field->adminOnly = false; /** @see GFFormDisplay::get_counter_init_script() need to prevent adminOnly */
@@ -1114,13 +1108,6 @@ class GravityView_Edit_Entry_Render {
 	    if( !empty( $warnings ) ) {
 		    do_action( 'gravityview_log_error', __METHOD__ . $warnings, $field_value );
 	    }
-
-        /**
-         * Unset hack $_GET['page'] = 'gf_entries'
-         * We need the fileupload html field to render with the proper id
-         *  ( <li id="field_80_16" ... > )
-         */
-        unset( $_GET['page'] );
 
         // Re-define $_POST
         $_POST = $_post_backup;
