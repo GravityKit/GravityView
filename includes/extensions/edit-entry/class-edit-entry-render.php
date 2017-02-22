@@ -13,7 +13,6 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-
 class GravityView_Edit_Entry_Render {
 
     /**
@@ -78,12 +77,6 @@ class GravityView_Edit_Entry_Render {
      * @var array
      */
 	public $fields_with_calculation = array();
-
-    /**
-     * Hold an array of GF field objects with type 'total'
-     * @var array
-     */
-	public $total_fields = array();
 
     /**
      * Gravity Forms form id
@@ -1574,11 +1567,6 @@ class GravityView_Edit_Entry_Render {
             if( $field->has_calculation() ) {
                 $this->fields_with_calculation[] = $field;
                 // don't remove the calculation fields on form render.
-            }
-
-            // process total field after all fields have been saved
-            if ( 'total' === $field->type ) {
-                $this->total_fields[] = $field;
             }
 
             if( in_array( $field->type, $field_type_blacklist ) ) {
