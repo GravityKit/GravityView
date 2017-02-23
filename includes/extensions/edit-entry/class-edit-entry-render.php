@@ -1209,11 +1209,6 @@ class GravityView_Edit_Entry_Render {
 	            $field->{$key} = isset( $field->{$key} ) ? $field->{$key} : NULL;
             }
 
-            // unset emailConfirmEnabled for email type fields
-           /* if( 'email' === $field['type'] && !empty( $field['emailConfirmEnabled'] ) ) {
-                $field['emailConfirmEnabled'] = '';
-            }*/
-
             switch( RGFormsModel::get_input_type( $field ) ) {
 
                 /**
