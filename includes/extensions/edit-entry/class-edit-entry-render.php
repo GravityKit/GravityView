@@ -159,7 +159,7 @@ class GravityView_Edit_Entry_Render {
 
         do_action('gravityview_log_debug', 'GravityView_Edit_Entry[prevent_maybe_process_form] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
 
-        if( $this->is_edit_entry_submission() && $this->verify_nonce() ) {
+        if( $this->is_edit_entry_submission() ) {
             remove_action( 'wp',  array( 'RGForms', 'maybe_process_form'), 9 );
         }
     }
