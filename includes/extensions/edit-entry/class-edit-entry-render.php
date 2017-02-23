@@ -745,7 +745,7 @@ class GravityView_Edit_Entry_Render {
      * @param array $form Gravity Forms form
      * @param bool $do_shortcode Whether to process shortcode inside content. In GF, only run on Custom Field and Post Content fields
      *
-     * @return mixed|string|void
+     * @return string
      */
     private function fill_post_template( $template, $form, $entry, $do_shortcode = false ) {
 
