@@ -78,13 +78,11 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$edit_link_no_post = GravityView_Edit_Entry::get_edit_link( $entry, $view->ID );
 
 		// A link to the raw
-		$this->assertEquals( '?page=gf_entries&view=entry&edit='.$nonce, $edit_link_no_post );
+		$this->assertEquals( '?edit='.$nonce, $edit_link_no_post );
 
 		$args = array(
 			'p' => $post_id,
 			'entry' => $entry['id'],
-			'page' => 'gf_entries',
-			'view' => 'entry',
 			'edit' => $nonce,
 		);
 
