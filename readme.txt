@@ -20,7 +20,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 1.20 on February 2, 2017 =
+= 1.20 on February 23, 2017 =
 
 * Added: Product Fields are now editable
     - Quantity,
@@ -51,6 +51,7 @@ __Developer Notes:__
 * Modified: Only print errors when running the unit tests if the `--debug` setting is defined, like `phpunit --debug --verbose`
 * Modified: If overriding `get_field_input()` using `GravityView_Field`, returning empty value will now result in the default `GF_Field` input being used
 * Modified: GravityView_Edit_Entry_User_Registration::restore_display_name() now returns a value instead of void
+* Tweak: Edit Entry links no longer require `page=gf_entries&view=entry` at the end of the URL (in case you noticed)
 
 = 1.19.4 on January 19, 2017 =
 

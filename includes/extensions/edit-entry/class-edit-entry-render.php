@@ -1060,16 +1060,12 @@ class GravityView_Edit_Entry_Render {
         if(
             ( $this->is_edit_entry_submission() && !in_array( $field->type, array( 'fileupload', 'post_image' ) ) )
             && false === ( $gv_field && is_callable( array( $gv_field, 'get_field_input' ) ) )
+            && ! GFCommon::is_product_field( $field->type )
             || ! empty( $field_content )
             || in_array( $field->type, array( 'honeypot' ) )
         ) {
 	        return $field_content;
         }
-
-        $_post_backup = isset( $_POST ) ? $_POST : array();
-
-	        // Prevent "Product Fields are not editable" message on submitted form
-            unset( $_POST );
 
         // SET SOME FIELD DEFAULTS TO PREVENT ISSUES
         $field->adminOnly = false; /** @see GFFormDisplay::get_counter_init_script() need to prevent adminOnly */
@@ -1101,9 +1097,6 @@ class GravityView_Edit_Entry_Render {
 	    if( !empty( $warnings ) ) {
 		    do_action( 'gravityview_log_error', __METHOD__ . $warnings, $field_value );
 	    }
-
-        // Re-define $_POST
-        $_POST = $_post_backup;
 
         return $return;
     }
