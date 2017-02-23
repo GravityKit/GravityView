@@ -94,7 +94,7 @@ module.exports = function(grunt) {
 					expand: true,
 					cwd: 'assets/lib',
 					extDot: 'last', // Process extension as the last dot (jquery.cookie.js)
-					src: ['**/*.js', '!**/build.js', '!**/dist/*.js', '!**/*.min.js'],
+					src: ['**/*.js', '!**/build.js', '!**/dist/*.js', '!**/*.min.js', '!**/flexibility.js'],
 					dest: 'assets/lib',
 					ext: '.min.js'
 				}]
