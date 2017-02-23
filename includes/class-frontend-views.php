@@ -727,7 +727,7 @@ class GravityView_frontend {
 
 		$gravityview_view = new GravityView_View( $view_data );
 
-		$post_id = ! empty( $atts['post_id'] ) ? intval( $atts['post_id'] ) : $this->getPostId();
+		$post_id = ! empty( $atts['post_id'] ) ? intval( $atts['post_id'] ) : get_the_ID();
 
 		$gravityview_view->setPostId( $post_id );
 
