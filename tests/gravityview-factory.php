@@ -214,6 +214,29 @@ class GV_UnitTest_Factory_For_Entry extends GF_UnitTest_Factory_For_Entry {
 	function update_object( $entry_id = '', $entry = array() ) {
 		return GFAPI::update_entry( $entry_id, $entry );
 	}
+
+	/**
+	 * Create form from a json dump file.
+	 *
+	 * @param string $filename Name of the file in data/forms/
+	 * @param int $overrides Data that we want to override
+	 *
+	 * @return array A form array as returned by Gravity Forms
+	 */
+	function import_and_get( $filename, $overrides ) {
+		$entry_json = file_get_contents( dirname( __FILE__ ) . "/data/forms/" . $filename );
+		$entry     = json_decode( $entry_json, true );
+
+		/**
+		 * Note: wp_parse_args does not work well here
+		 *  since it uses array_merge which reindexes numeric keys.
+		 * This messes up the field IDs. We do it our own way.
+		 */
+		foreach ( $overrides as $key => $value ) {
+			$entry[ $key ] = $value;
+		}
+		return $this->get_object_by_id( GFAPI::add_entry( $entry ) );
+	}
 }
 
 class GV_UnitTest_Factory_For_Form extends GF_UnitTest_Factory_For_Form {
@@ -237,4 +260,19 @@ class GV_UnitTest_Factory_For_Form extends GF_UnitTest_Factory_For_Form {
 	}
 
 	function update_object( $object, $fields ) {}
+
+	/**
+	 * Create form from a json dump file.
+	 *
+	 * @param string $filename Name of the file in data/forms/
+	 *
+	 * @return array A form array as returned by Gravity Forms
+	 */
+	function import_and_get( $filename ) {
+		$form_json = file_get_contents( dirname( __FILE__ ) . "/data/forms/" . $filename );
+		$forms     = json_decode( $form_json, true );
+		$form      = $forms[0];
+
+		return $this->create_and_get( array(), $form );
+	}
 }

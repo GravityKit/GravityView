@@ -323,6 +323,72 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * Reset the edit entry context.
+	 *
+	 * @return void
+	 */
+	private function _reset_context() {
+		GravityView_Edit_Entry::$instance = null;
+		GravityView_frontend::$instance = null;
+		GravityView_View_Data::$instance = null;
+		GravityView_View::$instance = null;
+
+		wp_set_current_user( 0 );
+		remove_all_filters( 'gravityview/is_single_entry' );
+		remove_all_filters( 'gravityview/edit_entry/form_fields' );
+		$_GET = array(); $_POST = array();
+	}
+
+	/**
+	 * Emulate a valid edit view hit.
+	 *
+	 * @param $form A $view object returned by our factory.
+	 * @param $view A $view object returned by our factory.
+	 * @param $entry An $entry object returned by our factory.
+	 *
+	 * @return array With first item the rendered output, and second item the render instance.
+	 */
+	private function _emulate_render( $form, $view, $entry ) {
+		$loader = GravityView_Edit_Entry::getInstance();
+		$render = $loader->instances['render'];
+
+		add_filter( 'gravityview/is_single_entry', '__return_true' );
+		$data = GravityView_View_Data::getInstance( $view );
+		$template = GravityView_View::getInstance( array(
+			'form' => $form,
+			'form_id' => $form['id'],
+			'view_id' => $view->ID,
+			'entries' => array( $entry ),
+			'atts' => GVCommon::get_template_settings( $view->ID ),
+		) );
+
+		$_GET['edit'] = wp_create_nonce(
+			GravityView_Edit_Entry::get_nonce_key( $view->ID, $form['id'], $entry['id'] )
+		);
+
+		/** Render */
+		ob_start() && $render->init( $data );
+		$rendered_form = ob_get_clean();
+
+		return array( $rendered_form, $render );
+	}
+
+	/**
+	 * Create a user with a random email/username.
+	 *
+	 * @param string $role The role
+	 *
+	 * @return int The ID of the created user.
+	 */
+	private function _generate_user( $role ) {
+		return $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => $role )
+		);
+	}
+
+	/**
 	 * All rendering stuff here for now to save time. Move to logical classes and methods later.
 	 *
 	 * @covers GravityView_Edit_Entry_Render::is_edit_entry()
@@ -332,11 +398,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	 */
 	public function test_edit_entry_render() {
 		/** A clean slate, please. */
-		/** @todo: maybe invoke this on setup automatically for each test? */
-		GravityView_Edit_Entry::$instance = null;
-		GravityView_frontend::$instance = null;
-		GravityView_View_Data::$instance = null;
-		GravityView_View::$instance = null;
+		$this->_reset_context();
 
 		$loader = GravityView_Edit_Entry::getInstance();
 		$render = $loader->instances['render'];
@@ -347,7 +409,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		/** GravityView_Edit_Entry_Render::is_edit_entry */
 		$this->assertFalse( $render->is_edit_entry() );
-		add_filter( 'gravityview/is_single_entry', '__return_true', 667 );
+		add_filter( 'gravityview/is_single_entry', '__return_true' );
 		$_GET['edit'] = 'this is an edit';
 		$this->assertTrue( $render->is_edit_entry() );
 
@@ -366,7 +428,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		/** Main rendering emulation. */
 		$form = $this->factory->form->create_and_get();
-		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'], 'status' => 'publish' ) );
+		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'], 'status' => 'active' ) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 		GravityView_View_Data::$instance = null;
 		GravityView_View::$instance = null;
@@ -381,20 +443,12 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertContains( 'do not have permission', ob_get_clean() );
 
 		/** Let's try again. */
-		$subscriber = $this->factory->user->create( array(
-			'user_login' => md5( microtime() ),
-			'user_email' => md5( microtime() ) . '@gravityview.tests',
-			'role' => 'subscriber' )
-		);
+		$subscriber = $this->_generate_user( 'subscriber' );
 		wp_set_current_user( $subscriber );
 		ob_start() && $render->init( $data );
 		$this->assertContains( 'do not have permission', ob_get_clean() );
 
-		$administrator = $this->factory->user->create( array(
-			'user_login' => md5( microtime() ),
-			'user_email' => md5( microtime() ) . '@gravityview.tests',
-			'role' => 'administrator' )
-		);
+		$administrator = $this->_generate_user( 'administrator' );
 		wp_set_current_user( $administrator );
 		ob_start() && $render->init( $data );
 		$this->assertContains( 'link to edit this entry is not valid', ob_get_clean() );
@@ -446,14 +500,122 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		 */
 
 		/** Cleanup */
-		remove_filter( 'gravityview/is_single_entry', '__return_true', 667 );
-		/** @todo: maybe invoke this on teardown automatically for each test? */
-		GravityView_Edit_Entry::$instance = null;
-		GravityView_frontend::$instance = null;
-		GravityView_View_Data::$instance = null;
-		GravityView_View::$instance = null;
-		$_GET = array(); $_POST = array();
-		wp_set_current_user( 0 );
+		$this->_reset_context();
+	}
+
+	public function test_edit_entry_simple() {
+		/** Create a user */
+		$administrator = $this->_generate_user( 'administrator' );
+
+		/** Create the form, entry and view */
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'created_by' => $administrator,
+			'form_id' => $form['id'],
+			/** Fields, more complex entries may have hundreds of fields defined in the JSON file. */
+			'1' => 'this is field one',
+			'2' => 102,
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		/** Request the rendered form */
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+		list( $output, $render ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( 'gform_submit', $output );
+
+		/** Submit an edit */
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+
+		$_POST = array(
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+
+			/** Fields */
+			'input_1' => 'we changed it',
+			'input_2' => 102,
+		);
+		list( $output, $render ) = $this->_emulate_render( $form, $view, $entry );
+
+		/** Check updates */
+		$this->assertEquals( $render->entry['1'], 'we changed it' );
+		$this->assertEquals( $render->entry['2'], 102 );
+
+		/** Cleanup */
+		$this->_reset_context();
+	}
+
+	public function test_edit_entry_simple_fails() {
+		/** Create a couple of users */
+		$subscriber1 = $this->_generate_user( 'subscriber' );
+		$subscriber2 = $this->_generate_user( 'subscriber' );
+		$administrator = $this->_generate_user( 'administrator' );
+
+		/** Create the form, entry and view */
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'created_by' => $subscriber1,
+			'form_id' => $form['id'],
+			/** Fields, more complex entries may have hundreds of fields defined in the JSON file. */
+			'1' => 'set all the fields!',
+			'2' => 107,
+		) );
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'settings' => wp_parse_args( array(
+				'user_edit' => 1, /** Allow users to edit entries in this view. */
+			), GravityView_View_Data::get_default_args() ),
+		) );
+
+		/** Let's get failing... */
+
+		$post = array(
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+
+			/** Fields */
+			'input_1' => 'we changed it',
+			'input_2' => 102,
+		);
+
+		/** No permissions to edit this entry */
+		$this->_reset_context(); $_POST = $post;
+		list( $output, $render ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( 'do not have permission to edit this entry', $output );
+		$this->assertEquals( $render->entry['1'], $entry['1'] );
+		$this->assertEquals( $render->entry['2'], $entry['2'] );
+
+		/** No permissions to edit this entry, not logged in. */
+		$this->_reset_context(); $_POST = $post;
+		list( $output, $render ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( 'do not have permission to edit this entry', $output );
+		$this->assertEquals( $render->entry['1'], $entry['1'] );
+		$this->assertEquals( $render->entry['2'], $entry['2'] );
+
+		/** No permissions to edit this entry, logged in as someone else. */
+		$this->_reset_context(); $_POST = $post;
+		wp_set_current_user( $subscriber2 );
+		list( $output, $render ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( 'do not have permission to edit this entry', $output );
+		$this->assertEquals( $render->entry['1'], $entry['1'] );
+		$this->assertEquals( $render->entry['2'], $entry['2'] );
+
+		/** Only one field is visible and editable. */
+		$this->_reset_context(); $_POST = $post;
+		wp_set_current_user( $subscriber1 );
+
+		add_filter( 'gravityview/edit_entry/form_fields', function( $fields, $edit_fields, $form, $view_id ) {
+			unset( $fields[0] ); /** The first text field is now hidden. */
+			return $fields;
+		}, 10, 4 );
+
+		list( $output, $render ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertEquals( $render->entry['1'], $entry['1'], 'Oh no! The first field was edited.' );
+		$this->assertEquals( $render->entry['2'], $post['input_2'], 'The second field was not edited... Why?' );
+
+		/** Cleanup */
+		$this->_reset_context();
 	}
 
 	/**
