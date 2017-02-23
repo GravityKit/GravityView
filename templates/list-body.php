@@ -107,34 +107,41 @@ if( ! $this->getTotalEntries() ) {
 
 			?>
 
-		<?php } ?>
+		<?php }
 
-		<div class="gv-grid gv-list-view-content">
+		if (
+            ( $this->getFields( 'directory_list-image' ) || $this->getFields( 'directory_list-description' ) || $this->getFields( 'directory_list-content-attributes' ) )
+            || has_action( 'gravityview_entry_content_before' ) || has_action( 'gravityview_entry_content_after' )
+        ) { ?>
 
-			<?php
+            <div class="gv-grid gv-list-view-content">
+
+				<?php
 
 				/**
 				 * @action `gravityview_entry_content_before` Tap in inside the View Content wrapper <div>
+				 *
 				 * @param array $entry Gravity Forms Entry array
 				 * @param GravityView_View $this The GravityView_View instance
 				 */
 				do_action( 'gravityview_entry_content_before', $entry, $this );
 
-				$this->renderZone('image', 'wrapper_class="gv-grid-col-1-3 gv-list-view-content-image"');
+				$this->renderZone( 'image', 'wrapper_class="gv-grid-col-1-3 gv-list-view-content-image"' );
 
-				$this->renderZone('description', array(
+				$this->renderZone( 'description', array(
 					'wrapper_class' => 'gv-grid-col-2-3 gv-list-view-content-description',
-					'label_markup' => '<h4>{{label}}</h4>',
-					'wpautop'      => true
-				));
+					'label_markup'  => '<h4>{{label}}</h4>',
+					'wpautop'       => true
+				) );
 
-				$this->renderZone('content-attributes', array(
+				$this->renderZone( 'content-attributes', array(
 					'wrapper_class' => 'gv-list-view-content-attributes',
-					'markup'     => '<p id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</p>'
-				));
+					'markup'        => '<p id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</p>'
+				) );
 
 				/**
 				 * @action `gravityview_entry_content_after` Tap in at the end of the View Content wrapper <div>
+				 *
 				 * @param array $entry Gravity Forms Entry array
 				 * @param GravityView_View $this The GravityView_View instance
 				 */
@@ -142,9 +149,10 @@ if( ! $this->getTotalEntries() ) {
 
 			?>
 
-		</div>
+            </div>
 
-		<?php
+			<?php
+		}
 
 		// Is the footer configured?
 		if ( $this->getField('directory_list-footer-left') || $this->getField('directory_list-footer-right') ) {
