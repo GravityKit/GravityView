@@ -346,7 +346,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	 * @param $view A $view object returned by our factory.
 	 * @param $entry An $entry object returned by our factory.
 	 *
-	 * @return array With first item the rendered output, and second item the render instance.
+	 * @return array With first item the rendered output,
+	 *  and second item the render instance, and third item is the reloaded entry.
 	 */
 	private function _emulate_render( $form, $view, $entry ) {
 		$loader = GravityView_Edit_Entry::getInstance();
@@ -370,7 +371,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		ob_start() && $render->init( $data );
 		$rendered_form = ob_get_clean();
 
-		return array( $rendered_form, $render );
+		return array( $rendered_form, $render, GFAPI::get_entry( $entry['id'] ) );
 	}
 
 	/**
@@ -521,7 +522,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		/** Request the rendered form */
 		$this->_reset_context();
 		wp_set_current_user( $administrator );
-		list( $output, $render ) = $this->_emulate_render( $form, $view, $entry );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 		$this->assertContains( 'gform_submit', $output );
 
 		/** Submit an edit */
@@ -536,16 +537,23 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			'input_1' => 'we changed it',
 			'input_2' => 102,
 		);
-		list( $output, $render ) = $this->_emulate_render( $form, $view, $entry );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
 		/** Check updates */
-		$this->assertEquals( $render->entry['1'], 'we changed it' );
-		$this->assertEquals( $render->entry['2'], 102 );
+		$this->assertEquals( $entry['1'], 'we changed it' );
+		$this->assertEquals( $entry['2'], 102 );
 
 		/** Cleanup */
 		$this->_reset_context();
 	}
 
+	/**
+	 * @covers GravityView_Edit_Entry_Render::custom_validation()
+	 * @covers GravityView_Edit_Entry_Render::validate()
+	 * @covers GravityView_Edit_Entry_Render::get_configured_edit_fields()
+	 * @covers GravityView_Edit_Entry_Render::user_can_edit_entry()
+	 * @group editme
+	 */
 	public function test_edit_entry_simple_fails() {
 		/** Create a couple of users */
 		$subscriber1 = $this->_generate_user( 'subscriber' );
@@ -576,30 +584,30 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 			/** Fields */
 			'input_1' => 'we changed it',
-			'input_2' => 102,
+			'input_2' => 102310,
 		);
 
 		/** No permissions to edit this entry */
 		$this->_reset_context(); $_POST = $post;
-		list( $output, $render ) = $this->_emulate_render( $form, $view, $entry );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 		$this->assertContains( 'do not have permission to edit this entry', $output );
-		$this->assertEquals( $render->entry['1'], $entry['1'] );
-		$this->assertEquals( $render->entry['2'], $entry['2'] );
+		$this->assertEquals( $entry['1'], $entry['1'] );
+		$this->assertEquals( $entry['2'], $entry['2'] );
 
 		/** No permissions to edit this entry, not logged in. */
 		$this->_reset_context(); $_POST = $post;
-		list( $output, $render ) = $this->_emulate_render( $form, $view, $entry );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 		$this->assertContains( 'do not have permission to edit this entry', $output );
-		$this->assertEquals( $render->entry['1'], $entry['1'] );
-		$this->assertEquals( $render->entry['2'], $entry['2'] );
+		$this->assertEquals( $entry['1'], $entry['1'] );
+		$this->assertEquals( $entry['2'], $entry['2'] );
 
 		/** No permissions to edit this entry, logged in as someone else. */
 		$this->_reset_context(); $_POST = $post;
 		wp_set_current_user( $subscriber2 );
-		list( $output, $render ) = $this->_emulate_render( $form, $view, $entry );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 		$this->assertContains( 'do not have permission to edit this entry', $output );
-		$this->assertEquals( $render->entry['1'], $entry['1'] );
-		$this->assertEquals( $render->entry['2'], $entry['2'] );
+		$this->assertEquals( $entry['1'], $entry['1'] );
+		$this->assertEquals( $entry['2'], $entry['2'] );
 
 		/** Only one field is visible and editable. */
 		$this->_reset_context(); $_POST = $post;
@@ -610,9 +618,17 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			return $fields;
 		}, 10, 4 );
 
-		list( $output, $render ) = $this->_emulate_render( $form, $view, $entry );
-		$this->assertEquals( $render->entry['1'], $entry['1'], 'Oh no! The first field was edited.' );
-		$this->assertEquals( $render->entry['2'], $post['input_2'], 'The second field was not edited... Why?' );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertEquals( $entry['1'], $entry['1'], 'Oh no! The first field was edited.' );
+		$this->assertEquals( $entry['2'], $post['input_2'], 'The second field was not edited... Why?' );
+
+		/** Test internal validation. */
+		$this->_reset_context(); $_POST = $post;
+		wp_set_current_user( $administrator );
+		$_POST['input_2'] = 'this is not a number nanananana';
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertEquals( $entry['2'], $post['input_2'], 'A numeric field was changed! WTF?' );
+		$this->assertContains( 'enter a valid number', $output );
 
 		/** Cleanup */
 		$this->_reset_context();
