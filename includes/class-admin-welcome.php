@@ -193,7 +193,7 @@ class GravityView_Welcome {
 
 					<ol class="ol-decimal">
 						<li>Go to <a href="<?php echo admin_url('post-new.php?post_type=gravityview'); ?>">Views &gt; New View</a></li>
-						<li>If you want to <strong>create a new form</strong>, click the "Start Fresh" button</li>
+						<li>If you want to <strong>create a new form</strong>, click the "Use a Form Preset" button</li>
 						<li>If you want to <strong>use an existing form&rsquo;s entries</strong>, select from the dropdown.</li>
 						<li>Select the type of View you would like to create. There are two core types of Views: <strong>Table</strong> and <strong>Listing</strong>.
 							<ul class="ul-square">

@@ -524,7 +524,7 @@ class GravityView_frontend {
 
 			/** @since 1.7.4 */
 			if ( is_preview() && ! gravityview_get_form_id( $this->post_id ) ) {
-				$content .= __( 'When using a Start Fresh template, you must save the View before a Preview is available.', 'gravityview' );
+				$content .= __( 'When using a preset template, you must save the View before a Preview is available.', 'gravityview' );
 			} else {
 				foreach ( $this->getGvOutputData()->get_views() as $view_id => $data ) {
 					$content .= $this->render_view( array( 'id' => $view_id ) );
