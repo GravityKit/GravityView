@@ -1070,11 +1070,6 @@ class GravityView_Edit_Entry_Render {
         // SET SOME FIELD DEFAULTS TO PREVENT ISSUES
         $field->adminOnly = false; /** @see GFFormDisplay::get_counter_init_script() need to prevent adminOnly */
 
-        // add categories as choices for Post Category field
-        if ( 'post_category' === $field->type ) {
-            $field = GFCommon::add_categories_as_choices( $field, $value );
-        }
-
         $field_value = $this->get_field_value( $field );
 
 	    // Prevent any PHP warnings, like undefined index
