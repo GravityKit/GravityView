@@ -98,6 +98,126 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers GravityView_Edit_Entry::get_edit_link()
+	 * @see https://github.com/gravityview/GravityView/issues/842
+	 */
+	public function test_get_edit_link_loop() {
+		$this->_reset_context();
+
+		{ /** Test fixtures */
+			$form = $this->factory->form->create_and_get();
+
+			$editor = $this->factory->user->create_and_set( array(
+				'user_login' => 'editor',
+				'role' => 'editor'
+			) );
+
+			$entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'created_by' => $editor->ID,
+			) );
+
+			$view = $this->factory->view->create_and_get(array(
+				'form_id' => $form['id'],
+				'settings' => array(
+					'user_edit' => 1
+				),
+			) );
+			$view->entry = $entry;
+
+			$a_post = $this->factory->post->create_and_get( array(
+				'post_content' => 'This is a post',
+			) );
+
+			$view_post = $this->factory->post->create_and_get( array(
+				'post_content' => '[gravityview id="' . $view->ID . '"]',
+			) );
+			$view_post->view = $view;
+
+			$another_form = $this->factory->form->create_and_get();
+
+			$another_entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $another_form['id'],
+				'created_by' => $editor->ID,
+			) );
+
+			$another_view = $this->factory->view->create_and_get(array(
+				'form_id' => $another_form['id'],
+				'settings' => array(
+					'user_edit' => 1
+				),
+			) );
+			$another_view->entry = $another_entry;
+
+			$another_post = $this->factory->post->create_and_get( array(
+				'post_content' => 'This is a post',
+			) );
+
+			$another_view_post = $this->factory->post->create_and_get( array(
+				'post_content' => '[gravityview id="' . $another_view->ID . '"]',
+			) );
+			$another_view_post->view = $another_view;
+
+			$and_another_form = $this->factory->form->create_and_get();
+
+			$and_another_entry = $this->factory->entry->create_and_get( array(
+				'form_id' => $another_form['id'],
+				'created_by' => $editor->ID,
+			) );
+
+			$and_another_view = $this->factory->view->create_and_get(array(
+				'form_id' => $another_form['id'],
+				'settings' => array(
+					'user_edit' => 1
+				),
+			) );
+			/** Fake it until you make it... */
+			$and_another_view->view = $and_another_view;
+			$and_another_view->view->entry = $and_another_entry;
+		}
+
+		/** Let's mix it up, we have posts, view shortcodes and an actual view */
+		$posts = array( $a_post, $view_post, $another_post, $another_view_post, $and_another_view );
+
+		$data = GravityView_View_Data::getInstance( $posts );
+		$fe = GravityView_frontend::getInstance();
+		$fe->setGvOutputData( $data );
+
+		/** Fake the loop, sort of... */
+		global $wp_actions, $wp_query;
+		$wp_actions['loop_start'] = 1;
+		$wp_query->in_the_loop = true;
+
+		add_filter( 'gravityview/edit_entry/verify_nonce', '__return_true' );
+
+		foreach ( $posts as $_post ) {
+			setup_postdata( $GLOBALS['post'] =& $_post );
+
+			/**
+			 * We can also check the actual content output here to make sure all is well
+			 *  and no IDs are messed up, etc. @todo for another day, for another test. */
+			$fe->insert_view_in_content( get_the_content() );
+
+			if ( empty( $_post->view ) ) {
+				continue;
+			}
+
+			$args = array(
+				'entry' => $_post->view->entry['id'],
+			);
+			$expected = add_query_arg( $args, get_permalink( $_post->ID ) );
+
+			$edit_link_with_post = GravityView_Edit_Entry::get_edit_link( $_post->view->entry, $_post->view->ID, $_post->ID );
+			$this->assertEquals( $expected, remove_query_arg( array( 'edit', 'gvid' ), $edit_link_with_post ) );
+		}
+
+		remove_all_filters( 'gravityview/edit_entry/verify_nonce' );
+		unset( $wp_actions['loop_start'] );
+		$wp_query->in_the_loop = false;
+		$this->_reset_context();
+	}
+
+	/**
 	 * @covers GravityView_Edit_Entry::add_template_path
 	 */
 	public function test_add_template_path() {
@@ -550,7 +670,6 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	 * @covers GravityView_Edit_Entry_Render::validate()
 	 * @covers GravityView_Edit_Entry_Render::get_configured_edit_fields()
 	 * @covers GravityView_Edit_Entry_Render::user_can_edit_entry()
-	 * @group editme
 	 */
 	public function test_edit_entry_simple_fails() {
 		/** Create a couple of users */
