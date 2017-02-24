@@ -43,14 +43,11 @@ before_script:
   - bash tests/bin/travis.sh before
 
 script:
-  - phpunit -c phpunit.xml.dist
+  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then phpunit -c phpunit.xml.dist; else phpunit -c phpunit.xml.dist --no-coverage; fi
 
 after_script:
-  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0'
-    ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0'
-    ]]; php ocular.phar code-coverage:upload --format=php-clover /tmp/clover.xml;
-    fi
+  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then php ocular.phar code-coverage:upload --format=php-clover /tmp/clover.xml; fi
 
 after_success:
-  - travis_retry php vendor/bin/coveralls -v
+  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then travis_retry php vendor/bin/coveralls -v; fi
