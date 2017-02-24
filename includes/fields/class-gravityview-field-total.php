@@ -26,9 +26,40 @@ class GravityView_Field_Total extends GravityView_Field {
 
 		add_filter( 'gravityview/edit_entry/after_update', array( $this, 'edit_entry_recalculate_totals' ), 10, 3 );
 
+		add_filter( 'gravityview_blacklist_field_types', array( $this, 'add_to_blacklist' ), 10, 2 );
+
 		parent::__construct();
 	}
 
+	/**
+	 * Prevent the Total fields from being displayed in the Edit Entry configuration screen -- for now
+	 *
+	 * Gravity Forms forms need to know all the pricing information available to calculate a Total.
+	 *
+	 * If you have an Edit Entry field with just two fields (Quantity and Total), the Total will not be able to calculate
+	 * without the Product field, and possibly the Option, Shipping, and Coupon fields.
+	 *
+	 * The only options currently available are: show the whole form, or don't show the Total
+	 *
+	 * @since 1.20
+	 *
+	 * @todo Support Total fields in Edit Entry configuration
+	 *
+	 * @param array $blacklist Array of field types not able to be added to Edit Entry
+	 * @param  string|null $context Context
+	 *
+	 * @return array Blacklist, with "total" added. If not edit context, original field blacklist. Otherwise, blacklist including total.
+	 */
+	public function add_to_blacklist( $blacklist = array(), $context = NULL  ){
+
+		if( empty( $context ) || $context !== 'edit' ) {
+			return $blacklist;
+		}
+
+		$blacklist[] = 'total';
+
+		return $blacklist;
+	}
 
 	/**
 	 * If entry has totals fields, recalculate them
@@ -43,14 +74,18 @@ class GravityView_Field_Total extends GravityView_Field {
 	 */
 	function edit_entry_recalculate_totals( $form = array(), $entry_id = 0, $Edit_Entry_Render = null ) {
 
-		//saving total field as the last field of the form.
-		if ( ! empty( $Edit_Entry_Render->total_fields ) ) {
+		$original_form = GFAPI::get_form( $form['id'] );
 
-			$entry = $Edit_Entry_Render->entry;
+		$total_fields = GFCommon::get_fields_by_type( $original_form, 'total' );
+
+		//saving total field as the last field of the form.
+		if ( ! empty( $total_fields ) ) {
+
+			$entry = GFAPI::get_entry( $entry_id );
 
 			/** @var GF_Field_Total $total_field */
-			foreach ( $Edit_Entry_Render->total_fields as $total_field ) {
-				$entry["{$total_field->id}"] = GFCommon::get_order_total( $form, $Edit_Entry_Render->entry );
+			foreach ( $total_fields as $total_field ) {
+				$entry["{$total_field->id}"] = GFCommon::get_order_total( $original_form, $entry );
 			}
 
 			$return_entry = GFAPI::update_entry( $entry );

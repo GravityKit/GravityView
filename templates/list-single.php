@@ -55,8 +55,8 @@
 		</div>
 	<?php
 	}
-	?>
 
+	if ( $this->getFields( 'single_list-image' ) || $this->getFields( 'single_list-description' ) || $this->getFields( 'single_list-content-attributes' ) ) { ?>
 		<div class="gv-list-view-content">
 			<?php
 
@@ -78,8 +78,9 @@
 
 			?>
 		</div>
+    <?php }
 
-		<?php if ( $this->getFields( 'single_list-footer-left' ) || $this->getFields( 'single_list-footer-right' ) ) { ?>
+    if ( $this->getFields( 'single_list-footer-left' ) || $this->getFields( 'single_list-footer-right' ) ) { ?>
 			<div class="gv-grid gv-list-view-footer">
 				<div class="gv-grid-col-1-2 gv-left">
 					<?php $this->renderZone( 'footer-left' ); ?>

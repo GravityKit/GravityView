@@ -59,7 +59,7 @@ languages/gravityview-pt.po
 
 ## Bower
 assets/lib/flexibility/*
-!assets/lib/flexibility/dist/*
+!assets/lib/flexibility/*.js
 !assets/lib/flexibility/*.json
 
 # Unit tests

@@ -565,7 +565,7 @@ class GravityView_frontend {
 
 			/** @since 1.7.4 */
 			if ( is_preview() && ! gravityview_get_form_id( $this->post_id ) ) {
-				$content .= __( 'When using a Start Fresh template, you must save the View before a Preview is available.', 'gravityview' );
+				$content .= __( 'When using a preset template, you must save the View before a Preview is available.', 'gravityview' );
 			} else {
 				if ( function_exists( 'gravityview' ) ) {
 					foreach ( gravityview()->views->all() as $view ) {
@@ -794,11 +794,11 @@ class GravityView_frontend {
 		if ( function_exists( 'gravityview' ) ) {
 			$view_data = $view->as_data();
 			$gravityview_view = new GravityView_View( $view_data );
-			$post_id = intval( $view->settings->get( 'post_id' ) ? : $this->getPostId() );
+			$post_id = intval( $view->settings->get( 'post_id' ) ? : get_the_ID() );
 		} else {
 			/** These constructs are deprecated. Use the new gravityview() wrapper. */
 			$gravityview_view = new GravityView_View( $view_data );
-			$post_id = ! empty( $atts['post_id'] ) ? intval( $atts['post_id'] ) : $this->getPostId();
+			$post_id = ! empty( $atts['post_id'] ) ? intval( $atts['post_id'] ) : get_the_ID();
 		}
 
 		$gravityview_view->setPostId( $post_id );

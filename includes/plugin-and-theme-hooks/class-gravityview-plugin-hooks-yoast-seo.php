@@ -31,6 +31,12 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 	protected $style_handles = array(
 		'wp-seo-metabox',
 		'wpseo-admin-media',
+		'yoast-seo-metabox-css',
+		'yoast-seo-admin-media',
+		'yoast-seo-scoring',
+		'yoast-seo-snippet',
+		'yoast-seo-select2',
+		'yoast-seo-kb-search',
 		'metabox-tabs',
 		'metabox-classic',
 		'metabox-fresh',
@@ -43,6 +49,11 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 	protected $script_handles = array(
 		'wp-seo-metabox',
 		'wpseo-admin-media',
+		'yoast-seo-metabox',
+		'yoast-seo-admin-media',
+		'yoast-seo-post-scraper',
+		'yoast-seo-replacevar-plugin',
+		'yoast-seo-shortcode-plugin',
 		'jquery-qtip',
 		'jquery-ui-autocomplete',
 	);

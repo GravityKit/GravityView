@@ -874,7 +874,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 
 		/**
 		 * @filter `gravityview_widget_search_filters` Modify what fields are shown. The order of the fields in the $search_filters array controls the order as displayed in the search bar widget.
-		 * @param array $search_fields Array of search filters with `key`, `label`, `value`, `type` keys
+		 * @param array $search_fields Array of search filters with `key`, `label`, `value`, `type`, `choices` keys
 		 * @param GravityView_Widget_Search $this Current widget object
 		 * @param array $widget_args Args passed to this method. {@since 1.8}
 		 * @var array
@@ -1180,7 +1180,7 @@ class GravityView_Widget_Search extends GravityView_Widget {
 	 */
 	public function register_scripts() {
 
-		wp_register_script( 'gv-flexibility', plugins_url( 'assets/lib/flexibility/dist/flexibility.js', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version, true );
+		wp_register_script( 'gv-flexibility', plugins_url( 'assets/lib/flexibility/flexibility.js', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version, true );
 
 	}
 

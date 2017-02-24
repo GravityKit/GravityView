@@ -82,7 +82,9 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 	function filter_gravityview_back_link( $link ) {
 		global $wpml_url_filters;
 
-		$link = $wpml_url_filters->permalink_filter( $link, GravityView_frontend::getInstance()->getPostId() );
+		if( $wpml_url_filters ) {
+			$link = $wpml_url_filters->permalink_filter( $link, GravityView_frontend::getInstance()->getPostId() );
+		}
 
 		return $link;
 	}
@@ -96,6 +98,10 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 	 */
 	private function remove_url_hooks() {
 		global $wpml_url_filters;
+
+		if( ! $wpml_url_filters ) {
+			return;
+		}
 
 		$wpml_url_filters->remove_global_hooks();
 
@@ -115,6 +121,10 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 	 */
 	private function add_url_hooks() {
 		global $wpml_url_filters;
+
+		if( ! $wpml_url_filters ) {
+			return;
+		}
 
 		$wpml_url_filters->add_global_hooks();
 

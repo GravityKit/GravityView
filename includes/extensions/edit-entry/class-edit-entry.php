@@ -151,8 +151,6 @@ class GravityView_Edit_Entry {
         $base = gv_entry_link( $entry, $post_id );
 
         $url = add_query_arg( array(
-            'page' => 'gf_entries', // Needed for GFForms::get_page()
-            'view' => 'entry', // Needed for GFForms::get_page()
             'edit' => wp_create_nonce( $nonce_key )
         ), $base );
 
@@ -212,6 +210,7 @@ class GravityView_Edit_Entry {
 			'transaction_id',
 			'transaction_type',
 			'captcha',
+			'honeypot',
 		);
 
 		/**

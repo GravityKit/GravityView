@@ -50,8 +50,8 @@ script:
   - vendor/bin/phpunit -c phpunit.xml.dist
 
 after_script:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover /tmp/clover.xml
+  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then php ocular.phar code-coverage:upload --format=php-clover /tmp/clover.xml; fi
 
 after_success:
-  - travis_retry php vendor/bin/coveralls -v --exclude-no-stmt
+  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then travis_retry php vendor/bin/coveralls -v --exclude-no-stmt; fi

@@ -73,6 +73,11 @@ class View_Collection extends Collection {
 					continue;
 				}
 
+				if ( ! isset( $shortcode->atts['id'] ) ) {
+					do_action( 'gravityview_log_error', __METHOD__ . ': [gravityview] shortcode has no `id` attribute' );
+					continue;
+				}
+
 				if ( is_numeric( $shortcode->atts['id'] ) ) {
 					try {
 						$views->add( View::by_id( $shortcode->atts['id'] ) );

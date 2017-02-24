@@ -56,6 +56,7 @@ class GravityView_Field_Product extends GravityView_Field {
 		// Clear the purchase details so we can re-calculate them
 		if ( GVCommon::has_product_field( $form ) ) {
 			gform_delete_meta( $entry_id, 'gform_product_info__' );
+			gform_delete_meta( $entry_id, 'gform_product_info__1' );
 			gform_delete_meta( $entry_id, 'gform_product_info_1_' );
 			gform_delete_meta( $entry_id, 'gform_product_info_1_1' );
 		}
