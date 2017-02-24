@@ -314,6 +314,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::gravityview_get_current_views()
 	 * @group get_current_views
 	 * @internal Make sure this test is above the test_directory_link() test so that one doesn't pollute $post
 	 */
@@ -523,21 +524,28 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		/* TODO - fix this assertion */
 		$this->assertEquals( site_url( '?p=' . $post_id . '&pagenum=2' ), GravityView_API::directory_link() );
+	}
 
-		$gravityview_view->setPostId( $post_id );
+	/**
+	 * @covers ::gv_directory_link()
+	 * @covers GravityView_API::directory_link()
+	 *
+	 * @group ajax
+	 */
+	public function test_directory_link_ajax() {
+		if ( ! defined( 'DOING_AJAX' ) )
+			define( 'DOING_AJAX', true );
 
-		//
-		// TESTING AJAX
-		//
-		define( 'DOING_AJAX', true );
-
-		// No passed post_id; use $_POST when DOING_AJAX is set
-		$this->assertNull( GravityView_API::directory_link() );
-
+		$post_array = array(
+			'post_content' => 'asdasdsd',
+			'post_type' => 'post',
+			'post_status' => 'publish',
+		);
+		$post_id = wp_insert_post( $post_array );
+		$_GET['pagenum'] = 2;
 		$_POST['post_id'] = $post_id;
 		// No passed post_id; use $_POST when DOING_AJAX is set
 		$this->assertEquals( site_url( '?p=' . $post_id . '&pagenum=2' ), GravityView_API::directory_link() );
-
 	}
 
 }

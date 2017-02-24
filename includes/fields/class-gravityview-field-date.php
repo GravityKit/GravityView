@@ -14,6 +14,10 @@ class GravityView_Field_Date extends GravityView_Field {
 
 	var $_gf_field_class_name = 'GF_Field_Date';
 
+	var $is_searchable = true;
+
+	var $search_operators = array( 'less_than', 'greater_than', 'is', 'isnot' );
+
 	var $group = 'advanced';
 
 	public function __construct() {

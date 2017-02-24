@@ -74,7 +74,12 @@ class GravityView_oEmbed {
 	 */
 	private function get_handler_regex() {
 
-		$entry_var_name = GravityView_Post_Types::get_entry_var_name();
+		if ( function_exists( 'gravityview' ) ) {
+			$entry_var_name = \GV\Entry::get_endpoint_name();
+		} else {
+			/** Deprecated. Use \GV\Entry::get_endpoint_name instead. */
+			$entry_var_name = GravityView_Post_Types::get_entry_var_name();
+		}
 
 		/**
 		 * @filter `gravityview_slug` Modify the url part for a View. [Read the doc](http://docs.gravityview.co/article/62-changing-the-view-slug)
@@ -223,7 +228,15 @@ class GravityView_oEmbed {
 
 			do_action('gravityview_log_debug', 'GravityView_oEmbed[render_handler] Embedding an entry inside a post or page', $matches );
 
-			$this->view_id = GravityView_View_Data::getInstance()->maybe_get_view_id( $post_id );
+			if ( function_exists( 'gravityview' ) && $post = get_post( $post_id ) ) {
+				$views = \GV\View_Collection::from_post( $post );
+				$views = $views->all();
+				if ( ! empty( $views ) )
+					$this->view_id = $views[0]->ID;
+			} else {
+				/** Deprecated. */
+				$this->view_id = GravityView_View_Data::getInstance()->maybe_get_view_id( $post_id );
+			}
 
 		} else {
 

@@ -9,6 +9,8 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 
 	var $name = 'date_created';
 
+	var $is_searchable = true;
+
 	var $search_operators = array( 'less_than', 'greater_than', 'is', 'isnot' );
 
 	var $group = 'meta';

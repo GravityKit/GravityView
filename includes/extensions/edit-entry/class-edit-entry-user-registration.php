@@ -72,8 +72,12 @@ class GravityView_Edit_Entry_User_Registration {
      */
     public function update_user( $form = array(), $entry_id = 0 ) {
 
-        if( ! class_exists( 'GFAPI' ) || ! class_exists( 'GF_User_Registration' ) || empty( $entry_id ) ) {
-            return;
+        if( ! class_exists( 'GFAPI' ) || ! class_exists( 'GF_User_Registration' ) ) {
+	        do_action( 'gravityview_log_error', __METHOD__ . ': GFAPI or User Registration class not found; not updating the user' );
+	        return;
+        } elseif( empty( $entry_id ) ) {
+        	do_action( 'gravityview_log_error', __METHOD__ . ': Entry ID is empty; not updating the user', $entry_id );
+	        return;
         }
 
         /** @var GF_User_Registration $gf_user_registration */
@@ -89,38 +93,7 @@ class GravityView_Edit_Entry_User_Registration {
 	     */
         $entry = apply_filters( 'gravityview/edit_entry/user_registration/entry', $entry, $form );
 
-        $config = $gf_user_registration->get_single_submission_feed( $entry, $form );
-
-        /**
-         * @filter `gravityview/edit_entry/user_registration/preserve_role` Keep the current user role or override with the role defined in the Create feed
-         * @since 1.15
-         * @param[in,out] boolean $preserve_role Preserve current user role Default: true
-         * @param[in] array $config Gravity Forms User Registration feed configuration for the form
-         * @param[in] array $form Gravity Forms form array
-         * @param[in] array $entry Gravity Forms entry being edited
-         */
-        $preserve_role = apply_filters( 'gravityview/edit_entry/user_registration/preserve_role', true, $config, $form, $entry );
-
-        if( $preserve_role ) {
-            $config['meta']['role'] = 'gfur_preserve_role';
-        }
-
-        /**
-         * Make sure the current display name is not changed with the update user method.
-         * @since 1.15
-         */
-        $config['meta']['displayname'] = $this->match_current_display_name( $entry['created_by'] );
-
-
-        /**
-         * @filter `gravityview/edit_entry/user_registration/config` Modify the User Registration Addon feed configuration
-         * @since 1.14
-         * @param[in,out] array $config Gravity Forms User Registration feed configuration for the form
-         * @param[in] array $form Gravity Forms form array
-         * @param[in] array $entry Gravity Forms entry being edited
-         */
-        $config = apply_filters( 'gravityview/edit_entry/user_registration/config', $config, $form, $entry );
-
+	    $config = $this->get_feed_configuration( $entry, $form );
 
         // Make sure the feed is active
 	    if ( ! rgar( $config, 'is_active', false ) ) {
@@ -146,31 +119,90 @@ class GravityView_Edit_Entry_User_Registration {
 
     }
 
+	/**
+	 * Get the User Registration feed configuration for the entry & form
+	 *
+	 * @uses GF_User_Registration::get_single_submission_feed
+	 * @uses GravityView_Edit_Entry_User_Registration::match_current_display_name
+	 *
+	 * @since 1.20
+	 *
+	 * @param $entry
+	 * @param $form
+	 *
+	 * @return array
+	 */
+    public function get_feed_configuration( $entry, $form ) {
+
+	    /** @var GF_User_Registration $gf_user_registration */
+	    $gf_user_registration = GF_User_Registration::get_instance();
+
+	    $config = $gf_user_registration->get_single_submission_feed( $entry, $form );
+
+	    /**
+	     * @filter `gravityview/edit_entry/user_registration/preserve_role` Keep the current user role or override with the role defined in the Create feed
+	     * @since 1.15
+	     * @param[in,out] boolean $preserve_role Preserve current user role Default: true
+	     * @param[in] array $config Gravity Forms User Registration feed configuration for the form
+	     * @param[in] array $form Gravity Forms form array
+	     * @param[in] array $entry Gravity Forms entry being edited
+	     */
+	    $preserve_role = apply_filters( 'gravityview/edit_entry/user_registration/preserve_role', true, $config, $form, $entry );
+
+	    if( $preserve_role ) {
+		    $config['meta']['role'] = 'gfur_preserve_role';
+	    }
+
+	    $displayname = $this->match_current_display_name( $entry['created_by'] );
+
+	    /**
+	     * Make sure the current display name is not changed with the update user method.
+	     * @since 1.15
+	     */
+	    $config['meta']['displayname'] = $displayname ? $displayname : $config['meta']['displayname'];
+
+	    /**
+	     * @filter `gravityview/edit_entry/user_registration/config` Modify the User Registration Addon feed configuration
+	     * @since 1.14
+	     * @param[in,out] array $config Gravity Forms User Registration feed configuration for the form
+	     * @param[in] array $form Gravity Forms form array
+	     * @param[in] array $entry Gravity Forms entry being edited
+	     */
+	    $config = apply_filters( 'gravityview/edit_entry/user_registration/config', $config, $form, $entry );
+
+	    return $config;
+    }
+
     /**
      * Calculate the user display name format
      *
      * @since 1.15
+     * @since 1.20 Returns false if user not found at $user_id
      *
      * @param int $user_id WP User ID
-     * @return string Display name format as used inside Gravity Forms User Registration
+     * @return false|string Display name format as used inside Gravity Forms User Registration. Returns false if user not found.
      */
     public function match_current_display_name( $user_id ) {
 
         $user = get_userdata( $user_id );
 
+        if( ! $user ) {
+        	return false;
+        }
+
         $names = $this->generate_display_names( $user );
 
         $format = array_search( $user->display_name, $names, true );
 
-        // In case we can't find the current display name format, or it is the 'nickname' format (which Gravity Forms doesn't support)
-        //   trigger last resort method at the 'gform_user_updated' hook
-        if( false === $format || 'nickname' === $format ) {
+        /**
+         * In case we can't find the current display name format, trigger last resort method at the 'gform_user_updated' hook
+         * @see restore_display_name
+         */
+        if( false === $format ) {
             $this->_user_before_update = $user;
-            $format = 'nickname';
         }
 
         return $format;
-
     }
 
     /**
@@ -187,11 +219,13 @@ class GravityView_Edit_Entry_User_Registration {
         $public_display['nickname']  = $profileuser->nickname;
         $public_display['username']  = $profileuser->user_login;
 
-        if ( !empty($profileuser->first_name) )
-            $public_display['firstname'] = $profileuser->first_name;
+        if ( !empty($profileuser->first_name) ) {
+	        $public_display['firstname'] = $profileuser->first_name;
+        }
 
-        if ( !empty($profileuser->last_name) )
-            $public_display['lastname'] = $profileuser->last_name;
+        if ( !empty($profileuser->last_name) ) {
+	        $public_display['lastname'] = $profileuser->last_name;
+        }
 
         if ( !empty($profileuser->first_name) && !empty($profileuser->last_name) ) {
             $public_display['firstlast'] = $profileuser->first_name . ' ' . $profileuser->last_name;
@@ -213,7 +247,7 @@ class GravityView_Edit_Entry_User_Registration {
      * @param array $config Gravity Forms User Registration Addon form feed configuration
      * @param array $entry The Gravity Forms entry that was just updated
      * @param string $password User password
-     * @return void
+     * @return int|false|WP_Error|null True: User updated; False: $user_id not a valid User ID; WP_Error: User update error; Null: Method didn't process
      */
     public function restore_display_name( $user_id = 0, $config = array(), $entry = array(), $password = '' ) {
 
@@ -235,10 +269,16 @@ class GravityView_Edit_Entry_User_Registration {
          * @since 1.14.4
          */
         if( ! $restore_display_name || $is_update_feed || is_null( $this->_user_before_update ) ) {
-            return;
+            return null;
         }
 
         $user_after_update = get_userdata( $user_id );
+
+        // User not found
+	    if ( ! $user_after_update ) {
+	    	do_action('gravityview_log_error', __METHOD__ . sprintf( ' - User not found at $user_id #%d', $user_id ) );
+		    return false;
+	    }
 
         $restored_user = $user_after_update;
 
@@ -268,7 +308,9 @@ class GravityView_Edit_Entry_User_Registration {
 
         $this->_user_before_update = null;
 
-        unset( $updated, $restored_user, $user_after_update );
+        unset( $restored_user, $user_after_update );
+
+        return $updated;
     }
 
 } //end class

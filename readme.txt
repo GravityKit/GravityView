@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 3.3
-Tested up to: 4.7
+Tested up to: 4.7.2
 Stable tag: trunk
 Contributors: The GravityView Team
 License: GPL 3 or higher
@@ -19,6 +19,41 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 1.20 on February 24, 2017 =
+
+* Added: Product Fields are now editable
+    - Quantity,
+    - Product fields are hidden if the entry contains external transaction data
+    - Support for Coupon Addon
+* Fixed: Single Entry not accessible when filtering by a Checkbox field in the Advanced Filters Extension
+* Fixed: WPML links to Single Entry not working if using directory or sub-domain URL formats
+* Fixed: Product field prices not always formatted as a currency
+* Fixed: Product fields sometimes appeared twice in the Add Field field picker
+* Fixed: PHP warning when updating entries. Thanks for reporting, Werner!
+* Modified: Don't show CAPTCHA fields in Edit Entry
+* Fixed: "Trying to get property of non-object" bug when updating an entry connected to Gravity Forms User Registration
+* Fixed: Yoast SEO scripts and styles not loading properly on Edit View screen
+* Updated: Minimum version of Gravity Forms User Registration updated to 3.2
+
+__Developer Notes:__
+
+
+* Added: `GVCommon::entry_has_transaction_data()` to check whether entry array contains payment gateway transaction information
+* Added: `gravityview/edit_entry/hide-coupon-fields` to modify whether to hide Coupon fields in Edit Entry (default: `false`)
+* Added: `GravityView_frontend::get_view_entries_parameters()` method to get the final entry search parameters for a View without fetching the entries as well
+* Added: `GVCommon::get_product_field_types()` to fetch Gravity Forms product field types array
+* Added: `gravityview/edit_entry/field_blacklist` filter to modify what field types should not be shown in Edit Entry
+* Added: `GravityView_Plugin_Hooks_Gravity_Forms_Coupon` class
+* Added: Third `GravityView_Edit_Entry_Render` parameter to `gravityview/edit_entry/field_value`, `gravityview/edit_entry/field_value_{field_type}` filters and `gravityview/edit_entry/after_update` action
+* Updated: `list-body.php` and `list-single.php` template files to prevent empty `<div>` from rendering (and looking bad) when there are no fields configured for the zones
+* Updated: `fields/product.php` template file
+* Updated: Flexibility library for IE CSS flexbox support
+* Modified: `gravityview/edit_entry/hide-product-fields` default will now be determined by whether entry has gateway transaction information
+* Modified: Only print errors when running the unit tests if the `--debug` setting is defined, like `phpunit --debug --verbose`
+* Modified: If overriding `get_field_input()` using `GravityView_Field`, returning empty value will now result in the default `GF_Field` input being used
+* Modified: GravityView_Edit_Entry_User_Registration::restore_display_name() now returns a value instead of void
+* Tweak: Edit Entry links no longer require `page=gf_entries&view=entry` at the end of the URL (in case you noticed)
 
 = 1.19.4 on January 19, 2017 =
 

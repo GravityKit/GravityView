@@ -192,6 +192,245 @@ class GVCommon_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @since 1.20
+	 * @covers GVCommon::entry_has_transaction_data()
+	 */
+	public function test_entry_has_transaction_data() {
+
+		$this->assertTrue( GVCommon::entry_has_transaction_data( array( 'transaction_id' => 1 ) ) );
+		$this->assertTrue( GVCommon::entry_has_transaction_data( array( 'transaction_id' => NULL, 'payment_status' => 'completed' ) ) );
+		$this->assertFalse( GVCommon::entry_has_transaction_data( array( 'transaction_id' => NULL, 'payment_status' => NULL ) ) );
+		$this->assertFalse( GVCommon::entry_has_transaction_data( array() ) );
+		$this->assertFalse( GVCommon::entry_has_transaction_data('') );
+
+	}
+
+	/**
+	 * Test basic filter functionality
+	 *
+	 * @since 1.20
+	 * @covers GVCommon::get_product_field_types
+	 */
+	public function test_get_product_field_types() {
+
+		remove_all_filters( 'gform_product_field_types' );
+
+		$product_field_types = GVCommon::get_product_field_types();
+
+		$this->assertTrue( is_array( $product_field_types ) );
+		$this->assertTrue( in_array( 'product', $product_field_types ) );
+
+		add_filter( 'gform_product_field_types', '__return_empty_array' );
+
+		$empty_product_field_types = GVCommon::get_product_field_types();
+
+		$this->assertEquals( array(), $empty_product_field_types, 'The gform_product_field_types filter did not work' );
+	}
+
+	public function test_check_entry_display() {
+
+		$form = $this->factory->form->create();
+
+		$entry = $this->factory->entry->create( array( 'form_id' => $form['id'] ) );
+
+		GVCommon::check_entry_display( $entry );
+
+		// If `context_view_id`
+
+		//Make sure the current View is connected to the same form as the Entry
+	}
+
+	/**
+	 * @since 1.20
+	 * @covers GVCommon::calculate_get_entries_criteria()
+	 * @covers GravityView_frontend::set_context_view_id()
+	 * @group calculate_get_entries_criteria
+	 */
+	function test_calculate_get_entries_criteria() {
+
+		$default_values = array(
+			'search_criteria' => null,
+			'sorting' => null,
+			'paging' => null,
+			'cache' => true,
+			'context_view_id' => null,
+		);
+
+		// When no View ID is set, everything should be null
+		$this->assertEquals( $default_values, \GVCommon::calculate_get_entries_criteria() );
+
+		$this->_calculate_get_entries_criteria_add_operator( $default_values );
+
+		$this->_calculate_get_entries_criteria_dates( $default_values );
+
+		$this->_calculate_get_entries_criteria_context_view_id( $default_values );
+
+		// Unset [field_filters][mode] if it's the only key that exists in [field_filters]
+		$_field_values_only_mode_expected = $_field_values_only_mode = $default_values;
+		$_field_values_only_mode['search_criteria']['field_filters'] = array( 'mode' => 'all' );
+		$_field_values_only_mode_expected['search_criteria']['field_filters'] = array();
+		$this->assertEquals( $_field_values_only_mode_expected, GVCommon::calculate_get_entries_criteria( $_field_values_only_mode ) );
+
+		// Test `gravityview_search_criteria` filter
+		add_filter( 'gravityview_search_criteria', '__return_empty_array' );
+		$this->assertEquals( array(), GVCommon::calculate_get_entries_criteria( $default_values ) );
+		remove_filter( 'gravityview_search_criteria', '__return_empty_array' );
+
+	}
+
+	/**
+	 * @since 1.20
+	 */
+	private function _calculate_get_entries_criteria_context_view_id( $default_values ) {
+
+		$expected_get_context_view_id = $default_values;
+
+		// Test when is single entry
+		GravityView_frontend::getInstance()->setSingleEntry( 48 );
+		GravityView_frontend::getInstance()->set_context_view_id( 123 );
+		$expected_get_context_view_id['context_view_id'] = 123;
+		$this->assertEquals( $expected_get_context_view_id, GVCommon::calculate_get_entries_criteria() );
+		GravityView_frontend::getInstance()->setSingleEntry( false ); // Reset is single entry
+		GravityView_frontend::getInstance()->setGvOutputData( GravityView_View_Data::getInstance() );
+		GravityView_frontend::getInstance()->set_context_view_id( null );
+
+		// If `context_view_id` is passed, then use it.
+		unset( $_GET['view_id'] );
+		$criteria = array( 'context_view_id' => 345 );
+		$expected_get_context_view_id['context_view_id'] = 345;
+		$this->assertEquals( $expected_get_context_view_id, GVCommon::calculate_get_entries_criteria( $criteria ) );
+
+
+		// Test when action=delete is set but view ID isn't
+		$_GET['action'] = 'delete';
+		unset( $_GET['view_id'] );
+		$expected_get_context_view_id['context_view_id'] = NULL;
+		$this->assertEquals( $expected_get_context_view_id, GVCommon::calculate_get_entries_criteria() );
+
+		// Test when action=delete is set AND view ID is too
+		$_GET['action'] = 'delete';
+		$_GET['view_id'] = 456;
+		$expected_get_context_view_id['context_view_id'] = 456;
+		$this->assertEquals( $expected_get_context_view_id, GVCommon::calculate_get_entries_criteria() );
+
+		$views = $this->factory->view->create_many( 2 );
+		GravityView_frontend::getInstance()->setGvOutputData( GravityView_View_Data::getInstance() );
+		GravityView_frontend::getInstance()->getGvOutputData()->add_view( $views );
+		GravityView_frontend::getInstance()->set_context_view_id( 234 );
+		$expected_get_context_view_id['context_view_id'] = 234;
+		$this->assertEquals( $expected_get_context_view_id, GVCommon::calculate_get_entries_criteria() );
+		GravityView_frontend::getInstance()->set_context_view_id( null );
+
+		/** Cleanup */
+		GravityView_frontend::$instance = null;
+		GravityView_View_Data::$instance = null;
+		unset( $_GET['action'] );
+	}
+
+	/**
+	 * Subset to test date handling
+	 *
+	 * @since 1.20
+	 * @see test_calculate_get_entries_criteria
+	 *
+	 * @param array $default_values
+	 */
+	private function _calculate_get_entries_criteria_dates( $default_values ) {
+
+		// Invalid dates get unset
+		$_date_create_false = $_date_create_false_expected = $default_values;
+		$_date_create_false['search_criteria']['start_date'] = 'asdsadsd';
+		$_date_create_false['search_criteria']['end_date'] = 'asdsadsd';
+		$_date_create_false_expected['search_criteria'] = array();
+		$this->assertEquals( $_date_create_false_expected, GVCommon::calculate_get_entries_criteria( $_date_create_false ) );
+
+
+		// Used multiple times below
+		$timestamp = '2014-07-24';
+		$datetime = date_create( $timestamp );
+		$properly_formatted_date = $datetime->format( 'Y-m-d H:i:s' );
+		$improperly_formatted_date = $datetime->format( 'Y-m-d' );
+
+		// Format dates as GF wants them: Y-m-d H:i:s
+		$_date_create_improper = $_date_create_improper_expected = $default_values;
+		$_date_create_improper['search_criteria']['start_date'] = $improperly_formatted_date;
+		$_date_create_improper_expected['search_criteria']['start_date'] = $properly_formatted_date;
+		$this->assertEquals( $_date_create_improper_expected, GVCommon::calculate_get_entries_criteria( $_date_create_improper ) );
+
+		// Start time valid, end time not valid
+		$_date_create_end_invalid = $_date_create_end_invalid_expected = $default_values;
+		$_date_create_end_invalid['search_criteria']['start_date'] = $improperly_formatted_date;
+		$_date_create_end_invalid['search_criteria']['end_date'] = 'asdsadsd';
+		$_date_create_end_invalid_expected['search_criteria'] = array(
+			'start_date' => $properly_formatted_date,
+		);
+
+		$this->assertEquals( $_date_create_end_invalid_expected, GVCommon::calculate_get_entries_criteria( $_date_create_end_invalid ) );
+	}
+
+	/**
+	 * Subset to test how operators are managed
+	 *
+	 * @since 1.20
+	 *
+	 * @see test_calculate_get_entries_criteria
+	 *
+	 * @param array $default_values
+	 */
+	private function _calculate_get_entries_criteria_add_operator( $default_values ) {
+
+		$search_criteria_without_operator = array(
+			'search_criteria' => array(
+				'field_filters' => array(
+					'mode' => 'all',
+					0 => array(
+						'key' => 'created_by',
+						'value' => 'example',
+					)
+				),
+			),
+		);
+
+		$search_criteria_without_operator_expected = $default_values;
+		$search_criteria_without_operator_expected['search_criteria'] = array(
+			'field_filters' => array(
+				'mode' => 'all',
+				0 => array(
+					'key' => 'created_by',
+					'value' => 'example',
+					'operator' => 'contains',
+				)
+			),
+		);
+
+		$this->assertEquals( $search_criteria_without_operator_expected, GVCommon::calculate_get_entries_criteria( $search_criteria_without_operator ) );
+
+
+		// Modify the search operator returned
+		add_filter( 'gravityview_search_operator', function() {
+			return 'is';
+		});
+
+		$search_criteria_without_operator_with_filter_expected = $default_values;
+
+		$search_criteria_without_operator_with_filter_expected['search_criteria'] = array(
+			'field_filters' => array(
+				'mode' => 'all',
+				0 => array(
+					'key' => 'created_by',
+					'value' => 'example',
+					'operator' => 'is',
+				),
+			)
+		);
+
+		$this->assertEquals( $search_criteria_without_operator_with_filter_expected, GVCommon::calculate_get_entries_criteria( $search_criteria_without_operator ) );
+
+		// Cleanup
+		remove_all_filters( 'gravityview_search_operator' );
+	}
+
+	/**
 	 * @covers GVCommon::has_shortcode_r
 	 * @group has_shortcode
 	 */

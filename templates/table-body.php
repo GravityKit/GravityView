@@ -11,6 +11,11 @@
 	<tbody>
 		<?php
 
+		/**
+		 * @action `gravityview_table_body_before` Inside the `tbody`, before any rows are rendered. Can be used to insert additional rows.
+         * @since 1.0.7
+         * @param GravityView_View $this Current GravityView_View object
+		 */
 		do_action('gravityview_table_body_before', $this );
 
 		if( 0 === $this->getTotalEntries() ) {
@@ -44,6 +49,11 @@
 		?>
 				<tr<?php echo ' class="'.esc_attr( $class ).'"'; ?>>
 		<?php
+                    /**
+                     * @action `gravityview_table_cells_before` Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
+                     * @since 1.0.7
+                     * @param GravityView_View $this Current GravityView_View object
+                     */
 					do_action('gravityview_table_cells_before', $this );
 
 					$this->renderZone( 'columns', array(
@@ -51,6 +61,13 @@
 						'hide_empty' => false, // Always show <td>
 					));
 
+                    /**
+                     * @action gravityview_table_cells_after Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
+                     *
+                     * @since 1.0.7
+                     *
+                     * @param GravityView_View $this Current GravityView_View object
+                     */
 					do_action('gravityview_table_cells_after', $this );
 		?>
 				</tr>
@@ -59,6 +76,10 @@
 
 		}
 
+		/**
+		 * @action `gravityview_table_body_after` Inside the `tbody`, after all rows are rendered. Can be used to insert additional rows.
+		 * @since 1.0.7
+		 */
 		do_action('gravityview_table_body_after', $this );
 	?>
 	</tbody>

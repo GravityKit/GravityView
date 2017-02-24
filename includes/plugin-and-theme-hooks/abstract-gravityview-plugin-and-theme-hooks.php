@@ -65,7 +65,7 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 
 	/**
 	 * Define features in the admin editor used by the theme or plugin to be used when registering the GravityView post type
-	 * @see GravityView_Post_Types::init_post_types
+	 * @see \GV\Entry::get_endpoint_name
 	 * @since 1.15.2
 	 * @type array
 	 */

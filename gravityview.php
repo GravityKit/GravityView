@@ -3,7 +3,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:          	1.19.4
+ * Version:          	1.20
  * Author:            	GravityView
  * Author URI:        	https://gravityview.co
  * Text Domain:       	gravityview
@@ -79,7 +79,7 @@ require GRAVITYVIEW_DIR . '/future/gravityview.php';
  */
 final class GravityView_Plugin {
 
-	const version = '1.19.4';
+	const version = '1.20';
 
 	private static $instance;
 
@@ -214,16 +214,25 @@ final class GravityView_Plugin {
 
 		self::require_files();
 
-		// register post types
-		GravityView_Post_Types::init_post_types();
+		/** Deprecate in favor of \GV\View::register_post_type. */
+		if ( ! function_exists( 'gravityview' ) ) {
+			// register post types
+			GravityView_Post_Types::init_post_types();
+		}
 
-		// register rewrite rules
-		GravityView_Post_Types::init_rewrite();
+		/** Deprecate in favor of \GV\View::add_rewrite_endpoint. */
+		if ( ! function_exists( 'gravityview' ) ) {
+			// register rewrite rules
+			GravityView_Post_Types::init_rewrite();
+		}
 
-		flush_rewrite_rules();
+		/** Deprecate. Handled in \GV\Plugin::activate now. */
+		if ( ! function_exists( 'gravityview' ) ) {
+			flush_rewrite_rules();
 
-		// Update the current GV version
-		update_option( 'gv_version', self::version );
+			// Update the current GV version
+			update_option( 'gv_version', self::version );
+		}
 
 		// Add the transient to redirect to configuration page
 		set_transient( '_gv_activation_redirect', true, 60 );
@@ -239,11 +248,13 @@ final class GravityView_Plugin {
 	 * Plugin deactivate function.
 	 *
 	 * @access public
-	 * @static
+	 * @deprecated
 	 * @return void
 	 */
 	public static function deactivate() {
-		flush_rewrite_rules();
+		if ( ! function_exists( 'gravityview' ) ) {
+			flush_rewrite_rules();
+		}
 	}
 
 	/**
@@ -295,9 +306,15 @@ final class GravityView_Plugin {
 	/**
 	 * Check if is_admin(), and make sure not DOING_AJAX
 	 * @since 1.7.5
+	 * @deprecated
+	 * @see \GV\Frontend_Request::is_admin via gravityview()->request->is_admin()
 	 * @return bool
 	 */
 	public static function is_admin() {
+
+		if ( function_exists( 'gravityview' ) ) {
+			return gravityview()->request->is_admin();
+		}
 
 		$doing_ajax = defined( 'DOING_AJAX' ) ? DOING_AJAX : false;
 

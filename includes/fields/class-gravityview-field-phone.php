@@ -11,6 +11,9 @@ class GravityView_Field_Phone extends GravityView_Field {
 
 	var $is_searchable = true;
 
+	var $search_operators = array( 'is', 'isnot', 'contains', 'starts_with', 'ends_with' );
+
+	/** @see GF_Field_Phone */
 	var $_gf_field_class_name = 'GF_Field_Phone';
 
 	var $group = 'advanced';

@@ -294,7 +294,8 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * We want to make sure that GravityView doesn't mess with Texas
+	 * We want to make sure that GravityView doesn't affect core Gravity Forms Merge Tags output
+	 * @covers GravityView_Merge_Tags::replace_variables()
 	 * @since 1.15.1
 	 */
 	function test_gf_merge_tags() {

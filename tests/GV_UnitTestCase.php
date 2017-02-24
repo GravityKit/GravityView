@@ -31,4 +31,17 @@ class GV_UnitTestCase extends WP_UnitTestCase {
 		parent::tearDown();
 	}
 
+	/**
+	 * Multisite-agnostic way to delete a user from the database.
+	 *
+	 * @since 1.20 - Included in WP 4.3.0+, so we need to stub for 4.0+
+	 */
+	public static function delete_user( $user_id ) {
+		if ( is_multisite() ) {
+			return wpmu_delete_user( $user_id );
+		} else {
+			return wp_delete_user( $user_id );
+		}
+	}
+
 }

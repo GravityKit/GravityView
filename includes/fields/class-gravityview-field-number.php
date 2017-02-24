@@ -15,8 +15,11 @@ class GravityView_Field_Number extends GravityView_Field {
 
 	var $name = 'number';
 
+	var $is_searchable = true;
+
 	var $search_operators = array( 'is', 'isnot', 'greater_than', 'less_than' );
 
+	/** @see GF_Field_Number */
 	var $_gf_field_class_name = 'GF_Field_Number';
 
 	var $group = 'standard';

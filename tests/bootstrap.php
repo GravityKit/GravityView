@@ -54,13 +54,15 @@ class GV_Unit_Tests_Bootstrap {
 		// load test function so tests_add_filter() is available
 		require_once $this->wp_tests_dir . '/includes/functions.php';
 
+		// In WordPress 4.0 this is not being set, so let's just set it to localhost
+		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+
 		// load GV
 		tests_add_filter( 'muplugins_loaded', array( $this, 'load' ) );
 
-		tests_add_filter( 'gravityview_log_error', array( $this, 'test_print_log'), 10, 3 );
-
 		// Log debug if passed to `phpunit` like: `phpunit --debug --verbose`
 		if( in_array( '--debug', (array)$_SERVER['argv'], true ) && in_array( '--verbose', (array)$_SERVER['argv'], true ) ) {
+			tests_add_filter( 'gravityview_log_error', array( $this, 'test_print_log'), 10, 3 );
 			tests_add_filter( 'gravityview_log_debug', array( $this, 'test_print_log' ), 10, 3 );
 		}
 

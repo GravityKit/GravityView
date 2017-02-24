@@ -12,6 +12,8 @@ class GravityView_Field_Source_URL extends GravityView_Field {
 
 	var $name = 'source_url';
 
+	var $is_searchable = true;
+
 	var $search_operators = array( 'is', 'isnot', 'contains', 'starts_with', 'ends_with' );
 
 	var $group = 'meta';

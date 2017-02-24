@@ -7,6 +7,7 @@
  * @author    Katz Web Services, Inc.
  * @link      http://gravityview.co
  * @copyright Copyright 2014, Katz Web Services, Inc.
+ * @deprecated
  *
  * @since 1.0.9
  */
@@ -14,6 +15,10 @@
 class GravityView_Post_Types {
 
 	function __construct() {
+		/** Deprecated. Handled by \GV\Core from here on after. */
+		if ( function_exists( 'gravityview' ) ) {
+			return;
+		}
 
 		// Load custom post types. It's a static method.
 		// Load even when invalid to allow for export
@@ -28,10 +33,15 @@ class GravityView_Post_Types {
 	 * Init plugin components such as register own custom post types
 	 *
 	 * @access public
-	 * @static
+	 * @deprecated
+	 * @see \GV\View::register_post_type
 	 * @return void
 	 */
 	public static function init_post_types() {
+
+		if ( function_exists( 'gravityview' ) ) {
+			return \GV\View::register_post_type();
+		}
 
 		/**
 		 * @filter `gravityview_is_hierarchical` Make GravityView Views hierarchical by returning TRUE
@@ -125,10 +135,15 @@ class GravityView_Post_Types {
 	 * Register rewrite rules to capture the single entry view
 	 *
 	 * @access public
-	 * @static
+	 * @deprecated
+	 * @see \GV\Entry::add_rewrite_endpoint
 	 * @return void
 	 */
 	public static function init_rewrite() {
+
+		if ( function_exists( 'gravityview' ) ) {
+			return \GV\Entry::add_rewrite_endpoint();
+		}
 
 		$endpoint = self::get_entry_var_name();
 
@@ -140,10 +155,14 @@ class GravityView_Post_Types {
 	 * Return the query var / end point name for the entry
 	 *
 	 * @access public
-	 * @static
+	 * @deprecated
+	 * @see \GV\Entry::get_endpoint_name
 	 * @return string Default: "entry"
 	 */
 	public static function get_entry_var_name() {
+		if ( function_exists( 'gravityview' ) ) {
+			return \GV\Entry::get_endpoint_name();
+		}
 
 		/**
 		 * @filter `gravityview_directory_endpoint` Change the slug used for single entries

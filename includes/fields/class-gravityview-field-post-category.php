@@ -9,6 +9,8 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 
 	var $name = 'post_category';
 
+	var $is_searchable = true;
+
 	var $search_operators = array( 'is', 'in', 'not in', 'isnot', 'contains');
 
 	var $_gf_field_class_name = 'GF_Field_Post_Category';

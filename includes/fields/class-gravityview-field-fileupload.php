@@ -11,6 +11,10 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 	var $_gf_field_class_name = 'GF_Field_FileUpload';
 
+	var $is_searchable = true;
+
+	var $search_operators = array( 'contains' );
+
 	var $group = 'advanced';
 
 	public function __construct() {
@@ -35,6 +39,25 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		);
 
 		return $add_options + $field_options;
+	}
+
+	/**
+	 * Trick the GF fileupload field to render with the proper HTML ID to enable the plupload JS to work properly
+	 *
+	 * @param array               $form  The Form Object currently being processed.
+	 * @param string|array        $value The field value. From default/dynamic population, $_POST, or a resumed incomplete submission.
+	 * @param null|array          $entry Null or the Entry Object currently being edited.
+	 * @param GF_Field_FileUpload $field Gravity Forms field
+	 *
+	 * @return string
+	 */
+	function get_field_input( $form, $field_value, $entry, $field ) {
+
+		$field->_is_entry_detail = true;
+
+		$return = $field->get_field_input( $form, $field_value, $entry );
+
+		return $return;
 	}
 
 	/**

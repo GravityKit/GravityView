@@ -9,8 +9,15 @@ class GravityView_Field_MultiSelect extends GravityView_Field {
 
 	var $name = 'multiselect';
 
+	/**
+	 * @see GFCommon::get_field_filter_settings Gravity Forms suggests checkboxes should just be "contains"
+	 * @var array
+	 */
 	var $search_operators = array( 'is', 'in', 'not in', 'isnot', 'contains');
 
+	var $is_searchable = true;
+
+	/** @see GF_Field_MultiSelect */
 	var $_gf_field_class_name = 'GF_Field_MultiSelect';
 
 	var $group = 'standard';

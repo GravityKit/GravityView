@@ -28,6 +28,11 @@
 	width: auto;
 }
 
+// Prevent borders on images in the Getting Started, What's New screens
+.post-type-gravityview .about-wrap img {
+	border: none;
+}
+
 // Form Toolbar for connected views
 #gf_form_toolbar .gv_connected_forms {
 

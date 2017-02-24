@@ -13,7 +13,6 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-
 class GravityView_Edit_Entry_Render {
 
     /**
@@ -37,12 +36,6 @@ class GravityView_Edit_Entry_Render {
 	 * @var bool Whether to allow save and continue functionality
 	 */
 	private static $supports_save_and_continue = false;
-
-	/**
-	 * @since 1.9
-	 * @var bool Whether to allow editing product fields
-	 */
-	private static $supports_product_fields = false;
 
     /**
      * Gravity Forms entry array
@@ -84,12 +77,6 @@ class GravityView_Edit_Entry_Render {
      * @var array
      */
 	public $fields_with_calculation = array();
-
-    /**
-     * Hold an array of GF field objects with type 'total'
-     * @var array
-     */
-	public $total_fields = array();
 
     /**
      * Gravity Forms form id
@@ -170,9 +157,11 @@ class GravityView_Edit_Entry_Render {
      */
     public function prevent_maybe_process_form() {
 
-        do_action('gravityview_log_debug', 'GravityView_Edit_Entry[prevent_maybe_process_form] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
+        if( ! empty( $_POST ) ) {
+	        do_action( 'gravityview_log_debug', 'GravityView_Edit_Entry[prevent_maybe_process_form] $_POSTed data (sanitized): ', esc_html( print_r( $_POST, true ) ) );
+        }
 
-        if( $this->is_edit_entry_submission() && $this->verify_nonce() ) {
+        if( $this->is_edit_entry_submission() ) {
             remove_action( 'wp',  array( 'RGForms', 'maybe_process_form'), 9 );
         }
     }
@@ -342,8 +331,9 @@ class GravityView_Edit_Entry_Render {
              * @action `gravityview/edit_entry/after_update` Perform an action after the entry has been updated using Edit Entry
              * @param array $form Gravity Forms form array
              * @param string $entry_id Numeric ID of the entry that was updated
+             * @param GravityView_Edit_Entry_Render $this This object
              */
-            do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'] );
+            do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'], $this );
 
         } else {
             do_action('gravityview_log_error', __METHOD__ . ': Submission is NOT valid.', $this->entry );
@@ -484,23 +474,14 @@ class GravityView_Edit_Entry_Render {
 
         }
 
-        //saving total field as the last field of the form.
-        if ( ! empty( $this->total_fields ) ) {
-            $update = true;
-            foreach ( $this->total_fields as $total_field ) {
-                $input_name = 'input_' . str_replace( '.', '_', $total_field->id);
-                $entry[ strval( $total_field->id ) ] = RGFormsModel::prepare_value( $form, $total_field, '', $input_name, $entry['id'], $entry );
-            }
-        }
-
         if( $update ) {
 
             $return_entry = GFAPI::update_entry( $entry );
 
             if( is_wp_error( $return_entry ) ) {
-                do_action( 'gravityview_log_error', 'Updating the entry calculation and total fields failed', $return_entry );
+                do_action( 'gravityview_log_error', 'Updating the entry calculation fields failed', $return_entry );
             } else {
-                do_action( 'gravityview_log_debug', 'Updating the entry calculation and total fields succeeded' );
+                do_action( 'gravityview_log_debug', 'Updating the entry calculation fields succeeded' );
             }
         }
     }
@@ -766,7 +747,7 @@ class GravityView_Edit_Entry_Render {
      * @param array $form Gravity Forms form
      * @param bool $do_shortcode Whether to process shortcode inside content. In GF, only run on Custom Field and Post Content fields
      *
-     * @return mixed|string|void
+     * @return string
      */
     private function fill_post_template( $template, $form, $entry, $do_shortcode = false ) {
 
@@ -801,7 +782,7 @@ class GravityView_Edit_Entry_Render {
     private function after_update() {
 
         do_action( 'gform_after_update_entry', $this->form, $this->entry['id'], self::$original_entry );
-        do_action( "gform_after_update_entry_{$this->form['id']}", $this->form, $this->entry['id'] );
+        do_action( "gform_after_update_entry_{$this->form['id']}", $this->form, $this->entry['id'], self::$original_entry );
 
         // Re-define the entry now that we've updated it.
         $entry = RGFormsModel::get_lead( $this->entry['id'] );
@@ -949,7 +930,6 @@ class GravityView_Edit_Entry_Render {
         unset( $_GET['page'] );
 
         // TODO: Verify multiple-page forms
-        // TODO: Product fields are not editable
 
         ob_start(); // Prevent PHP warnings possibly caused by prefilling list fields for conditional logic
 
@@ -1082,54 +1062,29 @@ class GravityView_Edit_Entry_Render {
         if(
             ( $this->is_edit_entry_submission() && !in_array( $field->type, array( 'fileupload', 'post_image' ) ) )
             && false === ( $gv_field && is_callable( array( $gv_field, 'get_field_input' ) ) )
+            && ! GFCommon::is_product_field( $field->type )
             || ! empty( $field_content )
             || in_array( $field->type, array( 'honeypot' ) )
-            || GFCommon::is_product_field( $field->type ) // Prevent product fields from appearing editable
         ) {
 	        return $field_content;
-        }
-
-        // Turn on Admin-style display for file upload fields only
-        if( 'fileupload' === $field->type ) {
-            $_GET['page'] = 'gf_entries';
         }
 
         // SET SOME FIELD DEFAULTS TO PREVENT ISSUES
         $field->adminOnly = false; /** @see GFFormDisplay::get_counter_init_script() need to prevent adminOnly */
 
-        // add categories as choices for Post Category field
-        if ( 'post_category' === $field->type ) {
-            $field = GFCommon::add_categories_as_choices( $field, $value );
-        }
-
         $field_value = $this->get_field_value( $field );
-
-        /**
-         * @filter `gravityview/edit_entry/field_value` Change the value of an Edit Entry field, if needed
-         * @since 1.11
-         * @param mixed $field_value field value used to populate the input
-         * @param object $field Gravity Forms field object ( Class GF_Field )
-         */
-        $field_value = apply_filters( 'gravityview/edit_entry/field_value', $field_value, $field );
-
-        /**
-         * @filter `gravityview/edit_entry/field_value_{field_type}` Change the value of an Edit Entry field for a specific field type
-         * @since 1.17
-         * @param mixed $field_value field value used to populate the input
-         * @param GF_Field $field Gravity Forms field object
-         */
-        $field_value = apply_filters( 'gravityview/edit_entry/field_value_' . $field->type , $field_value, $field );
 
 	    // Prevent any PHP warnings, like undefined index
 	    ob_start();
+
+	    $return = null;
 
         /** @var GravityView_Field $gv_field */
         if( $gv_field && is_callable( array( $gv_field, 'get_field_input' ) ) ) {
             $return = $gv_field->get_field_input( $this->form, $field_value, $this->entry, $field );
         } else {
 	        $return = $field->get_field_input( $this->form, $field_value, $this->entry );
-        }
-
+	    }
 
 	    // If there was output, it's an error
 	    $warnings = ob_get_clean();
@@ -1137,13 +1092,6 @@ class GravityView_Edit_Entry_Render {
 	    if( !empty( $warnings ) ) {
 		    do_action( 'gravityview_log_error', __METHOD__ . $warnings, $field_value );
 	    }
-
-        /**
-         * Unset hack $_GET['page'] = 'gf_entries'
-         * We need the fileupload html field to render with the proper id
-         *  ( <li id="field_80_16" ... > )
-         */
-        unset( $_GET['page'] );
 
         return $return;
     }
@@ -1153,7 +1101,7 @@ class GravityView_Edit_Entry_Render {
      *
      * @param GF_Field $field
      *
-     * @return array|mixed|string|void
+     * @return array|mixed|string
      */
     private function get_field_value( $field ) {
 
@@ -1213,6 +1161,26 @@ class GravityView_Edit_Entry_Render {
         // if value is empty get the default value if defined
         $field_value = $field->get_value_default_if_empty( $field_value );
 
+	    /**
+	     * @filter `gravityview/edit_entry/field_value` Change the value of an Edit Entry field, if needed
+	     * @since 1.11
+	     * @since 1.20 Added third param
+	     * @param mixed $field_value field value used to populate the input
+	     * @param object $field Gravity Forms field object ( Class GF_Field )
+	     * @param GravityView_Edit_Entry_Render $this Current object
+	     */
+	    $field_value = apply_filters( 'gravityview/edit_entry/field_value', $field_value, $field, $this );
+
+	    /**
+	     * @filter `gravityview/edit_entry/field_value_{field_type}` Change the value of an Edit Entry field for a specific field type
+	     * @since 1.17
+	     * @since 1.20 Added third param
+	     * @param mixed $field_value field value used to populate the input
+	     * @param GF_Field $field Gravity Forms field object
+	     * @param GravityView_Edit_Entry_Render $this Current object
+	     */
+	    $field_value = apply_filters( 'gravityview/edit_entry/field_value_' . $field->type , $field_value, $field, $this );
+
         return $field_value;
     }
 
@@ -1240,11 +1208,6 @@ class GravityView_Edit_Entry_Render {
             foreach ( array( 'noDuplicates', 'adminOnly', 'inputType', 'isRequired', 'enablePrice', 'inputs', 'allowedExtensions' ) as $key ) {
 	            $field->{$key} = isset( $field->{$key} ) ? $field->{$key} : NULL;
             }
-
-            // unset emailConfirmEnabled for email type fields
-           /* if( 'email' === $field['type'] && !empty( $field['emailConfirmEnabled'] ) ) {
-                $field['emailConfirmEnabled'] = '';
-            }*/
 
             switch( RGFormsModel::get_input_type( $field ) ) {
 
@@ -1311,11 +1274,6 @@ class GravityView_Edit_Entry_Render {
                     if( !isset( $_POST['input_'.$field->id ] ) ) {
                         $_POST['input_'.$field->id ] = NULL;
                     }
-                    break;
-                case 'captcha':
-                    // Fix issue with recaptcha_check_answer() on line 1458 in form_display.php
-                    $_POST['recaptcha_challenge_field'] = NULL;
-                    $_POST['recaptcha_response_field'] = NULL;
                     break;
             }
 
@@ -1582,25 +1540,7 @@ class GravityView_Edit_Entry_Render {
 
         $edit_fields = array();
 
-        $field_type_blacklist = array(
-            'page',
-        );
-
-	    /**
-	     * @filter `gravityview/edit_entry/hide-product-fields` Hide product fields from being editable.
-	     * @since 1.9.1
-         * @param boolean $hide_product_fields Whether to hide product fields in the editor.  Default: false
-	     */
-	    $hide_product_fields = apply_filters( 'gravityview/edit_entry/hide-product-fields', empty( self::$supports_product_fields ) );
-
-	    if( $hide_product_fields ) {
-		    $field_type_blacklist[] = 'option';
-		    $field_type_blacklist[] = 'quantity';
-            $field_type_blacklist[] = 'product';
-            $field_type_blacklist[] = 'total';
-            $field_type_blacklist[] = 'shipping';
-            $field_type_blacklist[] = 'calculation';
-	    }
+        $field_type_blacklist = $this->loader->get_field_blacklist( $this->entry );
 
         // First, remove blacklist or calculation fields
         foreach ( $fields as $key => $field ) {
@@ -1610,12 +1550,6 @@ class GravityView_Edit_Entry_Render {
             if( $field->has_calculation() ) {
                 $this->fields_with_calculation[] = $field;
                 // don't remove the calculation fields on form render.
-            }
-
-            // process total field after all fields have been saved
-            if ( $field->type == 'total' ) {
-                $this->total_fields[] = $field;
-                unset( $fields[ $key ] );
             }
 
             if( in_array( $field->type, $field_type_blacklist ) ) {
@@ -1824,7 +1758,7 @@ class GravityView_Edit_Entry_Render {
      *
      * @param $has_conditional_logic
      * @param $form
-     * @return mixed|void
+     * @return mixed
      */
     public function manage_conditional_logic( $has_conditional_logic, $form ) {
 

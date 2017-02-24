@@ -137,6 +137,7 @@ class GVCommon {
 	 * Check whether a form has product fields
 	 *
 	 * @since 1.16
+	 * @since 1.20 Refactored the field types to get_product_field_types() method
 	 *
 	 * @param array $form Gravity Forms form array
 	 *
@@ -144,11 +145,60 @@ class GVCommon {
 	 */
 	public static function has_product_field( $form = array() ) {
 
-		$product_fields = apply_filters( 'gform_product_field_types', array( 'option', 'quantity', 'product', 'total', 'shipping', 'calculation', 'price' ) );
+		$product_fields = self::get_product_field_types();
 
 		$fields = GFAPI::get_fields_by_type( $form, $product_fields );
 
 		return empty( $fields ) ? false : $fields;
+	}
+
+	/**
+	 * Return array of product field types
+	 *
+	 * Modify the value using the `gform_product_field_types` filter
+	 *
+	 * @since 1.20
+	 *
+	 * @return array
+	 */
+	public static function get_product_field_types() {
+
+		$product_fields = apply_filters( 'gform_product_field_types', array( 'option', 'quantity', 'product', 'total', 'shipping', 'calculation', 'price', 'hiddenproduct', 'singleproduct', 'singleshipping' ) );
+
+		return $product_fields;
+	}
+
+	/**
+	 * Check if an entry has transaction data
+	 *
+	 * Checks the following keys to see if they are set: 'payment_status', 'payment_date', 'transaction_id', 'payment_amount', 'payment_method'
+	 *
+	 * @since 1.20
+	 *
+	 * @param array $entry Gravity Forms entry array
+	 *
+	 * @return bool True: Entry has metadata suggesting it has communicated with a payment gateway; False: it does not have that data.
+	 */
+	public static function entry_has_transaction_data( $entry = array() ) {
+
+		if ( ! is_array( $entry ) ) {
+			return false;
+		}
+
+		$has_transaction_data = false;
+
+		$payment_meta = array( 'payment_status', 'payment_date', 'transaction_id', 'payment_amount', 'payment_method' );
+
+		foreach ( $payment_meta as $meta ) {
+
+			$has_transaction_data = rgar( $entry, $meta, false );
+
+			if( ! empty( $has_transaction_data ) ) {
+				break;
+			}
+		}
+
+		return (bool) $has_transaction_data;
 	}
 
 	/**
@@ -299,9 +349,12 @@ class GVCommon {
 			$payment_fields = GravityView_Fields::get_all( 'pricing' );
 
 			foreach ( $payment_fields as $payment_field ) {
-				if( isset( $fields["{$payment_field->name}"] ) ) {
+
+				// Either the field exists ($fields['shipping']) or the form explicitly contains a `shipping` field with numeric key
+				if( isset( $fields["{$payment_field->name}"] ) || GFCommon::get_fields_by_type( $form, $payment_field->name ) ) {
 					continue;
 				}
+
 				$fields["{$payment_field->name}"] = array(
 					'label' => $payment_field->label,
 					'desc' => $payment_field->description,
@@ -376,7 +429,7 @@ class GVCommon {
 			'search_criteria' => null,
 			'sorting' => null,
 			'paging' => null,
-			'cache' => (isset( $passed_criteria['cache'] ) ? $passed_criteria['cache'] : true),
+			'cache' => (isset( $passed_criteria['cache'] ) ? (bool) $passed_criteria['cache'] : true),
 		);
 
 		$criteria = wp_parse_args( $passed_criteria, $search_criteria_defaults );
@@ -423,19 +476,21 @@ class GVCommon {
 					// Gravity Forms wants dates in the `Y-m-d H:i:s` format.
 					$criteria['search_criteria'][ $key ] = $date->format( 'Y-m-d H:i:s' );
 				} else {
+					do_action( 'gravityview_log_error', '[filter_get_entries_criteria] '.$key.' Date format not valid:', $criteria['search_criteria'][ $key ] );
+
 					// If it's an invalid date, unset it. Gravity Forms freaks out otherwise.
 					unset( $criteria['search_criteria'][ $key ] );
-
-					do_action( 'gravityview_log_error', '[filter_get_entries_criteria] '.$key.' Date format not valid:', $criteria['search_criteria'][ $key ] );
 				}
 			}
 		}
 
 
-		// When multiple views are embedded, OR single entry, calculate the context view id and send it to the advanced filter
-		if ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance()->has_multiple_views() || GravityView_frontend::getInstance()->getSingleEntry() ) {
+		// Calculate the context view id and send it to the advanced filter
+		if( GravityView_frontend::getInstance()->getSingleEntry() ) {
 			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
-		} elseif ( 'delete' === RGForms::get( 'action' ) ) {
+		} elseif ( class_exists( 'GravityView_View_Data' ) && GravityView_View_Data::getInstance() && GravityView_View_Data::getInstance()->has_multiple_views() ) {
+			$criteria['context_view_id'] = GravityView_frontend::getInstance()->get_context_view_id();
+		} elseif ( 'delete' === GFForms::get( 'action' ) ) {
 			$criteria['context_view_id'] = isset( $_GET['view_id'] ) ? intval( $_GET['view_id'] ) : null;
 		} elseif( !isset( $criteria['context_view_id'] ) ) {
             // Prevent overriding the Context View ID: Some widgets could set the context_view_id (e.g. Recent Entries widget)
@@ -451,7 +506,6 @@ class GVCommon {
 		$criteria = apply_filters( 'gravityview_search_criteria', $criteria, $form_ids, $criteria['context_view_id'] );
 
 		return (array)$criteria;
-
 	}
 
 
@@ -706,6 +760,7 @@ class GVCommon {
 	 *
 	 * Checks if a certain entry is valid according to the View search filters (specially the Adv Filters)
 	 *
+	 * @uses GVCommon::calculate_get_entries_criteria();
 	 * @see GFFormsModel::is_value_match()
 	 *
 	 * @since 1.7.4
@@ -784,11 +839,12 @@ class GVCommon {
 			} else {
 				$field = self::get_field( $form, $k );
 				$field_value  = GFFormsModel::get_lead_field_value( $entry, $field );
-				 // If it's a complex field, then fetch the input's value
-				$field_value = is_array( $field_value ) ? rgar( $field_value, $k ) : $field_value;
+				 // If it's a complex field, then fetch the input's value, if exists at the current key. Otherwise, let GF handle it
+				$field_value = ( is_array( $field_value ) && isset( $field_value[ $k ] ) ) ? rgar( $field_value, $k ) : $field_value;
 			}
 
 			$operator = isset( $filter['operator'] ) ? strtolower( $filter['operator'] ) : 'is';
+
 			$is_value_match = GFFormsModel::is_value_match( $field_value, $filter['value'], $operator, $field );
 
 			// verify if we are already free to go!

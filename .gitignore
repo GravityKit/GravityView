@@ -59,7 +59,7 @@ languages/gravityview-pt.po
 
 ## Bower
 assets/lib/flexibility/*
-!assets/lib/flexibility/dist/*
+!assets/lib/flexibility/*.js
 !assets/lib/flexibility/*.json
 
 # Unit tests
@@ -76,8 +76,13 @@ languages/gravityview-de.mo
 
 languages/gravityview-de.po
 
-docs/config.doxygen
-
 .idea/modules.xml
 
 .idea/php.xml
+
+# DoxyGen
+docs/config.doxygen
+docs/html
+
+# VIM
+*.swp

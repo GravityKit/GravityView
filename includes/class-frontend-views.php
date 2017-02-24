@@ -338,7 +338,10 @@ class GravityView_frontend {
 		global $post;
 
 		// If in admin and NOT AJAX request, get outta here.
-		if ( GravityView_Plugin::is_admin() )  {
+		if ( function_exists( 'gravityview' ) && gravityview()->request->is_admin() ) {
+			return;
+			/** Deprecated in favor of gravityview()->request->is_admin(). */
+		} else if ( GravityView_Plugin::is_admin() ) {
 			return;
 		}
 
@@ -521,7 +524,7 @@ class GravityView_frontend {
 
 			/** @since 1.7.4 */
 			if ( is_preview() && ! gravityview_get_form_id( $this->post_id ) ) {
-				$content .= __( 'When using a Start Fresh template, you must save the View before a Preview is available.', 'gravityview' );
+				$content .= __( 'When using a preset template, you must save the View before a Preview is available.', 'gravityview' );
 			} else {
 				foreach ( $this->getGvOutputData()->get_views() as $view_id => $data ) {
 					$content .= $this->render_view( array( 'id' => $view_id ) );
@@ -700,7 +703,7 @@ class GravityView_frontend {
 			/**
 			 * @filter `gravityview_direct_access` Should Views be directly accessible, or only visible using the shortcode?
 			 * @see https://codex.wordpress.org/Function_Reference/register_post_type#public
-			 * @see GravityView_Post_Types::init_post_types
+			 * @see \GV\Entry::get_endpoint_name
 			 * @since 1.15.2
 			 * @param[in,out] boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded via shortcode. Default: `true`
 			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
@@ -724,7 +727,7 @@ class GravityView_frontend {
 
 		$gravityview_view = new GravityView_View( $view_data );
 
-		$post_id = ! empty( $atts['post_id'] ) ? intval( $atts['post_id'] ) : $this->getPostId();
+		$post_id = ! empty( $atts['post_id'] ) ? intval( $atts['post_id'] ) : get_the_ID();
 
 		$gravityview_view->setPostId( $post_id );
 
@@ -796,6 +799,7 @@ class GravityView_frontend {
 
 				// Only display warning once when multiple Views are embedded
 				if( $view_id !== (int) GravityView_frontend::get_context_view_id() ) {
+					ob_end_clean();
 					return null;
 				}
 
@@ -811,6 +815,7 @@ class GravityView_frontend {
 				 */
 				echo esc_attr( $message );
 
+				ob_end_clean();
 				return null;
 			}
 
@@ -818,6 +823,7 @@ class GravityView_frontend {
 			// important: do not remove this as it prevents fake attempts of displaying entries from other views/forms
 			if ( $this->getGvOutputData()->has_multiple_views() && $view_id != $this->get_context_view_id() ) {
 				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '. $view_id );
+				ob_end_clean();
 				return null;
 			}
 
@@ -1122,39 +1128,78 @@ class GravityView_frontend {
 		do_action( 'gravityview_log_debug', '[get_view_entries] init' );
 		// start filters and sorting
 
+		$parameters = self::get_view_entries_parameters( $args, $form_id );
+
+		$count = 0; // Must be defined so that gravityview_get_entries can use by reference
+
+		//fetch entries
+		$entries = gravityview_get_entries( $form_id, $parameters, $count );
+
+		do_action( 'gravityview_log_debug', sprintf( '%s: Get Entries. Found: %s entries', __METHOD__, $count ), $entries );
+
+		/**
+		 * @filter `gravityview_view_entries` Filter the entries output to the View
+		 * @deprecated since 1.5.2
+		 * @param array $args View settings associative array
+		 * @var array
+		 */
+		$entries = apply_filters( 'gravityview_view_entries', $entries, $args );
+
+		$return = array(
+			'count' => $count,
+			'entries' => $entries,
+			'paging' => rgar( $parameters, 'paging' ),
+		);
+
+		/**
+		 * @filter `gravityview/view/entries` Filter the entries output to the View
+		 * @param array $criteria associative array containing count, entries & paging
+		 * @param array $args View settings associative array
+		 * @since 1.5.2
+		 */
+		return apply_filters( 'gravityview/view/entries', $return, $args );
+	}
+
+	/**
+	 * Get an array of search parameters formatted as Gravity Forms requires
+	 *
+	 * Results are filtered by `gravityview_get_entries` and `gravityview_get_entries_{View ID}` filters
+	 *
+	 * @uses GravityView_frontend::get_search_criteria
+	 * @uses GravityView_frontend::get_search_criteria_paging
+	 *
+	 * @since 1.20
+	 *
+	 * @see GravityView_View_Data::get_default_args For $args options
+	 *
+	 * @param array $args Array of View settings, as structured in GravityView_View_Data::get_default_args
+	 * @param int $form_id Gravity Forms form ID to search
+	 *
+	 * @return array With `search_criteria`, `sorting`, `paging`, `cache` keys
+	 */
+	public static function get_view_entries_parameters( $args = array(), $form_id = 0 ) {
+
+
+		if ( ! is_array( $args ) || ! is_numeric( $form_id ) ) {
+
+			do_action( 'gravityview_log_error', __METHOD__ . ': Passed args are not an array or the form ID is not numeric' );
+
+			return array();
+		}
+
+		$form_id = intval( $form_id );
+
 		/**
 		 * Process search parameters
 		 * @var array
 		 */
 		$search_criteria = self::get_search_criteria( $args, $form_id );
 
-		// Paging & offset
-		$page_size = ! empty( $args['page_size'] ) ? intval( $args['page_size'] ) : apply_filters( 'gravityview_default_page_size', 25 );
-
-		if ( -1 === $page_size ) {
-			$page_size = PHP_INT_MAX;
-		}
-
-		if ( isset( $args['offset'] ) ) {
-			$offset = intval( $args['offset'] );
-		} else {
-			$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
-			$offset = ( $curr_page - 1 ) * $page_size;
-		}
-
-		$paging = array(
-			'offset' => $offset,
-			'page_size' => $page_size,
-		);
-
-		do_action( 'gravityview_log_debug', __METHOD__ . ': Paging: ', $paging );
-
-		// Sorting
-		$sorting = self::updateViewSorting( $args, $form_id );
+		$paging = self::get_search_criteria_paging( $args );
 
 		$parameters = array(
 			'search_criteria' => $search_criteria,
-			'sorting' => $sorting,
+			'sorting' => self::updateViewSorting( $args, $form_id ),
 			'paging' => $paging,
 			'cache' => isset( $args['cache'] ) ? $args['cache'] : true,
 		);
@@ -1185,30 +1230,49 @@ class GravityView_frontend {
 
 		do_action( 'gravityview_log_debug', __METHOD__ . ': $parameters passed to gravityview_get_entries(): ', $parameters );
 
-		//fetch entries
-		$count = 0;
-		$entries = gravityview_get_entries( $form_id, $parameters, $count );
-
-		do_action( 'gravityview_log_debug', sprintf( '%s: Get Entries. Found: %s entries', __METHOD__, $count ), $entries );
-
-		/**
-		 * @filter `gravityview_view_entries` Filter the entries output to the View
-		 * @deprecated since 1.5.2
-		 * @param array $args View settings associative array
-		 * @var array
-		 */
-		$entries = apply_filters( 'gravityview_view_entries', $entries, $args );
-
-		/**
-		 * @filter `gravityview/view/entries` Filter the entries output to the View
-		 * @param array $criteria associative array containing count, entries & paging
-		 * @param array $args View settings associative array
-		 * @since 1.5.2
-		 */
-		return apply_filters( 'gravityview/view/entries', compact( 'count', 'entries', 'paging' ), $args );
-
+		return $parameters;
 	}
 
+	/**
+	 * Get the paging array for the View
+	 *
+	 * @since 1.19.5
+	 *
+	 * @param $args
+	 * @param int $form_id
+	 */
+	public static function get_search_criteria_paging( $args ) {
+
+		/**
+		 * @filter `gravityview_default_page_size` The default number of entries displayed in a View
+		 * @since 1.1.6
+		 * @param int $default_page_size Default: 25
+		 */
+		$default_page_size = apply_filters( 'gravityview_default_page_size', 25 );
+
+		// Paging & offset
+		$page_size = ! empty( $args['page_size'] ) ? intval( $args['page_size'] ) : $default_page_size;
+
+		if ( -1 === $page_size ) {
+			$page_size = PHP_INT_MAX;
+		}
+
+		if ( isset( $args['offset'] ) ) {
+			$offset = intval( $args['offset'] );
+		} else {
+			$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
+			$offset = ( $curr_page - 1 ) * $page_size;
+		}
+
+		$paging = array(
+			'offset' => $offset,
+			'page_size' => $page_size,
+		);
+
+		do_action( 'gravityview_log_debug', __METHOD__ . ': Paging: ', $paging );
+
+		return $paging;
+	}
 
 	/**
 	 * Updates the View sorting criteria
@@ -1351,7 +1415,12 @@ class GravityView_frontend {
 	 */
 	public static function is_single_entry() {
 
-		$var_name = GravityView_Post_Types::get_entry_var_name();
+		if ( function_exists( 'gravityview' ) ) {
+			$var_name = \GV\Entry::get_endpoint_name();
+		} else {
+			/** Deprecated. Use \GV\Entry::get_endpoint_name instead. */
+			$var_name = GravityView_Post_Types::get_entry_var_name();
+		}
 
 		$single_entry = get_query_var( $var_name );
 

@@ -10,6 +10,8 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 	var $is_searchable = true;
 
+	public $search_operators = array( 'is', 'isnot' );
+
 	var $is_sortable = true;
 
 	var $is_numeric = true;

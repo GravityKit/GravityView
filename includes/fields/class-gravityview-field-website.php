@@ -12,8 +12,11 @@ class GravityView_Field_Website extends GravityView_Field {
 
 	var $name = 'website';
 
+	var $is_searchable = true;
+
 	var $search_operators = array( 'is', 'isnot', 'contains', 'starts_with', 'ends_with' );
 
+	/** @see GF_Field_Website */
 	var $_gf_field_class_name = 'GF_Field_Website';
 
 	var $group = 'advanced';
