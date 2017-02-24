@@ -566,6 +566,13 @@ class GravityView_Admin_Views {
 		 */
 		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array(), $context );
 
+		if ( ! is_array( $blacklist_field_types ) ) {
+
+		    do_action( 'gravityview_log_error', __METHOD__ . ': $blacklist_field_types is not an array', print_r( $blacklist_field_types, true ) );
+
+			$blacklist_field_types = array();
+		}
+
 		$fields = $this->get_available_fields( $form, $context );
 
 		$output = '';
@@ -574,7 +581,7 @@ class GravityView_Admin_Views {
 
 			foreach( $fields as $id => $details ) {
 
-				if( in_array( $details['type'], $blacklist_field_types ) ) {
+				if( in_array( $details['type'], (array) $blacklist_field_types ) ) {
 					continue;
 				}
 
