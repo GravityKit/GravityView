@@ -3,7 +3,7 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://gravityview.co
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:          	1.20-beta
+ * Version:          	1.20
  * Author:            	GravityView
  * Author URI:        	https://gravityview.co
  * Text Domain:       	gravityview
@@ -79,7 +79,7 @@ require GRAVITYVIEW_DIR . '/future/gravityview.php';
  */
 final class GravityView_Plugin {
 
-	const version = '1.20-beta';
+	const version = '1.20';
 
 	private static $instance;
 
