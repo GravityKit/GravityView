@@ -312,8 +312,9 @@ final class GravityView_Plugin {
 	 */
 	public static function is_admin() {
 
-		if ( function_exists( 'gravityview' ) )
+		if ( function_exists( 'gravityview' ) ) {
 			return gravityview()->request->is_admin();
+		}
 
 		$doing_ajax = defined( 'DOING_AJAX' ) ? DOING_AJAX : false;
 
