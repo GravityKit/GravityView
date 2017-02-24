@@ -18,6 +18,8 @@
  */
 class GravityView_Plugin_Hooks_Gravity_Forms extends GravityView_Plugin_and_Theme_Hooks {
 
+	public $class_name = 'GFForms';
+
 	/**
 	 * @inheritDoc
 	 * @since 1.15.2
@@ -36,6 +38,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms extends GravityView_Plugin_and_Them
 		'gform_field_filter',
 		'gform_forms',
 	);
+
 }
 
 new GravityView_Plugin_Hooks_Gravity_Forms;
