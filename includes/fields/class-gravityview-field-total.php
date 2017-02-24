@@ -53,7 +53,7 @@ class GravityView_Field_Total extends GravityView_Field {
 	public function add_to_blacklist( $blacklist = array(), $context = NULL  ){
 
 		if( empty( $context ) || $context !== 'edit' ) {
-			return $fields;
+			return $blacklist;
 		}
 
 		$blacklist[] = 'total';
