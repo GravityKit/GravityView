@@ -254,16 +254,12 @@ class GravityView_Welcome {
 
 				<div class="feature-section col two-col" style="margin:0; padding: 0;">
 					<div class="col col-1">
-						<div class="media-container" style="min-height:81px; border: none;"><img alt="Front-end entry approval" src="<?php echo plugins_url( 'assets/images/screenshots/frontend-approval.gif', GRAVITYVIEW_FILE ); ?>"></div>
-						<h4 class="higher">Front-end Entry Approval</h4>
-                        <p><strong>It&rsquo;s here!</strong>: you can now approve entries from the front of the site. It's easier than ever: just add the "Approve Entries" field to your View and get started.</p>
-                        <p><a href="https://docs.gravityview.co/article/390-entry-approval" class="button-primary button button-large">Learn how to set it up!</a></p>
-					</div>
-
-					<div class="col col-2 last-feature">
-						<div class="media-container" style="min-height:81px; border: none;"><img src="<?php echo plugins_url( 'assets/images/screenshots/show-all-entries-setting.png', GRAVITYVIEW_FILE ); ?>" alt="Show all entries to administrators setting"></div>
-						<h4 class="higher">Show All Entries to Administrators</h4>
-						<p>We added a setting to make front-end moderation easy. The new "Show all entries to administrators" setting allows administrators to see entries with any approval status, while everyone else will only see approved entries. It makes moderating entries easy.</p>
+						<div class="media-container"><img alt="Pricing fields? Check." src="<?php echo plugins_url( 'assets/images/screenshots/edit-product-fields.jpg', GRAVITYVIEW_FILE ); ?>" style="border: none"></div>
+                    </div>
+                    <div class="col col-2 last-col">
+                        <h4 class="higher">Edit Pricing Fields</h4>
+                        <p>You can now edit product fields when an entry does not have transaction data. If you manage products internally, you'll love this feature!</p>
+                        <p><a href="https://docs.gravityview.co/article/406-editing-product-and-pricing-fields" class="button-primary button button-large">Learn more about editing Pricing Fields</a></p>
 					</div>
 				</div>
 
@@ -271,6 +267,45 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.20 on February 23, 2017</h3>
+
+                <ul>
+                    <li>Added: Product Fields are now editable
+
+                        <ul>
+                            <li>Quantity,</li>
+                            <li>Product fields are hidden if the entry contains external transaction data</li>
+                            <li>Support for Coupon Addon</li>
+                        </ul></li>
+                    <li>Fixed: Single Entry not accessible when filtering by a Checkbox field in the Advanced Filters Extension</li>
+                    <li>Fixed: WPML links to Single Entry not working if using directory or sub-domain URL formats</li>
+                    <li>Fixed: Product field prices not always formatted as a currency</li>
+                    <li>Fixed: Product fields sometimes appeared twice in the Add Field field picker</li>
+                    <li>Fixed: PHP warning when updating entries. Thanks for reporting, Werner!</li>
+                    <li>Modified: Don&#39;t show CAPTCHA fields in Edit Entry</li>
+                    <li>Fixed: &quot;Trying to get property of non-object&quot; bug when updating an entry connected to Gravity Forms User Registration</li>
+                    <li>Fixed: Yoast SEO scripts and styles not loading properly on Edit View screen</li>
+                    <li>Updated: Minimum version of Gravity Forms User Registration updated to 3.2</li>
+                </ul>
+
+                <p><strong>Developer Notes:</strong></p>
+
+                <ul>
+                    <li>Modified: <code>gravityview/edit_entry/hide-product-fields</code> default will now be determined by whether entry has gateway transaction information</li>
+                    <li>Added: <code>GVCommon::entry_has_transaction_data()</code> to check whether entry array contains payment gateway transaction information</li>
+                    <li>Added: <code>gravityview/edit_entry/hide-coupon-fields</code> to modify whether to hide Coupon fields in Edit Entry (default: <code>false</code>)</li>
+                    <li>Added: <code>GravityView_frontend::get_view_entries_parameters()</code> method to get the final entry search parameters for a View without fetching the entries as well</li>
+                    <li>Updated: <code>fields/product.php</code> template file</li>
+                    <li>Updated: Flexibility library for IE CSS flexbox support</li>
+                    <li>Added: <code>GVCommon::get_product_field_types()</code> to fetch Gravity Forms product field types array</li>
+                    <li>Added: <code>gravityview/edit_entry/field_blacklist</code> filter to modify what field types should not be shown in Edit Entry</li>
+                    <li>Added: <code>GravityView_Plugin_Hooks_Gravity_Forms_Coupon</code> class</li>
+                    <li>Added: Third <code>GravityView_Edit_Entry_Render</code> parameter to <code>gravityview/edit_entry/field_value</code>, <code>gravityview/edit_entry/field_value_{field_type}</code> filters and <code>gravityview/edit_entry/after_update</code> action</li>
+                    <li>Modified: Only print errors when running the unit tests if the <code>--debug</code> setting is defined, like <code>phpunit --debug --verbose</code></li>
+                    <li>Modified: If overriding <code>get_field_input()</code> using <code>GravityView_Field</code>, returning empty value will now result in the default <code>GF_Field</code> input being used</li>
+                    <li>Modified: GravityView<em>Edit</em>Entry<em>User</em>Registration::restore<em>display</em>name() now returns a value instead of void</li>
+                    <li>Tweak: Edit Entry links no longer require <code>page=gf_entries&amp;view=entry</code> at the end of the URL (in case you noticed)</li>
+                </ul>
 
                 <h3>1.19.4 on January 19, 2017</h3>
 
