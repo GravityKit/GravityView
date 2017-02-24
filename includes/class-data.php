@@ -123,6 +123,13 @@ class GravityView_View_Data {
 			}
 		}
 
+		/**
+		 * @filter `gravityview_maybe_get_view_ids`
+		 * @param int[] $ids View IDs parsed from the post
+		 * @param string|int|int[]|array|WP_Post|WP_Post[] $passed_post
+		 */
+		$ids = apply_filters( 'gravityview_maybe_get_view_ids', $ids, $passed_post );
+
 		if( empty($ids) ) {
 			return NULL;
 		}
