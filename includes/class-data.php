@@ -463,7 +463,7 @@ class GravityView_View_Data {
 	 * @param  string $content $post->post_content content
 	 *
 	 * @deprecated
-	 * @see \GV\Shortcode::parse and \GV\View_Collection::append (via the `gravityview()->request->views` link)
+	 * @see \GV\View_Collection::from_content
 	 *
 	 * @return int|null|array If a single View is found, the ID of the View. If there are multiple views in the content, array of IDs parsed. If not found, NULL
 	 */

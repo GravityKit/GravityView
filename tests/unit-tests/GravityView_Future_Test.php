@@ -446,6 +446,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \GV\View_Collection::from_post()
+	 * @covers \GV\View_Collection::from_content()
 	 * @covers \GV\View_Collection::get()
 	 * @covers \GravityView_View_Data::maybe_get_view_id()
 	 * @covers \GravityView_View_Data::is_valid_embed_id()

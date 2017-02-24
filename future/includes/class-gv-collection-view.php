@@ -67,25 +67,7 @@ class View_Collection extends Collection {
 			/** A straight up gravityview post. */
 			$views->add( View::from_post( $post ) );
 		} else {
-			/** Let's find us some [gravityview] shortcodes perhaps. */
-			foreach ( Shortcode::parse( $post->post_content ) as $shortcode ) {
-				if ( $shortcode->name != 'gravityview' ) {
-					continue;
-				}
-
-				if ( ! isset( $shortcode->atts['id'] ) ) {
-					do_action( 'gravityview_log_error', __METHOD__ . ': [gravityview] shortcode has no `id` attribute' );
-					continue;
-				}
-
-				if ( is_numeric( $shortcode->atts['id'] ) ) {
-					try {
-						$views->add( View::by_id( $shortcode->atts['id'] ) );
-					} catch ( \InvalidArgumentException $e ) {
-						// @todo log this error with the future logger
-					}
-				}
-			}
+			$views->merge( self::from_content( $post->post_content ) );
 
 			/**
 			 * @filter `gravityview/view_collection/from_post/meta_keys` Define meta keys to parse to check for GravityView shortcode content.
@@ -108,14 +90,39 @@ class View_Collection extends Collection {
 
 			/** What about inside post meta values? */
 			foreach ( $meta_keys as $meta_key ) {
-				foreach ( Shortcode::parse( $post->$meta_key ) as $shortcode ) {
-					if ( ! $shortcode instanceof Shortcodes\gravityview ) {
-						continue;
-					}
+				if ( is_string( $meta_key ) ) {
+					$views->merge( self::from_content( $post->$meta_key ) );
+				}
+			}
+		}
 
-					if ( is_numeric( $shortcode->atts['id'] ) ) {
-						$views->add( View::by_id( $shortcode->atts['id'] ) );
-					}
+		return $views;
+	}
+
+	/**
+	 * Get a list of detected \GV\View objects inside the supplied content.
+	 *
+	 * The content can have a shortcode, this is the simplest case.
+	 *
+	 * @param string $content The content to look into.
+	 *
+	 * @api
+	 * @since future
+	 * @return \GV\View_Collection A \GV\View_Collection instance contanining the views inside the supplied \WP_Post.
+	 */
+	public static function from_content( $content ) {
+		$views = new self();
+
+		/** Let's find us some [gravityview] shortcodes perhaps. */
+		foreach ( Shortcode::parse( $content ) as $shortcode ) {
+			if ( $shortcode->name != 'gravityview' || empty( $shortcode->atts['id'] ) ) {
+				continue;
+			}
+
+			if ( is_numeric( $shortcode->atts['id'] ) ) {
+				try {
+					$views->add( View::by_id( $shortcode->atts['id'] ) );
+				} catch ( \InvalidArgumentException $e ) {
 				}
 			}
 		}
