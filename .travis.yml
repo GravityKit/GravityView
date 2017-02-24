@@ -43,7 +43,7 @@ before_script:
   - bash tests/bin/travis.sh before
 
 script:
-  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then phpunit -c phpunit.xml.dist; else phpunit -c phpunit.xml.dist --no-coverage; fi
+  - phpunit -c phpunit.xml.dist
 
 after_script:
   - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
