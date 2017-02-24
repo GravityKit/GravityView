@@ -143,6 +143,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \GV\View_Collection::add()
+	 * @covers \GV\View_Collection::merge()
 	 */
 	function test_view_collection_add() {
 		$views = new \GV\View_Collection();
@@ -160,6 +161,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 		}
 		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
 		$this->assertCount( 1, $views->all() );
+
+		$more_views = new \GV\View_Collection();
+		$more_views->add( $view );
+		$more_views->add( $view );
+		$this->assertCount( 2, $more_views->all() );
+
+		$views->merge( $more_views );
+		$this->assertCount( 3, $views->all() );
 	}
 
 	/**

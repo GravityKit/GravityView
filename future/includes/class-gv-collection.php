@@ -29,6 +29,19 @@ class Collection {
 	}
 
 	/**
+	 * Merge another collection into here.
+	 *
+	 * @param \GV\Collection $collection The collection to be merged.
+	 *
+	 * @api
+	 * @since future
+	 * @return void
+	 */
+	public function merge( \GV\Collection $collection ) {
+		array_map( array( $this, 'add'), $collection->all() );
+	}
+
+	/**
 	 * Returns all the objects in this collection as an an array.
 	 *
 	 * @api
