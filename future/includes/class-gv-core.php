@@ -36,6 +36,14 @@ final class Core {
 	public $request;
 
 	/**
+	 * @var \GV\Logger;
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $log;
+
+	/**
 	 * Get the global instance of \GV\Core.
 	 *
 	 * @return \GV\Core The global instance of GravityView Core.
@@ -71,12 +79,14 @@ final class Core {
 		/**
 		 * Stop all further functionality from loading if the WordPress
 		 * plugin is incompatible with the current environment.
-		 *
-		 * @todo Output incompatibility notices.
 		 */
 		if ( ! $this->plugin->is_compatible() ) {
 			return;
 		}
+
+		/** Enable logging. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-logger.php' );
+		$this->log = new WP_Action_Logger();
 
 		/** Register the gravityview post type upon WordPress core init. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );

@@ -1049,6 +1049,29 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\WP_Action_Logger::log()
+	 */
+	public function test_logging() {
+		$this->assertInstanceOf( '\GV\WP_Action_Logger', gravityview()->log );
+
+		$_this = &$this;
+		add_action( 'gravityview_log_debug_test', function( $message, $data ) use ( $_this ) {
+			$this->assertEquals( "[info, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
+			$this->assertEquals( $data, array( 'a' => 'b' ) );
+		}, 10, 2 );
+		gravityview()->log->info( 'Hello, {world}!', array( 'world' => 'TRAPPIST-1', 'data' => array( 'a' => 'b' ) ) );
+		remove_all_actions( 'gravityview_log_debug_test' );
+
+		add_action( 'gravityview_log_error_test', function( $message, $data ) use ( $_this ) {
+			$this->assertEquals( "[critical, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
+			$this->assertEquals( $data, array( 'a' => 'b' ) );
+		}, 10, 2 );
+		gravityview()->log->critical( 'Hello, {world}!', array( 'world' => 'TRAPPIST-1', 'data' => array( 'a' => 'b' ) ) );
+
+		remove_all_actions( 'gravityview_log_error_test' );
+	}
+
+	/**
 	 * @covers \GV\Field_Collection::add()
 	 * @covers \GV\Field_Collection::from_configuration()
 	 * @covers \GV\Field_Collection::as_configuration()

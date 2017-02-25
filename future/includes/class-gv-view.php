@@ -190,10 +190,10 @@ class View implements \ArrayAccess {
 		/** Get connected form. */
 		$view->form = GF_Form::by_id( $view->_gravityview_form_id );
 		if ( ! $view->form ) {
-			/**
-			 * Form doesn't exist...
-			 * @todo Add logging all around such silent failure places.
-			 */
+			gravityview()->log->error( 'View #{view_id} tried attaching non-existent Form #{form_id} to it.', array(
+				'view_id' => $view->ID,
+				'form_id' => $view->_gravityview_form_id ? : 0,
+			) );
 		}
 
 		/** Get fields. */
