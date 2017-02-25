@@ -18,7 +18,7 @@ class GravityView_View_Data {
 	private function __construct( $passed_post = NULL ) {
 		if ( function_exists( 'gravityview' ) ) {
 			/** Reset the new frontend request views, since we now have duplicate state. */
-			gravityview()->request = new \GV\Frontend_Request();
+			gravityview()->request = new \GV\Dummy_Request();
 		}
 
 		if( !empty( $passed_post ) ) {

@@ -555,7 +555,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * Test stubs that work with the old View Data.
 	 *
 	 * @covers GravityView_frontend::single_entry_title()
-	 * @group current
 	 */
 	function test_view_compat() {
 		$this->_reset_context();
@@ -857,15 +856,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		set_current_screen( 'dashboard' );
 		$this->assertFalse( gravityview()->request->is_admin() );
-	}
-
-	/**
-	 * @covers \GV\Frontend_Request::parse()
-	 */
-	function test_frontend_request_parse() {
-		// Make sure doesn't break without a global post
-		$request = new \GV\Frontend_Request();
-		$request->parse( null );
 	}
 
 	/**

@@ -28,7 +28,7 @@ final class Core {
 	public $plugin;
 
 	/**
-	 * @var \GV\Frontend_Request The current request.
+	 * @var \GV\Request The global request.
 	 *
 	 * @api
 	 * @since future
@@ -120,7 +120,29 @@ final class Core {
 
 		/** Initialize the current request. For now we assume a default WordPress frontent context. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
-		$this->request = new Frontend_Request();
+
+		/**
+		 * Use this for global state tracking in the old code.
+		 *
+		 * We're in a tricky situation now, where we're putting our
+		 *  Frontend_Request to work. But the old code is relying on
+		 *  it to keep track of views state and whatnot. Ugh.
+		 *
+		 * More importantly GravityView_View_Data is resetting it every
+		 *  time the class instantiates! This conflicts with adding filters,
+		 *  actions, and other global initialization for the real request.
+		 *
+		 * Let's give them a Dummy_Request to work with. They're using it
+		 *  as a container for views either way. And for the is_admin()
+		 *  function, which will be available once GravityView_View_Data
+		 *  is removed.
+		 */
+		$this->request = new Dummy_Request();
+
+		if ( ! $this->request->is_admin() ) {
+			/** The main frontend request. */
+			new Frontend_Request();
+		}
 	}
 
 	private function __clone() { }
