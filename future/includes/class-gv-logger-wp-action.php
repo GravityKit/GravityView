@@ -27,7 +27,7 @@ class WP_Action_Logger extends Logger {
 	 */
 	protected function log( $level, $message, $context ) {
 
-		$backtrace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 3 );
+		$backtrace = debug_backtrace();
 		$location = $this->interpolate( "{class}{type}{function}", $backtrace[2] );
 
 		$message = $this->interpolate( "[$level, $location] $message", $context );

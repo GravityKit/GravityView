@@ -1046,15 +1046,15 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$_this = &$this;
 		add_action( 'gravityview_log_debug_test', function( $message, $data ) use ( $_this ) {
-			$this->assertEquals( "[info, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
-			$this->assertEquals( $data, array( 'a' => 'b' ) );
+			$_this->assertEquals( "[info, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
+			$_this->assertEquals( $data, array( 'a' => 'b' ) );
 		}, 10, 2 );
 		gravityview()->log->info( 'Hello, {world}!', array( 'world' => 'TRAPPIST-1', 'data' => array( 'a' => 'b' ) ) );
 		remove_all_actions( 'gravityview_log_debug_test' );
 
 		add_action( 'gravityview_log_error_test', function( $message, $data ) use ( $_this ) {
-			$this->assertEquals( "[critical, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
-			$this->assertEquals( $data, array( 'a' => 'b' ) );
+			$_this->assertEquals( "[critical, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
+			$_this->assertEquals( $data, array( 'a' => 'b' ) );
 		}, 10, 2 );
 		gravityview()->log->critical( 'Hello, {world}!', array( 'world' => 'TRAPPIST-1', 'data' => array( 'a' => 'b' ) ) );
 
