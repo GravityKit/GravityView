@@ -59,6 +59,10 @@ function GravityView_View_Data_add_view( $view_id, $atts ) {
 
 /** Add some global fix for field capability discrepancies. */
 add_filter( 'gravityview/configuration/fields', function( $fields ) {
+	if ( empty( $fields  ) ) {
+		return $fields;
+	}
+
 	/**
 	 * Each view field is saved in a weird capability state by default.
 	 *
