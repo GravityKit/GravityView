@@ -401,8 +401,8 @@ class View implements \ArrayAccess {
 		return array_merge(
 			array( 'id' => $this->ID ),
 			array( 'view_id' => $this->ID ),
-			array( 'form_id' => $this->form->ID ),
-			array( 'form' => gravityview_get_form( $this->form->ID ) ),
+			array( 'form_id' => $this->form ? $this->form->ID : null ),
+			array( 'form' => $this->form ? gravityview_get_form( $this->form->ID ) : null ),
 			array( 'atts' => $this->settings->as_atts() ),
 			array( 'fields' => $this->fields->as_configuration() ),
 			$this->_data

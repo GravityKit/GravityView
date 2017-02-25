@@ -149,7 +149,7 @@ class GravityView_Admin_Bar {
 					if ( function_exists( 'gravityview' ) ) {
 						/** `$view` is now a \GV\View object, not an array. */
 						$view_id = $view->ID;
-						$form_id = $view->form->ID;
+						$form_id = $view->form ? $view->form->ID : null;
 					} else {
 						/** Deprecated. */
 						$view_id = $view['id'];
