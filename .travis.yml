@@ -47,11 +47,11 @@ before_script:
   - bash tests/bin/travis.sh before
 
 script:
-  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' && $GV_NO_FUTURE = '0' ]]; then vendor/bin/phpunit -c phpunit.xml.dist; else vendor/bin/phpunit -c phpunit.xml.dist --no-coverage; fi
+  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' && -z $GV_NO_FUTURE ]]; then vendor/bin/phpunit -c phpunit.xml.dist; else vendor/bin/phpunit -c phpunit.xml.dist --no-coverage; fi
 
 after_script:
-  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' && $GV_NO_FUTURE = '0' ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' && $GV_NO_FUTURE = '0' ]]; then php ocular.phar code-coverage:upload --format=php-clover /tmp/clover.xml; fi
+  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' && -z $GV_NO_FUTURE ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' && -z $GV_NO_FUTURE ]]; then php ocular.phar code-coverage:upload --format=php-clover /tmp/clover.xml; fi
 
 after_success:
-  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' && $GV_NO_FUTURE = '0' ]]; then travis_retry php vendor/bin/coveralls -v --exclude-no-stmt; fi
+  - if [[ $TRAVIS_PHP_VERSION = '7.0' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0' && -z $GV_NO_FUTURE ]]; then travis_retry php vendor/bin/coveralls -v --exclude-no-stmt; fi
