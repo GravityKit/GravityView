@@ -17,12 +17,12 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 class View implements \ArrayAccess {
 
 	/**
-	 * @var The backing \WP_Post instance.
+	 * @var \WP_Post The backing post instance.
 	 */
 	private $post;
 
 	/**
-	 * @var The settings \GV\View_Settings instance.
+	 * @var \GV\View_Settings The settings.
 	 *
 	 * @api
 	 * @since future
@@ -30,7 +30,7 @@ class View implements \ArrayAccess {
 	public $settings;
 
 	/**
-	 * @var The \GV\Form for this view.
+	 * @var \GV\Form The backing form for this view.
 	 *
 	 * Contains the form that is sourced for entries in this view.
 	 *
@@ -40,7 +40,7 @@ class View implements \ArrayAccess {
 	public $form;
 
 	/**
-	 * @var A \GV\Field_Collection instance.
+	 * @var \GV\Field_Collection The fields for this view.
 	 *
 	 * Contains all the fields that are attached to this view.
 	 *
@@ -48,6 +48,11 @@ class View implements \ArrayAccess {
 	 * @since future
 	 */
 	public $fields;
+
+	/**
+	 * @var \GV\View_Template The template attached to this view.
+	 */
+	public $template;
 
 	/**
 	 * The constructor.
@@ -201,6 +206,9 @@ class View implements \ArrayAccess {
 
 		$view->settings->update( gravityview_get_template_settings( $view->ID ) );
 
+		/** Set the template. */
+		$view->template = new \GV\View_Template( $view->_gravityview_directory_template );
+
 		/**
 		 * @deprecated
 		 *
@@ -248,8 +256,13 @@ class View implements \ArrayAccess {
 			 */
 			// 'fields' => \GravityView_View_Data::getInstance()->get_fields( $view->ID ),
 
+			/**
+			 * @deprecated
+			 * @see \GV\View::$template::$ID
+			 */
+			// 'template_id' => gravityview_get_template_id( $view->ID ),
+
 			'widgets' => gravityview_get_directory_widgets( $view->ID ),
-			'template_id' => gravityview_get_template_id( $view->ID ),
 		);
 
 		return $view;
@@ -349,9 +362,11 @@ class View implements \ArrayAccess {
 			case 'form':
 				return $this->form;
 			case 'form_id':
-				return $this->form->ID;
+				return $this->form ? $this->form->ID : null;
 			case 'atts':
 				return $this->as_atts();
+			case 'template_id':
+				return $this->template ? $this->template->ID : null;
 			default:
 				/** @todo move the rest out and get rid of _data completely! */
 				return $this->_data[$offset];
@@ -405,6 +420,7 @@ class View implements \ArrayAccess {
 			array( 'form' => $this->form ? gravityview_get_form( $this->form->ID ) : null ),
 			array( 'atts' => $this->settings->as_atts() ),
 			array( 'fields' => $this->fields->as_configuration() ),
+			array( 'template_id' => $this->template? $this->template->ID : null ),
 			$this->_data
 		);
 	}

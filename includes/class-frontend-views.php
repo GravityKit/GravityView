@@ -795,10 +795,12 @@ class GravityView_frontend {
 			$view_data = $view->as_data();
 			$gravityview_view = new GravityView_View( $view_data );
 			$post_id = intval( $view->settings->get( 'post_id' ) ? : get_the_ID() );
+			$template_id = $view->template ? $view->template->ID : null;
 		} else {
 			/** These constructs are deprecated. Use the new gravityview() wrapper. */
 			$gravityview_view = new GravityView_View( $view_data );
 			$post_id = ! empty( $atts['post_id'] ) ? intval( $atts['post_id'] ) : get_the_ID();
+			$template_id = $view_data['template_id'];
 		}
 
 		$gravityview_view->setPostId( $post_id );
@@ -809,7 +811,7 @@ class GravityView_frontend {
 			do_action( 'gravityview_log_debug', '[render_view] Executing Directory View' );
 
 			//fetch template and slug
-			$view_slug = apply_filters( 'gravityview_template_slug_'. $view_data['template_id'], 'table', 'directory' );
+			$view_slug = apply_filters( 'gravityview_template_slug_'. $template_id, 'table', 'directory' );
 
 			do_action( 'gravityview_log_debug', '[render_view] View template slug: ', $view_slug );
 
@@ -924,7 +926,7 @@ class GravityView_frontend {
 			}
 
 			//fetch template and slug
-			$view_slug = apply_filters( 'gravityview_template_slug_' . $view_data['template_id'], 'table', 'single' );
+			$view_slug = apply_filters( 'gravityview_template_slug_' . $template_id, 'table', 'single' );
 			do_action( 'gravityview_log_debug', '[render_view] View single template slug: ', $view_slug );
 
 			//fetch entry detail
@@ -946,7 +948,7 @@ class GravityView_frontend {
 		}
 
 		// add template style
-		self::add_style( $view_data['template_id'] );
+		self::add_style( $template_id );
 
 		// Prepare to render view and set vars
 		$gravityview_view->setEntries( $view_entries['entries'] );
@@ -963,7 +965,7 @@ class GravityView_frontend {
 
 		} else {
 			// finaly we'll render some html
-			$sections = apply_filters( 'gravityview_render_view_sections', $sections, $view_data['template_id'] );
+			$sections = apply_filters( 'gravityview_render_view_sections', $sections, $template_id );
 
 			do_action( 'gravityview_log_debug', '[render_view] Sections to render: ', $sections );
 			foreach ( $sections as $section ) {
@@ -1562,7 +1564,10 @@ class GravityView_frontend {
 				if ( function_exists( 'gravityview' ) ) {
 					$view = $data;
 					$view_id = $view->ID;
+					$template_id = $view->template ? $view->template->ID : null;
 					$data = $view->as_data();
+				} else {
+					$template_id = $data['template_id'];
 				}
 
 				/**
@@ -1623,7 +1628,7 @@ class GravityView_frontend {
 
 				$this->enqueue_default_style( $css_dependencies );
 
-				self::add_style( $data['template_id'] );
+				self::add_style( $template_id );
 			}
 
 			if ( 'wp_print_footer_scripts' === current_filter() ) {

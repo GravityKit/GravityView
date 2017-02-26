@@ -88,6 +88,10 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-logger.php' );
 		$this->log = new WP_Action_Logger();
 
+		/** Templating. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-template.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-template-view.php' );
+
 		/** Register the gravityview post type upon WordPress core init. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
 		add_action( 'init', array( '\GV\View', 'register_post_type' ) );

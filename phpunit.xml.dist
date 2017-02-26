@@ -27,6 +27,8 @@
 			<exclude>
 				<directory>./tests/</directory>
 				<directory>./vendor/</directory>
+				<directory>./includes/lib/</directory>
+				<directory>./future/lib/</directory>
 			</exclude>
 		</whitelist>
 	</filter>

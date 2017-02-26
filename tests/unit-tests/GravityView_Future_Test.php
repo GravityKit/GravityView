@@ -266,6 +266,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $post->ID, $view['view_id'] );
 		$this->assertEquals( $post->_gravityview_form_id, $view['form_id'] );
 		$this->assertSame( $view->form, $view['form'] );
+		$this->assertEquals( $post->_gravityview_directory_template, $view['template_id'] );
 
 		/** Immutable! */
 		$expectedException = null;
