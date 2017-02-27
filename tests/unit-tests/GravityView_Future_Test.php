@@ -549,7 +549,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertInstanceOf( '\WP_Error', GravityView_View_Data::is_valid_embed_id( $post->ID, $post->ID ) );
 
 		/** Test shortcode has all attributes in View regression. */
-		$this->assertEquals( $data->get_view( $data->maybe_get_view_id( $with_shortcodes )[1] )['atts']['search_field'], 2 );
+		$view = $data->get_view( array_pop( $data->maybe_get_view_id( $with_shortcodes ) ) );
+		$this->assertEquals( $view['atts']['search_field'], 2 );
 
 		$GLOBALS['shortcode_tags']['gravityview'] = $original_shortcode;
 		$this->_reset_context();
