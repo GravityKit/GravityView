@@ -120,10 +120,13 @@ class View_Collection extends Collection {
 			}
 
 			if ( is_numeric( $shortcode->atts['id'] ) ) {
-				try {
-					$views->add( View::by_id( $shortcode->atts['id'] ) );
-				} catch ( \InvalidArgumentException $e ) {
+				$view = View::by_id( $shortcode->atts['id'] );
+				if ( ! $view ) {
+					continue;
 				}
+				
+				$view->settings->update( $shortcode->atts );
+				$views->add( $view );
 			}
 		}
 
