@@ -232,6 +232,13 @@ class GravityView_oEmbed {
 				$views = \GV\View_Collection::from_post( $post );
 				$views = $views->all();
 				if ( ! empty( $views ) ) {
+					/** maybe_get_view_id has a side-effect that adds retrieved views to the global scope */
+					foreach ( $views as $view ) {
+						if ( \GV\View::exists( $view->ID ) && ! gravityview()->views->contains( $view->ID ) ) {
+							gravityview()->views->add( $view );
+						}
+					}
+
 					$this->view_id = $views[0]->ID;
 				}
 			} else {

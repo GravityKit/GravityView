@@ -535,7 +535,15 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_all_filters( 'gravityview/data/parse/meta_keys' );
 		$this->assertEquals( $data->maybe_get_view_id( sprintf( '[gravityview id="%d"]', $post->ID ) ), $post->ID );
 
+		/** Test GravityView_View_Data::maybe_get_view_id side-effect: calling it adds views to the global scope, hahah :( */
+		$this->_reset_context();
+		$data = GravityView_View_Data::getInstance();
+		$data->maybe_get_view_id( $post );
+		$this->assertCount( 1, gravityview()->views->all() );
+
 		/** Test regressions for GravityView_oEmbed::set_vars by calling stuff. */
+		$this->_reset_context();
+		$this->assertCount( 0, gravityview()->views->all() );
 		$form = $this->factory->form->create_and_get();
 		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $form['id'] ) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
@@ -543,6 +551,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$embed_content = sprintf( "\n%s\n", add_query_arg( 'entry', $entry['id'], get_permalink( $post->ID ) ) );
 		$this->assertContains( 'table class="gv-table-view-content"', $GLOBALS['wp_embed']->autoembed( $embed_content ) );
+		$this->assertCount( 1, gravityview()->views->all() );
 
 		/** Test GravityView_View_Data::is_valid_embed_id regression. */
 		$this->assertTrue( GravityView_View_Data::is_valid_embed_id( $post->ID, $view->ID ) );

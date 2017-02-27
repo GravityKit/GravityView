@@ -27,7 +27,7 @@ class GravityView_View_Data {
 
 			if ( function_exists( 'gravityview' ) ) {
 				foreach( is_array( $id_or_id_array ) ? $id_or_id_array : array( $id_or_id_array ) as $view_id ) {
-					if ( \GV\View::exists( $view_id ) ) {
+					if ( \GV\View::exists( $view_id ) && ! gravityview()->views->contains( $view_id ) ) {
 						gravityview()->views->add( \GV\View::by_id( $view_id ) );
 					}
 				}
@@ -91,6 +91,11 @@ class GravityView_View_Data {
 						$views = \GV\View_Collection::from_post( $post );
 						foreach ( $views->all() as $view ) {
 							$ids []= $view->ID;
+
+							/** And as a side-effect... add each view to the global scope. */
+							if ( ! gravityview()->views->contains( $view->ID ) ) {
+								gravityview()->views->add( $view );
+							}
 						}
 					} else {
 						/** Deprecated, see \GV\View_Collection::from_post */
@@ -122,6 +127,11 @@ class GravityView_View_Data {
 						foreach ( $shortcodes as $shortcode ) {
 							if ( $shortcode->name == 'gravityview' && !empty( $shortcode->atts['id'] ) ) {
 								$ids []= $shortcode->atts['id'];
+
+								/** And as a side-effect... add each view to the global scope. */
+								if ( ! gravityview()->views->contains( $shortcode->atts['id'] ) && \GV\View::exists( $shortcode->atts['id'] ) ) {
+									gravityview()->views->add( $shortcode->atts['id'] );
+								}
 							}
 						}
 					} else {
@@ -472,7 +482,7 @@ class GravityView_View_Data {
 			$ids = array();
 			foreach ( \GV\Shortcode::parse( $content ) as $shortcode ) {
 				if ( $shortcode->name == 'gravityview' && is_numeric( $shortcode->atts['id'] ) ) {
-					if ( \GV\View::exists( $shortcode->atts['id'] ) ) {
+					if ( \GV\View::exists( $shortcode->atts['id'] ) && ! gravityview()->views->contains( $shortcode->atts['id'] ) ) {
 						gravityview()->views->add( \GV\View::by_id( $shortcode->atts['id'] ) );
 					}
 					/**
