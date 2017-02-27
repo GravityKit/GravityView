@@ -48,6 +48,20 @@ class View_Collection extends Collection {
 	}
 
 	/**
+	 * Check whether \GV\View with an ID is already here.
+	 *
+	 * @param int $view_id The ID of the view to check.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @return boolean Whether it exists or not.
+	 */
+	public function contains( $view_id ) {
+		return ! is_null( $this->get( $view_id ) );
+	}
+
+	/**
 	 * Get a list of \GV\View objects inside the supplied \WP_Post.
 	 *
 	 * The post can be a gravityview post, which is the simplest case.

@@ -449,6 +449,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\View_Collection::from_post()
 	 * @covers \GV\View_Collection::from_content()
 	 * @covers \GV\View_Collection::get()
+	 * @covers \GV\View_Collection::contains()
 	 * @covers \GravityView_View_Data::maybe_get_view_id()
 	 * @covers \GravityView_View_Data::is_valid_embed_id()
 	 * @covers \GravityView_oEmbed::set_vars()
@@ -464,6 +465,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$view = $views->get( $post->ID );
 		$this->assertEquals( $view->ID, $post->ID );
 		$this->assertNull( $views->get( -1 ) );
+		$this->assertTrue( $views->contains( $view->ID ) );
+		$this->assertFalse( $views->contains( -1 ) );
 
 		$another_post = $this->factory->view->create_and_get();
 
