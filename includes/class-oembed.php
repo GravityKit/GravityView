@@ -228,7 +228,7 @@ class GravityView_oEmbed {
 
 			do_action('gravityview_log_debug', 'GravityView_oEmbed[render_handler] Embedding an entry inside a post or page', $matches );
 
-			if ( function_exists( 'gravityview' ) && $post = get_post( $post_id ) ) {
+			if ( false /** Do not use for now. See issue #848 */ && function_exists( 'gravityview' ) && $post = get_post( $post_id ) ) {
 				$views = \GV\View_Collection::from_post( $post );
 				$views = $views->all();
 				if ( ! empty( $views ) )
