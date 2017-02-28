@@ -254,4 +254,22 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 
 	}
 
+	/**
+	 * @covers GravityView_Shortcode::shortcode
+	 * @see https://github.com/gravityview/GravityView/issues/851
+	 */
+	public function test_shortcode_search_criteria() {
+		$view_id = $this->factory->view->create();
+
+		$_this = &$this;
+		add_filter( 'gravityview_get_entries', function( $parameters ) use ( $_this ) {
+			$_this->assertEquals( $parameters['paging'], array( 'page_size' => 13, 'offset' => 7 ) );
+			return $parameters;
+		} );
+
+		do_shortcode( '[gravityview id="'.$view_id.'" page_size="13" offset="7"]' );
+
+		remove_all_filters( 'gravityview_get_entries' );
+	}
+
 }
