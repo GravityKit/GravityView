@@ -270,6 +270,28 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		do_shortcode( '[gravityview id="'.$view_id.'" page_size="13" offset="7"]' );
 
 		remove_all_filters( 'gravityview_get_entries' );
+
+		add_filter( 'gravityview_get_entries', function( $parameters ) use ( $_this ) {
+			$_this->assertEquals( $parameters['paging'], array( 'page_size' => 5, 'offset' => 5 ) );
+			return $parameters;
+		} );
+
+		$_GET['pagenum'] = 2;
+		do_shortcode( '[gravityview id="'.$view_id.'" page_size="5" offset="0"]' );
+
+		remove_all_filters( 'gravityview_get_entries' );
+
+		add_filter( 'gravityview_get_entries', function( $parameters ) use ( $_this ) {
+			$_this->assertEquals( $parameters['paging'], array( 'page_size' => 5, 'offset' => 23 ) );
+			return $parameters;
+		} );
+
+		$_GET['pagenum'] = 5;
+		do_shortcode( '[gravityview id="'.$view_id.'" page_size="5" offset="3"]' );
+
+		remove_all_filters( 'gravityview_get_entries' );
+
+		unset( $_GET['pagenum'] );
 	}
 
 }
