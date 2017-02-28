@@ -591,6 +591,14 @@ class GravityView_View_Data {
 				'value' => 25,
 				'show_in_shortcode' => true,
 			),
+			'offset' => array(
+				'label' 	=> __('Offset entries starting from', 'gravityview'),
+				'type' => 'number',
+				'class'	=> 'small-text',
+				'group'	=> 'default',
+				'value' => 0,
+				'show_in_shortcode' => true,
+			),
 			'lightbox' => array(
 				'label' => __( 'Enable lightbox for images', 'gravityview' ),
 				'type' => 'checkbox',
