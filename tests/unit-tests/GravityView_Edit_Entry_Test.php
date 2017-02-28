@@ -665,6 +665,68 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
+	public function test_edit_entry_upload() {
+		/** Create a user */
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$filename = '/tmp/noexist-392393190d9_007/upload.txt';
+
+		/** Create the form, entry and view */
+		$form = $this->factory->form->import_and_get( 'upload.json' );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'created_by' => $administrator,
+			'form_id' => $form['id'],
+			'1' => $filename,
+			'2' => '',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		/** Request the rendered form */
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( 'gform_submit', $output );
+		$this->assertContains( 'upload.txt', $output );
+
+		/** Try saving a change, but no touching the upload field. */
+		$_POST = array(
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+
+			/** Fields */
+			'gform_uploaded_files' => json_encode( array( 'input_1' => $entry['1'] ) ),
+			'input_2' => '40',
+		);
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( $entry['1'], $filename, 'File upload got erased!' );
+
+		/** Empty both fields, see what happens to the entry. */
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+
+		$_POST = array(
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+
+			/** Fields */
+			'gform_uploaded_files' => json_encode( array( 'input_1' => $entry['1'] ) ),
+			'input_2' => '',
+		);
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		/** Delete the file */
+		RGFormsModel::delete_file( $entry['id'], '1' );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertNotInstanceOf( '\WP_Error', $entry, 'Entry was destroyed on empty submission...' );
+
+		$this->assertEmpty( $entry['1'] );
+		$this->assertEmpty( $entry['2'] );
+
+		/** Cleanup */
+		$this->_reset_context();
+	}
+
 	/**
 	 * @covers GravityView_Edit_Entry_Render::custom_validation()
 	 * @covers GravityView_Edit_Entry_Render::validate()
