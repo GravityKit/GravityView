@@ -225,7 +225,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** An shortcode-based post. */
 		$with_shortcodes = $this->factory->post->create_and_get( array(
-			'post_content' => sprintf( '[gravityview id="%d"][gravityview id="%d"]', $post->ID, $another_post->ID )
+			'post_content' => sprintf( '[gravityview id="%d"][gravityview id="%d" search_field="2"]', $post->ID, $another_post->ID )
 		) );
 		$views = \GV\View_Collection::from_post( $with_shortcodes );
 		$this->assertCount( 2, $views->all() );
@@ -293,6 +293,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Test GravityView_View_Data::is_valid_embed_id regression. */
 		$this->assertTrue( GravityView_View_Data::is_valid_embed_id( $post->ID, $view->ID ) );
 		$this->assertInstanceOf( '\WP_Error', GravityView_View_Data::is_valid_embed_id( $post->ID, $another_post->ID ) );
+
+		/** Test shortcode has all attributes in View regression. */
+		$views = $data->maybe_get_view_id( $with_shortcodes );
+		$view = $data->get_view( $views[1] );
+		$this->assertEquals( $view['atts']['search_field'], 2 );
 
 		$GLOBALS['shortcode_tags']['gravityview'] = $original_shortcode;
 		GravityView_frontend::$instance = NULL;
