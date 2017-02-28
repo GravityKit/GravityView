@@ -115,7 +115,7 @@ class Shortcode {
 
 			/** This is a registered GravityView shortcode. */
 			if ( !empty( self::$shortcodes[$shortcode_name] ) ) {
-				$shortcode = clone( self::$shortcodes[$shortcode_name] );
+				$shortcode = clone self::$shortcodes[$shortcode_name];
 			} else {
 				/** This is some generic shortcode. */
 				$shortcode = new self;
