@@ -20,6 +20,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+* Add support for comma-separated email addresses when adding a note and using "Other email address"
+
 = 1.20 on February 24, 2017 =
 
 * Added: Product Fields are now editable

@@ -733,8 +733,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 				do_action( 'gravityview_log_debug', __METHOD__ . ': Sending note to a custom email address: ' . $to );
 			}
 
-			if ( ! is_email( $to ) ) {
-				do_action( 'gravityview_log_error', __METHOD__ . ': $to not a valid email address: ' . $to, $email_data );
+			if ( ! GFCommon::is_valid_email_list( $to ) ) {
+				do_action( 'gravityview_log_error', __METHOD__ . ': $to not a valid email or email list (CSV of emails): ' . print_r( $to, true ), $email_data );
 				return;
 			}
 
