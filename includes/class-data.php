@@ -597,7 +597,7 @@ class GravityView_View_Data {
 				'class'	=> 'small-text',
 				'group'	=> 'default',
 				'value' => 0,
-				'show_in_shortcode' => true,
+				'show_in_shortcode' => false,
 			),
 			'lightbox' => array(
 				'label' => __( 'Enable lightbox for images', 'gravityview' ),
