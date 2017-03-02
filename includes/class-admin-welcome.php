@@ -267,6 +267,15 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0;"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+                <h3>1.20.1 on March 1, 2017</h3>
+
+                <ul>
+                    <li>Added: Support for comma-separated email addresses when adding a note and using &quot;Other email address&quot;</li>
+                    <li>Fixed: Edit Entry issue with File Uploads not saving properly</li>
+                    <li>Fixed: Support for <code>offset</code> attribute in the <code>[gravityview]</code> shortcode</li>
+                </ul>
+
+
                 <h3>1.20 on February 23, 2017</h3>
 
                 <ul>
