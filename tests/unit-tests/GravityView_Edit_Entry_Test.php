@@ -454,7 +454,9 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		wp_set_current_user( 0 );
 		remove_all_filters( 'gravityview/is_single_entry' );
 		remove_all_filters( 'gravityview/edit_entry/form_fields' );
-		$_GET = array(); $_POST = array();
+		$_GET = array(); $_POST = array(); $_FILES = array();
+
+		RGFormsModel::$uploaded_files = array();
 	}
 
 	/**
@@ -663,6 +665,94 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		/** Cleanup */
 		$this->_reset_context();
+	}
+
+	public function test_edit_entry_upload() {
+		/** Create a user */
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$filename = site_url( '/tmp/noexist-392393190d9_007/upload.txt' );
+
+		/** Create the form, entry and view */
+		$form = $this->factory->form->import_and_get( 'upload.json' );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'created_by' => $administrator,
+			'form_id' => $form['id'],
+			'1' => $filename,
+			'2' => '123',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		/** Request the rendered form */
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertContains( 'gform_submit', $output );
+		$this->assertContains( 'upload.txt', $output );
+
+		/** Try saving a change, but no touching the upload field. */
+		$_POST = array(
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+
+			/** Fields */
+			'gform_uploaded_files' => json_encode( array( 'input_1' => $entry['1'] ) ),
+			'input_2' => '40',
+			'input_3' => '',
+		);
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertEquals( $entry['1'], $filename, 'File upload got erased!' );
+
+		/** Edit only the text input, see what happens to the upload. */
+		$this->_reset_context();
+		wp_set_current_user( $administrator );
+
+		$_POST = array(
+			'lid' => $entry['id'],
+			'is_submit_' . $form['id'] => true,
+
+			/** Fields */
+			'gform_uploaded_files' => json_encode( array( 'input_1' => $entry['1'] ) ),
+			'input_2' => '29',
+			'input_3' => '',
+		);
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$this->assertEquals( $entry['1'], $filename );
+		$this->assertEquals( $entry['2'], '29' );
+
+		/** Edit the upload, make sure it saves. */
+		$_POST['input_2'] ='31';
+		unset( $_POST['gform_uploaded_files'] );
+		$tmp_name = tempnam( '/tmp/', 'gvtest_' );
+		file_put_contents( $tmp_name, 'zZz' );
+		$_FILES = array(
+			'input_1' => array( 'name' => 'sleep.txt', 'type' => 'text', 'size' => 3, 'tmp_name' => $tmp_name, 'error' => UPLOAD_ERR_OK ),
+		);
+
+		// Since move_uploaded_file will not work, let's fake it...
+		add_filter( 'gform_save_field_value', array( $this, '_fake_move_uploaded_file' ), 10, 5 );
+
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEquals( $entry['1'], $this->_target['url'] );
+		$this->assertEquals( $entry['2'], '31' );
+
+		remove_filter( 'gform_save_field_value', array( $this, '_fake_move_uploaded_file' ), 10 );
+	}
+
+	/**
+	 * If temp file can't be copied during the test, fake a URL
+	 * @used-by test_edit_entry_upload
+	 */
+	public function _fake_move_uploaded_file( $value, $lead, $field, $form, $input_id ) {
+
+		if ( $value == 'FAILED (Temporary file could not be copied.)' ) {
+			$target = GFFormsModel::get_file_upload_path( $form['id'], 'tiny.jpg' );
+			$this->_target = $target;
+			return $target['url'];
+		}
+
+		return $value;
 	}
 
 	/**

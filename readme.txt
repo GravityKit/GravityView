@@ -20,6 +20,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
+= 1.20.1 on March 1, 2017 =
+
+* Added: Support for comma-separated email addresses when adding a note and using "Other email address"
+* Fixed: Edit Entry issue with File Uploads not saving properly
+* Fixed: Support for `offset` attribute in the `[gravityview]` shortcode
+* Updated: Auto-upgrade script
+
 = 1.20 on February 24, 2017 =
 
 * Added: Product Fields are now editable
