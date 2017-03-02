@@ -728,21 +728,31 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$_FILES = array(
 			'input_1' => array( 'name' => 'sleep.txt', 'type' => 'text', 'size' => 3, 'tmp_name' => $tmp_name, 'error' => UPLOAD_ERR_OK ),
 		);
-		/**
-		 * Since move_uploaded_file will not work, let's fake it...
-		 */
-		$_this = &$this;
-		add_filter( 'gform_save_field_value', function( $value, $lead, $field, $form, $input_id ) use ( $_this ) {
-			if ( $value == 'FAILED (Temporary file could not be copied.)' ) {
-				$target = GFFormsModel::get_file_upload_path( $form['id'], 'tiny.jpg' );
-				$this->_target = $target;
-				return $target['url'];
-			}
-			return $value;
-		}, 10, 5 );
+
+		// Since move_uploaded_file will not work, let's fake it...
+		add_filter( 'gform_save_field_value', array( $this, '_fake_move_uploaded_file' ), 10, 5 );
+
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
 		$this->assertEquals( $entry['1'], $this->_target['url'] );
 		$this->assertEquals( $entry['2'], '31' );
+
+		remove_filter( 'gform_save_field_value', array( $this, '_fake_move_uploaded_file' ), 10 );
+	}
+
+	/**
+	 * If temp file can't be copied during the test, fake a URL
+	 * @used-by test_edit_entry_upload
+	 */
+	public function _fake_move_uploaded_file( $value, $lead, $field, $form, $input_id ) {
+
+		if ( $value == 'FAILED (Temporary file could not be copied.)' ) {
+			$target = GFFormsModel::get_file_upload_path( $form['id'], 'tiny.jpg' );
+			$this->_target = $target;
+			return $target['url'];
+		}
+
+		return $value;
 	}
 
 	/**
