@@ -398,7 +398,8 @@ class GravityView_Edit_Entry_Render {
 		 * Make sure the fileuploads are not overwritten if no such request was done.
 		 */
 		add_filter( "gform_save_field_value_$form_id", function( $value, $lead, $field, $form, $input_id ) {
-			if ( $field->type != 'fileupload' ) {
+
+		    if ( ! $field || $field->type != 'fileupload' ) {
 				return $value;
 			}
 
