@@ -407,7 +407,7 @@ class GravityView_Edit_Entry_Render {
 
 			if ( $field->multipleFiles ) {
 				if ( empty( $value ) ) {
-					return json_decode( $lead[ $input_id ] );
+					return json_decode( $lead[ $input_id ], true );
 				}
 				return $value;
 			}
