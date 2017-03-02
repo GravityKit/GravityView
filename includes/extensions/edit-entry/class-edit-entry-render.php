@@ -396,33 +396,51 @@ class GravityView_Edit_Entry_Render {
 
 		/**
 		 * Make sure the fileuploads are not overwritten if no such request was done.
+         * @since 1.20.1
 		 */
-		add_filter( "gform_save_field_value_$form_id", function( $value, $lead, $field, $form, $input_id ) {
-
-		    if ( ! $field || $field->type != 'fileupload' ) {
-				return $value;
-			}
-
-			$input_name = 'input_' . str_replace( '.', '_', $input_id );
-
-			if ( $field->multipleFiles ) {
-				if ( empty( $value ) ) {
-					return json_decode( $lead[ $input_id ], true );
-				}
-				return $value;
-			}
-
-			/** No file is being uploaded. */
-			if ( empty( $_FILES[ $input_name ]['name'] ) ) {
-				/** So return the original upload */
-				return $lead[ $input_id ];
-			}
-
-			return $value;
-		}, 99, 5 );
+		add_filter( "gform_save_field_value_$form_id", array( $this, 'save_field_value' ), 99, 5 );
 
         RGFormsModel::$uploaded_files[ $form_id ] = $files;
     }
+
+	/**
+	 * Make sure the fileuploads are not overwritten if no such request was done.
+	 *
+     * TO ONLY BE USED INTERNALLY; DO NOT DEVELOP ON; MAY BE REMOVED AT ANY TIME.
+     *
+	 * @since 1.20.1
+	 *
+	 * @param string $value Field value
+	 * @param array $entry GF entry array
+	 * @param GF_Field_FileUpload $field
+	 * @param array $form GF form array
+	 * @param string $input_id ID of the input being saved
+	 *
+	 * @return string
+	 */
+	public function save_field_value( $value = '', $entry = array(), $field = null, $form = array(), $input_id = '' ) {
+
+		if ( ! $field || $field->type != 'fileupload' ) {
+			return $value;
+		}
+
+		$input_name = 'input_' . str_replace( '.', '_', $input_id );
+
+		if ( $field->multipleFiles ) {
+			if ( empty( $value ) ) {
+				return json_decode( $entry[ $input_id ], true );
+			}
+			return $value;
+		}
+
+		/** No file is being uploaded. */
+		if ( empty( $_FILES[ $input_name ]['name'] ) ) {
+			/** So return the original upload */
+			return $entry[ $input_id ];
+		}
+
+		return $value;
+	}
 
     /**
      * Remove max_files validation (done on gravityforms.js) to avoid conflicts with GravityView
