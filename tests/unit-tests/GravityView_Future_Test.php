@@ -1175,4 +1175,17 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		wp_set_current_user( 0 );
 	}
+
+	/**
+	 * @covers \GV\Template::split_slug()
+																	 * @group template
+	 */
+	public function test_template_split_slug() {
+		$this->assertEquals( \GV\View_Template::split_slug( 'main' ), array( '', 'main' ) );
+		$this->assertEquals( \GV\View_Template::split_slug( 'secondary', 'part' ), array( '', 'secondary-part' ) );
+		$this->assertEquals( \GV\View_Template::split_slug( 'partial/sub' ), array( 'partial/', 'sub' ) );
+		$this->assertEquals( \GV\View_Template::split_slug( 'partial/sub', 'part' ), array( 'partial/', 'sub-part') );
+		$this->assertEquals( \GV\View_Template::split_slug( 'partial/fraction/atom', '' ), array( 'partial/fraction/', 'atom' ) );
+		$this->assertEquals( \GV\View_Template::split_slug( 'partial/fraction/atom', 'quark' ), array( 'partial/fraction/', 'atom-quark' ) );
+	}
 }

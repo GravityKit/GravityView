@@ -207,7 +207,7 @@ class View implements \ArrayAccess {
 		$view->settings->update( gravityview_get_template_settings( $view->ID ) );
 
 		/** Set the template. */
-		$view->template = new \GV\View_Template( $view->_gravityview_directory_template );
+		$view->template = new View_Template( $view->_gravityview_directory_template, $view );
 
 		/**
 		 * @deprecated
