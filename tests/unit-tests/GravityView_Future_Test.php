@@ -866,6 +866,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\Frontend_Request::is_search()
+	 * @group current
+	 */
+	function test_frontend_request_is_search() {
+	}
+
+	/**
 	 * @covers \GV\Frontend_Request::is_admin()
 	 * @group ajax
 	 */
@@ -1187,5 +1194,120 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( \GV\View_Template::split_slug( 'partial/sub', 'part' ), array( 'partial/', 'sub-part') );
 		$this->assertEquals( \GV\View_Template::split_slug( 'partial/fraction/atom', '' ), array( 'partial/fraction/', 'atom' ) );
 		$this->assertEquals( \GV\View_Template::split_slug( 'partial/fraction/atom', 'quark' ), array( 'partial/fraction/', 'atom-quark' ) );
+	}
+
+	/**
+	 * @covers \GV\View_Renderer::render()
+																	 * @group render
+	 */
+	public function test_frontend_view_renderer() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form['id'],
+			/** Fields, more complex entries may have hundreds of fields defined in the JSON file. */
+			'1' => 'this is field one',
+			'2' => 102,
+		) );
+		$post = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view = \GV\View::from_post( $post );
+
+		$renderer = new \GV\View_Renderer();
+
+		$expectedException = null;
+		try {
+			$renderer->render( $view, new \GV\Dummy_Request() );
+		} catch ( \RuntimeException $e ) {
+			$expectedException = $e;
+		}
+		$this->assertInstanceOf( '\RuntimeException', $expectedException );
+
+		/** Password protection. */
+		wp_update_post( array( 'ID' => $view->ID, 'post_password' => '123' ) );
+		$this->assertContains( 'content is password protected', $renderer->render( $view, new \GV\Frontend_Request() ) );
+		wp_update_post( array( 'ID' => $view->ID, 'post_password' => '' ) );
+	}
+
+	/**
+	 * @covers \GV\Frontend_Request::output()
+	 * @covers \GV\Frontend_Request::is_view()
+							* @group request
+	 */
+	public function test_frontend_request() {
+		$request = new \GV\Frontend_Request();
+
+		global $post;
+
+		$this->assertEquals( $request->output( 'just some regular content' ), 'just some regular content' );
+
+		$_this = &$this;
+		add_filter( 'gravityview/request/output/views', function( $views ) use ( $_this ) {
+			$_this->assertCount( 0, $views->all() );
+			return $views;
+		} );
+
+		$this->assertFalse( $request->is_view() );
+		$request->output( '' );
+
+		remove_all_filters( 'gravityview/request/output/views' );
+
+		$view = $this->factory->view->create_and_get();
+		$with_shortcode = $this->factory->post->create_and_get( array(
+			'post_content' => '[gravityview id="' . $view->ID . '"]'
+		) );
+
+		add_filter( 'gravityview/request/output/views', function( $views ) use ( $_this, $view ) {
+			$_this->assertCount( 1, $views->all() );
+			$_this->assertEquals( $view->ID, $views->last()->ID );
+			return $views;
+		} );
+
+		$post = $with_shortcode;
+		$this->assertFalse( $request->is_view() );
+		$request->output( '' );
+
+		$post = $view;
+		$this->assertTrue( $request->is_view() );
+		$request->output( '' );
+
+		$post = null;
+		$request->output( '[gravityview id="' . $view->ID . '"]' );
+
+		remove_all_filters( 'gravityview/request/output/views' );
+
+		/** A post password is required. */
+		$post = get_post( wp_update_post( array( 'ID' => $view->ID, 'post_password' => '123' ) ) );
+		$this->assertEquals( $request->output( 'sentinel_1' ), 'sentinel_1' );
+		$post = get_post( wp_update_post( array( 'ID' => $view->ID, 'post_password' => null ) ) );
+
+		/** Not directly accessible. */
+		add_filter( 'gravityview_direct_access', '__return_false' );
+		$this->assertContains( 'not allowed to view this', $request->output( '' ) );
+		remove_all_filters( 'gravityview_direct_access' );
+
+		add_filter( 'gravityview/request/output/direct', '__return_false' );
+		$this->assertContains( 'not allowed to view this', $request->output( '' ) );
+		remove_all_filters( 'gravityview/request/output/direct' );
+
+		/** Embed-only */
+		add_filter( 'gravityview/request/output/views', function( $views ) use ( $_this, $view ) {
+			$views->get( $view->ID )->settings->set( 'embed_only', true );
+			return $views;
+		} );
+		$this->assertContains( 'not allowed to view this', $request->output( '' ) );
+		remove_all_filters( 'gravityview/request/output/views' );
+
+		/** A broken view with no form. */
+		delete_post_meta( $post->ID, '_gravityview_form_id' );
+		$this->assertEquals( $request->output( 'sentinel' ), 'sentinel' );
+
+		$administrator = $this->factory->user->create( array(
+			'user_login' => md5( microtime() ),
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role' => 'administrator' )
+		);
+		wp_set_current_user( $administrator );
+		$this->assertContains( 'View is not configured properly', $request->output( '' ) );
+
+		$this->_reset_context();
 	}
 }

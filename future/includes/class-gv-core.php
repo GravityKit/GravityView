@@ -122,7 +122,9 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-settings-view.php' );
 
-		/** Initialize the current request. For now we assume a default WordPress frontent context. */
+		/** The Renderers. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-view-renderer.php' );
+
 		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
 
 		/**
