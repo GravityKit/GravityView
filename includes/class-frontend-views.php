@@ -1359,11 +1359,11 @@ class GravityView_frontend {
 			$page_size = PHP_INT_MAX;
 		}
 
-		if ( isset( $args['offset'] ) ) {
-			$offset = intval( $args['offset'] );
-		} else {
-			$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
-			$offset = ( $curr_page - 1 ) * $page_size;
+		$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
+		$offset = ( $curr_page - 1 ) * $page_size;
+
+		if ( ! empty( $args['offset'] ) ) {
+			$offset += intval( $args['offset'] );
 		}
 
 		$paging = array(

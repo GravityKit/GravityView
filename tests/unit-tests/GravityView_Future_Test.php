@@ -565,6 +565,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$view = $data->get_view( $views[1] );
 		$this->assertEquals( $view['atts']['search_field'], 2 );
 
+		/** Test shortcode has all attributes in View regression. */
+		$views = $data->maybe_get_view_id( $with_shortcodes );
+		$view = $data->get_view( $views[1] );
+		$this->assertEquals( $view['atts']['search_field'], 2 );
+
 		$GLOBALS['shortcode_tags']['gravityview'] = $original_shortcode;
 		$this->_reset_context();
 	}
