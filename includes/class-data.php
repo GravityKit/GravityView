@@ -87,7 +87,7 @@ class GravityView_View_Data {
 			if( is_array( $passed_post ) ) {
 
 				foreach ( $passed_post as &$post) {
-					if ( false /** Do not use for now. See issue #848 */ && function_exists( 'gravityview' ) && $post instanceof WP_Post ) {
+					if ( function_exists( 'gravityview' ) && $post instanceof WP_Post ) {
 						$views = \GV\View_Collection::from_post( $post );
 						foreach ( $views->all() as $view ) {
 							$ids []= $view->ID;
@@ -122,7 +122,7 @@ class GravityView_View_Data {
 
 				if ( is_string( $passed_post ) ) {
 
-					if ( false /** Do not use for now. See issue #848 */ && function_exists( 'gravityview' ) ) {
+					if ( function_exists( 'gravityview' ) ) {
 						$shortcodes = \GV\Shortcode::parse( $passed_post );
 						foreach ( $shortcodes as $shortcode ) {
 							if ( $shortcode->name == 'gravityview' && !empty( $shortcode->atts['id'] ) ) {
