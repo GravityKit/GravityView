@@ -201,9 +201,19 @@ class View implements \ArrayAccess {
 			) );
 		}
 
-		/** Get fields. */
-		$view->fields = Field_Collection::from_configuration( (array)$view->_gravityview_directory_fields );
+		/**
+		* @filter `gravityview/configuration/fields` Filter the View fields' configuration array
+		* @since 1.6.5
+		*
+		* @param $fields array Multi-array of fields with first level being the field zones
+		* @param $view_id int The View the fields are being pulled for
+		*/
+		$configuration = apply_filters( 'gravityview/configuration/fields', (array)$view->_gravityview_directory_fields, $view->ID );
 
+		/** Get all fields. */
+		$view->fields = Field_Collection::from_configuration( $configuration );
+
+		/** The settings. */
 		$view->settings->update( gravityview_get_template_settings( $view->ID ) );
 
 		/** Set the template. */
@@ -419,7 +429,7 @@ class View implements \ArrayAccess {
 			array( 'form_id' => $this->form ? $this->form->ID : null ),
 			array( 'form' => $this->form ? gravityview_get_form( $this->form->ID ) : null ),
 			array( 'atts' => $this->settings->as_atts() ),
-			array( 'fields' => $this->fields->as_configuration() ),
+			array( 'fields' => $this->fields->by_visible()->as_configuration() ),
 			array( 'template_id' => $this->template? $this->template->ID : null ),
 			$this->_data
 		);

@@ -1102,6 +1102,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Field::from_configuration()
 	 * @covers \GravityView_View_Data::get_fields()
 	 * @covers ::gravityview_get_directory_fields()
+	 * @covers \GVCommon::get_directory_fields()
 	 */
 	public function test_field_and_field_collection() {
 		$fields = new \GV\Field_Collection();
@@ -1180,7 +1181,37 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$view = \GV\View::from_post( $post );
 		$this->assertEquals( $view->fields->as_configuration(), gravityview_get_directory_fields( $view->ID ) );
 
+		/** Regression on \GravityView_View_Data::get_fields() */
+		$this->assertEquals( $view->fields->as_configuration(), \GravityView_View_Data::getInstance()->get_fields( $view->ID ) );
+
+		/** Visible/hidden fields */
+		add_filter( 'gravityview/configuration/fields', function( $fields ) {
+			foreach ( $fields['directory_table-columns'] as &$field ) {
+				if ( $field['label'] == 'Business Name' ) {
+					$field['only_loggedin'] = 1;
+					$field['only_loggedin_cap'] = 'read';
+				}
+			}
+			return $fields;
+		} );
+
+		$view = \GV\View::from_post( $post );
+		$view_data = $view->as_data();
+		$logged_in_count = count( $view_data['fields']['directory_table-columns'] );
+
 		wp_set_current_user( 0 );
+
+		$view = \GV\View::from_post( $post );
+		$view_data = $view->as_data();
+		$non_logged_in_count = count( $view_data['fields']['directory_table-columns'] );
+
+		$this->assertEquals( $logged_in_count - 1, $non_logged_in_count, 'Fields were not hidden for non-logged in view' );
+		$this->assertEquals( $logged_in_count, $view->fields->count() );
+		$this->assertEquals( $non_logged_in_count, $view->fields->by_visible()->count() );
+
+		remove_all_filters( 'gravityview/configuration/fields' );
+
+		$this->_reset_context();
 	}
 
 	/**
