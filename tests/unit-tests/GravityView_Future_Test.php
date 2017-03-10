@@ -1175,7 +1175,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $view->fields->as_configuration(), gravityview_get_directory_fields( $view->ID ) );
 
 		/** Regression on \GravityView_View_Data::get_fields() */
-		$this->assertEquals( $view->fields->as_configuration(), \GravityView_View_Data::get_fields( $view->ID ) );
+		$this->assertEquals( $view->fields->as_configuration(), \GravityView_View_Data::getInstance()->get_fields( $view->ID ) );
 
 		/** Visible/hidden fields */
 		add_filter( 'gravityview/configuration/fields', function( $fields ) {
@@ -1203,5 +1203,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $non_logged_in_count, $view->fields->by_visible()->count() );
 
 		remove_all_filters( 'gravityview/configuration/fields' );
+
+		$this->_reset_context();
 	}
 }
