@@ -44,4 +44,26 @@ abstract class Form {
 	 * @return \GV\Form|null An instance of this form or null if not found.
 	 */
 	abstract public static function by_id( $form_id );
+
+	/**
+	 * Get all entries for this form.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @return \GV\Entry_Collection The \GV\Entry_Collection
+	 */
+	abstract public function get_entries();
+
+	/**
+	 * Magic shortcuts.
+	 *
+	 * - `entries` -> `$this->get_entries()`
+	 */
+	public function __get( $key ) {
+		switch ( $key ):
+			case 'entries':
+				return $this->get_entries();
+		endswitch;
+	}
 }

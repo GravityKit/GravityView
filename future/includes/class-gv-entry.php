@@ -7,11 +7,31 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 }
 
 /**
- * The base Entry class.
+ * The base \GV\Entry class.
  *
  * Contains all entry data and some processing and logic rules.
  */
-class Entry {
+abstract class Entry {
+
+	/**
+	 * @var string The identifier of the backend used for this entry.
+	 * @api
+	 * @since future
+	 */
+	public static $backend = null;
+
+	/**
+	 * @var int The ID for this entry.
+	 *
+	 * @api
+	 * @since future
+	 */
+	public $ID = null;
+
+	/**
+	 * @var mixed The backing entry.
+	 */
+	private $entry;
 	
 	/**
 	 * Adds the necessary rewrites for single Entries.
@@ -49,4 +69,15 @@ class Entry {
 
 		return sanitize_title( $endpoint );
 	}
+
+	/**
+	 * Construct a \GV\Entry instance by ID.
+	 *
+	 * @param int|string $entry_id The internal entry ID.
+	 *
+	 * @api
+	 * @since future
+	 * @return \GV\Entry|null An instance of this entry or null if not found.
+	 */
+	abstract public static function by_id( $entry_id );
 }

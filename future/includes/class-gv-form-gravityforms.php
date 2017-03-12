@@ -55,6 +55,68 @@ class GF_Form extends Form implements \ArrayAccess {
 	}
 
 	/**
+	 * Get all entries for this form.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @return \GV\Entry_Collection The \GV\Entry_Collection
+	 */
+	public function get_entries() {
+		$entries = new \GV\Entry_Collection();
+
+		$form = &$this;
+
+		/** Add the fetcher lazy callback. */
+		$entries->add_fetch_callback( function( $filters, $sorts, $offset ) use ( $form ) {
+			$entries = new \GV\Entry_Collection();
+
+			$search_criteria = array();
+			$sorting = array();
+			$paging = array();
+
+			/** Apply the filters */
+			foreach ( $filters as $filter ) {
+				$_search_criteria = $filter->to_search_criteria();
+
+				foreach ( array( 'field_filters', 'start_date', 'end_date', 'status' ) as $key ) {
+					if ( ! empty( $_search_criteria[ $key ] ) ) {
+						$search_criteria[ $key ] = array_merge( empty( $search_criteria[ $key ] ) ? array() : $search_criteria[ $key ], $_search_criteria[ $key ] );
+					}
+				}
+			}
+
+			foreach ( \GFAPI::get_entries( $form->ID, $search_criteria, $sorting, $paging ) as $entry ) {
+				$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
+			}
+
+			return $entries;
+		} );
+
+		/** Add the counter lazy callback. */
+		$entries->add_count_callback( function( $filters ) use ( $form ) {
+
+			$search_criteria = array();
+			$sorting = array();
+
+			/** Apply the filters */
+			foreach ( $filters as $filter ) {
+				$_search_criteria = $filter->to_search_criteria();
+
+				foreach ( array( 'field_filters', 'start_date', 'end_date', 'status' ) as $key ) {
+					if ( ! empty( $_search_criteria[ $key ] ) ) {
+						$search_criteria[ $key ] = array_merge( empty( $search_criteria[ $key ] ) ? array() : $search_criteria[ $key ], $_search_criteria[ $key ] );
+					}
+				}
+			}
+
+			return \GFAPI::count_entries( $form->ID, $search_criteria );
+		} );
+
+		return $entries;
+	}
+
+	/**
 	 * ArrayAccess compatibility layer with a Gravity Forms form array.
 	 *
 	 * @internal

@@ -1206,4 +1206,62 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	/**
+										 * @group current
+	 * @covers \GV\Entry_Collection::from_form
+	 * @covers \GV\Entry_Collection::filter
+	 * @covers \GV\Form::get_entries
+	 * @covers \GV\Entry_Collection::count
+	 * @covers \GV\GF_Entry_Filter::from_search_criteria()
+	 */
+	public function test_entry_collection_and_filter() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => 'set all the fields!',
+			'2' => -100,
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form->ID ) );
+
+		$entries = new \GV\Entry_Collection();
+
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$entries->add( $entry );
+		$this->assertSame( $entries->get( $entry['id'] ), $entry );
+
+		/** Moar!!! */
+		foreach ( range( 1, 500 ) as $i ) {
+			$this->factory->entry->import_and_get( 'simple_entry.json', array(
+				'form_id' => $form['id'],
+				'1' => "this is the $i-numbered entry",
+				'2' => $i,
+			) );
+		}
+
+		$this->assertEquals( $form->entries->count(), 501 );
+
+		$filter_1 = \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
+			'mode' => 'any', /** OR */
+			array( 'key' => '2', 'value' => '200' ),
+			array( 'key' => '2', 'value' => '300' ),
+		) ) );
+		$this->assertEquals( $form->entries->filter( $filter_1 )->count(), 2 );
+
+		$filter_2 = \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
+			'mode' => 'any', /** OR */
+			array( 'key' => '2', 'value' => '150' ),
+			array( 'key' => '2', 'value' => '450' ),
+		) ) );
+		$this->assertEquals( $form->entries->filter( $filter_1 )->filter( $filter_2 )->count(), 4 );
+
+		$this->assertCount( 20, $form->entries->all() );
+		$this->assertCount( 4, $form->entries->filter( $filter_1 )->filter( $filter_2 )->all() );
+
+		$this->_reset_context();
+	}
 }

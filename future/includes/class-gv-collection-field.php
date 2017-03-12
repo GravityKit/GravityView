@@ -13,7 +13,7 @@ class Field_Collection extends Collection {
 	/**
 	 * Add a \GV\Field to this collection.
 	 *
-	 * @param \GV\Field $field The view to add to the internal array.
+	 * @param \GV\Field $field The field to add to the internal array.
 	 *
 	 * @throws \InvalidArgumentException if $field is not of type \GV\Field.
 	 *
@@ -31,7 +31,7 @@ class Field_Collection extends Collection {
 	/**
 	 * Get a \GV\Field from this list by UID.
 	 *
-	 * @param int $field_uid The UID of the field in the view to get.
+	 * @param int $field_uid The UID of the field in the field to get.
 	 *
 	 * @api
 	 * @since future
