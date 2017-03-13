@@ -1208,7 +1208,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
-										 * @group current
 	 * @covers \GV\Entry_Collection::from_form
 	 * @covers \GV\Entry_Collection::filter
 	 * @covers \GV\Form::get_entries
