@@ -213,11 +213,8 @@ class View implements \ArrayAccess {
 		/** Get all fields. */
 		$view->fields = Field_Collection::from_configuration( $configuration );
 
-		/** The settings. */
+		/** View configuration. */
 		$view->settings->update( gravityview_get_template_settings( $view->ID ) );
-
-		/** Set the template. */
-		$view->template = new View_Template( $view->_gravityview_directory_template, $view );
 
 		/**
 		 * @deprecated
@@ -270,7 +267,7 @@ class View implements \ArrayAccess {
 			 * @deprecated
 			 * @see \GV\View::$template::$ID
 			 */
-			// 'template_id' => gravityview_get_template_id( $view->ID ),
+			'template_id' => gravityview_get_template_id( $view->ID ),
 
 			'widgets' => gravityview_get_directory_widgets( $view->ID ),
 		);

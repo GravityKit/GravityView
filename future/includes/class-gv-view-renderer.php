@@ -39,6 +39,10 @@ class View_Renderer {
 		}
 
 		/**
+		 * @todo If not configured, output a warning here...
+		 */
+
+		/**
 		 * This View is password protected. Output the form.
 		 */
 		if ( post_password_required( $view->ID ) ) {
@@ -48,10 +52,12 @@ class View_Renderer {
 		/**
 		 * @filter `gravityview_template_slug_{$template_id}` Modify the template slug about to be loaded in directory views.
 		 * @since 1.6
+		 * @param deprecated
+		 * @see The `gravityview_get_template_id` filter
 		 * @param string $slug Default: 'table'
 		 * @param string $view The current view context: directory.
 		 */
-		$template_slug = apply_filters( 'gravityview_template_slug_' . $view->template->ID, 'table', 'directory' );
+		$template_slug = apply_filters( 'gravityview_template_slug_' . gravityview_get_template_id( $view->ID ), 'table', 'directory' );
 
 		/**
 		 * Figure out whether to get the entries or not.
@@ -81,10 +87,18 @@ class View_Renderer {
 			$entries = array( 'count' => null, 'entries' => null, 'paging' => null );
 		}
 
+		/**
+		 * @filter `gravityview/template/view/class` Filter the template class that is about to be used to render the view.
+		 * @since future
+		 * @param string $class The chosen class - Default: \GV\View_Table_Template.
+		 * @param \GV\View $view The view about to be rendered.
+		 */
+		$class = apply_filters( 'gravityview/template/view/class', sprintf( '\GV\View_%s_Template', ucfirst( $template_slug ) ), $view );
+
+		$template = new $class( $view );
+
 		ob_start();
-
-		$view->template->render( $template_slug );
-
+		$template->render();
 		return ob_get_clean();
 	}
 }

@@ -20,15 +20,7 @@ if ( ! class_exists( 'Gamajo_Template_Loader' ) ) {
  *
  * Attached to a \GV\View and used by a \GV\View_Renderer.
  */
-class View_Template extends Template {
-
-	/**
-	 * @var string The template identifier.
-	 *
-	 * For example, "default_list" or "default_table".
-	 * A template file slug will be provided based on this ID when rendering.
-	 */
-	public $ID;
+abstract class View_Template extends Template {
 
 	/**
 	 * @var \GV\View The view connected to this template.
@@ -36,13 +28,16 @@ class View_Template extends Template {
 	public $view;
 
 	/**
+	 * @var string The template slug to be loaded (like "table", "list")
+	 */
+	public static $slug;
+
+	/**
 	 * Initializer.
 	 *
-	 * @param string $ID The ID of this template.
 	 * @param \GV\View $view The View connected to this template.
 	 */
-	public function __construct( $ID, View $view ) {
-		$this->ID = $ID;
+	public function __construct( View $view ) {
 		$this->view = $view;
 
 		/** Add granular overrides. */
@@ -91,21 +86,34 @@ class View_Template extends Template {
 
 	/**
 	 * Output some HTML.
+	 *
+	 * @return void
 	 */
-	public function render( $slug ) {
+	public function render() {
 
 		/**
 		 * Make various pieces of data available to the template
 		 *  under the $gravityview scoped variable.
+		 *
+		 * @filter `gravityview/template/view/data`
+		 * @param array $data The default data available to all View templates.
+		 * @since future
 		 */
-		$this->set_template_data( array(
+		$this->set_template_data( apply_filters( 'gravityview/template/view/data', array(
+
 			'template' => $this,
 
 			/** Shortcuts */
 			'view' => $this->view,
-		), 'gravityview' );
+			'fields' => $this->view->fields->by_visible(),
+			'entries' => $this->view->entries,
+
+		) ), 'gravityview' );
 
 		/** Load the template. */
-		$this->get_template_part( $slug );
+		$this->get_template_part( static::$slug );
 	}
 }
+
+/** Load implementations. */
+require gravityview()->plugin->dir( 'future/includes/class-gv-template-view-table.php' );
