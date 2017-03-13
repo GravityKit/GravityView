@@ -1259,8 +1259,30 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) ) );
 		$this->assertEquals( $form->entries->filter( $filter_1 )->filter( $filter_2 )->count(), 4 );
 
-		$this->assertCount( 20, $form->entries->all() );
+		$this->assertCount( 20, $form->entries->all() ); /** The default count... */
 		$this->assertCount( 4, $form->entries->filter( $filter_1 )->filter( $filter_2 )->all() );
+
+		/** Try limiting and offsetting (a.k.a. pagination)... */
+		$this->assertCount( 5, $form->entries->limit( 5 )->all() );
+		$this->assertEquals( 501, $form->entries->limit( 5 )->count() );
+
+		$entries = $form->entries->limit( 2 )->offset( 0 )->all();
+		$this->assertCount( 2, $entries );
+		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '500', '499' ) );
+
+		$entries = $form->entries->limit( 2 )->offset( 6 )->all();
+		$this->assertCount( 2, $entries );
+		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '494', '493' ) );
+
+		/** Hey, how about some sorting love? */
+		$view = \GV\View::from_post( $view );
+
+		$field = new \GV\Field();
+		$field->ID = '2'; /** @todo What about them joins? Should a field have a form link or the other way around? */
+		$sort = new \GV\Entry_Sort( $field, \GV\Entry_Sort::ASC );
+		$entries = $form->entries->limit( 2 )->sort( $sort )->offset( 18 )->all();
+
+		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '114', '115' ) );
 
 		$this->_reset_context();
 	}

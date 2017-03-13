@@ -78,6 +78,9 @@ class Entry_Collection extends Collection {
 	/**
 	 * Count the current number of \GV\Entry objects here.
 	 *
+	 * @api
+	 * @since future
+	 *
 	 * @return int The number of entries here.
 	 */
 	public function count() {
@@ -97,6 +100,9 @@ class Entry_Collection extends Collection {
 
 	/**
 	 * Get the entries as an array.
+	 *
+	 * @api
+	 * @since future
 	 *
 	 * @return \GV\Entry[] The entries as an array.
 	 */
@@ -127,12 +133,77 @@ class Entry_Collection extends Collection {
 	 *
 	 * @param \GV\Entry_Filter $filter The filter to be applied.
 	 *
+	 * @api
+	 * @since future
+	 *
 	 * @return \GV\Entry_Collection A copy of the this collection with the filter applied.
 	 */
 	public function filter( \GV\Entry_Filter $filter ) {
 		$collection = clone( $this );
 
 		array_push( $collection->filters, $filter );
+
+		return $collection;
+	}
+
+	/**
+	 * Sort.
+	 *
+	 * @param \GV\Entry_Sort $sort The sort to apply to this collection.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @return \GV\Entry_Collection A copy of the this collection with the sort applied.
+	 */
+	public function sort( $sort ) {
+		$collection = clone( $this );
+
+		array_push( $collection->sorts, $sort );
+
+		return $collection;
+	}
+
+	/**
+	 * Limit the fetch to a specified window.
+	 *
+	 * @param int $limit The limit.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @return \GV\Entry_Collection A copy of the this collection with the limit applied.
+	 */
+	public function limit( $limit ) {
+		$collection = clone( $this );
+
+		if ( ! $collection->_offset ) {
+			$collection->_offset = new Entry_Offset();
+		}
+		$collection->_offset->limit = $limit;
+
+		return $collection;
+	}
+
+	/**
+	 * Skip $offset entries.
+	 *
+	 * Useful, you know, for pagination and stuff.
+	 *
+	 * @param int $offset The number of entries to skip.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @return \GV\Entry_Collection A copy of the this collection with the offset applied.
+	 */
+	public function offset( $offset ) {
+		$collection = clone( $this );
+
+		if ( ! $collection->_offset ) {
+			$collection->_offset = new Entry_Offset();
+		}
+		$collection->_offset->offset = $offset;
 
 		return $collection;
 	}

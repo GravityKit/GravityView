@@ -86,6 +86,24 @@ class GF_Form extends Form implements \ArrayAccess {
 				}
 			}
 
+			/** Apply the sorts */
+			foreach ( $sorts as $sort ) {
+				/** @todo Wait, Gravity Forms doesn't allow to multisort? */
+				$sorting = array(
+					'key' => $sort->field->ID,
+					'direction' => $sort->direction,
+				);
+			}
+
+			/** The offset and limit */
+			if ( ! empty( $offset->limit ) ) {
+				$paging['page_size'] = $offset->limit;
+			}
+
+			if ( ! empty( $offset->offset ) ) {
+				$paging['offset'] = $offset->offset;
+			}
+
 			foreach ( \GFAPI::get_entries( $form->ID, $search_criteria, $sorting, $paging ) as $entry ) {
 				$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
 			}
