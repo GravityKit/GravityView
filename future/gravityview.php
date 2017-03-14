@@ -25,4 +25,4 @@ function gravityview() {
 }
 
 /** Liftoff...*/
-gravityview();
+add_action( 'plugins_loaded', 'gravityview' );
