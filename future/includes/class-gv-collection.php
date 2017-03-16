@@ -29,6 +29,17 @@ class Collection {
 	}
 
 	/**
+	 * Clear this collection.
+	 *
+	 * @api
+	 * @since future
+	 * @return void
+	 */
+	public function clear() {
+		$this->storage = array();
+	}
+
+	/**
 	 * Merge another collection into here.
 	 *
 	 * @param \GV\Collection $collection The collection to be merged.

@@ -143,6 +143,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \GV\View_Collection::add()
+	 * @covers \GV\View_Collection::clear()
 	 * @covers \GV\View_Collection::merge()
 	 */
 	function test_view_collection_add() {
@@ -169,6 +170,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$views->merge( $more_views );
 		$this->assertCount( 3, $views->all() );
+
+		$views->clear();
+		$this->assertCount( 0, $views->all() );
+		$this->assertEquals( 0, $views->count() );
 	}
 
 	/**
