@@ -96,6 +96,10 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
 		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
 
+		/** The Settings. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-settings-view.php' );
+
 		/** Add rewrite endpoint for single-entry URLs. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
 		add_action( 'init', array( '\GV\Entry', 'add_rewrite_endpoint' ) );
@@ -109,18 +113,24 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-form.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-form-gravityforms.php' );
 
+		/** Our Entry generic and beloved entry backend implementations. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-entry-gravityforms.php' );
+
 		/** Our Field generic. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-field.php' );
 
 		/** Get the collections ready. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-collection.php' );
-		require_once $this->plugin->dir( 'future/includes/class-gv-collection-field.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-collection-form.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-field.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-entry.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-collection-view.php' );
 
-		/** The Settings. */
-		require_once $this->plugin->dir( 'future/includes/class-gv-settings.php' );
-		require_once $this->plugin->dir( 'future/includes/class-gv-settings-view.php' );
+		/** The sorting, filtering and paging classes. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-entry-filter.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-entry-sort.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-collection-entry-offset.php' );
 
 		/** The Renderers. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-view-renderer.php' );
@@ -149,6 +159,8 @@ final class Core {
 			/** The main frontend request. */
 			new Frontend_Request();
 		}
+
+		define( 'GRAVITYVIEW_FUTURE_CORE_LOADED', true );
 	}
 
 	private function __clone() { }

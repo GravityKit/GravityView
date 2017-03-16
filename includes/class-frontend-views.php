@@ -231,7 +231,7 @@ class GravityView_frontend {
 	 * @param null $view_id
 	 */
 	public function set_context_view_id( $view_id = null ) {
-		$multiple_views = function_exists( 'gravityview' ) ? gravityview()->views->count() > 1 : ( $this->getGvOutputData() && $this->getGvOutputData()->has_multiple_views() );
+		$multiple_views = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? gravityview()->views->count() > 1 : ( $this->getGvOutputData() && $this->getGvOutputData()->has_multiple_views() );
 
 		if ( ! empty( $view_id ) ) {
 
@@ -245,7 +245,7 @@ class GravityView_frontend {
 			$this->context_view_id = $_GET['gvid'];
 
 		} elseif ( ! $multiple_views ) {
-			if ( function_exists( 'gravityview' ) ) {
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 				$view = gravityview()->views->last();
 				$this->context_view_id = $view ? $view->ID : null;
 			} else {
@@ -344,7 +344,7 @@ class GravityView_frontend {
 		global $post;
 
 		// If in admin and NOT AJAX request, get outta here.
-		if ( function_exists( 'gravityview' ) && gravityview()->request->is_admin() ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && gravityview()->request->is_admin() ) {
 			return;
 			/** Deprecated in favor of gravityview()->request->is_admin(). */
 		} else if ( GravityView_Plugin::is_admin() ) {
@@ -470,10 +470,10 @@ class GravityView_frontend {
 
 		$context_view_id = $this->get_context_view_id();
 
-		$multiple_views = function_exists( 'gravityview' ) ? gravityview()->views->count() > 1 : $this->getGvOutputData()->has_multiple_views();
+		$multiple_views = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? gravityview()->views->count() > 1 : $this->getGvOutputData()->has_multiple_views();
 
 		if ( $multiple_views && ! empty( $context_view_id ) ) {
-			if ( function_exists( 'gravityview' ) ) {
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 				$view = gravityview()->views->get( $context_view_id );
 				if ( ! $view ) {
 					/** Emulate the weird behavior of \GravityView_View_Data::get_view adding a view which wasn't there to begin with. */
@@ -485,7 +485,7 @@ class GravityView_frontend {
 				$view_meta = $this->getGvOutputData()->get_view( $context_view_id );
 			}
 		} else {
-			if ( function_exists( 'gravityview' ) ) {
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 				foreach ( gravityview()->views->all() as $_view ) {
 					if ( intval( $_view->form->ID ) === intval( $entry['form_id'] ) ) {
 						$view = $_view;
@@ -507,7 +507,7 @@ class GravityView_frontend {
 			}
 		}
 
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			if ( $title = $view->settings->get( 'single_title' ) ) {
 				$title = GravityView_API::replace_variables( $title, $view->form, $entry );
 				$title = do_shortcode( $title );
@@ -567,7 +567,7 @@ class GravityView_frontend {
 			if ( is_preview() && ! gravityview_get_form_id( $this->post_id ) ) {
 				$content .= __( 'When using a preset template, you must save the View before a Preview is available.', 'gravityview' );
 			} else {
-				if ( function_exists( 'gravityview' ) ) {
+				if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 					foreach ( gravityview()->views->all() as $view ) {
 						$content .= $this->render_view( array( 'id' => $view->ID ) );
 					}
@@ -705,7 +705,7 @@ class GravityView_frontend {
 
 		$view_id = $passed_args['id'];
 
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			$view = gravityview()->views->get( $view_id );
 			if ( ! $view ) {
 				/** Emulate the weird behavior of \GravityView_View_Data::get_view adding a view which wasn't there to begin with. */
@@ -771,7 +771,7 @@ class GravityView_frontend {
 			 */
 			$direct_access = apply_filters( 'gravityview_direct_access', true, $view_id );
 
-			if ( function_exists( 'gravityview' ) ) {
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 				$embed_only = $view->settings->get( 'embed_only' );
 			} else {
 				/** Deprecated. View attributes moved to \GV\View::$settings. */
@@ -791,7 +791,7 @@ class GravityView_frontend {
 		 */
 		global $gravityview_view;
 
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			$view_data = $view->as_data();
 			$gravityview_view = new GravityView_View( $view_data );
 			$post_id = intval( $view->settings->get( 'post_id' ) ? : get_the_ID() );
@@ -820,7 +820,7 @@ class GravityView_frontend {
 			 */
 			$get_entries = apply_filters( 'gravityview_get_view_entries_'.$view_slug, true );
 
-			if ( function_exists( 'gravityview' ) ) {
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 				$hide_until_searched = $view->settings->get( 'hide_until_searched' );
 			} else {
 				/** $atts is deprecated, use \GV\View:$settings */
@@ -838,7 +838,7 @@ class GravityView_frontend {
 
 			if ( $get_entries ) {
 
-				if ( function_exists( 'gravityview' ) ) {
+				if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 					$sort_columns = $view->settings->get( 'sort_columns' );
 				} else {
 					/** $atts is deprecated, use \GV\View:$settings */
@@ -850,7 +850,7 @@ class GravityView_frontend {
 					add_filter( 'gravityview/template/field_label', array( $this, 'add_columns_sort_links' ) , 100, 3 );
 				}
 
-				if ( function_exists( 'gravityview' ) ) {
+				if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 					$view_entries = self::get_view_entries( $view->settings->as_atts(), $view->form->ID );
 				} else {
 					/** $atts is deprecated, use \GV\View:$settings */
@@ -880,7 +880,7 @@ class GravityView_frontend {
 			 * @action `gravityview_render_entry_{View ID}` Before rendering a single entry for a specific View ID
 			 * @since 1.17
 			 */
-			if ( function_exists( 'gravityview' ) ) {
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 				do_action( 'gravityview_render_entry_' . $view->ID );
 			} else {
 				/** $view_data is depreacted, use \GV\View properties */
@@ -890,7 +890,7 @@ class GravityView_frontend {
 			$entry = $this->getEntry();
 
 			// You are not permitted to view this entry.
-			if ( empty( $entry ) || ! self::is_entry_approved( $entry, function_exists( 'gravityview' ) ? $view->settings->as_atts() : $atts ) ) {
+			if ( empty( $entry ) || ! self::is_entry_approved( $entry, defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? $view->settings->as_atts() : $atts ) ) {
 
 				do_action( 'gravityview_log_debug', '[render_view] Entry does not exist. This may be because of View filters limiting access.' );
 
@@ -918,7 +918,7 @@ class GravityView_frontend {
 
 			// We're in single view, but the view being processed is not the same view the single entry belongs to.
 			// important: do not remove this as it prevents fake attempts of displaying entries from other views/forms
-			$multiple_views = function_exists( 'gravityview' ) ? gravityview()->views->count() > 1 : $this->getGvOutputData()->has_multiple_views();
+			$multiple_views = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? gravityview()->views->count() > 1 : $this->getGvOutputData()->has_multiple_views();
 			if ( $multiple_views && $view_id != $this->get_context_view_id() ) {
 				do_action( 'gravityview_log_debug', '[render_view] In single entry view, but the entry does not belong to this View. Perhaps there are multiple views on the page. View ID: '. $view_id );
 				ob_end_clean();
@@ -934,7 +934,7 @@ class GravityView_frontend {
 			$view_entries['entries'][] = $entry;
 			do_action( 'gravityview_log_debug', '[render_view] Get single entry: ', $view_entries['entries'] );
 
-			if ( function_exists( 'gravityview' ) ) {
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 				$back_link_label = $view->settings->get( 'back_link_label', null );
 			} else {
 				$back_link_label = isset( $atts['back_link_label'] ) ? $atts['back_link_label'] : null;
@@ -1247,6 +1247,9 @@ class GravityView_frontend {
 		 */
 		$entries = apply_filters( 'gravityview_view_entries', $entries, $args );
 
+		/** Adjust count by defined offset. */
+		$count = max( 0, ( $count - rgar( $args, 'offset', 0 ) ) );
+
 		$return = array(
 			'count' => $count,
 			'entries' => $entries,
@@ -1517,7 +1520,7 @@ class GravityView_frontend {
 	 */
 	public static function is_single_entry() {
 
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			$var_name = \GV\Entry::get_endpoint_name();
 		} else {
 			/** Deprecated. Use \GV\Entry::get_endpoint_name instead. */
@@ -1553,7 +1556,7 @@ class GravityView_frontend {
 		// enqueue template specific styles
 		if ( $this->getGvOutputData() ) {
 
-			if ( function_exists( 'gravityview' ) ) {
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 				$views = gravityview()->views->all();
 			} else {
 				/** \GravityView_View_Data::get_view is no more... */
@@ -1561,7 +1564,7 @@ class GravityView_frontend {
 			}
 
 			foreach ( $views as $view_id => $data ) {
-				if ( function_exists( 'gravityview' ) ) {
+				if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 					$view = $data;
 					$view_id = $view->ID;
 					$template_id = $view->template ? $view->template->ID : null;
@@ -1582,7 +1585,7 @@ class GravityView_frontend {
 				$js_dependencies = array( 'jquery', 'gravityview-jquery-cookie' );
 				$css_dependencies = array();
 
-				if ( function_exists( 'gravityview' ) ) {
+				if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 					$lightbox = $view->settings->get( 'lightbox' );
 				} else {
 					/** View data attributes are now stored in \GV\View::$settings */

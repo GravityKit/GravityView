@@ -20,7 +20,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		}
 
 		/** Not being loaded by the plugin yet. */
-		if ( ! function_exists( 'gravityview' ) ) {
+		if ( ! defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			$this->markTestSkipped( 'gravityview() is not being loaded by plugin yet' );
 			return;
 		}
@@ -1216,7 +1216,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \GV\Template::split_slug()
-																	 * @group template
 	 */
 	public function test_template_split_slug() {
 		$this->assertEquals( \GV\View_Template::split_slug( 'main' ), array( '', 'main' ) );
@@ -1229,7 +1228,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \GV\View_Renderer::render()
-																	 * @group render
 	 */
 	public function test_frontend_view_renderer() {
 		$form = $this->factory->form->import_and_get( 'simple.json' );
@@ -1261,7 +1259,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	/**
 	 * @covers \GV\Frontend_Request::output()
 	 * @covers \GV\Frontend_Request::is_view()
-							* @group request
 	 */
 	public function test_frontend_request() {
 		$request = new \GV\Frontend_Request();
@@ -1338,6 +1335,84 @@ class GVFuture_Test extends GV_UnitTestCase {
 		);
 		wp_set_current_user( $administrator );
 		$this->assertContains( 'View is not configured properly', $request->output( '' ) );
+
+		$this->_reset_context();
+	}
+
+	/**
+	 * @covers \GV\Entry_Collection::filter
+	 * @covers \GV\Form::get_entries
+	 * @covers \GV\Entry_Collection::count
+	 * @covers \GV\GF_Entry_Filter::from_search_criteria()
+	 */
+	public function test_entry_collection_and_filter() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => 'set all the fields!',
+			'2' => -100,
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form->ID ) );
+
+		$entries = new \GV\Entry_Collection();
+
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$entries->add( $entry );
+		$this->assertSame( $entries->get( $entry['id'] ), $entry );
+
+		/** Moar!!! */
+		foreach ( range( 1, 500 ) as $i ) {
+			$this->factory->entry->import_and_get( 'simple_entry.json', array(
+				'form_id' => $form['id'],
+				'1' => "this is the $i-numbered entry",
+				'2' => $i,
+			) );
+		}
+
+		$this->assertEquals( $form->entries->count(), 501 );
+
+		$filter_1 = \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
+			'mode' => 'any', /** OR */
+			array( 'key' => '2', 'value' => '200' ),
+			array( 'key' => '2', 'value' => '300' ),
+		) ) );
+		$this->assertEquals( $form->entries->filter( $filter_1 )->count(), 2 );
+
+		$filter_2 = \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
+			'mode' => 'any', /** OR */
+			array( 'key' => '2', 'value' => '150' ),
+			array( 'key' => '2', 'value' => '450' ),
+		) ) );
+		$this->assertEquals( $form->entries->filter( $filter_1 )->filter( $filter_2 )->count(), 4 );
+
+		$this->assertCount( 20, $form->entries->all() ); /** The default count... */
+		$this->assertCount( 4, $form->entries->filter( $filter_1 )->filter( $filter_2 )->all() );
+
+		/** Try limiting and offsetting (a.k.a. pagination)... */
+		$this->assertCount( 5, $form->entries->limit( 5 )->all() );
+		$this->assertEquals( 501, $form->entries->limit( 5 )->count() );
+
+		$entries = $form->entries->limit( 2 )->offset( 0 )->all();
+		$this->assertCount( 2, $entries );
+		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '500', '499' ) );
+
+		$entries = $form->entries->limit( 2 )->offset( 6 )->all();
+		$this->assertCount( 2, $entries );
+		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '494', '493' ) );
+
+		/** Hey, how about some sorting love? */
+		$view = \GV\View::from_post( $view );
+
+		$field = new \GV\Field();
+		$field->ID = '2'; /** @todo What about them joins? Should a field have a form link or the other way around? */
+		$sort = new \GV\Entry_Sort( $field, \GV\Entry_Sort::ASC );
+		$entries = $form->entries->limit( 2 )->sort( $sort )->offset( 18 )->all();
+
+		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '114', '115' ) );
 
 		$this->_reset_context();
 	}
