@@ -1247,6 +1247,9 @@ class GravityView_frontend {
 		 */
 		$entries = apply_filters( 'gravityview_view_entries', $entries, $args );
 
+		/** Adjust count by defined offset. */
+		$count = max( 0, ( $count - rgar( $args, 'offset', 0 ) ) );
+
 		$return = array(
 			'count' => $count,
 			'entries' => $entries,
