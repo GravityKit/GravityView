@@ -16,7 +16,7 @@ class GravityView_View_Data {
 	 * @param null $passed_post
 	 */
 	private function __construct( $passed_post = NULL ) {
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			/** Reset the new frontend request views, since we now have duplicate state. */
 			gravityview()->request = new \GV\Dummy_Request();
 		}
@@ -25,7 +25,7 @@ class GravityView_View_Data {
 
 			$id_or_id_array = $this->maybe_get_view_id( $passed_post );
 
-			if ( function_exists( 'gravityview' ) ) {
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 				foreach( is_array( $id_or_id_array ) ? $id_or_id_array : array( $id_or_id_array ) as $view_id ) {
 					if ( \GV\View::exists( $view_id ) && ! gravityview()->views->contains( $view_id ) ) {
 						gravityview()->views->add( \GV\View::by_id( $view_id ) );
@@ -44,7 +44,7 @@ class GravityView_View_Data {
 	 * @return boolean
 	 */
 	public function has_multiple_views() {
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			return gravityview()->views->count() > 1;
 		}
 
@@ -87,7 +87,7 @@ class GravityView_View_Data {
 			if( is_array( $passed_post ) ) {
 
 				foreach ( $passed_post as &$post) {
-					if ( function_exists( 'gravityview' ) && $post instanceof WP_Post ) {
+					if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && $post instanceof WP_Post ) {
 						$views = \GV\View_Collection::from_post( $post );
 						foreach ( $views->all() as $view ) {
 							$ids []= $view->ID;
@@ -122,7 +122,7 @@ class GravityView_View_Data {
 
 				if ( is_string( $passed_post ) ) {
 
-					if ( function_exists( 'gravityview' ) ) {
+					if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 						$shortcodes = \GV\Shortcode::parse( $passed_post );
 						foreach ( $shortcodes as $shortcode ) {
 							if ( $shortcode->name == 'gravityview' && !empty( $shortcode->atts['id'] ) ) {
@@ -175,7 +175,7 @@ class GravityView_View_Data {
 	 * @see \GV\View_Collection::all() via `gravityview()->views` or `gravityview()->request->views`.
 	 */
 	function get_views() {
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			if ( ! gravityview()->views->count() ) {
 				return array();
 			}
@@ -192,7 +192,7 @@ class GravityView_View_Data {
 	 * @see \GV\View_Collection::get() via `gravityview()->views` or `gravityview()->request->views`.
 	 */
 	function get_view( $view_id, $atts = NULL ) {
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			if ( ! $view = gravityview()->views->get( $view_id ) ) {
 				if ( ! \GV\View::exists( $view_id ) ) {
 					return false;
@@ -241,7 +241,7 @@ class GravityView_View_Data {
 	 * @since    1.0.0
 	 */
 	function view_exists( $view_id ) {
-		return ( function_exists( 'gravityview' ) && \GV\View::exists( $view_id ) ) || is_string( get_post_status( $view_id ) );
+		return ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && \GV\View::exists( $view_id ) ) || is_string( get_post_status( $view_id ) );
 	}
 
 	/**
@@ -260,7 +260,7 @@ class GravityView_View_Data {
 	function add_view( $view_id, $atts = NULL ) {
 
 		/** Deprecated. Do not edit. */
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			return \GV\Mocks\GravityView_View_Data_add_view( $view_id, $atts );
 		}
 
@@ -300,7 +300,7 @@ class GravityView_View_Data {
 		do_action('gravityview_log_debug', sprintf('GravityView_View_Data[add_view] Settings pulled in from View #%s', $view_id), $view_settings );
 
 		// Merge the view settings with the defaults
-		$view_defaults = wp_parse_args( $view_settings, function_exists( 'gravityview' ) ? \GV\View_Settings::defaults() : self::get_default_args() );
+		$view_defaults = wp_parse_args( $view_settings, defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? \GV\View_Settings::defaults() : self::get_default_args() );
 
 		do_action('gravityview_log_debug', 'GravityView_View_Data[add_view] View Defaults after merging View Settings with the default args.', $view_defaults );
 
@@ -355,7 +355,7 @@ class GravityView_View_Data {
 		$dir_fields = gravityview_get_directory_fields( $view_id );
 		do_action( 'gravityview_log_debug', '[render_view] Fields: ', $dir_fields );
 
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			if ( \GV\View::exists( $view_id ) ) {
 				$view = \GV\View::by_id( $view_id );
 				return $view->fields->by_visible()->as_configuration();
@@ -379,7 +379,7 @@ class GravityView_View_Data {
 	 */
 	private function filter_fields( $dir_fields ) {
 
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			throw new Exception( __METHOD__ . ' should not be called anymore. Why was it?' );
 		}
 
@@ -413,7 +413,7 @@ class GravityView_View_Data {
 	 */
 	private function hide_field_check_conditions( $properties ) {
 
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			throw new Exception( __METHOD__ . ' should not be called anymore. Why was it?' );
 		}
 
@@ -435,7 +435,7 @@ class GravityView_View_Data {
 	 */
 	function get_id_from_atts( $atts ) {
 
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			$settings = new \GV\View_Settings();
 			$settings->update( \GV\View_Settings::defaults() );
 			$settings->update( shortcode_parse_atts( $atts ) );
@@ -447,7 +447,7 @@ class GravityView_View_Data {
 		$atts = is_array( $atts ) ? $atts : shortcode_parse_atts( $atts );
 
 		// Get the settings from the shortcode and merge them with defaults.
-		$atts = wp_parse_args( $atts, function_exists( 'gravityview' ) ? \GV\View_Settings::defaults() : self::get_default_args() );
+		$atts = wp_parse_args( $atts, defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? \GV\View_Settings::defaults() : self::get_default_args() );
 
 		$view_id = ! empty( $atts['view_id'] ) ? (int)$atts['view_id'] : NULL;
 
@@ -477,7 +477,7 @@ class GravityView_View_Data {
 	 * @return int|null|array If a single View is found, the ID of the View. If there are multiple views in the content, array of IDs parsed. If not found, NULL
 	 */
 	public function parse_post_content( $content ) {
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			$ids = array();
 			foreach ( \GV\Shortcode::parse( $content ) as $shortcode ) {
 				if ( $shortcode->name == 'gravityview' && is_numeric( $shortcode->atts['id'] ) ) {
@@ -557,7 +557,7 @@ class GravityView_View_Data {
 	 * @return int|null|array If a single View is found, the ID of the View. If there are multiple views in the content, array of IDs parsed. If not found, or meta not parsed, NULL
 	 */
 	private function parse_post_meta( $post_id ) {
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			/** Is private and no longer used in future mode. */
 			throw new RuntimeException( __CLASS__ . '::parse_post_meta is no more. Why was it called?' );
 		}
@@ -646,7 +646,7 @@ class GravityView_View_Data {
 		}
 
 		if( ! $message ) {
-			if ( function_exists( 'gravityview' ) && $post = get_post( $post_id ) )  {
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && $post = get_post( $post_id ) )  {
 				$views = GV\View_Collection::from_post( $post );
 				$view_ids_in_post = array_map( function( $view ) { return $view->ID; }, $views->all() );
 			} else {
@@ -663,7 +663,7 @@ class GravityView_View_Data {
 		if( ! $message ) {
 
 			// It's a View
-			if ( ( function_exists( 'gravityview' ) && \GV\View::exists( $post_id ) )
+			if ( ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) && \GV\View::exists( $post_id ) )
 				|| 'gravityview' === get_post_type( $post_id ) ) {
 				$message = esc_html__( 'The ID is already a View.', 'gravityview' );;
 			}
@@ -684,7 +684,7 @@ class GravityView_View_Data {
 	 */
 	public static function get_default_arg( $key, $with_details = false ) {
 
-		$args = function_exists( 'gravityview' ) ? \GV\View_Settings::defaults( $with_details ) : self::get_default_args( $with_details );
+		$args = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? \GV\View_Settings::defaults( $with_details ) : self::get_default_args( $with_details );
 
 		if( !isset( $args[ $key ] ) ) { return NULL; }
 
@@ -711,7 +711,7 @@ class GravityView_View_Data {
 	 * @see \GV\View_Settings::defaults()
 	 */
 	public static function get_default_args( $with_details = false, $group = NULL ) {
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			return \GV\View_Settings::defaults( $with_details, $group );
 		}
 

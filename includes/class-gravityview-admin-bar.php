@@ -42,7 +42,7 @@ class GravityView_Admin_Bar {
 			return;
 		}
 
-		if ( function_exists( 'gravityview' ) ) {
+		if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			if ( ! gravityview()->views->count() ) {
 				return;
 			}
@@ -130,7 +130,7 @@ class GravityView_Admin_Bar {
 
 		if( GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview', 'gravityforms_edit_forms' ) ) ) {
 
-			if ( function_exists( 'gravityview' ) ) {
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 				$views = gravityview()->views->all();
 			} else {
 				/** Deprecated. Use no more, please. See: `gravityview()->views`*/
@@ -146,7 +146,7 @@ class GravityView_Admin_Bar {
 
 				foreach ( $views as $view ) {
 
-					if ( function_exists( 'gravityview' ) ) {
+					if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 						/** `$view` is now a \GV\View object, not an array. */
 						$view_id = $view->ID;
 						$form_id = $view->form ? $view->form->ID : null;

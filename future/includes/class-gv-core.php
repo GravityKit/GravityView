@@ -157,6 +157,8 @@ final class Core {
 			/** The main frontend request. */
 			new Frontend_Request();
 		}
+
+		define( 'GRAVITYVIEW_FUTURE_CORE_LOADED', true );
 	}
 
 	private function __clone() { }

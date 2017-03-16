@@ -20,7 +20,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		}
 
 		/** Not being loaded by the plugin yet. */
-		if ( ! function_exists( 'gravityview' ) ) {
+		if ( ! defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 			$this->markTestSkipped( 'gravityview() is not being loaded by plugin yet' );
 			return;
 		}

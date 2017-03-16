@@ -486,7 +486,7 @@ class GVCommon {
 
 		if ( ! GravityView_frontend::getInstance()->getSingleEntry() ) {
 			/** GravityView_View_Data::getInstance() has a side-effect :( and not one, so we can't let it run under some circumstances. */
-			if ( function_exists( 'gravityview' ) ) {
+			if ( defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ) {
 				$multiple_original = gravityview()->views->count() > 1;
 				GravityView_View_Data::getInstance(); /** Yes, those side-effects have to kick in. */
 				/** This weird state only happens in tests, when we play around and reset the $instance... */
@@ -1132,7 +1132,7 @@ class GVCommon {
 
 		if ( class_exists( 'GravityView_View_Data' ) ) {
 
-			$defaults = function_exists( 'gravityview' ) ? \GV\View_Settings::defaults() : GravityView_View_Data::get_default_args();
+			$defaults = defined( 'GRAVITYVIEW_FUTURE_CORE_LOADED' ) ? \GV\View_Settings::defaults() : GravityView_View_Data::get_default_args();
 
 			return wp_parse_args( (array)$settings, $defaults );
 
