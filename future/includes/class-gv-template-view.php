@@ -106,7 +106,8 @@ abstract class View_Template extends Template {
 			/** Shortcuts */
 			'view' => $this->view,
 			'fields' => $this->view->fields->by_visible(),
-			'entries' => $this->view->entries,
+			'entries' => $this->view->form->entries->limit( 1 ),
+			'form' => $this->view->form,
 
 		) ), 'gravityview' );
 

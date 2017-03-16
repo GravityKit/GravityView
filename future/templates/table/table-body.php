@@ -14,15 +14,14 @@
 		if ( ! $gravityview->entries->count() ) {
 			?>
 			<tr>
-				<td colspan="<?php echo $gravityview->fields ? count( $gravityview->fields ) : ''; ?>" class="gv-no-results">
-					heoheoeo
+				<td colspan="<?php echo $gravityview->fields->count() ? : ''; ?>" class="gv-no-results">
 					<?php echo gv_no_results(); ?>
 				</td>
 			</tr>
 		<?php
 		} else {
 
-			foreach ( (array)$gravityview->entries as $entry ) :
+			foreach ( $gravityview->entries->all() as $entry ) :
 
 				// Add `alt` class to alternate rows
 				$alt = empty( $alt ) ? 'alt' : '';
@@ -37,6 +36,7 @@
 		?>
 				<tr<?php echo ' class="'.esc_attr( $class ).'"'; ?>>
 		<?php
+			echo sprintf( "<td colspan=\"%s\">{$entry->ID}</td>", $gravityview->fields->count() ? : '' );
 		?>
 				</tr>
 			<?php
