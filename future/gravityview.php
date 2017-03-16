@@ -35,3 +35,6 @@ if ( version_compare( phpversion(), '5.3' , '<' ) ) {
 	/** Liftoff...*/
 	gravityview();
 }
+
+/** Liftoff...*/
+add_action( 'plugins_loaded', 'gravityview' );
