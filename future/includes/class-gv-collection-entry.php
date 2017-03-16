@@ -84,6 +84,10 @@ class Entry_Collection extends Collection {
 	 * @return int The number of entries here.
 	 */
 	public function count() {
+		if ( parent::count() ) {
+			return parent::count();
+		}
+
 		$count = 0;
 
 		/** Call all lazy callbacks. */
@@ -107,23 +111,49 @@ class Entry_Collection extends Collection {
 	 * @return \GV\Entry[] The entries as an array.
 	 */
 	public function all() {
-		/** This collection has already been hydrated. */
 		if ( parent::count() ) {
 			return parent::all();
 		}
+		return $this->fetch()->all();
+	}
 
-		$entries = array();
+	/**
+	 * Get the last \GV\Entry in this collection.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @return \GV\Entry|null The last entry or null.
+	 */
+	public function last() {
+		if ( parent::count() ) {
+			return parent::last();
+		}
+		return $this->fetch()->last();
+	}
 
+	/**
+	 * Hydrate this collection now.
+	 *
+	 * @api
+	 * @since future
+	 *
+	 * @return \GV\Entry_Collection This collection, now hydrated.
+	 */
+	public function fetch() {
 		/** Call all lazy callbacks. */
-		foreach ( $this->callbacks as $callback ) {
+		foreach ( $this->callbacks as $i => $callback ) {
 			if ( $callback[0] != 'fetch' ) {
 				continue;
 			}
 
-			$entries = array_merge( $entries, $callback[1]( $this->filters, $this->sorts, $this->_offset )->all() );
+			$this->merge( $callback[1]( $this->filters, $this->sorts, $this->_offset ) );
+
+			/** Remove callback as done. */
+			unset( $this->callbacks[$i] );
 		}
 
-		return $entries;
+		return $this;
 	}
 
 	/**
@@ -215,6 +245,9 @@ class Entry_Collection extends Collection {
 	 *  \GV\Entry_Collection callback( \GV\Entry_Filter $filter, \GV\Entry_Sort $sort, \GV\Entry_Offset $offset );
 	 *
 	 * The methods that trigger the callback are:
+	 * - \GV\Entry_Collection::fetch
+	 *
+	 * ::fetch is triggered via:
 	 * - \GV\Entry_Collection::all
 	 * - \GV\Entry_Collection::last
 	 *

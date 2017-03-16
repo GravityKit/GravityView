@@ -1277,6 +1277,15 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertCount( 2, $entries );
 		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '494', '493' ) );
 
+		$entries = $form->entries->limit( 2 )->offset( 6 );
+		$entries->fetch();
+		$this->assertEquals( $entries->count(), 2 );
+		$entries->fetch();
+		$this->assertEquals( $entries->count(), 2 );
+
+		$last = $form->entries->limit( 2 )->offset( 6 )->last();
+		$this->assertEquals( $last['2'], '493' );
+
 		/** Hey, how about some sorting love? */
 		$view = \GV\View::from_post( $view );
 
