@@ -143,6 +143,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \GV\View_Collection::add()
+	 * @covers \GV\View_Collection::clear()
 	 * @covers \GV\View_Collection::merge()
 	 */
 	function test_view_collection_add() {
@@ -169,6 +170,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$views->merge( $more_views );
 		$this->assertCount( 3, $views->all() );
+
+		$views->clear();
+		$this->assertCount( 0, $views->all() );
+		$this->assertEquals( 0, $views->count() );
 	}
 
 	/**
@@ -1403,6 +1408,15 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entries = $form->entries->limit( 2 )->offset( 6 )->all();
 		$this->assertCount( 2, $entries );
 		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '494', '493' ) );
+
+		$entries = $form->entries->limit( 2 )->offset( 6 );
+		$entries->fetch();
+		$this->assertEquals( $entries->count(), 2 );
+		$entries->fetch();
+		$this->assertEquals( $entries->count(), 2 );
+
+		$last = $form->entries->limit( 2 )->offset( 6 )->last();
+		$this->assertEquals( $last['2'], '493' );
 
 		/** Hey, how about some sorting love? */
 		$view = \GV\View::from_post( $view );
