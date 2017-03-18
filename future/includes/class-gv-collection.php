@@ -36,7 +36,7 @@ class Collection {
 	 * @return void
 	 */
 	public function clear() {
-		$this->storage = array();
+		$this->count() && ( $this->storage = array() );
 	}
 
 	/**

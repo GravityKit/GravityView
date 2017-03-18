@@ -33,9 +33,19 @@ class Entry_Collection extends Collection {
 	private $sorts = array();
 
 	/**
-	 * @var \GV\Entry_Offset Pagination, limit and offset criteria.
+	 * @var int The offset.
 	 */
-	private $_offset = null;
+	public $offset = 0;
+
+	/**
+	 * @var int The limit.
+	 */
+	public $limit = 20;
+
+	/**
+	 * @var int The current page.
+	 */
+	public $current_page = 1;
 
 	/**
 	 * Add an \GV\Entry to this collection.
@@ -76,19 +86,15 @@ class Entry_Collection extends Collection {
 	}
 
 	/**
-	 * Count the current number of \GV\Entry objects here.
+	 * Count the total number of \GV\Entry objects that are possible to get.
 	 *
 	 * @api
 	 * @since future
 	 *
-	 * @return int The number of entries here.
+	 * @return int The total number of entries that are fetchable.
 	 */
-	public function count() {
-		if ( parent::count() ) {
-			return parent::count();
-		}
-
-		$count = 0;
+	public function total() {
+		$total = 0;
 
 		/** Call all lazy callbacks. */
 		foreach ( $this->callbacks as $callback ) {
@@ -96,10 +102,10 @@ class Entry_Collection extends Collection {
 				continue;
 			}
 
-			$count += $callback[1]( $this->filters );
+			$total += $callback[1]( $this->filters );
 		}
 
-		return $count;
+		return $total - $this->offset;
 	}
 
 	/**
@@ -141,16 +147,20 @@ class Entry_Collection extends Collection {
 	 * @return \GV\Entry_Collection This collection, now hydrated.
 	 */
 	public function fetch() {
+		$this->clear();
+
+		/** Calculate the offsets. */
+		$offset = new \GV\Entry_Offset();
+		$offset->limit = $this->limit;
+		$offset->offset = ( $this->limit * ( $this->current_page - 1 ) ) + $this->offset;
+
 		/** Call all lazy callbacks. */
 		foreach ( $this->callbacks as $i => $callback ) {
 			if ( $callback[0] != 'fetch' ) {
 				continue;
 			}
 
-			$this->merge( $callback[1]( $this->filters, $this->sorts, $this->_offset ) );
-
-			/** Remove callback as done. */
-			unset( $this->callbacks[$i] );
+			$this->merge( $callback[1]( $this->filters, $this->sorts, $offset ) );
 		}
 
 		return $this;
@@ -170,6 +180,7 @@ class Entry_Collection extends Collection {
 	 */
 	public function filter( \GV\Entry_Filter $filter ) {
 		$collection = clone( $this );
+		$collection->clear();
 
 		array_push( $collection->filters, $filter );
 
@@ -188,6 +199,7 @@ class Entry_Collection extends Collection {
 	 */
 	public function sort( $sort ) {
 		$collection = clone( $this );
+		$collection->clear();
 
 		array_push( $collection->sorts, $sort );
 
@@ -206,21 +218,19 @@ class Entry_Collection extends Collection {
 	 */
 	public function limit( $limit ) {
 		$collection = clone( $this );
-
-		if ( ! $collection->_offset ) {
-			$collection->_offset = new Entry_Offset();
-		}
-		$collection->_offset->limit = $limit;
-
+		$collection->clear();
+		$collection->limit = $limit;
 		return $collection;
 	}
 
 	/**
-	 * Skip $offset entries.
+	 * Add an $offset to these entries.
 	 *
-	 * Useful, you know, for pagination and stuff.
+	 * Useful, you know, for pagination and stuff. Not too useful directly.
 	 *
-	 * @param int $offset The number of entries to skip.
+	 * @see \GV\Entry_Collection::page()
+	 *
+	 * @param int $offset The number of entries to skip in the database.
 	 *
 	 * @api
 	 * @since future
@@ -229,12 +239,22 @@ class Entry_Collection extends Collection {
 	 */
 	public function offset( $offset ) {
 		$collection = clone( $this );
+		$collection->clear();
+		$collection->offset = $offset;
+		return $collection;
+	}
 
-		if ( ! $collection->_offset ) {
-			$collection->_offset = new Entry_Offset();
-		}
-		$collection->_offset->offset = $offset;
-
+	/**
+	 * Set the current page.
+	 *
+	 * @param int $page Set the current page to this page. Ends up agumenting the $offset in \GV\Entry_Offset
+	 *
+	 * @return \GV\Entry_Collection A copy of the this collection with the offset applied.
+	 */
+	public function page( $page ) {
+		$collection = clone( $this );
+		$collection->clear();
+		$collection->current_page = $page;
 		return $collection;
 	}
 

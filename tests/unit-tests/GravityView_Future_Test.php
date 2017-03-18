@@ -1348,7 +1348,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Entry_Collection::filter
 	 * @covers \GV\Form::get_entries
 	 * @covers \GV\Entry_Collection::count
+	 * @covers \GV\Entry_Collection::total
 	 * @covers \GV\GF_Entry_Filter::from_search_criteria()
+	 * @covers \GV\Entry_Collection::offset
+	 * @covers \GV\Entry_Collection::limit
+	 * @covers \GV\Entry_Collection::sort
+	 * @covers \GV\Entry_Collection::page
 	 */
 	public function test_entry_collection_and_filter() {
 		$this->_reset_context();
@@ -1378,28 +1383,31 @@ class GVFuture_Test extends GV_UnitTestCase {
 			) );
 		}
 
-		$this->assertEquals( $form->entries->count(), 501 );
+		$this->assertEquals( $form->entries->total(), 501 );
+		$this->assertEquals( $form->entries->count(), 0 );
 
 		$filter_1 = \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
 			'mode' => 'any', /** OR */
 			array( 'key' => '2', 'value' => '200' ),
 			array( 'key' => '2', 'value' => '300' ),
 		) ) );
-		$this->assertEquals( $form->entries->filter( $filter_1 )->count(), 2 );
+		$this->assertEquals( $form->entries->filter( $filter_1 )->count(), 0 );
+		$this->assertEquals( $form->entries->filter( $filter_1 )->total(), 2 );
 
 		$filter_2 = \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
 			'mode' => 'any', /** OR */
 			array( 'key' => '2', 'value' => '150' ),
 			array( 'key' => '2', 'value' => '450' ),
 		) ) );
-		$this->assertEquals( $form->entries->filter( $filter_1 )->filter( $filter_2 )->count(), 4 );
+		$this->assertEquals( $form->entries->filter( $filter_1 )->filter( $filter_2 )->total(), 4 );
 
 		$this->assertCount( 20, $form->entries->all() ); /** The default count... */
 		$this->assertCount( 4, $form->entries->filter( $filter_1 )->filter( $filter_2 )->all() );
 
 		/** Try limiting and offsetting (a.k.a. pagination)... */
 		$this->assertCount( 5, $form->entries->limit( 5 )->all() );
-		$this->assertEquals( 501, $form->entries->limit( 5 )->count() );
+		$this->assertEquals( 501, $form->entries->limit( 5 )->total() );
+		$this->assertEquals( 0, $form->entries->limit( 5 )->count() );
 
 		$entries = $form->entries->limit( 2 )->offset( 0 )->all();
 		$this->assertCount( 2, $entries );
@@ -1427,6 +1435,23 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entries = $form->entries->limit( 2 )->sort( $sort )->offset( 18 )->all();
 
 		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '114', '115' ) );
+
+		/** Pagination */
+		$page_1 = $form->entries->limit( 2 )->offset( 1 )->sort( $sort );
+		$this->assertEquals( 1, $page_1->current_page );
+		$this->assertEquals( $page_1->total(), 500 );
+
+		$entries = $page_1->all();
+		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '1', '10' ) );
+
+		$page_2 = $page_1->page( 2 );
+		$this->assertEquals( 2, $page_2->current_page );
+
+		$entries = $page_2->all();
+		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '100', '101' ) );
+
+		$entries = $page_2->page( 3 )->all();
+		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '102', '103' ) );
 
 		$this->_reset_context();
 	}
