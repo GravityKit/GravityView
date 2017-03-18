@@ -11,5 +11,11 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  *
  * Offset and limit, pagination.
  */
-class Entry_Offset extends Settings {
+class Entry_Offset {
+
+	/** @var int The offset. */
+	public $offset = 0;
+
+	/** @var int The limit. */
+	public $limit = 20;
 }
