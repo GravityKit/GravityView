@@ -76,19 +76,15 @@ class Entry_Collection extends Collection {
 	}
 
 	/**
-	 * Count the current number of \GV\Entry objects here.
+	 * Count the total number of \GV\Entry objects that are possible to get.
 	 *
 	 * @api
 	 * @since future
 	 *
-	 * @return int The number of entries here.
+	 * @return int The total number of entries that are fetchable.
 	 */
-	public function count() {
-		if ( parent::count() ) {
-			return parent::count();
-		}
-
-		$count = 0;
+	public function total() {
+		$total = 0;
 
 		/** Call all lazy callbacks. */
 		foreach ( $this->callbacks as $callback ) {
@@ -96,10 +92,10 @@ class Entry_Collection extends Collection {
 				continue;
 			}
 
-			$count += $callback[1]( $this->filters );
+			$total += $callback[1]( $this->filters );
 		}
 
-		return $count;
+		return $total;
 	}
 
 	/**
