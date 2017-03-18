@@ -39,7 +39,7 @@ class GF_Entry_Filter extends Entry_Filter {
 	 *
 	 * @return array $search_criteria The Gravity Forms search criteria.
 	 */
-	public function to_search_criteria() {
+	public function as_search_criteria() {
 		return $this->search_criteria;
 	}
 }

@@ -77,7 +77,7 @@ class GF_Form extends Form implements \ArrayAccess {
 
 			/** Apply the filters */
 			foreach ( $filters as $filter ) {
-				$_search_criteria = $filter->to_search_criteria();
+				$_search_criteria = $filter->as_search_criteria();
 
 				foreach ( array( 'field_filters', 'start_date', 'end_date', 'status' ) as $key ) {
 					if ( ! empty( $_search_criteria[ $key ] ) ) {
@@ -119,7 +119,7 @@ class GF_Form extends Form implements \ArrayAccess {
 
 			/** Apply the filters */
 			foreach ( $filters as $filter ) {
-				$_search_criteria = $filter->to_search_criteria();
+				$_search_criteria = $filter->as_search_criteria();
 
 				foreach ( array( 'field_filters', 'start_date', 'end_date', 'status' ) as $key ) {
 					if ( ! empty( $_search_criteria[ $key ] ) ) {
