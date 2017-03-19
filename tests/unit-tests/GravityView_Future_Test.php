@@ -1360,4 +1360,58 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$expected['end_date'] = '2999';
 		$this->assertEquals( $expected, $filter::merge_search_criteria( $filter->as_search_criteria(), array( 'status' => 'inactive', 'start_date' => '2011', 'end_date' => '2999' ) ) );
 	}
+
+	/**
+	 * @covers GravityView_frontend::get_view_entries()
+	 */
+	public function test_get_view_entries_compat() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry_1 = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => 'set all the fields!',
+			'2' => -100,
+		) );
+		$view = \GV\View::by_id( $this->factory->view->create( array( 'form_id' => $form->ID ) ) );
+
+		$entries = GravityView_frontend::get_view_entries( $view->settings->as_atts(), $form->ID );
+		$this->assertEquals( 1, $entries['count'] );
+		$this->assertEquals( array( 'offset' => 0, 'page_size' => 25 ), $entries['paging'] );
+		$this->assertEquals( $entry_1['id'], $entries['entries'][0]['id'] );
+
+		$entry_2 = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => 'a here goes nothing...',
+			'2' => 999,
+		) );
+
+		$view->settings->update( array( 'page_size' => 1, 'offset' => 1 ) );
+
+		$entries = GravityView_frontend::get_view_entries( $view->settings->as_atts(), $form->ID );
+		$this->assertEquals( 1, $entries['count'] );
+		$this->assertEquals( array( 'offset' => 0, 'page_size' => 1 ), $entries['paging'] );
+		$this->assertEquals( $entry_1['id'], $entries['entries'][0]['id'] );
+
+		$view->settings->set( 'offset', 0 );
+		$view->settings->set( 'page_size', 30 );
+		$view->settings->set( 'search_field', '2' );
+		$view->settings->set( 'search_value', '999' );
+
+		$entries = GravityView_frontend::get_view_entries( $view->settings->as_atts(), $form->ID );
+		$this->assertEquals( 1, $entries['count'] );
+		$this->assertEquals( $entry_2['id'], $entries['entries'][0]['id'] );
+
+		$view->settings->set( 'search_field', '' );
+		$view->settings->set( 'search_value', '' );
+
+		$view->settings->set( 'sort_field', '1' );
+		$view->settings->set( 'sort_direction', 'desc' );
+		$entries = GravityView_frontend::get_view_entries( $view->settings->as_atts(), $form->ID );
+		$this->assertEquals( 2, $entries['count'] );
+		$this->assertEquals( $entry_1['id'], $entries['entries'][0]['id'] );
+
+		$this->_reset_context();
+	}
 }
