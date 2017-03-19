@@ -1267,7 +1267,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			array( 'key' => '2', 'value' => '150' ),
 			array( 'key' => '2', 'value' => '450' ),
 		) ) );
-		$this->assertEquals( $form->entries->filter( $filter_1 )->filter( $filter_2 )->total(), 4 );
+		$this->assertEquals( 4, $form->entries->filter( $filter_1 )->filter( $filter_2 )->total() );
 
 		$this->assertCount( 20, $form->entries->all() ); /** The default count... */
 		$this->assertCount( 4, $form->entries->filter( $filter_1 )->filter( $filter_2 )->all() );
@@ -1322,5 +1322,42 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '102', '103' ) );
 
 		$this->_reset_context();
+	}
+
+	/**
+	 * @covers \GV\GF_Entry_Filter::as_search_criteria()
+	 * @covers \GV\GF_Entry_Filter::merge_search_criteria()
+	 */
+	public function test_merge_search_criteria() {
+		/** Merging Gravity Forms criteria */
+		$filter = \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
+			'mode' => 'hello',
+			array( 'two' ),
+		) ) );
+
+		$expected = $filter->as_search_criteria();
+		$this->assertEquals( $expected, $filter::merge_search_criteria( array(), $filter->as_search_criteria() ) );
+		$this->assertEquals( $expected, $filter::merge_search_criteria( $filter->as_search_criteria(), array() ) );
+
+		$expected['field_filters']['mode'] = 'bye';
+		$this->assertEquals( $expected, $filter::merge_search_criteria( $filter->as_search_criteria(), array( 'field_filters' => array( 'mode' => 'bye' ) ) ) );
+
+		$expected['field_filters'] []= array( 'one' );
+		$this->assertEquals( $expected, $filter::merge_search_criteria( $filter->as_search_criteria(), array( 'field_filters' => array( 'mode' => 'bye', array( 'one' ) ) ) ) );
+
+		$filter = \GV\GF_Entry_Filter::from_search_criteria( array( 'status' => 'active', 'start_date' => 'today', 'end_date' => 'yesterday' ) );
+
+		$expected = $filter->as_search_criteria();
+		$this->assertEquals( $expected, $filter::merge_search_criteria( array(), $filter->as_search_criteria() ) );
+		$this->assertEquals( $expected, $filter::merge_search_criteria( $filter->as_search_criteria(), array() ) );
+
+		$expected['status'] = 'inactive';
+		$this->assertEquals( $expected, $filter::merge_search_criteria( $filter->as_search_criteria(), array( 'status' => 'inactive' ) ) );
+
+		$expected['start_date'] = '2011';
+		$this->assertEquals( $expected, $filter::merge_search_criteria( $filter->as_search_criteria(), array( 'status' => 'inactive', 'start_date' => '2011' ) ) );
+
+		$expected['end_date'] = '2999';
+		$this->assertEquals( $expected, $filter::merge_search_criteria( $filter->as_search_criteria(), array( 'status' => 'inactive', 'start_date' => '2011', 'end_date' => '2999' ) ) );
 	}
 }
