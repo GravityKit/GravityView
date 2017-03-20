@@ -1174,6 +1174,16 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$visible = $fields->by_visible();
 		$this->assertCount( 3, $visible->all() );
 
+		add_filter( 'gravityview/configuration/fields', function( $fields ) {
+			foreach ( $fields['directory_table-columns'] as &$field ) {
+				if ( $field['label'] == 'Business Name' ) {
+					/** Custom parameters */
+					$field['sentinel'] = '9148';
+				}
+			}
+			return $fields;
+		} );
+
 		/** Back compatibility */
 		$post = $this->factory->view->create_and_get();
 		$view = \GV\View::from_post( $post );
@@ -1181,6 +1191,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Regression on \GravityView_View_Data::get_fields() */
 		$this->assertEquals( $view->fields->as_configuration(), \GravityView_View_Data::getInstance()->get_fields( $view->ID ) );
+
+		remove_all_filters( 'gravityview/configuration/fields' );
 
 		/** Visible/hidden fields */
 		add_filter( 'gravityview/configuration/fields', function( $fields ) {

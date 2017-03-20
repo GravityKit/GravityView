@@ -12,6 +12,14 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Houses all base Field functionality.
  */
 class Field {
+
+	/**
+	 * @var array The custom View configuration for this field.
+	 *
+	 * Everything else is in the properties.
+	 */
+	private $configuration = array();
+
 	/**
 	 * @var string The field position in the view.
 	 * @api
@@ -103,13 +111,15 @@ class Field {
 	 *			'search_filter' => string '0'
 	 *			'show_as_link' => string '0'
 	 *
+	 *			+ whatever else specific field types may have
+	 *
 	 * @internal
 	 * @since future
 	 *
 	 * @return array
 	 */
 	public function as_configuration() {
-		return array(
+		return array_merge( array(
 			'id' => $this->ID,
 			'label' => $this->label,
 			'show_label' => $this->show_label ? '1' : '0',
@@ -119,7 +129,7 @@ class Field {
 			'only_loggedin_cap' => $this->cap,
 			'search_filter' => $this->search_filter ? '1' : '0',
 			'show_as_link' => $this->show_as_link ? '1' : '0',
-		);
+		), $this->configuration );
 	}
 
 	/**
@@ -133,6 +143,7 @@ class Field {
 	 */
 	public function from_configuration( $configuration ) {
 		$configuration = wp_parse_args( $configuration, $this->as_configuration() );
+
 		$this->ID = $configuration['id'];
 		$this->label = $configuration['label'];
 		$this->show_label = $configuration['show_label'] == '1';
@@ -141,5 +152,18 @@ class Field {
 		$this->cap = $configuration['only_loggedin'] == '1' ? $configuration['only_loggedin_cap'] : '';
 		$this->search_filter = $configuration['search_filter'] == '1';
 		$this->show_as_link = $configuration['show_as_link'] == '1';
+
+		/** Shared among all field types (sort of). */
+		$shared_configuration_keys = array(
+			'id', 'label', 'show_label', 'custom_label', 'custom_class',
+			'only_loggedin' ,'only_loggedin_cap', 'search_filter', 'show_as_link',
+		);
+
+		/** Everything else goes into the properties for now. @todo subclasses! */
+		foreach ( $configuration as $key => $value ) {
+			if ( ! in_array( $key, $shared_configuration_keys ) ) {
+				$this->configuration[ $key ] = $value;
+			}
+		}
 	}
 }
