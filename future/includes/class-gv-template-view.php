@@ -28,6 +28,11 @@ abstract class View_Template extends Template {
 	public $view;
 
 	/**
+	 * @var \GV\Entry_Collection The entries that need to be rendered.
+	 */
+	public $entries;
+
+	/**
 	 * @var string The template slug to be loaded (like "table", "list")
 	 */
 	public static $slug;
@@ -37,8 +42,9 @@ abstract class View_Template extends Template {
 	 *
 	 * @param \GV\View $view The View connected to this template.
 	 */
-	public function __construct( View $view ) {
+	public function __construct( View $view, Entry_Collection $entries ) {
 		$this->view = $view;
+		$this->entries = $entries;
 
 		/** Add granular overrides. */
 		add_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ), 10, 3 );
@@ -106,7 +112,7 @@ abstract class View_Template extends Template {
 			/** Shortcuts */
 			'view' => $this->view,
 			'fields' => $this->view->fields->by_visible(),
-			'entries' => $this->view->form->entries->limit( 1 ),
+			'entries' => $this->entries->fetch(),
 			'form' => $this->view->form,
 
 		) ), 'gravityview' );

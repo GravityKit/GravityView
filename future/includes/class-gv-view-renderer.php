@@ -78,24 +78,39 @@ class View_Renderer {
 
 		/**
 		 * Fetch entries for this View.
-		 * @todo rewrite the API using Entry_Collection
 		 */
 		if ( $get_entries ) {
-			$sort_columns = $view->settings->get( 'sort_columns' );
-			$entries = \GravityView_frontend::get_view_entries( $view->settings->as_atts(), $view->form->ID );
+
+			/**
+			 * @todo: Stop using _frontend and use something like $request->get_search_criteria() instead
+			 */
+			$parameters = \GravityView_frontend::get_view_entries_parameters( $view->settings->as_atts(), $view->form->ID );
+
+			$entries = $view->form->entries
+				->filter( \GV\GF_Entry_Filter::from_search_criteria( $parameters['search_criteria'] ) )
+				->offset( $view->settings->get( 'offset' ) )
+				->limit( $parameters['paging']['page_size'] )
+				/** @todo: Get the page from the request instead! */
+				->page( ( ( $parameters['paging']['offset'] - $view->settings->get( 'offset' ) ) / $parameters['paging']['page_size'] ) + 1 );
+
+			if ( ! empty( $parameters['sorting'] ) ) {
+				$field = new \GV\Field();
+				$field->ID = $parameters['sorting']['key'];
+				$direction = strtolower( $parameters['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
+				$entries = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
+			}
 		} else {
-			$entries = array( 'count' => null, 'entries' => null, 'paging' => null );
+			$entries = new \GV\Enty_Collection();
 		}
 
 		/**
-		 * @filter `gravityview/template/view/class` Filter the template class that is about to be used to render the view.
-		 * @since future
-		 * @param string $class The chosen class - Default: \GV\View_Table_Template.
-		 * @param \GV\View $view The view about to be rendered.
-		 */
+		* @filter `gravityview/template/view/class` Filter the template class that is about to be used to render the view.
+		* @since future
+		* @param string $class The chosen class - Default: \GV\View_Table_Template.
+		* @param \GV\View $view The view about to be rendered.
+		*/
 		$class = apply_filters( 'gravityview/template/view/class', sprintf( '\GV\View_%s_Template', ucfirst( $template_slug ) ), $view );
-
-		$template = new $class( $view );
+		$template = new $class( $view, $entries );
 
 		ob_start();
 		$template->render();

@@ -21,7 +21,7 @@
 		<?php
 		} else {
 
-			foreach ( $gravityview->entries->all() as $entry ) :
+			foreach ( $gravityview->entries->all() as $entry ):
 
 				// Add `alt` class to alternate rows
 				$alt = empty( $alt ) ? 'alt' : '';
@@ -32,16 +32,17 @@
 				 * @param array $entry Current entry being displayed
 				 * @param GravityView_View $this Current GravityView_View object
 				 */
-				$class = apply_filters( 'gravityview_entry_class', $alt, $entry, null );
+				$class = apply_filters( 'gravityview_entry_class', $alt, $entry->as_entry(), null );
 		?>
-				<tr<?php echo ' class="'.esc_attr( $class ).'"'; ?>>
-		<?php
-			echo sprintf( "<td colspan=\"%s\">{$entry->ID}</td>", $gravityview->fields->count() ? : '' );
-		?>
-				</tr>
+			<tr<?php echo ' class="'.esc_attr( $class ).'"'; ?>>
 			<?php
+				foreach ( $gravityview->fields->all() as $field ):
+					echo sprintf( "<td>%s</td>", $entry[ $field->ID ] );
+				endforeach;
+			?>
+			</tr>
+		<?php
 			endforeach;
-
 		}
-	?>
+		?>
 	</tbody>
