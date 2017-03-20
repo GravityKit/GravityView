@@ -77,18 +77,12 @@ class GF_Form extends Form implements \ArrayAccess {
 
 			/** Apply the filters */
 			foreach ( $filters as $filter ) {
-				$_search_criteria = $filter->to_search_criteria();
-
-				foreach ( array( 'field_filters', 'start_date', 'end_date', 'status' ) as $key ) {
-					if ( ! empty( $_search_criteria[ $key ] ) ) {
-						$search_criteria[ $key ] = array_merge( empty( $search_criteria[ $key ] ) ? array() : $search_criteria[ $key ], $_search_criteria[ $key ] );
-					}
-				}
+				$search_criteria = $filter::merge_search_criteria( $search_criteria, $filter->as_search_criteria() );
 			}
 
 			/** Apply the sorts */
 			foreach ( $sorts as $sort ) {
-				/** @todo Wait, Gravity Forms doesn't allow to multisort? */
+				/** Gravity Forms does not have multi-sorting, so just overwrite. */
 				$sorting = array(
 					'key' => $sort->field->ID,
 					'direction' => $sort->direction,
@@ -119,13 +113,7 @@ class GF_Form extends Form implements \ArrayAccess {
 
 			/** Apply the filters */
 			foreach ( $filters as $filter ) {
-				$_search_criteria = $filter->to_search_criteria();
-
-				foreach ( array( 'field_filters', 'start_date', 'end_date', 'status' ) as $key ) {
-					if ( ! empty( $_search_criteria[ $key ] ) ) {
-						$search_criteria[ $key ] = array_merge( empty( $search_criteria[ $key ] ) ? array() : $search_criteria[ $key ], $_search_criteria[ $key ] );
-					}
-				}
+				$search_criteria = $filter::merge_search_criteria( $search_criteria, $filter->as_search_criteria() );
 			}
 
 			return \GFAPI::count_entries( $form->ID, $search_criteria );

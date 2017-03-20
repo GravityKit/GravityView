@@ -31,7 +31,7 @@ abstract class Entry {
 	/**
 	 * @var mixed The backing entry.
 	 */
-	private $entry;
+	protected $entry;
 	
 	/**
 	 * Adds the necessary rewrites for single Entries.
@@ -80,4 +80,13 @@ abstract class Entry {
 	 * @return \GV\Entry|null An instance of this entry or null if not found.
 	 */
 	abstract public static function by_id( $entry_id );
+
+	/**
+	 * Return the backing entry object.
+	 *
+	 * @return array The backing entry object.
+	 */
+	public function as_entry() {
+		return $this->entry;
+	}
 }

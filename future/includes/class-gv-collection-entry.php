@@ -48,6 +48,11 @@ class Entry_Collection extends Collection {
 	public $current_page = 1;
 
 	/**
+	 * @var int The number of entries fetched.
+	 */
+	private $fetched = -1;
+
+	/**
 	 * Add an \GV\Entry to this collection.
 	 *
 	 * @param \GV\Entry $entry The entry to add to the internal array.
@@ -117,7 +122,7 @@ class Entry_Collection extends Collection {
 	 * @return \GV\Entry[] The entries as an array.
 	 */
 	public function all() {
-		if ( parent::count() ) {
+		if ( $this->fetched >= 0 || parent::count() ) {
 			return parent::all();
 		}
 		return $this->fetch()->all();
@@ -132,7 +137,7 @@ class Entry_Collection extends Collection {
 	 * @return \GV\Entry|null The last entry or null.
 	 */
 	public function last() {
-		if ( parent::count() ) {
+		if ( $this->fetched >= 0 || parent::count() ) {
 			return parent::last();
 		}
 		return $this->fetch()->last();
@@ -162,6 +167,8 @@ class Entry_Collection extends Collection {
 
 			$this->merge( $callback[1]( $this->filters, $this->sorts, $offset ) );
 		}
+
+		$this->fetched = $this->count();
 
 		return $this;
 	}
@@ -315,5 +322,13 @@ class Entry_Collection extends Collection {
 		}
 
 		$this->callbacks []= array( $type, $callback );
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function clear() {
+		$this->fetched = -1;
+		parent::clear();
 	}
 }
