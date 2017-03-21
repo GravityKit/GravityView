@@ -14,9 +14,12 @@ if ( version_compare( phpversion(), '5.3' , '<' ) ) {
 
 /** All looks fine. */
 } else {
-	/** @define "GRAVITYVIEW_DIR" "../" Require core and mocks */
+	/** Require core and mocks */
 	require GRAVITYVIEW_DIR . 'future/_mocks.php';
 	require GRAVITYVIEW_DIR . 'future/includes/class-gv-core.php';
+
+	/** T-minus 3... 2.. 1... */
+	\GV\Core::bootstrap();
 
 	/**
 	 * The main GravityView wrapper function.
@@ -33,8 +36,5 @@ if ( version_compare( phpversion(), '5.3' , '<' ) ) {
 	}
 
 	/** Liftoff...*/
-	gravityview();
+	add_action( 'plugins_loaded', 'gravityview' );
 }
-
-/** Liftoff...*/
-add_action( 'plugins_loaded', 'gravityview' );
