@@ -7,8 +7,11 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) )
 if ( version_compare( phpversion(), '5.3' , '<' ) )
 	return false;
 
-/** @define "GRAVITYVIEW_DIR" "../" Require core */
+/** Require core */
 require GRAVITYVIEW_DIR . 'future/includes/class-gv-core.php';
+
+/** T-minus 3... 2.. 1... */
+\GV\Core::bootstrap();
 
 /**
  * The main GravityView wrapper function.

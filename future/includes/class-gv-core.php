@@ -55,6 +55,16 @@ final class Core {
 	}
 
 	/**
+	 * Very early initialization.
+	 *
+	 * Activation handlers, rewrites, post type registration.
+	 */
+	public static function bootstrap() {
+		require_once dirname( __FILE__ ) . '/class-gv-plugin.php';
+		Plugin::get()->register_activation_hooks();
+	}
+
+	/**
 	 * Bootstrap.
 	 *
 	 * @return void
@@ -72,7 +82,6 @@ final class Core {
 	 * @return void
 	 */
 	private function init() {
-		require_once dirname( __FILE__ ) . '/class-gv-plugin.php';
 		$this->plugin = Plugin::get();
 
 		/**
