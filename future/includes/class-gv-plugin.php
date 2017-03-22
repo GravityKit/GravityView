@@ -76,29 +76,11 @@ final class Plugin {
 	}
 
 	/**
-	 * Bootstrap.
+	 * Register hooks that are fired when the plugin is activated and deactivated.
 	 *
 	 * @return void
 	 */
-	private function __construct() {
-		$this->init();
-	}
-
-	/**
-	 * Initialize all plugin hooks, constants, settings, etc.
-	 *
-	 * @return void
-	 */
-	private function init() {
-		/**
-		 * Stop all further functionality from loading if the WordPress
-		 * plugin is incompatible with the current environment.
-		 */
-		if ( ! $this->is_compatible() ) {
-			return;
-		}
-
-		/** Register hooks that are fired when the plugin is activated and deactivated. */
+	public function register_activation_hooks() {
 		register_activation_hook( $this->dir( 'gravityview.php' ), array( $this, 'activate' ) );
 		register_deactivation_hook( $this->dir( 'gravityview.php' ), array( $this, 'deactivate' ) );
 	}
@@ -110,6 +92,15 @@ final class Plugin {
 	 * @return void
 	 */
 	public function activate() {
+		/** Register the gravityview post type upon WordPress core init. */
+		require_once $this->dir( 'future/includes/class-gv-view.php' );
+		View::register_post_type();
+
+		/** Add the entry rewrite endpoint. */
+		require_once $this->dir( 'future/includes/class-gv-entry.php' );
+		Entry::add_rewrite_endpoint();
+
+		/** Flush all URL rewrites. */
 		flush_rewrite_rules();
 
 		update_option( 'gv_version', \GravityView_Plugin::version );
