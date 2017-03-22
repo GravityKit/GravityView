@@ -118,7 +118,9 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-shortcode-gravityview.php' );
 		// add_action( 'init', array( '\GV\Shortcodes\gravityview', 'add' ) ); // @todo uncomment when original is stubbed
 
-		/** Our Form generic and beloved form backend implementations. */
+		/** Our Source generic and beloved source and form backend implementations. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-source.php' );
+		require_once $this->plugin->dir( 'future/includes/class-gv-source-internal.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-form.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-form-gravityforms.php' );
 

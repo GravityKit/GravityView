@@ -18,7 +18,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * @api
 	 * @since future
 	 */
-	public static $backend = 'gravityforms';
+	public static $backend = self::BACKEND_GRAVITYFORMS;
 
 	/**
 	 * Initialization.
