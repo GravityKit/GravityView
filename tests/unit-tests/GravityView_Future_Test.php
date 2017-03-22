@@ -1357,6 +1357,69 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\View_Table_Template::the_columns()
+	 * @covers \GV\View_Table_Template::the_entry()
+	 */
+	public function test_view_table() {
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'form_id' => $form->ID,
+			'1' => 'set all the fields!',
+			'2' => -100,
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form->ID ) );
+
+		foreach ( range( 1, 10 ) as $i ) {
+			$this->factory->entry->import_and_get( 'simple_entry.json', array(
+				'form_id' => $form['id'],
+				'1' => "this is the $i-numbered entry",
+				'2' => $i,
+			) );
+		}
+
+		add_filter( 'gravityview/configuration/fields', function( $fields ) {
+			return array(
+				'directory_table-columns' => array(
+					array(
+						'id' => 1, 'label' => 'This is field one',
+					),
+					array(
+						'id' => 2, 'label' => 'This is field two',
+					),
+				),
+			);
+		} );
+		$view = \GV\View::by_id( $view->ID );
+		remove_all_filters( 'gravityview/configuration/fields' );
+
+		$template = new \GV\View_Table_Template( $view, $view->form->entries );
+
+		/** Test the column ouput. */
+		$expected = sprintf( '<th id="gv-field-%1$d-1" class="gv-field-%1$d-1"><span class="gv-field-label">This is field one</span></th><th id="gv-field-%1$d-2" class="gv-field-%1$d-2"><span class="gv-field-label">This is field two</span></th>', $view->form->ID );
+
+		ob_start(); $template->the_columns();
+		$this->assertEquals( $expected, ob_get_clean() );
+
+		$entries = $view->form->entries->all();
+
+		$attributes = array( 'class' => 'hello-button', 'data-row' => '1' );
+
+		add_filter( 'gravityview/entry/row/attributes', function( $attributes ) {
+			$attributes['onclick'] = 'alert("hello :)");';
+			return $attributes;
+		} );
+
+		ob_start(); $template->the_entry( $entries[1], $attributes );
+		$output = ob_get_clean();
+		$this->assertContains( '<tr class="hello-button" data-row="1" onclick="alert(&quot;hello :)&quot;);">', $output );
+
+		$this->_reset_context();
+	}
+
+	/**
 	 * @covers \GV\Entry_Collection::filter
 	 * @covers \GV\Form::get_entries
 	 * @covers \GV\Entry_Collection::count

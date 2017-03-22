@@ -32,4 +32,73 @@ class View_Table_Template extends View_Template {
 			);
 		}
 	}
+
+	/**
+	 * Output the entry row.
+	 *
+	 * @param \GV\Entry $entry The entry to be rendered.
+	 * @param array $attributes The attributes for the <tr> tag
+	 *
+	 * @return void
+	 */
+	public function the_entry( \GV\Entry $entry, $attributes ) {
+		/**
+		 * @filter `gravityview/entry/row/attributes` Filter the row attributes for the row in table view.
+		 *
+		 * @param array $attributes The HTML attributes.
+		 * @param \GV\Entry $entry The entry this is being called for.
+		 * @param \GV\View_Template This template.
+		 *
+		 * @since future
+		 */
+		$attributes = apply_filters( 'gravityview/entry/row/attributes', $attributes, $entry, $this );
+
+		/** Glue the attributes together. */
+		foreach ( $attributes as $attribute => $value ) {
+			$attributes[$attribute] = sprintf( "$attribute=\"%s\"", esc_attr( $value) );
+		}
+		$attributes = implode( ' ', $attributes );
+
+		$fields = $this->view->fields->by_position( 'directory_table-columns' )->by_visible();
+
+		?>
+			<tr<?php echo $attributes ? " $attributes" : ''; ?>>
+				<?php foreach ( $fields->all() as $field ) {
+					$this->the_field( $entry, $field );
+				} ?>
+			</tr>
+		<?php
+	}
+
+	/**
+	 * Output a field cell.
+	 *
+	 * @param \GV\Field $entry The entry this field is for.
+	 * @param \GV\Field $field The field to be ouput.
+	 *
+	 * @return void
+	 */
+	public function the_field( \GV\Entry $entry, \GV\Field $field ) {
+		$attributes = array();
+
+		/**
+		 * @filter `gravityview/entry/cell/attributes` Filter the row attributes for the row in table view.
+		 *
+		 * @param array $attributes The HTML attributes.
+		 * @param \GV\Field $field The field these attributes are for.
+		 * @param \GV\Entry $entry The entry this is being called for.
+		 * @param \GV\View_Template This template.
+		 *
+		 * @since future
+		 */
+		$attributes = apply_filters( 'gravityview/entry/cell/attributes', $attributes, $field, $entry, $this );
+
+		/** Glue the attributes together. */
+		foreach ( $attributes as $attribute => $value ) {
+			$attributes[$attribute] = sprintf( "$attribute=\"%s\"", esc_attr( $value) );
+		}
+		$attributes = implode( ' ', $attributes );
+
+		printf( '<td%s>%s</td>', $attributes, \gv_value( $entry->as_entry(), $field->as_configuration() ) );
+	}
 }
