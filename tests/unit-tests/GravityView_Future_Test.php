@@ -1189,6 +1189,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$view = \GV\View::from_post( $post );
 		$this->assertEquals( $view->fields->as_configuration(), gravityview_get_directory_fields( $view->ID ) );
 
+		/** Test custom getters */
+		foreach( $view->fields->by_position( 'directory_table-columns' )->all() as $field ) {
+			if ( $field->label == 'Business Name' ) {
+				$this->assertEquals( '9148', $field->sentinel );
+			}
+		}
+
 		/** Regression on \GravityView_View_Data::get_fields() */
 		$this->assertEquals( $view->fields->as_configuration(), \GravityView_View_Data::getInstance()->get_fields( $view->ID ) );
 

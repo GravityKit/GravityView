@@ -166,4 +166,17 @@ class Field {
 			}
 		}
 	}
+
+	/**
+	 * Get one of the extra configuration keys via property accessors.
+	 *
+	 * @param string $key The key to get.
+	 *
+	 * @return mixed|null The value for the given configuration key, null if doesn't exist.
+	 */
+	public function __get( $key ) {
+		if ( isset( $this->configuration[ $key ] ) ) {
+			return $this->configuration[ $key ];
+		}
+	}
 }
