@@ -1232,6 +1232,52 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\Context::__set()
+	 * @covers \GV\Context::__get()
+	 *
+	 * @covers \GV\Field_Value_Context::__set()
+	 * @covers \GV\Field_Value_Context::__get()
+	 */
+	public function test_contexts() {
+		$context = new \GV\Context();
+
+		$context->space = 'is the place';
+		$this->assertEquals( 'is the place', $context->space );
+
+		$context = new \GV\Field_Value_Context();
+
+		$context->place = 'is the space';
+		$this->assertEquals( 'is the space', $context->place );
+
+		$expectedException = null;
+		try {
+			/** Make sure we can only set the view to a \GV\View instance. */
+			$context->view = 'hello';
+		} catch ( \InvalidArgumentException $e ) {
+			$expectedException = $e;
+		}
+		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
+
+		$expectedException = null;
+		try {
+			/** Make sure we can only set the form to a \GV\Form instance. */
+			$context->form = 'hello';
+		} catch ( \InvalidArgumentException $e ) {
+			$expectedException = $e;
+		}
+		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
+
+		$expectedException = null;
+		try {
+			/** Make sure we can only set the entry to a \GV\Entry instance. */
+			$context->entry = 'hello';
+		} catch ( \InvalidArgumentException $e ) {
+			$expectedException = $e;
+		}
+		$this->assertInstanceOf( '\InvalidArgumentException', $expectedException );
+	}
+
+	/**
 	 * @covers \GV\Entry_Collection::filter
 	 * @covers \GV\Form::get_entries
 	 * @covers \GV\Entry_Collection::count

@@ -19,5 +19,5 @@ class Internal_Source extends Source {
 	 * @api
 	 * @since future
 	 */
-	public static $backend = self::BACKEND_GRAVITYVIEW;
+	public static $backend = self::BACKEND_INTERNAL;
 }

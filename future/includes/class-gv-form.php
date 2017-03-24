@@ -13,19 +13,6 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  *  API to various form backends via \GV\Form implementations.
  */
 abstract class Form extends Source {
-	
-	/**
-	 * @var string BACKEND_GRAVITYVIEW The backend identifier for special GravityView data sources
-	 *  like custom content and the like. Not really a form, but a source nevertheless.
-	 */
-	const BACKEND_GRAVITYVIEW = 'gravityview';
-
-	/**
-	 * @var string BACKEND_GRAVITYFORMS The backend identifier for special GravityView data sources
-	 *  like custom content and the like. Not really a form, but a source nevertheless.
-	 */
-	const BACKEND_GRAVITYFORMS = 'gravityforms';
-
 	/**
 	 * @var int The ID for this form.
 	 *
