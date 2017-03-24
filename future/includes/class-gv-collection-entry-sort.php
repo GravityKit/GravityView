@@ -22,6 +22,11 @@ class Entry_Sort {
 	const DESC = 'DESC';
 
 	/**
+	 * @var string An enum of sorts, sort direction identifier - random.
+	 */
+	const RAND = 'RAND';
+
+	/**
 	 * @var \GV\Field The field that this sort is for.
 	 */
 	public $field;
@@ -35,7 +40,7 @@ class Entry_Sort {
 	 * Instantiate a sort for a field.
 	 *
 	 * @param \GV\Field $field The field we're sorting by.
-	 * @param string $direction The direction of this sort (\GV\Entry_Sort::ASC, \GV\Entry_Sort::DESC).
+	 * @param string $direction The direction of this sort (\GV\Entry_Sort::ASC, \GV\Entry_Sort::DESC, etc.).
 	 *
 	 * @api
 	 * @since future
